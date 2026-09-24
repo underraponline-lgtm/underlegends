@@ -212,7 +212,10 @@ def reescribir(h, nums, nuevas):
     ult = chr(ord('A') + h.ancho - 1)
     hasta = h.fila_datos + len(total) - 1
     if total:
-        sid, filas_grilla = _grilla(h)
+        # la grilla sólo se pregunta si la tabla CRECE: si entra lo que
+        # había, entra lo de ahora. Una lectura menos por hoja y corrida.
+        sid, filas_grilla = (_grilla(h) if len(total) > len(viejas)
+                             else (None, hasta))
         if hasta > filas_grilla and sid is not None:
             _pedir('POST', ':batchUpdate', json={'requests': [{'appendDimension': {
                 'sheetId': sid, 'dimension': 'ROWS',

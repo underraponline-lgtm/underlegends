@@ -1187,7 +1187,43 @@ def _api(metodo, sid, cola, **kw):
                                % (metodo, cola[:60], r.status_code,
                                   r.text[:200]))
         return r.json() if r.content else {}
+    # ⚠️ UN `batchUpdate` CAMBIA LA ESTRUCTURA —bandas, condicionales,
+    # pestañas—, así que la metadata guardada deja de valer. Ver `_meta()`.
+    if metodo != 'GET' and ':batchUpdate' in cola:
+        _META.pop(sid, None)
     return _reint(_pedir)
+
+
+#: la metadata de cada documento, por corrida. Ver `_meta()`.
+_META = {}
+
+
+def _meta(sid, refresco=False):
+    """`{pestaña: su metadata}` del documento: propiedades, bandas y
+    reglas condicionales. **Una** lectura, **con** reintento.
+
+    🔴 ERAN CUATRO `requests.get` SUELTOS Y NINGUNO REINTENTABA:
+    `hoja_existe()`, `crear_hoja()`, `_hoja_id()` y `_adornos()`. Medido
+    el 24/09/2026: el paso de Podios/Duelos/Mundial murió **en tres de
+    cuatro corridas seguidas** —de las 2:22 PM a las 3:52 PM ET—, las
+    tres en uno de estos dos: `?fields=sheets.properties` y
+    `?fields=sheets(…bandedRanges…)`. `_leer()` y `_api()` tenían su
+    reintento; la lectura que falló no pasaba por ninguno. Ninguna
+    corrida figuró como fallida: el ciclo sigue, y las tres vitrinas se
+    quedaron con los números de la corrida anterior.
+
+    ⚠️ Y SE PEDÍAN DE A DOS POR HOJA, DOS VECES POR HOJA. `rehacer_hoja()`
+    pedía la pestaña y después sus adornos, y `vestir()` las dos cosas
+    otra vez: cuatro lecturas de metadata por vitrina, con la cuota en 60
+    por minuto. Ahora es una, que se guarda hasta el próximo
+    `batchUpdate` —que es lo único que la cambia—.
+    """
+    if refresco or sid not in _META:
+        d = _api('GET', sid, '?fields=sheets(properties,'
+                 'bandedRanges.bandedRangeId,conditionalFormats)')
+        _META[sid] = {x['properties']['title']: x
+                      for x in d.get('sheets') or []}
+    return _META[sid]
 
 
 def _mismo(mandado, leido):
@@ -1321,15 +1357,8 @@ def escribir_vitrina(filas, cab, sid=None, hoja=None, fila_cab=None):
 
 
 def hoja_existe(sid, nombre):
-    """`True` si esa pestaña está en el documento."""
-    import requests
-    from escribir import token
-    r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s' % sid,
-                     params={'fields': 'sheets.properties.title'},
-                     headers={'Authorization': 'Bearer ' + token()}, timeout=60)
-    r.raise_for_status()
-    return any(s['properties']['title'] == nombre
-               for s in r.json().get('sheets', []))
+    """`True` si esa pestaña está en el documento. Ver `_meta()`."""
+    return nombre in _meta(sid)
 
 
 def crear_hoja(sid, nombre, cab, color=None):
@@ -1353,15 +1382,7 @@ def crear_hoja(sid, nombre, cab, color=None):
     _api('PUT', sid, '/values/%s?valueInputOption=RAW'
          % _q('%s!A1:%s1' % (nombre, _col(len(cab)))), json={'values': [cab]})
     # la cabecera, con el mismo navy de las otras hojas
-    hid = None
-    import requests
-    from escribir import token
-    r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s' % sid,
-                     params={'fields': 'sheets.properties'},
-                     headers={'Authorization': 'Bearer ' + token()}, timeout=60)
-    for s in r.json().get('sheets', []):
-        if s['properties']['title'] == nombre:
-            hid = s['properties']['sheetId']
+    hid = ((_meta(sid).get(nombre) or {}).get('properties') or {}).get('sheetId')
     if hid is not None:
         _api('POST', sid, ':batchUpdate', json={'requests': [
             {'repeatCell': {
@@ -1378,16 +1399,9 @@ def crear_hoja(sid, nombre, cab, color=None):
 
 
 def _hoja_id(sid, nombre):
-    import requests
-    from escribir import token
-    r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s' % sid,
-                     params={'fields': 'sheets.properties'},
-                     headers={'Authorization': 'Bearer ' + token()}, timeout=60)
-    r.raise_for_status()
-    for s in r.json().get('sheets', []):
-        if s['properties']['title'] == nombre:
-            return s['properties']
-    return None
+    """Las propiedades de esa pestaña, o `None`. Ver `_meta()`."""
+    x = _meta(sid).get(nombre)
+    return x['properties'] if x else None
 
 
 def _adornos(sid, nombre):
@@ -1405,19 +1419,9 @@ def _adornos(sid, nombre):
     condicionales son objetos de la hoja, no formato de celda. Es por eso
     que `rehacer_hoja()` las dejaba pasar aunque limpie todo.
     """
-    import requests
-    from escribir import token
-    r = requests.get('https://sheets.googleapis.com/v4/spreadsheets/%s' % sid,
-                     params={'fields': 'sheets(properties.sheetId,'
-                                       'properties.title,bandedRanges.bandedRangeId,'
-                                       'conditionalFormats)'},
-                     headers={'Authorization': 'Bearer ' + token()}, timeout=60)
-    r.raise_for_status()
-    for s in r.json().get('sheets', []):
-        if s['properties']['title'] == nombre:
-            return ([b['bandedRangeId'] for b in s.get('bandedRanges', [])],
-                    len(s.get('conditionalFormats', [])))
-    return ([], 0)
+    x = _meta(sid).get(nombre) or {}
+    return ([b['bandedRangeId'] for b in x.get('bandedRanges', [])],
+            len(x.get('conditionalFormats', [])))
 
 
 def rehacer_hoja(sid, nombre, cab, filas, color=None):
@@ -1466,11 +1470,13 @@ def rehacer_hoja(sid, nombre, cab, filas, color=None):
     _api('PUT', sid, '/values/%s?valueInputOption=RAW'
          % _q('%s!A1:%s1' % (nombre, _col(ancho))), json={'values': [cab]})
     escritas = escribir_vitrina(filas, cab, sid=sid, hoja=nombre, fila_cab=1)
-    vestir(sid, nombre, cab, filas)
+    # ⚠️ LIMPIA: el batch de arriba ya le sacó bandas y condicionales, así
+    # que preguntarle cuáles tiene es una lectura que contesta «ninguna».
+    vestir(sid, nombre, cab, filas, hid=hid, limpia=True)
     return escritas, (filas_hoja, cols_hoja)
 
 
-def vestir(sid, nombre, cab, filas, hid=None):
+def vestir(sid, nombre, cab, filas, hid=None, limpia=False):
     """Le pone el diseño a una vitrina ya escrita. Ver `sheet/estilo.py`.
 
     🔴 LO LLAMAN LAS DOS RUTAS, Y ESO ES EL PUNTO. `Ranking Temporada` y
@@ -1494,7 +1500,7 @@ def vestir(sid, nombre, cab, filas, hid=None):
             return False
         hid = props['sheetId']
     # limpiar lo de antes: las bandas chocan y las condicionales se apilan
-    bandas, n_cond = _adornos(sid, nombre)
+    bandas, n_cond = ([], 0) if limpia else _adornos(sid, nombre)
     previas = ([{'deleteConditionalFormatRule': {'sheetId': hid, 'index': i}}
                 for i in range(n_cond - 1, -1, -1)]
                + [{'deleteBanding': {'bandedRangeId': b}} for b in bandas])
@@ -1649,7 +1655,10 @@ def escribir_todas(dry=True):
     out = {}
     for cual, filas, cab in trabajos:
         nombre = NOMBRE[cual]
-        fila_cab = fila_cabecera(nombre)
+        # ⚠️ LAS QUE SE REHACEN TIENEN LA CABECERA EN LA FILA 1 SIEMPRE
+        # —`rehacer_hoja()` la pone ahí—, así que buscarla es una lectura
+        # que no cambia nada. Tres de cuatro, con la cuota en 60 por minuto.
+        fila_cab = 1 if cual in REHACER else fila_cabecera(nombre)
         if cab is None:
             cab = cabecera_oficial(hoja=nombre, fila=fila_cab)
         out[cual] = {'filas': len(filas), 'hoja': nombre, 'cab': len(cab)}
