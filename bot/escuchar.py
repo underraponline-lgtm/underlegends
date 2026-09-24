@@ -411,6 +411,25 @@ HISTORIA = re.compile(r'\s*[(\uff08][^()\uff08\uff09]*[)\uff09]?\s*$')
 _PERSONAS = [None]
 
 
+_DISTINTOS = [None]
+
+
+def _distintos():
+    """Los pares declarados «no confundir», como claves normalizadas."""
+    if _DISTINTOS[0] is None:
+        out = set()
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas.json'),
+                         encoding='utf-8') as f:
+                for x in (json.load(f) or {}).get('no_confundir') or []:
+                    if len(x) >= 2 and norm(x[0]) and norm(x[1]):
+                        out.add(frozenset((norm(x[0]), norm(x[1]))))
+        except (OSError, ValueError):
+            pass
+        _DISTINTOS[0] = out
+    return _DISTINTOS[0]
+
+
 def _personas():
     """Los nombres (normalizados) de gente que YA EXISTE. Se cachea.
 
@@ -539,6 +558,7 @@ def resolver(texto, conocidos=None, ids=None):
         canon = {}
         mapa = {norm(c): c for c in conocidos if norm(c)}
         personas = _personas()
+        distintos = _distintos()
 
         def _c(n):
             # 🔴 EL PARECIDO PUEDE CORREGIR UN TYPO, PERO NUNCA CONVERTIR A
@@ -586,6 +606,12 @@ def resolver(texto, conocidos=None, ids=None):
             elif nb and nb not in personas:
                 cerca = difflib.get_close_matches(nb, list(mapa), n=1,
                                                   cutoff=0.85)
+                # ⚠️ Y NUNCA SOBRE UN PAR DECLARADO DISTINTO. La guía de
+                # Dlx (parte 5) lista nombres parecidos que son dos
+                # personas —`Blood`/`Bloody` da 0.91, `Luck`/`Lucky` y
+                # `Erik`/`Erika` 0.89—, todos por encima de este corte.
+                if cerca and frozenset((nb, cerca[0])) in distintos:
+                    cerca = []
                 if cerca and (bool(_equipo(n))
                               == bool(_equipo(mapa[cerca[0]]))):
                     r = mapa[cerca[0]]

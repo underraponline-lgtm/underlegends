@@ -270,6 +270,9 @@ def _clave_fila(n):
 _GRAFIA = None
 #: los que no están en el padrón ni tienen alias: (clave, banderas) -> grafía
 _DESCONOCIDOS = {}
+#: claves que la hoja AKAs declara como dos personas que solo cambian de
+#: bandera (`Zeta 🇨🇴` / `Zeta 🇲🇽`)
+_POR_BANDERA = set()
 #: una bandera es un PAR de indicadores regionales
 _BANDERA2 = re.compile('[\U0001F1E6-\U0001F1FF]{2}')
 
@@ -319,6 +322,19 @@ def _grafia(nombre, declarado=False):
     global _GRAFIA
     if _GRAFIA is None:
         _GRAFIA = {}
+        # los nombres que la hoja AKAs distingue SOLO por la bandera
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas.json'),
+                         encoding='utf-8') as f:
+                for x in (json.load(f) or {}).get('no_confundir') or []:
+                    if len(x) >= 2:
+                        a, b = (''.join(c for c in unicodedata.normalize(
+                            'NFKD', str(v)) if c.isalnum()).lower()
+                            for v in x[:2])
+                        if a and a == b:
+                            _POR_BANDERA.add(a)
+        except (OSError, ValueError):
+            pass
         try:
             with io.open(os.path.join(BASE, 'datos', 'padron.json'),
                          encoding='utf-8') as f:
@@ -335,6 +351,14 @@ def _grafia(nombre, declarado=False):
                  if c.isalnum()).lower()
     if not kk:
         return nombre
+    # 🔴 SALVO QUE ESE NOMBRE ESTÉ DECLARADO COMO DOS PERSONAS QUE SÓLO
+    # CAMBIAN DE BANDERA. La guía de Dlx (parte 5) tiene `Zeta 🇨🇴 ≠ Zeta
+    # 🇲🇽`: con la clave de letras son la misma, así que aunque «Zeta» esté
+    # en el padrón, ahí la bandera manda. Es la otra cara de su «la
+    # bandera no siempre es decoración».
+    if kk in _POR_BANDERA:
+        fl = frozenset(_BANDERA2.findall(nombre or ''))
+        return _DESCONOCIDOS.setdefault((kk, fl), nombre)
     if kk in _GRAFIA:
         return _GRAFIA[kk]
     if declarado:
