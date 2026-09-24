@@ -186,8 +186,17 @@ def corre(args, callado=True):
     if r.returncode and callado:
         ultima = (r.stderr or r.stdout or '').strip().splitlines()
         print('      ⚠️ falló: %s' % ' '.join(args[:2]))
+        # 🔴 EL ERROR SOLO NO DICE DÓNDE. Hasta el 25/09/2026 esto imprimía
+        # la última línea, cortada a 110 caracteres, y el log del ciclo de
+        # las 6:52 AM ET del 24/09 decía «APIError: [429]: Quota exceeded»
+        # sin decir qué llamada: hubo que deducirla leyendo el builder. La
+        # última línea `File "…", line N` del traceback es la que la
+        # nombra, y cuesta una línea más en el log.
+        donde = [l for l in ultima if l.strip().startswith('File "')]
+        if donde:
+            print('         %s' % donde[-1].strip()[:150])
         if ultima:
-            print('         %s' % ultima[-1][:110])
+            print('         %s' % ultima[-1][:200])
     return r.returncode == 0
 
 
