@@ -515,7 +515,7 @@ que cambia es que desde ahí cada llave nueva de ese canal se lee cada media
 hora. (El `🆕` no salió en el log porque el resumen del paso 1 filtraba esa
 línea; arreglado.)
 
-### 13. SNAKE RAP: VERIFICA, ES DE CARTA Y DA IDs (24/09, noche)
+### 13. SNAKE RAP: ES DE CARTA Y DA IDs — Y NO VERIFICA (24/09, noche)
 
 Dlx: *«este es una gran oportunidad para obtener IDs y hacer el setup del
 bot al servidor. Además de poder autoverificar debido a que este servidor
@@ -525,20 +525,25 @@ Snake Rap está armado igual que DRA: **`・Miembro 🐍`** lo tienen 7.273 de
 7.337, y los países son roles con la bandera en el nombre (🇦🇷 887, 🇪🇸 581,
 🇲🇽 509, 🇨🇴 502…).
 
+🔴 **EL MIEMBRO 🐍 NO VERIFICA.** Leí «autoverificar» como «que su rol
+también verifique», lo apliqué —el portón pasó de 324 a 404— y Dlx lo
+corrigió esa misma tarde: *«No. El rol de verificado es miembro en DRA
+únicamente»*. Se revirtió; queda escrito en `bot/verificados.py`, con sus
+palabras. **Una regla de identidad no se cambia por interpretación: se
+pregunta.**
+
 | qué | dónde | medido |
 |---|---|---|
-| el Miembro 🐍 verifica, como el de DRA | `bot/verificados.py` (`EXTRA`) | el portón pasa de **324 a 404**; 8 ya compiten en la T1, Velatz (#3) entre ellos |
 | servidor **de carta** (no de identidad) | `herramientas/servidores_de.py` | 20 personas están sólo ahí |
 | IDs por nombre, **con el país como segunda señal** | `herramientas/cruzar_miembros.py` | 27 escritos; atajó 9 que eran otra persona |
 
-⚠️ **ES UNA EXCEPCIÓN DICHA.** Para FFA, LIVONIA y La Confederación sigue
-*«sacá su ID, pero no lo verifiques»*.
+⚠️ **DE SNAKE RAP SE SACA EL ID Y NADA MÁS**, como de FFA, LIVONIA y La
+Confederación: *«sacá su ID, pero no lo verifiques»*.
 
-⚠️ **DE SNAKE RAP SE GUARDAN SÓLO LOS DEL PADRÓN.** `verificados.json` y
-`servidores_de.json` van al repo **público**: la lista de miembros de otro
-servidor —7.000 personas que en su mayoría nunca jugaron— no es nuestra y
-al portón no le sirve. ⚠️ DRA y FFA sí guardan todo (2.574 y 3.892 IDs):
-es de antes y queda como sugerencia.
+⚠️ **DE SNAKE RAP SE GUARDAN SÓLO LOS DEL PADRÓN** en `servidores_de.json`,
+que va al repo **público**: la lista de miembros de otro servidor —7.000
+personas que en su mayoría nunca jugaron— no es nuestra. ⚠️ DRA y FFA sí
+guardan todo (2.574 y 3.892 IDs): es de antes y queda como sugerencia.
 
 ⚠️ **EN SNAKE RAP UN NOMBRE ÚNICO NO ALCANZA.** De 56 IDs que daban las
 guardas de siempre, 9 eran otra persona: el «Victor» único de Snake Rap es
@@ -583,15 +588,17 @@ cada palabra de la lista sea un `datos/*.json` antes de tocar nada.
 
 | | |
 |---|---|
-| `escuchar` | vitrinas sin 429 (tercera seguida) · 2.574 → 2.660 verificados · «el sitio no cambió» · guardó |
+| `escuchar` | vitrinas sin 429 (tercera seguida) · 2.574 → 2.660 verificados —con Snake Rap, **revertido** a las 7:03 PM— · «el sitio no cambió» · guardó |
 | `dibujar` | `--solo-dibujar` arrancó en el paso 3 · **72 de 72 personas, 762 cartas, 10,7 min** |
 | Bloqueadas | dibujó **42** —las de la gente nueva—, no las 186 de siempre |
 | anuncios | 39 en vez de 25: **14 de Snake Rap**, con organizador y hora |
 
 ⚠️ **«RAP EXHIBITION 1/8» de Snake Rap se jugó el 22/09 —ya en la T1— y
 su llave no está en ningún canal que el bot lea**: la más nueva de
-`［🔑］llaves` es del 18/09. Si cuenta, habrá salido como imagen o en otro
-lado. Pregunta para Dlx.
+`［🔑］llaves` es del 18/09. ✅ **Dlx: *«no debería contar»*.** Queda en
+`datos/decisiones.json` como `RAP EXHIBITION 1/8 · SR · *`, y
+`decision_evento()` ahora lo encuentra por nombre sin adornos y con
+cualquier fecha: así vale aunque alguien publique la llave tarde.
 
 ⚠️ **Y DOS FILAS CON EL MISMO DISCORD ID YA NO SE RESUELVEN POR ORDEN.**
 Eran tres —apareció Luzzano cuando Snake Rap lo verificó— y una salía al
@@ -612,6 +619,7 @@ incluido, que se pusheó antes de las 6:22 PM.
 | ⚠️ | la lista de `guardar.sh` se quedó corta por octava vez | ahora **avisa** lo que el ciclo cambió y no guarda |
 | ⚠️ | `bot_en.json` tampoco se guardaba | con `--solo-dibujar` lo lee `dibujar` |
 | ⚠️ | `utcnow()` deprecado, en el log de cada corrida | `now(timezone.utc)` |
+| 🔴 | `guardar.sh` volvía a poner la lista ENTERA: un `dibujar` largo habría devuelto a su versión vieja lo que `escuchar` commiteó en el medio —`avisados.json` incluido, o sea avisos repetidos— | sólo lo que la corrida cambió; probado con un origin de mentira contra la versión de antes |
 
 #### Lo que espera a Dlx
 
