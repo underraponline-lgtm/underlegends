@@ -519,9 +519,12 @@ def _lo_barato(correr):
             s = l.strip()
             if s.startswith('--') or s.startswith('('):
                 continue
+            # ⚠️ '🆕' TAMBIÉN: el servidor nuevo es el MOTIVO de un barrido
+            # completo, y sin su línea el resumen decía «barrido completo ·
+            # 177 canales» sin decir por qué. Pasó con Snake Rap el 24/09.
             if any(x in s for x in ('llave(s)', 'fila(s)', 'evento(s)',
-                                    'canal(es)')):
-                print('      %s' % s[:96])
+                                    'canal(es)', '🆕')):
+                print('      %s' % s[:110])
         if r.returncode:
             # 🔴 Y SE IMPRIME EL MOTIVO, QUE ANTES SE TIRABA. Esto decía
             # sólo «salió con 1» y mandaba el stderr a la basura, o sea
