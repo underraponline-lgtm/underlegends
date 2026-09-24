@@ -428,6 +428,36 @@ cambiaba cuando alguien lo corría a mano. Ahora corre en el 1d, después
 de Decidir, y se commitea. (El commit `752e093` decía que el ciclo lo
 regeneraba: no era cierto.)
 
+### 11. LOS DOS SHEETS, REVISADOS PESTAÑA POR PESTAÑA (24/09, tarde)
+
+Dlx: *«el hub será esta página y principalmente nuestro servidor… el sheet
+es más que todo información raw que cualquiera puede ver»*. Con eso se
+recorrieron las 22 pestañas. El patrón fue el de `Pendientes`: **las
+tablas que escribe el ciclo estaban bien; lo roto era todo lo que seguía
+describiendo el proceso viejo** y que ya no mantenía nadie.
+
+| Sheet | qué se hizo | con qué |
+|---|---|---|
+| Oficial | `Lobby`: de afiche (66 celdas combinadas) a **índice** de los datos en crudo | `sheet/indice.py`, en el ciclo en lugar de `lobby.py` |
+| Oficial | ocultas: `Mi Perfil`, `Guía`, `Ranking de Ligas` | el hub hace las tres |
+| Operativo | `Entrada` dice que la llena el ciclo (decía «procesá con IA y pegá en C2») | `sheet/entrada_instrucciones.py` |
+| Operativo | `AKAs`: instrucciones verdaderas; fuera la cola de «fusiones» que nadie leía | `sheet/operativo_t1.py` |
+| Operativo | `Eventos Procesados`: el resumen era la pre-temporada pegada (348 eventos) → fórmulas | ídem |
+| Operativo | `Config`: «Temporada actual» decía Pre-Temporada 1 | ídem |
+| Operativo | ocultas: `Entrada`, `Pendientes`, `Anuncios`, `Log`, `MW Puntos` | ídem |
+| Apps Script | la página vieja es un aviso que manda al hub (versión 53) | `sheet/webapp_subir.py` |
+
+⚠️ **`rangos.yml` quedó sólo a mano**: la página ya no tiene el bloque
+de rangos, y con el disparo por push el próximo cambio a `rangos.py`
+habría terminado en rojo. El rango de la web sale del payload del hub.
+
+⚠️ **Todo se ocultó, nada se borró.** Lo reemplazado quedó en
+`docs/sheet_respaldo/` y la página vieja en el historial de git.
+
+⚠️ **Dos cosas que conté mal y medí antes de dejarlas**: el resumen de
+`Eventos Procesados` dio 1 evento y 258 cazados en mi primera versión —el
+`#` viene como texto y quedaron celdas con `""`—; va con `LEN(…)>0`.
+
 ---
 
 # Dónde quedamos — 23/09/2026
