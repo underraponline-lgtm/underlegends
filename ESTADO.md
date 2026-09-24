@@ -579,6 +579,29 @@ y murió. `escuchar` quedó en rojo, **`dibujar` se salteó con 72 personas
 esperando** y la corrida no guardó nada. Ahora `guardar.sh` comprueba que
 cada palabra de la lista sea un `datos/*.json` antes de tocar nada.
 
+#### Verificado en la nube, la corrida de las 5:52 PM
+
+| | |
+|---|---|
+| `escuchar` | vitrinas sin 429 (tercera seguida) · 2.574 → 2.660 verificados · «el sitio no cambió» · guardó |
+| `dibujar` | `--solo-dibujar` arrancó en el paso 3 · **72 de 72 personas, 762 cartas, 10,7 min** |
+| Bloqueadas | dibujó **42** —las de la gente nueva—, no las 186 de siempre |
+| anuncios | 39 en vez de 25: **14 de Snake Rap**, con organizador y hora |
+
+⚠️ **«RAP EXHIBITION 1/8» de Snake Rap se jugó el 22/09 —ya en la T1— y
+su llave no está en ningún canal que el bot lea**: la más nueva de
+`［🔑］llaves` es del 18/09. Si cuenta, habrá salido como imagen o en otro
+lado. Pregunta para Dlx.
+
+⚠️ **Y DOS FILAS CON EL MISMO DISCORD ID YA NO SE RESUELVEN POR ORDEN.**
+Eran tres —apareció Luzzano cuando Snake Rap lo verificó— y una salía al
+revés: «gana lzz», con `lzz -> Luzzano` en los AKAs. Ahora mandan los AKAs
+(`subir_datos._es_alias_de()`, con la cadena entera). Probarlo me costó
+una escritura a KV desde esta PC: corrí `subir_datos.py --auto` y ese
+flag no existe, así que corrió de verdad. Diff-writer y con los datos del
+último commit: escribió lo mismo que la corrida siguiente, arreglo
+incluido, que se pusheó antes de las 6:22 PM.
+
 #### Lo que la auditoría de ese día encontró, además
 
 | | qué pasaba | arreglo |
