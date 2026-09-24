@@ -528,8 +528,19 @@ def armar():
             # esa cuenta es identidad, o sea del padrón y de quien lo
             # escribe. Lo que sí es de este paso es **no pisar sin
             # avisar**: se reporta y el que quedó afuera queda dicho.
+            #
+            # 🔴 PERO SI LOS AKAs YA LO DICEN, MANDAN ELLOS, y no el orden de
+            # las filas. Medido el 24/09/2026: de tres IDs repetidos, dos
+            # salían bien de casualidad y uno al revés — «luzzano se queda
+            # sin carta, gana lzz», con `lzz -> Luzzano` en los AKAs. Los
+            # puntos se cargan con el nombre real, así que el día que
+            # compita su `/card` abriría la fila vacía.
             if did in por_id:
-                dup_id.append((did, por_id[did], k))
+                otro = por_id[did]
+                dup_id.append((did, otro, k))
+                if _es_alias_de(k, otro):
+                    con_id += 1
+                    continue
             por_id[did] = k
             pares.append({'key': 'd:' + did, 'value': k})
             con_id += 1
@@ -654,11 +665,22 @@ def armar():
     # estaban. Un contador que mide otra cosa que la que dice es una alarma
     # falsa, y una alarma falsa gasta lo mismo que una de verdad.
     if dup_id:
-        print('  🔴 %d Discord ID repetido(s): el segundo pisa al '
-              'primero en KV' % len(dup_id))
+        # ⚠️ SE DICE QUIÉN GANÓ DE VERDAD: con los AKAs de por medio ya no
+        # es siempre «el segundo». Y los que decidieron los AKAs son un
+        # aviso, no una alarma: la cuenta llega a la carta correcta, lo
+        # que sobra es una fila repetida en el padrón.
+        por_alias = [(d, a, b) for d, a, b in dup_id if _es_alias_de(b, a)]
+        print('  %s %d Discord ID repetido(s) en el padrón%s'
+              % ('⚠️' if len(por_alias) == len(dup_id) else '🔴',
+                 len(dup_id), ' — los AKAs deciden %d' % len(por_alias)
+                 if por_alias else ': el segundo pisa al primero en KV'))
         for did, antes, ahora in dup_id[:6]:
-            print('     %-20s %s se queda sin carta, gana %s'
-                  % (did, antes, ahora))
+            if _es_alias_de(ahora, antes):
+                print('     %-20s gana %s: los AKAs dicen que %s es él'
+                      % (did, antes, ahora))
+            else:
+                print('     %-20s %s se queda sin carta, gana %s'
+                      % (did, antes, ahora))
     return pares, len(gente), con_id
 
 
@@ -700,6 +722,36 @@ def bot_en():
 
 
 _CC_CACHE = {}
+
+
+_ALIAS = {}
+
+
+def _es_alias_de(a, b):
+    """¿Los AKAs dicen que `a` es otro nombre de `b`? Claves de KV."""
+    if not _ALIAS:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas.json'),
+                         encoding='utf-8') as f:
+                _ALIAS.update({_llave(k): _llave(v) for k, v in
+                               (json.load(f).get('alias') or {}).items()})
+        except (OSError, ValueError):
+            _ALIAS['_'] = ''
+    # ⚠️ LA CADENA ENTERA: `gekto -> geekto -> Presagio`
+    visto, x = set(), _llave(a)
+    while x in _ALIAS and x not in visto:
+        visto.add(x)
+        x = _ALIAS[x]
+        if x == _llave(b):
+            return True
+    return False
+
+
+def _llave(s):
+    """Un nombre como clave de comparación: sólo letras y números."""
+    import unicodedata
+    s = unicodedata.normalize('NFKD', str(s or ''))
+    return ''.join(c for c in s if c.isalnum()).lower()
 
 
 def _cc_de(pais):
