@@ -186,7 +186,7 @@ se van a cero solos en cuanto `config` tome los umbrales de `comun/rangos.py`.
 | `comun/rangos.py` | **8** | es la fuente |
 | la columna `Rango` del Sheet | **8** | ✅ se calcula, ver `rankings.rangos_de()` |
 | la Guía | 6 | sola, se reescribe con el Sheet |
-| `Index.html` del Apps Script | **8** | ✅ sola, al pushear `rangos.py` |
+| `Index.html` del Apps Script | — | ✅ **retirada el 24/09/2026**: es un aviso que manda a underlegends.pages.dev |
 | los roles de Discord | **8** | ✅ **hechos**, ver abajo |
 
 ✅ **LOS ROLES YA SON OCHO, Y ESTA TABLA DIJO «6» DURANTE DIAS.** Dlx,

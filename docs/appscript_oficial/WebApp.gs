@@ -23,7 +23,7 @@
 
 function doGet(e) {
   return HtmlService.createHtmlOutputFromFile('Index')
-    .setTitle('Mi Perfil — Liga Global')
+    .setTitle('Liga Global — se mudó')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1');
 }
@@ -57,7 +57,7 @@ function getWebAppUrl() {
    ⚠️ Y `refreshCache()` SIGUE EXISTIENDO, porque contesta otra
    pregunta: los **datos** cambiaron y el código no.
    ════════════════════════════════════════════════════════════════════ */
-const CACHE_V = '8c10b3c9de';   // lo reescribe sheet/webapp_subir.py
+const CACHE_V = '4dc8cbb09c';   // lo reescribe sheet/webapp_subir.py
 
 function getAllData() {
   const cache = CacheService.getScriptCache();
