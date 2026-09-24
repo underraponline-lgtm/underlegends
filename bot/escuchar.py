@@ -182,6 +182,16 @@ CAMPEON = re.compile(
     r'|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)'
     r'\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})', re.I)
 MENCION = re.compile(r'<@!?(\d+)>')
+#: una linea de podio: campeon, subcampeon, tercero, cuarto, MVP. Nunca
+#: es una batalla, aunque traiga dos nombres entre corchetes.
+CONTRA = re.compile(r'🆚|\bvs\.?\b', re.I)
+PODIO = re.compile(
+    r'CAMPE[OÓ]N|\bPUESTO\b|\bLUGAR\b|M\.?\s*V\.?\s*P\b', re.I)
+#: el segundo puesto. Sirve para deducir al campeon cuando su linea no
+#: engancha con nadie: en una final de dos, el otro lado.
+SUBCAMPEON = re.compile(
+    r'(?:SUB[\s\-]*CAMPE[OÓ]N|\b(?:2\s*(?:DO|DO\.)|SEGUNDO)\s+PUESTO)'
+    r'\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})', re.I)
 # los shortcodes de emoji de Discord: `:flag_ve:`, `:ownerroleicon:`
 CORTO = re.compile(r':[a-z0-9_+\-]{2,32}:')
 
@@ -207,17 +217,40 @@ def norm(s):
 
 
 def nombres_de_linea(l):
-    """Los competidores de una linea, en orden. [] si no es una batalla."""
+    """Los competidores de una linea, en orden. [] si no es una batalla.
+
+    🔴 EL MARCO NO GANA SI EL SEPARADOR VE MAS LADOS. Antes, con dos
+    nombres entre `⌞ ⌝` se devolvian esos dos y **el resto de la linea
+    se tiraba**. Medido el 25/09/2026 en ELRAP FECHA 6 (#353):
+
+        ⌞fokox🇦🇷⌝  <:VSF:…>  ⌞Sin límites 🇵🇪⌝ <:VSF:…> nhp🇨🇱
+
+    son tres, y `nhp` —el que PASO— no tiene marco. Salia «fokox vs Sin
+    límites», ninguno de los dos aparecia en cuartos y la batalla se iba
+    a Pendientes: los dos eliminados sin puesto. Lo mismo con `EricRJ`,
+    `moneymaker`, `ricard`, `erian` y `ZTR`, todos al final de su linea.
+    Era la fuga mas grande de ese evento: **19 de 31** con puesto.
+
+    ⚠️ Y SOLO SI VE MAS, no si ve distinto. En `[A] [B] 🆚 [C] [D]` —la
+    forma de las finales grupales— el marco encuentra cuatro y el
+    separador dos, y ahi el marco tiene razon.
+    """
+    marco = []
     for d in DELIMS:
         hay = d.findall(l)
         if len(hay) >= 2:
-            return [x.strip() for x in hay]
+            marco = [x.strip() for x in hay]
+            break
+    sep = []
     if SEP.search(l):
-        trozos = [t.strip(' .·▪️♠︎-–—*_`') for t in SEP.split(l)]
+        trozos = [re.sub(r'[⌞⌝\[\]]', '', t).strip(' .·▪️♠︎-–—*_`')
+                  for t in SEP.split(l)]
         trozos = [t for t in trozos if 1 < len(norm(t)) <= 28]
         if len(trozos) >= 2:
-            return trozos
-    return []
+            sep = trozos
+    if len(sep) > len(marco):
+        return sep
+    return marco or sep
 
 
 def unir_continuadas(texto):
@@ -318,7 +351,23 @@ def rondas_de(texto):
                 out.append((actual, bats))
             actual, bats = ALIAS.get(e, e), []
             continue
-        if nombres and actual:
+        # 🔴 LA LINEA DEL PODIO NO ES UNA BATALLA. `CAMPEÓN: [Cj] [Zignos]`
+        # trae dos nombres entre corchetes y cae dentro de la seccion
+        # FINAL, asi que se leia como una final mas —Cj contra Zignos,
+        # que son COMPAÑEROS— y entraba a `1v1` como un duelo que nunca
+        # existio. Medido el 25/09/2026 en CARABOBO: tres «finales», una
+        # real y dos fantasmas, la del campeon y la del subcampeon.
+        #
+        # ⚠️ Y NO SE VEIA POR OTRO BUG. Hasta ese dia la canonizacion
+        # contra las inscripciones (corte 0.66) convertia `ZIGNOS` en el
+        # equipo `Zignos + CJ`, asi que el fantasma salia como equipo y
+        # quedaba afuera de los duelos por accidente. Arreglar aquel dejo
+        # a la vista este: un bug tapaba al otro.
+        # ⚠️ solo si NO trae un «contra»: una linea de podio nunca lo
+        # tiene, y un tercer puesto escrito en linea —`3ER PUESTO: A 🆚 B`—
+        # si es una batalla
+        if nombres and actual and not (PODIO.search(l)
+                                       and not CONTRA.search(l)):
             bats.append(nombres)
     if actual and bats:
         out.append((actual, bats))
@@ -329,6 +378,88 @@ def es_llave(texto):
     """La firma: dos rondas distintas Y dos lineas de batalla."""
     rs = rondas_de(texto)
     return len(rs) >= 2 and sum(len(b) for _, b in rs) >= 2
+
+
+#: `A(B+C)`: lo de adentro es a quien le gano A, no parte de su nombre.
+#: Solo al FINAL del lado, y el cierre es opcional porque hay llaves
+#: que lo cortan. Es el mismo criterio que `sheet/equipos._PAREN`.
+HISTORIA = re.compile(r'\s*[(\uff08][^()\uff08\uff09]*[)\uff09]?\s*$')
+
+_PERSONAS = [None]
+
+
+def _personas():
+    """Los nombres (normalizados) de gente que YA EXISTE. Se cachea.
+
+    Sale del padron y del mapa de AKAs —los dos lados de cada alias—,
+    que es lo que el resto del sistema llama «una persona». Si falta
+    alguno de los dos archivos se sigue con lo que haya: el parecido
+    queda igual de estricto por el corte.
+    """
+    if _PERSONAS[0] is None:
+        out = set()
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'padron.json'),
+                         encoding='utf-8') as f:
+                for x in json.load(f) or []:
+                    out.add(norm(x.get('raw') or ''))
+        except (OSError, ValueError):
+            pass
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas.json'),
+                         encoding='utf-8') as f:
+                al = (json.load(f) or {}).get('alias') or {}
+            for a, r in al.items():
+                out.add(norm(a))
+                out.add(norm(r))
+        except (OSError, ValueError):
+            pass
+        out.discard('')
+        _PERSONAS[0] = out
+    return _PERSONAS[0]
+
+
+def _grupo_campeon(camp, b):
+    """Los lados de `b` que nombra la linea del campeon, si son VARIOS.
+
+    Devuelve la lista (en el orden de `b`) solo si la linea nombra a dos
+    o mas lados, a cada uno por separado, y deja al menos uno afuera —o
+    sea, si describe un equipo ganador contra el resto—. Si no, `[]`.
+
+    ⚠️ SE PARTE LA LINEA Y SE BUSCA CADA PEDAZO, no se pregunta si el
+    nombre «esta adentro». `nc` esta adentro de muchas palabras; un
+    pedazo que es exactamente `Nc` no.
+    """
+    if len(b) < 3:
+        return []
+    partes = [x for x in re.split(r'[+&,\[\]]|\s+y\s+', camp or '')
+              if norm(x)]
+    if len(partes) < 2:
+        return []
+    elegidos = []
+    for x in partes:
+        g = _parecido(x, [n for n in b if n not in elegidos], corte=0.8)
+        if g is None:
+            return []
+        elegidos.append(g)
+    if len(elegidos) < 2 or len(elegidos) >= len(b):
+        return []
+    return [n for n in b if n in elegidos]
+
+
+class Batalla(tuple):
+    """`(ronda, lados, ganador, razon)` — una tupla de cuatro, igual que
+    siempre — que ademas puede decir quienes **pasaron**.
+
+    ⚠️ ES UNA TUPLA A PROPOSITO. Todos los que llaman desarman cuatro
+    valores (`for ronda, lados, gan, razon in resolver(...)`); agregar un
+    quinto los rompe a todos juntos. Con esto el que no pregunta por
+    `.pasan` no se entera de que existe.
+    """
+    def __new__(cls, t, pasan=()):
+        o = super().__new__(cls, t)
+        o.pasan = list(pasan)
+        return o
 
 
 def _parecido(x, candidatos, corte=0.72):
@@ -380,13 +511,63 @@ def resolver(texto, conocidos=None, ids=None):
     umbral de parecido. Sin inscriptos se cae al comportamiento de antes.
     """
     rs = rondas_de(texto)
+    _c = None
     if conocidos:
         canon = {}
+        mapa = {norm(c): c for c in conocidos if norm(c)}
+        personas = _personas()
 
         def _c(n):
-            if n not in canon:
-                canon[n] = _parecido(n, conocidos, corte=0.66) or n
-            return canon[n]
+            # 🔴 EL PARECIDO PUEDE CORREGIR UN TYPO, PERO NUNCA CONVERTIR A
+            # UNA PERSONA EN OTRA. Hasta el 25/09/2026 esto era
+            # `_parecido(n, conocidos, corte=0.66) or n`, y medido sobre
+            # las 38 llaves de FFA hacia cuatro cosas distintas mal:
+            #
+            #   persona -> OTRA persona   MASINO->Rumasi, OASIS->Sin limites,
+            #                             CRK->Rumasi, VANDU->Volk, MARK->Makma
+            #   equipo  -> uno solo       makma+colesito->colesito (13 casos)
+            #   uno     -> equipo         ZIGNOS->«Zignos + CJ» (5 casos)
+            #   ganador -> perdedor       nhp(sin limites)->Sin limites
+            #
+            # El peor: `masino` contra `rumasi` comparten `masi` y dan
+            # 2·4/12 = **0.667**, un pelo arriba del corte. Masino GANO
+            # DESGRACIAS EN TOKYO VOL.10 y se quedo sin fila: sus semis
+            # salian a nombre de Rumasi y la linea «CAMPEÓN: MASINO» ya
+            # no coincidia con nadie, asi que la final se tiraba entera
+            # —y con ella el campeon y el subcampeon—. Dlx lo vio desde
+            # afuera: *«si Makma esta top 1, no ha ganado mas de un
+            # duelo?»*.
+            #
+            # ⚠️ Y NO SUMABA NADA. Medido el mismo dia: sin esta
+            # canonizacion se resuelven **las mismas 241 batallas** y dos
+            # finales MAS (28 contra 26 de 36). El paso que tenia que
+            # arreglar nombres solo los cambiaba de dueno.
+            #
+            # Tres reglas, las tres baratas:
+            #  1. igual a una inscripcion -> esa (es la cuenta que firmo);
+            #  2. si el nombre ya ES alguien del padron, se queda: un
+            #     parecido no puede pisar una identidad que existe;
+            #  3. si no, parecido a 0.85 y con la misma forma —equipo
+            #     con equipo, uno con uno—. `kminan`/`Kaminan` da 0.92 y
+            #     pasa; `masino`/`rumasi` da 0.67 y no.
+            #
+            # ⚠️ LA HISTORIA `A(B+C)` NO ES EL NOMBRE: es a quien le gano
+            # A. Se compara sin ella, porque con ella adentro `nhp(sin
+            # limites)` se parecia mas al perdedor que al ganador.
+            if n in canon:
+                return canon[n]
+            nb = norm(HISTORIA.sub('', n))
+            r = n
+            if nb in mapa:
+                r = mapa[nb]
+            elif nb and nb not in personas:
+                cerca = difflib.get_close_matches(nb, list(mapa), n=1,
+                                                  cutoff=0.85)
+                if cerca and (bool(_equipo(n))
+                              == bool(_equipo(mapa[cerca[0]]))):
+                    r = mapa[cerca[0]]
+            canon[n] = r
+            return r
 
         rs = [(ronda, [[_c(n) for n in b] for b in bats])
               for ronda, bats in rs]
@@ -435,7 +616,16 @@ def resolver(texto, conocidos=None, ids=None):
                             'el tercer puesto no tiene ronda siguiente'))
                 continue
             if sig:
-                ganan = [n for n in b if _parecido(n, sig)]
+                # 🔴 LA HISTORIA ENTRE PARENTESIS NO ES PARTE DEL NOMBRE, y
+                # comparada adentro rompia justo la pregunta de esta linea.
+                # `SAITO` pasa de octavos y en cuartos aparece como
+                # `SAITO(blody)`: `saito` contra `saitoblody` da 0.67, abajo
+                # del corte, asi que «no aparece nadie despues» y la
+                # batalla se iba a Pendientes. Medido el 25/09/2026: 4
+                # octavos de FFA caian por esto.
+                sig_l = {HISTORIA.sub('', x) for x in sig}
+                ganan = [n for n in b if _parecido(n, sig)
+                         or _parecido(HISTORIA.sub('', n), sig_l)]
                 if not ganan:
                     # el mismo equipo escrito al reves. Ver `_equipo()`.
                     eqs = {_equipo(s) for s in sig} - {frozenset()}
@@ -445,8 +635,29 @@ def resolver(texto, conocidos=None, ids=None):
                 elif not ganan:
                     out.append((ronda, b, None, 'no aparece nadie después'))
                 else:
-                    out.append((ronda, b, None,
-                                'pasan %d, no hay un ganador' % len(ganan)))
+                    # 🔑 SE DICE QUIENES PASARON. En una batalla de 4
+                    # donde pasan 2, los otros 2 quedaron eliminados en
+                    # esta ronda —y eso es un puesto—, pero hasta el
+                    # 25/09/2026 solo se devolvia el conteo: el que
+                    # llamaba no podia saber quien habia caido y tiraba la
+                    # batalla entera. Ver `Batalla`.
+                    out.append(Batalla((ronda, b, None,
+                                        'pasan %d, no hay un ganador'
+                                        % len(ganan)), pasan=ganan))
+            elif camp and _grupo_campeon(camp, b):
+                # 🔑 EL CAMPEON ES UN GRUPO DE LOS LADOS: es una final POR
+                # EQUIPOS escrita sin `+`. `[PRR] [SIX] [SNOW] 🆚 [COLESITO]
+                # [BLOODY] [MAKMA]` con `CAMPEÓN: PRR + SIX + SNOW` son dos
+                # equipos de tres, no una batalla de seis —y como batalla de
+                # seis «la linea CAMPEÓN no coincide con nadie», porque no
+                # coincide con UNO. Se devuelve como dos lados-equipo, que es
+                # la forma que `motor.equipo()` ya sabe repartir y que
+                # `resultados._filas_uno()` ya deja afuera de los duelos.
+                gan = _grupo_campeon(camp, b)
+                per = [n for n in b if n not in gan]
+                ta, tb = ' + '.join(gan), ' + '.join(per)
+                out.append((ronda, [ta, tb], ta,
+                            'línea CAMPEÓN: final por equipos'))
             elif camp:
                 # 🔴 EL CAMPEON TIENE QUE SER UNO DE LOS QUE PELEARON.
                 # Aca decia `_parecido(camp, b) or (camp if len(b) else
@@ -473,6 +684,13 @@ def resolver(texto, conocidos=None, ids=None):
                 # `Pendientes` con su motivo, que es la respuesta
                 # honesta.
                 g, pq = _parecido(camp, b), 'línea CAMPEÓN'
+                # 🔴 Y CANONIZADO IGUAL QUE LOS LADOS. Antes se canonizaba
+                # la batalla y se comparaba contra la linea CAMPEON cruda:
+                # si un lado cambiaba de nombre, el campeon ya no era
+                # nadie. Las dos puntas de la comparacion por el mismo
+                # camino, o la comparacion mide la diferencia de caminos.
+                if g is None and _c is not None:
+                    g = _parecido(_c(camp), b)
                 # el mismo equipo escrito al revés, igual que arriba:
                 # `1ER PUESTO: TAM+RIZAS+CUTULÚ` contra el lado
                 # `CUTULÚ+RIZAS+TAM` de la final. Ver `_equipo()`.
@@ -507,6 +725,45 @@ def resolver(texto, conocidos=None, ids=None):
                                 break
                         if g is not None:
                             break
+                # 🔑 Y SI EL CAMPEON NO SE RESUELVE, EL SUBCAMPEON PUEDE
+                # DECIRLO. En una final de dos, saber quien perdio ES saber
+                # quien gano. Medido el 25/09/2026: DESGRACIAS EN TOKYO VOL
+                # 11 escribe `CAMPEÓN: JOVEN ALA` con el lado `PRR` —dos
+                # alias de Hassan que no se parecen entre si— y `SUB-CAMPEÓN:
+                # SEBITA`, que si es un lado. La final se iba a Pendientes.
+                #
+                # ⚠️ SOLO CON DOS LADOS Y SOLO SI ENGANCHA CON UNO. Con tres
+                # saber quien perdio no dice quien gano, y si el
+                # subcampeon se parece a los dos no se elige.
+                if g is None and len(b) == 2:
+                    ms = SUBCAMPEON.search(texto or '')
+                    sub = ms.group(1).strip() if ms else None
+                    # ⚠️ SI LA LINEA NOMBRA A LOS DOS, O A UN EQUIPO, NO SE
+                    # DEDUCE NADA. La primera version de esto hizo campeon
+                    # a Nc en CARABOBO: la linea era `SUB-CAMPEÓN: [Nc]
+                    # [Mcnadie]` —los dos, como equipo—, `ncmcnadie` se
+                    # parecia a `mcnadie` y no a `nc`, y «engancha con uno
+                    # solo» daba verdadero. Se pregunta tambien si el nombre
+                    # de cada lado ESTA ADENTRO de la linea: si estan los dos,
+                    # es ambigua.
+                    en_linea = norm(sub) if sub else ''
+                    if sub and (_equipo(sub) or sub.count('[') > 1):
+                        sub = None
+                    if sub:
+                        cand = set()
+                        for n in b:
+                            nn = norm(HISTORIA.sub('', n))
+                            if (_parecido(sub, [n]) or (nn and nn in en_linea)
+                                    or (_c is not None
+                                        and _parecido(_c(sub), [n]))):
+                                cand.add(n)
+                        if not cand and ids:
+                            for did in MENCION.findall(sub):
+                                for nom in (ids.get(str(did)) or []):
+                                    cand.update(n for n in b if _parecido(nom, [n]))
+                        if len(cand) == 1:
+                            g = next(n for n in b if n not in cand)
+                            pq = 'línea SUB-CAMPEÓN: el campeón es el otro lado'
                 if g is not None:
                     out.append((ronda, b, g, pq))
                 elif MENCION.search(camp):

@@ -307,8 +307,22 @@ def _resolvedor():
             if pelado and pelado != n:
                 hallado = porclave.get(clave(pelado))
             if hallado is None:
-                resolver.fallo.add(n)
-                return n
+                # 🔴 SIN EL `(algo)`, AUNQUE NO ESTÉ EN EL PADRÓN. Antes se
+                # devolvía `n` tal cual, así que un desconocido quedaba
+                # bautizado con su anotación: `money maker(cj)` y `money
+                # maker` eran dos personas en la vitrina —las dos estaban
+                # en la hoja el 24/09/2026— y en `1v1` el duelo salía a
+                # nombre de la versión con paréntesis. Lo de adentro es
+                # a quién le ganó o quién entró por él, nunca su nombre.
+                #
+                # ⚠️ SÓLO EL PARÉNTESIS, NO LOS EMOJIS: `TøKīØ🦠🧠` es un
+                # nombre real con emoji, que es la razón de arriba para
+                # probar primero tal cual. Y sigue anotado como
+                # desconocido, así que va a `Pendientes` igual — con el
+                # nombre que alguien puede buscar.
+                limpio = _ANOTACION.sub('', n).strip() or n
+                resolver.fallo.add(limpio)
+                return limpio
         return hallado
     resolver.fallo = set()
     resolver.padron = porclave
