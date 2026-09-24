@@ -2415,6 +2415,78 @@ pinta();setInterval(pinta,1000);
 
 // ── La puerta ─────────────────────────────────────────────────────────────
 export default {
+  // ══════════════════════════════════════════════════════════════════
+  // 🔴 EL CRON DE GITHUB DISPARA 1 DE CADA 9 VECES, Y NO ES ARREGLABLE
+  // DESDE ADENTRO.
+  //
+  // Medido el 24/09/2026 sobre las 54 ranuras horarias desde el 22/09:
+  //
+  //     el ciclo ya estaba corriendo       26  (48 %)
+  //     libres, y el cron disparó           3
+  //     libres, y GitHub no disparó        25
+  //
+  // La primera mitad era nuestra —una corrida de dos horas se come las
+  // ranuras siguientes— y ya está arreglada: el ciclo se partió en dos
+  // trabajos y la compresión de las webp pasó de 2.5 s a 0.3 s por carta.
+  //
+  // La segunda no: `schedule` en Actions es **best effort** y GitHub lo
+  // descarta bajo carga. De las ranuras LIBRES disparó el **11 %**. A las
+  // 2:07am de ese día, con el runner vacío y nada en cola, no disparó.
+  //
+  // ⚠️ POR ESO EL DISPARADOR VIVE ACÁ. Un Cron Trigger de Cloudflare sí es
+  // puntual, entra en el plan gratis, y este Worker ya está desplegado.
+  //
+  // ⚠️ Y VA OFFSET 15 MINUTOS del de GitHub (`7,37` allá, `22,52` acá) a
+  // propósito. No se reemplaza al de GitHub: se le suma. Con los dos vivos
+  // el ciclo arranca cada 15 min, y si uno muere entero sigue cada 30. Un
+  // disparo de más no cuesta nada —el `concurrency` del workflow lo pone
+  // en fila— y en un repo público los minutos son gratis.
+  //
+  // ⚠️ DEJA RASTRO EN KV SIEMPRE, no sólo cuando falla. Un disparador
+  // que sólo escribe al fallar es indistinguible de uno muerto: las dos
+  // cosas se ven como silencio. Con `cron:ultimo` la auditoría puede
+  // preguntar «¿disparó en la última hora?», que es la pregunta que
+  // importa. Es la regla de este repo — *lo que no se pregunta no se
+  // entera de que dejó de andar*.
+  async scheduled(evento, env, ctx) {
+    ctx.waitUntil((async () => {
+      const t = new Date().toISOString();
+      if (!env.GH_TOKEN || !env.GH_REPO) {
+        await env.KV.put('cron:ultimo', JSON.stringify(
+          { t, ok: false, por: 'sin GH_TOKEN o GH_REPO en el Worker' }));
+        return;
+      }
+      let estado = 0;
+      let cuerpo = '';
+      try {
+        const r = await fetch(
+          `https://api.github.com/repos/${env.GH_REPO}` +
+          '/actions/workflows/ciclo.yml/dispatches',
+          {
+            method: 'POST',
+            headers: {
+              // ⚠️ GitHub RECHAZA sin User-Agent, con un 403 que no dice
+              // que el problema es el encabezado.
+              'User-Agent': 'liga-global-bot',
+              'Accept': 'application/vnd.github+json',
+              'Authorization': `Bearer ${env.GH_TOKEN}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ref: 'main' }),
+          });
+        estado = r.status;
+        // 204 es el éxito; cualquier otra cosa trae un cuerpo que explica
+        if (estado !== 204) cuerpo = (await r.text()).slice(0, 180);
+      } catch (e) {
+        cuerpo = String(e).slice(0, 180);
+      }
+      await env.KV.put('cron:ultimo', JSON.stringify({
+        t, ok: estado === 204, estado, cuerpo,
+        cron: evento.cron || '',
+      }));
+    })());
+  },
+
   async fetch(req, env, ctx) {
     if (req.method === 'GET') {
       const ruta = new URL(req.url).pathname;

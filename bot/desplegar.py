@@ -175,6 +175,59 @@ def main():
     # ⚠️ ES OPCIONAL A PROPOSITO. Si no esta en .env el Worker igual anda:
     # `/numeral` guarda la preferencia y avisa que se aplica despues. Asi el
     # dia que el token se rote y todavia no este cargado, nada se rompe.
+    # 🔴 EL DISPARADOR DEL CICLO, PORQUE EL CRON DE GITHUB NO DISPARA.
+    # Medido el 24/09/2026: de las ranuras horarias que estaban LIBRES,
+    # `schedule` en Actions disparo el **11 %**. Es best effort y GitHub lo
+    # descarta bajo carga; no se arregla desde adentro. Un Cron Trigger de
+    # Cloudflare si es puntual y entra en el plan gratis.
+    #
+    # ⚠️ EL TOKEN VA COMO `secret_text`, igual que el de Discord: abre los
+    # repos, asi que no puede leerse desde el panel.
+    #
+    # ⚠️ Y ES OPCIONAL A PROPOSITO. Sin el, el Worker sigue contestando
+    # `/card` igual y el ciclo queda con el cron de GitHub solo — que es
+    # exactamente el estado de antes, no uno peor.
+    ght = env.get('GH_TOKEN')
+    ghr = env.get('GH_REPO')
+    if ght and ghr:
+        meta['bindings'] += [
+            {'type': 'secret_text', 'name': 'GH_TOKEN', 'text': ght},
+            {'type': 'plain_text', 'name': 'GH_REPO', 'text': ghr},
+        ]
+        print('  · GH_TOKEN + GH_REPO: el Worker dispara el ciclo por cron')
+    else:
+        # 🔴 Y SI EL WORKER YA TENIA EL TOKEN, ESTE DEPLOY LO BORRA. El
+        # `PUT` del script **reemplaza la lista entera de bindings**, igual
+        # que la API de Apps Script reemplaza el proyecto entero: mandar
+        # menos no es «dejar como estaba», es borrar. El deploy diria 200,
+        # el cron seguiria agendado, y cada media hora dispararia contra un
+        # Worker sin token — o sea que el ciclo se detiene y lo unico que
+        # avisa es un `cron:ultimo` con `ok:false` que nadie mira.
+        #
+        # ⚠️ Se pregunta a la nube y no al `.env`, porque la pregunta es
+        # «¿que va a perder este deploy?» y eso sólo lo sabe lo que está
+        # arriba.
+        # ⚠️ NO PASA POR `pedir()` A PROPOSITO: esa funcion hace `sys.exit(1)`
+        # cuando Cloudflare dice que no, y un guardian que mata el deploy
+        # porque no pudo *consultar* es peor que el problema que vigila.
+        tenia = False
+        try:
+            r = s.get('%s/accounts/%s/workers/scripts/%s/bindings'
+                      % (API, cid, NOMBRE), timeout=30)
+            tenia = any(x.get('name') == 'GH_TOKEN'
+                        for x in (r.json().get('result') or []))
+        except Exception as e:                               # noqa: BLE001
+            print('  ⚠️ no pude preguntar qué bindings tiene el Worker (%s):'
+                  '\n     no sé si este deploy borra algo' % str(e)[:60])
+        if tenia:
+            print('\n  🔴 EL WORKER YA TIENE GH_TOKEN Y ESTE DEPLOY SE LO SACA.')
+            print('     El `PUT` reemplaza los bindings: mandar menos los borra.')
+            print('     El cron seguiría agendado y dispararía en vano.')
+            print('     Poné GH_TOKEN y GH_REPO en .env y volvé a correr esto.')
+            return 1
+        print('  ⚠️ sin GH_TOKEN/GH_REPO en .env: el ciclo queda sólo con el')
+        print('     cron de GitHub, que dispara 1 de cada 9 veces')
+
     tok = env.get('DISCORD_TOKEN')
     if tok:
         meta['bindings'].append(
@@ -198,6 +251,30 @@ def main():
     pedir(s, 'POST', '/accounts/%s/workers/scripts/%s/subdomain' % (cid, NOMBRE),
           json={'enabled': True, 'previews_enabled': False})
     print('  ✅ publicado en workers.dev')
+
+    # 🔴 EL CRON SE REGISTRA APARTE DEL SCRIPT, y eso es una trampa: subir
+    # un `worker.js` con `scheduled()` adentro **no** lo agenda. El handler
+    # queda ahi sin que nadie lo llame nunca, y no hay error en ningun
+    # lado — el deploy dice 200 igual. Es la forma que este repo persigue:
+    # sale bien y no hace nada.
+    #
+    # ⚠️ OFFSET 15 MINUTOS DEL DE GITHUB (`7,37` alla, `22,52` aca), a
+    # proposito. No lo reemplaza: se le suma. Con los dos vivos el ciclo
+    # arranca cada 15 min; si uno muere entero, sigue cada 30. Un disparo
+    # de mas no cuesta: el `concurrency` del workflow lo pone en fila, y en
+    # un repo publico los minutos son gratis.
+    #
+    # ⚠️ ES UN PUT Y REEMPLAZA LA LISTA ENTERA. Mandar uno solo borra los
+    # demas, igual que la API de Apps Script con sus cuatro archivos.
+    if ght and ghr:
+        pedir(s, 'PUT',
+              '/accounts/%s/workers/scripts/%s/schedules' % (cid, NOMBRE),
+              json=[{'cron': '22,52 * * * *'}])
+        print('  ✅ cron registrado: 22,52 * * * *  — a los :22 y :52 de cada '
+              'hora,\n     15 min corrido del de GitHub, que va a los :07 y '
+              ':37')
+    else:
+        print('  · sin cron: falta GH_TOKEN/GH_REPO')
 
     ver_vivo(url)
     ver_igual(s, cid)
