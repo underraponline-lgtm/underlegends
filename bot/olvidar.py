@@ -6,6 +6,7 @@
     python bot/olvidar.py Konan --hacer   lo borra y lo anota en olvidados
     python bot/olvidar.py Konan --volver  lo deja volver
     python bot/olvidar.py --sueltas       las grafias muertas
+    python bot/olvidar.py --huerfanas     cartas de una grafia fusionada
     python bot/olvidar.py --sueltas --hacer
     python bot/olvidar.py --auto          el self-check
 
@@ -422,6 +423,66 @@ def _self_check():
 
 
 # ── main ─────────────────────────────────────────────────────────────────
+def huerfanas():
+    """Carpetas de cartas en R2 cuyo nombre es un ALIAS de otra persona.
+
+    🔴 CADA FUSION DE ALIAS DEJA UNA. Cuando `datos/akas.json` declara
+    que `XXXXX` es `Xubaru`, el sistema entero pasa a usar `xubaru` —el
+    pool, KV, la web y `/card`— y la carpeta `xxxxx/` de R2 **se queda
+    ahi con sus 15 cartas**, que ya no mira nadie. No falla: son bytes
+    invisibles. Medido el 24/09/2026: **6 carpetas, 89 cartas**.
+
+    ⚠️ NO BORRA, Y NO ES PEREZA. Dlx, 24/09/2026, preguntado si
+    limpiarlas: *«intenta lo mejor ahi, en pendiente lo resolvere
+    luego»*. Borrar de R2 no se deshace, asi que lo mejor que se puede
+    hacer sin su respuesta es **poder verlas**: un pendiente que no se
+    puede medir se convierte en un pendiente que nadie vuelve a mirar.
+
+    ⚠️ Y SE PREGUNTA AL MAPA, NO SE ADIVINA. `sueltas()` de este mismo
+    archivo explica por que «sin dueño» es ambiguo y se niega a elegir;
+    aca no hay ambiguedad **porque alguien lo declaro**: el alias dice
+    literalmente que esa grafia es otra persona.
+    """
+    import unicodedata
+
+    def _k(x):
+        return ''.join(c for c in unicodedata.normalize('NFKD', str(x or ''))
+                       if c.isalnum()).lower()
+
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'akas.json'),
+                     encoding='utf-8') as f:
+            al = (json.load(f) or {}).get('alias') or {}
+        with io.open(os.path.join(BASE, 'datos', 'cartas_r2.json'),
+                     encoding='utf-8') as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return []
+    c = d.get('cartas', d) if isinstance(d, dict) else {}
+
+    def real(n):
+        # ⚠️ SIGUIENDO LA CADENA, igual que `rankings.canon()`: el mapa
+        # tiene `gekto -> geekto -> Presagio`, y parar en el primer salto
+        # contesta con otro alias.
+        vis, act = set(), n
+        for _ in range(8):
+            k = _k(act)
+            if k in vis or k not in al:
+                break
+            vis.add(k)
+            act = al[k]
+        return act
+
+    vivas = {_k(x) for x in c}
+    out = []
+    for k in sorted(c):
+        r = real(k)
+        if _k(r) != _k(k):
+            out.append({'clave': k, 'real': r, 'cartas': len(c[k]),
+                        'el_real_esta': _k(r) in vivas})
+    return out
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     flags = {a for a in sys.argv[1:] if a.startswith('--')}
@@ -445,6 +506,23 @@ def main():
         return
 
     s = sesion()
+
+    if '--huerfanas' in flags:
+        h = huerfanas()
+        print('\n  CARPETAS DE CARTAS QUE SON UN ALIAS DE OTRA PERSONA: '
+              '%d' % len(h))
+        if not h:
+            return print('  (ninguna)\n')
+        for x in h:
+            print('    %-16s -> %-16s %2d carta(s)   %s'
+                  % (x['clave'], x['real'], x['cartas'],
+                     'el real tambien esta' if x['el_real_esta']
+                     else '⚠️ EL REAL NO ESTA'))
+        print('    total: %d carta(s) que no mira nadie'
+              % sum(x['cartas'] for x in h))
+        print('\n  NO SE BORRA NADA: es un pendiente de Dlx. Ver '
+              '`huerfanas()`.\n')
+        return
 
     if '--sueltas' in flags:
         d = sueltas(s)

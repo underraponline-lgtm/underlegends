@@ -85,6 +85,35 @@ def payload(local):
     return requests.get(WEB, timeout=30).json()
 
 
+def _no_confundir(norm):
+    """Los pares ya declarados como DOS personas, normalizados.
+
+    Devuelve un set con las dos direcciones, para poder preguntar sin
+    ordenar. Sale de `datos/akas.json`, que es donde
+    `sheet/construir_akas.py` mezcla la hoja `AKAs` del Operativo con
+    `datos/akas_a_mano.json` —lo que Dlx dijo por chat—.
+    """
+    import io as _io
+    import json as _json
+    import os as _os
+    p = _os.path.join(BASE, 'datos', 'akas.json')
+    try:
+        with _io.open(p, encoding='utf-8') as f:
+            d = _json.load(f) or {}
+    except (OSError, ValueError):
+        # ⚠️ SIN EL ARCHIVO SE SIGUE. Perder el chequeo entero porque
+        # falta un json es peor que repetir un aviso.
+        return set()
+    out = set()
+    for par in (d.get('no_confundir') or []):
+        if len(par) >= 2:
+            a, b = norm(par[0]), norm(par[1])
+            if a and b:
+                out.add((a, b))
+                out.add((b, a))
+    return out
+
+
 def main():
     d = payload('--local' in sys.argv)
     pad = _j('datos', 'padron.json') or []
@@ -179,6 +208,7 @@ def main():
     # Con dos candidatos, va a la lista para mirar.
     import difflib
     nombres_pad = {norm(x.get('raw')): x for x in pad if norm(x.get('raw'))}
+    NO_CONFUNDIR = _no_confundir(norm)
     claros, ambiguos = [], []
     for f in sin_padron:
         k = norm(f.get('n'))
@@ -191,6 +221,19 @@ def main():
         # se mira, un falso positivo le da a alguien los puntos de otro.
         cerca = difflib.get_close_matches(k, list(nombres_pad), n=3,
                                           cutoff=0.76)
+        # 🔴 Y SE SACAN LOS QUE YA SE DECLARARON DISTINTOS. Sin esto
+        # el chequeo vuelve a proponer el mismo par en cada corrida,
+        # aunque Dlx ya haya contestado — `JAHNO`/`Juano` salio dos dias
+        # seguidos despues de que dijera *«esas si son 2 personas
+        # diferentes»*. `datos/akas.json` tiene una lista `no_confundir`
+        # para exactamente esto y este archivo no la leia: la decision
+        # estaba tomada y escrita, y el codigo miraba otro lado.
+        #
+        # ⚠️ UN AVISO QUE VUELVE DESPUES DE CONTESTARLO ENSEÑA A
+        # IGNORARLO, que es la leccion de `_mismo()` y la de los 188 del
+        # audit. El costo no es el ruido: es el dia que aparezca un par
+        # de verdad.
+        cerca = [c for c in cerca if (k, c) not in NO_CONFUNDIR]
         if len(cerca) == 1:
             claros.append((f, nombres_pad[cerca[0]]))
         elif len(cerca) > 1:
