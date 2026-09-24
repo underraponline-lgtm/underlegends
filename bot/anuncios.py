@@ -307,7 +307,10 @@ def marca_inscripcion(txt):
 #: el de un anuncio de la noche anterior.
 #:
 #: ⚠️ 100 es el máximo de Discord por llamada, así que sigue siendo UNA.
-POR_CANAL = {'eventos': 25, 'inscripciones': 100}
+#: Cuantos mensajes mirar por canal. `inscripciones` va alto a proposito:
+#: cada persona escribe UNA vez y de ahi sale su Discord ID, que es lo
+#: unico que no se puede deducir de ningun otro lado. Ver `leer()`.
+POR_CANAL = {'eventos': 25, 'inscripciones': 600}
 
 
 def leer(s, por_canal=None):
@@ -320,11 +323,43 @@ def leer(s, por_canal=None):
     estados = {}
     for cid, nombre, cod, tipo, gid in canales(s):
         lim = por_canal or POR_CANAL.get(tipo, 25)
-        r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
-                  params={'limit': lim}, timeout=25)
-        if r.status_code != 200:
+        # 🔴 DISCORD DA 100 POR PEDIDO Y ANTES SE PEDIA UNO SOLO, asi que
+        # `inscripciones: 100` no era una eleccion: era el techo de la API
+        # disfrazado de configuracion.
+        #
+        # ⚠️ Y HOY NO ATA — lo medi antes de creermelo. El canal de FFA
+        # tiene **64 mensajes en total**, de los que 35 son inscripciones,
+        # asi que paginar no cambio el numero. Se deja igual porque el
+        # techo se alcanza solo: un evento de 30 personas son 30 mensajes,
+        # y con la actividad de dos dias ya estaba en 64. El dia que pase
+        # de 100, las inscripciones mas viejas se caen del borde **y el
+        # numero de gente sin Discord ID sube con la actividad**, que es
+        # exactamente al reves de lo que uno quiere.
+        #
+        # ⚠️ Lo que NO arregla paginar: de las 27 personas que compiten sin
+        # estar en el padron, 22 no tienen ninguna inscripcion parecida
+        # porque **nunca escribieron en el canal**. Eso no es un limite de
+        # lectura, es un hecho — y pide otra cosa.
+        #
+        # ⚠️ Se pagina con `before`, que es el ultimo id visto. `limit` sigue
+        # siendo 100 por pedido porque es el maximo que la API acepta.
+        msgs, antes = [], None
+        while len(msgs) < lim:
+            pa = {'limit': min(100, lim - len(msgs))}
+            if antes:
+                pa['before'] = antes
+            r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
+                      params=pa, timeout=25)
+            if r.status_code != 200:
+                break
+            lote = r.json()
+            if not lote:
+                break
+            msgs += lote
+            antes = lote[-1].get('id')
+        if not msgs:
             continue
-        for m in r.json():
+        for m in msgs:
             # 🔴 LA MARCA PUEDE ESTAR EN CUALQUIERA DE LOS DOS CANALES.
             # FFA la pone en `inscripciones` y el anuncio del evento vive
             # en `eventos`; buscarla sólo donde «corresponde» la perdería
