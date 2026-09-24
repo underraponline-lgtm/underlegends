@@ -1351,7 +1351,8 @@ def main():
           % (len(hallazgos), len(grupos)))
 
     todas, dudas, sabidas = [], [], collections.Counter()
-    en_curso, incompletos, retenidos = [], [], []
+    en_curso, incompletos, retenidos, descartados = [], [], [], []
+    import decidir as DEC
     repes = 0
     for g in grupos:
         # 🔴 UN NOMBRE POR GRUPO Y LAS BATALLAS SIN REPETIR. Ver
@@ -1404,6 +1405,14 @@ def main():
         # el evento (Parte 2, §12) y una llave rumbo al Interserver usa
         # otro sistema de puntos (§11.2) — *«preguntá para cuál de los
         # dos rankings es»*.
+        # 🔑 LO QUE DLX DECIDIÓ EN ✅ DECIDIR MANDA. «No cuenta» no se suma
+        # nunca —aunque después alguien complete la llave—, y «cuenta»
+        # destraba un evento retenido por Interserver o por una fase sin
+        # batallas. Ver `sheet/decidir.py`.
+        dec = DEC.decision_evento(nom, ligas[0], fec) if ligas else None
+        if dec == 'no cuenta':
+            descartados.append((nom, ligas[0], fec))
+            continue
         motivo = None
         for h in g['llaves']:
             t = h.get('texto') or ''
@@ -1418,7 +1427,7 @@ def main():
                           'propio sistema de puntos (guía, Parte 2, §11.2): '
                           '¿cuenta también para el Ranking Global?')
                 break
-        if ligas and motivo:
+        if ligas and motivo and dec != 'cuenta':
             retenidos.append((nom, ligas[0], fec, motivo))
             continue
         if ligas and not tiene_campeon(limpias):
@@ -1463,6 +1472,10 @@ def main():
         print('\n   -- Bracket incompleto: sin campeón y quieta %d h o más '
               '-> NO se suma, va a Pendientes --' % QUIETA_H)
         for ev, sv_i, fec_i, _c in incompletos:
+            print('     %-32s %s · %s' % (ev[:32], sv_i, fec_i))
+    if descartados:
+        print('\n   -- Dlx dijo que no cuentan (✅ Decidir) --')
+        for ev, sv_i, fec_i in descartados:
             print('     %-32s %s · %s' % (ev[:32], sv_i, fec_i))
     if retenidos:
         print('\n   -- retenidos: la guía no deja sumarlos --')

@@ -251,8 +251,15 @@ def main():
         try:
             wp = gc.open_by_key(PAD.OPERATIVO).worksheet(PENDIENTES)
             for tipo, det, match, k in pendientes:
-                wp.append_row(['', tipo, 'bot /card', det, match, 'pendiente'],
-                              value_input_option='RAW')
+                # 🔴 `table_range`: SIN ÉL, EL APPEND CAÍA EN EL PANEL. La
+                # API busca «la tabla» del rango que se le pasa, y con el
+                # panel de la derecha eligió ése: 15 `alta` terminaron en
+                # J133:M147, debajo de las instrucciones, donde nadie las
+                # veía como dudas. Medido el 24/09/2026.
+                wp.append_row(['', tipo, 'bot /card', det, match, 'Pendiente'],
+                              value_input_option='RAW',
+                              insert_data_option='OVERWRITE',
+                              table_range='A1:H1')
                 borrar_kv(s, k)
             print('  %d fila(s) agregadas a «%s»' % (len(pendientes), PENDIENTES))
         except Exception as e:

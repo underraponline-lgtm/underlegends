@@ -548,6 +548,29 @@ def main():
         corre(['sheet/procesar_entrada.py', '--aplicar', '--limpiar'],
               callado=False)
 
+    # ── 1d · lo que una persona contestó en ✅ Decidir ──────────────
+    #
+    # 🔴 CONTESTAR TIENE QUE HACER ALGO, O NADIE CONTESTA. `Pendientes`
+    # juntaba dudas y ningún proceso leía las respuestas: Dlx, 24/09/2026,
+    # *«es muy confusa… por eso no la he usado»*. `sheet/decidir.py` aplica
+    # lo contestado —alias a la hoja AKAs, decisiones de eventos, Discord
+    # IDs— y rehace la hoja con lo que sigue abierto.
+    #
+    # ⚠️ Y LA HOJA AKAs SE LEE ACÁ, Y ANTES NO SE LEÍA NUNCA. `datos/akas.json`
+    # sólo se rehacía corriendo `construir_akas.py` a mano: un alias que
+    # alguien escribía en la hoja no llegaba al ranking. Va después de
+    # Decidir —que puede agregar alias— y antes de las vitrinas, que son
+    # las que fusionan por alias.
+    #
+    # ⚠️ NO FRENA EL CICLO. Si la hoja no contesta, las dudas esperan.
+    paso('1d', 'lo contestado en ✅ Decidir, y los alias de la hoja AKAs')
+    if not correr:
+        print('      correría sheet/decidir.py --aplicar y '
+              'sheet/construir_akas.py')
+    else:
+        corre(['sheet/decidir.py', '--aplicar'], callado=False)
+        corre(['sheet/construir_akas.py'], callado=False)
+
     # ── 1c · la vitrina del Ranking, recalculada ────────────────────
     #
     # 🔴 EL EVENTO ENTRABA Y LA HOJA QUE LA GENTE MIRA QUEDABA IGUAL.

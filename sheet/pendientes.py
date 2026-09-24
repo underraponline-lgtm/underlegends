@@ -90,9 +90,22 @@ def _filas(h):
     ⚠️ Ahora pasa por `escribir._pedir()`, que reintenta el 429 y el 5xx
     y levanta todo lo demás. Una lectura que falla falla.
     """
+    return [f for _n, f in _filas_con_n(h)]
+
+
+def _filas_con_n(h):
+    """`[(fila del Sheet, valores)]` de la tabla, sin las vacías.
+
+    🔴 EL NÚMERO DE FILA SE GUARDA, NO SE RECALCULA. `barrer()` hacía
+    `h.fila_datos + i` sobre la lista YA FILTRADA: con una fila vacía en
+    el medio, todo lo que venía después se corría uno y el ciclo marcaba
+    `Resuelto` la duda de al lado. No se veía porque la tabla todavía no
+    tiene huecos — el día que alguien borre una fila a mano, sí.
+    """
     d = _pedir('GET', '/values/%s' % requests.utils.quote(
         '%s!A%d:%s' % (HOJA, h.fila_datos, ULTIMA))).get('values', [])
-    return [f for f in d if any(str(c).strip() for c in f)]
+    return [(h.fila_datos + i, f) for i, f in enumerate(d)
+            if any(str(c).strip() for c in f)]
 
 
 def leer():
@@ -160,9 +173,14 @@ def anotar_varios(dudas, dry=False):
             print('   [dry] %s · %s · %s' % (f[1], f[2], f[3]))
         return len(nuevas)
     if nuevas:
+        # ⚠️ OVERWRITE Y NO INSERT_ROWS: insertar mete filas ENTERAS, y
+        # eso empujaba para abajo todo lo que estaba a la derecha. Así se
+        # partió el panel de instrucciones de esta hoja —pasos 1-3 en la
+        # fila 31 y 4-6 en la 123—. Escribir en las filas vacías de abajo
+        # no mueve nada.
         _pedir('POST', '/values/%s!A%d:append?valueInputOption=RAW'
-               '&insertDataOption=INSERT_ROWS'
-               % (requests.utils.quote(HOJA), h.fila_datos + len(hay)),
+               '&insertDataOption=OVERWRITE'
+               % (requests.utils.quote(HOJA), h.fila_datos),
                json={'values': nuevas})
     return len(nuevas)
 
@@ -329,14 +347,13 @@ def barrer(dry=True):
     # dejarlo apagado —«por si vuelve»— porque lo que codificaba era una
     # idea equivocada, y un lector lo tomaría por buena.
     h = _hoja()
-    filas = _filas(h)
     cierres = []
-    for i, f in enumerate(filas):
+    for n, f in _filas_con_n(h):
         f = list(f) + [''] * ANCHO
         d = {c: str(f[j]).strip() for j, c in enumerate(COLS)}
         por = _resuelto_ya(d, resolver)
         if por:
-            cierres.append((h.fila_datos + i, d['Tipo'], d['Detalle'], por))
+            cierres.append((n, d['Tipo'], d['Detalle'], por))
     if dry or not cierres:
         return cierres
     # 🔴 UNA SOLA LLAMADA. La cuota de escritura son 60 por minuto y el
