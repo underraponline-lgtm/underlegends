@@ -62,6 +62,35 @@ def main():
     import io as _io
     from comun import respaldo
 
+    # 🔴 SIN EL ESPEJO DE FOTOS, ESTO LE SACA LA CARA A QUIEN REDIBUJA.
+    # Pasó el 24/09/2026 con Makmah: se le redibujaron las 13 cartas para
+    # corregirle el país y salieron **con la inicial**, teniendo él su foto
+    # guardada en R2 desde que usó `/foto`. Y no falla: sale una carta
+    # válida, más pobre que la que había.
+    #
+    # `comun/fotos/` está gitignoreado —son caras de gente real— así que en
+    # una máquina recién clonada está vacío. Medido ese día: **0 archivos**,
+    # y con el espejo bajado, **35 de las 71 del pool** tienen cara.
+    #
+    # ⚠️ `bot/pipeline.py` ya lo baja como paso propio, con la regla escrita
+    # al lado: *la precondición es DIBUJAR, no «correr en Actions»*. Esto
+    # también dibuja, así que la precondición es la misma — y faltaba.
+    try:
+        from comun.temporada import carpeta_fotos
+        _fo = carpeta_fotos()
+        _n = len(os.listdir(_fo)) if os.path.isdir(_fo) else 0
+    except Exception:                                        # noqa: BLE001
+        _n = 0
+    if not _n:
+        print('🔴 el espejo de fotos está VACIO, así que estas cartas')
+        print('   saldrían con la inicial aunque la persona tenga foto.')
+        print('   Corré primero:  python bot/fotos.py --espejo')
+        print('   (o pasá --sin-fotos si de verdad querés dibujar así)')
+        if '--sin-fotos' not in sys.argv:
+            return 1
+    else:
+        print('   espejo de fotos: %d cara(s)' % _n)
+
     args = [a for a in sys.argv[1:] if not a.startswith('-')]
     if '--cambiaron' in sys.argv:
         slugs = cambiaron()

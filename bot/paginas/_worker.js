@@ -50,7 +50,20 @@ export default {
       // ⚠️ 60 s DE CACHE Y `stale-while-revalidate`: el ciclo escribe una
       // vez por hora, pero la cuenta atrás corre en el navegador, así que
       // una copia de hace un minuto no atrasa el contador ni un segundo.
-      h.set('cache-control', 'public, max-age=60, stale-while-revalidate=600');
+      //
+      // 🔴 EL `stale-while-revalidate` ERA 600 Y ESO ENGAÑA MIRANDO. Dlx
+      // reportó el 24/09/2026 que la tarjeta de Makma seguía vieja y que
+      // le salía la de Servidor: las dos cosas eran ESTE encabezado. La
+      // carta ya estaba redibujada y el payload ya ofrecía su Temporada —
+      // su navegador estaba sirviendo una copia de hasta **diez minutos**
+      // mientras revalidaba por detrás.
+      //
+      // ⚠️ Diez minutos está bien para un dato que cambia cada media hora
+      // y está MAL cuando alguien está mirando si un arreglo llegó: la
+      // página se ve rota y no lo está. 120 s conserva casi toda la
+      // ganancia —la segunda visita sigue siendo instantánea— y deja de
+      // mostrar un mundo de hace diez minutos.
+      h.set('cache-control', 'public, max-age=60, stale-while-revalidate=120');
       return new Response(r.body, { status: r.status, headers: h });
     }
 

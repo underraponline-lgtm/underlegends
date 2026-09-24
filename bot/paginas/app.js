@@ -518,7 +518,7 @@ function pintaComparar() {
     var f = con[CMP[j]];
     if (!f) return '';
     return '<div class="cmp-lado">' +
-      '<input class="cmp-busca" data-lado="' + j + '" list="cmpNombres" ' +
+      '<input class="cmp-busca" data-lado="' + j + '" ' +
       'value="' + esc(f.n) + '" placeholder="Escribí un nombre…" ' +
       'autocomplete="off" spellcheck="false" ' +
       'aria-label="Rapero a comparar">' +
@@ -542,12 +542,78 @@ function pintaComparar() {
   // ⚠️ UN SOLO `<datalist>` PARA LOS DOS LADOS. Con uno por lado serían
   // 142 `<option>` repetidos en el DOM para la misma lista.
   $('#cmp').innerHTML =
-    '<datalist id="cmpNombres">' +
-    con.map(function (f) { return '<option value="' + esc(f.n) + '">'; })
-      .join('') + '</datalist>' +
+    '<div class="sugeridor" id="sugeridor" hidden></div>' +
     lado(0) + lado(1) +
     (a.k === b.k ? '<p class="sin">Elegí dos distintos.</p>'
                  : '<div class="vs">' + vs + '</div>');
+}
+
+/* ── el sugeridor del comparador ──────────────────────────────────────
+   🔑 UNA VENTANITA PROPIA Y NO EL `<datalist>` DEL NAVEGADOR. Dlx,
+   24/09/2026: *«eso de buscar debería aparecer una mini ventana con los
+   resultados más cercanos basado en lo que escribo»*.
+
+   El `<datalist>` parecía gratis y tiene tres problemas que sólo se ven
+   usándolo: **filtra por prefijo**, así que escribir «chula» no encuentra
+   a `PichulaMc`; se dibuja con el estilo del sistema operativo, o sea
+   blanco sobre una página negra; y en varios navegadores no aparece hasta
+   que se toca la flecha. Un control que a veces no se ve es un control
+   que no está.
+
+   ⚠️ VIVE FUERA DE `pintaComparar()`, y eso no es orden: repintar
+   reemplaza el `<input>` que tiene el foco, así que si la lista se
+   dibujara ahí adentro se perdería el cursor a la segunda letra. Por eso
+   antes el cambio iba en `change` y no en `input` — ahora se puede
+   sugerir en cada tecla porque la ventanita es otro elemento. */
+var SUG = { lado: -1, sel: 0, lista: [] };
+
+function cerrarSug() {
+  var e = $('#sugeridor');
+  if (e) { e.hidden = true; e.innerHTML = ''; }
+  SUG.lado = -1;
+}
+
+function pintaSug(inp) {
+  var con = (D.tabla || []).filter(function (f) { return (f.c || []).length; });
+  var q = String(inp.value || '').trim().toLowerCase();
+  // ⚠️ POR CONTENIDO Y NO POR PREFIJO: «chula» tiene que encontrar a
+  // PichulaMc. Los que empiezan igual van primero igual, porque es lo
+  // que uno espera al escribir las primeras letras.
+  var empieza = [], dentro = [];
+  con.forEach(function (f, i) {
+    var n = String(f.n).toLowerCase();
+    if (!q) { empieza.push([f, i]); return; }
+    var p = n.indexOf(q);
+    if (p === 0) empieza.push([f, i]);
+    else if (p > 0) dentro.push([f, i]);
+  });
+  SUG.lista = empieza.concat(dentro).slice(0, 8);
+  SUG.sel = 0;
+  SUG.lado = +inp.dataset.lado;
+  var e = $('#sugeridor');
+  if (!SUG.lista.length) {
+    e.innerHTML = '<div class="sug-no">Nadie con ese nombre</div>';
+  } else {
+    e.innerHTML = SUG.lista.map(function (par, j) {
+      var f = par[0];
+      return '<button class="sug' + (j ? '' : ' on') + '" data-i="' +
+        par[1] + '"><i class="cc">' + ccTexto(f.cc) + '</i>' + esc(f.n) +
+        '<span>' + num(f.pts) + ' pts</span></button>';
+    }).join('');
+  }
+  // se pega debajo del campo que se está escribiendo
+  var r = inp.getBoundingClientRect(), c = $('#cmp').getBoundingClientRect();
+  e.style.left = (r.left - c.left) + 'px';
+  e.style.top = (r.bottom - c.top + 4) + 'px';
+  e.style.width = r.width + 'px';
+  e.hidden = false;
+}
+
+function eligeSug(i) {
+  if (i == null || i < 0 || SUG.lado < 0) return;
+  CMP[SUG.lado] = i;
+  cerrarSug();
+  pintaComparar();
 }
 
 /* Del texto escrito al índice de `con`. `-1` si no es nadie.
@@ -800,6 +866,49 @@ function eventos() {
   // repintar reemplaza el `<input>` que tiene el foco — se pierde el
   // cursor a la segunda letra. `change` dispara al elegir del datalist y
   // al salir del campo, que es cuando el nombre ya está completo.
+  // ⚠️ `input` PARA SUGERIR y `change` para confirmar. Sugerir en cada
+  // tecla se puede porque la ventanita es otro elemento y no repinta el
+  // campo; confirmar en cada tecla borraría lo que se está escribiendo.
+  $('#cmp').addEventListener('input', function (e) {
+    var s = e.target.closest('.cmp-busca'); if (!s) return;
+    pintaSug(s);
+  });
+  $('#cmp').addEventListener('focusin', function (e) {
+    var s = e.target.closest('.cmp-busca'); if (!s) return;
+    s.select();
+    pintaSug(s);
+  });
+  // el clic en una sugerencia. `mousedown` y no `click`: el `blur` del
+  // campo llega antes que el click y cerraría la lista debajo del dedo.
+  $('#cmp').addEventListener('mousedown', function (e) {
+    var b = e.target.closest('.sug'); if (!b) return;
+    e.preventDefault();
+    eligeSug(+b.dataset.i);
+  });
+  $('#cmp').addEventListener('keydown', function (e) {
+    var s = e.target.closest('.cmp-busca'); if (!s) return;
+    var e2 = $('#sugeridor');
+    if (!e2 || e2.hidden || !SUG.lista.length) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      SUG.sel = (SUG.sel + (e.key === 'ArrowDown' ? 1 : -1) +
+                 SUG.lista.length) % SUG.lista.length;
+      $$('#sugeridor .sug').forEach(function (b, j) {
+        b.classList.toggle('on', j === SUG.sel);
+      });
+      return;
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      eligeSug(SUG.lista[SUG.sel] ? SUG.lista[SUG.sel][1] : -1);
+      s.blur();
+      return;
+    }
+    if (e.key === 'Escape') { cerrarSug(); s.blur(); }
+  });
+  $('#cmp').addEventListener('focusout', function (e) {
+    if (e.target.closest('.cmp-busca')) setTimeout(cerrarSug, 120);
+  });
   $('#cmp').addEventListener('change', function (e) {
     var s = e.target.closest('.cmp-busca'); if (!s) return;
     var con = (D.tabla || []).filter(function (f) { return (f.c || []).length; });
