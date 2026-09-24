@@ -261,9 +261,9 @@ jobs:
       - name: el ciclo
         run: |
           if [ "${{ inputs.simulacro }}" = "true" ]; then
-            python bot/pipeline.py
+            python bot/pipeline.py --solo-dibujar
           else
-            python bot/pipeline.py --correr
+            python bot/pipeline.py --correr --solo-dibujar
           fi
 
       - name: guardar el sello

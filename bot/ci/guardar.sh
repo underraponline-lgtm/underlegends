@@ -81,7 +81,34 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
           datos/padron.json datos/verificados.json \
           datos/servidores_de.json datos/fotos_etag.json \
           datos/anuncios.json datos/avisados.json \
-          datos/akas.json datos/decisiones.json"
+          datos/akas.json datos/decisiones.json \
+          datos/bloqueadas_selladas.json datos/web_sello.json"
+# 🔴 LOS DOS ULTIMOS FALTARON DOS DIAS, Y COSTABAN 48 VECES POR DIA.
+# Medido el 24/09/2026 en cuatro corridas seguidas: las mismas 186
+# Bloqueadas se redibujaban y se subian a R2 en CADA corrida —con la
+# bajada de Chromium y de 427 fotos para eso— y el hub se volvia a
+# desplegar en Cloudflare Pages en cada corrida, «el sitio cambió». Los
+# dos pasos tenian su sello y los dos lo escribian bien: el archivo
+# moria con el runner. Es la octava vez que esta lista se queda corta;
+# por eso ahora, mas abajo, el guardado AVISA lo que no guarda.
+# 🔴 LO QUE EL CICLO CAMBIO Y ESTA LISTA NO GUARDA, DICHO EN VOZ ALTA.
+# Una lista escrita a mano se queda corta sola —pasó ocho veces— y
+# no falla: el estado se pierde con el runner y la corrida siguiente
+# repite el trabajo. Esto no decide nada; sólo lo pone en el log.
+# ⚠️ Los `entrada_*.json` no son estado: son la copia del día de lo
+# que ya está en `Resultados`, y se rehacen de Discord.
+SUELTOS=""
+for f in $(git diff --name-only -- datos/; \
+           git ls-files --others --exclude-standard -- datos/); do
+  case " $ARCHIVOS " in
+    *" $f "*) ;;
+    *) case "$f" in datos/entrada_*.json) ;; *) SUELTOS="$SUELTOS $f" ;; esac ;;
+  esac
+done
+if [ -n "$SUELTOS" ]; then
+  echo "🔴 el ciclo cambió y NO se guarda:$SUELTOS"
+  echo "   la corrida siguiente no lo va a ver — ¿falta en ARCHIVOS?"
+fi
 if git diff --quiet -- $ARCHIVOS; then
   echo "nada cambió: no hay nada que commitear"
   exit 0
@@ -114,6 +141,10 @@ mkdir -p /tmp/gen
 # TODAS las demas. Un archivo que falta no tiene nada que
 # preservar; `git diff` y `git add` ya saben tratar la ausencia.
 for f in $ARCHIVOS; do if [ -f "$f" ]; then cp "$f" "/tmp/gen/$(basename $f)"; fi; done
+# la BASE de los sellos: como estaban en el checkout. Ver unir_sellos.py
+for f in cartas_selladas bloqueadas_selladas; do
+  git show "HEAD:datos/$f.json" > "/tmp/gen/base_$f.json" 2>/dev/null || true
+done
 git fetch -q origin "${GITHUB_REF_NAME}"
 git reset -q --hard "origin/${GITHUB_REF_NAME}"
 # 🔴 EL SELLO SE **UNE**, NO SE ELIGE. Para los pools, el
@@ -124,9 +155,13 @@ git reset -q --hard "origin/${GITHUB_REF_NAME}"
 # Quedarme con el mio tira los sellos de la corrida anterior y
 # la siguiente redibuja todo, que es el bucle de 120 min por
 # hora que `always()` existe para cortar.
-python herramientas/unir_sellos.py \
-  /tmp/gen/cartas_selladas.json datos/cartas_selladas.json \
-  /tmp/gen/cartas_selladas.json
+for f in cartas_selladas bloqueadas_selladas; do
+  if [ -f "/tmp/gen/$f.json" ]; then
+    python herramientas/unir_sellos.py \
+      "/tmp/gen/$f.json" "datos/$f.json" "/tmp/gen/$f.json" \
+      "/tmp/gen/base_$f.json"
+  fi
+done
 for f in $ARCHIVOS; do B="/tmp/gen/$(basename $f)"; if [ -f "$B" ]; then cp "$B" "$f"; fi; done
 if git diff --quiet -- $ARCHIVOS; then
   echo "despues de sincronizar no queda nada nuevo"
