@@ -401,6 +401,18 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     antes = set(getattr(resolver, 'fallo', ()))
 
     res, avisos = {}, []
+    # cada puesto que cobra cada uno, para el revivido (ver abajo)
+    aportes = {}
+    # 🔑 LOS REVIVIDOS SE CONOCEN ANTES DE REPARTIR: a ellos NO se
+    # les saltea la primera derrota aunque ya tengan un puesto más
+    # alto — la guía de Dlx (§3.7) dice que la conservan.
+    revividos = set()
+    for b in batallas:
+        for mq in re.finditer(r'revivido\s*:\s*([^;|]+)',
+                              str(b.get('notas') or ''), re.I):
+            q = resolver(mq.group(1).strip())
+            if q:
+                revividos.add(q)
 
     def sumar(lado, pts, puesto, salvo=()):
         ms = equipo(lado)
@@ -414,6 +426,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             # ya cobró un puesto más alto. Ver el bucle de `CAIDA`.
             if q in salvo:
                 continue
+            aportes.setdefault(q, []).append((puesto, cuota))
             d = res.setdefault(q, {'rapero': q, 'puntos': 0, 'posicion': '',
                                    'notas': ''})
             d['puntos'] += cuota
@@ -472,10 +485,29 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             # subcampeonato, `g8` se quedaba sin sus cuartos. Ahora cobra
             # cada uno el que no tiene un puesto más alto, con la cuota
             # del equipo completo.
-            ya = {resolver(m) for m in (equipo(p) or [p])} & set(res)
+            ya = ({resolver(m) for m in (equipo(p) or [p])} & set(res)) - revividos
             if ya and len(ya) == len(equipo(p) or [p]):
                 continue
             sumar(p, tab.get(puesto, 0), puesto, salvo=ya)
+
+    # 🔴 EL REVIVIDO: 50 % DE SU PUESTO FINAL + LA PRIMERA DERROTA ENTERA.
+    # Guía de formatos de Dlx (23/09/2026, §3.7): «TORNEO DE PLAZAS — RBK
+    # pierde octavos vs Ragna, revive vs Ian → 1250 completos + 625 (el
+    # 50 % de su posición final)». Sin esto cobraba los dos puestos
+    # enteros: Snow, 5.958 en TOKYO VOL.12 donde le tocan 4.291.
+    ORDEN_P = ['r32', 'octavos', 'cuartos', 'semifinal', 'cuarto',
+               'tercero', 'subcampeon', 'campeon']
+    for q in revividos:
+        ap = aportes.get(q) or []
+        d = res.get(q)
+        if not d or len(ap) < 2:
+            continue
+        ap = sorted(ap, key=lambda x: ORDEN_P.index(x[0])
+                    if x[0] in ORDEN_P else -1)
+        primera, final = ap[0], ap[-1]
+        d['puntos'] = primera[1] + int(final[1] * mods.get('revivido', 0.5))
+        d['posicion'] = ETIQUETA.get(final[0], final[0])
+        d['notas'] += '(R) '
 
     # 🔴 LOS MODIFICADORES CAEN SOBRE **LOS DOS LADOS**, Y ESO PARECE UN
     # BUG DEL ORIGINAL. `Code.gs:336` hace
@@ -506,7 +538,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if not n:
             continue
         lados = equipo(b.get('ladoA')) + equipo(b.get('ladoB'))
-        if 'revivido' in n:
+        if 'revivido' in n and not re.search(r'revivido\s*:', n):
             for x in lados:
                 d = res.get(resolver(x))
                 if d:

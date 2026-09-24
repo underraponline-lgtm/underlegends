@@ -625,7 +625,8 @@ def marcar_walkins(filas, textos=()):
         if r not in pos:
             continue
         for lado in (f.get('ladoA'), f.get('ladoB')):
-            if not lado or E._equipo(lado) or re.search(r'[+,&]', lado):
+            if not lado or E._equipo(lado) or re.search(
+                    r'[+,&]', E.HISTORIA.sub('', lado)):
                 continue
             k = _k(lado)
             if k and (k not in primera or pos[r] < primera[k][0]):
@@ -638,6 +639,90 @@ def marcar_walkins(filas, textos=()):
             continue
         nota = 'Walk-in %d: %s' % (min(i, 3), E.HISTORIA.sub('', nombre).strip())
         f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
+    return filas
+
+
+#: la notacion de revivido de la guia (§3.7): `Mco (R)`, `1R`, `2R`
+REVIVIDO_MARCA = re.compile(r'([^\s⌞\[\]()]{2,}[^⌞\[\]()]*?)\s*(?:\(\s*R\s*\)|\b[123]\s*R\b)')
+
+
+def marcar_revividos(filas, textos=()):
+    """Anota `Revivido: nombre` a quien pierde y vuelve a entrar.
+
+    🔴 EL FENOMENO MAS FRECUENTE DE LA GUIA, Y EL LECTOR NO LO VEIA. Dlx,
+    23/09/2026, §3.7: *«aparece 33 veces en 78 eventos. Alguien pierde, y
+    vuelve a entrar al torneo. Regla: el revivido cobra el 50 % de su
+    posicion FINAL, y ademas conserva los puntos de la ronda donde perdio
+    la primera vez»*. Medido el 25/09/2026 en la T1:
+
+        Snow      VOL.12    pierde la semi en dupla, gana la final en trio
+        Colesito  VOL.12    pierde la semi en dupla, sale subcampeon en trio
+        nc        CARABOBO  pierde cuartos con g8, sube con Mcnadie
+
+    Cobraban los dos puestos enteros (Snow 5.958 donde le tocan 4.291).
+
+    Se reconoce de tres maneras, las tres de la guia:
+      · la notacion `(R)`, `1R`, `2R` al lado del nombre;
+      · el mismo nombre dos veces en la misma ronda (el segundo es el
+        revivido: «de arriba hacia abajo»);
+      · quien pierde una batalla y aparece en otra de la misma ronda o de
+        una posterior —el absorbido de §3.2 es exactamente esto—.
+
+    ⚠️ EL TERCER PUESTO NO CUENTA COMO VOLVER: los que pierden la semi lo
+    juegan por reglamento. Y la batalla del podio tampoco (no se peleo).
+    """
+    def _k(n):
+        return E.norm(E.HISTORIA.sub('', n or ''))
+
+    def _r(f):
+        r = (f.get('ronda') or '').upper()
+        r = E.ALIAS.get(r, r)
+        return E.ORDEN.index(r) if r in E.ORDEN else -1
+
+    def _miembros(lado):
+        # ⚠️ LA HISTORIA SE SACA ANTES DE PARTIR: `SAITO(blody+cj)` partido
+        # por `+` dejaba un integrante `cj)`, y CJ parecia volver a semis
+        # en ELRAP FECHA 6. Mismo error que ya tuvo `escuchar.resolver`.
+        return [p for p in (_k(x) for x in re.split(
+            r'[+,&]', E.HISTORIA.sub('', lado or ''))) if p]
+
+    revividos = {}
+    # 1. la notacion, en el texto crudo
+    for t in textos:
+        for m in REVIVIDO_MARCA.finditer(t or ''):
+            k = E.norm(m.group(1))
+            if k:
+                revividos.setdefault(k, m.group(1).strip())
+    # 2 y 3. perdio y volvio a aparecer
+    validas = [f for f in filas
+               if _r(f) >= 0 and 'TERCER' not in (f.get('ronda') or '').upper()
+               and 'podio' not in (f.get('notas') or '').lower()]
+    for i, f in enumerate(validas):
+        g = f.get('ganador') or ''
+        perdedor = f.get('ladoB') if g == f.get('ladoA') else f.get('ladoA')
+        for m in _miembros(perdedor):
+            for j, h in enumerate(validas):
+                if j == i or _r(h) < _r(f):
+                    continue
+                if m in _miembros(h.get('ladoA')) + _miembros(h.get('ladoB')):
+                    # ⚠️ las filas de una amenaza partida comparten al que
+                    # PASO, no al que perdio: el perdedor de una fila de
+                    # «triple» no reaparece en otra de la misma batalla
+                    revividos.setdefault(m, m)
+                    break
+    if not revividos:
+        return filas
+    # la nota va en la PRIMERA fila donde aparece, con el nombre como esta
+    # escrito ahi, para que el motor lo resuelva igual que al resto
+    puesto = set()
+    for f in sorted(validas, key=_r):
+        for lado in (f.get('ladoA'), f.get('ladoB')):
+            for parte in re.split(r'[+,&]', lado or ''):
+                k = _k(parte)
+                if k in revividos and k not in puesto:
+                    puesto.add(k)
+                    nota = 'Revivido: %s' % E.HISTORIA.sub('', parte).strip()
+                    f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
     return filas
 
 
@@ -951,8 +1036,9 @@ def main():
             del_grupo += f
             dudas += d
             sabidas.update(sab)
-        limpias = marcar_walkins(sin_repetir(del_grupo),
-                                 [h.get('texto') or '' for h in g['llaves']])
+        _txt = [h.get('texto') or '' for h in g['llaves']]
+        limpias = marcar_revividos(
+            marcar_walkins(sin_repetir(del_grupo), _txt), _txt)
         repes += len(del_grupo) - len(limpias)
         todas += limpias
     if repes:
