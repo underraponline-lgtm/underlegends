@@ -52,7 +52,12 @@ def b64(p):
 UL = b64(os.path.join(BASE, '02_Competitivo', 'ul_blanco.png'))
 # el AVATAR, bajado del CDN. Antes apuntaba por error a Valen_servidor.png,
 # que es la carta exportada completa: salia una carta dentro de la carta.
-FOTO = b64(os.path.join(SCR, 'av_valen.png'))
+# av_valen.png si esta, y un cartel que DICE «MUESTRA» si no.
+# Antes era `b64(os.path.join(SCR, 'av_valen.png'))` en 44 archivos,
+# y al importar cualquiera de ellos se leia del disco la foto de una
+# persona. Ver 03_Servidor/disenos/_muestra.py.
+from _muestra import cara_muestra
+FOTO = cara_muestra()
 def sil(sv): return b64(os.path.join(SILD, 'sv_%s.png' % sv.lower()))
 def esc(sv): return b64(os.path.join(CUAD, 'sv_%s.png' % sv.lower()))
 

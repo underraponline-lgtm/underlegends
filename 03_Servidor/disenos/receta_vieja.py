@@ -68,7 +68,12 @@ def b64(p):
 
 
 UL = b64(os.path.join(BASE, '02_Competitivo', 'ul_blanco.png'))
-FOTO = b64(os.path.join(SCR, 'av_valen.png'))
+# av_valen.png si esta, y un cartel que DICE «MUESTRA» si no.
+# Antes era `b64(os.path.join(SCR, 'av_valen.png'))` en 44 archivos,
+# y al importar cualquiera de ellos se leia del disco la foto de una
+# persona. Ver 03_Servidor/disenos/_muestra.py.
+from _muestra import cara_muestra
+FOTO = cara_muestra()
 ESC = b64(os.path.join(BASE, 'comun', 'escudos_cuad', f'sv_{SV.lower()}.png'))
 BAN = 'https://flagcdn.com/w80/ar.png'
 STATS = [('305K', 'PTS'), ('80', 'EVT'), ('57.3', 'WR%'),
