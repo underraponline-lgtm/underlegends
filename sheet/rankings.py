@@ -224,9 +224,33 @@ def canon(quien):
             # ⚠️ SIN MAPA SE SIGUE, con los nombres crudos. Quedarse sin
             # vitrinas porque falta un json es peor que no fusionar.
             _ALIAS = {}
-    k = ''.join(c for c in unicodedata.normalize('NFKD', quien or '')
-                if c.isalnum()).lower()
-    return _ALIAS.get(k) or quien
+    # 🔴 SE SIGUE LA CADENA HASTA EL FINAL, no un solo salto.
+    # `datos/akas.json` tiene `gekto -> geekto` y `geekto -> Presagio`,
+    # así que con un salto único `canon('gekto')` daba **`geekto`**, que
+    # es otro alias. Una fila escrita `gekto` y otra escrita `geekto`
+    # terminaban en dos personas distintas de la vitrina siendo la
+    # misma — el bug de Makma otra vez, un eslabón más adentro.
+    #
+    # ⚠️ `construir_akas.py` YA LO AVISA al construir el mapa
+    # («⚠️ cadena: "gekto" -> "geekto" -> "Presagio"») y el aviso no
+    # alcanzaba: quien lee el mapa tenía que saber seguirlo.
+    #
+    # ⚠️ CON TOPE, PORQUE UN CICLO CUELGA. `a -> b -> a` es un empate
+    # declarado mal en la hoja, y ocho de los nueve «enlaces» de hoy
+    # son `bna -> BNA`, que apunta a sí mismo con otra caja: eso para
+    # solo porque se compara la clave normalizada, no el texto.
+    vis, act = set(), quien or ''
+    for _ in range(8):
+        k = ''.join(c for c in unicodedata.normalize('NFKD', act)
+                    if c.isalnum()).lower()
+        if k in vis:
+            break
+        vis.add(k)
+        sig = _ALIAS.get(k)
+        if not sig:
+            break
+        act = sig
+    return act or quien
 
 
 def agregar(filas_res, filas_uno):
@@ -1009,6 +1033,52 @@ def _mismo(mandado, leido):
         return float(a) == float(b)
     except (TypeError, ValueError):
         return False
+
+
+def alias_vivos(hoja=None, sid=None):
+    """Los nombres de una vitrina que siguen siendo un ALIAS de otro.
+
+    🔴 EXISTE PORQUE UNA CELDA NO ENTRO Y EL VERIFICADOR DIJO QUE SI.
+    El 24/09/2026 se declaró `XXXXX -> Xubaru`, `escribir_vitrina()`
+    mandó `Xubaru` en la fila 11 —comprobado interceptando la llamada— y
+    contestó **0 celdas malas**, «74 quedaron», «la vitrina quedó como se
+    calculó». La hoja seguía diciendo `XXXXX 🇳🇴`. En la misma
+    corrida `Fokox -> Focox` y `gekto -> Presagio` sí entraron, así que no
+    fue el mapa ni la tabla: fue **esa celda**. Repetir el comando lo
+    arregló y no se pudo reproducir.
+
+    ⚠️ NO SE SABE POR QUE, Y ESTE CHEQUEO NO LO AVERIGUA. Lo que hace es
+    convertirlo en ruido en vez de silencio: `_mismo()` compara lo que
+    mandé contra lo que leí, o sea que si el problema está **en la
+    lectura** las dos mitades se equivocan juntas y la comparación pasa.
+    Esto pregunta otra cosa —¿quedó algún alias vivo en la hoja?— con una
+    lectura nueva y contra `datos/akas.json`, que es la fuente.
+
+    ⚠️ Y CAZA UN SEGUNDO CASO, que es el que va a volver: declarar un
+    alias nuevo y olvidar reescribir la vitrina. Ahí no falla nada
+    tampoco — la hoja sigue mostrando a la misma persona dos veces.
+
+    Devuelve `[(nombre_en_la_hoja, nombre_real), …]`, vacío si está bien.
+    """
+    hoja = hoja or HOJA
+    fila = fila_cabecera(hoja)
+    v = _leer(sid or OFICIAL, '%s!A%d:C300' % (hoja, fila))
+    # ⚠️ la columna del nombre se BUSCA, como en todo el resto de este
+    # archivo: un índice escrito describe el diseño de la hoja de hoy.
+    cab = v[0] if v else []
+    try:
+        c = [str(x).strip().lower() for x in cab].index('rapero')
+    except ValueError:
+        c = 1
+    malos = []
+    for f in v[1:]:
+        n = str(f[c]).strip() if len(f) > c else ''
+        if not n:
+            continue
+        real = canon(n)
+        if real and _norm(real) != _norm(n):
+            malos.append((n, real))
+    return malos
 
 
 def escribir_vitrina(filas, cab, sid=None, hoja=None, fila_cab=None):
@@ -1955,6 +2025,19 @@ def main():
             print('   🔴 … y %d celda(s) más'
                   % (r['total_malas'] - len(r['malas'])))
         ok = not r['malas'] and r['quedaron'] == r['escritas']
+        # 🔴 Y UNA SEGUNDA PREGUNTA, CON UNA LECTURA NUEVA. Ver
+        # `alias_vivos()`: la comparación de arriba dio limpia con una
+        # celda sin entrar, porque compara contra lo que mandé.
+        sobran = alias_vivos()
+        if sobran:
+            ok = False
+            print('\n   🔴 %d nombre(s) de la hoja siguen siendo un '
+                  'ALIAS de otra persona:' % len(sobran))
+            for _n, _real in sobran[:8]:
+                print('      · %-24s tendría que decir  %s'
+                      % (_n, _real))
+            print('      -> esa celda no entró, o falta reescribir la '
+                  'vitrina.\n         Repetí el comando y volvé a mirar.')
         print('\n   %s\n' % ('✅ la vitrina quedó como se calculó'
                              if ok else '🔴 la hoja NO quedó como se pidió'))
         return 0 if ok else 1
