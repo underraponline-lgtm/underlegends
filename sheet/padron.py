@@ -186,10 +186,13 @@ def en_la_liga():
     # ⚠️ el ID vive en `planillas.py`: la T1 estrena planilla y una copia
     # suelta lee la vieja sin fallar. Ver el encabezado de ese modulo.
     from planillas import OFICIAL as OF
-    v = requests.get('%s/%s/values/%s'
-                     % (API, OF, requests.utils.quote('Ranking Temporada!A16:F')),
-                     headers={'Authorization': 'Bearer ' + token()},
-                     timeout=90).json().get('values', [])
+    # 🔴 LA CABECERA SE BUSCA, NO SE CLAVA (ver CLAUDE.md). Esto leía
+    # `A16:F` —la fila de la pre-temporada— y hoy la cabecera está en la
+    # 1: la primera fila de datos se tomaba por cabecera y `index('Rapero')`
+    # reventaba. Y sin mirar la respuesta, un 429 era una tabla vacía.
+    import rankings as _R
+    v = _R._leer(OF, 'Ranking Temporada!A%d:F'
+                 % _R.fila_cabecera('Ranking Temporada'))
     cab2 = [str(x).strip() for x in v[0]]
     iR, iE = cab2.index('Rapero'), cab2.index('Ev')
     compitio = {}
