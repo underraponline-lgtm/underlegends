@@ -417,9 +417,31 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             q = resolver(mq.group(1).strip())
             if q:
                 revividos.add(q)
+    # 🔑 EL DRAFTEADO COBRA LAS DOS COSAS, ENTERAS (guía, Parte 2, §9.1):
+    # su eliminación Y su parte del equipo. Como el revivido, no se le
+    # saltea la primera derrota; a diferencia del revivido, no se le
+    # corta nada.
+    drafteados = set()
+    for b in batallas:
+        for mq in re.finditer(r'drafteado\s*:\s*([^;|]+)',
+                              str(b.get('notas') or ''), re.I):
+            q = resolver(mq.group(1).strip())
+            if q:
+                drafteados.add(q)
 
-    def sumar(lado, pts, puesto, salvo=()):
+    def _pk(b):
+        """Los que la batalla marca como pokemon: no pelearon ahí."""
+        return {q for q in (resolver(x.strip()) for x in re.findall(
+            r'pokemon\s*:\s*([^;|]+)', str((b or {}).get('notas') or ''),
+            re.I)) if q}
+
+    def sumar(lado, pts, puesto, salvo=(), fuera=()):
         ms = equipo(lado)
+        # 🔴 EL POKEMON NO COBRA NI DIVIDE (guía, Parte 2, §10.2 y §10.4):
+        # *«equipo campeón de 4, uno es pokemon: 10.000 ÷ 3, no ÷ 4»*. Y
+        # como no suma aporte, tampoco se lleva el puesto ni la medalla.
+        if fuera:
+            ms = [m for m in ms if resolver(m) not in fuera]
         if not ms:
             return
         # ⚠️ EL EQUIPO DIVIDE Y REDONDEA PARA ABAJO, como el original.
@@ -446,19 +468,22 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     tercer = (por('tercer puesto') or [None])[0]
 
     if final:
-        sumar(final.get('ganador'), tab.get('campeon', 0), 'campeon')
+        sumar(final.get('ganador'), tab.get('campeon', 0), 'campeon',
+              fuera=_pk(final))
         sub = _perdedor(final)
         if sub is None:
             avisos.append('la final: el ganador %r no es ninguno de los dos '
                           'lados' % final.get('ganador'))
         else:
-            sumar(sub, tab.get('subcampeon', 0), 'subcampeon')
+            sumar(sub, tab.get('subcampeon', 0), 'subcampeon',
+                  fuera=_pk(final))
 
     if tercer:
-        sumar(tercer.get('ganador'), tab.get('tercero', 0), 'tercero')
+        sumar(tercer.get('ganador'), tab.get('tercero', 0), 'tercero',
+              fuera=_pk(tercer))
         c4 = _perdedor(tercer)
         if c4 is not None:
-            sumar(c4, tab.get('cuarto', 0), 'cuarto')
+            sumar(c4, tab.get('cuarto', 0), 'cuarto', fuera=_pk(tercer))
     else:
         semis = por('semifinal')
         if len(semis) >= 2:
@@ -472,7 +497,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             for b in semis:
                 p = _perdedor(b)
                 if p is not None:
-                    sumar(p, sf, 'semifinal')
+                    sumar(p, sf, 'semifinal', fuera=_pk(b))
 
     # ⚠️ EL QUE YA TIENE PUESTO NO SE PISA. Quien perdio en cuartos pero
     # jugo el tercer puesto ya cobro; el original lo cuida igual.
@@ -484,15 +509,16 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             # 🔴 SE MIRA A CADA INTEGRANTE, NO SÓLO AL PRIMERO. Esto
             # preguntaba si el PRIMER integrante del equipo perdedor ya
             # tenía puesto, y si lo tenía salteaba al equipo ENTERO. En
-            # CARABOBO (25/09/2026) `nc` perdió cuartos con `g8` y después
+            # CARABOBO (24/09/2026) `nc` perdió cuartos con `g8` y después
             # llegó a la final con otra dupla: como `nc` ya cobraba el
             # subcampeonato, `g8` se quedaba sin sus cuartos. Ahora cobra
             # cada uno el que no tiene un puesto más alto, con la cuota
             # del equipo completo.
-            ya = ({resolver(m) for m in (equipo(p) or [p])} & set(res)) - revividos
+            ya = (({resolver(m) for m in (equipo(p) or [p])} & set(res))
+                  - revividos - drafteados)
             if ya and len(ya) == len(equipo(p) or [p]):
                 continue
-            sumar(p, tab.get(puesto, 0), puesto, salvo=ya)
+            sumar(p, tab.get(puesto, 0), puesto, salvo=ya, fuera=_pk(b))
 
     # 🔴 EL REVIVIDO: 50 % DE SU PUESTO FINAL + LA PRIMERA DERROTA ENTERA.
     # Guía de formatos de Dlx (23/09/2026, §3.7): «TORNEO DE PLAZAS — RBK
@@ -512,6 +538,36 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         d['puntos'] = primera[1] + int(final[1] * mods.get('revivido', 0.5))
         d['posicion'] = ETIQUETA.get(final[0], final[0])
         d['notas'] += '(R) '
+
+    # el drafteado conserva todo lo que sumó; su puesto es el más alto
+    for q in drafteados - revividos:
+        ap = aportes.get(q) or []
+        d = res.get(q)
+        if not d or len(ap) < 2:
+            continue
+        alto = max(ap, key=lambda x: ORDEN_P.index(x[0])
+                   if x[0] in ORDEN_P else -1)
+        d['posicion'] = ETIQUETA.get(alto[0], alto[0])
+        d['notas'] += 'Drafteado '
+
+    # 🔴 UN PUESTO NO PUEDE REPARTIR MÁS DE LO QUE VALE. Guía, Parte 2 (§13):
+    # en el #339 el equipo campeón cobró 10.000 CADA UNO en vez de dividir,
+    # y el chequeo obvio —«¿el valor está en la tabla?»— no lo vio: 10.000
+    # está en la tabla. El que sirve es sumar lo que cobró cada integrante
+    # por ESE puesto.
+    #
+    # ⚠️ SOBRE LOS APORTES Y NO SOBRE LOS PUNTOS FINALES: un revivido o un
+    # drafteado carga también su eliminación anterior en la misma fila, y
+    # la guía lo da como el falso positivo que hay que saber separar. Y
+    # sólo los puestos de un solo dueño: en semis y cuartos hay tantos
+    # perdedores como batallas, y en las amenazas más.
+    for pu in ('campeon', 'subcampeon', 'tercero', 'cuarto'):
+        base = tab.get(pu, 0)
+        tot = sum(c for ap in aportes.values() for x, c in ap if x == pu)
+        if base and tot > base:
+            avisos.append('SUMA: el puesto «%s» reparte %d y vale %d — ¿un '
+                          'equipo que no se dividió? (guía, Parte 2 §13)'
+                          % (ETIQUETA.get(pu, pu), tot, base))
 
     # 🔴 LOS MODIFICADORES CAEN SOBRE **LOS DOS LADOS**, Y ESO PARECE UN
     # BUG DEL ORIGINAL. `Code.gs:336` hace
@@ -641,7 +697,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # BNA y Hassan de rivales, la IA los juntó y dejó a Hassan en los dos
     # equipos de la final.
     #
-    # ⚠️ Pasó el 25/09/2026 con un alias que se declaró ese mismo día:
+    # ⚠️ Pasó el 24/09/2026 con un alias que se declaró ese mismo día:
     # `Fleivacheck -> fleivaman`, y en ELRAP FECHA 6 los dos pelean en la
     # misma batalla de octavos. Se avisa acá porque el mapa de AKAs es
     # global y la contradicción sólo se ve dentro de un evento.
@@ -845,6 +901,65 @@ def _self_check():
     except Exception as e:                               # noqa: BLE001
         ok('el motor entiende toda ronda que el lector escribe', False,
            'no pude preguntarle a escuchar.py: %s' % str(e)[:50])
+
+    # 6 · LA PARTE 2 DE LA GUÍA, con su propia tabla para no depender de
+    #     `Config`: el pokemon y el drafteado.
+    t16 = {'16+': {'campeon': 10000, 'subcampeon': 7500, 'tercero': 6000,
+                   'cuarto': 4500, 'semifinal': 5250, 'cuartos': 2500,
+                   'octavos': 1250, 'r32': 625}}
+    mods = {'revivido': 0.5, 'walkin': {1: 0.5, 2: 0.25, 3: 0.0}}
+
+    def _yo(n):
+        return str(n or '').strip()
+
+    def _pp(bs):
+        e = procesar(bs, num=1, fecha='24/09', servidor='FFA',
+                     participantes=16, tab=t16, mods=mods, resolver=_yo)
+        return {r['rapero']: r for r in e['resultados']}, e
+
+    semis = [{'ronda': 'semifinales', 'ladoA': 'Ana', 'ladoB': 'Beto',
+              'ganador': 'Ana'},
+             {'ronda': 'semifinales', 'ladoA': 'Caro', 'ladoB': 'Dani',
+              'ganador': 'Caro'}]
+    pk, epk = _pp(semis + [{'ronda': 'final', 'ladoA': 'Ana + Eze + Fer + Beto',
+                            'ladoB': 'Caro + Gus',
+                            'ganador': 'Ana + Eze + Fer + Beto',
+                            'notas': 'Pokemon: Beto'}])
+    ok('equipo campeón de 4 con un pokemon: ÷3 (§10.4)',
+       pk.get('Ana', {}).get('puntos') == 10000 // 3,
+       '%s' % pk.get('Ana', {}).get('puntos'))
+    ok('el pokemon conserva su semi ENTERA y nada más (§10.3)',
+       pk.get('Beto', {}).get('puntos') == 5250,
+       '%s' % pk.get('Beto', {}).get('puntos'))
+    ok('y su puesto es la semi, no la medalla (§10.2)',
+       pk.get('Beto', {}).get('posicion') == ETIQUETA['semifinal'],
+       '%s' % pk.get('Beto', {}).get('posicion'))
+    cuartos = [{'ronda': 'cuartos', 'ladoA': 'Ana + Fer', 'ladoB': 'Beto + Gus',
+                'ganador': 'Ana + Fer', 'notas': 'Drafteado: Beto'},
+               {'ronda': 'cuartos', 'ladoA': 'Caro + Hugo',
+                'ladoB': 'Dani + Ivan', 'ganador': 'Caro + Hugo'}]
+    dr, edr = _pp(cuartos + [{'ronda': 'final', 'ladoA': 'Ana + Fer + Beto',
+                              'ladoB': 'Caro + Hugo',
+                              'ganador': 'Ana + Fer + Beto'}])
+    ok('el drafteado cobra su eliminación Y su parte (§9.1)',
+       dr.get('Beto', {}).get('puntos') == 2500 // 2 + 10000 // 3,
+       '%s' % dr.get('Beto', {}).get('puntos'))
+    ok('y queda con el puesto más alto',
+       dr.get('Beto', {}).get('posicion') == ETIQUETA['campeon'],
+       '%s' % dr.get('Beto', {}).get('posicion'))
+    ok('ninguno de los dos reparte de más (§13)',
+       not any(a.startswith('SUMA:') for a in epk['avisos'] + edr['avisos']),
+       '%s' % ([a for a in epk['avisos'] + edr['avisos']
+                if a.startswith('SUMA:')] or '—'))
+    try:
+        import resultados as _R
+        uno = _R._filas_uno({'num': 1, 'fecha': '24/09', 'servidor': 'FFA',
+                             'duelos': [{'ronda': 'cuartos', 'a': 'Ana',
+                                         'b': 'Beto', 'ganador': 'Ana',
+                                         'notas': 'Pokemon: Beto'}]})
+        ok('contra un pokemon no hay duelo', uno == [], '%d fila(s)' % len(uno))
+    except Exception as e:                               # noqa: BLE001
+        ok('contra un pokemon no hay duelo', False, str(e)[:50])
 
     mal = nonlocal_mal[0]
     print('')

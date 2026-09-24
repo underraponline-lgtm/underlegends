@@ -283,7 +283,7 @@ def _grafia(nombre, declarado=False):
     🔴 EL RANKING AGRUPABA POR COMO ESTABA ESCRITO, NO POR QUIEN ERA.
     `canon()` devolvía el nombre tal cual cuando no era un alias, y
     `agregar()` usa ese texto como clave: `MAU KC` y `Mau Kc` eran dos
-    claves y por lo tanto **dos personas**. Medido el 25/09/2026 sobre el
+    claves y por lo tanto **dos personas**. Medido el 24/09/2026 sobre el
     pool que escribió el ciclo:
 
         MAU KC 5.250  +  Mau Kc 5.250   semifinalista en #350 y en #354
@@ -695,6 +695,20 @@ def rangos_de(res):
         return {}
 
 
+def _desempate(v, quien):
+    """Lo que ordena a dos con el mismo OVR y los mismos puntos.
+
+    La cadena de la guía (Parte 2, §10.8): 🥇 → 🥈 → eventos → WR%, y el
+    nombre al final para que el orden no dependa del dict.
+
+    ⚠️ «EVENTOS» VA DE MAYOR A MENOR, y es una lectura: la guía no dice
+    el sentido. Con los mismos puntos y las mismas medallas, adelante
+    queda quien compitió más.
+    """
+    g = lambda c: _OVR.num(v.get(c) or 0)
+    return (-g('🥇'), -g('🥈'), -g('Ev'), -g('Win%'), str(quien).lower())
+
+
 def _comp_ovr(v):
     """Las cinco componentes del OVR de esa persona, desde `agregar()`.
 
@@ -746,7 +760,7 @@ def tabla_nueva():
         # cada corrida —«20 sin fila anterior: dxg🇲🇽🇨🇴🇨🇴, Garxziiscity
         # 🇦🇿…, KC 🇨🇴, Volk 🇲🇽, BLANKO 🇺🇸…»— y **todos** tenían bandera:
         # ese número no podía bajar nunca, y un aviso que no baja enseña a
-        # no leerlo. Medido el 25/09/2026.
+        # no leerlo. Medido el 24/09/2026.
         #
         # ⚠️ Y ES LA CLAVE DE `canon()`: sólo letras y números. Cubre de
         # paso lo que el comentario de abajo ya nombraba como riesgo
@@ -823,7 +837,7 @@ def tabla_nueva():
         # grafía de la primera vez: la hoja se quedaba con `MAKMA`
         # mientras el resto del sistema usaba `Makma`. Ver `APARTE`.
         fila[icol.get('Rapero', 1)] = quien
-        filas.append((_comp_ovr(v), fila))
+        filas.append((_comp_ovr(v), fila, _desempate(v, quien)))
 
     # 🔴 EL ORDEN Y EL `#` SALEN DEL **OVR**, NO DE LOS PUNTOS.
     # Dlx, 24/09/2026: *«OVR… porque en si el OVR va a variar en mas
@@ -842,14 +856,20 @@ def tabla_nueva():
     # con **todas** las filas juntas y no una por una. Verificado el
     # 24/09/2026: con las 74 de la vitrina y con las 70 del pool los
     # cinco topes dan identicos y el numero coincide persona por persona.
-    _ovrs = _OVR.calcular([c for c, _f in filas])
+    _ovrs = _OVR.calcular([c for c, _f, _d in filas])
     # ⚠️ DESEMPATE POR PUNTOS. El OVR es un entero redondeado, asi que
     # hay empates de verdad; sin un segundo criterio el orden entre ellos
     # depende de como vino el dict y **cambia solo entre corridas**, con
     # la tabla entera moviendose sin que nadie compita.
-    filas = [f for _o, _p, f in sorted(
-        [(-o, -_OVR.num(c[0]), f) for o, (c, f) in zip(_ovrs, filas)],
-        key=lambda t: (t[0], t[1]))]
+    #
+    # ⚠️ Y DESPUES, LA CADENA DE LA GUIA (Parte 2, §10.8): *«Puntos → 🥇 →
+    # 🥈 → eventos → WR%»*. Con puntos solos el agujero seguia: dos con el
+    # mismo OVR y los mismos puntos volvian a depender del dict. El nombre
+    # cierra la cadena para que el orden no pueda cambiar solo.
+    filas = [f for _o, _p, _d, f in sorted(
+        [(-o, -_OVR.num(c[0]), d, f)
+         for o, (c, f, d) in zip(_ovrs, filas)],
+        key=lambda t: (t[0], t[1], t[2]))]
     for n, f in enumerate(filas, 1):
         f[icol['#']] = n
 
