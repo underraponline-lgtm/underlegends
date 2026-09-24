@@ -28,6 +28,15 @@ LAS GUARDAS SON LAS MISMAS QUE YA COSTARON SANGRE
 ⚠️ EN DRA verifica (rol Miembro + saca Invitado) Y escribe el ID.
    En FFA, si no esta en DRA, SOLO escribe el ID: verificarse en DRA es cosa
    del usuario (Dlx, 19/09/2026).
+
+🔑 AUTOVERIFICAR ES ESTO, Y LO DEFINIÓ DLX EL 24/09/2026:
+   1. sacar IDs de los servidores grandes —Snake Rap— y ponerlos en el Sheet
+   2. de esa gente, ver quién está en DRA
+   3. verificarla en DRA, **sólo si tiene país**: bandera en el padrón o rol
+      de país en DRA, FFA, LIVONIA o Snake Rap (`pais_por_rol.decidir()`)
+   El paso 3 vale también para quien YA tenía ID y está en DRA sin el
+   Miembro, que antes no se miraba. Verificado = el Miembro de DRA, nada
+   más: el rol de Snake Rap no verifica (`bot/verificados.py`).
 """
 import io
 import json
@@ -358,6 +367,78 @@ def main():
         fila = (q, did, '%s · %s' % (et, tipo), sv)
         (verificar if sv == 'DRA' else capturar).append(fila)
 
+    # 🔴 AUTOVERIFICAR, COMO LO DEFINIÓ DLX (24/09/2026): *«getting ids
+    # from the huge server from SNAKE RAP then put it into the sheet.
+    # Then, getting those people, check whether they are on the DRA
+    # server, then verify them, but before verifying them, only those
+    # [that] have a country flag or role can be verified… you can check
+    # DRA, FFA, LIVONIA and now SNAKE RAP roles»*.
+    #
+    # ⚠️ EL PAÍS SE DECIDE CON LA REGLA DE `sheet/pais_por_rol.py`, no con
+    # una nueva: gana USA, después el rol de DRA, después el de los otros
+    # servidores, al final la columna del padrón. Más la bandera del nombre,
+    # que Dlx nombró aparte («a country flag or role»).
+    import pais_por_rol as PR
+    sys.path.insert(0, os.path.join(BASE, 'bot'))
+    import subir_datos as _SD
+    import verificados as _VER
+    iso_rol = {}
+    for sv_, gid_ in GUILDS:
+        if sv_ == 'DRA':
+            iso_rol[sv_] = dict(PR.ROLES)
+            continue
+        rr = s.get('%s/guilds/%s/roles' % (API, gid_), timeout=30)
+        iso_rol[sv_] = {x['id']: PR._iso_del_nombre(x['name'])
+                        for x in (rr.json() if rr.status_code == 200 else [])
+                        if PR._iso_del_nombre(x['name'])}
+    paises_de = {}
+    for sv_, ms_ in cache.items():
+        mp = iso_rol.get(sv_) or {}
+        for m_ in ms_:
+            d_ = (m_.get('user') or {}).get('id')
+            cs = sorted({mp[x] for x in (m_.get('roles') or []) if x in mp})
+            if d_ and cs:
+                paises_de.setdefault(d_, {})[sv_] = cs
+
+    def pais_para(p, did):
+        """(país, por qué) de esa persona, o ('', por qué) si no tiene."""
+        suyos = paises_de.get(str(did), {})
+        pais, por = PR.decidir(_SD._cc_de(p.get('pais')), cc_bandera(p.get('full')),
+                               suyos.get('DRA', []),
+                               {k: v for k, v in suyos.items() if k != 'DRA'})
+        if not pais and cc_bandera(p.get('full')):
+            return cc_bandera(p.get('full')), 'bandera del nombre'
+        return pais or '', por
+
+    # los que matchean recién en DRA: sin país, sólo el ID
+    sin_pais = []
+    for f in list(verificar):
+        pais, _por = pais_para(idx.get(PAD.norm(f[0])) or {}, f[1])
+        if not pais:
+            verificar.remove(f)
+            capturar.append(f)
+            sin_pais.append(f[0])
+
+    # 🔴 Y LOS QUE YA TIENEN ID —los de Snake Rap, entre ellos— ESTÁN EN DRA
+    # Y NO TIENEN EL MIEMBRO: es el paso que faltaba. Este script sólo
+    # miraba a quien no tenía ID, así que un ID sacado de Snake Rap nunca
+    # llegaba a verificarse.
+    miembros_dra = {(m_.get('user') or {}).get('id'): (m_.get('roles') or [])
+                    for m_ in cache.get('DRA', [])}
+    olv = _VER._olvidados()
+    verificar_ya = []
+    for p in pad:
+        did = str(p.get('discord_id') or '')
+        if not did or did not in miembros_dra or rol in miembros_dra[did]:
+            continue
+        if PAD.norm(p['raw']) in nunca or did in olv:
+            continue
+        pais, por = pais_para(p, did)
+        if not pais:
+            sin_pais.append(p['raw'])
+            continue
+        verificar_ya.append((p['raw'], did, '%s · %s' % (pais, por), 'DRA'))
+
     print('\n  ✅ VERIFICAR en DRA (rol + ID): %d' % len(verificar))
     for f in verificar[:60]:
         print('       %-18s %-20s %-30s' % f[:3])
@@ -375,6 +456,13 @@ def main():
         print('       %-18s %-20s %-30s %s' % (f[0], f[1], f[2], f[3]))
     if len(capturar) > 40:
         print('       … y %d mas' % (len(capturar) - 40))
+    print('  ✅ VERIFICAR en DRA, ya tienen ID y tienen país: %d'
+          % len(verificar_ya))
+    for f in verificar_ya[:40]:
+        print('       %-18s %-20s %s' % f[:3])
+    if sin_pais:
+        print('  🏳️ en DRA sin el Miembro y SIN país en ningún servidor: %d '
+              '(no se verifican)   %s' % (len(sin_pais), ', '.join(sin_pais[:8])))
     print('  🔎 PARA QUE MIRES: %d' % len(revisar))
     if '--detalle' in sys.argv:
         for q, por in revisar:
@@ -425,20 +513,22 @@ def main():
     # otra decisión, y quedaba pegada a esta.
     if '--solo-ids' in sys.argv:
         print('  --solo-ids: no toco roles de DRA (%d quedan sin el rol)'
-              % len(verificar))
+              % (len(verificar) + len(verificar_ya)))
         print('\n  después:  python sheet/construir_padron.py\n')
         return
     ok = 0
-    for q, did, et, sv in verificar:
+    todos = verificar + verificar_ya
+    for q, did, et, sv in todos:
         a = _rol_op(s, s.put, GUILDS[0][1], did, rol)
         if invitado:
             _rol_op(s, s.delete, GUILDS[0][1], did, invitado)
         if a:
             ok += 1
-            if ok % 25 == 0:
-                print('   verificados %d de %d...' % (ok, len(verificar)))
+            print('   ✅ %s verificado en DRA (%s)' % (q, et))
+        else:
+            print('   🔴 %s: Discord no aceptó el rol' % q)
         time.sleep(0.4)
-    print('  ✅ verificados en DRA: %d de %d' % (ok, len(verificar)))
+    print('  ✅ verificados en DRA: %d de %d' % (ok, len(todos)))
     print('  🆔 capturados fuera de DRA (ID, sin verificar): %d' % len(capturar))
     print('\n  después:  python sheet/construir_padron.py\n')
 
