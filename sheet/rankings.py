@@ -251,7 +251,71 @@ def canon(quien):
         if not sig:
             break
         act = sig
-    return act or quien
+    return _grafia(act or quien)
+
+
+def _clave_fila(n):
+    """La identidad de un nombre: sólo letras y números. Ver `canon()`."""
+    return ''.join(c for c in unicodedata.normalize('NFKD', str(n or ''))
+                   if c.isalnum()).lower()
+
+
+_GRAFIA = None
+
+
+def _grafia(nombre):
+    """UNA sola forma de escribir a cada persona. La del padrón si está.
+
+    🔴 EL RANKING AGRUPABA POR COMO ESTABA ESCRITO, NO POR QUIEN ERA.
+    `canon()` devolvía el nombre tal cual cuando no era un alias, y
+    `agregar()` usa ese texto como clave: `MAU KC` y `Mau Kc` eran dos
+    claves y por lo tanto **dos personas**. Medido el 25/09/2026 sobre el
+    pool que escribió el ciclo:
+
+        MAU KC 5.250  +  Mau Kc 5.250   semifinalista en #350 y en #354
+        Denik  5.250  +  DENIK  1.250
+        RICARD 2.000  +  ricard 1.250
+        Volk🇲🇽 5.250 +  volk🇨🇴 1.250
+
+    Mau Kc tiene 10.500 en dos eventos y figuraba como dos de 5.250.
+
+    ⚠️ LO DESTAPÓ UN ARREGLO, NO LO CAUSÓ. Hasta el 24/09 la
+    canonización difusa contra las inscripciones (corte 0.66) juntaba
+    estas variantes de casualidad —y de paso le cambiaba el nombre a
+    gente que no era—. Sacada esa, quedó a la vista que la identidad
+    dependía de las mayúsculas.
+
+    ⚠️ LA BANDERA NO SEPARA: `volk🇨🇴` y `Volk🇲🇽` son la misma clave.
+    Es la regla que este proyecto ya tiene escrita —*la bandera en una
+    llave es decoración, no dato*: el mismo Hassan aparece como 🇪🇬, 🇮🇶 y
+    🇦🇴—. El país sale del padrón, no del emoji.
+
+    ⚠️ LA DEL PADRÓN GANA porque es el AKA oficial: Dlx, 24/09/2026,
+    *«esos nombres deberían ser los que aparecen en la lista de raperos
+    del sheet operativo, ya que ese es su oficial AKA»*. Si no está en el
+    padrón, la primera que aparece — y `Resultados` se lee siempre en el
+    mismo orden, así que es siempre la misma.
+    """
+    global _GRAFIA
+    if _GRAFIA is None:
+        _GRAFIA = {}
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'padron.json'),
+                         encoding='utf-8') as f:
+                for x in json.load(f) or []:
+                    r = str(x.get('raw') or '').strip()
+                    kk = ''.join(c for c in unicodedata.normalize('NFKD', r)
+                                 if c.isalnum()).lower()
+                    if kk and kk not in _GRAFIA:
+                        _GRAFIA[kk] = r
+        except (OSError, ValueError):
+            # sin padrón se sigue: quedan las grafías de la primera vez
+            pass
+    kk = ''.join(c for c in unicodedata.normalize('NFKD', nombre or '')
+                 if c.isalnum()).lower()
+    if not kk:
+        return nombre
+    return _GRAFIA.setdefault(kk, nombre)
 
 
 def agregar(filas_res, filas_uno):
@@ -626,7 +690,19 @@ def tabla_nueva():
     for f in _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1)):
         f = list(f) + [''] * len(cab)
         nom = str(f[icol.get('Rapero', 1)]).strip()
-        base = _norm(re.sub(r'[\U0001F1E6-\U0001F1FF]', '', nom).replace('❓', ''))
+        # 🔴 LA MISMA CLAVE PARA GUARDAR Y PARA BUSCAR. Acá se guardaba
+        # SIN bandera (`MAU KC 🇨🇴` -> `mau kc`) y abajo se buscaba CON
+        # bandera (`mau kc 🇨🇴`), así que nadie con bandera en el nombre
+        # enganchaba nunca con su fila anterior. Se veía en el aviso de
+        # cada corrida —«20 sin fila anterior: dxg🇲🇽🇨🇴🇨🇴, Garxziiscity
+        # 🇦🇿…, KC 🇨🇴, Volk 🇲🇽, BLANKO 🇺🇸…»— y **todos** tenían bandera:
+        # ese número no podía bajar nunca, y un aviso que no baja enseña a
+        # no leerlo. Medido el 25/09/2026.
+        #
+        # ⚠️ Y ES LA CLAVE DE `canon()`: sólo letras y números. Cubre de
+        # paso lo que el comentario de abajo ya nombraba como riesgo
+        # —`Rodri LP` contra `RodriLP`, una tilde, un espacio de más—.
+        base = _clave_fila(nom)
         if base:
             viejo[base] = f
 
@@ -651,7 +727,7 @@ def tabla_nueva():
     # que llaman cuatro lugares. Ver la guarda de `main()`.
     enganchadas = set()
     for quien, v in ag.items():
-        prev = viejo.get(_norm(quien), [])
+        prev = viejo.get(_clave_fila(quien), [])
         # 🔴 NO ENCONTRAR LA FILA VIEJA NO ES LO MISMO QUE SER NUEVO, y
         # se parecen mucho. Si el nombre de `Resultados` no escribe
         # igual que el de la vitrina —`Rodri LP` contra `RodriLP`, una
@@ -663,7 +739,7 @@ def tabla_nueva():
         if not prev and viejo:
             perdidos.append(quien)
         if prev:
-            enganchadas.add(_norm(quien))
+            enganchadas.add(_clave_fila(quien))
         fila = [''] * len(cab)
         for c, i in icol.items():
             if c in ARRASTRE:
