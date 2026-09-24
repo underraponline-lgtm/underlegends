@@ -28,7 +28,12 @@ import time
 
 #: cuánto esperar antes de cada reintento. La cuota es por minuto, así
 #: que el último intento cae del otro lado de la ventana.
-ESPERAS = (5, 12, 25, 45)
+# ⚠️ HASTA 90 s, Y NO 45: después de una ráfaga Google sigue
+# diciendo 429 más de un minuto. Medido el 24/09/2026 a las 12:23 PM
+# ET: del primer 429 al último pasaron 93 s con cinco intentos, y el
+# paso de las vitrinas murió igual. El trabajo tiene 20 min de techo
+# y tarda ~6: la paciencia entra.
+ESPERAS = (5, 15, 30, 60, 90)
 
 
 def _es_cuota(e):

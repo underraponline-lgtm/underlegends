@@ -111,6 +111,18 @@ def de_los_json():
     return out
 
 
+#: los que se buscan en git pero NO se piden en `ACCESOS.md`, con el porqué.
+#:
+#: ⚠️ EL `token` DE OAUTH DURA UNA HORA y se rehace solo con el
+#: `refresh_token` y el `client_secret`, que sí están anotados. Pedirlo
+#: anotado era una alarma que no se podía apagar: anotarlo hoy lo deja
+#: viejo en sesenta minutos, y un aviso que siempre está prendido entrena
+#: a no leerlo. Medido el 24/09/2026: era el único «sin anotar» de 14.
+DERIVADOS = {
+    'oauth_token.json · token': 'dura una hora; sale del refresh_token',
+}
+
+
 def inventariado():
     """Que TODOS los valores estén escritos en `ACCESOS.md`.
 
@@ -214,7 +226,7 @@ def main():
         print('\n  ⚠️ no hay ACCESOS.md: no puedo decir si están todos')
     else:
         for etq, v in sorted(secretos.items()):
-            if v not in acc:
+            if v not in acc and etq not in DERIVADOS:
                 sin_anotar.append(etq)
         print('\n  ¿están todos en ACCESOS.md?')
         if sin_anotar:
@@ -225,7 +237,11 @@ def main():
             print('    Un secret de GitHub es de SOLO ESCRITURA: no se baja.')
             print('    Si el archivo local se pierde, se pierde el acceso.')
         else:
-            print('    ✅ los %d están anotados' % len(secretos))
+            print('    ✅ los %d están anotados'
+                  % (len(secretos) - len(DERIVADOS)))
+        for etq, por in sorted(DERIVADOS.items()):
+            if etq in secretos:
+                print('    ·  %-30s no hace falta: %s' % (etq, por))
 
     print('')
     if faltan:

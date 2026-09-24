@@ -78,7 +78,12 @@ def token():
 #: cuántas veces reintentar un 429, y cuánto esperar entre intentos.
 #: ⚠️ La cuota de Sheets es **por minuto**, así que esperar sirve de
 #: verdad: no es una falla, es un «ahora no».
-REINTENTOS = (5, 12, 25, 45)
+# ⚠️ HASTA 90 s, Y NO 45: después de una ráfaga Google sigue
+# diciendo 429 más de un minuto. Medido el 24/09/2026 a las 12:23 PM
+# ET: del primer 429 al último pasaron 93 s con cinco intentos, y el
+# paso de las vitrinas murió igual. El trabajo tiene 20 min de techo
+# y tarda ~6: la paciencia entra.
+REINTENTOS = (5, 15, 30, 60, 90)
 
 
 def _pedir(metodo, ruta, **kw):
@@ -137,12 +142,9 @@ def poner(a1, filas):
     no el proceso**. El exportador de PNG mira las cuatro esquinas del
     archivo en vez de confiar en que el navegador respondió.
     """
-    r = requests.put('%s/%s/values/%s?valueInputOption=RAW'
-                     % (API, id_operativo(), requests.utils.quote(a1)),
-                     headers={'Authorization': 'Bearer ' + token()},
-                     json={'values': filas}, timeout=90)
-    if r.status_code >= 300:
-        raise RuntimeError('%s: %s' % (r.status_code, r.text[:200]))
+    # por `_pedir()`: un 429 es «esperá», no «falló»
+    _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(a1),
+           json={'values': filas})
     leido = _pedir('GET', '/values/%s' % requests.utils.quote(a1)).get('values', [])
     malas = []
     for i, esperada in enumerate(filas):

@@ -296,18 +296,25 @@ def _eventos():
         return {}
 
 
+_ID = {}
+
+
 def _hoja_id(crear=False):
     from escribir import _pedir
+    if _ID.get(HOJA) is not None:
+        return _ID[HOJA]
     d = _pedir('GET', '?fields=sheets.properties(sheetId,title)')
     for s in d.get('sheets') or []:
         if s['properties']['title'] == HOJA:
-            return s['properties']['sheetId']
+            _ID[HOJA] = s['properties']['sheetId']
+            return _ID[HOJA]
     if not crear:
         return None
     r = _pedir('POST', ':batchUpdate', json={'requests': [{'addSheet': {
         'properties': {'title': HOJA, 'index': 0,
                        'gridProperties': {'frozenRowCount': FILA_CAB}}}}]})
-    return r['replies'][0]['addSheet']['properties']['sheetId']
+    _ID[HOJA] = r['replies'][0]['addSheet']['properties']['sheetId']
+    return _ID[HOJA]
 
 
 def _respuestas():
@@ -448,6 +455,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         print('      alias: %s -> %s' % (a, b))
     for ev, dec in eventos.items():
         print('      evento: %s -> %s' % (ev, dec))
+    aplicar.hubo = bool(cierres or pares or eventos or ids)
     if dry:
         return estados
 
@@ -612,8 +620,9 @@ def correr(dry=True):
     print('   %d pregunta(s) abierta(s) · %d fila(s) repetida(s) en '
           '`Pendientes`' % (len(preguntas), len(repetidas)))
     estados = aplicar(preguntas, respuestas, repetidas, dry=dry)
-    if not dry:
-        # lo que se acaba de cerrar ya no se pregunta
+    # lo que se acaba de cerrar ya no se pregunta. ⚠️ Y SI NO SE CERRÓ NADA
+    # NO SE RELEE: dos lecturas menos en cada corrida, que es la mayoría.
+    if not dry and getattr(aplicar, 'hubo', True):
         abiertas, repetidas, hechas = _abiertas_de_pendientes()
         preguntas = armar(abiertas, eventos)
     pintar(preguntas, estados, respuestas, hechas, dry=dry)
