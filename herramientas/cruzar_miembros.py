@@ -61,8 +61,8 @@ def _guilds():
     g = [('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
          # 🔴 SNAKE RAP, DESDE EL 24/09/2026: 7.337 miembros. Dlx: «es una
          # gran oportunidad para obtener IDs». De acá, como de FFA, sólo se
-         # CAPTURA el ID —lo decide `sv == 'DRA'` más abajo—: su propia
-         # verificación la cuenta `bot/verificados.py`, sin tocar roles.
+         # CAPTURA el ID —lo decide `sv == 'DRA'` más abajo—. Verificar es
+         # sólo el Miembro de DRA (Dlx, 24/09/2026).
          ('SR', '492346406976356374')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
