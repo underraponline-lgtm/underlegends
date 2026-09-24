@@ -367,6 +367,20 @@ def _grafia(nombre, declarado=False):
     return _DESCONOCIDOS.setdefault((kk, fl), nombre)
 
 
+def _trolls():
+    """`f(nombre) -> bool`: ¿es un nombre que no entra a ningún ranking?
+
+    ⚠️ SI NO SE PUEDE SABER, NADIE ES TROLL: sacar gente del ranking por
+    un archivo que no se pudo leer sería peor que dejar a un troll.
+    """
+    try:
+        import decidir as _DEC
+        fuera = _DEC.no_rankear()
+        return lambda q: bool(fuera) and _DEC.norm(q) in fuera
+    except Exception:                                    # noqa: BLE001
+        return lambda q: False
+
+
 def agregar(filas_res, filas_uno):
     """Las filas crudas -> {rapero: {columna: valor}}.
 
@@ -383,6 +397,7 @@ def agregar(filas_res, filas_uno):
     d = defaultdict(lambda: defaultdict(int))
     evs = defaultdict(set)
     ultimo = defaultdict(list)          # (num, fecha, puesto) por persona
+    es_troll = _trolls()
     for f in filas_res:
         f = list(f) + [''] * 11
         num, sv, esc, quien = str(f[0]).strip(), str(f[2]).strip(), \
@@ -390,6 +405,9 @@ def agregar(filas_res, filas_uno):
         if not quien:
             continue
         quien = canon(quien)
+        # 🔴 LOS TROLL NO ENTRAN A NINGUNA VITRINA. Ver `decidir.no_rankear()`.
+        if es_troll(quien):
+            continue
         pos = _norm(f[6])
         try:
             pts = int(float(str(f[7]).replace(',', '') or 0))
@@ -467,10 +485,16 @@ def agregar(filas_res, filas_uno):
         # `x == gan` da False y la persona pierde un duelo que ganó — un
         # Win% plausible y equivocado, que no falla en ningún lado.
         a, b, gan = canon(a), canon(b), canon(gan)
+        # ⚠️ EL TROLL SALE, SU RIVAL NO: el que le ganó conserva el duelo
+        # ganado y el que le perdió, el perdido. Sólo no se le cuentan al
+        # troll, que no tiene fila.
         for x in (a, b):
+            if es_troll(x):
+                continue
             j[x] += 1
             hist[x].append(x == gan)
-        g[gan] += 1
+        if not es_troll(gan):
+            g[gan] += 1
     for quien in set(list(j) + list(d)):
         if j.get(quien):
             d[quien]['Win%'] = '%.1f%%' % (100.0 * g.get(quien, 0) / j[quien])

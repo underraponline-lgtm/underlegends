@@ -355,8 +355,20 @@ def normalizar(cr, anclas=None):
 
 
 def calcular(filas_res, filas_uno=()):
-    """Las filas crudas -> `{quien: {dimensiones, conf, score}}`."""
-    return normalizar(crudo(filas_res, filas_uno))
+    """Las filas crudas -> `{quien: {dimensiones, conf, score}}`.
+
+    ⚠️ LOS TROLL SE SACAN ANTES DE NORMALIZAR, no después: si no, sus
+    números entran a los máximos contra los que se mide a todos los demás.
+    Ver `decidir.no_rankear()`.
+    """
+    c = crudo(filas_res, filas_uno)
+    try:
+        import rankings as _RK
+        es_troll = _RK._trolls()
+        c = {q: v for q, v in c.items() if not es_troll(q)}
+    except Exception:                                    # noqa: BLE001
+        pass
+    return normalizar(c)
 
 
 def _self_check():

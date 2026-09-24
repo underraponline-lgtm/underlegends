@@ -79,6 +79,9 @@ GRUPO = {
 }
 
 NUEVO = 'Es alguien nuevo'
+#: un nombre de broma que no es nadie: no entra a ningún ranking. Ver
+#: `no_rankear()`.
+TROLL = 'Es un troll (no cuenta)'
 _BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]{2}')
 
 
@@ -158,7 +161,7 @@ def _pregunta(p):
         return ('¿Quién es «%s»? No está en la Lista de Raperos. Si es '
                 'alguien que ya está, escribí su nombre como figura ahí.' % det,
                 ', '.join(sug) if sug else '—',
-                ['Es %s' % s for s in sug] + [NUEVO])
+                ['Es %s' % s for s in sug] + [NUEVO, TROLL])
     if t == 'alta':
         quien = det.split(' = ')[0].strip()
         return ('«%s» usó /card y no está en la Lista de Raperos. Si ya está '
@@ -214,6 +217,12 @@ def interpretar(p, respuesta):
         return ('esperar', r)
     if r in CIERRAN:
         return ('cerrar', r)
+    # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
+    # abajo lo leería como «alias de "un troll"».
+    if r == TROLL:
+        if p['tipo'] == 'Nombre desconocido':
+            return ('troll', _sin_bandera(p['detalle']))
+        return ('error', '«%s» no aplica a esta pregunta' % r)
     if r == NUEVO:
         return ('cerrar', 'nuevo: queda con este nombre')
     if r in ('No cuenta', 'Sí cuenta'):
@@ -233,6 +242,35 @@ def _decisiones():
             return json.load(f) or {}
     except (OSError, ValueError):
         return {}
+
+
+def no_rankear():
+    """Los nombres que no entran a NINGÚN ranking, normalizados.
+
+    🔴 LA REGLA EXISTÍA Y NO LA APLICABA NADIE. `datos/identidades.json`
+    tiene a Farmeador y Manito como *«joke/placeholder, se filtra del
+    ranking (§6)»*, pero sólo la leían las herramientas de IDs y roles:
+    las vitrinas de la T1 no. Dlx, 24/09/2026, mirando el hub: *«why the
+    ultra man is still on the list? If it is a troll name right?»* —
+    «El ultra knowledge instintivo», puesto 45.
+
+    Son dos fuentes y se suman: lo que Dlx marca en ✅ Decidir como
+    «Es un troll» (`datos/decisiones.json`, `no_rankear`) y los joke de
+    las reglas de identidad.
+
+    ⚠️ SALE DEL RANKING, NO DE LA LLAVE: quien le ganó al troll conserva
+    su duelo ganado. Ver `rankings.agregar()`.
+    """
+    out = {norm(k) for k in (_decisiones().get('no_rankear') or {})}
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'identidades.json'),
+                     encoding='utf-8') as f:
+            ident = json.load(f)
+        out |= {norm(k) for k, v in (ident.get('no_verificar') or {}).items()
+                if 'joke' in str(v).lower()}
+    except (OSError, ValueError):
+        pass
+    return {x for x in out if x}
 
 
 def decision_evento(ev, sv, fecha):
@@ -429,8 +467,15 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                                encoding='utf-8'))
     akas = AK.cargar() or {}
     estados, cierres, pares, eventos, ids = {}, [], [], {}, []
+    trolls = []
+    fuera = no_rankear()
     for p in preguntas:
         r = respuestas.get(p['id'])
+        # un nombre que ya se sabe troll no se vuelve a preguntar
+        if (not r and p['tipo'] == 'Nombre desconocido'
+                and norm(_sin_bandera(p['detalle'])) in fuera):
+            cierres += [(n, 'troll: no cuenta (ya decidido)') for n in p['filas']]
+            continue
         acc = interpretar(p, r[0] if r else '')
         if not acc:
             continue
@@ -444,6 +489,9 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         elif que == 'evento':
             eventos[p['detalle']] = dato
             cierres += [(n, 'evento: %s' % dato) for n in p['filas']]
+        elif que == 'troll':
+            trolls.append(dato)
+            cierres += [(n, 'troll: no cuenta') for n in p['filas']]
         elif que == 'alias':
             x = _persona(dato, padron, akas)
             if x is None:
@@ -472,7 +520,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         print('      alias: %s -> %s' % (a, b))
     for ev, dec in eventos.items():
         print('      evento: %s -> %s' % (ev, dec))
-    aplicar.hubo = bool(cierres or pares or eventos or ids)
+    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls)
     if dry:
         return estados
 
@@ -501,6 +549,17 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
+    if trolls:
+        d = _decisiones()
+        ahora = datetime.datetime.now(datetime.timezone.utc).strftime(
+            '%Y-%m-%d %H:%M UTC')
+        for t in trolls:
+            d.setdefault('no_rankear', {})[t] = {'motivo': 'troll',
+                                                 'cuando': ahora, 'por': POR}
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+        print('      troll: %s' % ', '.join(trolls))
     if cierres:
         from escribir import _pedir
         _pedir('POST', '/values:batchUpdate', json={
@@ -676,7 +735,11 @@ def _self_check():
     ok(jahno['filas'] == [2, 3], 'y contestarla cierra las dos filas')
     ok('DESGRACIAS EN TOKYO VOL.10' in jahno['donde'],
        'el evento se dice por su nombre, no por el número')
-    ok(jahno['opciones'] == ['Es Juano', NUEVO], 'la sugerencia es una opción')
+    ok(jahno['opciones'] == ['Es Juano', NUEVO, TROLL], 'la sugerencia es una opción')
+    ok(interpretar(jahno, TROLL) == ('troll', jahno['detalle'].replace('🇦🇷', '').strip()),
+       '«Es un troll» es troll')
+    ok(interpretar(jahno, TROLL)[0] != 'alias',
+       'y no se lee como «alias de "un troll"»')
     ok(interpretar(jahno, 'Es Juano') == ('alias', 'Juano'),
        '«Es Juano» es un alias')
     ok(interpretar(jahno, 'Makmah') == ('alias', 'Makmah'),
