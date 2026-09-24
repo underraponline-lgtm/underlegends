@@ -131,6 +131,10 @@ def _filas_uno(ev):
             continue
         if 'triple' in str(b.get('notas', '')).lower():
             continue
+        # el tercer puesto que sale del PODIO no se peleó en la llave: ver
+        # `escuchar._tercero_del_podio()`. Paga puesto, no suma duelo.
+        if 'podio' in str(b.get('notas', '')).lower():
+            continue
         out.append([ev['num'], ev['fecha'], ev['servidor'], b.get('ronda', ''),
                     a, c, g, (c if g == a else a),
                     str(b.get('notas', '')).strip()])

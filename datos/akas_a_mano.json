@@ -44,6 +44,15 @@
   "   Discord ID). `Volk 🇲🇽` y `volk 🇨🇴` NO se juntan: Dlx, mismo día, «la",
   "   bandera no siempre es decoración». Ver `rankings._grafia()`.",
   "",
+  "⚠️ Fleivacheck -> fleivaman SE DECLARÓ Y SE SACÓ el mismo 25/09/2026.",
+  "   Dlx: «Fleivaman y fleivacheck si». Pero en ELRAP FECHA 6 los dos",
+  "   pelean en la MISMA batalla de octavos (Iguana vs fleivaman vs",
+  "   Fleivacheck) y en cuartos figura `fleivaman(fleivachek)`: uno le",
+  "   ganó al otro. Su propia guía de formatos (parte 5) dice «si un",
+  "   alias y su nombre real aparecen AMBOS en el mismo evento como",
+  "   personas distintas, NO los fusiones». Queda afuera hasta que",
+  "   Dlx lo resuelva.",
+  "",
   "pares: [alias, nombre real].",
   "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
  ],
@@ -83,14 +92,6 @@
   [
    "BLOODY PAINTER",
    "Bloody"
-  ],
-  [
-   "Fleivacheck",
-   "fleivaman"
-  ],
-  [
-   "fleivachek",
-   "fleivaman"
   ]
  ],
  "no_confundir": [

@@ -196,9 +196,7 @@
   "ricard": "Richard",
   "ricardflex": "Richard",
   "richardflex": "Richard",
-  "bloodypainter": "Bloody",
-  "fleivacheck": "fleivaman",
-  "fleivachek": "fleivaman"
+  "bloodypainter": "Bloody"
  },
  "pares": [
   [
@@ -984,14 +982,6 @@
   [
    "BLOODY PAINTER",
    "Bloody"
-  ],
-  [
-   "Fleivacheck",
-   "fleivaman"
-  ],
-  [
-   "fleivachek",
-   "fleivaman"
   ]
  ],
  "no_confundir": [

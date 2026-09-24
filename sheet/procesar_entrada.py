@@ -81,11 +81,20 @@ CELDA_ULTIMO, CELDA_PROXIMO = 'Config!B27', 'Config!B28'
 
 
 def _get(rng):
-    r = requests.get('%s/%s/values/%s'
-                     % (API, id_operativo(), requests.utils.quote(rng)),
-                     headers={'Authorization': 'Bearer ' + token()}, timeout=60)
-    r.raise_for_status()
-    return r.json().get('values', [])
+    # 🔴 CON REINTENTO: corre en el ciclo y es una lectura como cualquier
+    # otra. Sin él, un 429 —la cuota es por minuto— tumba la carga de
+    # eventos entera; es el agujero que mató el ciclo de las 6:52 AM ET del
+    # 24/09/2026 desde otro archivo. Ver `sheet/reintentar.py`.
+    from reintentar import leer
+
+    def _pedir():
+        r = requests.get('%s/%s/values/%s'
+                         % (API, id_operativo(), requests.utils.quote(rng)),
+                         headers={'Authorization': 'Bearer ' + token()},
+                         timeout=60)
+        r.raise_for_status()
+        return r.json().get('values', [])
+    return leer(_pedir)
 
 
 def _put(rng, filas):
@@ -196,7 +205,7 @@ def main():
 
     hproc = Hoja('Eventos Procesados')
     ya = numeros_por_evento(hproc)
-    planes, tope, sin_resolver = [], num, []
+    planes, tope, sin_resolver, alias_mal = [], num, [], []
     for (nombre, sv, fecha), bs in sorted(evs.items()):
         repetido = ya.get((nombre, sv, fecha))
         if repetido is None:
@@ -231,6 +240,22 @@ def main():
             print('          🔴 «%s» no está en el padrón%s'
                   % (n, '  ¿será %s?' % ', '.join(cerca) if cerca else ''))
         sin_resolver += [(ev['num'], n) for n in ev['sin_resolver']]
+        # 🔴 UN ALIAS QUE CHOCA NO PUEDE QUEDAR SÓLO EN UN MENSAJE. Los
+        # avisos del motor salían por consola y por `#registros`, y un
+        # aviso que se lee una vez y se va es un aviso que se pierde. El de
+        # dos lados que son la misma persona pide que alguien decida sobre
+        # un alias, así que va a `Pendientes`, como los nombres desconocidos.
+        alias_mal += [(ev['num'], a) for a in ev['avisos']
+                      if 'pelean en la misma batalla' in a]
+
+    if alias_mal and aplicar:
+        try:
+            from pendientes import anotar
+            for n, a in alias_mal:
+                anotar('Evento dudoso', 'evento #%s' % n, a)
+        except Exception as e:                           # noqa: BLE001
+            # como con los desconocidos: la cola no puede tumbar la carga
+            print('   ⚠️ no pude anotar el alias en conflicto (%s)' % str(e)[:60])
 
     if not planes:
         print('\n   nada que escribir.\n')

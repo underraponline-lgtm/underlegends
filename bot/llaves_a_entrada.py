@@ -545,8 +545,100 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                       'participantes': len(gente_grupo or gente),
                       'ronda': ronda.lower(),
                       'ladoA': ganador, 'ladoB': otro,
-                      'ganador': ganador, 'notas': ''})
+                      'ganador': ganador,
+                      # ⚠️ EL TERCERO QUE SALE DEL PODIO NO ES UN DUELO: la
+                      # llave no trae esa batalla y no se sabe si se peleó.
+                      # Con la nota, `resultados._filas_uno()` la deja
+                      # afuera de `1v1` y el motor igual paga 3ro y 4to.
+                      'notas': ('podio: tercer puesto sin batalla en la llave'
+                                if razon.startswith('podio') else '')})
     return filas, dudas, sabidas
+
+
+def marcar_walkins(filas, textos=()):
+    """Anota `Walk-in N: nombre` a quien aparece recien en una ronda avanzada.
+
+    🔴 LA GUIA DE FORMATOS LO TIENE COMO EL ERROR #4 —«walk-in sin
+    descuento», 19 de 78 eventos— Y EL LECTOR NO LO MIRABA. Dlx,
+    23/09/2026, §4.1: *«alguien aparece por primera vez en cuartos o semis
+    sin haber jugado antes. Cobra menos porque se salto camino»*: una ronda
+    salteada 50 %, dos 25 %, tres o mas 0 %. Al campeon tambien: «Konan
+    aparecio recien en cuartos… cobro 5.000 en vez de 10.000».
+
+    Medido el 25/09/2026: en DESGRACIAS EN TOKYO VOL 11 el ganador de
+    ONZASS vs GUS no se presento y PICHULITA entro directo a cuartos.
+    Cobraba sus cuartos enteros.
+
+    ⚠️ QUIEN ESTUVO ANTES SE MIRA EN EL TEXTO DE LA LLAVE, NO EN LAS FILAS.
+    La primera version miraba las filas ya resueltas, y una batalla de
+    octavos que queda sin resolver no deja filas: su gente parecia
+    aparecer recien en cuartos. Asi le cayo un walk-in falso a `nhp` en
+    ELRAP FECHA 6, que peleo octavos (`fokox 🆚 Sin limites 🆚 nhp`).
+
+    ⚠️ LA NOTA LLEVA EL NOMBRE. El motor aplicaba `Walk-in N` a los DOS
+    lados de la batalla —su propio comentario lo documenta como bug
+    pendiente de decidir— y la guia lo decide: castiga al que salteo.
+
+    ⚠️ SOLO INDIVIDUALES. Quien aparece por primera vez dentro de un
+    equipo es un drafteado o un absorbido (§3.2, §4.1: «no aplica a
+    drafteados de pandilla»), no un walk-in. Y no cuenta si se parece a
+    alguien de una ronda anterior: `PICHULITAMC` en octavos y `PICHULITA`
+    en cuartos son la misma persona escrita distinto.
+    """
+    def _k(n):
+        return E.norm(E.HISTORIA.sub('', n or ''))
+
+    def _ronda(r):
+        r = (r or '').upper()
+        return E.ALIAS.get(r, r)
+
+    # las rondas del texto, en orden, con TODOS los nombres que aparecen
+    # —tambien los de adentro de un parentesis: son gente que ya peleo—
+    en_texto = collections.defaultdict(set)
+    for t in textos:
+        for ronda, bats in E.rondas_de(t):
+            r = _ronda(ronda)
+            if r not in E.ORDEN or r == 'TERCER LUGAR':
+                continue
+            for b in bats:
+                for n in b:
+                    for parte in re.split(r'[+,&()]', n):
+                        k = E.norm(parte)
+                        if k:
+                            en_texto[r].add(k)
+    for f in filas:
+        r = _ronda(f.get('ronda'))
+        if r in E.ORDEN and r != 'TERCER LUGAR':
+            for lado in (f.get('ladoA'), f.get('ladoB')):
+                for parte in re.split(r'[+,&]', lado or ''):
+                    k = _k(parte)
+                    if k:
+                        en_texto[r].add(k)
+    rondas = sorted(en_texto, key=E.ORDEN.index)
+    if len(rondas) < 2:
+        return filas
+    pos = {r: i for i, r in enumerate(rondas)}
+
+    primera = {}   # clave -> (indice de ronda, nombre, fila)
+    for f in filas:
+        r = _ronda(f.get('ronda'))
+        if r not in pos:
+            continue
+        for lado in (f.get('ladoA'), f.get('ladoB')):
+            if not lado or E._equipo(lado) or re.search(r'[+,&]', lado):
+                continue
+            k = _k(lado)
+            if k and (k not in primera or pos[r] < primera[k][0]):
+                primera[k] = (pos[r], lado, f)
+    for k, (i, nombre, f) in primera.items():
+        if i == 0:
+            continue
+        previos = set().union(*(en_texto[rondas[j]] for j in range(i)))
+        if k in previos or E._parecido(k, list(previos)):
+            continue
+        nota = 'Walk-in %d: %s' % (min(i, 3), E.HISTORIA.sub('', nombre).strip())
+        f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
+    return filas
 
 
 def nombre_de(grupo):
@@ -859,7 +951,8 @@ def main():
             del_grupo += f
             dudas += d
             sabidas.update(sab)
-        limpias = sin_repetir(del_grupo)
+        limpias = marcar_walkins(sin_repetir(del_grupo),
+                                 [h.get('texto') or '' for h in g['llaves']])
         repes += len(del_grupo) - len(limpias)
         todas += limpias
     if repes:

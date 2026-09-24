@@ -165,7 +165,10 @@ RONDA = re.compile(
 # inventado: **«7» es una persona de verdad**, tiene sus cartas en R2.
 DELIMS = (re.compile(r'⌞(.+?)⌝'),
           re.compile(r'\[([^\[\]\n]{1,30})\]'))
-SEP = re.compile(r'🆚|<a?:VSF?:\d+>|\bvs\.?\b', re.I)
+# ⚠️ `:vsf:` TAMBIEN: hay llaves que mezclan el emoji `<:VSF:…>` con su
+# shortcode en la MISMA linea (EL RAP FECHA 5, #349), y sin el segundo dos
+# equipos quedaban pegados en uno de seis.
+SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
 
 # 🔴 `(?<!SUB)` Y `(?<!SUB-)` NO SON ADORNO: `SUBCAMPEON: PIPE` matchea
 # `CAMPEON:` y devuelve al **segundo** como campeon. Hoy no se nota
@@ -219,38 +222,58 @@ def norm(s):
 def nombres_de_linea(l):
     """Los competidores de una linea, en orden. [] si no es una batalla.
 
-    🔴 EL MARCO NO GANA SI EL SEPARADOR VE MAS LADOS. Antes, con dos
-    nombres entre `⌞ ⌝` se devolvian esos dos y **el resto de la linea
-    se tiraba**. Medido el 25/09/2026 en ELRAP FECHA 6 (#353):
+    🔑 CADA `🆚` SEPARA UN LADO, Y LOS NOMBRES ENMARCADOS JUNTOS DENTRO DE
+    UN LADO SON UN EQUIPO. Es lo que dice la notacion, y es lo que la guia
+    de formatos de Dlx (23/09/2026, §3.3) llama formato hibrido:
 
-        ⌞fokox🇦🇷⌝  <:VSF:…>  ⌞Sin límites 🇵🇪⌝ <:VSF:…> nhp🇨🇱
+        [MINIBOY] 🆚 [SNOW] 🆚 [VELATZ] 🆚 [GUS]      cuatro individuales
+        [SNOW] [VELATZ] 🆚 [PRR] [SIX]               dos duplas
+        [PRR] [SIX] [SNOW] 🆚 [COLESITO] [BLOODY] [MAKMA]   dos trios
+        [Sudaka] [Adachi] 🆚 [L] [Shadow] 🆚 [Mcnadie] [nc]  tres duplas
 
-    son tres, y `nhp` —el que PASO— no tiene marco. Salia «fokox vs Sin
-    límites», ninguno de los dos aparecia en cuartos y la batalla se iba
-    a Pendientes: los dos eliminados sin puesto. Lo mismo con `EricRJ`,
-    `moneymaker`, `ricard`, `erian` y `ZTR`, todos al final de su linea.
-    Era la fuga mas grande de ese evento: **19 de 31** con puesto.
+    🔴 HASTA EL 25/09/2026 SE CONTABAN LOS MARCOS Y NO LOS LADOS. `[nc] [g8]
+    🆚 [Mau Kc] [Denik]` salia como una batalla de CUATRO donde pasan dos,
+    y cada eliminado cobraba la ronda completa. Es una dupla: por la regla
+    §3.2 de la guia —«los puntos SE DIVIDEN»— cada uno cobra la mitad. O
+    sea que las duplas perdedoras de CARABOBO cobraban el doble, y por eso
+    su campeon quedaba por debajo de un semifinalista.
 
-    ⚠️ Y SOLO SI VE MAS, no si ve distinto. En `[A] [B] 🆚 [C] [D]` —la
-    forma de las finales grupales— el marco encuentra cuatro y el
-    separador dos, y ahi el marco tiene razon.
+    ⚠️ EL MARCO SIGUE SIRVIENDO SIN SEPARADOR, y sigue sirviendo PARA LEER
+    CADA LADO: en `⌞fokox⌝ <:VSF:…> ⌞Sin limites⌝ <:VSF:…> nhp` cada lado
+    tiene un marco o ninguno, y el que no tiene marco tambien es un lado
+    —`nhp` fue el que paso—. Lo que se tira es lo que esta afuera de los
+    marcos DE UN LADO QUE SI LOS TIENE: `(BLOODY) [Cj] [Zignos]` es el
+    equipo Cj + Zignos, y `(BLOODY)` un refuerzo que no peleo (§4.2).
     """
-    marco = []
+    if SEP.search(l):
+        lados = []
+        for seg in SEP.split(l):
+            enm = []
+            for d in DELIMS:
+                enm = [x.strip() for x in d.findall(seg) if norm(x)]
+                if enm:
+                    break
+            # ⚠️ UN MARCO QUE YA ES UN EQUIPO NO SE JUNTA CON OTRO: no
+            # existen equipos de equipos. Si un separador no se reconoce,
+            # dos equipos caen en el mismo pedazo; juntarlos daria uno de
+            # seis. Cada uno queda como su propio lado.
+            if len(enm) >= 2 and any(re.search(r'[+,&]', x) for x in enm):
+                lados.extend(enm)
+            elif len(enm) >= 2:
+                lados.append(' + '.join(enm))
+            elif len(enm) == 1:
+                lados.append(enm[0])
+            else:
+                t = re.sub(r'[⌞⌝\[\]]', '', seg).strip(' .·▪️♠︎-–—*_`')
+                if 1 < len(norm(t)) <= 28:
+                    lados.append(t)
+        if len(lados) >= 2:
+            return lados
     for d in DELIMS:
         hay = d.findall(l)
         if len(hay) >= 2:
-            marco = [x.strip() for x in hay]
-            break
-    sep = []
-    if SEP.search(l):
-        trozos = [re.sub(r'[⌞⌝\[\]]', '', t).strip(' .·▪️♠︎-–—*_`')
-                  for t in SEP.split(l)]
-        trozos = [t for t in trozos if 1 < len(norm(t)) <= 28]
-        if len(trozos) >= 2:
-            sep = trozos
-    if len(sep) > len(marco):
-        return sep
-    return marco or sep
+            return [x.strip() for x in hay]
+    return []
 
 
 def unir_continuadas(texto):
@@ -624,12 +647,40 @@ def resolver(texto, conocidos=None, ids=None):
                 # batalla se iba a Pendientes. Medido el 25/09/2026: 4
                 # octavos de FFA caian por esto.
                 sig_l = {HISTORIA.sub('', x) for x in sig}
+                # 🔴 Y UN INDIVIDUAL PUEDE PASAR A UNA RONDA DE EQUIPOS. En
+                # el formato híbrido (guía §3.3) los que ganan cuartos
+                # arman duplas en semis: `[SNOW]` pasa y aparece como
+                # `[SNOW] [VELATZ]`. Contra el texto del equipo `snow` no
+                # se parece a nada, así que nadie «pasaba» y los cuartos
+                # de TOKYO VOL.12 se perdían enteros. Se busca también
+                # entre los integrantes de los equipos de la ronda
+                # siguiente — sólo para lados individuales.
+                # ⚠️ LA HISTORIA SE SACA ANTES DE PARTIR: `gekto(chianluka
+                # +makma)` partido por `+` dejaba un «integrante» `makma)`
+                # y Makma aparecía pasando a semis en ELRAP FECHA 6 —con
+                # lo que su derrota en cuartos se borraba—.
+                miembros = {m.strip() for x in sig
+                            for m in re.split(r'[+&]', HISTORIA.sub('', x))
+                            if norm(m)}
                 ganan = [n for n in b if _parecido(n, sig)
-                         or _parecido(HISTORIA.sub('', n), sig_l)]
+                         or _parecido(HISTORIA.sub('', n), sig_l)
+                         or (not _equipo(n)
+                             and _parecido(HISTORIA.sub('', n), miembros))]
                 if not ganan:
                     # el mismo equipo escrito al reves. Ver `_equipo()`.
                     eqs = {_equipo(s) for s in sig} - {frozenset()}
                     ganan = [n for n in b if _equipo(n) in eqs]
+                    # 🔑 Y EL EQUIPO QUE LLEGA CON UNO MAS. En los formatos
+                    # hibridos el perdedor de una semi puede ser ABSORBIDO
+                    # por el ganador (guia §3.2, «Klk 4»): `[SNOW] [VELATZ]
+                    # 🆚 [PRR] [SIX]` y en la final `[PRR] [SIX] [SNOW]`. Por
+                    # igualdad no pasa nadie; PRR + SIX esta ENTERO adentro
+                    # del trio, SNOW + VELATZ no. Solo si es uno solo.
+                    if not ganan:
+                        sub = [n for n in b if _equipo(n)
+                               and any(_equipo(n) < e for e in eqs)]
+                        if len(sub) == 1:
+                            ganan = sub
                 if len(ganan) == 1:
                     out.append((ronda, b, ganan[0], 'ronda siguiente'))
                 elif not ganan:
@@ -776,6 +827,61 @@ def resolver(texto, conocidos=None, ids=None):
                                 'de la batalla'))
             else:
                 out.append((ronda, b, None, 'última ronda y no dice campeón'))
+    return _tercero_del_podio(texto, out)
+
+
+#: `3ER PUESTO:` / `TERCER LUGAR:` del podio (y el typo `TECER`)
+TERCERO = re.compile(
+    r'(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)\s*:?\s*[*_`~|]*\s*'
+    r'([^\n]{1,80})', re.I)
+
+
+def _tercero_del_podio(texto, out):
+    """El tercer puesto que dice el PODIO, si nombra a uno solo.
+
+    \U0001F534 PODIO MANDA. Guia de formatos de Dlx (23/09/2026, §4.6): *«cuando
+    la llave dice una cosa y el podio publicado dice otra, gana el
+    podio»*. Hasta el 25/09/2026 el `3ER PUESTO:` del podio no se leia:
+    sin batalla por el tercero, los dos que perdieron la semi cobraban el
+    promedio (§4.5, 5.250 en 16+). Pero TOKYO VOL.10 publica `3ER PUESTO:
+    XXXXX` y TOKYO VOL 11 `TERCER LUGAR: COLESITO` \u2014uno solo\u2014: tercero
+    (6.000) y el otro semifinalista cuarto (4.500).
+
+    \u26a0\ufe0f SOLO CON UN NOMBRE, Y SOLO SI ES UNO DE LOS QUE PERDIERON LA SEMI.
+    Dos nombres en el tercero es exactamente el caso del promedio (§4.5,
+    «el podio pone a dos personas juntas en \U0001F949»), y un tercero que no
+    perdio ninguna semi es un podio que no se entiende: no se toca.
+
+    \u26a0\ufe0f LA BATALLA QUE SE ARMA NO SE PELEO, O NO SE SABE: va con
+    `podio` en el motivo y `llaves_a_entrada` le pone la nota que la deja
+    afuera de los duelos. Si la llave SI trae la batalla del tercero, se
+    le pone el ganador y ahi si es un duelo.
+    """
+    m = TERCERO.search(texto or '')
+    if not m:
+        return out
+    linea = MENCION.sub('', m.group(1))
+    partes = [x for x in re.split(r'\s[-\u2013\u2014/]\s|,|\s+y\s+|\+|&', linea)
+              if norm(x)]
+    if len(partes) != 1:
+        return out
+    semis = [(b, g) for r, b, g, _z in out if r == 'SEMIFINALES']
+    perd = [n for b, g in semis if g is not None for n in b if n != g]
+    if len(semis) != 2 or len(perd) != 2 or any(_equipo(n) for n in perd):
+        return out
+    t = _parecido(partes[0], perd)
+    if t is None:
+        return out
+    otro = next(n for n in perd if n != t)
+    # si la llave ya trae la batalla del tercero, se le pone el ganador
+    for i, (r, b, g, z) in enumerate(out):
+        if r == 'TERCER LUGAR' and g is None and t in b:
+            out[i] = (r, b, t, 'línea TERCER PUESTO')
+            return out
+    if any(r == 'TERCER LUGAR' for r, _b, _g, _z in out):
+        return out
+    out.append(('TERCER LUGAR', [t, otro], t,
+                'podio: tercer puesto sin batalla en la llave'))
     return out
 
 
