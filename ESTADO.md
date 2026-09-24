@@ -352,6 +352,18 @@ Lo único que se movió fue una llave sin título de FFA del 23/09 que el
 que no estaba en cuartos y una final ilegible. Iba a escribir 3 filas;
 ahora es un `Bracket incompleto`.
 
+🔴 **DOS BUGS QUE APARECIERON MIDIENDO ESTO, los dos viejos:**
+
+- **El plantel contaba pedazos de paréntesis como personas.** Partía
+  por `+` antes de sacar el «a quién le ganó», así que
+  `gekto(chianluka+makma)` daba `gektochianluka`: ELRAP FECHA 6 contaba
+  34 y son 29, EL RAP FECHA 5 29 y son 27. Ninguno cambió de escala;
+  con 15 reales y una basura, un evento cobra 16+.
+- **`Pendientes` agotaba la cuota.** Una lectura por duda: 33 nombres
+  desconocidos eran ~66 lecturas contra 60 por minuto, y en el ciclo de
+  las 9:22 AM ET una duda se perdió. Ahora es un lote: una lectura y un
+  `append`. Y `_filas()` tomaba un 429 por «cola vacía» y duplicaba.
+
 ⚠️ **Lo que NO se automatizó, a propósito:** la regla del pozo para 3 o
 más empatados (§10.1) —sólo aparece en formatos como 5 VIDAS, que el
 lector no lee; el empate de dos ya da el pozo, que es la columna `Semi`—
