@@ -309,6 +309,74 @@ runner**. Existir y estar disponible son dos preguntas distintas.
 `herramientas/workflows_validos.py` ahora mira las dos, y corre en la
 auditoría semanal.
 
+### 9. LA GUÍA DE FORMATOS DE DLX, EN EL PIPELINE (24/09, de día)
+
+Dlx pasó la guía que usa el staff para puntuar llaves, en dos partes
+(`GUIA_Formatos_de_Llave` y su `PARTE_2`, 23/09). ⚠️ **Tiene detalles
+de la pre-temporada** —la fila de `Entrada` a mano, la columna «Otros»,
+el ❓ de Control—: *«lo que importa es el procesamiento de eventos»*.
+Eso es lo que entró.
+
+| regla | dónde |
+|---|---|
+| los equipos DIVIDEN, con floor (§3.2) | `motor.sumar()` |
+| walk-in con nombre: 50 / 25 / 0 % (§4.1) | `llaves_a_entrada.marcar_walkins()` |
+| revivido: 1ª derrota entera + 50 % de su puesto final (§3.7) | `marcar_revividos()` + motor |
+| el podio manda: `3ER PUESTO:` (§4.6) | `escuchar._tercero_del_podio()` |
+| alias peligroso: la misma persona a los dos lados (Parte 5) | motor → `Pendientes` |
+| los 14 pares que NO son la misma persona (Parte 5) | hoja AKAs + `akas_a_mano.json` |
+| `SEMIFINAL` a secas y `FILTROS` (= R32, §3.6) | `escuchar.RONDA` · `motor.DE_LLAVE` |
+| ronda que la escala no paga → aviso, no 0 callado (§2) | motor → `Pendientes` |
+| **sin campeón no se suma** (Parte 1: «resultado desconocido») | `llaves_a_entrada.main()` |
+| pokemon `(P)`: no paga, no divide, sin medalla (P2 §10) | lector + motor |
+| `[SUPLENTE]`: cupo vacío (P2 §9.4) | `escuchar.nombres_de_linea()` |
+| drafteado: eliminación + parte, enteras (P2 §9.1) | `marcar_revividos()` + motor |
+| invitado de honor: no es walk-in (P2 §9.2) | `marcar_walkins()` |
+| fase de filtros/cypher sin batallas → se retiene (P2 §12) | `fase_sin_batallas()` |
+| llave rumbo al Interserver → se retiene y se pregunta (P2 §11.2) | `llaves_a_entrada.main()` |
+| un puesto no reparte más de lo que vale (P2 §13) | motor → `Pendientes` |
+| `𝐕𝐒` y letras de fantasía | `escuchar.plano()` |
+| desempate: OVR → pts → 🥇 → 🥈 → eventos → WR% (P2 §10.8) | `rankings._desempate()` |
+
+🔴 **SIN CAMPEÓN NO SE SUMA, Y ESO CAMBIA UN DISEÑO.** Hasta hoy una
+llave leída a medias se cargaba y la duda iba a `Pendientes`: se sumaba
+primero y se preguntaba después. Ahora una llave sin la final ganada
+**espera** mientras esté en curso (menos de 12 h sin tocar) y después va
+a `Pendientes` como `Bracket incompleto`. La vitrina ya no se mueve a
+mitad de un evento: se mueve cuando termina.
+
+⚠️ **Medido sobre las 8 llaves de la T1: ninguna fila cambió** con la
+Parte 2 —ninguna usa pokemon, suplente, draft, filtros ni Interserver—.
+Lo único que se movió fue una llave sin título de FFA del 23/09 que el
+`SEMIFINAL` roto escondía: cuartos donde no pasa nadie, gente en semis
+que no estaba en cuartos y una final ilegible. Iba a escribir 3 filas;
+ahora es un `Bracket incompleto`.
+
+⚠️ **Lo que NO se automatizó, a propósito:** la regla del pozo para 3 o
+más empatados (§10.1) —sólo aparece en formatos como 5 VIDAS, que el
+lector no lee; el empate de dos ya da el pozo, que es la columna `Semi`—
+y puntuar por POSICIÓN y no por nombre de ronda (§3.6): los precedentes
+se contradicen, así que se avisa en vez de adivinar.
+
+#### Lo que espera a Dlx
+
+1. **VR y Vargas.** La guía (P2 §15) dice que son la misma persona; la
+   hoja AKAs los tiene en `no_confundir` con «Orgs confunden». Siguen
+   separados hasta que diga cuál vale.
+2. **EL RAP FECHA 5 (#349), la final.** `Pichulitamc👻` y `Neo👻(pollo)`
+   del lado campeón, `agus(yinn)` del subcampeón, y el MVP es **pollo**,
+   que había caído en cuartos. Si 👻 es «no peleó» y el paréntesis es
+   quién peleó en su lugar, hoy se paga mal: los tres campeones cobran
+   3.333 y pollo y yinn nada de la final. En FFA el paréntesis venía
+   siendo «a quién le ganó» (ELRAP 6), por eso no se tocó.
+3. **fleivaman y Fleivacheck**: Dlx dijo que son la misma persona, pero
+   pelean ENTRE ELLOS en ELRAP FECHA 6. El alias se sacó hasta que
+   confirme.
+4. **Volk 🇲🇽 y volk 🇨🇴**, y **ADACCHI / Adachi**: ¿una persona o dos?
+5. **«eventos» en el desempate**: la guía no dice el sentido; va de mayor
+   a menor (con los mismos puntos y medallas, adelante quien compitió
+   más).
+
 ---
 
 # Dónde quedamos — 23/09/2026
