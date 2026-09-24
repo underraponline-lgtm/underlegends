@@ -189,7 +189,8 @@
   "senticde": "Senticide",
   "xdddd": "UL OFICIA",
   "jander": "Ambidextro",
-  "fullylo4ded": "Oasis"
+  "fullylo4ded": "Oasis",
+  "makma": "Makmah"
  },
  "pares": [
   [
@@ -947,6 +948,10 @@
   [
    "Fullylo4ded",
    "Oasis"
+  ],
+  [
+   "Makma",
+   "Makmah"
   ]
  ],
  "no_confundir": [
@@ -1074,11 +1079,6 @@
    "Lukas 🇦🇷",
    "Luka 🇨🇴",
    "DOS Lukas (Dlx)"
-  ],
-  [
-   "Makmah 🇦🇷",
-   "Makma 🇻🇪",
-   "DOS Makmahs (Dlx)"
   ],
   [
    "Lord Viruzz 🇨🇴",
