@@ -458,6 +458,56 @@ habría terminado en rojo. El rango de la web sale del payload del hub.
 `Eventos Procesados` dio 1 evento y 258 cazados en mi primera versión —el
 `#` viene como texto y quedaron celdas con `""`—; va con `LEN(…)>0`.
 
+### 12. LA CUOTA DE SHEETS, Y UN SERVIDOR NUEVO SIN AVISAR (24/09, noche)
+
+🔴 **Durante tres corridas seguidas las vitrinas de Podios, Duelos y
+Mundial no se recalcularon, con el ciclo en verde.** De 2:22 a 3:52 PM ET
+el paso `rankings.py --otras` murió con un 429 en tres de cuatro corridas.
+Nada figuró como fallido: el ciclo sigue, y las tres hojas se quedaban con
+los números de antes. Es la cuota de Sheets —**60 lecturas por minuto**
+para la cuenta de servicio, sumando los dos documentos—, y había dos
+causas distintas:
+
+| dónde | qué pasaba | el arreglo |
+|---|---|---|
+| `procesar_entrada.py` (murió a las 11:52 AM, a mitad del #355) | ~8 lecturas **por evento**, y el ciclo reprocesa todos los de la temporada | `resultados.reescribir()`: **una** lectura y **una** escritura por hoja, sean cuantos sean los eventos |
+| `rankings.py --otras` | las lecturas que fallaban eran de **metadata**: `requests.get` sueltos **sin el reintento** que ya tenían `_leer()` y `_api()` | `_meta()`: una lectura por documento, con reintento, guardada hasta el próximo `batchUpdate`. De ~27 lecturas a ~14 |
+| los dos | el 429 duró **93 s** y los reintentos esperaban 5-12-25-45 | 5-15-30-60-90 |
+| `decidir.py` | leía pegado a las vitrinas y sumaba a la ráfaga | paso **2d**, al final del trabajo; no relee si no cerró nada |
+
+⚠️ **El borrado viejo de `Resultados` podía DUPLICAR un evento.** Era un
+`requests.put` sin mirar la respuesta: con un 429 las filas viejas
+quedaban, se contaban como borradas y se agregaban las nuevas — el doble
+de puntos, sin un error. Y leía los valores **formateados**, así que cada
+evento reprocesado volvía texto los números de todos los demás (por eso
+el `#` de `Eventos Procesados` era texto en 6 de 7 filas). Ahora todo pasa
+por `escribir._pedir()`, que reintenta y levanta, y se lee con
+`UNFORMATTED_VALUE`. Verificado: mismo contenido —136 / 31 / 7 filas— y
+todo numérico.
+
+⚠️ **La lección: un reintento que no cubre TODAS las lecturas no es un
+reintento.** `_leer()` y `_api()` lo tenían; la que falló no pasaba por
+ninguno. Se ve igual que tenerlo hasta el día que la ráfaga cae justo ahí.
+
+#### Snake Rap: el bot NO está adentro, y el ciclo ya no necesita que avisen
+
+Medido a las 4:30 PM ET: el bot está en **DRA, LIVONIA, FFA y La
+Confederación**, y pedirle a Discord el servidor de Snake Rap da **404
+Unknown Guild**. El link era el correcto (Under Legends,
+`1550026808404217926`) y el servidor también (la invitación de SR apunta a
+`492346406976356374`, 7.336 miembros). O quien lo agregó no tiene
+«Gestionar servidor» ahí, o un bot anti-raid lo sacó por entrar con
+Administrador. El link sin admin —ver canales y leer historial, que es
+todo lo que el bot necesita ahí— es `permissions=66560`.
+
+✅ **Cuando entre, entra solo.** `escuchar()` compara la lista de
+servidores del bot contra la de la memoria (`datos/canales_llaves.json`,
+clave `guilds`) y, si aparece uno, esa corrida barre todo: sus llaves
+entran a los 30 minutos y no a las 20 horas. Cuesta un request por
+corrida. La memoria arrancó con los cuatro de hoy, así que Snake Rap
+cuenta como nuevo aunque entre antes de la primera corrida con este
+código. El log lo dice: *«🆕 el bot está en un servidor nuevo»*.
+
 ---
 
 # Dónde quedamos — 23/09/2026
