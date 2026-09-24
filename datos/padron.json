@@ -3056,7 +3056,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1247306019839938754",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1247306019839938754/c0f12a4df03dc52a513e1dd00f810f92.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1247306019839938754/d25adaf17a2f825d94cfc4cc924f24e6.png?size=256",
   "notas": ""
  },
  {
@@ -3106,7 +3106,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1357796427191029932",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1357796427191029932/34f7b2ddf8dd1674f9784796b2273361.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1357796427191029932/e0bce0a098773d4b1ae3f90f478f6645.png?size=256",
   "notas": ""
  },
  {
@@ -5944,7 +5944,7 @@
   "raw": "Camila",
   "pais": "Venezuela",
   "sv": "",
-  "verificado": "✅",
+  "verificado": "",
   "discord_id": "1432188610542567549",
   "av_sheet": "https://cdn.discordapp.com/avatars/1432188610542567549/35e1859696d3a6f028fe5801c4fc3e6b.png?size=256",
   "notas": ""
@@ -7286,7 +7286,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "897942226955563068",
-  "av_sheet": "https://cdn.discordapp.com/avatars/897942226955563068/782d6454a9a59ff72e8dd9b50066d39b.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/897942226955563068/f5ec18a29225a83248d3a076110b5387.png?size=256",
   "notas": ""
  },
  {
@@ -8574,7 +8574,7 @@
   "raw": "BuMa",
   "pais": "España",
   "sv": "",
-  "verificado": "✅",
+  "verificado": "",
   "discord_id": "772531685438783539",
   "av_sheet": "https://cdn.discordapp.com/avatars/772531685438783539/9fb0c400be1630f9e2b91e53e7d9571a.png?size=256",
   "notas": ""
@@ -8764,9 +8764,9 @@
   "raw": "geekto",
   "pais": "Argentina",
   "sv": "FFA",
-  "verificado": "",
+  "verificado": "✅",
   "discord_id": "852667585593868288",
-  "av_sheet": "",
+  "av_sheet": "https://cdn.discordapp.com/avatars/852667585593868288/7dd69d6d8f96136b5aeaf69673a30cb2.png?size=256",
   "notas": "alta automática desde #inscripciones"
  },
  {
@@ -8774,9 +8774,9 @@
   "raw": "Elsoolar",
   "pais": "",
   "sv": "FFA",
-  "verificado": "",
+  "verificado": "✅",
   "discord_id": "758073934645297262",
-  "av_sheet": "",
+  "av_sheet": "https://cdn.discordapp.com/avatars/758073934645297262/617a45819d36121e49e2c827870b0a69.png?size=256",
   "notas": "alta automática desde #inscripciones"
  },
  {
@@ -8798,5 +8798,25 @@
   "discord_id": "1498545536708382722",
   "av_sheet": "",
   "notas": "alta automática desde #inscripciones"
+ },
+ {
+  "full": "Matriz 🇪🇸",
+  "raw": "Matriz",
+  "pais": "España",
+  "sv": "",
+  "verificado": "✅",
+  "discord_id": "1225061927688998983",
+  "av_sheet": "https://cdn.discordapp.com/embed/avatars/3.png",
+  "notas": ""
+ },
+ {
+  "full": "IFX 🇦🇷",
+  "raw": "IFX",
+  "pais": "Argentina",
+  "sv": "",
+  "verificado": "✅",
+  "discord_id": "598344541770219550",
+  "av_sheet": "https://cdn.discordapp.com/avatars/598344541770219550/2b200733c0607e78702ecdc5e6afc723.png?size=256",
+  "notas": ""
  }
 ]
