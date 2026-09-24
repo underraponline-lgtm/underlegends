@@ -897,7 +897,18 @@ def tabla_nueva():
     for n, f in enumerate(filas, 1):
         f[icol['#']] = n
 
-    hubo = len(viejo)
+    # 🔴 UN TROLL QUE SALE NO ES «LA TABLA ENCOGE». El guardián de abajo
+    # cuenta personas para atajar un `Resultados` leído a medias, y el
+    # 24/09/2026 atajó lo contrario: sacar a «El ultra knowledge
+    # instintivo» dejaba 86 contra 87, y la hoja no se escribió — con lo
+    # que el pool y el hub siguieron mostrándolo. Los que salen por
+    # `decidir.no_rankear()` no cuentan como perdidos; cualquier otro, sí.
+    es_troll = _trolls()
+    trolls_fuera = [k for k in viejo if es_troll(k)]
+    if trolls_fuera:
+        avisos.append('sale(n) %d nombre(s) troll: %s'
+                      % (len(trolls_fuera), ', '.join(trolls_fuera)))
+    hubo = len(viejo) - len(trolls_fuera)
     ahora = len(filas)
     if ahora < hubo:
         avisos.append('la tabla pasaría de %d a %d personas (%d menos)'
