@@ -1053,14 +1053,25 @@ def toca_completo(mem=None):
     return (ahora - t).total_seconds() >= HORAS_BARRIDO * 3600
 
 
-def _canales(s, solo=None):
+def _guilds(s):
+    """`[{id, name}]` de los servidores donde está el bot. `None` si Discord
+    no contesta: «no sé» no es «ninguno»."""
+    gs = s.get('https://discord.com/api/v10/users/@me/guilds', timeout=30)
+    if gs.status_code != 200:
+        return None
+    return [{'id': str(g['id']), 'name': g.get('name') or '?'}
+            for g in gs.json()]
+
+
+def _canales(s, solo=None, guilds=None):
     """(canal_id, canal, servidor, guild) de los canales que hay que mirar.
 
     ⚠️ CON `solo` NO SE LE PREGUNTA NADA A DISCORD, y ahi esta el ahorro
     de verdad. El barrido completo gasta **1 request de servidores + 4 de
-    canales + 129 de mensajes**; el dirigido gasta **2**, porque los
-    nombres ya estan en la memoria. Filtrar la lista completa despues de
-    pedirla no habria ahorrado nada.
+    canales + 129 de mensajes**; el dirigido gasta **3** —la lista de
+    servidores, ver `escuchar()`, y los 2 canales—, porque los nombres
+    ya estan en la memoria. Filtrar la lista completa despues de pedirla
+    no habria ahorrado nada.
     """
     if solo:
         for cid in sorted(solo):
@@ -1068,10 +1079,10 @@ def _canales(s, solo=None):
             yield (cid, d.get('canal') or '?', d.get('servidor') or '?',
                    d.get('guild') or '')
         return
-    gs = s.get('https://discord.com/api/v10/users/@me/guilds', timeout=30)
-    if gs.status_code != 200:
-        sys.exit('no pude listar los servidores: %s' % gs.text[:120])
-    for g in gs.json():
+    gs = guilds if guilds is not None else _guilds(s)
+    if gs is None:
+        sys.exit('no pude listar los servidores')
+    for g in gs:
         r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g['id'],
                   timeout=30)
         if r.status_code != 200:
@@ -1081,7 +1092,7 @@ def _canales(s, solo=None):
                 yield c['id'], c['name'], g['name'], g['id']
 
 
-def barrer(s, por_canal=25, solo=None):
+def barrer(s, por_canal=25, solo=None, guilds=None):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
     ⚠️ NO SE FILTRA POR NOMBRE DE CANAL. Ver el encabezado: `eventos-hoy`
@@ -1107,7 +1118,7 @@ def barrer(s, por_canal=25, solo=None):
     canales, no menos mensajes de cada canal.
     """
     out, n_ch, n_msg = [], 0, 0
-    for cid, canal, servidor, guild in _canales(s, solo):
+    for cid, canal, servidor, guild in _canales(s, solo, guilds):
         n_ch += 1
         rr = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
                    params={'limit': por_canal}, timeout=30)
@@ -1162,8 +1173,36 @@ def escuchar(s, forzar=None, por_canal=25):
     completo = toca_completo(mem) if forzar is None else bool(forzar)
     if not mem.get('canales'):
         completo = True
+
+    # 🔴 UN SERVIDOR NUEVO NO PUEDE ESPERAR AL BARRIDO DE LAS 20 H. El
+    # dirigido mira los canales donde YA hubo llaves, así que los de un
+    # servidor que se acaba de sumar no existen para él: Snake Rap agregó
+    # el bot el 24/09/2026 y sus llaves habrían entrado recién al día
+    # siguiente — o cuando alguien se acordara de correr el ciclo con
+    # `completo`. Un sistema que se mantiene solo no puede depender de
+    # que alguien avise.
+    #
+    # ⚠️ CUESTA UN REQUEST POR CORRIDA: la lista de servidores, que el
+    # barrido completo ya pedía igual. Se compara contra la de la
+    # memoria y, si aparece uno, esta corrida barre todo.
+    #
+    # ⚠️ SIN LISTA EN LA MEMORIA NO HAY «NUEVO»: la primera corrida la
+    # anota y sigue. Si no, el primer arranque barrería todo por
+    # servidores que ya se conocían — y un clone limpio ya barre todo
+    # por la regla de arriba.
+    guilds = _guilds(s)
+    nuevos = []
+    if guilds is not None and mem.get('guilds') is not None:
+        nuevos = [g['name'] for g in guilds if g['id'] not in mem['guilds']]
+        if nuevos and forzar is None:
+            completo = True
     out, n_ch, n_msg = barrer(s, por_canal=por_canal,
-                              solo=None if completo else mem['canales'])
+                              solo=None if completo else mem['canales'],
+                              guilds=guilds)
+    # ⚠️ SE ANOTA LA LISTA DE HOY, también si se fue alguno: si el bot
+    # sale de un servidor y vuelve, vuelve a ser nuevo.
+    if guilds is not None:
+        mem['guilds'] = {g['id']: g['name'] for g in guilds}
     for h in out:
         mem.setdefault('canales', {})[h['canal_id']] = {
             'servidor': h['servidor'], 'guild': h['guild'],
@@ -1172,7 +1211,8 @@ def escuchar(s, forzar=None, por_canal=25):
         mem['ultimo_completo'] = datetime.datetime.now(
             datetime.timezone.utc).isoformat(timespec='seconds')
     _guardar_conocidos(mem)
-    return out, {'completo': completo, 'canales': n_ch, 'mensajes': n_msg}
+    return out, {'completo': completo, 'canales': n_ch, 'mensajes': n_msg,
+                 'nuevos': nuevos}
 
 
 def _self_check():
@@ -1399,13 +1439,14 @@ class _Discord(object):
     LLAVE = ('`[ OCTAVOS ]`\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n'
              '`[ FINAL ]`\n⌞A⌝ 🆚 ⌞C⌝')
 
-    def __init__(self):
+    def __init__(self, guilds=None):
         self.urls = []
+        self.guilds = guilds or [{'id': 'g1', 'name': 'FFA'}]
 
     def get(self, url, params=None, timeout=None):
         self.urls.append(url)
         if url.endswith('/users/@me/guilds'):
-            return _Resp([{'id': 'g1', 'name': 'FFA'}])
+            return _Resp(self.guilds)
         if url.endswith('/channels'):
             # el de voz (type 2) esta a proposito: tiene que quedar fuera
             return _Resp([{'id': 'c1', 'name': 'llaves', 'type': 0},
@@ -1490,6 +1531,33 @@ def _check_cadencia():
         h3, i3 = escuchar(d3, forzar=False, por_canal=5)
         casos.append(('sin memoria cae al completo aunque se pida dirigido',
                       i3['completo'] and len(h3) == 1))
+
+        # 🔴 EL SERVIDOR NUEVO: con el barrido de recién, la cadencia dice
+        # dirigido — y aparece un servidor que la memoria no tiene.
+        d4 = _Discord(guilds=[{'id': 'g1', 'name': 'FFA'},
+                              {'id': 'g2', 'name': 'SNAKE RAP'}])
+        h4, i4 = escuchar(d4, por_canal=5)
+        d5 = _Discord(guilds=[{'id': 'g1', 'name': 'FFA'},
+                              {'id': 'g2', 'name': 'SNAKE RAP'}])
+        h5, i5 = escuchar(d5, por_canal=5)
+        casos += [
+            ('un servidor nuevo manda barrer todo, sin esperar las %d h'
+             % HORAS_BARRIDO, i4['completo'] and i4['nuevos'] == ['SNAKE RAP']),
+            ('y encuentra sus llaves', len(h4) == 2),
+            ('en la corrida siguiente ya no es nuevo: vuelve el dirigido',
+             not i5['completo'] and i5['nuevos'] == []),
+        ]
+        # ⚠️ Y SIN LISTA EN LA MEMORIA, NO HAY NUEVOS: se anota y sigue
+        m = conocidos()
+        m.pop('guilds', None)
+        _guardar_conocidos(m)
+        d6 = _Discord(guilds=[{'id': 'g1', 'name': 'FFA'},
+                              {'id': 'g3', 'name': 'TWR'}])
+        _h6, i6 = escuchar(d6, por_canal=5)
+        casos.append(('sin lista anterior la anota y no inventa nuevos',
+                      not i6['completo'] and i6['nuevos'] == []
+                      and sorted(conocidos().get('guilds') or {})
+                      == ['g1', 'g3']))
         for que, ok in casos:
             mal += not ok
             print('   %s %s' % ('✅' if ok else '🔴', que))
