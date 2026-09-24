@@ -552,6 +552,33 @@ otro servidor.
 gente en un servidor de 7.000 es una decisión de Dlx y de sus admins, no
 un efecto de haber entrado.
 
+#### Sus eventos llegan al hub, y sus canales de staff no
+
+Snake Rap anuncia con su propia plantilla —`▫️ **ORGANIZADOR**: <@…>`,
+`INICIO DEL TORNEO: <t:1790109000:F>`— y `bot/anuncios.py` no reconocía
+**ningún** campo: la negrita va entre el nombre y los dos puntos. Ahora
+sí, y la marca `<t:…>` de Discord es la hora exacta (`cuando.momento()`).
+Medido: 5 eventos suyos con organizador y hora; FFA igual que antes.
+
+⚠️ **EL BOT ES ADMINISTRADOR EN CUATRO DE LOS CINCO SERVIDORES** —Snake Rap,
+DRA, FFA y LIVONIA—, así que ve los canales de staff. En los anuncios ya
+se excluyen por nombre (`［📰］anuncios-staff`, `✦🔒︱staff-anuncios`). En
+el lector de llaves **no**, a propósito: se probó «sólo lo que ve un
+miembro común» y dejaba afuera `•「🔑」llaves-veredictos` de DRA, que sólo
+ve el Jurado y es de donde salen sus llaves. El lector lee todo, como dice
+su docstring. Si un día aparece una llave de borrador pegada en un canal
+de staff, el arreglo es sacarle el Administrador al rol `LIGA GLOBAL` en
+ese servidor, no un filtro acá.
+
+#### 🔴 Y un `\n` literal tumbó la corrida de las 5:22 PM
+
+Al sumar `bot_en.json` a `guardar.sh` con una edición por heredoc, la barra
+de la línea se comió y quedó `\n` como una palabra más de la lista. `bash
+-n` lo dio por bueno —es sintaxis válida—; `git add` lo tomó como archivo
+y murió. `escuchar` quedó en rojo, **`dibujar` se salteó con 72 personas
+esperando** y la corrida no guardó nada. Ahora `guardar.sh` comprueba que
+cada palabra de la lista sea un `datos/*.json` antes de tocar nada.
+
 #### Lo que la auditoría de ese día encontró, además
 
 | | qué pasaba | arreglo |
