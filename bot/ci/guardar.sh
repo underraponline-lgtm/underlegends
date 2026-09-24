@@ -150,20 +150,37 @@ git config user.email "ciclo@users.noreply.github.com"
 # Ahora: guardar lo generado aparte, poner el arbol EXACTAMENTE
 # en origin, volver a poner lo generado, commitear y empujar.
 # Sin rebase no hay conflicto posible.
-mkdir -p /tmp/gen
-# ⚠️ `if [ -f ]` Y NO `cp` A SECAS: un archivo de la lista que
-# todavia no existe —recien agregado, o que el paso que lo
-# escribe no llego a correr— mataba el paso entero con
-# «No such file or directory», y con el se perdia el sello de
-# TODAS las demas. Un archivo que falta no tiene nada que
-# preservar; `git diff` y `git add` ya saben tratar la ausencia.
-for f in $ARCHIVOS; do if [ -f "$f" ]; then cp "$f" "/tmp/gen/$(basename $f)"; fi; done
+#
+# 🔴 Y SÓLO LO QUE ESTA CORRIDA CAMBIÓ SE PONE ENCIMA DE ORIGIN.
+# Antes se volvía a poner la lista ENTERA, también lo que la
+# corrida no tocó y traía tal cual del checkout. Mientras cada
+# trabajo reescribía todo daba igual; desde `--solo-dibujar`, el
+# trabajo `dibujar` no reescribe los pools ni `avisados.json`, y
+# si dura más que media hora —un redibujo de dos horas— al
+# terminar DEVOLVÍA A SU VERSIÓN VIEJA lo que `escuchar` había
+# commiteado mientras tanto. Con `avisados.json`, eso es la
+# memoria de qué llaves ya se anunciaron: avisos repetidos en
+# Discord. Visto el 24/09/2026 leyendo este archivo, antes de
+# que pasara.
+#
+# ⚠️ Y SE PARTE SIEMPRE DE LO QUE LA CORRIDA GENERÓ, también en
+# los reintentos. El reintento de antes copiaba el árbol ya
+# unido, así que lo que había traído de origin la primera vez
+# pasaba a contar como «mío» en la segunda.
+CAMBIADOS=""
+for f in $ARCHIVOS; do
+  if [ -f "$f" ] && ! git diff --quiet -- "$f"; then
+    CAMBIADOS="$CAMBIADOS $f"
+  fi
+done
+echo "cambió en esta corrida:${CAMBIADOS:- nada}"
+mkdir -p /tmp/gen/orig
+for f in $CAMBIADOS; do cp "$f" "/tmp/gen/orig/$(basename "$f")"; done
 # la BASE de los sellos: como estaban en el checkout. Ver unir_sellos.py
 for f in cartas_selladas bloqueadas_selladas; do
   git show "HEAD:datos/$f.json" > "/tmp/gen/base_$f.json" 2>/dev/null || true
 done
-git fetch -q origin "${GITHUB_REF_NAME}"
-git reset -q --hard "origin/${GITHUB_REF_NAME}"
+
 # 🔴 EL SELLO SE **UNE**, NO SE ELIGE. Para los pools, el
 # padron y el inventario de R2 «gana el mio» es correcto: son
 # mediciones y la mia es la de recien. El sello no: el mio sale
@@ -172,14 +189,20 @@ git reset -q --hard "origin/${GITHUB_REF_NAME}"
 # Quedarme con el mio tira los sellos de la corrida anterior y
 # la siguiente redibuja todo, que es el bucle de 120 min por
 # hora que `always()` existe para cortar.
-for f in cartas_selladas bloqueadas_selladas; do
-  if [ -f "/tmp/gen/$f.json" ]; then
-    python herramientas/unir_sellos.py \
-      "/tmp/gen/$f.json" "datos/$f.json" "/tmp/gen/$f.json" \
-      "/tmp/gen/base_$f.json"
-  fi
-done
-for f in $ARCHIVOS; do B="/tmp/gen/$(basename $f)"; if [ -f "$B" ]; then cp "$B" "$f"; fi; done
+sincronizar() {
+  git fetch -q origin "${GITHUB_REF_NAME}"
+  git reset -q --hard "origin/${GITHUB_REF_NAME}"
+  for f in $CAMBIADOS; do
+    b="$(basename "$f" .json)"
+    if [ "$b" = "cartas_selladas" ] || [ "$b" = "bloqueadas_selladas" ]; then
+      python herramientas/unir_sellos.py "/tmp/gen/orig/$b.json" "$f" "$f" "/tmp/gen/base_$b.json"
+    else
+      cp "/tmp/gen/orig/$b.json" "$f"
+    fi
+  done
+}
+
+sincronizar
 if git diff --quiet -- $ARCHIVOS; then
   echo "despues de sincronizar no queda nada nuevo"
   exit 0
@@ -192,13 +215,7 @@ git commit -q -m "ciclo: $(date -u +%Y-%m-%d\ %H:%M) UTC"
 for i in 1 2 3; do
   git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
   echo "push rechazado, reintento $i"
-  git fetch -q origin "${GITHUB_REF_NAME}"
-  for f in $ARCHIVOS; do if [ -f "$f" ]; then cp "$f" "/tmp/gen/$(basename $f)"; fi; done
-  git reset -q --hard "origin/${GITHUB_REF_NAME}"
-  python herramientas/unir_sellos.py \
-    /tmp/gen/cartas_selladas.json datos/cartas_selladas.json \
-    /tmp/gen/cartas_selladas.json
-  for f in $ARCHIVOS; do B="/tmp/gen/$(basename $f)"; if [ -f "$B" ]; then cp "$B" "$f"; fi; done
+  sincronizar
   git add $ARCHIVOS
   git commit -q -m "ciclo: $(date -u +%Y-%m-%d\ %H:%M) UTC" || true
   sleep 5
