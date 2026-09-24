@@ -36,10 +36,25 @@ frena desde hoy. La convencion ya estaba acordada en la hoja antes de
 que existiera el freno, asi que el motor la honra: con `NUEVO` en las
 notas, el nombre desconocido pasa sin discutir.
 
-⚠️ SE ESCRIBEN DOS BLOQUES SUELTOS, NO UN RANGO CORRIDO. `A2:A8` y
-`B15:B21`, con la fila 9 (`🎯 Acciones`) y la 14 en el medio sin tocar.
-Escribir de A2 a B21 de una pisaria las dos. Es lo que ya paso el
-20/09/2026 con `📖 Instrucciones` de `Config`.
+⚠️ SE ESCRIBEN DOS BLOQUES SUELTOS, NO UN RANGO CORRIDO. `A1:A9` y
+`A14:B21`, sin tocar nada de la columna C para la derecha —ahí está la
+tabla—. Escribir de A1 a B21 de una, con celdas vacías, pisaría lo que
+haya en medio. Es lo que ya pasó el 20/09/2026 con `📖 Instrucciones`
+de `Config`.
+
+🔴 DESDE EL 24/09/2026 LOS PASOS NO SON LOS DE DLX, Y NO POR ESTILO.
+Los cuatro primeros se habían dejado tal cual —«es la voz de Dlx»— y
+describían el camino manual: procesar la llave con una IA y pegarla en
+C2. Ese camino ya no existe: `bot/llaves_a_entrada.py` llena esta hoja
+desde Discord y `procesar_entrada.py --limpiar` la vacía, cada media
+hora. Quien siguiera los pasos pegaría una tabla que el ciclo borra.
+Dlx, el mismo día: *«el sheet es más que todo información raw que
+cualquiera puede ver»* — o sea que la hoja tiene que decir qué es, no
+cómo se usaba.
+
+⚠️ Y LAS NOTAS SON LAS QUE EL CICLO ESCRIBE HOY, con lo que cada una
+hace de verdad en el motor. Las de antes (`WO`, `Suplente`…) no las
+escribe ni las lee nadie.
 """
 import os
 import sys
@@ -56,26 +71,26 @@ except AttributeError:
 from escribir import poner, _pedir                      # noqa: E402
 import requests                                          # noqa: E402
 
-# ⚠️ LOS PASOS 1 A 4 VAN TAL CUAL ESTABAN. Son correctos y el texto es de
-# Dlx; reescribirlos «mejor» es cambiar la voz de algo que la gente ya lee
-# sin que nadie lo haya pedido. Lo unico falso es el 5.
-PASOS = [
-    ['1. Procesa bracket con IA'],
-    ['   (usa el prompt oficial)'],
-    ['2. Copia la tabla resultante'],
-    ['3. Selecciona C2 y pega'],
-    ['4. Verifica los nombres'],
-    ['5. Avisa que está cargada'],
-    ['⚠️ el botón viejo NO procesa'],
+QUE_ES = [
+    ['📖 Qué es esta hoja'],
+    ['🤖 La llena el ciclo solo:'],
+    ['   lee las llaves de Discord,'],
+    ['   las procesa y la vacía,'],
+    ['   cada media hora.'],
+    ['No hace falta pegar nada.'],
+    ['¿Una llave no entró o'],
+    ['entró mal? → ✅ Decidir'],
+    [''],
 ]
 NOTAS = [
-    ['Eliminado y vuelto · ×50%'],
-    ['Saltó X rondas · ×50/25/0%'],
-    ['Rival no se presentó · no cambia puntos'],
-    ['Directo a rondas · no cambia puntos'],
-    ['Reemplazó a alguien · no cambia puntos'],
-    ['Drafteado a equipo · poné coma en el lado'],
-    ['Rapero no registrado · deja pasar el nombre'],
+    ['📝 Las notas que escribe el ciclo', ''],
+    ['Revivido: X', 'perdió y volvió · 1ª derrota entera + 50 % del puesto final'],
+    ['Walk-in N: X', 'entró salteando N rondas · cobra 50 / 25 / 0 %'],
+    ['Pokemon: X', 'aparece sin pelear · esa aparición no paga ni da puesto'],
+    ['Drafteado: X', 'eliminado y sumado a un equipo · cobra las dos cosas'],
+    ['triple', 'batalla de 3 o más · paga el puesto, no cuenta como duelo'],
+    ['podio', 'tercero sacado del podio · paga el puesto, no es duelo'],
+    ['NUEVO', 'rapero que no está en la lista · deja pasar el nombre'],
 ]
 
 
@@ -88,25 +103,27 @@ def main():
     aplicar = '--aplicar' in sys.argv
     print('\n══ LAS INSTRUCCIONES DE `Entrada` ══\n')
 
-    for rng, nuevo, etq in (('Entrada!A2:A8', PASOS, 'los pasos'),
-                            ('Entrada!B15:B21', NOTAS, 'las notas')):
+    for rng, nuevo, etq in (('Entrada!A1:A9', QUE_ES, 'qué es'),
+                            ('Entrada!A14:B21', NOTAS, 'las notas')):
         act = leer(rng)
         print('   %s (%s)\n' % (etq, rng))
         for i, fila in enumerate(nuevo):
-            viejo = (act[i][0] if i < len(act) and act[i] else '')
-            igual = str(viejo).strip() == fila[0].strip()
-            print('      %s %-44s %s'
-                  % ('  ' if igual else '->', fila[0],
-                     '' if igual else '(antes: %r)' % str(viejo)[:34]))
+            viejo = ' · '.join(str(x) for x in (act[i] if i < len(act) else [])
+                               if str(x).strip())
+            texto = ' · '.join(x for x in fila if x)
+            igual = viejo.strip() == texto.strip()
+            print('      %s %-58s %s'
+                  % ('  ' if igual else '->', texto[:58],
+                     '' if igual else '(antes: %r)' % viejo[:34]))
         print('')
 
     if not aplicar:
         print('   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
 
-    poner('Entrada!A2:A8', PASOS)
-    print('   ✅ los pasos')
-    poner('Entrada!B15:B21', NOTAS)
+    poner('Entrada!A1:A9', QUE_ES)
+    print('   ✅ qué es')
+    poner('Entrada!A14:B21', NOTAS)
     print('   ✅ las notas\n')
     return 0
 
