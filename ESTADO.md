@@ -389,6 +389,45 @@ se contradicen, así que se avisa en vez de adivinar.
    a menor (con los mismos puntos y medallas, adelante quien compitió
    más).
 
+### 10. LA CARTA Y EL RANKING, Y UNA COLA QUE SE PUEDE USAR (24/09, tarde)
+
+**La carta y el ranking.** Dlx: *«asegurate de que lo que dicen las
+cartas y el ranking sea lo mismo»*. Medido: la hoja, el pool y la web
+**coinciden en las 86** (#, puntos, eventos, win%, 🥇🥈🥉). Lo que no
+coincidía era la **imagen**: el ranking sale al escuchar y la carta al
+terminar de dibujar, ~36 min después, y el OVR relativo cambia la carta
+de todos en cada evento — en ese momento 56 de 87 estaban por redibujar.
+
+| qué | dónde |
+|---|---|
+| las 13 pasadas de una tanda van de a 4 (eran 27 min en fila) | `pipeline.PARALELO` |
+| la web pide cada carta con `?v=` del sello, como el Worker | `subir_web._versiones()` |
+| la web marca ⏳ la carta que se está redibujando | `app.js` `vieja()` |
+| la web se vuelve a subir al terminar de dibujar | `pipeline.py`, paso 6 |
+| el pool desempata con el `#` de la vitrina y lo comprueba | `construir_pool_temporada.py` |
+
+⚠️ **Los 56 de golpe fueron el desempate nuevo** (OVR → puntos → 🥇 →
+🥈 → eventos → WR%): antes los empatados quedaban en el orden del dict y
+**podían reordenarse solos entre corridas**, redibujando sin que nadie
+compitiera. Esa fuente de cambios ya no existe.
+
+**✅ Decidir.** Dlx: *«es muy confusa… por eso no la he usado»*, sobre
+`Pendientes`. Tenía 21 repetidas, 42 resueltas mezcladas, el panel
+partido por los INSERT_ROWS, 15 `alta` del bot escondidas debajo del
+panel — y **contestar no hacía nada**. Ahora hay una hoja nueva, la
+primera del Operativo, que el ciclo rehace en el paso 1d:
+
+- una fila por pregunta, en palabras, con el evento por su nombre;
+- la respuesta se elige de una lista (o se escribe un nombre);
+- el ciclo la **aplica**: alias a la hoja AKAs, Discord ID a la Lista
+  de Raperos, «cuenta / no cuenta» a `datos/decisiones.json`.
+
+🔴 **Y `construir_akas.py` NO CORRÍA EN EL CICLO.** Un alias escrito en
+la hoja AKAs no llegaba nunca al ranking; `datos/akas.json` sólo
+cambiaba cuando alguien lo corría a mano. Ahora corre en el 1d, después
+de Decidir, y se commitea. (El commit `752e093` decía que el ciclo lo
+regeneraba: no era cierto.)
+
 ---
 
 # Dónde quedamos — 23/09/2026
