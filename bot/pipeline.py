@@ -57,6 +57,7 @@ por una letra deja el evento sin cargar y el error en un log que nadie
 lee. Ver `sheet/pendientes.py`.
 """
 import glob
+import hashlib
 import io
 import json
 import os
@@ -815,6 +816,45 @@ def main():
     if correr:
         paso('2c', 'la web')
         corre(['bot/subir_web.py', '--aplicar'], callado=False)
+
+        # 🔴 Y EL SITIO EN SI, QUE HASTA HOY NO SE DESPLEGABA SOLO.
+        # Cloudflare Pages está conectado al repo **privado**, así que
+        # desde que el trabajo se mudó al público ningún cambio del hub
+        # llegaba — y no fallaba: la página seguía viva con su HTML del
+        # día que alguien pusheó allá mientras este paso le refrescaba el
+        # payload cada media hora. **Las dos mitades de la misma página
+        # con dos edades distintas.**
+        #
+        # ⚠️ SOLO CUANDO EL SITIO CAMBIO. Un despliegue por corrida serían
+        # ~48 por día para publicar los mismos cinco archivos. El sello es
+        # el hash de `bot/paginas/`, que es la misma idea que
+        # `comun/huella_codigo.py` con otra carpeta.
+        try:
+            hs = hashlib.sha256()
+            d = os.path.join(SCR, 'paginas')
+            for raiz, _ds, _fs in os.walk(d):
+                for f in sorted(_fs):
+                    hs.update(f.encode())
+                    hs.update(io.open(os.path.join(raiz, f), 'rb').read())
+            h = hs.hexdigest()[:16]
+            p = os.path.join(BASE, 'datos', 'web_sello.json')
+            viejo = ''
+            if os.path.exists(p):
+                viejo = (json.load(io.open(p, encoding='utf-8'))
+                         or {}).get('hash', '')
+            if h != viejo:
+                print('      el sitio cambió: desplegando')
+                if corre(['bot/paginas_subir.py', '--aplicar'], callado=False):
+                    json.dump({'hash': h, 'cuando': time.strftime(
+                        '%Y-%m-%dT%H:%M:%S')},
+                        io.open(p, 'w', encoding='utf-8', newline='\n'))
+            else:
+                print('      el sitio no cambió: no lo despliego')
+        except Exception as e:                               # noqa: BLE001
+            # ⚠️ NO PUEDE TUMBAR EL CICLO. Lo que de verdad tiene que pasar
+            # todas las noches es dibujar; que el hub quede una corrida
+            # atrás es molesto y no es una caída.
+            print('      ⚠️ no pude desplegar el sitio: %s' % str(e)[:90])
 
     # ── 2 · que cambio ──────────────────────────────────────────────
     paso(3, 'qué cambió')
