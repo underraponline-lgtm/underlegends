@@ -508,6 +508,80 @@ corrida. La memoria arrancó con los cuatro de hoy, así que Snake Rap
 cuenta como nuevo aunque entre antes de la primera corrida con este
 código. El log lo dice: *«🆕 el bot está en un servidor nuevo»*.
 
+⚠️ **Y ENTRÓ ESE MISMO DÍA, ENTRE LAS 4:32 Y LAS 4:52 PM ET.** La corrida
+de las 4:52 lo encontró sola, barrió los 177 canales y dejó anotado su
+`［🔑］llaves`. Sus llaves eran de antes de la T1, así que no cargó nada: lo
+que cambia es que desde ahí cada llave nueva de ese canal se lee cada media
+hora. (El `🆕` no salió en el log porque el resumen del paso 1 filtraba esa
+línea; arreglado.)
+
+### 13. SNAKE RAP: VERIFICA, ES DE CARTA Y DA IDs (24/09, noche)
+
+Dlx: *«este es una gran oportunidad para obtener IDs y hacer el setup del
+bot al servidor. Además de poder autoverificar debido a que este servidor
+tiene 7000 usuarios»*.
+
+Snake Rap está armado igual que DRA: **`・Miembro 🐍`** lo tienen 7.273 de
+7.337, y los países son roles con la bandera en el nombre (🇦🇷 887, 🇪🇸 581,
+🇲🇽 509, 🇨🇴 502…).
+
+| qué | dónde | medido |
+|---|---|---|
+| el Miembro 🐍 verifica, como el de DRA | `bot/verificados.py` (`EXTRA`) | el portón pasa de **324 a 404**; 8 ya compiten en la T1, Velatz (#3) entre ellos |
+| servidor **de carta** (no de identidad) | `herramientas/servidores_de.py` | 20 personas están sólo ahí |
+| IDs por nombre, **con el país como segunda señal** | `herramientas/cruzar_miembros.py` | 27 escritos; atajó 9 que eran otra persona |
+
+⚠️ **ES UNA EXCEPCIÓN DICHA.** Para FFA, LIVONIA y La Confederación sigue
+*«sacá su ID, pero no lo verifiques»*.
+
+⚠️ **DE SNAKE RAP SE GUARDAN SÓLO LOS DEL PADRÓN.** `verificados.json` y
+`servidores_de.json` van al repo **público**: la lista de miembros de otro
+servidor —7.000 personas que en su mayoría nunca jugaron— no es nuestra y
+al portón no le sirve. ⚠️ DRA y FFA sí guardan todo (2.574 y 3.892 IDs):
+es de antes y queda como sugerencia.
+
+⚠️ **EN SNAKE RAP UN NOMBRE ÚNICO NO ALCANZA.** De 56 IDs que daban las
+guardas de siempre, 9 eran otra persona: el «Victor» único de Snake Rap es
+🇻🇪 y el del padrón 🇦🇷; «Cesar» 🇪🇨 contra 🇦🇷; «Luka» 🇦🇷 contra 🇨🇴. Por
+eso allá se pide que coincida también el país. Y `--solo-ids` escribe los
+ID **sin dar el rol de DRA**: se pidió sacar IDs, no verificar gente en
+otro servidor.
+
+⚠️ **LOS APODOS `#N` NO LLEGAN A SNAKE RAP**, a propósito:
+`herramientas/sincronizar_puesto.py` tiene DRA y FFA escritos. Renombrar
+gente en un servidor de 7.000 es una decisión de Dlx y de sus admins, no
+un efecto de haber entrado.
+
+#### Lo que la auditoría de ese día encontró, además
+
+| | qué pasaba | arreglo |
+|---|---|---|
+| 🔴 | las **mismas 186 Bloqueadas** se redibujaban y subían en cada corrida | `bloqueadas_selladas.json` no se guardaba |
+| 🔴 | el hub se **desplegaba en cada corrida** | `web_sello.json` tampoco |
+| 🔴 | `dibujar` repetía el ciclo entero —y se comía el mismo 429— | `--solo-dibujar` arranca en el paso 3 |
+| ⚠️ | la lista de `guardar.sh` se quedó corta por octava vez | ahora **avisa** lo que el ciclo cambió y no guarda |
+| ⚠️ | `bot_en.json` tampoco se guardaba | con `--solo-dibujar` lo lee `dibujar` |
+| ⚠️ | `utcnow()` deprecado, en el log de cada corrida | `now(timezone.utc)` |
+
+#### Lo que espera a Dlx
+
+1. **Makmah y Makma.** Las llaves dicen siempre «Makma 🇻🇪», y la cuenta
+   verificada `makmah_g` tiene el rol Venezuela y el apodo «#2 | Makmah»:
+   el sistema los junta y **parece bien**. Pero la hoja AKAs dice «DOS
+   Makmahs (Dlx)» y `construir_akas` lo retracta en cada corrida. ¿Esa
+   nota era de la pre-temporada?
+2. **CJ, Eze y Noone** —los únicos de la T1 con candidatos y sin ID—:
+   CJ 🇻🇪 casi seguro `@cj_kloke_`; Eze tiene cinco; Noone 🇵🇪 sólo
+   `@001wanted100`, que es 🇨🇴.
+3. **El Score Selección de la carta de País** sale de `datos/mundial.json`,
+   que es de la **pre-temporada**. `docs/t1_que_se_mueve.md` dice que se
+   deriva del pool (promedio del top 5) y `sheet/resetear.py` que se
+   conserva: se contradicen. Nadie tiene la carta de País todavía.
+4. **Los estilos**: Snake Rap tiene roles de estilo (PUNCH, INGENIO,
+   POÉTICO, MÉTRICAS, FLOW…) y la Competitiva tiene 16 íconos sin dueño.
+5. **13 del padrón con ID y sin país** que los roles de Snake Rap
+   completarían: `pais_por_rol.py` no llena huecos y su escritor no está.
+
 ---
 
 # Dónde quedamos — 23/09/2026
