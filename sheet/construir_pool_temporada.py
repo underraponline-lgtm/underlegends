@@ -469,6 +469,9 @@ def main():
               or r[col('Sv')].strip())
         _p = PAD.get(norm(r[col('Rapero')]), {})
         pool.append({
+            # el `#` de la vitrina: ver el orden, abajo. No sale al json.
+            '_n': (int(num(r[col('#')])) if '#' in H and num(r[col('#')])
+                   else 10 ** 6),
             'full': r[col('Rapero')].strip(), 'raw': nom,
             # 🔴 EL PAIS SALE DEL PADRON. Ver sheet/padron.py y el mismo
             # comentario en construir_pool_competitivo.py: el emoji pegado
@@ -518,11 +521,34 @@ def main():
              for d in pool])):
         d['ovr'] = o
 
-    pool.sort(key=lambda d: -d['ovr'])
+    # 🔴 EL EMPATE SE DESEMPATA COMO EN LA VITRINA: CON SU `#`. Esto era
+    # `sort(-ovr)` y los empatados quedaban en el orden en que venían —que
+    # era el de la vitrina sólo porque el sort de Python es estable—. Con
+    # muchos empatados (un evento, los mismos puntos) cualquier cambio en
+    # cómo se lee la hoja movía los puestos, y la carta decía un `#` y el
+    # ranking otro. Medido el 24/09/2026: 56 de 87 cambiaron de puesto
+    # entre dos corridas por el desempate, sin que nadie compitiera.
+    pool.sort(key=lambda d: (-d['ovr'], d['_n']))
     for i, d in enumerate(pool, 1):
         d['pos'] = i
         d['total'] = len(pool)
         d['rango'] = OVR.color(d['ovr'])
+
+    # 🔴 Y SE COMPRUEBA: EL `#` DE LA CARTA TIENE QUE SER EL DEL RANKING. Los
+    # dos calculan el OVR con `sheet/ovr.py` sobre las mismas filas, así
+    # que coinciden; si alguna vez uno cambia su fórmula o sus componentes,
+    # esto grita en vez de dejar que la carta y el ranking digan dos
+    # puestos distintos.
+    distinto = [(d['raw'], d['_n'], d['pos']) for d in pool
+                if d['_n'] < 10 ** 6 and d['_n'] != d['pos']]
+    if distinto:
+        print('   🔴 la carta y el ranking no dan el mismo puesto en %d: %s'
+              % (len(distinto), ', '.join('%s (hoja %d · carta %d)' % x
+                                          for x in distinto[:5])))
+    else:
+        print('   ✅ el puesto de cada carta es el del ranking (%d)' % len(pool))
+    for d in pool:
+        d.pop('_n', None)
 
     salida = os.path.join(RAIZ, 'datos', 'temporada_pool.json')
     os.makedirs(os.path.dirname(salida), exist_ok=True)

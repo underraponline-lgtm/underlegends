@@ -124,6 +124,21 @@ POR_TANDA = 40
 # ~3 h contra 120 min, asi que se hace en dos; por eso el sello tiene que
 # sobrevivir al timeout (ver `guardar el sello` en el .yml).
 SEG_POR_CARTA = 3.5
+
+# 🔴 LAS PASADAS DE UNA TANDA VAN DE A VARIAS A LA VEZ. Eran trece
+# Chromium en fila —Temporada, Competitivo, País y diez de la Servidor—
+# en un runner de 4 núcleos. Medido el 24/09/2026 en el ciclo de las
+# 9:09 AM ET: **27 min dibujando** 89 personas. Y ese tiempo es lo que
+# la carta anda atrás del ranking: el ciclo publica el ranking al
+# terminar de escuchar, y la carta nueva recién cuando esto termina.
+#
+# ⚠️ SE PUEDE PORQUE CADA TIPO USA SUS PROPIOS ARCHIVOS. Temporada,
+# Competitivo y País escriben un temporal fijo cada una —`_tmp.html`,
+# `comp.json`, `_export.html`— pero hay UNA llamada de cada una por
+# tanda, así que nunca se pisan; las diez de la Servidor ya nombran su
+# temporal con el PID (`03_Servidor/generar.py`) y su PNG con el
+# servidor. Lo que NO se puede es partir un mismo tipo en dos llamadas.
+PARALELO = max(1, min(4, os.cpu_count() or 1))
 # Cuantas rutas por llamada a `subir_cartas.py`. El techo real son
 # ~380 (32.768 caracteres / ~86 por ruta); 200 deja margen.
 POR_SUBIDA = 200
@@ -1002,7 +1017,7 @@ def main():
                       for cs in trabajo.values() for c in cs)
         print('      en %d tanda(s) de hasta %d · %d pasada(s) · ~%.0f min'
               % ((len(trabajo) + POR_TANDA - 1) // POR_TANDA, POR_TANDA,
-                 pasadas, pasadas * SEG_POR_CARTA / 60.0))
+                 pasadas, pasadas * SEG_POR_CARTA / 60.0 / PARALELO))
         print('\n   (simulacro: no toqué nada — corré con --correr)\n')
         return 0
 
@@ -1075,9 +1090,10 @@ def main():
         for quien in lote:
             for c in trabajo[quien]:
                 por_carta.setdefault(c, []).append(quien)
+        llamadas = []
         for c, quienes in sorted(por_carta.items()):
             print('      %-12s %d persona(s)' % (c, len(quienes)))
-            llamadas = [list(COMO[c][0]) + sorted(quienes)]
+            llamadas.append(list(COMO[c][0]) + sorted(quienes))
             if c == 'servidor':
                 # ⚠️ la Servidor son DIEZ: la propia y una por servidor,
                 # porque `/card` abre en la del servidor donde escribiste.
@@ -1089,14 +1105,22 @@ def main():
                 # vuelve a marcarlas como pendientes.
                 llamadas += [list(COMO[c][0]) + sorted(quienes)
                              + ['--sv=%s' % sv] for sv in SERVIDORES]
-            for args in llamadas:
-                corre(args)
+        # ⚠️ TODAS LAS PASADAS DE LA TANDA A LA VEZ, y RECIÉN DESPUÉS se
+        # cuenta lo que salió. Ver `PARALELO`: el éxito se sigue mirando
+        # en el archivo y no en el código de salida, igual que antes.
+        from concurrent.futures import ThreadPoolExecutor
+        t_tanda = time.time()
+        with ThreadPoolExecutor(max_workers=PARALELO) as ex:
+            list(ex.map(corre, llamadas))
+        print('      %d pasada(s) en %.1f min, de a %d'
+              % (len(llamadas), (time.time() - t_tanda) / 60, PARALELO))
+        for c, quienes in sorted(por_carta.items()):
             faltan = no_salieron(c, quienes, corte)
             for quien, que in faltan:
                 malos.add(quien)
                 fallaron.append('%s/%s' % (quien, que))
             if faltan:
-                print('         ⚠️ %d no salió/salieron' % len(faltan))
+                print('         ⚠️ %s: %d no salió/salieron' % (c, len(faltan)))
 
         # ⚠️ EL MTIME Y NO EL NOMBRE. Una carta vieja de la misma persona
         # se llama igual que la nueva: es el bug que tenian generar_todas,
@@ -1176,6 +1200,13 @@ def main():
     if subidas:
         paso(6, 'refrescar KV')
         corre(['bot/subir_datos.py'], callado=False)
+        # 🔴 Y LA WEB OTRA VEZ, CON LAS CARTAS YA NUEVAS. La web se sube al
+        # escuchar —antes de dibujar— y marca como «actualizándose» las
+        # cartas cuyo dato cambió; sin esta vuelta la marca quedaba hasta
+        # el ciclo siguiente, media hora después de que la carta ya
+        # estaba bien. Y lleva la versión nueva de cada carta (`?v=`), que
+        # es lo que hace que el navegador pida la imagen nueva.
+        corre(['bot/subir_web.py', '--aplicar'], callado=False)
 
     if fallaron:
         print('\n   🔴 %d carta(s) fallaron: %s'
