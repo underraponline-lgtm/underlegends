@@ -163,13 +163,68 @@ def armar():
         # 🔑 EL INSTANTE, EN ISO UTC. El texto lo arma el navegador.
         'cuando': x['cuando'],
         'cupos': x.get('cupos') or '',
+        # 🔑 EL LINK AL ANUNCIO. Dlx, 24/09/2026: *«lo que se viene
+        # próximamente, EN VIVO (con el link del canal o invitación)»*.
+        # Un link de Discord pide los **tres** ids —guild, canal y
+        # mensaje— y `datos/anuncios.json` guardaba el NOMBRE del canal
+        # y el id del mensaje, con lo cual no se podía armar nada. Los
+        # tres existen al leer y ahora viajan: ver `anuncios.parsear()`.
+        #
+        # ⚠️ VA VACIO SI FALTA ALGUNO, y la vista no dibuja el enlace.
+        # Un `href` a medias lleva a una página de error de Discord, que
+        # es peor que no ofrecerlo. *Sin dato no hay pieza.*
+        'link': ('https://discord.com/channels/%s/%s/%s'
+                 % (x['guild_id'], x['canal_id'], x['msg_id'])
+                 if x.get('guild_id') and x.get('canal_id') and x.get('msg_id')
+                 else ''),
+        'modalidad': x.get('modalidad') or '',
+        'premios': (x.get('premios') or '')[:60],
     } for x in CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)]
+
+    # 🔑 Y LO QUE ACABA DE PASAR, PORQUE «LO QUE SE VIENE» SE APAGA SOLO.
+    # Dlx, 24/09/2026: *«hoy día hubieron muchos eventos, hay que mejorar
+    # eso de LO QUE SE VIENE, EN VIVO»*. Medido ese día a las 4:35am: la
+    # sección estaba **vacía** y era correcto —el último anuncio fue a las
+    # 12:11am y la ventana de EN VIVO son 90 min— pero el resultado es que
+    # el bloque desaparece justo el día que hubo cuatro eventos.
+    #
+    # ⚠️ NO SE AGRANDA LA VENTANA. Eso ya fue un bug: `margen_min=180`
+    # mostraba como EN VIVO algo de hace 160 minutos. La ventana dice la
+    # verdad; lo que faltaba era la otra mitad de la pregunta.
+    #
+    # ⚠️ Y SE EXCLUYEN LOS QUE YA ESTAN EN `prox`, o el mismo evento sale
+    # dos veces —una como «en vivo» y otra como «pasó»— que es exactamente
+    # el tipo de contradicción en pantalla que este proyecto persigue.
+    _ya = {x.get('msg_id') for x in
+           CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)}
+    _ahora = __import__('datetime').datetime.utcnow().strftime(
+        '%Y-%m-%dT%H:%M:%S')
+    pas = []
+    for x in sorted(ann, key=lambda y: str(y.get('cuando') or ''),
+                    reverse=True):
+        if x.get('msg_id') in _ya or not x.get('cuando'):
+            continue
+        if str(x['cuando']) >= _ahora:
+            continue                       # todavía no pasó: es de `prox`
+        pas.append({
+            'nombre': x['nombre'],
+            'sv': x.get('servidor') or '',
+            'cuando': x['cuando'],
+            'modalidad': x.get('modalidad') or '',
+            'link': ('https://discord.com/channels/%s/%s/%s'
+                     % (x['guild_id'], x['canal_id'], x['msg_id'])
+                     if x.get('guild_id') and x.get('canal_id')
+                     and x.get('msg_id') else ''),
+        })
+        if len(pas) >= 6:
+            break
 
     return {
         'temporada': SELLO,
         'gente': len(pool),
         'tabla': tabla,
         'proximos': prox,
+        'pasados': pas,
         'r2': R2,
         'cartas': list(CARTAS),
         'svs': _servidores(gente),

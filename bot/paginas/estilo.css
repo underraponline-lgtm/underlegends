@@ -173,6 +173,21 @@ padding:12px 0;border-top:1px solid var(--bd)}
 .ev:first-of-type{border-top:0;padding-top:3px}
 .ev>div{min-width:0;flex:1 1 auto}
 .ev b{display:block;font:800 1.05rem/1.2 Archivo,sans-serif;letter-spacing:-.015em}
+/* el nombre del evento, cuando lleva link al anuncio de Discord */
+.ev b a{color:inherit;text-decoration:none;display:inline-flex;
+align-items:baseline;gap:5px}
+.ev b a:hover{color:var(--tl)}
+.ev .ir{font-style:normal;font-size:.72em;opacity:.55;transition:opacity .15s}
+.ev b a:hover .ir{opacity:1}
+/* ⚠️ «Lo que pasó» usa la misma fila que «Lo que viene» a propósito: es la
+   misma cosa en otro tiempo, y dos maquetas distintas para eventos harían
+   que se leyeran como dos cosas. Lo único que cambia es el peso —ya pasó—
+   y que a la derecha va cuánto hace en vez de la cuenta atrás. */
+.ev.paso{opacity:.78}
+.ev.paso:hover{opacity:1}
+.ev .hace{flex:0 0 auto;font:600 .64rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase;color:var(--tx2);
+white-space:nowrap}
 .ev small{display:block;color:var(--tx2);margin-top:4px;
 font:600 .68rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;
 text-transform:uppercase}
@@ -495,6 +510,23 @@ letter-spacing:.13em;text-transform:uppercase;transition:all .15s}
 .pest.on{color:var(--ng);background:var(--tl);border-color:var(--tl)}
 .v-carta{min-height:180px;display:flex;justify-content:center;align-items:center}
 .v-carta img{max-height:62dvh;width:auto;max-width:100%}
+/* ⚠️ DESCARGAR VA DEBAJO DE LA CARTA y no en la cabecera: pertenece a la
+   tarjeta que se está mirando —la pestaña activa— y no a la persona. */
+.v-acc{display:flex;justify-content:center;margin-top:12px}
+.bajar{display:inline-flex;align-items:center;gap:8px;
+border:1px solid var(--bd);background:#0B1211;color:var(--tx2);
+padding:9px 18px;border-radius:999px;
+font:700 .68rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.15em;text-transform:uppercase;transition:all .15s}
+.bajar:hover{color:var(--ng);background:var(--tl);border-color:var(--tl)}
+.bajar i{font-style:normal;font-size:.84rem;line-height:1}
+/* ⚠️ EL ESTADO «YENDO» NO ES ADORNO: el `fetch` del blob tarda lo que tarde
+   la red, y sin señal el botón parece no haber hecho nada y se toca dos
+   veces. `pointer-events:none` evita la segunda descarga. */
+.bajar.yendo{opacity:.55;pointer-events:none}
+.bajar.yendo i{animation:baja .9s ease-in-out infinite}
+@keyframes baja{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.bajar.yendo i{animation:none}}
 .v-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
 .v-stats div{background:#0B1211;border:1px solid var(--bd);padding:9px 4px;text-align:center}
 .v-stats b{display:block;font:900 1.06rem/1.1 Archivo,sans-serif;

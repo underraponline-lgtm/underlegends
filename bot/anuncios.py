@@ -191,7 +191,7 @@ def cupos(s):
     return None, None
 
 
-def parsear(m, servidor, canal):
+def parsear(m, servidor, canal, guild=''):
     """Un mensaje -> un anuncio, o `None` si no parece uno."""
     txt = m.get('content') or ''
     nom = nombre_de(txt)
@@ -209,6 +209,14 @@ def parsear(m, servidor, canal):
     return {
         'nombre': nom, 'servidor': servidor, 'canal': canal,
         'msg_id': m.get('id'), 'cuando': (m.get('timestamp') or '')[:19],
+        # 🔑 PARA PODER LINKEAR AL ANUNCIO. Dlx, 24/09/2026: «lo que se
+        # viene proximamente, EN VIVO (con el link del canal o
+        # invitacion)». Un link de Discord es
+        # `discord.com/channels/<guild>/<canal>/<mensaje>` y los tres
+        # existen justo aca, al leer — despues no: `datos/anuncios.json`
+        # guardaba el NOMBRE del canal y el id del mensaje, y con eso no
+        # se puede armar nada.
+        'canal_id': m.get('channel_id') or '', 'guild_id': guild or '',
         'organizador': org,
         'cupos_texto': puestos.get('cupos') or '',
         'inscriptos': a, 'cupo_total': b,
@@ -229,7 +237,7 @@ def _sesion():
 
 
 def canales(s):
-    """`[(id, nombre, servidor, tipo)]` de los canales que sirven.
+    """`[(id, nombre, servidor, tipo, guild)]` de los canales que sirven.
 
     ⚠️ SE BUSCAN POR NOMBRE Y NO SE PIDEN. Es la misma decisión que
     `datos/canales_llaves.json`: una lista de IDs escrita a mano
@@ -257,10 +265,14 @@ def canales(s):
             if c.get('type') not in (0, 5):
                 continue
             n = c.get('name', '')
+            # ⚠️ EL GUILD VIAJA CON EL CANAL, y antes no. Sin él no se puede
+            # armar el link a un mensaje —Discord pide los tres: guild,
+            # canal y mensaje— y acá es el único lugar donde se sabe cuál
+            # es. Ver `parsear()`. `escuchar._canales()` ya lo devolvía.
             if PATRON_INSC.search(n):
-                out.append((c['id'], n, cod, 'inscripciones'))
+                out.append((c['id'], n, cod, 'inscripciones', g))
             elif PATRON.search(n):
-                out.append((c['id'], n, cod, 'eventos'))
+                out.append((c['id'], n, cod, 'eventos', g))
     canales.sin_acceso = sin_acceso
     return out
 
@@ -306,7 +318,7 @@ def leer(s, por_canal=None):
     """
     anuncios, inscr = [], []
     estados = {}
-    for cid, nombre, cod, tipo in canales(s):
+    for cid, nombre, cod, tipo, gid in canales(s):
         lim = por_canal or POR_CANAL.get(tipo, 25)
         r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
                   params={'limit': lim}, timeout=25)
@@ -330,7 +342,7 @@ def leer(s, por_canal=None):
                                 'canal': nombre,
                                 'texto': (m.get('content') or '')[:80]}
             if tipo == 'eventos':
-                a = parsear(m, cod, nombre)
+                a = parsear(m, cod, nombre, gid)
                 if a:
                     anuncios.append(a)
             else:
