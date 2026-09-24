@@ -139,7 +139,128 @@ son parte del plan gratis y **sí** son puntuales, y el Worker ya está
 desplegado. Dispararía el `workflow_dispatch` de GitHub por API. Queda
 anotado, no hecho.
 
-### 6. Lo que falta, en orden
+### 6. LA MADRUGADA DEL 24: IDENTIDAD, LA WEB Y EL CRON
+
+Dlx miró el sitio y reportó cuatro cosas. Las cuatro tenían **una sola
+causa de fondo**, y abajo había tres bugs encadenados.
+
+#### Makma es una persona y el sistema veía dos
+
+La web lo mostraba #1 de FFA con 16.000 pts; `/card` le daba una tarjeta
+vacía; su `/foto` «no se puso». Todo lo mismo:
+
+| | |
+|---|---|
+| `Makma 🇻🇪` | sin Discord ID · 4 eventos, 16.000 pts |
+| `Makmah 🇦🇷` | con ID y ✅ · 0 eventos |
+
+En R2 eso son **dos claves**: `makma/` con las cuatro cartas frescas y
+`makmah/` con sólo `servidor`. La web servía la primera y `/card` resuelve
+el ID a la segunda. **No era cache.** Y su `/foto` funcionó perfecto — se
+guardó en `fotos/…/makmah.webp` y la carta se dibuja como `makma`.
+
+🔴 **Y SON NUEVE, NO UNO.** El repo lo sabía y lo imprimía: `Lzz/Luzzano`,
+`Santz/Santos`, `Erician/Erian`, `Bulldozer/Bull12r`, `KRT/Krtman`,
+`Nacho/Nc-Nacho`, `Wachin/El Wachin`, `Inclusivo/Xclusivo`.
+
+🔴 **La causa: el mapa de 186 alias no lo leía nadie.** Medido —
+`construir_pool_temporada`, `construir_pool_competitivo`, `padron`,
+`subir_web` y `subir_datos` lo mencionaban **cero** veces. Hoy canoniza
+`rankings.agregar()`, el embudo único de las cinco vitrinas.
+
+#### El país vivía en TRES columnas de la misma hoja
+
+```
+Rapero    'Makmah 🇦🇷'   el emoji pegado al nombre
+Bandera   'Venezuela'    lo único que pais_desde_rol.py escribía
+País      'ar'           lo que lee el POOL
+```
+
+Decía «✅ 1 país escrito» y no cambiaba nada. Y no alcanzó con escribir
+las dos: **hay que preguntar por las dos** — el script decidía qué
+cambiar mirando `Bandera`, así que una fila con `Bandera` bien y `País`
+vieja no entraba nunca. Con las dos cosas encontró **3**, dos de ellas
+con `País` vacío teniendo bandera.
+
+#### Los nombres trolls eran basura de parseo, y el paréntesis costó una vuelta
+
+`nhp(sinlimites` y `fleivacheck)` son **las dos mitades del mismo
+nombre**. Los 14 lados con paréntesis tienen todos la forma `A(B+C)`.
+
+⚠️ **El primer arreglo lo trató como separador de equipo y movió el
+ranking entero**: los puntos se reparten entre integrantes, así que el
+ganador cobraba un tercio. Lo resolvió mirar la progresión de una llave —
+el paréntesis **crece cada ronda y agrega al que acaba de vencer**. Es la
+lista de vencidos; el competidor es lo que va antes.
+
+Y **la bandera del nombre es decoración**: el mismo Hassan aparece como
+🇪🇬, 🇮🇶 y 🇦🇴. El fallback las tomaba como país — de ahí la bandera de
+Noruega. Hoy sólo acepta los 21 países de la Liga.
+
+| | antes | ahora |
+|---|---|---|
+| personas | 76 | **71** |
+| `nhp(sinlimites` · `money maker(cj)` | estaban | **no** |
+| Noruega · Gabón · Azerbaiyán · Jordania | estaban | **no** |
+| Hassan | 3 personas | **1** |
+
+#### La web ofrecía 58 cartas que nadie se había ganado
+
+`_cartas()` preguntaba **sólo** al inventario de R2, y estar ahí es
+«alguna vez se dibujó», no «le corresponde hoy»: el bucket tiene las de
+la pre-temporada. **58 de 72.** El bot ya lo hacía bien — las dos
+pantallas leían fuentes distintas para la misma pregunta.
+
+Se agregó **descargar** (no es un `<a download>`: los navegadores lo
+ignoran cross-origin, así que va por `fetch`+blob y hubo que habilitar
+CORS en R2), **link a Discord** en cada evento, y **«Lo que pasó»**
+porque «lo que viene» se apaga sola fuera de la ventana de 90 min.
+
+🔴 **Y EL SITIO NO SE DESPLEGABA MÁS.** Pages está conectado al repo
+**privado**, así que desde la mudanza ningún cambio del hub llegaba — y
+no fallaba: HTML viejo con datos frescos. Hoy lo despliega el paso 2c
+con su sello, vía `bot/paginas_subir.py`.
+
+⚠️ Ese script tiene una trampa anotada: **`_worker.js` no va en el
+manifiesto**. Subido como un asset más, Cloudflare lo sirve en vez de
+correrlo y `/api/lobby` empieza a devolver el `index.html` **con 200**.
+La página carga perfecta y vacía.
+
+#### El cron del Worker: `ctx.waitUntil` tiraba el trabajo
+
+Cuatro slots sin rastro con todo bien configurado. Era
+`ctx.waitUntil(async () => {…})` y devolver: un `scheduled` ya tiene su
+propia vida. **No falla — la invocación figura como exitosa y no hace
+nada.** Con `await` anda: `cron:ultimo` con HTTP 204 y el ciclo arrancó.
+
+Lo que dejó verlo fue mover la marca al principio: con la escritura sólo
+al final, «no disparó» y «disparó y murió» se ven igual.
+
+Ahora el ciclo arranca a los **:07 y :37 por GitHub** y a los **:22 y :52
+por Cloudflare**.
+
+#### Y el arreglo de compresión, medido por fin
+
+| por tanda de 40 | antes | ahora |
+|---|---|---|
+| dibujar | 9–11 min | 9m 20s |
+| **subir** | **15–19 min** | **1m 21s** |
+| total | ~25 min | **~10.7 min** |
+
+**Doce veces**, no ocho: ahora los 8 hilos paralelizan red en vez de
+pelear por 2 núcleos. Y la corrida **terminó** — 10 tandas, 400 personas
+en 117 min, contra 5 de 6 que no llegaba.
+
+#### Lo que sigue
+
+- **El AKA verificado.** Quedan `XXXXX`, `papa`, `dxg`, `Garxziiscity`:
+  **no son basura de parseo, son nombres que la gente escribió**. Hay que
+  resolverlos contra el Discord ID de su inscripción.
+- Las fuentes y el aprovechamiento del espacio del hub, que Dlx pidió y
+  no se pudieron juzgar: los screenshots del navegador expiran con la
+  ventana oculta.
+
+### 7. Lo que falta, en orden
 
 1. **Ver salir el cron solo.** Con `*/30` no disparó ni a las 04:00 ni a
    las 04:30 —workflow activo y cron en la rama por defecto, los dos
@@ -161,7 +282,7 @@ anotado, no hecho.
 4. **El plan de estudiante** (dominio `.me` gratis, y Cloudflare for
    Students: 12 meses de Workers Paid). Dlx: *«dejá eso para el final»*.
 
-### 7. Los bugs de esa noche, todos de la misma familia
+### 8. Los bugs de esa noche, todos de la misma familia
 
 Ninguno fallaba. Todos devolvían algo plausible.
 
