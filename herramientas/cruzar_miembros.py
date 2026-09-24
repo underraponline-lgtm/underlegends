@@ -4,6 +4,8 @@
     python herramientas/cruzar_miembros.py             muestra el plan
     python herramientas/cruzar_miembros.py --aplicar   escribe: rol + ID
     python herramientas/cruzar_miembros.py --refrescar vuelve a bajar la lista
+    python herramientas/cruzar_miembros.py --aplicar --solo-ids
+                                        escribe los ID y NO toca roles de DRA
 
 ⚠️ ESTO REEMPLAZA A BUSCAR POR NOMBRE, Y POR ESO ENCUENTRA MUCHO MAS. Con el
 Members Intent apagado la unica via era `members/search`, que **esta capada**:
@@ -56,7 +58,12 @@ def _guilds():
     `(verificar if sv == 'DRA' else capturar)` mas abajo, que ya era la regla
     para FFA y vale igual para Livonia.
     """
-    g = [('DRA', '841017460341604382'), ('FFA', '1468472442925092958')]
+    g = [('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
+         # 🔴 SNAKE RAP, DESDE EL 24/09/2026: 7.337 miembros. Dlx: «es una
+         # gran oportunidad para obtener IDs». De acá, como de FFA, sólo se
+         # CAPTURA el ID —lo decide `sv == 'DRA'` más abajo—: su propia
+         # verificación la cuenta `bot/verificados.py`, sin tocar roles.
+         ('SR', '492346406976356374')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:
@@ -83,6 +90,44 @@ def norm(s):
     s = re.sub(r'[\U0001F1E6-\U0001F1FF]', '', str(s)).replace('❓', '')
     s = unicodedata.normalize('NFD', s.strip().lower())
     return ''.join(c for c in s if c.isalnum())
+
+
+#: los servidores donde un nombre único NO alcanza. Ver `main()`.
+GRANDES = {'SR'}
+_BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]{2}')
+
+
+def cc_bandera(texto):
+    """El código de país de la primera bandera del texto, o `''`."""
+    m = _BANDERA.search(str(texto or ''))
+    return ''.join(chr(ord(c) - 0x1F1E6 + 97) for c in m.group(0)) if m else ''
+
+
+def paises_por_rol(s, gid):
+    """`{rol_id: código}` de los roles de ese servidor que traen bandera."""
+    r = s.get('%s/guilds/%s/roles' % (API, gid), timeout=30)
+    if r.status_code != 200:
+        return {}
+    return {x['id']: cc_bandera(x['name']) for x in r.json()
+            if cc_bandera(x['name'])}
+
+
+def cc_padron(p):
+    """Los códigos de país que dice el padrón: su columna y la bandera del
+    nombre. Pueden ser dos — el de Makmah dice 🇦🇷 y Venezuela —, y
+    cualquiera de los dos sirve de señal."""
+    out = set()
+    if cc_bandera(p.get('full')):
+        out.add(cc_bandera(p.get('full')))
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import subir_datos as _SD
+        cc = _SD._cc_de(p.get('pais'))
+        if cc:
+            out.add(cc)
+    except Exception:                                    # noqa: BLE001
+        pass
+    return out
 
 
 def formas(m):
@@ -212,6 +257,24 @@ def main():
             for x in formas(m):
                 por_forma.setdefault(norm(x), set()).add(did)
 
+    # 🔴 EN SNAKE RAP UN NOMBRE ÚNICO NO ALCANZA. Las guardas de arriba se
+    # pensaron para DRA y FFA, que son de la Liga; Snake Rap son 7.337
+    # personas de toda la escena, y ahí un «Ivan», un «Victor» o un «Cesar»
+    # únicos pueden ser otra persona. Medido el 24/09/2026 al entrar: de 56
+    # IDs que daba, la mayoría eran nombres de pila. Allá se pide una
+    # SEGUNDA señal: que el país del padrón coincida con su rol de bandera.
+    cc_rol = {}
+    for sv_, gid_ in GUILDS:
+        if sv_ not in GRANDES:
+            continue
+        band = paises_por_rol(s, gid_)
+        for m_ in cache.get(sv_, []):
+            did_ = (m_.get('user') or {}).get('id')
+            ccs = {band[x] for x in (m_.get('roles') or []) if x in band}
+            if did_ and ccs:
+                cc_rol[did_] = ccs
+    alias_de = {k: v for k, v in (akd.get('alias') or {}).items()}
+
     # nick/usuario por cuenta, para el tier nombre+numeros
     nick_user = {did: [x for x in ((m.get('nick')),
                                    ((m.get('user') or {}).get('username'))) if x]
@@ -263,6 +326,28 @@ def main():
                 revisar.append((q, 'ambiguo: %d por nombre+sufijo' % len(pf)))
             continue
         sv, m = cuentas[did]
+        et_ = m.get('nick') or ((m.get('user') or {}).get('username'))
+        # ⚠️ UNA FILA QUE ES ALIAS DE OTRA NO LLEVA ID PROPIO: la persona es
+        # la otra fila. «Erician» se llevaba una cuenta distinta de la de
+        # «Erian», que los AKAs dicen que es la misma persona.
+        real = alias_de.get(PAD.norm(q)) or alias_de.get(q.lower())
+        if real and PAD.norm(real) != PAD.norm(q) and PAD.norm(real) in idx:
+            revisar.append((q, 'es alias de %s según AKAs: su ID va en esa '
+                               'fila' % real))
+            continue
+        if sv in GRANDES:
+            ccp = cc_padron(idx.get(PAD.norm(q)) or {})
+            cca = cc_rol.get(did, set())
+            if not ccp or not cca:
+                revisar.append((q, '%s: @%s se llama igual, sin país para '
+                                   'confirmarlo' % (sv, et_)))
+                continue
+            if not ccp & cca:
+                revisar.append((q, '%s: @%s se llama igual pero es %s, y el '
+                                   'padrón dice %s'
+                                % (sv, et_, '/'.join(sorted(cca)),
+                                   '/'.join(sorted(ccp)))))
+                continue
         choca = [p for p in pareja.get(PAD.norm(q), ())
                  if any(PAD.norm(x) == p for x in formas(m))]
         if choca:
@@ -291,6 +376,9 @@ def main():
     if len(capturar) > 40:
         print('       … y %d mas' % (len(capturar) - 40))
     print('  🔎 PARA QUE MIRES: %d' % len(revisar))
+    if '--detalle' in sys.argv:
+        for q, por in revisar:
+            print('       %-18s %s' % (q, por))
     print('  — sin ninguna coincidencia: %d'
           % (len(faltan) - len(verificar) - len(capturar) - len(revisar)))
 
@@ -331,6 +419,15 @@ def main():
         ws.batch_update(celdas, value_input_option='RAW')
     print('  🆔 %d ID escritos (un batch, RAW para no perder digitos)' % len(celdas))
 
+    # ⚠️ `--solo-ids`: EL ROL DE DRA ES UNA ACCIÓN SOBRE PERSONAS EN OTRO
+    # SERVIDOR, y no siempre es lo que se pidió. El 24/09/2026 se pidió
+    # sacar IDs de Snake Rap; dar el rol Miembro en DRA a quien matchee es
+    # otra decisión, y quedaba pegada a esta.
+    if '--solo-ids' in sys.argv:
+        print('  --solo-ids: no toco roles de DRA (%d quedan sin el rol)'
+              % len(verificar))
+        print('\n  después:  python sheet/construir_padron.py\n')
+        return
     ok = 0
     for q, did, et, sv in verificar:
         a = _rol_op(s, s.put, GUILDS[0][1], did, rol)
