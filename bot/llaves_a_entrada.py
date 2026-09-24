@@ -1341,6 +1341,9 @@ def main():
     print('   barrido %s · %d canal(es) · %d mensaje(s) · %d llave(s)'
           % ('completo' if info['completo'] else 'dirigido',
              n_ch, n_msg, len(hallazgos)))
+    if info.get('nuevos'):
+        print('   🆕 el bot está en un servidor nuevo: %s — por eso el '
+              'barrido es completo' % ', '.join(info['nuevos']))
     if viejas:
         print('   %d llave(s) de antes del %s: fuera de la %s'
               % (viejas, TEMP.INICIO[:10], TEMP.ACTUAL.upper()))
