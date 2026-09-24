@@ -321,7 +321,9 @@ function pintaTabla() {
       '<td><span class="ovr">' + (f.ovr || '—') + '</span></td>' +
       '<td class="col-rg">' + rg + '</td>' +
       '<td class="col-sv"><span class="sv">' + esc(f.sv) + '</span></td>' +
-      '<td>' + num(f.pts) + '</td>' +
+      // ⚠️ `pts` LLEVA CLASE PROPIA: es de lo que habla la tabla y salía
+      // con el mismo peso que la columna de eventos. Ver `td.pts`.
+      '<td class="pts">' + num(f.pts) + '</td>' +
       '<td>' + esc(f.ev) + '</td></tr>';
   }).join('');
   $('#notaTabla').textContent = fs.length === (D.tabla || []).length
