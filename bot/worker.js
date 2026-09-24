@@ -2449,7 +2449,21 @@ export default {
   // importa. Es la regla de este repo — *lo que no se pregunta no se
   // entera de que dejó de andar*.
   async scheduled(evento, env, ctx) {
-    ctx.waitUntil((async () => {
+    // 🔴 LA MARCA SE ESCRIBE **PRIMERO**, Y ESO NO ES ORDEN SINO UNA
+    // MEDICION. El 24/09/2026 este cron no dejó rastro en dos ventanas de
+    // 30 min, con el handler desplegado, la agenda registrada y el
+    // `workflow_dispatch` contestando 204 desde afuera. Con la escritura
+    // al final, «no disparó» y «disparó y murió antes de llegar» se ven
+    // exactamente igual: silencio.
+    //
+    // ⚠️ Y SE `await`, NO `waitUntil`. Un `scheduled` ya tiene su propia
+    // vida; envolver todo en `waitUntil` y devolver enseguida agrega una
+    // forma de perder el trabajo que no hacía falta.
+    try {
+      await env.KV.put('cron:arranco', JSON.stringify(
+        { t: new Date().toISOString(), cron: evento.cron || '' }));
+    } catch (e) { /* si ni esto anda, el problema es el binding */ }
+    await (async () => {
       const t = new Date().toISOString();
       if (!env.GH_TOKEN || !env.GH_REPO) {
         await env.KV.put('cron:ultimo', JSON.stringify(
@@ -2484,7 +2498,7 @@ export default {
         t, ok: estado === 204, estado, cuerpo,
         cron: evento.cron || '',
       }));
-    })());
+    })();
   },
 
   async fetch(req, env, ctx) {
