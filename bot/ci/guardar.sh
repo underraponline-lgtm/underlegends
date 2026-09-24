@@ -82,7 +82,20 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
           datos/servidores_de.json datos/fotos_etag.json \
           datos/anuncios.json datos/avisados.json \
           datos/akas.json datos/decisiones.json \
-          datos/bloqueadas_selladas.json datos/web_sello.json \n          datos/bot_en.json"
+          datos/bloqueadas_selladas.json datos/web_sello.json \
+          datos/bot_en.json"
+# 🔴 CADA PALABRA DE LA LISTA TIENE QUE SER UN `datos/*.json`, Y SE MIRA.
+# El 24/09/2026 a las 5:22 PM ET entró un `\n` literal —una edición con
+# heredoc se comió la barra— y `bash -n` dio bien, porque es sintaxis
+# válida: `git add` lo tomó como archivo, murió con «pathspec '\n' did
+# not match», el trabajo quedó en rojo, `dibujar` se salteó y la corrida
+# no guardó nada. Mejor morir acá, diciendo por qué, que ahí.
+for f in $ARCHIVOS; do
+  case "$f" in
+    datos/*.json) ;;
+    *) echo "🔴 ARCHIVOS tiene algo que no es un archivo de datos: «$f»"; exit 1 ;;
+  esac
+done
 # 🔴 LOS DOS ULTIMOS FALTARON DOS DIAS, Y COSTABAN 48 VECES POR DIA.
 # Medido el 24/09/2026 en cuatro corridas seguidas: las mismas 186
 # Bloqueadas se redibujaban y se subian a R2 en CADA corrida —con la
