@@ -323,14 +323,25 @@ def plantel(texto):
 
     ⚠️ LOS EQUIPOS SE PARTEN. `Jetix 🇦🇷 + Arez 🇪🇨` son dos personas, y
     contarlo como una sola cambia el parecido.
+
+    🔴 UN LADO ENTERO ES UN COMPETIDOR AUNQUE TENGA UNA SOLA LETRA. El
+    corte de dos letras es para los PEDAZOS que salen de partir un
+    equipo —ahí una letra suelta es basura—, pero se aplicaba también a
+    un lado entero, y hay un rapero que se llama `7`. Y este conjunto no
+    es sólo una huella: `len()` de él es `participantes`, que es lo que
+    elige la escala de puntos (`motor.escala_de`). Medido el 25/09/2026:
+    DESGRACIAS EN TOKYO VOL.12 tuvo 16 personas —cuatro batallas de
+    cuatro en cuartos—, se contaban 15, y el evento entero cobraba con
+    la escala 8-15 en vez de 16+.
     """
     out = set()
     for _ronda, bats in E.rondas_de(texto):
         for b in bats:
             for n in b:
-                for parte in re.split(r'[+,/]|\s-\s', n):
+                partes = re.split(r'[+,/]|\s-\s', n)
+                for parte in partes:
                     k = E.norm(parte)
-                    if len(k) >= 2:
+                    if len(k) >= 2 or (k and len(partes) == 1):
                         out.add(k)
     return out
 
