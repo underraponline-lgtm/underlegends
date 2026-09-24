@@ -57,8 +57,30 @@ function ccTexto(cc) {
 }
 
 var num = function (n) { return Number(n || 0).toLocaleString('es'); };
+/* ⚠️ CON LA VERSIÓN DE ESA CARTA. La URL de R2 es estable a propósito, así
+   que sin `?v=` el navegador puede mostrar la imagen que guardó aunque la
+   carta ya se haya redibujado. La versión sale del sello del pipeline. */
 var urlCarta = function (f, cual) {
-  return D.r2 + '/' + encodeURIComponent(f.k) + '/' + cual + '.webp';
+  var v = (f.cv || {})[cual];
+  return D.r2 + '/' + encodeURIComponent(f.k) + '/' + cual + '.webp' +
+    (v ? '?v=' + v : '');
+};
+/* ¿La imagen de esa carta es de antes de los números de ahora? Ver
+   `_versiones()` en bot/subir_web.py. */
+var vieja = function (f, cual) {
+  return (f.vj || []).indexOf(cual) >= 0;
+};
+var avisoCarta = function (f, cual) {
+  var a = $('#vAviso');
+  if (!a) {
+    a = document.createElement('p');
+    a.id = 'vAviso';
+    a.className = 'aviso-carta';
+    $('#vImg').parentNode.insertAdjacentElement('afterend', a);
+  }
+  a.hidden = !vieja(f, cual);
+  a.textContent = '⏳ Esta tarjeta se está redibujando con los datos de ' +
+    'ahora. Los números de abajo ya son los actuales.';
 };
 var porK = function (k) {
   return (D.tabla || []).filter(function (x) { return x.k === k; })[0];
@@ -446,7 +468,10 @@ function pintaGaleria() {
   $('#galeria').innerHTML = con.slice(0, VISTAS).map(function (f) {
     // ⚠️ SIN CHAPA DE PUESTO: la tarjeta ya lo dibuja arriba a la
     // derecha, y la chapa caía justo encima del OVR.
-    return '<button class="gc" data-k="' + esc(f.k) + '">' +
+    return '<button class="gc' + (vieja(f, f.c[0]) ? ' vieja' : '') +
+      '" data-k="' + esc(f.k) + '"' +
+      (vieja(f, f.c[0]) ? ' title="Se está redibujando con los datos de ahora"' : '') +
+      '>' +
       '<img loading="lazy" decoding="async" src="' + urlCarta(f, f.c[0]) +
       '" alt="Tarjeta de ' + esc(f.n) + '">' +
       '<b>' + esc(f.n) + '</b><small>' + f.c.length + ' tarjeta' +
@@ -817,8 +842,10 @@ function abrir(k) {
     img.hidden = false;
     img.src = urlCarta(f, cs[0]);
     img.alt = 'Tarjeta ' + (NOMBRE_CARTA[cs[0]] || cs[0]) + ' de ' + f.n;
+    avisoCarta(f, cs[0]);
   } else {
     img.hidden = true;
+    avisoCarta(f, '');
     $('#vPestanas').innerHTML =
       '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>';
   }
@@ -964,6 +991,7 @@ function eventos() {
     $$('#vPestanas .pest').forEach(function (p) { p.classList.toggle('on', p === b); });
     $('#vImg').src = urlCarta(f, b.dataset.c);
     $('#vImg').alt = 'Tarjeta ' + (NOMBRE_CARTA[b.dataset.c] || '') + ' de ' + f.n;
+    avisoCarta(f, b.dataset.c);
   });
   $('#vBajar').addEventListener('click', function () {
     var b = $('#vBajar');

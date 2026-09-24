@@ -592,6 +592,9 @@ font-variant-numeric:tabular-nums}
 .v-stats span{display:block;color:var(--tx2);margin-top:3px;
 font:600 .54rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;
 text-transform:uppercase}
+.aviso-carta{color:var(--tx2);font-size:.82rem;text-align:center;margin:8px 12px 0;line-height:1.35}
+.gc.vieja{position:relative}
+.gc.vieja::after{content:"⏳";position:absolute;top:6px;right:8px;font-size:.95rem;opacity:.85}
 .sin-carta{color:var(--tx2);font-size:.88rem;text-align:center;padding:30px 10px}
 
 /* ── teléfono ─────────────────────────────────────────────────────

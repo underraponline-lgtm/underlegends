@@ -111,6 +111,7 @@ def armar():
 
     from comun import respaldo as _resp
     _foto = _con_foto()
+    _ver, _vieja = _versiones()
     tabla = [{
         'n': p.get('raw'),
         'pos': p.get('pos'),
@@ -155,6 +156,12 @@ def armar():
         # carta que no está.
         'k': _clave(p),
         'c': _cartas(p, r2, _comp.get(p.get('raw'))),
+        # 🔑 LA VERSIÓN DE CADA CARTA Y CUÁLES ESTÁN POR REDIBUJARSE. Ver
+        # `_versiones()`: sin la primera el navegador muestra una imagen
+        # guardada, y sin la segunda la carta contradice al ranking sin
+        # decir por qué.
+        'cv': _ver.get(p.get('raw')) or {},
+        'vj': sorted(_vieja.get(p.get('raw')) or ()),
         # 🔑 SI ESTA PERSONA TIENE CARA. Dlx, 24/09/2026: *«en la sección
         # de tarjetas sólo quisiera ver tarjetas con avatares, no
         # muestres ahí si no hay avatares»*.
@@ -322,6 +329,47 @@ def _con_foto():
         return None
     from comun import respaldo
     return set(respaldo._norm(k) for k in d)
+
+
+def _versiones():
+    """`({persona: {carta: version}}, {persona: {cartas viejas}})`.
+
+    🔴 LA CARTA Y EL RANKING SE PUBLICAN EN MOMENTOS DISTINTOS, y por eso
+    se contradecían. El ranking sale cuando el ciclo termina de escuchar;
+    la carta nueva, cuando termina de dibujar — medido el 24/09/2026,
+    36 min después, con el OVR moviéndose para todos en cada evento.
+    Mientras tanto la web mostraba la imagen de antes debajo del número
+    de ahora, sin decir nada.
+
+    ⚠️ LA VIEJA SE SABE SIN ADIVINAR: es la misma pregunta que decide qué
+    dibujar (`que_cambio.huellas()` contra el sello). Si la huella de hoy
+    no es la sellada, lo que está en R2 se dibujó con otros datos.
+
+    ⚠️ Y LA VERSIÓN SALE DEL SELLO, no de la hora: cambia exactamente
+    cuando la carta se redibuja. La URL de R2 es estable a propósito, así
+    que sin `?v=` el navegador puede seguir mostrando la guardada — el
+    mismo problema que `bot/worker.js` ya resolvió para Discord.
+
+    ⚠️ SI NO SE PUEDE MEDIR, NO SE MARCA NADA: una marca falsa de
+    «actualizándose» es peor que ninguna.
+    """
+    import hashlib
+    ver, vieja = {}, {}
+    try:
+        sello = (_json('datos', 'cartas_selladas.json') or {}).get('cartas') or {}
+        for quien, cs in sello.items():
+            ver[quien] = {c: hashlib.sha1(str(h).encode('utf-8'))
+                          .hexdigest()[:8] for c, h in cs.items()}
+        import que_cambio as QC
+        for quien, cs in QC.huellas().items():
+            antes = sello.get(quien) or {}
+            malas = {c for c, h in cs.items() if c in antes and antes[c] != h}
+            if malas:
+                vieja[quien] = malas
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude medir qué cartas están viejas: %s' % str(e)[:80])
+        return ver, {}
+    return ver, vieja
 
 
 def _cartas(p, r2, comp=None):
