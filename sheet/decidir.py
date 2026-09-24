@@ -60,7 +60,18 @@ HOJA = '✅ Decidir'
 #: las filas de arriba son el título y cómo se usa; la tabla empieza abajo
 FILA_CAB = 5
 COLS = ['#', 'Tipo', 'Qué hay que decidir', 'Dónde apareció', 'Sugerencia',
-        '✍️ RESPUESTA', 'Estado', 'id']
+        '✍️ RESPUESTA', '📝 NOTA', 'Estado', 'id']
+# 🔴 LA COLUMNA DE NOTAS EXISTE PORQUE DLX ESCRIBIÓ EN «Sugerencia». El
+# 24/09/2026, al usarla por primera vez: *«Existe elsolar y solar. Son
+# personas diferentes. Solar es de Chile y su ID es 1155972121848201256»*,
+# en la columna que el ciclo rehace cada media hora. Se perdía. Ahora lo
+# que se escribe en 📝 NOTA se conserva de una corrida a la otra, y lo que
+# se escriba igual en otra columna se rescata a la nota.
+#
+# ⚠️ LAS COLUMNAS SE BUSCAN POR SU NOMBRE AL LEER, no por posición: agregar
+# ésta corrió `Estado` e `id`, y leer por número habría tomado las
+# respuestas ya escritas como vacías — y la hoja rehecha las habría borrado.
+C_RESP, C_NOTA, C_ESTADO, C_ID = 5, 6, 7, 8
 POR = 'Dlx (✅ Decidir)'
 DECISIONES = os.path.join(BASE, 'datos', 'decisiones.json')
 
@@ -131,22 +142,122 @@ def armar(abiertas, eventos=None):
     """
     eventos = eventos or {}
     por = collections.OrderedDict()
+    grupo_de = {}
     for n, f in abiertas:
         tipo, det = f.get('Tipo', '').strip(), f.get('Detalle', '').strip()
         if not tipo or not det:
             continue
         k = clave(tipo, det)
+        # 🔴 LA MISMA PERSONA ESCRITA DISTINTO ES UNA SOLA PREGUNTA. Dlx vio
+        # «MAU KC 🇨🇴» y «Mau Kc 🇨🇴», «DENIK» y «Denik», tres «money maker»:
+        # contestar uno dejaba los otros. Se juntan por el nombre sin
+        # adornos Y LA MISMA BANDERA: «Volk 🇲🇽» y «volk 🇨🇴» siguen aparte,
+        # porque la bandera separa a desconocidos con el mismo nombre.
+        # ⚠️ El id es el de la PRIMERA grafía: así una respuesta ya escrita
+        # sigue encontrando su pregunta.
+        # ⚠️ Los fragmentos de equipo NO se juntan: «kc)» con «kc» cerraba
+        # la pregunta de verdad junto con la basura.
+        if tipo == 'Nombre desconocido' and not es_fragmento(det):
+            g = (norm(_sin_bandera(det)), ''.join(sorted(_BANDERA.findall(det))))
+            if g in grupo_de and grupo_de[g] in por:
+                q = por[grupo_de[g]]
+                q['filas'].append(n)
+                if det not in q['variantes']:
+                    q['variantes'].append(det)
+                continue
+            grupo_de[g] = k
         if k in por:
             por[k]['filas'].append(n)
             continue
         origen, match = f.get('Origen', '').strip(), f.get('Posible match', '').strip()
         p = {'id': k, 'tipo': tipo, 'detalle': det, 'origen': origen,
-             'match': match, 'filas': [n],
+             'match': match, 'filas': [n], 'variantes': [det],
              'grupo': GRUPO.get(tipo, (4, tipo)),
              'donde': _donde(origen, det, eventos)}
-        p['que'], p['sug'], p['opciones'] = _pregunta(p)
         por[k] = p
+    for p in por.values():
+        p['que'], p['sug'], p['opciones'] = _pregunta(p)
     return sorted(por.values(), key=lambda p: (p['grupo'][0], p['filas'][0]))
+
+
+def es_fragmento(det):
+    """¿Es un pedazo de equipo y no un nombre? «a + b + c», «x(kc)», «kc)».
+
+    🔴 SON DE UNA VERSIÓN ANTERIOR DEL LECTOR, que reportaba el lado entero
+    de una batalla por equipos como si fuera una persona. El de hoy los
+    parte —los puntos ya se reparten entre los integrantes, y cada uno
+    que falta tiene su propia pregunta—, pero las filas viejas seguían
+    abiertas: «marto🇦🇷+ erian 🇵🇦 + melomaniaco» como un solo nombre.
+    """
+    return '+' in det or '(' in det or ')' in det
+
+
+def _reparar(s):
+    """Un texto que pasó por la codificación equivocada, arreglado.
+
+    «!馃挆ValenAdoratesJuan馃挆» es «!💗ValenAdoratesJuan💗»: los bytes UTF-8
+    del emoji leídos como GBK. Si deshacerlo da un texto válido, es eso.
+    """
+    t = str(s or '')
+    if not re.search('[\u4e00-\u9fff]', t):
+        return t
+    try:
+        return t.encode('gbk').decode('utf-8')
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return t
+
+
+def _sin_decoracion(nombre):
+    """«👤 | DRAKO MC» -> «DRAKO MC»: el prefijo del apodo de DRA."""
+    return re.sub(r'^[^\w]*\|\s*', '', str(nombre or '')).strip() or nombre
+
+
+def _conflicto_en_palabras(det):
+    """Los conflictos del sync, dichos para una persona y con los links.
+
+    🔴 VENÍAN ASÍ: *«AKA 'Shadow' (fila 237) ya tiene ID 1461433944237936829,
+    el log trae 821825142556196895»*. Para contestar había que ir a buscar
+    dos números a mano. Ahora dice qué pasó y deja los dos perfiles a un
+    click.
+    """
+    m = re.search(r"AKA '(.+?)' \(fila \d+\) ya tiene ID (\d+), el log trae (\d+)", det)
+    if m:
+        return ('«%s» ya tiene una cuenta de Discord en la Lista, y el sync '
+                'encontró OTRA cuenta con ese nombre. ¿Es la misma persona '
+                'con dos cuentas, u otra persona?\nLa que tiene: '
+                'https://discord.com/users/%s\nLa otra: '
+                'https://discord.com/users/%s' % m.groups())
+    m = re.search(r"ID (\d+) ya pertenece a fila \d+ \((.+?)\); no se asignó a '(.+?)'", det)
+    if m:
+        did, dueno, otro = m.groups()
+        return ('La cuenta https://discord.com/users/%s es de «%s» en la '
+                'Lista, y el sync la encontró también como «%s». ¿«%s» es %s?'
+                % (did, dueno, otro, otro, _sin_bandera(dueno)))
+    return 'Conflicto de identidad que encontró el sync: %s' % det
+
+
+_PADRON_NOMBRES = []
+
+
+def _parecidos_padron(nombre):
+    """Hasta tres nombres de la Lista que se parecen a ese."""
+    import difflib
+    if not _PADRON_NOMBRES:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'padron.json'),
+                         encoding='utf-8') as f:
+                _PADRON_NOMBRES.extend(x.get('raw') for x in json.load(f)
+                                       if x.get('raw'))
+        except (OSError, ValueError):
+            return []
+    k = norm(nombre)
+    if not k:
+        return []
+    por = {}
+    for r in _PADRON_NOMBRES:
+        por.setdefault(norm(r), r)
+    return [por[x] for x in difflib.get_close_matches(k, list(por), n=3,
+                                                      cutoff=0.8)]
 
 
 def _sugerencias(match):
@@ -158,23 +269,37 @@ def _pregunta(p):
     t, det, match = p['tipo'], p['detalle'], p['match']
     if t == 'Nombre desconocido':
         sug = _sugerencias(match)
-        return ('¿Quién es «%s»? No está en la Lista de Raperos. Si es '
-                'alguien que ya está, escribí su nombre como figura ahí.' % det,
+        otras = [v for v in p.get('variantes', [det]) if v != det]
+        tambien = (' (también escrito %s)' % ', '.join('«%s»' % v for v in otras)
+                   if otras else '')
+        return ('¿Quién es «%s»?%s No está en la Lista de Raperos. Si es '
+                'alguien que ya está, escribí su nombre como figura ahí.'
+                % (det, tambien),
                 ', '.join(sug) if sug else '—',
                 ['Es %s' % s for s in sug] + [NUEVO, TROLL])
     if t == 'alta':
-        quien = det.split(' = ')[0].strip()
-        return ('«%s» usó /card y no está en la Lista de Raperos. Si ya está '
-                'con otro nombre, escribilo: le pongo su Discord.' % quien,
-                match or '—', [NUEVO, 'Ya está resuelto'])
+        quien = _sin_decoracion(_reparar(det.split(' = ')[0].strip()))
+        did = det.split(' = ')[-1].strip() if ' = ' in det else ''
+        # ⚠️ «sv FFA» NO ES UNA SUGERENCIA: es dónde usó /card. Va dicho, y
+        # la sugerencia pasa a ser lo que la palabra promete: nombres de la
+        # Lista que se le parecen.
+        sv = match[3:].strip() if match.startswith('sv ') else ''
+        sug = _parecidos_padron(quien)
+        return ('«%s» usó /card%s y no está en la Lista de Raperos. Si ya '
+                'está con otro nombre, elegilo o escribilo: le pongo su '
+                'Discord.%s' % (quien, ' en %s' % sv if sv and sv != '?' else '',
+                                '\nSu cuenta: https://discord.com/users/%s' % did
+                                if did.isdigit() else ''),
+                ', '.join(sug) if sug else '—',
+                ['Es %s' % x for x in sug] + [NUEVO, 'Ya está resuelto'])
     if t in ('conflicto', 'ambiguo'):
         quien = det.split(' = ')[0].strip()
         return ('«%s» usó /card y su nombre choca con la lista (%s). '
                 'Revisalo en Discord.' % (quien, match or t),
                 match or '—', ['Ya lo revisé', 'Dejar para después'])
     if t == 'Alias posible':
-        return ('Conflicto de identidad que encontró el sync: %s' % det,
-                match or '—', ['Ya lo revisé', 'Dejar para después'])
+        return (_conflicto_en_palabras(det), match or '—',
+                ['Ya lo revisé', 'Dejar para después'])
     if t == 'Bracket incompleto':
         return ('Esta llave no dice quién ganó y lleva más de 12 h sin '
                 'cambios, así que no sumó nada. ¿Cuenta?',
@@ -373,20 +498,56 @@ def _hoja_id(crear=False):
 
 
 def _respuestas():
-    """{id: (respuesta, estado)} de lo que hay escrito en la hoja."""
+    """{id: (respuesta, estado)} de lo que hay escrito en la hoja.
+
+    También deja en `_respuestas.notas` `{id: nota}` y en
+    `_respuestas.sugerencias` `{id: lo que dice la columna Sugerencia}`,
+    para rescatar lo que alguien escribió ahí. Ver `C_NOTA`.
+    """
     import requests
     from escribir import _pedir
+    _respuestas.notas, _respuestas.sugerencias = {}, {}
     if _hoja_id() is None:
         return {}
     v = _pedir('GET', '/values/%s' % requests.utils.quote(
-        "'%s'!A%d:H" % (HOJA, FILA_CAB + 1))).get('values', [])
+        "'%s'!A%d:Z" % (HOJA, FILA_CAB))).get('values', [])
+    if not v:
+        return {}
+    cab = [str(c).strip() for c in v[0]]
+
+    def col(nombre, antes):
+        return cab.index(nombre) if nombre in cab else antes
+    i_resp, i_id = col('✍️ RESPUESTA', 5), col('id', 7)
+    i_est, i_sug = col('Estado', 6), col('Sugerencia', 4)
+    i_nota = col('📝 NOTA', None)
     out = {}
-    for f in v:
-        f = list(f) + [''] * len(COLS)
-        k, r = str(f[7]).strip(), str(f[5]).strip()
-        if k and r:
-            out[k] = (r, str(f[6]).strip())
+    for f in v[1:]:
+        f = list(f) + [''] * (len(cab) + len(COLS))
+        k = str(f[i_id]).strip()
+        if not k:
+            continue
+        r = str(f[i_resp]).strip()
+        if r:
+            out[k] = (r, str(f[i_est]).strip())
+        if i_nota is not None and str(f[i_nota]).strip():
+            _respuestas.notas[k] = str(f[i_nota]).strip()
+        _respuestas.sugerencias[k] = str(f[i_sug]).strip()
     return out
+
+
+def _nota(p):
+    """La nota de esa pregunta: la de 📝 NOTA, más lo que se haya escrito en
+    «Sugerencia» encima de lo que puso el sistema."""
+    nota = (getattr(_respuestas, 'notas', {}) or {}).get(p['id'], '')
+    s_hoja = (getattr(_respuestas, 'sugerencias', {}) or {}).get(p['id'], '')
+    # ⚠️ Lo que escribió el SISTEMA antes no es una nota: la sugerencia de
+    # la corrida anterior era el «Posible match» crudo («sv FFA»).
+    if s_hoja and s_hoja not in (p['sug'], (p.get('match') or '').strip()):
+        extra = s_hoja[len(p['sug']):] if s_hoja.startswith(p['sug']) else s_hoja
+        extra = extra.strip(' —-·')
+        if extra and extra not in nota:
+            nota = (nota + ' · ' if nota else '') + extra
+    return nota
 
 
 def _agregar_akas(pares, distintos):
@@ -476,6 +637,10 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                 and norm(_sin_bandera(p['detalle'])) in fuera):
             cierres += [(n, 'troll: no cuenta (ya decidido)') for n in p['filas']]
             continue
+        if not r and p['tipo'] == 'Nombre desconocido' and es_fragmento(p['detalle']):
+            cierres += [(n, 'fragmento de equipo: sus integrantes ya están '
+                            'por separado') for n in p['filas']]
+            continue
         acc = interpretar(p, r[0] if r else '')
         if not acc:
             continue
@@ -521,6 +686,11 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     for ev, dec in eventos.items():
         print('      evento: %s -> %s' % (ev, dec))
     aplicar.hubo = bool(cierres or pares or eventos or ids or trolls)
+    # ⚠️ LAS NOTAS DE LO QUE SE CIERRA NO SE PIERDEN: van a
+    # `datos/decisiones.json` con la pregunta, para quien tenga que actuar.
+    cerradas = {n for n, _d in cierres}
+    notas_cerradas = {p['id']: {'pregunta': p['detalle'], 'nota': _nota(p)}
+                      for p in preguntas if _nota(p) and set(p['filas']) & cerradas}
     if dry:
         return estados
 
@@ -546,6 +716,17 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         for ev, dec in eventos.items():
             d.setdefault('eventos', {})[ev] = {'decision': dec, 'cuando': ahora,
                                                'por': POR}
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    if notas_cerradas:
+        d = _decisiones()
+        ahora = datetime.datetime.now(datetime.timezone.utc).strftime(
+            '%Y-%m-%d %H:%M UTC')
+        for k, v in notas_cerradas.items():
+            v['cuando'] = ahora
+            d.setdefault('notas', {})[k] = v
+            print('      📝 nota guardada: %s — %s' % (v['pregunta'], v['nota']))
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
@@ -582,6 +763,21 @@ def _hora_et():
         return (ahora - datetime.timedelta(hours=4)).strftime('%d/%m %I:%M %p ET')
 
 
+PROTECCION = 'decidir: la rehace el ciclo'
+
+
+def _protecciones(sid):
+    """Los ids de las protecciones que puso esta hoja en corridas anteriores."""
+    from escribir import _pedir
+    d = _pedir('GET', '?fields=sheets(properties.sheetId,protectedRanges('
+                      'protectedRangeId,description))')
+    for x in d.get('sheets') or []:
+        if x['properties']['sheetId'] == sid:
+            return [p['protectedRangeId'] for p in x.get('protectedRanges') or []
+                    if p.get('description') == PROTECCION]
+    return []
+
+
 def pintar(preguntas, estados, respuestas, hechas, dry=True):
     """Rehace la hoja entera: título, cómo se usa, la tabla y lo último hecho."""
     import requests
@@ -591,14 +787,15 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         cuenta.items(), key=lambda x: min(p['grupo'][0] for p in preguntas
                                           if p['grupo'][1] == x[0])))
     filas = [
-        ['✅ DECIDIR — lo que el sistema no pudo resolver solo'] + [''] * 7,
+        ['✅ DECIDIR — lo que el sistema no pudo resolver solo'] + [''] * 8,
         ['Elegí una respuesta en la columna ✍️ RESPUESTA (o escribí el nombre, '
          'si es alguien de la Lista de Raperos). El ciclo la aplica sola en '
-         'menos de media hora y la pregunta sale de acá.'] + [''] * 7,
+         'menos de media hora y la pregunta sale de acá. Para aclarar algo, '
+         'usá 📝 NOTA: se guarda. Lo demás lo rehace el ciclo.'] + [''] * 8,
         ['%d abierta(s)%s · actualizado %s'
          % (len(preguntas), (' — ' + resumen) if resumen else '',
-            _hora_et())] + [''] * 7,
-        [''] * 8,
+            _hora_et())] + [''] * 8,
+        [''] * 9,
         COLS,
     ]
     for i, p in enumerate(preguntas, 1):
@@ -606,28 +803,29 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         # la respuesta se conserva si la pregunta sigue abierta: si se
         # borrara, parecería aplicada
         filas.append([str(i), p['grupo'][1], p['que'], p['donde'], p['sug'],
-                      r[0] if r else '', estados.get(p['id'], ''), p['id']])
+                      r[0] if r else '', _nota(p), estados.get(p['id'], ''),
+                      p['id']])
     if not preguntas:
-        filas.append(['', '', '🎉 No hay nada para decidir.'] + [''] * 5)
+        filas.append(['', '', '🎉 No hay nada para decidir.'] + [''] * 6)
     if hechas:
-        filas += [[''] * 8, ['', '', '✔️ Lo último que se aplicó'] + [''] * 5]
+        filas += [[''] * 9, ['', '', '✔️ Lo último que se aplicó'] + [''] * 6]
         for n, d in hechas[-8:][::-1]:
             filas.append(['', GRUPO.get(d['Tipo'], (4, d['Tipo']))[1],
-                          d['Detalle'], d['Origen'], '', d['Resolución'],
+                          d['Detalle'], d['Origen'], '', d['Resolución'], '',
                           '✔️ aplicado', ''])
     if dry:
         print('   (simulacro) la hoja tendría %d fila(s): %d pregunta(s)'
               % (len(filas), len(preguntas)))
         return
     sid = _hoja_id(crear=True)
-    _pedir('POST', '/values/%s:clear' % requests.utils.quote("'%s'!A1:H2000" % HOJA))
+    _pedir('POST', '/values/%s:clear' % requests.utils.quote("'%s'!A1:I2000" % HOJA))
     _pedir('PUT', '/values/%s?valueInputOption=RAW'
            % requests.utils.quote("'%s'!A1" % HOJA), json={'values': filas})
     n_preg = len(preguntas)
     reqs = [
         # la tabla, limpia de lo que haya quedado de una corrida anterior
         {'setDataValidation': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB,
-                                         'startColumnIndex': 5, 'endColumnIndex': 6}}},
+                                         'startColumnIndex': C_RESP, 'endColumnIndex': C_NOTA + 1}}},
         {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': 0,
                                   'endRowIndex': 2000},
                         'cell': {'userEnteredFormat': {}},
@@ -655,30 +853,44 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
                         'fields': 'userEnteredFormat(textFormat,backgroundColor)'}},
         {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB,
                                   'endRowIndex': FILA_CAB + n_preg + 20,
-                                  'startColumnIndex': 2, 'endColumnIndex': 7},
+                                  'startColumnIndex': 2, 'endColumnIndex': 8},
                         'cell': {'userEnteredFormat': {'wrapStrategy': 'WRAP',
                                                        'verticalAlignment': 'TOP'}},
                         'fields': 'userEnteredFormat(wrapStrategy,verticalAlignment)'}},
-        # la columna para contestar, que se vea que es para contestar
+        # las dos columnas para escribir, que se vea que son para escribir
         {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB,
                                   'endRowIndex': FILA_CAB + n_preg,
-                                  'startColumnIndex': 5, 'endColumnIndex': 6},
+                                  'startColumnIndex': C_RESP, 'endColumnIndex': C_NOTA + 1},
                         'cell': {'userEnteredFormat': {
                             'backgroundColor': {'red': 1, 'green': .97,
                                                 'blue': .82}}},
                         'fields': 'userEnteredFormat.backgroundColor'}},
     ]
-    for i, ancho in enumerate((36, 100, 430, 260, 150, 230, 230, 60)):
+    for i, ancho in enumerate((36, 100, 430, 260, 150, 230, 230, 230, 60)):
         reqs.append({'updateDimensionProperties': {
             'range': {'sheetId': sid, 'dimension': 'COLUMNS',
                       'startIndex': i, 'endIndex': i + 1},
-            'properties': {'pixelSize': ancho, 'hiddenByUser': i == 7},
+            'properties': {'pixelSize': ancho, 'hiddenByUser': i == C_ID},
             'fields': 'pixelSize,hiddenByUser'}})
+    # 🔴 LO QUE NO ES PARA ESCRIBIR, AVISA SI SE ESCRIBE. Protección con
+    # aviso —no bloquea: la hoja es de Dlx—: quien edite fuera de RESPUESTA
+    # o NOTA ve que eso lo rehace el ciclo. La de la corrida anterior se
+    # saca antes, o se apilan.
+    for pr in _protecciones(sid):
+        reqs.append({'deleteProtectedRange': {'protectedRangeId': pr}})
+    reqs.append({'addProtectedRange': {'protectedRange': {
+        'range': {'sheetId': sid},
+        'description': PROTECCION,
+        'warningOnly': True,
+        'unprotectedRanges': [{'sheetId': sid, 'startRowIndex': FILA_CAB,
+                               'endRowIndex': FILA_CAB + max(n_preg, 1),
+                               'startColumnIndex': C_RESP,
+                               'endColumnIndex': C_NOTA + 1}]}}})
     for i, p in enumerate(preguntas):
         reqs.append({'setDataValidation': {
             'range': {'sheetId': sid, 'startRowIndex': FILA_CAB + i,
                       'endRowIndex': FILA_CAB + i + 1,
-                      'startColumnIndex': 5, 'endColumnIndex': 6},
+                      'startColumnIndex': C_RESP, 'endColumnIndex': C_RESP + 1},
             # ⚠️ NO ESTRICTA: «Es X» con un X que no está en la lista se
             # escribe a mano, y una validación estricta lo rechazaría.
             'rule': {'condition': {'type': 'ONE_OF_LIST', 'values': [
@@ -740,6 +952,38 @@ def _self_check():
        '«Es un troll» es troll')
     ok(interpretar(jahno, TROLL)[0] != 'alias',
        'y no se lee como «alias de "un troll"»')
+
+    # 🔴 LO QUE DLX VIO LA PRIMERA VEZ QUE LA USÓ (24/09/2026)
+    nd = 'Nombre desconocido'
+    filas = [(10, {'Tipo': nd, 'Detalle': 'MAU KC 🇨🇴', 'Origen': 'evento #350'}),
+             (11, {'Tipo': nd, 'Detalle': 'Mau Kc 🇨🇴', 'Origen': 'evento #354'}),
+             (12, {'Tipo': nd, 'Detalle': 'Volk 🇲🇽', 'Origen': 'evento #352'}),
+             (13, {'Tipo': nd, 'Detalle': 'volk 🇨🇴', 'Origen': 'evento #353'}),
+             (14, {'Tipo': nd, 'Detalle': 'kc)', 'Origen': 'evento #353'}),
+             (15, {'Tipo': nd, 'Detalle': 'kc', 'Origen': 'evento #353'})]
+    g = armar(filas)
+    mau = next(p for p in g if p['detalle'] == 'MAU KC 🇨🇴')
+    ok(mau['filas'] == [10, 11] and 'Mau Kc' in mau['que'],
+       'la misma persona escrita distinto es UNA pregunta')
+    ok(sum(1 for p in g if norm(p['detalle']) == 'volk') == 2,
+       'con otra bandera, sigue aparte')
+    ok(next(p for p in g if p['detalle'] == 'kc')['filas'] == [15],
+       'un fragmento no se junta con el nombre de verdad')
+    ok(es_fragmento('marto🇦🇷+ erian 🇵🇦 + melomaniaco') and es_fragmento('kc)')
+       and not es_fragmento('Konan'), 'los fragmentos de equipo se reconocen')
+    ok(_reparar('!馃挆ValenAdoratesJuan馃挆') == '!💗ValenAdoratesJuan💗',
+       'el emoji mal decodificado se arregla')
+    ok(_sin_decoracion('👤 | DRAKO MC') == 'DRAKO MC', 'sin el «👤 |» de DRA')
+    c = _conflicto_en_palabras("AKA 'Shadow' (fila 237) ya tiene ID 146, el log trae 821")
+    ok('discord.com/users/146' in c and 'discord.com/users/821' in c,
+       'el conflicto del sync, en palabras y con los dos perfiles')
+    _respuestas.notas, _respuestas.sugerencias = {}, {mau['id']: '— son la misma'}
+    mau['sug'] = '—'
+    ok(_nota(mau) == 'son la misma', 'lo escrito en «Sugerencia» se rescata como nota')
+    _respuestas.sugerencias = {mau['id']: 'sv FFA'}
+    mau['match'] = 'sv FFA'
+    ok(_nota(mau) == '', 'y lo que puso el sistema antes, no')
+    _respuestas.notas, _respuestas.sugerencias = {}, {}
     ok(interpretar(jahno, 'Es Juano') == ('alias', 'Juano'),
        '«Es Juano» es un alias')
     ok(interpretar(jahno, 'Makmah') == ('alias', 'Makmah'),
