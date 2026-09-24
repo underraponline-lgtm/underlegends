@@ -201,6 +201,19 @@ def _resuelto_ya(fila, resolver):
         # con los puntos repartidos— así que la duda ya no existe.
         return ('el evento ya tiene campeón' if _tiene_campeon(detalle)
                 else '')
+    if tipo == 'Bracket incompleto':
+        # La misma señal, un paso después: `llaves_a_entrada.py` no suma
+        # un evento sin campeón, así que si hoy tiene Campeón es que
+        # alguien completó la final y el ciclo lo cargó entero.
+        #
+        # ⚠️ El detalle es `evento · servidor · fecha`, y se pregunta por
+        # el nombre. SALVO `(sin titulo)`: ese nombre no distingue un
+        # evento de otro, y cerrar la fila por el campeón de OTRO evento
+        # sin título esconde la duda, que es el peor daño para una cola.
+        nombre = detalle.split(' · ')[0].strip()
+        if not nombre or nombre == '(sin titulo)':
+            return ''
+        return 'el evento ya tiene campeón' if _tiene_campeon(nombre) else ''
     # 🔴 `Alias posible` NO SE CIERRA SOLO, Y LO INTENTE. La regla era
     # «si ese AKA ya está en el padrón, la duda se cerró» — y es
     # exactamente al revés: esas filas las escribe el **backfill** del
@@ -366,6 +379,13 @@ def _self_check():
         v = _resuelto_ya({'Tipo': 'Alias posible', 'Estado': '',
                           'Detalle': det}, r)
         ok(v == '', 'no se cierra solo: %s…' % det[:34])
+
+    # ⚠️ EL BRACKET INCOMPLETO SIN TÍTULO NO SE CIERRA POR EL CAMPEÓN DE
+    # OTRO. Se contesta sin tocar el Sheet: el `(sin titulo)` corta antes
+    # de preguntarle a `Resultados`.
+    v = _resuelto_ya({'Tipo': 'Bracket incompleto', 'Estado': '',
+                      'Detalle': '(sin titulo) · FFA · 23/09'}, r)
+    ok(v == '', 'un Bracket incompleto «(sin titulo)» no se cierra solo')
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
