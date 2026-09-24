@@ -163,13 +163,22 @@ def equipo(nombre):
 # ── lo que se lee de la planilla ──────────────────────────────────────
 
 def _leer(rng):
+    # 🔴 CON REINTENTO: las tablas de puntos se leen en cada carga de
+    # eventos del ciclo, y un 429 acá tumbaba la carga entera. Es el mismo
+    # agujero que mató el ciclo de las 6:52 AM ET del 24/09/2026 desde otro
+    # archivo. Ver `sheet/reintentar.py`.
     import requests
     from escribir import token, API, id_operativo
-    r = requests.get('%s/%s/values/%s'
-                     % (API, id_operativo(), requests.utils.quote(rng)),
-                     headers={'Authorization': 'Bearer ' + token()}, timeout=60)
-    r.raise_for_status()
-    return r.json().get('values', [])
+    from reintentar import leer
+
+    def _pedir():
+        r = requests.get('%s/%s/values/%s'
+                         % (API, id_operativo(), requests.utils.quote(rng)),
+                         headers={'Authorization': 'Bearer ' + token()},
+                         timeout=60)
+        r.raise_for_status()
+        return r.json().get('values', [])
+    return leer(_pedir)
 
 
 def _pct(v):
@@ -393,7 +402,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
 
     res, avisos = {}, []
 
-    def sumar(lado, pts, puesto):
+    def sumar(lado, pts, puesto, salvo=()):
         ms = equipo(lado)
         if not ms:
             return
@@ -401,6 +410,10 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         cuota = pts // len(ms) if len(ms) > 1 else pts
         for m in ms:
             q = resolver(m)
+            # la cuota es la del equipo entero; `salvo` sólo saltea a quien
+            # ya cobró un puesto más alto. Ver el bucle de `CAIDA`.
+            if q in salvo:
+                continue
             d = res.setdefault(q, {'rapero': q, 'puntos': 0, 'posicion': '',
                                    'notas': ''})
             d['puntos'] += cuota
@@ -451,10 +464,18 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             p = _perdedor(b)
             if p is None:
                 continue
-            primero = equipo(p)[0] if equipo(p) else p
-            if resolver(primero) in res:
+            # 🔴 SE MIRA A CADA INTEGRANTE, NO SÓLO AL PRIMERO. Esto
+            # preguntaba si el PRIMER integrante del equipo perdedor ya
+            # tenía puesto, y si lo tenía salteaba al equipo ENTERO. En
+            # CARABOBO (25/09/2026) `nc` perdió cuartos con `g8` y después
+            # llegó a la final con otra dupla: como `nc` ya cobraba el
+            # subcampeonato, `g8` se quedaba sin sus cuartos. Ahora cobra
+            # cada uno el que no tiene un puesto más alto, con la cuota
+            # del equipo completo.
+            ya = {resolver(m) for m in (equipo(p) or [p])} & set(res)
+            if ya and len(ya) == len(equipo(p) or [p]):
                 continue
-            sumar(p, tab.get(puesto, 0), puesto)
+            sumar(p, tab.get(puesto, 0), puesto, salvo=ya)
 
     # 🔴 LOS MODIFICADORES CAEN SOBRE **LOS DOS LADOS**, Y ESO PARECE UN
     # BUG DEL ORIGINAL. `Code.gs:336` hace
@@ -491,6 +512,20 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                 if d:
                     d['puntos'] = int(d['puntos'] * mods['revivido'])
                     d['notas'] += '(R) '
+        # 🔑 `Walk-in N: nombre` CASTIGA SOLO A ESE NOMBRE. La guia de
+        # formatos de Dlx (23/09/2026, §4.1) decide lo que el comentario
+        # de arriba dejaba abierto: el walk-in cobra menos «porque se
+        # salto camino», no su rival. Sin nombre se porta como antes.
+        mq = re.search(r'walk-in\s+(\d+)\s*:\s*([^;|]+)',
+                       str(b.get('notas') or ''), re.I)
+        if mq:
+            rondas = min(int(mq.group(1)), 3)
+            pct = mods['walkin'].get(rondas, 0.0)
+            d = res.get(resolver(mq.group(2).strip()))
+            if d:
+                d['puntos'] = int(d['puntos'] * pct)
+                d['notas'] += 'Walk-in %d ' % rondas
+            continue
         m = re.search(r'walk-in\s+(\d+)', n)
         if m:
             rondas = min(int(m.group(1)), 3)
@@ -546,6 +581,27 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if 'nuevo' in str(b.get('notas') or '').lower():
             esperados |= {x.strip() for x in
                           equipo(b.get('ladoA')) + equipo(b.get('ladoB'))}
+    # 🔴 LA MISMA PERSONA A LOS DOS LADOS DE UNA BATALLA ES IMPOSIBLE, y
+    # cuando pasa es porque un alias fusionó a dos que no son uno. Es el
+    # error que la guía de formatos de Dlx (23/09/2026, parte 5) llama
+    # «el alias peligroso»: *«si un alias y su nombre real aparecen AMBOS
+    # en el mismo evento como personas distintas, NO los fusiones»* — con
+    # BNA y Hassan de rivales, la IA los juntó y dejó a Hassan en los dos
+    # equipos de la final.
+    #
+    # ⚠️ Pasó el 25/09/2026 con un alias que se declaró ese mismo día:
+    # `Fleivacheck -> fleivaman`, y en ELRAP FECHA 6 los dos pelean en la
+    # misma batalla de octavos. Se avisa acá porque el mapa de AKAs es
+    # global y la contradicción sólo se ve dentro de un evento.
+    for b in batallas:
+        a, c = b.get('ladoA'), b.get('ladoB')
+        if a and c and len(equipo(a)) <= 1 and len(equipo(c)) <= 1:
+            ra, rc = resolver(a), resolver(c)
+            if ra and ra == rc and _sin_anotaciones(a) != _sin_anotaciones(c):
+                avisos.append('«%s» y «%s» pelean en la misma batalla y el '
+                              'mapa de AKAs los hace la misma persona (%s): '
+                              'revisar ese alias' % (a, c, ra))
+
     sin = sorted(set(getattr(resolver, 'fallo', ())) - antes - esperados)
     return {'num': num, 'fecha': fecha, 'servidor': servidor, 'escala': esc,
             'participantes': participantes,
