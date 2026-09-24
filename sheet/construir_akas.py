@@ -180,6 +180,39 @@ def main():
 
     pares, cuidado = leer()
     mp, mc = a_mano()
+
+    # 🔴 LO QUE DLX DIJO POR CHAT LE GANA A LA HOJA EN LAS DOS
+    # DIRECCIONES, y hasta el 25/09/2026 ganaba en una sola. Un `pares` a
+    # mano retractaba el «no confundir» de la hoja —es lo que hizo falta
+    # con Makma/Makmah— pero un `no_confundir` a mano NO retractaba un
+    # par de la hoja: se sumaba a la lista y el par seguia fusionando.
+    #
+    # El caso que lo destapo: la hoja `AKAs` dice `Santz -> Santos`, y
+    # Dlx, 25/09/2026: *«Santz y Santos son diferentes»*. Tienen dos
+    # Discord ID distintos (1201718668463972363 y 975234612953497651), o
+    # sea que eran dos cuentas de dos personas y el sistema las contaba
+    # como una. Con la regla vieja no habia forma de deshacerlo desde el
+    # repo: habia que esperar a que alguien editara la hoja.
+    #
+    # ⚠️ Y SI LO MANUAL SE CONTRADICE A SI MISMO, GANA «NO CONFUNDIR».
+    # Es el error barato: dos personas contadas por separado se arreglan
+    # declarando el alias; una persona que se lleva los puntos y la
+    # tarjeta de otra ya salio publicada.
+    _k = lambda a, b: frozenset((PAD.norm(a), PAD.norm(b)))
+    man_p = {_k(a, r) for a, r in mp}
+    man_c = {_k(c[0], c[1]) for c in mc}
+    choque_manual = man_p & man_c
+    if choque_manual:
+        print('   🔴 akas_a_mano.json dice las dos cosas de %d par(es): '
+              'gana NO CONFUNDIR' % len(choque_manual))
+        mp = [x for x in mp if _k(*x) not in choque_manual]
+        man_p -= choque_manual
+    pares_retr = [x for x in pares if _k(*x) in man_c]
+    pares = [x for x in pares if _k(*x) not in man_c]
+    for a, r in pares_retr:
+        print('   🔁 RETRACTADO el alias de la hoja %s -> %s: Dlx dijo '
+              'que son distintos' % (a, r))
+
     # ⚠️ AL FINAL, PARA QUE GANE. Ver `a_mano()`.
     pares = pares + [p for p in mp if p not in pares]
     cuidado = cuidado + [c for c in mc if c not in cuidado]
