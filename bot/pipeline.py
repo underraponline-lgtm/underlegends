@@ -716,7 +716,7 @@ def _lo_barato(correr):
                 _VER.guardar(antes_v)
             else:
                 print('      %-42s %s -> %d'
-                      % ('verificados (Miembro en DRA o Snake Rap)',
+                      % ('verificados (rol Miembro en DRA)',
                          len(antes_v) if antes_v else '—', len(nuevos)))
         except Exception as e:                           # noqa: BLE001
             print('      ⚠️ verificados: %s — sigo con los de ayer'
