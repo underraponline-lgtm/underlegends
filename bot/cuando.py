@@ -107,11 +107,24 @@ def _leer_iso(s):
         return None
 
 
+#: la marca de tiempo de Discord: `<t:1790109000>` o `<t:1790109000:F>`
+_MARCA = re.compile(r'<t:(\d{9,11})(?::[tTdDfFR])?>')
+
+
 def momento(anuncio):
     """Cuándo arranca ese anuncio, en ISO UTC. `None` si no se puede.
 
     `anuncio` es un dict de `bot/anuncios.py`: usa `horario` y `cuando`.
+
+    ⚠️ LA MARCA DE DISCORD GANA A TODO: es la hora exacta que el propio
+    Discord le muestra a cada uno en su zona. Snake Rap la usa —«INICIO
+    DEL TORNEO: <t:1790109000:F>»—, y no depende de cuándo se publicó el
+    anuncio como «EN 30 MINUTOS».
     """
+    m = _MARCA.search(str(anuncio.get('horario') or ''))
+    if m:
+        return _dt.datetime.fromtimestamp(int(m.group(1)), _dt.timezone.utc) \
+            .replace(tzinfo=None).strftime('%Y-%m-%dT%H:%M:%S')
     d = desfase(anuncio.get('horario'))
     if d is None:
         return None
@@ -223,6 +236,9 @@ def _self_check():
        'sin hora de mensaje no hay cuenta')
     ok(momento({'horario': '', 'cuando': '2026-09-23T01:30:41'}) is None,
        'sin frase tampoco')
+    # la de Snake Rap: la marca de Discord, exacta y sin mirar `cuando`
+    ok(momento({'horario': '<t:1790109000:F>', 'cuando': 'basura'})
+       == '2026-09-22T20:30:00', 'la marca <t:…> de Snake Rap es la hora exacta')
 
     print('\n  solo los que todavía no pasaron')
     ahora = _dt.datetime(2026, 9, 23, 2, 0, 0)
