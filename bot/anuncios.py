@@ -424,7 +424,8 @@ def _vigente(cuando, ahora=None):
         t = _dt.datetime.strptime(str(cuando)[:19], '%Y-%m-%dT%H:%M:%S')
     except (ValueError, TypeError):
         return False
-    ahora = ahora or _dt.datetime.utcnow()
+    # naive y en UTC, como `t`: `utcnow()` está deprecado desde 3.12
+    ahora = ahora or _dt.datetime.now(_dt.timezone.utc).replace(tzinfo=None)
     return (ahora - t).total_seconds() <= HORAS_VIGENTE * 3600
 
 
