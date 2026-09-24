@@ -436,6 +436,27 @@ margin-bottom:12px;transition:border-color .15s}
 /* ⚠️ UN NOMBRE QUE NO EXISTE SE AVISA Y SE VUELVE ATRAS. Dejarlo escrito
    con la tarjeta anterior debajo es la pantalla mintiendo. */
 .cmp .cmp-busca.mal{border-color:var(--mg);color:var(--mg)}
+/* 🔑 LA VENTANITA DE SUGERENCIAS. Reemplaza al `<datalist>` del
+   navegador, que filtraba por PREFIJO —«chula» no encontraba a
+   PichulaMc—, se dibujaba con el estilo del sistema (blanco sobre una
+   pagina negra) y en varios navegadores no aparecia hasta tocar la
+   flecha. Un control que a veces no se ve es un control que no esta.
+
+   ⚠️ `position:absolute` contra `.cmp`, que por eso es `relative`. Y
+   z-index alto: cae sobre las dos tarjetas. */
+.cmp{position:relative}
+.sugeridor{position:absolute;z-index:40;background:#0A100F;
+border:1px solid var(--tl);border-radius:2px;overflow:hidden;
+box-shadow:0 18px 40px rgba(0,0,0,.6);max-height:296px;overflow-y:auto}
+.sug{display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+padding:9px 12px;border:0;border-bottom:1px solid var(--bd2);
+color:var(--tx);font:700 .9rem/1.1 Archivo,sans-serif;background:none}
+.sug:last-child{border-bottom:0}
+.sug:hover,.sug.on{background:rgba(41,178,152,.16)}
+.sug span{margin-left:auto;color:var(--tx2);
+font:600 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;
+white-space:nowrap}
+.sug-no{padding:11px 12px;color:var(--tx2);font-size:.86rem}
 .cmp img{width:100%;max-width:220px;margin:0 auto;aspect-ratio:300/438;
 object-fit:contain}
 .cmp .vs{grid-column:1 / -1;display:grid;gap:5px}
