@@ -19,6 +19,8 @@ ninguna es de rendimiento:
     1. `discord_id` cargado en el padron
     2. pais (bandera) en el padron
     3. el rol **Miembro** de DRA, que es lo que se da al verificarse
+       — o, desde el 24/09/2026, el **Miembro 🐍** de Snake Rap. Ver
+       `EXTRA`, abajo.
 
 ⚠️ ESTO NO ES UN REQUISITO DE CARTA Y POR ESO NO VIVE EN
 `comun/requisitos.py`. Alla se mide **desempeño**, que sale del Sheet y
@@ -78,6 +80,30 @@ SALIDA = os.path.join(BASE, 'datos', 'verificados.json')
 # 🔴 EL ROL «MIEMBRO» DE DRA, que es el que se da al verificarse. Dlx
 # lo paso el 19/09: *«tener el rol de 1101257512273055745 en DRA»*.
 ROL_MIEMBRO = '1101257512273055745'
+
+# 🔴 Y DESDE EL 24/09/2026 SNAKE RAP TAMBIÉN VERIFICA. Dlx, el día que
+# entró el bot: *«este es una gran oportunidad para obtener IDs y hacer el
+# setup del bot al servidor. Además de poder autoverificar debido a que
+# este servidor tiene 7000 usuarios»*.
+#
+# ⚠️ ES UNA EXCEPCIÓN DICHA, NO LA REGLA NUEVA. Para FFA, LIVONIA y La
+# Confederación sigue valiendo la del 19/09 —*«sacá su ID, sí, pero no lo
+# verifiques»*, ver `datos/servidores.json`—. Snake Rap es otra cosa: un
+# servidor de la Liga con su propio rol de miembro, que tienen 7.273 de
+# 7.337. Medido ese día: el portón pasaba de 324 a 404 personas, y 8 de
+# esas 80 ya competían en la T1 —Velatz, #3 del ranking, entre ellas—.
+#
+# ⚠️ DE ACÁ SE GUARDAN SÓLO LOS DEL PADRÓN. `datos/verificados.json` va al
+# repo PÚBLICO, y los 7.000 de Snake Rap son en su enorme mayoría gente que
+# nunca jugó en la Liga. Publicar la lista de miembros de otro servidor no
+# le sirve al portón —`pasa()` sólo pregunta por filas del padrón— y es un
+# dato que no es nuestro. Quien entre al padrón después queda verificado en
+# la corrida siguiente.
+#
+# (código, guild, rol)
+EXTRA = (
+    ('SR', '492346406976356374', '511224802539995157'),
+)
 GUILD_DRA = '841017460341604382'
 
 
@@ -88,8 +114,8 @@ def _env(clave):
     sys.exit('falta %s en .env' % clave)
 
 
-def _miembros(s):
-    """{discord_id: [roles]} de DRA, paginado.
+def _miembros(s, gid=None):
+    """{discord_id: [roles]} de ese servidor —DRA si no se dice—, paginado.
 
     ⚠️ EL CURSOR VA POR `int` Y NO POR TEXTO. Los snowflakes tienen 17,
     18 y 19 digitos y `max()` sobre cadenas compara alfabeticamente: asi
@@ -98,14 +124,15 @@ def _miembros(s):
     """
     out, after = {}, '0'
     while True:
-        r = s.get('https://discord.com/api/v10/guilds/%s/members' % GUILD_DRA,
+        r = s.get('https://discord.com/api/v10/guilds/%s/members'
+                  % (gid or GUILD_DRA),
                   params={'limit': 1000, 'after': after}, timeout=40)
         if r.status_code == 429:
             time.sleep(float(r.json().get('retry_after', 1)) + .3)
             continue
         if r.status_code != 200:
-            raise RuntimeError('no pude listar DRA: %s %s'
-                               % (r.status_code, r.text[:120]))
+            raise RuntimeError('no pude listar %s: %s %s'
+                               % (gid or 'DRA', r.status_code, r.text[:120]))
         lote = r.json()
         if not lote:
             break
@@ -180,7 +207,7 @@ def cargar():
         return None, ''
 
 
-def guardar(ids, miembros=0):
+def guardar(ids, miembros=0, extra=None):
     """Escribe el archivo con ese conjunto de IDs.
 
     🔴 SEPARADA DE `refrescar()` PARA PODER DESHACER. El ciclo compara el
@@ -194,23 +221,89 @@ def guardar(ids, miembros=0):
     ids = sorted(ids)
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     with io.open(SALIDA, 'w', encoding='utf-8') as f:
-        json.dump({'guild': GUILD_DRA, 'rol': ROL_MIEMBRO,
-                   'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00',
-                                           time.gmtime()),
-                   'miembros': miembros or len(ids), 'ids': ids},
-                  f, ensure_ascii=False, indent=1)
+        d = {'guild': GUILD_DRA, 'rol': ROL_MIEMBRO,
+             'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00',
+                                     time.gmtime()),
+             'miembros': miembros or len(ids), 'ids': ids}
+        # los de cada servidor EXTRA, aparte: son el respaldo si ese
+        # servidor no contesta la próxima vez. Ver `refrescar()`.
+        if extra:
+            d['extra'] = {k: sorted(v) for k, v in extra.items()}
+        json.dump(d, f, ensure_ascii=False, indent=1)
     return set(ids)
 
 
+def _ids_padron():
+    """Los Discord ID del padrón. Vacío si no se puede leer: sin padrón,
+    los servidores EXTRA no verifican a nadie — de menos, nunca de más."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'padron.json'),
+                     encoding='utf-8') as f:
+            pad = json.load(f)
+    except (OSError, ValueError):
+        return set()
+    pad = pad if isinstance(pad, list) else (pad.get('gente') or [])
+    return {str(p.get('discord_id')) for p in pad if p.get('discord_id')}
+
+
+def _extra_anterior():
+    """`{código: [ids]}` de la corrida anterior, para cuando uno no contesta."""
+    try:
+        with io.open(SALIDA, encoding='utf-8') as f:
+            return json.load(f).get('extra') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def unir(ms_dra, de_extra, padron):
+    """`(ids verificados, {código: ids que aportó})`. Sin red: se prueba.
+
+    `ms_dra` es `{id: [roles]}` de DRA; `de_extra` es
+    `{código: (rol, {id: [roles]})}`. De DRA valen todos los que tienen
+    el rol; de los EXTRA, sólo los que además están en el padrón.
+    """
+    ids = {d for d, roles in ms_dra.items() if ROL_MIEMBRO in roles}
+    aporte = {}
+    for sv, (rol, ms) in de_extra.items():
+        aporte[sv] = {d for d, roles in ms.items() if rol in roles} & padron
+        ids |= aporte[sv]
+    return ids, aporte
+
+
 def refrescar(s=None):
-    """Le pregunta a Discord y reescribe el archivo. `(conjunto, miembros)`."""
+    """Le pregunta a Discord y reescribe el archivo. `(conjunto, miembros)`.
+
+    ⚠️ SI DRA NO CONTESTA, FALLA —y el ciclo sigue con el archivo de
+    ayer—, como siempre. SI UNO EXTRA NO CONTESTA, SE USA LO SUYO DE LA
+    CORRIDA ANTERIOR y se avisa: un corte de Snake Rap no puede sacarle la
+    carta a quien se verificó ahí, que es convertir una falla ajena en un
+    cambio de datos. El guardián del 20 % no alcanzaría a verlo: son pocos
+    contra los 2.574 de DRA.
+    """
     if s is None:
         s = requests.Session()
         s.headers['Authorization'] = 'Bot ' + _env('DISCORD_TOKEN')
     ms = _miembros(s)
-    ids = sorted(d for d, roles in ms.items() if ROL_MIEMBRO in roles)
-    guardar(ids, len(ms))
-    return set(ids), len(ms)
+    total = len(ms)
+    de_extra, antes = {}, _extra_anterior()
+    padron = _ids_padron()
+    for sv, gid, rol in EXTRA:
+        try:
+            m2 = _miembros(s, gid)
+            de_extra[sv] = (rol, m2)
+            total += len(m2)
+        except Exception as e:                           # noqa: BLE001
+            viejos = set(antes.get(sv) or ())
+            print('      ⚠️ %s no contestó (%s): sigo con sus %d de antes'
+                  % (sv, str(e)[:50], len(viejos)))
+            de_extra[sv] = (rol, {d: [rol] for d in viejos})
+    ids, aporte = unir(ms, de_extra, padron)
+    guardar(ids, total, aporte)
+    for sv, v in aporte.items():
+        solo = v - {d for d, roles in ms.items() if ROL_MIEMBRO in roles}
+        print('      %s verifica %d del padrón (%d que no lo están en DRA)'
+              % (sv, len(v), len(solo)))
+    return ids, total
 
 
 def _self_check():
@@ -256,6 +349,23 @@ def _self_check():
           % ('✅' if ok else '🔴', 'el que pidió salir, con las tres',
              'no' if not despues else '🔴 TIENE CARTA IGUAL'))
 
+    # 🔴 SNAKE RAP: SU ROL VERIFICA, PERO SÓLO A LOS DEL PADRÓN
+    dra = {'1': [ROL_MIEMBRO], '2': [], '3': [ROL_MIEMBRO]}
+    sr = {'2': ['R'], '4': ['R'], '5': ['otro']}
+    ids, aporte = unir(dra, {'SR': ('R', sr)}, padron={'2', '5'})
+    for que, ok in [
+        ('el de DRA con el rol, verificado', '1' in ids and '3' in ids),
+        ('el de Snake Rap con su rol y en el padrón, también', '2' in ids),
+        ('el de Snake Rap que NO está en el padrón, no se guarda',
+         '4' not in ids),
+        ('el de Snake Rap sin el rol, no', '5' not in ids),
+        ('lo que aportó Snake Rap queda aparte', aporte == {'SR': {'2'}}),
+        ('sin padrón, Snake Rap no verifica a nadie',
+         unir(dra, {'SR': ('R', sr)}, set())[1] == {'SR': set()}),
+    ]:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     # ⚠️ `cargar()` SIN ARCHIVO TIENE QUE DAR `None`, NO UN CONJUNTO
     # VACIO. Vacio significaria «nadie verificado» y dejaria a las 319
     # sin carta; `None` significa «no se» y el que lee no filtra.
@@ -295,7 +405,8 @@ def main():
         print('   del archivo del %s: %d verificados' % (cuando[:16], len(ids)))
     else:
         ids, cuantos = refrescar()
-        print('   DRA: %d miembros · %d con el rol Miembro' % (cuantos, len(ids)))
+        print('   %d miembros entre DRA y Snake Rap · %d verificados'
+              % (cuantos, len(ids)))
         print('   -> %s' % os.path.relpath(SALIDA, BASE))
 
     g = PAD.cargar()
