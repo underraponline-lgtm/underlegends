@@ -14,19 +14,17 @@
 # ⚠️ POR PUSH Y NO POR HORARIO. El umbral cambia una vez por temporada:
 # un cron diario serian 365 corridas para agarrar un cambio. El push a
 # esos dos archivos **es** la señal, y llega en el momento exacto.
+#
+# 🔴 APAGADO DESDE EL 24/09/2026: LA PAGINA DEL APPS SCRIPT SE RETIRO. Dlx:
+# «el hub sera esta pagina y principalmente nuestro servidor». Su
+# Index.html ahora es un aviso que manda a underlegends.pages.dev, y no
+# tiene el bloque de rangos: con el disparo por push, el proximo cambio a
+# `rangos.py` habria terminado en rojo buscando algo que ya no esta. Queda
+# a mano por si la pagina vuelve; el rango de la web sale del payload del
+# hub (`bot/subir_web.py`), que ya lee `comun/rangos.py`.
 name: rangos
 
 on:
-  # ⚠️ ESTOS DOS ARCHIVOS Y NO LA CARPETA ENTERA, y no es una estimacion:
-  # `webapp_rangos.bloque()` lee UMBRAL/ORDEN/ACENTO/MATERIAL/TILDES de
-  # `comun/rangos.py` y REQUISITOS de `comun/requisitos.py`, y nada mas.
-  # Poner `comun/**` haria que cada arreglo de un comentario en otro
-  # archivo despertara esto para no hacer nada.
-  push:
-    branches: [main]
-    paths:
-      - 'comun/rangos.py'
-      - 'comun/requisitos.py'
   # ⚠️ A MANO SIEMPRE, igual que el ciclo: si algo quedo a medias hay que
   # poder reintentarlo sin fabricar un commit.
   workflow_dispatch:
