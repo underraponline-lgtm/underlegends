@@ -10,6 +10,11 @@
    "guild": "1468472442925092958",
    "servidor": "[FFA] Freestyle For All 👾"
   },
+  "1501999226945667142": {
+   "canal": "📢˚┊contenido-rap",
+   "guild": "841017460341604382",
+   "servidor": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
+  },
   "1503270617770623066": {
    "canal": "•「🔑」llaves-veredictos",
    "guild": "841017460341604382",
@@ -24,13 +29,19 @@
    "canal": "『🔗』plantillas",
    "guild": "1045234440009420810",
    "servidor": "𝑳𝑰𝑽𝑶𝑵𝑰𝑨 𝑹𝑨𝑷"
+  },
+  "863208023857823785": {
+   "canal": "［🔑］llaves",
+   "guild": "492346406976356374",
+   "servidor": "ＳＮＡＫＥ 🐍 ＲＡＰ"
   }
  },
  "guilds": {
   "1045234440009420810": "𝑳𝑰𝑽𝑶𝑵𝑰𝑨 𝑹𝑨𝑷",
   "1468472442925092958": "[FFA] Freestyle For All 👾",
   "1537330461536161833": "🔱 La Confederación 🔱",
+  "492346406976356374": "ＳＮＡＫＥ 🐍 ＲＡＰ",
   "841017460341604382": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
  },
- "ultimo_completo": "2026-09-24T11:40:29+00:00"
+ "ultimo_completo": "2026-09-24T20:54:03+00:00"
 }
