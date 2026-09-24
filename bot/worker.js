@@ -2449,16 +2449,26 @@ export default {
   // importa. Es la regla de este repo — *lo que no se pregunta no se
   // entera de que dejó de andar*.
   async scheduled(evento, env, ctx) {
-    // 🔴 LA MARCA SE ESCRIBE **PRIMERO**, Y ESO NO ES ORDEN SINO UNA
-    // MEDICION. El 24/09/2026 este cron no dejó rastro en dos ventanas de
-    // 30 min, con el handler desplegado, la agenda registrada y el
-    // `workflow_dispatch` contestando 204 desde afuera. Con la escritura
-    // al final, «no disparó» y «disparó y murió antes de llegar» se ven
-    // exactamente igual: silencio.
+    // 🔴 `ctx.waitUntil` EN UN `scheduled` TIRABA EL TRABAJO ENTERO, Y ESE
+    // ERA EL BUG. La primera versión hacía `ctx.waitUntil(async () => {…})`
+    // y devolvía enseguida: el cron **no dejaba rastro en cuatro slots
+    // seguidos** —dos ventanas de 30 min— con el handler desplegado, la
+    // agenda registrada y el `workflow_dispatch` contestando 204 cuando lo
+    // probaba desde afuera.
     //
-    // ⚠️ Y SE `await`, NO `waitUntil`. Un `scheduled` ya tiene su propia
-    // vida; envolver todo en `waitUntil` y devolver enseguida agrega una
-    // forma de perder el trabajo que no hacía falta.
+    // Un `scheduled` ya tiene su propia vida; no necesita que le extiendan
+    // ninguna. Envolverlo en `waitUntil` y volver agrega una forma de
+    // perder el trabajo que no hacía falta — y **no falla**: la invocación
+    // figura como exitosa y no hace nada. Con `await` funciona:
+    //
+    //     cron:arranco   4:52:45am
+    //     cron:ultimo    4:52:45am · ok, HTTP 204
+    //     y el ciclo arrancó a las 4:52am
+    //
+    // ⚠️ Y LA MARCA VA **PRIMERO**, que es lo que dejó verlo. Con la
+    // escritura sólo al final, «no disparó» y «disparó y murió antes de
+    // llegar» se ven exactamente igual: silencio. Las dos claves separan
+    // esas dos preguntas y por eso se quedan las dos.
     try {
       await env.KV.put('cron:arranco', JSON.stringify(
         { t: new Date().toISOString(), cron: evento.cron || '' }));
