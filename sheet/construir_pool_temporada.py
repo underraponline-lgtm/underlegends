@@ -298,8 +298,12 @@ def main():
     # explorar_sheet.py para el porque.
     sc = ['https://www.googleapis.com/auth/spreadsheets.readonly']
     gc = gspread.authorize(Credentials.from_service_account_file(creds, scopes=sc))
-    sh = gc.open_by_key(SHEET)
     from reintentar import leer as _leer_reint   # ver `sheet/reintentar.py`
+    # 🔴 ABRIR TAMBIÉN GASTA CUOTA. `open_by_key()` pide los metadatos del
+    # documento; era la única lectura de este archivo sin reintento. El
+    # 24/09/2026 el mismo agujero tumbó el ciclo de las 6:52 AM ET desde
+    # `construir_pool_competitivo.py`. Ver allá.
+    sh = _leer_reint(lambda: gc.open_by_key(SHEET))
     # ⚠️ EL `lambda` NO ES ADORNO: sin el, `sh.worksheet(...)` se evalua
     # ANTES de entrar al reintento —y esa llamada TAMBIEN pega a la API—,
     # asi que el 429 se escapaba por la mitad que quedaba afuera.
