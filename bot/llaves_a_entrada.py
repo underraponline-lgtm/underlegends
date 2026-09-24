@@ -240,16 +240,56 @@ def ids_del_padron():
                   % str(e)[:60])
             _IDS[0] = {}
             return _IDS[0]
+        # 🔴 ESTO NUNCA AGREGO UN SOLO ALIAS, y el docstring de arriba
+        # dice que si. `construir_akas.cargar()` devuelve el json ENTERO
+        # —`{_leeme, alias, pares, no_confundir}`— y aca se iteraban esas
+        # cuatro claves como si fueran alias: `_leeme` apuntando a una
+        # lista. No fallaba, asi que el `except` de abajo tampoco avisaba;
+        # simplemente no hacia nada.
+        #
+        # Medido el 25/09/2026 con la final de DESGRACIAS CON TöKĪØ: el
+        # campeon es `<@1405241805733105704>`, ese ID es **Hassan** en el
+        # padron, y el lado de la final dice `PRRR🇦🇴` —un alias de Hassan
+        # declarado en la hoja AKAs—. Sin los alias, `Hassan` contra
+        # `PRRR` no engancha y la final entera se iba a Pendientes.
         try:
             import construir_akas as AK
+            mapa = (AK.cargar() or {}).get('alias') or {}
+
+            def _real(a):
+                # siguiendo la cadena, como `rankings.canon()`
+                vis, k = set(), _norm_simple(a)
+                while k in mapa and k not in vis:
+                    vis.add(k)
+                    k = _norm_simple(mapa[k])
+                return k
+
             alias = {}
-            for a, real in (AK.cargar() or {}).items():
-                alias.setdefault(_norm_simple(real), []).append(a)
+            for a in mapa:
+                alias.setdefault(_real(a), []).append(a)
             for did, nombres in out.items():
                 for n in list(nombres):
-                    nombres.extend(alias.get(_norm_simple(n), []))
-        except Exception:                                # noqa: BLE001
-            pass                    # sin alias se sigue: es un extra
+                    for a in alias.get(_real(n), []):
+                        if a not in nombres:
+                            nombres.append(a)
+        except Exception as e:                           # noqa: BLE001
+            # sin alias se sigue —es un extra—, pero se dice
+            print('   ⚠️ sin alias para las menciones: %s' % str(e)[:60])
+        # 🔑 Y EL NOMBRE CON EL QUE CADA UNO SE INSCRIBIO. Es lo que Dlx
+        # pidio desde el principio —*«basate en el ID de los autores del
+        # canal de inscripciones»*—: un `<@ID>` que se anoto como
+        # `PRRR🇦🇴` se llama `PRRR🇦🇴` en esa llave, y eso lo firmo Discord.
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'anuncios.json'),
+                         encoding='utf-8') as f:
+                for x in (json.load(f) or {}).get('inscripciones') or []:
+                    did, t = str(x.get('discord_id') or ''), (x.get('texto') or '').strip()
+                    if did and t:
+                        l = out.setdefault(did, [])
+                        if t not in l:
+                            l.append(t)
+        except (OSError, ValueError):
+            pass
         _IDS[0] = out
     return _IDS[0]
 
@@ -408,9 +448,38 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     # 🔑 `conocidos=` ERA EL PARAMETRO QUE FALTABA. Ver `inscriptos_de()`:
     # sin él, los nombres de la llave se resuelven contra el texto crudo y
     # salen partidos por los paréntesis y los `+` de los equipos.
-    for ronda, lados, ganador, razon in E.resolver(txt,
-                                                   conocidos=inscriptos_de(sv),
-                                                   ids=ids_del_padron()):
+    for bat in E.resolver(txt, conocidos=inscriptos_de(sv),
+                          ids=ids_del_padron()):
+        ronda, lados, ganador, razon = bat
+        # 🔴 EN UNA BATALLA DONDE PASAN VARIOS, LOS QUE NO PASAN CAYERON
+        # AHI —y eso es un puesto—. Hasta el 25/09/2026 esto se contaba
+        # como «limitacion conocida» y no se escribia ninguna fila: medido
+        # ese dia, **30 batallas** en las llaves de FFA, casi todas de 4
+        # con 2 que pasan. Los eliminados quedaban sin sus puntos.
+        #
+        # ⚠️ LA REGLA YA ESTABA DECIDIDA, para los triples, justo abajo:
+        # *«el puesto si se reparte y el duelo no»*. Esto es el mismo caso
+        # un paso mas alla —una batalla de muchos—, asi que va con la misma
+        # nota: `triple`, que `resultados._filas_uno()` deja afuera del 1v1.
+        #
+        # ⚠️ El `ladoA` es uno de los que paso y NO es «quien le gano»:
+        # el motor solo usa la fila para saber quien cayo y en que ronda
+        # (`motor._perdedor`), y el que paso cobra por su ronda siguiente.
+        # La nota lo dice para quien mire la hoja.
+        pasan = [x for x in (getattr(bat, 'pasan', None) or []) if x in lados]
+        if ganador is None and 'pasan' in razon and pasan:
+            caen = [l for l in lados if l not in pasan]
+            for p in caen:
+                filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
+                              'participantes': len(gente_grupo or gente),
+                              'ronda': ronda.lower(),
+                              'ladoA': pasan[0], 'ladoB': p,
+                              'ganador': pasan[0],
+                              'notas': 'triple (%d bandas, pasan %d)'
+                                       % (len(lados), len(pasan))})
+            sabidas['batalla de %d donde pasan %d -> %d fila(s), sin duelo'
+                    % (len(lados), len(pasan), len(caen))] += 1
+            continue
         if ganador is None:
             if 'tercer puesto' in razon or 'pasan' in razon:
                 sabidas[razon] += 1
