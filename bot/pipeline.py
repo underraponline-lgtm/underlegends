@@ -186,7 +186,7 @@ def corre(args, callado=True):
     if r.returncode and callado:
         ultima = (r.stderr or r.stdout or '').strip().splitlines()
         print('      ⚠️ falló: %s' % ' '.join(args[:2]))
-        # 🔴 EL ERROR SOLO NO DICE DÓNDE. Hasta el 25/09/2026 esto imprimía
+        # 🔴 EL ERROR SOLO NO DICE DÓNDE. Hasta el 24/09/2026 esto imprimía
         # la última línea, cortada a 110 caracteres, y el log del ciclo de
         # las 6:52 AM ET del 24/09 decía «APIError: [429]: Quota exceeded»
         # sin decir qué llamada: hubo que deducirla leyendo el builder. La

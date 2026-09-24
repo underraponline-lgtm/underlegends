@@ -182,13 +182,13 @@ def main():
     mp, mc = a_mano()
 
     # 🔴 LO QUE DLX DIJO POR CHAT LE GANA A LA HOJA EN LAS DOS
-    # DIRECCIONES, y hasta el 25/09/2026 ganaba en una sola. Un `pares` a
+    # DIRECCIONES, y hasta el 24/09/2026 ganaba en una sola. Un `pares` a
     # mano retractaba el «no confundir» de la hoja —es lo que hizo falta
     # con Makma/Makmah— pero un `no_confundir` a mano NO retractaba un
     # par de la hoja: se sumaba a la lista y el par seguia fusionando.
     #
     # El caso que lo destapo: la hoja `AKAs` dice `Santz -> Santos`, y
-    # Dlx, 25/09/2026: *«Santz y Santos son diferentes»*. Tienen dos
+    # Dlx, 24/09/2026: *«Santz y Santos son diferentes»*. Tienen dos
     # Discord ID distintos (1201718668463972363 y 975234612953497651), o
     # sea que eran dos cuentas de dos personas y el sistema las contaba
     # como una. Con la regla vieja no habia forma de deshacerlo desde el
