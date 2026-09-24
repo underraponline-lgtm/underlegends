@@ -716,9 +716,27 @@ el hash actual, en vez de arrastrar URLs muertas.
 
 ## Git
 
-El proyecto usa **git local** (sin remoto por ahora). Un commit por tanda de
-cambios, con un mensaje que diga **qué** se hizo y **por qué** — el porqué es lo
-que no se puede reconstruir después leyendo el diff.
+Un commit por tanda de cambios, con un mensaje que diga **qué** se hizo y
+**por qué** — el porqué es lo que no se puede reconstruir después leyendo el
+diff.
+
+🔴 **ESTA CARPETA ES EL REPO PÚBLICO `underlegends`, y hay otro.** Esta
+línea decía *«git local, sin remoto por ahora»* y dejó de ser cierto el
+24/09/2026:
+
+| | |
+|---|---|
+| **`underlegends`** · **público** | esta carpeta. Donde corre el ciclo |
+| `liga-global-tarjetas` · privado | la carpeta de arriba: el **archivo**, con el historial y las fotos |
+
+⚠️ **El público es público por plata**: Actions es ilimitado ahí y son
+2.000 min/mes en uno privado. Y arrancó con el historial en cero a
+propósito — el del privado tiene 421 fotos de gente real.
+
+⚠️ **EL CICLO COMMITEA ACÁ CADA MEDIA HORA** (`datos/`, con
+`bot/ci/guardar.sh`). Antes de pushear: `git pull --rebase origin main`.
+Y no se toca un archivo de `datos/` mientras corre una corrida (:22 y :52):
+los dos commits lo cambian y el segundo choca.
 
 ⚠️ **`creds.json` nunca se commitea.** Está en `.gitignore` y ahí se queda. Es
 una clave de cuenta de servicio con acceso al Sheet: si alguna vez entra al
