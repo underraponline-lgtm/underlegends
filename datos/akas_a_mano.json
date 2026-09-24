@@ -36,6 +36,14 @@
   "   Discord ID; `Subaru` es una fila vacia con ❓. Mandarlo al otro le",
   "   daria a XXXXX un pais que no es y le sacaria la carta de Pais.",
   "",
+  "",
+  "⚠️ Dlx, 25/09/2026: «Ricard y richardflex, ricardflex son la misma»,",
+  "   «Bloody painter y bloody las mismas», «Fleivaman y fleivacheck si».",
+  "   El nombre real es el del padrón en los tres casos —el AKA oficial—:",
+  "   Richard (Ecuador), Bloody (Colombia, verificado) y fleivaman (con",
+  "   Discord ID). `Volk 🇲🇽` y `volk 🇨🇴` NO se juntan: Dlx, mismo día, «la",
+  "   bandera no siempre es decoración». Ver `rankings._grafia()`.",
+  "",
   "pares: [alias, nombre real].",
   "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
  ],
@@ -59,6 +67,30 @@
   [
    "XXXXX",
    "Xubaru"
+  ],
+  [
+   "RICARD",
+   "Richard"
+  ],
+  [
+   "ricardflex",
+   "Richard"
+  ],
+  [
+   "richardflex",
+   "Richard"
+  ],
+  [
+   "BLOODY PAINTER",
+   "Bloody"
+  ],
+  [
+   "Fleivacheck",
+   "fleivaman"
+  ],
+  [
+   "fleivachek",
+   "fleivaman"
   ]
  ],
  "no_confundir": [
