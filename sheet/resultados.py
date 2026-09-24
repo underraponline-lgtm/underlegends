@@ -57,7 +57,8 @@ try:
 except AttributeError:
     pass
 
-from escribir import Hoja, poner, id_operativo, API, token   # noqa: E402
+from escribir import (Hoja, poner, id_operativo, API, token,   # noqa: E402
+                      _pedir)
 
 # ⚠️ EL ORDEN ES EL DE LA HOJA, no uno nuevo. Se verifica contra la
 # cabecera antes de escribir: mandar de menos NO falla, entra corrido.
@@ -147,34 +148,100 @@ def _filas_uno(ev):
     return out
 
 
-def _borrar_evento(hoja, num):
-    """Saca las filas de ese evento. Idempotencia: reescribir no duplica."""
+def _filas_crudas(h):
+    """Las filas de la tabla con su valor de verdad: los números, números.
+
+    🔴 `Hoja.filas()` DEVUELVE LO QUE SE VE, Y REESCRIBIRLO LO VUELVE TEXTO.
+    El borrado de antes leía así y reescribía las filas que quedaban: cada
+    evento reprocesado convertía los puntos y el `#` de todos los demás en
+    texto. Por eso `Eventos Procesados` tenía el `#` como texto en seis de
+    siete filas —la séptima, recién agregada, era número— y un `COUNT`
+    daba 1. Medido el 24/09/2026.
+    """
     import requests
-    filas = hoja.filas()
-    quedan = [f for f in filas if str(f[0]).strip() != str(num)]
-    if len(quedan) == len(filas):
-        return 0
-    # se reescribe el bloque entero y se limpia la cola
-    ancho = hoja.ancho
-    quedan = [list(f) + [''] * (ancho - len(f)) for f in quedan]
-    vacias = [[''] * ancho for _ in range(len(filas) - len(quedan))]
-    rng = '%s!A%d:%s%d' % (hoja.nombre, hoja.fila_datos,
-                           chr(ord('A') + ancho - 1),
-                           hoja.fila_datos + len(filas) - 1)
-    requests.put('%s/%s/values/%s?valueInputOption=RAW'
-                 % (API, id_operativo(), requests.utils.quote(rng)),
-                 headers={'Authorization': 'Bearer ' + token()},
-                 json={'values': quedan + vacias}, timeout=90)
-    return len(filas) - len(quedan)
+    ult = chr(ord('A') + h.ancho - 1)
+    d = _pedir('GET', '/values/%s!A%d:%s?valueRenderOption=UNFORMATTED_VALUE'
+               % (requests.utils.quote(h.nombre), h.fila_datos, ult))
+    return [f for f in d.get('values', []) if any(str(c).strip() for c in f)]
 
 
-def guardar(ev, dry=True):
-    """Escribe un evento en las dos hojas. Idempotente por `num`."""
-    for c in ('num', 'fecha', 'servidor'):
-        if c not in ev:
-            raise ValueError('al evento le falta %r' % c)
+def _grilla(h):
+    """Cuántas filas tiene la hoja: un rango más largo es un 400."""
+    d = _pedir('GET', '?fields=sheets.properties(title,sheetId,gridProperties)')
+    for s_ in d.get('sheets') or []:
+        if s_['properties']['title'] == h.nombre:
+            return (s_['properties']['sheetId'],
+                    s_['properties']['gridProperties'].get('rowCount', 0))
+    return None, 0
+
+
+def reescribir(h, nums, nuevas):
+    """La tabla sin las filas de `nums` y con `nuevas` al final. Cuántas saca.
+
+    🔴 UNA LECTURA Y UNA ESCRITURA POR HOJA, SEA CUAL SEA LA CANTIDAD DE
+    EVENTOS. Esto era, por evento: leer la hoja para borrar, reescribirla,
+    y leerla otra vez para saber dónde agregar —`Hoja.agregar()` cuenta las
+    filas antes de escribir—. Tres hojas por evento: ~8 lecturas cada uno,
+    y el ciclo reprocesa TODOS los eventos de la temporada. Con siete ya
+    pasaba las 60 lecturas por minuto: el 24/09/2026 a las 11:52 AM ET
+    `procesar_entrada.py` murió con un 429 a la mitad del #355. Con veinte
+    eventos habría muerto en todas las corridas.
+
+    🔴 Y EL BORRADO NO MIRABA SI HABÍA FUNCIONADO: era un `requests.put`
+    sin fijarse la respuesta. Con un 429 las filas viejas quedaban, se
+    contaban como borradas, y después se agregaban las nuevas: **el evento
+    duplicado, o sea el doble de puntos**, sin un error. Ahora todo pasa
+    por `escribir._pedir()`, que reintenta y levanta.
+
+    ⚠️ El orden DENTRO de cada evento se conserva —`rankings.py` lee la
+    racha en ese orden—; el evento reescrito queda al final, como antes.
+    ⚠️ Lo que sobra abajo se BORRA, no se llena de `""`: una celda con
+    `""` cuenta para `COUNTA` y aparenta datos.
+    """
+    import requests
+    viejas = _filas_crudas(h)
+    nums = {str(n).strip() for n in nums}
+    quedan = [list(f) + [''] * (h.ancho - len(f)) for f in viejas
+              if str(f[0]).strip() not in nums]
+    total = quedan + [list(f) for f in nuevas]
+    malas = [f for f in total if len(f) != h.ancho]
+    if malas:
+        raise RuntimeError(
+            '%s tiene %d columnas y %d fila(s) traen otra cantidad. Mandar de '
+            'menos NO falla: entra corrida.' % (h.nombre, h.ancho, len(malas)))
+    ult = chr(ord('A') + h.ancho - 1)
+    hasta = h.fila_datos + len(total) - 1
+    if total:
+        sid, filas_grilla = _grilla(h)
+        if hasta > filas_grilla and sid is not None:
+            _pedir('POST', ':batchUpdate', json={'requests': [{'appendDimension': {
+                'sheetId': sid, 'dimension': 'ROWS',
+                'length': hasta - filas_grilla + 50}}]})
+        _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(
+            '%s!A%d:%s%d' % (h.nombre, h.fila_datos, ult, hasta)),
+            json={'values': total})
+    if len(viejas) > len(total):
+        _pedir('POST', '/values/%s:clear' % requests.utils.quote(
+            '%s!A%d:%s%d' % (h.nombre, hasta + 1, ult,
+                             h.fila_datos + len(viejas) - 1)))
+    return len(viejas) - len(quedan)
+
+
+def guardar_varios(evs, dry=True):
+    """Escribe varios eventos en las dos hojas. `{num: (resultados, duelos)}`.
+
+    Idempotente por `num`: reescribir un evento reemplaza sus filas.
+    """
     paises, clave = _pais_de()
-    res, uno = _filas_res(ev, paises, clave), _filas_uno(ev)
+    res, uno, cuentas = [], [], {}
+    for ev in evs:
+        for c in ('num', 'fecha', 'servidor'):
+            if c not in ev:
+                raise ValueError('al evento le falta %r' % c)
+        r, u = _filas_res(ev, paises, clave), _filas_uno(ev)
+        res += r
+        uno += u
+        cuentas[ev['num']] = (len(r), len(u))
 
     hr, hu = Hoja('Resultados'), Hoja('1v1')
     for h, cols in ((hr, COLS_RES), (hu, COLS_UNO)):
@@ -184,21 +251,27 @@ def guardar(ev, dry=True):
                 'esperaba: %s' % (h.nombre, h.cabecera, cols))
 
     if dry:
-        print('   [dry] #%s %s %s → %d resultado(s) y %d duelo(s)'
-              % (ev['num'], ev['servidor'], ev['fecha'], len(res), len(uno)))
+        for ev in evs:
+            n1, n2 = cuentas[ev['num']]
+            print('   [dry] #%s %s %s → %d resultado(s) y %d duelo(s)'
+                  % (ev['num'], ev['servidor'], ev['fecha'], n1, n2))
         sin_pais = [r[4] for r in res if not r[5]]
         if sin_pais:
             print('         ⚠️ %d sin país en el padrón: %s'
                   % (len(sin_pais), ', '.join(sin_pais[:6])))
-        return 0, 0
+        return {n: (0, 0) for n in cuentas}
 
-    borradas = _borrar_evento(hr, ev['num']) + _borrar_evento(hu, ev['num'])
+    nums = [ev['num'] for ev in evs]
+    borradas = reescribir(hr, nums, res) + reescribir(hu, nums, uno)
     if borradas:
-        print('   (reescribiendo: saqué %d fila(s) viejas de #%s)'
-              % (borradas, ev['num']))
-    n1 = hr.agregar(res, dry=False) if res else 0
-    n2 = hu.agregar(uno, dry=False) if uno else 0
-    return n1, n2
+        print('   (reescribiendo: saqué %d fila(s) viejas de %d evento(s))'
+              % (borradas, len(evs)))
+    return cuentas
+
+
+def guardar(ev, dry=True):
+    """Escribe un evento. Ver `guardar_varios()`, que es lo que hay que usar."""
+    return guardar_varios([ev], dry=dry)[ev['num']]
 
 
 def estado():
