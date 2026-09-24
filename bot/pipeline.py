@@ -1000,7 +1000,14 @@ def main():
         # ⚠️ PERO LAS BLOQUEADAS SE MIRAN IGUAL. Ver rehacer_bloqueadas():
         # su contador puede moverse sin que se mueva ninguna carta.
         n_bq = rehacer_bloqueadas() if correr else 0
-        if n_bq:
+        # 🔴 Y KV SE REFRESCA SIEMPRE, no sólo si hubo Bloqueadas. Quien
+        # PIERDE el portón —se le saca la verificación, pide salir— no
+        # cambia ninguna carta, así que esta rama no redibujaba nada y KV
+        # lo seguía teniendo: `/card` le contestaba igual. Pasó el
+        # 24/09/2026: el portón volvió a ser sólo DRA (2.686 -> 2.576) y
+        # la corrida dijo «no había nada que hacer» con 86 de más en KV.
+        # Cuesta ~5 s y es un diff-writer: escribe lo que cambió.
+        if correr:
             corre(['bot/subir_datos.py'], callado=False)
         print('\n   listo en %.1f s · %s\n'
               % (time.time() - t0,
