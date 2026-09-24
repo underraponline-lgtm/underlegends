@@ -135,6 +135,63 @@ def de_esta_temporada(hallazgos):
 _IDS = [None]
 
 
+_INSC = [None]
+
+
+def inscriptos_de(sv):
+    """Los nombres que se anotaron en el canal de inscripciones de `sv`.
+
+    🔴 ESTE ES EL PARAMETRO QUE FALTABA, Y ES EL QUE DLX PIDIO. La llamada
+    a `escuchar.resolver()` pasaba `ids=` y **no** `conocidos=`, que es
+    justamente la lista de inscriptos de ese evento. Su docstring lo dice
+    entero: *«cuando están, el parecido se busca contra ~16 candidatos en
+    vez de contra todo el texto»*. Sin eso cae a parecido sobre el texto
+    crudo de la llave, y de ahí sale la basura que se vio en la vitrina:
+
+        nhp(sinlimites     <- cortado en el paréntesis
+        fleivacheck)       <- la OTRA MITAD del mismo nombre
+        papa               <- de «sosa+papa+ bna🇯🇴»
+        XXXXX 🇳🇴 · Garxziiscity 🇦🇿 · El ultra knowledge 🇬🇦
+
+    Cada pedazo se volvía una persona y agarraba la bandera del emoji que
+    tenía al lado — y así aparecieron Noruega, Azerbaiyán y Gabón en un
+    ranking de una liga hispanohablante.
+
+    🔑 **Y UNA INSCRIPCION VALE MAS QUE CUALQUIER ALGORITMO DE NOMBRES**,
+    que es lo que dice `bot/inscripciones.py` en su encabezado: es un
+    mensaje que escribió la propia persona, así que el `author.id` es su
+    Discord ID **firmado por Discord**. Medido el 21/09: cruzar los 371
+    del padrón sin ID contra los 2.705 miembros de DRA daba **11 (3 %)**;
+    por el canal es el 100 % y sin margen, porque no es un parecido. El
+    caso que lo muestra: `tnor` se inscribe desde la cuenta `tenor_25499`.
+
+    ⚠️ VAN TODOS LOS DEL SERVIDOR Y NO SOLO LOS DE ESE EVENTO. Se podría
+    filtrar por fecha, pero **sobrar un candidato es barato y faltar uno
+    es el bug de arriba**: si el inscripto no está en la lista, el nombre
+    de la llave no tiene con qué canonizarse. Son 35 en total.
+
+    ⚠️ Y SALE DE `datos/anuncios.json`, que el ciclo ya refresca en el
+    paso anterior. Pedirle a Discord otra vez sería una segunda fuente
+    para lo mismo, y la que se quede vieja no avisa.
+    """
+    if _INSC[0] is None:
+        d = {}
+        try:
+            p = os.path.join(BASE, 'datos', 'anuncios.json')
+            with io.open(p, encoding='utf-8') as f:
+                for x in (json.load(f) or {}).get('inscripciones') or []:
+                    t = (x.get('texto') or '').strip()
+                    if t:
+                        d.setdefault(x.get('servidor') or '', []).append(t)
+        except (OSError, ValueError):
+            # ⚠️ SIN INSCRIPTOS SE SIGUE, con el comportamiento de antes.
+            # Quedarse sin procesar una llave porque falta un json es peor
+            # que resolverla peor.
+            d = {}
+        _INSC[0] = d
+    return _INSC[0].get(sv) or []
+
+
 def ids_del_padron():
     """{discord_id: [nombres]}, del padrón más sus alias. `{}` si falla.
 
@@ -348,7 +405,11 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                       'no está en `servidores` ni en `solo_identidad`'))
         return filas, dudas, sabidas
 
+    # 🔑 `conocidos=` ERA EL PARAMETRO QUE FALTABA. Ver `inscriptos_de()`:
+    # sin él, los nombres de la llave se resuelven contra el texto crudo y
+    # salen partidos por los paréntesis y los `+` de los equipos.
     for ronda, lados, ganador, razon in E.resolver(txt,
+                                                   conocidos=inscriptos_de(sv),
                                                    ids=ids_del_padron()):
         if ganador is None:
             if 'tercer puesto' in razon or 'pasan' in razon:

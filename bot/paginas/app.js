@@ -522,6 +522,50 @@ var NOMBRE_CARTA = {
   servidor: 'Servidor', pais: 'País'
 };
 
+// ══════════════════════════════════════════════════════════════════════
+// 🔴 BAJAR UNA CARTA NO ES UN `<a download>`, Y ESO NO SE PUEDE ADIVINAR
+// LEYENDO: los navegadores **ignoran** el atributo `download` cuando el
+// archivo es de otro origen. Con un `<a download href="…r2.dev/…">` el
+// botón se ve bien, no da error, y abre la imagen en vez de guardarla.
+//
+// Así que se baja con `fetch` y se guarda un blob — y eso pide **CORS en
+// el bucket**, que no tenía. Medido el 24/09/2026: `pub-*.r2.dev` no
+// mandaba ni un `access-control-*`. Se le puso una política limitada a
+// los dos dominios de Pages; a cualquier otro origen sigue sin mandarla.
+//
+// ⚠️ Y HAY UN CAMINO DE VUELTA, porque el que falla es el `fetch`: si la
+// política se cae o el archivo no está, se abre la imagen en otra pestaña.
+// Un botón que no hace nada es peor que uno que hace algo parecido.
+//
+// ⚠️ El nombre del archivo lo pone la página y no el bucket. En R2 todas
+// se llaman `temporada.webp` —la clave es `<persona>/<carta>.webp`— así
+// que cuatro descargas dejarían cuatro archivos con el mismo nombre.
+function bajarCarta(f, cual) {
+  var nombre = f.n.replace(/[\\/:*?"<>|]/g, '') + ' - ' +
+    (NOMBRE_CARTA[cual] || cual) + '.webp';
+  var url = urlCarta(f, cual);
+  var b = $('#vBajar');
+  if (b) b.classList.add('yendo');
+  fetch(url, { mode: 'cors' }).then(function (r) {
+    if (!r.ok) throw new Error(r.status);
+    return r.blob();
+  }).then(function (bl) {
+    var u = URL.createObjectURL(bl);
+    var a = document.createElement('a');
+    a.href = u;
+    a.download = nombre;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    // sin esto el blob queda en memoria toda la sesión
+    setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
+  }).catch(function () {
+    window.open(url, '_blank', 'noopener');
+  }).then(function () {
+    if (b) b.classList.remove('yendo');
+  });
+}
+
 function abrir(k) {
   var f = porK(k);
   if (!f) return;

@@ -132,12 +132,54 @@ def num(x):
         return 0.0
 
 
+#: 🔴 LOS PAISES DE LA LIGA, Y ES UN FILTRO NECESARIO. Sale de
+#: `sheet/padron_t1.PAIS_ISO` —que dice de dónde salió cada uno— menos
+#: Brasil y Emiratos, que CLAUDE.md ya declara fuera: *«Emiratos y Brasil no
+#: deberían existir, no se les toma en cuenta»* (Dlx, 22/09/2026).
+#:
+#: ⚠️ NO SE ESCRIBE LA LISTA ACA, se deriva. Copiarla sería el bug del rango
+#: en cinco lugares con veintiún países.
+def _iso_liga():
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from padron_t1 import PAIS_ISO
+        return {v for k, v in PAIS_ISO.items()} - {'br', 'ae'}
+    except ImportError:
+        return set()
+
+
+ISO_LIGA = _iso_liga()
+
+
 def bandera(s):
-    """El emoji de bandera son dos 'regional indicator': U+1F1E6 = A."""
+    """El emoji de bandera son dos 'regional indicator': U+1F1E6 = A.
+
+    🔴 Y SOLO VALE SI ES UN PAIS DE LA LIGA. Dlx, 24/09/2026: *«te dije que
+    sólo las banderas hispanohablantes. Veo una bandera de noruega»*.
+
+    Esa bandera era real y el dato venía de acá: **el emoji que la gente
+    pega a su nombre en la llave es decoración, no dato**, y este fallback lo
+    tomaba como país cuando la persona no estaba en el padrón. Medido sobre
+    los lados reales de la T1, el mismo Hassan aparece como `Hassan🇪🇬`,
+    `Hassan🇮🇶` y `hassan🇦🇴` — Egipto, Irak y Angola— y hay `🇬🇦` Gabón,
+    `🇦🇿` Azerbaiyán, `🇯🇴` Jordania y `🇳🇴` Noruega. Ninguno es un país de
+    la Liga y ninguno es un error de nadie: son chistes.
+
+    ⚠️ EL FALLBACK NO SE BORRA, SE ACOTA. Sirve para la gente que todavía no
+    está en el padrón y escribe su bandera de verdad — que es la mayoría. Lo
+    que no puede es aceptar cualquier cosa.
+
+    ⚠️ Y CON UNA BANDERA DE AFUERA DEVUELVE VACIO, no la primera válida que
+    encuentre. Sin país no hay carta de País, y eso es *«sin dato no hay
+    pieza»*: mejor sin bandera que con la de un país que no compite.
+    """
     m = re.findall(r'[\U0001F1E6-\U0001F1FF]{2}', s)
     if not m:
         return ''
-    return ''.join(chr(ord(c) - 0x1F1E6 + ord('a')) for c in m[0])
+    cc = ''.join(chr(ord(c) - 0x1F1E6 + ord('a')) for c in m[0])
+    if ISO_LIGA and cc not in ISO_LIGA:
+        return ''
+    return cc
 
 
 sys.path.insert(0, RAIZ)

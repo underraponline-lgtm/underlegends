@@ -223,6 +223,15 @@
     </div>
     <div class="pestanas" id="vPestanas"></div>
     <div class="v-carta"><img id="vImg" alt="" loading="lazy"></div>
+    <!-- 🔑 DESCARGAR. El PNG con fondo transparente es lo que el proyecto
+         fabrica; sin esto la única forma de guardarlo era clic derecho, que
+         en teléfono no existe. Va debajo de la carta y no en la cabecera:
+         pertenece a la carta que se está mirando, no a la persona. -->
+    <div class="v-acc">
+      <button class="bajar" id="vBajar" hidden>
+        <i aria-hidden="true">&#11015;</i><span>Descargar</span>
+      </button>
+    </div>
     <div class="v-stats" id="vStats"></div>
   </div>
 </div>
