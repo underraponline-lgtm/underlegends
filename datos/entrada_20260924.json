@@ -5,6 +5,28 @@
   "fecha": "24/09",
   "participantes": 31,
   "ronda": "octavos",
+  "ladoA": "Makma 🇻🇪",
+  "ladoB": "vandu 🇨🇦",
+  "ganador": "Makma 🇻🇪",
+  "notas": "triple (3 bandas)"
+ },
+ {
+  "evento": "ELRAP FECHA 6",
+  "servidor": "FFA",
+  "fecha": "24/09",
+  "participantes": 31,
+  "ronda": "octavos",
+  "ladoA": "Makma 🇻🇪",
+  "ladoB": "Tuca 🇦🇷",
+  "ganador": "Makma 🇻🇪",
+  "notas": "triple (3 bandas)"
+ },
+ {
+  "evento": "ELRAP FECHA 6",
+  "servidor": "FFA",
+  "fecha": "24/09",
+  "participantes": 31,
+  "ronda": "octavos",
   "ladoA": "chianluka",
   "ladoB": "geekto 🇦🇷",
   "ganador": "chianluka",
@@ -28,9 +50,31 @@
   "participantes": 31,
   "ronda": "octavos",
   "ladoA": "Sin límites 🇵🇪",
-  "ladoB": "fokox🇦🇷",
+  "ladoB": "Fokox🇦🇷",
   "ganador": "Sin límites 🇵🇪",
   "notas": ""
+ },
+ {
+  "evento": "ELRAP FECHA 6",
+  "servidor": "FFA",
+  "fecha": "24/09",
+  "participantes": 31,
+  "ronda": "octavos",
+  "ladoA": "Fleivacheck 🇧🇴",
+  "ladoB": "Iguana 🇵🇪",
+  "ganador": "Fleivacheck 🇧🇴",
+  "notas": "triple (3 bandas)"
+ },
+ {
+  "evento": "ELRAP FECHA 6",
+  "servidor": "FFA",
+  "fecha": "24/09",
+  "participantes": 31,
+  "ronda": "octavos",
+  "ladoA": "Fleivacheck 🇧🇴",
+  "ladoB": "fleivaman🇵🇭",
+  "ganador": "Fleivacheck 🇧🇴",
+  "notas": "triple (3 bandas)"
  },
  {
   "evento": "ELRAP FECHA 6",
@@ -50,7 +94,7 @@
   "participantes": 31,
   "ronda": "octavos",
   "ladoA": "hassan🇦🇴",
-  "ladoB": "⌞Scot 🇦🇷⌝",
+  "ladoB": "Scot 🇦🇷",
   "ganador": "hassan🇦🇴",
   "notas": "triple (4 bandas)"
  },
@@ -83,7 +127,7 @@
   "participantes": 31,
   "ronda": "cuartos",
   "ladoA": "gekto🇦🇷(chianluka🇦🇷)",
-  "ladoB": "Makma 🇻🇪(vandu)",
+  "ladoB": "Makma 🇻🇪",
   "ganador": "gekto🇦🇷(chianluka🇦🇷)",
   "notas": ""
  },
@@ -148,9 +192,9 @@
   "fecha": "24/09",
   "participantes": 16,
   "ronda": "final",
-  "ladoA": "Zignos 🇩🇴",
+  "ladoA": "Zignos 🇩🇴 + CJ 🇻🇪",
   "ladoB": "Cj 🇻🇪",
-  "ganador": "Zignos 🇩🇴",
+  "ganador": "Zignos 🇩🇴 + CJ 🇻🇪",
   "notas": "triple (4 bandas)"
  },
  {
@@ -159,9 +203,9 @@
   "fecha": "24/09",
   "participantes": 16,
   "ronda": "final",
-  "ladoA": "Zignos 🇩🇴",
-  "ladoB": "Nc 🇦🇷",
-  "ganador": "Zignos 🇩🇴",
+  "ladoA": "Zignos 🇩🇴 + CJ 🇻🇪",
+  "ladoB": "nc🇯🇴+g8🇯🇴",
+  "ganador": "Zignos 🇩🇴 + CJ 🇻🇪",
   "notas": "triple (4 bandas)"
  },
  {
@@ -170,9 +214,9 @@
   "fecha": "24/09",
   "participantes": 16,
   "ronda": "final",
-  "ladoA": "Zignos 🇩🇴",
-  "ladoB": "Mcnadie 🇦🇷",
-  "ganador": "Zignos 🇩🇴",
+  "ladoA": "Zignos 🇩🇴 + CJ 🇻🇪",
+  "ladoB": "MCNADIE🇦🇷",
+  "ganador": "Zignos 🇩🇴 + CJ 🇻🇪",
   "notas": "triple (4 bandas)"
  },
  {
@@ -193,7 +237,7 @@
   "participantes": 13,
   "ronda": "cuartos",
   "ladoA": "**PICHULAMC🇦🇷**",
-  "ladoB": "ELSOOLAR🇨🇴",
+  "ladoB": "Elsoolar🇨🇴",
   "ganador": "**PICHULAMC🇦🇷**",
   "notas": "triple (3 bandas)"
  },
@@ -203,9 +247,9 @@
   "fecha": "23/09",
   "participantes": 13,
   "ronda": "cuartos",
-  "ladoA": "**PRRR🇦🇴**",
-  "ladoB": "FLEIVAMAN🇵🇪",
-  "ganador": "**PRRR🇦🇴**",
+  "ladoA": "PRRR🇦🇴",
+  "ladoB": "fleivaman🇵🇭",
+  "ganador": "PRRR🇦🇴",
   "notas": "triple (3 bandas)"
  },
  {
@@ -214,9 +258,9 @@
   "fecha": "23/09",
   "participantes": 13,
   "ronda": "cuartos",
-  "ladoA": "**PRRR🇦🇴**",
+  "ladoA": "PRRR🇦🇴",
   "ladoB": "VANDU 🇨🇦",
-  "ganador": "**PRRR🇦🇴**",
+  "ganador": "PRRR🇦🇴",
   "notas": "triple (3 bandas)"
  },
  {
@@ -226,7 +270,7 @@
   "participantes": 13,
   "ronda": "cuartos",
   "ladoA": "**VELATZ🇨🇱**",
-  "ladoB": "RICARD🇪🇨",
+  "ladoB": "Richard 🇪🇨",
   "ganador": "**VELATZ🇨🇱**",
   "notas": "triple (4 bandas)"
  },
@@ -237,7 +281,7 @@
   "participantes": 13,
   "ronda": "cuartos",
   "ladoA": "**VELATZ🇨🇱**",
-  "ladoB": "BLOODY🇨🇴",
+  "ladoB": "Bloody 🇨🇴 + Volk 🇲🇽",
   "ganador": "**VELATZ🇨🇱**",
   "notas": "triple (4 bandas)"
  },
@@ -258,9 +302,9 @@
   "fecha": "23/09",
   "participantes": 13,
   "ronda": "cuartos",
-  "ladoA": "**MAKMA 🇻🇪**",
+  "ladoA": "Makma 🇻🇪",
   "ladoB": "NOONE🇵🇪",
-  "ganador": "**MAKMA 🇻🇪**",
+  "ganador": "Makma 🇻🇪",
   "notas": "triple (3 bandas)"
  },
  {
@@ -269,9 +313,9 @@
   "fecha": "23/09",
   "participantes": 13,
   "ronda": "cuartos",
-  "ladoA": "**MAKMA 🇻🇪**",
+  "ladoA": "Makma 🇻🇪",
   "ladoB": "TROT🇪🇸",
-  "ganador": "**MAKMA 🇻🇪**",
+  "ganador": "Makma 🇻🇪",
   "notas": "triple (3 bandas)"
  },
  {
@@ -280,9 +324,9 @@
   "fecha": "23/09",
   "participantes": 13,
   "ronda": "semifinales",
-  "ladoA": "**PRRR🇦🇴**",
+  "ladoA": "PRRR🇦🇴",
   "ladoB": "PICHULAMC🇦🇷",
-  "ganador": "**PRRR🇦🇴**",
+  "ganador": "PRRR🇦🇴",
   "notas": ""
  },
  {
@@ -292,7 +336,7 @@
   "participantes": 13,
   "ronda": "semifinales",
   "ladoA": "**VELATZ🇨🇱**",
-  "ladoB": "MAKMA 🇻🇪",
+  "ladoB": "Makma 🇻🇪",
   "ganador": "**VELATZ🇨🇱**",
   "notas": ""
  },
@@ -302,9 +346,9 @@
   "fecha": "23/09",
   "participantes": 17,
   "ronda": "octavos",
-  "ladoA": "COLESITO 🇨🇴",
+  "ladoA": "colesito",
   "ladoB": "TEITO 🇨🇴",
-  "ganador": "COLESITO 🇨🇴",
+  "ganador": "colesito",
   "notas": ""
  },
  {
@@ -324,9 +368,9 @@
   "fecha": "23/09",
   "participantes": 17,
   "ronda": "octavos",
-  "ladoA": "PRR 🇦🇴",
+  "ladoA": "PRRR🇦🇴",
   "ladoB": "CHOP 🇸🇻",
-  "ganador": "PRR 🇦🇴",
+  "ganador": "PRRR🇦🇴",
   "notas": ""
  },
  {
@@ -369,7 +413,7 @@
   "participantes": 17,
   "ronda": "octavos",
   "ladoA": "SEBITA 🇱🇷",
-  "ladoB": "BLOODY 🇨🇴",
+  "ladoB": "Bloody 🇨🇴 + Volk 🇲🇽",
   "ganador": "SEBITA 🇱🇷",
   "notas": ""
  },
@@ -379,9 +423,9 @@
   "fecha": "23/09",
   "participantes": 17,
   "ronda": "cuartos",
-  "ladoA": "COLESITO 🇨🇴",
+  "ladoA": "colesito",
   "ladoB": "BLANKO 🇺🇸",
-  "ganador": "COLESITO 🇨🇴",
+  "ganador": "colesito",
   "notas": ""
  },
  {
@@ -390,9 +434,9 @@
   "fecha": "23/09",
   "participantes": 17,
   "ronda": "cuartos",
-  "ladoA": "PRR 🇦🇴",
+  "ladoA": "PRRR🇦🇴",
   "ladoB": "BALTRIP 🇩🇴",
-  "ganador": "PRR 🇦🇴",
+  "ganador": "PRRR🇦🇴",
   "notas": ""
  },
  {
@@ -423,9 +467,9 @@
   "fecha": "23/09",
   "participantes": 17,
   "ronda": "semifinales",
-  "ladoA": "PRR 🇦🇴",
-  "ladoB": "COLESITO 🇨🇴",
-  "ganador": "PRR 🇦🇴",
+  "ladoA": "PRRR🇦🇴",
+  "ladoB": "colesito",
+  "ganador": "PRRR🇦🇴",
   "notas": ""
  },
  {
@@ -490,7 +534,7 @@
   "participantes": 25,
   "ronda": "octavos",
   "ladoA": "PICHULITAMC 🇦🇷",
-  "ladoB": "SIN LIMITES 🇵🇪",
+  "ladoB": "Sin límites 🇵🇪",
   "ganador": "PICHULITAMC 🇦🇷",
   "notas": "triple (3 bandas)"
  },
@@ -501,7 +545,7 @@
   "participantes": 25,
   "ronda": "octavos",
   "ladoA": "PICHULITAMC 🇦🇷",
-  "ladoB": "NC 🇦🇷",
+  "ladoB": "nc🇯🇴+g8🇯🇴",
   "ganador": "PICHULITAMC 🇦🇷",
   "notas": "triple (3 bandas)"
  },
@@ -511,9 +555,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "octavos",
-  "ladoA": "MASINO 🇨🇱",
+  "ladoA": "Rumasi 🇲🇽",
   "ladoB": "JAHNO 🇦🇷",
-  "ganador": "MASINO 🇨🇱",
+  "ganador": "Rumasi 🇲🇽",
   "notas": "triple (3 bandas)"
  },
  {
@@ -522,9 +566,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "octavos",
-  "ladoA": "MASINO 🇨🇱",
+  "ladoA": "Rumasi 🇲🇽",
   "ladoB": "TORMEN 🇸🇻",
-  "ganador": "MASINO 🇨🇱",
+  "ganador": "Rumasi 🇲🇽",
   "notas": "triple (3 bandas)"
  },
  {
@@ -533,9 +577,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "octavos",
-  "ladoA": "MAKMA 🇻🇪",
+  "ladoA": "Makma 🇻🇪",
   "ladoB": "YINN 🇲🇦",
-  "ganador": "MAKMA 🇻🇪",
+  "ganador": "Makma 🇻🇪",
   "notas": "triple (3 bandas)"
  },
  {
@@ -544,9 +588,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "octavos",
-  "ladoA": "MAKMA 🇻🇪",
+  "ladoA": "Makma 🇻🇪",
   "ladoB": "KIPMC 🇧🇷",
-  "ganador": "MAKMA 🇻🇪",
+  "ganador": "Makma 🇻🇪",
   "notas": "triple (3 bandas)"
  },
  {
@@ -578,7 +622,7 @@
   "participantes": 25,
   "ronda": "octavos",
   "ladoA": "XXXXX 🇳🇴",
-  "ladoB": "SCOT 🇦🇷",
+  "ladoB": "Scot 🇦🇷",
   "ganador": "XXXXX 🇳🇴",
   "notas": "triple (3 bandas)"
  },
@@ -599,9 +643,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "octavos",
-  "ladoA": "ELSOLAR 🇨🇴",
-  "ladoB": "RICHARD 🇪🇨",
-  "ganador": "ELSOLAR 🇨🇴",
+  "ladoA": "Elsoolar🇨🇴",
+  "ladoB": "Richard 🇪🇨",
+  "ganador": "Elsoolar🇨🇴",
   "notas": "triple (3 bandas)"
  },
  {
@@ -610,9 +654,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "octavos",
-  "ladoA": "ELSOLAR 🇨🇴",
+  "ladoA": "Elsoolar🇨🇴",
   "ladoB": "LRS 🇦🇷",
-  "ganador": "ELSOLAR 🇨🇴",
+  "ganador": "Elsoolar🇨🇴",
   "notas": "triple (3 bandas)"
  },
  {
@@ -632,9 +676,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "cuartos",
-  "ladoA": "MASINO 🇨🇱",
+  "ladoA": "Rumasi 🇲🇽",
   "ladoB": "PICHULITA 🇦🇷",
-  "ganador": "MASINO 🇨🇱",
+  "ganador": "Rumasi 🇲🇽",
   "notas": ""
  },
  {
@@ -643,9 +687,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "cuartos",
-  "ladoA": "MAKMA 🇻🇪",
+  "ladoA": "Makma 🇻🇪",
   "ladoB": "TUSICARIO 🇨🇱",
-  "ganador": "MAKMA 🇻🇪",
+  "ganador": "Makma 🇻🇪",
   "notas": ""
  },
  {
@@ -655,7 +699,7 @@
   "participantes": 25,
   "ronda": "cuartos",
   "ladoA": "XXXXX 🇳🇴",
-  "ladoB": "ELSOLAR 🇨🇴",
+  "ladoB": "Elsoolar🇨🇴",
   "ganador": "XXXXX 🇳🇴",
   "notas": ""
  },
@@ -665,9 +709,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "semifinales",
-  "ladoA": "MASINO 🇨🇱",
+  "ladoA": "Rumasi 🇲🇽",
   "ladoB": "MAU KC 🇨🇴",
-  "ganador": "MASINO 🇨🇱",
+  "ganador": "Rumasi 🇲🇽",
   "notas": ""
  },
  {
@@ -676,20 +720,9 @@
   "fecha": "23/09",
   "participantes": 25,
   "ronda": "semifinales",
-  "ladoA": "MAKMA 🇻🇪",
+  "ladoA": "Makma 🇻🇪",
   "ladoB": "XXXXX 🇳🇴",
-  "ganador": "MAKMA 🇻🇪",
-  "notas": ""
- },
- {
-  "evento": "__ DESGRACIAS EN TOKYO VOL.10 __",
-  "servidor": "FFA",
-  "fecha": "23/09",
-  "participantes": 25,
-  "ronda": "final",
-  "ladoA": "MASINO 🇨🇱",
-  "ladoB": "MAKMA 🇻🇪",
-  "ganador": "MASINO 🇨🇱",
+  "ganador": "Makma 🇻🇪",
   "notas": ""
  },
  {
@@ -699,7 +732,7 @@
   "participantes": 29,
   "ronda": "cuartos",
   "ladoA": "makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷",
-  "ladoB": "Sin límites 🇵🇪+Trot🇪🇸+Soneto 🇪🇨",
+  "ladoB": "Sin límites 🇵🇪",
   "ganador": "makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷",
   "notas": ""
  },

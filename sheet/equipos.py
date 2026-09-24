@@ -65,6 +65,52 @@ _DIBUJO = re.compile('[' + re.escape(DIBUJO) + ']')
 SEPS = ('+', ',')
 SEP = '+'                       # el que usa la gente; se deja por claridad
 
+# 🔴 EL PARENTESIS TAMBIEN SEPARA, Y NO SABERLO INVENTO PERSONAS. Medido el
+# 24/09/2026 sobre los lados reales de las llaves de la T1, hay 14 con
+# paréntesis y **todos** tienen la forma `A(B)` o `A(B+C)`:
+#
+#     nhp(sinlimites+fleivacheck)        gekto🇦🇷(chianluka+makma+nhp)
+#     Hassan🇮🇶(tam+kc)                  SAITO🇨🇴(blody🇨🇴+cj)
+#     Makma 🇻🇪(vandu)                   money maker(cj)
+#
+# Partir sólo por `+` daba `nhp(sinlimites` y `fleivacheck)` — **las dos
+# mitades del mismo nombre, con el paréntesis desbalanceado**— y cada pedazo
+# se volvía una persona en `Resultados`, en el pool, en la vitrina y en la
+# web. De ahí salieron `papa`, `money maker(cj)` y `El ultra knowledge
+# instintivo 🇬🇦`.
+#
+# ⚠️ ESTO NO DECIDE QUE SIGNIFICA EL PARENTESIS, y a propósito. Puede ser
+# «a quién eliminó» o una batalla a varias bandas; no se sabe y no hace
+# falta saberlo. Lo único que se arregla es la **tokenización**: bajo
+# cualquiera de las dos lecturas, `nhp(sinlimites` no es un nombre. Con el
+# paréntesis como separador salen `nhp`, `sinlimites` y `fleivacheck`, que
+# son tres nombres reales — estrictamente mejor que antes en los dos casos.
+#
+# 🔑 Y LO QUE HAY ADENTRO ES **A QUIEN LE GANO**, medido, no supuesto. La
+# primera versión de esto trató el paréntesis como un separador de equipo
+# —`gekto(chianluka+makma)` -> tres personas— y eso movió el ranking
+# entero: los puntos se reparten entre los integrantes, así que el ganador
+# cobraba un tercio y sus dos víctimas cobraban el resto. CJ pasó a #1 con
+# 2 eventos.
+#
+# Lo que lo resolvió fue mirar la progresión de una llave:
+#
+#     cuartos       gekto🇦🇷(chianluka🇦🇷)      vs  Makma 🇻🇪
+#     semifinales   gekto🇦🇷(chianluka+makma)   vs  nhp(sinlimites+…)
+#
+# El paréntesis **crece cada ronda, y le agrega justo al que acaba de
+# vencer**. Un equipo no gana integrantes a mitad de torneo. Igual
+# `hassan(tam)` -> `Hassan(tam+kc)` -> `Hassan(tam+kc+cj)`.
+#
+# ⚠️ ASI QUE SE BORRA ENTERO y el competidor es lo que va ANTES. No se
+# pierde a nadie: cada vencido aparece como su propio lado en la batalla
+# donde perdió, que es donde le corresponde.
+#
+# ⚠️ Y SE BORRA **ANTES** DE PARTIR POR `+`. `makma + tam + agus(yinn)` es
+# el equipo de tres que le ganó a yinn: partir primero metería a yinn de
+# cuarto integrante y le repartiría puntos que no ganó.
+_PAREN = re.compile(r'[(（][^)）]*[)）]?')
+
 
 def limpiar(s):
     """Un nombre sin los caracteres del dibujo de la llave."""
@@ -80,6 +126,14 @@ def integrantes(lado):
     se carga**: va a `Pendientes`.
     """
     s = limpiar(lado)
+    if not s:
+        return [], False
+    # ⚠️ EL PARENTESIS SE NORMALIZA A `+` ANTES DE MIRAR SI HAY SEPARADOR.
+    # Ver `CIERRA` arriba: `Makma 🇻🇪(vandu)` no tiene ningún `+` ni `,`, así
+    # que con el chequeo viejo salía como UN nombre llamado
+    # `Makma 🇻🇪(vandu)` — y ése también era una persona inventada.
+    # 🔴 EL PARENTESIS SE BORRA ENTERO, NO SEPARA. Ver `CIERRA` arriba.
+    s = _PAREN.sub('', s).strip()
     if not s:
         return [], False
     if not any(x in s for x in SEPS):
