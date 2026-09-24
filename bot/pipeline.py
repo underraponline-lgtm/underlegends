@@ -627,13 +627,9 @@ def main():
     else:
         corre(['sheet/rankings.py', '--escribir', '--aplicar'], callado=False)
         corre(['sheet/rankings.py', '--otras', '--aplicar'], callado=False)
-        # ⚠️ Y EL LOBBY, que es la hoja que MAS se ve y la que mas
-        # mentia: decia «735 raperos · 348 eventos · ultimos campeones
-        # #195» con la T1 arrancada y el contador en #350. Ver
-        # `sheet/lobby.py`: no rehace la maqueta, recalcula las celdas
-        # que son hechos y comprueba leyendo.
-        # ⚠️ LOS ANUNCIOS VAN **ANTES** DEL LOBBY, que los lee. Al revés
-        # el Lobby dibuja los del ciclo anterior y nadie se entera.
+        # ⚠️ LOS ANUNCIOS DE DISCORD, para el hub: `subir_web.py` (paso 2c)
+        # arma «lo que viene» con ellos. Antes también los leía el afiche
+        # del Lobby; el índice ya no los muestra —están en el hub—.
         corre(['bot/anuncios.py', '--aplicar'], callado=False)
         # 🔴 EL LOBBY YA NO ES UN AFICHE: ES EL ÍNDICE DE LOS DATOS EN
         # CRUDO. Dlx, 24/09/2026: *«el hub será esta página y principalmente
