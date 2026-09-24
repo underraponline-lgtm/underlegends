@@ -540,6 +540,30 @@ pregunta.**
 ⚠️ **DE SNAKE RAP SE SACA EL ID Y NADA MÁS**, como de FFA, LIVONIA y La
 Confederación: *«sacá su ID, pero no lo verifiques»*.
 
+🔑 **AUTOVERIFICAR, COMO LO DEFINIÓ DLX DESPUÉS:** *«getting ids from the
+huge server from SNAKE RAP then put it into the sheet. Then, getting those
+people, check whether they are on the DRA server, then verify them… only
+those [that] have a country flag or role can be verified… check DRA, FFA,
+LIVONIA and now SNAKE RAP roles»*. O sea: el ID sale de Snake Rap, y lo
+que verifica sigue siendo **darles el Miembro de DRA**, con país. Vive en
+`herramientas/cruzar_miembros.py` (el país, con `pais_por_rol.decidir()`),
+que además mira ahora a quien **ya tenía ID** y está en DRA sin el rol.
+
+| de los 540 del padrón con ID | |
+|---|---|
+| en DRA y ya verificados | 337 |
+| **no están en DRA** —no se pueden verificar hasta que entren— | **202** |
+| en DRA sin el Miembro y con país | 1 — **Skratch 🇨🇱, verificado** a las 7:24 PM |
+
+⚠️ **Corre a mano**, no en el ciclo: dar roles en DRA cada media hora es
+una automatización que decide Dlx.
+
+🔴 **Y QUIEN PIERDE EL PORTÓN SEGUÍA EN KV.** En la rama de «nada cambió»
+KV sólo se refrescaba si había Bloqueadas nuevas; a las 7:22 PM el portón
+volvió a DRA (2.686 → 2.576) y la corrida dijo «no había nada que hacer»
+con 86 de más en KV, a los que `/card` seguía contestando. Ahora esa rama
+refresca KV siempre (~5 s, diff-writer).
+
 ⚠️ **DE SNAKE RAP SE GUARDAN SÓLO LOS DEL PADRÓN** en `servidores_de.json`,
 que va al repo **público**: la lista de miembros de otro servidor —7.000
 personas que en su mayoría nunca jugaron— no es nuestra. ⚠️ DRA y FFA sí
