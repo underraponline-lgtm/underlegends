@@ -73,6 +73,7 @@ except AttributeError:
 from planillas import OFICIAL  # noqa: E402
 # ⚠️ el estilo de las cinco vitrinas vive en un solo lugar: `sheet/estilo.py`
 import estilo  # noqa: E402
+import ovr as _OVR  # noqa: E402
 HOJA = 'Ranking Temporada'
 FILA_CAB = 16
 
@@ -581,6 +582,18 @@ def rangos_de(res):
         return {}
 
 
+def _comp_ovr(v):
+    """Las cinco componentes del OVR de esa persona, desde `agregar()`.
+
+    ⚠️ `pod` SON LAS TRES MEDALLAS, no solo el oro. El builder del pool
+    ya se comio ese bug —sumaba las tres y guardaba solo el oro— y si aca
+    se leyera distinto, las dos mitades del mismo numero se separarian.
+    """
+    g = lambda c: _OVR.num(v.get(c) or 0)
+    return (g('Puntos'), g('Ev'), g('Win%'),
+            g('🥇') + g('🥈') + g('🥉'), g('🎯'))
+
+
 def tabla_nueva():
     """La `Ranking Temporada` entera, recalculada. (filas, avisos).
 
@@ -685,10 +698,34 @@ def tabla_nueva():
         # grafía de la primera vez: la hoja se quedaba con `MAKMA`
         # mientras el resto del sistema usaba `Makma`. Ver `APARTE`.
         fila[icol.get('Rapero', 1)] = quien
-        filas.append((v.get('Puntos', 0), fila))
+        filas.append((_comp_ovr(v), fila))
 
-    filas.sort(key=lambda x: -x[0])
-    for n, (_, f) in enumerate(filas, 1):
+    # 🔴 EL ORDEN Y EL `#` SALEN DEL **OVR**, NO DE LOS PUNTOS.
+    # Dlx, 24/09/2026: *«OVR… porque en si el OVR va a variar en mas
+    # factores que puntos y MW»*. Hasta ese dia esta hoja ordenaba por
+    # `Puntos` y el pool —o sea la carta, su pastilla y el hub— por OVR,
+    # asi que **CJ era #1 en la planilla y #6 en la web** con los mismos
+    # datos: 12.500 puntos de un solo evento dan OVR 74 contra el 86 de
+    # Hassan. Dos pantallas, un dato, dos respuestas.
+    #
+    # ⚠️ LA FORMULA NO SE COPIA: se llama a `sheet/ovr.py`, que es el
+    # mismo que usa `construir_pool_temporada.py`. Copiarla seria el bug
+    # de las crews y el del divisor — dos lugares que empiezan iguales y
+    # se separan solos.
+    #
+    # ⚠️ EL OVR SE NORMALIZA CONTRA EL GRUPO, asi que hay que calcularlo
+    # con **todas** las filas juntas y no una por una. Verificado el
+    # 24/09/2026: con las 74 de la vitrina y con las 70 del pool los
+    # cinco topes dan identicos y el numero coincide persona por persona.
+    _ovrs = _OVR.calcular([c for c, _f in filas])
+    # ⚠️ DESEMPATE POR PUNTOS. El OVR es un entero redondeado, asi que
+    # hay empates de verdad; sin un segundo criterio el orden entre ellos
+    # depende de como vino el dict y **cambia solo entre corridas**, con
+    # la tabla entera moviendose sin que nadie compita.
+    filas = [f for _o, _p, f in sorted(
+        [(-o, -_OVR.num(c[0]), f) for o, (c, f) in zip(_ovrs, filas)],
+        key=lambda t: (t[0], t[1]))]
+    for n, f in enumerate(filas, 1):
         f[icol['#']] = n
 
     hubo = len(viejo)
@@ -706,7 +743,8 @@ def tabla_nueva():
                          '…' if len(perdidos) > 6 else ''))
     tabla_nueva.viejo_ids = list(viejo)
     tabla_nueva.enganchadas = enganchadas
-    return [f for _, f in filas], avisos
+    # `filas` ya son las filas: el orden por OVR las desarma arriba.
+    return filas, avisos
 
 
 tabla_nueva.viejo_ids = []

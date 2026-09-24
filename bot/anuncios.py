@@ -392,6 +392,13 @@ def leer(s, por_canal=None):
                               'texto': txt[:60],
                               'quien': u.get('username') or '',
                               'discord_id': u.get('id') or '',
+                              # 🔑 EL ID DEL MENSAJE, que es la unica
+                              # llave estable: el texto se repite —mucha
+                              # gente se anota dos veces— y la fecha no
+                              # distingue dos anotados en el mismo
+                              # segundo. Lo usa `guardar()` para
+                              # acumular sin duplicar.
+                              'msg_id': m.get('id') or '',
                               'cuando': (m.get('timestamp') or '')[:19]})
     # ⚠️ EL ESTADO ES POR SERVIDOR y se le cuelga a sus anuncios: lo que
     # la gente quiere saber es «¿puedo anotarme?», y eso lo contesta la
@@ -497,12 +504,89 @@ def es_inscripcion(txt):
     return BANDERA.sub('', t).strip().lower() in _conocidos()
 
 
+#: Cuantas inscripciones se conservan. 4.000 son años a este ritmo y
+#: pesan ~600 KB; el tope existe para que el archivo no crezca sin
+#: techo, no porque sobren.
+TOPE_INSCR = 4000
+
+
 def guardar(anuncios, inscr):
+    """Deja el cache en disco. **Las inscripciones se ACUMULAN.**
+
+    🔴 PISARLAS ERA PERDERLAS, Y ESA ERA LA CAUSA DE LOS 21 SIN FILA.
+    Dlx, 24/09/2026, sobre la gente que compite y no esta en `Lista de
+    Raperos`: *«quizas sea un bug que se te olvido agregarlos»*. No fue
+    un olvido y tampoco era gente nueva: medido ese dia, el canal
+    `✦📝︎∣inscripciones` de FFA tiene **64 mensajes en total y los 35
+    que son inscripciones son TODOS del mismo dia**. Este `guardar()`
+    escribia `inscripciones: inscr` —lo que el canal tuviera en ese
+    momento— asi que cada corrida **tiraba las de la corrida anterior**.
+
+    O sea que quien se anoto para un evento de la semana pasada, compitio
+    y quedo en la llave, ya no tiene inscripcion: su Discord ID existio,
+    lo leimos, y lo borramos nosotros en la corrida siguiente. Sin ese ID
+    `altas_desde_inscripciones.py` no puede darle de alta, y sin fila en
+    el padron no tiene carta, ni pais, ni AKA.
+
+    ⚠️ ES LA MISMA FORMA QUE `bot/avisar.py`, que este repo ya documenta:
+    *«un dedup cuyo estado no sobrevive no es un dedup»*. Aca es un lector
+    cuya memoria se pisa a si misma. Y no fallaba — el archivo siempre
+    tenia inscripciones validas, las de hoy.
+
+    ⚠️ NO RECUPERA EL PASADO. Lo que ya se perdio se perdio; esto evita
+    que siga pasando. Los 21 de hoy hay que resolverlos de otra forma.
+
+    ⚠️ LOS ANUNCIOS **SI** SE PISAN, a proposito: un anuncio describe un
+    evento que cambia —se llena de cupos, se cierra— y lo que vale es su
+    estado de ahora. Una inscripcion es un hecho con fecha: paso, y no
+    deja de haber pasado.
+    """
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
+    previas = (cargar() or {}).get('inscripciones') or []
+
+    # 🔴 DOS LLAVES, Y HAY QUE MIRAR LAS DOS. `msg_id` es la estable,
+    # pero lo agregamos el 24/09/2026: las inscripciones guardadas antes
+    # de ese dia no lo tienen. Con `msg_id or <respaldo>` un mensaje
+    # re-leido entra con su `msg_id` y su copia vieja sigue guardada con
+    # el respaldo — dos llaves distintas para el mismo mensaje, o sea un
+    # duplicado. **Paso de verdad**: la primera corrida dijo «14 nuevas»
+    # sobre un canal que no habia cambiado, y dejo 49 donde hay 35.
+    #
+    # ⚠️ Es el error que este repo llama «contar lo que hay en disco no es
+    # contar lo que salio» visto desde el otro lado: el contador decia
+    # 14 nuevas y eran cero.
+    #
+    # Son la misma inscripcion si coinciden por CUALQUIERA de las dos.
+    def _fb(i):
+        return '%s|%s|%s' % (i.get('discord_id'), i.get('texto'),
+                             i.get('cuando'))
+
+    v_id, v_fb, juntas = set(), set(), []
+    # las nuevas primero, para que una inscripcion re-leida gane sobre su
+    # copia vieja — asi la version con `msg_id` reemplaza a la de antes
+    for i in list(inscr) + list(previas):
+        mi, fb = i.get('msg_id') or '', _fb(i)
+        if (mi and mi in v_id) or fb in v_fb:
+            continue
+        if mi:
+            v_id.add(mi)
+        v_fb.add(fb)
+        juntas.append(i)
+    juntas.sort(key=lambda i: str(i.get('cuando') or ''), reverse=True)
+    nuevas = len(juntas) - len(previas)
+    if nuevas > 0 and previas:
+        print('   inscripciones: %d nueva(s), %d guardadas'
+              % (nuevas, len(juntas)))
+    elif previas and len(juntas) < len(previas):
+        # limpiar duplicados tambien es noticia, y callarlo haria pensar
+        # que se perdieron inscripciones
+        print('   inscripciones: %d duplicada(s) unificada(s), %d '
+              'guardadas' % (len(previas) - len(juntas), len(juntas)))
     with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
         json.dump({'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00',
                                            time.gmtime()),
-                   'anuncios': anuncios, 'inscripciones': inscr},
+                   'anuncios': anuncios,
+                   'inscripciones': juntas[:TOPE_INSCR]},
                   f, ensure_ascii=False, indent=1)
 
 

@@ -120,9 +120,14 @@ def _cabecera(valores, *obligatorias):
         '%s. ¿Cambió la hoja?' % ' y '.join(repr(o) for o in obligatorias))
 
 # OVR de temporada: PTS 36% · EVT 20% · WR 16% · POD 16% · CAZ 12%
-PESOS = [0.36, 0.20, 0.16, 0.16, 0.12]
-UMBRAL_COLOR = [('SSS', 88), ('SS', 82), ('S', 74), ('A', 67),
-                ('B', 61), ('C', 56), ('D', 52)]
+# 🔑 LOS PESOS Y LOS UMBRALES VIVEN EN `sheet/ovr.py`. Estaban
+# escritos aca y eran el unico lugar que los tenia, que es por lo que
+# `rankings.py` no podia ordenar por OVR. Se reexportan para no romper
+# a quien los importe de este modulo.
+import ovr as OVR  # noqa: E402
+
+PESOS = list(OVR.PESOS)
+UMBRAL_COLOR = OVR.UMBRAL_COLOR
 
 
 def num(x):
@@ -496,20 +501,24 @@ def main():
             'av': AV.get(nom.lower(), ''),
         })
 
-    # OVR: se normaliza cada componente contra el maximo del pool
-    comp = lambda d: (d['pts'], d['ev'], num(d['wr']), d['pod'], d['caz'])
-    tope = [max(x) or 1 for x in zip(*[comp(d) for d in pool])]
-    for d in pool:
-        q = comp(d)
-        n = [math.sqrt(q[0] / tope[0]), math.sqrt(q[1] / tope[1]), q[2] / tope[2],
-             math.sqrt(q[3] / tope[3]), q[4] / tope[4]]
-        d['ovr'] = round(40 + sum(w * x for w, x in zip(PESOS, n)) * 59)
+    # OVR: se normaliza cada componente contra el maximo del pool.
+    # 🔑 LA FORMULA VIVE EN `sheet/ovr.py` Y ACA SOLO SE LLAMA. La
+    # tenia escrita este archivo y nadie mas podia usarla, asi que
+    # `Ranking Temporada` se ordenaba por Puntos —lo unico que si sabia
+    # calcular— y la carta por OVR. CJ salia #1 en la planilla y #6 en
+    # la web con los mismos datos. Es la forma que este repo ya
+    # documenta: la decision existia en un lugar y el otro leia otra
+    # cosa.
+    for d, o in zip(pool, OVR.calcular(
+            [(d['pts'], d['ev'], num(d['wr']), d['pod'], d['caz'])
+             for d in pool])):
+        d['ovr'] = o
 
     pool.sort(key=lambda d: -d['ovr'])
     for i, d in enumerate(pool, 1):
         d['pos'] = i
         d['total'] = len(pool)
-        d['rango'] = next((k for k, u in UMBRAL_COLOR if d['ovr'] >= u), 'E')
+        d['rango'] = OVR.color(d['ovr'])
 
     salida = os.path.join(RAIZ, 'datos', 'temporada_pool.json')
     os.makedirs(os.path.dirname(salida), exist_ok=True)
