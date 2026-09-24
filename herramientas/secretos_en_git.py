@@ -64,7 +64,21 @@ def del_env():
 
 
 def de_los_json():
-    """Los pedazos de `creds.json` y `oauth_token.json` que sí son secretos."""
+    """Los pedazos de los TRES json de credenciales que sí son secretos.
+
+    🔴 ERAN DOS, Y LA OTRA MITAD DE ESTE SCRIPT YA DECIA CINCO. El
+    24/09/2026 la lista de archivos que tienen que estar ignorados paso a
+    cinco —entro `oauth_client.json`— y **esta funcion se quedo en dos**,
+    asi que el `client_secret` de ese archivo no se buscaba en el arbol ni
+    en el historial. Las dos mitades de este script contestan preguntas
+    distintas y se arreglaron por separado: una decia «el archivo esta
+    ignorado» y la otra «el valor no esta en git», y con un solo lado
+    cubierto el chequeo da verde igual.
+
+    ⚠️ Tambien entra el token del `gh`, que no vive en ningun archivo del
+    repo sino en el keyring — pero es el que abre los dos repos, y si
+    alguna vez aparece pegado en un `.py` hay que enterarse.
+    """
     out = {}
     p = os.path.join(BASE, 'creds.json')
     if os.path.exists(p):
@@ -83,7 +97,43 @@ def de_los_json():
         for k in ('refresh_token', 'client_secret', 'token'):
             if d.get(k) and len(str(d[k])) >= MINIMO:
                 out['oauth_token.json · %s' % k] = str(d[k])
+    p = os.path.join(BASE, 'oauth_client.json')
+    if os.path.exists(p):
+        d = json.load(io.open(p, encoding='utf-8'))
+        ins = d.get('installed') or d.get('web') or {}
+        if ins.get('client_secret'):
+            out['oauth_client.json · client_secret'] = ins['client_secret']
+    tok = subprocess.run(['gh', 'auth', 'token'], cwd=BASE,
+                         capture_output=True, text=True,
+                         encoding='utf-8', errors='replace').stdout.strip()
+    if len(tok) >= MINIMO:
+        out['gh · token del CLI'] = tok
     return out
+
+
+def inventariado():
+    """Que TODOS los valores estén escritos en `ACCESOS.md`.
+
+    🔴 EXISTE PORQUE «DEBERIAS TENERLOS TODOS» ERA UNA INTENCION Y NO UN
+    CHEQUEO. Dlx, 24/09/2026: *«mira todos los tokens, como acordamos desde
+    hace tiempo deberias tenerlo tu. Todos»*. Medido ese dia: de **12**
+    valores, `ACCESOS.md` tenia **6**. Faltaban la `private_key` de la
+    cuenta de servicio, los tres de `oauth_token.json`, el
+    `client_secret` de `oauth_client.json` y `FOTOS_SAL`.
+
+    🔴 Y NO ES UN DETALLE DE PROLIJIDAD: **UN SECRET DE GITHUB NO SE PUEDE
+    LEER DE VUELTA.** Es de solo escritura. O sea que la «copia» de
+    `CREDS_JSON` en la nube no recupera nada: el unico lugar del mundo con
+    esa clave era un archivo gitignoreado en un disco.
+
+    ⚠️ Es la forma que este repo ya persigue en otro lado — *lo que no se
+    pregunta no se entera*. La tabla de los roles de rango decia «a mano»
+    y estuvo dias diciendo 6 cuando ya eran 8.
+    """
+    p = os.path.join(BASE, 'ACCESOS.md')
+    if not os.path.exists(p):
+        return None
+    return io.open(p, encoding='utf-8', errors='ignore').read()
 
 
 def en_git(valor):
@@ -133,7 +183,8 @@ def main():
         secretos['.env · %s' % k] = v
     secretos.update(de_los_json())
 
-    print('\n  los valores (%d, de .env y los dos json):' % len(secretos))
+    print('\n  los valores (%d, de .env, los tres json y el gh):'
+          % len(secretos))
     malo = []
     for etq, v in sorted(secretos.items()):
         arbol, hist = en_git(v)
@@ -152,6 +203,30 @@ def main():
         for k, por in sorted(PUBLICOS.items()):
             print('    ·  %-22s %s' % (k, por))
 
+    # ── LA TERCERA PREGUNTA: ¿ESTAN TODOS ANOTADOS? ──────────────────
+    # Las dos de arriba preguntan si un secreto **se escapó**. Esta
+    # pregunta lo contrario: si alguno **se puede perder**. Son
+    # direcciones opuestas y las dos importan — un secreto que sólo vive
+    # en este disco no está filtrado y tampoco está a salvo.
+    acc = inventariado()
+    sin_anotar = []
+    if acc is None:
+        print('\n  ⚠️ no hay ACCESOS.md: no puedo decir si están todos')
+    else:
+        for etq, v in sorted(secretos.items()):
+            if v not in acc:
+                sin_anotar.append(etq)
+        print('\n  ¿están todos en ACCESOS.md?')
+        if sin_anotar:
+            print('    🔴 %d de %d SIN ANOTAR:' % (len(sin_anotar),
+                                                   len(secretos)))
+            for etq in sin_anotar:
+                print('       %s' % etq)
+            print('    Un secret de GitHub es de SOLO ESCRITURA: no se baja.')
+            print('    Si el archivo local se pierde, se pierde el acceso.')
+        else:
+            print('    ✅ los %d están anotados' % len(secretos))
+
     print('')
     if faltan:
         print('  🔴 %d archivo(s) de credenciales sin ignorar. Arreglar ESO '
@@ -163,6 +238,15 @@ def main():
         return 1
     if faltan:
         return 1
+    # ⚠️ SIN ANOTAR **NO** BLOQUEA EL COMMIT, y es a propósito. Un secreto
+    # que falta en el inventario no es una filtración: no hay nada que
+    # arreglar antes de pushear, y hacerlo rojo entrenaría a saltear el
+    # chequeo entero — que es lo único que no puede pasarle a esto.
+    # Avisa, y se arregla cuando se lea.
+    if sin_anotar:
+        print('  ⚠️ ningún secreto en git, pero %d no está(n) anotado(s) '
+              'en ACCESOS.md\n' % len(sin_anotar))
+        return 0
     print('  ✅ ningún secreto en el árbol ni en el historial\n')
     return 0
 
