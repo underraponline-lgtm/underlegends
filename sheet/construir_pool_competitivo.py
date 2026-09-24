@@ -224,10 +224,17 @@ def main():
     # explorar_sheet.py para el porque.
     sc = ['https://www.googleapis.com/auth/spreadsheets.readonly']
     gc = gspread.authorize(Credentials.from_service_account_file(creds, scopes=sc))
-    sh = gc.open_by_key(SHEET)
+    from reintentar import leer as _leer_reint   # ver `sheet/reintentar.py`
+    # 🔴 ABRIR LA PLANILLA TAMBIÉN ES UNA LECTURA, y era la única de este
+    # builder sin reintento. `open_by_key()` le pide a Google los metadatos
+    # del documento, así que gasta cuota como cualquier `get_all_values`.
+    # El ciclo de las 6:52 AM ET del 24/09/2026 murió acá: «APIError:
+    # [429]: Quota exceeded for quota metric 'Read requests'» →
+    # «sin pools frescos no sigo» → exit 1. Todo lo demás de este archivo
+    # ya aguantaba un 429; ésta no, y bastaba con que tropezara ésta.
+    sh = _leer_reint(lambda: gc.open_by_key(SHEET))
 
     # de Temporada: WR y racha
-    from reintentar import leer as _leer_reint   # ver `sheet/reintentar.py`
     # ⚠️ con `lambda`: ver el mismo comentario en construir_pool_temporada
     t = _leer_reint(lambda: sh.worksheet('Ranking Temporada').get_all_values())
     # 🔴 LA CABECERA SE BUSCA. Ver `_cabecera()` en

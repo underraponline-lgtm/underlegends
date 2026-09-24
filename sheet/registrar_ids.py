@@ -153,8 +153,14 @@ def main():
     scope = (['https://www.googleapis.com/auth/spreadsheets'] if aplicar
              else ['https://www.googleapis.com/auth/spreadsheets.readonly'])
     gc = gspread.authorize(Credentials.from_service_account_file(cred, scopes=scope))
-    ws = gc.open_by_key(PAD.OPERATIVO).worksheet(PAD.HOJA)
-    val = ws.get_all_values()
+    # 🔴 ESTE PASO CORRE EN EL CICLO (el 1a) Y NO AGUANTABA UN 429: abrir la
+    # planilla, abrir la hoja y leerla eran tres pedidos sin reintento. Es el
+    # mismo agujero que tumbó el ciclo de las 6:52 AM ET del 24/09/2026 desde
+    # `construir_pool_competitivo.py` — la cuota es por minuto y esperar
+    # sirve. Ver `sheet/reintentar.py`.
+    from reintentar import leer as _leer_reint
+    ws = _leer_reint(lambda: gc.open_by_key(PAD.OPERATIVO).worksheet(PAD.HOJA))
+    val = _leer_reint(ws.get_all_values)
     cab = PAD._cabecera(val)
     H = [x.strip() for x in val[cab]]
     iR = H.index('Rapero')
