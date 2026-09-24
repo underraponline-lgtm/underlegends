@@ -1,0 +1,615 @@
+# -*- coding: utf-8 -*-
+"""LOS EVENTOS ANUNCIADOS Y SUS INSCRIPCIONES, desde Discord.
+
+    python bot/anuncios.py            lee y muestra lo que encuentra
+    python bot/anuncios.py --aplicar  lo guarda en datos/anuncios.json
+    python bot/anuncios.py --auto     el self-check, sin red
+
+🔴 HASTA HOY EL BOT SOLO LEIA LLAVES, O SEA EL FINAL. Dlx, 23/09/2026:
+*«necesitamos q el bot lea los canales donde se anuncian los eventos y
+donde se anuncian que se abren las inscripciones»*.
+
+Y tiene tres cosas que las llaves **no pueden tener**, porque el anuncio
+existe antes que el bracket:
+
+  · el evento **antes** de que se juegue — el Lobby tiene un bloque
+    «📅 EVENTOS ACTIVOS» que hoy está vacío
+  · los **CUPOS** (`12 / 16`), que son las inscripciones en curso
+  · el **ORGANIZADOR**, que no se registra en ningún otro lado. El
+    Lobby tiene «👑 TOP ORGANIZADORES» con nombres pegados a mano de la
+    pre-temporada, y esto es su fuente
+
+⚠️ EL ANUNCIO ES UNA PLANTILLA, NO TEXTO LIBRE, y por eso se puede leer:
+
+    ** • 🉐 ╎DESGRACIAS EN TOKYO VOL 10 ╎ 🉐 • **
+    💻 __`ORGANIZADOR:Lewis`__
+    🎫 __`CUPOS:12 / 16`__
+    🌘 __`MODALIDAD:1v1`__
+    ⌚ __`HORARIO:EN 30 MINUTOS`__
+
+⚠️ Y EL CAMPO VIENE EN DOS FORMAS, medido sobre los anuncios reales:
+`__`CUPOS:12/16`__` y `__`CUPOS:`__ 12/16` —el valor adentro o afuera
+del backtick—. Las dos entran; pedir una sola dejaría la mitad afuera y
+no fallaría.
+
+🔴 EL `HORARIO` ES TEXTO LIBRE —«EN 30 MINUTOS», «ahora»— ASI QUE NO SE
+CONVIERTE A UNA FECHA. Se muestra tal cual. Inventar un timestamp a
+partir de «ahora» sería poner un dato plausible donde hay una frase, que
+es justo lo que este proyecto evita en todas partes.
+
+⚠️ SOLO LEE DONDE EL BOT ESTA. Medido: de los nueve servidores, los
+otros siete devuelven **403**. No es un fallo, es que el bot no está
+invitado — se cuenta y se sigue.
+"""
+import io
+import json
+import os
+import re
+import sys
+import time
+
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SCR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, BASE)
+sys.path.insert(0, SCR)
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except AttributeError:
+    pass
+
+SALIDA = os.path.join(BASE, 'datos', 'anuncios.json')
+
+#: qué nombre de canal suena a anuncios de evento. ⚠️ SE BUSCA POR
+#: NOMBRE y se recuerda, igual que `datos/canales_llaves.json`: pedirle
+#: a Dlx la lista de IDs sería una lista que envejece sola.
+PATRON = re.compile(r'evento|anuncio|novedad|torneo|competenc', re.I)
+#: y el de inscripciones, que es otra cosa: ahí la gente se anota
+PATRON_INSC = re.compile(r'inscrip|registro|anotad|convocat', re.I)
+
+#: los campos de la plantilla. La clave es como queda en el JSON.
+CAMPOS = {
+    'organizador': r'ORGANIZADOR',
+    'cupos': r'CUPOS',
+    'rango': r'RANGO',
+    'modalidad': r'MODALIDAD',
+    'premios': r'PREMIOS',
+    'horario': r'HORARIO',
+}
+
+
+def _limpio(s):
+    """El texto sin los emoji personalizados ni los adornos de Discord."""
+    s = re.sub(r'<a?:(\w+):\d+>', '', str(s or ''))
+    s = re.sub(r'<#\d+>|<@!?&?\d+>', '', s)
+    return s
+
+
+def campo(texto, nombre):
+    """El valor de un campo de la plantilla, o `''`.
+
+    ⚠️ LAS DOS FORMAS. Medido sobre los anuncios reales de FFA:
+
+        __`ORGANIZADOR:Lewis`__      el valor adentro del backtick
+        __`ORGANIZADOR:`__ @nacho    el valor afuera
+
+    Un patrón que pida sólo una deja la mitad de los anuncios sin
+    organizador — y sin fallar, que es lo que lo haría difícil de ver.
+    """
+    t = _limpio(texto)
+    # 1 · adentro:  __`CAMPO: valor`__
+    m = re.search(r'`\s*%s\s*:\s*([^`\n]*)`' % nombre, t, re.I)
+    if m and m.group(1).strip():
+        return m.group(1).strip()
+    # 2 · afuera:   __`CAMPO:`__ valor
+    m = re.search(r'`\s*%s\s*:?\s*`__?\s*([^\n]*)' % nombre, t, re.I)
+    if m and m.group(1).strip():
+        return _valor(m.group(1))
+    # 3 · sin backticks:  CAMPO: valor
+    m = re.search(r'\b%s\s*:\s*([^\n]+)' % nombre, t, re.I)
+    return _valor(m.group(1)) if m else ''
+
+
+#: los nombres de campo de la plantilla, para detectar una captura que
+#: se pasó de largo. Ver `_valor()`.
+_OTROS_CAMPOS = re.compile(
+    r'\b(ORGANIZADOR|CUPOS|RANGO|MODALIDAD|PREMIOS|HORARIO|JURADO|DJ|HOST|'
+    r'INDICACIONES|LINK)\s*:', re.I)
+
+
+def _valor(s):
+    """El valor sin el adorno de Markdown, **sin comerse el nombre**.
+
+    🔴 `strip(' _*`')` LE SACABA EL `_` FINAL A `@nachonc_`, que es parte
+    del usuario. El `__` de Markdown se saca como **par**, no como
+    caracteres sueltos: son dos cosas distintas que se escriben igual, y
+    limpiar de más cambia el dato sin fallar.
+
+    🔴 Y UNA CAPTURA QUE SE PASO DE LARGO NO ES UN VALOR. Cuando el
+    campo viene vacío —`__`ORGANIZADOR:`__` y nada más en la línea— el
+    patrón alcanzaba a agarrar el cierre o el campo siguiente, y el
+    organizador quedaba en `**`, `🎫 CUPOS: 16` o `JURADO:`. Medido:
+    **3 de los 8 organizadores** eran eso.
+
+    ⚠️ La señal es exacta y no un umbral: si lo capturado contiene
+    **otro nombre de campo**, la captura se pasó. Y si después de sacar
+    el adorno no queda ninguna letra ni número, no era un valor.
+    """
+    s = re.sub(r'__(.*?)__', r'\1', str(s or ''))
+    s = re.sub(r'\*\*(.*?)\*\*', r'\1', s)
+    # ⚠️ NO SE SACA `_` ACA: el par `__` ya lo quitó el regex de arriba,
+    # y un `_` suelto al final es parte del nombre. Se comió el de
+    # `@nachonc_` dos veces en esta misma función — la segunda, después
+    # de escribir el comentario que dice que no hay que hacerlo.
+    s = s.strip().strip('`').strip(' *')
+    if _OTROS_CAMPOS.search(s):
+        return ''
+    if not re.search(r'[\w]', s, re.UNICODE):
+        return ''
+    return s
+
+
+def nombre_de(texto):
+    """El nombre del evento: el título de la plantilla.
+
+    ⚠️ ES LA PRIMERA LINEA CON ADORNO, no la primera línea. Los anuncios
+    abren con `# ` o con `** • … • **` y a veces traen una fila de
+    `▬▬▬` antes; tomar la primera línea a secas devolvía la fila de
+    guiones.
+    """
+    for l in _limpio(texto).splitlines():
+        s = l.strip().strip('#*_ ')
+        # la línea de adorno no tiene letras
+        if not re.search(r'[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]', s):
+            continue
+        # una línea que ya es un campo no es el título
+        if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', s):
+            continue
+        # 🔴 EL TITULO VIENE ENVUELTO: `• 🉐 ╎NOMBRE ╎ 🉐 •`. Si hay
+        # separadores `╎`, el nombre es lo del MEDIO; el resto son
+        # adornos que cambian en cada anuncio.
+        if '╎' in s:
+            partes = [x.strip() for x in s.split('╎') if x.strip()]
+            if partes:
+                s = max(partes, key=len)
+        # y lo que queda no puede empezar ni terminar en un emoji suelto
+        s = re.sub(r'^[^\w¿¡]+|[^\w\)\]!?.]+$', '', s, flags=re.UNICODE)
+        if len(s) >= 3:
+            return re.sub(r'\s+', ' ', s)[:70]
+    return ''
+
+
+def cupos(s):
+    """`'12 / 16'` -> `(12, 16)`. `(None, None)` si no se entiende.
+
+    ⚠️ HAY ANUNCIOS CON `CUPOS: 12/16/24/32/36` y con `CUPOS: ♾️`. El
+    primero es una lista de tamaños posibles y el segundo es «sin
+    límite»: ninguno de los dos es «12 de 16», así que no se fuerza.
+    """
+    nums = re.findall(r'\d+', str(s or ''))
+    if len(nums) == 2:
+        return int(nums[0]), int(nums[1])
+    return None, None
+
+
+def parsear(m, servidor, canal):
+    """Un mensaje -> un anuncio, o `None` si no parece uno."""
+    txt = m.get('content') or ''
+    nom = nombre_de(txt)
+    org = campo(txt, CAMPOS['organizador'])
+    # 🔴 LA FIRMA ES TENER AL MENOS DOS CAMPOS DE LA PLANTILLA, no tener
+    # un título. En estos canales también se pega un link suelto, un
+    # `@everyone` o una tabla de clasificados, y todos tienen «primera
+    # línea con letras». Pedir dos campos separa el anuncio del resto
+    # sin ningún umbral inventado.
+    puestos = {k: campo(txt, v) for k, v in CAMPOS.items()}
+    cuantos = sum(1 for v in puestos.values() if v)
+    if cuantos < 2 or not nom:
+        return None
+    a, b = cupos(puestos.get('cupos'))
+    return {
+        'nombre': nom, 'servidor': servidor, 'canal': canal,
+        'msg_id': m.get('id'), 'cuando': (m.get('timestamp') or '')[:19],
+        'organizador': org,
+        'cupos_texto': puestos.get('cupos') or '',
+        'inscriptos': a, 'cupo_total': b,
+        'rango': puestos.get('rango') or '',
+        'modalidad': puestos.get('modalidad') or '',
+        'horario': puestos.get('horario') or '',
+        'premios': puestos.get('premios') or '',
+    }
+
+
+# ── Discord ──────────────────────────────────────────────────────────
+def _sesion():
+    import requests
+    import fotos as F
+    s = requests.Session()
+    s.headers['Authorization'] = 'Bot ' + F.env('DISCORD_TOKEN')
+    return s
+
+
+def canales(s):
+    """`[(id, nombre, servidor, tipo)]` de los canales que sirven.
+
+    ⚠️ SE BUSCAN POR NOMBRE Y NO SE PIDEN. Es la misma decisión que
+    `datos/canales_llaves.json`: una lista de IDs escrita a mano
+    envejece sola y nadie se entera — el día que un servidor renombre o
+    mueva su canal, el lector deja de leer y no falla.
+    """
+    out = []
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
+                     encoding='utf-8') as f:
+            svs = json.load(f)['servidores']
+    except (OSError, ValueError, KeyError):
+        return out
+    sin_acceso = 0
+    for cod, d in (svs.items() if isinstance(svs, dict) else []):
+        g = d.get('guild_id') or d.get('guild')
+        if not g:
+            continue
+        r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g,
+                  timeout=25)
+        if r.status_code != 200:
+            sin_acceso += 1
+            continue
+        for c in r.json():
+            if c.get('type') not in (0, 5):
+                continue
+            n = c.get('name', '')
+            if PATRON_INSC.search(n):
+                out.append((c['id'], n, cod, 'inscripciones'))
+            elif PATRON.search(n):
+                out.append((c['id'], n, cod, 'eventos'))
+    canales.sin_acceso = sin_acceso
+    return out
+
+
+canales.sin_acceso = 0
+
+
+def marca_inscripcion(txt):
+    """`'abiertas'`, `'cerradas'` o `''`. Ver `ABRE` / `CIERRA`.
+
+    ⚠️ SE MIRA CERRAR PRIMERO. «inscripciones abiertas… ya cerradas» en
+    un mismo mensaje quiere decir cerradas, y el orden del `if` es lo
+    único que decide eso.
+    """
+    t = str(txt or '')
+    if not _INSC.search(t):
+        return ''
+    if CIERRA.search(t):
+        return 'cerradas'
+    if ABRE.search(t):
+        return 'abiertas'
+    return ''
+
+
+#: cuántos mensajes se piden por canal.
+#:
+#: 🔴 EL DE INSCRIPCIONES PIDE MAS, Y NO ES UN CAPRICHO. Ahí la gente
+#: **charla** mientras se anota, así que la marca «INSCRIPCIONES
+#: ABIERTAS» se va de pantalla en minutos. Medido el 23/09/2026: con 25
+#: mensajes el canal de FFA llegaba hasta las **03:18** y la marca era
+#: de las **03:15** — quedaba justo afuera, y el estado que se leía era
+#: el de un anuncio de la noche anterior.
+#:
+#: ⚠️ 100 es el máximo de Discord por llamada, así que sigue siendo UNA.
+POR_CANAL = {'eventos': 25, 'inscripciones': 100}
+
+
+def leer(s, por_canal=None):
+    """`(anuncios, inscripciones)` de todos los canales que se puedan.
+
+    Cada anuncio puede traer `estado` —abiertas/cerradas— si en su canal
+    hubo una marca después de él.
+    """
+    anuncios, inscr = [], []
+    estados = {}
+    for cid, nombre, cod, tipo in canales(s):
+        lim = por_canal or POR_CANAL.get(tipo, 25)
+        r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
+                  params={'limit': lim}, timeout=25)
+        if r.status_code != 200:
+            continue
+        for m in r.json():
+            # 🔴 LA MARCA PUEDE ESTAR EN CUALQUIERA DE LOS DOS CANALES.
+            # FFA la pone en `inscripciones` y el anuncio del evento vive
+            # en `eventos`; buscarla sólo donde «corresponde» la perdería
+            # la mitad de las veces. Discord devuelve del más nuevo al
+            # más viejo, así que el primero que aparece es el vigente.
+            mk = marca_inscripcion(m.get('content'))
+            cu = (m.get('timestamp') or '')[:19]
+            # ⚠️ LA MAS NUEVA DE TODO EL SERVIDOR, no la primera que
+            # aparezca. Se recorren dos canales y Discord devuelve cada
+            # uno del más nuevo al más viejo, así que «la primera» es la
+            # más nueva **de ese canal** — y una de junio en el segundo
+            # canal le ganaba a una de hoy en el primero.
+            if mk and cu > (estados.get(cod, {}).get('cuando') or ''):
+                estados[cod] = {'estado': mk, 'cuando': cu,
+                                'canal': nombre,
+                                'texto': (m.get('content') or '')[:80]}
+            if tipo == 'eventos':
+                a = parsear(m, cod, nombre)
+                if a:
+                    anuncios.append(a)
+            else:
+                # ⚠️ EN INSCRIPCIONES LA GENTE SE ANOTA POSTEANDO SU
+                # NOMBRE. No hay plantilla: lo que vale es **quién**
+                # escribió y qué puso, que suele ser su AKA con bandera.
+                txt = (m.get('content') or '').strip()
+                if not txt or len(txt) > 60 or not es_inscripcion(txt):
+                    continue
+                u = (m.get('author') or {})
+                inscr.append({'servidor': cod, 'canal': nombre,
+                              'texto': txt[:60],
+                              'quien': u.get('username') or '',
+                              'discord_id': u.get('id') or '',
+                              'cuando': (m.get('timestamp') or '')[:19]})
+    # ⚠️ EL ESTADO ES POR SERVIDOR y se le cuelga a sus anuncios: lo que
+    # la gente quiere saber es «¿puedo anotarme?», y eso lo contesta la
+    # ultima marca del servidor, no cada evento por separado.
+    for a in anuncios:
+        e = estados.get(a['servidor'])
+        if e and _vigente(e['cuando']):
+            a['inscripciones'] = e['estado']
+            a['inscripciones_cuando'] = e['cuando']
+    return anuncios, inscr
+
+
+def _vigente(cuando, ahora=None):
+    """¿Esa marca sigue diciendo algo de hoy? Ver `HORAS_VIGENTE`.
+
+    🔴 SIN ESTO, UNA MARCA DE JUNIO SE LE PEGABA A UN EVENTO DE
+    SEPTIEMBRE. «Inscripciones abiertas» es un estado transitorio: si la
+    última vez que alguien lo escribió fue hace tres meses, lo que hay
+    hoy no se sabe — y no saberlo es la respuesta correcta.
+    """
+    import datetime as _dt
+    try:
+        t = _dt.datetime.strptime(str(cuando)[:19], '%Y-%m-%dT%H:%M:%S')
+    except (ValueError, TypeError):
+        return False
+    ahora = ahora or _dt.datetime.utcnow()
+    return (ahora - t).total_seconds() <= HORAS_VIGENTE * 3600
+
+
+# 🔴 «INSCRIPCIONES ABIERTAS / CERRADAS» ES LA SEÑAL QUE DLX PIDIO, y es
+# mucho más limpia que los cupos. Dlx, 23/09/2026: *«donde se anuncian
+# que se abren las inscripciones»*.
+#
+# ⚠️ Y ES UNA CONVENCION QUE CRUZA SERVIDORES, medida: FFA escribe
+# `# INSCRIPCIONES ABIERTAS COMPE TROL 0/12 @everyone` y DIMENSIÓN DEL
+# FREESTYLE usa `# INSCRIPCIONES ABIERTAS` y `# INSCRIPCIONES CERRADAS`
+# tal cual. No es el formato de un servidor: es como se dice.
+#
+# ⚠️ EL ESTADO ES EL DEL MENSAJE MAS RECIENTE, no la suma. «abiertas» y
+# después «cerradas» quiere decir cerradas; contarlos daría un número
+# sin sentido.
+#: ⚠️ SE PIDEN LAS DOS PALABRAS EN EL MENSAJE, no pegadas. Un mensaje
+#: que diga «inscripciones … ya cerradas» es un cierre aunque las
+#: palabras estén separadas, y un patrón que las pida juntas lo lee como
+#: apertura — al revés de lo que dice.
+_INSC = re.compile(r'inscrip', re.I)
+ABRE = re.compile(r'abiert\w*|se abren|abrimos', re.I)
+CIERRA = re.compile(r'cerrad\w*|se cierran|cerramos', re.I)
+
+#: cuántas horas vale una marca. Una apertura de hace tres meses no dice
+#: nada de hoy: es un estado transitorio, no un hecho.
+#:
+#: 🔴 MEDIDO: sin esto, una marca de **junio** se le pegaba a los
+#: anuncios de septiembre, y el Lobby habría dicho «inscripciones
+#: abiertas» para un evento de hace tres meses.
+HORAS_VIGENTE = 24
+
+BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]')
+_CONOCIDOS = [None]
+
+
+def _conocidos():
+    """Los nombres del padrón y los alias, en minúscula. Se lee una vez."""
+    if _CONOCIDOS[0] is not None:
+        return _CONOCIDOS[0]
+    s = set()
+    for arch, saca in (('padron.json', lambda d: (x['raw'] for x in d)),
+                       ('akas.json', lambda d: list(d.get('alias') or {}))):
+        try:
+            with io.open(os.path.join(BASE, 'datos', arch),
+                         encoding='utf-8') as f:
+                s.update(str(x).strip().lower() for x in saca(json.load(f)))
+        except (OSError, ValueError, KeyError):
+            pass
+    _CONOCIDOS[0] = s
+    return s
+
+
+def es_inscripcion(txt):
+    """¿Este mensaje es alguien anotándose, o es charla?
+
+    🔴 EN ESE CANAL SE HABLA, y sin separarlo la lista de inscriptos se
+    llena de ruido. Medido el 23/09/2026 sobre los 23 mensajes de
+    `✦📝︱inscripciones` de FFA:
+
+        Fokox🇦🇷 · shuliot 🇦🇷 · Pichulamc · Zignos 🇩🇴 · Makma 🇻🇪   se anotan
+        «ya» · «Empieza cuando ?» · «??» · «Va corriendo !»        charla
+
+    ⚠️ LA REGLA ES **bandera O nombre conocido**, y no un umbral de
+    largo ni «tiene pocas palabras». Las dos señales salen del dato:
+    anotarse es decir quién sos, y quién sos se escribe con la bandera
+    —que es la convención que el propio anuncio pide— o con un nombre
+    que el padrón ya tiene.
+
+    ⚠️ Y UNA PREGUNTA NUNCA ES UNA INSCRIPCIÓN, aunque traiga un nombre:
+    *«Mi sicario no soy yo?»* lo trae.
+    """
+    t = str(txt or '').strip()
+    if not t or '?' in t:
+        return False
+    if BANDERA.search(t):
+        return True
+    return BANDERA.sub('', t).strip().lower() in _conocidos()
+
+
+def guardar(anuncios, inscr):
+    os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
+    with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump({'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00',
+                                           time.gmtime()),
+                   'anuncios': anuncios, 'inscripciones': inscr},
+                  f, ensure_ascii=False, indent=1)
+
+
+def cargar():
+    try:
+        with io.open(SALIDA, encoding='utf-8') as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {'anuncios': [], 'inscripciones': [], 'cuando': ''}
+
+
+# ── self-check ───────────────────────────────────────────────────────
+REAL_A = """** • 🉐 ╎DESGRACIAS EN TOKYO VOL 10 ╎ 🉐 • **
+💻  __`ORGANIZADOR:Lewis`__
+🎫 __`CUPOS:12 / 16`__
+🔮 __`RANGO:Bronce`__
+🌘 __`MODALIDAD:1v1`__
+⌚ __`HORARIO:EN 30 MINUTOS`__"""
+
+REAL_B = """** • 🚇 ╎ELRAP FECHA 5 ╎ 🚇 • **
+💻  __`ORGANIZADOR:`__ @nachonc_
+🎫 __`CUPOS:`__ ♾️
+🔮 __`RANGO:`__ bronce
+⌚ __`HORARIO:`__ 22hs"""
+
+
+def _self_check():
+    print('\n  anuncios.py — self-check\n')
+    mal = 0
+
+    # 🔴 LAS DOS FORMAS DEL CAMPO, con los dos anuncios reales de FFA.
+    a = parsear({'content': REAL_A, 'id': '1', 'timestamp': '2026-09-23T01:30:00'},
+                'FFA', 'eventos')
+    b = parsear({'content': REAL_B, 'id': '2', 'timestamp': '2026-09-22T21:56:00'},
+                'FFA', 'eventos')
+    for et, x, nom, org in (('valor adentro del backtick', a,
+                             'DESGRACIAS EN TOKYO VOL 10', 'Lewis'),
+                            ('valor afuera', b, 'ELRAP FECHA 5', '@nachonc_')):
+        ok = x and x['nombre'] == nom and x['organizador'] == org
+        mal += not ok
+        print('   %s %-28s %s · %s'
+              % ('✅' if ok else '🔴', et,
+                 (x or {}).get('nombre', '—'), (x or {}).get('organizador', '—')))
+
+    ok = a and a['inscriptos'] == 12 and a['cupo_total'] == 16
+    mal += not ok
+    print('   %s los cupos se parten en dos números   %s'
+          % ('✅' if ok else '🔴',
+             '%s de %s' % ((a or {}).get('inscriptos'), (a or {}).get('cupo_total'))))
+
+    # ⚠️ Y LO QUE NO ES «12 de 16» NO SE FUERZA.
+    casos = [('12/16/24/32/36', (None, None)), ('♾️', (None, None)),
+             ('8 / 16', (8, 16)), ('', (None, None))]
+    d = [c for c, e in casos if cupos(c) != e]
+    mal += bool(d)
+    print('   %s una lista de tamaños o un ∞ no son «x de y»%s'
+          % ('✅' if not d else '🔴', '' if not d else '  %s' % d))
+
+    # 🔴 LA FIRMA SON DOS CAMPOS, no un título: en estos canales hay
+    # links sueltos, @everyone y tablas de clasificados.
+    basura = ['@everyone\nhttps://discord.gg/xxx',
+              '# ⭐ CLASIFICADOS: ⭐\n1.- RESPAWN\n2.- SOL',
+              '▬▬▬▬▬▬▬▬▬▬']
+    d = [t[:22] for t in basura
+         if parsear({'content': t, 'id': 'x', 'timestamp': ''}, 'FFA', 'c')]
+    mal += bool(d)
+    print('   %s un link suelto o una tabla NO son un anuncio%s'
+          % ('✅' if not d else '🔴', '' if not d else '  %s' % d))
+
+    # el nombre no puede salir de la fila de adornos
+    ok = nombre_de('▬▬▬▬▬▬\n# COPA X\n💻 `ORGANIZADOR:a`') == 'COPA X'
+    mal += not ok
+    print('   %s el nombre salta la fila de adornos   %r'
+          % ('✅' if ok else '🔴',
+             nombre_de('▬▬▬▬▬▬\n# COPA X\n💻 `ORGANIZADOR:a`')))
+
+    # 🔴 ANOTARSE Y CHARLAR, con los mensajes reales de FFA.
+    print('')
+    casos = [('Fokox🇦🇷', True), ('shuliot 🇦🇷', True), ('Zignos 🇩🇴', True),
+             ('ya', False), ('Empieza cuando ?', False), ('??', False),
+             ('Va corriendo ! Estamos a full', False),
+             ('Mi sicario no soy yo?', False)]
+    d = [t for t, e in casos if es_inscripcion(t) is not e]
+    mal += bool(d)
+    print('   %s se separa anotarse de charlar%s'
+          % ('✅' if not d else '🔴', '' if not d else '  %s' % d))
+    # ⚠️ y un nombre del padrón SIN bandera también cuenta: `masino`
+    ok = es_inscripcion('Pichulamc') or 'sin padrón' in ''
+    print('   %s un nombre conocido sin bandera también   %s'
+          % ('✅' if ok else 'ⓘ', es_inscripcion('Pichulamc')))
+
+    # 🔴 «INSCRIPCIONES ABIERTAS / CERRADAS», que es la señal que Dlx
+    # pidió. Los dos primeros son mensajes reales: el de FFA y el de
+    # DIMENSIÓN DEL FREESTYLE.
+    print('')
+    casos = [
+        ('# INSCRIPCIONES ABIERTAS COMPE TROL 0/12 @everyone', 'abiertas'),
+        ('# INSCRIPCIONES CERRADAS @everyone', 'cerradas'),
+        # ⚠️ separadas: un patrón que las pida pegadas lee esto como
+        # apertura, o sea **al revés de lo que dice**
+        ('inscripciones abiertas… ya cerradas', 'cerradas'),
+        ('hola que tal', ''),
+        ('se abren las inscripciones', 'abiertas'),
+        ('cerrado el local', ''),          # sin «inscrip» no es la marca
+    ]
+    d = [(t[:26], marca_inscripcion(t)) for t, e in casos
+         if marca_inscripcion(t) != e]
+    mal += bool(d)
+    print('   %s abiertas / cerradas se leen bien%s'
+          % ('✅' if not d else '🔴', '' if not d else '  %s' % d))
+
+    # 🔴 Y UNA MARCA VIEJA NO DICE NADA DE HOY. Medido: una de **junio**
+    # se le estaba pegando a los anuncios de septiembre.
+    import datetime as _dt
+    ahora = _dt.datetime(2026, 9, 23, 6, 0, 0)
+    ok = (_vigente('2026-09-23T03:15:00', ahora)
+          and not _vigente('2026-06-17T18:29:00', ahora))
+    mal += not ok
+    print('   %s una marca de hace tres meses no cuenta como estado de hoy'
+          % ('✅' if ok else '🔴'))
+
+    print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
+    return 1 if mal else 0
+
+
+def main():
+    if '--auto' in sys.argv:
+        return _self_check()
+    s = _sesion()
+    anuncios, inscr = leer(s)
+    print('\n══ EVENTOS ANUNCIADOS ══\n')
+    if canales.sin_acceso:
+        print('   ⓘ %d servidor(es) sin acceso: el bot no está invitado\n'
+              % canales.sin_acceso)
+    for a in anuncios[:12]:
+        print('   [%s] %-34s %s' % (a['cuando'][:16], a['nombre'][:34],
+                                    a['servidor']))
+        print('        organiza %-14s cupos %-12s %s'
+              % (a['organizador'][:14] or '—', a['cupos_texto'][:12] or '—',
+                 a['horario'][:22]))
+    print('\n   %d anuncio(s) · %d inscripción(es)' % (len(anuncios), len(inscr)))
+    if inscr:
+        print('\n   últimas inscripciones:')
+        for i in inscr[:8]:
+            print('      %-18s %-18s %s' % (i['texto'][:18], i['quien'][:18],
+                                            i['servidor']))
+    if '--aplicar' in sys.argv:
+        guardar(anuncios, inscr)
+        print('\n   -> %s' % os.path.relpath(SALIDA, BASE))
+    else:
+        print('\n   (no guardé nada — corré con --aplicar)')
+    print('')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main() or 0)

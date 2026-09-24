@@ -1,0 +1,419 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=Barlow+Condensed:wght@600;700&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #0D0D14;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Archivo', sans-serif;
+  color: #E8E8F0;
+}
+
+h1 { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.3px; }
+.sub { font-size: 0.8rem; color: #9090A8; margin-bottom: 32px; }
+
+.rack {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ══════════════════════════════════════════════
+   LA TARJETA
+   ══════════════════════════════════════════════ */
+.card {
+  width: 300px;
+  height: 438px;
+  position: relative;
+  font-family: 'Archivo', sans-serif;
+  color: #fff;
+  /* SILUETA tipo escudo: esquinas biseladas arriba, se cierra hacia abajo */
+  clip-path: polygon(
+    0% 3%, 3% 0%, 97% 0%, 100% 3%,
+    100% 79%,
+    97% 86%, 88% 92%, 66% 97.5%, 50% 100%,
+    34% 97.5%, 12% 92%, 3% 86%, 0% 79%
+  );
+  filter: drop-shadow(0 16px 34px rgba(0,0,0,0.55));
+}
+
+/* fondo base con degradado del rango */
+.c-bg { position:absolute; inset:0; z-index:0; background:var(--grad); }
+
+/* textura diagonal — antes estaba en 0.08 (invisible), ahora se nota */
+.c-tex {
+  position:absolute; inset:0; z-index:1;
+  opacity: 0.16;
+  background-image: repeating-linear-gradient(
+    115deg, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 1px,
+    transparent 1px, transparent 9px);
+  mix-blend-mode: overlay;
+}
+/* brillo diagonal */
+/* brillo difuso: mas ancho y suave, para que la carta no se vea plana */
+.c-shine {
+  position:absolute; top:-40%; left:-30%; width:170%; height:70%; z-index:2;
+  background: linear-gradient(transparent, rgba(255,255,255,0.26), transparent);
+  transform: rotate(-22deg);
+  filter: blur(14px);
+  pointer-events:none;
+}
+.c-edge {
+  position:absolute; inset:6px; z-index:4; pointer-events:none;
+  clip-path: inherit;
+  border:1.5px solid rgba(255,255,255,0.32);
+  clip-path: polygon(
+    0% 3%, 3% 0%, 97% 0%, 100% 3%,
+    100% 79%,
+    97% 86%, 88% 92%, 66% 97.5%, 50% 100%,
+    34% 97.5%, 12% 92%, 3% 86%, 0% 79%
+  );
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding:1.5px;
+  background: linear-gradient(150deg,
+    rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.06) 30%,
+    rgba(255,255,255,0.02) 62%, rgba(255,255,255,0.42) 100%);
+  border:none;
+}
+.card.bright .c-edge {
+  background: linear-gradient(150deg,
+    rgba(255,255,255,0.85) 0%, rgba(140,105,0,0.18) 32%,
+    rgba(140,105,0,0.10) 64%, rgba(255,255,255,0.7) 100%);
+}
+.c-vig {
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 28%, transparent 40%, rgba(0,0,0,0.30) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.20) 0%, transparent 20%, transparent 70%, rgba(0,0,0,0.28) 100%);
+}
+
+/* ── ZONA FOTO: llena TODO el bloque superior, se funde hacia abajo ── */
+.c-scrim {
+  position:absolute; top:0; left:0; width:60%; height:48%; z-index:4; pointer-events:none;
+  background: radial-gradient(ellipse at 14% 20%, rgba(0,0,0,0.60) 0%, rgba(0,0,0,0.28) 44%, transparent 74%);
+}
+.card.bright .c-scrim {
+  background: radial-gradient(ellipse at 14% 20%, rgba(255,248,214,0.72) 0%, rgba(255,248,214,0.34) 44%, transparent 74%);
+}
+.c-photo {
+  position:absolute; top:0; left:0; right:0; height:58%;
+  z-index:3; overflow:hidden;
+  -webkit-mask-image: linear-gradient(180deg,#000 0%,#000 46%,rgba(0,0,0,0.55) 74%,transparent 100%);
+          mask-image: linear-gradient(180deg,#000 0%,#000 46%,rgba(0,0,0,0.55) 74%,transparent 100%);
+}
+.c-photo img { width:100%; height:100%; object-fit:cover; object-position:center 22%; }
+/* fallback iniciales (Bloody no tiene avatar) */
+.c-initials {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding-right: 26px; padding-bottom: 26px;
+  font-size: 8.4rem; font-weight:900; line-height:0.8;
+  letter-spacing:-6px;
+  color: rgba(255,255,255,0.13);
+  user-select:none;
+}
+/* el degradado que funde la foto con el color de la carta */
+.c-photo::after {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.10) 22%, transparent 45%);
+}
+
+/* ── COLUMNA IZQUIERDA sobre la foto: OVR + rango + bandera + escudo ── */
+.c-left {
+  position:absolute; top:20px; left:20px; z-index:5;
+  display:flex; flex-direction:column; align-items:center;
+}
+.c-ovr {
+  font-size: 3.55rem; font-weight:900; line-height:0.8;
+  letter-spacing:-3px;
+  -webkit-text-stroke: 2px rgba(0,0,0,0.7);
+  paint-order: stroke fill;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
+.c-rank {
+  font-size: 1.42rem; font-weight:900; letter-spacing:2.5px;
+  margin-top: 3px;
+  -webkit-text-stroke: 1.5px rgba(0,0,0,0.7);
+  paint-order: stroke fill;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.45);
+}
+.c-sep {
+  width:34px; height:2px; margin:9px 0 8px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+}
+.c-flag {
+  width:44px; height:30px; border-radius:4px; object-fit:cover;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.5);
+}
+.c-logo {
+  width:38px; height:38px; border-radius:50%; object-fit:cover; margin-top:8px;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.25);
+}
+
+/* ── banda superior (solo cartas destacadas) ── */
+.c-band {
+  position:absolute; top:90%; left:50%; transform:translateX(-50%); z-index:6;
+  padding:3px 13px 4px; border-radius:20px; white-space:nowrap;
+  font-size:0.58rem; font-weight:900; letter-spacing:1.6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+
+/* ── NOMBRE ── */
+.c-name {
+  position:absolute; top:49.5%; left:0; right:0; z-index:5;
+  text-align:center;
+  font-size: 1.72rem; font-weight:900; letter-spacing:-0.5px;
+  text-transform:uppercase;
+  text-shadow: 0 2px 3px rgba(0,0,0,0.55), 0 4px 16px rgba(0,0,0,0.6);
+}
+.c-rule {
+  position:absolute; top:57.5%; left:11%; right:11%; height:1.5px; z-index:5;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+}
+
+/* ── STATS: 2 columnas × 3 filas, como FIFA ── */
+.c-stats {
+  position:absolute; top:60%; left:9%; right:9%; z-index:5;
+  display:grid; grid-template-columns:1fr 1px 1fr;
+  row-gap: 7px;
+}
+.c-vdiv { grid-row:1/4; grid-column:2; background:rgba(255,255,255,0.28); }
+.c-stat {
+  display:flex; align-items:baseline; gap:7px; justify-content:center;
+}
+.c-val {
+  font-family:'Barlow Condensed', 'LigaEmoji', sans-serif;
+  font-size:1.5rem; font-weight:700; line-height:1;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+.c-lbl {
+  font-size:0.66rem; font-weight:800; letter-spacing:1.2px;
+  opacity:0.85; text-transform:uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.65), 0 2px 6px rgba(0,0,0,0.45);
+}
+
+.c-foot {
+  position:absolute; top:84.3%; left:0; right:0; z-index:5;
+  text-align:center; font-size:0.47rem; font-weight:800;
+  letter-spacing:2.3px; opacity:0.72;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.65), 0 2px 6px rgba(0,0,0,0.45);
+}
+
+/* ── variante clara (rango S dorado): texto oscuro ── */
+/* TODO el texto en BLANCO, tambien en las cartas claras (rango S).
+   Antes iba oscuro (#2E2400) y se perdia legibilidad; ahora se sostiene
+   con sombra oscura en vez de cambiar el color. */
+.card.bright { color:#fff; }
+.card.bright .c-ovr, .card.bright .c-rank {
+  color:#fff;
+  -webkit-text-stroke: 0.7px rgba(0,0,0,0.55);
+  paint-order: stroke fill;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.75), 0 0 24px rgba(0,0,0,0.45);
+}
+.card.bright .c-name, .card.bright .c-val { text-shadow: 0 2px 8px rgba(0,0,0,0.7), 0 3px 14px rgba(0,0,0,0.5); }
+.card.bright .c-initials { color: rgba(0,0,0,0.13); }
+.card.bright .c-sep { background:linear-gradient(90deg,transparent,rgba(0,0,0,0.45),transparent); }
+.card.bright .c-rule { background:linear-gradient(90deg,transparent,rgba(0,0,0,0.42),transparent); }
+.card.bright .c-vdiv { background:rgba(0,0,0,0.25); }
+.card.bright .c-band { background:rgba(255,255,255,0.30); border-color:rgba(70,52,0,0.45); }
+.card.bright .c-tex { opacity:0.20; mix-blend-mode:multiply; }
+
+.tag {
+  text-align:center; margin-top:12px;
+  font-size:0.68rem; color:#9090A8; letter-spacing:0.5px;
+}
+
+/* ═══ ENCABEZADOS Y LEYENDA ═══ */
+h1 { font-size:1.15rem; font-weight:800; margin-bottom:2px; }
+.sub2 { font-size:0.8rem; color:#9090A8; margin-bottom:6px; }
+.sec { max-width:1500px; margin:46px auto 18px; padding-top:26px; border-top:1px solid #2A2A40; }
+.sec h2 { font-size:1rem; font-weight:800; letter-spacing:-0.2px; }
+.sec .sub { font-size:0.76rem; color:#9090A8; margin-top:2px; margin-bottom:0; }
+.ley { max-width:1500px; margin:20px auto 0; font-size:0.72rem; color:#9090A8; text-align:center; line-height:1.7; }
+.ley b { color:#E8E8F0; }
+
+
+
+/* ═══ COLUMNA LIMPIA (layout FIFA) ═══
+   Repinta el degradado propio de la carta sobre la franja izquierda y lo
+   desvanece hacia la derecha. Así el número queda sobre el material de la
+   carta, no sobre el avatar — que es como funciona la carta de FIFA. */
+.c-colwash {
+  position:absolute; top:0; left:0; right:0; height:58%; z-index:4; pointer-events:none;
+  background: var(--grad);
+  -webkit-mask-image: linear-gradient(90deg,#000 0%,#000 13%,rgba(0,0,0,0.5) 25%,transparent 43%);
+          mask-image: linear-gradient(90deg,#000 0%,#000 13%,rgba(0,0,0,0.5) 25%,transparent 43%);
+  display:none;
+}
+/* halo (solo en la edición que lo usa) */
+.c-scrim { display:none; }
+
+/* la textura y el brillo tienen que quedar por ENCIMA de la columna limpia */
+.c-tex, /* brillo difuso: mas ancho y suave, para que la carta no se vea plana */
+.c-shine { z-index:5; }
+.c-vig { z-index:5; }
+.c-edge { z-index:6; }
+.c-left, .c-band, .c-name, .c-rule, .c-stats, .c-foot { z-index:7 !important; }
+
+/* base: sin sombras ni bordes; cada edición agrega lo suyo */
+.rack .c-ovr, .rack .c-rank { text-shadow:none; -webkit-text-stroke:0; }
+/* el numero tambien en blanco: la sombra lo separa del fondo claro */
+.rack .card.bright .c-ovr, .rack .card.bright .c-rank {
+  color:#fff; text-shadow:0 2px 10px rgba(0,0,0,0.8);
+  -webkit-text-stroke:0.7px rgba(0,0,0,0.5); paint-order:stroke fill; }
+
+/* ── A · layout FIFA, sin borde ── */
+.rack.a .c-colwash { display:block; }
+
+/* ── B · layout FIFA + filo 1px ── */
+.rack.b .c-colwash { display:block; }
+.rack.b .c-ovr, .rack.b .c-rank { -webkit-text-stroke:1px rgba(0,0,0,0.55); }
+.rack.b .card.bright .c-ovr, .rack.b .card.bright .c-rank { -webkit-text-stroke:0.7px rgba(0,0,0,0.5); }
+
+/* ── C · layout FIFA + dorada también blanca ── */
+.rack.c .c-colwash { display:block; }
+.rack.c .c-ovr, .rack.c .c-rank { -webkit-text-stroke:1px rgba(0,0,0,0.55); }
+.rack.c .card.bright .c-ovr, .rack.c .card.bright .c-rank {
+  color:#FFF; -webkit-text-stroke:1px rgba(0,0,0,0.6); }
+
+/* ── D · foto completa + blanco con filo ── */
+.rack.d .c-ovr  { -webkit-text-stroke:1.2px rgba(0,0,0,0.8); }
+.rack.d .c-rank { -webkit-text-stroke:1px rgba(0,0,0,0.8); }
+.rack.d .card.bright .c-ovr, .rack.d .card.bright .c-rank {
+  color:#FFF; -webkit-text-stroke:1.2px rgba(0,0,0,0.8); }
+.rack.d .card.bright .c-rank { -webkit-text-stroke-width:1px; }
+
+/* ── E · foto completa + sombra MUY suave (antes era el doble) ── */
+.rack.e .c-ovr  { -webkit-text-stroke:1.2px rgba(0,0,0,0.8); text-shadow:0 2px 7px rgba(0,0,0,0.30); }
+.rack.e .c-rank { -webkit-text-stroke:1px rgba(0,0,0,0.8);   text-shadow:0 2px 6px rgba(0,0,0,0.28); }
+.rack.e .card.bright .c-ovr, .rack.e .card.bright .c-rank {
+  color:#FFF; -webkit-text-stroke:1.2px rgba(0,0,0,0.8); text-shadow:0 2px 7px rgba(0,0,0,0.30); }
+.rack.e .card.bright .c-rank { -webkit-text-stroke-width:1px; }
+
+/* la marca necesita contraste propio en la dorada (abajo el oro ya es oscuro) */
+.card.bright .c-foot { color:#FFF6D2; opacity:0.85;
+  text-shadow:0 1px 2px rgba(80,58,0,0.9), 0 2px 6px rgba(80,58,0,0.55); }
+
+/* ═══ ENCUADRE ═══
+   La franja de color tapa el ~25% izquierdo, así que un avatar centrado
+   queda con la mitad del sujeto escondida. Corriendo el bloque de foto a la
+   derecha, el centro del avatar cae en la zona visible. */
+.c-photo { left:13%; }
+.c-photo img { object-position: center 26%; }
+
+/* la línea entre columnas de stats casi no se veía en la dorada y la plateada */
+.c-vdiv { background:rgba(255,255,255,0.40); }
+.card.bright .c-vdiv { background:rgba(0,0,0,0.30); }
+
+
+
+
+/* ═══ TAG POR RAREZA — escalera de metales ═══
+   Nada de arcoíris: dorado, plata, grafito y negro conviven con cualquier
+   color de carta. La rareza se lee por LUMINOSIDAD, no por tono. */
+
+/* t1 · LEGENDARIO — dorado macizo, halo fuerte, destello que recorre */
+.c-band.t1 {
+  background: linear-gradient(180deg,#FFF0A8 0%,#FFD024 48%,#C89000 100%);
+  color:#2A1E00 !important; border:1px solid rgba(90,66,0,0.55);
+  box-shadow: 0 0 20px rgba(255,196,32,0.9), 0 0 44px rgba(255,178,0,0.5),
+              inset 0 1px 0 rgba(255,255,255,0.9);
+  text-shadow: 0 1px 0 rgba(255,252,225,0.9);
+  overflow:hidden;
+}
+.c-band.t1::after {
+  content:''; position:absolute; top:0; left:-60%; width:45%; height:100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.9), transparent);
+  animation: brillo 2.8s ease-in-out infinite;
+}
+@keyframes brillo { 0%{left:-60%} 55%{left:130%} 100%{left:130%} }
+
+/* t2 · ÉPICO — plata pulida */
+.c-band.t2 {
+  background: linear-gradient(180deg,#FFFFFF 0%,#DCE0E8 46%,#9BA3B2 100%);
+  color:#1E2129 !important; border:1px solid rgba(60,68,82,0.45);
+  box-shadow: 0 0 15px rgba(255,255,255,0.65), inset 0 1px 0 rgba(255,255,255,0.95);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.85);
+}
+
+/* t3 · RARO — grafito con filo claro */
+.c-band.t3 {
+  background: linear-gradient(180deg,#5A606E 0%,#3A404C 55%,#23272F 100%);
+  color:#EEF1F6 !important; border:1px solid rgba(255,255,255,0.45);
+  box-shadow: 0 0 9px rgba(255,255,255,0.22), inset 0 1px 0 rgba(255,255,255,0.28);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+}
+
+/* t4 · COMÚN — negro plano, sin brillo a propósito */
+.c-band.t4 {
+  background: rgba(12,12,18,0.72);
+  color:#A8ACB8 !important; border:1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 2px 7px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+}
+
+/* leyenda de rareza */
+.lg { display:inline-block; padding:2px 9px; border-radius:14px; margin:0 3px;
+      font-size:0.62rem; font-weight:900; letter-spacing:1.2px; }
+.lg.t1 { background:linear-gradient(180deg,#FFF0A8,#FFD024); color:#2A1E00; }
+.lg.t2 { background:linear-gradient(180deg,#FFFFFF,#DCE0E8); color:#1E2129; }
+.lg.t3 { background:linear-gradient(180deg,#5A606E,#3A404C); color:#EEF1F6; }
+.lg.t4 { background:rgba(12,12,18,0.72); color:#A8ACB8; border:1px solid rgba(255,255,255,0.18); }
+
+
+
+/* ═══ EL TAG DORADO NECESITA SEPARARSE DE LA CARTA DORADA ═══
+   Mismo tier, pero sobre fondo dorado se fundía y parecía de menor rango.
+   Un aro oscuro lo despega sin cambiarle el color. */
+.card.bright .c-band.t1 {
+  border:1.5px solid rgba(60,42,0,0.75);
+  box-shadow: 0 0 0 1px rgba(255,246,200,0.55),
+              0 3px 12px rgba(50,34,0,0.55),
+              0 0 22px rgba(255,200,40,0.55),
+              inset 0 1px 0 rgba(255,255,255,0.9);
+}
+.card.bright .c-band.t2 { border:1.5px solid rgba(60,60,70,0.5); }
+
+/* ═══ EL NOMBRE NO PUEDE DEPENDER DE LA FOTO ═══
+   La foto llega hasta el 58% y el nombre está en el 49,5%, así que cae
+   encima. En las cartas oscuras el nombre es blanco y se despega solo; en la
+   dorada es oscuro y se embarra contra fotos reales (pasto, gente, ropa).
+   Se desvanece la foto antes y se le da al nombre un halo propio. */
+.c-photo {
+  -webkit-mask-image: linear-gradient(180deg,#000 0%,#000 40%,rgba(0,0,0,0.42) 66%,transparent 92%);
+          mask-image: linear-gradient(180deg,#000 0%,#000 40%,rgba(0,0,0,0.42) 66%,transparent 92%);
+}
+.card.bright .c-name {
+  text-shadow: 0 0 14px rgba(255,248,205,1), 0 0 30px rgba(255,246,195,0.95),
+               0 1px 2px rgba(255,255,255,0.95), 0 2px 5px rgba(255,244,180,0.9);
+}
+.card.bright .c-val {
+  text-shadow: 0 0 10px rgba(255,248,205,0.95), 0 1px 2px rgba(255,255,255,0.9);
+}
+
+/* ═══ MATRIZ DE COMPATIBILIDAD ═══ */
+.mx { max-width:1500px; margin:0 auto; }
+.mx-row { display:flex; align-items:center; gap:6px; margin-bottom:6px; flex-wrap:nowrap; overflow-x:auto; }
+.mx-lbl { width:22px; flex-shrink:0; font-weight:900; font-size:1rem; color:#9090A8; text-align:center; }
+.mx-cell { flex-shrink:0; }
+.mx-card { position:relative; padding:14px 10px; border-radius:8px; overflow:hidden;
+           display:flex; align-items:center; justify-content:center; min-width:132px; }
+.mx-bg { position:absolute; inset:0; background:var(--grad); }
+.mx-card .c-band { z-index:2; font-size:0.55rem; }
+
+/* ── el nombre se escala segun el largo ──────────────────────────────
+   Misma escalera que la Temporada y la Competitiva: las tres cartas del
+   mismo rapero tienen que tratar el nombre igual. */
+.n6  .c-name{ font-size:1.86rem }
+.n8  .c-name{ font-size:1.72rem }
+.n10 .c-name{ font-size:1.55rem }
+.n12 .c-name{ font-size:1.38rem }

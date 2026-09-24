@@ -1,0 +1,137 @@
+{
+ "_nota": "Eventos insignia de la Pre-temporada 2026. Cada evento tiene UN icono y la lista de participantes con su resultado. Los niveles son los mismos que usan los rombos: oro, plata, bronce, negro (participo). El orden de las llaves se transcribio de los posts originales. Identidades unificadas: Ragna = Ragnar.",
+ "_niveles": [
+  "oro",
+  "plata",
+  "bronce",
+  "negro"
+ ],
+ "temporada": "PRE-2026",
+ "interserver": {
+  "nombre": "Interserver de La Hermandad",
+  "edicion": 4,
+  "servidor": "hermandad",
+  "icono": "ev_bl.png",
+  "participantes": {
+   "Rodri LP": "oro",
+   "Konan": "plata",
+   "Road": "bronce",
+   "Axinu": "negro",
+   "Bloody": "negro",
+   "Edu": "negro",
+   "Juanpa": "negro",
+   "Kaled": "negro",
+   "MCO": "negro",
+   "Maki": "negro",
+   "OG": "negro",
+   "Prosu": "negro",
+   "Respawn": "negro",
+   "Rubik": "negro",
+   "Six": "negro",
+   "Tyree": "negro"
+  },
+  "prioridad": 0
+ },
+ "tfc_champions": {
+  "nombre": "TFC Champions T5 · Final Internacional",
+  "servidor": "TFC",
+  "icono": "logos_sv/sv_tfc.png",
+  "participantes": {
+   "Konan": "oro",
+   "Rubik": "plata",
+   "Kourier": "bronce",
+   "Thiflow": "negro",
+   "Luz": "negro",
+   "Afidu": "negro",
+   "Ragnar": "negro",
+   "Vice": "negro",
+   "Tyree": "negro",
+   "Axinu": "negro",
+   "Christo": "negro",
+   "420": "negro",
+   "Six": "negro",
+   "KB": "negro",
+   "Scorpio": "negro",
+   "Raven": "negro"
+  },
+  "prioridad": 2
+ },
+ "urban_nations": {
+  "nombre": "Urban Nations · Final Internacional",
+  "servidor": "URBF",
+  "icono": "logos_sv/sv_urbf.png",
+  "participantes": {
+   "MCO": "oro",
+   "Logan": "plata",
+   "Maki": "bronce",
+   "Scorpio": "negro",
+   "Arama": "negro",
+   "Pablosky": "negro",
+   "Axinu": "negro",
+   "Zignos": "negro"
+  },
+  "prioridad": 9
+ },
+ "frz_internacional": {
+  "nombre": "Final Internacional FRZ",
+  "servidor": "FRZ",
+  "icono": "logos_sv/sv_frz.png",
+  "participantes": {
+   "Ceko": "oro",
+   "Olaf": "plata",
+   "Dynoco": "bronce",
+   "Znzia": "negro",
+   "Juasmio": "negro",
+   "Mintus": "negro",
+   "Ceim": "negro",
+   "Erian": "negro",
+   "BM": "negro",
+   "David CM": "negro",
+   "Itohimo": "negro",
+   "Bloody": "negro",
+   "MCO": "negro",
+   "Nazion": "negro",
+   "Limitz": "negro",
+   "Ragnar": "negro"
+  },
+  "prioridad": 5
+ },
+ "dra_aniversario": {
+  "nombre": "Gran Evento · 5to Aniversario",
+  "servidor": "DRA",
+  "icono": "logos_sv/sv_dra.png",
+  "participantes": {
+   "Bloody": "oro",
+   "Edu": "plata",
+   "Deluxe": "bronce",
+   "BNA": "negro",
+   "RZ": "negro",
+   "Wachiwa": "negro",
+   "Kuni": "negro",
+   "Anbeck": "negro",
+   "Saiko": "negro",
+   "Humildad": "negro",
+   "Axinu": "negro",
+   "Andy": "negro",
+   "Prosu": "negro",
+   "Sombra": "negro",
+   "MCO": "negro",
+   "Gus": "negro"
+  },
+  "prioridad": 3
+ },
+ "_orden": {
+  "_nota": "El orden de los rombos lo manda la IMPORTANCIA DEL EVENTO, no el resultado del rapero. El Interserver va primero siempre por ser de toda la Hermandad; el resto sigue el tamano del servidor.",
+  "interserver": 0,
+  "SR": 1,
+  "TFC": 2,
+  "DRA": 3,
+  "SV": 4,
+  "FRZ": 5,
+  "FFA": 6,
+  "TWR": 7,
+  "FTN": 8,
+  "URBF": 9,
+  "EFA": 10
+ }
+}

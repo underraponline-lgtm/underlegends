@@ -1,0 +1,73 @@
+{
+ "_nota": "Estrellas del Interserver de la Hermandad. 1 estrella = 1 edicion ganada. Cargado a mano: no sale del pipeline.",
+ "_regla": "Cuando un servidor campeon deja de existir, su titulo pasa al SIGUIENTE SERVIDOR VIVO de ese podio. El servidor eliminado conserva su Salon de la Fama como registro historico, pero no se dibuja en ninguna carta.",
+ "_marca": "Under Legends es la MARCA paraguas, no un servidor: por eso va como pie en las tres cartas. El servidor dentro de UL es DRA, y por eso la estrella de T3 termina en DRA.",
+ "estrellas_por_servidor": {
+  "TFC": 1,
+  "SR": 1,
+  "DRA": 1,
+  "FTN": 1,
+  "TWR": 0,
+  "FRZ": 0,
+  "URBF": 0,
+  "EFA": 0,
+  "FFA": 0,
+  "RZ": 0
+ },
+ "ediciones": {
+  "1": {
+   "gano": "EDF",
+   "hoy_la_tiene": "TFC",
+   "heredada": true,
+   "campeon_individual": "Ragnar"
+  },
+  "2": {
+   "gano": "EDF",
+   "hoy_la_tiene": "SR",
+   "heredada": true,
+   "campeon_individual": null
+  },
+  "3": {
+   "gano": "EDF",
+   "hoy_la_tiene": "DRA",
+   "heredada": true,
+   "_via": "Under Legends, que es la marca; el servidor es DRA",
+   "campeon_individual": null
+  },
+  "4": {
+   "gano": "FTN",
+   "hoy_la_tiene": "FTN",
+   "heredada": false,
+   "temporada": "PRE-2026",
+   "campeon_individual": "Rodri LP",
+   "subcampeon": "Konan",
+   "tercero": "Road",
+   "bracket": "datos/interserver.json"
+  }
+ },
+ "eliminados": {
+  "EDF": {
+   "estrellas_originales": 3,
+   "ediciones_ganadas": [
+    1,
+    2,
+    3
+   ],
+   "salon_de_la_fama": true,
+   "se_dibuja": false,
+   "_por_que": "El servidor ya no existe. Sus 3 titulos pasaron por herencia a TFC, SR y DRA, uno por edicion. EDF conserva el registro para que el conteo de ediciones cierre y se sepa quien gano que, pero no hay carta donde mostrarlo. No es un error a corregir: es historia del sistema. Si algun dia se construye la carta Historico, ahi si tendria sentido que aparezca.",
+   "_no_confundir_con": "EFA, que SI existe y aparece en interserver.json (Konan figura representando a EFA en el podio de T4). EDF y EFA son servidores DISTINTOS."
+  }
+ },
+ "_pendiente": [
+  "Faltan los brackets de T1, T2 y T3. Para las estrellas alcanza (la gana el servidor); para mostrar campeones individuales, no. De T2 y T3 no se sabe quien gano.",
+  "Rodri LP gano T4 representando a Fontana pero no aparece en el Ranking Competitivo con ese nombre: probablemente compite con otro AKA. No bloquea las estrellas.",
+  "En merge_input.json aparece un servidor 'UL' que no esta en la lista de 7. Dlx confirmo que UL es la marca y DRA el servidor, asi que probablemente mapea a DRA: HAY QUE VERIFICARLO antes de usar ese archivo."
+ ],
+ "_rebranding_pendiente": {
+  "_que": "Hay un rebranding planeado que mueve estos nombres.",
+  "UL": "pasa a DRAP",
+  "DRE": "pasa a Under Rap",
+  "_ojo": "Cuando ocurra hay que tocar datos Y codigo: los nombres viven en este archivo, en comun/escudos.py, en los pools y en los nombres de comun/logos_color/."
+ }
+}

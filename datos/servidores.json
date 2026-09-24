@@ -1,0 +1,176 @@
+{
+ "_leeme": [
+  "LA TABLA QUE TRADUCE UN SERVIDOR DE DISCORD AL CODIGO DE LA LIGA.",
+  "",
+  "Sin esto /card no puede abrir en la carta del servidor DONDE ESCRIBISTE,",
+  "que es lo que decidio Dlx el 16/09/2026: la interaccion trae el guild_id",
+  "y hace falta saber que ese numero es 'FFA'.",
+  "",
+  "Es temporal a proposito: su lugar definitivo es la hoja datos_servidores",
+  "del Sheet nuevo (ver docs/sheet_t1.md). Vive aca porque el bot lo necesita",
+  "AHORA y el Sheet todavia no existe. El dia que exista, esto se borra.",
+  "",
+  "Los guild_id y las invitaciones NO son secretos: son publicos y cualquier",
+  "miembro los puede copiar. El token si lo es, y vive en .env.",
+  "",
+  "⚠️ 'invitacion' ES UN LINK PUBLICO Y EL BOT LO MANDA EN PRIVADO. Va al",
+  "mensaje efimero de quien elige un servidor donde no esta. Si esta vacio,",
+  "el bot NO MANDA NADA -- no inventa un link ni avisa que le falta. Un",
+  "aviso que el que lo lee no puede accionar es ruido; que falten links se",
+  "dice en bot/verificar.py, que es donde esta el que puede cargarlos.",
+  "",
+  "⚠️ LOS NUEVE SE VERIFICARON, NO SE CARGARON A MANO. Dlx paso la lista el",
+  "17/09/2026 y cada par (invitacion, guild_id) se cruzo por dos caminos:",
+  "",
+  "  1. GET /invites/<codigo> devuelve el guild al que lleva de verdad.",
+  "  2. EL ID CONTIENE SU PROPIA FECHA: los 42 bits altos de un snowflake",
+  "     son milisegundos desde 2015, asi que el id dice cuando se creo el",
+  "     servidor y eso se cruza contra el 'Est.' de la invitacion SIN",
+  "     preguntarle a nadie. Siete de siete coincidieron al mes.",
+  "",
+  "🔴 Y ASI SALTO EL UNICO QUE NO CUADRABA: URBF. El link que venia en la",
+  "lista (B4FZA2YYcc) llevaba al guild 1385091960829775893, '[VFA] VIRTUAL",
+  "FREESTYLE ARENA', de Jun 2025 -- y el guild_id que vino era de FEB 2026.",
+  "Dos servidores distintos. Dlx paso el link nuevo y ese SI coincide:",
+  "vThvc9f5xy -> 1467763447117778989, Feb 2026, '✮ »Urban Freestyle« ✮'.",
+  "O sea que el error estaba en el link viejo de la lista, no en el id.",
+  "Sin la comprobacion cruzada se habria cargado un invite a otro servidor.",
+  "",
+  "OJO: los 7 del pool de temporada son TWR TFC SR FTN URBF FRZ DRA. FFA y",
+  "EFA aparecen en comun/logos_sv/ pero NO son columnas del Sheet, asi que",
+  "hoy nadie tiene puntos ahi.",
+  "",
+  "⚠️ LA SERVIDOR YA NO SE BLOQUEA. Dlx, 17/09/2026: 'el servidor siempre va",
+  "a estar desbloqueado'. Lo que te separa de la carta de TWR no es un evento",
+  "sino no estar en TWR. De ahi 'invitacion'.",
+  "",
+  "⚠️ ESTO ESTA COPIADO EN bot/worker.js Y NO HAY MANERA DE QUE UNO AVISE",
+  "SOBRE EL OTRO. Un Worker no lee archivos del repo: lo que no viaja en el",
+  "bundle no existe alla. bot/probar_local.mjs comprueba que digan lo mismo.",
+  "",
+  "canales.DRA.verificacion es a donde el bot manda a quien no",
+  "reconoce. Dlx, 18/09/2026: sin estar en DRA y verificado no hay",
+  "",
+  "canales.DRA es a donde el bot manda a quien no reconoce. Dlx, 18/09/2026:",
+  "sin estar en DRA y verificado no hay carta. El Worker tiene su copia en",
+  "VERIFICA y probar_local cruza las dos.",
+  "",
+  "Son DOS id: el canal y el MENSAJE de YAGPDB que pide la verificacion. El",
+  "link que Discord copia con \"Copiar enlace del mensaje\" termina en el id del",
+  "mensaje, no en el del canal — pedir /channels/<ese id> da 404. Desde afuera",
+  "el bot apunta al mensaje, para que la persona caiga en la instruccion."
+ ],
+ "servidores": {
+  "DRA": {
+   "nombre": "Discord Rap Español",
+   "guild_id": "841017460341604382",
+   "invitacion": "https://discord.gg/SFVnEmVnKz",
+   "en_el_sheet": true,
+   "nota": "el lobby principal de la Liga"
+  },
+  "FFA": {
+   "nombre": "FFA",
+   "guild_id": "1468472442925092958",
+   "invitacion": "https://discord.gg/4TBvDP2Chm",
+   "en_el_sheet": false,
+   "nota": "donde se prueba el bot"
+  },
+  "TWR": {
+   "nombre": "The Warren Rap",
+   "guild_id": "1115145044127666196",
+   "invitacion": "https://discord.gg/fytxhaTCVj",
+   "en_el_sheet": true
+  },
+  "TFC": {
+   "nombre": "The Freestyle Community",
+   "guild_id": "1043611686524944404",
+   "invitacion": "https://discord.gg/grUBFhsFFa",
+   "en_el_sheet": true
+  },
+  "SR": {
+   "nombre": "Snake Rap",
+   "guild_id": "492346406976356374",
+   "invitacion": "https://discord.gg/qhKcQgU47v",
+   "en_el_sheet": true
+  },
+  "FTN": {
+   "nombre": "Fontana",
+   "guild_id": "1331924080835694655",
+   "invitacion": "https://discord.gg/U5q5C8XnD9",
+   "en_el_sheet": true
+  },
+  "FRZ": {
+   "nombre": "Freestyle Zone",
+   "guild_id": "838593179187544064",
+   "invitacion": "https://discord.gg/D3JZKM96zc",
+   "en_el_sheet": true
+  },
+  "URBF": {
+   "nombre": "Urban Freestyle Battles",
+   "guild_id": "1467763447117778989",
+   "invitacion": "https://discord.gg/vThvc9f5xy",
+   "en_el_sheet": true,
+   "nota": "el link que venia en la lista (B4FZA2YYcc) llevaba a VFA, otro servidor; Dlx paso el nuevo y verifica"
+  },
+  "EFA": {
+   "nombre": "EFA",
+   "guild_id": "1222746296377675867",
+   "invitacion": "https://discord.gg/DDc3SqE8ax",
+   "en_el_sheet": false
+  }
+ },
+ "_fuera_de_la_tabla": [
+  "Servidores que Dlx paso y que NO tienen codigo en la Liga, o sea que no",
+  "tienen columna en el Sheet ni carta de servidor:",
+  "  Stelar Verses  615678104668602378  https://discord.gg/XKP2M6F2zd",
+  "  Tibetania      1092906777009459353 https://discord.gg/Vu5j4Jxq3u",
+  "",
+  "⚠️ Stelar Versers SI aparece en datos/eventos.json con prioridad 4 para",
+  "el orden de los rombos, asi que existe como EVENTO y no como servidor.",
+  "Si alguna vez tiene columna en el Sheet, entra aca con su codigo."
+ ],
+ "canales": {
+  "FFA": {
+   "pruebas": "1546677145965821983"
+  },
+  "DRA": {
+   "verificacion": "1506094409438199988",
+   "verificacion_mensaje": "1514898497265078423",
+   "verificacion_rol": "1101257512273055745",
+   "rol_invitado": "1206980203352690749"
+  }
+ },
+ "_solo_identidad_leeme": [
+  "Servidores donde el bot ESTA pero que NO son de la Liga.",
+  "",
+  "Sirven para una sola cosa: cruzar sus miembros contra el padron y",
+  "sacar Discord ID que no tenemos. NO tienen codigo de Liga, NO salen",
+  "en el menu de /card y NO se les dibuja carta.",
+  "",
+  "⚠️ NO AGREGAR ESTOS A `servidores` NI A LA LISTA DE",
+  "herramientas/servidores_de.py. Esa lista alimenta `meta.bot_en` y",
+  "`p:<n>.svs`, que son los que deciden el menu de cartas: meter uno aca",
+  "pondria «LIVONIA · BLOQUEADA» en la carta de 472 personas.",
+  "",
+  "⚠️ Y DE ACA NO SE VERIFICA A NADIE. La regla de Dlx es la misma que",
+  "para FFA: «si ves a alguien que esta en la liga global pero no en DRA,",
+  "saca su ID, si, pero no lo verifiques». cruzar_miembros.py ya lo hace",
+  "solo — `(verificar if sv == 'DRA' else capturar)`."
+ ],
+ "solo_identidad": {
+  "LIVONIA": {
+   "nombre": "𝑳𝑰𝑽𝑶𝑵𝑰𝑨 𝑹𝑨𝑷",
+   "guild_id": "1045234440009420810",
+   "miembros_aprox": 1087,
+   "desde": "2026-09-19",
+   "para": "sacar Discord ID, nada mas"
+  },
+  "CONFED": {
+   "nombre": "🔱 La Confederación 🔱",
+   "guild_id": "1537330461536161833",
+   "miembros_aprox": 35,
+   "desde": "2026-09-20",
+   "para": "sacar Discord ID, nada mas"
+  }
+ }
+}

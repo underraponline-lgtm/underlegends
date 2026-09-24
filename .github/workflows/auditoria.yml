@@ -1,0 +1,232 @@
+# LA AUDITORIA, SIN QUE NADIE SE ACUERDE.
+#
+# `bot/verificar.py` cruza KV, R2, el inventario y el Worker, y contesta lo
+# unico que importa: **¿falta alguna carta de las que el bot promete?**
+#
+# 🔴 POR QUE UN WORKFLOW Y NO «correrlo de vez en cuando».
+# `docs/arquitectura.md` lo tenia en la lista de lo que conviene mover a
+# Actions con el motivo escrito: *«hoy solo corre si alguien se acuerda»*.
+# Una auditoria que depende de que alguien se acuerde encuentra los
+# problemas **despues** de que se noten, que es justo cuando ya no hace
+# falta una auditoria.
+#
+# ⚠️ SEMANAL Y NO EN CADA PUSH. Pide ~850 URLs a R2 y lee KV entero:
+# en cada push serian decenas de corridas por dia gastando cuota para
+# contestar lo mismo. El estado que vigila —cartas que faltan, claves
+# desincronizadas— cambia cuando corre el ciclo, no cuando se commitea
+# un comentario.
+#
+# ⚠️ Y NO FALLA POR LO QUE HAY EN `Pendientes`: esa cola tiene cosas
+# **a proposito**. Falla solo si la auditoria misma encuentra algo roto.
+name: auditoria
+
+on:
+  workflow_dispatch:
+  schedule:
+    # ┌─────────────────────────────────────────────────────────────┐
+    # │ 🔴 EL CRON DE GITHUB ES **SIEMPRE UTC**. No existe campo de │
+    # │ zona horaria: no se puede escribir «9 AM EST». Lo unico que  │
+    # │ se puede hacer es elegir la hora UTC y dejar anotado a que   │
+    # │ hora cae — que es lo que hacen las dos lineas de abajo.      │
+    # │                                                              │
+    # │ ⚠️ Y HAY QUE ANOTAR **LAS DOS**, EST Y EDT. La costa este de │
+    # │ EEUU cambia de hora dos veces al año: de marzo a noviembre   │
+    # │ es EDT (UTC−4) y el resto EST (UTC−5). Una sola etiqueta     │
+    # │ seria correcta seis meses y estaria una hora corrida los     │
+    # │ otros seis, sin que nada avise. Es el mismo error que ya nos │
+    # │ costo una vuelta en el Apps Script —asumir que dos relojes   │
+    # │ son el mismo— y ahi fueron tres horas.                       │
+    # │                                                              │
+    # │ ⚠️ Nadie tiene que «arreglar» esto poniendo TZ en el yml:    │
+    # │ GitHub lo ignora en silencio y el cron sigue en UTC.         │
+    # └─────────────────────────────────────────────────────────────┘
+    #
+    # LUNES 13:00 UTC  =  09:00 EDT (marzo–noviembre)
+    #                  =  08:00 EST (noviembre–marzo)
+    #
+    # ⚠️ Era 10:00 UTC, o sea las **6 o 5 de la mañana** del lado de
+    # Dlx: un informe semanal que nadie iba a leer cuando sale. A las 9
+    # cae al empezar el lunes, y sigue despues del ciclo, que es lo que
+    # el horario original buscaba.
+    - cron: '0 13 * * 1'
+
+concurrency:
+  group: auditoria
+  cancel-in-progress: true
+
+jobs:
+  auditoria:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      # ⚠️ NODE HACE FALTA, Y NO POR PYTHON. Los dos ultimos chequeos de
+      # `verificar.py` corren `probar_local.mjs` y `simular.mjs`: ejecutan
+      # **el Worker de verdad** contra los datos reales, que es lo unico
+      # que detecta que `norm()` —escrito dos veces, en Python y en JS—
+      # se separo para un nombre con tilde.
+      #
+      # `ubuntu-latest` ya trae Node, asi que esto es por explicito: el
+      # dia que el runner cambie, el fallo seria «la auditoria dejo de
+      # probar el Worker» y no «falta Node».
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: instalar
+        # ⚠️ sin `playwright install`: la auditoria no dibuja nada, solo
+        # mira. Bajar el navegador serian ~2 min por corrida para nada.
+        run: pip install -r requirements.txt
+
+      - name: credenciales
+        env:
+          CREDS_JSON: ${{ secrets.CREDS_JSON }}
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: |
+          if [ -z "$CREDS_JSON" ] || [ -z "$ENV_FILE" ]; then
+            echo "Faltan los secrets CREDS_JSON y/o ENV_FILE."
+            exit 1
+          fi
+          printf '%s' "$CREDS_JSON" > creds.json
+          printf '%s' "$ENV_FILE"   > .env
+
+      - name: auditar
+        run: python bot/verificar.py
+
+      - name: números que el repo afirma y ya no son
+        # No falla el job: marca de mas a proposito (lo dice su docstring),
+        # asi que su valor es que alguien lea la salida, no que corte.
+        if: always()
+        run: python herramientas/numeros_viejos.py || true
+
+      - name: ¿el norm() del Worker da lo mismo que el de Python?
+        # 🔴 EL MISMO `norm()` ESCRITO DOS VECES, en Python y en JS. Si
+        # se separan para un nombre con tilde, el bot le busca la carta
+        # a `p:<otra clave>` y contesta «no tenés carta» a alguien que
+        # sí la tiene. Compara 881 nombres reales leyendo el `norm()`
+        # **de `worker.js`**, no una copia.
+        #
+        # ⚠️ Estaba escrito y no lo corría nada. Un test que existe y no
+        # se ejecuta es documentación, no un test.
+        run: python herramientas/claves_js_vs_py.py
+
+      - name: ¿falta alguna dependencia declarada?
+        # `numpy` faltaba en `requirements.txt` y tiraba **dos de las
+        # cuatro cartas** en Actions: en la máquina de casa venía
+        # instalado con otra cosa. Sigue los imports desde los puntos de
+        # entrada del ciclo, así que no depende de que alguien recuerde
+        # agregarlo.
+        run: python herramientas/falta_en_requirements.py
+
+      - name: ¿algún aviso revienta en la consola de Windows?
+        # 🔴 LA HERRAMIENTA YA EXISTÍA Y ENCONTRABA EL BUG. Nadie la
+        # corría. El 21/09 apareció a mano un `print('⚠️ no pude leer
+        # 1v1…')` dentro de un `except` de `construir_pool_competitivo`
+        # —un builder del ciclo— que en Windows levanta
+        # `UnicodeEncodeError` y tumba la corrida: el camino que existe
+        # para *seguir* cuando el Sheet falla era el que la mataba.
+        # `revienta_en_consola.py` lo listaba desde siempre.
+        #
+        # ⚠️ FALLA EL JOB. No es informativo: cuando pasa, el script se
+        # cae **justo cuando encontró algo**, o sea que se lee como
+        # «está roto» en vez de «hay un problema». Es al revés.
+        #
+        # ⚠️ En Actions es Linux y UTF-8, así que esto NO se detecta
+        # corriendo: se detecta leyendo el fuente, que es lo que hace.
+        run: |
+          python herramientas/revienta_en_consola.py
+          python herramientas/revienta_en_consola.py | grep -q '^0 archivo' \
+            || { echo "::error::hay scripts que revientan al imprimir un aviso"; exit 1; }
+
+      - name: ¿los self-check chequean algo?
+        # 🔴 ESTE SÍ FALLA EL JOB, y es la diferencia con los dos de
+        # arriba. `numeros_viejos` y `pendientes` informan —tener cosas
+        # ahí es normal—; este dice que un guardián dejó de guardar, y
+        # un guardián roto no se nota hasta el día que hacía falta.
+        #
+        # ⚠️ Corre semanal y no en el ciclo a propósito: importa un
+        # módulo por vez y muta sus constantes. Eso no tiene por qué
+        # vivir en el camino que dibuja las cartas todas las noches.
+        run: python herramientas/chequeo_que_no_chequea.py
+
+      - name: la temporada, en los tres lugares donde vive
+        # El repo, R2 y el binding del Worker en Cloudflare. El día que
+        # arranque la T2 y alguno se quede atrás, salen 138 cartas
+        # válidas con la inicial gigante y nada falla.
+        run: python comun/temporada.py
+
+      - name: el escritor de la vitrina, ensayado
+        # 🔴 ESTE ESCRITOR SE VA A EJECUTAR **UNA VEZ**, el día del
+        # reset, sobre la hoja que mira toda la Liga. Sin ensayarlo, se
+        # estrena ahí. Es la misma lección que el paso 1 del ciclo tiene
+        # escrita: «si no se ejercita, el día que se encienda se estrena».
+        #
+        # ⚠️ ESCRIBE, PERO EN SU PROPIA PESTAÑA del Operativo, que crea y
+        # borra en la misma corrida — y borra también una que haya
+        # quedado de un job cortado. No toca ninguna hoja de verdad.
+        #
+        # ⚠️ Semanal y no en el ciclo: el ciclo dibuja cartas todas las
+        # noches y no tiene por qué crear pestañas en una planilla.
+        run: |
+          python sheet/rankings.py --auto
+          python sheet/rankings.py --ensayo
+
+      - name: la web contra sus casos de borde
+        # 🔴 «EL POOL VACIO ES UN ESTADO, NO UN ERROR» — es regla del
+        # proyecto y encontro cuatro bugs en los generadores. La pagina
+        # nunca la habia pasado y le encontro dos mas, los dos del tipo
+        # que no falla: con el pool vacio quedaba un panel «Las crews»
+        # sin nada, y con la API caida ONCE secciones vacias.
+        run: python herramientas/web_en_borde.py
+
+      - name: los workflows, validos para GitHub y no solo para PyYAML
+        # 🔴 MI PROPIO CHEQUEO DIO VERDE Y GITHUB DIJO QUE NO. El
+        # 24/09/2026 el `ciclo.yml` quedo con DOS claves `jobs:`;
+        # `yaml.safe_load` se queda con la ultima sin decir nada, asi que
+        # paso el chequeo, se pusheo, y el fallo aparecio al disparar la
+        # corrida. Un validador que dice que si donde el de verdad dice
+        # que no es peor que no validar: da permiso para pushear.
+        run: python herramientas/workflows_validos.py
+
+      - name: los nueve escudos
+        # el `KeyError: 'URBF'` que tumbó las 138 por 2 personas, vuelto
+        # una pregunta que se hace sola
+        run: python comun/escudos.py
+
+      - name: los ocho roles de rango siguen en Discord
+        # 🔴 ESTO EXISTE PORQUE `CLAUDE.md` DIJO «SON SEIS» DURANTE DIAS
+        # DESPUES DE QUE FUERAN OCHO, y `ESTADO.md` se contradecia a si
+        # mismo: arriba «la unica tarea pendiente», ochocientas lineas
+        # mas abajo «✅ hechos». De las cinco filas de «donde vive el
+        # rango», cuatro se comprobaban solas y la de los roles decia «a
+        # mano» — y lo que no se pregunta no se entera de que ya se hizo.
+        #
+        # ⚠️ SI FALLA, ES DE VERDAD: alguien borro o renombro un rol, y
+        # el rango deja de coincidir con las cartas.
+        run: python herramientas/roles_de_rango.py
+
+      - name: quién puede usar /card
+        # ⚠️ NO FALLA, Y ESO ES LA MITAD DE LA HERRAMIENTA. Que alguien
+        # no tenga carta casi siempre es que no se registró o no se
+        # verificó — una acción de esa persona, no un arreglo. Lo que sí
+        # es fallo nuestro (`sin dibujar`, `sin indexar`) sale marcado
+        # con 🔴 y ya lo vigila `bot/verificar.py`, que este job corre
+        # arriba y SÍ falla.
+        #
+        # Medido el 23/09/2026 sobre los 40 que compiten en la T1: 17
+        # con /card, y ninguno faltando por culpa del ciclo.
+        if: always()
+        run: python herramientas/quien_puede_card.py || true
+
+      - name: qué espera a que alguien lo mire
+        if: always()
+        run: |
+          python sheet/pendientes.py --barrer --aplicar || true
+          python sheet/pendientes.py || true

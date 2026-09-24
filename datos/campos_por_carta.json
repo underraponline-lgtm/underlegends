@@ -1,0 +1,250 @@
+{
+ "cartas": {
+  "Competitiva": {
+   "C": [
+    "dura"
+   ],
+   "Dm": [
+    "dura"
+   ],
+   "E": [
+    "dura"
+   ],
+   "T": [
+    "dura"
+   ],
+   "V": [
+    "dura"
+   ],
+   "arc_pais": [
+    "opcional"
+   ],
+   "arc_sv": [
+    "opcional"
+   ],
+   "av": [
+    "opcional"
+   ],
+   "cc": [
+    "dura",
+    "opcional"
+   ],
+   "duel_t": [
+    "dura"
+   ],
+   "duel_v": [
+    "dura"
+   ],
+   "ev": [
+    "dura"
+   ],
+   "pos": [
+    "dura"
+   ],
+   "pos_pais": [
+    "opcional"
+   ],
+   "pos_sv": [
+    "opcional"
+   ],
+   "raw": [
+    "dura"
+   ],
+   "rch_act": [
+    "dura"
+   ],
+   "rch_max": [
+    "dura"
+   ],
+   "score": [
+    "dura"
+   ],
+   "sv": [
+    "dura"
+   ],
+   "total": [
+    "dura"
+   ],
+   "wr": [
+    "dura"
+   ]
+  },
+  "Pais": {
+   "av": [
+    "opcional"
+   ],
+   "cc": [
+    "dura"
+   ],
+   "duel_real": [
+    "opcional"
+   ],
+   "duel_t": [
+    "dura"
+   ],
+   "duel_v": [
+    "dura"
+   ],
+   "ev": [
+    "dura",
+    "opcional"
+   ],
+   "oro": [
+    "opcional"
+   ],
+   "pod": [
+    "opcional"
+   ],
+   "pos_pais": [
+    "opcional"
+   ],
+   "pos_sv": [
+    "opcional"
+   ],
+   "rango": [
+    "dura"
+   ],
+   "raw": [
+    "dura"
+   ],
+   "rch_max": [
+    "opcional"
+   ],
+   "score": [
+    "dura"
+   ],
+   "seg": [
+    "dura",
+    "opcional"
+   ],
+   "sem": [
+    "opcional"
+   ],
+   "sv": [
+    "dura"
+   ],
+   "ter": [
+    "dura",
+    "opcional"
+   ],
+   "wr": [
+    "opcional"
+   ]
+  },
+  "Servidor": {
+   "av": [
+    "opcional"
+   ],
+   "cc": [
+    "dura"
+   ],
+   "duel_real": [
+    "opcional"
+   ],
+   "duel_t": [
+    "dura"
+   ],
+   "duel_v": [
+    "dura"
+   ],
+   "ev": [
+    "dura",
+    "opcional"
+   ],
+   "oro": [
+    "opcional"
+   ],
+   "ovr": [
+    "opcional"
+   ],
+   "pod": [
+    "opcional"
+   ],
+   "pos_pais": [
+    "opcional"
+   ],
+   "pos_sv": [
+    "opcional"
+   ],
+   "rango": [
+    "dura"
+   ],
+   "raw": [
+    "dura"
+   ],
+   "rch_act": [
+    "opcional"
+   ],
+   "rch_max": [
+    "opcional"
+   ],
+   "score": [
+    "dura"
+   ],
+   "sv": [
+    "dura"
+   ]
+  },
+  "Temporada": {
+   "av": [
+    "dura"
+   ],
+   "caz": [
+    "opcional"
+   ],
+   "cc": [
+    "dura"
+   ],
+   "czd": [
+    "opcional"
+   ],
+   "ev": [
+    "dura"
+   ],
+   "oro": [
+    "dura"
+   ],
+   "ovr": [
+    "dura"
+   ],
+   "pod": [
+    "dura"
+   ],
+   "pos": [
+    "opcional"
+   ],
+   "pts": [
+    "dura"
+   ],
+   "racha": [
+    "dura"
+   ],
+   "raw": [
+    "dura"
+   ],
+   "score": [
+    "dura"
+   ],
+   "sem": [
+    "opcional"
+   ],
+   "sob": [
+    "opcional"
+   ],
+   "srv": [
+    "dura"
+   ],
+   "sv": [
+    "dura"
+   ]
+  }
+ },
+ "codigo": {
+  "competitivo": "cb38bd8bb76b",
+  "pais": "09d4ec219e6b",
+  "servidor": "b0a23b2c870d",
+  "temporada": "a1cf70cd75a3"
+ },
+ "como": "herramientas/que_pide_cada_carta.py",
+ "medido": "2026-09-21"
+}

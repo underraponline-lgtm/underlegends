@@ -1,0 +1,197 @@
+# ── SECRETOS ────────────────────────────────────────────────────────────
+# Credenciales de la service account que lee el Sheet Oficial.
+# NUNCA subir: da acceso de lectura al Sheet completo.
+creds.json
+
+
+# ── SALIDAS GENERADAS ───────────────────────────────────────────────────
+# Cada carta escribe su HTML acá. Se regenera corriendo el generador,
+# no hace falta versionarlo (y ensucia los diff: son cientos de KB con
+# base64 embebido adentro).
+salida/
+
+# Los scripts de diseño también escriben un HTML con todo embebido antes de
+# capturarlo. Mismo caso: 4-6 MB cada uno, y se regeneran corriendo el script.
+# El PNG SÍ se versiona: es el registro visual de lo que se decidió, y no se
+# puede reconstruir sin volver a correr toda la ronda.
+03_Servidor/disenos/*.html
+
+
+# ── TEMPORALES DE exportar_png.py ───────────────────────────────────────
+# _cp2.json         respaldo de comp.json mientras se exporta
+# _kn.html          HTML intermedio con fuentes y avatares embebidos
+# _tmp_export.html  el equivalente en la Servidor
+_cp2.json
+_kn.html
+_tmp_export.html
+
+
+# ── PYTHON ──────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+
+# ── BACKUPS ─────────────────────────────────────────────────────────────
+# La regla del CLAUDE.md es hacer backup antes de cada tanda de cambios.
+# Esas copias son de trabajo, no historial: para eso está el repo.
+*_backup*
+*.bak
+
+# Documento personal que quedo en referencia/ por error. No es del proyecto.
+*.pdf
+
+# ── EL TOKEN DEL BOT ─────────────────────────────────────────────────────
+# Misma regla que creds.json: si entra al historial hay que REGENERARLO en
+# el portal de Discord. Ver CLAUDE.bot.md.
+token.json
+bot_token*
+.env
+
+# pruebas del exportador: se regeneran corriendo probar_export.py
+_prueba_*.png
+_prueba_*.html
+
+# rig de medicion: lo regenera medir_brillo.py. Son capturas sueltas de una
+# carta a medio armar, no muestras que sirva mirar.
+03_Servidor/disenos/_medir/
+
+# recortes del pie: los regenera pie_comparar.py
+03_Servidor/disenos/_pie_*.png
+03_Servidor/disenos/_ref_pie.png
+
+# rig de figuras: lo regenera medir_figuras.py
+03_Servidor/disenos/_figuras.png
+
+03_Servidor/disenos/_emb/
+03_Servidor/disenos/_fon/
+03_Servidor/disenos/_tope_ahora.png
+03_Servidor/disenos/_dos_tonos.png
+03_Servidor/disenos/_choque/
+03_Servidor/disenos/_ref_lado.png
+03_Servidor/disenos/_ref_marcada.png
+03_Servidor/disenos/_ops.png
+03_Servidor/disenos/_viejo_*.png
+03_Servidor/disenos/_col.png
+03_Servidor/disenos/_bd/
+03_Servidor/disenos/_pst/
+03_Servidor/disenos/_p1.png
+03_Servidor/disenos/_der/
+03_Servidor/disenos/_col2/
+03_Servidor/disenos/_cf.png
+03_Servidor/disenos/_todos/
+03_Servidor/disenos/_todos_*/
+03_Servidor/disenos/_lado3.html
+03_Servidor/disenos/_bor/
+03_Servidor/disenos/_fila1.png
+03_Servidor/disenos/_panel.*
+03_Servidor/disenos/_pie2.png
+03_Servidor/disenos/_v.png
+03_Servidor/disenos/_num/
+03_Servidor/disenos/_cc/
+03_Servidor/disenos/_cal/
+
+# cache de los puntos por servidor: lo baja ovr_que_mide.py del Sheet.
+# No es un pool —la fuente de verdad es datos/— y se regenera borrandolo.
+03_Servidor/disenos/_pts_sv.json
+
+# rig de la comparacion de orden en la Competitiva: lo regenera comparar_orden.py
+02_Competitivo/v2/_cmp*.png
+02_Competitivo/v2/_cmp.html
+02_Competitivo/v2/_swap.html
+03_Servidor/disenos/_fondos2.html
+03_Servidor/disenos/_marco.html
+03_Servidor/disenos/_tex_*.png
+03_Servidor/disenos/_gema.html
+03_Servidor/disenos/_gcmp.html
+03_Servidor/disenos/_todos_dF_sg/
+
+# rigs de medicion de figuras: los regeneran los scripts del scratchpad.
+# Son capturas en blanco y negro para calcular IoU, no muestras que sirva mirar.
+03_Servidor/disenos/_iou.*
+03_Servidor/disenos/_cand.*
+03_Servidor/disenos/_mx.*
+03_Servidor/disenos/_c2.*
+03_Servidor/disenos/_bz.*
+03_Servidor/disenos/_sw.*
+03_Servidor/disenos/_aj.*
+03_Servidor/disenos/_r3.*
+03_Servidor/disenos/_rt.*
+03_Servidor/disenos/_roce.*
+03_Servidor/disenos/_rad.*
+03_Servidor/disenos/_dos.*
+03_Servidor/disenos/_pie_zoom.png
+
+# referencias de terceros para la carta de Pais: capturas de cartas de FIFA
+# que Dlx pasa para trazar la silueta. Material ajeno, no va al repo.
+04_Pais/referencia/*.png
+04_Pais/referencia/*.jpg
+# ⚠️ UN PATRON Y NO UN NOMBRE POR HOJA. Habia trece lineas, una por cada
+# HTML temporal, y cada hoja comparativa nueva agregaba la suya — hasta
+# que alguna se olvidaba y el temporal aparecia en git status como si
+# fuera trabajo. Todos los intermedios de 04_Pais empiezan con guion bajo.
+04_Pais/_*.html
+04_Pais/_sil_*.png
+04_Pais/_chk.*
+04_Pais/_velo.*
+04_Pais/_cb*.png
+04_Pais/_zoom.png
+04_Pais/_cmp_*.png
+
+# Los temporales por carta del generador de Servidor (_sv_0.html, _sv_1.html...).
+# Uno por carta a proposito: reusar el mismo revienta en Windows mientras
+# Chromium lo tiene abierto -- ver 03_Servidor/generar.py.
+03_Servidor/_sv_*.html
+03_Servidor/_sv.html
+
+# El volcado de KV para bot/simular.mjs: es un derivado, se baja cuando hace
+# falta. No trae secretos pero tampoco tiene por que vivir en el repo.
+bot/_kv_volcado.json
+
+# Las fotos de la temporada. R2 es la fuente; esto es el espejo local que
+# llena `python bot/fotos.py --espejo`. Son 10,4 MB de fotos de personas
+# reales: meterlas al historial de git las vuelve permanentes, tambien para
+# quien despues se vaya.
+comun/fotos/
+
+# Credenciales de OAuth para escribir el Apps Script (proyecto `liga-global`).
+#
+# 🔴 MISMA REGLA QUE `creds.json`: si entran al historial no alcanza con
+# borrarlas en el commit siguiente — quedan para siempre y hay que rotar el
+# cliente en Google Cloud.
+#
+# `oauth_client.json` es lo que baja la consola al crear el cliente.
+# `oauth_token.json` es el refresh token que deja el flujo, y ese es el que
+# de verdad da acceso: con el se escribe el Apps Script sin volver a pedir
+# permiso.
+oauth_client.json
+oauth_token.json
+
+# ── EL INVENTARIO DE ACCESOS ────────────────────────────────────────────
+# ACCESOS.md junta TODAS las credenciales en un solo lugar. Es el archivo
+# mas peligroso del repo: si entra al historial hay que rotar todo lo que
+# contiene, y borrarlo en el commit siguiente NO alcanza.
+ACCESOS.md
+
+
+# ── agregado por herramientas/repo_publico.py ──
+# Lo que este repo dejó de llevar a proposito. Las dos primeras son por
+# PERSONAS —fotos de gente real— y el resto es peso que un generador rehace.
+03_Servidor/disenos/_avatares/
+03_Servidor/disenos/av_valen.png
+comun/fotos/
+galeria/
+03_Servidor/disenos/*.png
+03_Servidor/disenos/*.html
+04_Pais/_*.html
+04_Pais/fondos.png
+04_Pais/maqueta.png
+04_Pais/ver_fondos.png
+# ⚠️ UN SOLO `*` Y NUNCA `**`: en git `*` no cruza `/`, asi que estas cuatro
+# lineas tocan el nivel 1 y dejan en paz `v2/estilos/`, `disenos/texturas/` y
+# `disenos/_respaldo_405/`, que son INSUMOS. Con `**` se van y la carta
+# Servidor no arranca — paso tres veces el 24/09/2026.
+02_Competitivo/v2/*.png
+02_Competitivo/v2/*.html
+

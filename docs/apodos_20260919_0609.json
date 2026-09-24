@@ -1,0 +1,1373 @@
+{
+ "cuando": "2026-09-19 06:09",
+ "cambios": [
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "425356695309516810",
+   "antes": "#16 | OG",
+   "nuevo": "#30 | OG",
+   "user": "the0g."
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "458519920330670086",
+   "antes": "🐉 | Number",
+   "nuevo": "#48 | Number",
+   "user": "number9408"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "494965289042182164",
+   "antes": "#18 | Agus",
+   "nuevo": "#6 | Agus",
+   "user": "agusdcab"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "513409344512065580",
+   "antes": "#6 | Axinu",
+   "nuevo": "#2 | Axinu",
+   "user": "axinu"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "522777983921029162",
+   "antes": "🐉 | Riolu",
+   "nuevo": "#107 | Riolu",
+   "user": "alvaroriolu03"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "535579351710957568",
+   "antes": "#30 | Zeta",
+   "nuevo": "#28 | Zeta",
+   "user": "zetaenmsi"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "566516207625175040",
+   "antes": "👤 | VR",
+   "nuevo": "#89 | VR",
+   "user": "tenacious_kiwi_74604"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "578697503130779649",
+   "antes": "🐉 | PichulaMc",
+   "nuevo": "#45 | PichulaMc",
+   "user": "dariel.ivo"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "588547235621371936",
+   "antes": "#27 | Dynoco",
+   "nuevo": "#25 | Dynoco",
+   "user": "dynoco."
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "596924970429448202",
+   "antes": "🐉 | BastyRetro",
+   "nuevo": "#33 | BastyRetro",
+   "user": "bastyretro"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "613552853302378527",
+   "antes": "#21 | Vandu",
+   "nuevo": "#71 | Vandu",
+   "user": "dfelipetor"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "618666009905201152",
+   "antes": "🐉 | Xhay",
+   "nuevo": "#57 | Xhay",
+   "user": "youngxhay"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "638492318701322267",
+   "antes": "🐉 | Bau",
+   "nuevo": "#13 | Bau",
+   "user": "kinon2.forever"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "639232575461654538",
+   "antes": "#25 | Six",
+   "nuevo": "#39 | Six",
+   "user": "ivanjajaa"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "645308964141137952",
+   "antes": "🐉 | Soulb",
+   "nuevo": "#135 | Soulb",
+   "user": "sj.2008_"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "680268290962227243",
+   "antes": "#7 | Konan",
+   "nuevo": "#1 | Konan",
+   "user": "franciscoporfi"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "682072673580351492",
+   "antes": "#12 | Erik",
+   "nuevo": "#23 | Erik",
+   "user": "epik2942"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "692881329573986317",
+   "antes": "#1 | Bloody",
+   "nuevo": "#22 | Bloody",
+   "user": "bloodypintor"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "729439360545587291",
+   "antes": "#24 | Juasmio",
+   "nuevo": "#16 | Juasmio",
+   "user": "jmiopa"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "729809358627536938",
+   "antes": "🐉 | Delux",
+   "nuevo": "#31 | Delux",
+   "user": "delux.13"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "732777259244453938",
+   "antes": "🐉 | Pipe",
+   "nuevo": "#116 | Pipe",
+   "user": "x.pipe.x2.09590"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "739338101603696681",
+   "antes": "🪽 | ItsDlx",
+   "nuevo": "#129 | ItsDlx",
+   "user": "itsdlx"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "744324043552849950",
+   "antes": "🐉 | Maki",
+   "nuevo": "#44 | Maki",
+   "user": "intrusomaki"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "745324578347286528",
+   "antes": "🐉 | Soneto",
+   "nuevo": "#70 | Soneto",
+   "user": "pllsuax"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "748841088676003932",
+   "antes": "🐉 | Prodigy",
+   "nuevo": "#47 | Prodigy",
+   "user": "prodigy0608"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "752763980077858829",
+   "antes": "🐉 | Am",
+   "nuevo": "#49 | Am",
+   "user": "jirafa02"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "768561204707983361",
+   "antes": "#15 | Abyssus",
+   "nuevo": "#3 | Abyssus",
+   "user": "vipertapestry"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "771817602657288192",
+   "antes": "🐉 | HH",
+   "nuevo": "#98 | HH",
+   "user": "hhhomes"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "771843689294856203",
+   "antes": "🐉 | Acry",
+   "nuevo": "#72 | Acry",
+   "user": "acrymc"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "776271601221763103",
+   "antes": "🐉 | Deluxe",
+   "nuevo": "#56 | Deluxe",
+   "user": ".jeluxe"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "778332138930962432",
+   "antes": "🐉 | Sombra",
+   "nuevo": "#15 | Sombra",
+   "user": "sombra7312"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "790016013680771102",
+   "antes": "#9 | Colesito",
+   "nuevo": "#34 | Colesito",
+   "user": "colesito"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "803600126156734475",
+   "antes": "🐉 | NFK",
+   "nuevo": "#7 | NFK",
+   "user": "nfk777"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "818314359218241567",
+   "antes": "👤 | Iguana Joshua",
+   "nuevo": "#120 | Iguana Joshua",
+   "user": "iguanajoshua"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "839700927954681888",
+   "antes": "🐉 | 7po",
+   "nuevo": "#32 | 7po",
+   "user": "ideka__"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "847124099243180042",
+   "antes": "🐉 | GP",
+   "nuevo": "#55 | GP",
+   "user": "gxbrielalejandro"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "853130894663745549",
+   "antes": "🍃 | Andy ._.",
+   "nuevo": "#94 | Andy ._.",
+   "user": "andy._.2321"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "868896089233838120",
+   "antes": "🐉 | Jeisy",
+   "nuevo": "#121 | Jeisy",
+   "user": "jeizy_0"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "896609871460442142",
+   "antes": "🐉 | Yeyox",
+   "nuevo": "#82 | Yeyox",
+   "user": "yeyox07"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "917207293496557578",
+   "antes": "🐉 | Partim",
+   "nuevo": "#40 | Partim",
+   "user": "essencesteez"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "918750979724288040",
+   "antes": "#10 | Juanpa",
+   "nuevo": "#5 | Juanpa",
+   "user": "juxnpaa"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "942540846685909002",
+   "antes": "#22 | Saiko",
+   "nuevo": "#20 | Saiko",
+   "user": "ladiesandgentlemeen"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "943968207960694865",
+   "antes": "🐉 | Leiter",
+   "nuevo": "#80 | Leiter",
+   "user": "leitermc"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "983935442913206303",
+   "antes": "🐉 | Kourier",
+   "nuevo": "#14 | Kourier",
+   "user": "everythingbelow"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "989640104765177956",
+   "antes": "#5 | Gus",
+   "nuevo": "#58 | Gus",
+   "user": "agusdema"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1017990627604041780",
+   "antes": "#14 | Vize",
+   "nuevo": "#19 | Vize",
+   "user": "vice6514"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1048744067313451050",
+   "antes": "#3 | MCO",
+   "nuevo": "#36 | MCO",
+   "user": "mcorap"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1055474244089286706",
+   "antes": "#19 | Erian",
+   "nuevo": "#65 | Erian",
+   "user": "deslanofthemind"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1070553144964173906",
+   "antes": "🐉 | Rubik",
+   "nuevo": "#38 | Rubik",
+   "user": "rubik2703"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1071185986366742630",
+   "antes": "#4 | Zignos",
+   "nuevo": "#8 | Zignos",
+   "user": "emekultra"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1095893775383023708",
+   "antes": "🐉 | Jobaking",
+   "nuevo": "#124 | Jobaking",
+   "user": "jobains"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1097714486795849748",
+   "antes": "#11 | Snow",
+   "nuevo": "#51 | Snow",
+   "user": "snowzzzzzzzz"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1138166936547643412",
+   "antes": "🐉 | MCNadie",
+   "nuevo": "#75 | MCNadie",
+   "user": "mcnadie"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1167678661684641814",
+   "antes": "🐉 | Bocto",
+   "nuevo": "#52 | Bocto",
+   "user": "narddog4"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1177668622227886112",
+   "antes": "#13 | Prosu",
+   "nuevo": "#10 | Prosu",
+   "user": "prosufk"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1204164715350196284",
+   "antes": "🐉 | Dios",
+   "nuevo": "#87 | Dios",
+   "user": "dan666._"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1228547913240547338",
+   "antes": "#29 | Humildad",
+   "nuevo": "#63 | Humildad",
+   "user": "kanon_kk13"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1237192883535216715",
+   "antes": "🐉 | Masino",
+   "nuevo": "#60 | Masino",
+   "user": "martinv444"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1247306019839938754",
+   "antes": "🐉 | Walker",
+   "nuevo": "#61 | Walker",
+   "user": "walker2706"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1294600140815990858",
+   "antes": "🐉 | Marcos",
+   "nuevo": "#101 | Marcos",
+   "user": "marcosq_14"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1323444294534828104",
+   "antes": "🐉 | Lord Viruzz",
+   "nuevo": "#81 | Lord Viruzz",
+   "user": "kidbuu02124"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1338567692239765617",
+   "antes": "#28 | Deuxs",
+   "nuevo": "#79 | Deuxs",
+   "user": "yatusabe_eldeuxss"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1347663033949880360",
+   "antes": "🐉 | Trot",
+   "nuevo": "#109 | Trot",
+   "user": "eresmatrot"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1357796427191029932",
+   "antes": "🐉 | Liberia",
+   "nuevo": "#21 | Liberia",
+   "user": "malasiafighter"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1363285354442133778",
+   "antes": "🐉 | Molusco",
+   "nuevo": "#97 | Molusco",
+   "user": "moluscoanvriento_79058"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1378395662592512151",
+   "antes": "🐉 | AFR",
+   "nuevo": "#132 | AFR",
+   "user": "afr777_."
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1382511700519030824",
+   "antes": "🐉 | Vlade",
+   "nuevo": "#43 | Vlade",
+   "user": "vladeink"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1385452830684614697",
+   "antes": "🐉 | LRS",
+   "nuevo": "#93 | LRS",
+   "user": "lrs0378"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1391556667841450004",
+   "antes": "🐉 | Val",
+   "nuevo": "#67 | Val",
+   "user": "nixytos"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1392280902997905539",
+   "antes": "🐉 | Meteoro",
+   "nuevo": "#74 | Meteoro",
+   "user": "jajajaja.lprzs"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1397110475594010700",
+   "antes": "🐉 | Xubaru",
+   "nuevo": "#104 | Xubaru",
+   "user": "xxxxxx.fl"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1400508144920170577",
+   "antes": "#17 | Panchok",
+   "nuevo": "#4 | Panchok",
+   "user": "panchok0103"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1413305434881658960",
+   "antes": "🐉 | Jupiter",
+   "nuevo": "#77 | Jupiter",
+   "user": "jupiter2417tj"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1413322255047594015",
+   "antes": "🐉 | Xervoe",
+   "nuevo": "#78 | Xervoe",
+   "user": "eminenciadelquisco"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1428556720510079168",
+   "antes": "🐉 | Rodas",
+   "nuevo": "#42 | Rodas",
+   "user": "r.o._77_02939"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1445803811758276660",
+   "antes": "🐉 | Nobu",
+   "nuevo": "#118 | Nobu",
+   "user": "adachit_332"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1458603256292053037",
+   "antes": "🐉 | Rbk",
+   "nuevo": "#133 | Rbk",
+   "user": "ismel_0555"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1483563636512522321",
+   "antes": "🐉 | Hardcore",
+   "nuevo": "#83 | Hardcore",
+   "user": "imitadordemickeymousechileno"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1490902626970239088",
+   "antes": "🐉 | Btrece",
+   "nuevo": "#111 | Btrece",
+   "user": "btrece_"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1491486652739092623",
+   "antes": "🐉 | Dantemx",
+   "nuevo": "#69 | Dantemx",
+   "user": "danteshemc"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1508623564285149357",
+   "antes": "👤 | SIN LIMITES",
+   "nuevo": "#130 | SIN LIMITES",
+   "user": "sinlimites2026"
+  },
+  {
+   "guild": "841017460341604382",
+   "sv": "DRA",
+   "id": "1515482513106272366",
+   "antes": "🐉 | Guess",
+   "nuevo": "#37 | Guess",
+   "user": "sinergiabreak"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "425356695309516810",
+   "antes": "#16 | OG",
+   "nuevo": "#30 | OG",
+   "user": "the0g."
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "458519920330670086",
+   "antes": "Number🍷",
+   "nuevo": "#48 | Number🍷",
+   "user": "number9408"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "458702447913861130",
+   "antes": "",
+   "nuevo": "#11 | Tuca",
+   "user": "tuquitta"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "494965289042182164",
+   "antes": "#18 | Agus",
+   "nuevo": "#6 | Agus",
+   "user": "agusdcab"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "505444041719021569",
+   "antes": "",
+   "nuevo": "#24 | Tam",
+   "user": "tuabuelamuerta12"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "520210394078248971",
+   "antes": "",
+   "nuevo": "#73 | Neo",
+   "user": "neosoulkid"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "522777983921029162",
+   "antes": "",
+   "nuevo": "#107 | Riolu",
+   "user": "alvaroriolu03"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "578697503130779649",
+   "antes": "Pichulita",
+   "nuevo": "#45 | Pichulita",
+   "user": "dariel.ivo"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "588547235621371936",
+   "antes": "#27 | Dynoco",
+   "nuevo": "#25 | Dynoco",
+   "user": "dynoco."
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "596924970429448202",
+   "antes": "",
+   "nuevo": "#33 | BastyRetro",
+   "user": "bastyretro"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "613552853302378527",
+   "antes": "#21 | Vandu",
+   "nuevo": "#71 | Vandu",
+   "user": "dfelipetor"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "638492318701322267",
+   "antes": "",
+   "nuevo": "#13 | Bau",
+   "user": "kinon2.forever"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "639232575461654538",
+   "antes": "#25 | Six",
+   "nuevo": "#39 | Six",
+   "user": "ivanjajaa"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "645308964141137952",
+   "antes": "Soul B",
+   "nuevo": "#135 | Soul B",
+   "user": "sj.2008_"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "680268290962227243",
+   "antes": "#7 | Konan",
+   "nuevo": "#1 | Konan",
+   "user": "franciscoporfi"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "682072673580351492",
+   "antes": "#12 | Erik",
+   "nuevo": "#23 | Erik",
+   "user": "epik2942"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "692881329573986317",
+   "antes": "#1 | Slenderman",
+   "nuevo": "#22 | Slenderman",
+   "user": "bloodypintor"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "711076230857752627",
+   "antes": "",
+   "nuevo": "#91 | Provenza",
+   "user": "provenzaaznevorp"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "712512566215180320",
+   "antes": "",
+   "nuevo": "#90 | Skratch",
+   "user": "66skratch"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "729439360545587291",
+   "antes": "#24 | Juasmio",
+   "nuevo": "#16 | Juasmio",
+   "user": "jmiopa"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "729809358627536938",
+   "antes": "dante",
+   "nuevo": "#31 | dante",
+   "user": "delux.13"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "732777259244453938",
+   "antes": "",
+   "nuevo": "#116 | Pipe",
+   "user": "x.pipe.x2.09590"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "739338101603696681",
+   "antes": "",
+   "nuevo": "#129 | DLX",
+   "user": "itsdlx"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "742442337028014090",
+   "antes": "",
+   "nuevo": "#76 | Efimero",
+   "user": "efimero001"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "744324043552849950",
+   "antes": "",
+   "nuevo": "#44 | Maki",
+   "user": "intrusomaki"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "745324578347286528",
+   "antes": "",
+   "nuevo": "#70 | Soneto",
+   "user": "pllsuax"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "748841088676003932",
+   "antes": "",
+   "nuevo": "#47 | Prodigy",
+   "user": "prodigy0608"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "752763980077858829",
+   "antes": "",
+   "nuevo": "#49 | Am",
+   "user": "jirafa02"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "768561204707983361",
+   "antes": "#15 | abyssus",
+   "nuevo": "#3 | abyssus",
+   "user": "vipertapestry"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "771817602657288192",
+   "antes": "",
+   "nuevo": "#98 | HH",
+   "user": "hhhomes"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "771843689294856203",
+   "antes": "",
+   "nuevo": "#72 | Acry",
+   "user": "acrymc"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "778332138930962432",
+   "antes": "",
+   "nuevo": "#15 | Sombra",
+   "user": "sombra7312"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "790016013680771102",
+   "antes": "#9 | Colesito",
+   "nuevo": "#34 | Colesito",
+   "user": "colesito"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "818314359218241567",
+   "antes": "",
+   "nuevo": "#120 | Iguana",
+   "user": "iguanajoshua"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "839700927954681888",
+   "antes": "",
+   "nuevo": "#32 | 7po",
+   "user": "ideka__"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "847124099243180042",
+   "antes": "",
+   "nuevo": "#55 | GP",
+   "user": "gxbrielalejandro"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "853130894663745549",
+   "antes": "",
+   "nuevo": "#94 | Andy",
+   "user": "andy._.2321"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "868896089233838120",
+   "antes": "",
+   "nuevo": "#121 | Jeisy",
+   "user": "jeizy_0"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "917207293496557578",
+   "antes": "",
+   "nuevo": "#40 | Partim",
+   "user": "essencesteez"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "918750979724288040",
+   "antes": "#10 | Juanpa",
+   "nuevo": "#5 | Juanpa",
+   "user": "juxnpaa"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "921617312728109167",
+   "antes": "",
+   "nuevo": "#126 | Rayo",
+   "user": "rayyoo_"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "936079604207202365",
+   "antes": "",
+   "nuevo": "#108 | Fazer",
+   "user": "ignac.07"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "950011515434573824",
+   "antes": "Teto word of the day",
+   "nuevo": "#112 | Teto word of the day",
+   "user": "miniboy5138"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "979878316846768139",
+   "antes": "",
+   "nuevo": "#18 | Fullylo4ded",
+   "user": "fullylo4ded"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "983935442913206303",
+   "antes": "",
+   "nuevo": "#14 | Kourier",
+   "user": "everythingbelow"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "989640104765177956",
+   "antes": "#5 | Gus",
+   "nuevo": "#58 | Gus",
+   "user": "agusdema"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1048744067313451050",
+   "antes": "#3 | MCO",
+   "nuevo": "#36 | MCO",
+   "user": "mcorap"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1055474244089286706",
+   "antes": "#19 | Erian",
+   "nuevo": "#65 | Erian",
+   "user": "deslanofthemind"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1070553144964173906",
+   "antes": "",
+   "nuevo": "#38 | Rubik",
+   "user": "rubik2703"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1071185986366742630",
+   "antes": "#4 | Zignos",
+   "nuevo": "#8 | Zignos",
+   "user": "emekultra"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1095893775383023708",
+   "antes": "",
+   "nuevo": "#124 | Jobaking",
+   "user": "jobains"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1097714486795849748",
+   "antes": "#11 | Snow",
+   "nuevo": "#51 | Snow",
+   "user": "snowzzzzzzzz"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1150099153238630410",
+   "antes": "",
+   "nuevo": "#113 | Drexx",
+   "user": "manuxxx0789_78781"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1167678661684641814",
+   "antes": "",
+   "nuevo": "#52 | Bocto",
+   "user": "narddog4"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1177668622227886112",
+   "antes": "#13 | Prosu",
+   "nuevo": "#10 | Prosu",
+   "user": "prosufk"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1204164715350196284",
+   "antes": "",
+   "nuevo": "#87 | Dios",
+   "user": "dan666._"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1228547913240547338",
+   "antes": "#29 | Humilda",
+   "nuevo": "#63 | Humilda",
+   "user": "kanon_kk13"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1237192883535216715",
+   "antes": "MASINO",
+   "nuevo": "#60 | MASINO",
+   "user": "martinv444"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1247306019839938754",
+   "antes": "",
+   "nuevo": "#61 | Walker",
+   "user": "walker2706"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1266557884058046507",
+   "antes": "",
+   "nuevo": "#84 | Assuan",
+   "user": ".assuan._08335"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1294600140815990858",
+   "antes": "Marcosq14",
+   "nuevo": "#101 | Marcosq14",
+   "user": "marcosq_14"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1323444294534828104",
+   "antes": "",
+   "nuevo": "#81 | Lord Viruzz",
+   "user": "kidbuu02124"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1338567692239765617",
+   "antes": "#28 | .",
+   "nuevo": "#79 | .",
+   "user": "yatusabe_eldeuxss"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1347663033949880360",
+   "antes": "",
+   "nuevo": "#109 | Trot",
+   "user": "eresmatrot"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1357796427191029932",
+   "antes": "",
+   "nuevo": "#21 | Liberia",
+   "user": "malasiafighter"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1363285354442133778",
+   "antes": "",
+   "nuevo": "#97 | Molusco",
+   "user": "moluscoanvriento_79058"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1378395662592512151",
+   "antes": "",
+   "nuevo": "#132 | AFR",
+   "user": "afr777_."
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1382511700519030824",
+   "antes": "",
+   "nuevo": "#43 | Vlade",
+   "user": "vladeink"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1385452830684614697",
+   "antes": "",
+   "nuevo": "#93 | LRS",
+   "user": "lrs0378"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1391556667841450004",
+   "antes": "",
+   "nuevo": "#67 | Val",
+   "user": "nixytos"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1392280902997905539",
+   "antes": "Meteoro🇬🇭",
+   "nuevo": "#74 | Meteoro🇬🇭",
+   "user": "jajajaja.lprzs"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1397110475594010700",
+   "antes": "",
+   "nuevo": "#104 | Xubaru",
+   "user": "xxxxxx.fl"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1400508144920170577",
+   "antes": "#17 | Panchok",
+   "nuevo": "#4 | Panchok",
+   "user": "panchok0103"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1405241805733105704",
+   "antes": "",
+   "nuevo": "#26 | Hassan",
+   "user": "ndfue"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1413305434881658960",
+   "antes": "Jupiter 🇲🇽",
+   "nuevo": "#77 | Jupiter 🇲🇽",
+   "user": "jupiter2417tj"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1413322255047594015",
+   "antes": "",
+   "nuevo": "#78 | Xervoe",
+   "user": "eminenciadelquisco"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1426686911908675628",
+   "antes": "",
+   "nuevo": "#62 | Velatz",
+   "user": "funhorlavild"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1428556720510079168",
+   "antes": "",
+   "nuevo": "#42 | Rodas",
+   "user": "r.o._77_02939"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1445803811758276660",
+   "antes": "",
+   "nuevo": "#118 | Nobu",
+   "user": "adachit_332"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1458603256292053037",
+   "antes": "Ismel",
+   "nuevo": "#133 | Ismel",
+   "user": "ismel_0555"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1471344428064178248",
+   "antes": "",
+   "nuevo": "#123 | Mark ❓",
+   "user": "markcastillo_0"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1483563636512522321",
+   "antes": "",
+   "nuevo": "#83 | Hardcore",
+   "user": "imitadordemickeymousechileno"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1487658663148785734",
+   "antes": "",
+   "nuevo": "#86 | Cronox",
+   "user": "cronoxzito"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1490902626970239088",
+   "antes": "",
+   "nuevo": "#111 | Btrece",
+   "user": "btrece_"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1491486652739092623",
+   "antes": "",
+   "nuevo": "#69 | Dantemx",
+   "user": "danteshemc"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1493013247488430202",
+   "antes": "xxxclusivo",
+   "nuevo": "#66 | xxxclusivo",
+   "user": "wackmc1"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1508623564285149357",
+   "antes": "",
+   "nuevo": "#130 | Sin Limites",
+   "user": "sinlimites2026"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1515482513106272366",
+   "antes": "",
+   "nuevo": "#37 | Guess",
+   "user": "sinergiabreak"
+  },
+  {
+   "guild": "1468472442925092958",
+   "sv": "FFA",
+   "id": "1523082259870257315",
+   "antes": "",
+   "nuevo": "#119 | NC",
+   "user": "nachonc_"
+  }
+ ]
+}

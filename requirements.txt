@@ -1,0 +1,50 @@
+# Lo que el pipeline necesita para correr en GitHub Actions.
+#
+# ⚠️ SIN VERSIONES CLAVADAS Y ES A PROPOSITO, por ahora: el job corre
+# contra APIs vivas (Sheets, Cloudflare, Discord) y clavar versiones sin
+# nadie que las suba deja el pipeline atado a una libreria que dejo de
+# hablar con su API. Si algun dia un `pip install` rompe una corrida, se
+# clava esa y se anota por que — clavarlas todas «por las dudas» cambia
+# un problema raro por uno seguro.
+#
+# ⚠️ `playwright` NO alcanza: hace falta tambien `playwright install
+# chromium`, que baja el navegador. Esta en el workflow.
+gspread
+google-auth
+requests
+playwright
+pillow
+# 🔴 NUMPY FALTABA Y TIRABA DOS DE LAS CUATRO CARTAS. Los exportadores de
+# la Competitiva y la de País lo usan para medir la unión de lo que
+# sobresale del recorte y para verificar que las cuatro esquinas del PNG
+# quedaron transparentes.
+#
+# ⚠️ ACÁ NO SE NOTABA: en esta máquina numpy vino con otra cosa. Se vio en
+# la primera corrida del ciclo en Actions que tuvo trabajo de verdad, con
+# `ModuleNotFoundError` en el runner limpio. Un `pip install -r` que anda
+# en la máquina donde se escribió no dice nada sobre una máquina vacía.
+numpy
+# ⚠️ ESTE NO LO NECESITA EL CICLO, Y VA IGUAL. `sheet/autorizar.py` lo
+# importa para el flujo de OAuth, que **no puede** correr en un runner —
+# abre un navegador. Pero `sheet/webapp_rangos.py`, que sí corre en
+# Actions, importa ese módulo, y el día que alguien suba ese import
+# arriba de la función el workflow de rangos se cae con
+# `ModuleNotFoundError` en el paso que publica la página pública. Dos
+# segundos de instalación contra ese fallo.
+google-auth-oauthlib
+
+# ⚠️ ESTA LISTA SE AUDITA SOLA, no se mantiene a mano:
+#     python herramientas/falta_en_requirements.py
+# Sigue los imports desde los puntos de entrada del ciclo y dice qué
+# falta. Así se encontró que `numpy` tiraba dos de las cuatro cartas.
+# 🔴 LA BASE DE HUSOS HORARIOS, Y HACE FALTA EN WINDOWS. `zoneinfo` es
+# de la stdlib pero **no trae los datos**: los toma del sistema, y
+# Windows no los tiene. Sin esto, `ZoneInfo('America/Los_Angeles')`
+# —el huso de la planilla, que la cuenta atrás del Lobby necesita para
+# comparar contra `NOW()`— tira `ZoneInfoNotFoundError`.
+#
+# ⚠️ AL REVES QUE NUMPY: ese faltaba acá y se vio en Actions; este anda
+# en Actions (Ubuntu trae la base) y se cayó acá. La lección es la
+# misma en los dos sentidos — el entorno donde algo funciona no dice
+# nada del otro.
+tzdata

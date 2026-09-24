@@ -1,0 +1,1099 @@
+{
+ "_leeme": [
+  "La hoja AKAs del Operativo. La construye sheet/construir_akas.py.",
+  "alias: nombre normalizado -> como se escribe de verdad.",
+  "no_confundir: pares que PARECEN la misma persona y NO lo son."
+ ],
+ "alias": {
+  "humilda": "Humildad",
+  "dtr": "Humildad",
+  "cf": "Humildad",
+  "camilo": "Humildad",
+  "ananin": "Hardcore",
+  "stitch": "Hardcore",
+  "stitchmafioso": "Hardcore",
+  "lyamal": "Hardcore",
+  "aczino": "Hardcore",
+  "aczinohardcore": "Hardcore",
+  "prrr": "Hassan",
+  "prr": "Hassan",
+  "bna": "BNA",
+  "vocesdelokendo": "BNA",
+  "nd": "Hassan",
+  "prrrr": "Hassan",
+  "muerteencefalica": "Hassan",
+  "drmacheck": "Hassan",
+  "hsybiakxo": "Hassan",
+  "jovenallah": "Hassan",
+  "blody": "Bloody",
+  "bloddy": "Bloody",
+  "velats": "Velatz",
+  "vela": "Velatz",
+  "juancito": "MCO",
+  "elreyes": "Reyes",
+  "carr": "Provenza",
+  "richvargas": "Vargas",
+  "vandurex": "Vandu",
+  "rocto": "Bocto",
+  "erikan": "Erian",
+  "vice": "Vize",
+  "pombe": "Pomberito",
+  "xervodelpueblo": "Xervoe",
+  "cronex": "Cronox",
+  "cronax": "Cronox",
+  "bastian": "Anderbarra",
+  "sombras": "Sombra",
+  "anritmico": "Abyssus",
+  "geekto": "Presagio",
+  "cole": "Colesito",
+  "gustavocerati": "Gus",
+  "roadespanol4barras": "Road",
+  "dantenc": "Dantemx",
+  "dante": "Dantemx",
+  "dantemc": "Dantemx",
+  "pichulita": "PichulaMc",
+  "pichulitamc": "PichulaMc",
+  "loordviruz": "Lord Viruzz",
+  "kibak": "Valen",
+  "plink": "Guess",
+  "420": "HH",
+  "reckless": "Kourier",
+  "nicopiscu": "Piscu",
+  "ra": "Johao",
+  "nexuz": "Nexus",
+  "bleist": "Val",
+  "nix": "Val",
+  "latarantula": "Val",
+  "desdelosquince": "Xhay",
+  "deuxs": "Deuxs",
+  "walka": "Walker",
+  "nahunauseas": "Nahu",
+  "mrclean": "Luzzano",
+  "miguelangel": "Tier",
+  "eucalipto": "Alone",
+  "erikdaniel": "Erik",
+  "2942player": "Erik",
+  "epik2942": "Erik",
+  "venti": "EmiZor",
+  "17": "Deuxs",
+  "ninobendito": "Deuxs",
+  "cronoxz": "Cronox",
+  "laura": "Molusco",
+  "laurasad": "Molusco",
+  "corazondefleiva": "Molusco",
+  "epik": "Erik",
+  "sietepo": "7po",
+  "abysus": "Abyssus",
+  "agustin": "Agus",
+  "amir10": "Amir",
+  "asuan": "Assuan",
+  "bootrax": "BTRX",
+  "cesardou": "Cesar",
+  "choko": "Choka",
+  "colesitodebogota": "Colesito",
+  "coxisjusticiero": "Coxis",
+  "ck": "Crack and Krank",
+  "cyk": "Crack and Krank",
+  "creazzy": "Crazzy",
+  "criezj": "CrisZJ",
+  "kronox": "Cronox",
+  "damien": "Damian",
+  "darn": "DarnBless",
+  "durnbless": "DarnBless",
+  "desuu": "Desu",
+  "detorb": "Detto",
+  "deux": "Deuxs",
+  "domi": "Dominick",
+  "draxx": "Drexx",
+  "duvan": "Duvan du",
+  "dynococo": "Dynoco",
+  "emifero": "Efimero",
+  "mistererian": "Erian",
+  "ezcopetazo": "Escopetazo",
+  "estewn": "Estwn",
+  "estewvn": "Estwn",
+  "estwvn": "Estwn",
+  "ezee": "Eze",
+  "fuckingjose": "Fakin Jose",
+  "gianelmalo": "Gian",
+  "jvenallah": "Hassan",
+  "krishnamurti": "Hassan",
+  "ikgnito": "Incognito",
+  "jhaden": "Jayden",
+  "jeizy": "Jeisy",
+  "joako": "Joakko",
+  "joha": "Johao",
+  "josema": "Joshema",
+  "jota": "Jotap",
+  "juasimo": "Juasmio",
+  "kassax": "KSX",
+  "limisz": "Limtsz",
+  "limitsz": "Limtsz",
+  "limitz": "Limtsz",
+  "loorviruz": "Lord Viruzz",
+  "luchov": "Lucho",
+  "lucas": "Lukas",
+  "lukassinescrupulos": "Lukas",
+  "luzano": "Luzzano",
+  "viktorv": "Luzzano",
+  "markos": "Marcos",
+  "minifusok": "Miniboy",
+  "mitosis": "Mito",
+  "muchachoa": "Muchacho Altanero",
+  "nannsu": "Nanssu",
+  "nemmi": "Nemi",
+  "nessboy": "Ness",
+  "nittnation": "Nitt",
+  "geetko": "Presagio",
+  "elrapqhaceshoy": "Provenza",
+  "elrapquehaceshoy": "Provenza",
+  "ragna": "Ragnar",
+  "rfran": "Refran",
+  "roda": "Rodas",
+  "rodropro45": "Rodropro",
+  "snti": "Santi",
+  "santo": "Santos",
+  "seteth": "Shetet",
+  "sheet": "Shetet",
+  "shete": "Shetet",
+  "shete9358": "Shetet",
+  "skracth": "Skratch",
+  "skratchaza": "Skratch",
+  "surfx": "Surxf",
+  "surfxf": "Surxf",
+  "tlaguino": "Tiaguinho",
+  "tsa": "TS",
+  "kybak": "Valen",
+  "valentin": "Valen",
+  "valde": "Vlade",
+  "xervo": "Xervoe",
+  "zafkabeff": "Zafka",
+  "sekka": "Zekha",
+  "zeki": "Zekki",
+  "zekiii": "Zekki",
+  "z": "Zeta",
+  "zetrico": "Zetryko",
+  "xervœ": "Xervoe",
+  "jupiter": "Jupiter",
+  "soulb": "Soulb",
+  "lzz": "Luzzano",
+  "viruz": "Lord Viruzz",
+  "wachin": "El Wachin",
+  "nacho": "Nc-Nacho",
+  "erician": "Erian",
+  "inclusivo": "Xclusivo",
+  "krt": "Krtman",
+  "bulldozer": "Bull12r",
+  "santz": "Santos",
+  "pensamientos": "Pensamiento",
+  "senticde": "Senticide",
+  "xdddd": "UL OFICIA",
+  "jander": "Ambidextro",
+  "fullylo4ded": "Oasis"
+ },
+ "pares": [
+  [
+   "Humilda",
+   "Humildad"
+  ],
+  [
+   "DTR",
+   "Humildad"
+  ],
+  [
+   "CF",
+   "Humildad"
+  ],
+  [
+   "Camilo",
+   "Humildad"
+  ],
+  [
+   "Añañin",
+   "Hardcore"
+  ],
+  [
+   "Stitch",
+   "Hardcore"
+  ],
+  [
+   "Stitch Mafioso",
+   "Hardcore"
+  ],
+  [
+   "L.Yamal",
+   "Hardcore"
+  ],
+  [
+   "Aczino",
+   "Hardcore"
+  ],
+  [
+   "ACZINO HARDCORE",
+   "Hardcore"
+  ],
+  [
+   "Prrr",
+   "Hassan"
+  ],
+  [
+   "PRR",
+   "Hassan"
+  ],
+  [
+   "Bna",
+   "BNA"
+  ],
+  [
+   "Vocesdelokendo",
+   "BNA"
+  ],
+  [
+   "ND",
+   "Hassan"
+  ],
+  [
+   "Prrrr",
+   "Hassan"
+  ],
+  [
+   "Muerte encefalica",
+   "Hassan"
+  ],
+  [
+   "Dr. Macheck",
+   "Hassan"
+  ],
+  [
+   "Hsybiakxo",
+   "Hassan"
+  ],
+  [
+   "Joven Allah",
+   "Hassan"
+  ],
+  [
+   "BLODY",
+   "Bloody"
+  ],
+  [
+   "BLODDY",
+   "Bloody"
+  ],
+  [
+   "Blody",
+   "Bloody"
+  ],
+  [
+   "VELATS",
+   "Velatz"
+  ],
+  [
+   "Vela",
+   "Velatz"
+  ],
+  [
+   "Juancito",
+   "MCO"
+  ],
+  [
+   "Elreyes",
+   "Reyes"
+  ],
+  [
+   "Carr",
+   "Provenza"
+  ],
+  [
+   "Rich Vargas",
+   "Vargas"
+  ],
+  [
+   "Vandurex",
+   "Vandu"
+  ],
+  [
+   "Rocto",
+   "Bocto"
+  ],
+  [
+   "Erikan",
+   "Erian"
+  ],
+  [
+   "Vice",
+   "Vize"
+  ],
+  [
+   "Pombe",
+   "Pomberito"
+  ],
+  [
+   "xervodelpueblo",
+   "Xervoe"
+  ],
+  [
+   "Cronex",
+   "Cronox"
+  ],
+  [
+   "Cronax",
+   "Cronox"
+  ],
+  [
+   "Bastian",
+   "Anderbarra"
+  ],
+  [
+   "Sombras",
+   "Sombra"
+  ],
+  [
+   "ANRITMICO",
+   "Abyssus"
+  ],
+  [
+   "ANRÍTMICO",
+   "Abyssus"
+  ],
+  [
+   "geekto",
+   "Presagio"
+  ],
+  [
+   "Cole",
+   "Colesito"
+  ],
+  [
+   "Gustavo Cerati",
+   "Gus"
+  ],
+  [
+   "RoadEspañol4barras",
+   "Road"
+  ],
+  [
+   "Dantenc",
+   "Dantemx"
+  ],
+  [
+   "Dante",
+   "Dantemx"
+  ],
+  [
+   "DANTEMC",
+   "Dantemx"
+  ],
+  [
+   "Pichulita",
+   "PichulaMc"
+  ],
+  [
+   "PichulitaMC",
+   "PichulaMc"
+  ],
+  [
+   "Loordviruz",
+   "Lord Viruzz"
+  ],
+  [
+   "Kibak",
+   "Valen"
+  ],
+  [
+   "PLINK",
+   "Guess"
+  ],
+  [
+   "Plink",
+   "Guess"
+  ],
+  [
+   "420",
+   "HH"
+  ],
+  [
+   "Reckless",
+   "Kourier"
+  ],
+  [
+   "Nico Piscu",
+   "Piscu"
+  ],
+  [
+   "R.A",
+   "Johao"
+  ],
+  [
+   "Nexuz",
+   "Nexus"
+  ],
+  [
+   "Bleist",
+   "Val"
+  ],
+  [
+   "Nix",
+   "Val"
+  ],
+  [
+   "LaTarantula",
+   "Val"
+  ],
+  [
+   "DesdeLosQuince",
+   "Xhay"
+  ],
+  [
+   "Deuxs",
+   "Deuxs"
+  ],
+  [
+   "Walka",
+   "Walker"
+  ],
+  [
+   "Nahu Nauseas",
+   "Nahu"
+  ],
+  [
+   "MrClean",
+   "Luzzano"
+  ],
+  [
+   "Miguel Angel",
+   "Tier"
+  ],
+  [
+   "Eucalipto",
+   "Alone"
+  ],
+  [
+   "Erikdaniel",
+   "Erik"
+  ],
+  [
+   "ErikDaniel",
+   "Erik"
+  ],
+  [
+   "2942player",
+   "Erik"
+  ],
+  [
+   "epik2942",
+   "Erik"
+  ],
+  [
+   "Venti",
+   "EmiZor"
+  ],
+  [
+   "17",
+   "Deuxs"
+  ],
+  [
+   "Niño Bendito",
+   "Deuxs"
+  ],
+  [
+   "Cronoxz",
+   "Cronox"
+  ],
+  [
+   "Laura",
+   "Molusco"
+  ],
+  [
+   "laurasad",
+   "Molusco"
+  ],
+  [
+   "Corazón de Fleiva",
+   "Molusco"
+  ],
+  [
+   "Epik",
+   "Erik"
+  ],
+  [
+   "sietepo",
+   "7po"
+  ],
+  [
+   "abysus",
+   "Abyssus"
+  ],
+  [
+   "agustin",
+   "Agus"
+  ],
+  [
+   "Amir10",
+   "Amir"
+  ],
+  [
+   "Asuan",
+   "Assuan"
+  ],
+  [
+   "Bootrax",
+   "BTRX"
+  ],
+  [
+   "Cesardou",
+   "Cesar"
+  ],
+  [
+   "Choko",
+   "Choka"
+  ],
+  [
+   "colesito de bogota",
+   "Colesito"
+  ],
+  [
+   "coxisjusticiero",
+   "Coxis"
+  ],
+  [
+   "ck",
+   "Crack and Krank"
+  ],
+  [
+   "Cyk",
+   "Crack and Krank"
+  ],
+  [
+   "Creazzy",
+   "Crazzy"
+  ],
+  [
+   "CrieZJ",
+   "CrisZJ"
+  ],
+  [
+   "kronox",
+   "Cronox"
+  ],
+  [
+   "Damien",
+   "Damian"
+  ],
+  [
+   "Darn",
+   "DarnBless"
+  ],
+  [
+   "durnbless",
+   "DarnBless"
+  ],
+  [
+   "desuu",
+   "Desu"
+  ],
+  [
+   "detorb",
+   "Detto"
+  ],
+  [
+   "Deux",
+   "Deuxs"
+  ],
+  [
+   "Domi",
+   "Dominick"
+  ],
+  [
+   "Draxx",
+   "Drexx"
+  ],
+  [
+   "duvan",
+   "Duvan du"
+  ],
+  [
+   "dynococo",
+   "Dynoco"
+  ],
+  [
+   "emifero",
+   "Efimero"
+  ],
+  [
+   "mistererian",
+   "Erian"
+  ],
+  [
+   "EZCOPETAZO",
+   "Escopetazo"
+  ],
+  [
+   "Estewn",
+   "Estwn"
+  ],
+  [
+   "Estewvn",
+   "Estwn"
+  ],
+  [
+   "estwvn",
+   "Estwn"
+  ],
+  [
+   "Ezee",
+   "Eze"
+  ],
+  [
+   "fuckingjose",
+   "Fakin Jose"
+  ],
+  [
+   "gianelmalo",
+   "Gian"
+  ],
+  [
+   "jvenallah",
+   "Hassan"
+  ],
+  [
+   "Krishnamurti",
+   "Hassan"
+  ],
+  [
+   "Ikgnito",
+   "Incognito"
+  ],
+  [
+   "Jhaden",
+   "Jayden"
+  ],
+  [
+   "Jeizy",
+   "Jeisy"
+  ],
+  [
+   "Joako",
+   "Joakko"
+  ],
+  [
+   "Joha",
+   "Johao"
+  ],
+  [
+   "Josema",
+   "Joshema"
+  ],
+  [
+   "Jota",
+   "Jotap"
+  ],
+  [
+   "JUASIMO",
+   "Juasmio"
+  ],
+  [
+   "kassax",
+   "KSX"
+  ],
+  [
+   "Limisz",
+   "Limtsz"
+  ],
+  [
+   "limitsz",
+   "Limtsz"
+  ],
+  [
+   "Limitz",
+   "Limtsz"
+  ],
+  [
+   "loorviruz",
+   "Lord Viruzz"
+  ],
+  [
+   "Luchov",
+   "Lucho"
+  ],
+  [
+   "lucas",
+   "Lukas"
+  ],
+  [
+   "Lukassinescrupulos",
+   "Lukas"
+  ],
+  [
+   "luzano",
+   "Luzzano"
+  ],
+  [
+   "Viktor v.",
+   "Luzzano"
+  ],
+  [
+   "Markos",
+   "Marcos"
+  ],
+  [
+   "Mini Fusok",
+   "Miniboy"
+  ],
+  [
+   "mitosis",
+   "Mito"
+  ],
+  [
+   "Muchacho A",
+   "Muchacho Altanero"
+  ],
+  [
+   "Nannsu",
+   "Nanssu"
+  ],
+  [
+   "Nemmi",
+   "Nemi"
+  ],
+  [
+   "Nessboy",
+   "Ness"
+  ],
+  [
+   "Nitt Nation",
+   "Nitt"
+  ],
+  [
+   "geetko",
+   "Presagio"
+  ],
+  [
+   "Elrapqhaceshoy",
+   "Provenza"
+  ],
+  [
+   "El rap que haces hoy",
+   "Provenza"
+  ],
+  [
+   "ragna",
+   "Ragnar"
+  ],
+  [
+   "RFran",
+   "Refran"
+  ],
+  [
+   "Roda",
+   "Rodas"
+  ],
+  [
+   "rodropro45",
+   "Rodropro"
+  ],
+  [
+   "snti",
+   "Santi"
+  ],
+  [
+   "Santo",
+   "Santos"
+  ],
+  [
+   "Seteth",
+   "Shetet"
+  ],
+  [
+   "Sheet",
+   "Shetet"
+  ],
+  [
+   "shete",
+   "Shetet"
+  ],
+  [
+   "shete9358",
+   "Shetet"
+  ],
+  [
+   "skracth",
+   "Skratch"
+  ],
+  [
+   "skratchaza",
+   "Skratch"
+  ],
+  [
+   "SurfX",
+   "Surxf"
+  ],
+  [
+   "Surfxf",
+   "Surxf"
+  ],
+  [
+   "Tlaguiño",
+   "Tiaguinho"
+  ],
+  [
+   "T.S.A",
+   "TS"
+  ],
+  [
+   "kybak",
+   "Valen"
+  ],
+  [
+   "Valentin",
+   "Valen"
+  ],
+  [
+   "valde",
+   "Vlade"
+  ],
+  [
+   "xervo",
+   "Xervoe"
+  ],
+  [
+   "Zafkabeff",
+   "Zafka"
+  ],
+  [
+   "Sekka",
+   "Zekha"
+  ],
+  [
+   "zeki",
+   "Zekki"
+  ],
+  [
+   "zekiii",
+   "Zekki"
+  ],
+  [
+   "z",
+   "Zeta"
+  ],
+  [
+   "Zetrico",
+   "Zetryko"
+  ],
+  [
+   "Xervœ",
+   "Xervoe"
+  ],
+  [
+   "Júpíter",
+   "Jupiter"
+  ],
+  [
+   "Soul B",
+   "Soulb"
+  ],
+  [
+   "Lzz",
+   "Luzzano"
+  ],
+  [
+   "Viruz",
+   "Lord Viruzz"
+  ],
+  [
+   "Wachin",
+   "El Wachin"
+  ],
+  [
+   "Nacho",
+   "Nc-Nacho"
+  ],
+  [
+   "Erician",
+   "Erian"
+  ],
+  [
+   "Inclusivo",
+   "Xclusivo"
+  ],
+  [
+   "KRT",
+   "Krtman"
+  ],
+  [
+   "Bulldozer",
+   "Bull12r"
+  ],
+  [
+   "Santz",
+   "Santos"
+  ],
+  [
+   "Pensamientos",
+   "Pensamiento"
+  ],
+  [
+   "Senticde",
+   "Senticide"
+  ],
+  [
+   "XDDDD",
+   "UL OFICIA"
+  ],
+  [
+   "JANDER",
+   "Ambidextro"
+  ],
+  [
+   "Fullylo4ded",
+   "Oasis"
+  ]
+ ],
+ "no_confundir": [
+  [
+   "Blood 🇧🇴",
+   "Bloody 🇨🇴",
+   "País diferente"
+  ],
+  [
+   "Deluxe 🇦🇷",
+   "Delux 🇦🇷",
+   "DOS argentinos"
+  ],
+  [
+   "7 🇨🇴",
+   "7po 🇨🇱",
+   "País diferente"
+  ],
+  [
+   "Reyes 🇨🇴",
+   "Reyes Mc 🇨🇱",
+   "País diferente"
+  ],
+  [
+   "Subaru",
+   "Xubaru 🇻🇪",
+   "Nombres diferentes"
+  ],
+  [
+   "Nexus 🇨🇱",
+   "Number 🇺🇾",
+   "Diferentes"
+  ],
+  [
+   "VR 🇨🇴",
+   "Vargas 🇨🇴",
+   "Orgs confunden"
+  ],
+  [
+   "Zaiko ❓",
+   "Saiko 🇨🇱",
+   "Diferentes"
+  ],
+  [
+   "Dr.Machine 🇨🇷",
+   "Erian 🇵🇦",
+   "Diferentes"
+  ],
+  [
+   "Luz 🇨🇱",
+   "Luzzano 🇦🇷",
+   "Diferente país"
+  ],
+  [
+   "Respawn 🇻🇪",
+   "Prosu 🇨🇴",
+   "Diferente país"
+  ],
+  [
+   "S1lence 🇵🇪",
+   "Silence ❓",
+   "Posiblemente"
+  ],
+  [
+   "Hassan (=ND)",
+   "Deluxe 🇦🇷",
+   "ND es Hassan"
+  ],
+  [
+   "Erik 🇦🇷",
+   "Erika 🇺🇸",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Saiko 🇨🇱",
+   "Saito ❓",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Santos 🇨🇴",
+   "Santi 🇦🇷",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Santos 🇨🇴",
+   "Zanti 🇦🇷",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Charro 🇲🇽",
+   "Charlie 🇲🇽",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Charro 🇲🇽",
+   "Char 🇨🇴",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Richard 🇪🇨",
+   "Rich 🇨🇴",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Camila 🇻🇪",
+   "Cami 🇵🇾",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Raezer 🇻🇪",
+   "Raizer 🇵🇪",
+   "Distintos (Dlx)"
+  ],
+  [
+   "john jairo restrepo 🇨🇴",
+   "John 🇵🇪",
+   "Distintos (Dlx)"
+  ],
+  [
+   "7 🇨🇴",
+   "71 🇦🇷",
+   "71 es campeón de SYBAU"
+  ],
+  [
+   "Lukas 🇦🇷",
+   "Luka 🇨🇴",
+   "DOS Lukas (Dlx)"
+  ],
+  [
+   "Makmah 🇦🇷",
+   "Makma 🇻🇪",
+   "DOS Makmahs (Dlx)"
+  ],
+  [
+   "Lord Viruzz 🇨🇴",
+   "Lord 🇨🇴",
+   "Distintos"
+  ],
+  [
+   "IsaMc 🇲🇽",
+   "SamC 🇨🇴",
+   "Distintos (Dlx)"
+  ],
+  [
+   "Abyssus 🇵🇦",
+   "Abyssus 🇨🇦 (SNAKE)",
+   "MISMO — SNAKE le pone 🇨🇦"
+  ]
+ ]
+}
