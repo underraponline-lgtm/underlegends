@@ -236,8 +236,25 @@ def _decisiones():
 
 
 def decision_evento(ev, sv, fecha):
-    """'cuenta' / 'no cuenta' / None para `ev · sv · fecha`. Lo lee el lector."""
-    d = (_decisiones().get('eventos') or {}).get('%s · %s · %s' % (ev, sv, fecha))
+    """'cuenta' / 'no cuenta' / None para `ev · sv · fecha`. Lo lee el lector.
+
+    ⚠️ TAMBIÉN POR NOMBRE, Y CON `*` COMO FECHA, para lo que se decide ANTES
+    de que exista la llave. Dlx, 24/09/2026, sobre «RAP EXHIBITION 1/8» de
+    Snake Rap —jugado el 22/09 y sin llave en ningún canal—: *«no debería
+    contar»*. El título y la fecha exactos que va a tener si alguien la
+    publica tarde no se conocen: el nombre se compara sin adornos y `*`
+    vale cualquier día.
+    """
+    eventos = _decisiones().get('eventos') or {}
+    d = eventos.get('%s · %s · %s' % (ev, sv, fecha))
+    if d is None:
+        k = norm(ev)
+        for clave, v in eventos.items():
+            partes = [x.strip() for x in clave.split(' · ')]
+            if (len(partes) == 3 and k and norm(partes[0]) == k
+                    and partes[1] == sv and partes[2] in (fecha, '*')):
+                d = v
+                break
     return (d or {}).get('decision')
 
 
