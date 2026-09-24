@@ -218,6 +218,93 @@ def leer():
     return gente
 
 
+def heredar_de_alias(gente):
+    """Si la fila REAL no tiene un dato y su alias si, se lo lleva.
+
+    🔴 EL DISCORD ID VIVIA EN LA FILA EQUIVOCADA Y COSTABA LA TARJETA.
+    `datos/akas.json` dice que `KRT` es `Krtman`, asi que todo el sistema
+    canoniza a `Krtman` — y **el Discord ID esta en la fila `KRT`**.
+    Medido el 24/09/2026 contra el porton de identidad:
+
+        KRT      id=1359316127901024357   pasa=True
+        Krtman   id=—                     pasa=False
+
+    La misma persona pasa con el nombre que el sistema NO usa y falla con
+    el que si. `/card` le contesta «todavia no estas verificado» a alguien
+    que lo esta — la respuesta equivocada con la cara de la correcta, que
+    es exactamente lo que ya paso con los siete de `cartas_r2`. Lo mismo
+    con `Lzz`/`Luzzano`.
+
+    ⚠️ `construir_akas.py` YA LO AVISA en cada corrida —*«🔴 2 persona(s)
+    que FIGURAN SIN DISCORD ID Y LO TIENEN»*— y termina en *«se arregla
+    uniendo las dos filas en el Sheet»*, o sea esperando a una persona.
+    Lleva dias impreso. El objetivo del proyecto es que esto se mantenga
+    solo, asi que el sistema lo absorbe y el aviso queda para el dia que
+    haya que unir las filas de verdad.
+
+    ⚠️ SOLO RELLENA HUECOS, NUNCA PISA. Si las dos filas tienen el dato y
+    **no coinciden**, no se elige: se avisa. Es el caso de
+    `Santz`=1201718668463972363 contra `Santos`=975234612953497651, dos
+    IDs distintos para lo que el mapa declara una sola persona — o sobra
+    uno o son dos personas, y adivinar ahi le da a alguien la tarjeta de
+    otro. Eso lo contesta Dlx, no un script.
+
+    ⚠️ Y NO BORRA LA FILA DEL ALIAS. Sigue habiendo dos filas en el
+    padron; lo que cambia es que la buena ya no esta coja. Borrar es una
+    decision sobre el Sheet de Dlx.
+    """
+    import unicodedata
+
+    def _k(x):
+        return ''.join(c for c in unicodedata.normalize('NFKD', str(x or ''))
+                       if c.isalnum()).lower()
+
+    try:
+        with open(os.path.join(BASE, 'datos', 'akas.json'),
+                  encoding='utf-8') as f:
+            al = (json.load(f) or {}).get('alias') or {}
+    except (OSError, ValueError):
+        # ⚠️ sin mapa no hay alias que seguir, y quedarse sin padron
+        # porque falta un json seria mucho peor
+        return gente, [], []
+
+    def real(n):
+        # siguiendo la cadena, igual que `rankings.canon()`
+        vis, act = set(), n
+        for _ in range(8):
+            k = _k(act)
+            if k in vis or k not in al:
+                break
+            vis.add(k)
+            act = al[k]
+        return act
+
+    por = {}
+    for x in gente:
+        por.setdefault(_k(x.get('raw')), x)
+
+    #: los campos que se pueden heredar. `full` y `raw` NO: son la
+    #: identidad de esa fila, y copiarlos fusionaria dos filas sin
+    #: decidirlo.
+    CAMPOS = ('discord_id', 'pais', 'verificado', 'sv', 'av_sheet')
+    movidos, choques = [], []
+    for x in gente:
+        r = real(x.get('raw'))
+        if _k(r) == _k(x.get('raw')):
+            continue
+        destino = por.get(_k(r))
+        if destino is None:
+            continue
+        for c in CAMPOS:
+            a, b = (x.get(c) or ''), (destino.get(c) or '')
+            if a and not b:
+                destino[c] = a
+                movidos.append((x.get('raw'), destino.get('raw'), c, a))
+            elif a and b and a != b and c == 'discord_id':
+                choques.append((x.get('raw'), destino.get('raw'), a, b))
+    return gente, movidos, choques
+
+
 def cargar():
     """El padron ya guardado. NO pide credenciales — es lo que usan los
     generadores y el bajador de avatares."""
@@ -234,6 +321,18 @@ def por_nombre(gente=None):
 
 def main():
     gente = leer()
+    gente, movidos, choques = heredar_de_alias(gente)
+    if movidos:
+        print('   %d dato(s) que estaban en la fila del ALIAS y la fila '
+              'real no tenia:' % len(movidos))
+        for a, b, c, v in movidos[:8]:
+            print('      %-12s -> %-12s %-12s %s'
+                  % (a, b, c, str(v)[:24]))
+    if choques:
+        print('   🔴 %d con DOS Discord ID distintos — no se elige, '
+              'lo decide Dlx:' % len(choques))
+        for a, b, ia, ib in choques:
+            print('      %-12s=%s  vs  %-12s=%s' % (a, ia, b, ib))
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     with open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(gente, f, ensure_ascii=False, indent=1)

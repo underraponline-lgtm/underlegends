@@ -1,0 +1,37 @@
+# 🔴 `datos/*.json` NO SE AUTO-MERGEA. NUNCA.
+#
+# El 24/09/2026 el ciclo commiteó `datos/` mientras yo trabajaba local y
+# git mezcló `competitivo_pool.json` por líneas: el resultado era **JSON
+# válido** con 62 filas donde una rama tenía 70, y se llevó puestas a
+# nueve personas —Colesito, Xubaru, BLANKO, Baltrip, ARDEAN, Lilñaño,
+# Chop, ISAIAS y AREZ—. Sin conflicto, sin aviso, sin error.
+#
+# ⚠️ ES EL PEOR CASO POSIBLE DE ESTE REPO: no falla, parsea, y queda un
+# archivo que se ve bien y miente. Es la misma familia que «contar lo que
+# hay en disco no es contar lo que salió» y que la cache que no mira nada.
+#
+# ⚠️ Y VA A VOLVER A PASAR, porque no es un accidente: el ciclo corre cada
+# media hora en Actions y commitea `datos/` **por diseño**. Cualquier
+# sesión local que dure más de media hora se cruza con él.
+#
+# `-merge` le dice a git que no intente mezclarlas: si las dos ramas
+# tocaron el archivo, **declara conflicto** y hay que resolverlo a mano.
+# Que es exactamente lo que se quiere — estos archivos son listas de
+# personas, y la resolución correcta nunca es «intercalar las líneas»:
+# o gana el más nuevo respecto del Sheet, o se reconstruye desde la
+# fuente, o se hace la unión. Las tres piden mirar.
+datos/*.json -merge
+
+# Lo mismo para el inventario y los sellos: son mapas grandes donde una
+# línea intercalada de la otra rama pasa desapercibida.
+datos/**/*.json -merge
+
+# ⚠️ EL PAYLOAD Y LOS SELLOS TAMBIEN. `web_sello.json` decide si se
+# despliega el hub y `cartas_selladas.json` si se redibujan 552 cartas:
+# un merge que invente un hash intermedio no despliega ni redibuja nada,
+# en silencio.
+
+# Los .webp y .png son binarios: que git ni lo intente.
+*.webp binary
+*.png binary
+*.woff2 binary
