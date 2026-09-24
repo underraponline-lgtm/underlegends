@@ -98,12 +98,10 @@ def _get(rng):
 
 
 def _put(rng, filas):
-    r = requests.put('%s/%s/values/%s?valueInputOption=RAW'
-                     % (API, id_operativo(), requests.utils.quote(rng)),
-                     headers={'Authorization': 'Bearer ' + token()},
-                     json={'values': filas}, timeout=60)
-    if r.status_code >= 300:
-        raise RuntimeError('%s: %s' % (r.status_code, r.text[:200]))
+    """Escribe un rango. Por `_pedir()`: reintenta el 429 en vez de morir."""
+    from escribir import _pedir
+    _pedir('PUT', '/values/%s?valueInputOption=RAW'
+           % requests.utils.quote(rng), json={'values': filas})
 
 
 def leer_entrada():
@@ -164,20 +162,6 @@ def numeros_por_evento(h):
             continue
         out[(str(f[1]).strip(), str(f[2]).strip(), str(f[3]).strip())] = int(n)
     return out
-
-
-def _quitar_de_procesados(h, num):
-    """Saca ese numero del registro. Ver la nota de idempotencia."""
-    filas = h.filas()
-    quedan = [f for f in filas if str(f[0]).strip() != str(num)]
-    if len(quedan) == len(filas):
-        return 0
-    quedan = [list(f) + [''] * (h.ancho - len(f)) for f in quedan]
-    vacias = [[''] * h.ancho for _ in range(len(filas) - len(quedan))]
-    _put('%s!A%d:%s%d' % (h.nombre, h.fila_datos,
-                          chr(ord('A') + h.ancho - 1),
-                          h.fila_datos + len(filas) - 1), quedan + vacias)
-    return len(filas) - len(quedan)
 
 
 def main():
@@ -333,12 +317,16 @@ def main():
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
 
+    # 🔴 TODOS LOS EVENTOS DE UNA VEZ: una lectura y una escritura por
+    # hoja. Ver `resultados.reescribir()` — de a uno eran ~8 lecturas por
+    # evento y el ciclo murió con un 429 a la mitad del #355.
+    cuentas = RES.guardar_varios(planes, dry=False)
+    RES.reescribir(hproc, [ev['num'] for ev in planes],
+                   [[ev['num'], ev['nombre'], ev['servidor'], ev['fecha'],
+                     ev['participantes'], ev['escala'], '✅', '', '', '', '']
+                    for ev in planes])
     for ev in planes:
-        n1, n2 = RES.guardar(ev, dry=False)
-        _quitar_de_procesados(hproc, ev['num'])
-        hproc.agregar([[ev['num'], ev['nombre'], ev['servidor'], ev['fecha'],
-                        ev['participantes'], ev['escala'], '✅', '', '', '', '']],
-                      dry=False)
+        n1, n2 = cuentas[ev['num']]
         print('   ✅ #%d  %d en Resultados, %d en 1v1, 1 en Eventos Procesados'
               % (ev['num'], n1, n2))
         # 🔴 Y SE AVISA EN DISCORD. Dlx, 22/09/2026: *«¿como se que el bot

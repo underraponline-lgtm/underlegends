@@ -444,7 +444,7 @@ def agregar(filas_res, filas_uno):
     # numero de evento es monotono —`Config!B27 + 1`— y dentro de un
     # evento el orden de la hoja ya es el de la llave, porque
     # `resultados._filas_uno()` las escribe ronda por ronda y
-    # `_borrar_evento()` reescribe el bloque conservando el orden.
+    # `resultados.reescribir()` conserva ese orden.
     #
     # ⚠️ El docstring de `DE_DONDE` decia «por fecha» y la fecha es justo
     # el campo que no se puede ordenar. Ordenar por lo que no ordena no
@@ -1805,8 +1805,8 @@ def _self_check():
         print('   %s %-20s %s -> %s' % ('✅' if ok else '🔴', que, gano, r))
 
     # 🔴 EL ORDEN ES POR `Evento #` Y LA HOJA PUEDE TRAERLOS MEZCLADOS.
-    # `_borrar_evento()` reescribe el bloque de un evento reprocesado y
-    # lo vuelve a agregar **al final**, asi que el #1 puede quedar debajo
+    # `resultados.reescribir()` saca las filas de un evento reprocesado y
+    # las vuelve a agregar **al final**, asi que el #1 puede quedar debajo
     # del #2. Leyendo en el orden del archivo la racha sale distinta y
     # sigue siendo un numero creible.
     print('\n  y no en el orden en que estan en la hoja')
