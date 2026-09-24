@@ -791,6 +791,43 @@ def sin_repetir(filas):
     return out
 
 
+#: horas sin publicar ni editar la llave para dar por TERMINADO un evento
+#: que no dice quién ganó. Un evento dura una noche; la llave se va
+#: completando mientras tanto, así que menos que esto es «en curso».
+QUIETA_H = 12
+
+
+def tiene_campeon(filas):
+    """`True` si alguna fila es la FINAL con ganador: se sabe quién ganó."""
+    return any(str(f.get('ronda') or '').strip().lower() == 'final'
+               and str(f.get('ganador') or '').strip() for f in filas)
+
+
+def horas_quieta(grupo, ahora=None):
+    """Horas desde lo último que se hizo con la llave: publicarla o editarla.
+
+    `None` si ningún mensaje trae hora, y quien llama lo trata como
+    quieta: una llave que no se puede ubicar en el tiempo no puede
+    esperar para siempre sin que nadie la vea.
+    """
+    ahora = ahora or datetime.datetime.now(datetime.timezone.utc)
+    ult = None
+    for h in grupo['llaves']:
+        for k in ('editado', 'cuando'):
+            t = str(h.get(k) or '').strip()
+            if not t:
+                continue
+            try:
+                t = datetime.datetime.fromisoformat(t.replace('Z', '+00:00'))
+            except ValueError:
+                continue
+            if t.tzinfo is None:
+                t = t.replace(tzinfo=datetime.timezone.utc)
+            if ult is None or t > ult:
+                ult = t
+    return None if ult is None else (ahora - ult).total_seconds() / 3600.0
+
+
 def agrupar(hallazgos):
     """Junta las llaves que son el MISMO evento, por plantel."""
     grupos = []
@@ -970,6 +1007,32 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    print('\n  sin campeón no se suma: ¿terminó o sigue?')
+    ahora = datetime.datetime(2026, 9, 24, 12, 0,
+                              tzinfo=datetime.timezone.utc)
+    g_viejo = {'llaves': [{'cuando': '2026-09-23T03:26:17.654000+00:00',
+                           'editado': ''}]}
+    g_editado = {'llaves': [{'cuando': '2026-09-23T03:26:17+00:00',
+                             'editado': '2026-09-24T10:00:00+00:00'}]}
+    casos = [
+        ('con la final y su ganador, hay campeón',
+         tiene_campeon([{'ronda': 'final', 'ganador': 'Ana'}])),
+        ('la semi ganada NO es campeón',
+         not tiene_campeon([{'ronda': 'semifinales', 'ganador': 'Ana'}])),
+        ('la final sin ganador NO es campeón',
+         not tiene_campeon([{'ronda': 'final', 'ganador': ''}])),
+        ('publicada hace 32 h y sin tocar: terminó',
+         horas_quieta(g_viejo, ahora) >= QUIETA_H),
+        ('editada hace 2 h: manda la edición, sigue en curso',
+         abs(horas_quieta(g_editado, ahora) - 2.0) < 1e-6),
+        ('sin ninguna hora: None, y quien llama la da por quieta',
+         horas_quieta({'llaves': [{'cuando': '', 'editado': ''}]},
+                      ahora) is None),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     print('\n  la fila, contra la forma de la hoja')
     try:
         from procesar_entrada import COL_A, CAMPOS as CAMPOS_E
@@ -1021,6 +1084,7 @@ def main():
           % (len(hallazgos), len(grupos)))
 
     todas, dudas, sabidas = [], [], collections.Counter()
+    en_curso, incompletos = [], []
     repes = 0
     for g in grupos:
         # 🔴 UN NOMBRE POR GRUPO Y LAS BATALLAS SIN REPETIR. Ver
@@ -1029,16 +1093,55 @@ def main():
         # veces, que es el unico error de esta cadena que no se arregla
         # volviendo a correr.
         nom, fec = nombre_de(g), fecha_de(g)
-        del_grupo = []
+        del_grupo, d_grupo = [], []
         for h in g['llaves']:
             f, d, sab = filas_de(h, nombre=nom, fecha=fec,
                                  gente_grupo=g['plantel'])
             del_grupo += f
-            dudas += d
+            d_grupo += d
             sabidas.update(sab)
         _txt = [h.get('texto') or '' for h in g['llaves']]
         limpias = marcar_revividos(
             marcar_walkins(sin_repetir(del_grupo), _txt), _txt)
+
+        # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
+        # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
+        # entre los descartes pone «Resultado desconocido» —no se sabe
+        # quién ganó la final— y «Bracket incompleto». Hasta el 24/09 se
+        # cargaba lo que se pudiera leer y la duda iba a `Pendientes`, o
+        # sea que **se sumaba primero y se preguntaba después**: el patrón
+        # que la guía denuncia — *«la IA tiende a procesar lo ambiguo en
+        # vez de descartarlo»*.
+        #
+        # ⚠️ Lo destapó una llave de FFA del 23/09 que nadie veía porque
+        # `SEMIFINAL` a secas no era un encabezado. Con eso arreglado
+        # aparecía «(sin titulo)»: dos cuartos donde no pasaba nadie,
+        # gente en semis que no estaba en cuartos y una final ilegible.
+        # Se iban a escribir **3 filas**, o sea puntos de cuartos para tres
+        # personas de un evento que la guía descarta entero.
+        #
+        # ⚠️ Y NO ES LO MISMO «TODAVÍA NO» QUE «NUNCA». La llave se va
+        # completando durante la noche, así que una sin final puede estar
+        # en curso: esa espera sin sumar y sin ir a `Pendientes` —no es
+        # una duda, es un evento que no terminó—. Recién cuando lleva
+        # `QUIETA_H` horas sin que nadie la toque pasa a ser un
+        # `Bracket incompleto`, que es un tipo que la hoja ya tenía.
+        #
+        # ⚠️ Sólo en servidores que CUENTAN: las llaves de los de
+        # `solo_identidad` no dan filas por diseño, y sin esto cada una
+        # parecería un evento sin campeón.
+        ligas = [codigo_servidor(h.get('guild'))[0] for h in g['llaves']
+                 if codigo_servidor(h.get('guild'))[1] == 'liga']
+        if ligas and not tiene_campeon(limpias):
+            hq = horas_quieta(g)
+            if hq is not None and hq < QUIETA_H:
+                en_curso.append((nom, hq))
+            else:
+                incompletos.append((nom, ligas[0], fec,
+                                    ['%s: %s' % (d[1].lower(), d[2])
+                                     for d in d_grupo]))
+            continue
+        dudas += d_grupo
         repes += len(del_grupo) - len(limpias)
         todas += limpias
     if repes:
@@ -1062,6 +1165,16 @@ def main():
         print('\n   -- lo que SI va a Pendientes --')
         for ev, cosas in list(por_evento.items())[:8]:
             print('     %-32s %d batalla(s)' % (ev[:32], len(cosas)))
+    if en_curso:
+        print('\n   -- en curso: sin campeón todavía, no se suma hasta la '
+              'final --')
+        for ev, hq in en_curso:
+            print('     %-32s tocada hace %.1f h' % (ev[:32], hq))
+    if incompletos:
+        print('\n   -- Bracket incompleto: sin campeón y quieta %d h o más '
+              '-> NO se suma, va a Pendientes --' % QUIETA_H)
+        for ev, sv_i, fec_i, _c in incompletos:
+            print('     %-32s %s · %s' % (ev[:32], sv_i, fec_i))
 
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
@@ -1135,6 +1248,16 @@ def main():
     for ev, cosas in por_evento.items():
         P.anotar('Llave sin resolver', 'llaves de Discord', ev,
                  ' | '.join(cosas[:4]))
+    # ⚠️ EL DETALLE LLEVA SERVIDOR Y FECHA, no sólo el nombre: la cola no
+    # duplica por (tipo, detalle), y dos llaves sin título son dos eventos
+    # que con el nombre solo se volverían una fila.
+    for ev, sv_i, fec_i, cosas in incompletos:
+        P.anotar('Bracket incompleto', 'llaves de Discord',
+                 '%s · %s · %s' % (ev, sv_i, fec_i),
+                 ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
+                             'guía (Parte 1) lo descarta y NO se sumó '
+                             'nada. Si cuenta, completá la final en la '
+                             'llave' % QUIETA_H] + cosas[:3]))
     # 🔴 ERA `todas_dudas`, QUE NO EXISTE — y la variable de verdad es
     # `dudas`. `NameError` en la ULTIMA linea del camino `--aplicar`, o
     # sea **despues** de escribir en `Entrada` y de anotar en
