@@ -5,7 +5,9 @@
     python bot/pipeline.py --correr   lo hace
     python bot/pipeline.py --correr --sin-pools   no rebaja los pools del Sheet
     python bot/pipeline.py --correr --sin-subir   dibuja y NO publica (para probar)
-    python bot/pipeline.py --correr --sin-dibujar hasta el paso 2c y para
+    python bot/pipeline.py --correr --sin-dibujar hasta el paso 2d y para
+    python bot/pipeline.py --correr --solo-dibujar desde el paso 3: lo de
+                                    antes ya lo hizo el trabajo `escuchar`
 
 🔴 POR QUE EXISTE. Cada pieza de esta cadena ya estaba y **nada las
 encadenaba**: rebajar los pools, dibujar, subir a R2, refrescar KV y
@@ -451,11 +453,14 @@ def rehacer_bloqueadas():
         return 0
 
 
-def main():
-    correr = '--correr' in sys.argv
-    t0 = time.time()
-    print('\n══ EL CICLO %s ══' % ('' if correr else '(simulacro)'))
+def _lo_barato(correr):
+    """Los pasos 1 a 2d: de Discord y el Sheet a los pools y la web.
 
+    Son segundos y no necesitan navegador; lo caro empieza en el 3. Vive
+    aparte para que el trabajo `dibujar` pueda saltearlo: ver
+    `--solo-dibujar` en `main()`. Devuelve un código de salida si hay
+    que cortar el ciclo, o `None` para seguir.
+    """
     # ── 1 · las llaves que haya cargadas ────────────────────────────
     # 🔴 EL BOTON QUE NUNCA CORRIO. El paso 5 de la hoja `Entrada` manda a
     # apretar un menu del Apps Script, y ese menu **no se ejecuto una sola
@@ -922,6 +927,33 @@ def main():
     else:
         corre(['sheet/decidir.py', '--aplicar'], callado=False)
         corre(['sheet/construir_akas.py'], callado=False)
+    return None
+
+
+def main():
+    correr = '--correr' in sys.argv
+    t0 = time.time()
+    print('\n══ EL CICLO %s ══' % ('' if correr else '(simulacro)'))
+
+    # 🔴 `--solo-dibujar`: EL TRABAJO `dibujar` NO REPITE LO DE `escuchar`.
+    # Corría el ciclo entero otra vez —leer Discord, cargar los eventos,
+    # recalcular las vitrinas, rebajar los pools y desplegar el hub— un
+    # minuto después de que `escuchar` lo hiciera y lo commiteara. Medido
+    # la mañana del 24/09/2026: el `dibujar` de las 10:33 AM ET repitió
+    # los pasos 1 a 2c, se comió el mismo 429 que `escuchar` y perdió las
+    # vitrinas. Todo lo que el dibujo necesita ya viene en este checkout:
+    # el workflow lo hace después del commit de `escuchar`.
+    #
+    # ⚠️ SI EL COMMIT DE `escuchar` NO LLEGÓ, se dibuja con los pools de
+    # la corrida anterior y la siguiente se pone al día. Lo que no pasa
+    # es que se dibuje algo que no está en el repo.
+    if '--solo-dibujar' in sys.argv:
+        print('\n   ⏭  --solo-dibujar: de la carga a la web ya lo hizo '
+              '`escuchar`; este checkout es su commit')
+    else:
+        r = _lo_barato(correr)
+        if r is not None:
+            return r
 
     # ── 2 · que cambio ──────────────────────────────────────────────
     paso(3, 'qué cambió')
