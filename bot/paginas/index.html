@@ -122,6 +122,19 @@
     <p class="bajada">El orden sale del <b>OVR</b>, que es el mismo número
     que lleva la tarjeta. Tocá un encabezado para ordenar por puntos o por
     eventos, y una fila para ver sus tarjetas.</p>
+    <!-- 🔑 SUBCATEGORIAS. Dlx, 24/09/2026: «crea subcategorías al
+         seleccionar opciones, por ejemplo en ranking, porque hay bastantes
+         rankings». Son tres vistas de la MISMA gente con otra pregunta:
+         cómo va la temporada, quién sube al podio, y quién está más cerca
+         de desbloquear el Competitivo.
+
+         ⚠️ No son tres tablas: es una que cambia de columnas y de orden.
+         Tres tablas serían tres lugares donde arreglar el mismo bug. -->
+    <div class="subs" id="subRanking">
+      <button class="sub on" data-sub="temporada">Temporada</button>
+      <button class="sub" data-sub="podios">Podios</button>
+      <button class="sub" data-sub="camino">Camino al competitivo</button>
+    </div>
     <section class="blk">
       <div class="filtros">
         <input id="buscar" type="search" placeholder="Buscar rapero…"
@@ -129,6 +142,7 @@
         <div class="chips" id="chipsSv"></div>
         <div class="chips" id="chipsCc"></div>
       </div>
+      <p class="nota" id="notaSub"></p>
       <div class="tabla-caja">
         <table id="tabla">
           <thead><tr>
@@ -139,6 +153,12 @@
             <th data-orden="sv" class="col-sv">Sv</th>
             <th data-orden="pts">Puntos</th>
             <th data-orden="ev">Ev</th>
+            <!-- las tres de «Podios». Sólo se ven en esa subcategoría:
+                 en la de Temporada serían tres columnas en cero para casi
+                 todos, comiéndose el ancho del teléfono. -->
+            <th data-orden="oro" class="col-pod">&#129351;</th>
+            <th data-orden="seg" class="col-pod">&#129352;</th>
+            <th data-orden="ter" class="col-pod">&#129353;</th>
           </tr></thead>
           <tbody id="filas"></tbody>
         </table>
