@@ -333,20 +333,43 @@ def plantel(texto):
     DESGRACIAS EN TOKYO VOL.12 tuvo 16 personas —cuatro batallas de
     cuatro en cuartos—, se contaban 15, y el evento entero cobraba con
     la escala 8-15 en vez de 16+.
+
+    🔴 Y EL PARÉNTESIS SE SACA ANTES DE PARTIR, como en `equipos.py`.
+    `gekto(chianluka+makma)` partido por `+` daba `gektochianluka` y
+    `makma)`: una «persona» que no existe. Medido el 24/09/2026: ELRAP
+    FECHA 6 contaba **34** y eran 27 lados limpios —siete de basura—, y
+    EL RAP FECHA 5 contaba 29 con `agusyinn` y `neopollo`. Ninguno cambió
+    de escala, pero con 15 reales y una basura un evento cobra 16+. La
+    guía (Parte 1, §2) lo llama *«el paso que más se arruina»*.
+
+    ⚠️ LO DE ADENTRO SÍ CUENTA, SI ES ALGUIEN NUEVO. Quien aparece sólo
+    entre paréntesis estuvo en la llave —`hassan(tam)`: tam perdió con
+    Hassan—, pero muchas veces es otra forma de escribir a alguien que ya
+    tiene su lado: `blody` es `bloody`, `pollo` es `pollo sport`. Entra
+    sólo si no se parece a nadie ya contado.
     """
-    out = set()
+    from equipos import _PAREN
+    out, adentro = set(), set()
     for _ronda, bats in E.rondas_de(texto):
         for b in bats:
             for n in b:
-                partes = re.split(r'[+,/]|\s-\s', n)
+                # ⚠️ EL POKEMON NO SUMA AL PLANTEL (guía, §2 regla 3): no
+                # peleó. Va primero porque su marca `(P)` es un paréntesis.
+                n = E._sin_pokemon(n)
+                for x in _PAREN.findall(n):
+                    for p in re.split(r'[+,/]', x.strip('()（）')):
+                        if len(E.norm(p)) >= 2:
+                            adentro.add(E.norm(p))
+                partes = re.split(r'[+,/]|\s-\s', _PAREN.sub('', n))
                 for parte in partes:
-                    # ⚠️ EL POKEMON NO SUMA AL PLANTEL (guía, §2 regla 3):
-                    # no peleó. Si compitió en otra ronda ya se cuenta ahí.
-                    if E.POKEMON.search(parte):
-                        continue
                     k = E.norm(parte)
                     if len(k) >= 2 or (k and len(partes) == 1):
                         out.add(k)
+    for k in sorted(adentro - out):
+        if not (E._parecido(k, list(out)) or any(
+                min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
+                for c in out)):
+            out.add(k)
     return out
 
 
@@ -1239,6 +1262,13 @@ def _self_check():
          plantel(hp['texto']) == {'ana', 'beto', 'caro', 'dani', 'eze'}
          and plantel('`[ CUARTOS ]`\n⌞Ana⌝ 🆚 ⌞Beto⌝\n`[ FINAL ]`\n⌞Ana⌝ 🆚 '
                      '⌞Zzz (P)⌝') == {'ana', 'beto'}),
+        ('el paréntesis no inventa gente: `gekto(chianluka+makma)`',
+         plantel('`[ CUARTOS ]`\n⌞gekto(chianluka)⌝ 🆚 ⌞Makma⌝\n`[ FINAL ]`\n'
+                 '⌞gekto(chianluka+makma)⌝ 🆚 ⌞nhp⌝')
+         == {'gekto', 'makma', 'nhp', 'chianluka'}),
+        ('y el que está adentro escrito distinto no se cuenta dos veces',
+         plantel('`[ CUARTOS ]`\n⌞SAITO(blody)⌝ 🆚 ⌞Bloody⌝\n`[ FINAL ]`\n'
+                 '⌞SAITO⌝ 🆚 ⌞Ana⌝') == {'saito', 'bloody', 'ana'}),
         ('en un draft, el que vuelve en un equipo es drafteado',
          'Drafteado: Beto' in ' '.join(f['notas'] for f in fd)),
         ('sin draft, el mismo caso es revivido',
