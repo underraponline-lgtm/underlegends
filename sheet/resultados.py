@@ -45,6 +45,7 @@ duelos, win rate— saldria mal **sin fallar**, que es peor que la hoja
 vacia. La hoja vacia dice la verdad: todavia no hay registro.
 """
 import os
+import re
 import sys
 
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -134,6 +135,11 @@ def _filas_uno(ev):
         # el tercer puesto que sale del PODIO no se peleó en la llave: ver
         # `escuchar._tercero_del_podio()`. Paga puesto, no suma duelo.
         if 'podio' in str(b.get('notas', '')).lower():
+            continue
+        # 🔴 NI LA DEL POKEMON: aparece en la llave y no peleó (guía, Parte
+        # 2, §10.2). Un 1v1 donde un lado no estaba no es un duelo, y
+        # contarlo le regala una victoria al otro.
+        if re.search(r'pokemon\s*:', str(b.get('notas', '')), re.I):
             continue
         out.append([ev['num'], ev['fecha'], ev['servidor'], b.get('ronda', ''),
                     a, c, g, (c if g == a else a),

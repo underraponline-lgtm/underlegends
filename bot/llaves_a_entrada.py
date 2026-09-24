@@ -247,7 +247,7 @@ def ids_del_padron():
         # lista. No fallaba, asi que el `except` de abajo tampoco avisaba;
         # simplemente no hacia nada.
         #
-        # Medido el 25/09/2026 con la final de DESGRACIAS CON TöKĪØ: el
+        # Medido el 24/09/2026 con la final de DESGRACIAS CON TöKĪØ: el
         # campeon es `<@1405241805733105704>`, ese ID es **Hassan** en el
         # padron, y el lado de la final dice `PRRR🇦🇴` —un alias de Hassan
         # declarado en la hoja AKAs—. Sin los alias, `Hassan` contra
@@ -329,7 +329,7 @@ def plantel(texto):
     equipo —ahí una letra suelta es basura—, pero se aplicaba también a
     un lado entero, y hay un rapero que se llama `7`. Y este conjunto no
     es sólo una huella: `len()` de él es `participantes`, que es lo que
-    elige la escala de puntos (`motor.escala_de`). Medido el 25/09/2026:
+    elige la escala de puntos (`motor.escala_de`). Medido el 24/09/2026:
     DESGRACIAS EN TOKYO VOL.12 tuvo 16 personas —cuatro batallas de
     cuatro en cuartos—, se contaban 15, y el evento entero cobraba con
     la escala 8-15 en vez de 16+.
@@ -340,6 +340,10 @@ def plantel(texto):
             for n in b:
                 partes = re.split(r'[+,/]|\s-\s', n)
                 for parte in partes:
+                    # ⚠️ EL POKEMON NO SUMA AL PLANTEL (guía, §2 regla 3):
+                    # no peleó. Si compitió en otra ronda ya se cuenta ahí.
+                    if E.POKEMON.search(parte):
+                        continue
                     k = E.norm(parte)
                     if len(k) >= 2 or (k and len(partes) == 1):
                         out.add(k)
@@ -463,7 +467,7 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                           ids=ids_del_padron()):
         ronda, lados, ganador, razon = bat
         # 🔴 EN UNA BATALLA DONDE PASAN VARIOS, LOS QUE NO PASAN CAYERON
-        # AHI —y eso es un puesto—. Hasta el 25/09/2026 esto se contaba
+        # AHI —y eso es un puesto—. Hasta el 24/09/2026 esto se contaba
         # como «limitacion conocida» y no se escribia ninguna fila: medido
         # ese dia, **30 batallas** en las llaves de FFA, casi todas de 4
         # con 2 que pasan. Los eliminados quedaban sin sus puntos.
@@ -555,6 +559,155 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     return filas, dudas, sabidas
 
 
+def _con_nota(f, nota):
+    """Agrega `nota` a la fila si no la tiene ya."""
+    if nota.lower() not in (f.get('notas') or '').lower():
+        f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
+
+
+def _pokemones(f):
+    """Las claves de los que la fila marca como pokemon."""
+    return {E.norm(x) for x in re.findall(r'pokemon\s*:\s*([^;|]+)',
+                                          f.get('notas') or '', re.I)}
+
+
+def marcar_pokemones(filas, textos=()):
+    """Anota `Pokemon: nombre` en las filas de la ronda donde no peleó.
+
+    🔴 EL POKEMON APARECE EN LA LLAVE Y NO PELEÓ. Guía de formatos, Parte 2
+    (§9.7, §10.2 a §10.4): se marca `(P)` o con la palabra *pokemon*, y
+    esa aparición no paga, no da puesto —*«si le ponés campeón le estás
+    regalando un 🥇»*— y no entra al divisor del equipo. Lo que ganó
+    antes lo conserva entero: *«el pokemon no significa revivido»*.
+
+    ⚠️ LA MARCA SE LEE EN EL TEXTO CRUDO, NO EN LAS FILAS. El paréntesis se
+    pierde antes de llegar acá: `equipos.integrantes()` borra todo lo que
+    está entre paréntesis —porque `A(B+C)` es a quién le ganó A— y el
+    canonizador del lector compara sin él. Es lo mismo que ya hacen el
+    walk-in y el revivido.
+    """
+    def _ronda(r):
+        r = (r or '').upper()
+        return E.ALIAS.get(r, r)
+
+    marcados = set()                     # (ronda, clave)
+    for t in textos:
+        for ronda, bats in E.rondas_de(t):
+            for b in bats:
+                for lado in b:
+                    for parte in re.split(r'[+,&]', lado):
+                        if E.POKEMON.search(parte):
+                            k = E.norm(E.POKEMON.sub('', parte))
+                            if k:
+                                marcados.add((_ronda(ronda), k))
+    if not marcados:
+        return filas
+    for f in filas:
+        r = _ronda(f.get('ronda'))
+        for lado in (f.get('ladoA'), f.get('ladoB')):
+            for parte in re.split(r'[+,&]', E.HISTORIA.sub('', lado or '')):
+                limpio = E.POKEMON.sub('', parte).strip()
+                if (r, E.norm(limpio)) in marcados:
+                    _con_nota(f, 'Pokemon: %s' % limpio)
+    return filas
+
+
+def invitados_de(textos=()):
+    """Las claves de los invitados de honor que la llave declara.
+
+    ⚠️ Guía, Parte 2 (§9.2): el invitado de honor cobra el 100 % aunque
+    entre en una ronda avanzada — no es un walk-in. Se reconoce al lado
+    del nombre (`Konan (invitado)`) o en una línea propia
+    (`INVITADO DE HONOR: Konan`).
+    """
+    out = set()
+    for t in textos:
+        for l in E.plano(t or '').splitlines():
+            if not E.INVITADO.search(l):
+                continue
+            partes = []
+            ns = E.nombres_de_linea(l)
+            if ns:
+                partes = [x for lado in ns for x in re.split(r'[+,&]', lado)
+                          if E.INVITADO.search(x)]
+            elif ':' in l:
+                partes = re.split(r'[,+/]|\s+y\s+', l.split(':', 1)[1])
+            for x in partes:
+                x = re.sub(r'(?i)\bde\s+honor\b', '', E.INVITADO.sub('', x))
+                k = E.norm(x)
+                if k:
+                    out.add(k)
+    return out
+
+
+#: la fase previa que, sin batallas, es un cypher disfrazado (guía §12)
+FASE_PREVIA = ('FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES')
+#: `FASE CYPHER`, `[ CYPHER ]`: un encabezado, no el nombre del evento
+CYPHER = re.compile(r'^\W*(?:(?:fase|ronda)\s+(?:de\s+)?)?c[iy]pher\W*$'
+                    r'|(?:fase|ronda)\s+(?:de\s+)?c[iy]pher', re.I)
+#: `rumbo al Interserver`: el Interserver tiene su propio sistema (§11.2)
+INTERSERVER = re.compile(r'inter\s*-?\s*server|camino\s+a\s+la\s+hermandad',
+                         re.I)
+
+
+def _cuantos_nombres(l):
+    """Cuántos nombres trae una línea que no es una batalla."""
+    n = len(E.MENCION.findall(l))
+    l = E.MENCION.sub(' ', l)
+    for x in re.split(r'[,+/|•·]|\s[-–—]\s|^\s*[-–—*]\s*', l):
+        k = E.norm(x)
+        if 2 <= len(k) <= 28:
+            n += 1
+    return n
+
+
+def fase_sin_batallas(texto):
+    """La fase previa que lista gente SIN mostrar batallas, o None.
+
+    🔴 LA GUÍA LO DICE CON TODAS LAS LETRAS Y ES LO CONTRARIO DE LO QUE
+    HACE UN LECTOR. Parte 2, §12: *«si hay una fase de filtros,
+    clasificatoria o cypher sin batallas mostradas, se descarta el evento
+    entero. No se procesa "solo la parte clara"»*. Un lector hace
+    exactamente eso por diseño: una sección sin batallas no deja filas y
+    el evento sigue con el resto — los eliminados en filtros
+    desaparecen sin puntos y el evento entra cuando tenía que quedar
+    afuera. La guía lo llama *«la diferencia de criterio que más daño
+    hace»*.
+
+    ⚠️ Sólo las fases PREVIAS (filtros, clasificatoria, preliminares) y
+    un encabezado de cypher. Un evento que se LLAMA «Cypher algo» y trae
+    su llave cuenta (§14.2: *«lo que decide es el bracket, no el
+    título»*), y una lista de inscriptos antes de la primera ronda no es
+    una fase.
+    """
+    halladas = []
+    actual, gente, bats = None, 0, 0
+    for l in E.unir_continuadas(E.plano(texto or '')).splitlines():
+        nombres = E.nombres_de_linea(l)
+        m = E.RONDA.search(l)
+        cy = bool(CYPHER.search(l)) and not nombres
+        if cy or (m and not nombres):
+            if actual and gente >= 3 and not bats:
+                halladas.append(actual)
+            if cy:
+                actual = 'CYPHER'
+            else:
+                e = re.sub(r'\s+', ' ', m.group(1).upper()).strip()
+                e = E.ALIAS.get(e, e)
+                actual = e if e in FASE_PREVIA else None
+            gente, bats = 0, 0
+            continue
+        if not actual:
+            continue
+        if nombres:
+            bats += 1
+        elif not E.PODIO.search(l):
+            gente += _cuantos_nombres(l)
+    if actual and gente >= 3 and not bats:
+        halladas.append(actual)
+    return halladas[0] if halladas else None
+
+
 def marcar_walkins(filas, textos=()):
     """Anota `Walk-in N: nombre` a quien aparece recien en una ronda avanzada.
 
@@ -565,7 +718,7 @@ def marcar_walkins(filas, textos=()):
     salteada 50 %, dos 25 %, tres o mas 0 %. Al campeon tambien: «Konan
     aparecio recien en cuartos… cobro 5.000 en vez de 10.000».
 
-    Medido el 25/09/2026: en DESGRACIAS EN TOKYO VOL 11 el ganador de
+    Medido el 24/09/2026: en DESGRACIAS EN TOKYO VOL 11 el ganador de
     ONZASS vs GUS no se presento y PICHULITA entro directo a cuartos.
     Cobraba sus cuartos enteros.
 
@@ -619,16 +772,22 @@ def marcar_walkins(filas, textos=()):
         return filas
     pos = {r: i for i, r in enumerate(rondas)}
 
+    # ⚠️ NI EL POKEMON NI EL INVITADO DE HONOR SON WALK-IN (guía, Parte 2,
+    # §9.2): el primero no peleó esa ronda y el segundo cobra el 100 %.
+    invitados = invitados_de(textos)
     primera = {}   # clave -> (indice de ronda, nombre, fila)
     for f in filas:
         r = _ronda(f.get('ronda'))
         if r not in pos:
             continue
+        pk = _pokemones(f)
         for lado in (f.get('ladoA'), f.get('ladoB')):
             if not lado or E._equipo(lado) or re.search(
                     r'[+,&]', E.HISTORIA.sub('', lado)):
                 continue
             k = _k(lado)
+            if k in pk or k in invitados:
+                continue
             if k and (k not in primera or pos[r] < primera[k][0]):
                 primera[k] = (pos[r], lado, f)
     for k, (i, nombre, f) in primera.items():
@@ -653,7 +812,7 @@ def marcar_revividos(filas, textos=()):
     23/09/2026, §3.7: *«aparece 33 veces en 78 eventos. Alguien pierde, y
     vuelve a entrar al torneo. Regla: el revivido cobra el 50 % de su
     posicion FINAL, y ademas conserva los puntos de la ronda donde perdio
-    la primera vez»*. Medido el 25/09/2026 en la T1:
+    la primera vez»*. Medido el 24/09/2026 en la T1:
 
         Snow      VOL.12    pierde la semi en dupla, gana la final en trio
         Colesito  VOL.12    pierde la semi en dupla, sale subcampeon en trio
@@ -687,6 +846,12 @@ def marcar_revividos(filas, textos=()):
             r'[+,&]', E.HISTORIA.sub('', lado or ''))) if p]
 
     revividos = {}
+    # 🔑 EN UN DRAFT, QUIEN VUELVE DENTRO DE UN EQUIPO ES UN DRAFTEADO, no
+    # un revivido (guía, Parte 2, §9.1 y §11.1): cobra su eliminación Y su
+    # parte del equipo al 100 %. En la llave se ven igual, así que lo
+    # decide que la llave diga que es un draft.
+    es_draft = any(E.DRAFT.search(t or '') for t in textos)
+    drafteados = set()
     # 1. la notacion, en el texto crudo
     for t in textos:
         for m in REVIVIDO_MARCA.finditer(t or ''):
@@ -704,13 +869,22 @@ def marcar_revividos(filas, textos=()):
             for j, h in enumerate(validas):
                 if j == i or _r(h) < _r(f):
                     continue
-                if m in _miembros(h.get('ladoA')) + _miembros(h.get('ladoB')):
+                # ⚠️ EL POKEMON NO VUELVE: aparece sin pelear (§10.3).
+                if m in _pokemones(h):
+                    continue
+                ma, mb = _miembros(h.get('ladoA')), _miembros(h.get('ladoB'))
+                if m in ma + mb:
                     # ⚠️ las filas de una amenaza partida comparten al que
                     # PASO, no al que perdio: el perdedor de una fila de
                     # «triple» no reaparece en otra de la misma batalla
-                    revividos.setdefault(m, m)
+                    en_equipo = len(ma if m in ma else mb) > 1
+                    if es_draft and en_equipo and m not in revividos:
+                        drafteados.add(m)
+                    else:
+                        revividos.setdefault(m, m)
                     break
-    if not revividos:
+    drafteados -= set(revividos)
+    if not revividos and not drafteados:
         return filas
     # la nota va en la PRIMERA fila donde aparece, con el nombre como esta
     # escrito ahi, para que el motor lo resuelva igual que al resto
@@ -719,10 +893,12 @@ def marcar_revividos(filas, textos=()):
         for lado in (f.get('ladoA'), f.get('ladoB')):
             for parte in re.split(r'[+,&]', lado or ''):
                 k = _k(parte)
-                if k in revividos and k not in puesto:
-                    puesto.add(k)
-                    nota = 'Revivido: %s' % E.HISTORIA.sub('', parte).strip()
-                    f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
+                if k in puesto or not (k in revividos or k in drafteados):
+                    continue
+                puesto.add(k)
+                que = 'Revivido' if k in revividos else 'Drafteado'
+                nota = '%s: %s' % (que, E.HISTORIA.sub('', parte).strip())
+                f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
     return filas
 
 
@@ -1033,6 +1209,67 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    print('\n  la Parte 2 de la guía: pokemon, invitado, draft, fases')
+    hp = dict(h, texto=('`[ SEMIFINALES ]`\n⌞Ana⌝ 🆚 ⌞Beto⌝\n⌞Caro⌝ 🆚 ⌞Dani⌝\n'
+                        '`[ FINAL ]`\n⌞Ana⌝ ⌞Beto (P)⌝ 🆚 ⌞Caro⌝ ⌞Eze⌝\n'
+                        '🥇 CAMPEÓN: Ana + Beto'))
+    fp = marcar_revividos(marcar_walkins(marcar_pokemones(
+        filas_de(hp)[0], [hp['texto']]), [hp['texto']]), [hp['texto']])
+    fin = [f for f in fp if f['ronda'] == 'final']
+    notas = ' '.join(f['notas'] for f in fp)
+    # ⚠️ EN DUPLAS, que es como se escribe una absorción: en un 1v1 el que
+    # pierde y reaparece con el ganador deja la batalla sin ganador —los
+    # dos «pasan»— y no hay derrota que conservar
+    dr = dict(h, texto=('# DRAFT KINGS\n`[ CUARTOS ]`\n⌞Ana⌝ ⌞Fer⌝ 🆚 ⌞Beto⌝ ⌞Gus⌝\n'
+                        '⌞Caro⌝ ⌞Hugo⌝ 🆚 ⌞Dani⌝ ⌞Ivan⌝\n`[ FINAL ]`\n'
+                        '⌞Ana⌝ ⌞Fer⌝ ⌞Beto⌝ 🆚 ⌞Caro⌝ ⌞Hugo⌝ ⌞Dani⌝\n'
+                        '🥇 CAMPEÓN: Ana + Fer + Beto'))
+    fd = marcar_revividos(filas_de(dr)[0], [dr['texto']])
+    rv = dict(dr, texto=dr['texto'].replace('# DRAFT KINGS', '# COPA'))
+    fr = marcar_revividos(filas_de(rv)[0], [rv['texto']])
+    wk = ('`[ CUARTOS ]`\n⌞Ana⌝ 🆚 ⌞Beto⌝\n⌞Caro⌝ 🆚 ⌞Dani⌝\n`[ SEMIFINALES ]`\n'
+          '⌞Ana⌝ 🆚 ⌞Konan⌝\n`[ FINAL ]`\n⌞Konan⌝ 🆚 ⌞Caro⌝\n'
+          'INVITADO DE HONOR: Konan\n🥇 CAMPEÓN: Konan')
+    fw = marcar_walkins(filas_de(dict(h, texto=wk))[0], [wk])
+    casos = [
+        ('el pokemon de la final queda anotado en esa fila',
+         len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
+        ('y no se lo cuenta como revivido (§10.3)', 'Revivido' not in notas),
+        ('el pokemon no suma al plantel',
+         plantel(hp['texto']) == {'ana', 'beto', 'caro', 'dani', 'eze'}
+         and plantel('`[ CUARTOS ]`\n⌞Ana⌝ 🆚 ⌞Beto⌝\n`[ FINAL ]`\n⌞Ana⌝ 🆚 '
+                     '⌞Zzz (P)⌝') == {'ana', 'beto'}),
+        ('en un draft, el que vuelve en un equipo es drafteado',
+         'Drafteado: Beto' in ' '.join(f['notas'] for f in fd)),
+        ('sin draft, el mismo caso es revivido',
+         'Revivido: Beto' in ' '.join(f['notas'] for f in fr)),
+        ('el invitado de honor no es walk-in (§9.2)',
+         not any('Walk-in' in f['notas'] for f in fw)),
+        ('filtros con nombres y sin batallas: se descarta',
+         fase_sin_batallas('# COPA\nFILTROS\nAna\nBeto\nCaro\nDani\n'
+                           'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
+                           'FINAL\nAna vs Caro') == 'FILTROS'),
+        ('filtros CON batallas: cuenta',
+         fase_sin_batallas('FILTROS\nAna vs Beto\nCaro vs Dani\n'
+                           'FINAL\nAna vs Caro') is None),
+        ('una fase cypher con gente: se descarta',
+         fase_sin_batallas('FASE CYPHER\n<@1> <@2> <@3>\nFINAL\nAna vs Beto')
+         == 'CYPHER'),
+        ('un evento que se LLAMA cypher y trae llave: cuenta (§14.2)',
+         fase_sin_batallas('CYPHER KINGS VOL 2\nAna, Beto, Caro, Dani\n'
+                           'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
+                           'FINAL\nAna vs Caro') is None),
+        ('los inscriptos antes de la primera ronda no son una fase',
+         fase_sin_batallas('# COPA\nInscriptos: Ana, Beto, Caro, Dani\n'
+                           'SEMIFINALES\nAna vs Beto\nCaro vs Dani') is None),
+        ('una llave rumbo al Interserver se reconoce',
+         bool(INTERSERVER.search('# CLASIFICATORIO INTER-SERVER'))
+         and not INTERSERVER.search('# COPA INTERNACIONAL')),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     print('\n  la fila, contra la forma de la hoja')
     try:
         from procesar_entrada import COL_A, CAMPOS as CAMPOS_E
@@ -1084,7 +1321,7 @@ def main():
           % (len(hallazgos), len(grupos)))
 
     todas, dudas, sabidas = [], [], collections.Counter()
-    en_curso, incompletos = [], []
+    en_curso, incompletos, retenidos = [], [], []
     repes = 0
     for g in grupos:
         # 🔴 UN NOMBRE POR GRUPO Y LAS BATALLAS SIN REPETIR. Ver
@@ -1101,8 +1338,8 @@ def main():
             d_grupo += d
             sabidas.update(sab)
         _txt = [h.get('texto') or '' for h in g['llaves']]
-        limpias = marcar_revividos(
-            marcar_walkins(sin_repetir(del_grupo), _txt), _txt)
+        limpias = marcar_revividos(marcar_walkins(
+            marcar_pokemones(sin_repetir(del_grupo), _txt), _txt), _txt)
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
@@ -1132,6 +1369,28 @@ def main():
         # parecería un evento sin campeón.
         ligas = [codigo_servidor(h.get('guild'))[0] for h in g['llaves']
                  if codigo_servidor(h.get('guild'))[1] == 'liga']
+        # 🔴 LO QUE LA GUÍA NO DEJA SUMAR SE RETIENE ENTERO, antes de
+        # preguntar por el campeón: una fase previa sin batallas descarta
+        # el evento (Parte 2, §12) y una llave rumbo al Interserver usa
+        # otro sistema de puntos (§11.2) — *«preguntá para cuál de los
+        # dos rankings es»*.
+        motivo = None
+        for h in g['llaves']:
+            t = h.get('texto') or ''
+            fase = fase_sin_batallas(t)
+            if fase:
+                motivo = ('la fase %s lista gente sin mostrar batallas: la '
+                          'guía (Parte 2, §12) descarta el evento entero'
+                          % fase.lower())
+                break
+            if INTERSERVER.search(t):
+                motivo = ('es una llave rumbo al Interserver, que tiene su '
+                          'propio sistema de puntos (guía, Parte 2, §11.2): '
+                          '¿cuenta también para el Ranking Global?')
+                break
+        if ligas and motivo:
+            retenidos.append((nom, ligas[0], fec, motivo))
+            continue
         if ligas and not tiene_campeon(limpias):
             hq = horas_quieta(g)
             if hq is not None and hq < QUIETA_H:
@@ -1175,6 +1434,11 @@ def main():
               '-> NO se suma, va a Pendientes --' % QUIETA_H)
         for ev, sv_i, fec_i, _c in incompletos:
             print('     %-32s %s · %s' % (ev[:32], sv_i, fec_i))
+    if retenidos:
+        print('\n   -- retenidos: la guía no deja sumarlos --')
+        for ev, sv_i, fec_i, mot in retenidos:
+            print('     %-32s %s · %s\n        %s' % (ev[:32], sv_i, fec_i,
+                                                   mot))
 
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
@@ -1251,6 +1515,10 @@ def main():
     # ⚠️ EL DETALLE LLEVA SERVIDOR Y FECHA, no sólo el nombre: la cola no
     # duplica por (tipo, detalle), y dos llaves sin título son dos eventos
     # que con el nombre solo se volverían una fila.
+    for ev, sv_i, fec_i, mot in retenidos:
+        P.anotar('Evento dudoso', 'llaves de Discord',
+                 '%s · %s · %s' % (ev, sv_i, fec_i),
+                 mot + '. NO se sumó nada.')
     for ev, sv_i, fec_i, cosas in incompletos:
         P.anotar('Bracket incompleto', 'llaves de Discord',
                  '%s · %s · %s' % (ev, sv_i, fec_i),

@@ -158,7 +158,7 @@ ALIAS = {'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
 # «FINALE» con la S opcional: la E era obligatoria. `SEMIFINALES` y `SEMI -
 # FINAL` andaban por otros caminos (la segunda por `SEMIS?`), pero una llave
 # que escribiera `[SEMIFINAL]` a secas no tenia encabezado y su semi se
-# sumaba a la ronda anterior. Encontrado el 25/09/2026 probando el caso.
+# sumaba a la ronda anterior. Encontrado el 24/09/2026 probando el caso.
 #
 # ⚠️ Y `FILTROS` ES UNA RONDA. La guia de formatos de Dlx (§3.6) dice que
 # aparece en ~18 de 78 eventos; sin esto sus batallas quedaban antes del
@@ -180,6 +180,60 @@ DELIMS = (re.compile(r'⌞(.+?)⌝'),
 # shortcode en la MISMA linea (EL RAP FECHA 5, #349), y sin el segundo dos
 # equipos quedaban pegados en uno de seis.
 SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
+
+# 🔴 `[SUPLENTE]` ES UN CUPO VACIO, NO UNA PERSONA. Guía de formatos, Parte 2
+# (§9.4): *«ALGORITMOS cuartos: … 𝐕𝐒 [SUPLENTE]. Eso es un cupo vacío → 0
+# puntos y NO cuenta como participante. El rapero real avanza»*. Leído como
+# nombre, `SUPLENTE` cobraba la ronda y sumaba uno al plantel —que es lo que
+# elige la escala—.
+VACIO = {'suplente'}
+
+# 🔴 EL POKEMON: aparece en la llave y NO PELEÓ. Guía, Parte 2 (§9.7, §10.2 a
+# §10.4): la marca es `(P)` o la palabra *pokemon* al lado del nombre. Esa
+# aparición no paga, no da puesto —ni la medalla— y no entra al divisor del
+# equipo; lo que ganó antes lo conserva ENTERO, porque no es un revivido.
+POKEMON = re.compile(r'\(\s*(?:P|pok[eé]mon)\s*\)|\bpok[eé]mon\b', re.I)
+
+# ⚠️ EL DRAFT: el ganador elige a un perdedor para su equipo (§11.1). Quien
+# vuelve así cobra su eliminación Y su parte del equipo al 100 % (§9.1); el
+# revivido cobra la mitad de su puesto final (§3.7). En la llave se ven
+# igual —alguien que perdió y reaparece en un equipo—, así que lo único que
+# los separa es que la llave diga que el formato es de draft.
+DRAFT = re.compile(r'draft|reclut|absorbid', re.I)
+
+# ⚠️ EL INVITADO DE HONOR entra en ronda avanzada y cobra el 100 % (§9.2):
+# no es un walk-in.
+INVITADO = re.compile(r'invitad[oa]', re.I)
+
+
+def _sin_pokemon(lado):
+    """El lado sin sus integrantes pokemon: `Ana + Beto (P)` -> `Ana`."""
+    if not POKEMON.search(lado or ''):
+        return lado
+    return ' + '.join(x.strip() for x in re.split(r'[+,&]', lado)
+                      if x.strip() and not POKEMON.search(x))
+
+
+def plano(texto):
+    """El texto con las letras «de fantasía» pasadas a letras comunes.
+
+    🔴 `𝐕𝐒` NO ES `VS` PARA UNA REGEX. Los organizadores decoran con el
+    bloque de símbolos alfanuméricos matemáticos (U+1D400…U+1D7FF) —el
+    ejemplo de la propia guía, §9.4, trae `𝐕𝐒`— y con letras de ancho
+    completo. Sin esto una llave escrita así no tiene separadores ni
+    encabezados: no se detecta, y no falla nada.
+
+    ⚠️ SÓLO ESOS DOS BLOQUES. NFKD sobre todo el texto también desarmaría
+    tildes y banderas, que el resto del lector sabe leer tal como vienen.
+    Es la misma trampa que los roles `𝐑𝐚𝐧𝐠𝐨 𝐒𝐒𝐒` de Discord (ver CLAUDE.md).
+    """
+    if not texto:
+        return texto or ''
+    return ''.join(
+        unicodedata.normalize('NFKD', c)
+        if 0x1D400 <= ord(c) <= 0x1D7FF or 0xFF01 <= ord(c) <= 0xFF5E else c
+        for c in texto)
+
 
 # 🔴 `(?<!SUB)` Y `(?<!SUB-)` NO SON ADORNO: `SUBCAMPEON: PIPE` matchea
 # `CAMPEON:` y devuelve al **segundo** como campeon. Hoy no se nota
@@ -242,7 +296,7 @@ def nombres_de_linea(l):
         [PRR] [SIX] [SNOW] 🆚 [COLESITO] [BLOODY] [MAKMA]   dos trios
         [Sudaka] [Adachi] 🆚 [L] [Shadow] 🆚 [Mcnadie] [nc]  tres duplas
 
-    🔴 HASTA EL 25/09/2026 SE CONTABAN LOS MARCOS Y NO LOS LADOS. `[nc] [g8]
+    🔴 HASTA EL 24/09/2026 SE CONTABAN LOS MARCOS Y NO LOS LADOS. `[nc] [g8]
     🆚 [Mau Kc] [Denik]` salia como una batalla de CUATRO donde pasan dos,
     y cada eliminado cobraba la ronda completa. Es una dupla: por la regla
     §3.2 de la guia —«los puntos SE DIVIDEN»— cada uno cobra la mitad. O
@@ -278,12 +332,17 @@ def nombres_de_linea(l):
                 t = re.sub(r'[⌞⌝\[\]]', '', seg).strip(' .·▪️♠︎-–—*_`')
                 if 1 < len(norm(t)) <= 28:
                     lados.append(t)
+        # el cupo vacío no es un lado: `X 🆚 [SUPLENTE]` es X que pasa solo
+        n_lados = len(lados)
+        lados = [x for x in lados if norm(x) not in VACIO]
         if len(lados) >= 2:
             return lados
+        if len(lados) < n_lados:
+            return []
     for d in DELIMS:
-        hay = d.findall(l)
+        hay = [x.strip() for x in d.findall(l) if norm(x) not in VACIO]
         if len(hay) >= 2:
-            return [x.strip() for x in hay]
+            return hay
     return []
 
 
@@ -371,6 +430,7 @@ def unir_continuadas(texto):
 def rondas_de(texto):
     """[(ronda, [[competidor,...],...])] en el orden en que aparecen."""
     out, actual, bats = [], None, []
+    texto = plano(texto)
     # ⚠️ PRIMERO SE UNEN LAS CONTINUADAS. Ver `unir_continuadas()`: sin
     # esto, un equipo partido en dos lineas se pierde y la ronda entera
     # puede quedar a medias sin que nada falle.
@@ -389,7 +449,7 @@ def rondas_de(texto):
         # trae dos nombres entre corchetes y cae dentro de la seccion
         # FINAL, asi que se leia como una final mas —Cj contra Zignos,
         # que son COMPAÑEROS— y entraba a `1v1` como un duelo que nunca
-        # existio. Medido el 25/09/2026 en CARABOBO: tres «finales», una
+        # existio. Medido el 24/09/2026 en CARABOBO: tres «finales», una
         # real y dos fantasmas, la del campeon y la del subcampeon.
         #
         # ⚠️ Y NO SE VEIA POR OTRO BUG. Hasta ese dia la canonizacion
@@ -563,6 +623,7 @@ def resolver(texto, conocidos=None, ids=None):
     la comparacion posterior es **exacta** y deja de depender de un
     umbral de parecido. Sin inscriptos se cae al comportamiento de antes.
     """
+    texto = plano(texto)
     rs = rondas_de(texto)
     _c = None
     if conocidos:
@@ -573,7 +634,7 @@ def resolver(texto, conocidos=None, ids=None):
 
         def _c(n):
             # 🔴 EL PARECIDO PUEDE CORREGIR UN TYPO, PERO NUNCA CONVERTIR A
-            # UNA PERSONA EN OTRA. Hasta el 25/09/2026 esto era
+            # UNA PERSONA EN OTRA. Hasta el 24/09/2026 esto era
             # `_parecido(n, conocidos, corte=0.66) or n`, y medido sobre
             # las 38 llaves de FFA hacia cuatro cosas distintas mal:
             #
@@ -666,7 +727,12 @@ def resolver(texto, conocidos=None, ids=None):
             if rs[j][0] == 'TERCER LUGAR':
                 continue
             for b in rs[j][1]:
-                sig.update(b)
+                # 🔴 EL POKEMON NO PASÓ DE RONDA: aparece sin pelear (guía,
+                # Parte 2, §10.2). Quien pierde la semi y es pokemon en la
+                # final aparecía «pasando», así que su semi quedaba con dos
+                # que avanzan, sin resolver — y perdía la semifinal que la
+                # guía dice que conserva ENTERA (§10.3).
+                sig.update(x for x in (_sin_pokemon(l) for l in b) if x)
             break
         for b in bats:
             # el tercer puesto no puede salir de la progresion: su motivo
@@ -681,7 +747,7 @@ def resolver(texto, conocidos=None, ids=None):
                 # `SAITO` pasa de octavos y en cuartos aparece como
                 # `SAITO(blody)`: `saito` contra `saitoblody` da 0.67, abajo
                 # del corte, asi que «no aparece nadie despues» y la
-                # batalla se iba a Pendientes. Medido el 25/09/2026: 4
+                # batalla se iba a Pendientes. Medido el 24/09/2026: 4
                 # octavos de FFA caian por esto.
                 sig_l = {HISTORIA.sub('', x) for x in sig}
                 # 🔴 Y UN INDIVIDUAL PUEDE PASAR A UNA RONDA DE EQUIPOS. En
@@ -726,7 +792,7 @@ def resolver(texto, conocidos=None, ids=None):
                     # 🔑 SE DICE QUIENES PASARON. En una batalla de 4
                     # donde pasan 2, los otros 2 quedaron eliminados en
                     # esta ronda —y eso es un puesto—, pero hasta el
-                    # 25/09/2026 solo se devolvia el conteo: el que
+                    # 24/09/2026 solo se devolvia el conteo: el que
                     # llamaba no podia saber quien habia caido y tiraba la
                     # batalla entera. Ver `Batalla`.
                     out.append(Batalla((ronda, b, None,
@@ -815,7 +881,7 @@ def resolver(texto, conocidos=None, ids=None):
                             break
                 # 🔑 Y SI EL CAMPEON NO SE RESUELVE, EL SUBCAMPEON PUEDE
                 # DECIRLO. En una final de dos, saber quien perdio ES saber
-                # quien gano. Medido el 25/09/2026: DESGRACIAS EN TOKYO VOL
+                # quien gano. Medido el 24/09/2026: DESGRACIAS EN TOKYO VOL
                 # 11 escribe `CAMPEÓN: JOVEN ALA` con el lado `PRR` —dos
                 # alias de Hassan que no se parecen entre si— y `SUB-CAMPEÓN:
                 # SEBITA`, que si es un lado. La final se iba a Pendientes.
@@ -878,7 +944,7 @@ def _tercero_del_podio(texto, out):
 
     \U0001F534 PODIO MANDA. Guia de formatos de Dlx (23/09/2026, §4.6): *«cuando
     la llave dice una cosa y el podio publicado dice otra, gana el
-    podio»*. Hasta el 25/09/2026 el `3ER PUESTO:` del podio no se leia:
+    podio»*. Hasta el 24/09/2026 el `3ER PUESTO:` del podio no se leia:
     sin batalla por el tercero, los dos que perdieron la semi cobraban el
     promedio (§4.5, 5.250 en 16+). Pero TOKYO VOL.10 publica `3ER PUESTO:
     XXXXX` y TOKYO VOL 11 `TERCER LUGAR: COLESITO` \u2014uno solo\u2014: tercero
@@ -1050,7 +1116,7 @@ def barrer(s, por_canal=25, solo=None):
         ms = rr.json()
         n_msg += len(ms)
         for m in ms:
-            if es_llave(m.get('content') or ''):
+            if es_llave(plano(m.get('content') or '')):
                 out.append({'servidor': servidor, 'guild': guild,
                             'canal': canal, 'canal_id': cid,
                             'msg_id': m['id'],
@@ -1067,7 +1133,9 @@ def barrer(s, por_canal=25, solo=None):
                             # cuando se jugo.
                             'cuando': m.get('timestamp') or '',
                             'editado': m.get('edited_timestamp') or '',
-                            'texto': m.get('content') or ''})
+                            # plano: ver `plano()`. Lo que viene detrás
+                            # —titulo, plantel, marcas— lee este texto
+                            'texto': plano(m.get('content') or '')})
         time.sleep(0.05)
     return out, n_ch, n_msg
 
@@ -1281,6 +1349,28 @@ def _self_check():
         print('   %s %-34s -> %s' % ('✅' if ok else '🔴', que, g or '—'))
 
     mal += _check_cadencia()
+    print('\n  la Parte 2 de la guía: cupo vacío, letras de fantasía')
+    casos = [
+        ('`X 🆚 [SUPLENTE]` no es una batalla',
+         nombres_de_linea('⌞Ana⌝ 🆚 [SUPLENTE]') == []),
+        ('en una de tres, el cupo vacío se cae y quedan dos',
+         nombres_de_linea('⌞Ana⌝ 🆚 ⌞Beto⌝ 🆚 [SUPLENTE]') == ['Ana', 'Beto']),
+        ('`𝐕𝐒` separa como `vs`',
+         nombres_de_linea(plano('Ana 𝐕𝐒 Beto')) == ['Ana', 'Beto']),
+        ('`𝐂𝐔𝐀𝐑𝐓𝐎𝐒` es un encabezado',
+         [r for r, _b in rondas_de('𝐂𝐔𝐀𝐑𝐓𝐎𝐒\nAna 𝐕𝐒 Beto\n'
+                                   '𝐅𝐈𝐍𝐀𝐋\nAna 𝐕𝐒 Caro')]
+         == ['CUARTOS', 'FINAL']),
+        ('las tildes y las banderas no se tocan',
+         plano('Ñandú 🇦🇷 Tökïo') == 'Ñandú 🇦🇷 Tökïo'),
+        ('`(P)` y `pokemon` son la marca; `Pepe` no',
+         bool(POKEMON.search('Axinu (P)')) and bool(POKEMON.search('Luzzano pokemon'))
+         and not POKEMON.search('Pepe (Perú)')),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     return mal
 
 
