@@ -65,6 +65,8 @@ SALIDA = os.path.join(BASE, 'datos', 'anuncios.json')
 PATRON = re.compile(r'evento|anuncio|novedad|torneo|competenc', re.I)
 #: y el de inscripciones, que es otra cosa: ahí la gente se anota
 PATRON_INSC = re.compile(r'inscrip|registro|anotad|convocat', re.I)
+#: los de staff, que también matchean y no son para el hub. Ver `canales()`.
+STAFF = re.compile(r'staff|moderat|admin', re.I)
 
 #: los campos de la plantilla. La clave es como queda en el JSON.
 CAMPOS = {
@@ -73,7 +75,11 @@ CAMPOS = {
     'rango': r'RANGO',
     'modalidad': r'MODALIDAD',
     'premios': r'PREMIOS',
-    'horario': r'HORARIO',
+    # ⚠️ «INICIO DEL TORNEO» ES EL HORARIO DE SNAKE RAP, y trae la hora
+    # como marca de Discord —`<t:1790109000:F>`—, que es exacta. Ver
+    # `cuando.momento()`. «HORA INSCRIPCIONES» NO: es cuándo se abre la
+    # lista, no cuándo arranca.
+    'horario': r'HORARIO|INICIO(?:\s+DEL\s+TORNEO)?',
 }
 
 
@@ -96,6 +102,9 @@ def campo(texto, nombre):
     organizador — y sin fallar, que es lo que lo haría difícil de ver.
     """
     t = _limpio(texto)
+    # el nombre puede traer alternativas —`HORARIO|INICIO…`—: en un grupo
+    # que no captura, para que el valor siga siendo el grupo 1
+    nombre = '(?:%s)' % nombre
     # 1 · adentro:  __`CAMPO: valor`__
     m = re.search(r'`\s*%s\s*:\s*([^`\n]*)`' % nombre, t, re.I)
     if m and m.group(1).strip():
@@ -105,7 +114,17 @@ def campo(texto, nombre):
     if m and m.group(1).strip():
         return _valor(m.group(1))
     # 3 · sin backticks:  CAMPO: valor
-    m = re.search(r'\b%s\s*:\s*([^\n]+)' % nombre, t, re.I)
+    #
+    # 🔴 Y CON LA NEGRITA EN EL MEDIO: `**ORGANIZADOR**: …`. Es como escribe
+    # Snake Rap, y con `CAMPO\s*:` no matcheaba ningún campo: el anuncio
+    # tenía cinco y el lector contaba cero, así que lo tiraba por «no
+    # parece un anuncio». Medido el 24/09/2026 con sus tres últimos.
+    #
+    # ⚠️ LOS ESPACIOS, SOLO HORIZONTALES. Con `\s` el hueco después de los
+    # dos puntos cruzaba el salto de línea: el organizador de Snake Rap es
+    # una mención —`_limpio()` la saca— y el campo vacío se quedaba con la
+    # línea siguiente, «◾️ HORA INSCRIPCIONES».
+    m = re.search(r'\b%s[*_~ \t]*:[*_~ \t]*([^\n]+)' % nombre, t, re.I)
     return _valor(m.group(1)) if m else ''
 
 
@@ -196,6 +215,17 @@ def parsear(m, servidor, canal, guild=''):
     txt = m.get('content') or ''
     nom = nombre_de(txt)
     org = campo(txt, CAMPOS['organizador'])
+    # ⚠️ EL ORGANIZADOR COMO MENCIÓN —`ORGANIZADOR: <@123…>`, que es como lo
+    # escribe Snake Rap— lo borra `_limpio()`. El nombre viene en el mismo
+    # mensaje: Discord manda las menciones resueltas en `mentions`, así que
+    # no hace falta ninguna llamada más.
+    if not org:
+        mm = re.search(r'ORGANIZADOR[*_~ \t]*:[*_~ \t]*<@!?(\d+)>', txt, re.I)
+        if mm:
+            u = next((x for x in (m.get('mentions') or [])
+                      if str(x.get('id')) == mm.group(1)), None)
+            if u:
+                org = '@' + (u.get('global_name') or u.get('username') or '')
     # 🔴 LA FIRMA ES TENER AL MENOS DOS CAMPOS DE LA PLANTILLA, no tener
     # un título. En estos canales también se pega un link suelto, un
     # `@everyone` o una tabla de clasificados, y todos tienen «primera
@@ -265,6 +295,18 @@ def canales(s):
             if c.get('type') not in (0, 5):
                 continue
             n = c.get('name', '')
+            # 🔴 LOS DE STAFF, NO. `［📰］anuncios-staff` de Snake Rap y
+            # `✦🔒︱staff-anuncios` de FFA matchean «anuncio», y el bot es
+            # Administrador en los dos: los lee. Lo que sale de acá va al
+            # hub, o sea que un anuncio interno se publicaba.
+            #
+            # ⚠️ POR NOMBRE Y NO POR PERMISOS, y se probó al revés primero:
+            # «lo que ve un miembro común» deja afuera `llaves-veredictos`
+            # de DRA —sólo lo ve el Jurado— y el bot es Administrador en
+            # cuatro de los cinco servidores, así que tampoco sirve «lo que
+            # ve sólo por ser admin». Este lector ya elige por nombre.
+            if STAFF.search(n):
+                continue
             # ⚠️ EL GUILD VIAJA CON EL CANAL, y antes no. Sin él no se puede
             # armar el link a un mensaje —Discord pide los tres: guild,
             # canal y mensaje— y acá es el único lugar donde se sabe cuál
