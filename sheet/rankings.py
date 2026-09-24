@@ -824,6 +824,23 @@ def tabla_competitivo(res, orden_temp, sv_de, piso=None):
     # el error que dejó a los 45 en `score: 0.0`.
     if piso is None:
         piso = minimo('competitivo', 'ev')
+    # 🔴 LAS FILAS SE CANONIZAN **ANTES** DE `calcular()`, Y FALTABA. La
+    # canonización se puso en `agregar()` porque es el embudo de las cinco
+    # vitrinas — pero ésta no pasa por ahí: recibe las filas crudas de
+    # `Resultados` y se las da a `competitivo.calcular()`, que agrupa por
+    # el nombre tal cual vino de la llave.
+    #
+    # El síntoma: `temporada_pool.json` decía `Makmah` y
+    # `competitivo_pool.json` decía `Makma` **el mismo día y desde la misma
+    # hoja**. Y eso rompe cosas que no se ven: `bot/rehacer.py` busca a la
+    # persona en el pool competitivo, así que «rehacer las cartas de
+    # Makmah» contestaba *«no está en el pool»* teniéndolo.
+    #
+    # ⚠️ Y NO SE ARREGLA EN `competitivo.py`: `rankings` lo importa, así
+    # que importar al revés sería un ciclo. Se arregla acá, que es donde
+    # las filas entran.
+    res = [list(f[:4]) + [canon(str(f[4]).strip())] + list(f[5:])
+           if len(f) > 4 else f for f in res]
     c = {q: v for q, v in calcular(res).items() if (v.get('ev') or 0) >= piso}
     filas = []
     for quien, v in c.items():

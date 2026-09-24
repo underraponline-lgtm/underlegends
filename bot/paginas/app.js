@@ -27,7 +27,10 @@
 'use strict';
 
 var D = null;
-var ORDEN = { col: 'pos', desc: false };
+// ⚠️ `tocado` distingue «el orden por defecto» de «el que pidió quien
+// mira». Sin eso, la subcategoría le pisaría el orden cada vez que se
+// repinta la tabla — y repintar pasa al buscar y al filtrar.
+var ORDEN = { col: 'pos', desc: false, tocado: false };
 var FIL = { q: '', qc: '', sv: '', cc: '' };
 var VISTAS = 24;
 
@@ -292,8 +295,54 @@ function ordenadas(fs) {
   });
 }
 
+/* La subcategoría del ranking. Ver `#subRanking` en el HTML.
+   ⚠️ Vive acá y no en el hash: es un filtro de una vista, no una vista.
+   Ponerlo en la URL obligaría a inventar rutas para cada combinación de
+   subcategoría, búsqueda y chips. */
+var SUB = 'temporada';
+
+/* Qué cambia cada subcategoría: el orden, las columnas y la explicación.
+   🔑 ES UNA TABLA, NO TRES. Tres tablas serían tres lugares donde
+   arreglar el mismo bug — que es el error que este repo persigue. */
+var SUBS = {
+  temporada: {
+    orden: null,
+    nota: '',
+    cols: [],
+  },
+  podios: {
+    orden: function (a, b) {
+      return (b.oro - a.oro) || (b.seg - a.seg) || (b.ter - a.ter) ||
+        (b.pts - a.pts);
+    },
+    nota: 'Ordenado por oros, después platas y después bronces. ' +
+      'Quien no subió al podio no aparece.',
+    cols: ['pod'],
+    filtro: function (f) { return (f.oro + f.seg + f.ter) > 0; },
+  },
+  camino: {
+    // 🔴 EL COMPETITIVO PIDE 10 EVENTOS Y HOY NO LLEGA NADIE, así que la
+    // tabla del Competitivo está VACIA — y una tabla vacía no dice por
+    // qué. Esta contesta la pregunta que sí tiene respuesta: quién está
+    // más cerca. Es «sin dato no hay pieza» con la pieza que sí hay.
+    orden: function (a, b) { return (b.ev - a.ev) || (b.pts - a.pts); },
+    nota: 'El Competitivo se desbloquea a los 10 eventos. Todavía no ' +
+      'llegó nadie: éstos son los que están más cerca.',
+    cols: [],
+  },
+};
+
 function pintaTabla() {
+  var cfg = SUBS[SUB] || SUBS.temporada;
   var fs = ordenadas(filtradas());
+  if (cfg.filtro) fs = fs.filter(cfg.filtro);
+  // ⚠️ El orden propio de la subcategoría sólo manda si el usuario no
+  // tocó un encabezado. Si lo tocó, gana lo que pidió — un orden que se
+  // ignora es un control que miente.
+  if (cfg.orden && !ORDEN.tocado) fs = fs.slice().sort(cfg.orden);
+  $('#tabla').classList.toggle('con-pod', (cfg.cols || []).indexOf('pod') >= 0);
+  $('#notaSub').textContent = cfg.nota || '';
+  $('#notaSub').hidden = !cfg.nota;
   // 🔴 LA COLUMNA DE RANGO SE CAE SI NO LA TIENE NADIE. Hoy el requisito
   // son 10 eventos y el máximo del pool es 3, así que salían 54 pastillas
   // con un punto adentro: una columna entera comiéndose el ancho —el
@@ -302,7 +351,7 @@ function pintaTabla() {
   $('#tabla').classList.toggle('sin-rango',
     !(D.tabla || []).some(function (f) { return f.rg; }));
   if (!fs.length) {
-    $('#filas').innerHTML = '<tr><td colspan="7" class="vacio">' +
+    $('#filas').innerHTML = '<tr><td colspan="10" class="vacio">' +
       ((D.tabla || []).length ? 'Nadie con ese filtro.'
                               : 'Todavía no hay nadie en el ranking.') +
       '</td></tr>';
@@ -324,7 +373,11 @@ function pintaTabla() {
       // ⚠️ `pts` LLEVA CLASE PROPIA: es de lo que habla la tabla y salía
       // con el mismo peso que la columna de eventos. Ver `td.pts`.
       '<td class="pts">' + num(f.pts) + '</td>' +
-      '<td>' + esc(f.ev) + '</td></tr>';
+      '<td>' + esc(f.ev) + '</td>' +
+      // las tres del podio: se ocultan por CSS fuera de esa subcategoría
+      '<td class="col-pod">' + (f.oro || '') + '</td>' +
+      '<td class="col-pod">' + (f.seg || '') + '</td>' +
+      '<td class="col-pod">' + (f.ter || '') + '</td></tr>';
   }).join('');
   $('#notaTabla').textContent = fs.length === (D.tabla || []).length
     ? fs.length + ' raperos' : fs.length + ' de ' + D.tabla.length;
@@ -448,11 +501,27 @@ function pintaComparar() {
         esc(f.n) + '</option>';
     }).join('');
   };
+  // 🔑 SE PUEDE ESCRIBIR EL NOMBRE, no sólo desplegar la lista. Dlx,
+  // 24/09/2026: *«en tarjetas deja que se pueda escribir el nombre para
+  // comparar tarjetas»*.
+  //
+  // ⚠️ ES UN `<input list>` CON `<datalist>`, no un buscador a mano. El
+  // navegador da el autocompletado gratis —filtra mientras se escribe, y
+  // en teléfono abre su propio selector— y si alguien escribe algo que no
+  // existe, el `<select>` de antes no tenía forma de decirlo. Acá el valor
+  // se busca contra la lista al soltar el foco.
+  //
+  // ⚠️ Y LA LISTA SIGUE ESTANDO: con 71 nombres, desplegar es más rápido
+  // que escribir cuando uno no sabe a quién buscar. `list=` da las dos
+  // cosas con un solo control.
   var lado = function (j) {
     var f = con[CMP[j]];
     if (!f) return '';
     return '<div class="cmp-lado">' +
-      '<select data-lado="' + j + '">' + ops(CMP[j]) + '</select>' +
+      '<input class="cmp-busca" data-lado="' + j + '" list="cmpNombres" ' +
+      'value="' + esc(f.n) + '" placeholder="Escribí un nombre…" ' +
+      'autocomplete="off" spellcheck="false" ' +
+      'aria-label="Rapero a comparar">' +
       '<img loading="lazy" decoding="async" src="' + urlCarta(f, f.c[0]) +
       '" alt="Tarjeta de ' + esc(f.n) + '"></div>';
   };
@@ -470,9 +539,31 @@ function pintaComparar() {
       '</b><em>' + et + '</em><b class="' + (gb ? 'gana' : '') + '">' + fmt(y) +
       '</b></div>';
   }).join('');
-  $('#cmp').innerHTML = lado(0) + lado(1) +
+  // ⚠️ UN SOLO `<datalist>` PARA LOS DOS LADOS. Con uno por lado serían
+  // 142 `<option>` repetidos en el DOM para la misma lista.
+  $('#cmp').innerHTML =
+    '<datalist id="cmpNombres">' +
+    con.map(function (f) { return '<option value="' + esc(f.n) + '">'; })
+      .join('') + '</datalist>' +
+    lado(0) + lado(1) +
     (a.k === b.k ? '<p class="sin">Elegí dos distintos.</p>'
                  : '<div class="vs">' + vs + '</div>');
+}
+
+/* Del texto escrito al índice de `con`. `-1` si no es nadie.
+   ⚠️ Compara normalizado: quien escribe «makmah» en minúscula, o con un
+   espacio de más al pegar, está nombrando a la misma persona. */
+function indiceDe(txt, con) {
+  var k = String(txt || '').trim().toLowerCase();
+  if (!k) return -1;
+  for (var i = 0; i < con.length; i++) {
+    if (String(con[i].n).trim().toLowerCase() === k) return i;
+  }
+  // y si no es exacto, el primero que empiece igual
+  for (var j = 0; j < con.length; j++) {
+    if (String(con[j].n).trim().toLowerCase().indexOf(k) === 0) return j;
+  }
+  return -1;
 }
 
 /* ── servidores, países, crews ────────────────────────────────────── */
@@ -675,6 +766,7 @@ function eventos() {
       // obliga a tocar dos veces siempre.
       if (ORDEN.col === c) ORDEN.desc = !ORDEN.desc;
       else { ORDEN.col = c; ORDEN.desc = (c !== 'pos' && c !== 'n'); }
+      ORDEN.tocado = true;
       $$('#tabla th').forEach(function (o) { o.classList.remove('asc', 'desc'); });
       th.classList.add(ORDEN.desc ? 'desc' : 'asc');
       pintaTabla();
@@ -689,12 +781,40 @@ function eventos() {
     var t = e.target.closest('[data-k]');
     if (t && !e.target.closest('.pest')) abrir(t.dataset.k);
   });
+  // ⚠️ AL CAMBIAR DE SUBCATEGORIA SE SUELTA EL ORDEN MANUAL. Cada una
+  // trae el suyo —Podios por oros, Camino por eventos— y respetar el
+  // orden viejo haría que tocar «Podios» no cambiara nada visible.
+  $('#subRanking').addEventListener('click', function (e) {
+    var b = e.target.closest('.sub'); if (!b) return;
+    SUB = b.dataset.sub;
+    ORDEN.tocado = false;
+    $$('#subRanking .sub').forEach(function (o) {
+      o.classList.toggle('on', o === b);
+    });
+    pintaTabla();
+  });
   $('#masCartas').addEventListener('click', function () {
     VISTAS = 9999; pintaGaleria();
   });
+  // ⚠️ `change` Y NO `input`: con `input` se repinta en cada tecla, y
+  // repintar reemplaza el `<input>` que tiene el foco — se pierde el
+  // cursor a la segunda letra. `change` dispara al elegir del datalist y
+  // al salir del campo, que es cuando el nombre ya está completo.
   $('#cmp').addEventListener('change', function (e) {
-    var s = e.target.closest('select'); if (!s) return;
-    CMP[+s.dataset.lado] = +s.value;
+    var s = e.target.closest('.cmp-busca'); if (!s) return;
+    var con = (D.tabla || []).filter(function (f) { return (f.c || []).length; });
+    var i = indiceDe(s.value, con);
+    if (i < 0) {
+      // ⚠️ SE AVISA Y SE VUELVE ATRAS. Dejar el texto inventado en el
+      // campo con la tarjeta anterior debajo es la pantalla mintiendo.
+      s.classList.add('mal');
+      setTimeout(function () {
+        s.classList.remove('mal');
+        pintaComparar();
+      }, 900);
+      return;
+    }
+    CMP[+s.dataset.lado] = i;
     pintaComparar();
   });
   $('#vPestanas').addEventListener('click', function (e) {
