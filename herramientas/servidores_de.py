@@ -54,7 +54,19 @@ API = 'https://discord.com/api/v10'
 # /card**. Agregar uno de identidad pondria «LIVONIA · 🔒 BLOQUEADA» en la
 # carta de 472 personas y pediria dibujar 472 cartas de un servidor que no
 # compite en la Liga.
-GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'))
+GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
+          ('SR', '492346406976356374'))
+# 🔴 SNAKE RAP ENTRÓ EL 24/09/2026 Y ES DE CARTA, NO DE IDENTIDAD. Es un
+# servidor de la Liga —está en `datos/servidores.json`, sus eventos cuentan
+# y su camiseta es una de las nueve—, así que va acá y no en
+# `solo_identidad`. Tercero y no primero: el orden es la prioridad de los
+# mensajes directos, y DRA sigue siendo donde vive la Liga.
+#
+# ⚠️ DE LOS QUE ESTÁN EN `SOLO_PADRON` SE GUARDAN SÓLO LOS DEL PADRÓN. Son
+# 7.337 miembros y este archivo va al repo PÚBLICO: la lista de miembros de
+# otro servidor no es nuestra, y el menú de /card sólo la necesita para
+# quien puede tener carta. Ver el mismo criterio en `bot/verificados.py`.
+SOLO_PADRON = {'SR'}
 SALIDA = os.path.join(BASE, 'datos', 'servidores_de.json')
 
 
@@ -109,13 +121,17 @@ def main():
         dentro[sv] = miembros(s, gid)
         print('   %d miembros' % len(dentro[sv]))
 
+    pad = PAD.cargar()
+    ids_padron = {str(p['discord_id']) for p in pad if p.get('discord_id')}
+
     # {discord_id -> [servidores, en orden de prioridad]}
     mapa = {}
     for sv, _ in GUILDS:
         for did in dentro[sv]:
+            if sv in SOLO_PADRON and did not in ids_padron:
+                continue
             mapa.setdefault(did, []).append(sv)
 
-    pad = PAD.cargar()
     con_id = [p for p in pad if p.get('discord_id')]
     ubicados = [p for p in con_id if p['discord_id'] in mapa]
     print('\npadron: %d · con Discord ID: %d · ubicados en algun servidor: %d'
@@ -130,7 +146,8 @@ def main():
     # su ID quedo de cuando estaban. Se cuentan aparte porque su carta no se
     # puede emitir contra ningun servidor.
     huerfanos = [p for p in con_id if p['discord_id'] not in mapa]
-    print('   %-14s %d   (con ID pero fuera de los dos)' % ('en ninguno', len(huerfanos)))
+    print('   %-14s %d   (con ID pero fuera de los %d)'
+          % ('en ninguno', len(huerfanos), len(GUILDS)))
     if huerfanos[:6]:
         print('      %s' % ', '.join(p['raw'] for p in huerfanos[:6]))
 

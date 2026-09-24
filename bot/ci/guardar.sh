@@ -82,7 +82,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
           datos/servidores_de.json datos/fotos_etag.json \
           datos/anuncios.json datos/avisados.json \
           datos/akas.json datos/decisiones.json \
-          datos/bloqueadas_selladas.json datos/web_sello.json"
+          datos/bloqueadas_selladas.json datos/web_sello.json \n          datos/bot_en.json"
 # 🔴 LOS DOS ULTIMOS FALTARON DOS DIAS, Y COSTABAN 48 VECES POR DIA.
 # Medido el 24/09/2026 en cuatro corridas seguidas: las mismas 186
 # Bloqueadas se redibujaban y se subian a R2 en CADA corrida —con la
@@ -91,6 +91,10 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
 # dos pasos tenian su sello y los dos lo escribian bien: el archivo
 # moria con el runner. Es la octava vez que esta lista se queda corta;
 # por eso ahora, mas abajo, el guardado AVISA lo que no guarda.
+# ⚠️ `bot_en.json` DESDE `--solo-dibujar`: el trabajo `dibujar` ya no
+# vuelve a preguntarle a Discord en qué servidores está el bot, así
+# que lo lee del commit de `escuchar` — y sin esto leía el del 24/09
+# a la madrugada, con DRA y FFA, y lo escribía en KV al final.
 # 🔴 LO QUE EL CICLO CAMBIO Y ESTA LISTA NO GUARDA, DICHO EN VOZ ALTA.
 # Una lista escrita a mano se queda corta sola —pasó ocho veces— y
 # no falla: el estado se pierde con el runner y la corrida siguiente
