@@ -190,7 +190,9 @@
   "xdddd": "UL OFICIA",
   "jander": "Ambidextro",
   "fullylo4ded": "Oasis",
-  "makma": "Makmah"
+  "makma": "Makmah",
+  "fokox": "Focox",
+  "gekto": "geekto"
  },
  "pares": [
   [
@@ -952,6 +954,14 @@
   [
    "Makma",
    "Makmah"
+  ],
+  [
+   "Fokox",
+   "Focox"
+  ],
+  [
+   "gekto",
+   "geekto"
   ]
  ],
  "no_confundir": [

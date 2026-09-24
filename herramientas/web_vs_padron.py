@@ -160,6 +160,76 @@ def main():
     if faltan:
         print('        -> compitieron y no aparecen en ningún lado.')
 
+    # ── 5 · el que sigue, y es el que Dlx pidió ──────────────────────
+    #
+    # 🔴 «¿ESTA ESTE NOMBRE EN EL PADRON?» NO ES LA PREGUNTA COMPLETA. La
+    # otra mitad es **«¿hay un nombre en el padrón que sea obviamente el
+    # mismo?»**, y sin ella la sección 1 lista a gente que sí está,
+    # escrita distinto.
+    #
+    # Dlx, 24/09/2026: *«esos nombres deberían ser los que aparecen en la
+    # lista de raperos del Sheet operativo, ya que ese es su oficial AKA.
+    # Luego en AKAs comparar a ver si se le reconoce con otro AKA»*. Y el
+    # caso que lo destapó: *«Fokox es Focox de México, de una te digo»*.
+    #
+    # ⚠️ PROPONE, NO DECIDE. `Fokox` está a una letra de `Focox` (México)
+    # **y a dos de `Focus` (Perú)**. Un parecido a ciegas habría elegido
+    # uno de los dos y acertado la mitad de las veces — y el costo de
+    # errar no es cosmético: el alias le da a alguien los puntos de otro.
+    # Con dos candidatos, va a la lista para mirar.
+    import difflib
+    nombres_pad = {norm(x.get('raw')): x for x in pad if norm(x.get('raw'))}
+    claros, ambiguos = [], []
+    for f in sin_padron:
+        k = norm(f.get('n'))
+        # ⚠️ 0.76 Y NO 0.82. Con 0.82 se escapaba justo el caso que
+        # Dlx nombró: `fokox` contra `focox` da **0.80** — cinco letras
+        # con una distinta. Un corte que deja afuera el ejemplo que
+        # motivó el chequeo está mal elegido.
+        #
+        # ⚠️ Bajarlo sube los ambiguos, y eso es lo correcto: un ambiguo
+        # se mira, un falso positivo le da a alguien los puntos de otro.
+        cerca = difflib.get_close_matches(k, list(nombres_pad), n=3,
+                                          cutoff=0.76)
+        if len(cerca) == 1:
+            claros.append((f, nombres_pad[cerca[0]]))
+        elif len(cerca) > 1:
+            ambiguos.append((f, [nombres_pad[c] for c in cerca]))
+
+    print('\n   5 · DE LOS QUE «NO ESTAN», SE PARECEN A ALGUIEN QUE SI: %d'
+          % (len(claros) + len(ambiguos)))
+    # ⚠️ Y SI LOS PAISES NO COINCIDEN, NO ES UN MATCH CLARO. Es el
+    # criterio que `datos/akas.json` ya usa como motivo en su lista de
+    # NO CONFUNDIR —«País diferente» aparece cuatro veces ahí— así que no
+    # hace falta inventar ninguna regla: alcanza con aplicar la que está.
+    # El caso de hoy: `JAHNO` es 🇦🇷 y `Juano` es de España.
+    ISO = {'Argentina': 'ar', 'Bolivia': 'bo', 'Chile': 'cl',
+           'Colombia': 'co', 'Ecuador': 'ec', 'España': 'es',
+           'Estados Unidos': 'us', 'Guatemala': 'gt', 'Honduras': 'hn',
+           'México': 'mx', 'Panamá': 'pa', 'Perú': 'pe',
+           'Puerto Rico': 'pr', 'República Dominicana': 'do',
+           'Uruguay': 'uy', 'Venezuela': 've'}
+    for f, p in list(claros):
+        a, b = (f.get('cc') or ''), ISO.get(p.get('pais') or '', '')
+        if a and b and a != b:
+            claros.remove((f, p))
+            ambiguos.append((f, [p]))
+    for f, p in claros:
+        print('        %-20s -> %-16s %-12s %s'
+              % (str(f.get('n'))[:20], str(p.get('raw'))[:16],
+                 str(p.get('pais') or '—')[:12],
+                 'con ID' if p.get('discord_id') else 'sin ID'))
+    for f, ps in ambiguos:
+        por = ('el país no coincide' if len(ps) == 1
+               else 'se parece a %d' % len(ps))
+        print('        %-20s ⚠️ %s: %s — no lo decido'
+              % (str(f.get('n'))[:20], por,
+                 ' y a '.join('%s (%s)' % (p.get('raw'), p.get('pais') or '?')
+                              for p in ps)))
+    if claros:
+        print('        -> se declaran en `datos/akas_a_mano.json`, en `pares`,')
+        print('           y `sheet/construir_akas.py` los mezcla.')
+
     print('')
     mal = len(sin_padron) + len(faltan)
     print('   %s\n' % ('✅ todos los de la web están en el padrón y '

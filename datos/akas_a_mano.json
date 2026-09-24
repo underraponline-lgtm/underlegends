@@ -16,6 +16,12 @@
   "⚠️ Cuando el par entre a la hoja del Sheet, sacarlo de aca. Si queda",
   "en los dos lados no rompe nada, pero deja de decir 'esto falta alla'.",
   "",
+  "⚠️ Fokox->Focox lo dijo Dlx directo el 24/09/2026: «Fokox es Focox de",
+  "   Mexico, de una te digo». El chequeo automatico lo habia marcado como",
+  "   DUDOSO porque la web decia `ar` y el padron Mexico — y tenia razon en",
+  "   dudar: ese `ar` salia del emoji que alguien le pego en la llave, que",
+  "   es decoracion y no dato. El padron gana.",
+  "",
   "pares: [alias, nombre real].",
   "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
  ],
@@ -27,6 +33,14 @@
   [
    "Makma",
    "Makmah"
+  ],
+  [
+   "Fokox",
+   "Focox"
+  ],
+  [
+   "gekto",
+   "geekto"
   ]
  ],
  "no_confundir": []
