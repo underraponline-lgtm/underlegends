@@ -193,11 +193,20 @@ def _avisar_actions(hay, personas, cartas):
         pass
 
 
-def corre(args, callado=True):
-    """⚠️ encoding utf-8 explicito: ver el comentario de bot/rehacer.py."""
+def corre(args, callado=True, mostrar=()):
+    """⚠️ encoding utf-8 explicito: ver el comentario de bot/rehacer.py.
+
+    `mostrar`: pedazos de texto; las líneas de la salida que los contengan
+    se imprimen aunque la llamada vaya callada. Es para el chequeo que un
+    paso hace de sí mismo y que no tiene que frenar el ciclo, pero sí verse.
+    """
     r = subprocess.run([sys.executable] + args, cwd=BASE,
                        capture_output=callado, text=True,
                        encoding='utf-8', errors='replace')
+    if callado and mostrar:
+        for l in (r.stdout or '').splitlines():
+            if any(m in l for m in mostrar):
+                print('      %s' % l.strip())
     if r.returncode and callado:
         ultima = (r.stderr or r.stdout or '').strip().splitlines()
         print('      ⚠️ falló: %s' % ' '.join(args[:2]))
@@ -821,7 +830,11 @@ def main():
         antes = {n: len(_pool(n)) for n in ('temporada', 'competitivo')}
         for s in ('sheet/construir_pool_temporada.py',
                   'sheet/construir_pool_competitivo.py'):
-            ok = corre([s])
+            # ⚠️ EL CHEQUEO «¿EL # DE LA CARTA ES EL DEL RANKING?» SE MUESTRA.
+            # No frena —un puesto distinto no justifica dejar sin cartas a
+            # nadie— pero callado no lo veía nadie.
+            ok = corre([s], mostrar=('el puesto de cada carta',
+                                     'la carta y el ranking no dan'))
             print('      %-42s %s' % (s, 'ok' if ok else '🔴 falló'))
             if not ok:
                 # ⚠️ SIN POOLS NO SE SIGUE. Dibujar con los de ayer sube
