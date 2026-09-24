@@ -22,6 +22,20 @@
   "   dudar: ese `ar` salia del emoji que alguien le pego en la llave, que",
   "   es decoracion y no dato. El padron gana.",
   "",
+  "",
+  "⚠️ XXXXX->Xubaru lo dijo Dlx el 24/09/2026: «xxxx es Xubaru, así se",
+  "   inscribió en un evento». LO BUSQUE Y NO ESTA: el canal de",
+  "   inscripciones de FFA tiene 64 mensajes crudos y NINGUNO menciona",
+  "   ninguno de los dos nombres, ni siquiera de los que el filtro",
+  "   descarta. O sea que no es que falte la herramienta —la hay y lee el",
+  "   canal— es que ese mensaje ya no esta ahi. Este par se apoya en lo",
+  "   que dijo Dlx, no en un ID de Discord.",
+  "",
+  "🔑 Y TIENE QUE APUNTAR A `Xubaru` Y NO A `Subaru`: el padron trae los",
+  "   dos, y son dos personas. `Xubaru` es el de Venezuela, verificado, con",
+  "   Discord ID; `Subaru` es una fila vacia con ❓. Mandarlo al otro le",
+  "   daria a XXXXX un pais que no es y le sacaria la carta de Pais.",
+  "",
   "pares: [alias, nombre real].",
   "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
  ],
@@ -41,6 +55,10 @@
   [
    "gekto",
    "geekto"
+  ],
+  [
+   "XXXXX",
+   "Xubaru"
   ]
  ],
  "no_confundir": []

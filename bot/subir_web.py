@@ -109,6 +109,8 @@ def armar():
     gente = sorted((p for p in pool if p.get('raw')),
                    key=lambda p: p.get('pos') or 9999)[:TOPE]
 
+    from comun import respaldo as _resp
+    _foto = _con_foto()
     tabla = [{
         'n': p.get('raw'),
         'pos': p.get('pos'),
@@ -153,6 +155,30 @@ def armar():
         # carta que no está.
         'k': _clave(p),
         'c': _cartas(p, r2, _comp.get(p.get('raw'))),
+        # 🔑 SI ESTA PERSONA TIENE CARA. Dlx, 24/09/2026: *«en la sección
+        # de tarjetas sólo quisiera ver tarjetas con avatares, no
+        # muestres ahí si no hay avatares»*.
+        #
+        # ⚠️ VIAJA COMO DATO Y NO SE DECIDE EN LA PAGINA. El navegador no
+        # puede saberlo: la cara está **dibujada adentro** del `.webp`,
+        # así que desde el HTML una carta con inicial y una con foto son
+        # el mismo pedido con el mismo 200. La única forma de preguntarlo
+        # del lado del navegador sería mirar los píxeles.
+        #
+        # ⚠️ Y NO FILTRA LA TABLA NI EL RANKING, sólo la galería. Quien no
+        # tiene foto compitió igual, y sacarlo del ranking le borraría lo
+        # que sí se ganó. Es *«la bandera es identidad, el número es
+        # ranking»* otra vez: la cara decide cómo se ve la carta, no si
+        # la persona existe.
+        #
+        # ⚠️ EL SLUG NO ES `_clave()`. La clave de R2 es el nombre en
+        # minúsculas y el inventario de fotos va por `respaldo._norm()`,
+        # que además saca espacios y acentos: `Fakin Jose` es
+        # `fakin jose` como clave y `fakinjose` como slug. Comparar uno
+        # contra el otro le daría «sin foto» a todo el que tenga un
+        # espacio o una tilde en el nombre — teniéndola.
+        'fo': 1 if (_foto is None
+                    or _resp._norm(p.get('raw')) in _foto) else 0,
     } for p in gente]
 
     _an = _json('datos', 'anuncios.json') or {}
@@ -266,6 +292,36 @@ def _clave(p):
     `Makma/temporada.webp` da 404 mientras `makma/temporada.webp` da 200.
     """
     return str(p.get('raw') or '').lower()
+
+
+def _con_foto():
+    """Los slugs que TIENEN una foto guardada en R2, o `None` si no se sabe.
+
+    🔑 SALE DE `datos/fotos_etag.json`, QUE ESTA COMMITEADO. Es lo que
+    `bot/fotos.py` deja al congelar las caras en R2, una entrada por
+    persona, con el etag del objeto — o sea la respuesta exacta a «¿esta
+    persona tiene cara?».
+
+    ⚠️ Y NO SE PREGUNTA AL ESPEJO LOCAL. `comun/respaldo.avatar()` daría
+    el mismo número acá —medido el 24/09/2026: **35 de 70, las mismas
+    35**— y daría **cero** en un runner recién clonado, porque
+    `comun/fotos/` está gitignoreado y el ciclo lo baja en un paso
+    aparte. Un payload armado antes de ese paso escondería la galería
+    entera sin que nada falle: es la forma que este repo ya documenta
+    —*contar lo que hay en disco no es contar lo que salió*— y acá
+    costaría la sección completa.
+
+    ⚠️ DEVUELVE `None` SI EL INVENTARIO NO ESTA, y el que llama no filtra
+    nada. Esconder a todos porque no pude leer mi propia entrada es
+    exactamente el error que el párrafo de arriba describe: mejor una
+    galería con caras de menos que una vacía.
+    """
+    d = _json('datos', 'fotos_etag.json')
+    if not isinstance(d, dict) or not d:
+        print('   ⚠️ sin datos/fotos_etag.json: nadie se filtra por foto')
+        return None
+    from comun import respaldo
+    return set(respaldo._norm(k) for k in d)
 
 
 def _cartas(p, r2, comp=None):

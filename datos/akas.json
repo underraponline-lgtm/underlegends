@@ -192,7 +192,8 @@
   "fullylo4ded": "Oasis",
   "makma": "Makmah",
   "fokox": "Focox",
-  "gekto": "geekto"
+  "gekto": "geekto",
+  "xxxxx": "Xubaru"
  },
  "pares": [
   [
@@ -962,6 +963,10 @@
   [
    "gekto",
    "geekto"
+  ],
+  [
+   "XXXXX",
+   "Xubaru"
   ]
  ],
  "no_confundir": [

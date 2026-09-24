@@ -396,18 +396,50 @@ function pintaTop() {
   }).join('');
 }
 
+/* ── quién entra en la sección de tarjetas ────────────────────
+   🔑 UN SOLO LUGAR PARA LAS TRES VISTAS. La galería, el comparador y su
+   sugeridor tenían este mismo filtro escrito tres veces, y el pedido de
+   Dlx del 24/09/2026 —*«solo quisiera ver tarjetas con avatares»*— toca a
+   los tres: arreglado en uno, el comparador seguiría ofreciendo a alguien
+   que la galería ya no muestra. Es la forma de `escudo()`, que este repo
+   documenta escrita tres veces y rota en una.
+
+   Dos condiciones:
+   • **tiene alguna carta en R2 y se la ganó** — `c`, que `subir_web.py`
+     arma preguntando a `comun/requisitos.py`;
+   • **tiene cara** — `fo`.
+
+   ⚠️ `fo !== 0` Y NO `fo === 1`, a propósito. El payload que hay en KV
+   hasta que el ciclo escriba el siguiente **no trae `fo`**, y con
+   `=== 1` la sección entera quedaría vacía mientras el Worker sirve esa
+   copia — sin que nada falle, que es la peor forma. Mejor caras de menos
+   que una página en blanco; es la misma decisión que `_con_foto()` toma
+   del otro lado.
+
+   ⚠️ Y NO TOCA LA TABLA NI EL RANKING. Quien no tiene foto compitió
+   igual; sacarlo de ahí le borraría lo que sí se ganó. */
+function conTarjeta() {
+  return (D.tabla || []).filter(function (f) {
+    return (f.c || []).length && f.fo !== 0;
+  });
+}
+
 /* ── galería ──────────────────────────────────────────────────────── */
 function pintaGaleria() {
-  // ⚠️ SOLO LOS QUE TIENEN TARJETA. `c` viene del inventario de R2, así
-  // que acá no se adivina: quien no la tiene no aparece con una imagen
-  // rota.
   var q = (FIL.qc || '').toLowerCase();
-  var con = (D.tabla || []).filter(function (f) {
-    if (!(f.c || []).length) return false;
+  var hay = conTarjeta();
+  var con = hay.filter(function (f) {
     return !q || String(f.n || '').toLowerCase().indexOf(q) >= 0;
   });
   if (!con.length) {
-    $('#galeria').innerHTML = '<p class="sin-carta">Nadie con ese nombre.</p>';
+    // ⚠️ DOS VACÍOS DISTINTOS, DOS MENSAJES. «Nadie con ese nombre» es
+    // cierto cuando hay galería y la búsqueda no encontró a nadie, y es
+    // una mentira cuando la galería está vacía de entrada — ahí no
+    // sobra el nombre, faltan las caras.
+    $('#galeria').innerHTML = '<p class="sin-carta">' + (hay.length
+      ? 'Nadie con ese nombre.'
+      : 'Todavía no hay tarjetas con foto. Poné la tuya en Discord con ' +
+        '<code>/foto</code>.') + '</p>';
     $('#masCartas').hidden = true;
     return;
   }
@@ -493,7 +525,7 @@ var FILAS_CMP = [
 ];
 
 function pintaComparar() {
-  var con = (D.tabla || []).filter(function (f) { return (f.c || []).length; });
+  var con = conTarjeta();
   if (con.length < 2) { apaga('#secComparar'); return; }
   var ops = function (sel) {
     return con.map(function (f, i) {
@@ -574,7 +606,7 @@ function cerrarSug() {
 }
 
 function pintaSug(inp) {
-  var con = (D.tabla || []).filter(function (f) { return (f.c || []).length; });
+  var con = conTarjeta();
   var q = String(inp.value || '').trim().toLowerCase();
   // ⚠️ POR CONTENIDO Y NO POR PREFIJO: «chula» tiene que encontrar a
   // PichulaMc. Los que empiezan igual van primero igual, porque es lo
@@ -911,7 +943,7 @@ function eventos() {
   });
   $('#cmp').addEventListener('change', function (e) {
     var s = e.target.closest('.cmp-busca'); if (!s) return;
-    var con = (D.tabla || []).filter(function (f) { return (f.c || []).length; });
+    var con = conTarjeta();
     var i = indiceDe(s.value, con);
     if (i < 0) {
       // ⚠️ SE AVISA Y SE VUELVE ATRAS. Dejar el texto inventado en el
