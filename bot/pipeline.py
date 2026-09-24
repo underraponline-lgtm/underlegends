@@ -635,7 +635,12 @@ def main():
         # ⚠️ LOS ANUNCIOS VAN **ANTES** DEL LOBBY, que los lee. Al revés
         # el Lobby dibuja los del ciclo anterior y nadie se entera.
         corre(['bot/anuncios.py', '--aplicar'], callado=False)
-        corre(['sheet/lobby.py', '--aplicar'], callado=False)
+        # 🔴 EL LOBBY YA NO ES UN AFICHE: ES EL ÍNDICE DE LOS DATOS EN
+        # CRUDO. Dlx, 24/09/2026: *«el hub será esta página y principalmente
+        # nuestro servidor… el sheet es más que todo información raw»*. Ver
+        # `sheet/indice.py`. `lobby.py` queda en el repo, pero no se llama:
+        # repintaría el afiche encima del índice.
+        corre(['sheet/indice.py', '--aplicar'], callado=False)
 
     # ── 1b · la identidad, desde Discord ────────────────────────────
     #
