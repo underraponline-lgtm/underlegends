@@ -35,6 +35,11 @@ try:
 except AttributeError:
     pass
 
+# 🔴 LOS REQUISITOS, DE SU UNICO LUGAR. La web tiene que ofrecer sólo las
+# cartas que la persona **se ganó**, y eso no lo sabe el inventario de R2:
+# ahí quedaron las de la pre-temporada. Ver `_cartas()`.
+from comun import requisitos as RQ  # noqa: E402
+
 #: la clave. `web:` para que se vea de un vistazo que no es de `/card`.
 CLAVE = 'web:lobby'
 
@@ -88,6 +93,16 @@ def armar():
 
     pool = _json('datos', 'temporada_pool.json') or []
     r2 = _json('datos', 'cartas_r2.json') or {}
+    # 🔴 EL POOL COMPETITIVO TAMBIEN, PARA PODER PREGUNTAR POR LOS
+    # REQUISITOS. Los duelos de País —`dna_t` y `din_t`— viven ahí y no en
+    # el de temporada, así que sin esto `requisitos.falta('pais', …)`
+    # contesta que falta lo primero para todo el mundo. Es el mismo reparto
+    # que ya documenta `comun/requisitos.py` en su self-check.
+    _comp = {}
+    for x in (_json('datos', 'competitivo_pool.json') or []):
+        k = x.get('raw') or x.get('full')
+        if k:
+            _comp[k] = x
     # ⚠️ ORDENADO POR PUESTO Y NO POR PUNTOS. El `pos` ya lo calculó el
     # builder con sus desempates; reordenar acá sería una segunda regla
     # de orden que puede discrepar con la del Sheet.
@@ -137,7 +152,7 @@ def armar():
         # dejar que el navegador se coma cuatro 404 es una imagen rota por
         # carta que no está.
         'k': _clave(p),
-        'c': _cartas(p, r2),
+        'c': _cartas(p, r2, _comp.get(p.get('raw'))),
     } for p in gente]
 
     _an = _json('datos', 'anuncios.json') or {}
@@ -198,17 +213,58 @@ def _clave(p):
     return str(p.get('raw') or '').lower()
 
 
-def _cartas(p, r2):
-    """Las cartas que esta persona TIENE, de las cuatro. Nunca inventa.
+def _cartas(p, r2, comp=None):
+    """Las cartas que esta persona TIENE **y se ganó**. Nunca inventa.
 
     🔴 SE PREGUNTA AL INVENTARIO, no se arman las cuatro URLs y se deja
     que el navegador descubra cuáles no están. Con 54 personas eso serían
     hasta 216 pedidos que terminan en 404 y una imagen rota por cada uno
     — y una carta que no existe **no es un error**: País pide tres
     condiciones y hoy no la tiene nadie.
+
+    🔴 Y ADEMAS SE PREGUNTA POR EL REQUISITO, QUE ES LO QUE FALTABA. Estar
+    en R2 significa «alguna vez se dibujó», no «le corresponde hoy»: el
+    bucket todavía tiene las cartas de la **pre-temporada**, que se
+    reseteó. Medido el 24/09/2026 con el pool en 72 personas:
+
+        58 de 72 tenían al menos una carta que no se ganaron
+        57 Competitivo (pide 10 eventos)  ·  56 País (pide 3+3 duelos)
+
+    Makma aparecía con las cuatro teniendo **4 eventos**. La web se las
+    ofrecía y al abrirlas se veía una carta de verdad — de otra temporada.
+
+    ⚠️ Dlx, 24/09/2026: *«en el website no se tiene que mostrar ninguna
+    tarjeta de las que tienen requisitos, a menos que se hayan cumplido
+    esos requisitos»*.
+
+    ⚠️ **EL BOT YA LO HACIA BIEN, y eso es lo que hay que leer acá.**
+    `bot/subir_datos.py` arma `cs` (las que tiene) y `bl` (las
+    bloqueadas) preguntándole a `comun/requisitos.py`; el registro de
+    Makmah en KV dice `cs:["servidor"]` y `bl:["competitivo","pais",
+    "temporada"]`, que es correcto. Las dos pantallas leían **fuentes
+    distintas para la misma pregunta**: el bot el requisito y la web el
+    inventario. Es el bug del rango en cinco lugares, con dos.
+
+    ⚠️ **NO alcanza con el requisito solo**: sigue haciendo falta el
+    inventario, porque una carta que le corresponde y todavía no se
+    dibujó tampoco se puede mostrar. Son las dos condiciones, no una.
     """
     tiene = r2.get(_clave(p)) or {}
-    return [c for c in CARTAS if c in tiene]
+    # los duelos de País viven en el pool competitivo; el resto acá
+    fila = dict(comp or {}, **p)
+    out = []
+    for c in CARTAS:
+        if c not in tiene:
+            continue
+        try:
+            if RQ.falta(c, fila, p.get('sv')) is None:
+                out.append(c)
+        except Exception:                                    # noqa: BLE001
+            # ⚠️ SI NO SE PUEDE PREGUNTAR, NO SE OFRECE. Al revés —dar la
+            # carta por buena cuando el chequeo falla— es volver al bug de
+            # arriba, y en silencio.
+            pass
+    return out
 
 
 def _servidores(gente):
