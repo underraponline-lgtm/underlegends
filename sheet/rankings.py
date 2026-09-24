@@ -56,6 +56,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from collections import defaultdict
 
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -185,6 +186,49 @@ def _norm(s):
     return ''.join(c for c in s if unicodedata.category(c) != 'Mn').strip()
 
 
+_ALIAS = None
+
+
+def canon(quien):
+    """El nombre real de esa persona, según el mapa de AKAs. O el mismo.
+
+    🔴 EL MAPA DE 186 ALIAS SE CALCULABA Y NO LO LEIA NADIE. Medido el
+    24/09/2026: `construir_pool_temporada`, `construir_pool_competitivo`,
+    `padron`, `subir_web` y `subir_datos` lo mencionaban **cero** veces.
+    `sheet/construir_akas.py` lo construía, `pendientes.py` lo miraba para
+    avisar, y el camino que atribuye resultados a una persona lo ignoraba.
+
+    Es *«el dato estaba y el pipeline lo tiraba»* otra vez, y el síntoma
+    fue Makma: nueve filas del padrón son un alias de otra fila, así que
+    **nueve personas se contaban dos veces**. Makma 🇻🇪 juntaba los 16.000
+    puntos y Makmah 🇦🇷 tenía el Discord ID — la web mostraba al primero
+    como #1 de FFA y `/card` le daba al segundo una tarjeta vacía. Hasta
+    su `/foto` cayó en la mitad equivocada.
+
+    ⚠️ VA EN `agregar()` Y NO EN CADA VITRINA. Es el embudo único: las
+    cinco salen de este dict, así que canonizar acá mueve los puntos, los
+    eventos, los podios, los servidores, los duelos y la racha de una vez.
+    Puesto en una vitrina quedaría bien en ésa y mal en las otras cuatro.
+
+    ⚠️ Y SE HACE ANTES DE ACUMULAR, no después. Sumar dos filas y después
+    renombrar una deja dos entradas; la fusión tiene que pasar en la clave.
+    """
+    global _ALIAS
+    if _ALIAS is None:
+        _ALIAS = {}
+        try:
+            p = os.path.join(BASE, 'datos', 'akas.json')
+            with io.open(p, encoding='utf-8') as f:
+                _ALIAS = (json.load(f) or {}).get('alias') or {}
+        except (OSError, ValueError):
+            # ⚠️ SIN MAPA SE SIGUE, con los nombres crudos. Quedarse sin
+            # vitrinas porque falta un json es peor que no fusionar.
+            _ALIAS = {}
+    k = ''.join(c for c in unicodedata.normalize('NFKD', quien or '')
+                if c.isalnum()).lower()
+    return _ALIAS.get(k) or quien
+
+
 def agregar(filas_res, filas_uno):
     """Las filas crudas -> {rapero: {columna: valor}}.
 
@@ -194,6 +238,9 @@ def agregar(filas_res, filas_uno):
 
     `filas_res` son las 11 columnas de `Resultados` y `filas_uno` las 9
     de `1v1`, en el orden de la hoja.
+
+    🔴 Y CANONIZA LOS NOMBRES CONTRA EL MAPA DE AKAs. Ver `canon()`: sin
+    eso, nueve personas se cuentan dos veces.
     """
     d = defaultdict(lambda: defaultdict(int))
     evs = defaultdict(set)
@@ -204,6 +251,7 @@ def agregar(filas_res, filas_uno):
             str(f[3]).strip(), str(f[4]).strip()
         if not quien:
             continue
+        quien = canon(quien)
         pos = _norm(f[6])
         try:
             pts = int(float(str(f[7]).replace(',', '') or 0))
@@ -277,6 +325,10 @@ def agregar(filas_res, filas_uno):
         a, b, gan = str(f[4]).strip(), str(f[5]).strip(), str(f[6]).strip()
         if not (a and b and gan):
             continue
+        # ⚠️ LOS TRES, INCLUIDO EL GANADOR. Si `a` se canoniza y `gan` no,
+        # `x == gan` da False y la persona pierde un duelo que ganó — un
+        # Win% plausible y equivocado, que no falla en ningún lado.
+        a, b, gan = canon(a), canon(b), canon(gan)
         for x in (a, b):
             j[x] += 1
             hist[x].append(x == gan)

@@ -261,9 +261,14 @@ def main():
     if not aplicar:
         print('\n  (nada escrito — corré con --aplicar)\n')
         return
+    # 🔴 NO SE SALE ACA AUNQUE `poner` ESTE VACIO, y eso era un bug. La
+    # coherencia entre `Bandera` y `País` se revisa más abajo, y con este
+    # `return` quedaba **código muerto justo cuando hace falta**: el caso que
+    # importa es el de una fila donde `Bandera` ya está bien y `País` quedó
+    # vieja — que por definición no entra en `poner`. Pasó con Makmah el
+    # 24/09/2026: «nada que escribir» y el pool siguió diciendo Argentina.
     if not poner:
-        print('\n  nada que escribir\n')
-        return
+        print('\n  nada que traer de los roles; reviso las columnas igual')
 
     gc = gspread.authorize(Credentials.from_service_account_file(
         os.path.join(BASE, 'creds.json'),
@@ -290,13 +295,106 @@ def main():
               io.open(p, 'w', encoding='utf-8', newline='\n'), ensure_ascii=False, indent=1)
     print('\n  respaldo -> %s' % os.path.relpath(p, BASE))
 
-    celdas = []
+    # 🔴 EL PAIS VIVE EN TRES COLUMNAS DE ESTA HOJA, Y ESTO ESCRIBIA UNA.
+    # Medido el 24/09/2026 sobre Makmah:
+    #
+    #     Rapero    'Makmah 🇦🇷'   el emoji pegado al nombre
+    #     Bandera   'Venezuela'    lo único que este script tocaba
+    #     País      'ar'           lo que lee `sheet/padron.py`, o sea el POOL
+    #
+    # Así que decía «✅ 1 país escrito», el Sheet quedaba con Venezuela en
+    # una columna, y la carta, la web y `/card` seguían diciendo Argentina.
+    # **La escritura salió bien y no cambió nada.**
+    #
+    # ⚠️ Es la forma que este repo persigue en cinco lugares —el rango en
+    # cinco sitios, el divisor, las crews— dentro de una sola hoja: dos
+    # columnas para el mismo hecho y cada lector eligiendo una.
+    #
+    # ⚠️ EL EMOJI DE `Rapero` NO SE TOCA. Ese campo es la clave con la que
+    # todo lo demás cruza a la persona —`fila_de` se arma con él, y las
+    # llaves de Discord lo escriben así— así que reescribirlo renombraría a
+    # alguien a mitad de temporada. Se AVISA y se corrige a mano.
+    # ⚠️ EL MAPA NOMBRE→ISO YA EXISTE y no se copia: vive en
+    # `sheet/padron_t1.PAIS_ISO`, donde dice de dónde salió cada uno —los 16
+    # primeros de cruzar el pool con el padrón, los 7 restantes de ISO
+    # 3166-1—. Escribir otra tabla acá sería el bug del rango en cinco
+    # lugares, con países.
+    #
+    # ⚠️ Y `PAD.BANDERA_ISO` NO SIRVE PARA ESTO: mapea el **emoji** a ISO
+    # (`🇦🇷 → ar`), no el nombre. Invertirlo da `{'ar': '🇦🇷'}`, que es lo
+    # contrario de lo que hace falta. Lo probé y por eso está escrito.
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'sheet'))
+        from padron_t1 import PAIS_ISO as iso_de      # noqa: E402
+    except ImportError:
+        iso_de = {}
+    iP = H.index('País') if 'País' in H else -1
+    celdas, sin_iso, emoji_viejo = [], [], []
     for n, pa in poner:
         f = fila_de.get(PAD.norm(n))
-        if f:
-            celdas.append({'range': '%s%d' % (letra(iB), f), 'values': [[pa]]})
+        if not f:
+            continue
+        celdas.append({'range': '%s%d' % (letra(iB), f), 'values': [[pa]]})
+        if iP >= 0:
+            cc = iso_de.get(pa) or ''
+            if cc:
+                celdas.append({'range': '%s%d' % (letra(iP), f),
+                               'values': [[cc]]})
+            else:
+                sin_iso.append((n, pa))
+        raw = val[f - 1][iR] if len(val[f - 1]) > iR else ''
+        if re.search(r'[\U0001F1E6-\U0001F1FF]', raw):
+            emoji_viejo.append((raw, pa))
+    # 🔴 Y APARTE, QUE LAS DOS COLUMNAS COINCIDAN EN TODA LA HOJA. Esto no
+    # es lo mismo que lo de arriba y hace falta por un motivo concreto: este
+    # script decide qué cambiar mirando `Bandera` y escribe `País`, así que
+    # una fila donde `Bandera` ya está bien y `País` quedó vieja **no entra
+    # en `poner` nunca**. Pasó el 24/09/2026 con Makmah: la primera corrida
+    # escribió Venezuela en `Bandera`, la segunda dijo «0 para escribir», y
+    # `País` siguió en `ar` — que es lo que el pool lee.
+    #
+    # ⚠️ Es la misma forma que lo de arriba, un nivel más arriba: no alcanza
+    # con escribir las dos, hay que **preguntar por las dos**.
+    if iP >= 0:
+        ya = {c['range'] for c in celdas}
+        arregladas = []
+        for f in range(cab + 1, len(val)):
+            fila = val[f]
+            ban = (fila[iB] if len(fila) > iB else '').strip()
+            cc = (fila[iP] if len(fila) > iP else '').strip().lower()
+            esp = iso_de.get(ban) or ''
+            if ban and esp and cc != esp:
+                r = '%s%d' % (letra(iP), f + 1)
+                if r not in ya:
+                    celdas.append({'range': r, 'values': [[esp]]})
+                    arregladas.append(
+                        ((fila[iR] if len(fila) > iR else '?'), cc or '(vacío)',
+                         esp, ban))
+        if arregladas:
+            print('\n  🔁 %d fila(s) con `Bandera` y `País` en desacuerdo — '
+                  'gana `Bandera`:' % len(arregladas))
+            for raw, vie, nue, ban in arregladas[:12]:
+                print('     %-22s País %-8s -> %-4s  (Bandera dice %s)'
+                      % (str(raw)[:22], vie, nue, ban))
+            if len(arregladas) > 12:
+                print('     … y %d más' % (len(arregladas) - 12))
+
+    if not celdas:
+        print('\n  nada que escribir: las tres columnas coinciden\n')
+        return 0
     ws.batch_update(celdas, value_input_option='RAW')
-    print('  ✅ %d pais(es) escritos en el Sheet' % len(celdas))
+    print('  ✅ %d celda(s) escritas (Bandera + País)' % len(celdas))
+    if iP < 0:
+        print('  🔴 no encontré la columna `País`: el pool va a seguir con el '
+              'valor viejo')
+    for n, pa in sin_iso:
+        print('  🔴 %s: no sé el código ISO de %r, `País` quedó sin tocar'
+              % (n, pa))
+    for raw, pa in emoji_viejo:
+        print('  ⚠️ %r sigue con su bandera vieja en el nombre y ahora es %s.'
+              % (raw, pa))
+        print('     No lo reescribo: ese campo es la clave con la que todo')
+        print('     cruza a la persona. Corregilo a mano en la hoja.')
     print('\n  después:  python sheet/construir_padron.py\n')
 
 
