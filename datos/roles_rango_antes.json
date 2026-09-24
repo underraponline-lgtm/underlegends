@@ -1,0 +1,750 @@
+{
+ "guild": "841017460341604382",
+ "roles": {
+  "S": "1502241224910700574",
+  "A": "1502241261493682207",
+  "B": "1502241301066678362",
+  "C": "1502241353663250472",
+  "D": "1502241394318770347",
+  "E": "1502241424094003293",
+  "SSS": "1550996501868584990",
+  "SS": "1550996520067928106"
+ },
+ "gente": [
+  {
+   "id": "400161083798716416",
+   "usuario": "raezer9",
+   "tramo": "B"
+  },
+  {
+   "id": "425356695309516810",
+   "usuario": "the0g.",
+   "tramo": "A"
+  },
+  {
+   "id": "447170339320102924",
+   "usuario": "rz_1",
+   "tramo": "B"
+  },
+  {
+   "id": "458519920330670086",
+   "usuario": "number9408",
+   "tramo": "B"
+  },
+  {
+   "id": "494965289042182164",
+   "usuario": "agusdcab",
+   "tramo": "SS"
+  },
+  {
+   "id": "513409344512065580",
+   "usuario": "axinu",
+   "tramo": "SS"
+  },
+  {
+   "id": "522777983921029162",
+   "usuario": "alvaroriolu03",
+   "tramo": "D"
+  },
+  {
+   "id": "535579351710957568",
+   "usuario": "zetaenmsi",
+   "tramo": "A"
+  },
+  {
+   "id": "559068959845122048",
+   "usuario": "user_mic",
+   "tramo": "D"
+  },
+  {
+   "id": "566516207625175040",
+   "usuario": "tenacious_kiwi_74604",
+   "tramo": "C"
+  },
+  {
+   "id": "569648769495203841",
+   "usuario": "miguelangel2704",
+   "tramo": "A"
+  },
+  {
+   "id": "578697503130779649",
+   "usuario": "dariel.ivo",
+   "tramo": "B"
+  },
+  {
+   "id": "588547235621371936",
+   "usuario": "dynoco.",
+   "tramo": "A"
+  },
+  {
+   "id": "592511642617511936",
+   "usuario": "basikrap",
+   "tramo": "D"
+  },
+  {
+   "id": "596924970429448202",
+   "usuario": "bastyretro",
+   "tramo": "A"
+  },
+  {
+   "id": "613552853302378527",
+   "usuario": "dfelipetor",
+   "tramo": "C"
+  },
+  {
+   "id": "618666009905201152",
+   "usuario": "youngxhay",
+   "tramo": "B"
+  },
+  {
+   "id": "638492318701322267",
+   "usuario": "kinon2.forever",
+   "tramo": "S"
+  },
+  {
+   "id": "639232575461654538",
+   "usuario": "ivanjajaa",
+   "tramo": "A"
+  },
+  {
+   "id": "640274259985301582",
+   "usuario": ".bluestyles",
+   "tramo": "C"
+  },
+  {
+   "id": "642028501372764191",
+   "usuario": "danny._.4313",
+   "tramo": "D"
+  },
+  {
+   "id": "645308964141137952",
+   "usuario": "sj.2008_",
+   "tramo": "E"
+  },
+  {
+   "id": "661752165081284630",
+   "usuario": "zetryko_oficial.",
+   "tramo": "C"
+  },
+  {
+   "id": "680268290962227243",
+   "usuario": "franciscoporfi",
+   "tramo": "SSS"
+  },
+  {
+   "id": "682072673580351492",
+   "usuario": "epik2942",
+   "tramo": "A"
+  },
+  {
+   "id": "692881329573986317",
+   "usuario": "bloodypintor",
+   "tramo": "A"
+  },
+  {
+   "id": "712512566215180320",
+   "usuario": "66skratch",
+   "tramo": "C"
+  },
+  {
+   "id": "713043220640038944",
+   "usuario": "zeta1310",
+   "tramo": "B"
+  },
+  {
+   "id": "713857205396439142",
+   "usuario": "mcarita",
+   "tramo": "D"
+  },
+  {
+   "id": "724627764455407667",
+   "usuario": "chase_rpr",
+   "tramo": "C"
+  },
+  {
+   "id": "729064766307434587",
+   "usuario": "sblk2130",
+   "tramo": "D"
+  },
+  {
+   "id": "729439360545587291",
+   "usuario": "jmiopa",
+   "tramo": "A"
+  },
+  {
+   "id": "729809358627536938",
+   "usuario": "delux.13",
+   "tramo": "A"
+  },
+  {
+   "id": "732777259244453938",
+   "usuario": "x.pipe.x2.09590",
+   "tramo": "D"
+  },
+  {
+   "id": "739338101603696681",
+   "usuario": "itsdlx",
+   "tramo": "E"
+  },
+  {
+   "id": "744324043552849950",
+   "usuario": "intrusomaki",
+   "tramo": "B"
+  },
+  {
+   "id": "745324578347286528",
+   "usuario": "pllsuax",
+   "tramo": "C"
+  },
+  {
+   "id": "747256544055263364",
+   "usuario": "bnjaa.ve",
+   "tramo": "D"
+  },
+  {
+   "id": "748841088676003932",
+   "usuario": "prodigy0608",
+   "tramo": "B"
+  },
+  {
+   "id": "752763980077858829",
+   "usuario": "jirafa02",
+   "tramo": "B"
+  },
+  {
+   "id": "768561204707983361",
+   "usuario": "vipertapestry",
+   "tramo": "SS"
+  },
+  {
+   "id": "771817602657288192",
+   "usuario": "hhhomes",
+   "tramo": "C"
+  },
+  {
+   "id": "771843689294856203",
+   "usuario": "acrymc",
+   "tramo": "C"
+  },
+  {
+   "id": "776271601221763103",
+   "usuario": ".jeluxe",
+   "tramo": "B"
+  },
+  {
+   "id": "778332138930962432",
+   "usuario": "sombra7312",
+   "tramo": "A"
+  },
+  {
+   "id": "780161041681350666",
+   "usuario": "sk84734",
+   "tramo": "C"
+  },
+  {
+   "id": "781971857519804417",
+   "usuario": "cinexfilosanity",
+   "tramo": "C"
+  },
+  {
+   "id": "788945693166796821",
+   "usuario": "0kamui",
+   "tramo": "B"
+  },
+  {
+   "id": "790016013680771102",
+   "usuario": "colesito",
+   "tramo": "A"
+  },
+  {
+   "id": "803600126156734475",
+   "usuario": "nfk777",
+   "tramo": "S"
+  },
+  {
+   "id": "804497011406929975",
+   "usuario": "delux3458",
+   "tramo": "C"
+  },
+  {
+   "id": "817387658656874536",
+   "usuario": "jesuslgamer31",
+   "tramo": "D"
+  },
+  {
+   "id": "818314359218241567",
+   "usuario": "iguanajoshua",
+   "tramo": "D"
+  },
+  {
+   "id": "820803699928072193",
+   "usuario": "luzz0",
+   "tramo": "B"
+  },
+  {
+   "id": "825179002091995136",
+   "usuario": "elneekoperoelog",
+   "tramo": "D"
+  },
+  {
+   "id": "830283509985312799",
+   "usuario": "angelrojas7803",
+   "tramo": "B"
+  },
+  {
+   "id": "832626921538846790",
+   "usuario": "mr.kude",
+   "tramo": "D"
+  },
+  {
+   "id": "835417380011900928",
+   "usuario": "333pabp",
+   "tramo": "C"
+  },
+  {
+   "id": "836666069569110117",
+   "usuario": "olaf2547",
+   "tramo": "C"
+  },
+  {
+   "id": "839700927954681888",
+   "usuario": "ideka__",
+   "tramo": "A"
+  },
+  {
+   "id": "847124099243180042",
+   "usuario": "gxbrielalejandro",
+   "tramo": "B"
+  },
+  {
+   "id": "852667585593868288",
+   "usuario": "eltractorjonshon",
+   "tramo": "B"
+  },
+  {
+   "id": "853130894663745549",
+   "usuario": "andy._.2321",
+   "tramo": "C"
+  },
+  {
+   "id": "855918964655783967",
+   "usuario": "j.r_ga",
+   "tramo": "D"
+  },
+  {
+   "id": "866657242866909216",
+   "usuario": "diegit4",
+   "tramo": "C"
+  },
+  {
+   "id": "868896089233838120",
+   "usuario": "jeizy_0",
+   "tramo": "D"
+  },
+  {
+   "id": "885365894606381068",
+   "usuario": "hbrsg_",
+   "tramo": "D"
+  },
+  {
+   "id": "896609871460442142",
+   "usuario": "yeyox07",
+   "tramo": "C"
+  },
+  {
+   "id": "913850096062439456",
+   "usuario": "ventu._.x",
+   "tramo": "D"
+  },
+  {
+   "id": "917207293496557578",
+   "usuario": "essencesteez",
+   "tramo": "A"
+  },
+  {
+   "id": "918750979724288040",
+   "usuario": "juxnpaa",
+   "tramo": "SS"
+  },
+  {
+   "id": "942540846685909002",
+   "usuario": "ladiesandgentlemeen",
+   "tramo": "A"
+  },
+  {
+   "id": "943968207960694865",
+   "usuario": "leitermc",
+   "tramo": "C"
+  },
+  {
+   "id": "967511243445403668",
+   "usuario": "thiflow",
+   "tramo": "C"
+  },
+  {
+   "id": "983935442913206303",
+   "usuario": "everythingbelow",
+   "tramo": "S"
+  },
+  {
+   "id": "989640104765177956",
+   "usuario": "agusdema",
+   "tramo": "B"
+  },
+  {
+   "id": "1014047926365995028",
+   "usuario": "arabigboy",
+   "tramo": "C"
+  },
+  {
+   "id": "1017990627604041780",
+   "usuario": "vice6514",
+   "tramo": "A"
+  },
+  {
+   "id": "1028631611685740684",
+   "usuario": ".gatitodev",
+   "tramo": "D"
+  },
+  {
+   "id": "1036361414887100527",
+   "usuario": "wu_dstardo",
+   "tramo": "D"
+  },
+  {
+   "id": "1048744067313451050",
+   "usuario": "mcorap",
+   "tramo": "A"
+  },
+  {
+   "id": "1055474244089286706",
+   "usuario": "deslanofthemind",
+   "tramo": "B"
+  },
+  {
+   "id": "1064988517765234689",
+   "usuario": "nixyto_",
+   "tramo": "B"
+  },
+  {
+   "id": "1070553144964173906",
+   "usuario": "rubik2703",
+   "tramo": "A"
+  },
+  {
+   "id": "1071185986366742630",
+   "usuario": "emekultra",
+   "tramo": "S"
+  },
+  {
+   "id": "1080336881243398286",
+   "usuario": "hola._123456768",
+   "tramo": "C"
+  },
+  {
+   "id": "1089661639508377630",
+   "usuario": "elinzano1009",
+   "tramo": "B"
+  },
+  {
+   "id": "1095893775383023708",
+   "usuario": "jobains",
+   "tramo": "D"
+  },
+  {
+   "id": "1097714486795849748",
+   "usuario": "snowzzzzzzzz",
+   "tramo": "B"
+  },
+  {
+   "id": "1106029696388444251",
+   "usuario": "surxf189278",
+   "tramo": "B"
+  },
+  {
+   "id": "1138166936547643412",
+   "usuario": "mcnadie",
+   "tramo": "C"
+  },
+  {
+   "id": "1144079267198672976",
+   "usuario": "igtscaco",
+   "tramo": "E"
+  },
+  {
+   "id": "1167678661684641814",
+   "usuario": "narddog4",
+   "tramo": "B"
+  },
+  {
+   "id": "1177668622227886112",
+   "usuario": "prosufk",
+   "tramo": "S"
+  },
+  {
+   "id": "1178858627998691430",
+   "usuario": "nesstyle",
+   "tramo": "C"
+  },
+  {
+   "id": "1190746928774922311",
+   "usuario": "ominouspoetry",
+   "tramo": "B"
+  },
+  {
+   "id": "1204164715350196284",
+   "usuario": "dan666._",
+   "tramo": "C"
+  },
+  {
+   "id": "1228547913240547338",
+   "usuario": "kanon_kk13",
+   "tramo": "B"
+  },
+  {
+   "id": "1237192883535216715",
+   "usuario": "martinv444",
+   "tramo": "B"
+  },
+  {
+   "id": "1247306019839938754",
+   "usuario": "walker2706",
+   "tramo": "B"
+  },
+  {
+   "id": "1266522892439650327",
+   "usuario": "kunilop",
+   "tramo": "C"
+  },
+  {
+   "id": "1276857675316989962",
+   "usuario": "adrianleanca_64287",
+   "tramo": "D"
+  },
+  {
+   "id": "1294600140815990858",
+   "usuario": "marcosq_14",
+   "tramo": "C"
+  },
+  {
+   "id": "1323444294534828104",
+   "usuario": "kidbuu02124",
+   "tramo": "C"
+  },
+  {
+   "id": "1328330885187108864",
+   "usuario": "jaxs_07505",
+   "tramo": "D"
+  },
+  {
+   "id": "1338567692239765617",
+   "usuario": "yatusabe_eldeuxss",
+   "tramo": "C"
+  },
+  {
+   "id": "1347663033949880360",
+   "usuario": "eresmatrot",
+   "tramo": "D"
+  },
+  {
+   "id": "1357796427191029932",
+   "usuario": "malasiafighter",
+   "tramo": "A"
+  },
+  {
+   "id": "1357885526404894870",
+   "usuario": "ricardocortes0758",
+   "tramo": "C"
+  },
+  {
+   "id": "1359316127901024357",
+   "usuario": "algoritmokrt",
+   "tramo": "C"
+  },
+  {
+   "id": "1363285354442133778",
+   "usuario": "moluscoanvriento_79058",
+   "tramo": "C"
+  },
+  {
+   "id": "1378395662592512151",
+   "usuario": "afr777_.",
+   "tramo": "E"
+  },
+  {
+   "id": "1382511700519030824",
+   "usuario": "vladeink",
+   "tramo": "B"
+  },
+  {
+   "id": "1385452830684614697",
+   "usuario": "lrs0378",
+   "tramo": "C"
+  },
+  {
+   "id": "1391556667841450004",
+   "usuario": "nixytos",
+   "tramo": "C"
+  },
+  {
+   "id": "1392280902997905539",
+   "usuario": "jajajaja.lprzs",
+   "tramo": "C"
+  },
+  {
+   "id": "1397110475594010700",
+   "usuario": "xxxxxx.fl",
+   "tramo": "D"
+  },
+  {
+   "id": "1400508144920170577",
+   "usuario": "panchok0103",
+   "tramo": "SS"
+  },
+  {
+   "id": "1405415242015445036",
+   "usuario": "iluv.rinnx",
+   "tramo": "D"
+  },
+  {
+   "id": "1413305434881658960",
+   "usuario": "jupiter2417tj",
+   "tramo": "C"
+  },
+  {
+   "id": "1413322255047594015",
+   "usuario": "eminenciadelquisco",
+   "tramo": "C"
+  },
+  {
+   "id": "1428556720510079168",
+   "usuario": "r.o._77_02939",
+   "tramo": "B"
+  },
+  {
+   "id": "1432188610542567549",
+   "usuario": "camila022672",
+   "tramo": "D"
+  },
+  {
+   "id": "1438222811171914014",
+   "usuario": "maggregor89",
+   "tramo": "D"
+  },
+  {
+   "id": "1445803811758276660",
+   "usuario": "adachit_332",
+   "tramo": "D"
+  },
+  {
+   "id": "1455770402780610731",
+   "usuario": "trueno008940",
+   "tramo": "C"
+  },
+  {
+   "id": "1458603256292053037",
+   "usuario": "ismel_0555",
+   "tramo": "E"
+  },
+  {
+   "id": "1461433944237936829",
+   "usuario": "alejo008715",
+   "tramo": "D"
+  },
+  {
+   "id": "1462237816829513971",
+   "usuario": "criszjono",
+   "tramo": "C"
+  },
+  {
+   "id": "1462602972197556237",
+   "usuario": "lil_drakito",
+   "tramo": "C"
+  },
+  {
+   "id": "1479882427915698238",
+   "usuario": "telmex06321",
+   "tramo": "C"
+  },
+  {
+   "id": "1483563636512522321",
+   "usuario": "imitadordemickeymousechileno",
+   "tramo": "C"
+  },
+  {
+   "id": "1485452150363390052",
+   "usuario": "itachi095666",
+   "tramo": "D"
+  },
+  {
+   "id": "1488340333355077642",
+   "usuario": "pablofrescobar_one",
+   "tramo": "A"
+  },
+  {
+   "id": "1488670857265156217",
+   "usuario": "jvoar3crew._71538",
+   "tramo": "B"
+  },
+  {
+   "id": "1490264526434599054",
+   "usuario": "amaya061258",
+   "tramo": "C"
+  },
+  {
+   "id": "1490482007808016425",
+   "usuario": "joserapmc2.0",
+   "tramo": "B"
+  },
+  {
+   "id": "1490902626970239088",
+   "usuario": "btrece_",
+   "tramo": "D"
+  },
+  {
+   "id": "1491486652739092623",
+   "usuario": "danteshemc",
+   "tramo": "C"
+  },
+  {
+   "id": "1492228152691396720",
+   "usuario": "majiztral",
+   "tramo": "D"
+  },
+  {
+   "id": "1497026847504990218",
+   "usuario": "elreyes_mc",
+   "tramo": "D"
+  },
+  {
+   "id": "1498441174728577025",
+   "usuario": "danix9827",
+   "tramo": "D"
+  },
+  {
+   "id": "1501237670154866788",
+   "usuario": "johao0517",
+   "tramo": "C"
+  },
+  {
+   "id": "1505463269530402896",
+   "usuario": "n_mmc",
+   "tramo": "B"
+  },
+  {
+   "id": "1508623564285149357",
+   "usuario": "sinlimites2026",
+   "tramo": "E"
+  },
+  {
+   "id": "1508771760709963930",
+   "usuario": "juanclaudio0959",
+   "tramo": "D"
+  },
+  {
+   "id": "1515482513106272366",
+   "usuario": "sinergiabreak",
+   "tramo": "A"
+  }
+ ]
+}

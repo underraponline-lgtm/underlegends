@@ -1,0 +1,453 @@
+{
+ "selecciones": {
+  "co": {
+   "capitan": "Axinu",
+   "representantes": [
+    "Juanpa",
+    "Bloody",
+    "Colesito",
+    "Partim"
+   ],
+   "libres": 0,
+   "pts": 1042089,
+   "top5": [
+    {
+     "rapero": "Bloody",
+     "pts": 313286
+    },
+    {
+     "rapero": "Axinu",
+     "pts": 229061
+    },
+    {
+     "rapero": "Colesito",
+     "pts": 205996
+    },
+    {
+     "rapero": "Juanpa",
+     "pts": 205955
+    },
+    {
+     "rapero": "Snow",
+     "pts": 199892
+    }
+   ]
+  },
+  "ar": {
+   "capitan": "Konan",
+   "representantes": [
+    "Luzzano",
+    "Rubik",
+    "Vize",
+    "Agus"
+   ],
+   "libres": 0,
+   "pts": 736452,
+   "top5": [
+    {
+     "rapero": "Valen",
+     "pts": 305082
+    },
+    {
+     "rapero": "MCO",
+     "pts": 291308
+    },
+    {
+     "rapero": "Konan",
+     "pts": 224415
+    },
+    {
+     "rapero": "Hassan",
+     "pts": 212602
+    },
+    {
+     "rapero": "Erik",
+     "pts": 196311
+    }
+   ]
+  },
+  "cl": {
+   "capitan": "Saiko",
+   "representantes": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "libres": 4,
+   "pts": 139582,
+   "top5": [
+    {
+     "rapero": "Panchok",
+     "pts": 161311
+    },
+    {
+     "rapero": "Velatz",
+     "pts": 144667
+    },
+    {
+     "rapero": "Saiko",
+     "pts": 139582
+    },
+    {
+     "rapero": "Deuxs",
+     "pts": 96916
+    },
+    {
+     "rapero": "Cronox",
+     "pts": 91603
+    }
+   ]
+  },
+  "mx": {
+   "capitan": "Maki",
+   "representantes": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "libres": 4,
+   "pts": 61707,
+   "top5": [
+    {
+     "rapero": "Jupiter",
+     "pts": 88916
+    },
+    {
+     "rapero": "Dantemx",
+     "pts": 77375
+    },
+    {
+     "rapero": "Yeyox",
+     "pts": 75375
+    },
+    {
+     "rapero": "Maki",
+     "pts": 61707
+    },
+    {
+     "rapero": "Kyss",
+     "pts": 48875
+    }
+   ]
+  }
+ },
+ "paises": [
+  {
+   "puesto": 1,
+   "cc": "ar",
+   "raperos": 163,
+   "pts": 3728154,
+   "oros": 183
+  },
+  {
+   "puesto": 2,
+   "cc": "co",
+   "raperos": 74,
+   "pts": 2612057,
+   "oros": 124
+  },
+  {
+   "puesto": 3,
+   "cc": "cl",
+   "raperos": 105,
+   "pts": 1838800,
+   "oros": 58
+  },
+  {
+   "puesto": 4,
+   "cc": "ve",
+   "raperos": 47,
+   "pts": 809930,
+   "oros": 31
+  },
+  {
+   "puesto": 5,
+   "cc": "mx",
+   "raperos": 46,
+   "pts": 763373,
+   "oros": 18
+  },
+  {
+   "puesto": 6,
+   "cc": "??",
+   "raperos": 145,
+   "pts": 523204,
+   "oros": 11
+  },
+  {
+   "puesto": 7,
+   "cc": "pe",
+   "raperos": 39,
+   "pts": 442290,
+   "oros": 13
+  },
+  {
+   "puesto": 8,
+   "cc": "uy",
+   "raperos": 15,
+   "pts": 424479,
+   "oros": 8
+  },
+  {
+   "puesto": 9,
+   "cc": "pa",
+   "raperos": 7,
+   "pts": 340562,
+   "oros": 14
+  },
+  {
+   "puesto": 10,
+   "cc": "do",
+   "raperos": 10,
+   "pts": 337789,
+   "oros": 19
+  },
+  {
+   "puesto": 11,
+   "cc": "es",
+   "raperos": 31,
+   "pts": 326541,
+   "oros": 5
+  },
+  {
+   "puesto": 12,
+   "cc": "pr",
+   "raperos": 9,
+   "pts": 201539,
+   "oros": 9
+  },
+  {
+   "puesto": 13,
+   "cc": "ec",
+   "raperos": 15,
+   "pts": 188833,
+   "oros": 3
+  },
+  {
+   "puesto": 14,
+   "cc": "bo",
+   "raperos": 5,
+   "pts": 122125,
+   "oros": 1
+  },
+  {
+   "puesto": 15,
+   "cc": "us",
+   "raperos": 5,
+   "pts": 76500,
+   "oros": 5
+  },
+  {
+   "puesto": 16,
+   "cc": "hn",
+   "raperos": 4,
+   "pts": 75707,
+   "oros": 3
+  },
+  {
+   "puesto": 17,
+   "cc": "gt",
+   "raperos": 2,
+   "pts": 61375,
+   "oros": 2
+  },
+  {
+   "puesto": 18,
+   "cc": "cr",
+   "raperos": 3,
+   "pts": 26000,
+   "oros": 1
+  },
+  {
+   "puesto": 19,
+   "cc": "py",
+   "raperos": 2,
+   "pts": 9000,
+   "oros": 0
+  },
+  {
+   "puesto": 20,
+   "cc": "cw",
+   "raperos": 2,
+   "pts": 8250,
+   "oros": 0
+  },
+  {
+   "puesto": 21,
+   "cc": "hr",
+   "raperos": 1,
+   "pts": 4000,
+   "oros": 0
+  },
+  {
+   "puesto": 22,
+   "cc": "sv",
+   "raperos": 2,
+   "pts": 2625,
+   "oros": 0
+  },
+  {
+   "puesto": 23,
+   "cc": "sa",
+   "raperos": 1,
+   "pts": 2500,
+   "oros": 0
+  },
+  {
+   "puesto": 24,
+   "cc": "ws",
+   "raperos": 1,
+   "pts": 1250,
+   "oros": 0
+  },
+  {
+   "puesto": 25,
+   "cc": "ae",
+   "raperos": 1,
+   "pts": 1250,
+   "oros": 0
+  }
+ ],
+ "competitivos": {
+  "ar": {
+   "puesto": 1,
+   "clasificados": 33,
+   "faltan": 0,
+   "score_seleccion": 72.8,
+   "mejor": "Konan",
+   "mejor_score": 91.1
+  },
+  "co": {
+   "puesto": 2,
+   "clasificados": 25,
+   "faltan": 0,
+   "score_seleccion": 71.1,
+   "mejor": "Axinu",
+   "mejor_score": 80.7
+  },
+  "cl": {
+   "puesto": 3,
+   "clasificados": 26,
+   "faltan": 0,
+   "score_seleccion": 61.2,
+   "mejor": "Panchok",
+   "mejor_score": 75.3
+  },
+  "mx": {
+   "puesto": 4,
+   "clasificados": 11,
+   "faltan": 0,
+   "score_seleccion": 45.4,
+   "mejor": "Kourier",
+   "mejor_score": 64.0
+  },
+  "ve": {
+   "puesto": 5,
+   "clasificados": 10,
+   "faltan": 0,
+   "score_seleccion": 44.7,
+   "mejor": "Tam",
+   "mejor_score": 54.9
+  },
+  "pe": {
+   "puesto": 6,
+   "clasificados": 8,
+   "faltan": 0,
+   "score_seleccion": 33.6,
+   "mejor": "Imagy",
+   "mejor_score": 50.6
+  },
+  "es": {
+   "puesto": 7,
+   "clasificados": 6,
+   "faltan": 0,
+   "score_seleccion": 33.0,
+   "mejor": "Road",
+   "mejor_score": 52.8
+  },
+  "uy": {
+   "puesto": 8,
+   "clasificados": 41,
+   "faltan": 1,
+   "score_seleccion": 27.3,
+   "mejor": "Number",
+   "mejor_score": 46.4
+  },
+  "pa": {
+   "puesto": 9,
+   "clasificados": 23,
+   "faltan": 3,
+   "score_seleccion": 22.7,
+   "mejor": "Abyssus",
+   "mejor_score": 75.8
+  },
+  "pr": {
+   "puesto": 10,
+   "clasificados": 23,
+   "faltan": 3,
+   "score_seleccion": 21.9,
+   "mejor": "Sombra",
+   "mejor_score": 61.9
+  },
+  "ec": {
+   "puesto": 11,
+   "clasificados": 32,
+   "faltan": 2,
+   "score_seleccion": 18.4,
+   "mejor": "Soneto",
+   "mejor_score": 36.2
+  },
+  "us": {
+   "puesto": 12,
+   "clasificados": 23,
+   "faltan": 3,
+   "score_seleccion": 16.4,
+   "mejor": "Christo",
+   "mejor_score": 65.0
+  },
+  "do": {
+   "puesto": 13,
+   "clasificados": 14,
+   "faltan": 4,
+   "score_seleccion": 14.0,
+   "mejor": "Zignos",
+   "mejor_score": 69.9
+  },
+  "bo": {
+   "puesto": 14,
+   "clasificados": 23,
+   "faltan": 3,
+   "score_seleccion": 13.3,
+   "mejor": "Meteoro",
+   "mejor_score": 34.5
+  },
+  "gt": {
+   "puesto": 15,
+   "clasificados": 14,
+   "faltan": 4,
+   "score_seleccion": 9.1,
+   "mejor": "Am",
+   "mejor_score": 45.7
+  },
+  "hn": {
+   "puesto": 16,
+   "clasificados": 14,
+   "faltan": 4,
+   "score_seleccion": 8.3,
+   "mejor": "Xhay",
+   "mejor_score": 41.5
+  },
+  "??": {
+   "puesto": 17,
+   "clasificados": 14,
+   "faltan": 4,
+   "score_seleccion": 3.9,
+   "mejor": "Mark",
+   "mejor_score": 19.3
+  }
+ },
+ "_hoja": "Ranking Mundial",
+ "_nota": "Tres bloques en una hoja, no una tabla. El ❓ de la hoja es \"sin pais\" y se guarda como \"??\": son 145 raperos."
+}

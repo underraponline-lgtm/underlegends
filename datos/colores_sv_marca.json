@@ -1,0 +1,39 @@
+{
+ "_nota": "El color de cada servidor. La regla: MANDA EL LOGO. Se usa el color cromatico dominante del propio archivo del logo, y solo cuando el logo no tiene color se cae al de marca de svColors.",
+ "_por_que": "Habia dos juegos de colores y ninguno servia solo. Los de svColors (Index.html de Mi Perfil) son los oficiales, pero en dos casos contradicen al logo: ahi TFC es azul y su logo es rojo vino, y DRA es rosa y su logo es azul. Los medidos del icono de Discord fallaban distinto: TFC salia casi negro y FRZ casi blanco, y habia que normalizarlos a mano. Sacarlo del logo a color resuelve los dos problemas.",
+ "usar": {
+  "TFC": "#600816",
+  "DRA": "#5964E0",
+  "FTN": "#2A3982",
+  "TWR": "#DE104E",
+  "EFA": "#A95225",
+  "FFA": "#26045B",
+  "SR": "#E0670B",
+  "FRZ": "#26B3A6",
+  "URBF": "#9959D9",
+  "RZ": "#3A96F2"
+ },
+ "de_donde_sale": {
+  "TFC": "del logo · rojo vino",
+  "DRA": "del logo · azul",
+  "FTN": "del logo · azul marino (su acento es el dorado #E0CC70)",
+  "TWR": "del logo · rosa",
+  "EFA": "del logo · cobre",
+  "FFA": "del logo · violeta profundo",
+  "SR": "del logo ORIGINAL · naranja. Dlx confirmo que el logo original de Snake Rap es naranja, no dorado ni verde. El dorado (Logo_Ciclo_8) es una version posterior y el verde no existe.",
+  "FRZ": "de marca. Su logo es blanco y negro PURO: cero contenido cromatico, no hay de donde sacarlo",
+  "URBF": "de marca. Su logo es grafiti blanco y negro: tampoco tiene color propio",
+  "RZ": "del logo · el punto más caliente de su fuego azul"
+ },
+ "_pendiente_sr": "Se acordo que Snake Rap va en VERDE, pero no hay ningun logo verde: los dos archivos que hay son dorado (Logo_Ciclo_8, el actual) y naranja (SR.png, el viejo). Tres salidas: (a) que Dlx pase la version verde, (b) usar el verde de marca #33BF5A y teñir la silueta blanca, que ya existe en comun/logos_sv/, (c) aceptar el dorado, que es el color real del logo actual. Hasta que se decida queda el dorado.",
+ "marca_original_svColors": {
+  "_nota": "Se conservan para referencia: son los de la constante svColors del Index.html de Mi Perfil.",
+  "TWR": "#E63333",
+  "TFC": "#5966F2",
+  "SR": "#33BF5A",
+  "FTN": "#FF9926",
+  "URBF": "#9959D9",
+  "FRZ": "#26B3A6",
+  "DRA": "#E84393"
+ }
+}

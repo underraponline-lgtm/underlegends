@@ -1,0 +1,120 @@
+{
+ "_nota": "Interserver de la Hermandad · Cuarta edicion · Pre-temporada 2026. Cargado a mano: los podios NO salen del pipeline.",
+ "_niveles": "oro campeon · plata subcampeon · bronce tercero · negro participo",
+ "temporada": "PRE-2026",
+ "edicion": 4,
+ "podio": {
+  "oro": {
+   "rapero": "Rodri LP",
+   "cc": "ar",
+   "sv": "Fontana",
+   "discord": "1045042688094896249"
+  },
+  "plata": {
+   "rapero": "Konan",
+   "cc": "ar",
+   "sv": "EFA",
+   "discord": "680268290962227243"
+  },
+  "bronce": {
+   "rapero": "Road",
+   "cc": "es",
+   "sv": "Snake",
+   "discord": "777912333611434004"
+  }
+ },
+ "llaves": {
+  "octavos": [
+   [
+    "Bloody",
+    "OG"
+   ],
+   [
+    "Respawn",
+    "Maki"
+   ],
+   [
+    "Konan",
+    "Kaled"
+   ],
+   [
+    "Tyree",
+    "Rubik"
+   ],
+   [
+    "Road",
+    "Prosu"
+   ],
+   [
+    "Juanpa",
+    "Edu"
+   ],
+   [
+    "Axinu",
+    "MCO"
+   ],
+   [
+    "Rodri LP",
+    "Six"
+   ]
+  ],
+  "cuartos": [
+   [
+    "OG",
+    "Respawn"
+   ],
+   [
+    "Konan",
+    "Rubik"
+   ],
+   [
+    "Road",
+    "Juanpa"
+   ],
+   [
+    "Axinu",
+    "Rodri LP"
+   ]
+  ],
+  "semis": [
+   [
+    "Respawn",
+    "Konan"
+   ],
+   [
+    "Road",
+    "Rodri LP"
+   ]
+  ],
+  "tercero": [
+   [
+    "Respawn",
+    "Road"
+   ]
+  ],
+  "final": [
+   [
+    "Konan",
+    "Rodri LP"
+   ]
+  ]
+ },
+ "participantes": {
+  "Rodri LP": "oro",
+  "Konan": "plata",
+  "Road": "bronce",
+  "Axinu": "negro",
+  "Bloody": "negro",
+  "Edu": "negro",
+  "Juanpa": "negro",
+  "Kaled": "negro",
+  "MCO": "negro",
+  "Maki": "negro",
+  "OG": "negro",
+  "Prosu": "negro",
+  "Respawn": "negro",
+  "Rubik": "negro",
+  "Six": "negro",
+  "Tyree": "negro"
+ }
+}

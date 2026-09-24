@@ -1,0 +1,89 @@
+{
+ "_leeme": [
+  "REGLAS DE IDENTIDAD QUE LAS HERRAMIENTAS TIENEN QUE OBEDECER.",
+  "",
+  "Sale de `Identidades_Ranking_v2.md` (19/09/2026), que a su vez resume la",
+  "pestana AKAs del Operativo. 🔴 SI ESTE ARCHIVO CONTRADICE A AKAs, GANA AKAs.",
+  "",
+  "Existe porque el MD es prosa y las herramientas no la leen. El 19/09/2026",
+  "`verificar_liga.py` le escribio a «Lord» el Discord ID de «Lord Viruzz»",
+  "—la cuenta de Lord Viruzz tiene global_name «Lord»— y el MD decia en su §2",
+  "que son personas distintas. El dato estaba; el codigo no iba a buscarlo.",
+  "",
+  "no_verificar   : nunca darles rol ni escribirles ID. Baneados y joke names.",
+  "no_fusionar    : pares de personas DISTINTAS. Si una cuenta matchea a las",
+  "                 dos, no es de ninguna: va a revision.",
+  "ids_cruzados   : IDs que pertenecen a UNO y quedaron en la fila del otro.",
+  "                 El que figura en `de` es el dueno real."
+ ],
+
+ "no_verificar": {
+  "BNA": "identidad propia y BANEADA (Identidades v2 §2)",
+  "Farmeador": "joke/placeholder, se filtra del ranking (§6)",
+  "Manito": "joke/placeholder, se filtra del ranking (§6)",
+  "Ikgnito": "sin confirmar si es Incognito (§1)",
+  "Venti": "sin confirmar si es Z-up (§1)"
+ },
+
+ "no_fusionar": [
+  ["Deluxe", "Delux"],
+  ["Luck", "Lucky"],
+  ["Vargas", "VR"],
+  ["Lord", "Lord Viruzz"],
+  ["Zeta CO", "Zeta MX"],
+  ["Erik", "Erika"],
+  ["Reyes", "Reyes Mc"],
+  ["Blood", "Bloody"],
+  ["Sainos", "Zignos"],
+  ["Piscu", "Nico"],
+  ["Axinu", "Colesito"],
+  ["7", "7po"],
+  ["BNA", "Hassan"],
+  ["Dr.Machine", "Erian"],
+  ["Subaru", "Xubaru"],
+  ["Nexus", "Number"],
+  ["Zaiko", "Saiko"],
+  ["Luz", "Luzzano"],
+  ["Respawn", "Prosu"],
+  ["S1lence", "Silence"],
+  ["Molusco", "Darkness"],
+  ["ND", "Delux"],
+  ["ND", "Deluxe"]
+ ],
+
+ "_leeme_pais": [
+  "pais_fijado: decisiones de pais tomadas A MANO, de Identidades_Ranking_v2 §5.",
+  "Ganan sobre TODO, incluido el rol de Discord.",
+  "",
+  "Dlx, 19/09/2026: en general **gana el rol** sobre el Sheet, porque el rol se",
+  "lo pone la persona y la columna del Sheet la llenan los bots. Pero estas",
+  "fueron miradas y decididas una por una —varias son doble nacionalidad, donde",
+  "el rol es tan cierto como el otro— y dejarlas pisar por el rol seria perder",
+  "la decision. Respawn es el caso: su rol dice Honduras y el MD dice Venezuela."
+ ],
+
+ "pais_fijado": {
+  "Christo": "Estados Unidos",
+  "Abyssus": "Panamá",
+  "Provenza": "Argentina",
+  "Respawn": "Venezuela",
+  "Prosu": "Colombia",
+
+  "_resueltos_por_dlx_19_09": "los de abajo tenian mas de un rol de pais y los decidio Dlx",
+  "Sombra": "Puerto Rico",
+  "Kourier": "Estados Unidos",
+  "Koppakidd": "Estados Unidos",
+  "DLX": "Estados Unidos",
+  "Val": "España"
+ },
+
+ "ids_cruzados": [
+  {"sin_id": "Axinu", "de": "Colesito", "id": "790016013680771102"},
+  {"sin_id": "Nico", "de": "Piscu", "id": "195620707290316801"},
+  {"sin_id": "Sainos", "de": "Zignos", "id": "1071185986366742630"}
+ ],
+
+ "ambiguos_preguntar": [
+  "Blood", "Reyes", "7", "Delux", "Deluxe", "Silence", "Zeta", "Lord", "Nico"
+ ]
+}

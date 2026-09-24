@@ -1,0 +1,119 @@
+name: preparar
+description: >
+  Checkout, Python, dependencias y credenciales. Lo comparten los dos
+  trabajos del ciclo.
+
+# ════════════════════════════════════════════════════════════════════
+# 🔴 UNA SOLA COPIA DE LOS CUATRO PASOS DE ARRANQUE.
+#
+# Desde el 24/09/2026 el ciclo está partido en `escuchar` —cada media
+# hora, barato— y `dibujar` —sólo cuando hay algo, caro—, y los dos
+# arrancan igual. Repetir los cuatro pasos en cada job es la misma
+# forma que este repo documenta cinco veces: dos copias, una se queda
+# vieja, y el síntoma aparece meses después en el job que nadie mira.
+#
+# ⚠️ El navegador NO se instala acá. Lo pide `bot/pipeline.py` justo
+# antes de dibujar, porque la precondición es **dibujar**, no «correr
+# en Actions» — y el 97 % de las corridas no dibuja nada.
+# ════════════════════════════════════════════════════════════════════
+
+inputs:
+  creds_json:
+    required: true
+  env_file:
+    required: true
+
+# 🔴 EL CHECKOUT **NO** ESTA ACA, Y NO SE PUEDE MOVER. Una action local
+# se resuelve leyendo `./.github/actions/preparar/action.yml` **del disco
+# del runner**, o sea que el repo tiene que estar bajado ANTES de
+# invocarla. Ponerlo adentro es huevo y gallina, y GitHub lo dice tal
+# cual:
+#
+#     Can't find 'action.yml' … Did you forget to run actions/checkout
+#     before running your local action?
+#
+# Por eso cada job hace su `actions/checkout` como primer paso. Son tres
+# lineas repetidas y es lo unico que no se puede unificar.
+
+runs:
+  using: composite
+  steps:
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: pip
+
+    - name: instalar
+      shell: bash
+      run: |
+        pip install -r requirements.txt
+        # 🔴 EL NAVEGADOR YA NO SE BAJA ACA. Era
+        # `playwright install --with-deps chromium` en este paso, o sea
+        # **en toda corrida** — y el 97 % de las corridas no dibuja nada.
+        #
+        # Medido el 22/09/2026 sobre una corrida quieta: el job entero
+        # son 62 s y este paso **36**, el 58 %. Bajar Chromium 23 veces
+        # por dia para no usarlo son ~7 h por mes de las 33 del plan.
+        #
+        # Ahora lo pide `bot/pipeline.py` justo antes de dibujar, que es
+        # la misma regla que ya sigue el espejo de las caras: *la
+        # precondicion es DIBUJAR, no «correr en Actions»*. Puesto aca
+        # queda bien para este llamador y mal para el otro.
+
+    - name: credenciales
+      # 🔴 LOS DOS SECRETOS VIVEN EN GITHUB, NO EN EL REPO. `creds.json`
+      # da acceso al Sheet y `.env` tiene los tokens de Cloudflare y del
+      # bot; los dos estan en `.gitignore` y ahi se quedan.
+      env:
+        CREDS_JSON: ${{ inputs.creds_json }}
+        ENV_FILE: ${{ inputs.env_file }}
+      shell: bash
+      run: |
+        if [ -z "$CREDS_JSON" ] || [ -z "$ENV_FILE" ]; then
+          echo "Faltan los secrets CREDS_JSON y/o ENV_FILE."
+          echo "Se cargan en Settings -> Secrets and variables -> Actions."
+          exit 1
+        fi
+        printf '%s' "$CREDS_JSON" > creds.json
+        printf '%s' "$ENV_FILE"   > .env
+        # que no se escapen ni por accidente
+        echo "creds.json" >> .git/info/exclude
+        echo ".env"       >> .git/info/exclude
+
+        # 🔴 QUE HAYAN LLEGADO ENTEROS, NO SOLO QUE EXISTAN. Cargar un
+        # secret desde PowerShell es facil de hacer mal: `<` no existe
+        # como redireccion y el pipe de PS 5.1 puede cambiar la
+        # codificacion o agregar un BOM. Un `creds.json` con un byte de
+        # mas **existe y no parsea**, y sin este chequeo el fallo
+        # aparece recien tres pasos despues, adentro de gspread, con un
+        # error que no menciona la palabra «secret».
+        #
+        # ⚠️ Se verifica la FORMA, nunca el valor: que sea JSON y traiga
+        # las dos claves que la cuenta de servicio necesita, y que el
+        # .env traiga los nombres que el pipeline busca. Nada se imprime.
+        python - <<'PY'
+        import json, io, sys
+        try:
+            d = json.load(io.open('creds.json', encoding='utf-8-sig'))
+        except Exception as e:
+            sys.exit('CREDS_JSON no es JSON válido (%s). '
+                     'Volvé a cargarlo: cmd /c "gh secret set '
+                     'CREDS_JSON < creds.json"' % str(e)[:60])
+        for k in ('client_email', 'private_key'):
+            if not d.get(k):
+                sys.exit('a CREDS_JSON le falta %r' % k)
+        env = io.open('.env', encoding='utf-8-sig').read()
+        faltan = [k for k in ('CLOUDFLARE_API_TOKEN',) if k not in env]
+        if faltan:
+            sys.exit('a ENV_FILE le falta %s' % ', '.join(faltan))
+        print('credenciales: JSON válido y .env con lo que hace falta')
+        PY
+
+    # ⚠️ LAS CARAS **NO** SON UN PASO DE ACA, Y ES A PROPOSITO. El
+    # runner necesita el espejo de R2 para no dibujar 15 caras de 138,
+    # pero eso es precondicion de **dibujar**, no de «correr en
+    # Actions»: puesto aca quedaria bien para este llamador y mal para
+    # el otro —una persona con el repo recien clonado corriendo
+    # `pipeline.py --correr`—. Vive en `bot/pipeline.py`, paso 3, que
+    # ademas solo lo paga los dias que hay algo que dibujar.

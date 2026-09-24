@@ -1,0 +1,88 @@
+{
+ "_nota": "Las crews de la Liga, pasadas por Dlx el 20/08/2026. La clave es el nombre de la crew y el valor la lista de miembros tal como los escribio; el cruce con el pool se hace normalizando el nombre.",
+ "_aviso_umbral": "El umbral de 3 rige igual que para pais y servidor: ser '1 de 1' no dice nada. Medido sobre el pool de 138, solo 4 de 17 crews llegan a 3 miembros CON CARTA.",
+ "_aviso_alias": "Algunos de los que figuran 'fuera del pool' pueden ser ALIAS y no ausencias. competitivo.py resuelve alias con la hoja AKAs del Operativo —hay rastro de 'kibak' -> 'valen'— y este cruce NO los resuelve. Antes de dar por ausente a alguien, pasarlo por AKAs.",
+ "crews": {
+  "Follombia": [
+   "Prosu",
+   "Vandu",
+   "Kirito",
+   "Erian",
+   "Snow",
+   "Bloody",
+   "Vlade",
+   "97",
+   "Saz",
+   "JJ",
+   "Partim",
+   "Sami"
+  ],
+  "KS": [
+   "Zignos",
+   "Heat",
+   "Sombra"
+  ],
+  "Fontana": [
+   "Kibak",
+   "RodriLP",
+   "Agus",
+   "Luzzano",
+   "Prodigy"
+  ],
+  "Sexosos": [
+   "Juanpa",
+   "Christo",
+   "Astaroth",
+   "Axinu",
+   "Acry",
+   "7Po"
+  ],
+  "Argentina Crew": [
+   "Franky"
+  ],
+  "Mayas Crew": [
+   "MayanMC"
+  ],
+  "RKT Crew": [
+   "Reazer"
+  ],
+  "La Formula Crew": [
+   "Pipe"
+  ],
+  "La Pampa Crew": [
+   "MCO"
+  ],
+  "NOBLESSE OBLIGE": [
+   "Kyss",
+   "Rubik",
+   "Vice"
+  ],
+  "Santa Trinidad": [
+   "Mika",
+   "Makmah",
+   "Gocho"
+  ],
+  "Guardia Nacional": [
+   "Kourier",
+   "Volk",
+   "Cj"
+  ],
+  "Lighting Force": [
+   "Camila",
+   "Panchok",
+   "Og",
+   "Nhp"
+  ],
+  "Caypher": [
+   "Rayden",
+   "Rayo"
+  ],
+  "Peruvianleads": [],
+  "Blanca Perla": [
+   "Six"
+  ],
+  "Sentinelense": [
+   "Velatz"
+  ]
+ }
+}

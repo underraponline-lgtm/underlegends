@@ -1,0 +1,230 @@
+# -*- coding: utf-8 -*-
+"""GUARDAR UN EVENTO EN `Resultados` Y `1v1`. Lo que el bot va a llamar.
+
+    from sheet.resultados import guardar
+    guardar({
+        'num': 349, 'fecha': '20/09', 'servidor': 'DRA', 'escala': '16+',
+        'resultados': [{'rapero': 'Konan', 'posicion': 'Campeón',
+                        'puntos': 10000}],
+        'duelos': [{'ronda': 'Final', 'a': 'Konan', 'b': 'Axinu',
+                    'ganador': 'Konan'}],
+    }, dry=True)
+
+    python sheet/resultados.py --estado      que hay en las dos hojas
+    python sheet/resultados.py --probar      un evento de prueba, en simulacro
+
+🔴 POR QUE ESTA PIEZA, Y NO ARREGLAR `procesarEvento`.
+
+El motor del Apps Script **ya tiene** `escribirLogs()`, que hace justo
+esto. Pero el `Log` del Operativo dice `Total entradas 0`: **nunca se
+ejecuto**, y los 348 eventos de `Eventos Procesados` entraron por otro
+camino. Dlx, 20/09: *«todo es automatico, lo del sheet es viejo»* — la
+idea es que el bot lleve el registro.
+
+⚠️ Y «automatico» NO era «el bot detecta solo»: Dlx lo aclaro el mismo
+dia —*«mayormente los usuarios pondran las llaves y anunciaran los
+eventos manualmente»*—, asi que lo legado es **el menu de la planilla**
+y no la carga a mano. Quien llama a esto es
+`sheet/procesar_entrada.py`, que lee lo que una persona pego en
+`Entrada` y frena si un nombre no esta en el padron.
+
+O sea que el camino que importa es este: Python, llamable desde GitHub
+Actions o desde donde sea, sin depender del menu de la planilla.
+
+LAS DOS HOJAS ESTAN VACIAS Y ESO CUESTA CARO
+----------------------------------------------
+`duel_t` y `duel_v` son **obligatorios en tres de las cuatro tarjetas** y
+hoy son reales en **4 de 138**: el resto muestra `0/0`. Salen de `1v1` en
+cuanto tenga filas. Y cruzando el ganador con el pais del padron salen
+tambien `DNA` y `DIN`, las dos que la carta Pais dibuja como `—`.
+
+⚠️ NO SE SIEMBRAN LAS VIEJAS. `datos/eventos.json` tiene los cinco eventos
+insignia con sus participantes, y sembrarlos daria 72 filas de datos
+reales... de **5 de 348 eventos**. Cualquier cuenta sobre eso —podios,
+duelos, win rate— saldria mal **sin fallar**, que es peor que la hoja
+vacia. La hoja vacia dice la verdad: todavia no hay registro.
+"""
+import os
+import sys
+
+SCR = os.path.dirname(os.path.abspath(__file__))
+BASE = os.path.dirname(SCR)
+sys.path.insert(0, SCR)
+sys.path.insert(0, BASE)
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except AttributeError:
+    pass
+
+from escribir import Hoja, poner, id_operativo, API, token   # noqa: E402
+
+# ⚠️ EL ORDEN ES EL DE LA HOJA, no uno nuevo. Se verifica contra la
+# cabecera antes de escribir: mandar de menos NO falla, entra corrido.
+COLS_RES = ['Evento #', 'Fecha', 'Servidor', 'Escala', 'Rapero', 'País',
+            'Posición', 'Puntos', 'MW pts', 'Puntos sin MW', 'Notas']
+COLS_UNO = ['Evento #', 'Fecha', 'Servidor', 'Ronda', 'Rapero A', 'Rapero B',
+            'Ganador', 'Perdedor', 'Notas']
+
+
+def _pais_de():
+    """{clave: iso} desde el padrón. Vacío si no responde."""
+    try:
+        from padron import seguro
+        from comun.claves import clave
+        return {k: d['cc'] for k, d in seguro().items() if d.get('cc')}, clave
+    except Exception:                                # noqa: BLE001
+        return {}, (lambda s: str(s).strip().lower())
+
+
+def _filas_res(ev, paises, clave):
+    out = []
+    for r in ev.get('resultados', []):
+        nom = str(r.get('rapero', '')).strip()
+        if not nom:
+            continue
+        pts = r.get('puntos', 0) or 0
+        mw = r.get('mw_pts', 0) or 0
+        out.append([ev['num'], ev['fecha'], ev['servidor'], ev.get('escala', ''),
+                    nom, paises.get(clave(nom), ''), r.get('posicion', ''),
+                    pts, mw or '', pts - mw, str(r.get('notas', '')).strip()])
+    return out
+
+
+def _filas_uno(ev):
+    out = []
+    for b in ev.get('duelos', []):
+        a, c = str(b.get('a', '')).strip(), str(b.get('b', '')).strip()
+        g = str(b.get('ganador', '')).strip()
+        if not (a and c and g):
+            continue
+        # ⚠️ SOLO 1v1 LIMPIOS. Un lado con coma es un equipo y una nota con
+        # «triple» es otra cosa: mezclarlos con los duelos individuales
+        # ensucia el win rate de las tarjetas. Es la misma regla que ya
+        # tenia `escribirLogs` en el Apps Script.
+        #
+        # ✅ Y ES LA DEFINICION, NO UNA PERDIDA. Dlx, 21/09/2026:
+        # *«que eso sea duelos individuales nada mas. No grupales. Solo
+        # vale cuando el formato es 1v1, no 1v3 o 2v2»*.
+        #
+        # Lo habia anotado como un costo: medido sobre la llave de
+        # prueba, Am peleo 2 y gano 1, pero como su derrota fue contra un
+        # duo le queda **1/1 = 100 %**. Eso parecia inflado.
+        #
+        # ⚠️ NO LO ES, PORQUE `duel_t` NO ES «batallas»: es **duelos**, y
+        # un 1v2 no es un duelo. Am tiene un duelo y lo gano. La misma
+        # cifra que parecia un error es la respuesta correcta a la
+        # pregunta que la columna hace.
+        #
+        # Queda escrito porque la lectura equivocada es facil de repetir:
+        # el numero se ve raro si uno cree que cuenta batallas.
+        # 🔴 Y ESTO MIRABA SOLO LA COMA, ASI QUE NO FILTRABA NADA. La
+        # regla estaba bien escrita y el dato viene con `+`: el primer
+        # evento por equipos de la T1 —#349, un 3v3— metio sus **4
+        # batallas** en `1v1` como si fueran duelos individuales, entre
+        # entidades como `sosa+papa+ bna🇯🇴` que no son personas.
+        #
+        # El separador vive ahora en `sheet/equipos.py`, junto con el que
+        # usa `motor.equipo()` para repartir los puntos. Eran las dos
+        # mitades de la misma regla de Dlx y las dos miraban la coma.
+        from equipos import cuenta_como_duelo
+        if not cuenta_como_duelo(a, c):
+            continue
+        if 'triple' in str(b.get('notas', '')).lower():
+            continue
+        out.append([ev['num'], ev['fecha'], ev['servidor'], b.get('ronda', ''),
+                    a, c, g, (c if g == a else a),
+                    str(b.get('notas', '')).strip()])
+    return out
+
+
+def _borrar_evento(hoja, num):
+    """Saca las filas de ese evento. Idempotencia: reescribir no duplica."""
+    import requests
+    filas = hoja.filas()
+    quedan = [f for f in filas if str(f[0]).strip() != str(num)]
+    if len(quedan) == len(filas):
+        return 0
+    # se reescribe el bloque entero y se limpia la cola
+    ancho = hoja.ancho
+    quedan = [list(f) + [''] * (ancho - len(f)) for f in quedan]
+    vacias = [[''] * ancho for _ in range(len(filas) - len(quedan))]
+    rng = '%s!A%d:%s%d' % (hoja.nombre, hoja.fila_datos,
+                           chr(ord('A') + ancho - 1),
+                           hoja.fila_datos + len(filas) - 1)
+    requests.put('%s/%s/values/%s?valueInputOption=RAW'
+                 % (API, id_operativo(), requests.utils.quote(rng)),
+                 headers={'Authorization': 'Bearer ' + token()},
+                 json={'values': quedan + vacias}, timeout=90)
+    return len(filas) - len(quedan)
+
+
+def guardar(ev, dry=True):
+    """Escribe un evento en las dos hojas. Idempotente por `num`."""
+    for c in ('num', 'fecha', 'servidor'):
+        if c not in ev:
+            raise ValueError('al evento le falta %r' % c)
+    paises, clave = _pais_de()
+    res, uno = _filas_res(ev, paises, clave), _filas_uno(ev)
+
+    hr, hu = Hoja('Resultados'), Hoja('1v1')
+    for h, cols in ((hr, COLS_RES), (hu, COLS_UNO)):
+        if h.cabecera[:len(cols)] != cols:
+            raise RuntimeError(
+                '%s no tiene las columnas esperadas.\n  hoja: %s\n  '
+                'esperaba: %s' % (h.nombre, h.cabecera, cols))
+
+    if dry:
+        print('   [dry] #%s %s %s → %d resultado(s) y %d duelo(s)'
+              % (ev['num'], ev['servidor'], ev['fecha'], len(res), len(uno)))
+        sin_pais = [r[4] for r in res if not r[5]]
+        if sin_pais:
+            print('         ⚠️ %d sin país en el padrón: %s'
+                  % (len(sin_pais), ', '.join(sin_pais[:6])))
+        return 0, 0
+
+    borradas = _borrar_evento(hr, ev['num']) + _borrar_evento(hu, ev['num'])
+    if borradas:
+        print('   (reescribiendo: saqué %d fila(s) viejas de #%s)'
+              % (borradas, ev['num']))
+    n1 = hr.agregar(res, dry=False) if res else 0
+    n2 = hu.agregar(uno, dry=False) if uno else 0
+    return n1, n2
+
+
+def estado():
+    for n in ('Resultados', '1v1'):
+        h = Hoja(n)
+        fs = h.filas()
+        evs = sorted({str(f[0]).strip() for f in fs if f and str(f[0]).strip()})
+        print('   %-12s %4d filas · %d evento(s)%s'
+              % (n, len(fs), len(evs),
+                 '  (#%s … #%s)' % (evs[0], evs[-1]) if evs else ''))
+
+
+def main():
+    print('\n══ EL REGISTRO CRUDO ══\n')
+    estado()
+    if '--probar' not in sys.argv:
+        print('')
+        return 0
+    print('\n   un evento de prueba, en simulacro:')
+    guardar({
+        'num': 9999, 'fecha': '20/09', 'servidor': 'DRA', 'escala': '16+',
+        'resultados': [
+            {'rapero': 'Konan', 'posicion': 'Campeón', 'puntos': 10000},
+            {'rapero': 'Axinu', 'posicion': 'Subcampeón', 'puntos': 7500},
+            {'rapero': 'NoExisteNadie', 'posicion': 'Cuartos', 'puntos': 2500},
+        ],
+        'duelos': [
+            {'ronda': 'Final', 'a': 'Konan', 'b': 'Axinu', 'ganador': 'Konan'},
+            {'ronda': 'SF', 'a': 'Konan, Bloody', 'b': 'Val', 'ganador': 'Val'},
+        ],
+    }, dry=True)
+    print('\n   ⚠️ el duelo con coma es un EQUIPO y queda afuera a propósito:')
+    print('      mezclarlo con los 1v1 ensucia el win rate de las tarjetas.')
+    print('')
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,130 @@
+# EL RANGO, PUBLICADO SOLO.
+#
+# Cuando cambian los umbrales o el minimo de eventos, esto sube el bloque
+# al Apps Script del Sheet Oficial y **publica una version nueva**, que es
+# el paso que hace que la gente lo vea. Ver `sheet/webapp_rangos.py`.
+#
+# 🔴 POR QUE EXISTE: EL RANGO VIVE EN CINCO LUGARES. `CLAUDE.md` los
+# lista — `comun/rangos.py`, la columna del Sheet, la Guia, el Index.html
+# del Apps Script y los roles de Discord— y dice que la incoherencia no
+# se arregla a medias: "si el Sheet pasa a ocho y los roles se quedan en
+# seis, se muda de sitio en vez de cerrarse". El Index.html era el unico
+# que quedaba atado a que alguien corriera un comando.
+#
+# ⚠️ POR PUSH Y NO POR HORARIO. El umbral cambia una vez por temporada:
+# un cron diario serian 365 corridas para agarrar un cambio. El push a
+# esos dos archivos **es** la señal, y llega en el momento exacto.
+name: rangos
+
+on:
+  # ⚠️ ESTOS DOS ARCHIVOS Y NO LA CARPETA ENTERA, y no es una estimacion:
+  # `webapp_rangos.bloque()` lee UMBRAL/ORDEN/ACENTO/MATERIAL/TILDES de
+  # `comun/rangos.py` y REQUISITOS de `comun/requisitos.py`, y nada mas.
+  # Poner `comun/**` haria que cada arreglo de un comentario en otro
+  # archivo despertara esto para no hacer nada.
+  push:
+    branches: [main]
+    paths:
+      - 'comun/rangos.py'
+      - 'comun/requisitos.py'
+  # ⚠️ A MANO SIEMPRE, igual que el ciclo: si algo quedo a medias hay que
+  # poder reintentarlo sin fabricar un commit.
+  workflow_dispatch:
+
+concurrency:
+  group: rangos
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: instalar
+        # sin Playwright: aca no se dibuja nada
+        run: pip install -r requirements.txt
+
+      - name: credenciales
+        # 🔴 TRES, Y CADA UNA HACE UNA COSA DISTINTA.
+        #
+        #  · CREDS_JSON  la cuenta de servicio: **lee** el Apps Script.
+        #  · OAUTH_TOKEN el refresh token de Dlx: **escribe y publica**.
+        #    La cuenta de servicio no puede: devuelve `403 User has not
+        #    enabled the Apps Script API`, que es un interruptor por
+        #    usuario y una cuenta de servicio no tiene donde hacer clic.
+        #    Ver `sheet/autorizar.py`.
+        #  · ENV_FILE    no hace falta aca, y por eso no esta.
+        env:
+          CREDS_JSON: ${{ secrets.CREDS_JSON }}
+          OAUTH_TOKEN: ${{ secrets.OAUTH_TOKEN }}
+        run: |
+          if [ -z "$CREDS_JSON" ] || [ -z "$OAUTH_TOKEN" ]; then
+            echo "Faltan los secrets CREDS_JSON y/o OAUTH_TOKEN."
+            echo "El segundo sale de oauth_token.json, que deja"
+            echo "  python sheet/autorizar.py"
+            exit 1
+          fi
+          printf '%s' "$CREDS_JSON"  > creds.json
+          printf '%s' "$OAUTH_TOKEN" > oauth_token.json
+          echo "creds.json"       >> .git/info/exclude
+          echo "oauth_token.json" >> .git/info/exclude
+
+          # 🔴 QUE HAYAN LLEGADO ENTEROS, NO SOLO QUE EXISTAN. Misma razon
+          # que en `ciclo.yml`: un JSON con un byte de mas **existe y no
+          # parsea**, y el fallo aparece tres pasos despues con un error
+          # que no menciona la palabra «secret».
+          #
+          # ⚠️ Y AL TOKEN SE LE MIRA EL `refresh_token`, no que sea JSON.
+          # Un `oauth_token.json` sin ese campo es valido, parsea, y
+          # **anda una hora**: si se cargo el archivo de un access token
+          # suelto, esto funciona hoy y falla la proxima temporada, que
+          # es justo cuando hace falta. Nada se imprime.
+          python - <<'PY'
+          import json, io, sys
+          try:
+              d = json.load(io.open('creds.json', encoding='utf-8-sig'))
+          except Exception as e:
+              sys.exit('CREDS_JSON no es JSON válido (%s)' % str(e)[:60])
+          for k in ('client_email', 'private_key'):
+              if not d.get(k):
+                  sys.exit('a CREDS_JSON le falta %r' % k)
+          try:
+              t = json.load(io.open('oauth_token.json', encoding='utf-8-sig'))
+          except Exception as e:
+              sys.exit('OAUTH_TOKEN no es JSON válido (%s). Cargalo con: '
+                       'cmd /c "gh secret set OAUTH_TOKEN < oauth_token.json"'
+                       % str(e)[:60])
+          if not t.get('refresh_token'):
+              sys.exit('a OAUTH_TOKEN le falta refresh_token: es un access '
+                       'token suelto y vence en una hora. Regeneralo con '
+                       '`python sheet/autorizar.py`.')
+          # ⚠️ `endswith` Y NO `in`: con `in`, un token que solo tenga
+          # `script.projects.readonly` contiene la cadena
+          # `script.projects` y pasaria el chequeo — para despues fallar
+          # al escribir, que es lo que este paso existe para evitar.
+          dados = t.get('scopes') or ()
+          faltan = [s for s in ('script.projects', 'script.deployments')
+                    if not any(x.endswith('/' + s) for x in dados)]
+          if faltan:
+              sys.exit('a OAUTH_TOKEN le faltan scopes: %s. Sin '
+                       '`script.deployments` se sube el código y **no se '
+                       'publica**, que es el paso que la gente ve. '
+                       'Regeneralo con `python sheet/autorizar.py`.'
+                       % ', '.join(faltan))
+          print('credenciales: las dos válidas, con refresh_token y scopes')
+          PY
+
+      - name: publicar el bloque
+        # ⚠️ ES SEGURO CORRERLO DE MAS. `webapp_rangos.py` compara con lo
+        # que hay arriba y sale temprano si ya esta igual, asi que un
+        # `workflow_dispatch` de prueba no deja una version de Apps
+        # Script nueva e identica en el historial de despliegues.
+        run: python sheet/webapp_rangos.py --aplicar

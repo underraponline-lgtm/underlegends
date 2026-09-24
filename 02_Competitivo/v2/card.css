@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Barlow+Condensed:wght@600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07070C;padding:44px 20px;font-family:'Archivo','LigaEmoji',sans-serif;color:#E9E9F2}
+h1{font-size:1.15rem;font-weight:800}
+.sub{font-size:0.8rem;color:#8E8EA6;margin:2px 0 34px}
+.rack{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
+.wrap{width:300px}
+.cap{text-align:center;margin-top:14px;font-size:0.68rem;color:#8E8EA6}
+.ley{max-width:1300px;margin:34px auto 0;font-size:0.74rem;color:#8E8EA6;text-align:center;line-height:2}
+.ley b{color:#E9E9F2}
+
+/* ═══ LA CARTA · 300 × 485 ═══ */
+.card{position:relative;width:300px;height:485px;color:#fff;
+  filter:drop-shadow(0 18px 42px rgba(0,0,0,0.85))}
+.clip{position:absolute;inset:0;overflow:hidden;
+  clip-path:path('__OUT__'); -webkit-clip-path:path('__OUT__')}
+
+.bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 20%, #1F2230 0%, var(--base) 60%, #05050A 100%)}
+.rays{position:absolute;inset:-22%;opacity:0.40;
+  background:repeating-conic-gradient(from 200deg at 52% 24%,
+    var(--acc) 0deg 1.3deg, transparent 1.3deg 8.5deg);
+  -webkit-mask-image:radial-gradient(ellipse at 52% 24%,#000 0%,rgba(0,0,0,0.45) 40%,transparent 72%);
+          mask-image:radial-gradient(ellipse at 52% 24%,#000 0%,rgba(0,0,0,0.45) 40%,transparent 72%)}
+.bloom{position:absolute;inset:0;
+  background:radial-gradient(ellipse 58% 34% at 52% 22%,
+    color-mix(in srgb,var(--acc) 38%,transparent) 0%, transparent 68%)}
+
+.photo{position:absolute;top:0;left:4%;right:0;height:68%;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover;object-position:center 22%}
+.photo b{display:flex;width:100%;height:100%;align-items:center;justify-content:center;
+  font-size:6.6rem;font-weight:900;color:rgba(255,255,255,0.08)}
+.veil{position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 40% 22% at 14% 22%, rgba(0,0,0,0.80) 0%, transparent 66%),
+    linear-gradient(180deg, rgba(0,0,0,0.26) 0%, transparent 12%, transparent 46%,
+      color-mix(in srgb,var(--base) 86%,transparent) 58%, var(--base) 68%)}
+
+.frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* ── número y rango ── */
+.tl{position:absolute;top:16.5%;left:8%}
+.ovr{font-size:3.3rem;font-weight:900;line-height:0.78;letter-spacing:-2px;
+  text-shadow:0 2px 9px rgba(0,0,0,0.95)}
+.rk{font-size:1.18rem;font-weight:800;letter-spacing:3px;margin-top:4px;
+  text-shadow:0 2px 7px rgba(0,0,0,0.95)}
+
+/* ── rombos de logros, sobre el filo izquierdo ── */
+.skills{position:absolute;top:31.5%;left:-10px;display:flex;flex-direction:column;gap:8px;
+  z-index:6}
+/* el punto tiene que quedar SIEMPRE encima del rombo de abajo.
+   Van en columna con gap, y el punto sale hacia abajo-derecha: sin esto
+   el rombo siguiente lo tapa, porque los hermanos se apilan por orden. */
+.skills i:nth-child(1){z-index:3}
+.skills i:nth-child(2){z-index:2}
+.skills i:nth-child(3){z-index:1}
+.skills i{width:41px;height:41px;transform:rotate(45deg);border-radius:9px;
+  background:linear-gradient(150deg,rgba(9,9,16,0.95),rgba(32,32,50,0.95));
+  border:2px solid var(--acc);
+  /* SIN brillo del acento a proposito. Los rombos salen en left:-10px y el
+     halo se iba 14px mas, o sea ~25px fuera del escudo. Sobre fondo oscuro
+     se fundia; sobre transparencia queda como una capa magenta suelta.
+     El acento ya se lee en el marco, la pastilla y el 100. Ver CLAUDE.md. */
+  box-shadow:0 3px 8px rgba(0,0,0,0.7);
+  display:flex;align-items:center;justify-content:center;font-style:normal}
+
+/* EL TAMANO DEPENDE DE CUANTOS ROMBOS HAYA.
+   41px es el PISO (tres rombos, la columna llena). Con menos crecen,
+   porque hay lugar de sobra:
+        3 -> 41px   2 -> 44px   1 -> 47px
+   El `left` compensa en cada caso para que el centro caiga siempre en
+   10,5px, que es donde esta la linea del marco (stroke-width 27
+   recortado -> banda visible de 0 a 13,5px).
+   El punto del nivel acompana el tamano. */
+.skills.k2{left:-11.5px}
+.skills.k2 i{width:44px;height:44px;border-radius:10px}
+.skills.k2 i.ic::before{width:13px;height:13px;right:-3.6px;bottom:-3.6px}
+.skills.k1{left:-13px}
+.skills.k1 i{width:47px;height:47px;border-radius:10px}
+.skills.k1 i.ic::before{width:13.6px;height:13.6px;right:-3.8px;bottom:-3.8px}
+.skills i>u{display:block;transform:rotate(-45deg);text-decoration:none;line-height:1;
+  font-size:0.82rem;color:var(--acc)}
+
+/* ── rombo con icono: el borde dice el NIVEL, el icono dice QUE ──
+   32px · icono al 78% (con aire) · borde 2px
+   ranura 1 evento · ranura 2 estilo · ranura 3 crew — el orden es fijo */
+.skills i.ic{position:relative;overflow:visible;
+  background:linear-gradient(150deg,rgba(9,9,16,0.97),rgba(32,32,50,0.97))}
+/* el icono va SIEMPRE BLANCO: la imagen actua de mascara.
+   Requiere que el <i> traiga style="--m:url(...)" con el logo procesado.
+   Motivo: los logos oscuros sobre rombo oscuro no se ven — probado.
+   Va al 78% centrado, asi que nunca se sale del rombo. */
+.skills i.ic img{display:none}
+.skills i.ic::after{content:'';position:absolute;top:50%;left:50%;
+  width:78%;height:78%;transform:translate(-50%,-50%) rotate(-45deg);
+  -webkit-mask-image:var(--m);mask-image:var(--m);
+  -webkit-mask-size:contain;mask-size:contain;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+  background:var(--acc)}
+.skills i.ic::after{background:#FFFFFF}
+
+/* ── NIVEL: un punto en el vertice, NO el color del borde ──
+   El borde siempre toma --acc (el color del rango): la carta usa una sola
+   paleta y el rombo deja de parecer un cuerpo extrano.
+   El punto va afuera del rombo, por eso overflow:visible arriba. */
+.skills i.ic::before{content:'';position:absolute;right:-3.5px;bottom:-3.5px;
+  width:12.5px;height:12.5px;border-radius:50%;background:var(--niv,transparent);
+  border:1.5px solid rgba(8,8,14,0.9);z-index:3}
+/* los cuatro niveles — se pasan por style="--niv:..." en el <i> */
+.lv-oro   {--niv:#FFD024}   /* campeon    */
+.lv-plata {--niv:#F4F7FF}   /* subcampeon — mas brillante: a 12px el #DCE0E8
+                               se confundia con el gris del participo */
+.lv-bronce{--niv:#CD7F32}   /* tercero    */
+.lv-negro {--niv:#5E5E70}   /* participo  */
+/* el podio brilla; el que solo participo no.
+   RADIOS A LA MITAD de los originales (oro 11/4, plata 10/3, bronce 7).
+   El punto vive en el vertice de abajo del rombo, que ya sale del escudo:
+   con el radio entero el halo se derramaba afuera y sobre fondo claro se
+   leia como una forma suelta, no como una medalla. A la mitad el punto
+   sigue encendido y el derrame desaparece.
+   Los TRES juntos: son la misma familia y Konan lleva plata y oro pegados,
+   asi que bajar uno solo se veria como un error en una sola carta.
+   El `inset` de la plata NO es halo sino el anillo que define el borde
+   del punto: ese queda igual. */
+.lv-oro::before   {box-shadow:0 0 5.5px 0.5px #FFD024,0 0 2px #FFD024}
+.lv-plata::before {box-shadow:0 0 5px rgba(244,247,255,0.9),
+                             0 0 1.5px rgba(255,255,255,0.8),
+                             inset 0 0 0 1.2px rgba(255,255,255,0.9)}
+.lv-bronce::before{box-shadow:0 0 3.5px  #CD7F32}
+
+/* ── chips de la derecha ── */
+.tr{position:absolute;top:17.5%;right:-11px;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.mr{position:absolute;top:39.5%;right:-11px;display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+.chip{min-width:56px;text-align:center;padding:5px 10px 4px;border-radius:8px;
+  background:linear-gradient(180deg,rgba(11,11,19,0.95),rgba(28,28,44,0.95));
+  border:1.4px solid rgba(255,255,255,0.62);
+  font-family:'Barlow Condensed','LigaEmoji',sans-serif;font-size:1.08rem;font-weight:700;line-height:1.2;
+  box-shadow:0 3px 9px rgba(0,0,0,0.7)}
+/* sin brillo del acento: los chips salen en right:-11px, ver .skills i */
+.chip.on{color:var(--acc);border-color:var(--acc);
+  box-shadow:0 3px 9px rgba(0,0,0,0.7)}
+.chip.sm{font-size:0.95rem}
+.chip em{font-style:normal;opacity:0.4;margin:0 1px}
+.chip.sc{font-size:0.92rem;padding-right:6px}
+.chip.sc u{display:inline-block;text-decoration:none;font-family:'Archivo','LigaEmoji',sans-serif;
+  font-size:0.42rem;font-weight:900;letter-spacing:0.5px;opacity:0.55;margin-left:2px;vertical-align:2px}
+
+/* ── nombre ── */
+/* ── el nombre se achica solo si hace falta ──
+   Medido sobre los 138 del pool: 103 tienen <=6 caracteres, 28 tienen 7-8,
+   4 tienen 9-10 y 3 tienen 11+ (BastyRetro, Lord Viruzz, Fullylo4ded,
+   Sin Limites). Achicarlo para todos castigaria a 134 por 4 excepciones. */
+.n6  .name{font-size:1.86rem}
+.n8  .name{font-size:1.72rem}
+.n10 .name{font-size:1.55rem}
+.n12 .name{font-size:1.38rem}
+.name{position:absolute;top:56.5%;left:0;right:0;text-align:center;
+  font-size:1.72rem;font-weight:900;text-transform:uppercase;letter-spacing:-0.5px;
+  text-shadow:0 3px 8px rgba(0,0,0,0.98)}
+
+/* ── 6 stats ── */
+.stats{position:absolute;top:64%;left:7%;right:7%}
+.lb,.nb{display:grid;grid-template-columns:repeat(6,1fr);text-align:center}
+.lb span{font-size:0.76rem;font-weight:800;letter-spacing:0.4px;opacity:0.95;text-shadow:0 1px 3px rgba(0,0,0,0.95)}
+.nb span{font-family:'Barlow Condensed','LigaEmoji',sans-serif;font-size:1.9rem;font-weight:700;
+  line-height:1.1;text-shadow:0 2px 5px rgba(0,0,0,0.95)}
+/* un 100 significa que ese rapero LIDERA esa dimension en todo el pool
+   (los valores se normalizan contra el maximo). Se marca con .top
+   Ojo: es relativo — si otro mejora, el 100 baja sin que este empeore.
+   EVT queda fuera a proposito: es un conteo crudo, no una dimension. */
+.nb span.top{color:var(--acc);
+  text-shadow:0 0 14px color-mix(in srgb,var(--acc) 75%,transparent),
+              0 2px 5px rgba(0,0,0,0.95)}
+
+/* ── bandera · temporada · servidor ── */
+.chem{position:absolute;top:75.5%;left:0;right:0;
+  display:flex;align-items:center;justify-content:center;gap:11px}
+.fl{width:36px;height:24px;border-radius:4px;object-fit:cover;border:1px solid rgba(255,255,255,0.45)}
+.cl{width:24px;height:24px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.35)}
+.lg{font-size:0.62rem;font-weight:900;letter-spacing:0.8px;color:var(--acc);
+  border:1.3px solid color-mix(in srgb,var(--acc) 65%,transparent);border-radius:5px;padding:3px 7px;
+  background:rgba(8,8,14,0.55)}
+.sep{width:1px;height:22px;background:rgba(255,255,255,0.28)}
+
+/* ── variantes del bloque superior ── */
+.rkbox{display:inline-block;margin-top:7px;padding:3px 9px 2px;border-radius:6px;
+  font-size:0.6rem;font-weight:900;letter-spacing:1.6px;
+  color:#0B0B12;background:var(--acc);
+  box-shadow:0 0 14px color-mix(in srgb,var(--acc) 45%,transparent)}
+.rk2{margin-top:4px;font-family:'Barlow Condensed','LigaEmoji',sans-serif;font-size:1.9rem;
+  font-weight:700;line-height:0.9;color:var(--acc);text-shadow:0 2px 7px rgba(0,0,0,0.95)}
+.rk2 i{display:block;font-family:'Archivo','LigaEmoji',sans-serif;font-style:normal;
+  font-size:0.5rem;font-weight:900;letter-spacing:2px;opacity:0.6;color:#FFF;margin-top:1px}
+.rkbig{margin-top:2px;font-size:2.4rem;font-weight:900;line-height:0.85;color:var(--acc);
+  text-shadow:0 2px 9px rgba(0,0,0,0.95)}
+/* sin brillo del acento: es un .chip, sale en right:-11px. Ver .skills i */
+.chip.rkchip{color:var(--acc);border-color:var(--acc);font-size:1.05rem;font-weight:700;
+  box-shadow:0 3px 9px rgba(0,0,0,0.7)}
+
+.chip.cf{font-size:0.92rem;padding-right:6px}
+.chip.cf u{display:inline-block;text-decoration:none;font-family:'Archivo','LigaEmoji',sans-serif;
+  font-size:0.4rem;font-weight:900;letter-spacing:0.5px;opacity:0.55;margin-left:3px;vertical-align:2px}
+
+/* ═══ TAG DEL COMPETITIVO ═══ */
+.tagbot,.tagtop{position:absolute;left:50%;transform:translateX(-50%);z-index:9;
+  white-space:nowrap;border-radius:20px;font-weight:900;
+  box-shadow:0 3px 10px rgba(0,0,0,0.55)}
+.tagbot{top:83.4%;padding:4px 13px 5px;font-size:0.58rem;letter-spacing:1.2px}
+.tagtop{top:2.6%;padding:2px 9px 3px;font-size:0.47rem;letter-spacing:1px}
+
+.t1{background:linear-gradient(180deg,#FFF0A8 0%,#FFD024 48%,#C89000 100%);
+    color:#2A1E00;border:1px solid rgba(90,66,0,0.55);
+    box-shadow:0 0 16px rgba(255,196,32,0.7),inset 0 1px 0 rgba(255,255,255,0.85)}
+.t2{background:linear-gradient(180deg,#FFFFFF 0%,#DCE0E8 46%,#9BA3B2 100%);
+    color:#1E2129;border:1px solid rgba(60,68,82,0.45);
+    box-shadow:0 0 12px rgba(255,255,255,0.5),inset 0 1px 0 rgba(255,255,255,0.9)}
+.t3{background:linear-gradient(180deg,#5A606E 0%,#3A404C 55%,#23272F 100%);
+    color:#EEF1F6;border:1px solid rgba(255,255,255,0.42)}
+.t4{background:rgba(12,12,18,0.78);color:#A8ACB8;border:1px solid rgba(255,255,255,0.2)}
+
+/* variante 2: todo sube para dejarle lugar al tag de abajo */
+/* sin TAG abajo: todo baja y el nombre recupera tamaño */
+
+/* duelos y racha: el sufijo D / R en chico, como el SC */
+.chip u{display:inline-block;text-decoration:none;font-family:'Archivo','LigaEmoji',sans-serif;
+  font-size:0.42rem;font-weight:900;letter-spacing:0.5px;opacity:0.6;margin-left:3px;vertical-align:2px}
+.chip.du{font-size:1rem}
+
+/* ═══ v12 — el estado previo a mover la fila de abajo ═══
+   base: nombre 63.5% · stats 71.5% · fila 84%
+   con tag: nombre 61% · stats 69.5% · fila 81.5% · tag 83.4% */
+
+/* ── el logo UL, en la V de abajo ────────────────────────────────────
+   Calculado del path del escudo: a y=440 quedan 206px de ancho y a y=450
+   quedan 144. Con el TAG subido, el logo entra en la parte ancha de la V
+   en vez de quedar donde el filo ya esta cerrando. */
+.ul{ position:absolute; top:429px; left:50%; transform:translateX(-50%);
+     height:20.8px; width:auto; z-index:9; pointer-events:none; }
+
+/* la fila de bandera, temporada y escudo baja de tamano para dejarle
+   lugar al logo sin que el bloque de abajo se sienta apretado */
+.fl{ width:32px; height:21px }
+.cl{ width:21px; height:21px }
+.sep{ height:19px }
+.lg{ font-size:0.56rem; padding:2px 6px }
+.chem{ gap:9px }
+
+/* el TAG sube y se achica apenas */
+.tagbot{ top:82%; font-size:0.54rem; padding:3px 11px 4px }
+
+/* ═══════════════════════════════════════════════════════════════════
+   LA CORONA Y LA FILA DE ABAJO
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── la temporada, asomando desde la corona ───────────────────────────
+   Va DENTRO de .clip, o sea ANTES del marco en el orden de dibujo. Dos
+   cosas le comen la parte de arriba: el overflow del recorte corta lo que
+   sube de y=0, y la banda metalica del marco le pasa por encima.
+   El top NO es a ojo: lo que tapa es el PERFIL DE LA CORONA, que tiene
+   tres picos con valles, no una linea recta. Por debajo de top:0 el pico
+   central se come parte del texto (a -4 se pierde el 9% de la tinta).
+   En 4 el texto queda entero y asoma el 65% del circulo. */
+.temp{ position:absolute; top:4px; left:50%; transform:translateX(-50%);
+  width:42px; height:42px; border-radius:50%; z-index:12;
+  display:flex; align-items:flex-end; justify-content:center; padding-bottom:7px;
+  border:2px solid color-mix(in srgb,var(--acc) 85%,transparent);
+  background:rgba(10,10,18,0.94); color:var(--acc);
+  font-size:0.44rem; font-weight:900; letter-spacing:0.4px }
+
+/* ── el bloque de texto sube ──────────────────────────────────────────
+   nombre 56.5 -> 55.4 · stats 64 -> 62.9. Al subir, la tinta de los
+   numeros termina antes y la fila de abajo gana aire contra el TAG. */
+.name { top:55.4% }
+.stats{ top:62.9% }
+
+/* ── la fila de abajo, todo en circulos ───────────────────────────────
+   Centrada CONTANDO EL BRILLO del TAG, no solo su texto: el halo arranca
+   en y=391 aunque las letras empiecen en 399. */
+.chem{ top:73.61%; gap:11px }
+.sep { display:none }
+.fl, .cl{ width:27px; height:27px; border-radius:50%; object-fit:cover;
+  border:none; display:block }
+
+/* el circulo del estilo: fondo oscuro como los rombos, y aro apagado
+   porque todavia no mide nada. Cuando existan los datos de estilo, se
+   enciende igual que los otros dos. */
+.ci{ display:inline-block; width:27px; height:27px; border-radius:50%;
+  position:relative; background:linear-gradient(150deg,rgba(9,9,16,0.95),rgba(32,32,50,0.95));
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--acc) 34%,transparent) }
+.ci::after{ content:''; position:absolute; inset:0; background:#fff;
+  -webkit-mask-image:var(--m); mask-image:var(--m);
+  -webkit-mask-size:72%; mask-size:72%;
+  -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:center; mask-position:center }
+
+/* ── EL ARO QUE MIDE ──────────────────────────────────────────────────
+   En vez de una medalla suelta, el aro se completa segun tu posicion
+   dentro de esa categoria: #1 de 33 lo llena, el ultimo casi no lo pinta.
+   Toma el color del rango, asi el dorado queda reservado para los logros
+   de evento y para el TAG, y no se gasta repetido. Grosor 2px, el mismo
+   que el borde de los rombos. */
+.ar{ position:relative; display:inline-block; border-radius:50%; line-height:0;
+  padding:2px; background:rgba(255,255,255,0.26) }
+/* ese fondo es la PISTA del anillo: se ve entera siempre, y encima se
+   dibuja el arco de color. Estaba en 0.10 y no se notaba, asi que un aro
+   al 4% parecia un circulo roto en vez de uno casi vacio. */
+.ar::before{ content:''; position:absolute; inset:0; border-radius:50%;
+  background:var(--acc);
+  -webkit-mask:radial-gradient(circle, transparent 0 calc(50% - 2px), #000 calc(50% - 2px) 100%);
+          mask:radial-gradient(circle, transparent 0 calc(50% - 2px), #000 calc(50% - 2px) 100%) }
+.ar img{ position:relative; z-index:1 }
+
+/* ── el aro se abre abajo y el numero del puesto va en la abertura ────
+   El arco sigue midiendo la posicion, pero solo, nadie entiende que mide.
+   Con el numero adentro del hueco, el arco pasa a ser el medidor y el
+   numero la etiqueta. Y va centrado abajo, no colgando de la derecha. */
+.ar::before{
+  -webkit-mask:radial-gradient(circle,transparent 0 calc(50% - 2px),#000 calc(50% - 2px) 100%),
+    conic-gradient(from 205deg,#000 0 310deg, transparent 310deg 360deg);
+  -webkit-mask-composite:source-in;
+          mask:radial-gradient(circle,transparent 0 calc(50% - 2px),#000 calc(50% - 2px) 100%),
+    conic-gradient(from 205deg,#000 0 310deg, transparent 310deg 360deg);
+          mask-composite:intersect }
+.ar{ background:transparent }
+.ar > b{ position:absolute; left:50%; bottom:-6px; transform:translateX(-50%);
+  font-family:'Barlow Condensed','LigaEmoji',sans-serif; font-size:0.66rem; font-weight:700;
+  line-height:1; color:var(--acc); z-index:3; padding:0 3px;
+  background:rgba(8,8,14,0.9); border-radius:3px }
+
+/* el TAG, centrado entre el numero del aro y el logo UL.
+   El numero cuelga hasta y=394 y el logo arranca en 429, asi que el centro
+   de ese hueco esta en 411.5. Antes se media contra la fila de circulos,
+   que termina antes que el numero. */
+.tagbot{ top:81.97% }   /* NO va centrado a proposito: 3px arriba del centro. Queda 12.4px de aire
+   contra el numero del aro y 18.5 contra el logo, asi el TAG se apoya en la
+   fila de circulos en vez de flotar entre los dos. */
+
+/* ── ajuste fino del bloque de abajo ─────────────────────────────────
+   El logo baja y se achica, el TAG se achica, y los tres huecos quedan
+   iguales: numero del aro -> TAG -> logo UL. */
+.ul{ top:433px; height:18.5px }
+.tagbot{ font-size:0.5rem; padding:2.5px 10px 3.5px }
+
+/* ── el aro va SIEMPRE completo ───────────────────────────────────────
+   Antes se llenaba segun el puesto, y un aro al 4% parecia un circulo
+   roto. Ahora el aro es fijo y lo unico que cambia es el numero de abajo,
+   que es el dato que se queria mostrar. La abertura de abajo sigue, pero
+   solo para alojar el numero. */
+.ar::before{ background:var(--acc) }
+
+/* el TAG recupera tamano */
+.tagbot{ font-size:0.56rem; padding:3.5px 12px 4.5px }
+
+/* ── el icono de crew llena el circulo ────────────────────────────────
+   La fila son piezas LLENAS: la bandera y el escudo del servidor van con
+   object-fit:cover y ocupan de borde a borde. La crew estaba al 72% y
+   quedaba chica al lado de las otras. */
+.ci::after{ -webkit-mask-size:88%; mask-size:88% }
+
+/* el logo UL baja un poco mas y el TAG crece otro poco */
+.ul{ top:437px; height:18px }
+.tagbot{ font-size:0.6rem; padding:4px 13px 5px }
+
+/* ── el bloque central sube ───────────────────────────────────────────
+   Al crecer el TAG y bajar el logo, la mitad de abajo se puso pesada y
+   el centro de la carta quedo vacio. Nombre, stats y fila suben ~6px. */
+.name { top:54.2% }
+.stats{ top:61.7% }
+.chem { top:72.40% }
+
+/* ── version A, con el TAG un poco mas arriba y mas chico ─────────────
+   El numero del aro sube de -6 a -3px: queda pegado al circulo y le deja
+   aire al TAG. El TAG baja de 0.6 a 0.58rem y se sube 3px por encima del
+   centro, o sea que NO queda centrado a proposito: pesa mas arriba. */
+.ar > b{ bottom:-3px }
+.tagbot{ font-size:0.58rem; padding:3.5px 12px 4.5px }
+
+/* ── version C, con el logo 0.1 mas chico y 0.1 mas abajo ─────────────
+   El logo vuelve a su posicion original y el TAG sube con el.
+   Con esto los dos huecos del bloque de abajo quedan en 10.0 y 9.9. */
+.ul{ top:426.6px; height:20.7px }
+.tagbot{ top:81.27% }   /* subido a mano, NO centrado: asi lo quiere Dlx */
+
+/* el TAG baja de 0.58 a 0.56rem */
+.tagbot{ font-size:0.56rem }
+
+/* ── el aro va CERRADO ────────────────────────────────────────────────
+   Tenia una abertura de 50 grados abajo para alojar el numero, pero al
+   ampliar se ve como un anillo roto. Ahora el anillo es un circulo entero
+   y el numero se apoya encima, con su propio fondo oscuro. */
+.ar::before{
+  -webkit-mask:radial-gradient(circle, transparent 0 calc(50% - 2px), #000 calc(50% - 2px) 100%);
+          mask:radial-gradient(circle, transparent 0 calc(50% - 2px), #000 calc(50% - 2px) 100%) }
+
+/* ── la columna de rombos, centrada entre la pastilla y el EFI ────────
+   OJO: la caja del contenedor mide 139 pero los rombos estan rotados 45
+   grados, asi que PINTAN 156. Hay que centrar lo pintado, no la caja.
+   Con tres rombos, lo pintado va de 144.3 a 300.3 y el hueco disponible
+   de 143.2 a 299.2: coinciden casi exacto, asi que quedan sin aire.
+   Por eso ademas se achican de 41 a 38: para que respiren. */
+.skills i{ width:38px; height:38px }
+.skills i.ic::before{ width:11.5px; height:11.5px; right:-3.2px; bottom:-3.2px }
+/* Cada cantidad tiene su propio top, y cada una se referencia contra algo
+   distinto. Siempre se centra LO PINTADO, no la caja: un rombo de 44
+   rotado 45 grados pinta 62, no 44.
+     3 rombos -> centrados entre la pastilla (143.2) y el EFI (299.2)
+     2 rombos -> centrados entre la pastilla y el NOMBRE (262.9)
+     1 rombo  -> arriba, colgando de la pastilla con 6px de aire */
+.skills      { top:32.19% }   /* 3 de 38, pintan 146, entre pastilla y EFI    */
+.skills.k2   { top:31.99% }   /* 2 de 44, pintan 114, entre pastilla y nombre */
+.skills.k1   { top:32.77% }   /* 1 de 47, pinta   66, pegado a la pastilla    */
+
+/* ── el icono de estilo toma el color de la carta ─────────────────────
+   La fila de abajo es toda de piezas con color: bandera, servidor y crew
+   van como imagen. El estilo es lo unico dibujado, asi que en blanco
+   quedaba como un cuerpo extrano. Tomando --acc se integra con el metal
+   de cada rango: en una amatista sale violeta, en una rubi sale rojo. */
+.ci::after{ background:var(--acc) }

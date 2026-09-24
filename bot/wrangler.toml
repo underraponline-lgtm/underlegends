@@ -1,0 +1,20 @@
+# El Worker de la Liga Global.
+#
+#   npx wrangler deploy          (pide Node 22+)
+#
+# Si Node es viejo, el panel de Cloudflare tambien sirve: Workers & Pages ->
+# Create -> Worker, y se pega worker.js en el editor. Para el primer PING/PONG
+# alcanza.
+
+name = "liga-global-bot"
+main = "worker.js"
+compatibility_date = "2026-09-16"
+
+[vars]
+# ⚠️ ESTA CLAVE NO ES SECRETA, y conviene saber por que: es la clave PUBLICA
+# de la app de Discord, la que VERIFICA firmas. No puede firmar nada. Discord
+# la muestra en el portal a cualquiera que abra la app.
+#
+# El que SI es secreto es el TOKEN del bot, y no aparece en este archivo ni en
+# el Worker: solo lo usa registrar.mjs, una vez, desde la maquina de Dlx.
+DISCORD_PUBLIC_KEY = "7d181e0def5e2121fd59230a9b5d9e7413a7ba37a5463c4772586506b73e4ce8"

@@ -1,0 +1,26 @@
+{
+ "_leeme": [
+  "LO QUE DLX DIJO POR CHAT Y EL SHEET TODAVIA NO SABE.",
+  "",
+  "La hoja AKAs del Operativo es la fuente, y este archivo se le SUMA:",
+  "`sheet/construir_akas.py` lo mezcla al final, asi que lo de aca gana.",
+  "",
+  "Existe porque las decisiones de Dlx llegan por chat y el Sheet se",
+  "edita a mano despues —o no se edita—. Sin un lugar en el repo, la",
+  "decision vive en la conversacion y el codigo sigue contando dos",
+  "personas donde hay una. Es exactamente lo que le paso a este par:",
+  "`construir_akas.py` NOMBRA a Oasis y Fullylo4ded en su docstring como",
+  "el caso que lo motivo, y el 22/09/2026 `datos/akas.json` seguia sin",
+  "tenerlos —los dos con su set completo de 16 cartas en R2—.",
+  "",
+  "⚠️ Cuando el par entre a la hoja del Sheet, sacarlo de aca. Si queda",
+  "en los dos lados no rompe nada, pero deja de decir 'esto falta alla'.",
+  "",
+  "pares: [alias, nombre real].",
+  "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
+ ],
+ "pares": [
+  ["Fullylo4ded", "Oasis"]
+ ],
+ "no_confundir": []
+}

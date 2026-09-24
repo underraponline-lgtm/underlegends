@@ -1,0 +1,319 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TARJETA NORMAL — rectangular
+   ═══════════════════════════════════════════════════════════════════
+   Este CSS sale TAL CUAL de PALETAS.html: son las 84 reglas que
+   quedaron ahi. No se rediseño nada — lo unico que se agrega es la
+   regla `.card`, que en ese archivo no existia (por eso la carta se
+   veia rectangular y sin silueta) y el chip de temporada.
+   ═══════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=Barlow+Condensed:wght@600;700&display=swap');
+
+/* la unica carta del set sin silueta de escudo: la forma sola la
+   distingue de la Competitiva (escudo trazado) y de Servidor (biselado) */
+.card{
+  width:300px; height:438px; position:relative; overflow:hidden;
+  border-radius:14px; font-family:'Archivo','LigaEmoji',sans-serif; color:#fff;
+  box-shadow:0 16px 38px rgba(0,0,0,0.7);
+}
+/* marco */
+.c-frame{position:absolute;inset:0;border-radius:14px;pointer-events:none;z-index:8;
+  border:2px solid rgba(255,255,255,0.55);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,0.45), inset 0 0 22px rgba(0,0,0,0.35)}
+.c-bg{ position:absolute; inset:0; z-index:0; background:var(--grad); }
+.c-tex{
+  position:absolute; inset:0; z-index:1;
+  opacity: 0.16;
+  background-image: repeating-linear-gradient(
+    115deg, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 1px,
+    transparent 1px, transparent 9px);
+  mix-blend-mode: overlay;
+}
+.c-shine{
+  position:absolute; top:-40%; left:-30%; width:170%; height:70%; z-index:2;
+  background: linear-gradient(transparent, rgba(255,255,255,0.20), transparent);
+  transform: rotate(-22deg);
+  pointer-events:none;
+}
+.c-edge{
+  position:absolute; inset:6px; z-index:4; pointer-events:none;
+  clip-path: inherit;
+  border:1.5px solid rgba(255,255,255,0.32);
+  clip-path: polygon(
+    0% 3%, 3% 0%, 97% 0%, 100% 3%,
+    100% 79%,
+    97% 86%, 88% 92%, 66% 97.5%, 50% 100%,
+    34% 97.5%, 12% 92%, 3% 86%, 0% 79%
+  );
+  -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding:1.5px;
+  background: linear-gradient(150deg,
+    rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.06) 30%,
+    rgba(255,255,255,0.02) 62%, rgba(255,255,255,0.42) 100%);
+  border:none;
+}
+.c-vig{
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 28%, transparent 40%, rgba(0,0,0,0.30) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.20) 0%, transparent 20%, transparent 70%, rgba(0,0,0,0.28) 100%);
+}
+.c-photo{
+  position:absolute; top:0; left:0; right:0; height:58%;
+  z-index:3; overflow:hidden;
+  /* la foto se mantiene ENTERA hasta donde arranca el nombre.
+     .c-name esta en 49.5% de la carta, o sea el 85% de la foto, asi que
+     el desvanecido empieza recien ahi. Antes arrancaba en el 46% y media
+     foto ya estaba mezclada con el color. */
+  
+          
+  -webkit-mask-image: linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.45) 88%,transparent 100%);
+          mask-image: linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.45) 88%,transparent 100%);
+}
+.c-photo img{ width:100%; height:100%; object-fit:cover; object-position:center 22%; }
+.c-initials{
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding-right: 26px; padding-bottom: 26px;
+  font-size: 8.4rem; font-weight:900; line-height:0.8;
+  letter-spacing:-6px;
+  color: rgba(255,255,255,0.13);
+  user-select:none;
+}
+.c-photo::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.38) 0%, rgba(0,0,0,0.10) 22%, transparent 45%);
+}
+.c-left{
+  position:absolute; top:20px; left:20px; z-index:5;
+  display:flex; flex-direction:column; align-items:center;
+}
+.c-ovr{
+  font-size: 3.55rem; font-weight:900; line-height:0.8;
+  letter-spacing:-3px;
+}
+.c-rank{
+  font-size: 1.42rem; font-weight:900; letter-spacing:2.5px;
+  margin-top: 3px;
+}
+.c-sep{
+  width:34px; height:2px; margin:9px 0 8px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+}
+.c-flag{
+  width:44px; height:30px; border-radius:4px; object-fit:cover;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.5);
+}
+.c-logo{
+  width:38px; height:38px; border-radius:50%; object-fit:cover; margin-top:8px;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.25);
+}
+
+/* PUESTO y TEMPORADA a los costados del TAG, a su misma altura (90%).
+   Antes iban arriba, uno en cada esquina; abajo acompañan al TAG y
+   dejan limpia la zona de la foto. */
+
+/* logo de Under Legends — Liga Global. Blanco puro, sin sombra ni borde.
+   Alineado con el techo del numero: .c-left arranca en top:20px. */
+.c-ul{position:absolute;top:20px;right:16px;width:34px;height:34px;z-index:7;
+  pointer-events:none;filter:none;opacity:1}
+.c-name{
+  position:absolute; top:49.5%; left:0; right:0; z-index:5;
+  text-align:center;
+  font-size: 1.72rem; font-weight:900; letter-spacing:-0.5px;
+  text-transform:uppercase;
+}
+.c-rule{
+  position:absolute; top:57.5%; left:11%; right:11%; height:1.5px; z-index:5;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+}
+.c-stats{
+  position:absolute; top:60%; left:9%; right:9%; z-index:5;
+  display:grid; grid-template-columns:1fr 1px 1fr;
+  row-gap: 7px;
+}
+.c-vdiv{ grid-row:1/4; grid-column:2; background:rgba(255,255,255,0.28); }
+.c-stat{
+  display:flex; align-items:baseline; gap:7px; justify-content:center;
+}
+.c-val{
+  font-family:'Barlow Condensed', 'LigaEmoji', sans-serif;
+  font-size:1.5rem; font-weight:700; line-height:1;
+}
+.c-lbl{
+  font-size:0.66rem; font-weight:800; letter-spacing:1.2px;
+  opacity:0.85; text-transform:uppercase;
+}
+.tag{
+  text-align:center; margin-top:12px;
+  font-size:0.68rem; color:#9090A8; letter-spacing:0.5px;
+}
+.sec{ max-width:1500px; margin:46px auto 18px; padding-top:26px; border-top:1px solid #2A2A40; }
+.sec h2{ font-size:1rem; font-weight:800; letter-spacing:-0.2px; }
+.sec .sub{ font-size:0.76rem; color:#9090A8; margin-top:2px; margin-bottom:0; }
+.ley b{ color:#E8E8F0; }
+/*
+Repinta el degradado propio de la carta sobre la franja izquierda y lo
+   desvanece hacia la derecha. Así el número queda sobre el material de la
+   carta, no sobre el avatar — que es como funciona la carta de FIFA. */
+.c-tex, .c-shine{ z-index:5; }
+.c-vig{ z-index:5; }
+.c-edge{ z-index:6; }
+.c-left, .c-band, .c-name, .c-rule, .c-stats{ z-index:7 !important; }
+.rack .c-ovr, .rack .c-rank{   }
+.c-pos, .c-season{
+  position:absolute; top:90%; z-index:7;
+  padding:3px 9px 4px; border-radius:20px; line-height:1.25;
+  font-size:0.58rem; font-weight:900; letter-spacing:1.2px; color:#fff;
+  background:rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow:0 2px 10px rgba(0,0,0,0.35);
+}
+.c-pos{left:8%}
+.c-season{right:8%}
+
+
+/* ── LA FILA DE ABAJO ────────────────────────────────────────────────
+   Puesto a la izquierda, TAG al centro, temporada a la derecha, los tres
+   en 90%. Mismo estilo de pildora para que se lean como una fila.
+   OJO: estas tres reglas ya se perdieron dos veces al editar cerca. */
+.c-band{
+  position:absolute; top:90%; left:50%; transform:translateX(-50%); z-index:7;
+  padding:3px 13px 4px; border-radius:20px; white-space:nowrap;
+  font-size:0.58rem; font-weight:900; letter-spacing:1.6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+.c-pos, .c-season{
+  position:absolute; top:90%; z-index:7;
+  padding:3px 9px 4px; border-radius:20px; line-height:1.25;
+  font-size:0.58rem; font-weight:900; letter-spacing:1.2px; color:#fff;
+  background: rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.30);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+}
+.c-pos{left:8%}
+.c-season{right:8%}
+
+.c-band.t1{
+  background: linear-gradient(180deg,#FFF0A8 0%,#FFD024 48%,#C89000 100%);
+  color:#2A1E00 !important; border:1px solid rgba(90,66,0,0.55);
+  box-shadow: 0 0 20px rgba(255,196,32,0.9), 0 0 44px rgba(255,178,0,0.5),
+              inset 0 1px 0 rgba(255,255,255,0.9);
+  text-shadow: 0 1px 0 rgba(255,252,225,0.9);
+  overflow:hidden;
+}
+.c-band.t2{
+  background: linear-gradient(180deg,#FFFFFF 0%,#DCE0E8 46%,#9BA3B2 100%);
+  color:#1E2129 !important; border:1px solid rgba(60,68,82,0.45);
+  box-shadow: 0 0 15px rgba(255,255,255,0.65), inset 0 1px 0 rgba(255,255,255,0.95);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.85);
+}
+.c-band.t3{
+  background: linear-gradient(180deg,#5A606E 0%,#3A404C 55%,#23272F 100%);
+  color:#EEF1F6 !important; border:1px solid rgba(255,255,255,0.45);
+  box-shadow: 0 0 9px rgba(255,255,255,0.22), inset 0 1px 0 rgba(255,255,255,0.28);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.75);
+}
+.c-band.t4{
+  background: rgba(12,12,18,0.72);
+  color:#A8ACB8 !important; border:1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 2px 7px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+}
+.lg.t1{ background:linear-gradient(180deg,#FFF0A8,#FFD024); color:#2A1E00; }
+.lg.t2{ background:linear-gradient(180deg,#FFFFFF,#DCE0E8); color:#1E2129; }
+.lg.t3{ background:linear-gradient(180deg,#5A606E,#3A404C); color:#EEF1F6; }
+.lg.t4{ background:rgba(12,12,18,0.72); color:#A8ACB8; border:1px solid rgba(255,255,255,0.18); }
+.sec{max-width:1400px;margin:38px auto 0}
+.sec h2{font-size:0.96rem;font-weight:900}
+.sec h2 span{font-weight:500;color:#8E8EA6;font-size:0.75rem}
+.rack{display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.linea{max-width:1400px;margin:32px auto 0;height:1px;background:rgba(255,255,255,0.09)}
+.tag{display:none}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07070C;padding:40px 20px;font-family:'Archivo','LigaEmoji',sans-serif;color:#E9E9F2}
+h1{font-size:1.15rem;font-weight:800}
+.sub{font-size:0.8rem;color:#8E8EA6;margin:3px 0 8px;line-height:1.8}
+
+/* ── el logo UL y el PUESTO se intercambiaron ─────────────────────────
+   Antes: logo arriba a la derecha · puesto abajo a la izquierda.
+   Ahora al reves. Van al final del archivo a proposito: tienen que ganar
+   por cascada a las reglas de arriba, que estan duplicadas (.c-pos, .c-season
+   aparece dos veces) y siguen poniendo top:90% left:8%.
+   El logo se centra en la fila de abajo con translateY(-50%), asi queda
+   alineado con el TAG y con PRE sin importar cuanto mida de alto.
+   Nuevo logo: blanco puro, proporcion 1.228, por eso height:auto. */
+/* EL PUESTO deja de ser pastilla y pasa a ser numero, como el OVR.
+   56.8px es el OVR; este va en 2.2rem = 35.2px, claramente menor.
+   line-height 0.8 es el mismo del OVR: asi los dos apoyan igual arriba,
+   y right:20px espeja el left:20px de .c-left. */
+.c-pos{ top:20px; right:20px; left:auto; bottom:auto;
+        font-size:2.2rem; line-height:0.8; letter-spacing:-1.5px;
+        background:none; border:none; box-shadow:none; padding:0; }
+
+/* La fila de abajo: PRE a la izquierda, logo a la derecha.
+   El logo se mide por ALTO, no por ancho, porque la referencia es la letra
+   del rango (25px medidos). Con width:auto el logo nuevo, que es mas ancho
+   que alto (1.228), va a salir 30.7 x 25 sin deformarse. */
+.c-season{ left:8%; right:auto; }
+.c-ul{ top:92.35%; right:8%; left:auto; bottom:auto;
+       height:25px; width:auto; transform:translateY(-50%); }
+
+/* ── LA FILA DE ABAJO, ahora en flex ─────────────────────────────────
+   Antes los tres iban sueltos en absolute y el TAG se centraba sobre el
+   centro de la CARTA (150). Pero PRE mide 44.6 y el logo 30.7, asi que el
+   centro real entre ellos caia en 157: el TAG se veia corrido 13.9px.
+   Con space-between los dos huecos salen iguales por construccion, y sigue
+   siendo cierto aunque PRE cambie de ancho (PRE, T1, T2...). */
+.c-fila{ position:absolute; top:90%; left:8%; right:8%; z-index:7;
+         display:flex; align-items:center; justify-content:space-between; }
+.c-fila > *{ position:static; top:auto; left:auto; right:auto; bottom:auto;
+             transform:none; margin:0; }
+
+/* ── el nombre, con sombra ───────────────────────────────────────────
+   La Competitiva ya la tenia y la Temporada no. Con 138 avatares distintos
+   el nombre cae sobre fotos claras (Vize sobre el naranja, Konan sobre la
+   cara) y se empasta. Mismo valor que usa card.css. */
+.c-name{ text-shadow:0 3px 8px rgba(0,0,0,0.98); }
+
+/* ── el ritmo vertical de la columna izquierda ───────────────────────
+   Estaba en 19px arriba de la bandera y 8px abajo, asi que la bandera se
+   veia pegada al escudo. Ahora 13 y 13: la bandera queda equidistante y
+   la altura total de la columna no cambia. */
+.c-sep{ margin:6px 0 5px; }
+.c-logo{ margin-top:13px; }
+
+/* ── la temporada, como marca y no como pastilla (variante A) ─────────
+   PRE y el logo dicen lo mismo: de donde viene la carta. El TAG es lo
+   unico de esa fila que habla de la persona. Antes habia dos pastillas
+   compitiendo; ahora la fila se lee marca · TAG · marca, con una sola
+   cosa fuerte en el medio.
+   Al achicarse PRE, el flex le devuelve el aire al TAG solo. */
+.c-season{ background:none; border:none; box-shadow:none; padding:0;
+           font-size:0.6rem; letter-spacing:2.4px; opacity:0.9; }
+
+/* ── el nombre se escala segun el largo ──────────────────────────────
+   Portado de card.css. Sin esto el mismo rapero tenia el nombre en
+   27.52px aca y en 29.76px en la Competitiva, y las dos cartas no
+   parecian de la misma coleccion. Mismos cuatro escalones. */
+.n6  .c-name{ font-size:1.86rem }
+.n8  .c-name{ font-size:1.72rem }
+.n10 .c-name{ font-size:1.55rem }
+.n12 .c-name{ font-size:1.38rem }
+
+/* ── sombras arriba ──────────────────────────────────────────────────
+   El OVR, la letra del rango y el puesto son texto blanco apoyado sobre
+   la foto. Sobre avatares claros se empastaban. Los valores son los MISMOS
+   que usa card.css en .ovr y .rk, asi las dos cartas se ven hermanas. */
+.c-ovr { text-shadow:0 2px 9px rgba(0,0,0,0.95) }
+.c-rank{ text-shadow:0 2px 7px rgba(0,0,0,0.95) }
+.c-pos { text-shadow:0 2px 9px rgba(0,0,0,0.95) }
+
+/* la temporada, blanco puro: mismo peso que el logo UL, que tambien es
+   blanco pleno. Los dos son la marca de la carta. */
+.c-season{ color:#fff; opacity:1 }

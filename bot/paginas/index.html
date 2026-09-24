@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#030304">
+<title>Liga Global — Under Legends</title>
+<meta name="description" content="El hub de la Liga Global de Under Legends: el ranking de la temporada, las tarjetas de cada rapero, los duelos, los servidores y lo que viene.">
+<meta property="og:title" content="Liga Global — Under Legends">
+<meta property="og:description" content="El ranking, las tarjetas y lo que viene. La nueva era del freestyle.">
+<meta property="og:type" content="website">
+<link rel="icon" href="ul.png">
+<link rel="apple-touch-icon" href="ul.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<!-- El fondo: la aurora de marca y la trama del wordmark. Las dos son
+     CSS y texto, cero imágenes: no pesan un byte de red. -->
+<div class="aurora" aria-hidden="true"></div>
+<div class="trama" id="trama" aria-hidden="true"></div>
+<div class="velo" aria-hidden="true"></div>
+
+<div class="app">
+
+  <!-- 🔑 EL MENU. En escritorio es una columna fija a la izquierda; en
+       teléfono, la barra de abajo. Es el MISMO elemento: dos barras con
+       los mismos enlaces se desincronizan la primera vez que se agrega
+       una vista. -->
+  <aside class="menu">
+    <a class="marca" href="#/">
+      <img src="ul.png" alt="Under Legends" width="40" height="40">
+      <span><b>Liga Global</b><small>Under Legends</small></span>
+    </a>
+    <nav id="nav">
+      <a href="#/"><i>&#9632;</i><span>Inicio</span></a>
+      <a href="#/ranking"><i>&#127942;</i><span>Ranking</span></a>
+      <a href="#/tarjetas"><i>&#127183;</i><span>Tarjetas</span></a>
+      <a href="#/duelos"><i>&#9876;</i><span>Duelos</span></a>
+      <a href="#/mundo"><i>&#127758;</i><span>Mundo</span></a>
+      <a href="#/guia"><i>&#127895;</i><span>Guía</span></a>
+    </nav>
+    <p class="pie" id="pie">—</p>
+  </aside>
+
+  <main>
+
+  <!-- ══ INICIO ══════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="">
+    <header class="hero">
+      <div class="hero-tx">
+        <span class="era">LA NUEVA <b>ERA</b></span>
+        <h1>Liga <em>Global</em></h1>
+        <p class="lema">La liga de freestyle de <b>Under Legends</b>. Cada
+        rapero tiene su tarjeta, y cada tarjeta sale de lo que hizo esta
+        temporada.</p>
+        <div class="cifras">
+          <div><b id="cRaperos">—</b><span>raperos</span></div>
+          <div><b id="cEventos">—</b><span>eventos</span></div>
+          <div><b id="cPaises">—</b><span id="lPaises">países</span></div>
+          <div><b id="cCartas">—</b><span>tarjetas</span></div>
+        </div>
+      </div>
+      <div class="hero-carta" id="heroCarta" hidden>
+        <span class="corona">Campeón de la temporada</span>
+        <button class="hc-marco" id="hcBtn">
+          <img id="hcImg" alt="" width="300" height="438">
+        </button>
+        <b id="hcNombre"></b>
+      </div>
+    </header>
+
+    <section class="blk viene" id="viene" hidden>
+      <h2><span>&#9201;</span> Lo que viene</h2>
+      <div id="eventos"></div>
+    </section>
+
+    <section class="blk" id="secPodio">
+      <h2><span>&#129351;</span> El podio</h2>
+      <div class="podio" id="elPodio"></div>
+      <div class="records" id="records"></div>
+    </section>
+
+    <section class="blk" id="secTop">
+      <h2><span>&#127942;</span> Los cinco de arriba</h2>
+      <div class="tabla-caja">
+        <table class="mini"><tbody id="filasTop"></tbody></table>
+      </div>
+      <a class="mas" href="#/ranking">Ver el ranking completo</a>
+    </section>
+  </section>
+
+  <!-- ══ RANKING ═════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="ranking" hidden>
+    <h1 class="tit">Ranking <em>de temporada</em></h1>
+    <p class="bajada">El orden sale de los puntos que cada uno hizo. Tocá una
+    fila para ver sus tarjetas.</p>
+    <section class="blk">
+      <div class="filtros">
+        <input id="buscar" type="search" placeholder="Buscar rapero…"
+               autocomplete="off" spellcheck="false" aria-label="Buscar rapero">
+        <div class="chips" id="chipsSv"></div>
+        <div class="chips" id="chipsCc"></div>
+      </div>
+      <div class="tabla-caja">
+        <table id="tabla">
+          <thead><tr>
+            <th data-orden="pos" class="asc">#</th>
+            <th data-orden="n">Rapero</th>
+            <th data-orden="ovr">OVR</th>
+            <th data-orden="rg" class="col-rg">Rango</th>
+            <th data-orden="sv" class="col-sv">Sv</th>
+            <th data-orden="pts">Puntos</th>
+            <th data-orden="ev">Ev</th>
+          </tr></thead>
+          <tbody id="filas"></tbody>
+        </table>
+      </div>
+      <p class="nota" id="notaTabla"></p>
+    </section>
+  </section>
+
+  <!-- ══ TARJETAS ════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="tarjetas" hidden>
+    <h1 class="tit">Las <em>tarjetas</em></h1>
+    <p class="bajada">Hasta cuatro por rapero. Se dibujan solas con los datos
+    de la temporada y se piden en Discord con <code>/card</code>.</p>
+    <section class="blk" id="secComparar">
+      <h2><span>&#9878;</span> Comparar dos</h2>
+      <p class="bajada">Elegí dos y mirá sus tarjetas y sus números uno al lado
+      del otro. El que va ganando cada fila queda en verde.</p>
+      <div class="cmp" id="cmp"></div>
+    </section>
+
+    <section class="blk">
+      <h2><span>&#128269;</span> Todas las tarjetas</h2>
+      <input id="buscarC" type="search" placeholder="Buscar rapero…"
+             autocomplete="off" spellcheck="false" aria-label="Buscar rapero">
+      <div class="galeria" id="galeria"></div>
+      <button class="mas" id="masCartas" hidden>Ver más</button>
+    </section>
+  </section>
+
+  <!-- ══ DUELOS ══════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="duelos" hidden>
+    <h1 class="tit">Duelos <em>1v1</em></h1>
+    <p class="bajada">Cara a cara, fuera del bracket. Se ordena por
+    <b>ganados</b> y no por porcentaje: un 1 de 1 da 100&nbsp;% y no dice nada.</p>
+    <div class="dos">
+      <section class="blk" id="secDuelos">
+        <h2><span>&#9876;</span> Más duelos ganados</h2>
+        <div class="duelos" id="listaDuelos"></div>
+        <p class="nota solo-ancho">La barra clara es cuántos peleó; la llena, cuántos ganó.</p>
+      </section>
+      <div class="col">
+        <section class="blk" id="secPodios">
+          <h2><span>&#127941;</span> Medallero</h2>
+          <p class="bajada">Primeros, segundos y terceros puestos de la temporada.</p>
+          <div class="podios" id="listaPodios"></div>
+        </section>
+        <section class="blk" id="secRachas">
+          <h2><span>&#128293;</span> Rachas</h2>
+          <p class="bajada">Eventos seguidos sin faltar.</p>
+          <div class="rachas" id="rachas"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MUNDO ═══════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="mundo" hidden>
+    <h1 class="tit">El <em>mundo</em></h1>
+    <p class="bajada">La Liga es la suma de los servidores aliados y de la
+    gente que los representa.</p>
+    <section class="blk" id="secSvs">
+      <h2><span>&#128737;</span> Los servidores</h2>
+      <div class="svs" id="svs"></div>
+    </section>
+    <section class="blk" id="secPaises">
+      <h2><span>&#127758;</span> Los países</h2>
+      <p class="bajada">Por los puntos que hizo su gente.</p>
+      <div class="paises" id="listaPaises"></div>
+    </section>
+    <section class="blk" id="secCrews">
+      <h2><span>&#129309;</span> Las crews</h2>
+      <div class="crews" id="crews"></div>
+    </section>
+  </section>
+
+  <!-- ══ GUIA ════════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="guia" hidden>
+    <h1 class="tit">Cómo <em>funciona</em></h1>
+    <p class="bajada">Qué pide cada tarjeta y qué significa cada letra.</p>
+    <div class="dos ancha">
+    <section class="blk" id="secComo">
+      <h2><span>&#127915;</span> Cómo conseguir tu tarjeta</h2>
+      <p class="bajada">Cada una pide algo distinto, porque cada una mide algo
+      distinto. Mientras no llegues, sale la <b>bloqueada</b> con cuánto falta.</p>
+      <div class="como" id="listaComo"></div>
+    </section>
+    <section class="blk" id="secRangos">
+      <h2><span>&#127895;</span> Los ocho rangos</h2>
+      <p class="bajada" id="bajadaRangos"></p>
+      <div class="escalera" id="escalera"></div>
+    </section>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<div class="visor" id="visor" hidden>
+  <div class="visor-fondo" data-cerrar></div>
+  <div class="visor-caja" role="dialog" aria-modal="true" aria-label="Tarjeta">
+    <button class="cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+    <div class="visor-cab">
+      <span class="v-pos" id="vPos"></span>
+      <div><h3 id="vNombre"></h3><p id="vSub"></p></div>
+    </div>
+    <div class="pestanas" id="vPestanas"></div>
+    <div class="v-carta"><img id="vImg" alt="" loading="lazy"></div>
+    <div class="v-stats" id="vStats"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

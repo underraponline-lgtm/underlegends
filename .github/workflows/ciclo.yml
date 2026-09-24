@@ -1,0 +1,281 @@
+# EL CICLO, CORRIENDO SOLO.
+#
+# Del Sheet a Discord: rebaja los pools, mira que cambio, dibuja SOLO eso,
+# sube a R2, refresca KV y sella. Ver `bot/pipeline.py`.
+#
+# 🔴 POR QUE ACTIONS Y NO EL WORKER. Los 10 ms de CPU por request del
+# Worker prohiben calcular, y **Playwright no corre en un Worker**: dibujar
+# una carta necesita un navegador. Actions da 30 minutos por job y 2.000
+# minutos al mes, que es donde esto entra.
+#
+# ⚠️ Y POR ESO EL PASO «que cambio» NO ES UN LUJO. Una tanda completa son
+# ~26 minutos: redibujar todo despues de cada evento se come el 40 % del
+# mes para que el 99 % de las cartas salga identica. Un ciclo sin cambios
+# termina en segundos y no gasta casi nada.
+name: ciclo
+
+on:
+  # ⚠️ A MANO SIEMPRE DISPONIBLE. Un pipeline que solo corre por horario
+  # no se puede probar ni desatascar sin esperar al proximo turno.
+  workflow_dispatch:
+    inputs:
+      simulacro:
+        description: 'Solo decir que haria, sin tocar nada'
+        type: boolean
+        default: false
+  schedule:
+    # 🔴 09:00 UTC, Y LA HORA NO ES UN DETALLE: VA **DESPUES** DEL SYNC.
+    # El job de identidades de `liga-global-sync` corre a las **08:00
+    # UTC** —backfill, akaops, sync, avatars, roles, nicks, audit— y es
+    # el que actualiza el padron. Si el ciclo corre antes, dibuja con la
+    # identidad de AYER y no lo corrige hasta 24 h despues.
+    #
+    # ⚠️ La primera version decia `0 4 * * *` "despues del sync de las
+    # 03:00". El 03:00 es el `Sync hora` de la hoja `Consola`, que es
+    # otra cosa; el cron de Actions son las 08:00 (`docs/arquitectura.md`).
+    # O sea que quedaba CUATRO HORAS ANTES, justo al reves de lo que su
+    # propio comentario decia que evitaba. Dos numeros parecidos con el
+    # mismo nombre.
+    #
+    # Una hora de margen: el sync son ~7 modos y no siempre tarda igual.
+    #
+    # 🔴 CADA HORA DESDE EL 22/09/2026. Dlx: «haz el cron». Lo que lo
+    # frenaba era el costo, y eso se midio y se arreglo:
+    #
+    #   los minutos de Actions   ~720/mes de 2.000   (eran 1.440)
+    #   las escrituras de KV     0 en un dia quieto  (limite 1.000/dia)
+    #   los requests a Discord   2 por corrida       (eran 135)
+    #
+    # El que mordia eran los minutos, y **por el redondeo**: Actions
+    # cobra por minuto empezado, asi que 1,7 min se cobran como 2. Con
+    # el barrido dirigido del paso 1 la corrida mediana baja a ~0,95 y
+    # se cobra 1 — la factura se parte por la mitad porque cruza un
+    # umbral, no porque el ahorro sea del 50 %.
+    #
+    # ⚠️ KV NO ES EL LIMITE **SOLO PORQUE DOS COSAS YA ESTAN HECHAS**:
+    # `subir_datos.py` es diff-writer y `pipeline.py` lo llama `if
+    # subidas`. Si alguien saca cualquiera de las dos, cada hora son
+    # 24 x 241 = 5.784 escrituras sobre un limite de 1.000 — y lo que
+    # se pierde es el **sello**, o sea que Discord sigue sirviendo las
+    # cartas viejas de su cache.
+    #
+    # 🔴 Y LO DE «LA CORRIDA DE LAS 09:00, DESPUES DEL SYNC» YA NO ES
+    # CIERTO — tres veces, y conviene decir las tres porque cada una
+    # sola parecia suficiente para mantener el horario:
+    #
+    #  1. **El sync no corre a las 08:00.** Su cron las pide; GitHub lo
+    #     atiende cuando puede. Medido sobre sus tres ultimas corridas
+    #     por horario: **12:13, 12:48 y 14:47 UTC**. O sea que la del
+    #     ciclo a las 09:00 caia ANTES del sync, no despues — justo lo
+    #     que el comentario decia que evitaba, por segunda vez.
+    #  2. **Las 24 refrescan el padron.** El paso 2 corre
+    #     `construir_padron.py` en cada corrida desde el 22/09; no hay
+    #     una que lo traiga fresco y 23 que hereden.
+    #  3. **Y la identidad ya no depende del sync.** El paso 1b le
+    #     pregunta a Discord quien esta verificado y en que servidores
+    #     esta, cada hora. Ver su comentario en `bot/pipeline.py`.
+    #
+    # Se deja escrito en vez de borrarlo porque el horario es lo unico
+    # que quedo de esa decision, y sin esto alguien lo vuelve a «mover
+    # para despues del sync» apoyado en una premisa que no se sostiene.
+    # 🔴 EN EL MINUTO 7 Y EL 37, NO EN EL 0 Y EL 30. Probado el
+    # 24/09/2026: con `*/30` **no disparó ni a las 04:00 ni a las
+    # 04:30**, con el workflow activo y el cron ya en la rama por
+    # defecto —los dos verificados contra la API—.
+    #
+    # GitHub documenta que las corridas programadas se retrasan bajo
+    # carga y que *«los momentos de mayor carga incluyen el comienzo de
+    # cada hora»*. `*/30` cae justo en los dos minutos más congestionados
+    # que existen: el :00 y el :30, donde entra todo el mundo.
+    #
+    # ⚠️ ESTO NO ES UNA CERTEZA, ES UNA COBERTURA. No puedo probar que el
+    # retraso fue por congestión; lo que sé es que el horario elegido era
+    # el peor posible y que correrlo siete minutos no cuesta nada. Si con
+    # el offset tampoco dispara, la causa es otra y hay que buscarla —
+    # pero al menos se habrá descartado la que la documentación señala.
+    # ⚠️ ACA LA ZONA HORARIA NO IMPORTA, y es la unica de las dos que
+    # no importa: este cron no pide una HORA, pide un INTERVALO. Corre
+    # a y media y a y siete de **cada** hora, asi que sale igual en UTC,
+    # en EST y en EDT. El que si depende de la zona es el de
+    # `auditoria.yml`, que pide un lunes a tal hora — ahi esta el bloque
+    # que explica por que hay que anotar EST y EDT por separado.
+    - cron: '7,37 * * * *'
+
+# ⚠️ UNA CORRIDA POR VEZ, Y LA QUE ESTA CORRIENDO **NO** SE CANCELA.
+# El paso que sella va al final: cortar una corrida en el medio deja
+# cartas subidas sin sellar —que se vuelven a dibujar, molesto pero
+# inofensivo— o, peor, la mitad de una subida. Se espera.
+
+env:
+  # ⚠️ SIN ESTO EL LOG SALE EN OTRO ORDEN DEL QUE PASARON LAS COSAS.
+  # `pipeline.py` imprime a un stdout que no es una terminal, asi que
+  # Python lo buferea por bloques; los subprocesos que corren con
+  # `callado=False` escriben directo. Resultado: en la corrida del
+  # 21/09 el log mostraba la subida a R2 y la escritura en KV **dentro
+  # del paso 3**, antes de que se dibujara nada. Leer un log asi para
+  # entender un fallo hace perder el tiempo en el lugar equivocado.
+  PYTHONUNBUFFERED: '1'
+
+jobs:
+  # ══════════════════════════════════════════════════════════════════
+  # ESCUCHAR — cada media hora, y nunca dibuja.
+  #
+  # 🔴 ESTE TRABAJO EXISTE POR FRESCURA, NO SOLO POR PLATA. Antes era un
+  # solo job con `concurrency`, asi que mientras un redibujo de dos
+  # horas corria **nadie escuchaba Discord**: las corridas se encolaban
+  # y la web se quedaba vieja todo ese rato. Partido, escuchar sale cada
+  # media hora pase lo que pase.
+  #
+  # ⚠️ Y CUESTA UN MINUTO. Medido el 24/09/2026 sobre una corrida
+  # quieta: 51 s en total —33 de `pip install`, 11 de checkout— y
+  # GitHub cobra redondeando para arriba, asi que el piso real es un
+  # minuto por corrida. Cada media hora son 48 al dia, 1.440 al mes:
+  # el 72 por ciento del plan gratis en repo privado. Cada 15 minutos
+  # NO entra: serian 2.880.
+  #
+  # ⚠️ `*/45` NO EXISTE: cron lo lee como «minutos 0 y 45», o sea huecos
+  # de 45 y de 15 alternados, 48 corridas por dia — el mismo costo que
+  # `*/30` y peor repartido.
+  # ══════════════════════════════════════════════════════════════════
+  escuchar:
+    runs-on: ubuntu-latest
+    # 🔴 EL `concurrency` VA POR TRABAJO Y NO POR WORKFLOW, y ese
+    # cambio es la mitad de la razon de partirlo. A nivel workflow una
+    # corrida entera bloquea a la siguiente, asi que un redibujo de dos
+    # horas dejaba a `escuchar` encolado dos horas —exactamente lo que
+    # la particion viene a arreglar—. Con grupos distintos, escuchar
+    # sale cada media hora aunque dibujar siga trabajando.
+    #
+    # ⚠️ Y LOS DOS COMMITEAN A LA MISMA RAMA A LA VEZ. Eso ya esta
+    # resuelto: `bot/ci/guardar.sh` hace fetch, reset, reaplica y
+    # reintenta —se escribio para el caso del push perdido—.
+    concurrency:
+      group: escuchar
+      cancel-in-progress: false
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    outputs:
+      dibujar: ${{ steps.p.outputs.dibujar }}
+      personas: ${{ steps.p.outputs.personas }}
+      cartas: ${{ steps.p.outputs.cartas }}
+    steps:
+      # 🔴 EL CHECKOUT VA ACA Y NO EN LA COMPOSITE ACTION: una action local
+      # se lee del disco del runner, asi que el repo tiene que estar
+      # bajado antes de invocarla. Es lo unico que no se puede unificar.
+      #
+      # ⚠️ Y SACA LA RAMA, NO EL SHA DEL EVENTO. `dibujar` corre DESPUES
+      # de que `escuchar` commiteo los pools: con el default se llevaria
+      # la foto de ANTES y dibujaria con datos viejos **sin fallar**.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+
+      - name: escuchar
+        id: p
+        run: |
+          if [ "${{ inputs.simulacro }}" = "true" ]; then
+            python bot/pipeline.py --sin-dibujar
+          else
+            python bot/pipeline.py --correr --sin-dibujar
+          fi
+
+      - name: guardar
+        # 🔴 EL CUERPO VIVE EN `bot/ci/guardar.sh`, Y NO ES PROLIJIDAD:
+        # lo llaman los DOS trabajos. Copiar 130 lineas es la forma que
+        # este repo documenta cinco veces.
+        if: always() && inputs.simulacro != true
+        run: bash bot/ci/guardar.sh
+
+  # ══════════════════════════════════════════════════════════════════
+  # DIBUJAR — solo cuando escuchar encontro algo.
+  #
+  # 🔴 UN JOB SALTEADO CUESTA CERO. Esa es toda la gracia: antes esto
+  # corria 24 veces al dia mirara o no hubiera cambiado algo; ahora
+  # corre las dos o tres que hacen falta.
+  #
+  # ⚠️ Y HACE EL CICLO ENTERO, no solo la parte de dibujar. Volver a
+  # leer el Sheet cuesta segundos y evita pasarse los pools entre
+  # runners por un artefacto — que es un segundo camino que casi nunca
+  # se ejercita, o sea uno que no esta probado el dia que hace falta.
+  # El checkout ya trae lo que `escuchar` commiteo.
+  # ══════════════════════════════════════════════════════════════════
+  dibujar:
+    needs: escuchar
+    if: needs.escuchar.outputs.dibujar == 'true' && inputs.simulacro != true
+    runs-on: ubuntu-latest
+    # ⚠️ NO SE CANCELA LA QUE ESTA CORRIENDO. El sello va al final de
+    # cada tanda: cortar a la mitad deja cartas subidas sin sellar —que
+    # se vuelven a dibujar, molesto pero inofensivo— o media subida.
+    concurrency:
+      group: dibujar
+      cancel-in-progress: false
+    # 🔴 120 Y NO 30. Medido el 21/09/2026: una persona son 1,7 min —sus
+    # 4 cartas mas las 9 por servidor—, asi que con 30 entran 17. Un
+    # cambio de Score le pega a **todos** (el Score sale del ranking del
+    # pool entero), o sea que la corrida grande no entraba.
+    #
+    # ⚠️ Con el sello por tanda, quedarse corto ya no traba nada: lo
+    # hecho queda sellado y la corrida siguiente continua. El techo alto
+    # es para que una corrida grande termine en dos dias y no en ocho.
+    #
+    # ⚠️ Y NO MAS: son 2.000 minutos al mes. 120 diarios serian 3.600 si
+    # se usaran siempre — no se usan, porque el caso normal son 0 o 2
+    # personas y termina en segundos. El techo protege del caso raro sin
+    # gastar en el comun.
+    timeout-minutes: 120
+    permissions:
+      # el sello (`datos/cartas_selladas.json`) se commitea: es lo que
+      # sobrevive entre corridas
+      contents: write
+    steps:
+      # 🔴 EL CHECKOUT VA ACA Y NO EN LA COMPOSITE ACTION: una action local
+      # se lee del disco del runner, asi que el repo tiene que estar
+      # bajado antes de invocarla. Es lo unico que no se puede unificar.
+      #
+      # ⚠️ Y SACA LA RAMA, NO EL SHA DEL EVENTO. `dibujar` corre DESPUES
+      # de que `escuchar` commiteo los pools: con el default se llevaria
+      # la foto de ANTES y dibujaria con datos viejos **sin fallar**.
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+      - name: el ciclo
+        run: |
+          if [ "${{ inputs.simulacro }}" = "true" ]; then
+            python bot/pipeline.py
+          else
+            python bot/pipeline.py --correr
+          fi
+
+      - name: guardar el sello
+        # 🔴 EL CUERPO VIVE EN `bot/ci/guardar.sh`, Y NO ES PROLIJIDAD:
+        # desde el 24/09/2026 lo llaman DOS trabajos —`escuchar` y
+        # `dibujar`— y copiarlo es la forma que este repo documenta cinco
+        # veces. Una copia se queda vieja y nadie se entera.
+        if: always() && inputs.simulacro != true
+        run: bash bot/ci/guardar.sh
+
+      - name: qué quedó pendiente
+        # No falla el job: `Pendientes` es la cola de lo que una persona
+        # tiene que mirar, y tener cosas ahi es lo normal, no un error.
+        if: always()
+        run: |
+          # 🔴 PRIMERO SE CIERRA LO QUE YA SE ARREGLO SOLO. Medido el
+          # 23/09/2026: de 35 filas, **9** eran de antes de que
+          # `equipos.py` partiera los lados o de que el resolvedor
+          # consultara las AKAs — o sea trabajo que ya no existe. Una
+          # cola llena de cosas hechas se deja de leer, y entonces deja
+          # de existir: es la leccion de las 188 alarmas falsas del
+          # `audit` y la que `avisar.py` aplica con los avisos.
+          python sheet/pendientes.py --barrer --aplicar || true
+          python sheet/pendientes.py || true
