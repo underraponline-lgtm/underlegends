@@ -183,6 +183,26 @@ def main():
     # ⚠️ AL FINAL, PARA QUE GANE. Ver `a_mano()`.
     pares = pares + [p for p in mp if p not in pares]
     cuidado = cuidado + [c for c in mc if c not in cuidado]
+
+    # 🔴 UN PAR NO PUEDE SER «LA MISMA PERSONA» Y «NO CONFUNDIR» A LA VEZ,
+    # y hasta el 24/09/2026 podía: las dos listas se armaban por separado y
+    # nada las cruzaba. El caso que lo destapó es Makma/Makmah — la hoja
+    # AKAs del Sheet los tenía como «⚠️ NO CONFUNDIR · DOS Makmahs (Dlx)» y
+    # Dlx dijo por chat que **son la misma persona**.
+    #
+    # ⚠️ GANA `pares`, Y SE DICE EN VOZ ALTA. `alias` se arma sólo desde
+    # `pares`, así que la contradicción no rompía nada visible — dejaba una
+    # anotación diciendo lo contrario de lo que el código hace, que es peor
+    # que un error: es documentación que miente.
+    #
+    # ⚠️ Es la única forma de RETRACTAR algo de la hoja desde el repo. Todo
+    # lo demás de `akas_a_mano.json` suma; esto resta, porque la hoja se
+    # edita a mano y una decisión nueva de Dlx no puede esperar a eso.
+    _pn = {frozenset((PAD.norm(a), PAD.norm(r))) for a, r in pares}
+    retractados = [c for c in cuidado
+                   if frozenset((PAD.norm(c[0]), PAD.norm(c[1]))) in _pn]
+    cuidado = [c for c in cuidado if c not in retractados]
+
     alias = {}
     for a, r in pares:
         alias[PAD.norm(a)] = r
@@ -199,6 +219,12 @@ def main():
     print('-> %s' % os.path.relpath(SALIDA, BASE))
     print('   %d alias  ·  %d pares marcados NO CONFUNDIR'
           % (len(alias), len(cuidado)))
+    for c in retractados:
+        print('   🔁 RETRACTADO el «no confundir» de %s / %s' % (c[0], c[1]))
+        print('      (%s) — hay un par que dice que son la misma persona.'
+              % (c[2] if len(c) > 2 else 'sin motivo anotado'))
+        print('      ⚠️ Sacarlo también de la hoja AKAs del Operativo, o '
+              'vuelve\n         a entrar en cada corrida.')
 
     for m in _avisos(pares, PAD.norm):
         print('   ⚠️  %s' % m)

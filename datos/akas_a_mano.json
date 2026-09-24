@@ -20,7 +20,14 @@
   "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
  ],
  "pares": [
-  ["Fullylo4ded", "Oasis"]
+  [
+   "Fullylo4ded",
+   "Oasis"
+  ],
+  [
+   "Makma",
+   "Makmah"
+  ]
  ],
  "no_confundir": []
 }
