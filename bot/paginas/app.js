@@ -114,8 +114,13 @@ function ir() {
   window.scrollTo(0, 0);
   var v = $$('.vista').filter(function (x) { return !x.hidden; })[0];
   var h = v && v.querySelector('h1');
-  document.title = (h ? h.textContent.trim() + ' · ' : '') +
-    'Liga Global — Under Legends';
+  // ⚠️ SIN REPETIR EL NOMBRE. En Inicio el `<h1>` ES «Liga Global», así que
+  // la pestaña decía «Liga Global · Liga Global — Under Legends». Se compara
+  // normalizado porque el `<h1>` trae saltos y un `<em>` adentro.
+  var t = (h ? h.textContent : '').replace(/\s+/g, ' ').trim();
+  var base = 'Liga Global — Under Legends';
+  document.title = (t && base.toLowerCase().indexOf(t.toLowerCase()) < 0)
+    ? t + ' · ' + base : base;
 }
 
 /* ── la trama ─────────────────────────────────────────────────────── */
@@ -177,12 +182,43 @@ function pintaHero() {
   if (!pr.length) return;
   $('#viene').hidden = false;
   $('#eventos').innerHTML = pr.map(function (e) {
-    return '<div class="ev"><div><b>' + esc(e.nombre) + '</b><small>' +
-      esc(e.sv) + (e.cupos ? ' &middot; ' + esc(e.cupos) : '') +
+    // ⚠️ LA LINEA DE ABAJO SE ARMA CON LO QUE HAY. Servidor, cupos,
+    // modalidad y premio son opcionales y la mayoría de los anuncios trae
+    // dos o tres: `filter(Boolean)` evita los « · · » de los que faltan.
+    var sub = [e.sv, e.cupos, e.modalidad, e.premios]
+      .filter(Boolean).map(esc).join(' &middot; ');
+    // 🔑 EL NOMBRE ES EL LINK AL ANUNCIO, cuando lo hay. Dlx lo pidió con
+    // el link del canal; se usa el del **mensaje**, que además de abrir el
+    // canal deja a la persona parada en el anuncio.
+    //
+    // ⚠️ `rel="noopener noreferrer"` y `target="_blank"`: sin `noopener`
+    // la pestaña que se abre puede escribir sobre `window.opener`.
+    var tit = e.link
+      ? '<a href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
+        'noreferrer">' + esc(e.nombre) + '<i class="ir">&#8599;</i></a>'
+      : esc(e.nombre);
+    return '<div class="ev"><div><b>' + tit + '</b><small>' + sub +
       '</small></div><span class="reloj" data-t="' + esc(e.cuando) +
       '">&middot;</span></div>';
   }).join('');
   pintaRelojes();
+}
+
+/* ── lo que acaba de pasar ────────────────────────────────────────── */
+function pintaPasados() {
+  var ps = D.pasados || [];
+  if (!ps.length) { apaga('#secPaso'); return; }
+  $('#secPaso').hidden = false;
+  $('#pasados').innerHTML = ps.map(function (e) {
+    var sub = [e.sv, e.modalidad].filter(Boolean).map(esc).join(' &middot; ');
+    var tit = e.link
+      ? '<a href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
+        'noreferrer">' + esc(e.nombre) + '<i class="ir">&#8599;</i></a>'
+      : esc(e.nombre);
+    return '<div class="ev paso"><div><b>' + tit + '</b><small>' + sub +
+      '</small></div><span class="hace">' + esc(cuandoSe(e.cuando)) +
+      '</span></div>';
+  }).join('');
 }
 
 /* ── podio y récords ──────────────────────────────────────────────── */
@@ -595,6 +631,13 @@ function abrir(k) {
     $('#vPestanas').innerHTML =
       '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>';
   }
+  // ⚠️ EL BOTON SIGUE A LA CARTA, NO A LA PERSONA: sin cartas no hay nada
+  // que bajar, y dejarlo visible sería un botón que no puede funcionar.
+  var bj = $('#vBajar');
+  if (bj) {
+    bj.hidden = !cs.length;
+    bj.dataset.k = k;
+  }
   $('#visor').hidden = false;
   document.body.style.overflow = 'hidden';
 }
@@ -659,6 +702,16 @@ function eventos() {
     $('#vImg').src = urlCarta(f, b.dataset.c);
     $('#vImg').alt = 'Tarjeta ' + (NOMBRE_CARTA[b.dataset.c] || '') + ' de ' + f.n;
   });
+  $('#vBajar').addEventListener('click', function () {
+    var b = $('#vBajar');
+    var f = porK(b.dataset.k);
+    if (!f) return;
+    // ⚠️ LA PESTAÑA ACTIVA, no `f.c[0]`. Si alguien abre la Servidor y le
+    // da a Descargar, tiene que bajar ESA — bajar siempre la primera es un
+    // botón que hace algo parecido a lo que dice.
+    var p = $('#vPestanas .pest.on');
+    bajarCarta(f, (p && p.dataset.c) || (f.c || [])[0]);
+  });
   $('#visor').addEventListener('click', function (e) {
     if (e.target.closest('[data-cerrar]')) cerrar();
   });
@@ -691,6 +744,7 @@ function cuandoSe(iso) {
 function pinta() {
   trama();
   pintaHero();
+  pintaPasados();
   pintaPodio();
   pintaChips();
   pintaTabla();
