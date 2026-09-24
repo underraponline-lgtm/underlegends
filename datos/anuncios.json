@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-24T03:40:18+00:00",
+ "cuando": "2026-09-24T06:51:48+00:00",
  "anuncios": [
   {
    "nombre": "RAPEROS UNDERDOGS",
@@ -92,6 +92,23 @@
    "premios": "Puntos para Ranking Interserver Hermandad"
   },
   {
+   "nombre": "ELRAP FECHA 6",
+   "servidor": "FFA",
+   "canal": "✦🏆︱eventos",
+   "msg_id": "1552532949776474147",
+   "cuando": "2026-09-24T04:11:39",
+   "organizador": "@nachonc_",
+   "cupos_texto": ":infinity:",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "Pandillas",
+   "horario": "EN 15",
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-24T04:11:50"
+  },
+  {
    "nombre": "CARABOBO NUNCA SE RINDE VOL.1",
    "servidor": "FFA",
    "canal": "✦🏆︱eventos",
@@ -106,7 +123,7 @@
    "horario": "en 10 min",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "DESGRACIAS CON TöKĪØ V.1",
@@ -123,7 +140,7 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 12",
@@ -140,7 +157,7 @@
    "horario": "EN 30 MINUTOS",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 11",
@@ -157,7 +174,7 @@
    "horario": "EN 30 MINUTOS",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "el que diga 7 parrafos de vencer gana x nocaut tecnico_",
@@ -174,7 +191,7 @@
    "horario": "ahora",
    "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 10",
@@ -191,7 +208,7 @@
    "horario": "EN 30 MINUTOS",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "ELRAP FECHA 5",
@@ -208,7 +225,7 @@
    "horario": "en 15 se abren inscripciones",
    "premios": "pts para el ascenso + pts para la tabla",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "_ARKA MULTIVERSE VOL.1_",
@@ -225,7 +242,7 @@
    "horario": "",
    "premios": "Clasificacion ᴘʟᴀᴛᴀ ɪɪɪ  y Rol De Campeon",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "Lamanija 4x4",
@@ -242,7 +259,7 @@
    "horario": "EN 15",
    "premios": "aura + trofeo",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "ELRAP",
@@ -259,7 +276,7 @@
    "horario": "EN 15 __",
    "premios": "PTS PARA EL ASCENSO+PTS PARA LA TABLA`__",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "EL RAP FECHA 3",
@@ -276,7 +293,7 @@
    "horario": "EN 15",
    "premios": "PTS PARA EL ASCENSO + PTS PARA LA TABLA",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "LOS TUMBA ABUELAS EDICION I",
@@ -293,7 +310,7 @@
    "horario": "EN 1 HORA",
    "premios": "ROL CAMPEON",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "aura",
@@ -310,7 +327,7 @@
    "horario": "ya",
    "premios": "aura",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "LA VUELTA DEL GOAT",
@@ -327,7 +344,7 @@
    "horario": "ABIERTAS 15M ANTES DE COMPETENCIA!",
    "premios": "FOTO DE FLENNZS",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "dragon ball z kai",
@@ -344,7 +361,7 @@
    "horario": "EN 15",
    "premios": "PTS PARA EL ASCENSO",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "EL TREN DE ARAGUA",
@@ -361,7 +378,7 @@
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "premios": "PTS PARA EL ASCENSO",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "ELRAP FECHA 2",
@@ -378,7 +395,7 @@
    "horario": "EN 15",
    "premios": "PTS PARA EL ASCENSO",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   },
   {
    "nombre": "CIEGO, SORDO Y MUDO V.3",
@@ -395,27 +412,170 @@
    "horario": "Ahora",
    "premios": "Puntos para la tabla T1 + Rol de campeon 🏆",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
-  },
-  {
-   "nombre": "El templo del chaKalaJe 1",
-   "servidor": "FFA",
-   "canal": "✦🏆︱eventos",
-   "msg_id": "1550348220134334485",
-   "cuando": "2026-09-18T03:30:19",
-   "organizador": "pichula",
-   "cupos_texto": "8 /",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "cartón",
-   "modalidad": "1 v 1_",
-   "horario": "AHORA",
-   "premios": "RESPETO y fotopata",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-24T02:22:16"
+   "inscripciones_cuando": "2026-09-24T04:11:50"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "cuando": "2026-09-24T05:00:17"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "nhp 🇨🇱",
+   "quien": "andresnhp",
+   "discord_id": "1468995046161256706",
+   "cuando": "2026-09-24T04:44:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "PRRR🇦🇴",
+   "quien": "ndfue",
+   "discord_id": "1405241805733105704",
+   "cuando": "2026-09-24T04:40:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "cuando": "2026-09-24T04:40:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Fokox🇦🇷Fokox🇦🇷Fokox🇦🇷Fokox🇦🇷Fokox🇦🇷Fokox🇦🇷Fokox🇦🇷Fokox🇦🇷 xD",
+   "quien": "esometilin",
+   "discord_id": "881358841319682079",
+   "cuando": "2026-09-24T04:31:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "EricRJ 🇦🇷 primera",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "cuando": "2026-09-24T04:24:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Scot 🇦🇷",
+   "quien": "ros81",
+   "discord_id": "1498545536708382722",
+   "cuando": "2026-09-24T04:22:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Crk🇲🇽",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "cuando": "2026-09-24T04:22:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "fleivaman🇵🇭",
+   "quien": "dnk.x",
+   "discord_id": "393418014135156737",
+   "cuando": "2026-09-24T04:18:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Fleivacheck 🇧🇴",
+   "quien": "dangerworldoff_22969",
+   "discord_id": "1451728184801234944",
+   "cuando": "2026-09-24T04:17:50"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Kravitz 🇨🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "cuando": "2026-09-24T04:16:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Elote🇦🇿",
+   "quien": "sebs._.fs",
+   "discord_id": "1217564137383526470",
+   "cuando": "2026-09-24T04:15:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "cuando": "2026-09-24T04:15:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Rumasi 🇲🇽",
+   "quien": "rumasi9812",
+   "discord_id": "1504561856038043838",
+   "cuando": "2026-09-24T04:15:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "vandu 🇨🇦 primera",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "cuando": "2026-09-24T04:15:25"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Iguana 🇵🇪",
+   "quien": "iguanajoshua",
+   "discord_id": "818314359218241567",
+   "cuando": "2026-09-24T04:15:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Tuca 🇦🇷 (primera)",
+   "quien": "tuquitta",
+   "discord_id": "458702447913861130",
+   "cuando": "2026-09-24T04:15:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Fokox🇦🇷",
+   "quien": "esometilin",
+   "discord_id": "881358841319682079",
+   "cuando": "2026-09-24T04:12:44"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "geekto 🇦🇷",
+   "quien": "eltractorjonshon",
+   "discord_id": "852667585593868288",
+   "cuando": "2026-09-24T04:12:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝︱inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "cuando": "2026-09-24T04:12:18"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝︱inscripciones",
