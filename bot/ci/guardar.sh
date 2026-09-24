@@ -80,7 +80,8 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
           datos/bloqueados.json datos/canales_llaves.json \
           datos/padron.json datos/verificados.json \
           datos/servidores_de.json datos/fotos_etag.json \
-          datos/anuncios.json datos/avisados.json"
+          datos/anuncios.json datos/avisados.json \
+          datos/akas.json datos/decisiones.json"
 if git diff --quiet -- $ARCHIVOS; then
   echo "nada cambió: no hay nada que commitear"
   exit 0

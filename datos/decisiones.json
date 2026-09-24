@@ -1,0 +1,9 @@
+{
+ "_leeme": [
+  "Lo que Dlx decidió sobre eventos en la hoja ✅ Decidir.",
+  "La clave es «evento · servidor · fecha», como en Pendientes.",
+  "llaves_a_entrada.py lo respeta: «no cuenta» no se suma nunca;",
+  "«cuenta» no se retiene por Interserver ni por fase sin batallas."
+ ],
+ "eventos": {}
+}
