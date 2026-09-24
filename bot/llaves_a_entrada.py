@@ -1539,23 +1539,27 @@ def main():
         print('   ✅ %d fila(s) en `Entrada`' % len(nuevas))
     else:
         print('   ✅ nada nuevo para `Entrada`')
-    for ev, cosas in por_evento.items():
-        P.anotar('Llave sin resolver', 'llaves de Discord', ev,
-                 ' | '.join(cosas[:4]))
+    # ⚠️ TODO EN UN LOTE: una lectura de la cola y un pedido, no uno por
+    # evento. Ver `pendientes.anotar_varios()`.
+    lote = [('Llave sin resolver', 'llaves de Discord', ev,
+             ' | '.join(cosas[:4])) for ev, cosas in por_evento.items()]
     # ⚠️ EL DETALLE LLEVA SERVIDOR Y FECHA, no sólo el nombre: la cola no
     # duplica por (tipo, detalle), y dos llaves sin título son dos eventos
     # que con el nombre solo se volverían una fila.
-    for ev, sv_i, fec_i, mot in retenidos:
-        P.anotar('Evento dudoso', 'llaves de Discord',
-                 '%s · %s · %s' % (ev, sv_i, fec_i),
-                 mot + '. NO se sumó nada.')
-    for ev, sv_i, fec_i, cosas in incompletos:
-        P.anotar('Bracket incompleto', 'llaves de Discord',
-                 '%s · %s · %s' % (ev, sv_i, fec_i),
-                 ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
-                             'guía (Parte 1) lo descarta y NO se sumó '
-                             'nada. Si cuenta, completá la final en la '
-                             'llave' % QUIETA_H] + cosas[:3]))
+    lote += [('Evento dudoso', 'llaves de Discord',
+              '%s · %s · %s' % (ev, sv_i, fec_i), mot + '. NO se sumó nada.')
+             for ev, sv_i, fec_i, mot in retenidos]
+    lote += [('Bracket incompleto', 'llaves de Discord',
+              '%s · %s · %s' % (ev, sv_i, fec_i),
+              ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
+                          'guía (Parte 1) lo descarta y NO se sumó nada. Si '
+                          'cuenta, completá la final en la llave' % QUIETA_H]
+                         + cosas[:3]))
+             for ev, sv_i, fec_i, cosas in incompletos]
+    if lote:
+        k = P.anotar_varios(lote)
+        print('   ✅ %d nueva(s) en `Pendientes` (%d ya estaban)'
+              % (k, len(lote) - k))
     # 🔴 ERA `todas_dudas`, QUE NO EXISTE — y la variable de verdad es
     # `dudas`. `NameError` en la ULTIMA linea del camino `--aplicar`, o
     # sea **despues** de escribir en `Entrada` y de anotar en

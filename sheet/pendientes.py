@@ -59,7 +59,7 @@ except AttributeError:
 
 import requests                                          # noqa: E402
 
-from escribir import Hoja, token, API, id_operativo      # noqa: E402
+from escribir import Hoja, token, API, id_operativo, _pedir   # noqa: E402
 
 HOJA = 'Pendientes'
 # A:H. La I esta vacia y la J es el panel de la hoja. Ver el docstring.
@@ -79,13 +79,19 @@ def _hoja():
 
 
 def _filas(h):
-    """Las filas de la TABLA (A:H), sin el panel de la derecha."""
-    d = requests.get('%s/%s/values/%s'
-                     % (API, id_operativo(),
-                        requests.utils.quote('%s!A%d:%s' % (HOJA, h.fila_datos,
-                                                            ULTIMA))),
-                     headers={'Authorization': 'Bearer ' + token()},
-                     timeout=60).json().get('values', [])
+    """Las filas de la TABLA (A:H), sin el panel de la derecha.
+
+    🔴 UN 429 ERA «LA COLA ESTÁ VACÍA». Esto hacía `requests.get(…)
+    .json().get('values', [])` sin mirar el código: con la cuota agotada
+    la respuesta es un `{"error": …}`, no trae `values`, y la cola
+    parecía vacía — así que `anotar()` no encontraba la duda y **la
+    escribía otra vez**. Un error convertido en un dato plausible.
+
+    ⚠️ Ahora pasa por `escribir._pedir()`, que reintenta el 429 y el 5xx
+    y levanta todo lo demás. Una lectura que falla falla.
+    """
+    d = _pedir('GET', '/values/%s' % requests.utils.quote(
+        '%s!A%d:%s' % (HOJA, h.fila_datos, ULTIMA))).get('values', [])
     return [f for f in d if any(str(c).strip() for c in f)]
 
 
@@ -106,33 +112,59 @@ def anotar(tipo, origen, detalle, match='', dry=False):
     Perder la duda es peor que tener un tipo raro, y el pipeline que
     llama a esto **no se puede caer por esto** — es lo contrario de para
     lo que existe.
+
+    ⚠️ PARA VARIAS DUDAS, `anotar_varios()`: esta lee la cola entera en
+    cada llamada.
     """
-    if tipo not in TIPOS:
-        print('   ⚠️ tipo %r no está en la hoja (%s)' % (tipo, ', '.join(TIPOS)))
-    # ⚠️ SE COMPARA LO MISMO QUE SE ESCRIBE. Antes el lado de la hoja iba
-    # con `.strip()` y el `detalle` recien llegado no, asi que un nombre
-    # con un espacio de mas nunca coincidia consigo mismo y entraba otra
-    # vez en cada corrida. Una cola con la misma duda veinte veces se
-    # deja de leer, y entonces deja de existir.
-    detalle = str(detalle).strip()
-    origen, match = str(origen).strip(), str(match).strip()
+    return anotar_varios([(tipo, origen, detalle, match)], dry=dry) == 1
+
+
+def anotar_varios(dudas, dry=False):
+    """Pone varias dudas en la cola con UNA lectura y UN pedido. Cuántas.
+
+    🔴 UNA LECTURA POR DUDA AGOTABA LA CUOTA. Medido el 24/09/2026 en el
+    ciclo de las 9:22 AM ET: 33 nombres desconocidos eran 33 `anotar()`,
+    y cada uno leía la cabecera y la cola —unas 66 lecturas contra una
+    cuota de 60 por minuto—. El reintento esperaba hasta 87 s por duda y
+    **una se perdió igual** («no pude anotarlo … 429»). La cola existe
+    para que nada se pierda, y la forma de escribir en ella perdía.
+
+    `dudas` es `[(tipo, origen, detalle, match), …]`. Se descartan las
+    que ya están en la hoja y las repetidas dentro del mismo lote.
+    """
+    nuevas, vistas = [], set()
+    for tipo, origen, detalle, match in dudas:
+        if tipo not in TIPOS:
+            print('   ⚠️ tipo %r no está en la hoja (%s)'
+                  % (tipo, ', '.join(TIPOS)))
+        # ⚠️ SE COMPARA LO MISMO QUE SE ESCRIBE. Antes el lado de la hoja
+        # iba con `.strip()` y el `detalle` recien llegado no, asi que un
+        # nombre con un espacio de mas nunca coincidia consigo mismo y
+        # entraba otra vez en cada corrida. Una cola con la misma duda
+        # veinte veces se deja de leer, y entonces deja de existir.
+        detalle = str(detalle).strip()
+        if (tipo, detalle) in vistas:
+            continue
+        vistas.add((tipo, detalle))
+        nuevas.append(['', tipo, str(origen).strip(), detalle,
+                       str(match).strip(), 'Pendiente', '', ''])
+    if not nuevas:
+        return 0
     h = _hoja()
     hay = _filas(h)
-    for f in hay:
-        f = list(f) + [''] * ANCHO
-        if str(f[1]).strip() == tipo and str(f[3]).strip() == detalle:
-            return False                     # ya está: no se duplica
-    fila = ['', tipo, origen, detalle, match, 'Pendiente', '', '']
+    ya = {(str((list(f) + [''] * ANCHO)[1]).strip(),
+           str((list(f) + [''] * ANCHO)[3]).strip()) for f in hay}
+    nuevas = [f for f in nuevas if (f[1], f[3]) not in ya]
     if dry:
-        print('   [dry] %s · %s · %s' % (tipo, origen, detalle))
-        return True
-    destino = h.fila_datos + len(hay)
-    requests.post('%s/%s/values/%s!A%d:append?valueInputOption=RAW'
-                  '&insertDataOption=INSERT_ROWS'
-                  % (API, id_operativo(), requests.utils.quote(HOJA), destino),
-                  headers={'Authorization': 'Bearer ' + token()},
-                  json={'values': [fila]}, timeout=60).raise_for_status()
-    return True
+        for f in nuevas:
+            print('   [dry] %s · %s · %s' % (f[1], f[2], f[3]))
+        return len(nuevas)
+    if nuevas:
+        _pedir('POST', '/values/%s!A%d:append?valueInputOption=RAW'
+               '&insertDataOption=INSERT_ROWS'
+               % (requests.utils.quote(HOJA), h.fila_datos + len(hay)),
+               json={'values': nuevas})
+    return len(nuevas)
 
 
 def _resuelto_ya(fila, resolver):
@@ -309,13 +341,11 @@ def barrer(dry=True):
         return cierres
     # 🔴 UNA SOLA LLAMADA. La cuota de escritura son 60 por minuto y el
     # ciclo escribe en paralelo; veinte `PUT` sueltos la rozan solos.
-    requests.post('%s/%s/values:batchUpdate' % (API, id_operativo()),
-                  headers={'Authorization': 'Bearer ' + token()},
-                  json={'valueInputOption': 'RAW',
-                        'data': [{'range': '%s!F%d:H%d' % (HOJA, n, n),
-                                  'values': [['Resuelto', por, 'el ciclo']]}
-                                 for n, _t, _d, por in cierres]},
-                  timeout=60).raise_for_status()
+    _pedir('POST', '/values:batchUpdate',
+           json={'valueInputOption': 'RAW',
+                 'data': [{'range': '%s!F%d:H%d' % (HOJA, n, n),
+                           'values': [['Resuelto', por, 'el ciclo']]}
+                          for n, _t, _d, por in cierres]})
     return cierres
 
 

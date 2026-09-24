@@ -251,9 +251,9 @@ def main():
 
     if alias_mal and aplicar:
         try:
-            from pendientes import anotar
-            for n, a in alias_mal:
-                anotar('Evento dudoso', 'evento #%s' % n, a)
+            from pendientes import anotar_varios
+            anotar_varios([('Evento dudoso', 'evento #%s' % n, a, '')
+                           for n, a in alias_mal])
         except Exception as e:                           # noqa: BLE001
             # como con los desconocidos: la cola no puede tumbar la carga
             print('   ⚠️ no pude anotar el alias en conflicto (%s)' % str(e)[:60])
@@ -299,19 +299,25 @@ def main():
         print('\n   ⚠️ %d nombre(s) no están en el padrón. Van a `Pendientes`'
               % len(sin_resolver))
         print('      y el evento se carga igual:')
+        lote = []
         for n, nom in sin_resolver:
             cerca = motor.parecidos(nom, resolver)
             print('      #%s  %-16s %s'
                   % (n, nom, '¿será %s?' % ', '.join(cerca) if cerca else ''))
-            if aplicar:
-                try:
-                    from pendientes import anotar
-                    anotar('Nombre desconocido', 'evento #%s' % n, nom,
-                           ', '.join(cerca))
-                except Exception as e:                   # noqa: BLE001
-                    # ⚠️ Ni siquiera esto puede tumbar la carga del evento:
-                    # la cola existe para que el pipeline no se frene.
-                    print('         ⚠️ no pude anotarlo (%s)' % str(e)[:60])
+            lote.append(('Nombre desconocido', 'evento #%s' % n, nom,
+                         ', '.join(cerca)))
+        # 🔴 DE UNA VEZ Y NO UNA POR NOMBRE: 33 nombres eran 66 lecturas y
+        # agotaban la cuota. Ver `pendientes.anotar_varios()`.
+        if aplicar and lote:
+            try:
+                from pendientes import anotar_varios
+                k = anotar_varios(lote)
+                print('      ✅ %d nueva(s) en `Pendientes` (%d ya estaban)'
+                      % (k, len(lote) - k))
+            except Exception as e:                       # noqa: BLE001
+                # ⚠️ Ni siquiera esto puede tumbar la carga del evento:
+                # la cola existe para que el pipeline no se frene.
+                print('         ⚠️ no pude anotarlos (%s)' % str(e)[:60])
 
     # ⚠️ LA COPIA SE IMPRIME SIEMPRE, no solo con --limpiar. Es lo unico
     # que separa esto de `limpiarEntrada()`, que borro el pasado de 348
