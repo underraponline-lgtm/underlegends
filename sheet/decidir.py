@@ -476,7 +476,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             'La clave es «evento · servidor · fecha», como en Pendientes.',
             'llaves_a_entrada.py lo respeta: «no cuenta» no se suma nunca;',
             '«cuenta» no se retiene por Interserver ni por fase sin batallas.'])
-        ahora = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
+        ahora = datetime.datetime.now(datetime.timezone.utc).strftime(
+            '%Y-%m-%d %H:%M UTC')
         for ev, dec in eventos.items():
             d.setdefault('eventos', {})[ev] = {'decision': dec, 'cuando': ahora,
                                                'por': POR}

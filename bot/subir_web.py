@@ -230,7 +230,8 @@ def armar():
     # el tipo de contradicción en pantalla que este proyecto persigue.
     _ya = {x.get('msg_id') for x in
            CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)}
-    _ahora = __import__('datetime').datetime.utcnow().strftime(
+    _dt_ = __import__('datetime')
+    _ahora = _dt_.datetime.now(_dt_.timezone.utc).strftime(
         '%Y-%m-%dT%H:%M:%S')
     pas = []
     for x in sorted(ann, key=lambda y: str(y.get('cuando') or ''),
