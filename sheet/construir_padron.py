@@ -295,13 +295,25 @@ def heredar_de_alias(gente):
         destino = por.get(_k(r))
         if destino is None:
             continue
+        # 🔴 DOS DISCORD ID DISTINTOS VETAN EL PAR ENTERO, no solo el
+        # campo del ID. Un Discord ID **es** una persona: si las dos filas
+        # tienen uno y no coinciden, lo sospechoso es el alias, y heredar
+        # cualquier otra cosa le pone a uno el dato del otro.
+        #
+        # Paso el 24/09/2026, el mismo dia que se escribio esta funcion:
+        # `Santz -> Santos` choco por el ID —bien, no se movio— pero el
+        # `av_sheet` de Santz SI se copio a Santos. Al dia siguiente Dlx:
+        # *«Santz y Santos son diferentes»*. La foto de una persona
+        # colgada en la fila de otra.
+        ia, ib = (x.get('discord_id') or ''), (destino.get('discord_id') or '')
+        if ia and ib and ia != ib:
+            choques.append((x.get('raw'), destino.get('raw'), ia, ib))
+            continue
         for c in CAMPOS:
             a, b = (x.get(c) or ''), (destino.get(c) or '')
             if a and not b:
                 destino[c] = a
                 movidos.append((x.get('raw'), destino.get('raw'), c, a))
-            elif a and b and a != b and c == 'discord_id':
-                choques.append((x.get('raw'), destino.get('raw'), a, b))
     return gente, movidos, choques
 
 
