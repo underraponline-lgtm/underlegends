@@ -103,6 +103,10 @@ CAIDA = [('cuartos', 'cuartos'), ('octavos', 'octavos'), ('r32', 'r32')]
 # que queda escrito en `Entrada`. Cambiar los nombres del motor y no los
 # de la hoja dejaria los datos viejos sin leer.
 DE_LLAVE = {
+    # ⚠️ el filtro «normalmente equivale a R32 → 625» (guía de Dlx,
+    # §3.6). La clasificatoria y las preliminares dependen de DÓNDE
+    # están en la llave, así que no se mapean: se avisan (ver abajo).
+    'filtros': 'r32',
     'semifinales': 'semifinal',
     'tercer lugar': 'tercer puesto',
     'dieciseisavos': 'r32',
@@ -613,6 +617,22 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if 'nuevo' in str(b.get('notas') or '').lower():
             esperados |= {x.strip() for x in
                           equipo(b.get('ladoA')) + equipo(b.get('ladoB'))}
+    # 🔴 UNA RONDA QUE NO PAGA NADA SE AVISA, NO SE CALLA. Si la llave
+    # tiene una ronda que la escala no contempla, sus eliminados cobraban
+    # CERO sin que nada lo dijera: octavos en un evento de 8-15, o una
+    # CLASIFICATORIA. La guía de Dlx (§2 y §3.6) tiene precedentes que
+    # no se reducen a una fórmula —TORNEO DE PLAZAS subió a 16+, URBAN
+    # LEAGUE pagó 625, NITRO KINGS pagó cuartos por posición— y su regla
+    # para eso es «dejá una nota diciendo qué hiciste». Esto la deja.
+    for r in sorted({ronda_de(b.get('ronda')) for b in batallas}):
+        if r in ('final', 'tercer puesto', 'semifinal'):
+            continue
+        puesto = dict(CAIDA).get(r)
+        if not puesto or not tab.get(puesto):
+            avisos.append('ESCALA: la ronda «%s» no tiene valor en la escala '
+                          '%s y sus eliminados cobran 0 — revisar (guía §2 '
+                          'y §3.6)' % (r, esc))
+
     # 🔴 LA MISMA PERSONA A LOS DOS LADOS DE UNA BATALLA ES IMPOSIBLE, y
     # cuando pasa es porque un alias fusionó a dos que no son uno. Es el
     # error que la guía de formatos de Dlx (23/09/2026, parte 5) llama

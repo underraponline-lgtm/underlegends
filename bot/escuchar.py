@@ -144,17 +144,28 @@ import requests                                          # noqa: E402
 # lista decorativa: si `SEMIFINALES` quedara antes que `CUARTOS`, el
 # ganador se buscaria en la ronda equivocada y saldrian ganadores dados
 # vuelta sin un solo error.
-ORDEN = ['CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS', 'OCTAVOS',
+ORDEN = ['FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS',
+         'OCTAVOS',
          'CUARTOS', 'SEMIFINALES', 'TERCER LUGAR', 'FINAL']
 ALIAS = {'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
+         'FILTRO': 'FILTROS',
          'SEMI - FINAL': 'SEMIFINALES', 'SEMI-FINAL': 'SEMIFINALES',
          'SEMI FINAL': 'SEMIFINALES', 'SEMIFINAL': 'SEMIFINALES',
          'SEMIS': 'SEMIFINALES', 'SEMI': 'SEMIFINALES',
          'GRAN FINAL': 'FINAL'}
 
+# 🔴 `FINAL(?:ES)?` Y NO `FINALES?`. El patron decia `SEMI…FINALES?`, o sea
+# «FINALE» con la S opcional: la E era obligatoria. `SEMIFINALES` y `SEMI -
+# FINAL` andaban por otros caminos (la segunda por `SEMIS?`), pero una llave
+# que escribiera `[SEMIFINAL]` a secas no tenia encabezado y su semi se
+# sumaba a la ronda anterior. Encontrado el 25/09/2026 probando el caso.
+#
+# ⚠️ Y `FILTROS` ES UNA RONDA. La guia de formatos de Dlx (§3.6) dice que
+# aparece en ~18 de 78 eventos; sin esto sus batallas quedaban antes del
+# primer encabezado reconocido y se tiraban enteras.
 RONDA = re.compile(
-    r'\b(CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|'
-    r'CUARTOS(?:\s+DE\s+FINAL)?|SEMI\s*-?\s*FINALES?|SEMIS?|'
+    r'\b(FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|'
+    r'CUARTOS(?:\s+DE\s+FINAL)?|SEMI\s*-?\s*FINAL(?:ES)?|SEMIS?|'
     r'TERCER\s+LUGAR|GRAN\s+FINAL|FINAL)\b', re.I)
 
 # ⚠️ CUATRO ESTILOS MEDIDOS, no inventados. Sobre 100 mensajes:
