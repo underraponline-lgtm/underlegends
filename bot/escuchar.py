@@ -1154,6 +1154,11 @@ def escuchar(s, forzar=None, por_canal=25):
     otra rama cuesta no enterarse.
     """
     mem = conocidos()
+    # ⚠️ `BARRIDO_COMPLETO`: el ciclo a mano con `completo`, para cuando
+    # se suma un servidor (ver `ciclo.yml`). Sin esto sus canales se
+    # descubren recién en el barrido completo de las 20 h.
+    if forzar is None and os.environ.get('BARRIDO_COMPLETO') == 'true':
+        forzar = True
     completo = toca_completo(mem) if forzar is None else bool(forzar)
     if not mem.get('canales'):
         completo = True

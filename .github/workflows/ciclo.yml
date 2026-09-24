@@ -23,6 +23,13 @@ on:
         description: 'Solo decir que haria, sin tocar nada'
         type: boolean
         default: false
+      # ⚠️ PARA CUANDO SE SUMA UN SERVIDOR. El barrido completo —el que
+      # descubre canales nuevos— corre cada 20 h; sin esto, las llaves de
+      # un servidor que acaba de agregar al bot esperan hasta un dia.
+      completo:
+        description: 'Barrido completo de Discord (se sumo un servidor)'
+        type: boolean
+        default: false
   schedule:
     # 🔴 09:00 UTC, Y LA HORA NO ES UN DETALLE: VA **DESPUES** DEL SYNC.
     # El job de identidades de `liga-global-sync` corre a las **08:00
@@ -178,6 +185,8 @@ jobs:
 
       - name: escuchar
         id: p
+        env:
+          BARRIDO_COMPLETO: ${{ inputs.completo }}
         run: |
           if [ "${{ inputs.simulacro }}" = "true" ]; then
             python bot/pipeline.py --sin-dibujar
