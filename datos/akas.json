@@ -192,7 +192,13 @@
   "makma": "Makmah",
   "fokox": "Focox",
   "gekto": "geekto",
-  "xxxxx": "Xubaru"
+  "xxxxx": "Xubaru",
+  "ricard": "Richard",
+  "ricardflex": "Richard",
+  "richardflex": "Richard",
+  "bloodypainter": "Bloody",
+  "fleivacheck": "fleivaman",
+  "fleivachek": "fleivaman"
  },
  "pares": [
   [
@@ -962,6 +968,30 @@
   [
    "XXXXX",
    "Xubaru"
+  ],
+  [
+   "RICARD",
+   "Richard"
+  ],
+  [
+   "ricardflex",
+   "Richard"
+  ],
+  [
+   "richardflex",
+   "Richard"
+  ],
+  [
+   "BLOODY PAINTER",
+   "Bloody"
+  ],
+  [
+   "Fleivacheck",
+   "fleivaman"
+  ],
+  [
+   "fleivachek",
+   "fleivaman"
   ]
  ],
  "no_confundir": [

@@ -251,19 +251,30 @@ def canon(quien):
         if not sig:
             break
         act = sig
-    return _grafia(act or quien)
+    # si pasó por el mapa, la identidad está DECLARADA: ver `_grafia()`
+    return _grafia(act or quien, declarado=(act or '') != (quien or ''))
 
 
 def _clave_fila(n):
-    """La identidad de un nombre: sólo letras y números. Ver `canon()`."""
-    return ''.join(c for c in unicodedata.normalize('NFKD', str(n or ''))
-                   if c.isalnum()).lower()
+    """La identidad de un nombre, LA MISMA que usa el ranking: `canon()`.
+
+    ⚠️ Y NO SOLO LETRAS Y NÚMEROS: con eso `Volk 🇲🇽` y `volk 🇨🇴` —dos
+    desconocidos con banderas distintas, que el ranking mantiene
+    separados— compartían la fila vieja y uno se llevaba la del otro. La
+    fila anterior de cada uno tiene que buscarse con la misma identidad
+    con que se agrupa.
+    """
+    return canon(str(n or '').strip())
 
 
 _GRAFIA = None
+#: los que no están en el padrón ni tienen alias: (clave, banderas) -> grafía
+_DESCONOCIDOS = {}
+#: una bandera es un PAR de indicadores regionales
+_BANDERA2 = re.compile('[\U0001F1E6-\U0001F1FF]{2}')
 
 
-def _grafia(nombre):
+def _grafia(nombre, declarado=False):
     """UNA sola forma de escribir a cada persona. La del padrón si está.
 
     🔴 EL RANKING AGRUPABA POR COMO ESTABA ESCRITO, NO POR QUIEN ERA.
@@ -285,10 +296,19 @@ def _grafia(nombre):
     gente que no era—. Sacada esa, quedó a la vista que la identidad
     dependía de las mayúsculas.
 
-    ⚠️ LA BANDERA NO SEPARA: `volk🇨🇴` y `Volk🇲🇽` son la misma clave.
-    Es la regla que este proyecto ya tiene escrita —*la bandera en una
-    llave es decoración, no dato*: el mismo Hassan aparece como 🇪🇬, 🇮🇶 y
-    🇦🇴—. El país sale del padrón, no del emoji.
+    🔴 LA BANDERA SEPARA A LOS DESCONOCIDOS, Y A NADIE MÁS. La primera
+    versión de esto juntaba `volk🇨🇴` con `Volk🇲🇽` apoyada en la regla
+    escrita —*la bandera en una llave es decoración*—, y Dlx la corrigió
+    el mismo día: *«la bandera no siempre es decoración»*. Las dos cosas
+    son ciertas en casos distintos:
+
+      · alguien DEL PADRÓN, o con un alias declarado: la identidad ya
+        está resuelta y la bandera es decoración. El mismo Hassan aparece
+        como 🇪🇬, 🇮🇶 y 🇦🇴, y es uno.
+      · alguien que el sistema NO conoce: no hay nada más que el nombre y
+        la bandera, y dos banderas distintas pueden ser dos personas. Se
+        juntan sólo si la bandera coincide —`MAU KC 🇨🇴` con `Mau Kc 🇨🇴`—.
+        Si son la misma, se declara el alias y pasan al primer caso.
 
     ⚠️ LA DEL PADRÓN GANA porque es el AKA oficial: Dlx, 24/09/2026,
     *«esos nombres deberían ser los que aparecen en la lista de raperos
@@ -315,7 +335,12 @@ def _grafia(nombre):
                  if c.isalnum()).lower()
     if not kk:
         return nombre
-    return _GRAFIA.setdefault(kk, nombre)
+    if kk in _GRAFIA:
+        return _GRAFIA[kk]
+    if declarado:
+        return _GRAFIA.setdefault(kk, nombre)
+    fl = frozenset(_BANDERA2.findall(nombre or ''))
+    return _DESCONOCIDOS.setdefault((kk, fl), nombre)
 
 
 def agregar(filas_res, filas_uno):
