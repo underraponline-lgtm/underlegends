@@ -1510,6 +1510,39 @@ console.log('\nMI CUENTA CON DISCORD\n');
   delete PUESTO['d:555000111222333444'];
 }
 
+console.log('\nEL PROXY DE PAGES DEJA PASAR TODO LO QUE LA PÁGINA PIDE\n');
+
+// 🔴 EL 25/09/2026 LAS TRES RUTAS NUEVAS DE «MI CUENTA» ANDABAN ACÁ Y NO EN LA
+// PÁGINA: estas pruebas llaman al Worker directo, y el proxy de Pages
+// (`paginas/_worker.js`) sólo deja pasar una lista cerrada. Dlx lo vio con una
+// captura: «No pude leer tus redes». Esto saca de app.js y campana.js cada
+// `/api/…` que la página pide y prueba que el proxy lo mande al Worker.
+{
+  const { readFileSync } = await import('node:fs');
+  const src = ['paginas/app.js', 'paginas/campana.js']
+    .map((f) => readFileSync(new URL(f, import.meta.url), 'utf8')).join('\n');
+  const rutas = new Set((src.match(/'\/api\/[a-z0-9/._-]*[a-z0-9]'/gi) || []).map((x) => x.slice(1, -1)));
+  // campana.js las arma como '/api/avisos/' + ruta: `pedir('alta', …)`
+  for (const m of src.matchAll(/pedir\('([a-z]+)'/g)) rutas.add('/api/avisos/' + m[1]);
+  const { default: proxy } = await import('./paginas/_worker.js');
+  const antes = globalThis.fetch;
+  let llego = null;
+  globalThis.fetch = async (u) => { llego = String(u); return new Response('{}', { status: 200 }); };
+  const envP = { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } };
+  ok('encontré las rutas que pide la página', rutas.size >= 8, [...rutas].join(' '));
+  for (const r of [...rutas].sort()) {
+    let pasa = false;
+    for (const metodo of ['POST', 'GET']) {
+      llego = null;
+      await proxy.fetch(new Request('https://underlegends.pages.dev' + r,
+        { method: metodo, body: metodo === 'POST' ? '{}' : undefined }), envP);
+      if (llego && llego.startsWith('https://liga-global-bot')) { pasa = true; break; }
+    }
+    ok('el proxy deja pasar ' + r, pasa);
+  }
+  globalThis.fetch = antes;
+}
+
 console.log('\nMIS REDES EN MI PERFIL\n');
 
 {

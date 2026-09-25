@@ -950,7 +950,9 @@ letter-spacing:.2em;text-transform:uppercase}
 .hoy-com{margin-top:20px;padding-top:16px;border-top:1px solid var(--bd2)}
 .hoy-com h3{margin-bottom:10px;color:var(--tx2);font:900 .78rem/1 Archivo,sans-serif;
 letter-spacing:.14em;text-transform:uppercase}
-.com-n{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+/* ⚠️ 110 Y NO 130: con 130 entraban tres por fila y «Verificadas» quedaba sola
+   abajo. Con 110, cuatro en fila en la compu (513 px) y 2×2 en el teléfono */
+.com-n{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}
 .com-n div{display:grid;gap:4px;padding:12px 14px;background:rgba(255,255,255,.03);border-radius:4px}
 .com-n dt{color:var(--tx2);font:600 .74rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
 text-transform:uppercase}
