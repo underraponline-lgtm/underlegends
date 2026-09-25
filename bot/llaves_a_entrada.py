@@ -1197,8 +1197,13 @@ def _self_check():
     # las 25 que hay son de la pre.
     print('\n  el corte de temporada')
     ini = TEMP.INICIO
-    antes = ini.replace('2026-09-22', '2026-09-21')
-    despues = ini.replace('T00:00:00', 'T12:00:00')
+    # ⚠️ CON CUENTAS DE FECHA, NO REEMPLAZANDO TEXTO: esto armaba «antes» con
+    # `.replace('2026-09-22', …)`, y desde el arranque de la T1 `INICIO` es
+    # otra fecha —el reemplazo no hacía nada y la prueba se ponía en rojo—
+    import datetime as _dt
+    _i = _dt.datetime.fromisoformat(ini)
+    antes = (_i - _dt.timedelta(days=1)).isoformat()
+    despues = (_i + _dt.timedelta(hours=12)).isoformat()
     dentro, fuera = de_esta_temporada([
         {'cuando': antes}, {'cuando': despues}, {'cuando': ini},
         {'cuando': ''}, {},

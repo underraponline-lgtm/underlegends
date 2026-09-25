@@ -26,8 +26,9 @@ SCR = os.path.dirname(os.path.abspath(__file__))
 # 🔴 EL UNICO LUGAR. Al arrancar la T2 se cambia aca y nada mas.
 ACTUAL = 't1'
 
-# 🔴 DESDE CUANDO CUENTA ESTA TEMPORADA. Es la hora del reset del
-# 22/09/2026, en UTC.
+# 🔴 DESDE CUANDO CUENTA LA FASE DE PRUEBA. Es la hora del reset del
+# 22/09/2026, en UTC. Desde el arranque de la temporada (`FECHAS`), lo que
+# cuenta es `INICIO`, que se calcula abajo: ver `inicio()`.
 #
 # ⚠️ SIN ESTO EL RESET SE DESHACE SOLO, y en la primera corrida. Los
 # canales de llaves de Discord siguen teniendo las **25 llaves de la
@@ -42,16 +43,17 @@ ACTUAL = 't1'
 # edicion. El 96 % de las llaves se edita despues —a veces dias— asi
 # que una llave de la pre editada hoy seguiria siendo de la pre. Es la
 # misma razon por la que `_ddmm()` usa `timestamp`.
-INICIO = '2026-09-22T00:00:00+00:00'
+INICIO_PRUEBA = '2026-09-22T00:00:00+00:00'
 
 # 🔑 CUÁNDO SE JUEGA CADA TEMPORADA, para la página. Dlx, 25/09/2026: *«la
 # temporada 1 ya tiene fecha de arranque: 5 de octubre hasta el 31 de
 # diciembre»*, y *«estamos en prueba todavía»*: desde `INICIO` hasta el
 # arranque es la FASE DE PRUEBA.
 #
-# ⚠️ NO MUEVE `INICIO`. Ése decide qué llaves cuentan, y si lo jugado en la
-# fase de prueba se borra el 5/10 o sigue sumando es una pregunta abierta
-# (NOVEDADES.md, «Esperando a Dlx»). Esto sólo se muestra.
+# 🔴 Y EL ARRANQUE MUEVE `INICIO`: lo jugado en la fase de prueba NO cuenta.
+# Dlx, 25/09/2026, a «¿el 5 de octubre lo de la fase de prueba se borra y
+# todos arrancan de cero, o sigue sumando?»: *«Se borra»*. Ver `inicio()` y
+# el paso 0 de `bot/pipeline.py`.
 FECHAS = {'t1': ('2026-10-05', '2026-12-31')}
 
 # 🔑 HASTA CUÁNDO LA FOTO SE CAMBIA SIN LÍMITE, inclusive y en hora del este.
@@ -61,6 +63,22 @@ FECHAS = {'t1': ('2026-10-05', '2026-12-31')}
 # antes NO cuenta como el cambio de la temporada. `bot/desplegar.py` se lo
 # pasa al Worker como `FOTO_LIBRE_HASTA`.
 FOTO_LIBRE = {'t1': '2026-10-09'}
+
+
+def _medianoche_et(dia):
+    """`'2026-10-05'` -> la medianoche de ese día en Nueva York, en UTC.
+
+    ⚠️ CON EL HORARIO DE VERANO DE ESE DÍA, no con un -4 fijo: la T2 puede
+    arrancar en invierno (-5).
+    """
+    import datetime as _dt
+    try:
+        import zoneinfo
+        et = zoneinfo.ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = _dt.timezone(_dt.timedelta(hours=-4))
+    return (_dt.datetime.fromisoformat(dia).replace(tzinfo=et)
+            .astimezone(_dt.timezone.utc))
 
 
 def foto_libre_hasta(cual=None):
@@ -73,13 +91,63 @@ def foto_libre_hasta(cual=None):
     dia = FOTO_LIBRE.get(cual or ACTUAL)
     if not dia:
         return ''
+    otro = (_dt.date.fromisoformat(dia) + _dt.timedelta(days=1)).isoformat()
+    return _medianoche_et(otro).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
+def arranque(cual=None):
+    """Cuándo arranca la temporada: las 00:00 ET de su primer día, en UTC."""
+    ini = (FECHAS.get(cual or ACTUAL) or ('',))[0]
+    return _medianoche_et(ini).strftime('%Y-%m-%dT%H:%M:%S+00:00') if ini else ''
+
+
+def _ahora():
+    import datetime as _dt
+    return _dt.datetime.now(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S+00:00')
+
+
+def inicio(ahora=None):
+    """Desde cuándo cuentan las llaves: la fase de prueba, o la temporada.
+
+    🔑 CAMBIA SOLO. Cada corrida del ciclo es un proceso nuevo que importa
+    esto de cero, así que a las 00:00 ET del arranque `INICIO` pasa a esa
+    hora sin que nadie toque nada, y las llaves de la fase de prueba dejan
+    de leerse. Lo que ya estaba cargado lo archiva y vacía el paso 0 del
+    ciclo (`toca_arranque()`).
+    """
+    a = arranque()
+    return a if a and (ahora or _ahora()) >= a else INICIO_PRUEBA
+
+
+INICIO = inicio()
+
+#: dónde queda anotado que el arranque ya se hizo: `{temporada: instante}`.
+#: Va commiteado (`bot/ci/guardar.sh`): el ciclo corre en runners limpios.
+ARRANQUES = os.path.join(os.path.dirname(SCR), 'datos', 'arranque.json')
+
+
+def _arranques():
+    import json
     try:
-        import zoneinfo
-        et = zoneinfo.ZoneInfo('America/New_York')
-    except Exception:                                    # noqa: BLE001
-        et = _dt.timezone(_dt.timedelta(hours=-4))
-    fin = _dt.datetime.fromisoformat(dia).replace(tzinfo=et) + _dt.timedelta(days=1)
-    return fin.astimezone(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+        with open(ARRANQUES, encoding='utf-8') as f:
+            return json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def toca_arranque(ahora=None):
+    """¿Hay que archivar y vaciar la fase de prueba? Una sola vez por temporada."""
+    a = arranque()
+    return bool(a) and (ahora or _ahora()) >= a and ACTUAL not in _arranques()
+
+
+def anotar_arranque(extra=None):
+    import json
+    d = _arranques()
+    d[ACTUAL] = dict({'cuando': _ahora()}, **(extra or {}))
+    with open(ARRANQUES, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+        f.write('\n')
 
 
 # Las temporadas que existieron, en orden. La pre-temporada NO esta: Dlx,
@@ -171,6 +239,27 @@ def clave_foto(nombre, cual=None):
     return '%s%s.webp' % (carpeta_r2(cual), nombre)
 
 
+def mal_fechas():
+    """Las fechas, sin red: cuántas cosas dan mal. Lo corre CI (`--auto`)."""
+    casos = [
+        ('el arranque de la T1 es las 00:00 ET del 5/10',
+         arranque('t1') == '2026-10-05T04:00:00+00:00'),
+        ('la foto es libre hasta el fin del 9/10 ET',
+         foto_libre_hasta('t1') == '2026-10-10T04:00:00Z'),
+        ('antes del arranque cuentan las llaves desde la fase de prueba',
+         inicio('2026-10-05T03:59:59+00:00') == INICIO_PRUEBA),
+        ('desde el arranque, sólo las de la temporada',
+         inicio('2026-10-05T04:00:00+00:00') == arranque('t1')),
+        ('en invierno la medianoche del este es a las 05:00 UTC',
+         _medianoche_et('2027-01-15').strftime('%H') == '05'),
+    ]
+    mal = 0
+    for que, ok in casos:
+        mal += not ok
+        print('  %s %s' % ('ok' if ok else '🔴', que))
+    return mal
+
+
 def _self_check():
     """Que la temporada diga lo mismo en los tres lugares donde vive.
 
@@ -199,7 +288,7 @@ def _self_check():
     print('LA TEMPORADA\n')
     print('  ACTUAL       %s' % ACTUAL)
     print('  TODAS        %s' % ', '.join(TODAS))
-    mal = 0
+    mal = mal_fechas()
 
     if ACTUAL not in TODAS:
         print('  🔴 ACTUAL no está en TODAS: la Histórica no la va a ver')
@@ -300,4 +389,7 @@ if __name__ == '__main__':
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except AttributeError:
         pass
+    if '--auto' in sys.argv:
+        print('\n  temporada.py — las fechas, sin red\n')
+        sys.exit(1 if mal_fechas() else 0)
     sys.exit(1 if _self_check() else 0)

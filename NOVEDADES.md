@@ -217,11 +217,21 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | regla | Dlx | dónde |
 |---|---|---|
 | **La foto es libre hasta el 9 de octubre inclusive** (hora del este); desde el 10, una por temporada. **Lo cambiado antes no cuenta** como el cambio de la temporada (había dos marcas de la fase de prueba, dlx y makmah: quedaron libres) | *«Sí. O sea hay cambios ilimitados hasta el 9»* | `FOTO_LIBRE` de `comun/temporada.py` → `FOTO_LIBRE_HASTA` del Worker (`bot/desplegar.py`) → `/foto` y la página |
-| **El 5 de octubre lo jugado en la fase de prueba se borra**: la T1 arranca de cero | *«Se borra»* | 🔨 a preparar: `INICIO` pasa al 5/10 y `sheet/resetear.py` —el del 22/09— se pone al día con `Resultados` y `1v1` |
+| **El 5 de octubre lo jugado en la fase de prueba se borra**: la T1 arranca de cero | *«Se borra»* | ✅ programado: `INICIO` cambia solo a las 00:00 ET del 5/10 (`comun/temporada.inicio()`) y el ciclo archiva y vacía lo crudo una vez (paso 0 de `bot/pipeline.py`, `sheet/resetear.py --prueba`) |
 
 ⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Viernes 25/09 (1:25 a 1:45 PM) — versión 1.14
+
+- 🧹 **El 5/10 la fase de prueba se borra, y lo hace el ciclo solo**, como dijiste (*«Se borra»*):
+  - **La fecha cambia sola**: `INICIO` pasa a las 00:00 ET del 5/10 en la primera corrida de ese día (`comun/temporada.inicio()`), así que las llaves de la prueba dejan de leerse.
+  - **El paso 0 del ciclo**, una sola vez (`datos/arranque.json`), en la corrida de las 12:22 AM: cada hoja cruda del Operativo —`Entrada`, `Resultados`, `1v1`, `Eventos Procesados`— se **duplica como «… · prueba»** y recién después se vacía. Nada se pierde. Las vitrinas quedan en cero solas, porque salen de esas hojas. Las llaves de la página arrancan de cero, y esa corrida acepta que el pool quede vacío.
+  - **No se toca** la Lista de Raperos, los AKAs, Config, Pendientes ni las fotos.
+  - Te llega un **DM** cuando se hace, o si falla. Si falla, el ciclo no procesa nada hasta que ande y reintenta cada media hora.
+- ✅ **Ensayado de punta a punta** con pestañas «ENSAYO-…» en el Operativo, que después se quitaron: archiva, vacía sólo las columnas de la tabla (el panel de `Entrada` en A y B queda), y **la segunda vez no toca nada**, ni siquiera un dato nuevo. Simulado contra el Operativo real: hoy archivaría 136 filas de `Resultados`, 31 de `1v1` y 7 de `Eventos Procesados`.
+- Lo que el 5/10 se anuncie para ese día o después sigue en el calendario: la página filtra por la hora del evento, no por cuándo se anunció.
 
 ## 📅 Viernes 25/09 (1:15 a 1:25 PM) — versión 1.13
 
@@ -447,7 +457,8 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+1. **🔴 Hay 16 respaldos completos del Sheet en el repo PÚBLICO** (`docs/sheet_respaldo/`, del 20 al 22/09). Traen la planilla entera, con la Lista de Raperos y sus Discord IDs (mucho de eso ya es público en `datos/padron.json`, pero también las notas y los pendientes). ¿Los saco? Sacarlos de hoy es fácil; sacarlos **del historial** pide reescribirlo en GitHub, y eso es irreversible.
+2. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 

@@ -453,6 +453,54 @@ def _lo_barato(correr):
     # no puede dejar sin redibujar a las 138: lo dudoso va a `Pendientes`
     # —ver `sheet/pendientes.py`— y el ciclo sigue. Y con la hoja vacia es
     # un no-op que sale en un segundo.
+    # ── 0 · el arranque de la temporada: la fase de prueba se borra ──
+    #
+    # 🔑 Dlx, 25/09/2026: «Se borra». Una vez, en la primera corrida desde
+    # las 00:00 ET del arranque (`comun/temporada.toca_arranque()`): las
+    # hojas crudas del Operativo se archivan como «… · prueba» y se vacían
+    # (`sheet/resetear.py --prueba`), y las llaves de la página arrancan de
+    # cero. `INICIO` ya cambió solo, así que las llaves de la prueba no
+    # vuelven a entrar.
+    #
+    # ⚠️ VA ANTES DEL PASO 1: si no, esta misma corrida procesaría lo que
+    # quedó en `Entrada` como si fuera de la temporada.
+    #
+    # ⚠️ SI FALLA, EL CICLO NO SIGUE: procesar sobre hojas a medio vaciar
+    # mezclaría la prueba con la temporada. Se reintenta en la próxima.
+    reseteo = False
+    from comun import temporada as _TMP
+    if _TMP.toca_arranque():
+        paso(0, 'arranca la %s: la fase de prueba se archiva y se vacía' % _TMP.SELLO)
+        if not correr:
+            print('      correría sheet/resetear.py --prueba --aplicar')
+        else:
+            ok0 = corre(['sheet/resetear.py', '--prueba', '--aplicar'], callado=False)
+            if not ok0:
+                print('\n   🔴 no pude archivar la fase de prueba: no sigo (se reintenta '
+                      'en la próxima corrida)\n')
+                try:
+                    import alertar as _AL
+                    _AL.dm('🔴 **No pude arrancar la %s**: archivar la fase de prueba falló. '
+                           'El ciclo no procesa nada hasta que ande; se reintenta cada media hora.'
+                           % _TMP.SELLO)
+                except Exception:                        # noqa: BLE001
+                    pass
+                return 1
+            # las llaves de la página: las de la prueba quedan en el historial de git
+            for _n in ('llaves_t1.json', 'llaves_links.json'):
+                with io.open(os.path.join(BASE, 'datos', _n), 'w', encoding='utf-8',
+                             newline='\n') as _f:
+                    _f.write('{}\n')
+            _TMP.anotar_arranque()
+            reseteo = True
+            try:
+                import alertar as _AL
+                _AL.dm('🧹 **Arrancó la %s.** La fase de prueba quedó archivada en las pestañas '
+                       '«· prueba» del Operativo y todo arranca de cero: rankings, puntos y '
+                       'llaves. Las tarjetas se redibujan solas.' % _TMP.SELLO)
+            except Exception:                            # noqa: BLE001
+                pass
+
     paso(1, 'las llaves cargadas en `Entrada`')
     # ✅ EL LECTOR **YA ESCRIBE**, desde el 22/09/2026. Dlx: «pongamos
     # esto a prueba, estos 3 dias pongamos a prueba FFA, quiero ver si
@@ -814,7 +862,9 @@ def _lo_barato(correr):
                 return 1
         for n, hubo in antes.items():
             hay = len(_pool(n))
-            if hubo and hay < hubo * 0.8:
+            # ⚠️ EN LA CORRIDA DEL ARRANQUE LA CAÍDA ES LA ESPERADA: el pool
+            # queda en cero porque la fase de prueba se acaba de vaciar
+            if hubo and hay < hubo * 0.8 and not reseteo:
                 print('\n   🔴 el pool de %s pasó de %d a %d (-%.0f %%).'
                       % (n, hubo, hay, 100.0 * (hubo - hay) / hubo))
                 print('      Eso no parece un cambio real: no sigo. Mirá el')
