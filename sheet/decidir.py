@@ -196,15 +196,30 @@ def _reparar(s):
     """Un texto que pasó por la codificación equivocada, arreglado.
 
     «!馃挆ValenAdoratesJuan馃挆» es «!💗ValenAdoratesJuan💗»: los bytes UTF-8
-    del emoji leídos como GBK. Si deshacerlo da un texto válido, es eso.
+    del emoji leídos como GBK. «Kingđź‡¦đź‡·» es «King🇦🇷» leído como
+    Windows-1250.
+
+    🔴 LAS DOS VENÍAN DEL MISMO LUGAR: `registrar_ids.py` decodificaba lo
+    que baja de KV con `r.text`, y requests ADIVINA el charset cuando la
+    respuesta no lo dice. Arreglado en la fuente el 24/09/2026; esto queda
+    para las filas que ya estaban escritas en `Pendientes`.
+
+    ⚠️ LA PRUEBA ES LA VUELTA ENTERA, no un parecido: se recodifica con la
+    codificación sospechada y se lee como UTF-8. Un nombre de verdad con
+    tildes —«José», «Łukasz», «Ñandú»— no forma UTF-8 válido al revés y
+    queda como estaba.
     """
     t = str(s or '')
-    if not re.search('[\u4e00-\u9fff]', t):
+    if t.isascii():
         return t
-    try:
-        return t.encode('gbk').decode('utf-8')
-    except (UnicodeEncodeError, UnicodeDecodeError):
-        return t
+    for cod in ('gbk', 'cp1250', 'cp1252'):
+        try:
+            r = t.encode(cod).decode('utf-8')
+        except (UnicodeEncodeError, UnicodeDecodeError):
+            continue
+        if r != t:
+            return r
+    return t
 
 
 def _sin_decoracion(nombre):
@@ -986,6 +1001,10 @@ def _self_check():
        and not es_fragmento('Konan'), 'los fragmentos de equipo se reconocen')
     ok(_reparar('!馃挆ValenAdoratesJuan馃挆') == '!💗ValenAdoratesJuan💗',
        'el emoji mal decodificado se arregla')
+    ok(_reparar('Kingđź‡¦đź‡·') == 'King🇦🇷',
+       'arregla un emoji leído como Windows-1250 (el de registrar_ids)')
+    ok(all(_reparar(x) == x for x in ('José', 'Łukasz', 'Ñandú', 'King🇦🇷', 'Konan')),
+       'no toca nombres de verdad: la vuelta entera no da UTF-8')
     ok(_sin_decoracion('👤 | DRAKO MC') == 'DRAKO MC', 'sin el «👤 |» de DRA')
     c = _conflicto_en_palabras("AKA 'Shadow' (fila 237) ya tiene ID 146, el log trae 821")
     ok('discord.com/users/146' in c and 'discord.com/users/821' in c,

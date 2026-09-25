@@ -118,6 +118,34 @@ def _slug(s):
 SELLOS = os.path.join(BASE, 'datos', 'bloqueadas_selladas.json')
 
 
+_FOTOS = {}
+
+
+def _foto(nom, per):
+    """La cara de esa persona como `data:` URI, o None (sale la inicial).
+
+    🔴 FALTABA, Y ESTABA DECIDIDA. `CLAUDE.md`: *«la bandera y la foto SÍ
+    van… la foto va apagada y detrás del velo — sos vos, pero todavía no
+    es tu carta»*. `comun/bloqueada.py` tiene su CSS afinado y el pipeline
+    baja el espejo de caras «porque la Bloqueada lleva foto» — y este
+    archivo nunca se la pasaba a `html()`. Las 1.625 publicadas salían con
+    la inicial. Lo encontró la revisión del 24/09/2026 mirando la de
+    Hassan, que tiene foto en las otras cartas y una «H» en ésta.
+
+    ⚠️ La misma regla que las otras cuatro cartas: `respaldo.avatar()`, que
+    prefiere la copia del repo y sólo acepta una URL si lleva el ID de esa
+    persona. Una por nombre y por corrida: el sello y el dibujo la piden
+    los dos.
+    """
+    if nom not in _FOTOS:
+        try:
+            from comun import respaldo as RS
+            _FOTOS[nom] = RS.avatar(nom, (per or {}).get('av') or '') or None
+        except Exception:                                # noqa: BLE001
+            _FOTOS[nom] = None
+    return _FOTOS[nom]
+
+
 def _sello_de(t, css):
     """El hash de lo que esa Bloqueada VA A DIBUJAR.
 
@@ -135,8 +163,11 @@ def _sello_de(t, css):
     porque acá el HTML es barato de generar y la carta no.
     """
     _k, nom, cc, ev, carta, per = t
-    html = BL.html(nom, cc, ev, silueta=BL.FORMAS[BL.FORMA][0],
-                   carta=carta, persona=per)
+    # ⚠️ CON LA FOTO ADENTRO: si alguien cambia su cara con `/foto`, su
+    # Bloqueada también se tiene que redibujar, y eso lo ve sólo un sello
+    # que incluya la foto.
+    html = BL.html(nom, cc, ev, foto=_foto(nom, per),
+                   silueta=BL.FORMAS[BL.FORMA][0], carta=carta, persona=per)
     h = hashlib.sha1()
     h.update(html.encode('utf-8'))
     h.update(css)
@@ -313,7 +344,8 @@ async def dibujar(tanda, destinos):
         fuentes = f.read()
     cuerpo = ''.join(
         '<div class="uno">%s</div>'
-        % BL.html(nom, cc, ev, silueta=silueta, carta=c, persona=per)
+        % BL.html(nom, cc, ev, foto=_foto(nom, per), silueta=silueta,
+                  carta=c, persona=per)
         for _, nom, cc, ev, c, per in tanda)
     pag = ('<!DOCTYPE html><meta charset="utf-8"><style>' + fuentes
            + BL.css(silueta, margen)
@@ -495,6 +527,11 @@ def main():
     if not faltan:
         print('\n  no queda nada\n')
         return
+    # 🔑 EL NAVEGADOR, RECIEN ACA: ya se sabe que hay algo que dibujar.
+    # El pipeline lo pedía antes de contar y lo bajaba en toda corrida
+    # quieta. Ver `bot/navegador.py`.
+    import navegador
+    navegador.hace_falta()
 
     t0, hechas = time.time(), 0
     # 🔴 SE SELLA POR TANDA Y SE SELLA **LA TANDA QUE SALIO**. Dos cosas

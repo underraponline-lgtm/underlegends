@@ -90,7 +90,12 @@ def cola_kv(s):
         r = s.get('%s/values/%s' % (KV_API, k), timeout=30)
         if r.status_code == 200:
             try:
-                out.append((k, json.loads(r.text)))
+                # 🔴 `r.content` EN UTF-8, NUNCA `r.text`. KV contesta sin
+                # `charset` y requests ADIVINA: con un nombre corto y un
+                # emoji adivinó Windows-1250 y «King🇦🇷» llegó a
+                # `Pendientes` como «Kingđź‡¦đź‡·» (24/09/2026). El
+                # «!馃挆Valen…» de antes era lo mismo, adivinado como GBK.
+                out.append((k, json.loads(r.content.decode('utf-8'))))
             except Exception:
                 pass
     return out
