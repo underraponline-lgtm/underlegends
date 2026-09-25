@@ -216,6 +216,12 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Viernes 25/09 (1 a 1:15 PM) — versión 1.12
+
+- 📷 **La foto desde la página**, que pediste: *«¿podrías hacer que se pueda cambiar la foto desde la página web de la tarjeta también? Esto respetando lo de 1 vez por temporada»*. En Mi cuenta y abajo de tu tarjeta en tu propio perfil. Es `/foto` con otra puerta: **la misma regla** (`meta.arrancada`, `foto:<temporada>:<clave>`, el pase de DRA la saltea), **el mismo guardado** (`fotoAR2()`, que ahora comparten los dos) y **la misma cara**: la global de Discord, que el Worker pide con el permiso de entrar —nadie puede subir otra imagen—. Primero muestra cuál quedaría y se guarda recién con «Usar esta foto». 6 pruebas nuevas.
+- 🏙️ **Urban Freestyle le dio al bot su rol** (administrador): «Data⋅Eventos», que daba 403, ya se lee. Se forzó la búsqueda de canales (`CANALES_V` 5) para no esperar las 6 h.
+- La corrida de las **12:52 PM** fue la primera con todo lo de hoy: escuchó, no dibujó (las 633 cartas de diseño esperan a la madrugada), escribió la comunidad (**10.004**) y anotó a los **331** de los avisos personales. La página ya está en la **1.11** con todo en vivo.
+
 ## 📅 Viernes 25/09 (12:50 PM a 1:10 PM) — versión 1.11
 
 - 👤 **Los avisos de cada uno** (de «todas», la 4, la última): «subiste de rango» y «desbloqueaste tu tarjeta», al celular. **Sin ningún secreto nuevo** —los tokens nuevos quedaron para el final—: el ciclo arma la cola (`bot/avisos_personales.py`, un paso nuevo en los dos trabajos) y la deja en KV (`avisos:personales`); el vigía del Worker, que ya corre cada minuto, la lee y la manda.
@@ -430,8 +436,9 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
-2. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+1. **¿La foto es libre hasta el 5 de octubre?** Hoy el límite de una por temporada **ya rige**: la fase de prueba cuenta como temporada arrancada porque hay gente en el pool (`meta.arrancada`). O sea que quien cambie su foto ahora gasta su cambio de la T1. Si preferís que sea libre hasta el 5/10, es un cambio chico (que `arrancada` mire también la fecha de `comun/temporada.py`).
+2. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
+3. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 

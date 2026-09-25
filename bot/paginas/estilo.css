@@ -1357,6 +1357,10 @@ background:rgba(255,255,255,.03);border-radius:0 4px 4px 0}
 /* la campana: los avisos de cada uno */
 .cp-yo{display:grid;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--bd2)}
 .cp-yo .bajar{justify-self:start}
+/* la foto de la tarjeta, antes de usarla */
+.foto-vista{display:flex;align-items:center;gap:12px}
+.foto-vista img{width:96px;height:96px;border-radius:50%;object-fit:cover;flex:none;
+box-shadow:0 0 0 2px var(--bd)}
 .red.chica{width:30px;height:30px}
 .red.chica svg{width:15px;height:15px}
 /* Mis redes: elegir cuáles se muestran */

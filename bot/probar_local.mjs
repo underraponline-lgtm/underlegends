@@ -1560,6 +1560,49 @@ console.log('\nMIS REDES EN MI PERFIL\n');
   delete PUESTO['d:555000111222333555'];
 }
 
+console.log('\nLA FOTO DESDE LA PÁGINA\n');
+
+{
+  const puestoR2 = [];
+  env.CARTAS = { put: async (k, cuerpo) => { puestoR2.push(k); } };
+  const foto = async (cuerpo) => {
+    const r = await worker.fetch(new Request('https://x/cuenta/foto', {
+      method: 'POST', body: JSON.stringify(cuerpo),
+    }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  const antes = globalThis.fetch;
+  const discord = (avatar) => async (url) => (String(url).includes('cdn.discordapp.com')
+    ? new Response('imagen', { status: 200 })
+    : String(url).includes('/guilds/') ? new Response(JSON.stringify({ roles: [] }), { status: 200 })
+    : new Response(JSON.stringify({ id: '555000111222333666', username: 'k', avatar }), { status: 200 }));
+  let r = await foto({ token: 'x' });
+  ok('un permiso con forma rara se rechaza', r.status === 400);
+  globalThis.fetch = discord('abc');
+  r = await foto({ token: 'permisoBueno1234567890' });
+  ok('sin tarjeta en la Liga no hay dónde ponerla', r.status === 409 && r.json.error === 'sin_perfil');
+  PUESTO['d:555000111222333666'] = 'konan';
+  globalThis.fetch = discord(null);
+  r = await foto({ token: 'permisoBueno1234567890' });
+  ok('sin foto en Discord no se guarda el gris', r.status === 422 && r.json.error === 'sin_foto');
+  globalThis.fetch = discord('abc');
+  r = await foto({ token: 'permisoBueno1234567890' });
+  ok('primero muestra cuál quedaría, sin guardar nada', r.status === 200 && r.json.estado === 'puede' &&
+     /avatars\/555000111222333666\/abc\.webp\?size=256/.test(r.json.vista || '') && !puestoR2.length,
+     JSON.stringify(r.json));
+  r = await foto({ token: 'permisoBueno1234567890', confirmar: true });
+  ok('con «usar esta foto» la guarda en R2 y anota el uso de la temporada',
+     r.status === 200 && r.json.ok && puestoR2.length === 1 && !!PUESTO['foto:t1:konan'],
+     JSON.stringify(r.json));
+  r = await foto({ token: 'permisoBueno1234567890', confirmar: true });
+  ok('y la segunda vez de la temporada, no (sin el pase de DRA)',
+     r.status === 403 && r.json.error === 'usado' && puestoR2.length === 1);
+  globalThis.fetch = antes;
+  delete PUESTO['d:555000111222333666'];
+  delete PUESTO['foto:t1:konan'];
+  delete env.CARTAS;
+}
+
 console.log('\n/WEBSITE Y /NOTIFY\n');
 
 {

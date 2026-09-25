@@ -1374,6 +1374,56 @@ async function cuentaRedes(req, env) {
   return new Response(JSON.stringify({ clave, publicas, guardadas: elegidas }), { headers: h });
 }
 
+// ── la foto desde la página: lo mismo que `/foto` ─────────────────────────
+// 🔑 Dlx, 25/09/2026: «¿podrías hacer que se pueda cambiar la foto desde la
+// página web de la tarjeta también? Esto respetando lo de 1 vez por
+// temporada». Es `/foto` con otra puerta: la misma regla (`meta.arrancada`,
+// `claveUso`, el pase de DRA), el mismo guardado (`fotoAR2()`) y la misma
+// cara —la global de Discord, no la de un servidor—.
+//
+// ⚠️ LA CARA SALE DE DISCORD, NO DE LA PÁGINA: el hash viene de `/users/@me`
+// con el permiso de entrar. Nadie puede subir otra imagen ni la de otro.
+//
+// ⚠️ EN DOS PASOS: sin `confirmar` sólo dice qué foto quedaría y si se puede
+// (la página la muestra y pregunta); con `confirmar`, la guarda.
+async function cuentaFoto(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const res = (d, estado = 200) => new Response(JSON.stringify(d), { status: estado, headers: h });
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const t = String((d && d.token) || '');
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) return res({ error: 'token' }, 400);
+  let u = null;
+  try {
+    const r = await fetch('https://discord.com/api/v10/users/@me', {
+      headers: { Authorization: 'Bearer ' + t } });
+    if (r.ok) u = await r.json();
+  } catch (e) { u = null; }
+  if (!u || !u.id) return res({ error: 'discord' }, 401);
+  const quien = await env.KV.get('d:' + u.id);
+  if (!quien) return res({ error: 'sin_perfil' }, 409);
+  // el blob gris por defecto no se guarda: ver `/foto`
+  if (!u.avatar) return res({ error: 'sin_foto' }, 422);
+  if (!env.CARTAS) return res({ error: 'sin_r2' }, 503);
+  const arranco = await temporadaArrancada(env);
+  const usado = arranco && !!(await env.KV.get(claveUso(env, quien)));
+  let pase = false;
+  if (usado) {
+    const dra = SV_DE('DRA');
+    const { miembro } = dra ? await miembroDra(env, dra.guild, u.id) : { miembro: null };
+    pase = !!(miembro && (miembro.roles || []).indexOf(ROL_PASE) >= 0);
+  }
+  const temporada = temporadaDe(env).toUpperCase();
+  const puede = !usado || pase;
+  if (!d.confirmar) {
+    return res({ estado: puede ? 'puede' : 'usado', libre: !arranco, pase, temporada,
+      vista: urlAvatar(u.id, u.avatar).replace('size=1024', 'size=256') });
+  }
+  if (!puede) return res({ error: 'usado', temporada }, 403);
+  const r = await fotoAR2(env, quien, u.id, u.avatar, arranco);
+  return res(Object.assign({ temporada }, r), r.ok ? 200 : 502);
+}
+
 // ── /notify: los avisos de eventos, en el celular o la compu ─────────────
 // 🔴 SIN DMs. Dlx, 25/09/2026: *«no debería usar el bot para enviarte DMs,
 // sino activar la notificación al celular o dispositivo»*. Nació por DM esa
@@ -1824,10 +1874,54 @@ const ROL_PASE = '1531136241171697807';
 const tienePase = (i) =>
   !!(i.member && i.member.roles && i.member.roles.indexOf(ROL_PASE) >= 0);
 
+/**
+ * Bajar la cara de Discord, guardarla en R2 y anotar el uso de la temporada.
+ * Lo usan `/foto` (`guardarFoto`) y la página (`cuentaFoto`): la misma regla y
+ * el mismo guardado por las dos puertas. Devuelve lo que pasó, sin textos:
+ * cada puerta lo cuenta a su manera.
+ *
+ * ⚠️ SE BAJA Y SE GUARDA EN STREAMING: `res.body` va directo a R2 sin pasar
+ * por memoria ni por un decodificador. Esperar la red no gasta CPU; parsear
+ * sí, y acá no se parsea nada.
+ *
+ * ⚠️ EL USO SE ANOTA **DESPUÉS** DE GUARDAR, y sólo si la temporada arrancó:
+ * ver los comentarios de `guardarFoto`.
+ */
+async function fotoAR2(env, quien, id, hash, arranco) {
+  let r;
+  try {
+    r = await fetch(urlAvatar(id, hash));
+  } catch (e) {
+    return { ok: false, paso: 'cdn', error: String(e).slice(0, 50) };
+  }
+  if (!r.ok) return { ok: false, paso: 'cdn', estado: r.status };
+  try {
+    await env.CARTAS.put(claveFoto(env, quien), r.body, {
+      httpMetadata: { contentType: 'image/webp' },
+    });
+  } catch (e) {
+    return { ok: false, paso: 'r2', error: String(e).slice(0, 60) };
+  }
+  if (!arranco) return { ok: true, libre: true };
+  try {
+    await env.KV.put(claveUso(env, quien), JSON.stringify({ hash, ts: Date.now() }));
+  } catch (e) {
+    return { ok: true, anotado: false, error: String(e).slice(0, 40) };
+  }
+  return { ok: true, anotado: true };
+}
+
+/** `meta.arrancada`: ¿rige el límite de una foto por temporada? Ver `/foto`. */
+async function temporadaArrancada(env) {
+  try {
+    const m0 = await env.KV.get('meta');
+    return m0 ? (JSON.parse(m0).arrancada !== false) : true;
+  } catch (e) {
+    return true;   // ante la duda, rige: es el lado conservador
+  }
+}
+
 async function guardarFoto(env, i, quien, id, hash) {
-  // ⚠️ SE BAJA Y SE GUARDA EN STREAMING: `res.body` va directo a R2 sin
-  // pasar por memoria ni por un decodificador. Esperar la red no gasta CPU;
-  // parsear sí, y acá no se parsea nada.
   //
   // 🔴 TODO ESTO CORRE ADENTRO DE UN `waitUntil`, Y AHI UN ERROR NO LO VE
   // NADIE. Sin los try/catch de abajo, un fallo del CDN, de R2 o de la
@@ -1836,28 +1930,23 @@ async function guardarFoto(env, i, quien, id, hash) {
   // diciendo que la aplicación no respondió. No hay log que mirar —los del
   // Worker no salen de Cloudflare en el plan gratis— así que el único lugar
   // donde el error puede aparecer es en el mensaje a la persona.
-  let r;
-  try {
-    r = await fetch(urlAvatar(id, hash));
-  } catch (e) {
+  const arranco0 = await temporadaArrancada(env);
+  const res = await fotoAR2(env, quien, id, hash, arranco0);
+  if (!res.ok && res.paso === 'cdn' && res.error) {
     return seguir(i, 'No pude llegar al CDN de Discord (`' +
-                     String(e).slice(0, 50) + '`). Probá de nuevo en un rato.');
+                     res.error + '`). Probá de nuevo en un rato.');
   }
-  if (!r.ok) {
+  if (!res.ok && res.paso === 'cdn') {
     // 🔴 PASA DE VERDAD, Y NO ES UN ERROR NUESTRO. Medido el 20/09/2026:
     // `ropomc` tiene un hash que la lista de miembros de Discord devuelve y
     // que el CDN ya no sirve — 404 en los cuatro formatos. O sea que ni el
     // dato fresco de Discord garantiza un hash vivo.
-    return seguir(i, 'Discord no me dio tu foto (`' + r.status + '`).\n' +
+    return seguir(i, 'Discord no me dio tu foto (`' + res.estado + '`).\n' +
                   'Suele arreglarse volviéndotela a poner en Discord y ' +
                   'probando de nuevo.');
   }
-  try {
-    await env.CARTAS.put(claveFoto(env, quien), r.body, {
-      httpMetadata: { contentType: 'image/webp' },
-    });
-  } catch (e) {
-    return seguir(i, 'No pude guardar tu foto (`' + String(e).slice(0, 60) +
+  if (!res.ok) {
+    return seguir(i, 'No pude guardar tu foto (`' + res.error +
                      '`). Probá de nuevo en un rato — **no te gasté** el ' +
                      'cambio de la temporada.');
   }
@@ -1884,23 +1973,15 @@ async function guardarFoto(env, i, quien, id, hash) {
   // ⚠️ La misma `meta.arrancada` que decide si el límite rige decide si
   // se anota. Las dos preguntas tienen que contestarse igual o el
   // contador se llena en un mundo donde todavía no cuenta.
-  let arranco = true;
-  try {
-    const m0 = await env.KV.get('meta');
-    arranco = m0 ? (JSON.parse(m0).arrancada !== false) : true;
-  } catch (e) { /* ante la duda, se anota: es el lado conservador */ }
-  if (!arranco) {
+  if (res.libre) {
     return seguir(i, '📸 Tu foto **quedó guardada**.\n' +
                      'La temporada todavía no arrancó, así que podés ' +
                      'cambiarla las veces que quieras hasta que empiece.');
   }
-  try {
-    await env.KV.put(claveUso(env, quien),
-                     JSON.stringify({ hash, ts: Date.now() }));
-  } catch (e) {
+  if (!res.anotado) {
     return seguir(i, '📸 Tu foto **quedó guardada**.\n' +
                      '⚠️ Pero no pude anotar que ya usaste tu cambio de la ' +
-                     'temporada (`' + String(e).slice(0, 40) + '`), así que ' +
+                     'temporada (`' + res.error + '`), así que ' +
                      '`/foto` te va a dejar cambiarla de nuevo. Avisale a Dlx.');
   }
   return seguir(i,
@@ -3043,6 +3124,7 @@ export default {
     // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
     if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);
     if (camino === '/cuenta/redes' && req.method === 'POST') return cuentaRedes(req, env);
+    if (camino === '/cuenta/foto' && req.method === 'POST') return cuentaFoto(req, env);
 
     if (req.method === 'GET') {
       const ruta = camino;

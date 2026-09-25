@@ -10,6 +10,15 @@
  ],
  "cambios": [
   {
+   "version": "1.12",
+   "dia": "2026-09-25",
+   "titulo": "Cambiá tu foto desde la página",
+   "items": [
+    "📷 **Cambiá tu foto desde la página**: en **Mi cuenta** o abajo de tu tarjeta en tu perfil, «Cambiar mi foto». Te muestra cuál va a quedar —la de tu perfil de Discord— y la ponés con un toque. Es lo mismo que `/foto`: **una por temporada**.",
+    "🏙️ **Urban Freestyle**: el bot ya escucha los cuatro canales de eventos del servidor."
+   ]
+  },
+  {
    "version": "1.11",
    "dia": "2026-09-25",
    "titulo": "Tus avisos: rango y tarjetas",

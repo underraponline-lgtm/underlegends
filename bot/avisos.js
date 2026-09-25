@@ -81,7 +81,9 @@ export const PATRON_VIGIA = /evento|competenc/i;
 //: a las seis horas
 // 3: los nombres se normalizan (NFKD) antes de compararlos; ver `vigilar()`
 // 4: sólo los servidores confirmados de la Liga (`meta.liga`); ver `descubrir()`
-const CANALES_V = 4;
+// 5: Urban Freestyle le dio al bot su rol (25/09/2026) y «Data⋅Eventos»,
+// que daba 403, ya se puede leer: se vuelve a buscar sin esperar las 6 h.
+const CANALES_V = 5;
 //: 🔑 DONDE SE RE-PUBLICAN LOS ANUNCIOS DE TODA LA LIGA. Dlx, 25/09/2026:
 //: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
