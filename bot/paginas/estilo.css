@@ -958,6 +958,12 @@ letter-spacing:.14em;text-transform:uppercase}
 text-transform:uppercase}
 .com-n dd{font:900 1.7rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 .com-n small{color:var(--tx3);font:600 .76rem/1.3 Archivo,sans-serif}
+/* «pedila»: ver `pintaPedi()` */
+.com-pedi{display:inline-block;margin-top:12px;color:var(--tl);text-decoration:none;
+font:800 .82rem/1.2 Archivo,sans-serif}
+.com-pedi:hover{text-decoration:underline}
+.com-pedi[hidden]{display:none}
+.pedi-bt{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .ac-n{display:grid;gap:8px;margin-bottom:14px}
 .ac-n div{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
 padding-bottom:8px;border-bottom:1px solid var(--bd2)}

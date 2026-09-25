@@ -107,7 +107,7 @@ jobs:
                    sheet/pendientes.py sheet/rankings.py sheet/registrar_ids.py sheet/resetear.py \
                    comun/temporada.py \
                    herramientas/quien_puede_card.py herramientas/roles_de_rango.py \
-                   herramientas/simular_score.py herramientas/unir_sellos.py; do
+                   herramientas/simular_score.py herramientas/unir_sellos.py herramientas/sin_dm.py; do
             echo "::group::$f"
             if ! python "$f" --auto; then
               echo "::error::$f falló su self-check"
