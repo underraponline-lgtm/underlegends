@@ -2398,7 +2398,10 @@ var CARTA_TIT = { temporada: 'Temporada', competitivo: 'Competitiva', pais: 'Pa�
 var PERF_CARTA = {};
 
 function pintaPerfil(k) {
-  var f = porK(k);
+  // 🔑 QUIEN ENTRÓ CON DISCORD Y NO JUGÓ LA TEMPORADA también tiene su perfil
+  // (Dlx, 25/09/2026: «cuando toco mi perfil debería ver mi perfil»). Sólo
+  // lo ve esa persona: el resto de los perfiles sale del ranking.
+  var f = porK(k) || filaCuenta(k);
   var caja = $('#perfil');
   if (!f) {
     caja.innerHTML = '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
@@ -2421,7 +2424,8 @@ function pintaPerfil(k) {
   caja.innerHTML =
     '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
     '<header class="pf-cab">' + avatar(f, 116) +
-      '<div class="pf-id"><span class="pf-pos">#' + esc(f.pos) + ' de la temporada</span>' +
+      '<div class="pf-id"><span class="pf-pos">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) +
+        ' de la temporada' : 'Todavía sin eventos esta temporada') + '</span>' +
       '<h1 class="tit">' + esc(f.n) + '</h1><p class="pf-sub">' + sub +
       '<span id="pfCrew"></span></p></div>' +
       '<dl class="pf-cifras"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
@@ -2882,19 +2886,27 @@ function pintaPopCuenta() {
   // y sus Bloqueadas: a Dlx le decía que no tenía ninguna (25/09/2026).
   if (!f && DC && DC.rapero) {
     var misCartas = (DC.cs || []).length + (DC.bl || []).length;
+    // 🔴 LA SESIÓN DE ANTES DEL 25/09 NO TRAE LA CLAVE, y el texto le decía
+    // «volvé a entrar con Discord» a alguien que ya estaba conectado: Dlx lo
+    // leyó como desconectado. Es un toque —el link lleva `prompt=none`, no
+    // vuelve a pedir permiso— y ahora dice lo que es: actualizar.
     c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
       esc(DC.rapero) + '</b><small>Conectado con Discord' +
       (DC.n && DC.n !== DC.rapero ? ' como ' + esc(DC.n) : '') + '</small></div></div>' +
-      '<p class="nota">' + (DC.clave ? 'Todavía no jugaste esta temporada: aparecés en el ranking ' +
-        'con tu primer evento.' : 'Volvé a entrar con Discord para ver tus tarjetas acá.') + '</p>' +
+      (DC.clave ? '<p class="nota">Todavía no jugaste esta temporada: aparecés en el ranking ' +
+        'con tu primer evento.</p>'
+        : '<p class="nota">Tu sesión es de una versión anterior. Actualizala para ver tus ' +
+          'tarjetas y tu perfil: es un toque, no te pide nada.</p>' +
+          '<button type="button" class="btn sec ancho" id="dcEntrar">&#8635; Actualizar mi cuenta</button>') +
       '<nav class="pop-menu">' +
+      (DC.clave ? '<a href="#/r/' + encodeURIComponent(DC.clave) + '">&#128100; Mi perfil</a>' : '') +
       (DC.clave && misCartas ? '<button type="button" data-carta="' + esc(DC.clave) + '">&#127183; Mis tarjetas' +
         ' <small>' + misCartas + '</small></button>' : '') +
       (DC.cc && PAIS[String(DC.cc).toLowerCase()] ? '<a href="#/pais/' + esc(DC.cc) + '">' + bandera(DC.cc) +
         ' Mi país</a>' : '') +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>' +
-      (DC.clave ? '' : entrar);
+      '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' +
+      '<button type="button" id="yoOlvidar">Salir</button></nav>';
     return;
   }
   if (!f && DC) {
@@ -2924,6 +2936,7 @@ function pintaPopCuenta() {
     ((f.c || []).length ? '<button type="button" data-carta="' + esc(f.k) + '">&#127183; Mis tarjetas</button>' : '') +
     (f.cc && PAIS[String(f.cc).toLowerCase()] ? '<a href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' Mi país</a>' : '') +
     '<a href="#/avisos">&#128276; Mis avisos</a>' +
+    (DC ? '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' : '') +
     '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
     (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar);
 }

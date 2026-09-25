@@ -79,7 +79,8 @@ const REDESCUBRIR = 6 * HORA;
 export const PATRON_VIGIA = /evento|competenc/i;
 //: si cambia qué canales se escuchan, la lista guardada se rehace ya y no
 //: a las seis horas
-const CANALES_V = 2;
+// 3: los nombres se normalizan (NFKD) antes de compararlos; ver `vigilar()`
+const CANALES_V = 3;
 //: 🔑 DONDE SE RE-PUBLICAN LOS ANUNCIOS DE TODA LA LIGA. Dlx, 25/09/2026:
 //: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
@@ -902,7 +903,12 @@ export class Avisos {
       if (r.status !== 200) { sinAcceso++; continue; }
       for (const c of await r.json()) {
         if (c.type !== 0 && c.type !== 5) continue;
-        const n = c.name || '';
+        // 🔴 NORMALIZADO, O LAS LETRAS DECORADAS NO MATCHEAN. Urban Freestyle
+        // (25/09/2026) llama a su canal «「🏆」𝙀𝙫𝙚𝙣𝙩𝙤𝙨»: son letras matemáticas
+        // (U+1D400 y siguientes), no «Eventos», y /evento/ no las encuentra.
+        // No falla: el servidor queda sin avisos y nadie se entera. NFKD las
+        // vuelve letras comunes, como en `anuncios.py`.
+        const n = (c.name || '').normalize('NFKD');
         // los de staff también dicen «evento», y el bot los lee
         if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON_VIGIA.test(n)) continue;
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild });

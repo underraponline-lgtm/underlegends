@@ -178,7 +178,14 @@
    "guild_id": "1467763447117778989",
    "invitacion": "https://discord.gg/vThvc9f5xy",
    "en_el_sheet": true,
-   "nota": "el link que venia en la lista (B4FZA2YYcc) llevaba a VFA, otro servidor; Dlx paso el nuevo y verifica"
+   "nota": "el link que venia en la lista (B4FZA2YYcc) llevaba a VFA, otro servidor; Dlx paso el nuevo y verifica · 25/09/2026: el bot entró (Dlx) y se confirmó; TikTok de Dlx",
+   "confirmado": true,
+   "redes": [
+    [
+     "tiktok",
+     "https://www.tiktok.com/@urban_freestyle627"
+    ]
+   ]
   },
   "EFA": {
    "nombre": "EFA",

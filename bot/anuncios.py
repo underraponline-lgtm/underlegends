@@ -47,6 +47,7 @@ import os
 import re
 import sys
 import time
+import unicodedata
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -562,7 +563,10 @@ def canales(s):
         for c in r.json():
             if c.get('type') not in (0, 5):
                 continue
-            n = c.get('name', '')
+            # 🔴 NORMALIZADO: los canales de Urban Freestyle (25/09/2026) se
+            # llaman «「🏆」𝙀𝙫𝙚𝙣𝙩𝙤𝙨», en letras matemáticas, y el patrón no
+            # los encontraba. NFKD las vuelve letras comunes (ver `_linea()`).
+            n = unicodedata.normalize('NFKD', c.get('name', ''))
             # 🔴 LOS DE STAFF, NO. `［📰］anuncios-staff` de Snake Rap y
             # `✦🔒︱staff-anuncios` de FFA matchean «anuncio», y el bot es
             # Administrador en los dos: los lee. Lo que sale de acá va al
