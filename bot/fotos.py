@@ -392,7 +392,15 @@ def espejo(s):
           % (nuevas, iguales, len(tengo)))
     if malas:
         print('   🔴 %d no se pudieron bajar' % len(malas))
+    # ⚠️ QUIEN LLAMA TIENE QUE PODER PREGUNTARLO. Desde el 24/09/2026 la
+    # foto entra en el sello de las Bloqueadas: un espejo a medias las
+    # re-sellaría sin cara y se redibujarían dos veces —sin foto ahora, con
+    # foto en la corrida siguiente—. Ver `pipeline.rehacer_bloqueadas()`.
+    espejo.malas = len(malas)
     return len(tengo)
+
+
+espejo.malas = 0
 
 
 def desde_disco(s, dry=True):

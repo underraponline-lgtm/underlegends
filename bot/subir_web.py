@@ -733,8 +733,12 @@ def subir(payload, solo_si_cambio=False):
             r = requests.get('%s/values/%s' % (SD.API, CLAVE),
                              headers={'Authorization': 'Bearer ' + tok},
                              timeout=45)
+            # ⚠️ `r.content` EN UTF-8 y no `r.text`: KV no dice el charset
+            # y requests lo adivina. Una adivinanza mala acá no rompe nada
+            # visible —dice «cambió» y escribe— pero gasta una escritura
+            # de las 1.000 del día en cada corrida.
             if r.status_code == 200 and \
-                    _sin_sello(json.loads(r.text)) == _sin_sello(payload):
+                    _sin_sello(json.loads(r.content.decode('utf-8'))) == _sin_sello(payload):
                 return None
         except (ValueError, OSError):
             # ⚠️ SI NO SE PUEDE LEER, SE ESCRIBE. El error de este lado es

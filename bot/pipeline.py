@@ -245,55 +245,15 @@ def _pool(nombre):
         return []
 
 
-_NAVEGADOR = [False]
-
-
-def hace_falta_el_navegador():
-    """Baja Chromium, y sólo si hay algo que dibujar. Idempotente.
-
-    🔴 SE BAJABA EN TODA CORRIDA Y EL 97 % NO DIBUJA NADA. Estaba en el
-    paso `instalar` del `.yml` como
-    `playwright install --with-deps chromium`.
-
-    Medido el 22/09/2026 sobre una corrida quieta de verdad: el job entero
-    son **62 s** y ese paso **36** — el 58 %. Con el cron cada hora son 23
-    corridas quietas por día bajando un navegador que no se usa: **~7 h
-    por mes** de las 33 que da el plan.
-
-    ⚠️ Es la misma regla que ya sigue `bajar_las_caras()`: la precondición
-    es **dibujar**, no «correr en Actions». Puesta en el workflow queda
-    bien para ese llamador y mal para el otro — y acá el otro llamador es
-    el 97 % de las veces.
-
-    ⚠️ FUERA DE ACTIONS NO HACE NADA. En una máquina donde Playwright ya
-    tiene su navegador, `install` termina enseguida; pero `--with-deps`
-    pide sudo y en Windows no aplica, así que se prueba primero si ya está
-    y sólo se baja si falta.
-    """
-    if _NAVEGADOR[0]:
-        return
-    _NAVEGADOR[0] = True
-    try:
-        from playwright.sync_api import sync_playwright
-        with sync_playwright() as pw:
-            pw.chromium.executable_path      # ya está: no hay nada que bajar
-            if os.path.exists(pw.chromium.executable_path):
-                return
-    except Exception:                                    # noqa: BLE001
-        pass
-    print('      bajando Chromium (sólo cuando hay que dibujar)…')
-    args = [sys.executable, '-m', 'playwright', 'install']
-    if os.environ.get('GITHUB_ACTIONS'):
-        args.append('--with-deps')
-    args.append('chromium')
-    r = subprocess.run(args, cwd=BASE, capture_output=True, text=True,
-                       encoding='utf-8', errors='replace')
-    if r.returncode:
-        print('      ⚠️ no pude instalar el navegador: %s'
-              % (r.stderr or '').strip().splitlines()[-1][:90])
+# El navegador vive en `bot/navegador.py` desde el 24/09/2026: el paso 5b
+# lo bajaba en toda corrida y la regla de «sólo si hay que dibujar» se
+# rompió teniéndola acá. Ver su docstring.
+from navegador import hace_falta as hace_falta_el_navegador  # noqa: E402
 
 
 _ESPEJO_HECHO = [False]
+#: ¿bajaron TODAS las caras? Lo mira el paso 5b antes de sellar Bloqueadas.
+_CARAS_COMPLETAS = [False]
 
 
 def bajar_las_caras():
@@ -328,6 +288,7 @@ def bajar_las_caras():
         _s.headers['Authorization'] = 'Bearer ' + FT.env('CLOUDFLARE_API_TOKEN')
         FT.espejo(_s)
         _ESPEJO_HECHO[0] = True
+        _CARAS_COMPLETAS[0] = not getattr(FT.espejo, 'malas', 0)
     except Exception as e:                               # noqa: BLE001
         print('      ⚠️ sin espejo (%s): dibujo con lo que haya en el repo'
               % str(e)[:70])
@@ -395,11 +356,22 @@ def rehacer_bloqueadas():
     peor que nada y muchisimo mejor que abortar despues de haber dibujado.
     """
     paso('5b', 'las Bloqueadas')
-    # 🔴 LAS CARAS PRIMERO. La Bloqueada lleva foto, y este paso corre
-    # también en la rama de «nada cambió», que es anterior al paso 4.
-    # Ver `bajar_las_caras()`.
-    hace_falta_el_navegador()
+    # 🔴 LAS CARAS PRIMERO. La Bloqueada lleva foto —y desde el 24/09/2026
+    # la foto entra en su SELLO—, y este paso corre también en la rama de
+    # «nada cambió», que es anterior al paso 4. Ver `bajar_las_caras()`.
+    #
+    # ⚠️ EL NAVEGADOR NO: lo pide `bloqueadas.py` recién cuando sabe que
+    # hay algo que dibujar. Pedirlo acá lo bajaba en toda corrida quieta.
     bajar_las_caras()
+    # 🔴 SIN TODAS LAS CARAS NO SE SELLA. La foto entra en el sello: con el
+    # espejo a medias, quien no tiene su foto acá se re-sellaría con la
+    # inicial y se redibujaría —y en la corrida siguiente, al volver la
+    # foto, otra vez—. Saltear una vuelta es gratis; dibujar 1.214 dos
+    # veces, no.
+    if not _CARAS_COMPLETAS[0]:
+        print('      ⚠️ faltan caras del espejo: no toco las Bloqueadas en '
+              'esta corrida')
+        return 0
     try:
         sys.path.insert(0, SCR)
         import bloqueadas as BQ
