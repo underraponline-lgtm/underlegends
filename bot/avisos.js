@@ -536,7 +536,7 @@ export async function jwtVapid(aud, env, ahora = Date.now()) {
  * `-1` es que falló ACÁ: la clave VAPID, el cifrado, una URL rota. Con un
  * solo código, una clave mal cargada se vería como «Google no contesta».
  */
-async function empujar(sub, texto, opc, env, jwts) {
+async function empujar(sub, texto, opc, env, jwts, detalle) {
   let h, cuerpo;
   try {
     const aud = new URL(sub.endpoint).origin;
@@ -551,13 +551,32 @@ async function empujar(sub, texto, opc, env, jwts) {
       // es un aviso con hora, no un boletín.
       Urgency: opc.urgencia || 'high',
     };
-    if (opc.topic) h.Topic = opc.topic;
+    // 🔴 APPLE RECHAZA EL `Topic` Y RECHAZA EL AVISO ENTERO. Medido el
+    // 25/09/2026 con el iPhone de Dlx: `400 {"reason":"BadWebPushTopic"}`
+    // para «ev1552973488204152833» y también para «ev5967769», cortos y sólo
+    // letras y números. «Mandar una de prueba» no lleva `Topic`, y por eso
+    // eso sí le llegaba y los avisos de eventos no: NINGÚN aviso del lote le
+    // había llegado nunca a un iPhone. A Apple va sin él; Google lo usa para
+    // que un aviso nuevo reemplace al viejo si el teléfono estaba apagado.
+    if (opc.topic && !/(^|\.)push\.apple\.com$/.test(new URL(sub.endpoint).hostname)) {
+      h.Topic = opc.topic;
+    }
     cuerpo = await cifrar(texto, sub.p256dh, sub.auth);
   } catch (e) {
     return -1;
   }
   try {
     const r = await fetch(sub.endpoint, { method: 'POST', headers: h, body: cuerpo });
+    // 🔑 LA RAZÓN DEL RECHAZO, NO SÓLO EL NÚMERO. El 25/09/2026 el iPhone de
+    // Dlx recibía «Mandar una de prueba» y no los avisos del lote: dos 400
+    // sin texto no dicen qué encabezado no le gustó al servicio de push.
+    if (detalle && r.status >= 400) {
+      let razon = '';
+      try { razon = (await r.text()).slice(0, 160); } catch (e) { razon = ''; }
+      let host = '';
+      try { host = new URL(sub.endpoint).hostname; } catch (e) { host = ''; }
+      detalle.push({ host, estado: r.status, razon });
+    }
     return r.status;
   } catch (e) {
     return 0;
@@ -1169,14 +1188,15 @@ export class Avisos {
     const ttl = Math.max(60, Math.min(Math.floor((av.hasta - ahora) / 1000), 12 * 3600));
     const opc = { ttl, topic: 'ev' + av.id.replace(/\D/g, '').slice(-20) };
     const jwts = new Map();
+    const detalle = [];
     let estados = await Promise.all(
-      subs.map((s) => empujar(s, av.cuerpo, opc, this.env, jwts)));
+      subs.map((s) => empujar(s, av.cuerpo, opc, this.env, jwts, detalle)));
     // un reintento para lo que falló por el otro lado (0, 429, 5xx)
     const otra = estados.map((e, i) => (e === 0 || e === 429 || e >= 500 ? i : -1))
       .filter((i) => i >= 0);
     if (otra.length) {
       const re2 = await Promise.all(
-        otra.map((i) => empujar(subs[i], av.cuerpo, opc, this.env, jwts)));
+        otra.map((i) => empujar(subs[i], av.cuerpo, opc, this.env, jwts, detalle)));
       estados = estados.slice();
       otra.forEach((i, j) => { estados[i] = re2[j]; });
     }
@@ -1200,7 +1220,8 @@ export class Avisos {
     });
     if (mal) {
       this.guardar('ultimo_fallo', { t: ahora, id: av.id,
-        estados: estados.filter((e) => !(e >= 200 && e < 300)).slice(0, 10) });
+        estados: estados.filter((e) => !(e >= 200 && e < 300)).slice(0, 10),
+        detalle: detalle.slice(0, 6) });
     }
   }
 
@@ -1349,7 +1370,8 @@ export class Avisos {
       ultima_republicacion: post ? { t: new Date(post.creado).toISOString(),
         ok: post.hecho === 1, error: post.error || '' } : null,
       ultimo_error: err ? { t: new Date(err.t).toISOString(), ruta: err.ruta, error: err.error } : null,
-      ultimo_fallo: fallo ? { t: new Date(fallo.t).toISOString(), estados: fallo.estados } : null,
+      ultimo_fallo: fallo ? { t: new Date(fallo.t).toISOString(), estados: fallo.estados,
+        detalle: fallo.detalle || [] } : null,
       ok: !!v.t && ahora - v.t < 5 * MIN && !(v.errores || []).length,
       cron: CRON_VIGIA,
       vigia: {
