@@ -189,7 +189,24 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Los anuncios de la Liga van en 〢🌍〉rankings-liga-global de DRA**, y salen solos en «Novedades de la Liga» | *«en ranking global de DRA, sólo en ese servidor… el bot debería hacer eso por default»* | `herramientas/anunciar.py`; la página los lee en cada corrida |
 | **Crews y países se tocan como un perfil** | *«que aparezca ese cuadrado celeste y el mouse para clickear como cualquier perfil»* | `bot/paginas/estilo.css` |
 
+### Lo que dijo Dlx el 25/09 (11 AM a 11:40 AM)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **De 3 a 11 AM ET no corre ninguna sincronización** (antes corría a las 6:52 y 10:52) | *«durante las 3am EST y 11am EST no se hará ninguna sincronización para ahorrar más»* | `bot/madrugada.py` y `MADRUGADA` de `bot/worker.js` |
+| **Urban Freestyle es de la Liga**: el bot entró, con su TikTok | *«el bot ya está metido. El ID del servidor es 1467763447117778989»* · *«este es el TikTok de Urban Freestyle»* | `datos/servidores.json` (`confirmado`) |
+| **Se escuchan sólo los servidores de la Liga**: TFC no | *«Olvida TFC, ya te dije que no está»* | `confirmado` de `datos/servidores.json`, para el vigía, los anuncios y las llaves |
+
 ---
+
+## 📅 Viernes 25/09 (11 a 11:40 AM) — versión 1.07
+
+- 🏙️ **Urban Freestyle conectado**: el bot está adentro (429 miembros), quedó confirmado con su TikTok y el vigía escucha sus 4 canales de eventos (Eventos, RedBull, SMCRN y Data-Eventos). Sus llaves entran solas con el barrido diario.
+- 🔴 **Sus canales se llaman «𝙀𝙫𝙚𝙣𝙩𝙤𝙨», en letras decoradas**, y el vigía y el lector de anuncios no los iban a reconocer nunca, sin avisar. Ahora los nombres se normalizan.
+- 🔴 **La alerta de las 11:24 AM («el vigía no anda»)** la causó eso mismo: apareció un canal de TFC que el bot no puede leer. Ahora un canal sin acceso no es una falla, y **los tres lectores miran sólo los servidores de la Liga** (DRA, FFA, Snake Rap y Urban Freestyle). En vivo: 14 canales, sin errores.
+- 🔴 **`/verificar` le contestaba a todos «ya te anoté»** en vez de decir qué falta: la información del portón no estaba en KV (la última `meta` era de las 6:52 AM, anterior al comando). Escrita a mano a las 11:25 AM; desde ahí dice ✅/❌ para DRA, Miembro y país.
+- 🌙 **Madrugada sin sincronización**: de 3 a 11 AM ET no corre el ciclo. El vigía de avisos sigue.
+- 👤 **Mi cuenta**: «↻ Actualizar mi cuenta» en vez de «Volvé a entrar con Discord» para una sesión vieja, **Mi perfil** aunque no hayas jugado, y **Cambiar mi foto**.
 
 ## 📅 Viernes 25/09 (10:45 AM) — versión 1.06
 
@@ -366,9 +383,10 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **El anuncio en DRA está listo para publicar** (fase de prueba, Snake Rap, la fecha de la T1 y la página), en `docs/anuncios/2026-09-25_fase_de_prueba.json`. Sin @everyone. Decime «publicalo» o qué cambiar.
-2. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
-3. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+1. **1.300 personas de DRA tienen Miembro y país y no tienen tarjeta**: no están en el padrón con su Discord ID. Hoy entran solas cuando usan `/card` o `/verificar`. ¿Las cargo a todas? Son ~5.200 cartas (unas 8 h de GitHub, gratis) y ~2.600 escrituras de KV (2 o 3 días, por la cuota). O seguimos con que entren al pedirla.
+2. **El anuncio en DRA está listo para publicar** (fase de prueba, Snake Rap, la fecha de la T1 y la página), en `docs/anuncios/2026-09-25_fase_de_prueba.json`. Sin @everyone. Decime «publicalo» o qué cambiar.
+3. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
+4. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
