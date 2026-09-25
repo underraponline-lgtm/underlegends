@@ -1391,6 +1391,36 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   ok('el canal de avisos de rango se guarda', /666777/.test(texto(r)));
 }
 
+console.log('\nMI CUENTA CON DISCORD\n');
+
+{
+  const cuenta = async (token) => {
+    const r = await worker.fetch(new Request('https://x/cuenta', {
+      method: 'POST', body: JSON.stringify({ token }),
+    }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  const antes = globalThis.fetch;
+  let r = await cuenta('x');
+  ok('un permiso con forma rara se rechaza sin preguntarle a Discord', r.status === 400);
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  r = await cuenta('permisoFalso1234567890');
+  ok('uno que Discord no reconoce, también', r.status === 401 && r.json.error === 'discord');
+  PUESTO['d:555000111222333444'] = 'konan';
+  globalThis.fetch = async () => new Response(JSON.stringify(
+    { id: '555000111222333444', username: 'konan_', global_name: 'Konan', avatar: 'abc' }), { status: 200 });
+  r = await cuenta('permisoBueno1234567890');
+  ok('uno bueno de alguien de la Liga devuelve su rapero', r.status === 200 &&
+     r.json.rapero === 'Konan' && r.json.av === '555000111222333444/abc', JSON.stringify(r.json));
+  globalThis.fetch = async () => new Response(JSON.stringify(
+    { id: '999000111222333444', username: 'nadie' }), { status: 200 });
+  r = await cuenta('permisoBueno1234567890');
+  ok('y de alguien que no está, entra igual y sin rapero', r.status === 200 && r.json.rapero === '' &&
+     r.json.n === 'nadie');
+  globalThis.fetch = antes;
+  delete PUESTO['d:555000111222333444'];
+}
+
 console.log('\n/WEBSITE Y /NOTIFY\n');
 
 {

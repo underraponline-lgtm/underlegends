@@ -126,6 +126,17 @@ export default {
           'cache-control': 'public, max-age=900' },
       });
     }
+    // «Mi cuenta» con Discord: el permiso va al Worker, que le pregunta a Discord
+    if (url.pathname === '/api/cuenta') {
+      if (req.method !== 'POST') return new Response('no', { status: 405 });
+      const cuerpo = await req.text();
+      if (cuerpo.length > 1024) return new Response('grande', { status: 413 });
+      const r = await fetch(ORIGEN + '/cuenta', {
+        method: 'POST', body: cuerpo, headers: { 'content-type': 'application/json' },
+      });
+      return new Response(r.body, { status: r.status, headers: {
+        'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+    }
     if (url.pathname === '/api/perfiles') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       const r = await fetch(ORIGEN + '/perfiles', {
