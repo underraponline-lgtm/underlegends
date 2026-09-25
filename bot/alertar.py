@@ -165,6 +165,24 @@ def resuelto(clave, texto):
     return False
 
 
+def recordar(clave, texto):
+    """Un recordatorio que pidió Dlx: se manda UNA vez y queda anotado.
+
+    ⚠️ NO ES UNA ALERTA: `alertar()` repite cada 6 h mientras el problema
+    siga, y un recordatorio repetido es una pared de mensajes por algo que
+    no está roto.
+    """
+    d = _leer()
+    if d.get('recordado:' + clave):
+        return False
+    ok = dm('🔔 ' + texto)
+    if ok:
+        d['recordado:' + clave] = {'t': _ahora().isoformat(), 'texto': texto[:300]}
+        _guardar(d)
+        print('   📨 recordatorio a Dlx: %s' % texto[:90])
+    return ok
+
+
 # ── lo que late solo ──────────────────────────────────────────────────
 def salud():
     """El vigía de avisos, el disparador del ciclo y la cuota de KV."""
@@ -218,6 +236,23 @@ def salud():
                 resuelto('kv', 'La cuota de KV volvió a tener margen (%d hoy).' % usado)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude mirar el disparador ni KV (%s)' % str(e)[:80])
+    # 4 · 🔔 A7, EL SCORE A 40–99. Dlx, 25/09/2026: «aplicalo en otro
+    # momento… hazme recordar, ahora no». El momento importa: mientras
+    # nadie tenga 10 eventos no hay letras, y cambiar la escala no le mueve
+    # nada a nadie; después se la mueve a mitad de temporada. Por eso avisa
+    # cuando el primero llega a 8, y una sola vez.
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+            pool = json.load(f)
+        top = max(pool, key=lambda p: p.get('ev') or 0) if pool else None
+        if top and (top.get('ev') or 0) >= 8:
+            recordar('a7', 'Lo que me pediste recordarte: **A7**, llevar el Score del '
+                     'Competitivo a 40–99. **%s ya tiene %d eventos**: cuando alguien llega a '
+                     '10 tiene letra, y cambiar la escala después se la mueve a mitad de '
+                     'temporada. Si va, decime y lo aplico junto con los umbrales de los '
+                     '8 rangos.' % (top.get('raw'), top.get('ev')))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude mirar el recordatorio de A7 (%s)' % str(e)[:80])
 
 
 def main():
