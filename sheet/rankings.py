@@ -2372,8 +2372,20 @@ def main():
         for a in avisos:
             print('   ⚠️ %s' % a)
         if filas is None:
-            print('\n   🔴 No escribo. El registro crudo se llena solo a')
-            print('      partir del primer evento de la T1.\n')
+            # 🔴 CON LA VITRINA VACÍA NO ES UN ERROR: ES EL ESTADO ENTRE EL
+            # ARRANQUE Y EL PRIMER EVENTO. `sheet/resetear.py --prueba` vacía
+            # las crudas y esta vitrina (`resetear.VITRINA`); salir con 1 acá
+            # hacía que el ciclo avisara «la vitrina no se escribe» cada 6 h
+            # hasta el primer evento de la T1.
+            vivas = [f for f in _leer(OFICIAL, '%s!A%d:AZ' % (HOJA, fila_cabecera(HOJA) + 1))
+                     if any(str(c).strip() for c in f)]
+            if not vivas:
+                print('\n   ✅ `Resultados` y la vitrina están vacías: nada que '
+                      'escribir\n      (la temporada todavía no tiene eventos).\n')
+                return 0
+            print('\n   🔴 No escribo: `Resultados` está vacía y la vitrina tiene '
+                  '%d fila(s).\n      Si arrancó la temporada, la vacía '
+                  '`sheet/resetear.py --prueba`.\n' % len(vivas))
             return 1
         cab = cabecera_oficial()
         print('   %d fila(s) · %d columnas' % (len(filas), len(cab)))
