@@ -68,9 +68,16 @@ jobs:
           done
 
       - name: los workflows
+        # 🔴 AUNQUE HAYA FALLADO UN CHEQUEO ANTERIOR. El 25/09/2026 `guardar.sh`
+        # dio rojo por un archivo que todavía no existía y GitHub salteó
+        # todo lo de abajo: cuatro pushes —el reset del 5/10 entre ellos—
+        # sin self-checks ni pruebas del Worker, y nadie lo notó porque ya
+        # estaba rojo por otra cosa. Cada chequeo dice lo suyo.
+        if: success() || failure()
         run: python herramientas/workflows_validos.py
 
       - uses: actions/setup-node@v4
+        if: success() || failure()
         with:
           node-version: '20'
 
@@ -80,11 +87,13 @@ jobs:
       # mismo contrato—. `probar_local.mjs` pasa /card y los botones por el
       # Worker de verdad con un KV de mentira.
       - name: el Worker
+        if: success() || failure()
         run: |
           node bot/avisos_prueba.mjs
           node bot/probar_local.mjs
 
       - name: los self-checks
+        if: success() || failure()
         env:
           PYTHONIOENCODING: utf-8
         run: |
