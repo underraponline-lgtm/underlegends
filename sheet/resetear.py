@@ -183,7 +183,171 @@ def hay_respaldo():
     return out
 
 
+# ══ EL ARRANQUE: LA FASE DE PRUEBA SE BORRA ═══════════════════════════
+# 🔑 Dlx, 25/09/2026, a «¿el 5 de octubre lo de la fase de prueba se borra y
+# todos arrancan de cero, o sigue sumando?»: «Se borra». Lo corre solo el
+# paso 0 de `bot/pipeline.py`, una vez, en la primera corrida del ciclo
+# desde las 00:00 ET del arranque (`comun/temporada.toca_arranque()`).
+#
+# ⚠️ NO ES EL RESET DEL 22/09. Aquél borraba las vitrinas del Oficial; desde
+# el 23/09 las vitrinas se calculan solas desde lo crudo del Operativo, así
+# que alcanza con vaciar lo crudo: las vitrinas quedan en cero en la misma
+# corrida. La identidad —`Lista de Raperos`, `AKAs`, `Config`— no se toca.
+#
+# ⚠️ SE ARCHIVA ANTES DE VACIAR, EN LA MISMA PLANILLA. Corre en Actions, donde
+# un respaldo en un archivo se pierde con el runner: cada hoja se duplica como
+# «<hoja> · prueba» y recién después se vacía. Nada se pierde.
+#
+# ⚠️ HOJA POR HOJA, Y LA QUE YA TIENE SU ARCHIVO NO SE VUELVE A TOCAR. Si una
+# corrida se cortara a la mitad, la siguiente no vacía lo que ya archivó: a
+# esa altura podría tener datos de la temporada nueva.
+#
+# ⚠️ SÓLO LAS COLUMNAS DE LA TABLA: `Entrada` tiene el panel de instrucciones
+# en A y B, al lado de los datos.
+PRUEBA = ['Entrada', 'Resultados', '1v1', 'Eventos Procesados']
+SUFIJO = ' · prueba'
+
+
+def _col(i):
+    s = ''
+    i += 1
+    while i:
+        i, r = divmod(i - 1, 26)
+        s = chr(65 + r) + s
+    return s
+
+
+def rango_tabla(hoja, arriba, ojo):
+    """El rango de los datos de una tabla, sin su cabecera ni lo de al lado.
+
+    `arriba` son las primeras filas de la hoja (A1:Z20) y `ojo` una columna
+    que la cabecera tiene seguro (`escribir.CABECERAS`). `None` si no está.
+    """
+    for i, f in enumerate(arriba):
+        celdas = [str(c).strip() for c in f]
+        if ojo in celdas:
+            c0 = celdas.index(ojo)
+            c1 = max(j for j, c in enumerate(celdas) if c)
+            return "'%s'!%s%d:%s" % (hoja, _col(c0), i + 2, _col(c1))
+    return None
+
+
+def _api(tk, metodo, sid, sufijo, **kw):
+    r = requests.request(metodo, '%s/%s%s' % (API, sid, sufijo),
+                         headers={'Authorization': 'Bearer ' + tk}, timeout=90, **kw)
+    if r.status_code >= 300:
+        raise RuntimeError('%s %s: %s' % (metodo, r.status_code, r.content[:160]))
+    return r.json() if r.content else {}
+
+
+def _filas(tk, sid, rango):
+    v = _api(tk, 'GET', sid, '/values/%s' % requests.utils.quote(rango)).get('values', [])
+    return sum(1 for f in v if any(str(c).strip() for c in f))
+
+
+def plan_prueba(tk, sid, cuales=None):
+    """`[(hoja, sheetId, rango, filas, ya)]`: qué se archiva y vacía.
+
+    `cuales` es `[(hoja, columna segura de su cabecera)]`; por defecto,
+    `PRUEBA` con las de `escribir.CABECERAS`. Existe para ensayarlo contra
+    pestañas de prueba, como `rankings.py --ensayo`: un borrado que se
+    estrena el día del arranque se estrena con la Liga mirando.
+    """
+    from escribir import CABECERAS
+    hojas = {s['properties']['title']: s['properties']['sheetId'] for s in
+             _api(tk, 'GET', sid, '?fields=sheets.properties(sheetId,title)')['sheets']}
+    ojo = dict(cuales) if cuales else {h: CABECERAS[h][1] for h in PRUEBA}
+    out = []
+    for h in ojo:
+        if h not in hojas:
+            raise RuntimeError('no está la hoja %r' % h)
+        arriba = _api(tk, 'GET', sid, '/values/%s' % requests.utils.quote(
+            "'%s'!A1:Z20" % h)).get('values', [])
+        rango = rango_tabla(h, arriba, ojo[h])
+        if not rango:
+            raise RuntimeError('no encontré la cabecera de %r' % h)
+        out.append((h, hojas[h], rango, _filas(tk, sid, rango), (h + SUFIJO) in hojas))
+    return out
+
+
+def aplicar_prueba(tk, sid, plan):
+    """Archiva y vacía. Devuelve las filas vaciadas; revienta si algo no quedó."""
+    van = [x for x in plan if not x[4]]
+    if not van:
+        return 0
+    n_hojas = len(_api(tk, 'GET', sid, '?fields=sheets.properties(sheetId)')['sheets'])
+    _api(tk, 'POST', sid, ':batchUpdate', json={'requests': [
+        {'duplicateSheet': {'sourceSheetId': sid_h, 'insertSheetIndex': n_hojas + i,
+                            'newSheetName': h + SUFIJO}}
+        for i, (h, sid_h, _r, _n, _y) in enumerate(van)]})
+    # ⚠️ SE VERIFICA EL ARCHIVO ANTES DE VACIAR: un 200 dice que la API
+    # aceptó el pedido, no que la copia tiene los datos.
+    for h, _i, rango, n, _y in van:
+        copia = rango.replace("'%s'!" % h, "'%s'!" % (h + SUFIJO), 1)
+        if _filas(tk, sid, copia) != n:
+            raise RuntimeError('el archivo de %r no tiene sus %d filas: no vacío nada' % (h, n))
+    _api(tk, 'POST', sid, '/values:batchClear', json={'ranges': [x[2] for x in van]})
+    total = 0
+    for h, _i, rango, n, _y in van:
+        quedan = _filas(tk, sid, rango)
+        if quedan:
+            raise RuntimeError('%r quedó con %d filas' % (h, quedan))
+        total += n
+    return total
+
+
+def main_prueba(sid=None):
+    aplicar = '--aplicar' in sys.argv
+    print('\n══ ARRANQUE: LA FASE DE PRUEBA SE ARCHIVA Y SE VACÍA ══\n')
+    tk = token()
+    sid = sid or ids()['operativo']
+    plan = plan_prueba(tk, sid)
+    for h, _i, rango, n, ya in plan:
+        print('   %-20s %s' % (h, 'ya archivada: no se toca' if ya
+                               else '%4d fila(s) · %s' % (n, rango.split('!')[1])))
+    print('\n   NO se toca: Lista de Raperos, AKAs, Config, Pendientes ni lo del Oficial')
+    print('   (las vitrinas se vacían solas: salen de estas hojas)')
+    if not aplicar:
+        print('\n   (simulacro: no toqué nada — corré con --aplicar)\n')
+        return 0
+    n = aplicar_prueba(tk, sid, plan)
+    print('\n   ✅ %d fila(s) archivada(s) en «… · prueba» y vaciada(s)\n' % n)
+    return 0
+
+
+def _self_check():
+    print('')
+    print('  resetear.py — el rango de cada tabla, sin red')
+    print('')
+    mal = 0
+
+    def ok(cond, que):
+        nonlocal mal
+        mal += not cond
+        print('   %s %s' % ('ok' if cond else '🔴', que))
+
+    entrada = [['📖 Cómo usar', '', 'Evento', 'Servidor', 'Fecha', 'Ganador', 'Notas'],
+               ['1. Procesa bracket con IA']]
+    ok(rango_tabla('Entrada', entrada, 'Evento') == "'Entrada'!C2:G",
+       'Entrada: sólo sus columnas, sin el panel de A y B')
+    res = [['LOS RESULTADOS'], [], ['Evento #', 'Rapero', 'Puesto', 'Pts']]
+    ok(rango_tabla('Resultados', res, 'Evento #') == "'Resultados'!A4:D",
+       'Resultados: debajo de su cabecera de la fila 3')
+    ok(rango_tabla('1v1', [['otra cosa']], 'Evento #') is None,
+       'sin cabecera no hay rango (y no se vacía nada)')
+    ok(_col(0) == 'A' and _col(25) == 'Z' and _col(26) == 'AA', 'las letras de las columnas')
+    ok('Lista de Raperos' not in PRUEBA and 'AKAs' not in PRUEBA and 'Config' not in PRUEBA,
+       'la identidad no está en la lista')
+    print('')
+    print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
+    return 1 if mal else 0
+
+
 def main():
+    if '--auto' in sys.argv:
+        return _self_check()
+    if '--prueba' in sys.argv:
+        return main_prueba()
     aplicar = '--aplicar' in sys.argv
     print('\n══ RESET DE TEMPORADA ══\n')
 

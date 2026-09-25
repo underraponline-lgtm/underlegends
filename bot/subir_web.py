@@ -1121,9 +1121,12 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
     items = []
     for x in ann:
         pub = str(x.get('cuando') or '')[:19]
-        if not pub or pub < desde:
-            continue
         ini = CU.momento(x)
+        # ⚠️ POR LA HORA DEL EVENTO, NO POR CUÁNDO SE ANUNCIÓ: el día del
+        # arranque, un evento anunciado el 3/10 para el 6/10 es de la
+        # temporada y tiene que seguir en el calendario
+        if not pub or str(ini or pub)[:19] < desde:
+            continue
         items.append({'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '',
                       'cuando': ini or pub, 'sh': 0 if ini else 1,
                       'link': link(x), 'rg': _rango_ev(x.get('rango')),
