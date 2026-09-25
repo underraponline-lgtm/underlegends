@@ -199,3 +199,10 @@ galeria/
 # Respaldos de IDs de Discord que deja cruzar_miembros.py antes de escribir:
 # son datos de personas y este repo es público.
 docs/respaldo_ids_*.json
+
+# 🔴 LOS RESPALDOS COMPLETOS DEL SHEET (`sheet/respaldar.py`) TAMPOCO. Traen la
+# planilla entera —la Lista de Raperos con sus Discord IDs, las notas y los
+# pendientes— y 16 se habían publicado (20 a 22/09/2026). Sacados del árbol el
+# 25/09; el historial no se reescribió: ver NOVEDADES.md. Se guardan en esta
+# máquina y en el repo privado.
+docs/sheet_respaldo/

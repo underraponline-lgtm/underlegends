@@ -88,6 +88,10 @@ PRIVADO = (
     ('oauth_token.json', 'el OAuth del Apps Script'),
     ('ACCESOS.md', 'el inventario de credenciales'),
     ('03_Servidor/disenos/_avatares/', '421 fotos de gente de la Liga'),
+    # 🔴 SE HABÍAN PUBLICADO 16, Y NINGÚN CHEQUEO LOS VIO: `con_ids()` sólo
+    # miraba `datos/`. La planilla entera, con la Lista de Raperos, sus
+    # Discord IDs, las notas y los pendientes (25/09/2026).
+    ('docs/sheet_respaldo/', 'los respaldos completos del Sheet'),
     ('03_Servidor/disenos/av_valen.png', 'la foto de Valen'),
     # 🔑 LA UNICA CARTA RENDERIZADA QUE NO SALE, Y NO ES UNA REGLA GENERAL.
     # Las otras 21 si salen: una carta es el producto, va a Discord y ya se
@@ -267,7 +271,9 @@ def con_ids(rutas):
     """`{ruta: cuantos IDs distintos}` de los que traen IDs de Discord."""
     out = {}
     for r, _ in rutas:
-        if not r.startswith('datos/') or not r.endswith('.json'):
+        # ⚠️ CUALQUIER .json, NO SÓLO `datos/`: los 16 respaldos del Sheet de
+        # `docs/sheet_respaldo/` traían IDs y este informe no los mostraba
+        if not r.endswith('.json'):
             continue
         try:
             t = io.open(os.path.join(BASE, r), encoding='utf-8').read()
