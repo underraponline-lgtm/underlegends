@@ -2620,8 +2620,40 @@ function pintaComunidad() {
   caja.innerHTML = '<h3>La comunidad</h3><dl class="com-n">' + filas.map(function (f) {
     return '<div><dt>' + esc(f[0]) + '</dt><dd>' + num(f[1]) + '</dd><small>' + esc(f[2]) +
       '</small></div>';
-  }).join('') + '</dl>';
+  }).join('') + '</dl>' +
+    // ver `pintaPedi()`: se esconde para quien ya tiene la suya
+    '<a class="com-pedi" id="comPedi" href="#/tarjetas">¿Todavía no tenés tu tarjeta? Pedila &#8594;</a>';
   caja.hidden = false;
+  try { pintaPedi(); } catch (e) { /* la cuenta lo vuelve a pintar */ }
+}
+
+/* 🔑 «QUE LA PIDAN ELLAS». Dlx, 25/09/2026, sobre las 1.492 personas con el
+   Miembro de DRA y país que nunca pidieron su tarjeta: que cada una la pida
+   —con /verificar o /card— y que la página las empuje. Un bloque en
+   Tarjetas y un link en «La comunidad» del Inicio, que se esconden para
+   quien ya tiene la suya (la de la cuenta de Discord, o la del rapero que
+   eligió en «Mi cuenta»). */
+function pintaPedi() {
+  var f = yo();
+  var tiene = (f && (f.c || []).some(function (c) { return String(c).indexOf('bloq-') !== 0; })) ||
+    (DC && (DC.cs || []).length > 0);
+  var dra = svDe('DRA');
+  var s = $('#secPedi');
+  if (s) {
+    s.innerHTML = '<h2><span>&#127183;</span> ¿Todavía no tenés tu tarjeta?</h2>' +
+      '<p class="bajada">La pide cada uno y es un minuto: escribí <code>/verificar</code> en ' +
+      'Discord. El bot te dice qué te falta y, si está todo, te carga solo: en menos de una hora ' +
+      'tenés tu tarjeta.</p>' +
+      '<p class="bajada">Hace falta estar en <b>Discord Rap Español</b> con el rol <b>Miembro</b> ' +
+      'y tu <b>país</b> (la bandera en el apodo o el rol de tu país).</p>' +
+      '<div class="pedi-bt">' +
+      (dra.invita ? '<a class="btn" href="' + esc(dra.invita) + '" target="_blank" ' +
+        'rel="noopener noreferrer">Entrar a Discord Rap Español &#8599;</a>' : '') +
+      '<a class="btn sec" href="#/guia">Cómo funciona</a></div>';
+    s.hidden = !!tiene;
+  }
+  var l = $('#comPedi');
+  if (l) l.hidden = !!tiene;
 }
 function pintaActividad() {
   var A = D.actividad;
@@ -3151,6 +3183,8 @@ function pintaCuenta() {
     : '<span class="av ini" style="width:26px;height:26px;font-size:13px">&#128100;</span>';
   $('#cuentaCara').innerHTML = cara;
   $('#cuentaTxt').textContent = f ? f.n : DC ? (DC.rapero || DC.n) : 'Mi cuenta';
+  // quien entra, sale o elige quién es cambia si el «pedila» se ve
+  try { pintaPedi(); } catch (e) { console.error('[pintaPedi]', e); }
 }
 function pintaPopCuenta() {
   var f = yo(), c = $('#popCuenta');
