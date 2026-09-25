@@ -904,6 +904,11 @@ export class Avisos {
       for (const m of msgs) if (this.anotar(m, c, ahora)) nuevos++;
     }
     if (pausa) errores.push('401: el token no sirve; se reintenta en una hora');
+    if (this.dmPrueba) {
+      const p = this.dmPrueba;
+      this.dmPrueba = null;
+      await this.avisarDueno(p);
+    }
     // la re-publicación en `eventos-hoy` va en el mismo minuto
     if (!pausa) await this.publicar(ahora);
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
@@ -1016,7 +1021,53 @@ export class Avisos {
     this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +
       'VALUES (?, ?, ?, ?, ?, ?)', id, SV_PRUEBA, JSON.stringify(cuerpo), ahora,
     ahora + 15 * MIN, ahora);
+    // 🔴 UNA PRUEBA QUE NO LLEGA TIENE QUE DECIR POR QUÉ. El 25/09/2026 Dlx
+    // escribió «Probando…» dos veces y no le llegó nada, sin ninguna señal:
+    // sus dispositivos se anotaron con «Todos», que a propósito NO incluye
+    // las pruebas. Ahora el bot le contesta por DM qué leyó y a cuántos
+    // dispositivos con 🧪 Pruebas lo mandó — y si son cero, cómo activarlo.
+    const n = this.sql.exec('SELECT COUNT(*) AS n FROM subs WHERE instr(svs, ?) > 0',
+      '|' + SV_PRUEBA + '|').toArray()[0].n;
+    this.dmPrueba = { n, c, texto: String(m.content || '').trim().slice(0, 40), t: m.timestamp };
     return true;
+  }
+
+  /** El DM al dueño con el resultado de su prueba. Ver `prueba()`. */
+  async avisarDueno(p) {
+    if (!this.dueno || !this.env.DISCORD_TOKEN) return;
+    const h = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA,
+      'content-type': 'application/json' };
+    let hora = '';
+    try {
+      hora = new Date(Date.parse(p.t)).toLocaleTimeString('es-AR', {
+        timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }) + ' ET';
+    } catch (e) { hora = ''; }
+    const donde = (p.c.svn || p.c.sv) + ' · ' + p.c.nombre;
+    const texto = p.n
+      ? `🧪 Leí tu «${p.texto}» en ${donde} (${hora}) y te la mandé a **${p.n} ` +
+        `dispositivo${p.n === 1 ? '' : 's'}** con 🧪 Pruebas. Si en alguno no apareció, ` +
+        'abrí ahí <https://underlegends.pages.dev/#/avisos> y tocá «Mandar una de ' +
+        'prueba»: te dice si es el navegador o el sistema.'
+      : `🧪 Leí tu «${p.texto}» en ${donde} (${hora}), pero **ningún dispositivo tiene ` +
+        '🧪 Pruebas** marcado, así que no se la mandé a nadie. En cada dispositivo abrí ' +
+        '<https://underlegends.pages.dev/#/avisos>, tocá «🧪 Pruebas» y volvé a escribir ' +
+        '«probando».';
+    try {
+      const r = await fetch(`${DC}/users/@me/channels`, { method: 'POST', headers: h,
+        body: JSON.stringify({ recipient_id: this.dueno }) });
+      if (r.status !== 200) {
+        this.guardar('ultimo_error', { t: Date.now(), ruta: 'dm-prueba', error: 'canal ' + r.status });
+        return;
+      }
+      const ch = await r.json();
+      const r2 = await fetch(`${DC}/channels/${ch.id}/messages`, { method: 'POST', headers: h,
+        body: JSON.stringify({ content: texto, allowed_mentions: { parse: [] } }) });
+      if (r2.status !== 200) {
+        this.guardar('ultimo_error', { t: Date.now(), ruta: 'dm-prueba', error: 'mensaje ' + r2.status });
+      }
+    } catch (e) {
+      this.guardar('ultimo_error', { t: Date.now(), ruta: 'dm-prueba', error: String(e).slice(0, 200) });
+    }
   }
 
   /**
@@ -1282,8 +1333,19 @@ export class Avisos {
     }
     const post = this.sql.exec('SELECT hecho, msg, error, creado FROM posts ' +
       'ORDER BY creado DESC LIMIT 1').toArray()[0];
+    // 🔑 LAS PRUEBAS, APARTE: cuántos dispositivos las reciben y cómo salió la
+    // última. Sin esto, una prueba que no llega no deja rastro (25/09/2026).
+    const conPrueba = this.sql.exec('SELECT COUNT(*) AS n FROM subs WHERE instr(svs, ?) > 0',
+      '|' + SV_PRUEBA + '|').toArray()[0].n;
+    const up = this.sql.exec('SELECT creado, estado, enviados, fallos FROM avisos ' +
+      'WHERE sv = ? ORDER BY creado DESC LIMIT 1', SV_PRUEBA).toArray()[0];
     return {
       servicios,
+      pruebas: {
+        dispositivos: conPrueba,
+        ultima: up ? { t: new Date(up.creado).toISOString(), estado: up.estado,
+          enviados: up.enviados, fallos: up.fallos } : null,
+      },
       ultima_republicacion: post ? { t: new Date(post.creado).toISOString(),
         ok: post.hecho === 1, error: post.error || '' } : null,
       ultimo_error: err ? { t: new Date(err.t).toISOString(), ruta: err.ruta, error: err.error } : null,
