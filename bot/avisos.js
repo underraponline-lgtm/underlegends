@@ -80,7 +80,8 @@ export const PATRON_VIGIA = /evento|competenc/i;
 //: si cambia qué canales se escuchan, la lista guardada se rehace ya y no
 //: a las seis horas
 // 3: los nombres se normalizan (NFKD) antes de compararlos; ver `vigilar()`
-const CANALES_V = 3;
+// 4: sólo los servidores confirmados de la Liga (`meta.liga`); ver `descubrir()`
+const CANALES_V = 4;
 //: 🔑 DONDE SE RE-PUBLICAN LOS ANUNCIOS DE TODA LA LIGA. Dlx, 25/09/2026:
 //: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
@@ -885,6 +886,16 @@ export class Avisos {
   async descubrir(servidores, ahora) {
     const lista = [];
     let sinAcceso = 0;
+    // 🔴 SÓLO LOS SERVIDORES DE LA LIGA. Dlx, 25/09/2026, después de una
+    // alerta por un canal de TFC: «Olvida TFC, ya te dije que no está». La
+    // lista es `confirmado` de `datos/servidores.json`, que viaja en `meta`
+    // (`liga`); sin ella —una `meta` vieja— se escucha lo de siempre.
+    try {
+      const liga = (JSON.parse((await this.env.KV.get('meta')) || '{}').liga) || null;
+      if (Array.isArray(liga) && liga.length) {
+        servidores = (servidores || []).filter((s) => liga.indexOf(s.sv) >= 0);
+      }
+    } catch (e) { /* sin meta, la lista entera */ }
     // 🔴 QUIÉN SOY, PARA NO LEERME. El bot publica en `eventos-hoy`, que es
     // también un canal que este vigía escucha: sin esto, su propia
     // re-publicación podría volver a entrar como anuncio nuevo.
@@ -965,13 +976,28 @@ export class Avisos {
         return { c, estado: 0, msgs: null };
       }
     }));
+    // 🔴 UN 403 NO ES UNA FALLA DEL VIGÍA: es un canal que ese servidor no le
+    // deja leer al bot. Con los nombres normalizados (25/09/2026) apareció
+    // «🎉│EVENTOS» de TFC, que antes no se reconocía, y el vigía lo contaba
+    // como error cada minuto: `ok` en falso y una alerta a Dlx por algo que
+    // no se arregla acá. Se saca de la lista hasta el próximo redescubrimiento
+    // y queda anotado en `sin_leer`, para que se vea cuál es.
+    const sinLeer = [];
     for (const { c, estado, msgs } of respuestas) {
       if (estado === 401) { pausa = ahora + HORA; continue; }
+      if (estado === 403) { sinLeer.push(c); continue; }
       if (!msgs) { errores.push(`${c.sv} ${c.nombre}: ${estado || 'sin red'}`); continue; }
       leidos += msgs.length;
       for (const m of msgs) if (this.anotar(m, c, ahora)) nuevos++;
     }
     if (pausa) errores.push('401: el token no sirve; se reintenta en una hora');
+    if (sinLeer.length) {
+      const fuera = sinLeer.map((c) => c.id);
+      canales.lista = (canales.lista || []).filter((c) => fuera.indexOf(c.id) < 0);
+      canales.sin_leer = (canales.sin_leer || []).concat(sinLeer.map((c) => `${c.sv} ${c.nombre}`))
+        .filter((x, i, t) => t.indexOf(x) === i);
+      this.guardar('canales', canales);
+    }
     if (this.dmPrueba) {
       const p = this.dmPrueba;
       this.dmPrueba = null;
@@ -1435,6 +1461,8 @@ export class Avisos {
         leidos: v.leidos || 0, errores: v.errores || [], error: v.error || '',
         pausa: v.pausa ? new Date(v.pausa).toISOString() : null,
         canales: (c.lista || []).map((x) => ({ sv: x.sv, svn: x.svn, nombre: x.nombre })),
+        // los que el servidor no le deja leer al bot: no son una falla
+        sin_leer: c.sin_leer || [],
       },
       suscripciones: n,
       ultimas_24h: { avisos: dia.n, enviados: dia.e },

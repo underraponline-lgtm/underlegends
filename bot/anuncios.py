@@ -553,7 +553,9 @@ def canales(s):
     sin_acceso = 0
     for cod, d in (svs.items() if isinstance(svs, dict) else []):
         g = d.get('guild_id') or d.get('guild')
-        if not g:
+        # 🔴 SÓLO LOS CONFIRMADOS (Dlx, 25/09/2026: «Olvida TFC, ya te dije
+        # que no está»). Un servidor que no es de la Liga no aporta eventos.
+        if not g or not d.get('confirmado'):
             continue
         r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g,
                   timeout=25)

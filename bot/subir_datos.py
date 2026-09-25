@@ -648,6 +648,11 @@ def armar():
         # `bot/autoverificar.py`: publicarlos acá es lo que evita escribir una
         # copia en el Worker que se desincronice. ~1,5 KB.
         'porton': _porton(_padron),
+        # 🔑 LOS SERVIDORES DE LA LIGA, para que el vigía de avisos escuche sólo
+        # ésos (Dlx, 25/09/2026: «Olvida TFC, ya te dije que no está»). La
+        # marca es `confirmado` de `datos/servidores.json`; acá sólo viaja.
+        'liga': sorted(k for k, v in ((_json_servidores().get('servidores') or {}).items())
+                       if v.get('confirmado')),
         # ⚠️ ACÁ HABÍA UN `req_competitivo` SUELTO Y NO LO LEÍA NADIE. Era de
         # antes de que viajaran los cuatro, y quedó al lado de `req` diciendo
         # lo mismo con otro nombre. No podía discrepar —los dos salen de
@@ -935,6 +940,14 @@ def _ultima_sellada():
     if t.tzinfo is None:
         t = t.replace(tzinfo=_dt.timezone.utc)
     return t.astimezone(_dt.timezone.utc).strftime('%Y%m%d%H%M')
+
+
+def _json_servidores():
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            return json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
 
 
 def solo_las_que_cambiaron(s, pares):

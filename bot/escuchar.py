@@ -1063,6 +1063,23 @@ def _guilds(s):
             for g in gs.json()]
 
 
+#: para el self-check: los guild de la Liga, en vez de `datos/servidores.json`
+_LIGA_PRUEBA = None
+
+
+def _guilds_liga():
+    """Los guild ID de los servidores confirmados de la Liga, o `set()`."""
+    if _LIGA_PRUEBA is not None:
+        return set(_LIGA_PRUEBA)
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            svs = (json.load(f) or {}).get('servidores') or {}
+    except (OSError, ValueError):
+        return set()
+    return {str(d.get('guild_id')) for d in svs.values()
+            if d.get('confirmado') and d.get('guild_id')}
+
+
 def _canales(s, solo=None, guilds=None):
     """(canal_id, canal, servidor, guild) de los canales que hay que mirar.
 
@@ -1082,6 +1099,14 @@ def _canales(s, solo=None, guilds=None):
     gs = guilds if guilds is not None else _guilds(s)
     if gs is None:
         sys.exit('no pude listar los servidores')
+    # 🔴 SÓLO LOS SERVIDORES DE LA LIGA: el bot está en más de los que
+    # cuentan, y una llave de un servidor que no es de la Liga no suma
+    # (Dlx, 25/09/2026: «Olvida TFC, ya te dije que no está»). La marca es
+    # `confirmado` de `datos/servidores.json`; si no se puede leer, se mira
+    # todo, como antes.
+    liga = _guilds_liga()
+    if liga:
+        gs = [g for g in gs if str(g.get('id')) in liga]
     for g in gs:
         r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g['id'],
                   timeout=30)
@@ -1505,6 +1530,10 @@ def _check_cadencia():
     guardo = MEMORIA
     tmp = tempfile.mkdtemp()
     MEMORIA = os.path.join(tmp, 'canales_llaves.json')
+    # ⚠️ los servidores de mentira no están en `datos/servidores.json`: sin
+    # esto el filtro de la Liga los descartaría y ninguna prueba vería nada
+    global _LIGA_PRUEBA
+    _LIGA_PRUEBA = {'g1', 'g2', 'g3'}
     try:
         d1 = _Discord()
         h1, i1 = escuchar(d1, forzar=True, por_canal=5)
@@ -1558,11 +1587,20 @@ def _check_cadencia():
                       not i6['completo'] and i6['nuevos'] == []
                       and sorted(conocidos().get('guilds') or {})
                       == ['g1', 'g3']))
+        # 🔑 UN SERVIDOR QUE NO ES DE LA LIGA NO SE BARRE (Dlx, 25/09/2026:
+        # «Olvida TFC, ya te dije que no está»)
+        _LIGA_PRUEBA = {'g1'}
+        d7 = _Discord(guilds=[{'id': 'g1', 'name': 'FFA'}, {'id': 'g9', 'name': 'TFC'}])
+        list(_canales(d7))
+        casos.append(('un servidor que no es de la Liga no se barre',
+                      any('/guilds/g1/' in u for u in d7.urls)
+                      and not any('/guilds/g9/' in u for u in d7.urls)))
         for que, ok in casos:
             mal += not ok
             print('   %s %s' % ('✅' if ok else '🔴', que))
     finally:
         MEMORIA = guardo
+        _LIGA_PRUEBA = None
         shutil.rmtree(tmp, ignore_errors=True)
     return mal
 
