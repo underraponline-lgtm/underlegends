@@ -68,10 +68,22 @@ COLS = ['#', 'Tipo', 'Origen', 'Detalle', 'Posible match', 'Estado',
 ANCHO = len(COLS)
 ULTIMA = chr(ord('A') + ANCHO - 1)          # 'H'
 
-# Los cinco de la propia hoja, en su columna `📋 Tipos`. No se inventan
-# tipos nuevos: si hace falta uno, se agrega ahi primero.
+# Los tipos que se escriben en la cola. Eran los cinco de una columna
+# `📋 Tipos` que la hoja ya no tiene —hoy es técnica y se contesta desde
+# «✅ Decidir»—, y `registrar_ids.py` escribía además `alta`, `conflicto` y
+# `ambiguo`: cada corrida avisaba «tipo 'alta' no está en la hoja» (5 de 8
+# corridas del 25/09/2026, en la lectura de los logs) y la fila entraba
+# igual. ⚠️ Son los de `decidir.GRUPO`, que dice cómo se pregunta cada uno:
+# el self-check los compara.
 TIPOS = ('Nombre desconocido', 'Alias posible', 'Evento dudoso',
-         'Bracket incompleto', 'MW pendiente')
+         'Bracket incompleto', 'MW pendiente', 'Llave sin resolver',
+         'alta', 'conflicto', 'ambiguo')
+
+
+def _did(detalle):
+    """El Discord ID de una fila de identidad («nombre = 1234…»), o `''`."""
+    d = str(detalle).split(' = ')[-1].strip() if ' = ' in str(detalle) else ''
+    return d if d.isdigit() else ''
 
 
 def _hoja():
@@ -156,9 +168,14 @@ def anotar_varios(dudas, dry=False):
         # entraba otra vez en cada corrida. Una cola con la misma duda
         # veinte veces se deja de leer, y entonces deja de existir.
         detalle = str(detalle).strip()
-        if (tipo, detalle) in vistas:
+        # 🔴 EL ALTA ES DE UNA CUENTA, NO DE UN NOMBRE. Quien usa /card con
+        # un apodo y después con otro entraba dos veces: el 25/09/2026 el ID
+        # 554330098812059679 quedó en dos filas con dos nombres (10:55 y
+        # 11:23 AM) y a las 11:53 entró solo a la Lista con un tercero.
+        clave = (tipo, _did(detalle) or detalle) if tipo == 'alta' else (tipo, detalle)
+        if clave in vistas:
             continue
-        vistas.add((tipo, detalle))
+        vistas.add(clave)
         nuevas.append(['', tipo, str(origen).strip(), detalle,
                        str(match).strip(), 'Pendiente', '', ''])
     if not nuevas:
@@ -167,7 +184,13 @@ def anotar_varios(dudas, dry=False):
     hay = _filas(h)
     ya = {(str((list(f) + [''] * ANCHO)[1]).strip(),
            str((list(f) + [''] * ANCHO)[3]).strip()) for f in hay}
-    nuevas = [f for f in nuevas if (f[1], f[3]) not in ya]
+    # y un alta con ese ID que siga abierta, con el nombre que sea
+    altas = {_did((list(f) + [''] * ANCHO)[3]) for f in hay
+             if str((list(f) + [''] * ANCHO)[1]).strip() == 'alta'
+             and str((list(f) + [''] * ANCHO)[5]).strip().lower() in ('', 'pendiente')}
+    altas.discard('')
+    nuevas = [f for f in nuevas if (f[1], f[3]) not in ya
+              and not (f[1] == 'alta' and _did(f[3]) in altas)]
     if dry:
         for f in nuevas:
             print('   [dry] %s · %s · %s' % (f[1], f[2], f[3]))
@@ -264,6 +287,15 @@ def _resuelto_ya(fila, resolver):
         if not nombre or nombre == '(sin titulo)':
             return ''
         return 'el evento ya tiene campeón' if _tiene_campeon(nombre) else ''
+    if tipo == 'alta':
+        # 🔑 «USÓ /card Y NO ESTÁ EN LA LISTA» DEJA DE SER CIERTO cuando su
+        # Discord ID está en la Lista: la pregunta era a qué fila ponérselo,
+        # y ya está puesto —lo hizo alguien o `autoverificar.py`—. Se
+        # reproduce, como un nombre que hoy resuelve. Se dice con qué nombre
+        # quedó, así un alta que terminó en la fila equivocada se ve.
+        did = _did(detalle)
+        quien = _en_la_lista().get(did) if did else None
+        return ('su Discord ya está en la Lista, como «%s»' % quien) if quien else ''
     # 🔴 `Alias posible` NO SE CIERRA SOLO, Y LO INTENTE. La regla era
     # «si ese AKA ya está en el padrón, la duda se cerró» — y es
     # exactamente al revés: esas filas las escribe el **backfill** del
@@ -282,6 +314,21 @@ def _resuelto_ya(fila, resolver):
     # un nombre que hoy resuelve, una llave que hoy tiene campeón. Una
     # decisión de identidad no se reproduce, se toma.
     return ''
+
+
+_LISTA = {}
+
+
+def _en_la_lista():
+    """`{discord_id: nombre}` del padrón. Una lectura por corrida."""
+    if 'd' not in _LISTA:
+        try:
+            import construir_padron as _PAD
+            _LISTA['d'] = {str(x.get('discord_id') or ''): x.get('raw') or ''
+                           for x in _PAD.cargar() if x.get('discord_id')}
+        except Exception:                                # noqa: BLE001
+            _LISTA['d'] = {}
+    return _LISTA['d']
 
 
 def _tiene_campeon(nombre_evento):
@@ -433,6 +480,23 @@ def _self_check():
     v = _resuelto_ya({'Tipo': 'Bracket incompleto', 'Estado': '',
                       'Detalle': '(sin titulo) · FFA · 23/09'}, r)
     ok(v == '', 'un Bracket incompleto «(sin titulo)» no se cierra solo')
+
+    # el alta, por Discord ID
+    ok(_did('JOVEN E R E M I T A⚕️ = 1266639530291') == '1266639530291'
+       and _did('sin id') == '', 'el Discord ID sale del detalle de un alta')
+    _LISTA['d'] = {'554330098812059679': 'La Loquita [Uma Cryu]'}
+    v = _resuelto_ya({'Tipo': 'alta', 'Estado': 'Pendiente',
+                      'Detalle': 'Catarsis = 554330098812059679'}, r)
+    ok('La Loquita' in v, 'un alta cuyo ID ya está en la Lista se cierra, y dice con qué nombre')
+    ok(_resuelto_ya({'Tipo': 'alta', 'Estado': 'Pendiente',
+                     'Detalle': 'Otro = 111222333444555666'}, r) == '',
+       'y uno cuyo ID no está, sigue abierto')
+    _LISTA.clear()
+    try:
+        import decidir as _DC
+        ok(set(_DC.GRUPO) == set(TIPOS), 'los tipos son los mismos que pregunta ✅ Decidir')
+    except Exception as e:                               # noqa: BLE001
+        ok(False, 'no pude comparar con decidir.GRUPO (%s)' % str(e)[:50])
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
