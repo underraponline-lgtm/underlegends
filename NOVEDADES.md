@@ -141,7 +141,46 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Eventos más vivo**, con logos, DRA y **Google Calendar** | *«se ve algo muerto… sincronizar esto con el calendario de Google»* | `app.js`, `/calendario.ics` |
 | **Mundo con números exactos** | *«en el mundo poner números exactos»* | `subir_web.py` |
 
+### Lo que contestó y pidió Dlx el 25/09 (7:50 a 8:20 AM)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **`/notify`**: los avisos de eventos **por DM**, eligiendo los servidores desde Discord | *«activar las notificaciones de este servidor… ahí te dejará las opciones en vez de que lo haga en el website»* | `bot/avisos.js`, `bot/worker.js` |
+| **`/website`**: el link a la página | *«/website que te redirigiría a la página»* | `bot/worker.js` |
+| **Volk 🇲🇽 y volk 🇨🇴 son dos personas**, y los dos son de Guardia Nacional | *«sí, son diferentes; los dos son parte de ello»* | `datos/crews.json`, `bot/subir_web.py` (`_choques()`) |
+| **Ascenso y Ligas llegan en la Temporada 2** | *«eso será en la temporada 2»* | `app.js` |
+| **Sin «(actual)»** en el Inicio | *«quita el (actual) que dice en inicio»* | `app.js` |
+| **El Inicio muestra el top 3** de cada ranking | *«que sólo muestre el top 3 de todo en el inicio»* | `app.js` |
+| **Las dos tarjetas de campeones van a la derecha**, no abajo | *«tienen que estar a la derecha, no abajo»* | `estilo.css` |
+| **La racha como «1/4»** | *«¿por qué no ponés / X?»* | `app.js` |
+| **Las redes en grande arriba del top**, y **las novedades** son la información de la Liga | *«2 bloques con flechas… lo último de la liga que sea como novedades»* | `app.js` |
+| **Paneles con páginas en el Inicio**: Most Wanted \| Misiones primero, La Liga hoy al final | *«la primera será MW, a la derecha MISIONES… Liga hoy será la última»* | `app.js` |
+| **Mi cuenta** arriba a la derecha y **Ajustes** | *«mi cuenta (mi perfil y cosas más)… y una de ajustes»* | `app.js` |
+| **La hora, la de quien mira** | *«que se adapte al usuario… en mi caso yo soy EST»* | `app.js` (`fmtHora`, `diaDe`) |
+| **Páginas de crews y de países** | *«crear perfiles para las crews, y quizás países»* | `app.js` |
+| **Histórica y Prime** en la Guía, «próximamente» | *«agregá HISTÓRICA y PRIME»* | `app.js` |
+| **Sin «Qué se escucha»** en Eventos | *«eliminar eso que se escucha muchas cosas de DRA»* | `index.html` |
+
 ---
+
+## 📅 Viernes 25/09 (8 AM) — Mi cuenta, `/notify`, la llave por equipos y las crews con página
+
+**Lo que se ve** (publicado a las **8:27 AM**)
+- 🏠 **Inicio**: sin «(actual)»; **las dos tarjetas de campeones a la derecha** en cualquier pantalla menos el teléfono (antes bajaban por debajo de 860 px); **«Los tres de arriba»** con el número a la derecha; **paneles con páginas** —Most Wanted | Misiones, tu temporada | lo que viene, La Liga hoy—; **Novedades de la Liga** con flechas; y **En las redes**, dos videos grandes por página.
+- 👤 **Mi cuenta**, arriba a la derecha: elegís quién sos y el navegador lo recuerda (sin contraseña, no sale de ahí): tu perfil, tus tarjetas, tu país y tus avisos. ⚙️ **Ajustes**: formato de hora, zona horaria y menos animaciones. **Todas las horas están en tu zona**, y lo dice («hora EDT»).
+- 🏆 **Rankings**: la racha como «🔥1/4»; Ligas dice «Temporada 2».
+- 🤝 **Crews y países con página** (`#/crew/…`, `#/pais/…`): su puesto, sus números y su gente. Se abren desde Mundo, los rankings y el perfil de cada rapero.
+- 📅 **Eventos**: el día ordenado —la hora con su zona, el formato, el rango, el campeón y los botones en una fila—; **los últimos campeones** y **cómo se juega** (formatos y quién organiza); y los avisos por DM en lugar de «Qué se escucha».
+- 🏆 **La llave**: arriba, la ficha del evento (formato, rango, cuándo, cuántos, quién organizó, el premio); en el cuadro, **cada integrante de un equipo en su renglón**; abajo, **los puntos agrupados por puesto**.
+- 📖 **Guía**: Histórica y Prime, «llegan con la Temporada 2».
+
+**En Discord** (desplegado a las **8:00 AM**; los comandos nuevos tardan hasta una hora en aparecerle a todos)
+- 🔔 **`/notify`**: un panel para elegir de qué servidores querés el aviso de cada evento **por DM**. Adentro de un servidor, el primer botón activa ése. El primer DM es la confirmación, y si Discord no deja escribirte (DMs cerrados) no te anota y te dice cómo abrirlos. Los DMs salen de la misma cola que los avisos de la página.
+- 🌐 **`/website`**: el link a la página.
+
+**Por dentro**
+- 🔴 **Volk y volk tenían la misma clave**: el segundo abría el perfil del primero y heredaba sus tarjetas. Ahora son `volk-mx` y `volk-co`.
+- Si una sección de la página falla, las demás siguen.
 
 ## 📅 Viernes 25/09 (7 AM) — los rankings, los campeones y `/verificar`
 
@@ -257,9 +296,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ## ❓ Esperando a Dlx
 
-1. **`/notify`**: ¿qué tiene que hacer? Tres ideas: **(a)** que el bot te mande **por mensaje directo** el aviso de cada evento, para quien no quiere instalar la página; **(b)** que el bot **etiquete un rol** en un canal cuando se anuncia un evento; **(c)** otra cosa.
-2. **Volk**: hay **dos** en la temporada —**Volk 🇲🇽** (2.625 pts, #43) y **volk 🇨🇴** (1.250 pts, #74)— y la lista de Guardia Nacional dice «Volk», así que hoy la crew cuenta a los dos. ¿Cuál es de Guardia Nacional?
-3. **Ligas** y **Ascenso** dicen «próximamente». Cuando quieras, contame qué mide cada uno y lo armo.
+1. **El Score del Competitivo**: tenías razón, es el de antes. El rework dejó dos cambios **para decidir después de simularlos**, y nunca se aplicaron: **G1**, los pesos —hoy ⚡30 · 🎯24 · 👑21 · 🔥15 · 🌍10; el rework propone ⚡25 · 🎯24 · 👑21 · 🔥**10** · 🌍**20**— y **A7**, llevar el Score a 40–99. Simulado sobre las 138 de la pre-temporada, **G1 le cambia la letra a 37 (27 %)**; hoy no le cambia a nadie, porque nadie llegó a 10 eventos. ¿Aplico G1 ahora? A7 pide mover los umbrales de los 8 rangos en la misma pasada: lo dejo para cuando digas.
+2. **La segunda página de los paneles** del Inicio la armé con **tu temporada** (tu puesto, tu racha y lo que te falta, si elegiste quién sos en «Mi cuenta») y **lo que viene** (el próximo evento o el último campeón). ¿Va así, o preferís otra cosa ahí?
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -283,6 +321,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 - **El perfil no tiene redes todavía**: esperan al login con Discord en la página.
 - **Inscribirse y no ir** (lo que va a cortar la racha): hay que guardar las inscripciones de cada evento antes de que el servidor las borre. Lo armo cuando lo pidas.
 - **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
+- **Dos personas con el mismo nombre en minúsculas** (Volk y volk) ya se separan en la página, pero **R2 y KV todavía arman la clave del nombre**: el día que los dos estén verificados, sus tarjetas chocan. Hoy ninguno lo está.
+- **`/notify` todavía no mandó un DM de verdad**: el primero va a salir con el próximo evento que se anuncie. Lo miro.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
 - **Las cartas siguen con el logo guardado** de cada servidor: el del hub ya sale de Discord, pero el escudo de la carta pasa por `procesar_logos.py` y no se puede cambiar solo sin mirarlo.
