@@ -55,7 +55,7 @@ API = 'https://discord.com/api/v10'
 # carta de 472 personas y pediria dibujar 472 cartas de un servidor que no
 # compite en la Liga.
 GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
-          ('SR', '492346406976356374'))
+          ('SR', '492346406976356374'), ('URBF', '1467763447117778989'))
 # 🔴 SNAKE RAP ENTRÓ EL 24/09/2026 Y ES DE CARTA, NO DE IDENTIDAD. Es un
 # servidor de la Liga —está en `datos/servidores.json`, sus eventos cuentan
 # y su camiseta es una de las nueve—, así que va acá y no en
@@ -66,7 +66,10 @@ GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
 # 7.337 miembros y este archivo va al repo PÚBLICO: la lista de miembros de
 # otro servidor no es nuestra, y el menú de /card sólo la necesita para
 # quien puede tener carta. Ver el mismo criterio en `bot/verificados.py`.
-SOLO_PADRON = {'SR'}
+# 🟠 URBAN FREESTYLE, DESDE EL 25/09/2026: de carta como Snake Rap, y por
+# el mismo motivo sólo se guardan los del padrón. Último en la lista: es el
+# más nuevo, y el orden es la prioridad de los mensajes directos.
+SOLO_PADRON = {'SR', 'URBF'}
 SALIDA = os.path.join(BASE, 'datos', 'servidores_de.json')
 
 
