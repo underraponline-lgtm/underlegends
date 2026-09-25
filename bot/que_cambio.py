@@ -500,9 +500,13 @@ def sellar(solo=None):
                 del nuevo[quien]
     else:
         nuevo = h
-    from datetime import datetime
+    from datetime import datetime, timezone
+    # ⚠️ EN UTC Y CON EL DESFASE ESCRITO: `subir_datos.py` lo compara contra
+    # `meta.sello`, que es UTC. Con `now()` a secas era la hora de la
+    # máquina —UTC en Actions, la del este acá— y la comparación daba
+    # distinto según dónde corriera.
     with io.open(SELLO, 'w', encoding='utf-8') as f:
-        json.dump({'cuando': datetime.now().isoformat(timespec='seconds'),
+        json.dump({'cuando': datetime.now(timezone.utc).isoformat(timespec='seconds'),
                    'cartas': nuevo}, f, ensure_ascii=False,
                   indent=0, sort_keys=True)
     return SELLO

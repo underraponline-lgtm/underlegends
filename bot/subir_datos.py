@@ -917,6 +917,26 @@ def presupuesto(s, pares, usadas=None):
     return ahora, len(despues)
 
 
+def _ultima_sellada():
+    """`AAAAMMDDHHMM` en UTC de la última tanda de cartas sellada, o `''`.
+
+    Sale de `datos/cartas_selladas.json` (`que_cambio.sellar()`), que se
+    escribe después de subir. Los de antes del 25/09/2026 no traen desfase
+    y se escribían en el runner, que es UTC.
+    """
+    import datetime as _dt
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'cartas_selladas.json'),
+                     encoding='utf-8') as f:
+            c = (json.load(f) or {}).get('cuando') or ''
+        t = _dt.datetime.fromisoformat(c)
+    except (OSError, ValueError, TypeError):
+        return ''
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=_dt.timezone.utc)
+    return t.astimezone(_dt.timezone.utc).strftime('%Y%m%d%H%M')
+
+
 def solo_las_que_cambiaron(s, pares):
     """De las 241, las que KV todavia no tiene igual.
 
@@ -980,10 +1000,21 @@ def solo_las_que_cambiaron(s, pares):
     # Y si cambió cualquier otro campo de `meta`, se escribe entera con el
     # sello nuevo — un sello más nuevo nunca rompe nada.
     mismas_cartas = '--mismas-cartas' in sys.argv
+    # ⚠️ PERO NUNCA CON UN SELLO QUE QUEDÓ DETRÁS DE LA ÚLTIMA TANDA. Si el
+    # trabajo de dibujar se cortó entre subir una tanda y escribir `meta`
+    # —el tope es de 120 min—, la corrida siguiente no tiene nada que
+    # dibujar y llegaría acá con el flag: el sello viejo quedaría para
+    # siempre antes de esas cartas, y Discord seguiría mostrando las de
+    # antes. Se sella DESPUÉS de subir, así que la hora del sello de las
+    # cartas es una cota de la última subida. Sin poder leerla, se escribe.
+    ultima = _ultima_sellada() if mismas_cartas else ''
 
     def _sin(o, k):
-        return ({x: y for x, y in o.items() if x != 'sello'}
-                if k == 'meta' and mismas_cartas and isinstance(o, dict) else o)
+        if not (k == 'meta' and mismas_cartas and ultima and isinstance(o, dict)):
+            return o
+        if str((json.loads(arriba_de.get('meta') or '{}') or {}).get('sello', '')) < ultima:
+            return o
+        return {x: y for x, y in o.items() if x != 'sello'}
 
     distintas = []
     for par, arriba in ((p, arriba_de.get(p['key'])) for p in pares):
