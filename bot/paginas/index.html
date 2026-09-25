@@ -58,10 +58,27 @@
       <a href="#/mundo"><i>&#127758;</i><span>Mundo</span></a>
       <a href="#/guia"><i>&#127895;</i><span>Guía</span></a>
     </nav>
+    <!-- 🔑 AJUSTES, donde dice «Temporada T1 · datos hace…». Dlx,
+         25/09/2026: «y una de ajustes quizás? arriba donde dice temporada t1». -->
+    <button class="m-ajustes" id="bAjustes" type="button"><i aria-hidden="true">&#9881;</i><span>Ajustes</span></button>
     <p class="pie" id="pie">—</p>
   </aside>
 
   <main>
+
+  <!-- 🔑 MI CUENTA, ARRIBA A LA DERECHA. Dlx, 25/09/2026: «agregar arriba en
+       la esquina derecha superior mi cuenta (mi perfil y cosas más)». No hay
+       contraseña: este dispositivo recuerda quién sos, y nada sale de acá.
+       En el teléfono el menú de la izquierda no está, así que los Ajustes
+       también viven acá. -->
+  <div class="barra">
+    <button class="b-icono" id="bAjustes2" type="button" aria-label="Ajustes">&#9881;</button>
+    <button class="cuenta" id="bCuenta" type="button" aria-haspopup="dialog">
+      <span class="cuenta-cara" id="cuentaCara"></span><span id="cuentaTxt">Mi cuenta</span>
+    </button>
+    <div class="pop" id="popCuenta" role="dialog" aria-label="Mi cuenta" hidden></div>
+    <div class="pop" id="popAjustes" role="dialog" aria-label="Ajustes" hidden></div>
+  </div>
 
   <!-- ══ INICIO ══════════════════════════════════════════════════ -->
   <section class="vista" data-vista="">
@@ -129,53 +146,82 @@
     </section>
     </div>
 
-    <!-- 🔑 EL MAPA. Dlx, 25/09/2026: «en inicio poner como un mapa con el
-         porcentaje de cuántos países están representados, algo visual».
-         El dibujo del mundo se baja SÓLO si esta sección se ve —es el
-         único archivo de afuera de la página— y si no llega, queda el
-         número y las banderas: sin dato no hay pieza, pero con medio dato
-         hay media. -->
-    <!-- 🔑 MITAD MAPA, MITAD ACTIVIDAD. Dlx, 25/09/2026: «el mapa está un
-         poco grande para lo que es… quizás podamos medir la actividad
-         también… partir a la mitad ese mapa de actividad y países». -->
     <div class="col">
-    <section class="blk" id="secMapa" hidden>
-      <h2><span>&#127758;</span> La Liga hoy</h2>
-      <div class="hoy">
-        <div class="hoy-mapa">
-          <div class="mapa-dato" id="mapaDato"></div>
-          <div class="mapa" id="mapa"></div>
+    <!-- 🔑 PANELES CON PÁGINAS. Dlx, 25/09/2026: «en donde dice liga hoy
+         también hacer un sistema de paneles de páginas… Liga hoy será la
+         última; la primera será MW, y a la mitad a la derecha MISIONES».
+         La segunda es la tuya: lo que te falta y lo que viene. -->
+    <section class="blk paneles" id="secPaneles">
+      <div class="nov-cab"><h2 id="pnTit"></h2>
+        <div class="feed-nav">
+          <button class="cal-ir" id="pnAntes" aria-label="Página anterior">&#8249;</button>
+          <span class="pn-dots" id="pnDots"></span>
+          <button class="cal-ir" id="pnDespues" aria-label="Página siguiente">&#8250;</button>
+        </div></div>
+      <div class="pn-pag" data-pag="0" data-tit="&#128128; Most Wanted &middot; &#127919; Misiones">
+        <div class="pn-dos">
+          <div class="teaser mw"><span class="tz-ico" aria-hidden="true">&#128128;</span>
+            <h3>Most Wanted</h3><p>Quién cazó, quién fue cazado y quién sobrevivió.</p>
+            <span class="pase-tag">Próximamente</span></div>
+          <div class="teaser mis"><span class="tz-ico" aria-hidden="true">&#127919;</span>
+            <h3>Misiones</h3><p>Las misiones de la temporada.</p>
+            <span class="pase-tag">Próximamente</span></div>
         </div>
-        <div class="hoy-ac" id="actividad" hidden></div>
+      </div>
+      <div class="pn-pag" data-pag="1" data-tit="&#128100; Tu temporada" hidden>
+        <div class="pn-dos"><div class="pn-yo" id="pnYo"></div><div class="pn-ev" id="pnEv"></div></div>
+      </div>
+      <!-- 🔑 EL MAPA Y LA ACTIVIDAD, la última página. El dibujo del mundo se
+           baja recién cuando esta página se ve. -->
+      <div class="pn-pag" data-pag="2" data-tit="&#127758; La Liga hoy" hidden>
+        <div id="secMapa" hidden>
+          <div class="hoy">
+            <div class="hoy-mapa">
+              <div class="mapa-dato" id="mapaDato"></div>
+              <div class="mapa" id="mapa"></div>
+            </div>
+            <div class="hoy-ac" id="actividad" hidden></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- 🔑 LO ÚLTIMO DE LA LIGA, ABAJO DE «LA LIGA HOY», CON FLECHAS. Dlx,
-         25/09/2026: «abajo de la Liga hoy irían los posts más recientes de
-         las redes sociales, con flechas de derecha a izquierda para ir a la
-         siguiente página en ese panel y regresar». Los anuncios de la Liga
-         en DRA y los videos de YouTube de cada servidor; Instagram y TikTok
-         no abren sus publicaciones sin una app aprobada, así que de esas
-         van los links. Ver `_feed()` en bot/subir_web.py. -->
+    <!-- 🔑 LAS NOVEDADES: lo que la Liga anuncia en DRA. Dlx, 25/09/2026:
+         «lo último de la liga que sea como novedades, información». -->
     <section class="blk" id="secNov" hidden>
-      <div class="nov-cab"><h2><span>&#128240;</span> Lo último de la Liga</h2>
+      <div class="nov-cab"><h2><span>&#128240;</span> Novedades de la Liga</h2>
+        <div class="feed-nav" id="novNav">
+          <button class="cal-ir" id="novAntes" aria-label="Más nuevas">&#8249;</button>
+          <span id="novPag"></span>
+          <button class="cal-ir" id="novDespues" aria-label="Más viejas">&#8250;</button>
+        </div></div>
+      <div class="feed" id="novedades"></div>
+    </section>
+    </div>
+    </div>
+
+    <!-- 🔑 LAS REDES, EN GRANDE, arriba del top. Dlx, 25/09/2026: «arriba de
+         los cinco de arriba podemos poner ahí específicamente las redes
+         sociales, en grande, 2 bloques con flechas». Los videos de YouTube de
+         cada servidor; de Instagram y TikTok van los links, porque no dejan
+         leer sus publicaciones sin una app aprobada. -->
+    <section class="blk" id="secRedes" hidden>
+      <div class="nov-cab"><h2><span>&#127909;</span> En las redes</h2>
         <div class="feed-nav" id="feedNav">
           <button class="cal-ir" id="feedAntes" aria-label="Más nuevos">&#8249;</button>
           <span id="feedPag"></span>
           <button class="cal-ir" id="feedDespues" aria-label="Más viejos">&#8250;</button>
         </div></div>
-      <div class="feed" id="feed"></div>
+      <div class="feed grande" id="feed"></div>
       <div class="nov-redes" id="novRedes"></div>
     </section>
-    </div>
-    </div>
 
     <!-- 🔑 EL TOP 5 DE CADA RANKING, NO SÓLO EL DE TEMPORADA. Dlx,
          25/09/2026: «que los cinco de arriba muestre el top 5 de todos los
          rankings que hayan». -->
     <section class="blk" id="secTop">
-      <h2><span>&#127942;</span> Los cinco de arriba</h2>
-      <p class="bajada">El top 5 de cada ranking. Tocá un nombre para abrir su
+      <h2><span>&#127942;</span> Los tres de arriba</h2>
+      <p class="bajada">El top 3 de cada ranking. Tocá un nombre para abrir su
       perfil.</p>
       <div class="tops" id="tops"></div>
     </section>
@@ -192,6 +238,16 @@
        🔑 `#/r/<clave>`: la página de cada rapero. La dibuja `pintaPerfil()`. -->
   <section class="vista" data-vista="r" hidden>
     <div id="perfil"></div>
+  </section>
+
+  <!-- ══ CREW Y PAÍS ═════════════════════════════════════════════
+       🔑 Dlx, 25/09/2026: «crear perfiles para las crews, y quizás países».
+       `#/crew/<clave>` y `#/pais/<cc>`, como el perfil de un rapero. -->
+  <section class="vista" data-vista="crew" hidden>
+    <div id="crewPag"></div>
+  </section>
+  <section class="vista" data-vista="pais" hidden>
+    <div id="paisPag"></div>
   </section>
 
   <!-- ══ RANKING ═════════════════════════════════════════════════ -->
@@ -232,7 +288,7 @@
       <button class="sub" data-sub="crews">Crews</button>
       <button class="sub pronto" data-sub="mw">Most Wanted<i>pronto</i></button>
       <button class="sub pronto" data-sub="misiones">Misiones<i>pronto</i></button>
-      <button class="sub pronto" data-sub="ligas">Ligas<i>pronto</i></button>
+      <button class="sub pronto" data-sub="ligas">Ligas<i>T2</i></button>
     </div>
     <section class="blk">
       <div class="filtros">
@@ -334,6 +390,21 @@
       </section>
     </div>
 
+    <!-- 🔑 LOS ÚLTIMOS CAMPEONES Y CÓMO SE JUEGA. Dlx, 25/09/2026:
+         «agregar más cosas a la sección de eventos entre aviso de eventos y
+         calendario». Sale de las llaves y de los anuncios; sin dato no hay
+         pieza. -->
+    <div class="dos ev-mas">
+      <section class="blk" id="secCampeones" hidden>
+        <h2><span>&#127942;</span> Los últimos campeones</h2>
+        <div class="ucamp" id="ultCampeones"></div>
+      </section>
+      <section class="blk" id="secFormatos" hidden>
+        <h2><span>&#127908;</span> Cómo se juega</h2>
+        <div id="formatos"></div>
+      </section>
+    </div>
+
     <!-- 🔔 LA CAMPANA, que antes era su propia vista: los avisos son de
          eventos. Ver `campana.js`, que busca estos mismos ids. -->
     <h2 class="tit2" id="avisos">Avisos de <em>eventos</em></h2>
@@ -345,9 +416,20 @@
       <h2><span>&#128276;</span> En este dispositivo</h2>
       <div id="campana"><p class="cp-tx">Cargando…</p></div>
     </section>
-    <section class="blk" id="secVigia" hidden>
-      <h2><span>&#128225;</span> Qué se escucha</h2>
-      <div id="vigia"></div>
+    <!-- 🔑 Y POR DISCORD, sin instalar nada. En lugar de «Qué se escucha»:
+         Dlx, 25/09/2026, «eliminar eso que se escucha muchas cosas de DRA
+         cuando sólo escucha eventos». -->
+    <section class="blk notify-card" id="secNotify">
+      <h2><span>&#128172;</span> Por mensaje directo</h2>
+      <p class="bajada">¿Preferís que te llegue por Discord? Escribí
+      <code>/notify</code> en cualquier servidor de la Liga, elegí de cuáles, y el
+      bot te escribe por DM cada vez que anuncian un evento.</p>
+      <ul class="guia-notas">
+        <li><b>Adentro de un servidor</b>, el primer botón activa ése.</li>
+        <li><b>Se cambia o se apaga</b> con el mismo <code>/notify</code>.</li>
+        <li>El servidor tiene que dejar que te escriban por <b>mensaje directo</b>
+        (sus Ajustes de privacidad).</li>
+      </ul>
     </section>
     </div>
   </section>

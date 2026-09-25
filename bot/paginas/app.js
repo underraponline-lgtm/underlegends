@@ -65,6 +65,77 @@ function ccTexto(cc) {
 }
 
 var num = function (n) { return Number(n || 0).toLocaleString('es'); };
+
+/* ── los ajustes de quien mira ────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «la hora que se muestre ahí que se adapte al usuario
+   que esté en la página… en mi caso yo soy EST». Por defecto, la zona y el
+   formato del dispositivo; desde Ajustes se pueden fijar.
+
+   ⚠️ TODO EN `localStorage` Y SIEMPRE CON try: en una ventana privada o con
+   los datos bloqueados no hay dónde guardar, y la página anda igual. */
+function leerLS(k, def) {
+  try {
+    var v = localStorage.getItem(k);
+    return v == null ? def : JSON.parse(v);
+  } catch (e) { return def; }
+}
+function guardarLS(k, v) {
+  try {
+    if (v == null) localStorage.removeItem(k);
+    else localStorage.setItem(k, JSON.stringify(v));
+  } catch (e) { /* sin dónde guardar: se sigue igual */ }
+}
+var AJ = leerLS('lg:ajustes', {}) || {};
+var ZONAS = [['', 'La de este dispositivo'],
+  ['America/New_York', 'Este de EE. UU. (Nueva York)'], ['America/Mexico_City', 'México'],
+  ['America/Guatemala', 'Centroamérica'], ['America/Bogota', 'Colombia · Perú · Ecuador'],
+  ['America/Caracas', 'Venezuela · Bolivia'], ['America/Santo_Domingo', 'Rep. Dominicana · Puerto Rico'],
+  ['America/Santiago', 'Chile'], ['America/Argentina/Buenos_Aires', 'Argentina · Uruguay'],
+  ['Europe/Madrid', 'España']];
+function zona() {
+  if (AJ.tz) return AJ.tz;
+  try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch (e) { return ''; }
+}
+function opcTz(o) {
+  o = o || {};
+  if (AJ.tz) o.timeZone = AJ.tz;
+  if (AJ.h12 === true || AJ.h12 === false) o.hour12 = AJ.h12;
+  return o;
+}
+function fmtHora(d) {
+  try { return new Date(d).toLocaleTimeString('es', opcTz({ hour: 'numeric', minute: '2-digit' })); }
+  catch (e) { return ''; }
+}
+function fmtFecha(d, o) {
+  try { return new Date(d).toLocaleDateString('es', opcTz(o || { day: 'numeric', month: 'short' })); }
+  catch (e) { return ''; }
+}
+// «EDT», «GMT-3»: para que se lea que la hora es la de quien mira
+function zonaCorta(d) {
+  try {
+    var o = { timeZoneName: 'short' };
+    if (zona()) o.timeZone = zona();
+    var p = new Intl.DateTimeFormat('en-US', o).formatToParts(d ? new Date(d) : new Date());
+    return (p.filter(function (x) { return x.type === 'timeZoneName'; })[0] || {}).value || '';
+  } catch (e) { return ''; }
+}
+// el día de un instante en la zona de quien mira: 'AAAA-MM-DD'
+function diaDe(d) {
+  try {
+    var o = { year: 'numeric', month: '2-digit', day: '2-digit' }, q = {};
+    if (zona()) o.timeZone = zona();
+    new Intl.DateTimeFormat('en-CA', o).formatToParts(new Date(d)).forEach(function (x) {
+      q[x.type] = x.value;
+    });
+    return q.year + '-' + q.month + '-' + q.day;
+  } catch (e) {
+    var x = new Date(d);
+    return x.getFullYear() + '-' + dd2(x.getMonth() + 1) + '-' + dd2(x.getDate());
+  }
+}
+function aplicarCalma() {
+  document.documentElement.classList.toggle('calma', !!AJ.calma);
+}
 /* ⚠️ CON LA VERSIÓN DE ESA CARTA. La URL de R2 es estable a propósito, así
    que sin `?v=` el navegador puede mostrar la imagen que guardó aunque la
    carta ya se haya redibujado. La versión sale del sello del pipeline. */
@@ -143,6 +214,8 @@ function ir() {
   if (!hay) { r = ''; }
   $$('.vista').forEach(function (v) { v.hidden = v.dataset.vista !== r; });
   if (r === 'r') pintaPerfil(decodeURIComponent(partes.slice(1).join('/')));
+  if (r === 'crew') pintaCrew(decodeURIComponent(partes.slice(1).join('/')));
+  if (r === 'pais') pintaPais(partes[1] || '');
   // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
   // Inicio, y deja mandar el link de un ranking puntual.
   if (r === 'ranking') {
@@ -269,8 +342,10 @@ function reqDe(id) {
   return m ? +m[1] : 0;
 }
 function campeon(f, cual, tit) {
+  // ⚠️ SIN «(ACTUAL)»: Dlx lo pidió a las 6:30 y lo sacó a las 8 del mismo
+  // 25/09/2026, «quita el (actual) que dice en inicio»
   return '<div class="hero-carta"><span class="corona">' + esc(tit) +
-    ' <i>(actual)</i></span><button class="hc-marco" data-carta="' + esc(f.k) + '">' +
+    '</span><button class="hc-marco" data-carta="' + esc(f.k) + '">' +
     '<img src="' + urlCarta(f, cual) + '" alt="Tarjeta de ' + esc(f.n) +
     '" width="300" height="438"></button><b data-k="' + esc(f.k) + '">' + esc(f.n) +
     '</b></div>';
@@ -408,16 +483,43 @@ function abrirLlave(n) {
   $('#visorLlave .v-pos').innerHTML = sv.logo
     ? '<img class="l-logo" src="' + esc(sv.logo) + '" alt="" width="44" height="44">' : '&#127942;';
   var pas = (D.pasados || []).filter(function (p) { return String(p.llave) === String(n); })[0];
+  // 🔑 LA FICHA DEL EVENTO: formato, rango, cuándo, cuántos y quién organizó.
+  // Dlx, 25/09/2026: «mejorar significativamente este panel de llaves para
+  // que se entienda mejor, y mostrar el formato de eventos… pandillas, 1v1,
+  // el rango». El formato y el rango vienen del anuncio (`info`).
+  var inf = L.info || {};
+  var cal = (D.calendario || []).filter(function (c) { return String(c.ll) === String(n); })[0];
+  var mod = inf.mod || (pas && pas.modalidad) || '';
+  var rgo = inf.rg || (pas && pas.rango) || '';
+  var org = inf.org || (pas && pas.org) || '';
   $('#lNombre').textContent = L.nombre;
-  $('#lSub').innerHTML = ['<span class="chip-sv" style="--c:' + esc(colorSv(L.sv)) + '">' +
-    esc(sv.nombre || L.sv) + '</span>', esc(L.fecha),
+  $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) +
+    (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
+    (rgo ? '<span class="rg-ev">' + esc(rgo) + '</span>' : '') + '</span>' +
+    '<span class="l-datos">' + [cal ? esc(fmtFecha(cal.t, { weekday: 'short', day: 'numeric', month: 'short' })) +
+      ' &middot; ' + esc(fmtHora(cal.t)) + ' ' + esc(zonaCorta(cal.t)) : esc(L.fecha),
     L.participantes ? esc(L.participantes) + ' raperos' : '',
-    pas && pas.org ? 'organizó ' + esc(pas.org) : '']
-    .filter(Boolean).join(' &middot; ');
-  var fila = function (r) {
-    return '<li><i>' + (MEDALLA[r[1]] || '') + '</i><span>' + quien(r[0]) +
-      '</span><small>' + esc(r[1]) + '</small><b>' + num(r[2]) + '</b></li>';
-  };
+    org ? 'organizó <b>' + esc(org) + '</b>' : '',
+    inf.pre ? '&#127941; ' + esc(inf.pre) : ''].filter(Boolean).join(' &middot; ') + '</span>';
+  // 🔑 LOS PUNTOS, POR PUESTO: todos los campeones juntos, después los
+  // subcampeones… En una llave por equipos, cada equipo queda junto.
+  var ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos',
+    'Dieciseisavos', 'R32'];
+  var grupos = {}, orden = [];
+  (L.tabla || []).forEach(function (r) {
+    if (!grupos[r[1]]) { grupos[r[1]] = []; orden.push(r[1]); }
+    grupos[r[1]].push(r);
+  });
+  orden.sort(function (a, b) {
+    var x = ORD_P.indexOf(a), y = ORD_P.indexOf(b);
+    return (x < 0 ? 99 : x) - (y < 0 ? 99 : y);
+  });
+  var puntos = orden.map(function (g) {
+    return '<div class="pg"><h5>' + (MEDALLA[g] ? MEDALLA[g] + ' ' : '') + esc(g) +
+      '<small>' + grupos[g].length + '</small></h5><ul>' + grupos[g].map(function (r) {
+        return '<li><span>' + quien(r[0]) + '</span><b>' + num(r[2]) + '</b></li>';
+      }).join('') + '</ul></div>';
+  }).join('');
   // ⚠️ EL CUADRO ARRIBA y los puntos debajo: lo que se vino a ver es la
   // llave. Ver `cuadro()`.
   var links = (L.links || []).map(function (u, i, t) {
@@ -442,8 +544,9 @@ function abrirLlave(n) {
   }).join('');
   $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') +
     cuadro(L, quien) +
-    ((L.tabla || []).length ? '<h4>Los puntos</h4><ol class="res dos-col">' +
-      L.tabla.map(fila).join('') + '</ol>' : '') +
+    '<p class="nota l-guia">En dorado, el camino del campeón. En los eventos por equipos, cada ' +
+    'integrante va en su renglón.</p>' +
+    (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
   $('#visorLlave').hidden = false;
   $('#lCuerpo').scrollTop = 0;
@@ -527,9 +630,10 @@ function pastillaRg(f) {
 function rachaCelda(f) {
   var r = f.rch || [0, 0];
   if (!r[1]) return nada;
-  // «🔥3 · máx 5»: la que lleva y la más larga. «0/5» se leía «0 de 5».
-  return '<span class="rch' + (r[0] ? ' viva' : '') + '">' + (r[0] ? '&#128293;' + r[0] + ' ' : '') +
-    '<s>máx ' + r[1] + '</s></span>';
+  // «🔥1/4»: la que lleva y la más larga. Dlx, 25/09/2026: «eso que dice
+  // máx 4 se ve raro, ¿por qué no ponés / X?»
+  return '<span class="rch' + (r[0] ? ' viva' : '') + '">' + (r[0] ? '&#128293;' : '') + r[0] +
+    '<s>/' + r[1] + '</s></span>';
 }
 function ultCelda(f) {
   var u = f.ult || [];
@@ -695,6 +799,7 @@ var SUBS = {
     orden: 'pts',
     cols: ['i', 'pais', 'np', 'pts', 'prom'],
     que: ['país', 'países'],
+    enlace: function (f) { return ' data-pais="' + esc(f.cc) + '"'; },
   },
   crews: {
     baj: 'Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> ' +
@@ -707,11 +812,12 @@ var SUBS = {
     fila: function (f) { return f.rk === 0 ? 'chica' : ''; },
     cols: ['i', 'crew', 'nc', 'pts', 'mejor'],
     que: ['crew', 'crews'],
+    enlace: function (f) { return ' data-crew="' + esc(f.clave || f.crew) + '"'; },
   },
   mw: { pronto: '<b>Most Wanted</b>: quién cazó, quién fue cazado y quién sobrevivió. ' +
     'Suma al OVR y arranca pronto.' },
   misiones: { pronto: '<b>Las misiones</b> de la temporada arrancan pronto.' },
-  ligas: { pronto: '<b>El ranking de ligas</b> vuelve pronto.' },
+  ligas: { pronto: '<b>El ranking de ligas</b> llega en la Temporada 2.', cuando: 'Temporada 2' },
 };
 
 function filtradas(fs, cfg) {
@@ -761,8 +867,8 @@ function pintaTabla() {
   $('#notaSub').hidden = !nota;
   if (cfg.pronto) {
     $('#cabTabla').innerHTML = '';
-    $('#filas').innerHTML = '<tr><td class="vacio pronto-td"><span>Próximamente</span>' +
-      cfg.pronto + '</td></tr>';
+    $('#filas').innerHTML = '<tr><td class="vacio pronto-td"><span>' +
+      (cfg.cuando || 'Próximamente') + '</span>' + cfg.pronto + '</td></tr>';
     $('#notaTabla').textContent = '';
     return;
   }
@@ -795,7 +901,8 @@ function pintaTabla() {
   $('#filas').innerHTML = fs.map(function (f) {
     var cl = [f._i === 1 ? 'top1' : f._i === 2 ? 'top2' : f._i === 3 ? 'top3' : '',
       cfg.fila ? cfg.fila(f) : ''].filter(Boolean).join(' ');
-    return '<tr' + (cl ? ' class="' + cl + '"' : '') + (f.k ? ' data-k="' + esc(f.k) + '"' : '') + '>' +
+    return '<tr' + (cl ? ' class="' + cl + '"' : '') + (f.k ? ' data-k="' + esc(f.k) + '"' : '') +
+      (cfg.enlace ? cfg.enlace(f) : '') + '>' +
       cols.map(function (id) {
         var c = COL[id];
         return '<td' + (c.cls ? ' class="' + c.cls + '"' : '') + '>' + c.v(f) + '</td>';
@@ -1085,7 +1192,7 @@ function pintaPaises() {
   if (!cs.length) apaga('#secCrews');
   if (!ps.length) { apaga('#secPaises'); return; }
   $('#listaPaises').innerHTML = ps.map(function (p, i) {
-    return '<div class="pa"><span class="p">' + (i + 1) + '</span>' +
+    return '<div class="pa" data-pais="' + esc(p.cc) + '"><span class="p">' + (i + 1) + '</span>' +
       '<span class="fl">' + ccTexto(p.cc) + '</span>' +
       '<span class="nm">' + esc(nombrePais(p.cc)) + '</span>' +
       '<span class="n">' + p.n + (p.n === 1 ? ' rapero' : ' raperos') + '</span>' +
@@ -1098,7 +1205,7 @@ function pintaPaises() {
   var pos = 0;
   $('#crews').innerHTML = cs.map(function (c) {
     var p = c.rk === 0 ? 0 : ++pos;
-    return '<div class="cw' + (p ? '' : ' chica') + '">' +
+    return '<div class="cw' + (p ? '' : ' chica') + '" data-crew="' + esc(c.clave || c.crew) + '">' +
       (c.logo ? '<img class="cw-logo" src="' + esc(c.logo) + '" alt="" width="48" height="48" loading="lazy">'
         : '<span class="cw-logo cw-ini">' + esc(inicial(c.crew)) + '</span>') +
       '<div class="cw-tx"><b>' + esc(c.crew) + '</b><small>' + c.n + (c.n === 1 ? ' rapero' : ' raperos') +
@@ -1144,10 +1251,17 @@ function pintaRangos() {
 
 /* ── cómo conseguir tu tarjeta ────────────────────────────────────── */
 function pintaComo() {
-  var qs = D.requisitos || [];
+  // 🔑 Y LAS DOS QUE VIENEN. Dlx, 25/09/2026: «en guía, cómo conseguir tu
+  // tarjeta, agregá HISTÓRICA y PRIME con lo de PRÓXIMAMENTE». Las dos
+  // llegan con la T2: la Histórica suma todas las temporadas.
+  var qs = (D.requisitos || []).concat(D.requisitos && D.requisitos.length ? [
+    { titulo: 'Histórica', mide: 'Todas tus temporadas juntas.', pide: ['Llega con la Temporada 2'], prox: 1 },
+    { titulo: 'Prime', mide: 'Próximamente.', pide: ['Llega con la Temporada 2'], prox: 1 },
+  ] : []);
   if (!qs.length) { apaga('#secComo'); return; }
   $('#listaComo').innerHTML = qs.map(function (q) {
-    return '<div class="cm"><h3>' + esc(q.titulo) + '</h3><p>' + esc(q.mide) +
+    return '<div class="cm' + (q.prox ? ' prox' : '') + '"><h3>' + esc(q.titulo) +
+      (q.prox ? '<span class="pase-tag">Próximamente</span>' : '') + '</h3><p>' + esc(q.mide) +
       '</p><ul>' + (q.pide || []).map(function (p) {
         return '<li' + (p === 'nada' ? ' class="nada"' : '') + '>' +
           (p === 'nada' ? 'Sin requisito' : esc(p)) + '</li>';
@@ -1293,7 +1407,16 @@ function cuadro(L, quien) {
   var angosto = window.innerWidth < 760;
   var W = 150, G = angosto ? 24 : 30, FILA = 26, PAD = 5,
       SEP = angosto ? 10 : 14, TOPE = 34;
-  var alto = function (b) { return PAD * 2 + FILA * Math.max(2, b[0].length); };
+  // 🔑 UN RENGLÓN POR INTEGRANTE. En una llave de tríos los tres nombres
+  // entraban a la fuerza en un renglón de 26 px y se cortaban (Dlx, con la
+  // captura de TOKYO VOL.12). Ahora la caja crece con el equipo.
+  var LINEA = 21;
+  var miembros = function (s) { return String(s || '').split(/,\s*/).filter(Boolean).length || 1; };
+  var altoLado = function (s) { return Math.max(FILA, 6 + LINEA * miembros(s)); };
+  var alto = function (b) {
+    return PAD * 2 + b[0].reduce(function (a, s) { return a + altoLado(s); }, 0) +
+      (b[0].length < 2 ? FILA * (2 - b[0].length) : 0);
+  };
   var hijos = function (r, i) {
     if (!r) return [];
     return ((rs[r].b[i] || [])[3] || []).filter(function (j) { return rs[r - 1].b[j]; });
@@ -1358,8 +1481,10 @@ function cuadro(L, quien) {
   // final queda pegada al techo y el nombre se cortaba.
   var pf = pos[(n - 1) + ':0'];
   var hayCamp = !!(pf && (rs[n - 1].b[0] || [])[1] && rs[n - 1].b.length === 1);
+  // el alto del campeón: un renglón por integrante del equipo ganador
+  var campH = hayCamp ? 20 + LINEA * miembros(rs[n - 1].b[0][1]) : 0;
   if (hayCamp) {
-    var sobra = pf.y - alto(rs[n - 1].b[0]) / 2 - 50;
+    var sobra = pf.y - alto(rs[n - 1].b[0]) / 2 - campH - 12;
     if (sobra < 0) TOPE -= sobra;
   }
   var ncol = espejo ? 2 * n - 1 : n;
@@ -1379,8 +1504,11 @@ function cuadro(L, quien) {
       Math.round(y - h / 2) + 'px;width:' + W + 'px;height:' + h + 'px"' +
       (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' + b[0].map(function (s) {
         var g = b[1] && (b[1] === s || comparten(b[1], s));
-        return '<div class="ld' + (g ? ' g' : '') + '" title="' + esc(s) +
-          '"><span class="nm">' + lado(s) + '</span></div>';
+        var eq = miembros(s) > 1;
+        return '<div class="ld' + (g ? ' g' : '') + (eq ? ' eq' : '') + '" style="height:' + altoLado(s) +
+          'px" title="' + esc(s) + '"><span class="nm">' + (eq ? String(s).split(/,\s*/).map(function (m) {
+            return '<span class="mb">' + quien(m) + '</span>';
+          }).join('') : lado(s)) + '</span></div>';
       }).join('') + '</div>';
   };
 
@@ -1405,9 +1533,11 @@ function cuadro(L, quien) {
   // el campeón, arriba de la final
   if (hayCamp) {
     var hf = alto(rs[n - 1].b[0]);
-    html.push('<div class="camp" style="left:' + (X(pf) - 20) + 'px;width:' + (W + 40) +
-      'px;top:' + Math.round(TOPE + pf.y - hf / 2 - 44) + 'px"><small>&#127942; Campeón</small>' +
-      lado(campeon) + '</div>');
+    html.push('<div class="camp' + (miembros(campeon) > 1 ? ' eq' : '') + '" style="left:' + (X(pf) - 20) +
+      'px;width:' + (W + 40) + 'px;top:' + Math.round(TOPE + pf.y - hf / 2 - campH - 8) +
+      'px"><small>&#127942; Campeón</small>' + (miembros(campeon) > 1
+        ? String(campeon).split(/,\s*/).map(function (m) { return '<span class="mb">' + quien(m) + '</span>'; }).join('')
+        : lado(campeon)) + '</div>');
   }
   // el tercer puesto, debajo de la final
   if (ter && pf) {
@@ -1474,7 +1604,9 @@ function porDia() {
   (D.calendario || []).forEach(function (c) {
     var t = new Date(c.t);
     if (isNaN(t)) return;
-    var k = claveDia(t);
+    // ⚠️ EL DÍA EN LA ZONA ELEGIDA, no la del dispositivo: si quien mira fijó
+    // la hora del este, un evento de las 11 PM va en su día
+    var k = diaDe(t);
     (m[k] = m[k] || []).push(c);
   });
   return m;
@@ -1485,7 +1617,7 @@ function pintaCalendario() {
   if (!cs.length) { apaga('#secCal'); apaga('#secDia'); return; }
   var M = porDia();
   if (!CAL.y) {
-    var hoy = new Date(), hk = claveDia(hoy);
+    var hoy = new Date(), hk = diaDe(hoy);
     CAL.y = hoy.getFullYear();
     CAL.m = hoy.getMonth();
     // el día que se abre: hoy si hubo algo; si no, el último que tuvo
@@ -1500,7 +1632,7 @@ function pintaCalendario() {
   var arranque = (new Date(CAL.y, CAL.m, 1).getDay() + 6) % 7;
   var diasMes = new Date(CAL.y, CAL.m + 1, 0).getDate();
   var celdas = Math.ceil((arranque + diasMes) / 7) * 7;
-  var hoyK = claveDia(new Date()), h = '';
+  var hoyK = diaDe(Date.now()), h = '';
   for (var i = 0; i < celdas; i++) {
     var d = new Date(CAL.y, CAL.m, 1 - arranque + i);
     var k = claveDia(d), evs = M[k] || [];
@@ -1538,28 +1670,101 @@ function pintaDia(M) {
   var d = CAL.dia ? new Date(CAL.dia + 'T12:00:00') : null;
   var txt = d ? d.toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
   $('#diaTit').innerHTML = '<span>&#128197;</span> ' +
-    (txt ? esc(txt.charAt(0).toUpperCase() + txt.slice(1)) : 'El día');
+    (txt ? esc(txt.charAt(0).toUpperCase() + txt.slice(1)) : 'El día') +
+    (evs.length ? '<small class="dia-n">' + evs.length + (evs.length === 1 ? ' evento' : ' eventos') +
+      ' &middot; hora ' + esc(zonaCorta(evs[0].t)) + '</small>' : '');
   if (!evs.length) {
     $('#diaLista').innerHTML = '<p class="dia-no">Ese día no hubo eventos.</p>';
     return;
   }
+  // 🔑 CADA EVENTO, UNA TARJETA: la hora grande a la izquierda, lo que es
+  // arriba y lo que se puede hacer abajo, en una fila. Dlx, 25/09/2026: «la
+  // zona de la derecha está rara, quizás podamos reorganizarlo mejor».
   $('#diaLista').innerHTML = evs.map(function (e) {
-    var hora = new Date(e.t).toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit' });
-    // 🔑 LO QUE VIENE SE PUEDE AGREGAR A GOOGLE CALENDAR, de a uno; el
-    // calendario entero se suma desde la cabecera de la sección.
+    var L = e.ll && (D.llaves || {})[e.ll];
+    var inf = (L && L.info) || {};
+    var mod = e.mod || inf.mod || '';
+    var camp = L ? (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; }) : [];
     var acc = (e.ll ? '<button class="btn" data-llave="' + e.ll + '">&#127942; Ver llave</button>' : '') +
       (e.fut ? '<a class="btn" href="' + esc(googleEv(e)) + '" target="_blank" ' +
         'rel="noopener noreferrer">&#128197; Agregar a Google</a>' : '') +
       (e.link ? '<a class="btn sec" href="' + esc(e.link) + '" target="_blank" ' +
-        'rel="noopener noreferrer">En Discord &#8599;</a>' : '');
+        'rel="noopener noreferrer">Discord &#8599;</a>' : '');
     var estado = e.fut ? 'por jugarse' : e.jugado ? 'jugado' : 'anunciado';
-    return '<div class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
-      '<span class="de-h">' + esc(hora) + (e.sh ? '<small>anunciado</small>' : '') + '</span>' +
-      '<div><b>' + esc(e.n) + '</b><div class="de-sub">' + chipSv(e.sv) +
-      (e.rg ? '<span class="rg-ev" title="El rango de este evento en ' + esc(nombreSv(e.sv)) + '">' +
-        esc(e.rg) + '</span>' : '') + '<small>' + estado + '</small></div>' +
-      (acc ? '<div class="de-acc">' + acc + '</div>' : '') + '</div></div>';
+    return '<article class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
+      '<div class="de-t"><b>' + esc(fmtHora(e.t)) + '</b>' + (e.sh ? '<small>anunciado</small>' : '') +
+      '</div><div class="de-c"><h3>' + esc(e.n) + '</h3>' +
+      '<div class="de-sub">' + chipSv(e.sv) + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
+      (e.rg || inf.rg ? '<span class="rg-ev">' + esc(e.rg || inf.rg) + '</span>' : '') +
+      '<span class="de-est ' + (e.fut ? 'fut' : e.jugado ? 'jug' : '') + '">' + estado + '</span></div>' +
+      (camp.length ? '<p class="de-camp"><span>&#127942;</span>' + camp.map(function (r) {
+        var f = porK(kDe(r[0]));
+        return f ? quienEs(f, 20) : conBanderas(r[0]);
+      }).join('<i class="coma">,</i> ') + '</p>' : '') +
+      (acc ? '<div class="de-acc">' + acc + '</div>' : '') + '</div></article>';
   }).join('');
+}
+
+/* ── los últimos campeones y cómo se juega ────────────────────────────
+   🔑 Dlx, 25/09/2026: «agregar más cosas a la sección de eventos entre
+   aviso de eventos y calendario». Sale de las llaves que viajan en el lobby
+   y de su ficha (el formato y quién organizó vienen del anuncio). */
+function jugadas() {
+  var vistos = {};
+  return (D.calendario || []).filter(function (c) {
+    if (!c.ll || !(D.llaves || {})[c.ll] || vistos[c.ll]) return false;
+    vistos[c.ll] = 1;
+    return true;
+  }).sort(function (a, b) { return a.t < b.t ? 1 : -1; });
+}
+function pintaUltCampeones() {
+  var js = jugadas().slice(0, 6);
+  if (!js.length) { apaga('#secCampeones'); return; }
+  $('#secCampeones').hidden = false;
+  $('#ultCampeones').innerHTML = js.map(function (c) {
+    var L = D.llaves[c.ll], inf = L.info || {};
+    var camp = (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; });
+    return '<button type="button" class="uc" data-llave="' + esc(c.ll) + '" style="--c:' +
+      esc(colorSv(c.sv)) + '"><span class="uc-top">' + chipSv(c.sv) + '<small>' +
+      esc(fmtFecha(c.t)) + '</small></span><b class="uc-n">' + esc(c.n) + '</b>' +
+      '<span class="uc-camp">&#127942; ' + (camp.length ? camp.map(function (r) {
+        var f = porK(kDe(r[0]));
+        return f ? quienEs(f, 22) : conBanderas(r[0]);
+      }).join('<i class="coma">,</i> ') : '—') + '</span>' +
+      '<small class="uc-d">' + [inf.mod ? esc(inf.mod) : '', L.participantes ? L.participantes + ' raperos' : '']
+        .filter(Boolean).join(' &middot; ') + '</small></button>';
+  }).join('');
+}
+function pintaFormatos() {
+  var ls = jugadas();
+  var fmt = {}, org = {}, con = 0, gente = 0;
+  ls.forEach(function (c) {
+    var L = D.llaves[c.ll], inf = L.info || {};
+    if (inf.mod) {
+      var m = inf.mod.trim().replace(/\s+/g, ' ');
+      var k = m.toLowerCase();
+      fmt[k] = fmt[k] || { n: 0, t: m };
+      fmt[k].n++;
+      con++;
+    }
+    if (inf.org) org[inf.org] = (org[inf.org] || 0) + 1;
+    gente += L.participantes || 0;
+  });
+  var fs = Object.keys(fmt).map(function (k) { return fmt[k]; }).sort(function (a, b) { return b.n - a.n; });
+  var os = Object.keys(org).map(function (k) { return [k, org[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+  if (!fs.length && !os.length) { apaga('#secFormatos'); return; }
+  $('#secFormatos').hidden = false;
+  var max = fs.length ? fs[0].n : 1;
+  $('#formatos').innerHTML =
+    (fs.length ? '<h3 class="gh">Formatos</h3>' + fs.slice(0, 6).map(function (x) {
+      return '<div class="gp"><span>' + esc(x.t) + '</span><i><u style="width:' +
+        Math.round(100 * x.n / max) + '%"></u></i><b>' + x.n + '</b></div>';
+    }).join('') : '') +
+    (os.length ? '<h3 class="gh">Quién organiza</h3><div class="orgs">' + os.slice(0, 8).map(function (x) {
+      return '<span class="org">' + esc(x[0]) + '<u>' + x[1] + '</u></span>';
+    }).join('') + '</div>' : '') +
+    '<p class="nota">Sobre las ' + ls.length + ' llaves más nuevas' +
+    (ls.length ? ': ' + Math.round(gente / ls.length) + ' raperos por llave, en promedio' : '') + '.</p>';
 }
 
 /* ── la cabecera de Eventos ───────────────────────────────────────────
@@ -1599,8 +1804,8 @@ function pintaEvCab() {
   if (prox) {
     h += '<div class="evc-prox" style="--c:' + esc(colorSv(prox.sv)) + '">' +
       '<span class="evc-et">Próximo evento</span><b class="evc-n1">' + esc(prox.n) + '</b>' +
-      '<div class="evc-sub">' + chipSv(prox.sv) + '<span>' + esc(new Date(prox.t).toLocaleString('es',
-        { weekday: 'long', hour: 'numeric', minute: '2-digit' })) + '</span></div>' +
+      '<div class="evc-sub">' + chipSv(prox.sv) + '<span>' + esc(fmtFecha(prox.t, { weekday: 'long' })) +
+        ' &middot; ' + esc(fmtHora(prox.t)) + ' ' + esc(zonaCorta(prox.t)) + '</span></div>' +
       '<span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) + '">&middot;</span></div>';
   } else if (ult) {
     h += '<div class="evc-prox" style="--c:' + esc(colorSv(ult.sv)) + '">' +
@@ -1752,10 +1957,14 @@ function dibujoMapa(topo, por) {
    ⚠️ EL COMPETITIVO SE VE AUNQUE ESTÉ VACÍO, porque ahí la ausencia ES el
    dato: pide 10 eventos y todavía no llegó nadie. Decirlo —y quién está
    más cerca— es mejor que esconder el ranking que más importa. */
+// 🔑 EL TOP 3. Dlx, 25/09/2026: «que sólo muestre el top 3 de todo en el
+// inicio». El resto está a un «Ver todo» de distancia.
+var TOP = 3;
 function pintaTops() {
   var T = D.tabla || [];
   var fila = function (f, i, v, c) {
-    return '<li' + (f.k ? ' data-k="' + esc(f.k) + '"' : '') + '><i class="pp">' + (i + 1) +
+    return '<li' + (f.k ? ' data-k="' + esc(f.k) + '"' : f.dc ? ' data-crew="' + esc(f.dc) + '"' : '') +
+      '><i class="pp">' + (i + 1) +
       '</i><span class="nm">' + (f.k ? quienEs(f.av !== undefined ? f : conCara(f), 24)
         : (f.logo ? '<span class="quien"><img class="av" src="' + esc(f.logo) + '" alt="" ' +
           'style="width:24px;height:24px"><span class="qn">' + esc(f.n) + '</span></span>'
@@ -1763,23 +1972,23 @@ function pintaTops() {
       '</span><b' + (c ? ' style="color:' + esc(c) + '"' : '') + '>' + v + '</b></li>';
   };
   var cajas = [];
-  cajas.push(['&#127942;', 'Temporada <u>OVR</u>', '#/ranking/temporada', T.slice(0, 5).map(function (f, i) {
+  cajas.push(['&#127942;', 'Temporada <u>OVR</u>', '#/ranking/temporada', T.slice(0, TOP).map(function (f, i) {
     return fila(f, i, f.ovr || '—');
   })]);
   var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
     return (b.sc || 0) - (a.sc || 0);
-  }).slice(0, 5);
+  }).slice(0, TOP);
   var pide = reqDe('competitivo') || 10;
   var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
   cajas.push(['&#9876;', 'Competitivo <u>Score</u>', '#/ranking/competitivo', comp.map(function (f, i) {
     return fila(f, i, esc(f.rg), f.rgc);
   }), cerca ? 'Se desbloquea a los <b>' + pide + ' eventos</b> y todavía no llegó nadie. ' +
     'El más cerca: <b>' + esc(cerca.n) + '</b>, con ' + cerca.ev + '.' : '']);
-  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/ranking/duelos', (D.duelos || []).slice(0, 5).map(function (d, i) {
+  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/ranking/duelos', (D.duelos || []).slice(0, TOP).map(function (d, i) {
     return fila(d, i, d.g + '<s>/' + d.t + '</s>');
   })]);
   var med = T.filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; })
-    .sort(medallero).slice(0, 5);
+    .sort(medallero).slice(0, TOP);
   cajas.push(['&#127941;', 'Podios', '#/ranking/podios', med.map(function (f, i) {
     return fila(f, i, [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]]
       .filter(function (x) { return x[1]; }).map(function (x) {
@@ -1794,9 +2003,9 @@ function pintaTops() {
   var rs = (vivas.length ? vivas : con).slice().sort(function (a, b) {
     return vivas.length ? (b.rch[0] - a.rch[0]) || (b.rch[1] - a.rch[1])
                         : (b.rch[1] - a.rch[1]) || (b.pts - a.pts);
-  }).slice(0, 5);
+  }).slice(0, TOP);
   if (!rs.length && (D.rachas || []).length) {
-    rs = D.rachas.slice(0, 5).map(function (r) { return { n: r.n, k: r.k, cc: r.cc, rch: [r.r, r.r] }; });
+    rs = D.rachas.slice(0, TOP).map(function (r) { return { n: r.n, k: r.k, cc: r.cc, rch: [r.r, r.r] }; });
     vivas = rs;
   }
   cajas.push(['&#128293;', 'Rachas <u>' + (vivas.length ? 'la actual' : 'la más larga') + '</u>',
@@ -1805,8 +2014,8 @@ function pintaTops() {
     })]);
   cajas.push(['&#129309;', 'Crews <u>pts</u>', '#/ranking/crews', (D.crews || []).filter(function (c) {
     return c.rk !== 0;
-  }).slice(0, 5).map(function (c, i) {
-    return fila({ n: c.crew, logo: c.logo }, i, num(c.pts));
+  }).slice(0, TOP).map(function (c, i) {
+    return fila({ n: c.crew, logo: c.logo, dc: c.clave || c.crew }, i, num(c.pts));
   })]);
   // 🔑 LOS QUE VIENEN. Dlx, 25/09/2026: «los otros 2 de cinco de arriba
   // será MOST WANTED y MISIONES», y después «los 2 espacios será uno de
@@ -1815,8 +2024,9 @@ function pintaTops() {
   cajas.push(['&#128128;', 'Most Wanted', '', [],
     'Quién cazó, quién fue cazado y quién sobrevivió. <b>Próximamente</b>.', 'pronto']);
   cajas.push(['&#127919;', 'Misiones', '', [], 'Las misiones de la temporada. <b>Próximamente</b>.', 'pronto']);
-  cajas.push(['&#128200;', 'Ascenso', '', [], 'El ranking de ascenso. <b>Próximamente</b>.', 'pronto']);
-  cajas.push(['&#127942;', 'Ligas', '', [], 'El ranking de ligas. <b>Próximamente</b>.', 'pronto']);
+  // Dlx, 25/09/2026: Ascenso y Ligas, «eso será en la temporada 2»
+  cajas.push(['&#128200;', 'Ascenso', '', [], 'El ranking de ascenso. <b>Llega en la Temporada 2</b>.', 'pronto']);
+  cajas.push(['&#127942;', 'Ligas', '', [], 'El ranking de ligas. <b>Llega en la Temporada 2</b>.', 'pronto']);
   var hay = cajas.filter(function (c) { return c[3].length || c[4]; });
   if (!hay.length) { apaga('#secTop'); return; }
   $('#tops').innerHTML = hay.map(function (c) {
@@ -1873,6 +2083,89 @@ function conCara(x) {
   return { n: x.n, k: x.k, cc: x.cc || f.cc, av: f.av || '' };
 }
 
+/* ── la página de una crew y la de un país ───────────────────────────
+   🔑 Dlx, 25/09/2026: «crear perfiles para las crews, y quizás países».
+   Todo sale del lobby que ya bajó: su gente es la de la tabla. */
+function genteLista(fs) {
+  return '<div class="gente">' + fs.map(function (f) {
+    return '<div class="gt" data-k="' + esc(f.k) + '"><span class="gt-p">#' + esc(f.pos) + '</span>' +
+      '<span class="gt-n">' + quienEs(f, 30) + '</span>' +
+      '<span class="gt-d"><b class="ovr">' + (f.ovr || '—') + '</b><small>OVR</small></span>' +
+      '<span class="gt-d"><b>' + num(f.pts) + '</b><small>pts</small></span>' +
+      '<span class="gt-d"><b>' + esc(f.ev || 0) + '</b><small>ev</small></span></div>';
+  }).join('') + '</div>';
+}
+function cabezaPagina(img, pre, tit, sub, cifras) {
+  return '<header class="pf-cab">' + img + '<div class="pf-id"><span class="pf-pos">' + pre +
+    '</span><h1 class="tit">' + tit + '</h1><p class="pf-sub">' + sub + '</p></div>' +
+    '<dl class="pf-cifras">' + cifras.map(function (c) {
+      return '<div><dt>' + c[0] + '</dt><dd>' + c[1] + '</dd></div>';
+    }).join('') + '</dl></header>';
+}
+function pintaCrew(clave) {
+  var caja = $('#crewPag');
+  var cs = D.crews || [];
+  var c = cs.filter(function (x) { return (x.clave || x.crew) === clave; })[0];
+  if (!c) {
+    caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a><section class="blk entro">' +
+      '<h2><span>&#128269;</span> No la encontré</h2><p class="bajada">Esa crew no tiene gente en la ' +
+      'temporada.</p></section>';
+    return;
+  }
+  document.title = c.crew + ' · Liga Global de Freestyle';
+  var conPuesto = cs.filter(function (x) { return x.rk !== 0; });
+  var pos = conPuesto.indexOf(c) + 1;
+  var gente = (c.gente || []).map(function (n) { return porK(kDe(n)); }).filter(Boolean)
+    .sort(function (a, b) { return (a.pos || 999) - (b.pos || 999); });
+  var ccs = [];
+  gente.forEach(function (f) { if (f.cc && ccs.indexOf(f.cc) < 0) ccs.push(f.cc); });
+  var logo = c.logo ? '<img class="cw-logo grande" src="' + esc(c.logo) + '" alt="" width="116" height="116">'
+    : '<span class="cw-logo cw-ini grande">' + esc(inicial(c.crew)) + '</span>';
+  caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a>' +
+    cabezaPagina(logo, pos ? '#' + pos + ' de las crews' : 'Sin puesto: hacen falta tres raperos',
+      esc(c.crew), ccs.map(function (cc) { return bandera(cc); }).join(' '),
+      [['Raperos', esc(c.n)], ['Puntos', num(c.pts)],
+        ['Por rapero', c.n ? num(Math.round(c.pts / c.n)) : '—'],
+        ['Su mejor', c.mejor && kDe(c.mejor) ? '<span class="lnk" data-k="' + esc(kDe(c.mejor)) + '">' +
+          esc(c.mejor) + '</span>' : esc(c.mejor || '—')]]) +
+    '<section class="blk entro"><h2><span>&#129309;</span> Su gente en la temporada</h2>' +
+    (gente.length ? genteLista(gente) : '<p class="bajada">Todavía nadie de la crew jugó la temporada.</p>') +
+    '</section>';
+}
+function pintaPais(cc) {
+  cc = String(cc || '').toLowerCase();
+  var caja = $('#paisPag');
+  var ps = D.paises || [];
+  var P = ps.filter(function (x) { return String(x.cc).toLowerCase() === cc; })[0];
+  var gente = (D.tabla || []).filter(function (f) { return String(f.cc).toLowerCase() === cc; })
+    .sort(function (a, b) { return (a.pos || 999) - (b.pos || 999); });
+  if (!P && !gente.length) {
+    caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a><section class="blk entro">' +
+      '<h2><span>&#128269;</span> No lo encontré</h2><p class="bajada">Ese país no tiene raperos en ' +
+      'la temporada.</p></section>';
+    return;
+  }
+  document.title = nombrePais(cc) + ' · Liga Global de Freestyle';
+  var pos = P ? ps.indexOf(P) + 1 : 0;
+  var pts = P ? P.pts : gente.reduce(function (a, f) { return a + (f.pts || 0); }, 0);
+  var crews = (D.crews || []).filter(function (c) {
+    return (c.gente || []).some(function (n) { var f = porK(kDe(n)); return f && String(f.cc).toLowerCase() === cc; });
+  });
+  var img = PAIS[cc] ? '<img class="pais-bandera" src="banderas/' + esc(cc) + '.png" alt="" width="120" height="80">' : '';
+  caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a>' +
+    cabezaPagina(img, pos ? '#' + pos + ' de los países' : '', esc(nombrePais(cc)),
+      crews.length ? crews.map(function (c) {
+        return '<a class="chip-crew" href="#/crew/' + encodeURIComponent(c.clave || c.crew) + '">' +
+          esc(c.crew) + '</a>';
+      }).join(' ') : '',
+      [['Raperos', esc(gente.length)], ['Puntos', num(pts)],
+        ['Por rapero', gente.length ? num(Math.round(pts / gente.length)) : '—'],
+        ['Su mejor', gente[0] ? '<span class="lnk" data-k="' + esc(gente[0].k) + '">' + esc(gente[0].n) +
+          '</span>' : '—']]) +
+    '<section class="blk entro"><h2><span>&#127758;</span> Su gente en la temporada</h2>' +
+    genteLista(gente) + '</section>';
+}
+
 /* ── ir al perfil ─────────────────────────────────────────────────────── */
 function irPerfil(k) {
   if (!$('#visor').hidden) cerrar();
@@ -1918,8 +2211,9 @@ function pintaPerfil(k) {
   var rg = f.rg ? '<span class="rg pf-rg" style="color:' + esc(f.rgc || '') + ';border-color:' +
     esc(f.rgc || '#1A2523') + '">' + esc(f.rg) + '</span>' : '';
   var sub = [
-    f.cc ? bandera(f.cc) + ' ' + esc(nombrePais(f.cc)) : '',
-    f.sv ? '<span class="chip-sv" style="--c:' + esc(colorSv(f.sv)) + '">' + esc(sv.nombre || f.sv) + '</span>' : '',
+    f.cc ? '<a class="pf-pais" href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' ' +
+      esc(nombrePais(f.cc)) + '</a>' : '',
+    f.sv ? chipSv(f.sv) : '',
   ].filter(Boolean).join(' <i class="sep">·</i> ');
   var med = [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]];
   caja.innerHTML =
@@ -1978,7 +2272,9 @@ function pintaPerfil(k) {
     }
     var E = P.e || {};
     if (x.crew) {
-      $('#pfCrew').innerHTML = ' <i class="sep">·</i> <span class="chip-crew">' + esc(x.crew) + '</span>';
+      var cw = (D.crews || []).filter(function (c) { return c.clave === x.crew || c.crew === x.crew; })[0];
+      $('#pfCrew').innerHTML = ' <i class="sep">·</i> <a class="chip-crew" href="#/crew/' +
+        encodeURIComponent(cw ? cw.clave || cw.crew : x.crew) + '">' + esc(cw ? cw.crew : x.crew) + '</a>';
     }
     var dus = x.du || [];
     var g = dus.filter(function (d) { return d[2]; }).length;
@@ -2016,7 +2312,7 @@ function pintaPerfil(k) {
       $('#pfEv').innerHTML = evs.map(function (e) {
         var m = E[e[0]] || [];
         var t = m[2] ? new Date(m[2]) : null;
-        var fecha = t && !isNaN(t) ? t.toLocaleDateString('es', { day: 'numeric', month: 'short' }) : (m[4] || '');
+        var fecha = t && !isNaN(t) ? fmtFecha(t) : (m[4] || '');
         var ll = (D.llaves || {})[e[0]]
           ? '<button class="ver-llave" data-llave="' + esc(e[0]) + '">Ver llave</button>' : '';
         return '<div class="pe" style="--c:' + esc(colorSv(m[1])) + '"><span class="pe-f">' + esc(fecha) +
@@ -2141,22 +2437,98 @@ function itemFeed(x) {
     '<b>' + esc(x.tit) + '</b>' + (!yt && x.tx ? '<p>' + esc(x.tx) + '</p>' : '') +
     '<span class="fd-ir">' + (yt ? 'Ver en YouTube' : 'Ver en Discord') + ' &#8599;</span></a>';
 }
+function pager(st, items, pp, caja, nav, pag, antes, despues, item) {
+  var tot = Math.max(1, Math.ceil(items.length / pp));
+  st.pag = Math.max(0, Math.min(st.pag, tot - 1));
+  st.pp = pp;
+  $(caja).innerHTML = items.slice(st.pag * pp, st.pag * pp + pp).map(item).join('');
+  $(nav).hidden = tot < 2;
+  $(pag).textContent = (st.pag + 1) + ' de ' + tot;
+  $(antes).disabled = st.pag === 0;
+  $(despues).disabled = st.pag >= tot - 1;
+}
+// 🔑 LAS REDES, EN GRANDE: los videos de YouTube de cada servidor, dos por
+// página. Dlx, 25/09/2026: «en grande, 2 bloques con flechas».
 function pintaFeed() {
-  var fs = D.feed || (D.novedades || []).map(function (x) {
-    return Object.assign({ tipo: 'discord', sv: 'DRA' }, x);
-  });
+  var fs = (D.feed || []).filter(function (x) { return x.tipo === 'youtube'; });
   var rs = D.redes || [];
-  if (!fs.length && !rs.length) { apaga('#secNov'); return; }
-  $('#secNov').hidden = false;
+  if (!fs.length && !rs.length) { apaga('#secRedes'); return; }
+  $('#secRedes').hidden = false;
   $('#novRedes').innerHTML = rs.length ? '<span>Seguí a la Liga</span>' + redes(rs) : '';
-  var pp = FEED.pp = porPagina(), tot = Math.max(1, Math.ceil(fs.length / pp));
-  FEED.pag = Math.max(0, Math.min(FEED.pag, tot - 1));
-  $('#feed').innerHTML = fs.slice(FEED.pag * pp, FEED.pag * pp + pp).map(itemFeed).join('');
   $('#feed').hidden = !fs.length;
-  $('#feedNav').hidden = tot < 2;
-  $('#feedPag').textContent = (FEED.pag + 1) + ' de ' + tot;
-  $('#feedAntes').disabled = FEED.pag === 0;
-  $('#feedDespues').disabled = FEED.pag >= tot - 1;
+  pager(FEED, fs, porPagina(), '#feed', '#feedNav', '#feedPag', '#feedAntes', '#feedDespues', itemFeed);
+}
+// 🔑 LAS NOVEDADES: lo que anuncia la Liga en DRA. Dlx, 25/09/2026: «lo
+// último de la liga que sea como novedades, información».
+var NOV = { pag: 0, pp: 0 };
+function pintaNovedades() {
+  var ns = (D.novedades || []).map(function (x) { return Object.assign({ tipo: 'discord', sv: 'DRA' }, x); });
+  if (!ns.length) { apaga('#secNov'); return; }
+  $('#secNov').hidden = false;
+  pager(NOV, ns, porPagina(), '#novedades', '#novNav', '#novPag', '#novAntes', '#novDespues', itemFeed);
+}
+
+/* ── los paneles del Inicio ───────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «un sistema de paneles de páginas: la primera será
+   MW y a la mitad, a la derecha, MISIONES… Liga hoy será la última». La del
+   medio es la de quien mira: su temporada y lo que viene. */
+var PN = { pag: 0 };
+function pintaPaneles() {
+  var pags = $$('#secPaneles .pn-pag');
+  if (!pags.length) return;
+  PN.pag = Math.max(0, Math.min(PN.pag, pags.length - 1));
+  pags.forEach(function (p, i) { p.hidden = i !== PN.pag; });
+  $('#pnTit').innerHTML = pags[PN.pag].dataset.tit || '';
+  $('#pnDots').innerHTML = pags.map(function (p, i) {
+    return '<button type="button" class="pn-dot' + (i === PN.pag ? ' on' : '') + '" data-pn="' + i +
+      '" aria-label="Página ' + (i + 1) + '"></button>';
+  }).join('');
+  $('#pnAntes').disabled = PN.pag === 0;
+  $('#pnDespues').disabled = PN.pag === pags.length - 1;
+  pintaYoPanel();
+}
+function pintaYoPanel() {
+  var f = yo(), c = $('#pnYo'), e = $('#pnEv');
+  if (!c || !e) return;
+  if (!f) {
+    c.innerHTML = '<div class="teaser yo"><span class="tz-ico" aria-hidden="true">&#128100;</span>' +
+      '<h3>¿Quién sos?</h3><p>Elegí tu nombre y acá ves tu puesto, tu racha y lo que te falta.</p>' +
+      '<button type="button" class="btn" data-abrir-cuenta>Elegir quién soy</button></div>';
+  } else {
+    var pide = reqDe('competitivo') || 10, r = f.rch || [0, 0];
+    var falta = Math.max(0, pide - (f.ev || 0));
+    c.innerHTML = '<div class="teaser yo lleno" data-k="' + esc(f.k) + '">' + avatar(f, 56) +
+      '<h3>' + esc(f.n) + '</h3><p class="yo-pos">#' + esc(f.pos) + ' de la temporada</p>' +
+      '<dl class="yo-n"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
+      '<div><dt>Puntos</dt><dd>' + num(f.pts) + '</dd></div>' +
+      '<div><dt>Racha</dt><dd>' + (r[0] ? '&#128293;' + r[0] : '0') + '<s>/' + r[1] + '</s></dd></div></dl>' +
+      '<p class="yo-falta">' + (f.rg ? 'Rango <b>' + esc(f.rg) + '</b>'
+        : falta ? 'Te ' + (falta === 1 ? 'falta <b>1 evento</b>' : 'faltan <b>' + falta + ' eventos</b>') +
+          ' para la Competitiva' : 'Ya tenés los eventos de la Competitiva') + '</p></div>';
+  }
+  var ahora = Date.now();
+  var prox = (D.calendario || []).filter(function (x) { return Date.parse(x.t) > ahora; })[0];
+  var ult = jugadas()[0];
+  if (prox) {
+    e.innerHTML = '<div class="teaser ev" style="--c:' + esc(colorSv(prox.sv)) + '">' +
+      '<span class="evc-et">Próximo evento</span><h3>' + esc(prox.n) + '</h3>' + chipSv(prox.sv) +
+      '<p>' + esc(fmtFecha(prox.t, { weekday: 'long' })) + ' &middot; ' + esc(fmtHora(prox.t)) + ' ' +
+      esc(zonaCorta(prox.t)) + '</p><span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) +
+      '">&middot;</span><a class="btn sec" href="#/eventos">Ver el calendario</a></div>';
+    pintaRelojes();
+  } else if (ult) {
+    var L = D.llaves[ult.ll];
+    var camp = (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; });
+    e.innerHTML = '<div class="teaser ev" style="--c:' + esc(colorSv(ult.sv)) + '">' +
+      '<span class="evc-et">El último campeón</span><h3>' + (camp.length ? camp.map(function (r) {
+        var g = porK(kDe(r[0]));
+        return g ? quienEs(g, 26) : conBanderas(r[0]);
+      }).join('<i class="coma">,</i> ') : '—') + '</h3>' + chipSv(ult.sv) + '<p>' + esc(ult.n) + ' &middot; ' +
+      esc(cuandoSe(ult.t)) + '</p><button type="button" class="btn sec" data-llave="' + esc(ult.ll) +
+      '">&#127942; Ver la llave</button></div>';
+  } else {
+    e.innerHTML = '';
+  }
 }
 
 /* ── la guía, con los números de verdad ──────────────────────────────
@@ -2218,6 +2590,72 @@ function pintaGuia() {
         }).join(', ') + '.</p>' : '') : '');
 }
 
+/* ── mi cuenta ────────────────────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «arriba en la esquina derecha superior mi cuenta (mi
+   perfil y cosas más)». No hay login: quien mira elige quién es y este
+   dispositivo lo recuerda. No sale de acá. */
+var YO = leerLS('lg:yo', '');
+function yo() { return YO ? porK(YO) : null; }
+function pintaCuenta() {
+  var f = yo();
+  $('#cuentaCara').innerHTML = f ? avatar(f, 26)
+    : '<span class="av ini" style="width:26px;height:26px;font-size:13px">&#128100;</span>';
+  $('#cuentaTxt').textContent = f ? f.n : 'Mi cuenta';
+}
+function pintaPopCuenta() {
+  var f = yo(), c = $('#popCuenta');
+  if (!f) {
+    c.innerHTML = '<h3>¿Quién sos?</h3><p class="nota">Elegí tu nombre y este dispositivo lo ' +
+      'recuerda: tu perfil y tu temporada quedan a un toque. Sin contraseña, y no sale de acá.</p>' +
+      '<input type="search" id="yoBusca" placeholder="Tu nombre de competencia…" autocomplete="off" ' +
+      'spellcheck="false" aria-label="Tu nombre"><div class="pop-lista" id="yoRes"></div>';
+    return;
+  }
+  c.innerHTML = '<div class="pop-yo">' + avatar(f, 46) + '<div><b>' + esc(f.n) + '</b><small>#' +
+    esc(f.pos) + ' de la temporada · OVR ' + (f.ovr || '—') + '</small></div></div>' +
+    '<nav class="pop-menu">' +
+    '<a href="#/r/' + encodeURIComponent(f.k) + '">&#128100; Mi perfil</a>' +
+    ((f.c || []).length ? '<button type="button" data-carta="' + esc(f.k) + '">&#127183; Mis tarjetas</button>' : '') +
+    (f.cc && PAIS[String(f.cc).toLowerCase()] ? '<a href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' Mi país</a>' : '') +
+    '<a href="#/avisos">&#128276; Mis avisos</a>' +
+    '<button type="button" id="yoOlvidar">No soy yo</button></nav>';
+}
+function pintaYoRes(q) {
+  var caja = $('#yoRes');
+  if (!caja) return;
+  q = sinTildes(q).trim();
+  var fs = q ? (D.tabla || []).filter(function (f) { return sinTildes(f.n).indexOf(q) >= 0; }).slice(0, 6) : [];
+  caja.innerHTML = fs.map(function (f) {
+    return '<button type="button" class="br" data-yo="' + esc(f.k) + '">' + quienEs(f, 24) +
+      '<span class="br-p">#' + esc(f.pos) + '</span></button>';
+  }).join('') || (q ? '<p class="br-no">No hay nadie con ese nombre en la temporada.</p>' : '');
+}
+function pintaPopAjustes() {
+  var h = AJ.h12 === true ? '12' : AJ.h12 === false ? '24' : '';
+  $('#popAjustes').innerHTML = '<h3>&#9881; Ajustes</h3>' +
+    '<label class="aj"><span>Formato de la hora</span><select id="ajH12">' +
+    '<option value="">Automático (' + esc(fmtHora(Date.now())) + ')</option>' +
+    '<option value="12">12 horas</option><option value="24">24 horas</option></select></label>' +
+    '<label class="aj"><span>Zona horaria</span><select id="ajTz">' + ZONAS.map(function (z) {
+      return '<option value="' + esc(z[0]) + '">' + esc(z[1]) + '</option>';
+    }).join('') + '</select></label>' +
+    '<p class="nota">Las horas de la página van en <b>' + esc(zonaCorta()) + '</b>' +
+    (AJ.tz ? '.' : ', la de este dispositivo.') + '</p>' +
+    '<label class="aj aj-ck"><input type="checkbox" id="ajCalma"' + (AJ.calma ? ' checked' : '') +
+    '><span>Menos animaciones</span></label>' +
+    '<button type="button" class="btn sec ancho" id="ajBorrar">Olvidar quién soy y mis ajustes</button>';
+  $('#ajH12').value = h;
+  $('#ajTz').value = AJ.tz || '';
+}
+function cerrarPops() { $$('.pop').forEach(function (p) { p.hidden = true; }); }
+// lo que depende de la hora se vuelve a dibujar al cambiar la zona o el formato
+function repintarHoras() {
+  [pintaCalendario, pintaEvCab, pintaPaneles, pintaUltCampeones].forEach(function (f) {
+    try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
+  });
+  if (ruta().indexOf('r/') === 0) ir();
+}
+
 /* ── eventos de la página ─────────────────────────────────────────── */
 function eventos() {
   $('#buscar').addEventListener('input', function (e) {
@@ -2267,8 +2705,13 @@ function eventos() {
     if (e.target.closest('a')) return;
     var c = e.target.closest('[data-carta]');
     if (c) { abrir(c.dataset.carta); return; }
-    var t = e.target.closest('[data-k]');
-    if (t && !e.target.closest('.pest')) irPerfil(t.dataset.k);
+    // ⚠️ LO MÁS ADENTRO MANDA: en la fila de una crew, el nombre de su mejor
+    // rapero abre al rapero y el resto de la fila, la crew
+    var t = e.target.closest('[data-k],[data-crew],[data-pais]');
+    if (!t || e.target.closest('.pest')) return;
+    if (t.dataset.k) irPerfil(t.dataset.k);
+    else if (t.dataset.crew) location.hash = '#/crew/' + encodeURIComponent(t.dataset.crew);
+    else if (t.dataset.pais) location.hash = '#/pais/' + encodeURIComponent(t.dataset.pais);
   });
   // el perfil: sus pestañas de tarjetas y descargar la que se ve
   document.addEventListener('click', function (e) {
@@ -2304,6 +2747,79 @@ function eventos() {
   // ⚠️ AL CAMBIAR DE SUBCATEGORIA SE SUELTA EL ORDEN MANUAL. Cada una
   // trae el suyo —Podios por oros, Camino por eventos— y respetar el
   // orden viejo haría que tocar «Podios» no cambiara nada visible.
+  // mi cuenta y los ajustes: se abren arriba, se cierran tocando afuera
+  var abrirPop = function (id, pintar) {
+    var p = $(id), estaba = !p.hidden;
+    cerrarPops();
+    if (estaba) return;
+    pintar();
+    p.hidden = false;
+    var inp = p.querySelector('input[type=search]');
+    if (inp) inp.focus();
+  };
+  $('#bCuenta').addEventListener('click', function () { abrirPop('#popCuenta', pintaPopCuenta); });
+  ['#bAjustes', '#bAjustes2'].forEach(function (b) {
+    $(b).addEventListener('click', function () { abrirPop('#popAjustes', pintaPopAjustes); });
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('.pop,#bCuenta,#bAjustes,#bAjustes2,[data-abrir-cuenta]')) return;
+    cerrarPops();
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-abrir-cuenta]')) {
+      e.preventDefault();
+      window.scrollTo(0, 0);
+      abrirPop('#popCuenta', pintaPopCuenta);
+      return;
+    }
+    var y = e.target.closest('[data-yo]');
+    if (y) {
+      YO = y.dataset.yo;
+      guardarLS('lg:yo', YO);
+      pintaCuenta();
+      pintaPopCuenta();
+      pintaPaneles();
+      return;
+    }
+    if (e.target.closest('#yoOlvidar')) {
+      YO = '';
+      guardarLS('lg:yo', null);
+      pintaCuenta();
+      pintaPopCuenta();
+      pintaPaneles();
+      return;
+    }
+    if (e.target.closest('.pop-menu a,.pop-menu [data-carta]')) cerrarPops();
+    if (e.target.closest('#ajBorrar')) {
+      AJ = {};
+      YO = '';
+      guardarLS('lg:ajustes', null);
+      guardarLS('lg:yo', null);
+      aplicarCalma();
+      pintaCuenta();
+      pintaPopAjustes();
+      repintarHoras();
+    }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.id === 'yoBusca') pintaYoRes(e.target.value);
+  });
+  document.addEventListener('change', function (e) {
+    var id = e.target.id;
+    if (id !== 'ajH12' && id !== 'ajTz' && id !== 'ajCalma') return;
+    if (id === 'ajH12') {
+      var v = e.target.value;
+      if (v) AJ.h12 = v === '12'; else delete AJ.h12;
+    }
+    if (id === 'ajTz') {
+      if (e.target.value) AJ.tz = e.target.value; else delete AJ.tz;
+    }
+    if (id === 'ajCalma') AJ.calma = e.target.checked;
+    guardarLS('lg:ajustes', AJ);
+    aplicarCalma();
+    repintarHoras();
+    pintaPopAjustes();
+  });
   $('#subRanking').addEventListener('click', function (e) {
     var b = e.target.closest('.sub'); if (!b) return;
     elegirSub(b.dataset.sub);
@@ -2313,8 +2829,17 @@ function eventos() {
   // las flechas del feed
   $('#feedAntes').addEventListener('click', function () { FEED.pag--; pintaFeed(); });
   $('#feedDespues').addEventListener('click', function () { FEED.pag++; pintaFeed(); });
+  $('#novAntes').addEventListener('click', function () { NOV.pag--; pintaNovedades(); });
+  $('#novDespues').addEventListener('click', function () { NOV.pag++; pintaNovedades(); });
+  $('#pnAntes').addEventListener('click', function () { PN.pag--; pintaPaneles(); });
+  $('#pnDespues').addEventListener('click', function () { PN.pag++; pintaPaneles(); });
+  $('#pnDots').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pn]');
+    if (b) { PN.pag = +b.dataset.pn; pintaPaneles(); }
+  });
   window.addEventListener('resize', function () {
     if (FEED.pp && FEED.pp !== porPagina()) pintaFeed();
+    if (NOV.pp && NOV.pp !== porPagina()) pintaNovedades();
   });
   // la categoría del comparador: se quedan los mismos dos si la tienen
   $('#cmpCat').addEventListener('click', function (e) {
@@ -2468,6 +2993,7 @@ function eventos() {
 
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
+    if ($$('.pop').some(function (p) { return !p.hidden; })) { cerrarPops(); return; }
     if (!$('#visor').hidden) cerrar();
     else if (!$('#visorLlave').hidden) cerrarLlave();
   });
@@ -2510,7 +3036,8 @@ function pinta() {
   // consola con el nombre de la sección.
   [trama, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
     pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
-    pintaTops, pintaMapa, pintaActividad, pintaFeed, pintaCalendario, pintaEvCab]
+    pintaTops, pintaMapa, pintaActividad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
+    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaPaneles, aplicarCalma]
     .forEach(function (f) {
       try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
     });
