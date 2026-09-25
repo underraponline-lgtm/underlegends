@@ -112,6 +112,26 @@ const ok = (cond, que) => {
     'rechaza una clave que no es un punto P-256');
 }
 
+// ── 3b · qué escucha el vigía y qué publica en eventos-hoy ──────────
+{
+  console.log('3b · el vigía y eventos-hoy');
+  const si = ['〢🔥〉eventos-hoy', '✦🏆︱eventos', '［🏆］eventos', '〢🥇〉competenciasᵀᴵᴱᴿ¹',
+    '👾˚┊ffa-competencias', '〢🗓️〉proximos-eventos'];
+  const no = ['✦📢︱anuncios', '•「🌐」novedades', '✦⚡︱novedades', '［📢］anuncios'];
+  ok(si.every((n) => A.PATRON_VIGIA.test(n)), 'escucha los de eventos y competencias');
+  ok(no.every((n) => !A.PATRON_VIGIA.test(n)), 'y no los de anuncios ni novedades (Dlx, 25/09)');
+  const m = A.mensajeRed({ t: 'ELRAP FECHA 7', sv: 'FFA', svn: 'Freestyle For All',
+    ini: Date.UTC(2026, 8, 25, 1, 0), mod: '1vs1', cup: '16', pre: '',
+    url: 'https://discord.com/channels/1/2/3' });
+  const e = m.embeds[0];
+  ok(!m.content, 'sin texto: el lector de anuncios no lo puede tomar por un anuncio');
+  ok(Array.isArray(m.allowed_mentions.parse) && !m.allowed_mentions.parse.length,
+    'no le hace ping a nadie');
+  ok(e.description.includes('<t:1790298000:R>'), 'la hora va como marca de Discord (cada uno en su zona)');
+  ok(m.components[0].components.every((b) => b.style === 5 && b.url),
+    'los dos botones son links: al anuncio y a la campana');
+}
+
 // ── 4 · el ida y vuelta: lo que se cifra se puede abrir ─────────────
 {
   console.log('4 · ida y vuelta');

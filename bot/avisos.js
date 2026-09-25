@@ -71,6 +71,20 @@ const RECORDAR_SI_FALTA = 60 * MIN;
 const ANTES = 30 * MIN;
 //: cada cuánto se vuelven a buscar los canales de eventos por nombre.
 const REDESCUBRIR = 6 * HORA;
+//: 🔑 SOLO EVENTOS Y COMPETENCIAS. Dlx, 25/09/2026: *«solo eventos y
+//: competencias»*. La primera versión usaba la búsqueda del hub
+//: (`anuncio|novedad|torneo` también) y escuchaba 14 canales. Los de
+//: anuncios y novedades los sigue leyendo el ciclo para el ranking y el
+//: hub; el vigía, que sólo manda avisos, no los necesita.
+export const PATRON_VIGIA = /evento|competenc/i;
+//: si cambia qué canales se escuchan, la lista guardada se rehace ya y no
+//: a las seis horas
+const CANALES_V = 2;
+//: 🔑 DONDE SE RE-PUBLICAN LOS ANUNCIOS DE TODA LA LIGA. Dlx, 25/09/2026:
+//: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
+//: DRA, «eventos de toda la comunidad». Ver `publicar()`.
+export const CANAL_RED = '1500690475089399858';
+const HUB_AVISOS = 'https://underlegends.pages.dev/#/avisos';
 //: cuántas notificaciones por invocación. El plan gratis da 50 subpedidos
 //: por invocación: 20 envíos + 20 reintentos entran con margen.
 const LOTE = 20;
@@ -373,6 +387,47 @@ async function empujar(sub, texto, opc, env, jwts) {
 const MUERTA = (e) => e === 404 || e === 410;
 
 // ═════════════════════════════════════════════════════════════════════
+// LA RE-PUBLICACION EN `eventos-hoy`
+// ═════════════════════════════════════════════════════════════════════
+
+/**
+ * El mensaje que el bot deja en `eventos-hoy` por cada anuncio nuevo.
+ *
+ * ⚠️ SOLO EMBED, SIN TEXTO. El lector de anuncios —el de acá y el de
+ * Python— lee `content`; un mensaje sin texto no se puede confundir con un
+ * anuncio, y así el eco del bot no vuelve a entrar como evento nuevo.
+ * ⚠️ LA HORA VA COMO MARCA DE DISCORD (`<t:…>`): cada uno la ve en su
+ * zona —Dlx en hora del este, el resto de la Liga en la suya—.
+ * ⚠️ SIN MENCIONES (`allowed_mentions: []`): esto no hace ping a nadie; el
+ * ping de rol de cada servidor sigue siendo el suyo.
+ */
+export function mensajeRed(c) {
+  const seg = c.ini ? Math.floor(c.ini / 1000) : 0;
+  const lineas = [`**${c.svn || c.sv}** · ${c.sv}`];
+  if (seg) lineas.push(`⏰ Empieza <t:${seg}:R> · <t:${seg}:t>`);
+  const extra = [c.mod && `🎤 ${c.mod}`, c.cup && `🎟️ cupos: ${c.cup}`,
+    c.pre && `🏅 ${c.pre}`].filter(Boolean);
+  if (extra.length) lineas.push(extra.join(' · '));
+  return {
+    allowed_mentions: { parse: [] },
+    embeds: [{
+      title: ('🏆 ' + (c.t || 'Nuevo evento')).slice(0, 256),
+      url: c.url,
+      description: lineas.join('\n').slice(0, 4000),
+      color: 0x29B298,
+      footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse' },
+    }],
+    components: [{
+      type: 1,
+      components: [
+        { type: 2, style: 5, label: 'Ir al anuncio', url: c.url },
+        { type: 2, style: 5, label: 'Avisos en tu teléfono', emoji: { name: '🔔' }, url: HUB_AVISOS },
+      ],
+    }],
+  };
+}
+
+// ═════════════════════════════════════════════════════════════════════
 // LA ALTA: qué suscripción se acepta
 // ═════════════════════════════════════════════════════════════════════
 
@@ -496,6 +551,20 @@ export class Avisos {
           fallos INTEGER NOT NULL DEFAULT 0
         );
         CREATE TABLE IF NOT EXISTS estado (k TEXT PRIMARY KEY, v TEXT NOT NULL);
+        CREATE TABLE IF NOT EXISTS claves (
+          clave TEXT PRIMARY KEY,
+          id TEXT NOT NULL,
+          t INTEGER NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS posts (
+          id TEXT PRIMARY KEY,
+          cuerpo TEXT NOT NULL,
+          creado INTEGER NOT NULL,
+          hecho INTEGER NOT NULL DEFAULT 0,
+          intentos INTEGER NOT NULL DEFAULT 0,
+          msg TEXT NOT NULL DEFAULT '',
+          error TEXT NOT NULL DEFAULT ''
+        );
       `);
     });
   }
@@ -537,6 +606,16 @@ export class Avisos {
   async descubrir(servidores, ahora) {
     const lista = [];
     let sinAcceso = 0;
+    // 🔴 QUIÉN SOY, PARA NO LEERME. El bot publica en `eventos-hoy`, que es
+    // también un canal que este vigía escucha: sin esto, su propia
+    // re-publicación podría volver a entrar como anuncio nuevo.
+    let yo = '';
+    try {
+      const r = await fetch(`${DC}/users/@me`, {
+        headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+      });
+      if (r.status === 200) yo = (await r.json()).id || '';
+    } catch (e) { yo = ''; }
     for (const s of servidores || []) {
       if (!s.guild) continue;
       const r = await fetch(`${DC}/guilds/${s.guild}/channels`, {
@@ -546,12 +625,12 @@ export class Avisos {
       for (const c of await r.json()) {
         if (c.type !== 0 && c.type !== 5) continue;
         const n = c.name || '';
-        // los de staff también dicen «anuncio», y el bot los lee
-        if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON.test(n)) continue;
+        // los de staff también dicen «evento», y el bot los lee
+        if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON_VIGIA.test(n)) continue;
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild });
       }
     }
-    const canales = { t: ahora, lista, sin_acceso: sinAcceso };
+    const canales = { t: ahora, v: CANALES_V, yo, lista, sin_acceso: sinAcceso };
     // ⚠️ UNA BUSQUEDA QUE NO ENCONTRO NADA NO PISA A UNA QUE SÍ. Si Discord
     // contestó mal a todo, quedarse sin canales es dejar de avisar callado.
     const antes = this.leer('canales');
@@ -580,9 +659,10 @@ export class Avisos {
 
     let canales = this.leer('canales');
     if (!canales || !canales.lista || !canales.lista.length ||
-        ahora - (canales.t || 0) > REDESCUBRIR) {
+        canales.v !== CANALES_V || ahora - (canales.t || 0) > REDESCUBRIR) {
       canales = await this.descubrir(d && d.servidores, ahora);
     }
+    this.yo = canales.yo || '';
     let leidos = 0, nuevos = 0, pausa = 0;
     const errores = [];
     // ⚠️ LOS CANALES SE PIDEN A LA VEZ, NO UNO DETRAS DEL OTRO. La primera
@@ -607,9 +687,13 @@ export class Avisos {
       for (const m of msgs) if (this.anotar(m, c, ahora)) nuevos++;
     }
     if (pausa) errores.push('401: el token no sirve; se reintenta en una hora');
+    // la re-publicación en `eventos-hoy` va en el mismo minuto
+    if (!pausa) await this.publicar(ahora);
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
       this.sql.exec('DELETE FROM avisos WHERE creado < ?', ahora - 2 * 24 * HORA);
+      this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
+      this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -629,6 +713,9 @@ export class Avisos {
     if (this.sql.exec('SELECT 1 FROM avisos WHERE id = ?', m.id).toArray().length) {
       return false;
     }
+    // lo que publicó el propio bot —la re-publicación de `eventos-hoy`— no
+    // es un anuncio: es el eco de uno
+    if (this.yo && m.author && m.author.id === this.yo) return false;
     // lo que no se avisa se anota igual —vacío y cerrado— para no volver
     // a leerlo en el minuto siguiente
     const descartar = () => {
@@ -643,6 +730,19 @@ export class Avisos {
     if (ini != null ? ini < ahora - GRACIA : ahora - publicado > EDAD_SIN_HORA) {
       return descartar();
     }
+    // 🔴 EL MISMO EVENTO EN DOS CANALES AVISA UNA VEZ. `eventos-hoy` de DRA
+    // junta eventos de toda la comunidad: si alguien copia ahí el anuncio
+    // de FFA, son dos mensajes distintos del mismo evento. Se reconoce por
+    // el nombre y la hora de arranque —redondeada a 10 minutos, porque
+    // «EN 15» publicado con un minuto de diferencia da un minuto distinto—.
+    const clave = a.nombre.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '') + '|' +
+      (ini != null ? Math.round(ini / (10 * MIN)) : '');
+    if (this.sql.exec('SELECT 1 FROM claves WHERE clave = ? AND t > ?', clave,
+      ahora - EDAD_MAX).toArray().length) {
+      return descartar();
+    }
+    this.sql.exec('INSERT OR REPLACE INTO claves (clave, id, t) VALUES (?, ?, ?)',
+      clave, m.id, ahora);
     const cuerpo = {
       v: 1, tipo: 'evento', id: m.id, t: a.nombre, sv: c.sv, svn: c.svn, ini,
       mod: a.modalidad.slice(0, 60), cup: a.cupos.slice(0, 40),
@@ -652,6 +752,11 @@ export class Avisos {
     const hasta = ini != null ? ini + GRACIA : publicado + EDAD_SIN_HORA;
     this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +
       'VALUES (?, ?, ?, ?, ?, ?)', m.id, c.sv, JSON.stringify(cuerpo), ahora, hasta, ahora);
+    // y a la cola de `eventos-hoy`, salvo que el anuncio haya salido de ahí
+    if (c.id !== CANAL_RED) {
+      this.sql.exec('INSERT OR IGNORE INTO posts (id, cuerpo, creado) VALUES (?, ?, ?)',
+        m.id, JSON.stringify(cuerpo), ahora);
+    }
     // 🔑 Y SI FALTA MAS DE UNA HORA, UN RECORDATORIO. Snake Rap anuncia
     // con horas —«INICIO DEL TORNEO: <t:…>»— y el aviso de las 12 del
     // mediodía no sirve de nada a las 4:30 de la tarde.
@@ -661,6 +766,48 @@ export class Avisos {
       JSON.stringify({ ...cuerpo, tipo: 'antes' }), ini - ANTES, ini + GRACIA, ahora);
     }
     return true;
+  }
+
+  /**
+   * Lo que falta publicar en `eventos-hoy`, de a cinco por minuto.
+   *
+   * ⚠️ TRES INTENTOS Y MEDIA HORA COMO MUCHO, y nunca con el evento
+   * empezado: la misma regla que las notificaciones —tarde es peor que
+   * nunca—. Si Discord dice que no, queda anotado en `estado` por qué.
+   */
+  async publicar(ahora) {
+    const pend = this.sql.exec('SELECT id, cuerpo FROM posts WHERE hecho = 0 AND ' +
+      'intentos < 3 AND creado > ? ORDER BY creado LIMIT 5', ahora - 30 * MIN).toArray();
+    for (const p of pend) {
+      let c = null;
+      try { c = JSON.parse(p.cuerpo); } catch (e) { c = null; }
+      if (!c || (c.ini && c.ini < ahora - GRACIA)) {
+        this.sql.exec('UPDATE posts SET hecho = 2 WHERE id = ?', p.id);
+        continue;
+      }
+      let estado = 0, msg = '';
+      try {
+        const r = await fetch(`${DC}/channels/${CANAL_RED}/messages`, {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(mensajeRed(c)),
+        });
+        estado = r.status;
+        if (estado === 200) msg = (await r.json()).id || '';
+        else msg = (await r.text()).slice(0, 160);
+      } catch (e) {
+        msg = String(e).slice(0, 160);
+      }
+      if (estado === 200) {
+        this.sql.exec('UPDATE posts SET hecho = 1, msg = ? WHERE id = ?', msg, p.id);
+      } else {
+        this.sql.exec('UPDATE posts SET intentos = intentos + 1, error = ? WHERE id = ?',
+          `${estado} ${msg}`.slice(0, 200), p.id);
+      }
+    }
   }
 
   async despertar(ahora) {
@@ -869,7 +1016,25 @@ export class Avisos {
     // anota donde nadie lo puede leer es un error callado con más pasos.
     const err = this.leer('ultimo_error');
     const fallo = this.leer('ultimo_fallo');
+    // 🔑 POR SERVICIO DE PUSH, SIN UN SOLO ENDPOINT: cuántos de Google
+    // (Chrome, Edge, Samsung, Opera), de Mozilla, de Apple, de Windows.
+    // Nació con Opera GX, que se anota y no recibe: así se ve por dónde
+    // entró cada navegador sin saber de quién es.
+    const servicios = {};
+    for (const r of this.sql.exec('SELECT endpoint FROM subs WHERE svs != ?',
+      '|' + SV_PRUEBA + '|').toArray()) {
+      let h = 'otro';
+      try { h = new URL(r.endpoint).hostname; } catch (e) { h = 'otro'; }
+      const k = /googleapis/.test(h) ? 'google' : /mozilla/.test(h) ? 'mozilla'
+        : /apple/.test(h) ? 'apple' : /windows/.test(h) ? 'windows' : 'otro';
+      servicios[k] = (servicios[k] || 0) + 1;
+    }
+    const post = this.sql.exec('SELECT hecho, msg, error, creado FROM posts ' +
+      'ORDER BY creado DESC LIMIT 1').toArray()[0];
     return {
+      servicios,
+      ultima_republicacion: post ? { t: new Date(post.creado).toISOString(),
+        ok: post.hecho === 1, error: post.error || '' } : null,
       ultimo_error: err ? { t: new Date(err.t).toISOString(), ruta: err.ruta, error: err.error } : null,
       ultimo_fallo: fallo ? { t: new Date(fallo.t).toISOString(), estados: fallo.estados } : null,
       ok: !!v.t && ahora - v.t < 5 * MIN && !(v.errores || []).length,

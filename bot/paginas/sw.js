@@ -62,10 +62,18 @@ self.addEventListener('push', function (e) {
   var d = {};
   try { d = e.data ? e.data.json() : {}; } catch (x) { d = { t: e.data ? e.data.text() : '' }; }
   var n = armar(d);
+  // 🔑 Y SE LE CUENTA A LA PAGINA, SI ESTA ABIERTA. Dlx, 25/09/2026: en su
+  // Samsung llegó, en Opera GX de la compu no. Desde afuera «no llegó al
+  // navegador» y «llegó y Windows la tapó» se ven igual; con este aviso
+  // la página sabe cuál de las dos fue. Ver `probar()` en campana.js.
+  var contar = self.clients.matchAll({ type: 'window', includeUncontrolled: true })
+    .then(function (vs) {
+      vs.forEach(function (v) { v.postMessage({ avisos: 'llego', tipo: d.tipo || '' }); });
+    }).catch(function () {});
   // ⚠️ SIEMPRE SE MUESTRA ALGO. Los navegadores exigen una notificación
   // por cada push (`userVisibleOnly`); el que recibe y no muestra, a la
   // larga pierde el permiso.
-  e.waitUntil(self.registration.showNotification(n.titulo, {
+  e.waitUntil(contar.then(function () { return self.registration.showNotification(n.titulo, {
     body: n.cuerpo,
     icon: '/ul.png',
     // la insignia es la silueta blanca de «UL»: Android la pinta en la
@@ -77,7 +85,7 @@ self.addEventListener('push', function (e) {
     timestamp: d.ini || Date.now(),
     lang: 'es',
     data: { url: n.url },
-  }));
+  }); }));
 });
 
 self.addEventListener('notificationclick', function (e) {

@@ -319,6 +319,11 @@ tbody tr.top3 td:nth-child(1){color:var(--bro);box-shadow:inset 3px 0 0 rgba(246
 .cc{display:inline;margin-right:8px;font-style:normal;
 font:700 .76rem/1 'Barlow Condensed',sans-serif;letter-spacing:.09em;
 color:var(--tx2);white-space:nowrap}
+/* la bandera como imagen: del alto de la letra, con un borde que la
+   separa del fondo oscuro (el blanco de Perú o Uruguay se perdía) */
+img.bf{display:inline-block;width:auto;height:.95em;vertical-align:-.12em;
+border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
+.fl img.bf,.chip img.bf{height:1em}
 .rg{display:inline-block;min-width:34px;padding:2px 8px;border:1px solid var(--bd);
 border-radius:2px;background:#0E1614;font:900 .7rem/1.35 Archivo,sans-serif;
 text-align:center;color:var(--tx3)}
@@ -473,7 +478,23 @@ text-transform:uppercase;text-align:center;min-width:5.5em}
 font-size:.86rem;padding:10px}
 
 /* ── servidores, países, crews ──────────────────────────────────── */
-.svs{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.svs{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+/* el logo, la cabecera con nombre completo y la sigla, y el «Entrar» */
+.sv-cab{display:flex;align-items:center;gap:12px;margin-bottom:12px;position:relative;min-width:0}
+.sv-cab > div{min-width:0}
+.sv-cab h3{margin-bottom:3px;overflow-wrap:anywhere}
+.sv-cab small{color:var(--tx3);font:700 .62rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.16em;text-transform:uppercase}
+.sv-logo{flex:0 0 auto;width:48px;height:48px;border-radius:12px;object-fit:cover;
+box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.sv-sigla{display:grid;place-items:center;background:var(--c,#7E8B89);color:var(--bl);
+font:900 .8rem/1 Archivo,sans-serif}
+.sv-entrar{position:relative;display:inline-block;margin-top:12px;padding:6px 14px;
+border:1px solid var(--bd);border-radius:999px;color:var(--tx2);text-decoration:none;
+font:700 .62rem/1 'Barlow Condensed',sans-serif;letter-spacing:.15em;text-transform:uppercase;
+transition:all .15s}
+.sv-entrar:hover{color:var(--ng);background:var(--tl);border-color:var(--tl)}
+.sv-entrar:focus-visible{outline:2px solid var(--tl);outline-offset:3px}
 .sv-c{position:relative;padding:15px 15px 13px;background:rgba(10,15,14,.82);
 border:1px solid var(--bd);overflow:hidden;
 clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}

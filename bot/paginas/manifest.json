@@ -1,7 +1,7 @@
 {
-  "name": "Liga Global — Under Legends",
+  "name": "Liga Global de Freestyle",
   "short_name": "Liga Global",
-  "description": "El ranking, las tarjetas y los avisos de eventos de la Liga Global.",
+  "description": "La Liga Global de Freestyle en Español. Unimos los rankings de los mejores servidores de rap online en una sola tabla mundial. Eventos, torneos, cyphers y batallas — todo en un solo lugar.",
   "lang": "es",
   "start_url": "/",
   "scope": "/",
