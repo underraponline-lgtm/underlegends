@@ -81,6 +81,9 @@
     var v = pedidoValido();
     if (!v || !SUB) return;
     PEDIDO = null;
+    // ⚠️ SE APLICA UNA VEZ: con el `#/avisos/FFA` en la dirección, recargar o
+    // volver atrás lo reenviaba y pisaba lo que la persona cambió después
+    try { history.replaceState(null, '', location.pathname + location.search + '#/avisos'); } catch (e) { /* igual */ }
     SVS = conPrueba(v);
     guardar('campana:svs', SVS);
     MSG = 'Guardando…';
@@ -140,8 +143,11 @@
   async function clave() { return (await pedir('clave')).clave; }
 
   // ── anotarse ────────────────────────────────────────────────────────
-  async function alta(conServidores) {
+  async function alta(conServidores, anterior) {
     var cuerpo = { sub: SUB.toJSON() };
+    // 🔑 `anterior`: la suscripción de antes, para que el objeto conserve la fila
+    // —sus servidores y de quién es— en vez de crear una nueva sin vínculo
+    if (anterior) cuerpo.anterior = anterior;
     // ⚠️ SIN `svs`, EL WORKER CONSERVA LOS QUE YA TENIA. La re-alta diaria
     // no los manda: si este navegador perdió su localStorage, mandar `[]`
     // borraría lo que la persona eligió.
@@ -175,7 +181,9 @@
   var LLEGO = [0];
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.addEventListener('message', function (e) {
-      if (e.data && e.data.avisos === 'llego') LLEGO[0] = Date.now();
+      // ⚠️ SÓLO LA DE PRUEBA: el service worker avisa también los de eventos
+      // y los personales, y cualquiera de ésos decía «Llegó» sin que ésta llegara
+      if (e.data && e.data.avisos === 'llego' && e.data.tipo === 'prueba') LLEGO[0] = Date.now();
     });
   }
   function esperarLlegada(desde, ms) {
@@ -437,9 +445,10 @@
       var k = await clave();
       if (SUB.options && SUB.options.applicationServerKey &&
           !igual(SUB.options.applicationServerKey, bytes(k).buffer)) {
+        var viejo = SUB.endpoint;
         await SUB.unsubscribe();
         SUB = await REG.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes(k) });
-        await alta(false);
+        await alta(false, viejo);
       } else if (Date.now() - leer('campana:alta', 0) > 24 * 3600 * 1000) {
         // ⚠️ UNA VEZ POR DIA SE VUELVE A ANOTAR: si el Worker la había
         // borrado —el servicio dijo 410—, así vuelve sin que nadie toque

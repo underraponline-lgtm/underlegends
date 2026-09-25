@@ -2939,6 +2939,23 @@ function urlLogin(modo) {
     '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : 'identify') +
     '&prompt=' + (conRedes ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
 }
+/* ⚠️ «SALIR» SUELTA TAMBIÉN LOS AVISOS DE ESTE DISPOSITIVO. En uno compartido,
+   el que entraba después seguía recibiendo los avisos del anterior (revisión
+   del 25/09/2026). */
+function desvincularAvisos() {
+  if (!leerLS('campana:yo', null)) return;
+  guardarLS('campana:yo', null);
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.ready
+    .then(function (reg) { return reg.pushManager.getSubscription(); })
+    .then(function (sub) {
+      if (sub) {
+        fetch('/api/avisos/desvincular', { method: 'POST', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ endpoint: sub.endpoint }) });
+      }
+    })
+    .catch(function () { /* se suelta la próxima vez */ });
+}
 /* 🔑 LOS AVISOS DE CADA UNO: con el permiso recién traído de Discord, este
    dispositivo queda anotado como de esta persona. El ID lo pone Discord, no
    la página: ver `rutaAvisos()` en bot/avisos.js. La campana se entera por
@@ -2988,6 +3005,9 @@ function secFoto() {
       : F.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: escribí <code>/verificar</code> en Discord.'
       : F.error === 'usado' ? 'Ya elegiste tu foto de la ' + T + ': va una por temporada. Se vuelve a abrir ' +
         'cuando arranque la que sigue.'
+      : F.error === 'cdn' ? 'Discord no me dio tu foto. Suele arreglarse volviéndotela a poner en Discord ' +
+        'y probando de nuevo.'
+      : F.error === 'espera' ? 'Esperá un minuto y probá de nuevo.'
       : 'No pude cambiarla. Probá de nuevo en un rato.';
     return cab + '<p class="nota">' + m + '</p></section>';
   }
@@ -3013,7 +3033,9 @@ function pedirRedes(mostrar) {
 function secRedes() {
   if (!DC || !DC.clave) return '';
   var R = REDES_MIAS;
-  var cab = '<section class="pop-sec" id="secRedes"><h4>&#128279; Mis redes en mi perfil</h4>';
+  // ⚠️ `secMisRedes` Y NO `secRedes`: ése es el feed de redes del Inicio, y
+  // con dos iguales `pintaFeed()` podía agarrar esta sección
+  var cab = '<section class="pop-sec" id="secMisRedes"><h4>&#128279; Mis redes en mi perfil</h4>';
   if (!R || !DC_TOKEN) {
     return cab + '<p class="nota">Mostrá en tu perfil las redes que ya tenés conectadas en Discord ' +
       '(Instagram, TikTok, YouTube…). Discord te pide permiso para leerlas.</p>' +
@@ -3052,7 +3074,11 @@ function volverDeDiscord() {
   var q = {};
   h.replace(/^#/, '').split('&').forEach(function (x) {
     var i = x.indexOf('=');
-    if (i > 0) q[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1));
+    // ⚠️ CON TRY: un `%` suelto en el link tiraba URIError y la página quedaba
+    // en blanco (revisión del 25/09/2026)
+    try {
+      if (i > 0) q[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1));
+    } catch (e) { /* ese par no se lee */ }
   });
   // quien vino a vincular sus avisos vuelve a la campana
   var destino = '#/' + (String(q.state || '').charAt(0) === 'v' ? 'avisos' : '');
@@ -3473,14 +3499,14 @@ function eventos() {
       fs.disabled = true;
       pedirFoto(true).then(function (R) {
         FOTO = R && R.ok ? { hecho: true, temporada: R.temporada, libre: R.libre, libre_hasta: R.libre_hasta }
-          : (R || { error: 'red' });
+          : { error: (R && (R.paso || R.error)) || 'red', temporada: R && R.temporada };
         pintaPopCuenta();
       }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       return;
     }
     var rg = e.target.closest('#dcRedesGuardar,#dcRedesQuitar');
     if (rg) {
-      var elegidas = rg.id === 'dcRedesQuitar' ? [] : $$('#secRedes input:checked').map(function (x) {
+      var elegidas = rg.id === 'dcRedesQuitar' ? [] : $$('#secMisRedes input:checked').map(function (x) {
         return x.value;
       });
       rg.disabled = true;
@@ -3488,13 +3514,16 @@ function eventos() {
         if (R && R.guardadas) REDES_MIAS = R;
         pintaPopCuenta();
         var n = $('#redesNota');
-        if (n) n.innerHTML = R && R.guardadas ? '&#10003; Guardado. ' + (R.guardadas.length ? 'Tu perfil va a ' +
+        if (n && R && R.error === 'tope') n.textContent = 'Ya cambiaste tus redes muchas veces hoy: probá mañana.';
+        else if (n && R && R.error === 'espera') n.textContent = 'Esperá un minuto y probá de nuevo.';
+        else if (n) n.innerHTML = R && R.guardadas ? '&#10003; Guardado. ' + (R.guardadas.length ? 'Tu perfil va a ' +
           'mostrar ' + R.guardadas.length + (R.guardadas.length === 1 ? ' red' : ' redes') : 'Tu perfil no ' +
           'muestra ninguna') + ' desde la próxima actualización (cada media hora).' : 'No pude guardar. Probá de nuevo.';
       }).catch(function () { rg.disabled = false; });
       return;
     }
     if (e.target.closest('#yoOlvidar')) {
+      desvincularAvisos();
       YO = '';
       DC = null;
       guardarLS('lg:yo', null);
@@ -3506,6 +3535,7 @@ function eventos() {
     }
     if (e.target.closest('.pop-menu a,.pop-menu [data-carta]')) cerrarPops();
     if (e.target.closest('#ajBorrar')) {
+      desvincularAvisos();
       AJ = {};
       YO = '';
       DC = null;
@@ -3772,7 +3802,7 @@ function cuandoSe(iso) {
 function pinta() {
   // el punto de «nuevo» del changelog: un pedido chico a un archivo estático
   try { cargarCambios(null); } catch (e) { /* sin changelog, la página sigue */ }
-  volverDeDiscord();
+  try { volverDeDiscord(); } catch (e) { console.error('[volverDeDiscord]', e); }
   // 🔴 CADA SECCIÓN, AISLADA. Una que falla —un dato que llega con otra
   // forma, o el HTML viejo en caché con este JS nuevo— queda sin dibujar y
   // el resto de la página sale igual. Antes un error en cualquier `pinta*`

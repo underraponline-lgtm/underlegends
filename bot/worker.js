@@ -1058,7 +1058,12 @@ const TOPE_MAPA = 5000;
 // eso es lo que ensucia. Un botón contesta con ACTUALIZAR, o sea que pisa el
 // mismo mensaje: aunque lo aprietes cien veces el canal no crece, y lo único
 // que cuesta son peticiones. Por eso el click tiene la mano más suelta.
-const FRENO = { comando: [4, 30000], click: [10, 10000] };
+const FRENO = { comando: [4, 30000], click: [10, 10000],
+  // 🔴 MI CUENTA ESCRIBE KV, y KV son 1.000 escrituras por día para toda la
+  // cuenta: sin freno, alguien con su permiso de Discord podía agotarlas
+  // guardando y quitando redes en un bucle, y el ciclo se quedaba sin poder
+  // escribir el lobby (revisión del 25/09/2026). Seis por minuto por persona.
+  cuenta: [6, 60000] };
 
 function frenado(id, tipo) {
   if (!id) return 0;
@@ -1354,20 +1359,41 @@ async function cuentaRedes(req, env) {
   if (!u || !u.id || !cs) return new Response('{"error":"discord"}', { status: 401, headers: h });
   const clave = await env.KV.get('d:' + u.id);
   if (!clave) return new Response('{"error":"sin_perfil"}', { status: 409, headers: h });
+  const esperar = frenado(u.id, 'cuenta');
+  if (esperar) return new Response(JSON.stringify({ error: 'espera', s: esperar }), { status: 429, headers: h });
   const publicas = redesPublicas(cs);
   const k = 'redes:' + clave;
+  // lo guardado: `{redes, d, n, t}` (antes era la lista sola)
+  let previo = null;
+  try { previo = JSON.parse((await env.KV.get(k)) || 'null'); } catch (e) { previo = null; }
+  const antes = Array.isArray(previo) ? previo : (previo && previo.redes) || [];
+  const hoy = new Date().toISOString().slice(0, 10);
+  const usadas = previo && !Array.isArray(previo) && previo.d === hoy ? (previo.n || 0) : 0;
+  const id = (r) => r.t + ':' + r.n;
+  const igual = (a, b) => a.map(id).join('|') === b.map(id).join('|');
+  const guardar = async (lista) => {
+    if (igual(lista, antes)) return true;               // sin cambios, sin escritura
+    if (usadas >= 10) return false;                     // diez cambios por día y por persona
+    await env.KV.put(k, JSON.stringify({ redes: lista, d: hoy, n: usadas + 1, t: Date.now() }));
+    return true;
+  };
+  const vivas = new Set(publicas.map(id));
   if (!Array.isArray(d.mostrar)) {
-    let guardadas = [];
-    try { guardadas = JSON.parse((await env.KV.get(k)) || '[]'); } catch (e) { guardadas = []; }
-    return new Response(JSON.stringify({ clave, publicas, guardadas }), { headers: h });
+    // 🔴 LO QUE YA NO ES PÚBLICO SE SACA AL MIRAR. Si alguien oculta una red en
+    // Discord —o le cambia el usuario—, el perfil seguía mostrando la vieja, y
+    // la página no ofrecía «Quitar» porque ya no tenía redes públicas.
+    const siguen = antes.filter((r) => vivas.has(id(r)));
+    try { await guardar(siguen); } catch (e) { /* se reintenta la próxima vez */ }
+    return new Response(JSON.stringify({ clave, publicas, guardadas: siguen }), { headers: h });
   }
   // ⚠️ SÓLO LAS QUE SIGUEN PÚBLICAS: lo que manda la página se cruza con lo
   // que Discord dice ahora, así no se puede guardar una red ajena ni una oculta
-  const quiero = new Set(d.mostrar.map(String));
-  const elegidas = publicas.filter((r) => quiero.has(r.t + ':' + r.n));
+  const quiero = new Set(d.mostrar.map(String).slice(0, 20));
+  const elegidas = publicas.filter((r) => quiero.has(id(r)));
   try {
-    if (elegidas.length) await env.KV.put(k, JSON.stringify(elegidas));
-    else await env.KV.delete(k);
+    if (!(await guardar(elegidas))) {
+      return new Response('{"error":"tope"}', { status: 429, headers: h });
+    }
   } catch (e) {
     return new Response('{"error":"kv"}', { status: 503, headers: h });
   }
@@ -1402,6 +1428,9 @@ async function cuentaFoto(req, env) {
   if (!u || !u.id) return res({ error: 'discord' }, 401);
   const quien = await env.KV.get('d:' + u.id);
   if (!quien) return res({ error: 'sin_perfil' }, 409);
+  // ⚠️ CON FRENO: guardar son una escritura de R2 y, después del 9/10, una de
+  // KV. Quien tiene el pase de DRA la cambia cuando quiere, no en un bucle.
+  if (d.confirmar && frenado(u.id, 'cuenta')) return res({ error: 'espera' }, 429);
   // el blob gris por defecto no se guarda: ver `/foto`
   if (!u.avatar) return res({ error: 'sin_foto' }, 422);
   if (!env.CARTAS) return res({ error: 'sin_r2' }, 503);
@@ -1905,6 +1934,9 @@ async function fotoAR2(env, quien, id, hash, arranco) {
   }
   if (!arranco) return { ok: true, libre: true };
   try {
+    // ⚠️ QUIEN YA TIENE SU USO ANOTADO NO SE VUELVE A ANOTAR: es el del pase de
+    // DRA, que cambia cuando quiere. Cada anotación es una escritura de KV.
+    if (await fotoUsada(env, quien)) return { ok: true, anotado: true };
     await env.KV.put(claveUso(env, quien), JSON.stringify({ hash, ts: Date.now() }));
   } catch (e) {
     return { ok: true, anotado: false, error: String(e).slice(0, 40) };
@@ -1918,7 +1950,9 @@ async function fotoAR2(env, quien, id, hash, arranco) {
 const libreHasta = (env) => Date.parse((env && env.FOTO_LIBRE_HASTA) || '') || 0;
 const libreHastaTexto = (env) => {
   const t = libreHasta(env);
-  if (!t) return '';
+  // ⚠️ SÓLO MIENTRAS CORRE: después del 9/10 la foto también es libre si el
+  // pool está vacío (el reset del 5/10), y ahí «hasta el 9 de octubre» mentía
+  if (!t || Date.now() >= t) return '';
   try {
     return new Intl.DateTimeFormat('es', { timeZone: 'America/New_York', day: 'numeric',
       month: 'long' }).format(new Date(t - 60000));

@@ -1568,9 +1568,9 @@ console.log('\nMIS REDES EN MI PERFIL\n');
     return { status: r.status, json: JSON.parse(await r.text()) };
   };
   const antes = globalThis.fetch;
-  const discord = (sinPermiso) => async (url) => (String(url).endsWith('/connections')
+  const discord = (sinPermiso, id = '555000111222333555') => async (url) => (String(url).endsWith('/connections')
     ? (sinPermiso ? new Response('{}', { status: 403 }) : new Response(JSON.stringify(conex), { status: 200 }))
-    : new Response(JSON.stringify({ id: '555000111222333555', username: 'konan_' }), { status: 200 }));
+    : new Response(JSON.stringify({ id, username: 'konan_' }), { status: 200 }));
   let r = await redes({ token: 'x' });
   ok('un permiso con forma rara se rechaza', r.status === 400);
   globalThis.fetch = discord(true);
@@ -1585,12 +1585,45 @@ console.log('\nMIS REDES EN MI PERFIL\n');
      r.status === 200 && r.json.publicas.length === 3 && r.json.guardadas.length === 0);
   r = await redes({ token: 'permisoBueno1234567890', mostrar: ['instagram:konan.rap', 'tiktok:escondido'] });
   ok('guarda sólo las elegidas que siguen públicas (la oculta no entra)',
-     r.status === 200 && r.json.guardadas.length === 1 && JSON.parse(PUESTO['redes:konan']).length === 1,
+     r.status === 200 && r.json.guardadas.length === 1 && JSON.parse(PUESTO['redes:konan']).redes.length === 1,
      PUESTO['redes:konan']);
+  // 🔴 KV SON 1.000 ESCRITURAS POR DÍA PARA TODA LA CUENTA (revisión del 25/09/2026)
+  const guardado = PUESTO['redes:konan'];
+  r = await redes({ token: 'permisoBueno1234567890', mostrar: ['instagram:konan.rap'] });
+  ok('guardar lo mismo otra vez no escribe KV', r.status === 200 && PUESTO['redes:konan'] === guardado);
   r = await redes({ token: 'permisoBueno1234567890', mostrar: [] });
-  ok('y «Quitar» las borra de KV', r.status === 200 && !('redes:konan' in PUESTO));
+  ok('y «Quitar» las saca (y se acuerda de cuántas veces cambió hoy)', r.status === 200 &&
+     JSON.parse(PUESTO['redes:konan']).redes.length === 0 && JSON.parse(PUESTO['redes:konan']).n === 2,
+     PUESTO['redes:konan']);
+  // lo guardado con el formato de antes —la lista sola— se sigue leyendo
+  PUESTO['redes:konan'] = JSON.stringify([{ t: 'instagram', n: 'konan.rap', u: 'https://www.instagram.com/konan.rap/' }]);
+  r = await redes({ token: 'permisoBueno1234567890' });
+  ok('el formato viejo (la lista sola) se sigue leyendo', r.status === 200 && r.json.guardadas.length === 1,
+     JSON.stringify(r.json.guardadas));
+  // lo que dejó de ser público se saca al mirar
+  PUESTO['redes:konan'] = JSON.stringify({ redes: [{ t: 'tiktok', n: 'escondido', u: 'https://www.tiktok.com/@escondido' }],
+    d: '2026-01-01', n: 1, t: 1 });
+  r = await redes({ token: 'permisoBueno1234567890' });
+  ok('lo que ya no es público en Discord sale del perfil al mirar', r.status === 200 &&
+     r.json.guardadas.length === 0 && JSON.parse(PUESTO['redes:konan']).redes.length === 0, PUESTO['redes:konan']);
+  // el tope del día, con otra persona (el freno por minuto es por persona)
+  globalThis.fetch = discord(false, '555000111222333777');
+  PUESTO['d:555000111222333777'] = 'otro';
+  PUESTO['redes:otro'] = JSON.stringify({ redes: [], d: new Date().toISOString().slice(0, 10), n: 10, t: Date.now() });
+  r = await redes({ token: 'permisoBueno1234567890', mostrar: ['instagram:konan.rap'] });
+  ok('diez cambios por día: el once no escribe', r.status === 429 && r.json.error === 'tope' &&
+     JSON.parse(PUESTO['redes:otro']).redes.length === 0, JSON.stringify(r.json));
+  // y el freno por minuto
+  let frenada = null;
+  for (let i = 0; i < 8 && !frenada; i++) {
+    const x = await redes({ token: 'permisoBueno1234567890' });
+    if (x.status === 429 && x.json.error === 'espera') frenada = i;
+  }
+  ok('y más de seis pedidos por minuto se frenan', frenada !== null, String(frenada));
   globalThis.fetch = antes;
   delete PUESTO['d:555000111222333555'];
+  delete PUESTO['d:555000111222333777'];
+  delete PUESTO['redes:otro'];
 }
 
 console.log('\nLA FOTO DESDE LA PÁGINA\n');

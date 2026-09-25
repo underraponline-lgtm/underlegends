@@ -51,13 +51,19 @@ const ok = (cond, que) => {
 // ── 0b · los avisos de cada uno ───────────────────────────────────────
 {
   console.log('0b · los avisos de cada uno');
+  const hoy = new Date().toISOString();
   const cola = A.colaPersonal(JSON.stringify([
     { id: 'a1', quien: '554330098812059679', titulo: 'Desbloqueaste tu tarjeta', cuerpo: 'x',
-      url: 'https://underlegends.pages.dev/#/r/konan' },
-    { id: 'a2', quien: 'no-es-un-id', titulo: 'x' },
-    { id: 'a3', quien: '554330098812059679' },
+      url: 'https://underlegends.pages.dev/#/r/konan', t: hoy },
+    { id: 'a2', quien: 'no-es-un-id', titulo: 'x', t: hoy },
+    { id: 'a3', quien: '554330098812059679', t: hoy },
   ]));
   ok(cola.length === 1 && cola[0].id === 'a1', 'la cola deja pasar sólo lo que se puede mandar');
+  // 🔴 LA COLA YA NO SE BORRA AL LEERLA: lo de más de una semana no sale
+  const vieja = new Date(Date.now() - 8 * 24 * 3600 * 1000).toISOString();
+  ok(A.colaPersonal(JSON.stringify([{ id: 'v', quien: '554330098812059679', titulo: 'x', t: vieja },
+    { id: 's', quien: '554330098812059679', titulo: 'x' }])).length === 0,
+    'lo de más de una semana, o sin fecha, no sale');
   ok(A.colaPersonal('esto no es json').length === 0 && A.colaPersonal(null).length === 0,
     'y una cola rota o vacía no rompe nada');
   const c = JSON.parse(A.cuerpoPersonal(cola[0]));

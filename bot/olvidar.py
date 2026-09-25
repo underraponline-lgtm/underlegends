@@ -293,7 +293,13 @@ def que_tiene(s, quien):
                 kv.append(k)
             elif k.startswith('d:') and norm(str(v[k])) == norm(quien):
                 kv.append(k)
-            elif k.startswith('foto:') and did and k[5:] == did:
+            # 🔴 LA MARCA DE FOTO ES `foto:<temporada>:<clave>`, no
+            # `foto:<id>`: comparaba contra el Discord ID y no la encontraba
+            # nunca (revisión del 25/09/2026)
+            elif k.startswith('foto:') and norm(k.split(':')[-1]) == norm(quien):
+                kv.append(k)
+            # y sus redes, que se guardan desde «Mis redes» de la página
+            elif k.startswith('redes:') and norm(k[6:]) == norm(quien):
                 kv.append(k)
     return {'raw': raw, 'did': did, 'kv': kv, 'espejo': esp,
             'fotos': (g or {}).get('fotos', []),
