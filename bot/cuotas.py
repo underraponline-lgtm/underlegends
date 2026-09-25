@@ -45,6 +45,22 @@ def barra(usado, total, ancho=28):
     return '[%s%s] %5.1f%%' % ('#' * n, '·' * (ancho - n), 100 * usado / total)
 
 
+def kv_hoy(s):
+    """`{'write': n, 'read': m, ...}` de KV hoy (UTC). `{}` si no se sabe."""
+    hoy = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
+    q = ('{ viewer { accounts(filter:{accountTag:"%s"}) {'
+         ' kvOperationsAdaptiveGroups(limit:50, filter:{date_geq:"%s"}) {'
+         ' sum { requests } dimensions { actionType } } } } }' % (CUENTA, hoy))
+    try:
+        gk = requests.post('https://api.cloudflare.com/client/v4/graphql',
+                           headers=dict(s.headers), json={'query': q}, timeout=40)
+        return {f['dimensions']['actionType']: f['sum']['requests']
+                for f in gk.json()['data']['viewer']['accounts'][0]
+                ['kvOperationsAdaptiveGroups']}
+    except Exception:                                    # noqa: BLE001
+        return {}
+
+
 def main():
     from subir_cartas import sesion, listar
     s = sesion()
@@ -73,17 +89,7 @@ def main():
     # escribir: 276 cartas recien subidas quedaron invisibles por UNA clave.
     # Un limite que solo se conoce en teoria se cruza sin que nadie lo vea.
     hoy = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
-    q = ('{ viewer { accounts(filter:{accountTag:"%s"}) {'
-         ' kvOperationsAdaptiveGroups(limit:50, filter:{date_geq:"%s"}) {'
-         ' sum { requests } dimensions { actionType } } } } }' % (CUENTA, hoy))
-    gk = requests.post('https://api.cloudflare.com/client/v4/graphql',
-                       headers=dict(s.headers), json={'query': q}, timeout=40)
-    try:
-        ops = {f['dimensions']['actionType']: f['sum']['requests']
-               for f in gk.json()['data']['viewer']['accounts'][0]
-               ['kvOperationsAdaptiveGroups']}
-    except Exception:
-        ops = {}
+    ops = kv_hoy(s)
     if ops:
         print('   HOY (UTC %s):' % hoy)
         print('      escrituras %5d   %s'
