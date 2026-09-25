@@ -190,6 +190,29 @@ def armar():
 
     _an = _json('datos', 'anuncios.json') or {}
     ann = _an.get('anuncios') or []
+    _link = lambda x: ('https://discord.com/channels/%s/%s/%s'
+                       % (x['guild_id'], x['canal_id'], x['msg_id'])
+                       if x.get('guild_id') and x.get('canal_id') and x.get('msg_id')
+                       else '')
+    _dt_ = __import__('datetime')
+    _t = _dt_.datetime.now(_dt_.timezone.utc).replace(tzinfo=None)
+    _ahora = _t.strftime('%Y-%m-%dT%H:%M:%S')
+    # 🔑 LOS ANUNCIADOS SIN UNA HORA QUE SE PUEDA LEER, UNAS HORAS EN «LO QUE
+    # VIENE». Desde el lector ancho (25/09/2026) entran los de DRA, que dan
+    # la hora por país —«🇲🇽 16:00 · 🇦🇷 19:00»— y ésa no se convierte en un
+    # instante (ver `cuando.momento()`: una hora mal leída sería peor). Sin
+    # esto, un evento de esta noche aparecía en «Lo que pasó» apenas se
+    # anunciaba. Van con su hora de publicación y `sin_hora`: la página dice
+    # «anunciado hace X» en vez de una cuenta atrás.
+    SIN_HORA_H = 3
+    sin_hora = []
+    for x in ann:
+        if CU.momento(x) or not x.get('cuando'):
+            continue
+        pub = CU._leer_iso(x['cuando'])
+        if pub and 0 <= (_t - pub).total_seconds() < SIN_HORA_H * 3600:
+            sin_hora.append(x)
+    sin_hora.sort(key=lambda x: str(x.get('cuando')), reverse=True)
     prox = [{
         'nombre': x['nombre'],
         'sv': x.get('servidor') or '',
@@ -213,6 +236,12 @@ def armar():
         'modalidad': x.get('modalidad') or '',
         'premios': (x.get('premios') or '')[:60],
     } for x in CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)]
+    prox += [{'nombre': x['nombre'], 'sv': x.get('servidor') or '',
+              'cuando': x['cuando'], 'sin_hora': 1,
+              'cupos': x.get('cupos_texto') or '', 'link': _link(x),
+              'modalidad': x.get('modalidad') or '',
+              'premios': (x.get('premios') or '')[:60]}
+             for x in sin_hora][:max(0, 5 - len(prox))]
 
     # 🔑 Y LO QUE ACABA DE PASAR, PORQUE «LO QUE SE VIENE» SE APAGA SOLO.
     # Dlx, 24/09/2026: *«hoy día hubieron muchos eventos, hay que mejorar
@@ -229,21 +258,22 @@ def armar():
     # dos veces —una como «en vivo» y otra como «pasó»— que es exactamente
     # el tipo de contradicción en pantalla que este proyecto persigue.
     _ya = {x.get('msg_id') for x in
-           CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)}
-    _dt_ = __import__('datetime')
-    _ahora = _dt_.datetime.now(_dt_.timezone.utc).strftime(
-        '%Y-%m-%dT%H:%M:%S')
+           CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO) + sin_hora}
+    # 🔴 «PASÓ» ES QUE ARRANCÓ, NO QUE SE PUBLICÓ. Esto comparaba la hora de
+    # publicación, así que un evento anunciado para la noche figuraba como
+    # pasado desde que se anunciaba. Ahora cuenta el arranque; y el que no
+    # tiene hora, recién cuando deja de estar en «Lo que viene».
+    _ini = lambda y: CU.momento(y) or str(y.get('cuando') or '')
     pas = []
-    for x in sorted(ann, key=lambda y: str(y.get('cuando') or ''),
-                    reverse=True):
+    for x in sorted(ann, key=_ini, reverse=True):
         if x.get('msg_id') in _ya or not x.get('cuando'):
             continue
-        if str(x['cuando']) >= _ahora:
+        if _ini(x) >= _ahora:
             continue                       # todavía no pasó: es de `prox`
         pas.append({
             'nombre': x['nombre'],
             'sv': x.get('servidor') or '',
-            'cuando': x['cuando'],
+            'cuando': _ini(x),
             'modalidad': x.get('modalidad') or '',
             'link': ('https://discord.com/channels/%s/%s/%s'
                      % (x['guild_id'], x['canal_id'], x['msg_id'])
@@ -788,8 +818,32 @@ def _sin_sello(p):
     sacarlo, «¿cambió algo?» contesta que sí **siempre** y el diff-writer
     no escribe menos que el que escribe todo.
     """
-    return json.dumps({k: v for k, v in (p or {}).items() if k != 'sello'},
+    return json.dumps({k: v for k, v in (p or {}).items()
+                       if k not in ('sello', 'leido')},
                       ensure_ascii=False, sort_keys=True)
+
+
+#: cada cuánto se reescribe el lobby aunque sólo haya cambiado `leido`
+LEIDO_MAX_H = 2
+
+
+def _leido_viejo(arriba, nuevo):
+    """¿La hora de lectura que está arriba quedó más vieja que esto?
+
+    🔴 `leido` CAMBIA EN CADA CORRIDA —es cuándo se leyeron los anuncios—,
+    así que comparándolo el lobby se escribía en KV **todas las veces**,
+    ~48 escrituras por día de una cuota de 1.000 para toda la cuenta
+    (auditoría del 25/09/2026). Pero si nunca se escribe por él, la página
+    dice «datos de hace 9 h» de algo que se leyó hace un minuto. El punto
+    medio: se ignora, salvo que lo de arriba tenga más de dos horas.
+    """
+    import datetime as d
+    try:
+        a = d.datetime.fromisoformat(str((arriba or {}).get('leido'))[:19])
+        b = d.datetime.fromisoformat(str((nuevo or {}).get('leido'))[:19])
+    except ValueError:
+        return bool((nuevo or {}).get('leido'))
+    return (b - a).total_seconds() > LEIDO_MAX_H * 3600
 
 
 def _token():
@@ -834,9 +888,11 @@ def subir(payload, solo_si_cambio=False):
             # y requests lo adivina. Una adivinanza mala acá no rompe nada
             # visible —dice «cambió» y escribe— pero gasta una escritura
             # de las 1.000 del día en cada corrida.
-            if r.status_code == 200 and \
-                    _sin_sello(json.loads(r.content.decode('utf-8'))) == _sin_sello(payload):
-                return None
+            if r.status_code == 200:
+                arriba = json.loads(r.content.decode('utf-8'))
+                if _sin_sello(arriba) == _sin_sello(payload) and \
+                        not _leido_viejo(arriba, payload):
+                    return None
         except (ValueError, OSError):
             # ⚠️ SI NO SE PUEDE LEER, SE ESCRIBE. El error de este lado es
             # dejar la web vieja, no gastar una escritura de más.
