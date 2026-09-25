@@ -955,8 +955,16 @@ def main():
     # de golpe puede ser un cambio de codigo —normal y correcto— o el
     # Sheet a medio editar. Sin esta linea las dos se ven igual, y la
     # primera reaccion ante «552 cartas» es cancelar.
+    # 🌙 Y CUÁNTAS ESPERAN A LA MADRUGADA: lo que cambió sólo de dibujo no
+    # se pide de día. Ver `que_cambio.cambios()` y `madrugada.REDIBUJO`.
+    esperan = motivos[1] if len(motivos) > 1 else {}
     for carta, (n_datos, cod) in sorted((motivos[0] if motivos else {}).items()):
-        if cod:
+        if cod and esperan.get(carta):
+            print('      🌙 cambió el CÓDIGO de la %s: %d carta(s) esperan a '
+                  'la madrugada' % (carta, esperan[carta]))
+            print('         (%d cambiaron además de datos: ésas van ahora)'
+                  % n_datos)
+        elif cod:
             print('      ⚠️ cambió el CÓDIGO de la %s: le toca a todo el '
                   'pool' % carta)
             print('         (%d de ellas además cambiaron de datos)' % n_datos)
@@ -979,7 +987,9 @@ def main():
         print('      %d ya no está(n) en el pool (su carta queda en R2): %s'
               % (len(idas), ', '.join(idas[:6])))
     if not trabajo:
-        print('      ✅ nada cambió en las cuatro cartas')
+        print('      ✅ nada cambió en las cuatro cartas%s'
+              % (' · 🌙 %d esperan a la madrugada' % sum(esperan.values())
+                 if esperan else ''))
         _avisar_actions(False, 0, 0)
         # ⚠️ PERO LAS BLOQUEADAS SE MIRAN IGUAL. Ver rehacer_bloqueadas():
         # su contador puede moverse sin que se mueva ninguna carta.

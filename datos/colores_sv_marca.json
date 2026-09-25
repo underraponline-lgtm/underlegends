@@ -10,7 +10,7 @@
   "FFA": "#26045B",
   "SR": "#E0670B",
   "FRZ": "#26B3A6",
-  "URBF": "#9959D9",
+  "URBF": "#EA7206",
   "RZ": "#3A96F2"
  },
  "de_donde_sale": {
@@ -22,7 +22,7 @@
   "FFA": "del logo · violeta profundo",
   "SR": "del logo ORIGINAL · naranja. Dlx confirmo que el logo original de Snake Rap es naranja, no dorado ni verde. El dorado (Logo_Ciclo_8) es una version posterior y el verde no existe.",
   "FRZ": "de marca. Su logo es blanco y negro PURO: cero contenido cromatico, no hay de donde sacarlo",
-  "URBF": "de marca. Su logo es grafiti blanco y negro: tampoco tiene color propio",
+  "URBF": "del logo NUEVO (25/09/2026) · naranja: el tono más vivo del archivo, el mismo del fondo de su carta. Era #9959D9, de marca, porque el logo viejo era grafiti blanco y negro",
   "RZ": "del logo · el punto más caliente de su fuego azul"
  },
  "_pendiente_sr": "Se acordo que Snake Rap va en VERDE, pero no hay ningun logo verde: los dos archivos que hay son dorado (Logo_Ciclo_8, el actual) y naranja (SR.png, el viejo). Tres salidas: (a) que Dlx pase la version verde, (b) usar el verde de marca #33BF5A y teñir la silueta blanca, que ya existe en comun/logos_sv/, (c) aceptar el dorado, que es el color real del logo actual. Hasta que se decida queda el dorado.",

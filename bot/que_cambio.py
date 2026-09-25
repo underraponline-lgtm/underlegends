@@ -424,13 +424,37 @@ def emitibles(quien, est=None):
     return out
 
 
-def cambios(motivos=None):
+def solo_dibujo(antes, hoy):
+    """¿Cambió el código y NO los datos? `antes` y `hoy`, dos huellas.
+
+    ⚠️ UNA CARTA SIN SELLO NO ES «SÓLO DIBUJO»: nunca se dibujó, así que
+    lo que le falta es la primera, no un redibujo.
+    """
+    if not antes or not hoy or antes == hoy:
+        return False
+    return antes.partition(':')[0] == hoy.partition(':')[0]
+
+
+def cambios(motivos=None, ahora=None):
     """(dict {persona: set(cartas)}, nuevas, idas, hay_sello).
 
     ⚠️ `motivos` es una lista que se LLENA, no un parametro que cambia
     lo que hace. Quien la pasa recibe el `por_que()` del mismo par de
     sellos que se comparo aca — asi el informe no puede discrepar del
-    calculo, que es la forma de bug que este archivo mas repite.
+    calculo, que es la forma de bug que este archivo mas repite. Y
+    después, `{carta: cuántas esperan a la madrugada}`: ver abajo.
+
+    🌙 LO QUE CAMBIÓ SÓLO DE DIBUJO ESPERA A LA MADRUGADA. Dlx,
+    25/09/2026, sobre el naranja de Urban Freestyle: *«prográmalo para la
+    madrugada, ya que no hay muchas cosas»*. Un cambio de código le toca a
+    todo el pool con los mismos datos —50 minutos que no mueven un número—
+    y de día eso atrasa lo que sí importa. Fuera de
+    `madrugada.REDIBUJO` esas cartas no se piden, **no se sellan**, y la
+    primera corrida de la noche las encuentra solas.
+
+    ⚠️ QUIEN CAMBIÓ DE DATOS SE REDIBUJA IGUAL, y con el código nuevo: la
+    regla mira carta por carta y frena sólo las que tienen en R2 los
+    mismos datos de hoy.
     """
     hoy = huellas()
     antes = None
@@ -442,6 +466,9 @@ def cambios(motivos=None):
     if motivos is not None:
         motivos.append(por_que(antes, hoy))
 
+    import madrugada as _MD
+    ya = _MD.es_hora_de_redibujar(ahora)
+    esperan = {}
     viejas, nuevas = set(antes), set(hoy)
     est = estado()
     out = {}
@@ -451,8 +478,16 @@ def cambios(motivos=None):
         # una que no se puede es un fallo permanente que se reintenta
         # todos los dias sin avanzar.
         d &= emitibles(quien, est)
+        # 🌙 y las que cambiaron sólo de dibujo, de madrugada
+        if not ya:
+            for c in sorted(d):
+                if solo_dibujo(antes[quien].get(c), hoy[quien].get(c)):
+                    d.discard(c)
+                    esperan[c] = esperan.get(c, 0) + 1
         if d:
             out[quien] = d
+    if motivos is not None:
+        motivos.append(esperan)
     return out, sorted(nuevas - viejas), sorted(viejas - nuevas), True
 
 
@@ -525,7 +560,9 @@ def main():
         print('      Corré `python herramientas/que_pide_cada_carta.py`.\n')
         return 1
 
-    cam, nuevas, idas, hay = cambios()
+    mot = []
+    cam, nuevas, idas, hay = cambios(mot)
+    esperan = mot[1] if len(mot) > 1 else {}
 
     if '--lista' in sys.argv:
         for quien in sorted(set(cam) | set(nuevas)):
@@ -574,6 +611,14 @@ def main():
         print('   y desde la próxima se comparan los cambios.\n')
         return 0
 
+    if esperan:
+        import madrugada as _MD
+        print('   🌙 %d carta(s) cambiaron sólo de dibujo y esperan a la '
+              'madrugada (de 12 a %d AM ET): %s'
+              % (sum(esperan.values()), _MD.REDIBUJO[1],
+                 ', '.join('%s %d' % kv for kv in sorted(esperan.items()))))
+        print('      REDIBUJAR_YA=true las adelanta.')
+        print('')
     if not (cam or nuevas or idas):
         print('   ✅ nada cambió: no hay que redibujar nada\n')
         return 0

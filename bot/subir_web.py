@@ -1212,9 +1212,15 @@ def _versiones():
             ver[quien] = {c: hashlib.sha1(str(h).encode('utf-8'))
                           .hexdigest()[:8] for c, h in cs.items()}
         import que_cambio as QC
+        # 🌙 SÓLO SI CAMBIARON LOS DATOS, no el dibujo. Un cambio de código
+        # —el naranja de Urban Freestyle— espera a la madrugada
+        # (`que_cambio.cambios()`), y mientras tanto la carta de R2 dice los
+        # mismos números que el ranking: marcarla «actualizándose» todo el
+        # día sería la marca falsa que este docstring prohíbe.
         for quien, cs in QC.huellas().items():
             antes = sello.get(quien) or {}
-            malas = {c for c, h in cs.items() if c in antes and antes[c] != h}
+            malas = {c for c, h in cs.items() if c in antes and antes[c] != h
+                     and not QC.solo_dibujo(antes[c], h)}
             if malas:
                 vieja[quien] = malas
     except Exception as e:                               # noqa: BLE001
@@ -1280,6 +1286,47 @@ def _cartas(p, r2, comp=None):
 #: ⚠️ el self-check lo apaga: arma el payload entero y no tiene que salir
 #: a Discord para eso (en CI la red está, pero la prueba no es de la red)
 _SIN_RED = [False]
+
+
+def _guardar_iconos(miembros):
+    """Deja en `datos/iconos_sv.json` el ícono de hoy de cada servidor.
+
+    🔑 PARA LAS CARTAS, QUE LO TENÍAN ESCRITO A MANO. El hub ya trackeaba el
+    logo de cada servidor desde su invitación (`_miembros()`), y las cartas
+    seguían con un hash clavado en `comun/escudos.py`. Medido el 25/09/2026:
+    los de **DRA, Snake Rap y TWR daban 404** —cambiaron de ícono— y sus
+    cartas caían en la silueta blanca sin avisar. Dlx, ese día, sobre Urban
+    Freestyle: *«usa el nuevo logo, detéctalo del mismo servidor»*.
+
+    ⚠️ SÓLO SE ESCRIBE SI CAMBIÓ, y sin hora adentro: es un archivo del
+    ciclo (`bot/ci/guardar.sh`) y cada reescritura sería un commit.
+
+    ⚠️ SIN RED NO SE TOCA: un `{}` borraría los íconos buenos de ayer.
+    """
+    nuevos = {}
+    for sv, d in (miembros or {}).items():
+        url = (d or {}).get('icono') or ''
+        # .../icons/<guild>/<hash>.webp?size=128 -> '<guild>/<hash>'
+        partes = url.split('/icons/')[-1].split('?')[0].rsplit('.', 1)[0]
+        if url and partes.count('/') == 1:
+            nuevos[sv] = partes
+    if not nuevos:
+        return
+    p = os.path.join(BASE, 'datos', 'iconos_sv.json')
+    viejo = _json('datos', 'iconos_sv.json') or {}
+    if viejo.get('iconos') == nuevos:
+        return
+    import collections
+    d = collections.OrderedDict()
+    d['_leeme'] = ('El ícono de hoy de cada servidor, «guild/hash» como lo sirve '
+                   'el CDN de Discord. Lo escribe bot/subir_web.py desde la '
+                   'invitación pública de cada uno; lo leen las cartas por '
+                   'comun/escudos.py. No se edita a mano.')
+    d['iconos'] = dict(sorted(nuevos.items()))
+    with io.open(p, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(json.dumps(d, ensure_ascii=False, indent=1) + '\n')
+    print('   🖼  datos/iconos_sv.json: %s' % ', '.join(
+        sv for sv in sorted(nuevos) if (viejo.get('iconos') or {}).get(sv) != nuevos[sv]))
 
 
 def _miembros(svs):
@@ -1379,6 +1426,7 @@ def _servidores(gente):
         a['pts'] += p.get('pts') or 0
         a['ev'] += p.get('ev') or 0
     miembros = _miembros(svs)
+    _guardar_iconos(miembros)
     logos = os.path.join(SCR, 'paginas', 'logos')
     out = []
     for sv in list(svs) + [s for s in acc if s not in svs]:
