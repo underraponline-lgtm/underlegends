@@ -2516,7 +2516,8 @@ export default {
     // agotó una vez y congeló el hub. El vigía deja su latido en el Durable
     // Object —ver `/avisos/estado`—, que tiene cien veces más cupo.
     if (evento.cron === CRON_VIGIA) {
-      await vigilar(env, SERVIDORES.map((s) => ({ sv: s.sv, nombre: s.nombre, guild: s.guild })));
+      await vigilar(env, SERVIDORES.map((s) => ({ sv: s.sv, nombre: s.nombre, guild: s.guild })),
+        DUENO);
       return;
     }
     // 🔴 `ctx.waitUntil` EN UN `scheduled` TIRABA EL TRABAJO ENTERO, Y ESE
