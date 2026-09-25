@@ -1410,6 +1410,12 @@ def _guardar_iconos(miembros):
         return
     p = os.path.join(BASE, 'datos', 'iconos_sv.json')
     viejo = _json('datos', 'iconos_sv.json') or {}
+    # 🔴 EL QUE NO CONTESTÓ CONSERVA EL DE AYER. Se reescribía sólo con los
+    # que respondieron, así que un 429 de una invitación borraba ese ícono,
+    # las cartas volvían al hash escrito a mano y, desde que el archivo
+    # entra a la huella (`comun/huella_codigo.DIBUJOS`), costaba dos
+    # redibujos enteros: uno al perderlo y otro al volver.
+    nuevos = dict(viejo.get('iconos') or {}, **nuevos)
     if viejo.get('iconos') == nuevos:
         return
     import collections

@@ -71,7 +71,18 @@ def unir(mio, remoto, base=None):
     c, _ = _sellos(base)
     junto = dict(b)
     for k, v in a.items():
-        if base is None or k not in b or c.get(k) != v:
+        # 🔴 POR CARTA CUANDO EL VALOR ES DE CARTAS. Desde el 25/09/2026 se
+        # sella carta por carta (`que_cambio.sellar()`), así que los dos
+        # trabajos pueden sellar cartas distintas de la misma persona: unir
+        # por persona tiraba lo que había sellado el otro.
+        if isinstance(v, dict) and isinstance(b.get(k), dict):
+            cb = c.get(k) if isinstance(c.get(k), dict) else {}
+            fila = dict(b[k])
+            for carta, h in v.items():
+                if base is None or carta not in b[k] or cb.get(carta) != h:
+                    fila[carta] = h
+            junto[k] = fila
+        elif base is None or k not in b or c.get(k) != v:
             junto[k] = v
     del_remoto = len([k for k in junto if junto[k] != a.get(k)])
     if en_cartas_a or en_cartas_b:
@@ -108,6 +119,13 @@ def _self_check():
     ver('la plana también', 'cartas' not in j)
     ver('nada más que una carta: el remoto vacío no rompe',
         unir(mio, None, base)[0]['x'] == '2')
+    # por carta: yo sellé la Competitiva de K, el otro su Servidor
+    b2 = {'cartas': {'K': {'competitivo': 'c1', 'servidor': 's1'}}}
+    m2 = {'cartas': {'K': {'competitivo': 'c2', 'servidor': 's1'}}}
+    r2 = {'cartas': {'K': {'competitivo': 'c1', 'servidor': 's2'}}}
+    j3, _ = unir(m2, r2, b2)
+    ver('por carta: lo mío y lo del otro de la MISMA persona quedan los dos',
+        j3['cartas']['K'] == {'competitivo': 'c2', 'servidor': 's2'})
     return mal
 
 

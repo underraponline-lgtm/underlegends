@@ -88,7 +88,9 @@ except AttributeError:
     pass
 
 SALIDA = os.path.join(SCR, 'salida')
-SERVIDORES = ('DRA', 'EFA', 'FFA', 'FRZ', 'FTN', 'SR', 'TFC', 'TWR', 'URBF')
+# ⚠️ LAS CAMISETAS Y SU LISTA VIVEN EN `que_cambio`: el sello tiene que ver
+# las mismas que se dibujan (`camisetas()`).
+from que_cambio import SERVIDORES, camisetas              # noqa: E402,F401
 
 # Cuantas personas por tanda.
 #
@@ -298,43 +300,6 @@ def bajar_las_caras():
     except Exception as e:                               # noqa: BLE001
         print('      ⚠️ sin espejo (%s): dibujo con lo que haya en el repo'
               % str(e)[:70])
-
-
-def camisetas(quienes):
-    """`{quien: [servidores]}`: las camisetas de la Servidor que alguien puede pedir.
-
-    🔴 SE DIBUJABAN LAS NUEVE PARA TODOS, Y SE PIDEN CUATRO COMO MUCHO. `/card`
-    abre la camiseta del servidor donde escribiste, y sólo se puede escribir
-    donde está el bot (`datos/bot_en.json`: DRA, FFA, Snake Rap y Urban
-    Freestyle) y donde está la persona (`datos/servidores_de.json`). Medido el
-    25/09/2026: la Valen salió en las nueve estando en tres, y el redibujo de
-    esa noche eran 382 personas × 10 pasadas. Las otras cinco camisetas no las
-    podía abrir nadie.
-
-    ⚠️ SIN LOS DOS ARCHIVOS SE DIBUJAN TODAS: sin saber dónde está cada uno,
-    se dibuja de más antes que de menos. Y quien no figura en ningún lado se
-    queda con la propia: `/card` cae en ésa si falta la camiseta.
-    """
-    def _j(n):
-        try:
-            with io.open(os.path.join(BASE, 'datos', n), encoding='utf-8') as f:
-                return json.load(f)
-        except (OSError, ValueError):
-            return None
-    bot_en, donde = _j('bot_en.json'), _j('servidores_de.json')
-    if not bot_en or donde is None:
-        return {q: list(SERVIDORES) for q in quienes}
-    try:
-        sys.path.insert(0, os.path.join(BASE, 'sheet'))
-        import construir_padron as _PAD
-        id_de = {p.get('raw'): str(p.get('discord_id') or '') for p in _PAD.cargar()}
-    except Exception:                                    # noqa: BLE001
-        return {q: list(SERVIDORES) for q in quienes}
-    out = {}
-    for q in quienes:
-        suyos = set(donde.get(id_de.get(q, ''), []) or [])
-        out[q] = [sv for sv in SERVIDORES if sv in bot_en and sv in suyos]
-    return out
 
 
 def no_salieron(carta, quienes, corte, camis=None):
@@ -1390,7 +1355,8 @@ def main():
         bien = [q for q in lote if q not in malos]
         if bien:
             sellados += bien
-            QC.sellar(sorted(set(sellados)))
+            # 🔴 SÓLO LAS CARTAS QUE SE PIDIERON: ver `que_cambio.sellar()`
+            QC.sellar({q: set(trabajo.get(q) or ()) for q in set(sellados)})
             print('      ✅ sellé %d de %d' % (len(bien), len(lote)))
         if malos:
             print('      %d sin sellar (falló alguna carta): se reintenta'
