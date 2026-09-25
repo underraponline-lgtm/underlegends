@@ -230,6 +230,7 @@ function ir() {
   if (r === 'r') pintaPerfil(decodeURIComponent(partes.slice(1).join('/')));
   if (r === 'crew') pintaCrew(decodeURIComponent(partes.slice(1).join('/')));
   if (r === 'pais') pintaPais(partes[1] || '');
+  if (r === 'cambios') cargarCambios(pintaCambios);
   // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
   // Inicio, y deja mandar el link de un ranking puntual.
   if (r === 'ranking') {
@@ -579,19 +580,111 @@ function cerrarLlave() {
 }
 
 /* ── podio y récords ──────────────────────────────────────────────── */
-function pintaPodio() {
-  var tres = (D.tabla || []).slice(0, 3).filter(function (f) {
-    return (f.c || []).length;
-  });
-  if (tres.length < 3) { apaga('#secPodio'); return; }
-  var med = ['🥇', '🥈', '🥉'];
-  $('#elPodio').innerHTML = tres.map(function (f, i) {
-    return '<div class="pd p' + (i + 1) + '">' +
-      '<span class="med">' + med[i] + '</span>' +
-      '<button data-carta="' + esc(f.k) + '"><img loading="lazy" decoding="async" src="' +
-      urlCarta(f, f.c[0]) + '" alt="Tarjeta de ' + esc(f.n) + '"></button>' +
-      '<b>' + esc(f.n) + '</b><small>' + num(f.pts) + ' pts</small></div>';
+/* ── el podio, por categoría ──────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «en la sección de podios en inicio deja unas flechas
+   para cambiar de categoría a competitivo así y así…». Son las mismas
+   categorías que «Los tres de arriba» —y se ordenan igual—, con la tarjeta
+   de cada uno. La elegida se recuerda en este dispositivo.
+
+   ⚠️ EL COMPETITIVO SE MUESTRA AUNQUE ESTÉ VACÍO, como en «Los tres de
+   arriba»: que nadie haya llegado a los 10 eventos ES el dato. */
+var POD = { i: 0, cats: [] };
+function catsPodio() {
+  var T = D.tabla || [];
+  var cats = [];
+  var persona = function (f) { return porK(f.k) || f; };
+  cats.push({ id: 'temporada', t: 'Temporada', carta: 'temporada', gente: T.slice(0, 3),
+    v: function (f) { return 'OVR <b>' + (f.ovr || '—') + '</b> · ' + num(f.pts) + ' pts'; } });
+  var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
+    return (b.sc || 0) - (a.sc || 0);
+  }).slice(0, 3);
+  var pide = reqDe('competitivo') || 10;
+  var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
+  cats.push({ id: 'competitivo', t: 'Competitivo', carta: 'competitivo', gente: comp,
+    v: function (f) { return 'Rango <b style="color:' + esc(f.rgc || 'inherit') + '">' + esc(f.rg) + '</b>'; },
+    vacio: cerca ? 'Se desbloquea a los <b>' + pide + ' eventos</b> y todavía no llegó nadie. ' +
+      'El más cerca: <b>' + esc(cerca.n) + '</b>, con ' + cerca.ev + '.' : '' });
+  cats.push({ id: 'duelos', t: 'Duelos', carta: 'temporada',
+    gente: (D.duelos || []).slice(0, 3).map(function (d) {
+      return Object.assign({}, persona(d), { _g: d.g, _t: d.t });
+    }),
+    v: function (f) { return '<b>' + f._g + '</b> de ' + f._t + ' ganados'; } });
+  var med = T.filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; })
+    .sort(medallero).slice(0, 3);
+  cats.push({ id: 'podios', t: 'Podios', carta: 'temporada', gente: med,
+    v: function (f) {
+      return [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]]
+        .filter(function (x) { return x[1]; }).map(function (x) { return x[0] + '<b>' + x[1] + '</b>'; })
+        .join(' ');
+    } });
+  var con = T.filter(function (f) { return ((f.rch || [])[1] || 0) > 0; });
+  var vivas = con.filter(function (f) { return f.rch[0] > 0; });
+  cats.push({ id: 'rachas', t: vivas.length ? 'Rachas' : 'Rachas (la más larga)', carta: 'temporada',
+    gente: (vivas.length ? vivas : con).slice().sort(function (a, b) {
+      return vivas.length ? (b.rch[0] - a.rch[0]) || (b.rch[1] - a.rch[1])
+                          : (b.rch[1] - a.rch[1]) || (b.pts - a.pts);
+    }).slice(0, 3),
+    v: function (f) { return '&#128293;<b>' + (vivas.length ? f.rch[0] : f.rch[1]) + '</b> seguidos'; } });
+  cats.push({ id: 'paises', t: 'Países', grupos: (D.paises || []).filter(function (p) { return p.n; })
+    .slice(0, 3).map(function (p) {
+      var cc = String(p.cc || '').toLowerCase();
+      return { n: nombrePais(cc), href: '#/pais/' + encodeURIComponent(cc),
+        img: PAIS[cc] ? '<img class="pd-bandera" src="banderas/g/' + esc(cc) + '.webp" alt="" ' +
+          'onerror="this.onerror=null;this.src=\'banderas/' + esc(cc) + '.png\'">' : '',
+        v: '<b>' + num(p.pts) + '</b> pts · ' + p.n + (p.n === 1 ? ' rapero' : ' raperos') };
+    }) });
+  cats.push({ id: 'crews', t: 'Crews', grupos: (D.crews || []).filter(function (c) { return c.rk !== 0; })
+    .slice(0, 3).map(function (c) {
+      return { n: c.crew, href: '#/crew/' + encodeURIComponent(c.clave || c.crew),
+        img: c.logo ? '<img class="pd-logo" src="' + esc(c.logo) + '" alt="">' : '',
+        v: '<b>' + num(c.pts) + '</b> pts · ' + c.n + (c.n === 1 ? ' rapero' : ' raperos') };
+    }) });
+  return cats.filter(function (c) { return (c.gente || c.grupos || []).length || c.vacio; });
+}
+function pintaPodioCat() {
+  var c = POD.cats[POD.i];
+  if (!c) return;
+  var med = ['&#129351;', '&#129352;', '&#129353;'];
+  $('#podCat').textContent = c.t;
+  $('#podDots').innerHTML = POD.cats.map(function (x, i) {
+    return '<button type="button" class="pn-dot' + (i === POD.i ? ' on' : '') + '" data-pod="' + i +
+      '" aria-label="' + esc(x.t) + '" title="' + esc(x.t) + '"></button>';
   }).join('');
+  $('#podNav').hidden = POD.cats.length < 2;
+  var h = (c.gente || []).map(function (f, i) {
+    var cs = f.c || [];
+    var carta = c.carta && cs.indexOf(c.carta) >= 0 ? c.carta : cs[0];
+    var img = carta
+      ? '<button data-carta="' + esc(f.k) + '"><img loading="lazy" decoding="async" src="' +
+        urlCarta(f, carta) + '" alt="Tarjeta de ' + esc(f.n) + '"></button>'
+      : '<button class="pd-sin" data-k="' + esc(f.k) + '">' + avatar(f, 120) + '</button>';
+    return '<div class="pd p' + (i + 1) + '"><span class="med">' + med[i] + '</span>' + img +
+      '<b data-k="' + esc(f.k) + '">' + esc(f.n) + (f.cc ? ' ' + bandera(f.cc) : '') + '</b>' +
+      '<small>' + c.v(f) + '</small></div>';
+  }).concat((c.grupos || []).map(function (g, i) {
+    return '<div class="pd p' + (i + 1) + ' grupo"><span class="med">' + med[i] + '</span>' +
+      '<a class="pd-g" href="' + g.href + '">' + g.img + '</a>' +
+      '<b><a href="' + g.href + '">' + esc(g.n) + '</a></b><small>' + g.v + '</small></div>';
+  })).join('');
+  $('#elPodio').innerHTML = h;
+  $('#elPodio').hidden = !h;
+  $('#podVacio').hidden = !!h || !c.vacio;
+  $('#podVacio').innerHTML = h ? '' : (c.vacio || '');
+}
+function moverPodio(paso, a) {
+  if (!POD.cats.length) return;
+  POD.i = a != null ? a : (POD.i + paso + POD.cats.length) % POD.cats.length;
+  guardarLS('lg:podio', POD.cats[POD.i].id);
+  pintaPodioCat();
+}
+function pintaPodio() {
+  POD.cats = catsPodio();
+  if (!POD.cats.length) { apaga('#secPodio'); return; }
+  var pedida = leerLS('lg:podio', '');
+  POD.i = 0;
+  POD.cats.forEach(function (c, i) { if (c.id === pedida) POD.i = i; });
+  pintaPodioCat();
+  pintaUnos();
 
   var rs = D.records || [];
   $('#records').innerHTML = rs.map(function (r) {
@@ -601,6 +694,49 @@ function pintaPodio() {
       '<span class="q">' + esc(r.n) + (r.cc ? ' ' + bandera(r.cc) : '') + '</span>' +
       '</dd>' + (r.x ? '<small class="rec-x">' + esc(r.x) + '</small>' : '') + '</dl>';
   }).join('');
+}
+
+/* ── los mejores de cada lado ─────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «y agrega más cosas abajo». El #1 de la temporada en
+   cada país, en cada crew y en cada servidor, del mismo payload. Un grupo
+   con un solo servidor no se dibuja: «el mejor de FFA» es el #1 de todos. */
+function pintaUnos() {
+  var T = D.tabla || [];
+  var mejor = function (ok) { return T.filter(ok)[0]; };
+  var item = function (cab, f, extra) {
+    return '<div class="uno">' + cab + '<div class="uno-q" data-k="' + esc(f.k) + '">' +
+      avatar(f, 34) + '<span><b>' + esc(f.n) + '</b><small>#' + esc(f.pos) + ' · OVR ' +
+      (f.ovr || '—') + ' · ' + num(f.pts) + ' pts</small></span></div>' + (extra || '') + '</div>';
+  };
+  var partes = [];
+  var ps = (D.paises || []).filter(function (p) { return p.n; }).map(function (p) {
+    var cc = String(p.cc || '').toLowerCase();
+    var f = mejor(function (x) { return String(x.cc || '').toLowerCase() === cc; });
+    return f ? item('<a class="uno-cab" href="#/pais/' + encodeURIComponent(cc) + '">' +
+      bandera(cc) + '<span>' + esc(nombrePais(cc)) + '</span><u>' + p.n + '</u></a>', f) : '';
+  }).filter(Boolean);
+  if (ps.length) partes.push('<h3 class="gh">Por país <small>' + ps.length + '</small></h3>' +
+    '<div class="unos">' + ps.join('') + '</div>');
+  var cs = (D.crews || []).filter(function (c) { return c.rk !== 0 && c.mejor; }).map(function (c) {
+    var f = porK(kDe(c.mejor)) || mejor(function (x) { return x.n === c.mejor; });
+    return f ? item('<a class="uno-cab" href="#/crew/' + encodeURIComponent(c.clave || c.crew) + '">' +
+      (c.logo ? '<img class="uno-logo" src="' + esc(c.logo) + '" alt="">' : '') + '<span>' + esc(c.crew) +
+      '</span><u>' + c.n + '</u></a>', f) : '';
+  }).filter(Boolean);
+  if (cs.length) partes.push('<h3 class="gh">Por crew <small>' + cs.length + '</small></h3>' +
+    '<div class="unos">' + cs.join('') + '</div>');
+  var svs = (D.svs || []).filter(function (s) { return s.n; });
+  if (svs.length > 1) {
+    var ss = svs.map(function (s) {
+      var f = mejor(function (x) { return x.sv === s.sv; });
+      return f ? item('<span class="uno-cab">' + chipSv(s.sv) + '<u>' + s.n + '</u></span>', f) : '';
+    }).filter(Boolean);
+    if (ss.length) partes.push('<h3 class="gh">Por servidor <small>' + ss.length + '</small></h3>' +
+      '<div class="unos">' + ss.join('') + '</div>');
+  }
+  if (!partes.length) { apaga('#secUnos'); return; }
+  $('#secUnos').hidden = false;
+  $('#unos').innerHTML = partes.join('');
 }
 
 /* ── filtros ──────────────────────────────────────────────────────── */
@@ -2761,11 +2897,66 @@ function pintaPopAjustes() {
     (AJ.tz ? '.' : ', la de este dispositivo.') + '</p>' +
     '<label class="aj aj-ck"><input type="checkbox" id="ajCalma"' + (AJ.calma ? ' checked' : '') +
     '><span>Menos animaciones</span></label>' +
-    '<button type="button" class="btn sec ancho" id="ajBorrar">Olvidar quién soy y mis ajustes</button>';
+    '<button type="button" class="btn sec ancho" id="ajBorrar">Olvidar quién soy y mis ajustes</button>' +
+    '<a class="aj-cambios" href="#/cambios">&#128220; Changelog: lo nuevo de la página' +
+    (CAMBIOS && CAMBIOS.length && CAMBIOS[0].dia > CAMBIOS_VISTO ? ' <b class="nuevo-et">Nuevo</b>' : '') +
+    '</a>';
   $('#ajH12').value = h;
   $('#ajTz').value = AJ.tz || '';
 }
 function cerrarPops() { $$('.pop').forEach(function (p) { p.hidden = true; }); }
+
+/* ── el changelog ─────────────────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «abajo de ajustes agrega un changelog… eso de
+   novedades que vamos llenando, pero sin información sensitiva». Es un
+   archivo estático (`cambios.json`): no pasa por el Worker ni gasta KV.
+
+   ⚠️ EL PUNTO DE «NUEVO» ES DE ESTE DISPOSITIVO: se guarda el último día
+   visto, y lo que es de después se marca. */
+var CAMBIOS = null;
+var CAMBIOS_VISTO = leerLS('lg:cambios', '');
+function cargarCambios(listo) {
+  if (CAMBIOS) { if (listo) listo(); return; }
+  fetch('cambios.json', { cache: 'no-cache' })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) { CAMBIOS = (d && d.cambios) || []; puntoCambios(); if (listo) listo(); })
+    .catch(function () {
+      var c = $('#cambios');
+      if (c && listo) c.innerHTML = '<p class="nota">No pude cargar el changelog. Probá recargar.</p>';
+    });
+}
+function puntoCambios() {
+  var hay = !!(CAMBIOS && CAMBIOS.length && CAMBIOS[0].dia > CAMBIOS_VISTO);
+  if ($('#cambiosNuevo')) $('#cambiosNuevo').hidden = !hay;
+  if ($('#bAjustes2')) $('#bAjustes2').classList.toggle('con-nuevo', hay);
+}
+// **negrita** y `código`, sobre el texto ya escapado
+function mdCorto(t) {
+  return esc(t).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+}
+function pintaCambios() {
+  var c = $('#cambios');
+  if (!c || !CAMBIOS) return;
+  var antes = CAMBIOS_VISTO;
+  c.innerHTML = CAMBIOS.map(function (x) {
+    var f = '';
+    try {
+      f = new Date(x.dia + 'T12:00:00Z').toLocaleDateString('es', { day: 'numeric', month: 'long',
+        year: 'numeric', timeZone: 'UTC' });
+    } catch (e) { f = x.dia; }
+    return '<article class="cambio' + (antes && x.dia > antes ? ' es-nuevo' : '') + '">' +
+      '<header><time datetime="' + esc(x.dia) + '">' + esc(f) + '</time>' +
+      (antes && x.dia > antes ? '<span class="nuevo-et">Nuevo</span>' : '') +
+      '<h2>' + esc(x.titulo) + '</h2></header><ul>' +
+      (x.items || []).map(function (i) { return '<li>' + mdCorto(i) + '</li>'; }).join('') +
+      '</ul></article>';
+  }).join('') || '<p class="nota">Todavía no hay nada anotado.</p>';
+  if (CAMBIOS.length) {
+    CAMBIOS_VISTO = CAMBIOS[0].dia;
+    guardarLS('lg:cambios', CAMBIOS_VISTO);
+    puntoCambios();
+  }
+}
 // lo que depende de la hora se vuelve a dibujar al cambiar la zona o el formato
 function repintarHoras() {
   [pintaCalendario, pintaEvCab, pintaPaneles, pintaUltCampeones].forEach(function (f) {
@@ -3044,6 +3235,13 @@ function eventos() {
     CMP[+s.dataset.lado] = i;
     pintaComparar();
   });
+  // el podio: flechas, puntos y las flechas del teclado cuando tiene el foco
+  $('#podAntes').addEventListener('click', function () { moverPodio(-1); });
+  $('#podDespues').addEventListener('click', function () { moverPodio(1); });
+  $('#podDots').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pod]');
+    if (b) moverPodio(0, +b.dataset.pod);
+  });
   $('#vPestanas').addEventListener('click', function (e) {
     var b = e.target.closest('.pest'); if (!b) return;
     var f = porK($('#vPestanas').dataset.k) || filaCuenta($('#vPestanas').dataset.k); if (!f) return;
@@ -3154,6 +3352,8 @@ function cuandoSe(iso) {
 }
 
 function pinta() {
+  // el punto de «nuevo» del changelog: un pedido chico a un archivo estático
+  try { cargarCambios(null); } catch (e) { /* sin changelog, la página sigue */ }
   volverDeDiscord();
   // 🔴 CADA SECCIÓN, AISLADA. Una que falla —un dato que llega con otra
   // forma, o el HTML viejo en caché con este JS nuevo— queda sin dibujar y

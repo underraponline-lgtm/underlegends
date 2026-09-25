@@ -73,6 +73,11 @@
     <!-- 🔑 AJUSTES, donde dice «Temporada T1 · datos hace…». Dlx,
          25/09/2026: «y una de ajustes quizás? arriba donde dice temporada t1». -->
     <button class="m-ajustes" id="bAjustes" type="button"><i aria-hidden="true">&#9881;</i><span>Ajustes</span></button>
+    <!-- 🔑 EL CHANGELOG, ABAJO DE AJUSTES. Dlx, 25/09/2026: «abajo de ajustes
+         agrega un changelog… eso de novedades que vamos llenando, pero sin
+         información sensitiva». Sale de `cambios.json`, que se escribe a mano
+         y para jugadores: ver su `_leeme`. -->
+    <a class="m-ajustes m-cambios" href="#/cambios"><i aria-hidden="true">&#128220;</i><span>Changelog</span><b class="punto-nuevo" id="cambiosNuevo" hidden></b></a>
     <p class="pie" id="pie">—</p>
   </aside>
 
@@ -238,10 +243,30 @@
       <div class="tops" id="tops"></div>
     </section>
 
+    <!-- 🔑 EL PODIO, POR CATEGORÍA. Dlx, 25/09/2026: «deja unas flechas
+         para cambiar de categoría a competitivo así y así…». Las mismas
+         categorías que «Los tres de arriba», con las tarjetas. -->
     <section class="blk" id="secPodio">
-      <h2><span>&#129351;</span> El podio</h2>
+      <div class="nov-cab"><h2><span>&#129351;</span> El podio
+        <b class="pod-cat" id="podCat"></b></h2>
+        <div class="feed-nav" id="podNav">
+          <button class="cal-ir" id="podAntes" aria-label="Categoría anterior">&#8249;</button>
+          <span class="pn-dots" id="podDots"></span>
+          <button class="cal-ir" id="podDespues" aria-label="Categoría siguiente">&#8250;</button>
+        </div></div>
       <div class="podio" id="elPodio"></div>
+      <p class="pod-vacio" id="podVacio" hidden></p>
       <div class="records" id="records"></div>
+    </section>
+
+    <!-- 🔑 Y MÁS ABAJO: el mejor de cada país, de cada crew y de cada
+         servidor. Dlx, 25/09/2026: «y agrega más cosas abajo». Sale del
+         mismo payload; sin dato no hay pieza. -->
+    <section class="blk" id="secUnos" hidden>
+      <h2><span>&#127758;</span> Los mejores de cada lado</h2>
+      <p class="bajada">El #1 de la temporada en cada país, en cada crew y en
+      cada servidor. Tocá un nombre para abrir su perfil.</p>
+      <div id="unos"></div>
     </section>
 
   </section>
@@ -562,14 +587,23 @@
         <details><summary>¿Cómo cambio mi foto?</summary><p>Con
         <code>/foto</code> en Discord, una vez por temporada.</p></details>
         <details><summary>¿Cómo me entero de los eventos?</summary><p>Activá
-        los <a href="#/avisos">avisos</a>: te llegan al teléfono o a la compu
-        cuando un servidor anuncia uno. También podés sumar el calendario de la
+        los <a href="#/avisos">avisos</a> (o escribí <code>/notify</code> en
+        Discord): te llegan al teléfono o a la compu cuando un servidor anuncia
+        uno. También podés sumar el calendario de la
         Liga a Google Calendar desde <a href="#/eventos">Eventos</a>.</p></details>
         <details><summary>¿Mi servidor se puede sumar a la Liga?</summary><p>Las
         postulaciones de servidores se anuncian en Discord Rap Español, en el
         canal de la Liga Global.</p></details>
       </div>
     </section>
+  </section>
+
+  <!-- ══ CHANGELOG ═════════════════════════════════════════════════ -->
+  <section class="vista" data-vista="cambios" hidden>
+    <h1 class="tit">Change<em>log</em></h1>
+    <p class="bajada">Lo nuevo de la página y del bot, de lo más reciente a lo
+    más viejo.</p>
+    <div class="cambios" id="cambios"><p class="nota">Cargando…</p></div>
   </section>
 
   </main>
