@@ -132,7 +132,109 @@ def candidatos(reg, norm):
     return out
 
 
+def AV_GUILDS():
+    """Los servidores donde el bot lee miembros: la lista de
+    `herramientas/cruzar_miembros.py`, no una copia."""
+    sys.path.insert(0, os.path.join(BASE, 'herramientas'))
+    import cruzar_miembros as CM
+    return list(CM.GUILDS)
+
+
+#: cuántos entran solos por corrida; el resto espera en la cola a la siguiente
+TOPE_ALTAS = 5
+
+
+def nombre_de(reg):
+    """El nombre con el que alguien se anotó: el apodo del servidor sin la
+    decoración (`#5 | Gus` -> `Gus`, `🐉 | Lil Drako` -> `Lil Drako`) y sin
+    banderas; si no sirve, el nombre global; al final, el usuario."""
+    for txt in (reg.get('nick'), reg.get('glob'), reg.get('user')):
+        t = str(txt or '')
+        t = ''.join(c for c in t if not 0x1F1E6 <= ord(c) <= 0x1F1FF)
+        t = t.replace('❓', '')
+        piezas = [x.strip() for x in t.split('|') if x.strip()]
+        t = piezas[-1] if piezas else ''
+        if 2 <= len(t) <= 32 and any(c.isalpha() for c in t):
+            return t
+    return ''
+
+
+def alta_sola(reg, nombres, alias, saltear, norm, pais):
+    """(nombre, código, '') si entra solo; ('', '', motivo) si no.
+
+    🔑 #11 DE DLX (25/09/2026): *«quien usa /card y no está en la Lista, se
+    agrega con su ID y país»*. Sólo quien se anotó a sí mismo (`por: yo`,
+    que pone el Worker): buscar a otro no es pedir entrar.
+
+    ⚠️ LO DUDOSO SIGUE YENDO A PENDIENTES, como siempre: sin país, un
+    nombre que se parece al de alguien que ya está —puede ser esa persona
+    con otra cuenta—, un alias, o alguien que pidió salir. `pais` es una
+    función `(reg) -> código`, para poder probar esto sin red.
+    """
+    import difflib
+    did = str(reg.get('id') or '')
+    if did in saltear:
+        return '', '', 'pidió salir o no se verifica'
+    nombre = nombre_de(reg)
+    if not nombre:
+        return '', '', 'sin un nombre que sirva'
+    k = norm(nombre)
+    if k in saltear:
+        return '', '', 'troll o no se verifica'
+    if k in alias:
+        return '', '', 'es alias de %s' % alias[k]
+    cerca = difflib.get_close_matches(k, list(nombres), n=1, cutoff=0.8)
+    if cerca:
+        return '', '', '¿es %s?' % nombres[cerca[0]]
+    cc = pais(reg)
+    if not cc:
+        return '', '', 'sin país (ni bandera en el apodo ni rol de país)'
+    return nombre, cc, ''
+
+
+def _self_check():
+    print('')
+    print('  registrar_ids.py — las altas solas (#11), sin red')
+    print('')
+    mal = 0
+
+    def ok(cond, que):
+        nonlocal mal
+        mal += not cond
+        print('   %s %s' % ('ok' if cond else '🔴', que))
+
+    ok(nombre_de({'nick': '#5 | Gus 🇦🇷'}) == 'Gus', 'el apodo sin «#5 |» ni bandera')
+    ok(nombre_de({'nick': '🐉 | Lil Drako'}) == 'Lil Drako', 'sin el dragón')
+    ok(nombre_de({'nick': '', 'glob': 'Drako', 'user': 'lildrako'}) == 'Drako',
+       'sin apodo, el nombre global')
+    ok(nombre_de({'nick': '🇨🇱', 'glob': '', 'user': 'x_y'}) == 'x_y',
+       'un apodo que es sólo una bandera no sirve: el usuario')
+    norm = lambda x: ''.join(c for c in str(x).lower() if c.isalnum())
+    nombres = {'konan': 'Konan', 'masino': 'Masino'}
+    alias = {'carr': 'Provenza'}
+    con = lambda reg: 'cl'
+    sin = lambda reg: ''
+    ok(alta_sola({'id': '1', 'nick': 'Nuevo 🇨🇱'}, nombres, alias, set(), norm, con)
+       == ('Nuevo', 'cl', ''), 'alguien nuevo, con país: entra')
+    ok(alta_sola({'id': '1', 'nick': 'Nuevo'}, nombres, alias, set(), norm, sin)[2]
+       .startswith('sin país'), 'sin país: a Pendientes')
+    ok('¿es Konan?' in alta_sola({'id': '1', 'nick': 'Konann'}, nombres, alias,
+                                 set(), norm, con)[2],
+       'un nombre que se parece al de alguien que ya está: a Pendientes')
+    ok(alta_sola({'id': '1', 'nick': 'Carr'}, nombres, alias, set(), norm, con)[2]
+       == 'es alias de Provenza', 'un alias: a Pendientes')
+    ok(alta_sola({'id': '9', 'nick': 'Nuevo'}, nombres, alias, {'9'}, norm, con)[2]
+       .startswith('pidió salir'), 'quien pidió salir no entra')
+    ok(alta_sola({'id': '1', 'nick': 'money maker'}, nombres, alias, {'moneymaker'},
+                 norm, con)[2].startswith('troll'), 'un troll no entra')
+    print('')
+    print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
+    return 1 if mal else 0
+
+
 def main():
+    if '--auto' in sys.argv:
+        sys.exit(_self_check())
     import gspread
     from google.oauth2.service_account import Credentials
     import construir_padron as PAD
@@ -188,6 +290,7 @@ def main():
     rellenar = []     # (fila, id, nombre, reg_key)
     pendientes = []   # (tipo, detalle, match, reg_key)
     ya_estaba = []    # reg_key (mismo id, nada que hacer)
+    altas = []        # (reg, reg_key, etiqueta, id): se anotó él mismo
 
     for k, reg in anotados:
         did = str(reg.get('id') or '').strip()
@@ -216,10 +319,74 @@ def main():
             quienes = ', '.join(val[m[1][0] - 1][iR].strip() for m in matches)
             pendientes.append(('ambiguo', '%s = %s' % (etiqueta, did),
                                'calza con: %s' % quienes, k))
+        elif reg.get('por') == 'yo':
+            altas.append((reg, k, etiqueta, did))
         else:
             pendientes.append(('alta', '%s = %s' % (etiqueta, did),
                                'sv %s' % (reg.get('sv') or '?'), k))
 
+    # 🔑 LAS ALTAS SOLAS (#11). Ver `alta_sola()`.
+    nuevos = []       # (nombre, código, id, nota, reg_key)
+    if altas:
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import autoverificar as AV
+        import verificados as VER
+        import lista_raperos as LR
+        try:
+            import decidir as DEC
+            trolls = {PAD.norm(x) for x in DEC.no_rankear()}
+        except Exception:                                # noqa: BLE001
+            trolls = set()
+        try:
+            ident = json.load(io.open(os.path.join(BASE, 'datos', 'identidades.json'),
+                                      encoding='utf-8'))
+        except (OSError, ValueError):
+            ident = {}
+        saltear = (set(VER._olvidados() or {}) | trolls
+                   | {PAD.norm(x) for x in (ident.get('no_verificar') or {})})
+        nombres = {}
+        for f in range(cab + 1, len(val)):
+            raw = (val[f][iR] if len(val[f]) > iR else '').strip()
+            if raw:
+                nombres.setdefault(PAD.norm(PAD.limpio(raw)), PAD.limpio(raw))
+        alias_n = {PAD.norm(a): r for a, r in alias.items()}
+        iso_ok = set(AV._iso_de_nombre().values())
+        ses, mapas = [None], [None]
+
+        def pais(reg):
+            cc = AV.cc_bandera(reg.get('nick')) or AV.cc_bandera(reg.get('glob'))
+            if not cc:
+                # sin bandera en el nombre: sus roles de país, con la regla
+                # de siempre (`autoverificar.pais_de`)
+                try:
+                    if ses[0] is None:
+                        ses[0] = AV._sesion() or False
+                        if ses[0]:
+                            mapas[0] = AV.mapas_de_roles(ses[0], AV_GUILDS())
+                    if ses[0] and mapas[0]:
+                        suyos = AV.roles_de_pais(ses[0], AV_GUILDS(), mapas[0],
+                                                 str(reg.get('id')))
+                        cc = AV.pais_de({'full': '', 'pais': ''}, suyos, None, {})[0]
+                except Exception as e:                   # noqa: BLE001
+                    print('  ⚠️ no pude mirar los roles de %s (%s)'
+                          % (reg.get('id'), str(e)[:40]))
+            return cc if cc in iso_ok else ''
+
+        for reg, k, etiqueta, did in altas:
+            nombre, cc, motivo = alta_sola(reg, nombres, alias_n, saltear,
+                                           PAD.norm, pais)
+            if motivo:
+                pendientes.append(('alta', '%s = %s' % (etiqueta, did),
+                                   'sv %s · %s' % (reg.get('sv') or '?', motivo), k))
+            elif len(nuevos) < TOPE_ALTAS:
+                nuevos.append((nombre, cc, did, 'alta automática · /card en %s · %s'
+                               % (reg.get('sv') or '?', LR._ahora_et()), k))
+                nombres[PAD.norm(nombre)] = nombre
+            # ⚠️ pasado el tope, se queda en la cola: entra en la próxima vuelta
+
+    print('  %d entran solos a la Lista (se anotaron ellos, con país)' % len(nuevos))
+    for nombre, cc, did, _, _ in nuevos:
+        print('     %-20s %s  %s' % (nombre, cc, did))
     print('  %d se rellenan solos (match exacto, sin id)' % len(rellenar))
     for _, did, nombre, _ in rellenar:
         print('     %-20s <- %s' % (nombre, did))
@@ -246,6 +413,31 @@ def main():
         ws.update([[str(did)]], '%s%d' % (letra(iID), fila), raw=True)
         borrar_kv(s, k)
         print('  escrito %s en %s' % (did, nombre))
+
+    # ── 1b. las altas solas (#11): una fila nueva cada una ────────────────
+    entraron = []
+    if nuevos:
+        import lista_raperos as LR
+        for nombre, cc, did, nota, k in nuevos:
+            try:
+                n = LR.agregar(nombre, cc, did, nota, aplicar=True)
+            except Exception as e:                       # noqa: BLE001
+                print('  ⚠️ no pude agregar a %s (%s)' % (nombre, str(e)[:60]))
+                n = None
+            if n:
+                borrar_kv(s, k)
+                entraron.append('%s %s' % (nombre, LR._bandera(cc)))
+            else:
+                pendientes.append(('alta', '%s = %s' % (nombre, did),
+                                   'no se pudo agregar solo', k))
+        if entraron:
+            try:
+                sys.path.insert(0, os.path.join(BASE, 'bot'))
+                import alertar
+                alertar.normal('🆕 Entraron solos a la Lista (se anotaron con /card): '
+                               + ', '.join(entraron))
+            except Exception:                            # noqa: BLE001
+                pass
 
     # ── 2. los que ya estaban: fuera de la cola ───────────────────────────
     for k in ya_estaba:

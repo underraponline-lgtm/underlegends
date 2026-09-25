@@ -125,6 +125,15 @@ def _pais_de(v, cc):
     return ''
 
 
+def _nombre_pais(cc):
+    """`'ve'` -> `'Venezuela'`, de `padron_t1.PAIS_ISO`: no se copia."""
+    try:
+        from padron_t1 import PAIS_ISO
+    except Exception:                                    # noqa: BLE001
+        return ''
+    return next((n for n, c in PAIS_ISO.items() if c == (cc or '').lower()), '')
+
+
 def _id_usado(v, did, salvo=None):
     i, col = mapa(v)
     for k, f in enumerate(v):
@@ -153,7 +162,10 @@ def agregar(nombre, cc, did, nota='', aplicar=False):
     fila = [''] * len(COLUMNAS)
     pon = lambda c, x: fila.__setitem__(COLUMNAS.index(c), x)
     pon('Rapero', ('%s %s' % (nombre, _bandera(cc))).strip())
-    pon('Bandera', _pais_de(v, cc))
+    # ⚠️ SI NADIE MÁS DE LA LISTA ES DE ESE PAÍS, `_pais_de` DA VACÍO, y una
+    # `Bandera` vacía deja a la persona afuera del portón
+    # (`verificados.pasa()` la lee). El nombre sale de `PAIS_ISO`.
+    pon('Bandera', _pais_de(v, cc) or _nombre_pais(cc))
     pon('Verificado', '❓')
     pon('Discord ID', did or '')
     pon('Notas', nota)
