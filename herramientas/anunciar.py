@@ -35,6 +35,16 @@ def canal():
     return ((d.get('canales') or {}).get('DRA') or {}).get('novedades')
 
 
+def textos_v2(cs):
+    """El texto de los componentes V2 (Text Display, tipo 10), en orden."""
+    out = []
+    for c in cs or []:
+        if c.get('type') == 10:
+            out.append(c.get('content') or '')
+        out += textos_v2(c.get('components'))
+    return out
+
+
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith('--')]
     if not args:
@@ -42,7 +52,9 @@ def main():
         return 2
     with io.open(args[0], encoding='utf-8') as f:
         msg = json.load(f)
-    msg.pop('_leeme', None)
+    # los campos con `_` son notas nuestras (`_leeme`, `_publicado`): no van a Discord
+    for k in [k for k in msg if k.startswith('_')]:
+        msg.pop(k)
     msg['allowed_mentions'] = {'parse': []}
     ch = canal()
     print('canal: %s (canales.DRA.novedades)\n' % ch)
@@ -54,6 +66,12 @@ def main():
             print('  · %s: %s' % (c.get('name'), c.get('value')))
     if msg.get('content'):
         print('  texto: ' + msg['content'])
+    # 🔑 COMPONENTES V2 (flags 32768): títulos con #, listas y citas, que es
+    # lo que pidió Dlx para los anuncios (25/09/2026)
+    for t in textos_v2(msg.get('components')):
+        for l in t.split('\n'):
+            print('    ' + l)
+        print('')
     if '--publicar' not in sys.argv and '--editar' not in sys.argv:
         print('\n  (sin publicar: agregá --publicar, o --editar <id>)')
         return 0
