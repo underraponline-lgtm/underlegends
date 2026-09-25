@@ -224,8 +224,15 @@ console.log('\nEL WORKER, SIN DISCORD Y SIN CLOUDFLARE\n');
 const V2 = 1 << 15, EF = 1 << 6;
 const galeria = (c) => (c || []).find(x => x.type === 12);
 const filas   = (c) => (c || []).filter(x => x.type === 1);
-const botones = (c) => { const f = filas(c).find(f => f.components[0].type === 2);
-                         return f ? f.components : []; };
+// ⚠️ LOS BOTONES DE CARTA SON LOS QUE TIENEN `custom_id`. En la misma fila
+// va la campana de avisos, que es un link (estilo 5) y no una carta: si se
+// contara, «son cuatro botones» daría cinco y «todos apagados» mentiría,
+// porque un link no vence y no se apaga.
+const filaBotones = (c) => filas(c).find(f => f.components[0].type === 2);
+const botones = (c) => { const f = filaBotones(c);
+                         return f ? f.components.filter(b => b.custom_id) : []; };
+const campana = (c) => { const f = filaBotones(c);
+                         return f ? f.components.find(b => b.style === 5) : null; };
 const select  = (c) => { const f = filas(c).find(f => f.components[0].type === 3);
                          return f ? f.components[0] : null; };
 
@@ -258,6 +265,13 @@ console.log('\nLA CARTA\n');
   ok('los otros tres NO son grises', botones(c).filter(b=>!b.disabled).every(b=>b.style===1),
      'si todos fueran grises, la única diferencia sería la opacidad');
   ok('y con la Servidor activa VIENE el menú', select(c) !== null);
+  // 🔔 decidido el 21/09: el permiso se pide donde ya están
+  const cp = campana(c);
+  ok('abajo va la campana de avisos', !!cp, cp ? cp.label : 'no está');
+  ok('y es un LINK al hub, no un botón que gaste interacción',
+     cp?.type === 2 && cp?.style === 5 && !cp?.custom_id &&
+     cp?.url === 'https://underlegends.pages.dev/#/avisos', cp?.url || '');
+  ok('la fila no pasa de cinco', (filaBotones(c)?.components || []).length <= 5);
 }
 
 {
@@ -1027,7 +1041,7 @@ console.log('\n«NO EXISTE» Y «TODAVÍA NO» SON DOS COSAS\n');
 const botonesDe = (r) => {
   const c = r.json?.data?.components || [];
   const fila = c.find(x => x.type === 1 && x.components?.[0]?.type === 2);
-  return (fila?.components || []).map(b => b.label);
+  return (fila?.components || []).filter(b => b.custom_id).map(b => b.label);
 };
 
 {

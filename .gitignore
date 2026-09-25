@@ -195,3 +195,7 @@ galeria/
 02_Competitivo/v2/*.png
 02_Competitivo/v2/*.html
 
+
+# Respaldos de IDs de Discord que deja cruzar_miembros.py antes de escribir:
+# son datos de personas y este repo es público.
+docs/respaldo_ids_*.json

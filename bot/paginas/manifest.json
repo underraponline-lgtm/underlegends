@@ -1,0 +1,15 @@
+{
+  "name": "Liga Global — Under Legends",
+  "short_name": "Liga Global",
+  "description": "El ranking, las tarjetas y los avisos de eventos de la Liga Global.",
+  "lang": "es",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#030304",
+  "theme_color": "#030304",
+  "icons": [
+    { "src": "ul-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "ul.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
