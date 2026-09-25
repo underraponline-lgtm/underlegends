@@ -19,7 +19,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 |---|---|---|
 | **Para tener carta: estar en DRA y verificado**, con Discord ID y país | *«to get cards all need to be in DRA server and verified»* (24/09) | `bot/verificados.py` |
 | **Verificado = sólo el rol Miembro de DRA** | *«El rol de verificado es miembro en DRA únicamente»* (24/09) | `bot/verificados.py` |
-| De FFA, LIVONIA, La Confederación **y Snake Rap**: se saca el ID, **no se verifica** | *«saca su ID, sí, pero no lo verifiques»* (19/09) | `herramientas/cruzar_miembros.py` |
+| De FFA, LIVONIA, La Confederación, **Snake Rap y Urban Freestyle**: se saca el ID, **no se verifica** | *«saca su ID, sí, pero no lo verifiques»* (19/09) · Urban Freestyle, *«quiero que hagas reconocimiento de IDs»* (25/09) | `herramientas/cruzar_miembros.py` |
 | **Autoverificar**: IDs de Snake Rap → Sheet → si están en DRA **y tienen país** (bandera o rol de país en DRA, FFA, LIVONIA o Snake Rap) → Miembro de DRA | *«only those [that] have a country flag or role can be verified»* (24/09) | **en el ciclo** desde el 25/09 (`bot/autoverificar.py`, paso 1a2) · los IDs por nombre, a mano (`herramientas/cruzar_miembros.py`) |
 | **El país sale del rol** cuando la Lista no lo tiene: gana USA · el rol de DRA · el de los otros servidores (sólo roles con bandera) · la bandera del nombre. Dos países sin USA: no se toca | *«si dale»* (25/09, #8) | `bot/autoverificar.py` |
 | **Quien se anota con `/card` y no está en la Lista, entra solo** con su ID y país. Lo dudoso (sin país, nombre parecido a otro, alias, troll) va a Pendientes | *«necesitamos que todas las personas que se verifiquen estén en DRA»* (25/09, #11) | `sheet/registrar_ids.py` · `bot/worker.js` |
@@ -106,7 +106,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Un mapa en Inicio** con el % de países representados | *«poner como un mapa con el porcentaje de cuántos países están representados»* | ✅ hecho · 15 de 20 (75 %) |
 | **Los cinco de arriba = top 5 de todos los rankings**, no sólo Temporada | *«que los cinco de arriba muestre el top 5 de todos los rankings»* | ✅ hecho · seis rankings |
 | **Todo más grande**, usando bien el espacio | *«siento que todo está muy pequeño.. hay demasiado espacio»* | ✅ primera pasada · decime qué sigue chico |
-| **Los logos de los servidores, al día desde Discord** | *«trackear los logos actuales ya que el bot debería ser posible de eso»* | ✅ en el hub · las cartas todavía usan el guardado |
+| **Los logos de los servidores, al día desde Discord** | *«trackear los logos actuales ya que el bot debería ser posible de eso»* | ✅ en el hub · ✅ en las cartas desde el 25/09 a las 12:17 PM (`datos/iconos_sv.json`) |
 | **Comparar con la página vieja del Apps Script** («Mi Perfil»): qué falta y qué mejorar | *«chequea muy bien cómo estaba la página appscript del excel antiguo»* | ✅ comparada · falta el informe |
 
 ### Lo que contestó Dlx el 25/09 a las 8 (5:40 AM)
@@ -197,7 +197,34 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Urban Freestyle es de la Liga**: el bot entró, con su TikTok | *«el bot ya está metido. El ID del servidor es 1467763447117778989»* · *«este es el TikTok de Urban Freestyle»* | `datos/servidores.json` (`confirmado`) |
 | **Se escuchan sólo los servidores de la Liga**: TFC no | *«Olvida TFC, ya te dije que no está»* | `confirmado` de `datos/servidores.json`, para el vigía, los anuncios y las llaves |
 
+### Lo que dijo Dlx el 25/09 (11:45 AM a 12:15 PM)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **Urban Freestyle en naranja, con la misma textura**, y su **logo nuevo** (la «UK» con corona) | *«el color de la tarjeta de esta misma al naranja pero que la textura sea la misma»* | `03_Servidor/disenos/los_nueve.py` (`#EA7206`), `comun/escudos_cuad/`, `comun/logos_sv/` |
+| **Lo que cambia sólo de dibujo se redibuja de madrugada**, de 12 a 4 AM ET. Quien cambió de datos, en el acto. El ciclo a mano tiene `redibujar_ya` para un arreglo urgente | *«prográmalo para la madrugada este cambio ya que no hay muchas cosas»* | `bot/madrugada.py` (`REDIBUJO`), `bot/que_cambio.py` (`cambios()`) |
+| **El logo de cada servidor se detecta del servidor**: las cartas usan el ícono que cada uno tiene hoy en Discord, igual que la página | *«mejor usa el nuevo logo, detéctalo del mismo servidor»* | `bot/subir_web.py` → `datos/iconos_sv.json` → `comun/escudos.py` |
+| **Urban Freestyle se llama «Urban Freestyle»**, no «Urban Freestyle Battles» | *«para el nombre usa el real»* | `datos/servidores.json` y el menú del Worker |
+| **Su tag: NUEVA GENERACIÓN** | *«usa este tag para Urban Freestyle: NUEVA GENERACIÓN»* | `datos/servidores.json` (`tag`) |
+| **El alta automática usa el apodo del servidor donde se usó `/card`** (aunque en DRA tenga otro) | *«debería usar el de Urban Freestyle, es correcto»* | `sheet/registrar_ids.py` |
+| **Reconocimiento de IDs en Urban Freestyle y Snake Rap**: se saca el ID, no se verifica | *«como el bot está en el servidor de Urban Freestyle y Snake Rap, quiero que hagas reconocimiento de IDs»* | `herramientas/cruzar_miembros.py`, `herramientas/servidores_de.py` |
+| **Las 1.300 de DRA sin tarjeta siguen entrando al pedirla** (`/card` o `/verificar`), no se cargan de golpe | *«la verdad no sabría qué decirte»* | sin cambios: el anuncio les dice cómo |
+| **Urban Freestyle, en el anuncio** | *«sí, exacto»* | ✅ publicado con @everyone en DRA y FFA (11:45 AM) |
+| **Mi cuenta: todas las ideas** —redes de Discord, próximos eventos, seguir raperos, avisos personales— | *«todas»* | 🔨 en curso |
+
+⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
 ---
+
+## 📅 Viernes 25/09 (11:45 AM a 12:20 PM) — versión 1.08
+
+- 🟠 **Urban Freestyle en naranja** (`#EA7206`, el tono más vivo de su logo nuevo), con el mismo corte blanco y los mismos rayones. El logo nuevo va en el escudo de la Servidor, en la silueta de los rombos y en la página, que también pasa a naranja.
+- 🌙 **Se redibuja esta madrugada**: 633 cartas cambiaron sólo de dibujo (382 Servidor y las tres del pool por el escudo) y esperan a la corrida de las 12:22 AM. De día se dibujan 0.
+- 🖼️ **Los logos de los servidores, los de hoy, también en las cartas.** Los hashes escritos a mano de **DRA, Snake Rap y TWR daban 404** y sus cartas caían en la silueta blanca sin avisar. Ahora salen de la invitación pública de cada servidor, como en la página.
+- 🏷️ **Urban Freestyle con su nombre y su tag** (NUEVA GENERACIÓN), en la página y en el menú del bot (desplegado a las 12:14 PM).
+- 🆔 **Reconocimiento de IDs**: Urban Freestyle (429 miembros) entra al cruce. 4 IDs nuevos, exactos, sólo de Urban Freestyle; Snake Rap no dio ninguno nuevo (ya se había cruzado el 24/09). 0 verificaciones, ningún rol tocado. 63 quedan para mirar, sin escribir.
+- 👤 **Valen tiene su carta**: se anotó con `/card` en Urban Freestyle, la corrida de las 11:52 lo dio de alta a las 11:53 AM con su apodo de ahí y le subió la Servidor a las 11:57 AM. La Temporada, la Competitiva y la de País esperan a que juegue (Bloqueadas).
+- 🔧 `sheet/lista_raperos.py --renombrar` cambia el nombre de una fila sin borrarla (el ID, el país y la verificación se quedan). No se usó: ganó el nombre de Urban Freestyle.
 
 ## 📅 Viernes 25/09 (11 a 11:40 AM) — versión 1.07
 
@@ -383,10 +410,8 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **1.300 personas de DRA tienen Miembro y país y no tienen tarjeta**: no están en el padrón con su Discord ID. Hoy entran solas cuando usan `/card` o `/verificar`. ¿Las cargo a todas? Son ~5.200 cartas (unas 8 h de GitHub, gratis) y ~2.600 escrituras de KV (2 o 3 días, por la cuota). O seguimos con que entren al pedirla.
-2. **El anuncio en DRA está listo para publicar** (fase de prueba, Snake Rap, la fecha de la T1 y la página), en `docs/anuncios/2026-09-25_fase_de_prueba.json`. Sin @everyone. Decime «publicalo» o qué cambiar.
-3. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
-4. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+1. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
+2. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -402,7 +427,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## 🔧 Pendiente mío
 
-- **Los IDs por nombre siguen a mano** (`herramientas/cruzar_miembros.py`): el ciclo sólo toma el ID que llega firmado por `/card`. Emparejar un nombre con una cuenta es el paso que ya costó dos veces.
+- **Los IDs por nombre siguen a mano** (`herramientas/cruzar_miembros.py`): el ciclo sólo toma el ID que llega firmado por `/card`. Emparejar un nombre con una cuenta es el paso que ya costó dos veces. Última pasada: 25/09, 12:16 PM, con Urban Freestyle (4 escritos, 63 para mirar).
 - **Sin país en ningún servidor**: 8 con ID. **5 ya tienen el Miembro de DRA** —Kevo, aze gian, Adriox, Sedelti y Elsoolar— y es lo único que les falta para la carta: con un rol de país en DRA (o la bandera en el apodo) entran solos en la corrida siguiente. Los otros 3 (Deikka, NarcoMC, TRIPLE7) están sólo en FFA. Otros 9 se miran a las 3:22 AM (hay un tope de 15 por corrida); Fabrizio tiene dos roles, España y Perú, y no lo toco.
 - **#13 «¿Por qué no tengo carta?»** en el hub, cuando digas.
 - **La campana con gente de verdad**: medir la CPU de un lote de 20 envíos (con 0 suscriptos no hay con qué) e iPhone con la página instalada.
@@ -415,6 +440,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 - 🔔 **A7** (el Score a 40–99): te llega un DM cuando el primero llegue a 8 eventos. Pide mover los umbrales de los 8 rangos en la misma pasada.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
-- **Las cartas siguen con el logo guardado** de cada servidor: el del hub ya sale de Discord, pero el escudo de la carta pasa por `procesar_logos.py` y no se puede cambiar solo sin mirarlo.
-- 🌙 **A las 6:52 AM se redibujan todas las cartas**: tocar `comun/respaldo.py` cambia la huella del código. Es la regla (*«se redibuja de más antes que de menos»*), no un error.
+- **El emblema de arriba de la Servidor sigue siendo un archivo** (`comun/escudos_cuad/`, de `herramientas/escudos_cuadrados.py`): si un servidor cambia de logo, ése hay que rehacerlo mirándolo. El círculo del servidor en las otras cartas ya sale solo de Discord.
+- 🌙 **Esta madrugada, desde las 12:22 AM, se redibujan 633 cartas**: el naranja de Urban Freestyle y el escudo cambian la huella del código. Lo miro a la mañana.
+- ⚠️ **El mapa campo→carta no se puede regenerar con el pool de hoy**: nadie cumple el requisito de País, así que la medición casi no la dibuja y le faltan `cc`, `sv` y los duelos. El aviso del ciclo dice «Regenerá» y **hoy no hay que hacerle caso**; lo probé y lo revertí.
 - Medir cuántas lecturas del Sheet hace cada corrida, para ver el margen contra la cuota.

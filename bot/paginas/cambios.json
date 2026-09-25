@@ -10,6 +10,18 @@
  ],
  "cambios": [
   {
+   "version": "1.08",
+   "dia": "2026-09-25",
+   "titulo": "Urban Freestyle en naranja, y los logos de hoy",
+   "items": [
+    "🟠 **Urban Freestyle, en naranja**: su tarjeta de servidor pasa a naranja con la misma textura, y su **logo nuevo** —la «UK» con corona— va en la tarjeta y en la página.",
+    "🏷️ **Urban Freestyle con su nombre real** y su lema: **NUEVA GENERACIÓN**.",
+    "🖼️ **Los logos de los servidores, siempre los de hoy**: las tarjetas toman el ícono que cada servidor tiene puesto en Discord. Los de Discord Rap Español, Snake Rap y The Warren Rap se habían quedado viejos.",
+    "🌙 **Los cambios de diseño se aplican de madrugada**: si cambia cómo se ve una tarjeta pero no tus números, se redibuja entre las 12 y las 4 AM (hora del este de EE.UU.). Si cambiaron tus números, al momento.",
+    "🆔 **Urban Freestyle también reconoce a su gente**: el bot cruza sus miembros con la lista de la Liga, así `/card` sabe quién sos."
+   ]
+  },
+  {
    "version": "1.07",
    "dia": "2026-09-25",
    "titulo": "Urban Freestyle se suma, y tu perfil",
