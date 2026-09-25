@@ -191,21 +191,42 @@ def hay_respaldo():
 #
 # ⚠️ NO ES EL RESET DEL 22/09. Aquél borraba las vitrinas del Oficial; desde
 # el 23/09 las vitrinas se calculan solas desde lo crudo del Operativo, así
-# que alcanza con vaciar lo crudo: las vitrinas quedan en cero en la misma
-# corrida. La identidad —`Lista de Raperos`, `AKAs`, `Config`— no se toca.
+# que alcanza con vaciar lo crudo: cuatro de las cinco vitrinas quedan en
+# cero en la misma corrida. La identidad —`Lista de Raperos`, `AKAs`,
+# `Config`— no se toca.
 #
-# ⚠️ SE ARCHIVA ANTES DE VACIAR, EN LA MISMA PLANILLA. Corre en Actions, donde
-# un respaldo en un archivo se pierde con el runner: cada hoja se duplica como
-# «<hoja> · prueba» y recién después se vacía. Nada se pierde.
+# 🔴 LA QUINTA ES `Ranking Temporada`, Y ÉSA NO SE VACÍA SOLA. Arrastra las
+# columnas que no se calculan (`rankings.ARRASTRE`), así que con `Resultados`
+# vacía no escribe nada —no tiene de dónde— y con el primer evento de la T1
+# sus dos guardas la frenan: la tabla «encogería» de ~85 a ~20 filas y casi
+# todas las viejas quedarían «sin dueño». O sea que la T1 arrancaba con los
+# puntos de la prueba en la vitrina, en el pool, en las cartas y en la web,
+# mientras el DM decía «todo arranca de cero». Lo encontró la revisión del
+# 25/09/2026. Por eso se archiva y se vacía acá, como las crudas
+# (`VITRINA`), y su archivo va al Operativo, con los otros: el Oficial es
+# público.
 #
-# ⚠️ HOJA POR HOJA, Y LA QUE YA TIENE SU ARCHIVO NO SE VUELVE A TOCAR. Si una
-# corrida se cortara a la mitad, la siguiente no vacía lo que ya archivó: a
-# esa altura podría tener datos de la temporada nueva.
+# ⚠️ SE ARCHIVA ANTES DE VACIAR. Corre en Actions, donde un respaldo en un
+# archivo se pierde con el runner: cada hoja se copia como «<hoja> · prueba»
+# y recién después se vacía. Nada se pierde.
+#
+# 🔴 UNA HOJA ESTÁ HECHA SI ESTÁ ARCHIVADA **Y VACÍA**, no si tiene archivo.
+# Así era hasta el 25/09/2026, y una corrida que se cortara entre la copia y
+# el vaciado —un 429, un corte de red— dejaba las cuatro archivadas y llenas:
+# la siguiente las daba por hechas, el pipeline anotaba el arranque y mandaba
+# el DM de éxito con la prueba intacta. Ahora una hoja con archivo y con
+# filas se vacía **sólo si esas filas son las mismas que las del archivo**
+# (`que_hacer()`): si hay algo que el archivo no tiene, pudo entrar después
+# —quizás de la temporada nueva— y eso no se borra sin que alguien mire.
 #
 # ⚠️ SÓLO LAS COLUMNAS DE LA TABLA: `Entrada` tiene el panel de instrucciones
 # en A y B, al lado de los datos.
 PRUEBA = ['Entrada', 'Resultados', '1v1', 'Eventos Procesados']
+#: la vitrina del Oficial que no se vacía sola, y una columna segura de su cabecera
+VITRINA = ('Ranking Temporada', 'Rapero')
 SUFIJO = ' · prueba'
+#: hasta dónde se busca la cabecera: la vitrina tiene más de 26 columnas
+ARRIBA = 'A1:AZ20'
 
 
 def _col(i):
@@ -220,75 +241,166 @@ def _col(i):
 def rango_tabla(hoja, arriba, ojo):
     """El rango de los datos de una tabla, sin su cabecera ni lo de al lado.
 
-    `arriba` son las primeras filas de la hoja (A1:Z20) y `ojo` una columna
+    `arriba` son las primeras filas de la hoja (`ARRIBA`) y `ojo` una columna
     que la cabecera tiene seguro (`escribir.CABECERAS`). `None` si no está.
+
+    🔴 LA TABLA EMPIEZA DONDE EMPIEZA SU CABECERA, NO EN EL OJO. En `Eventos
+    Procesados` la cabecera es `['#', 'Evento', …]` y el ojo es `Evento`, así
+    que el rango arrancaba en la B y el vaciado dejaba la columna `#` con los
+    números de la prueba: `resultados.reescribir()` los conservaba y la T1
+    se anotaba debajo, con 349 eventos sin nombre contados en el índice y en
+    el total. Lo encontró la revisión del 25/09/2026. Se va a la izquierda
+    mientras la celda de al lado tenga algo: en `Entrada` la B está vacía, y
+    el panel de instrucciones de la A queda afuera.
     """
     for i, f in enumerate(arriba):
         celdas = [str(c).strip() for c in f]
         if ojo in celdas:
             c0 = celdas.index(ojo)
+            while c0 > 0 and celdas[c0 - 1]:
+                c0 -= 1
             c1 = max(j for j, c in enumerate(celdas) if c)
             return "'%s'!%s%d:%s" % (hoja, _col(c0), i + 2, _col(c1))
     return None
 
 
+def que_hacer(filas, archivada, igual):
+    """Qué toca con una hoja: 'archivar', 'vaciar', 'nada' o 'frenar'.
+
+    `filas`: cuántas tiene la tabla; `archivada`: si ya tiene su «· prueba»;
+    `igual`: si esas filas son las mismas que las del archivo. Ver arriba:
+    hecha es archivada **y** vacía.
+    """
+    if not archivada:
+        return 'archivar'          # y después se vacía
+    if not filas:
+        return 'nada'
+    return 'vaciar' if igual else 'frenar'
+
+
 def _api(tk, metodo, sid, sufijo, **kw):
-    r = requests.request(metodo, '%s/%s%s' % (API, sid, sufijo),
-                         headers={'Authorization': 'Bearer ' + tk}, timeout=90, **kw)
+    # 🔴 CON REINTENTO: la cuota de Sheets es de 60 lecturas por minuto y por
+    # usuario, y el arranque hace ~35 mientras el otro trabajo del ciclo puede
+    # estar leyendo. El 25/09/2026, ensayándolo, el simulacro se comió un 429
+    # a la mitad. Sin esperar, un 429 cortaba el arranque entre archivar y
+    # vaciar (ver `que_hacer()`).
+    import time
+    for espera in (20, 40, 60, None):
+        r = requests.request(metodo, '%s/%s%s' % (API, sid, sufijo),
+                             headers={'Authorization': 'Bearer ' + tk}, timeout=90, **kw)
+        if r.status_code not in (429, 500, 502, 503) or espera is None:
+            break
+        print('      (%d de Sheets: espero %d s)' % (r.status_code, espera))
+        time.sleep(espera)
     if r.status_code >= 300:
         raise RuntimeError('%s %s: %s' % (metodo, r.status_code, r.content[:160]))
     return r.json() if r.content else {}
 
 
+def _valores(tk, sid, rango):
+    return _api(tk, 'GET', sid, '/values/%s' % requests.utils.quote(rango)).get('values', [])
+
+
 def _filas(tk, sid, rango):
-    v = _api(tk, 'GET', sid, '/values/%s' % requests.utils.quote(rango)).get('values', [])
-    return sum(1 for f in v if any(str(c).strip() for c in f))
+    return sum(1 for f in _valores(tk, sid, rango) if any(str(c).strip() for c in f))
 
 
-def plan_prueba(tk, sid, cuales=None):
+def _tabla(tk, sid, rango):
+    """Las filas de esa tabla, sin lo vacío del final: para comparar con el archivo."""
+    out = []
+    for f in _valores(tk, sid, rango):
+        f = [str(c) for c in f]
+        while f and not f[-1].strip():
+            f.pop()
+        out.append(f)
+    while out and not out[-1]:
+        out.pop()
+    return out
+
+
+def _archivo(h, rango):
+    """El mismo rango, en la copia «· prueba»."""
+    return rango.replace("'%s'!" % h, "'%s'!" % (h + SUFIJO), 1)
+
+
+def _pestanas(tk, sid):
+    return {s['properties']['title']: s['properties']['sheetId'] for s in
+            _api(tk, 'GET', sid, '?fields=sheets.properties(sheetId,title)')['sheets']}
+
+
+def plan_prueba(tk, sid, cuales=None, sid_archivo=None):
     """`[(hoja, sheetId, rango, filas, ya)]`: qué se archiva y vacía.
 
     `cuales` es `[(hoja, columna segura de su cabecera)]`; por defecto,
     `PRUEBA` con las de `escribir.CABECERAS`. Existe para ensayarlo contra
     pestañas de prueba, como `rankings.py --ensayo`: un borrado que se
     estrena el día del arranque se estrena con la Liga mirando.
+
+    `sid_archivo`: dónde vive el «· prueba», si no es la misma planilla (la
+    vitrina del Oficial se archiva en el Operativo).
     """
     from escribir import CABECERAS
-    hojas = {s['properties']['title']: s['properties']['sheetId'] for s in
-             _api(tk, 'GET', sid, '?fields=sheets.properties(sheetId,title)')['sheets']}
+    hojas = _pestanas(tk, sid)
+    en_archivo = _pestanas(tk, sid_archivo) if sid_archivo else hojas
     ojo = dict(cuales) if cuales else {h: CABECERAS[h][1] for h in PRUEBA}
     out = []
     for h in ojo:
         if h not in hojas:
             raise RuntimeError('no está la hoja %r' % h)
-        arriba = _api(tk, 'GET', sid, '/values/%s' % requests.utils.quote(
-            "'%s'!A1:Z20" % h)).get('values', [])
-        rango = rango_tabla(h, arriba, ojo[h])
+        rango = rango_tabla(h, _valores(tk, sid, "'%s'!%s" % (h, ARRIBA)), ojo[h])
         if not rango:
             raise RuntimeError('no encontré la cabecera de %r' % h)
-        out.append((h, hojas[h], rango, _filas(tk, sid, rango), (h + SUFIJO) in hojas))
+        out.append((h, hojas[h], rango, _filas(tk, sid, rango), (h + SUFIJO) in en_archivo))
     return out
 
 
-def aplicar_prueba(tk, sid, plan):
-    """Archiva y vacía. Devuelve las filas vaciadas; revienta si algo no quedó."""
-    van = [x for x in plan if not x[4]]
-    if not van:
-        return 0
-    n_hojas = len(_api(tk, 'GET', sid, '?fields=sheets.properties(sheetId)')['sheets'])
-    _api(tk, 'POST', sid, ':batchUpdate', json={'requests': [
-        {'duplicateSheet': {'sourceSheetId': sid_h, 'insertSheetIndex': n_hojas + i,
-                            'newSheetName': h + SUFIJO}}
-        for i, (h, sid_h, _r, _n, _y) in enumerate(van)]})
+def aplicar_prueba(tk, sid, plan, sid_archivo=None):
+    """Archiva y vacía. Devuelve las filas vaciadas; revienta si algo no quedó.
+
+    Ver `que_hacer()`: lo que ya tiene archivo se vacía sólo si sus filas son
+    las mismas que las del archivo.
+    """
+    dest = sid_archivo or sid
+    decide = {}
+    for h, _i, rango, n, ya in plan:
+        igual = ya and n and _tabla(tk, sid, rango) == _tabla(tk, dest, _archivo(h, rango))
+        decide[h] = que_hacer(n, ya, igual)
+    frenan = [h for h, q in decide.items() if q == 'frenar']
+    if frenan:
+        raise RuntimeError(
+            '%s ya tiene(n) su archivo «…%s» y filas que el archivo no tiene: '
+            'no la(s) vacío. Pudo entrar algo después de archivar —quizás de '
+            'la temporada nueva—; mirarlo a mano.' % (', '.join(frenan), SUFIJO))
+    van = [x for x in plan if decide[x[0]] == 'archivar']
+    if van and sid_archivo is None:
+        n_hojas = len(_api(tk, 'GET', sid, '?fields=sheets.properties(sheetId)')['sheets'])
+        _api(tk, 'POST', sid, ':batchUpdate', json={'requests': [
+            {'duplicateSheet': {'sourceSheetId': sid_h, 'insertSheetIndex': n_hojas + i,
+                                'newSheetName': h + SUFIJO}}
+            for i, (h, sid_h, _r, _n, _y) in enumerate(van)]})
+    elif van:
+        # ⚠️ CON `sid_archivo`, `copyTo`: va a otra planilla —la vitrina del
+        # Oficial se archiva en el Operativo— y la deja como «Copia de …», así
+        # que se renombra. El ensayo lo pide con la misma planilla, para
+        # pasar por este camino sin tocar el Oficial.
+        for h, sid_h, _r, _n, _y in van:
+            nueva = _api(tk, 'POST', sid, '/sheets/%d:copyTo' % sid_h,
+                         json={'destinationSpreadsheetId': dest})
+            _api(tk, 'POST', dest, ':batchUpdate', json={'requests': [
+                {'updateSheetProperties': {'properties': {'sheetId': nueva['sheetId'],
+                                                          'title': h + SUFIJO},
+                                           'fields': 'title'}}]})
     # ⚠️ SE VERIFICA EL ARCHIVO ANTES DE VACIAR: un 200 dice que la API
     # aceptó el pedido, no que la copia tiene los datos.
     for h, _i, rango, n, _y in van:
-        copia = rango.replace("'%s'!" % h, "'%s'!" % (h + SUFIJO), 1)
-        if _filas(tk, sid, copia) != n:
+        if _filas(tk, dest, _archivo(h, rango)) != n:
             raise RuntimeError('el archivo de %r no tiene sus %d filas: no vacío nada' % (h, n))
-    _api(tk, 'POST', sid, '/values:batchClear', json={'ranges': [x[2] for x in van]})
+    vaciar = [x for x in plan if decide[x[0]] in ('archivar', 'vaciar') and x[3]]
+    if not vaciar:
+        return 0
+    _api(tk, 'POST', sid, '/values:batchClear', json={'ranges': [x[2] for x in vaciar]})
     total = 0
-    for h, _i, rango, n, _y in van:
+    for h, _i, rango, n, _y in vaciar:
         quedan = _filas(tk, sid, rango)
         if quedan:
             raise RuntimeError('%r quedó con %d filas' % (h, quedan))
@@ -300,18 +412,32 @@ def main_prueba(sid=None):
     aplicar = '--aplicar' in sys.argv
     print('\n══ ARRANQUE: LA FASE DE PRUEBA SE ARCHIVA Y SE VACÍA ══\n')
     tk = token()
-    sid = sid or ids()['operativo']
+    todas = ids()
+    sid = sid or todas['operativo']
     plan = plan_prueba(tk, sid)
-    for h, _i, rango, n, ya in plan:
-        print('   %-20s %s' % (h, 'ya archivada: no se toca' if ya
-                               else '%4d fila(s) · %s' % (n, rango.split('!')[1])))
-    print('\n   NO se toca: Lista de Raperos, AKAs, Config, Pendientes ni lo del Oficial')
-    print('   (las vitrinas se vacían solas: salen de estas hojas)')
+    # la vitrina que no se vacía sola: se archiva en el Operativo, con las otras
+    plan_v = plan_prueba(tk, todas['oficial'], cuales=[VITRINA], sid_archivo=sid)
+    for h, _i, rango, n, ya in plan + plan_v:
+        print('   %-20s %4d fila(s) · %-10s %s' % (
+            h, n, rango.split('!')[1],
+            ('ya archivada' + (' y vacía' if not n else ': se vacía si es lo mismo que el archivo'))
+            if ya else 'se archiva y se vacía'))
+    print('\n   NO se toca: Lista de Raperos, AKAs, Config, Pendientes ni las otras')
+    print('   vitrinas del Oficial (se recalculan solas desde estas hojas)')
     if not aplicar:
         print('\n   (simulacro: no toqué nada — corré con --aplicar)\n')
         return 0
     n = aplicar_prueba(tk, sid, plan)
-    print('\n   ✅ %d fila(s) archivada(s) en «… · prueba» y vaciada(s)\n' % n)
+    n_v = aplicar_prueba(tk, todas['oficial'], plan_v, sid_archivo=sid)
+    # ⚠️ Y SE VUELVE A MIRAR TODO ANTES DE DECIR QUE ARRANCÓ: el pipeline anota
+    # el arranque con lo que esto devuelva.
+    llenas = [h for h, _i, rango, _n, _y in plan if _filas(tk, sid, rango)]
+    llenas += [h for h, _i, rango, _n, _y in plan_v if _filas(tk, todas['oficial'], rango)]
+    if llenas:
+        print('\n   🔴 quedaron con filas: %s\n' % ', '.join(llenas))
+        return 1
+    print('\n   ✅ %d fila(s) cruda(s) y %d de la vitrina archivadas en «… · prueba»'
+          ' (en el Operativo) y vaciadas\n' % (n, n_v))
     return 0
 
 
@@ -335,6 +461,23 @@ def _self_check():
        'Resultados: debajo de su cabecera de la fila 3')
     ok(rango_tabla('1v1', [['otra cosa']], 'Evento #') is None,
        'sin cabecera no hay rango (y no se vacía nada)')
+    # 🔴 la cabecera real de `Eventos Procesados`, del respaldo del 22/09
+    ep = [['', '🔍 Filtrar', '', '', '📊 Resumen'], ['', 'Servidor:', 'Todos'],
+          ['', 'Status:', 'Todos', '', '348'], [],
+          ['#', 'Evento', 'Servidor', 'Fecha', 'Participante', 'Escala', 'Status']]
+    ok(rango_tabla('Eventos Procesados', ep, 'Evento') == "'Eventos Procesados'!A6:G",
+       'Eventos Procesados: desde el `#`, no desde `Evento`')
+    rt = [['#', 'Rapero', 'Sv', 'Rango', 'Puntos'] + ['x'] * 25]
+    ok(rango_tabla('Ranking Temporada', rt, 'Rapero') == "'Ranking Temporada'!A2:AD",
+       'la vitrina: desde el `#` y pasando la Z')
+    ok(que_hacer(85, False, False) == 'archivar', 'sin archivo: se archiva (y se vacía)')
+    ok(que_hacer(0, True, False) == 'nada', 'archivada y vacía: hecha')
+    ok(que_hacer(85, True, True) == 'vaciar',
+       'archivada y con las mismas filas (la corrida se cortó): se vacía')
+    ok(que_hacer(90, True, False) == 'frenar',
+       'archivada y con filas que el archivo no tiene: NO se vacía')
+    ok(VITRINA[0] not in PRUEBA and VITRINA[0] == 'Ranking Temporada',
+       'la vitrina de Temporada se vacía aparte (las otras cuatro se recalculan solas)')
     ok(_col(0) == 'A' and _col(25) == 'Z' and _col(26) == 'AA', 'las letras de las columnas')
     ok('Lista de Raperos' not in PRUEBA and 'AKAs' not in PRUEBA and 'Config' not in PRUEBA,
        'la identidad no está en la lista')
