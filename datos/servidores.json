@@ -174,12 +174,13 @@
    "en_el_sheet": true
   },
   "URBF": {
-   "nombre": "Urban Freestyle Battles",
+   "nombre": "Urban Freestyle",
    "guild_id": "1467763447117778989",
    "invitacion": "https://discord.gg/vThvc9f5xy",
    "en_el_sheet": true,
-   "nota": "el link que venia en la lista (B4FZA2YYcc) llevaba a VFA, otro servidor; Dlx paso el nuevo y verifica · 25/09/2026: el bot entró (Dlx) y se confirmó; TikTok de Dlx",
+   "nota": "el link que venia en la lista (B4FZA2YYcc) llevaba a VFA, otro servidor; Dlx paso el nuevo y verifica · 25/09/2026: el bot entró (Dlx) y se confirmó; TikTok de Dlx · 25/09/2026: Dlx, «para el nombre usa el real, no es Urban Freestyle Battles» — en Discord es «Urban Freestyle | A New Era»",
    "confirmado": true,
+   "tag": "NUEVA GENERACIÓN",
    "redes": [
     [
      "tiktok",
@@ -251,7 +252,7 @@
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
- "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo».",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026).",
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal."

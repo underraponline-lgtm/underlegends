@@ -177,7 +177,7 @@ export const SERVIDORES = [
   { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/qhKcQgU47v' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
-  { sv: 'URBF', nombre: 'Urban Freestyle Battles', guild: '1467763447117778989', invita: 'https://discord.gg/vThvc9f5xy' },
+  { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/vThvc9f5xy' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax' },
 ];
 

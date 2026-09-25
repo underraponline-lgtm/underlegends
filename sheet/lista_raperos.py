@@ -5,6 +5,7 @@
     python sheet/lista_raperos.py --fusionar --aplicar       lo hace
     python sheet/lista_raperos.py --agregar NOMBRE CC ID ["nota"] [--aplicar]
     python sheet/lista_raperos.py --id NOMBRE ID [--aplicar]
+    python sheet/lista_raperos.py --renombrar VIEJO NUEVO ["por qué"] [--aplicar]
     python sheet/lista_raperos.py --sacar-no-confundir A B [--aplicar]
 
 Sin `--aplicar` no escribe nada: dice qué haría.
@@ -210,6 +211,48 @@ def poner_id(nombre, did, aplicar=False):
     return True
 
 
+# ── renombrar ──────────────────────────────────────────────────────────
+def renombrar(viejo, nuevo, motivo='', aplicar=False):
+    """Le cambia el nombre a una fila: `Rapero` (con su bandera) y `Nombre`.
+
+    🔑 NACE DE VALEN, 25/09/2026. El alta automática lo cargó con su apodo
+    de Urban Freestyle —«La Loquita [Uma Cryu]»— mientras en DRA se llama
+    «Catarsis», y hubo que elegir. Ganó el de Urban Freestyle (Dlx: *«debería
+    usar el de urban freestyle, es correcto»*), así que no se usó; pero
+    ningún script sabía cambiar un nombre, y borrar la fila para volver a
+    darla de alta le saca el ID, el país y la verificación.
+
+    ⚠️ EL NOMBRE VIEJO QUEDA EN LAS NOTAS, no se pierde: si una llave lo
+    escribe así, alguien tiene que poder saber quién era.
+    """
+    v = leer()
+    i, col = mapa(v)
+    fs = filas_de(v, viejo)
+    if len(fs) != 1:
+        print('   ⚠️ «%s» está %d veces en la Lista: no sé a cuál renombrar'
+              % (viejo, len(fs)))
+        return False
+    if filas_de(v, nuevo):
+        print('   ⚠️ «%s» ya está en la Lista (fila %d): no se renombra'
+              % (nuevo, filas_de(v, nuevo)[0][0]))
+        return False
+    n, f = fs[0]
+    nota = ('%s · antes «%s» (%s)'
+            % (_celda(f, col.get('Notas')), PAD.limpio(_celda(f, col['Rapero'])),
+               motivo or _ahora_et())).lstrip(' ·')
+    cambios = [('Rapero', ('%s %s' % (nuevo, _bandera(_celda(f, col.get('País'))))).strip()),
+               ('Nombre', nuevo), ('Notas', nota)]
+    for c, x in cambios:
+        print('   fila %d  %-7s %s  ->  %s' % (n, c, _celda(f, col.get(c)) or '—', x))
+    if not aplicar:
+        return True
+    respaldar(v, 'renombrar')
+    for c, x in cambios:
+        _E().poner(_rango(HOJA, '%s%d' % (chr(ord('A') + col[c]), n)), [[x]])
+    print('   ✅ renombrado')
+    return True
+
+
 # ── fusionar dobles ────────────────────────────────────────────────────
 def dobles():
     """[(alias, real)] como los cuenta `construir_akas.py` en cada corrida."""
@@ -360,6 +403,8 @@ def main():
         agregar(args[1], args[2], args[3], args[4] if len(args) > 4 else '', aplicar)
     elif args[0] == '--id' and len(args) == 3:
         poner_id(args[1], args[2], aplicar)
+    elif args[0] == '--renombrar' and len(args) >= 3:
+        renombrar(args[1], args[2], args[3] if len(args) > 3 else '', aplicar)
     elif args[0] == '--sacar-no-confundir' and len(args) == 3:
         sacar_no_confundir(args[1], args[2], aplicar)
     else:
