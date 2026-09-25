@@ -87,6 +87,14 @@ const COMANDOS = [
     ...EN_TODOS_LADOS,
   },
   {
+    // 🔑 Dlx, 25/09/2026: «correcto». Mira en vivo lo que pide el portón y
+    // dice qué falta. No da el rol: eso sigue siendo del ciclo.
+    name: 'verificar',
+    type: 1,
+    description: 'qué te falta para tener tu tarjeta, mirado en Discord ahora mismo',
+    ...EN_TODOS_LADOS,
+  },
+  {
     name: 'help',
     type: 1,
     description: 'qué hace el bot y cómo se usa cada comando',
@@ -102,6 +110,7 @@ const COMANDOS = [
         required: false,
         choices: [
           { name: '/card', value: 'card' },
+          { name: '/verificar', value: 'verificar' },
           { name: '/versus', value: 'versus' },
           { name: '/foto', value: 'foto' },
           { name: '/numeral', value: 'numeral' },

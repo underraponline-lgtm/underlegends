@@ -252,6 +252,32 @@ def limpiar_huerfanas(s, pares):
     return len(sobran)
 
 
+def _porton(padron):
+    """El portón del ciclo, en datos, para el `/verificar` del Worker.
+
+    ⚠️ `revisa` SON DISCORD IDs Y NO NOMBRES: el Worker sólo conoce el ID de
+    quien escribe el comando. `autoverificar._saltear()` mezcla IDs y nombres
+    normalizados, así que los nombres se traducen por el padrón.
+    """
+    out = {'guild': VERIF.GUILD_DRA, 'rol': VERIF.ROL_MIEMBRO, 'paises': {}, 'revisa': []}
+    try:
+        import pais_por_rol as PR
+        out['paises'] = dict(PR.ROLES)
+    except Exception as e:                                # noqa: BLE001
+        print('  ⚠️ /verificar sin los roles de país (%s)' % str(e)[:60])
+    try:
+        import autoverificar as AV
+        sal = AV._saltear()
+        ids = {str(p.get('discord_id')) for p in padron or []
+               if p.get('discord_id') and (str(p.get('discord_id')) in sal
+                                           or AV.norm(p.get('raw')) in sal)}
+        ids |= {x for x in sal if str(x).isdigit() and len(str(x)) >= 15}
+        out['revisa'] = sorted(ids)
+    except Exception as e:                                # noqa: BLE001
+        print('  ⚠️ /verificar sin la lista de revisión (%s)' % str(e)[:60])
+    return out
+
+
 def armar():
     import construir_padron as PAD
     with open(os.path.join(BASE, 'datos', 'competitivo_pool.json'),
@@ -592,6 +618,13 @@ def armar():
         # dia, o sea que el ciclo solo entraria cinco veces. Asi son
         # ~4 KB dentro de un valor que hoy pesa 0,4.
         'cargados': sorted(cargados_sin_carta),
+        # 🔑 EL PORTÓN, PARA `/verificar`. El Worker mira en vivo lo mismo
+        # que el ciclo, y para eso necesita el servidor, el rol de Miembro,
+        # los roles de país y a quién revisa un admin. Viven en
+        # `bot/verificados.py`, `sheet/pais_por_rol.py` y
+        # `bot/autoverificar.py`: publicarlos acá es lo que evita escribir una
+        # copia en el Worker que se desincronice. ~1,5 KB.
+        'porton': _porton(_padron),
         # ⚠️ ACÁ HABÍA UN `req_competitivo` SUELTO Y NO LO LEÍA NADIE. Era de
         # antes de que viajaran los cuatro, y quedó al lado de `req` diciendo
         # lo mismo con otro nombre. No podía discrepar —los dos salen de

@@ -1391,5 +1391,64 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   ok('el canal de avisos de rango se guarda', /666777/.test(texto(r)));
 }
 
+console.log('\n/VERIFICAR\n');
+
+{
+  const { diagnostico, banderasEn, proximaVuelta } = await import('./worker.js');
+  const P = { guild: G.DRA, rol: 'MIEMBRO', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
+              revisa: ['700700'] };
+  ok('las banderas de un apodo, sin repetir', JSON.stringify(banderasEn('Juan 🇦🇷🔥🇦🇷')) === '["ar"]');
+  const d1 = diagnostico(null, P);
+  ok('fuera de DRA: nada', !d1.enDra && !d1.rol && !d1.paises.length);
+  const d2 = diagnostico({ roles: ['R_AR'], user: { username: 'x' } }, P);
+  ok('en DRA con rol de país y sin Miembro', d2.enDra && !d2.rol && d2.paises.join() === 'ar');
+  const d3 = diagnostico({ roles: ['MIEMBRO', 'R_AR', 'R_CL'], user: {} }, P);
+  ok('dos roles de país son dos', d3.rol && d3.paises.length === 2);
+  const d4 = diagnostico({ roles: ['R_CL'], nick: 'Ana 🇺🇸', user: {} }, P);
+  ok('Estados Unidos gana si aparece, como en pais_por_rol', d4.paises.join() === 'us');
+  const d5 = diagnostico({ roles: [], nick: 'Ana 🇵🇪', user: {} }, P);
+  ok('sin rol de país, la bandera del apodo', d5.paises.join() === 'pe');
+  const v1 = proximaVuelta(Date.parse('2026-09-25T16:30:00Z'));   // 12:30 PM ET
+  ok('de día, la vuelta de :52', v1 && v1.toISOString() === '2026-09-25T16:52:00.000Z',
+     v1 && v1.toISOString());
+  const v2 = proximaVuelta(Date.parse('2026-09-25T08:00:00Z'));   // 4:00 AM ET
+  ok('de madrugada, la de las 6:52', v2 && v2.toISOString() === '2026-09-25T10:52:00.000Z',
+     v2 && v2.toISOString());
+
+  // el comando entero, con un miembro de mentira en DRA
+  const antes = globalThis.fetch;
+  const pedirVer = async (id, miembro, estado) => {
+    globalThis.fetch = async (url) => (String(url).indexOf('/members/') >= 0
+      ? new Response(JSON.stringify(miembro || {}), { status: estado || 200 })
+      : new Response('{}', { status: 200 }));
+    env.DISCORD_TOKEN = 'x';
+    META.porton = P;
+    try {
+      return await pedir({ type: 2, guild_id: G.DRA, channel_id: '1',
+                           member: { user: { id } }, data: { name: 'verificar' } });
+    } finally {
+      globalThis.fetch = antes;
+      delete env.DISCORD_TOKEN;
+      delete META.porton;
+    }
+  };
+  let r = await pedirVer('700001', null, 404);
+  ok('fuera de DRA: lo dice y ofrece entrar', /no te encuentro/.test(texto(r)), texto(r));
+  r = await pedirVer('700002', { roles: [], user: { username: 'sinpais' } });
+  ok('sin país: lo pide', /No encuentro tu \*\*país\*\*/.test(texto(r)), texto(r));
+  r = await pedirVer('700003', { roles: ['R_AR', 'R_CL'], user: {} });
+  ok('dos países: pide dejar uno', /dejá uno solo/.test(texto(r)), texto(r));
+  r = await pedirVer('700004', { roles: ['R_AR'], user: {} });
+  ok('completo sin Miembro: el bot se lo da, y dice cuándo',
+     /te lo da el bot solo/.test(texto(r)) && /próxima vuelta arranca/.test(texto(r)), texto(r));
+  await esperarSeguimientos();
+  ok('y lo anota en la cola, para que esa vuelta lo encuentre', !!PUESTO['reg:700004']);
+  r = await pedirVer('700700', { roles: ['R_AR'], user: {} });
+  ok('a quien revisa un admin no se le promete el rol', /lo revisa un admin/.test(texto(r)), texto(r));
+  r = await pedir({ type: 2, guild_id: G.DRA, channel_id: '1',
+                    member: { user: { id: '700005' } }, data: { name: 'verificar' } });
+  ok('sin token ni portón, hace lo de /card: anota y explica', /Ya te anoté/.test(texto(r)), texto(r));
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);
