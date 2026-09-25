@@ -146,6 +146,9 @@ function valor(v) {
     .replace(/__([^\n]*?)__/g, '$1')
     .replace(/\*\*([^\n]*?)\*\*/g, '$1');
   s = stripPy(s).replace(/^`+|`+$/g, '').replace(/^[ *]+|[ *]+$/g, '');
+  // el adorno que quedó sin par: como `_valor()` de Python
+  s = s.replace(/^[ *_`~]+/, '');
+  s = stripPy(s.replace(re('(?:\\*\\*|__|`|~~)+' + S + '*$'), ''));
   if (OTROS_CAMPOS.test(s)) return '';
   if (!re(W).test(s)) return '';
   return s;
@@ -167,22 +170,198 @@ const LINEAS = new RegExp('\r\n|[\n\r\x0b\x0c\x1c\x1d\x1e\x85\u2028\u2029]');
 const ES_CAMPO = re('^' + S + '*[A-ZÁÉÍÓÚÑ]+' + S + '*:');
 const ADORNO = re('^' + '[^\\p{L}\\p{N}_¿¡]+|[^\\p{L}\\p{N}_)\\]!?.]+$', 'g');
 
+// ── el lector ancho: el anuncio de cada servidor, como lo escribe ────────
+//
+// 🔴 EL MISMO DE `bot/anuncios.py` —ver su encabezado de esta parte—. Dlx,
+// 25/09/2026: «cada sv tiene su forma de hacer sus cosas como anunciar».
+// Medido sobre 263 mensajes de los 10 canales: DRA no avisaba NINGÚN evento.
+
+const VOCAB = [
+  [['INICIO', 'DEL', 'TORNEO'], 'horario', 1],
+  [['INICIO', 'DEL', 'EVENTO'], 'horario', 1],
+  [['HORA', 'DE', 'INSCRIPCIONES'], 'inscripciones', 9],
+  [['HORA', 'DE', 'INSCRIPCION'], 'inscripciones', 9],
+  [['HORA', 'INSCRIPCIONES'], 'inscripciones', 9],
+  [['HORA', 'INSCRIPCION'], 'inscripciones', 9],
+  [['HORARIO', 'CONFIRMADO'], 'horario', 2],
+  [['ORGANIZADO', 'POR'], 'organizador', 9],
+  [['FORMATO', 'DE', 'COMPETENCIA'], 'modalidad', 9],
+  [['INICIO'], 'horario', 1],
+  [['HORARIOS'], 'horario', 2],
+  [['HORARIO'], 'horario', 2],
+  [['CUANDO'], 'horario', 2],
+  [['ARRANCA'], 'horario', 2],
+  [['COMIENZA'], 'horario', 2],
+  [['EMPIEZA'], 'horario', 2],
+  [['HORA'], 'horario', 3],
+  [['FECHA'], 'fecha', 9],
+  [['DIA'], 'fecha', 9],
+  [['ORGANIZADORES'], 'organizador', 9],
+  [['ORGANIZADORA'], 'organizador', 9],
+  [['ORGANIZADOR'], 'organizador', 9],
+  [['ORGANIZACION'], 'organizador', 9],
+  [['ORGANIZACIOR'], 'organizador', 9],
+  [['ORGANIZADO'], 'organizador', 9],
+  [['ORGANIZA'], 'organizador', 9],
+  [['CUPOS'], 'cupos', 9],
+  [['CUPO'], 'cupos', 9],
+  [['RANGOS'], 'rango', 9],
+  [['RANGO'], 'rango', 9],
+  [['MODALIDAD'], 'modalidad', 9],
+  [['FORMATO'], 'modalidad', 9],
+  [['PREMIOS'], 'premios', 9],
+  [['PREMIO'], 'premios', 9],
+  [['RECOMPENSA'], 'premios', 9],
+  [['JURADOS'], 'jurado', 9],
+  [['JURADO'], 'jurado', 9],
+  [['JUECES'], 'jurado', 9],
+  [['JUEZ'], 'jurado', 9],
+  [['DJ'], 'dj', 9],
+  [['HOST'], 'host', 9],
+  [['INSCRIPCIONES'], 'inscripciones', 9],
+  [['INSCRIPCION'], 'inscripciones', 9],
+  [['TORNEO'], 'titulo', 9],
+];
+
+const NO_TITULOS = ['SUPLENTES', 'CLASIFICADOS', 'RESULTADOS', 'FELICIDADES',
+  'CANCELAD', 'POSTERGAD', 'SE CANCELA', 'LLAVE', 'BRACKET'];
+
+const NS = '[^' + S.slice(1);
+const MARCAS = /<a?:\w+:\d+>|<@!?&?\d+>|<#\d+>|<t:-?\d+(?::[a-zA-Z])?>/g;
+const MARCA_ES = re('\\p{M}');
+
+/** `↝**__𝐂𝐔𝐏𝐎𝐒__**: ♾️` -> `CUPOS :`, como `norm_linea()` de Python. */
+export function normLinea(s) {
+  const t = String(s == null ? '' : s).replace(MARCAS, ' ').normalize('NFKD');
+  let out = '';
+  for (const c of Array.from(t)) {
+    if (MARCA_ES.test(c)) continue;
+    for (const u of Array.from(c.toUpperCase())) {
+      out += (u >= 'A' && u <= 'Z') || (u >= '0' && u <= '9') || u === ':' ? u : ' ';
+    }
+  }
+  return out.split(' ').filter(Boolean).join(' ');
+}
+
+const toks = (nl) => nl.replace(/:/g, ' : ').split(' ').filter(Boolean);
+
+/** `[tipo, prioridad, palabras]` si la línea normalizada es un campo. */
+export function campoLinea(nl) {
+  const t = toks(nl);
+  for (const [pal, tipo, pri] of VOCAB) {
+    if (pal.every((p, i) => t[i] === p)) {
+      const resto = t.slice(pal.length);
+      if (tipo === 'titulo' && (!resto.length || resto[0] !== ':')) return null;
+      if (!resto.length || resto[0] === ':' || resto.length <= 8) return [tipo, pri, pal.length];
+      return null;
+    }
+  }
+  return null;
+}
+
+function dosPuntos(s) {
+  let dentro = 0;
+  for (let i = 0; i < s.length; i++) {
+    const c = s[i];
+    if (c === '<') dentro++;
+    else if (c === '>' && dentro) dentro--;
+    else if ((c === ':' || c === '：') && !dentro) return i;
+  }
+  return -1;
+}
+
+function valorLinea(raw, k, siguientes) {
+  const r = limpio(raw);
+  const i = dosPuntos(r);
+  if (i >= 0) {
+    const v = valor(r.slice(i + 1));
+    if (v) return v;
+  } else {
+    const resto = toks(normLinea(r)).slice(k).join(' ');
+    if (resto) return resto;
+  }
+  for (const s of siguientes.slice(0, 3)) {
+    if (stripPy(s)) {
+      if (campoLinea(normLinea(s))) return '';
+      return valor(limpio(s));
+    }
+  }
+  return '';
+}
+
+/** `{tipo: valor}` de las líneas que son campos. Ver `campos_lineas()`. */
+export function camposLineas(texto) {
+  const lineas = String(texto == null ? '' : texto).split(LINEAS);
+  const out = {};
+  const pri = {};
+  for (let i = 0; i < lineas.length; i++) {
+    const c = campoLinea(normLinea(lineas[i]));
+    if (!c) continue;
+    const [tipo, p, k] = c;
+    if (tipo in out && (tipo !== 'horario' || pri[tipo] <= p)) continue;
+    out[tipo] = valorLinea(lineas[i], k, lineas.slice(i + 1));
+    pri[tipo] = p;
+  }
+  return out;
+}
+
+/** La tarjeta del Centro de Competencias de DRA: `🏆 NOMBRE` en un embed. */
+function tarjeta(m) {
+  for (const e of (m && m.embeds) || []) {
+    const t = stripPy(String((e && e.title) || ''));
+    if (t.startsWith('🏆') && normLinea(e.description).includes('INSCRIB')) {
+      return Array.from(stripPy(t.slice('🏆'.length))).slice(0, 70).join('');
+    }
+  }
+  return '';
+}
+
+function sinMd(l) {
+  let s = String(l == null ? '' : l);
+  for (const x of ['**', '__', '~~', '`', '*']) s = s.split(x).join('');
+  return stripPy(stripPy(s).replace(/^[#>-]+/, ''));
+}
+
+const stripBordes = (s, cs) => {
+  const a = Array.from(s);
+  let i = 0;
+  let j = a.length;
+  while (i < j && cs.includes(a[i])) i++;
+  while (j > i && cs.includes(a[j - 1])) j--;
+  return a.slice(i, j).join('');
+};
+const LINK = re('@everyone|@here|https?://' + NS + '+|<t:-?\\d+(?::[a-zA-Z])?>', 'g');
+const VACIO_EN_CAJA = re('[\\[(][^\\p{L}\\p{N}_\\[\\]()]*[\\])]', 'g');
+
+/** Una línea -> el título limpio, o `''`. Ver `_titulo()` de Python. */
+function titulo(l) {
+  let s = sinMd(l).replace(LINK, '');
+  if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(s)) return '';
+  if (s.includes('╎')) {
+    const partes = s.split('╎').map(stripPy).filter(Boolean);
+    // el PRIMERO de los más largos, como `max(..., key=len)`
+    if (partes.length) s = partes.reduce((a, b) => (largo(b) > largo(a) ? b : a));
+  }
+  for (const [a, b] of [['『', '』'], ['「', '」'], ['〈', '〉']]) {
+    const i = s.indexOf(a);
+    const j = i >= 0 ? s.indexOf(b, i + 1) : -1;
+    if (i >= 0 && j > i) { s = s.slice(i + 1, j); break; }
+  }
+  s = s.replace(VACIO_EN_CAJA, ' ');
+  s = stripBordes(s.replace(ADORNO, ''), '_ ');
+  if (s.startsWith('(') && s.endsWith(')')) s = stripPy(s.slice(1, -1));
+  if (s.endsWith(')') && !s.includes('(')) s = s.slice(0, -1);
+  if (s.endsWith(']') && !s.includes('[')) s = s.slice(0, -1);
+  s = stripBordes(s.replace(ADORNO, ''), '_ ').normalize('NFKC');
+  return largo(s) >= 3 ? Array.from(s.replace(re(S + '+', 'g'), ' ')).slice(0, 70).join('') : '';
+}
+
 export function nombreDe(texto) {
   for (const l of limpio(texto).split(LINEAS)) {
-    let s = stripPy(l).replace(/^[#*_ ]+|[#*_ ]+$/g, '');
-    if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(s)) continue;
-    if (ES_CAMPO.test(s)) continue;
-    if (s.includes('╎')) {
-      const partes = s.split('╎').map(stripPy).filter(Boolean);
-      if (partes.length) {
-        // el PRIMERO de los más largos, como `max(..., key=len)`
-        s = partes.reduce((a, b) => (largo(b) > largo(a) ? b : a));
-      }
-    }
-    s = s.replace(ADORNO, '');
-    if (largo(s) >= 3) {
-      return Array.from(s.replace(re(S + '+', 'g'), ' ')).slice(0, 70).join('');
-    }
+    if (campoLinea(normLinea(l))) continue;
+    if (ES_CAMPO.test(sinMd(l))) continue;
+    const t = titulo(l);
+    if (t) return t;
   }
   return '';
 }
@@ -190,16 +369,22 @@ export function nombreDe(texto) {
 /** Un mensaje -> un anuncio, o `null` si no parece uno. Ver `parsear()`. */
 export function parsearAnuncio(m) {
   const txt = (m && m.content) || '';
-  const nombre = nombreDe(txt);
+  const anchos = camposLineas(txt);
+  const tj = stripPy(txt) ? '' : tarjeta(m);
+  const nombre = tj || titulo(anchos.titulo || '') || nombreDe(txt);
   const p = {};
-  let cuantos = 0;
-  for (const k of Object.keys(CAMPOS)) {
-    p[k] = campo(txt, CAMPOS[k]);
-    if (p[k]) cuantos++;
-  }
-  // 🔴 LA FIRMA ES TENER DOS CAMPOS DE LA PLANTILLA, como en Python: en
-  // estos canales también se pega un link, un @everyone o una tabla.
-  if (cuantos < 2 || !nombre) return null;
+  for (const k of Object.keys(CAMPOS)) p[k] = campo(txt, CAMPOS[k]);
+  // la plantilla manda donde la hay; el lector ancho completa
+  for (const k of Object.keys(p)) if (!p[k] && anchos[k]) p[k] = anchos[k];
+  // 🔴 LA FIRMA SON DOS CAMPOS PRESENTES, como en Python
+  const tipos = new Set(Object.keys(p).filter((k) => p[k]));
+  for (const k of Object.keys(anchos)) if (k !== 'titulo') tipos.add(k);
+  if (tj) { tipos.add('tarjeta'); tipos.add('boton'); }
+  if ((tipos.has('horario') || tipos.has('fecha')) &&
+      (txt.includes('@everyone') || txt.includes('@here'))) tipos.add('mencion');
+  if (tipos.size < 2 || !nombre) return null;
+  const n = normLinea(nombre);
+  if (NO_TITULOS.some((x) => n.startsWith(x)) || n === 'PRUEBA') return null;
   return {
     nombre, horario: p.horario, modalidad: p.modalidad,
     cupos: p.cupos, premios: p.premios, organizador: p.organizador,

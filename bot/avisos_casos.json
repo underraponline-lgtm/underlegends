@@ -2,6 +2,18 @@
  "casos": [
   {
    "sv": "FFA",
+   "id": "1552914314527248445",
+   "timestamp": "2026-09-25T05:27:04.336000+00:00",
+   "content": "Probando…",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "FFA",
    "id": "1552532949776474147",
    "timestamp": "2026-09-24T04:11:39.894000+00:00",
    "content": "** • <:FFA:1514883571909791814>  ╎ ELRAP FECHA 6 ╎ <:FFA:1514883571909791814>  • **\n\n💻  __`ORGANIZADOR: @nachonc_ `__\n🎫 __`CUPOS::infinity:`__\n🔮 __`RANGO:Bronce`__\n🌘 __`MODALIDAD:Pandillas`__\n💵 __`PREMIOS:Respeto`__\n⌚ __`HORARIO:EN 15`__\n\n**  📋 | __INDICACIONES:__\n\n1.▫️ 📓  Inscríbete en el canal de <#1> con tu AKA o nombre de usuario más la bandera de tu nacionalidad. (Ejemplo: LEWITO 🇦🇷 ) \n\n2. ▫️ 📡 Revisa que tu micrófono y conexión a internet estén estables para que no tengas ningún inconveniente a la hora de rapear.\n\n3. ▫️ 🎙️  Entra a la hora que los organizadores hagan el anuncio de que todos los inscritos ya pueden entrar al canal de voz. \n\n🔝 | LINK DEL SERVIDOR:\nhttps://discord.gg/T2RY9vAAQ\n\n🔊 [ @everyone ] **",
@@ -79,7 +91,7 @@
    "content": "# el que diga 7 parrafos de vencer gana x nocaut tecnico_◛\n\n💻  __`ORGANIZADOR:`__ yio  \n🎫 __`CUPOS:`__ 12/16/24/32/36\n🔮 __`RANGO:`__ diamante tunesino a lo galatasaray \n🌘 __`MODALIDAD:`__ 1v1 compe trol\n💵 __`PREMIOS:`__ Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7\n⌚ __`HORARIO:`__ ahora\n👨‍⚖️ jurado yo emsi\n💽 __`DJ`__  yo\n🎤 __`HOST:`__  yo\n\n  📋 | INDICACIONES:\n\n1.▫️ 📓  Inscríbete en el canal de #•「📝」inscripciones  con tu AKA7 o nombre de usuario más la bandera de tu nacionalidad. (Ejemplo: _yo emsi) \n\n▫️ 📡 Revisa que tu micrófono y conexión  a internet estén estables para que no tengas ningún inconveniente a la hora de rapear.\n\n▫️ 🎙️  Entra a la hora que los organizadores hagan el anuncio de que todos los inscritos ya pueden entrar al canal de voz.\n\n🔊 [ @everyone ]",
    "espera": {
     "es": true,
-    "nombre": "el que diga 7 parrafos de vencer gana x nocaut tecnico_",
+    "nombre": "el que diga 7 parrafos de vencer gana x nocaut tecnico",
     "horario": "ahora",
     "ini": "2026-09-23T03:13:45"
    }
@@ -127,8 +139,8 @@
    "content": "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n# <a:purplefire:1514512450228195390>   • ⚓<:FFA:1514509117459533954>🛶 ╎_ARKA MULTIVERSE VOL.1_╎ 🛶<:FFA:1514509117459533954>⚓ •  <a:purplefire:1514512450228195390>\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n## 💵 __`PREMIOS:`__ <a:mundo:1148738206444048404> Clasificacion ᴘʟᴀᴛᴀ ɪɪɪ <a:b_segundo:1045341449811673148> y Rol De Campeon <a:fuegoamarillo:1446747749092425781><a:Mundoamrillo:1230771261202763807><a:fuegoamarillo:1446747749092425781>\n** 🔮 __`RANGO:`__ Competencia De Ascenso Rango ᴘʟᴀᴛᴀ ɪɪɪ <a:b_segundo:1045341449811673148> <a:Mundoamrillo:1230771261202763807>\n- 1 Campeonato 🥇\n** 🎫 __`CUPOS:`__ 0/16\n🌘 __`MODALIDAD:`__ Multiverse \n🗓️ 𝐅𝐄𝐂𝐇𝐀 - 21/09\nLunes, 21 Septiembre\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n⌚ __`𝐇𝐎𝐑𝐀𝐑𝐈𝐎:`__ ⭐ 4:45PM HORA MEXICO CENTRAL (INSCRIPCIONES 30 MIN ANTES) ⭐\n💻  __`ORGANIZADOR:`__ <@1> <@1> \n👨‍⚖️ __`JURADO:`__ <@1> <@1> <@1> <@1>\n💽 __`DJ:`__ <@1> <@1> <@1> \n🎤 __`HOST:`__ <@1> \n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n@everyone",
    "espera": {
     "es": true,
-    "nombre": "_ARKA MULTIVERSE VOL.1_",
-    "horario": "",
+    "nombre": "ARKA MULTIVERSE VOL.1",
+    "horario": "⭐ 4:45PM HORA MEXICO CENTRAL (INSCRIPCIONES 30 MIN ANTES) ⭐",
     "ini": null
    }
   },
@@ -152,7 +164,7 @@
    "espera": {
     "es": true,
     "nombre": "ELRAP",
-    "horario": "EN 15 __",
+    "horario": "EN 15",
     "ini": "2026-09-20T22:00:23"
    }
   },
@@ -169,25 +181,13 @@
    }
   },
   {
-   "sv": "FFA",
-   "id": "1551040155052286083",
-   "timestamp": "2026-09-20T01:19:49.897000+00:00",
-   "content": "# 🌌 BELLAS ARTES VOL8🌌\n\n🗓️ **Detalles de la Batalla**\n\n● FECHA:  HOY PE MANO\n\n● HORA: EN 20 MINUTOS\n\n- **PREMIO** ROL CAMPEÓN, PUNTOS RANKING Y CLASIFICACIÓN A COMPE RANGO ORO II (PREMIO: 50DLS)\n\n● ESCENARIO: 📍ESCENARIO (literalmente)\n\n● FORMATO: ⚔️  1VS1\n\n- **RANGO** PLATA III🥈\n\n- **ORGANIZADOR** \n<@1> <@1> \n\n● JUECES: 🧑‍⚖️\n<@1> <@1> <@1> \n\n● DJ: 💿  \n<@1> @zzz._5  <@1> \n\n● HOST: 🎤 \n<@1> \n\n🏆 **La Recompensa**\n\n● PREMIO: ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II\n\n● **<a:rainbowfire:1514512525721342042>CLASIFICADOS<a:rainbowfire:1514512525721342042>**\n\n- <a:HONDURAS:1340260916704313386> **RESPAWN** <a:HONDURAS:1340260916704313386> \n- <a:VENEZUELA:1340259082711339039> **OG** <a:VENEZUELA:1340259082711339039> \n- <a:CHILE:1340257073086205992> **PANCHOK** <a:CHILE:1340257073086205992>\n- <a:ARGENTINA:1340255630623248425> **MCNADIE** <a:ARGENTINA:1340255630623248425>\n- <a:ARGENTINA:1340255630623248425> **PICHULITA** <a:ARGENTINA:1340255630623248425>\n- <a:ECUADOR:1340258109284814868> **LILLAÑO** <a:ECUADOR:1340258109284814868>\n- <a:REPUBLICADOMINICANA:1340258132886032414>  **ZIGNOS** <a:REPUBLICADOMINICANA:1340258132886032414> \n\n⚠️** Reglas del Ring**\n\n● Respeto al rival y al jurado: Las batallas se ganan con rimas, no rompiendo las normas del server.\n\n● Micrófonos listos: Asegúrate de tener buen audio para que no se corte tu beat.\n\n● Tiempos: Respeta las entradas y las réplicas establecidas por los jueces.\n\n📝** ¿Cómo inscribirte? **\n\n> Para subirte a la tarima, inscríbete en el canal inscripciones y demuestra tu carácter.\n\n## ¡Cupos limitados! No te quedes fuera de la galaxia del freestyle. 🚀🎙️\n@everyone",
-   "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
-    "ini": null
-   }
-  },
-  {
    "sv": "SR",
    "id": "1551986115077087393",
    "timestamp": "2026-09-22T15:58:44.342000+00:00",
    "content": "# 🥷🏼 **__RAP EXHIBITION 1/8__** 🎙️\n\n▫️ **ORGANIZADOR**: <@1> \n\n◾️ **HORA INSCRIPCIONES**: <t:1790107200:F>\n\n▫️ **INICIO DEL TORNEO**: <t:1790109000:F>\n\n◾️ **CUPOS**: ILIMITADOS\n\n▫️ **PREMIOS**: Clasificación **DIRECTA** a la ***GRAN FINAL RANGO*** 1️⃣ y puntos de <#1> \n\n▫️ **RANGO**: 2\n\n◾️ **MODALIDAD**: 1v1\n\n❗️ *ATENTOS A* https://discord.com/channels/492346406976356374/902968501239693372 @everyone",
    "espera": {
     "es": true,
-    "nombre": "__RAP EXHIBITION 1/8__",
+    "nombre": "RAP EXHIBITION 1/8",
     "horario": "<t:1790109000:F>",
     "ini": "2026-09-22T20:30:00"
    }
@@ -200,8 +200,8 @@
    "espera": {
     "es": true,
     "nombre": "SNAKE INSIGNIA",
-    "horario": "",
-    "ini": null
+    "horario": "<t:1789758000:F>",
+    "ini": "2026-09-18T19:00:00"
    }
   },
   {
@@ -210,10 +210,10 @@
    "timestamp": "2026-09-16T02:18:24.099000+00:00",
    "content": "# 🉐 __DESGRACIAS EN TOKYO VOL.5__ 🉐\n\n\n「Llegan las competencias más **Raperas** de discord,una edición pandillas hecha por **Lewito** que consiste en (depende la cantidad de inscritos):\n\n📝 | 𝐅𝐎𝐑𝐌𝐀𝐓𝐎\n\n1️⃣6️⃣ | 𝐎𝐂𝐓𝐀𝐕𝐎𝐒 𝐃𝐄 𝐅𝐈𝐍𝐀𝐋: 4x4 3E Libre\n8️⃣ | 𝐂𝐔𝐀𝐑𝐓𝐎𝐒 𝐃𝐄 𝐅𝐈𝐍𝐀𝐋: 4x4 3E Libre\n🏅 | 𝐒𝐄𝐌𝐈 - 𝐅𝐈𝐍𝐀𝐋𝐄𝐒: Minuto Libre compartido Ida - Vuelta\n🥇 | 𝐅𝐈𝐍𝐀𝐋: Survival\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n🥷 | 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑: <@1> \n🗓️ | 𝐇𝐎𝐑𝐀𝐑𝐈𝐎: AHORA\n🎟️ | 𝐂𝐔𝐏𝐎𝐒: 24 / 16 / 12\n🎖️ | 𝐑𝐀𝐍𝐆𝐎: 4\n🏆 | 𝐏𝐑𝐄𝐌𝐈𝐎: PUNTOS DE ASCENSO\n\n**Las 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 se abren 20 minutos antes del inicio de la competencia**\n\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n📋 | 𝐈𝐍𝐃𝐈𝐂𝐀𝐂𝐈𝐎𝐍𝐄𝐒:\n\n🎙️ • ***Asegurarse de tener el microfono sin dificultades antes de ponerse a rapear para no tener que repetir las entradas***\n\n📡 • ***Fijarse la estabilidad de tu conexión a internet para no tener dificultad para rapear***\n\n⚠️ • ***Inscribirse con tu AKA o con tu nombre de usuario en el canal de 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 con tu nacionalidad.\nEje: Lewito 🇦🇷***\n\n@everyone",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
-    "ini": null
+    "es": true,
+    "nombre": "DESGRACIAS EN TOKYO VOL.5",
+    "horario": "AHORA",
+    "ini": "2026-09-16T02:18:24"
    }
   },
   {
@@ -222,9 +222,9 @@
    "timestamp": "2026-09-15T23:05:44.727000+00:00",
    "content": "❪ 🗽 ❫『**__GENESIS BATTLES__**』❪ 🗽 ❫ \nFecha 6\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:tg2:1446228558463766709>   ↝**__CUPOS__**: ♾️\n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:rango2:1446228667893022830>   ↝**__RANGO__**: 4\n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》🥋   ↝**__MODALIDAD__**: PANDILLAS\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n》🧑‍⚖️   ↝**__ORGANIZADO POR__**: <@1> \n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:premio:1130124247805730836>   ↝**__PREMIOS__**: PTS TABLA\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:calendario:1130123739804209203>   ↝**__HORA INSCRIPCIONES__**: 20:00 🇨🇱\n\n**__INICIO__**: 20:30 🇨🇱\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n## FECHA 6\n<:SNKverde:1164919135487135775> ||  @everyone  || <:SNKverde:1164919135487135775>",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
+    "es": true,
+    "nombre": "GENESIS BATTLES",
+    "horario": "20:30 🇨🇱",
     "ini": null
    }
   },
@@ -234,10 +234,10 @@
    "timestamp": "2026-09-14T17:10:33.415000+00:00",
    "content": "══════════════════════\n                   <:GODZ:1548017814177194065> **ᏵᏫᎠᏃ** <:GODZ:1548017814177194065>\n  🌊 **\"Las mareas de Poseidón\"** 🌀\n╚═══════ ✦ <:mercante:1446236833347403836>✦ ════════╝\n\n<:rapper:1265822283394584697>┇𝗠𝗢𝗗𝗔𝗟𝗜𝗗𝗔𝗗: 1🆚️1\n\n🚸┇𝗖𝗨𝗣𝗢𝗦: 16\n\n<:rango4:1446235444118294539>┇𝗥𝗔𝗡𝗚𝗢: <:3snake:1266108850793222244>\n\n<:R2:1446231831555870891>┇𝗣𝗥𝗘𝗠𝗜𝗢𝗦: Puntos de ascenso + Puntos de ranking GØÐZ\n\n🧑‍⚖️┇𝗢𝗥𝗚𝗔𝗡𝗜𝗭𝗔𝗗𝗢 𝗣𝗢𝗥: <@1>\n\n<:calendario:1130123739804209203>┇𝗗𝗜𝗔: 14/09\n\n⏰┇𝗛𝗢𝗥𝗔 𝗜𝗡𝗦𝗖𝗥𝗜𝗣𝗖𝗜𝗢𝗡𝗘𝗦: *<t:1789411500:t>*\n\n<:microenmano:1178644200368119808>┇𝗜𝗡𝗜𝗖𝗜𝗢 𝗗𝗘𝗟 𝗧𝗢𝗥𝗡𝗘𝗢: *<t:1789412400:t>*\n\n<:flechaROJA:1130127809323470939> **ATENTOS A** https://discord.com/channels/492346406976356374/902968501239693372 @everyone\n\nhttps://discord.gg/qsJfzeqT?event=1549105012293247086",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
-    "ini": null
+    "es": true,
+    "nombre": "Las mareas de Poseidón",
+    "horario": "<t:1789412400:t>",
+    "ini": "2026-09-14T19:00:00"
    }
   },
   {
@@ -294,8 +294,8 @@
    "timestamp": "2026-09-03T21:21:47.289000+00:00",
    "content": "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n## <:REGLAS:1078494014480846898> **FIRE RAP** <:REGLAS:1078494014480846898>\n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\n♪ COMPE DE ASCENSO | RANGO *4* ♪\n\n📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n<:reloj_snk:1446232058249609216> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 - <:reloj_snk:1446232058249609216>\n\n*<t:1788470428:t>*\n\n<:organizador:1130121095618502738> - 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 - <:organizador:1130121095618502738>\n\n*Velatz 🇨🇱 <@1> *\n\n<:tg:1446232212805521493> - 𝐂𝐔𝐏𝐎𝐒 - <:tg:1446232212805521493>\n\n*12/16*\n\n<:rango3:1446232286797238463> - 𝐑𝐀𝐍𝐆𝐎 - <:rango3:1446232286797238463> \n\n*Rango 4*\n\n<:flechaROJA:1130127809323470939> *Atentos a <#1>* @everyone",
    "espera": {
-    "es": false,
-    "nombre": "",
+    "es": true,
+    "nombre": "FIRE RAP",
     "horario": "",
     "ini": null
    }
@@ -318,9 +318,9 @@
    "timestamp": "2026-08-30T21:30:27.633000+00:00",
    "content": "❪ 🚙  ❫『**__MITSUBISHI__**』❪ 🚙 ❫ \nFecha 1\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:tg2:1446228558463766709>   ↝**__CUPOS__**: ♾️\n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:rango2:1446228667893022830>   ↝**__RANGO__**: 4\n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》🥋   ↝**__MODALIDAD__**: 2V2\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n》🧑‍⚖️   ↝**__ORGANIZADO POR__**: <@1> \n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:premio:1130124247805730836>   ↝**__PREMIOS__**: PTS TABLA\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:calendario:1130123739804209203>   ↝**__HORA INSCRIPCIONES__**: 17:30 🇨🇱\n\n**__INICIO__**: 18:00 🇨🇱\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n## FECHA 1\n<:SNKverde:1164919135487135775> ||  @everyone  || <:SNKverde:1164919135487135775>",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
+    "es": true,
+    "nombre": "MITSUBISHI",
+    "horario": "18:00 🇨🇱",
     "ini": null
    }
   },
@@ -342,9 +342,9 @@
    "timestamp": "2026-08-29T16:41:47.269000+00:00",
    "content": "❪ 🗽 ❫『**__GENESIS BATTLES__**』❪ 🗽 ❫ \nFecha 5\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:tg2:1446228558463766709>   ↝**__CUPOS__**: ♾️\n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:rango2:1446228667893022830>   ↝**__RANGO__**: 4\n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》🥋   ↝**__MODALIDAD__**: MULTIVERSE\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n》🧑‍⚖️   ↝**__ORGANIZADO POR__**: <@1> \n\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:premio:1130124247805730836>   ↝**__PREMIOS__**: PTS TABLA\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n\n 》<:calendario:1130123739804209203>   ↝**__HORA INSCRIPCIONES__**: 21:00 🇨🇱\n\n**__INICIO__**: 21:30 🇨🇱\n▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰\n## FECHA 5\n<:SNKverde:1164919135487135775> ||  @everyone  || <:SNKverde:1164919135487135775>",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
+    "es": true,
+    "nombre": "GENESIS BATTLES",
+    "horario": "21:30 🇨🇱",
     "ini": null
    }
   },
@@ -366,9 +366,9 @@
    "timestamp": "2026-07-26T22:35:41.164000+00:00",
    "content": "# <:CorazonLleno:1529338625215434943> ¡SE LLEGÓ LA GRAN NOCHE! <:CorazonLleno:1529338625215434943> \n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\nDespués de cinco ediciones, decenas de batallas y un solo camino posible...\n\n**Hoy conoceremos al sobreviviente definitivo. <:1E_Bandido_UL:999878103243444294> **\n\nCinco campeones entrarán al escenario.\nSolo uno saldrá como el **CAMPEÓN SUPREMO de __5 Vidas Legends__ <a:CORONAGOD:1514510571494572122> **\n\n**`HORARIO CONFIRMADO:`**\n<a:Mexico:1163705533040173146><a:1038costaricaflag:1514526756391096401> 19:30\n<a:Colombia:1163705474840023102><a:Peru:1163705579248820285> 20:30\n<a:Venezuela:1163705627583975495><a:PR:1163705589646508032> 21:30\n<a:Argentina:1163705360599748618><a:Uruguay:1163705608025939978> 22:30\n\n**`STAFF CONFIRMADO EN FLYER.`**\n\n\n🔔 @everyone",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
+    "es": true,
+    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
+    "horario": "19:30",
     "ini": null
    }
   },
@@ -450,9 +450,9 @@
    "timestamp": "2026-07-20T19:05:19.371000+00:00",
    "content": "# <:CorazonLleno:1490454635901620274> ¡5 VIDAS LEGENDS - Edición #5! <:CorazonLleno:1490454635901620274> \n▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n\nHoy se completará toda la lista, y saldrá el último **SOBREVIVIENTE** <:1E_Bandido_UL:999878103243444294> para la edición final de **CAMPEONES** <a:corona_gif_UL:993007650801471488> \n\nCinco participantes.\nCinco oportunidades.\nUna sola meta: sobrevivir.\n\n**<a:calendario:999875080484036608> FECHA:** Hoy, Lunes 20 Jul.\n\n**<a:reloj_gif_UL:993007772570505267> HORARIO:**\n<a:Mexico:1163705533040173146><a:1038costaricaflag:1514526756391096401> 16:00\n<a:Colombia:1163705474840023102><a:Peru:1163705579248820285> 17:00\n<a:Venezuela:1163705627583975495><a:PR:1163705589646508032> 18:00\n<a:Argentina:1163705360599748618><a:Uruguay:1163705608025939978> 19:00\n\n**<a:atencion_UL:989907977530126416> Las inscripciones estarán abiertas 10 minutos antes en este mismo canal.**\n\n> **`LOS MC’s QUE YA PARTICIPARON EN ESTA TEMPORADA, NO PODRÁN COMPETIR DE NUEVO.`**\n\n<a:ping_UL:1066430988000964738> @everyone",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
+    "es": true,
+    "nombre": "¡5 VIDAS LEGENDS - Edición #5!",
+    "horario": "16:00",
     "ini": null
    }
   },
@@ -510,9 +510,9 @@
    "timestamp": "2026-07-05T22:48:06.479000+00:00",
    "content": "# <a:fuegoazuloscuro:1446747770768592907> ¡TRAP SEASON vol.3! <a:fuegoazuloscuro:1446747770768592907> \n\nUna competencia con la esencia del TRAP, dónde el flow, la musicalidad, los punchlines y la puesta en escena serán clave para alcanzar la victoria.\n\n**<a:calendario:999875080484036608> FECHA:** Hoy, Domingo 5 Jul.\n\n**<a:reloj_gif_UL:993007772570505267> HORARIO:**\n<a:Mexico:1163705533040173146>🇨🇷 17:00\n<a:Colombia:1163705474840023102><a:Peru:1163705579248820285> 18:00\n<a:Venezuela:1163705627583975495><a:PR:1163705589646508032> 19:00\n<a:Argentina:1163705360599748618><a:Uruguay:1163705608025939978> 20:00\n\n**<a:atencion_UL:989907977530126416> Las inscripciones estarán abiertas desde ahora por el canal de <#1> **\n\n<a:ping_UL:1066430988000964738> @everyone",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
+    "es": true,
+    "nombre": "¡TRAP SEASON vol.3!",
+    "horario": "🇨🇷 17:00",
     "ini": null
    }
   },
@@ -522,10 +522,10 @@
    "timestamp": "2026-07-01T22:16:14.001000+00:00",
    "content": "@everyone\n\n# 🏆 **EVENTO FINAL — RANKING INTERSERVER HERMANDAD** 🏆\n\nLlegó el cierre. Hoy definimos todo en el último evento del ranking interserver. 🔥\n\n🗓️ **Cuándo:** <t:1782946800:F>\n⏳ **Arranca:** <t:1782946800:R>\n\n📝 **INSCRIPCIONES ABIERTAS YA**\n♾️ Cupos infinitos — si querés competir, este es tu momento.\n\n# ✅ Para anotarte, reaccioná a este mensaje con ✅\n\n¡Nos vemos en tarima! 🎤🔥",
    "espera": {
-    "es": false,
-    "nombre": "",
-    "horario": "",
-    "ini": null
+    "es": true,
+    "nombre": "EVENTO FINAL — RANKING INTERSERVER HERMANDAD",
+    "horario": "<t:1782946800:F>",
+    "ini": "2026-07-01T23:00:00"
    }
   },
   {
@@ -536,6 +536,186 @@
    "espera": {
     "es": true,
     "nombre": "RAPEROS UNDERDOGS",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521426427118092359",
+   "timestamp": "2026-06-30T08:05:26.961000+00:00",
+   "content": "`Discord Rap En Español | Aprende A Rapear • Cyphers 24/7 • Producción Musical's #┃bienvenido` has left the connection",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521426425285185577",
+   "timestamp": "2026-06-30T08:05:26.524000+00:00",
+   "content": "Cakey detectó webhook ✅",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521426421577289839",
+   "timestamp": "2026-06-30T08:05:25.640000+00:00",
+   "content": "Cakey detectó webhook ✅",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521426420046364753",
+   "timestamp": "2026-06-30T08:05:25.275000+00:00",
+   "content": "`Discord Rap En Español | Aprende A Rapear • Cyphers 24/7 • Producción Musical's #💬┃general` has left the connection",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521426419471618108",
+   "timestamp": "2026-06-30T08:05:25.138000+00:00",
+   "content": "SA",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521425346208206858",
+   "timestamp": "2026-06-30T08:01:09.252000+00:00",
+   "content": "Cakey detectó webhook ✅",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521425344198869072",
+   "timestamp": "2026-06-30T08:01:08.773000+00:00",
+   "content": "assaas",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521415615393431725",
+   "timestamp": "2026-06-30T07:22:29.245000+00:00",
+   "content": "Cakey detectó webhook ✅",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521415613149478933",
+   "timestamp": "2026-06-30T07:22:28.710000+00:00",
+   "content": "a",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521403166028202025",
+   "timestamp": "2026-06-30T06:33:01.085000+00:00",
+   "content": "aaa",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521402739538526268",
+   "timestamp": "2026-06-30T06:31:19.402000+00:00",
+   "content": "Webhook detectado:",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521402738175508500",
+   "timestamp": "2026-06-30T06:31:19.077000+00:00",
+   "content": "jhola",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521402297253630116",
+   "timestamp": "2026-06-30T06:29:33.953000+00:00",
+   "content": "PROBANDO 1",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521399486784733234",
+   "timestamp": "2026-06-30T06:18:23.885000+00:00",
+   "content": "xd XDDD",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "DRA",
+   "id": "1521354857284636702",
+   "timestamp": "2026-06-30T03:21:03.383000+00:00",
+   "content": "assssssssss",
+   "espera": {
+    "es": false,
+    "nombre": "",
     "horario": "",
     "ini": null
    }
@@ -631,7 +811,7 @@
    "content": "▬▬▬▬▬▬▬\n# __MUY__ **NOMBRADO**\n__`ORGANIZADOR:`__ @alguien_\n__`PREMIOS:`__ **rol**\n__`HORARIO: EN 300`__",
    "espera": {
     "es": true,
-    "nombre": "MUY__ **NOMBRADO",
+    "nombre": "MUY NOMBRADO",
     "horario": "EN 300",
     "ini": "2026-09-25T01:00:00"
    }
@@ -682,6 +862,186 @@
     "nombre": "NOCHE DE FREE",
     "horario": "en vivo",
     "ini": "2026-09-24T20:00:00"
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv12",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "## Torneo 🏆: Plaza Underground ##\n\n## Organizador 💼: <@1>  ##\n\n## Modalidad 🆚️: 1 vs 1##\n\n## Cupos 👥️: 8 ##\n\n## Fecha 📅: Hoy ##\n\n@everyone",
+   "espera": {
+    "es": true,
+    "nombre": "Plaza Underground",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv13",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "( NITRO KINGS )\n｡.｡:+* ﾟ ゜ﾟ +:｡.｡:+ ﾟ\n〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: <@1>\n\n〔𝐑𝐀𝐍𝐆𝐎〕: 3\n\n〔𝐌𝐎𝐃𝐀𝐋𝐈𝐃𝐀𝐃〕: TORNEO\n\n  〔𝐈𝐍𝐈𝐂𝐈𝐎 𝐃𝐄𝐋 𝐄𝐕𝐄𝐍𝐓𝐎〕: EN 15 MINUTOS\n@everyone",
+   "espera": {
+    "es": true,
+    "nombre": "NITRO KINGS",
+    "horario": "EN 15 MINUTOS",
+    "ini": "2026-09-24T20:15:00"
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv14",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "❪ 🗽 ❫『**__GENESIS BATTLES__**』❪ 🗽 ❫ \nFecha 6\n▰▰▰▰▰\n\n 》<:tg2:1>   ↝**__CUPOS__**: ♾️\n\n 》🥋   ↝**__MODALIDAD__**: PANDILLAS\n》🧑‍⚖️   ↝**__ORGANIZADO POR__**: <@1> \n\n 》<:calendario:1>   ↝**__HORA INSCRIPCIONES__**: 20:00 🇨🇱\n\n**__INICIO__**: 20:30 🇨🇱\n## FECHA 6",
+   "espera": {
+    "es": true,
+    "nombre": "GENESIS BATTLES",
+    "horario": "20:30 🇨🇱",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv15",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# <:CorazonLleno:1> ¡5 VIDAS LEGENDS - Edición #5! <:CorazonLleno:1> \n▬▬▬▬▬\n\nCinco participantes.\n\n**<a:calendario:1> FECHA:** Hoy, Lunes 20 Jul.\n\n**<a:reloj_gif_UL:1> HORARIO:**\n<a:Mexico:1> 16:00\n<a:Argentina:1> 19:00\n\n<a:ping_UL:1> @everyone",
+   "espera": {
+    "es": true,
+    "nombre": "¡5 VIDAS LEGENDS - Edición #5!",
+    "horario": "16:00",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv16",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# 🌌 BELLAS ARTES VOL8🌌\n\n🗓️ **Detalles de la Batalla**\n\n● FECHA:  HOY PE MANO\n\n● HORA: EN 20 MINUTOS\n\n- **PREMIO** ROL CAMPEÓN, PUNTOS RANKING\n\n● FORMATO: ⚔️  1VS1\n\n- **RANGO** PLATA III🥈\n\n- **ORGANIZADOR** \n<@1> <@1> ",
+   "espera": {
+    "es": true,
+    "nombre": "BELLAS ARTES VOL8",
+    "horario": "EN 20 MINUTOS",
+    "ini": "2026-09-24T20:20:00"
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv17",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# <:1E_Dragon1_UL:1> RAMDOM <:1E_Dragon1_UL:1> \n\nEsta competencia será al azar\n\nHORARIOS\n🇦🇷🇺🇾 | 20:30hs\n🇲🇽| 17:30 hs\n\nLas inscripciones estarán abiertas en 5 horas <#1> \n@everyone",
+   "espera": {
+    "es": true,
+    "nombre": "RAMDOM",
+    "horario": "🇦🇷🇺🇾 | 20:30hs",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv18",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n<:reloj_snk:1> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 - <:reloj_snk:1>\n\n*<t:1788470428:t>*",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv19",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "▬▬▬▬▬\n## <:REGLAS:1> **FIRE RAP** <:REGLAS:1>\n▬▬▬▬▬\n\n📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n<:organizador:1> - 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 - <:organizador:1>\n\n*Velatz 🇨🇱 <@1> *\n\n<:tg:1> - 𝐂𝐔𝐏𝐎𝐒 - <:tg:1>\n\n*12/16*",
+   "espera": {
+    "es": true,
+    "nombre": "FIRE RAP",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv20",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "** • ╎<:FireP:1> _\"𝐋𝐀 𝐒𝐔𝐏𝐄𝐑𝐕𝐈𝐕𝐄𝐍𝐂𝐈𝐀 𝐃𝐄𝐋 𝐌𝐀𝐒 𝐅𝐔𝐄𝐑𝐓𝐄 #4\"_ ╎ • **\n💻  __`ORGANIZADOR:`__ yo\n🎫 __`CUPOS:`__ 16\n⌚ __`HORARIO:`__ aora",
+   "espera": {
+    "es": true,
+    "nombre": "LA SUPERVIVENCIA DEL MAS FUERTE #4",
+    "horario": "aora",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv21",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# ***[👑] POLO RALPH LAUREN PRECICLO [👑]***\n\n⚙️*〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: @nachonc_ \n\n🎟️*〔𝐂𝐔𝐏𝐎𝐒〕:*16\n\n 🎤 *〔𝐈𝐍𝐈𝐂𝐈𝐎 𝐃𝐄𝐋 𝐄𝐕𝐄𝐍𝐓𝐎〕:*apenas se llenen",
+   "espera": {
+    "es": true,
+    "nombre": "POLO RALPH LAUREN PRECICLO",
+    "horario": "apenas se llenen",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv22",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "▬▬▬▬▬\n⚜️  SUPLENTES ⚜️\n- <a:MEXICO:1> `MTZ` <a:MEXICO:1>\n▬▬▬▬▬\n⌚ __`𝐇𝐎𝐑𝐀𝐑𝐈𝐎:`__ ⭐ 5:30PM HORA MEXICO CENTRAL ⭐\n💻  __`ORGANIZADOR:`__ <@1>\n👨‍⚖️ __`JURADO:`__ <@1>\n@everyone",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv23",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "@everyone \n\nEN 5 MINUTOS ARRANCAMOS VAYAN UNIENDOSE\n\nhttps://discord.gg/x",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv24",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "Probando…",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv25",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "🎉 <@1> ¡FELICIDADES! Eres el flamante **Campeón de RAPEROS DOGS** 🏆",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv26",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "@everyone QUEDA POSTERGADA LA FECHA PARA MAÑANA",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
    }
   }
  ]
