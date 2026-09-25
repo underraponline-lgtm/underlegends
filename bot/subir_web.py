@@ -427,26 +427,105 @@ def _cartas(p, r2, comp=None):
     return out
 
 
+#: ⚠️ el self-check lo apaga: arma el payload entero y no tiene que salir
+#: a Discord para eso (en CI la red está, pero la prueba no es de la red)
+_SIN_RED = [False]
+
+
+def _miembros(svs):
+    """`{sv: miembros}` desde la invitación pública de cada servidor.
+
+    🔑 POR LA INVITACION Y NO POR EL BOT. `GET /invites/<código>?
+    with_counts=true` contesta para cualquier servidor con invitación
+    pública —el bot no está en seis de los nueve— y no pide token.
+    Medido el 25/09/2026: los nueve contestan y el guild de cada
+    invitación coincide con el de `servidores.json`.
+
+    ⚠️ REDONDEADO, a propósito. El número exacto se mueve con cada
+    persona que entra o sale, y un payload que cambia en cada corrida
+    gasta una escritura de KV por corrida —de las 1.000 del día— para
+    decir «7.334» en vez de «7.300». Con cientos arriba de mil y decenas
+    abajo, cambia cuando cambia de verdad.
+
+    ⚠️ SI NO HAY RED, NO HAY NUMERO: la página dibuja el servidor sin él.
+    *Sin dato no hay pieza.*
+    """
+    if _SIN_RED[0]:
+        return {}
+    import requests
+    out = {}
+    for sv, x in svs.items():
+        cod = (x.get('invitacion') or '').rstrip('/').split('/')[-1]
+        if not cod:
+            continue
+        try:
+            r = requests.get('https://discord.com/api/v10/invites/%s' % cod,
+                             params={'with_counts': 'true'}, timeout=15)
+            j = r.json() if r.status_code == 200 else {}
+        except (OSError, ValueError):
+            continue
+        n = j.get('approximate_member_count')
+        # la invitación tiene que llevar a ESE servidor: un link cambiado
+        # a mano contaría la gente de otro
+        if not n or (j.get('guild') or {}).get('id') != x.get('guild_id'):
+            continue
+        out[sv] = int(round(n, -2) if n >= 1000 else round(n, -1))
+    return out
+
+
 def _servidores(gente):
-    """Cuánta gente y cuántos puntos por servidor, con su color de marca.
+    """Los servidores confirmados de la Liga, con su gente en la T1.
+
+    🔴 ERAN SOLO LOS QUE TENÍAN GENTE EN EL RANKING, y con la T1 entera en
+    FFA la vista «Mundo» mostraba un solo servidor. Dlx, 25/09/2026:
+    *«deberías agregar DRA, Snake Rap también, pero con sus nombres
+    completos e incluso sus logos y cantidad de miembros»*. La Liga es
+    justamente eso —*«unimos los rankings de los mejores servidores»*—,
+    así que van los nueve de `datos/servidores.json`, con o sin raperos.
+
+    ⚠️ LOS FILTROS DEL RANKING NO CAMBIAN: `pintaChips()` ya ofrece sólo
+    los servidores con gente (`s.n`), así que no aparecen chips que no
+    filtran nada.
 
     ⚠️ EL COLOR SALE DE `datos/colores_sv_marca.json`, que es donde ya
     vive — *«manda el logo»*, dice su propia nota. Escribir los nueve en
     el CSS de la página sería el mismo error que el rango en cinco
-    lugares, con nueve en vez de ocho.
+    lugares, con nueve en vez de ocho. Y el logo, de
+    `bot/paginas/logos/` (lo arma `herramientas/logos_web.py`).
     """
     col = (_json('datos', 'colores_sv_marca.json') or {}).get('usar') or {}
+    # 🔴 SOLO LOS CONFIRMADOS. Dlx, 25/09/2026, a los minutos de pedir los
+    # nueve: *«los únicos servidores confirmados son Snake Rap, Discord Rap
+    # y FFA... los demás no están confirmados todavía»*. La marca vive en
+    # `datos/servidores.json` (`"confirmado": true`) y no acá: el día que se
+    # confirme otro, se cambia ahí y la página lo toma sola.
+    svs = {k: v for k, v in ((_json('datos', 'servidores.json') or {})
+                             .get('servidores') or {}).items() if v.get('confirmado')}
     acc = {}
     for p in gente:
         sv = (p.get('sv') or '').upper()
         if not sv:
             continue
-        a = acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0,
-                                'color': col.get(sv, '#7E8B89')})
+        a = acc.setdefault(sv, {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0})
         a['n'] += 1
         a['pts'] += p.get('pts') or 0
         a['ev'] += p.get('ev') or 0
-    return sorted(acc.values(), key=lambda a: (-a['n'], a['sv']))
+    miembros = _miembros(svs)
+    logos = os.path.join(SCR, 'paginas', 'logos')
+    out = []
+    for sv in list(svs) + [s for s in acc if s not in svs]:
+        a = acc.get(sv) or {'sv': sv, 'n': 0, 'pts': 0, 'ev': 0}
+        x = svs.get(sv) or {}
+        a['color'] = col.get(sv, '#7E8B89')
+        a['nombre'] = x.get('nombre') or sv
+        a['invita'] = x.get('invitacion') or ''
+        if os.path.exists(os.path.join(logos, sv.lower() + '.webp')):
+            a['logo'] = 'logos/%s.webp' % sv.lower()
+        if sv in miembros:
+            a['miembros'] = miembros[sv]
+        out.append(a)
+    # primero los que tienen gente en la T1, por puntos; después, por tamaño
+    return sorted(out, key=lambda a: (-a['pts'], -a.get('miembros', 0), a['sv']))
 
 
 def _paises(gente):
@@ -762,9 +841,27 @@ def _self_check():
         mal += not cond
         print('   %s %s' % ('ok' if cond else '🔴', que))
 
+    _SIN_RED[0] = True
     p = armar()
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
+
+    # 🔑 LOS NUEVE SERVIDORES, con o sin gente en la T1, y cada uno con su
+    # nombre y su logo. Ver `_servidores()`.
+    _svs = {k: v for k, v in ((_json('datos', 'servidores.json') or {})
+                              .get('servidores') or {}).items() if v.get('confirmado')}
+    _ps = {s['sv']: s for s in p.get('svs') or []}
+    ok(set(_svs) <= set(_ps), 'están los %d servidores confirmados  (%d)'
+       % (len(_svs), len(_ps)))
+    _de_mas = [s for s in _ps if s not in _svs and not _ps[s].get('n')]
+    ok(not _de_mas, 'y ninguno sin confirmar que no tenga gente en la T1  %s'
+       % (_de_mas or '—'))
+    ok(all(_ps[s].get('nombre') and _ps[s].get('invita') for s in _svs if s in _ps),
+       'cada uno con su nombre y su invitación')
+    _sin_logo = [s for s in _svs if s in _ps and not _ps[s].get('logo')]
+    ok(not _sin_logo, 'y con su logo  %s' % (_sin_logo or '—'))
+    ok(all('miembros' not in s for s in p['svs']),
+       'sin red no hay cantidad de miembros (sin dato no hay pieza)')
     ok(len(p['tabla']) <= TOPE, 'y no pasa de %d filas' % TOPE)
 
     # 🔴 LA LETRA SIGUE LA MISMA PUERTA QUE LA CARTA. Si la web mostrara

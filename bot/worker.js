@@ -171,7 +171,7 @@ const bloqueada = (g, id) => !!(g && g.bl && g.bl.indexOf(id) >= 0
 // y el bot habría mandado gente al lugar equivocado sin fallar nunca.
 export const SERVIDORES = [
   { sv: 'DRA', nombre: 'Discord Rap Español', guild: '841017460341604382', invita: 'https://discord.gg/SFVnEmVnKz' },
-  { sv: 'FFA', nombre: 'FFA', guild: '1468472442925092958', invita: 'https://discord.gg/4TBvDP2Chm' },
+  { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/4TBvDP2Chm' },
   { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
   { sv: 'TFC', nombre: 'The Freestyle Community', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
   { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/qhKcQgU47v' },

@@ -43,14 +43,22 @@ function esc(s) {
   });
 }
 
-/* `ar` -> 🇦🇷. En Windows no hay fuente de banderas y el emoji cae a las
-   dos letras; por eso `.cc` tiene forma de etiqueta — el respaldo se lee
-   como una sigla de país y no como un glitch. */
+/* `ar` -> la imagen de la bandera, no el emoji.
+
+   🔴 EL EMOJI 🇦🇷 EN WINDOWS SON DOS LETRAS. No hay fuente de banderas y
+   caía a «AR», «CO» — Dlx, 25/09/2026: «esto es una website, puedes poner
+   literalmente una imagen pequeña de las banderas». Salen de
+   `bot/paginas/banderas/`, que arma `herramientas/banderas_web.py` con la
+   lista `PAIS` de acá abajo: la misma lista para el nombre y la imagen.
+
+   ⚠️ UN PAIS QUE NO ESTA EN `PAIS` SIGUE SALIENDO COMO SIGLA. Una imagen
+   que no existe dibuja el ícono de imagen rota, que es peor que dos
+   letras; por eso sólo se pide la de los que se sabe que están. */
 function bandera(cc) {
   cc = String(cc || '').trim().toLowerCase();
-  if (!/^[a-z]{2}$/.test(cc)) return '';
-  return String.fromCodePoint(
-    cc.charCodeAt(0) - 97 + 0x1F1E6, cc.charCodeAt(1) - 97 + 0x1F1E6);
+  if (!/^[a-z]{2}$/.test(cc) || !PAIS[cc]) return '';
+  return '<img class="bf" src="banderas/' + cc + '.png" alt="' + esc(PAIS[cc]) +
+    '" title="' + esc(PAIS[cc]) + '" width="21" height="14" loading="lazy">';
 }
 function ccTexto(cc) {
   return bandera(cc) || esc(String(cc || '').toUpperCase());
@@ -143,7 +151,7 @@ function ir() {
   // la pestaña decía «Liga Global · Liga Global — Under Legends». Se compara
   // normalizado porque el `<h1>` trae saltos y un `<em>` adentro.
   var t = (h ? h.textContent : '').replace(/\s+/g, ' ').trim();
-  var base = 'Liga Global — Under Legends';
+  var base = 'Liga Global de Freestyle';
   document.title = (t && base.toLowerCase().indexOf(t.toLowerCase()) < 0)
     ? t + ' · ' + base : base;
 }
@@ -690,14 +698,42 @@ function indiceDe(txt, con) {
 }
 
 /* ── servidores, países, crews ────────────────────────────────────── */
+/* `7300` -> «7,3 mil». La cantidad de miembros viaja redondeada (ver
+   `_miembros()` en subir_web.py) y así se lee como lo que es: un tamaño. */
+function milesCortos(n) {
+  n = Number(n || 0);
+  if (n < 1000) return String(n);
+  var m = Math.round(n / 100) / 10;
+  return String(m).replace('.', ',') + ' mil';
+}
+
+/* 🔑 LOS NUEVE, con su logo, su nombre completo y cuánta gente tienen.
+   Dlx, 25/09/2026: «deberías agregar DRA, Snake Rap también, pero con sus
+   nombres completos e incluso sus logos y cantidad de miembros». Antes
+   salían sólo los que tenían raperos en la T1 —con la T1 entera en FFA,
+   uno solo—.
+   ⚠️ Cada pieza sale si hay dato: sin logo va la sigla, sin cantidad no
+   se inventa un número, y sin raperos en la T1 no se dice «0 puntos». */
 function pintaServidores() {
   var ss = D.svs || [];
   if (!ss.length) { apaga('#secSvs'); return; }
   $('#svs').innerHTML = ss.map(function (s) {
+    var logo = s.logo
+      ? '<img class="sv-logo" src="' + esc(s.logo) + '" alt="" width="48" height="48" loading="lazy">'
+      : '<span class="sv-logo sv-sigla">' + esc(s.sv) + '</span>';
+    var datos = [];
+    if (s.miembros) datos.push('<div><dt>Miembros</dt><dd>' + milesCortos(s.miembros) + '</dd></div>');
+    if (s.n) {
+      datos.push('<div><dt>En la T1</dt><dd>' + s.n + '</dd></div>');
+      datos.push('<div><dt>Puntos</dt><dd>' + num(s.pts) + '</dd></div>');
+    }
+    var entrar = s.invita
+      ? '<a class="sv-entrar" href="' + esc(s.invita) + '" target="_blank" rel="noopener noreferrer">Entrar</a>'
+      : '';
     return '<div class="sv-c" style="--c:' + esc(s.color) + '">' +
-      '<h3>' + esc(s.sv) + '</h3><dl>' +
-      '<div><dt>Raperos</dt><dd>' + s.n + '</dd></div>' +
-      '<div><dt>Puntos</dt><dd>' + num(s.pts) + '</dd></div></dl></div>';
+      '<div class="sv-cab">' + logo + '<div><h3>' + esc(s.nombre || s.sv) + '</h3>' +
+      '<small>' + esc(s.sv) + '</small></div></div>' +
+      (datos.length ? '<dl>' + datos.join('') + '</dl>' : '') + entrar + '</div>';
   }).join('');
 }
 

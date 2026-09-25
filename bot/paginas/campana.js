@@ -120,13 +120,51 @@
     await probar(true);
   }
 
+  // 🔑 EL SERVICE WORKER AVISA CUANDO UN PUSH LLEGA (ver sw.js). Con eso
+  // la prueba puede decir DÓNDE se cortó, que era la pregunta de Dlx con
+  // Opera GX: en su Samsung llegó y en la compu no, y desde la página
+  // «no llegó al navegador» y «llegó y Windows la tapó» se veían igual.
+  var LLEGO = [0];
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', function (e) {
+      if (e.data && e.data.avisos === 'llego') LLEGO[0] = Date.now();
+    });
+  }
+  function esperarLlegada(desde, ms) {
+    return new Promise(function (listo) {
+      var t0 = Date.now();
+      (function mirar() {
+        if (LLEGO[0] >= desde) return listo(true);
+        if (Date.now() - t0 > ms) return listo(false);
+        setTimeout(mirar, 250);
+      })();
+    });
+  }
+
   async function probar(recien) {
     MSG = 'Mandando uno de prueba…'; pinta();
+    var desde = Date.now();
     try {
       var d = await pedir('probar', { endpoint: SUB.endpoint });
-      MSG = d.ok ? (recien ? '✅ Listo. Te mandé uno de prueba: tiene que llegarte en unos segundos.'
-        : '✅ Enviado: tiene que llegarte en unos segundos.')
-        : '⚠️ El servicio de avisos contestó ' + d.estado + '. Probá desactivar y activar de nuevo.';
+      if (!d.ok) {
+        MSG = '⚠️ El servicio de avisos contestó ' + d.estado + '. Probá desactivar y activar de nuevo.';
+        pinta();
+        return;
+      }
+      MSG = recien ? 'Te mandé uno de prueba. Esperando que llegue…' : 'Enviado. Esperando que llegue…';
+      pinta();
+      var llego = await esperarLlegada(desde, 20000);
+      // ⚠️ DOS FALLOS DISTINTOS, DOS CONSEJOS DISTINTOS. Si llegó al
+      // navegador y no se vio, lo tapa el sistema; si no llegó, el
+      // servicio de push de ese navegador no entrega, y ahí no hay
+      // ajuste que lo arregle desde acá.
+      MSG = llego
+        ? '✅ Llegó a este dispositivo. Si no viste la notificación, la está tapando el ' +
+          'sistema: en Windows, Configuración → Sistema → Notificaciones → activá tu ' +
+          'navegador y apagá «No molestar».'
+        : '⚠️ Tu navegador aceptó la suscripción pero el aviso no le llegó. Pasa con ' +
+          'algunos navegadores de compu (Opera GX, por ejemplo): en esta compu probá con ' +
+          'Chrome, Edge o Firefox. En el teléfono, Chrome anda.';
     } catch (e) {
       MSG = e.estado === 429 ? 'Esperá unos segundos entre pruebas.' : '⚠️ ' + e.message;
     }

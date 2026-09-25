@@ -66,14 +66,16 @@
    "guild_id": "841017460341604382",
    "invitacion": "https://discord.gg/SFVnEmVnKz",
    "en_el_sheet": true,
-   "nota": "el lobby principal de la Liga"
+   "nota": "el lobby principal de la Liga",
+   "confirmado": true
   },
   "FFA": {
-   "nombre": "FFA",
+   "nombre": "Freestyle For All",
    "guild_id": "1468472442925092958",
    "invitacion": "https://discord.gg/4TBvDP2Chm",
    "en_el_sheet": false,
-   "nota": "donde se prueba el bot"
+   "nota": "donde se prueba el bot",
+   "confirmado": true
   },
   "TWR": {
    "nombre": "The Warren Rap",
@@ -91,7 +93,8 @@
    "nombre": "Snake Rap",
    "guild_id": "492346406976356374",
    "invitacion": "https://discord.gg/qhKcQgU47v",
-   "en_el_sheet": true
+   "en_el_sheet": true,
+   "confirmado": true
   },
   "FTN": {
    "nombre": "Fontana",
@@ -172,5 +175,6 @@
    "desde": "2026-09-20",
    "para": "sacar Discord ID, nada mas"
   }
- }
+ },
+ "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve."
 }
