@@ -1659,3 +1659,25 @@ font:800 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transf
 .uno-q small{color:var(--tx2);font-size:.8rem}
 .uno-q:hover b{color:var(--tl)}
 @media (max-width:640px){.pod-cat{display:block;margin:8px 0 0}}
+
+/* ── la llave, más fácil de leer ────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «mejora esa sección de las llaves… para que se
+   entienda mejor». La leyenda va arriba del cuadro; el que ganó cada
+   batalla se marca más y el que quedó afuera se apaga; cada ronda dice
+   cuánto vale; y con el mouse encima se sigue a alguien. */
+.l-ley{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin:14px 0 4px;
+color:var(--tx2);font-size:.86rem}
+.l-ley span{display:inline-flex;align-items:center;gap:7px}
+.l-ley i{display:inline-block;width:22px;height:14px;border:1px solid var(--bd);background:#0E1514}
+.l-ley .ley-g i{box-shadow:inset 3px 0 0 var(--tl);background:rgba(41,178,152,.14)}
+.l-ley .ley-p i{opacity:.45}
+.l-ley .ley-o i{height:0;border:0;border-top:2px solid var(--oro);width:24px}
+.l-ley .ley-n{flex-basis:100%;color:var(--tx3);font-size:.82rem}
+.cuadro .rl small{display:block;margin-top:4px;color:var(--tl);letter-spacing:.06em;font-size:.86em}
+.bx .ld.g{background:rgba(41,178,152,.09)}
+.bx .ld:not(.g){opacity:.62}
+.bx.fin .ld.g{background:rgba(255,210,74,.08)}
+.bx:hover .ld:not(.g){opacity:.85}
+.bx.sigue,.camp.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl),0 0 18px rgba(41,178,152,.25);z-index:2}
+.cuadro .ql.sigue span{color:var(--tl)}
+.bx.sigue .ld{opacity:1}
