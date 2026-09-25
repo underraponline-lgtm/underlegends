@@ -558,10 +558,15 @@ function abrirLlave(n) {
       '<div>' + rs.map(function (r) { return quien(r[0]); }).join('') + '</div>' +
       '<small>' + p[0] + ' · ' + num(rs[0][2]) + ' pts</small></div>' : '';
   }).join('');
+  // 🔑 CÓMO SE LEE, ARRIBA DEL CUADRO. Estaba abajo, en letra chica, y es
+  // lo primero que hace falta para entender lo que sigue.
+  var ley = '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
+    '<span class="ley-p"><i></i>Quedó afuera</span><span class="ley-o"><i></i>El camino del campeón</span>' +
+    '<span class="ley-n">Arriba de cada ronda, los puntos de quien queda afuera ahí' +
+    (window.matchMedia && window.matchMedia('(hover:hover)').matches
+      ? '. Pasá el mouse por un nombre y se ve todo su camino.' : '.') + '</span></div>';
   $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') +
-    cuadro(L, quien) +
-    '<p class="nota l-guia">En dorado, el camino del campeón. En los eventos por equipos, cada ' +
-    'integrante va en su renglón.</p>' +
+    ley + cuadro(L, quien) +
     (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
   $('#visorLlave').hidden = false;
@@ -1644,6 +1649,31 @@ function cuadro(L, quien) {
     var sobra = pf.y - alto(rs[n - 1].b[0]) / 2 - campH - 12;
     if (sobra < 0) TOPE -= sobra;
   }
+  // 🔑 CUÁNTO VALE CADA RONDA, arriba de su columna: los puntos de quien
+  // queda afuera ahí. Es lo que ata el cuadro con «Los puntos, por puesto»
+  // de abajo, que antes había que cruzar a mano. Sale de la tabla de la
+  // misma llave; si en una ronda no todos se llevan lo mismo (las semis con
+  // tercer puesto), no se escribe nada antes que un número a medias.
+  var ptsDe = {};
+  (L.tabla || []).forEach(function (t) {
+    miembrosDe(t[0]).forEach(function (m) { ptsDe[m] = t[2]; });
+  });
+  var valeRonda = function (R) {
+    var vs = [];
+    R.b.forEach(function (b) {
+      (b[0] || []).forEach(function (s) {
+        if (b[1] && (b[1] === s || comparten(b[1], s))) return;
+        miembrosDe(s).forEach(function (m) { if (ptsDe[m] != null) vs.push(ptsDe[m]); });
+      });
+    });
+    return vs.length && vs.every(function (v) { return v === vs[0]; }) ? vs[0] : null;
+  };
+  var vale = rs.map(valeRonda);
+  var ptsCamp = (function () {
+    var m = miembrosDe((rs[n - 1].b[0] || [])[1])[0];
+    return m && ptsDe[m] != null ? ptsDe[m] : null;
+  })();
+  if (vale.some(function (v) { return v != null; })) TOPE += 14;
   var ncol = espejo ? 2 * n - 1 : n;
   var col = function (p) { return p.lado === 'd' ? 2 * (n - 1) - p.r : p.r; };
   var X = function (p) { return col(p) * (W + G); };
@@ -1707,8 +1737,12 @@ function cuadro(L, quien) {
   // el nombre de cada ronda, arriba de su columna
   for (var c = 0; c < ncol; c++) {
     var r = espejo && c > n - 1 ? 2 * (n - 1) - c : c;
+    var v = vale[r], fin = r === n - 1 && rs[n - 1].b.length === 1;
     html.push('<span class="rl" style="left:' + c * (W + G) + 'px;width:' + W + 'px">' +
-      esc(rs[r].r) + '</span>');
+      esc(rs[r].r) + (v != null || (fin && ptsCamp != null)
+        ? '<small>' + (v != null ? num(v) + ' pts' : '') +
+          (fin && ptsCamp != null ? (v != null ? ' &middot; ' : '') + '&#127942; ' + num(ptsCamp) : '') +
+          '</small>' : '') + '</span>');
   }
   var ancho = ncol * (W + G) - G, alto2 = Math.ceil(fondo + 8);
   // en el teléfono el cuadro no entra: se avisa que sigue a la derecha
@@ -3234,6 +3268,24 @@ function eventos() {
     }
     CMP[+s.dataset.lado] = i;
     pintaComparar();
+  });
+  // 🔑 SEGUIR A ALGUIEN POR LA LLAVE: con el mouse encima de un nombre se
+  // iluminan todas las batallas donde está. En el teléfono no hay «encima»:
+  // tocar el nombre sigue abriendo su perfil.
+  var SIGUE = '';
+  document.addEventListener('mouseover', function (e) {
+    var q = e.target.closest && e.target.closest('.cuadro .ql[data-k]');
+    var k = q ? q.dataset.k : '';
+    if (k === SIGUE) return;
+    SIGUE = k;
+    $$('.cuadro .sigue').forEach(function (x) { x.classList.remove('sigue'); });
+    if (!k) return;
+    $$('.cuadro .ql').forEach(function (x) {
+      if (x.dataset.k !== k) return;
+      x.classList.add('sigue');
+      var bx = x.closest('.bx,.camp');
+      if (bx) bx.classList.add('sigue');
+    });
   });
   // el podio: flechas, puntos y las flechas del teclado cuando tiene el foco
   $('#podAntes').addEventListener('click', function () { moverPodio(-1); });
