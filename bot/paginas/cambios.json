@@ -1,0 +1,59 @@
+{
+ "_leeme": [
+  "El changelog PÚBLICO de la página (#/cambios, abajo de Ajustes). Lo más nuevo arriba.",
+  "Se escribe a mano al terminar cada tanda, junto con NOVEDADES.md, y SIN NADA SENSIBLE:",
+  "ni nombres de gente con problemas, ni IDs, ni tokens, ni cuotas, ni lo que Dlx adelanta",
+  "como spoiler (eso va sólo al artifact privado). Es para jugadores: qué cambió para ellos.",
+  "`dia` en AAAA-MM-DD; en los items, **negrita** y `código` se ven como tales."
+ ],
+ "cambios": [
+  {
+   "dia": "2026-09-25",
+   "titulo": "Los avisos desde Discord y tus tarjetas en Mi cuenta",
+   "items": [
+    "🔔 **`/notify` ya no manda mensajes directos**: elegís en Discord de qué servidores querés los avisos (o todos) y el botón **Activar** abre la campana con eso elegido. Un toque y te llegan al celular o a la compu, aunque Discord esté cerrado.",
+    "👤 **Mi cuenta**: si tenés tarjeta y todavía no jugaste esta temporada, ahora ves tus tarjetas igual (con las bloqueadas y lo que les falta).",
+    "🥇 **El podio del Inicio, con flechas**: pasá por Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cada uno con sus tarjetas, banderas o logos.",
+    "🌎 **Los mejores de cada lado**, abajo del podio: el #1 de la temporada en cada país y en cada crew.",
+    "📜 **Este changelog**, abajo de Ajustes.",
+    "🧩 La llave de los eventos por equipos ya no se sale de su caja.",
+    "🔗 El link de la página pegado en Discord ahora sale con el logo.",
+    "🛠️ `/numeral` y `/settings` avisan si no pudieron guardar, en vez de «la aplicación no respondió»."
+   ]
+  },
+  {
+   "dia": "2026-09-25",
+   "titulo": "Mi cuenta, ajustes, rankings y perfiles",
+   "items": [
+    "👤 **Entrá con Discord** en Mi cuenta (arriba a la derecha): la página sabe quién sos y te lleva a tu perfil y tus tarjetas. Sólo lee tu nombre y tu foto.",
+    "⚙️ **Ajustes**: formato de la hora, zona horaria y menos animaciones. Todas las horas se ven en tu zona.",
+    "🏆 **Los rankings en una sola tabla**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews. Tocá una columna para ordenar. Most Wanted, Misiones y Ligas, próximamente.",
+    "👑 **Los dos campeones** en el Inicio: el de la temporada y el del competitivo, que queda vacante hasta que alguien juegue 10 eventos.",
+    "🙋 **Un perfil para cada rapero**: sus tarjetas con descarga, sus números, lo que le falta para cada tarjeta, sus eventos y sus duelos. Y una página para **cada crew y cada país**.",
+    "📅 **Eventos**: el calendario del mes en tu hora, los últimos campeones, cómo se juega y **Sumar a Google Calendar** (también Apple y Outlook).",
+    "🏟️ **La llave como cuadro de torneo**, con la ficha del evento (formato, rango, quién organiza) y los puntos de cada puesto.",
+    "📖 **Guía**: cuántos puntos da cada puesto, de qué están hechos el OVR y el Score, un glosario y preguntas frecuentes. La Histórica y la Prime llegan con la Temporada 2.",
+    "⚖️ **El Score usa los pesos nuevos**: Eficiencia 25, Consistencia 24, Dominancia 21, Diversidad 20 y Racha 10. La Diversidad mira dónde sumás tus puntos.",
+    "🤖 **En Discord**: `/verificar` te dice qué te falta para tu tarjeta, mirado en ese momento, y `/website` te deja el link a la página.",
+    "📱 Los avisos llegan también al **iPhone**, con la Liga agregada a la pantalla de inicio."
+   ]
+  },
+  {
+   "dia": "2026-09-24",
+   "titulo": "La página nueva y los avisos de eventos",
+   "items": [
+    "🌐 **underlegends.pages.dev**: los rankings, las tarjetas, los eventos y el mundo de la Liga en una página que se actualiza sola cada media hora.",
+    "🔔 **Avisos de eventos**: activás la campana y te llega una notificación al celular o a la compu cuando un servidor anuncia un evento, aunque no tengas Discord abierto. Elegís de qué servidores.",
+    "🐍 **Snake Rap se sumó a la Liga**: sus eventos ya cuentan.",
+    "🃏 **Descargá tu tarjeta** desde la página."
+   ]
+  },
+  {
+   "dia": "2026-09-22",
+   "titulo": "Arrancó la Temporada 1",
+   "items": [
+    "🏁 **Todos en cero**: la pre-temporada fue de prueba. Los puntos, los rankings y las tarjetas se arman con lo que se juega desde ahora."
+   ]
+  }
+ ]
+}

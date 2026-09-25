@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """LAS BANDERAS DEL HUB, COMO IMAGEN Y NO COMO EMOJI.
 
-    python herramientas/banderas_web.py     rehace bot/paginas/banderas/
+    python herramientas/banderas_web.py     rehace bot/paginas/banderas/ (y g/)
 
 🔴 EN WINDOWS NO HAY FUENTE DE BANDERAS. El emoji 🇦🇷 son dos letras
 especiales que el sistema dibuja como bandera sólo si tiene con qué: en
@@ -21,6 +21,10 @@ ningún CDN para mostrar una bandera.
 ⚠️ 60×40 Y 3:2 PARA TODAS, recortadas al centro. En 20 px de ancho una
 bandera de proporción 19:10 al lado de una 3:2 se ve como un error de
 alineación, no como fidelidad.
+
+🔑 Y UNA GRANDE, 240×160, EN `g/` (25/09/2026): el podio de países del
+Inicio las muestra a ~120 px, y la de 60 agrandada al doble se ve
+borrosa. Mismas fuentes y mismo recorte, así las dos dicen lo mismo.
 """
 import io
 import os
@@ -33,6 +37,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SALIDA = os.path.join(BASE, 'bot', 'paginas', 'banderas')
 FUENTE = os.path.join(BASE, '04_Pais', 'banderas')
 ANCHO, ALTO = 60, 40
+GRANDE = (240, 160)
 
 
 def paises_del_hub():
@@ -54,7 +59,7 @@ def origen(cc):
     return Image.open(io.BytesIO(r.content)), 'flagcdn'
 
 
-def recortar(im):
+def recortar(im, tam=(ANCHO, ALTO)):
     """Llenar 3:2 recortando al centro, sin deformar."""
     im = im.convert('RGBA')
     w, h = im.size
@@ -64,17 +69,19 @@ def recortar(im):
     else:
         nh = int(w * ALTO / ANCHO)
         im = im.crop((0, (h - nh) // 2, w, (h - nh) // 2 + nh))
-    return im.resize((ANCHO, ALTO), Image.LANCZOS)
+    return im.resize(tam, Image.LANCZOS)
 
 
 def main():
-    os.makedirs(SALIDA, exist_ok=True)
+    os.makedirs(os.path.join(SALIDA, 'g'), exist_ok=True)
     total = 0
     for cc in paises_del_hub():
         im, de = origen(cc)
         dest = os.path.join(SALIDA, cc + '.png')
         recortar(im).save(dest, optimize=True)
         total += os.path.getsize(dest)
+        recortar(im, GRANDE).save(os.path.join(SALIDA, 'g', cc + '.webp'), 'WEBP',
+                                  quality=90, method=6)
         print('  %s  %-7s %5d bytes' % (cc, de, os.path.getsize(dest)))
     print('%d banderas · %.1f KB en %s' % (len(paises_del_hub()), total / 1024,
                                         os.path.relpath(SALIDA, BASE)))
