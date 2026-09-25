@@ -1275,13 +1275,24 @@ async function cuentaDiscord(req, env) {
   // ⚠️ EL RAPERO SALE DEL MISMO LUGAR QUE `/card`: `d:<id>` existe sólo para
   // quien pasa el portón. Quien no está, entra igual y la página le dice qué
   // le falta.
+  //
+  // 🔴 Y CON SUS CARTAS, NO SÓLO EL NOMBRE. La página buscaba al rapero en el
+  // ranking de la temporada, y quien tiene carta pero todavía no jugó la T1
+  // no está ahí: Dlx, 25/09/2026, con su carta de Servidor, leyó «todavía no
+  // tenés tarjeta en la Liga». Es lo mismo que `/card` ya le muestra a
+  // cualquiera, así que no se expone nada nuevo.
   let rapero = '';
+  let yo = {};
   try {
     const clave = await env.KV.get('d:' + u.id);
-    if (clave) rapero = (JSON.parse((await env.KV.get('p:' + clave)) || '{}').n) || '';
-  } catch (e) { rapero = ''; }
-  return new Response(JSON.stringify({ id: u.id, n: u.global_name || u.username || '',
-    av: u.avatar ? u.id + '/' + u.avatar : '', rapero }), { headers: h });
+    if (clave) {
+      const p = JSON.parse((await env.KV.get('p:' + clave)) || '{}');
+      rapero = p.n || '';
+      yo = { clave, cs: p.cs || [], bl: p.bl || [], ev: p.ev || 0, sv: p.sv || '', cc: p.cc || '' };
+    }
+  } catch (e) { rapero = ''; yo = {}; }
+  return new Response(JSON.stringify(Object.assign({ id: u.id, n: u.global_name || u.username || '',
+    av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {})), { headers: h });
 }
 
 // ── /notify: los avisos de eventos por DM ─────────────────────────────────

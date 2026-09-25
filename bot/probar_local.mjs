@@ -1496,6 +1496,11 @@ console.log('\nMI CUENTA CON DISCORD\n');
   r = await cuenta('permisoBueno1234567890');
   ok('uno bueno de alguien de la Liga devuelve su rapero', r.status === 200 &&
      r.json.rapero === 'Konan' && r.json.av === '555000111222333444/abc', JSON.stringify(r.json));
+  // 🔴 Y SUS CARTAS: quien tiene carta y no jugó la temporada no está en el
+  // ranking, y la página le decía «todavía no tenés tarjeta» (Dlx, 25/09).
+  ok('y su clave y sus cartas, para mostrarlas aunque no esté en el ranking',
+     r.json.clave === 'konan' && Array.isArray(r.json.cs) && Array.isArray(r.json.bl),
+     JSON.stringify({ clave: r.json.clave, cs: r.json.cs, bl: r.json.bl }));
   globalThis.fetch = async () => new Response(JSON.stringify(
     { id: '999000111222333444', username: 'nadie' }), { status: 200 });
   r = await cuenta('permisoBueno1234567890');

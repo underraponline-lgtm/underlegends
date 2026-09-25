@@ -164,6 +164,15 @@ var avisoCarta = function (f, cual) {
 var porK = function (k) {
   return (D.tabla || []).filter(function (x) { return x.k === k; })[0];
 };
+/* 🔑 LA FILA DE QUIEN ENTRÓ CON DISCORD Y NO ESTÁ EN EL RANKING: tiene carta
+   (la de Servidor no pide nada) pero ningún evento de la temporada. Sirve
+   para el visor de «Mis tarjetas»; sus Bloqueadas van como cartas más. */
+var filaCuenta = function (k) {
+  if (!DC || !DC.clave || DC.clave !== k) return null;
+  return { k: DC.clave, n: DC.rapero || DC.n, cc: DC.cc, sv: DC.sv, pos: '—', ovr: null,
+    pts: 0, ev: DC.ev || 0, wr: '—',
+    c: (DC.cs || []).concat((DC.bl || []).map(function (b) { return 'bloq-' + b; })) };
+};
 var apaga = function (sel) { var e = $(sel); if (e) e.hidden = true; };
 
 /* Los nombres de país, para que la tabla no diga «AR». Sólo los que la
@@ -1275,7 +1284,9 @@ function pintaComo() {
 /* ── el visor ─────────────────────────────────────────────────────── */
 var NOMBRE_CARTA = {
   temporada: 'Temporada', competitivo: 'Competitiva',
-  servidor: 'Servidor', pais: 'País'
+  servidor: 'Servidor', pais: 'País',
+  'bloq-temporada': 'Temporada 🔒', 'bloq-competitivo': 'Competitiva 🔒',
+  'bloq-pais': 'País 🔒', 'bloq-servidor': 'Servidor 🔒'
 };
 
 // ══════════════════════════════════════════════════════════════════════
@@ -1323,9 +1334,9 @@ function bajarCarta(f, cual) {
 }
 
 function abrir(k) {
-  var f = porK(k);
+  var f = porK(k) || filaCuenta(k);
   if (!f) return;
-  $('#vPos').textContent = '#' + f.pos;
+  $('#vPos').textContent = f.pos && f.pos !== '—' ? '#' + f.pos : '';
   $('#vNombre').textContent = f.n;
   $('#vSub').innerHTML = [ccTexto(f.cc), esc(f.sv), f.crew ? esc(f.crew) : '']
     .filter(Boolean).join(' &middot; ');
@@ -1362,7 +1373,11 @@ function abrir(k) {
   }
   // 🔑 DE LA TARJETA AL PERFIL: el botón lleva `data-k`, así que lo
   // atiende el mismo escucha que cualquier nombre
-  if ($('#vPerfil')) $('#vPerfil').dataset.k = k;
+  if ($('#vPerfil')) {
+    $('#vPerfil').dataset.k = k;
+    // quien entró con Discord y no jugó la temporada no tiene página todavía
+    $('#vPerfil').hidden = !porK(k);
+  }
   $('#visor').hidden = false;
   document.body.style.overflow = 'hidden';
 }
@@ -2493,7 +2508,16 @@ function pintaPaneles() {
 function pintaYoPanel() {
   var f = yo(), c = $('#pnYo'), e = $('#pnEv');
   if (!c || !e) return;
-  if (!f) {
+  if (!f && DC && DC.rapero) {
+    // ⚠️ CON TARJETA Y SIN EVENTOS: ver `pintaPopCuenta()`
+    var n = (DC.cs || []).length + (DC.bl || []).length;
+    c.innerHTML = '<div class="teaser yo lleno">' + avatar({ n: DC.n, av: DC.av }, 56) +
+      '<h3>' + esc(DC.rapero) + '</h3><p class="yo-pos">Todavía sin eventos esta temporada</p>' +
+      '<p class="yo-falta">Con tu primer evento entrás al ranking' +
+      (reqDe('temporada') ? ' y se desbloquea tu Temporada' : '') + '.</p>' +
+      (DC.clave && n ? '<button type="button" class="btn" data-carta="' + esc(DC.clave) +
+        '">&#127183; Ver mis tarjetas</button>' : '') + '</div>';
+  } else if (!f) {
     c.innerHTML = '<div class="teaser yo"><span class="tz-ico" aria-hidden="true">&#128100;</span>' +
       '<h3>¿Quién sos?</h3><p>Elegí tu nombre y acá ves tu puesto, tu racha y lo que te falta.</p>' +
       '<button type="button" class="btn" data-abrir-cuenta>Elegir quién soy</button></div>';
@@ -2638,9 +2662,11 @@ function volverDeDiscord() {
     .then(function (r) { return r.json(); })
     .then(function (c) {
       if (!c || !c.id) return;
-      DC = { id: c.id, n: c.n || '', av: c.av || '', rapero: c.rapero || '' };
+      DC = { id: c.id, n: c.n || '', av: c.av || '', rapero: c.rapero || '',
+        clave: c.clave || '', cs: c.cs || [], bl: c.bl || [], ev: c.ev || 0,
+        sv: c.sv || '', cc: c.cc || '' };
       guardarLS('lg:dc', DC);
-      YO = c.rapero ? kDe(c.rapero) : '';
+      YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
       guardarLS('lg:yo', YO || null);
       pintaCuenta();
       pintaPaneles();
@@ -2654,11 +2680,31 @@ function pintaCuenta() {
   var cara = f ? avatar(f, 26) : DC ? avatar({ n: DC.n, av: DC.av }, 26)
     : '<span class="av ini" style="width:26px;height:26px;font-size:13px">&#128100;</span>';
   $('#cuentaCara').innerHTML = cara;
-  $('#cuentaTxt').textContent = f ? f.n : DC ? DC.n : 'Mi cuenta';
+  $('#cuentaTxt').textContent = f ? f.n : DC ? (DC.rapero || DC.n) : 'Mi cuenta';
 }
 function pintaPopCuenta() {
   var f = yo(), c = $('#popCuenta');
   var entrar = '<button type="button" class="btn dc-entrar" id="dcEntrar">Entrar con Discord</button>';
+  // 🔴 CON TARJETA Y SIN EVENTOS NO ES «SIN TARJETA». Quien no jugó la
+  // temporada no está en el ranking, pero puede tener su carta de Servidor
+  // y sus Bloqueadas: a Dlx le decía que no tenía ninguna (25/09/2026).
+  if (!f && DC && DC.rapero) {
+    var misCartas = (DC.cs || []).length + (DC.bl || []).length;
+    c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
+      esc(DC.rapero) + '</b><small>Conectado con Discord' +
+      (DC.n && DC.n !== DC.rapero ? ' como ' + esc(DC.n) : '') + '</small></div></div>' +
+      '<p class="nota">' + (DC.clave ? 'Todavía no jugaste esta temporada: aparecés en el ranking ' +
+        'con tu primer evento.' : 'Volvé a entrar con Discord para ver tus tarjetas acá.') + '</p>' +
+      '<nav class="pop-menu">' +
+      (DC.clave && misCartas ? '<button type="button" data-carta="' + esc(DC.clave) + '">&#127183; Mis tarjetas' +
+        ' <small>' + misCartas + '</small></button>' : '') +
+      (DC.cc && PAIS[String(DC.cc).toLowerCase()] ? '<a href="#/pais/' + esc(DC.cc) + '">' + bandera(DC.cc) +
+        ' Mi país</a>' : '') +
+      '<a href="#/avisos">&#128276; Mis avisos</a>' +
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' +
+      (DC.clave ? '' : entrar);
+    return;
+  }
   if (!f && DC) {
     c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
       esc(DC.n) + '</b><small>Conectado con Discord</small></div></div>' +
@@ -2997,7 +3043,7 @@ function eventos() {
   });
   $('#vPestanas').addEventListener('click', function (e) {
     var b = e.target.closest('.pest'); if (!b) return;
-    var f = porK($('#vPestanas').dataset.k); if (!f) return;
+    var f = porK($('#vPestanas').dataset.k) || filaCuenta($('#vPestanas').dataset.k); if (!f) return;
     $$('#vPestanas .pest').forEach(function (p) { p.classList.toggle('on', p === b); });
     $('#vImg').src = urlCarta(f, b.dataset.c);
     $('#vImg').alt = 'Tarjeta ' + (NOMBRE_CARTA[b.dataset.c] || '') + ' de ' + f.n;
@@ -3005,7 +3051,7 @@ function eventos() {
   });
   $('#vBajar').addEventListener('click', function () {
     var b = $('#vBajar');
-    var f = porK(b.dataset.k);
+    var f = porK(b.dataset.k) || filaCuenta(b.dataset.k);
     if (!f) return;
     // ⚠️ LA PESTAÑA ACTIVA, no `f.c[0]`. Si alguien abre la Servidor y le
     // da a Descargar, tiene que bajar ESA — bajar siempre la primera es un
