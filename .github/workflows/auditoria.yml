@@ -230,3 +230,14 @@ jobs:
         run: |
           python sheet/pendientes.py --barrer --aplicar || true
           python sheet/pendientes.py || true
+
+      - name: alertas
+        # 🔑 Si la auditoría falló, un DM a Dlx con el link; si volvió a
+        # pasar, un DM de que volvió. Ver bot/alertar.py. Este trabajo no
+        # commitea, así que no recuerda lo avisado de una semana a la otra
+        # — y no hace falta: corre una vez por semana.
+        if: always()
+        run: >
+          python bot/alertar.py --ciclo auditoria --estado "${{ job.status }}"
+          --run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          || true

@@ -194,6 +194,20 @@ jobs:
             python bot/pipeline.py --correr --sin-dibujar
           fi
 
+      - name: alertas
+        # 🔑 Dlx, 25/09/2026: «por DM a mí únicamente; si es algo normal,
+        # en el canal donde avisa el repo de sync». Si este trabajo falló,
+        # le llega un DM (una vez, no cada media hora); si volvió a andar,
+        # un DM de que volvió. Y `--salud` mira lo que late solo: el vigía
+        # de avisos, el disparador del ciclo y la cuota de KV. Va ANTES de
+        # guardar para que el recuerdo de lo avisado quede commiteado.
+        # Nunca hace fallar al trabajo: ver bot/alertar.py.
+        if: always() && inputs.simulacro != true
+        run: >
+          python bot/alertar.py --ciclo escuchar --estado "${{ job.status }}"
+          --run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          --salud || true
+
       - name: guardar
         # 🔴 EL CUERPO VIVE EN `bot/ci/guardar.sh`, Y NO ES PROLIJIDAD:
         # lo llaman los DOS trabajos. Copiar 130 lineas es la forma que
@@ -265,6 +279,14 @@ jobs:
           else
             python bot/pipeline.py --correr --solo-dibujar
           fi
+
+      - name: alertas
+        # lo mismo que en `escuchar`, sin `--salud` (ya la miró aquel)
+        if: always() && inputs.simulacro != true
+        run: >
+          python bot/alertar.py --ciclo dibujar --estado "${{ job.status }}"
+          --run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          || true
 
       - name: guardar el sello
         # 🔴 EL CUERPO VIVE EN `bot/ci/guardar.sh`, Y NO ES PROLIJIDAD:
