@@ -2446,7 +2446,10 @@ function pintaPerfil(k) {
             }).join('') + '</div><div class="pf-carta"><img id="pfImg" alt="Tarjeta ' +
             esc(CARTA_TIT[cual] || cual) + ' de ' + esc(f.n) + '" src="' + urlCarta(f, cual) +
             '"></div><div class="v-acc"><button class="bajar" id="pfBajar" data-pfk="' + esc(k) +
-            '"><i aria-hidden="true">&#11015;</i><span>Descargar</span></button></div>'
+            '"><i aria-hidden="true">&#11015;</i><span>Descargar</span></button>' +
+            // 🔑 la foto, desde tu propia tarjeta (Dlx, 25/09/2026)
+            (DC && DC.clave === k ? '<button class="bajar" type="button" data-foto><i aria-hidden="true">' +
+              '&#128247;</i><span>Cambiar mi foto</span></button>' : '') + '</div>'
           : '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>') +
       '</section>' +
       '<div class="col">' +
@@ -2925,10 +2928,11 @@ var DC = leerLS('lg:dc', null);
    el dispositivo. */
 var DC_TOKEN = null, REDES_MIAS = null;
 function urlLogin(modo) {
-  // 'r' las redes (pide `connections`), 'v' vincular los avisos, o entrar
+  // 'r' las redes (pide `connections`), 'v' vincular los avisos, 'f' la
+  // foto, o entrar
   var conRedes = modo === true || modo === 'r';
-  var st = (conRedes ? 'r' : modo === 'v' ? 'v' : 'i') + Math.random().toString(36).slice(2) +
-    Date.now().toString(36);
+  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' ? modo : 'i') +
+    Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
     '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
@@ -2954,6 +2958,47 @@ function vincularAvisos(token) {
       window.dispatchEvent(new Event('lg:vinculado'));
     })
     .catch(function () { window.dispatchEvent(new Event('lg:vinculado-no')); });
+}
+/* 🔑 LA FOTO DESDE LA PÁGINA: lo mismo que `/foto`, con su regla (una por
+   temporada; libre antes de que arranque; el pase de DRA la saltea). Primero
+   se muestra qué foto quedaría; se guarda recién con «Usar esta foto». */
+var FOTO = null;
+function pedirFoto(confirmar) {
+  return fetch('/api/cuenta/foto', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: DC_TOKEN, confirmar: !!confirmar }) })
+    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); });
+}
+function secFoto() {
+  if (!FOTO || !DC) return '';
+  var F = FOTO, cab = '<section class="pop-sec" id="secFoto"><h4>&#128247; Tu foto de la tarjeta</h4>';
+  var T = esc(F.temporada || 'temporada');
+  if (F.hecho) {
+    return cab + '<p class="nota">&#128248; <b>Listo</b>: ésa es tu foto de la ' + T + '. Tus tarjetas ' +
+      'se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del ' +
+      'este, no corre).' + (F.libre ? ' Hasta que arranque la temporada la podés cambiar las veces que ' +
+      'quieras.' : '') + '</p></section>';
+  }
+  if (F.error) {
+    var m = F.error === 'sin_foto' ? 'No tenés foto puesta en Discord: tu tarjeta va con la inicial, ' +
+      'que con el color de tu rango queda bien. Si te ponés una, volvé.'
+      : F.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: escribí <code>/verificar</code> en Discord.'
+      : F.error === 'usado' ? 'Ya elegiste tu foto de la ' + T + ': va una por temporada. Se vuelve a abrir ' +
+        'cuando arranque la que sigue.'
+      : 'No pude cambiarla. Probá de nuevo en un rato.';
+    return cab + '<p class="nota">' + m + '</p></section>';
+  }
+  if (F.estado === 'usado') {
+    return cab + '<p class="nota">Ya elegiste tu foto de la ' + T + ' y va <b>una por temporada</b>: ' +
+      'la Histórica necesita la cara que tenías en cada una. Se vuelve a abrir cuando arranque la que ' +
+      'sigue.</p></section>';
+  }
+  return cab + '<div class="foto-vista"><img src="' + esc(F.vista) + '" alt="Tu foto de Discord" ' +
+    'width="96" height="96"><p class="nota">Tu tarjeta de la ' + T + ' va a llevar ésta, la de tu ' +
+    'perfil de Discord. ' + (F.libre ? 'Hasta que arranque la temporada la podés cambiar las veces que ' +
+      'quieras.' : F.pase ? 'Con el pase de DRA la podés cambiar cuando quieras.'
+      : '<b>Va una por temporada</b>: después no se puede cambiar hasta la próxima.') + '</p></div>' +
+    '<button type="button" class="btn ancho" id="dcFotoSi">Usar esta foto</button>' +
+    '<button type="button" class="btn sec ancho" id="dcFotoNo">Cancelar</button></section>';
 }
 function pedirRedes(mostrar) {
   var cuerpo = { token: DC_TOKEN };
@@ -3014,7 +3059,8 @@ function volverDeDiscord() {
   if (!q.access_token || !st || q.state !== st) return;
   var porRedes = st.charAt(0) === 'r';
   var porAvisos = st.charAt(0) === 'v';
-  if (porRedes) DC_TOKEN = q.access_token;
+  var porFoto = st.charAt(0) === 'f';
+  if (porRedes || porFoto) DC_TOKEN = q.access_token;
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })
     .then(function (r) { return r.json(); })
@@ -3033,6 +3079,13 @@ function volverDeDiscord() {
       if (porAvisos) {
         vincularAvisos(q.access_token);
         $('#popCuenta').hidden = true;
+      }
+      if (porFoto) {
+        pedirFoto(false).then(function (R) {
+          FOTO = R;
+          pintaPopCuenta();
+          $('#popCuenta').hidden = false;
+        }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       }
       if (porRedes) {
         pedirRedes(null).then(function (R) {
@@ -3078,8 +3131,9 @@ function pintaPopCuenta() {
       (DC.cc && PAIS[String(DC.cc).toLowerCase()] ? '<a href="#/pais/' + esc(DC.cc) + '">' + bandera(DC.cc) +
         ' Mi país</a>' : '') +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
-      '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secRedes() + secProximos() + secSigo();
+      (DC.clave ? '<button type="button" data-foto>&#128247; Cambiar mi foto</button>' : '') +
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secFoto() + secRedes() + secProximos() +
+      secSigo();
     return;
   }
   if (!f && DC) {
@@ -3110,10 +3164,10 @@ function pintaPopCuenta() {
     ((f.c || []).length ? '<button type="button" data-carta="' + esc(f.k) + '">&#127183; Mis tarjetas</button>' : '') +
     (f.cc && PAIS[String(f.cc).toLowerCase()] ? '<a href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' Mi país</a>' : '') +
     '<a href="#/avisos">&#128276; Mis avisos</a>' +
-    (DC ? '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' : '') +
+    (DC && DC.clave ? '<button type="button" data-foto>&#128247; Cambiar mi foto</button>' : '') +
     '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
     (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar) +
-    secRedes() + secProximos() + secSigo();
+    secFoto() + secRedes() + secProximos() + secSigo();
 }
 function pintaYoRes(q) {
   var caja = $('#yoRes');
@@ -3400,6 +3454,24 @@ function eventos() {
     }
     if (e.target.closest('#dcRedes')) {
       location.href = urlLogin(true);
+      return;
+    }
+    if (e.target.closest('[data-foto]')) {
+      location.href = urlLogin('f');
+      return;
+    }
+    if (e.target.closest('#dcFotoNo')) {
+      FOTO = null;
+      pintaPopCuenta();
+      return;
+    }
+    var fs = e.target.closest('#dcFotoSi');
+    if (fs) {
+      fs.disabled = true;
+      pedirFoto(true).then(function (R) {
+        FOTO = R && R.ok ? { hecho: true, temporada: R.temporada, libre: R.libre } : (R || { error: 'red' });
+        pintaPopCuenta();
+      }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       return;
     }
     var rg = e.target.closest('#dcRedesGuardar,#dcRedesQuitar');
