@@ -83,8 +83,13 @@ background:radial-gradient(140% 58% at 50% 4%,rgba(3,3,4,.20),rgba(3,3,4,.88) 56
    ⚠️ Y LAS VISTAS SE MUESTRAN CON `hidden`, no con `display:none` en
    CSS. Así el estado vive en el DOM —`document.querySelector('[hidden]')`
    lo dice— y no en una clase que hay que mantener en dos lugares. */
+/* 🔑 MÁS PÁGINA, MENOS MENÚ. Dlx, 25/09/2026: «mirá el espacio de la
+   izquierda, donde están los botones de inicio, ranking, tarjetas: hay
+   bastante espacio». El menú baja de 250 a 212 px y el tope de 1.720 a
+   1.920: a 1920 de pantalla son 250 px más para el contenido, que es lo que
+   deja el top de cada ranking en cinco columnas sin partir los nombres. */
 .app{position:relative;z-index:3;display:grid;
-grid-template-columns:250px minmax(0,1fr);max-width:1720px;margin:0 auto}
+grid-template-columns:212px minmax(0,1fr);max-width:1920px;margin:0 auto}
 
 .menu{position:sticky;top:0;align-self:start;height:100dvh;
 display:flex;flex-direction:column;padding:22px 14px 18px;
@@ -120,8 +125,11 @@ letter-spacing:-.035em;text-transform:uppercase;margin-bottom:8px}
 text-shadow:3px 3px 0 var(--tls)}
 
 /* ── cabecera ───────────────────────────────────────────────────── */
+/* ⚠️ LAS DOS TARJETAS VAN CENTRADAS EN SU MITAD, no pegadas al borde:
+   Dlx, 25/09/2026, «centrar un poco más esas 2 tarjetas». */
 .hero{position:relative;display:grid;gap:34px;align-items:center;
-grid-template-columns:minmax(0,1fr) auto;padding:6px 0 4px}
+grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);padding:6px 0 4px}
+.hero .campeones{justify-self:center}
 /* ⚠️ EL LOGO VA CON LA PILDORA, NO SUELTO. En la primera versión de
    esta cabecera la marca desapareció del todo: el título quedó solo y
    la página de Under Legends no mostraba el logo de Under Legends. */
@@ -261,6 +269,10 @@ filter:blur(20px)}
 
 .records{display:grid;gap:10px;margin-top:24px;
 grid-template-columns:repeat(auto-fit,minmax(185px,1fr))}
+/* ⚠️ CATORCE RÉCORDS: SIETE Y SIETE, no ocho y seis. Con el ancho nuevo
+   entraban ocho por fila y la segunda quedaba con dos huecos. */
+#secPodio{container-type:inline-size}
+@container (min-width:1200px){.records{grid-template-columns:repeat(7,minmax(0,1fr))}}
 .rec{background:rgba(11,18,17,.8);border:1px solid var(--bd);padding:14px 16px;
 clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
 .rec dt{color:var(--tx2);font:600 .7rem/1 'Barlow Condensed',sans-serif;
@@ -275,11 +287,11 @@ font-variant-numeric:tabular-nums}
 
 /* ── filtros y tabla ────────────────────────────────────────────── */
 .filtros{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
-#buscar,#buscarC{width:100%;background:#0E1614;border:1px solid var(--bd);color:var(--tx);
+#buscar,#buscarC,#yoBusca{width:100%;background:#0E1614;border:1px solid var(--bd);color:var(--tx);
 padding:14px 17px;font:600 1.02rem/1 Archivo,sans-serif;border-radius:2px;
 outline:none;transition:border-color .15s}
-#buscar:focus,#buscarC:focus{border-color:var(--tl)}
-#buscar::placeholder,#buscarC::placeholder{color:var(--tx3)}
+#buscar:focus,#buscarC:focus,#yoBusca:focus{border-color:var(--tl)}
+#buscar::placeholder,#buscarC::placeholder,#yoBusca::placeholder{color:var(--tx3)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px solid var(--bd);background:rgba(11,18,17,.8);color:var(--tx2);
 padding:7px 13px;border-radius:2px;
@@ -721,7 +733,7 @@ transition:fill .15s}
 /* ⚠️ CINCO RECIÉN DESDE 1.150 PX DE SECCIÓN. Medido a 1440 de pantalla: con
    cinco, cada caja quedaba en 200 px y los nombres se partían letra por
    letra («H-a-s-s-a-n»). Con dos entra todo en una línea. */
-@container (min-width:1150px){.tops{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@container (min-width:1400px){.tops{grid-template-columns:repeat(5,minmax(0,1fr))}}
 @container (max-width:560px){.tops{grid-template-columns:1fr}}
 .tp{container-type:inline-size;background:rgba(10,15,14,.82);border:1px solid var(--bd);padding:16px 16px 12px;
 clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
@@ -746,12 +758,9 @@ align-items:baseline;padding:9px 2px;border-top:1px solid var(--bd2)}
 .tp .nm{font:800 1rem/1.2 Archivo,sans-serif;min-width:0;transition:color .12s}
 .tp .quien{max-width:100%}
 .tp .quien .qn{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
-/* en una caja angosta el número baja abajo del nombre: el nombre se lleva
-   todo el ancho y no se parte */
-@container (max-width:250px){
-  .tp li{grid-template-columns:22px minmax(0,1fr);row-gap:5px}
-  .tp li b{grid-column:2;justify-self:start}
-}
+/* ⚠️ EL NÚMERO SIEMPRE A LA DERECHA. Dlx, 25/09/2026: «se ve raro que esté
+   abajo y no a la derecha». Por eso las cinco columnas piden 1.400 px de
+   sección: con menos, van dos y cada fila entra en una línea. */
 .tp li b{font:900 1.05rem/1 Archivo,sans-serif;color:var(--tl);
 font-variant-numeric:tabular-nums;white-space:nowrap}
 .tp li b s{text-decoration:none;color:var(--tx3);font-weight:700}
@@ -761,7 +770,7 @@ letter-spacing:.12em;text-transform:uppercase}
 .tp-no b{color:var(--tx)}
 
 /* ── el calendario ──────────────────────────────────────────────── */
-.cal-dos{display:grid;gap:22px;grid-template-columns:minmax(0,3fr) minmax(270px,1fr);
+.cal-dos{display:grid;gap:22px;grid-template-columns:minmax(0,1.9fr) minmax(330px,1fr);
 align-items:start}
 .cal-dos .blk{margin-top:0}
 .cal-cab{display:flex;align-items:center;gap:12px;margin-bottom:14px}
@@ -818,6 +827,7 @@ font:700 .62rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transf
 .de small{display:block;margin-top:4px;color:var(--tx2);
 font:600 .74rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .de-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.de .btn{padding:8px 11px;font-size:.7rem}
 .dia-no{color:var(--tx2)}
 
 /* ── el cuadro de la llave ──────────────────────────────────────────
@@ -1261,12 +1271,173 @@ letter-spacing:-.01em;text-transform:none}
 .pase .bajada{margin:0 auto 24px}
 .pase-acc{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
 
+/* ── la barra de arriba: mi cuenta ──────────────────────────────────── */
+.barra{position:relative;z-index:40;display:flex;justify-content:flex-end;align-items:center;
+gap:8px;margin:-8px 0 10px}
+.cuenta{display:inline-flex;align-items:center;gap:9px;padding:5px 14px 5px 5px;border-radius:999px;
+border:1px solid var(--bd);background:rgba(11,18,17,.85);color:var(--tx);
+font:800 .9rem/1 Archivo,sans-serif;transition:border-color .15s}
+.cuenta:hover{border-color:var(--tl)}
+.cuenta-cara{display:inline-flex}
+.b-icono{display:none;width:38px;height:38px;border-radius:50%;border:1px solid var(--bd);
+background:rgba(11,18,17,.85);color:var(--tx);font-size:1.05rem}
+.m-ajustes{display:flex;align-items:center;gap:10px;margin-top:auto;padding:11px 14px;
+color:var(--tx2);font:700 .88rem/1 Archivo,sans-serif;border-radius:3px;transition:all .15s}
+.m-ajustes i{font-style:normal;width:1.1em;text-align:center}
+.m-ajustes:hover{color:var(--tx);background:rgba(41,178,152,.06)}
+.menu .pie{margin-top:6px}
+.pop{position:absolute;top:46px;right:0;width:340px;max-width:calc(100vw - 32px);padding:16px;
+background:#0B1110;border:1px solid var(--bd);border-radius:6px;box-shadow:0 18px 40px rgba(0,0,0,.6);
+display:grid;gap:10px}
+.pop[hidden]{display:none}
+.pop h3{font:900 1rem/1.2 Archivo,sans-serif}
+.pop input[type=search]{width:100%}
+.pop-lista{display:grid;gap:2px}
+.pop-yo{display:flex;align-items:center;gap:12px}
+.pop-yo b{display:block;font:900 1.05rem/1.2 Archivo,sans-serif}
+.pop-yo small{color:var(--tx2);font-size:.82rem}
+.pop-menu{display:grid;gap:2px}
+.pop-menu a,.pop-menu button{display:flex;align-items:center;gap:9px;padding:10px 10px;border-radius:4px;
+color:var(--tx);text-decoration:none;font:700 .94rem/1.2 Archivo,sans-serif;text-align:left}
+.pop-menu a:hover,.pop-menu button:hover{background:rgba(41,178,152,.1)}
+.pop-menu #yoOlvidar{color:var(--tx2)}
+.aj{display:grid;gap:6px;color:var(--tx2);font:700 .8rem/1.2 Archivo,sans-serif}
+.aj select{background:#0E1614;border:1px solid var(--bd);color:var(--tx);padding:9px 10px;border-radius:3px;
+font:600 .92rem/1.2 Archivo,sans-serif}
+.aj-ck{display:flex;align-items:center;gap:9px;color:var(--tx)}
+.pop .nota{margin:0;text-transform:none;letter-spacing:0;font:500 .86rem/1.45 Archivo,sans-serif;color:var(--tx2)}
+.pop .nota b{color:var(--tx)}
+.calma *,.calma *::before,.calma *::after{animation:none!important;transition:none!important}
+.calma .blk{opacity:1;transform:none}
+
+/* ── los paneles del Inicio ─────────────────────────────────────────── */
+.pn-dots{display:inline-flex;gap:6px;padding:0 4px}
+.pn-dot{width:9px;height:9px;border-radius:50%;background:var(--bd);transition:background .15s}
+.pn-dot.on{background:var(--tl)}
+.pn-pag[hidden]{display:none}
+.pn-dos{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.teaser{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-width:0;
+padding:18px 16px;background:rgba(10,15,14,.82);border:1px solid var(--bd2);overflow:hidden;min-height:210px}
+.teaser::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.2;
+background:radial-gradient(120% 90% at 100% 0%,var(--c,var(--mg)),transparent 60%)}
+.teaser.mw{--c:#E41373}
+.teaser.mis{--c:#29B298}
+.teaser .tz-ico{font-size:2.2rem;line-height:1}
+.teaser h3{font:900 1.25rem/1.15 Archivo,sans-serif;overflow-wrap:anywhere}
+.teaser p{color:var(--tx2);font-size:.94rem;line-height:1.45}
+.teaser .pase-tag{margin-top:auto}
+.teaser .btn{margin-top:auto}
+.teaser.yo.lleno{cursor:pointer}
+.teaser.yo.lleno:hover{border-color:var(--tl)}
+.yo-pos{color:var(--oro)!important;font:800 .74rem/1 Archivo,sans-serif!important;letter-spacing:.14em;
+text-transform:uppercase}
+.yo-n{display:grid;grid-template-columns:repeat(3,auto);gap:4px 18px}
+.yo-n dt{color:var(--tx3);font:700 .66rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.yo-n dd{margin-top:4px;font:900 1.2rem/1 Archivo,sans-serif}
+.yo-n dd s{text-decoration:none;color:var(--tx3);font-size:.8em}
+.yo-falta{font-size:.9rem!important}
+.yo-falta b{color:var(--tx)}
+.teaser.ev .reloj{font-size:1.4rem}
+#secPaneles .hoy{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+
+/* ── las redes, en grande ──────────────────────────────────────────── */
+.feed.grande .fd{padding:14px 15px 15px}
+.feed.grande .fd b{font-size:1.14rem;line-height:1.3}
+.feed.grande .fd-img{border-radius:4px}
+.feed.grande .fd-img i{width:48px;height:34px;font-size:1rem}
+
+/* ── la página de una crew y la de un país ─────────────────────────── */
+.cw-logo.grande{width:116px;height:116px;border-radius:26px}
+.cw-ini.grande{font-size:2.6rem}
+.pais-bandera{width:120px;height:80px;object-fit:cover;border-radius:8px;
+box-shadow:0 0 0 1px rgba(255,255,255,.14),0 10px 28px rgba(0,0,0,.5)}
+.gente{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(420px,100%),1fr))}
+.gt{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto auto;gap:14px;align-items:center;
+padding:10px 14px;background:rgba(11,18,17,.72);border:1px solid var(--bd2);cursor:pointer;transition:border-color .15s}
+.gt:hover{border-color:var(--tl)}
+.gt-p{color:var(--tx3);font:900 .95rem/1 Archivo,sans-serif}
+.gt-n{min-width:0;font-weight:800}
+.gt-d{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.gt-d b{font:900 1rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.gt-d small{color:var(--tx3);font:700 .62rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.pf-pais{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor}
+.pf-pais:hover{color:var(--tl)}
+a.chip-crew{text-decoration:none}
+a.chip-crew:hover{background:rgba(228,19,115,.3)}
+.cw[data-crew],.pa[data-pais]{cursor:pointer;transition:border-color .15s}
+.cw[data-crew]:hover,.pa[data-pais]:hover{border-color:var(--tl)}
+
+/* ── eventos: el día, los campeones y cómo se juega ────────────────── */
+.dia-n{display:block;margin-top:6px;color:var(--tx3);font:700 .72rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+#diaLista{display:grid;gap:10px}
+.de{grid-template-columns:62px minmax(0,1fr);gap:12px;padding:12px 12px 12px 14px;border:1px solid var(--bd2);
+border-left:0;background:rgba(10,15,14,.7);box-shadow:inset 4px 0 0 var(--c)}
+.de:first-child{border-top:1px solid var(--bd2)}
+.de-t b{display:block;font:900 1.15rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.de-t small{display:block;margin-top:4px;color:var(--tx3);font:700 .6rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+.de-c{min-width:0}
+.de-c h3{font:900 1.05rem/1.2 Archivo,sans-serif;overflow-wrap:anywhere}
+.de-est{color:var(--tx3);font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.de-est.jug{color:var(--tl)}
+.de-est.fut{color:var(--oro)}
+.de-camp{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;font-weight:800;font-size:.95rem}
+.lch{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;
+background:rgba(255,255,255,.06);border:1px solid var(--bd);color:var(--tx);
+font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.ev-mas{margin-top:22px}
+.ucamp{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}
+.uc{display:flex;flex-direction:column;align-items:flex-start;gap:7px;min-width:0;padding:12px 14px;text-align:left;
+background:rgba(10,15,14,.82);border:1px solid var(--bd2);box-shadow:inset 3px 0 0 var(--c);cursor:pointer;
+transition:border-color .15s,transform .15s}
+.uc:hover{border-color:var(--c);transform:translateY(-2px)}
+.uc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%}
+.uc-top small{color:var(--tx2);font:700 .74rem/1 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.uc-n{font:900 1rem/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.uc-camp{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-weight:800}
+.uc-d{color:var(--tx3);font:600 .72rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.orgs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.org{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;background:rgba(11,18,17,.72);
+border:1px solid var(--bd2);font-weight:800;font-size:.9rem}
+.org u{text-decoration:none;color:var(--tl);font:900 .85rem/1 Archivo,sans-serif}
+#formatos .gp{grid-template-columns:minmax(0,1fr) minmax(60px,1.4fr) auto}
+
+/* ── la guía: las que vienen ───────────────────────────────────────── */
+.cm.prox{border-style:dashed;opacity:.82}
+.cm.prox h3{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.cm.prox .pase-tag{font-size:.6rem;padding:4px 10px}
+
+/* ── la llave: la ficha, los equipos y los puntos por puesto ───────── */
+#lSub{display:flex;flex-direction:column;align-items:flex-start;gap:7px}
+.l-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.l-datos{color:var(--tx2);font-size:.9rem}
+.l-datos b{color:var(--tx)}
+.bx .ld.eq{align-items:flex-start;padding-top:3px;padding-bottom:3px}
+.bx .ld.eq .nm{display:flex;flex-direction:column;gap:1px;overflow:visible;white-space:normal}
+.bx .mb{display:block;min-width:0;line-height:20px}
+.cuadro .camp.eq{display:flex;flex-direction:column;align-items:center}
+.cuadro .camp .mb{display:block;line-height:21px}
+.l-guia{margin:2px 0 6px}
+.pgs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}
+.pg{padding:10px 12px;background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.pg h5{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:6px;color:var(--tl);
+font:700 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.pg h5 small{color:var(--tx3);font:inherit}
+.pg ul{list-style:none;margin:0;padding:0}
+.pg li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 0;
+border-top:1px solid var(--bd2)}
+.pg li:first-child{border-top:0}
+.pg li span{min-width:0;font-weight:800}
+.pg li b{font:900 .92rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--tx)}
+
 /* ── teléfono ─────────────────────────────────────────────────────
    🔴 EL MENU PASA A LA BARRA DE ABAJO, que es donde el pulgar llega. Una
    columna lateral en un teléfono se come un tercio del ancho para que
    nadie la use. */
 @media(max-width:1100px){
   .cal-dos{grid-template-columns:1fr}
+  .hero{grid-template-columns:minmax(0,1fr) auto}
   .ev-cab{grid-template-columns:1fr}
 }
 @media(max-width:1000px){
@@ -1285,7 +1456,9 @@ letter-spacing:-.01em;text-transform:none}
   height:auto;flex-direction:row;align-items:center;padding:0;
   border-right:0;border-top:1px solid var(--bd);
   background:rgba(3,3,4,.94);backdrop-filter:blur(14px)}
-  .menu .marca,.menu .pie{display:none}
+  .menu .marca,.menu .pie,.m-ajustes{display:none}
+  .b-icono{display:inline-grid;place-items:center}
+  .barra{margin:-4px 0 12px}
   .menu nav{flex-direction:row;width:100%;gap:0}
   .menu nav a{flex:1 1 0;flex-direction:column;gap:4px;min-width:0;
   padding:9px 2px calc(9px + env(safe-area-inset-bottom));
@@ -1324,6 +1497,14 @@ letter-spacing:-.01em;text-transform:none}
   .reloj{font-size:1.18rem}
   .pa{grid-template-columns:26px 1.8em 1fr auto;gap:9px;padding:9px 10px}
   .feed{grid-template-columns:1fr}
+  .pn-dos{grid-template-columns:1fr}
+  .teaser{min-height:0}
+  #secPaneles .hoy{grid-template-columns:1fr}
+  .gt{grid-template-columns:34px minmax(0,1fr) auto auto;gap:10px}
+  .gt-d:last-child{display:none}
+  .pop{position:fixed;top:64px;left:12px;right:12px;width:auto}
+  .cw-logo.grande{width:84px;height:84px}
+  .pais-bandera{width:96px;height:64px}
   .nov-redes>span{flex-basis:100%;margin-bottom:2px}
   .campeones{gap:12px}
   .campeones.dos .hc-marco img,.campeones .hero-carta,.hc-vacio{width:min(43vw,190px)}

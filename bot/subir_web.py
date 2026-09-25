@@ -220,7 +220,9 @@ def armar():
         'caz': p.get('caz') or 0,
         'czd': p.get('czd') or 0,
         'sob': p.get('sob') or 0,
-        'ult': _ult.get(_resp._norm(p.get('raw'))) or [],
+        'ult': (_ult.get(_resp._norm(p.get('raw')) + '|' + (p.get('cc') or '').lower())
+                or ([] if p.get('raw') in _choques() else _ult.get(_resp._norm(p.get('raw'))))
+                or []),
         # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
         # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
         'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
@@ -353,7 +355,11 @@ def armar():
         # en esos huecos»*. Ver `llaves_web.enlazar()`.
         llaves = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []))
                   for n, r in llaves.items()}
-        calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora)
+        _info = {}
+        calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora, _info)
+        for _n, _f in _info.items():
+            if _n in llaves:
+                llaves[_n] = dict(llaves[_n], info=_f)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
         regs, llaves, calendario = {}, {}, []
@@ -390,7 +396,10 @@ def armar():
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
         'actividad': _actividad(regs),
-        'novedades': _novedades(),
+        # 🔑 LAS NOVEDADES SON LO DE LA LIGA EN DRA, y el feed las REDES.
+        # Dlx, 25/09/2026: «lo último de la liga que sea como novedades,
+        # información», y las redes en grande aparte, arriba del top 5.
+        'novedades': _novedades(tope=8),
         # 🔑 EL FEED: lo de DRA y los últimos videos de YouTube de cada
         # servidor, del más nuevo al más viejo. Ver `_feed()`.
         'feed': _feed(),
@@ -646,7 +655,11 @@ def _ultimos():
             if t and t[0]:
                 # ⚠️ EL DÍA ENTERO, no «24/09»: la temporada puede cruzar de
                 # año, y «01/01» ordenado como texto quedaría antes que «24/09»
-                out[_resp._norm(t[0])] = [regs[n].get('dia') or '', t[1] or '']
+                v = [regs[n].get('dia') or '', t[1] or '']
+                out[_resp._norm(t[0])] = v
+                # y por bandera: `Volk` 🇲🇽 y `volk` 🇨🇴 normalizan igual
+                for cc in _banderas(t[0]):
+                    out[_resp._norm(t[0]) + '|' + cc] = v
     return out
 
 
@@ -678,7 +691,7 @@ def _youtube(canal, tope=3):
 
 
 def _feed(tope=9):
-    """Lo último de la Liga: DRA y los videos de YouTube de cada servidor.
+    """Las redes de la Liga: los últimos videos de YouTube de cada servidor.
 
     🔑 Dlx, 25/09/2026: *«abajo de la Liga hoy irían los posts más recientes
     de las redes sociales, con flechas para ir a la siguiente página»*.
@@ -688,7 +701,7 @@ def _feed(tope=9):
     De esos dos van los links, en «Seguí a la Liga».
     """
     svs = ((_json('datos', 'servidores.json') or {}).get('servidores') or {})
-    out = [dict(x, tipo='discord', sv='DRA') for x in _novedades(tope=4)]
+    out = []
     for sv, x in svs.items():
         if x.get('confirmado') and x.get('youtube_id'):
             for v in _youtube(x['youtube_id']):
@@ -867,8 +880,24 @@ def _perfiles(gente, comp, regs):
     except Exception:                                    # noqa: BLE001
         crews, _crew_norm = {}, (lambda s: s)
     norm = _resp._norm
-    por = {norm(p.get('raw')): p for p in gente if p.get('raw')}
+    # 🔴 POR CLAVE Y NO POR NOMBRE NORMALIZADO: `Volk` y `volk` normalizan
+    # igual y se juntaban en un solo perfil. Ver `_choques()`.
+    por = {_clave(p): p for p in gente if p.get('raw')}
+    comp_raw = {x.get('raw'): x for x in comp if x.get('raw')}
     comp_de = {norm(x.get('raw')): x for x in comp if x.get('raw')}
+    candidatos = defaultdict(list)
+    for p in gente:
+        if p.get('raw'):
+            candidatos[norm(p['raw'])].append(((p.get('cc') or '').lower(), _clave(p)))
+
+    def de(nombre):
+        """El nombre de una llave -> la clave de la persona, o None."""
+        c = candidatos.get(norm(nombre)) or []
+        if len(c) == 1:
+            return c[0][1]
+        ccs = _banderas(nombre)
+        m = [k for cc, k in c if cc in ccs]
+        return m[0] if len(m) == 1 else None
     inst = LW.instantes(regs)
     orden = sorted((n for n in regs if str(n).isdigit()),
                    key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)),
@@ -882,28 +911,30 @@ def _perfiles(gente, comp, regs):
         e[n] = [r.get('nombre') or '', r.get('sv') or '', t, int(r.get('participantes') or 0),
                 r.get('fecha') or '']
         for fila in r.get('tabla') or []:
-            q = norm(fila[0])
+            q = de(fila[0])
             if q in por:
                 evs[q].append([int(n), fila[1], int(fila[2] or 0)])
     dus = defaultdict(list)
     for n, a, b, g in _duelos_de(regs, LW):
         for yo, otro in ((a, b), (b, a)):
-            q = norm(yo)
+            q = de(yo)
             if q in por:
-                dus[q].append([n, otro, 1 if norm(g) == q else 0])
+                dus[q].append([n, otro, 1 if de(g) == q else 0])
     duel_ord = sorted([x for x in comp if x.get('duel_real') and (x.get('duel_t') or 0)],
                       key=lambda x: (-(x.get('duel_v') or 0), -(x.get('duel_t') or 0),
                                      x.get('raw') or ''))
-    pos_du = {norm(x['raw']): i + 1 for i, x in enumerate(duel_ord)}
+    pos_du = {_clave(x): i + 1 for i, x in enumerate(duel_ord)}
     med = sorted([p for p in gente
                   if (p.get('oro') or 0) + (p.get('seg') or 0) + (p.get('ter') or 0)],
                  key=lambda p: (-(p.get('oro') or 0), -(p.get('seg') or 0),
                                 -(p.get('ter') or 0), -(p.get('pts') or 0)))
-    pos_pod = {norm(p['raw']): i + 1 for i, p in enumerate(med)}
+    pos_pod = {_clave(p): i + 1 for i, p in enumerate(med)}
     por_cc = Counter((x.get('cc') or '').lower() for x in comp if x.get('cc'))
     out = {}
     for q, p in por.items():
-        fila = dict(comp_de.get(q) or {})
+        cp = comp_raw.get(p.get('raw')) or (comp_de.get(norm(p.get('raw')))
+                                            if p.get('raw') not in _choques() else None) or {}
+        fila = dict(cp)
         fila.update({k: v for k, v in p.items() if v not in (None, '')})
         req = {}
         for carta in ('temporada', 'competitivo', 'pais'):
@@ -916,7 +947,7 @@ def _perfiles(gente, comp, regs):
             rk['pod'] = [pos_pod[q], len(med)]
         # ⚠️ `pos_pais` ES TEXTO, «1/23»: el puesto y cuántos son. Es el mismo
         # número del círculo de la carta de País, así que no se recalcula.
-        pp = str((comp_de.get(q) or {}).get('pos_pais') or '')
+        pp = str(cp.get('pos_pais') or '')
         cc = (p.get('cc') or '').lower()
         if cc and re.match(r'^\d+(/\d+)?$', pp) and not pp.startswith('0'):
             pos, _, tot = pp.partition('/')
@@ -940,12 +971,12 @@ def _perfiles(gente, comp, regs):
             x['rk'] = rk
         if cr:
             x['crew'] = cr[0]
-        out[_clave(p)] = x
+        out[q] = x
     import time
     return {'sello': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'e': e, 'p': out}
 
 
-def _calendario(ann, regs, llaves, LW, CU, ahora):
+def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
     """Los eventos de la temporada, para el calendario de «Eventos».
 
     🔑 Dlx, 25/09/2026: *«crear una sección de eventos, y ahí aparecerá en
@@ -975,8 +1006,22 @@ def _calendario(ann, regs, llaves, LW, CU, ahora):
         ini = CU.momento(x)
         items.append({'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '',
                       'cuando': ini or pub, 'sh': 0 if ini else 1,
-                      'link': link(x), 'rg': _rango_ev(x.get('rango'))})
+                      'link': link(x), 'rg': _rango_ev(x.get('rango')),
+                      'mod': (x.get('modalidad') or '')[:40],
+                      'org': _org(x.get('organizador')),
+                      'pre': (x.get('premios') or '')[:60]})
     LW.cruzar(items, regs)
+    # 🔑 LA FICHA DE CADA LLAVE: formato, rango, quién organizó y el premio,
+    # que están en el anuncio y no en la llave. Dlx, 25/09/2026: «mostrar el
+    # formato de eventos… lo mostrabas en inicio: pandillas, 1v1, el rango».
+    if info is not None:
+        for i in items:
+            if i.get('llave'):
+                ficha = {k: i[k] for k in ('mod', 'rg', 'org', 'pre') if i.get(k)}
+                if i.get('link'):
+                    ficha['anuncio'] = i['link']
+                if ficha:
+                    info[str(i['llave'])] = ficha
     usadas = {str(i['llave']) for i in items if i.get('llave')}
     import datetime as _d
     for n, r in regs.items():
@@ -998,7 +1043,64 @@ def _calendario(ann, regs, llaves, LW, CU, ahora):
                     'll': int(ll) if ll in llaves else 0,
                     'jugado': 1 if ll else 0,
                     'fut': 1 if i['cuando'] > ahora else 0,
-                    'sh': i['sh'], **({'rg': i['rg']} if i.get('rg') else {})})
+                    'sh': i['sh'], **({'rg': i['rg']} if i.get('rg') else {}),
+                    **({'mod': i['mod']} if i.get('mod') else {})})
+    return out
+
+
+_CHOQUES = {}
+
+
+def _choques():
+    """`{nombre exacto: clave}` para los nombres que chocan en minúsculas.
+
+    🔴 DOS PERSONAS, UNA CLAVE. `Volk` 🇲🇽 y `volk` 🇨🇴 son dos raperos
+    distintos —Dlx, 25/09/2026: *«sí, son diferentes; los dos son parte de
+    ello»*, de Guardia Nacional— y en minúsculas son el mismo `volk`. La
+    página les daba la misma clave: el segundo abría el perfil del primero,
+    heredaba sus tarjetas y su último evento.
+
+    ⚠️ SE QUEDA CON LA CLAVE QUIEN TIENE DISCORD ID, porque es el único que
+    puede tener tarjetas y ésas viven en R2 bajo `volk/`. El otro pasa a
+    `volk-co`. Si ninguno tiene ID, los dos llevan su país y ninguno muestra
+    tarjetas: la de `volk/` no se sabe de cuál de los dos es.
+    """
+    if 'mapa' not in _CHOQUES:
+        grupos = defaultdict(list)
+        for p in _json('datos', 'temporada_pool.json') or []:
+            if p.get('raw'):
+                grupos[str(p['raw']).lower()].append(p)
+        out = {}
+        for k, ps in grupos.items():
+            if len({p['raw'] for p in ps}) < 2:
+                continue
+            con_id = [p for p in ps if p.get('discord_id')]
+            usados = set()
+            for p in ps:
+                if len(con_id) == 1 and p is con_id[0]:
+                    continue
+                base = '%s-%s' % (k, (p.get('cc') or '').lower() or 'x')
+                c, j = base, 2
+                while c in usados:
+                    c, j = '%s%d' % (base, j), j + 1
+                usados.add(c)
+                out[p['raw']] = c
+        _CHOQUES['mapa'] = out
+    return _CHOQUES['mapa']
+
+
+def _banderas(nombre):
+    """«volk 🇨🇴» -> ['co']: las banderas escritas en un nombre de llave."""
+    out, par = [], ''
+    for ch in str(nombre or ''):
+        c = ord(ch)
+        if 0x1F1E6 <= c <= 0x1F1FF:
+            par += chr(c - 0x1F1E6 + 97)
+            if len(par) == 2:
+                out.append(par)
+                par = ''
+        else:
+            par = ''
     return out
 
 
@@ -1008,8 +1110,11 @@ def _clave(p):
     ⚠️ ES EL NOMBRE EN MINUSCULAS, y eso hay que sacarlo del inventario,
     no inventarlo: `bot/subir_cartas.py` la construye así, y probarlo con
     `Makma/temporada.webp` da 404 mientras `makma/temporada.webp` da 200.
+
+    ⚠️ SALVO QUE CHOQUE CON OTRA PERSONA: ver `_choques()`.
     """
-    return str(p.get('raw') or '').lower()
+    raw = str(p.get('raw') or '')
+    return _choques().get(raw) or raw.lower()
 
 
 def _con_foto():
@@ -1818,6 +1923,13 @@ def _self_check():
     ok(all(_rango_ev(a) == b for a, b in _rs.items()),
        'el rango del evento: los niveles sí, el texto suelto no  %s'
        % [(a, _rango_ev(a)) for a, b in _rs.items() if _rango_ev(a) != b])
+    _ks = [x['k'] for x in p['tabla']]
+    ok(len(_ks) == len(set(_ks)), 'cada rapero de la tabla tiene su clave (%d repetidas)'
+       % (len(_ks) - len(set(_ks))))
+    _vk = sorted(x['k'] for x in p['tabla'] if x['n'].lower() == 'volk')
+    ok(len(_vk) in (0, 2) and (not _vk or len(set(_vk)) == 2),
+       'Volk y volk son dos: %s' % _vk)
+    ok(_banderas('volk 🇨🇴') == ['co'] and _banderas('Snow') == [], 'las banderas de un nombre')
     _g = p.get('guia') or {}
     ok(len(_g.get('ovr') or []) == 5 and sum(w for _n, w in _g['ovr']) == 100,
        'la guía trae los cinco pesos del OVR, y suman 100')

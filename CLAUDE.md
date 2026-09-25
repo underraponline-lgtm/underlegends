@@ -676,6 +676,21 @@ puesto de `Config`, los pesos de `sheet/ovr.py` y `sheet/competitivo.py`—,
 así que viajan en el payload (`guia`) en vez de escribirse en el HTML.
 `datos/escala.json` es la copia de `Config` para cuando no se puede leer.
 
+👤 **«MI CUENTA» NO ES UN LOGIN** (25/09/2026). Quien mira elige quién es y
+el navegador lo recuerda (`localStorage`, `lg:yo`); nada viaja a ningún
+lado. Lo mismo los Ajustes (`lg:ajustes`): formato de hora y zona. **Toda
+hora de la página pasa por `fmtHora()` / `fmtFecha()` / `diaDe()`**, que
+respetan esa zona; un `toLocaleTimeString` suelto vuelve a mostrar la del
+dispositivo aunque la persona haya elegido otra.
+
+🔴 **DOS PERSONAS, UNA CLAVE.** `Volk` 🇲🇽 y `volk` 🇨🇴 son dos raperos y en
+minúsculas eran el mismo `volk`: el segundo abría el perfil del primero y
+heredaba sus tarjetas. `_choques()` en `bot/subir_web.py` los separa
+(`volk-co`); se queda la clave quien tiene Discord ID, porque es el único
+que puede tener tarjetas en R2. ⚠️ **El resto del pipeline —R2, KV— sigue
+armando la clave del nombre**: hoy no importa porque ninguno de los dos
+está verificado, y el día que lo estén los dos, `p:volk` choca en KV.
+
 🔑 **EL REPARTO ES TODO EL DISEÑO, y es lo que lo separa del Apps
 Script.** Cloudflare Pages sirve estáticos **gratis e ilimitados**, así
 que el HTML, el CSS, el JS y las imágenes **no tocan el presupuesto de 10
