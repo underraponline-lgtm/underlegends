@@ -30,6 +30,13 @@ on:
         description: 'Barrido completo de Discord (se sumo un servidor)'
         type: boolean
         default: false
+      # 🌙 LO QUE CAMBIÓ SÓLO DE DIBUJO SE REDIBUJA DE MADRUGADA (Dlx,
+      # 25/09/2026). Esto lo adelanta, para un arreglo que no puede
+      # esperar. Ver `bot/madrugada.py`.
+      redibujar_ya:
+        description: 'Redibujar ya lo que cambió sólo de dibujo (no esperar a la madrugada)'
+        type: boolean
+        default: false
   schedule:
     # 🔴 09:00 UTC, Y LA HORA NO ES UN DETALLE: VA **DESPUES** DEL SYNC.
     # El job de identidades de `liga-global-sync` corre a las **08:00
@@ -214,6 +221,7 @@ jobs:
         id: p
         env:
           BARRIDO_COMPLETO: ${{ inputs.completo }}
+          REDIBUJAR_YA: ${{ inputs.redibujar_ya }}
         run: |
           if [ "${{ inputs.simulacro }}" = "true" ]; then
             python bot/pipeline.py --sin-dibujar
@@ -300,6 +308,8 @@ jobs:
           creds_json: ${{ secrets.CREDS_JSON }}
           env_file: ${{ secrets.ENV_FILE }}
       - name: el ciclo
+        env:
+          REDIBUJAR_YA: ${{ inputs.redibujar_ya }}
         run: |
           if [ "${{ inputs.simulacro }}" = "true" ]; then
             python bot/pipeline.py --solo-dibujar

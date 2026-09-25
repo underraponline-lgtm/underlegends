@@ -38,17 +38,56 @@ import os
 DIR_LOGOS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logos_sv')
 
 # El id del servidor y el hash del icono, tal como los sirve el CDN de Discord.
+#
+# 🔴 ESTOS SON EL RESPALDO, NO LA FUENTE. Medido el 25/09/2026: los de DRA,
+# SR y TWR que había acá daban **404** —los tres cambiaron de ícono— y sus
+# cartas caían en la silueta blanca sin que nada avisara. El de hoy sale de
+# `datos/iconos_sv.json`, que el ciclo escribe desde la invitación pública
+# de cada servidor (`bot/subir_web._guardar_iconos()`): ver `_de_hoy()`.
 LOGO = {
-    'DRA': '841017460341604382/1850334cb7d80902e889f679694a1713',
+    'DRA': '841017460341604382/a9b711f4ceaa4fa59734374ef9124859',
     'FTN': '1331924080835694655/79d5d1f815a977e394c4178af6ebcc0a',
     'TFC': '1043611686524944404/a_0eec14355e982c396c994f8d3510fa3d',
-    'SR':  '492346406976356374/a_84efb8f7f3a2d4d9af024149fcfbb09c',
+    'SR':  '492346406976356374/a_7d5ea47ca2a74c2a0b0c551a8e5a01bb',
     'TWR': '1115145044127666196/cf3638283222e016b59f25f57e7a1ee0',
     'FRZ': '838593179187544064/f55de8e5e5604b2a1813bb03cae9a9ad',
+    'URBF': '1467763447117778989/2af5df69cf7bd371a1a68e8a8eb018d4',
 }
 
-# los que hay que buscar como silueta si no estan en LOGO
+# los que hay que buscar como silueta si no estan en LOGO. URBF sigue acá
+# aunque ya tenga ícono: su silueta es la de los rombos de la Competitiva y
+# el respaldo si el ícono da 404 (`comun/respaldo.py`)
 SIN_ICONO = ['URBF', 'EFA', 'FFA']
+
+# 🟠 URBF VA CON SU ÍCONO DE DISCORD DESDE EL 25/09/2026. Dlx: *«usa el
+# nuevo logo, detéctalo del mismo servidor»*.
+#
+# ⚠️ FFA Y EFA SIGUEN CON LA SILUETA, A PROPÓSITO: el ícono de FFA es un
+# póster con micrófonos, llamas y texto (ver «Arte» en `CLAUDE.md`), y a 30
+# px es ruido. Y toda la T1 de hoy es de FFA: pasarlo al ícono cambiaría
+# todas las cartas de la temporada sin que nadie lo haya pedido.
+CON_ICONO = set(LOGO)
+
+
+def _de_hoy():
+    """`{sv: 'guild/hash'}` de `datos/iconos_sv.json`, sólo de `CON_ICONO`.
+
+    ⚠️ SI EL ARCHIVO NO ESTÁ —un clone recién hecho, antes de la primera
+    corrida— quedan los de arriba, que son los del 25/09/2026.
+    """
+    import json
+    p = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                     'datos', 'iconos_sv.json')
+    try:
+        with open(p, encoding='utf-8') as f:
+            d = json.load(f).get('iconos') or {}
+    except (OSError, ValueError):
+        return {}
+    return {sv: v for sv, v in d.items()
+            if sv in CON_ICONO and isinstance(v, str) and v.count('/') == 1}
+
+
+LOGO.update(_de_hoy())
 
 _cache = {}   # dir_logos -> {sv: data-uri}
 

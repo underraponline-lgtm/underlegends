@@ -182,7 +182,16 @@ def defs():
     # URBF · corte blanco duro. Era el unico de los nueve sin textura ni
     # gesto duro: sus "tres capas de pegatina" eran tres degrades encimados,
     # o sea mas de lo mismo sobre un campo violeta grande y plano.
-    A, B = '#7B44BF', '#FFFFFF'
+    #
+    # 🟠 NARANJA DESDE EL 25/09/2026, y la textura es la misma. Dlx: «el
+    # color de la tarjeta al naranja pero que la textura sea la misma». Su
+    # logo nuevo —la «UK» con corona— es naranja, y #EA7206 es el tono mas
+    # vivo del archivo (`comun/logos_color/urbf.png`). Era #7B44BF.
+    #
+    # ⚠️ SNAKE RAP TAMBIEN ES NARANJA (#C2540A) y los separa el dibujo, no el
+    # tono: el suyo es un corte diagonal ancho sobre negro; este, un corte
+    # blanco fino y rayones sobre el degrade.
+    A, B = '#EA7206', '#FFFFFF'
     d['URBF'] = (B, A,
         f'linear-gradient(200deg,transparent 0 52%,{B} 52% 55%,'
         f'{t(A,-.62)} 55% 100%),'

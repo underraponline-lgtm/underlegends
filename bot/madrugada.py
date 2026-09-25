@@ -30,6 +30,23 @@ GitHub no sabe de EDT y EST, así que la decisión no puede vivir en el
 que es el que dispara a los :22 y :52— y el self-check los compara. Si
 alguien cambia uno solo, CI se pone rojo.
 
+🎨 Y LO QUE CAMBIA SÓLO DE DIBUJO SE REDIBUJA DE MADRUGADA
+----------------------------------------------------------
+Dlx, 25/09/2026, sobre el naranja nuevo de Urban Freestyle: *«prográmalo
+para la madrugada, ya que no hay muchas cosas»*. Un cambio de código de
+una carta —un color, un logo, un arreglo de dibujo— le toca a TODO el
+pool con los mismos datos: son 50 minutos de redibujo que no le cambian un
+número a nadie. Eso espera a `REDIBUJO` (de 12:00 a 3:59 AM ET, las seis
+corridas antes de la ventana; la hora de más cubre el `dibujar` que dispara
+la de las 2:52, que arranca a las ~2:57 y puede pasar de las 3).
+
+⚠️ QUIEN CAMBIÓ DE DATOS SE REDIBUJA EN EL ACTO, y ya con el código nuevo:
+la regla frena sólo las cartas cuyos datos son los mismos que las que están
+en R2. Ver `que_cambio.cambios()`.
+
+⚠️ `REDIBUJAR_YA=true` LO ADELANTA —el input `redibujar_ya` del ciclo a
+mano—, para un arreglo que no puede esperar a la noche.
+
 QUIÉN LA MIRA
 -------------
   bot/worker.js      no dispara el ciclo fuera de los dos horarios
@@ -54,6 +71,9 @@ HORAS = ()
 #: 510, más el margen de la alerta de siempre
 PAUSA_MADRUGADA = 510 + 20
 PAUSA_NORMAL = 75
+#: 🎨 cuándo se redibuja lo que cambió sólo de dibujo, en horas del este:
+#: [DESDE, HASTA). Ver el encabezado.
+REDIBUJO = (0, DESDE + 1)
 
 
 def _este(t=None):
@@ -76,6 +96,14 @@ def toca_ciclo(t=None):
     if not DESDE <= e.hour < HASTA:
         return True
     return e.hour in HORAS and e.minute >= 30
+
+
+def es_hora_de_redibujar(t=None):
+    """¿Toca redibujar lo que cambió sólo de dibujo? Ver `REDIBUJO`."""
+    ya = str(os.environ.get('REDIBUJAR_YA') or '').strip().lower()
+    if ya in ('1', 'true', 'si', 'sí', 'yes'):
+        return True
+    return REDIBUJO[0] <= _este(t).hour < REDIBUJO[1]
 
 
 def pausa_max(t=None):
@@ -115,6 +143,30 @@ def _self_check():
     ok(pausa_max(f(9, 0)) == PAUSA_MADRUGADA and pausa_max(f(14, 0)) == PAUSA_NORMAL,
        'la alerta del disparador espera más de madrugada')
 
+    # 🎨 el redibujo de lo que cambió sólo de dibujo. `g` cuenta desde la
+    # medianoche del este (4:00 UTC en verano), así llega hasta las 11 PM
+    g = lambda h, m: (datetime.datetime(2026, 9, 25, 4, 0, tzinfo=utc)
+                      + datetime.timedelta(hours=h, minutes=m))
+    guardado = os.environ.pop('REDIBUJAR_YA', None)
+    try:
+        ok(es_hora_de_redibujar(g(0, 22)) and es_hora_de_redibujar(g(2, 52)),
+           'el redibujo entra en las corridas de 12:22 a 2:52 AM')
+        ok(es_hora_de_redibujar(g(3, 5)),
+           'y en el dibujar que arranca pasadas las 3 (lo dispara la de las 2:52)')
+        ok(not es_hora_de_redibujar(g(11, 22)) and not es_hora_de_redibujar(g(23, 52)),
+           'de día y a las 11:52 PM, no: espera')
+        ok(sum(es_hora_de_redibujar(g(h, m)) and toca_ciclo(g(h, m))
+               for h in range(24) for m in (22, 52)) == 6,
+           'son seis corridas del ciclo en la ventana del redibujo')
+        os.environ['REDIBUJAR_YA'] = 'true'
+        ok(es_hora_de_redibujar(g(14, 22)), 'REDIBUJAR_YA=true lo adelanta')
+        os.environ['REDIBUJAR_YA'] = 'false'
+        ok(not es_hora_de_redibujar(g(14, 22)), "y el 'false' que manda GitHub no")
+    finally:
+        os.environ.pop('REDIBUJAR_YA', None)
+        if guardado is not None:
+            os.environ['REDIBUJAR_YA'] = guardado
+
     # ⚠️ LA MISMA VENTANA EN EL WORKER, que es el que dispara
     with io.open(os.path.join(SCR, 'worker.js'), encoding='utf-8') as fh:
         js = fh.read()
@@ -146,7 +198,8 @@ def main():
             print('   (madrugada: de 3 a 11 AM ET no corre ninguna sincronización)',
                   file=sys.stderr)
         return 0
-    print('en la ventana: %s · toca ciclo: %s' % (en_ventana(), toca_ciclo()))
+    print('en la ventana: %s · toca ciclo: %s · redibujo: %s'
+          % (en_ventana(), toca_ciclo(), es_hora_de_redibujar()))
     return 0
 
 
