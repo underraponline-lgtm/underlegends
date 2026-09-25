@@ -31,6 +31,23 @@ const ok = (cond, que) => {
   if (!cond) fallas++;
 };
 
+// ── 0 · un anuncio editado después de descartado ────────────────────
+{
+  const sin = { id: '1', edited_timestamp: null };
+  const ed = { id: '1', edited_timestamp: '2026-09-25T20:00:00+00:00' };
+  const descartada = (m) => ({ estado: 2, hasta: 0, cuerpo: A.marcaDescarte(m) });
+  ok(A.releer(undefined, sin), 'lo que nunca pasó se lee');
+  ok(!A.releer(descartada(sin), sin), 'lo descartado y sin tocar no se vuelve a leer');
+  ok(!A.releer({ estado: 2, hasta: 0, cuerpo: '{}' }, sin),
+    'y las filas de antes (`{}`) tampoco, si nadie las editó');
+  ok(A.releer(descartada(sin), ed), 'editado después de descartarlo: se lee de nuevo');
+  ok(!A.releer(descartada(ed), ed), 'y una vez releído, no otra vez');
+  ok(!A.releer({ estado: 1, hasta: 999, cuerpo: '{"t":"X"}' }, ed),
+    'lo avisado no se vuelve a leer aunque lo editen');
+  ok(!A.releer({ estado: 0, hasta: 999, cuerpo: '{"t":"X"}' }, ed), 'lo que está en cola tampoco');
+  ok(!A.releer({ estado: 2, hasta: 999, cuerpo: '{"t":"X"}' }, ed), 'ni lo vencido');
+}
+
 // ── 1 · el ejemplo del RFC 8291 ─────────────────────────────────────
 {
   const as_pub = 'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8';

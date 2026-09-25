@@ -190,7 +190,20 @@ def main():
     hproc = Hoja('Eventos Procesados')
     ya = numeros_por_evento(hproc)
     planes, tope, sin_resolver, alias_mal = [], num, [], []
-    for (nombre, sv, fecha), bs in sorted(evs.items()):
+    # 🔴 EN EL ORDEN EN QUE SE JUGARON, NO EN ORDEN ALFABÉTICO. Era
+    # `sorted(evs.items())`: el #354 (CARABOBO, 10:25 PM del 23/09) quedó
+    # después del #353 (ELRAP FECHA 6, 2:18 AM del 24/09) porque «E» va
+    # antes que «_». Manda el instante de la llave —el ID del mensaje lo
+    # trae—, y sin link, el mediodía de su fecha. Ver `llaves_web.orden()`.
+    try:
+        import llaves_web as LW
+        _links = LW.leer(LW.LINKS)
+        _cuando = lambda k: LW.orden(LW._primero(_links.get('|'.join(k))),
+                                     k[2], k)
+    except Exception:                                    # noqa: BLE001
+        _cuando = lambda k: (0, k)
+    for (nombre, sv, fecha), bs in sorted(evs.items(),
+                                          key=lambda kv: _cuando(kv[0])):
         repetido = ya.get((nombre, sv, fecha))
         if repetido is None:
             tope += 1

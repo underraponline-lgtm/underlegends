@@ -205,6 +205,12 @@ def racha_maxima(s):
     return int(num(p[1])) if len(p) > 1 else 0
 
 
+def racha_actual(s):
+    """La primera mitad de `actual/maxima`: la que lleva ahora."""
+    p = str(s).split('/')
+    return int(num(p[0])) if len(p) > 1 else 0
+
+
 def avatares_conocidos():
     """Los avatares no estan en el Sheet: se rescatan de los JSON existentes.
 
@@ -503,6 +509,9 @@ def main():
             'sob': int(num(r[col('🛡️')])),
             'srv': sum(1 for s in SERVIDORES if num(r[col(s)]) > 0),
             'racha': racha_maxima(r[col('🔥')]),
+            # ⚠️ LAS DOS: la tarjeta y «Racha más larga» usan la máxima, y
+            # «Rachas» del hub dice quién viene encadenando AHORA
+            'racha_act': racha_actual(r[col('🔥')]),
             # el Score competitivo: de aca sale la LETRA del rango en la carta
             'score': SCORE.get(norm(r[col('Rapero')]), 0.0),
             'av': AV.get(nom.lower(), ''),

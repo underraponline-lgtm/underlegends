@@ -440,8 +440,11 @@ def _trolls():
         return lambda q: False
 
 
-def agregar(filas_res, filas_uno):
+def agregar(filas_res, filas_uno, instantes=None):
     """Las filas crudas -> {rapero: {columna: valor}}.
+
+    `instantes` es `{número de evento: ms}` —cuándo se publicó su llave—;
+    sin pasarlo se lee de `datos/llaves_t1.json`. Ver `llaves_web.orden()`.
 
     ⚠️ TOMA FILAS, NO LEE LA PLANILLA. Asi se puede probar con una llave
     inventada sin tocar el Sheet, que es como se verifico con `--probar`
@@ -453,6 +456,16 @@ def agregar(filas_res, filas_uno):
     🔴 Y CANONIZA LOS NOMBRES CONTRA EL MAPA DE AKAs. Ver `canon()`: sin
     eso, nueve personas se cuentan dos veces.
     """
+    import llaves_web as LW
+    if instantes is None:
+        try:
+            instantes = LW.instantes()
+        except Exception:                                # noqa: BLE001
+            instantes = {}
+
+    def cuando(n, fecha):
+        return LW.orden(instantes.get(n), fecha, n)
+
     d = defaultdict(lambda: defaultdict(int))
     evs = defaultdict(set)
     ultimo = defaultdict(list)          # (num, fecha, puesto) por persona
@@ -488,7 +501,7 @@ def agregar(filas_res, filas_uno):
         except ValueError:
             _n = 0
         ultimo[quien].append((_n, str(f[1]).strip(), POS.get(pos, '')))
-        jugo[quien].append((_orden_fecha(f[1], _n), _n, pos))
+        jugo[quien].append((cuando(_n, f[1]), _n, pos))
         if pos in LLEGO:
             tamano[_n] = max(tamano.get(_n, 0), LLEGO[pos])
 
@@ -523,7 +536,7 @@ def agregar(filas_res, filas_uno):
     # ⚠️ Se muestra la fecha igual —`(22/09)・🥇`— porque es lo que la
     # persona quiere leer; lo que NO se usa es para ordenar.
     for quien, filas in ultimo.items():
-        n, fecha, pos = max(filas, key=lambda x: x[0])
+        n, fecha, pos = max(filas, key=lambda x: cuando(x[0], x[1]))
         d[quien]['Último Resultado'] = ('(%s)・%s' % (fecha, pos) if pos
                                         else '(%s)' % fecha)
 
@@ -554,7 +567,7 @@ def agregar(filas_res, filas_uno):
             num = int(float(str(f[0]).strip() or 0))
         except ValueError:
             num = 0
-        orden.append((num, i, f))
+        orden.append((cuando(num, f[1]), i, f))
     for _num, _i, f in sorted(orden, key=lambda x: (x[0], x[1])):
         a, b, gan = str(f[4]).strip(), str(f[5]).strip(), str(f[6]).strip()
         if not (a and b and gan):
@@ -1980,6 +1993,20 @@ def _self_check():
     mal += not ok
     print('   %s la fecha ordena aunque cruce diciembre y aunque el # esté corrido'
           % ('✅' if ok else '🔴'))
+    # 🔴 DOS EVENTOS EL MISMO DÍA: manda cuándo se publicó cada llave. El
+    # #10 salió a las 6 PM y el #11 a las 3 PM: por número, Ana llegaba a
+    # semifinal en el ÚLTIMO; por hora, en el primero y después no.
+    import llaves_web as _LW
+    _t = lambda h: _LW.ms_de_fecha('23/09') + (h - 12) * 3600000
+    res5 = [R(10, '23/09', 'Ana', 'Cuartos'), R(10, '23/09', 'Zed', 'Octavos'),
+            R(11, '23/09', 'Ana', 'Semifinal'), R(11, '23/09', 'Zed', 'Octavos')]
+    ag5 = agregar(res5, [], instantes={10: _t(18), 11: _t(15)})
+    ag6 = agregar(res5, [], instantes={})
+    ok = (ag5['Ana'].get('🔥') == '0/1' and ag6['Ana'].get('🔥') == '1/1'
+          and ag5['Ana'].get('Último Resultado') == '(23/09)')
+    mal += not ok
+    print('   %s el mismo día, por la hora de la llave y no por el #   %s · sin hora %s'
+          % ('✅' if ok else '🔴', ag5['Ana'].get('🔥'), ag6['Ana'].get('🔥')))
 
     print('\n  ninguna columna se borra en silencio')
     cab = ['#', 'Rapero', 'Puntos', '🔥', 'Rango', 'Sv', 'Ev']

@@ -688,6 +688,36 @@ export async function rutaAvisos(req, env, ruta) {
 }
 
 /** Lo que corre el cron de cada minuto. */
+/**
+ * Lo que se guarda de un mensaje descartado: su última edición.
+ *
+ * ⚠️ `{}` SI NUNCA SE EDITÓ, que es lo que se guardaba antes: así las
+ * filas viejas no se vuelven a leer todas de golpe al desplegar.
+ */
+export function marcaDescarte(m) {
+  const ed = m && m.edited_timestamp ? String(m.edited_timestamp) : '';
+  return ed ? JSON.stringify({ ed }) : '{}';
+}
+
+/**
+ * ¿Se vuelve a leer un mensaje que ya pasó por el vigía?
+ *
+ * 🔴 UN ANUNCIO QUE SE ARMA EN DOS PASOS NO SONABA NUNCA. Se publica
+ * la imagen sola —o «📢 SE VIENE…»— y a los dos minutos se edita con el
+ * horario y los cupos; el vigía ya lo había descartado y no lo miraba más
+ * (auditoría del 25/09/2026). Ahora, si se editó después de descartarlo,
+ * se lee de nuevo.
+ *
+ * ⚠️ SÓLO LO DESCARTADO AL LEERLO (`desde = hasta = 0`). Lo avisado, lo
+ * que está en cola y lo vencido no se vuelven a mirar nunca: una edición
+ * no puede hacer sonar dos veces el mismo evento.
+ */
+export function releer(fila, m) {
+  if (!fila) return true;
+  if (Number(fila.estado) !== 2 || Number(fila.hasta) !== 0) return false;
+  return String(fila.cuerpo || '') !== marcaDescarte(m);
+}
+
 export async function vigilar(env, servidores, dueno) {
   if (!env.AVISOS) return;
   await elObjeto(env).fetch('https://avisos/vigilar', {
@@ -897,9 +927,11 @@ export class Avisos {
     if (Number.isNaN(publicado) || ahora - publicado > EDAD_MAX) return false;
     // ⚠️ ANTES DE LEERLO, ¿YA ESTA? Cada minuto se vuelven a pedir los
     // mismos diez mensajes; parsear los diez es gastar CPU en nada.
-    if (this.sql.exec('SELECT 1 FROM avisos WHERE id = ?', m.id).toArray().length) {
-      return false;
-    }
+    // 🔴 SALVO QUE SE HAYA EDITADO DESPUÉS DE DESCARTARLO. Ver `releer()`.
+    const fila = this.sql.exec('SELECT estado, hasta, cuerpo FROM avisos WHERE id = ?',
+      m.id).toArray()[0];
+    if (!releer(fila, m)) return false;
+    if (fila) this.sql.exec('DELETE FROM avisos WHERE id = ?', m.id);
     // lo que publicó el propio bot —la re-publicación de `eventos-hoy`— no
     // es un anuncio: es el eco de uno
     if (this.yo && m.author && m.author.id === this.yo) return false;
@@ -907,7 +939,8 @@ export class Avisos {
     // a leerlo en el minuto siguiente
     const descartar = () => {
       this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, ' +
-        'creado, estado) VALUES (?, ?, ?, ?, ?, ?, 2)', m.id, c.sv, '{}', 0, 0, ahora);
+        'creado, estado) VALUES (?, ?, ?, ?, ?, ?, 2)', m.id, c.sv, marcaDescarte(m),
+      0, 0, ahora);
       return false;
     };
     const a = parsearAnuncio(m);
