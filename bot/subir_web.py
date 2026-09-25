@@ -934,7 +934,11 @@ def _miembros(svs):
             continue
         d = {}
         if n:
-            d['miembros'] = int(round(n, -2) if n >= 1000 else round(n, -1))
+            # 🔑 EXACTO. Dlx, 25/09/2026: «en el mundo poner números exactos».
+            # Se redondeaba para no reescribir el lobby por cada persona que
+            # entra o sale; cuesta ~1 escritura de KV por corrida con cambios,
+            # dentro del presupuesto (ver `subir_datos.presupuesto()`).
+            d['miembros'] = int(n)
         if g.get('icon'):
             d['icono'] = ('https://cdn.discordapp.com/icons/%s/%s.webp?size=128'
                           % (g['id'], g['icon']))
@@ -1089,28 +1093,40 @@ def _crews():
 
     ⚠️ EL UMBRAL DE 3 VALE IGUAL QUE PARA PAIS Y SERVIDOR: ser «1 de 1»
     no dice nada. Una crew con una persona no es una crew en una tabla.
+
+    🔑 PERO SE VEN TODAS LAS QUE TIENEN ALGUIEN EN LA TEMPORADA (`rk: 0`
+    las de menos de 3). Dlx, 25/09/2026: *«agregar Knowledge Sombrío a las
+    crews también»* — y con el umbral no aparecía nunca: de sus siete sólo
+    Zignos juega la T1. El PUESTO sigue pidiendo 3 (el top 5 filtra por
+    `rk`); lo que cambió es que la crew exista en la página.
     """
     try:
         from comun.crews import DE_CADA_UNO, norm
     except Exception:                                    # noqa: BLE001
         return []
+    nombres = (_json('datos', 'crews.json') or {}).get('_nombres') or {}
+    logos = os.path.join(SCR, 'paginas', 'logos', 'crews')
     pool = _json('datos', 'temporada_pool.json') or []
     acc = {}
     for p in pool:
         c = DE_CADA_UNO.get(norm(p.get('raw')))
         if not c:
             continue
-        a = acc.setdefault(c, {'crew': c, 'n': 0, 'pts': 0, 'mejor': '',
-                               'mejor_pos': 10 ** 9})
+        a = acc.setdefault(c, {'crew': nombres.get(c, c), 'clave': c, 'n': 0, 'pts': 0,
+                               'mejor': '', 'mejor_pos': 10 ** 9, 'gente': []})
         a['n'] += 1
         a['pts'] += p.get('pts') or 0
+        a['gente'].append(p.get('raw'))
         if (p.get('pos') or 10 ** 9) < a['mejor_pos']:
             a['mejor_pos'] = p.get('pos') or 10 ** 9
             a['mejor'] = p.get('raw')
-    fuera = [a for a in acc.values() if a['n'] >= 3]
+    fuera = list(acc.values())
     for a in fuera:
         a.pop('mejor_pos', None)
-    return sorted(fuera, key=lambda a: (-a['pts'], -a['n']))
+        a['rk'] = 1 if a['n'] >= 3 else 0
+        if os.path.exists(os.path.join(logos, a['clave'] + '.webp')):
+            a['logo'] = 'logos/crews/%s.webp' % a['clave']
+    return sorted(fuera, key=lambda a: (-a['rk'], -a['pts'], -a['n']))
 
 
 def _records(gente, regs=None, comp=None):
