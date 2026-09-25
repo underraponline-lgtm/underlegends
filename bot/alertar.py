@@ -196,11 +196,20 @@ def salud():
             resuelto('vigia', 'El vigía de avisos volvió a latir.')
         else:
             hace = v.get('hace_s')
-            alertar('vigia', 'El vigía de avisos no anda: %s. Los avisos de '
-                    'eventos no están saliendo. (%s)' % (
-                        ('no late hace %d min' % (hace // 60)) if hace
-                        else (', '.join(v.get('errores') or []) or v.get('error')
-                              or 'no hay latido'), _et()))
+            errores = ', '.join(v.get('errores') or []) or v.get('error') or ''
+            # 🔴 LATE, PERO CON ERRORES, NO ES «NO LATE». `ok` es latido de
+            # menos de 5 min **y** sin errores; con un canal que no se pudo
+            # leer, `hace_s` era 30 y el DM decía «no late hace 0 min» (lo vio
+            # la lectura de los logs del 25/09/2026).
+            if hace is not None and hace < 5 * 60:
+                alertar('vigia', 'El vigía de avisos late, pero con errores: %s. '
+                        'Los avisos de esos canales pueden no estar saliendo. (%s)'
+                        % (errores or 'sin detalle', _et()))
+            else:
+                alertar('vigia', 'El vigía de avisos no anda: %s. Los avisos de '
+                        'eventos no están saliendo. (%s)' % (
+                            ('no late hace %d min' % (hace // 60)) if hace
+                            else (errores or 'no hay latido'), _et()))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude preguntarle al vigía (%s)' % str(e)[:80])
     # 2 · el disparador del ciclo: el cron del Worker a los :22 y :52

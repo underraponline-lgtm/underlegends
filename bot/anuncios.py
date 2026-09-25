@@ -635,8 +635,11 @@ def leer(s, por_canal=None):
     Cada anuncio puede traer `estado` —abiertas/cerradas— si en su canal
     hubo una marca después de él.
     """
+    import requests
     anuncios, inscr = [], []
     estados = {}
+    #: los servidores cuyo canal de eventos no se pudo leer: ver `main()`
+    leer.fallaron = set()
     for cid, nombre, cod, tipo, gid in canales(s):
         lim = por_canal or POR_CANAL.get(tipo, 25)
         # 🔴 DISCORD DA 100 POR PEDIDO Y ANTES SE PEDIA UNO SOLO, asi que
@@ -664,8 +667,25 @@ def leer(s, por_canal=None):
             pa = {'limit': min(100, lim - len(msgs))}
             if antes:
                 pa['before'] = antes
-            r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
-                      params=pa, timeout=25)
+            # 🔴 UN TIMEOUT DE DISCORD TUMBABA LA LECTURA ENTERA. El
+            # 25/09/2026 a las 11:23 AM ET un `ReadTimeout` de un solo canal
+            # cortó el script: `datos/anuncios.json` no se actualizó y el paso
+            # quedó en verde (lo vio la lectura de los logs). Un reintento, y
+            # si tampoco, se sigue con el canal siguiente.
+            r = None
+            for intento in (1, 2):
+                try:
+                    r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
+                              params=pa, timeout=25)
+                    break
+                except requests.exceptions.RequestException as e:
+                    if intento == 2:
+                        print('   ⚠️ %s · %s: Discord no contestó (%s)'
+                              % (cod, nombre, str(e)[:70]))
+            if r is None:
+                if tipo == 'eventos':
+                    leer.fallaron.add(cod)
+                break
             if r.status_code != 200:
                 break
             lote = r.json()
@@ -1056,6 +1076,15 @@ def main():
         return _self_check()
     s = _sesion()
     anuncios, inscr = leer(s)
+    # ⚠️ LOS ANUNCIOS SE PISAN (`guardar()`), así que un canal que no se pudo
+    # leer borraba de la web los eventos de ese servidor hasta la corrida
+    # siguiente. Se quedan los de antes, sólo de ese servidor.
+    if getattr(leer, 'fallaron', None):
+        previos = [a for a in (cargar() or {}).get('anuncios') or []
+                   if a.get('servidor') in leer.fallaron]
+        anuncios += previos
+        print('   ⚠️ sin leer: %s — quedan sus %d anuncio(s) de antes'
+              % (', '.join(sorted(leer.fallaron)), len(previos)))
     print('\n══ EVENTOS ANUNCIADOS ══\n')
     if canales.sin_acceso:
         print('   ⓘ %d servidor(es) sin acceso: el bot no está invitado\n'

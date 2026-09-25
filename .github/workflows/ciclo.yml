@@ -131,6 +131,12 @@ env:
   PYTHONUNBUFFERED: '1'
 
 jobs:
+  # 🔴 `ubuntu-24.04` Y NO `ubuntu-latest`. GitHub anunció en cada corrida
+  # que `ubuntu-latest` pasa a Ubuntu 26 desde el 19/10/2026 (lo vio la
+  # lectura de los logs del 25/09). `dibujar` instala Chromium con
+  # `playwright install --with-deps`, y una versión de Ubuntu que Playwright
+  # todavía no soporta rompe el dibujo a mitad de temporada, sin nadie
+  # mirando. El cambio de versión se hace a propósito, probándolo.
   # ══════════════════════════════════════════════════════════════════
   # 🌙 LA MADRUGADA, MÁS DESPACIO — ver `bot/madrugada.py`.
   #
@@ -144,7 +150,7 @@ jobs:
   # de una línea. Lo que dispara el Worker o Dlx a mano corre siempre.
   # ══════════════════════════════════════════════════════════════════
   ventana:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     outputs:
       corre: ${{ steps.v.outputs.corre }}
@@ -177,7 +183,7 @@ jobs:
   # `*/30` y peor repartido.
   # ══════════════════════════════════════════════════════════════════
   escuchar:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: ventana
     if: needs.ventana.outputs.corre == 'true'
     # 🔴 EL `concurrency` VA POR TRABAJO Y NO POR WORKFLOW, y ese
@@ -273,7 +279,7 @@ jobs:
   dibujar:
     needs: escuchar
     if: needs.escuchar.outputs.dibujar == 'true' && inputs.simulacro != true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # ⚠️ NO SE CANCELA LA QUE ESTA CORRIENDO. El sello va al final de
     # cada tanda: cortar a la mitad deja cartas subidas sin sellar —que
     # se vuelven a dibujar, molesto pero inofensivo— o media subida.

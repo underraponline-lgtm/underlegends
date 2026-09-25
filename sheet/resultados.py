@@ -209,6 +209,15 @@ def reescribir(h, nums, nuevas):
         raise RuntimeError(
             '%s tiene %d columnas y %d fila(s) traen otra cantidad. Mandar de '
             'menos NO falla: entra corrida.' % (h.nombre, h.ancho, len(malas)))
+    # 🔴 SI QUEDA IGUAL, NO SE ESCRIBE. El ciclo relee las llaves en cada
+    # corrida a propósito y reprocesa todos los eventos de la temporada, así
+    # que esto reescribía la tabla entera sin que cambiara nada: 167 filas
+    # por corrida el 25/09/2026, con 0 llaves nuevas (lo vio la lectura de
+    # los logs de ese día). Se compara con el valor de verdad
+    # (`_filas_crudas()`): un número que hoy es texto en la hoja NO da igual
+    # y se reescribe, que es lo que tiene que pasar.
+    if total == [list(f) + [''] * (h.ancho - len(f)) for f in viejas]:
+        return 0
     ult = chr(ord('A') + h.ancho - 1)
     hasta = h.fila_datos + len(total) - 1
     if total:
