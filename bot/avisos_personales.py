@@ -74,6 +74,11 @@ def _id(*partes):
     return hashlib.sha1('|'.join(str(p) for p in partes).encode('utf-8')).hexdigest()[:16]
 
 
+def _ahora_iso():
+    import datetime as _dt
+    return _dt.datetime.now(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
 def eventos(antes, hoy):
     """Los avisos entre dos estados `{did: {'k', 'n', 'rg', 'cs'}}`. Una lista.
 
@@ -81,6 +86,7 @@ def eventos(antes, hoy):
     ve, y lo que tiene no es novedad para él.
     """
     out = []
+    t = _ahora_iso()
     for did, h in sorted(hoy.items()):
         a = antes.get(did)
         if a is None:
@@ -105,6 +111,10 @@ def eventos(antes, hoy):
                 out.append({'id': _id(did, 'baja', rh), 'quien': did,
                             'titulo': '📉 Ahora sos rango %s' % rh,
                             'cuerpo': 'Antes eras %s.' % ra, 'url': url})
+    # ⚠️ CON FECHA: el objeto no manda lo de más de una semana, y la cola se
+    # recorta por fecha (`encolar()`), porque ya no se borra al leerla
+    for e in out:
+        e['t'] = t
     return out
 
 
@@ -185,8 +195,12 @@ def encolar(nuevos):
         previa = json.loads(v) if isinstance(v, str) else (v or [])
     except (ValueError, OSError):
         previa = []
-    ya = {a.get('id') for a in previa if isinstance(a, dict)}
-    cola = [a for a in previa if isinstance(a, dict)] + [a for a in nuevos if a['id'] not in ya]
+    # ⚠️ LO DE MÁS DE UNA SEMANA SE VA: el objeto ya no borra la cola
+    import datetime as _dt
+    desde = (_dt.datetime.now(_dt.timezone.utc) - _dt.timedelta(days=7)).strftime('%Y-%m-%dT%H:%M:%SZ')
+    previa = [a for a in previa if isinstance(a, dict) and str(a.get('t') or '') >= desde]
+    ya = {a.get('id') for a in previa}
+    cola = previa + [a for a in nuevos if a['id'] not in ya]
     r = s.put('%s/values/%s' % (SD.API, COLA),
               files={'value': (None, json.dumps(cola[-200:], ensure_ascii=False)),
                      'metadata': (None, '{}')}, timeout=30)

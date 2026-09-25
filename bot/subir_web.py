@@ -868,6 +868,14 @@ def _con_redes(perf):
                     rs = json.loads(x) if isinstance(x, str) else x
                 except ValueError:
                     continue
+                # desde el 25/09/2026 es `{redes, d, n, t}`; antes, la lista sola
+                if isinstance(rs, dict):
+                    # ⚠️ SIN REVISAR EN 120 DÍAS NO SE MUESTRAN: si alguien le
+                    # cambió el usuario a una red, el link viejo puede ser de
+                    # otra persona. Se refrescan al volver a «Mis redes».
+                    if time.time() * 1000 - (rs.get('t') or 0) > 120 * 864e5:
+                        continue
+                    rs = rs.get('redes') or []
                 if cl in ps and isinstance(rs, list) and rs:
                     ps[cl]['redes'] = [[r.get('t'), r.get('u'), r.get('n')] for r in rs
                                        if isinstance(r, dict) and r.get('t') and r.get('u')][:8]

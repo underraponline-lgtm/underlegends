@@ -755,13 +755,20 @@ export async function rutaAvisos(req, env, ruta) {
 export const COLA_PERSONAL = 'avisos:personales';
 
 /** La cola que dejó el ciclo, con sólo lo que se puede mandar. */
-export function colaPersonal(crudo) {
+export function colaPersonal(crudo, ahora) {
   let c = null;
   try { c = JSON.parse(crudo || 'null'); } catch (e) { c = null; }
   if (!Array.isArray(c)) return [];
+  // ⚠️ LO DE MÁS DE UNA SEMANA NO SALE: la cola ya no se borra (ver
+  // `personales()`) y `hechos` se olvida a los 30 días
+  const desde = (ahora || Date.now()) - 7 * 24 * HORA;
   return c.filter((a) => a && typeof a.id === 'string' && /^[0-9]{5,25}$/.test(String(a.quien || '')) &&
-    typeof a.titulo === 'string' && a.titulo).slice(0, 200);
+    typeof a.titulo === 'string' && a.titulo && Date.parse(a.t || '') >= desde).slice(0, 200);
 }
+
+/** Cuántos avisos personales salen por minuto como mucho: el vigía comparte
+ * el tope de 50 pedidos por invocación con la lectura de los canales. */
+export const TOPE_PERSONALES = 15;
 
 /** Lo que viaja al teléfono: lo lee `armar()` de `paginas/sw.js`. */
 export function cuerpoPersonal(a) {
@@ -1435,27 +1442,42 @@ export class Avisos {
   async personales(ahora) {
     const crudo = await this.env.KV.get(COLA_PERSONAL);
     if (!crudo) return 0;
-    const cola = colaPersonal(crudo);
-    let enviados = 0, sinVinculo = 0;
+    const cola = colaPersonal(crudo, ahora);
+    let enviados = 0, sinVinculo = 0, pedidos = 0, quedan = 0;
     for (const a of cola) {
       const id = 'yo:' + a.id;
       if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
-      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
       const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?',
         String(a.quien)).toArray();
+      // 🔴 CON TOPE POR MINUTO: el vigía comparte con la lectura de los canales
+      // el tope de pedidos de una invocación, y pasado ese tope `empujar()`
+      // devuelve 0 sin mandar nada. Lo que no entra, sale al minuto siguiente.
+      if (pedidos + subs.length > TOPE_PERSONALES && pedidos) { quedan++; continue; }
+      // ⚠️ SE ANOTA ANTES DE MANDAR —así dos minutos que se pisan no lo mandan
+      // dos veces— y se desanota si falló por el otro lado (0, 429, 5xx).
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
       if (!subs.length) { sinVinculo++; continue; }
+      pedidos += subs.length;
       const cuerpo = cuerpoPersonal(a);
       const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo,
         { ttl: 24 * 3600, topic: 'yo' + String(a.id).replace(/[^A-Za-z0-9]/g, '').slice(-20) },
         this.env, new Map())));
+      let llego = 0, reintentar = false;
       estados.forEach((e, i) => {
-        if (e >= 200 && e < 300) enviados++;
+        if (e >= 200 && e < 300) { enviados++; llego++; }
         else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        // sin red, frenado o caído del otro lado: vuelve a salir al minuto.
+        // Un 400 o un 403 no: repetirlo daría lo mismo durante una semana.
+        else if (e === 0 || e === 429 || e >= 500) reintentar = true;
       });
+      if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
     }
     this.sql.exec('DELETE FROM hechos WHERE t < ?', ahora - 30 * 24 * HORA);
-    try { await this.env.KV.delete(COLA_PERSONAL); } catch (e) { /* `hechos` evita repetir */ }
-    this.guardar('personales', { t: ahora, cola: cola.length, enviados, sin_vinculo: sinVinculo });
+    // 🔴 LA COLA YA NO SE BORRA: si el ciclo la reescribía entre la lectura y el
+    // borrado, lo nuevo se perdía (revisión del 25/09/2026). `hechos` evita
+    // repetir, y lo de más de una semana no sale (`colaPersonal()`).
+    this.guardar('personales', { t: ahora, cola: cola.length, enviados, sin_vinculo: sinVinculo,
+      quedan });
     return enviados;
   }
 
