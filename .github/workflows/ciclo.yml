@@ -125,6 +125,31 @@ env:
 
 jobs:
   # ══════════════════════════════════════════════════════════════════
+  # 🌙 LA MADRUGADA, MÁS DESPACIO — ver `bot/madrugada.py`.
+  #
+  # Dlx, 25/09/2026: de 3 a 11 AM ET no hay eventos. El Worker dispara el
+  # ciclo sólo a las 6:52 y 10:52 en esa ventana; esto frena el cron de
+  # respaldo de GitHub (:07 y :37) en la misma ventana. La hora del este
+  # con el cambio de horario no se puede pedir en un `schedule:`, así que
+  # la decide Python con `zoneinfo`.
+  #
+  # ⚠️ Baja SÓLO ese archivo: el repo pesa 100 MB y esto es una pregunta
+  # de una línea. Lo que dispara el Worker o Dlx a mano corre siempre.
+  # ══════════════════════════════════════════════════════════════════
+  ventana:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      corre: ${{ steps.v.outputs.corre }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: bot/madrugada.py
+          sparse-checkout-cone-mode: false
+      - id: v
+        run: python3 bot/madrugada.py --evento "${{ github.event_name }}" >> "$GITHUB_OUTPUT"
+
+  # ══════════════════════════════════════════════════════════════════
   # ESCUCHAR — cada media hora, y nunca dibuja.
   #
   # 🔴 ESTE TRABAJO EXISTE POR FRESCURA, NO SOLO POR PLATA. Antes era un
@@ -146,6 +171,8 @@ jobs:
   # ══════════════════════════════════════════════════════════════════
   escuchar:
     runs-on: ubuntu-latest
+    needs: ventana
+    if: needs.ventana.outputs.corre == 'true'
     # 🔴 EL `concurrency` VA POR TRABAJO Y NO POR WORKFLOW, y ese
     # cambio es la mitad de la razon de partirlo. A nivel workflow una
     # corrida entera bloquea a la siguiente, asi que un redibujo de dos

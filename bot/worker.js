@@ -2395,6 +2395,25 @@ function trama(n) {
 // refer everything as my local time zone EST»*). Este pie decía «… UTC».
 // ⚠️ CON `timeZone` Y NO CON UN -4 ESCRITO: de noviembre a marzo es -5, y
 // un desfase fijo miente medio año sin avisar.
+// 🌙 LA MADRUGADA, MÁS DESPACIO. Dlx, 25/09/2026: «después de las 3am EST
+// hasta las 11am EST que haya un retraso de cada 4 horas… a esas horas en
+// sí los eventos no hay ninguno». De 3 a 11 AM ET el ciclo corre a las 6:52
+// y a las 10:52 y nada más. El vigía de los avisos sigue cada minuto.
+// ⚠️ La misma ventana está en `bot/madrugada.py`, y su self-check compara
+// esta línea: si se cambia una sola, CI se pone rojo.
+export const MADRUGADA = { desde: 3, hasta: 11, horas: [6, 10] };
+
+export function tocaCiclo(fecha) {
+  const p = {};
+  for (const x of new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', hour: 'numeric', minute: 'numeric', hourCycle: 'h23',
+  }).formatToParts(fecha)) p[x.type] = x.value;
+  const h = Number(p.hour);
+  const m = Number(p.minute);
+  if (h < MADRUGADA.desde || h >= MADRUGADA.hasta) return true;
+  return MADRUGADA.horas.includes(h) && m >= 30;
+}
+
 export function horaEste(iso) {
   const t = Date.parse(iso);
   if (Number.isNaN(t)) return '';
@@ -2520,6 +2539,9 @@ export default {
         DUENO);
       return;
     }
+    // 🌙 DE MADRUGADA, DOS CORRIDAS Y NO DIECISÉIS. Ver `tocaCiclo()`. Se va
+    // antes de las marcas de KV: una madrugada quieta no gasta escrituras.
+    if (!tocaCiclo(new Date(evento.scheduledTime || Date.now()))) return;
     // 🔴 `ctx.waitUntil` EN UN `scheduled` TIRABA EL TRABAJO ENTERO, Y ESE
     // ERA EL BUG. La primera versión hacía `ctx.waitUntil(async () => {…})`
     // y devolvía enseguida: el cron **no dejaba rastro en cuatro slots
