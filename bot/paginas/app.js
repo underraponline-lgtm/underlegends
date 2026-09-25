@@ -2502,32 +2502,25 @@ function cuandoSe(iso) {
 }
 
 function pinta() {
-  trama();
-  pintaHero();
-  pintaPasados();
-  pintaPodio();
-  pintaChips();
-  pintaTabla();
-  pintaGaleria();
-  pintaComparar();
-  pintaServidores();
-  pintaPaises();
-  pintaRangos();
-  pintaComo();
-  pintaGuia();
-  pintaTops();
-  pintaMapa();
-  pintaActividad();
-  pintaFeed();
-  pintaCalendario();
-  pintaEvCab();
+  // 🔴 CADA SECCIÓN, AISLADA. Una que falla —un dato que llega con otra
+  // forma, o el HTML viejo en caché con este JS nuevo— queda sin dibujar y
+  // el resto de la página sale igual. Antes un error en cualquier `pinta*`
+  // cortaba todos los que venían después, y los escuchas no se colgaban:
+  // una sección rota apagaba la página entera. El error queda en la
+  // consola con el nombre de la sección.
+  [trama, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
+    pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
+    pintaTops, pintaMapa, pintaActividad, pintaFeed, pintaCalendario, pintaEvCab]
+    .forEach(function (f) {
+      try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
+    });
   // 🔴 LA FECHA QUE SE MUESTRA ES LA DE LOS DATOS, NO LA DE LA COPIA.
   // `sello` es cuándo se escribió el payload y se puede mover sin que
   // los datos se muevan —correr `subir_web.py` a mano lo pone en
   // «recién» con anuncios de hace dos horas—. Dlx lo vio tal cual.
   $('#pie').textContent = 'Temporada ' + (D.temporada || '') + ' · datos ' +
     (cuandoSe(D.leido || D.sello) || 'sin fecha');
-  eventos();
+  try { eventos(); } catch (e) { console.error('[eventos]', e); }
   ir();
   setInterval(pintaRelojes, 1000);
 }
