@@ -502,10 +502,10 @@ export async function rutaAvisos(req, env, ruta) {
 }
 
 /** Lo que corre el cron de cada minuto. */
-export async function vigilar(env, servidores) {
+export async function vigilar(env, servidores, dueno) {
   if (!env.AVISOS) return;
   await elObjeto(env).fetch('https://avisos/vigilar', {
-    method: 'POST', body: JSON.stringify({ servidores }),
+    method: 'POST', body: JSON.stringify({ servidores, dueno: dueno || '' }),
     headers: { 'content-type': 'application/json' },
   });
 }
@@ -663,6 +663,7 @@ export class Avisos {
       canales = await this.descubrir(d && d.servidores, ahora);
     }
     this.yo = canales.yo || '';
+    this.dueno = (d && d.dueno) || '';
     let leidos = 0, nuevos = 0, pausa = 0;
     const errores = [];
     // ⚠️ LOS CANALES SE PIDEN A LA VEZ, NO UNO DETRAS DEL OTRO. La primera
@@ -724,6 +725,22 @@ export class Avisos {
       return false;
     };
     const a = parsearAnuncio(m);
+    // 🧪 LA PRUEBA DE DLX, DESDE UN CANAL DE VERDAD. El 25/09/2026 escribió
+    // «Probando…» en los eventos de FFA para ver si le llegaba el aviso, y
+    // no le llegó nada — con razón: no es un anuncio, y lo que no tiene
+    // forma de anuncio no le suena el teléfono a nadie. Pero la prueba que
+    // quería hacer es justo la que faltaba: la cadena entera, desde el
+    // mensaje en Discord hasta el teléfono.
+    //
+    // ⚠️ SÓLO SUYO Y SÓLO A QUIEN ELIGIÓ «PRUEBAS» (`SV_PRUEBA`): el filtro
+    // de `lote()` no se lo manda a nadie más, y no va a `eventos-hoy`.
+    if (!a && this.dueno && m.author && m.author.id === this.dueno) {
+      const txt = String(m.content || '').trim().toLowerCase();
+      if (txt.startsWith('prueba') || txt.startsWith('probando')) {
+        descartar();
+        return this.prueba(c, m, ahora);
+      }
+    }
     if (!a) return descartar();
     const ini = momentoMs(a.horario, m.timestamp);
     // 🔴 LA REGLA: tarde es peor que nunca
@@ -765,6 +782,21 @@ export class Avisos {
         'creado) VALUES (?, ?, ?, ?, ?, ?)', m.id + ':antes', c.sv,
       JSON.stringify({ ...cuerpo, tipo: 'antes' }), ini - ANTES, ini + GRACIA, ahora);
     }
+    return true;
+  }
+
+  /** 🧪 El aviso de una prueba de Dlx. Ver `anotar()`. */
+  prueba(c, m, ahora) {
+    const id = 'prueba:' + m.id;
+    const cuerpo = {
+      v: 1, tipo: 'evento', id, t: 'Prueba: leí tu mensaje', sv: SV_PRUEBA,
+      svn: (c.svn || c.sv) + ' · ' + c.nombre, ini: null,
+      mod: 'así te llega cada evento de verdad', cup: '', pre: '',
+      url: `https://discord.com/channels/${c.g}/${c.id}/${m.id}`,
+    };
+    this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +
+      'VALUES (?, ?, ?, ?, ?, ?)', id, SV_PRUEBA, JSON.stringify(cuerpo), ahora,
+    ahora + 15 * MIN, ahora);
     return true;
   }
 

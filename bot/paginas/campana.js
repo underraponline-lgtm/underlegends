@@ -181,13 +181,24 @@
     pinta();
   }
 
+  // 🧪 «Pruebas»: le llega a quien lo elige cuando Dlx escribe «probando»
+  // en un canal de eventos (ver `prueba()` en bot/avisos.js).
+  var PRUEBA = 'ZZZ';
+
   var tElegir = null;
   function elegir(sv) {
-    if (sv === '') SVS = [];
-    else if (SVS.indexOf(sv) >= 0) SVS = SVS.filter(function (x) { return x !== sv; });
-    else SVS = SVS.concat([sv]);
+    var prueba = SVS.indexOf(PRUEBA) >= 0;
+    var reales = SVS.filter(function (x) { return x !== PRUEBA; });
+    var todos = servidores().map(function (s) { return s.sv; });
+    if (sv === PRUEBA) prueba = !prueba;
+    else if (sv === '') reales = [];
+    else if (reales.indexOf(sv) >= 0) reales = reales.filter(function (x) { return x !== sv; });
+    else reales = reales.concat([sv]);
     // elegir todos uno por uno es lo mismo que «todos»
-    if (SVS.length && SVS.length >= servidores().length) SVS = [];
+    if (reales.length >= todos.length) reales = [];
+    // ⚠️ «TODOS» ES LA LISTA VACÍA, Y LA VACÍA NO TRAE LAS PRUEBAS (el filtro
+    // de `lote()` en avisos.js): con «Pruebas» elegido, la lista va entera.
+    SVS = prueba ? (reales.length ? reales : todos).concat([PRUEBA]) : reales;
     guardar('campana:svs', SVS);
     pinta();
     clearTimeout(tElegir);
@@ -234,14 +245,19 @@
         '<span>Activar avisos</span></button>';
     } else {
       var svs = servidores();
+      var reales = SVS.filter(function (x) { return x !== PRUEBA; });
+      var todosOn = !reales.length || reales.length >= svs.length;
       h = '<p class="cp-ok">✅ Este dispositivo recibe los avisos.</p>';
       if (svs.length > 1) {
         h += '<p class="cp-tx">¿De qué servidores?</p><div class="chips cp-chips">' +
-          '<button class="chip' + (SVS.length ? '' : ' on') + '" data-sv="">Todos</button>' +
+          '<button class="chip' + (todosOn ? ' on' : '') + '" data-sv="">Todos</button>' +
           svs.map(function (s) {
-            return '<button class="chip' + (SVS.indexOf(s.sv) >= 0 ? ' on' : '') +
+            return '<button class="chip' + (!todosOn && reales.indexOf(s.sv) >= 0 ? ' on' : '') +
               '" data-sv="' + esc(s.sv) + '" title="' + esc(s.n) + '">' + esc(s.sv) + '</button>';
-          }).join('') + '</div>';
+          }).join('') +
+          '<button class="chip' + (SVS.indexOf(PRUEBA) >= 0 ? ' on' : '') + '" data-sv="' +
+          PRUEBA + '" title="Te llega cuando el admin escribe «probando» en un canal de ' +
+          'eventos: sirve para probar el sistema entero">🧪 Pruebas</button></div>';
       }
       h += '<div class="cp-acc"><button class="bajar" data-cp="probar"><i aria-hidden="true">' +
         '&#9654;</i><span>Mandar una de prueba</span></button>' +
