@@ -283,6 +283,19 @@ def main():
         if estado == 'failure':
             alertar('ciclo:' + job, '%s falló (%s).%s' % (
                 que, _et(), ('\n' + run) if run else ''))
+        elif estado == 'cancelled':
+            # 🔴 UN TRABAJO QUE SE CUELGA NO SALE «failure»: GitHub lo corta al
+            # llegar a `timeout-minutes` y lo marca «cancelled», y este paso
+            # sólo miraba las otras dos palabras. O sea que el caso más mudo
+            # —Chromium trabado, la red colgada— era justo el que no avisaba.
+            # Y el de crecer: el redibujo entero del 25/09 tardó 53,5 min
+            # contra un tope de 120, con 331 personas.
+            # ⚠️ Lo sellado queda: las cartas se sellan por tanda, así que
+            # un corte pierde sólo la tanda en curso y la próxima sigue.
+            alertar('ciclo:' + job, '%s se cortó antes de terminar (%s): llegó a su '
+                    'tiempo máximo o alguien la canceló. Lo que alcanzó a sellar queda; '
+                    'el resto sigue en la próxima corrida.%s' % (
+                        que, _et(), ('\n' + run) if run else ''))
         elif estado == 'success':
             resuelto('ciclo:' + job, '%s volvió a andar (%s).' % (que, _et()))
     if '--salud' in a:
