@@ -230,9 +230,14 @@ function pintaHero() {
       ? '<a href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
         'noreferrer">' + esc(e.nombre) + '<i class="ir">&#8599;</i></a>'
       : esc(e.nombre);
+    // 🔑 SIN HORA QUE SE PUEDA LEER, SIN CUENTA ATRÁS: «anunciado hace X».
+    // Una cuenta atrás hacia la hora de publicación diría «EN VIVO» de algo
+    // que todavía no empezó. Ver `sin_hora` en bot/subir_web.py.
+    var der = e.sin_hora
+      ? '<span class="hace">anunciado ' + esc(cuandoSe(e.cuando)) + '</span>'
+      : '<span class="reloj" data-t="' + esc(e.cuando) + '">&middot;</span>';
     return '<div class="ev"><div><b>' + tit + '</b><small>' + sub +
-      '</small></div><span class="reloj" data-t="' + esc(e.cuando) +
-      '">&middot;</span></div>';
+      '</small></div>' + der + '</div>';
   }).join('');
   pintaRelojes();
 }
@@ -310,7 +315,7 @@ function abrirLlave(n) {
   };
   $('#lNombre').textContent = L.nombre;
   $('#lSub').innerHTML = [esc(L.sv), esc(L.fecha),
-    L.participantes ? L.participantes + ' participantes' : '']
+    L.participantes ? esc(L.participantes) + ' participantes' : '']
     .filter(Boolean).join(' &middot; ');
   var fila = function (r) {
     return '<li><i>' + (MEDALLA[r[1]] || '') + '</i><span>' + quien(r[0]) +
@@ -963,7 +968,7 @@ function abrir(k) {
     '<div><b>' + (f.ovr || '—') + '</b><span>OVR</span></div>' +
     '<div><b>' + num(f.pts) + '</b><span>Puntos</span></div>' +
     '<div><b>' + f.ev + '</b><span>Eventos</span></div>' +
-    '<div><b>' + (f.wr || '—') + '</b><span>Win%</span></div>';
+    '<div><b>' + esc(f.wr || '—') + '</b><span>Win%</span></div>';
 
   var cs = f.c || [];
   var img = $('#vImg');
@@ -1168,7 +1173,13 @@ function eventos() {
 }
 
 function cuandoSe(iso) {
-  var t = Date.parse(String(iso || '').replace(' ', 'T'));
+  // 🔴 LA HORA VIENE EN UTC SIN ZONA, y `Date.parse` sin zona la toma como
+  // hora LOCAL: en el este, «Lo que pasó» decía «recién» de algo de hace
+  // cuatro horas. Encontrado por la auditoría del 25/09/2026. `pintaRelojes`
+  // ya le agregaba la Z.
+  var s = String(iso || '').replace(' ', 'T');
+  if (s && !/(Z|[+-]\d\d:?\d\d)$/.test(s)) s += 'Z';
+  var t = Date.parse(s);
   if (isNaN(t)) return '';
   var m = Math.round((Date.now() - t) / 60000);
   if (m < 2) return 'recién';

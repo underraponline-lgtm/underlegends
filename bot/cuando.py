@@ -160,11 +160,21 @@ def proximos(anuncios, ahora=None, cuantos=3, margen_min=0):
             continue
         out.append((iso, a))
     out.sort(key=lambda x: x[0])
-    return [{'cuando': iso, 'nombre': a.get('nombre') or 'sin nombre',
-             'servidor': a.get('servidor') or '', 'horario': a.get('horario') or '',
-             'faltan_min': int((_leer_iso(iso) - ahora).total_seconds() // 60),
-             'cupos': a.get('cupos') or '',
-             'inscripciones': a.get('inscripciones') or ''}
+    # 🔴 EL ANUNCIO ENTERO, NO SIETE CLAVES. Esto devolvía un dict armado a
+    # mano y `bot/subir_web.py` le pedía `msg_id`, `guild_id`, `canal_id`,
+    # `modalidad` y `premios`, que no estaban: «Lo que viene» salía sin el
+    # link que Dlx pidió, sin modalidad ni premio, y sin excluirse de «Lo que
+    # pasó». Y `cupos` se leía de una clave que el anuncio no tiene: la suya
+    # es `cupos_texto`. Encontrado por la auditoría del 25/09/2026.
+    #
+    # ⚠️ `cuando` pasa a ser el ARRANQUE; el de la publicación queda en
+    # `publicado`.
+    return [dict(a, cuando=iso, publicado=a.get('cuando') or '',
+                 nombre=a.get('nombre') or 'sin nombre',
+                 servidor=a.get('servidor') or '', horario=a.get('horario') or '',
+                 faltan_min=int((_leer_iso(iso) - ahora).total_seconds() // 60),
+                 cupos=a.get('cupos_texto') or a.get('cupos') or '',
+                 inscripciones=a.get('inscripciones') or '')
             for iso, a in out[:cuantos]]
 
 
