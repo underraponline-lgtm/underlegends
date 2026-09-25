@@ -98,16 +98,15 @@ def bloque_rangos():
 
 
 def bloque_pesos():
-    return [
-        ['⚙️ PESOS DEL SCORE', '', '', ''],
-        ['Dimensión', 'Peso', '', ''],
-        ['⚡ Eficiencia', 30, '', ''],
-        ['🎯 Consistencia', 24, '', ''],
-        ['👑 Dominancia', 21, '', ''],
-        ['🔥 Racha', 15, '', ''],
-        ['🌍 Diversidad', 10, '', ''],
-        ['', '', '', ''],
-    ]
+    # 🔴 LEÍDOS DE `competitivo.PESOS`, no escritos acá: tenían los números
+    # a mano, y el día que cambiaron los pesos (G1, 25/09/2026) esto habría
+    # seguido mostrando los viejos. Es la regla del docstring de arriba.
+    from competitivo import PESOS
+    nombre = {'E': '⚡ Eficiencia', 'C': '🎯 Consistencia', 'Dm': '👑 Dominancia',
+              'T': '🔥 Racha', 'V': '🌍 Diversidad'}
+    return ([['⚙️ PESOS DEL SCORE', '', '', ''], ['Dimensión', 'Peso', '', '']] +
+            [[nombre.get(k, k), int(round(p * 100)), '', ''] for k, p in PESOS] +
+            [['', '', '', '']])
 
 
 def bloque_requisitos():

@@ -9,8 +9,8 @@
 
 Quedan dos puntos del rework del 23/09/2026 que **no son implementación**:
 
-    G1  los pesos      ⚡0.30 · 🎯0.24 · 👑0.21 · 🔥0.15 · 🌍0.10   (hoy)
-                       ⚡0.25 · 🎯0.24 · 👑0.21 · 🔥0.10 · 🌍0.20   (propuesto)
+    G1  los pesos      ⚡0.25 · 🎯0.24 · 👑0.21 · 🔥0.10 · 🌍0.20   (hoy: aplicado el 25/09/2026)
+                       ⚡0.30 · 🎯0.24 · 👑0.21 · 🔥0.15 · 🌍0.10   (los de antes)
     A7  el Score a 40–99, como el OVR de Temporada
 
 El propio rework dice de los pesos *«simular sobre los 138 ANTES de
@@ -59,8 +59,8 @@ NOMBRE = {'E': '⚡ Eficiencia', 'C': '🎯 Consistencia', 'Dm': '👑 Dominanci
 
 #: los juegos de pesos que se comparan. El primero es el vigente.
 JUEGOS = [
-    ('hoy',       {'E': .30, 'C': .24, 'Dm': .21, 'T': .15, 'V': .10}),
-    ('rework G1', {'E': .25, 'C': .24, 'Dm': .21, 'T': .10, 'V': .20}),
+    ('hoy (G1)',  {'E': .25, 'C': .24, 'Dm': .21, 'T': .10, 'V': .20}),
+    ('antes',     {'E': .30, 'C': .24, 'Dm': .21, 'T': .15, 'V': .10}),
 ]
 
 

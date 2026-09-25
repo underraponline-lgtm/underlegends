@@ -13,7 +13,10 @@ rango**, y el rango es lo que aparece en las cuatro tarjetas.
 
 LA FORMULA, VERIFICADA CONTRA 138 FILAS REALES
 -----------------------------------------------
-    Score = (0.30·E + 0.24·C + 0.21·Dm + 0.15·T + 0.10·V) × Confianza
+    Score = (0.25·E + 0.24·C + 0.21·Dm + 0.10·T + 0.20·V) × Confianza
+
+    (los pesos del rework, G1, desde el 25/09/2026; hasta ese día fueron
+    0.30 · 0.24 · 0.21 · 0.15 · 0.10, y con ésos se calculó la pre)
 
 Medido el 22/09/2026 contra el pool de la pre-temporada, el ultimo que
 tuvo Scores de verdad: **las 138 cuadran**, con una diferencia maxima de
@@ -43,7 +46,8 @@ numero que ese mismo parrafo dice.
 ⚠️ **DIVERSIDAD ES LA UNICA INFERIDA, y se sabe por que.** Contar
 servidores no alcanza: cuatro personas con 7 servidores sacaban 80, 85,
 87 y 78. La Guia dice *«distribucion, no solo conteo»*, asi que se usa la
-**entropia** de como se reparten los eventos — reparto parejo da mas que
+**entropia** de como se reparten los PUNTOS entre servidores —dónde
+ganaste, no dónde apareciste (rework A4)—: reparto parejo da mas que
 concentrarse en uno. No se pudo comprobar contra los 138 porque el pool
 viejo guarda `srv` (cuantos servidores) y no el desglose por servidor.
 
@@ -74,10 +78,20 @@ try:
 except AttributeError:
     pass
 
-#: peso de cada dimension. Salen de la Guia y de `sheet/config_t1.py`.
+#: peso de cada dimension. ES LA FUENTE: la hoja Config, la Guía de la web
+#: y la simulación los leen de acá.
 #: ⚠️ SUMAN 100 y eso se comprueba en el self-check: si alguien toca uno
 #: sin tocar otro, el Score deja de estar en 0-100 y nadie se entera.
-PESOS = (('E', 0.30), ('C', 0.24), ('Dm', 0.21), ('T', 0.15), ('V', 0.10))
+#:
+#: 🔑 LOS DEL REWORK (G1). Dlx, 25/09/2026: «sí», con la simulación sobre
+#: las 138 de la pre delante —le cambiaba la letra a 37 (27 %)— y en el
+#: momento en que no le cambia a nadie: todavía nadie tiene 10 eventos.
+#: La Diversidad pasa de 10 a 20 y la Racha de 15 a 10: pesa más ganar en
+#: varios servidores y menos una racha larga en uno.
+PESOS = (('E', 0.25), ('C', 0.24), ('Dm', 0.21), ('T', 0.10), ('V', 0.20))
+#: los de antes del rework: con ésos se calculó el Score de la pre, y la
+#: comprobación contra esas 138 filas tiene que usarlos
+PESOS_PRE = (('E', 0.30), ('C', 0.24), ('Dm', 0.21), ('T', 0.15), ('V', 0.10))
 
 #: la rampa de confianza: (eventos, factor). Entre medio, lineal.
 CONF_DESDE, CONF_HASTA = (8, 0.80), (20, 1.00)
@@ -427,7 +441,7 @@ def _self_check():
         peor, cuantas = 0.0, 0
         for y in viejo:
             try:
-                esp = sum(p * float(y[k]) for k, p in PESOS) * float(y['conf'])
+                esp = sum(p * float(y[k]) for k, p in PESOS_PRE) * float(y['conf'])
             except (KeyError, TypeError, ValueError):
                 continue
             cuantas += 1

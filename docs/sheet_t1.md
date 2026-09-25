@@ -182,7 +182,7 @@ que además el pipeline puede leer.
 | bloque | qué guarda |
 |---|---|
 | **rangos** | los 8 tramos y sus umbrales — ⚠️ hoy el Sheet tiene 6 y la carta 8 |
-| **pesos** | Eficiencia 30 · Consistencia 24 · Dominancia 21 · Techo 15 · **Diversidad 10** |
+| **pesos** | Eficiencia 25 · Consistencia 24 · Dominancia 21 · Racha 10 · **Diversidad 20** (G1 del rework, desde el 25/09/2026; antes 30 · 24 · 21 · 15 · 10) |
 | **requisitos** | Temporada 2 · Competitivo 10 · País 1 nacional · Servidor 1 en ese servidor |
 | **confianza** | la rampa 0.80 → 1.00 y entre qué cantidades de eventos |
 | **calendario** | inicio y fin de la T1 — ⚠️ de acá sale **qué se reinicia y cuándo** |

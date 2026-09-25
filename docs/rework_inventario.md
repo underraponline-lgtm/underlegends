@@ -26,7 +26,7 @@ Estados:
 | 6 | Eficiencia lee `pts_base` | **❓** | vive en el procesamiento de eventos |
 | 7 | Score a 40–99 | **❌ falta** | el Score real va de **10.6 a 91.1** |
 | 7b | Duelos individuales | **❌ falta** | `duel_real` presente en **4 de 138** |
-| — | Pesos | **🔵 abierto** | G1, hay que simular antes |
+| — | Pesos | **✅ hecho** — 25/09/2026 | G1 aplicado tras simular sobre las 138 de la pre: ⚡25 · 🎯24 · 👑21 · 🔥10 · 🌍20. A7 (Score a 40–99) queda para después |
 
 ---
 
