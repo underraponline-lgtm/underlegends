@@ -63,9 +63,17 @@ VACIOS = {'', '?', '❓', '❌'}
 
 
 def norm(s):
-    """Misma normalizacion que comun/respaldo.py, para que crucen."""
+    """Misma normalizacion que comun/respaldo.py, para que crucen.
+
+    🔴 NFKD Y NO NFD, DESDE EL 25/09/2026. Con NFD un apodo en letras
+    decoradas —`𝐋𝐢𝐥 𝐃𝐫𝐚𝐤𝐨`— quedaba como `𝐋𝐢𝐥𝐃𝐫𝐚𝐤𝐨` y no cruzaba con
+    `lildrako`: la alta sola de `/card` creaba una fila nueva en vez de
+    reconocer a la persona (auditoría del 25/09). NFKD convierte la letra
+    decorada en letra. Medido antes de cambiarlo: de 2.081 nombres del
+    padrón, los alias y los pools, **ninguno** cambia de clave.
+    """
     s = re.sub(r'[\U0001F1E6-\U0001F1FF]', '', str(s)).replace('❓', '')
-    s = unicodedata.normalize('NFD', s.strip().lower())
+    s = unicodedata.normalize('NFKD', s.strip()).lower()
     return ''.join(c for c in s if c.isalnum())
 
 

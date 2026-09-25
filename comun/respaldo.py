@@ -69,7 +69,8 @@ _cache = {}
 
 
 def _norm(s):
-    s = unicodedata.normalize('NFD', str(s).lower())
+    # ⚠️ NFKD, igual que `construir_padron.norm()`: tienen que cruzar
+    s = unicodedata.normalize('NFKD', str(s)).lower()
     return ''.join(c for c in s if c.isalnum())
 
 

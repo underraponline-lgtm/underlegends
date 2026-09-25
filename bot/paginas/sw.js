@@ -75,10 +75,14 @@ self.addEventListener('push', function (e) {
   // larga pierde el permiso.
   e.waitUntil(contar.then(function () { return self.registration.showNotification(n.titulo, {
     body: n.cuerpo,
-    icon: '/ul.png',
-    // la insignia es la silueta blanca de «UL»: Android la pinta en la
-    // barra de estado y sólo mira el alfa
-    badge: '/insignia.png',
+    // 🐉 EL DRAGÓN DE UL, el logo que Dlx pidió para los avisos (25/09/2026):
+    // blanco sobre un círculo oscuro, porque un logo blanco solo desaparece
+    // en las notificaciones de fondo claro
+    icon: '/aviso.png',
+    // la insignia es la silueta blanca del mismo dragón: Android la pinta en
+    // la barra de estado y sólo mira el alfa. ⚠️ Otro nombre que la de antes
+    // (sólo «UL»): el navegador guarda estos íconos y no los vuelve a pedir
+    badge: '/insignia-ul.png',
     // el mismo evento reemplaza su aviso en vez de apilar dos
     tag: n.tag,
     renotify: true,

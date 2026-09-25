@@ -932,6 +932,13 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
   ok('sale del `resolved`, no del que preguntó', g.user === 'targetguy', g.user);
   // ⚠️ buscar a alguien no es pedir entrar: a un tercero lo decide un admin
   ok('y que lo nombró otro (`por: otro`)', g.por === 'otro', g.por);
+  // 🔴 y si después se anota él mismo, pasa a `yo` (auditoría del 25/09):
+  // si no, no entra solo a la Lista aunque `/card` le diga que sí
+  await pedir({ type: 2, guild_id: G.DRA, data: { name: 'card' },
+    member: { nick: '🐉 | Target', user: { id: '900002', username: 'targetguy' } } });
+  await esperarSeguimientos();
+  const g2 = PUESTO['reg:900002'] ? JSON.parse(PUESTO['reg:900002']) : {};
+  ok('si después se anota él mismo, la cola pasa a `por: yo`', g2.por === 'yo', g2.por);
 }
 {
   // ⚠️ DEDUP: un conocido NO se re-anota. Konan tiene `d:999111`.
