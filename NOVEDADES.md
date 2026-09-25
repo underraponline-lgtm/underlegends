@@ -170,7 +170,26 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **A7 (el Score a 40–99), más adelante**, con recordatorio | *«aplicalo en otro momento… hazme recordar, ahora no»* | `bot/alertar.py`: un DM cuando alguien llegue a 8 eventos |
 | **Mi cuenta: entrar con Discord** | *«creo que sería mejor meter el login de Discord»* | `bot/worker.js` (`/cuenta`), `bot/paginas/app.js` |
 
+### Lo que pidió Dlx el 25/09 (a media mañana, con capturas)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **`/notify` no manda DMs**: lleva a activar los avisos **en el dispositivo** | *«No debería usar el bot para enviarte DMs, sino activar la notificación al celular o dispositivo»* | `bot/worker.js` (`panelNotify`), `bot/paginas/campana.js` |
+| **Y se eligen los servidores en Discord** (o todos) | *«que te dé la opción para activar las notificaciones desde Discord… y seleccionar los servidores o para todos»* | el menú de `/notify` arma el link `#/avisos/FFA,SR` o `#/avisos/todos` |
+| **Un changelog abajo de Ajustes, sin información sensible** | *«abajo de ajustes agrega un changelog… eso de novedades que vamos llenando, pero sin información sensitiva»* | `bot/paginas/cambios.json`: **se escribe a mano al terminar cada tanda**, junto con este archivo |
+| **El podio del Inicio con flechas** por categoría, y más cosas abajo | *«deja unas flechas para cambiar de categoría a competitivo así y así… y agrega más cosas abajo»* | `bot/paginas/app.js` (`catsPodio`, `pintaUnos`) |
+| **La llave, que se entienda mejor** | *«mejora esa sección de las llaves brackets que te dije»* | `bot/paginas/app.js` (`cuadro`, `abrirLlave`) |
+
 ---
+
+## 📅 Viernes 25/09 (10 a 10:40 AM) — tu cuenta, `/notify` sin DMs, el podio, el changelog y la llave
+
+- 👤 **Mi cuenta decía «todavía no tenés tarjeta»** con tu carta de Servidor emitida: la página te buscaba en el ranking de la T1, donde no estás porque todavía no jugaste. Ahora dice «todavía no jugaste esta temporada» y **Mis tarjetas** abre la de Servidor y las tres Bloqueadas. Tu sesión guardada es de antes: **salí y volvé a entrar con Discord** para verlas.
+- 🔔 **`/notify` sin DMs** (se fueron con 0 anotados): un menú para elegir servidores —o **Todos**— y el botón **Activar** abre la campana con eso elegido. Un toque y listo; si ese dispositivo ya estaba activado, cambia los servidores. El permiso de notificaciones lo da el navegador, así que eso no se puede hacer desde Discord: es lo único que queda del lado de la página. La descripción del comando en Discord se actualiza en hasta una hora.
+- 🥇 **El podio con flechas**: Temporada, Competitivo (dice que se desbloquea a los 10 eventos), Duelos, Podios, Rachas, Países (con banderas grandes) y Crews (con logos). Recuerda la última que mirabas.
+- 🌎 **Los mejores de cada lado**, abajo del podio: el #1 de cada país (16) y de cada crew (2); por servidor, cuando juegue gente de más de uno.
+- 📜 **El changelog**, abajo de Ajustes (en el teléfono, dentro de Ajustes), con un punto rosa cuando hay algo nuevo. Es para jugadores: sin nombres de gente con problemas, ni IDs, ni tokens, ni cuotas, ni spoilers.
+- 🏟️ **La llave**: cómo leerla, arriba; cuántos puntos vale cada ronda; el ganador de cada batalla marcado y el que perdió apagado; y con el mouse encima de un nombre se ilumina todo su camino.
 
 ## 📅 Viernes 25/09 (9:20 a 9:50 AM) — la revisión: errores, gasto y seguridad
 
@@ -329,7 +348,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **Probá «Entrar con Discord»**: [underlegends.pages.dev](https://underlegends.pages.dev/) → **Mi cuenta** (arriba a la derecha) → **Entrar con Discord** → **Autorizar**. Tu redirect ya está (lo leí de la app: `https://underlegends.pages.dev/`). Si algo falla, decime qué pantalla ves.
+1. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -354,7 +373,6 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 - **Inscribirse y no ir** (lo que va a cortar la racha): hay que guardar las inscripciones de cada evento antes de que el servidor las borre. Lo armo cuando lo pidas.
 - **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
 - **Dos personas con el mismo nombre en minúsculas** (Volk y volk) ya se separan en la página, pero **R2 y KV todavía arman la clave del nombre**: el día que los dos estén verificados, sus tarjetas chocan. Hoy ninguno lo está.
-- **`/notify` todavía no mandó un DM de verdad**: el primero va a salir con el próximo evento que se anuncie. Lo miro.
 - **La corrida de las 10:52 AM** es la primera con las marcas del disparador en el Durable Object y `meta` sin reescribir: la miro.
 - 🔔 **A7** (el Score a 40–99): te llega un DM cuando el primero llegue a 8 eventos. Pide mover los umbrales de los 8 rangos en la misma pasada.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
