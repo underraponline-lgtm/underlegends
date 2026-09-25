@@ -364,8 +364,13 @@ def armar():
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
         regs, llaves, calendario = {}, {}, []
 
+    # 🔑 LA FASE: prueba hasta que arranca la temporada, y sus fechas. La
+    # página decide qué mostrar según el día de quien mira. Ver `FECHAS`.
+    from comun.temporada import ACTUAL, FECHAS
+    _f = FECHAS.get(ACTUAL)
     return {
         'temporada': SELLO,
+        'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
         'gente': len(pool),
         'tabla': tabla,
         'proximos': prox,
@@ -531,7 +536,16 @@ def _novedades(tope=3):
         return []
     out = []
     for m in ms if isinstance(ms, list) else []:
-        ls = _limpio_md(m.get('content'))
+        # 🔑 CON EL EMBED, SI LO HAY. Un anuncio «decorado» del bot es un
+        # embed con poco o nada de texto, y esto leía sólo el texto: Dlx,
+        # 25/09/2026, pidió anunciar en este canal y que saliera en la web.
+        # ⚠️ SÓLO LOS `rich` (los que arma un bot): la vista previa que
+        # Discord le pone a un link también es un embed, y no es anuncio.
+        partes = [m.get('content') or '']
+        for e in (m.get('embeds') or [])[:1]:
+            if (e or {}).get('type') == 'rich':
+                partes += [e.get('title') or '', e.get('description') or '']
+        ls = _limpio_md('\n'.join(p for p in partes if p))
         if not ls:
             continue
         a = m.get('author') or {}
