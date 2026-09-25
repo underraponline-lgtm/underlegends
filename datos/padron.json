@@ -8702,7 +8702,7 @@
  {
   "full": "Scot",
   "raw": "Scot",
-  "pais": "",
+  "pais": "Argentina",
   "sv": "FFA",
   "verificado": "",
   "discord_id": "1498545536708382722",
@@ -8738,5 +8738,15 @@
   "discord_id": "1155972121848201256",
   "av_sheet": "",
   "notas": "No es ELSOLAR 🇨🇴: son dos personas (Dlx, 24/09 y 25/09)"
+ },
+ {
+  "full": "radack 🇨🇴",
+  "raw": "radack",
+  "pais": "Colombia",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "664293214823383053",
+  "av_sheet": "",
+  "notas": "alta automática · /card en FFA · 25/09/2026 6:53 AM ET"
  }
 ]
