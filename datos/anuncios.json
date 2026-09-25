@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-25T16:23:20+00:00",
+ "cuando": "2026-09-25T16:53:23+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1517,7 +1517,7 @@
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
    "servidor": "URBF",
-   "canal": "⋆🐔│💙Eventos-Redbull❤️",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
    "msg_id": "1548034383221493780",
    "cuando": "2026-09-11T18:15:58",
    "canal_id": "1511968314992365729",
@@ -1534,7 +1534,7 @@
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
    "servidor": "URBF",
-   "canal": "⋆🐔│💙Eventos-Redbull❤️",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
    "msg_id": "1547081834842816522",
    "cuando": "2026-09-09T03:10:52",
    "canal_id": "1511968314992365729",
@@ -1551,7 +1551,7 @@
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
    "servidor": "URBF",
-   "canal": "⋆🐔│💙Eventos-Redbull❤️",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
    "msg_id": "1535705548110958693",
    "cuando": "2026-08-08T17:45:34",
    "canal_id": "1511968314992365729",
@@ -1568,7 +1568,7 @@
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
    "servidor": "URBF",
-   "canal": "⋆🐔│💙Eventos-Redbull❤️",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
    "msg_id": "1532180688269480047",
    "cuando": "2026-07-30T00:19:02",
    "canal_id": "1511968314992365729",
@@ -1585,7 +1585,7 @@
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
    "servidor": "URBF",
-   "canal": "⋆🐔│💙Eventos-Redbull❤️",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
    "msg_id": "1519026898598887444",
    "cuando": "2026-06-23T17:10:34",
    "canal_id": "1511968314992365729",
@@ -1602,7 +1602,7 @@
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
    "servidor": "URBF",
-   "canal": "⋆🐔│💙Eventos-Redbull❤️",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
    "msg_id": "1516655970267304066",
    "cuando": "2026-06-17T04:09:21",
    "canal_id": "1511968314992365729",
@@ -1647,6 +1647,23 @@
    "cupo_total": null,
    "rango": "",
    "modalidad": "",
+   "horario": "",
+   "premios": ""
+  },
+  {
+   "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
+   "servidor": "URBF",
+   "canal": "「📚」Data⋅Eventos",
+   "msg_id": "1543857828073054228",
+   "cuando": "2026-08-31T05:39:49",
+   "canal_id": "1518401777026728007",
+   "guild_id": "1467763447117778989",
+   "organizador": "- 4 Clasificatorias 12-16 Cupos",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "CLASIFICATORIAS",
    "horario": "",
    "premios": ""
   }
@@ -1924,7 +1941,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Tara 🇨🇴\nJoven promesa",
    "quien": "oceanman1020",
    "discord_id": "750791180102533140",
@@ -1933,7 +1950,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Bna🇸🇦 gane todo meno la inter de las ligas",
    "quien": "benjaclink31",
    "discord_id": "849765868819972166",
@@ -1942,7 +1959,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "OG🇻🇪\n\nNo hace falta decir más nada",
    "quien": "the0g.",
    "discord_id": "425356695309516810",
@@ -1951,7 +1968,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Guty 🇨🇴\nCampeon fmh under\nCampeon Regional Bogota redbull",
    "quien": "gutierrez__9",
    "discord_id": "766366997117141022",
@@ -1960,7 +1977,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Camila 🇻🇪",
    "quien": "camila022672",
    "discord_id": "1432188610542567549",
@@ -1969,7 +1986,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "OG🇻🇪",
    "quien": "the0g.",
    "discord_id": "425356695309516810",
@@ -1978,7 +1995,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "97🇨🇴",
    "quien": "97rap",
    "discord_id": "1529613468850716719",
@@ -1987,7 +2004,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Bareto D' Caprio 🇨🇴",
    "quien": "a.k.a_jj",
    "discord_id": "1097650470476070995",
@@ -1996,7 +2013,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "colesito",
    "quien": "colesito",
    "discord_id": "790016013680771102",
@@ -2005,7 +2022,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Carlosss🇪🇨",
    "quien": "carlosss.mc23",
    "discord_id": "958103803616444528",
@@ -2014,7 +2031,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "McK 🇨🇴",
    "quien": "mediaclickkingz",
    "discord_id": "1370929851762216990",
@@ -2023,7 +2040,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "vandu 🇨🇴",
    "quien": "dfelipetor",
    "discord_id": "613552853302378527",
@@ -2032,7 +2049,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Teito 🇨🇴",
    "quien": "teitomc.",
    "discord_id": "1503540314948898937",
@@ -2041,7 +2058,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Mochi 🇪🇨",
    "quien": "diego89780",
    "discord_id": "1147639724132012114",
@@ -2050,7 +2067,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "SHADOW 🇨🇴",
    "quien": "alejo008715",
    "discord_id": "1461433944237936829",
@@ -2059,7 +2076,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Adachi 🇻🇪",
    "quien": "adachit_332",
    "discord_id": "1445803811758276660",
@@ -2068,7 +2085,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Makma 🇻🇪",
    "quien": "makmah_g",
    "discord_id": "897942226955563068",
@@ -2077,7 +2094,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Guty🇨🇴 (juego en casa hijos de perra)",
    "quien": "gutierrez__9",
    "discord_id": "766366997117141022",
@@ -2086,7 +2103,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Bloody 🇨🇴",
    "quien": "bloodypintor",
    "discord_id": "692881329573986317",
@@ -2095,7 +2112,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Cinexfilo 🇻🇪",
    "quien": "cinexfilosanity",
    "discord_id": "781971857519804417",
@@ -2104,7 +2121,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Stickbarreto 🇨🇴",
    "quien": "christopher_hongo",
    "discord_id": "1403518820022222929",
@@ -2113,7 +2130,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "Sne",
    "quien": "sne_2.",
    "discord_id": "1513243793116102867",
@@ -2122,7 +2139,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "oep 🇨🇴",
    "quien": "oscarestivenpalermorodriguez",
    "discord_id": "1204158962480578603",
@@ -2131,7 +2148,7 @@
   },
   {
    "servidor": "URBF",
-   "canal": "「🗞️」Inscripciones-Redbull",
+   "canal": "‣《🗞️》Inscripciones",
    "texto": "VR🇨🇴",
    "quien": "1mrvargas",
    "discord_id": "1456416455405863038",
