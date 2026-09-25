@@ -133,8 +133,9 @@ def _avisos(pares, norm):
                        % (a, visto[k], r))
         visto[k] = r
     # ⚠️ CADENAS: si `A -> B` y `B -> C`, quien resuelva una sola vez se queda
-    # en B. Se avisan en vez de resolverse solas, porque una cadena suele ser
-    # un error de carga y resolverla en silencio lo esconde.
+    # en B. Se avisan SIEMPRE, porque una cadena puede ser un error de carga;
+    # y además `_aplanar()` las resuelve en el mapa, porque avisar solo no
+    # alcanzaba: ver ahí.
     reales = {norm(r) for _, r in pares}
     for a, r in pares:
         if norm(r) in {norm(x) for x, _ in pares} and norm(a) != norm(r):
@@ -147,6 +148,43 @@ def _avisos(pares, norm):
                                          for x, y in pares):
             pass
     return mal
+
+
+def _aplanar(alias, norm):
+    """Cada alias apuntando a su nombre FINAL, no a otro alias.
+
+    🔴 SEIS LECTORES DEL MAPA DABAN UN SOLO SALTO, y cinco lo seguían
+    hasta el final. Medido el 25/09/2026 con la única cadena de hoy
+    —`gekto -> geekto` (a mano) y `geekto -> Presagio` (la hoja)—:
+    `rankings.canon()`, `llaves_a_entrada`, `olvidar.huerfanas()`,
+    `construir_padron` y `subir_datos` contestaban **Presagio**;
+    `decidir.py`, `registrar_ids.py`, `altas_desde_inscripciones.py`,
+    `lista_raperos.dobles()` y `resolver()` de acá contestaban **geekto**,
+    que ya no es nadie: se fusionó esa madrugada. Y `motor.py` contestaba
+    una u otra **según el orden del dict** — hoy Presagio, de casualidad.
+
+    ⚠️ SE ARREGLA ACÁ Y NO EN LOS SEIS. Es el mismo embudo que `canon()`
+    explica para las vitrinas: puesto en cada lector, el séptimo que se
+    escriba vuelve a dar un salto. Con el mapa ya plano, un salto **es**
+    el final, y los que siguen la cadena terminan en el primero.
+
+    ⚠️ LA CADENA SE SIGUE AVISANDO: aplanar no es esconder. `_avisos()`
+    mira `pares`, que queda tal cual la escribió la hoja.
+
+    ⚠️ CON TOPE Y CON MEMORIA, como `canon()`: `a -> b -> a` es un ciclo
+    declarado mal, y `bna -> BNA` apunta a sí mismo con otra caja.
+    """
+    out = {}
+    for k, r in alias.items():
+        vis, act = {k}, r
+        for _ in range(8):
+            nk = norm(act)
+            if nk in vis or nk not in alias:
+                break
+            vis.add(nk)
+            act = alias[nk]
+        out[k] = act
+    return out
 
 
 def cargar():
@@ -239,6 +277,8 @@ def main():
     alias = {}
     for a, r in pares:
         alias[PAD.norm(a)] = r
+    # ⚠️ Plano: cada alias apunta al nombre final. Ver `_aplanar()`.
+    alias = _aplanar(alias, PAD.norm)
 
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
     with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
