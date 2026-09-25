@@ -1248,6 +1248,42 @@ async function miembroDra(env, guild, uid) {
   }
 }
 
+// ── «Mi cuenta» con Discord ───────────────────────────────────────────────
+// 🔑 Dlx, 25/09/2026: «creo que sería mejor meter el login de Discord». SIN
+// SECRETO DE CLIENTE: la app de la Liga no tiene uno guardado y generarlo es
+// crear un token nuevo, que quedó para el final. Discord le da al navegador
+// un permiso que sólo lee la identidad (`identify`, flujo implícito) y acá
+// se le pregunta a Discord de quién es: el navegador no puede inventar el ID.
+//
+// ⚠️ NO SE GUARDA NADA: el permiso se usa una vez y se tira. Lo que la página
+// recuerda —quién sos— vive en su `localStorage` y no autoriza nada acá.
+async function cuentaDiscord(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const t = String((d && d.token) || '');
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
+    return new Response('{"error":"token"}', { status: 400, headers: h });
+  }
+  let u = null;
+  try {
+    const r = await fetch('https://discord.com/api/v10/users/@me', {
+      headers: { Authorization: 'Bearer ' + t } });
+    if (r.ok) u = await r.json();
+  } catch (e) { u = null; }
+  if (!u || !u.id) return new Response('{"error":"discord"}', { status: 401, headers: h });
+  // ⚠️ EL RAPERO SALE DEL MISMO LUGAR QUE `/card`: `d:<id>` existe sólo para
+  // quien pasa el portón. Quien no está, entra igual y la página le dice qué
+  // le falta.
+  let rapero = '';
+  try {
+    const clave = await env.KV.get('d:' + u.id);
+    if (clave) rapero = (JSON.parse((await env.KV.get('p:' + clave)) || '{}').n) || '';
+  } catch (e) { rapero = ''; }
+  return new Response(JSON.stringify({ id: u.id, n: u.global_name || u.username || '',
+    av: u.avatar ? u.id + '/' + u.avatar : '', rapero }), { headers: h });
+}
+
 // ── /notify: los avisos de eventos por DM ─────────────────────────────────
 // 🔑 Dlx, 25/09/2026: «activar las notificaciones de este servidor… ahí te
 // dejará las opciones en vez de que lo haga en el website». Se eligen acá; los
@@ -2859,6 +2895,8 @@ export default {
     // una lista cerrada de cinco rutas que nunca llega hasta ahí.
     const camino = new URL(req.url).pathname;
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
+    // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
+    if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);
 
     if (req.method === 'GET') {
       const ruta = camino;

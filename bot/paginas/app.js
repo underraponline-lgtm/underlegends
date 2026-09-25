@@ -2596,29 +2596,95 @@ function pintaGuia() {
    dispositivo lo recuerda. No sale de acá. */
 var YO = leerLS('lg:yo', '');
 function yo() { return YO ? porK(YO) : null; }
+
+/* 🔑 ENTRAR CON DISCORD. Dlx, 25/09/2026: «creo que sería mejor meter el
+   login de Discord». Discord devuelve a la página con un permiso que sólo
+   lee la identidad; el Worker le pregunta a Discord de quién es
+   (`/api/cuenta`) y el permiso se tira. `DC_APP` es el ID público de la app
+   (va en cualquier link de OAuth); no es un secreto.
+
+   ⚠️ LA DIRECCIÓN DE VUELTA TIENE QUE ESTAR REGISTRADA en el portal de
+   Discord (OAuth2 → Redirects): `https://underlegends.pages.dev/`. Sin eso,
+   Discord contesta «invalid redirect_uri» y no pasa nada más. */
+var DC_APP = '1550026808404217926';
+var DC = leerLS('lg:dc', null);
+function urlLogin() {
+  var st = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
+  return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
+    '&redirect_uri=' + encodeURIComponent(location.origin + '/') + '&scope=identify' +
+    '&prompt=none&state=' + encodeURIComponent(st);
+}
+// ⚠️ ANTES DEL ENRUTADO: Discord vuelve con el permiso en el `#`, que es
+// justo lo que usa el enrutado de la página. Se lee, se limpia y recién
+// después se enruta.
+function volverDeDiscord() {
+  var h = location.hash || '';
+  if (h.indexOf('access_token=') < 0 && h.indexOf('error=') < 0) return;
+  var q = {};
+  h.replace(/^#/, '').split('&').forEach(function (x) {
+    var i = x.indexOf('=');
+    if (i > 0) q[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1));
+  });
+  try { history.replaceState(null, '', location.pathname + location.search + '#/'); } catch (e) { location.hash = '#/'; }
+  var st = '';
+  try { st = sessionStorage.getItem('lg:estado') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) { st = ''; }
+  if (!q.access_token || !st || q.state !== st) return;
+  fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: q.access_token }) })
+    .then(function (r) { return r.json(); })
+    .then(function (c) {
+      if (!c || !c.id) return;
+      DC = { id: c.id, n: c.n || '', av: c.av || '', rapero: c.rapero || '' };
+      guardarLS('lg:dc', DC);
+      YO = c.rapero ? kDe(c.rapero) : '';
+      guardarLS('lg:yo', YO || null);
+      pintaCuenta();
+      pintaPaneles();
+      pintaPopCuenta();
+      $('#popCuenta').hidden = false;
+    })
+    .catch(function () { /* si falla, queda como estaba */ });
+}
 function pintaCuenta() {
   var f = yo();
-  $('#cuentaCara').innerHTML = f ? avatar(f, 26)
+  var cara = f ? avatar(f, 26) : DC ? avatar({ n: DC.n, av: DC.av }, 26)
     : '<span class="av ini" style="width:26px;height:26px;font-size:13px">&#128100;</span>';
-  $('#cuentaTxt').textContent = f ? f.n : 'Mi cuenta';
+  $('#cuentaCara').innerHTML = cara;
+  $('#cuentaTxt').textContent = f ? f.n : DC ? DC.n : 'Mi cuenta';
 }
 function pintaPopCuenta() {
   var f = yo(), c = $('#popCuenta');
+  var entrar = '<button type="button" class="btn dc-entrar" id="dcEntrar">Entrar con Discord</button>';
+  if (!f && DC) {
+    c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
+      esc(DC.n) + '</b><small>Conectado con Discord</small></div></div>' +
+      '<p class="nota">Todavía no tenés tarjeta en la Liga. Escribí <code>/verificar</code> en ' +
+      'Discord: te dice qué te falta.</p><nav class="pop-menu">' +
+      '<a href="#/guia">&#127915; Cómo conseguir tu tarjeta</a>' +
+      '<a href="#/avisos">&#128276; Mis avisos</a>' +
+      '<button type="button" id="yoOlvidar">Salir</button></nav>';
+    return;
+  }
   if (!f) {
-    c.innerHTML = '<h3>¿Quién sos?</h3><p class="nota">Elegí tu nombre y este dispositivo lo ' +
-      'recuerda: tu perfil y tu temporada quedan a un toque. Sin contraseña, y no sale de acá.</p>' +
+    c.innerHTML = '<h3>Mi cuenta</h3><p class="nota">Entrá con tu Discord y la página sabe quién ' +
+      'sos: tu perfil, tus tarjetas y tu temporada, a un toque. Sólo lee tu nombre y tu foto; no ' +
+      'publica nada.</p>' + entrar +
+      '<details class="pop-sin"><summary>O elegí tu nombre sin entrar</summary>' +
       '<input type="search" id="yoBusca" placeholder="Tu nombre de competencia…" autocomplete="off" ' +
-      'spellcheck="false" aria-label="Tu nombre"><div class="pop-lista" id="yoRes"></div>';
+      'spellcheck="false" aria-label="Tu nombre"><div class="pop-lista" id="yoRes"></div></details>';
     return;
   }
   c.innerHTML = '<div class="pop-yo">' + avatar(f, 46) + '<div><b>' + esc(f.n) + '</b><small>#' +
-    esc(f.pos) + ' de la temporada · OVR ' + (f.ovr || '—') + '</small></div></div>' +
+    esc(f.pos) + ' de la temporada · OVR ' + (f.ovr || '—') +
+    (DC ? ' · con Discord' : '') + '</small></div></div>' +
     '<nav class="pop-menu">' +
     '<a href="#/r/' + encodeURIComponent(f.k) + '">&#128100; Mi perfil</a>' +
     ((f.c || []).length ? '<button type="button" data-carta="' + esc(f.k) + '">&#127183; Mis tarjetas</button>' : '') +
     (f.cc && PAIS[String(f.cc).toLowerCase()] ? '<a href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' Mi país</a>' : '') +
     '<a href="#/avisos">&#128276; Mis avisos</a>' +
-    '<button type="button" id="yoOlvidar">No soy yo</button></nav>';
+    '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
+    (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar);
 }
 function pintaYoRes(q) {
   var caja = $('#yoRes');
@@ -2781,9 +2847,15 @@ function eventos() {
       pintaPaneles();
       return;
     }
+    if (e.target.closest('#dcEntrar')) {
+      location.href = urlLogin();
+      return;
+    }
     if (e.target.closest('#yoOlvidar')) {
       YO = '';
+      DC = null;
       guardarLS('lg:yo', null);
+      guardarLS('lg:dc', null);
       pintaCuenta();
       pintaPopCuenta();
       pintaPaneles();
@@ -2793,8 +2865,10 @@ function eventos() {
     if (e.target.closest('#ajBorrar')) {
       AJ = {};
       YO = '';
+      DC = null;
       guardarLS('lg:ajustes', null);
       guardarLS('lg:yo', null);
+      guardarLS('lg:dc', null);
       aplicarCalma();
       pintaCuenta();
       pintaPopAjustes();
@@ -3028,6 +3102,7 @@ function cuandoSe(iso) {
 }
 
 function pinta() {
+  volverDeDiscord();
   // 🔴 CADA SECCIÓN, AISLADA. Una que falla —un dato que llega con otra
   // forma, o el HTML viejo en caché con este JS nuevo— queda sin dibujar y
   // el resto de la página sale igual. Antes un error en cualquier `pinta*`
