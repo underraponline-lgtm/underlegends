@@ -10,6 +10,17 @@
  ],
  "cambios": [
   {
+   "version": "1.07",
+   "dia": "2026-09-25",
+   "titulo": "Urban Freestyle se suma, y tu perfil",
+   "items": [
+    "🏙️ **Urban Freestyle se sumó a la Liga**: el bot ya está en el servidor, sus eventos se escuchan y los avisos de sus torneos te llegan al celular.",
+    "✅ **`/verificar` te dice de nuevo qué te falta** para tu tarjeta: estar en Discord Rap Español, el rol Miembro y tu país.",
+    "👤 **Mi cuenta**: «Mi perfil» abre tu perfil aunque todavía no hayas jugado esta temporada; una sesión de antes se actualiza con un toque; y está «Cambiar mi foto».",
+    "🌙 **De 3 a 11 de la mañana** (hora del este de EE.UU.) la página no se actualiza: los datos vuelven a las 11:22."
+   ]
+  },
+  {
    "version": "1.06",
    "dia": "2026-09-25",
    "titulo": "La fecha de la Temporada 1 y versiones",
