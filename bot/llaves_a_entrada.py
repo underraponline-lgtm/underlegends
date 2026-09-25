@@ -1356,6 +1356,7 @@ def main():
     todas, dudas, sabidas = [], [], collections.Counter()
     en_curso, incompletos, retenidos, descartados = [], [], [], []
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
+    link_de = {}                        # (evento, fecha) y evento -> link
     import decidir as DEC
     repes = 0
     for g in grupos:
@@ -1365,6 +1366,15 @@ def main():
         # veces, que es el unico error de esta cadena que no se arregla
         # volviendo a correr.
         nom, fec = nombre_de(g), fecha_de(g)
+        # 🔑 EL LINK DE LA LLAVE MÁS NUEVA DEL GRUPO, para que la pregunta
+        # de ✅ Decidir sobre este evento lleve al mensaje: «(sin titulo)»
+        # sin link obligaba a buscar la llave a mano en tres servidores.
+        _lk = ['https://discord.com/channels/%s/%s/%s'
+               % (h['guild'], h['canal_id'], h['msg_id'])
+               for h in sorted(g['llaves'], key=lambda x: str(x.get('cuando') or ''))
+               if h.get('guild') and h.get('canal_id') and h.get('msg_id')]
+        if _lk:
+            link_de[(nom, fec)] = link_de[nom] = _lk[-1]
         del_grupo, d_grupo = [], []
         for h in g['llaves']:
             f, d, sab = filas_de(h, nombre=nom, fecha=fec,
@@ -1581,20 +1591,25 @@ def main():
         print('   ✅ nada nuevo para `Entrada`')
     # ⚠️ TODO EN UN LOTE: una lectura de la cola y un pedido, no uno por
     # evento. Ver `pendientes.anotar_varios()`.
+    # ⚠️ EL LINK VA AL FINAL DEL «POSIBLE MATCH», separado por « · »:
+    # `decidir._link_llave()` lo saca de ahí y lo pone en la pregunta.
+    con_link = lambda t, k: ('%s · %s' % (t, link_de[k]) if link_de.get(k) else t)
     lote = [('Llave sin resolver', 'llaves de Discord', ev,
-             ' | '.join(cosas[:4])) for ev, cosas in por_evento.items()]
+             con_link(' | '.join(cosas[:4]), ev)) for ev, cosas in por_evento.items()]
     # ⚠️ EL DETALLE LLEVA SERVIDOR Y FECHA, no sólo el nombre: la cola no
     # duplica por (tipo, detalle), y dos llaves sin título son dos eventos
     # que con el nombre solo se volverían una fila.
     lote += [('Evento dudoso', 'llaves de Discord',
-              '%s · %s · %s' % (ev, sv_i, fec_i), mot + '. NO se sumó nada.')
+              '%s · %s · %s' % (ev, sv_i, fec_i),
+              con_link(mot + '. NO se sumó nada.', (ev, fec_i)))
              for ev, sv_i, fec_i, mot in retenidos]
     lote += [('Bracket incompleto', 'llaves de Discord',
               '%s · %s · %s' % (ev, sv_i, fec_i),
               ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
                           'guía (Parte 1) lo descarta y NO se sumó nada. Si '
                           'cuenta, completá la final en la llave' % QUIETA_H]
-                         + cosas[:3]))
+                         + cosas[:3]) + (' · %s' % link_de[(ev, fec_i)]
+                                         if link_de.get((ev, fec_i)) else ''))
              for ev, sv_i, fec_i, cosas in incompletos]
     if lote:
         k = P.anotar_varios(lote)

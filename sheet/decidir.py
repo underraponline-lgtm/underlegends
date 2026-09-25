@@ -114,6 +114,42 @@ def _sin_bandera(s):
 
 # ── las preguntas ───────────────────────────────────────────────────────
 
+_LLAVES = []
+
+
+def _link_llave(origen, match):
+    """(link a la llave en Discord, el match sin el link).
+
+    🔑 Dos fuentes: si la pregunta es de un evento ya procesado
+    (`evento #350`), el link sale de `datos/llaves_t1.json`; si viene del
+    lector (`llaves de Discord`), lo trae el «Posible match» al final.
+    """
+    t = str(match or '')
+    i = t.find('https://discord.com/channels/')
+    if i >= 0:
+        j = i
+        while j < len(t) and not t[j].isspace() and t[j] not in '|,':
+            j += 1
+        link = t[i:j]
+        resto = (t[:i] + t[j:]).strip()
+        if resto.endswith('·'):
+            resto = resto[:-1].strip()
+        return link, resto
+    m = re.match(r'evento\s*#\s*(\d+)', origen or '', re.I)
+    if m:
+        if not _LLAVES:
+            try:
+                with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'),
+                             encoding='utf-8') as f:
+                    _LLAVES.append(json.load(f))
+            except (OSError, ValueError):
+                _LLAVES.append({})
+        ls = (_LLAVES[0].get(m.group(1)) or {}).get('links') or []
+        if ls:
+            return ls[-1], t
+    return '', t
+
+
 def _donde(origen, detalle, eventos):
     """«Dónde apareció», en palabras."""
     m = re.match(r'evento\s*#\s*(\d+)', origen or '', re.I)
@@ -170,13 +206,16 @@ def armar(abiertas, eventos=None):
             por[k]['filas'].append(n)
             continue
         origen, match = f.get('Origen', '').strip(), f.get('Posible match', '').strip()
+        link, match = _link_llave(origen, match)
         p = {'id': k, 'tipo': tipo, 'detalle': det, 'origen': origen,
-             'match': match, 'filas': [n], 'variantes': [det],
+             'match': match, 'filas': [n], 'variantes': [det], 'link': link,
              'grupo': GRUPO.get(tipo, (4, tipo)),
              'donde': _donde(origen, det, eventos)}
         por[k] = p
     for p in por.values():
         p['que'], p['sug'], p['opciones'] = _pregunta(p)
+        if p.get('link'):
+            p['que'] += chr(10) + 'La llave: ' + p['link']
     return sorted(por.values(), key=lambda p: (p['grupo'][0], p['filas'][0]))
 
 
@@ -969,6 +1008,14 @@ def _self_check():
                'Posible match': 'es una llave rumbo al Interserver. NO se sumó nada.',
                'Estado': 'Pendiente'})]
     ps = armar(ab, {'350': ('DESGRACIAS EN TOKYO VOL.10', 'FFA', '23/09')})
+    _lk = 'https://discord.com/channels/1/2/3'
+    dud = armar([(9, {'Tipo': 'Evento dudoso', 'Origen': 'llaves de Discord',
+                      'Detalle': 'COPA Y · FFA · 24/09',
+                      'Posible match': 'es una llave rumbo al Interserver. NO se sumó nada. · ' + _lk,
+                      'Estado': 'Pendiente'})])[0]
+    ok(dud['que'].endswith('La llave: ' + _lk) and dud['que'].count(_lk) == 1,
+       'la pregunta de un evento trae el link a la llave, una vez')
+    ok(_lk not in dud['match'], 'y el motivo queda sin el link')
     ok(len(ps) == 3, 'las dos filas de JAHNO son UNA pregunta')
     ok(ps[0]['grupo'][1] == '🏆 Evento', 'los eventos van primero')
     jahno = next(p for p in ps if p['tipo'] == 'Nombre desconocido')
