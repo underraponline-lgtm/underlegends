@@ -109,7 +109,38 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Los logos de los servidores, al día desde Discord** | *«trackear los logos actuales ya que el bot debería ser posible de eso»* | ✅ en el hub · las cartas todavía usan el guardado |
 | **Comparar con la página vieja del Apps Script** («Mi Perfil»): qué falta y qué mejorar | *«chequea muy bien cómo estaba la página appscript del excel antiguo»* | ✅ comparada · falta el informe |
 
+### Lo que contestó Dlx el 25/09 a las 8 (5:40 AM)
+
+| # | regla | Dlx | estado |
+|---|---|---|---|
+| 1 | **Eze y Noone**: que el bot los detecte solo | *«de momento dejémoslo que el bot lo detecte automáticamente»* | ✅ cerrado · entran con `/card` o autoverificar |
+| 2 | **TFC es «The Freestyle Corpo»**, y no está en la Liga | *«The freestyle corpo, pero no están en la liga global»* | ✅ `datos/servidores.json` y el Worker |
+| 3a | **Racha en llaves de más de 16**: lo decidí yo, como pidió. **El cuarto de arriba de la llave**: cuartos en una de 32, octavos en una de 64 (la final en 8, la semi en 16) | *«¿cuál crees?»* | ✅ `rankings._umbral()` |
+| 3b | **Llaves de menos de 8**: llegar a la final | *«sí»* | ✅ ya era así |
+| 3c | **Faltar a un evento corta la racha** — aplicado a los eventos de **tu servidor** (ver abajo, pregunta 2) | *«sí creo»* | ✅ aplicado · a confirmar |
+| 3d | **La racha del ranking de Duelos es de duelos ganados seguidos**; participar en eventos no es racha | *«duelos ganados únicamente»* | ✅ ya era así |
+| 4 | **El logo UL, la trama y la dirección se quedan** | *«así como está ahora está bien»* | ✅ cerrado |
+| 5 | **Verificación**: me preguntó qué recomiendo | *«¿qué crees que deberíamos hacer?»* | ❓ mi recomendación abajo (pregunta 3) |
+| 6 | **El perfil de cada rapero** | *«ESTARÍA BUENÍSIMO»* | ✅ hecho (6:15 AM) |
+| 7 | **Most Wanted**: más adelante | *«sí, pero poco a poco iremos ahí»* | 🔜 en el top 5 como «Próximamente» |
+| 8 | **Redes sociales**: sí, y las de los servidores | *«¡Sí! ¿Puedes revisar el feed de las cuentas de Snake Rap, FFA y DRA?»* | ✅ las de los servidores y la Liga · las de cada rapero, con el login (pregunta 3) |
+
 ---
+
+## 📅 Viernes 25/09 (6 AM) — el perfil, las caras y el iPhone
+
+**Lo que se ve** (publicado a las **6:15 AM**)
+- 👤 **El perfil de cada rapero**: tocás un nombre en cualquier lado —o lo buscás en el Inicio— y abre su página: sus tarjetas con descarga, sus números, **lo que le falta para cada tarjeta** condición por condición (Hassan: 6 de 10 eventos para la Competitiva), su puesto en cada ranking, sus eventos con «Ver llave» y sus duelos con quién ganó.
+- 🙂 **Las caras**: un círculo con el avatar de Discord y la bandera a la derecha del nombre, en el ranking, el top 5, los duelos, el medallero, «Lo que pasó» y la llave. **47 de los 50** con Discord ID tienen cara; el resto, la inicial.
+- 🏠 **Inicio**: «Lo que pasó» con los **3 últimos**, quién organizó y quién ganó · **«La Liga hoy»**: el mapa a la mitad y **la actividad** al lado (7 eventos esta semana, 143 participaciones, 86 raperos, y las barras de 14 días) · **«Novedades de la Liga»**: los 3 últimos de 〢🌍〉rankings-liga-global y las redes de la Liga · el top 5 suma **Most Wanted y Misiones** (próximamente) · **14 récords** (antes 6).
+- 🛡️ **Mundo**: cada servidor con su etiqueta —**COMUNIDAD, TALENTOS, ENTRENAMIENTO**—, sus redes y un **«Entrar al servidor»** grande de su color.
+- 🏆 **La llave**: el logo del servidor, quién organizó y el podio arriba del cuadro.
+- 🔔 El botón «Avisame» del Inicio **se va para quien ya activó** los avisos, y tiene una ✕.
+- **DRA no aparece en Eventos porque no anunció nada desde que arrancó la T1**: sus 8 canales de eventos no tienen un mensaje desde el 22/09 (el último, el 06/09). Cuando anuncie, sale solo.
+
+**Los avisos en el iPhone** (Dlx: *«no me llegó nada a mi iPhone, a menos que haya clickeado ese botón que dice prueba»*)
+- 🔴 **Apple rechazaba todo aviso de evento**: `400 {"reason":"BadWebPushTopic"}`, por un encabezado que Google acepta. «Mandar una de prueba» no lo lleva, y por eso eso sí llegaba. **Ningún aviso de evento le había llegado nunca a un iPhone.** Arreglado a las **6:07 AM**; medido a las 6:10 con un simulacro: **4 de 4** entregados (antes 2 de 4).
+- Tus pruebas con «probando» no le llegaban a nadie porque ningún dispositivo tenía **🧪 Pruebas** marcado. Ahora el bot **te contesta por DM** a cuántos dispositivos la mandó.
 
 ## 📅 Viernes 25/09 (5 AM) — el rediseño del hub
 
@@ -188,14 +219,10 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ## ❓ Esperando a Dlx
 
-1. **Eze y Noone** (del #2): Eze tiene 5 cuentas posibles; la única cuenta de Noone 🇵🇪 (`@001wanted100`) es 🇨🇴. ¿Cuál es cada uno, o los dejo sin ID?
-2. **TFC**: el Sheet dice «The Freestyle Community»; su Discord y su logo dicen «The Freestyle **Corpo**». ¿Cuál es? (No es confirmado todavía, así que hoy no se ve en el hub.)
-3. **Racha**: (a) llaves de más de 16 —¿semifinal o cuartos?—; (b) llaves de menos de 8 —¿llegar a la final?—; (c) faltar a un evento, ¿corta la racha o sólo cuentan los que jugaste?; (d) en el ranking de **Duelos**, ¿la racha sigue siendo de duelos ganados seguidos (con otro nombre) o pasa a ser la de eventos?
-4. **«Under Legends» en el resto**: saqué la frase y puse la descripción oficial. Quedan el **logo UL**, la trama «UNDER LEGENDS» del fondo y la dirección `underlegends.pages.dev`. ¿Se quedan como marca o también se van?
-5. **Verificación con login de Discord**: para que la página sepa quién sos hace falta registrar la dirección del hub en el portal de Discord de la app (lo hacés vos, es un campo). ¿Lo hacemos, o arrancamos por el comando `/verificar` en Discord?
-6. **El perfil de cada rapero** —lo que más falta respecto de la página vieja del Apps Script—: historial de eventos con su cuadro, duelos, racha, puesto en cada ranking y qué le falta para cada tarjeta. ¿Lo hago como próximo paso?
-7. **Most Wanted**: la página vieja lo mostraba y en la T1 no hay datos de cazador ni cazado. ¿Sigue en esta temporada?
-8. **Redes sociales** en el perfil, como en la vieja: ¿las querés? Harían falta en la Lista, una columna por red.
+1. **Knowledge Sombrío**: ¿es el rol **🧠 KNOWLEDGE** de FFA? Lo tienen 18 personas —Hassan, Liberia, Xubaru, Zignos, Abyssus, Renegade, Respawn, Longsun Zhao, Gocho y otras nueve—. Si es esa, la armo con ellos; si no, ¿quiénes son?
+2. **La racha y faltar**: lo apliqué como **«faltar a un evento de TU servidor la corta»**; lo que jugás en otros servidores igual cuenta. Con tres servidores jugando el mismo día, «faltar a cualquiera» dejaría a todos en 0. Hoy cambia en 3 de 85: la máxima de Hassan pasa de 4 a 3, la de Makmah de 3 a 2, y Colesito pierde la que llevaba. ¿Va así?
+3. **Verificación**: te recomiendo arrancar por **`/verificar` en Discord**. La persona lo escribe y el bot mira en el momento lo mismo que el ciclo —que esté en DRA, con ID y país—: le da el Miembro o le dice exactamente qué le falta («ponete un rol de país»). No necesita nada de tu lado. El **login con Discord en la página** lo dejaría para después, junto con **las redes de cada rapero**: con su permiso trae las cuentas que tiene conectadas a Discord (YouTube, Twitch, TikTok, X…) y las pone en su perfil sin que nadie las cargue a mano. ¿Armo `/verificar`?
+4. **Misiones**: el top 5 dice «Próximamente». ¿Qué van a medir?
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -215,6 +242,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 - **Sin país en ningún servidor**: 8 con ID. **5 ya tienen el Miembro de DRA** —Kevo, aze gian, Adriox, Sedelti y Elsoolar— y es lo único que les falta para la carta: con un rol de país en DRA (o la bandera en el apodo) entran solos en la corrida siguiente. Los otros 3 (Deikka, NarcoMC, TRIPLE7) están sólo en FFA. Otros 9 se miran a las 3:22 AM (hay un tope de 15 por corrida); Fabrizio tiene dos roles, España y Perú, y no lo toco.
 - **#13 «¿Por qué no tengo carta?»** en el hub, cuando digas.
 - **La campana con gente de verdad**: medir la CPU de un lote de 20 envíos (con 0 suscriptos no hay con qué) e iPhone con la página instalada.
+- **Hay dos suscripciones de Apple**: si a tu iPhone le llega el mismo aviso dos veces, está anotado dos veces (la app de inicio y Safari). Desactivá uno.
+- **El perfil no tiene redes todavía**: esperan al login con Discord (pregunta 3).
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
 - **Las cartas siguen con el logo guardado** de cada servidor: el del hub ya sale de Discord, pero el escudo de la carta pasa por `procesar_logos.py` y no se puede cambiar solo sin mirarlo.
