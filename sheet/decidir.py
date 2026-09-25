@@ -711,8 +711,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             'La clave es «evento · servidor · fecha», como en Pendientes.',
             'llaves_a_entrada.py lo respeta: «no cuenta» no se suma nunca;',
             '«cuenta» no se retiene por Interserver ni por fase sin batallas.'])
-        ahora = datetime.datetime.now(datetime.timezone.utc).strftime(
-            '%Y-%m-%d %H:%M UTC')
+        ahora = _ahora_et()
         for ev, dec in eventos.items():
             d.setdefault('eventos', {})[ev] = {'decision': dec, 'cuando': ahora,
                                                'por': POR}
@@ -721,8 +720,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             f.write('\n')
     if notas_cerradas:
         d = _decisiones()
-        ahora = datetime.datetime.now(datetime.timezone.utc).strftime(
-            '%Y-%m-%d %H:%M UTC')
+        ahora = _ahora_et()
         for k, v in notas_cerradas.items():
             v['cuando'] = ahora
             d.setdefault('notas', {})[k] = v
@@ -732,8 +730,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             f.write('\n')
     if trolls:
         d = _decisiones()
-        ahora = datetime.datetime.now(datetime.timezone.utc).strftime(
-            '%Y-%m-%d %H:%M UTC')
+        ahora = _ahora_et()
         for t in trolls:
             d.setdefault('no_rankear', {})[t] = {'motivo': 'troll',
                                                  'cuando': ahora, 'por': POR}
@@ -751,6 +748,22 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                                   else POR]]}
                      for n, res in cierres]})
     return estados
+
+
+def _ahora_et():
+    """«2026-09-24 7:40 PM ET»: la fecha y hora que queda escrita.
+
+    ⚠️ EN HORA DEL ESTE, NUNCA UTC. Dlx, 24/09/2026: *«I told you to refer
+    everything as my local time zone EST»*. Este archivo guardaba
+    «2026-09-24 23:40 UTC» y Dlx lo lee en GitHub.
+    """
+    ahora = datetime.datetime.now(datetime.timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        et = ahora.astimezone(ZoneInfo('America/New_York'))
+    except Exception:                                    # noqa: BLE001
+        et = ahora - datetime.timedelta(hours=4)
+    return et.strftime('%Y-%m-%d ') + et.strftime('%I:%M %p ET').lstrip('0')
 
 
 def _hora_et():

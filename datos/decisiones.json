@@ -8,7 +8,7 @@
  "eventos": {
   "RAP EXHIBITION 1/8 · SR · *": {
    "decision": "no cuenta",
-   "cuando": "2026-09-24 23:00 UTC",
+   "cuando": "2026-09-24 7:00 PM ET",
    "por": "Dlx (chat)",
    "nota": "se jugó el 22/09 en Snake Rap y su llave no está en ningún canal; Dlx: «no debería contar»"
   }
@@ -16,7 +16,7 @@
  "no_rankear": {
   "El ultra knowledge instintivo": {
    "motivo": "troll",
-   "cuando": "2026-09-24 23:40 UTC",
+   "cuando": "2026-09-24 7:40 PM ET",
    "por": "Dlx (chat)",
    "nota": "Dlx, mirando el hub: «why the ultra man is still on the list? If it is a troll name right?»"
   }
@@ -25,7 +25,7 @@
   "6e01126bc8": {
    "pregunta": "ELSOLAR 🇨🇴",
    "nota": "Existe elsolar y solar. SOn personas diferentes. SOlar es de chile y su ID es 1155972121848201256",
-   "cuando": "2026-09-24 23:54 UTC"
+   "cuando": "2026-09-24 7:54 PM ET"
   }
  }
 }
