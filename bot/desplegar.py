@@ -65,7 +65,9 @@ MIGRACIONES = [('v1', {'new_sqlite_classes': ['Avisos']})]
 sys.path.insert(0, os.path.dirname(SCR))
 from comun.temporada import ACTUAL as TEMPORADA  # noqa: E402
 from comun.temporada import sal_fotos as _sal  # noqa: E402
+from comun.temporada import foto_libre_hasta as _libre  # noqa: E402
 SAL_FOTOS = _sal()
+FOTO_LIBRE_HASTA = _libre()
 
 def entorno():
     env = dict(os.environ)
@@ -170,6 +172,9 @@ def main():
             # coinciden, la foto se guarda donde nadie la busca y la carta
             # sale con la inicial sin que nada falle.
             {'type': 'plain_text', 'name': 'FOTOS_SAL', 'text': SAL_FOTOS},
+            # 🔑 HASTA CUÁNDO LA FOTO ES LIBRE (Dlx, 25/09/2026: «cambios
+            # ilimitados hasta el 9»), del mismo lugar que la temporada.
+            {'type': 'plain_text', 'name': 'FOTO_LIBRE_HASTA', 'text': FOTO_LIBRE_HASTA},
         ],
     }
 

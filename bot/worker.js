@@ -1406,7 +1406,7 @@ async function cuentaFoto(req, env) {
   if (!u.avatar) return res({ error: 'sin_foto' }, 422);
   if (!env.CARTAS) return res({ error: 'sin_r2' }, 503);
   const arranco = await temporadaArrancada(env);
-  const usado = arranco && !!(await env.KV.get(claveUso(env, quien)));
+  const usado = arranco && await fotoUsada(env, quien);
   let pase = false;
   if (usado) {
     const dra = SV_DE('DRA');
@@ -1417,11 +1417,12 @@ async function cuentaFoto(req, env) {
   const puede = !usado || pase;
   if (!d.confirmar) {
     return res({ estado: puede ? 'puede' : 'usado', libre: !arranco, pase, temporada,
+      libre_hasta: libreHastaTexto(env),
       vista: urlAvatar(u.id, u.avatar).replace('size=1024', 'size=256') });
   }
   if (!puede) return res({ error: 'usado', temporada }, 403);
   const r = await fotoAR2(env, quien, u.id, u.avatar, arranco);
-  return res(Object.assign({ temporada }, r), r.ok ? 200 : 502);
+  return res(Object.assign({ temporada, libre_hasta: libreHastaTexto(env) }, r), r.ok ? 200 : 502);
 }
 
 // ── /notify: los avisos de eventos, en el celular o la compu ─────────────
@@ -1911,8 +1912,39 @@ async function fotoAR2(env, quien, id, hash, arranco) {
   return { ok: true, anotado: true };
 }
 
+// 🔑 HASTA CUÁNDO LA FOTO ES LIBRE: el instante que `bot/desplegar.py` saca
+// de `comun/temporada.py` (`FOTO_LIBRE`). Dlx, 25/09/2026: «Sí. O sea hay
+// cambios ilimitados hasta el 9». Sin el binding, 0: la regla de antes.
+const libreHasta = (env) => Date.parse((env && env.FOTO_LIBRE_HASTA) || '') || 0;
+const libreHastaTexto = (env) => {
+  const t = libreHasta(env);
+  if (!t) return '';
+  try {
+    return new Intl.DateTimeFormat('es', { timeZone: 'America/New_York', day: 'numeric',
+      month: 'long' }).format(new Date(t - 60000));
+  } catch (e) {
+    return '';
+  }
+};
+
+/** ¿Ya usó su cambio de la temporada? Ver `/foto`.
+ *
+ * ⚠️ SÓLO CUENTA EL QUE SE HIZO CON EL LÍMITE RIGIENDO. Durante la fase de
+ * prueba el límite ya corría —el 25/09/2026 había dos marcas, dlx y makmah—
+ * y Dlx decidió que hasta el 9/10 es libre: esas marcas no gastan nada. Una
+ * marca sin fecha sí cuenta: ante la duda, el lado conservador. */
+async function fotoUsada(env, quien) {
+  const v = await env.KV.get(claveUso(env, quien));
+  if (!v) return false;
+  let ts = 0;
+  try { ts = Number(JSON.parse(v).ts) || 0; } catch (e) { ts = 0; }
+  return !(ts && ts < libreHasta(env));
+}
+
 /** `meta.arrancada`: ¿rige el límite de una foto por temporada? Ver `/foto`. */
 async function temporadaArrancada(env) {
+  // 🔑 el cambio libre de Dlx: hasta esa fecha, no rige
+  if (Date.now() < libreHasta(env)) return false;
   try {
     const m0 = await env.KV.get('meta');
     return m0 ? (JSON.parse(m0).arrancada !== false) : true;
@@ -1974,9 +2006,11 @@ async function guardarFoto(env, i, quien, id, hash) {
   // se anota. Las dos preguntas tienen que contestarse igual o el
   // contador se llena en un mundo donde todavía no cuenta.
   if (res.libre) {
-    return seguir(i, '📸 Tu foto **quedó guardada**.\n' +
-                     'La temporada todavía no arrancó, así que podés ' +
-                     'cambiarla las veces que quieras hasta que empiece.');
+    const hasta = libreHastaTexto(env);
+    return seguir(i, '📸 Tu foto **quedó guardada**.\n' + (hasta
+      ? 'Hasta el **' + hasta + '** podés cambiarla las veces que quieras.'
+      : 'La temporada todavía no arrancó, así que podés ' +
+        'cambiarla las veces que quieras hasta que empiece.'));
   }
   if (!res.anotado) {
     return seguir(i, '📸 Tu foto **quedó guardada**.\n' +
@@ -2151,9 +2185,8 @@ const COMANDOS = {
     //
     // ⚠️ Y EL ROL SIGUE SIENDO EL QUE SALTEA EL LÍMITE cuando sí rige. No
     // cambia de significado: cambia cuándo hace falta.
-    const meta0 = await env.KV.get('meta');
-    const arrancada = meta0 ? (JSON.parse(meta0).arrancada !== false) : true;
-    const usado = arrancada && await env.KV.get(claveUso(env, quien));
+    const arrancada = await temporadaArrancada(env);
+    const usado = arrancada && await fotoUsada(env, quien);
     const pase = tienePase(i);
     if (usado && !pase) {
       // ⚠️ SE DICE POR QUÉ Y HASTA CUÁNDO. «No podés» a secas deja a la
