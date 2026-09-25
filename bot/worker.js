@@ -2624,6 +2624,17 @@ export default {
       const ruta = camino;
       // 🔑 LOS PERFILES: una lectura de KV y se reenvía crudo, igual que el
       // lobby con `?json=1`. Los pide la página cuando se abre un perfil.
+      // 🔑 EL CALENDARIO DE LA LIGA PARA GOOGLE/APPLE, tal cual está en KV
+      if (ruta === '/calendario.ics') {
+        const crudo = await env.KV.get('web:ics');
+        return new Response(crudo || 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nEND:VCALENDAR\r\n', {
+          headers: {
+            'content-type': 'text/calendar; charset=utf-8',
+            'cache-control': 'public, max-age=900',
+            'access-control-allow-origin': '*',
+          },
+        });
+      }
       if (ruta === '/perfiles') {
         const crudo = await env.KV.get('web:perfiles');
         return new Response(crudo || '{}', {

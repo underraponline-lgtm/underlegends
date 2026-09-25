@@ -114,6 +114,18 @@ export default {
 
     // 🔑 LOS PERFILES, por el mismo camino que el lobby: el Worker los lee
     // de KV y acá se reenvían. Se piden sólo al abrir un perfil.
+    // el calendario para Google y Apple (webcal): el Worker lo tiene en KV
+    if (url.pathname === '/api/calendario.ics' || url.pathname === '/calendario.ics') {
+      const r = await fetch(ORIGEN + '/calendario.ics', {
+        headers: { accept: 'text/calendar' },
+        cf: { cacheTtl: 600, cacheEverything: true },
+      });
+      return new Response(r.body, {
+        status: r.status,
+        headers: { 'content-type': 'text/calendar; charset=utf-8',
+          'cache-control': 'public, max-age=900' },
+      });
+    }
     if (url.pathname === '/api/perfiles') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       const r = await fetch(ORIGEN + '/perfiles', {

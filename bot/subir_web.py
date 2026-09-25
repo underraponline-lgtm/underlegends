@@ -134,6 +134,7 @@ def armar():
     _foto = _con_foto()
     _ver, _vieja = _versiones()
     _avs = _avatares()
+    _ult = _ultimos()
     tabla = [{
         'n': p.get('raw'),
         'pos': p.get('pos'),
@@ -212,6 +213,14 @@ def armar():
         # espacio o una tilde en el nombre — teniéndola.
         'fo': 1 if (_foto is None
                     or _resp._norm(p.get('raw')) in _foto) else 0,
+        # 🔑 LO QUE EL RANKING DE TEMPORADA OFICIAL TIENE Y LA WEB NO. Dlx,
+        # 25/09/2026: «chequea cómo está el ranking temporada el oficial…
+        # tiene racha, último evento, sobrevivió, cazó, cazado, rango».
+        'rch': [p.get('racha_act') or 0, p.get('racha') or 0],
+        'caz': p.get('caz') or 0,
+        'czd': p.get('czd') or 0,
+        'sob': p.get('sob') or 0,
+        'ult': _ult.get(_resp._norm(p.get('raw'))) or [],
         # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
         # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
         'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
@@ -305,6 +314,9 @@ def armar():
             'sv': x.get('servidor') or '',
             # Dlx, 25/09/2026: «quizás nombrar al organizador también»
             'org': _org(x.get('organizador')),
+            # Dlx, 25/09/2026: «poner el rango de esta misma» — el nivel del
+            # evento cuando el anuncio lo dice (DRA: TIER 1, 2, 3, MIX)
+            'rango': _rango_ev(x.get('rango')),
             'cuando': _ini(x),
             'modalidad': x.get('modalidad') or '',
             'link': ('https://discord.com/channels/%s/%s/%s'
@@ -370,7 +382,7 @@ def armar():
         # récords son campos que el builder ya escribe y que **nadie
         # estaba mirando**. Es la forma de siempre en este repo, del lado
         # bueno: el dato estaba y el consumidor no lo pedía.
-        'duelos': _duelos(),
+        'duelos': _duelos(tope=300),
         'rachas': _rachas(gente),
         'crews': _crews(),
         'records': _records(gente, regs, _comp),
@@ -379,6 +391,15 @@ def armar():
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
         'actividad': _actividad(regs),
         'novedades': _novedades(),
+        # 🔑 EL FEED: lo de DRA y los últimos videos de YouTube de cada
+        # servidor, del más nuevo al más viejo. Ver `_feed()`.
+        'feed': _feed(),
+        # 🔑 LA GUÍA CON LOS NÚMEROS DE VERDAD: cuántos puntos da cada
+        # puesto (de `Config`, la tabla con la que se puntúa) y de qué está
+        # hecho el OVR y el Score (de `sheet/ovr.py` y `sheet/competitivo.py`,
+        # los que calculan). Escritos a mano en la página se quedarían viejos
+        # el día que cambie un peso.
+        'guia': _guia(),
         'redes': _redes(),
         # ⚠️ LOS PERFILES NO VIAJAN EN EL LOBBY: `main()` los saca de acá y
         # los sube aparte, a `CLAVE_PERFILES`. Ver `_perfiles()`.
@@ -512,6 +533,239 @@ def _novedades(tope=3):
         if len(out) >= tope:
             break
     return out
+
+
+#: las versalitas que usan los anuncios («ʙʀᴏɴᴄᴇ ɪɪɪ»): NFKD no las toca
+_VERSALITAS = {'ᴀ': 'a', 'ʙ': 'b', 'ᴄ': 'c', 'ᴅ': 'd', 'ᴇ': 'e', 'ꜰ': 'f', 'ɢ': 'g',
+               'ʜ': 'h', 'ɪ': 'i', 'ᴊ': 'j', 'ᴋ': 'k', 'ʟ': 'l', 'ᴍ': 'm', 'ɴ': 'n',
+               'ᴏ': 'o', 'ᴘ': 'p', 'ǫ': 'q', 'ʀ': 'r', 'ꜱ': 's', 'ᴛ': 't', 'ᴜ': 'u',
+               'ᴠ': 'v', 'ᴡ': 'w', 'ʏ': 'y', 'ᴢ': 'z'}
+_TIERS = r'(bronce|plata|oro|platino|diamante|esmeralda|rubi|maestro|leyenda|elite)'
+
+
+def _rango_ev(s):
+    """El rango del evento en SU servidor: «ʙʀᴏɴᴄᴇ ɪɪɪ 🥉» -> «Bronce III».
+
+    🔑 Dlx, 25/09/2026: *«quizás poner el rango de esta misma… aplica solo
+    para el servidor local, obviamente»*. Es el campo `RANGO` del anuncio.
+
+    ⚠️ SÓLO SI ES UN RANGO: el campo es texto libre y trae «4», «rap»,
+    «chill» o «diamante tunesino a lo galatasaray». Tiene que TERMINAR en
+    un nivel (con su número o no); si no, no se muestra — mostrar
+    «Diamante» de un chiste es peor que no mostrar nada.
+    """
+    import unicodedata
+    t = ''.join(_VERSALITAS.get(c, c) for c in str(s or ''))
+    t = unicodedata.normalize('NFKD', t)
+    t = ''.join(c for c in t if not unicodedata.combining(c)).lower()
+    t = re.sub(r'\s+', ' ', re.sub(r'[^a-z0-9 ]+', ' ', t)).strip()
+    m = re.search(r'(?:^|\s)' + _TIERS + r'(?:\s+(iii|ii|iv|i|v|[1-5]))?$', t)
+    if not m:
+        return ''
+    r = m.group(1).capitalize() + (' ' + m.group(2).upper() if m.group(2) else '')
+    return r + (' · Ascenso' if 'ascenso' in t else '')
+
+
+#: el nombre de cada dimensión del Score, como la explica `sheet/competitivo.py`
+_DIM = {'E': ['⚡', 'Eficiencia', 'puntos por evento'],
+        'C': ['🎯', 'Consistencia', 'qué tan seguido llegás a semifinal o más'],
+        'Dm': ['👑', 'Dominancia', 'eventos ganados'],
+        'T': ['🔥', 'Racha', 'eventos seguidos en semifinal o más'],
+        'V': ['🌍', 'Diversidad', 'en cuántos servidores competís']}
+#: el orden de los componentes del OVR, como los recibe `sheet/ovr.calcular()`
+_OVR_COMP = ['Puntos', 'Eventos', 'Win%', 'Podios', 'Most Wanted']
+#: cómo se escribe cada puesto de `Config` en la página
+_PUESTO = {'campeon': 'Campeón', 'subcampeon': 'Subcampeón', 'tercero': 'Tercero',
+           'cuarto': 'Cuarto', 'semifinal': 'Semifinal', 'cuartos': 'Cuartos',
+           'octavos': 'Octavos', 'r32': 'Dieciseisavos'}
+
+
+def _guia():
+    """Los números de la Guía, de los mismos lugares que los calculan.
+
+    ⚠️ LA TABLA DE PUNTOS VIVE EN `Config` del Operativo y se lee en vivo;
+    si no se puede (sin red, sin credenciales), sale de la última copia en
+    `datos/escala.json`, que esta misma función refresca cuando lee bien.
+    """
+    out = {}
+    try:
+        sys.path.append(os.path.join(BASE, 'sheet'))
+        import ovr as _O
+        import competitivo as _C
+        out['ovr'] = [[n, int(round(w * 100))] for n, w in zip(_OVR_COMP, _O.PESOS)]
+        out['score'] = [_DIM[k] + [int(round(w * 100))] for k, w in _C.PESOS if k in _DIM]
+        out['conf'] = [[1, int(round(_C.confianza(1) * 100))],
+                       [_C.CONF_DESDE[0], int(round(_C.CONF_DESDE[1] * 100))],
+                       [_C.CONF_HASTA[0], int(round(_C.CONF_HASTA[1] * 100))]]
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la guía sin pesos (%s)' % str(e)[:60])
+    esc = _json('datos', 'escala.json') or {}
+    if not _SIN_RED[0]:
+        try:
+            import motor as _M
+            t, mods = _M.tablas(), _M.modificadores()
+            nueva = {'tablas': {e: [[_PUESTO.get(k, k), v] for k, v in
+                                    sorted(t[e].items(), key=lambda kv: -kv[1])]
+                                for e in ('16+', '8-15', '4-7') if t.get(e)},
+                     'walkin': [[int(k), int(round(v * 100))] for k, v in
+                                sorted(mods.get('walkin', {}).items()) if int(k) > 0],
+                     'revivido': int(round(mods.get('revivido', 0.5) * 100))}
+            if nueva['tablas'] and nueva != {k: esc.get(k) for k in nueva}:
+                io.open(os.path.join(BASE, 'datos', 'escala.json'), 'w', encoding='utf-8',
+                        newline='\n').write(json.dumps(dict(nueva, _leeme=(
+                            'Copia de Config (Operativo): cuántos puntos da cada puesto '
+                            'por tamaño de llave. La refresca bot/subir_web.py cuando lee '
+                            'la hoja; es el respaldo de la Guía de la web.')),
+                            ensure_ascii=False, indent=1) + '\n')
+                esc = nueva
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ los puntos de Config, de la copia (%s)' % str(e)[:60])
+    if esc.get('tablas'):
+        out['puntos'] = {k: esc[k] for k in ('tablas', 'walkin', 'revivido') if k in esc}
+    return out
+
+
+def _ultimos():
+    """`{nombre normalizado: [fecha, puesto]}` del último evento de cada uno.
+
+    Sale de las llaves procesadas, en el orden en que se jugaron (la hora
+    de la llave). Es el `Último Resultado` del ranking oficial.
+    """
+    try:
+        sys.path.append(os.path.join(BASE, 'sheet'))
+        import llaves_web as LW
+        from comun import respaldo as _resp
+    except Exception:                                    # noqa: BLE001
+        return {}
+    regs = LW.leer()
+    inst = LW.instantes(regs)
+    out = {}
+    for n in sorted((n for n in regs if str(n).isdigit()),
+                    key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n))):
+        for t in regs[n].get('tabla') or []:
+            if t and t[0]:
+                # ⚠️ EL DÍA ENTERO, no «24/09»: la temporada puede cruzar de
+                # año, y «01/01» ordenado como texto quedaría antes que «24/09»
+                out[_resp._norm(t[0])] = [regs[n].get('dia') or '', t[1] or '']
+    return out
+
+
+def _youtube(canal, tope=3):
+    """Los últimos videos de un canal, por su RSS público: sin clave ni cuota."""
+    if _SIN_RED[0] or not canal:
+        return []
+    try:
+        import requests
+        import xml.etree.ElementTree as ET
+        r = requests.get('https://www.youtube.com/feeds/videos.xml',
+                         params={'channel_id': canal}, timeout=20)
+        if r.status_code != 200:
+            return []
+        ns = {'a': 'http://www.w3.org/2005/Atom', 'yt': 'http://www.youtube.com/xml/schemas/2015'}
+        raiz = ET.fromstring(r.content)
+    except Exception:                                    # noqa: BLE001
+        return []
+    out = []
+    canal_nombre = (raiz.findtext('a:title', default='', namespaces=ns) or '')[:60]
+    for e in raiz.findall('a:entry', ns)[:tope]:
+        vid = e.findtext('yt:videoId', default='', namespaces=ns)
+        t = (e.findtext('a:published', default='', namespaces=ns) or '')[:19]
+        if vid and t:
+            out.append({'t': t + 'Z', 'tipo': 'youtube', 'tit': (e.findtext('a:title', default='',
+                        namespaces=ns) or '')[:120], 'vid': vid, 'canal': canal_nombre,
+                        'link': 'https://www.youtube.com/watch?v=' + vid})
+    return out
+
+
+def _feed(tope=9):
+    """Lo último de la Liga: DRA y los videos de YouTube de cada servidor.
+
+    🔑 Dlx, 25/09/2026: *«abajo de la Liga hoy irían los posts más recientes
+    de las redes sociales, con flechas para ir a la siguiente página»*.
+
+    ⚠️ YOUTUBE SÍ, INSTAGRAM Y TIKTOK NO: YouTube publica un RSS abierto por
+    canal; Instagram y TikTok piden una app aprobada y un token por cuenta.
+    De esos dos van los links, en «Seguí a la Liga».
+    """
+    svs = ((_json('datos', 'servidores.json') or {}).get('servidores') or {})
+    out = [dict(x, tipo='discord', sv='DRA') for x in _novedades(tope=4)]
+    for sv, x in svs.items():
+        if x.get('confirmado') and x.get('youtube_id'):
+            for v in _youtube(x['youtube_id']):
+                out.append(dict(v, sv=sv, de=x.get('nombre') or sv))
+    out.sort(key=lambda x: x['t'], reverse=True)
+    return out[:tope]
+
+
+def _ics_texto(s):
+    return (str(s or '').replace('\\', '\\\\').replace(';', '\\;').replace(',', '\\,')
+            .replace('\n', '\\n'))
+
+
+def _ics(cal):
+    """El calendario de la Liga en iCalendar, para Google, Apple y Outlook.
+
+    🔑 Dlx, 25/09/2026: *«la opción de sincronizar esto con el calendario de
+    Google»*. El Worker lo sirve tal cual (`/calendario.ics`), sin armarlo:
+    cero CPU por pedido.
+
+    ⚠️ SIN HORA DE ESCRITURA QUE CAMBIE: `DTSTAMP` es el arranque del
+    evento, así el archivo sólo cambia cuando cambian los eventos y no gasta
+    una escritura de KV por corrida.
+    """
+    def fold(l):
+        b = l.encode('utf-8')
+        if len(b) <= 74:
+            return l
+        partes, act = [], ''
+        for ch in l:
+            if len((act + ch).encode('utf-8')) > 73:
+                partes.append(act)
+                act = ch
+            else:
+                act += ch
+        partes.append(act)
+        return '\r\n '.join(partes)
+    ls = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Liga Global de Freestyle//Eventos//ES',
+          'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'X-WR-CALNAME:Liga Global de Freestyle',
+          'X-WR-CALDESC:Los eventos de la Liga Global: underlegends.pages.dev',
+          'REFRESH-INTERVAL;VALUE=DURATION:PT6H', 'X-PUBLISHED-TTL:PT6H']
+    import datetime as dt
+    for c in cal or []:
+        try:
+            t = dt.datetime.strptime(c['t'][:19], '%Y-%m-%dT%H:%M:%S')
+        except (KeyError, ValueError):
+            continue
+        ini = t.strftime('%Y%m%dT%H%M%SZ')
+        fin = (t + dt.timedelta(minutes=90)).strftime('%Y%m%dT%H%M%SZ')
+        uid = 'ev-%s-%s-%s@underlegends.pages.dev' % (c.get('sv') or 'x', ini, __import__('hashlib').md5((c.get('n') or '').encode('utf-8')).hexdigest()[:6])
+        ls += ['BEGIN:VEVENT', 'UID:' + uid, 'DTSTAMP:' + ini, 'DTSTART:' + ini, 'DTEND:' + fin,
+               fold('SUMMARY:' + _ics_texto('%s · %s' % (c.get('n') or 'Evento', c.get('sv') or ''))),
+               fold('DESCRIPTION:' + _ics_texto('Evento de la Liga Global de Freestyle. ' +
+                                                (c.get('link') or ''))),
+               fold('URL:' + (c.get('link') or 'https://underlegends.pages.dev/#/eventos')),
+               'END:VEVENT']
+    ls.append('END:VCALENDAR')
+    return '\r\n'.join(ls) + '\r\n'
+
+
+def _subir_crudo(clave, texto, tipo='text/plain'):
+    """Un texto tal cual a KV, sólo si cambió. `True`, `None` (igual) o `False`."""
+    import requests
+    import subir_datos as SD
+    tok = _token()
+    if not tok:
+        return False
+    try:
+        r = requests.get('%s/values/%s' % (SD.API, clave),
+                         headers={'Authorization': 'Bearer ' + tok}, timeout=45)
+        if r.status_code == 200 and r.content.decode('utf-8') == texto:
+            return None
+    except (ValueError, OSError):
+        pass
+    r = requests.put('%s/values/%s' % (SD.API, clave), headers={'Authorization': 'Bearer ' + tok},
+                     files={'value': (None, texto), 'metadata': (None, '{}')}, timeout=60)
+    return r.status_code == 200
 
 
 def _redes():
@@ -721,7 +975,7 @@ def _calendario(ann, regs, llaves, LW, CU, ahora):
         ini = CU.momento(x)
         items.append({'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '',
                       'cuando': ini or pub, 'sh': 0 if ini else 1,
-                      'link': link(x)})
+                      'link': link(x), 'rg': _rango_ev(x.get('rango'))})
     LW.cruzar(items, regs)
     usadas = {str(i['llave']) for i in items if i.get('llave')}
     import datetime as _d
@@ -744,7 +998,7 @@ def _calendario(ann, regs, llaves, LW, CU, ahora):
                     'll': int(ll) if ll in llaves else 0,
                     'jugado': 1 if ll else 0,
                     'fut': 1 if i['cuando'] > ahora else 0,
-                    'sh': i['sh']})
+                    'sh': i['sh'], **({'rg': i['rg']} if i.get('rg') else {})})
     return out
 
 
@@ -1550,6 +1804,25 @@ def _self_check():
     ok(isinstance(p.get('actividad'), dict) and len(p['actividad'].get('dias') or []) == 14,
        'la actividad trae 14 días')
     ok(p.get('novedades') == [], 'sin red no hay novedades')
+    ok(p.get('feed') == [], 'ni feed')
+    _i = _ics([{'t': '2026-09-23T19:35:00Z', 'n': 'TOKYO; VOL, 11', 'sv': 'FFA', 'link': 'https://x'}])
+    ok(_i.startswith('BEGIN:VCALENDAR\r\n') and 'DTSTART:20260923T193500Z' in _i and
+       'TOKYO\\; VOL\\, 11' in _i and _i.endswith('END:VCALENDAR\r\n'),
+       'el calendario .ics sale bien armado y escapado')
+    ok(all(len(l.encode('utf-8')) <= 75 for l in _ics(p.get('calendario')).split('\r\n')),
+       'y ningún renglón pasa de 75 bytes (la regla de iCalendar)')
+    ok(all(len(f.get('rch') or []) == 2 for f in p['tabla']), 'cada fila trae su racha actual/máxima')
+    _rs = {'ʙʀᴏɴᴄᴇ ɪɪɪ 🥉': 'Bronce III', 'BRONCE': 'Bronce', '4': '', 'chill': '',
+           'diamante tunesino a lo galatasaray': '',
+           'Competencia De Ascenso Rango ᴘʟᴀᴛᴀ ɪɪɪ': 'Plata III · Ascenso'}
+    ok(all(_rango_ev(a) == b for a, b in _rs.items()),
+       'el rango del evento: los niveles sí, el texto suelto no  %s'
+       % [(a, _rango_ev(a)) for a, b in _rs.items() if _rango_ev(a) != b])
+    _g = p.get('guia') or {}
+    ok(len(_g.get('ovr') or []) == 5 and sum(w for _n, w in _g['ovr']) == 100,
+       'la guía trae los cinco pesos del OVR, y suman 100')
+    ok(len(_g.get('score') or []) == 5 and sum(x[3] for x in _g['score']) == 100,
+       'y las cinco dimensiones del Score, con nombre (ninguna quedó sin explicar)')
     ok(_limpio_md('# 🏆 HOLA <:CorazonLleno:152933862521543> @everyone\n▬▬▬\n**chau**')
        == ['🏆 HOLA', 'chau'], 'el texto de Discord sale sin su formato')
     ok(_org('@!    MMC.') == 'MMC.', 'y el organizador sin la arroba')
@@ -1594,6 +1867,10 @@ def main():
     else:
         print('\n   %s' % ('✅ subido a KV como `%s`' % CLAVE if okk
                              else '🔴 no pude subirlo'))
+    # 🔑 EL CALENDARIO PARA GOOGLE, tal cual: el Worker lo reenvía sin armarlo
+    ok3 = _subir_crudo('web:ics', _ics(p.get('calendario')))
+    print('   %s' % ('✓ calendario .ics: igual' if ok3 is None else
+                     '✅ calendario .ics subido' if ok3 else '🔴 no pude subir el .ics'))
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

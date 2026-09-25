@@ -1,0 +1,106 @@
+{
+ "tablas": {
+  "16+": [
+   [
+    "Campeón",
+    10000
+   ],
+   [
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Tercero",
+    6000
+   ],
+   [
+    "Semifinal",
+    5250
+   ],
+   [
+    "Cuarto",
+    4500
+   ],
+   [
+    "Cuartos",
+    2500
+   ],
+   [
+    "Octavos",
+    1250
+   ],
+   [
+    "Dieciseisavos",
+    625
+   ]
+  ],
+  "8-15": [
+   [
+    "Campeón",
+    7500
+   ],
+   [
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Tercero",
+    4000
+   ],
+   [
+    "Semifinal",
+    3500
+   ],
+   [
+    "Cuarto",
+    3000
+   ],
+   [
+    "Cuartos",
+    2000
+   ]
+  ],
+  "4-7": [
+   [
+    "Campeón",
+    5000
+   ],
+   [
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Tercero",
+    3000
+   ],
+   [
+    "Semifinal",
+    2625
+   ],
+   [
+    "Cuarto",
+    2250
+   ],
+   [
+    "Cuartos",
+    1250
+   ]
+  ]
+ },
+ "walkin": [
+  [
+   1,
+   50
+  ],
+  [
+   2,
+   25
+  ],
+  [
+   3,
+   0
+  ]
+ ],
+ "revivido": 50,
+ "_leeme": "Copia de Config (Operativo): cuántos puntos da cada puesto por tamaño de llave. La refresca bot/subir_web.py cuando lee la hoja; es el respaldo de la Guía de la web."
+}

@@ -141,9 +141,13 @@ text-shadow:5px 5px 0 var(--tls),-1px -1px 0 rgba(41,178,152,.8)}
 .lema{color:var(--tx2);margin-top:16px;font-size:1.1rem;max-width:54ch}
 .lema b{color:var(--tl);font-weight:700}
 
-.cifras{display:flex;flex-wrap:wrap;gap:11px;margin-top:26px}
+/* ⚠️ CUATRO EN UNA FILA, SIEMPRE. Con los dos campeones al lado el texto
+   se angostó y la cuarta bajaba sola a otro renglón: una grilla de cuatro
+   las achica parejo en vez de dejar una huérfana. En el teléfono, dos y dos. */
+.cifras{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-top:26px;
+max-width:640px}
 .cifras div{background:linear-gradient(180deg,rgba(14,14,18,.86),rgba(7,7,9,.86));
-border:1px solid var(--bd);padding:13px 22px;min-width:124px;
+border:1px solid var(--bd);padding:13px 16px;min-width:0;
 clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px))}
 .cifras b{display:block;font:900 2.1rem/1.05 Archivo,sans-serif;
 font-variant-numeric:tabular-nums;letter-spacing:-.02em}
@@ -164,7 +168,7 @@ radial-gradient(64% 58% at 50% 62%,rgba(41,178,152,.42),transparent 74%);
 filter:blur(26px)}
 .hc-marco img{width:300px;height:auto;transition:transform .3s ease}
 .hc-marco:hover img{transform:translateY(-6px) scale(1.02)}
-.hero-carta b{display:block;margin-top:12px;
+.hero-carta>b{display:block;margin-top:12px;cursor:pointer;
 font:900 1.32rem/1 Archivo,sans-serif;letter-spacing:-.02em}
 
 /* ── lo que viene ───────────────────────────────────────────────── */
@@ -261,11 +265,13 @@ grid-template-columns:repeat(auto-fit,minmax(185px,1fr))}
 clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
 .rec dt{color:var(--tx2);font:600 .7rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.16em;text-transform:uppercase}
-.rec dd{margin-top:6px;display:flex;align-items:baseline;gap:8px}
+.rec dd{margin-top:6px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
 .rec .v{font:900 1.5rem/1 Archivo,sans-serif;color:var(--tl);
 font-variant-numeric:tabular-nums}
-.rec .q{font:800 .96rem/1.2 Archivo,sans-serif;overflow:hidden;
-text-overflow:ellipsis;white-space:nowrap}
+/* ⚠️ SIN «…»: el nombre entero, aunque baje abajo del número. Dlx,
+   25/09/2026: «que todo sea expandido, que no haya necesidad de poner
+   "……"». */
+.rec .q{font:800 .96rem/1.2 Archivo,sans-serif;min-width:0;overflow-wrap:anywhere}
 
 /* ── filtros y tabla ────────────────────────────────────────────── */
 .filtros{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
@@ -285,13 +291,19 @@ text-transform:uppercase;transition:all .15s;white-space:nowrap}
 
 .tabla-caja{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse}
-th{font:800 .72rem/1 Archivo,sans-serif;letter-spacing:.15em;color:var(--tx2);
+th{font:800 .72rem/1 Archivo,sans-serif;letter-spacing:.1em;color:var(--tx2);
 text-transform:uppercase;text-align:right;padding:0 9px 10px;white-space:nowrap;
 cursor:pointer;user-select:none;transition:color .15s}
 th:hover{color:var(--tx)}
-th:nth-child(1),th:nth-child(2){text-align:left}
-th.asc::after{content:' \2191';color:var(--tl)}
-th.desc::after{content:' \2193';color:var(--tl)}
+th.c-pos,th.c-n,.c-izq{text-align:left}
+/* 🔑 TODAS SE ORDENAN, Y SE VE: la flecha doble en cada encabezado y la del
+   sentido en el que manda. Dlx, 25/09/2026: «que se pueda filtrar de
+   arriba hacia abajo para los demás». */
+th.ord::after{content:'\2195';display:inline-block;margin-left:5px;color:var(--tx3);
+letter-spacing:0}
+th.asc::after{content:'\2191';color:var(--tl)}
+th.desc::after{content:'\2193';color:var(--tl)}
+th:focus-visible{outline:2px solid var(--tl);outline-offset:-2px}
 /* ⚠️ EL VOLUMEN DE ESTA TABLA ESTABA PAREJO Y NO DEBERIA. Dlx,
    24/09/2026: «deberíamos alzar el volumen a algunas letras». Mirándola:
    el nombre —que es lo que uno busca— pesaba lo mismo que la fecha, y los
@@ -301,21 +313,21 @@ th.desc::after{content:' \2193';color:var(--tl)}
    su color), los PUNTOS, y después el resto. El puesto sube de tono
    porque en una tabla ordenada el número de fila es una referencia, no
    decoración. */
-td{padding:13px 12px;border-top:1px solid var(--bd2);text-align:right;
+td{padding:13px 9px;border-top:1px solid var(--bd2);text-align:right;
 font-variant-numeric:tabular-nums;font-weight:600;white-space:nowrap}
 /* ⚠️ `--tx3` ES MAS OSCURO QUE `--tx2`, no más claro: al subirle el tono
    a esto y a la sigla del país me los llevé para abajo. Medido en la
    paleta — tx #EDEDF2, tx2 #7E8B89, tx3 #4A5654. */
-td:nth-child(1){text-align:left;width:52px;color:var(--tx2);
+td.c-pos{text-align:left;width:52px;color:var(--tx2);
 font:900 1.06rem/1 Archivo,sans-serif}
-td:nth-child(2){text-align:left;font:800 1.16rem/1.15 Archivo,sans-serif;
+td.c-n{text-align:left;font:800 1.16rem/1.15 Archivo,sans-serif;
 letter-spacing:-.018em;white-space:normal}
 tbody tr{cursor:pointer;transition:background .12s}
 tbody tr:hover{background:rgba(41,178,152,.07)}
 tbody tr.top1 td{background:rgba(228,19,115,.07)}
-tbody tr.top1 td:nth-child(1){color:var(--oro);box-shadow:inset 3px 0 0 var(--mg)}
-tbody tr.top2 td:nth-child(1){color:var(--pla);box-shadow:inset 3px 0 0 var(--tl)}
-tbody tr.top3 td:nth-child(1){color:var(--bro);box-shadow:inset 3px 0 0 rgba(246,246,246,.5)}
+tbody tr.top1 td.c-pos{color:var(--oro);box-shadow:inset 3px 0 0 var(--mg)}
+tbody tr.top2 td.c-pos{color:var(--pla);box-shadow:inset 3px 0 0 var(--tl)}
+tbody tr.top3 td.c-pos{color:var(--bro);box-shadow:inset 3px 0 0 rgba(246,246,246,.5)}
 /* ⚠️ LA SIGLA Y EL NOMBRE NO SE SEPARAN. Con `white-space:normal` en la
    celda —que hace falta para que un nombre largo baje de renglón— el
    salto caía JUSTO entre la bandera y el nombre. */
@@ -330,18 +342,11 @@ border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
 .rg{display:inline-block;min-width:34px;padding:2px 8px;border:1px solid var(--bd);
 border-radius:2px;background:#0E1614;font:900 .8rem/1.35 Archivo,sans-serif;
 text-align:center;color:var(--tx3)}
-#tabla.sin-rango .col-rg,#tabla.sin-rango td:nth-child(4){display:none}
-/* ⚠️ LAS TRES DEL PODIO SE VEN SOLO EN SU SUBCATEGORIA. En la de
-   Temporada serian tres columnas en cero para casi todos, comiendose el
-   ancho del telefono para no decir nada — el mismo motivo por el que la
-   de Rango se cae cuando no la tiene nadie. */
-#tabla .col-pod{display:none}
-#tabla.con-pod .col-pod{display:table-cell}
 /* las subcategorias del ranking */
 .subs{display:flex;flex-wrap:wrap;gap:7px;margin:-6px 0 18px}
 .sub{border:1px solid var(--bd);background:rgba(11,18,17,.8);color:var(--tx2);
-padding:10px 18px;border-radius:2px;
-font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.13em;
+padding:10px 13px;border-radius:2px;
+font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;
 text-transform:uppercase;transition:all .15s}
 .sub:hover{color:var(--tx);border-color:var(--tx2)}
 .sub.on{color:var(--ng);background:var(--tl);border-color:var(--tl)}
@@ -377,49 +382,6 @@ padding:12px 30px;text-decoration:none;text-align:center;
 font:800 .76rem/1 Archivo,sans-serif;letter-spacing:.15em;
 text-transform:uppercase;transition:all .15s}
 .mas:hover{color:var(--ng);background:var(--tl);border-color:var(--tl)}
-
-/* ── duelos y rachas ────────────────────────────────────────────── */
-.duelos{display:grid;gap:7px}
-.du{display:grid;grid-template-columns:32px 1fr auto auto;gap:14px;
-align-items:center;padding:12px 14px;background:rgba(11,18,17,.72);
-border:1px solid var(--bd2);cursor:pointer;transition:border-color .15s}
-.du:hover{border-color:var(--tl)}
-.du .p{color:var(--tx3);font:900 1rem/1 Archivo,sans-serif}
-.du .nm{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-/* 🔴 DOS CAPAS, PORQUE SON DOS DATOS. La barra era UNA y medía
-   **cuántos duelos peleó** mientras su tooltip decía «% ganados».
-   Medido: Velatz gana 3 de 4 y tenía la barra al 100 %; Masino gana 3
-   de 3 y la tenía al 75 %. O sea que el que ganó todo se veía peor que
-   el que perdió uno.
-
-   Ahora el carril claro es **cuántos peleó** —comparado con el que más
-   peleó— y el relleno **cuántos ganó** de esos. Las dos cosas se ven y
-   ninguna miente. */
-.du .bar{position:relative;width:150px;height:9px;background:#0E1614;
-border:1px solid var(--bd2);border-radius:99px;overflow:hidden}
-.du .bar u{position:absolute;inset:0 auto 0 0;background:#1E2E2B}
-.du .bar i{position:absolute;inset:0 auto 0 0;
-background:linear-gradient(90deg,var(--tl),var(--mg))}
-.du .gp{font:900 1.02rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;
-white-space:nowrap}
-.du .gp s{text-decoration:none;color:var(--tx3);font-weight:600}
-.rachas{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
-.ra{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;
-background:rgba(11,18,17,.72);border:1px solid var(--bd2);
-font:700 .9rem/1 Archivo,sans-serif}
-.ra u{text-decoration:none;color:var(--mg);font-weight:900}
-
-/* ── medallero ──────────────────────────────────────────────────── */
-.podios{display:grid;gap:6px}
-.pm{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
-padding:11px 14px;background:rgba(11,18,17,.72);border:1px solid var(--bd2);
-cursor:pointer;transition:border-color .15s}
-.pm:hover{border-color:var(--tl)}
-.pm .nm{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm .med{display:flex;gap:10px;font:900 .96rem/1 Archivo,sans-serif;
-font-variant-numeric:tabular-nums;white-space:nowrap}
-.pm .med span{display:inline-flex;align-items:center;gap:3px;color:var(--tx3)}
-.pm .med span.hay{color:var(--tx)}
 
 /* ── comparador ─────────────────────────────────────────────────────
    🔑 DOS SELECTS Y NADA MAS. Todo el cruce lo hace el navegador con el
@@ -523,7 +485,7 @@ border:1px solid var(--bd2)}
 letter-spacing:.14em;text-transform:uppercase;white-space:nowrap}
 .pa .pt{font:900 1.04rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;
 color:var(--tl)}
-.crews{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.crews{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
 .cw{padding:14px 16px;background:rgba(11,18,17,.72);border:1px solid var(--bd2);
 border-left:3px solid var(--mg)}
 .cw b{display:block;font:900 1.08rem/1.1 Archivo,sans-serif}
@@ -749,23 +711,28 @@ transition:fill .15s}
 .mapa path.hisp{fill:#17221F;stroke:#3A4D49;stroke-dasharray:3 2}
 .mapa path.con{fill:var(--tl);fill-opacity:var(--a,.6);stroke:#0B3B32;stroke-width:.9}
 .mapa path.con:hover{fill:var(--mg);fill-opacity:1}
-.mapa-otros{margin-top:12px;display:grid;gap:7px}
-.mapa-otros p{color:var(--tx2);font-size:.92rem;line-height:1.6}
-.mapa-otros span{display:inline-block;min-width:6.5em;margin-right:8px;color:var(--tx3);
-font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
 
 /* ── el top 5 de cada ranking ───────────────────────────────────── */
-.tops{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr))}
-.tp{background:rgba(10,15,14,.82);border:1px solid var(--bd);padding:16px 16px 12px;
+/* 🔑 DIEZ CAJAS EN CINCO O EN DOS, NUNCA CON HUECOS. Dlx, 25/09/2026, con
+   la captura de dos lugares vacíos al final. Se mide el ancho de la sección
+   y no el de la pantalla: el menú lateral se come 250 px. */
+#secTop{container-type:inline-size}
+.tops{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+/* ⚠️ CINCO RECIÉN DESDE 1.150 PX DE SECCIÓN. Medido a 1440 de pantalla: con
+   cinco, cada caja quedaba en 200 px y los nombres se partían letra por
+   letra («H-a-s-s-a-n»). Con dos entra todo en una línea. */
+@container (min-width:1150px){.tops{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@container (max-width:560px){.tops{grid-template-columns:1fr}}
+.tp{container-type:inline-size;background:rgba(10,15,14,.82);border:1px solid var(--bd);padding:16px 16px 12px;
 clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
-.tp h3{display:flex;align-items:center;gap:9px;margin-bottom:10px;
+.tp h3{display:flex;flex-wrap:wrap;align-items:center;gap:6px 9px;margin-bottom:10px;
 font:900 1.02rem/1 Archivo,sans-serif;letter-spacing:.02em;text-transform:uppercase}
 .tp h3>span{color:var(--tl);font-size:1.05rem}
-.tp h3 a{margin-left:auto;color:var(--tx3);text-decoration:none;
+.tp h3 a{white-space:nowrap;margin-left:auto;color:var(--tx3);text-decoration:none;
 font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em}
 .tp h3 a:hover{color:var(--tl)}
 .tp ol{list-style:none}
-.tp h3 u{text-decoration:none;color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
+.tp h3 u{white-space:nowrap;text-decoration:none;color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.12em}
 .tp li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;
 align-items:baseline;padding:9px 2px;border-top:1px solid var(--bd2)}
@@ -774,8 +741,17 @@ align-items:baseline;padding:9px 2px;border-top:1px solid var(--bd2)}
 .tp li[data-k]:hover .nm{color:var(--tl)}
 .tp .pp{font:900 .95rem/1 Archivo,sans-serif;color:var(--tx3);font-style:normal}
 .tp li:first-child .pp{color:var(--oro)}
-.tp .nm{font:800 1rem/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;
-white-space:nowrap;transition:color .12s}
+/* ⚠️ EL NOMBRE ENTERO, aunque baje de renglón. Dlx, 25/09/2026: «que todo
+   sea expandido, que no haya necesidad de poner "……"». */
+.tp .nm{font:800 1rem/1.2 Archivo,sans-serif;min-width:0;transition:color .12s}
+.tp .quien{max-width:100%}
+.tp .quien .qn{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+/* en una caja angosta el número baja abajo del nombre: el nombre se lleva
+   todo el ancho y no se parte */
+@container (max-width:250px){
+  .tp li{grid-template-columns:22px minmax(0,1fr);row-gap:5px}
+  .tp li b{grid-column:2;justify-self:start}
+}
 .tp li b{font:900 1.05rem/1 Archivo,sans-serif;color:var(--tl);
 font-variant-numeric:tabular-nums;white-space:nowrap}
 .tp li b s{text-decoration:none;color:var(--tx3);font-weight:700}
@@ -841,7 +817,7 @@ font:700 .62rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transf
 .de b{display:block;font:800 1.05rem/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
 .de small{display:block;margin-top:4px;color:var(--tx2);
 font:600 .74rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
-.de-acc{display:flex;flex-wrap:wrap;gap:6px}
+.de-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .dia-no{color:var(--tx2)}
 
 /* ── el cuadro de la llave ──────────────────────────────────────────
@@ -900,11 +876,9 @@ background:linear-gradient(145deg,#173A33,#0C1614)}
 .quien .qn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .quien img.bf{flex:0 0 auto}
 td .quien .qn{white-space:normal;overflow:visible}
-.ra .quien{gap:7px}
 .rec[data-k]{cursor:pointer;transition:border-color .15s}
 .rec[data-k]:hover{border-color:var(--tl)}
-.rec-x{display:block;margin-top:6px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;
-white-space:nowrap;font:600 .7rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;
+.rec-x{display:block;margin-top:6px;color:var(--tx3);overflow-wrap:anywhere;font:600 .7rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;
 text-transform:uppercase}
 
 /* ── el buscador ─────────────────────────────────────────────────── */
@@ -931,8 +905,10 @@ border-bottom:1px solid var(--bd2);font:800 .95rem/1.2 Archivo,sans-serif}
 .ps{padding:14px 16px 13px 18px;background:rgba(10,15,14,.82);border:1px solid var(--bd2);
 box-shadow:inset 4px 0 0 var(--c,#7E8B89)}
 .ps header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
-.ps .hace{color:var(--tx2);white-space:nowrap;font:600 .74rem/1 'Barlow Condensed',sans-serif;
-letter-spacing:.12em;text-transform:uppercase}
+/* ⚠️ MÁS GRANDE. Dlx, 25/09/2026: «hacé lo que dice "hace 1 día" más
+   grande». Es lo primero que uno busca en un evento que ya pasó. */
+.ps .hace{color:var(--tx);white-space:nowrap;font:700 1.02rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.06em;text-transform:uppercase}
 .ps h3{font:900 1.14rem/1.2 Archivo,sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere}
 .ps-d{margin-top:5px;color:var(--tx2);font-size:.92rem}
 .ps-d b{color:var(--tx)}
@@ -953,7 +929,6 @@ color:var(--mg);font:800 .76rem/1.2 Archivo,sans-serif;letter-spacing:.04em}
 .hoy .mapa-dato{gap:12px}
 .hoy .mapa-dato>b{font-size:2.5rem}
 .hoy .mapa-dato span{font-size:.88rem}
-.hoy .mapa-otros p{font-size:.84rem}
 .hoy-ac h3{margin-bottom:10px;color:var(--tx2);font:900 .78rem/1 Archivo,sans-serif;
 letter-spacing:.2em;text-transform:uppercase}
 .ac-n{display:grid;gap:8px;margin-bottom:14px}
@@ -984,18 +959,6 @@ letter-spacing:.14em;text-transform:uppercase}
 border:1px solid var(--bd);background:rgba(11,18,17,.8);color:var(--tx2);transition:all .15s}
 .red svg{width:18px;height:18px}
 .red:hover{color:var(--ng);background:var(--tl);border-color:var(--tl)}
-.novedades{display:grid;gap:12px;grid-template-columns:repeat(3,minmax(0,1fr))}
-.nv{display:flex;flex-direction:column;gap:7px;padding:14px 16px;background:rgba(10,15,14,.82);
-border:1px solid var(--bd);border-top:3px solid var(--mg);color:inherit;text-decoration:none;
-transition:border-color .15s,transform .15s}
-.nv:hover{border-color:var(--tl);transform:translateY(-2px)}
-.nv small{color:var(--tx3);font:700 .72rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
-text-transform:uppercase}
-.nv b{font:800 1.02rem/1.3 Archivo,sans-serif}
-.nv p{color:var(--tx2);font-size:.9rem;line-height:1.45;overflow:hidden;display:-webkit-box;
--webkit-line-clamp:3;-webkit-box-orient:vertical}
-.nv-ir{margin-top:auto;color:var(--tl);font:700 .72rem/1 'Barlow Condensed',sans-serif;
-letter-spacing:.13em;text-transform:uppercase}
 
 /* ── los dos rankings que vienen ─────────────────────────────────── */
 .tp.pronto{opacity:.75;border-style:dashed}
@@ -1095,22 +1058,228 @@ letter-spacing:.12em;text-transform:uppercase}
 .ql span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bx .ql .av{box-shadow:none}
 
+/* ── los botones, del color del servidor ────────────────────────────
+   🔑 Dlx, 25/09/2026: «hacer los botones más bonitos, quizás como los que
+   tienen los servidores». Es el «Entrar» de Mundo en chico: lleno del
+   color de ese servidor (`--c`, que viaja en el payload), y el secundario
+   con su borde. Sin servidor, el teal de la marca. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+padding:10px 16px;border-radius:3px;border:1px solid var(--c,var(--tl));
+background:var(--c,var(--tl));color:#050607;text-decoration:none;cursor:pointer;
+font:900 .78rem/1 Archivo,sans-serif;letter-spacing:.08em;text-transform:uppercase;
+transition:filter .15s,background .15s,color .15s}
+.btn:hover{filter:brightness(1.14)}
+.btn:focus-visible{outline:2px solid var(--tx);outline-offset:3px}
+.btn.sec{background:transparent;color:var(--tx);
+border-color:color-mix(in srgb,var(--c,var(--tl)) 70%,transparent)}
+.btn.sec:hover{background:color-mix(in srgb,var(--c,var(--tl)) 22%,transparent);filter:none}
+.btn.ancho{display:flex;width:100%;margin-top:14px;padding:13px 16px}
+.ps-acc{margin-top:12px;gap:8px}
+
+/* ── la pastilla del servidor, con su logo, y el rango del evento ───── */
+.chip-sv{padding:3px 11px 3px 4px}
+img.sv-mini{flex:0 0 auto;border-radius:5px;object-fit:cover}
+.ps-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px;min-width:0}
+.ps header{flex-wrap:wrap}
+/* ⚠️ EL RANGO DEL EVENTO ES DE SU SERVIDOR, no de la Liga: por eso va con
+   el color del servidor y no con el de ningún rango (ver la cabecera). */
+.rg-ev{display:inline-flex;align-items:center;padding:4px 10px;border-radius:3px;
+border:1px dashed color-mix(in srgb,var(--c,var(--tl)) 70%,transparent);color:var(--tx);
+font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+
+/* ── los dos campeones ──────────────────────────────────────────────── */
+.campeones{display:flex;gap:24px;align-items:flex-start;justify-content:center}
+.campeones.dos .hc-marco img{width:228px}
+.corona i{font-style:normal;color:var(--tx2);letter-spacing:.1em}
+.campeones .hero-carta{width:228px}
+.campeones .corona{display:flex;align-items:flex-end;justify-content:center;min-height:2.7em;
+line-height:1.35;text-align:center}
+.hero-carta.vacante{width:228px}
+.hc-vacio{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+width:228px;max-width:100%;aspect-ratio:300/438;padding:18px 14px;text-align:center;
+border:1.5px dashed rgba(255,255,255,.2);border-radius:14px;
+background:repeating-linear-gradient(135deg,rgba(255,255,255,.03) 0 10px,transparent 10px 20px),
+rgba(10,15,14,.7)}
+.hc-candado{font-size:2rem;line-height:1;opacity:.85}
+.hc-vacio>b{font:900 1.45rem/1 Archivo,sans-serif;letter-spacing:.06em;text-transform:uppercase;
+color:var(--tx2)}
+.hc-vacio p{color:var(--tx2);font-size:.9rem;line-height:1.4}
+.hc-vacio p b{color:var(--tx)}
+.hc-cerca{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px;cursor:pointer}
+.hc-cerca small{color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.14em;text-transform:uppercase}
+.hc-cerca .quien{font-weight:800;color:var(--tx)}
+.hc-cerca u{text-decoration:none;color:var(--tl);font:900 .92rem/1 Archivo,sans-serif}
+.hc-cerca:hover .qn{color:var(--tl)}
+
+/* ── lo último de la Liga, con flechas ──────────────────────────────── */
+.feed-nav{display:flex;align-items:center;gap:8px}
+.feed-nav[hidden]{display:none}
+.feed-nav span{min-width:4.2em;text-align:center;color:var(--tx2);
+font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.cal-ir:disabled{opacity:.3;cursor:default;background:#0B1211;color:var(--tx);border-color:var(--bd)}
+.feed{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.fd{display:flex;flex-direction:column;gap:9px;min-width:0;padding:12px 13px 13px;
+background:rgba(10,15,14,.82);border:1px solid var(--bd2);box-shadow:inset 3px 0 0 var(--c,var(--tl));
+color:var(--tx);text-decoration:none;transition:border-color .15s,transform .15s}
+.fd:hover{border-color:var(--c,var(--tl));transform:translateY(-2px)}
+.fd-img{position:relative;display:block;aspect-ratio:16/9;border-radius:3px;overflow:hidden;
+background:#070A09}
+.fd-img img{width:100%;height:100%;object-fit:cover}
+.fd-img i{position:absolute;left:8px;bottom:8px;display:grid;place-items:center;width:36px;height:25px;
+border-radius:7px;background:rgba(0,0,0,.75);color:#fff;font-style:normal;font-size:.8rem}
+.fd-de{display:flex;align-items:center;gap:7px;min-width:0;color:var(--tx2);
+font:700 .76rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase}
+.fd-de small{margin-left:auto;white-space:nowrap;color:var(--tx3);font:inherit;letter-spacing:.06em}
+.fd-red{flex:0 0 auto;display:inline-grid;place-items:center;width:20px;height:20px;
+color:var(--c,var(--tl))}
+.fd-red svg{width:18px;height:18px}
+.fd b{font:800 1rem/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
+.fd p{color:var(--tx2);font-size:.88rem;line-height:1.45;overflow:hidden;display:-webkit-box;
+-webkit-line-clamp:4;-webkit-box-orient:vertical}
+.fd-ir{margin-top:auto;color:var(--c,var(--tl));font:700 .74rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+#secNov .nov-redes{margin-top:14px}
+
+/* ── los rankings ──────────────────────────────────────────────────── */
+.sub i{font-style:normal;margin-left:7px;padding:2px 6px;border-radius:99px;
+background:rgba(255,255,255,.07);color:var(--tx2);font-size:.64rem;letter-spacing:.08em}
+.sub.pronto{border-style:dashed;color:var(--tx3)}
+.sub.pronto i{background:rgba(228,19,115,.16);color:var(--mg)}
+.sub.on i{background:rgba(0,0,0,.2);color:var(--ng)}
+.sub:disabled{opacity:.42;cursor:not-allowed}
+.sub:disabled:hover{color:var(--tx2);border-color:var(--bd)}
+.nada{color:var(--tx3);font-weight:600}
+td .sc,td .g{font:900 1.07rem/1 Archivo,sans-serif;color:var(--tl)}
+.rch{white-space:nowrap;font-weight:800;color:var(--tx2)}
+.rch.viva{color:var(--oro)}
+.rch s{text-decoration:none;color:var(--tx3);font-weight:700;margin-left:1px}
+.ult{display:inline-flex;flex-direction:column;align-items:flex-end;gap:4px}
+.ult b{font:800 .9rem/1 Archivo,sans-serif}
+.ult small{color:var(--tx3);font:600 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;
+text-transform:uppercase}
+.lnk{cursor:pointer;border-bottom:1px dotted currentColor}
+.lnk:hover{color:var(--tl)}
+tr.chica td{opacity:.58}
+.pronto-td{padding:38px 16px!important;font-size:1.02rem;color:var(--tx2)}
+.pronto-td span{display:block;margin-bottom:10px;color:var(--mg);
+font:800 .74rem/1 Archivo,sans-serif;letter-spacing:.2em;text-transform:uppercase}
+.pronto-td b{color:var(--tx)}
+#notaSub{margin:0 0 14px;color:var(--tx2);font:500 .92rem/1.45 Archivo,sans-serif;
+letter-spacing:0;text-transform:none}
+#notaSub b{color:var(--tx)}
+/* en la tabla el nombre no se corta: la columna se hace del ancho del más largo */
+td.c-n .quien .qn{overflow:visible;text-overflow:clip}
+
+/* ── la cabecera de Eventos ─────────────────────────────────────────── */
+.ev-cab{display:grid;gap:20px 28px;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+align-items:center}
+.ev-cab::before{background:linear-gradient(90deg,var(--mg),var(--tl))}
+.evc-prox{padding:4px 0 4px 16px;box-shadow:inset 4px 0 0 var(--c,var(--tl));min-width:0}
+.evc-et{display:block;color:var(--oro);font:800 .74rem/1 Archivo,sans-serif;letter-spacing:.2em;
+text-transform:uppercase}
+.evc-n1{display:block;margin:10px 0 12px;font:900 clamp(1.35rem,2.4vw,1.9rem)/1.1 Archivo,sans-serif;
+letter-spacing:-.02em;overflow-wrap:anywhere}
+.evc-sub{display:flex;flex-wrap:wrap;align-items:center;gap:8px;color:var(--tx2);font-weight:700}
+.evc-prox .reloj{display:inline-block;margin-top:12px}
+.evc-no{margin-top:10px;color:var(--tx3);font-size:.92rem}
+.evc-num{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.evc-num div{padding:12px 14px;background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.evc-num dt{color:var(--tx2);font:600 .72rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase}
+.evc-num dd{margin-top:7px;font:900 1.6rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.evc-sv{display:flex;align-items:center;gap:8px}
+.evc-acc{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:10px}
+.cal-ley small{margin-left:2px;color:var(--tx3);font-weight:800}
+.de-sub{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin-top:7px}
+.de-sub small{display:inline;margin:0}
+
+/* ── las crews ─────────────────────────────────────────────────────── */
+.cw{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:start}
+.cw-logo{width:48px;height:48px;border-radius:12px;object-fit:cover;
+box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.cw-ini{display:grid;place-items:center;background:#0E1614;color:var(--tx2);
+font:900 1.2rem/1 Archivo,sans-serif}
+.cw-tx{min-width:0}
+.cw-g{margin-top:7px;color:var(--tx2);font-size:.88rem;line-height:1.5}
+.cw-p{text-decoration:none;color:var(--oro);font:900 1.1rem/1 Archivo,sans-serif}
+.cw.chica{opacity:.6;border-left-color:var(--bd)}
+.cw.chica .cw-p{color:var(--tx3)}
+.cw.chica:hover{opacity:1}
+
+/* ── la guía ────────────────────────────────────────────────────────── */
+.escala th{cursor:default}
+.escala th small{display:block;margin-top:5px;color:var(--tx3);font-size:.62rem;letter-spacing:.12em}
+.escala td{padding:11px 12px}
+.escala td.c-izq{font-weight:800}
+.escala td small{display:block;margin-top:4px;color:var(--tx3);white-space:normal;
+font:600 .7rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.escala tbody tr{cursor:default}
+.escala tbody tr:hover{background:none}
+.guia-notas{list-style:none;margin-top:14px;display:grid;gap:8px;color:var(--tx2);font-size:.95rem}
+.guia-notas b{color:var(--tx)}
+.gh{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;margin:2px 0 10px;
+font:900 1.08rem/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.gh small{color:var(--tx3);font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em}
+.nota+.gh{margin-top:26px}
+#numeros .nota{text-transform:none;letter-spacing:0;font:500 .9rem/1.45 Archivo,sans-serif;
+color:var(--tx2)}
+#numeros .nota b{color:var(--tx)}
+.gp{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(50px,1fr) auto;gap:12px;
+align-items:center;padding:7px 0;border-top:1px solid var(--bd2)}
+.gh+.gp{border-top:0}
+.gp span{font-weight:800;font-size:.96rem}
+.gp span small{display:block;margin-top:3px;color:var(--tx3);font:600 .72rem/1.25 'Barlow Condensed',sans-serif;
+letter-spacing:.08em;text-transform:uppercase}
+.gp i{height:8px;border-radius:99px;background:#0E1614;border:1px solid var(--bd2);overflow:hidden}
+.gp u{display:block;height:100%;background:linear-gradient(90deg,var(--tl),var(--mg))}
+.gp b{min-width:4ch;text-align:right;font:900 1rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.glos{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.glos div{padding:13px 15px;background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.glos dt{color:var(--tl);font:900 1.02rem/1.1 Archivo,sans-serif}
+.glos dd{margin-top:6px;color:var(--tx2);font-size:.94rem;line-height:1.5}
+.faq{display:grid;gap:8px}
+.faq details{background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.faq summary{display:flex;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;
+list-style:none;font:800 1.02rem/1.3 Archivo,sans-serif}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';color:var(--tl);font-weight:900}
+.faq details[open] summary::after{content:'\2212'}
+.faq details p{padding:0 16px 15px;color:var(--tx2);line-height:1.55}
+.faq a{color:var(--tl)}
+
+/* ── el Pase ────────────────────────────────────────────────────────── */
+.pase{text-align:center;padding:46px 26px 42px;overflow:hidden}
+.pase::after{content:'';position:absolute;inset:0;pointer-events:none;
+background:radial-gradient(60% 70% at 50% 0%,rgba(228,19,115,.18),transparent 70%),
+radial-gradient(50% 60% at 50% 100%,rgba(41,178,152,.14),transparent 70%)}
+.pase-tag{display:inline-block;padding:6px 15px;border-radius:999px;background:var(--mg);
+color:var(--bl);font:900 .72rem/1 Archivo,sans-serif;letter-spacing:.2em;text-transform:uppercase}
+.pase-ico{display:block;margin:22px 0 10px;font-size:3.6rem;line-height:1}
+.blk h2.pase-tit{margin:0 0 12px;color:var(--tx);font:900 clamp(1.4rem,3vw,2rem)/1.15 Archivo,sans-serif;
+letter-spacing:-.01em;text-transform:none}
+.pase .bajada{margin:0 auto 24px}
+.pase-acc{position:relative;z-index:1;display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+
 /* ── teléfono ─────────────────────────────────────────────────────
    🔴 EL MENU PASA A LA BARRA DE ABAJO, que es donde el pulgar llega. Una
    columna lateral en un teléfono se come un tercio del ancho para que
    nadie la use. */
 @media(max-width:1100px){
   .cal-dos{grid-template-columns:1fr}
+  .ev-cab{grid-template-columns:1fr}
 }
 @media(max-width:1000px){
   .inicio-grid{grid-template-columns:1fr}
-  .novedades{grid-template-columns:1fr}
   .pf-grid{grid-template-columns:1fr}
   .pf-cab{grid-template-columns:auto minmax(0,1fr)}
   .pf-cifras{grid-column:1 / -1;grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 @media(max-width:900px){
-  .dos,.dos.ancha,.cmp{grid-template-columns:1fr}
+  /* ⚠️ `minmax(0,1fr)` Y NO `1fr`: con `1fr` la tabla de puntos de la Guía
+     estiraba la columna a 454 px en un teléfono de 390 — la tabla tiene su
+     propia caja que se desliza, pero la grilla no la dejaba achicarse. */
+  .dos,.dos.ancha,.cmp{grid-template-columns:minmax(0,1fr)}
   .app{grid-template-columns:1fr}
   .menu{position:fixed;bottom:0;left:0;right:0;top:auto;z-index:50;
   height:auto;flex-direction:row;align-items:center;padding:0;
@@ -1136,7 +1305,7 @@ letter-spacing:.12em;text-transform:uppercase}
   .marca{justify-content:center}
   .ul{width:54px;height:54px}
   .lema{margin-left:auto;margin-right:auto}
-  .cifras{justify-content:center}
+  .cifras{margin-left:auto;margin-right:auto;width:100%}
   .hc-marco img{width:min(74vw,268px)}
 }
 @media(max-width:620px){
@@ -1144,21 +1313,27 @@ letter-spacing:.12em;text-transform:uppercase}
   .blk{padding:17px 15px 15px;margin-top:22px}
   /* ⚠️ LA MITAD MENOS MEDIO HUECO: el hueco es de 11 px, y con «−5 px» dos
      cifras sumaban un píxel de más y bajaban una por renglón */
-  .cifras div{min-width:0;flex:1 1 calc(50% - 6px);padding:10px 12px}
-  .col-sv,td:nth-child(5){display:none}
+  .cifras{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cifras div{padding:10px 12px}
+  .c-sv{display:none}
   .galeria{grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
   .podio{gap:8px}
   .pd .med{font-size:1.4rem}
   .pd b{font-size:.8rem}
   .pd small{font-size:.54rem}
   .reloj{font-size:1.18rem}
-  .du{grid-template-columns:26px 1fr auto;gap:9px;padding:9px 10px}
-  /* ⚠️ LA BARRA SE OCULTA Y SU EXPLICACION TAMBIEN. La nota decía
-     «la barra clara es cuántos peleó» debajo de una lista sin barras:
-     un pie de foto sin foto. Se esconden juntas o no se esconde
-     ninguna. */
-  .du .bar,.solo-ancho{display:none}
   .pa{grid-template-columns:26px 1.8em 1fr auto;gap:9px;padding:9px 10px}
+  .feed{grid-template-columns:1fr}
+  .nov-redes>span{flex-basis:100%;margin-bottom:2px}
+  .campeones{gap:12px}
+  .campeones.dos .hc-marco img,.campeones .hero-carta,.hc-vacio{width:min(43vw,190px)}
+  .campeones .corona{font-size:.62rem;letter-spacing:.12em}
+  .hc-vacio{padding:12px 8px;gap:7px}
+  .hc-vacio>b{font-size:1.1rem}
+  .hc-vacio p{font-size:.78rem}
+  .hc-candado{font-size:1.5rem}
+  .gp{grid-template-columns:minmax(0,1.5fr) minmax(40px,1fr) auto;gap:8px}
+  .evc-num dd{font-size:1.3rem}
   .pa .n{display:none}
   .visor{padding:10px}
   .visor-caja{padding:14px 12px 16px}
@@ -1173,7 +1348,6 @@ letter-spacing:.12em;text-transform:uppercase}
   .ce i{width:8px;height:8px}
   .ce.fut i{background:transparent;outline:1px dashed var(--c)}
   .mapa-dato>b{font-size:2.6rem}
-  .tops{grid-template-columns:1fr}
   .hoy{grid-template-columns:1fr}
   .lpod{grid-template-columns:1fr}
   .pf-cab{padding:18px 16px;gap:16px}
