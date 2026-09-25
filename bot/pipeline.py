@@ -294,7 +294,44 @@ def bajar_las_caras():
               % str(e)[:70])
 
 
-def no_salieron(carta, quienes, corte):
+def camisetas(quienes):
+    """`{quien: [servidores]}`: las camisetas de la Servidor que alguien puede pedir.
+
+    🔴 SE DIBUJABAN LAS NUEVE PARA TODOS, Y SE PIDEN CUATRO COMO MUCHO. `/card`
+    abre la camiseta del servidor donde escribiste, y sólo se puede escribir
+    donde está el bot (`datos/bot_en.json`: DRA, FFA, Snake Rap y Urban
+    Freestyle) y donde está la persona (`datos/servidores_de.json`). Medido el
+    25/09/2026: la Valen salió en las nueve estando en tres, y el redibujo de
+    esa noche eran 382 personas × 10 pasadas. Las otras cinco camisetas no las
+    podía abrir nadie.
+
+    ⚠️ SIN LOS DOS ARCHIVOS SE DIBUJAN TODAS: sin saber dónde está cada uno,
+    se dibuja de más antes que de menos. Y quien no figura en ningún lado se
+    queda con la propia: `/card` cae en ésa si falta la camiseta.
+    """
+    def _j(n):
+        try:
+            with io.open(os.path.join(BASE, 'datos', n), encoding='utf-8') as f:
+                return json.load(f)
+        except (OSError, ValueError):
+            return None
+    bot_en, donde = _j('bot_en.json'), _j('servidores_de.json')
+    if not bot_en or donde is None:
+        return {q: list(SERVIDORES) for q in quienes}
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'sheet'))
+        import construir_padron as _PAD
+        id_de = {p.get('raw'): str(p.get('discord_id') or '') for p in _PAD.cargar()}
+    except Exception:                                    # noqa: BLE001
+        return {q: list(SERVIDORES) for q in quienes}
+    out = {}
+    for q in quienes:
+        suyos = set(donde.get(id_de.get(q, ''), []) or [])
+        out[q] = [sv for sv in SERVIDORES if sv in bot_en and sv in suyos]
+    return out
+
+
+def no_salieron(carta, quienes, corte, camis=None):
     """[(quien, que)] de lo que esa carta NO dejo en disco recien dibujado.
 
     🔴 HACE FALTA PORQUE AHORA SE DIBUJA DE A MUCHOS. Con una llamada por
@@ -311,15 +348,19 @@ def no_salieron(carta, quienes, corte):
     _script, carpeta, pref = COMO[carta]
     d = os.path.join(BASE, carpeta)
     falta = []
-    esperados = [('', pref)]
-    if carta == 'servidor':
-        esperados += [(sv, 'sv-%s_' % sv.lower()) for sv in SERVIDORES]
+    base = [('', pref)]
+    todas = [(sv, 'sv-%s_' % sv.lower()) for sv in SERVIDORES]
     # ⚠️ SE PRUEBAN LAS DOS GRAFIAS, y no por las dudas: los
     # exportadores no coinciden. Servidor escribe la **clave**
     # (`sv_bloody.png`) y Temporada y Competitivo el nombre **tal cual**
     # (`temporada_Agus.png`). Pedir una sola forma es elegir cuál de los
     # dos se cuenta mal, que es exactamente lo que pasaba.
     for quien in quienes:
+        # ⚠️ LAS CAMISETAS QUE SE PIDIERON, NO LAS NUEVE: ver `camisetas()`
+        esperados = base
+        if carta == 'servidor':
+            suyas = set((camis or {}).get(quien, SERVIDORES))
+            esperados = base + [(sv, p) for sv, p in todas if sv in suyas]
         for sv, p in esperados:
             hay = False
             for n in (CL(quien), str(quien)):
@@ -1102,12 +1143,18 @@ def main():
     # sellar seria un segundo flujo que casi nunca corre — y un flujo que
     # casi nunca corre es uno que no esta probado el dia que hace falta.
     if len(trabajo) > 50:
-        print('      ⚠️ son muchas: por acá son ~%.0f min (1,7 por persona).'
-              % (len(trabajo) * 1.7))
-        print('         Más rápido a mano, con un solo Chromium (~95 min):')
-        print('         python bot/generar_todas.py && '
-              'python bot/tanda_servidores.py')
-        print('         Igual sigo: cada tanda queda sellada y esto avanza.')
+        # 🔴 LA CUENTA SALE DE LAS PASADAS, NO DE UN 1,7 POR PERSONA. Ese número
+        # era de cuando se dibujaba de a una carta por proceso: el 25/09/2026
+        # anunciaba ~648 min para un trabajo que tardó 51 (auditoría).
+        _cm = camisetas([q for q, cs in trabajo.items() if 'servidor' in cs])
+        _pas = sum(len(_cm.get(q, SERVIDORES)) + 1 if c == 'servidor' else 1
+                   for q, cs in trabajo.items() for c in cs)
+        print('      ⚠️ son muchas: %d pasada(s), ~%.0f min.'
+              % (_pas, _pas * SEG_POR_CARTA / 60.0 / PARALELO))
+        # ⚠️ ACÁ SE RECOMENDABA DIBUJAR A MANO «con un solo Chromium (~95
+        # min)»: desde que las tandas van en paralelo y la Servidor dibuja
+        # sólo sus camisetas, este camino es el rápido (~22 min para 633).
+        print('         Cada tanda queda sellada: si se corta, la próxima sigue.')
     print('      %d persona(s) · %d carta(s)' % (len(trabajo), n_cartas))
     for quien in sorted(trabajo)[:10]:
         print('         %-18s %s' % (quien, ', '.join(sorted(trabajo[quien]))))
@@ -1146,8 +1193,9 @@ def main():
         # veces — que es el mismo error que el 1,7 escrito a mano, dado
         # vuelta. La primera version de esta linea decia «7 min» de un
         # trabajo de 70.
-        pasadas = sum(len(SERVIDORES) + 1 if c == 'servidor' else 1
-                      for cs in trabajo.values() for c in cs)
+        _cm = camisetas([q for q, cs in trabajo.items() if 'servidor' in cs])
+        pasadas = sum(len(_cm.get(q, SERVIDORES)) + 1 if c == 'servidor' else 1
+                      for q, cs in trabajo.items() for c in cs)
         print('      en %d tanda(s) de hasta %d · %d pasada(s) · ~%.0f min'
               % ((len(trabajo) + POR_TANDA - 1) // POR_TANDA, POR_TANDA,
                  pasadas, pasadas * SEG_POR_CARTA / 60.0 / PARALELO))
@@ -1236,8 +1284,15 @@ def main():
                 # —su carta «servidor» habia salido— y sus nueve `sv-*`
                 # quedaban viejas **para siempre**, porque el sello no
                 # vuelve a marcarlas como pendientes.
-                llamadas += [list(COMO[c][0]) + sorted(quienes)
-                             + ['--sv=%s' % sv] for sv in SERVIDORES]
+                #
+                # 🔑 Y SÓLO LAS QUE SE PUEDEN PEDIR: ver `camisetas()`.
+                camis = camisetas(quienes)
+                por_sv = {}
+                for q, svs in camis.items():
+                    for sv in svs:
+                        por_sv.setdefault(sv, []).append(q)
+                llamadas += [list(COMO[c][0]) + sorted(qs) + ['--sv=%s' % sv]
+                             for sv, qs in sorted(por_sv.items())]
         # ⚠️ TODAS LAS PASADAS DE LA TANDA A LA VEZ, y RECIÉN DESPUÉS se
         # cuenta lo que salió. Ver `PARALELO`: el éxito se sigue mirando
         # en el archivo y no en el código de salida, igual que antes.
@@ -1248,7 +1303,8 @@ def main():
         print('      %d pasada(s) en %.1f min, de a %d'
               % (len(llamadas), (time.time() - t_tanda) / 60, PARALELO))
         for c, quienes in sorted(por_carta.items()):
-            faltan = no_salieron(c, quienes, corte)
+            faltan = no_salieron(c, quienes, corte,
+                                 camisetas(quienes) if c == 'servidor' else None)
             for quien, que in faltan:
                 malos.add(quien)
                 fallaron.append('%s/%s' % (quien, que))

@@ -515,8 +515,20 @@ def armar():
             # 469 personas la intersección se vacía —los 331 nuevos tienen DRA
             # y FFA y nada más— y el menú quedaría con los nueve bloqueados
             # para todo el mundo. Es por persona porque el dato es por persona.
+            #
+            # 🔴 Y SÓLO LAS DE DONDE ESTÁ, no todas las que hay en R2. El ciclo
+            # dibujó las nueve para todos hasta el 25/09/2026, así que el menú
+            # de /card las mostraba abiertas y el «🔒 BLOQUEADA · no está en
+            # X» que pidió Dlx el 19/09 no le salía a nadie: Valen tenía las
+            # nueve estando en tres. Desde ese día el ciclo dibuja sólo las
+            # que se pueden pedir (`pipeline.camisetas()`), y las viejas que
+            # quedan en R2 ya no se ofrecen: dejaron de actualizarse.
+            #
+            # ⚠️ SI NO SE SABE DÓNDE ESTÁ (`svs` vacío) SE OFRECE LO QUE HAY, como
+            # antes: esconder una carta que existe es peor que mostrarla.
             'svc': sorted(c[3:].upper() for c in inventario.get(k, {})
-                          if c.startswith('sv-')),
+                          if c.startswith('sv-')
+                          and (not svs or c[3:].upper() in svs)),
         }
         # 🔴 LAS BLOQUEADAS QUE TIENE SUBIDAS. Sin esto el Worker no puede
         # distinguir «no existe» de «todavía no», y las dos hacen desaparecer
