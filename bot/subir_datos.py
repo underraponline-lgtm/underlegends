@@ -812,6 +812,50 @@ def servidores_listos():
     return sorted(comun)
 
 
+#: hasta dónde escribe este script en un día. Lo que queda hasta 1.000 es
+#: la reserva de la web (`web:lobby`, una escritura por corrida que cambia)
+TOPE_DIA = 850
+#: si no se puede saber cuánto se usó hoy, cuánto escribe una corrida
+SIN_DATO = 300
+
+
+def presupuesto(s, pares, usadas=None):
+    """`(las que se escriben ahora, cuántas quedan para después)`.
+
+    🔴 EL 24/09/2026 LA CUOTA SE AGOTÓ Y EL HUB SE QUEDÓ CONGELADO. 1.117
+    escrituras de 1.000: sumar y sacar a 104 personas del portón fueron
+    ~400 de golpe, y a las 7:52 PM ET la web —una sola clave— no pudo
+    subirse. El diff-writer ya existía: lo que faltaba era que una corrida
+    no pudiera gastar lo que el resto del día necesita.
+
+    ⚠️ LO QUE NO ENTRA NO SE PIERDE: sigue siendo distinto de lo que hay
+    arriba, así que la corrida siguiente lo vuelve a encontrar. Un cambio
+    grande se reparte en varias corridas en vez de congelar la web.
+
+    ⚠️ `meta` VA PRIMERO: es el sello con el que Discord sirve las cartas
+    nuevas, y sin él lo demás no se ve.
+    """
+    if usadas is None:
+        try:
+            from cuotas import kv_hoy
+            usadas = kv_hoy(s).get('write')
+        except Exception:                                # noqa: BLE001
+            usadas = None
+    libre = (TOPE_DIA - usadas) if usadas is not None else SIN_DATO
+    libre = max(libre, 1)          # `meta` entra siempre
+    if len(pares) <= libre:
+        if usadas is not None:
+            print('  presupuesto de KV: %d usadas hoy, %d libres para este '
+                  'script' % (usadas, TOPE_DIA - usadas))
+        return pares, 0
+    orden = sorted(pares, key=lambda p: p['key'] != 'meta')
+    ahora, despues = orden[:libre], orden[libre:]
+    print('  ⚠️ presupuesto de KV: %s hoy; escribo %d y dejo %d para las '
+          'corridas siguientes' % ('%d usadas' % usadas if usadas is not None
+                                   else 'no sé cuántas', len(ahora), len(despues)))
+    return ahora, len(despues)
+
+
 def solo_las_que_cambiaron(s, pares):
     """De las 241, las que KV todavia no tiene igual.
 
@@ -950,6 +994,11 @@ def main():
         if not pares:
             print('  nada que escribir: KV ya dice lo mismo.\n')
             return
+        pares, diferidas = presupuesto(s, pares)
+        if diferidas:
+            # ⚠️ sin limpiar huérfanas: borrar también gasta escrituras, y
+            # lo que no entró hoy entra en las corridas siguientes
+            todas_las_claves = None
 
     # La API acepta hasta 10.000 por tanda; se manda de a 1.000 para que un
     # error diga en qué tanda pasó.
