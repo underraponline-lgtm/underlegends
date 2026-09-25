@@ -2,13 +2,8 @@
  "_leeme": "El ícono de hoy de cada servidor, «guild/hash» como lo sirve el CDN de Discord. Lo escribe bot/subir_web.py desde la invitación pública de cada uno; lo leen las cartas por comun/escudos.py. No se edita a mano.",
  "iconos": {
   "DRA": "841017460341604382/a9b711f4ceaa4fa59734374ef9124859",
-  "EFA": "1222746296377675867/46026a4d76ec85ffc2f57e2a6588ae0a",
   "FFA": "1468472442925092958/ca445a9acc71998f3252590bbda7ee29",
-  "FRZ": "838593179187544064/f55de8e5e5604b2a1813bb03cae9a9ad",
-  "FTN": "1331924080835694655/79d5d1f815a977e394c4178af6ebcc0a",
   "SR": "492346406976356374/a_7d5ea47ca2a74c2a0b0c551a8e5a01bb",
-  "TFC": "1043611686524944404/a_0eec14355e982c396c994f8d3510fa3d",
-  "TWR": "1115145044127666196/8960093a1ab53e930ee66d6eca1797e0",
   "URBF": "1467763447117778989/2af5df69cf7bd371a1a68e8a8eb018d4"
  }
 }
