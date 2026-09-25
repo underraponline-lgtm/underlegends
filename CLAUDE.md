@@ -1,5 +1,13 @@
 # Liga Global — Sistema de Tarjetas
 
+> 📰 **ANTES QUE NADA: `NOVEDADES.md`.** Las reglas que Dlx ya decidió, lo que
+> cambió y lo que espera respuesta, en una página. Se lee al empezar y se
+> actualiza al terminar cada tanda. Existe porque Dlx, 24/09/2026: *«I see
+> you keep forgetting stuff we made and took decisions and actions»*.
+>
+> 🕐 **Todas las horas en hora del este (ET)**, nunca UTC: en los mensajes,
+> los commits, los archivos y las hojas.
+
 Generador de tarjetas estilo FIFA para los raperos de Liga Global. Cada carta
 sale de datos reales del Google Sheet, se arma como HTML/CSS y se exporta a PNG
 con fondo transparente para Discord.
