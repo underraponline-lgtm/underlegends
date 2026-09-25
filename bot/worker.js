@@ -1159,6 +1159,94 @@ async function cambiarApodo(env, gid, uid, nick) {
   }
 }
 
+// ── /verificar ────────────────────────────────────────────────────────────
+// 🔑 QUÉ TE FALTA PARA TENER TARJETA, MIRADO EN VIVO. Dlx, 25/09/2026, a
+// «¿armo /verificar?»: «correcto». Mira en Discord Rap Español lo mismo que
+// el portón del ciclo —estar adentro, el rol de Miembro y un país— y dice
+// cuál falta, con palabras y con el botón que lo arregla.
+//
+// ⚠️ NO DA EL ROL, Y ES A PROPÓSITO. Lo da `bot/autoverificar.py` en cada
+// vuelta, con sus topes y con la lista de a quién no (trolls, `no_verificar`,
+// olvidados). Si también lo diera el Worker, las reglas de identidad vivirían
+// en dos lugares —la deriva que este repo persigue— y la tarjeta igual
+// saldría recién en la vuelta siguiente, que es cuando el ciclo carga a la
+// persona en KV. Lo que sí hace es ANOTARLA, así esa vuelta la encuentra.
+//
+// ⚠️ EL PORTÓN LLEGA POR KV (`meta.porton`), NO ESTÁ ESCRITO ACÁ: el
+// servidor, el rol, los roles de país y a quién revisa un admin los publica
+// `bot/subir_datos.py` en cada corrida, desde donde viven.
+
+// El minuto en que arranca la próxima vuelta del ciclo: `:22` y `:52`, menos
+// lo que `tocaCiclo()` frena de madrugada.
+export function proximaVuelta(ahora) {
+  const t = Math.floor(ahora / 60000) * 60000;
+  for (let k = 1; k <= 24 * 60; k++) {
+    const x = new Date(t + k * 60000);
+    // en UTC: el este corre en horas enteras, así que el minuto es el mismo
+    const m = x.getUTCMinutes();
+    if ((m === 22 || m === 52) && tocaCiclo(x)) return x;
+  }
+  return null;
+}
+
+// «Juan 🇦🇷🔥» -> ['ar']: las banderas escritas en un nombre, sin repetir
+export function banderasEn(txt) {
+  const out = [];
+  let par = '';
+  for (const ch of String(txt || '')) {
+    const c = ch.codePointAt(0);
+    if (c >= 0x1F1E6 && c <= 0x1F1FF) {
+      par += String.fromCharCode(c - 0x1F1E6 + 97);
+      if (par.length === 2) {
+        if (out.indexOf(par) < 0) out.push(par);
+        par = '';
+      }
+    } else {
+      par = '';
+    }
+  }
+  return out;
+}
+
+// 'ar' -> 🇦🇷
+const emojiBandera = (cc) => String.fromCodePoint(
+  0x1F1E6 + cc.charCodeAt(0) - 97, 0x1F1E6 + cc.charCodeAt(1) - 97);
+
+// Qué tiene un miembro de DRA (`null` = no está). Sin red: se prueba solo.
+//
+// ⚠️ EL PAÍS SE LEE EN EL ORDEN DE `sheet/pais_por_rol.decidir()`: Estados
+// Unidos si aparece, después los roles de país de DRA, después las banderas
+// del apodo. Lo que ese módulo mira además —los roles de FFA y Snake Rap, el
+// país fijado a mano— no llega acá: por eso, sin país, el texto dice «no lo
+// encuentro en DRA» y no «no tenés».
+export function diagnostico(miembro, porton) {
+  if (!miembro) return { enDra: false, rol: false, paises: [] };
+  const roles = miembro.roles || [];
+  const tabla = (porton && porton.paises) || {};
+  const porRol = [];
+  roles.forEach((r) => {
+    if (tabla[r] && porRol.indexOf(tabla[r]) < 0) porRol.push(tabla[r]);
+  });
+  const u = miembro.user || {};
+  const porNombre = banderasEn([miembro.nick, u.global_name, u.username].join(' '));
+  let paises = porRol.length ? porRol : porNombre;
+  if (porRol.indexOf('us') >= 0 || porNombre.indexOf('us') >= 0) paises = ['us'];
+  return { enDra: true, rol: roles.indexOf(porton && porton.rol) >= 0, paises };
+}
+
+// El miembro de DRA, con el token del bot. `estado` 404 = no está adentro.
+async function miembroDra(env, guild, uid) {
+  try {
+    const r = await fetch(`https://discord.com/api/v10/guilds/${guild}/members/${uid}`, {
+      headers: { 'Authorization': 'Bot ' + env.DISCORD_TOKEN },
+    });
+    if (!r.ok) return { estado: r.status, miembro: null };
+    return { estado: 200, miembro: await r.json() };
+  } catch (e) {
+    return { estado: -1, miembro: null };
+  }
+}
+
 // ── Los ajustes del servidor ──────────────────────────────────────────────
 // Dlx, 19/09/2026: «un comando settings que funcione con botones que solo los
 // dueños del servidor o los que tengan manage roles o admins puedan usar».
@@ -1413,6 +1501,16 @@ const AYUDA = {
     '· **Avisos de cambio de rango** — a qué canal anunciarlos.',
   ].join('\n'),
 
+  verificar: () => [
+    '## `/verificar` — qué te falta para tu tarjeta',
+    'Mira en este momento, en Discord Rap Español, las tres cosas que hacen ' +
+    'falta: estar en el servidor, el rol **Miembro** y un **país**. Te dice ' +
+    'cuál falta y cómo arreglarlo.',
+    '',
+    'El rol de Miembro lo da el bot solo, en su vuelta de cada media hora: no ' +
+    'hace falta pedírselo a nadie.',
+  ].join('\n'),
+
   ping: () => [
     '## `/ping` — ¿está vivo?',
     'Contesta desde el Worker y dice si la firma validó. Sirve para saber si ' +
@@ -1430,6 +1528,7 @@ const AYUDA_INDICE = [
   'Las tarjetas de la Liga, adentro de Discord.',
   '',
   '· **`/card`** — tu tarjeta, o la de quien elijas',
+  '· **`/verificar`** — qué te falta para tener tu tarjeta',
   '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
   '· **`/foto`** — usá tu foto de Discord en tus tarjetas ' +
   '*(una por temporada, libre hasta que arranque)*',
@@ -1867,6 +1966,65 @@ const COMANDOS = {
       `· servidor \`${i.guild_id || '(fuera de un servidor)'}\`\n` +
       '· la firma Ed25519 validó\n' +
       '· esto salió de un Worker, sin nada prendido entre comando y comando');
+  },
+
+  async verificar(i, env, ctx) {
+    const yo = idDe(i);
+    const [ya, mCrudo] = await Promise.all([env.KV.get('d:' + yo), env.KV.get('meta')]);
+    if (ya) return aviso('Ya estás verificado ✅ — tu tarjeta sale con `/card`.');
+    let mm = null;
+    try { mm = mCrudo ? JSON.parse(mCrudo) : null; } catch (e) { mm = null; }
+    const P = mm && mm.porton;
+    const v = comoVerificarse(aquiEs(i.guild_id));
+    const d = datosDe(i, yo);
+    // ⚠️ SIN EL PORTÓN EN KV O SIN EL TOKEN NO SE PUEDE MIRAR: se hace lo de
+    // `/card`, que es anotar y explicar. Un comando que no puede contestar lo
+    // que promete igual deja a la persona un paso más cerca.
+    if (!P || !P.guild || !env.DISCORD_TOKEN) {
+      anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
+      return aviso(YA_TE_ANOTE + '\n\n' + v.texto, v.botones);
+    }
+    const { estado, miembro } = await miembroDra(env, P.guild, yo);
+    if (!miembro && estado !== 404) {
+      return aviso('No pude mirar Discord Rap Español ahora mismo (contestó ' + estado +
+                   '). Probá de nuevo en un rato.');
+    }
+    const dg = diagnostico(miembro, P);
+    const unPais = dg.paises.length === 1;
+    const si = (b) => (b ? '✅' : '❌');
+    const lista = [
+      `${si(dg.enDra)} Estar en **Discord Rap Español**`,
+      `${si(dg.rol)} Tener el rol **Miembro** ahí`,
+      `${si(unPais)} Tener un país` + (unPais ? ' ' + emojiBandera(dg.paises[0]) : ''),
+    ].join('\n');
+    if (!dg.enDra) {
+      return aviso('Para tener tarjeta hace falta estar en **Discord Rap Español**, y ahí ' +
+                   'no te encuentro.\n\n' + lista + '\n\n' + v.texto +
+                   '\nCuando entres, volvé a escribir `/verificar`.', v.botones);
+    }
+    if (dg.paises.length > 1) {
+      return aviso(lista + '\n\nTenés **' + dg.paises.length + ' países** en DRA (' +
+                   dg.paises.map(emojiBandera).join(' ') + '): dejá uno solo y volvé a ' +
+                   'escribir `/verificar`.');
+    }
+    if (!unPais) {
+      return aviso(lista + '\n\nNo encuentro tu **país** en DRA. Elegí tu rol de país ' +
+                   'ahí, o poné tu bandera en el apodo, y volvé a escribir `/verificar`.');
+    }
+    // lo tuyo está completo: lo que falta lo hace el ciclo
+    if ((P.revisa || []).indexOf(String(yo)) >= 0) {
+      return aviso(lista + '\n\nLo tuyo está completo. Tu caso lo revisa un admin: no ' +
+                   'hace falta que hagas nada más.');
+    }
+    anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
+    const vuelta = proximaVuelta(Date.now());
+    const hora = vuelta ? horaEste(vuelta.toISOString()).replace(/^\S+ /, '') : '';
+    const cuando = hora ? ` La próxima vuelta arranca a las **${hora}**.` : '';
+    return aviso(lista + '\n\n' + (dg.rol
+      ? 'Estás verificado en DRA ✅. Tu tarjeta sale cuando el bot te cargue: en menos ' +
+        'de una hora.'
+      : 'Lo tuyo está completo ✅. El rol de **Miembro** te lo da el bot solo, y con él ' +
+        'sale tu tarjeta: en menos de una hora.') + cuando);
   },
 
   async card(i, env, ctx) {
