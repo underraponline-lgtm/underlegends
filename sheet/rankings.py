@@ -106,8 +106,10 @@ DE_DONDE = {
     # ⚠️ POR `Evento #`, NO POR `Fecha`. Esta linea decia «por fecha» y
     # la fecha de la hoja es `28/04` sin año: con dos temporadas encima
     # no ordena. Ver `_racha()`.
-    '🔥': ('Resultados: eventos seguidos llegando a semifinal (llave de 16 o '
-           'más) o a la final (llave de 8), actual/máxima, en orden de fecha'),
+    '🔥': ('Resultados: eventos seguidos llegando al cuarto de arriba de la '
+           'llave (semifinal en una de 16, la final en una de 8), actual/máxima, '
+           'en el orden en que se jugaron; faltar a un evento de tu servidor la '
+           'corta'),
     'Rapero': 'padrón: Nombre + la bandera de País',
     'Sv': 'Resultados: el servidor con más eventos',
     '✅': 'padrón: la columna Verificado',
@@ -161,6 +163,13 @@ def _umbral(tamano):
     Se deduce de la ronda más temprana en que alguien quedó afuera —ver
     `agregar()`—, que es lo que `Resultados` guarda de cada uno.
     """
+    # 🔑 (a) Y (b) CERRADAS EL 25/09/2026. Dlx: *«(a) ¿cuál crees? (b) sí»*.
+    # La regla que las junta es LLEGAR AL CUARTO DE ARRIBA DE LA LLAVE: la
+    # final en una de 8, la semifinal en una de 16, cuartos en una de 32,
+    # octavos en una de 64. Cuesta lo mismo en todas. Debajo de 8, la
+    # final, que es lo que Dlx confirmó.
+    if tamano >= 32:
+        return tamano // 4
     return 4 if tamano >= 16 else 2
 
 
@@ -468,6 +477,7 @@ def agregar(filas_res, filas_uno, instantes=None):
 
     d = defaultdict(lambda: defaultdict(int))
     evs = defaultdict(set)
+    sv_ev, fecha_ev = {}, {}             # num -> servidor y fecha del evento
     ultimo = defaultdict(list)          # (num, fecha, puesto) por persona
     jugo = defaultdict(list)            # (orden, num, puesto) por persona
     tamano = {}                         # num -> la primera ronda de su llave
@@ -501,6 +511,8 @@ def agregar(filas_res, filas_uno, instantes=None):
         except ValueError:
             _n = 0
         ultimo[quien].append((_n, str(f[1]).strip(), POS.get(pos, '')))
+        sv_ev.setdefault(_n, sv)
+        fecha_ev.setdefault(_n, str(f[1]).strip())
         jugo[quien].append((cuando(_n, f[1]), _n, pos))
         if pos in LLEGO:
             tamano[_n] = max(tamano.get(_n, 0), LLEGO[pos])
@@ -512,12 +524,8 @@ def agregar(filas_res, filas_uno, instantes=None):
     # más larga que sus eventos (8 > 6). Dlx lo definió: eventos seguidos
     # llegando a semifinal o a la final según la llave. Ver `_umbral()`.
     #
-    # ⚠️ SOLO CUENTAN LOS EVENTOS QUE JUGÓ: faltar a uno no corta la racha
-    # (es lo que ya hacía la `T` del Competitivo). A confirmar con Dlx.
-    for quien, lista in jugo.items():
-        oks = [LLEGO.get(pos, 999) <= _umbral(tamano.get(n, 0))
-               for _k, n, pos in sorted(lista)]
-        d[quien]['🔥'] = _racha(oks)
+    # ⚠️ LA RACHA SE CALCULA MÁS ABAJO, cuando ya se sabe el servidor de
+    # cada uno: faltar a un evento de TU servidor la corta. Ver ahí.
 
     # ⚠️ `Ev` SON EVENTOS DISTINTOS, NO FILAS. Una persona tiene una fila
     # por evento, pero si alguna vez entra dos veces —un reproceso a medias,
@@ -544,6 +552,24 @@ def agregar(filas_res, filas_uno, instantes=None):
     for quien, r in d.items():
         vistos = [(r.get(s, 0), s) for s in SERVIDORES if r.get(s, 0)]
         r['Sv'] = max(vistos)[1] if vistos else ''
+
+    # 🔑 LA RACHA. Dlx, 25/09/2026, a «faltar a un evento, ¿corta la racha?»:
+    # *«sí creo»*. Faltar corta, pero SÓLO A UN EVENTO DE TU SERVIDOR (el
+    # de `Sv`): FFA juega cuatro por día y con tres servidores jugando a la
+    # vez nadie puede estar en todos, así que «faltar a cualquiera» dejaría
+    # a la Liga entera en 0. Lo que jugás en otros servidores también
+    # cuenta. Medido con los 7 eventos de la T1, todos de FFA: la máxima de
+    # Hassan pasa de 4 a 3, la de Makmah de 3 a 2, y Colesito pierde la que
+    # llevaba (2).
+    for quien, lista in jugo.items():
+        mio = d[quien].get('Sv') or ''
+        jugados = {n: pos for _k, n, pos in lista}
+        linea = set(jugados) | ({n for n, s in sv_ev.items() if s == mio}
+                                if mio else set())
+        oks = [n in jugados and
+               LLEGO.get(jugados[n], 999) <= _umbral(tamano.get(n, 0))
+               for n in sorted(linea, key=lambda n: cuando(n, fecha_ev.get(n, '')))]
+        d[quien]['🔥'] = _racha(oks)
 
     # los duelos
     #
@@ -1978,8 +2004,8 @@ def _self_check():
     for que, got, esp in [
         ('Ana: #1 ✓ (22/09) · #3 ✓ (24/09) · #2 ✗ (25/09) — por FECHA, no por número',
          ag.get('Ana', {}).get('🔥'), '0/2'),
-        ('Bea: el cuarto puesto es semifinal en una llave de 16',
-         ag.get('Bea', {}).get('🔥'), '1/1'),
+        ('Bea: el cuarto puesto es semifinal en una llave de 16 — y después faltó a dos',
+         ag.get('Bea', {}).get('🔥'), '0/1'),
         ('Zed: quedó en octavos y en cuartos, nunca suma',
          ag.get('Zed', {}).get('🔥'), '0/0'),
         ('y el cuarto puesto cuenta como semifinal en SEM',
@@ -1988,6 +2014,23 @@ def _self_check():
         ok = got == esp
         mal += not ok
         print('   %s %s -> %s' % ('✅' if ok else '🔴', que, got))
+    # 🔑 FALTAR A UN EVENTO DE TU SERVIDOR CORTA; A UNO DE OTRO, NO
+    res7 = [R(1, '22/09', 'Ana', 'Semifinal'), R(1, '22/09', 'Zed', 'Octavos'),
+            [2, '23/09', 'SR', '16+', 'Zed', 'ar', 'Octavos', 10, '', 10, ''],
+            R(3, '24/09', 'Ana', 'Semifinal'), R(3, '24/09', 'Zed', 'Octavos')]
+    ag7 = agregar(res7, [], instantes={})
+    res8 = res7 + [R(4, '25/09', 'Zed', 'Octavos'), R(5, '26/09', 'Ana', 'Semifinal'),
+                   R(5, '26/09', 'Zed', 'Octavos')]
+    ag8 = agregar(res8, [], instantes={})
+    ok = ag7['Ana'].get('🔥') == '2/2' and ag8['Ana'].get('🔥') == '1/2'
+    mal += not ok
+    print('   %s faltar a un evento de otro servidor no corta (%s); a uno del tuyo sí (%s)'
+          % ('✅' if ok else '🔴', ag7['Ana'].get('🔥'), ag8['Ana'].get('🔥')))
+    ok = _umbral(32) == 8 and _umbral(64) == 16 and _umbral(16) == 4 and _umbral(8) == 2 \
+        and _umbral(4) == 2
+    mal += not ok
+    print('   %s el cuarto de arriba: cuartos en 32, octavos en 64, semis en 16, final en 8'
+          % ('✅' if ok else '🔴'))
     ok = (_orden_fecha('02/01', 9) > _orden_fecha('28/12', 1)
           and _orden_fecha('23/09', 355) < _orden_fecha('24/09', 353))
     mal += not ok

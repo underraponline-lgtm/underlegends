@@ -112,6 +112,21 @@ export default {
       return new Response(r.body, { status: r.status, headers: h });
     }
 
+    // 🔑 LOS PERFILES, por el mismo camino que el lobby: el Worker los lee
+    // de KV y acá se reenvían. Se piden sólo al abrir un perfil.
+    if (url.pathname === '/api/perfiles') {
+      if (req.method !== 'GET') return new Response('no', { status: 405 });
+      const r = await fetch(ORIGEN + '/perfiles', {
+        method: 'GET',
+        headers: { accept: 'application/json' },
+        cf: { cacheTtl: 60, cacheEverything: true },
+      });
+      const h = new Headers();
+      h.set('content-type', 'application/json; charset=utf-8');
+      h.set('cache-control', 'public, max-age=60, stale-while-revalidate=120');
+      return new Response(r.body, { status: r.status, headers: h });
+    }
+
     // `/lobby` era la ruta de antes. Se conserva como redirección: es la
     // que está en los commits y en cualquier link ya pasado.
     if (url.pathname === '/lobby' || url.pathname === '/lobby/') {

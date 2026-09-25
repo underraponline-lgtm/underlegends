@@ -173,7 +173,7 @@ export const SERVIDORES = [
   { sv: 'DRA', nombre: 'Discord Rap Español', guild: '841017460341604382', invita: 'https://discord.gg/SFVnEmVnKz' },
   { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/4TBvDP2Chm' },
   { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
-  { sv: 'TFC', nombre: 'The Freestyle Community', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
+  { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
   { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/qhKcQgU47v' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
@@ -2622,6 +2622,19 @@ export default {
 
     if (req.method === 'GET') {
       const ruta = camino;
+      // 🔑 LOS PERFILES: una lectura de KV y se reenvía crudo, igual que el
+      // lobby con `?json=1`. Los pide la página cuando se abre un perfil.
+      if (ruta === '/perfiles') {
+        const crudo = await env.KV.get('web:perfiles');
+        return new Response(crudo || '{}', {
+          status: crudo ? 200 : 404,
+          headers: {
+            'content-type': 'application/json; charset=utf-8',
+            'cache-control': 'public, max-age=60',
+            'access-control-allow-origin': '*',
+          },
+        });
+      }
       if (ruta === '/lobby' || ruta === '/lobby/') {
         // ⚠️ UNA lectura de KV y un template. Nada más entra en 10 ms.
         const crudo = await env.KV.get('web:lobby');
