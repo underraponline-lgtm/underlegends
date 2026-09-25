@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { Avisos, CRON_VIGIA, rutaAvisos, vigilar } from './avisos.js';
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, pedirDM } from './avisos.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -784,6 +784,7 @@ const botonLink = (label, url) => ({ type: 2, style: 5, label, url });
 // rechaza el mensaje entero con el sexto. El día que haya cinco cartas,
 // la campana se cae sola en vez de romper `/card`.
 const AVISOS_URL = 'https://underlegends.pages.dev/#/avisos';
+const HUB_URL = 'https://underlegends.pages.dev';
 const botonAvisos = (ocupados) => (ocupados < 5
   ? [{ type: 2, style: 5, label: 'Avisos', emoji: { name: '🔔' }, url: AVISOS_URL }]
   : []);
@@ -1247,6 +1248,58 @@ async function miembroDra(env, guild, uid) {
   }
 }
 
+// ── /notify: los avisos de eventos por DM ─────────────────────────────────
+// 🔑 Dlx, 25/09/2026: «activar las notificaciones de este servidor… ahí te
+// dejará las opciones en vez de que lo haga en el website». Se eligen acá; los
+// guarda y los manda el mismo objeto que la campana de la página
+// (`bot/avisos.js`), en la misma cola.
+//
+// ⚠️ EL PANEL SE ARMA DE LO QUE CONTESTA EL OBJETO (`/dm/ver`), no de una
+// lista escrita acá: los servidores que se pueden elegir son los que el vigía
+// escucha, igual que en la página.
+export function panelNotify(v, aqui) {
+  const svs = v.servidores || [];
+  const nombre = (sv) => (svs.find((s) => s.sv === sv) || {}).svn || sv;
+  const todos = v.activo && !v.svs.length;
+  const elegidos = !v.activo ? [] : todos ? svs.map((s) => s.sv) : v.svs;
+  const estado = !v.activo ? '🔕 **Apagados.**'
+    : todos ? '🔔 **Activados** para todos los servidores de la Liga.'
+      : '🔔 **Activados** para ' + v.svs.map(nombre).join(', ') + '.';
+  const lineas = ['## 🔔 Avisos de eventos por mensaje directo',
+    'Cuando un servidor de la Liga anuncia un evento, te escribo por DM al minuto.',
+    '', estado];
+  if (v.error === 'dm') {
+    lineas.push('', '⚠️ **No te puedo mandar mensajes directos.** En el servidor: tocá su ' +
+      'nombre → **Ajustes de privacidad** → activá **Mensajes directos**, y volvé a elegir.');
+  } else if (v.error === 'lleno') {
+    lineas.push('', '⚠️ Ya no entra nadie más por ahora. Probá los avisos de la página.');
+  }
+  const filas = [];
+  if (svs.length) {
+    filas.push({ type: COMP.FILA, components: [{
+      type: COMP.SELECT, custom_id: 'ntf:svs', placeholder: 'Elegí de qué servidores',
+      min_values: 1, max_values: svs.length,
+      options: svs.map((s) => ({ label: s.svn, value: s.sv, default: elegidos.indexOf(s.sv) >= 0 })),
+    }] });
+  }
+  const botones = [];
+  // «de este servidor»: si se pide adentro de uno de la Liga, ése va primero
+  if (aqui && svs.some((s) => s.sv === aqui) && elegidos.indexOf(aqui) < 0) {
+    botones.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Activar ' + nombre(aqui),
+      custom_id: 'ntf:sv:' + aqui });
+  }
+  if (!todos) {
+    botones.push({ type: COMP.BOTON, style: botones.length ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
+      label: 'Todos los servidores', custom_id: 'ntf:todos' });
+  }
+  if (v.activo) {
+    botones.push({ type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Apagar', custom_id: 'ntf:off' });
+  }
+  if (botones.length) filas.push({ type: COMP.FILA, components: botones });
+  filas.push({ type: COMP.FILA, components: [botonLink('Avisos en la página', AVISOS_URL)] });
+  return { content: lineas.join('\n'), components: filas };
+}
+
 // ── Los ajustes del servidor ──────────────────────────────────────────────
 // Dlx, 19/09/2026: «un comando settings que funcione con botones que solo los
 // dueños del servidor o los que tengan manage roles o admins puedan usar».
@@ -1501,6 +1554,21 @@ const AYUDA = {
     '· **Avisos de cambio de rango** — a qué canal anunciarlos.',
   ].join('\n'),
 
+  notify: () => [
+    '## `/notify` — los avisos de eventos por mensaje directo',
+    'Elegís de qué servidores de la Liga y, cuando uno anuncia un evento, te ' +
+    'escribo por DM al minuto. Adentro de un servidor, el primer botón activa ' +
+    'ése. Se cambia o se apaga con el mismo comando.',
+    '',
+    'Para que te lleguen, el servidor tiene que dejar que te escriban por DM ' +
+    '(sus **Ajustes de privacidad**).',
+  ].join('\n'),
+
+  website: () => [
+    '## `/website` — la página de la Liga',
+    'Te deja el link a la página: rankings, perfiles, llaves y calendario.',
+  ].join('\n'),
+
   verificar: () => [
     '## `/verificar` — qué te falta para tu tarjeta',
     'Mira en este momento, en Discord Rap Español, las tres cosas que hacen ' +
@@ -1529,6 +1597,8 @@ const AYUDA_INDICE = [
   '',
   '· **`/card`** — tu tarjeta, o la de quien elijas',
   '· **`/verificar`** — qué te falta para tener tu tarjeta',
+  '· **`/notify`** — avisos de eventos por mensaje directo',
+  '· **`/website`** — la página de la Liga',
   '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
   '· **`/foto`** — usá tu foto de Discord en tus tarjetas ' +
   '*(una por temporada, libre hasta que arranque)*',
@@ -1966,6 +2036,18 @@ const COMANDOS = {
       `· servidor \`${i.guild_id || '(fuera de un servidor)'}\`\n` +
       '· la firma Ed25519 validó\n' +
       '· esto salió de un Worker, sin nada prendido entre comando y comando');
+  },
+
+  async notify(i, env, ctx) {
+    const v = await pedirDM(env, '/dm/ver', { usuario: idDe(i) });
+    if (!v || v.error) return aviso('Los avisos no están andando ahora. Probá en un rato.');
+    return responderPanel(RESPONDE.MENSAJE, panelNotify(v, aquiEs(i.guild_id)));
+  },
+
+  // 🔑 Dlx, 25/09/2026: «/website, que te redirigiría a la página».
+  async website(i, env, ctx) {
+    return aviso('🌐 **La Liga Global**: los rankings, el perfil de cada rapero, las llaves ' +
+                 'de cada evento y el calendario.', [botonLink('Abrir la página', HUB_URL)]);
   },
 
   async verificar(i, env, ctx) {
@@ -2907,6 +2989,29 @@ export default {
         // está abajo.
         return responderPanel(RESPONDE.ACTUALIZAR,
           panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
+      }
+
+      // ── /notify: los servidores de los avisos por DM ───────────────────
+      // ⚠️ LO GUARDA EL OBJETO DE LOS AVISOS, y quien toca es siempre quien
+      // pidió el panel: es efímero y cada click trae su propio ID.
+      if (que === 'ntf') {
+        const esperarN = frenado(idDe(i), 'click');
+        if (esperarN) return espera(esperarN);
+        const yo = idDe(i);
+        let d = null;
+        if (quien === 'off') d = { usuario: yo, apagar: true };
+        else if (quien === 'todos') d = { usuario: yo, svs: [] };
+        else if (quien === 'svs') d = { usuario: yo, svs: (i.data && i.data.values) || [] };
+        else if (quien === 'sv') {
+          const v0 = await pedirDM(env, '/dm/ver', { usuario: yo }) || {};
+          d = { usuario: yo, svs: v0.activo && (v0.svs || []).length ? v0.svs.concat([extra]) : [extra] };
+        }
+        if (!d) return aviso('No sé qué hacer con eso.');
+        const v = await pedirDM(env, '/dm/poner', d);
+        if (!v || v.error === 'usuario' || !v.servidores) {
+          return aviso('Los avisos no están andando ahora. Probá en un rato.');
+        }
+        return responderPanel(RESPONDE.ACTUALIZAR, panelNotify(v, aquiEs(i.guild_id)));
       }
 
       // ── Los botones del versus ─────────────────────────────────────────

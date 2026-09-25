@@ -1391,6 +1391,29 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   ok('el canal de avisos de rango se guarda', /666777/.test(texto(r)));
 }
 
+console.log('\n/WEBSITE Y /NOTIFY\n');
+
+{
+  const r = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1',
+                          member: { user: { id: '700900' } }, data: { name: 'website' } });
+  const bots = (r.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('/website deja el botón a la página', bots.some((b) => /underlegends\.pages\.dev/.test(b.url || '')),
+     JSON.stringify(r.json?.data));
+  const r2 = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1',
+                           member: { user: { id: '700901' } }, data: { name: 'notify' } });
+  ok('/notify sin los avisos enchufados lo dice, no revienta', /no están andando/.test(texto(r2)), texto(r2));
+  const { panelNotify } = await import('./worker.js');
+  const svs = [{ sv: 'FFA', svn: 'Freestyle For All' }, { sv: 'SR', svn: 'Snake Rap' }];
+  const p1 = panelNotify({ activo: false, svs: [], servidores: svs }, 'FFA');
+  const b1 = p1.components.flatMap((f) => f.components);
+  ok('adentro de FFA, el primer botón activa FFA', b1.some((b) => b.custom_id === 'ntf:sv:FFA'));
+  const p2 = panelNotify({ activo: true, svs: [], servidores: svs }, 'FFA');
+  ok('con todos activados dice «todos» y ofrece apagar', /todos los servidores/.test(p2.content) &&
+     p2.components.flatMap((f) => f.components).some((b) => b.custom_id === 'ntf:off'));
+  const p3 = panelNotify({ activo: false, svs: [], servidores: svs, error: 'dm' }, '');
+  ok('si Discord no deja escribirle, explica cómo abrir los DMs', /Mensajes directos/.test(p3.content));
+}
+
 console.log('\n/VERIFICAR\n');
 
 {
