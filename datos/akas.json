@@ -196,7 +196,8 @@
   "ricard": "Richard",
   "ricardflex": "Richard",
   "richardflex": "Richard",
-  "bloodypainter": "Bloody"
+  "bloodypainter": "Bloody",
+  "sebita": "Liberia"
  },
  "pares": [
   [
@@ -982,6 +983,10 @@
   [
    "BLOODY PAINTER",
    "Bloody"
+  ],
+  [
+   "SEBITA",
+   "Liberia"
   ]
  ],
  "no_confundir": [

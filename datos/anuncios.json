@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-25T05:23:55+00:00",
+ "cuando": "2026-09-25T05:53:45+00:00",
  "anuncios": [
   {
    "nombre": "RAPEROS UNDERDOGS",
@@ -408,23 +408,6 @@
    "modalidad": "MULTIVERSE (1-4)",
    "horario": "EN 15",
    "premios": "PTS PARA EL ASCENSO"
-  },
-  {
-   "nombre": "CIEGO, SORDO Y MUDO V.3",
-   "servidor": "FFA",
-   "canal": "✦🏆︱eventos",
-   "msg_id": "1550538619402588251",
-   "cuando": "2026-09-18T16:06:54",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "1v1",
-   "horario": "Ahora",
-   "premios": "Puntos para la tabla T1 + Rol de campeon 🏆"
   },
   {
    "nombre": "__RAP EXHIBITION 1/8__",
