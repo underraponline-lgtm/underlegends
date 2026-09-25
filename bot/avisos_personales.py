@@ -71,6 +71,16 @@ def _nivel(x):
 
 
 def _id(*partes):
+    """El id de un aviso: el objeto no manda dos veces el mismo (30 días).
+
+    🔴 LLEVA EL ARRANQUE DE LA TEMPORADA. Sin eso, quien desbloqueaba una
+    tarjeta en la fase de prueba no recibía el aviso de la misma tarjeta en la
+    T1 —el 5/10 se resetea todo y se vuelven a ganar—: el objeto lo daba por
+    mandado. Revisión del 25/09/2026. `inicio()` cambia justo el día del
+    arranque, así que la prueba y la T1 dan ids distintos.
+    """
+    from comun import temporada as _TMP
+    partes = (str(_TMP.inicio())[:10],) + partes
     return hashlib.sha1('|'.join(str(p) for p in partes).encode('utf-8')).hexdigest()[:16]
 
 
@@ -140,12 +150,18 @@ def estado_de_hoy():
         elif k.startswith('d:'):
             clave_de[k[2:]] = v
     pide = minimo('competitivo', 'ev')
+    # 🔴 LA LETRA SALE DEL SCORE (`comun.rangos.de_score()`), NO DEL `rango`
+    # DEL POOL DE TEMPORADA: ése es el color de la carta, que sale del OVR.
+    # Medido el 25/09/2026, Hassan: `rango` SSS con Score 46.4 —B—. El día
+    # que llegara a 10 eventos, el aviso le habría dicho «Subiste a rango
+    # SSS» con la carta y el Sheet diciendo B. Revisión de ese día.
+    from comun.rangos import de_score
     letra = {}
     try:
         with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
             for x in json.load(f):
-                if x.get('raw') and (x.get('ev') or 0) >= pide and x.get('rango'):
-                    letra[_clave(x['raw'])] = _rg(x['rango'])
+                if x.get('raw') and (x.get('ev') or 0) >= pide:
+                    letra[_clave(x['raw'])] = _rg(de_score(float(x.get('score') or 0)))
     except (OSError, ValueError):
         pass
     out = {}
@@ -153,6 +169,51 @@ def estado_de_hoy():
         p = cs.get(k) or {}
         out[did] = {'k': k, 'n': p.get('n') or '', 'rg': letra.get(k, ''),
                     'cs': sorted(p.get('cs') or [])}
+    return out
+
+
+def frescas():
+    """`{nombre: {cartas}}` dibujadas con los datos de hoy, o `None`.
+
+    🔑 «YA ESTÁ EN /card» TIENE QUE SER VERDAD CUANDO LLEGA. Quien pasa el
+    requisito puede tener en R2 una carta vieja —de la pre-temporada— y `cs`
+    la cuenta enseguida, así que el aviso salía antes del redibujo: abría
+    /card y veía los números viejos. Revisión del 25/09/2026. Es la misma
+    pregunta que decide qué dibujar: el sello contra la huella de hoy, por
+    la primera parte (los datos). Un cambio sólo de dibujo no frena el aviso.
+
+    ⚠️ SI NO SE PUEDE MEDIR, `None`: se avisa como antes.
+    """
+    try:
+        import que_cambio as QC
+        hoy = QC.huellas()
+        with io.open(QC.SELLO, encoding='utf-8') as f:
+            sello = (json.load(f) or {}).get('cartas') or {}
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude mirar qué cartas están dibujadas (%s)' % str(e)[:60])
+        return None
+    out = {}
+    for quien, cs in hoy.items():
+        s = sello.get(quien) or {}
+        out[quien] = {c for c, h in cs.items()
+                      if s.get(c) and s[c].partition(':')[0] == h.partition(':')[0]}
+    return out
+
+
+def sin_dibujar(antes, hoy, fr):
+    """`hoy` sin las cartas NUEVAS que todavía no están dibujadas.
+
+    ⚠️ SÓLO LAS NUEVAS: una que ya tenía y se está redibujando por un evento
+    no se saca, o al volver se avisaría «desbloqueaste» otra vez. Y al no
+    quedar anotada, la corrida que la dibuja la encuentra nueva y la avisa.
+    """
+    if fr is None:
+        return hoy
+    out = {}
+    for did, h in hoy.items():
+        ya = set((antes.get(did) or {}).get('cs') or [])
+        listas = fr.get(h.get('n') or '', set())
+        out[did] = dict(h, cs=[c for c in h.get('cs') or [] if c in ya or c in listas])
     return out
 
 
@@ -194,7 +255,9 @@ def encolar(nuevos):
         v = v.get('value') if isinstance(v, dict) else v
         previa = json.loads(v) if isinstance(v, str) else (v or [])
     except (ValueError, OSError):
-        previa = []
+        # ⚠️ SIN LEERLA NO SE ESCRIBE: se pisaría lo que el vigía todavía no
+        # mandó. `False` hace que el estado no se guarde y se reintente.
+        return False
     # ⚠️ LO DE MÁS DE UNA SEMANA SE VA: el objeto ya no borra la cola
     import datetime as _dt
     desde = (_dt.datetime.now(_dt.timezone.utc) - _dt.timedelta(days=7)).strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -219,6 +282,7 @@ def main():
             _guardar_estado(hoy)
             print('   ✅ %s' % os.path.relpath(ESTADO, BASE))
         return 0
+    hoy = sin_dibujar(antes, hoy, frescas())
     evs = eventos(antes, hoy)
     for e in evs[:20]:
         print('   %-20s %s' % (hoy[e['quien']]['n'][:20], e['titulo']))
@@ -251,6 +315,13 @@ def _self_check():
         print('   %s %s' % ('ok' if cond else '🔴', que))
 
     base = {'k': 'konan', 'n': 'Konan', 'rg': '', 'cs': ['servidor']}
+    nueva = dict(base, cs=['servidor', 'temporada'])
+    ok(sin_dibujar({'1': base}, {'1': nueva}, {'Konan': {'servidor'}})['1']['cs'] == ['servidor'],
+       'una tarjeta nueva que todavía no se dibujó con los datos de hoy espera')
+    ok(sin_dibujar({'1': nueva}, {'1': nueva}, {'Konan': set()})['1']['cs'] == ['servidor', 'temporada'],
+       'una que ya tenía y se está redibujando no se saca (si no, se avisaría otra vez)')
+    ok(sin_dibujar({'1': base}, {'1': nueva}, None)['1']['cs'] == nueva['cs'],
+       'sin poder medir, como antes')
     ok(eventos({}, {'1': base}) == [], 'a quien se ve por primera vez no se le avisa nada')
     ok(eventos({'1': base}, {'1': base}) == [], 'sin cambios, nada')
     e = eventos({'1': base}, {'1': dict(base, cs=['servidor', 'temporada'])})
