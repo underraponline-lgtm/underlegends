@@ -180,7 +180,25 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El podio del Inicio con flechas** por categoría, y más cosas abajo | *«deja unas flechas para cambiar de categoría a competitivo así y así… y agrega más cosas abajo»* | `bot/paginas/app.js` (`catsPodio`, `pintaUnos`) |
 | **La llave, que se entienda mejor** | *«mejora esa sección de las llaves brackets que te dije»* | `bot/paginas/app.js` (`cuadro`, `abrirLlave`) |
 
+### Lo que dijo Dlx el 25/09 (10:45 AM)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **Estamos en FASE DE PRUEBA; la Temporada 1 va del 5 de octubre al 31 de diciembre** | *«estamos en prueba todavía»* · *«la temporada 1 ya tiene fecha de arranque: 5 de octubre hasta el 31 de diciembre»* | `comun/temporada.py` (`FECHAS`); el Inicio y el pie lo dicen solos |
+| **El changelog lleva versión**: hoy **1.06**; cada actualización, grande o chica, **+0.01** | *«estamos actualmente en la actualización 1.05… cada cambio grande o pequeño se aumentará un .01»* | `bot/paginas/cambios.json` (`version`) |
+| **Los anuncios de la Liga van en 〢🌍〉rankings-liga-global de DRA**, y salen solos en «Novedades de la Liga» | *«en ranking global de DRA, sólo en ese servidor… el bot debería hacer eso por default»* | `herramientas/anunciar.py`; la página los lee en cada corrida |
+| **Crews y países se tocan como un perfil** | *«que aparezca ese cuadrado celeste y el mouse para clickear como cualquier perfil»* | `bot/paginas/estilo.css` |
+
 ---
+
+## 📅 Viernes 25/09 (10:45 AM) — versión 1.06
+
+- 📅 **Fase de prueba y la fecha de la T1**: el Inicio dice «Fase de prueba · la Temporada 1 arranca el 5 de octubre (faltan 10 días)» y el pie, «Fase de prueba». El 5/10 cambia solo a «Temporada 1 en juego».
+- 🔢 **El changelog con versiones**, de la 1.01 a la **1.06**. La entrada del 22/09 decía «Arrancó la Temporada 1»: ahora dice «Arrancó la fase de prueba».
+- 🎥 **Las miniaturas de YouTube en alta**: eran de 320 px y se estiraban al doble. Ahora 640 en el teléfono y 1280 en la compu.
+- 🤝 **Crews y países con la manito y el resaltado celeste** en «Los tres de arriba», el podio, «Los mejores de cada lado» y la ficha de cada tarjeta.
+- 📰 **«Novedades de la Liga» lee también los anuncios decorados** del bot (antes sólo el texto).
+- ⚠️ Tocar `comun/temporada.py` hace que la próxima corrida **redibuje todas las cartas** una vez (salen iguales; ~50 min de GitHub, gratis).
 
 ## 📅 Viernes 25/09 (10 a 10:40 AM) — tu cuenta, `/notify` sin DMs, el podio, el changelog y la llave
 
@@ -348,7 +366,9 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+1. **El anuncio en DRA está listo para publicar** (fase de prueba, Snake Rap, la fecha de la T1 y la página), en `docs/anuncios/2026-09-25_fase_de_prueba.json`. Sin @everyone. Decime «publicalo» o qué cambiar.
+2. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
+3. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 

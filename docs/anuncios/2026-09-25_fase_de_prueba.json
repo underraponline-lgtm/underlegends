@@ -1,0 +1,23 @@
+{
+ "_leeme": "El anuncio del 25/09/2026 en 〢🌍〉rankings-liga-global de DRA. Se publica con herramientas/anunciar.py.",
+ "embeds": [
+  {
+   "type": "rich",
+   "color": 2732696,
+   "author": {"name": "LIGA GLOBAL DE FREESTYLE", "icon_url": "https://underlegends.pages.dev/ul.png"},
+   "title": "🧪 Fase de prueba · 🐍 ¡Snake Rap se unió! · 📅 La Temporada 1 arranca el 5 de octubre",
+   "description": "🧪 **Estamos en FASE DE PRUEBA.** Todo lo que se juega ahora sirve para probar el sistema entero: rankings, tarjetas, perfiles y avisos. ¡Gracias por jugar y por avisar lo que falle!\n\n🐍 **¡SNAKE RAP SE UNIÓ A LA LIGA!** Sus eventos ya cuentan para el ranking global. ¡Bienvenidos!\n\n📅 **La Temporada 1 ya tiene fecha:** arranca el **5 de octubre** y termina el **31 de diciembre**.\n\n🌐 **Chequeen la página:** rankings, perfiles, llaves, calendario y avisos de eventos en el celular.\nhttps://underlegends.pages.dev",
+   "fields": [
+    {"name": "🤖 En Discord", "value": "`/card` tu tarjeta · `/verificar` qué te falta · `/notify` avisos de eventos"}
+   ],
+   "thumbnail": {"url": "https://underlegends.pages.dev/ul.png"},
+   "footer": {"text": "Under Legends · Liga Global de Freestyle en Español"}
+  }
+ ],
+ "components": [
+  {"type": 1, "components": [
+   {"type": 2, "style": 5, "label": "Abrir la página", "emoji": {"name": "🌐"}, "url": "https://underlegends.pages.dev"},
+   {"type": 2, "style": 5, "label": "Entrar a Snake Rap", "emoji": {"name": "🐍"}, "url": "https://discord.gg/qhKcQgU47v"}
+  ]}
+ ]
+}
