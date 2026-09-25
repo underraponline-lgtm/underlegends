@@ -2437,8 +2437,8 @@ const COMANDOS = {
         ? 'porque **vos** lo elegiste — le gana a lo que diga el servidor.'
         : `porque es lo que tiene puesto el servidor (nadie lo cambió a mano).`;
       return aviso(`En **${sv}** tu puesto está **${ahoraOn ? 'a la vista' : 'oculto'}**, ` +
-                   porque + '\nPara cambiarlo: `/puesto mostrar:True` o ' +
-                   '`/puesto mostrar:False`.');
+                   porque + '\nPara cambiarlo: `/numeral mostrar:True` o ' +
+                   '`/numeral mostrar:False`.');
     }
     const quiere = !!op.value;
     // ⚠️ AUNQUE COINCIDA CON LO QUE YA SE VE, SE GUARDA. «Está a la vista
@@ -2453,12 +2453,23 @@ const COMANDOS = {
       ? ((mio && mio.antes) || actual)   // el que tenía guardado, si lo hay
       : sinPuesto(actual);
 
-    await env.KV.put(claveNick(gid, uid), JSON.stringify({
-      on: quiere,
-      // se conserva el apodo con «#N» para poder devolverlo al prenderlo
-      antes: quiere ? ((mio && mio.antes) || actual) : actual,
-      ts: Date.now(),
-    }));
+    // 🔴 SI KV NO ESCRIBE, SE DICE Y NO SE TOCA EL APODO. El 24/09/2026 a
+    // las 7 PM ET la cuota diaria de escrituras se agotó y el Worker tiró 5
+    // excepciones: una escritura sin `try` convierte «hoy no hay cupo» en
+    // «la aplicación no respondió», que no dice nada. Y el apodo NO se
+    // cambia: sin la elección guardada, la próxima sincronización lo
+    // devolvería a lo que diga el servidor.
+    try {
+      await env.KV.put(claveNick(gid, uid), JSON.stringify({
+        on: quiere,
+        // se conserva el apodo con «#N» para poder devolverlo al prenderlo
+        antes: quiere ? ((mio && mio.antes) || actual) : actual,
+        ts: Date.now(),
+      }));
+    } catch (e) {
+      return aviso('No pude guardar tu elección (`' + String(e).slice(0, 60) +
+                   '`), así que no te toqué el apodo. Probá de nuevo en un rato.');
+    }
 
     if (yaEraMio && destino === actual) {
       return aviso(`En **${sv}** tu puesto ya estaba **${quiere ? 'a la vista' : 'oculto'}** ` +
@@ -2882,10 +2893,15 @@ export default {
       } catch (e) {
         cuerpo = String(e).slice(0, 180);
       }
-      await env.KV.put('cron:ultimo', JSON.stringify({
-        t, ok: estado === 204, estado, cuerpo,
-        cron: evento.cron || '',
-      }));
+      // ⚠️ CON `try`, como `cron:arranco`: el disparo ya salió, y sin
+      // cupo de KV esta marca era una excepción en cada corrida del día
+      // (el 24/09/2026 a las 7 PM ET). Que la marca falte ya es la señal.
+      try {
+        await env.KV.put('cron:ultimo', JSON.stringify({
+          t, ok: estado === 204, estado, cuerpo,
+          cron: evento.cron || '',
+        }));
+      } catch (e) { /* sin cupo: la marca vieja ya dice que algo pasó */ }
     })();
   },
 
@@ -3020,7 +3036,14 @@ export default {
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
         else if (quien === 'avisos') cfg.avisos = vals[0] || '';
         else return aviso('No sé qué ajuste es ése.');
-        await env.KV.put(claveCfg(i.guild_id), JSON.stringify(cfg));
+        // ⚠️ Mismo motivo que en `/numeral`: sin `try`, un día sin cupo
+        // de KV es «la aplicación no respondió» y el admin no sabe si quedó.
+        try {
+          await env.KV.put(claveCfg(i.guild_id), JSON.stringify(cfg));
+        } catch (e) {
+          return aviso('No pude guardar el ajuste (`' + String(e).slice(0, 60) +
+                       '`): quedó como estaba. Probá de nuevo en un rato.');
+        }
         // ⚠️ SE REDIBUJA EL MISMO MENSAJE (tipo 7), no se manda uno nuevo. Un
         // panel que deja un mensaje por click convierte tres ajustes en tres
         // paneles contradictorios, y el último no es necesariamente el que

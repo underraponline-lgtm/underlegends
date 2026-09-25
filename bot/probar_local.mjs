@@ -1297,6 +1297,26 @@ const leerNick = (g, u) => { try { return JSON.parse(PUESTO[`pnick:${g}:${u}`]);
   const r = await pedir(cmdPuesto(G.DRA, '777003'));
   ok('apagado en FFA, en DRA sigue a la vista', /a la vista/i.test(texto(r)));
 }
+{
+  // 🔴 EL TEXTO NOMBRABA `/puesto`, QUE NO EXISTE: el comando se llama
+  // `/numeral` desde que se registró. Quien copiaba el ejemplo recibía
+  // «comando desconocido» de Discord.
+  const r = await pedir(cmdPuesto(G.FFA, '777004'));
+  ok('el ejemplo para cambiarlo nombra un comando que existe',
+     /\/numeral mostrar:/.test(texto(r)) && !/\/puesto/.test(texto(r)), texto(r).slice(-80));
+}
+{
+  // 🔴 SIN CUPO DE KV SE DICE, Y EL APODO NO SE TOCA. El 24/09/2026 a las
+  // 7 PM ET la cuota diaria se agotó y el Worker tiró 5 excepciones: una
+  // escritura sin `try` es «la aplicación no respondió».
+  const put = env.KV.put;
+  env.KV.put = async () => { throw new Error('KV put() limit exceeded for the day.'); };
+  const r = await pedir(cmdPuesto(G.FFA, '777005', false));
+  env.KV.put = put;
+  ok('sin cupo de KV, /numeral contesta y dice que no guardó',
+     /no pude guardar tu elecci/i.test(texto(r)) && /limit exceeded/.test(texto(r)), texto(r));
+  ok('y no anota nada a medias', leerNick(G.FFA, '777005') === null);
+}
 
 console.log('\nLOS TRES ESTADOS: SIN ELEGIR / PRENDIDO / APAGADO\n');
 
