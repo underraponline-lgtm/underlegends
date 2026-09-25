@@ -10,6 +10,15 @@
  ],
  "cambios": [
   {
+   "version": "1.10",
+   "dia": "2026-09-25",
+   "titulo": "Tus redes en tu perfil",
+   "items": [
+    "🔗 **Tus redes en tu perfil**: en **Mi cuenta → Mis redes en mi perfil** elegís cuáles de las redes que ya tenés conectadas en Discord (Instagram, TikTok, YouTube, X, Twitch…) se ven en tu perfil. Sólo las que mostrás en tu perfil de Discord, sólo las que marcás, y las podés quitar cuando quieras.",
+    "📱 **Mi cuenta no se sale de la pantalla**: si tiene mucho, se desplaza adentro."
+   ]
+  },
+  {
    "version": "1.09",
    "dia": "2026-09-25",
    "titulo": "Seguir raperos, tus próximos eventos y la comunidad",

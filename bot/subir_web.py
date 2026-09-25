@@ -833,6 +833,53 @@ def _hoy_este():
         return dt.datetime.utcnow().date()
 
 
+def _con_redes(perf):
+    """Suma a cada perfil las redes que esa persona eligió mostrar.
+
+    🔑 Las guarda el Worker en `redes:<clave>` cuando la persona toca
+    «Guardar» en «Mis redes» (ver `cuentaRedes()` en `bot/worker.js`). Acá
+    sólo se leen —`keys` con prefijo y `bulk/get`, dos pedidos— y viajan
+    dentro de `web:perfiles`, que ya se escribe sólo si cambió.
+
+    ⚠️ SI KV NO CONTESTA, LOS PERFILES SALEN SIN REDES Y NO SIN PERFIL: es
+    un agregado, no puede tumbar lo demás.
+    """
+    ps = (perf or {}).get('p') or {}
+    if not ps or _SIN_RED[0]:
+        return 0
+    try:
+        import requests
+        import subir_datos as SD
+        tok = _token()
+        if not tok:
+            return 0
+        s = requests.Session()
+        s.headers['Authorization'] = 'Bearer ' + tok
+        r = s.get('%s/keys' % SD.API, params={'prefix': 'redes:', 'limit': 1000}, timeout=30).json()
+        ks = [k['name'] for k in (r.get('result') or [])]
+        n = 0
+        for i in range(0, len(ks), 100):
+            v = (s.post('%s/bulk/get' % SD.API, json={'keys': ks[i:i + 100]}, timeout=30)
+                 .json().get('result') or {}).get('values') or {}
+            for k, x in v.items():
+                cl = k[len('redes:'):]
+                x = x.get('value') if isinstance(x, dict) else x
+                try:
+                    rs = json.loads(x) if isinstance(x, str) else x
+                except ValueError:
+                    continue
+                if cl in ps and isinstance(rs, list) and rs:
+                    ps[cl]['redes'] = [[r.get('t'), r.get('u'), r.get('n')] for r in rs
+                                       if isinstance(r, dict) and r.get('t') and r.get('u')][:8]
+                    n += 1
+        if n:
+            print('   🔗 redes en %d perfil(es)' % n)
+        return n
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin redes en los perfiles (%s)' % str(e)[:60])
+        return 0
+
+
 def _comunidad():
     """Personas en los servidores, en la Lista, con Discord y verificadas.
 
@@ -2079,6 +2126,7 @@ def main():
         return _self_check()
     p = armar()
     perf = p.pop('_perfiles', None) or {}
+    _con_redes(perf)
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
                                                           p['gente']))

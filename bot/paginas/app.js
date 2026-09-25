@@ -2428,7 +2428,7 @@ function pintaPerfil(k) {
       '<div class="pf-id"><span class="pf-pos">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) +
         ' de la temporada' : 'Todavía sin eventos esta temporada') + '</span>' +
       '<h1 class="tit">' + esc(f.n) + '</h1><p class="pf-sub">' + sub +
-      '<span id="pfCrew"></span></p>' +
+      '<span id="pfCrew"></span></p><p class="pf-redes" id="pfRedes" hidden></p>' +
       // no se sigue uno mismo
       (k === YO || (DC && DC.clave === k) ? '' : '<p class="pf-acc">' + botonSigo(k) + '</p>') + '</div>' +
       '<dl class="pf-cifras"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
@@ -2484,6 +2484,11 @@ function pintaPerfil(k) {
       var cw = (D.crews || []).filter(function (c) { return c.clave === x.crew || c.crew === x.crew; })[0];
       $('#pfCrew').innerHTML = ' <i class="sep">·</i> <a class="chip-crew" href="#/crew/' +
         encodeURIComponent(cw ? cw.clave || cw.crew : x.crew) + '">' + esc(cw ? cw.crew : x.crew) + '</a>';
+    }
+    // 🔑 SUS REDES: las que eligió mostrar desde Mi cuenta (ver `secRedes()`)
+    if ((x.redes || []).length) {
+      $('#pfRedes').innerHTML = redes(x.redes, 'chica');
+      $('#pfRedes').hidden = false;
     }
     var dus = x.du || [];
     var g = dus.filter(function (d) { return d[2]; }).length;
@@ -2639,8 +2644,11 @@ var RED_ICONO = {
   twitch: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h15v10l-4 4h-4l-3 3v-3H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 7v4M15 7v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   kick: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4v6l5-6h5l-6 8 6 10h-5l-5-7v7H5z" fill="currentColor"/></svg>',
 };
+RED_ICONO.spotify = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7 9.6c3.4-1 7-.6 10 1M7.6 12.9c2.9-.8 5.7-.4 8.2.9M8.2 16c2.2-.5 4.3-.3 6.1.7" fill="none" stroke="var(--ng,#030304)" stroke-width="1.6" stroke-linecap="round"/></svg>';
+RED_ICONO.reddit = '<svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="14" rx="8" ry="5.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="13.6" r="1.2" fill="currentColor"/><circle cx="15" cy="13.6" r="1.2" fill="currentColor"/><path d="M12 8.5l1.3-4.4 3.6 1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="5.3" r="1.4" fill="currentColor"/></svg>';
+RED_ICONO.bluesky = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11c-1.5-3-5-6.5-8-6.5-1.2 0-1.5 1.5-1 3.5.6 2.6 2.4 3.6 5 3.4-3 .6-4 2.4-2.4 4.1 1.8 2 4.4 0 6.4-3.5 2 3.5 4.6 5.5 6.4 3.5 1.6-1.7.6-3.5-2.4-4.1 2.6.2 4.4-.8 5-3.4.5-2-.2-3.5-1-3.5-3 0-6.5 3.5-8 6.5z" fill="currentColor"/></svg>';
 var RED_NOMBRE = { instagram: 'Instagram', youtube: 'YouTube', x: 'X', tiktok: 'TikTok',
-  twitch: 'Twitch', kick: 'Kick' };
+  twitch: 'Twitch', kick: 'Kick', spotify: 'Spotify', reddit: 'Reddit', bluesky: 'Bluesky' };
 function redes(rs, cl) {
   return (rs || []).map(function (r) {
     return '<a class="red ' + (cl || '') + '" href="' + esc(r[1]) + '" target="_blank" ' +
@@ -2911,12 +2919,58 @@ function secProximos() {
    Discord contesta «invalid redirect_uri» y no pasa nada más. */
 var DC_APP = '1550026808404217926';
 var DC = leerLS('lg:dc', null);
-function urlLogin() {
-  var st = Math.random().toString(36).slice(2) + Date.now().toString(36);
+/* 🔑 «MIS REDES» PIDE OTRO PERMISO: `connections`, sólo cuando la persona lo
+   toca. Entrar sigue pidiendo sólo `identify`. El permiso de redes queda en
+   memoria mientras la página está abierta —para poder guardar— y nunca en
+   el dispositivo. */
+var DC_TOKEN = null, REDES_MIAS = null;
+function urlLogin(conRedes) {
+  var st = (conRedes ? 'r' : 'i') + Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
-    '&redirect_uri=' + encodeURIComponent(location.origin + '/') + '&scope=identify' +
-    '&prompt=none&state=' + encodeURIComponent(st);
+    '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
+    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : 'identify') +
+    '&prompt=' + (conRedes ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
+}
+function pedirRedes(mostrar) {
+  var cuerpo = { token: DC_TOKEN };
+  if (mostrar) cuerpo.mostrar = mostrar;
+  return fetch('/api/cuenta/redes', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(cuerpo) })
+    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); });
+}
+function secRedes() {
+  if (!DC || !DC.clave) return '';
+  var R = REDES_MIAS;
+  var cab = '<section class="pop-sec" id="secRedes"><h4>&#128279; Mis redes en mi perfil</h4>';
+  if (!R || !DC_TOKEN) {
+    return cab + '<p class="nota">Mostrá en tu perfil las redes que ya tenés conectadas en Discord ' +
+      '(Instagram, TikTok, YouTube…). Discord te pide permiso para leerlas.</p>' +
+      '<button type="button" class="btn sec ancho" id="dcRedes">Elegir mis redes</button></section>';
+  }
+  if (R.error) {
+    return cab + '<p class="nota">' + (R.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: escribí ' +
+      '<code>/verificar</code> en Discord.' : 'No pude leer tus redes. Probá de nuevo.') + '</p>' +
+      '<button type="button" class="btn sec ancho" id="dcRedes">Probar de nuevo</button></section>';
+  }
+  if (!(R.publicas || []).length) {
+    return cab + '<p class="nota">No tenés redes públicas en Discord. Andá a <b>Ajustes → Conexiones</b>, ' +
+      'conectá tu Instagram, TikTok o YouTube y activá <b>«Mostrar en el perfil»</b>. Después volvé acá.</p>' +
+      '<button type="button" class="btn sec ancho" id="dcRedes">Ya las conecté</button></section>';
+  }
+  var ya = {};
+  (R.guardadas || []).forEach(function (r) { ya[r.t + ':' + r.n] = 1; });
+  var nada = !(R.guardadas || []).length;
+  return cab + '<div class="redes-el">' + R.publicas.map(function (r) {
+    var id = r.t + ':' + r.n;
+    return '<label><input type="checkbox" value="' + esc(id) + '"' + (nada || ya[id] ? ' checked' : '') +
+      '><span class="red chica">' + (RED_ICONO[r.t] || '') + '</span><span>' + esc(RED_NOMBRE[r.t] || r.t) +
+      ' <small>' + esc(r.n) + '</small></span></label>';
+  }).join('') + '</div><button type="button" class="btn ancho" id="dcRedesGuardar">Guardar en mi perfil</button>' +
+    (nada ? '' : '<button type="button" class="btn sec ancho" id="dcRedesQuitar">Quitar todas</button>') +
+    '<p class="nota" id="redesNota">' + (nada ? 'Todavía no mostrás ninguna.' : 'Tu perfil muestra ' +
+      R.guardadas.length + '.') + ' Los cambios aparecen en la próxima actualización (cada media hora).</p>' +
+    '</section>';
 }
 // ⚠️ ANTES DEL ENRUTADO: Discord vuelve con el permiso en el `#`, que es
 // justo lo que usa el enrutado de la página. Se lee, se limpia y recién
@@ -2933,6 +2987,8 @@ function volverDeDiscord() {
   var st = '';
   try { st = sessionStorage.getItem('lg:estado') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) { st = ''; }
   if (!q.access_token || !st || q.state !== st) return;
+  var porRedes = st.charAt(0) === 'r';
+  if (porRedes) DC_TOKEN = q.access_token;
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })
     .then(function (r) { return r.json(); })
@@ -2948,6 +3004,13 @@ function volverDeDiscord() {
       pintaPaneles();
       pintaPopCuenta();
       $('#popCuenta').hidden = false;
+      if (porRedes) {
+        pedirRedes(null).then(function (R) {
+          REDES_MIAS = R;
+          pintaPopCuenta();
+          $('#popCuenta').hidden = false;
+        }).catch(function () { REDES_MIAS = { error: 'red' }; pintaPopCuenta(); });
+      }
     })
     .catch(function () { /* si falla, queda como estaba */ });
 }
@@ -2986,7 +3049,7 @@ function pintaPopCuenta() {
         ' Mi país</a>' : '') +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
       '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secProximos() + secSigo();
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secRedes() + secProximos() + secSigo();
     return;
   }
   if (!f && DC) {
@@ -3020,7 +3083,7 @@ function pintaPopCuenta() {
     (DC ? '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' : '') +
     '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
     (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar) +
-    secProximos() + secSigo();
+    secRedes() + secProximos() + secSigo();
 }
 function pintaYoRes(q) {
   var caja = $('#yoRes');
@@ -3303,6 +3366,26 @@ function eventos() {
     }
     if (e.target.closest('#dcEntrar')) {
       location.href = urlLogin();
+      return;
+    }
+    if (e.target.closest('#dcRedes')) {
+      location.href = urlLogin(true);
+      return;
+    }
+    var rg = e.target.closest('#dcRedesGuardar,#dcRedesQuitar');
+    if (rg) {
+      var elegidas = rg.id === 'dcRedesQuitar' ? [] : $$('#secRedes input:checked').map(function (x) {
+        return x.value;
+      });
+      rg.disabled = true;
+      pedirRedes(elegidas).then(function (R) {
+        if (R && R.guardadas) REDES_MIAS = R;
+        pintaPopCuenta();
+        var n = $('#redesNota');
+        if (n) n.innerHTML = R && R.guardadas ? '&#10003; Guardado. ' + (R.guardadas.length ? 'Tu perfil va a ' +
+          'mostrar ' + R.guardadas.length + (R.guardadas.length === 1 ? ' red' : ' redes') : 'Tu perfil no ' +
+          'muestra ninguna') + ' desde la próxima actualización (cada media hora).' : 'No pude guardar. Probá de nuevo.';
+      }).catch(function () { rg.disabled = false; });
       return;
     }
     if (e.target.closest('#yoOlvidar')) {

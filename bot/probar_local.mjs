@@ -1510,6 +1510,56 @@ console.log('\nMI CUENTA CON DISCORD\n');
   delete PUESTO['d:555000111222333444'];
 }
 
+console.log('\nMIS REDES EN MI PERFIL\n');
+
+{
+  const { redesPublicas } = await import('./worker.js');
+  const conex = [
+    { type: 'instagram', name: 'konan.rap', visibility: 1 },
+    { type: 'twitter', name: 'konan_x', visibility: 1 },
+    { type: 'youtube', id: 'UC123', name: 'Konan TV', visibility: 1 },
+    { type: 'tiktok', name: 'escondido', visibility: 0 },
+    { type: 'steam', name: 'konan_gamer', visibility: 1 },
+  ];
+  const pub = redesPublicas(conex);
+  ok('sólo las públicas y de redes que sirven (Steam no, la oculta no)',
+     pub.map((r) => r.t).join(',') === 'instagram,x,youtube', JSON.stringify(pub));
+  ok('cada una con su link', pub[0].u === 'https://www.instagram.com/konan.rap/' &&
+     pub[1].u === 'https://x.com/konan_x' && pub[2].u === 'https://www.youtube.com/channel/UC123',
+     JSON.stringify(pub.map((r) => r.u)));
+
+  const redes = async (cuerpo) => {
+    const r = await worker.fetch(new Request('https://x/cuenta/redes', {
+      method: 'POST', body: JSON.stringify(cuerpo),
+    }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  const antes = globalThis.fetch;
+  const discord = (sinPermiso) => async (url) => (String(url).endsWith('/connections')
+    ? (sinPermiso ? new Response('{}', { status: 403 }) : new Response(JSON.stringify(conex), { status: 200 }))
+    : new Response(JSON.stringify({ id: '555000111222333555', username: 'konan_' }), { status: 200 }));
+  let r = await redes({ token: 'x' });
+  ok('un permiso con forma rara se rechaza', r.status === 400);
+  globalThis.fetch = discord(true);
+  r = await redes({ token: 'permisoBueno1234567890' });
+  ok('sin el permiso de conexiones, lo dice', r.status === 403 && r.json.error === 'permiso');
+  globalThis.fetch = discord(false);
+  r = await redes({ token: 'permisoBueno1234567890' });
+  ok('sin perfil en la Liga no se guarda nada', r.status === 409 && r.json.error === 'sin_perfil');
+  PUESTO['d:555000111222333555'] = 'konan';
+  r = await redes({ token: 'permisoBueno1234567890' });
+  ok('con perfil: ofrece las públicas y dice que no guardó ninguna',
+     r.status === 200 && r.json.publicas.length === 3 && r.json.guardadas.length === 0);
+  r = await redes({ token: 'permisoBueno1234567890', mostrar: ['instagram:konan.rap', 'tiktok:escondido'] });
+  ok('guarda sólo las elegidas que siguen públicas (la oculta no entra)',
+     r.status === 200 && r.json.guardadas.length === 1 && JSON.parse(PUESTO['redes:konan']).length === 1,
+     PUESTO['redes:konan']);
+  r = await redes({ token: 'permisoBueno1234567890', mostrar: [] });
+  ok('y «Quitar» las borra de KV', r.status === 200 && !('redes:konan' in PUESTO));
+  globalThis.fetch = antes;
+  delete PUESTO['d:555000111222333555'];
+}
+
 console.log('\n/WEBSITE Y /NOTIFY\n');
 
 {
