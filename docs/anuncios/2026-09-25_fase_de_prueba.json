@@ -124,9 +124,20 @@
   }
  ],
  "_publicado": {
-  "mensaje": "1553068185467621488",
-  "cuando": "2026-09-25 11:37 AM ET",
-  "link": "https://discord.com/channels/841017460341604382/1498326749748924416/1553068185467621488",
-  "editar": "python herramientas/anunciar.py docs/anuncios/2026-09-25_fase_de_prueba.json --editar 1553068185467621488"
+  "nota": "El primero (11:37 AM ET, sin ping) lo borró Dlx; se volvió a publicar con @everyone en DRA y FFA.",
+  "DRA": {
+   "mensaje": "1553068724943061114",
+   "cuando": "2026-09-25 11:45 AM ET",
+   "everyone": true,
+   "link": "https://discord.com/channels/841017460341604382/1498326749748924416/1553068724943061114",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-09-25_fase_de_prueba.json --editar 1553068724943061114"
+  },
+  "FFA": {
+   "mensaje": "1553068729485627483",
+   "cuando": "2026-09-25 11:45 AM ET",
+   "everyone": true,
+   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1553068729485627483",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-09-25_fase_de_prueba.json --servidor FFA --editar 1553068729485627483"
+  }
  }
 }

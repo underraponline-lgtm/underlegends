@@ -5,6 +5,9 @@
     python herramientas/anunciar.py MENSAJE.json --publicar    lo publica
     python herramientas/anunciar.py MENSAJE.json --editar ID   reemplaza ese mensaje
 
+    --servidor FFA   en el canal de novedades de ese servidor (`canales.FFA.novedades`)
+    --everyone       menciona a todos. SÓLO si Dlx lo pide para ese anuncio
+
 🔑 Dlx, 25/09/2026: *«quiero que anuncies en DRA con el bot un mensaje así
 decorado… en ranking global de DRA, sólo en ese servidor»*. El canal es
 〢🌍〉rankings-liga-global (`canales.DRA.novedades` de
@@ -16,8 +19,11 @@ página: lo que se publica acá aparece ahí solo, en la corrida siguiente
 Publicar en un servidor de 1.700 personas no se deshace: se puede editar, y
 por eso existe `--editar` —Discord no vuelve a notificar un mensaje editado—.
 
-⚠️ SIN MENCIONES, NUNCA: `allowed_mentions` va vacío aunque el JSON diga
-otra cosa. Un @everyone lo decide Dlx, y se agrega a mano si lo pide.
+⚠️ SIN MENCIONES SALVO `--everyone`: `allowed_mentions` va vacío aunque el
+JSON diga otra cosa. Un @everyone lo decide Dlx —lo pidió para el anuncio de
+la fase de prueba, el 25/09/2026— y va como flag de ESA corrida, no en el
+JSON: así un reenvío o una edición no vuelve a sonar sin que nadie lo pida.
+Y editar no notifica nunca: un @everyone agregado en una edición no suena.
 """
 import io
 import json
@@ -29,10 +35,16 @@ sys.path.insert(0, os.path.join(BASE, 'bot'))
 API = 'https://discord.com/api/v10'
 
 
-def canal():
+def canal(sv='DRA'):
     with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
         d = json.load(f)
-    return ((d.get('canales') or {}).get('DRA') or {}).get('novedades')
+    return ((d.get('canales') or {}).get(sv) or {}).get('novedades')
+
+
+def guild(sv='DRA'):
+    with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+        d = json.load(f)
+    return ((d.get('servidores') or {}).get(sv) or {}).get('guild_id')
 
 
 def textos_v2(cs):
@@ -55,9 +67,26 @@ def main():
     # los campos con `_` son notas nuestras (`_leeme`, `_publicado`): no van a Discord
     for k in [k for k in msg if k.startswith('_')]:
         msg.pop(k)
-    msg['allowed_mentions'] = {'parse': []}
-    ch = canal()
-    print('canal: %s (canales.DRA.novedades)\n' % ch)
+    sv = sys.argv[sys.argv.index('--servidor') + 1].upper() if '--servidor' in sys.argv else 'DRA'
+    everyone = '--everyone' in sys.argv
+    msg['allowed_mentions'] = {'parse': ['everyone'] if everyone else []}
+    if everyone:
+        # en un mensaje V2 no hay `content`: la mención va arriba del primer texto
+        if int(msg.get('flags') or 0) & 32768:
+            pila = list(msg.get('components') or [])
+            while pila:
+                c = pila.pop(0)
+                if c.get('type') == 10:
+                    c['content'] = '@everyone\n' + (c.get('content') or '')
+                    break
+                pila = list(c.get('components') or []) + pila
+        else:
+            msg['content'] = ('@everyone ' + (msg.get('content') or '')).strip()
+    ch = canal(sv)
+    if not ch:
+        print('  🔴 no hay canales.%s.novedades en datos/servidores.json' % sv)
+        return 1
+    print('canal: %s (canales.%s.novedades)%s\n' % (ch, sv, ' · CON @everyone' if everyone else ''))
     for e in msg.get('embeds') or []:
         print('  ' + (e.get('title') or ''))
         for l in (e.get('description') or '').split('\n'):
@@ -89,10 +118,9 @@ def main():
         print('\n  🔴 Discord contestó %s: %s' % (r.status_code, r.content.decode('utf-8', 'replace')[:300]))
         return 1
     m = r.json()
-    with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
-        guild = ((json.load(f).get('servidores') or {}).get('DRA') or {}).get('guild_id')
-    print('\n  ✅ %s: https://discord.com/channels/%s/%s/%s'
-          % ('editado' if '--editar' in sys.argv else 'publicado', guild, ch, m.get('id')))
+    print('\n  ✅ %s: https://discord.com/channels/%s/%s/%s%s'
+          % ('editado' if '--editar' in sys.argv else 'publicado', guild(sv), ch, m.get('id'),
+             ' · menciona a todos: %s' % m.get('mention_everyone') if everyone else ''))
     return 0
 
 
