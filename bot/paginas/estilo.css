@@ -130,6 +130,11 @@ text-shadow:3px 3px 0 var(--tls)}
 .hero{position:relative;display:grid;gap:34px;align-items:center;
 grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);padding:6px 0 4px}
 .hero .campeones{justify-self:center}
+/* ⚠️ CON `.hero` DELANTE, A PROPÓSITO: las reglas de 228 px de más abajo
+   ganaban por estar después, y la tarjeta no se achicaba nunca (medido). */
+.hero .campeones .hero-carta,.hero .campeones.dos .hc-marco img,.hero .hc-vacio{width:clamp(150px,16vw,228px)}
+.hero-tx{container-type:inline-size;min-width:0}
+@container (max-width:430px){.hero-tx .cifras{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* ⚠️ EL LOGO VA CON LA PILDORA, NO SUELTO. En la primera versión de
    esta cabecera la marca desapareció del todo: el título quedó solo y
    la página de Under Legends no mostraba el logo de Under Legends. */
@@ -1437,6 +1442,11 @@ border-top:1px solid var(--bd2)}
    nadie la use. */
 @media(max-width:1100px){
   .cal-dos{grid-template-columns:1fr}
+  .campeones{gap:14px}
+  .campeones .corona{font-size:.62rem;letter-spacing:.12em}
+  .hc-vacio{padding:12px 8px;gap:7px}
+  .hc-vacio>b{font-size:1.1rem}
+  .hc-vacio p{font-size:.78rem}
   .hero{grid-template-columns:minmax(0,1fr) auto}
   .ev-cab{grid-template-columns:1fr}
 }
@@ -1470,7 +1480,13 @@ border-top:1px solid var(--bd2)}
   main{padding:20px 16px calc(84px + env(safe-area-inset-bottom))}
   .cifras b{font-size:1.7rem}
 }
-@media(max-width:860px){
+/* 🔑 LAS DOS TARJETAS VAN AL COSTADO HASTA QUE DE VERDAD NO ENTRAN. Dlx,
+   25/09/2026: «tienen que estar a la derecha, no abajo». El corte estaba en
+   860 px —medido: a 860 bajaban, y entre 900 y 1.000 el texto quedaba en
+   200 px—; ahora las tarjetas se achican con la pantalla y bajan recién en
+   un teléfono, donde al costado no hay lugar. */
+@media(max-width:640px){
+  .hero-tx{width:100%}
   /* 🔴 LA TARJETA DEL CAMPEON BAJA, NO SE ACHICA. Al lado del título en
      una pantalla angosta las dos piezas quedan chicas y ninguna manda. */
   .hero{grid-template-columns:1fr;gap:26px;padding:4px 0 2px;
@@ -1550,6 +1566,9 @@ border-top:1px solid var(--bd2)}
   .menu nav a span{display:block;max-width:100%;overflow:hidden;white-space:nowrap}
 }
 @media(max-width:400px){
+  /* en el teléfono más chico las dos tarjetas se reparten el ancho */
+  .hero .campeones .hero-carta,.hero .campeones.dos .hc-marco img,.hero .hc-vacio{
+  width:calc((100vw - 44px) / 2)}
   /* ⚠️ `minmax(0,1fr)` Y NO `1fr`: `1fr` no baja del ancho de su contenido,
      y a 320 px las cuatro fichas sumaban 7 px más que la pantalla */
   .escalera{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
