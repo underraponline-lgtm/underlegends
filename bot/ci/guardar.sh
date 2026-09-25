@@ -128,7 +128,28 @@ if [ -n "$SUELTOS" ]; then
   echo "🔴 el ciclo cambió y NO se guarda:$SUELTOS"
   echo "   la corrida siguiente no lo va a ver — ¿falta en ARCHIVOS?"
 fi
-if git diff --quiet -- $ARCHIVOS; then
+# 🔴 `git diff` NO VE UN ARCHIVO QUE GIT TODAVÍA NO CONOCE. Un estado que
+# el ciclo crea por primera vez —`autoverificar.json` el 25/09/2026— daba
+# «nada cambió» y no se guardaba nunca: la corrida siguiente arrancaba sin
+# él, lo volvía a crear y tampoco. Y `git add` de un archivo de la lista
+# que no existe muere. Se pregunta de a uno (auditoría del 25/09/2026).
+cambio() {
+  [ -f "$1" ] || return 1
+  if git ls-files --error-unmatch -- "$1" >/dev/null 2>&1; then
+    ! git diff --quiet -- "$1"
+  else
+    return 0
+  fi
+}
+hay_cambios() {
+  for f in $ARCHIVOS; do cambio "$f" && return 0; done
+  return 1
+}
+existentes() {
+  for f in $ARCHIVOS; do [ -f "$f" ] && printf '%s ' "$f"; done
+  return 0
+}
+if ! hay_cambios; then
   echo "nada cambió: no hay nada que commitear"
   exit 0
 fi
@@ -171,7 +192,7 @@ git config user.email "ciclo@users.noreply.github.com"
 # pasaba a contar como «mío» en la segunda.
 CAMBIADOS=""
 for f in $ARCHIVOS; do
-  if [ -f "$f" ] && ! git diff --quiet -- "$f"; then
+  if cambio "$f"; then
     CAMBIADOS="$CAMBIADOS $f"
   fi
 done
@@ -205,11 +226,11 @@ sincronizar() {
 }
 
 sincronizar
-if git diff --quiet -- $ARCHIVOS; then
+if ! hay_cambios; then
   echo "despues de sincronizar no queda nada nuevo"
   exit 0
 fi
-git add $ARCHIVOS
+git add -- $(existentes)
 # ⚠️ EN HORA DEL ESTE, que es la que lee Dlx: «I told you to refer
 # everything as my local time zone EST» (24/09/2026). Decía «UTC».
 # ⚠️ POR PYTHON Y NO POR `TZ=… date`: sin la base de husos, `date` no
@@ -225,7 +246,7 @@ for i in 1 2 3; do
   git push -q origin "HEAD:${GITHUB_REF_NAME}" && exit 0
   echo "push rechazado, reintento $i"
   sincronizar
-  git add $ARCHIVOS
+  git add -- $(existentes)
   git commit -q -m "$MENSAJE" || true
   sleep 5
 done

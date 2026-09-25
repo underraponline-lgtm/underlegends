@@ -94,13 +94,27 @@ def _ddmm(iso):
     edicion. El 96 % de las llaves se edita despues —a veces dias— y el
     evento se jugo cuando se publico, no cuando el organizador termino de
     cargar el campeon.
+
+    🔴 EN HORA DEL ESTE, NO EN UTC. Discord da el instante en UTC y esto
+    lo cortaba ahí, así que un evento de las 10:25 PM ET del 23/09 quedaba
+    del 24/09 (CARABOBO NO SE RINDE VOL.1, auditoría del 25/09/2026). Y la
+    fecha no es sólo lo que se lee: es la mitad de la IDENTIDAD del evento
+    —`procesar_entrada.numeros_por_evento()`— y lo que ordena la racha.
     """
     if not iso:
         return ''
     try:
-        return datetime.datetime.fromisoformat(iso).strftime('%d/%m')
+        t = datetime.datetime.fromisoformat(str(iso).replace('Z', '+00:00'))
     except (ValueError, TypeError):
         return ''
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=datetime.timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        et = ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = datetime.timezone(datetime.timedelta(hours=-4))
+    return t.astimezone(et).strftime('%d/%m')
 
 
 def de_esta_temporada(hallazgos):
@@ -1373,8 +1387,15 @@ def main():
                % (h['guild'], h['canal_id'], h['msg_id'])
                for h in sorted(g['llaves'], key=lambda x: str(x.get('cuando') or ''))
                if h.get('guild') and h.get('canal_id') and h.get('msg_id')]
+        # 🔴 CON EL SERVIDOR EN LA CLAVE. Era `(nombre, fecha)` y `nombre`:
+        # dos llaves «(sin titulo)» de dos servidores daban la misma clave y
+        # la pregunta de una llevaba al mensaje de la otra (auditoría del
+        # 25/09/2026). Por nombre solo queda nada más si ese nombre es de UN
+        # grupo: ante la duda, sin link, que es mejor que el link equivocado.
         if _lk:
-            link_de[(nom, fec)] = link_de[nom] = _lk[-1]
+            for _h in g['llaves']:
+                link_de[(nom, codigo_servidor(_h.get('guild'))[0], fec)] = _lk[-1]
+            link_de[nom] = None if nom in link_de else _lk[-1]
         del_grupo, d_grupo = [], []
         for h in g['llaves']:
             f, d, sab = filas_de(h, nombre=nom, fecha=fec,
@@ -1601,15 +1622,15 @@ def main():
     # que con el nombre solo se volverían una fila.
     lote += [('Evento dudoso', 'llaves de Discord',
               '%s · %s · %s' % (ev, sv_i, fec_i),
-              con_link(mot + '. NO se sumó nada.', (ev, fec_i)))
+              con_link(mot + '. NO se sumó nada.', (ev, sv_i, fec_i)))
              for ev, sv_i, fec_i, mot in retenidos]
     lote += [('Bracket incompleto', 'llaves de Discord',
               '%s · %s · %s' % (ev, sv_i, fec_i),
               ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
                           'guía (Parte 1) lo descarta y NO se sumó nada. Si '
                           'cuenta, completá la final en la llave' % QUIETA_H]
-                         + cosas[:3]) + (' · %s' % link_de[(ev, fec_i)]
-                                         if link_de.get((ev, fec_i)) else ''))
+                         + cosas[:3]) + (' · %s' % link_de[(ev, sv_i, fec_i)]
+                                         if link_de.get((ev, sv_i, fec_i)) else ''))
              for ev, sv_i, fec_i, cosas in incompletos]
     if lote:
         k = P.anotar_varios(lote)

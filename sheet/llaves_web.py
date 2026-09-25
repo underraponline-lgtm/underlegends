@@ -101,20 +101,82 @@ def fecha_iso(fecha):
         return ''
 
 
-def _dia_este(cuando):
-    """La fecha, en hora del este, de un instante ISO en UTC."""
+def _et():
+    try:
+        import zoneinfo
+        return zoneinfo.ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        return datetime.timezone(datetime.timedelta(hours=-4))
+
+
+def _instante_iso(cuando):
     try:
         t = datetime.datetime.fromisoformat(str(cuando).replace('Z', '+00:00'))
     except ValueError:
         return None
     if t.tzinfo is None:
         t = t.replace(tzinfo=datetime.timezone.utc)
+    return t
+
+
+def _dia_este(cuando):
+    """La fecha, en hora del este, de un instante ISO en UTC."""
+    t = _instante_iso(cuando)
+    return t.astimezone(_et()).date() if t else None
+
+
+def instante(link):
+    """Cuándo se publicó el mensaje de ese link, en ms.
+
+    🔑 EL ID DEL MENSAJE YA LO TRAE: un ID de Discord lleva en sus 42 bits
+    de arriba los milisegundos desde el 1/1/2015. No hace falta pedirle
+    nada a Discord ni guardar otra columna.
+    """
     try:
-        import zoneinfo
-        et = zoneinfo.ZoneInfo('America/New_York')
-    except Exception:                                    # noqa: BLE001
-        et = datetime.timezone(datetime.timedelta(hours=-4))
-    return t.astimezone(et).date()
+        i = int(str(link).rstrip('/').rsplit('/', 1)[-1])
+    except (ValueError, TypeError):
+        return None
+    return (i >> 22) + 1420070400000 if i > 0 else None
+
+
+def _primero(links):
+    ms = [x for x in (instante(l) for l in (links or ())) if x]
+    return min(ms) if ms else None
+
+
+def instantes(regs=None):
+    """`{número de evento: ms}`: cuándo se publicó la llave de cada uno."""
+    out = {}
+    for n, r in (leer() if regs is None else regs).items():
+        ms = _primero(r.get('links'))
+        if ms is not None and str(n).isdigit():
+            out[int(n)] = ms
+    return out
+
+
+def ms_de_fecha(fecha):
+    """`'23/09'` -> el mediodía de ese día en hora del este, en ms."""
+    iso = fecha_iso(fecha)
+    if not iso:
+        return None
+    d = datetime.date.fromisoformat(iso)
+    return int(datetime.datetime(d.year, d.month, d.day, 12,
+                                 tzinfo=_et()).timestamp() * 1000)
+
+
+def orden(ms, fecha, desempate):
+    """La clave para poner eventos en el orden en que se jugaron.
+
+    🔴 NI EL `Evento #` NI LA FECHA ALCANZAN. Los eventos de una corrida
+    se numeraban en orden ALFABÉTICO, y FFA juega tres o cuatro por día:
+    el 23/09 la racha leía TöKĪØ (6:56 PM ET) antes que TOKYO VOL.12 (5:36
+    PM ET). Manda el instante en que se publicó la llave; sin link —una
+    llave cargada a mano—, el mediodía de su fecha; y el `desempate` al
+    final (auditoría del 25/09/2026).
+    """
+    if ms is None:
+        ms = ms_de_fecha(fecha)
+    return (ms if ms is not None else float('inf'), desempate)
 
 
 def _bandas(nota):
@@ -318,6 +380,8 @@ def cruzar(pasados, regs):
     for p in pasados:
         p.pop('llave', None)
         dia = _dia_este(p.get('cuando'))
+        _ini = _instante_iso(p.get('cuando'))
+        ini = int(_ini.timestamp() * 1000) if _ini else None
         a = clave_nombre(p.get('nombre'))
         if not dia or not a:
             continue
@@ -342,7 +406,14 @@ def cruzar(pasados, regs):
             else:
                 puntaje = difflib.SequenceMatcher(None, a, b).ratio()
             if puntaje >= PARECIDO:
-                cands.append((puntaje, -abs(dd), str(n)))
+                # ⚠️ LO MÁS CERCA EN EL TIEMPO, EN MINUTOS Y NO EN DÍAS: dos
+                # llaves con el mismo nombre el mismo día empataban siempre y
+                # el anuncio se quedaba sin botón. Con el instante de la
+                # llave, gana la que se publicó más cerca del arranque.
+                ms = _primero(r.get('links'))
+                cerca = (-(abs(ms - ini) // 60000) if ms is not None and ini
+                         else -abs(dd) * 1440)
+                cands.append((puntaje, cerca, str(n)))
         if not cands:
             continue
         cands.sort(reverse=True)

@@ -619,7 +619,12 @@ def _duelos(tope=10):
 
 
 def _rachas(gente, tope=8):
-    """Quién viene encadenando eventos. `racha` es del pool de temporada.
+    """Quién viene encadenando eventos AHORA: `racha_act` del pool.
+
+    🔴 ERA LA MÁXIMA, y la sección dice «vienen encadenando»: alguien con
+    una racha de 5 en la primera semana y cero desde entonces aparecía
+    arriba de todo (auditoría del 25/09/2026). La máxima sigue en «Racha
+    más larga», que es lo que ese récord dice.
 
     🔴 SE DESCARTA LA RACHA MAYOR QUE LOS EVENTOS, PORQUE ES IMPOSIBLE.
     Medido el 23/09/2026: **3 de 54** —Masino y Hassan con racha 3 y UN
@@ -633,9 +638,9 @@ def _rachas(gente, tope=8):
     nota; que aparezca con un número corregido a mano, no.
     """
     con = [{'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '',
-            'r': p.get('racha') or 0, 'ev': p.get('ev') or 0}
+            'r': p.get('racha_act') or 0, 'ev': p.get('ev') or 0}
            for p in gente
-           if 0 < (p.get('racha') or 0) <= (p.get('ev') or 0)]
+           if 0 < (p.get('racha_act') or 0) <= (p.get('ev') or 0)]
     con.sort(key=lambda x: (-x['r'], -x['ev']))
     return con[:tope]
 
