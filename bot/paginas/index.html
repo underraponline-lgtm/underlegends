@@ -312,6 +312,21 @@
   </main>
 </div>
 
+<!-- 🔑 LA LLAVE DE UN EVENTO QUE YA PASÓ («Ver llave» en «Lo que pasó»).
+     Va ANTES del visor de la tarjeta: tocar un nombre abre su tarjeta
+     encima, y al cerrarla se vuelve acá. -->
+<div class="visor" id="visorLlave" hidden>
+  <div class="visor-fondo" data-cerrar-llave></div>
+  <div class="visor-caja ancha" role="dialog" aria-modal="true" aria-labelledby="lNombre">
+    <button class="cerrar" data-cerrar-llave aria-label="Cerrar">&times;</button>
+    <div class="visor-cab">
+      <span class="v-pos" aria-hidden="true">&#127942;</span>
+      <div><h3 id="lNombre"></h3><p id="lSub"></p></div>
+    </div>
+    <div class="llave" id="lCuerpo"></div>
+  </div>
+</div>
+
 <div class="visor" id="visor" hidden>
   <div class="visor-fondo" data-cerrar></div>
   <div class="visor-caja" role="dialog" aria-modal="true" aria-label="Tarjeta">

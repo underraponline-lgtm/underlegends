@@ -93,7 +93,7 @@ jobs:
                    bot/inscripciones.py bot/llaves_a_entrada.py bot/olvidar.py \
                    bot/verificados.py sheet/archivar_temporada.py \
                    sheet/competitivo.py sheet/construir_pool_competitivo.py \
-                   sheet/decidir.py sheet/estilo.py sheet/lobby.py \
+                   sheet/decidir.py sheet/estilo.py sheet/llaves_web.py sheet/lobby.py \
                    sheet/pendientes.py sheet/rankings.py \
                    herramientas/quien_puede_card.py herramientas/roles_de_rango.py \
                    herramientas/simular_score.py herramientas/unir_sellos.py; do

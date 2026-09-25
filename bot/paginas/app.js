@@ -248,10 +248,85 @@ function pintaPasados() {
       ? '<a href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
         'noreferrer">' + esc(e.nombre) + '<i class="ir">&#8599;</i></a>'
       : esc(e.nombre);
+    // 🔑 «VER LLAVE» SÓLO SI LA LLAVE VINO EN EL PAYLOAD. Un botón que
+    // abre una ventana vacía es peor que no tenerlo: sin dato no hay pieza.
+    var ll = e.llave && (D.llaves || {})[e.llave]
+      ? '<button class="ver-llave" data-llave="' + esc(e.llave) + '">' +
+        'Ver llave</button>' : '';
     return '<div class="ev paso"><div><b>' + tit + '</b><small>' + sub +
-      '</small></div><span class="hace">' + esc(cuandoSe(e.cuando)) +
+      '</small>' + ll + '</div><span class="hace">' + esc(cuandoSe(e.cuando)) +
       '</span></div>';
   }).join('');
+}
+
+/* ── la llave de un evento que ya pasó ────────────────────────────── */
+// 🔑 «VER LLAVES». Dlx, 25/09/2026: «un botón de ver llaves de evento y
+// vemos ahí la info y las llaves de forma detallada». La llave viaja en
+// el mismo payload —`D.llaves`, por número de evento— y el cruce con el
+// anuncio lo hace `sheet/llaves_web.py`, con su self-check: acá no se
+// adivina nada.
+//
+// ⚠️ LOS NOMBRES ABREN LA TARJETA de quien está en la tabla, con el mismo
+// `data-k` que el resto de la página. Por eso `#visorLlave` va ANTES de
+// `#visor` en el HTML: la tarjeta se abre encima y al cerrarla se vuelve
+// a la llave.
+var MEDALLA = { 'Campeón': '&#129351;', 'Subcampeón': '&#129352;',
+                'Tercero': '&#129353;', 'Cuarto': '&#127894;' };
+// lo que va en «Podio»: los puestos que se ganan en las dos últimas rondas
+var PODIO = { 'Campeón': 1, 'Subcampeón': 1, 'Tercero': 1, 'Cuarto': 1,
+              'Semifinal': 1 };
+
+function abrirLlave(n) {
+  var L = (D.llaves || {})[n];
+  if (!L) return;
+  var k = {};
+  (D.tabla || []).forEach(function (f) { k[f.n] = f.k; });
+  var quien = function (x) {
+    return k[x] ? '<button class="ql" data-k="' + esc(k[x]) + '">' + esc(x) +
+      '</button>' : esc(x);
+  };
+  $('#lNombre').textContent = L.nombre;
+  $('#lSub').innerHTML = [esc(L.sv), esc(L.fecha),
+    L.participantes ? L.participantes + ' participantes' : '']
+    .filter(Boolean).join(' &middot; ');
+  var fila = function (r) {
+    return '<li><i>' + (MEDALLA[r[1]] || '') + '</i><span>' + quien(r[0]) +
+      '</span><small>' + esc(r[1]) + '</small><b>' + num(r[2]) + '</b></li>';
+  };
+  // ⚠️ ARRIBA SÓLO EL PODIO y la tabla entera al final: con 30 que cobran,
+  // la tabla empujaba la llave —que es lo que se vino a ver— fuera de la
+  // pantalla.
+  var pod = (L.tabla || []).filter(function (r) { return PODIO[r[1]]; });
+  var rondas = (L.rondas || []).map(function (R) {
+    return '<h4>' + esc(R.r) + '</h4><ul class="bts">' + R.b.map(function (b) {
+      // [lados, ganador, nota]: una batalla de 3 o 4 bandas viene junta
+      return '<li>' + b[0].map(function (x) {
+        return '<span class="' + (b[1] && b[1] === x ? 'g' : 'p') + '">' +
+          quien(x) + '</span>';
+      }).join('<i>vs</i>') + (b[2] ? '<small>' + esc(b[2]) + '</small>' : '') +
+        '</li>';
+    }).join('') + '</ul>';
+  }).join('');
+  var links = (L.links || []).map(function (u, i, t) {
+    return '<a class="bajar" href="' + esc(u) + '" target="_blank" ' +
+      'rel="noopener noreferrer"><span>' +
+      (t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord') +
+      '</span><i class="ir">&#8599;</i></a>';
+  }).join('');
+  $('#lCuerpo').innerHTML =
+    (pod.length ? '<h4>Podio</h4><ol class="res">' + pod.map(fila).join('') +
+      '</ol>' : '') + rondas +
+    ((L.tabla || []).length ? '<h4>Los puntos</h4><ol class="res">' +
+      L.tabla.map(fila).join('') + '</ol>' : '') +
+    (links ? '<div class="v-acc">' + links + '</div>' : '');
+  $('#visorLlave').hidden = false;
+  $('#lCuerpo').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarLlave() {
+  $('#visorLlave').hidden = true;
+  if ($('#visor').hidden) document.body.style.overflow = '';
 }
 
 /* ── podio y récords ──────────────────────────────────────────────── */
@@ -898,7 +973,8 @@ function abrir(k) {
 
 function cerrar() {
   $('#visor').hidden = true;
-  document.body.style.overflow = '';
+  // ⚠️ si la llave sigue abierta debajo, la página sigue quieta
+  if ($('#visorLlave').hidden) document.body.style.overflow = '';
   $('#vImg').src = '';
 }
 
@@ -1042,8 +1118,18 @@ function eventos() {
   $('#visor').addEventListener('click', function (e) {
     if (e.target.closest('[data-cerrar]')) cerrar();
   });
+  $('#visorLlave').addEventListener('click', function (e) {
+    if (e.target.closest('[data-cerrar-llave]')) cerrarLlave();
+  });
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-llave]');
+    if (b) abrirLlave(b.dataset.llave);
+  });
+  // ⚠️ Escape cierra lo de arriba primero: la tarjeta, y después la llave
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !$('#visor').hidden) cerrar();
+    if (e.key !== 'Escape') return;
+    if (!$('#visor').hidden) cerrar();
+    else if (!$('#visorLlave').hidden) cerrarLlave();
   });
 
   // Aparición de los paneles y marca en la nav. `IntersectionObserver` y

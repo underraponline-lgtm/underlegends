@@ -367,6 +367,18 @@ def main():
     else:
         print('   (el contador no se mueve: no hubo eventos nuevos)')
 
+    # 🔑 Y LA LLAVE QUEDA GUARDADA PARA EL HUB —«Ver llaves» de «Lo que
+    # pasó»—, recién ahora que las tres hojas y el contador quedaron.
+    # Ver `sheet/llaves_web.py`. Como el aviso de Discord, no puede
+    # tumbar la carga: si falla, lo único que se pierde es el botón.
+    try:
+        import llaves_web
+        k = llaves_web.guardar(planes)
+        print('   ✅ `datos/llaves_t1.json`: %d llave(s) nueva(s) o cambiada(s)'
+              % k)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude guardar las llaves para el hub (%s)' % str(e)[:60])
+
     if not limpiar:
         print('\n   (`Entrada` queda como está — `--limpiar` la vacía)\n')
         return 0
