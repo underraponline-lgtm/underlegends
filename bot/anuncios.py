@@ -90,6 +90,195 @@ def _limpio(s):
     return s
 
 
+# ── el lector ancho: el anuncio de cada servidor, como lo escribe ────────
+#
+# 🔴 LA PLANTILLA DE FFA NO ES LA DE TODOS. Dlx, 25/09/2026: *«cada sv tiene
+# su forma de hacer sus cosas como anunciar cosas»*. Medido ese día sobre
+# los últimos 263 mensajes de los 10 canales que escucha el vigía: el
+# lector de la plantilla se perdía
+#
+#   DRA   «¡5 VIDAS LEGENDS - Edición #5!», TRAP SEASON, SEVEN STREET,
+#         SATURN BATTLES, «## Torneo 🏆: Plaza Underground ##»
+#   SR    GENESIS BATTLES (seis fechas), MITSUBISHI, FIRE RAP, NITRO KINGS,
+#         POLO RALPH LAUREN, COPA FEDERACIÓN, INFINITY RAP
+#   FFA   BELLAS ARTES, Plaza FFA
+#
+# O sea que de DRA —el servidor de la Liga— no avisaba NINGÚN evento.
+#
+# ⚠️ LO QUE TIENEN EN COMÚN NO ES LA FORMA, SON LOS CAMPOS. Cada servidor
+# los escribe a su manera —`𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑` en letras decoradas,
+# `〔𝐑𝐀𝐍𝐆𝐎〕:`, `(ORGANIZADO):`, `↝**__CUPOS__**:`, `● FECHA:`,
+# `Organizador 💼:` o el valor en la línea de abajo— pero son los mismos.
+# Se normaliza cada línea (NFKD: la letra decorada vuelve a ser letra; sin
+# tildes; mayúsculas; lo que no es letra, número o `:` es un espacio) y se
+# pregunta si EMPIEZA con uno de estos nombres.
+#
+# ⚠️ VIVE TAMBIÉN EN `bot/avisos.js`, IGUAL: el vigía lee con eso. Los ata
+# `bot/avisos_casos.json` — ver `bot/avisos_casos.py`.
+
+#: (palabras, tipo, prioridad para el horario: menos es mejor). Las de más
+#: palabras van antes: «HORA INSCRIPCIONES» no es la hora del evento.
+VOCAB = (
+    (('INICIO', 'DEL', 'TORNEO'), 'horario', 1),
+    (('INICIO', 'DEL', 'EVENTO'), 'horario', 1),
+    (('HORA', 'DE', 'INSCRIPCIONES'), 'inscripciones', 9),
+    (('HORA', 'DE', 'INSCRIPCION'), 'inscripciones', 9),
+    (('HORA', 'INSCRIPCIONES'), 'inscripciones', 9),
+    (('HORA', 'INSCRIPCION'), 'inscripciones', 9),
+    (('HORARIO', 'CONFIRMADO'), 'horario', 2),
+    (('ORGANIZADO', 'POR'), 'organizador', 9),
+    (('FORMATO', 'DE', 'COMPETENCIA'), 'modalidad', 9),
+    (('INICIO',), 'horario', 1),
+    (('HORARIOS',), 'horario', 2),
+    (('HORARIO',), 'horario', 2),
+    (('CUANDO',), 'horario', 2),
+    (('ARRANCA',), 'horario', 2),
+    (('COMIENZA',), 'horario', 2),
+    (('EMPIEZA',), 'horario', 2),
+    (('HORA',), 'horario', 3),
+    (('FECHA',), 'fecha', 9),
+    (('DIA',), 'fecha', 9),
+    (('ORGANIZADORES',), 'organizador', 9),
+    (('ORGANIZADORA',), 'organizador', 9),
+    (('ORGANIZADOR',), 'organizador', 9),
+    (('ORGANIZACION',), 'organizador', 9),
+    (('ORGANIZACIOR',), 'organizador', 9),
+    (('ORGANIZADO',), 'organizador', 9),
+    (('ORGANIZA',), 'organizador', 9),
+    (('CUPOS',), 'cupos', 9),
+    (('CUPO',), 'cupos', 9),
+    (('RANGOS',), 'rango', 9),
+    (('RANGO',), 'rango', 9),
+    (('MODALIDAD',), 'modalidad', 9),
+    (('FORMATO',), 'modalidad', 9),
+    (('PREMIOS',), 'premios', 9),
+    (('PREMIO',), 'premios', 9),
+    (('RECOMPENSA',), 'premios', 9),
+    (('JURADOS',), 'jurado', 9),
+    (('JURADO',), 'jurado', 9),
+    (('JUECES',), 'jurado', 9),
+    (('JUEZ',), 'jurado', 9),
+    (('DJ',), 'dj', 9),
+    (('HOST',), 'host', 9),
+    (('INSCRIPCIONES',), 'inscripciones', 9),
+    (('INSCRIPCION',), 'inscripciones', 9),
+    # ⚠️ «Torneo 🏆: Plaza Underground» (DRA): el campo ES el nombre
+    (('TORNEO',), 'titulo', 9),
+)
+
+#: un título así no es un evento: es la segunda parte de otro, o un resultado
+NO_TITULOS = ('SUPLENTES', 'CLASIFICADOS', 'RESULTADOS', 'FELICIDADES',
+              'CANCELAD', 'POSTERGAD', 'SE CANCELA', 'LLAVE', 'BRACKET')
+
+
+def norm_linea(s):
+    """`↝**__𝐂𝐔𝐏𝐎𝐒__**: ♾️` -> `CUPOS :`. Ver el encabezado de esta parte.
+
+    ⚠️ Las marcas de Discord salen antes, enteras: `<t:1789412400:t>` y
+    `<a:reloj:123>` traen letras y `:` que parecerían campos.
+    """
+    import unicodedata
+    s = re.sub(r'<a?:\w+:\d+>|<@!?&?\d+>|<#\d+>|<t:-?\d+(?::[a-zA-Z])?>', ' ',
+               str(s or ''))
+    s = unicodedata.normalize('NFKD', s)
+    out = []
+    for c in s:
+        if unicodedata.category(c).startswith('M'):
+            continue
+        for u in c.upper():
+            out.append(u if ('A' <= u <= 'Z' or '0' <= u <= '9' or u == ':')
+                       else ' ')
+    return ' '.join(''.join(out).split())
+
+
+def campo_linea(nl):
+    """`(tipo, prioridad, palabras)` si la línea normalizada es un campo.
+
+    ⚠️ Y NO UNA ORACIÓN QUE EMPIEZA IGUAL: después del nombre tiene que
+    venir `:`, nada (el valor está abajo), o pocas palabras —«- **PREMIO**
+    ROL CAMPEÓN» de BELLAS ARTES no lleva dos puntos—.
+    """
+    toks = nl.replace(':', ' : ').split()
+    for pal, tipo, pri in VOCAB:
+        if tuple(toks[:len(pal)]) == pal:
+            resto = toks[len(pal):]
+            # «Torneo: X» es el nombre; «TORNEO SNAKE», un título
+            if tipo == 'titulo' and (not resto or resto[0] != ':'):
+                return None
+            if not resto or resto[0] == ':' or len(resto) <= 8:
+                return tipo, pri, len(pal)
+            return None
+    return None
+
+
+def _dos_puntos(s):
+    """Dónde están los dos puntos del campo: el primero fuera de `<…>`."""
+    dentro = 0
+    for i, c in enumerate(s):
+        if c == '<':
+            dentro += 1
+        elif c == '>' and dentro:
+            dentro -= 1
+        elif c in ':：' and not dentro:
+            return i
+    return -1
+
+
+def _valor_linea(raw, k, siguientes):
+    """El valor de un campo: lo que sigue a los dos puntos; si no hay dos
+    puntos, lo que queda de la línea; si eso está vacío, la línea de abajo
+    —salvo que sea otro campo—."""
+    r = _limpio(raw)
+    i = _dos_puntos(r)
+    if i >= 0:
+        v = _valor(r[i + 1:])
+        if v:
+            return v
+    else:
+        resto = ' '.join(norm_linea(r).replace(':', ' : ').split()[k:])
+        if resto:
+            return resto
+    for s in siguientes[:3]:
+        if s.strip():
+            if campo_linea(norm_linea(s)):
+                return ''
+            return _valor(_limpio(s))
+    return ''
+
+
+def campos_lineas(texto):
+    """`{tipo: valor}` de las líneas que son campos, con el lector ancho.
+
+    El horario se queda con el de más prioridad: INICIO DEL TORNEO gana a
+    HORARIO, y HORARIO a HORA. Del resto, el primero.
+    """
+    lineas = str(texto or '').splitlines()
+    out, pri = {}, {}
+    for i, raw in enumerate(lineas):
+        c = campo_linea(norm_linea(raw))
+        if not c:
+            continue
+        tipo, p, k = c
+        if tipo in out and (tipo != 'horario' or pri[tipo] <= p):
+            continue
+        out[tipo], pri[tipo] = _valor_linea(raw, k, lineas[i + 1:]), p
+    return out
+
+
+def _tarjeta(m):
+    """El nombre de la tarjeta del Centro de Competencias de DRA, o `''`.
+
+    La publica su bot como un embed —`🏆 NOMBRE` y «¡Inscríbete presionando
+    el botón de abajo!»— sin texto en el mensaje, así que el lector de
+    texto no la ve.
+    """
+    for e in (m.get('embeds') or []):
+        t = str(e.get('title') or '').strip()
+        if t.startswith('🏆') and 'INSCRIB' in norm_linea(e.get('description')):
+            return t[1:].strip()[:70]
+    return ''
+
+
 def campo(texto, nombre):
     """El valor de un campo de la plantilla, o `''`.
 
@@ -160,6 +349,11 @@ def _valor(s):
     # `@nachonc_` dos veces en esta misma función — la segunda, después
     # de escribir el comentario que dice que no hay que hacerlo.
     s = s.strip().strip('`').strip(' *')
+    # 🔴 Y EL ADORNO QUE QUEDÓ SIN PAR, adelante o al final: «__ ⭐ 4:45PM»,
+    # «EN 15 __», «__** <t:…>». Al final sólo en tandas —`__`, `**`— para no
+    # comerse el `_` de `@nachonc_` (ver arriba).
+    s = s.lstrip(' *_`~')
+    s = re.sub(r'(?:\*\*|__|`|~~)+\s*$', '', s).strip()
     if _OTROS_CAMPOS.search(s):
         return ''
     if not re.search(r'[\w]', s, re.UNICODE):
@@ -176,25 +370,71 @@ def nombre_de(texto):
     guiones.
     """
     for l in _limpio(texto).splitlines():
-        s = l.strip().strip('#*_ ')
-        # la línea de adorno no tiene letras
-        if not re.search(r'[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]', s):
+        # una línea que ya es un campo no es el título (con el lector ancho:
+        # `〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕:` también es un campo)
+        if campo_linea(norm_linea(l)):
             continue
-        # una línea que ya es un campo no es el título
-        if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', s):
+        if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', _sin_md(l)):
             continue
-        # 🔴 EL TITULO VIENE ENVUELTO: `• 🉐 ╎NOMBRE ╎ 🉐 •`. Si hay
-        # separadores `╎`, el nombre es lo del MEDIO; el resto son
-        # adornos que cambian en cada anuncio.
-        if '╎' in s:
-            partes = [x.strip() for x in s.split('╎') if x.strip()]
-            if partes:
-                s = max(partes, key=len)
-        # y lo que queda no puede empezar ni terminar en un emoji suelto
-        s = re.sub(r'^[^\w¿¡]+|[^\w\)\]!?.]+$', '', s, flags=re.UNICODE)
-        if len(s) >= 3:
-            return re.sub(r'\s+', ' ', s)[:70]
+        t = _titulo(l)
+        if t:
+            return t
     return ''
+
+
+def _sin_md(l):
+    """La línea sin el Markdown de Discord: negritas, subrayados, código,
+    encabezados (`#`), citas (`>`) y el `-#` de texto chico."""
+    s = str(l or '')
+    for x in ('**', '__', '~~', '`', '*'):
+        s = s.replace(x, '')
+    return s.strip().lstrip('#>-').strip()
+
+
+_ADORNO = re.compile(r'^[^\w¿¡]+|[^\w\)\]!?.]+$', re.UNICODE)
+
+
+def _titulo(l):
+    """Una línea -> el título limpio, o `''` si no sirve de título."""
+    # ⚠️ la marca de hora de Discord tampoco: «*<t:1788470340:d>*» sola en
+    # una línea quedaba como un título «t:1788470340:d»
+    s = re.sub(r'@everyone|@here|https?://\S+|<t:-?\d+(?::[a-zA-Z])?>', '',
+               _sin_md(l))
+    # la línea de adorno no tiene letras
+    if not re.search(r'[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]', s):
+        return ''
+    # 🔴 EL TITULO VIENE ENVUELTO: `• 🉐 ╎NOMBRE ╎ 🉐 •`. Si hay
+    # separadores `╎`, el nombre es lo del MEDIO; el resto son
+    # adornos que cambian en cada anuncio.
+    if '╎' in s:
+        partes = [x.strip() for x in s.split('╎') if x.strip()]
+        if partes:
+            s = max(partes, key=len)
+    # y los otros envoltorios: `❪🗽❫『GENESIS BATTLES』`, `〈🟣〈INFINITY RAP〉〉`
+    for a, b in (('『', '』'), ('「', '」'), ('〈', '〉')):
+        i = s.find(a)
+        j = s.find(b, i + 1) if i >= 0 else -1
+        if i >= 0 and j > i:
+            s = s[i + 1:j]
+            break
+    # un paréntesis o corchete que sólo guarda un emoji: «[👑] POLO … [👑]»
+    s = re.sub(r'[\[(][^\w\[\]()]*[\])]', ' ', s, flags=re.UNICODE)
+    # lo que queda no puede empezar ni terminar en un emoji suelto, ni en el
+    # `_` de una cursiva, ni en un paréntesis o corchete sin su par
+    # —«( NITRO KINGS )», «🔥 [Plaza FFA] 🔥»—
+    s = _ADORNO.sub('', s).strip('_ ')
+    if s.startswith('(') and s.endswith(')'):
+        s = s[1:-1].strip()
+    if s.endswith(')') and '(' not in s:
+        s = s[:-1]
+    if s.endswith(']') and '[' not in s:
+        s = s[:-1]
+    s = _ADORNO.sub('', s).strip('_ ')
+    # 🔑 LA LETRA DECORADA SE LEE COMO LETRA: «𝐋𝐀 𝐒𝐔𝐏𝐄𝐑𝐕𝐈𝐕𝐄𝐍𝐂𝐈𝐀…» es «LA
+    # SUPERVIVENCIA…», que es como se busca y como se ve en todos lados
+    import unicodedata
+    s = unicodedata.normalize('NFKC', s)
+    return re.sub(r'\s+', ' ', s)[:70] if len(s) >= 3 else ''
 
 
 def cupos(s):
@@ -213,7 +453,12 @@ def cupos(s):
 def parsear(m, servidor, canal, guild=''):
     """Un mensaje -> un anuncio, o `None` si no parece uno."""
     txt = m.get('content') or ''
-    nom = nombre_de(txt)
+    # 🔑 EL LECTOR ANCHO: los campos como los escribe cada servidor (ver
+    # `campos_lineas()`), y la tarjeta del Centro de Competencias de DRA,
+    # que no trae texto.
+    anchos = campos_lineas(txt)
+    tarjeta = '' if txt.strip() else _tarjeta(m)
+    nom = tarjeta or _titulo(anchos.get('titulo') or '') or nombre_de(txt)
     org = campo(txt, CAMPOS['organizador'])
     # ⚠️ EL ORGANIZADOR COMO MENCIÓN —`ORGANIZADOR: <@123…>`, que es como lo
     # escribe Snake Rap— lo borra `_limpio()`. El nombre viene en el mismo
@@ -232,8 +477,31 @@ def parsear(m, servidor, canal, guild=''):
     # línea con letras». Pedir dos campos separa el anuncio del resto
     # sin ningún umbral inventado.
     puestos = {k: campo(txt, v) for k, v in CAMPOS.items()}
-    cuantos = sum(1 for v in puestos.values() if v)
-    if cuantos < 2 or not nom:
+    # ⚠️ LA PLANTILLA MANDA donde la hay —así FFA lee igual que siempre— y
+    # el lector ancho completa lo que ella no ve.
+    for k in puestos:
+        if not puestos[k] and anchos.get(k):
+            puestos[k] = anchos[k]
+    if not org:
+        org = anchos.get('organizador') or ''
+    # 🔴 Y CUENTAN LOS CAMPOS PRESENTES, no sólo los que traen valor: en
+    # «(RANGO)» sin nada al lado, la forma ya dice que es un anuncio.
+    tipos = {k for k, v in puestos.items() if v} | \
+        {k for k in anchos if k != 'titulo'}
+    if tarjeta:
+        tipos |= {'tarjeta', 'boton'}
+    # ⚠️ UNA HORA Y UN @everyone TAMBIÉN SON DOS SEÑALES: el RAMDOM de DRA
+    # trae sólo «HORARIOS» con la lista por país, y a todos llamados.
+    if ('horario' in tipos or 'fecha' in tipos) and \
+            ('@everyone' in txt or '@here' in txt):
+        tipos.add('mencion')
+    if len(tipos) < 2 or not nom:
+        return None
+    # ⚠️ Un título así no es un evento: es la segunda parte de uno
+    # («SUPLENTES»), un resultado («FELICIDADES»), o una prueba del sistema
+    # de competencias de DRA, que se llaman «prueba» a secas.
+    n = norm_linea(nom)
+    if n.startswith(NO_TITULOS) or n == 'PRUEBA':
         return None
     a, b = cupos(puestos.get('cupos'))
     return {
@@ -679,6 +947,28 @@ def _self_check():
     print('   %s los cupos se parten en dos números   %s'
           % ('✅' if ok else '🔴',
              '%s de %s' % ((a or {}).get('inscriptos'), (a or {}).get('cupo_total'))))
+
+    # 🔑 EL LECTOR ANCHO (25/09/2026): cada servidor, como lo escribe. Los
+    # formatos de texto están en `bot/avisos_casos.json`; acá lo que ese
+    # contrato no cubre.
+    card = {'content': '', 'embeds': [{'title': '🏆 LA NOCHE DEL FREE',
+                                       'description': '¡Inscríbete presionando el botón de abajo!'}]}
+    x = parsear(card, 'DRA', 'competencias')
+    ok = bool(x) and x['nombre'] == 'LA NOCHE DEL FREE'
+    mal += not ok
+    print('   %s la tarjeta del Centro de Competencias de DRA   %s'
+          % ('✅' if ok else '🔴', (x or {}).get('nombre', '—')))
+    x = parsear({'content': '', 'embeds': [{'title': '🏆 prueba',
+                                           'description': '¡Inscríbete presionando el botón de abajo!'}]},
+                'DRA', 'competencias')
+    mal += bool(x)
+    print('   %s y la de una prueba del sistema, no' % ('✅' if not x else '🔴'))
+    ok = campo_linea(norm_linea('⚙️*〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: @nachonc_')) == ('organizador', 9, 1) \
+        and campo_linea(norm_linea('<:reloj:1> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 -'))[0] == 'inscripciones' \
+        and campo_linea(norm_linea('Las inscripciones estarán abiertas 10 minutos antes en este canal')) is None \
+        and campo_linea(norm_linea('## TORNEO SNAKE')) is None
+    mal += not ok
+    print('   %s un campo es un campo en letras decoradas; una oración, no' % ('✅' if ok else '🔴'))
 
     # ⚠️ Y LO QUE NO ES «12 de 16» NO SE FUERZA.
     casos = [('12/16/24/32/36', (None, None)), ('♾️', (None, None)),

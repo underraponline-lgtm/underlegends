@@ -79,6 +79,13 @@ const ok = (cond, que) => {
   const anuncios = casos.filter((c) => c.espera.es).length;
   ok(mal === 0, `los ${casos.length} casos dan lo mismo que en Python (${anuncios} anuncios)`);
   ok(casos.length >= 30, 'hay casos de verdad para comparar');
+  // 🔑 la tarjeta del Centro de Competencias de DRA: sin texto, en un embed
+  // (el contrato guarda sólo texto; ver el self-check de bot/anuncios.py)
+  const inscr = '¡Inscríbete presionando el botón de abajo!';
+  const t = A.parsearAnuncio({ content: '', embeds: [{ title: '🏆 LA NOCHE DEL FREE', description: inscr }] });
+  ok(!!t && t.nombre === 'LA NOCHE DEL FREE', 'la tarjeta del Centro de Competencias de DRA');
+  ok(!A.parsearAnuncio({ content: '', embeds: [{ title: '🏆 prueba', description: inscr }] }),
+    'y la de una prueba del sistema, no');
 }
 
 // ── 3 · VAPID y la alta ─────────────────────────────────────────────

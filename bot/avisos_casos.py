@@ -44,7 +44,7 @@ import cuando as CU  # noqa: E402
 
 #: los canales de eventos que hoy tienen anuncios, con su servidor
 CANALES = [('FFA', '1487206325602484295'), ('SR', '863208020900184084'),
-           ('DRA', '1501086026729521202')]
+           ('DRA', '1501086026729521202'), ('DRA', '1500690475089399858')]
 
 #: 🔑 LOS BORDES QUE LOS MENSAJES REALES TODAVIA NO TRAEN. Cada uno es una
 #: forma que el lector de Python ya sabe leer y el de JS tiene que imitar.
@@ -65,6 +65,49 @@ INVENTADOS = [
     '# Evento con' + chr(0xa0) + 'espacio raro\nMODALIDAD:' + chr(0xa0) +
     'libre' + chr(0x2003) + '\nHORARIO:' + chr(0x3000) + 'EN 10 MIN',
     'NOCHE DE FREE\nhorario: en vivo\nmodalidad: libre',
+    # 🔑 LOS FORMATOS DE CADA SERVIDOR (25/09/2026), calcados de los reales:
+    # el lector ancho de `anuncios.campos_lineas()`. Ver su encabezado.
+    '## Torneo 🏆: Plaza Underground ##\n\n## Organizador 💼: <@1>  ##\n\n'
+    '## Modalidad 🆚️: 1 vs 1##\n\n## Cupos 👥️: 8 ##\n\n## Fecha 📅: Hoy ##\n\n@everyone',
+    '( NITRO KINGS )\n｡.｡:+* ﾟ ゜ﾟ +:｡.｡:+ ﾟ\n〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: <@1>\n\n'
+    '〔𝐑𝐀𝐍𝐆𝐎〕: 3\n\n〔𝐌𝐎𝐃𝐀𝐋𝐈𝐃𝐀𝐃〕: TORNEO\n\n'
+    '  〔𝐈𝐍𝐈𝐂𝐈𝐎 𝐃𝐄𝐋 𝐄𝐕𝐄𝐍𝐓𝐎〕: EN 15 MINUTOS\n@everyone',
+    '❪ 🗽 ❫『**__GENESIS BATTLES__**』❪ 🗽 ❫ \nFecha 6\n▰▰▰▰▰\n\n'
+    ' 》<:tg2:1>   ↝**__CUPOS__**: ♾️\n\n 》🥋   ↝**__MODALIDAD__**: PANDILLAS\n'
+    '》🧑‍⚖️   ↝**__ORGANIZADO POR__**: <@1> \n\n'
+    ' 》<:calendario:1>   ↝**__HORA INSCRIPCIONES__**: 20:00 🇨🇱\n\n'
+    '**__INICIO__**: 20:30 🇨🇱\n## FECHA 6',
+    '# <:CorazonLleno:1> ¡5 VIDAS LEGENDS - Edición #5! <:CorazonLleno:1> \n'
+    '▬▬▬▬▬\n\nCinco participantes.\n\n'
+    '**<a:calendario:1> FECHA:** Hoy, Lunes 20 Jul.\n\n'
+    '**<a:reloj_gif_UL:1> HORARIO:**\n<a:Mexico:1> 16:00\n<a:Argentina:1> 19:00\n\n'
+    '<a:ping_UL:1> @everyone',
+    '# 🌌 BELLAS ARTES VOL8🌌\n\n🗓️ **Detalles de la Batalla**\n\n'
+    '● FECHA:  HOY PE MANO\n\n● HORA: EN 20 MINUTOS\n\n'
+    '- **PREMIO** ROL CAMPEÓN, PUNTOS RANKING\n\n● FORMATO: ⚔️  1VS1\n\n'
+    '- **RANGO** PLATA III🥈\n\n- **ORGANIZADOR** \n<@1> <@1> ',
+    '# <:1E_Dragon1_UL:1> RAMDOM <:1E_Dragon1_UL:1> \n\n'
+    'Esta competencia será al azar\n\nHORARIOS\n🇦🇷🇺🇾 | 20:30hs\n'
+    '🇲🇽| 17:30 hs\n\nLas inscripciones estarán abiertas en 5 horas <#1> \n@everyone',
+    '📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n'
+    '<:reloj_snk:1> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 - <:reloj_snk:1>\n\n*<t:1788470428:t>*',
+    '▬▬▬▬▬\n## <:REGLAS:1> **FIRE RAP** <:REGLAS:1>\n▬▬▬▬▬\n\n'
+    '📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n'
+    '<:organizador:1> - 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 - <:organizador:1>\n\n*Velatz 🇨🇱 <@1> *\n\n'
+    '<:tg:1> - 𝐂𝐔𝐏𝐎𝐒 - <:tg:1>\n\n*12/16*',
+    '** • ╎<:FireP:1> _"𝐋𝐀 𝐒𝐔𝐏𝐄𝐑𝐕𝐈𝐕𝐄𝐍𝐂𝐈𝐀 𝐃𝐄𝐋 𝐌𝐀𝐒 𝐅𝐔𝐄𝐑𝐓𝐄 #4"_ ╎ • **\n'
+    '💻  __`ORGANIZADOR:`__ yo\n🎫 __`CUPOS:`__ 16\n⌚ __`HORARIO:`__ aora',
+    '# ***[👑] POLO RALPH LAUREN PRECICLO [👑]***\n\n'
+    '⚙️*〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: @nachonc_ \n\n🎟️*〔𝐂𝐔𝐏𝐎𝐒〕:*16\n\n'
+    ' 🎤 *〔𝐈𝐍𝐈𝐂𝐈𝐎 𝐃𝐄𝐋 𝐄𝐕𝐄𝐍𝐓𝐎〕:*apenas se llenen',
+    # y lo que NO es un anuncio aunque lo parezca
+    '▬▬▬▬▬\n⚜️  SUPLENTES ⚜️\n- <a:MEXICO:1> `MTZ` <a:MEXICO:1>\n▬▬▬▬▬\n'
+    '⌚ __`𝐇𝐎𝐑𝐀𝐑𝐈𝐎:`__ ⭐ 5:30PM HORA MEXICO CENTRAL ⭐\n'
+    '💻  __`ORGANIZADOR:`__ <@1>\n👨‍⚖️ __`JURADO:`__ <@1>\n@everyone',
+    '@everyone \n\nEN 5 MINUTOS ARRANCAMOS VAYAN UNIENDOSE\n\nhttps://discord.gg/x',
+    'Probando…',
+    '🎉 <@1> ¡FELICIDADES! Eres el flamante **Campeón de RAPEROS DOGS** 🏆',
+    '@everyone QUEDA POSTERGADA LA FECHA PARA MAÑANA',
 ]
 
 
