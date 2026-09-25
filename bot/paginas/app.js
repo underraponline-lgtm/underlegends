@@ -216,8 +216,12 @@ var ALIAS = { avisos: 'eventos', duelos: 'ranking' };
 
 function ir() {
   // los menús de arriba se cierran al cambiar de página: quedaban abiertos
-  // tapando la vista nueva si se navegaba sin tocar afuera
+  // tapando la vista nueva si se navegaba sin tocar afuera. Y lo mismo el
+  // visor de tarjetas y el de la llave: desde ahí ahora se abre un país o
+  // una crew, y la página nueva quedaba abajo del visor.
   cerrarPops();
+  if ($('#visor') && !$('#visor').hidden) cerrar();
+  if ($('#visorLlave') && !$('#visorLlave').hidden) cerrarLlave();
   // 🔑 `#/r/<clave>` ES EL PERFIL: la vista es la primera parte y la
   // persona, el resto. Ver `pintaPerfil()`.
   var pedida = ruta(), partes = pedida.split('/');
@@ -1482,7 +1486,14 @@ function abrir(k) {
   if (!f) return;
   $('#vPos').textContent = f.pos && f.pos !== '—' ? '#' + f.pos : '';
   $('#vNombre').textContent = f.n;
-  $('#vSub').innerHTML = [ccTexto(f.cc), esc(f.sv), f.crew ? esc(f.crew) : '']
+  // 🔑 EL PAÍS Y LA CREW SE TOCAN, como en el perfil (Dlx, 25/09/2026: «que
+  // aparezca el mouse para clickear como cualquier perfil»)
+  var pa = String(f.cc || '').toLowerCase();
+  var cr = f.crew && (D.crews || []).filter(function (c) { return c.crew === f.crew; })[0];
+  $('#vSub').innerHTML = [pa && PAIS[pa] ? '<a class="v-lnk" href="#/pais/' + esc(pa) + '">' + ccTexto(pa) +
+      ' ' + esc(nombrePais(pa)) + '</a>' : ccTexto(f.cc), esc(f.sv),
+    f.crew ? (cr ? '<a class="v-lnk" href="#/crew/' + encodeURIComponent(cr.clave || cr.crew) + '">' +
+      esc(f.crew) + '</a>' : esc(f.crew)) : '']
     .filter(Boolean).join(' &middot; ');
   $('#vStats').innerHTML =
     '<div><b>' + (f.ovr || '—') + '</b><span>OVR</span></div>' +
@@ -2620,8 +2631,16 @@ function itemFeed(x) {
   var de = yt ? (x.canal || nombreSv(x.sv) || x.sv) : 'Liga Global';
   return '<a class="fd' + (yt ? ' yt' : '') + '" href="' + esc(x.link) + '" target="_blank" ' +
     'rel="noopener noreferrer" style="--c:' + esc(colorSv(x.sv)) + '">' +
+    // 🔴 ERA `mqdefault` (320×180) Y EL FEED GRANDE LA ESTIRA AL DOBLE: Dlx,
+    // 25/09/2026, «por qué los thumbnails se ven con baja calidad». Ahora la
+    // de 640 en el teléfono y la de 1280 en la compu; si un video no tiene
+    // la grande, `hqdefault` existe siempre. `object-fit:cover` recorta las
+    // bandas negras de la de 640, que es 4:3.
     (yt && x.vid ? '<span class="fd-img"><img src="https://i.ytimg.com/vi/' + esc(x.vid) +
-      '/mqdefault.jpg" alt="" width="320" height="180" loading="lazy" decoding="async">' +
+      '/hq720.jpg" srcset="https://i.ytimg.com/vi/' + esc(x.vid) + '/sddefault.jpg 640w, ' +
+      'https://i.ytimg.com/vi/' + esc(x.vid) + '/hq720.jpg 1280w" sizes="(max-width: 620px) 100vw, 50vw" ' +
+      'onerror="this.onerror=null;this.removeAttribute(\'srcset\');this.src=\'https://i.ytimg.com/vi/' +
+      esc(x.vid) + '/hqdefault.jpg\'" alt="" width="640" height="360" loading="lazy" decoding="async">' +
       '<i aria-hidden="true">&#9654;</i></span>' : '') +
     '<span class="fd-de"><i class="fd-red">' + (yt ? RED_ICONO.youtube : DISCORD_ICONO) + '</i>' +
     esc(de) + '<small>' + esc(cuandoSe(x.t)) + '</small></span>' +
@@ -2933,12 +2952,52 @@ function pintaPopAjustes() {
     '><span>Menos animaciones</span></label>' +
     '<button type="button" class="btn sec ancho" id="ajBorrar">Olvidar quién soy y mis ajustes</button>' +
     '<a class="aj-cambios" href="#/cambios">&#128220; Changelog: lo nuevo de la página' +
-    (CAMBIOS && CAMBIOS.length && CAMBIOS[0].dia > CAMBIOS_VISTO ? ' <b class="nuevo-et">Nuevo</b>' : '') +
+    (CAMBIOS && CAMBIOS.length && CAMBIOS[0].version ? ' <span class="ver">v' + esc(CAMBIOS[0].version) + '</span>' : '') +
+    (CAMBIOS && CAMBIOS.length && nuevaQue(versionDe(CAMBIOS[0]), CAMBIOS_VISTO) ? ' <b class="nuevo-et">Nuevo</b>' : '') +
     '</a>';
   $('#ajH12').value = h;
   $('#ajTz').value = AJ.tz || '';
 }
 function cerrarPops() { $$('.pop').forEach(function (p) { p.hidden = true; }); }
+
+/* ── la fase: prueba, o la temporada en juego ─────────────────────────
+   🔑 Dlx, 25/09/2026: «estamos en prueba todavía» y «la temporada 1 ya
+   tiene fecha: 5 de octubre hasta el 31 de diciembre». Las fechas viajan en
+   el payload desde `comun/temporada.py` (`FECHAS`); qué se muestra lo
+   decide el día de quien mira, así el 5/10 cambia solo, sin tocar nada. */
+function diaLocal(iso) {
+  var p = String(iso || '').split('-');
+  return p.length === 3 ? new Date(+p[0], +p[1] - 1, +p[2]) : null;
+}
+function enPrueba() {
+  var a = D.fase && diaLocal(D.fase.arranca);
+  return !!a && Date.now() < a.getTime();
+}
+function pintaFase() {
+  var c = $('#fase'), f = D.fase;
+  if (!c || !f) { if (c) c.hidden = true; return; }
+  var a = diaLocal(f.arranca), t = diaLocal(f.termina);
+  if (!a || !t) { c.hidden = true; return; }
+  var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+  var dias = function (d) { return Math.round((d - hoy) / 86400000); };
+  var fecha = function (d) {
+    try { return d.toLocaleDateString('es', { day: 'numeric', month: 'long' }); }
+    catch (e) { return d.getDate() + '/' + (d.getMonth() + 1); }
+  };
+  var cuenta = function (n) {
+    return n <= 0 ? 'hoy' : n === 1 ? 'falta 1 día' : 'faltan ' + n + ' días';
+  };
+  var h = '';
+  if (dias(a) > 0) {
+    h = '&#129514; <b>Fase de prueba</b> &middot; la <b>Temporada ' + esc(String(D.temporada || '1').replace(/^T/i, '')) +
+      '</b> arranca el <b>' + esc(fecha(a)) + '</b> (' + cuenta(dias(a)) + ') y termina el ' + esc(fecha(t)) + '.';
+  } else if (dias(t) >= 0) {
+    h = '&#127937; <b>Temporada ' + esc(String(D.temporada || '1').replace(/^T/i, '')) + ' en juego</b> &middot; termina el <b>' +
+      esc(fecha(t)) + '</b> (' + (dias(t) === 0 ? 'hoy' : cuenta(dias(t))) + ').';
+  }
+  c.innerHTML = h;
+  c.hidden = !h;
+}
 
 /* ── el changelog ─────────────────────────────────────────────────────
    🔑 Dlx, 25/09/2026: «abajo de ajustes agrega un changelog… eso de
@@ -2959,8 +3018,23 @@ function cargarCambios(listo) {
       if (c && listo) c.innerHTML = '<p class="nota">No pude cargar el changelog. Probá recargar.</p>';
     });
 }
+// 🔑 «LO NUEVO» ES LA VERSIÓN, NO EL DÍA: hay días con varias. Dlx, 25/09/2026:
+// «cada cambio grande o pequeño se aumentará un .01».
+function versionDe(x) { return x ? String(x.version || x.dia || '') : ''; }
+function nuevaQue(a, b) {
+  var pa = String(a || '').split('.').map(Number), pb = String(b || '').split('.').map(Number);
+  for (var i = 0; i < Math.max(pa.length, pb.length); i++) {
+    var x = pa[i] || 0, y = pb[i] || 0;
+    if (isNaN(x) || isNaN(y)) return String(a) > String(b);
+    if (x !== y) return x > y;
+  }
+  return false;
+}
 function puntoCambios() {
-  var hay = !!(CAMBIOS && CAMBIOS.length && CAMBIOS[0].dia > CAMBIOS_VISTO);
+  var hay = !!(CAMBIOS && CAMBIOS.length && nuevaQue(versionDe(CAMBIOS[0]), CAMBIOS_VISTO));
+  if ($('#verCambios') && CAMBIOS && CAMBIOS.length && CAMBIOS[0].version) {
+    $('#verCambios').textContent = 'v' + CAMBIOS[0].version;
+  }
   if ($('#cambiosNuevo')) $('#cambiosNuevo').hidden = !hay;
   if ($('#bAjustes2')) $('#bAjustes2').classList.toggle('con-nuevo', hay);
 }
@@ -2973,20 +3047,22 @@ function pintaCambios() {
   if (!c || !CAMBIOS) return;
   var antes = CAMBIOS_VISTO;
   c.innerHTML = CAMBIOS.map(function (x) {
+    var nueva = antes && nuevaQue(versionDe(x), antes);
     var f = '';
     try {
       f = new Date(x.dia + 'T12:00:00Z').toLocaleDateString('es', { day: 'numeric', month: 'long',
         year: 'numeric', timeZone: 'UTC' });
     } catch (e) { f = x.dia; }
-    return '<article class="cambio' + (antes && x.dia > antes ? ' es-nuevo' : '') + '">' +
-      '<header><time datetime="' + esc(x.dia) + '">' + esc(f) + '</time>' +
-      (antes && x.dia > antes ? '<span class="nuevo-et">Nuevo</span>' : '') +
+    return '<article class="cambio' + (nueva ? ' es-nuevo' : '') + '">' +
+      '<header>' + (x.version ? '<span class="ver-et">v' + esc(x.version) + '</span>' : '') +
+      '<time datetime="' + esc(x.dia) + '">' + esc(f) + '</time>' +
+      (nueva ? '<span class="nuevo-et">Nuevo</span>' : '') +
       '<h2>' + esc(x.titulo) + '</h2></header><ul>' +
       (x.items || []).map(function (i) { return '<li>' + mdCorto(i) + '</li>'; }).join('') +
       '</ul></article>';
   }).join('') || '<p class="nota">Todavía no hay nada anotado.</p>';
   if (CAMBIOS.length) {
-    CAMBIOS_VISTO = CAMBIOS[0].dia;
+    CAMBIOS_VISTO = versionDe(CAMBIOS[0]);
     guardarLS('lg:cambios', CAMBIOS_VISTO);
     puntoCambios();
   }
@@ -3424,8 +3500,9 @@ function pinta() {
   // `sello` es cuándo se escribió el payload y se puede mover sin que
   // los datos se muevan —correr `subir_web.py` a mano lo pone en
   // «recién» con anuncios de hace dos horas—. Dlx lo vio tal cual.
-  $('#pie').textContent = 'Temporada ' + (D.temporada || '') + ' · datos ' +
-    (cuandoSe(D.leido || D.sello) || 'sin fecha');
+  $('#pie').textContent = (enPrueba() ? 'Fase de prueba' : 'Temporada ' + (D.temporada || '')) +
+    ' · datos ' + (cuandoSe(D.leido || D.sello) || 'sin fecha');
+  try { pintaFase(); } catch (e) { console.error('[pintaFase]', e); }
   try { eventos(); } catch (e) { console.error('[eventos]', e); }
   ir();
   setInterval(pintaRelojes, 1000);

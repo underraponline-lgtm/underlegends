@@ -1681,3 +1681,25 @@ color:var(--tx2);font-size:.86rem}
 .bx.sigue,.camp.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl),0 0 18px rgba(41,178,152,.25);z-index:2}
 .cuadro .ql.sigue span{color:var(--tl)}
 .bx.sigue .ld{opacity:1}
+
+/* ── 1.06: la fase, las versiones y crews y países que se tocan ────────── */
+.fase{margin:12px 0 2px;padding:9px 13px;border:1px solid var(--tls);background:rgba(41,178,152,.08);
+color:var(--tx2);font-size:.95rem;max-width:62ch;clip-path:var(--bisel)}
+.fase b{color:var(--tx)}
+.m-cambios .ver{margin-left:auto;color:var(--tx3);font:700 .72rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.08em}
+.aj-cambios .ver{color:var(--tl);font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.06em}
+.ver-et{font:800 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;color:var(--ng);
+background:var(--tl);padding:4px 7px;border-radius:3px}
+/* 🔑 CREWS Y PAÍSES SE TOCAN COMO UN PERFIL (Dlx, 25/09/2026): la manito, y
+   el recuadro o el nombre celeste al pasar, igual que un rapero. */
+.tp li[data-crew]{cursor:pointer}
+.tp li[data-crew]:hover .nm,.tp li[data-crew]:hover .qn{color:var(--tl)}
+.uno{transition:border-color .15s}
+.uno:hover{border-color:var(--tl)}
+.uno-cab:hover span{color:var(--tl)}
+.pd.grupo .pd-g:hover{border-color:var(--tl)}
+.pd b a:hover{color:var(--tl)}
+.v-lnk{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;cursor:pointer}
+.v-lnk:hover{color:var(--tl)}
+.v-lnk .bf{vertical-align:-1px}

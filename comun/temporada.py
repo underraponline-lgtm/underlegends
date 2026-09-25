@@ -44,6 +44,16 @@ ACTUAL = 't1'
 # misma razon por la que `_ddmm()` usa `timestamp`.
 INICIO = '2026-09-22T00:00:00+00:00'
 
+# 🔑 CUÁNDO SE JUEGA CADA TEMPORADA, para la página. Dlx, 25/09/2026: *«la
+# temporada 1 ya tiene fecha de arranque: 5 de octubre hasta el 31 de
+# diciembre»*, y *«estamos en prueba todavía»*: desde `INICIO` hasta el
+# arranque es la FASE DE PRUEBA.
+#
+# ⚠️ NO MUEVE `INICIO`. Ése decide qué llaves cuentan, y si lo jugado en la
+# fase de prueba se borra el 5/10 o sigue sumando es una pregunta abierta
+# (NOVEDADES.md, «Esperando a Dlx»). Esto sólo se muestra.
+FECHAS = {'t1': ('2026-10-05', '2026-12-31')}
+
 # Las temporadas que existieron, en orden. La pre-temporada NO esta: Dlx,
 # 16/09/2026, «esa info sera borrada e inutilizada, era info de prueba».
 TODAS = ('t1',)
