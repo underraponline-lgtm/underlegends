@@ -44,7 +44,11 @@
       <a href="#/"><i>&#9632;</i><span>Inicio</span></a>
       <a href="#/ranking"><i>&#127942;</i><span>Ranking</span></a>
       <a href="#/tarjetas"><i>&#127183;</i><span>Tarjetas</span></a>
-      <a href="#/duelos"><i>&#9876;</i><span>Duelos</span></a>
+      <!-- 🔑 «DUELOS» PASÓ A SER UN RANKING MÁS, y su lugar es del Pase.
+           Dlx, 25/09/2026: «lo de duelos deberías quitarlo y ahí poner PASE
+           de rapero… próximamente». `#/duelos` sigue andando: abre el
+           ranking de Duelos (ver `ALIAS` en app.js). -->
+      <a href="#/pase"><i>&#127903;</i><span>Pase</span></a>
       <!-- 🔑 «EVENTOS» Y NO UNA OCTAVA ENTRADA. Dlx, 25/09/2026, pidió la
            sección con calendario; los avisos son de eventos, así que viven
            adentro. Ocho casillas no entran en la barra del teléfono (siete
@@ -93,13 +97,12 @@
           <button id="ctaCerrar" aria-label="No mostrar más">&times;</button>
         </div>
       </div>
-      <div class="hero-carta" id="heroCarta" hidden>
-        <span class="corona">Campeón de la temporada</span>
-        <button class="hc-marco" id="hcBtn">
-          <img id="hcImg" alt="" width="300" height="438">
-        </button>
-        <b id="hcNombre"></b>
-      </div>
+      <!-- 🔑 LOS DOS CAMPEONES. Dlx, 25/09/2026: «al costado del campeón de
+           la temporada poner entre paréntesis "actual", porque no acabó la
+           temporada, y al costado poner el campeón del competitivo también».
+           Los arma `pintaHero()`; el del Competitivo sale vacante mientras
+           nadie llegue a su requisito, con quién está más cerca. -->
+      <div class="campeones" id="campeones" hidden></div>
     </header>
 
     <!-- 🔴 EL ESPACIO SOBRABA A LO ANCHO. Dlx, 25/09/2026: «siento que todo
@@ -122,7 +125,7 @@
       <h2><span>&#128197;</span> Lo que pasó</h2>
       <p class="bajada">Los tres últimos eventos, con quién organizó y quién ganó.</p>
       <div id="pasados"></div>
-      <a class="mas" href="#/eventos">Ver el calendario</a>
+      <a class="btn ancho" href="#/eventos">&#128197; Ver el calendario</a>
     </section>
     </div>
 
@@ -135,26 +138,37 @@
     <!-- 🔑 MITAD MAPA, MITAD ACTIVIDAD. Dlx, 25/09/2026: «el mapa está un
          poco grande para lo que es… quizás podamos medir la actividad
          también… partir a la mitad ese mapa de actividad y países». -->
+    <div class="col">
     <section class="blk" id="secMapa" hidden>
       <h2><span>&#127758;</span> La Liga hoy</h2>
       <div class="hoy">
         <div class="hoy-mapa">
           <div class="mapa-dato" id="mapaDato"></div>
           <div class="mapa" id="mapa"></div>
-          <div class="mapa-otros" id="mapaOtros"></div>
         </div>
         <div class="hoy-ac" id="actividad" hidden></div>
       </div>
     </section>
-    </div>
 
-    <!-- 🔑 LAS NOVEDADES DE LA LIGA: lo último de 〢🌍〉rankings-liga-global en
-         DRA, y las redes. -->
+    <!-- 🔑 LO ÚLTIMO DE LA LIGA, ABAJO DE «LA LIGA HOY», CON FLECHAS. Dlx,
+         25/09/2026: «abajo de la Liga hoy irían los posts más recientes de
+         las redes sociales, con flechas de derecha a izquierda para ir a la
+         siguiente página en ese panel y regresar». Los anuncios de la Liga
+         en DRA y los videos de YouTube de cada servidor; Instagram y TikTok
+         no abren sus publicaciones sin una app aprobada, así que de esas
+         van los links. Ver `_feed()` en bot/subir_web.py. -->
     <section class="blk" id="secNov" hidden>
-      <div class="nov-cab"><h2><span>&#128240;</span> Novedades de la Liga</h2>
-        <div class="nov-redes" id="novRedes"></div></div>
-      <div class="novedades" id="novedades"></div>
+      <div class="nov-cab"><h2><span>&#128240;</span> Lo último de la Liga</h2>
+        <div class="feed-nav" id="feedNav">
+          <button class="cal-ir" id="feedAntes" aria-label="Más nuevos">&#8249;</button>
+          <span id="feedPag"></span>
+          <button class="cal-ir" id="feedDespues" aria-label="Más viejos">&#8250;</button>
+        </div></div>
+      <div class="feed" id="feed"></div>
+      <div class="nov-redes" id="novRedes"></div>
     </section>
+    </div>
+    </div>
 
     <!-- 🔑 EL TOP 5 DE CADA RANKING, NO SÓLO EL DE TEMPORADA. Dlx,
          25/09/2026: «que los cinco de arriba muestre el top 5 de todos los
@@ -182,7 +196,7 @@
 
   <!-- ══ RANKING ═════════════════════════════════════════════════ -->
   <section class="vista" data-vista="ranking" hidden>
-    <h1 class="tit">Ranking <em>de temporada</em></h1>
+    <h1 class="tit">Los <em>rankings</em></h1>
     <!-- 🔴 DECIA «el orden sale de los puntos» Y NO ES CIERTO. Medido el
          24/09/2026 en la pantalla: #1 Hassan con 10.833 arriba de #2
          PichulaMc con 11.833. El orden es por OVR —86, 79, 79, 75, 74— que
@@ -193,9 +207,8 @@
          más eventos. Lo que no puede pasar es que la página diga una cosa y
          la tabla haga otra — y las columnas están ahí, así que cualquiera
          lo ve. Se puede reordenar tocando el encabezado. -->
-    <p class="bajada">El orden sale del <b>OVR</b>, que es el mismo número
-    que lleva la tarjeta. Tocá un encabezado para ordenar por puntos o por
-    eventos, y un nombre para abrir su perfil.</p>
+    <p class="bajada" id="bajadaRk">El orden sale del <b>OVR</b>, que es el
+    mismo número que lleva la tarjeta.</p>
     <!-- 🔑 SUBCATEGORIAS. Dlx, 24/09/2026: «crea subcategorías al
          seleccionar opciones, por ejemplo en ranking, porque hay bastantes
          rankings». Son tres vistas de la MISMA gente con otra pregunta:
@@ -204,10 +217,22 @@
 
          ⚠️ No son tres tablas: es una que cambia de columnas y de orden.
          Tres tablas serían tres lugares donde arreglar el mismo bug. -->
+    <!-- 🔑 TODOS LOS RANKINGS, NO TRES. Dlx, 25/09/2026: «agregar los
+         rankings que no hay; eliminar camino al competitivo». Son los de la
+         planilla oficial —Temporada, Competitivo, Podios, Duelos, Mundial—
+         más Rachas y Crews, que la página ya tenía sueltos; los que todavía
+         no tienen datos se ven y dicen que vienen. -->
     <div class="subs" id="subRanking">
       <button class="sub on" data-sub="temporada">Temporada</button>
+      <button class="sub" data-sub="competitivo">Competitivo</button>
+      <button class="sub" data-sub="duelos">Duelos</button>
       <button class="sub" data-sub="podios">Podios</button>
-      <button class="sub" data-sub="camino">Camino al competitivo</button>
+      <button class="sub" data-sub="rachas">Rachas</button>
+      <button class="sub" data-sub="paises">Países</button>
+      <button class="sub" data-sub="crews">Crews</button>
+      <button class="sub pronto" data-sub="mw">Most Wanted<i>pronto</i></button>
+      <button class="sub pronto" data-sub="misiones">Misiones<i>pronto</i></button>
+      <button class="sub pronto" data-sub="ligas">Ligas<i>pronto</i></button>
     </div>
     <section class="blk">
       <div class="filtros">
@@ -219,21 +244,9 @@
       <p class="nota" id="notaSub"></p>
       <div class="tabla-caja">
         <table id="tabla">
-          <thead><tr>
-            <th data-orden="pos" class="asc">#</th>
-            <th data-orden="n">Rapero</th>
-            <th data-orden="ovr">OVR</th>
-            <th data-orden="rg" class="col-rg">Rango</th>
-            <th data-orden="sv" class="col-sv">Sv</th>
-            <th data-orden="pts">Puntos</th>
-            <th data-orden="ev">Ev</th>
-            <!-- las tres de «Podios». Sólo se ven en esa subcategoría:
-                 en la de Temporada serían tres columnas en cero para casi
-                 todos, comiéndose el ancho del teléfono. -->
-            <th data-orden="oro" class="col-pod">&#129351;</th>
-            <th data-orden="seg" class="col-pod">&#129352;</th>
-            <th data-orden="ter" class="col-pod">&#129353;</th>
-          </tr></thead>
+          <!-- 🔑 LAS COLUMNAS LAS PONE CADA RANKING: ver `SUBS` en app.js.
+               Todas se ordenan, de mayor a menor o al revés. -->
+          <thead id="cabTabla"></thead>
           <tbody id="filas"></tbody>
         </table>
       </div>
@@ -248,8 +261,12 @@
     de la temporada y se piden en Discord con <code>/card</code>.</p>
     <section class="blk" id="secComparar">
       <h2><span>&#9878;</span> Comparar dos</h2>
-      <p class="bajada">Elegí dos y mirá sus tarjetas y sus números uno al lado
-      del otro. El que va ganando cada fila queda en verde.</p>
+      <!-- 🔑 PRIMERO QUÉ TARJETA. Dlx, 25/09/2026: «en comparación de 2
+           elegir la categoría primero, o sea qué se va a comparar». Cada
+           tarjeta mide otra cosa, así que cada una trae sus propias filas. -->
+      <p class="bajada">Elegí qué tarjeta comparar y después a quiénes. El que
+      va ganando cada fila queda en verde.</p>
+      <div class="subs cmp-cat" id="cmpCat"></div>
       <div class="cmp" id="cmp"></div>
     </section>
 
@@ -262,47 +279,23 @@
     </section>
   </section>
 
-  <!-- ══ DUELOS ══════════════════════════════════════════════════ -->
-  <section class="vista" data-vista="duelos" hidden>
-    <h1 class="tit">Duelos <em>1v1</em></h1>
-    <!-- 🔴 DECÍA «fuera del bracket» Y ERA AL REVÉS: los duelos salen de
-         las llaves, son sus batallas uno contra uno. Dlx, 24/09/2026, al
-         ver a Makma #1 del ranking con 2 duelos ganados: «¿no significa
-         que ha ganado más de un duelo?». Estaba bien contado —sus otras
-         victorias fueron triples— pero la página no lo decía, y un número
-         correcto que se lee mal es un error de la página.
-         ⚠️ La regla es de Dlx (21/09, reconfirmada el 24/09): los
-         triples NO cuentan. -->
-    <p class="bajada">Las batallas <b>uno contra uno</b> de las llaves.
-    Los triples, las de cuatro y las de equipos no cuentan: ahí no hay un
-    solo rival. Por eso alguien puede ir primero en el ranking con pocos
-    duelos. Se ordena por <b>ganados</b> y no por porcentaje: un 1 de 1 da
-    100&nbsp;% y no dice nada.</p>
-    <div class="dos">
-      <section class="blk" id="secDuelos">
-        <h2><span>&#9876;</span> Más duelos ganados</h2>
-        <div class="duelos" id="listaDuelos"></div>
-        <p class="nota solo-ancho">La barra clara es cuántos peleó; la llena, cuántos ganó.</p>
-      </section>
-      <div class="col">
-        <section class="blk" id="secPodios">
-          <h2><span>&#127941;</span> Medallero</h2>
-          <p class="bajada">Primeros, segundos y terceros puestos de la temporada.</p>
-          <div class="podios" id="listaPodios"></div>
-        </section>
-        <section class="blk" id="secRachas">
-          <h2><span>&#128293;</span> Rachas</h2>
-          <!-- 🔑 LA DEFINICION DE DLX, 25/09/2026. Decía «eventos seguidos sin
-               faltar», que era un tercer significado: la tarjeta contaba
-               duelos ganados y los récords, eventos. Ver `_umbral()` en
-               sheet/rankings.py. -->
-          <p class="bajada">La que llevan <b>ahora</b>: eventos seguidos llegando a
-          <b>semifinal</b> (o a la <b>final</b> cuando la llave es de 8). La más
-          larga está en Récords.</p>
-          <div class="rachas" id="rachas"></div>
-        </section>
+  <!-- ══ PASE ════════════════════════════════════════════════════
+       🔑 Dlx, 25/09/2026: «ahí poner PASE de rapero… próximamente». Todavía
+       no tiene reglas, así que la página no inventa ninguna: dice que viene
+       y deja activar los avisos para enterarse. -->
+  <section class="vista" data-vista="pase" hidden>
+    <h1 class="tit">Pase de <em>rapero</em></h1>
+    <section class="blk pase">
+      <span class="pase-tag">Próximamente</span>
+      <span class="pase-ico" aria-hidden="true">&#127903;</span>
+      <h2 class="pase-tit">Algo nuevo viene para la temporada</h2>
+      <p class="bajada">El Pase de rapero todavía no tiene fecha. Cuando salga
+      se anuncia en la Liga — y si activás los avisos, te llega al teléfono.</p>
+      <div class="pase-acc">
+        <a class="btn" href="#/avisos">&#128276; Activar los avisos</a>
+        <a class="btn sec" href="#/ranking">Mientras tanto, los rankings</a>
       </div>
-    </div>
+    </section>
   </section>
 
   <!-- ══ EVENTOS ═════════════════════════════════════════════════
@@ -314,6 +307,13 @@
     <p class="bajada">Todo lo que se jugó en la temporada y lo que viene, con el
     color de cada servidor. Tocá un día para ver sus eventos, y un evento jugado
     para ver su llave.</p>
+    <!-- 🔑 LO QUE VIENE, LO QUE PASÓ Y CÓMO NO PERDERSE NADA. Dlx,
+         25/09/2026: «hacer un poco más motivador esto, porque se ve algo
+         muerto… la opción de sincronizar esto con el calendario de Google».
+         El calendario de la Liga es un .ics que el Worker sirve tal cual
+         (`/calendario.ics`): Google, Apple y Outlook se suscriben y se
+         actualizan solos. -->
+    <section class="blk ev-cab" id="evCab" hidden></section>
     <div class="cal-dos">
       <section class="blk" id="secCal">
         <div class="cal-cab">
@@ -367,8 +367,8 @@
          encima de los países». -->
     <section class="blk" id="secCrews">
       <h2><span>&#129309;</span> Las crews</h2>
-      <p class="bajada">Las crews con tres o más raperos en la temporada, por
-      los puntos que suman.</p>
+      <p class="bajada">Las crews con gente en la temporada, por los puntos que
+      suman. Para tener puesto hacen falta <b>tres raperos</b>.</p>
       <div class="crews" id="crews"></div>
     </section>
     <section class="blk" id="secPaises">
@@ -381,7 +381,8 @@
   <!-- ══ GUIA ════════════════════════════════════════════════════ -->
   <section class="vista" data-vista="guia" hidden>
     <h1 class="tit">Cómo <em>funciona</em></h1>
-    <p class="bajada">Qué pide cada tarjeta y qué significa cada letra.</p>
+    <p class="bajada">Qué pide cada tarjeta, cuántos puntos da cada puesto, de
+    qué está hecho cada número y qué significa cada palabra.</p>
     <div class="dos ancha">
     <section class="blk" id="secComo">
       <h2><span>&#127915;</span> Cómo conseguir tu tarjeta</h2>
@@ -395,6 +396,86 @@
       <div class="escalera" id="escalera"></div>
     </section>
     </div>
+
+    <!-- 🔑 LOS NÚMEROS SALEN DE DONDE SE CALCULAN: la tabla de puntos, de
+         `Config`; los pesos, de `sheet/ovr.py` y `sheet/competitivo.py`.
+         Ver `_guia()` en bot/subir_web.py. Dlx, 25/09/2026: «agregar más
+         cosas a GUÍA». -->
+    <div class="dos">
+    <section class="blk" id="secPuntos">
+      <h2><span>&#127942;</span> Cuántos puntos da cada puesto</h2>
+      <p class="bajada">Depende de cuánta gente juega la llave: ganar una de 16
+      vale más que ganar una de 6.</p>
+      <div id="puntos"></div>
+    </section>
+    <section class="blk" id="secNumeros">
+      <h2><span>&#128202;</span> El OVR y el Score</h2>
+      <div id="numeros"></div>
+    </section>
+    </div>
+
+    <section class="blk" id="secGlos">
+      <h2><span>&#128214;</span> Las palabras de la Liga</h2>
+      <dl class="glos">
+        <div><dt>OVR</dt><dd>El número de tu temporada, de 40 a 99. Ordena el
+        ranking y es el que lleva tu tarjeta de Temporada.</dd></div>
+        <div><dt>Score</dt><dd>El número del Competitivo, de 0 a 100. Mide la
+        calidad y no la cantidad: de él sale tu rango.</dd></div>
+        <div><dt>Rango</dt><dd>La letra, de E a SSS. Es una sola por persona y
+        es la misma en todas tus tarjetas.</dd></div>
+        <div><dt>Racha</dt><dd>Eventos seguidos llegando arriba de la llave: la
+        final si es de menos de 16, la semifinal de 16 a 31, cuartos de 32 a 63
+        y octavos de 64 o más. En Duelos, duelos ganados seguidos.</dd></div>
+        <div><dt>Duelo</dt><dd>Una batalla uno contra uno. Los triples, los de
+        cuatro y los de equipos no cuentan: ahí no hay un solo rival.</dd></div>
+        <div><dt>Win%</dt><dd>Duelos ganados sobre duelos jugados.</dd></div>
+        <div><dt>Podio</dt><dd>Terminar primero, segundo o tercero en un
+        evento.</dd></div>
+        <div><dt>Walk-in</dt><dd>Entrar a una llave ya empezada, salteando
+        rondas. Cobra menos, porque se saltó camino.</dd></div>
+        <div><dt>Revivido</dt><dd>Volver a la llave después de caer. Cobra su
+        primer puesto entero y una parte del final.</dd></div>
+        <div><dt>Most Wanted</dt><dd>Quién cazó, quién fue cazado y quién
+        sobrevivió. Suma al OVR y arranca pronto.</dd></div>
+        <div><dt>Crew</dt><dd>Tu equipo. Suma los puntos de su gente; para
+        tener puesto necesita tres raperos en la temporada.</dd></div>
+        <div><dt>Verificado</dt><dd>Tener el rol de Miembro en Discord Rap
+        Español, con tu cuenta y tu país. Es lo que habilita tus tarjetas.</dd></div>
+        <div><dt>Bloqueada</dt><dd>La tarjeta que todavía no te ganaste: dice
+        cuánto te falta.</dd></div>
+        <div><dt>Llave</dt><dd>El cuadro de un evento, ronda por ronda. Se abre
+        desde «Ver llave».</dd></div>
+        <div><dt>Temporada</dt><dd>La T1 es la primera. El Competitivo se mide
+        dentro de cada temporada y vuelve a cero en la siguiente.</dd></div>
+      </dl>
+    </section>
+
+    <section class="blk" id="secFaq">
+      <h2><span>&#10067;</span> Preguntas frecuentes</h2>
+      <div class="faq">
+        <details><summary>¿Cómo pido mi tarjeta?</summary><p>En Discord, con
+        <code>/card</code>. Si todavía no estás verificado, te dice qué te
+        falta.</p></details>
+        <details><summary>¿Cómo aparezco en el ranking?</summary><p>Jugando un
+        evento en un servidor de la Liga. Con una participación ya entrás al
+        ranking de Temporada.</p></details>
+        <details><summary>¿Cada cuánto se actualiza?</summary><p>Sola, cada
+        media hora. De 3 a 11 de la mañana (hora del este de EE.&nbsp;UU.)
+        corre dos veces.</p></details>
+        <details><summary>¿Por qué mi Competitiva está bloqueada?</summary><p>El
+        Competitivo pide diez eventos en la temporada. Hasta entonces la tarjeta
+        sale bloqueada, con cuántos te faltan.</p></details>
+        <details><summary>¿Cómo cambio mi foto?</summary><p>Con
+        <code>/foto</code> en Discord, una vez por temporada.</p></details>
+        <details><summary>¿Cómo me entero de los eventos?</summary><p>Activá
+        los <a href="#/avisos">avisos</a>: te llegan al teléfono o a la compu
+        cuando un servidor anuncia uno. También podés sumar el calendario de la
+        Liga a Google Calendar desde <a href="#/eventos">Eventos</a>.</p></details>
+        <details><summary>¿Mi servidor se puede sumar a la Liga?</summary><p>Las
+        postulaciones de servidores se anuncian en Discord Rap Español, en el
+        canal de la Liga Global.</p></details>
+      </div>
+    </section>
   </section>
 
   </main>

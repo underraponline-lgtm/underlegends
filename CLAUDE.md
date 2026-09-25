@@ -650,10 +650,31 @@ la planilla.
 ## El hub web — `underlegends.pages.dev`
 
 Siete vistas con menú lateral en escritorio y barra de abajo en teléfono,
-enrutado por hash: Inicio, Ranking, Tarjetas, Duelos, **Eventos** (el
-calendario y la campana; `#/avisos` es un alias que baja hasta ella), Mundo
-y Guía. Vive en **`bot/paginas/`**, sin framework y sin build:
-los archivos que están ahí son los que se sirven.
+enrutado por hash: Inicio, Ranking, Tarjetas, **Pase** (próximamente),
+**Eventos** (el calendario y la campana; `#/avisos` es un alias que baja
+hasta ella), Mundo y Guía. Vive en **`bot/paginas/`**, sin framework y sin
+build: los archivos que están ahí son los que se sirven.
+
+🔑 **LOS RANKINGS SON UNA TABLA, NO DIEZ** (25/09/2026). Temporada,
+Competitivo, Duelos, Podios, Rachas, Países y Crews, más tres «pronto»
+(Most Wanted, Misiones, Ligas). Cada uno declara sus filas, sus columnas y
+su orden en `SUBS` de `app.js`, y las columnas viven en `COL` con cómo se
+muestran y cómo se ordenan — **todas se ordenan**. `#/ranking/<sub>` abre
+uno; `#/duelos` (el menú viejo) abre el de Duelos.
+
+⚠️ **Una columna que dice lo mismo en todas las filas no se dibuja**: hoy
+la T1 entera es de FFA y «Sv» se esconde sola (`si()` en `COL`). Vuelve
+cuando juegue gente de otro servidor.
+
+📅 **EL CALENDARIO PARA GOOGLE, APPLE Y OUTLOOK**: `subir_web.py` escribe
+un `.ics` en KV (`web:ics`, sólo si cambió) y el Worker lo sirve tal cual en
+`/calendario.ics`. Sin hora de escritura adentro: `DTSTAMP` es el arranque
+del evento, o cada corrida sería una escritura de KV.
+
+📖 **La Guía muestra números que se calculan en otro lado** —los puntos por
+puesto de `Config`, los pesos de `sheet/ovr.py` y `sheet/competitivo.py`—,
+así que viajan en el payload (`guia`) en vez de escribirse en el HTML.
+`datos/escala.json` es la copia de `Config` para cuando no se puede leer.
 
 🔑 **EL REPARTO ES TODO EL DISEÑO, y es lo que lo separa del Apps
 Script.** Cloudflare Pages sirve estáticos **gratis e ilimitados**, así
@@ -2004,7 +2025,7 @@ bot/              el lector de Discord y el ciclo
                                   envío cifrado (Durable Object + SQLite)
                   avisos_casos.py el contrato Python<->JS del lector de
                                   anuncios, con avisos_casos.json
-                  paginas/        underlegends.pages.dev — el hub, 6 vistas
+                  paginas/        underlegends.pages.dev — el hub, 7 vistas
                   paginas_viejas/ liga-global.pages.dev — sólo un 301
                   ci/guardar.sh   lo que se commitea. Lo llaman los DOS
                                   trabajos del ciclo, por eso no vive en

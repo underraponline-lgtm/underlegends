@@ -130,7 +130,9 @@ function ruta() {
 // 🔑 `#/avisos` ES AHORA UN LUGAR ADENTRO DE «EVENTOS»: el botón de
 // `/card` lleva ahí y no puede romperse. Se abre la vista y se baja hasta
 // la campana.
-var ALIAS = { avisos: 'eventos' };
+// 🔑 `#/duelos` TAMBIÉN: Duelos pasó a ser un ranking (Dlx, 25/09/2026) y
+// su lugar en el menú es del Pase. Los links viejos abren ese ranking.
+var ALIAS = { avisos: 'eventos', duelos: 'ranking' };
 
 function ir() {
   // 🔑 `#/r/<clave>` ES EL PERFIL: la vista es la primera parte y la
@@ -141,6 +143,12 @@ function ir() {
   if (!hay) { r = ''; }
   $$('.vista').forEach(function (v) { v.hidden = v.dataset.vista !== r; });
   if (r === 'r') pintaPerfil(decodeURIComponent(partes.slice(1).join('/')));
+  // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
+  // Inicio, y deja mandar el link de un ranking puntual.
+  if (r === 'ranking') {
+    var sb = pedida === 'duelos' ? 'duelos' : partes[1];
+    if (sb && SUBS[sb] && sb !== SUB) elegirSub(sb);
+  }
   $$('#nav a').forEach(function (a) {
     a.classList.toggle('on', a.getAttribute('href') === '#/' + r);
   });
@@ -213,15 +221,7 @@ function pintaHero() {
   $('#lPaises').textContent = ps === 1 ? 'país' : 'países';
   $('#cCartas').textContent = cartas;
 
-  // La tarjeta del #1, si la tiene. Si no, no se dibuja el hueco.
-  var uno = (D.tabla || [])[0];
-  if (uno && (uno.c || []).length) {
-    $('#hcImg').src = urlCarta(uno, uno.c[0]);
-    $('#hcImg').alt = 'Tarjeta de ' + uno.n;
-    $('#hcNombre').textContent = uno.n;
-    $('#hcBtn').dataset.carta = uno.k;
-    $('#heroCarta').hidden = false;
-  }
+  pintaCampeones();
 
   var pr = D.proximos || [];
   if (!pr.length) return;
@@ -254,6 +254,67 @@ function pintaHero() {
   pintaRelojes();
 }
 
+/* ── los dos campeones ─────────────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «al costado del campeón de la temporada poner entre
+   paréntesis "actual", porque no acabó la temporada, y al costado poner el
+   campeón del competitivo también».
+
+   ⚠️ EL DEL COMPETITIVO PUEDE ESTAR VACANTE, y eso se dice: el rango pide
+   su requisito de eventos y al arrancar la temporada no lo tiene nadie. Un
+   hueco que explica por qué está vacío —y quién está más cerca— dice más
+   que esconderlo. */
+function reqDe(id) {
+  var q = (D.requisitos || []).filter(function (x) { return x.id === id; })[0];
+  var m = q && /(\d+)/.exec((q.pide || [])[0] || '');
+  return m ? +m[1] : 0;
+}
+function campeon(f, cual, tit) {
+  return '<div class="hero-carta"><span class="corona">' + esc(tit) +
+    ' <i>(actual)</i></span><button class="hc-marco" data-carta="' + esc(f.k) + '">' +
+    '<img src="' + urlCarta(f, cual) + '" alt="Tarjeta de ' + esc(f.n) +
+    '" width="300" height="438"></button><b data-k="' + esc(f.k) + '">' + esc(f.n) +
+    '</b></div>';
+}
+function pintaCampeones() {
+  var T = D.tabla || [], h = [];
+  var uno = T[0];
+  var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
+    return (b.sc || 0) - (a.sc || 0);
+  })[0];
+  if (uno && (uno.c || []).length) h.push(campeon(uno, uno.c[0], 'Campeón de la temporada'));
+  if (h.length && comp && (comp.c || []).length) {
+    h.push(campeon(comp, comp.c.indexOf('competitivo') >= 0 ? 'competitivo' : comp.c[0],
+      'Campeón del competitivo'));
+  } else if (h.length) {
+    var pide = reqDe('competitivo') || 10;
+    var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
+    h.push('<div class="hero-carta vacante"><span class="corona">Campeón del competitivo</span>' +
+      '<div class="hc-vacio"><span class="hc-candado" aria-hidden="true">&#128274;</span>' +
+      '<b>Vacante</b><p>Se define a los <b>' + pide + ' eventos</b>, y todavía no llegó nadie.</p>' +
+      (cerca ? '<p class="hc-cerca" data-k="' + esc(cerca.k) + '"><small>El más cerca</small>' +
+        quienEs(cerca, 26) + '<u>' + (cerca.ev || 0) + ' de ' + pide + '</u></p>' : '') +
+      '</div></div>');
+  }
+  if (!h.length) return;
+  $('#campeones').innerHTML = h.join('');
+  $('#campeones').classList.toggle('dos', h.length > 1);
+  $('#campeones').hidden = false;
+}
+
+/* ── el servidor, con su logo ──────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «donde dice Freestyle For All poner el logo del
+   servidor también». Un solo lugar para la pastilla: «Lo que pasó», el
+   calendario y la cabecera de Eventos la usan igual. */
+function logoSv(sv, tam) {
+  var x = svDe(sv);
+  return x.logo ? '<img class="sv-mini" src="' + esc(x.logo) + '" alt="" width="' + tam +
+    '" height="' + tam + '" loading="lazy" decoding="async">' : '';
+}
+function chipSv(sv) {
+  return '<span class="chip-sv" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 18) +
+    esc(nombreSv(sv) || sv) + '</span>';
+}
+
 /* ── lo que acaba de pasar ────────────────────────────────────────── */
 function pintaPasados() {
   // 🔑 LOS TRES MÁS NUEVOS, con quién organizó y quién ganó. Dlx,
@@ -273,15 +334,22 @@ function pintaPasados() {
     var datos = [e.org ? 'Organizó <b>' + esc(e.org) + '</b>' : '',
       L && L.participantes ? L.participantes + ' raperos' : '',
       e.modalidad ? esc(e.modalidad) : ''].filter(Boolean).join(' &middot; ');
+    // 🔑 EL RANGO DEL EVENTO, cuando el anuncio lo dice: es el de SU
+    // servidor («aplica solo para el servidor local», Dlx 25/09/2026).
+    var rg = e.rango ? '<span class="rg-ev" title="El rango de este evento en ' +
+      esc(nombreSv(e.sv)) + '">' + esc(e.rango) + '</span>' : '';
     return '<article class="ps" style="--c:' + esc(colorSv(e.sv)) + '">' +
-      '<header><span class="chip-sv">' + esc(nombreSv(e.sv) || e.sv) + '</span>' +
+      '<header><span class="ps-chips">' + chipSv(e.sv) + rg + '</span>' +
       '<span class="hace">' + esc(cuandoSe(e.cuando)) + '</span></header>' +
       '<h3>' + esc(e.nombre) + '</h3>' +
       (datos ? '<p class="ps-d">' + datos + '</p>' : '') +
       (camp.length ? '<p class="ps-c"><span>&#127942;</span>' + camp.join('<i class="coma">,</i> ') + '</p>' : '') +
+      // ⚠️ LOS BOTONES DEL COLOR DEL SERVIDOR, como el «Entrar» de Mundo:
+      // Dlx, 25/09/2026, «hacer los botones más bonitos, quizás como los
+      // que tienen los servidores»
       '<div class="ps-acc">' +
-        (L ? '<button class="ver-llave" data-llave="' + esc(e.llave) + '">Ver llave</button>' : '') +
-        (e.link ? '<a class="ver-llave" href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
+        (L ? '<button class="btn" data-llave="' + esc(e.llave) + '">&#127942; Ver llave</button>' : '') +
+        (e.link ? '<a class="btn sec" href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
           'noreferrer">El anuncio &#8599;</a>' : '') +
       '</div></article>';
   }).join('');
@@ -439,117 +507,303 @@ function pintaChips() {
     }).join('');
 }
 
-function filtradas() {
-  var q = FIL.q.toLowerCase();
-  return (D.tabla || []).filter(function (f) {
-    if (FIL.sv && (f.sv || '').toUpperCase() !== FIL.sv) return false;
-    if (FIL.cc && (f.cc || '').toLowerCase() !== FIL.cc) return false;
-    if (q && String(f.n || '').toLowerCase().indexOf(q) < 0) return false;
+/* 🔑 EL ORDEN DE UN MEDALLERO: oros, después platas, después bronces.
+   Sumar las tres daría que tres bronces valen más que un oro, que es justo
+   lo que un medallero existe para no decir. */
+function medallero(a, b) {
+  return (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) ||
+    (b.ter || 0) - (a.ter || 0) || (b.pts || 0) - (a.pts || 0);
+}
+function pct(x) { return parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0; }
+var nada = '<span class="nada">&mdash;</span>';
+var MW_ON = false;
+
+function pastillaRg(f) {
+  return f.rg
+    ? '<span class="rg" style="color:' + esc(f.rgc || '') + ';border-color:' +
+      esc(f.rgc || '#1A2523') + '55">' + esc(f.rg) + '</span>'
+    : '<span class="rg">&middot;</span>';
+}
+function rachaCelda(f) {
+  var r = f.rch || [0, 0];
+  if (!r[1]) return nada;
+  // «🔥3 · máx 5»: la que lleva y la más larga. «0/5» se leía «0 de 5».
+  return '<span class="rch' + (r[0] ? ' viva' : '') + '">' + (r[0] ? '&#128293;' + r[0] + ' ' : '') +
+    '<s>máx ' + r[1] + '</s></span>';
+}
+function ultCelda(f) {
+  var u = f.ult || [];
+  if (!u[0]) return nada;
+  var d = new Date(u[0] + 'T12:00:00');
+  var fe = isNaN(d) ? u[0] : d.toLocaleDateString('es', { day: 'numeric', month: 'short' });
+  return '<span class="ult"><b>' + esc(u[1] || '') + '</b><small>' + esc(fe) + '</small></span>';
+}
+function mwCol(k, t, tit) {
+  return { t: t, tit: tit, s: function (f) { return f[k] || 0; },
+    v: function (f) { return MW_ON ? String(f[k] || 0) : nada; } };
+}
+function crewCelda(c) {
+  return '<span class="quien">' + (c.logo
+    ? '<img class="av" src="' + esc(c.logo) + '" alt="" style="width:30px;height:30px">'
+    : '<span class="av ini" style="width:30px;height:30px;font-size:14px">' +
+      esc(inicial(c.crew)) + '</span>') + '<span class="qn">' + esc(c.crew) + '</span></span>';
+}
+
+/* 🔑 CADA COLUMNA DICE CÓMO SE MUESTRA (`v`) Y CÓMO SE ORDENA (`s`). Todas
+   se ordenan: Dlx, 25/09/2026, «que se pueda filtrar de arriba hacia abajo
+   para los demás». `txt` arranca de la A a la Z; el resto, de mayor a
+   menor, porque un ranking que al tocar «Puntos» muestra primero al
+   último obliga a tocar dos veces siempre. */
+var COL = {
+  pos: { t: '#', cls: 'c-pos', s: function (f) { return f.pos; }, v: function (f) { return esc(f.pos); } },
+  i: { t: '#', cls: 'c-pos', s: function (f) { return f._i; }, v: function (f) { return f._i || nada; } },
+  n: { t: 'Rapero', cls: 'c-n', txt: 1, s: function (f) { return sinTildes(f.n); },
+    v: function (f) { return quienEs(f.av !== undefined ? f : conCara(f), 30); } },
+  ovr: { t: 'OVR', tit: 'El número de la temporada, de 40 a 99', s: function (f) { return f.ovr || 0; },
+    v: function (f) { return '<span class="ovr">' + (f.ovr || '—') + '</span>'; } },
+  // ⚠️ EL RANGO SE ORDENA POR SCORE, que es de donde sale: por letra, «A+»
+  // quedaría abajo de «A» y «SSS» abajo de «S». Sin rango, al final.
+  rg: { t: 'Rango', si: function () { return (D.tabla || []).some(function (f) { return f.rg; }); },
+    s: function (f) { return f.rg ? f.sc || 0 : ''; }, v: pastillaRg },
+  sc: { t: 'Score', tit: 'El número del Competitivo, de 0 a 100', s: function (f) { return f.sc || 0; },
+    v: function (f) { return f.sc ? '<b class="sc">' + esc(String(f.sc).replace('.', ',')) + '</b>' : nada; } },
+  // ⚠️ SE VE SÓLO SI HAY MÁS DE UN SERVIDOR EN LA TABLA: hoy la T1 entera es
+  // de FFA y la columna decía «FFA» ochenta y cinco veces, comiéndose el
+  // ancho. Cuando entre gente de otro servidor, vuelve sola.
+  sv: { t: 'Sv', tit: 'Servidor', cls: 'c-sv', txt: 1,
+    si: function (fs) { return fs.some(function (f) { return (f.sv || '') !== ((fs[0] || {}).sv || ''); }); },
+    s: function (f) { return f.sv || ''; },
+    v: function (f) { return '<span class="sv">' + esc(f.sv || '') + '</span>'; } },
+  pts: { t: 'Puntos', cls: 'pts', s: function (f) { return f.pts || 0; }, v: function (f) { return num(f.pts); } },
+  ev: { t: 'Ev', tit: 'Eventos jugados en la temporada', s: function (f) { return f.ev || 0; },
+    v: function (f) { return esc(f.ev || 0); } },
+  wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: function (f) { return f.wr ? pct(f.wr) : ''; },
+    v: function (f) { return f.wr ? esc(f.wr) : nada; } },
+  racha: { t: 'Racha', tit: 'La que lleva ahora / la más larga de la temporada',
+    s: function (f) { var r = f.rch || [0, 0]; return r[0] * 1000 + r[1]; }, v: rachaCelda },
+  ract: { t: 'Actual', tit: 'Eventos seguidos que lleva ahora', s: function (f) { return (f.rch || [0])[0]; },
+    v: function (f) { var r = (f.rch || [0])[0]; return r ? '<span class="rch viva">&#128293;' + r + '</span>' : '0'; } },
+  rmax: { t: 'La más larga', tit: 'La racha más larga de la temporada', s: function (f) { return (f.rch || [0, 0])[1]; },
+    v: function (f) { return esc((f.rch || [0, 0])[1]); } },
+  ult: { t: 'Último evento', tit: 'Cómo le fue la última vez que jugó, y cuándo',
+    s: function (f) { return (f.ult || [])[0] || ''; }, v: ultCelda },
+  caz: mwCol('caz', 'Cazó', 'Most Wanted: a cuántos cazó'),
+  czd: mwCol('czd', 'Cazado', 'Most Wanted: cuántas veces lo cazaron'),
+  sob: mwCol('sob', 'Sobrevivió', 'Most Wanted: cuántas veces sobrevivió'),
+  mis: { t: 'Misiones', tit: 'Las misiones de la temporada: próximamente',
+    s: function () { return 0; }, v: function () { return nada; } },
+  g: { t: 'Ganados', s: function (f) { return f.g || 0; }, v: function (f) { return '<b class="g">' + (f.g || 0) + '</b>'; } },
+  t: { t: 'Jugados', s: function (f) { return f.t || 0; }, v: function (f) { return esc(f.t || 0); } },
+  wrd: { t: '%', tit: 'Ganados sobre jugados', s: function (f) { return f.t ? f.g / f.t : 0; },
+    v: function (f) { return f.t ? Math.round(100 * f.g / f.t) + '%' : nada; } },
+  oro: { t: '&#129351;', tit: 'Primeros puestos', s: function (f) { return f.oro || 0; },
+    v: function (f) { return f.oro || '<span class="nada">&middot;</span>'; } },
+  seg: { t: '&#129352;', tit: 'Segundos puestos', s: function (f) { return f.seg || 0; },
+    v: function (f) { return f.seg || '<span class="nada">&middot;</span>'; } },
+  ter: { t: '&#129353;', tit: 'Terceros puestos', s: function (f) { return f.ter || 0; },
+    v: function (f) { return f.ter || '<span class="nada">&middot;</span>'; } },
+  sem: { t: 'Semis', tit: 'Semifinales jugadas', s: function (f) { return f.sem || 0; },
+    v: function (f) { return f.sem || '<span class="nada">&middot;</span>'; } },
+  pais: { t: 'País', cls: 'c-n', txt: 1, s: function (f) { return sinTildes(nombrePais(f.cc)); },
+    v: function (f) { return '<span class="quien">' + (bandera(f.cc) || '') + '<span class="qn">' +
+      esc(nombrePais(f.cc)) + '</span></span>'; } },
+  np: { t: 'Raperos', s: function (f) { return f.n || 0; }, v: function (f) { return esc(f.n || 0); } },
+  prom: { t: 'Por rapero', tit: 'Puntos por cada rapero de ese país', s: function (f) { return f.n ? f.pts / f.n : 0; },
+    v: function (f) { return f.n ? num(Math.round(f.pts / f.n)) : nada; } },
+  crew: { t: 'Crew', cls: 'c-n', txt: 1, s: function (f) { return sinTildes(f.crew); }, v: crewCelda },
+  nc: { t: 'Raperos', s: function (f) { return f.n || 0; }, v: function (f) { return esc(f.n || 0); } },
+  mejor: { t: 'Su mejor', tit: 'El mejor de la crew en la temporada', txt: 1, cls: 'c-izq',
+    s: function (f) { return sinTildes(f.mejor); },
+    v: function (f) {
+      var k = kDe(f.mejor);
+      return k ? '<span class="lnk" data-k="' + esc(k) + '">' + esc(f.mejor) + '</span>' : esc(f.mejor || '');
+    } },
+};
+
+/* La subcategoría del ranking. Ver `#subRanking` en el HTML.
+   ⚠️ Vive acá y no en el hash: es un filtro de una vista, no una vista.
+   El hash sólo la abre (`#/ranking/duelos`); al tocarla se reescribe con
+   `replaceState`, que no dispara `hashchange` ni sube la página. */
+var SUB = 'temporada';
+
+/* 🔑 CADA RANKING DICE SUS FILAS, SUS COLUMNAS Y SU ORDEN. Es una tabla
+   para todos, no diez: diez tablas serían diez lugares donde arreglar el
+   mismo bug — que es el error que este repo persigue. */
+var SUBS = {
+  temporada: {
+    baj: 'El orden sale del <b>OVR</b>, que es el mismo número que lleva la tarjeta. ' +
+      'Tocá cualquier encabezado para ordenar, y un nombre para abrir su perfil.',
+    filas: function () { return D.tabla || []; },
+    orden: 'pos',
+    // 🔑 LAS COLUMNAS DEL RANKING OFICIAL. Dlx, 25/09/2026: «chequea cómo
+    // está el ranking temporada el oficial… tiene racha, último evento,
+    // sobrevivió, cazó, cazado… y uno nuevo que es misiones».
+    cols: ['pos', 'n', 'ovr', 'rg', 'sv', 'pts', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis'],
+    nota: function () {
+      return MW_ON ? '' : '<b>Most Wanted</b> y <b>Misiones</b> arrancan pronto: hasta ' +
+        'entonces sus columnas van en &mdash;.';
+    },
+  },
+  competitivo: {
+    baj: 'Ordenado por <b>Score</b>, que mide la calidad y no la cantidad: de él sale el ' +
+      'rango, el mismo en todas las tarjetas.',
+    filas: function () { return (D.tabla || []).filter(function (f) { return f.rg; }); },
+    orden: 'sc',
+    cols: ['i', 'n', 'rg', 'sc', 'ev', 'wr', 'sv'],
+    vacio: function () {
+      var pide = reqDe('competitivo') || 10;
+      var c = (D.tabla || []).slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
+      return 'El Competitivo pide <b>' + pide + ' eventos</b> en la temporada y todavía no ' +
+        'llegó nadie.' + (c ? ' El más cerca: <b>' + esc(c.n) + '</b>, con ' + c.ev + '.' : '');
+    },
+  },
+  duelos: {
+    // 🔴 DECÍA «fuera del bracket» Y ERA AL REVÉS: los duelos salen de las
+    // llaves. Y la regla es de Dlx (21/09, reconfirmada el 24/09): los
+    // triples no cuentan.
+    baj: 'Las batallas <b>uno contra uno</b> de las llaves. Los triples, las de cuatro y ' +
+      'las de equipos no cuentan: ahí no hay un solo rival. Se ordena por <b>ganados</b>: ' +
+      'un 1 de 1 da 100&nbsp;% y no dice nada.',
+    filas: function () { return D.duelos || []; },
+    orden: 'g',
+    cols: ['i', 'n', 'g', 't', 'wrd', 'sv'],
+  },
+  podios: {
+    baj: 'Como un medallero: primero los oros, después las platas y después los bronces. ' +
+      'Quien no subió al podio no aparece.',
+    filas: function () {
+      return (D.tabla || []).filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; });
+    },
+    orden: medallero,
+    cols: ['i', 'n', 'oro', 'seg', 'ter', 'sem', 'pts'],
+  },
+  rachas: {
+    baj: 'Eventos seguidos llegando arriba de la llave: la <b>final</b> si es de menos de ' +
+      '16, la <b>semifinal</b> de 16 a 31, <b>cuartos</b> de 32 a 63. La que llevan ahora y ' +
+      'la más larga de la temporada.',
+    filas: function () {
+      return (D.tabla || []).filter(function (f) { return ((f.rch || [])[1] || 0) > 0; });
+    },
+    orden: 'racha',
+    cols: ['i', 'n', 'ract', 'rmax', 'ult', 'ev'],
+  },
+  paises: {
+    baj: 'Por los puntos que hizo su gente en la temporada.',
+    filas: function () { return D.paises || []; },
+    sinChips: 1,
+    nombre: function (f) { return nombrePais(f.cc); },
+    orden: 'pts',
+    cols: ['i', 'pais', 'np', 'pts', 'prom'],
+    que: ['país', 'países'],
+  },
+  crews: {
+    baj: 'Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> ' +
+      'en la temporada: las que no llegan se ven, sin número.',
+    filas: function () { return D.crews || []; },
+    sinChips: 1,
+    nombre: function (f) { return f.crew; },
+    orden: function (a, b) { return ((b.rk !== 0) - (a.rk !== 0)) || (b.pts - a.pts) || (b.n - a.n); },
+    sinPuesto: function (f) { return f.rk === 0; },
+    fila: function (f) { return f.rk === 0 ? 'chica' : ''; },
+    cols: ['i', 'crew', 'nc', 'pts', 'mejor'],
+    que: ['crew', 'crews'],
+  },
+  mw: { pronto: '<b>Most Wanted</b>: quién cazó, quién fue cazado y quién sobrevivió. ' +
+    'Suma al OVR y arranca pronto.' },
+  misiones: { pronto: '<b>Las misiones</b> de la temporada arrancan pronto.' },
+  ligas: { pronto: '<b>El ranking de ligas</b> vuelve pronto.' },
+};
+
+function filtradas(fs, cfg) {
+  var q = sinTildes(FIL.q).trim();
+  return fs.filter(function (f) {
+    if (!cfg.sinChips) {
+      if (FIL.sv && (f.sv || '').toUpperCase() !== FIL.sv) return false;
+      if (FIL.cc && (f.cc || '').toLowerCase() !== FIL.cc) return false;
+    }
+    if (q && sinTildes(cfg.nombre ? cfg.nombre(f) : f.n).indexOf(q) < 0) return false;
     return true;
   });
 }
 
-function ordenadas(fs) {
-  var c = ORDEN.col, d = ORDEN.desc ? -1 : 1;
-  return fs.slice().sort(function (a, b) {
-    var x = a[c], y = b[c];
-    // ⚠️ SIN RANGO VAN AL FINAL SIEMPRE, ordene como ordene. Hoy no lo
-    // tiene nadie —hacen falta 10 eventos— y dejarlos mezclados haría
-    // que ordenar por rango pareciera que no hace nada.
-    if (c === 'rg') { x = x || '￿'; y = y || '￿'; }
-    if (typeof x === 'string' || typeof y === 'string') {
-      return String(x || '').localeCompare(String(y || ''), 'es') * d;
-    }
-    return ((x || 0) - (y || 0)) * d;
-  });
+// ⚠️ LO VACÍO VA AL FINAL, ordene como ordene: quien todavía no tiene rango
+// o nunca jugó un duelo no es «el más bajo», es que no tiene el dato. Y a
+// igual valor manda el orden de ese ranking, no el azar del `sort`.
+function ordenadas(fs, id, desc) {
+  var c = COL[id];
+  if (!c) return fs;
+  var d = desc ? -1 : 1;
+  return fs.map(function (f, i) { return [f, i]; }).sort(function (A, B) {
+    var x = c.s(A[0]), y = c.s(B[0]);
+    x = x == null ? '' : x; y = y == null ? '' : y;
+    if ((x === '') !== (y === '')) return x === '' ? 1 : -1;
+    var r = (typeof x === 'string' || typeof y === 'string')
+      ? String(x).localeCompare(String(y), 'es') : x - y;
+    return r * d || A[1] - B[1];
+  }).map(function (P) { return P[0]; });
 }
 
-/* La subcategoría del ranking. Ver `#subRanking` en el HTML.
-   ⚠️ Vive acá y no en el hash: es un filtro de una vista, no una vista.
-   Ponerlo en la URL obligaría a inventar rutas para cada combinación de
-   subcategoría, búsqueda y chips. */
-var SUB = 'temporada';
-
-/* Qué cambia cada subcategoría: el orden, las columnas y la explicación.
-   🔑 ES UNA TABLA, NO TRES. Tres tablas serían tres lugares donde
-   arreglar el mismo bug — que es el error que este repo persigue. */
-var SUBS = {
-  temporada: {
-    orden: null,
-    nota: '',
-    cols: [],
-  },
-  podios: {
-    orden: function (a, b) {
-      return (b.oro - a.oro) || (b.seg - a.seg) || (b.ter - a.ter) ||
-        (b.pts - a.pts);
-    },
-    nota: 'Ordenado por oros, después platas y después bronces. ' +
-      'Quien no subió al podio no aparece.',
-    cols: ['pod'],
-    filtro: function (f) { return (f.oro + f.seg + f.ter) > 0; },
-  },
-  camino: {
-    // 🔴 EL COMPETITIVO PIDE 10 EVENTOS Y HOY NO LLEGA NADIE, así que la
-    // tabla del Competitivo está VACIA — y una tabla vacía no dice por
-    // qué. Esta contesta la pregunta que sí tiene respuesta: quién está
-    // más cerca. Es «sin dato no hay pieza» con la pieza que sí hay.
-    orden: function (a, b) { return (b.ev - a.ev) || (b.pts - a.pts); },
-    nota: 'El Competitivo se desbloquea a los 10 eventos. Todavía no ' +
-      'llegó nadie: éstos son los que están más cerca.',
-    cols: [],
-  },
-};
+function elegirSub(s) {
+  SUB = s;
+  ORDEN.tocado = false;
+  $$('#subRanking .sub').forEach(function (o) { o.classList.toggle('on', o.dataset.sub === s); });
+  pintaTabla();
+}
 
 function pintaTabla() {
   var cfg = SUBS[SUB] || SUBS.temporada;
-  var fs = ordenadas(filtradas());
-  if (cfg.filtro) fs = fs.filter(cfg.filtro);
-  // ⚠️ El orden propio de la subcategoría sólo manda si el usuario no
-  // tocó un encabezado. Si lo tocó, gana lo que pidió — un orden que se
-  // ignora es un control que miente.
-  if (cfg.orden && !ORDEN.tocado) fs = fs.slice().sort(cfg.orden);
-  $('#tabla').classList.toggle('con-pod', (cfg.cols || []).indexOf('pod') >= 0);
-  $('#notaSub').textContent = cfg.nota || '';
-  $('#notaSub').hidden = !cfg.nota;
-  // 🔴 LA COLUMNA DE RANGO SE CAE SI NO LA TIENE NADIE. Hoy el requisito
-  // son 10 eventos y el máximo del pool es 3, así que salían 54 pastillas
-  // con un punto adentro: una columna entera comiéndose el ancho —el
-  // escaso, el del teléfono— para no decir nada. La sección «Rangos» ya
-  // explica por qué está vacía.
-  $('#tabla').classList.toggle('sin-rango',
-    !(D.tabla || []).some(function (f) { return f.rg; }));
+  MW_ON = (D.tabla || []).some(function (f) { return f.caz || f.czd || f.sob; });
+  $('#bajadaRk').innerHTML = cfg.baj || cfg.pronto || '';
+  $('#chipsSv').hidden = $('#chipsCc').hidden = !!(cfg.sinChips || cfg.pronto);
+  $('#buscar').hidden = !!cfg.pronto;
+  var nota = cfg.nota ? cfg.nota() : '';
+  $('#notaSub').innerHTML = nota;
+  $('#notaSub').hidden = !nota;
+  if (cfg.pronto) {
+    $('#cabTabla').innerHTML = '';
+    $('#filas').innerHTML = '<tr><td class="vacio pronto-td"><span>Próximamente</span>' +
+      cfg.pronto + '</td></tr>';
+    $('#notaTabla').textContent = '';
+    return;
+  }
+  // el puesto DENTRO DE ESTE RANKING, antes de que quien mira reordene
+  var base = cfg.filas().slice();
+  var cols = cfg.cols.filter(function (id) { return !COL[id].si || COL[id].si(base); });
+  base = typeof cfg.orden === 'function' ? base.sort(cfg.orden)
+    : ordenadas(base, cfg.orden, !COL[cfg.orden].txt && cfg.orden !== 'pos');
+  base.forEach(function (f, i) { f._i = cfg.sinPuesto && cfg.sinPuesto(f) ? '' : i + 1; });
+  var fs = filtradas(base, cfg);
+  if (ORDEN.tocado) fs = ordenadas(fs, ORDEN.col, ORDEN.desc);
+  // sin tocar, la flecha va en «#»: es el orden de este ranking
+  var act = ORDEN.tocado ? ORDEN.col : cols[0], dsc = ORDEN.tocado ? ORDEN.desc : false;
+  $('#cabTabla').innerHTML = '<tr>' + cols.map(function (id) {
+    var c = COL[id];
+    return '<th scope="col" tabindex="0" data-col="' + id + '" class="ord' +
+      (c.cls ? ' ' + c.cls : '') + (id === act ? (dsc ? ' desc' : ' asc') : '') + '"' +
+      (c.tit ? ' title="' + esc(c.tit) + '"' : '') +
+      (id === act ? ' aria-sort="' + (dsc ? 'descending' : 'ascending') + '"' : '') + '>' +
+      c.t + '</th>';
+  }).join('') + '</tr>';
+  var que = cfg.que || ['rapero', 'raperos'];
   if (!fs.length) {
-    $('#filas').innerHTML = '<tr><td colspan="10" class="vacio">' +
-      ((D.tabla || []).length ? 'Nadie con ese filtro.'
-                              : 'Todavía no hay nadie en el ranking.') +
-      '</td></tr>';
+    $('#filas').innerHTML = '<tr><td colspan="' + cols.length + '" class="vacio">' +
+      (base.length ? 'Nadie con ese filtro.'
+        : cfg.vacio ? cfg.vacio() : 'Todavía no hay nadie en este ranking.') + '</td></tr>';
     $('#notaTabla').textContent = '';
     return;
   }
   $('#filas').innerHTML = fs.map(function (f) {
-    var cl = f.pos === 1 ? 'top1' : f.pos === 2 ? 'top2' : f.pos === 3 ? 'top3' : '';
-    var rg = f.rg
-      ? '<span class="rg" style="color:' + esc(f.rgc || '') + ';border-color:' +
-        esc(f.rgc || '#1A2523') + '55">' + esc(f.rg) + '</span>'
-      : '<span class="rg">&middot;</span>';
-    return '<tr class="' + cl + '" data-k="' + esc(f.k) + '">' +
-      '<td>' + esc(f.pos) + '</td>' +
-      '<td>' + quienEs(f, 30) + '</td>' +
-      '<td><span class="ovr">' + (f.ovr || '—') + '</span></td>' +
-      '<td class="col-rg">' + rg + '</td>' +
-      '<td class="col-sv"><span class="sv">' + esc(f.sv) + '</span></td>' +
-      // ⚠️ `pts` LLEVA CLASE PROPIA: es de lo que habla la tabla y salía
-      // con el mismo peso que la columna de eventos. Ver `td.pts`.
-      '<td class="pts">' + num(f.pts) + '</td>' +
-      '<td>' + esc(f.ev) + '</td>' +
-      // las tres del podio: se ocultan por CSS fuera de esa subcategoría
-      '<td class="col-pod">' + (f.oro || '') + '</td>' +
-      '<td class="col-pod">' + (f.seg || '') + '</td>' +
-      '<td class="col-pod">' + (f.ter || '') + '</td></tr>';
+    var cl = [f._i === 1 ? 'top1' : f._i === 2 ? 'top2' : f._i === 3 ? 'top3' : '',
+      cfg.fila ? cfg.fila(f) : ''].filter(Boolean).join(' ');
+    return '<tr' + (cl ? ' class="' + cl + '"' : '') + (f.k ? ' data-k="' + esc(f.k) + '"' : '') + '>' +
+      cols.map(function (id) {
+        var c = COL[id];
+        return '<td' + (c.cls ? ' class="' + c.cls + '"' : '') + '>' + c.v(f) + '</td>';
+      }).join('') + '</tr>';
   }).join('');
-  $('#notaTabla').textContent = fs.length === (D.tabla || []).length
-    ? fs.length + ' raperos' : fs.length + ' de ' + D.tabla.length;
+  $('#notaTabla').textContent = fs.length === base.length
+    ? fs.length + ' ' + (fs.length === 1 ? que[0] : que[1])
+    : fs.length + ' de ' + base.length;
 }
 
 /* ── quién entra en la sección de tarjetas ────────────────────
@@ -615,59 +869,6 @@ function pintaGaleria() {
   $('#masCartas').textContent = 'Ver las ' + con.length;
 }
 
-/* ── duelos y rachas ──────────────────────────────────────────────── */
-function pintaDuelos() {
-  var ds = D.duelos || [], rs = D.rachas || [];
-  if (!ds.length) apaga('#secDuelos');
-  if (!rs.length) apaga('#secRachas');
-  if (!ds.length && !rs.length) return;
-  var max = ds.length ? Math.max.apply(null, ds.map(function (d) { return d.t; })) : 1;
-  $('#listaDuelos').innerHTML = ds.map(function (d, i) {
-    var pct = Math.round(100 * d.g / (d.t || 1));
-    return '<div class="du" data-k="' + esc(d.k) + '">' +
-      '<span class="p">' + (i + 1) + '</span>' +
-      '<span class="nm">' + quienEs(conCara(d), 26) + '</span>' +
-      '<span class="bar" title="' + pct + '% ganados"><i style="width:' +
-      Math.round(100 * d.t / max) + '%"></i></span>' +
-      '<span class="gp">' + d.g + '<s>/' + d.t + '</s></span></div>';
-  }).join('');
-  // ⚠️ SIN LA ETIQUETA «RACHAS» DISFRAZADA DE CHIP. Era un `<span>` con
-  // los estilos apagados a mano para parecer un título, al lado del
-  // `<h2>` que ya dice lo mismo. Un elemento que finge ser otro se
-  // rompe la primera vez que alguien toca la clase.
-  $('#rachas').innerHTML = rs.map(function (r) {
-    return '<span class="ra" data-k="' + esc(r.k) + '">' + quienEs(conCara(r), 22) +
-      ' <u>' + r.r + '</u></span>';
-  }).join('');
-}
-
-/* ── medallero ──────────────────────────────────────────────────────
-   Los tres campos ya viajaban en el payload y no los miraba nadie.
-
-   ⚠️ SE ORDENA COMO UN MEDALLERO DE VERDAD: primero por oros, después
-   por platas, después por bronces. Sumar las tres daría que tres
-   bronces valen más que un oro, que es justo lo que un medallero
-   existe para no decir. */
-function pintaPodios() {
-  var ps = (D.tabla || []).filter(function (f) {
-    return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0;
-  });
-  if (!ps.length) { apaga('#secPodios'); return; }
-  ps.sort(function (a, b) {
-    return (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) ||
-           (b.ter || 0) - (a.ter || 0) || (a.pos || 0) - (b.pos || 0);
-  });
-  $('#listaPodios').innerHTML = ps.slice(0, 12).map(function (f) {
-    var m = function (n, e) {
-      return '<span class="' + (n ? 'hay' : '') + '">' + e + ' ' + (n || 0) + '</span>';
-    };
-    return '<div class="pm" data-k="' + esc(f.k) + '">' +
-      '<span class="nm">' + quienEs(f, 26) + '</span>' +
-      '<span class="med">' + m(f.oro, '\uD83E\uDD47') + m(f.seg, '\uD83E\uDD48') +
-      m(f.ter, '\uD83E\uDD49') + '</span></div>';
-  }).join('');
-}
-
 /* ── comparar dos ───────────────────────────────────────────────────
    🔑 TODO EL CRUCE LO HACE EL NAVEGADOR con el payload que ya bajó: no
    hay una consulta nueva ni una ruta nueva. Es la misma idea que el
@@ -678,33 +879,46 @@ function pintaPodios() {
    selects en blanco no muestra para qué sirve. */
 var CMP = [0, 1];
 
-var FILAS_CMP = [
-  ['ovr', 'OVR', 1], ['pts', 'Puntos', 1], ['ev', 'Eventos', 1],
-  ['pod', 'Podios', 1], ['pos', 'Puesto', -1]
-];
+/* 🔑 PRIMERO QUÉ TARJETA. Dlx, 25/09/2026: «en comparación de 2 elegir la
+   categoría primero, o sea qué se va a comparar». Cada tarjeta mide otra
+   cosa, así que cada una trae sus filas: comparar el OVR de dos tarjetas
+   Competitivas sería comparar lo que esa tarjeta no mide.
+
+   ⚠️ UNA CATEGORÍA QUE TIENEN MENOS DE DOS SE VE APAGADA, con cuántos la
+   tienen: esconderla haría pensar que no existe. */
+var CMP_CAT = 'temporada';
+var CATS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'],
+  ['pais', 'País'], ['servidor', 'Servidor']];
+var FILAS_CMP = {
+  temporada: [['ovr', 'OVR', 1], ['pts', 'Puntos', 1], ['ev', 'Eventos', 1],
+    ['pod', 'Podios', 1], ['pos', 'Puesto', -1]],
+  competitivo: [['sc', 'Score', 1], ['ev', 'Eventos', 1], ['wr', 'Win%', 1], ['oro', 'Títulos', 1]],
+  pais: [['pts', 'Puntos', 1], ['ev', 'Eventos', 1], ['pod', 'Podios', 1], ['pos', 'Puesto', -1]],
+  servidor: [['pts', 'Puntos', 1], ['ev', 'Eventos', 1], ['oro', 'Títulos', 1], ['pos', 'Puesto', -1]],
+};
+function cmpLista() {
+  return conTarjeta().filter(function (f) { return (f.c || []).indexOf(CMP_CAT) >= 0; });
+}
 
 function pintaComparar() {
-  var con = conTarjeta();
-  if (con.length < 2) { apaga('#secComparar'); return; }
-  var ops = function (sel) {
-    return con.map(function (f, i) {
-      return '<option value="' + i + '"' + (i === sel ? ' selected' : '') + '>' +
-        esc(f.n) + '</option>';
-    }).join('');
+  var todas = conTarjeta();
+  if (todas.length < 2) { apaga('#secComparar'); return; }
+  var cuantos = function (cat) {
+    return todas.filter(function (f) { return (f.c || []).indexOf(cat) >= 0; }).length;
   };
-  // 🔑 SE PUEDE ESCRIBIR EL NOMBRE, no sólo desplegar la lista. Dlx,
-  // 24/09/2026: *«en tarjetas deja que se pueda escribir el nombre para
-  // comparar tarjetas»*.
-  //
-  // ⚠️ ES UN `<input list>` CON `<datalist>`, no un buscador a mano. El
-  // navegador da el autocompletado gratis —filtra mientras se escribe, y
-  // en teléfono abre su propio selector— y si alguien escribe algo que no
-  // existe, el `<select>` de antes no tenía forma de decirlo. Acá el valor
-  // se busca contra la lista al soltar el foco.
-  //
-  // ⚠️ Y LA LISTA SIGUE ESTANDO: con 71 nombres, desplegar es más rápido
-  // que escribir cuando uno no sabe a quién buscar. `list=` da las dos
-  // cosas con un solo control.
+  if (cuantos(CMP_CAT) < 2) CMP_CAT = 'temporada';
+  $('#cmpCat').innerHTML = CATS.map(function (c) {
+    var n = cuantos(c[0]);
+    return '<button class="sub' + (c[0] === CMP_CAT ? ' on' : '') + '" data-cat="' + c[0] + '"' +
+      (n < 2 ? ' disabled title="Hace falta que dos la tengan"' : '') + '>' + c[1] +
+      '<i>' + n + '</i></button>';
+  }).join('');
+  var con = cmpLista();
+  if (con.length < 2) { $('#cmp').innerHTML = ''; return; }
+  CMP = CMP.map(function (i) { return Math.min(i, con.length - 1); });
+  if (CMP[0] === CMP[1]) CMP[1] = CMP[0] ? 0 : 1;
+  // 🔑 SE PUEDE ESCRIBIR EL NOMBRE, no sólo desplegar la lista (Dlx,
+  // 24/09/2026). La ventanita de sugerencias es `pintaSug()`.
   var lado = function (j) {
     var f = con[CMP[j]];
     if (!f) return '';
@@ -713,25 +927,26 @@ function pintaComparar() {
       'value="' + esc(f.n) + '" placeholder="Escribí un nombre…" ' +
       'autocomplete="off" spellcheck="false" ' +
       'aria-label="Rapero a comparar">' +
-      '<img loading="lazy" decoding="async" src="' + urlCarta(f, f.c[0]) +
-      '" alt="Tarjeta de ' + esc(f.n) + '"></div>';
+      '<img loading="lazy" decoding="async" src="' + urlCarta(f, CMP_CAT) +
+      '" alt="Tarjeta ' + esc(CARTA_TIT[CMP_CAT] || '') + ' de ' + esc(f.n) + '"></div>';
   };
   var a = con[CMP[0]], b = con[CMP[1]];
-  var vs = FILAS_CMP.map(function (par) {
+  var val = function (f, k) { return typeof f[k] === 'string' ? pct(f[k]) : (f[k] || 0); };
+  var vs = (FILAS_CMP[CMP_CAT] || FILAS_CMP.temporada).map(function (par) {
     var k = par[0], et = par[1], dir = par[2];
-    var x = a[k] || 0, y = b[k] || 0;
-    // ⚠️ EN EL PUESTO GANA EL NUMERO MAS CHICO. Sin ese `-1` el #1
-    // aparecería perdiendo contra el #40, que es lo que pasa cuando una
-    // tabla asume que más siempre es mejor.
+    var x = val(a, k), y = val(b, k);
+    // ⚠️ EN EL PUESTO GANA EL NÚMERO MÁS CHICO: sin ese `-1` el #1
+    // aparecería perdiendo contra el #40.
     var ga = dir > 0 ? x > y : x < y;
     var gb = dir > 0 ? y > x : y < x;
-    var fmt = function (v) { return k === 'pos' ? '#' + v : num(v); };
+    var fmt = function (v) {
+      return k === 'pos' ? '#' + v : k === 'wr' ? String(v).replace('.', ',') + '%'
+        : k === 'sc' ? String(v).replace('.', ',') : num(v);
+    };
     return '<div class="fila"><b class="' + (ga ? 'gana' : '') + '">' + fmt(x) +
       '</b><em>' + et + '</em><b class="' + (gb ? 'gana' : '') + '">' + fmt(y) +
       '</b></div>';
   }).join('');
-  // ⚠️ UN SOLO `<datalist>` PARA LOS DOS LADOS. Con uno por lado serían
-  // 142 `<option>` repetidos en el DOM para la misma lista.
   $('#cmp').innerHTML =
     '<div class="sugeridor" id="sugeridor" hidden></div>' +
     lado(0) + lado(1) +
@@ -765,7 +980,7 @@ function cerrarSug() {
 }
 
 function pintaSug(inp) {
-  var con = conTarjeta();
+  var con = cmpLista();
   var q = String(inp.value || '').trim().toLowerCase();
   // ⚠️ POR CONTENIDO Y NO POR PREFIJO: «chula» tiene que encontrar a
   // PichulaMc. Los que empiezan igual van primero igual, porque es lo
@@ -824,15 +1039,6 @@ function indiceDe(txt, con) {
 }
 
 /* ── servidores, países, crews ────────────────────────────────────── */
-/* `7300` -> «7,3 mil». La cantidad de miembros viaja redondeada (ver
-   `_miembros()` en subir_web.py) y así se lee como lo que es: un tamaño. */
-function milesCortos(n) {
-  n = Number(n || 0);
-  if (n < 1000) return String(n);
-  var m = Math.round(n / 100) / 10;
-  return String(m).replace('.', ',') + ' mil';
-}
-
 /* 🔑 LOS NUEVE, con su logo, su nombre completo y cuánta gente tienen.
    Dlx, 25/09/2026: «deberías agregar DRA, Snake Rap también, pero con sus
    nombres completos e incluso sus logos y cantidad de miembros». Antes
@@ -848,7 +1054,8 @@ function pintaServidores() {
       ? '<img class="sv-logo" src="' + esc(s.logo) + '" alt="" width="64" height="64" loading="lazy">'
       : '<span class="sv-logo sv-sigla">' + esc(s.sv) + '</span>';
     var datos = [];
-    if (s.miembros) datos.push('<div><dt>Miembros</dt><dd>' + milesCortos(s.miembros) + '</dd></div>');
+    // 🔑 EXACTO. Dlx, 25/09/2026: «en el mundo poner números exactos».
+    if (s.miembros) datos.push('<div><dt>Miembros</dt><dd>' + num(s.miembros) + '</dd></div>');
     if (s.n) {
       datos.push('<div><dt>En la T1</dt><dd>' + s.n + '</dd></div>');
       datos.push('<div><dt>Puntos</dt><dd>' + num(s.pts) + '</dd></div>');
@@ -885,9 +1092,23 @@ function pintaPaises() {
       '<span class="pt">' + num(p.pts) + '</span></div>';
   }).join('');
   if (!cs.length) return;
+  // 🔑 TODAS LAS QUE TIENEN GENTE EN LA TEMPORADA, con su logo y su gente.
+  // El puesto sigue pidiendo tres raperos: las que no llegan van sin número
+  // y apagadas (ver `_crews()` en bot/subir_web.py).
+  var pos = 0;
   $('#crews').innerHTML = cs.map(function (c) {
-    return '<div class="cw"><b>' + esc(c.crew) + '</b><small>' + c.n +
-      ' · ' + num(c.pts) + ' pts · mejor ' + esc(c.mejor) + '</small></div>';
+    var p = c.rk === 0 ? 0 : ++pos;
+    return '<div class="cw' + (p ? '' : ' chica') + '">' +
+      (c.logo ? '<img class="cw-logo" src="' + esc(c.logo) + '" alt="" width="48" height="48" loading="lazy">'
+        : '<span class="cw-logo cw-ini">' + esc(inicial(c.crew)) + '</span>') +
+      '<div class="cw-tx"><b>' + esc(c.crew) + '</b><small>' + c.n + (c.n === 1 ? ' rapero' : ' raperos') +
+      ' &middot; ' + num(c.pts) + ' pts</small>' +
+      ((c.gente || []).length ? '<p class="cw-g">' + c.gente.map(function (n) {
+        var k = kDe(n);
+        return k ? '<span class="lnk" data-k="' + esc(k) + '">' + esc(n) + '</span>' : esc(n);
+      }).join(', ') + '</p>' : '') + '</div>' +
+      '<u class="cw-p"' + (p ? '' : ' title="Para tener puesto hacen falta tres raperos"') + '>' +
+      (p ? '#' + p : '&mdash;') + '</u></div>';
   }).join('');
 }
 
@@ -1295,10 +1516,15 @@ function pintaCalendario() {
         '</span>' : '') + '</span></button>';
   }
   $('#calGrid').innerHTML = h;
-  var vistos = [];
+  // 🔑 LOS SERVIDORES DE LA LIGA, CON SU LOGO, aunque todavía no hayan
+  // jugado: Dlx, 25/09/2026, «el logo del servidor, agregar DRA».
+  var vistos = (D.svs || []).map(function (x) { return x.sv; });
   cs.forEach(function (c) { if (vistos.indexOf(c.sv) < 0) vistos.push(c.sv); });
+  var cuenta = {};
+  cs.forEach(function (c) { cuenta[c.sv] = (cuenta[c.sv] || 0) + 1; });
   $('#calLey').innerHTML = vistos.map(function (sv) {
-    return '<span style="--c:' + esc(colorSv(sv)) + '"><i></i>' + esc(nombreSv(sv)) + '</span>';
+    return '<span style="--c:' + esc(colorSv(sv)) + '"><i></i>' + logoSv(sv, 18) +
+      esc(nombreSv(sv)) + '<small>' + (cuenta[sv] || 0) + '</small></span>';
   }).join('') + '<span class="sin"><i></i>Anunciado, sin llave</span>' +
     '<span class="fut"><i></i>Por jugarse</span>';
   pintaDia(M);
@@ -1319,15 +1545,89 @@ function pintaDia(M) {
   }
   $('#diaLista').innerHTML = evs.map(function (e) {
     var hora = new Date(e.t).toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit' });
-    var acc = (e.ll ? '<button class="ver-llave" data-llave="' + e.ll + '">Ver llave</button>' : '') +
-      (e.link ? '<a class="ver-llave" href="' + esc(e.link) + '" target="_blank" ' +
+    // 🔑 LO QUE VIENE SE PUEDE AGREGAR A GOOGLE CALENDAR, de a uno; el
+    // calendario entero se suma desde la cabecera de la sección.
+    var acc = (e.ll ? '<button class="btn" data-llave="' + e.ll + '">&#127942; Ver llave</button>' : '') +
+      (e.fut ? '<a class="btn" href="' + esc(googleEv(e)) + '" target="_blank" ' +
+        'rel="noopener noreferrer">&#128197; Agregar a Google</a>' : '') +
+      (e.link ? '<a class="btn sec" href="' + esc(e.link) + '" target="_blank" ' +
         'rel="noopener noreferrer">En Discord &#8599;</a>' : '');
     var estado = e.fut ? 'por jugarse' : e.jugado ? 'jugado' : 'anunciado';
     return '<div class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
       '<span class="de-h">' + esc(hora) + (e.sh ? '<small>anunciado</small>' : '') + '</span>' +
-      '<div><b>' + esc(e.n) + '</b><small>' + esc(nombreSv(e.sv)) + ' &middot; ' + estado +
-      '</small>' + (acc ? '<div class="de-acc">' + acc + '</div>' : '') + '</div></div>';
+      '<div><b>' + esc(e.n) + '</b><div class="de-sub">' + chipSv(e.sv) +
+      (e.rg ? '<span class="rg-ev" title="El rango de este evento en ' + esc(nombreSv(e.sv)) + '">' +
+        esc(e.rg) + '</span>' : '') + '<small>' + estado + '</small></div>' +
+      (acc ? '<div class="de-acc">' + acc + '</div>' : '') + '</div></div>';
   }).join('');
+}
+
+/* ── la cabecera de Eventos ───────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «hacer un poco más motivador esto, porque se ve algo
+   muerto… la opción de sincronizar esto con el calendario de Google». Lo
+   que viene con su cuenta atrás —o el último campeón, si no hay nada
+   anunciado—, los números de la temporada y cómo no perderse ninguno.
+
+   ⚠️ EL CALENDARIO ES UN .ics QUE SIRVE EL WORKER TAL CUAL
+   (`/calendario.ics`, lo escribe `bot/subir_web.py`): Google, Apple y
+   Outlook se suscriben una vez y se actualizan solos. Desde la compu de
+   desarrollo se apunta al dominio público, porque Google no puede leer
+   `localhost`. */
+var ICS_HOST = /^(localhost|127\.|\[::1\])/.test(location.hostname) || !location.host
+  ? 'underlegends.pages.dev' : location.host;
+function googleEv(e) {
+  var t = new Date(e.t), f = new Date(t.getTime() + 90 * 60000);
+  var z = function (x) { return x.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, ''); };
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' +
+    encodeURIComponent(e.n + ' · ' + (nombreSv(e.sv) || e.sv)) + '&dates=' + z(t) + '/' + z(f) +
+    '&details=' + encodeURIComponent('Evento de la Liga Global de Freestyle.' +
+      (e.link ? '\n' + e.link : ''));
+}
+function pintaEvCab() {
+  var cs = D.calendario || [];
+  if (!cs.length) { apaga('#evCab'); return; }
+  var ahora = Date.now();
+  var prox = cs.filter(function (c) { return Date.parse(c.t) > ahora; })[0];
+  var ult = (D.pasados || [])[0];
+  var L = ult && ult.llave && (D.llaves || {})[ult.llave];
+  var camp = L ? (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; }) : [];
+  var porSv = {};
+  cs.forEach(function (c) { if (Date.parse(c.t) <= ahora) porSv[c.sv] = (porSv[c.sv] || 0) + 1; });
+  var top = Object.keys(porSv).sort(function (a, b) { return porSv[b] - porSv[a]; })[0];
+  var A = D.actividad || {};
+  var h = '';
+  if (prox) {
+    h += '<div class="evc-prox" style="--c:' + esc(colorSv(prox.sv)) + '">' +
+      '<span class="evc-et">Próximo evento</span><b class="evc-n1">' + esc(prox.n) + '</b>' +
+      '<div class="evc-sub">' + chipSv(prox.sv) + '<span>' + esc(new Date(prox.t).toLocaleString('es',
+        { weekday: 'long', hour: 'numeric', minute: '2-digit' })) + '</span></div>' +
+      '<span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) + '">&middot;</span></div>';
+  } else if (ult) {
+    h += '<div class="evc-prox" style="--c:' + esc(colorSv(ult.sv)) + '">' +
+      '<span class="evc-et">El último campeón</span>' +
+      (camp.length ? '<b class="evc-n1">' + camp.map(function (r) {
+        var f = porK(kDe(r[0]));
+        return f ? quienEs(f, 34) : conBanderas(r[0]);
+      }).join('<i class="coma">,</i> ') + '</b>' : '') +
+      '<div class="evc-sub">' + chipSv(ult.sv) + '<span>' + esc(ult.nombre) + ' &middot; ' +
+      esc(cuandoSe(ult.cuando)) + '</span></div>' +
+      '<p class="evc-no">El próximo aparece acá apenas un servidor lo anuncie.</p></div>';
+  }
+  h += '<dl class="evc-num">' +
+    '<div><dt>Eventos en la temporada</dt><dd>' + num(D.eventos || 0) + '</dd></div>' +
+    '<div><dt>Esta semana</dt><dd>' + num(A.ev || 0) + '</dd></div>' +
+    '<div><dt>Raperos esta semana</dt><dd>' + num(A.gente || 0) + '</dd></div>' +
+    (top ? '<div><dt>El más activo</dt><dd class="evc-sv">' + logoSv(top, 24) + esc(top) +
+      '</dd></div>' : '') + '</dl>' +
+    '<div class="evc-acc">' +
+    '<a class="btn" href="#/avisos">&#128276; Avisame de cada evento</a>' +
+    '<a class="btn sec" href="https://calendar.google.com/calendar/render?cid=' +
+      encodeURIComponent('webcal://' + ICS_HOST + '/calendario.ics') + '" target="_blank" ' +
+      'rel="noopener noreferrer">&#128197; Sumar a Google Calendar</a>' +
+    '<a class="btn sec" href="webcal://' + esc(ICS_HOST) + '/calendario.ics">Apple · Outlook</a></div>';
+  $('#evCab').innerHTML = h;
+  $('#evCab').hidden = false;
+  pintaRelojes();
 }
 
 /* ── el mapa ──────────────────────────────────────────────────────────
@@ -1364,17 +1664,9 @@ function pintaMapa() {
   $('#mapaDato').innerHTML = '<b>' + pct + '<small>%</small></b><span><em>' +
     dentro.length + ' de ' + HISPANOS.length + '</em> países de habla hispana con ' +
     'raperos en la temporada</span>';
-  var otros = ps.filter(function (p) {
-    return HISPANOS.indexOf(String(p.cc).toLowerCase()) < 0;
-  });
-  var faltan = HISPANOS.filter(function (c) { return !por[c]; });
-  $('#mapaOtros').innerHTML =
-    (otros.length ? '<p><span>Y también</span>' + otros.map(function (p) {
-      return ccTexto(p.cc) + ' ' + esc(nombrePais(p.cc));
-    }).join(' &middot; ') + '</p>' : '') +
-    (faltan.length ? '<p><span>Todavía no</span>' + faltan.map(function (c) {
-      return ccTexto(c) + ' ' + esc(nombrePais(c));
-    }).join(' &middot; ') + '</p>' : '');
+  // ⚠️ SIN «Y TAMBIÉN» NI «TODAVÍA NO». Dlx, 25/09/2026: «quitar eso que
+  // dice "y también" y "todavía no"». El mapa ya lo dice: pintado el que
+  // tiene gente, punteado el que falta, y el nombre al pasar el mouse.
   var caja = $('#mapa');
   var cargar = function () {
     fetch(MUNDO).then(function (r) {
@@ -1462,50 +1754,69 @@ function dibujoMapa(topo, por) {
    más cerca— es mejor que esconder el ranking que más importa. */
 function pintaTops() {
   var T = D.tabla || [];
-  var fila = function (f, i, v, u, c) {
+  var fila = function (f, i, v, c) {
     return '<li' + (f.k ? ' data-k="' + esc(f.k) + '"' : '') + '><i class="pp">' + (i + 1) +
       '</i><span class="nm">' + (f.k ? quienEs(f.av !== undefined ? f : conCara(f), 24)
-        : (f.cc ? bandera(f.cc) + ' ' : '') + esc(f.n)) +
+        : (f.logo ? '<span class="quien"><img class="av" src="' + esc(f.logo) + '" alt="" ' +
+          'style="width:24px;height:24px"><span class="qn">' + esc(f.n) + '</span></span>'
+          : esc(f.n))) +
       '</span><b' + (c ? ' style="color:' + esc(c) + '"' : '') + '>' + v + '</b></li>';
   };
   var cajas = [];
-  cajas.push(['&#127942;', 'Temporada <u>OVR</u>', '#/ranking', T.slice(0, 5).map(function (f, i) {
-    return fila(f, i, f.ovr || '—', 'OVR');
+  cajas.push(['&#127942;', 'Temporada <u>OVR</u>', '#/ranking/temporada', T.slice(0, 5).map(function (f, i) {
+    return fila(f, i, f.ovr || '—');
   })]);
   var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
     return (b.sc || 0) - (a.sc || 0);
   }).slice(0, 5);
+  var pide = reqDe('competitivo') || 10;
   var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
-  cajas.push(['&#9876;', 'Competitivo <u>Score</u>', '#/guia', comp.map(function (f, i) {
-    return fila(f, i, esc(f.rg), f.sc ? String(f.sc).replace('.', ',') : '', f.rgc);
-  }), cerca ? 'Se desbloquea a los <b>10 eventos</b> y todavía no llegó nadie. ' +
+  cajas.push(['&#9876;', 'Competitivo <u>Score</u>', '#/ranking/competitivo', comp.map(function (f, i) {
+    return fila(f, i, esc(f.rg), f.rgc);
+  }), cerca ? 'Se desbloquea a los <b>' + pide + ' eventos</b> y todavía no llegó nadie. ' +
     'El más cerca: <b>' + esc(cerca.n) + '</b>, con ' + cerca.ev + '.' : '']);
-  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/duelos', (D.duelos || []).slice(0, 5).map(function (d, i) {
-    return fila(d, i, d.g + '<s>/' + d.t + '</s>', 'ganados');
+  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/ranking/duelos', (D.duelos || []).slice(0, 5).map(function (d, i) {
+    return fila(d, i, d.g + '<s>/' + d.t + '</s>');
   })]);
   var med = T.filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; })
-    .sort(function (a, b) {
-      return (b.oro - a.oro) || (b.seg - a.seg) || (b.ter - a.ter) || (b.pts - a.pts);
-    }).slice(0, 5);
-  cajas.push(['&#127941;', 'Podios', '#/duelos', med.map(function (f, i) {
+    .sort(medallero).slice(0, 5);
+  cajas.push(['&#127941;', 'Podios', '#/ranking/podios', med.map(function (f, i) {
     return fila(f, i, [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]]
       .filter(function (x) { return x[1]; }).map(function (x) {
         return x[0] + x[1];
-      }).join(' '), '');
+      }).join(' '));
   })]);
-  cajas.push(['&#127758;', 'Países <u>pts</u>', '#/mundo', (D.paises || []).slice(0, 5).map(function (p, i) {
-    return fila({ n: nombrePais(p.cc), cc: p.cc }, i, num(p.pts), 'pts');
+  // 🔑 RACHAS EN EL LUGAR DE PAÍSES. Dlx, 25/09/2026: «quitar el de países
+  // y ahí poner el de rachas». La que llevan ahora; si nadie lleva una, la
+  // más larga de la temporada — y el título dice cuál de las dos es.
+  var con = T.filter(function (f) { return ((f.rch || [])[1] || 0) > 0; });
+  var vivas = con.filter(function (f) { return f.rch[0] > 0; });
+  var rs = (vivas.length ? vivas : con).slice().sort(function (a, b) {
+    return vivas.length ? (b.rch[0] - a.rch[0]) || (b.rch[1] - a.rch[1])
+                        : (b.rch[1] - a.rch[1]) || (b.pts - a.pts);
+  }).slice(0, 5);
+  if (!rs.length && (D.rachas || []).length) {
+    rs = D.rachas.slice(0, 5).map(function (r) { return { n: r.n, k: r.k, cc: r.cc, rch: [r.r, r.r] }; });
+    vivas = rs;
+  }
+  cajas.push(['&#128293;', 'Rachas <u>' + (vivas.length ? 'la actual' : 'la más larga') + '</u>',
+    '#/ranking/rachas', rs.map(function (f, i) {
+      return fila(f, i, '&#128293;' + (vivas.length ? f.rch[0] : f.rch[1]));
+    })]);
+  cajas.push(['&#129309;', 'Crews <u>pts</u>', '#/ranking/crews', (D.crews || []).filter(function (c) {
+    return c.rk !== 0;
+  }).slice(0, 5).map(function (c, i) {
+    return fila({ n: c.crew, logo: c.logo }, i, num(c.pts));
   })]);
-  cajas.push(['&#129309;', 'Crews <u>pts</u>', '#/mundo', (D.crews || []).slice(0, 5).map(function (c, i) {
-    return fila({ n: c.crew }, i, num(c.pts), 'pts');
-  })]);
-  // 🔑 LOS DOS QUE VIENEN. Dlx, 25/09/2026: «los otros 2 de cinco de arriba
-  // será MOST WANTED y MISIONES». Todavía no hay datos: se dice que vienen,
-  // en vez de esconder lo que Dlx pidió ver.
+  // 🔑 LOS QUE VIENEN. Dlx, 25/09/2026: «los otros 2 de cinco de arriba
+  // será MOST WANTED y MISIONES», y después «los 2 espacios será uno de
+  // Ascenso, que viene próximamente, y el otro Ligas». Todavía no hay
+  // datos: se dice que vienen, en vez de esconder lo que Dlx pidió ver.
   cajas.push(['&#128128;', 'Most Wanted', '', [],
-    'Cazadores, cazados y quién sobrevive. <b>Próximamente</b>.', 'pronto']);
-  cajas.push(['&#127919;', 'Misiones', '', [],
-    'Los desafíos de la temporada. <b>Próximamente</b>.', 'pronto']);
+    'Quién cazó, quién fue cazado y quién sobrevivió. <b>Próximamente</b>.', 'pronto']);
+  cajas.push(['&#127919;', 'Misiones', '', [], 'Las misiones de la temporada. <b>Próximamente</b>.', 'pronto']);
+  cajas.push(['&#128200;', 'Ascenso', '', [], 'El ranking de ascenso. <b>Próximamente</b>.', 'pronto']);
+  cajas.push(['&#127942;', 'Ligas', '', [], 'El ranking de ligas. <b>Próximamente</b>.', 'pronto']);
   var hay = cajas.filter(function (c) { return c[3].length || c[4]; });
   if (!hay.length) { apaga('#secTop'); return; }
   $('#tops').innerHTML = hay.map(function (c) {
@@ -1813,17 +2124,98 @@ function redes(rs, cl) {
       esc(RED_NOMBRE[r[0]] || r[0]) + '">' + (RED_ICONO[r[0]] || esc(r[0])) + '</a>';
   }).join('');
 }
-function pintaNovedades() {
-  var ns = D.novedades || [], rs = D.redes || [];
-  if (!ns.length && !rs.length) { apaga('#secNov'); return; }
+var DISCORD_ICONO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" ' +
+  'fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
+var FEED = { pag: 0, pp: 0 };
+function porPagina() { return window.innerWidth < 620 ? 1 : 2; }
+function itemFeed(x) {
+  var yt = x.tipo === 'youtube';
+  var de = yt ? (x.canal || nombreSv(x.sv) || x.sv) : 'Liga Global';
+  return '<a class="fd' + (yt ? ' yt' : '') + '" href="' + esc(x.link) + '" target="_blank" ' +
+    'rel="noopener noreferrer" style="--c:' + esc(colorSv(x.sv)) + '">' +
+    (yt && x.vid ? '<span class="fd-img"><img src="https://i.ytimg.com/vi/' + esc(x.vid) +
+      '/mqdefault.jpg" alt="" width="320" height="180" loading="lazy" decoding="async">' +
+      '<i aria-hidden="true">&#9654;</i></span>' : '') +
+    '<span class="fd-de"><i class="fd-red">' + (yt ? RED_ICONO.youtube : DISCORD_ICONO) + '</i>' +
+    esc(de) + '<small>' + esc(cuandoSe(x.t)) + '</small></span>' +
+    '<b>' + esc(x.tit) + '</b>' + (!yt && x.tx ? '<p>' + esc(x.tx) + '</p>' : '') +
+    '<span class="fd-ir">' + (yt ? 'Ver en YouTube' : 'Ver en Discord') + ' &#8599;</span></a>';
+}
+function pintaFeed() {
+  var fs = D.feed || (D.novedades || []).map(function (x) {
+    return Object.assign({ tipo: 'discord', sv: 'DRA' }, x);
+  });
+  var rs = D.redes || [];
+  if (!fs.length && !rs.length) { apaga('#secNov'); return; }
   $('#secNov').hidden = false;
   $('#novRedes').innerHTML = rs.length ? '<span>Seguí a la Liga</span>' + redes(rs) : '';
-  $('#novedades').innerHTML = ns.map(function (x) {
-    return '<a class="nv" href="' + esc(x.link) + '" target="_blank" rel="noopener noreferrer">' +
-      '<small>' + esc(cuandoSe(x.t)) + (x.de ? ' · ' + esc(x.de) : '') + '</small>' +
-      '<b>' + esc(x.tit) + '</b>' + (x.tx ? '<p>' + esc(x.tx) + '</p>' : '') +
-      '<span class="nv-ir">Ver en Discord &#8599;</span></a>';
-  }).join('');
+  var pp = FEED.pp = porPagina(), tot = Math.max(1, Math.ceil(fs.length / pp));
+  FEED.pag = Math.max(0, Math.min(FEED.pag, tot - 1));
+  $('#feed').innerHTML = fs.slice(FEED.pag * pp, FEED.pag * pp + pp).map(itemFeed).join('');
+  $('#feed').hidden = !fs.length;
+  $('#feedNav').hidden = tot < 2;
+  $('#feedPag').textContent = (FEED.pag + 1) + ' de ' + tot;
+  $('#feedAntes').disabled = FEED.pag === 0;
+  $('#feedDespues').disabled = FEED.pag >= tot - 1;
+}
+
+/* ── la guía, con los números de verdad ──────────────────────────────
+   🔑 Dlx, 25/09/2026: «agregar más cosas a GUÍA». La tabla de puntos sale
+   de `Config` y los pesos de `sheet/ovr.py` y `sheet/competitivo.py` (ver
+   `_guia()` en bot/subir_web.py): escritos acá se quedarían viejos el día
+   que cambie uno. */
+function pintaGuia() {
+  var G = D.guia || {}, P = G.puntos;
+  if (!P || !P.tablas) apaga('#secPuntos');
+  else {
+    var escs = ['16+', '8-15', '4-7'].filter(function (e) { return (P.tablas[e] || []).length; });
+    var orden = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos',
+      'Dieciseisavos'];
+    var vale = function (e, p) {
+      var r = P.tablas[e].filter(function (x) { return x[0] === p; })[0];
+      return r ? r[1] : null;
+    };
+    var nom = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
+    var wk = P.walkin || [];
+    $('#puntos').innerHTML = '<div class="tabla-caja"><table class="escala"><thead><tr>' +
+      '<th class="c-izq">Puesto</th>' + escs.map(function (e) {
+        return '<th>' + nom[e] + '<small>raperos</small></th>';
+      }).join('') + '</tr></thead><tbody>' + orden.filter(function (p) {
+        return escs.some(function (e) { return vale(e, p) != null; });
+      }).map(function (p) {
+        return '<tr><td class="c-izq">' + (MEDALLA[p] ? MEDALLA[p] + ' ' : '') + esc(p) +
+          (p === 'Semifinal' ? '<small>cuando no se juega el tercer puesto</small>' : '') + '</td>' +
+          escs.map(function (e) {
+            var v = vale(e, p);
+            return '<td>' + (v == null ? nada : num(v)) + '</td>';
+          }).join('') + '</tr>';
+      }).join('') + '</tbody></table></div>' +
+      '<ul class="guia-notas"><li><b>Por equipos</b>: los puntos del puesto se reparten ' +
+      'entre los integrantes.</li>' +
+      (wk.length ? '<li><b>Walk-in</b>: quien entra salteando rondas cobra ' + wk.map(function (w, i) {
+        return w[1] + '&nbsp;% con ' + w[0] + (i === wk.length - 1 ? ' o más' : '') +
+          (w[0] === 1 ? ' ronda' : ' rondas');
+      }).join(', ') + '.</li>' : '') +
+      (P.revivido != null ? '<li><b>Revivido</b>: su primer puesto entero y el ' + P.revivido +
+        '&nbsp;% del puesto final.</li>' : '') + '</ul>';
+  }
+  if (!(G.ovr || []).length && !(G.score || []).length) { apaga('#secNumeros'); return; }
+  var barra = function (n, w, max, sub) {
+    return '<div class="gp"><span>' + n + (sub ? '<small>' + sub + '</small>' : '') + '</span>' +
+      '<i><u style="width:' + Math.round(100 * w / max) + '%"></u></i><b>' + w + '&nbsp;%</b></div>';
+  };
+  var mx = function (xs, j) { return Math.max.apply(null, xs.map(function (x) { return x[j]; })); };
+  $('#numeros').innerHTML =
+    ((G.ovr || []).length ? '<h3 class="gh">El OVR <small>de 40 a 99 · ordena la temporada</small></h3>' +
+      G.ovr.map(function (x) { return barra(esc(x[0]), x[1], mx(G.ovr, 1)); }).join('') +
+      '<p class="nota">Cada parte se compara con la mejor de la temporada.</p>' : '') +
+    ((G.score || []).length ? '<h3 class="gh">El Score <small>de 0 a 100 · da el rango</small></h3>' +
+      G.score.map(function (x) { return barra(x[0] + ' ' + esc(x[1]), x[3], mx(G.score, 3), esc(x[2])); }).join('') +
+      ((G.conf || []).length ? '<p class="nota">Y se multiplica por la <b>confianza</b>, que premia ' +
+        'jugar más: ' + G.conf.map(function (c, i) {
+          return c[1] + '&nbsp;% ' + (i === G.conf.length - 1 ? 'desde ' : 'con ') + c[0] +
+            (c[0] === 1 ? ' evento' : ' eventos');
+        }).join(', ') + '.</p>' : '') : '');
 }
 
 /* ── eventos de la página ─────────────────────────────────────────── */
@@ -1843,19 +2235,25 @@ function eventos() {
     });
   });
 
-  $$('#tabla th').forEach(function (th) {
-    th.addEventListener('click', function () {
-      var c = th.dataset.orden;
-      // ⚠️ LO NUMERICO ARRANCA DE MAYOR A MENOR y el puesto y el nombre al
-      // revés. Un ranking que al tocar «Puntos» muestra primero al último
-      // obliga a tocar dos veces siempre.
-      if (ORDEN.col === c) ORDEN.desc = !ORDEN.desc;
-      else { ORDEN.col = c; ORDEN.desc = (c !== 'pos' && c !== 'n'); }
-      ORDEN.tocado = true;
-      $$('#tabla th').forEach(function (o) { o.classList.remove('asc', 'desc'); });
-      th.classList.add(ORDEN.desc ? 'desc' : 'asc');
-      pintaTabla();
-    });
+  // 🔑 LOS ENCABEZADOS SE REDIBUJAN CON CADA RANKING, así que el escucha va
+  // en la cabecera y no en cada uno. Tocar el que ya manda lo da vuelta.
+  var ordenar = function (th) {
+    var id = th.dataset.col, c = COL[id];
+    var cfg = SUBS[SUB] || SUBS.temporada;
+    var act = ORDEN.tocado ? ORDEN.col : cfg.cols[0], dsc = ORDEN.tocado ? ORDEN.desc : false;
+    if (id === act) ORDEN.desc = !dsc;
+    else ORDEN.desc = !(c.txt || id === 'pos' || id === 'i');
+    ORDEN.col = id;
+    ORDEN.tocado = true;
+    pintaTabla();
+  };
+  $('#cabTabla').addEventListener('click', function (e) {
+    var th = e.target.closest('th[data-col]');
+    if (th) ordenar(th);
+  });
+  $('#cabTabla').addEventListener('keydown', function (e) {
+    var th = e.target.closest('th[data-col]');
+    if (th && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); ordenar(th); }
   });
 
   // Un solo escucha para todo lo que abre el visor. ⚠️ Los enlaces del
@@ -1908,12 +2306,25 @@ function eventos() {
   // orden viejo haría que tocar «Podios» no cambiara nada visible.
   $('#subRanking').addEventListener('click', function (e) {
     var b = e.target.closest('.sub'); if (!b) return;
-    SUB = b.dataset.sub;
-    ORDEN.tocado = false;
-    $$('#subRanking .sub').forEach(function (o) {
-      o.classList.toggle('on', o === b);
-    });
-    pintaTabla();
+    elegirSub(b.dataset.sub);
+    // el link queda en la barra para mandarlo, sin saltar arriba
+    try { history.replaceState(null, '', '#/ranking/' + b.dataset.sub); } catch (x) { /* nada */ }
+  });
+  // las flechas del feed
+  $('#feedAntes').addEventListener('click', function () { FEED.pag--; pintaFeed(); });
+  $('#feedDespues').addEventListener('click', function () { FEED.pag++; pintaFeed(); });
+  window.addEventListener('resize', function () {
+    if (FEED.pp && FEED.pp !== porPagina()) pintaFeed();
+  });
+  // la categoría del comparador: se quedan los mismos dos si la tienen
+  $('#cmpCat').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cat]'); if (!b || b.disabled) return;
+    var antes = cmpLista(), ks = CMP.map(function (i) { return (antes[i] || {}).k; });
+    CMP_CAT = b.dataset.cat;
+    var ahora = cmpLista().map(function (f) { return f.k; });
+    CMP = ks.map(function (k, j) { var i = ahora.indexOf(k); return i >= 0 ? i : j; });
+    cerrarSug();
+    pintaComparar();
   });
   $('#masCartas').addEventListener('click', function () {
     VISTAS = 9999; pintaGaleria();
@@ -1967,7 +2378,7 @@ function eventos() {
   });
   $('#cmp').addEventListener('change', function (e) {
     var s = e.target.closest('.cmp-busca'); if (!s) return;
-    var con = conTarjeta();
+    var con = cmpLista();
     var i = indiceDe(s.value, con);
     if (i < 0) {
       // ⚠️ SE AVISA Y SE VUELVE ATRAS. Dejar el texto inventado en el
@@ -2098,18 +2509,18 @@ function pinta() {
   pintaChips();
   pintaTabla();
   pintaGaleria();
-  pintaDuelos();
-  pintaPodios();
   pintaComparar();
   pintaServidores();
   pintaPaises();
   pintaRangos();
   pintaComo();
+  pintaGuia();
   pintaTops();
   pintaMapa();
   pintaActividad();
-  pintaNovedades();
+  pintaFeed();
   pintaCalendario();
+  pintaEvCab();
   // 🔴 LA FECHA QUE SE MUESTRA ES LA DE LOS DATOS, NO LA DE LA COPIA.
   // `sello` es cuándo se escribió el payload y se puede mover sin que
   // los datos se muevan —correr `subir_web.py` a mano lo pone en
