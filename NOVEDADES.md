@@ -62,6 +62,41 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | Avisar **una vez** por llave; si cambia, se **edita** el aviso | |
 | Lo que toque quién está verificado **se pregunta antes**, con el número medido | (lección del 24/09) |
 
+
+### Lo que contestó Dlx el 25/09 (las 17 preguntas)
+
+| # | regla | Dlx | estado |
+|---|---|---|---|
+| 1 | **Makmah y Makma son la misma persona**: se saca la nota «DOS Makmahs» de la hoja AKAs | *«supongo. Las 2 son la misma persona»* | por hacer |
+| 2 | **CJ es `@cj_kloke_`** 🇻🇪 | *«si»* | por hacer · Eze y Noone siguen abiertos (abajo) |
+| 3 | **money maker** (y «moneymaker») **es troll** | *«si»* | por hacer |
+| 4 | **SEBITA es AKA de Liberia**: sus puntos van a Liberia | *«lo agregas SEBITA como AKA de liberia y todos los puntos de sebita específicamente le das a liberia»* | por hacer |
+| 5 | **Solar entra a la Lista con su ID**, sin confundirlo con ELSOLAR | *«Si. pero ten cuidado como dije que hay 2»* | por hacer |
+| 6 | **El Score Selección de la carta de País sale de la T1** (los 5 mejores de cada país) | *«si»* | por hacer |
+| 7 | Los estilos de Snake Rap **no** llenan los íconos de la Competitiva | *«no»* | cerrado |
+| 8 | **El escritor de la columna País** con los roles de país de Snake Rap | *«si dale»* | por hacer |
+| 9 | **Autoverificar, las dos cosas**: automático en el ciclo y a mano | *«podríamos hacer ambos para ahorrar el trabajo»* | por hacer |
+| 10 | **Alertas: por DM sólo a Dlx** si algo se traba; lo normal, en el canal donde avisa el repo de sync | *«por DM a mi únicamente. si es algo normal avísalo en el canal donde mencionas cosas con el repo de sync»* | por hacer |
+| 11 | **Quien usa `/card` y no está en la Lista, se agrega** con su ID y país. Verificado **sólo si está en DRA** | *«necesitamos que todas las personas que se verifiquen estén en DRA»* | por hacer |
+| 12 | **Se fusionan las 9 filas duplicadas** del padrón **guardando todas las AKAs** | *«si pero guarda las diferentes akas»* | por hacer |
+| 13 | «¿Por qué no tengo carta?» en el hub: sí, más adelante | *«si ahí vemos del tema»* | después |
+| 14 | El bot **sigue siendo Administrador** | *«no»* | cerrado |
+| 15 | **Los anuncios de toda la Liga se re-publican en `〢🔥〉eventos-hoy`** de DRA (`1500690475089399858`) | *«si este es el canal»* | ✅ hecho (1:22 AM) |
+| 16 | Telegram, **al final** con los demás tokens | *«lo dejamos para el final»* | cerrado |
+| 17 | **El vigía escucha sólo eventos y competencias** (10 canales) | *«solo eventos y competencias»* | ✅ hecho (1:22 AM) |
+
+### Lo que pidió Dlx el 25/09 (además)
+
+| regla | Dlx | estado |
+|---|---|---|
+| **Sólo tres servidores confirmados**: Snake Rap, Discord Rap Español y FFA. El hub muestra esos | *«los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía»* | ✅ hecho · `datos/servidores.json` (`confirmado`) |
+| **La descripción oficial**, y nunca «la liga de freestyle de Under Legends» | *«🏆 La Liga Global de Freestyle en Español. Unimos los rankings de los mejores servidores de rap online en una sola tabla mundial…»* | ✅ hecho |
+| **Banderas como imagen**, no emoji | *«puedes poner literalmente una imagen pequeña de las banderas»* | ✅ hecho |
+| **Mundo con nombre completo, logo y miembros** de cada servidor | *«con sus nombres completos e incluso sus logos y cantidad de miembros»* | ✅ hecho |
+| **RACHA = eventos seguidos llegando a semifinal** si la llave es de octavos, **a la final** si es de cuartos (más de 16: «supongo semifinal, ahí veremos») | *«RACHA es llegar a semifinal cuando el formato es de octavos, o cuando es de cuartos a la gran final»* | por hacer |
+| **«Ver llaves»** en «Lo que pasó»: la llave completa del evento en la web | *«un botón de ver llaves de evento y vemos ahí la info y las llaves de forma detallada»* | por hacer |
+| Verificación: un comando en Discord y un apartado en la página (quizás con login de Discord) | *«mi idea original era implementar un comando de verificación en discord y un apartado de verificación en la página también»* | a diseñar |
+
 ---
 
 ## 📅 Viernes 25/09 (madrugada)
@@ -100,23 +135,11 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ## ❓ Esperando a Dlx
 
-1. **Makmah / Makma**: las llaves dicen «Makma 🇻🇪» y la cuenta verificada (`makmah_g`) tiene el rol Venezuela y el apodo «#2 | Makmah» → el sistema los junta. ¿Se saca la nota «DOS Makmahs» de la hoja AKAs?
-2. **CJ** ¿es `@cj_kloke_` (🇻🇪)? · **Eze**: 5 cuentas posibles · **Noone** 🇵🇪: la única cuenta, `@001wanted100`, es 🇨🇴.
-3. **money maker** ¿es troll?
-4. **SEBITA 🇱🇷**: tu nota dice «Es Liberia» — ¿qué hay que hacer?
-5. **Solar** no está en la Lista de Raperos: ¿lo agrego con su ID?
-6. **Carta de País**: el «Score Selección» de cada país sale de la **pre-temporada**. ¿Se calcula con la T1 (promedio de los 5 mejores de cada país)?
-7. **Estilos**: Snake Rap tiene roles de estilo (PUNCH, INGENIO, POÉTICO…) y la Competitiva tiene 16 íconos sin dueño. ¿Se llenan de ahí?
-8. **13 países** que darían los roles de Snake Rap: ¿construyo el escritor de la columna País?
-9. **Autoverificar**: ¿corre solo en el ciclo (p. ej. una vez al día) o a mano?
-10. **Alertas**: ¿te aviso por Discord cuando algo se traba? ¿Por mensaje directo o en un canal?
-11. **«Es alguien nuevo»** de quien usó `/card`: ¿que lo agregue a la Lista con su ID y país?
-12. **9 filas duplicadas** del padrón (KRT/Krtman, Lzz/Luzzano…): ¿las fusiono?
-13. **«¿Por qué no tengo carta?»** en el hub: ¿lo hago?
-14. El bot es **Administrador en 4 de los 5 servidores**. No es urgente; sacárselo evita que vea canales de staff.
-15. **Canal «📡 eventos de la Liga» en DRA**: el bot re-publica ahí, al minuto, los anuncios de **todos** los servidores. Es la otra mitad de los avisos: sin instalar nada y sin token nuevo. ¿Lo creo? ¿Con qué nombre y en qué categoría?
-16. **Telegram** (el 2º de tu lista del 21/09): pide crear un bot en BotFather, o sea **un token nuevo** — ¿lo dejamos para el final con los demás tokens?
-17. **Los 14 canales que escucha el vigía** incluyen los de *novedades* y *anuncios* (misma búsqueda por nombre que el hub). Sólo avisa lo que tiene forma de anuncio de evento. ¿Está bien, o sólo los de eventos/competencias?
+1. **Eze y Noone** (del #2): Eze tiene 5 cuentas posibles; la única cuenta de Noone 🇵🇪 (`@001wanted100`) es 🇨🇴. ¿Cuál es cada uno, o los dejo sin ID?
+2. **TFC**: el Sheet dice «The Freestyle Community»; su Discord y su logo dicen «The Freestyle **Corpo**». ¿Cuál es? (No es confirmado todavía, así que hoy no se ve en el hub.)
+3. **Racha**: (a) llaves de más de 16 —¿semifinal o cuartos?—; (b) llaves de menos de 8 —¿llegar a la final?—; (c) faltar a un evento, ¿corta la racha o sólo cuentan los que jugaste?; (d) en el ranking de **Duelos**, ¿la racha sigue siendo de duelos ganados seguidos (con otro nombre) o pasa a ser la de eventos?
+4. **«Under Legends» en el resto**: saqué la frase y puse la descripción oficial. Quedan el **logo UL**, la trama «UNDER LEGENDS» del fondo y la dirección `underlegends.pages.dev`. ¿Se quedan como marca o también se van?
+5. **Verificación con login de Discord**: para que la página sepa quién sos hace falta registrar la dirección del hub en el portal de Discord de la app (lo hacés vos, es un campo). ¿Lo hacemos, o arrancamos por el comando `/verificar` en Discord?
 
 ## 🔧 Pendiente mío
 
