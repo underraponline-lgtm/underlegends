@@ -58,7 +58,10 @@ jobs:
         # `datos/*.json`; acá se comprueba además que existan.
         run: |
           bash -n bot/ci/guardar.sh
-          eval "$(sed -n '/^ARCHIVOS=/,/bot_en.json"$/p' bot/ci/guardar.sh)"
+          # hasta la primera línea que cierra la lista (`…json"`), y no
+          # hasta un archivo en particular: el último cambia cada vez que
+          # la lista crece
+          eval "$(sed -n '/^ARCHIVOS=/,/json"$/p' bot/ci/guardar.sh)"
           for f in $ARCHIVOS; do
             case "$f" in datos/*.json) ;; *) echo "::error::ARCHIVOS tiene «$f»"; exit 1 ;; esac
             [ -f "$f" ] || { echo "::error::no existe $f"; exit 1; }
