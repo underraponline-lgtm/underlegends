@@ -209,6 +209,12 @@ def corre(args, callado=True, mostrar=()):
         for l in (r.stdout or '').splitlines():
             if any(m in l for m in mostrar):
                 print('      %s' % l.strip())
+    # 🔴 CON LA SALIDA A LA VISTA, UNA FALLA NO SE ANUNCIABA. El 25/09/2026
+    # `rankings.py --escribir` salió con 1 desde las 2:22 PM ET —«No escribo
+    # sin respaldo»— y el paso siguió como si nada: el renglón estaba en el
+    # log, entre cuarenta más, sin nada que lo marcara.
+    if r.returncode and not callado:
+        print('      ⚠️ falló: %s (salió con %d)' % (' '.join(args[:2]), r.returncode))
     if r.returncode and callado:
         ultima = (r.stderr or r.stdout or '').strip().splitlines()
         print('      ⚠️ falló: %s' % ' '.join(args[:2]))
@@ -519,11 +525,13 @@ def _lo_barato(correr):
             if not ok0:
                 print('\n   🔴 no pude archivar la fase de prueba: no sigo (se reintenta '
                       'en la próxima corrida)\n')
+                # ⚠️ `alertar` Y NO `dm`: se reintenta cada media hora, y un DM
+                # por intento era una pared (revisión del 25/09/2026)
                 try:
                     import alertar as _AL
-                    _AL.dm('🔴 **No pude arrancar la %s**: archivar la fase de prueba falló. '
-                           'El ciclo no procesa nada hasta que ande; se reintenta cada media hora.'
-                           % _TMP.SELLO)
+                    _AL.alertar('arranque', '**No pude arrancar la %s**: archivar la fase de '
+                                'prueba falló. El ciclo no procesa nada hasta que ande; se '
+                                'reintenta cada media hora.' % _TMP.SELLO)
                 except Exception:                        # noqa: BLE001
                     pass
                 return 1
@@ -536,9 +544,12 @@ def _lo_barato(correr):
             reseteo = True
             try:
                 import alertar as _AL
-                _AL.dm('🧹 **Arrancó la %s.** La fase de prueba quedó archivada en las pestañas '
-                       '«· prueba» del Operativo y todo arranca de cero: rankings, puntos y '
-                       'llaves. Las tarjetas se redibujan solas.' % _TMP.SELLO)
+                _txt = ('**Arrancó la %s.** La fase de prueba quedó archivada en las pestañas '
+                        '«· prueba» del Operativo y todo arranca de cero: rankings, puntos y '
+                        'llaves. Las tarjetas se redibujan solas.' % _TMP.SELLO)
+                # si antes había fallado, el «volvió» ya dice que arrancó
+                if not _AL.resuelto('arranque', _txt):
+                    _AL.dm('🧹 ' + _txt)
             except Exception:                            # noqa: BLE001
                 pass
 
@@ -671,7 +682,22 @@ def _lo_barato(correr):
         print('      correría sheet/rankings.py --escribir --aplicar')
         print('      y sheet/rankings.py --otras --aplicar')
     else:
-        corre(['sheet/rankings.py', '--escribir', '--aplicar'], callado=False)
+        ok_vit = corre(['sheet/rankings.py', '--escribir', '--aplicar'], callado=False)
+        # 🔴 Y SI NO SE ESCRIBE, SE AVISA. Esa hoja alimenta el pool de
+        # Temporada: congelada, las cartas y la web se quedan con el número
+        # de la última corrida buena, y el ciclo sigue en verde. Un DM cada
+        # 6 h como mucho (`alertar`), y uno de «volvió» cuando vuelva.
+        try:
+            import alertar as _AL
+            if ok_vit:
+                _AL.resuelto('vitrina', 'Ranking Temporada vuelve a escribirse sola.')
+            else:
+                _AL.alertar('vitrina', '**Ranking Temporada no se está escribiendo**: '
+                            'las cartas de Temporada y la web se quedan con los números de '
+                            'la última corrida buena. El motivo está en el log del ciclo, '
+                            'paso 1c.')
+        except Exception:                                # noqa: BLE001
+            pass
         corre(['sheet/rankings.py', '--otras', '--aplicar'], callado=False)
         # ⚠️ LOS ANUNCIOS DE DISCORD, para el hub: `subir_web.py` (paso 2c)
         # arma «lo que viene» con ellos. Antes también los leía el afiche

@@ -220,6 +220,50 @@ def _orden_fecha(fecha, num):
 # más delicado del proyecto. Ahora sale de `rangos_de()`.
 ARRASTRE = ('🎯', '💀', '🛡️', '✅')
 
+
+def arrastre_en_git():
+    """De dónde vuelve lo que la vitrina no puede recalcular, o None.
+
+    🔴 LA VITRINA SE QUEDÓ CONGELADA EL 25/09/2026 DESDE LAS 2:22 PM ET. La
+    puerta de `--escribir` pedía un respaldo completo en
+    `docs/sheet_respaldo/`, y ese mismo día salieron del repo —son datos de
+    personas y el repo es público—, así que en Actions la puerta decía «no
+    hay» en cada corrida y el paso quedaba en verde igual. La encontró la
+    revisión de ese día: la corrida de la 1:52 PM escribió 85 filas y la de
+    las 2:22 PM, ninguna.
+
+    ⚠️ Y AQUEL RESPALDO TAMPOCO PROTEGÍA NADA EN EL CICLO: era un archivo
+    del 22/09 que cumplía la puerta para siempre. Lo que de verdad no vuelve
+    solo son las columnas de `ARRASTRE` —`✅` sale del padrón—, y
+    `datos/temporada_pool.json` las guarda (`caz`, `czd`, `sob`) y el ciclo
+    lo commitea cada media hora. Ese historial es mejor respaldo que el
+    completo: tiene media hora, no tres días.
+    """
+    import subprocess
+    ruta = os.path.join(BASE, 'datos', 'temporada_pool.json')
+    try:
+        r = subprocess.run(['git', 'log', '-1', '--format=%ct',
+                            '--', 'datos/temporada_pool.json'], cwd=BASE,
+                           capture_output=True, text=True, timeout=30)
+        with io.open(ruta, encoding='utf-8') as f:
+            pool = json.load(f)
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return None
+    cuando = (r.stdout or '').strip()
+    if r.returncode or not cuando:
+        return None
+    if pool and not all(c in pool[0] for c in ('caz', 'czd', 'sob')):
+        return None
+    # la hora en ET, como todas las del proyecto
+    import datetime as _dt
+    t = _dt.datetime.fromtimestamp(int(cuando), _dt.timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        t = t.astimezone(ZoneInfo('America/New_York'))
+        return 'datos/temporada_pool.json en git (%s ET)' % t.strftime('%d/%m %I:%M %p')
+    except Exception:                                    # noqa: BLE001
+        return 'datos/temporada_pool.json en git (%s UTC)' % t.strftime('%d/%m %H:%M')
+
 # El `#` no se calcula ni se arrastra: se numera al final, despues de
 # ordenar.
 #
@@ -2349,7 +2393,7 @@ def main():
         #     reemplaza entero tiene que poder volver.
         sys.path.insert(0, SCR)
         from resetear import hay_respaldo
-        rp = hay_respaldo().get('oficial')
+        rp = hay_respaldo().get('oficial') or arrastre_en_git()
         print('\n   respaldo oficial   %s' % (rp or '🔴 NO HAY'))
         if not rp:
             print('\n   🔴 No escribo sin respaldo. '
