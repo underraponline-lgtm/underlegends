@@ -233,9 +233,31 @@
     try { if (SUB) await SUB.unsubscribe(); } catch (e) { /* ya no estaba */ }
     SUB = null;
     if (ep) { try { await pedir('baja', { endpoint: ep }); } catch (e) { /* se cae sola */ } }
+    guardar('campana:yo', null);
     MSG = 'Listo: este dispositivo ya no recibe avisos.';
     pinta();
   }
+
+  // 🔑 VINCULAR: se entra con Discord (sin pedir nada nuevo: `prompt=none`)
+  // y a la vuelta `vincularAvisos()` de app.js anota el dispositivo.
+  function vincular() {
+    if (typeof window.urlLogin !== 'function') throw new Error('recargá la página');
+    location.href = window.urlLogin('v');
+  }
+  async function desvincular() {
+    if (SUB) await pedir('desvincular', { endpoint: SUB.endpoint });
+    guardar('campana:yo', null);
+    MSG = 'Listo: este dispositivo ya no recibe tus avisos personales.';
+    pinta();
+  }
+  window.addEventListener('lg:vinculado', function () {
+    MSG = '✅ Listo: te llegan tus avisos (rango y tarjetas) en este dispositivo.';
+    pinta();
+  });
+  window.addEventListener('lg:vinculado-no', function () {
+    MSG = '⚠️ No pude vincularlo. Activá los avisos en este dispositivo y probá de nuevo.';
+    pinta();
+  });
 
   // 🧪 «Pruebas»: le llega a quien lo elige cuando Dlx escribe «probando»
   // en un canal de eventos (ver `prueba()` en bot/avisos.js).
@@ -327,6 +349,16 @@
       h += '<div class="cp-acc"><button class="bajar" data-cp="probar"><i aria-hidden="true">' +
         '&#9654;</i><span>Mandar una de prueba</span></button>' +
         '<button class="bajar cp-no" data-cp="desactivar"><span>Desactivar</span></button></div>';
+      // 🔑 LOS AVISOS DE CADA UNO (Dlx, 25/09/2026: «todas»): subiste de
+      // rango, desbloqueaste una tarjeta. Sólo si este dispositivo se
+      // vinculó entrando con Discord; el ID lo pone Discord, no la página.
+      var yo = leer('campana:yo', null);
+      h += '<div class="cp-yo"><p class="cp-tx"><b>&#128100; Avisos míos</b>: cuando subís de ' +
+        'rango o desbloqueás una tarjeta.</p>' + (yo && yo.id
+        ? '<p class="cp-ok">✅ Vinculado con tu Discord' + (yo.n ? ' (' + esc(yo.n) + ')' : '') +
+          '.</p><button class="bajar cp-no" data-cp="desvincular"><span>Desvincular</span></button>'
+        : '<button class="bajar" data-cp="vincular"><i aria-hidden="true">&#128279;</i>' +
+          '<span>Vincular con mi Discord</span></button>') + '</div>';
     }
     h += '<p class="cp-msg" role="status">' + esc(MSG) + '</p>';
     caja.innerHTML = h;
@@ -376,7 +408,7 @@
     if (b.hasAttribute('data-sv')) { elegir(b.getAttribute('data-sv')); return; }
     var que = b.getAttribute('data-cp');
     var f = que === 'activar' ? activar : que === 'probar' ? function () { return probar(false); }
-      : desactivar;
+      : que === 'vincular' ? vincular : que === 'desvincular' ? desvincular : desactivar;
     b.disabled = true;
     Promise.resolve(f()).catch(function (err) {
       MSG = '⚠️ ' + (err && err.message ? err.message : 'no se pudo');

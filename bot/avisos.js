@@ -687,6 +687,8 @@ const RUTAS = {
   '/avisos/clave': 'GET', '/avisos/estado': 'GET',
   '/avisos/alta': 'POST', '/avisos/baja': 'POST', '/avisos/probar': 'POST',
   '/avisos/simular': 'POST',
+  // 🔑 los avisos de cada uno: ver `vincular()` y `personales()` del objeto
+  '/avisos/vincular': 'POST', '/avisos/desvincular': 'POST',
 };
 
 const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
@@ -706,6 +708,29 @@ export async function rutaAvisos(req, env, ruta) {
       : json({ error: 'los avisos todavía no tienen clave' }, 503);
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
+  // 🔑 VINCULAR UN DISPOSITIVO A UNA PERSONA: el Discord ID sale de Discord
+  // —con el permiso que la página trae de entrar con Discord—, nunca de la
+  // página. Así nadie puede anotarse los avisos de otro.
+  if (ruta === '/avisos/vincular') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo); } catch (e) { d = null; }
+    const t = String((d && d.token) || '');
+    if (!d || typeof d.endpoint !== 'string' || !/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    let u = null;
+    try {
+      const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
+      if (r.ok) u = await r.json();
+    } catch (e) { u = null; }
+    if (!u || !u.id) return json({ error: 'discord' }, 401);
+    return elObjeto(env).fetch('https://avisos/vincular', {
+      method: 'POST', body: JSON.stringify({ endpoint: d.endpoint, quien: String(u.id) }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -713,6 +738,34 @@ export async function rutaAvisos(req, env, ruta) {
   return elObjeto(env).fetch('https://avisos' + sub, {
     method: 'POST', body: cuerpo, headers: { 'content-type': 'application/json' },
   });
+}
+
+// ── los avisos de cada uno ─────────────────────────────────────────────
+// 🔑 Dlx, 25/09/2026, a las ideas de Mi cuenta: «todas». La cuarta: que te
+// llegue un aviso cuando te pasa algo a vos —subiste de rango, desbloqueaste
+// una tarjeta—. Los arma el ciclo (`bot/avisos_personales.py`) y los deja en
+// KV; el vigía los lee cada minuto y los manda a los dispositivos que esa
+// persona vinculó.
+//
+// ⚠️ POR KV Y NO POR UNA RUTA: una ruta para que el ciclo le hable al Worker
+// habría pedido un secreto compartido nuevo, y los tokens nuevos quedaron
+// para el final (Dlx). El ciclo ya escribe KV con su llave.
+export const COLA_PERSONAL = 'avisos:personales';
+
+/** La cola que dejó el ciclo, con sólo lo que se puede mandar. */
+export function colaPersonal(crudo) {
+  let c = null;
+  try { c = JSON.parse(crudo || 'null'); } catch (e) { c = null; }
+  if (!Array.isArray(c)) return [];
+  return c.filter((a) => a && typeof a.id === 'string' && /^[0-9]{5,25}$/.test(String(a.quien || '')) &&
+    typeof a.titulo === 'string' && a.titulo).slice(0, 200);
+}
+
+/** Lo que viaja al teléfono: lo lee `armar()` de `paginas/sw.js`. */
+export function cuerpoPersonal(a) {
+  const url = /^https:\/\/underlegends\.pages\.dev\//.test(String(a.url || '')) ? a.url : '/';
+  return JSON.stringify({ v: 1, tipo: 'personal', id: String(a.id).slice(0, 40),
+    t: String(a.titulo).slice(0, 120), b: String(a.cuerpo || '').slice(0, 240), url });
 }
 
 /** Lo que corre el cron de cada minuto. */
@@ -841,6 +894,11 @@ export class Avisos {
       // que alguien va a creer que sirve. (La columna `cursor_dm` de `avisos`
       // queda donde ya existía: no la lee nada.)
       this.sql.exec('DROP TABLE IF EXISTS dms');
+      // 🔑 LOS AVISOS DE CADA UNO (25/09/2026): de quién es cada dispositivo
+      // —si lo vinculó entrando con Discord— y qué aviso personal ya salió.
+      // `ADD COLUMN` falla si ya está: es la migración de una sola vez.
+      try { this.sql.exec("ALTER TABLE subs ADD COLUMN quien TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      this.sql.exec('CREATE TABLE IF NOT EXISTS hechos (id TEXT PRIMARY KEY, t INTEGER NOT NULL)');
     });
   }
 
@@ -866,6 +924,8 @@ export class Avisos {
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);
       if (ruta === '/simular') return this.simular();
+      if (ruta === '/vincular') return this.vincular(d);
+      if (ruta === '/desvincular') return this.desvincular(d);
       if (ruta === '/disparo') {
         if (d.cual !== 'arranco' && d.cual !== 'ultimo') return json({ error: 'no existe' }, 404);
         this.guardar('disparo_' + d.cual, d.v || {});
@@ -1017,6 +1077,10 @@ export class Avisos {
       limpio: (!previo.limpio || ahora - previo.limpio > HORA) ? ahora : previo.limpio,
     });
     if (nuevos) await this.despertar(ahora);
+    // 🔑 los avisos de cada uno. Nunca frena al vigía: ver `personales()`
+    try { await this.personales(ahora); } catch (e) {
+      this.guardar('personales', { t: ahora, error: String(e).slice(0, 120) });
+    }
     return { ok: !errores.length, leidos, nuevos, errores };
   }
 
@@ -1340,6 +1404,72 @@ export class Avisos {
     return json({ ok: true, svs: this.svsDe(sub.endpoint) });
   }
 
+  /** Este dispositivo es de esta persona. Sólo lo llama `rutaAvisos`, con el ID de Discord. */
+  vincular(d) {
+    if (typeof d.endpoint !== 'string' || !/^[0-9]{5,25}$/.test(String(d.quien || ''))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const r = this.sql.exec('UPDATE subs SET quien = ? WHERE endpoint = ?', String(d.quien), d.endpoint);
+    if (!r.rowsWritten) return json({ error: 'esa suscripción no está anotada' }, 404);
+    return json({ ok: true });
+  }
+
+  desvincular(d) {
+    if (typeof d.endpoint !== 'string') return json({ error: 'falta el endpoint' }, 400);
+    this.sql.exec("UPDATE subs SET quien = '' WHERE endpoint = ?", d.endpoint);
+    return json({ ok: true });
+  }
+
+  /**
+   * La cola de avisos personales que dejó el ciclo en KV.
+   *
+   * ⚠️ CADA UNO SALE UNA VEZ: se anota en `hechos` ANTES de mandarlo, así
+   * una cola que no se pudo borrar —o que el ciclo reescribió con lo viejo
+   * adentro— no vuelve a sonar.
+   *
+   * ⚠️ SIN VÍNCULO NO HAY AVISO: la cola lleva el Discord ID y sólo le llega
+   * a los dispositivos que esa persona vinculó. El resto se descarta.
+   */
+  async personales(ahora) {
+    const crudo = await this.env.KV.get(COLA_PERSONAL);
+    if (!crudo) return 0;
+    const cola = colaPersonal(crudo);
+    let enviados = 0, sinVinculo = 0;
+    for (const a of cola) {
+      const id = 'yo:' + a.id;
+      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?',
+        String(a.quien)).toArray();
+      if (!subs.length) { sinVinculo++; continue; }
+      const cuerpo = cuerpoPersonal(a);
+      const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo,
+        { ttl: 24 * 3600, topic: 'yo' + String(a.id).replace(/[^A-Za-z0-9]/g, '').slice(-20) },
+        this.env, new Map())));
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) enviados++;
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+      });
+    }
+    this.sql.exec('DELETE FROM hechos WHERE t < ?', ahora - 30 * 24 * HORA);
+    try { await this.env.KV.delete(COLA_PERSONAL); } catch (e) { /* `hechos` evita repetir */ }
+    this.guardar('personales', { t: ahora, cola: cola.length, enviados, sin_vinculo: sinVinculo });
+    return enviados;
+  }
+
+  /** Para `estado()`. ⚠️ Con try: si esto fallara, `/avisos/estado` daría 500
+   * y `bot/alertar.py` leería al vigía como caído. */
+  estadoPersonales() {
+    try {
+      return {
+        vinculados: this.sql.exec("SELECT COUNT(*) AS n FROM subs WHERE quien != ''").toArray()[0].n,
+        ultima: this.leer('personales'),
+      };
+    } catch (e) {
+      return { error: String(e).slice(0, 80) };
+    }
+  }
+
   svsDe(endpoint) {
     const r = this.sql.exec('SELECT svs FROM subs WHERE endpoint = ?', endpoint).toArray()[0];
     return r ? r.svs.split('|').filter(Boolean) : [];
@@ -1465,6 +1595,9 @@ export class Avisos {
         sin_leer: c.sin_leer || [],
       },
       suscripciones: n,
+      // 🔑 los avisos de cada uno: cuántos dispositivos están vinculados a
+      // una persona y cómo salió la última cola
+      personales: this.estadoPersonales(),
       ultimas_24h: { avisos: dia.n, enviados: dia.e },
       ultimo: ult ? {
         t: new Date(ult.creado).toISOString(), sv: ult.sv, titulo: tit,
