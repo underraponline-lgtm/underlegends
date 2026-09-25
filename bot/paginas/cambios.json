@@ -10,6 +10,14 @@
  ],
  "cambios": [
   {
+   "version": "1.11",
+   "dia": "2026-09-25",
+   "titulo": "Tus avisos: rango y tarjetas",
+   "items": [
+    "👤 **Avisos míos**: en **Eventos → Avisos**, «Vincular con mi Discord» y te llega un aviso al celular cuando **subís de rango** o **desbloqueás una tarjeta**. Sólo a los dispositivos que vinculaste, y lo podés desvincular cuando quieras."
+   ]
+  },
+  {
    "version": "1.10",
    "dia": "2026-09-25",
    "titulo": "Tus redes en tu perfil",

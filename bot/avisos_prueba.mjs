@@ -48,6 +48,44 @@ const ok = (cond, que) => {
   ok(!A.releer({ estado: 2, hasta: 999, cuerpo: '{"t":"X"}' }, ed), 'ni lo vencido');
 }
 
+// ── 0b · los avisos de cada uno ───────────────────────────────────────
+{
+  console.log('0b · los avisos de cada uno');
+  const cola = A.colaPersonal(JSON.stringify([
+    { id: 'a1', quien: '554330098812059679', titulo: 'Desbloqueaste tu tarjeta', cuerpo: 'x',
+      url: 'https://underlegends.pages.dev/#/r/konan' },
+    { id: 'a2', quien: 'no-es-un-id', titulo: 'x' },
+    { id: 'a3', quien: '554330098812059679' },
+  ]));
+  ok(cola.length === 1 && cola[0].id === 'a1', 'la cola deja pasar sólo lo que se puede mandar');
+  ok(A.colaPersonal('esto no es json').length === 0 && A.colaPersonal(null).length === 0,
+    'y una cola rota o vacía no rompe nada');
+  const c = JSON.parse(A.cuerpoPersonal(cola[0]));
+  ok(c.tipo === 'personal' && c.t === 'Desbloqueaste tu tarjeta' && c.url.endsWith('#/r/konan'),
+    'el cuerpo lleva el título y el link al perfil');
+  ok(JSON.parse(A.cuerpoPersonal({ id: 'z', titulo: 't', url: 'https://otro.sitio/x' })).url === '/',
+    'un link que no es de la página no viaja');
+
+  // vincular: el ID sale de Discord, nunca de la página
+  const antes = globalThis.fetch;
+  const llamadas = [];
+  const env = { AVISOS: { idFromName: () => 'x', get: () => ({ fetch: async (u, o) => {
+    llamadas.push([u, o && o.body]); return new Response('{"ok":true}'); } }) } };
+  const pedir = (cuerpo) => A.rutaAvisos(new Request('https://x/avisos/vincular',
+    { method: 'POST', body: JSON.stringify(cuerpo) }), env, '/avisos/vincular');
+  let r = await pedir({ endpoint: 'https://push/1', token: 'x' });
+  ok(r.status === 400 && !llamadas.length, 'un permiso con forma rara se rechaza sin molestar al objeto');
+  globalThis.fetch = async () => new Response('{}', { status: 401 });
+  r = await pedir({ endpoint: 'https://push/1', token: 'permisoFalso1234567890' });
+  ok(r.status === 401 && !llamadas.length, 'uno que Discord no reconoce, también');
+  globalThis.fetch = async () => new Response(JSON.stringify({ id: '554330098812059679' }), { status: 200 });
+  r = await pedir({ endpoint: 'https://push/1', token: 'permisoBueno1234567890', quien: '1' });
+  const cuerpo = JSON.parse(llamadas[0] ? llamadas[0][1] : '{}');
+  ok(r.status === 200 && cuerpo.quien === '554330098812059679' && cuerpo.endpoint === 'https://push/1',
+    'uno bueno vincula con el ID que dice Discord (el que manda la página no cuenta)');
+  globalThis.fetch = antes;
+}
+
 // ── 1 · el ejemplo del RFC 8291 ─────────────────────────────────────
 {
   const as_pub = 'BP4z9KsN6nGRTbVYI_c7VJSPQTBtkgcy27mlmlMoZIIgDll6e3vCYLocInmYWAmS6TlzAC8wEqKK6PBru3jl7A8';

@@ -2924,13 +2924,36 @@ var DC = leerLS('lg:dc', null);
    memoria mientras la página está abierta —para poder guardar— y nunca en
    el dispositivo. */
 var DC_TOKEN = null, REDES_MIAS = null;
-function urlLogin(conRedes) {
-  var st = (conRedes ? 'r' : 'i') + Math.random().toString(36).slice(2) + Date.now().toString(36);
+function urlLogin(modo) {
+  // 'r' las redes (pide `connections`), 'v' vincular los avisos, o entrar
+  var conRedes = modo === true || modo === 'r';
+  var st = (conRedes ? 'r' : modo === 'v' ? 'v' : 'i') + Math.random().toString(36).slice(2) +
+    Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
     '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
     '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : 'identify') +
     '&prompt=' + (conRedes ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
+}
+/* 🔑 LOS AVISOS DE CADA UNO: con el permiso recién traído de Discord, este
+   dispositivo queda anotado como de esta persona. El ID lo pone Discord, no
+   la página: ver `rutaAvisos()` en bot/avisos.js. La campana se entera por
+   un evento y se repinta. */
+function vincularAvisos(token) {
+  if (!('serviceWorker' in navigator)) return;
+  navigator.serviceWorker.ready
+    .then(function (reg) { return reg.pushManager.getSubscription(); })
+    .then(function (sub) {
+      if (!sub) throw new Error('sin avisos');
+      return fetch('/api/avisos/vincular', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ endpoint: sub.endpoint, token: token }) });
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error('no');
+      guardarLS('campana:yo', { id: DC ? DC.id : '', n: DC ? (DC.rapero || DC.n) : '' });
+      window.dispatchEvent(new Event('lg:vinculado'));
+    })
+    .catch(function () { window.dispatchEvent(new Event('lg:vinculado-no')); });
 }
 function pedirRedes(mostrar) {
   var cuerpo = { token: DC_TOKEN };
@@ -2983,11 +3006,14 @@ function volverDeDiscord() {
     var i = x.indexOf('=');
     if (i > 0) q[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1));
   });
-  try { history.replaceState(null, '', location.pathname + location.search + '#/'); } catch (e) { location.hash = '#/'; }
+  // quien vino a vincular sus avisos vuelve a la campana
+  var destino = '#/' + (String(q.state || '').charAt(0) === 'v' ? 'avisos' : '');
+  try { history.replaceState(null, '', location.pathname + location.search + destino); } catch (e) { location.hash = destino; }
   var st = '';
   try { st = sessionStorage.getItem('lg:estado') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) { st = ''; }
   if (!q.access_token || !st || q.state !== st) return;
   var porRedes = st.charAt(0) === 'r';
+  var porAvisos = st.charAt(0) === 'v';
   if (porRedes) DC_TOKEN = q.access_token;
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })
@@ -3004,6 +3030,10 @@ function volverDeDiscord() {
       pintaPaneles();
       pintaPopCuenta();
       $('#popCuenta').hidden = false;
+      if (porAvisos) {
+        vincularAvisos(q.access_token);
+        $('#popCuenta').hidden = true;
+      }
       if (porRedes) {
         pedirRedes(null).then(function (R) {
           REDES_MIAS = R;

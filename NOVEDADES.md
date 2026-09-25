@@ -216,10 +216,17 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Viernes 25/09 (12:50 PM a 1:10 PM) — versión 1.11
+
+- 👤 **Los avisos de cada uno** (de «todas», la 4, la última): «subiste de rango» y «desbloqueaste tu tarjeta», al celular. **Sin ningún secreto nuevo** —los tokens nuevos quedaron para el final—: el ciclo arma la cola (`bot/avisos_personales.py`, un paso nuevo en los dos trabajos) y la deja en KV (`avisos:personales`); el vigía del Worker, que ya corre cada minuto, la lee y la manda.
+- **Sólo a quien vinculó un dispositivo**: en la campana, «Vincular con mi Discord» entra con Discord (`prompt=none`, no pide nada nuevo) y el Worker le pregunta a Discord de quién es —el ID nunca lo pone la página—. «Desvincular» y «Desactivar» lo sacan.
+- ⚠️ **La primera corrida no avisa nada**: anota cómo está cada uno (331). Si no, le diría a todos «desbloqueaste tu Servidor». **Bajar de rango no se avisa** (lo decidí yo: un aviso para decirte que bajaste no suma; es una línea, `AVISA_BAJADA`, si lo querés).
+- Cada aviso sale **una vez**: el objeto lo anota antes de mandarlo (`hechos`), así una cola repetida no vuelve a sonar. El rango sigue la misma puerta que la carta: nada debajo de 10 eventos.
+- Con eso quedan hechas las cuatro ideas de Mi cuenta.
+
 ## 📅 Viernes 25/09 (12:35 a 12:50 PM) — versión 1.10
 
 - 🔗 **Tus redes en tu perfil** (de «todas», la 1): en Mi cuenta, **«Mis redes en mi perfil»** pide a Discord el permiso `connections` —aparte: entrar sigue pidiendo sólo `identify`— y ofrece **sólo las conexiones que la persona ya muestra en su perfil de Discord** (Instagram, TikTok, YouTube, X, Twitch, Spotify, Reddit, Bluesky). Se guardan **sólo las que marca**, en `redes:<clave>` de KV, y **sólo si tiene perfil en la Liga**; «Quitar todas» las borra. El ciclo las suma a `web:perfiles` (`subir_web._con_redes()`: un listado y un `bulk/get` por corrida) y el perfil las muestra arriba. El permiso de redes vive en la memoria de la página, nunca en el dispositivo. Worker: `cuentaRedes()`, con 8 pruebas.
-- Falta de «todas»: **los avisos personales** (subiste de rango, desbloqueaste una tarjeta).
 
 ## 📅 Viernes 25/09 (12:20 a 12:35 PM) — versión 1.09
 

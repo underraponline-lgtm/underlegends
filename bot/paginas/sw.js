@@ -55,6 +55,10 @@ function armar(d) {
       url: d.url || '/', tag: 'ev' + (d.id || ''),
     };
   }
+  // 🔑 LOS AVISOS DE CADA UNO: subiste de rango, desbloqueaste una tarjeta
+  if (d.tipo === 'personal') {
+    return { titulo: d.t || 'Liga Global', cuerpo: d.b || '', url: d.url || '/', tag: 'yo' + (d.id || '') };
+  }
   return { titulo: 'Liga Global', cuerpo: d.t || 'Hay novedades en la Liga.', url: '/', tag: 'liga' };
 }
 
