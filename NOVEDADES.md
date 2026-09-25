@@ -161,7 +161,23 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Histórica y Prime** en la Guía, «próximamente» | *«agregá HISTÓRICA y PRIME»* | `app.js` |
 | **Sin «Qué se escucha»** en Eventos | *«eliminar eso que se escucha muchas cosas de DRA»* | `index.html` |
 
+### Lo que contestó Dlx el 25/09 (tercera tanda de la mañana)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **El Score usa los pesos del rework (G1)**: ⚡25 · 🎯24 · 👑21 · 🔥10 · 🌍20 (antes 30 · 24 · 21 · 15 · 10) | *«sí»* | `sheet/competitivo.py` (`PESOS`) |
+| **La Diversidad es la del rework**: reparte los **puntos** por servidor —dónde ganaste—, no las participaciones | *«asegurate que eso de la diversidad del rework aplique»* | ya lo hacía (A4); el texto de la Guía decía otra cosa y se corrigió |
+| **A7 (el Score a 40–99), más adelante**, con recordatorio | *«aplicalo en otro momento… hazme recordar, ahora no»* | `bot/alertar.py`: un DM cuando alguien llegue a 8 eventos |
+| **Mi cuenta: entrar con Discord** | *«creo que sería mejor meter el login de Discord»* | `bot/worker.js` (`/cuenta`), `bot/paginas/app.js` |
+
 ---
+
+## 📅 Viernes 25/09 (8:40 AM) — el Score del rework y entrar con Discord
+
+- ⚖️ **El Score, con los pesos del rework** desde las **8:40 AM**. No le cambió la letra a nadie: todavía nadie tiene 10 eventos. La hoja Config y la Guía ya los muestran, y la Config los lee de `competitivo.py` en vez de tenerlos escritos a mano.
+- 🌍 **La Diversidad** ya repartía los puntos por servidor (rework A4). Lo que decía «en cuántos servidores competís» era el texto de la Guía; ahora dice lo que mide.
+- 🔔 **A7 con recordatorio**: cuando el primero llegue a **8 eventos** (Hassan va 6), el bot te manda **un** DM para decidirlo antes de que haya letras. Una vez, no cada 6 horas.
+- 👤 **Entrar con Discord** en «Mi cuenta» (publicado a las **8:41 AM**). Sólo lee tu nombre y tu foto; el Worker le pregunta a Discord quién sos y tira el permiso. Si estás en la Liga, te lleva a tu perfil; si no, te dice que escribas `/verificar`. **Falta tu paso en el portal** (abajo).
 
 ## 📅 Viernes 25/09 (8 AM) — Mi cuenta, `/notify`, la llave por equipos y las crews con página
 
@@ -296,8 +312,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ## ❓ Esperando a Dlx
 
-1. **El Score del Competitivo**: tenías razón, es el de antes. El rework dejó dos cambios **para decidir después de simularlos**, y nunca se aplicaron: **G1**, los pesos —hoy ⚡30 · 🎯24 · 👑21 · 🔥15 · 🌍10; el rework propone ⚡25 · 🎯24 · 👑21 · 🔥**10** · 🌍**20**— y **A7**, llevar el Score a 40–99. Simulado sobre las 138 de la pre-temporada, **G1 le cambia la letra a 37 (27 %)**; hoy no le cambia a nadie, porque nadie llegó a 10 eventos. ¿Aplico G1 ahora? A7 pide mover los umbrales de los 8 rangos en la misma pasada: lo dejo para cuando digas.
-2. **La segunda página de los paneles** del Inicio la armé con **tu temporada** (tu puesto, tu racha y lo que te falta, si elegiste quién sos en «Mi cuenta») y **lo que viene** (el próximo evento o el último campeón). ¿Va así, o preferís otra cosa ahí?
+1. **Para que «Entrar con Discord» ande falta un paso tuyo**, un solo campo: [discord.com/developers/applications](https://discord.com/developers/applications) → **LIGA GLOBAL** → **OAuth2** → **Redirects** → **Add Redirect** → `https://underlegends.pages.dev/` (con la barra final) → **Save Changes**. No crea ni cambia ningún token. Avisame cuando esté y lo pruebo.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -323,6 +338,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 - **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
 - **Dos personas con el mismo nombre en minúsculas** (Volk y volk) ya se separan en la página, pero **R2 y KV todavía arman la clave del nombre**: el día que los dos estén verificados, sus tarjetas chocan. Hoy ninguno lo está.
 - **`/notify` todavía no mandó un DM de verdad**: el primero va a salir con el próximo evento que se anuncie. Lo miro.
+- 🔔 **A7** (el Score a 40–99): te llega un DM cuando el primero llegue a 8 eventos. Pide mover los umbrales de los 8 rangos en la misma pasada.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
 - **Las cartas siguen con el logo guardado** de cada servidor: el del hub ya sale de Discord, pero el escudo de la carta pasa por `procesar_logos.py` y no se puede cambiar solo sin mirarlo.
