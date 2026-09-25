@@ -841,6 +841,18 @@ se distingue de uno que anda.**
 `len(datos/competitivo_pool.json)`, porque la T1 arranca de cero y el pool
 cambia de tamaño.
 
+### `r.text` sobre una respuesta sin `charset` es una adivinanza
+
+⚠️ **KV, R2 y el script de un Worker contestan sin `charset`**, y
+`requests` lo **adivina**. Adivina bien mucho tiempo, y un día no. Pasó
+tres veces el 24/09/2026: «King🇦🇷» llegó a `Pendientes` como
+«Kingđź‡¦đź‡·» (Windows-1250), el «!馃挆Valen…» de ✅ Decidir era lo mismo
+adivinado como GBK, y el chequeo de `desplegar.py` dijo «el desplegado
+no es el del repo» sobre dos archivos idénticos (cirílico).
+
+**La regla:** para JSON, `r.json()` —mira los primeros bytes, no adivina—;
+para todo lo demás, `r.content.decode('utf-8')`. Nunca `json.loads(r.text)`.
+
 ### Una columna que se arrastra de sí misma no tiene semilla
 
 ⚠️ **`Rango` estuvo vacío para TODA la vitrina y nadie lo vio**, porque el

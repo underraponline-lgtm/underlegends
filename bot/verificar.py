@@ -77,21 +77,28 @@ def main():
 
     r = s.get('https://api.cloudflare.com/client/v4/accounts/%s/workers/scripts/%s'
               % (CUENTA, NOMBRE), timeout=30)
-    arriba = r.text
-    local = io.open(os.path.join(SCR, 'worker.js'), encoding='utf-8').read()
-    igual = False
-    if '/**' in arriba and '};' in arriba:
-        cuerpo = arriba[arriba.index('/**'):arriba.rindex('};') + 2]
-        igual = (cuerpo.replace('\r\n', '\n').strip()
-                 == local.replace('\r\n', '\n').strip())
-    ok('lo desplegado es lo del repo', igual,
-       '' if igual else 'falta correr bot/desplegar.py')
+    # 🔴 DOS MODULOS DESDE EL 24/09/2026 (`worker.js` + `avisos.js`), y este
+    # chequeo recortaba «del primer `/**` al último `};`»: con dos archivos
+    # en el multipart ese recorte los agarra juntos, con el borde en el
+    # medio, y decía «falta desplegar» sobre un Worker al día. Se desarma
+    # igual que en `desplegar.py` —un solo lugar— y en UTF-8: KV y este
+    # endpoint no mandan `charset` y `r.text` lo adivina (ver CLAUDE.md).
+    import desplegar as DSP
+    arriba = DSP._partes(r.content.decode('utf-8', 'replace'))
+    distintos = []
+    for mod in DSP.MODULOS:
+        local = io.open(os.path.join(SCR, mod), encoding='utf-8').read()
+        if ' '.join((arriba.get(mod) or '').split()) != ' '.join(local.split()):
+            distintos.append(mod)
+    ok('lo desplegado es lo del repo', not distintos,
+       'distinto: %s — falta correr bot/desplegar.py' % ', '.join(distintos)
+       if distintos else '')
 
     print('\n2. KV\n')
     def kv(k):
         rr = s.get('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/'
                    'namespaces/%s/values/%s' % (CUENTA, KV_NS, k), timeout=30)
-        return rr.text if rr.status_code == 200 else None
+        return rr.content.decode('utf-8') if rr.status_code == 200 else None
 
     crudo = kv('meta')
     ok('`meta` se lee', bool(crudo))
@@ -535,8 +542,12 @@ def main():
     # la puerta de atras: el orden importa, no solo que exista el sello.
     from datetime import datetime, timezone
     ultima = max(o['last_modified'] for o in objs)
+    # ⚠️ EN UTC, como el sello (`subir_datos.py`). Con `.astimezone()` a
+    # secas era la hora de la máquina: bien en Actions, y en una PC en hora
+    # del este comparaba UTC contra ET y daba verde por cuatro horas de
+    # ventaja que no existen.
     loc = (datetime.fromisoformat(ultima.replace('Z', '+00:00'))
-           .astimezone().strftime('%Y%m%d%H%M'))
+           .astimezone(timezone.utc).strftime('%Y%m%d%H%M'))
     # ⚠️ SE RELEE ANTES DE DAR ROJO. KV es EVENTUALMENTE CONSISTENTE: una
     # lectura a segundos de la escritura puede devolver el valor viejo, y este
     # verificador corre justo despues del pipeline. Paso el 17/09: dijo

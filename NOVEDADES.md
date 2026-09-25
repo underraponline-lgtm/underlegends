@@ -64,6 +64,18 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Viernes 25/09 (madrugada)
+
+**La revisión de todo** (Dlx: *«verifica que todo esté bien»*, 12:20 AM)
+- ✅ **El ciclo**: todas las corridas desde las 8:22 PM terminaron bien, cada media hora. A las 9:52 PM redesplegó el hub solo, con la campana.
+- ✅ **El Worker, `/card`, el vigía de avisos** (14 canales, sin errores, late cada minuto), **la web** (datos de la última corrida) y **CI**, en verde.
+- 🔴 **Las Bloqueadas salían sin foto.** Estaba decidido que llevan tu foto apagada detrás del velo —«sos vos, pero todavía no es tu carta»— y el generador nunca se la pasaba: la de Hassan tenía una «H». Arreglado: se redibujan con cara las **1.214** de quien tiene foto.
+- 🔴 **Un nombre llegaba roto al Sheet** —«Kingđź‡¦đź‡·» en vez de «King🇦🇷»— y es el **mismo origen de los textos raros** que viste en ✅ Decidir: se leía lo que manda el bot adivinando la codificación. Arreglado en la fuente y en lo que ya estaba escrito.
+- **Chromium se bajaba en cada corrida aunque no hubiera nada que dibujar** (43 s de cada 168). Ahora sólo cuando hay algo.
+- Nada roto: el «0 inscripciones» de cada corrida es porque FFA y Snake Rap **vacían** sus canales de inscripciones después de cada evento.
+
+---
+
 ## 📅 Jueves 24/09
 
 **Lo que se ve**

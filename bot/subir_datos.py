@@ -562,7 +562,12 @@ def armar():
     # el pool en 0—. Lo que decide es haber competido.
     arrancada = bool(temp)
     pares.append({'key': 'meta', 'value': json.dumps({
-        'sello': time.strftime('%Y%m%d%H%M'),
+        # ⚠️ EN UTC Y DICHO, no «la hora de esta máquina». Es un `?v=` para
+        # romper la caché de Discord —nadie lo lee como hora, por eso no va
+        # en hora del este—, pero `verificar.py` lo compara contra la última
+        # subida a R2: en Actions las dos eran UTC y en esta PC una sería
+        # hora del este. Un chequeo que da verde según dónde corre no chequea.
+        'sello': time.strftime('%Y%m%d%H%M', time.gmtime()),
         'arrancada': arrancada,
         # cuántos tienen carta, no cuántos compitieron. Ver el comentario del
         # `return` de esta función.

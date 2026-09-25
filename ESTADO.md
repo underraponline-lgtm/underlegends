@@ -752,6 +752,36 @@ verdad sin molestar a nadie, uno cada cinco minutos como mucho.
 de 20 cifrados (con 0 suscriptos no hay con qué); iPhone, que sólo recibe
 con la página instalada en la pantalla de inicio (la vista lo explica).
 
+### 15. LA REVISIÓN DE LA MADRUGADA (25/09, 12:20 AM)
+
+Dlx: *«verifica que todo esté bien»*. Todo contestaba bien —el ciclo en
+verde desde las 8:22 PM, el Worker, el vigía, el hub, CI— y **tres cosas
+estaban mal igual**. Ninguna fallaba: las tres salieron de **leer el log
+entero** de una corrida «success» y de mirar una carta publicada.
+
+| qué | cómo se vio | qué era |
+|---|---|---|
+| **Las Bloqueadas sin foto** | la de Hassan, bajada de R2: una «H» detrás del candado | `bot/bloqueadas.py` nunca le pasaba `foto=` a `bloqueada.html()`. La decisión, el CSS y el espejo de caras estaban; faltaba el argumento |
+| **«Kingđź‡¦đź‡·» en `Pendientes`** | una línea del paso 1a | `registrar_ids.py` leía KV con `r.text`: sin `charset`, requests adivina. Windows-1250 esta vez, GBK el «!馃挆Valen…» de antes |
+| **Chromium en toda corrida quieta** | los tiempos del paso 5b: 43 s de 168 para «no queda nada» | el 5b lo pedía antes de contar. La regla ya estaba escrita en la propia función |
+
+⚠️ **LA FOTO ENTRA EN EL SELLO**, así que al arreglarla cambian **1.214 de
+1.625** —las de quien tiene cara— y el ciclo las redibuja una vez. Y por
+eso mismo **sin todas las caras del espejo el 5b no toca nada**: re-sellar
+con la inicial y volver a sellar con foto en la corrida siguiente serían
+1.214 cartas dibujadas dos veces.
+
+⚠️ **`r.text` SOBRE UNA RESPUESTA SIN `charset` ES UNA ADIVINANZA.** Ya
+son tres en el día —el chequeo de `desplegar.py`, `registrar_ids.py` y
+`subir_web.py`—, y la forma es siempre la misma: adivina bien mucho tiempo
+y un día no. Para JSON, `r.json()` sí es seguro (mira los primeros bytes);
+para todo lo demás, `r.content.decode('utf-8')`.
+
+⚠️ **LO QUE NO ERA:** «0 inscripción(es)» en cada corrida. Los canales de
+inscripciones de FFA y Snake Rap **se vacían** después de cada evento —
+Discord devuelve 0 mensajes—, y las 18 que ya se leyeron siguen en
+`datos/anuncios.json`.
+
 ---
 
 # Dónde quedamos — 23/09/2026
