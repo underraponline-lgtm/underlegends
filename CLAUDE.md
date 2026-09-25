@@ -650,7 +650,9 @@ la planilla.
 ## El hub web — `underlegends.pages.dev`
 
 Siete vistas con menú lateral en escritorio y barra de abajo en teléfono,
-enrutado por hash. Vive en **`bot/paginas/`**, sin framework y sin build:
+enrutado por hash: Inicio, Ranking, Tarjetas, Duelos, **Eventos** (el
+calendario y la campana; `#/avisos` es un alias que baja hasta ella), Mundo
+y Guía. Vive en **`bot/paginas/`**, sin framework y sin build:
 los archivos que están ahí son los que se sirven.
 
 🔑 **EL REPARTO ES TODO EL DISEÑO, y es lo que lo separa del Apps
@@ -707,6 +709,17 @@ KV ni otra ruta en el Worker.
 los junta por servidor, fecha y nombre, y **los números del nombre tienen que
 coincidir** —«TOKYO VOL 11» y «VOL 12» se parecen un 95 %—. Si no está
 seguro, no cuelga el botón.
+
+🏆 **Y SE DIBUJA COMO CUADRO, desde el 25/09/2026** (`cuadro()` en
+`app.js`): cada batalla trae de qué batallas vienen sus lados —`b[3]`, lo
+arma `llaves_web.enlazar()` por los nombres de los ganadores— y la página
+sólo lo pinta. En espejo si la final tiene dos ramas; de un lado en el
+teléfono. Viajan las de «Lo que pasó» **y las 24 más nuevas** (`LLAVES_WEB`
+en `subir_web.py`), para el calendario de «Eventos».
+
+⚠️ **El calendario va en la hora de quien mira**: el payload trae el
+instante en UTC (`calendario`) y el día lo pone el navegador. Un calendario
+en una sola zona le correría la fecha a media Liga.
 
 ---
 
