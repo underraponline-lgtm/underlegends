@@ -1,6 +1,6 @@
 {
  "_leeme": "Cuántas personas distintas hay en los servidores de la Liga (sin bots). Lo escribe herramientas/servidores_de.py en cada corrida; lo muestra «La Liga hoy».",
- "personas": 10007,
+ "personas": 10006,
  "servidores": [
   "DRA",
   "FFA",
