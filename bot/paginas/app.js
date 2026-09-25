@@ -2585,7 +2585,7 @@ function pintaGuia() {
       G.ovr.map(function (x) { return barra(esc(x[0]), x[1], mx(G.ovr, 1)); }).join('') +
       '<p class="nota">Cada parte se compara con la mejor de la temporada.</p>' : '') +
     ((G.score || []).length ? '<h3 class="gh">El Score <small>de 0 a 100 · da el rango</small></h3>' +
-      G.score.map(function (x) { return barra(x[0] + ' ' + esc(x[1]), x[3], mx(G.score, 3), esc(x[2])); }).join('') +
+      G.score.map(function (x) { return barra(esc(x[0]) + ' ' + esc(x[1]), x[3], mx(G.score, 3), esc(x[2])); }).join('') +
       ((G.conf || []).length ? '<p class="nota">Y se multiplica por la <b>confianza</b>, que premia ' +
         'jugar más: ' + G.conf.map(function (c, i) {
           return c[1] + '&nbsp;% ' + (i === G.conf.length - 1 ? 'desde ' : 'con ') + c[0] +
