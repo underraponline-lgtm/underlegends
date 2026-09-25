@@ -72,7 +72,12 @@ def _guilds():
          # gran oportunidad para obtener IDs». De acá, como de FFA, sólo se
          # CAPTURA el ID —lo decide `sv == 'DRA'` más abajo—. Verificar es
          # sólo el Miembro de DRA (Dlx, 24/09/2026).
-         ('SR', '492346406976356374')]
+         ('SR', '492346406976356374'),
+         # 🟠 URBAN FREESTYLE, DESDE EL 25/09/2026: el bot entró y Dlx
+         # pidió «reconocimiento de IDs» ahí y en Snake Rap. Igual que FFA
+         # y Snake Rap: sólo se CAPTURA el ID. Verificar sigue siendo sólo
+         # el Miembro de DRA.
+         ('URBF', '1467763447117778989')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:
