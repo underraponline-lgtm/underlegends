@@ -106,7 +106,8 @@ DE_DONDE = {
     # ⚠️ POR `Evento #`, NO POR `Fecha`. Esta linea decia «por fecha» y
     # la fecha de la hoja es `28/04` sin año: con dos temporadas encima
     # no ordena. Ver `_racha()`.
-    '🔥': '1v1: racha actual/máxima, por Evento #',
+    '🔥': ('Resultados: eventos seguidos llegando a semifinal (llave de 16 o '
+           'más) o a la final (llave de 8), actual/máxima, en orden de fecha'),
     'Rapero': 'padrón: Nombre + la bandera de País',
     'Sv': 'Resultados: el servidor con más eventos',
     '✅': 'padrón: la columna Verificado',
@@ -127,7 +128,65 @@ for _s in SERVIDORES:
     DE_DONDE[_s] = 'Resultados: eventos en ese servidor'
 
 POS = {'campeon': '🥇', 'subcampeon': '🥈', 'tercero': '🥉',
+       # 🔴 EL CUARTO PUESTO ES UN SEMIFINALISTA, y no estaba. `motor.py`
+       # lo da a quien perdió la semifinal y después el partido por el
+       # tercero: llegó a semifinal igual que el que no jugó ese partido.
+       # Sin esta línea no contaba como semifinal en `SEM`, en la racha ni
+       # en la `T` del Competitivo (que toma esta misma tabla).
+       'cuarto': '🎖️',
        'semifinal': '🎖️'}
+
+#: 🔑 HASTA DONDE LLEGO, como el tamaño de la ronda en que quedó afuera.
+#: El campeón es 1; el que perdió la final, 2; los semifinalistas, 4.
+LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4,
+         'semifinal': 4, 'cuartos': 8, 'octavos': 16, 'r32': 32,
+         'dieciseisavos': 32, 'r64': 64}
+
+
+def _umbral(tamano):
+    """Hasta dónde hay que llegar para que ese evento sume a la racha.
+
+    🔴 LA DEFINICION ES DE DLX, 25/09/2026: *«RACHA es llegar a semifinal
+    cuando el formato es de octavos, o cuando es de cuartos a la gran
+    final. Y si es más de 16 supongo hasta semifinal igual? o cuartos?
+    ahí veremos»*.
+
+        llave de 16 (octavos)      semifinal  (LLEGO <= 4)
+        llave de 8  (cuartos)      la final   (LLEGO <= 2)
+        más de 16                  semifinal  — su «supongo», a confirmar
+        menos de 8                 la final   — no lo dijo; a confirmar
+
+    ⚠️ EL FORMATO ES LA PRIMERA RONDA DE LA LLAVE, NO LA GENTE ANOTADA.
+    Un evento de 29 personas en tríos arranca en cuartos: son 8 lados.
+    Se deduce de la ronda más temprana en que alguien quedó afuera —ver
+    `agregar()`—, que es lo que `Resultados` guarda de cada uno.
+    """
+    return 4 if tamano >= 16 else 2
+
+
+def _orden_fecha(fecha, num):
+    """`'28/09'` + `#` -> una clave que ordena cronológicamente.
+
+    🔴 EL `Evento #` NO ES CRONOLOGICO, aunque así lo decía este archivo.
+    Los eventos de una misma corrida se numeran en orden **alfabético**
+    (`procesar_entrada.py`): el #355, del 23/09, quedó después del #353 y
+    el #354, del 24/09. Para una racha el orden es todo, así que manda la
+    fecha y el número sólo desempata dentro del día.
+
+    ⚠️ LA FECHA NO TRAE AÑO. El año sale del arranque de la temporada
+    (`comun/temporada.INICIO`): un mes anterior al del arranque es del año
+    siguiente, así una temporada que cruza diciembre no se desordena.
+    """
+    try:
+        dia, mes = [int(x) for x in str(fecha).strip().split('/')[:2]]
+    except ValueError:
+        return (9999, 99, 99, num)
+    try:
+        from comun.temporada import INICIO
+        anio0, mes0 = int(INICIO[:4]), int(INICIO[5:7])
+    except (ImportError, ValueError):
+        anio0, mes0 = 2026, 1
+    return (anio0 + (1 if mes < mes0 else 0), mes, dia, num)
 
 # 🔴 LO QUE NO SE CALCULA SE **ARRASTRA** DE LA FILA QUE ESA PERSONA
 # TENIA. Reescribir la tabla entera con solo lo que sale de `Resultados`
@@ -397,6 +456,8 @@ def agregar(filas_res, filas_uno):
     d = defaultdict(lambda: defaultdict(int))
     evs = defaultdict(set)
     ultimo = defaultdict(list)          # (num, fecha, puesto) por persona
+    jugo = defaultdict(list)            # (orden, num, puesto) por persona
+    tamano = {}                         # num -> la primera ronda de su llave
     es_troll = _trolls()
     for f in filas_res:
         f = list(f) + [''] * 11
@@ -427,6 +488,23 @@ def agregar(filas_res, filas_uno):
         except ValueError:
             _n = 0
         ultimo[quien].append((_n, str(f[1]).strip(), POS.get(pos, '')))
+        jugo[quien].append((_orden_fecha(f[1], _n), _n, pos))
+        if pos in LLEGO:
+            tamano[_n] = max(tamano.get(_n, 0), LLEGO[pos])
+
+    # 🔴 LA RACHA SON EVENTOS, NO DUELOS. Hasta el 25/09/2026 la `🔥` era
+    # «duelos 1v1 ganados seguidos», y el hub se contradecía: la tarjeta de
+    # Hassan decía «RACHA DE 8» —ocho duelos— y los récords del Inicio
+    # daban a Makmah, porque ahí se descartaba a quien tuviera una racha
+    # más larga que sus eventos (8 > 6). Dlx lo definió: eventos seguidos
+    # llegando a semifinal o a la final según la llave. Ver `_umbral()`.
+    #
+    # ⚠️ SOLO CUENTAN LOS EVENTOS QUE JUGÓ: faltar a uno no corta la racha
+    # (es lo que ya hacía la `T` del Competitivo). A confirmar con Dlx.
+    for quien, lista in jugo.items():
+        oks = [LLEGO.get(pos, 999) <= _umbral(tamano.get(n, 0))
+               for _k, n, pos in sorted(lista)]
+        d[quien]['🔥'] = _racha(oks)
 
     # ⚠️ `Ev` SON EVENTOS DISTINTOS, NO FILAS. Una persona tiene una fila
     # por evento, pero si alguna vez entra dos veces —un reproceso a medias,
@@ -499,7 +577,8 @@ def agregar(filas_res, filas_uno):
         if j.get(quien):
             d[quien]['Win%'] = '%.1f%%' % (100.0 * g.get(quien, 0) / j[quien])
             d[quien]['_duelos'] = '%d/%d' % (g.get(quien, 0), j[quien])
-            d[quien]['🔥'] = _racha(hist[quien])
+            # la de duelos sigue existiendo para su propia vitrina
+            d[quien]['_racha_duelos'] = _racha(hist[quien])
             # ⚠️ Y LOS DOS NUMEROS SUELTOS, que es lo que el `Ranking
             # Duelos` ordena. `_duelos` es texto —`12/18`— y una vitrina
             # que ordena por texto pone «9/10» arriba de «12/18».
@@ -1158,7 +1237,9 @@ def tabla_duelos(ag, rangos):
         g = int(v.get('_dg') or 0)
         filas.append((g, j and 1.0 * g / j, [
             0, quien, v.get('Sv', ''), j, g, int(v.get('_dp') or 0),
-            v.get('Win%', ''), v.get('🔥', ''), rangos.get(quien, ''),
+            # ⚠️ EN DUELOS, LA RACHA DE DUELOS: hasta que Dlx diga si esta
+            # vitrina también pasa a la de eventos, se queda con lo suyo
+            v.get('Win%', ''), v.get('_racha_duelos', ''), rangos.get(quien, ''),
         ]))
     filas.sort(key=lambda x: (-x[0], -x[1]))
     out = []
@@ -1859,11 +1940,46 @@ def _self_check():
            [1, '', '', '', 'Ana', 'Cyn', 'Ana', 'Cyn', ''],
            [3, '', '', '', 'Ana', 'Dia', 'Ana', 'Dia', '']]
     ag = agregar([], uno)
-    ok = ag.get('Ana', {}).get('🔥') == '1/1'
+    ok = ag.get('Ana', {}).get('_racha_duelos') == '1/1'
     mal += not ok
     print('   %s Ana gana el #1, pierde el #2, gana el #3 -> %s '
           '(en orden de hoja daria 1/2)'
-          % ('✅' if ok else '🔴', ag.get('Ana', {}).get('🔥')))
+          % ('✅' if ok else '🔴', ag.get('Ana', {}).get('_racha_duelos')))
+
+    # 🔑 LA RACHA DE EVENTOS, como la definió Dlx el 25/09/2026. Ver
+    # `_umbral()`: semifinal si la llave es de 16, la final si es de 8.
+    print('\n  la racha de eventos (semifinal en llave de 16, final en llave de 8)')
+
+    def R(num, fecha, quien, pos):
+        return [num, fecha, 'FFA', '16+', quien, 'ar', pos, 10, '', 10, '']
+    res = [
+        # #1, 22/09, llave de 16 (alguien quedó en octavos): semifinal SUMA
+        R(1, '22/09', 'Ana', 'Semifinal'), R(1, '22/09', 'Bea', 'Cuarto'),
+        R(1, '22/09', 'Zed', 'Octavos'),
+        # #2, del 25/09 aunque tenga número 2: llave de 8, semifinal NO suma
+        R(2, '25/09', 'Ana', 'Semifinal'), R(2, '25/09', 'Zed', 'Cuartos'),
+        # #3, 24/09, llave de 8: subcampeón SUMA
+        R(3, '24/09', 'Ana', 'Subcampeón'), R(3, '24/09', 'Zed', 'Cuartos'),
+    ]
+    ag = agregar(res, [])
+    for que, got, esp in [
+        ('Ana: #1 ✓ (22/09) · #3 ✓ (24/09) · #2 ✗ (25/09) — por FECHA, no por número',
+         ag.get('Ana', {}).get('🔥'), '0/2'),
+        ('Bea: el cuarto puesto es semifinal en una llave de 16',
+         ag.get('Bea', {}).get('🔥'), '1/1'),
+        ('Zed: quedó en octavos y en cuartos, nunca suma',
+         ag.get('Zed', {}).get('🔥'), '0/0'),
+        ('y el cuarto puesto cuenta como semifinal en SEM',
+         ag.get('Bea', {}).get('🎖️'), 1),
+    ]:
+        ok = got == esp
+        mal += not ok
+        print('   %s %s -> %s' % ('✅' if ok else '🔴', que, got))
+    ok = (_orden_fecha('02/01', 9) > _orden_fecha('28/12', 1)
+          and _orden_fecha('23/09', 355) < _orden_fecha('24/09', 353))
+    mal += not ok
+    print('   %s la fecha ordena aunque cruce diciembre y aunque el # esté corrido'
+          % ('✅' if ok else '🔴'))
 
     print('\n  ninguna columna se borra en silencio')
     cab = ['#', 'Rapero', 'Puntos', '🔥', 'Rango', 'Sv', 'Ev']
