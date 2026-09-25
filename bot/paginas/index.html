@@ -80,10 +80,18 @@
         </div>
         <!-- 🔔 Se ve sólo donde la campana se puede activar y todavía no
              está activada: lo prende `campana.js`. -->
-        <a class="campana-cta" id="campanaCta" href="#/avisos" hidden>
-          <i aria-hidden="true">&#128276;</i>
-          <span>Avisame cuando anuncien un evento</span>
-        </a>
+        <!-- 🔑 EL BUSCADOR: tu nombre y a tu perfil. Era lo primero de la página
+             vieja del Apps Script. -->
+        <div class="busca">
+          <input id="buscarInicio" type="search" placeholder="Buscá tu nombre y abrí tu perfil…"
+                 autocomplete="off" spellcheck="false" aria-label="Buscar rapero">
+          <div class="busca-res" id="buscaRes" hidden></div>
+        </div>
+        <div class="campana-cta" id="campanaCta" hidden>
+          <a href="#/avisos"><i aria-hidden="true">&#128276;</i>
+          <span>Avisame cuando anuncien un evento</span></a>
+          <button id="ctaCerrar" aria-label="No mostrar más">&times;</button>
+        </div>
       </div>
       <div class="hero-carta" id="heroCarta" hidden>
         <span class="corona">Campeón de la temporada</span>
@@ -112,8 +120,7 @@
          pasó, con el link a cada anuncio. -->
     <section class="blk" id="secPaso" hidden>
       <h2><span>&#128197;</span> Lo que pasó</h2>
-      <p class="bajada">Los últimos eventos detectados. Tocá uno para abrir
-      su anuncio en Discord.</p>
+      <p class="bajada">Los tres últimos eventos, con quién organizó y quién ganó.</p>
       <div id="pasados"></div>
       <a class="mas" href="#/eventos">Ver el calendario</a>
     </section>
@@ -125,21 +132,37 @@
          único archivo de afuera de la página— y si no llega, queda el
          número y las banderas: sin dato no hay pieza, pero con medio dato
          hay media. -->
+    <!-- 🔑 MITAD MAPA, MITAD ACTIVIDAD. Dlx, 25/09/2026: «el mapa está un
+         poco grande para lo que es… quizás podamos medir la actividad
+         también… partir a la mitad ese mapa de actividad y países». -->
     <section class="blk" id="secMapa" hidden>
-      <h2><span>&#127758;</span> La Liga en el mapa</h2>
-      <div class="mapa-dato" id="mapaDato"></div>
-      <div class="mapa" id="mapa"></div>
-      <div class="mapa-otros" id="mapaOtros"></div>
+      <h2><span>&#127758;</span> La Liga hoy</h2>
+      <div class="hoy">
+        <div class="hoy-mapa">
+          <div class="mapa-dato" id="mapaDato"></div>
+          <div class="mapa" id="mapa"></div>
+          <div class="mapa-otros" id="mapaOtros"></div>
+        </div>
+        <div class="hoy-ac" id="actividad" hidden></div>
+      </div>
     </section>
     </div>
+
+    <!-- 🔑 LAS NOVEDADES DE LA LIGA: lo último de 〢🌍〉rankings-liga-global en
+         DRA, y las redes. -->
+    <section class="blk" id="secNov" hidden>
+      <div class="nov-cab"><h2><span>&#128240;</span> Novedades de la Liga</h2>
+        <div class="nov-redes" id="novRedes"></div></div>
+      <div class="novedades" id="novedades"></div>
+    </section>
 
     <!-- 🔑 EL TOP 5 DE CADA RANKING, NO SÓLO EL DE TEMPORADA. Dlx,
          25/09/2026: «que los cinco de arriba muestre el top 5 de todos los
          rankings que hayan». -->
     <section class="blk" id="secTop">
       <h2><span>&#127942;</span> Los cinco de arriba</h2>
-      <p class="bajada">El top 5 de cada ranking. Tocá un nombre para ver sus
-      tarjetas.</p>
+      <p class="bajada">El top 5 de cada ranking. Tocá un nombre para abrir su
+      perfil.</p>
       <div class="tops" id="tops"></div>
     </section>
 
@@ -149,6 +172,12 @@
       <div class="records" id="records"></div>
     </section>
 
+  </section>
+
+  <!-- ══ PERFIL ══════════════════════════════════════════════════
+       🔑 `#/r/<clave>`: la página de cada rapero. La dibuja `pintaPerfil()`. -->
+  <section class="vista" data-vista="r" hidden>
+    <div id="perfil"></div>
   </section>
 
   <!-- ══ RANKING ═════════════════════════════════════════════════ -->
@@ -166,7 +195,7 @@
          lo ve. Se puede reordenar tocando el encabezado. -->
     <p class="bajada">El orden sale del <b>OVR</b>, que es el mismo número
     que lleva la tarjeta. Tocá un encabezado para ordenar por puntos o por
-    eventos, y una fila para ver sus tarjetas.</p>
+    eventos, y un nombre para abrir su perfil.</p>
     <!-- 🔑 SUBCATEGORIAS. Dlx, 24/09/2026: «crea subcategorías al
          seleccionar opciones, por ejemplo en ranking, porque hay bastantes
          rankings». Son tres vistas de la MISMA gente con otra pregunta:
@@ -407,6 +436,7 @@
       <button class="bajar" id="vBajar" hidden>
         <i aria-hidden="true">&#11015;</i><span>Descargar</span>
       </button>
+      <button class="bajar" id="vPerfil"><span>Ver su perfil</span></button>
     </div>
     <div class="v-stats" id="vStats"></div>
   </div>

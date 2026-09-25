@@ -133,10 +133,14 @@ function ruta() {
 var ALIAS = { avisos: 'eventos' };
 
 function ir() {
-  var pedida = ruta(), r = ALIAS[pedida] || pedida;
+  // 🔑 `#/r/<clave>` ES EL PERFIL: la vista es la primera parte y la
+  // persona, el resto. Ver `pintaPerfil()`.
+  var pedida = ruta(), partes = pedida.split('/');
+  var r = ALIAS[pedida] || partes[0];
   var hay = $$('.vista').some(function (v) { return v.dataset.vista === r; });
   if (!hay) { r = ''; }
   $$('.vista').forEach(function (v) { v.hidden = v.dataset.vista !== r; });
+  if (r === 'r') pintaPerfil(decodeURIComponent(partes.slice(1).join('/')));
   $$('#nav a').forEach(function (a) {
     a.classList.toggle('on', a.getAttribute('href') === '#/' + r);
   });
@@ -215,7 +219,7 @@ function pintaHero() {
     $('#hcImg').src = urlCarta(uno, uno.c[0]);
     $('#hcImg').alt = 'Tarjeta de ' + uno.n;
     $('#hcNombre').textContent = uno.n;
-    $('#hcBtn').dataset.k = uno.k;
+    $('#hcBtn').dataset.carta = uno.k;
     $('#heroCarta').hidden = false;
   }
 
@@ -252,23 +256,34 @@ function pintaHero() {
 
 /* ── lo que acaba de pasar ────────────────────────────────────────── */
 function pintaPasados() {
-  var ps = D.pasados || [];
+  // 🔑 LOS TRES MÁS NUEVOS, con quién organizó y quién ganó. Dlx,
+  // 25/09/2026: «que se vea los 3 eventos más recientes en lo que pasó, y
+  // que se vea más bonito… quizás nombrar al organizador también». El
+  // resto está en «Eventos».
+  var ps = (D.pasados || []).slice(0, 3);
   if (!ps.length) { apaga('#secPaso'); return; }
   $('#secPaso').hidden = false;
   $('#pasados').innerHTML = ps.map(function (e) {
-    var sub = [e.sv, e.modalidad].filter(Boolean).map(esc).join(' &middot; ');
-    var tit = e.link
-      ? '<a href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
-        'noreferrer">' + esc(e.nombre) + '<i class="ir">&#8599;</i></a>'
-      : esc(e.nombre);
-    // 🔑 «VER LLAVE» SÓLO SI LA LLAVE VINO EN EL PAYLOAD. Un botón que
-    // abre una ventana vacía es peor que no tenerlo: sin dato no hay pieza.
-    var ll = e.llave && (D.llaves || {})[e.llave]
-      ? '<button class="ver-llave" data-llave="' + esc(e.llave) + '">' +
-        'Ver llave</button>' : '';
-    return '<div class="ev paso"><div><b>' + tit + '</b><small>' + sub +
-      '</small>' + ll + '</div><span class="hace">' + esc(cuandoSe(e.cuando)) +
-      '</span></div>';
+    var L = e.llave && (D.llaves || {})[e.llave];
+    var camp = L ? (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; })
+      .map(function (r) {
+        var f = porK(kDe(r[0]));
+        return f ? quienEs(f, 22) : conBanderas(r[0]);
+      }) : [];
+    var datos = [e.org ? 'Organizó <b>' + esc(e.org) + '</b>' : '',
+      L && L.participantes ? L.participantes + ' raperos' : '',
+      e.modalidad ? esc(e.modalidad) : ''].filter(Boolean).join(' &middot; ');
+    return '<article class="ps" style="--c:' + esc(colorSv(e.sv)) + '">' +
+      '<header><span class="chip-sv">' + esc(nombreSv(e.sv) || e.sv) + '</span>' +
+      '<span class="hace">' + esc(cuandoSe(e.cuando)) + '</span></header>' +
+      '<h3>' + esc(e.nombre) + '</h3>' +
+      (datos ? '<p class="ps-d">' + datos + '</p>' : '') +
+      (camp.length ? '<p class="ps-c"><span>&#127942;</span>' + camp.join('<i class="coma">,</i> ') + '</p>' : '') +
+      '<div class="ps-acc">' +
+        (L ? '<button class="ver-llave" data-llave="' + esc(e.llave) + '">Ver llave</button>' : '') +
+        (e.link ? '<a class="ver-llave" href="' + esc(e.link) + '" target="_blank" rel="noopener ' +
+          'noreferrer">El anuncio &#8599;</a>' : '') +
+      '</div></article>';
   }).join('');
 }
 
@@ -314,13 +329,22 @@ function abrirLlave(n) {
   if (!L) return;
   var k = {};
   (D.tabla || []).forEach(function (f) { k[f.n] = f.k; });
+  // 🔑 CON SU CARA Y LA BANDERA A LA DERECHA, como en el ranking; tocar
+  // un nombre abre su perfil
   var quien = function (x) {
-    return k[x] ? '<button class="ql" data-k="' + esc(k[x]) + '">' +
-      conBanderas(x) + '</button>' : conBanderas(x);
+    var f = k[x] && porK(k[x]);
+    return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + avatar(f, 18) +
+      '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + '</button>' : conBanderas(x);
   };
+  var sv = svDe(L.sv);
+  $('#visorLlave .v-pos').innerHTML = sv.logo
+    ? '<img class="l-logo" src="' + esc(sv.logo) + '" alt="" width="44" height="44">' : '&#127942;';
+  var pas = (D.pasados || []).filter(function (p) { return String(p.llave) === String(n); })[0];
   $('#lNombre').textContent = L.nombre;
-  $('#lSub').innerHTML = [esc(L.sv), esc(L.fecha),
-    L.participantes ? esc(L.participantes) + ' participantes' : '']
+  $('#lSub').innerHTML = ['<span class="chip-sv" style="--c:' + esc(colorSv(L.sv)) + '">' +
+    esc(sv.nombre || L.sv) + '</span>', esc(L.fecha),
+    L.participantes ? esc(L.participantes) + ' raperos' : '',
+    pas && pas.org ? 'organizó ' + esc(pas.org) : '']
     .filter(Boolean).join(' &middot; ');
   var fila = function (r) {
     return '<li><i>' + (MEDALLA[r[1]] || '') + '</i><span>' + quien(r[0]) +
@@ -337,7 +361,19 @@ function abrirLlave(n) {
   // ⚠️ SIN UN «PODIO» APARTE: repetía las cuatro primeras filas de «Los
   // puntos», que ya llevan su medalla. Con el cuadro arriba, el campeón
   // ya está a la vista.
-  $('#lCuerpo').innerHTML = cuadro(L, quien) +
+  // 🔑 EL PODIO ARRIBA DEL CUADRO: lo primero que se busca en una llave
+  var puesto = function (p) {
+    return (L.tabla || []).filter(function (r) { return r[1] === p; });
+  };
+  var podio = [['Campeón', '&#129351;', 'p1'], ['Subcampeón', '&#129352;', 'p2'],
+    ['Tercero', '&#129353;', 'p3']].map(function (p) {
+    var rs = puesto(p[0]);
+    return rs.length ? '<div class="lp ' + p[2] + '"><span class="lp-m">' + p[1] + '</span>' +
+      '<div>' + rs.map(function (r) { return quien(r[0]); }).join('') + '</div>' +
+      '<small>' + p[0] + ' · ' + num(rs[0][2]) + ' pts</small></div>' : '';
+  }).join('');
+  $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') +
+    cuadro(L, quien) +
     ((L.tabla || []).length ? '<h4>Los puntos</h4><ol class="res dos-col">' +
       L.tabla.map(fila).join('') + '</ol>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
@@ -366,17 +402,18 @@ function pintaPodio() {
   $('#elPodio').innerHTML = tres.map(function (f, i) {
     return '<div class="pd p' + (i + 1) + '">' +
       '<span class="med">' + med[i] + '</span>' +
-      '<button data-k="' + esc(f.k) + '"><img loading="lazy" decoding="async" src="' +
+      '<button data-carta="' + esc(f.k) + '"><img loading="lazy" decoding="async" src="' +
       urlCarta(f, f.c[0]) + '" alt="Tarjeta de ' + esc(f.n) + '"></button>' +
       '<b>' + esc(f.n) + '</b><small>' + num(f.pts) + ' pts</small></div>';
   }).join('');
 
   var rs = D.records || [];
   $('#records').innerHTML = rs.map(function (r) {
-    return '<dl class="rec"><dt>' + esc(r.que) + '</dt><dd>' +
-      '<span class="v">' + esc(r.v) + '</span>' +
-      '<span class="q">' + ccTexto(r.cc) + ' ' + esc(r.n) + '</span>' +
-      '</dd></dl>';
+    return '<dl class="rec"' + (r.k ? ' data-k="' + esc(r.k) + '"' : '') + '><dt>' +
+      esc(r.que) + '</dt><dd>' +
+      '<span class="v">' + esc(typeof r.v === 'number' ? num(r.v) : r.v) + '</span>' +
+      '<span class="q">' + esc(r.n) + (r.cc ? ' ' + bandera(r.cc) : '') + '</span>' +
+      '</dd>' + (r.x ? '<small class="rec-x">' + esc(r.x) + '</small>' : '') + '</dl>';
   }).join('');
 }
 
@@ -498,7 +535,7 @@ function pintaTabla() {
       : '<span class="rg">&middot;</span>';
     return '<tr class="' + cl + '" data-k="' + esc(f.k) + '">' +
       '<td>' + esc(f.pos) + '</td>' +
-      '<td><i class="cc">' + ccTexto(f.cc) + '</i>' + esc(f.n) + '</td>' +
+      '<td>' + quienEs(f, 30) + '</td>' +
       '<td><span class="ovr">' + (f.ovr || '—') + '</span></td>' +
       '<td class="col-rg">' + rg + '</td>' +
       '<td class="col-sv"><span class="sv">' + esc(f.sv) + '</span></td>' +
@@ -566,7 +603,7 @@ function pintaGaleria() {
     // ⚠️ SIN CHAPA DE PUESTO: la tarjeta ya lo dibuja arriba a la
     // derecha, y la chapa caía justo encima del OVR.
     return '<button class="gc' + (vieja(f, f.c[0]) ? ' vieja' : '') +
-      '" data-k="' + esc(f.k) + '"' +
+      '" data-carta="' + esc(f.k) + '"' +
       (vieja(f, f.c[0]) ? ' title="Se está redibujando con los datos de ahora"' : '') +
       '>' +
       '<img loading="lazy" decoding="async" src="' + urlCarta(f, f.c[0]) +
@@ -589,7 +626,7 @@ function pintaDuelos() {
     var pct = Math.round(100 * d.g / (d.t || 1));
     return '<div class="du" data-k="' + esc(d.k) + '">' +
       '<span class="p">' + (i + 1) + '</span>' +
-      '<span class="nm"><i class="cc">' + ccTexto(d.cc) + '</i>' + esc(d.n) + '</span>' +
+      '<span class="nm">' + quienEs(conCara(d), 26) + '</span>' +
       '<span class="bar" title="' + pct + '% ganados"><i style="width:' +
       Math.round(100 * d.t / max) + '%"></i></span>' +
       '<span class="gp">' + d.g + '<s>/' + d.t + '</s></span></div>';
@@ -599,8 +636,8 @@ function pintaDuelos() {
   // `<h2>` que ya dice lo mismo. Un elemento que finge ser otro se
   // rompe la primera vez que alguien toca la clase.
   $('#rachas').innerHTML = rs.map(function (r) {
-    return '<span class="ra"><i class="cc">' + ccTexto(r.cc) + '</i>' +
-      esc(r.n) + ' <u>' + r.r + '</u></span>';
+    return '<span class="ra" data-k="' + esc(r.k) + '">' + quienEs(conCara(r), 22) +
+      ' <u>' + r.r + '</u></span>';
   }).join('');
 }
 
@@ -625,7 +662,7 @@ function pintaPodios() {
       return '<span class="' + (n ? 'hay' : '') + '">' + e + ' ' + (n || 0) + '</span>';
     };
     return '<div class="pm" data-k="' + esc(f.k) + '">' +
-      '<span class="nm"><i class="cc">' + ccTexto(f.cc) + '</i>' + esc(f.n) + '</span>' +
+      '<span class="nm">' + quienEs(f, 26) + '</span>' +
       '<span class="med">' + m(f.oro, '\uD83E\uDD47') + m(f.seg, '\uD83E\uDD48') +
       m(f.ter, '\uD83E\uDD49') + '</span></div>';
   }).join('');
@@ -808,7 +845,7 @@ function pintaServidores() {
   if (!ss.length) { apaga('#secSvs'); return; }
   $('#svs').innerHTML = ss.map(function (s) {
     var logo = s.logo
-      ? '<img class="sv-logo" src="' + esc(s.logo) + '" alt="" width="48" height="48" loading="lazy">'
+      ? '<img class="sv-logo" src="' + esc(s.logo) + '" alt="" width="64" height="64" loading="lazy">'
       : '<span class="sv-logo sv-sigla">' + esc(s.sv) + '</span>';
     var datos = [];
     if (s.miembros) datos.push('<div><dt>Miembros</dt><dd>' + milesCortos(s.miembros) + '</dd></div>');
@@ -816,13 +853,17 @@ function pintaServidores() {
       datos.push('<div><dt>En la T1</dt><dd>' + s.n + '</dd></div>');
       datos.push('<div><dt>Puntos</dt><dd>' + num(s.pts) + '</dd></div>');
     }
-    var entrar = s.invita
-      ? '<a class="sv-entrar" href="' + esc(s.invita) + '" target="_blank" rel="noopener noreferrer">Entrar</a>'
-      : '';
+    // 🔑 LA ETIQUETA, LAS REDES Y UN «ENTRAR» GRANDE. Dlx, 25/09/2026:
+    // «generar tags para los servidores… y hacer el botón de entrar más
+    // grande, mira el espacio de cada cosa».
     return '<div class="sv-c" style="--c:' + esc(colorVisible(s.color)) + '">' +
       '<div class="sv-cab">' + logo + '<div><h3>' + esc(s.nombre || s.sv) + '</h3>' +
-      '<small>' + esc(s.sv) + '</small></div></div>' +
-      (datos.length ? '<dl>' + datos.join('') + '</dl>' : '') + entrar + '</div>';
+      (s.tag ? '<span class="sv-tag">' + esc(s.tag) + '</span>' : '<small>' + esc(s.sv) + '</small>') +
+      '</div></div>' +
+      (datos.length ? '<dl>' + datos.join('') + '</dl>' : '') +
+      (s.redes ? '<div class="sv-redes">' + redes(s.redes) + '</div>' : '') +
+      (s.invita ? '<a class="sv-entrar" href="' + esc(s.invita) + '" target="_blank" ' +
+        'rel="noopener noreferrer">Entrar al servidor &#8599;</a>' : '') + '</div>';
   }).join('');
 }
 
@@ -981,6 +1022,9 @@ function abrir(k) {
     bj.hidden = !cs.length;
     bj.dataset.k = k;
   }
+  // 🔑 DE LA TARJETA AL PERFIL: el botón lleva `data-k`, así que lo
+  // atiende el mismo escucha que cualquier nombre
+  if ($('#vPerfil')) $('#vPerfil').dataset.k = k;
   $('#visor').hidden = false;
   document.body.style.overflow = 'hidden';
 }
@@ -1318,8 +1362,8 @@ function pintaMapa() {
   var dentro = HISPANOS.filter(function (c) { return por[c]; });
   var pct = Math.round(100 * dentro.length / HISPANOS.length);
   $('#mapaDato').innerHTML = '<b>' + pct + '<small>%</small></b><span><em>' +
-    dentro.length + ' de ' + HISPANOS.length + '</em> países de habla hispana ya ' +
-    'tienen raperos en la temporada</span>';
+    dentro.length + ' de ' + HISPANOS.length + '</em> países de habla hispana con ' +
+    'raperos en la temporada</span>';
   var otros = ps.filter(function (p) {
     return HISPANOS.indexOf(String(p.cc).toLowerCase()) < 0;
   });
@@ -1420,23 +1464,23 @@ function pintaTops() {
   var T = D.tabla || [];
   var fila = function (f, i, v, u, c) {
     return '<li' + (f.k ? ' data-k="' + esc(f.k) + '"' : '') + '><i class="pp">' + (i + 1) +
-      '</i><span class="nm">' + (f.cc ? '<i class="cc">' + ccTexto(f.cc) + '</i>' : '') +
-      esc(f.n) + '</span><b' + (c ? ' style="color:' + esc(c) + '"' : '') + '>' + v +
-      '</b>' + (u ? '<small>' + u + '</small>' : '') + '</li>';
+      '</i><span class="nm">' + (f.k ? quienEs(f.av !== undefined ? f : conCara(f), 24)
+        : (f.cc ? bandera(f.cc) + ' ' : '') + esc(f.n)) +
+      '</span><b' + (c ? ' style="color:' + esc(c) + '"' : '') + '>' + v + '</b></li>';
   };
   var cajas = [];
-  cajas.push(['&#127942;', 'Temporada', '#/ranking', T.slice(0, 5).map(function (f, i) {
+  cajas.push(['&#127942;', 'Temporada <u>OVR</u>', '#/ranking', T.slice(0, 5).map(function (f, i) {
     return fila(f, i, f.ovr || '—', 'OVR');
   })]);
   var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
     return (b.sc || 0) - (a.sc || 0);
   }).slice(0, 5);
   var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
-  cajas.push(['&#9876;', 'Competitivo', '#/guia', comp.map(function (f, i) {
+  cajas.push(['&#9876;', 'Competitivo <u>Score</u>', '#/guia', comp.map(function (f, i) {
     return fila(f, i, esc(f.rg), f.sc ? String(f.sc).replace('.', ',') : '', f.rgc);
   }), cerca ? 'Se desbloquea a los <b>10 eventos</b> y todavía no llegó nadie. ' +
     'El más cerca: <b>' + esc(cerca.n) + '</b>, con ' + cerca.ev + '.' : '']);
-  cajas.push(['&#129354;', 'Duelos', '#/duelos', (D.duelos || []).slice(0, 5).map(function (d, i) {
+  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/duelos', (D.duelos || []).slice(0, 5).map(function (d, i) {
     return fila(d, i, d.g + '<s>/' + d.t + '</s>', 'ganados');
   })]);
   var med = T.filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; })
@@ -1449,18 +1493,336 @@ function pintaTops() {
         return x[0] + x[1];
       }).join(' '), '');
   })]);
-  cajas.push(['&#127758;', 'Países', '#/mundo', (D.paises || []).slice(0, 5).map(function (p, i) {
+  cajas.push(['&#127758;', 'Países <u>pts</u>', '#/mundo', (D.paises || []).slice(0, 5).map(function (p, i) {
     return fila({ n: nombrePais(p.cc), cc: p.cc }, i, num(p.pts), 'pts');
   })]);
-  cajas.push(['&#129309;', 'Crews', '#/mundo', (D.crews || []).slice(0, 5).map(function (c, i) {
+  cajas.push(['&#129309;', 'Crews <u>pts</u>', '#/mundo', (D.crews || []).slice(0, 5).map(function (c, i) {
     return fila({ n: c.crew }, i, num(c.pts), 'pts');
   })]);
+  // 🔑 LOS DOS QUE VIENEN. Dlx, 25/09/2026: «los otros 2 de cinco de arriba
+  // será MOST WANTED y MISIONES». Todavía no hay datos: se dice que vienen,
+  // en vez de esconder lo que Dlx pidió ver.
+  cajas.push(['&#128128;', 'Most Wanted', '', [],
+    'Cazadores, cazados y quién sobrevive. <b>Próximamente</b>.', 'pronto']);
+  cajas.push(['&#127919;', 'Misiones', '', [],
+    'Los desafíos de la temporada. <b>Próximamente</b>.', 'pronto']);
   var hay = cajas.filter(function (c) { return c[3].length || c[4]; });
   if (!hay.length) { apaga('#secTop'); return; }
   $('#tops').innerHTML = hay.map(function (c) {
-    return '<div class="tp"><h3><span>' + c[0] + '</span>' + c[1] +
-      '<a href="' + c[2] + '">Ver todo</a></h3>' + (c[3].length
+    return '<div class="tp' + (c[5] ? ' ' + c[5] : '') + '"><h3><span>' + c[0] + '</span>' + c[1] +
+      (c[2] ? '<a href="' + c[2] + '">Ver todo</a>' : '') + '</h3>' + (c[3].length
       ? '<ol>' + c[3].join('') + '</ol>' : '<p class="tp-no">' + c[4] + '</p>') + '</div>';
+  }).join('');
+}
+
+/* ── la cara: el avatar de Discord o la inicial ─────────────────────────
+   🔑 Dlx, 25/09/2026: «para aquellos que tienen imágenes, un círculo y su
+   avatar en los rankings, uno pequeño, y mover la bandera a la derecha del
+   nombre».
+
+   ⚠️ EL AVATAR DE DISCORD Y NO LA FOTO DE LA CARTA: la foto congelada vive
+   en una dirección secreta a propósito (ver `_avatares()` en
+   bot/subir_web.py). `f.av` es `<id>/<hash>`; si la persona cambió su
+   foto, el CDN da 404 y el círculo pasa a la inicial solo. */
+var CDN_AV = 'https://cdn.discordapp.com/avatars/';
+function inicial(n) {
+  var s = String(n || '').replace(/[^\p{L}\p{N}]/gu, '');
+  return (s.charAt(0) || '?').toUpperCase();
+}
+function avatar(f, tam) {
+  tam = tam || 28;
+  var st = 'width:' + tam + 'px;height:' + tam + 'px';
+  var ini = esc(inicial(f && f.n));
+  if (f && f.av) {
+    return '<img class="av" src="' + CDN_AV + esc(f.av) + '.webp?size=' +
+      (tam > 40 ? 128 : 64) + '" alt="" style="' + st + '" data-i="' + ini +
+      '" loading="lazy" decoding="async">';
+  }
+  return '<span class="av ini" style="' + st + ';font-size:' + Math.round(tam * 0.46) +
+    'px">' + ini + '</span>';
+}
+document.addEventListener('error', function (e) {
+  var t = e.target;
+  if (!t || t.tagName !== 'IMG' || !t.classList.contains('av')) return;
+  var s = document.createElement('span');
+  s.className = 'av ini';
+  s.style.cssText = t.style.cssText + ';font-size:' +
+    Math.round(parseInt(t.style.width, 10) * 0.46) + 'px';
+  s.textContent = t.dataset.i || '?';
+  t.replaceWith(s);
+}, true);
+/* el nombre con su cara a la izquierda y la bandera a la derecha */
+function quienEs(f, tam) {
+  return '<span class="quien">' + avatar(f, tam) + '<span class="qn">' + esc(f.n) +
+    '</span>' + (bandera(f.cc) || '') + '</span>';
+}
+/* lo que viene sin cara en su lista (duelos, rachas) la toma de la tabla */
+function conCara(x) {
+  var f = porK(x.k) || {};
+  return { n: x.n, k: x.k, cc: x.cc || f.cc, av: f.av || '' };
+}
+
+/* ── ir al perfil ─────────────────────────────────────────────────────── */
+function irPerfil(k) {
+  if (!$('#visor').hidden) cerrar();
+  if (!$('#visorLlave').hidden) cerrarLlave();
+  location.hash = '#/r/' + encodeURIComponent(k);
+}
+
+/* ── el perfil de cada rapero ─────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «ESTARÍA BUENÍSIMO». Lo que más le faltaba al hub
+   contra la página vieja del Apps Script: una página por persona.
+
+   ⚠️ EL HISTORIAL SE PIDE APARTE (`/api/perfiles`) y una sola vez: el
+   lobby se baja en cada visita y esto sólo cuando alguien abre un perfil.
+   Si no llega, el perfil se dibuja igual con lo que trae la tabla. */
+var PERF = null, PERF_PIDIENDO = null;
+function perfiles() {
+  if (PERF) return Promise.resolve(PERF);
+  if (!PERF_PIDIENDO) {
+    PERF_PIDIENDO = fetch('/api/perfiles', { headers: { accept: 'application/json' } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { PERF = d || {}; return PERF; })
+      .catch(function () { PERF_PIDIENDO = null; return null; });
+  }
+  return PERF_PIDIENDO;
+}
+
+var CARTA_TIT = { temporada: 'Temporada', competitivo: 'Competitiva', pais: 'País', servidor: 'Servidor' };
+var PERF_CARTA = {};
+
+function pintaPerfil(k) {
+  var f = porK(k);
+  var caja = $('#perfil');
+  if (!f) {
+    caja.innerHTML = '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
+      '<section class="blk entro"><h2><span>&#128269;</span> No lo encontré</h2>' +
+      '<p class="bajada">Ese rapero no está en la tabla de la temporada.</p></section>';
+    return;
+  }
+  document.title = f.n + ' · Liga Global de Freestyle';
+  var sv = svDe(f.sv);
+  var cartas = f.c || [];
+  var cual = PERF_CARTA[k] && cartas.indexOf(PERF_CARTA[k]) >= 0 ? PERF_CARTA[k] : cartas[0];
+  var rg = f.rg ? '<span class="rg pf-rg" style="color:' + esc(f.rgc || '') + ';border-color:' +
+    esc(f.rgc || '#1A2523') + '">' + esc(f.rg) + '</span>' : '';
+  var sub = [
+    f.cc ? bandera(f.cc) + ' ' + esc(nombrePais(f.cc)) : '',
+    f.sv ? '<span class="chip-sv" style="--c:' + esc(colorSv(f.sv)) + '">' + esc(sv.nombre || f.sv) + '</span>' : '',
+  ].filter(Boolean).join(' <i class="sep">·</i> ');
+  var med = [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]];
+  caja.innerHTML =
+    '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
+    '<header class="pf-cab">' + avatar(f, 116) +
+      '<div class="pf-id"><span class="pf-pos">#' + esc(f.pos) + ' de la temporada</span>' +
+      '<h1 class="tit">' + esc(f.n) + '</h1><p class="pf-sub">' + sub +
+      '<span id="pfCrew"></span></p></div>' +
+      '<dl class="pf-cifras"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
+      '<div><dt>Rango</dt><dd>' + (rg || '<span class="nada">—</span>') + '</dd></div>' +
+      '<div><dt>Puntos</dt><dd>' + num(f.pts) + '</dd></div>' +
+      '<div><dt>Eventos</dt><dd>' + esc(f.ev) + '</dd></div>' +
+      '<div><dt>Win%</dt><dd>' + esc(f.wr || '—') + '</dd></div></dl>' +
+    '</header>' +
+    '<div class="pf-grid">' +
+      '<section class="blk entro pf-cartas"><h2><span>&#127183;</span> Sus tarjetas</h2>' +
+        (cartas.length
+          ? '<div class="pestanas" id="pfPest">' + cartas.map(function (c) {
+              return '<button class="pest' + (c === cual ? ' on' : '') + '" data-pfc="' + c + '">' +
+                (CARTA_TIT[c] || c) + '</button>';
+            }).join('') + '</div><div class="pf-carta"><img id="pfImg" alt="Tarjeta ' +
+            esc(CARTA_TIT[cual] || cual) + ' de ' + esc(f.n) + '" src="' + urlCarta(f, cual) +
+            '"></div><div class="v-acc"><button class="bajar" id="pfBajar" data-pfk="' + esc(k) +
+            '"><i aria-hidden="true">&#11015;</i><span>Descargar</span></button></div>'
+          : '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>') +
+      '</section>' +
+      '<div class="col">' +
+        '<section class="blk entro"><h2><span>&#128202;</span> Sus números</h2><div class="pf-nums">' +
+          '<div><b>' + med.map(function (m) { return m[1] ? m[0] + m[1] : ''; }).join(' ') +
+            (med.some(function (m) { return m[1]; }) ? '' : '—') + '</b><span>Podios</span></div>' +
+          // ⚠️ `sem` SON LAS VECES QUE QUEDÓ EN SEMIS, no las que llegó: quien
+          // llegó siempre a la final tiene 0, y «Semifinales 0» se leía mal
+          '<div><b>' + (f.sem || 0) + '</b><span>Quedó en semis</span></div>' +
+          '<div><b id="pfDu">—</b><span>Duelos ganados</span></div>' +
+          '<div><b id="pfRd">—</b><span>Racha de duelos</span></div>' +
+        '</div></section>' +
+        '<section class="blk entro"><h2><span>&#127919;</span> Lo que le falta</h2>' +
+          '<div class="pf-req" id="pfReq"><p class="nota">Cargando…</p></div></section>' +
+        '<section class="blk entro" id="pfRkSec" hidden><h2><span>&#127942;</span> En cada ranking</h2>' +
+          '<div class="pf-rk" id="pfRk"></div></section>' +
+      '</div>' +
+    '</div>' +
+    '<section class="blk entro" id="pfEvSec" hidden><h2><span>&#128197;</span> Sus eventos</h2>' +
+      '<div class="pf-ev" id="pfEv"></div></section>' +
+    '<section class="blk entro" id="pfDuSec" hidden><h2><span>&#9876;</span> Sus duelos</h2>' +
+      '<div class="pf-du" id="pfDus"></div></section>';
+
+  // ── lo que viene de /api/perfiles
+  perfiles().then(function (P) {
+    if (ruta() !== 'r/' + encodeURIComponent(k) && ruta() !== 'r/' + k) return;
+    var x = P && P.p && P.p[k];
+    if (!x) {
+      $('#pfReq').innerHTML = '<p class="nota">Su historial todavía no está: se arma en la ' +
+        'próxima corrida del ciclo.</p>';
+      return;
+    }
+    var E = P.e || {};
+    if (x.crew) {
+      $('#pfCrew').innerHTML = ' <i class="sep">·</i> <span class="chip-crew">' + esc(x.crew) + '</span>';
+    }
+    var dus = x.du || [];
+    var g = dus.filter(function (d) { return d[2]; }).length;
+    $('#pfDu').innerHTML = dus.length ? g + '<s>/' + dus.length + '</s>' : '—';
+    $('#pfRd').innerHTML = x.rd ? x.rd[0] + '<s> · máx ' + x.rd[1] + '</s>' : '—';
+    // lo que le falta, por tarjeta y por condición
+    var req = x.req || {};
+    $('#pfReq').innerHTML = ['temporada', 'competitivo', 'pais'].map(function (c) {
+      var tiene = cartas.indexOf(c) >= 0;
+      var cs = req[c] || [];
+      var listo = tiene || cs.every(function (q) { return q[0] >= q[1]; });
+      return '<div class="rq' + (listo ? ' ok' : '') + '"><h3>' + (CARTA_TIT[c] || c) +
+        '<span>' + (listo ? '&#10003; Desbloqueada' : 'Bloqueada') + '</span></h3>' +
+        (listo ? '' : cs.map(function (q) {
+          var pct = Math.max(0, Math.min(100, Math.round(100 * q[0] / (q[1] || 1))));
+          return '<div class="rq-l"><span>' + esc(Math.min(q[0], q[1])) + '/' + esc(q[1]) + ' ' +
+            esc(String(q[2]).toLowerCase()) + '</span><i><u style="width:' + pct + '%"></u></i></div>';
+        }).join('')) + '</div>';
+    }).join('');
+    // en cada ranking
+    var rk = x.rk || {}, filas = [];
+    filas.push(['Temporada', '#' + f.pos + ' de ' + (D.gente || (D.tabla || []).length)]);
+    if (rk.du) filas.push(['Duelos', '#' + rk.du[0] + ' de ' + rk.du[1]]);
+    if (rk.pod) filas.push(['Podios', '#' + rk.pod[0] + ' de ' + rk.pod[1]]);
+    if (rk.pa) filas.push([bandera(f.cc) + ' ' + esc(nombrePais(f.cc)), '#' + rk.pa[0] + ' de ' + rk.pa[1]]);
+    if (rk.cr && rk.cr[1]) filas.push([esc(rk.cr[0]), '#' + rk.cr[1] + ' de ' + rk.cr[2]]);
+    $('#pfRk').innerHTML = filas.map(function (r) {
+      return '<div><span>' + r[0] + '</span><b>' + r[1] + '</b></div>';
+    }).join('');
+    $('#pfRkSec').hidden = !filas.length;
+    // sus eventos, el más nuevo arriba
+    var evs = x.ev || [];
+    if (evs.length) {
+      $('#pfEvSec').hidden = false;
+      $('#pfEv').innerHTML = evs.map(function (e) {
+        var m = E[e[0]] || [];
+        var t = m[2] ? new Date(m[2]) : null;
+        var fecha = t && !isNaN(t) ? t.toLocaleDateString('es', { day: 'numeric', month: 'short' }) : (m[4] || '');
+        var ll = (D.llaves || {})[e[0]]
+          ? '<button class="ver-llave" data-llave="' + esc(e[0]) + '">Ver llave</button>' : '';
+        return '<div class="pe" style="--c:' + esc(colorSv(m[1])) + '"><span class="pe-f">' + esc(fecha) +
+          '</span><div><b>' + esc(m[0] || ('Evento #' + e[0])) + '</b><small>' +
+          esc(nombreSv(m[1])) + (m[3] ? ' · ' + m[3] + ' raperos' : '') + '</small>' + ll + '</div>' +
+          '<span class="pe-p">' + (MEDALLA[e[1]] ? MEDALLA[e[1]] + ' ' : '') + esc(e[1]) + '</span>' +
+          '<b class="pe-pts">' + num(e[2]) + '</b></div>';
+      }).join('');
+    }
+    if (dus.length) {
+      $('#pfDuSec').hidden = false;
+      $('#pfDus').innerHTML = dus.map(function (d) {
+        var m = E[d[0]] || [];
+        var r = porK(kDe(d[1]));
+        return '<div class="dd' + (d[2] ? ' g' : ' p') + '"><span class="dd-r">' + (d[2] ? 'Ganó' : 'Perdió') +
+          '</span><span class="dd-v">vs ' + (r ? quienEs(r, 22) : conBanderas(d[1])) + '</span>' +
+          '<small>' + esc(m[0] || '') + '</small></div>';
+      }).join('');
+    }
+  });
+}
+/* la clave de alguien por su nombre, para los rivales de los duelos */
+var K_DE = null;
+function kDe(n) {
+  if (!K_DE) {
+    K_DE = {};
+    (D.tabla || []).forEach(function (f) { K_DE[f.n] = f.k; });
+  }
+  return K_DE[n] || '';
+}
+
+/* ── el buscador del Inicio ───────────────────────────────────────────
+   🔑 Lo que la página vieja tenía primero: escribís tu nombre y vas a tu
+   perfil. */
+function sinTildes(s) {
+  return String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
+function pintaBusca(q) {
+  var caja = $('#buscaRes');
+  q = sinTildes(q).trim();
+  if (!q) { caja.hidden = true; caja.innerHTML = ''; return; }
+  var fs = (D.tabla || []).filter(function (f) {
+    return sinTildes(f.n).indexOf(q) >= 0;
+  }).slice(0, 6);
+  caja.hidden = false;
+  caja.innerHTML = fs.length ? fs.map(function (f, i) {
+    return '<button class="br' + (i ? '' : ' on') + '" data-k="' + esc(f.k) + '">' + quienEs(f, 26) +
+      '<span class="br-p">#' + esc(f.pos) + '</span></button>';
+  }).join('') : '<p class="br-no">No hay nadie con ese nombre en la temporada.</p>';
+}
+
+/* ── la actividad ─────────────────────────────────────────────────────
+   🔑 Dlx, 25/09/2026: «quizás podamos medir la actividad también». Los
+   eventos de cada día de las últimas dos semanas, con el color de su
+   servidor, y los números de la semana. */
+function pintaActividad() {
+  var A = D.actividad;
+  var caja = $('#actividad');
+  if (!A || !(A.dias || []).length) { caja.hidden = true; return; }
+  var max = Math.max(1, Math.max.apply(null, A.dias.map(function (d) {
+    return Object.keys(d[1]).reduce(function (s, k) { return s + d[1][k]; }, 0);
+  })));
+  var dias = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+  var barras = A.dias.map(function (d) {
+    var dia = new Date(d[0] + 'T12:00:00');
+    var tot = 0, capas = Object.keys(d[1]).map(function (sv) {
+      tot += d[1][sv];
+      return '<i style="height:' + (100 * d[1][sv] / max) + '%;background:' + esc(colorSv(sv)) +
+        '" title="' + esc(nombreSv(sv)) + ': ' + d[1][sv] + '"></i>';
+    }).join('');
+    return '<div class="ac-d" title="' + esc(dia.toLocaleDateString('es', { day: 'numeric', month: 'short' })) +
+      ': ' + tot + (tot === 1 ? ' evento' : ' eventos') + '"><span class="ac-b">' + capas + '</span>' +
+      '<u>' + dias[dia.getDay()] + '</u></div>';
+  }).join('');
+  var cambio = A.ant ? Math.round(100 * (A.ev - A.ant) / A.ant) : null;
+  caja.innerHTML = '<h3>Actividad</h3>' +
+    '<dl class="ac-n"><div><dt>Eventos esta semana</dt><dd>' + A.ev +
+    (cambio !== null ? '<s class="' + (cambio >= 0 ? 'sube' : 'baja') + '">' + (cambio >= 0 ? '+' : '') +
+      cambio + '%</s>' : '') + '</dd></div>' +
+    '<div><dt>Participaciones</dt><dd>' + num(A.part) + '</dd></div>' +
+    '<div><dt>Raperos distintos</dt><dd>' + num(A.gente) + '</dd></div></dl>' +
+    '<div class="ac-g" role="img" aria-label="Eventos por día, últimas dos semanas">' + barras + '</div>' +
+    '<p class="nota">Eventos por día · últimas 2 semanas</p>';
+  caja.hidden = false;
+}
+
+/* ── novedades de la Liga y sus redes ─────────────────────────────────
+   🔑 Dlx, 25/09/2026: «3 mini recent feeds de DRA únicamente, como una
+   pestaña de novedades… información de la liga». Salen de
+   〢🌍〉rankings-liga-global, donde se anuncia todo lo de la Liga. */
+var RED_ICONO = {
+  instagram: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>',
+  youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="M10 9v6l5-3z" fill="var(--ng,#030304)"/></svg>',
+  x: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>',
+  tiktok: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 3v11.5a3.5 3.5 0 1 1-3.5-3.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M13 3c.4 2.6 2.2 4.4 5 4.6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
+  twitch: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h15v10l-4 4h-4l-3 3v-3H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M11 7v4M15 7v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  kick: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4v6l5-6h5l-6 8 6 10h-5l-5-7v7H5z" fill="currentColor"/></svg>',
+};
+var RED_NOMBRE = { instagram: 'Instagram', youtube: 'YouTube', x: 'X', tiktok: 'TikTok',
+  twitch: 'Twitch', kick: 'Kick' };
+function redes(rs, cl) {
+  return (rs || []).map(function (r) {
+    return '<a class="red ' + (cl || '') + '" href="' + esc(r[1]) + '" target="_blank" ' +
+      'rel="noopener noreferrer" title="' + esc(RED_NOMBRE[r[0]] || r[0]) + '" aria-label="' +
+      esc(RED_NOMBRE[r[0]] || r[0]) + '">' + (RED_ICONO[r[0]] || esc(r[0])) + '</a>';
+  }).join('');
+}
+function pintaNovedades() {
+  var ns = D.novedades || [], rs = D.redes || [];
+  if (!ns.length && !rs.length) { apaga('#secNov'); return; }
+  $('#secNov').hidden = false;
+  $('#novRedes').innerHTML = rs.length ? '<span>Seguí a la Liga</span>' + redes(rs) : '';
+  $('#novedades').innerHTML = ns.map(function (x) {
+    return '<a class="nv" href="' + esc(x.link) + '" target="_blank" rel="noopener noreferrer">' +
+      '<small>' + esc(cuandoSe(x.t)) + (x.de ? ' · ' + esc(x.de) : '') + '</small>' +
+      '<b>' + esc(x.tit) + '</b>' + (x.tx ? '<p>' + esc(x.tx) + '</p>' : '') +
+      '<span class="nv-ir">Ver en Discord &#8599;</span></a>';
   }).join('');
 }
 
@@ -1499,11 +1861,48 @@ function eventos() {
   // Un solo escucha para todo lo que abre el visor. ⚠️ Los enlaces del
   // menú también son clics: se sale antes si el destino es un `<a>`, o
   // tocar «Ver el ranking completo» abriría una tarjeta.
+  // 🔑 UNA TARJETA ABRE LA TARJETA; UN NOMBRE ABRE SU PERFIL. Desde el
+  // 25/09/2026 cada rapero tiene su página, y es lo que alguien busca al
+  // tocar un nombre en una tabla. Las imágenes de tarjetas (galería,
+  // podio, campeón) siguen abriendo el visor: llevan `data-carta`.
   document.addEventListener('click', function (e) {
     if (e.target.closest('a')) return;
+    var c = e.target.closest('[data-carta]');
+    if (c) { abrir(c.dataset.carta); return; }
     var t = e.target.closest('[data-k]');
-    if (t && !e.target.closest('.pest')) abrir(t.dataset.k);
+    if (t && !e.target.closest('.pest')) irPerfil(t.dataset.k);
   });
+  // el perfil: sus pestañas de tarjetas y descargar la que se ve
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pfc]');
+    if (b) {
+      var k = $('#pfBajar') && $('#pfBajar').dataset.pfk;
+      var f = porK(k);
+      if (!f) return;
+      PERF_CARTA[k] = b.dataset.pfc;
+      $$('#pfPest .pest').forEach(function (p) { p.classList.toggle('on', p === b); });
+      $('#pfImg').src = urlCarta(f, b.dataset.pfc);
+      $('#pfImg').alt = 'Tarjeta ' + (CARTA_TIT[b.dataset.pfc] || '') + ' de ' + f.n;
+      return;
+    }
+    var d = e.target.closest('#pfBajar');
+    if (d) {
+      var g = porK(d.dataset.pfk);
+      if (g) bajarCarta(g, PERF_CARTA[g.k] || (g.c || [])[0]);
+    }
+  });
+  // el buscador del Inicio: escribir sugiere, Enter abre el primero
+  var bi = $('#buscarInicio');
+  if (bi) {
+    bi.addEventListener('input', function () { pintaBusca(bi.value); });
+    bi.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        var p = $('#buscaRes .br');
+        if (p) { e.preventDefault(); bi.value = ''; pintaBusca(''); irPerfil(p.dataset.k); }
+      } else if (e.key === 'Escape') { bi.value = ''; pintaBusca(''); }
+    });
+    bi.addEventListener('blur', function () { setTimeout(function () { pintaBusca(''); }, 180); });
+  }
   // ⚠️ AL CAMBIAR DE SUBCATEGORIA SE SUELTA EL ORDEN MANUAL. Cada una
   // trae el suyo —Podios por oros, Camino por eventos— y respetar el
   // orden viejo haría que tocar «Podios» no cambiara nada visible.
@@ -1708,6 +2107,8 @@ function pinta() {
   pintaComo();
   pintaTops();
   pintaMapa();
+  pintaActividad();
+  pintaNovedades();
   pintaCalendario();
   // 🔴 LA FECHA QUE SE MUESTRA ES LA DE LOS DATOS, NO LA DE LA COPIA.
   // `sello` es cuándo se escribió el payload y se puede mover sin que
