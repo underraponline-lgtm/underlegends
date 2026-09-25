@@ -84,6 +84,45 @@ COMO_R2 = {'Temporada': 'temporada', 'Competitiva': 'competitivo',
            'Servidor': 'servidor', 'Pais': 'pais'}
 TODAS = sorted(COMO_R2.values())
 
+#: las nueve camisetas de la Servidor. Una sola lista: `bot/pipeline.py` la
+#: importa de acá, porque el sello y el dibujo tienen que ver las mismas.
+SERVIDORES = ('DRA', 'EFA', 'FFA', 'FRZ', 'FTN', 'SR', 'TFC', 'TWR', 'URBF')
+
+
+def camisetas(quienes):
+    """`{quien: [servidores]}`: las camisetas de la Servidor que alguien puede pedir.
+
+    🔴 SE DIBUJABAN LAS NUEVE PARA TODOS, Y SE PIDEN CUATRO COMO MUCHO. `/card`
+    abre la camiseta del servidor donde escribiste, y sólo se puede escribir
+    donde está el bot (`datos/bot_en.json`: DRA, FFA, Snake Rap y Urban
+    Freestyle) y donde está la persona (`datos/servidores_de.json`). Medido el
+    25/09/2026: la Valen salió en las nueve estando en tres, y el redibujo de
+    esa noche eran 382 personas × 10 pasadas. Las otras cinco camisetas no las
+    podía abrir nadie.
+
+    🔴 Y ENTRA AL SELLO DE LA SERVIDOR (`huellas()`). Si no, quien entra a un
+    servidor —o el bot a uno nuevo— no tenía su camiseta nunca: el dibujo
+    miraba esta lista y el sello no. Lo encontró la revisión del 25/09/2026.
+
+    ⚠️ SIN LOS DOS ARCHIVOS SE DIBUJAN TODAS: sin saber dónde está cada uno,
+    se dibuja de más antes que de menos. Y quien no figura en ningún lado se
+    queda con la propia: `/card` cae en ésa si falta la camiseta.
+    """
+    bot_en, donde = _j('datos', 'bot_en.json'), _j('datos', 'servidores_de.json')
+    if not bot_en or donde is None:
+        return {q: list(SERVIDORES) for q in quienes}
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'sheet'))
+        import construir_padron as _PAD
+        id_de = {p.get('raw'): str(p.get('discord_id') or '') for p in _PAD.cargar()}
+    except Exception:                                    # noqa: BLE001
+        return {q: list(SERVIDORES) for q in quienes}
+    out = {}
+    for q in quienes:
+        suyos = set(donde.get(id_de.get(q, ''), []) or [])
+        out[q] = [sv for sv in SERVIDORES if sv in bot_en and sv in suyos]
+    return out
+
 
 def _j(*p):
     ruta = os.path.join(BASE, *p)
@@ -333,6 +372,8 @@ def huellas():
             caras = {}
 
     from comun.claves import clave as _CL
+    # 🔴 LAS CAMISETAS, EN LA DE SERVIDOR: ver `camisetas()`
+    camis = camisetas(list(est))
     out = {}
     for quien, dos in est.items():
         h = {}
@@ -347,6 +388,20 @@ def huellas():
             h[carta] = '%s:%s' % (
                 hashlib.sha1('\n'.join(crudo).encode('utf-8')).hexdigest()[:12],
                 cod.get(carta, '?'))
+            # 🔴 LAS CAMISETAS, COMO TERCERA PARTE DE LA SERVIDOR: `datos:
+            # código:camisetas`. Ver `camisetas()`: sin esto, quien entra a
+            # un servidor no tenía su camiseta nunca.
+            #
+            # ⚠️ Y NO EN LOS DATOS, A PROPÓSITO. Qué camisetas se dibujan es
+            # una decisión de dibujo, no un número de la carta: como un cambio
+            # de código, espera a la madrugada (`solo_dibujo()` compara sólo
+            # la primera parte). Metida en los datos, el día que entró al
+            # sello cambiaba la huella de las 382 Servidor y las redibujaba
+            # esa misma tarde — con el naranja de Urban Freestyle que Dlx
+            # había pedido para la madrugada.
+            if carta == 'servidor':
+                h[carta] += ':' + hashlib.sha1(','.join(camis.get(quien) or [])
+                                               .encode('utf-8')).hexdigest()[:6]
         out[quien] = h
     return out
 
@@ -369,7 +424,8 @@ def por_que(antes, hoy):
             d1, _, c1 = v.partition(':')
             if d0 != d1:
                 n += 1
-            if c0 != c1:
+            # la segunda parte, sin las camisetas de la Servidor
+            if c0.partition(':')[0] != c1.partition(':')[0]:
                 codcam = True
         out[carta] = (n, codcam)
     return out
@@ -496,6 +552,14 @@ def sellar(solo=None):
 
     ⚠️ `solo` LIMITA A UNAS PERSONAS. Una tanda que dibuja cuatro y sube
     tres no puede sellar las cuatro: la que falto se perderia.
+
+    🔴 Y A UNAS CARTAS: `{quien: {cartas}}`. Con una lista se sellaba a la
+    persona entera, y desde que lo que cambia sólo de dibujo espera a la
+    madrugada eso PIERDE redibujos: si de día le cambiaban los datos de la
+    Competitiva, se dibujaba ésa y se sellaban las cuatro —también la
+    Servidor que esperaba el naranja de Urban Freestyle—, y a la noche
+    `cambios()` ya no la encontraba. Reproducido por la revisión del
+    25/09/2026. Una lista sigue valiendo, y sella las cuatro.
     """
     h = huellas()
 
@@ -524,11 +588,19 @@ def sellar(solo=None):
         with io.open(SELLO, encoding='utf-8') as f:
             previo = (json.load(f) or {}).get('cartas') or {}
     if solo is not None:
-        solo = set(solo)
-        nuevo = dict(previo)
-        for quien in solo:
-            if quien in h:
+        if not isinstance(solo, dict):
+            solo = {q: None for q in solo}
+        nuevo = {q: dict(v) for q, v in previo.items()}
+        for quien, cs in solo.items():
+            if quien not in h:
+                continue
+            if cs is None:
                 nuevo[quien] = h[quien]
+                continue
+            fila = nuevo.setdefault(quien, {})
+            for c in cs:
+                if c in h[quien]:
+                    fila[c] = h[quien][c]
         # los que ya no estan en el pool salen del sello
         for quien in list(nuevo):
             if quien not in h:
@@ -547,7 +619,85 @@ def sellar(solo=None):
     return SELLO
 
 
+def _self_check():
+    """Lo que espera a la madrugada no se pierde al sellar de día. Sin red.
+
+    ⚠️ CORRE `cambios()` Y `sellar()` DE VERDAD, con `huellas()`, `estado()`
+    y `emitibles()` cambiados por unos fijos y el sello en una carpeta
+    temporal: es la composición la que perdía el redibujo, no una pieza.
+    """
+    import tempfile
+    from datetime import datetime, timezone
+    mal = 0
+
+    def ok(cond, que):
+        nonlocal mal
+        mal += not cond
+        print('   %s %s' % ('✅' if cond else '🔴', que))
+
+    print('')
+    print('  que_cambio.py — el sello por carta, sin red')
+    print('')
+    g = globals()
+    orig = {k: g[k] for k in ('huellas', 'estado', 'emitibles', 'SELLO')}
+    ya = os.environ.pop('REDIBUJAR_YA', None)
+    try:
+        g['SELLO'] = os.path.join(tempfile.mkdtemp(), 'sello.json')
+        # a K le cambiaron los datos de la Competitiva y el código de las cuatro
+        antes = {'K': {c: 'd1:c1' for c in TODAS}}
+        hoy = {'K': {c: 'd1:c2' for c in TODAS}}
+        hoy['K']['competitivo'] = 'd2:c2'
+        g['huellas'] = lambda: {q: dict(v) for q, v in hoy.items()}
+        g['estado'] = lambda: {'K': {'c': {'cc': 'ar'}, 't': {}}}
+        g['emitibles'] = lambda quien, est=None: set(TODAS)
+        with io.open(SELLO, 'w', encoding='utf-8') as f:
+            json.dump({'cartas': antes}, f)
+        dia = datetime(2026, 9, 25, 18, 0, tzinfo=timezone.utc)      # 2 PM ET
+        noche = datetime(2026, 9, 26, 5, 22, tzinfo=timezone.utc)    # 1:22 AM ET
+        cam = cambios(ahora=dia)[0]
+        ok(cam == {'K': {'competitivo'}},
+           'de día se dibuja sólo lo que cambió de datos: %s' % cam)
+        sellar({'K': cam.get('K', set())})
+        cam = cambios(ahora=noche)[0]
+        ok(cam.get('K') == set(TODAS) - {'competitivo'},
+           'y a la noche las otras tres siguen esperando: %s' % sorted(cam.get('K', ())))
+        sellar({'K': cam.get('K', set())})
+        ok(not cambios(ahora=noche)[0], 'selladas las cuatro, ya no queda nada')
+        # una lista, como antes, sella a la persona entera
+        with io.open(SELLO, 'w', encoding='utf-8') as f:
+            json.dump({'cartas': antes}, f)
+        sellar(['K'])
+        ok(not cambios(ahora=noche)[0], 'una lista sella las cuatro, como antes')
+        # quien salió del pool sale del sello; el resto no se toca
+        with io.open(SELLO, 'w', encoding='utf-8') as f:
+            json.dump({'cartas': dict(antes, Z={'servidor': 'x:y'})}, f)
+        sellar({'K': {'temporada'}})
+        with io.open(SELLO, encoding='utf-8') as f:
+            s2 = json.load(f)['cartas']
+        ok('Z' not in s2 and s2['K']['temporada'] == 'd1:c2' and s2['K']['servidor'] == 'd1:c1',
+           'sella sólo la carta pedida, y el que se fue sale')
+        # una camiseta nueva (tercera parte de la Servidor) espera a la noche
+        antes = {'K': {c: 'd1:c1' for c in TODAS}}
+        antes['K']['servidor'] = 'd1:c1:aaaaaa'
+        hoy = {'K': dict(antes['K'], servidor='d1:c1:bbbbbb')}
+        with io.open(SELLO, 'w', encoding='utf-8') as f:
+            json.dump({'cartas': antes}, f)
+        ok(not cambios(ahora=dia)[0] and cambios(ahora=noche)[0] == {'K': {'servidor'}},
+           'una camiseta nueva espera a la madrugada, y ahí se dibuja')
+        ok(por_que(antes, hoy)['servidor'] == (0, False),
+           'y no se informa como un cambio de código')
+    finally:
+        g.update(orig)
+        if ya is not None:
+            os.environ['REDIBUJAR_YA'] = ya
+    print('')
+    print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
+    return mal
+
+
 def main():
+    if '--auto' in sys.argv:
+        return 1 if _self_check() else 0
     if '--sellar' in sys.argv:
         quienes = [a for a in sys.argv[1:] if not a.startswith('-')]
         p = sellar(quienes or None)

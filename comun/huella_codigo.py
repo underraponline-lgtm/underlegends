@@ -97,6 +97,7 @@ es por que.
 """
 import ast
 import hashlib
+import json
 import os
 import re
 import sys
@@ -133,6 +134,55 @@ CARPETAS = {
 SALTAR = ('disenos', 'salida', '__pycache__', 'fonts', 'logos_sv',
           'logos_color', 'escudos_cuad', 'fotos', 'banderas',
           'banderas_carta', 'estilos')
+
+# 🔴 LO QUE LA CARTA DIBUJA Y NO ES CÓDIGO: los escudos, las banderas, los
+# estilos, las fuentes y el ícono de hoy de cada servidor. Hasta el 25/09/2026
+# la huella miraba sólo `.py` y `.css`, así que cambiar el logo de un servidor
+# —`datos/iconos_sv.json` lo cambia solo desde ese día— no redibujaba ninguna
+# carta ya hecha. Es «una cache que mira los datos no ve el código» un
+# escalón más abajo: tampoco veía los dibujos. Lo encontró la revisión de ese
+# día.
+#
+# ⚠️ ENTRAN EN LAS CUATRO: se redibuja de más antes que de menos, y cambian
+# una vez cada tanto. Y cuentan como CÓDIGO, así que esperan a la madrugada
+# (`bot/madrugada.py`) igual que un cambio de dibujo.
+#
+# ⚠️ LOS PNG POR SUS BYTES —git no les toca el fin de línea— y los de texto
+# normalizados: el `.css` como el resto de los `.css`, el `.json` releído y
+# ordenado, así un reordenamiento de claves no redibuja nada.
+DIBUJOS = ('comun/escudos_cuad', 'comun/logos_sv', '04_Pais/banderas',
+           '04_Pais/banderas_carta', '02_Competitivo/v2/estilos',
+           'comun/fonts', 'datos/iconos_sv.json')
+EXT_DIBUJO = ('.png', '.svg', '.webp', '.woff2', '.css', '.json')
+
+
+def dibujos():
+    """Las rutas —relativas a BASE, ordenadas— de `DIBUJOS`."""
+    out = []
+    for rel in DIBUJOS:
+        p = os.path.join(BASE, rel)
+        if os.path.isfile(p):
+            out.append(rel)
+        elif os.path.isdir(p):
+            out += [rel + '/' + a for a in os.listdir(p)
+                    if a.endswith(EXT_DIBUJO) and os.path.isfile(os.path.join(p, a))]
+    return sorted(out)
+
+
+def _bytes_dibujo(rel):
+    """El contenido de un dibujo, sin lo que no cambia lo que se ve."""
+    with open(os.path.join(BASE, rel), 'rb') as f:
+        d = f.read()
+    if rel.endswith('.css'):
+        return normalizar(rel, d.decode('utf-8', 'replace')).encode('utf-8')
+    if rel.endswith('.json'):
+        try:
+            return json.dumps(json.loads(d.decode('utf-8')), sort_keys=True,
+                              ensure_ascii=False).encode('utf-8')
+        except ValueError:
+            return d
+    return d
+
 
 # carta -> por donde se entra a dibujarla, para rescatar lo vivo de una
 # carpeta salteada
@@ -257,6 +307,16 @@ def de(carta):
         h.update(rel.encode('utf-8'))
         h.update(b'\0')
         h.update(normalizar(rel, d).encode('utf-8', 'replace'))
+        h.update(b'\0')
+    # y los dibujos: ver `DIBUJOS`
+    for rel in dibujos():
+        try:
+            d = _bytes_dibujo(rel)
+        except OSError:
+            continue
+        h.update(rel.encode('utf-8'))
+        h.update(b'\0')
+        h.update(hashlib.sha1(d).digest())
         h.update(b'\0')
     return h.hexdigest()[:12]
 
