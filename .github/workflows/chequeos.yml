@@ -1,0 +1,91 @@
+# ════════════════════════════════════════════════════════════════════
+# LOS SELF-CHECKS, EN CADA PUSH DE CÓDIGO.
+#
+# 🔴 EXISTE PORQUE EL 24/09/2026 LOS BUGS SE AGARRARON A MANO. Ese día
+# corrí los self-checks yo y así salieron dos errores míos antes de
+# llegar al ciclo; el día que no me acuerde, salen. Y otro llegó igual:
+# un `\n` literal en `guardar.sh` que `bash -n` daba por bueno y que
+# tumbó una corrida entera. Esto los corre solo.
+#
+# ⚠️ SÓLO LOS QUE SON DE VERDAD SIN RED Y SIN ESCRIBIR. Probados ese día
+# en un clon sin credenciales y con la red cortada: 19 pasan. Quedan
+# afuera `sheet/motor.py` (lee las tablas de puntos del Sheet),
+# `bot/subir_web.py` (pide el token de Cloudflare) y
+# `sheet/webapp_subir.py` (pide un archivo local). Y OJO: no todo
+# `--auto` es un self-check — `bot/subir_datos.py` y
+# `sheet/construir_akas.py` corren DE VERDAD con ese flag.
+#
+# ⚠️ SIN SECRETS, A PROPÓSITO: si un chequeo intentara escribir en el
+# Sheet o en KV, acá no puede.
+#
+# ⚠️ NO CORRE CON LOS COMMITS DEL CICLO (sólo tocan `datos/`), así no
+# llena la lista de corridas cada media hora.
+# ════════════════════════════════════════════════════════════════════
+name: chequeos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - 'bot/ci/**'
+      - '.github/**'
+  workflow_dispatch:
+
+jobs:
+  chequeos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: dependencias
+        run: pip install -q -r requirements.txt
+
+      - name: que todo compile
+        run: python -m compileall -q bot sheet comun herramientas
+
+      - name: guardar.sh
+        # `bash -n` no alcanza: un `\n` literal es sintaxis válida.
+        # guardar.sh mismo comprueba que cada palabra de su lista sea un
+        # `datos/*.json`; acá se comprueba además que existan.
+        run: |
+          bash -n bot/ci/guardar.sh
+          eval "$(sed -n '/^ARCHIVOS=/,/bot_en.json"$/p' bot/ci/guardar.sh)"
+          for f in $ARCHIVOS; do
+            case "$f" in datos/*.json) ;; *) echo "::error::ARCHIVOS tiene «$f»"; exit 1 ;; esac
+            [ -f "$f" ] || { echo "::error::no existe $f"; exit 1; }
+          done
+
+      - name: los workflows
+        run: python herramientas/workflows_validos.py
+
+      - name: los self-checks
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          fallas=""
+          for f in bot/anuncios.py bot/avisar.py bot/cuando.py bot/escuchar.py \
+                   bot/inscripciones.py bot/llaves_a_entrada.py bot/olvidar.py \
+                   bot/verificados.py sheet/archivar_temporada.py \
+                   sheet/competitivo.py sheet/construir_pool_competitivo.py \
+                   sheet/decidir.py sheet/estilo.py sheet/lobby.py \
+                   sheet/pendientes.py sheet/rankings.py \
+                   herramientas/quien_puede_card.py herramientas/roles_de_rango.py \
+                   herramientas/simular_score.py herramientas/unir_sellos.py; do
+            echo "::group::$f"
+            if ! python "$f" --auto; then
+              echo "::error::$f falló su self-check"
+              fallas="$fallas $f"
+            fi
+            echo "::endgroup::"
+          done
+          if [ -n "$fallas" ]; then
+            echo "fallaron:$fallas"
+            exit 1
+          fi
+          echo "los self-checks, todos bien"
