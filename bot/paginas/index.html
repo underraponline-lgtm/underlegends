@@ -45,9 +45,14 @@
       <a href="#/ranking"><i>&#127942;</i><span>Ranking</span></a>
       <a href="#/tarjetas"><i>&#127183;</i><span>Tarjetas</span></a>
       <a href="#/duelos"><i>&#9876;</i><span>Duelos</span></a>
+      <!-- 🔑 «EVENTOS» Y NO UNA OCTAVA ENTRADA. Dlx, 25/09/2026, pidió la
+           sección con calendario; los avisos son de eventos, así que viven
+           adentro. Ocho casillas no entran en la barra del teléfono (siete
+           ya se midieron al límite), y `#/avisos` sigue andando: lo abre
+           el botón de `/card`. -->
+      <a href="#/eventos"><i>&#128197;</i><span>Eventos</span></a>
       <a href="#/mundo"><i>&#127758;</i><span>Mundo</span></a>
       <a href="#/guia"><i>&#127895;</i><span>Guía</span></a>
-      <a href="#/avisos"><i>&#128276;</i><span>Avisos</span></a>
     </nav>
     <p class="pie" id="pie">—</p>
   </aside>
@@ -89,6 +94,12 @@
       </div>
     </header>
 
+    <!-- 🔴 EL ESPACIO SOBRABA A LO ANCHO. Dlx, 25/09/2026: «siento que todo
+         está muy pequeño… hay demasiado espacio». A 1440 px, «Lo que pasó»
+         era una columna de 1.100 px con seis renglones cortos. Al lado va
+         el mapa, que es lo que pidió para el Inicio. -->
+    <div class="inicio-grid">
+    <div class="col">
     <section class="blk viene" id="viene" hidden>
       <h2><span>&#9201;</span> Lo que viene</h2>
       <div id="eventos"></div>
@@ -104,6 +115,32 @@
       <p class="bajada">Los últimos eventos detectados. Tocá uno para abrir
       su anuncio en Discord.</p>
       <div id="pasados"></div>
+      <a class="mas" href="#/eventos">Ver el calendario</a>
+    </section>
+    </div>
+
+    <!-- 🔑 EL MAPA. Dlx, 25/09/2026: «en inicio poner como un mapa con el
+         porcentaje de cuántos países están representados, algo visual».
+         El dibujo del mundo se baja SÓLO si esta sección se ve —es el
+         único archivo de afuera de la página— y si no llega, queda el
+         número y las banderas: sin dato no hay pieza, pero con medio dato
+         hay media. -->
+    <section class="blk" id="secMapa" hidden>
+      <h2><span>&#127758;</span> La Liga en el mapa</h2>
+      <div class="mapa-dato" id="mapaDato"></div>
+      <div class="mapa" id="mapa"></div>
+      <div class="mapa-otros" id="mapaOtros"></div>
+    </section>
+    </div>
+
+    <!-- 🔑 EL TOP 5 DE CADA RANKING, NO SÓLO EL DE TEMPORADA. Dlx,
+         25/09/2026: «que los cinco de arriba muestre el top 5 de todos los
+         rankings que hayan». -->
+    <section class="blk" id="secTop">
+      <h2><span>&#127942;</span> Los cinco de arriba</h2>
+      <p class="bajada">El top 5 de cada ranking. Tocá un nombre para ver sus
+      tarjetas.</p>
+      <div class="tops" id="tops"></div>
     </section>
 
     <section class="blk" id="secPodio">
@@ -112,13 +149,6 @@
       <div class="records" id="records"></div>
     </section>
 
-    <section class="blk" id="secTop">
-      <h2><span>&#127942;</span> Los cinco de arriba</h2>
-      <div class="tabla-caja">
-        <table class="mini"><tbody id="filasTop"></tbody></table>
-      </div>
-      <a class="mas" href="#/ranking">Ver el ranking completo</a>
-    </section>
   </section>
 
   <!-- ══ RANKING ═════════════════════════════════════════════════ -->
@@ -246,6 +276,53 @@
     </div>
   </section>
 
+  <!-- ══ EVENTOS ═════════════════════════════════════════════════
+       🔑 Dlx, 25/09/2026: «deberíamos crear una sección de eventos, y ahí
+       aparecerá en forma de calendario todos los eventos que pasaron, con
+       un color diferente y respectivo al servidor, y los futuros». -->
+  <section class="vista" data-vista="eventos" hidden>
+    <h1 class="tit">Los <em>eventos</em></h1>
+    <p class="bajada">Todo lo que se jugó en la temporada y lo que viene, con el
+    color de cada servidor. Tocá un día para ver sus eventos, y un evento jugado
+    para ver su llave.</p>
+    <div class="cal-dos">
+      <section class="blk" id="secCal">
+        <div class="cal-cab">
+          <button class="cal-ir" id="calAntes" aria-label="Mes anterior">&#8249;</button>
+          <h2 id="calMes"></h2>
+          <button class="cal-ir" id="calDespues" aria-label="Mes siguiente">&#8250;</button>
+        </div>
+        <div class="cal-sem" aria-hidden="true">
+          <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span>
+          <span>Vie</span><span>Sáb</span><span>Dom</span>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-ley" id="calLey"></div>
+      </section>
+      <section class="blk" id="secDia">
+        <h2 id="diaTit"><span>&#128197;</span> El día</h2>
+        <div id="diaLista"></div>
+      </section>
+    </div>
+
+    <!-- 🔔 LA CAMPANA, que antes era su propia vista: los avisos son de
+         eventos. Ver `campana.js`, que busca estos mismos ids. -->
+    <h2 class="tit2" id="avisos">Avisos de <em>eventos</em></h2>
+    <p class="bajada">Cuando un servidor de la Liga anuncia un evento, te llega
+    al teléfono o a la compu aunque no tengas Discord abierto. Los eventos se
+    anuncian con <b>15 minutos</b> de aviso: esto te lo trae al minuto.</p>
+    <div class="dos ancha">
+    <section class="blk" id="secCampana">
+      <h2><span>&#128276;</span> En este dispositivo</h2>
+      <div id="campana"><p class="cp-tx">Cargando…</p></div>
+    </section>
+    <section class="blk" id="secVigia" hidden>
+      <h2><span>&#128225;</span> Qué se escucha</h2>
+      <div id="vigia"></div>
+    </section>
+    </div>
+  </section>
+
   <!-- ══ MUNDO ═══════════════════════════════════════════════════ -->
   <section class="vista" data-vista="mundo" hidden>
     <h1 class="tit">El <em>mundo</em></h1>
@@ -257,14 +334,18 @@
       cada uno y cuánto sumó en la temporada. Tocá <b>Entrar</b> para unirte.</p>
       <div class="svs" id="svs"></div>
     </section>
+    <!-- 🔑 LAS CREWS ARRIBA. Dlx, 25/09/2026: «puedes poner las crews
+         encima de los países». -->
+    <section class="blk" id="secCrews">
+      <h2><span>&#129309;</span> Las crews</h2>
+      <p class="bajada">Las crews con tres o más raperos en la temporada, por
+      los puntos que suman.</p>
+      <div class="crews" id="crews"></div>
+    </section>
     <section class="blk" id="secPaises">
       <h2><span>&#127758;</span> Los países</h2>
       <p class="bajada">Por los puntos que hizo su gente.</p>
       <div class="paises" id="listaPaises"></div>
-    </section>
-    <section class="blk" id="secCrews">
-      <h2><span>&#129309;</span> Las crews</h2>
-      <div class="crews" id="crews"></div>
     </section>
   </section>
 
@@ -287,29 +368,6 @@
     </div>
   </section>
 
-  <!-- ══ AVISOS ══════════════════════════════════════════════════
-       🔑 LOS EVENTOS SE ANUNCIAN CON 15 MINUTOS DE AVISO —18 de 26,
-       medido el 24/09/2026—, así que un recordatorio de «falta media
-       hora» llega tarde casi siempre. Lo que sirve es enterarse en el
-       momento: el Worker revisa los canales cada minuto y avisa apenas
-       aparece el anuncio. Ver `bot/avisos.js`. -->
-  <section class="vista" data-vista="avisos" hidden>
-    <h1 class="tit">Avisos de <em>eventos</em></h1>
-    <p class="bajada">Cuando un servidor de la Liga anuncia un evento, te llega
-    al teléfono o a la compu aunque no tengas Discord abierto. Los eventos se
-    anuncian con <b>15 minutos</b> de aviso: esto te lo trae al minuto.</p>
-    <div class="dos ancha">
-    <section class="blk" id="secCampana">
-      <h2><span>&#128276;</span> En este dispositivo</h2>
-      <div id="campana"><p class="cp-tx">Cargando…</p></div>
-    </section>
-    <section class="blk" id="secVigia" hidden>
-      <h2><span>&#128225;</span> Qué se escucha</h2>
-      <div id="vigia"></div>
-    </section>
-    </div>
-  </section>
-
   </main>
 </div>
 
@@ -318,7 +376,10 @@
      encima, y al cerrarla se vuelve acá. -->
 <div class="visor" id="visorLlave" hidden>
   <div class="visor-fondo" data-cerrar-llave></div>
-  <div class="visor-caja ancha" role="dialog" aria-modal="true" aria-labelledby="lNombre">
+  <!-- 🔑 ANCHA DE VERDAD: el cuadro de una llave de 16 son siete columnas.
+       Dlx, 25/09/2026, con la imagen de una llave clásica: «pensé que ibas
+       a crear algo así y rellenar los nombres en esos huecos». -->
+  <div class="visor-caja ancha llave-caja" role="dialog" aria-modal="true" aria-labelledby="lNombre">
     <button class="cerrar" data-cerrar-llave aria-label="Cerrar">&times;</button>
     <div class="visor-cab">
       <span class="v-pos" aria-hidden="true">&#127942;</span>

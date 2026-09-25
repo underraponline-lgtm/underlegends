@@ -77,6 +77,21 @@ CARTAS = ('temporada', 'competitivo', 'servidor', 'pais')
 #: la gente lo está jugando, que es el error contrario.
 VENTANA_VIVO = 90
 
+#: Cuántas llaves viajan en el payload, además de las de «Lo que pasó».
+#:
+#: ⚠️ LAS MÁS NUEVAS Y NO TODAS. Una llave pesa ~1,5 KB y FFA juega cuatro
+#: por día: la temporada entera serían ~600 KB en CADA visita. Con 24 el
+#: calendario abre el cuadro de los últimos días; las de antes llevan al
+#: mensaje de Discord. El día que haga falta más, van a R2 aparte.
+LLAVES_WEB = 24
+
+
+def _nom(s):
+    """El nombre sin el subrayado de Discord: `__RAP EXHIBITION__` es
+    `RAP EXHIBITION`. Se veía tal cual en «Lo que pasó» y en el
+    calendario."""
+    return str(s or '').strip().strip('_*~ ').strip()
+
 
 def _json(*p):
     try:
@@ -136,6 +151,10 @@ def armar():
         # desincronizaron—. Mandándolo masticado, cambiar un acento en
         # `rangos.py` lo cambia en la web sola, en el ciclo siguiente.
         'rgc': _acento(_letra(p)),
+        # 🔑 EL SCORE, SÓLO DE QUIEN TIENE LETRA: es el número del ranking
+        # Competitivo, y debajo de 10 eventos no hay ranking que mostrar.
+        'sc': (round(float(_comp.get(p.get('raw'), {}).get('score')
+                           or p.get('score') or 0), 1) if _letra(p) else 0),
         'ovr': p.get('ovr') or 0,
         'wr': p.get('wr') or '',
         'pod': p.get('pod') or 0,
@@ -214,7 +233,7 @@ def armar():
             sin_hora.append(x)
     sin_hora.sort(key=lambda x: str(x.get('cuando')), reverse=True)
     prox = [{
-        'nombre': x['nombre'],
+        'nombre': _nom(x['nombre']),
         'sv': x.get('servidor') or '',
         # 🔑 EL INSTANTE, EN ISO UTC. El texto lo arma el navegador.
         'cuando': x['cuando'],
@@ -236,7 +255,7 @@ def armar():
         'modalidad': x.get('modalidad') or '',
         'premios': (x.get('premios') or '')[:60],
     } for x in CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)]
-    prox += [{'nombre': x['nombre'], 'sv': x.get('servidor') or '',
+    prox += [{'nombre': _nom(x['nombre']), 'sv': x.get('servidor') or '',
               'cuando': x['cuando'], 'sin_hora': 1,
               'cupos': x.get('cupos_texto') or '', 'link': _link(x),
               'modalidad': x.get('modalidad') or '',
@@ -271,7 +290,7 @@ def armar():
         if _ini(x) >= _ahora:
             continue                       # todavía no pasó: es de `prox`
         pas.append({
-            'nombre': x['nombre'],
+            'nombre': _nom(x['nombre']),
             'sv': x.get('servidor') or '',
             'cuando': _ini(x),
             'modalidad': x.get('modalidad') or '',
@@ -295,10 +314,24 @@ def armar():
         if _sh not in sys.path:
             sys.path.append(_sh)
         import llaves_web as _LW
-        llaves = _LW.cruzar(pas, _LW.leer())
+        regs = _LW.leer()
+        llaves = _LW.cruzar(pas, regs)
+        # 🔑 Y LAS MÁS NUEVAS, para que el calendario de «Eventos» abra su
+        # cuadro. Ver `LLAVES_WEB`.
+        _inst = _LW.instantes(regs)
+        for n in sorted(regs, key=lambda n: _inst.get(int(n), 0) if str(n).isdigit()
+                        else 0, reverse=True)[:LLAVES_WEB]:
+            llaves.setdefault(n, regs[n])
+        # 🔑 CON EL ÁRBOL: de qué batalla viene cada lado, que es lo que
+        # dibuja el cuadro. Dlx, 25/09/2026, con la imagen de una llave
+        # clásica: *«pensé que ibas a crear algo así y rellenar los nombres
+        # en esos huecos»*. Ver `llaves_web.enlazar()`.
+        llaves = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or []))
+                  for n, r in llaves.items()}
+        calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
-        llaves = {}
+        regs, llaves, calendario = {}, {}, []
 
     return {
         'temporada': SELLO,
@@ -307,6 +340,13 @@ def armar():
         'proximos': prox,
         'pasados': pas,
         'llaves': llaves,
+        # 🔑 LA TEMPORADA EN UN CALENDARIO: lo que pasó y lo que viene. Ver
+        # `_calendario()`.
+        'calendario': calendario,
+        # 🔴 LOS EVENTOS DE LA TEMPORADA, NO LAS PARTICIPACIONES. El Inicio
+        # sumaba `ev` de cada persona y decía «134 eventos» con siete
+        # jugados (auditoría del 25/09/2026).
+        'eventos': len(regs),
         'r2': R2,
         'cartas': list(CARTAS),
         'svs': _servidores(gente),
@@ -338,6 +378,63 @@ def armar():
         # saber de cuándo es lo que está leyendo, no cuándo se copió.
         'leido': _an.get('cuando') or '',
     }
+
+
+def _calendario(ann, regs, llaves, LW, CU, ahora):
+    """Los eventos de la temporada, para el calendario de «Eventos».
+
+    🔑 Dlx, 25/09/2026: *«crear una sección de eventos, y ahí aparecerá en
+    forma de calendario todos los eventos que pasaron, con un color
+    diferente y respectivo al servidor, y los futuros»*.
+
+    Dos fuentes, y un evento sale UNA vez: el anuncio (lo que viene y lo
+    que pasó) y la llave procesada (lo que se jugó). Se juntan con
+    `llaves_web.cruzar()`, el mismo cruce de «Lo que pasó»; la llave que
+    no tiene anuncio —un servidor que no anuncia en un canal que leemos—
+    sale sola.
+
+    ⚠️ EL INSTANTE EN UTC CON SU `Z`, y el día lo pone el navegador: quien
+    mira desde Madrid y quien mira desde Lima ven el evento en SU día.
+    """
+    from comun.temporada import INICIO
+    desde = INICIO[:19]
+    link = lambda x: ('https://discord.com/channels/%s/%s/%s'
+                      % (x['guild_id'], x['canal_id'], x['msg_id'])
+                      if x.get('guild_id') and x.get('canal_id') and x.get('msg_id')
+                      else '')
+    items = []
+    for x in ann:
+        pub = str(x.get('cuando') or '')[:19]
+        if not pub or pub < desde:
+            continue
+        ini = CU.momento(x)
+        items.append({'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '',
+                      'cuando': ini or pub, 'sh': 0 if ini else 1,
+                      'link': link(x)})
+    LW.cruzar(items, regs)
+    usadas = {str(i['llave']) for i in items if i.get('llave')}
+    import datetime as _d
+    for n, r in regs.items():
+        if str(n) in usadas:
+            continue
+        ms = LW._primero(r.get('links'))
+        if ms is None:
+            continue
+        items.append({'nombre': r.get('nombre') or '', 'sv': r.get('sv') or '',
+                      'cuando': _d.datetime.fromtimestamp(ms / 1000, _d.timezone.utc)
+                      .strftime('%Y-%m-%dT%H:%M:%S'),
+                      'sh': 0, 'link': (r.get('links') or [''])[0], 'llave': int(n)})
+    out = []
+    for i in sorted(items, key=lambda i: i['cuando']):
+        ll = str(i.get('llave') or '')
+        out.append({'t': i['cuando'] + 'Z', 'n': _nom(i['nombre']), 'sv': i['sv'],
+                    'link': i['link'],
+                    # la llave, si viaja en el payload; si no, el link basta
+                    'll': int(ll) if ll in llaves else 0,
+                    'jugado': 1 if ll else 0,
+                    'fut': 1 if i['cuando'] > ahora else 0,
+                    'sh': i['sh']})
+    return out
 
 
 def _clave(p):
@@ -481,7 +578,13 @@ _SIN_RED = [False]
 
 
 def _miembros(svs):
-    """`{sv: miembros}` desde la invitación pública de cada servidor.
+    """`{sv: {'miembros': n, 'icono': url}}` desde la invitación pública.
+
+    🔑 EL LOGO TAMBIÉN, DE LA MISMA RESPUESTA. Dlx, 25/09/2026: *«para los
+    íconos de los servidores intentá trackear los logos actuales»*. La
+    invitación trae el hash del ícono de hoy, así que el logo del hub es
+    el que el servidor tiene puesto en Discord —si lo cambia, la corrida
+    siguiente lo toma— sin bajar ni guardar nada.
 
     🔑 POR LA INVITACION Y NO POR EL BOT. `GET /invites/<código>?
     with_counts=true` contesta para cualquier servidor con invitación
@@ -513,11 +616,19 @@ def _miembros(svs):
         except (OSError, ValueError):
             continue
         n = j.get('approximate_member_count')
+        g = j.get('guild') or {}
         # la invitación tiene que llevar a ESE servidor: un link cambiado
         # a mano contaría la gente de otro
-        if not n or (j.get('guild') or {}).get('id') != x.get('guild_id'):
+        if g.get('id') != x.get('guild_id'):
             continue
-        out[sv] = int(round(n, -2) if n >= 1000 else round(n, -1))
+        d = {}
+        if n:
+            d['miembros'] = int(round(n, -2) if n >= 1000 else round(n, -1))
+        if g.get('icon'):
+            d['icono'] = ('https://cdn.discordapp.com/icons/%s/%s.webp?size=128'
+                          % (g['id'], g['icon']))
+        if d:
+            out[sv] = d
     return out
 
 
@@ -567,10 +678,14 @@ def _servidores(gente):
         a['color'] = col.get(sv, '#7E8B89')
         a['nombre'] = x.get('nombre') or sv
         a['invita'] = x.get('invitacion') or ''
-        if os.path.exists(os.path.join(logos, sv.lower() + '.webp')):
+        # ⚠️ EL DE DISCORD PRIMERO y el guardado de respaldo: sin red, o si
+        # el servidor saca su ícono, la página sigue teniendo uno.
+        if (miembros.get(sv) or {}).get('icono'):
+            a['logo'] = miembros[sv]['icono']
+        elif os.path.exists(os.path.join(logos, sv.lower() + '.webp')):
             a['logo'] = 'logos/%s.webp' % sv.lower()
-        if sv in miembros:
-            a['miembros'] = miembros[sv]
+        if (miembros.get(sv) or {}).get('miembros'):
+            a['miembros'] = miembros[sv]['miembros']
         out.append(a)
     # primero los que tienen gente en la T1, por puntos; después, por tamaño
     return sorted(out, key=lambda a: (-a['pts'], -a.get('miembros', 0), a['sv']))
@@ -904,8 +1019,8 @@ def subir(payload, solo_si_cambio=False):
             pass
     r = requests.put('%s/values/%s' % (SD.API, CLAVE),
                      headers={'Authorization': 'Bearer ' + tok},
-                     files={'value': (None, json.dumps(payload,
-                                                       ensure_ascii=False)),
+                     files={'value': (None, json.dumps(
+                         payload, ensure_ascii=False, separators=(',', ':'))),
                             'metadata': (None, '{}')},
                      timeout=60)
     return r.status_code == 200
@@ -929,9 +1044,21 @@ def _self_check():
     # payload, y ninguna llave viaja sin un anuncio que la abra.
     _ll = p.get('llaves')
     _con = [x['llave'] for x in p.get('pasados') or [] if x.get('llave')]
-    ok(isinstance(_ll, dict) and all(str(n) in _ll for n in _con)
-       and set(_ll) <= {str(n) for n in _con},
+    ok(isinstance(_ll, dict) and all(str(n) in _ll for n in _con),
        'las llaves de «Lo que pasó», una por anuncio  (%d)' % len(_con))
+    ok(len(_ll) <= len(_con) + LLAVES_WEB,
+       'y no más de %d aparte  (%d en total)' % (LLAVES_WEB, len(_ll)))
+    ok(all(len(b) == 4 for L in _ll.values() for R in L['rondas'] for b in R['b']),
+       'cada batalla trae de qué batallas viene (el árbol)')
+    _cal = p.get('calendario') or []
+    ok(all(re_iso(c['t'][:19]) and c['t'].endswith('Z') for c in _cal),
+       'el calendario viaja con instantes UTC  (%d)' % len(_cal))
+    ok([c['t'] for c in _cal] == sorted(c['t'] for c in _cal),
+       'y en orden')
+    ok(all(str(c['ll']) in _ll for c in _cal if c['ll']),
+       'cada «ver llave» del calendario tiene su llave en el payload')
+    ok(p.get('eventos') == len(__import__('llaves_web').leer()),
+       'los eventos son los procesados, no las participaciones  (%s)' % p.get('eventos'))
 
     # 🔑 LOS NUEVE SERVIDORES, con o sin gente en la T1, y cada uno con su
     # nombre y su logo. Ver `_servidores()`.
