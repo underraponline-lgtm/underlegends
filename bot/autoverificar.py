@@ -253,11 +253,62 @@ def roles_de_pais(s, guilds, mapas, did, dra_roles=None):
 
 
 # ── la hoja ────────────────────────────────────────────────────────────
+#: lo que en `Bandera` o `País` quiere decir «no se sabe». `❓` es lo que la
+#: hoja pone a quien no tiene país, y el padrón ya lo lee como vacío.
+VACIO = ('', '❓', '?')
+
+
+def plan_hoja(v, i, col, poner, rango):
+    """(celdas, van, ya): qué escribir, a quién, y a quién no y por qué.
+
+    Pura, para poder probarla sin la hoja. `v` son las filas de la Lista,
+    `i` la de la cabecera, `col` {columna: índice} y `rango(a1)` arma el
+    rango con el nombre de la hoja.
+
+    🔴 `❓` CUENTA COMO VACÍO. La primera corrida en la nube (25/09/2026,
+    2:22 AM) encontró los 15 países y escribió **cero**: la `Bandera` de
+    esas filas decía `❓`, el padrón lo lee como «sin país» —por eso eran
+    candidatos— y esta guarda pedía la celda vacía de verdad. Y lo salteaba
+    **callada**, así que la corrida dijo «hecho: 0» sin decir por qué.
+    """
+    fila_de = {}
+    for k, f in enumerate(v):
+        if k > i:
+            d = _celda(f, col['Discord ID'])
+            if d:
+                fila_de.setdefault(d, []).append(k + 1)
+    letra = lambda j: chr(ord('A') + j)
+    celdas, van, ya = [], [], []
+    for did, cc, nombre in poner:
+        fs = fila_de.get(did) or []
+        if len(fs) != 1:
+            ya.append((did, 'está en %d filas' % len(fs)))
+            continue
+        f = v[fs[0] - 1]
+        ban, pa = _celda(f, col['Bandera']), _celda(f, col['País'])
+        if ban not in VACIO or pa not in VACIO:
+            # alguien lo puso en la última media hora: no se pisa
+            ya.append((did, 'la hoja ya dice %s' % (ban if ban not in VACIO else pa)))
+            continue
+        celdas += [{'range': rango('%s%d' % (letra(col['Bandera']), fs[0])),
+                    'values': [[nombre]]},
+                   {'range': rango('%s%d' % (letra(col['País']), fs[0])),
+                    'values': [[cc]]}]
+        van.append((did, cc, nombre, _celda(f, col['Rapero'])))
+    return celdas, van, ya
+
+
+def _celda(fila, j):
+    return (fila[j] if j is not None and j < len(fila) else '').strip()
+
+
 def escribir_paises(poner, aplicar):
-    """`poner` = [(did, código, nombre del país)]. Devuelve los que quedaron.
+    """`poner` = [(did, código, nombre del país)]. Devuelve los que quedaron
+    —o, sin `aplicar`, los que quedarían: la prueba en seco cuenta lo mismo
+    que la corrida, no lo que quiso escribir—.
 
     Relee la hoja viva, busca cada fila por su Discord ID y escribe sólo si
-    `Bandera` y `País` siguen vacías. Después relee y cuenta lo que quedó.
+    `Bandera` y `País` siguen sin país. Después relee y cuenta lo que quedó.
     """
     import lista_raperos as LR
     v = LR.leer()
@@ -265,36 +316,21 @@ def escribir_paises(poner, aplicar):
     if not all(c in col for c in ('Discord ID', 'Bandera', 'País')):
         print('   🔴 la Lista no tiene Discord ID / Bandera / País: no escribo')
         return []
-    fila_de = {}
-    for k, f in enumerate(v):
-        if k > i:
-            d = LR._celda(f, col['Discord ID'])
-            if d:
-                fila_de.setdefault(d, []).append(k + 1)
-    letra = lambda j: chr(ord('A') + j)
-    datos, van = [], []
-    for did, cc, nombre in poner:
-        fs = fila_de.get(did) or []
-        if len(fs) != 1:
-            print('   ⚠️ %s está en %d filas: no escribo su país' % (did, len(fs)))
-            continue
-        f = v[fs[0] - 1]
-        if LR._celda(f, col['Bandera']) or LR._celda(f, col['País']):
-            continue                     # alguien lo puso en la última media hora
-        datos += [{'range': LR._rango(LR.HOJA, '%s%d' % (letra(col['Bandera']), fs[0])),
-                   'values': [[nombre]]},
-                  {'range': LR._rango(LR.HOJA, '%s%d' % (letra(col['País']), fs[0])),
-                   'values': [[cc]]}]
-        van.append((did, cc, nombre, LR._celda(f, col['Rapero'])))
-    if not aplicar or not datos:
+    celdas, van, ya = plan_hoja(v, i, col, poner, lambda a1: LR._rango(LR.HOJA, a1))
+    for did, por in ya:
+        print('   ⚠️ %s: no escribo su país (%s)' % (did, por))
+    if not aplicar or not celdas:
         return van
     LR._E()._pedir('POST', '/values:batchUpdate',
-                   json={'valueInputOption': 'RAW', 'data': datos})
+                   json={'valueInputOption': 'RAW', 'data': celdas})
     v2 = LR.leer()
-    quedo = {LR._celda(f, col['Discord ID']): (LR._celda(f, col['Bandera']),
-                                              LR._celda(f, col['País']))
+    quedo = {_celda(f, col['Discord ID']): (_celda(f, col['Bandera']),
+                                           _celda(f, col['País']))
              for k, f in enumerate(v2) if k > i}
-    return [x for x in van if quedo.get(x[0]) == (x[2], x[1])]
+    bien = [x for x in van if quedo.get(x[0]) == (x[2], x[1])]
+    if len(bien) != len(van):
+        print('   🔴 escribí %d país(es) y al releer quedaron %d' % (len(van), len(bien)))
+    return bien
 
 
 def dar_miembro(s, did, rol, invitado):
@@ -449,7 +485,7 @@ def correr(aplicar):
             m[str(p['discord_id'])] = ahora.isoformat(timespec='seconds')
         _guardar({'sin_pais': m})
     print('   %s: %d país(es) · %d verificado(s) · %d sin país en ningún lado'
-          % ('hecho' if aplicar else 'haría', len(escritos) if aplicar else len(poner),
+          % ('hecho' if aplicar else 'haría', len(escritos),
              len(verificados), len(sin)))
     if aplicar and (escritos or verificados):
         import alertar
@@ -517,6 +553,24 @@ def _self_check():
        % [p['raw'] for p in pv])
     ok('Dani' not in [p['raw'] for p in pp + pv], 'sin ID no entra a nada')
     ok('Troll' not in [p['raw'] for p in pp + pv], 'los que se saltean no entran')
+
+    cab = ['Rapero', 'Bandera', 'SV', 'Verificado', 'Discord ID', 'Avatar',
+           'Notas', 'Nombre', 'País', 'Crew']
+    hoja = [['x'], cab,
+            ['Meidei ❓', '❓', '', '', '11', '', '', '', ''],
+            ['Bea', 'Chile', '', '', '22', '', '', '', 'cl'],
+            ['Doble', '', '', '', '33'], ['Doble2', '', '', '', '33'],
+            ['Ceci', '', '', '', '44', '', '', '', '']]
+    col = {c: cab.index(c) for c in cab}
+    celdas, van, ya = plan_hoja(hoja, 1, col, [('11', 'cl', 'Chile'), ('22', 'ar', 'Argentina'),
+                                               ('33', 'co', 'Colombia'), ('44', 've', 'Venezuela')],
+                                lambda a1: a1)
+    ok([x[0] for x in van] == ['11', '44'],
+       'escribe donde dice ❓ o está vacío  %s' % [x[0] for x in van])
+    ok({'range': 'B3', 'values': [['Chile']]} in celdas and {'range': 'I3', 'values': [['cl']]} in celdas,
+       'las dos columnas: Bandera con el nombre y País con el código')
+    ok([d for d, _ in ya] == ['22', '33'],
+       'no pisa un país que ya está, ni escribe un ID que está en dos filas  %s' % ya)
 
     import verificados as VER
     import cruzar_miembros as CM
