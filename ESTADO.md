@@ -664,6 +664,94 @@ incluido, que se pusheó antes de las 6:22 PM.
 5. **13 del padrón con ID y sin país** que los roles de Snake Rap
    completarían: `pais_por_rol.py` no llena huecos y su escritor no está.
 
+
+### 14. LA CAMPANA: AVISOS DE EVENTOS POR LA WEB (24/09, noche)
+
+Dlx: *«can you implement the event networking notification system through
+this website»*. Estaba investigado y decidido desde el 21/09 —ver 🔵 *LO
+ÚLTIMO DE TODO*, más abajo— y ahora está **construido, desplegado y
+probado de punta a punta**.
+
+**Lo que hace:** en `underlegends.pages.dev/#/avisos` (y con el botón
+🔔 **Avisos** que ahora sale debajo de cada carta de `/card`) cualquiera
+toca **Activar avisos** y le llega una notificación al teléfono o a la
+compu cada vez que un servidor de la Liga anuncia un evento — aunque no
+tenga Discord abierto. Elige de qué servidores.
+
+🔴 **AL MINUTO, NO «30 MIN ANTES», Y LO DECIDIERON LOS DATOS.** De los 26
+anuncios con hora de `datos/anuncios.json`: **18 con 15 min o menos** de
+aviso, 23 con 30 o menos, **2** con más de una hora. Un recordatorio de
+«falta media hora» llegaba tarde casi siempre, y el ciclo también (15-30
+min más lo que tarde Actions). Por eso **no sale del ciclo**: un Cron
+Trigger de Cloudflare **cada minuto** lee los canales de eventos y avisa
+en cuanto aparece un anuncio. Si el evento es en más de una hora —Snake
+Rap anuncia con `<t:…>`—, va además un recordatorio **30 min antes**.
+
+| pieza | dónde |
+|---|---|
+| el vigía, la cola, el envío y las suscripciones | `bot/avisos.js` — un **Durable Object con SQLite** |
+| el lector de anuncios, en JS | `bot/avisos.js`, atado a Python por `bot/avisos_casos.json` |
+| la página | `bot/paginas/campana.js`, `sw.js`, `manifest.json`, `insignia.png` |
+| el proxy | `bot/paginas/_worker.js` — seis rutas nombradas, una por una |
+| las claves VAPID | `.env` + `ACCESOS.md` **5c** — **no se rotan** con los demás |
+| la prueba de punta a punta | `herramientas/probar_avisos.py` |
+
+**Medido en producción, 24/09 a las 9:30 PM ET:**
+
+```
+el vigía        late cada minuto · 14 canales · 107 mensajes · 0 errores
+probar_avisos   la de prueba llega en 0,7 s y se descifra
+                el simulacro pasa por la cola y llega en 0,7 s
+```
+
+`probar_avisos.py` **hace de navegador**: se registra en el servicio de push
+de Mozilla —el de Firefox, protocolo abierto—, se anota en el hub, pide una
+de prueba y un simulacro, **los descifra con su propia clave** y se borra.
+Si eso dice lo que el Worker mandó, andan la firma, el cifrado, el proxy, la
+cola y el servicio de push. `python bot/desplegar.py --ver` muestra el
+latido.
+
+⚠️ **NADA DE ESTO ESCRIBE EN KV.** La cuota son 1.000 escrituras/día
+para toda la cuenta —se agotó hoy a las ~7:50 PM— y el latido del vigía
+son 1.440. Va al SQLite del Durable Object: 100.000 filas/día gratis. Y
+el cron de cada minuto **sale antes** de las dos marcas `cron:*` que deja
+el disparador del ciclo, que sí van a KV.
+
+⚠️ **EL LECTOR DE ANUNCIOS ESTÁ DOS VECES** —Python para el ciclo, JS para
+el Worker— y los ata un contrato: **57 casos** (45 mensajes reales, 12
+bordes). `python bot/avisos_casos.py --auto` y `node bot/avisos_prueba.mjs`
+corren en CI. Los `\b`, `\w` y `\s` de JS **no** son los de Python —en JS son
+ASCII—, así que el port los arma a mano: sin eso, «ÑORGANIZADOR:» se leía
+distinto.
+
+⚠️ **EL CIFRADO SE VERIFICÓ CONTRA EL EJEMPLO DEL RFC 8291, BYTE A BYTE**,
+antes de mandarle nada a nadie. Un cifrado mal hecho no falla: el teléfono
+recibe algo que no puede abrir y lo tira callado.
+
+⚠️ **TARDE ES PEOR QUE NUNCA, EN CÓDIGO.** Un anuncio sin hora se avisa
+sólo si es de hace menos de 20 min; con hora, hasta 5 min después de
+empezado. El TTL de cada notificación es lo que falta para eso: si el
+teléfono está apagado, el servicio de push la tira en vez de entregarla
+tarde.
+
+⚠️ **SÓLO 404 Y 410 BORRAN UNA SUSCRIPCIÓN.** La primera versión borraba
+también con 403, y eso es un gatillo para vaciar la tabla: un bug de firma
+nuestro hace que Google conteste 403 a todos.
+
+⚠️ **ESCUCHA 14 CANALES, NO 3.** La búsqueda por nombre es la misma de
+`anuncios.canales()` —`evento|anuncio|novedad|torneo|competenc`, sin los de
+staff—, y en DRA sola matchean nueve. Son los mismos que ya lee el ciclo
+para el hub: el vigía oye lo que la página muestra.
+
+⚠️ **EL SERVIDOR `ZZZ` ES DE PRUEBA.** No existe, la página no lo ofrece, y
+un aviso suyo le llega **sólo** a quien lo eligió a mano —ni a quien pidió
+«todos»—. `/avisos/simular` lo usa para recorrer el camino de un anuncio de
+verdad sin molestar a nadie, uno cada cinco minutos como mucho.
+
+**Lo que no se midió todavía:** los 10 ms de CPU por invocación con un lote
+de 20 cifrados (con 0 suscriptos no hay con qué); iPhone, que sólo recibe
+con la página instalada en la pantalla de inicio (la vista lo explica).
+
 ---
 
 # Dónde quedamos — 23/09/2026
@@ -2176,6 +2264,11 @@ pts` vacío. Es la respuesta honesta, no un cero disfrazado de dato.
 ---
 
 ## 🔵 LO ÚLTIMO DE TODO: avisarle a la gente fuera de Discord
+
+✅ **EL 1º —WEB PUSH— ESTÁ CONSTRUIDO DESDE EL 24/09/2026**, y con un cambio
+que salió de medir: avisa **al anunciarse**, cada minuto, no media hora
+antes. Ver la sección **14** de arriba. Telegram sigue esperando: pide un
+token de BotFather, y los tokens nuevos van al final.
 
 ⚠️ **Dlx, 21/09: «esto lo dejaremos para lo último».** Está investigado y
 decidido, no construido. **No empezar por acá** — antes van las llaves a

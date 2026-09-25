@@ -1,6 +1,6 @@
 """DESPLIEGA EL WORKER SIN WRANGLER.
 
-    python bot/desplegar.py            sube worker.js y deja la URL lista
+    python bot/desplegar.py            sube worker.js + avisos.js y deja la URL lista
     python bot/desplegar.py --ver      solo mira el estado, no toca nada
 
 ⚠️ **POR QUE NO USA WRANGLER.** Wrangler pide **Node 22** y en esta maquina hay
@@ -44,6 +44,21 @@ KV_ID = 'a87399a3a0b647b0803aa90509ccce56'
 # una vez y no se mueve sola: si cambiara con cada deploy, el Worker podria
 # comportarse distinto sin que nadie haya tocado el codigo.
 COMPAT = '2026-09-16'
+
+#: los módulos del Worker. `worker.js` es el principal: Cloudflare busca ahí
+#: las clases de los Durable Objects, y por eso re-exporta `Avisos`.
+MODULOS = ('worker.js', 'avisos.js')
+
+#: 🔑 LAS MIGRACIONES DE DURABLE OBJECTS, EN ORDEN Y PARA SIEMPRE. Una clase
+#: con estado no se crea, se MIGRA: Cloudflare guarda en qué etiqueta está
+#: el Worker y sólo acepta los pasos que faltan. Mandar `v1` otra vez
+#: cuando ya está es un error; no mandarlo la primera vez, también. Por eso
+#: se pregunta la etiqueta de arriba en cada deploy — ver `migracion()`.
+#:
+#: ⚠️ NUNCA SE BORRA UN PASO DE ACA. Para cambiar algo se agrega uno nuevo
+#: al final (`v2`, …). Y `new_sqlite_classes`, no `new_classes`: el plan
+#: gratis sólo tiene Durable Objects con SQLite.
+MIGRACIONES = [('v1', {'new_sqlite_classes': ['Avisos']})]
 
 
 # La temporada sale de un solo lugar; ver el binding de abajo.
@@ -129,9 +144,6 @@ def main():
     # ⚠️ ANTES DE SUBIR, NO DESPUES. Ver ver_servidores().
     ver_servidores()
 
-    with io.open(os.path.join(SCR, 'worker.js'), encoding='utf-8') as f:
-        codigo = f.read()
-
     meta = {
         'main_module': 'worker.js',
         'compatibility_date': COMPAT,
@@ -160,6 +172,36 @@ def main():
             {'type': 'plain_text', 'name': 'FOTOS_SAL', 'text': SAL_FOTOS},
         ],
     }
+
+    # 🔔 LOS AVISOS DE EVENTOS: el Durable Object y las claves VAPID.
+    # Ver `bot/avisos.js`. El objeto guarda las suscripciones y lo ya
+    # avisado en SQLite —no en KV, que tiene 1.000 escrituras por día para
+    # toda la cuenta— y las claves firman y cifran cada notificación.
+    meta['bindings'].append({'type': 'durable_object_namespace',
+                             'name': 'AVISOS', 'class_name': 'Avisos'})
+    vpub, vpriv = env.get('VAPID_PUBLICA'), env.get('VAPID_PRIVADA')
+    if vpub and vpriv:
+        meta['bindings'] += [
+            {'type': 'plain_text', 'name': 'VAPID_PUBLICA', 'text': vpub},
+            {'type': 'secret_text', 'name': 'VAPID_PRIVADA', 'text': vpriv},
+        ]
+        print('  · VAPID: los avisos firman y cifran')
+    else:
+        # 🔴 MISMA TRAMPA QUE EL GH_TOKEN, PERO PEOR: sin la privada el
+        # Worker no puede firmar, y las suscripciones están atadas a ESA
+        # pública. Un deploy desde una máquina sin `.env` completo dejaría a
+        # todos sin avisos sin que nada falle a la vista.
+        if 'VAPID_PRIVADA' in _nombres_arriba(s, cid):
+            print('\n  🔴 EL WORKER TIENE VAPID_PRIVADA Y ESTE DEPLOY SE LA SACA.')
+            print('     Las suscripciones quedan atadas a esa clave: sin ella,')
+            print('     nadie vuelve a recibir un aviso. Está en ACCESOS.md (5c).')
+            return 1
+        print('  ⚠️ sin VAPID en .env: la campana no se puede activar')
+        print('     (python bot/avisos_claves.py las crea, una sola vez)')
+    mig = migracion(s, cid)
+    if mig:
+        meta['migrations'] = mig
+        print('  · migración de Durable Objects -> %s' % mig['new_tag'])
 
     # ⚠️ EL TOKEN DEL BOT VA COMO `secret_text`, NUNCA COMO `plain_text`.
     # Un `plain_text` se lee entero desde el panel y desde la API; un
@@ -236,13 +278,19 @@ def main():
     else:
         print('  ⚠️ sin DISCORD_TOKEN en .env: /numeral anota la preferencia pero')
         print('     el apodo lo cambia recien sincronizar_puesto.py')
-    print('\nsubiendo %d bytes...' % len(codigo.encode('utf-8')))
+    # ⚠️ SON DOS MODULOS DESDE EL 24/09/2026: `worker.js` importa
+    # `avisos.js`. Si se sube uno solo, el import no resuelve y Cloudflare
+    # rechaza el script entero — falla fuerte, que es lo bueno de este caso.
+    partes = {'metadata': (None, json.dumps(meta), 'application/json')}
+    total = 0
+    for mod in MODULOS:
+        with io.open(os.path.join(SCR, mod), encoding='utf-8') as f:
+            b = f.read().encode('utf-8')
+        partes[mod] = (mod, b, 'application/javascript+module')
+        total += len(b)
+    print('\nsubiendo %d bytes en %d módulos...' % (total, len(MODULOS)))
     pedir(s, 'PUT', '/accounts/%s/workers/scripts/%s' % (cid, NOMBRE),
-          files={
-              'metadata': (None, json.dumps(meta), 'application/json'),
-              'worker.js': ('worker.js', codigo.encode('utf-8'),
-                            'application/javascript+module'),
-          })
+          files=partes)
     print('  ✅ subido')
 
     # Sin esto el Worker existe pero no tiene URL publica, y el sintoma es
@@ -266,15 +314,26 @@ def main():
     #
     # ⚠️ ES UN PUT Y REEMPLAZA LA LISTA ENTERA. Mandar uno solo borra los
     # demas, igual que la API de Apps Script con sus cuatro archivos.
+    #
+    # 🔔 Y DESDE EL 24/09/2026 SON DOS: el vigía de los avisos corre cada
+    # minuto. Su expresión sale de `avisos.js` (`CRON_VIGIA`) y no se
+    # escribe acá: el Worker distingue los dos crons comparando contra esa
+    # constante, así que si las dos copias difirieran, el vigía caería en
+    # la rama del disparador y escribiría en KV cada minuto.
+    crons = [{'cron': cron_vigia()}]
     if ght and ghr:
-        pedir(s, 'PUT',
-              '/accounts/%s/workers/scripts/%s/schedules' % (cid, NOMBRE),
-              json=[{'cron': '22,52 * * * *'}])
-        print('  ✅ cron registrado: 22,52 * * * *  — a los :22 y :52 de cada '
-              'hora,\n     15 min corrido del de GitHub, que va a los :07 y '
-              ':37')
+        crons.insert(0, {'cron': '22,52 * * * *'})
+    pedir(s, 'PUT',
+          '/accounts/%s/workers/scripts/%s/schedules' % (cid, NOMBRE),
+          json=crons)
+    for c in crons:
+        print('  ✅ cron registrado: %s' % c['cron'])
+    if ght and ghr:
+        print('     22,52: dispara el ciclo, 15 min corrido del de GitHub '
+              '(:07 y :37)')
     else:
-        print('  · sin cron: falta GH_TOKEN/GH_REPO')
+        print('  · sin el disparador del ciclo: falta GH_TOKEN/GH_REPO')
+    print('     %s: el vigía de los avisos' % cron_vigia())
 
     ver_vivo(url)
     ver_igual(s, cid)
@@ -341,6 +400,92 @@ def ver_servidores():
           % len(tabla))
 
 
+def cron_vigia():
+    """La expresión del cron del vigía, de su único lugar: `avisos.js`."""
+    with io.open(os.path.join(SCR, 'avisos.js'), encoding='utf-8') as f:
+        m = re.search(r"CRON_VIGIA\s*=\s*'([^']+)'", f.read())
+    if not m:
+        sys.exit('no encontré CRON_VIGIA en bot/avisos.js')
+    return m.group(1)
+
+
+def _nombres_arriba(s, cid):
+    """Los nombres de los bindings del Worker desplegado; vacío si no se sabe.
+
+    ⚠️ NO PASA POR `pedir()` A PROPOSITO, por lo mismo que el guardián del
+    GH_TOKEN: un guardián que mata el deploy porque no pudo *consultar* es
+    peor que el problema que vigila.
+    """
+    try:
+        r = s.get('%s/accounts/%s/workers/scripts/%s/bindings'
+                  % (API, cid, NOMBRE), timeout=30)
+        return {x.get('name') for x in (r.json().get('result') or [])}
+    except Exception as e:                                   # noqa: BLE001
+        print('  ⚠️ no pude preguntar qué bindings tiene el Worker (%s)'
+              % str(e)[:60])
+        return set()
+
+
+def migracion(s, cid):
+    """Los pasos de `MIGRACIONES` que al Worker de arriba le faltan, o None.
+
+    La etiqueta actual viene en la lista de scripts de la cuenta
+    (`migration_tag`), que es de donde la saca wrangler.
+    """
+    tag = None
+    try:
+        r = s.get('%s/accounts/%s/workers/scripts' % (API, cid), timeout=30)
+        for x in (r.json().get('result') or []):
+            if x.get('id') == NOMBRE:
+                tag = x.get('migration_tag') or None
+    except Exception as e:                                   # noqa: BLE001
+        # si no se sabe, se manda todo: Cloudflare rechaza un paso repetido
+        # con un error claro, que es mejor que no crear la clase
+        print('  ⚠️ no pude leer la etiqueta de migración (%s)' % str(e)[:60])
+    tags = [t for t, _ in MIGRACIONES]
+    if tag == tags[-1]:
+        return None
+    faltan = MIGRACIONES[tags.index(tag) + 1:] if tag in tags else MIGRACIONES
+    m = {'new_tag': tags[-1], 'steps': [paso for _, paso in faltan]}
+    if tag:
+        m['old_tag'] = tag
+    return m
+
+
+def _partes(texto):
+    """`{módulo: código}` de lo que baja la API, que viene en multipart.
+
+    ⚠️ DESENVOLVER UN MULTIPART A OJO FALLA DOS VECES, Y LAS DOS CALLADO.
+
+      1 · el cierre NO se busca como «el último \\n--». `worker.js` tiene
+          comentarios cuya línea arranca con `--`. Se corta por el borde
+          entero, que se lee de la primera línea y es aleatorio.
+      2 · el separador de cabecera es **`\\r\\n\\r\\n`**, no `\\n\\n`. Con
+          `find('\\n\\n')` el corte se iba a la primera línea en blanco del
+          comentario inicial del Worker y **se comía 1.492 caracteres**:
+          reportaba «no es el del repo» sobre dos archivos idénticos.
+    """
+    if not texto.startswith('--'):
+        return {'worker.js': texto}
+    borde = texto.split('\n', 1)[0].strip()
+    out = {}
+    for trozo in texto.split(borde)[1:]:
+        if trozo.startswith('--'):
+            break                                   # el cierre: `--borde--`
+        corte, salto = -1, 0
+        for sep in ('\r\n\r\n', '\n\n'):
+            i = trozo.find(sep)
+            if i >= 0 and (corte < 0 or i < corte):
+                corte, salto = i, len(sep)
+        if corte < 0:
+            continue
+        cab, cuerpo = trozo[:corte], trozo[corte + salto:]
+        m = re.search(r'name="([^"]+)"', cab)
+        if m:
+            out[m.group(1)] = cuerpo
+    return out
+
+
 def ver_igual(sesion, cid):
     """¿Lo que está ARRIBA es lo que hay en el repo?
 
@@ -356,47 +501,30 @@ def ver_igual(sesion, cid):
     `==` contra el archivo da distinto aunque sea el mismo script. Se
     compara el cuerpo.
     """
-    local = io.open(os.path.join(BASE, 'bot', 'worker.js'),
-                    encoding='utf-8').read()
     try:
         r = sesion.get('%s/accounts/%s/workers/scripts/%s' % (API, cid, NOMBRE),
                        timeout=60)
-        arriba = r.text
+        # 🔴 `r.content` EN UTF-8, NO `r.text`. El multipart viene sin
+        # `charset` y requests ADIVINA: el 24/09/2026 adivinó cirílico,
+        # «—» salió «вҖ”» y el chequeo dijo «EL DESPLEGADO NO ES EL DEL
+        # REPO» sobre dos archivos idénticos. Hasta ese deploy había
+        # adivinado bien, que es lo peor que puede hacer una adivinanza.
+        arriba = _partes(r.content.decode('utf-8', 'replace'))
     except Exception as e:                                   # noqa: BLE001
         print('  ⚠️ no pude bajar el desplegado (%s)' % e)
         return
-    # ⚠️ DESENVOLVER UN MULTIPART A OJO FALLA DOS VECES, Y LAS DOS CALLADO.
-    # Este verificador existe para no creerle a un «200 ✅», así que un
-    # falso positivo suyo es peor que no tenerlo: se termina ignorando.
-    #
-    #   1 · el cierre NO se busca como «el último \n--». `worker.js` tiene
-    #       comentarios cuya línea arranca con `--`, así que el corte caía
-    #       adentro del script. Se lee el boundary de la primera línea.
-    #   2 · el separador de cabecera es **`\r\n\r\n`**, no `\n\n`. Con
-    #       `find('\n\n')` el corte se iba a la primera línea en blanco del
-    #       comentario inicial del Worker y **se comía 1.492 caracteres**,
-    #       o sea que reportaba «no es el del repo» sobre dos archivos
-    #       idénticos. Medido: decía 99.785 contra 101.277.
-    if arriba.startswith('--'):
-        borde = arriba.split('\n', 1)[0].strip()
-        corte, salto = -1, 0
-        for sep in ('\r\n\r\n', '\n\n'):
-            i = arriba.find(sep)
-            if i >= 0 and (corte < 0 or i < corte):
-                corte, salto = i, len(sep)
-        if corte >= 0:
-            arriba = arriba[corte + salto:]
-        fin = arriba.rfind('\n' + borde)
-        if fin > 0:
-            arriba = arriba[:fin]
-    a = re.sub(r'\s+', ' ', arriba).strip()
-    b = re.sub(r'\s+', ' ', local).strip()
-    if a == b:
-        print('  repo  ✅ lo que está arriba es `bot/worker.js`')
-    else:
-        print('  repo  🔴 EL DESPLEGADO NO ES EL DEL REPO '
-              '(%d vs %d bytes). Corré `python bot/desplegar.py`.'
-              % (len(a), len(b)))
+    for mod in MODULOS:
+        local = io.open(os.path.join(SCR, mod), encoding='utf-8').read()
+        a = ' '.join((arriba.get(mod) or '').split())
+        b = ' '.join(local.split())
+        if a == b:
+            print('  repo  ✅ lo que está arriba es `bot/%s`' % mod)
+        elif mod not in arriba:
+            print('  repo  🔴 ARRIBA NO ESTA `%s`. Corré `python bot/desplegar.py`.'
+                  % mod)
+        else:
+            print('  repo  🔴 `%s` DESPLEGADO NO ES EL DEL REPO (%d vs %d bytes). '
+                  'Corré `python bot/desplegar.py`.' % (mod, len(a), len(b)))
 
 
 def ver_vivo(url):
@@ -418,6 +546,20 @@ def ver_vivo(url):
     print('  POST %d  %s' % (r2.status_code,
                              '✅ rechaza firmas falsas' if r2.status_code == 401
                              else '⚠️ deberia ser 401'))
+    # 🔔 el vigía de los avisos: ¿late? Recién desplegado puede no haber
+    # corrido todavía —el cron es cada minuto—, así que eso no es un error.
+    try:
+        j = requests.get(url + '/avisos/estado', timeout=25).json()
+        v = j.get('vigia') or {}
+        if v.get('t'):
+            print('  AVISOS %s  vigía hace %ss · %d canal(es) · %d suscripción(es)%s'
+                  % ('✅' if j.get('ok') else '⚠️', v.get('hace_s'),
+                     len(v.get('canales') or []), j.get('suscripciones') or 0,
+                     (' · errores: %s' % v.get('errores')) if v.get('errores') else ''))
+        else:
+            print('  AVISOS ·  el vigía todavía no corrió (cron de cada minuto)')
+    except Exception as e:                                   # noqa: BLE001
+        print('  AVISOS ⚠️  no contestó /avisos/estado (%s)' % str(e)[:60])
 
 
 if __name__ == '__main__':

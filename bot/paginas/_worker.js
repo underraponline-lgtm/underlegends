@@ -25,6 +25,10 @@
  * reenviara cualquier cosa habría DOS URLs por las que llegan POST
  * firmados, y una de ellas sin que Discord lo sepa.
  *
+ * 🔔 LA EXCEPCION SON LOS AVISOS DE EVENTOS (24/09/2026): cinco rutas
+ * nombradas una por una —ver `AVISOS`— que el Worker atiende en
+ * `/avisos/*` antes de mirar si algo es de Discord.
+ *
  * ⚠️ UN PROYECTO DE PAGES NO SE RENOMBRA: el nombre ES el subdominio.
  * Éste nació como `liga-global` y pasó a `underlegends` creando el
  * proyecto nuevo. El viejo **no se borró**: quedaría un link muerto por
@@ -32,9 +36,50 @@
  */
 const ORIGEN = 'https://liga-global-bot.liga-global-ul.workers.dev';
 
+// 🔔 LAS RUTAS DE LOS AVISOS, UNA POR UNA Y CON SU METODO. Son las únicas
+// que pasan escritura, y la regla de arriba sigue en pie: ninguna de estas
+// llega al `POST /` del Worker —las interacciones de Discord—, porque el
+// Worker las atiende en `/avisos/*` antes de mirar nada más. Y se nombran
+// enteras en vez de reenviar un prefijo: un prefijo deja pasar la ruta que
+// alguien agregue mañana sin pensar en esto.
+const AVISOS = {
+  '/api/avisos/clave': 'GET',
+  '/api/avisos/estado': 'GET',
+  '/api/avisos/alta': 'POST',
+  '/api/avisos/baja': 'POST',
+  '/api/avisos/probar': 'POST',
+  // sólo le llega a quien eligió el servidor de prueba: ver `SV_PRUEBA`
+  '/api/avisos/simular': 'POST',
+};
+
+async function avisos(req, url) {
+  const metodo = AVISOS[url.pathname];
+  if (req.method !== metodo) return new Response('no', { status: 405 });
+  const init = { method: metodo, headers: { accept: 'application/json' } };
+  if (metodo === 'POST') {
+    const cuerpo = await req.text();
+    if (cuerpo.length > 4096) return new Response('demasiado grande', { status: 413 });
+    init.body = cuerpo;
+    init.headers['content-type'] = 'application/json';
+  } else if (url.pathname.endsWith('/clave')) {
+    // la clave pública no cambia: una hora en el borde
+    init.cf = { cacheTtl: 3600, cacheEverything: true };
+  }
+  const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
+  return new Response(r.body, {
+    status: r.status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': metodo === 'GET' ? 'public, max-age=20' : 'no-store',
+    },
+  });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+
+    if (AVISOS[url.pathname]) return avisos(req, url);
 
     if (url.pathname === '/api/lobby') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });

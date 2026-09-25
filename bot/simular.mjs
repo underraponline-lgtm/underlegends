@@ -93,10 +93,13 @@ const media = (d) => {
   const g = (d?.components || []).find(x => x.type === 12);
   return g?.items?.[0]?.media?.url || null;
 };
+// ⚠️ SÓLO LOS DE CARTA, los que tienen `custom_id`. En la misma fila va la
+// campana de avisos, que es un link al hub: no se «aprieta» contra el
+// Worker, así que no hay nada que simular.
 const botones = (d) => {
   const f = (d?.components || []).filter(x => x.type === 1)
     .find(f => f.components[0].type === 2);
-  return f ? f.components : [];
+  return f ? f.components.filter(b => b.custom_id) : [];
 };
 
 const fallos = [];

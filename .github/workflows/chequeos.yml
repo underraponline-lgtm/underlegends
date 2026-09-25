@@ -28,6 +28,9 @@ on:
     branches: [main]
     paths:
       - '**.py'
+      - 'bot/**.js'
+      - 'bot/**.mjs'
+      - 'bot/avisos_casos.json'
       - 'bot/ci/**'
       - '.github/**'
   workflow_dispatch:
@@ -64,12 +67,26 @@ jobs:
       - name: los workflows
         run: python herramientas/workflows_validos.py
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 🔔 EL WORKER, SIN CLOUDFLARE. `avisos_prueba.mjs` cifra contra el
+      # ejemplo del RFC 8291 y lee los anuncios igual que Python —con
+      # `bot/avisos_casos.py --auto`, más abajo, son las dos puntas del
+      # mismo contrato—. `probar_local.mjs` pasa /card y los botones por el
+      # Worker de verdad con un KV de mentira.
+      - name: el Worker
+        run: |
+          node bot/avisos_prueba.mjs
+          node bot/probar_local.mjs
+
       - name: los self-checks
         env:
           PYTHONIOENCODING: utf-8
         run: |
           fallas=""
-          for f in bot/anuncios.py bot/avisar.py bot/cuando.py bot/escuchar.py \
+          for f in bot/anuncios.py bot/avisar.py bot/avisos_casos.py bot/cuando.py bot/escuchar.py \
                    bot/inscripciones.py bot/llaves_a_entrada.py bot/olvidar.py \
                    bot/verificados.py sheet/archivar_temporada.py \
                    sheet/competitivo.py sheet/construir_pool_competitivo.py \

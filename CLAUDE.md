@@ -649,7 +649,7 @@ la planilla.
 
 ## El hub web — `underlegends.pages.dev`
 
-Seis vistas con menú lateral en escritorio y barra de abajo en teléfono,
+Siete vistas con menú lateral en escritorio y barra de abajo en teléfono,
 enrutado por hash. Vive en **`bot/paginas/`**, sin framework y sin build:
 los archivos que están ahí son los que se sirven.
 
@@ -679,6 +679,23 @@ viajan en el payload y se aplican en línea. Escribirlos ahí sería el
 
 ⚠️ **Y NINGUNA SECCION SE DIBUJA VACIA.** Cada `pinta*()` se apaga sola
 si no tiene con qué — es *«sin dato no hay pieza»* aplicado a una página.
+
+🔔 **LA CAMPANA: AVISOS DE EVENTOS, DESDE EL 24/09/2026.** `#/avisos`
+anota el dispositivo y le llega una notificación **al minuto** de que un
+servidor anuncia un evento. No sale del ciclo —18 de 26 eventos se
+anuncian con 15 min o menos de aviso—: un cron de Cloudflare **cada
+minuto** lee los canales y un **Durable Object con SQLite** guarda las
+suscripciones, **no KV**. Todo en `bot/avisos.js`; el porqué, en la
+sección 14 de `ESTADO.md`.
+
+⚠️ **El lector de anuncios está en Python y en JS**, atados por
+`bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
+lea igual. Y `python herramientas/probar_avisos.py` prueba la cadena
+entera con el servicio de push de Mozilla — **correrlo después de tocar
+cualquier cosa de los avisos**.
+
+🔴 **Las claves VAPID no se rotan con los demás tokens**: las suscripciones
+quedan atadas a ellas. Ver `ACCESOS.md` 5c.
 
 ---
 
@@ -1912,6 +1929,8 @@ comun/            las definiciones canonicas. Cada una trae la medicion que
                                  solo los de datos
                   + logos_sv/, logos_color/, escudos_cuad/, fonts/
 herramientas/     puedo_generar.py        si las cuatro cartas salen para las 138
+                  probar_avisos.py        si los avisos llegan de verdad: hace de
+                                          navegador con el push de Mozilla
                   secretos_en_git.py      si algun secreto entro al repo o a su
                                           historial. Sabe cuales NO son secretos
                   workflows_validos.py    si los .yml valen para GITHUB y no
@@ -1939,6 +1958,10 @@ bot/              el lector de Discord y el ciclo
                   avisar.py       avisa en Discord, una vez por llave
                   olvidar.py      la salida: borrar a alguien de R2 y KV
                   subir_web.py    el payload del lobby, a KV (paso 2c)
+                  avisos.js       la campana: vigía de cada minuto, cola y
+                                  envío cifrado (Durable Object + SQLite)
+                  avisos_casos.py el contrato Python<->JS del lector de
+                                  anuncios, con avisos_casos.json
                   paginas/        underlegends.pages.dev — el hub, 6 vistas
                   paginas_viejas/ liga-global.pages.dev — sólo un 301
                   ci/guardar.sh   lo que se commitea. Lo llaman los DOS

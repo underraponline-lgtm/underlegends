@@ -32,6 +32,14 @@
  * ⚠️ 10 ms DE CPU POR PETICIÓN. Esperar red no gasta; parsear sí.
  */
 
+// ── Los avisos de eventos (la campana del hub) ────────────────────────────
+// Viven en su propio módulo porque tienen su propio estado —un Durable
+// Object— y porque Node los prueba sin levantar el Worker entero. Ver
+// `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
+// Cloudflare busca ahí las clases de los Durable Objects.
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar } from './avisos.js';
+export { Avisos };
+
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
 const RECIBE = { PING: 1, COMANDO: 2, COMPONENTE: 3, AUTOCOMPLETAR: 4, MODAL: 5 };
 const RESPONDE = {
@@ -442,7 +450,7 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         label: c.et,
         custom_id: `c:${quien}:${c.id}:${dueno}`,
         disabled: apagado || c.id === cual,
-      })),
+      })).concat(botonAvisos(CARTAS.filter(c => tiene(g, c.id)).length)),
     },
   ];
 
@@ -751,6 +759,20 @@ const responderTexto = (tipo, d) => new Response(JSON.stringify({
 // que Discord rechace el payload entero sin decir cuál de los dos campos
 // sobraba.
 const botonLink = (label, url) => ({ type: 2, style: 5, label, url });
+
+// 🔔 LA CAMPANA VA DEBAJO DE LA CARTA. Decidido el 21/09/2026 (ver
+// `ESTADO.md`, «avisarle a la gente fuera de Discord»): *«el cuello de
+// botella no es el canal, es el permiso — y se pide donde ya están:
+// alguien tira /card, ve su tarjeta, y abajo va el botón»*.
+//
+// ⚠️ ES DE LINK (estilo 5), así que no gasta interacción ni pasa por el
+// freno. Y SÓLO SI HAY LUGAR: una fila lleva cinco botones y Discord
+// rechaza el mensaje entero con el sexto. El día que haya cinco cartas,
+// la campana se cae sola en vez de romper `/card`.
+const AVISOS_URL = 'https://underlegends.pages.dev/#/avisos';
+const botonAvisos = (ocupados) => (ocupados < 5
+  ? [{ type: 2, style: 5, label: 'Avisos', emoji: { name: '🔔' }, url: AVISOS_URL }]
+  : []);
 
 const filaDe = (botones) =>
   (botones && botones.length) ? [{ type: 1, components: botones.slice(0, 5) }] : [];
@@ -2347,6 +2369,21 @@ function trama(n) {
   return `<div class="trama" aria-hidden="true">${out}</div><div class="velo"></div>`;
 }
 
+// 🕐 EN HORA DEL ESTE, como todo lo que lee Dlx (24/09/2026: *«I told you to
+// refer everything as my local time zone EST»*). Este pie decía «… UTC».
+// ⚠️ CON `timeZone` Y NO CON UN -4 ESCRITO: de noviembre a marzo es -5, y
+// un desfase fijo miente medio año sin avisar.
+export function horaEste(iso) {
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return '';
+  const p = {};
+  for (const x of new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/New_York', day: '2-digit', month: '2-digit',
+    hour: 'numeric', minute: '2-digit', hour12: true,
+  }).formatToParts(new Date(t))) p[x.type] = x.value;
+  return `${p.day}/${p.month} ${p.hour}:${p.minute} ${p.dayPeriod} ET`;
+}
+
 function paginaLobby(d) {
   /* 🔴 LA COLUMNA DE RANGO SE CAE SI NO LA TIENE NADIE. Hoy el
      requisito son 10 eventos y el máximo del pool es 2, así que salían
@@ -2391,7 +2428,7 @@ ${trama(11)}
 <table><thead><tr><th>#</th><th>Rapero</th>${hayRg ? '<th>Rg</th>' : ''}<th>Sv</th><th>Puntos</th><th>Ev</th></tr></thead>
 <tbody>${filas || `<tr><td colspan="${hayRg ? 6 : 5}" class="vacio">Todav&iacute;a no hay nadie.</td></tr>`}</tbody></table></section>
 
-<p class="pie">Se actualiza solo &middot; datos del ${esc((d.sello || '').replace('T', ' ').replace('Z', ' UTC'))}</p>
+<p class="pie">Se actualiza solo &middot; datos del ${esc(horaEste(d.sello || ''))}</p>
 </main>
 
 <script>
@@ -2449,6 +2486,17 @@ export default {
   // importa. Es la regla de este repo — *lo que no se pregunta no se
   // entera de que dejó de andar*.
   async scheduled(evento, env, ctx) {
+    // 🔑 EL CRON DE CADA MINUTO ES OTRO: el vigía de los avisos de eventos.
+    //
+    // ⚠️ SE VA ANTES DE TOCAR KV, y no es un detalle. Las dos marcas de
+    // abajo son dos escrituras por disparo: con este cron serían 2.880 por
+    // día, casi el triple de la cuota gratis de TODA la cuenta, que ya se
+    // agotó una vez y congeló el hub. El vigía deja su latido en el Durable
+    // Object —ver `/avisos/estado`—, que tiene cien veces más cupo.
+    if (evento.cron === CRON_VIGIA) {
+      await vigilar(env, SERVIDORES.map((s) => ({ sv: s.sv, nombre: s.nombre, guild: s.guild })));
+      return;
+    }
     // 🔴 `ctx.waitUntil` EN UN `scheduled` TIRABA EL TRABAJO ENTERO, Y ESE
     // ERA EL BUG. La primera versión hacía `ctx.waitUntil(async () => {…})`
     // y devolvía enseguida: el cron **no dejaba rastro en cuatro slots
@@ -2512,8 +2560,14 @@ export default {
   },
 
   async fetch(req, env, ctx) {
+    // 🔑 LOS AVISOS, ANTES QUE NADA, Y POR RUTA EXACTA. El `POST /` de abajo
+    // son las interacciones de Discord y verifican firma; `/avisos/*` es
+    // una lista cerrada de cinco rutas que nunca llega hasta ahí.
+    const camino = new URL(req.url).pathname;
+    if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
+
     if (req.method === 'GET') {
-      const ruta = new URL(req.url).pathname;
+      const ruta = camino;
       if (ruta === '/lobby' || ruta === '/lobby/') {
         // ⚠️ UNA lectura de KV y un template. Nada más entra en 10 ms.
         const crudo = await env.KV.get('web:lobby');

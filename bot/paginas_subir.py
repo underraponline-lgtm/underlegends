@@ -130,6 +130,13 @@ def main():
     # fallback de SPA contesta cualquier ruta— y la página carga perfecta y
     # vacía. `/_worker.js` devolviendo 200 es la señal de que está mal.
     #
+    # ⚠️ PERO PREGUNTALO EN LA URL DEL DESPLIEGUE, NO EN LA DE SIEMPRE. El
+    # 24/09/2026 a la noche `underlegends.pages.dev/_worker.js` seguía dando
+    # 200 con el código adentro —`CF-Cache-Status: HIT`, `Age: 60386`— y el
+    # sitio andaba bien: era la copia que el borde guardó de aquella
+    # primera corrida rota. `<id>.underlegends.pages.dev/_worker.js` daba
+    # el `index.html`, que es lo correcto.
+    #
     # ⚠️ Va como su propio campo del multipart, al lado de `manifest`. Es lo
     # que hace wrangler por debajo.
     worker = None

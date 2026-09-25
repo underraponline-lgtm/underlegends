@@ -11,6 +11,10 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="ul.png">
 <link rel="apple-touch-icon" href="ul.png">
+<!-- 🔔 EL MANIFIESTO ES LO QUE DEJA INSTALAR LA LIGA EN LA PANTALLA DE
+     INICIO, y en iPhone eso no es un lujo: Safari sólo entrega avisos a
+     una página instalada. Ver `campana.js`. -->
+<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev" crossorigin>
@@ -43,6 +47,7 @@
       <a href="#/duelos"><i>&#9876;</i><span>Duelos</span></a>
       <a href="#/mundo"><i>&#127758;</i><span>Mundo</span></a>
       <a href="#/guia"><i>&#127895;</i><span>Guía</span></a>
+      <a href="#/avisos"><i>&#128276;</i><span>Avisos</span></a>
     </nav>
     <p class="pie" id="pie">—</p>
   </aside>
@@ -64,6 +69,12 @@
           <div><b id="cPaises">—</b><span id="lPaises">países</span></div>
           <div><b id="cCartas">—</b><span>tarjetas</span></div>
         </div>
+        <!-- 🔔 Se ve sólo donde la campana se puede activar y todavía no
+             está activada: lo prende `campana.js`. -->
+        <a class="campana-cta" id="campanaCta" href="#/avisos" hidden>
+          <i aria-hidden="true">&#128276;</i>
+          <span>Avisame cuando anuncien un evento</span>
+        </a>
       </div>
       <div class="hero-carta" id="heroCarta" hidden>
         <span class="corona">Campeón de la temporada</span>
@@ -264,6 +275,29 @@
     </div>
   </section>
 
+  <!-- ══ AVISOS ══════════════════════════════════════════════════
+       🔑 LOS EVENTOS SE ANUNCIAN CON 15 MINUTOS DE AVISO —18 de 26,
+       medido el 24/09/2026—, así que un recordatorio de «falta media
+       hora» llega tarde casi siempre. Lo que sirve es enterarse en el
+       momento: el Worker revisa los canales cada minuto y avisa apenas
+       aparece el anuncio. Ver `bot/avisos.js`. -->
+  <section class="vista" data-vista="avisos" hidden>
+    <h1 class="tit">Avisos de <em>eventos</em></h1>
+    <p class="bajada">Cuando un servidor de la Liga anuncia un evento, te llega
+    al teléfono o a la compu aunque no tengas Discord abierto. Los eventos se
+    anuncian con <b>15 minutos</b> de aviso: esto te lo trae al minuto.</p>
+    <div class="dos ancha">
+    <section class="blk" id="secCampana">
+      <h2><span>&#128276;</span> En este dispositivo</h2>
+      <div id="campana"><p class="cp-tx">Cargando…</p></div>
+    </section>
+    <section class="blk" id="secVigia" hidden>
+      <h2><span>&#128225;</span> Qué se escucha</h2>
+      <div id="vigia"></div>
+    </section>
+    </div>
+  </section>
+
   </main>
 </div>
 
@@ -291,5 +325,6 @@
 </div>
 
 <script src="app.js"></script>
+<script src="campana.js" defer></script>
 </body>
 </html>

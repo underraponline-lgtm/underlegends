@@ -34,6 +34,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Los troll no entran a ningún ranking**; se marcan en ✅ Decidir con «Es un troll» | *«If it is a troll name right?»* (24/09) | `sheet/decidir.py` → `no_rankear()` |
 | **RAP EXHIBITION 1/8** (Snake Rap, 22/09) **no cuenta** | *«no debería contar»* (24/09) | `datos/decisiones.json` |
 | El Ranking Mundial son **países**, no selecciones | *«ese evento fifa ya no se está haciendo»* (22/09) | `sheet/rankings.py` |
+| **Avisos fuera de Discord**: 1º Web Push, después Telegram. El ping de rol de Discord **no se reemplaza**. El permiso se pide donde ya están: debajo de `/card` y en el hub | *«así la gente se va a encadenar más»* (21/09) · construido el 24/09 | `bot/avisos.js` · `#/avisos` |
 
 ### Personas
 
@@ -66,6 +67,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 ## 📅 Jueves 24/09
 
 **Lo que se ve**
+- 🔔 **Avisos de eventos en el hub** (9:30 PM): en [underlegends.pages.dev/#/avisos](https://underlegends.pages.dev/#/avisos) cualquiera toca *Activar avisos* y le llega una notificación al teléfono o a la compu **cuando un servidor anuncia un evento**, aunque no tenga Discord abierto. Elige de qué servidores. Debajo de cada carta de `/card` hay un botón 🔔 **Avisos** que lleva ahí.
+  - **Al minuto y no «30 min antes»**, porque se midió: de 26 eventos con hora, **18 se anunciaron con 15 min o menos** de aviso. El Worker revisa **14 canales** de DRA, FFA y Snake Rap cada minuto; no depende del ciclo ni de GitHub.
+  - Probado de punta a punta con el servicio de push de Mozilla: llega en **0,7 s** y se descifra. Si un evento se anuncia con más de una hora (Snake Rap), además va un recordatorio 30 min antes.
 - **Snake Rap entró** (~4:40 PM ET) y el ciclo lo encontró solo: lee su canal `［🔑］llaves` y **sus eventos salen en el hub**. Se sacaron **23 IDs** de ahí (27 en total), con el país como segunda señal: atajó 9 que eran otra persona.
 - **Autoverificar** funcionando: **Skratch 🇨🇱 verificado** en DRA (7:24 PM). De los 540 del padrón con ID: 337 ya verificados, **202 no están en DRA** (no se pueden verificar hasta que entren).
 - **«El ultra knowledge instintivo» fuera del ranking** (visible en el hub desde las 8:02 PM). Hassan conserva su duelo ganado.
@@ -77,7 +81,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 - La verificación por el rol de Snake Rap (5:09 PM) **fue un error mío** y se sacó a las 7:03 PM: **104 personas** tuvieron `/card` unas horas. Desde las 7:52 PM, quien pierde el portón sale del bot en la corrida siguiente.
 - La **cuota de KV se agotó** (1.117 de 1.000, ~7:50 PM) y el hub se congeló hasta las 8:00 PM. Ahora cada corrida tiene presupuesto y deja reserva para la web.
 - **Chequeos automáticos**: en cada push de código corren 20 self-checks en GitHub.
-- **Horas en ET** en los commits del ciclo, `decisiones.json` y los avisos de cuota.
+- **Horas en ET** en los commits del ciclo, `decisiones.json`, los avisos de cuota y (desde las 9:35 PM) el pie de `/lobby` del Worker.
 
 ---
 
@@ -97,9 +101,12 @@ Son las que no se pueden volver a preguntar ni olvidar.
 12. **9 filas duplicadas** del padrón (KRT/Krtman, Lzz/Luzzano…): ¿las fusiono?
 13. **«¿Por qué no tengo carta?»** en el hub: ¿lo hago?
 14. El bot es **Administrador en 4 de los 5 servidores**. No es urgente; sacárselo evita que vea canales de staff.
+15. **Canal «📡 eventos de la Liga» en DRA**: el bot re-publica ahí, al minuto, los anuncios de **todos** los servidores. Es la otra mitad de los avisos: sin instalar nada y sin token nuevo. ¿Lo creo? ¿Con qué nombre y en qué categoría?
+16. **Telegram** (el 2º de tu lista del 21/09): pide crear un bot en BotFather, o sea **un token nuevo** — ¿lo dejamos para el final con los demás tokens?
+17. **Los 14 canales que escucha el vigía** incluyen los de *novedades* y *anuncios* (misma búsqueda por nombre que el hub). Sólo avisa lo que tiene forma de anuncio de evento. ¿Está bien, o sólo los de eventos/competencias?
 
 ## 🔧 Pendiente mío
 
-- El pie de la página `/lobby` del Worker muestra UTC: va en el próximo despliegue del Worker.
+- **La campana con gente de verdad**: medir la CPU de un lote de 20 envíos (con 0 suscriptos no hay con qué) e iPhone con la página instalada.
 - En ✅ Decidir, las preguntas de eventos («(sin titulo)») deberían traer el link a la llave en Discord.
 - Medir cuántas lecturas del Sheet hace cada corrida, para ver el margen contra la cuota.

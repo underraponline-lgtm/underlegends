@@ -1,0 +1,303 @@
+/* ════════════════════════════════════════════════════════════════════
+   LA CAMPANA — los avisos de eventos, del lado de la página.
+
+   La vista `#/avisos` y el botón de Inicio. Lo que pasa acá es pedir el
+   permiso, anotar este dispositivo en el Worker y dejar elegir de qué
+   servidores avisar. Lo que manda las notificaciones es el vigía de
+   `bot/avisos.js`, que revisa los canales de eventos cada minuto.
+
+   🔴 UN ARCHIVO APARTE DE `app.js`, Y NO POR PROLIJIDAD. Esto usa
+   `async/await` y APIs que un navegador viejo no tiene; si fallara adentro
+   de `app.js` se llevaría puesto el ranking entero. Acá, si algo no
+   anda, lo único que se apaga es la campana.
+
+   ⚠️ EL PERMISO SE PIDE CON UN CLIC, NUNCA SOLO. Un navegador que ve un
+   pedido de notificaciones al cargar la página lo castiga —Chrome lo
+   silencia para siempre— y con razón: nadie sabe todavía qué le van a
+   mandar. Acá primero se explica y después se pregunta.
+   ════════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+
+  var SOPORTA = 'serviceWorker' in navigator && 'PushManager' in window &&
+    'Notification' in window;
+  // ⚠️ EN iPHONE LOS AVISOS SOLO ANDAN CON LA PÁGINA INSTALADA: Safari
+  // expone PushManager únicamente dentro de la app de pantalla de inicio.
+  // Sin esta rama, un iPhone vería «tu navegador no puede» — cierto, pero
+  // sin decir que hay una salida.
+  var IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var INSTALADA = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+    navigator.standalone === true;
+
+  var REG = null;    // el service worker
+  var SUB = null;    // la suscripción de ESTE dispositivo
+  var EST = null;    // /api/avisos/estado
+  var SVS = leer('campana:svs', []);   // [] = todos los servidores
+  var MSG = '';
+
+  function leer(k, def) {
+    try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? def : v; }
+    catch (e) { return def; }
+  }
+  function guardar(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* modo privado */ }
+  }
+
+  function bytes(b64) {
+    var s = String(b64 || '').replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    var bin = atob(s), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  function igual(a, b) {
+    if (!a || !b || a.byteLength !== b.byteLength) return false;
+    var x = new Uint8Array(a), y = new Uint8Array(b);
+    for (var i = 0; i < x.length; i++) if (x[i] !== y[i]) return false;
+    return true;
+  }
+
+  function hace(iso) {
+    var t = Date.parse(iso);
+    if (isNaN(t)) return '';
+    var s = Math.round((Date.now() - t) / 1000);
+    if (s < 90) return 'hace ' + Math.max(s, 1) + ' s';
+    var m = Math.round(s / 60);
+    if (m < 60) return 'hace ' + m + ' min';
+    var h = Math.round(m / 60);
+    return h < 24 ? 'hace ' + h + ' h' : 'hace ' + Math.round(h / 24) + ' días';
+  }
+
+  async function pedir(ruta, cuerpo) {
+    var r = await fetch('/api/avisos/' + ruta, cuerpo ? {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(cuerpo),
+    } : { headers: { accept: 'application/json' } });
+    var d = {};
+    try { d = await r.json(); } catch (e) { d = {}; }
+    if (!r.ok) {
+      var err = new Error(d.error || ('el servidor contestó ' + r.status));
+      err.estado = r.status;
+      throw err;
+    }
+    return d;
+  }
+
+  async function clave() { return (await pedir('clave')).clave; }
+
+  // ── anotarse ────────────────────────────────────────────────────────
+  async function alta(conServidores) {
+    var cuerpo = { sub: SUB.toJSON() };
+    // ⚠️ SIN `svs`, EL WORKER CONSERVA LOS QUE YA TENIA. La re-alta diaria
+    // no los manda: si este navegador perdió su localStorage, mandar `[]`
+    // borraría lo que la persona eligió.
+    if (conServidores) cuerpo.svs = SVS;
+    var d = await pedir('alta', cuerpo);
+    if (Array.isArray(d.svs)) { SVS = d.svs; guardar('campana:svs', SVS); }
+    guardar('campana:alta', Date.now());
+  }
+
+  async function activar() {
+    MSG = 'Pidiendo permiso…'; pinta();
+    var p = await Notification.requestPermission();
+    if (p !== 'granted') { MSG = ''; pinta(); return; }
+    MSG = 'Anotando este dispositivo…'; pinta();
+    var k = await clave();
+    REG = REG || await navigator.serviceWorker.register('/sw.js');
+    await navigator.serviceWorker.ready;
+    SUB = await REG.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes(k) });
+    await alta(true);
+    MSG = '';
+    await probar(true);
+  }
+
+  async function probar(recien) {
+    MSG = 'Mandando uno de prueba…'; pinta();
+    try {
+      var d = await pedir('probar', { endpoint: SUB.endpoint });
+      MSG = d.ok ? (recien ? '✅ Listo. Te mandé uno de prueba: tiene que llegarte en unos segundos.'
+        : '✅ Enviado: tiene que llegarte en unos segundos.')
+        : '⚠️ El servicio de avisos contestó ' + d.estado + '. Probá desactivar y activar de nuevo.';
+    } catch (e) {
+      MSG = e.estado === 429 ? 'Esperá unos segundos entre pruebas.' : '⚠️ ' + e.message;
+    }
+    pinta();
+  }
+
+  async function desactivar() {
+    MSG = 'Desactivando…'; pinta();
+    var ep = SUB && SUB.endpoint;
+    try { if (SUB) await SUB.unsubscribe(); } catch (e) { /* ya no estaba */ }
+    SUB = null;
+    if (ep) { try { await pedir('baja', { endpoint: ep }); } catch (e) { /* se cae sola */ } }
+    MSG = 'Listo: este dispositivo ya no recibe avisos.';
+    pinta();
+  }
+
+  var tElegir = null;
+  function elegir(sv) {
+    if (sv === '') SVS = [];
+    else if (SVS.indexOf(sv) >= 0) SVS = SVS.filter(function (x) { return x !== sv; });
+    else SVS = SVS.concat([sv]);
+    // elegir todos uno por uno es lo mismo que «todos»
+    if (SVS.length && SVS.length >= servidores().length) SVS = [];
+    guardar('campana:svs', SVS);
+    pinta();
+    clearTimeout(tElegir);
+    tElegir = setTimeout(function () {
+      alta(true).then(function () { MSG = '✅ Guardado.'; pinta(); })
+        .catch(function (e) { MSG = '⚠️ No pude guardar: ' + e.message; pinta(); });
+    }, 500);
+  }
+
+  function servidores() {
+    var vistos = {}, out = [];
+    ((EST && EST.vigia && EST.vigia.canales) || []).forEach(function (c) {
+      if (!vistos[c.sv]) { vistos[c.sv] = 1; out.push({ sv: c.sv, n: c.svn || c.sv }); }
+    });
+    return out;
+  }
+
+  // ── dibujar ─────────────────────────────────────────────────────────
+  function pinta() {
+    var caja = $('#campana');
+    var cta = $('#campanaCta');
+    // ⚠️ `Notification` NO EXISTE en Safari de iPhone fuera de la pantalla
+    // de inicio: nombrarlo a secas es un ReferenceError que apaga todo esto.
+    var negado = typeof Notification !== 'undefined' && Notification.permission === 'denied';
+    if (cta) cta.hidden = !!SUB || !(SOPORTA || IOS) || negado;
+    if (!caja) return;
+    var h = '';
+    if (!SOPORTA && IOS && !INSTALADA) {
+      h = '<p class="cp-tx">En iPhone y iPad los avisos llegan con la Liga en la pantalla de inicio:</p>' +
+        '<ol class="cp-pasos"><li>Tocá <b>Compartir</b> (el cuadrado con la flecha).</li>' +
+        '<li>Elegí <b>Agregar a inicio</b>.</li>' +
+        '<li>Abrí la Liga <b>desde ese ícono</b> y volvé a esta pantalla.</li></ol>';
+    } else if (!SOPORTA) {
+      h = '<p class="cp-tx">Este navegador no puede recibir avisos. En Android andan Chrome, ' +
+        'Firefox, Edge y Samsung Internet; en la compu, cualquiera de esos.</p>';
+    } else if (negado) {
+      h = '<p class="cp-tx">Las notificaciones de esta página están <b>bloqueadas</b>. Para ' +
+        'activarlas: tocá el candado al lado de la dirección → <b>Notificaciones</b> → ' +
+        '<b>Permitir</b>, y recargá.</p>';
+    } else if (!SUB) {
+      h = '<p class="cp-tx">Un aviso por evento, cuando el servidor lo anuncia. Nada más: ' +
+        'ni resultados, ni publicidad, ni nada que no sea un evento por empezar.</p>' +
+        '<button class="cp-btn" data-cp="activar"><i aria-hidden="true">&#128276;</i>' +
+        '<span>Activar avisos</span></button>';
+    } else {
+      var svs = servidores();
+      h = '<p class="cp-ok">✅ Este dispositivo recibe los avisos.</p>';
+      if (svs.length > 1) {
+        h += '<p class="cp-tx">¿De qué servidores?</p><div class="chips cp-chips">' +
+          '<button class="chip' + (SVS.length ? '' : ' on') + '" data-sv="">Todos</button>' +
+          svs.map(function (s) {
+            return '<button class="chip' + (SVS.indexOf(s.sv) >= 0 ? ' on' : '') +
+              '" data-sv="' + esc(s.sv) + '" title="' + esc(s.n) + '">' + esc(s.sv) + '</button>';
+          }).join('') + '</div>';
+      }
+      h += '<div class="cp-acc"><button class="bajar" data-cp="probar"><i aria-hidden="true">' +
+        '&#9654;</i><span>Mandar una de prueba</span></button>' +
+        '<button class="bajar cp-no" data-cp="desactivar"><span>Desactivar</span></button></div>';
+    }
+    h += '<p class="cp-msg" role="status">' + esc(MSG) + '</p>';
+    caja.innerHTML = h;
+    pintaVigia();
+  }
+
+  function pintaVigia() {
+    var sec = $('#secVigia'), caja = $('#vigia');
+    if (!sec || !caja) return;
+    var v = EST && EST.vigia;
+    // sin dato no hay pieza
+    if (!v || !v.t || !(v.canales || []).length) { sec.hidden = true; return; }
+    sec.hidden = false;
+    // ⚠️ UNA FILA POR SERVIDOR, NO POR CANAL. La búsqueda por nombre
+    // encontró 14 canales —DRA sola tiene nueve— y catorce filas de
+    // nombres con adornos (`〢🔥〉eventos-hoy`) no se leen: lo que la
+    // persona quiere saber es de qué servidores le va a llegar.
+    var por = {}, orden = [];
+    v.canales.forEach(function (c) {
+      if (!por[c.sv]) { por[c.sv] = []; orden.push(c.sv); }
+      // sólo letras «de verdad» y dígitos: afuera `〢` (es un NÚMERO chino,
+      // \p{Nl}) y los superíndices de `competenciasᵀᴵᴱᴿ¹`, que son \p{Lm}
+      var limpio = String(c.nombre || '')
+        .replace(/[^\p{Lu}\p{Ll}\p{Lt}\p{Lo}\p{Nd}\- ]+/gu, '').trim();
+      if (limpio && por[c.sv].indexOf(limpio) < 0) por[c.sv].push(limpio);
+    });
+    var h = '<p class="cp-tx">Cada minuto se revisan los canales de eventos de estos ' +
+      'servidores. Lo que se anuncia ahí, sale.</p><div class="vg-lista">' +
+      orden.map(function (sv) {
+        return '<div class="vg-canal"><b>' + esc(sv) + '</b><span>' +
+          esc(por[sv].join(' · ')) + '</span></div>';
+      }).join('') + '</div>';
+    var bien = EST.ok;
+    h += '<p class="nota">' + (bien ? '● ' : '⚠️ ') + 'última revisión ' + esc(hace(v.t)) +
+      (EST.suscripciones ? ' · ' + EST.suscripciones + ' dispositivo' +
+        (EST.suscripciones === 1 ? '' : 's') + ' con la campana' : '') + '</p>';
+    if (EST.ultimo && EST.ultimo.titulo) {
+      h += '<p class="nota">último aviso: ' + esc(EST.ultimo.titulo) + ' (' + esc(EST.ultimo.sv) +
+        ') ' + esc(hace(EST.ultimo.t)) + '</p>';
+    }
+    caja.innerHTML = h;
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cp],[data-sv]');
+    if (!b || !$('#campana') || !$('#campana').contains(b)) return;
+    if (b.hasAttribute('data-sv')) { elegir(b.getAttribute('data-sv')); return; }
+    var que = b.getAttribute('data-cp');
+    var f = que === 'activar' ? activar : que === 'probar' ? function () { return probar(false); }
+      : desactivar;
+    b.disabled = true;
+    Promise.resolve(f()).catch(function (err) {
+      MSG = '⚠️ ' + (err && err.message ? err.message : 'no se pudo');
+      pinta();
+    });
+  });
+
+  // ── arrancar ────────────────────────────────────────────────────────
+  async function arrancar() {
+    if (SOPORTA) {
+      try {
+        REG = await navigator.serviceWorker.register('/sw.js');
+        SUB = await REG.pushManager.getSubscription();
+      } catch (e) { REG = null; SUB = null; }
+    }
+    pinta();
+    try { EST = await pedir('estado'); } catch (e) { EST = null; }
+    pinta();
+    if (!SUB) return;
+    try {
+      // 🔴 SI LA CLAVE DEL WORKER CAMBIO, LA SUSCRIPCION VIEJA NO SIRVE: se
+      // rehace sola acá, sin preguntar de nuevo —el permiso ya está—. Es
+      // lo que hace sobrevivir una rotación de la clave VAPID para todo el
+      // que vuelva a entrar. Ver `bot/avisos_claves.py`.
+      var k = await clave();
+      if (SUB.options && SUB.options.applicationServerKey &&
+          !igual(SUB.options.applicationServerKey, bytes(k).buffer)) {
+        await SUB.unsubscribe();
+        SUB = await REG.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes(k) });
+        await alta(false);
+      } else if (Date.now() - leer('campana:alta', 0) > 24 * 3600 * 1000) {
+        // ⚠️ UNA VEZ POR DIA SE VUELVE A ANOTAR: si el Worker la había
+        // borrado —el servicio dijo 410—, así vuelve sin que nadie toque
+        // nada, y le trae de vuelta los servidores que había elegido.
+        await alta(false);
+      }
+      pinta();
+    } catch (e) { /* la campana sigue como estaba */ }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
+  else arrancar();
+})();
