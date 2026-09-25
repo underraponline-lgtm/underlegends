@@ -206,6 +206,9 @@ function ruta() {
 var ALIAS = { avisos: 'eventos', duelos: 'ranking' };
 
 function ir() {
+  // los menús de arriba se cierran al cambiar de página: quedaban abiertos
+  // tapando la vista nueva si se navegaba sin tocar afuera
+  cerrarPops();
   // 🔑 `#/r/<clave>` ES EL PERFIL: la vista es la primera parte y la
   // persona, el resto. Ver `pintaPerfil()`.
   var pedida = ruta(), partes = pedida.split('/');
