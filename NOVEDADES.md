@@ -193,6 +193,21 @@ Son las que no se pueden volver a preguntar ni olvidar.
 3. **Racha**: (a) llaves de más de 16 —¿semifinal o cuartos?—; (b) llaves de menos de 8 —¿llegar a la final?—; (c) faltar a un evento, ¿corta la racha o sólo cuentan los que jugaste?; (d) en el ranking de **Duelos**, ¿la racha sigue siendo de duelos ganados seguidos (con otro nombre) o pasa a ser la de eventos?
 4. **«Under Legends» en el resto**: saqué la frase y puse la descripción oficial. Quedan el **logo UL**, la trama «UNDER LEGENDS» del fondo y la dirección `underlegends.pages.dev`. ¿Se quedan como marca o también se van?
 5. **Verificación con login de Discord**: para que la página sepa quién sos hace falta registrar la dirección del hub en el portal de Discord de la app (lo hacés vos, es un campo). ¿Lo hacemos, o arrancamos por el comando `/verificar` en Discord?
+6. **El perfil de cada rapero** —lo que más falta respecto de la página vieja del Apps Script—: historial de eventos con su cuadro, duelos, racha, puesto en cada ranking y qué le falta para cada tarjeta. ¿Lo hago como próximo paso?
+7. **Most Wanted**: la página vieja lo mostraba y en la T1 no hay datos de cazador ni cazado. ¿Sigue en esta temporada?
+8. **Redes sociales** en el perfil, como en la vieja: ¿las querés? Harían falta en la Lista, una columna por red.
+
+### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
+
+«Mi Perfil» tenía buscador, perfil por rapero con más de 50 números, Top 3 del Competitivo, cuántos hay en cada rango, Most Wanted, redes sociales, modo VS y 8 pestañas de rankings.
+
+| | |
+|---|---|
+| **Falta** | el perfil de cada rapero · buscador en el Inicio · Most Wanted · redes sociales · el Competitivo como pestaña del Ranking |
+| **Ya está** | el VS (Comparar dos) · la escalera de rangos con cuántos hay · Temporada, Podios, Duelos, Países y Crews |
+| **Mejor que antes** | las tarjetas de verdad · datos solos cada media hora · llaves en cuadro, calendario y mapa · avisos · hecha para el teléfono |
+
+**Los avisos en la PC** (Dlx: *«¿arreglaste para que pueda tener las notificaciones en PC también?»*): del lado del servidor no había nada roto para la PC —el aviso sale igual para todos— y anoche no hubo nada que avisar (en los 10 canales, desde el 24/09 al mediodía, sólo está su «Probando…»). El sospechoso es **Opera GX**, que deja activar los avisos y en la compu a veces no los recibe. La campana lo distingue sola: «Mandar una de prueba» espera 20 s y dice si llegó (entonces es Windows) o no (entonces es el navegador: Chrome o Edge en esa compu).
 
 ## 🔧 Pendiente mío
 
