@@ -401,6 +401,8 @@ def armar():
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
         'actividad': _actividad(regs),
+        # 🔑 CUÁNTA GENTE TIENE LA LIGA. Ver `_comunidad()`.
+        'comunidad': _comunidad(),
         # 🔑 LAS NOVEDADES SON LO DE LA LIGA EN DRA, y el feed las REDES.
         # Dlx, 25/09/2026: «lo último de la liga que sea como novedades,
         # información», y las redes en grande aparte, arriba del top 5.
@@ -829,6 +831,42 @@ def _hoy_este():
         return dt.datetime.now(ZoneInfo('America/New_York')).date()
     except Exception:                                    # noqa: BLE001
         return dt.datetime.utcnow().date()
+
+
+def _comunidad():
+    """Personas en los servidores, en la Lista, con Discord y verificadas.
+
+    🔑 Dlx, 25/09/2026: *«¿cuántas personas diferentes tenemos, y con ID y
+    verificadas? Quizás ese dato podríamos agregarlo a La Liga hoy»*. La
+    primera sale de `datos/comunidad.json` (1b); las otras tres se cuentan
+    acá, con el padrón que el paso 2 acaba de rehacer.
+
+    ⚠️ VERIFICADAS ES EL PORTÓN, NO EL ROL: `verificados.pasa()` —ID, el
+    Miembro de DRA y país—, o sea quien tiene tarjeta. El Miembro solo
+    son miles más.
+
+    ⚠️ SIN DATO NO HAY PIEZA: lo que no se pudo contar no viaja.
+    """
+    out = {}
+    c = _json('datos', 'comunidad.json') or {}
+    if c.get('personas'):
+        out['personas'] = int(c['personas'])
+        out['servidores'] = len(c.get('servidores') or [])
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import construir_padron as _PAD
+        import verificados as _VER
+        pad = _PAD.cargar()
+        out['lista'] = len(pad)
+        out['con_id'] = sum(1 for p in pad if str(p.get('discord_id') or '').strip())
+        verif, _ = _VER.cargar()
+        if verif:
+            out['verificados'] = sum(1 for p in pad if _VER.pasa(p, verif))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude contar la comunidad (%s)' % str(e)[:60])
+    return {k: v for k, v in out.items() if v} or None
 
 
 def _actividad(regs, dias=14):

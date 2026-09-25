@@ -216,6 +216,14 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Viernes 25/09 (12:20 a 12:35 PM) — versión 1.09
+
+- ⭐ **Seguir raperos** (de «todas», la 3): botón en el perfil, la lista en Mi cuenta con el puesto de hoy y una ★ al lado del nombre en toda la página. Vive en el dispositivo (`lg:sigo`), como `lg:yo`: no viaja a ningún lado.
+- 📅 **Tus próximos eventos**, en Mi cuenta: los anunciados en los servidores donde estás (`/api/cuenta` devuelve `svs`; Worker desplegado), con el anuncio —que es donde cada servidor dice cómo anotarse— y «+ Calendario». Sin servidores, los de toda la Liga.
+- 👥 **La comunidad, en «La Liga hoy»**, que pediste: *«¿cuántas personas diferentes tenemos, y con ID y verificadas? Quizás ese dato podríamos agregarlo a La Liga hoy»*. Medido a las 12:26 PM: **10.004 personas distintas** en los 4 servidores (sumando serían 12.036), **876 en la Lista**, **545 con Discord ID** y **331 verificadas con tarjeta**. La primera la cuenta `herramientas/servidores_de.py` en cada corrida (sin bots, sólo el número al repo: `datos/comunidad.json`); las otras tres, `subir_web._comunidad()`.
+- ❓ **Por qué el reconocimiento dio sólo 4 IDs**: el cruce busca en los servidores a los **331 de la Lista que no tienen ID**. De ésos, 268 no tienen ninguna cuenta con ese nombre en los 4 servidores (se fueron o usan otro) y 63 son ambiguos. Las otras ~9.100 personas de los servidores nunca compitieron: no están en la Lista y entran solas con `/card` o `/verificar`.
+- Faltan de «todas»: **las redes de Discord en el perfil** y **los avisos personales**.
+
 ## 📅 Viernes 25/09 (11:45 AM a 12:20 PM) — versión 1.08
 
 - 🟠 **Urban Freestyle en naranja** (`#EA7206`, el tono más vivo de su logo nuevo), con el mismo corte blanco y los mismos rayones. El logo nuevo va en el escudo de la Servidor, en la silueta de los rombos y en la página, que también pasa a naranja.

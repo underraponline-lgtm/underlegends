@@ -10,6 +10,16 @@
  ],
  "cambios": [
   {
+   "version": "1.09",
+   "dia": "2026-09-25",
+   "titulo": "Seguir raperos, tus próximos eventos y la comunidad",
+   "items": [
+    "⭐ **Seguí a quien quieras**: en su perfil, «☆ Seguir». Aparece en **Mi cuenta** con su puesto de hoy, y con una ★ al lado de su nombre en toda la página. Queda en tu dispositivo.",
+    "📅 **Tus próximos eventos, en Mi cuenta**: los anunciados en tus servidores, con el link al anuncio para anotarte y para sumarlo a tu calendario.",
+    "👥 **La comunidad, en «La Liga hoy»**: cuántas personas distintas hay en los servidores de la Liga, cuántas están en la Lista, cuántas con su Discord y cuántas verificadas con tarjeta."
+   ]
+  },
+  {
    "version": "1.08",
    "dia": "2026-09-25",
    "titulo": "Urban Freestyle en naranja, y los logos de hoy",
