@@ -489,8 +489,24 @@ def main():
                 crudos.append((q, vistos[et], c))
             vistos[et] = c
     clones = []
+    fuera_kv = 0
     for q, a, b in crudos:
         cq = kv('p:' + q)
+        # 🔴 QUIEN NO ESTA EN KV NO TIENE CONTRA QUE COMPARAR, y el bot no le
+        # sirve esas cartas. Medido el 25/09/2026 a las 12:40 AM: la
+        # auditoría dio **97 clones**, y los 97 eran gente con cartas de la
+        # pre-temporada en R2 que no pasa el portón —189 hoy—. Sin entrada
+        # en KV no hay `svp` ni `sv`, y el padrón tampoco lo tiene
+        # (`sv: ''`), así que su par «propia contra la de su servidor» caía
+        # como clon por no poder decir cuál es su servidor.
+        #
+        # ⚠️ No se los da por buenos: se cuentan aparte y se dice. El clon
+        # que este chequeo busca es el que ve alguien, y a esa gente el bot
+        # no le muestra ninguna carta hasta que pase el portón —y entonces
+        # entra a KV y se compara como todos—.
+        if not cq:
+            fuera_kv += 1
+            continue
         # ⚠️ `svp`, NO `sv`. Desde el 19/09 `sv` es donde ESTAS —lo dice
         # Discord— y `svp` donde JUGASTE —el argmax del Sheet—. La carta
         # propia se dibuja contra `svp`, asi que comparando con `sv` este
@@ -525,7 +541,9 @@ def main():
     ok('nadie tiene dos cartas identicas por error', not clones,
        ('%d: %s' % (len(clones), ' · '.join(clones[:3]))) if clones
        else '%d par(es) esperado(s): la propia contra la de su propio servidor'
-            % esperados)
+            % esperados
+       + ('  ·  %d de gente fuera de KV, sin servidor contra qué comparar'
+          % fuera_kv if fuera_kv else ''))
 
     # etag repetido DENTRO de un tipo de carta = dos personas con el mismo PNG
     mezclas = []
