@@ -95,6 +95,20 @@ const COMANDOS = [
     ...EN_TODOS_LADOS,
   },
   {
+    // 🔑 Dlx, 25/09/2026: «activar las notificaciones de este servidor… ahí
+    // te dejará las opciones». Los avisos de eventos, por DM.
+    name: 'notify',
+    type: 1,
+    description: 'avisos de eventos por mensaje directo: elegí de qué servidores',
+    ...EN_TODOS_LADOS,
+  },
+  {
+    name: 'website',
+    type: 1,
+    description: 'el link a la página de la Liga Global',
+    ...EN_TODOS_LADOS,
+  },
+  {
     name: 'help',
     type: 1,
     description: 'qué hace el bot y cómo se usa cada comando',
@@ -111,6 +125,8 @@ const COMANDOS = [
         choices: [
           { name: '/card', value: 'card' },
           { name: '/verificar', value: 'verificar' },
+          { name: '/notify', value: 'notify' },
+          { name: '/website', value: 'website' },
           { name: '/versus', value: 'versus' },
           { name: '/foto', value: 'foto' },
           { name: '/numeral', value: 'numeral' },
