@@ -1539,5 +1539,288 @@
     2500
    ]
   ]
+ },
+ "356": {
+  "dia": "2026-09-25",
+  "escala": "16+",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1553129509300215839"
+  ],
+  "n": 356,
+  "nombre": "DESGRACIAS EN TOKYO VOL.13",
+  "participantes": 31,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "ME TIENE SIN CUIDADO 🇯🇲",
+       "Chop, OG"
+      ],
+      "ME TIENE SIN CUIDADO 🇯🇲",
+      ""
+     ],
+     [
+      [
+       "Teito🇨🇴, Dominick",
+       "MHS 🇦🇷, FALON 🇨🇱"
+      ],
+      "Teito🇨🇴, Dominick",
+      ""
+     ],
+     [
+      [
+       "Abyssus, Agre",
+       "Paria, Kravitz"
+      ],
+      "Abyssus, Agre",
+      ""
+     ],
+     [
+      [
+       "Bloody, Colesito",
+       "ISAIAS 🇪🇸, Gocho"
+      ],
+      "Bloody, Colesito",
+      ""
+     ],
+     [
+      [
+       "Zignos, Velatz",
+       "yinn, Provenza"
+      ],
+      "Zignos, Velatz",
+      ""
+     ],
+     [
+      [
+       "Makmah, Snow",
+       "Gus, Miniboy"
+      ],
+      "Makmah, Snow",
+      ""
+     ],
+     [
+      [
+       "ENEK 🇪🇸, Neo",
+       "Last🇺🇾, Trot"
+      ],
+      "ENEK 🇪🇸, Neo",
+      ""
+     ],
+     [
+      [
+       "Eze, Six",
+       "Fin, 1200 🇵🇪"
+      ],
+      "Eze, Six",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ME TIENE SIN CUIDADO 🇯🇲",
+       "Teito🇨🇴, Dominick"
+      ],
+      "ME TIENE SIN CUIDADO 🇯🇲",
+      ""
+     ],
+     [
+      [
+       "Bloody, Colesito",
+       "Abyssus, Agre"
+      ],
+      "Bloody, Colesito",
+      ""
+     ],
+     [
+      [
+       "Makmah, Snow",
+       "Velatz, Zignos"
+      ],
+      "Makmah, Snow",
+      ""
+     ],
+     [
+      [
+       "Neo, ENEK 🇪🇸",
+       "Eze, Six"
+      ],
+      "Neo, ENEK 🇪🇸",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ME TIENE SIN CUIDADO 🇯🇲",
+       "Bloody, Colesito"
+      ],
+      "ME TIENE SIN CUIDADO 🇯🇲",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "ENEK 🇪🇸, Neo",
+       "ME TIENE SIN CUIDADO 🇯🇲"
+      ],
+      "ENEK 🇪🇸, Neo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "ME TIENE SIN CUIDADO 🇯🇲",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "ENEK 🇪🇸",
+    "Campeón",
+    5000
+   ],
+   [
+    "Neo",
+    "Campeón",
+    5000
+   ],
+   [
+    "Abyssus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Agre",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Eze",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Six",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Teito🇨🇴",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "1200 🇵🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Chop",
+    "Octavos",
+    625
+   ],
+   [
+    "FALON 🇨🇱",
+    "Octavos",
+    625
+   ],
+   [
+    "Fin",
+    "Octavos",
+    625
+   ],
+   [
+    "Gocho",
+    "Octavos",
+    625
+   ],
+   [
+    "Gus",
+    "Octavos",
+    625
+   ],
+   [
+    "ISAIAS 🇪🇸",
+    "Octavos",
+    625
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    625
+   ],
+   [
+    "Last🇺🇾",
+    "Octavos",
+    625
+   ],
+   [
+    "MHS 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ],
+   [
+    "OG",
+    "Octavos",
+    625
+   ],
+   [
+    "Paria",
+    "Octavos",
+    625
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    625
+   ],
+   [
+    "Trot",
+    "Octavos",
+    625
+   ],
+   [
+    "yinn",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }
