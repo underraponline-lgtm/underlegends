@@ -1425,8 +1425,12 @@ border:1px solid var(--bd2);font-weight:800;font-size:.9rem}
 .l-datos{color:var(--tx2);font-size:.9rem}
 .l-datos b{color:var(--tx)}
 .bx .ld.eq{align-items:flex-start;padding-top:3px;padding-bottom:3px}
-.bx .ld.eq .nm{display:flex;flex-direction:column;gap:1px;overflow:visible;white-space:normal}
-.bx .mb{display:block;min-width:0;line-height:20px}
+.bx .ld.eq .nm{display:flex;flex-direction:column;gap:0;overflow:visible;white-space:normal}
+/* ⚠️ 21 PX EXACTOS, los mismos que reserva `cuadro()` (LINEA). Con
+   `line-height` la carita de 18 px agregaba el espacio de la línea de base
+   y cada renglón medía ~24: en las llaves de tríos sobraban 8 px por lado
+   (medido en EL RAP FECHA 5 y TOKYO VOL.12). */
+.bx .mb{display:flex;align-items:center;min-width:0;height:21px}
 .cuadro .camp.eq{display:flex;flex-direction:column;align-items:center}
 .cuadro .camp .mb{display:block;line-height:21px}
 .l-guia{margin:2px 0 6px}
