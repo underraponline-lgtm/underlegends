@@ -81,10 +81,36 @@ def ovr_nacional(score, score_pais, mejor_score, mejor_pais):
         return None
 
 
-def seleccion(mundial):
-    """{codigo de pais -> Score Seleccion}, de `datos/mundial.json`."""
+#: cuántos de cada país entran a su Score Selección
+TOP_SELECCION = 5
+
+
+def seleccion(mundial=None, comp=None):
+    """{codigo de pais -> Score Seleccion}.
+
+    🔴 DESDE EL 25/09/2026 SALE DE LA T1. Dlx, a «¿el Score Selección se
+    calcula con la T1 (promedio de los 5 mejores de cada país)?»: *«si»*.
+    Hasta ahí salía de `datos/mundial.json`, que es la hoja «PAÍSES MÁS
+    COMPETITIVOS» de la **pre-temporada**: la carta de País de la T1 medía
+    a cada uno contra su país de otra temporada.
+
+    ⚠️ LOS CINCO LUGARES SE DIVIDEN POR CINCO AUNQUE EL PAIS TENGA MENOS.
+    Es la regla que ya tenía la hoja —*«los cupos vacíos cuentan como
+    cero»*—, y sin ella un país con una sola persona de Score 90 tendría
+    la mejor selección del mundo.
+
+    ⚠️ `mundial` queda sólo de respaldo, para cuando no hay pool que
+    medir: con el pool vacío no hay OVR Nacional de nadie igual.
+    """
+    if comp:
+        por = {}
+        for c in comp:
+            if c.get('cc') and c.get('score') is not None:
+                por.setdefault(c['cc'], []).append(float(c['score']))
+        return {cc: round(sum(sorted(v, reverse=True)[:TOP_SELECCION]) / TOP_SELECCION, 1)
+                for cc, v in por.items()}
     return {k: v.get('score_seleccion')
-            for k, v in (mundial.get('competitivos') or {}).items()}
+            for k, v in ((mundial or {}).get('competitivos') or {}).items()}
 
 
 def tabla(comp, mundial):
@@ -94,7 +120,7 @@ def tabla(comp, mundial):
     encabezado: pedirle los maximos por separado seria dejar que dos llamadas
     contesten distinto para la misma persona.
     """
-    sel = seleccion(mundial)
+    sel = seleccion(mundial, comp)
     if not comp or not sel:
         return {}
     mejor_score = max(x['score'] for x in comp)
