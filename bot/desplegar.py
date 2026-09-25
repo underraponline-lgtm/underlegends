@@ -244,7 +244,8 @@ def main():
         # menos no es «dejar como estaba», es borrar. El deploy diria 200,
         # el cron seguiria agendado, y cada media hora dispararia contra un
         # Worker sin token — o sea que el ciclo se detiene y lo unico que
-        # avisa es un `cron:ultimo` con `ok:false` que nadie mira.
+        # avisa es un `disparador.ultimo` con `ok:false` en
+        # `/avisos/estado` (antes `cron:ultimo` en KV) que nadie mira.
         #
         # ⚠️ Se pregunta a la nube y no al `.env`, porque la pregunta es
         # «¿que va a perder este deploy?» y eso sólo lo sabe lo que está

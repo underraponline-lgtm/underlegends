@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, pedirDM } from './avisos.js';
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, pedirDM, marcarDisparo } from './avisos.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -1820,10 +1820,13 @@ const DUENO = '739338101603696681';
 const esDueno = (i) => idDe(i) === DUENO;
 
 const marca = (sello) => {
-  // `sello` viene como AAAAMMDDHHMM, de la máquina que corrió el pipeline
+  // `sello` viene como AAAAMMDDHHMM en UTC (`subir_datos.py`), y se muestra
+  // en hora del este, como todo lo que lee Dlx. Antes salía la hora UTC
+  // pelada, sin decir que lo era: cuatro horas de diferencia sin aviso.
   const t = String(sello || '');
   if (t.length !== 12) return '(sin sello)';
-  return `${t.slice(6, 8)}/${t.slice(4, 6)} ${t.slice(8, 10)}:${t.slice(10, 12)}`;
+  return horaEste(`${t.slice(0, 4)}-${t.slice(4, 6)}-${t.slice(6, 8)}T` +
+                  `${t.slice(8, 10)}:${t.slice(10, 12)}:00Z`) || '(sin sello)';
 };
 
 const tablaRg = (u) => (u || []).map((x) => `${x[0]} ${x[1]}`).join(' · ');
@@ -1871,12 +1874,18 @@ function panelRangos(m) {
   ].join('\n');
 }
 
-function panelEstado(m) {
+function panelEstado(m, disp) {
   if (!m || !m.sello) return '_No pude leer `meta` de KV._';
+  // ⚠️ EL SELLO YA NO ES «EL ÚLTIMO PIPELINE»: desde el 25/09/2026 `meta` no
+  // se reescribe si la corrida no subió cartas (ver `subir_datos.py`,
+  // `--mismas-cartas`). Lo que dice si el ciclo está vivo es el disparador,
+  // que vive en el Durable Object (`marcarDisparo()`).
+  const u = disp && disp.ultimo;
   const L = [
     '## La Liga, ahora mismo',
     '```',
-    `último pipeline     ${marca(m.sello)}`,
+    `cartas al día del   ${marca(m.sello)}`,
+    `último disparo      ${u && u.t ? horaEste(u.t) + (u.ok ? ' · ok' : ' · FALLÓ ' + (u.estado || '')) : '(sin dato)'}`,
     `personas con carta  ${m.gente != null ? m.gente : '?'}`,
     `con Discord ID      ${m.con_id != null ? m.con_id : '?'}` +
       (m.gente ? `  (${Math.round(100 * m.con_id / m.gente)} %)` : ''),
@@ -2063,7 +2072,12 @@ const COMANDOS = {
     // también — que es exactamente lo que hay que poder ver.
     const m = JSON.parse((await env.KV.get('meta')) || '{}');
     if (sub.name === 'rangos') return aviso(panelRangos(m));
-    return aviso(panelEstado(m));
+    let disp = null;
+    try {
+      const r = await rutaAvisos(new Request('https://x/avisos/estado'), env, '/avisos/estado');
+      disp = (await r.json()).disparador || null;
+    } catch (e) { disp = null; }
+    return aviso(panelEstado(m, disp));
   },
 
   ping(i) {
@@ -2858,15 +2872,23 @@ export default {
     // escritura sólo al final, «no disparó» y «disparó y murió antes de
     // llegar» se ven exactamente igual: silencio. Las dos claves separan
     // esas dos preguntas y por eso se quedan las dos.
-    try {
-      await env.KV.put('cron:arranco', JSON.stringify(
-        { t: new Date().toISOString(), cron: evento.cron || '' }));
-    } catch (e) { /* si ni esto anda, el problema es el binding */ }
+    //
+    // 🔑 LAS DOS MARCAS VAN AL DURABLE OBJECT, no a KV: eran ~70 escrituras
+    // por día de las 1.000 de la cuenta. Ver `marcarDisparo()` en
+    // `avisos.js`. ⚠️ KV QUEDA DE RESPALDO: si el objeto no contesta, la
+    // marca se escribe donde estaba antes, porque una marca que se pierde
+    // es exactamente el silencio que estas dos claves existen para evitar.
+    const marcar = async (cual, v) => {
+      if (await marcarDisparo(env, cual, v)) return;
+      try {
+        await env.KV.put('cron:' + cual, JSON.stringify(v));
+      } catch (e) { /* sin objeto y sin cupo: el problema es el binding */ }
+    };
+    await marcar('arranco', { t: new Date().toISOString(), cron: evento.cron || '' });
     await (async () => {
       const t = new Date().toISOString();
       if (!env.GH_TOKEN || !env.GH_REPO) {
-        await env.KV.put('cron:ultimo', JSON.stringify(
-          { t, ok: false, por: 'sin GH_TOKEN o GH_REPO en el Worker' }));
+        await marcar('ultimo', { t, ok: false, por: 'sin GH_TOKEN o GH_REPO en el Worker' });
         return;
       }
       let estado = 0;
@@ -2893,15 +2915,12 @@ export default {
       } catch (e) {
         cuerpo = String(e).slice(0, 180);
       }
-      // ⚠️ CON `try`, como `cron:arranco`: el disparo ya salió, y sin
-      // cupo de KV esta marca era una excepción en cada corrida del día
-      // (el 24/09/2026 a las 7 PM ET). Que la marca falte ya es la señal.
-      try {
-        await env.KV.put('cron:ultimo', JSON.stringify({
-          t, ok: estado === 204, estado, cuerpo,
-          cron: evento.cron || '',
-        }));
-      } catch (e) { /* sin cupo: la marca vieja ya dice que algo pasó */ }
+      // ⚠️ `marcar()` no tira: sin cupo de KV esta marca era una excepción
+      // en cada corrida del día (el 24/09/2026 a las 7 PM ET).
+      await marcar('ultimo', {
+        t, ok: estado === 204, estado, cuerpo,
+        cron: evento.cron || '',
+      });
     })();
   },
 

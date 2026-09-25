@@ -188,6 +188,7 @@ def salud():
     """El vigía de avisos, el disparador del ciclo y la cuota de KV."""
     import requests
     # 1 · el vigía de avisos: late cada minuto en el Worker
+    j = {}
     try:
         j = requests.get(WORKER + '/avisos/estado', timeout=25).json()
         v = j.get('vigia') or {}
@@ -211,10 +212,19 @@ def salud():
             s.headers['Authorization'] = 'Bearer ' + tok
             import cuotas as C
             import desplegar as D
-            r = s.get('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/'
-                      'namespaces/%s/values/cron:ultimo' % (C.CUENTA, D.KV_ID), timeout=25)
-            if r.status_code == 200:
-                c = json.loads(r.content.decode('utf-8'))
+            # 🔑 LA MARCA VIVE EN EL DURABLE OBJECT desde el 25/09/2026 (ver
+            # `marcarDisparo()` en `avisos.js`) y llega con el estado del
+            # vigía, que ya se pidió arriba. ⚠️ KV QUEDA DE RESPALDO: es
+            # donde el Worker la escribe si el objeto no contesta, y donde
+            # estaba antes de ese cambio.
+            c = (j.get('disparador') or {}).get('ultimo') or None
+            if not c:
+                r = s.get('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/'
+                          'namespaces/%s/values/cron:ultimo' % (C.CUENTA, D.KV_ID),
+                          timeout=25)
+                if r.status_code == 200:
+                    c = json.loads(r.content.decode('utf-8'))
+            if c:
                 t = datetime.datetime.fromisoformat(c['t'].replace('Z', '+00:00'))
                 viejo = (_ahora() - t).total_seconds() / 60
                 # 🌙 de madrugada el disparador se calla ~4 h a propósito:

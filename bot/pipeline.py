@@ -991,8 +991,12 @@ def main():
         # 24/09/2026: el portón volvió a ser sólo DRA (2.686 -> 2.576) y
         # la corrida dijo «no había nada que hacer» con 86 de más en KV.
         # Cuesta ~5 s y es un diff-writer: escribe lo que cambió.
+        # 🔑 `--mismas-cartas` SI NO SE SUBIÓ NINGUNA BLOQUEADA: sin cartas
+        # nuevas, `meta` sólo cambiaría por su sello, que es la hora. Era una
+        # escritura de KV por corrida para nada. Ver `solo_las_que_cambiaron()`.
         if correr:
-            corre(['bot/subir_datos.py'], callado=False)
+            corre(['bot/subir_datos.py'] + ([] if n_bq else ['--mismas-cartas']),
+                  callado=False)
         print('\n   listo en %.1f s · %s\n'
               % (time.time() - t0,
                  '%d Bloqueada(s) al día' % n_bq if n_bq
