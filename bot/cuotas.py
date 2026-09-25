@@ -45,6 +45,16 @@ def barra(usado, total, ancho=28):
     return '[%s%s] %5.1f%%' % ('#' * n, '·' * (ancho - n), 100 * usado / total)
 
 
+def _et(t):
+    """Un instante UTC dicho en hora del este: «8:00 PM ET». Nunca UTC."""
+    try:
+        from zoneinfo import ZoneInfo
+        t = t.astimezone(ZoneInfo('America/New_York'))
+    except Exception:                                    # noqa: BLE001
+        t = t - datetime.timedelta(hours=4)
+    return t.strftime('%I:%M %p ET').lstrip('0')
+
+
 def kv_hoy(s):
     """`{'write': n, 'read': m, ...}` de KV hoy (UTC). `{}` si no se sabe."""
     hoy = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
@@ -91,7 +101,11 @@ def main():
     hoy = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
     ops = kv_hoy(s)
     if ops:
-        print('   HOY (UTC %s):' % hoy)
+        # ⚠️ el «día» de Cloudflare es UTC: arranca a las 8 PM ET (7 PM
+        # en invierno). Se dice en la hora que lee Dlx.
+        print('   HOY (el día de Cloudflare arrancó a las %s):'
+              % _et(datetime.datetime.now(datetime.timezone.utc)
+                    .replace(hour=0, minute=0, second=0, microsecond=0)))
         print('      escrituras %5d   %s'
               % (ops.get('write', 0), barra(ops.get('write', 0), LIM['kv_escrituras_dia'])))
         print('      lecturas   %5d   %s'
@@ -101,8 +115,11 @@ def main():
                      .replace(hour=0, minute=0, second=0, microsecond=0)
                      + datetime.timedelta(days=1)
                      - datetime.datetime.now(datetime.timezone.utc))
-            print('      🔴 AGOTADA. Vuelve a las 00:00 UTC, en %.1f h'
-                  % (falta.total_seconds() / 3600))
+            print('      🔴 AGOTADA. Vuelve a las %s, en %.1f h'
+                  % (_et(datetime.datetime.now(datetime.timezone.utc)
+                         .replace(hour=0, minute=0, second=0, microsecond=0)
+                         + datetime.timedelta(days=1)),
+                     falta.total_seconds() / 3600))
     print('   una corrida de subir_datos.py escribe SOLO lo que cambio:')
     print('   con todo igual son 0 escrituras y 241 lecturas, que es la cuota')
     print('   que sobra (100.000 al dia contra 1.000).')

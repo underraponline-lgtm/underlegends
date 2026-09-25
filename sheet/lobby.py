@@ -551,7 +551,7 @@ def datos():
                   'actualizado solo el %s'
                   % (len(evs), len(padron),
                      '%d servidor%s' % (len(svs), '' if len(svs) == 1 else 'es'),
-                     time.strftime('%d/%m/%Y %H:%M UTC', time.gmtime())))
+                     __import__('datetime').datetime.now(__import__('zoneinfo').ZoneInfo('America/New_York')).strftime('%d/%m/%Y %I:%M %p ET')))
     return out, fml
 
 

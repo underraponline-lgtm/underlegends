@@ -1112,8 +1112,8 @@ los que pasan, porque el ciclo sube la carta *después* de armar KV).
 
 ## El repo de sync existe, y esto decía que no
 
-`underraponline-lgtm/liga-global-sync`, 1.700 líneas, corre solo a las **08:00
-UTC**. `CLAUDE.bot.md` decía *«el archivo no existe»*. Tres commits hoy, con
+`underraponline-lgtm/liga-global-sync`, 1.700 líneas, corre solo a las **4:00 AM
+ET** (08:00 UTC). `CLAUDE.bot.md` decía *«el archivo no existe»*. Tres commits hoy, con
 su README (tenía una línea). Lo importante para la próxima sesión está en
 `CLAUDE.bot.md`, en la tabla de **qué le toca a cada repo**.
 
@@ -1278,8 +1278,8 @@ Sheet ──> pools ──> qué cambió ──> caras (R2) ──┐
 
 Cada pieza ya existía y **nada las encadenaba**: eran cinco comandos que
 alguien tenía que acordarse de correr en orden. `.github/workflows/ciclo.yml`
-lo dispara **diario a las 09:00 UTC** —una hora después del sync de
-identidades de las 08:00, o el ciclo dibujaría con el padrón de ayer— y
+lo dispara **diario a las 5:00 AM ET** —una hora después del sync de
+identidades de las 4:00 AM ET, o el ciclo dibujaría con el padrón de ayer— y
 también a mano.
 
 ### Lo que lo hace viable: no redibuja todo

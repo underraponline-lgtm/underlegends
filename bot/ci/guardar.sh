@@ -208,7 +208,14 @@ if git diff --quiet -- $ARCHIVOS; then
   exit 0
 fi
 git add $ARCHIVOS
-git commit -q -m "ciclo: $(date -u +%Y-%m-%d\ %H:%M) UTC"
+# ⚠️ EN HORA DEL ESTE, que es la que lee Dlx: «I told you to refer
+# everything as my local time zone EST» (24/09/2026). Decía «UTC».
+# ⚠️ POR PYTHON Y NO POR `TZ=… date`: sin la base de husos, `date` no
+# falla — devuelve UTC y le pone «ET» igual. Medido en esta PC: dijo
+# «12:09 AM ET» a las 8:09 PM. Si Python no puede, se dice UTC, que es
+# la verdad.
+MENSAJE="ciclo: $(python -c "import datetime as d, zoneinfo as z; t = d.datetime.now(z.ZoneInfo('America/New_York')); print(t.strftime('%Y-%m-%d ') + t.strftime('%I:%M %p').lstrip('0') + ' ET')" 2>/dev/null || date -u '+%Y-%m-%d %H:%M UTC')"
+git commit -q -m "$MENSAJE"
 # ⚠️ EL REINTENTO SIGUE, PERO AHORA PUEDE GANAR: lo unico que
 # puede fallar es que alguien haya empujado entre el fetch y el
 # push, y ahi volver a sincronizar SI cambia el resultado.
@@ -217,7 +224,7 @@ for i in 1 2 3; do
   echo "push rechazado, reintento $i"
   sincronizar
   git add $ARCHIVOS
-  git commit -q -m "ciclo: $(date -u +%Y-%m-%d\ %H:%M) UTC" || true
+  git commit -q -m "$MENSAJE" || true
   sleep 5
 done
 echo "no pude empujar el sello despues de 3 intentos"
