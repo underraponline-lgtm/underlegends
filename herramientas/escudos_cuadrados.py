@@ -33,7 +33,10 @@ DRA tiene azul —el suyo, el de su carta, no el del archivo—, ninguno trae
 un color ajeno, y la tinta se puede agrandar hasta llenar porque ya no
 compite con un margen horneado.
 """
-BASE = r'C:\Users\tonyd\Downloads\LigaGlobal_Tarjetas'
+# 🔴 ERA UNA RUTA ESCRITA A MANO al repo viejo (el privado): corrida desde el
+# público leía y escribía los escudos de OTRA carpeta, sin avisar. Pasó el
+# 25/09/2026 al rehacer el de URBF. Sale de dónde está el archivo.
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(BASE, 'comun', 'logos_color')
 DST = os.path.join(BASE, 'comun', 'escudos_cuad')
 os.makedirs(DST, exist_ok=True)
@@ -175,8 +178,13 @@ def mascara(a):
 
 print('%-6s %-11s %-11s %-9s %-9s %s' % ('sv', 'origen', 'caja tinta', 'area', 'escala', 'motivo'))
 print('-' * 74)
+# `python herramientas/escudos_cuadrados.py URBF` rehace sólo ése: los demás
+# quedan como están, byte a byte
+SOLO = {x.upper() for x in __import__('sys').argv[1:]}
 for f in sorted(os.listdir(SRC)):
     sv = os.path.splitext(f)[0].upper()
+    if SOLO and sv not in SOLO:
+        continue
     if sv.endswith('_ALT') or sv.endswith('_ANIMADO') or f.lower().endswith('.gif'):
         continue
     im = Image.open(os.path.join(SRC, f)).convert('RGBA')
