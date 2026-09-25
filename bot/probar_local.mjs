@@ -1576,7 +1576,8 @@ console.log('\n/VERIFICAR\n');
   ok('de día, la vuelta de :52', v1 && v1.toISOString() === '2026-09-25T16:52:00.000Z',
      v1 && v1.toISOString());
   const v2 = proximaVuelta(Date.parse('2026-09-25T08:00:00Z'));   // 4:00 AM ET
-  ok('de madrugada, la de las 6:52', v2 && v2.toISOString() === '2026-09-25T10:52:00.000Z',
+  // de 3 a 11 AM ET no corre nada (Dlx, 25/09/2026): la primera es la de las 11:22
+  ok('de madrugada, la de las 11:22', v2 && v2.toISOString() === '2026-09-25T15:22:00.000Z',
      v2 && v2.toISOString());
 
   // el comando entero, con un miembro de mentira en DRA

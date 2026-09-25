@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""LA MADRUGADA, MÁS DESPACIO: de 3 a 11 AM ET el ciclo corre dos veces.
+"""LA MADRUGADA, SIN CICLO: de 3 a 11 AM ET no corre ninguna sincronización.
 
     python bot/madrugada.py --evento schedule   `corre=true|false` para GitHub
     python bot/madrugada.py --auto              el self-check, sin red
@@ -8,11 +8,15 @@ Dlx, 25/09/2026: *«después de las 3am EST hasta las 11am EST que haya un
 retraso digamos de cada 4 horas para que hayan 2 pasados o incluso una.
 Debido a que a esas horas en sí los eventos no hay ninguno»*.
 
+Y después, el mismo día: *«durante las 3am EST y 11am EST no se hará
+ninguna sincronización para ahorrar más»*.
+
 LA REGLA
 --------
-De 3:00 a 10:59 AM ET el ciclo corre a las **6:52 y a las 10:52**, y nada
-más: dos corridas donde había dieciséis. Menos commits del ciclo, menos
-minutos de Actions, menos lecturas del Sheet y de Discord.
+De 3:00 a 10:59 AM ET **no corre el ciclo**: la última corrida es la de las
+2:52 y la siguiente la de las 11:22. Hasta el 25/09/2026 corría a las 6:52 y
+a las 10:52; se sacaron las dos. Menos commits del ciclo, menos minutos de
+Actions, menos lecturas del Sheet y de Discord.
 
 ⚠️ EL VIGÍA DE LOS AVISOS NO SE TOCA: sigue cada minuto. Casi no cuesta
 —vive en el Worker, no en Actions— y es lo que avisa en el acto si alguna
@@ -31,7 +35,7 @@ QUIÉN LA MIRA
   bot/worker.js      no dispara el ciclo fuera de los dos horarios
   ciclo.yml          el cron de respaldo de GitHub (:07 y :37) no corre en
                      la ventana: los dos horarios los cubre el Worker
-  bot/alertar.py     el disparador puede callarse ~4 h sin que sea un fallo
+  bot/alertar.py     el disparador puede callarse ~8 h y media sin que sea un fallo
 """
 import datetime
 import io
@@ -43,11 +47,12 @@ SCR = os.path.dirname(os.path.abspath(__file__))
 
 #: la ventana, en horas del este: [DESDE, HASTA)
 DESDE, HASTA = 3, 11
-#: las horas de la ventana en que sí corre (a los :52, la segunda mitad)
-HORAS = (6, 10)
-#: lo máximo que puede callarse el disparador, en minutos: 2:52 -> 6:52 son
-#: 240, más el margen de la alerta de siempre
-PAUSA_MADRUGADA = 240 + 20
+#: las horas de la ventana en que sí corre (a los :52, la segunda mitad).
+#: Vacío desde el 25/09/2026: ninguna.
+HORAS = ()
+#: lo máximo que puede callarse el disparador, en minutos: 2:52 -> 11:22 son
+#: 510, más el margen de la alerta de siempre
+PAUSA_MADRUGADA = 510 + 20
 PAUSA_NORMAL = 75
 
 
@@ -99,14 +104,13 @@ def _self_check():
     f = lambda h, m: datetime.datetime(2026, 9, 25, h + 4, m, tzinfo=utc)
     ok(toca_ciclo(f(2, 52)), '2:52 AM corre (la última antes de la ventana)')
     ok(not toca_ciclo(f(3, 22)) and not toca_ciclo(f(5, 52)), '3:22 y 5:52 AM no')
-    ok(toca_ciclo(f(6, 52)) and not toca_ciclo(f(6, 22)), '6:52 AM sí, 6:22 no')
-    ok(toca_ciclo(f(10, 52)) and not toca_ciclo(f(9, 52)), '10:52 AM sí, 9:52 no')
+    ok(not toca_ciclo(f(6, 52)) and not toca_ciclo(f(10, 52)), '6:52 y 10:52 AM tampoco')
     ok(toca_ciclo(f(11, 22)), '11:22 AM vuelve a lo de siempre')
-    ok(sum(toca_ciclo(f(h, m)) for h in range(3, 11) for m in (22, 52)) == 2,
-       'en la ventana corre DOS veces, no dieciséis')
+    ok(sum(toca_ciclo(f(h, m)) for h in range(3, 11) for m in (22, 52)) == 0,
+       'en la ventana no corre NINGUNA vez')
     # en invierno (EST, UTC-5) la ventana sigue siendo la misma hora local
     inv = datetime.datetime(2026, 12, 15, 5 + 5, 52, tzinfo=utc)
-    ok(not toca_ciclo(inv) and toca_ciclo(inv.replace(hour=6 + 5)),
+    ok(not toca_ciclo(inv) and toca_ciclo(inv.replace(hour=11 + 5, minute=22)),
        'en invierno (EST) la ventana sigue a la misma hora local')
     ok(pausa_max(f(9, 0)) == PAUSA_MADRUGADA and pausa_max(f(14, 0)) == PAUSA_NORMAL,
        'la alerta del disparador espera más de madrugada')
@@ -114,9 +118,9 @@ def _self_check():
     # ⚠️ LA MISMA VENTANA EN EL WORKER, que es el que dispara
     with io.open(os.path.join(SCR, 'worker.js'), encoding='utf-8') as fh:
         js = fh.read()
-    m = re.search(r'MADRUGADA = \{ desde: (\d+), hasta: (\d+), horas: \[([\d, ]+)\] \}', js)
+    m = re.search(r'MADRUGADA = \{ desde: (\d+), hasta: (\d+), horas: \[([\d, ]*)\] \}', js)
     igual = bool(m) and (int(m.group(1)), int(m.group(2))) == (DESDE, HASTA) and \
-        tuple(int(x) for x in m.group(3).split(',')) == HORAS
+        tuple(int(x) for x in m.group(3).split(',') if x.strip()) == HORAS
     ok(igual, 'el Worker dispara con la misma ventana  %s'
        % (m.group(0) if m else 'no encontré MADRUGADA en worker.js'))
     print('')
@@ -139,8 +143,8 @@ def main():
         corre = ev != 'schedule' or not en_ventana()
         print('corre=%s' % ('true' if corre else 'false'))
         if not corre:
-            print('   (madrugada: el cron de GitHub no corre de 3 a 11 AM ET; '
-                  'el Worker dispara a las 6:52 y 10:52)', file=sys.stderr)
+            print('   (madrugada: de 3 a 11 AM ET no corre ninguna sincronización)',
+                  file=sys.stderr)
         return 0
     print('en la ventana: %s · toca ciclo: %s' % (en_ventana(), toca_ciclo()))
     return 0
