@@ -67,7 +67,34 @@
    "invitacion": "https://discord.gg/SFVnEmVnKz",
    "en_el_sheet": true,
    "nota": "el lobby principal de la Liga",
-   "confirmado": true
+   "confirmado": true,
+   "tag": "ENTRENAMIENTO",
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/underlegendsoficial/"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/@underlegendsoficial"
+    ],
+    [
+     "x",
+     "https://twitter.com/UnderLegendsRap"
+    ],
+    [
+     "tiktok",
+     "https://www.tiktok.com/@.underlegendsoficial"
+    ],
+    [
+     "twitch",
+     "https://www.twitch.tv/underlegendsoficial"
+    ],
+    [
+     "kick",
+     "https://kick.com/underlegends"
+    ]
+   ]
   },
   "FFA": {
    "nombre": "Freestyle For All",
@@ -75,7 +102,22 @@
    "invitacion": "https://discord.gg/4TBvDP2Chm",
    "en_el_sheet": false,
    "nota": "donde se prueba el bot",
-   "confirmado": true
+   "confirmado": true,
+   "tag": "COMUNIDAD",
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/freestyleforall_/"
+    ],
+    [
+     "tiktok",
+     "https://www.tiktok.com/@freestyleforall_1"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/@somosfreeforall"
+    ]
+   ]
   },
   "TWR": {
    "nombre": "The Warren Rap",
@@ -84,17 +126,37 @@
    "en_el_sheet": true
   },
   "TFC": {
-   "nombre": "The Freestyle Community",
+   "nombre": "The Freestyle Corpo",
    "guild_id": "1043611686524944404",
    "invitacion": "https://discord.gg/grUBFhsFFa",
-   "en_el_sheet": true
+   "en_el_sheet": true,
+   "nota": "Dlx, 25/09/2026: «The Freestyle Corpo, pero no están en la liga global». El Sheet viejo decía «The Freestyle Community»."
   },
   "SR": {
    "nombre": "Snake Rap",
    "guild_id": "492346406976356374",
    "invitacion": "https://discord.gg/qhKcQgU47v",
    "en_el_sheet": true,
-   "confirmado": true
+   "confirmado": true,
+   "tag": "TALENTOS",
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/snakerap_freestyle/"
+    ],
+    [
+     "x",
+     "https://twitter.com/snakerap800"
+    ],
+    [
+     "tiktok",
+     "https://www.tiktok.com/@snake_rap"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/channel/UC1wmceEHX_k4ME_ZGq60dJg"
+    ]
+   ]
   },
   "FTN": {
    "nombre": "Fontana",
@@ -140,7 +202,8 @@
    "verificacion": "1506094409438199988",
    "verificacion_mensaje": "1514898497265078423",
    "verificacion_rol": "1101257512273055745",
-   "rol_invitado": "1206980203352690749"
+   "rol_invitado": "1206980203352690749",
+   "novedades": "1498326749748924416"
   }
  },
  "_solo_identidad_leeme": [
@@ -176,5 +239,8 @@
    "para": "sacar Discord ID, nada mas"
   }
  },
- "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve."
+ "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo».",
+ "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal.",
+ "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes."
 }

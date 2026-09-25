@@ -24,7 +24,9 @@ aprendió `getProximos()` del Apps Script.
 import io
 import json
 import os
+import re
 import sys
+from collections import Counter, defaultdict
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -42,6 +44,10 @@ from comun import requisitos as RQ  # noqa: E402
 
 #: la clave. `web:` para que se vea de un vistazo que no es de `/card`.
 CLAVE = 'web:lobby'
+#: 🔑 LOS PERFILES VAN EN OTRA CLAVE: el lobby se baja en CADA visita y el
+#: perfil sólo cuando alguien abre uno. Juntos, el Inicio cargaría el
+#: historial de toda la Liga para mostrar cinco nombres.
+CLAVE_PERFILES = 'web:perfiles'
 
 #: cuántos entran al ranking de la página. No son todos a propósito: el
 #: payload viaja entero en cada visita y una tabla de 300 no se lee.
@@ -127,6 +133,7 @@ def armar():
     from comun import respaldo as _resp
     _foto = _con_foto()
     _ver, _vieja = _versiones()
+    _avs = _avatares()
     tabla = [{
         'n': p.get('raw'),
         'pos': p.get('pos'),
@@ -205,6 +212,10 @@ def armar():
         # espacio o una tilde en el nombre — teniéndola.
         'fo': 1 if (_foto is None
                     or _resp._norm(p.get('raw')) in _foto) else 0,
+        # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
+        # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
+        'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
+               if _avs.get(str(p.get('discord_id') or '')) else ''),
     } for p in gente]
 
     _an = _json('datos', 'anuncios.json') or {}
@@ -292,6 +303,8 @@ def armar():
         pas.append({
             'nombre': _nom(x['nombre']),
             'sv': x.get('servidor') or '',
+            # Dlx, 25/09/2026: «quizás nombrar al organizador también»
+            'org': _org(x.get('organizador')),
             'cuando': _ini(x),
             'modalidad': x.get('modalidad') or '',
             'link': ('https://discord.com/channels/%s/%s/%s'
@@ -360,7 +373,16 @@ def armar():
         'duelos': _duelos(),
         'rachas': _rachas(gente),
         'crews': _crews(),
-        'records': _records(gente),
+        'records': _records(gente, regs, _comp),
+        # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
+        # actividad», «3 mini recent feeds de DRA… información de la liga»
+        # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
+        'actividad': _actividad(regs),
+        'novedades': _novedades(),
+        'redes': _redes(),
+        # ⚠️ LOS PERFILES NO VIAJAN EN EL LOBBY: `main()` los saca de acá y
+        # los sube aparte, a `CLAVE_PERFILES`. Ver `_perfiles()`.
+        '_perfiles': _perfiles(gente, list(_comp.values()), regs),
         'requisitos': _requisitos(),
         # ⚠️ para que la página pueda decir «esto es de hace X». Un dato
         # sin fecha no se distingue de uno viejo.
@@ -378,6 +400,295 @@ def armar():
         # saber de cuándo es lo que está leyendo, no cuándo se copió.
         'leido': _an.get('cuando') or '',
     }
+
+
+def _org(s):
+    """`@!    MMC.` -> `MMC.`: el organizador, sin la arroba ni el relleno."""
+    return re.sub(r'^[@!\s]+', '', str(s or '')).strip()
+
+
+_EMOJI = re.compile(r'<a?:\w+:\d+>')
+_MENCION = re.compile(r'<[@#][!&]?\d+>|@everyone|@here')
+
+
+def _limpio_md(s):
+    """Los renglones de un mensaje de Discord, sin su formato.
+
+    ⚠️ SE SACAN LOS EMOJIS PROPIOS DEL SERVIDOR (`<:CorazonLleno:152…>`):
+    afuera de Discord son texto crudo. Y los separadores `▬▬▬`, que en la
+    web son un renglón de rayas.
+    """
+    out = []
+    for l in str(s or '').split('\n'):
+        l = _MENCION.sub('', _EMOJI.sub('', l))
+        l = re.sub(r'^\s*(-#|#{1,3})\s*', '', l)
+        l = re.sub(r'\*\*|__|~~|`', '', l).strip(' ▬—=·\t')
+        if l:
+            out.append(l)
+    return out
+
+
+def _discord():
+    """Una sesión con el token del bot, o `None` si no hay red o token."""
+    if _SIN_RED[0]:
+        return None
+    try:
+        import requests
+        import fotos as FO
+        s = requests.Session()
+        s.headers['Authorization'] = 'Bot ' + FO.env('DISCORD_TOKEN')
+        return s
+    except (SystemExit, Exception):                      # noqa: BLE001
+        return None
+
+
+def _avatares():
+    """`{discord_id: hash}` de los miembros de DRA, para el ranking.
+
+    🔴 EL AVATAR DE DISCORD Y NO LA FOTO DE R2. La foto congelada vive bajo
+    `fotos/<sal>-t1/` y la sal existe para que la cara de alguien no se
+    pueda bajar sabiendo su nombre (`comun/temporada.sal_fotos()`):
+    publicar UNA de esas direcciones en el payload, que es público, dejaría
+    a la vista las 427. El avatar de Discord es lo que cualquiera del
+    servidor ya ve, y si la persona lo cambia o se va, el link se muere
+    con él, que es justo lo que la sal quería.
+
+    ⚠️ SIN RED O SIN TOKEN, NADIE TIENE CÍRCULO: la página pone la inicial.
+    """
+    s = _discord()
+    if s is None:
+        return {}
+    # ⚠️ DRA Y FFA, NO SNAKE RAP: medido el 25/09/2026 sobre los 50 del pool
+    # con Discord ID, DRA da 33, FFA suma 14 y Snake Rap no suma ninguno —y
+    # tarda 11 s en listar sus 7.300—. El avatar es el global de la cuenta,
+    # así que alcanza con encontrar a la persona en uno.
+    out = {}
+    for sv in ('DRA', 'FFA'):
+        try:
+            import fotos as FO
+            for k, v in FO.avatares_del_servidor(s, FO.guild(sv)).items():
+                if v and k not in out:
+                    out[k] = v
+        except (SystemExit, Exception) as e:             # noqa: BLE001
+            print('   ⚠️ sin avatares de %s (%s)' % (sv, str(e)[:60]))
+    return out
+
+
+def _novedades(tope=3):
+    """Lo último que publicó la Liga en DRA, para el Inicio.
+
+    🔑 Dlx, 25/09/2026: *«3 mini recent feeds de DRA únicamente, como una
+    pestaña de novedades… información de la liga»*. El canal es
+    〢🌍〉rankings-liga-global (`canales.DRA.novedades`), donde se anuncia
+    la página, las postulaciones y cada actualización.
+
+    ⚠️ SIN LAS IMÁGENES: las direcciones de los adjuntos de Discord vienen
+    firmadas y cambian en cada pedido, así que el lobby cambiaría en cada
+    corrida y gastaría una escritura de KV por nada. Va el texto y el link.
+    """
+    s = _discord()
+    sv = _json('datos', 'servidores.json') or {}
+    canal = ((sv.get('canales') or {}).get('DRA') or {}).get('novedades')
+    guild = ((sv.get('servidores') or {}).get('DRA') or {}).get('guild_id')
+    if s is None or not canal or not guild:
+        return []
+    try:
+        r = s.get('https://discord.com/api/v10/channels/%s/messages' % canal,
+                  params={'limit': 10}, timeout=20)
+        ms = r.json() if r.status_code == 200 else []
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin novedades de DRA (%s)' % str(e)[:60])
+        return []
+    out = []
+    for m in ms if isinstance(ms, list) else []:
+        ls = _limpio_md(m.get('content'))
+        if not ls:
+            continue
+        a = m.get('author') or {}
+        out.append({'t': str(m.get('timestamp') or '')[:19] + 'Z',
+                    'tit': ls[0][:110], 'tx': ' '.join(ls[1:])[:280],
+                    'de': a.get('global_name') or a.get('username') or '',
+                    'link': 'https://discord.com/channels/%s/%s/%s' % (guild, canal, m['id'])})
+        if len(out) >= tope:
+            break
+    return out
+
+
+def _redes():
+    """Las redes de la Liga: las de Under Legends, que son las de DRA."""
+    sv = ((_json('datos', 'servidores.json') or {}).get('servidores') or {})
+    return (sv.get('DRA') or {}).get('redes') or []
+
+
+def _hoy_este():
+    import datetime as dt
+    try:
+        from zoneinfo import ZoneInfo
+        return dt.datetime.now(ZoneInfo('America/New_York')).date()
+    except Exception:                                    # noqa: BLE001
+        return dt.datetime.utcnow().date()
+
+
+def _actividad(regs, dias=14):
+    """Cuánto se jugó: eventos por día y por servidor, y la última semana.
+
+    🔑 Dlx, 25/09/2026: *«quizás podamos medir la actividad también»*. Sale
+    de las llaves procesadas (`datos/llaves_t1.json`), que traen el día en
+    hora del este, el servidor, la gente y los que sumaron puntos.
+
+    ⚠️ LA SEMANA ANTERIOR VIAJA APARTE (`ant`) para que la página pueda
+    decir si sube o baja; con la temporada recién arrancada es 0, y ahí la
+    página no compara.
+    """
+    import datetime as dt
+    hoy = _hoy_este()
+    por, sem, ant, part, gente = {}, 0, 0, 0, set()
+    from comun import respaldo as _resp
+    for r in (regs or {}).values():
+        try:
+            dia = dt.date.fromisoformat(r.get('dia') or '')
+        except ValueError:
+            continue
+        hace = (hoy - dia).days
+        if 0 <= hace < dias:
+            x = por.setdefault(dia.isoformat(), {})
+            x[r.get('sv') or '?'] = x.get(r.get('sv') or '?', 0) + 1
+        if 0 <= hace < 7:
+            sem += 1
+            part += int(r.get('participantes') or 0)
+            gente |= {_resp._norm(t[0]) for t in r.get('tabla') or [] if t and t[0]}
+        elif 7 <= hace < 14:
+            ant += 1
+    lista = [(hoy - dt.timedelta(days=i)).isoformat() for i in range(dias - 1, -1, -1)]
+    return {'dias': [[d, por.get(d, {})] for d in lista], 'ev': sem, 'ant': ant,
+            'part': part, 'gente': len(gente)}
+
+
+def _duelos_de(regs, LW):
+    """Los 1v1 de las llaves, del más viejo al más nuevo: `[(num, a, b, ganador)]`.
+
+    ⚠️ SÓLO DOS LADOS DE UNA PERSONA: la regla de Dlx (21/09, reconfirmada el
+    24/09) es que los triples, las de cuatro y las de equipos no son duelos.
+    """
+    inst = LW.instantes(regs)
+    orden = sorted((n for n in regs if str(n).isdigit()),
+                   key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)))
+    out = []
+    for n in orden:
+        for R in regs[n].get('rondas') or []:
+            for b in R.get('b') or []:
+                lados = b[0] if b else []
+                if len(lados) == 2 and not any(',' in (x or '') for x in lados):
+                    out.append((int(n), lados[0], lados[1], b[1] if len(b) > 1 else ''))
+    return out
+
+
+def _mil(n):
+    return '{:,}'.format(int(n)).replace(',', '.')
+
+
+def _perfiles(gente, comp, regs):
+    """Lo que la página de cada rapero necesita y el lobby no trae.
+
+    🔑 Dlx, 25/09/2026: *«ESTARÍA BUENÍSIMO»*, al perfil de cada uno. Es lo
+    que más le faltaba al hub contra la página vieja del Apps Script: su
+    historial, sus duelos, su racha, su puesto en cada ranking y qué le
+    falta para cada tarjeta.
+
+    ⚠️ TODO SALE DE LO QUE YA ESTÁ EN `datos/`: los eventos y los duelos de
+    las llaves procesadas, los requisitos de `comun/requisitos.py` —el
+    mismo lugar que decide la Bloqueada— y la crew de `comun/crews.py`, no
+    del pool, que la trae vieja.
+    """
+    import datetime as dt
+    from comun import respaldo as _resp
+    try:
+        sys.path.append(os.path.join(BASE, 'sheet'))
+        import llaves_web as LW
+    except Exception:                                    # noqa: BLE001
+        return {}
+    try:
+        from comun.crews import puestos as _puestos, norm as _crew_norm
+        crews = _puestos(comp)
+    except Exception:                                    # noqa: BLE001
+        crews, _crew_norm = {}, (lambda s: s)
+    norm = _resp._norm
+    por = {norm(p.get('raw')): p for p in gente if p.get('raw')}
+    comp_de = {norm(x.get('raw')): x for x in comp if x.get('raw')}
+    inst = LW.instantes(regs)
+    orden = sorted((n for n in regs if str(n).isdigit()),
+                   key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)),
+                   reverse=True)
+    e, evs = {}, defaultdict(list)
+    for n in orden:
+        r = regs[n]
+        ms = inst.get(int(n))
+        t = (dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+             if ms else '')
+        e[n] = [r.get('nombre') or '', r.get('sv') or '', t, int(r.get('participantes') or 0),
+                r.get('fecha') or '']
+        for fila in r.get('tabla') or []:
+            q = norm(fila[0])
+            if q in por:
+                evs[q].append([int(n), fila[1], int(fila[2] or 0)])
+    dus = defaultdict(list)
+    for n, a, b, g in _duelos_de(regs, LW):
+        for yo, otro in ((a, b), (b, a)):
+            q = norm(yo)
+            if q in por:
+                dus[q].append([n, otro, 1 if norm(g) == q else 0])
+    duel_ord = sorted([x for x in comp if x.get('duel_real') and (x.get('duel_t') or 0)],
+                      key=lambda x: (-(x.get('duel_v') or 0), -(x.get('duel_t') or 0),
+                                     x.get('raw') or ''))
+    pos_du = {norm(x['raw']): i + 1 for i, x in enumerate(duel_ord)}
+    med = sorted([p for p in gente
+                  if (p.get('oro') or 0) + (p.get('seg') or 0) + (p.get('ter') or 0)],
+                 key=lambda p: (-(p.get('oro') or 0), -(p.get('seg') or 0),
+                                -(p.get('ter') or 0), -(p.get('pts') or 0)))
+    pos_pod = {norm(p['raw']): i + 1 for i, p in enumerate(med)}
+    por_cc = Counter((x.get('cc') or '').lower() for x in comp if x.get('cc'))
+    out = {}
+    for q, p in por.items():
+        fila = dict(comp_de.get(q) or {})
+        fila.update({k: v for k, v in p.items() if v not in (None, '')})
+        req = {}
+        for carta in ('temporada', 'competitivo', 'pais'):
+            req[carta] = [[RQ.cuanto(fila, campo), meta, RQ.como_se_dice(carta, meta, None, i)]
+                          for i, (meta, campo, _q) in enumerate(RQ.condiciones(carta))]
+        rk = {}
+        if pos_du.get(q):
+            rk['du'] = [pos_du[q], len(duel_ord)]
+        if pos_pod.get(q):
+            rk['pod'] = [pos_pod[q], len(med)]
+        # ⚠️ `pos_pais` ES TEXTO, «1/23»: el puesto y cuántos son. Es el mismo
+        # número del círculo de la carta de País, así que no se recalcula.
+        pp = str((comp_de.get(q) or {}).get('pos_pais') or '')
+        cc = (p.get('cc') or '').lower()
+        if cc and re.match(r'^\d+(/\d+)?$', pp) and not pp.startswith('0'):
+            pos, _, tot = pp.partition('/')
+            rk['pa'] = [int(pos), int(tot) if tot else por_cc.get(cc, 0)]
+        # ⚠️ CON LA NORMA DE `comun/crews.py`, no con la de las fotos
+        cr = crews.get(_crew_norm(p.get('raw') or ''))
+        if cr:
+            rk['cr'] = [cr[0], cr[1], cr[2]]
+        # la racha de duelos: seguidos ganados, del más viejo al más nuevo
+        act = mej = 0
+        for _n, _o, gano in dus.get(q, []):
+            act = act + 1 if gano else 0
+            mej = max(mej, act)
+        x = {'req': req}
+        if evs.get(q):
+            x['ev'] = evs[q]
+        if dus.get(q):
+            x['du'] = list(reversed(dus[q]))
+            x['rd'] = [act, mej]
+        if rk:
+            x['rk'] = rk
+        if cr:
+            x['crew'] = cr[0]
+        out[_clave(p)] = x
+    import time
+    return {'sello': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'e': e, 'p': out}
 
 
 def _calendario(ann, regs, llaves, LW, CU, ahora):
@@ -678,6 +989,12 @@ def _servidores(gente):
         a['color'] = col.get(sv, '#7E8B89')
         a['nombre'] = x.get('nombre') or sv
         a['invita'] = x.get('invitacion') or ''
+        # 🔑 LA ETIQUETA Y LAS REDES. Dlx, 25/09/2026: «generar tags para los
+        # servidores… FFA COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO».
+        if x.get('tag'):
+            a['tag'] = x['tag']
+        if x.get('redes'):
+            a['redes'] = x['redes']
         # ⚠️ EL DE DISCORD PRIMERO y el guardado de respaldo: sin red, o si
         # el servidor saca su ícono, la página sigue teniendo uno.
         if (miembros.get(sv) or {}).get('icono'):
@@ -796,8 +1113,13 @@ def _crews():
     return sorted(fuera, key=lambda a: (-a['pts'], -a['n']))
 
 
-def _records(gente):
+def _records(gente, regs=None, comp=None):
     """Los números que sobresalen. Uno por categoría, o ninguno.
+
+    🔑 MÁS FICHAS DESDE EL 25/09/2026. Dlx: *«agrega más cosas para las
+    cosas randoms de abajo de OVR más alto, más puntos… agrega más de
+    esos»*. Las de un evento —el mejor puntaje en una sola llave, la llave
+    más grande, el día con más eventos— salen de las llaves procesadas.
 
     ⚠️ SI NADIE TIENE EL DATO, LA FICHA NO SALE. Es la regla del proyecto
     —*«sin dato no hay pieza»*—: un récord de racha con la temporada
@@ -849,6 +1171,72 @@ def _records(gente):
         # es peor que no filtrar ninguna.
         ('racha', 'Racha más larga', top_racha()),
     ]
+
+    def top_de(f, minimo=1):
+        con = [(f(p), p) for p in gente]
+        con = [(v, p) for v, p in con if v >= minimo]
+        if not con:
+            return None
+        v, p = max(con, key=lambda x: x[0])
+        return {'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '', 'v': v}
+
+    salida += [
+        ('oro', 'Más títulos', top('oro')),
+        ('fin', 'Más finales', top_de(lambda p: (p.get('oro') or 0) + (p.get('seg') or 0))),
+        ('sem', 'Más semifinales', top('sem')),
+        ('srv', 'Más servidores', top('srv', 2)),
+    ]
+    # los duelos ganados salen del pool competitivo, que es donde viven
+    con = [x for x in (comp or {}).values() if x.get('duel_real') and (x.get('duel_v') or 0)]
+    if con:
+        x = max(con, key=lambda x: (x.get('duel_v') or 0, -(x.get('duel_t') or 0)))
+        salida.append(('duv', 'Más duelos ganados',
+                       {'n': x.get('raw'), 'k': _clave(x), 'cc': x.get('cc') or '',
+                        'v': x.get('duel_v')}))
+    regs = regs or {}
+    # el mejor puntaje en UNA llave, la llave más grande y el día con más eventos
+    mejor = None
+    for r in regs.values():
+        for t in r.get('tabla') or []:
+            if t and int(t[2] or 0) and (mejor is None or int(t[2]) > mejor[0]):
+                mejor = (int(t[2]), t[0], r.get('nombre') or '')
+    if mejor:
+        p = next((g for g in gente if g.get('raw') == mejor[1]), {})
+        salida.append(('mev', 'Mejor evento',
+                       {'n': mejor[1], 'k': _clave(p) if p else '', 'cc': p.get('cc') or '',
+                        'v': _mil(mejor[0]), 'x': mejor[2]}))
+    if regs:
+        r = max(regs.values(), key=lambda r: int(r.get('participantes') or 0))
+        if int(r.get('participantes') or 0):
+            salida.append(('grande', 'Llave más grande',
+                           {'n': r.get('nombre') or '', 'v': int(r['participantes']),
+                            'x': 'raperos · ' + (r.get('sv') or '')}))
+        dias = Counter(r.get('fecha') for r in regs.values() if r.get('fecha'))
+        if dias:
+            fe, cu = max(dias.items(), key=lambda x: x[1])
+            if cu > 1:
+                salida.append(('dia', 'Día más activo', {'n': fe, 'v': cu, 'x': 'eventos'}))
+    # la racha de duelos: ganados seguidos, en el orden en que se jugaron
+    try:
+        sys.path.append(os.path.join(BASE, 'sheet'))
+        import llaves_web as LW
+        from comun import respaldo as _resp
+        act, mej = defaultdict(int), defaultdict(int)
+        for _n, a, b, g in _duelos_de(regs, LW):
+            for yo in (a, b):
+                q = _resp._norm(yo)
+                act[q] = act[q] + 1 if _resp._norm(g) == q else 0
+                mej[q] = max(mej[q], act[q])
+        if mej:
+            q = max(mej, key=lambda k: mej[k])
+            if mej[q] >= 2:
+                p = next((g for g in gente if _resp._norm(g.get('raw')) == q), None)
+                if p:
+                    salida.append(('rdu', 'Racha de duelos',
+                                   {'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '',
+                                    'v': mej[q], 'x': 'ganados seguidos'}))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin racha de duelos (%s)' % str(e)[:60])
     return [{'id': i, 'que': q, **d} for i, q, d in salida if d]
 
 
@@ -985,7 +1373,7 @@ def _token():
     return ''
 
 
-def subir(payload, solo_si_cambio=False):
+def subir(payload, solo_si_cambio=False, clave=None):
     """Lo deja en KV. Devuelve `True` si salió, `None` si no hizo falta.
 
     ⚠️ CON `solo_si_cambio` ES UN DIFF-WRITER, igual que
@@ -996,12 +1384,13 @@ def subir(payload, solo_si_cambio=False):
     import requests
     import subir_datos as SD
 
+    clave = clave or CLAVE
     tok = _token()
     if not tok:
         return False
     if solo_si_cambio:
         try:
-            r = requests.get('%s/values/%s' % (SD.API, CLAVE),
+            r = requests.get('%s/values/%s' % (SD.API, clave),
                              headers={'Authorization': 'Bearer ' + tok},
                              timeout=45)
             # ⚠️ `r.content` EN UTF-8 y no `r.text`: KV no dice el charset
@@ -1017,7 +1406,7 @@ def subir(payload, solo_si_cambio=False):
             # ⚠️ SI NO SE PUEDE LEER, SE ESCRIBE. El error de este lado es
             # dejar la web vieja, no gastar una escritura de más.
             pass
-    r = requests.put('%s/values/%s' % (SD.API, CLAVE),
+    r = requests.put('%s/values/%s' % (SD.API, clave),
                      headers={'Authorization': 'Bearer ' + tok},
                      files={'value': (None, json.dumps(
                          payload, ensure_ascii=False, separators=(',', ':'))),
@@ -1037,6 +1426,7 @@ def _self_check():
 
     _SIN_RED[0] = True
     p = armar()
+    perf = p.pop('_perfiles', None) or {}
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
 
@@ -1130,6 +1520,23 @@ def _self_check():
                'y no son todos el mismo numero (%d valores distintos)'
                % distintos)
 
+    # 🔑 LOS PERFILES: uno por fila de la tabla, con sus requisitos
+    ok(set(perf.get('p') or {}) == {f['k'] for f in p['tabla']},
+       'un perfil por cada rapero de la tabla  (%d)' % len(perf.get('p') or {}))
+    ok(all(len(x['req'].get('pais') or []) == 3 for x in (perf.get('p') or {}).values()),
+       'y cada uno con las tres condiciones de País')
+    _evs = {str(e[0]) for x in (perf.get('p') or {}).values() for e in x.get('ev') or []}
+    ok(_evs <= set(perf.get('e') or {}), 'cada evento del historial tiene su nombre  (%d)'
+       % len(_evs))
+    ok('_perfiles' not in p, 'y no viajan en el lobby')
+    ok(all('av' in f for f in p['tabla']) and not any(f['av'] for f in p['tabla']),
+       'sin red nadie tiene avatar (la inicial)')
+    ok(isinstance(p.get('actividad'), dict) and len(p['actividad'].get('dias') or []) == 14,
+       'la actividad trae 14 días')
+    ok(p.get('novedades') == [], 'sin red no hay novedades')
+    ok(_limpio_md('# 🏆 HOLA <:CorazonLleno:152933862521543> @everyone\n▬▬▬\n**chau**')
+       == ['🏆 HOLA', 'chau'], 'el texto de Discord sale sin su formato')
+    ok(_org('@!    MMC.') == 'MMC.', 'y el organizador sin la arroba')
     ok(json.dumps(p, ensure_ascii=False) and True, 'el payload es JSON')
     tam = len(json.dumps(p, ensure_ascii=False).encode('utf-8'))
     # ⚠️ KV admite 25 MB por valor; el problema no es ese sino que el
@@ -1149,6 +1556,7 @@ def main():
     if '--auto' in sys.argv:
         return _self_check()
     p = armar()
+    perf = p.pop('_perfiles', None) or {}
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
                                                           p['gente']))
@@ -1166,11 +1574,22 @@ def main():
         return 0
     okk = subir(p, solo_si_cambio='--siempre' not in sys.argv)
     if okk is None:
-        print('\n   ✓ ya estaba igual arriba: no gasté una escritura\n')
-        return 0
-    print('\n   %s\n' % ('✅ subido a KV como `%s`' % CLAVE if okk
-                         else '🔴 no pude subirlo'))
-    return 0 if okk else 1
+        print('\n   ✓ ya estaba igual arriba: no gasté una escritura')
+    else:
+        print('\n   %s' % ('✅ subido a KV como `%s`' % CLAVE if okk
+                             else '🔴 no pude subirlo'))
+    # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
+    # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
+    ok2 = None
+    if perf.get('p'):
+        ok2 = subir(perf, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_PERFILES)
+        print('   %s' % ('✓ perfiles: ya estaban iguales' if ok2 is None else
+                         '✅ perfiles subidos (%d) a `%s`  %.1f KB'
+                         % (len(perf['p']), CLAVE_PERFILES,
+                            len(json.dumps(perf, ensure_ascii=False)) / 1024.0)
+                         if ok2 else '🔴 no pude subir los perfiles'))
+    print('')
+    return 0 if okk is not False else 1
 
 
 if __name__ == '__main__':
