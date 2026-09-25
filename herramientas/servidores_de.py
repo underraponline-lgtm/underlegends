@@ -94,9 +94,10 @@ def miembros(s, gid):
         if not lote:
             break
         for m in lote:
-            did = (m.get('user') or {}).get('id')
-            if did:
-                out.add(did)
+            u = m.get('user') or {}
+            # los bots no son gente: ni tienen carta ni cuentan en la comunidad
+            if u.get('id') and not u.get('bot'):
+                out.add(u['id'])
         # 🔴 `key=int` NO ES COSMETICO. Los snowflakes tienen 17, 18 y 19
         # digitos, y `max()` sobre cadenas compara alfabeticamente: asi
         # '999999999999999999' le gana a '1000000000000000000', que es
@@ -187,7 +188,26 @@ def main():
         print('   -> si es de carta va en `servidores`; si es sólo para sacar')
         print('      IDs va en `solo_identidad`. Los dos en datos/servidores.json.')
 
+    # 🔑 CUÁNTAS PERSONAS DISTINTAS HAY EN LA LIGA. Dlx, 25/09/2026: «¿cuántas
+    # personas diferentes tenemos…? Quizás ese dato podríamos agregarlo a La
+    # Liga hoy». Sumar los servidores cuenta dos veces a quien está en dos
+    # —medido ese día: 12.036 sumando, 10.004 personas—, y las listas enteras
+    # ya están acá, así que la cuenta de verdad no cuesta ni un pedido más.
+    #
+    # ⚠️ SÓLO EL NÚMERO VA AL REPO, que es público: las listas no son nuestras.
+    todas = set().union(*dentro.values()) if dentro else set()
+    print('\npersonas distintas en los %d: %d (sumando serían %d)'
+          % (len(GUILDS), len(todas), sum(len(v) for v in dentro.values())))
+
     if '--json' in sys.argv:
+        with io.open(os.path.join(BASE, 'datos', 'comunidad.json'), 'w',
+                     encoding='utf-8', newline='\n') as f:
+            json.dump({'_leeme': 'Cuántas personas distintas hay en los servidores de la '
+                                 'Liga (sin bots). Lo escribe herramientas/servidores_de.py '
+                                 'en cada corrida; lo muestra «La Liga hoy».',
+                       'personas': len(todas),
+                       'servidores': [sv for sv, _ in GUILDS]},
+                      f, ensure_ascii=False, indent=1)
         json.dump(mapa, io.open(SALIDA, 'w', encoding='utf-8', newline='\n'),
                   ensure_ascii=False, indent=0, sort_keys=True)
         p2 = os.path.join(BASE, 'datos', 'bot_en.json')

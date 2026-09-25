@@ -2277,7 +2277,8 @@ document.addEventListener('error', function (e) {
 /* el nombre con su cara a la izquierda y la bandera a la derecha */
 function quienEs(f, tam) {
   return '<span class="quien">' + avatar(f, tam) + '<span class="qn">' + esc(f.n) +
-    '</span>' + (bandera(f.cc) || '') + '</span>';
+    '</span>' + (bandera(f.cc) || '') +
+    (sigoA(f.k) ? '<i class="sigo-et" title="Lo seguís">&#9733;</i>' : '') + '</span>';
 }
 /* lo que viene sin cara en su lista (duelos, rachas) la toma de la tabla */
 function conCara(x) {
@@ -2427,7 +2428,9 @@ function pintaPerfil(k) {
       '<div class="pf-id"><span class="pf-pos">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) +
         ' de la temporada' : 'Todavía sin eventos esta temporada') + '</span>' +
       '<h1 class="tit">' + esc(f.n) + '</h1><p class="pf-sub">' + sub +
-      '<span id="pfCrew"></span></p></div>' +
+      '<span id="pfCrew"></span></p>' +
+      // no se sigue uno mismo
+      (k === YO || (DC && DC.clave === k) ? '' : '<p class="pf-acc">' + botonSigo(k) + '</p>') + '</div>' +
       '<dl class="pf-cifras"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
       '<div><dt>Rango</dt><dd>' + (rg || '<span class="nada">—</span>') + '</dd></div>' +
       '<div><dt>Puntos</dt><dd>' + num(f.pts) + '</dd></div>' +
@@ -2574,6 +2577,25 @@ function pintaBusca(q) {
    🔑 Dlx, 25/09/2026: «quizás podamos medir la actividad también». Los
    eventos de cada día de las últimas dos semanas, con el color de su
    servidor, y los números de la semana. */
+/* 🔑 LA COMUNIDAD: cuánta gente tiene la Liga. Dlx, 25/09/2026: «¿cuántas
+   personas diferentes tenemos, y con ID y verificadas? Quizás ese dato
+   podríamos agregarlo a La Liga hoy». Cada número se dibuja sólo si vino. */
+function pintaComunidad() {
+  var C = D.comunidad, caja = $('#comunidad');
+  if (!caja) return;
+  if (!C || !C.personas) { caja.hidden = true; return; }
+  var filas = [
+    ['Personas', C.personas, C.servidores ? 'distintas, en los ' + C.servidores + ' servidores' : 'distintas'],
+    ['En la Lista', C.lista, 'compitieron o se anotaron'],
+    ['Con su Discord', C.con_id, 'el bot sabe quiénes son'],
+    ['Verificadas', C.verificados, 'con tarjeta'],
+  ].filter(function (f) { return f[1]; });
+  caja.innerHTML = '<h3>La comunidad</h3><dl class="com-n">' + filas.map(function (f) {
+    return '<div><dt>' + esc(f[0]) + '</dt><dd>' + num(f[1]) + '</dd><small>' + esc(f[2]) +
+      '</small></div>';
+  }).join('') + '</dl>';
+  caja.hidden = false;
+}
 function pintaActividad() {
   var A = D.actividad;
   var caja = $('#actividad');
@@ -2820,6 +2842,64 @@ function pintaGuia() {
 var YO = leerLS('lg:yo', '');
 function yo() { return YO ? porK(YO) : null; }
 
+/* ── seguir raperos ───────────────────────────────────────────────────
+   🔑 Dlx, 25/09/2026, a las ideas de Mi cuenta: «todas». Seguir a alguien es
+   de este dispositivo, como `lg:yo`: no viaja a ningún lado y no hace falta
+   entrar con Discord. Se ve en tres lugares: el botón del perfil, la lista
+   de Mi cuenta y una ★ al lado de su nombre en toda la página. */
+var SIGO = leerLS('lg:sigo', []);
+if (!Array.isArray(SIGO)) SIGO = [];
+function sigoA(k) { return !!k && SIGO.indexOf(k) >= 0; }
+function alternarSigo(k) {
+  var i = SIGO.indexOf(k);
+  if (i >= 0) SIGO.splice(i, 1); else SIGO.unshift(k);
+  SIGO = SIGO.slice(0, 60);
+  guardarLS('lg:sigo', SIGO.length ? SIGO : null);
+}
+function botonSigo(k) {
+  var si = sigoA(k);
+  return '<button type="button" class="btn sec seguir' + (si ? ' on' : '') + '" data-seguir="' +
+    esc(k) + '" aria-pressed="' + si + '">' + (si ? '&#9733; Siguiendo' : '&#9734; Seguir') + '</button>';
+}
+/* lo que va en Mi cuenta: a quién seguís, con su puesto de hoy */
+function secSigo() {
+  var fs = SIGO.map(function (k) { return porK(k); }).filter(Boolean);
+  if (!fs.length) return '';
+  return '<section class="pop-sec"><h4>&#9733; Siguiendo <small>' + fs.length + '</small></h4>' +
+    '<div class="pop-sigo">' + fs.slice(0, 6).map(function (f) {
+      return '<a href="#/r/' + encodeURIComponent(f.k) + '">' + avatar(f, 26) + '<span class="ps-n">' +
+        esc(f.n) + '</span><span class="ps-d">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) : '—') +
+        ' &middot; OVR ' + (f.ovr || '—') + '</span></a>';
+    }).join('') + '</div>' + (fs.length > 6 ? '<p class="nota">y ' + (fs.length - 6) +
+      ' más: tienen la &#9733; en el ranking.</p>' : '') + '</section>';
+}
+/* 🔑 TUS PRÓXIMOS EVENTOS: los anunciados en los servidores donde estás
+   (lo sabe `/api/cuenta`); sin eso, los de toda la Liga. El link es el
+   anuncio, que es donde cada servidor dice cómo anotarse. */
+function secProximos() {
+  var ahora = Date.now();
+  var fut = (D.calendario || []).filter(function (c) { return Date.parse(c.t) > ahora; });
+  var svs = (DC && DC.svs && DC.svs.length ? DC.svs : (yo() && yo().sv ? [yo().sv] : []));
+  var mios = svs.length ? fut.filter(function (c) { return svs.indexOf(c.sv) >= 0; }) : fut;
+  var titulo = svs.length ? '&#128197; Tus próximos eventos' : '&#128197; Próximos eventos';
+  if (!mios.length) {
+    return '<section class="pop-sec"><h4>' + titulo + '</h4><p class="nota">' +
+      (svs.length ? 'Ninguno anunciado en tus servidores' + (fut.length ? ' (hay ' + fut.length +
+        ' en otros)' : '') : 'No hay eventos anunciados') + '. <a href="#/avisos">Activá los avisos</a> y ' +
+      'te llega uno al celular cuando salga.</p></section>';
+  }
+  return '<section class="pop-sec"><h4>' + titulo + '</h4><div class="pop-ev">' +
+    mios.slice(0, 3).map(function (c) {
+      return '<div class="pv" style="--c:' + esc(colorSv(c.sv)) + '"><b>' + esc(c.n) + '</b><small>' +
+        esc(nombreSv(c.sv)) + ' &middot; ' + esc(fmtFecha(c.t, { weekday: 'short' })) + ' ' +
+        esc(fmtHora(c.t)) + '</small><span class="pv-acc">' +
+        (c.link ? '<a href="' + esc(c.link) + '" target="_blank" rel="noopener noreferrer">Anuncio' +
+          ' e inscripción &#8599;</a>' : '') +
+        '<a href="' + esc(googleEv(c)) + '" target="_blank" rel="noopener noreferrer">+ Calendario</a>' +
+        '</span></div>';
+    }).join('') + '</div></section>';
+}
+
 /* 🔑 ENTRAR CON DISCORD. Dlx, 25/09/2026: «creo que sería mejor meter el
    login de Discord». Discord devuelve a la página con un permiso que sólo
    lee la identidad; el Worker le pregunta a Discord de quién es
@@ -2860,7 +2940,7 @@ function volverDeDiscord() {
       if (!c || !c.id) return;
       DC = { id: c.id, n: c.n || '', av: c.av || '', rapero: c.rapero || '',
         clave: c.clave || '', cs: c.cs || [], bl: c.bl || [], ev: c.ev || 0,
-        sv: c.sv || '', cc: c.cc || '' };
+        sv: c.sv || '', cc: c.cc || '', svs: c.svs || [] };
       guardarLS('lg:dc', DC);
       YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
       guardarLS('lg:yo', YO || null);
@@ -2906,7 +2986,7 @@ function pintaPopCuenta() {
         ' Mi país</a>' : '') +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
       '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>';
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secProximos() + secSigo();
     return;
   }
   if (!f && DC) {
@@ -2916,7 +2996,7 @@ function pintaPopCuenta() {
       'Discord: te dice qué te falta.</p><nav class="pop-menu">' +
       '<a href="#/guia">&#127915; Cómo conseguir tu tarjeta</a>' +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>';
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secProximos() + secSigo();
     return;
   }
   if (!f) {
@@ -2925,7 +3005,8 @@ function pintaPopCuenta() {
       'publica nada.</p>' + entrar +
       '<details class="pop-sin"><summary>O elegí tu nombre sin entrar</summary>' +
       '<input type="search" id="yoBusca" placeholder="Tu nombre de competencia…" autocomplete="off" ' +
-      'spellcheck="false" aria-label="Tu nombre"><div class="pop-lista" id="yoRes"></div></details>';
+      'spellcheck="false" aria-label="Tu nombre"><div class="pop-lista" id="yoRes"></div></details>' +
+      secSigo();
     return;
   }
   c.innerHTML = '<div class="pop-yo">' + avatar(f, 46) + '<div><b>' + esc(f.n) + '</b><small>#' +
@@ -2938,7 +3019,8 @@ function pintaPopCuenta() {
     '<a href="#/avisos">&#128276; Mis avisos</a>' +
     (DC ? '<a href="#/guia">&#128247; Cambiar mi foto <small>/foto</small></a>' : '') +
     '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
-    (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar);
+    (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar) +
+    secProximos() + secSigo();
 }
 function pintaYoRes(q) {
   var caja = $('#yoRes');
@@ -3202,6 +3284,12 @@ function eventos() {
       e.preventDefault();
       window.scrollTo(0, 0);
       abrirPop('#popCuenta', pintaPopCuenta);
+      return;
+    }
+    var sg = e.target.closest('[data-seguir]');
+    if (sg) {
+      alternarSigo(sg.dataset.seguir);
+      sg.outerHTML = botonSigo(sg.dataset.seguir);
       return;
     }
     var y = e.target.closest('[data-yo]');
@@ -3504,7 +3592,7 @@ function pinta() {
   // consola con el nombre de la sección.
   [trama, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
     pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
-    pintaTops, pintaMapa, pintaActividad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
+    pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
     pintaUltCampeones, pintaFormatos, pintaCuenta, pintaPaneles, aplicarCalma]
     .forEach(function (f) {
       try { f(); } catch (e) { console.error('[' + f.name + ']', e); }

@@ -86,7 +86,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
           datos/bot_en.json datos/alertas.json \
           datos/llaves_t1.json datos/llaves_links.json \
           datos/autoverificar.json datos/escala.json \
-          datos/iconos_sv.json"
+          datos/iconos_sv.json datos/comunidad.json"
 # 🔴 CADA PALABRA DE LA LISTA TIENE QUE SER UN `datos/*.json`, Y SE MIRA.
 # El 24/09/2026 a las 5:22 PM ET entró un `\n` literal —una edición con
 # heredoc se comió la barra— y `bash -n` dio bien, porque es sintaxis

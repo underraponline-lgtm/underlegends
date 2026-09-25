@@ -1288,7 +1288,9 @@ async function cuentaDiscord(req, env) {
     if (clave) {
       const p = JSON.parse((await env.KV.get('p:' + clave)) || '{}');
       rapero = p.n || '';
-      yo = { clave, cs: p.cs || [], bl: p.bl || [], ev: p.ev || 0, sv: p.sv || '', cc: p.cc || '' };
+      yo = { clave, cs: p.cs || [], bl: p.bl || [], ev: p.ev || 0, sv: p.sv || '', cc: p.cc || '',
+        // en qué servidores está: «tus próximos eventos» de Mi cuenta son los de ahí
+        svs: p.svs || [] };
     }
   } catch (e) { rapero = ''; yo = {}; }
   return new Response(JSON.stringify(Object.assign({ id: u.id, n: u.global_name || u.username || '',

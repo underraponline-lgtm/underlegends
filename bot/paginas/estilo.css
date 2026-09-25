@@ -946,6 +946,16 @@ color:var(--mg);font:800 .76rem/1.2 Archivo,sans-serif;letter-spacing:.04em}
 .hoy .mapa-dato span{font-size:.88rem}
 .hoy-ac h3{margin-bottom:10px;color:var(--tx2);font:900 .78rem/1 Archivo,sans-serif;
 letter-spacing:.2em;text-transform:uppercase}
+/* la comunidad: cuatro números a lo ancho, abajo del mapa y la actividad */
+.hoy-com{margin-top:20px;padding-top:16px;border-top:1px solid var(--bd2)}
+.hoy-com h3{margin-bottom:10px;color:var(--tx2);font:900 .78rem/1 Archivo,sans-serif;
+letter-spacing:.14em;text-transform:uppercase}
+.com-n{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.com-n div{display:grid;gap:4px;padding:12px 14px;background:rgba(255,255,255,.03);border-radius:4px}
+.com-n dt{color:var(--tx2);font:600 .74rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase}
+.com-n dd{font:900 1.7rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.com-n small{color:var(--tx3);font:600 .76rem/1.3 Archivo,sans-serif}
 .ac-n{display:grid;gap:8px;margin-bottom:14px}
 .ac-n div{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
 padding-bottom:8px;border-bottom:1px solid var(--bd2)}
@@ -1318,6 +1328,33 @@ font:600 .92rem/1.2 Archivo,sans-serif}
 .aj-ck{display:flex;align-items:center;gap:9px;color:var(--tx)}
 .pop .nota{margin:0;text-transform:none;letter-spacing:0;font:500 .86rem/1.45 Archivo,sans-serif;color:var(--tx2)}
 .pop .nota b{color:var(--tx)}
+.pop .nota a{color:var(--tl)}
+/* ── Mi cuenta: seguir y próximos eventos ── */
+.pop-sec{display:grid;gap:6px;border-top:1px solid var(--bd);padding-top:10px}
+.pop-sec h4{font:900 .8rem/1.2 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.06em;
+color:var(--tx2);display:flex;align-items:center;gap:6px}
+.pop-sec h4 small{color:var(--tx3);font-weight:700}
+.pop-sigo{display:grid;gap:2px}
+.pop-sigo a{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:4px;color:var(--tx);
+text-decoration:none}
+.pop-sigo a:hover{background:rgba(41,178,152,.1)}
+.ps-n{flex:1;min-width:0;font:800 .92rem/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;
+white-space:nowrap}
+.ps-d{color:var(--tx2);font:700 .78rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;
+white-space:nowrap}
+.pop-ev{display:grid;gap:6px}
+.pv{display:grid;gap:3px;padding:8px 10px;border-left:3px solid var(--c,var(--tl));
+background:rgba(255,255,255,.03);border-radius:0 4px 4px 0}
+.pv b{font:800 .92rem/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.pv small{color:var(--tx2);font:600 .8rem/1.3 Archivo,sans-serif}
+.pv-acc{display:flex;flex-wrap:wrap;gap:4px 14px}
+.pv-acc a{color:var(--tl);font:700 .8rem/1.4 Archivo,sans-serif;text-decoration:none}
+.pv-acc a:hover{text-decoration:underline}
+/* el botón de seguir, en el perfil, y la ★ de quien seguís */
+.pf-acc{margin-top:12px}
+.seguir{padding:8px 14px}
+.seguir.on{--c:#E0B341;color:#E0B341;border-color:#E0B341}
+.sigo-et{font-style:normal;color:#E0B341;font-size:.85em;margin-left:4px}
 .calma *,.calma *::before,.calma *::after{animation:none!important;transition:none!important}
 .calma .blk{opacity:1;transform:none}
 
