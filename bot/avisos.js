@@ -632,79 +632,12 @@ export function mensajeRed(c) {
   };
 }
 
-// ═════════════════════════════════════════════════════════════════════
-// LOS AVISOS POR MENSAJE DIRECTO (`/notify`)
-// ═════════════════════════════════════════════════════════════════════
-//
-// 🔑 Dlx, 25/09/2026: «activar las notificaciones de este servidor… ahí te
-// dejará las opciones en vez de que lo haga en el website». Lo mismo que la
-// campana de la página, pero desde Discord y al DM: quien no quiere instalar
-// nada elige servidores con `/notify` y el aviso le llega al minuto.
-//
-// ⚠️ VIAJAN EN LA MISMA COLA QUE LOS DE LA PÁGINA (`avisos`), con su propio
-// cursor y DESPUÉS de ellos: una alarma manda un lote de push, la siguiente
-// otro, y cuando se terminan, los DMs de a `LOTE_DM`. Cada DM son dos pedidos
-// la primera vez —abrir el canal y escribir— y uno después: diez por alarma
-// son veinte de los cincuenta subpedidos que tiene cada invocación.
-const LOTE_DM = 10;
-//: tres DMs seguidos que Discord no deja mandar (DMs cerrados, bot
-//: bloqueado): se borra, porque insistir sólo gasta pedidos
-const FALLOS_DM = 3;
-
-/** El aviso de un evento, para un DM: el de `eventos-hoy` con su pie propio. */
-export function mensajeDM(c) {
-  const m = mensajeRed(c);
-  m.embeds[0].footer = { text: 'Te llega porque lo pediste con /notify · ahí lo cambiás o lo apagás',
-    icon_url: HUB + '/aviso.png' };
-  // «Avisos en tu teléfono» sobra: el aviso ya le está llegando acá
-  m.components[0].components = [m.components[0].components[0],
-    { type: 2, style: 5, label: 'La Liga', url: HUB }];
-  return m;
-}
-
-/** ¿A quien eligió `svs` ('|FFA|SR|', o '' = todos) le toca el aviso de `sv`? */
-export function leToca(svs, sv) {
-  const s = String(svs || '');
-  if (sv === SV_PRUEBA) return s.indexOf('|' + SV_PRUEBA + '|') >= 0;
-  return !s || s.indexOf('|' + sv + '|') >= 0;
-}
-
-/** Abre el DM si hace falta y escribe. Devuelve `{estado, canal, codigo}`. */
-export async function mandarDM(env, usuario, canal, cuerpo) {
-  const h = { Authorization: 'Bot ' + env.DISCORD_TOKEN, 'User-Agent': UA,
-    'content-type': 'application/json' };
-  try {
-    let ch = canal;
-    if (!ch) {
-      const r = await fetch(`${DC}/users/@me/channels`, { method: 'POST', headers: h,
-        body: JSON.stringify({ recipient_id: usuario }) });
-      if (r.status !== 200) return { estado: r.status, canal: '', codigo: 0 };
-      ch = (await r.json()).id;
-    }
-    const r2 = await fetch(`${DC}/channels/${ch}/messages`, { method: 'POST', headers: h,
-      body: JSON.stringify(cuerpo) });
-    let codigo = 0;
-    if (r2.status !== 200) {
-      try { codigo = (await r2.json()).code || 0; } catch (e) { codigo = 0; }
-    }
-    return { estado: r2.status, canal: ch, codigo };
-  } catch (e) {
-    return { estado: 0, canal: canal || '', codigo: 0 };
-  }
-}
-
-/** Lo que el Worker le pregunta al objeto para `/notify`: `/dm/ver` y `/dm/poner`. */
-export async function pedirDM(env, ruta, d) {
-  if (!env.AVISOS) return null;
-  try {
-    const r = await elObjeto(env).fetch('https://avisos' + ruta, {
-      method: 'POST', body: JSON.stringify(d), headers: { 'content-type': 'application/json' },
-    });
-    return await r.json();
-  } catch (e) {
-    return null;
-  }
-}
+// 🔴 LOS AVISOS POR MENSAJE DIRECTO SE SACARON (25/09/2026). `/notify`
+// nació esa mañana mandando DMs, y Dlx lo corrigió a la tarde: *«no debería
+// usar el bot para enviarte DMs, sino activar la notificación al celular o
+// dispositivo»*. Se fueron con 0 anotados. Ahora `/notify` lleva a la campana
+// de la página con el servidor ya elegido (`#/avisos/<SV>`, ver `campana.js`),
+// y el único camino de un aviso es el push de este objeto.
 
 // ═════════════════════════════════════════════════════════════════════
 // LA ALTA: qué suscripción se acepta
@@ -900,21 +833,12 @@ export class Avisos {
           msg TEXT NOT NULL DEFAULT '',
           error TEXT NOT NULL DEFAULT ''
         );
-        CREATE TABLE IF NOT EXISTS dms (
-          usuario TEXT PRIMARY KEY,
-          svs TEXT NOT NULL DEFAULT '',
-          canal TEXT NOT NULL DEFAULT '',
-          alta INTEGER NOT NULL,
-          enviados INTEGER NOT NULL DEFAULT 0,
-          fallos INTEGER NOT NULL DEFAULT 0
-        );
       `);
-      // 🔑 EL CURSOR DE LOS DMs (`/notify`, 25/09/2026).
-      // ⚠️ `ALTER` Y NO EN EL `CREATE`: la tabla ya existe con sus filas, y
-      // `CREATE TABLE IF NOT EXISTS` no le agrega columnas a lo que ya está.
-      try {
-        this.sql.exec('ALTER TABLE avisos ADD COLUMN cursor_dm INTEGER NOT NULL DEFAULT 0');
-      } catch (e) { /* ya estaba */ }
+      // 🔴 LA TABLA DE LOS DMs DE `/notify` SE BORRA: se sacaron el mismo día
+      // que nacieron, con 0 anotados. Estado que ya no lee nadie es estado
+      // que alguien va a creer que sirve. (La columna `cursor_dm` de `avisos`
+      // queda donde ya existía: no la lee nada.)
+      this.sql.exec('DROP TABLE IF EXISTS dms');
     });
   }
 
@@ -940,8 +864,6 @@ export class Avisos {
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);
       if (ruta === '/simular') return this.simular();
-      if (ruta === '/dm/ver') return json(this.dmVer(d));
-      if (ruta === '/dm/poner') return json(await this.dmPoner(d));
       if (ruta === '/disparo') {
         if (d.cual !== 'arranco' && d.cual !== 'ultimo') return json({ error: 'no existe' }, 404);
         this.guardar('disparo_' + d.cual, d.v || {});
@@ -1298,8 +1220,6 @@ export class Avisos {
       "WHERE id > ? AND ((svs = '' AND ? != ?) OR instr(svs, ?) > 0) ORDER BY id LIMIT ?",
     av.cursor, av.sv, SV_PRUEBA, '|' + av.sv + '|', LOTE).toArray();
     if (!subs.length) {
-      // 🔑 terminados los de la página, los DMs de `/notify`
-      if (await this.loteDM(av)) return;
       this.sql.exec('UPDATE avisos SET estado = 1 WHERE id = ?', av.id);
       this.guardar('ultimo_aviso', { t: ahora, id: av.id, sv: av.sv,
         enviados: av.enviados, fallos: av.fallos });
@@ -1346,103 +1266,6 @@ export class Avisos {
         estados: estados.filter((e) => !(e >= 200 && e < 300)).slice(0, 10),
         detalle: detalle.slice(0, 6) });
     }
-  }
-
-  // ── los DMs de `/notify` ─────────────────────────────────────────────
-  async loteDM(av) {
-    if (!this.env.DISCORD_TOKEN) return false;
-    const filas = this.sql.exec('SELECT rowid AS r, usuario, canal FROM dms ' +
-      "WHERE rowid > ? AND ((svs = '' AND ? != ?) OR instr(svs, ?) > 0) ORDER BY rowid LIMIT ?",
-    av.cursor_dm || 0, av.sv, SV_PRUEBA, '|' + av.sv + '|', LOTE_DM).toArray();
-    if (!filas.length) return false;
-    let cuerpo;
-    try { cuerpo = mensajeDM(JSON.parse(av.cuerpo)); } catch (e) { return false; }
-    const res = await Promise.all(filas.map((x) => mandarDM(this.env, x.usuario, x.canal, cuerpo)));
-    let ok = 0, mal = 0;
-    this.state.storage.transactionSync(() => {
-      res.forEach((x, i) => {
-        const u = filas[i].usuario;
-        if (x.estado === 200) {
-          ok++;
-          this.sql.exec('UPDATE dms SET enviados = enviados + 1, fallos = 0, canal = ? ' +
-            'WHERE usuario = ?', x.canal, u);
-        } else {
-          mal++;
-          this.sql.exec('UPDATE dms SET fallos = fallos + 1 WHERE usuario = ?', u);
-          this.sql.exec('DELETE FROM dms WHERE usuario = ? AND fallos >= ?', u, FALLOS_DM);
-        }
-      });
-      this.sql.exec('UPDATE avisos SET cursor_dm = ?, enviados = enviados + ?, ' +
-        'fallos = fallos + ? WHERE id = ?', filas[filas.length - 1].r, ok, mal, av.id);
-    });
-    if (mal) {
-      this.guardar('ultimo_fallo_dm', { t: Date.now(), id: av.id,
-        estados: res.filter((x) => x.estado !== 200).slice(0, 10)
-          .map((x) => x.estado + (x.codigo ? '/' + x.codigo : '')) });
-    }
-    return true;
-  }
-
-  // los servidores que se pueden elegir: los que el vigía escucha, como la campana
-  servidoresDM() {
-    const c = this.leer('canales') || {};
-    const out = [], vistos = {};
-    for (const x of c.lista || []) {
-      if (x.sv && x.sv !== SV_PRUEBA && !vistos[x.sv]) {
-        vistos[x.sv] = 1;
-        out.push({ sv: x.sv, svn: x.svn || x.sv });
-      }
-    }
-    return out;
-  }
-
-  dmVer(d) {
-    const u = String((d && d.usuario) || '');
-    const r = /^\d{15,21}$/.test(u)
-      ? this.sql.exec('SELECT svs FROM dms WHERE usuario = ?', u).toArray()[0] : null;
-    return { activo: !!r, svs: r ? r.svs.split('|').filter(Boolean) : [],
-      servidores: this.servidoresDM() };
-  }
-
-  async dmPoner(d) {
-    const u = String((d && d.usuario) || '');
-    if (!/^\d{15,21}$/.test(u)) return { error: 'usuario' };
-    if (d.apagar) {
-      this.sql.exec('DELETE FROM dms WHERE usuario = ?', u);
-      return this.dmVer({ usuario: u });
-    }
-    const servs = this.servidoresDM();
-    const validos = servs.map((s) => s.sv);
-    const svs = (Array.isArray(d.svs) ? d.svs : [])
-      .map((x) => String(x).toUpperCase()).filter((x, i, a) => validos.indexOf(x) >= 0 && a.indexOf(x) === i);
-    // ninguno o todos = «todos», que además toma los servidores que se sumen
-    const texto = svs.length && svs.length < validos.length ? '|' + svs.join('|') + '|' : '';
-    const fila = this.sql.exec('SELECT canal FROM dms WHERE usuario = ?', u).toArray()[0];
-    let canal = fila ? fila.canal : '';
-    if (!fila) {
-      const n = this.sql.exec('SELECT COUNT(*) AS n FROM dms').toArray()[0].n;
-      if (n >= TOPE_SUBS) return Object.assign(this.dmVer({ usuario: u }), { error: 'lleno' });
-      // 🔑 SE PRUEBA ANTES DE ANOTAR: el primer DM es la confirmación. Si
-      // Discord no deja escribirle (DMs cerrados), no se guarda nada — sería
-      // prometerle avisos que no le van a llegar.
-      const nombres = texto
-        ? svs.map((x) => (servs.find((s) => s.sv === x) || {}).svn || x).join(', ')
-        : 'cualquier servidor de la Liga';
-      const res = await mandarDM(this.env, u, '', {
-        allowed_mentions: { parse: [] },
-        content: `🔔 Listo: te escribo por acá cuando **${nombres}** anuncie un evento. ` +
-          'Para cambiarlo o apagarlo, usá `/notify`.',
-      });
-      if (res.estado !== 200) {
-        return Object.assign(this.dmVer({ usuario: u }), { error: 'dm', estado: res.estado,
-          codigo: res.codigo });
-      }
-      canal = res.canal;
-    }
-    this.sql.exec('INSERT INTO dms (usuario, svs, canal, alta) VALUES (?, ?, ?, ?) ' +
-      'ON CONFLICT(usuario) DO UPDATE SET svs = excluded.svs, canal = excluded.canal',
-    u, texto, canal, Date.now());
-    return this.dmVer({ usuario: u });
   }
 
   // ── la gente ─────────────────────────────────────────────────────────
@@ -1608,7 +1431,6 @@ export class Avisos {
         canales: (c.lista || []).map((x) => ({ sv: x.sv, svn: x.svn, nombre: x.nombre })),
       },
       suscripciones: n,
-      mensajes_directos: this.sql.exec('SELECT COUNT(*) AS n FROM dms').toArray()[0].n,
       ultimas_24h: { avisos: dia.n, enviados: dia.e },
       ultimo: ult ? {
         t: new Date(ult.creado).toISOString(), sv: ult.sv, titulo: tit,

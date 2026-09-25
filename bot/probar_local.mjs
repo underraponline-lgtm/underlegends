@@ -1518,19 +1518,41 @@ console.log('\n/WEBSITE Y /NOTIFY\n');
   const bots = (r.json?.data?.components || []).flatMap((f) => f.components || []);
   ok('/website deja el botón a la página', bots.some((b) => /underlegends\.pages\.dev/.test(b.url || '')),
      JSON.stringify(r.json?.data));
+  // 🔴 SIN DMs: Dlx, 25/09/2026, «no debería usar el bot para enviarte DMs,
+  // sino activar la notificación al celular o dispositivo». Y se elige en
+  // Discord: «seleccionar los servidores o para todos».
   const r2 = await pedir({ type: 2, guild_id: G.FFA, channel_id: '1',
                            member: { user: { id: '700901' } }, data: { name: 'notify' } });
-  ok('/notify sin los avisos enchufados lo dice, no revienta', /no están andando/.test(texto(r2)), texto(r2));
+  const b2 = (r2.json?.data?.components || []).flatMap((f) => f.components || []);
+  const act = (bs) => bs.find((b) => b.style === 5) || {};
+  ok('/notify en FFA viene con FFA elegido y el botón lleva a la campana con eso',
+     /underlegends\.pages\.dev\/#\/avisos\/FFA$/.test(act(b2).url || ''), JSON.stringify(b2).slice(0, 160));
+  ok('trae el menú de servidores y «Todos»', b2.some((b) => b.custom_id === 'ntf:svs') &&
+     b2.some((b) => b.custom_id === 'ntf:todos'));
+  ok('y dice que es para el celular o la compu', /celular o compu/.test(texto(r2)), texto(r2).slice(0, 80));
+  const r3 = await pedir({ type: 2, user: { id: '700902' }, data: { name: 'notify' } });
+  const b3 = (r3.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('fuera de un servidor de la Liga, todos', /#\/avisos\/todos$/.test(act(b3).url || ''), JSON.stringify(b3).slice(0, 160));
+  const r4 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700903' } },
+                           data: { custom_id: 'ntf:svs', component_type: 3, values: ['FFA', 'SR'] } });
+  const b4 = (r4.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('elegir en el menú redibuja el panel con la elección en el link',
+     r4.json?.type === 7 && /#\/avisos\/FFA,SR$/.test(act(b4).url || ''), act(b4).url);
+  const r5 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700904' } },
+                           data: { custom_id: 'ntf:todos', component_type: 2 } });
+  ok('«Todos» deja el link en todos y se saca el botón',
+     /#\/avisos\/todos$/.test(act((r5.json?.data?.components || []).flatMap((f) => f.components || [])).url || '') &&
+     !(r5.json?.data?.components || []).flatMap((f) => f.components || []).some((b) => b.custom_id === 'ntf:todos'));
+  const r6 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700905' } },
+                           data: { custom_id: 'ntf:off', component_type: 2 } });
+  ok('un botón de un panel viejo (el de los DMs) muestra el de ahora',
+     r6.json?.type === 7 && /celular o compu/.test(texto(r6)));
   const { panelNotify } = await import('./worker.js');
-  const svs = [{ sv: 'FFA', svn: 'Freestyle For All' }, { sv: 'SR', svn: 'Snake Rap' }];
-  const p1 = panelNotify({ activo: false, svs: [], servidores: svs }, 'FFA');
-  const b1 = p1.components.flatMap((f) => f.components);
-  ok('adentro de FFA, el primer botón activa FFA', b1.some((b) => b.custom_id === 'ntf:sv:FFA'));
-  const p2 = panelNotify({ activo: true, svs: [], servidores: svs }, 'FFA');
-  ok('con todos activados dice «todos» y ofrece apagar', /todos los servidores/.test(p2.content) &&
-     p2.components.flatMap((f) => f.components).some((b) => b.custom_id === 'ntf:off'));
-  const p3 = panelNotify({ activo: false, svs: [], servidores: svs, error: 'dm' }, '');
-  ok('si Discord no deja escribirle, explica cómo abrir los DMs', /Mensajes directos/.test(p3.content));
+  const p7 = panelNotify('FFA', ['DRA', 'SR'], null);
+  ok('si el vigía no escucha ese servidor, no lo ofrece y lo dice',
+     !p7.components[0].components[0].options.some((o) => o.value === 'FFA') && /Todavía no se escuchan/.test(p7.content));
+  ok('y nadie queda anotado a DMs: el único link es la página',
+     b2.filter((b) => b.style === 5).every((b) => /^https:\/\/underlegends\.pages\.dev\//.test(b.url)));
 }
 
 console.log('\n/VERIFICAR\n');

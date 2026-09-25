@@ -42,7 +42,52 @@
   var EST = null;    // /api/avisos/estado
   var SVS = leer('campana:svs', []);   // [] = todos los servidores
   var MSG = '';
-
+  // 🔑 `#/avisos/FFA,SR` O `#/avisos/todos`: EL LINK DE `/notify`. Dlx,
+  // 25/09/2026: «que te dé la opción para activar las notificaciones desde
+  // Discord… y seleccionar los servidores o para todos». Se elige en Discord
+  // y acá se activa con un toque; si este dispositivo ya estaba activado, la
+  // elección REEMPLAZA a la de antes, porque es exactamente lo que se eligió.
+  // `null` = no vino del link; `[]` = todos.
+  var PEDIDO = pedidoDelLink();
+  function pedidoDelLink() {
+    var m = /^#\/avisos\/([A-Za-z0-9,]+)$/.exec(location.hash || '');
+    if (!m) return null;
+    return m[1].toLowerCase() === 'todos' ? [] : m[1].toUpperCase().split(',').filter(Boolean);
+  }
+  function nombreSv(sv) {
+    var s = servidores().filter(function (x) { return x.sv === sv; })[0];
+    return s ? s.n : sv;
+  }
+  // ⚠️ SÓLO SERVIDORES QUE EL VIGÍA ESCUCHA. `null` si todavía no se sabe
+  // cuáles son (el estado no llegó) o si del link no queda ninguno.
+  function pedidoValido() {
+    if (!PEDIDO) return null;
+    var ok = servidores().map(function (s) { return s.sv; });
+    if (!ok.length) return null;
+    if (!PEDIDO.length) return [];
+    var v = PEDIDO.filter(function (sv) { return ok.indexOf(sv) >= 0; });
+    return !v.length ? null : v.length >= ok.length ? [] : v;
+  }
+  function textoPedido(v) {
+    return !v.length ? 'todos los servidores' : v.map(nombreSv).join(', ');
+  }
+  // ⚠️ «Pruebas» se conserva: y «todos» con pruebas va como la lista entera
+  // (ver `elegir()`), porque la lista vacía no trae las pruebas.
+  function conPrueba(v) {
+    if (SVS.indexOf(PRUEBA) < 0) return v;
+    return (v.length ? v : servidores().map(function (s) { return s.sv; })).concat([PRUEBA]);
+  }
+  function aplicarPedido() {
+    var v = pedidoValido();
+    if (!v || !SUB) return;
+    PEDIDO = null;
+    SVS = conPrueba(v);
+    guardar('campana:svs', SVS);
+    MSG = 'Guardando…';
+    pinta();
+    alta(true).then(function () { MSG = '✅ Listo: te llegan los avisos de ' + textoPedido(v) + '.'; pinta(); })
+      .catch(function (e) { MSG = '⚠️ No pude guardar: ' + e.message; pinta(); });
+  }
   function leer(k, def) {
     try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? def : v; }
     catch (e) { return def; }
@@ -115,6 +160,9 @@
     REG = REG || await navigator.serviceWorker.register('/sw.js');
     await navigator.serviceWorker.ready;
     SUB = await REG.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: bytes(k) });
+    // quien llega desde `/notify` se anota a lo que eligió en Discord
+    var v = pedidoValido();
+    if (v) { SVS = conPrueba(v); guardar('campana:svs', SVS); PEDIDO = null; }
     await alta(true);
     MSG = '';
     await probar(true);
@@ -254,7 +302,9 @@
         'activarlas: tocá el candado al lado de la dirección → <b>Notificaciones</b> → ' +
         '<b>Permitir</b>, y recargá.</p>';
     } else if (!SUB) {
-      h = '<p class="cp-tx">Un aviso por evento, cuando el servidor lo anuncia. Nada más: ' +
+      h = (pedidoValido() ? '<p class="cp-ok">Vas a activar los avisos de <b>' +
+        esc(textoPedido(pedidoValido())) + '</b>, como elegiste en Discord.</p>' : '') +
+        '<p class="cp-tx">Un aviso por evento, cuando el servidor lo anuncia. Nada más: ' +
         'ni resultados, ni publicidad, ni nada que no sea un evento por empezar.</p>' +
         '<button class="cp-btn" data-cp="activar"><i aria-hidden="true">&#128276;</i>' +
         '<span>Activar avisos</span></button>';
@@ -346,6 +396,7 @@
     try { EST = await pedir('estado'); } catch (e) { EST = null; }
     pinta();
     if (!SUB) return;
+    aplicarPedido();
     try {
       // 🔴 SI LA CLAVE DEL WORKER CAMBIO, LA SUSCRIPCION VIEJA NO SIRVE: se
       // rehace sola acá, sin preguntar de nuevo —el permiso ya está—. Es
@@ -366,6 +417,12 @@
       pinta();
     } catch (e) { /* la campana sigue como estaba */ }
   }
+
+  // el link de `/notify` con la página ya abierta
+  window.addEventListener('hashchange', function () {
+    PEDIDO = pedidoDelLink();
+    if (PEDIDO) { if (SUB) aplicarPedido(); else pinta(); }
+  });
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
   else arrancar();

@@ -186,37 +186,6 @@ const ok = (cond, que) => {
 }
 
 
-{
-  // /notify: a quién le toca, el mensaje y el envío
-  ok(A.leToca('', 'FFA'), '«todos» recibe FFA');
-  ok(!A.leToca('', A.SV_PRUEBA), '«todos» NO recibe el servidor de prueba');
-  ok(A.leToca('|FFA|SR|', 'SR') && !A.leToca('|FFA|SR|', 'DRA'), 'los elegidos, y sólo ésos');
-  const m = A.mensajeDM({ t: 'TOKYO', sv: 'FFA', svn: 'Freestyle For All', url: 'https://discord.com/x' });
-  ok(/notify/.test(m.embeds[0].footer.text), 'el DM dice cómo cambiarlo');
-  ok(m.components[0].components.length === 2 &&
-     m.components[0].components.every((b) => !/teléfono/.test(b.label)),
-     'y no ofrece «avisos en tu teléfono»: ya le está llegando');
-  const antes = globalThis.fetch;
-  const pedidos = [];
-  globalThis.fetch = async (url, opc) => {
-    pedidos.push(String(url));
-    if (String(url).endsWith('/users/@me/channels')) {
-      return new Response(JSON.stringify({ id: '999' }), { status: 200 });
-    }
-    return new Response('{}', { status: 200 });
-  };
-  const r1 = await A.mandarDM({ DISCORD_TOKEN: 'x' }, '123456789012345678', '', { content: 'hola' });
-  ok(r1.estado === 200 && r1.canal === '999' && pedidos.length === 2,
-     'la primera vez abre el DM y escribe (dos pedidos)');
-  pedidos.length = 0;
-  const r2 = await A.mandarDM({ DISCORD_TOKEN: 'x' }, '123456789012345678', '999', { content: 'hola' });
-  ok(r2.estado === 200 && pedidos.length === 1, 'después, uno solo: el canal se guarda');
-  globalThis.fetch = async () => new Response(JSON.stringify({ code: 50007 }), { status: 403 });
-  const r3 = await A.mandarDM({ DISCORD_TOKEN: 'x' }, '123456789012345678', '999', { content: 'hola' });
-  ok(r3.estado === 403 && r3.codigo === 50007, 'con los DMs cerrados devuelve el código de Discord');
-  globalThis.fetch = antes;
-}
-
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

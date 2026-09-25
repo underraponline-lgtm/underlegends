@@ -221,7 +221,9 @@ function ir() {
   // 🔑 `#/r/<clave>` ES EL PERFIL: la vista es la primera parte y la
   // persona, el resto. Ver `pintaPerfil()`.
   var pedida = ruta(), partes = pedida.split('/');
-  var r = ALIAS[pedida] || partes[0];
+  // `#/avisos/FFA` (el link de `/notify`) es `#/avisos` con un servidor:
+  // el alias se busca también por la primera parte
+  var r = ALIAS[pedida] || ALIAS[partes[0]] || partes[0];
   var hay = $$('.vista').some(function (v) { return v.dataset.vista === r; });
   if (!hay) { r = ''; }
   $$('.vista').forEach(function (v) { v.hidden = v.dataset.vista !== r; });
@@ -246,7 +248,8 @@ function ir() {
   // cambiar de vista dos veces vaciaba la página. Un nombre que
   // significa dos cosas es un bug esperando su segundo clic.
   $$('.vista:not([hidden]) .blk').forEach(function (b) { b.classList.add('entro'); });
-  var ancla = pedida !== r && document.getElementById(pedida);
+  var ancla = pedida !== r && (document.getElementById(pedida) ||
+    (ALIAS[partes[0]] ? document.getElementById(partes[0]) : null));
   if (ancla) setTimeout(function () { ancla.scrollIntoView({ block: 'start' }); }, 40);
   else window.scrollTo(0, 0);
   var v = $$('.vista').filter(function (x) { return !x.hidden; })[0];
