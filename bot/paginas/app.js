@@ -161,8 +161,22 @@ var avisoCarta = function (f, cual) {
   a.textContent = '⏳ Esta tarjeta se está redibujando con los datos de ' +
     'ahora. Los números de abajo ya son los actuales.';
 };
+/* La clave de `comun/claves.py`: NFD, minúsculas, sólo letras y números de
+   cualquier alfabeto, sin banderas. */
+var normK = function (s) {
+  return String(s || '').normalize('NFD').toLowerCase()
+    .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/[^\p{L}\p{N}-]/gu, '');
+};
 var porK = function (k) {
-  return (D.tabla || []).filter(function (x) { return x.k === k; })[0];
+  var t = D.tabla || [];
+  var f = t.filter(function (x) { return x.k === k; })[0];
+  if (f) return f;
+  // 🔴 LOS LINKS VIEJOS. Hasta el 25/09/2026 la clave de la página era el
+  // nombre en minúsculas —`mau kc`— y la de R2 y KV, `maukc`; ahora es una
+  // sola (`_clave()` en bot/subir_web.py). Un `#/r/mau%20kc` guardado sigue
+  // abriendo el perfil.
+  var n = normK(k);
+  return n ? t.filter(function (x) { return normK(x.k) === n; })[0] : undefined;
 };
 /* 🔑 LA FILA DE QUIEN ENTRÓ CON DISCORD Y NO ESTÁ EN EL RANKING: tiene carta
    (la de Servidor no pide nada) pero ningún evento de la temporada. Sirve
@@ -231,8 +245,11 @@ function ir() {
   var hay = $$('.vista').some(function (v) { return v.dataset.vista === r; });
   if (!hay) { r = ''; }
   $$('.vista').forEach(function (v) { v.hidden = v.dataset.vista !== r; });
-  if (r === 'r') pintaPerfil(decodeURIComponent(partes.slice(1).join('/')));
-  if (r === 'crew') pintaCrew(decodeURIComponent(partes.slice(1).join('/')));
+  // ⚠️ CON TRY: un `%` suelto en el link tiraba URIError y la vista quedaba
+  // vacía, igual que en `volverDeDiscord()`
+  var dec = function (x) { try { return decodeURIComponent(x); } catch (e) { return x; } };
+  if (r === 'r') pintaPerfil(dec(partes.slice(1).join('/')));
+  if (r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
   if (r === 'pais') pintaPais(partes[1] || '');
   if (r === 'cambios') cargarCambios(pintaCambios);
   // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
@@ -2410,6 +2427,8 @@ function pintaPerfil(k) {
       '<p class="bajada">Ese rapero no está en la tabla de la temporada.</p></section>';
     return;
   }
+  // la clave de verdad, aunque se haya llegado por un link viejo (`porK()`)
+  k = f.k || k;
   document.title = f.n + ' · Liga Global de Freestyle';
   var sv = svDe(f.sv);
   var cartas = f.c || [];

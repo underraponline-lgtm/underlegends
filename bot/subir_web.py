@@ -848,6 +848,10 @@ def _con_redes(perf):
     if not ps or _SIN_RED[0]:
         return 0
     try:
+        # 🔴 `time` NO ESTÁ ARRIBA DE ESTE ARCHIVO: sin esto, el primer valor
+        # con el formato nuevo tiraba NameError y el `except` de abajo lo
+        # convertía en «sin redes» para todos, callado.
+        import time
         import requests
         import subir_datos as SD
         tok = _token()
@@ -856,11 +860,15 @@ def _con_redes(perf):
         s = requests.Session()
         s.headers['Authorization'] = 'Bearer ' + tok
         r = s.get('%s/keys' % SD.API, params={'prefix': 'redes:', 'limit': 1000}, timeout=30).json()
+        if not r.get('success', True):
+            raise RuntimeError('keys: %s' % str(r.get('errors'))[:60])
         ks = [k['name'] for k in (r.get('result') or [])]
         n = 0
         for i in range(0, len(ks), 100):
-            v = (s.post('%s/bulk/get' % SD.API, json={'keys': ks[i:i + 100]}, timeout=30)
-                 .json().get('result') or {}).get('values') or {}
+            rb = s.post('%s/bulk/get' % SD.API, json={'keys': ks[i:i + 100]}, timeout=30).json()
+            if not rb.get('success', True):
+                raise RuntimeError('bulk/get: %s' % str(rb.get('errors'))[:60])
+            v = (rb.get('result') or {}).get('values') or {}
             for k, x in v.items():
                 cl = k[len('redes:'):]
                 x = x.get('value') if isinstance(x, dict) else x
@@ -884,8 +892,12 @@ def _con_redes(perf):
             print('   🔗 redes en %d perfil(es)' % n)
         return n
     except Exception as e:                               # noqa: BLE001
-        print('   ⚠️ sin redes en los perfiles (%s)' % str(e)[:60])
-        return 0
+        # ⚠️ `None` Y NO 0: «no pude leer» no es «nadie tiene redes». Con 0 se
+        # subían los perfiles sin las redes de nadie, y volvían en la corrida
+        # siguiente: dos escrituras de KV y un rato con los perfiles pelados.
+        print('   ⚠️ no pude leer las redes (%s): los perfiles esperan a la '
+              'próxima corrida' % str(e)[:60])
+        return None
 
 
 def _comunidad():
@@ -1200,7 +1212,8 @@ def _choques():
         grupos = defaultdict(list)
         for p in _json('datos', 'temporada_pool.json') or []:
             if p.get('raw'):
-                grupos[str(p['raw']).lower()].append(p)
+                # la misma clave que `_clave()`: la de R2
+                grupos[_clave_r2(str(p['raw']))].append(p)
         out = {}
         for k, ps in grupos.items():
             if len({p['raw'] for p in ps}) < 2:
@@ -1245,7 +1258,19 @@ def _clave(p):
     ⚠️ SALVO QUE CHOQUE CON OTRA PERSONA: ver `_choques()`.
     """
     raw = str(p.get('raw') or '')
-    return _choques().get(raw) or raw.lower()
+    return _choques().get(raw) or _clave_r2(raw)
+
+
+def _clave_r2(raw):
+    """🔴 LA DE `comun/claves.py`, NO `raw.lower()`. R2, KV y el Worker
+    usan `clave()` —sólo letras y números—, y la página usaba el nombre en
+    minúsculas: `MAU KC` era `mau kc` acá y `maukc` en R2. Medido el
+    25/09/2026, 5 de 85 (MAU KC, Sin Limites, Crack and Krank, Lilñaño y
+    Pollo Sport): la web no les mostraba ni una tarjeta, sus redes no
+    aparecían y su link de «Mi perfil» decía «No lo encontré». Lo encontró
+    la revisión de ese día."""
+    from comun.claves import clave
+    return clave(raw)
 
 
 def _con_foto():
@@ -1851,14 +1876,23 @@ def _escalera():
 
 
 def _letra(p):
-    """La letra de rango, o `''`. Misma puerta que la carta."""
+    """La letra de rango, o `''`. Misma puerta y misma fuente que la carta.
+
+    🔴 SALE DEL SCORE, NO DEL `rango` DEL POOL DE TEMPORADA: ése es el COLOR
+    de la carta (`sheet/ovr.color()`, que sale del OVR). Con la puerta de 10
+    eventos cerrada para todos no se veía; medido el 25/09/2026, Hassan tenía
+    `rango` SSS y Score 46.4, o sea B. La carta usa `rango(score)`
+    (`01_Temporada/normal_v3.letra_rango()`): acá lo mismo, por
+    `comun.rangos.de_score()`. Lo encontró la revisión de ese día.
+    """
     try:
         from comun.requisitos import minimo
+        from comun.rangos import de_score
         if (p.get('ev') or 0) < minimo('competitivo', 'ev'):
             return ''
+        return de_score(float(p.get('score') or 0))
     except Exception:                                    # noqa: BLE001
         return ''
-    return p.get('rango') or ''
 
 
 def _acento(rg):
@@ -2143,7 +2177,7 @@ def main():
         return _self_check()
     p = armar()
     perf = p.pop('_perfiles', None) or {}
-    _con_redes(perf)
+    redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
                                                           p['gente']))
@@ -2172,7 +2206,9 @@ def main():
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None
-    if perf.get('p'):
+    if perf.get('p') and not redes_ok:
+        print('   · perfiles: no los subo sin las redes (ver arriba)')
+    elif perf.get('p'):
         ok2 = subir(perf, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_PERFILES)
         print('   %s' % ('✓ perfiles: ya estaban iguales' if ok2 is None else
                          '✅ perfiles subidos (%d) a `%s`  %.1f KB'
