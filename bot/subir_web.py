@@ -509,6 +509,17 @@ def _avatares():
     return out
 
 
+def _textos_v2(cs):
+    """El texto de los componentes V2 de un mensaje (Text Display), en orden."""
+    out = []
+    for c in cs or []:
+        if isinstance(c, dict):
+            if c.get('type') == 10:
+                out.append(c.get('content') or '')
+            out += _textos_v2(c.get('components'))
+    return out
+
+
 def _novedades(tope=3):
     """Lo último que publicó la Liga en DRA, para el Inicio.
 
@@ -545,6 +556,10 @@ def _novedades(tope=3):
         for e in (m.get('embeds') or [])[:1]:
             if (e or {}).get('type') == 'rich':
                 partes += [e.get('title') or '', e.get('description') or '']
+        # 🔑 Y LOS COMPONENTES V2 (títulos con #, listas): un mensaje así no
+        # trae `content` ni `embeds`, todo su texto vive en los Text Display
+        # (tipo 10), a veces adentro de un contenedor o una sección.
+        partes += _textos_v2(m.get('components'))
         ls = _limpio_md('\n'.join(p for p in partes if p))
         if not ls:
             continue
