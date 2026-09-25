@@ -276,14 +276,37 @@ var MEDALLA = { 'Campeón': '&#129351;', 'Subcampeón': '&#129352;',
 var PODIO = { 'Campeón': 1, 'Subcampeón': 1, 'Tercero': 1, 'Cuarto': 1,
               'Semifinal': 1 };
 
+// «Denik 🇵🇪» -> «Denik» con la bandera como imagen. 🔴 LA LLAVE TRAE EL
+// NOMBRE COMO SE ESCRIBIÓ, con su emoji, cuando la persona no está en el
+// padrón; y en Windows el emoji de bandera son dos letras —«Denik PE»—, que
+// es justo lo que Dlx pidió no ver más (25/09/2026). Un país que no está en
+// `PAIS` se saca: dos letras sueltas no dicen nada.
+function conBanderas(x) {
+  var out = '', txt = '', par = '';
+  Array.from(String(x == null ? '' : x)).forEach(function (ch) {
+    var c = ch.codePointAt(0);
+    if (c >= 0x1F1E6 && c <= 0x1F1FF) {
+      par += String.fromCharCode(c - 0x1F1E6 + 97);
+      if (par.length === 2) {
+        out += esc(txt) + bandera(par);
+        txt = '';
+        par = '';
+      }
+    } else {
+      txt += ch;
+    }
+  });
+  return (out + esc(txt)).trim();
+}
+
 function abrirLlave(n) {
   var L = (D.llaves || {})[n];
   if (!L) return;
   var k = {};
   (D.tabla || []).forEach(function (f) { k[f.n] = f.k; });
   var quien = function (x) {
-    return k[x] ? '<button class="ql" data-k="' + esc(k[x]) + '">' + esc(x) +
-      '</button>' : esc(x);
+    return k[x] ? '<button class="ql" data-k="' + esc(k[x]) + '">' +
+      conBanderas(x) + '</button>' : conBanderas(x);
   };
   $('#lNombre').textContent = L.nombre;
   $('#lSub').innerHTML = [esc(L.sv), esc(L.fecha),
