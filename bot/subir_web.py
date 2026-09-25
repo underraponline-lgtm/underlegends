@@ -456,6 +456,8 @@ def _limpio_md(s):
     out = []
     for l in str(s or '').split('\n'):
         l = _MENCION.sub('', _EMOJI.sub('', l))
+        # un anuncio con ping arranca con «@everyone»: en la página no dice nada
+        l = re.sub(r'@(everyone|here)\b', '', l)
         l = re.sub(r'^\s*(-#|#{1,3})\s*', '', l)
         l = re.sub(r'\*\*|__|~~|`', '', l).strip(' ▬—=·\t')
         if l:
