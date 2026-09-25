@@ -2733,13 +2733,16 @@ function trama(n) {
 // refer everything as my local time zone EST»*). Este pie decía «… UTC».
 // ⚠️ CON `timeZone` Y NO CON UN -4 ESCRITO: de noviembre a marzo es -5, y
 // un desfase fijo miente medio año sin avisar.
-// 🌙 LA MADRUGADA, MÁS DESPACIO. Dlx, 25/09/2026: «después de las 3am EST
+// 🌙 LA MADRUGADA, SIN CICLO. Dlx, 25/09/2026: «después de las 3am EST
 // hasta las 11am EST que haya un retraso de cada 4 horas… a esas horas en
-// sí los eventos no hay ninguno». De 3 a 11 AM ET el ciclo corre a las 6:52
-// y a las 10:52 y nada más. El vigía de los avisos sigue cada minuto.
+// sí los eventos no hay ninguno», y el mismo día: «durante las 3am EST y
+// 11am EST no se hará ninguna sincronización para ahorrar más». De 3 a 11
+// AM ET no corre el ciclo: la última es la de las 2:52 y la siguiente la de
+// las 11:22. El vigía de los avisos sigue cada minuto: no es una
+// sincronización, es lo que avisa si alguien anuncia un evento a esa hora.
 // ⚠️ La misma ventana está en `bot/madrugada.py`, y su self-check compara
 // esta línea: si se cambia una sola, CI se pone rojo.
-export const MADRUGADA = { desde: 3, hasta: 11, horas: [6, 10] };
+export const MADRUGADA = { desde: 3, hasta: 11, horas: [] };
 
 export function tocaCiclo(fecha) {
   const p = {};
