@@ -913,6 +913,9 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
   ok('con su apodo del servidor, que es el que sirve para matchear',
      guardado?.nick === '🐉 | Lil Drako', guardado?.nick);
   ok('y el servidor de donde vino', guardado?.sv === 'FFA', guardado?.sv);
+  // 🔑 #11 de Dlx (25/09/2026): quien se anota a sí mismo entra solo a la
+  // Lista, y eso lo decide `por` — ver `sheet/registrar_ids.py`.
+  ok('y que se anotó él mismo (`por: yo`)', guardado?.por === 'yo', guardado?.por);
 }
 {
   // Elegís en el selector a alguien que no está: SU id lo tenemos, se anota.
@@ -927,6 +930,8 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
      !!PUESTO['reg:900002'], PUESTO['reg:900002'] ? 'reg:900002' : 'no');
   const g = PUESTO['reg:900002'] ? JSON.parse(PUESTO['reg:900002']) : {};
   ok('sale del `resolved`, no del que preguntó', g.user === 'targetguy', g.user);
+  // ⚠️ buscar a alguien no es pedir entrar: a un tercero lo decide un admin
+  ok('y que lo nombró otro (`por: otro`)', g.por === 'otro', g.por);
 }
 {
   // ⚠️ DEDUP: un conocido NO se re-anota. Konan tiene `d:999111`.

@@ -358,7 +358,11 @@ async function quienEs(i, env) {
 // ⚠️ DEDUP CONTRA LA CUOTA. KV da 1000 escrituras/día. Se lee antes: si ya
 // tiene `d:` (cargado) o ya está en `reg:`, no se escribe. Leer es barato
 // (100k/día). Y va en waitUntil: nunca demora la respuesta de 3 segundos.
-function anotar(env, ctx, id, nick, user, glob, guild) {
+// 🔑 `por`: 'yo' si se anotó quien usó el comando, 'otro' si lo nombró
+// alguien más. Desde el 25/09/2026 quien se anota a sí mismo entra solo a la
+// Lista (`sheet/registrar_ids.py`, #11 de Dlx); a un tercero lo sigue
+// decidiendo un admin, porque buscar a alguien no es pedir entrar.
+function anotar(env, ctx, id, nick, user, glob, guild, por) {
   if (!id || !ctx || !ctx.waitUntil) return;
   ctx.waitUntil((async () => {
     try {
@@ -369,6 +373,7 @@ function anotar(env, ctx, id, nick, user, glob, guild) {
       await env.KV.put('reg:' + id, JSON.stringify({
         id, nick: nick || '', user: user || '', glob: glob || '',
         guild: guild || '', sv: aquiEs(guild) || '', ts: Date.now(),
+        por: por || '',
       }));
     } catch (e) { /* best-effort: anotar NUNCA rompe /card */ }
   })());
@@ -892,6 +897,16 @@ export const VERIFICA = {
 // verificarse: el canal de verificación **no se ve hasta estar adentro**, así
 // que un «Verificarme» apretado antes de entrar lleva a una pantalla vacía.
 // Discord los dibuja de izquierda a derecha y así se leen.
+// 🔑 QUIEN SE ANOTA A SÍ MISMO ENTRA SOLO (25/09/2026, #11 de Dlx), si
+// Discord sabe su país. Si no —o si su nombre se parece al de alguien que ya
+// está— lo decide un admin, que es lo que este texto prometía siempre.
+const YA_TE_ANOTE = 'Ya te anoté ✍️ — si Discord sabe tu país (bandera en ' +
+  'tu apodo o un rol de país), entrás a la Liga solo en menos de una hora; ' +
+  'si no, te carga un admin.';
+
+// «Verificate…» -> «verificate…», para seguir una frase
+const minuscula = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
+
 function comoVerificarse(aqui) {
   const s = SV_DE(VERIFICA.sv);
   if (!s) return { texto: '', botones: [] };
@@ -1877,7 +1892,7 @@ const COMANDOS = {
         // La persona elegida no está cargada, pero SU ID lo tenemos acá mismo
         // (es el valor del selector) — se anota para no perderlo.
         const d = datosDe(i, porUsuario.value);
-        anotar(env, ctx, porUsuario.value, d.nick, d.user, d.glob, i.guild_id);
+        anotar(env, ctx, porUsuario.value, d.nick, d.user, d.glob, i.guild_id, 'otro');
         return aviso(`${comoDije} todavía no está en la Liga — lo anoté para ` +
                      'que un admin lo cargue.\n' +
                      'Si sabés su nombre de competencia: `/card nombre:<su nombre>`.');
@@ -1914,18 +1929,24 @@ const COMANDOS = {
         const cargado = mm && Array.isArray(mm.cargados)
                         && mm.cargados.indexOf(String(yo)) >= 0;
         const v = comoVerificarse(aquiEs(i.guild_id));
+        // 🔑 «ESO LO HACÉS VOS» DEJÓ DE SER CIERTO EL 25/09/2026 para quien
+        // ya está en DRA con su país: `bot/autoverificar.py` le da el
+        // Miembro solo (#9 de Dlx). Para el resto sigue siendo suyo.
         if (cargado) {
           return aviso('Ya estás cargado en la Liga ✅ — no hace falta que ' +
                        'nadie te agregue.\n\nLo que falta es **verificarte ' +
-                       'en DRA**, y eso lo hacés vos.\n' + v.texto +
-                       '\n\nUna vez verificado, tu tarjeta sale sola en la ' +
-                       'próxima vuelta.', v.botones);
+                       'en DRA**:\n• si ya estás en DRA y Discord sabe tu ' +
+                       'país (bandera en tu apodo o un rol de país), el bot ' +
+                       'te verifica solo en la próxima vuelta (~30 min);\n' +
+                       '• si no, ' + minuscula(v.texto) +
+                       '\n\nUna vez verificado, tu tarjeta sale sola.', v.botones);
         }
         const d = datosDe(i, yo);
-        anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id);
-        return aviso('Ya te anoté ✍️ — un admin te va a cargar.\n\n' +
+        anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
+        return aviso(YA_TE_ANOTE + '\n\n' +
                      'Para tener carta hace falta **estar en DRA** y ' +
-                     '**verificarte** ahí.\n' + v.texto +
+                     '**verificarte** ahí; si ya estás en DRA, eso también ' +
+                     'sale solo.\n' + v.texto +
                      '\n\nSi ya competís y esto te parece un error, probá ' +
                      '`/card nombre:<tu nombre>`.', v.botones);
       }
@@ -2019,7 +2040,7 @@ const COMANDOS = {
       // momento en que el bot la tiene delante. Hoy son 25 de 469 sin ID.
       if (rival.id) {
         const d = datosDe(i, rival.id);
-        anotar(env, ctx, rival.id, d.nick, d.user, d.glob, i.guild_id);
+        anotar(env, ctx, rival.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
       return aviso(`${rival.como} todavía no está en la Liga — lo anoté para ` +
                    'que un admin lo cargue.');
@@ -2031,15 +2052,16 @@ const COMANDOS = {
     if (!mio.clave) {
       if (!pedido) {
         const d = datosDe(i, idDe(i));
-        anotar(env, ctx, idDe(i), d.nick, d.user, d.glob, i.guild_id);
+        anotar(env, ctx, idDe(i), d.nick, d.user, d.glob, i.guild_id, 'yo');
         const vf = comoVerificarse(aquiEs(i.guild_id));
-        return aviso('Ya te anoté ✍️ — un admin te va a cargar.\n\n' +
+        return aviso(YA_TE_ANOTE + '\n\n' +
                      'Para tener carta hace falta **estar en DRA** y ' +
-                     '**verificarte** ahí.\n' + vf.texto, vf.botones);
+                     '**verificarte** ahí; si ya estás en DRA, eso también ' +
+                     'sale solo.\n' + vf.texto, vf.botones);
       }
       if (mio.id) {
         const d = datosDe(i, mio.id);
-        anotar(env, ctx, mio.id, d.nick, d.user, d.glob, i.guild_id);
+        anotar(env, ctx, mio.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
       return aviso(`${mio.como} todavía no está en la Liga — lo anoté.`);
     }

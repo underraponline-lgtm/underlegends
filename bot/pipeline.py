@@ -664,6 +664,18 @@ def _lo_barato(correr):
         if not ok:
             print('      ⚠️ falló: la cola queda para la próxima')
 
+    # 🔑 ENTRE 1a Y 1b A PROPÓSITO: 1b vuelve a leer quién tiene el Miembro
+    # y el paso 2 el padrón, así que quien se verifica acá pasa el portón
+    # en esta misma corrida. Ver `bot/autoverificar.py` (#8 y #9 de Dlx).
+    #
+    # ⚠️ NO FRENA EL CICLO: lo que no se pudo hacer espera a la vuelta
+    # siguiente.
+    paso('1a2', 'el país y el Miembro de DRA, solos')
+    if not correr:
+        print('      correría bot/autoverificar.py --aplicar')
+    else:
+        corre(['bot/autoverificar.py', '--aplicar'], callado=False)
+
     paso('1b', 'quién está verificado y en qué servidores, desde Discord')
     if not correr:
         print('      preguntaría a Discord por el rol Miembro y por los '
