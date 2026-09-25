@@ -186,6 +186,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
   - `meta` ya no se reescribe si la corrida no subió cartas: **~34 por día menos**. Por eso `/owner estado` dice ahora «cartas al día del» y «último disparo», **en hora del este** (antes salía UTC sin decirlo).
 - ⏱️ **Una corrida que se corta por tiempo ahora te avisa** (9:43 AM). GitHub la marca «cancelled», no «failure», y la alerta sólo miraba esa palabra. El redibujo entero de hoy tardó 53 min contra un tope de 120.
 - 🛡️ **Prueba de inyección**: la página servida con los 1.279 textos terminados en código HTML y recorrida entera. Los nombres, llaves, crews y títulos salen bien; lo único que se ejecutaba era el ícono de las dimensiones en la Guía, que no escribe nadie de afuera. Arreglado igual (9:51 AM).
+- 👤 **Tu redirect de Discord está**: lo leí de la configuración de la app (sólo lectura), y es la misma dirección que usa la página. El «URL Generator» de esa pantalla no hace falta.
 - ✅ **Revisado y bien**: ningún token vence solo (GitHub, Cloudflare y el bot); el secret `OAUTH_TOKEN` está (su falla del 24/09 fue 22 segundos antes de cargarlo); el Durable Object usa 957 de 100.000 invocaciones; la página sin datos dice «No pude cargar»; al volver de Discord el permiso se borra de la dirección.
 
 ## 📅 Viernes 25/09 (8:40 AM) — el Score del rework y entrar con Discord
@@ -328,7 +329,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **Para que «Entrar con Discord» ande falta un paso tuyo**, un solo campo: [discord.com/developers/applications](https://discord.com/developers/applications) → **LIGA GLOBAL** → **OAuth2** → **Redirects** → **Add Redirect** → `https://underlegends.pages.dev/` (con la barra final) → **Save Changes**. No crea ni cambia ningún token. Avisame cuando esté y lo pruebo.
+1. **Probá «Entrar con Discord»**: [underlegends.pages.dev](https://underlegends.pages.dev/) → **Mi cuenta** (arriba a la derecha) → **Entrar con Discord** → **Autorizar**. Tu redirect ya está (lo leí de la app: `https://underlegends.pages.dev/`). Si algo falla, decime qué pantalla ves.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
