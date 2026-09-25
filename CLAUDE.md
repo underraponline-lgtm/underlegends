@@ -697,6 +697,17 @@ cualquier cosa de los avisos**.
 🔴 **Las claves VAPID no se rotan con los demás tokens**: las suscripciones
 quedan atadas a ellas. Ver `ACCESOS.md` 5c.
 
+🏆 **«VER LLAVE» EN «LO QUE PASÓ», DESDE EL 25/09/2026.** La llave de cada
+evento procesado se guarda en `datos/llaves_t1.json` (`sheet/llaves_web.py`,
+después de que `procesar_entrada` escribió) y viaja **dentro del payload del
+lobby**, sólo la de los anuncios que muestra la sección: no hay otra clave de
+KV ni otra ruta en el Worker.
+
+⚠️ **El anuncio y la llave no comparten ninguna clave**: `llaves_web.cruzar()`
+los junta por servidor, fecha y nombre, y **los números del nombre tienen que
+coincidir** —«TOKYO VOL 11» y «VOL 12» se parecen un 95 %—. Si no está
+seguro, no cuelga el botón.
+
 ---
 
 ## El bot de Discord
@@ -1963,6 +1974,8 @@ sheet/            el puente con el Google Sheet: explorar + los dos builders
                   estilo.py       como se ve una vitrina. Un lugar para las 5
                   competitivo.py  el Score y las cinco dimensiones
                   lobby.py        la portada, calculada + la cuenta atras
+                  llaves_web.py   la llave de cada evento, para «Ver llave»
+                  lista_raperos.py agregar, poner un ID y fusionar dobles
                   webapp_subir.py sube al Apps Script sin pisar lo ajeno
 bot/              el lector de Discord y el ciclo
                   anuncios.py     lee eventos e inscripciones
@@ -1970,6 +1983,10 @@ bot/              el lector de Discord y el ciclo
                   avisar.py       avisa en Discord, una vez por llave
                   olvidar.py      la salida: borrar a alguien de R2 y KV
                   subir_web.py    el payload del lobby, a KV (paso 2c)
+                  autoverificar.py el país (del rol) y el Miembro de DRA,
+                                  solos en cada corrida (paso 1a2)
+                  alertar.py      DM a Dlx si algo se traba; lo normal, al
+                                  canal de Logs
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
                   avisos_casos.py el contrato Python<->JS del lector de
