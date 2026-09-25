@@ -1297,6 +1297,83 @@ async function cuentaDiscord(req, env) {
     av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {})), { headers: h });
 }
 
+// ── «Mis redes» en el perfil: las conexiones PÚBLICAS de Discord ─────────
+// 🔑 Dlx, 25/09/2026, a las ideas de Mi cuenta: «todas». La primera era ésta:
+// usar las conexiones que Discord ya tiene (Instagram, TikTok, YouTube…) y
+// que se vean en el perfil de cada uno.
+//
+// ⚠️ SÓLO LAS QUE LA PERSONA YA MUESTRA EN SU PERFIL DE DISCORD
+// (`visibility: 1`) Y SÓLO LAS QUE ELIGE: la página las ofrece y se guardan
+// cuando toca «Guardar». Nada se publica sin ese toque, y «Quitar» las borra.
+//
+// ⚠️ EL PERMISO ES OTRO QUE EL DE ENTRAR: `identify connections`, pedido
+// desde «Mis redes». Entrar con Discord sigue pidiendo sólo `identify`.
+//
+// ⚠️ SE GUARDA SÓLO PARA QUIEN TIENE PERFIL EN LA LIGA (`d:<id>`): una red
+// sin perfil donde mostrarse sería un dato suelto de alguien. Va a
+// `redes:<clave>` y el ciclo la suma a `web:perfiles` (`subir_web.py`).
+const REDES_DC = {
+  instagram: (c) => 'https://www.instagram.com/' + encodeURIComponent(c.name) + '/',
+  tiktok: (c) => 'https://www.tiktok.com/@' + encodeURIComponent(c.name),
+  youtube: (c) => 'https://www.youtube.com/channel/' + encodeURIComponent(c.id),
+  twitter: (c) => 'https://x.com/' + encodeURIComponent(c.name),
+  twitch: (c) => 'https://www.twitch.tv/' + encodeURIComponent(c.name),
+  spotify: (c) => 'https://open.spotify.com/user/' + encodeURIComponent(c.id),
+  reddit: (c) => 'https://www.reddit.com/user/' + encodeURIComponent(c.name),
+  bluesky: (c) => 'https://bsky.app/profile/' + encodeURIComponent(c.name),
+};
+export function redesPublicas(cs) {
+  return (Array.isArray(cs) ? cs : [])
+    .filter((c) => c && c.visibility === 1 && REDES_DC[c.type] && (c.type === 'youtube' ||
+      c.type === 'spotify' ? c.id : c.name))
+    .map((c) => ({ t: c.type === 'twitter' ? 'x' : c.type, n: String(c.name || '').slice(0, 60),
+      u: REDES_DC[c.type](c) }))
+    .slice(0, 8);
+}
+async function cuentaRedes(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const t = String((d && d.token) || '');
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
+    return new Response('{"error":"token"}', { status: 400, headers: h });
+  }
+  const auth = { headers: { Authorization: 'Bearer ' + t } };
+  let u = null, cs = null;
+  try {
+    const [ru, rc] = await Promise.all([
+      fetch('https://discord.com/api/v10/users/@me', auth),
+      fetch('https://discord.com/api/v10/users/@me/connections', auth)]);
+    if (ru.ok) u = await ru.json();
+    // sin el permiso de conexiones Discord contesta 401/403: se dice cuál falta
+    if (ru.ok && (rc.status === 401 || rc.status === 403)) {
+      return new Response('{"error":"permiso"}', { status: 403, headers: h });
+    }
+    if (rc.ok) cs = await rc.json();
+  } catch (e) { u = null; }
+  if (!u || !u.id || !cs) return new Response('{"error":"discord"}', { status: 401, headers: h });
+  const clave = await env.KV.get('d:' + u.id);
+  if (!clave) return new Response('{"error":"sin_perfil"}', { status: 409, headers: h });
+  const publicas = redesPublicas(cs);
+  const k = 'redes:' + clave;
+  if (!Array.isArray(d.mostrar)) {
+    let guardadas = [];
+    try { guardadas = JSON.parse((await env.KV.get(k)) || '[]'); } catch (e) { guardadas = []; }
+    return new Response(JSON.stringify({ clave, publicas, guardadas }), { headers: h });
+  }
+  // ⚠️ SÓLO LAS QUE SIGUEN PÚBLICAS: lo que manda la página se cruza con lo
+  // que Discord dice ahora, así no se puede guardar una red ajena ni una oculta
+  const quiero = new Set(d.mostrar.map(String));
+  const elegidas = publicas.filter((r) => quiero.has(r.t + ':' + r.n));
+  try {
+    if (elegidas.length) await env.KV.put(k, JSON.stringify(elegidas));
+    else await env.KV.delete(k);
+  } catch (e) {
+    return new Response('{"error":"kv"}', { status: 503, headers: h });
+  }
+  return new Response(JSON.stringify({ clave, publicas, guardadas: elegidas }), { headers: h });
+}
+
 // ── /notify: los avisos de eventos, en el celular o la compu ─────────────
 // 🔴 SIN DMs. Dlx, 25/09/2026: *«no debería usar el bot para enviarte DMs,
 // sino activar la notificación al celular o dispositivo»*. Nació por DM esa
@@ -2965,6 +3042,7 @@ export default {
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
     // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
     if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);
+    if (camino === '/cuenta/redes' && req.method === 'POST') return cuentaRedes(req, env);
 
     if (req.method === 'GET') {
       const ruta = camino;
