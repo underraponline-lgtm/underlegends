@@ -50,6 +50,24 @@ const AVISOS = {
   '/api/avisos/probar': 'POST',
   // sólo le llega a quien eligió el servidor de prueba: ver `SV_PRUEBA`
   '/api/avisos/simular': 'POST',
+  // 🔑 los avisos de cada uno (25/09/2026): ver `vincular()` en bot/avisos.js
+  '/api/avisos/vincular': 'POST',
+  '/api/avisos/desvincular': 'POST',
+};
+
+// 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
+// una igual que los avisos. POST, JSON chico, nunca en caché.
+//
+// 🔴 EL 25/09/2026 NACIERON `/cuenta/redes` Y `/cuenta/foto` EN EL WORKER Y NO
+// ACÁ, y lo mismo `vincular` en los avisos: la página recibía su propio HTML
+// en vez de la respuesta y decía «No pude leer tus redes» (Dlx, con captura).
+// Las pruebas llamaban al Worker directo y daban verde. Ahora
+// `bot/probar_local.mjs` saca de app.js y campana.js cada `/api/…` que la
+// página pide y prueba que este proxy lo deje pasar.
+const CUENTA = {
+  '/api/cuenta': '/cuenta',
+  '/api/cuenta/redes': '/cuenta/redes',
+  '/api/cuenta/foto': '/cuenta/foto',
 };
 
 async function avisos(req, url) {
@@ -127,11 +145,12 @@ export default {
       });
     }
     // «Mi cuenta» con Discord: el permiso va al Worker, que le pregunta a Discord
-    if (url.pathname === '/api/cuenta') {
+    if (CUENTA[url.pathname]) {
       if (req.method !== 'POST') return new Response('no', { status: 405 });
       const cuerpo = await req.text();
-      if (cuerpo.length > 1024) return new Response('grande', { status: 413 });
-      const r = await fetch(ORIGEN + '/cuenta', {
+      // las redes elegidas viajan en el cuerpo: 2 KB alcanzan de sobra
+      if (cuerpo.length > 2048) return new Response('grande', { status: 413 });
+      const r = await fetch(ORIGEN + CUENTA[url.pathname], {
         method: 'POST', body: cuerpo, headers: { 'content-type': 'application/json' },
       });
       return new Response(r.body, { status: r.status, headers: {
