@@ -600,7 +600,8 @@ export function mensajeRed(c) {
       url: c.url,
       description: lineas.join('\n').slice(0, 4000),
       color: 0x29B298,
-      footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse' },
+      footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse',
+        icon_url: HUB + '/aviso.png' },
     }],
     components: [{
       type: 1,

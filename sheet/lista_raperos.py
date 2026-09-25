@@ -258,25 +258,42 @@ def fusionar(aplicar=False):
     v = leer()
     i, col = mapa(v)
     plan, cambios, borrar = [], [], []
+    # 🔴 POR REAL, NO POR PAR. Dos alias del mismo rapero daban dos cambios
+    # sobre la misma fila y el segundo pisaba la mezcla del primero; y si
+    # la segunda fila de un alias chocaba de ID, la primera ya estaba en
+    # `borrar` sin haberse mezclado (auditoría del 25/09/2026). Ahora cada
+    # real junta todos sus alias sobre UNA fila, y un alias se borra sólo
+    # si TODAS sus filas se mezclaron.
+    por_real = {}
     for a, r in dobles():
-        fa, fr = filas_de(v, a), filas_de(v, r)
-        if len(fr) != 1 or not fa:
-            print('   ⚠️ %s -> %s: %d fila(s) del alias y %d del real; se saltea'
-                  % (a, r, len(fa), len(fr)))
+        por_real.setdefault(r, []).append(a)
+    for r, alias in por_real.items():
+        fr = filas_de(v, r)
+        if len(fr) != 1:
+            print('   ⚠️ %s: %d fila(s) del real; se saltea' % (r, len(fr)))
             continue
-        nr, real = fr[0]
-        fila = real
-        for na, doble in fa:
-            m = _mezcla(fila, doble, col, _celda(doble, col['Rapero']))
-            if m is None:
-                print('   ⚠️ %s -> %s: tienen DOS Discord ID distintos; se saltea'
-                      % (a, r))
-                break
-            fila = m
-            borrar.append(na)
-        else:
+        nr, fila = fr[0]
+        tocada = False
+        for a in alias:
+            fa = filas_de(v, a)
+            if not fa:
+                print('   ⚠️ %s -> %s: el alias no tiene fila; se saltea' % (a, r))
+                continue
+            prueba, suyas = fila, []
+            for na, doble in fa:
+                m = _mezcla(prueba, doble, col, _celda(doble, col['Rapero']))
+                if m is None:
+                    print('   ⚠️ %s -> %s: tienen DOS Discord ID distintos; se saltea'
+                          % (a, r))
+                    break
+                prueba = m
+                suyas.append(na)
+            else:
+                fila, tocada = prueba, True
+                borrar += suyas
+                plan.append((a, r, nr, suyas))
+        if tocada:
             cambios.append((nr, fila))
-            plan.append((a, r, nr, [n for n, _ in fa]))
     for a, r, nr, ns in plan:
         print('   %-12s -> %-12s  queda la fila %d, se va la %s'
               % (a, r, nr, ', '.join(str(x) for x in ns)))

@@ -369,7 +369,16 @@ function anotar(env, ctx, id, nick, user, glob, guild, por) {
       const [ya, cola] = await Promise.all([
         env.KV.get('d:' + id), env.KV.get('reg:' + id),
       ]);
-      if (ya || cola) return;                 // ya cargado, o ya en la cola
+      if (ya) return;                         // ya cargado
+      if (cola) {
+        // 🔴 SI ANTES LO NOMBRÓ OTRO Y AHORA SE ANOTA ÉL, SE REESCRIBE: con
+        // `por: 'otro'` no entra solo a la Lista, y el texto de `/card` le
+        // acaba de decir que sí (auditoría del 25/09/2026). Es una
+        // escritura más sólo en ese caso.
+        let antes = null;
+        try { antes = JSON.parse(cola); } catch (e) { antes = null; }
+        if (!(por === 'yo' && (!antes || antes.por !== 'yo'))) return;
+      }
       await env.KV.put('reg:' + id, JSON.stringify({
         id, nick: nick || '', user: user || '', glob: glob || '',
         guild: guild || '', sv: aquiEs(guild) || '', ts: Date.now(),

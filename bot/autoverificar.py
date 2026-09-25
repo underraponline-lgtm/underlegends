@@ -146,7 +146,10 @@ def pais_de(p, suyos, fijado, iso_de):
     emoji = cc_bandera(p.get('full'))
     cc, por = PR.decidir(columna, emoji, suyos.get('DRA', []),
                          {k: v for k, v in suyos.items() if k != 'DRA' and v})
-    if not cc and emoji:
+    # ⚠️ LA BANDERA SÓLO CUANDO NO HAY ROLES, no cuando se contradicen: con
+    # dos países que no son USA la regla es no tocar (auditoría 25/09/2026)
+    conflicto = 'países' in por or 'roles de país' in por
+    if not cc and emoji and not conflicto:
         return emoji, 'bandera del nombre'
     return cc or '', por
 
@@ -204,13 +207,24 @@ def _pedir(s, metodo, url, **kw):
 
 
 def miembro(s, gid, did):
-    """Sus roles en ese servidor, `None` si no está. Levanta si Discord falla."""
+    """El miembro de ese servidor —roles, apodo—, `None` si no está.
+    Levanta si Discord falla."""
     r = _pedir(s, 'GET', '%s/guilds/%s/members/%s' % (API, gid, did))
     if r.status_code == 404:
         return None
     if r.status_code != 200:
         raise RuntimeError('%s: %s' % (gid, r.status_code))
-    return r.json().get('roles') or []
+    return r.json() or {}
+
+
+def _roles(m):
+    return (m or {}).get('roles') or []
+
+
+def _apodo(m):
+    """El apodo y el nombre global: ahí va la bandera que la gente se pone."""
+    u = (m or {}).get('user') or {}
+    return ' '.join(x for x in ((m or {}).get('nick'), u.get('global_name')) if x)
 
 
 def mapas_de_roles(s, guilds):
@@ -231,13 +245,19 @@ def mapas_de_roles(s, guilds):
     return out
 
 
-def roles_de_pais(s, guilds, mapas, did, dra_roles=None):
-    """{servidor: [códigos]} de esa persona, en DRA y en los otros."""
-    suyos = {}
-    if dra_roles is None and 'DRA' in mapas:
-        dra_roles = miembro(s, dict(guilds)['DRA'], did)
-    if dra_roles:
-        cs = sorted({mapas['DRA'][x] for x in dra_roles if x in mapas['DRA']})
+def roles_de_pais(s, guilds, mapas, did):
+    """`({servidor: [códigos]}, apodo en DRA)` de esa persona.
+
+    🔴 Y EL APODO, PORQUE `/card` LO PROMETE: «si Discord sabe tu país
+    (bandera en tu apodo o un rol de país)». Esto leía sólo roles, así que
+    la bandera del apodo no contaba (auditoría del 25/09/2026). Viene en el
+    mismo pedido: no cuesta nada.
+    """
+    suyos, apodo = {}, ''
+    if 'DRA' in mapas:
+        m = miembro(s, dict(guilds)['DRA'], did)
+        apodo = _apodo(m)
+        cs = sorted({mapas['DRA'][x] for x in _roles(m) if x in mapas['DRA']})
         if cs:
             suyos['DRA'] = cs
     # ⚠️ LOS OTROS SE MIRAN AUNQUE DRA YA DIGA UN PAÍS: «si una de las dos
@@ -245,11 +265,11 @@ def roles_de_pais(s, guilds, mapas, did, dra_roles=None):
     for sv, gid in guilds:
         if sv == 'DRA' or sv not in mapas:
             continue
-        rs = miembro(s, gid, did)
-        cs = sorted({mapas[sv][x] for x in (rs or []) if x in mapas[sv]})
+        cs = sorted({mapas[sv][x] for x in _roles(miembro(s, gid, did))
+                     if x in mapas[sv]})
         if cs:
             suyos[sv] = cs
-    return suyos
+    return suyos, apodo
 
 
 # ── la hoja ────────────────────────────────────────────────────────────
@@ -286,14 +306,25 @@ def plan_hoja(v, i, col, poner, rango):
             continue
         f = v[fs[0] - 1]
         ban, pa = _celda(f, col['Bandera']), _celda(f, col['País'])
-        if ban not in VACIO or pa not in VACIO:
+        if ban not in VACIO:
             # alguien lo puso en la última media hora: no se pisa
-            ya.append((did, 'la hoja ya dice %s' % (ban if ban not in VACIO else pa)))
+            ya.append((did, 'la hoja ya dice %s' % ban))
             continue
-        celdas += [{'range': rango('%s%d' % (letra(col['Bandera']), fs[0])),
-                    'values': [[nombre]]},
-                   {'range': rango('%s%d' % (letra(col['País']), fs[0])),
-                    'values': [[cc]]}]
+        celda_b = {'range': rango('%s%d' % (letra(col['Bandera']), fs[0])),
+                   'values': [[nombre]]}
+        # 🔴 `País` CON CÓDIGO Y `Bandera` VACÍA: el portón lee `Bandera`, así
+        # que esa persona quedaba afuera con el país escrito en la hoja
+        # (Scot, 25/09/2026: «ar» en País). Si los roles dicen lo mismo, se
+        # completa sólo `Bandera`; si dicen otra cosa, no se toca nada.
+        if pa not in VACIO:
+            if pa.lower() != cc:
+                ya.append((did, 'País dice %s y los roles %s' % (pa, cc)))
+                continue
+            celdas.append(celda_b)
+        else:
+            celdas += [celda_b,
+                       {'range': rango('%s%d' % (letra(col['País']), fs[0])),
+                        'values': [[cc]]}]
         van.append((did, cc, nombre, _celda(f, col['Rapero'])))
     return celdas, van, ya
 
@@ -336,7 +367,10 @@ def escribir_paises(poner, aplicar):
 def dar_miembro(s, did, rol, invitado):
     import verificados as VER
     base = '%s/guilds/%s/members/%s/roles/' % (API, VER.GUILD_DRA, did)
-    h = {'X-Audit-Log-Reason': 'Liga Global: autoverificar (ID + país)'}
+    # ⚠️ un encabezado HTTP no lleva «í» suelta: Discord pide el motivo
+    # codificado (auditoría del 25/09/2026)
+    from urllib.parse import quote
+    h = {'X-Audit-Log-Reason': quote('Liga Global: autoverificar (ID + país)')}
     r = _pedir(s, 'PUT', base + rol, headers=h)
     ok = r.status_code in (200, 204)
     if ok and invitado:
@@ -388,8 +422,11 @@ def correr(aplicar):
     if len(pp) > RARO_PAISES:
         raros.append('%d filas con ID y sin país' % len(pp))
         pp = []
-    if len(pv) > RARO_VERIFICAR:
-        raros.append('%d en DRA sin el Miembro' % len(pv))
+    # ⚠️ EL UMBRAL CUENTA A QUIEN SE PUEDE VERIFICAR: los que no tienen país
+    # no se verifican igual, y contarlos trababa todo con un DM cada 6 h
+    # (auditoría del 25/09/2026)
+    if len([p for p in pv if (p.get('pais') or '').strip()]) > RARO_VERIFICAR:
+        raros.append('%d en DRA sin el Miembro y con país' % len(pv))
         pv = []
     if raros:
         import alertar
@@ -437,11 +474,13 @@ def correr(aplicar):
             break
         ya.add(did)
         try:
-            suyos = roles_de_pais(s, guilds, mapas, did)
+            suyos, apodo = roles_de_pais(s, guilds, mapas, did)
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ %s: Discord no contestó (%s); sigo' % (p['raw'], str(e)[:40]))
             continue
-        cc, por = pais_de(p, suyos, fij.get(norm(p['raw'])), iso_de)
+        # la bandera puede estar en el nombre de la Lista o en su apodo
+        con_apodo = dict(p, full=('%s %s' % (p.get('full') or '', apodo)).strip())
+        cc, por = pais_de(con_apodo, suyos, fij.get(norm(p['raw'])), iso_de)
         if not cc:
             (dudas if 'países' in por or 'roles de país' in por else sin).append((p, por))
             continue
@@ -457,19 +496,24 @@ def correr(aplicar):
     con_pais = {d for d, _, _, _ in escritos}
 
     # 2 · el Miembro de DRA
-    verificados, sin_pais_v = [], []
-    for p in pv[:TOPE_VERIFICAR]:
+    verificados = []
+    # 🔴 EL TOPE VA DESPUÉS DE FILTRAR POR PAÍS: cortando antes, cinco sin
+    # país ocupaban los cinco lugares en cada corrida y nadie más se
+    # verificaba nunca (auditoría del 25/09/2026)
+    tiene = lambda p: bool((p.get('pais') or '').strip()) or \
+        str(p['discord_id']) in con_pais
+    sin_pais_v = [p['raw'] for p in pv if not tiene(p)]
+    if sin_pais_v:
+        print('   🏳️ en DRA sin el Miembro y sin país: %d (no se verifican)   %s'
+              % (len(sin_pais_v), ', '.join(sin_pais_v[:8])))
+    for p in [p for p in pv if tiene(p)][:TOPE_VERIFICAR]:
         did = str(p['discord_id'])
-        tiene = bool((p.get('pais') or '').strip()) or did in con_pais
-        if not tiene:
-            sin_pais_v.append(p['raw'])
-            continue
         try:
-            rs = miembro(s, VER.GUILD_DRA, did)
+            m = miembro(s, VER.GUILD_DRA, did)
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ %s: DRA no contestó (%s)' % (p['raw'], str(e)[:40]))
             continue
-        if rs is None or rol in rs:
+        if m is None or rol in _roles(m):
             continue                     # se fue de DRA, o ya lo tiene
         if aplicar and not dar_miembro(s, did, rol, invitado):
             print('   🔴 %s: Discord no aceptó el rol' % p['raw'])
@@ -529,6 +573,8 @@ def _self_check():
        'USA gana, venga de donde venga')
     ok(pais_de({'full': 'X ❓', 'pais': ''}, {'SR': ['co'], 'FFA': ['ar']}, None, iso)[0] == '',
        'dos países que no son USA: no se toca')
+    ok(pais_de({'full': 'X 🇨🇱', 'pais': ''}, {'SR': ['co'], 'FFA': ['ar']}, None, iso)[0] == '',
+       'y la bandera del nombre tampoco lo desempata')
     ok(pais_de({'full': 'X 🇨🇱', 'pais': ''}, {}, None, iso) == ('cl', 'bandera del nombre'),
        'sin roles: la bandera del nombre')
     ok(pais_de({'full': 'X ❓', 'pais': ''}, {}, None, iso)[0] == '',
@@ -560,16 +606,22 @@ def _self_check():
             ['Meidei ❓', '❓', '', '', '11', '', '', '', ''],
             ['Bea', 'Chile', '', '', '22', '', '', '', 'cl'],
             ['Doble', '', '', '', '33'], ['Doble2', '', '', '', '33'],
-            ['Ceci', '', '', '', '44', '', '', '', '']]
+            ['Ceci', '', '', '', '44', '', '', '', ''],
+            ['Scot ❓', '❓', '', '', '55', '', '', '', 'ar'],
+            ['Otro', '', '', '', '66', '', '', '', 'pe']]
     col = {c: cab.index(c) for c in cab}
     celdas, van, ya = plan_hoja(hoja, 1, col, [('11', 'cl', 'Chile'), ('22', 'ar', 'Argentina'),
-                                               ('33', 'co', 'Colombia'), ('44', 've', 'Venezuela')],
+                                               ('33', 'co', 'Colombia'), ('44', 've', 'Venezuela'),
+                                               ('55', 'ar', 'Argentina'), ('66', 'co', 'Colombia')],
                                 lambda a1: a1)
-    ok([x[0] for x in van] == ['11', '44'],
+    ok([x[0] for x in van] == ['11', '44', '55'],
        'escribe donde dice ❓ o está vacío  %s' % [x[0] for x in van])
+    ok({'range': 'B8', 'values': [['Argentina']]} in celdas and
+       not any(c['range'] == 'I8' for c in celdas),
+       'País ya dice «ar» y los roles también: completa sólo Bandera')
     ok({'range': 'B3', 'values': [['Chile']]} in celdas and {'range': 'I3', 'values': [['cl']]} in celdas,
        'las dos columnas: Bandera con el nombre y País con el código')
-    ok([d for d, _ in ya] == ['22', '33'],
+    ok([d for d, _ in ya] == ['22', '33', '66'],
        'no pisa un país que ya está, ni escribe un ID que está en dos filas  %s' % ya)
 
     import verificados as VER

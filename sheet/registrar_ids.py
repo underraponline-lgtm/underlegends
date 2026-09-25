@@ -102,7 +102,17 @@ def cola_kv(s):
 
 
 def borrar_kv(s, clave):
-    s.delete('%s/values/%s' % (KV_API, clave), timeout=30)
+    """Saca un anotado de la cola. `True` si KV dijo que sí.
+
+    ⚠️ SE MIRA LA RESPUESTA: un DELETE que falla deja el `reg:` en la cola,
+    y la corrida siguiente lo volvía a anotar en Pendientes (auditoría del
+    25/09/2026).
+    """
+    try:
+        r = s.delete('%s/values/%s' % (KV_API, clave), timeout=30)
+        return r.status_code in (200, 204, 404)
+    except Exception:                                    # noqa: BLE001
+        return False
 
 
 def candidatos(reg, norm):
@@ -148,8 +158,12 @@ def nombre_de(reg):
     """El nombre con el que alguien se anotó: el apodo del servidor sin la
     decoración (`#5 | Gus` -> `Gus`, `🐉 | Lil Drako` -> `Lil Drako`) y sin
     banderas; si no sirve, el nombre global; al final, el usuario."""
+    import unicodedata
     for txt in (reg.get('nick'), reg.get('glob'), reg.get('user')):
-        t = str(txt or '')
+        # 🔴 LA LETRA DECORADA, COMO LETRA: `𝐋𝐢𝐥 𝐃𝐫𝐚𝐤𝐨` es «Lil Drako», que es
+        # como se busca y como tiene que quedar en la Lista (auditoría del
+        # 25/09/2026)
+        t = unicodedata.normalize('NFKC', str(txt or ''))
         t = ''.join(c for c in t if not 0x1F1E6 <= ord(c) <= 0x1F1FF)
         t = t.replace('❓', '')
         piezas = [x.strip() for x in t.split('|') if x.strip()]
@@ -157,6 +171,15 @@ def nombre_de(reg):
         if 2 <= len(t) <= 32 and any(c.isalpha() for c in t):
             return t
     return ''
+
+
+def apodo_con_dos_nombres(reg):
+    """¿El apodo trae dos piezas con letras? «Juan | Crew X»: no se sabe
+    cuál es el nombre. «#5 | Gus» o «🐉 | Lil Drako», sí: la otra pieza no
+    tiene letras."""
+    piezas = [x for x in str(reg.get('nick') or '').split('|')
+              if any(c.isalpha() for c in x)]
+    return len(piezas) >= 2
 
 
 def alta_sola(reg, nombres, alias, saltear, norm, pais):
@@ -178,6 +201,12 @@ def alta_sola(reg, nombres, alias, saltear, norm, pais):
     nombre = nombre_de(reg)
     if not nombre:
         return '', '', 'sin un nombre que sirva'
+    if apodo_con_dos_nombres(reg):
+        return '', '', 'el apodo trae dos nombres: ¿cuál es?'
+    # ⚠️ Una letra que no es latina ni después de normalizar —«ᏵᏫᎠᏃ»— la
+    # mira un humano: no se sabe cómo la escribe la llave.
+    if any(ord(c) > 0xFF for c in nombre):
+        return '', '', 'el nombre tiene letras que no son latinas'
     k = norm(nombre)
     if k in saltear:
         return '', '', 'troll o no se verifica'
@@ -209,6 +238,8 @@ def _self_check():
        'sin apodo, el nombre global')
     ok(nombre_de({'nick': '🇨🇱', 'glob': '', 'user': 'x_y'}) == 'x_y',
        'un apodo que es sólo una bandera no sirve: el usuario')
+    ok(nombre_de({'nick': '𝐋𝐢𝐥 𝐃𝐫𝐚𝐤𝐨 🇪🇨'}) == 'Lil Drako',
+       'la letra decorada, como letra  (%r)' % nombre_de({'nick': '𝐋𝐢𝐥 𝐃𝐫𝐚𝐤𝐨 🇪🇨'}))
     norm = lambda x: ''.join(c for c in str(x).lower() if c.isalnum())
     nombres = {'konan': 'Konan', 'masino': 'Masino'}
     alias = {'carr': 'Provenza'}
@@ -227,6 +258,12 @@ def _self_check():
        .startswith('pidió salir'), 'quien pidió salir no entra')
     ok(alta_sola({'id': '1', 'nick': 'money maker'}, nombres, alias, {'moneymaker'},
                  norm, con)[2].startswith('troll'), 'un troll no entra')
+    ok(alta_sola({'id': '1', 'nick': 'Juan | Crew X'}, nombres, alias, set(), norm, con)[2]
+       .startswith('el apodo trae dos'), '«Juan | Crew X»: no se sabe cuál es el nombre')
+    ok(alta_sola({'id': '1', 'nick': '#5 | Gus'}, nombres, alias, set(), norm, con)[0] == 'Gus',
+       '«#5 | Gus» sí: el #5 no es un nombre')
+    ok(alta_sola({'id': '1', 'nick': 'ᏵᏫᎠᏃ'}, nombres, alias, set(), norm, con)[2]
+       .startswith('el nombre tiene letras'), 'letras que no son latinas: a Pendientes')
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
@@ -354,22 +391,24 @@ def main():
         ses, mapas = [None], [None]
 
         def pais(reg):
-            cc = AV.cc_bandera(reg.get('nick')) or AV.cc_bandera(reg.get('glob'))
-            if not cc:
-                # sin bandera en el nombre: sus roles de país, con la regla
-                # de siempre (`autoverificar.pais_de`)
-                try:
-                    if ses[0] is None:
-                        ses[0] = AV._sesion() or False
-                        if ses[0]:
-                            mapas[0] = AV.mapas_de_roles(ses[0], AV_GUILDS())
-                    if ses[0] and mapas[0]:
-                        suyos = AV.roles_de_pais(ses[0], AV_GUILDS(), mapas[0],
-                                                 str(reg.get('id')))
-                        cc = AV.pais_de({'full': '', 'pais': ''}, suyos, None, {})[0]
-                except Exception as e:                   # noqa: BLE001
-                    print('  ⚠️ no pude mirar los roles de %s (%s)'
-                          % (reg.get('id'), str(e)[:40]))
+            # 🔴 LA REGLA DE SIEMPRE, CON LA BANDERA DEL APODO AL FINAL: gana
+            # USA, después el rol de DRA, después los otros servidores, y
+            # recién ahí la bandera (`autoverificar.pais_de`). Antes la
+            # bandera del apodo iba primero (auditoría del 25/09/2026).
+            apodo = ' '.join(str(reg.get(k) or '') for k in ('nick', 'glob'))
+            suyos = {}
+            try:
+                if ses[0] is None:
+                    ses[0] = AV._sesion() or False
+                    if ses[0]:
+                        mapas[0] = AV.mapas_de_roles(ses[0], AV_GUILDS())
+                if ses[0] and mapas[0]:
+                    suyos = AV.roles_de_pais(ses[0], AV_GUILDS(), mapas[0],
+                                             str(reg.get('id')))[0]
+            except Exception as e:                       # noqa: BLE001
+                print('  ⚠️ no pude mirar los roles de %s (%s)'
+                      % (reg.get('id'), str(e)[:40]))
+            cc = AV.pais_de({'full': apodo, 'pais': ''}, suyos, None, {})[0]
             return cc if cc in iso_ok else ''
 
         for reg, k, etiqueta, did in altas:
@@ -445,20 +484,19 @@ def main():
 
     # ── 3. pendientes: una fila por cada uno, sin pisar nada ──────────────
     if pendientes:
+        # 🔴 CON `anotar_varios`, QUE NO REPITE: antes era un `append_row`
+        # por duda, y si el borrado de KV fallaba la misma fila volvía a
+        # entrar cada media hora. Ver `sheet/pendientes.py`.
         try:
-            wp = gc.open_by_key(PAD.OPERATIVO).worksheet(PENDIENTES)
-            for tipo, det, match, k in pendientes:
-                # 🔴 `table_range`: SIN ÉL, EL APPEND CAÍA EN EL PANEL. La
-                # API busca «la tabla» del rango que se le pasa, y con el
-                # panel de la derecha eligió ése: 15 `alta` terminaron en
-                # J133:M147, debajo de las instrucciones, donde nadie las
-                # veía como dudas. Medido el 24/09/2026.
-                wp.append_row(['', tipo, 'bot /card', det, match, 'Pendiente'],
-                              value_input_option='RAW',
-                              insert_data_option='OVERWRITE',
-                              table_range='A1:H1')
-                borrar_kv(s, k)
-            print('  %d fila(s) agregadas a «%s»' % (len(pendientes), PENDIENTES))
+            from pendientes import anotar_varios
+            k = anotar_varios([(tipo, 'bot /card', det, match)
+                               for tipo, det, match, _ in pendientes])
+            print('  %d fila(s) nuevas en «%s» (%d ya estaban)'
+                  % (k, PENDIENTES, len(pendientes) - k))
+            quedan = [c for _, _, _, c in pendientes if not borrar_kv(s, c)]
+            if quedan:
+                print('  ⚠️ %d `reg:` no se pudieron sacar de la cola: vuelven '
+                      'la próxima vez (sin repetirse en Pendientes)' % len(quedan))
         except Exception as e:
             print('  ⚠️ no pude escribir en «%s»: %s' % (PENDIENTES, e))
             print('     (los `reg:` de esos quedan en la cola para el próximo intento)')
