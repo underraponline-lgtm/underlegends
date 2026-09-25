@@ -95,11 +95,11 @@ const COMANDOS = [
     ...EN_TODOS_LADOS,
   },
   {
-    // 🔑 Dlx, 25/09/2026: «activar las notificaciones de este servidor… ahí
-    // te dejará las opciones». Los avisos de eventos, por DM.
+    // 🔑 Dlx, 25/09/2026: «no debería usar el bot para enviarte DMs, sino
+    // activar la notificación al celular o dispositivo». Lleva a la campana.
     name: 'notify',
     type: 1,
-    description: 'avisos de eventos por mensaje directo: elegí de qué servidores',
+    description: 'activá los avisos de eventos en tu celular o compu',
     ...EN_TODOS_LADOS,
   },
   {

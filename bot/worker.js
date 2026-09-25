@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, pedirDM, marcarDisparo } from './avisos.js';
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo } from './avisos.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -1295,56 +1295,73 @@ async function cuentaDiscord(req, env) {
     av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {})), { headers: h });
 }
 
-// ── /notify: los avisos de eventos por DM ─────────────────────────────────
-// 🔑 Dlx, 25/09/2026: «activar las notificaciones de este servidor… ahí te
-// dejará las opciones en vez de que lo haga en el website». Se eligen acá; los
-// guarda y los manda el mismo objeto que la campana de la página
-// (`bot/avisos.js`), en la misma cola.
+// ── /notify: los avisos de eventos, en el celular o la compu ─────────────
+// 🔴 SIN DMs. Dlx, 25/09/2026: *«no debería usar el bot para enviarte DMs,
+// sino activar la notificación al celular o dispositivo»*. Nació por DM esa
+// misma mañana y se sacó con 0 anotados.
 //
-// ⚠️ EL PANEL SE ARMA DE LO QUE CONTESTA EL OBJETO (`/dm/ver`), no de una
-// lista escrita acá: los servidores que se pueden elegir son los que el vigía
-// escucha, igual que en la página.
-export function panelNotify(v, aqui) {
-  const svs = v.servidores || [];
-  const nombre = (sv) => (svs.find((s) => s.sv === sv) || {}).svn || sv;
-  const todos = v.activo && !v.svs.length;
-  const elegidos = !v.activo ? [] : todos ? svs.map((s) => s.sv) : v.svs;
-  const estado = !v.activo ? '🔕 **Apagados.**'
-    : todos ? '🔔 **Activados** para todos los servidores de la Liga.'
-      : '🔔 **Activados** para ' + v.svs.map(nombre).join(', ') + '.';
-  const lineas = ['## 🔔 Avisos de eventos por mensaje directo',
-    'Cuando un servidor de la Liga anuncia un evento, te escribo por DM al minuto.',
-    '', estado];
-  if (v.error === 'dm') {
-    lineas.push('', '⚠️ **No te puedo mandar mensajes directos.** En el servidor: tocá su ' +
-      'nombre → **Ajustes de privacidad** → activá **Mensajes directos**, y volvé a elegir.');
-  } else if (v.error === 'lleno') {
-    lineas.push('', '⚠️ Ya no entra nadie más por ahora. Probá los avisos de la página.');
-  }
-  const filas = [];
-  if (svs.length) {
-    filas.push({ type: COMP.FILA, components: [{
-      type: COMP.SELECT, custom_id: 'ntf:svs', placeholder: 'Elegí de qué servidores',
-      min_values: 1, max_values: svs.length,
-      options: svs.map((s) => ({ label: s.svn, value: s.sv, default: elegidos.indexOf(s.sv) >= 0 })),
-    }] });
+// 🔑 SE ELIGE EN DISCORD Y SE ACTIVA CON UN TOQUE. Y después: *«que te dé la
+// opción para activar las notificaciones desde Discord… y seleccionar los
+// servidores o para todos»*. El permiso de notificaciones lo da el navegador
+// del dispositivo —ningún bot puede darlo por vos—, así que lo que se hace
+// acá es todo lo demás: el menú elige los servidores y el botón abre la
+// campana con esa elección ya puesta (`#/avisos/FFA,SR` o `#/avisos/todos`,
+// ver `campana.js`). Si ese dispositivo ya estaba activado, el mismo botón
+// cambia los servidores.
+//
+// ⚠️ NO SE GUARDA NADA ACÁ: la elección viaja en el link. Por eso el panel no
+// necesita al objeto de los avisos más que para saber qué se escucha.
+//
+// ⚠️ SÓLO OFRECE LOS SERVIDORES QUE EL VIGÍA ESCUCHA (`escuchados`). Un
+// «avisos de TWR» sin un canal de TWR escuchado sería prometer avisos que no
+// van a salir. Si el objeto no contesta, se ofrecen todos: la página valida.
+export function panelNotify(aqui, escuchados, elegidos) {
+  const lista = (escuchados && escuchados.length ? escuchados : SERVIDORES.map((x) => x.sv))
+    .map((sv) => SERVIDORES.find((x) => x.sv === sv) || { sv, nombre: sv });
+  const nombre = (sv) => (lista.find((x) => x.sv === sv) || SERVIDORES.find((x) => x.sv === sv) ||
+    { nombre: sv }).nombre;
+  const hay = (sv) => lista.some((x) => x.sv === sv);
+  // lo elegido en el menú; si todavía no se tocó, el servidor donde se escribió
+  const sel = Array.isArray(elegidos) ? elegidos.filter(hay) : aqui && hay(aqui) ? [aqui] : [];
+  const todos = !sel.length || sel.length >= lista.length;
+  const lineas = ['## 🔔 Avisos de eventos en tu celular o compu',
+    'Cuando un servidor de la Liga anuncia un evento, te llega un aviso al minuto, ' +
+    'aunque no tengas Discord abierto.',
+    '',
+    '**Elegidos:** ' + (todos ? 'todos los servidores.' : sel.map((sv) => '**' + nombre(sv) + '**').join(', ') + '.'),
+    '1. Cambialos con el menú si querés.',
+    '2. Tocá **Activar**: se abre la página y aceptás las notificaciones. Listo.',
+    '',
+    '📱 **En iPhone**, antes: Safari → **Compartir** → **Agregar a inicio**, y abrí la Liga desde ese ícono.',
+    'Se activa una vez en cada dispositivo. Si ya lo tenías, **Activar** cambia los servidores.'];
+  if (aqui && !hay(aqui)) {
+    lineas.push('', `⚠️ Todavía no se escuchan los eventos de **${nombre(aqui)}**.`);
   }
   const botones = [];
-  // «de este servidor»: si se pide adentro de uno de la Liga, ése va primero
-  if (aqui && svs.some((s) => s.sv === aqui) && elegidos.indexOf(aqui) < 0) {
-    botones.push({ type: COMP.BOTON, style: ESTILO.PRIMARIO, label: 'Activar ' + nombre(aqui),
-      custom_id: 'ntf:sv:' + aqui });
-  }
   if (!todos) {
-    botones.push({ type: COMP.BOTON, style: botones.length ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
-      label: 'Todos los servidores', custom_id: 'ntf:todos' });
+    botones.push({ type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Todos los servidores',
+      custom_id: 'ntf:todos' });
   }
-  if (v.activo) {
-    botones.push({ type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Apagar', custom_id: 'ntf:off' });
+  botones.push(Object.assign(botonLink('Activar', AVISOS_URL + '/' + (todos ? 'todos' : sel.join(','))),
+    { emoji: { name: '🔔' } }));
+  return { content: lineas.join('\n'), components: [
+    { type: COMP.FILA, components: [{
+      type: COMP.SELECT, custom_id: 'ntf:svs', placeholder: 'Elegí de qué servidores',
+      min_values: 1, max_values: lista.length,
+      options: lista.map((x) => ({ label: x.nombre, value: x.sv, default: !todos && sel.indexOf(x.sv) >= 0 })),
+    }] },
+    { type: COMP.FILA, components: botones },
+  ] };
+}
+
+async function escuchados(env) {
+  try {
+    const r = await rutaAvisos(new Request('https://x/avisos/estado'), env, '/avisos/estado');
+    const c = ((await r.json()).vigia || {}).canales || [];
+    return c.length ? [...new Set(c.map((x) => x.sv))] : null;
+  } catch (e) {
+    return null;
   }
-  if (botones.length) filas.push({ type: COMP.FILA, components: botones });
-  filas.push({ type: COMP.FILA, components: [botonLink('Avisos en la página', AVISOS_URL)] });
-  return { content: lineas.join('\n'), components: filas };
 }
 
 // ── Los ajustes del servidor ──────────────────────────────────────────────
@@ -1602,13 +1619,13 @@ const AYUDA = {
   ].join('\n'),
 
   notify: () => [
-    '## `/notify` — los avisos de eventos por mensaje directo',
-    'Elegís de qué servidores de la Liga y, cuando uno anuncia un evento, te ' +
-    'escribo por DM al minuto. Adentro de un servidor, el primer botón activa ' +
-    'ése. Se cambia o se apaga con el mismo comando.',
+    '## `/notify` — los avisos de eventos en tu celular o compu',
+    'Te da el link para activar los avisos en ese dispositivo, con el servidor ' +
+    'donde lo escribiste ya elegido. Cuando anuncia un evento, te llega un aviso ' +
+    'al minuto aunque no tengas Discord abierto.',
     '',
-    'Para que te lleguen, el servidor tiene que dejar que te escriban por DM ' +
-    '(sus **Ajustes de privacidad**).',
+    'En iPhone, primero agregá la página a tu pantalla de inicio (Safari → ' +
+    'Compartir → Agregar a inicio). Se apagan o se cambian en la misma página.',
   ].join('\n'),
 
   website: () => [
@@ -2099,10 +2116,10 @@ const COMANDOS = {
       '· esto salió de un Worker, sin nada prendido entre comando y comando');
   },
 
+  // 🔑 Ver `panelNotify()`. Los servidores escuchados salen del estado del
+  // objeto de los avisos; si no contesta, se ofrece igual (la campana valida).
   async notify(i, env, ctx) {
-    const v = await pedirDM(env, '/dm/ver', { usuario: idDe(i) });
-    if (!v || v.error) return aviso('Los avisos no están andando ahora. Probá en un rato.');
-    return responderPanel(RESPONDE.MENSAJE, panelNotify(v, aquiEs(i.guild_id)));
+    return responderPanel(RESPONDE.MENSAJE, panelNotify(aquiEs(i.guild_id), await escuchados(env), null));
   },
 
   // 🔑 Dlx, 25/09/2026: «/website, que te redirigiría a la página».
@@ -3082,27 +3099,17 @@ export default {
           panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
       }
 
-      // ── /notify: los servidores de los avisos por DM ───────────────────
-      // ⚠️ LO GUARDA EL OBJETO DE LOS AVISOS, y quien toca es siempre quien
-      // pidió el panel: es efímero y cada click trae su propio ID.
+      // ── /notify: el menú de servidores y «Todos» ───────────────────────
+      // ⚠️ NO SE GUARDA NADA: el panel se redibuja con la elección en el link
+      // de «Activar». Un panel viejo (el de los DMs, con `ntf:sv:X` u
+      // `ntf:off`) se cambia por el de ahora en el mismo mensaje.
       if (que === 'ntf') {
         const esperarN = frenado(idDe(i), 'click');
         if (esperarN) return espera(esperarN);
-        const yo = idDe(i);
-        let d = null;
-        if (quien === 'off') d = { usuario: yo, apagar: true };
-        else if (quien === 'todos') d = { usuario: yo, svs: [] };
-        else if (quien === 'svs') d = { usuario: yo, svs: (i.data && i.data.values) || [] };
-        else if (quien === 'sv') {
-          const v0 = await pedirDM(env, '/dm/ver', { usuario: yo }) || {};
-          d = { usuario: yo, svs: v0.activo && (v0.svs || []).length ? v0.svs.concat([extra]) : [extra] };
-        }
-        if (!d) return aviso('No sé qué hacer con eso.');
-        const v = await pedirDM(env, '/dm/poner', d);
-        if (!v || v.error === 'usuario' || !v.servidores) {
-          return aviso('Los avisos no están andando ahora. Probá en un rato.');
-        }
-        return responderPanel(RESPONDE.ACTUALIZAR, panelNotify(v, aquiEs(i.guild_id)));
+        const elegidos = quien === 'svs' ? ((i.data && i.data.values) || [])
+          : quien === 'todos' ? [] : null;
+        return responderPanel(RESPONDE.ACTUALIZAR,
+          panelNotify(aquiEs(i.guild_id), await escuchados(env), elegidos));
       }
 
       // ── Los botones del versus ─────────────────────────────────────────
