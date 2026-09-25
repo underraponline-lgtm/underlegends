@@ -172,6 +172,22 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Viernes 25/09 (9:20 a 9:50 AM) — la revisión: errores, gasto y seguridad
+
+Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que apareció, medido:
+
+- 🧩 **La llave por equipos se salía de su caja** en EL RAP FECHA 5 y DESGRACIAS EN TOKYO VOL.12: cada integrante medía 24 px y el cuadro le reservaba 21. Arreglado (9:22 AM). Y los menús de arriba (Mi cuenta, Ajustes) se cierran al cambiar de página.
+- 🔗 **El link de la página pegado en Discord** ahora sale con el logo; antes era sólo texto.
+- 🔁 **Un alias encadenado** (gekto → geekto → Presagio) se resolvía distinto según qué parte lo leyera: seis contestaban «geekto», que ya no es nadie. Ahora el mapa se guarda resuelto hasta el nombre final (9:26 AM).
+- 🤖 **El bot, los días sin cupo de KV**: el 24/09 a las 7 PM se agotaron las escrituras y el Worker tiró 5 errores («la aplicación no respondió»). Ahora `/numeral` y `/settings` dicen que no pudieron guardar. Y `/numeral` mandaba a usar `/puesto`, **un comando que no existe** (9:30 AM).
+- 💾 **KV se pasó de la cuota 3 de los últimos 7 días** (1.063, 1.110 y 1.117 de 1.000). Una corrida sin ningún cambio escribía 6 claves. Tres arreglos (9:41 AM):
+  - 🔴 **Krtman y Presagio tenían su `/card` alternando de perfil cada media hora** (krt/krtman y geekto/presagio, el 24/09): un Discord ID repetido dejaba dos entradas que se turnaban. Hoy ya no había repetidos, pero el próximo iba a caer igual. Arreglado.
+  - Las marcas del disparador del ciclo van al Durable Object, que tiene cien veces más cupo: **~70 escrituras por día menos**.
+  - `meta` ya no se reescribe si la corrida no subió cartas: **~34 por día menos**. Por eso `/owner estado` dice ahora «cartas al día del» y «último disparo», **en hora del este** (antes salía UTC sin decirlo).
+- ⏱️ **Una corrida que se corta por tiempo ahora te avisa** (9:43 AM). GitHub la marca «cancelled», no «failure», y la alerta sólo miraba esa palabra. El redibujo entero de hoy tardó 53 min contra un tope de 120.
+- 🛡️ **Prueba de inyección**: la página servida con los 1.279 textos terminados en código HTML y recorrida entera. Los nombres, llaves, crews y títulos salen bien; lo único que se ejecutaba era el ícono de las dimensiones en la Guía, que no escribe nadie de afuera. Arreglado igual (9:51 AM).
+- ✅ **Revisado y bien**: ningún token vence solo (GitHub, Cloudflare y el bot); el secret `OAUTH_TOKEN` está (su falla del 24/09 fue 22 segundos antes de cargarlo); el Durable Object usa 957 de 100.000 invocaciones; la página sin datos dice «No pude cargar»; al volver de Discord el permiso se borra de la dirección.
+
 ## 📅 Viernes 25/09 (8:40 AM) — el Score del rework y entrar con Discord
 
 - ⚖️ **El Score, con los pesos del rework** desde las **8:40 AM**. No le cambió la letra a nadie: todavía nadie tiene 10 eventos. La hoja Config y la Guía ya los muestran, y la Config los lee de `competitivo.py` en vez de tenerlos escritos a mano.
@@ -338,6 +354,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 - **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
 - **Dos personas con el mismo nombre en minúsculas** (Volk y volk) ya se separan en la página, pero **R2 y KV todavía arman la clave del nombre**: el día que los dos estén verificados, sus tarjetas chocan. Hoy ninguno lo está.
 - **`/notify` todavía no mandó un DM de verdad**: el primero va a salir con el próximo evento que se anuncie. Lo miro.
+- **La corrida de las 10:52 AM** es la primera con las marcas del disparador en el Durable Object y `meta` sin reescribir: la miro.
 - 🔔 **A7** (el Score a 40–99): te llega un DM cuando el primero llegue a 8 eventos. Pide mover los umbrales de los 8 rangos en la misma pasada.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
