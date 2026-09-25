@@ -117,15 +117,53 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | 2 | **TFC es «The Freestyle Corpo»**, y no está en la Liga | *«The freestyle corpo, pero no están en la liga global»* | ✅ `datos/servidores.json` y el Worker |
 | 3a | **Racha en llaves de más de 16**: lo decidí yo, como pidió. **El cuarto de arriba de la llave**: cuartos en una de 32, octavos en una de 64 (la final en 8, la semi en 16) | *«¿cuál crees?»* | ✅ `rankings._umbral()` |
 | 3b | **Llaves de menos de 8**: llegar a la final | *«sí»* | ✅ ya era así |
-| 3c | **Faltar a un evento corta la racha** — aplicado a los eventos de **tu servidor** (ver abajo, pregunta 2) | *«sí creo»* | ✅ aplicado · a confirmar |
+| 3c | ~~Faltar a un evento corta la racha~~ — **no**: Dlx hablaba de **inscribirse y no ir** (ver abajo). La racha mira sólo los eventos que jugaste | *«sí creo»* → *«nono… a lo que me refería era si un usuario se inscribe a un evento pero luego no va»* | ↩️ deshecho a las 6:43 AM · lo de inscribirse y no ir, más adelante |
 | 3d | **La racha del ranking de Duelos es de duelos ganados seguidos**; participar en eventos no es racha | *«duelos ganados únicamente»* | ✅ ya era así |
 | 4 | **El logo UL, la trama y la dirección se quedan** | *«así como está ahora está bien»* | ✅ cerrado |
-| 5 | **Verificación**: me preguntó qué recomiendo | *«¿qué crees que deberíamos hacer?»* | ❓ mi recomendación abajo (pregunta 3) |
+| 5 | **Verificación**: `/verificar` en Discord | *«¿qué crees que deberíamos hacer?»* → *«correcto»* | ✅ hecho (7:35 AM) |
 | 6 | **El perfil de cada rapero** | *«ESTARÍA BUENÍSIMO»* | ✅ hecho (6:15 AM) |
 | 7 | **Most Wanted**: más adelante | *«sí, pero poco a poco iremos ahí»* | 🔜 en el top 5 como «Próximamente» |
 | 8 | **Redes sociales**: sí, y las de los servidores | *«¡Sí! ¿Puedes revisar el feed de las cuentas de Snake Rap, FFA y DRA?»* | ✅ las de los servidores y la Liga · las de cada rapero, con el login (pregunta 3) |
 
+### Lo que contestó y pidió Dlx el 25/09 (6:30 AM, con cinco capturas)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **Knowledge Sombrío** es Sombra, Heat, Jere, Kain y Zaylax (más Zignos, que ya estaba) — **no** el rol 🧠 KNOWLEDGE de FFA | *«No. Era Sombra, Heat, Jere, Kain, Zaylax y quizás personas que no sé más»* | `datos/crews.json` |
+| **La racha no se corta por faltar.** Lo que la va a cortar es **inscribirse y no ir**, y eso espera a que guardemos las inscripciones | *«creo que es algo muy complicado de aplicar, entonces mejor no»* | `sheet/rankings.py` |
+| **`/verificar`**, sí | *«Correcto»* | `bot/worker.js` |
+| **Misiones**: lo va a contar él | *«Te hablaré más del tema en el futuro»* | — |
+| Los cinco de arriba **sin «…»**, con **Ascenso** y **Ligas** (próximamente) y **Rachas en vez de Países** | *«que todo sea expandido»* | `app.js` |
+| **«(actual)»** al lado del campeón de la temporada, y **el campeón del competitivo** al costado | *«porque no acabó la temporada»* | `app.js` |
+| **Rankings**: los que faltaban, sin «Camino al competitivo», las columnas del ranking oficial y **todas ordenables** | *«crear más columnas… racha, último evento, sobrevivió, cazó, cazado… y uno nuevo que es misiones»* | `app.js` (`COL`, `SUBS`) |
+| **Duelos sale del menú** y entra **Pase de rapero, próximamente** | *«lo de duelos deberías quitarlo y ahí poner PASE de rapero»* | `index.html` |
+| **Comparar: primero la categoría** | *«elegir la categoría primero, o sea qué se va a comparar»* | `app.js` |
+| **Eventos más vivo**, con logos, DRA y **Google Calendar** | *«se ve algo muerto… sincronizar esto con el calendario de Google»* | `app.js`, `/calendario.ics` |
+| **Mundo con números exactos** | *«en el mundo poner números exactos»* | `subir_web.py` |
+
 ---
+
+## 📅 Viernes 25/09 (7 AM) — los rankings, los campeones y `/verificar`
+
+**Lo que se ve** (publicado antes de las **7:30 AM**)
+- 🏆 **Los rankings**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, más **Most Wanted, Misiones y Ligas** como «pronto». **Todas las columnas se ordenan**, de mayor a menor o al revés. Temporada suma las del ranking oficial: **racha** («🔥2 máx 4»), **último evento** (cómo le fue y cuándo), **cazó, cazado, sobrevivió** y **misiones** (en — hasta que arranquen). Sin «Camino al competitivo».
+- 👑 **Los dos campeones** arriba: el de la temporada con **(actual)** y el del **competitivo**, que hoy dice **vacante**: se define a los 10 eventos y el más cerca es Hassan, con 6.
+- 📰 **Lo último de la Liga**, abajo de «La Liga hoy», **con flechas**: los anuncios de DRA y los videos de YouTube de Under Legends, FFA y Snake Rap. Instagram y TikTok no dejan leer sus publicaciones sin una app aprobada: de esas van los links.
+- 🗓️ **Lo que pasó**: el logo del servidor, el **rango del evento** en su servidor («Bronce III»), «hace 1 día» grande y los botones del color del servidor.
+- 🔝 **Los cinco de arriba**: diez cajas, **Rachas** en vez de Países, **Ascenso** y **Ligas** próximamente, y el nombre entero siempre.
+- 📅 **Eventos**: arriba el próximo evento con cuenta atrás (o el último campeón), los números de la semana y **«Sumar a Google Calendar»** / Apple · Outlook: el calendario de la Liga se actualiza solo en tu calendario. Los eventos por jugarse tienen «Agregar a Google» de a uno.
+- 🌍 **Mundo**: miembros exactos (1.676 · 7.334 · 2.720) y **las nueve crews con gente en la T1**, con logo y su gente; el puesto sigue pidiendo 3 raperos.
+- 🎟️ **Pase de rapero**: su lugar en el menú, «próximamente».
+- 📖 **Guía**: cuántos puntos da cada puesto (de `Config`: el campeón de una llave de 16 o más se lleva 10.000), de qué está hecho el OVR y el Score, **15 palabras** explicadas y **7 preguntas frecuentes**.
+- 🃏 **Comparar**: primero la tarjeta (Temporada, Competitiva, País, Servidor) y después a quiénes.
+
+**`/verificar`** (Worker desplegado y comando registrado a las **7:35 AM**; tarda hasta una hora en aparecerle a todos)
+- La persona lo escribe y el bot mira **en ese momento**, en DRA, las tres cosas del portón: estar en el servidor, el **Miembro** y un **país**. Dice cuál falta, con el botón que lo arregla, y a qué hora arranca la próxima vuelta.
+- **No da el rol**: lo sigue dando el ciclo cada media hora (`bot/autoverificar.py`), con sus topes y su lista de a quién no. Si también lo diera el Worker, las reglas de quién entra vivirían en dos lugares. Y la tarjeta igual sale recién con la vuelta que carga a la persona.
+
+**Por dentro**
+- ↩️ **6:43 AM**: la racha volvió a mirar sólo los eventos jugados, antes del ciclo de las 6:52.
+- 🧱 Si una sección de la página falla, **ya no apaga las demás**.
 
 ## 📅 Viernes 25/09 (6 AM) — el perfil, las caras y el iPhone
 
@@ -219,10 +257,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ## ❓ Esperando a Dlx
 
-1. **Knowledge Sombrío**: ¿es el rol **🧠 KNOWLEDGE** de FFA? Lo tienen 18 personas —Hassan, Liberia, Xubaru, Zignos, Abyssus, Renegade, Respawn, Longsun Zhao, Gocho y otras nueve—. Si es esa, la armo con ellos; si no, ¿quiénes son?
-2. **La racha y faltar**: lo apliqué como **«faltar a un evento de TU servidor la corta»**; lo que jugás en otros servidores igual cuenta. Con tres servidores jugando el mismo día, «faltar a cualquiera» dejaría a todos en 0. Hoy cambia en 3 de 85: la máxima de Hassan pasa de 4 a 3, la de Makmah de 3 a 2, y Colesito pierde la que llevaba. ¿Va así?
-3. **Verificación**: te recomiendo arrancar por **`/verificar` en Discord**. La persona lo escribe y el bot mira en el momento lo mismo que el ciclo —que esté en DRA, con ID y país—: le da el Miembro o le dice exactamente qué le falta («ponete un rol de país»). No necesita nada de tu lado. El **login con Discord en la página** lo dejaría para después, junto con **las redes de cada rapero**: con su permiso trae las cuentas que tiene conectadas a Discord (YouTube, Twitch, TikTok, X…) y las pone en su perfil sin que nadie las cargue a mano. ¿Armo `/verificar`?
-4. **Misiones**: el top 5 dice «Próximamente». ¿Qué van a medir?
+1. **`/notify`**: ¿qué tiene que hacer? Tres ideas: **(a)** que el bot te mande **por mensaje directo** el aviso de cada evento, para quien no quiere instalar la página; **(b)** que el bot **etiquete un rol** en un canal cuando se anuncia un evento; **(c)** otra cosa.
+2. **Volk**: hay **dos** en la temporada —**Volk 🇲🇽** (2.625 pts, #43) y **volk 🇨🇴** (1.250 pts, #74)— y la lista de Guardia Nacional dice «Volk», así que hoy la crew cuenta a los dos. ¿Cuál es de Guardia Nacional?
+3. **Ligas** y **Ascenso** dicen «próximamente». Cuando quieras, contame qué mide cada uno y lo armo.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -243,7 +280,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 - **#13 «¿Por qué no tengo carta?»** en el hub, cuando digas.
 - **La campana con gente de verdad**: medir la CPU de un lote de 20 envíos (con 0 suscriptos no hay con qué) e iPhone con la página instalada.
 - **Hay dos suscripciones de Apple**: si a tu iPhone le llega el mismo aviso dos veces, está anotado dos veces (la app de inicio y Safari). Desactivá uno.
-- **El perfil no tiene redes todavía**: esperan al login con Discord (pregunta 3).
+- **El perfil no tiene redes todavía**: esperan al login con Discord en la página.
+- **Inscribirse y no ir** (lo que va a cortar la racha): hay que guardar las inscripciones de cada evento antes de que el servidor las borre. Lo armo cuando lo pidas.
+- **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
 - **Las cartas siguen con el logo guardado** de cada servidor: el del hub ya sale de Discord, pero el escudo de la carta pasa por `procesar_logos.py` y no se puede cambiar solo sin mirarlo.
