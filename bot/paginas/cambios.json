@@ -10,6 +10,14 @@
  ],
  "cambios": [
   {
+   "version": "1.13",
+   "dia": "2026-09-25",
+   "titulo": "Tu foto, libre hasta el 9 de octubre",
+   "items": [
+    "📷 **Cambiá tu foto las veces que quieras hasta el 9 de octubre**, con `/foto` o desde la página. Desde el 10 va **una por temporada**, y lo que hayas cambiado antes no cuenta."
+   ]
+  },
+  {
    "version": "1.12",
    "dia": "2026-09-25",
    "titulo": "Cambiá tu foto desde la página",

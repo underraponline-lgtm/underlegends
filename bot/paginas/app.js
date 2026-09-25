@@ -2968,6 +2968,11 @@ function pedirFoto(confirmar) {
     body: JSON.stringify({ token: DC_TOKEN, confirmar: !!confirmar }) })
     .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); });
 }
+/* 🔑 Dlx, 25/09/2026: «cambios ilimitados hasta el 9». La fecha viene del Worker. */
+function libreTexto(F) {
+  return F.libre_hasta ? 'Hasta el <b>' + esc(F.libre_hasta) + '</b> la podés cambiar las veces que quieras.'
+    : 'Hasta que arranque la temporada la podés cambiar las veces que quieras.';
+}
 function secFoto() {
   if (!FOTO || !DC) return '';
   var F = FOTO, cab = '<section class="pop-sec" id="secFoto"><h4>&#128247; Tu foto de la tarjeta</h4>';
@@ -2975,8 +2980,7 @@ function secFoto() {
   if (F.hecho) {
     return cab + '<p class="nota">&#128248; <b>Listo</b>: ésa es tu foto de la ' + T + '. Tus tarjetas ' +
       'se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del ' +
-      'este, no corre).' + (F.libre ? ' Hasta que arranque la temporada la podés cambiar las veces que ' +
-      'quieras.' : '') + '</p></section>';
+      'este, no corre).' + (F.libre ? ' ' + libreTexto(F) : '') + '</p></section>';
   }
   if (F.error) {
     var m = F.error === 'sin_foto' ? 'No tenés foto puesta en Discord: tu tarjeta va con la inicial, ' +
@@ -2994,8 +2998,7 @@ function secFoto() {
   }
   return cab + '<div class="foto-vista"><img src="' + esc(F.vista) + '" alt="Tu foto de Discord" ' +
     'width="96" height="96"><p class="nota">Tu tarjeta de la ' + T + ' va a llevar ésta, la de tu ' +
-    'perfil de Discord. ' + (F.libre ? 'Hasta que arranque la temporada la podés cambiar las veces que ' +
-      'quieras.' : F.pase ? 'Con el pase de DRA la podés cambiar cuando quieras.'
+    'perfil de Discord. ' + (F.libre ? libreTexto(F) : F.pase ? 'Con el pase de DRA la podés cambiar cuando quieras.'
       : '<b>Va una por temporada</b>: después no se puede cambiar hasta la próxima.') + '</p></div>' +
     '<button type="button" class="btn ancho" id="dcFotoSi">Usar esta foto</button>' +
     '<button type="button" class="btn sec ancho" id="dcFotoNo">Cancelar</button></section>';
@@ -3469,7 +3472,8 @@ function eventos() {
     if (fs) {
       fs.disabled = true;
       pedirFoto(true).then(function (R) {
-        FOTO = R && R.ok ? { hecho: true, temporada: R.temporada, libre: R.libre } : (R || { error: 'red' });
+        FOTO = R && R.ok ? { hecho: true, temporada: R.temporada, libre: R.libre, libre_hasta: R.libre_hasta }
+          : (R || { error: 'red' });
         pintaPopCuenta();
       }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       return;

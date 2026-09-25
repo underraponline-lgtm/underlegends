@@ -54,6 +54,34 @@ INICIO = '2026-09-22T00:00:00+00:00'
 # (NOVEDADES.md, «Esperando a Dlx»). Esto sólo se muestra.
 FECHAS = {'t1': ('2026-10-05', '2026-12-31')}
 
+# 🔑 HASTA CUÁNDO LA FOTO SE CAMBIA SIN LÍMITE, inclusive y en hora del este.
+# Dlx, 25/09/2026, a «¿la foto es libre hasta el 5 de octubre?»: *«Sí. O sea
+# hay cambios ilimitados hasta el 9»*. Después rige «una por temporada»
+# —`/foto` y la página, que usan la misma regla— y lo que se haya cambiado
+# antes NO cuenta como el cambio de la temporada. `bot/desplegar.py` se lo
+# pasa al Worker como `FOTO_LIBRE_HASTA`.
+FOTO_LIBRE = {'t1': '2026-10-09'}
+
+
+def foto_libre_hasta(cual=None):
+    """El instante —ISO, en UTC— en que termina el cambio libre. `''` si no hay.
+
+    ⚠️ EL DÍA ES INCLUSIVE Y EN HORA DEL ESTE, con su horario de verano: el 9
+    de octubre termina a las 00:00 del 10 en Nueva York, que son las 04:00 UTC.
+    """
+    import datetime as _dt
+    dia = FOTO_LIBRE.get(cual or ACTUAL)
+    if not dia:
+        return ''
+    try:
+        import zoneinfo
+        et = zoneinfo.ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = _dt.timezone(_dt.timedelta(hours=-4))
+    fin = _dt.datetime.fromisoformat(dia).replace(tzinfo=et) + _dt.timedelta(days=1)
+    return fin.astimezone(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
 # Las temporadas que existieron, en orden. La pre-temporada NO esta: Dlx,
 # 16/09/2026, «esa info sera borrada e inutilizada, era info de prueba».
 TODAS = ('t1',)

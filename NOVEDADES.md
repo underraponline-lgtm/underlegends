@@ -212,9 +212,20 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Urban Freestyle, en el anuncio** | *«sí, exacto»* | ✅ publicado con @everyone en DRA y FFA (11:45 AM) |
 | **Mi cuenta: todas las ideas** —redes de Discord, próximos eventos, seguir raperos, avisos personales— | *«todas»* | 🔨 en curso |
 
+### Lo que contestó Dlx el 25/09 (1:15 PM)
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **La foto es libre hasta el 9 de octubre inclusive** (hora del este); desde el 10, una por temporada. **Lo cambiado antes no cuenta** como el cambio de la temporada (había dos marcas de la fase de prueba, dlx y makmah: quedaron libres) | *«Sí. O sea hay cambios ilimitados hasta el 9»* | `FOTO_LIBRE` de `comun/temporada.py` → `FOTO_LIBRE_HASTA` del Worker (`bot/desplegar.py`) → `/foto` y la página |
+| **El 5 de octubre lo jugado en la fase de prueba se borra**: la T1 arranca de cero | *«Se borra»* | 🔨 a preparar: `INICIO` pasa al 5/10 y `sheet/resetear.py` —el del 22/09— se pone al día con `Resultados` y `1v1` |
+
 ⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Viernes 25/09 (1:15 a 1:25 PM) — versión 1.13
+
+- 📷 **La foto, libre hasta el 9 de octubre**, como dijiste. La fecha vive en `comun/temporada.py` (`FOTO_LIBRE`) y el despliegue se la pasa al Worker; `/foto` y la página usan la misma regla. Una marca de uso hecha antes de esa fecha no cuenta, así que las dos de hoy (dlx y makmah) quedaron libres sin borrar nada. 3 pruebas nuevas.
 
 ## 📅 Viernes 25/09 (1 a 1:15 PM) — versión 1.12
 
@@ -436,9 +447,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **¿La foto es libre hasta el 5 de octubre?** Hoy el límite de una por temporada **ya rige**: la fase de prueba cuenta como temporada arrancada porque hay gente en el pool (`meta.arrancada`). O sea que quien cambie su foto ahora gasta su cambio de la T1. Si preferís que sea libre hasta el 5/10, es un cambio chico (que `arrancada` mire también la fecha de `comun/temporada.py`).
-2. **El 5 de octubre, ¿lo de la fase de prueba se borra y todos arrancan de cero, o sigue sumando?** Si se borra, hay que mover `INICIO` de `comun/temporada.py` y vaciar las hojas ese día (hay una herramienta: `sheet/archivar_temporada.py`).
-3. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+1. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 

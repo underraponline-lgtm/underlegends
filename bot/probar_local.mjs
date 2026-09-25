@@ -1597,6 +1597,22 @@ console.log('\nLA FOTO DESDE LA PÁGINA\n');
   r = await foto({ token: 'permisoBueno1234567890', confirmar: true });
   ok('y la segunda vez de la temporada, no (sin el pase de DRA)',
      r.status === 403 && r.json.error === 'usado' && puestoR2.length === 1);
+  // 🔑 «cambios ilimitados hasta el 9» (Dlx, 25/09/2026)
+  delete PUESTO['foto:t1:konan'];
+  env.FOTO_LIBRE_HASTA = new Date(Date.now() + 5 * 864e5).toISOString();
+  r = await foto({ token: 'permisoBueno1234567890' });
+  ok('en el cambio libre lo dice, con la fecha', r.json.libre === true && !!r.json.libre_hasta,
+     JSON.stringify(r.json));
+  r = await foto({ token: 'permisoBueno1234567890', confirmar: true });
+  ok('y se guarda sin gastar el cambio de la temporada', r.status === 200 && r.json.libre &&
+     !PUESTO['foto:t1:konan']);
+  // lo que se cambió antes de que termine el cambio libre no cuenta después
+  env.FOTO_LIBRE_HASTA = '2026-01-01T04:00:00Z';
+  PUESTO['foto:t1:konan'] = JSON.stringify({ hash: 'viejo', ts: Date.parse('2025-12-20T00:00:00Z') });
+  r = await foto({ token: 'permisoBueno1234567890' });
+  ok('una marca de antes del fin del cambio libre no gasta nada', r.json.estado === 'puede',
+     JSON.stringify(r.json));
+  delete env.FOTO_LIBRE_HASTA;
   globalThis.fetch = antes;
   delete PUESTO['d:555000111222333666'];
   delete PUESTO['foto:t1:konan'];
