@@ -108,8 +108,7 @@ DE_DONDE = {
     # no ordena. Ver `_racha()`.
     '🔥': ('Resultados: eventos seguidos llegando al cuarto de arriba de la '
            'llave (semifinal en una de 16, la final en una de 8), actual/máxima, '
-           'en el orden en que se jugaron; faltar a un evento de tu servidor la '
-           'corta'),
+           'en el orden en que se jugaron; sólo cuentan los que jugó'),
     'Rapero': 'padrón: Nombre + la bandera de País',
     'Sv': 'Resultados: el servidor con más eventos',
     '✅': 'padrón: la columna Verificado',
@@ -524,8 +523,7 @@ def agregar(filas_res, filas_uno, instantes=None):
     # más larga que sus eventos (8 > 6). Dlx lo definió: eventos seguidos
     # llegando a semifinal o a la final según la llave. Ver `_umbral()`.
     #
-    # ⚠️ LA RACHA SE CALCULA MÁS ABAJO, cuando ya se sabe el servidor de
-    # cada uno: faltar a un evento de TU servidor la corta. Ver ahí.
+    # ⚠️ LA RACHA SE CALCULA MÁS ABAJO, junto al servidor de cada uno.
 
     # ⚠️ `Ev` SON EVENTOS DISTINTOS, NO FILAS. Una persona tiene una fila
     # por evento, pero si alguna vez entra dos veces —un reproceso a medias,
@@ -553,22 +551,19 @@ def agregar(filas_res, filas_uno, instantes=None):
         vistos = [(r.get(s, 0), s) for s in SERVIDORES if r.get(s, 0)]
         r['Sv'] = max(vistos)[1] if vistos else ''
 
-    # 🔑 LA RACHA. Dlx, 25/09/2026, a «faltar a un evento, ¿corta la racha?»:
-    # *«sí creo»*. Faltar corta, pero SÓLO A UN EVENTO DE TU SERVIDOR (el
-    # de `Sv`): FFA juega cuatro por día y con tres servidores jugando a la
-    # vez nadie puede estar en todos, así que «faltar a cualquiera» dejaría
-    # a la Liga entera en 0. Lo que jugás en otros servidores también
-    # cuenta. Medido con los 7 eventos de la T1, todos de FFA: la máxima de
-    # Hassan pasa de 4 a 3, la de Makmah de 3 a 2, y Colesito pierde la que
-    # llevaba (2).
+    # 🔑 LA RACHA: los eventos que JUGÓ, en el orden en que se jugaron.
+    #
+    # 🔴 «FALTAR CORTA» SE PROBÓ Y SE SACÓ EL MISMO DÍA. Dlx, 25/09/2026, a
+    # «faltar a un evento, ¿corta la racha?»: *«sí creo»*; lo apliqué a los
+    # eventos del servidor de cada uno y a las 6:30 AM ET aclaró: *«creo que
+    # es algo muy complicado de aplicar, entonces mejor no. A lo que me
+    # refería era de que si un usuario SE INSCRIBE a un evento pero luego
+    # no va, a eso se le quita racha»*. Eso pide saber quién se anotó, y los
+    # servidores vacían sus inscripciones después de cada evento: queda para
+    # cuando se guarden (ver NOVEDADES, pendiente).
     for quien, lista in jugo.items():
-        mio = d[quien].get('Sv') or ''
-        jugados = {n: pos for _k, n, pos in lista}
-        linea = set(jugados) | ({n for n, s in sv_ev.items() if s == mio}
-                                if mio else set())
-        oks = [n in jugados and
-               LLEGO.get(jugados[n], 999) <= _umbral(tamano.get(n, 0))
-               for n in sorted(linea, key=lambda n: cuando(n, fecha_ev.get(n, '')))]
+        oks = [LLEGO.get(pos, 999) <= _umbral(tamano.get(n, 0))
+               for _k, n, pos in sorted(lista)]
         d[quien]['🔥'] = _racha(oks)
 
     # los duelos
@@ -2004,8 +1999,8 @@ def _self_check():
     for que, got, esp in [
         ('Ana: #1 ✓ (22/09) · #3 ✓ (24/09) · #2 ✗ (25/09) — por FECHA, no por número',
          ag.get('Ana', {}).get('🔥'), '0/2'),
-        ('Bea: el cuarto puesto es semifinal en una llave de 16 — y después faltó a dos',
-         ag.get('Bea', {}).get('🔥'), '0/1'),
+        ('Bea: el cuarto puesto es semifinal en una llave de 16',
+         ag.get('Bea', {}).get('🔥'), '1/1'),
         ('Zed: quedó en octavos y en cuartos, nunca suma',
          ag.get('Zed', {}).get('🔥'), '0/0'),
         ('y el cuarto puesto cuenta como semifinal en SEM',
@@ -2014,7 +2009,6 @@ def _self_check():
         ok = got == esp
         mal += not ok
         print('   %s %s -> %s' % ('✅' if ok else '🔴', que, got))
-    # 🔑 FALTAR A UN EVENTO DE TU SERVIDOR CORTA; A UNO DE OTRO, NO
     res7 = [R(1, '22/09', 'Ana', 'Semifinal'), R(1, '22/09', 'Zed', 'Octavos'),
             [2, '23/09', 'SR', '16+', 'Zed', 'ar', 'Octavos', 10, '', 10, ''],
             R(3, '24/09', 'Ana', 'Semifinal'), R(3, '24/09', 'Zed', 'Octavos')]
@@ -2022,9 +2016,10 @@ def _self_check():
     res8 = res7 + [R(4, '25/09', 'Zed', 'Octavos'), R(5, '26/09', 'Ana', 'Semifinal'),
                    R(5, '26/09', 'Zed', 'Octavos')]
     ag8 = agregar(res8, [], instantes={})
-    ok = ag7['Ana'].get('🔥') == '2/2' and ag8['Ana'].get('🔥') == '1/2'
+    # 🔑 FALTAR NO CORTA (Dlx, 25/09/2026: «mejor no»): sólo los que jugó
+    ok = ag7['Ana'].get('🔥') == '2/2' and ag8['Ana'].get('🔥') == '3/3'
     mal += not ok
-    print('   %s faltar a un evento de otro servidor no corta (%s); a uno del tuyo sí (%s)'
+    print('   %s faltar a un evento no corta la racha (%s · %s)'
           % ('✅' if ok else '🔴', ag7['Ana'].get('🔥'), ag8['Ana'].get('🔥')))
     ok = _umbral(32) == 8 and _umbral(64) == 16 and _umbral(16) == 4 and _umbral(8) == 2 \
         and _umbral(4) == 2

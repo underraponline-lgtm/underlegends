@@ -2,6 +2,11 @@
  "_nota": "Las crews de la Liga, pasadas por Dlx el 20/08/2026. La clave es el nombre de la crew y el valor la lista de miembros tal como los escribio; el cruce con el pool se hace normalizando el nombre.",
  "_aviso_umbral": "El umbral de 3 rige igual que para pais y servidor: ser '1 de 1' no dice nada. Medido sobre el pool de 138, solo 4 de 17 crews llegan a 3 miembros CON CARTA.",
  "_aviso_alias": "Algunos de los que figuran 'fuera del pool' pueden ser ALIAS y no ausencias. competitivo.py resuelve alias con la hoja AKAs del Operativo —hay rastro de 'kibak' -> 'valen'— y este cruce NO los resuelve. Antes de dar por ausente a alguien, pasarlo por AKAs.",
+ "_nombres_leeme": "Cómo se lee cada crew en la web cuando la clave es una sigla. La clave no se cambia: la usan el logo (comun/logos_crew/KS.png) y las cartas.",
+ "_nombres": {
+  "KS": "Knowledge Sombrío"
+ },
+ "_ks_leeme": "Dlx, 25/09/2026: «era Sombra, Heat, Jere, Kain, Zaylax y quizás personas que no sé más». Zignos ya estaba desde el 20/08 y se queda.",
  "crews": {
   "Follombia": [
    "Prosu",
@@ -20,7 +25,10 @@
   "KS": [
    "Zignos",
    "Heat",
-   "Sombra"
+   "Sombra",
+   "Jere",
+   "Kain",
+   "Zaylax"
   ],
   "Fontana": [
    "Kibak",
