@@ -1411,6 +1411,70 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   ok('el canal de avisos de rango se guarda', /666777/.test(texto(r)));
 }
 
+console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
+
+{
+  // 🔑 ERAN ~70 ESCRITURAS DE KV POR DÍA (`cron:arranco` y `cron:ultimo`
+  // en cada disparo de :22 y :52), de una cuota de 1.000 que se pasó tres
+  // días de siete. Ahora van al Durable Object, y KV queda de respaldo.
+  const antesFetch = globalThis.fetch;
+  const marcas = [];
+  const kvPuestas = [];
+  const envD = {
+    ...env, GH_TOKEN: 'x', GH_REPO: 'a/b',
+    KV: { ...env.KV, put: async (k) => { kvPuestas.push(k); } },
+    AVISOS: {
+      idFromName: () => 'liga',
+      get: () => ({ fetch: async (url, opc) => {
+        marcas.push(JSON.parse(opc.body).cual);
+        return new Response('{"ok":true}', { status: 200 });
+      } }),
+    },
+  };
+  let disparos = 0;
+  globalThis.fetch = async () => { disparos++; return new Response(null, { status: 204 }); };
+  // 2:22 PM ET: fuera de la madrugada, así que toca ciclo
+  await worker.scheduled({ cron: '22,52 * * * *', scheduledTime: Date.parse('2026-09-25T18:22:00Z') },
+    envD, ctx);
+  ok('dispara el ciclo', disparos === 1);
+  ok('las dos marcas van al objeto', marcas.join(',') === 'arranco,ultimo', marcas.join(','));
+  ok('y KV no gasta ni una escritura', kvPuestas.length === 0, kvPuestas.join(','));
+  envD.AVISOS = { idFromName: () => 'liga',
+    get: () => ({ fetch: async () => { throw new Error('caído'); } }) };
+  await worker.scheduled({ cron: '22,52 * * * *', scheduledTime: Date.parse('2026-09-25T18:52:00Z') },
+    envD, ctx);
+  ok('si el objeto no contesta, las marcas caen en KV', kvPuestas.join(',') === 'cron:arranco,cron:ultimo',
+     kvPuestas.join(','));
+  // 🌙 5:22 AM ET es madrugada: no dispara y no marca nada
+  marcas.length = 0; kvPuestas.length = 0; disparos = 0;
+  await worker.scheduled({ cron: '22,52 * * * *', scheduledTime: Date.parse('2026-09-25T09:22:00Z') },
+    envD, ctx);
+  ok('de madrugada no dispara ni gasta', disparos === 0 && !marcas.length && !kvPuestas.length);
+  globalThis.fetch = antesFetch;
+}
+
+{
+  // 🔑 `/owner estado`: el sello en hora del este (antes salía UTC pelado),
+  // y el último disparo del ciclo, que ahora vive en el Durable Object.
+  const antes = env.AVISOS;
+  env.AVISOS = {
+    idFromName: () => 'liga',
+    get: () => ({ fetch: async () => new Response(JSON.stringify({
+      disparador: { ultimo: { t: '2026-09-25T18:22:05Z', ok: true, estado: 204 } },
+    }), { status: 200 }) }),
+  };
+  const r = await pedir({
+    type: 2, user: { id: '739338101603696681' },
+    data: { name: 'owner', options: [{ name: 'estado', type: 1 }] },
+  });
+  env.AVISOS = antes;
+  const t = r.json?.data?.content || '';
+  ok('/owner estado dice el último disparo, en hora del este',
+     /último disparo\s+25\/09 2:22 PM ET · ok/.test(t), t.split('\n').slice(2, 5).join(' | '));
+  ok('y el sello de las cartas también en ET, no en UTC pelado',
+     /cartas al día del\s+\d\d\/\d\d \d{1,2}:\d\d [AP]M ET/.test(t));
+}
+
 console.log('\nMI CUENTA CON DISCORD\n');
 
 {

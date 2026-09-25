@@ -811,6 +811,32 @@ export function releer(fila, m) {
   return String(fila.cuerpo || '') !== marcaDescarte(m);
 }
 
+/**
+ * La marca del disparador del ciclo (el cron de :22 y :52 del Worker).
+ * `true` si quedó guardada.
+ *
+ * 🔑 EN EL OBJETO Y NO EN KV. Eran dos escrituras de KV por disparo
+ * —`cron:arranco` y `cron:ultimo`—, ~70 por día de una cuota de 1.000
+ * para toda la cuenta que se pasó tres días de siete (20, 22 y 24/09).
+ * Es el mismo motivo por el que el vigía late acá: el objeto tiene cien
+ * veces más cupo. Se leen en `/avisos/estado` → `disparador`.
+ *
+ * ⚠️ INTERNA: no está en `RUTAS`, así que desde afuera no se puede
+ * escribir. Sólo la llama el `scheduled` del Worker.
+ */
+export async function marcarDisparo(env, cual, v) {
+  if (!env.AVISOS) return false;
+  try {
+    const r = await elObjeto(env).fetch('https://avisos/disparo', {
+      method: 'POST', body: JSON.stringify({ cual, v }),
+      headers: { 'content-type': 'application/json' },
+    });
+    return r.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
 export async function vigilar(env, servidores, dueno) {
   if (!env.AVISOS) return;
   await elObjeto(env).fetch('https://avisos/vigilar', {
@@ -916,6 +942,11 @@ export class Avisos {
       if (ruta === '/simular') return this.simular();
       if (ruta === '/dm/ver') return json(this.dmVer(d));
       if (ruta === '/dm/poner') return json(await this.dmPoner(d));
+      if (ruta === '/disparo') {
+        if (d.cual !== 'arranco' && d.cual !== 'ultimo') return json({ error: 'no existe' }, 404);
+        this.guardar('disparo_' + d.cual, d.v || {});
+        return json({ ok: true });
+      }
       return json({ error: 'no existe' }, 404);
     } catch (e) {
       this.guardar('ultimo_error', { t: Date.now(), ruta, error: String(e).slice(0, 200) });
@@ -1563,6 +1594,12 @@ export class Avisos {
         detalle: fallo.detalle || [] } : null,
       ok: !!v.t && ahora - v.t < 5 * MIN && !(v.errores || []).length,
       cron: CRON_VIGIA,
+      // 🔑 EL DISPARADOR DEL CICLO: cuándo arrancó y cómo le fue al último
+      // intento. Lo lee `bot/alertar.py`. Ver `marcarDisparo()`.
+      disparador: {
+        arranco: this.leer('disparo_arranco'),
+        ultimo: this.leer('disparo_ultimo'),
+      },
       vigia: {
         t: v.t ? new Date(v.t).toISOString() : null,
         hace_s: v.t ? Math.round((ahora - v.t) / 1000) : null,

@@ -2,6 +2,10 @@
 
     python bot/subir_datos.py            escribe todo
     python bot/subir_datos.py --ver      lee un par de claves, no escribe
+    python bot/subir_datos.py --mismas-cartas
+                                         escribe, y NO reescribe `meta` si lo
+                                         único distinto es el sello: la corrida
+                                         no subió cartas (ver pipeline.py)
 
 ⚠️ **UNA CLAVE POR PERSONA, NO UN BLOB.** Es la decisión de `CLAUDE.bot.md` y
 el motivo es el límite que manda: **10 ms de CPU por request**. Esperar red no
@@ -404,6 +408,8 @@ def armar():
 
     pares, con_id = [], 0
     por_id, dup_id = {}, []
+    # la entrada `d:<id>` de cada ID, para poder corregirla en su lugar
+    par_d = {}
     for k, x in gente:
         p = idx.get(k, {})
         t = temp.get(x['raw'], {})
@@ -564,11 +570,28 @@ def armar():
             if did in por_id:
                 otro = por_id[did]
                 dup_id.append((did, otro, k))
+                con_id += 1
                 if _es_alias_de(k, otro):
-                    con_id += 1
                     continue
+                # 🔴 UNA SOLA ENTRADA POR CLAVE, O LAS DOS SE TURNAN. Esto
+                # agregaba un segundo `d:<id>` al lado del primero, y
+                # `solo_las_que_cambiaron()` compara cada entrada contra
+                # lo que hay en KV: la que no coincidía se escribía, así
+                # que **cada corrida escribía la otra**. Medido en los
+                # logs del 24/09/2026: `krt`/`krtman` y `geekto`/
+                # `presagio` —dos IDs— reescritos en TODAS las corridas,
+                # y el `/card` de esas dos cuentas cambiando de perfil
+                # cada media hora. El aviso de abajo decía «el segundo
+                # pisa al primero», y era verdad una corrida de cada dos.
+                #
+                # ⚠️ Se corrige la entrada que ya estaba, y así gana el
+                # segundo SIEMPRE, que es lo que el aviso promete.
+                por_id[did] = k
+                par_d[did]['value'] = k
+                continue
             por_id[did] = k
-            pares.append({'key': 'd:' + did, 'value': k})
+            par_d[did] = {'key': 'd:' + did, 'value': k}
+            pares.append(par_d[did])
             con_id += 1
 
     # 🔴 ¿ARRANCÓ LA TEMPORADA? Dlx, 22/09/2026: *«cuando el plazo está
@@ -945,13 +968,31 @@ def solo_las_que_cambiaron(s, pares):
     for i in range(0, len(pares), 100):
         arriba_de.update(_lote([p['key'] for p in pares[i:i + 100]]))
 
+    # 🔴 `meta.sello` ES LA HORA DE AHORA, así que `meta` se escribía en
+    # TODAS las corridas —~34 escrituras por día— aunque no hubiera ni una
+    # carta nueva. El sello existe para romper la caché de Discord (`?v=`),
+    # y eso sólo hace falta cuando se subió una carta: con las mismas
+    # cartas, el sello viejo sigue siendo posterior a la última subida,
+    # que es lo que `verificar.py` pide.
+    #
+    # ⚠️ LO DICE QUIEN LLAMA, no se adivina acá: sólo el pipeline sabe si
+    # esta corrida subió algo. Sin el flag, se compara todo, como siempre.
+    # Y si cambió cualquier otro campo de `meta`, se escribe entera con el
+    # sello nuevo — un sello más nuevo nunca rompe nada.
+    mismas_cartas = '--mismas-cartas' in sys.argv
+
+    def _sin(o, k):
+        return ({x: y for x, y in o.items() if x != 'sello'}
+                if k == 'meta' and mismas_cartas and isinstance(o, dict) else o)
+
     distintas = []
     for par, arriba in ((p, arriba_de.get(p['key'])) for p in pares):
             # ⚠️ Se comparan los OBJETOS, no las cadenas: json.dumps puede
             # cambiar el orden de las claves entre versiones de Python y
             # entonces "todo cambio" sin que cambiara nada.
             try:
-                igual = arriba is not None and json.loads(arriba) == json.loads(par['value'])
+                igual = arriba is not None and (_sin(json.loads(arriba), par['key'])
+                                                == _sin(json.loads(par['value']), par['key']))
             except (ValueError, TypeError):
                 igual = arriba == par['value']      # `d:<id>` guarda texto pelado
             if not igual:
