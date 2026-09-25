@@ -134,6 +134,32 @@ def _bandas(nota):
     return n, m
 
 
+def _juntar(bs):
+    """Las filas de una batalla de 3 o 4 bandas, otra vez en una.
+
+    Van juntas las filas seguidas con el mismo que pasó y la misma nota de
+    bandas, hasta completar las bandas que la nota dice. ⚠️ SE COMPARA LA
+    PARTE DE LAS BANDAS, no la nota entera: en TOKYO VOL.12 (#355) una fila
+    dice «…; Revivido: SNOW» y su compañera no, y quedaban como dos
+    batallas. Sirve también para las llaves ya guardadas: no cambia una
+    batalla que ya está completa.
+    """
+    out = []
+    for lados, g, nota in bs:
+        n, m = _bandas(nota)
+        base = str(nota or '').split(';')[0].strip()
+        ult = out[-1] if out else None
+        if (n > 2 and ult and ult[0] and lados and ult[0][0] == lados[0]
+                and ult[1] == g and str(ult[2]).split(';')[0].strip() == base
+                and len(ult[0]) < n - m + 1):
+            for x in lados[1:]:
+                if x not in ult[0]:
+                    ult[0].append(x)
+            continue
+        out.append([list(lados), g, nota])
+    return out
+
+
 def armar(ev, links=()):
     """El registro de un evento ya procesado por el motor.
 
@@ -163,14 +189,9 @@ def armar(ev, links=()):
             orden[etq] = (ORDEN.index(canon) if canon in ORDEN else -1, i)
         a, b = d.get('a') or '', d.get('b') or ''
         g, nota = d.get('ganador') or '', str(d.get('notas') or '').strip()
-        bs = rondas[donde[etq]]['b']
-        n, m = _bandas(nota)
-        ult = bs[-1] if bs else None
-        if (n > 2 and ult and ult[0][0] == a and ult[1] == g and ult[2] == nota
-                and len(ult[0]) < n - m + 1):
-            ult[0].append(b)
-            continue
-        bs.append([[a, b], g, nota])
+        rondas[donde[etq]]['b'].append([[a, b], g, nota])
+    for R in rondas:
+        R['b'] = _juntar(R['b'])
     rondas.sort(key=lambda r: orden[r['r']])
     res = sorted(ev.get('resultados') or (),
                  key=lambda r: (-int(r.get('puntos') or 0), str(r.get('rapero'))))
@@ -223,6 +244,66 @@ def guardar(planes, archivo=ARCHIVO, links_archivo=LINKS):
             json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
             f.write(chr(10))
     return cambiaron
+
+
+def _miembros(lado):
+    """`'Hassan, PichulaMc'` -> `{'hassan', 'pichulamc'}`."""
+    out = set()
+    for x in str(lado or '').replace('+', ',').split(','):
+        k = clave_nombre(x)
+        if k:
+            out.add(k)
+    return out
+
+
+def enlazar(rondas):
+    """Las rondas con un cuarto dato en cada batalla: de qué batallas de la
+    ronda anterior vienen sus lados (índices). Es lo que dibuja el árbol.
+
+    🔑 Dlx, 25/09/2026, con la imagen de una llave clásica: *«pensé que ibas
+    a crear algo así y rellenar los nombres en esos huecos»*. Para dibujar
+    las ramas hay que saber qué batalla alimenta a cuál, y la llave no lo
+    dice: lo dicen los nombres.
+
+    1. POR NOMBRE: el que ganó en la ronda anterior aparece en un lado de
+       ésta. Con equipos alcanza uno —«NC, MCNadie» ganó como «MCNadie, NC»—.
+       Por nombre y no por orden: en CARABOBO (#354) la primera semi viene
+       de los cuartos 3 y 1.
+    2. LO QUE QUEDA SUELTO VA AL HUECO DE AL LADO. En una batalla de 3 bandas
+       donde pasan 2, al segundo que pasa no lo anota nadie (ver
+       `llaves_a_entrada`): en ELRAP FECHA 6 (#353), Presagio llega a cuartos
+       sin haber «ganado» nada. La llave lista las batallas en su orden, así
+       que su batalla es la vecina de la que ya engancha.
+
+    ⚠️ Una batalla no alimenta a dos, y una no recibe más ramas que lados.
+    Lo que no engancha queda sin rama —un walk-in, un revivido— y se dibuja
+    igual, en su columna. El tercer puesto no es parte del árbol.
+    """
+    out = [{'r': R['r'], 'b': [b + [[]] for b in _juntar([x[:3] for x in R['b']])]}
+           for R in rondas]
+    arbol = [R for R in out if R['r'] != 'Tercer puesto']
+    for k in range(1, len(arbol)):
+        prev, cur = arbol[k - 1]['b'], arbol[k]['b']
+        usado = [False] * len(prev)
+        for b in cur:
+            m = set()
+            for lado in b[0]:
+                m |= _miembros(lado)
+            for i, a in enumerate(prev):
+                if not usado[i] and len(b[3]) < len(b[0]) and _miembros(a[1]) & m:
+                    b[3].append(i)
+                    usado[i] = True
+        for i in range(len(prev)):
+            if usado[i]:
+                continue
+            for b in cur:
+                if len(b[3]) < len(b[0]) and any(abs(j - i) == 1 for j in b[3]):
+                    b[3].append(i)
+                    usado[i] = True
+                    break
+        for b in cur:
+            b[3].sort()
+    return out
 
 
 def cruzar(pasados, regs):
@@ -374,6 +455,27 @@ def _self_check():
     q = [{'nombre': 'FLEIVA FREE', 'sv': 'SR', 'cuando': '2026-09-24T20:00:00'}]
     cruzar(q, dos)
     ok(q[0].get('llave') is None, 'con un empate no elige')
+
+    # 🌳 el árbol: por nombre aunque venga fuera de orden (#354), lo suelto
+    # al hueco de al lado (el segundo que pasa de 3 bandas, #353), las filas
+    # de una batalla juntas aunque una diga «Revivido» (#355), y el tercer
+    # puesto afuera
+    rs = [{'r': 'Cuartos', 'b': [
+        [['A', 'B'], 'A', ''], [['C, K', 'D'], 'C, K', ''],
+        [['E', 'F'], 'E', 'triple (4 bandas, pasan 2); Revivido: E'],
+        [['E', 'G'], 'E', 'triple (4 bandas, pasan 2)'], [['H', 'I'], 'H', '']]},
+        {'r': 'Semifinales', 'b': [[['K, C', 'A'], 'A', ''], [['X', 'H'], 'X', '']]},
+        {'r': 'Tercer puesto', 'b': [[['K, C', 'H'], 'H', '']]},
+        {'r': 'Final', 'b': [[['A', 'X'], 'A', '']]}]
+    ar = enlazar(rs)
+    ok([b[0] for b in ar[0]['b']][2] == ['E', 'F', 'G'] and len(ar[0]['b']) == 4,
+       'la batalla de 4 bandas vuelve a ser una aunque una fila diga «Revivido»')
+    ok([b[3] for b in ar[1]['b']] == [[0, 1], [2, 3]],
+       'semis: por nombre fuera de orden, y el que pasó sin anotar al hueco de al lado  %s'
+       % [b[3] for b in ar[1]['b']])
+    ok(ar[3]['b'][0][3] == [0, 1] and ar[2]['b'][0][3] == [],
+       'la final viene de las dos semis; el tercer puesto no es parte del árbol')
+    ok(len(rs[0]['b']) == 5, 'y no toca las rondas que le pasan')
 
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))

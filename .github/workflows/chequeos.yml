@@ -90,7 +90,7 @@ jobs:
         run: |
           fallas=""
           for f in bot/anuncios.py bot/autoverificar.py bot/avisar.py bot/avisos_casos.py bot/cuando.py bot/escuchar.py \
-                   bot/inscripciones.py bot/llaves_a_entrada.py bot/olvidar.py \
+                   bot/inscripciones.py bot/llaves_a_entrada.py bot/madrugada.py bot/olvidar.py \
                    bot/verificados.py sheet/archivar_temporada.py \
                    sheet/competitivo.py sheet/construir_pool_competitivo.py \
                    sheet/decidir.py sheet/estilo.py sheet/llaves_web.py sheet/lobby.py \

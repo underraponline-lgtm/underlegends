@@ -199,7 +199,10 @@ def salud():
                 c = json.loads(r.content.decode('utf-8'))
                 t = datetime.datetime.fromisoformat(c['t'].replace('Z', '+00:00'))
                 viejo = (_ahora() - t).total_seconds() / 60
-                if viejo > 75 or not c.get('ok'):
+                # 🌙 de madrugada el disparador se calla ~4 h a propósito:
+                # ver `bot/madrugada.py`
+                import madrugada as MD
+                if viejo > MD.pausa_max() or not c.get('ok'):
                     alertar('disparador', 'El disparador del ciclo no anda: su último '
                             'intento fue %s (%s). El ciclo queda sólo con el cron de '
                             'GitHub, que dispara 1 de cada 9 veces.'
