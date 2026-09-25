@@ -478,29 +478,33 @@ font-size:.86rem;padding:10px}
 /* ── servidores, países, crews ──────────────────────────────────── */
 .svs{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr))}
 /* el logo, la cabecera con nombre completo y la sigla, y el «Entrar» */
-.sv-cab{display:flex;align-items:center;gap:12px;margin-bottom:12px;position:relative;min-width:0}
+.sv-cab{display:flex;align-items:center;gap:14px;position:relative;min-width:0}
 .sv-cab > div{min-width:0}
 .sv-cab h3{margin-bottom:3px;overflow-wrap:anywhere}
 .sv-cab small{color:var(--tx2);font:700 .72rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.16em;text-transform:uppercase}
-.sv-logo{flex:0 0 auto;width:60px;height:60px;border-radius:14px;object-fit:cover;
+.sv-logo{flex:0 0 auto;width:64px;height:64px;border-radius:16px;object-fit:cover;
 box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 .sv-sigla{display:grid;place-items:center;background:var(--c,#7E8B89);color:var(--bl);
 font:900 .8rem/1 Archivo,sans-serif}
-.sv-entrar{position:relative;display:inline-block;margin-top:12px;padding:6px 14px;
-border:1px solid var(--bd);border-radius:999px;color:var(--tx2);text-decoration:none;
-font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase;
-transition:all .15s}
-.sv-entrar:hover{color:var(--ng);background:var(--tl);border-color:var(--tl)}
+/* 🔑 «ENTRAR» GRANDE Y DEL COLOR DEL SERVIDOR. Dlx, 25/09/2026: «hacer el
+   botón de entrar más grande, mira el espacio de cada cosa». Era una
+   pastilla de 11 px en una tarjeta de 280. */
+.sv-entrar{position:relative;display:block;margin-top:auto;padding:13px 16px;
+border-radius:3px;background:var(--c,#7E8B89);color:#050607;text-align:center;
+text-decoration:none;font:900 .9rem/1 Archivo,sans-serif;letter-spacing:.08em;
+text-transform:uppercase;transition:filter .15s}
+.sv-entrar:hover{filter:brightness(1.14)}
 .sv-entrar:focus-visible{outline:2px solid var(--tl);outline-offset:3px}
-.sv-c{position:relative;padding:18px 18px 16px;background:rgba(10,15,14,.82);
+.sv-c{position:relative;display:flex;flex-direction:column;gap:14px;
+padding:18px 18px 16px;background:rgba(10,15,14,.82);
 border:1px solid var(--bd);overflow:hidden;
 clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
 .sv-c::before{content:'';position:absolute;inset:0 auto 0 0;width:4px;background:var(--c,#7E8B89)}
 .sv-c::after{content:'';position:absolute;inset:0;pointer-events:none;
 background:radial-gradient(120% 90% at 0% 0%,var(--c,#7E8B89),transparent 62%);opacity:.18}
 .sv-c h3{font:900 1.28rem/1.05 Archivo,sans-serif;letter-spacing:-.01em;
-margin-bottom:10px;position:relative}
+margin-bottom:6px;position:relative}
 .sv-c dl{display:flex;gap:18px;position:relative}
 .sv-c dt{color:var(--tx2);font:600 .68rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.16em;text-transform:uppercase}
@@ -673,13 +677,18 @@ text-transform:uppercase}
    🔑 UNA SOLA ACCION FUERTE POR PANTALLA. El botón de activar es el único
    relleno de teal de la vista; probar y desactivar usan la píldora de
    «Descargar», que ya significa «acción secundaria» en el hub. */
-.campana-cta{display:inline-flex;align-items:center;gap:9px;margin-top:16px;
+.campana-cta{display:inline-flex;align-items:center;gap:2px;margin-top:14px}
+.campana-cta[hidden]{display:none}
+.campana-cta a{display:inline-flex;align-items:center;gap:9px;
 padding:9px 16px 9px 12px;border:1px solid var(--tls);border-radius:999px;
 background:rgba(13,58,49,.35);color:var(--tx);text-decoration:none;
 font:700 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.13em;
 text-transform:uppercase;transition:all .15s}
-.campana-cta i{font-style:normal;font-size:.95rem}
-.campana-cta:hover{background:var(--tl);border-color:var(--tl);color:var(--ng)}
+.campana-cta a i{font-style:normal;font-size:.95rem}
+.campana-cta a:hover{background:var(--tl);border-color:var(--tl);color:var(--ng)}
+#ctaCerrar{width:32px;height:32px;border-radius:50%;color:var(--tx3);font-size:1.25rem;
+line-height:1;transition:color .15s}
+#ctaCerrar:hover{color:var(--mg)}
 .cp-tx{color:var(--tx2);font-size:1rem;max-width:60ch;margin-bottom:14px}
 .cp-tx b{color:var(--tx)}
 .cp-ok{font:800 1rem/1.3 Archivo,sans-serif;margin-bottom:14px}
@@ -693,7 +702,7 @@ transition:filter .15s}
 .cp-btn i{font-style:normal;font-size:1.05rem}
 .cp-btn:hover{filter:brightness(1.12)}
 .cp-btn:disabled,.bajar:disabled{opacity:.55;cursor:default}
-.cp-btn:focus-visible,.bajar:focus-visible,.chip:focus-visible,.campana-cta:focus-visible{
+.cp-btn:focus-visible,.bajar:focus-visible,.chip:focus-visible,.campana-cta a:focus-visible{
 outline:2px solid var(--tl);outline-offset:3px}
 .cp-chips{margin-bottom:6px}
 .cp-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
@@ -746,7 +755,7 @@ transition:fill .15s}
 font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
 
 /* ── el top 5 de cada ranking ───────────────────────────────────── */
-.tops{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.tops{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr))}
 .tp{background:rgba(10,15,14,.82);border:1px solid var(--bd);padding:16px 16px 12px;
 clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
 .tp h3{display:flex;align-items:center;gap:9px;margin-bottom:10px;
@@ -756,7 +765,9 @@ font:900 1.02rem/1 Archivo,sans-serif;letter-spacing:.02em;text-transform:upperc
 font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em}
 .tp h3 a:hover{color:var(--tl)}
 .tp ol{list-style:none}
-.tp li{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto;gap:9px;
+.tp h3 u{text-decoration:none;color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em}
+.tp li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;
 align-items:baseline;padding:9px 2px;border-top:1px solid var(--bd2)}
 .tp li:first-child{border-top:0}
 .tp li[data-k]{cursor:pointer}
@@ -875,6 +886,215 @@ font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transfor
 .res.dos-col li{break-inside:avoid}
 .res.dos-col li:first-child{border-top:1px solid var(--bd2)}
 
+
+/* ══ 25/09/2026 (5:30 AM) · CARAS, PERFIL, «LA LIGA HOY» Y NOVEDADES ═════
+   Lo que pidió Dlx después de ver el rediseño. Ver `avatar()`,
+   `pintaPerfil()`, `pintaActividad()` y `pintaNovedades()` en app.js. */
+
+/* ── la cara ─────────────────────────────────────────────────────── */
+.av{flex:0 0 auto;display:inline-grid;place-items:center;border-radius:50%;object-fit:cover;
+background:#12201D;box-shadow:0 0 0 1.5px rgba(255,255,255,.12);vertical-align:middle}
+.av.ini{color:var(--tx2);font-family:Archivo,sans-serif;font-weight:900;line-height:1;
+background:linear-gradient(145deg,#173A33,#0C1614)}
+.quien{display:inline-flex;align-items:center;gap:9px;min-width:0;max-width:100%;vertical-align:middle}
+.quien .qn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quien img.bf{flex:0 0 auto}
+td .quien .qn{white-space:normal;overflow:visible}
+.ra .quien{gap:7px}
+.rec[data-k]{cursor:pointer;transition:border-color .15s}
+.rec[data-k]:hover{border-color:var(--tl)}
+.rec-x{display:block;margin-top:6px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;
+white-space:nowrap;font:600 .7rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;
+text-transform:uppercase}
+
+/* ── el buscador ─────────────────────────────────────────────────── */
+.busca{position:relative;margin-top:18px;max-width:460px}
+.busca::before{content:'🔍';position:absolute;left:15px;top:14px;font-size:.95rem;
+opacity:.55;pointer-events:none}
+#buscarInicio{width:100%;background:rgba(14,22,20,.92);border:1px solid var(--bd);
+color:var(--tx);padding:14px 16px 14px 44px;border-radius:3px;outline:none;
+font:600 1rem/1 Archivo,sans-serif;transition:border-color .15s}
+#buscarInicio:focus{border-color:var(--tl)}
+#buscarInicio::placeholder{color:var(--tx3)}
+.busca-res{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;
+background:#0A100F;border:1px solid var(--tl);border-radius:3px;overflow:hidden;
+box-shadow:0 18px 40px rgba(0,0,0,.6)}
+.br{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;text-align:left;
+border-bottom:1px solid var(--bd2);font:800 .95rem/1.2 Archivo,sans-serif}
+.br:last-child{border-bottom:0}
+.br:hover,.br.on{background:rgba(41,178,152,.14)}
+.br-p{margin-left:auto;color:var(--tx3);font:800 .8rem/1 Archivo,sans-serif}
+.br-no{padding:12px;color:var(--tx2);font-size:.9rem}
+
+/* ── «Lo que pasó»: tres tarjetas ────────────────────────────────── */
+#pasados{display:grid;gap:10px}
+.ps{padding:14px 16px 13px 18px;background:rgba(10,15,14,.82);border:1px solid var(--bd2);
+box-shadow:inset 4px 0 0 var(--c,#7E8B89)}
+.ps header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+.ps .hace{color:var(--tx2);white-space:nowrap;font:600 .74rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+.ps h3{font:900 1.14rem/1.2 Archivo,sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere}
+.ps-d{margin-top:5px;color:var(--tx2);font-size:.92rem}
+.ps-d b{color:var(--tx)}
+.ps-c{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;font-weight:800}
+.ps-c>span{font-size:1.05rem}
+.ps-c .coma,.ps-c i.coma{font-style:normal;color:var(--tx3)}
+.ps-acc{display:flex;flex-wrap:wrap;gap:6px}
+.chip-sv{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
+background:color-mix(in srgb,var(--c,#7E8B89) 22%,transparent);
+border:1px solid color-mix(in srgb,var(--c,#7E8B89) 55%,transparent);color:var(--tx);
+font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.chip-crew{display:inline-block;padding:3px 9px;border-radius:999px;background:rgba(228,19,115,.18);
+color:var(--mg);font:800 .76rem/1.2 Archivo,sans-serif;letter-spacing:.04em}
+
+/* ── «La Liga hoy»: mitad mapa, mitad actividad ──────────────────── */
+.hoy{display:grid;gap:20px;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}
+.hoy .mapa{margin:0}
+.hoy .mapa-dato{gap:12px}
+.hoy .mapa-dato>b{font-size:2.5rem}
+.hoy .mapa-dato span{font-size:.88rem}
+.hoy .mapa-otros p{font-size:.84rem}
+.hoy-ac h3{margin-bottom:10px;color:var(--tx2);font:900 .78rem/1 Archivo,sans-serif;
+letter-spacing:.2em;text-transform:uppercase}
+.ac-n{display:grid;gap:8px;margin-bottom:14px}
+.ac-n div{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+padding-bottom:8px;border-bottom:1px solid var(--bd2)}
+.ac-n dt{color:var(--tx2);font:600 .74rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase}
+.ac-n dd{font:900 1.5rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ac-n dd s{margin-left:8px;text-decoration:none;font:800 .8rem/1 Archivo,sans-serif}
+.ac-n .sube{color:var(--tl)}
+.ac-n .baja{color:var(--mg)}
+.ac-g{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;height:104px}
+.ac-d{display:flex;flex-direction:column;gap:4px;min-width:0}
+.ac-b{flex:1 1 auto;display:flex;flex-direction:column-reverse;border-radius:2px;overflow:hidden;
+background:rgba(255,255,255,.035)}
+.ac-b i{display:block;width:100%;flex:0 0 auto}
+.ac-d u{text-align:center;text-decoration:none;color:var(--tx3);
+font:700 .62rem/1 'Barlow Condensed',sans-serif}
+
+/* ── novedades de la Liga y sus redes ────────────────────────────── */
+.nov-cab{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+gap:10px 16px;margin-bottom:14px}
+.nov-cab h2{margin:0}
+.nov-redes{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.nov-redes>span{margin-right:6px;color:var(--tx3);font:700 .72rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.14em;text-transform:uppercase}
+.red{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:50%;
+border:1px solid var(--bd);background:rgba(11,18,17,.8);color:var(--tx2);transition:all .15s}
+.red svg{width:18px;height:18px}
+.red:hover{color:var(--ng);background:var(--tl);border-color:var(--tl)}
+.novedades{display:grid;gap:12px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.nv{display:flex;flex-direction:column;gap:7px;padding:14px 16px;background:rgba(10,15,14,.82);
+border:1px solid var(--bd);border-top:3px solid var(--mg);color:inherit;text-decoration:none;
+transition:border-color .15s,transform .15s}
+.nv:hover{border-color:var(--tl);transform:translateY(-2px)}
+.nv small{color:var(--tx3);font:700 .72rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase}
+.nv b{font:800 1.02rem/1.3 Archivo,sans-serif}
+.nv p{color:var(--tx2);font-size:.9rem;line-height:1.45;overflow:hidden;display:-webkit-box;
+-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.nv-ir{margin-top:auto;color:var(--tl);font:700 .72rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.13em;text-transform:uppercase}
+
+/* ── los dos rankings que vienen ─────────────────────────────────── */
+.tp.pronto{opacity:.75;border-style:dashed}
+
+/* ── los servidores ──────────────────────────────────────────────── */
+.sv-tag{display:inline-block;margin-top:2px;padding:3px 9px;border-radius:999px;
+background:var(--c,#7E8B89);color:#050607;font:800 .7rem/1.2 Archivo,sans-serif;letter-spacing:.14em}
+.sv-redes{display:flex;flex-wrap:wrap;gap:6px;position:relative}
+
+/* ── el perfil ───────────────────────────────────────────────────── */
+.volver{display:inline-block;margin-bottom:14px;color:var(--tx2);text-decoration:none;
+font:700 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.volver:hover{color:var(--tl)}
+.pf-cab{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:24px;align-items:center;
+padding:22px 24px;border:1px solid var(--bd);clip-path:var(--bisel);
+background:linear-gradient(135deg,rgba(13,58,49,.42),rgba(71,12,37,.3))}
+.pf-cab>.av{box-shadow:0 0 0 3px var(--ng),0 0 0 5px var(--tl)}
+.pf-pos{color:var(--oro);font:800 .78rem/1 Archivo,sans-serif;letter-spacing:.16em;
+text-transform:uppercase}
+.pf-id .tit{margin:6px 0 8px;overflow-wrap:anywhere}
+.pf-sub{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;color:var(--tx2);font-weight:700}
+.pf-sub .sep{font-style:normal;color:var(--tx3)}
+.pf-cifras{display:grid;grid-template-columns:repeat(5,auto);gap:6px 20px}
+.pf-cifras dt{color:var(--tx3);font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;
+text-transform:uppercase}
+.pf-cifras dd{margin-top:5px;font:900 1.5rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pf-cifras .nada{color:var(--tx3)}
+.pf-rg{font-size:1rem;padding:3px 10px}
+.pf-grid{display:grid;gap:22px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+align-items:start;margin-top:22px}
+.pf-grid .blk,.pf-grid .col .blk{margin-top:0}
+.pf-grid .col{display:flex;flex-direction:column;gap:22px}
+.pf-carta{display:flex;justify-content:center}
+.pf-carta img{width:100%;max-width:340px;aspect-ratio:300/438;object-fit:contain}
+.pf-nums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pf-nums div{padding:12px 8px;text-align:center;background:#0B1211;border:1px solid var(--bd)}
+.pf-nums b{display:block;font:900 1.25rem/1.15 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pf-nums b s{text-decoration:none;color:var(--tx3);font-weight:700;font-size:.78em}
+.pf-nums span{display:block;margin-top:5px;color:var(--tx2);font:600 .66rem/1.2 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+.rq{padding:12px 0;border-top:1px solid var(--bd2)}
+.rq:first-child{border-top:0;padding-top:0}
+.rq h3{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+font:900 1rem/1.2 Archivo,sans-serif}
+.rq h3 span{color:var(--tx3);font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.13em;
+text-transform:uppercase}
+.rq.ok h3 span{color:var(--tl)}
+.rq-l{margin-top:9px}
+.rq-l span{display:block;color:var(--tx2);font:600 .78rem/1.2 'Barlow Condensed',sans-serif;
+letter-spacing:.1em;text-transform:uppercase}
+.rq-l i{display:block;height:7px;margin-top:5px;background:#0E1614;border:1px solid var(--bd2);
+border-radius:99px;overflow:hidden}
+.rq-l u{display:block;height:100%;background:linear-gradient(90deg,var(--tl),var(--mg))}
+.pf-rk div{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+padding:10px 0;border-top:1px solid var(--bd2)}
+.pf-rk div:first-child{border-top:0}
+.pf-rk span{display:inline-flex;align-items:center;gap:6px;color:var(--tx2);font-weight:700}
+.pf-rk b{font:900 1.05rem/1 Archivo,sans-serif;color:var(--tl)}
+.pe{display:grid;grid-template-columns:72px minmax(0,1fr) auto auto;gap:14px;align-items:center;
+padding:12px 0 12px 12px;border-top:1px solid var(--bd2);box-shadow:inset 3px 0 0 var(--c,#7E8B89)}
+.pe:first-child{border-top:0}
+.pe-f{color:var(--tx2);font:700 .8rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;
+text-transform:uppercase}
+.pe b{display:block;font:800 1rem/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.pe small{display:block;margin-top:3px;color:var(--tx3);font:600 .7rem/1.2 'Barlow Condensed',sans-serif;
+letter-spacing:.1em;text-transform:uppercase}
+.pe .ver-llave{margin-top:8px}
+.pe-p{color:var(--tx2);white-space:nowrap;font:700 .8rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.1em;text-transform:uppercase}
+.pe-pts{min-width:4.5ch;text-align:right;color:var(--tl);font:900 1rem/1 Archivo,sans-serif;
+font-variant-numeric:tabular-nums}
+.pf-du{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+.dd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:9px 12px;
+background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.dd-r{padding:3px 8px;border-radius:999px;font:800 .7rem/1 Archivo,sans-serif;letter-spacing:.08em;
+text-transform:uppercase}
+.dd.g .dd-r{background:rgba(41,178,152,.2);color:var(--tl)}
+.dd.p .dd-r{background:rgba(228,19,115,.18);color:var(--mg)}
+.dd-v{display:inline-flex;align-items:center;gap:6px;min-width:0;font-weight:800}
+.dd small{flex-basis:100%;color:var(--tx3);font:600 .68rem/1.2 'Barlow Condensed',sans-serif;
+letter-spacing:.1em;text-transform:uppercase}
+
+/* ── la llave: el logo del servidor y el podio ──────────────────── */
+.l-logo{width:44px;height:44px;border-radius:12px;object-fit:cover;
+box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+#lSub{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.lpod{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr));margin:4px 0 14px}
+.lp{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:10px 12px;
+background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.lp.p1{border-color:rgba(255,210,74,.55);
+background:linear-gradient(180deg,rgba(255,210,74,.12),rgba(11,18,17,.72))}
+.lp-m{font-size:1.6rem;line-height:1}
+.lp div{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 auto;font-weight:800}
+.lp small{flex-basis:100%;color:var(--tx3);font:600 .7rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+.ql{display:inline-flex;align-items:center;gap:6px;max-width:100%}
+.ql span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bx .ql .av{box-shadow:none}
+
 /* ── teléfono ─────────────────────────────────────────────────────
    🔴 EL MENU PASA A LA BARRA DE ABAJO, que es donde el pulgar llega. Una
    columna lateral en un teléfono se come un tercio del ancho para que
@@ -884,6 +1104,10 @@ font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transfor
 }
 @media(max-width:1000px){
   .inicio-grid{grid-template-columns:1fr}
+  .novedades{grid-template-columns:1fr}
+  .pf-grid{grid-template-columns:1fr}
+  .pf-cab{grid-template-columns:auto minmax(0,1fr)}
+  .pf-cifras{grid-column:1 / -1;grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 @media(max-width:900px){
   .dos,.dos.ancha,.cmp{grid-template-columns:1fr}
@@ -950,6 +1174,15 @@ font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transfor
   .ce.fut i{background:transparent;outline:1px dashed var(--c)}
   .mapa-dato>b{font-size:2.6rem}
   .tops{grid-template-columns:1fr}
+  .hoy{grid-template-columns:1fr}
+  .lpod{grid-template-columns:1fr}
+  .pf-cab{padding:18px 16px;gap:16px}
+  .pf-cab>.av{width:84px!important;height:84px!important}
+  .pf-cifras{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pf-nums{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pe{grid-template-columns:minmax(0,1fr) auto;gap:6px 12px}
+  .pe-f{grid-column:1 / -1}
+  .pe-p{display:none}
   .visor-caja.llave-caja{height:auto;max-height:calc(100dvh - 20px)}
 }
 /* 🔴 SIETE EN LA BARRA NO ENTRAN CON EL ESPACIADO DE SEIS. Medido a 375 px

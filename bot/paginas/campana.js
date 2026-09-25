@@ -171,6 +171,14 @@
     pinta();
   }
 
+  // la ✕ del botón del Inicio: no se muestra más en este navegador
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#ctaCerrar')) return;
+    guardar('campana:cerrada', 1);
+    var c = $('#campanaCta');
+    if (c) c.hidden = true;
+  });
+
   async function desactivar() {
     MSG = 'Desactivando…'; pinta();
     var ep = SUB && SUB.endpoint;
@@ -223,7 +231,14 @@
     // ⚠️ `Notification` NO EXISTE en Safari de iPhone fuera de la pantalla
     // de inicio: nombrarlo a secas es un ReferenceError que apaga todo esto.
     var negado = typeof Notification !== 'undefined' && Notification.permission === 'denied';
-    if (cta) cta.hidden = !!SUB || !(SOPORTA || IOS) || negado;
+    // 🔴 SE VA PARA QUIEN YA ACTIVÓ, Y SE PUEDE CERRAR. Dlx, 25/09/2026:
+    // «si un usuario hizo todo el sistema para que le avise, que esto
+    // desaparezca de su inicio». En iPhone la app de la pantalla de inicio
+    // y Safari no comparten nada: en Safari la suscripción no se ve y el
+    // botón volvía. Se recuerda que se activó, y la ✕ lo cierra.
+    if (SUB) guardar('campana:activada', 1);
+    if (cta) cta.hidden = !!SUB || !!leer('campana:activada', 0) ||
+      !!leer('campana:cerrada', 0) || !(SOPORTA || IOS) || negado;
     if (!caja) return;
     var h = '';
     if (!SOPORTA && IOS && !INSTALADA) {
