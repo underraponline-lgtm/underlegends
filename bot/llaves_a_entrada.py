@@ -1355,6 +1355,7 @@ def main():
 
     todas, dudas, sabidas = [], [], collections.Counter()
     en_curso, incompletos, retenidos, descartados = [], [], [], []
+    links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
     import decidir as DEC
     repes = 0
     for g in grupos:
@@ -1445,6 +1446,19 @@ def main():
         dudas += d_grupo
         repes += len(del_grupo) - len(limpias)
         todas += limpias
+        # 🔑 LOS LINKS DE LA LLAVE EN DISCORD, para «Ver llaves» del hub.
+        # Acá es el único lugar donde existen: `Entrada` tiene nueve
+        # columnas y el mensaje no es una. Van todos los del grupo —un
+        # organizador que corrige y re-publica deja dos—, el más nuevo al
+        # final. Ver `sheet/llaves_web.py`.
+        if limpias:
+            k = '|'.join(str(limpias[0].get(c) or '').strip()
+                         for c in ('evento', 'servidor', 'fecha'))
+            links_llaves[k] = [
+                'https://discord.com/channels/%s/%s/%s'
+                % (h['guild'], h['canal_id'], h['msg_id'])
+                for h in sorted(g['llaves'], key=lambda x: str(x.get('cuando') or ''))
+                if h.get('guild') and h.get('canal_id') and h.get('msg_id')]
     if repes:
         print('   %d batalla(s) repetida(s) entre mensajes del mismo '
               'evento: se cuentan una vez\n' % repes)
@@ -1489,6 +1503,16 @@ def main():
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
+
+    # los links de cada llave, para que `procesar_entrada` los cuelgue de
+    # su evento en `datos/llaves_t1.json` (misma corrida, mismo runner)
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'llaves_links.json'), 'w',
+                     encoding='utf-8', newline='\n') as _f:
+            json.dump(links_llaves, _f, ensure_ascii=False, indent=1,
+                      sort_keys=True)
+    except OSError as e:
+        print('   ⚠️ no pude dejar los links de las llaves (%s)' % str(e)[:60])
 
     from escribir import Hoja
     import pendientes as P

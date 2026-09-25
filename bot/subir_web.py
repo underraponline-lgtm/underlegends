@@ -253,12 +253,30 @@ def armar():
         if len(pas) >= 6:
             break
 
+    # 🔑 «VER LLAVES»: la llave de cada uno, si ya se procesó. Dlx,
+    # 25/09/2026. El cruce vive en `sheet/llaves_web.py`, con su
+    # self-check, porque el anuncio y la llave no comparten ninguna
+    # clave: los junta el servidor, la fecha y el nombre.
+    #
+    # ⚠️ VIAJAN ACÁ Y NO EN UNA CLAVE DE KV PROPIA: son seis como mucho,
+    # y el lobby ya se escribe sólo cuando cambia. Ver `llaves_web.py`.
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import llaves_web as _LW
+        llaves = _LW.cruzar(pas, _LW.leer())
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
+        llaves = {}
+
     return {
         'temporada': SELLO,
         'gente': len(pool),
         'tabla': tabla,
         'proximos': prox,
         'pasados': pas,
+        'llaves': llaves,
         'r2': R2,
         'cartas': list(CARTAS),
         'svs': _servidores(gente),
@@ -845,6 +863,14 @@ def _self_check():
     p = armar()
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
+
+    # 🔑 «VER LLAVES»: cada anuncio con `llave` tiene su llave en el
+    # payload, y ninguna llave viaja sin un anuncio que la abra.
+    _ll = p.get('llaves')
+    _con = [x['llave'] for x in p.get('pasados') or [] if x.get('llave')]
+    ok(isinstance(_ll, dict) and all(str(n) in _ll for n in _con)
+       and set(_ll) <= {str(n) for n in _con},
+       'las llaves de «Lo que pasó», una por anuncio  (%d)' % len(_con))
 
     # 🔑 LOS NUEVE SERVIDORES, con o sin gente en la T1, y cada uno con su
     # nombre y su logo. Ver `_servidores()`.
