@@ -1,0 +1,86 @@
+{
+ "_leeme": "El aviso fijo de DRA, publicado el 26/09/2026: «¿Todavía no tenés tu tarjeta?». Dlx, sobre las 1.492 personas con el Miembro de DRA y país que nunca la pidieron: «que la pidan ellas», con un aviso fijo en DRA y un botón en la página. Los requisitos van con las mismas palabras que el anuncio de la fase de prueba y que /verificar. Componentes V2 (flags 32768). Se publica y se fija con herramientas/anunciar.py --publicar --fijar; sin @everyone.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 2732696,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🃏 ¿Todavía no tenés tu tarjeta?\nLa pide cada uno, y es un minuto."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## ✅ Qué hace falta\nEstar en **Discord Rap Español** con el rol **Miembro** y tu **país** (el rol o la bandera en el apodo)."
+    },
+    {
+     "type": 10,
+     "content": "## ⌨️ Cómo se pide\nEscribí **`/verificar`**: el bot te dice qué te falta y, si está todo, **te carga solo**. En menos de una hora tenés tu tarjeta, y después la ves con **`/card`**."
+    },
+    {
+     "type": 10,
+     "content": "-# La de Servidor sale apenas entrás · la de Temporada, con tu primer evento · la Competitiva, a los 10 eventos."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Verificarme",
+       "emoji": {
+        "name": "✅"
+       },
+       "url": "https://discord.com/channels/841017460341604382/1506094409438199988/1514898497265078423"
+      },
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Las tarjetas",
+       "emoji": {
+        "name": "🃏"
+       },
+       "url": "https://underlegends.pages.dev/#/tarjetas"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ],
+ "_publicado": {
+  "DRA": {
+   "mensaje": "1553495619992166454",
+   "cuando": "2026-09-26 3:57 PM ET",
+   "everyone": false,
+   "fijado": true,
+   "link": "https://discord.com/channels/841017460341604382/1498326749748924416/1553495619992166454",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-09-26_pedi_tu_tarjeta.json --editar 1553495619992166454"
+  }
+ }
+}

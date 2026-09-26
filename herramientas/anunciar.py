@@ -7,6 +7,7 @@
 
     --servidor FFA   en el canal de novedades de ese servidor (`canales.FFA.novedades`)
     --everyone       menciona a todos. SÓLO si Dlx lo pide para ese anuncio
+    --fijar          además lo fija en el canal (pide el permiso de fijar)
 
 🔑 Dlx, 25/09/2026: *«quiero que anuncies en DRA con el bot un mensaje así
 decorado… en ranking global de DRA, sólo en ese servidor»*. El canal es
@@ -118,9 +119,23 @@ def main():
         print('\n  🔴 Discord contestó %s: %s' % (r.status_code, r.content.decode('utf-8', 'replace')[:300]))
         return 1
     m = r.json()
+    # 🔑 «UN AVISO FIJO EN DRA» (Dlx, 25/09/2026, sobre pedir la tarjeta). El
+    # endpoint de fijar cambió en 2025: se prueba el nuevo y, si no existe, el
+    # de antes. Sin el permiso de fijar en ese canal, avisa y sigue.
+    fijado = None
+    if '--fijar' in sys.argv and m.get('id'):
+        for ruta in ('%s/channels/%s/messages/pins/%s', '%s/channels/%s/pins/%s'):
+            rp = requests.put(ruta % (API, ch, m['id']), headers=h, timeout=30)
+            fijado = rp.status_code
+            if rp.status_code not in (404, 405):
+                break
     print('\n  ✅ %s: https://discord.com/channels/%s/%s/%s%s'
           % ('editado' if '--editar' in sys.argv else 'publicado', guild(sv), ch, m.get('id'),
              ' · menciona a todos: %s' % m.get('mention_everyone') if everyone else ''))
+    if fijado is not None:
+        print('  📌 %s' % ('fijado' if fijado in (200, 204) else
+                          'no lo pude fijar (%s): hace falta el permiso de fijar mensajes '
+                          'en ese canal' % fijado))
     return 0
 
 
