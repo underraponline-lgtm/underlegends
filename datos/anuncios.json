@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-26T04:23:51+00:00",
+ "cuando": "2026-09-26T04:53:58+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1786,6 +1786,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "🇨🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1553266613162213397",
+   "cuando": "2026-09-26T04:46:58"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
