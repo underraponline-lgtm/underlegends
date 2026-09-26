@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-26T18:23:49+00:00",
+ "cuando": "2026-09-26T18:53:51+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -272,6 +272,23 @@
    "modalidad": "",
    "horario": "",
    "premios": ""
+  },
+  {
+   "nombre": "MARRUECOS EN VENTA V.1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1553479698141413467",
+   "cuando": "2026-09-26T18:53:42",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "cupos_texto": "12 / 16 / 24",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "ʙʀᴏɴᴄᴇ ɪɪɪ 🥉",
+   "modalidad": "1V1",
+   "horario": "CUANDO TODO ESTÉ LISTO",
+   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP"
   },
   {
    "nombre": "MARRUECOS EN VENTA V.1",
