@@ -1822,5 +1822,228 @@
     625
    ]
   ]
+ },
+ "357": {
+  "dia": "2026-09-25",
+  "escala": "16+",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1553174910090616934"
+  ],
+  "n": 357,
+  "nombre": "DESGRACIAS EN TOKYO VOL.14",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "DXG🇲🇽",
+       "Gus"
+      ],
+      "DXG🇲🇽",
+      ""
+     ],
+     [
+      [
+       "PichulaMc",
+       "Santi"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Makmah"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Bloody",
+       "Velatz"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Izaya 🇨🇱"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Provenza",
+       "Valdoza 🇨🇱"
+      ],
+      "Provenza",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Last🇬🇶"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "DXG🇲🇽"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Bloody"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "MetriOdin"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Provenza",
+       "Abyssus"
+      ],
+      "Provenza",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Trot"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "PROVENZAL 🇦🇷",
+       "Erian"
+      ],
+      "PROVENZAL 🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "PichulaMc"
+      ],
+      "Provenza",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Provenza",
+    "Campeón",
+    10000
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Abyssus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DXG🇲🇽",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MetriOdin",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Izaya 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Last🇬🇶",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Santi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
