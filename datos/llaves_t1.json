@@ -2045,5 +2045,163 @@
     1250
    ]
   ]
+ },
+ "358": {
+  "dia": "2026-09-23",
+  "escala": "8-15",
+  "fecha": "23/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1552453534245585029",
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1553252437756747777"
+  ],
+  "n": 358,
+  "nombre": "MARRUECOS EN VENTA V.1",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Geoka",
+       "Elsoolar"
+      ],
+      "PichulaMc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Hassan",
+       "fleivaman",
+       "Vandu"
+      ],
+      "Hassan",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Velatz",
+       "Richard",
+       "Bloody",
+       "Miniboy"
+      ],
+      "Velatz",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Noone",
+       "Trot"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hassan",
+       "PichulaMc"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "Velatz",
+       "Makmah"
+      ],
+      "Velatz",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hassan",
+       "Velatz"
+      ],
+      "Hassan",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Hassan",
+    "Campeón",
+    7500
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Elsoolar",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Noone",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Trot",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2000
+   ],
+   [
+    "fleivaman",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
