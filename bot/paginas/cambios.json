@@ -10,6 +10,19 @@
  ],
  "cambios": [
   {
+   "version": "1.15",
+   "dia": "2026-09-26",
+   "titulo": "¿Todavía no tenés tu tarjeta?",
+   "items": [
+    "🃏 **¿Todavía no tenés tu tarjeta?** En **Tarjetas** está qué hace falta y cómo pedirla con `/verificar`, y en Discord Rap Español hay un aviso fijo en el canal de la Liga. Si ya tenés la tuya, no lo ves.",
+    "🖼️ **Todos ven sus tarjetas en la página**: a quienes tienen espacios o tildes en el nombre no se les mostraban sus tarjetas ni su «Mi perfil». Ya aparecen, y los links viejos a su perfil siguen andando.",
+    "🔔 **Tus avisos, a tiempo y sólo tuyos**: «desbloqueaste tu tarjeta» llega cuando la tarjeta ya está dibujada con tus números de hoy, y si salís de tu cuenta en un dispositivo, ese dispositivo deja de recibir tus avisos.",
+    "🔗 **Tus redes, sólo las públicas**: si una red deja de ser pública en Discord, sale de tu perfil la próxima vez que abrís «Mis redes».",
+    "🏅 **La letra de rango es siempre la del Competitivo**: en la página y en los avisos sale del Score, igual que en tu carta. Aparece a los 10 eventos.",
+    "🛠️ **Arreglos**: un link roto ya no deja la página en blanco, y la foto y «Mis redes» te dicen qué pasó si Discord no contesta."
+   ]
+  },
+  {
    "version": "1.14",
    "dia": "2026-09-25",
    "titulo": "La Temporada 1 arranca de cero",

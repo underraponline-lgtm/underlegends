@@ -208,7 +208,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Su tag: NUEVA GENERACIÓN** | *«usa este tag para Urban Freestyle: NUEVA GENERACIÓN»* | `datos/servidores.json` (`tag`) |
 | **El alta automática usa el apodo del servidor donde se usó `/card`** (aunque en DRA tenga otro) | *«debería usar el de Urban Freestyle, es correcto»* | `sheet/registrar_ids.py` |
 | **Reconocimiento de IDs en Urban Freestyle y Snake Rap**: se saca el ID, no se verifica | *«como el bot está en el servidor de Urban Freestyle y Snake Rap, quiero que hagas reconocimiento de IDs»* | `herramientas/cruzar_miembros.py`, `herramientas/servidores_de.py` |
-| **Las 1.300 de DRA sin tarjeta siguen entrando al pedirla** (`/card` o `/verificar`), no se cargan de golpe | *«la verdad no sabría qué decirte»* | sin cambios: el anuncio les dice cómo |
+| **Las de DRA sin tarjeta (1.492 con Miembro y país) la piden ellas** (`/card` o `/verificar`), no se cargan de golpe; la página y un aviso fijo en DRA las empujan | *«la verdad no sabría qué decirte»* · *«Que la pidan ellas»* (25/09) | ✅ «¿Todavía no tenés tu tarjeta?» en **Tarjetas** y en «La comunidad» (`pintaPedi()` de `app.js`) · ✅ aviso fijo en 〢🌍〉rankings-liga-global (26/09, 3:57 PM, sin @everyone: `docs/anuncios/2026-09-26_pedi_tu_tarjeta.json`) |
 | **Urban Freestyle, en el anuncio** | *«sí, exacto»* | ✅ publicado con @everyone en DRA y FFA (11:45 AM) |
 | **Mi cuenta: todas las ideas** —redes de Discord, próximos eventos, seguir raperos, avisos personales— | *«todas»* | 🔨 en curso |
 
@@ -219,9 +219,31 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La foto es libre hasta el 9 de octubre inclusive** (hora del este); desde el 10, una por temporada. **Lo cambiado antes no cuenta** como el cambio de la temporada (había dos marcas de la fase de prueba, dlx y makmah: quedaron libres) | *«Sí. O sea hay cambios ilimitados hasta el 9»* | `FOTO_LIBRE` de `comun/temporada.py` → `FOTO_LIBRE_HASTA` del Worker (`bot/desplegar.py`) → `/foto` y la página |
 | **El 5 de octubre lo jugado en la fase de prueba se borra**: la T1 arranca de cero | *«Se borra»* | ✅ programado: `INICIO` cambia solo a las 00:00 ET del 5/10 (`comun/temporada.inicio()`) y el ciclo archiva y vacía lo crudo una vez (paso 0 de `bot/pipeline.py`, `sheet/resetear.py --prueba`) |
 
+### Lo que dijo Dlx el 26/09
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **El bot no le manda DMs a nadie más que a Dlx.** Lo de cada persona —tarjeta desbloqueada, rango, eventos— va **sólo** por la notificación de la página | *«eso de notificaciones sólo queremos que sea por la website y la notificación. No quiero que haya riesgo de que nos baneen el bot»* | Hoy son dos DMs y los dos a `DUENO`: las alertas (`bot/alertar.py`) y su «probando» (`bot/avisos.js`). `herramientas/sin_dm.py` pone rojo a CI si aparece un DM a otra persona |
+
 ⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Viernes 25/09 (2:30 PM) a sábado 26/09 (4 PM) — versión 1.15
+
+Dos revisiones (el JavaScript y el Python de ese día) y una lectura de los
+logs del ciclo. Lo que encontraron, y cómo quedó:
+
+- 🔴 **`Ranking Temporada` estuvo congelada de 2:22 a 2:52 PM del 25/09, y fue mío.** Al sacar los respaldos del Sheet del repo público, la puerta de `rankings.py --escribir` —que pedía uno— dijo «no hay» en cada corrida, y el paso quedaba en verde. Ahora el respaldo de lo que la vitrina no recalcula (las columnas de Most Wanted) es `datos/temporada_pool.json` en git, que tiene media hora y no tres días; si la vitrina no se escribe, te llega un DM (uno cada 6 h). Verificado en la corrida de las 2:52 PM: 85 filas.
+- 🌙 **El redibujo de la madrugada podía perder cartas**: el sello era por persona, así que si de día le cambiaban los datos de una carta se sellaban las cuatro, también la Servidor que esperaba el naranja. Ahora es **por carta**. Verificado anoche: a las 11:52 PM se dibujaron sólo las cartas con datos nuevos (93 personas) y a las **12:22 AM las 292 Servidor** que esperaban, en 16 min. Hoy no queda nada pendiente.
+- 🧹 **El arranque del 5/10 quedaba a medias** y la T1 habría arrancado con los puntos de la prueba: `Ranking Temporada` no se vaciaba sola (ahora se archiva en el Operativo y se vacía), `Eventos Procesados` conservaba la columna `#`, y una corrida cortada a la mitad se daba por hecha. Ensayado otra vez con pestañas de prueba (borradas) y simulado contra las hojas reales.
+- 👕 **Las camisetas entran al sello**: quien entra a un servidor —o el bot a uno nuevo— tiene su camiseta en la madrugada siguiente. Y el logo de un servidor que cambia redibuja sus cartas.
+- 🏅 **La letra de rango de la página y de los avisos salía del color de la carta** (el OVR), no del Score. Nadie la veía porque nadie llegó a 10 eventos; Hassan habría recibido «Subiste a rango SSS» siendo B.
+- 🖼️ **5 raperos no veían sus tarjetas en la página** (los que tienen espacios o tildes en el nombre): la página armaba otra clave que R2 y KV.
+- 🔗 **Mi cuenta**: «Mis redes» no escribe KV si no cambió y tiene tope por día; una red que deja de ser pública sale sola; salir de la cuenta suelta los avisos de ese dispositivo; los avisos personales ya no se pierden si el ciclo reescribe la cola.
+- 📋 **De los logs**: un timeout de Discord ya no tumba la lectura de anuncios; el DM del vigía dice el error en vez de «no late hace 0 min»; el registro no se reescribe si queda igual (eran 167 filas cada media hora); `Pendientes` no duplica un alta de la misma cuenta y la cierra sola cuando el ID ya está en la Lista.
+- 🐧 **Los workflows quedan en Ubuntu 24.04**: `ubuntu-latest` pasa a Ubuntu 26 el 19/10 y podía romper el Chromium del dibujo sin aviso. El cambio de versión se hace a propósito, probándolo.
+- 💸 **Una sola vez, 331 escrituras de KV** (25/09, 2:52 PM): cada persona pasó de ofrecer las 9 camisetas a las de sus servidores. Las corridas siguientes ya no reescriben.
 
 ## 📅 Viernes 25/09 (1:25 a 1:45 PM) — versión 1.14
 
@@ -457,7 +479,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 ## ❓ Esperando a Dlx
 
-1. **🔴 Hay 16 respaldos completos del Sheet en el repo PÚBLICO** (`docs/sheet_respaldo/`, del 20 al 22/09). Traen la planilla entera, con la Lista de Raperos y sus Discord IDs (mucho de eso ya es público en `datos/padron.json`, pero también las notas y los pendientes). ¿Los saco? Sacarlos de hoy es fácil; sacarlos **del historial** pide reescribirlo en GitHub, y eso es irreversible.
+1. ✅ ~~Los 16 respaldos completos del Sheet en el repo público~~: **salieron del árbol el 25/09** (siguen en esta máquina y en el repo privado) y `.gitignore` no los deja volver. El historial **no** se reescribió, a propósito: es irreversible y los mismos IDs siguen públicos en `datos/padron.json`, que el ciclo necesita. Si querés reescribirlo igual, decime.
 2. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
@@ -476,10 +498,9 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 
 - **Los IDs por nombre siguen a mano** (`herramientas/cruzar_miembros.py`): el ciclo sólo toma el ID que llega firmado por `/card`. Emparejar un nombre con una cuenta es el paso que ya costó dos veces. Última pasada: 25/09, 12:16 PM, con Urban Freestyle (4 escritos, 63 para mirar).
 - **Sin país en ningún servidor**: 8 con ID. **5 ya tienen el Miembro de DRA** —Kevo, aze gian, Adriox, Sedelti y Elsoolar— y es lo único que les falta para la carta: con un rol de país en DRA (o la bandera en el apodo) entran solos en la corrida siguiente. Los otros 3 (Deikka, NarcoMC, TRIPLE7) están sólo en FFA. Otros 9 se miran a las 3:22 AM (hay un tope de 15 por corrida); Fabrizio tiene dos roles, España y Perú, y no lo toco.
-- **#13 «¿Por qué no tengo carta?»** en el hub, cuando digas.
+- **#13 «¿Por qué no tengo carta?»** en el hub: la parte general ya está («¿Todavía no tenés tu tarjeta?», 1.15). La personal —qué le falta a cada uno— la dice `/verificar`; en la página, cuando digas.
 - **La campana con gente de verdad**: medir la CPU de un lote de 20 envíos (con 0 suscriptos no hay con qué) e iPhone con la página instalada.
 - **Hay dos suscripciones de Apple**: si a tu iPhone le llega el mismo aviso dos veces, está anotado dos veces (la app de inicio y Safari). Desactivá uno.
-- **El perfil no tiene redes todavía**: esperan al login con Discord en la página.
 - **Inscribirse y no ir** (lo que va a cortar la racha): hay que guardar las inscripciones de cada evento antes de que el servidor las borre. Lo armo cuando lo pidas.
 - **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
 - **Dos personas con el mismo nombre en minúsculas** (Volk y volk) ya se separan en la página, pero **R2 y KV todavía arman la clave del nombre**: el día que los dos estén verificados, sus tarjetas chocan. Hoy ninguno lo está.
@@ -488,6 +509,7 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
 - **El emblema de arriba de la Servidor sigue siendo un archivo** (`comun/escudos_cuad/`, de `herramientas/escudos_cuadrados.py`): si un servidor cambia de logo, ése hay que rehacerlo mirándolo. El círculo del servidor en las otras cartas ya sale solo de Discord.
-- 🌙 **Esta madrugada, desde las 12:22 AM, se redibujan 633 cartas**: el naranja de Urban Freestyle y el escudo cambian la huella del código. Lo miro a la mañana.
+- 🖼️ **El paso 5b baja las 427 caras en cada corrida** (~21 s), aunque no haya ninguna Bloqueada que redibujar: el sello de la Bloqueada incluye la foto embebida, así que para saber si cambió hace falta la foto. Se arregla con un sello previo por el etag de R2; no rompe nada y lo dejé para un rato tranquilo.
+- 🌍 **El OVR Nacional de la carta de País depende del país entero** (`datos/mundial.json`) y el sello mira sólo los datos de cada persona: si juega alguien de tu país, tu número se mueve y tu carta no se redibuja. Hoy tiene carta de País una sola persona; conviene cerrarlo antes de que sean más.
 - ⚠️ **El mapa campo→carta no se puede regenerar con el pool de hoy**: nadie cumple el requisito de País, así que la medición casi no la dibuja y le faltan `cc`, `sv` y los duelos. El aviso del ciclo dice «Regenerá» y **hoy no hay que hacerle caso**; lo probé y lo revertí.
 - Medir cuántas lecturas del Sheet hace cada corrida, para ver el margen contra la cuota.
