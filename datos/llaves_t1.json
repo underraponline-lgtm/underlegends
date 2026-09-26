@@ -2203,5 +2203,133 @@
     2000
    ]
   ]
+ },
+ "359": {
+  "dia": "2026-09-26",
+  "escala": "8-15",
+  "fecha": "26/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1553258218002579587",
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1553284023994945598"
+  ],
+  "n": 359,
+  "nombre": "MARRUECOS EN VENTA V.1",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "**OKAM🇨🇷**",
+       "MCO"
+      ],
+      "**OKAM🇨🇷**",
+      ""
+     ],
+     [
+      [
+       "**PARK JI-SUNG 🇯🇵**",
+       "SHULIOT🇦🇷"
+      ],
+      "**PARK JI-SUNG 🇯🇵**",
+      ""
+     ],
+     [
+      [
+       "Masino",
+       "Provenza"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Soneto"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "**PARK JI-SUNG 🇯🇵**",
+       "OKAM🇨🇷"
+      ],
+      "**PARK JI-SUNG 🇯🇵**",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Masino"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "**PARK JI-SUNG 🇯🇵**",
+       "Makmah"
+      ],
+      "**PARK JI-SUNG 🇯🇵**",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "**PARK JI-SUNG 🇯🇵**",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Masino",
+    "Semifinal",
+    3500
+   ],
+   [
+    "OKAM🇨🇷",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SHULIOT🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soneto",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
