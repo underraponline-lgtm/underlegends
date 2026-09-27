@@ -2868,8 +2868,17 @@ function pintaTops() {
   // será MOST WANTED y MISIONES», y después «los 2 espacios será uno de
   // Ascenso, que viene próximamente, y el otro Ligas». Todavía no hay
   // datos: se dice que vienen, en vez de esconder lo que Dlx pidió ver.
-  cajas.push(['&#128128;', 'Most Wanted', '', [],
-    'Quién cazó, quién fue cazado y quién sobrevivió. <b>Próximamente</b>.', 'pronto']);
+  // Most Wanted ya corre (1.22): los que más cobraron, miembros
+  if (D.mw && (D.mw.b || []).length) {
+    cajas.push(['&#128128;', 'Most Wanted <u>cobró</u>', '#/ranking/mw', (D.mw.caz || []).filter(function (c) {
+      return c.pts > 0 && !c.fc;
+    }).slice(0, TOP).map(function (c, i) {
+      return fila(c, i, num(c.pts));
+    }), 'Todavía nadie cazó a un buscado. Los de hoy están en el tablero, arriba.']);
+  } else {
+    cajas.push(['&#128128;', 'Most Wanted', '', [],
+      'Quién cazó, quién fue cazado y quién sobrevivió. <b>Próximamente</b>.', 'pronto']);
+  }
   cajas.push(['&#127919;', 'Misiones', '', [], 'Las misiones de la temporada. <b>Próximamente</b>.', 'pronto']);
   // Dlx, 25/09/2026: Ascenso y Ligas, «eso será en la temporada 2»
   cajas.push(['&#128200;', 'Ascenso', '', [], 'El ranking de ascenso. <b>Llega en la Temporada 2</b>.', 'pronto']);
