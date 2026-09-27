@@ -94,6 +94,62 @@ def de_score(s):
     return 'E'
 
 
+_POOL = {'mtime': None, 'por': {}}
+
+
+def letra_de(raw):
+    """La letra de esa persona, o `''` si todavía no la ganó. De UN lugar.
+
+    🔴 LA CALCULABAN CINCO PANTALLAS, CADA UNA CON SU SCORE. La vitrina del
+    Sheet (`rankings.rangos_de()`), la Servidor y la País leían el Score
+    competitivo; la Temporada, la página y los avisos personales, el del
+    pool de TEMPORADA, que se calcula sin juntar los alias. Medido el
+    27/09/2026: los dos Score difieren en 7 personas (MAU KC 10,7 contra
+    14,9; Volk 1,6 contra 10,7). No se veía porque nadie tiene 10 eventos;
+    el primero en llegar podía tener dos letras distintas, y el rango es
+    uno solo por persona.
+
+    ⚠️ SALE DEL POOL COMPETITIVO, que desde el 27/09 trae la puerta de 10
+    eventos (`construir_pool_competitivo.con_puerta`). Se pregunta otra
+    vez acá por si el pool es de antes: un pool viejo no puede inventar
+    una letra.
+
+    ⚠️ SE RELEE SI EL ARCHIVO CAMBIÓ: el ciclo reconstruye el pool a mitad
+    de camino, y una copia en memoria de antes le daría a la página la
+    letra de la corrida anterior.
+    """
+    import io
+    import json
+    import os
+    import sys
+    raiz = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    p = os.path.join(raiz, 'datos', 'competitivo_pool.json')
+    try:
+        m = os.path.getmtime(p)
+        if m != _POOL['mtime']:
+            with io.open(p, encoding='utf-8') as f:
+                _POOL['por'] = {x['raw']: x for x in json.load(f) if x.get('raw')}
+            _POOL['mtime'] = m
+    except (OSError, ValueError):
+        _POOL['mtime'], _POOL['por'] = None, {}
+    x = _POOL['por'].get(raw) or {}
+    # 🔴 SI NO SE PUEDE PREGUNTAR POR LA PUERTA, NO HAY LETRA. La primera
+    # versión salteaba la pregunta con un `except ImportError: pass` y
+    # devolvía la del pool: corriendo este archivo suelto —sin la raíz en
+    # el path— una persona con 8 eventos salía A. Lo encontró su propio
+    # self-check. Antes que inventar una letra, ninguna.
+    if raiz not in sys.path:
+        sys.path.insert(0, raiz)
+    try:
+        from comun.requisitos import minimo
+        piso = minimo('competitivo', 'ev')
+    except Exception:                                    # noqa: BLE001
+        return ''
+    if (x.get('ev') or 0) < piso:
+        return ''
+    return x.get('rango') or ''
+
+
 # ── la figura, en un viewBox de 100x100 centrado ─────────────────────────
 #
 # ⚠️ EL PRIMER JUEGO DE FIGURAS FALLO Y LA MEDICION LO DIJO. Yo las habia
@@ -504,6 +560,32 @@ def verificar_umbrales(raiz=None):
     return len(_COPIAS_UMBRAL)
 
 
+def verificar_letra_de():
+    """Que la letra salga del pool competitivo y respete la puerta de 10.
+
+    ⚠️ CON UN POOL DE MENTIRA: hoy nadie tiene 10 eventos, así que el
+    pool de verdad no puede probar el caso que importa —el primero que
+    llegue—. Revienta si falla, como `verificar()`.
+    """
+    import os
+    p = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                     'datos', 'competitivo_pool.json')
+    guardo = dict(_POOL)
+    try:
+        _POOL['mtime'] = os.path.getmtime(p)
+        _POOL['por'] = {'Ana': {'raw': 'Ana', 'ev': 12, 'rango': 'B'},
+                        'Beto': {'raw': 'Beto', 'ev': 8, 'rango': 'A'}}
+        casos = [('con 12 eventos, la letra del pool', letra_de('Ana'), 'B'),
+                 ('con 8, nada aunque el pool diga A', letra_de('Beto'), ''),
+                 ('quien no está en el pool, nada', letra_de('Nadie'), '')]
+    finally:
+        _POOL.update(guardo)
+    mal = [(q, r, e) for q, r, e in casos if r != e]
+    if mal:
+        raise RuntimeError('letra_de() falla: %s' % mal)
+    return len(casos)
+
+
 if __name__ == '__main__':
     # ⚠️ La consola de Windows abre en cp1252 y ahi el simbolo de aviso
     # REVIENTA el script. Un self-check que se cae segun desde donde lo
@@ -517,7 +599,9 @@ if __name__ == '__main__':
 
     n = verificar()
     m = verificar_umbrales()
+    ld = verificar_letra_de()
     print('LOS OCHO RANGOS')
+    print('  letra_de(): %d casos, la letra sale del pool con su puerta' % ld)
     print('  paleta verificada contra gencomp.py: %d rangos, todos iguales' % n)
     print('  umbrales verificados contra sus %d copias: todos iguales\n' % m)
     print('  %-4s %-9s %-10s %-9s %s' % ('', 'color', 'material', 'umbral',

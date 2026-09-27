@@ -137,7 +137,6 @@ def estado_de_hoy():
     """
     import subir_datos as SD
     from comun.claves import clave as _clave
-    from comun.requisitos import minimo
     pares, _n, _c = SD.armar()
     cs, clave_de = {}, {}
     for p in pares:
@@ -149,19 +148,22 @@ def estado_de_hoy():
                 pass
         elif k.startswith('d:'):
             clave_de[k[2:]] = v
-    pide = minimo('competitivo', 'ev')
     # 🔴 LA LETRA SALE DEL SCORE (`comun.rangos.de_score()`), NO DEL `rango`
     # DEL POOL DE TEMPORADA: ése es el color de la carta, que sale del OVR.
     # Medido el 25/09/2026, Hassan: `rango` SSS con Score 46.4 —B—. El día
     # que llegara a 10 eventos, el aviso le habría dicho «Subiste a rango
     # SSS» con la carta y el Sheet diciendo B. Revisión de ese día.
-    from comun.rangos import de_score
+    #
+    # ⚠️ Y AHORA DE `comun.rangos.letra_de()`, la misma de la carta y de la
+    # página: la letra es la del pool competitivo, con su puerta.
+    from comun.rangos import letra_de
     letra = {}
     try:
         with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
             for x in json.load(f):
-                if x.get('raw') and (x.get('ev') or 0) >= pide:
-                    letra[_clave(x['raw'])] = _rg(de_score(float(x.get('score') or 0)))
+                rg = letra_de(x.get('raw')) if x.get('raw') else ''
+                if rg:
+                    letra[_clave(x['raw'])] = _rg(rg)
     except (OSError, ValueError):
         pass
     out = {}

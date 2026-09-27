@@ -1903,12 +1903,12 @@ def _letra(p):
     (`01_Temporada/normal_v3.letra_rango()`): acá lo mismo, por
     `comun.rangos.de_score()`. Lo encontró la revisión de ese día.
     """
+    # ⚠️ Y DE `comun.rangos.letra_de()`, la misma de la carta y de los
+    # avisos: la fila es del pool de temporada, pero la letra es la del
+    # competitivo (ver su docstring: los dos Score no coinciden).
     try:
-        from comun.requisitos import minimo
-        from comun.rangos import de_score
-        if (p.get('ev') or 0) < minimo('competitivo', 'ev'):
-            return ''
-        return de_score(float(p.get('score') or 0))
+        from comun.rangos import letra_de
+        return letra_de(p.get('raw'))
     except Exception:                                    # noqa: BLE001
         return ''
 

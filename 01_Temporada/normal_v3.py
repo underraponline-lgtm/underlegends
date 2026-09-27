@@ -84,21 +84,17 @@ def letra_rango(c):
     mismo número que decide si se emite la carta Competitiva, y tenerlo
     dos veces es tenerlo mal una vez.
 
-    ⚠️ Y SI NO SE PUEDE PREGUNTAR, SE MUESTRA. Un fallo al importar no
-    puede dejar sin letra a quien sí la tiene: el hueco es para el que
-    no llegó, no para el que no se pudo medir.
+    🔴 Y SALE DE `comun.rangos.letra_de()`, LA MISMA QUE LA PÁGINA Y LOS
+    AVISOS. Esto la calculaba con el Score del pool de TEMPORADA, que no
+    junta los alias, y la Servidor y la País con el del competitivo: el
+    27/09/2026 los dos Score diferían en 7 personas. Ver `letra_de()`.
     """
-    try:
-        import os as _os
-        import sys as _sys
-        _sys.path.insert(0, _os.path.dirname(_os.path.dirname(
-            _os.path.abspath(__file__))))
-        from comun.requisitos import minimo
-        if (c.get('ev') or 0) < minimo('competitivo', 'ev'):
-            return ''
-    except Exception:                                    # noqa: BLE001
-        pass
-    return rango(c['score'])
+    import os as _os
+    import sys as _sys
+    _sys.path.insert(0, _os.path.dirname(_os.path.dirname(
+        _os.path.abspath(__file__))))
+    from comun.rangos import letra_de
+    return letra_de(c.get('raw'))
 
 def tier_color(ovr):
     """El COLOR de la carta. Sale del OVR de temporada."""
