@@ -3050,5 +3050,344 @@
     625
    ]
   ]
+ },
+ "363": {
+  "dia": "2026-09-22",
+  "escala": "16+",
+  "fecha": "22/09",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1552054613014880291"
+  ],
+  "n": 363,
+  "nombre": "RAP EXHIBITION 1 8",
+  "participantes": 31,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Sosa",
+       "NC"
+      ],
+      "MCO",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "ANTORCHA OLIMPICA",
+       "Leonart",
+       "Guess",
+       "Makmah"
+      ],
+      "ANTORCHA OLIMPICA",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Juanpa",
+       "Paria",
+       "KIRITO"
+      ],
+      "Juanpa",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Pollo Sport",
+       "PLA PLA",
+       "Dominick"
+      ],
+      "Pollo Sport",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MAXIMILIANO CALVO",
+       "Sin Limites",
+       "RIQUEZA"
+      ],
+      "MAXIMILIANO CALVO",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Luzzano",
+       "Hassan",
+       "Bloody",
+       "PUBLIC ENEMY"
+      ],
+      "Luzzano",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Zeta",
+       "Agre",
+       "PARADOJA",
+       "Agus"
+      ],
+      "Zeta",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Camila",
+       "leteletras🇨🇱",
+       "RAGE BAIT",
+       "Trot",
+       "SOL",
+       "LEWITO",
+       "Velatz"
+      ],
+      "Camila",
+      "triple (7 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "MCO"
+      ],
+      "ANTORCHA OLÍMPICA",
+      ""
+     ],
+     [
+      [
+       "Pollo Sport",
+       "Juanpa"
+      ],
+      "Pollo Sport",
+      ""
+     ],
+     [
+      [
+       "Luzzano",
+       "MAXIMILIANO CALVO"
+      ],
+      "Luzzano",
+      ""
+     ],
+     [
+      [
+       "Zeta",
+       "Camila"
+      ],
+      "Zeta",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "Pollo Sport"
+      ],
+      "ANTORCHA OLÍMPICA",
+      ""
+     ],
+     [
+      [
+       "Zeta",
+       "Luzzano"
+      ],
+      "Zeta",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Pollo Sport",
+       "Luzzano"
+      ],
+      "Pollo Sport",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "Zeta"
+      ],
+      "ANTORCHA OLÍMPICA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "ANTORCHA OLÍMPICA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Zeta",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Pollo Sport",
+    "Tercero",
+    6000
+   ],
+   [
+    "Luzzano",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Camila",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Juanpa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MAXIMILIANO CALVO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agre",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Guess",
+    "Octavos",
+    1250
+   ],
+   [
+    "Hassan",
+    "Octavos",
+    1250
+   ],
+   [
+    "KIRITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "PARADOJA",
+    "Octavos",
+    1250
+   ],
+   [
+    "PLA PLA",
+    "Octavos",
+    1250
+   ],
+   [
+    "PUBLIC ENEMY",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "RAGE BAIT",
+    "Octavos",
+    1250
+   ],
+   [
+    "RIQUEZA",
+    "Octavos",
+    1250
+   ],
+   [
+    "SOL",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "leteletras🇨🇱",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
