@@ -431,7 +431,8 @@ function pintaHero() {
     var der = e.sin_hora
       ? '<span class="hace">anunciado ' + esc(cuandoSe(e.cuando)) + '</span>'
       : '<span class="reloj" data-t="' + esc(e.cuando) + '">&middot;</span>';
-    return '<div class="ev"><div><b>' + tit + '</b><small>' + sub +
+    return '<div class="ev"><div><b>' + tit + etiquetaMult(e.sv, String(e.cuando || '').replace(/Z$/, '') + 'Z') +
+      '</b><small>' + sub +
       '</small></div>' + der + '</div>';
   }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
     'eventos el mismo día. Con los <a href="#/avisos">avisos</a> te enterás apenas sale uno.</p>' : '');
@@ -447,7 +448,7 @@ function vieneDestacado(e) {
     .map(function (x) { return '<span class="vi-chip">' + esc(x) + '</span>'; }).join('');
   return '<div class="vi-prox" style="--c:' + esc(colorSv(e.sv)) + '">' +
     '<div class="vi-cab">' + logoSv(e.sv, 40) + '<div><span class="vi-sv">' + esc(nombreSv(e.sv)) +
-      '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
+      etiquetaMult(e.sv, iso) + '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
       '</b></div></div>' +
     (e.sin_hora
       ? '<p class="vi-cuando"><span>Anunciado ' + esc(cuandoSe(e.cuando)) + '</span></p>'
@@ -559,6 +560,45 @@ function tituloRango(sv, rg) {
   return 'El rango de este evento en ' + nombreSv(sv) + (p ? ': ' + p + ' puntos de ascenso en ' +
     nombreSv(sv) + ' (no en la Liga)' : '');
 }
+/* ── los multiplicadores de la semana ──────────────────────────────────
+   🔑 Dlx, 27/09/2026: «cada semana haya un multiplicador de puntos… FFA x1,
+   Snake Rap 2x, URBF x5… debuffs también». Salen de `D.mult` (el sorteo de
+   `bot/multiplicadores.py`) y valen para los Puntos de la Temporada: el
+   Competitivo y el Most Wanted no cambian. */
+function xMult(x) { return '&times;' + String(x).replace('.', ','); }
+function claseMult(x) { return x < 1 ? 'baja' : x >= 5 ? 'x5' : x > 1 ? 'sube' : ''; }
+/* el de un evento de ese servidor a esa hora, si cae en la semana sorteada */
+function multDe(sv, cuando) {
+  var M = D.mult;
+  if (!M || !sv || !M.sv || M.sv[sv] == null) return null;
+  var t = cuando ? new Date(cuando).getTime() : Date.now();
+  return t >= new Date(M.ini).getTime() && t < new Date(M.fin).getTime() ? M.sv[sv] : null;
+}
+function etiquetaMult(sv, cuando) {
+  var x = multDe(sv, cuando);
+  return x == null || x === 1 ? '' : '<span class="xm ' + claseMult(x) + '" title="Esta semana los puntos de ' +
+    'Temporada de ' + esc(nombreSv(sv)) + ' valen ' + String(x).replace('.', ',') + ' veces">' + xMult(x) + '</span>';
+}
+function pintaMult() {
+  var M = D.mult, sec = $('#secMult');
+  if (!sec) return;
+  var svs = M && M.sv ? Object.keys(M.sv) : [];
+  if (!svs.length || Date.now() >= new Date(M.fin).getTime()) { sec.hidden = true; return; }
+  svs.sort(function (a, b) { return M.sv[b] - M.sv[a] || a.localeCompare(b); });
+  $('#multBaj').innerHTML = 'Esta semana los puntos de Temporada de cada evento valen esto, hasta el ' +
+    esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
+    '. El Competitivo no cambia.';
+  $('#multLista').innerHTML = svs.map(function (sv) {
+    var x = M.sv[sv];
+    return '<div class="mt ' + claseMult(x) + '" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 32) +
+      // la sigla arriba y el número abajo: en un renglón, «Discord Rap Español»
+      // se cortaba en «Discord Rap…» y hasta «FFA» quedaba en «F…»
+      '<div class="mt-t"><span class="mt-n" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span><b>' +
+      xMult(x) + '</b></div>' +
+      (x < 1 ? '<small>debuff</small>' : x >= 5 ? '<small>jackpot</small>' : '') + '</div>';
+  }).join('');
+  sec.hidden = false;
+}
 function chipSv(sv) {
   return '<span class="chip-sv" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 18) +
     esc(nombreSv(sv) || sv) + '</span>';
@@ -588,7 +628,7 @@ function pintaPasados() {
     var rg = e.rango ? '<span class="rg-ev" title="' + esc(tituloRango(e.sv, e.rango)) + '">' +
       esc(e.rango) + '</span>' : '';
     return '<article class="ps" style="--c:' + esc(colorSv(e.sv)) + '">' +
-      '<header><span class="ps-chips">' + chipSv(e.sv) + rg + '</span>' +
+      '<header><span class="ps-chips">' + chipSv(e.sv) + etiquetaMult(e.sv, e.cuando) + rg + '</span>' +
       '<span class="hace">' + esc(cuandoSe(e.cuando)) + '</span></header>' +
       '<h3>' + esc(e.nombre) + '</h3>' +
       (datos ? '<p class="ps-d">' + datos + '</p>' : '') +
@@ -824,7 +864,7 @@ function abrirLlave(n) {
   var rgo = inf.rg || (pas && pas.rango) || '';
   var org = inf.org || (pas && pas.org) || '';
   $('#lNombre').textContent = L.nombre;
-  $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) +
+  $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) + (L.vivo ? etiquetaMult(L.sv) : '') +
     (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
     (rgo ? '<span class="rg-ev" title="' + esc(tituloRango(L.sv, rgo)) + '">' + esc(rgo) + '</span>' : '') +
     (puntosRango(L.sv, rgo) ? '<span class="rg-pts">' + esc(puntosRango(L.sv, rgo)) +
@@ -932,7 +972,7 @@ function abrirLlave(n) {
 /* la ficha de una llave en vivo: no tiene puntos ni fecha de calendario */
 function pintaCabVivo(L) {
   $('#lNombre').textContent = L.nombre;
-  $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) +
+  $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) + (L.vivo ? etiquetaMult(L.sv) : '') +
     '<span class="vv-et"><i class="vivo-punto" aria-hidden="true"></i>En vivo</span></span>' +
     '<span class="l-datos">' + (L.participantes ? L.participantes + ' raperos &middot; ' : '') +
     (L.terminada ? 'terminó: los puntos llegan cuando el ciclo la procese'
@@ -2488,7 +2528,7 @@ function pintaDia(M) {
     return '<article class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
       '<div class="de-t"><b>' + esc(fmtHora(e.t)) + '</b>' + (e.sh ? '<small>anunciado</small>' : '') +
       '</div><div class="de-c"><h3>' + esc(e.n) + '</h3>' +
-      '<div class="de-sub">' + chipSv(e.sv) + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
+      '<div class="de-sub">' + chipSv(e.sv) + etiquetaMult(e.sv, e.t) + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
       (e.rg || inf.rg ? '<span class="rg-ev">' + esc(e.rg || inf.rg) + '</span>' : '') +
       '<span class="de-est ' + (e.fut ? 'fut' : e.jugado ? 'jug' : '') + '">' + estado + '</span></div>' +
       (camp.length ? '<p class="de-camp"><span>&#127942;</span>' + camp.map(function (r) {
@@ -4876,17 +4916,16 @@ function cuandoSe(iso) {
   return h < 24 ? 'hace ' + h + ' h' : 'hace ' + dias + (dias === 1 ? ' día' : ' días');
 }
 
-function pinta() {
-  // el punto de «nuevo» del changelog: un pedido chico a un archivo estático
-  try { cargarCambios(null); } catch (e) { /* sin changelog, la página sigue */ }
-  try { volverDeDiscord(); } catch (e) { console.error('[volverDeDiscord]', e); }
+/* lo que se dibuja con los datos: al abrir la página y cada vez que llegan
+   nuevos (ver `refrescarDatos()`) */
+function pintaDatos() {
   // 🔴 CADA SECCIÓN, AISLADA. Una que falla —un dato que llega con otra
   // forma, o el HTML viejo en caché con este JS nuevo— queda sin dibujar y
   // el resto de la página sale igual. Antes un error en cualquier `pinta*`
   // cortaba todos los que venían después, y los escuchas no se colgaban:
   // una sección rota apagaba la página entera. El error queda en la
   // consola con el nombre de la sección.
-  [trama, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
+  [trama, pintaMult, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
     pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
     pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
     pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaPaneles, aplicarCalma]
@@ -4912,10 +4951,40 @@ function pinta() {
     (viejo ? '<span class="pie-nota">De 3 a 11 AM (hora del este) no se actualiza.</span>' : '');
   $('#pie').title = 'Se actualiza cada media hora.';
   try { pintaFase(); } catch (e) { console.error('[pintaFase]', e); }
+}
+function pinta() {
+  // el punto de «nuevo» del changelog: un pedido chico a un archivo estático
+  try { cargarCambios(null); } catch (e) { /* sin changelog, la página sigue */ }
+  try { volverDeDiscord(); } catch (e) { console.error('[volverDeDiscord]', e); }
+  pintaDatos();
   try { eventos(); } catch (e) { console.error('[eventos]', e); }
   ir();
   setInterval(pintaRelojes, 1000);
   try { pedirVivo(); } catch (e) { console.error('[pedirVivo]', e); }
+  setInterval(refrescarDatos, 5 * 60000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && Date.now() - DATOS_PEDIDOS > 60000) refrescarDatos();
+  });
+}
+
+/* 🔑 LOS DATOS SE REFRESCAN SOLOS CON LA PÁGINA ABIERTA: cada 5 minutos
+   mientras se ve, y al volver a la pestaña. Dlx, 27/09/2026: «sigo viendo
+   los 10 MW de hoy» — eran 3 desde hacía un rato, pero la página pedía los
+   datos una sola vez, al abrirse, y el ciclo los cambia cada media hora.
+   ⚠️ SÓLO SI CAMBIÓ EL `sello`, y sin `ir()`: eso cierra la llave o el menú
+   que la persona tenga abiertos. Se redibujan las secciones y listo. */
+var DATOS_PEDIDOS = Date.now();
+function refrescarDatos() {
+  if (document.visibilityState === 'hidden' || !D) return;
+  DATOS_PEDIDOS = Date.now();
+  fetch('/api/lobby', { headers: { accept: 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) {
+      if (!d || !d.tabla || d.sello === D.sello) return;
+      D = d;
+      pintaDatos();
+    })
+    .catch(function () { /* la próxima vez */ });
 }
 
 fetch('/api/lobby', { headers: { accept: 'application/json' } })

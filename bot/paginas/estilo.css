@@ -1594,6 +1594,31 @@ text-transform:uppercase}
 .teaser.ev .reloj{font-size:1.4rem}
 #secPaneles .hoy{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 
+/* ── los multiplicadores de la semana ───────────────────────────────────
+   El valor manda: teal si sube, oro el ×5 (el «jackpot»), rojo el ×0,5.
+   El borde de la izquierda es el color del servidor. */
+.mult{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr))}
+.mt{--c:#7E8B89;position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:11px 12px;
+background:rgba(10,15,14,.82);border:1px solid var(--bd2);border-left:3px solid var(--c)}
+.mt .sv-mini{flex:none;border-radius:50%}
+.mt-t{display:flex;flex-direction:column;gap:4px;min-width:0}
+.mt-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx2);
+font:800 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em}
+.mt b{color:var(--tx2);font:900 1.45rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.mt small{position:absolute;top:-8px;right:8px;padding:1px 6px;border-radius:3px;
+font:800 .6rem/1.4 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.mt.sube b{color:var(--tl)}
+.mt.x5{border-color:rgba(255,210,74,.35)}
+.mt.x5 b{color:var(--oro);text-shadow:0 0 14px rgba(255,210,74,.45)}
+.mt.x5 small{background:var(--oro);color:#1A1405}
+.mt.baja b{color:#FF6B6B}
+.mt.baja small{background:#FF6B6B;color:#2A0707}
+.xm{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:3px;font:900 .72rem/1.4 Archivo,sans-serif;
+font-variant-numeric:tabular-nums;vertical-align:middle;white-space:nowrap}
+.xm.sube{background:rgba(41,178,152,.16);color:var(--tl)}
+.xm.x5{background:rgba(255,210,74,.18);color:var(--oro)}
+.xm.baja{background:rgba(255,107,107,.15);color:#FF6B6B}
+
 /* ── Most Wanted: el tablero, un cartel por buscado ─────────────────────
    El color de arriba dice cómo está: magenta suelto, gris cazado, oro si
    sobrevivió. El sello es del cartel de «se busca»: sólo en los dos

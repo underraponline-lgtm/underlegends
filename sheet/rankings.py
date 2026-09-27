@@ -51,6 +51,7 @@ eventos de la pre se procesaron y su detalle no quedo. La hoja se llena
 sola a partir del primer evento de la T1 que pase por
 `sheet/procesar_entrada.py`.
 """
+import datetime as _dt
 import io
 import json
 import os
@@ -496,8 +497,13 @@ def _trolls():
         return lambda q: False
 
 
-def agregar(filas_res, filas_uno, instantes=None):
+def agregar(filas_res, filas_uno, instantes=None, factor=None):
     """Las filas crudas -> {rapero: {columna: valor}}.
+
+    `factor(servidor, instante) -> multiplicador` multiplica los puntos de
+    cada evento: son los multiplicadores de la semana, y SÓLO los pide la
+    Temporada (`agregar_temporada()`). Sin `factor`, los puntos crudos —que
+    es lo que ve el Competitivo—.
 
     `instantes` es `{número de evento: ms}` —cuándo se publicó su llave—;
     sin pasarlo se lee de `datos/llaves_t1.json`. Ver `llaves_web.orden()`.
@@ -544,6 +550,15 @@ def agregar(filas_res, filas_uno, instantes=None):
             pts = int(float(str(f[7]).replace(',', '') or 0))
         except ValueError:
             pts = 0
+        # 🔑 EL MULTIPLICADOR DE LA SEMANA, sólo si lo piden: ver `agregar_temporada()`
+        if factor:
+            try:
+                _ms = instantes.get(int(float(num or 0)))
+            except ValueError:
+                _ms = None
+            _ms = _ms or LW.ms_de_fecha(str(f[1]).strip())
+            pts = int(round(pts * factor(sv, _dt.datetime.fromtimestamp(_ms / 1000, _dt.timezone.utc)
+                                         if _ms else None)))
         r = d[quien]
         r['Puntos'] += pts
         evs[quien].add(num)
@@ -957,6 +972,28 @@ def sumar_mw(ag, suma=None):
     return tocadas
 
 
+def agregar_temporada(filas_res, filas_uno, instantes=None):
+    """La Temporada: `agregar()` con los multiplicadores de la semana y el Most Wanted.
+
+    🔑 ES LO QUE SEPARA LA TEMPORADA DEL COMPETITIVO. Los dos salen de
+    `Resultados`; el Competitivo usa `agregar()` pelado, así que el Score no
+    ve ni los multiplicadores (Dlx, 27/09/2026: *«esto no afectaría el
+    competitivo»*) ni el MW (*«MW no cuenta para competitivo»*). Lo usan las
+    vitrinas de la Temporada, Podios y Mundial, y la portada.
+
+    ⚠️ SI LOS MULTIPLICADORES NO SE PUEDEN LEER, REVIENTA (ver
+    `multiplicadores.factor_de()`): mejor no escribir la vitrina esa vez que
+    escribirla sin multiplicar y bajarle los puntos a todos una corrida.
+    """
+    _b = os.path.join(BASE, 'bot')
+    if _b not in sys.path:
+        sys.path.insert(0, _b)
+    import multiplicadores as _MU
+    ag = agregar(filas_res, filas_uno, instantes, factor=_MU.factor_de())
+    sumar_mw(ag)
+    return ag
+
+
 def _comp_ovr(v):
     """Las cinco componentes del OVR de esa persona, desde `agregar()`.
 
@@ -992,8 +1029,7 @@ def tabla_nueva():
     avisos = []
     if not res:
         return None, ['`Resultados` está vacía: no hay de dónde calcular']
-    ag = agregar(res, uno)
-    sumar_mw(ag)
+    ag = agregar_temporada(res, uno)
     rg = rangos_de(res)
 
     cab = cabecera_oficial()
@@ -1928,9 +1964,8 @@ def escribir_todas(dry=True):
     """
     from escribir import Hoja
     res, uno = Hoja('Resultados').filas(), Hoja('1v1').filas()
-    ag = agregar(res, uno)
-    # el MW suma a la Temporada: Podios y Mundial muestran los mismos Puntos
-    sumar_mw(ag)
+    # los mismos Puntos que la Temporada: con multiplicadores y MW
+    ag = agregar_temporada(res, uno)
     pais_de, _rango_pool = identidad()
     # 🔴 UN SOLO ORIGEN PARA EL RANGO, Y EL POOL DEJA DE SER RESPALDO.
     #
@@ -2397,6 +2432,16 @@ def _self_check():
     mal += not ok
     print('   %s el Most Wanted suma a los Puntos y llena 🎯 💀 🛡️ (MTZ con bandera '
           'engancha; volk no es Volk)' % ('✅' if ok else '🔴'))
+    # 🔑 el multiplicador: sólo con `factor`, por servidor y por semana
+    resm = [[1, '27/09', 'SR', '16+', 'Ana', 'ar', 'Campeón', 10000, '', 0, ''],
+            [2, '27/09', 'FFA', '16+', 'Ana', 'ar', 'Subcampeón', 7500, '', 0, '']]
+    fx = lambda sv, t: 2 if sv == 'SR' and t else 1
+    crudo = agregar(resm, [], instantes={1: 1790200000000, 2: 1790200000000})
+    doble = agregar(resm, [], instantes={1: 1790200000000, 2: 1790200000000}, factor=fx)
+    ok = crudo['Ana']['Puntos'] == 17500 and doble['Ana']['Puntos'] == 27500
+    mal += not ok
+    print('   %s el multiplicador de la semana: sólo si se lo pide (el Competitivo ve %s, la '
+          'Temporada %s)' % ('✅' if ok else '🔴', crudo['Ana']['Puntos'], doble['Ana']['Puntos']))
     # y que de verdad no las produzca `agregar()`, que es el porqué
     traidas = set()
     for v in ag.values():
@@ -2698,8 +2743,7 @@ def main():
             print('      Se llena solo a partir del primer evento de la T1 que')
             print('      pase por `sheet/procesar_entrada.py`.\n')
             return 1
-        ag = agregar(res, uno)
-        sumar_mw(ag)                  # la vitrina los trae sumados
+        ag = agregar_temporada(res, uno)   # como la vitrina: multiplicada y con el MW
         cab = cabecera_oficial()
         viv = _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1))
         icol = {c: i for i, c in enumerate(cab)}

@@ -273,9 +273,34 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La caza queda escrita en la llave para siempre**, y en vivo se marca a los buscados | a «la caza para siempre», *«sí»* · a «buscados marcados», *«sí»* | `cuadro()` y `abrirLlave()` en `app.js` |
 | **Lo del Most Wanted suma a la Temporada: Puntos y OVR**, nunca al Competitivo | a «¿los puntos del MW suman ya a la Temporada (Puntos y OVR)?», *«1. sí»* | ✅ `sumar_mw()` en `sheet/rankings.py` (1.23) |
 | **3 buscados por día; 9 por semana** | *«de momento, como es diario, que sean 3… y que cuando sea por semana que sean 9»* | `CUANTOS` y `CUPOS` en `bot/most_wanted.py` (1.23) |
-| **Multiplicadores de puntos por servidor cada semana** (buffs y debuffs), y **algo para los organizadores**; nada de esto toca el Competitivo | *«cada semana haya un multiplicador de puntos que tú vas a decidir randomamente… luego podríamos dar debuffs también… tenemos que incentivar a los organizadores también»* | ⏳ en diseño, en el chat |
+| **Multiplicadores de puntos por servidor cada semana**, de **×0,5 a ×5**; el debuff le puede tocar **a cualquiera**; **desde ya**. Nunca el Competitivo | *«cada semana haya un multiplicador de puntos que tú vas a decidir randomamente»* · *«me gusta hasta x5»* · *«sí, a cualquiera»* · *«desde ya»* | ✅ `bot/multiplicadores.py` (paso 0b) y `rankings.agregar_temporada()` (1.24) |
+| **Todas las ideas de enganche, aprobadas**: guerra de servidores, meta de comunidad, evento dorado, encuestas, bonus por llave limpia, ranking de organizadores y destacado del calendario | *«me gustan todas las ideas la verdad»* | ⏳ por construir, en ese orden más o menos |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (12 a 12:30 PM) — versión 1.24
+
+**Los multiplicadores de la semana.** Dlx: *«me gusta hasta x5»*, el debuff
+*«a cualquiera»*, *«desde ya»*.
+
+- 🔑 **`bot/multiplicadores.py`, paso 0b del ciclo** (antes de las
+  vitrinas). Cada lunes a las 11 AM ET sortea uno por servidor de los que el
+  bot lee (`datos/bot_en.json`): uno fuerte (×2 o ×3, y ×5 una semana de
+  cada cuatro), quizás un ×0,5, y el resto ×1 a ×2. **Lo sorteado se guarda
+  y no se vuelve a sortear**: cada evento usa el de su semana para siempre.
+  El primero arrancó en el momento del sorteo (lo de antes no se multiplica)
+  y el arranque de la temporada corta la semana, como en el MW.
+- 🔑 **`rankings.agregar_temporada()` es la puerta de la Temporada**:
+  `agregar()` con el multiplicador de cada evento y el MW. La usan las
+  vitrinas de la Temporada, Podios y Mundial, y la portada. **El Competitivo
+  usa `agregar()` pelado**: no ve ni multiplicadores ni MW. Si el archivo no
+  se puede leer, revienta en vez de escribir sin multiplicar.
+- 🖥️ **En la página**: la sección del Inicio y la etiqueta «×N» en Lo que
+  viene, Lo que pasó, el calendario y la llave en vivo. Y **la página se
+  refresca sola** cada 5 minutos y al volver a la pestaña: Dlx seguía viendo
+  los 10 MW de la mañana porque la página pedía los datos una sola vez.
 
 ---
 

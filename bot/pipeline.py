@@ -518,6 +518,19 @@ def _lo_barato(correr):
             except Exception:                            # noqa: BLE001
                 pass
 
+    # ── 0b · los multiplicadores de la semana ──────────────────────
+    #
+    # 🔑 Dlx, 27/09/2026: «cada semana haya un multiplicador de puntos… desde
+    # ya». Sortea una vez por semana (lunes 11 AM ET) y lo guarda; va ANTES de
+    # las vitrinas (1c), que multiplican los Puntos de la Temporada con esto.
+    # Ver `bot/multiplicadores.py`.
+    #
+    # ⚠️ NUNCA FRENA EL CICLO: sin sorteo nuevo, las vitrinas usan lo guardado.
+    if correr:
+        paso('0b', 'los multiplicadores de la semana')
+        if not corre(['bot/multiplicadores.py', '--aplicar'], callado=False):
+            print('      ⚠️ no pude sortear los multiplicadores: quedan los que había')
+
     paso(1, 'las llaves cargadas en `Entrada`')
     # ✅ EL LECTOR **YA ESCRIBE**, desde el 22/09/2026. Dlx: «pongamos
     # esto a prueba, estos 3 dias pongamos a prueba FFA, quiero ver si

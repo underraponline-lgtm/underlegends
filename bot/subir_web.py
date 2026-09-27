@@ -446,6 +446,9 @@ def armar():
         # 🔑 MOST WANTED: el tablero del período, los cazadores de la temporada
         # y qué se cazó en cada llave. Ver `_mw()` y `bot/most_wanted.py`.
         'mw': _mw(gente),
+        # 🔑 LOS MULTIPLICADORES DE LA SEMANA: el Inicio los muestra y cada
+        # evento lleva el suyo. Ver `_mult()` y `bot/multiplicadores.py`.
+        'mult': _mult(),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -1907,6 +1910,22 @@ def _crews():
         if os.path.exists(os.path.join(logos, a['clave'] + '.webp')):
             a['logo'] = 'logos/crews/%s.webp' % a['clave']
     return sorted(fuera, key=lambda a: (-a['rk'], -a['pts'], -a['n']))
+
+
+def _mult():
+    """La semana de los multiplicadores de ahora: `{id, ini, fin, sv}`, o `None`.
+
+    ⚠️ SIN SORTEO NO HAY PIEZA: la página no muestra la sección.
+    """
+    try:
+        import multiplicadores as _MU
+        s = _MU.actual()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin multiplicadores para la página (%s)' % str(e)[:60])
+        return None
+    if not s or not s.get('sv'):
+        return None
+    return {'id': s['id'], 'ini': s['inicio'], 'fin': s['fin'], 'sv': s['sv']}
 
 
 def _mw_leer():

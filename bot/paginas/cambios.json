@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.24",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T12:20:00-04:00",
+   "titulo": "Multiplicadores de la semana",
+   "items": [
+    "⚡ **Multiplicadores de la semana**: cada lunes a las 11 AM (hora del este) se sortea uno por servidor, de **×0,5 a ×5**. Esa semana, los puntos de Temporada de sus eventos valen eso. Están arriba en el Inicio, y cada evento lleva su «×N».",
+    "🎰 El primero arranca hoy y dura hasta el lunes a las 11.",
+    "🔒 El **Competitivo** y el **Most Wanted** no se multiplican.",
+    "🔄 **La página se actualiza sola**: si la dejás abierta, los datos nuevos aparecen sin recargar."
+   ]
+  },
+  {
    "version": "1.23",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T12:15:00-04:00",

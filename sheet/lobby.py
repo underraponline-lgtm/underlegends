@@ -219,9 +219,8 @@ def datos():
 
     res = Hoja('Resultados').filas()
     uno = Hoja('1v1').filas()
-    ag = RK.agregar(res, uno)
-    # el Most Wanted suma a la Temporada: los mismos Puntos que la vitrina
-    RK.sumar_mw(ag)
+    # los mismos Puntos que la vitrina: con los multiplicadores y el Most Wanted
+    ag = RK.agregar_temporada(res, uno)
     # 🔑 LOS TOPS Y LAS STATS DE LA PORTADA SON DE LOS MIEMBROS («fuera de
     # concurso», Dlx, 27/09/2026), igual que en la página: el podio no es de
     # quien todavía no es miembro. Los contadores y los países cuentan a todos.

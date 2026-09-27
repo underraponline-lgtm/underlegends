@@ -153,6 +153,14 @@
     <!-- 🔴 EN VIVO: las llaves que se están jugando, leídas en el navegador
          cada minuto (ver bot/paginas/llave_vivo.js). Dlx, 27/09/2026. Se
          apaga sola cuando no se juega nada. -->
+    <!-- 🔑 LOS MULTIPLICADORES DE LA SEMANA. Dlx, 27/09/2026: «cada semana
+         haya un multiplicador de puntos… FFA x1, Snake Rap 2x, URBF x5…
+         debuffs también», y «desde ya». Ver bot/multiplicadores.py. -->
+    <section class="blk mult-sec" id="secMult" hidden>
+      <h2><span>&#9889;</span> Multiplicadores de la semana</h2>
+      <p class="bajada" id="multBaj"></p>
+      <div class="mult" id="multLista"></div>
+    </section>
     <section class="blk vivo-sec" id="secVivo" hidden>
       <h2><i class="vivo-punto" aria-hidden="true"></i> En vivo</h2>
       <div id="vivoLista"></div>
@@ -576,6 +584,9 @@
         le gana a uno en un evento de la Liga lo caza y cobra; si nadie lo caza
         y jugó, sobrevive y se lleva la mitad. Lo cobrado suma a tus Puntos de
         la Temporada, nunca al Competitivo.</dd></div>
+        <div><dt>Multiplicador</dt><dd>Cada lunes a las 11 AM (hora del este)
+        se sortea uno por servidor: esa semana, los puntos de Temporada de sus
+        eventos valen ×0,5 a ×5. El Competitivo y el Most Wanted no cambian.</dd></div>
         <div><dt>Crew</dt><dd>Tu equipo. Suma los puntos de su gente; para
         tener puesto necesita tres raperos en la temporada.</dd></div>
         <div><dt>Verificado</dt><dd>Tener el rol de Miembro en Discord Rap
