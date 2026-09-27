@@ -113,6 +113,12 @@ opacity:.75}
 .menu nav a:hover{color:var(--tx);background:rgba(41,178,152,.06)}
 .menu nav a.on{color:var(--tl);border-left-color:var(--tl);
 background:rgba(41,178,152,.09)}
+/* Privacidad · Términos: abajo del menú y de la Guía */
+.legal{padding:6px 12px 0;font:600 .68rem/1.7 'Barlow Condensed',sans-serif;
+letter-spacing:.13em;text-transform:uppercase}
+.legal a{color:var(--tx3);text-decoration:none}
+.legal a:hover,.legal a:focus-visible{color:var(--tl)}
+.vista > .legal{margin-top:28px;padding:0}
 .menu .pie{margin-top:auto;padding:14px 12px 0;color:var(--tx3);
 font:600 .68rem/1.7 'Barlow Condensed',sans-serif;letter-spacing:.13em;
 text-transform:uppercase;border-top:1px solid var(--bd2)}
