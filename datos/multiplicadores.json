@@ -1,4 +1,18 @@
 {
  "_leeme": "Los multiplicadores de cada semana: los sortea bot/multiplicadores.py (paso 0b del ciclo) y NO se vuelven a sortear. Las reglas viven en ese archivo.",
- "semanas": []
+ "semanas": [
+  {
+   "id": "2026-09-21",
+   "inicio": "2026-09-27T16:23:19Z",
+   "fin": "2026-09-28T15:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-09-27T16:23:19Z",
+   "sv": {
+    "DRA": 3,
+    "SR": 2,
+    "FFA": 1.5,
+    "URBF": 1.5
+   }
+  }
+ ]
 }
