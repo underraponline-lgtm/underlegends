@@ -236,10 +236,76 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Los íconos de estilo de la Servidor se quedan** (hoy salen de un sorteo por nombre) | *«aún no lo saques… te daré más información más adelante»* | `todos_sv.py`, `ESTILO_MUESTRA` |
 | **Seguidores, seguidos y un muro de POSTS: todavía no** | *«no lo hagas todavía, tenemos que discutir y arreglar cosas primero»* | mi opinión, abajo en «❓ Esperando a Dlx» |
 | **Urban Freestyle tiene que entrar igual que FFA y Snake Rap** | *«acuérdate que el bot está en Urban Freestyle, asegúrate que los eventos y canales sean identificados»* | sus cuatro canales de llaves se leen; ver la tanda 1.16 |
+| **Urban Freestyle, con otro naranja** que el de Snake Rap, también en Mundo | *«usa otro naranja… y para donde aparece en mundo también»* | ámbar `#FFA928` en `datos/colores_sv_marca.json` (el tono lo elegí yo; ver 1.17) |
+| **Las tarjetas del inicio no repiten el nombre** debajo | *«que digan Hassan y Makmah otra vez cuando en la tarjeta sale el nombre es innecesario»* | `campeon()` en `bot/paginas/app.js` |
+| **No son campeones todavía**: el rótulo del inicio tiene que decir otra cosa mientras se juega | *«no son campeones todavía, son top 1»* | «Líder» hasta el cierre, «Campeón» después (`temporadaCerrada()`); la palabra la propuse yo |
+| **Privacidad y Términos, dentro de Ajustes o de la cuenta**, y mejor hechas | *«¿quizás lo podamos agregar dentro de la sección de cuenta o ajustes? y hacer mejor esos sitios»* | `legalPop()` en `app.js` · `legal.css` |
+| **El changelog es de cambios, no de anuncios**, lleva la hora y usa el ancho de la compu | *«eso sólo es un anuncio, no un cambio… añade la hora de cada changelog… mezclarlo a la derecha»* | `cambios.json` · `acomodarCambios()` |
+| **«Tu servidor es donde más jugaste» sale del changelog**; cómo se asigna el servidor lo explica Dlx después | *«quita eso. Luego te comentaré cómo se hará»* | ⏳ esperando la regla |
+| **Mejoras del panel de llaves y llaves en vivo: para hablar** | *«¿qué harías tú?… quizás llaves en vivo? pero eso es otro tema… hazme saber»* | mi propuesta, en «❓ Esperando a Dlx» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Domingo 27/09 (6:15 a 7:15 AM) — versión 1.17
+
+Lo que Dlx pidió mirando la página. Dos commits (`957ab90` la página,
+`b1965fb` el lector), la página desplegada a las ~7:05 AM y el payload subido
+a mano una vez (una escritura de KV) para que el color nuevo no esperara a
+las 11:22. **El ciclo no se corrió**: de 3 a 11 AM no hay sincronización
+(*«para ahorrar más»*).
+
+- 📅 **Google Calendar en el teléfono**: lo que no anda es **suscribirse al
+  calendario entero** —lo dice la ayuda de Google: *«You can't subscribe to a
+  calendar in the Google Calendar app»*—, y eso no tiene arreglo de nuestro
+  lado. Lo que **sí** anda es agregar **un evento**: el botón abre la app con
+  el evento cargado. Está en «Lo que viene» y en Eventos, y la nota del
+  teléfono lo explica.
+- ⏱️ **«Lo que viene» rehecho**: con un solo evento anunciado —lo normal— era
+  un renglón. Ahora el próximo va grande (servidor, día y hora de quien mira,
+  cuenta atrás, anuncio, Google Calendar, avisos) y, si no hay más, una línea
+  que invita a activar los avisos.
+- 👑 **«Líder de la temporada» / «Líder del competitivo»** mientras se juega;
+  el día después del cierre pasa solo a «Campeón». Las dos tarjetas quedan
+  **centradas entre sí** (la Competitiva es 47 px más alta y colgaba) y
+  **sin el nombre abajo**.
+- 🎨 **Urban Freestyle en ámbar `#FFA928`.** Medido: su naranja y el de Snake
+  Rap estaban a **ΔE 3** (a simple vista, el mismo). Y había una segunda
+  causa: la página aclaraba todo color de luz menor al 50 %, **también el de
+  Snake Rap, que ya se leía** (5,7:1). Ahora sólo se aclara lo que no llega a
+  4,5:1, así Snake Rap muestra su naranja real: **ΔE 19,8** entre los dos. Es
+  sólo la web: el fondo de la carta de Servidor de Urban vive en
+  `los_nueve.py` y no cambió. En Mundo, los cuatro servidores van **dos y
+  dos** (Urban quedaba solo en la segunda fila).
+- 🔒 **Privacidad y Términos**: fuera del pie del menú; ahora en **Ajustes** y
+  en **Mi cuenta** («🔒 Tus datos»). Las dos páginas rehechas: español e
+  inglés, «Lo importante» arriba, índice, secciones numeradas. El texto legal
+  es el mismo.
+- 🕐 **«Datos hace 3 horas»**: era una línea de 11 px en mayúsculas
+  condensadas. Ahora dos renglones legibles y, cuando pasa de una hora, el
+  porqué: de 3 a 11 AM no se actualiza.
+- 📰 **Changelog**: la hora de cada versión (en la de quien mira), dos columnas
+  sin huecos en la compu, sin «Tu servidor es donde más jugaste» y la 1.15
+  titulada como cambio («Tus tarjetas en la página, y tus avisos a tiempo»).
+- 🏆 **AGREEMENT: DOOMSDAY V.1 se lee entera** (entra en la corrida de las
+  11:22 AM). Quedaba «sin campeón» por tres cosas de la misma llave: el
+  negrito entre la bandera y el `&` (`**FULLY🇨🇱**&DXG🇲🇽` era una persona);
+  en la semi **pasa uno de cada equipo y juntos arman el de la final**, y
+  ningún lado «aparecía después»; y el campeón viene como **una mención por
+  integrante**. Probado con las 16 llaves guardadas: 15 idénticas y ésta pasa
+  a 9 filas, campeón FULLY + SNOW, como el podio. Además, las menciones del
+  mensaje traen el nombre de Discord de cada uno y ahora se usan como
+  candidatos (siempre contra quien peleó).
+- 🔴 **Mi error de esta tanda, frenado a tiempo**: iba a sacar el `__` del
+  título de las llaves («__ AGREEMENT DOOMSDAY V.1 __») y lo había «medido»
+  en `datos/llaves_t1.json` —cero eventos con `_`—. **Era el archivo
+  equivocado**: ése ya viene limpio para la web. En `Eventos Procesados`
+  **11 eventos** se llaman «__ … __», y el nombre es su identidad: el cambio
+  los habría cargado **dos veces**. La prueba A/B lo mostró antes de
+  commitear y se revirtió; queda escrito en `titulo()`.
+- 👤 **Velatz, Provenza, Geoka y Neo** no tienen tarjeta en la página porque
+  **no están en DRA** (Discord contesta 404 a su ID): es tu regla del portón.
 
 ## 📅 Domingo 27/09 (4 a 6 AM) — versión 1.16
 
@@ -592,9 +658,30 @@ inglés, y `/borrar-mis-datos`.
   filas con la misma clave: en R2 sus tarjetas se pisan (gana la más nueva).
   Si son uno, va un alias en ✅ Decidir; si son dos, hay que separarlos como
   Volk y volk.
-- **Google Calendar**: ¿dónde lo probaste, en el teléfono o en la compu? Si
-  fue en la compu, ¿qué pasó (un error, o se sumó y no aparece nada)? Google
-  refresca un calendario por link cada varias horas: lo nuevo tarda en verse.
+- **¿«Líder» te sirve?** Es lo que puse arriba de las dos tarjetas del inicio
+  mientras se juega. Otras: «#1 de la temporada», «Va primero», «Top 1».
+- **¿El ámbar te sirve para Urban Freestyle?** Si no: naranja rojizo `#FF5A2E`
+  (ΔE 10 del de Snake Rap, se parece más al fuego de su logo) o miel `#F2B33D`
+  (el más lejos, pero cerca del dorado de «Líder»).
+- **El panel de llaves: qué haría yo**, en este orden —
+  1. **Tocar un nombre ilumina su camino** y dice cuánto sumó ahí. Hoy es
+     sólo con el mouse: en el teléfono no hay «pasar por encima».
+  2. **En el teléfono, la llave por rondas** (Filtros → Cuartos → Semis →
+     Final, de arriba abajo): el árbol en espejo obliga a correrlo de costado.
+  3. **Un link a cada llave** (`#/llave/362`) para pegar en Discord.
+  4. **Los equipos como un solo bloque**, con sus caras juntas.
+  5. **Lo que la llave no dice, con una etiqueta**: revivido, walk-in,
+     pokémon, refuerzo. El lector ya lo sabe; la página no lo muestra.
+- **¿Llaves en vivo?** Se puede. El vigía de la campana ya lee Discord cada
+  minuto; leer también los canales de llaves son unos pocos pedidos más. Lo
+  difícil es el lector: son 2.000 líneas de reglas en Python y el Worker
+  tiene 10 ms. Mi propuesta: **«EN VIVO» es la llave tal como la escribe el
+  organizador** —rondas, nombres, y quién pasó por el negrito—, sin puntos,
+  con un lector chico en JS atado a las mismas pruebas (como los anuncios).
+  Los **puntos siguen saliendo del ciclo**, y cuando procesa el evento la
+  llave en vivo se cambia por la oficial. La página pregunta cada ~30 s sólo
+  mientras hay un evento en vivo. Duplicar el lector entero **no**: dos
+  copias de las reglas es la incoherencia que este proyecto persigue.
 - **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
   el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su
   tarjeta»—, que sale de datos que ya calcula el ciclo y no le pide nada a
@@ -625,6 +712,14 @@ inglés, y `/borrar-mis-datos`.
 **Los avisos en la PC** (Dlx: *«¿arreglaste para que pueda tener las notificaciones en PC también?»*): del lado del servidor no había nada roto para la PC —el aviso sale igual para todos— y anoche no hubo nada que avisar (en los 10 canales, desde el 24/09 al mediodía, sólo está su «Probando…»). El sospechoso es **Opera GX**, que deja activar los avisos y en la compu a veces no los recibe. La campana lo distingue sola: «Mandar una de prueba» espera 20 s y dice si llegó (entonces es Windows) o no (entonces es el navegador: Chrome o Edge en esa compu).
 
 ## 🔧 Pendiente mío
+
+- **Mirar la corrida de las 11:22 AM del 27/09**: tiene que entrar AGREEMENT
+  DOOMSDAY V.1 (#364 si no entra otro antes), con FULLY + SNOW campeones.
+- **11 eventos se llaman «__ … __» en el Operativo** (el subrayado de Discord
+  en el título). En la página salen limpios; en el Sheet no. Limpiarlos pide
+  migrar `Eventos Procesados`, `Resultados` y `1v1` a la vez, porque el nombre
+  es la identidad del evento: va con el pendiente de anclar el evento al
+  mensaje de Discord (más abajo).
 
 - **Las dudas que quedan en las llaves viejas de Urban Freestyle** (21 de 46
   llaves): casi todas son llaves a medio llenar —la final vacía, o el campeón
