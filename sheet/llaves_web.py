@@ -219,6 +219,10 @@ def _juntar(bs):
                     ult[0].append(x)
             continue
         out.append([list(lados), g, nota])
+    # ⚠️ EL LADO VACÍO ES «NO PASÓ NADIE» (un grupo del filtro, ver
+    # `llaves_a_entrada.filas_de`): junta el grupo, pero no se dibuja.
+    for b in out:
+        b[0] = [x for x in b[0] if x]
     return out
 
 
@@ -401,7 +405,12 @@ def cruzar(pasados, regs):
                 continue
             if a == b:
                 puntaje = 2.0
-            elif _digitos(a) != _digitos(b):
+            # ⚠️ DOS NÚMEROS DISTINTOS SE DESCARTAN; UN NÚMERO CONTRA NINGUNO,
+            # NO. Snake Rap anuncia «SNAKE INSIGNIA» y su llave dice «SNAKE
+            # INSIGNIA 3/8» (la edición): nada se contradice, y sin esto su
+            # anuncio no llevaba nunca el botón. VOL 11 contra VOL 12 sigue
+            # afuera.
+            elif _digitos(a) and _digitos(b) and _digitos(a) != _digitos(b):
                 continue
             else:
                 puntaje = difflib.SequenceMatcher(None, a, b).ratio()
@@ -449,6 +458,13 @@ def _self_check():
                'notas': 'triple (3 bandas)'},
               {'ronda': 'filtros', 'a': 'Eva', 'b': 'Kim', 'ganador': 'Eva',
                'notas': 'triple (3 bandas)'},
+              # un grupo del filtro del que no pasó nadie (SNAKE INSIGNIA)
+              {'ronda': 'filtros', 'a': '', 'b': 'Lu', 'ganador': '',
+               'notas': 'triple (3 bandas, pasan 0)'},
+              {'ronda': 'filtros', 'a': '', 'b': 'Mia', 'ganador': '',
+               'notas': 'triple (3 bandas, pasan 0)'},
+              {'ronda': 'filtros', 'a': '', 'b': 'Noa', 'ganador': '',
+               'notas': 'triple (3 bandas, pasan 0)'},
               {'ronda': 'octavos', 'a': 'Hugo', 'b': 'Ivan', 'ganador': 'Hugo',
                'notas': 'triple (4 bandas, pasan 2)'},
               {'ronda': 'octavos', 'a': 'Hugo', 'b': 'Juan', 'ganador': 'Hugo',
@@ -465,8 +481,11 @@ def _self_check():
     ok(len(r['rondas'][2]['b']) == 2,
        'las dos semis juntas aunque una diga SEMIFINALES y otra semifinales')
     ok(r['rondas'][0]['b'][0][2] == 'triple (3 bandas)', 'la nota de la batalla viaja')
-    ok(r['rondas'][0]['b'][0][0] == ['Eva', 'Fede', 'Gus'] and len(r['rondas'][0]['b']) == 2,
+    ok(r['rondas'][0]['b'][0][0] == ['Eva', 'Fede', 'Gus'] and len(r['rondas'][0]['b']) == 3,
        'la de 3 bandas vuelve a ser una batalla  %s' % r['rondas'][0]['b'])
+    ok(r['rondas'][0]['b'][2][:2] == [['Lu', 'Mia', 'Noa'], ''],
+       'el grupo del filtro sin nadie que pase: los tres, sin lado vacío  %s'
+       % r['rondas'][0]['b'][2][:2])
     ok(r['rondas'][1]['b'][1][0] == ['Hugo', 'Ivan', 'Juan'],
        'la de 4 donde pasan 2: el que pasó y los dos que cayeron  %s'
        % r['rondas'][1]['b'][1][0])
@@ -526,6 +545,11 @@ def _self_check():
     q = [{'nombre': 'FLEIVA FREE', 'sv': 'SR', 'cuando': '2026-09-24T20:00:00'}]
     cruzar(q, dos)
     ok(q[0].get('llave') is None, 'con un empate no elige')
+    sr = {'360': {'nombre': 'SNAKE INSIGNIA 3/8', 'sv': 'SR', 'dia': '2026-09-26'}}
+    q = [{'nombre': 'SNAKE INSIGNIA', 'sv': 'SR', 'cuando': '2026-09-26T13:05:46'}]
+    cruzar(q, sr)
+    ok(q[0].get('llave') == 360,
+       'el anuncio sin número engancha con la llave que dice la edición (3/8)')
 
     # 🌳 el árbol: por nombre aunque venga fuera de orden (#354), lo suelto
     # al hueco de al lado (el segundo que pasa de 3 bandas, #353), las filas

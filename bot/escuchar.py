@@ -235,6 +235,159 @@ def plano(texto):
         for c in texto)
 
 
+# ── los dialectos de los otros servidores ─────────────────────────────
+#: un emoji propio que en el nombre dice VS: `<:VS1:…>`, `<:VS6:…>`. El
+#: `<:VSF:…>` de FFA no: `SEP` ya lo lee, y su llave queda como vino.
+VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?vs\w*:\d+>', re.I)
+#: cualquier emoji propio del servidor
+PROPIO = r'<a?:\w+:\d+>'
+#: el negrito y el subrayado de Discord pegados a un marco
+_MD = r'(?:\*\*|__)?'
+#: el podio con emoji propio: `<:1erPuesto:…>`, `<:2oPuesto:…>`, `<:3erPuesto:…>`
+PODIO_PROPIO = re.compile(r'<a?:([123])[a-z\u00ba\u00b0]*_?puesto\w*:\d+>', re.I)
+#: `3er PUESTO`, `3er Y 4º PUESTO`: un ENCABEZADO, si lo que sigue es una batalla
+TERCER_ENC = re.compile(
+    r'\b3\s*(?:er|ro|\u00ba|\u00b0)?\s*(?:y\s*4\s*(?:to|\u00ba|\u00b0|o)?\s*)?'
+    r'(?:puesto|lugar)\b', re.I)
+_BANDERA = '[\U0001F1E6-\U0001F1FF]'
+
+#: el país que nombra un emoji propio. Lo que dicen de verdad los nombres de
+#: los servidores (`<a:ARG:…>`, `<a:bn_ARG:…>`, `<a:Uruguay:…>`,
+#: `<a:REPUBLICADOMINICANA:…>`) y los códigos de tres letras de siempre.
+#: ⚠️ LOS CÓDIGOS DE TRES LETRAS, SÓLO EN MAYÚSCULAS: así los escriben los
+#: servidores (`ARG`, `PAN`, `bn_ARG`), y `pan`, `par` o `esa` en minúscula
+#: son palabras. Una bandera inventada le cambia el país a alguien.
+PAIS_DE_EMOJI = {
+    'ar': ('ARG', 'ARGENTINA'), 'bo': ('BOL', 'BOLIVIA'),
+    'br': ('BRA', 'BRASIL', 'BRAZIL'), 'cl': ('CHI', 'CHL', 'CHILE'),
+    'co': ('COL', 'COLOMBIA'), 'cr': ('CRC', 'CRI', 'COSTARICA'),
+    'cu': ('CUB', 'CUBA'),
+    'do': ('DOM', 'DOMINICANA', 'REPUBLICADOMINICANA', 'REPDOM'),
+    'ec': ('ECU', 'ECUADOR'), 'es': ('ESP', 'ESPANA', 'SPAIN'),
+    'gt': ('GUA', 'GTM', 'GUATEMALA'), 'hn': ('HON', 'HND', 'HONDURAS'),
+    'mx': ('MEX', 'MEXICO'), 'ni': ('NCA', 'NIC', 'NICARAGUA'),
+    'pa': ('PAN', 'PANAMA'), 'pe': ('PER', 'PERU'),
+    'pr': ('PUR', 'PRI', 'PUERTORICO'), 'py': ('PAR', 'PRY', 'PARAGUAY'),
+    'sv': ('SLV', 'ESA', 'ELSALVADOR', 'SALVADOR'),
+    'us': ('USA', 'EEUU', 'ESTADOSUNIDOS'),
+    'uy': ('URU', 'URY', 'URUGUAY'), 've': ('VEN', 'VENEZUELA'),
+}
+_PAIS = {n: cc for cc, ns in PAIS_DE_EMOJI.items() for n in ns}
+
+
+def _bandera(cc):
+    """`'uy'` -> 🇺🇾"""
+    return ''.join(chr(0x1F1E6 + ord(c) - ord('a')) for c in cc.lower())
+
+
+def _pais_del_emoji(m):
+    """El emoji propio pasado a bandera si su nombre es un país; si no, igual.
+
+    🔴 SEVEN STREET (FFA, 26/09/2026) ESCRIBE LAS BANDERAS ASÍ: `「Number
+    <a:Uruguay:…>」`. Sin esto el nombre llegaba con el código pegado
+    —«Number <a:Uruguay:1163705608025939978>»— y, peor, SIN PAÍS: la
+    bandera es identidad (CLAUDE.md), y un emoji propio no lo es para
+    nadie más que para ese servidor.
+
+    ⚠️ EL NOMBRE ENTERO O UNA DE SUS PARTES, nunca un pedazo: `bn_ARG`
+    es ARG, pero `flechaROJA` no es nada aunque termine en letras que
+    podrían ser un código.
+    """
+    nom = unicodedata.normalize('NFKD', m.group(1))
+    nom = ''.join(c for c in nom if not unicodedata.combining(c))
+    partes = [x for x in re.split(r'[^A-Za-z]+', nom) if x]
+    for k in [''.join(partes)] + partes:
+        if k.upper() in _PAIS and (len(k) > 3 or k.isupper()):
+            return _bandera(_PAIS[k.upper()])
+    return m.group(0)
+
+
+def _equipo_de_banderas(s):
+    """`HASSAN🇦🇷 ABYSSUS🇵🇦` -> `HASSAN🇦🇷 + ABYSSUS🇵🇦`, si no hay otro separador.
+
+    ⚠️ HACEN FALTA DOS BANDERAS: una sola es el país de una persona
+    (`PROSU 🇨🇴`), y dos pegadas son las dos de una misma persona
+    (`dxg🇲🇽🇨🇴`). Lo que separa es el espacio DESPUÉS de una bandera y
+    ANTES de una letra.
+    """
+    if len(re.findall(_BANDERA + '{2}', s)) < 2 or re.search(r'[+,&/]', s):
+        return s
+    return re.sub('(?<=' + _BANDERA + r')[ \t]+(?=' + _MD + r'\w)', ' + ', s)
+
+
+def traducir(texto):
+    """La llave escrita en el dialecto de otro servidor, en el que este lector lee.
+
+    🔴 LAS TRES LLAVES DE SNAKE RAP NO ENTRABAN, Y NADA FALLABA. Medido el
+    27/09/2026 sobre su canal `［🔑］llaves`: RAP EXHIBITION (22/09), GENESIS
+    BATTLES (25/09) y SNAKE INSIGNIA 3/8 (26/09) — cero filas, cero
+    avisos, cero en la página. El lector se escribió mirando FFA, y Snake
+    Rap escribe otro dialecto:
+
+        el separador    `<:VS1:…>`, `<:VS6:…>`, `<:ins:…>`  (FFA: 🆚 o `<:VSF:…>`)
+        el marco        `〈SOSA〉`, `「HASSAN🇦🇷」`           (FFA: `⌞x⌝` o `[x]`)
+        el equipo       `「HASSAN🇦🇷 ABYSSUS🇵🇦」`, sin `+`  (FFA: `⌞A + B⌝`)
+        el podio        `<:1erPuesto:…> <@…>`              (FFA: `CAMPEÓN: …`)
+        el tercero      `『3er Y 4º PUESTO』` de encabezado  (FFA: `TERCER LUGAR`)
+        el cuarto       `[ tkl ] <:ins:…> ( MCO )`, y MCO pasó a cuartos
+        la bandera      `<a:Uruguay:…>` (SEVEN STREET, de FFA)  (FFA: 🇺🇾)
+
+    🔑 SE TRADUCE EL TEXTO Y NO SE TOCA EL LECTOR. Cada regla de abajo
+    convierte una forma de Snake Rap en la forma de FFA que el lector ya
+    sabe leer, así que todo lo que el lector aprendió con FFA —triples,
+    revividos, pokémon, el podio que manda— vale igual para ellos. Y la
+    prueba de que no se rompe nada es concreta: las llaves de FFA de la
+    T1 salen **idénticas, fila por fila**, antes y después.
+
+    ⚠️ LOS MARCOS NUEVOS PASAN A `⌞x⌝` Y NO A `[x]`: `[x]` tiene un tope de
+    30 letras (ver `DELIMS`) y un equipo de tres con banderas ya son 30.
+    Uno de cuatro se perdería entero y en silencio.
+
+    ⚠️ Y ES IDEMPOTENTE: traducir algo ya traducido no lo cambia, así que
+    no importa si alguien lo llama dos veces.
+    """
+    if not texto:
+        return texto or ''
+    t = VS_PROPIO.sub(' 🆚 ', texto)
+    t = re.sub(r'<a?:(\w+):\d+>', _pais_del_emoji, t)
+    t = re.sub(r':flag_([a-z]{2}):', lambda m: _bandera(m.group(1)), t)
+    # el podio: el emoji dice el puesto, y el marco que lo rodea sobra
+    t = PODIO_PROPIO.sub(
+        lambda m: ' %s PUESTO: ' % {'1': '1ER', '2': '2DO', '3': '3ER'}[m.group(1)], t)
+    t = re.sub(r'[『「〈][ \t]*(\d(?:ER|DO) PUESTO:)[ \t]*[』」〉]', r'\1', t)
+    # los marcos, con el negrito que los envuelve
+    t = re.sub(_MD + r'[「〈][ \t]*', '⌞', t)
+    t = re.sub(r'[ \t]*[」〉]' + _MD, '⌝', t)
+    # el cuarto entre paréntesis, DESPUÉS de un separador: es un lado.
+    # ⚠️ Sólo con un emoji delante: `(BLOODY) [Cj] [Zignos]` es un refuerzo
+    # que no peleó (guía §4.2), y ése no lleva separador.
+    t = re.sub(r'(?<=[⌝\]])[ \t]*' + PROPIO + r'[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)',
+               r' 🆚 ⌞\1⌝', t)
+    # un emoji propio ENTRE dos marcos es el separador de ese servidor
+    # (`<:VSF:…>` no: `SEP` ya lo lee, y la llave de FFA queda como vino)
+    t = re.sub(r'(?<=[⌝\]])[ \t]*' + _MD + r'[ \t]*(?!<a?:(?i:vsf?):)' + PROPIO
+               + r'[ \t]*(?=' + _MD + r'[⌞\[])', ' 🆚 ', t)
+    # el equipo sin `+`
+    t = re.sub(r'⌞([^⌞⌝\n]{1,80})⌝', lambda m: '⌞' + _equipo_de_banderas(m.group(1)) + '⌝', t)
+    t = re.sub(r'\[([^\[\]\n]{1,40})\]',
+               lambda m: '[' + _equipo_de_banderas(m.group(1)) + ']', t)
+    # `3er Y 4º PUESTO` como encabezado: sólo si abajo hay una batalla,
+    # así la línea del podio (`3ER PUESTO: X`) no cambia.
+    # ⚠️ `split` y no `splitlines`: el salto del final se queda donde estaba
+    ls = t.split('\n')
+    for i, l in enumerate(ls):
+        m = TERCER_ENC.search(l)
+        if not m or RONDA.search(l) or nombres_de_linea(l):
+            continue
+        # ⚠️ `3ER PUESTO: X` ES EL PODIO, aunque abajo venga una batalla
+        if re.match(r'\s*[:：]\s*[^\s*_`~|]', l[m.end():]):
+            continue
+        sig = next((x for x in ls[i + 1:] if x.strip()), '')
+        if nombres_de_linea(sig):
+            ls[i] = TERCER_ENC.sub('TERCER LUGAR', l, count=1)
+    return '\n'.join(ls)
+
+
 # 🔴 `(?<!SUB)` Y `(?<!SUB-)` NO SON ADORNO: `SUBCAMPEON: PIPE` matchea
 # `CAMPEON:` y devuelve al **segundo** como campeon. Hoy no se nota
 # porque la linea del campeon va siempre arriba y `search` se queda con
@@ -262,6 +415,25 @@ SUBCAMPEON = re.compile(
     r'\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})', re.I)
 # los shortcodes de emoji de Discord: `:flag_ve:`, `:ownerroleicon:`
 CORTO = re.compile(r':[a-z0-9_+\-]{2,32}:')
+#: el negrito, el subrayado, el tachado y el spoiler de Discord
+MARCAS = re.compile(r'\*\*|__|~~|\|\|')
+
+
+def _sin_marcas(x):
+    """El nombre sin el negrito de Discord: `**PARK JI-SUNG 🇯🇵**` -> `PARK JI-SUNG 🇯🇵`.
+
+    🔴 EL NEGRITO LLEGABA AL RANKING. El 27/09/2026 el pool de temporada
+    tenía a alguien llamado `**PARK JI-SUNG **`, con los asteriscos, y en
+    el #359 figuraban `**OKAM🇨🇷**` y `OKAM🇨🇷` como dos nombres. `norm()`
+    ya los ignoraba para comparar, así que ninguna cuenta estaba mal: lo
+    que estaba mal era lo que se MOSTRABA, que es lo que ve la gente.
+    """
+    # ⚠️ Y SIN EL EMOJI PROPIO QUE NO ERA UNA BANDERA: un nombre nunca
+    # contiene `<a:x:123>`, y `norm()` ya lo borraba para comparar.
+    # ⚠️ Con el espacio de ANTES y nada más: juntar todos los espacios dobles
+    # cambiaba filas de FFA que ya estaban cargadas (TOKYO VOL.13).
+    x = re.sub(r'[ \t]*<a?:\w+:\d+>', '', MARCAS.sub('', x))
+    return x.strip(' *`')
 
 
 def norm(s):
@@ -336,13 +508,13 @@ def nombres_de_linea(l):
         n_lados = len(lados)
         lados = [x for x in lados if norm(x) not in VACIO]
         if len(lados) >= 2:
-            return lados
+            return [_sin_marcas(x) for x in lados]
         if len(lados) < n_lados:
             return []
     for d in DELIMS:
         hay = [x.strip() for x in d.findall(l) if norm(x) not in VACIO]
         if len(hay) >= 2:
-            return hay
+            return [_sin_marcas(x) for x in hay]
     return []
 
 
@@ -930,7 +1102,26 @@ def resolver(texto, conocidos=None, ids=None):
                                 'de la batalla'))
             else:
                 out.append((ronda, b, None, 'última ronda y no dice campeón'))
-    return _tercero_del_podio(texto, out)
+    # 🔑 EN UN FILTRO PUEDE NO PASAR NADIE DE UN GRUPO, y eso es un
+    # resultado. SNAKE INSIGNIA 3/8 (Snake Rap, 26/09/2026) arma ocho grupos
+    # de tres o cuatro y pasan los ocho mejores DEL TOTAL: de tres grupos
+    # pasaron dos, de dos grupos uno y de tres ninguno. Esos once cayeron
+    # en filtros —la guía los paga como R32 (§3.6)— y quedaban sin fila,
+    # o sea sin la participación, mandados a `Pendientes` como una duda.
+    #
+    # ⚠️ SÓLO SI DE OTRO GRUPO DE ESA RONDA SÍ PASÓ ALGUIEN. Si no engancha
+    # nadie de ningún grupo, lo que falla son los nombres y no el formato:
+    # eso sigue siendo una duda.
+    for r in {x[0] for x in out} & {'FILTROS'}:
+        de_r = [k for k, x in enumerate(out) if x[0] == r]
+        if any(out[k][2] is not None or getattr(out[k], 'pasan', None)
+               for k in de_r):
+            for k in de_r:
+                if out[k][2] is None and out[k][3] == 'no aparece nadie después':
+                    out[k] = Batalla((r, out[k][1], None,
+                                      'pasan 0: del filtro pasan los mejores '
+                                      'de todos los grupos'), pasan=())
+    return _tercero_del_podio(texto, out, ids)
 
 
 #: `3ER PUESTO:` / `TERCER LUGAR:` del podio (y el typo `TECER`)
@@ -939,7 +1130,7 @@ TERCERO = re.compile(
     r'([^\n]{1,80})', re.I)
 
 
-def _tercero_del_podio(texto, out):
+def _tercero_del_podio(texto, out, ids=None):
     """El tercer puesto que dice el PODIO, si nombra a uno solo.
 
     \U0001F534 PODIO MANDA. Guia de formatos de Dlx (23/09/2026, §4.6): *«cuando
@@ -960,19 +1151,37 @@ def _tercero_del_podio(texto, out):
     afuera de los duelos. Si la llave SI trae la batalla del tercero, se
     le pone el ganador y ahi si es un duelo.
     """
-    m = TERCERO.search(texto or '')
+    # ⚠️ LA PRIMERA QUE NOMBRA A ALGUIEN, no la primera a secas: un
+    # encabezado `TERCER LUGAR` arriba de su batalla también matchea, y
+    # sin esto tapaba al `3ER PUESTO: X` del podio de abajo.
+    m = next((x for x in TERCERO.finditer(texto or '')
+              if norm(MENCION.sub('', x.group(1))) or MENCION.search(x.group(1))),
+             None)
     if not m:
         return out
     linea = MENCION.sub('', m.group(1))
     partes = [x for x in re.split(r'\s[-\u2013\u2014/]\s|,|\s+y\s+|\+|&', linea)
               if norm(x)]
+    # 🔑 LA MENCION TAMBIEN NOMBRA A UNO, con el padrón: es la misma regla
+    # que el campeón (ver `resolver()`). Snake Rap publica el podio SOLO
+    # con menciones —`<:3erPuesto:…> <@…>`—, así que sin esto su tercero
+    # no se leía nunca y los dos semifinalistas cobraban el promedio.
+    menciones = MENCION.findall(m.group(1))
+    if not partes and len(menciones) == 1:
+        partes = [None]
     if len(partes) != 1:
         return out
     semis = [(b, g) for r, b, g, _z in out if r == 'SEMIFINALES']
     perd = [n for b, g in semis if g is not None for n in b if n != g]
     if len(semis) != 2 or len(perd) != 2 or any(_equipo(n) for n in perd):
         return out
-    t = _parecido(partes[0], perd)
+    if partes[0] is None:
+        # ⚠️ UN ID REPETIDO EN EL PADRON: decide cuál de los dos peleó
+        t = next((x for x in (_parecido(c, perd) for c in
+                              (ids or {}).get(str(menciones[0])) or [])
+                  if x is not None), None)
+    else:
+        t = _parecido(partes[0], perd)
     if t is None:
         return out
     otro = next(n for n in perd if n != t)
@@ -1117,6 +1326,64 @@ def _canales(s, solo=None, guilds=None):
                 yield c['id'], c['name'], g['name'], g['id']
 
 
+#: horas entre dos mensajes de la misma llave partida en dos
+PARTIDA_H = 3
+
+
+def _ronda_n(r):
+    """La posición de una ronda en `ORDEN`, o -1."""
+    r = ALIAS.get(r, r)
+    return ORDEN.index(r) if r in ORDEN else -1
+
+
+def unir_partidas(ms):
+    """Los mensajes de un canal, con cada llave partida en dos ya pegada.
+
+    🔴 SNAKE INSIGNIA 3/8 VINO EN DOS MENSAJES: filtros y cuartos en uno,
+    semis, tercero y final en el otro, publicados el mismo minuto por la
+    misma persona. Un mensaje de Discord tiene un tope de 2.000
+    caracteres y la llave entera eran 2.288. Leídos por separado, la
+    segunda mitad era **otro evento**: sin título, con cuatro personas y
+    un campeón — o sea puntos contados dos veces, sin que nada falle.
+
+    Se pegan si se cumplen las tres cosas, todas exactas:
+
+      · la misma persona, en el mismo canal;
+      · menos de `PARTIDA_H` horas entre uno y otro (lo dice el ID);
+      · el segundo EMPIEZA en una ronda posterior a la última del primero.
+
+    ⚠️ LA TERCERA ES LA QUE IMPORTA. Una llave repostada entera empieza
+    otra vez desde abajo, y una llave terminada acaba en la FINAL, que no
+    tiene nada después: ninguna de las dos se puede pegar por error.
+
+    ⚠️ EL ORDEN DE SALIDA ES EL DE DISCORD, del más nuevo al más viejo:
+    `llaves_a_entrada.sin_repetir()` se queda con la primera copia y
+    cuenta con que sea la corregida.
+    """
+    if not all(str(m.get('id', '')).isdigit() for m in ms):
+        return list(ms)
+    bloques = []
+    for m in sorted(ms, key=lambda m: int(m['id'])):
+        rs = rondas_de(traducir(plano(m.get('content') or '')))
+        autor = (m.get('author') or {}).get('id')
+        b = bloques[-1] if bloques else None
+        if (b and rs and b['_rondas'] and autor and autor == b['_autor']
+                and ((int(m['id']) >> 22) - (int(b['_ult']) >> 22)
+                     <= PARTIDA_H * 3600000)
+                and _ronda_n(rs[0][0]) > _ronda_n(b['_rondas'][-1][0])):
+            b['content'] = (b.get('content') or '') + '\n' + (m.get('content') or '')
+            b['edited_timestamp'] = max(b.get('edited_timestamp') or '',
+                                        m.get('edited_timestamp') or '') or None
+            b['_ult'] = m['id']
+            b['_partes'] += 1
+            b['_rondas'] = rondas_de(traducir(plano(b['content'])))
+            continue
+        b = dict(m)
+        b.update(_autor=autor, _ult=m['id'], _partes=1, _rondas=rs)
+        bloques.append(b)
+    return sorted(bloques, key=lambda b: int(b['id']), reverse=True)
+
+
 def barrer(s, por_canal=25, solo=None, guilds=None):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
@@ -1151,8 +1418,11 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
             continue              # sin permiso de leer: se salta, no falla
         ms = rr.json()
         n_msg += len(ms)
-        for m in ms:
-            if es_llave(plano(m.get('content') or '')):
+        for m in unir_partidas(ms):
+            # ⚠️ TRADUCIDO ANTES DE PREGUNTAR: ver `traducir()`. Todo lo
+            # que viene detrás lee `texto`, así que se traduce una vez acá.
+            texto = traducir(plano(m.get('content') or ''))
+            if es_llave(texto):
                 out.append({'servidor': servidor, 'guild': guild,
                             'canal': canal, 'canal_id': cid,
                             'msg_id': m['id'],
@@ -1171,7 +1441,8 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
                             'editado': m.get('edited_timestamp') or '',
                             # plano: ver `plano()`. Lo que viene detrás
                             # —titulo, plantel, marcas— lee este texto
-                            'texto': plano(m.get('content') or '')})
+                            'texto': texto,
+                            'partes': m.get('_partes', 1)})
         time.sleep(0.05)
     return out, n_ch, n_msg
 
@@ -1418,6 +1689,7 @@ def _self_check():
         mal += not ok
         print('   %s %-34s -> %s' % ('✅' if ok else '🔴', que, g or '—'))
 
+    mal += _check_dialectos()
     mal += _check_cadencia()
     print('\n  la Parte 2 de la guía: cupo vacío, letras de fantasía')
     casos = [
@@ -1441,6 +1713,129 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    return mal
+
+
+def _check_dialectos():
+    """Las llaves de Snake Rap y SEVEN STREET, recortadas de las de verdad.
+
+    🔴 SON LOS TEXTOS DEL 27/09/2026, no formas inventadas: las tres de
+    Snake Rap no entraban y SEVEN STREET tampoco. Los IDs de emojis y
+    de menciones van cambiados; la forma no.
+    """
+    mal = 0
+    print('\n  los dialectos de otros servidores')
+    genesis = ('🗽 __**GENESIS BATTLES**__ 🗽\n'
+               '╭──╯  <:EYE:1> 𝙲𝚄𝙰𝚁𝚃𝙾𝚂 <:EYE:1> ╰──╮\n'
+               '**「HASSAN🇦🇷」**<:VS6:2>「RAYITO🇲🇽」<:VS6:2>**「ABYSSUS🇵🇦」**\n'
+               '「BNA🇦🇷」<:VS6:2>**「DYNOCO🇦🇷」<:VS6:2>「GEOKA🇦🇷」**\n'
+               '╭──╯ <:coronavacia:3> 𝙵𝙸𝙽𝙰𝙻 <:coronavacia:3> ╰──╮\n'
+               '**「HASSAN🇦🇷 ABYSSUS🇵🇦」**<:VS6:2>「DYNOCO🇦🇷 **GEOKA🇦🇷」**\n'
+               '◆ <:1erPuesto:4> HASSAN🇦🇷 ABYSSUS🇵🇦\n')
+    g = traducir(plano(genesis))
+    rs = rondas_de(g)
+    fin = [x for x in resolver(g) if x[0] == 'FINAL']
+    insignia = ('# <:SNKyllw:5> **SNAKE INSIGNIA** <:SNKyllw:5> 3/8\n'
+                '───● **FILTROS** ●───\n'
+                '●[ tkl ]<:ins:6>[ cardozo ]<:ins:6>[ deluxe ] <:ins:6> ( MCO ) \n'
+                '●[ prosu ]<:ins:6>[ roda ]<:ins:6>[ dynoco ]\n'
+                '───● **CUARTOS** ●───\n'
+                '●[ MCO 🇦🇷 ] <:ins:6> [ PROSU 🇨🇴 ]\n')
+    insignia2 = ('ㅤ\n───● **SEMIFINAL** ●───\n'
+                 '●[ MCO 🇦🇷 ] <:ins:6> [ ZIGNOS 🇩🇴 ]\n'
+                 '●[ JUANPA 🇨🇴 ] <:ins:6> [ JUASMIO 🇨🇴 ]\n'
+                 '───● <:mp_iskull:7>🔺**3er Y 4º PUESTO**🔻<:mp_iskull:7> ●──\n\n'
+                 '●[ JUASMIO 🇨🇴 ] <:ins:6> [ MCO 🇦🇷 ]\n\n'
+                 '─────● **FINAL** ●────\n'
+                 '●[ ZIGNOS 🇩🇴 ] <:ins:6> [ JUANPA 🇨🇴 ]\n\n'
+                 '<:1erPuesto:4> ┋ <@11>\n<:3erPuesto:8> ┋ <@33>')
+    msgs = [{'id': '1553600767699583098', 'author': {'id': '9'}, 'content': insignia2,
+             'edited_timestamp': '2026-09-27T04:58:00+00:00'},
+            {'id': '1553600655443107882', 'author': {'id': '9'}, 'content': insignia,
+             'edited_timestamp': '2026-09-27T04:11:00+00:00'}]
+    bl = unir_partidas(msgs)
+    ins = traducir(plano(bl[0]['content'])) if len(bl) == 1 else ''
+    ids = {'11': ['Zignos'], '33': ['Juasmio']}
+    r_ins = resolver(ins, ids=ids)
+    exhib = ('🎙️ __**RAP EXHIBITION 1/8**__ 🎙️\n'
+             '➠ 『SEMIFINAL』\n'
+             '➢ 〈ANTORCHA OLÍMPICA〉<:VS1:12>〈POLLO SPORT〉\n'
+             '➢ 〈LZZ〉<:VS1:12>〈ZETA〉\n'
+             '➠ 『3er Y 4º PUESTO』\n\n'
+             '➢ 〈POLLO SPORT〉<:VS1:12>〈LZZ〉\n'
+             '➠ 『FINAL』\n'
+             '➢ 〈ANTORCHA OLÍMPICA〉<:VS1:12>〈ZETA〉\n'
+             '• 『 <:1erPuesto:4> 』 <@11>\n')
+    x = traducir(plano(exhib))
+    seven = ('<:flechaROJA:13> 「Number <a:Uruguay:14>」<:1E_Bandido_UL:15>'
+             '「Guess <a:ARG:16>」')
+    ffa = ('# DESGRACIAS EN TOKYO VOL.13\n`[ SEMIFINALES ]`\n'
+           '⌞MAKMA 🇻🇪 + SNOW 🇨🇴⌝ 🆚 ⌞NEO 🇦🇷 + ENEK 🇪🇸⌝\n'
+           '[PRR 🇦🇴] [SIX 🇦🇷] 🆚 [SNOW 🇨🇴] [VELATZ 🇨🇱]\n'
+           '⌞fokox⌝ <:VSF:17> ⌞Sin limites⌝ <:VSF:17> nhp\n'
+           '`[ FINAL ]`\n⌞Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷⌝ 🆚 ⌞dxg🇲🇽🇨🇴⌝\n'
+           '**CAMPEON:**Hassan🇪🇬 +\n(BLOODY) [Cj] [Zignos]')
+    casos = [
+        ('Snake Rap: 「」, `<:VS6:…>` y el equipo sin `+`',
+         [r for r, _b in rs] == ['CUARTOS', 'FINAL']
+         and rs[0][1][0] == ['HASSAN🇦🇷', 'RAYITO🇲🇽', 'ABYSSUS🇵🇦']
+         and rs[1][1] == [['HASSAN🇦🇷 + ABYSSUS🇵🇦', 'DYNOCO🇦🇷 + GEOKA🇦🇷']]),
+        ('el podio con emoji dice el campeón',
+         bool(fin) and fin[0][2] == 'HASSAN🇦🇷 + ABYSSUS🇵🇦'),
+        ('`( MCO )` después de un separador es el cuarto',
+         nombres_de_linea(traducir(
+             '●[ tkl ]<:ins:6>[ cardozo ]<:ins:6>[ deluxe ] <:ins:6> ( MCO ) '))
+         == ['tkl', 'cardozo', 'deluxe', 'MCO']),
+        ('pero `(BLOODY) [Cj] [Zignos]` sigue siendo el refuerzo',
+         traducir('(BLOODY) [Cj] [Zignos]') == '(BLOODY) [Cj] [Zignos]'),
+        ('la llave partida en dos mensajes es UNA',
+         len(bl) == 1 and bl[0]['id'] == '1553600655443107882'
+         and bl[0].get('_partes') == 2
+         and [r for r, _b in rondas_de(ins)] == ['FILTROS', 'CUARTOS', 'SEMIFINALES',
+                                                'TERCER LUGAR', 'FINAL']),
+        ('… y la edición que vale es la más nueva',
+         len(bl) == 1 and bl[0]['edited_timestamp'] == '2026-09-27T04:58:00+00:00'),
+        ('el campeón y el tercero, por mención',
+         [(r, g) for r, _b, g, _z in r_ins if r in ('TERCER LUGAR', 'FINAL')]
+         == [('TERCER LUGAR', 'JUASMIO 🇨🇴'), ('FINAL', 'ZIGNOS 🇩🇴')]),
+        ('otro autor no se pega',
+         len(unir_partidas([dict(msgs[0], author={'id': '8'}), msgs[1]])) == 2),
+        ('una llave repostada entera tampoco',
+         len(unir_partidas([dict(msgs[1], id='1553600767699583098'),
+                            msgs[1]])) == 2),
+        ('`『3er Y 4º PUESTO』` es el encabezado del tercero',
+         [r for r, _b in rondas_de(x)] == ['SEMIFINALES', 'TERCER LUGAR', 'FINAL']),
+        ('`『 <:1erPuesto:…> 』 <@…>` es la línea del campeón',
+         '1ER PUESTO: <@11>' in x),
+        ('`<a:Uruguay:…>` es una bandera',
+         nombres_de_linea(traducir(seven)) == ['Number 🇺🇾', 'Guess 🇦🇷']),
+        ('`<a:PAN:…>` es Panamá, pero `<:pan:…>` es pan',
+         traducir('<a:PAN:1>') == '🇵🇦' and traducir('<:pan:2>') == '<:pan:2>'),
+        ('`3ER PUESTO: X` sigue siendo el podio',
+         traducir('3ER PUESTO: Ana\n⌞A⌝ 🆚 ⌞B⌝') == '3ER PUESTO: Ana\n⌞A⌝ 🆚 ⌞B⌝'),
+        ('`**PARK JI-SUNG🇯🇵**` sale sin el negrito',
+         nombres_de_linea('[**PARK JI-SUNG🇯🇵**] 🆚 [OKAM🇨🇷]')
+         == ['PARK JI-SUNG🇯🇵', 'OKAM🇨🇷']),
+        ('una llave de FFA no cambia ni un carácter', traducir(ffa) == ffa),
+        ('traducir dos veces es traducir una',
+         all(traducir(traducir(plano(t))) == traducir(plano(t))
+             for t in (genesis, insignia + insignia2, exhib, seven))),
+    ]
+    filtro = ('`[ FILTROS ]`\n⌞A⌝ 🆚 ⌞B⌝ 🆚 ⌞C⌝\n⌞D⌝ 🆚 ⌞E⌝ 🆚 ⌞F⌝\n'
+              '`[ FINAL ]`\n⌞A⌝ 🆚 ⌞B⌝\nCAMPEON: A')
+    rf = [x for x in resolver(filtro) if x[0] == 'FILTROS']
+    nadie = '`[ FILTROS ]`\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n`[ FINAL ]`\n⌞X⌝ 🆚 ⌞Y⌝'
+    rn = [x for x in resolver(nadie) if x[0] == 'FILTROS']
+    casos += [
+        ('un grupo del filtro del que no pasa nadie cae entero',
+         len(rf) == 2 and rf[0][3].startswith('pasan 2')
+         and rf[1][3].startswith('pasan 0') and rf[1][1] == ['D', 'E', 'F']),
+        ('pero si no engancha nadie de ningún grupo sigue siendo duda',
+         len(rn) == 2 and all(x[3] == 'no aparece nadie después' for x in rn)),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     return mal
 
 

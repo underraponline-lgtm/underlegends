@@ -519,6 +519,21 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
         # (`motor._perdedor`), y el que paso cobra por su ronda siguiente.
         # La nota lo dice para quien mire la hoja.
         pasan = [x for x in (getattr(bat, 'pasan', None) or []) if x in lados]
+        # 🔑 UN GRUPO DEL FILTRO DONDE NO PASÓ NADIE: caen todos. Ver el
+        # final de `escuchar.resolver()`. El lado que pasa va VACÍO, y así
+        # lo lee el motor: `_perdedor()` devuelve el lado que no es el
+        # ganador, y el ganador vacío es el lado vacío. Con la nota
+        # `triple`, `resultados._filas_uno()` la deja afuera de los duelos.
+        if ganador is None and razon.startswith('pasan 0'):
+            for p in lados:
+                filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
+                              'participantes': len(gente_grupo or gente),
+                              'ronda': ronda.lower(),
+                              'ladoA': '', 'ladoB': p, 'ganador': '',
+                              'notas': 'triple (%d bandas, pasan 0)' % len(lados)})
+            sabidas['filtro de %d donde no pasa nadie -> %d fila(s), sin duelo'
+                    % (len(lados), len(lados))] += 1
+            continue
         if ganador is None and 'pasan' in razon and pasan:
             caen = [l for l in lados if l not in pasan]
             for p in caen:
