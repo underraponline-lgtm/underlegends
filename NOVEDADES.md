@@ -262,7 +262,11 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La bandera no se estira** (la de MTZ en el podio de SEVEN STREET) | *«why mtz has the mexican flag all width?»* | `img.bf` con ancho fijo en `estilo.css` |
 | **Buscar bugs en todo y mejorar el teléfono** | *«take this time to fix bugs… search everywhere… improve the interface when someone is on MOBILE»* | una auditoría entera de la página: 13 hallazgos, los 13 arreglados (1.20) |
 | **De 3 a 11 AM ET no se leen las llaves en vivo ni los anuncios**, igual que el ciclo | *«eso de detección de LLAVES en vivo que sea apagado entre las 3am y 11am, que siga eso de las notificaciones también y el cron»* | `enMadrugada()` en `bot/worker.js` y `vigilar()` en `bot/avisos.js`: el vigía late con `dormido` y no lee Discord. Lo anunciado de madrugada avisa a las 11 si el evento no empezó |
-| 🔮 **«Miembros oficiales» de la Liga** (en DRA) y **«verificados»** (ID y bandera): quien no es miembro, **probablemente escondido del ranking pero con su perfil** | *«prob hide them but keep their profile»* (9 AM) · antes: *«puede ser peligroso… queremos que DRA sea el hub»* | ⏳ **medido, sin tocar**: ver «❓ Esperando a Dlx» |
+| **«Fuera de concurso»**: nadie desaparece del ranking; el **número de puesto** —y el podio, «Líder» y el `#N` del apodo— es **sólo de los miembros**. Quien no lo es sigue en la tabla, en su lugar por puntos, sin número y con cómo conseguirlo | a esconderlos, *«tampoco quiero desaparecer a todos del ranking»*; a «fuera de concurso», *«me gusta la idea»* (9:30 AM) | ⏳ **por construir**: el número uno solo en la tabla, las tarjetas, el Sheet y el apodo. Las cuentas (OVR, Score) no cambian |
+| **El enganche es para todos**: Most Wanted automático, «Tu semana», avisos al teléfono, pronósticos en las llaves en vivo, Revelación y Novato de la semana, compartir la tarjeta como historia, desafíos | *«me gustó todo eso para todos… exceptuando lo del pase»* | ⏳ por construir; el objetivo, en palabras de Dlx: *«que la gente use el website y pare en nuestro HUB mayormente… atraer a la gente y engancharla»* |
+| **El Pase de rapero es sólo para DRA**, y se avanza con **TAREAS** | *«eso sí me gustaría que sólo para DRA»* | ⏳ por diseñar |
+| 🔴 **Tareas ≠ Misiones.** Las **Tareas** son del **Pase**; las **Misiones** son del **ranking de Temporada** (para todos) | *«lo de pase viene con TAREAS no misiones.. lo de misiones es para el ranking de temporada. Tareas para el pase no confundas»* | la pestaña «Misiones» del ranking; `comun/requisitos.py` ya suma las misiones para la Temporada |
+| **DRA es el hub de la Liga: entrenamiento y eventos principales** | *«DRA será un hub con misión principal a entrenamiento también y eventos principales»* | las Tareas del Pase salen naturalmente de ahí |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
@@ -771,17 +775,14 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **«Miembros oficiales»: esconderlos del ranking deja 57 de 153** (27/09, 9 AM:
-  *«prob hide them but keep their profile»*). Medido sobre el ranking de hoy:
-  **57 son miembros** (Discord vinculado, país y Miembro de DRA), **19 están
-  verificados pero no en DRA** (Velatz, #3, y Provenza, #10, entre ellos), **76
-  no vincularon su Discord** y 1 no tiene país. O sea que «esconder a quien no
-  es miembro» saca a **96 personas, no a unas pocas**, y el grueso son los 76
-  sin Discord vinculado, que pueden ser de DRA y no haberlo hecho todavía. El
-  top quedaría Hassan, Makmah, **PichulaMc #3** (era #4), Colesito, Erian…
-  Lo que hay que decidir: ¿se esconde a los 96 o sólo a los 19 que están
-  verificados y no en DRA? ¿Y desde cuándo: ya, o con la T1 del 5/10? No toqué
-  nada.
+- ✅ ~~«Miembros oficiales»: ¿esconder a los 96?~~ Resuelto a las 9:30 AM con
+  **«fuera de concurso»** (arriba, en las reglas): nadie desaparece, el número
+  es de los miembros. Medido ese día: 57 miembros, 19 verificados fuera de DRA,
+  76 sin Discord vinculado, 1 sin país.
+- **Las reglas de Misiones, Most Wanted automático y las Tareas del Pase**: qué
+  cuenta, cuánto da y qué se gana. Te las propongo con números para que las
+  corrijas; y para las Tareas, **cómo se hacen los entrenamientos de DRA**
+  (dónde se anuncian y dónde queda quién fue), porque de ahí salen.
 - **¿El tono miel te gusta** para Urban Freestyle, ya en la página?
 - **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
   el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su
