@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.28",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T14:05:00-04:00",
+   "titulo": "Insignias y Clásicos",
+   "items": [
+    "🏅 **Insignias** en cada perfil: debut, al podio, campeón, tricampeón, en llamas, duelista, cazador, regicida, sobreviviente y más. Las que te ganaste, a color; las que te faltan, en gris y con cómo se consiguen. **Quedan para siempre.**",
+    "🤜 **Clásicos**: cuando dos se cruzan en un duelo por **tercera vez** (o más), la llave lo marca con cómo venían, y **el que gana suma +10 %** en ese evento. Las rivalidades no se borran con la temporada.",
+    "🔥 Ya hay cuatro parejas cuyo próximo cruce es un Clásico: Hassan–PichulaMc, Velatz–Makmah, Hassan–Velatz y Masino–Makmah."
+   ]
+  },
+  {
    "version": "1.27",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T13:30:00-04:00",

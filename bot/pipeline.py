@@ -944,6 +944,12 @@ def _lo_barato(correr):
         paso('2b', 'Most Wanted')
         if not corre(['bot/most_wanted.py', '--aplicar'], callado=False):
             print('      ⚠️ Most Wanted falló: queda el de la corrida anterior')
+        # ── 2b2 · las insignias: después de los pools y del MW, que las dan ─
+        # 🔑 Dlx, 27/09/2026: «me gustan todas». Se anotan para siempre en
+        # `datos/insignias.json`; ver `bot/insignias.py`. Nunca frena el ciclo.
+        paso('2b2', 'las insignias')
+        if not corre(['bot/insignias.py', '--aplicar'], callado=False):
+            print('      ⚠️ las insignias fallaron: quedan las de la corrida anterior')
 
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #

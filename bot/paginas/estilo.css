@@ -1620,6 +1620,17 @@ font-variant-numeric:tabular-nums;vertical-align:middle;white-space:nowrap}
 .xm.baja{background:rgba(255,107,107,.15);color:#FF6B6B}
 .xm.oro{background:rgba(255,210,74,.22);color:var(--oro)}
 .mt small.gw{background:var(--tl);color:#04211C}
+/* las insignias del perfil: a color las ganadas, en gris las que faltan */
+.pf-ins{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(150px,100%),1fr))}
+.ins{display:flex;flex-direction:column;gap:3px;padding:10px 12px;border:1px solid var(--bd2);
+background:rgba(10,15,14,.6);opacity:.45;filter:grayscale(1)}
+.ins.si{opacity:1;filter:none;border-color:rgba(255,210,74,.35)}
+.ins-e{font-size:1.5rem;line-height:1}
+.ins b{font:800 .9rem/1.2 Archivo,sans-serif}
+.ins small{color:var(--tx2);font-size:.75rem;line-height:1.3}
+#pfInsN{margin-left:6px;color:var(--tx3);font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em}
+/* el Clásico, en la etiqueta de su batalla */
+.et-cl{color:#FF9F6B!important;border-color:rgba(255,159,107,.45)!important}
 .mt-x{grid-column:1/-1;display:grid;gap:6px;margin-top:4px;padding-top:10px;border-top:1px solid var(--bd2)}
 .mt-x p{color:var(--tx2);font-size:.9rem;line-height:1.45}
 .mt-x b{color:var(--tx)}

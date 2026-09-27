@@ -406,6 +406,8 @@ def armar():
         for _n, _f in _info.items():
             if _n in todas:
                 todas[_n] = dict(todas[_n], info=_f)
+        # 🔑 los Clásicos de cada llave: la página los marca en su batalla
+        _clasicos_de_llaves(llaves, todas)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
         regs, llaves, calendario, todas = {}, {}, [], {}
@@ -451,6 +453,11 @@ def armar():
         # 🔑 LOS MULTIPLICADORES DE LA SEMANA: el Inicio los muestra y cada
         # evento lleva el suyo. Ver `_mult()` y `bot/multiplicadores.py`.
         'mult': _mult(),
+        # 🔑 LAS INSIGNIAS: el catálogo (las de cada uno viajan en los perfiles)
+        # y las RIVALIDADES, para marcar el Clásico en una llave en vivo. Ver
+        # `bot/insignias.py` y `multiplicadores.clasicos()`.
+        'insignias': [list(c) for c in _IN().CATALOGO],
+        'rivales': _rivales(gente),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -1048,20 +1055,9 @@ def _duelos_de(regs, LW):
     # duelos de las cartas. Esto miraba sólo «dos lados sin coma», y el
     # 27/09/2026 Colesito tenía 2/3 en su carta y 3/4 en su perfil: contaba
     # el tercero que sale del podio y los triples que quedan de dos lados.
-    import equipos as _EQ
-    inst = LW.instantes(regs)
-    orden = sorted((n for n in regs if str(n).isdigit()),
-                   key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)))
-    out = []
-    for n in orden:
-        for R in regs[n].get('rondas') or []:
-            for b in R.get('b') or []:
-                lados = b[0] if b else []
-                g = b[1] if len(b) > 1 else ''
-                if len(lados) == 2 and _EQ.es_duelo(lados[0], lados[1], g,
-                                                    b[2] if len(b) > 2 else ''):
-                    out.append((int(n), lados[0], lados[1], g))
-    return out
+    # Hoy vive en `llaves_web.duelos()`: lo usan también las insignias y los
+    # Clásicos, y tiene que contar igual en los tres.
+    return LW.duelos(regs)
 
 
 def _mil(n):
@@ -1199,6 +1195,10 @@ def _perfiles(gente, comp, regs):
         mwp = _mw_de(p.get('raw'))
         if mwp:
             x['mw'] = mwp
+        # 🔑 sus insignias: las de la temporada de ahora y las de antes
+        ins = _ins_de(p.get('raw'))
+        if ins:
+            x['ins'] = ins
         out[q] = x
     import time
     # el promedio de la Liga en cada dimensión, para comparar en el gráfico:
@@ -1912,6 +1912,64 @@ def _crews():
         if os.path.exists(os.path.join(logos, a['clave'] + '.webp')):
             a['logo'] = 'logos/crews/%s.webp' % a['clave']
     return sorted(fuera, key=lambda a: (-a['rk'], -a['pts'], -a['n']))
+
+
+def _IN():
+    import insignias as _I
+    return _I
+
+
+_INS = {}
+
+
+def _ins_de(raw):
+    """Las insignias de alguien para su perfil: `[[id, cuándo], …]`, o `None`."""
+    if '_' not in _INS:
+        try:
+            import multiplicadores as _MU
+            _INS['_'] = _IN().visibles(_IN().leer(), _MU.temporada_actual())
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ sin insignias (%s)' % str(e)[:60])
+            _INS['_'] = {}
+    return _INS['_'].get(raw)
+
+
+def _rivales(gente):
+    """`{'k1|k2': {k1: ganados, k2: ganados}}`: las parejas que ya se cruzaron 2 veces.
+
+    El próximo cruce de una de éstas es un Clásico: la llave en vivo lo marca.
+    Sólo gente de la temporada, con la clave de la página (`k`).
+    """
+    try:
+        import multiplicadores as _MU
+        idx = {_MU._clave_persona(p.get('raw')): _clave(p) for p in gente if p.get('raw')}
+        out = {}
+        for (ka, kb), v in _MU.rivalidades().items():
+            pa, pb = idx.get(ka), idx.get(kb)
+            if pa and pb:
+                out['|'.join(sorted((pa, pb)))] = {pa: v['g'].get(ka, 0), pb: v['g'].get(kb, 0)}
+        return out or None
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin rivalidades (%s)' % str(e)[:60])
+        return None
+
+
+def _clasicos_de_llaves(*dicts):
+    """Cuelga de cada llave sus Clásicos: `[[a, b, ganados de a antes, de b]]`."""
+    try:
+        import multiplicadores as _MU
+        temp = _MU.temporada_actual()
+        por = {}
+        for c in _MU.clasicos():
+            if c['temporada'] == temp:
+                por.setdefault(str(c['n']), []).append([c['a'], c['b'], c['pa'], c['pb']])
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin Clásicos (%s)' % str(e)[:60])
+        return
+    for d in dicts:
+        for n in list(d):
+            if str(n) in por:
+                d[n] = dict(d[n], clasicos=por[str(n)])
 
 
 def _mult():

@@ -179,6 +179,32 @@ def orden(ms, fecha, desempate):
     return (ms if ms is not None else float('inf'), desempate)
 
 
+def duelos(regs=None):
+    """Los 1v1 de las llaves, del más viejo al más nuevo: `[(num, a, b, ganador)]`.
+
+    🔑 UN SOLO LUGAR, con la regla de `equipos.es_duelo()` —la misma de la
+    hoja `1v1`, de donde salen los duelos de las cartas—: dos lados de una
+    persona, con ganador, sin triples, ni el tercero del podio, ni pokémon.
+    Lo usan el perfil de la página, las insignias y los Clásicos; contar
+    distinto en cada uno fue el bug de Colesito (2/3 en su carta, 3/4 en su
+    perfil, 27/09/2026).
+    """
+    import equipos as _EQ
+    regs = leer() if regs is None else regs
+    inst = instantes(regs)
+    nums = sorted((n for n in regs if str(n).isdigit()),
+                  key=lambda n: orden(inst.get(int(n)), regs[n].get('fecha'), int(n)))
+    out = []
+    for n in nums:
+        for R in regs[n].get('rondas') or []:
+            for b in R.get('b') or []:
+                lados = b[0] if b else []
+                g = b[1] if len(b) > 1 else ''
+                if len(lados) == 2 and _EQ.es_duelo(lados[0], lados[1], g, b[2] if len(b) > 2 else ''):
+                    out.append((int(n), lados[0], lados[1], g))
+    return out
+
+
 def _bandas(nota):
     """`'triple (4 bandas, pasan 2)'` -> `(4, 2)`; sin bandas, `(0, 0)`."""
     s = str(nota or '').lower()

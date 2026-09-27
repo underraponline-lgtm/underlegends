@@ -1163,6 +1163,29 @@ function etiquetasNota(nota) {
   if (/^podio/i.test(s)) out.push('Por el podio');
   return out;
 }
+/* 🔑 EL CLÁSICO: el tercer cruce, o más, de los mismos dos (ver
+   `multiplicadores.clasicos()`). En una llave jugada, con lo que había ganado
+   cada uno ANTES; en vivo, con lo que llevan. El que gana suma +10 %. */
+function clasicoDe(L, b) {
+  var ls = (b && b[0]) || [];
+  if (!L || ls.length !== 2 || /[,+]/.test(ls[0] + ls[1])) return null;
+  var a = ls[0], c = ls[1];
+  var x = (L.clasicos || []).filter(function (y) {
+    return (y[0] === a && y[1] === c) || (y[0] === c && y[1] === a);
+  })[0];
+  if (x) return x[0] === a ? [a, c, x[2], x[3]] : [a, c, x[3], x[2]];
+  if (L.vivo && D.rivales) {
+    var ka = kDe(a), kc = kDe(c), r = ka && kc && D.rivales[[ka, kc].sort().join('|')];
+    if (r) return [a, c, r[ka] || 0, r[kc] || 0];
+  }
+  return null;
+}
+function etiquetaClasico(L, b) {
+  var c = clasicoDe(L, b);
+  return c ? '<span class="et-cl" title="Clásico: ya se cruzaron ' + (c[2] + c[3]) + ' veces (' + esc(c[0]) + ' ' +
+    c[2] + '–' + c[3] + ' ' + esc(c[1]) + '). El que gana suma +10 %.">&#129308; Clásico ' + c[2] + '–' + c[3] +
+    '</span>' : '';
+}
 function etiquetasHtml(nota) {
   var et = etiquetasNota(nota);
   return et.length ? et.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') : '';
@@ -1219,7 +1242,7 @@ function rondasLista(L, quien, cara) {
     return '<section class="rl-r' + (esFin ? ' fin' : '') + '"><h5>' + esc(R.r) +
       (v != null ? '<small>' + num(v) + ' pts</small>' : '') + '</h5>' +
       R.b.map(function (b) {
-        var et = etiquetasHtml(b[2]);
+        var et = etiquetasHtml(b[2]) + etiquetaClasico(L, b);
         return '<div class="bl"' + (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' +
           (et ? '<div class="bx-et">' + et + '</div>' : '') +
           (b[0] || []).map(function (s, i) {
@@ -2428,7 +2451,8 @@ function cuadro(L, quien, cara) {
     html.push(caja(b, X(p), TOPE + p.y, esFinal ? ' fin' : '', k));
     // la copa va en una etiqueta del borde, como «Revivido»: dentro del
     // renglón le comía el ancho a los nombres de un equipo
-    var et = etiquetasHtml(b[2]) + (esFinal && b[1] ? '<span class="et-copa">&#127942; Campeón</span>' : '');
+    var et = etiquetasHtml(b[2]) + etiquetaClasico(L, b) +
+      (esFinal && b[1] ? '<span class="et-copa">&#127942; Campeón</span>' : '');
     if (et) {
       html.push('<span class="bx-et" style="left:' + X(p) + 'px;width:' + W + 'px;top:' +
         Math.round(TOPE + p.y - alto(b) / 2 - 9) + 'px">' + et + '</span>');
@@ -3347,6 +3371,8 @@ function pintaPerfil(k) {
     '<section class="blk entro" id="pfCaraSec" hidden><h2><span>&#129354;</span> Cara a cara</h2>' +
       '<p class="bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Primero, con quien ' +
       'más veces se enfrentó.</p><div class="pf-cara" id="pfCara"></div></section>' +
+    '<section class="blk entro" id="pfInsSec" hidden><h2><span>&#127941;</span> Insignias <small id="pfInsN">' +
+      '</small></h2><div class="pf-ins" id="pfIns"></div></section>' +
     '<section class="blk entro" id="pfMwSec" hidden><h2><span>&#128128;</span> Su cacería</h2>' +
       '<div class="pf-mw" id="pfMw"></div></section>' +
     '<section class="blk entro" id="pfDuSec" hidden><h2><span>&#9876;</span> Sus duelos</h2>' +
@@ -3425,6 +3451,21 @@ function pintaPerfil(k) {
           esc(nombreSv(m[1])) + (m[3] ? ' · ' + m[3] + ' raperos' : '') + '</small>' + ll + '</div>' +
           '<span class="pe-p">' + (MEDALLA[e[1]] ? MEDALLA[e[1]] + ' ' : '') + esc(e[1]) + '</span>' +
           '<b class="pe-pts">' + num(e[2]) + '</b></div>';
+      }).join('');
+    }
+    // 🔑 SUS INSIGNIAS. Dlx, 27/09/2026: «me gustan todas». Las ganadas a
+    // color; las que faltan en gris, con cómo se ganan: se coleccionan.
+    var cat = D.insignias || [];
+    if (cat.length) {
+      var tiene = {};
+      (x.ins || []).forEach(function (i) { tiene[i[0]] = i[1]; });
+      $('#pfInsSec').hidden = false;
+      $('#pfInsN').textContent = Object.keys(tiene).length + ' de ' + cat.length;
+      $('#pfIns').innerHTML = cat.map(function (c) {
+        var cu = tiene[c[0]];
+        return '<div class="ins' + (cu ? ' si' : '') + '" title="' + esc(c[3]) + '"><span class="ins-e">' + c[1] +
+          '</span><b>' + esc(c[2]) + '</b><small>' + (cu ? 'desde el ' + esc(fmtFecha(cu, { day: 'numeric',
+            month: 'short' })) : esc(c[3])) + '</small></div>';
       }).join('');
     }
     // 🔑 SU CACERÍA: Most Wanted, de todos los períodos

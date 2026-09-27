@@ -45,6 +45,11 @@ proporción a su gente y con 3 como mínimo. Lleva **×1,5** la semana
 siguiente. «Trajo» a alguien el servidor de su primer evento. Quién ya
 jugó lo guarda `datos/vistos.json`, que no se borra con la temporada.
 
+LOS CLÁSICOS. Un duelo es Clásico si esos dos ya se cruzaron 2 veces
+antes: es su tercer cruce, o más. El que lo gana suma **+10 %** en ese
+evento. Los duelos se guardan en `datos/rivales.json`, que no se borra con
+la temporada: las rivalidades se acumulan.
+
 LOS BONOS DE CADA UNO.
 - **«Volvé»**: tu segundo evento de la temporada, si cae dentro de los 7
   días del primero, vale ×1,5. Es para el 42 % que juega una sola vez.
@@ -87,6 +92,8 @@ except AttributeError:
 SALIDA = os.path.join(BASE, 'datos', 'multiplicadores.json')
 #: quién jugó alguna vez en la Liga, y cuándo y dónde por primera vez
 VISTOS = os.path.join(BASE, 'datos', 'vistos.json')
+#: todos los duelos de la Liga, de todas las temporadas: de ahí salen los Clásicos
+RIVALES = os.path.join(BASE, 'datos', 'rivales.json')
 
 # ── los números, todos acá ───────────────────────────────────────────────
 #: la semana arranca el lunes a esta hora del este (como el Most Wanted)
@@ -118,6 +125,8 @@ MIN_ORG = 8
 NO_ES_ORG = {'yo', 'nosotros', 'staff', 'admin', 'admins', 'mods'}
 #: el Semillero: cuántos nuevos como mínimo, y lo que lleva la semana siguiente
 SEMILLERO_MIN, SEMILLERO_X = 3, 1.5
+#: el Clásico: cuántos cruces previos hacen falta, y lo que suma el que gana
+CLASICO_PREVIOS, CLASICO_X = 2, 1.1
 #: el techo de una fila, sumando todo
 TECHO = 5
 #: desde cuándo corre cada regla. «Volvé», desde que salió; lo semanal
@@ -503,6 +512,95 @@ def resultado_semillero(semana, eventos, vistos):
             'gana': max(cands)[2] if cands else None}
 
 
+def temporada_actual(ahora=None):
+    """`'prueba'` o la temporada (`'t1'`): la misma regla que el Most Wanted."""
+    from comun.temporada import ACTUAL
+    a = _arranque()
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    return ACTUAL if a and ahora >= a else 'prueba'
+
+
+def leer_rivales(ruta=None, estricto=False):
+    """`datos/rivales.json`: `[[evento, instante, a, b, ganador, temporada], …]`.
+
+    Con `estricto`, un archivo que está y no se lee revienta (ver `factor_de()`).
+    """
+    ruta = ruta or RIVALES
+    if estricto and os.path.exists(ruta):
+        with io.open(ruta, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('duelos') or []
+    try:
+        with io.open(ruta, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('duelos') or []
+    except (OSError, ValueError):
+        return []
+
+
+def anotar_duelos(registro, regs=None, temporada=None):
+    """Pone al día los duelos de la temporada de ahora, desde las llaves.
+
+    ⚠️ LOS DE ESTA TEMPORADA SE REEMPLAZAN ENTEROS, evento por evento: si una
+    llave se corrige, no quedan los duelos viejos al lado de los nuevos. Los
+    de otras temporadas no se tocan: el reset vacía las llaves, no esto.
+    """
+    import llaves_web as LW
+    regs = LW.leer() if regs is None else regs
+    temporada = temporada or temporada_actual()
+    ins = LW.instantes(regs)
+    nums = {int(n) for n in regs if str(n).isdigit()}
+    queda = [d for d in registro if not (d[5] == temporada and d[0] in nums)]
+    nuevos = []
+    for n, a, b, g in LW.duelos(regs):
+        ms = ins.get(n) or LW.ms_de_fecha(regs[str(n)].get('fecha') or '')
+        iso = _iso(dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc)) if ms else ''
+        nuevos.append([n, iso, a, b, g, temporada])
+    registro[:] = queda + nuevos
+    return registro
+
+
+def clasicos(registro=None):
+    """Los Clásicos, en orden: `[{'n', 'temporada', 'a', 'b', 'g', 'pa', 'pb'}]`.
+
+    Un duelo es Clásico si esos dos ya se habían cruzado `CLASICO_PREVIOS`
+    veces: `pa` y `pb` son los que había ganado cada uno ANTES de éste. La
+    identidad es la de la vitrina, así «MAU KC 🇨🇴» y «Mau Kc» son uno.
+    """
+    registro = leer_rivales() if registro is None else registro
+    orden = sorted(enumerate(registro), key=lambda x: (x[1][1] or '', x[1][0], x[0]))
+    hist, out = {}, []
+    for _i, d in orden:
+        n, _iso_, a, b, g, temp = d[:6]
+        ka, kb = _clave_persona(a), _clave_persona(b)
+        if not ka or not kb or ka == kb:
+            continue
+        h = hist.setdefault(tuple(sorted((ka, kb))), {})
+        if sum(h.values()) >= CLASICO_PREVIOS:
+            out.append({'n': n, 'temporada': temp, 'a': a, 'b': b, 'g': g,
+                        'pa': h.get(ka, 0), 'pb': h.get(kb, 0)})
+        kg = _clave_persona(g)
+        h[kg] = h.get(kg, 0) + 1
+    return out
+
+
+def rivalidades(registro=None, minimo=CLASICO_PREVIOS):
+    """`{(clave_a, clave_b): {'nombres', 'g'}}`: las parejas que ya se cruzaron `minimo` veces.
+
+    Para la llave EN VIVO: el próximo cruce de una de estas parejas es un Clásico.
+    """
+    registro = leer_rivales() if registro is None else registro
+    out = {}
+    for d in registro:
+        a, b, g = d[2], d[3], d[4]
+        ka, kb = _clave_persona(a), _clave_persona(b)
+        if not ka or not kb or ka == kb:
+            continue
+        x = out.setdefault(tuple(sorted((ka, kb))), {'nombres': {}, 'g': {}})
+        x['nombres'][ka], x['nombres'][kb] = a, b
+        kg = _clave_persona(g)
+        x['g'][kg] = x['g'].get(kg, 0) + 1
+    return {k: v for k, v in out.items() if sum(v['g'].values()) >= minimo}
+
+
 def leer(ruta=None):
     """`datos/multiplicadores.json`, o `{}`."""
     try:
@@ -522,7 +620,7 @@ def actual(d=None, ahora=None):
     return None
 
 
-def factor_de(d=None, filas=None):
+def factor_de(d=None, filas=None, rivales=None):
     """Una función `(servidor, instante, evento, rapero) -> multiplicador`.
 
     El multiplicador de la semana de ese servidor, ×3 si es el evento dorado
@@ -549,6 +647,11 @@ def factor_de(d=None, filas=None):
     # la Copa se anota en el paso 0b (hace falta el anuncio): acá, lo anotado
     copas = {(s.get('copa') or {}).get('n') for s in d.get('semanas') or []} - {None}
     volve = volve_de(filas)
+    # 🔑 los Clásicos de esta temporada: el que ganó, en ese evento
+    temp = temporada_actual()
+    rivales = leer_rivales(estricto=True) if rivales is None else rivales
+    ganados = {(_clave_persona(c['g']), c['n']) for c in clasicos(rivales) if c['temporada'] == temp}
+    claves = {}
 
     def factor(sv, instante, n=None, quien=None):
         x = 1
@@ -563,6 +666,11 @@ def factor_de(d=None, filas=None):
             x *= COPA_X
         if quien is not None and (quien, n) in volve:
             x *= VOLVE_X
+        if quien is not None and ganados:
+            if quien not in claves:
+                claves[quien] = _clave_persona(quien)
+            if (claves[quien], n) in ganados:
+                x *= CLASICO_X
         return min(TECHO, x)
     return factor
 
@@ -582,7 +690,7 @@ def eventos_de(regs=None):
     return out
 
 
-def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=None):
+def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=None, rivales=None):
     """Sortea la semana si hace falta, anota el dorado y la Copa, y cierra la guerra
     y el organizador de la semana. Devuelve el archivo."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
@@ -601,6 +709,11 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
     semillero_ok = bool(vistos)
     if semillero_ok:
         anotar_vistos(vistos, evs)
+    # 🔑 LOS DUELOS DE LA TEMPORADA, al día: de ahí salen los Clásicos
+    rivales_ok = rivales is not None or eventos is None
+    if rivales is None and eventos is None:
+        rivales = leer_rivales()
+        anotar_duelos(rivales)
     # la Copa que ya se jugó queda anotada, con su nombre
     for s in semanas:
         if s.get('copa') and not s['copa'].get('n'):
@@ -675,6 +788,12 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
+        if rivales_ok and rivales is not None and eventos is None:
+            with io.open(RIVALES, 'w', encoding='utf-8') as f:
+                json.dump({'_leeme': 'Todos los duelos de la Liga: [evento, instante, a, b, ganador, temporada]. '
+                                     'De acá salen los Clásicos de bot/multiplicadores.py; NO se borra con la '
+                                     'temporada (los de la temporada de ahora se rehacen desde las llaves).',
+                           'duelos': rivales}, f, ensure_ascii=False, indent=0)
         if semillero_ok:
             with io.open(VISTOS, 'w', encoding='utf-8') as f:
                 json.dump({'_leeme': 'Quién jugó alguna vez en la Liga: [primer evento, servidor]. Es del '
@@ -831,6 +950,26 @@ def _self_check():
        'al cerrar la semana, SR es el Semillero y lleva ×1,5 en la nueva')
     ok(correr(en(10, 19, 11, 22), d={'semanas': []}, eventos=evn, org_de={}, vistos={})['semanas'][-1]
        .get('semillero') is None, 'sin el registro de quién ya jugó, no hay Semillero (todos serían nuevos)')
+    # los Clásicos: el tercer cruce, o más, con los ganados de antes
+    rv = [[1, '2026-10-13T00:00:00Z', 'Ana', 'Bea', 'Ana', 't1'],
+          [2, '2026-10-14T00:00:00Z', 'Bea 🇨🇴', 'Ana', 'Bea 🇨🇴', 't1'],
+          [3, '2026-10-15T00:00:00Z', 'Ana', 'Bea', 'Ana', 't1'],
+          [4, '2026-10-16T00:00:00Z', 'Bea', 'Ana', 'Ana', 't1'],
+          [5, '2026-10-16T00:00:00Z', 'Cid', 'Dan', 'Cid', 't1']]
+    cs = clasicos(rv)
+    ok([(c['n'], c['g'], c['pa'], c['pb']) for c in cs] == [(3, 'Ana', 1, 1), (4, 'Ana', 1, 2)],
+       'el tercer cruce de Ana y Bea es Clásico (1–1 antes), y el cuarto también (2–1); Cid y Dan, no')
+    rz = rivalidades(rv)
+    ok(list(rz) == [('ana', 'bea')] and rz[('ana', 'bea')]['g'] == {'ana': 3, 'bea': 1},
+       'para la llave en vivo: Ana y Bea ya se cruzaron (3–1)')
+    rv2 = list(rv)
+    anotar_duelos(rv2, regs={}, temporada='t1')
+    ok(len(rv2) == 5, 'sin llaves de esa temporada, los duelos guardados quedan como estaban')
+    import unittest.mock as _mock
+    with _mock.patch(__name__ + '.temporada_actual', return_value='t1'):
+        f3 = factor_de({'semanas': []}, [], rivales=rv)
+    ok(f3('FFA', en(10, 15, 20), 3, 'Ana') == CLASICO_X and f3('FFA', en(10, 15, 20), 3, 'Bea') == 1,
+       'el que gana el Clásico suma +10 % en ese evento; el que pierde, nada')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

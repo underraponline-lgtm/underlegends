@@ -280,8 +280,36 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Sin bonus por llave limpia**: a los organizadores los premian el organizador de la semana, el Semillero y la sede, que son de uno solo por semana. Nada de «×1,5 a todos de gratis» | *«la 2. Pero explícame cómo sería porque tampoco queremos dar 1.5x a todos así de gratis»* | — |
 | **La Copa de la Liga es de la persona**, no de su servidor: el próximo evento que organice, donde sea | *«a la persona»* | ✅ `organizados()`, `ranking_org()` y `copa_n()` en `bot/multiplicadores.py` (1.26) |
 | **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
+| **Insignias y Clásicos, ya** | *«sí, dale»* | ✅ `bot/insignias.py` y `multiplicadores.clasicos()` (1.28) |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (2 PM) — versión 1.28
+
+**Insignias y Clásicos.** Dlx: *«sí, dale»*.
+
+- 🏅 **`bot/insignias.py`, paso 2b2 del ciclo** (después de los pools y del
+  MW): 13 insignias —debut, 10 y 25 eventos, podio, campeón, tricampeón,
+  trotamundos, en llamas, duelista, Clásico, cazador, regicida,
+  sobreviviente—, todas de datos que ya hay. Se anotan para siempre en
+  `datos/insignias.json`, con la temporada en que se ganaron: **las de la
+  prueba no se muestran desde la T1**. Hoy: 222 en 160 personas.
+- 🤜 **Clásicos**: `datos/rivales.json` guarda todos los duelos y **no se
+  borra con la temporada** (los de la temporada de ahora se rehacen desde
+  las llaves en cada corrida: una llave corregida no deja duelos viejos). Un
+  duelo es Clásico si esos dos ya se cruzaron 2 veces; el que lo gana suma
+  +10 % en ese evento (por `agregar_temporada()`, nunca el Competitivo).
+  Medido: 87 duelos, ningún Clásico todavía y 4 parejas cuyo próximo cruce
+  lo es.
+- 🔑 **Los duelos de las llaves, en un solo lugar**: `llaves_web.duelos()`,
+  con la regla de `equipos.es_duelo()` —la de la hoja `1v1`—. Lo usan el
+  perfil, las insignias y los Clásicos: cuentan igual en los tres (87, como
+  la hoja).
+- 🖥️ La página: las insignias en el perfil (las que faltan, en gris y con
+  cómo se ganan) y la etiqueta «🤜 Clásico 2–0» en la batalla, jugada o en
+  vivo.
 
 ---
 
