@@ -281,9 +281,10 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La Copa de la Liga es de la persona**, no de su servidor: el próximo evento que organice, donde sea | *«a la persona»* | ✅ `organizados()`, `ranking_org()` y `copa_n()` en `bot/multiplicadores.py` (1.26) |
 | **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
 | **Insignias y Clásicos, ya** | *«sí, dale»* | ✅ `bot/insignias.py` y `multiplicadores.clasicos()` (1.28) |
-| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ⏳ encuestas, pronósticos y precio por cabeza (piden entrar con la cuenta) |
+| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ⏳ encuestas y precio por cabeza (piden entrar con la cuenta) · ❌ el pronóstico en vivo (ver abajo) |
 | **El Lunes de la Liga va en «〢🌍〉rankings-liga-global» de DRA** | *«en el canal ranking global en DRA»* | ✅ `bot/lunes.py`, paso 2b3 (1.30). El bot es admin en DRA |
 | **«Con tiempo» desde 12 horas** | *«de 12 h a 24 h a más»* | ✅ `DESTACADO_H = 12` (1.30). Medido: 2 de 48 anuncios llegan |
+| **Nada interactivo en vivo, todavía: las llaves en vivo son para mirar.** Sin pronóstico del campeón en vivo y, por la misma regla, sin el aviso de la caza en vivo | *«eso de elegir quién gana en vivo creo que no deberíamos hacerlo aún… eso de ver las llaves en vivo sí, pero lo demás que tenga que ver en vivo no… es muy pronto»* (27/09, 2:40 PM) | — no se llegó a escribir nada. **Se queda** lo que la llave en vivo ya muestra, porque es para mirar: el 🎯 de los buscados, el ×N del servidor y el Clásico |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
@@ -1057,6 +1058,16 @@ inglés, y `/borrar-mis-datos`.
 - ✅ ~~El bonus por llave limpia~~: afuera (*«la 2»*).
 - ✅ ~~El Semillero: ¿quién es «gente nueva»?~~ *«A»*: hecho en la 1.27.
 - ✅ ~~El canal del Lunes de la Liga~~ y ~~«con tiempo»~~: contestadas (1.30).
+- **Las encuestas (El Elegido del Most Wanted y el servidor ×2 votado)**, antes
+  de construirlas. *El Elegido se vota en la página* ya está decidido, y *«el
+  voto de DRA vale doble»* se descartó (*«la verdad no me sirve»*). Falta:
+  1. **¿Quién vota?** A) cualquiera que entre con Discord · B) quien tiene
+     tarjeta: **335** · C) quien tiene tarjeta y jugó la temporada: **60**
+     (medido el 27/09 a las 2:40 PM). Mi recomendación: B.
+  2. **¿Se puede votar al propio servidor?** De los 161 que jugaron, **126
+     son de FFA**: si se puede, FFA gana todas las semanas. Mi
+     recomendación: no, se vota a otro.
+  3. ¿O las encuestas también esperan, como lo en vivo?
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién
