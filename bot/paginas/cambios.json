@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.25",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T12:45:00-04:00",
+   "titulo": "Evento dorado, guerra de servidores y bonos",
+   "items": [
+    "🌟 **Evento dorado**: cada semana, el primer evento de un servidor desde un día sorteado vale **×3** encima de su multiplicador. Se sabe desde el lunes, y en «Lo que viene» lleva la etiqueta 🌟.",
+    "⚔️ **Guerra de servidores**: cada semana los servidores se enfrentan de a dos. Gana el que más puntos hace por persona en sus eventos, y la semana siguiente lleva **×1,5**.",
+    "🎁 **Bonos**: tu segundo evento de la temporada vale **×1,5** si lo jugás dentro de los 7 días del primero. En una semana, jugar en **3 servidores** da **+1.500** y jugar **3 días distintos**, **+1.000**.",
+    "📅 El dorado, la guerra y los bonos de la semana arrancan el **lunes 28** a las 11 AM (hora del este). El ×1,5 del segundo evento corre desde hoy.",
+    "🔒 Nada de esto toca el Competitivo, y ningún evento pasa de ×5."
+   ]
+  },
+  {
    "version": "1.24",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T12:20:00-04:00",

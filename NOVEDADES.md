@@ -274,9 +274,39 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Lo del Most Wanted suma a la Temporada: Puntos y OVR**, nunca al Competitivo | a «¿los puntos del MW suman ya a la Temporada (Puntos y OVR)?», *«1. sí»* | ✅ `sumar_mw()` en `sheet/rankings.py` (1.23) |
 | **3 buscados por día; 9 por semana** | *«de momento, como es diario, que sean 3… y que cuando sea por semana que sean 9»* | `CUANTOS` y `CUPOS` en `bot/most_wanted.py` (1.23) |
 | **Multiplicadores de puntos por servidor cada semana**, de **×0,5 a ×5**; el debuff le puede tocar **a cualquiera**; **desde ya**. Nunca el Competitivo | *«cada semana haya un multiplicador de puntos que tú vas a decidir randomamente»* · *«me gusta hasta x5»* · *«sí, a cualquiera»* · *«desde ya»* | ✅ `bot/multiplicadores.py` (paso 0b) y `rankings.agregar_temporada()` (1.24) |
-| **Todas las ideas de enganche, aprobadas**: guerra de servidores, meta de comunidad, evento dorado, encuestas, bonus por llave limpia, ranking de organizadores y destacado del calendario | *«me gustan todas las ideas la verdad»* | ⏳ por construir, en ese orden más o menos |
+| **Todas las ideas de enganche, aprobadas**: guerra de servidores, meta de comunidad, evento dorado, encuestas, bonus por llave limpia, ranking de organizadores y destacado del calendario | *«me gustan todas las ideas la verdad»* | ✅ dorado y guerra (1.25) · ⏳ el resto |
+| **Y la segunda tanda también**: «Volvé», asistencia, insignias, Clásicos, precio por cabeza, Pasaporte, Semillero, sede de la semana, Lunes de la Liga, pronósticos. **La Fantasy League, más adelante** | *«me gustan todas… la fantasy league es muy buena idea también… pero creo que deberíamos implementarla luego»* | ✅ «Volvé», Pasaporte y Asistencia (1.25) · ⏳ el resto |
+| **El diseño del Pase de rapero se habla después** | *«luego hablemos del diseño del pase de rapero y todo eso»* | ⏳ |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (12:30 a 1 PM) — versión 1.25
+
+**El evento dorado, la guerra de servidores y los bonos.** Dlx: *«me gustan
+todas»*. Todo en `bot/multiplicadores.py`, que ahora es «la semana de la
+Liga», con sus tests.
+
+- 🌟 **Dorado**: con el sorteo del lunes sale un servidor y un día (martes a
+  sábado): el primer evento de ese servidor desde ese día vale ×3 encima de
+  su multiplicador. Se elige entre los servidores que jugaron en las dos
+  últimas semanas; en «Lo que viene» el candidato lleva 🌟.
+- ⚔️ **Guerra**: pares sorteados el lunes; gana el de más puntos CRUDOS por
+  persona (si no, ganaría siempre el del ×5), y lleva ×1,5 sobre su
+  multiplicador de la semana siguiente (`premio`).
+- 🎁 **«Volvé»** (×1,5 al segundo evento si cae dentro de los 7 días del
+  primero), **Pasaporte** (+1.500 por 3 servidores en la semana) y
+  **Asistencia** (+1.000 por 3 días distintos).
+- 🔑 **Todo entra por `agregar_temporada()`**: `agregar()` deja cada fila en
+  `agregar.filas` y el factor recibe el evento y la persona. El techo de una
+  fila es ×5. **El Competitivo no ve nada de esto.**
+- 📅 **Nada para atrás**: «Volvé» corre desde hoy 1 PM ET; lo semanal, desde
+  el sorteo del lunes 28 (`DESDE`).
+- ⚠️ **El bonus por llave limpia quedó afuera, a propósito**: medido, lo
+  cumplían casi todas (179 batallas, 3 sin ganador, ninguna llave sin
+  campeón). Así sería un ×1,5 para todos, no un incentivo. Ver «❓
+  Esperando a Dlx».
 
 ---
 
@@ -905,6 +935,13 @@ inglés, y `/borrar-mis-datos`.
   76 sin Discord vinculado, 1 sin país.
 - ✅ ~~¿Los puntos del Most Wanted suman ya a la Temporada?~~ *«1. sí»*: hecho
   en la 1.23.
+- **El bonus por llave limpia, ¿con qué criterio?** Como lo propuse (llave
+  completa) lo cumplen casi todas: 179 batallas, 3 sin ganador, ninguna
+  llave sin campeón. Otra opción: **todos los nombres de la llave son de la
+  Liga** (bien escritos y registrados). Hoy la cumplen 12 de 16; las que no,
+  por nombres escritos distinto (PROVENZAL, DXG…) o gente nueva. Eso empuja
+  a los organizadores a usar los nombres de la Liga y a la gente a
+  registrarse, pero le quita el bonus a un evento con gente nueva.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

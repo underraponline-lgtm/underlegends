@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""LOS MULTIPLICADORES DE LA SEMANA: cuánto vale un punto de Temporada en cada servidor.
+"""LA SEMANA DE LA LIGA: multiplicadores, evento dorado, guerra de servidores y bonos.
 
-    python bot/multiplicadores.py            el de esta semana, sin escribir nada
+    python bot/multiplicadores.py            la de esta semana, sin escribir nada
     python bot/multiplicadores.py --aplicar  sortea si hace falta y escribe
                                              datos/multiplicadores.json (paso 0b)
     python bot/multiplicadores.py --auto     el self-check, sin red ni archivos
@@ -10,29 +10,45 @@ Dlx, 27/09/2026: *«cada semana haya un multiplicador de puntos que tú vas a
 decidir randomamente… FFA va a dar x1 de puntos pero los eventos de Snake
 Rap darán 2x esta semana y los eventos de URBF darán x5… luego podríamos dar
 debuffs también»*. Y a las tres preguntas: *«me gusta hasta x5»*, el debuff
-*«sí, a cualquiera»*, y *«desde ya»*.
+*«sí, a cualquiera»*, y *«desde ya»*. Después, de las ideas para enganchar:
+*«me gustan todas»* — el evento dorado, la guerra de servidores, «Volvé», el
+Pasaporte y la Asistencia salen de acá.
 
 LAS REGLAS (todas acá arriba: Dlx va a rebalancear al final)
 ------------------------------------------------------------
-- Cada lunes a las 11 AM ET se sortea uno por servidor de la Liga: los que
-  el bot lee (`datos/bot_en.json`). Si el bot entra a otro, entra al sorteo.
-- Uno sale **fuerte**: ×2 o ×3, y ×5 más o menos una semana de cada cuatro.
-- Uno puede salir **×0,5** —el debuff—, cualquiera.
-- El resto, ×1, ×1,5 o ×2.
+LOS MULTIPLICADORES. Cada lunes a las 11 AM ET se sortea uno por servidor de
+la Liga —los que el bot lee, `datos/bot_en.json`—: uno **fuerte** (×2 o ×3,
+y ×5 más o menos una semana de cada cuatro), quizás un **×0,5** a cualquiera,
+y el resto ×1, ×1,5 o ×2.
 
-🔴 NUNCA TOCA EL COMPETITIVO: se aplica al sumar los Puntos de la Temporada
-(`rankings.agregar_temporada()`), y el Score lee `Resultados` sin
-multiplicar. Tampoco multiplica el Most Wanted: su recompensa es la suya.
+EL EVENTO DORADO. Con el sorteo sale un servidor y un día de martes a
+sábado: el primer evento de ese servidor desde ese día vale **×3** encima de
+su multiplicador. Se sabe desde el lunes, así los organizadores lo pueden
+aprovechar.
 
-⚠️ LO SORTEADO SE GUARDA Y NO SE VUELVE A SORTEAR. Los puntos de un evento
-usan el multiplicador de la semana en que se jugó, para siempre: si mañana
-cambian las reglas, lo de antes no se mueve.
+LA GUERRA DE SERVIDORES. Con el sorteo se arman los pares. Gana el que más
+puntos hace **por persona** en sus eventos de la semana —puntos crudos, sin
+multiplicar: si no, ganaría siempre el del ×5—, y la semana siguiente lleva
+**×1,5** sobre su multiplicador.
 
-⚠️ EL PRIMERO ARRANCÓ A MITAD DE SEMANA («desde ya», domingo 27/09), y
-arrancó en el momento del sorteo: lo jugado antes esa semana no se
-multiplica, porque cuando se jugó no había multiplicadores.
+LOS BONOS DE CADA UNO.
+- **«Volvé»**: tu segundo evento de la temporada, si cae dentro de los 7
+  días del primero, vale ×1,5. Es para el 42 % que juega una sola vez.
+- **Pasaporte**: jugar en 3 servidores distintos en una semana, +1.500.
+- **Asistencia**: jugar 3 días distintos en una semana, +1.000, ganes o no.
 
-⚠️ Y EL ARRANQUE DE LA TEMPORADA CORTA LA SEMANA, como en el Most Wanted: la
+⚠️ EL TECHO: sumando todo, una fila no pasa de ×5 (Dlx: *«hasta x5»*).
+
+🔴 NUNCA TOCA EL COMPETITIVO: todo se aplica al sumar los Puntos de la
+Temporada (`rankings.agregar_temporada()`), y el Score lee `Resultados` sin
+nada. Tampoco toca el Most Wanted: su recompensa es la suya.
+
+⚠️ LO SORTEADO SE GUARDA Y NO SE VUELVE A SORTEAR. Cada evento usa lo de la
+semana en que se jugó, para siempre: si mañana cambian las reglas, lo de
+antes no se mueve. Y NADA SE APLICA PARA ATRÁS: cada regla corre desde
+`DESDE`. El primer multiplicador arrancó en su sorteo (domingo 27/09).
+
+⚠️ EL ARRANQUE DE LA TEMPORADA CORTA LA SEMANA, como en el Most Wanted: la
 de la prueba termina a las 00:00 ET del arranque y la primera de la
 temporada va de ahí al lunes de la semana siguiente (ver `periodo()`).
 """
@@ -46,7 +62,7 @@ import sys
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
-for _p in (SCR, BASE):
+for _p in (SCR, BASE, os.path.join(BASE, 'sheet')):
     if _p not in sys.path:
         sys.path.insert(0, _p)
 try:
@@ -69,6 +85,20 @@ RESTO = ((1, 50), (1.5, 35), (2, 15))
 SERVIDORES = ('DRA', 'FFA', 'SR', 'URBF')
 #: una semana que empieza a menos de esto después del arranque se junta con la anterior
 JUNTAR = dt.timedelta(days=3)
+#: el evento dorado, encima del multiplicador de su servidor
+DORADO_X = 3
+#: lo que lleva el que gana la guerra, sobre su multiplicador de la semana siguiente
+GUERRA_X = 1.5
+#: «Volvé»: el segundo evento, si cae a menos de estos días del primero
+VOLVE_DIAS, VOLVE_X = 7, 1.5
+#: (cuántos hacen falta, cuántos puntos da): servidores distintos y días distintos
+PASAPORTE = (3, 1500)
+ASISTENCIA = (3, 1000)
+#: el techo de una fila, sumando todo
+TECHO = 5
+#: desde cuándo corre cada regla. «Volvé», desde que salió; lo semanal
+#: (dorado, guerra, pasaporte, asistencia), desde la primera semana entera
+DESDE = {'volve': '2026-09-27T17:00:00Z', 'semana': '2026-09-28T15:00:00Z'}
 
 ET = None
 
@@ -90,6 +120,10 @@ def _iso(t):
 
 def _de_iso(s):
     return dt.datetime.fromisoformat(str(s).replace('Z', '+00:00'))
+
+
+def _desde(regla):
+    return _de_iso(DESDE[regla])
 
 
 def _arranque():
@@ -143,6 +177,10 @@ def servidores():
         return list(SERVIDORES)
 
 
+def _rnd(que, semilla):
+    return random.Random(hashlib.sha256((que + semilla).encode()).hexdigest())
+
+
 def _pesado(rnd, opciones):
     tot = sum(p for _v, p in opciones)
     x = rnd.uniform(0, tot)
@@ -159,7 +197,7 @@ def sortear(svs, semilla):
     Con la misma semilla sale lo mismo (el id de la semana): se puede volver
     a mirar. Pero lo que vale es lo GUARDADO, no lo que sale de acá.
     """
-    rnd = random.Random(hashlib.sha256(('mult' + semilla).encode()).hexdigest())
+    rnd = _rnd('mult', semilla)
     svs = sorted(svs)
     rnd.shuffle(svs)
     out = {}
@@ -172,6 +210,136 @@ def sortear(svs, semilla):
         resto = resto[1:]
     for sv in resto:
         out[sv] = _pesado(rnd, RESTO)
+    return out
+
+
+def sortear_dorado(svs, ini, fin, semilla):
+    """`{'sv', 'desde'}`: el servidor y desde qué día (00:00 ET), o `None`.
+
+    El día va de martes a sábado y antes del último día de la semana: se sabe
+    desde el lunes, así hay tiempo de anunciarlo y de organizar.
+    """
+    rnd = _rnd('dorado', semilla)
+    dias = []
+    d = (ini.astimezone(_et()) + dt.timedelta(days=1)).date()
+    tope = (fin - dt.timedelta(days=1)).astimezone(_et())
+    while True:
+        ts = dt.datetime(d.year, d.month, d.day, tzinfo=_et())
+        if ts >= tope:
+            break
+        if 1 <= ts.weekday() <= 5:
+            dias.append(ts)
+        d += dt.timedelta(days=1)
+    if not svs or not dias:
+        return None
+    return {'sv': rnd.choice(sorted(svs)), 'desde': _iso(rnd.choice(dias))}
+
+
+def emparejar(svs, semilla):
+    """Los pares de la guerra: `[[a, b], …]`. Con un número impar, uno descansa."""
+    s = sorted(svs)
+    _rnd('guerra', semilla).shuffle(s)
+    return [s[i:i + 2] for i in range(0, len(s) - 1, 2)]
+
+
+def _num(x):
+    try:
+        return float(str(x).replace(',', '') or 0)
+    except ValueError:
+        return 0.0
+
+
+def _gente(n):
+    import unicodedata
+    n = unicodedata.normalize('NFKD', str(n or ''))
+    return ''.join(c for c in n if c.isalnum()).lower()
+
+
+def resultado_guerra(semana, eventos):
+    """`{'ppp': {servidor: puntos por persona}, 'gana': [servidor, …]}`.
+
+    Puntos CRUDOS de la tabla de cada llave —sin multiplicar—, sobre la gente
+    distinta que jugó los eventos de ese servidor esa semana. Un empate, o
+    los dos en cero, no tiene ganador.
+    """
+    ini, fin = _de_iso(semana['inicio']), _de_iso(semana['fin'])
+    pares = (semana.get('guerra') or {}).get('pares') or []
+    pts, gente = {}, {}
+    for e in eventos:
+        n, sv, t, tabla = e[0], e[1], e[2], e[3]
+        if not t or not (ini <= t < fin):
+            continue
+        for fila in tabla or []:
+            if len(fila) < 3:
+                continue
+            pts[sv] = pts.get(sv, 0) + _num(fila[2])
+            gente.setdefault(sv, set()).add(_gente(fila[0]))
+    ppp = {sv: (round(pts.get(sv, 0) / len(gente[sv]), 1) if gente.get(sv) else 0)
+           for par in pares for sv in par}
+    gana = []
+    for a, b in pares:
+        if ppp[a] > ppp[b]:
+            gana.append(a)
+        elif ppp[b] > ppp[a]:
+            gana.append(b)
+    return {'ppp': ppp, 'gana': gana}
+
+
+def dorado_n(semana, eventos):
+    """El número del evento dorado de esa semana, si ya se jugó; o `None`."""
+    d = semana.get('dorado')
+    if not d:
+        return None
+    if d.get('n'):
+        return d['n']
+    desde, fin = _de_iso(d['desde']), _de_iso(semana['fin'])
+    cands = sorted((e[2], e[0]) for e in eventos if e[1] == d['sv'] and e[2] and desde <= e[2] < fin)
+    return cands[0][1] if cands else None
+
+
+def volve_de(filas):
+    """`{(rapero, evento)}`: el segundo evento de cada uno, si cae dentro de los
+    `VOLVE_DIAS` del primero —y después de que salió la regla—."""
+    desde = _desde('volve')
+    por = {}
+    for e in filas:
+        n, t, quien = e[0], e[2], e[3]
+        if t:
+            ya = por.setdefault(quien, {})
+            ya[n] = min(t, ya.get(n, t))
+    out = set()
+    for quien, evs in por.items():
+        orden = sorted((t, n) for n, t in evs.items())
+        if len(orden) >= 2:
+            (t1, _n1), (t2, n2) = orden[0], orden[1]
+            if t2 - t1 <= dt.timedelta(days=VOLVE_DIAS) and t2 >= desde:
+                out.add((quien, n2))
+    return out
+
+
+def bonos(filas):
+    """Los fijos de cada semana: `{rapero: {'pts', 'por': [[semana, regla, pts], …]}}`.
+
+    El Pasaporte (servidores distintos) y la Asistencia (días distintos, en
+    hora del este), por semana de la Liga.
+    """
+    desde = _desde('semana')
+    sem = {}
+    for e in filas:
+        sv, t, quien = e[1], e[2], e[3]
+        if not t or t < desde:
+            continue
+        x = sem.setdefault((quien, periodo(t)[0]), {'sv': set(), 'dias': set()})
+        x['sv'].add(sv)
+        x['dias'].add(t.astimezone(_et()).date())
+    out = {}
+    for (quien, pid), x in sorted(sem.items()):
+        for regla, (falta, pts), hay in (('pasaporte', PASAPORTE, len(x['sv'])),
+                                         ('asistencia', ASISTENCIA, len(x['dias']))):
+            if hay >= falta:
+                y = out.setdefault(quien, {'pts': 0, 'por': []})
+                y['pts'] += pts
+                y['por'].append([pid, regla, pts])
     return out
 
 
@@ -194,11 +362,14 @@ def actual(d=None, ahora=None):
     return None
 
 
-def factor_de(d=None):
-    """Una función `(servidor, instante) -> multiplicador`, con lo guardado.
+def factor_de(d=None, filas=None):
+    """Una función `(servidor, instante, evento, rapero) -> multiplicador`.
 
-    `instante` es un `datetime` con zona. Fuera de toda semana sorteada, o en
-    un servidor que no entró, vale 1.
+    El multiplicador de la semana de ese servidor, ×3 si es el evento dorado
+    y ×1,5 si es el «Volvé» de esa persona; con el techo de ×5. `instante`
+    es un `datetime` con zona; fuera de toda semana sorteada vale 1. `filas`
+    son las de `rankings.agregar.filas`: de ahí salen el dorado que todavía
+    no se anotó y los «Volvé».
 
     ⚠️ SI EL ARCHIVO ESTÁ PERO NO SE PUEDE LEER, REVIENTA: sumar sin
     multiplicar una corrida bajaría los puntos de todos y los volvería a
@@ -211,25 +382,56 @@ def factor_de(d=None):
                 d = json.load(f) or {}
         else:
             d = {}
+    filas = filas or []
     semanas = [(_de_iso(s['inicio']), _de_iso(s['fin']), s.get('sv') or {})
                for s in d.get('semanas') or []]
+    dorados = {x for x in (dorado_n(s, filas) for s in d.get('semanas') or []) if x}
+    volve = volve_de(filas)
 
-    def factor(sv, instante):
-        if not instante or not sv:
-            return 1
-        for ini, fin, m in semanas:
-            if ini <= instante < fin:
-                return m.get(sv, 1)
-        return 1
+    def factor(sv, instante, n=None, quien=None):
+        x = 1
+        if instante and sv:
+            for ini, fin, m in semanas:
+                if ini <= instante < fin:
+                    x = m.get(sv, 1)
+                    break
+        if n is not None and n in dorados:
+            x *= DORADO_X
+        if quien is not None and (quien, n) in volve:
+            x *= VOLVE_X
+        return min(TECHO, x)
     return factor
 
 
-def correr(ahora=None, aplicar=False):
-    """Si la semana de ahora no tiene sorteo, lo hace. Devuelve el archivo."""
+def eventos_de(regs=None):
+    """`[(n, servidor, instante, tabla, nombre)]` de las llaves procesadas."""
+    import llaves_web as LW
+    regs = LW.leer() if regs is None else regs
+    ins = LW.instantes(regs)
+    out = []
+    for n, r in regs.items():
+        if not str(n).isdigit():
+            continue
+        ms = ins.get(int(n)) or LW.ms_de_fecha(r.get('fecha') or '')
+        t = dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc) if ms else None
+        out.append((int(n), (r.get('sv') or '').upper(), t, r.get('tabla') or [], r.get('nombre') or ''))
+    return out
+
+
+def correr(ahora=None, aplicar=False, d=None, eventos=None):
+    """Sortea la semana si hace falta, anota el dorado y cierra la guerra. Devuelve el archivo."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
-    d = leer()
+    d = leer() if d is None else d
     semanas = d.get('semanas') or []
+    evs = eventos_de() if eventos is None else eventos
     pid, ini, fin = periodo(ahora)
+    # el evento dorado que ya se jugó queda anotado: la página lo muestra
+    for s in semanas:
+        if s.get('dorado') and not s['dorado'].get('n'):
+            x = dorado_n(s, evs)
+            if x:
+                s['dorado']['n'] = x
+                s['dorado']['nombre'] = next((e[4] for e in evs if e[0] == x and len(e) > 4), '')
     if not any(s.get('id') == pid for s in semanas):
         try:
             from comun.temporada import ACTUAL
@@ -237,14 +439,33 @@ def correr(ahora=None, aplicar=False):
             temp = ACTUAL if a and ahora >= a else 'prueba'
         except Exception:                                # noqa: BLE001
             temp = 'prueba'
-        semanas.append({
-            'id': pid,
-            # 🔑 el primero de todos arranca en el sorteo, no el lunes: ver arriba
-            'inicio': _iso(ini if semanas else max(ini, ahora)),
-            'fin': _iso(fin), 'temporada': temp, 'sorteado': _iso(ahora),
-            'sv': sortear(servidores(), pid)})
-    out = {'_leeme': 'Los multiplicadores de cada semana: los sortea bot/multiplicadores.py '
-                     '(paso 0b del ciclo) y NO se vuelven a sortear. Las reglas viven en ese archivo.',
+        svs = servidores()
+        rec = {'id': pid,
+               # 🔑 el primero de todos arranca en el sorteo, no el lunes: ver arriba
+               'inicio': _iso(ini if semanas else max(ini, ahora)),
+               'fin': _iso(fin), 'temporada': temp, 'sorteado': _iso(ahora),
+               'sv': sortear(svs, pid)}
+        if ini >= _desde('semana'):
+            # el dorado, en un servidor que juega: uno sin eventos lo desperdiciaría
+            activos = sorted({e[1] for e in evs if e[2] and e[2] >= ahora - dt.timedelta(days=14)}
+                             & set(svs)) or svs
+            dor = sortear_dorado(activos, ini, fin, pid)
+            if dor:
+                rec['dorado'] = dor
+            if len(svs) >= 2:
+                rec['guerra'] = {'pares': emparejar(svs, pid)}
+        # 🔑 LA GUERRA DE LA SEMANA QUE TERMINÓ: el que ganó lleva ×1,5 en ésta
+        prev = semanas[-1] if semanas else None
+        if prev and prev.get('guerra') and 'gana' not in prev['guerra']:
+            prev['guerra'].update(resultado_guerra(prev, evs))
+            for sv in prev['guerra']['gana']:
+                if sv in rec['sv']:
+                    rec['sv'][sv] = min(TECHO, rec['sv'][sv] * GUERRA_X)
+                    rec.setdefault('premio', {})[sv] = GUERRA_X
+        semanas.append(rec)
+    out = {'_leeme': 'La semana de la Liga: multiplicadores, evento dorado y guerra de servidores. '
+                     'Lo sortea bot/multiplicadores.py (paso 0b del ciclo) y NO se vuelve a sortear. '
+                     'Las reglas viven en ese archivo.',
            'semanas': semanas}
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
@@ -254,7 +475,7 @@ def correr(ahora=None, aplicar=False):
 
 # ── self-check ───────────────────────────────────────────────────────────
 def _self_check():
-    print('\n══ MULTIPLICADORES ══\n')
+    print('\n══ LA SEMANA DE LA LIGA ══\n')
     mal = 0
 
     def ok(c, que):
@@ -288,15 +509,68 @@ def _self_check():
     ok(60 <= n5 <= 140 and 180 <= nd <= 300,
        'en 400 semanas: ×5 en %d (una de cada cuatro) y un ×0,5 en %d' % (n5, nd))
 
-    # el factor: sólo dentro de la semana, sólo el servidor que salió
-    d = {'semanas': [{'id': 'x', 'inicio': _iso(en(9, 27, 12)), 'fin': _iso(en(9, 28, 11)),
-                      'sv': {'SR': 2, 'URBF': 0.5}}]}
-    f = factor_de(d)
-    ok(f('SR', en(9, 27, 20)) == 2 and f('URBF', en(9, 27, 20)) == 0.5 and f('FFA', en(9, 27, 20)) == 1,
-       'dentro de la semana, cada servidor con el suyo; el que no salió, ×1')
-    ok(f('SR', en(9, 27, 11)) == 1 and f('SR', en(9, 28, 11)) == 1,
-       'antes del sorteo y desde el lunes a las 11, ×1 (no se aplica para atrás)')
-    ok(f('SR', None) == 1, 'un evento sin fecha, ×1')
+    # el dorado: un día de martes a sábado de esa semana; sin margen, no hay
+    dor = sortear_dorado(svs, en(10, 12, 11), en(10, 19, 11), 'x')
+    dd = _de_iso(dor['desde']).astimezone(et)
+    ok(dor['sv'] in svs and 1 <= dd.weekday() <= 5 and en(10, 13, 0) <= dd <= en(10, 17, 0) and dd.hour == 0,
+       'el dorado cae de martes a sábado, a las 00:00 ET  %s %s' % (dor['sv'], dd.strftime('%a %d')))
+    ok(sortear_dorado(svs, en(9, 27, 12), en(9, 28, 11), 'x') is None,
+       'y en una semana de un día no hay dorado (no hay tiempo de anunciarlo)')
+    # la guerra: pares, y gana el de más puntos por persona
+    pares = emparejar(svs, 'x')
+    ok(len(pares) == 2 and sorted(sum(pares, [])) == svs and len(emparejar(svs + ['EFA'], 'x')) == 2,
+       'la guerra arma pares con todos; con cinco, uno descansa  %s' % pares)
+    sem = {'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
+           'guerra': {'pares': [['FFA', 'SR'], ['DRA', 'URBF']]}}
+    evsg = [(1, 'FFA', en(10, 13, 20), [['Ana', 'Campeón', 6000], ['Bea', 'Octavos', 1000]], 'X'),
+            (2, 'SR', en(10, 14, 20), [['Cid', 'Campeón', 5000], ['Dan', 'Cuartos', 3000]], 'Y'),
+            (3, 'SR', en(10, 20, 20), [['Cid', 'Campeón', 9000]], 'fuera de la semana')]
+    rg = resultado_guerra(sem, evsg)
+    ok(rg['ppp'] == {'FFA': 3500, 'SR': 4000, 'DRA': 0, 'URBF': 0} and rg['gana'] == ['SR'],
+       'gana el de más puntos por persona (SR 4.000 contra FFA 3.500); cero contra cero, nadie')
+
+    # el factor: el de la semana, el dorado y «Volvé», con techo
+    d = {'semanas': [{'id': 'x', 'inicio': _iso(en(9, 28, 11)), 'fin': _iso(en(10, 5, 0)),
+                      'sv': {'SR': 2, 'URBF': 0.5, 'DRA': 5},
+                      'dorado': {'sv': 'SR', 'desde': _iso(en(9, 30, 0))}}]}
+    filas = [(10, 'SR', en(9, 29, 20), 'Ana', 1000),   # SR, antes del día dorado
+             (11, 'SR', en(9, 30, 21), 'Ana', 1000),   # el primero de SR desde el miércoles: dorado
+             (12, 'SR', en(10, 1, 21), 'Bea', 1000),
+             (13, 'DRA', en(10, 2, 21), 'Bea', 1000)]  # el segundo de Bea, a un día: «Volvé»
+    f = factor_de(d, filas)
+    ok(f('SR', en(9, 29, 20), 10, 'Ana') == 2 and f('SR', en(9, 30, 21), 11, 'Ana') == 5,
+       'el evento dorado: ×2 × 3 con techo ×5 (y el de antes, sólo ×2)')
+    ok(f('URBF', en(9, 30, 20), 99, 'Zoe') == 0.5 and f('FFA', en(9, 30, 20), 98, 'Zoe') == 1,
+       'el que salió ×0,5 vale la mitad; el que no salió, ×1')
+    ok(f('DRA', en(10, 2, 21), 13, 'Bea') == 5 and (('Bea', 13) in volve_de(filas)),
+       '«Volvé»: el segundo de Bea a un día del primero ×1,5 (sobre ×5, techo)')
+    ok(f('SR', en(9, 27, 11)) == 1 and f('SR', None) == 1,
+       'antes de toda semana sorteada, o sin fecha, ×1 (no se aplica para atrás)')
+    lejos = [(1, 'SR', en(9, 28, 20), 'Cid', 1), (2, 'SR', en(10, 8, 20), 'Cid', 1)]
+    viejo = [(1, 'SR', en(9, 20, 20), 'Dan', 1), (2, 'SR', en(9, 22, 20), 'Dan', 1)]
+    ok(not volve_de(lejos) and not volve_de(viejo),
+       'y no si pasaron más de 7 días, ni si el segundo fue antes de que saliera la regla')
+
+    # los bonos fijos: pasaporte y asistencia, por semana
+    fb = [(1, 'FFA', en(9, 29, 20), 'Ana', 1), (2, 'SR', en(9, 30, 20), 'Ana', 1),
+          (3, 'DRA', en(10, 1, 20), 'Ana', 1), (4, 'FFA', en(9, 29, 22), 'Bea', 1),
+          (5, 'FFA', en(9, 29, 23), 'Bea', 1), (6, 'FFA', en(9, 27, 20), 'Cid', 1),
+          (7, 'SR', en(9, 26, 20), 'Cid', 1), (8, 'DRA', en(9, 25, 20), 'Cid', 1)]
+    b = bonos(fb)
+    ok(b.get('Ana', {}).get('pts') == PASAPORTE[1] + ASISTENCIA[1] and 'Bea' not in b and 'Cid' not in b,
+       'Ana jugó en 3 servidores y 3 días: +%d; Bea, un día y un servidor; lo de Cid fue antes de la regla'
+       % (PASAPORTE[1] + ASISTENCIA[1]))
+
+    # correr: la guerra que terminó le da el premio a la semana nueva
+    dg = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
+                       'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1, 'DRA': 1, 'URBF': 1},
+                       'guerra': {'pares': [['FFA', 'SR'], ['DRA', 'URBF']]}}]}
+    out = correr(en(10, 19, 11, 22), d=dg, eventos=evsg)
+    nueva = out['semanas'][-1]
+    ok(out['semanas'][0]['guerra']['gana'] == ['SR'] and nueva.get('premio') == {'SR': GUERRA_X}
+       and nueva['sv']['SR'] == min(TECHO, sortear(servidores(), '2026-10-19')['SR'] * GUERRA_X)
+       and nueva.get('guerra') and nueva.get('dorado'),
+       'al cerrar la semana, SR ganó la guerra y lleva ×1,5 en la nueva, que trae su dorado y sus pares')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 
@@ -307,14 +581,21 @@ def main():
         return 1 if _self_check() else 0
     out = correr(aplicar='--aplicar' in a)
     s = actual(out)
-    print('\n══ LOS MULTIPLICADORES ══\n')
+    print('\n══ LA SEMANA DE LA LIGA ══\n')
     if not s:
         print('   (ninguna semana sorteada cubre este momento)\n')
         return 0
     print('   semana %s · %s → %s ET' % (s['id'], _de_iso(s['inicio']).astimezone(_et()).strftime('%d/%m %H:%M'),
                                          _de_iso(s['fin']).astimezone(_et()).strftime('%d/%m %H:%M')))
     for sv, x in sorted(s['sv'].items(), key=lambda kv: -kv[1]):
-        print('      %-5s ×%s' % (sv, ('%g' % x).replace('.', ',')))
+        print('      %-5s ×%s%s' % (sv, ('%g' % x).replace('.', ','),
+                                     '  (ganó la guerra)' if (s.get('premio') or {}).get(sv) else ''))
+    if s.get('dorado'):
+        print('   dorado: %s desde el %s%s' % (s['dorado']['sv'], _de_iso(s['dorado']['desde']).astimezone(_et())
+                                              .strftime('%a %d/%m'),
+                                              ' → fue el #%s' % s['dorado']['n'] if s['dorado'].get('n') else ''))
+    if s.get('guerra'):
+        print('   guerra: %s' % ' · '.join('%s vs %s' % tuple(p) for p in s['guerra']['pares']))
     if '--aplicar' not in a:
         print('\n   (simulacro: no escribí nada — `--aplicar`)')
     print()

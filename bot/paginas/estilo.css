@@ -1618,6 +1618,11 @@ font-variant-numeric:tabular-nums;vertical-align:middle;white-space:nowrap}
 .xm.sube{background:rgba(41,178,152,.16);color:var(--tl)}
 .xm.x5{background:rgba(255,210,74,.18);color:var(--oro)}
 .xm.baja{background:rgba(255,107,107,.15);color:#FF6B6B}
+.xm.oro{background:rgba(255,210,74,.22);color:var(--oro)}
+.mt small.gw{background:var(--tl);color:#04211C}
+.mt-x{grid-column:1/-1;display:grid;gap:6px;margin-top:4px;padding-top:10px;border-top:1px solid var(--bd2)}
+.mt-x p{color:var(--tx2);font-size:.9rem;line-height:1.45}
+.mt-x b{color:var(--tx)}
 
 /* ── Most Wanted: el tablero, un cartel por buscado ─────────────────────
    El color de arriba dice cómo está: magenta suelto, gris cazado, oro si

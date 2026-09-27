@@ -1925,7 +1925,18 @@ def _mult():
         return None
     if not s or not s.get('sv'):
         return None
-    return {'id': s['id'], 'ini': s['inicio'], 'fin': s['fin'], 'sv': s['sv']}
+    out = {'id': s['id'], 'ini': s['inicio'], 'fin': s['fin'], 'sv': s['sv']}
+    # 🔑 el dorado, la guerra y quién ganó la anterior (su ×1,5 va en `premio`)
+    for k in ('premio', 'dorado', 'guerra'):
+        if s.get(k):
+            out[k] = s[k]
+    semanas = _MU.leer().get('semanas') or []
+    ids = [x.get('id') for x in semanas]
+    if s['id'] in ids and ids.index(s['id']) > 0:
+        ant = semanas[ids.index(s['id']) - 1]
+        if (ant.get('guerra') or {}).get('gana') or (ant.get('dorado') or {}).get('n'):
+            out['ant'] = {k: ant[k] for k in ('guerra', 'dorado') if ant.get(k)}
+    return out
 
 
 def _mw_leer():

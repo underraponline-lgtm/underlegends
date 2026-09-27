@@ -500,10 +500,14 @@ def _trolls():
 def agregar(filas_res, filas_uno, instantes=None, factor=None):
     """Las filas crudas -> {rapero: {columna: valor}}.
 
-    `factor(servidor, instante) -> multiplicador` multiplica los puntos de
-    cada evento: son los multiplicadores de la semana, y SÓLO los pide la
-    Temporada (`agregar_temporada()`). Sin `factor`, los puntos crudos —que
-    es lo que ve el Competitivo—.
+    `factor(servidor, instante, evento, rapero) -> multiplicador` multiplica
+    los puntos de cada fila: el multiplicador de la semana, el evento dorado
+    y «Volvé». SÓLO los pide la Temporada (`agregar_temporada()`); sin
+    `factor`, los puntos crudos —que es lo que ve el Competitivo—.
+
+    Deja en `agregar.filas` cada fila como `(evento, servidor, instante,
+    rapero, puntos crudos)`: de ahí salen «Volvé», el Pasaporte y la
+    Asistencia, que miran a cada persona a lo largo de la semana.
 
     `instantes` es `{número de evento: ms}` —cuándo se publicó su llave—;
     sin pasarlo se lee de `datos/llaves_t1.json`. Ver `llaves_web.orden()`.
@@ -529,6 +533,7 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None):
         return LW.orden(instantes.get(n), fecha, n)
 
     d = defaultdict(lambda: defaultdict(int))
+    filas_ev = []
     evs = defaultdict(set)
     sv_ev, fecha_ev = {}, {}             # num -> servidor y fecha del evento
     ultimo = defaultdict(list)          # (num, fecha, puesto) por persona
@@ -550,15 +555,17 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None):
             pts = int(float(str(f[7]).replace(',', '') or 0))
         except ValueError:
             pts = 0
-        # 🔑 EL MULTIPLICADOR DE LA SEMANA, sólo si lo piden: ver `agregar_temporada()`
+        try:
+            _num = int(float(num or 0))
+        except ValueError:
+            _num = 0
+        _ms = instantes.get(_num) or LW.ms_de_fecha(str(f[1]).strip())
+        _t = _dt.datetime.fromtimestamp(_ms / 1000, _dt.timezone.utc) if _ms else None
+        filas_ev.append((_num, sv, _t, quien, pts))
+        # 🔑 LO DE LA SEMANA —el multiplicador, el evento dorado y «Volvé»—,
+        # sólo si lo piden: ver `agregar_temporada()`
         if factor:
-            try:
-                _ms = instantes.get(int(float(num or 0)))
-            except ValueError:
-                _ms = None
-            _ms = _ms or LW.ms_de_fecha(str(f[1]).strip())
-            pts = int(round(pts * factor(sv, _dt.datetime.fromtimestamp(_ms / 1000, _dt.timezone.utc)
-                                         if _ms else None)))
+            pts = int(round(pts * factor(sv, _t, _num, quien)))
         r = d[quien]
         r['Puntos'] += pts
         evs[quien].add(num)
@@ -687,6 +694,7 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None):
             d[quien]['_dg'] = g.get(quien, 0)
             d[quien]['_dj'] = j[quien]
             d[quien]['_dp'] = j[quien] - g.get(quien, 0)
+    agregar.filas = filas_ev
     return {k: dict(v) for k, v in d.items()}
 
 
@@ -989,7 +997,15 @@ def agregar_temporada(filas_res, filas_uno, instantes=None):
     if _b not in sys.path:
         sys.path.insert(0, _b)
     import multiplicadores as _MU
-    ag = agregar(filas_res, filas_uno, instantes, factor=_MU.factor_de())
+    # primero las filas, crudas: «Volvé» y los bonos miran a cada persona
+    # a lo largo de la semana, y eso hay que saberlo antes de multiplicar
+    agregar(filas_res, filas_uno, instantes)
+    filas = agregar.filas
+    ag = agregar(filas_res, filas_uno, instantes, factor=_MU.factor_de(filas=filas))
+    # 🔑 LOS BONOS FIJOS DE LA SEMANA: el Pasaporte y la Asistencia
+    for quien, b in _MU.bonos(filas).items():
+        if quien in ag:
+            ag[quien]['Puntos'] = ag[quien].get('Puntos', 0) + b['pts']
     sumar_mw(ag)
     return ag
 
@@ -2435,10 +2451,11 @@ def _self_check():
     # 🔑 el multiplicador: sólo con `factor`, por servidor y por semana
     resm = [[1, '27/09', 'SR', '16+', 'Ana', 'ar', 'Campeón', 10000, '', 0, ''],
             [2, '27/09', 'FFA', '16+', 'Ana', 'ar', 'Subcampeón', 7500, '', 0, '']]
-    fx = lambda sv, t: 2 if sv == 'SR' and t else 1
+    fx = lambda sv, t, *_: 2 if sv == 'SR' and t else 1
     crudo = agregar(resm, [], instantes={1: 1790200000000, 2: 1790200000000})
     doble = agregar(resm, [], instantes={1: 1790200000000, 2: 1790200000000}, factor=fx)
-    ok = crudo['Ana']['Puntos'] == 17500 and doble['Ana']['Puntos'] == 27500
+    ok = (crudo['Ana']['Puntos'] == 17500 and doble['Ana']['Puntos'] == 27500
+          and [(x[0], x[1], x[3], x[4]) for x in agregar.filas] == [(1, 'SR', 'Ana', 10000), (2, 'FFA', 'Ana', 7500)])
     mal += not ok
     print('   %s el multiplicador de la semana: sólo si se lo pide (el Competitivo ve %s, la '
           'Temporada %s)' % ('✅' if ok else '🔴', crudo['Ana']['Puntos'], doble['Ana']['Puntos']))

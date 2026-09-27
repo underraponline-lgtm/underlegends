@@ -432,6 +432,7 @@ function pintaHero() {
       ? '<span class="hace">anunciado ' + esc(cuandoSe(e.cuando)) + '</span>'
       : '<span class="reloj" data-t="' + esc(e.cuando) + '">&middot;</span>';
     return '<div class="ev"><div><b>' + tit + etiquetaMult(e.sv, String(e.cuando || '').replace(/Z$/, '') + 'Z') +
+      (esDorado(e) ? '<span class="xm oro">&#127775; dorado</span>' : '') +
       '</b><small>' + sub +
       '</small></div>' + der + '</div>';
   }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
@@ -448,7 +449,8 @@ function vieneDestacado(e) {
     .map(function (x) { return '<span class="vi-chip">' + esc(x) + '</span>'; }).join('');
   return '<div class="vi-prox" style="--c:' + esc(colorSv(e.sv)) + '">' +
     '<div class="vi-cab">' + logoSv(e.sv, 40) + '<div><span class="vi-sv">' + esc(nombreSv(e.sv)) +
-      etiquetaMult(e.sv, iso) + '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
+      etiquetaMult(e.sv, iso) + (esDorado(e) ? '<span class="xm oro" title="El evento dorado de la semana: ' +
+        'vale &times;3 encima de su multiplicador">&#127775; dorado</span>' : '') + '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
       '</b></div></div>' +
     (e.sin_hora
       ? '<p class="vi-cuando"><span>Anunciado ' + esc(cuandoSe(e.cuando)) + '</span></p>'
@@ -589,15 +591,53 @@ function pintaMult() {
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '. El Competitivo no cambia.';
   $('#multLista').innerHTML = svs.map(function (sv) {
-    var x = M.sv[sv];
+    var x = M.sv[sv], pr = (M.premio || {})[sv];
     return '<div class="mt ' + claseMult(x) + '" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 32) +
       // la sigla arriba y el número abajo: en un renglón, «Discord Rap Español»
       // se cortaba en «Discord Rap…» y hasta «FFA» quedaba en «F…»
       '<div class="mt-t"><span class="mt-n" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span><b>' +
       xMult(x) + '</b></div>' +
-      (x < 1 ? '<small>debuff</small>' : x >= 5 ? '<small>jackpot</small>' : '') + '</div>';
-  }).join('');
+      (x < 1 ? '<small>debuff</small>' : x >= 5 ? '<small>jackpot</small>' : pr ? '<small class="gw">ganó la guerra</small>' : '') +
+      '</div>';
+  }).join('') + extrasMult(M);
   sec.hidden = false;
+}
+/* 🔑 EL DORADO, LA GUERRA Y LOS BONOS: debajo de los multiplicadores. Dlx,
+   27/09/2026: «me gustan todas». Las reglas viven en bot/multiplicadores.py. */
+function extrasMult(M) {
+  var ls = [], dd = M.dorado, g = M.guerra, a = M.ant || {};
+  if (dd) {
+    ls.push('<b>&#127775; Evento dorado</b>: ' + (dd.n
+      ? 'fue <b>' + esc(dd.nombre || '#' + dd.n) + '</b> (' + esc(nombreSv(dd.sv)) + '): valió &times;3 encima de su multiplicador.'
+      : 'el primer evento de <b>' + esc(nombreSv(dd.sv)) + '</b> desde el ' +
+        esc(fmtFecha(dd.desde, { weekday: 'long', day: 'numeric' })) + ' vale <b>&times;3</b> encima de su multiplicador.'));
+  }
+  if (g && (g.pares || []).length) {
+    ls.push('<b>&#9876;&#65039; Guerra de servidores</b>: ' + g.pares.map(function (p) {
+      return esc(p[0]) + ' vs ' + esc(p[1]);
+    }).join(' &middot; ') + '. Gana el que más puntos hace por persona en sus eventos, y la semana que viene ' +
+      'lleva &times;1,5.');
+  }
+  if (a.guerra && (a.guerra.gana || []).length) {
+    ls.push('La semana pasada ganaron la guerra: <b>' + a.guerra.gana.map(function (s) {
+      return esc(nombreSv(s));
+    }).join(' y ') + '</b>.');
+  }
+  ls.push('<b>&#127873; Bonos</b>: tu segundo evento de la temporada vale <b>&times;1,5</b> si lo jugás dentro de ' +
+    'los 7 días del primero. Jugar en <b>3 servidores</b> en la semana da <b>+1.500</b>, y jugar <b>3 días ' +
+    'distintos</b>, <b>+1.000</b>.');
+  return '<div class="mt-x">' + ls.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+}
+/* el próximo evento que puede ser el dorado: el primero de su servidor desde su día */
+function esDorado(e) {
+  var dd = D.mult && D.mult.dorado;
+  if (!dd || dd.n || e.sv !== dd.sv || e.sin_hora) return false;
+  var t = function (x) { return new Date(String(x.cuando || '').replace(/Z$/, '') + 'Z').getTime(); };
+  var desde = new Date(dd.desde).getTime(), fin = new Date(D.mult.fin).getTime();
+  var cands = (D.proximos || []).filter(function (x) {
+    return x.sv === dd.sv && !x.sin_hora && t(x) >= desde && t(x) < fin;
+  }).sort(function (x, y) { return t(x) - t(y); });
+  return cands[0] === e;
 }
 function chipSv(sv) {
   return '<span class="chip-sv" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 18) +
