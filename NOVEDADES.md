@@ -291,6 +291,18 @@ la ventana de 3 a 11 AM— para que el redibujo grande pasara antes del día.
   la última del 18/09; en la T1 todavía no publicó ninguna) y sus anuncios.
   Pero **sus eventos se iban a llamar «-----------------------------»**: abren
   la llave con una línea de guiones. Arreglado, y ningún título de la T1 cambia.
+- 🔴 **El campeón salía al revés** en una llave vieja de Urban Freestyle: con
+  la línea `CAMPEÓN 🏆 : YINN HASSAN SEBITAS` sin enganchar, el respaldo del
+  «renglón de abajo» leía `SEGUNDO … : POLLO MARTYNEZ NC` y le daba la final
+  al subcampeón. Ya no: el renglón de abajo no puede ser el del segundo, y el
+  campeón escrito con espacios se parte con los integrantes de la final. Y
+  **los equipos con espacios** («HASSAN SEBITAS») se leen como equipo cuando
+  esos nombres pelearon solos antes. Ninguna llave de la T1 cambia.
+- 🔴 **KENNY tumbó 11 cartas de País** en la corrida de las 5:07 AM: el pool
+  trajo a «Kenny» (FFA, 🇦🇷) y a «KENNY» (Snake Rap, sin bandera), con la
+  misma clave, y el exportador de País cortaba la tanda entera ante uno sin
+  país. Jupiter, KC, Kravitz y otros ocho se quedaron sin la suya. Ahora lo
+  saltea; se reintentaron en la corrida de las 5:36 AM.
 - 📅 **Google Calendar**: el calendario estaba bien (Google lo baja: 200) y el
   problema es el teléfono, donde **ni la app ni la web de Google dejan sumar
   un calendario por link**. En el teléfono ahora la página lo explica y deja
@@ -575,6 +587,11 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
+- **¿«KENNY» (Snake Rap, sin bandera) y «Kenny» (FFA, 🇦🇷) son la misma
+  persona?** Ninguno está en la Lista ni tiene Discord ID, y hoy son dos
+  filas con la misma clave: en R2 sus tarjetas se pisan (gana la más nueva).
+  Si son uno, va un alias en ✅ Decidir; si son dos, hay que separarlos como
+  Volk y volk.
 - **Google Calendar**: ¿dónde lo probaste, en el teléfono o en la compu? Si
   fue en la compu, ¿qué pasó (un error, o se sumó y no aparece nada)? Google
   refresca un calendario por link cada varias horas: lo nuevo tarda en verse.
@@ -609,10 +626,9 @@ inglés, y `/borrar-mis-datos`.
 
 ## 🔧 Pendiente mío
 
-- **Equipos escritos con espacios** (Urban Freestyle: «HASSAN SEBITAS», sin
-  `+` ni banderas). Se puede resolver con una regla exacta —esos nombres
-  aparecieron solos en la ronda anterior—; hoy son la mitad de las 25 dudas
-  de sus llaves viejas. Lo hago antes de que publiquen una en la T1.
+- **Las dudas que quedan en las llaves viejas de Urban Freestyle** (21 de 46
+  llaves): casi todas son llaves a medio llenar —la final vacía, o el campeón
+  de una plantilla anterior—, que es lo que Pendientes tiene que ver.
 - **Dos llaves con el mismo nombre el mismo día son un evento**: la identidad
   sigue siendo `(nombre, servidor, fecha)`. Urban Freestyle tiene tres pares
   así en sus llaves viejas («compe chill» dos veces el 08/09). Es el
