@@ -195,7 +195,8 @@
 },
 "1177668622227886112": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -267,7 +268,8 @@
 },
 "1228547913240547338": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -550,7 +552,8 @@
 },
 "1382511700519030824": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -656,7 +659,8 @@
 },
 "1428556720510079168": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -912,7 +916,8 @@
 },
 "1501237670154866788": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -992,7 +997,8 @@
 },
 "1515482513106272366": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1156,7 +1162,8 @@
 },
 "458519920330670086": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1211,7 +1218,8 @@
 },
 "535579351710957568": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1241,7 +1249,8 @@
 },
 "559068959845122048": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1278,7 +1287,8 @@
 },
 "588547235621371936": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1558,7 +1568,8 @@
 },
 "729439360545587291": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1700,13 +1711,15 @@
 },
 "771843689294856203": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
 "776271601221763103": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1945,6 +1958,7 @@
 },
 "897942226955563068": {
 "cs": [
+"competitivo",
 "servidor",
 "temporada"
 ],
@@ -1982,7 +1996,8 @@
 },
 "918750979724288040": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
