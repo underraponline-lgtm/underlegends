@@ -139,26 +139,49 @@ def _de_iso(s):
     return dt.datetime.fromisoformat(str(s).replace('Z', '+00:00'))
 
 
-def _arranque_mw():
-    """Cuándo pasa a semanal: el día del arranque de la temporada a las
-    `ARRANCA_H` ET, en UTC. `None` si la temporada no tiene fecha.
+def _arranque():
+    """Cuándo arranca la temporada —las 00:00 ET de su primer día—, en UTC, o
+    `None` si no tiene fecha. Sale de `comun/temporada.py`: un solo lugar.
 
-    ⚠️ A LAS 11 Y NO A LA MEDIANOCHE del arranque. El último día de prueba va
-    del 4 de octubre a las 11 AM al 5 a las 11 AM; cambiar a las 00:00 del 5
-    armaría una «semana» del 28/09 al 5/10 que corta ese día por la mitad.
-    Y el 5 de octubre es lunes: la primera semana arranca justo ahí.
+    🔑 ES CUANDO TERMINA LA PRUEBA, y el Most Wanted diario con ella. Dlx,
+    27/09/2026: *«the period ends in october 4… like the periodo de
+    prueba»*.
+
+    ⚠️ Y NO A LAS 11 AM DEL 5: a las 00:00 el paso 0 del ciclo archiva las
+    llaves de la prueba. Un día de Most Wanted que siguiera abierto después
+    se recalcularía sin ellas y cerraría con todos «escondidos».
     """
-    from comun.temporada import ACTUAL, FECHAS
-    dia = (FECHAS.get(ACTUAL) or ('',))[0]
-    if not dia:
+    from comun.temporada import arranque
+    a = arranque()
+    return dt.datetime.fromisoformat(a) if a else None
+
+
+def _primera_semana():
+    """Cuándo sale el primer Most Wanted de la temporada: el lunes a las 11 AM
+    ET después de su primera semana entera. Para la T1, el lunes 12/10.
+
+    🔑 Dlx, 27/09/2026, a «arranca el lunes 12/10, con la primera semana de
+    la T1»: *«sí»*. Con todo en cero no hay a quién buscar —pide dos
+    eventos—: la primera semana es la que dice quiénes son.
+    """
+    a = _arranque()
+    if not a:
         return None
-    return (dt.datetime.fromisoformat(dia).replace(hour=ARRANCA_H, tzinfo=_et())
-            .astimezone(dt.timezone.utc))
+    d = a.astimezone(_et()).date() + dt.timedelta(days=7)
+    d += dt.timedelta(days=(7 - d.weekday()) % 7)              # el lunes
+    return dt.datetime(d.year, d.month, d.day, ARRANCA_H, tzinfo=_et()).astimezone(dt.timezone.utc)
+
+
+def _espera(ahora=None):
+    """Entre el arranque y el primer Most Wanted: cuándo sale. Si no, `None`."""
+    a, p = _arranque(), _primera_semana()
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    return p if a and a <= ahora < p else None
 
 
 def tipo_de(ahora=None):
     """`'dia'` en la fase de prueba, `'semana'` desde el arranque de la temporada."""
-    a = _arranque_mw()
+    a = _arranque()
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     return 'semana' if a and ahora >= a else 'dia'
 
@@ -172,7 +195,7 @@ def temporada_de(ahora=None):
     del período de ahora.
     """
     from comun.temporada import ACTUAL
-    a = _arranque_mw()
+    a = _arranque()
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     return ACTUAL if a and ahora >= a else 'prueba'
 
@@ -182,7 +205,8 @@ def periodo(ahora=None, tipo=None):
 
     Un día va de las 11 AM ET a las 11 AM ET del día siguiente; una semana,
     de lunes a lunes a la misma hora. La hora del este de verdad, con el
-    cambio de horario: 11 AM es 11 AM en octubre y en diciembre.
+    cambio de horario: 11 AM es 11 AM en octubre y en diciembre. Y el último
+    día de prueba termina con la prueba: ver `_arranque()`.
     """
     tipo = tipo or tipo_de(ahora)
     ahora = (ahora or dt.datetime.now(dt.timezone.utc)).astimezone(_et())
@@ -196,7 +220,11 @@ def periodo(ahora=None, tipo=None):
         fin = ini + dt.timedelta(days=7)
     else:
         fin = ini + dt.timedelta(days=1)
-    return ini.strftime('%Y-%m-%d'), ini.astimezone(dt.timezone.utc), fin.astimezone(dt.timezone.utc)
+    ini_u, fin_u = ini.astimezone(dt.timezone.utc), fin.astimezone(dt.timezone.utc)
+    a = _arranque()
+    if a and ini_u < a < fin_u:
+        fin_u = a
+    return ini.strftime('%Y-%m-%d'), ini_u, fin_u
 
 
 def _redondear(x):
@@ -406,6 +434,20 @@ def cerrar(buscados, tipo=None):
     return buscados
 
 
+def cerrar_periodo(act, evs, pool_o, temp):
+    """El período, cerrado y listo para el historial.
+
+    Se vuelve a cazar entero, por si entró una llave tarde — salvo que el
+    período sea de OTRA temporada. ⚠️ Al arrancar la T1 el paso 0 del ciclo
+    archiva las llaves de la prueba, y recalcular sin ellas dejaría a todos
+    «escondidos»: ahí vale lo último que se calculó.
+    """
+    bs = act.get('buscados') or []
+    if act.get('temporada', 'prueba') == temp:
+        bs = cazar(bs, evs, _de_iso(act.get('desde') or act['inicio']), _de_iso(act['fin']), pool_o)
+    return dict(act, buscados=cerrar(bs, act.get('tipo')))
+
+
 def _stats(pool, evs, R, hasta, ventana_dias):
     """Lo que las categorías necesitan de cada uno, con lo que pasó hasta `hasta`."""
     desde = hasta - dt.timedelta(days=ventana_dias)
@@ -564,7 +606,7 @@ def cargar_todo():
 
 def correr(ahora=None, aplicar=False):
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
-    tipo, temp = tipo_de(ahora), temporada_de(ahora)
+    tipo, temp, espera = tipo_de(ahora), temporada_de(ahora), _espera(ahora)
     pid, ini, fin = periodo(ahora, tipo)
     try:
         with io.open(SALIDA, encoding='utf-8') as f:
@@ -575,19 +617,22 @@ def correr(ahora=None, aplicar=False):
     pool_o = {p['raw']: p.get('o') or p.get('pos') for p in pool if p.get('raw')}
     hist = viejo.get('historial') or []
     act = viejo.get('actual') or {}
-    # 🔑 SE CAMBIÓ DE PERÍODO: el anterior se cierra con lo que ya se jugó —
-    # se vuelve a cazar entero por si entró una llave tarde— y va al historial
-    if act and act.get('id') != pid:
-        a_ini, a_fin = _de_iso(act.get('desde') or act['inicio']), _de_iso(act['fin'])
-        cerrado = cerrar(cazar(act.get('buscados') or [], evs, a_ini, a_fin, pool_o), act.get('tipo'))
+    # 🔑 SE CAMBIÓ DE PERÍODO, o arrancó la temporada: el anterior se cierra
+    # con lo que ya se jugó y va al historial. Ver `cerrar_periodo()`.
+    if act.get('id') and (espera or act['id'] != pid):
         hist = [h for h in hist if h.get('id') != act['id']]
-        hist.append(dict(act, buscados=cerrado))
+        hist.append(cerrar_periodo(act, evs, pool_o, temp))
         hist = hist[-HISTORIAL:]
         act = {}
-    # 🔑 SIN BUSCADOS SE VUELVE A ELEGIR EN CADA CORRIDA. Pasa al arrancar una
-    # temporada: lo de la prueba se borra, nadie jugó todavía y no hay a quién
-    # buscar. Sin esto, la primera semana de la T1 se quedaba sin Most Wanted.
-    if not act or not act.get('buscados'):
+    if not act.get('id'):
+        act = {}
+    # 🔑 LA PRIMERA SEMANA DE LA TEMPORADA NO HAY BUSCADOS: queda escrito
+    # cuándo salen, y la página lo dice. Ver `_primera_semana()`.
+    if espera:
+        act = {'temporada': temp, 'proximo': _iso(espera)}
+    # 🔑 SIN BUSCADOS SE VUELVE A ELEGIR EN CADA CORRIDA: si un período arranca
+    # sin nadie activo, no se queda vacío hasta el siguiente.
+    elif not act.get('buscados'):
         prev = hist[-1] if hist else {}
         # el anterior es de otra temporada (la prueba): ni su gente se excluye
         # ni sus puestos sirven para «El Sigiloso» — la tabla arrancó de cero
@@ -601,7 +646,8 @@ def correr(ahora=None, aplicar=False):
         act = {'id': pid, 'tipo': tipo, 'temporada': temp, 'inicio': _iso(ini), 'fin': _iso(fin),
                'desde': _iso(desde), 'elegido': _iso(ahora), 'buscados': buscados,
                'snap': {p['raw']: p.get('o') or p.get('pos') for p in pool if p.get('raw')}}
-    act['buscados'] = cazar(act['buscados'], evs, _de_iso(act.get('desde') or act['inicio']), fin, pool_o)
+    if act.get('id'):
+        act['buscados'] = cazar(act['buscados'], evs, _de_iso(act.get('desde') or act['inicio']), fin, pool_o)
     out = {'_leeme': 'Most Wanted: lo arma bot/most_wanted.py en el ciclo (paso 2b). '
                      'Los números viven en ese archivo.',
            'config': {'periodo': tipo, 'rango': list(RANGO), 'sube': SUBE, 'tope_sube': TOPE_SUBE,
@@ -637,18 +683,24 @@ def _self_check():
     ok(pid == '2026-10-12' and ini.astimezone(et).weekday() == 0, 'la semana va de lunes a lunes  %s' % pid)
     pid, ini, fin = periodo(dt.datetime(2026, 11, 3, 12, 0, tzinfo=et), 'semana')
     ok(fin.astimezone(et).hour == 11, 'y cruzando el cambio de horario sigue terminando a las 11 AM ET')
-    # diario hasta el arranque de la temporada, semanal desde ahí (a las 11 AM)
+    # el borde de la temporada: la prueba termina a las 00:00 del arranque, la
+    # primera semana no hay buscados y el lunes siguiente arranca el semanal
     from comun.temporada import ACTUAL, FECHAS
     arr = dt.date.fromisoformat(FECHAS[ACTUAL][0])
     en = lambda d, h, m=0: dt.datetime(arr.year, arr.month, arr.day, h, m, tzinfo=et) + dt.timedelta(days=d)
-    ok(tipo_de(en(-1, 20)) == 'dia' and temporada_de(en(-1, 20)) == 'prueba',
-       'la víspera del arranque (%s) todavía es diario y de la prueba' % (arr - dt.timedelta(days=1)))
-    ok(tipo_de(en(0, 10, 59)) == 'dia' and periodo(en(0, 10, 59))[0] == (arr - dt.timedelta(days=1)).isoformat(),
-       'el día del arranque a las 10:59 AM sigue el último día de prueba')
-    pid, ini, fin = periodo(en(0, 11, 22))
-    ok(tipo_de(en(0, 11, 22)) == 'semana' and temporada_de(en(0, 11, 22)) == ACTUAL
-       and pid == arr.isoformat() and (fin - ini).days == 7,
-       'a las 11:22 del arranque ya es semanal y de la %s: %s, 7 días' % (ACTUAL.upper(), pid))
+    pid, ini, fin = periodo(en(-1, 20))
+    ok(tipo_de(en(-1, 20)) == 'dia' and temporada_de(en(-1, 20)) == 'prueba'
+       and pid == (arr - dt.timedelta(days=1)).isoformat() and fin == en(0, 0),
+       'el último día de prueba (%s) termina con la prueba, a las 00:00 del arranque' % pid)
+    ps = _primera_semana()
+    ok(temporada_de(en(0, 0, 22)) == ACTUAL and _espera(en(0, 0, 22)) == ps and _espera(en(3, 15)) == ps,
+       'desde el arranque es la %s y la primera semana no hay buscados' % ACTUAL.upper())
+    pe = ps.astimezone(et)
+    ok(pe.weekday() == 0 and pe.hour == 11 and (pe.date() - arr).days >= 7,
+       'el primer Most Wanted sale el lunes %s a las 11 AM, con una semana jugada' % pe.date())
+    pid, ini, fin = periodo(ps + dt.timedelta(minutes=22))
+    ok(_espera(ps + dt.timedelta(minutes=22)) is None and tipo_de(ps) == 'semana'
+       and pid == pe.date().isoformat() and (fin - ini).days == 7, 'y es semanal: %s, 7 días' % pid)
 
     # quién lo cazó: 1 contra 1, equipos, triples y una triple sin nadie
     class _R:  # sin padrón: cada nombre es él mismo
@@ -714,6 +766,13 @@ def _self_check():
              [ev_de([[[['Dan', 'Eli'], 'Eli']]], part=4, t=t0 + dt.timedelta(hours=1))],
              t0, t0 + dt.timedelta(days=1), {})[0]['estado'] == 'suelto',
        'un evento de menos de 8 no cuenta para cazar')
+    # al arrancar la temporada, el último día de prueba se cierra con lo que tenía
+    per = {'id': 'X', 'tipo': 'dia', 'temporada': 'prueba', 'inicio': _iso(t0),
+           'fin': _iso(t0 + dt.timedelta(days=1)), 'buscados': [a]}
+    ok(cerrar_periodo(json.loads(json.dumps(per)), [], {}, ACTUAL)['buscados'][0]['estado'] == 'cazado',
+       'al arrancar la temporada, el último día de prueba guarda sus cazas (sus llaves se archivaron)')
+    ok(cerrar_periodo(json.loads(json.dumps(per)), [], {}, 'prueba')['buscados'][0]['estado'] == 'escondio',
+       'y dentro de la misma temporada, al cerrar se vuelve a cazar entero')
 
     # quién puede ser buscado: activo y miembro
     pool = [{'raw': 'Ana', 'pos': 1, 'o': 1, 'sv': 'FFA'},

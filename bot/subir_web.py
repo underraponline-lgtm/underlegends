@@ -201,8 +201,14 @@ def armar():
         # `_versiones()`: sin la primera el navegador muestra una imagen
         # guardada, y sin la segunda la carta contradice al ranking sin
         # decir por qué.
-        'cv': _ver.get(p.get('raw')) or {},
-        'vj': sorted(_vieja.get(p.get('raw')) or ()),
+        #
+        # ⚠️ COMPACTAS, EN EL ORDEN DE `CARTAS`: como `{carta: versión}` eran
+        # 15 KB del lobby —el nombre de las cuatro cartas repetido en cada
+        # fila— y el lobby pasó los 120 KB (27/09/2026). `cv` es
+        # `"v_temporada.v_competitivo.v_servidor.v_pais"` y `vj`, los
+        # índices de las viejas (`"013"`). La página lee las dos formas.
+        'cv': _compactas(_ver.get(p.get('raw'))),
+        'vj': ''.join(str(i) for i, c in enumerate(CARTAS) if c in (_vieja.get(p.get('raw')) or ())),
         # 🔑 SI ESTA PERSONA TIENE CARA. Dlx, 24/09/2026: *«en la sección
         # de tarjetas sólo quisiera ver tarjetas con avatares, no
         # muestres ahí si no hay avatares»*.
@@ -1397,6 +1403,16 @@ def _con_foto():
     return set(respaldo._norm(k) for k in d)
 
 
+def _compactas(vers):
+    """`{carta: versión}` -> `"v1.v2.v3.v4"`, en el orden de `CARTAS`; `''` si no hay.
+
+    ⚠️ LA VERSIÓN VA ENTERA, sin recortar: es el `?v=` de la URL de cada
+    carta, y cambiarla haría que cada navegador vuelva a bajar todas.
+    """
+    x = '.'.join((vers or {}).get(c, '') for c in CARTAS)
+    return x if x.strip('.') else ''
+
+
 def _versiones():
     """`({persona: {carta: version}}, {persona: {cartas viejas}})`.
 
@@ -1986,7 +2002,8 @@ def _mw(gente):
     d = _mw_leer()
     act = d.get('actual') or {}
     if not act.get('buscados'):
-        return None
+        # la primera semana de la temporada: sin buscados, con cuándo salen
+        return {'prox': act['proximo']} if act.get('proximo') else None
     por = {p.get('raw'): p for p in gente}
 
     def persona(n):
@@ -2506,6 +2523,8 @@ def _self_check():
     # ⚠️ KV admite 25 MB por valor; el problema no es ese sino que el
     # payload viaja entero en CADA visita.
     ok(tam < 120000, 'y pesa poco: %.1f KB' % (tam / 1024.0))
+    ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
+       'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0

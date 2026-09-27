@@ -182,15 +182,19 @@ function aplicarCalma() {
 /* ⚠️ CON LA VERSIÓN DE ESA CARTA. La URL de R2 es estable a propósito, así
    que sin `?v=` el navegador puede mostrar la imagen que guardó aunque la
    carta ya se haya redibujado. La versión sale del sello del pipeline. */
+// ⚠️ `cv` y `vj` viajan compactas, en el orden de `D.cartas` (ver
+// `subir_web.py`); un lobby guardado de antes las trae como objeto y lista
+var cartaIdx = function (cual) { return (D.cartas || []).indexOf(cual); };
 var urlCarta = function (f, cual) {
-  var v = (f.cv || {})[cual];
+  var v = typeof f.cv === 'string' ? f.cv.split('.')[cartaIdx(cual)] : (f.cv || {})[cual];
   return D.r2 + '/' + encodeURIComponent(f.k) + '/' + cual + '.webp' +
     (v ? '?v=' + v : '');
 };
 /* ¿La imagen de esa carta es de antes de los números de ahora? Ver
    `_versiones()` en bot/subir_web.py. */
 var vieja = function (f, cual) {
-  return (f.vj || []).indexOf(cual) >= 0;
+  return typeof f.vj === 'string' ? cartaIdx(cual) >= 0 && f.vj.indexOf(String(cartaIdx(cual))) >= 0
+    : (f.vj || []).indexOf(cual) >= 0;
 };
 var avisoCarta = function (f, cual) {
   var a = $('#vAviso');
@@ -3635,7 +3639,17 @@ function cartelMW(b) {
 }
 function pintaMW() {
   var M = D.mw, pag = $('#secPaneles .pn-pag[data-pag="0"]');
-  if (!pag || !M || !(M.b || []).length) return;
+  if (!pag || !M) return;
+  // la primera semana de la temporada no hay buscados: dice cuándo salen
+  if (!(M.b || []).length) {
+    if (!M.prox) return;
+    pag.dataset.tit = '&#128128; Most Wanted';
+    pag.innerHTML = '<p class="mw-cab">Los primeros <b>buscados de la temporada</b> salen el ' +
+      esc(fmtFecha(M.prox, { weekday: 'long', day: 'numeric', month: 'long' })) + ' a las ' +
+      esc(fmtHora(M.prox)) + ' ' + etiquetaHora(M.prox) + '. Se eligen con lo que cada uno juegue ' +
+      'hasta entonces.</p><p class="mw-pie"><span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
+    return;
+  }
   var sueltos = M.b.filter(function (b) { return b.e === 'suelto'; }).length;
   pag.dataset.tit = '&#128128; Most Wanted' + (M.tipo === 'dia' ? ' de hoy' : ' de la semana');
   pag.innerHTML = '<p class="mw-cab"><b>' + sueltos + ' de ' + M.b.length + '</b> siguen sueltos. ' +

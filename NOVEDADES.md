@@ -288,12 +288,21 @@ ver»*, y *«the period ends in october 4»*.
   cada corrida: el primero que le gana a un buscado lo caza. Guarda sólo a
   quiénes eligió; la caza se recalcula entera, así que una llave que entra
   tarde o se corrige cambia el resultado sin dejar nada viejo.
-- 📅 **Diario hasta el 4/10, semanal desde el 5/10**, solo: el último día de
-  prueba va del 4 a las 11 AM al 5 a las 11 AM, y el 5 es lunes. Lo de la
-  prueba **no cuenta en la T1** (se borra, como el resto): la tabla de
-  cazadores arranca de cero. Y si un período arranca sin nadie a quien
-  buscar —el primer día de la T1—, se vuelve a elegir en cada corrida, y la
-  caza cuenta desde que se eligió.
+- 📅 **Diario hasta que termina la prueba, semanal en la T1**, solo, con la
+  fecha de `comun/temporada.py` (si la T1 se corre, se cambia ahí y nada
+  más):
+  - el último día de prueba termina **a las 00:00 ET del arranque**, no a
+    las 11 AM: a esa hora el paso 0 archiva las llaves de la prueba, y un día
+    abierto se recalcularía sin ellas y cerraría con todos «escondidos». Por
+    lo mismo, un período de la prueba se cierra con lo último calculado
+    (`cerrar_periodo()`);
+  - **la primera semana de la T1 no hay buscados**: con todo en cero no hay
+    a quién buscar. El tablero dice cuándo salen: **el lunes 12/10 a las 11
+    AM ET**, que es lo que Dlx había aprobado (`_primera_semana()`);
+  - lo de la prueba **no cuenta en la T1** (se borra, como el resto): la
+    tabla de cazadores arranca de cero. Y si un período arranca sin nadie a
+    quien buscar, se vuelve a elegir en cada corrida, y la caza cuenta desde
+    que se eligió.
 - 🖥️ **En la página**: el tablero en el panel del Inicio (en el teléfono se
   desliza), la pestaña **Ranking → Most Wanted** (cazadores de la temporada),
   **«Su cacería»** en el perfil, las columnas Cazó · Cazado · Sobrevivió del

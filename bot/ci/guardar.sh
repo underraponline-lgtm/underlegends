@@ -95,6 +95,9 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
 # válida: `git add` lo tomó como archivo, murió con «pathspec '\n' did
 # not match», el trabajo quedó en rojo, `dibujar` se salteó y la corrida
 # no guardó nada. Mejor morir acá, diciendo por qué, que ahí.
+# ⚠️ Y UN ARCHIVO NUEVO DE LA LISTA TIENE QUE ESTAR YA EN EL REPO, aunque
+# sea vacío: `chequeos.yml` pide que cada uno exista. `mw.json` lo crea el
+# ciclo, y el push que lo sumó quedó en rojo (27/09/2026).
 for f in $ARCHIVOS; do
   case "$f" in
     datos/*.json) ;;
