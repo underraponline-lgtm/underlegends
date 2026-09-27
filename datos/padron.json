@@ -2036,7 +2036,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1445803811758276660",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1445803811758276660/9a4796a4dac5071cb2066fa8f8d64f3f.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1445803811758276660/0a264f19cc618f5b43d1c20d2d4a9fa3.png?size=256",
   "notas": ""
  },
  {
@@ -2206,7 +2206,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1462237816829513971",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1462237816829513971/20d73ea7443b7ada073df7a803091eb5.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1462237816829513971/6ce263f2cfcf48b3e768f6443bd87a9a.png?size=256",
   "notas": ""
  },
  {
@@ -2526,7 +2526,7 @@
   "sv": "DRA",
   "verificado": "✅",
   "discord_id": "692881329573986317",
-  "av_sheet": "https://cdn.discordapp.com/avatars/692881329573986317/ed76c8c0ba3b66d5d7f41b88cd5ee97f.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/692881329573986317/3192b47063875907a1f3e73ec2f663c0.png?size=256",
   "notas": ""
  },
  {
@@ -2996,7 +2996,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1413322255047594015",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1413322255047594015/e92adef3c8aa4fc063390962b6471690.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1413322255047594015/e434be2d412f9f05c011a0e6fd535f36.png?size=256",
   "notas": ""
  },
  {
@@ -3764,7 +3764,7 @@
   "raw": "kuki",
   "pais": "Chile",
   "sv": "",
-  "verificado": "✅",
+  "verificado": "",
   "discord_id": "1473616788339294289",
   "av_sheet": "https://cdn.discordapp.com/avatars/1473616788339294289/c05950302d3224fa2e6c72cc84e83392.png?size=256",
   "notas": ""
@@ -4466,7 +4466,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1345962362615894027",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1345962362615894027/7f815ceefcc80c6f24fa84aa5c4d1956.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1345962362615894027/193e1a3b134b29714891b0ea86180a49.png?size=256",
   "notas": ""
  },
  {
@@ -4926,7 +4926,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1498441174728577025",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1498441174728577025/9559586a6dff87ca82553f85e740f0ce.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1498441174728577025/6d01d489a1739c3ffa9ba3b742a05dbb.png?size=256",
   "notas": ""
  },
  {
@@ -6336,7 +6336,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1369795154403393536",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1369795154403393536/8ed4c68edcad66d28b16dbbecb8a1965.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/embed/avatars/1.png",
   "notas": ""
  },
  {
@@ -8456,7 +8456,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "515712116381188097",
-  "av_sheet": "https://cdn.discordapp.com/avatars/515712116381188097/aa75a4d879eb3a58f80623f1f2982c94.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/515712116381188097/0944f8bb5a2efba712b7decf4696e76e.png?size=256",
   "notas": ""
  },
  {
@@ -8778,5 +8778,35 @@
   "discord_id": "718565684308607017",
   "av_sheet": "https://cdn.discordapp.com/avatars/718565684308607017/ee5eb86dcff439c7262161f9254d1f6e.png?size=256",
   "notas": "alta automática · /card en DRA · 25/09/2026 11:24 PM ET"
+ },
+ {
+  "full": "Lvel 🇻🇪",
+  "raw": "Lvel",
+  "pais": "Venezuela",
+  "sv": "",
+  "verificado": "✅",
+  "discord_id": "1526612644642160721",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1526612644642160721/0d9b7a665d4b95b4278273c46f0c2128.png?size=256",
+  "notas": ""
+ },
+ {
+  "full": "Sainto 🇦🇷",
+  "raw": "Sainto",
+  "pais": "Argentina",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "934188018439450644",
+  "av_sheet": "https://cdn.discordapp.com/avatars/934188018439450644/f0d43f7aacf74c95ae96dd64144ee6bc.png?size=256",
+  "notas": ""
+ },
+ {
+  "full": "Kako 🇨🇱",
+  "raw": "Kako",
+  "pais": "Chile",
+  "sv": "",
+  "verificado": "✅",
+  "discord_id": "1189768757715931266",
+  "av_sheet": "https://cdn.discordapp.com/embed/avatars/1.png",
+  "notas": ""
  }
 ]

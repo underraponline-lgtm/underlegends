@@ -2532,7 +2532,7 @@
      [
       [
        "Lord",
-       "Kenny 🇦🇷"
+       "Kenny"
       ],
       "Lord",
       ""
@@ -2712,7 +2712,7 @@
     1250
    ],
    [
-    "Kenny 🇦🇷",
+    "Kenny",
     "Octavos",
     1250
    ],
@@ -2774,7 +2774,7 @@
      [
       [
        "Zeta",
-       "KENNY",
+       "Kenny",
        "Lhyon"
       ],
       "Zeta",
@@ -2970,7 +2970,7 @@
     625
    ],
    [
-    "KENNY",
+    "Kenny",
     "R32",
     625
    ],
@@ -3387,6 +3387,202 @@
     "leteletras🇨🇱",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "364": {
+  "dia": "2026-09-26",
+  "escala": "16+",
+  "fecha": "26/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1553488074267164773"
+  ],
+  "n": 364,
+  "nombre": "AGREEMENT DOOMSDAY V.1",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Prove🇦🇷, yinn",
+       "Miniboy, Krish",
+       "INFECTE🇨🇴, LAST🇬🇶"
+      ],
+      "Prove🇦🇷, yinn",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "FULLY🇨🇱, DXG🇲🇽",
+       "Scot, TRRRR🇯🇲"
+      ],
+      "FULLY🇨🇱, DXG🇲🇽",
+      ""
+     ],
+     [
+      [
+       "Snow, Velatz",
+       "Cronox, Kuni"
+      ],
+      "Snow, Velatz",
+      "Revivido: CRONOX🇨🇱"
+     ],
+     [
+      [
+       "Makmah, Hassan",
+       "Lizeninn, Carlos"
+      ],
+      "Makmah, Hassan",
+      ""
+     ],
+     [
+      [
+       "Prove🇦🇷, yinn",
+       "Erian, Cronox"
+      ],
+      "Prove🇦🇷, yinn",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "FULLY🇨🇱, Snow",
+       "DXG🇲🇽, Velatz"
+      ],
+      "FULLY🇨🇱, Snow",
+      ""
+     ],
+     [
+      [
+       "Makmah, Hassan",
+       "Prove🇦🇷, yinn"
+      ],
+      "Makmah, Hassan",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "FULLY🇨🇱, Snow",
+       "Makmah, Hassan"
+      ],
+      "FULLY🇨🇱, Snow",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "FULLY🇨🇱",
+    "Campeón",
+    5000
+   ],
+   [
+    "Snow",
+    "Campeón",
+    5000
+   ],
+   [
+    "Hassan",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "DXG🇲🇽",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Prove🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    2625
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Carlos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Scot",
+    "Cuartos",
+    1250
+   ],
+   [
+    "TRRRR🇯🇲",
+    "Cuartos",
+    1250
+   ],
+   [
+    "INFECTE🇨🇴",
+    "R32",
+    312
+   ],
+   [
+    "Krish",
+    "R32",
+    312
+   ],
+   [
+    "LAST🇬🇶",
+    "R32",
+    312
+   ],
+   [
+    "Miniboy",
+    "R32",
+    312
    ]
   ]
  }
