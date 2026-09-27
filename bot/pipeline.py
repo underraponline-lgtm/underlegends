@@ -1008,6 +1008,21 @@ def _lo_barato(correr):
     else:
         corre(['sheet/decidir.py', '--aplicar'], callado=False)
         corre(['sheet/construir_akas.py'], callado=False)
+
+    # ── 2e · las tarjetas de quien se fue, a la semana ──────────────
+    #
+    # 🔑 Dlx, 27/09/2026: «que sus tarjetas se borren después de 1 semana
+    # si se va». Quien no pasa el portón ya no las ve —KV y la página lo
+    # filtran— pero seguían en R2 para siempre. Ver `bot/fuera.py`: un reloj
+    # por persona que vuelve a cero si vuelve a pasar, y que se commitea
+    # (`datos/fuera_desde.json`, en `bot/ci/guardar.sh`).
+    #
+    # ⚠️ VA DESPUÉS DE 1b Y DE 2: pregunta por el portón de ESTA corrida.
+    paso('2e', 'las tarjetas de quien se fue hace una semana')
+    if not correr:
+        print('      correría bot/fuera.py --aplicar')
+    else:
+        corre(['bot/fuera.py', '--aplicar'], callado=False)
     return None
 
 
