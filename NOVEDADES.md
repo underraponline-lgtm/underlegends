@@ -225,6 +225,14 @@ Son las que no se pueden volver a preguntar ni olvidar.
 |---|---|---|
 | **El bot no le manda DMs a nadie más que a Dlx.** Lo de cada persona —tarjeta desbloqueada, rango, eventos— va **sólo** por la notificación de la página | *«eso de notificaciones sólo queremos que sea por la website y la notificación. No quiero que haya riesgo de que nos baneen el bot»* | Hoy son dos DMs y los dos a `DUENO`: las alertas (`bot/alertar.py`) y su «probando» (`bot/avisos.js`). `herramientas/sin_dm.py` pone rojo a CI si aparece un DM a otra persona |
 
+### Lo que dijo Dlx el 27/09
+
+| regla | Dlx | dónde |
+|---|---|---|
+| **La revisión de permisos de Discord va por el camino liviano**: se piden Message Content y Server Members tal como el bot funciona hoy, sin rehacerlo | *«no te preocupes mucho de eso… hay muchos bots que funcionan así»* | el formulario lo llena Dlx; las respuestas, abajo en «🔑 La revisión de permisos» |
+| **Cada uno borra lo suyo con un comando** | *«podríamos hacer un comando para delete-my-data»* | ✅ `/borrar-mis-datos` (`/delete-my-data` en inglés), en `bot/worker.js` |
+| **El bot es privado**: sólo Dlx lo suma a un servidor | *«Sí, privado»* | lo cambia Dlx en el portal: Bot → «Public Bot» |
+
 ⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
@@ -476,6 +484,26 @@ Dlx: *«check other bugs, improvements, optimization stuff you can do»*. Lo que
 - **Horas en ET** en los commits del ciclo, `decisiones.json`, los avisos de cuota y (desde las 9:35 PM) el pie de `/lobby` del Worker.
 
 ---
+
+## 🔑 La revisión de permisos de Discord (plazo: 24/12/2026)
+
+Discord avisó el 25/09 que LIGA GLOBAL pasó los 10.000 usuarios, y desde ahí
+los permisos privilegiados necesitan revisión. **Si no se envía antes del
+24/12, se quitan**, y sin ellos el bot deja de leer las llaves, los anuncios y
+las inscripciones (texto de los mensajes) y de ver quién tiene el Miembro
+(miembros). Hasta esa fecha todo sigue andando igual.
+
+**Qué hay hecho:** la [política de privacidad](https://underlegends.pages.dev/privacidad)
+y los [términos](https://underlegends.pages.dev/terminos), en español y en
+inglés, y `/borrar-mis-datos`.
+
+**Qué hace Dlx, cuando quiera:**
+1. *General Information*: Privacy Policy URL `https://underlegends.pages.dev/privacidad` y
+   Terms of Service URL `https://underlegends.pages.dev/terminos`.
+2. *Bot*: apagar «Public Bot» y «Presence Intent» (no lo usa nada).
+3. El formulario: marcar **Server Members** y **Message Content** (Presence no). Las
+   respuestas están en el chat del 27/09 y en `docs/revision_discord.md`; faltan
+   los links a capturas que pide para cada permiso.
 
 ## ❓ Esperando a Dlx
 
