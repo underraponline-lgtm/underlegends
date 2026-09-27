@@ -119,6 +119,49 @@ function zonaCorta(d) {
     return (p.filter(function (x) { return x.type === 'timeZoneName'; })[0] || {}).value || '';
   } catch (e) { return ''; }
 }
+/* 🔑 LA HORA CON TU BANDERA, NO CON «EDT». Dlx, 27/09/2026: *«que ahí
+   aparezca la hora del evento pero con la bandera del país del usuario si
+   está conectado en Discord, o con la zona local si no… porque al decir EDT
+   o EST confunde a algunos»*. La hora sigue siendo la de quien mira; lo que
+   cambia es cómo se dice de dónde es.
+
+   ⚠️ LA BANDERA SÓLO SI ES LA HORA DE ESE PAÍS: si alguien de Argentina mira
+   desde otra zona, o fijó otra en Ajustes, la hora que ve no es la de
+   Argentina, y la bandera mentiría. Se comparan los desfases en ese
+   instante —con el horario de verano incluido—; si no coinciden, «hora
+   local». Para los países con varias zonas vale la principal. */
+var ZONA_PAIS = { ar: 'America/Argentina/Buenos_Aires', bo: 'America/La_Paz', br: 'America/Sao_Paulo',
+  cl: 'America/Santiago', co: 'America/Bogota', cr: 'America/Costa_Rica', cu: 'America/Havana',
+  do: 'America/Santo_Domingo', ec: 'America/Guayaquil', es: 'Europe/Madrid', gt: 'America/Guatemala',
+  hn: 'America/Tegucigalpa', mx: 'America/Mexico_City', ni: 'America/Managua', pa: 'America/Panama',
+  pe: 'America/Lima', pr: 'America/Puerto_Rico', py: 'America/Asuncion', sv: 'America/El_Salvador',
+  us: 'America/New_York', uy: 'America/Montevideo', ve: 'America/Caracas' };
+function desfase(tz, d) {
+  try {
+    var p = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: 'numeric',
+      day: 'numeric', hour: 'numeric', minute: 'numeric' }).formatToParts(d).forEach(function (x) {
+      p[x.type] = x.value;
+    });
+    return Math.round((Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute) -
+      Math.floor(d.getTime() / 60000) * 60000) / 60000);
+  } catch (e) { return null; }
+}
+/* el país de quien mira: el de su Discord si entró, o el de quien eligió ser */
+function ccMio() {
+  var f = typeof yo === 'function' ? yo() : null;
+  return String((DC && DC.cc) || (f && f.cc) || '').toLowerCase();
+}
+function etiquetaHora(d) {
+  var t = d ? new Date(d) : new Date(), cc = ccMio(), tp = ZONA_PAIS[cc];
+  if (cc && tp && bandera(cc)) {
+    var mia = zona() ? desfase(zona(), t) : -t.getTimezoneOffset();
+    if (mia != null && mia === desfase(tp, t)) {
+      return '<span class="z-pais" title="Hora de ' + esc(nombrePais(cc)) + '">' + bandera(cc) + '</span>';
+    }
+  }
+  return '<span class="z-loc" title="' + esc(zonaCorta(t)) + '">hora local</span>';
+}
 // el día de un instante en la zona de quien mira: 'AAAA-MM-DD'
 function diaDe(d) {
   try {
@@ -226,7 +269,7 @@ function ruta() {
 // la campana.
 // 🔑 `#/duelos` TAMBIÉN: Duelos pasó a ser un ranking (Dlx, 25/09/2026) y
 // su lugar en el menú es del Pase. Los links viejos abren ese ranking.
-var ALIAS = { avisos: 'eventos', duelos: 'ranking' };
+var ALIAS = { avisos: 'eventos', duelos: 'ranking', llave: 'eventos' };
 
 function ir() {
   // los menús de arriba se cierran al cambiar de página: quedaban abiertos
@@ -252,6 +295,9 @@ function ir() {
   if (r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
   if (r === 'pais') pintaPais(partes[1] || '');
   if (r === 'cambios') cargarCambios(pintaCambios);
+  // 🔑 `#/llave/<número>` ABRE ESA LLAVE, encima del calendario. Dlx, 27/09/2026,
+  // «me gusta todo»: el link de cada llave es para pegarlo en Discord.
+  if (partes[0] === 'llave' && partes[1]) abrirLlave(dec(partes[1]));
   // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
   // Inicio, y deja mandar el link de un ranking puntual.
   if (r === 'ranking') {
@@ -385,7 +431,7 @@ function vieneDestacado(e) {
     (e.sin_hora
       ? '<p class="vi-cuando"><span>Anunciado ' + esc(cuandoSe(e.cuando)) + '</span></p>'
       : '<div class="vi-cuando"><span>' + esc(fmtFecha(iso, { weekday: 'long', day: 'numeric',
-          month: 'long' })) + ' &middot; <b>' + esc(fmtHora(iso)) + ' ' + esc(zonaCorta(iso)) + '</b></span>' +
+          month: 'long' })) + ' &middot; <b>' + esc(fmtHora(iso)) + ' ' + etiquetaHora(iso) + '</b></span>' +
         '<span class="reloj" data-t="' + esc(t) + '">&middot;</span></div>') +
     (chips ? '<div class="vi-chips">' + chips + '</div>' : '') +
     '<div class="vi-acc">' +
@@ -465,6 +511,19 @@ function logoSv(sv, tam) {
   return x.logo ? '<img class="sv-mini" src="' + esc(x.logo) + '" alt="" width="' + tam +
     '" height="' + tam + '" loading="lazy" decoding="async">' : '';
 }
+/* 🔑 LOS PUNTOS DE ASCENSO DE ESE RANGO, EN SU SERVIDOR. Dlx, 27/09/2026,
+   con la tabla de Snake Rap: «Rango 4» dice poco sin saber que al 1° le da
+   1.000. Son de SU ranking, no de la Liga. */
+function puntosRango(sv, rg) {
+  var t = svDe(sv).rangos, m = /^Rango (\w+)$/.exec(String(rg || ''));
+  var ps = t && m && t[m[1]];
+  return ps ? ps.map(function (p, i) { return (i < 3 ? (i + 1) + '°' : '4°') + ' ' + num(p); }).join(' · ') : '';
+}
+function tituloRango(sv, rg) {
+  var p = puntosRango(sv, rg);
+  return 'El rango de este evento en ' + nombreSv(sv) + (p ? ': ' + p + ' puntos de ascenso en ' +
+    nombreSv(sv) + ' (no en la Liga)' : '');
+}
 function chipSv(sv) {
   return '<span class="chip-sv" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 18) +
     esc(nombreSv(sv) || sv) + '</span>';
@@ -491,8 +550,8 @@ function pintaPasados() {
       e.modalidad ? esc(e.modalidad) : ''].filter(Boolean).join(' &middot; ');
     // 🔑 EL RANGO DEL EVENTO, cuando el anuncio lo dice: es el de SU
     // servidor («aplica solo para el servidor local», Dlx 25/09/2026).
-    var rg = e.rango ? '<span class="rg-ev" title="El rango de este evento en ' +
-      esc(nombreSv(e.sv)) + '">' + esc(e.rango) + '</span>' : '';
+    var rg = e.rango ? '<span class="rg-ev" title="' + esc(tituloRango(e.sv, e.rango)) + '">' +
+      esc(e.rango) + '</span>' : '';
     return '<article class="ps" style="--c:' + esc(colorSv(e.sv)) + '">' +
       '<header><span class="ps-chips">' + chipSv(e.sv) + rg + '</span>' +
       '<span class="hace">' + esc(cuandoSe(e.cuando)) + '</span></header>' +
@@ -547,18 +606,36 @@ function conBanderas(x) {
   return (out + esc(txt)).trim();
 }
 
+/* la llave abierta: para volver a dibujarla al cambiar de vista y para la
+   barra de quien se sigue */
+var LL = null;
+var LL_VISTA = '';
+var HOVER = !!(window.matchMedia && window.matchMedia('(hover:hover)').matches);
 function abrirLlave(n) {
   var L = (D.llaves || {})[n];
   if (!L) return;
   var k = {};
   (D.tabla || []).forEach(function (f) { k[f.n] = f.k; });
   // 🔑 CON SU CARA Y LA BANDERA A LA DERECHA, como en el ranking; tocar
-  // un nombre abre su perfil
-  var quien = function (x) {
+  // un nombre abre su perfil. En un equipo va sin cara: las caras van
+  // juntas, adelante (ver `cara`).
+  var quien = function (x, sinCara) {
     var f = k[x] && porK(k[x]);
-    return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + avatar(f, 18) +
+    return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + (sinCara ? '' : avatar(f, 18)) +
       '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + '</button>' : conBanderas(x);
   };
+  var cara = function (x) {
+    var f = k[x] && porK(k[x]);
+    return avatar(f || { n: String(x || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim() }, 20);
+  };
+  // los puntos y el puesto de cada uno en esta llave, para la barra de «seguir»
+  var pts = {};
+  (L.tabla || []).forEach(function (r) { if (k[r[0]]) pts[k[r[0]]] = [r[1], r[2]]; });
+  // ⚠️ EL CUADRO PRIMERO, también en el teléfono. Dlx, 27/09/2026: «que el
+  // default sea cuadros, no por rondas». «Por rondas» queda al lado.
+  if (!LL_VISTA) LL_VISTA = 'cuadro';
+  LL = { n: n, L: L, quien: quien, cara: cara, pts: pts };
+  FIJO = '';
   var sv = svDe(L.sv);
   $('#visorLlave .v-pos').innerHTML = sv.logo
     ? '<img class="l-logo" src="' + esc(sv.logo) + '" alt="" width="44" height="44">' : '&#127942;';
@@ -575,9 +652,11 @@ function abrirLlave(n) {
   $('#lNombre').textContent = L.nombre;
   $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) +
     (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
-    (rgo ? '<span class="rg-ev">' + esc(rgo) + '</span>' : '') + '</span>' +
+    (rgo ? '<span class="rg-ev" title="' + esc(tituloRango(L.sv, rgo)) + '">' + esc(rgo) + '</span>' : '') +
+    (puntosRango(L.sv, rgo) ? '<span class="rg-pts">' + esc(puntosRango(L.sv, rgo)) +
+      ' pts de ascenso en ' + esc(nombreSv(L.sv)) + '</span>' : '') + '</span>' +
     '<span class="l-datos">' + [cal ? esc(fmtFecha(cal.t, { weekday: 'short', day: 'numeric', month: 'short' })) +
-      ' &middot; ' + esc(fmtHora(cal.t)) + ' ' + esc(zonaCorta(cal.t)) : esc(L.fecha),
+      ' &middot; ' + esc(fmtHora(cal.t)) + ' ' + etiquetaHora(cal.t) : esc(L.fecha),
     L.participantes ? esc(L.participantes) + ' raperos' : '',
     org ? 'organizó <b>' + esc(org) + '</b>' : '',
     inf.pre ? '&#127941; ' + esc(inf.pre) : ''].filter(Boolean).join(' &middot; ') + '</span>';
@@ -607,7 +686,8 @@ function abrirLlave(n) {
       'rel="noopener noreferrer"><span>' +
       (t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord') +
       '</span><i class="ir">&#8599;</i></a>';
-  }).join('');
+  }).join('') + '<button type="button" class="bajar" data-copiar-llave="' + esc(n) + '">' +
+    '<i aria-hidden="true">&#128279;</i><span>Copiar el link de esta llave</span></button>';
   // ⚠️ SIN UN «PODIO» APARTE: repetía las cuatro primeras filas de «Los
   // puntos», que ya llevan su medalla. Con el cuadro arriba, el campeón
   // ya está a la vista.
@@ -627,25 +707,140 @@ function abrirLlave(n) {
   var ley = '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
     '<span class="ley-p"><i></i>Quedó afuera</span><span class="ley-o"><i></i>El camino del campeón</span>' +
     '<span class="ley-n">Arriba de cada ronda, los puntos de quien queda afuera ahí' +
-    (window.matchMedia && window.matchMedia('(hover:hover)').matches
-      ? '. Pasá el mouse por un nombre y se ve todo su camino.' : '.') + '</span></div>';
+    (HOVER ? '. Pasá el mouse por un nombre y se ve todo su camino.'
+      : '. Tocá un nombre y se ve todo su camino; tocalo otra vez para abrir su perfil.') + '</span></div>';
+  // 🔑 DOS FORMAS DE VERLA: el cuadro, y por rondas de arriba abajo —cómoda en
+  // el teléfono, donde el cuadro obliga a correrlo de costado—.
+  var vistas = '<div class="l-vista" role="group" aria-label="Cómo ver la llave">' +
+    [['cuadro', 'Cuadro'], ['rondas', 'Por rondas']].map(function (v) {
+      return '<button type="button" data-lvista="' + v[0] + '" aria-pressed="' + (LL_VISTA === v[0]) + '">' +
+        v[1] + '</button>';
+    }).join('') + '</div>';
   $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') +
-    ley + cuadro(L, quien) +
+    ley + vistas + '<div class="l-sigue" id="lSigue" hidden></div><div id="lVista"></div>' +
     (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
+  pintaVistaLlave();
   $('#visorLlave').hidden = false;
   $('#lCuerpo').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+function pintaVistaLlave() {
+  if (!LL || !$('#lVista')) return;
+  $$('[data-lvista]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lvista === LL_VISTA)); });
+  $('#lVista').innerHTML = LL_VISTA === 'rondas' ? rondasLista(LL.L, LL.quien, LL.cara)
+    : cuadro(LL.L, LL.quien, LL.cara);
   // en espejo la final va en el medio: se arranca mirándola
   var cc = $('#lCuerpo .cuadro-caja');
   if (cc && window.innerWidth >= 760 && cc.scrollWidth > cc.clientWidth) {
     cc.scrollLeft = (cc.scrollWidth - cc.clientWidth) / 2;
   }
-  document.body.style.overflow = 'hidden';
+  if (FIJO) seguirEnLlave(FIJO, true);
+}
+/* 🔑 SEGUIR A ALGUIEN POR LA LLAVE, y cuánto sumó ahí. Con el mouse, al pasar
+   por encima; en el teléfono, tocando el nombre (Dlx, 27/09/2026, a «tocar
+   un nombre ilumina su camino y dice cuánto sumó»: «me gusta todo»). */
+var FIJO = '';
+function seguirEnLlave(k, fijo) {
+  $$('#lCuerpo .sigue').forEach(function (x) { x.classList.remove('sigue'); });
+  var bar = $('#lSigue');
+  if (!k) { if (bar) bar.hidden = true; return; }
+  $$('#lCuerpo .ql').forEach(function (x) {
+    if (x.dataset.k !== k || x.closest('.lpod,.pgs,.l-sigue')) return;
+    x.classList.add('sigue');
+    var bx = x.closest('.bx,.camp,.bl');
+    if (bx) bx.classList.add('sigue');
+  });
+  var f = porK(k), p = LL && LL.pts[k];
+  if (!bar || !f) return;
+  bar.innerHTML = '<span class="ls-q">' + quienEs(f, 26) + '</span>' +
+    (p ? '<span class="ls-d">' + (MEDALLA[p[0]] ? MEDALLA[p[0]] + ' ' : '') + esc(p[0]) +
+      ' &middot; <b>' + num(p[1]) + ' pts</b></span>' : '') +
+    '<button type="button" class="btn sec ls-perf" data-k="' + esc(k) + '">Ver perfil</button>' +
+    (fijo ? '<button type="button" class="ls-x" data-sigue-x aria-label="Dejar de seguir">&times;</button>' : '');
+  bar.hidden = false;
+}
+/* 🔑 LO QUE LA LLAVE NO DICE CON UN NOMBRE, CON UNA ETIQUETA: revivido,
+   walk-in, pokémon, refuerzo, el tercero que dio el podio y cuántos pasan
+   de un grupo. Antes era sólo el `title` de la caja, que en el teléfono no
+   se ve nunca. */
+function etiquetasNota(nota) {
+  var s = String(nota || ''), out = [];
+  var t = /pasan (\d+)/.exec(s);
+  if (t) out.push(t[1] === '0' ? 'No pasó nadie' : 'Pasan ' + t[1]);
+  if (/revivid/i.test(s)) out.push('Revivido');
+  if (/walk-?in/i.test(s)) out.push('Walk-in');
+  if (/pok[eé]mon/i.test(s)) out.push('Pokémon');
+  if (/refuerzo/i.test(s)) out.push('Refuerzo');
+  if (/^podio/i.test(s)) out.push('Por el podio');
+  return out;
+}
+function etiquetasHtml(nota) {
+  var et = etiquetasNota(nota);
+  return et.length ? et.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') : '';
+}
+/* los puntos de cada integrante en esta llave, y lo que vale quedar afuera en
+   una ronda: el mismo número para el cuadro y para la lista */
+function ptsDeLlave(L) {
+  var ptsDe = {};
+  (L.tabla || []).forEach(function (t) {
+    miembrosDe(t[0]).forEach(function (m) { ptsDe[m] = t[2]; });
+  });
+  return ptsDe;
+}
+function valeRonda(R, ptsDe) {
+  var vs = [];
+  R.b.forEach(function (b) {
+    (b[0] || []).forEach(function (s) {
+      if (b[1] && (b[1] === s || comparten(b[1], s))) return;
+      miembrosDe(s).forEach(function (m) { if (ptsDe[m] != null) vs.push(ptsDe[m]); });
+    });
+  });
+  return vs.length && vs.every(function (v) { return v === vs[0]; }) ? vs[0] : null;
+}
+/* 🔑 LA LLAVE POR RONDAS: cada ronda con su valor, y cada batalla con quién
+   pasó marcado. Es la vista del teléfono: se lee bajando, como un chat. */
+function rondasLista(L, quien, cara) {
+  var rs = (L.rondas || []).filter(function (R) { return R.b.length; });
+  if (!rs.length) return '';
+  var ptsDe = ptsDeLlave(L);
+  var prin = rs.filter(function (R) { return R.r !== 'Tercer puesto'; });
+  var ult = prin[prin.length - 1];
+  var lado = function (s, gano) {
+    var ms = String(s || '').split(/,\s*/).filter(Boolean);
+    var eq = ms.length > 1;
+    return '<div class="bl-l' + (gano ? ' g' : '') + (eq ? ' eq' : '') + '">' +
+      (eq ? '<span class="eq-caras">' + ms.map(cara).join('') + '</span>' : '') +
+      '<span class="bl-n">' + ms.map(function (m) { return quien(m, eq); }).join('<i class="coma">&middot;</i>') +
+      '</span>' + (gano ? '<span class="bl-ok" title="Pasó">&#10003;</span>' : '') + '</div>';
+  };
+  return '<div class="rl-lista">' + rs.map(function (R) {
+    var v = valeRonda(R, ptsDe);
+    var esFin = R === ult && R.b.length === 1, camp = esFin ? (R.b[0] || [])[1] : '';
+    var ptsC = camp && ptsDe[miembrosDe(camp)[0]];
+    return '<section class="rl-r' + (esFin ? ' fin' : '') + '"><h5>' + esc(R.r) +
+      (v != null ? '<small>' + num(v) + ' pts</small>' : '') + '</h5>' +
+      R.b.map(function (b) {
+        var et = etiquetasHtml(b[2]);
+        return '<div class="bl"' + (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' +
+          (et ? '<div class="bx-et">' + et + '</div>' : '') +
+          (b[0] || []).map(function (s, i) {
+            return (i ? '<i class="bl-vs">vs</i>' : '') + lado(s, b[1] && (b[1] === s || comparten(b[1], s)));
+          }).join('') + '</div>';
+      }).join('') +
+      (camp ? '<p class="bl-camp"><span>&#127942; Campeón</span>' + String(camp).split(/,\s*/).map(function (m) {
+        return quien(m);
+      }).join('<i class="coma">&middot;</i>') + (ptsC != null ? '<b>' + num(ptsC) + ' pts</b>' : '') + '</p>' : '') +
+      '</section>';
+  }).join('') + '</div>';
 }
 
 function cerrarLlave() {
   $('#visorLlave').hidden = true;
   if ($('#visor').hidden) document.body.style.overflow = '';
+  FIJO = '';
+  // abierta por su link: al cerrarla queda el calendario, sin volver a abrirla
+  if (/^#\/llave\//.test(location.hash)) history.replaceState(null, '', '#/eventos');
 }
 
 /* ── podio y récords ──────────────────────────────────────────────── */
@@ -1631,7 +1826,7 @@ function comparten(a, b) {
   return miembrosDe(a).some(function (x) { return mb.indexOf(x) >= 0; });
 }
 
-function cuadro(L, quien) {
+function cuadro(L, quien, cara) {
   var todas = L.rondas || [];
   var rs = todas.filter(function (R) { return R.r !== 'Tercer puesto' && R.b.length; });
   var ter = todas.filter(function (R) { return R.r === 'Tercer puesto' && R.b.length; })[0];
@@ -1725,21 +1920,8 @@ function cuadro(L, quien) {
   // de abajo, que antes había que cruzar a mano. Sale de la tabla de la
   // misma llave; si en una ronda no todos se llevan lo mismo (las semis con
   // tercer puesto), no se escribe nada antes que un número a medias.
-  var ptsDe = {};
-  (L.tabla || []).forEach(function (t) {
-    miembrosDe(t[0]).forEach(function (m) { ptsDe[m] = t[2]; });
-  });
-  var valeRonda = function (R) {
-    var vs = [];
-    R.b.forEach(function (b) {
-      (b[0] || []).forEach(function (s) {
-        if (b[1] && (b[1] === s || comparten(b[1], s))) return;
-        miembrosDe(s).forEach(function (m) { if (ptsDe[m] != null) vs.push(ptsDe[m]); });
-      });
-    });
-    return vs.length && vs.every(function (v) { return v === vs[0]; }) ? vs[0] : null;
-  };
-  var vale = rs.map(valeRonda);
+  var ptsDe = ptsDeLlave(L);
+  var vale = rs.map(function (R) { return valeRonda(R, ptsDe); });
   var ptsCamp = (function () {
     var m = miembrosDe((rs[n - 1].b[0] || [])[1])[0];
     return m && ptsDe[m] != null ? ptsDe[m] : null;
@@ -1763,9 +1945,13 @@ function cuadro(L, quien) {
       (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' + b[0].map(function (s) {
         var g = b[1] && (b[1] === s || comparten(b[1], s));
         var eq = miembros(s) > 1;
+        // 🔑 EL EQUIPO, EN UN BLOQUE: las caras juntas adelante y los nombres
+        // al lado (Dlx, 27/09/2026, «me gusta todo»)
         return '<div class="ld' + (g ? ' g' : '') + (eq ? ' eq' : '') + '" style="height:' + altoLado(s) +
-          'px" title="' + esc(s) + '"><span class="nm">' + (eq ? String(s).split(/,\s*/).map(function (m) {
-            return '<span class="mb">' + quien(m) + '</span>';
+          'px" title="' + esc(s) + '">' + (eq && cara ? '<span class="eq-caras">' +
+            String(s).split(/,\s*/).map(cara).join('') + '</span>' : '') +
+          '<span class="nm">' + (eq ? String(s).split(/,\s*/).map(function (m) {
+            return '<span class="mb">' + quien(m, !!cara) + '</span>';
           }).join('') : lado(s)) + '</span></div>';
       }).join('') + '</div>';
   };
@@ -1776,6 +1962,11 @@ function cuadro(L, quien) {
     var p = pos[k], b = rs[p.r].b[p.i];
     var esFinal = p.r === n - 1 && rs[n - 1].b.length === 1;
     html.push(caja(b, X(p), TOPE + p.y, esFinal ? ' fin' : ''));
+    var et = etiquetasHtml(b[2]);
+    if (et) {
+      html.push('<span class="bx-et" style="left:' + X(p) + 'px;width:' + W + 'px;top:' +
+        Math.round(TOPE + p.y - alto(b) / 2 - 9) + 'px">' + et + '</span>');
+    }
     hijos(p.r, p.i).forEach(function (j) {
       var c = pos[(p.r - 1) + ':' + j];
       if (!c) return;
@@ -1944,7 +2135,8 @@ function pintaDia(M) {
   $('#diaTit').innerHTML = '<span>&#128197;</span> ' +
     (txt ? esc(txt.charAt(0).toUpperCase() + txt.slice(1)) : 'El día') +
     (evs.length ? '<small class="dia-n">' + evs.length + (evs.length === 1 ? ' evento' : ' eventos') +
-      ' &middot; hora ' + esc(zonaCorta(evs[0].t)) + '</small>' : '');
+      ' &middot; ' + (function (z) { return z.indexOf('z-pais') >= 0 ? 'hora ' + z : z; })(etiquetaHora(evs[0].t)) +
+      '</small>' : '');
   if (!evs.length) {
     $('#diaLista').innerHTML = '<p class="dia-no">Ese día no hubo eventos.</p>';
     return;
@@ -2077,7 +2269,7 @@ function pintaEvCab() {
     h += '<div class="evc-prox" style="--c:' + esc(colorSv(prox.sv)) + '">' +
       '<span class="evc-et">Próximo evento</span><b class="evc-n1">' + esc(prox.n) + '</b>' +
       '<div class="evc-sub">' + chipSv(prox.sv) + '<span>' + esc(fmtFecha(prox.t, { weekday: 'long' })) +
-        ' &middot; ' + esc(fmtHora(prox.t)) + ' ' + esc(zonaCorta(prox.t)) + '</span></div>' +
+        ' &middot; ' + esc(fmtHora(prox.t)) + ' ' + etiquetaHora(prox.t) + '</span></div>' +
       '<span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) + '">&middot;</span>' +
       '<a class="evc-g" href="' + esc(googleEv(prox)) + '" target="_blank" rel="noopener noreferrer">' +
       '&#128197; Agregar este evento a Google Calendar</a></div>';
@@ -2140,6 +2332,22 @@ function pintaEvCab() {
 }
 /* el teléfono: ahí Google Calendar no suma calendarios por link */
 var ANDROID = /Android/i.test(navigator.userAgent);
+/* 🔑 LOS LINKS DE DISCORD, EN LA APP. Dlx, 27/09/2026: *«hago clic en la
+   llave pero me lleva a Discord en el website cuando tengo la app»*. En
+   Android el navegador abre discord.com como página; un `intent://` le pide
+   al sistema la app de Discord, y si no está, vuelve al mismo link en el
+   navegador (`browser_fallback_url`). En el iPhone el link de siempre ya
+   abre la app, así que ahí no se toca. */
+document.addEventListener('click', function (e) {
+  if (!ANDROID || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+  var a = e.target && e.target.closest && e.target.closest('a[href]');
+  var m = a && /^https:\/\/((?:(?:ptb|canary)\.)?discord(?:app)?\.com\/(?:channels|invite)\/[^\s#]+|discord\.gg\/[^\s#?]+)/i
+    .exec(a.href);
+  if (!m) return;
+  e.preventDefault();
+  location.href = 'intent://' + m[1] + '#Intent;scheme=https;package=com.discord;S.browser_fallback_url=' +
+    encodeURIComponent(a.href) + ';end';
+});
 var MOVIL = ANDROID || /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
@@ -2504,6 +2712,76 @@ function perfiles() {
 var CARTA_TIT = { temporada: 'Temporada', competitivo: 'Competitiva', pais: 'País', servidor: 'Servidor' };
 var PERF_CARTA = {};
 
+/* 🔑 «SIN VERIFICAR», CON EL PORQUÉ. Dlx, 27/09/2026: «que aparezca en alguna
+   parte que no está verificado». `nv` viene del payload con lo primero que le
+   falta del portón (`_sin_verificar()` en bot/subir_web.py). */
+var NV = { id: 'su Discord todavía no está vinculado a la Liga',
+  pais: 'le falta el país', dra: 'tiene que ser Miembro de Discord Rap Español' };
+/* 🔑 EL GRÁFICO DE FORTALEZAS. Dlx, 27/09/2026: «en mi perfil de la hoja de
+   la pre-temporada había un gráfico donde comparaba las estadísticas del
+   competitivo y te mostraba cuál era más fuerte y menos». Es el radar de «Mi
+   Perfil» con las cinco dimensiones del Score, más el promedio de la Liga
+   para comparar. */
+var DIMS = [['⚡', 'Eficiencia'], ['🎯', 'Consistencia'], ['👑', 'Dominancia'], ['🔥', 'Racha'],
+  ['🌍', 'Diversidad']];
+function radar(v, prom, color) {
+  var cx = 150, cy = 120, R = 84, n = v.length;
+  var pt = function (i, r) {
+    var a = Math.PI * 2 * i / n - Math.PI / 2;
+    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  };
+  var poly = function (xs) {
+    return xs.map(function (x, i) {
+      var q = pt(i, R * Math.max(0, Math.min(100, x || 0)) / 100);
+      return q[0].toFixed(1) + ',' + q[1].toFixed(1);
+    }).join(' ');
+  };
+  var mx = Math.max.apply(null, v);
+  var s = '';
+  [25, 50, 75, 100].forEach(function (f) { s += '<polygon class="rd-red" points="' + poly([f, f, f, f, f]) + '"/>'; });
+  v.forEach(function (_x, i) {
+    var q = pt(i, R);
+    s += '<line class="rd-eje" x1="' + cx + '" y1="' + cy + '" x2="' + q[0].toFixed(1) + '" y2="' + q[1].toFixed(1) + '"/>';
+  });
+  if (prom && prom.length === n) s += '<polygon class="rd-prom" points="' + poly(prom) + '"/>';
+  s += '<polygon class="rd-yo" points="' + poly(v) + '"/>';
+  v.forEach(function (x, i) {
+    var q = pt(i, R * Math.max(0, Math.min(100, x)) / 100), l = pt(i, R + 20);
+    var an = Math.abs(l[0] - cx) < 10 ? 'middle' : l[0] > cx ? 'start' : 'end';
+    s += '<circle class="rd-p" cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="3.5"/>' +
+      '<text class="rd-l' + (x === mx && mx > 0 ? ' fuerte' : '') + '" x="' + l[0].toFixed(1) + '" y="' +
+      (l[1] + 5).toFixed(1) + '" text-anchor="' + an + '">' + DIMS[i][0] + ' ' + x + '</text>';
+  });
+  return '<svg class="radar" viewBox="0 0 300 240" style="--c:' + esc(color) + '" role="img" aria-label="' +
+    esc(v.map(function (x, i) { return DIMS[i][1] + ' ' + x; }).join(', ')) + '">' + s + '</svg>';
+}
+function pintaJuego(f, x, prom) {
+  var v = x && x.dm;
+  if (!v || v.length !== 5) return;
+  var G = (D.guia && D.guia.score) || [];
+  var orden = v.map(function (n, i) { return [n, i]; }).sort(function (a, b) { return b[0] - a[0]; });
+  var fuerte = orden[0], flojo = orden[orden.length - 1];
+  var pide = reqDe('competitivo') || 10;
+  $('#pfJuego').innerHTML = '<div class="juego">' + radar(v, prom, f.rgc || '#29B298') +
+    '<div class="jg-tx"><p class="jg-res">' +
+      (fuerte[0] > 0 ? '<span><small>Su fuerte</small><b>' + DIMS[fuerte[1]][0] + ' ' + DIMS[fuerte[1]][1] +
+        '</b></span>' : '') +
+      (flojo[0] < fuerte[0] ? '<span><small>A trabajar</small><b>' + DIMS[flojo[1]][0] + ' ' +
+        DIMS[flojo[1]][1] + '</b></span>' : '') + '</p>' +
+      '<ul class="jg-l">' + v.map(function (n, i) {
+        var g = G[i] || [];
+        return '<li title="' + esc(g[2] || '') + '"><span>' + DIMS[i][0] + ' ' + DIMS[i][1] +
+          (g[3] ? ' <i>' + g[3] + '%</i>' : '') + '</span><b>' + n + '</b>' +
+          (prom && prom[i] != null ? '<s>Liga ' + prom[i] + '</s>' : '') + '</li>';
+      }).join('') + '</ul>' +
+      '<p class="jg-nota"><span class="ley-yo" style="border-top-color:' + esc(f.rgc || '#29B298') + '"></span>' +
+        esc(f.n) + (prom ? ' <span class="ley-li"></span>el promedio de la Liga' : '') +
+      '</p>' +
+      ((f.ev || 0) < pide ? '<p class="jg-nota">Provisorio: con pocos eventos cambia mucho. Cuenta para el ' +
+        'rango desde los ' + pide + ' eventos (lleva ' + (f.ev || 0) + ').</p>' : '') +
+    '</div></div>';
+  $('#pfJuegoSec').hidden = false;
+}
 function pintaPerfil(k) {
   // 🔑 QUIEN ENTRÓ CON DISCORD Y NO JUGÓ LA TEMPORADA también tiene su perfil
   // (Dlx, 25/09/2026: «cuando toco mi perfil debería ver mi perfil»). Sólo
@@ -2535,7 +2813,11 @@ function pintaPerfil(k) {
     '<header class="pf-cab">' + avatar(f, 116) +
       '<div class="pf-id"><span class="pf-pos">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) +
         ' de la temporada' : 'Todavía sin eventos esta temporada') + '</span>' +
-      '<h1 class="tit">' + esc(f.n) + '</h1><p class="pf-sub">' + sub +
+      '<h1 class="tit">' + esc(f.n) + '</h1>' +
+      (f.nv ? '<p class="pf-nv"><span class="nv-et">Sin verificar</span><span>' + esc(NV[f.nv] || '') +
+        (k === YO || (DC && DC.clave === k) ? ' — en DRA, <code>/verificar</code> te dice qué hacer' : '') +
+        '</span></p>' : '') +
+      '<p class="pf-sub">' + sub +
       '<span id="pfCrew"></span></p><p class="pf-redes" id="pfRedes" hidden></p>' +
       // no se sigue uno mismo
       (k === YO || (DC && DC.clave === k) ? '' : '<p class="pf-acc">' + botonSigo(k) + '</p>') + '</div>' +
@@ -2558,7 +2840,8 @@ function pintaPerfil(k) {
             // 🔑 la foto, desde tu propia tarjeta (Dlx, 25/09/2026)
             (DC && DC.clave === k ? '<button class="bajar" type="button" data-foto><i aria-hidden="true">' +
               '&#128247;</i><span>Cambiar mi foto</span></button>' : '') + '</div>'
-          : '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>') +
+          : '<p class="sin-carta">' + (f.nv ? 'No tiene tarjetas porque no está verificado: ' +
+            esc(NV[f.nv] || '') + '.' : 'Todavía no tiene ninguna tarjeta emitida.') + '</p>') +
       '</section>' +
       '<div class="col">' +
         '<section class="blk entro"><h2><span>&#128202;</span> Sus números</h2><div class="pf-nums">' +
@@ -2570,6 +2853,8 @@ function pintaPerfil(k) {
           '<div><b id="pfDu">—</b><span>Duelos ganados</span></div>' +
           '<div><b id="pfRd">—</b><span>Racha de duelos</span></div>' +
         '</div></section>' +
+        '<section class="blk entro" id="pfJuegoSec" hidden><h2><span>&#128170;</span> Sus fortalezas</h2>' +
+          '<div id="pfJuego"></div></section>' +
         '<section class="blk entro"><h2><span>&#127919;</span> Lo que le falta</h2>' +
           '<div class="pf-req" id="pfReq"><p class="nota">Cargando…</p></div></section>' +
         '<section class="blk entro" id="pfRkSec" hidden><h2><span>&#127942;</span> En cada ranking</h2>' +
@@ -2601,6 +2886,7 @@ function pintaPerfil(k) {
       $('#pfRedes').innerHTML = redes(x.redes, 'chica');
       $('#pfRedes').hidden = false;
     }
+    try { pintaJuego(f, x, P.dmp); } catch (e) { console.error('[pintaJuego]', e); }
     var dus = x.du || [];
     var g = dus.filter(function (d) { return d[2]; }).length;
     $('#pfDu').innerHTML = dus.length ? g + '<s>/' + dus.length + '</s>' : '—';
@@ -2909,7 +3195,7 @@ function pintaYoPanel() {
     e.innerHTML = '<div class="teaser ev" style="--c:' + esc(colorSv(prox.sv)) + '">' +
       '<span class="evc-et">Próximo evento</span><h3>' + esc(prox.n) + '</h3>' + chipSv(prox.sv) +
       '<p>' + esc(fmtFecha(prox.t, { weekday: 'long' })) + ' &middot; ' + esc(fmtHora(prox.t)) + ' ' +
-      esc(zonaCorta(prox.t)) + '</p><span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) +
+      etiquetaHora(prox.t) + '</p><span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) +
       '">&middot;</span><a class="btn sec" href="#/eventos">Ver el calendario</a></div>';
     pintaRelojes();
   } else if (ult) {
@@ -3481,11 +3767,14 @@ function pintaCambios() {
     // 🔑 LA HORA, EN LA DE QUIEN MIRA. Dlx, 27/09/2026: «si es posible añade
     // la hora de cada changelog». `cuando` es el instante de la publicación;
     // las primeras cuatro se escribieron después y van sólo con el día.
-    if (x.cuando) f = fmtFecha(x.cuando, { day: 'numeric', month: 'long', year: 'numeric' }) +
-      ' · ' + fmtHora(x.cuando) + ' ' + zonaCorta(x.cuando);
+    var zh = '';
+    if (x.cuando) {
+      f = fmtFecha(x.cuando, { day: 'numeric', month: 'long', year: 'numeric' }) + ' · ' + fmtHora(x.cuando);
+      zh = ' ' + etiquetaHora(x.cuando);
+    }
     return '<article class="cambio' + (nueva ? ' es-nuevo' : '') + '">' +
       '<header>' + (x.version ? '<span class="ver-et">v' + esc(x.version) + '</span>' : '') +
-      '<time datetime="' + esc(x.cuando || x.dia) + '">' + esc(f) + '</time>' +
+      '<time datetime="' + esc(x.cuando || x.dia) + '">' + esc(f) + zh + '</time>' +
       (nueva ? '<span class="nuevo-et">Nuevo</span>' : '') +
       '<h2>' + esc(x.titulo) + '</h2></header><ul>' +
       (x.items || []).map(function (i) { return '<li>' + mdCorto(i) + '</li>'; }).join('') +
@@ -3862,18 +4151,14 @@ function eventos() {
   // tocar el nombre sigue abriendo su perfil.
   var SIGUE = '';
   document.addEventListener('mouseover', function (e) {
-    var q = e.target.closest && e.target.closest('.cuadro .ql[data-k]');
+    // ⚠️ SÓLO CON MOUSE DE VERDAD: el toque del teléfono también dispara un
+    // `mouseover`, y borraría el seguido que se eligió tocando
+    if (!HOVER || FIJO) return;
+    var q = e.target.closest && e.target.closest('#lVista .ql[data-k]');
     var k = q ? q.dataset.k : '';
     if (k === SIGUE) return;
     SIGUE = k;
-    $$('.cuadro .sigue').forEach(function (x) { x.classList.remove('sigue'); });
-    if (!k) return;
-    $$('.cuadro .ql').forEach(function (x) {
-      if (x.dataset.k !== k) return;
-      x.classList.add('sigue');
-      var bx = x.closest('.bx,.camp');
-      if (bx) bx.classList.add('sigue');
-    });
+    seguirEnLlave(k, false);
   });
   // el podio: flechas, puntos y las flechas del teclado cuando tiene el foco
   $('#podAntes').addEventListener('click', function () { moverPodio(-1); });
@@ -3904,7 +4189,28 @@ function eventos() {
     if (e.target.closest('[data-cerrar]')) cerrar();
   });
   $('#visorLlave').addEventListener('click', function (e) {
-    if (e.target.closest('[data-cerrar-llave]')) cerrarLlave();
+    if (e.target.closest('[data-cerrar-llave]')) { cerrarLlave(); return; }
+    if (e.target.closest('[data-sigue-x]')) { FIJO = ''; SIGUE = ''; seguirEnLlave(''); return; }
+    var bv = e.target.closest('[data-lvista]');
+    if (bv) { LL_VISTA = bv.dataset.lvista; pintaVistaLlave(); return; }
+    var cl = e.target.closest('[data-copiar-llave]');
+    if (cl) {
+      var u = location.origin + location.pathname + '#/llave/' + cl.dataset.copiarLlave;
+      var listo = function () { cl.querySelector('span').textContent = '✓ Link copiado'; };
+      try {
+        navigator.clipboard.writeText(u).then(listo, function () { window.prompt('Copiá el link:', u); });
+      } catch (x) { window.prompt('Copiá el link:', u); }
+      return;
+    }
+    // 🔑 EN EL TELÉFONO, EL PRIMER TOQUE SIGUE Y EL SEGUNDO ABRE EL PERFIL.
+    // Sin esto, tocar un nombre abría su perfil y el camino no se veía nunca.
+    var q = !HOVER && e.target.closest('#lVista .ql[data-k]');
+    if (q && FIJO !== q.dataset.k) {
+      e.preventDefault();
+      e.stopPropagation();
+      FIJO = q.dataset.k;
+      seguirEnLlave(FIJO, true);
+    }
   });
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-llave]');

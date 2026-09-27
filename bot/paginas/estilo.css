@@ -980,7 +980,10 @@ border-bottom:1px solid var(--bd2);font:800 .95rem/1.2 Archivo,sans-serif}
 #pasados{display:grid;gap:10px}
 .ps{padding:14px 16px 13px 18px;background:rgba(10,15,14,.82);border:1px solid var(--bd2);
 box-shadow:inset 4px 0 0 var(--c,#7E8B89)}
-.ps header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
+/* ⚠️ EL «HACE» SIEMPRE ARRIBA A LA DERECHA: con el rango del evento al lado
+   del servidor la fila no entraba y bajaba solo a otro renglón (Dlx lo vio
+   en el teléfono, 27/09/2026). Las pastillas se parten en su columna. */
+.ps header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px;margin-bottom:7px}
 /* ⚠️ MÁS GRANDE. Dlx, 25/09/2026: «hacé lo que dice "hace 1 día" más
    grande». Es lo primero que uno busca en un evento que ya pasó. */
 .ps .hace{color:var(--tx);white-space:nowrap;font:700 1.02rem/1 'Barlow Condensed',sans-serif;
@@ -1157,18 +1160,40 @@ letter-spacing:.12em;text-transform:uppercase}
    tienen los servidores». Es el «Entrar» de Mundo en chico: lleno del
    color de ese servidor (`--c`, que viaja en el payload), y el secundario
    con su borde. Sin servidor, el teal de la marca. */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
-padding:10px 16px;border-radius:3px;border:1px solid var(--c,var(--tl));
-background:var(--c,var(--tl));color:#050607;text-decoration:none;cursor:pointer;
-font:900 .78rem/1 Archivo,sans-serif;letter-spacing:.08em;text-transform:uppercase;
-transition:filter .15s,background .15s,color .15s}
-.btn:hover{filter:brightness(1.14)}
+/* 🔴 Y MÁS LINDOS. Dlx, 27/09/2026: «ya te dije que hagas que los botones se
+   hagan más bonitos». Eran rectángulos planos de 3 px de radio con letras
+   muy separadas. Ahora: esquinas de 10 px, una luz arriba, una sombra del
+   color del servidor que los despega del fondo, y se hunden al tocarlos.
+   ⚠️ EL TEXTO SE ELIGE SOLO, negro o blanco, según qué tan clara es `--c`:
+   sobre el violeta de FFA el negro quedaba en 4:1. Donde el navegador no
+   sabe calcularlo (color relativo), queda el negro de siempre. */
+.btn{--c0:var(--c,var(--tl));display:inline-flex;align-items:center;justify-content:center;gap:8px;
+min-height:40px;padding:9px 16px;border-radius:10px;border:1px solid var(--c0);
+background:var(--c0);color:#050607;text-decoration:none;cursor:pointer;white-space:nowrap;
+font:800 .8rem/1.1 Archivo,sans-serif;letter-spacing:.05em;text-transform:uppercase;
+box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 6px 16px -8px rgba(0,0,0,.9);
+transition:transform .15s ease,filter .15s,background .15s,box-shadow .15s,color .15s}
+@supports (background:color-mix(in srgb,red 50%,blue)){
+  .btn{background:linear-gradient(180deg,color-mix(in srgb,var(--c0) 82%,#fff),var(--c0) 62%);
+  border-color:color-mix(in srgb,var(--c0) 70%,#fff);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 20px -10px color-mix(in srgb,var(--c0) 85%,transparent)}}
+@supports (color:lch(from red l c h)){.btn{color:lch(from var(--c0) calc((50 - l) * infinity) 0 0)}}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.98);filter:brightness(.96)}
 .btn:focus-visible{outline:2px solid var(--tx);outline-offset:3px}
-.btn.sec{background:transparent;color:var(--tx);
-border-color:color-mix(in srgb,var(--c,var(--tl)) 70%,transparent)}
-.btn.sec:hover{background:color-mix(in srgb,var(--c,var(--tl)) 22%,transparent);filter:none}
-.btn.ancho{display:flex;width:100%;margin-top:14px;padding:13px 16px}
+.btn .ir{font-style:normal;opacity:.7}
+.btn.sec{background:rgba(255,255,255,.03);color:var(--tx);border-color:var(--bd);box-shadow:none}
+@supports (background:color-mix(in srgb,red 50%,blue)){
+  .btn.sec{background:color-mix(in srgb,var(--c0) 12%,rgba(255,255,255,.02));
+  border-color:color-mix(in srgb,var(--c0) 55%,transparent)}
+  .btn.sec:hover{background:color-mix(in srgb,var(--c0) 24%,transparent)}}
+.btn.sec:hover{filter:none}
+.btn.ancho{display:flex;width:100%;margin-top:14px;padding:12px 16px}
 .ps-acc{margin-top:12px;gap:8px}
+/* 🔴 LOS DOS BOTONES AL COSTADO. Dlx, 27/09/2026: «el botón está abajo sin
+   ninguna razón cuando podría estar al costado fácilmente». No entraban por
+   2 px: se reparten el ancho en vez de medir lo que miden. */
+.ps-acc .btn{flex:1 1 0;min-width:0;padding-left:10px;padding-right:10px}
 
 /* ── la pastilla del servidor, con su logo, y el rango del evento ───── */
 .chip-sv{padding:3px 11px 3px 4px}
@@ -1177,6 +1202,47 @@ img.sv-mini{flex:0 0 auto;border-radius:5px;object-fit:cover}
 .ps header{flex-wrap:wrap}
 /* ⚠️ EL RANGO DEL EVENTO ES DE SU SERVIDOR, no de la Liga: por eso va con
    el color del servidor y no con el de ningún rango (ver la cabecera). */
+/* la hora del evento con la bandera de quien mira, o «hora local» */
+.z-pais{display:inline-flex;vertical-align:-2px}
+.z-pais .bf{width:18px;height:12px}
+.z-loc{font-weight:600;color:var(--tx2);font-size:.92em}
+/* los puntos de ascenso del rango, en la ficha de la llave */
+.rg-pts{color:var(--tx2);font:600 .8rem/1.2 Archivo,sans-serif}
+/* «sin verificar», debajo del nombre en el perfil */
+.pf-nv{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:-2px 0 10px;color:var(--tx2);
+font-size:.92rem}
+.nv-et{padding:3px 9px;border-radius:999px;border:1px solid rgba(224,160,32,.6);color:#F2C14E;
+background:rgba(224,160,32,.1);font:700 .72rem/1.1 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase}
+.pf-nv code{font-size:.85em}
+/* el gráfico de fortalezas: el radar y su leyenda */
+.juego{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:8px 18px;align-items:center}
+.radar{width:100%;height:auto;overflow:visible}
+.rd-red{fill:none;stroke:#1E2B29;stroke-width:1}
+.rd-eje{stroke:#1E2B29;stroke-width:1}
+.rd-prom{fill:rgba(156,170,167,.08);stroke:#6F7E7B;stroke-width:1.3;stroke-dasharray:4 4}
+.rd-yo{fill:rgba(41,178,152,.22);stroke:var(--c);stroke-width:2.2;stroke-linejoin:round}
+@supports (fill:color-mix(in srgb,red 50%,blue)){.rd-yo{fill:color-mix(in srgb,var(--c) 26%,transparent)}}
+.rd-p{fill:var(--c);stroke:var(--ng);stroke-width:1.5}
+.rd-l{fill:var(--tx2);font:700 12px Archivo,sans-serif}
+.rd-l.fuerte{fill:var(--tx);font-weight:900}
+.jg-res{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.jg-res span{flex:1 1 130px;padding:8px 10px;border:1px solid var(--bd);background:#0B1211}
+.jg-res small{display:block;color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.14em;text-transform:uppercase}
+.jg-res b{display:block;margin-top:5px;font:800 .98rem/1.2 Archivo,sans-serif}
+.jg-l{list-style:none;display:grid;gap:6px;margin:0;padding:0}
+.jg-l li{display:grid;grid-template-columns:minmax(0,1fr) auto 4.6em;gap:10px;align-items:baseline;
+padding:6px 0;border-bottom:1px solid var(--bd2)}
+.jg-l li span{color:var(--tx2);font-size:.92rem}
+.jg-l li i{font-style:normal;color:var(--tx3);font-size:.8em}
+.jg-l li b{font:900 1.05rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.jg-l li s{text-decoration:none;color:var(--tx3);font-size:.8rem;text-align:right}
+.jg-nota{margin:10px 0 0;color:var(--tx3);font-size:.84rem;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ley-yo,.ley-li{display:inline-block;width:18px;height:0;border-top:2.5px solid var(--tl)}
+.ley-li{border-top:1.5px dashed #6F7E7B;margin-left:8px}
+@media (max-width:620px){.juego{grid-template-columns:1fr}.radar{max-width:320px;margin:0 auto}
+  .jg-res b{font-size:.86rem;white-space:nowrap}}
 .rg-ev{display:inline-flex;align-items:center;padding:4px 10px;border-radius:3px;
 border:1px dashed color-mix(in srgb,var(--c,var(--tl)) 70%,transparent);color:var(--tx);
 font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
@@ -1831,6 +1897,53 @@ color:var(--tx2);font-size:.86rem}
 .bx.fin .ld.g{background:rgba(255,210,74,.08)}
 .bx:hover .ld:not(.g){opacity:.85}
 .bx.sigue,.camp.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl),0 0 18px rgba(41,178,152,.25);z-index:2}
+/* ── la llave: cómo verla, a quién se sigue, los equipos y las etiquetas ── */
+.l-vista{display:inline-flex;margin:12px 0 6px;padding:3px;border:1px solid var(--bd);border-radius:10px;
+background:#0B1211}
+.l-vista button{padding:7px 14px;border-radius:7px;color:var(--tx2);font:800 .78rem/1 Archivo,sans-serif;
+letter-spacing:.04em;text-transform:uppercase}
+.l-vista button[aria-pressed="true"]{background:var(--tl);color:#050607}
+.l-sigue{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
+margin:8px 0 10px;padding:10px 12px;border:1px solid var(--tl);border-radius:10px;
+background:rgba(8,20,18,.96);box-shadow:0 8px 20px rgba(0,0,0,.45)}
+.l-sigue[hidden]{display:none}
+.ls-q{font-weight:800}
+.ls-d{color:var(--tx2);font-size:.92rem}
+.ls-d b{color:var(--tl)}
+.ls-perf{min-height:32px;padding:6px 12px;margin-left:auto}
+.ls-x{width:32px;height:32px;border-radius:8px;color:var(--tx2);font-size:1.3rem;line-height:1}
+.ls-x:hover{color:var(--tx);background:rgba(255,255,255,.06)}
+.eq-caras{display:inline-flex;flex:none;margin-right:8px;align-self:center}
+.eq-caras .av{width:20px;height:20px;border:2px solid #0A1110;box-shadow:none}
+.eq-caras .av+.av{margin-left:-7px}
+.bx .ld.eq .eq-caras{margin-top:0}
+.bx-et{position:absolute;z-index:3;display:flex;justify-content:flex-end;gap:4px;pointer-events:none}
+.bx-et span,.bl .bx-et span{padding:2px 6px;border-radius:5px;background:#1B2A26;border:1px solid #2E4A43;
+color:var(--tl);font:700 .62rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;
+white-space:nowrap}
+.rl-lista{display:grid;gap:18px;margin:6px 0 4px}
+.rl-r h5{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;color:var(--tx);
+font:900 .9rem/1 Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.rl-r h5 small{color:var(--tl);font:700 .8rem/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:none}
+.rl-r.fin h5{color:var(--oro)}
+.bl{position:relative;display:flex;flex-direction:column;gap:2px;margin-bottom:8px;padding:6px;
+border:1px solid #22332F;border-radius:10px;background:linear-gradient(180deg,#0F1917,#0A1110)}
+.bl .bx-et{position:static;justify-content:flex-start;margin:0 0 4px 4px}
+.bl-l{display:flex;align-items:center;gap:6px;min-height:34px;padding:4px 8px;border-radius:7px;opacity:.62}
+.bl-l.g{opacity:1;background:rgba(41,178,152,.1);box-shadow:inset 3px 0 0 var(--tl);font-weight:900}
+.rl-r.fin .bl-l.g{background:rgba(255,210,74,.08);box-shadow:inset 3px 0 0 var(--oro)}
+.bl-n{display:flex;flex-wrap:wrap;align-items:center;gap:2px 6px;min-width:0}
+.bl-n .ql{text-decoration:none}
+.bl-ok{margin-left:auto;color:var(--tl);font-weight:900}
+.rl-r.fin .bl-ok{color:var(--oro)}
+.bl-vs{align-self:center;padding:0 8px;color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.14em;text-transform:uppercase;font-style:normal}
+.bl.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl)}
+.bl .ql.sigue span{color:var(--tl)}
+.bl-camp{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:4px 0 0;padding:10px 12px;
+border:1px solid rgba(255,210,74,.55);border-radius:10px;background:rgba(255,210,74,.06);font-weight:900}
+.bl-camp>span{color:var(--oro);font:800 .78rem/1 Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.bl-camp b{margin-left:auto;color:var(--oro)}
 .cuadro .ql.sigue span{color:var(--tl)}
 .bx.sigue .ld{opacity:1}
 

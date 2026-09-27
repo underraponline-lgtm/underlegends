@@ -11,6 +11,22 @@
  ],
  "cambios": [
   {
+   "version": "1.18",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T08:30:00-04:00",
+   "titulo": "Las llaves se siguen con el dedo, y la hora con tu bandera",
+   "items": [
+    "🏆 **Las llaves, más fáciles de seguir**: tocá un nombre y se ilumina todo su camino, con el puesto y los puntos que sumó ahí; tocalo otra vez para abrir su perfil. Los equipos van en un bloque con sus caras, cada batalla dice si hubo revivido, walk-in o cuántos pasaban, y también se pueden ver **por rondas**.",
+    "🔗 **Cada llave tiene su link**: «Copiar el link de esta llave» y se abre directo, para pegarlo en Discord.",
+    "🕐 **La hora con tu bandera**: si entraste con Discord, al lado de la hora de cada evento va la bandera de tu país; si no, dice «hora local». Se acabó el «EDT».",
+    "📱 **Los links de Discord abren la app** en Android, en vez de la página de Discord.",
+    "💪 **Tus fortalezas, en tu perfil**: vuelve el gráfico de las cinco dimensiones del Competitivo —cuál es tu fuerte y cuál conviene trabajar—, comparado con el promedio de la Liga.",
+    "🔎 **«Sin verificar»**: el perfil dice si alguien no está verificado y qué le falta para tener tarjeta.",
+    "🐍 **Los rangos de Snake Rap**: sus eventos muestran el rango (Insignia, 1 a 4 o Chill) y los puntos de ascenso que da en su servidor.",
+    "🎨 **Botones nuevos**, más lindos y uno al lado del otro cuando entran. Urban Freestyle pasa a **miel**."
+   ]
+  },
+  {
    "version": "1.17",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T07:10:00-04:00",

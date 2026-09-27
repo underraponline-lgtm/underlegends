@@ -229,6 +229,13 @@ def armar():
         'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
                if _avs.get(str(p.get('discord_id') or '')) else ''),
     } for p in gente]
+    # 🔑 «SIN VERIFICAR», sólo en quien le falta algo: ver `_sin_verificar()`
+    _nv = _sin_verificar()
+    if _nv:
+        for p, f in zip(gente, tabla):
+            q = _nv(p)
+            if q:
+                f['nv'] = q
 
     _an = _json('datos', 'anuncios.json') or {}
     ann = _an.get('anuncios') or []
@@ -319,7 +326,7 @@ def armar():
             'org': _org(x.get('organizador')),
             # Dlx, 25/09/2026: «poner el rango de esta misma» — el nivel del
             # evento cuando el anuncio lo dice (DRA: TIER 1, 2, 3, MIX)
-            'rango': _rango_ev(x.get('rango')),
+            'rango': _rango_ev(x.get('rango'), x.get('servidor')),
             'cuando': _ini(x),
             'modalidad': x.get('modalidad') or '',
             'link': ('https://discord.com/channels/%s/%s/%s'
@@ -586,7 +593,7 @@ _VERSALITAS = {'ᴀ': 'a', 'ʙ': 'b', 'ᴄ': 'c', 'ᴅ': 'd', 'ᴇ': 'e', 'ꜰ':
 _TIERS = r'(bronce|plata|oro|platino|diamante|esmeralda|rubi|maestro|leyenda|elite)'
 
 
-def _rango_ev(s):
+def _rango_ev(s, sv=''):
     """El rango del evento en SU servidor: «ʙʀᴏɴᴄᴇ ɪɪɪ 🥉» -> «Bronce III».
 
     🔑 Dlx, 25/09/2026: *«quizás poner el rango de esta misma… aplica solo
@@ -602,6 +609,15 @@ def _rango_ev(s):
     t = unicodedata.normalize('NFKD', t)
     t = ''.join(c for c in t if not unicodedata.combining(c)).lower()
     t = re.sub(r'\s+', ' ', re.sub(r'[^a-z0-9 ]+', ' ', t)).strip()
+    # 🔑 SNAKE RAP NUMERA SUS RANGOS: «4», «3️⃣», «INSIGNIA». Dlx, 27/09/2026,
+    # con el mensaje de su servidor: Insignia y 1 a 4, más «Chill» sin rango.
+    # Un «4» suelto de otro servidor sigue sin decir nada: sólo en el suyo.
+    # Los puntos de cada uno viajan con el servidor (`rangos` en `svs`).
+    if (sv or '').upper() == 'SR':
+        m = re.fullmatch(r'(?:rango )?(insignia|[1-4])', t)
+        if m:
+            return 'Rango ' + ('Insignia' if m.group(1) == 'insignia' else m.group(1))
+        return 'Chill' if t in ('chill', 'sin rango') else ''
     m = re.search(r'(?:^|\s)' + _TIERS + r'(?:\s+(iii|ii|iv|i|v|[1-5]))?$', t)
     if not m:
         return ''
@@ -609,6 +625,8 @@ def _rango_ev(s):
     return r + (' · Ascenso' if 'ascenso' in t else '')
 
 
+#: las cinco dimensiones del Score, en el orden de la carta Competitiva
+_DIMS = ('E', 'C', 'Dm', 'T', 'V')
 #: el nombre de cada dimensión del Score, como la explica `sheet/competitivo.py`
 _DIM = {'E': ['⚡', 'Eficiencia', 'puntos por evento'],
         'C': ['🎯', 'Consistencia', 'qué tan seguido llegás a semifinal o más'],
@@ -1110,6 +1128,12 @@ def _perfiles(gente, comp, regs):
             act = act + 1 if gano else 0
             mej = max(mej, act)
         x = {'req': req}
+        # 🔑 LAS CINCO DIMENSIONES, PARA EL GRÁFICO. Dlx, 27/09/2026: *«en mi
+        # perfil de la hoja de la pre-temporada había un gráfico donde
+        # comparaba las estadísticas del competitivo y te mostraba cuál era
+        # más fuerte y menos»*. Es el radar de «Mi Perfil»: ⚡ 🎯 👑 🔥 🌍.
+        if (cp.get('ev') or 0) and any(cp.get(d) for d in _DIMS):
+            x['dm'] = [int(cp.get(d) or 0) for d in _DIMS]
         if evs.get(q):
             x['ev'] = evs[q]
         if dus.get(q):
@@ -1121,7 +1145,12 @@ def _perfiles(gente, comp, regs):
             x['crew'] = cr[0]
         out[q] = x
     import time
-    return {'sello': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'e': e, 'p': out}
+    # el promedio de la Liga en cada dimensión, para comparar en el gráfico:
+    # de los mismos que tienen gráfico (al menos un evento)
+    con = [x for x in comp if (x.get('ev') or 0) and any(x.get(d) for d in _DIMS)]
+    dmp = [round(sum(int(x.get(d) or 0) for x in con) / len(con)) for d in _DIMS] if con else []
+    return {'sello': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'e': e, 'p': out,
+            'dmp': dmp}
 
 
 def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
@@ -1157,7 +1186,7 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
             continue
         items.append({'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '',
                       'cuando': ini or pub, 'sh': 0 if ini else 1,
-                      'link': link(x), 'rg': _rango_ev(x.get('rango')),
+                      'link': link(x), 'rg': _rango_ev(x.get('rango'), x.get('servidor')),
                       'mod': (x.get('modalidad') or '')[:40],
                       'org': _org(x.get('organizador')),
                       'pre': (x.get('premios') or '')[:60]})
@@ -1367,6 +1396,49 @@ def _versiones():
         print('   ⚠️ no pude medir qué cartas están viejas: %s' % str(e)[:80])
         return ver, {}
     return ver, vieja
+
+
+def _sin_verificar():
+    """`f(fila) -> '' | 'id' | 'pais' | 'dra'`: qué le falta para pasar el portón.
+
+    🔑 Dlx, 27/09/2026: *«que aparezca en alguna parte que no está
+    verificado, si es que no lo está»*. La página ya escondía sus tarjetas
+    (`_del_porton()`); ahora además dice por qué, con las mismas tres
+    condiciones de `verificados.pasa()` y en su orden: Discord ID, país y
+    el Miembro de DRA.
+
+    ⚠️ QUIEN PIDIÓ QUE LO OLVIDEN NO LLEVA MARCA: `''`. Y `None` si no se
+    sabe quién está verificado —la misma regla que `_del_porton()`—: una
+    marca de «sin verificar» a todo el mundo sería mentira.
+    """
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import construir_padron as _PAD
+        import verificados as _VER
+        verif, _ = _VER.cargar()
+        if verif is None:
+            return None
+        pad = {}
+        for x in _PAD.cargar():
+            if x.get('raw'):
+                pad.setdefault(_PAD.norm(x['raw']), x)
+        olv = _VER._olvidados()
+
+        def f(fila):
+            x = pad.get(_PAD.norm(fila.get('raw') or ''))
+            did = str((x or {}).get('discord_id') or '')
+            if did and did in olv:
+                return ''
+            if not did:
+                return 'id'
+            if not ((x or {}).get('pais') or '').strip():
+                return 'pais'
+            return '' if did in verif else 'dra'
+        return f
+    except Exception:                                    # noqa: BLE001
+        return None
 
 
 def _del_porton():
@@ -1626,6 +1698,11 @@ def _servidores(gente):
             a['tag'] = x['tag']
         if x.get('redes'):
             a['redes'] = x['redes']
+        # 🔑 LOS PUNTOS DE ASCENSO DE CADA RANGO, en SU servidor (Snake Rap,
+        # 27/09/2026). Son de su ranking, no de la Liga: la página los muestra
+        # junto al rango del evento y no suman en ningún lado.
+        if (x.get('rangos') or {}).get('puntos'):
+            a['rangos'] = x['rangos']['puntos']
         # ⚠️ EL DE DISCORD PRIMERO y el guardado de respaldo: sin red, o si
         # el servidor saca su ícono, la página sigue teniendo uno.
         if (miembros.get(sv) or {}).get('icono'):
@@ -2200,6 +2277,11 @@ def _self_check():
     ok(all(_rango_ev(a) == b for a, b in _rs.items()),
        'el rango del evento: los niveles sí, el texto suelto no  %s'
        % [(a, _rango_ev(a)) for a, b in _rs.items() if _rango_ev(a) != b])
+    _sr = {'4': 'Rango 4', '3️⃣': 'Rango 3', 'RANGO 2': 'Rango 2', 'INSIGNIA': 'Rango Insignia',
+           'chill': 'Chill', '7': '', 'rap': ''}
+    ok(all(_rango_ev(a, 'SR') == b for a, b in _sr.items()),
+       'y el de Snake Rap, que numera los suyos  %s'
+       % [(a, _rango_ev(a, 'SR')) for a, b in _sr.items() if _rango_ev(a, 'SR') != b])
     _ks = [x['k'] for x in p['tabla']]
     ok(len(_ks) == len(set(_ks)), 'cada rapero de la tabla tiene su clave (%d repetidas)'
        % (len(_ks) - len(set(_ks))))
