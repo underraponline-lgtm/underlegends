@@ -402,6 +402,7 @@ export function parsearAnuncio(m) {
   return {
     nombre, horario: p.horario, modalidad: p.modalidad,
     cupos: p.cupos, premios: p.premios, organizador: p.organizador,
+    fecha: p.fecha || anchos.fecha || '',
   };
 }
 
@@ -413,6 +414,88 @@ const AHORA = re(B + '(ahora|ya|empez(ando|amos)|arrancamos|comenzamos|en' +
 const HORAS = ['h', 'hs', 'hr', 'hrs', 'hora', 'horas'];
 const TOPE_MIN = 60 * 12;
 const MARCA = /<t:(\d{9,11})(?::[tTdDfFR])?>/;
+
+// 🔑 «22:30 🇨🇱» ES UNA HORA: la bandera dice de dónde. El mismo mapa y las
+// mismas reglas que `cuando.hora_bandera()` en Python — el contrato
+// (bot/avisos_casos.json) los compara. ⚠️ Sin EE.UU.: tiene varios husos.
+export const ZONA_BANDERA = {
+  AR: 'America/Argentina/Buenos_Aires', BO: 'America/La_Paz',
+  BR: 'America/Sao_Paulo', CL: 'America/Santiago', CO: 'America/Bogota',
+  CR: 'America/Costa_Rica', CU: 'America/Havana', DO: 'America/Santo_Domingo',
+  EC: 'America/Guayaquil', ES: 'Europe/Madrid', GT: 'America/Guatemala',
+  HN: 'America/Tegucigalpa', MX: 'America/Mexico_City', NI: 'America/Managua',
+  PA: 'America/Panama', PE: 'America/Lima', PR: 'America/Puerto_Rico',
+  PY: 'America/Asuncion', SV: 'America/El_Salvador', UY: 'America/Montevideo',
+  VE: 'America/Caracas',
+};
+const BANDERA_RE = /([\u{1F1E6}-\u{1F1FF}])([\u{1F1E6}-\u{1F1FF}])/u;
+const HHMM_RE = /(?<![\d/])(\d{1,2})[:.h](\d{2})(?!\d)\s*(?:([ap])\.?\s*m\b\.?)?/i;
+const HH_RE = /(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)/i;
+// el día de la semana, con domingo en 0 como `getDay()`
+const DIAS_JS = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
+const DIA_MS = 24 * HORA;
+
+const sinTildes = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+function diaDe(texto) {
+  const t = sinTildes(texto);
+  for (let i = 0; i < DIAS_JS.length; i++) {
+    if (new RegExp('\\b' + DIAS_JS[i] + '\\b').test(t)) return i;
+  }
+  return null;
+}
+function horaDe(texto) {
+  const t = String(texto || '');
+  let h, mi, ap;
+  const m = HHMM_RE.exec(t);
+  if (m) { h = parseInt(m[1], 10); mi = parseInt(m[2], 10); ap = (m[3] || '').toLowerCase(); } else {
+    const n = HH_RE.exec(t);
+    if (!n) return null;
+    h = parseInt(n[1], 10); mi = 0; ap = (n[3] || '').toLowerCase();
+  }
+  if (ap === 'p' && h < 12) h += 12;
+  else if (ap === 'a' && h === 12) h = 0;
+  return h >= 0 && h <= 23 && mi >= 0 && mi <= 59 ? [h, mi] : null;
+}
+// la hora de pared de `ms` en esa zona, como si fuera UTC, y el día de la semana
+function pared(zona, ms) {
+  const f = new Intl.DateTimeFormat('en-US', { timeZone: zona, hourCycle: 'h23', year: 'numeric',
+    month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short' });
+  const p = {};
+  for (const x of f.formatToParts(new Date(ms))) p[x.type] = x.value;
+  return { ms: Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute, +p.second),
+    wd: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday) };
+}
+// una hora de pared de esa zona (dada como si fuera UTC) -> el instante UTC
+function deLaPared(zona, paredMs) {
+  const t1 = paredMs - (pared(zona, paredMs).ms - paredMs);
+  return paredMs - (pared(zona, t1).ms - t1);
+}
+export function horaBandera(horario, publicado, fecha) {
+  const t = String(horario || '');
+  const b = BANDERA_RE.exec(t);
+  const hm = horaDe(t);
+  if (!b || !hm) return null;
+  const cc = String.fromCharCode(b[1].codePointAt(0) - 0x1F1E6 + 65, b[2].codePointAt(0) - 0x1F1E6 + 65);
+  const zona = ZONA_BANDERA[cc];
+  const pub = Date.parse(String(publicado || '').slice(0, 19) + 'Z');
+  if (!zona || Number.isNaN(pub)) return null;
+  let dia = diaDe(t);
+  const f = String(fecha || '').trim();
+  if (dia == null && f) {
+    dia = diaDe(f);
+    if (dia == null && !/^hoy\b/i.test(f)) return null;
+  }
+  const loc = pared(zona, pub);
+  const hoy = loc.ms - (loc.ms % DIA_MS);
+  let base = hoy + (dia != null ? ((dia - loc.wd + 7) % 7) * DIA_MS : 0);
+  let cand = deLaPared(zona, base + (hm[0] * 60 + hm[1]) * MIN);
+  if (cand < pub - HORA) {
+    base += (dia != null ? 7 : 1) * DIA_MS;
+    cand = deLaPared(zona, base + (hm[0] * 60 + hm[1]) * MIN);
+  }
+  if (dia == null && cand - pub > 18 * HORA) return null;
+  return cand;
+}
 
 /** Minutos desde el anuncio hasta el evento; `null` si no se sabe. */
 export function desfase(horario) {
@@ -438,11 +521,12 @@ export function desfase(horario) {
  * eso las dos versiones difieren en los milisegundos y la prueba de
  * paridad no puede decir si están de acuerdo.
  */
-export function momentoMs(horario, publicado) {
+export function momentoMs(horario, publicado, fecha) {
   const mk = MARCA.exec(String(horario || ''));
   if (mk) return parseInt(mk[1], 10) * 1000;
   const d = desfase(horario);
-  if (d == null) return null;
+  // «22:30 🇨🇱»: ver `horaBandera()`, igual que `cuando.hora_bandera()`
+  if (d == null) return horaBandera(horario, publicado, fecha);
   const t = Date.parse(String(publicado || '').slice(0, 19) + 'Z');
   return Number.isNaN(t) ? null : t + d * MIN;
 }
@@ -1168,7 +1252,7 @@ export class Avisos {
       }
     }
     if (!a) return descartar();
-    const ini = momentoMs(a.horario, m.timestamp);
+    const ini = momentoMs(a.horario, m.timestamp, a.fecha);
     // 🔴 LA REGLA: tarde es peor que nunca
     if (ini != null ? ini < ahora - GRACIA : ahora - publicado > EDAD_SIN_HORA) {
       return descartar();

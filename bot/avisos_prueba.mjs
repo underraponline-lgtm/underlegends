@@ -124,7 +124,7 @@ const ok = (cond, que) => {
   let mal = 0;
   for (const c of casos) {
     const a = A.parsearAnuncio({ content: c.content });
-    const ms = a ? A.momentoMs(a.horario, c.timestamp) : null;
+    const ms = a ? A.momentoMs(a.horario, c.timestamp, a.fecha) : null;
     const js = {
       es: !!a,
       nombre: a ? a.nombre : '',

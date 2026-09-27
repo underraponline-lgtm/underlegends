@@ -31,6 +31,13 @@ las 21:00 de Bogotá son siete horas distintas, y el error no se ve — sale
 una cuenta atrás perfectamente formada que termina cuando no es. Lo
 relativo («en 30») no tiene ese problema: es relativo al mensaje, y la
 hora del mensaje la pone Discord en UTC.
+
+🔑 SALVO CON BANDERA, DESDE EL 27/09/2026: «22:30 🇨🇱» dice de dónde. Snake
+Rap anuncia así casi siempre, y esos eventos salían «sin hora» en el
+calendario (Dlx: *«ahí ve tú»*). Ver `hora_bandera()`: el día sale del
+día de la semana si lo dice, y si no, SÓLO si el anuncio no trae una fecha
+aparte y la hora cae en las 18 horas siguientes — lo demás sigue en `None`,
+porque un evento en el día equivocado es peor que uno sin hora.
 """
 import datetime as _dt
 import io
@@ -110,6 +117,101 @@ def _leer_iso(s):
 #: la marca de tiempo de Discord: `<t:1790109000>` o `<t:1790109000:F>`
 _MARCA = re.compile(r'<t:(\d{9,11})(?::[tTdDfFR])?>')
 
+#: el huso de cada bandera, para «22:30 🇨🇱». ⚠️ Sin EE.UU.: tiene varios.
+#: El mismo mapa que `ZONA_BANDERA` de bot/avisos.js.
+ZONA_BANDERA = {
+    'AR': 'America/Argentina/Buenos_Aires', 'BO': 'America/La_Paz',
+    'BR': 'America/Sao_Paulo', 'CL': 'America/Santiago', 'CO': 'America/Bogota',
+    'CR': 'America/Costa_Rica', 'CU': 'America/Havana', 'DO': 'America/Santo_Domingo',
+    'EC': 'America/Guayaquil', 'ES': 'Europe/Madrid', 'GT': 'America/Guatemala',
+    'HN': 'America/Tegucigalpa', 'MX': 'America/Mexico_City', 'NI': 'America/Managua',
+    'PA': 'America/Panama', 'PE': 'America/Lima', 'PR': 'America/Puerto_Rico',
+    'PY': 'America/Asuncion', 'SV': 'America/El_Salvador', 'UY': 'America/Montevideo',
+    'VE': 'America/Caracas',
+}
+_BANDERA = re.compile('([\U0001F1E6-\U0001F1FF])([\U0001F1E6-\U0001F1FF])')
+#: «22:30», «22.30», «22h30» / «23 HS», «23hs», y «8 pm» o «8:30 PM»
+_HHMM = re.compile(r'(?<![\d/])(\d{1,2})[:.h](\d{2})(?!\d)\s*(?:([ap])\.?\s*m\b\.?)?', re.I)
+_HH = re.compile(r'(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)', re.I)
+#: el día de la semana, sin tildes. `weekday()` de Python: lunes es 0.
+_DIAS = ('LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO', 'DOMINGO')
+
+
+def _sin_tildes(s):
+    import unicodedata
+    return ''.join(c for c in unicodedata.normalize('NFD', str(s or ''))
+                   if unicodedata.category(c) != 'Mn').upper()
+
+
+def _dia_de(texto):
+    t = _sin_tildes(texto)
+    for i, d in enumerate(_DIAS):
+        if re.search(r'\b%s\b' % d, t):
+            return i
+    return None
+
+
+def _hora_de(texto):
+    """`(hora, minutos)` de «22:30», «23 HS» o «8 pm»; `None` si no hay."""
+    t = str(texto or '')
+    m = _HHMM.search(t)
+    if m:
+        h, mi, ap = int(m.group(1)), int(m.group(2)), (m.group(3) or '').lower()
+    else:
+        m = _HH.search(t)
+        if not m:
+            return None
+        h, mi, ap = int(m.group(1)), 0, (m.group(3) or '').lower()
+    if ap == 'p' and h < 12:
+        h += 12
+    elif ap == 'a' and h == 12:
+        h = 0
+    return (h, mi) if 0 <= h <= 23 and 0 <= mi <= 59 else None
+
+
+def hora_bandera(horario, publicado, fecha=''):
+    """«22:30 🇨🇱» -> ISO UTC, con el día que corresponde. `None` si no.
+
+    ⚠️ EL DÍA ES LO DELICADO, no la hora. Con día de la semana —«Domingo
+    00:00 🇦🇷»— es el próximo domingo. Sin día, se asume el mismo en que se
+    anunció SÓLO si el anuncio no trae una fecha aparte (`fecha`: «FECHA:
+    4/10») y la hora cae dentro de las 18 horas siguientes: medido sobre los
+    11 anuncios reales con bandera, todos arrancaban entre 12 minutos y 9
+    horas después de publicarse. Una hora de tolerancia hacia atrás, para el
+    que se anuncia cuando ya empezó.
+    """
+    t = str(horario or '')
+    b = _BANDERA.search(t)
+    hm = _hora_de(t)
+    if not b or not hm:
+        return None
+    zona = ZONA_BANDERA.get(chr(ord(b.group(1)) - 0x1F1E6 + 65) +
+                            chr(ord(b.group(2)) - 0x1F1E6 + 65))
+    pub = _leer_iso(publicado)
+    if not zona or pub is None:
+        return None
+    try:
+        from zoneinfo import ZoneInfo
+        z = ZoneInfo(zona)
+    except Exception:                                    # noqa: BLE001
+        return None
+    dia = _dia_de(t)
+    f = str(fecha or '').strip()
+    if dia is None and f:
+        dia = _dia_de(f)
+        if dia is None and not re.match(r'^hoy\b', f, re.I):
+            return None                     # una fecha aparte que no es un día
+    utc = _dt.timezone.utc
+    loc = pub.replace(tzinfo=utc).astimezone(z)
+    d = loc.date() + _dt.timedelta(days=(dia - loc.weekday()) % 7 if dia is not None else 0)
+    cand = _dt.datetime(d.year, d.month, d.day, hm[0], hm[1], tzinfo=z)
+    if cand < loc - _dt.timedelta(hours=1):
+        d = d + _dt.timedelta(days=7 if dia is not None else 1)
+        cand = _dt.datetime(d.year, d.month, d.day, hm[0], hm[1], tzinfo=z)
+    if dia is None and cand - loc > _dt.timedelta(hours=18):
+        return None
+    return cand.astimezone(utc).replace(tzinfo=None).strftime('%Y-%m-%dT%H:%M:%S')
+
 
 def momento(anuncio):
     """Cuándo arranca ese anuncio, en ISO UTC. `None` si no se puede.
@@ -127,7 +229,9 @@ def momento(anuncio):
             .replace(tzinfo=None).strftime('%Y-%m-%dT%H:%M:%S')
     d = desfase(anuncio.get('horario'))
     if d is None:
-        return None
+        # 🔑 «22:30 🇨🇱»: ver `hora_bandera()`
+        return hora_bandera(anuncio.get('horario'), anuncio.get('cuando'),
+                            anuncio.get('fecha'))
     t = _leer_iso(anuncio.get('cuando'))
     if t is None:
         return None
@@ -249,6 +353,33 @@ def _self_check():
     # la de Snake Rap: la marca de Discord, exacta y sin mirar `cuando`
     ok(momento({'horario': '<t:1790109000:F>', 'cuando': 'basura'})
        == '2026-09-22T20:30:00', 'la marca <t:…> de Snake Rap es la hora exacta')
+
+    print('\n  la hora con bandera (los casos reales)')
+    casos = [
+        # (horario, publicado UTC, fecha, esperado UTC)
+        ('22:30 🇨🇱', '2026-09-26T00:57:15', '', '2026-09-26T01:30:00'),   # Chile, horario de verano
+        ('18:00 🇨🇱', '2026-08-30T21:30:00', '', '2026-08-30T22:00:00'),   # Chile, antes del cambio
+        ('Domingo 00:00 🇦🇷', '2026-09-26T13:05:46', '', '2026-09-27T03:00:00'),
+        ('23 HS 🇦🇷', '2026-08-25T01:30:00', '', '2026-08-25T02:00:00'),
+        ('🇨🇷 20:30', '2026-09-27T01:29:00', '', '2026-09-27T02:30:00'),
+        ('21:30 🇨🇱', '2026-08-29T16:41:00', '', '2026-08-30T01:30:00'),   # 9 h después
+        ('22:30 🇨🇱', '2026-09-26T01:40:00', '', '2026-09-26T01:30:00'),   # se anunció ya empezado
+    ]
+    for h, pub, f, esp in casos:
+        got = hora_bandera(h, pub, f)
+        ok(got == esp, '%-20s publicado %s -> %s' % (h, pub[5:16], got))
+    ok(hora_bandera('22:30 🇨🇱', '2026-09-26T00:57:15', 'Sábado 4/10') is not None,
+       'con el día en la fecha, se usa ese día')
+    ok(hora_bandera('22:30 🇨🇱', '2026-09-26T00:57:15', '04/10') is None,
+       'con una fecha aparte que no es un día: sin hora (podría ser otro día)')
+    ok(hora_bandera('20:00 🇨🇱', '2026-09-26T00:57:15', '') is None,
+       'sin día y a más de 18 h: sin hora')
+    ok(hora_bandera('21:00', '2026-09-26T00:57:15', '') is None,
+       'sin bandera, como siempre: sin hora')
+    ok(hora_bandera('21:00 🇺🇸', '2026-09-26T00:57:15', '') is None,
+       'EE.UU. tiene varios husos: sin hora')
+    ok(hora_bandera('RANGO 1/8 🇨🇱', '2026-09-26T00:57:15', '') is None,
+       'un «1/8» no es una hora')
 
     print('\n  solo los que todavía no pasaron')
     ahora = _dt.datetime(2026, 9, 23, 2, 0, 0)

@@ -539,6 +539,9 @@ def parsear(m, servidor, canal, guild=''):
         'rango': puestos.get('rango') or '',
         'modalidad': puestos.get('modalidad') or '',
         'horario': puestos.get('horario') or '',
+        # 🔑 PARA SABER CUÁNDO NO ADIVINAR EL DÍA de «22:30 🇨🇱»: ver
+        # `cuando.hora_bandera()`
+        'fecha': puestos.get('fecha') or anchos.get('fecha') or '',
         'premios': puestos.get('premios') or '',
     }
 
