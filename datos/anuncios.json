@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-27T02:54:43+00:00",
+ "cuando": "2026-09-27T03:24:04+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1751,6 +1751,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Lhyon🇦🇷",
+   "quien": "lhyonsito",
+   "discord_id": "429733075870810112",
+   "msg_id": "1553606603352055871",
+   "cuando": "2026-09-27T03:17:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1553605522220130317",
+   "cuando": "2026-09-27T03:13:41"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Choo🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1553602239854284951",
+   "cuando": "2026-09-27T03:00:38"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Soft 🇻🇪",
+   "quien": "sofstylee_85489",
+   "discord_id": "1365502221902418000",
+   "msg_id": "1553601820201586710",
+   "cuando": "2026-09-27T02:58:58"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Makma",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1553601812538597510",
+   "cuando": "2026-09-27T02:58:56"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
