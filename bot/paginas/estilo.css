@@ -1222,6 +1222,10 @@ letter-spacing:-.02em;overflow-wrap:anywhere}
 .evc-sub{display:flex;flex-wrap:wrap;align-items:center;gap:8px;color:var(--tx2);font-weight:700}
 .evc-prox .reloj{display:inline-block;margin-top:12px}
 .evc-no{margin-top:10px;color:var(--tx3);font-size:.92rem}
+/* la ayuda del calendario va a lo ancho, debajo de los botones, y el link se
+   deja seleccionar entero con un toque por si el portapapeles no deja */
+#evCab > .evc-no{grid-column:1 / -1;margin-top:0}
+#evCab .evc-no code{word-break:break-all;user-select:all;-webkit-user-select:all}
 .evc-num{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .evc-num div{padding:12px 14px;background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
 .evc-num dt{color:var(--tx2);font:600 .72rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;

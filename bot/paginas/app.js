@@ -2045,14 +2045,45 @@ function pintaEvCab() {
       '</dd></div>' : '') + '</dl>' +
     '<div class="evc-acc">' +
     '<a class="btn" href="#/avisos">&#128276; Avisame de cada evento</a>' +
-    '<a class="btn sec" href="https://calendar.google.com/calendar/render?cid=' +
+    /* 🔴 EN EL TELÉFONO, EL BOTÓN DE GOOGLE NO PUEDE ANDAR. Ni la app de
+       Google Calendar ni su web en el teléfono dejan sumar un calendario
+       por link: sólo la de la compu («Otros calendarios → Desde URL»). El
+       botón abría Google y no pasaba nada, y parecía que el calendario no
+       funcionaba — Dlx, 27/09/2026: «lo de sincronizar con Google Calendar
+       no funciona, creo». El .ics estaba bien (Google lo baja: 200). */
+    (MOVIL ? '' : '<a class="btn sec" href="https://calendar.google.com/calendar/render?cid=' +
       encodeURIComponent('webcal://' + ICS_HOST + '/calendario.ics') + '" target="_blank" ' +
-      'rel="noopener noreferrer">&#128197; Sumar a Google Calendar</a>' +
-    '<a class="btn sec" href="webcal://' + esc(ICS_HOST) + '/calendario.ics">Apple · Outlook</a></div>';
+      'rel="noopener noreferrer">&#128197; Sumar a Google Calendar</a>') +
+    /* `webcal://` lo abre el iPhone y la compu; Android no tiene quién */
+    (ANDROID ? '' : '<a class="btn sec" href="webcal://' + esc(ICS_HOST) +
+      '/calendario.ics">Apple · Outlook</a>') +
+    '<button type="button" class="btn sec" id="evcCopia">&#128279; Copiar el link</button></div>' +
+    '<p class="evc-no">' + (MOVIL
+      ? 'Google Calendar sólo deja sumar un calendario desde la compu: en calendar.google.com, ' +
+        '«Otros calendarios» → «+» → «Desde URL», pegá este link y listo, aparece solo en tu teléfono. '
+      : 'Si el botón de Google no te lo suma, en calendar.google.com: «Otros calendarios» → «+» → ' +
+        '«Desde URL», y pegá este link. ') +
+      '<code id="evcIcs">https://' + esc(ICS_HOST) + '/calendario.ics</code> ' +
+      'Google lo actualiza cada algunas horas.</p>';
   $('#evCab').innerHTML = h;
   $('#evCab').hidden = false;
+  var cp = $('#evcCopia');
+  if (cp) cp.onclick = function () {
+    var ics = $('#evcIcs').textContent;
+    var marca = function () {
+      var r = document.createRange(); r.selectNodeContents($('#evcIcs'));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    };
+    try {
+      navigator.clipboard.writeText(ics).then(function () { cp.textContent = '✓ Copiado'; }, marca);
+    } catch (e) { marca(); }
+  };
   pintaRelojes();
 }
+/* el teléfono: ahí Google Calendar no suma calendarios por link */
+var ANDROID = /Android/i.test(navigator.userAgent);
+var MOVIL = ANDROID || /iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 /* ── el mapa ──────────────────────────────────────────────────────────
    🔑 Dlx, 25/09/2026: «en inicio poner como un mapa con el porcentaje de

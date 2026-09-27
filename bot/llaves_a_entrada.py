@@ -399,6 +399,15 @@ def titulo(texto):
         limpio = re.sub(r'\s+', ' ', limpio).strip()
         if len(limpio) < 3:
             continue
+        # 🔴 UNA LÍNEA DE GUIONES NO ES UN TÍTULO. Urban Freestyle abre sus
+        # llaves con `** ----------------------------- **` y el nombre
+        # abajo (`# COMPE SOLO 4X4`); como el guion se deja pasar, el
+        # evento se llamaba «-----------------------------». Medido el
+        # 27/09/2026 sobre sus 46 llaves: casi todas. Y el nombre es parte
+        # de la identidad del evento —(nombre, servidor, fecha)—, así que
+        # tres llaves del mismo día eran UN evento. Sin una letra, se sigue.
+        if not re.search(r'[^\W\d_]', limpio):
+            continue
         if E.RONDA.search(limpio) or E.nombres_de_linea(l):
             continue
         return limpio[:60]

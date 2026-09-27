@@ -124,6 +124,7 @@ def armar():
         k = x.get('raw') or x.get('full')
         if k:
             _comp[k] = x
+    _puede = _del_porton()
     # ⚠️ ORDENADO POR PUESTO Y NO POR PUNTOS. El `pos` ya lo calculó el
     # builder con sus desempates; reordenar acá sería una segunda regla
     # de orden que puede discrepar con la del Sheet.
@@ -182,7 +183,7 @@ def armar():
         # dejar que el navegador se coma cuatro 404 es una imagen rota por
         # carta que no está.
         'k': _clave(p),
-        'c': _cartas(p, r2, _comp.get(p.get('raw'))),
+        'c': _cartas(p, r2, _comp.get(p.get('raw')), _puede),
         # 🔑 LA VERSIÓN DE CADA CARTA Y CUÁLES ESTÁN POR REDIBUJARSE. Ver
         # `_versiones()`: sin la primera el navegador muestra una imagen
         # guardada, y sin la segunda la carta contradice al ranking sin
@@ -1368,7 +1369,43 @@ def _versiones():
     return ver, vieja
 
 
-def _cartas(p, r2, comp=None):
+def _del_porton():
+    """`f(fila) -> bool`: ¿pasa el portón de identidad? `None` si no se sabe.
+
+    🔴 LA PÁGINA MOSTRABA TARJETAS QUE `/card` NO DA. `/card` le contesta
+    «todavía no estás verificado» a quien no pasa el portón —Discord ID,
+    país y el Miembro de DRA, `verificados.pasa()`— y la página le mostraba
+    igual su Temporada y su Servidor, porque sólo preguntaba por el
+    inventario de R2 y el requisito de cada carta. Medido el 27/09/2026:
+    **64 de las 121** personas con tarjeta en la página no pasaban el
+    portón. Dlx, ese día: *«sí»*, a ocultarlas.
+
+    ⚠️ ES EL MISMO CONJUNTO QUE ARMA `subir_datos.armar()` para KV —la
+    misma función, la misma normalización del nombre—: si fuera otro, la
+    página y el bot volverían a contestar distinto.
+
+    ⚠️ `None` NO ES «NADIE». Sin `datos/verificados.json` no se sabe quién
+    está verificado, y la regla de `verificados.cargar()` es no filtrar:
+    ocultarle la tarjeta a todos por no poder preguntar es peor.
+    """
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import construir_padron as _PAD
+        import verificados as _VER
+        verif, _ = _VER.cargar()
+        if verif is None:
+            return None
+        pasan = {_PAD.norm(x['raw']) for x in _PAD.cargar()
+                 if x.get('raw') and _VER.pasa(x, verif)}
+        return lambda fila: _PAD.norm(fila.get('raw') or '') in pasan
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude preguntar por el portón (%s): no filtro' % str(e)[:60])
+        return None
+
+
+def _cartas(p, r2, comp=None, puede=None):
     """Las cartas que esta persona TIENE **y se ganó**. Nunca inventa.
 
     🔴 SE PREGUNTA AL INVENTARIO, no se arman las cuatro URLs y se deja
@@ -1404,6 +1441,9 @@ def _cartas(p, r2, comp=None):
     inventario, porque una carta que le corresponde y todavía no se
     dibujó tampoco se puede mostrar. Son las dos condiciones, no una.
     """
+    # 🔴 PRIMERO EL PORTÓN, como `/card`: ver `_del_porton()`
+    if puede is not None and not puede(p):
+        return []
     tiene = r2.get(_clave(p)) or {}
     # los duelos de País viven en el pool competitivo; el resto acá
     fila = dict(comp or {}, **p)
