@@ -676,9 +676,21 @@ puesto de `Config`, los pesos de `sheet/ovr.py` y `sheet/competitivo.py`—,
 así que viajan en el payload (`guia`) en vez de escribirse en el HTML.
 `datos/escala.json` es la copia de `Config` para cuando no se puede leer.
 
-👤 **«MI CUENTA» NO ES UN LOGIN** (25/09/2026). Quien mira elige quién es y
-el navegador lo recuerda (`localStorage`, `lg:yo`); nada viaja a ningún
-lado. Lo mismo los Ajustes (`lg:ajustes`): formato de hora y zona. **Toda
+👤 **«MI CUENTA» ES «ENTRAR CON DISCORD», Y NO GUARDA NINGÚN PERMISO.**
+Esto decía *«no es un login»* hasta que Dlx pidió el de Discord el mismo
+25/09/2026. Es el flujo implícito (`identify`; `connections` sólo para «Mis
+redes»): la página le manda el permiso a `/api/cuenta`, el Worker le
+pregunta a Discord de quién es (`cuentaDiscord()` en `worker.js`) y el
+permiso se tira. Lo que queda en el navegador —`lg:dc`, quién sos, y `lg:yo`,
+a quién mira como propio— **no autoriza nada**: todo lo que escribe algo
+(redes, foto, vincular los avisos) manda un permiso recién traído de
+Discord, que el Worker vuelve a verificar.
+
+⚠️ **Sin sesión, a propósito**: una sesión firmada por el Worker pide un
+secreto nuevo, y los tokens nuevos quedaron para el final (Dlx). Por eso cada
+acción vuelve a pasar por Discord (`prompt=none`: si ya diste permiso, es un
+rebote sin preguntas). Lo mismo los Ajustes (`lg:ajustes`): formato de hora
+y zona, sólo en el navegador. **Toda
 hora de la página pasa por `fmtHora()` / `fmtFecha()` / `diaDe()`**, que
 respetan esa zona; un `toLocaleTimeString` suelto vuelve a mostrar la del
 dispositivo aunque la persona haya elegido otra.
