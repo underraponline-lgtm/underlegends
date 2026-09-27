@@ -1514,7 +1514,8 @@ var SUBS = {
     hay: function () { return !!(D.mw && (D.mw.b || []).length); },
     siNo: '<b>Most Wanted</b>: quién cazó, quién fue cazado y quién sobrevivió. Suma al OVR y arranca pronto.',
     baj: 'Los <b>cazadores</b> de la temporada: los puntos que cobraron cazando buscados y ' +
-      'sobreviviendo, a cuántos cazaron, cuántas veces los cazaron y cuántas sobrevivieron.',
+      'sobreviviendo, a cuántos cazaron, cuántas veces los cazaron y cuántas sobrevivieron. ' +
+      'Lo cobrado suma a los <b>Puntos</b> de la Temporada; al Competitivo, nunca.',
     filas: function () { return (D.mw && D.mw.caz) || []; },
     orden: 'mwp',
     cols: ['i', 'n', 'mwp', 'mwc', 'mwz', 'mws'],
@@ -3653,7 +3654,7 @@ function pintaMW() {
   var sueltos = M.b.filter(function (b) { return b.e === 'suelto'; }).length;
   pag.dataset.tit = '&#128128; Most Wanted' + (M.tipo === 'dia' ? ' de hoy' : ' de la semana');
   pag.innerHTML = '<p class="mw-cab"><b>' + sueltos + ' de ' + M.b.length + '</b> siguen sueltos. ' +
-    'Cazalos en cualquier evento de la Liga: le ganás a uno y cobrás su recompensa. Vence el ' +
+    'Cazalos en cualquier evento de la Liga: le ganás a uno y su recompensa suma a tus Puntos. Vence el ' +
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '.</p><div class="mw-t">' + M.b.map(cartelMW).join('') + '</div>' +
     '<p class="mw-pie"><a href="#/ranking/mw">Los cazadores de la temporada &#8250;</a>' +

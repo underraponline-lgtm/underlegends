@@ -271,8 +271,38 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El diario dura lo que la prueba: hasta el 4/10**. Con la T1, semanal | *«the period ends in october 4… like the periodo de prueba»* | `tipo_de()` en `bot/most_wanted.py`, con la fecha de `comun/temporada.py`: cambia solo el 5/10 a las 11 AM ET |
 | **El tablero de buscados va en el panel del Inicio** | *«sí, exacto, por eso puse el panel ahí»* | `pintaMW()` en `app.js`: la primera página del panel |
 | **La caza queda escrita en la llave para siempre**, y en vivo se marca a los buscados | a «la caza para siempre», *«sí»* · a «buscados marcados», *«sí»* | `cuadro()` y `abrirLlave()` en `app.js` |
+| **Lo del Most Wanted suma a la Temporada: Puntos y OVR**, nunca al Competitivo | a «¿los puntos del MW suman ya a la Temporada (Puntos y OVR)?», *«1. sí»* | ✅ `sumar_mw()` en `sheet/rankings.py` (1.23) |
+| **3 buscados por día; 9 por semana** | *«de momento, como es diario, que sean 3… y que cuando sea por semana que sean 9»* | `CUANTOS` y `CUPOS` en `bot/most_wanted.py` (1.23) |
+| **Multiplicadores de puntos por servidor cada semana** (buffs y debuffs), y **algo para los organizadores**; nada de esto toca el Competitivo | *«cada semana haya un multiplicador de puntos que tú vas a decidir randomamente… luego podríamos dar debuffs también… tenemos que incentivar a los organizadores también»* | ⏳ en diseño, en el chat |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (12 a 12:30 PM) — versión 1.23
+
+**Most Wanted: 3 por día, y suma a la Temporada.** Dlx: *«1. sí»* y *«que
+sean 3… y cuando sea por semana que sean 9»*.
+
+- 🔑 **`sumar_mw()` en `sheet/rankings.py`**: lo que cada uno cobró va a
+  `Puntos`, y 🎯 💀 🛡️ se calculan —salieron de `ARRASTRE`, donde no tenían
+  semilla: nadie las había llenado nunca—. 🎯 es el quinto componente del
+  OVR (`sheet/ovr.py`, 12 %), así que también lo mueve. Va en las vitrinas
+  de la Temporada, Podios, Mundial y la portada; **no en `agregar()`**, que
+  también alimenta el Score: el Competitivo no lo ve.
+- ⚠️ **Una corrida atrás**: las vitrinas (1c) leen el `mw.json` de la
+  corrida anterior, porque el MW (2b) necesita los pools que salen de
+  ellas. Media hora.
+- ⚠️ **El nombre se cruza como el pool** (`_como_pool()`: sin banderas, con
+  mayúsculas). Con la clave de la vitrina, MTZ —que no está en el padrón y
+  lleva la bandera en la clave— no enganchaba.
+- 🔑 **Una sola cuenta**: `most_wanted.suma()` la usan la web y el Sheet.
+- 💀 **3 por día y 9 por semana, repartidos por nivel** (`CUPOS`): por día,
+  uno de cada nivel —un pez gordo, uno del medio y uno al alcance de
+  cualquiera—, con la categoría sorteada adentro del nivel. Sin eso, con
+  tres lugares salían siempre El Rey, El Imparable y El Verdugo. El día de
+  hoy arrancó con 10 y, como nadie había cazado todavía, se volvió a elegir
+  con 3.
 
 ---
 
@@ -309,8 +339,7 @@ ver»*, y *«the period ends in october 4»*.
   ranking de Temporada (ya no leen del pool: salen de `datos/mw.json`) y en
   las llaves: «🎯 Acá cazaron a…» en la batalla que perdió, y en vivo, qué
   buscados juegan.
-- ⚠️ **Los puntos del Most Wanted todavía NO suman a los Puntos de la
-  Temporada ni al OVR.** Se ven en su pestaña. Ver «❓ Esperando a Dlx».
+- ✅ ~~Los puntos del Most Wanted todavía no suman~~: suman desde la 1.23.
 - ⚠️ **`El Muro` pide 60 % de duelos ganados**: sin piso, el primer día salió
   uno con 4 de 8.
 
@@ -849,10 +878,8 @@ inglés, y `/borrar-mis-datos`.
   **«fuera de concurso»** (arriba, en las reglas): nadie desaparece, el número
   es de los miembros. Medido ese día: 57 miembros, 19 verificados fuera de DRA,
   76 sin Discord vinculado, 1 sin país.
-- **¿Los puntos del Most Wanted suman ya a la Temporada (Puntos y OVR)?**
-  Hoy se ven sólo en su pestaña. Mi recomendación: **sí, desde hoy** —es lo
-  que la prueba tiene que mostrar, y el 5/10 se borra igual—; si preferís
-  mirarlo unos días aparte, queda como está.
+- ✅ ~~¿Los puntos del Most Wanted suman ya a la Temporada?~~ *«1. sí»*: hecho
+  en la 1.23.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

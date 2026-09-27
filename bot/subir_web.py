@@ -1911,7 +1911,8 @@ def _crews():
 
 def _mw_leer():
     """`datos/mw.json`, o `{}`. Lo escribe `bot/most_wanted.py` (paso 2b)."""
-    return _json('datos', 'mw.json') or {}
+    import most_wanted as _MWM
+    return _MWM.leer()
 
 
 _MW_POR = {}
@@ -1948,44 +1949,15 @@ def _mw_de(raw):
 
 
 def _mw_periodos(d):
-    """Los períodos que cuentan: los de la temporada del de ahora.
-
-    🔴 LO DE LA FASE DE PRUEBA SE BORRA (Dlx, 25/09/2026), y el Most Wanted
-    también: el 5 de octubre la tabla de cazadores arranca de cero. Los
-    períodos viejos quedan en `datos/mw.json`, sin contar.
-    """
-    act = d.get('actual') or {}
-    temp = act.get('temporada', 'prueba')
-    return [p for p in (d.get('historial') or []) + ([act] if act else [])
-            if p.get('temporada', 'prueba') == temp]
+    """Los períodos de la temporada de ahora: ver `most_wanted.periodos()`."""
+    import most_wanted as _MWM
+    return _MWM.periodos(d)
 
 
 def _mw_suma(d=None):
-    """Lo de cada uno en la temporada: `({raw: {pts, caz, czd, sob}}, {evento: cazas})`.
-
-    ⚠️ UNA SOLA CUENTA PARA LAS DOS TABLAS. La pestaña de cazadores y las
-    columnas Cazó · Cazado · Sobrevivió del ranking de Temporada leen de
-    acá: si cada una contara por su lado, un día dirían números distintos.
-    """
-    d = _mw_leer() if d is None else d
-    caz, ce = {}, {}
-    nuevo = lambda: {'pts': 0, 'caz': 0, 'czd': 0, 'sob': 0}
-    for per in _mw_periodos(d):
-        for b in per.get('buscados') or []:
-            if b.get('caza'):
-                c = b['caza']
-                ce.setdefault(str(c.get('n')), []).append(
-                    [b['n'], b.get('cn') or '', [y['n'] for y in c.get('por') or []]])
-                for y in c.get('por') or []:
-                    z = caz.setdefault(y['n'], nuevo())
-                    z['pts'] += y.get('cobra') or 0
-                    z['caz'] += 1
-                caz.setdefault(b['n'], nuevo())['czd'] += 1
-            elif b.get('estado') == 'sobrevivio':
-                z = caz.setdefault(b['n'], nuevo())
-                z['sob'] += 1
-                z['pts'] += b.get('paga') or 0
-    return caz, ce
+    """Lo de cada uno en la temporada: ver `most_wanted.suma()`, la cuenta única."""
+    import most_wanted as _MWM
+    return _MWM.suma(_mw_leer() if d is None else d)
 
 
 def _mw(gente):

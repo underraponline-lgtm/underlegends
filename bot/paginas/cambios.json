@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.23",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T12:15:00-04:00",
+   "titulo": "Most Wanted: 3 por día, y suma a tus Puntos",
+   "items": [
+    "💀 **3 buscados por día**: uno grande, uno del medio y uno al alcance de cualquiera, con la categoría sorteada. Con la Temporada 1 serán **9 por semana**.",
+    "🎯 **Lo que cobrás suma a tus Puntos de la Temporada**, y **Cazó** entra en tu OVR. Al Competitivo, nunca.",
+    "📊 En el Sheet de la Liga, las columnas 🎯 Cazó, 💀 Cazado y 🛡️ Sobrevivió ya se llenan solas.",
+    "⚡ La página baja más liviana."
+   ]
+  },
+  {
    "version": "1.22",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T11:45:00-04:00",

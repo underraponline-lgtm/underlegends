@@ -62,8 +62,16 @@ SALIDA = os.path.join(BASE, 'datos', 'mw.json')
 #: el período arranca a esta hora del este: la primera corrida después de
 #: la madrugada (de 3 a 11 AM ET no corre el ciclo)
 ARRANCA_H = 11
-#: cuántos buscados: al menos / como mucho
-CUANTOS = (10, 15)
+#: cuántos buscados por período. Dlx, 27/09/2026: *«de momento, como es
+#: diario, que sean 3… y que cuando sea por semana que sean 9»*
+CUANTOS = {'dia': 3, 'semana': 9}
+#: cómo se reparten entre los niveles de categoría. ⚠️ Sin esto, con tres
+#: lugares salían SIEMPRE El Rey, El Imparable y El Verdugo —las tres
+#: primeras de la lista—: el Rey es casi imposible de cazar y los demás
+#: nunca aparecían. Uno de cada nivel: un pez gordo, uno del medio y uno al
+#: alcance de cualquiera. Dentro de cada nivel la categoría sale sorteada.
+CUPOS = {'dia': (('A', 1), ('B', 1), ('CD', 1)),
+         'semana': (('A', 2), ('B', 3), ('C', 3), ('D', 1))}
 #: la recompensa base de cada nivel de categoría. La pre-temporada pagaba
 #: de 5.000 a 20.000 (Dlx, 27/09/2026)
 BASE_NIVEL = {'A': 8000, 'B': 6000, 'C': 5000, 'D': 4000}
@@ -501,7 +509,8 @@ def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla=''):
     elegidos, usados = [], set()
 
     def poner(cat, raw, motivo):
-        if raw in usados or raw not in activo:
+        cat = cat.split(':')[0]          # `dueno:FFA` es El Dueño de Casa de FFA
+        if raw in usados or raw not in activo or len(elegidos) >= total:
             return False
         p = st[raw]['p']
         base = BASE_NIVEL[NIVEL[cat]] * _nivel(p.get('o') or p.get('pos'))
@@ -510,12 +519,12 @@ def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla=''):
         usados.add(raw)
         return True
 
-    def primero(cat, cands):
-        for raw, motivo in cands:
-            if len(elegidos) >= CUANTOS[1]:
-                return
-            if poner(cat, raw, motivo):
-                return
+    total = CUANTOS.get(tipo, 3)
+    cands = {}
+
+    def primero(cat, lista):
+        # ⚠️ ACÁ SÓLO SE ANOTAN: quién entra lo decide el reparto por nivel
+        cands[cat] = lista
 
     por_o = sorted((s for s in st.values()), key=lambda s: s['p'].get('o') or s['p'].get('pos') or 9999)
     # El Rey: el #1 oficial (si ya fue buscado, el siguiente)
@@ -540,7 +549,7 @@ def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla=''):
             svs.setdefault(sv, []).append(s)
     for sv, gente in sorted(svs.items(), key=lambda kv: -len(kv[1])):
         if len(gente) >= 3:
-            primero('dueno', [(s['p']['raw'], 'el mejor de %s' % sv) for s in gente])
+            primero('dueno:' + sv, [(s['p']['raw'], 'el mejor de %s' % sv) for s in gente])
     # el `#` que se lee es el oficial (`pos`), no el orden por mérito
     primero('oscuro', [(s['p']['raw'], '#%s y podio %s' % (s['p'].get('pos'), ayer))
                        for s in sorted(st.values(), key=lambda s: min([_fase(f) for f in s['fases_v']] or [99]))
@@ -576,14 +585,25 @@ def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla=''):
             nov.append((sum(fs) / len(fs), s))
     primero('novato', [(s['p']['raw'], 'debutó hace %d días' % max(1, (inicio - min(s['ev_t'])).days))
                        for _f, s in sorted(nov, key=lambda x: x[0])])
-    # El Comodín: un sorteo entre los que quedan, hasta llegar al mínimo
-    resto = sorted(activo - usados)
     rnd = random.Random(hashlib.sha256(('mw' + semilla).encode()).hexdigest())
+    # El Comodín: un sorteo entre los activos; compite en su nivel como las demás
+    resto = sorted(activo)
     rnd.shuffle(resto)
-    for raw in resto:
-        if len(elegidos) >= CUANTOS[0]:
-            break
-        poner('comodin', raw, 'salió en el sorteo')
+    primero('comodin', [(raw, 'salió en el sorteo') for raw in resto])
+    # 🔑 EL REPARTO: cada nivel, sus lugares; dentro del nivel, la categoría
+    # sorteada, y de cada una el primero de su lista que esté libre
+    for niveles, n in CUPOS.get(tipo, CUPOS['dia']):
+        cats = sorted(c for c in cands if NIVEL[c.split(':')[0]] in niveles)
+        rnd.shuffle(cats)
+        puestos = 0
+        for c in cats:
+            if puestos >= n:
+                break
+            if any(poner(c, raw, motivo) for raw, motivo in cands[c]):
+                puestos += 1
+    # lo que un nivel no llenó (nadie cumplía), lo completa el sorteo
+    for raw, motivo in cands['comodin']:
+        poner('comodin', raw, motivo)
     return elegidos
 
 
@@ -626,6 +646,11 @@ def correr(ahora=None, aplicar=False):
         act = {}
     if not act.get('id'):
         act = {}
+    # 🔑 SI BAJÓ EL CUPO Y TODAVÍA NO CAZARON A NADIE, se vuelve a elegir: el
+    # 27/09/2026 el día arrancó con 10 y Dlx pidió 3 a media mañana
+    if len(act.get('buscados') or []) > CUANTOS.get(act.get('tipo'), 99) \
+            and not any(b.get('caza') for b in act['buscados']):
+        act['buscados'] = []
     # 🔑 LA PRIMERA SEMANA DE LA TEMPORADA NO HAY BUSCADOS: queda escrito
     # cuándo salen, y la página lo dice. Ver `_primera_semana()`.
     if espera:
@@ -650,7 +675,8 @@ def correr(ahora=None, aplicar=False):
         act['buscados'] = cazar(act['buscados'], evs, _de_iso(act.get('desde') or act['inicio']), fin, pool_o)
     out = {'_leeme': 'Most Wanted: lo arma bot/most_wanted.py en el ciclo (paso 2b). '
                      'Los números viven en ese archivo.',
-           'config': {'periodo': tipo, 'rango': list(RANGO), 'sube': SUBE, 'tope_sube': TOPE_SUBE,
+           'config': {'periodo': tipo, 'cuantos': CUANTOS.get(tipo), 'rango': list(RANGO),
+                      'sube': SUBE, 'tope_sube': TOPE_SUBE,
                       'por_puesto': POR_PUESTO, 'tope_puesto': TOPE_PUESTO,
                       'sobrevivir': SOBREVIVIR.get(tipo, 1), 'fase': FASE_MINIMA,
                       'paga': PAGA_SOBREVIVIR},
@@ -659,6 +685,61 @@ def correr(ahora=None, aplicar=False):
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
     return out
+
+
+# ── lo que se lee de afuera: la web y las vitrinas del Sheet ─────────────
+def leer(ruta=None):
+    """`datos/mw.json`, o `{}`."""
+    try:
+        with io.open(ruta or SALIDA, encoding='utf-8') as f:
+            return json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def periodos(d):
+    """Los períodos que cuentan: los de la temporada del período de ahora.
+
+    🔴 LO DE LA FASE DE PRUEBA SE BORRA (Dlx, 25/09/2026), y el Most Wanted
+    también: con la temporada, los cazadores y los puntos arrancan de cero.
+    Los períodos viejos quedan en `datos/mw.json`, sin contar.
+    """
+    act = d.get('actual') or {}
+    temp = act.get('temporada', 'prueba')
+    return [p for p in (d.get('historial') or []) + ([act] if act.get('id') else [])
+            if p.get('temporada', 'prueba') == temp]
+
+
+def suma(d=None):
+    """Lo de cada uno en la temporada: `({nombre: {pts, caz, czd, sob}}, {evento: cazas})`.
+
+    `pts` es lo que cobró: cazando, y la mitad de su recompensa cada vez que
+    sobrevivió. `cazas` son `[buscado, categoría, [cazadores]]`.
+
+    ⚠️ UNA SOLA CUENTA PARA TODOS: la tabla de cazadores de la página, las
+    columnas Cazó · Cazado · Sobrevivió, y lo que el MW suma a la Temporada
+    en las vitrinas (`rankings.sumar_mw()`). Si cada uno contara por su
+    lado, un día dirían números distintos.
+    """
+    d = leer() if d is None else d
+    caz, ce = {}, {}
+    nuevo = lambda: {'pts': 0, 'caz': 0, 'czd': 0, 'sob': 0}
+    for per in periodos(d):
+        for b in per.get('buscados') or []:
+            if b.get('caza'):
+                c = b['caza']
+                ce.setdefault(str(c.get('n')), []).append(
+                    [b['n'], b.get('cn') or '', [y['n'] for y in c.get('por') or []]])
+                for y in c.get('por') or []:
+                    z = caz.setdefault(y['n'], nuevo())
+                    z['pts'] += y.get('cobra') or 0
+                    z['caz'] += 1
+                caz.setdefault(b['n'], nuevo())['czd'] += 1
+            elif b.get('estado') == 'sobrevivio':
+                z = caz.setdefault(b['n'], nuevo())
+                z['sob'] += 1
+                z['pts'] += b.get('paga') or 0
+    return caz, ce
 
 
 # ── self-check ───────────────────────────────────────────────────────────
@@ -784,6 +865,30 @@ def _self_check():
     el = {b['n']: b['cat'] for b in elegir(pool, evs3, None, t0, tipo='dia')}
     ok('Bea' not in el and el.get('Ana') == 'rey',
        'un fuera de concurso no es buscado aunque haya ganado; el Rey es el #1 oficial  %s' % el)
+    # el cupo y el reparto: 3 por día, uno de cada nivel; 9 por semana
+    pool9 = [{'raw': 'P%02d' % i, 'pos': i, 'o': i, 'sv': 'FFA', 'ev': 20 - i, 'pod': 10 - i}
+             for i in range(1, 16)]
+    # ⚠️ con su fase: la actividad de cada uno sale de ahí (ver `_stats()`)
+    evs9 = [ev_de([[[['P%02d' % i, 'P%02d' % (i + 1)], 'P%02d' % i] for i in range(1, 15, 2)]],
+                  {'P%02d' % i: 'Cuartos' if i % 2 else 'Octavos' for i in range(1, 15)},
+                  t=t0 - dt.timedelta(hours=h)) for h in (5, 30, 60)]
+    d3 = elegir(pool9, evs9, None, t0, tipo='dia', semilla='x')
+    ok(len(d3) == CUANTOS['dia'] and len({NIVEL[b['cat']] in 'CD' and 'CD' or NIVEL[b['cat']] for b in d3}) == 3,
+       'por día, %d buscados, uno de cada nivel  %s' % (len(d3), [(b['n'], b['cat']) for b in d3]))
+    s9 = elegir(pool9, evs9, None, t0, tipo='semana', semilla='x')
+    ok(len(s9) == CUANTOS['semana'], 'por semana, %d buscados' % len(s9))
+    ok(elegir(pool9, evs9, None, t0, tipo='dia', semilla='x') == d3, 'y con la misma semilla, los mismos')
+    # la cuenta que leen la web y las vitrinas: sólo la temporada de ahora
+    per = lambda temp, bs: {'id': temp, 'temporada': temp, 'buscados': bs}
+    caza = lambda quien, por, cobra: {'n': quien, 'cn': 'El Rey', 'estado': 'cazado',
+                                      'caza': {'n': 7, 'por': [{'n': por, 'cobra': cobra}]}}
+    dd = {'historial': [per('prueba', [caza('Ana', 'Eli', 9000)])],
+          'actual': per('t1', [caza('Bea', 'Eli', 5000),
+                               {'n': 'Cid', 'estado': 'sobrevivio', 'paga': 2500}])}
+    sm, ce = suma(dd)
+    ok(sm.get('Eli') == {'pts': 5000, 'caz': 1, 'czd': 0, 'sob': 0} and 'Ana' not in sm
+       and sm['Cid']['pts'] == 2500 and list(ce) == ['7'],
+       'la cuenta de la temporada: lo de la prueba no entra, y sobrevivir también paga')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

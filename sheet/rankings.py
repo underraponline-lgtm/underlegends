@@ -113,9 +113,9 @@ DE_DONDE = {
     'Sv': 'Resultados: el servidor con más eventos',
     '✅': 'padrón: la columna Verificado',
     '#': 'el orden por Puntos',
-    '🎯': None,    # cazador       — Most Wanted
-    '💀': None,    # cazado        — Most Wanted
-    '🛡️': None,   # sobrevivió    — Most Wanted
+    '🎯': 'Most Wanted (datos/mw.json): a cuántos cazó. Ver `sumar_mw()`',
+    '💀': 'Most Wanted (datos/mw.json): cuántas veces lo cazaron',
+    '🛡️': 'Most Wanted (datos/mw.json): cuántas veces sobrevivió',
     'Rango': None,  # sale del Score del Ranking Competitivo
     # `(10/07)・🥇` — la fecha del último evento y qué puesto hizo. Sale de
     # `Resultados`, pero pide que la Fecha sea ordenable y hoy es `28/04`
@@ -218,7 +218,11 @@ def _orden_fecha(fecha, num):
 # llenaba, así que la corrida siguiente tampoco tenía de dónde copiar.
 # Medido: 21 de 21 personas con el `Rango` en blanco, que es el dato
 # más delicado del proyecto. Ahora sale de `rangos_de()`.
-ARRASTRE = ('🎯', '💀', '🛡️', '✅')
+#
+# 🔴 Y LAS TRES DE MOST WANTED SALIERON EL 27/09/2026, con el MW andando:
+# arrastradas no tenían semilla —nadie las había llenado nunca— y el MW
+# ya dice quién cazó a quién. Salen de `sumar_mw()`.
+ARRASTRE = ('✅',)
 
 
 def arrastre_en_git():
@@ -895,6 +899,64 @@ def _desempate(v, quien):
     return (-g('🥇'), -g('🥈'), -g('Ev'), -g('Win%'), str(quien).lower())
 
 
+def _como_pool(n):
+    """El nombre como lo guarda el pool (`raw`): sin banderas ni `❓`.
+
+    ⚠️ ES LA REGLA DE `construir_pool_temporada`, que saca `raw` de la
+    columna `Rapero`, y es el nombre con que `bot/most_wanted.py` anota a
+    cada uno. `_clave_fila()` no sirve para esto: quien no está en el padrón
+    lleva la bandera en la clave (`MTZ 🇲🇽`) y el MW lo nombra `MTZ`. Las
+    mayúsculas se respetan: `Volk` y `volk` son dos personas.
+    """
+    return re.sub(r'[\U0001F1E6-\U0001F1FF]', '', str(n or '')).replace('❓', '').strip()
+
+
+def sumar_mw(ag, suma=None):
+    """El Most Wanted en la Temporada: lo cobrado a `Puntos`, y 🎯 💀 🛡️.
+
+    🔑 Dlx, 27/09/2026, a «¿los puntos del MW suman ya a la Temporada
+    (Puntos y OVR)?»: *«sí»*. Lo que cada uno cobró —cazando, y la mitad de
+    su recompensa cada vez que sobrevivió— va a `Puntos`; 🎯 💀 🛡️ son
+    cuántas veces cazó, lo cazaron y sobrevivió. 🎯 es además el quinto
+    componente del OVR (`sheet/ovr.py`, peso 12 %).
+
+    ⚠️ NUNCA AL COMPETITIVO (Dlx: *«MW no cuenta para competitivo»*). Por
+    eso no va dentro de `agregar()`, que también alimenta el Score, sino en
+    las vitrinas de la Temporada: `tabla_nueva()`, `escribir_todas()` y la
+    portada (`sheet/lobby.py`).
+
+    ⚠️ VA UNA CORRIDA ATRÁS: las vitrinas (paso 1c) leen el `datos/mw.json`
+    de la corrida anterior, porque el MW (2b) necesita los pools que salen
+    de ellas. Media hora.
+
+    ⚠️ SI NO SE PUEDE LEER EL MW NO TOCA NADA y devuelve `None`: escribir
+    ceros bajaría los puntos y el OVR de todos por una corrida, y las
+    tarjetas se redibujarían dos veces. Sin las tres columnas, `sin_dueno()`
+    frena la escritura, que es lo que tiene que pasar.
+
+    Devuelve a cuántas personas les sumó algo.
+    """
+    if suma is None:
+        try:
+            _b = os.path.join(BASE, 'bot')
+            if _b not in sys.path:
+                sys.path.insert(0, _b)
+            import most_wanted as _MW
+            suma = _MW.suma()[0]
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude leer el Most Wanted (%s): la vitrina no lo suma' % str(e)[:80])
+            return None
+    por = {_como_pool(n): m for n, m in (suma or {}).items()}
+    tocadas = 0
+    for quien, v in ag.items():
+        m = por.get(_como_pool(quien)) or {}
+        v['🎯'], v['💀'], v['🛡️'] = m.get('caz', 0), m.get('czd', 0), m.get('sob', 0)
+        if m.get('pts'):
+            v['Puntos'] = v.get('Puntos', 0) + m['pts']
+        tocadas += bool(m)
+    return tocadas
+
+
 def _comp_ovr(v):
     """Las cinco componentes del OVR de esa persona, desde `agregar()`.
 
@@ -931,6 +993,7 @@ def tabla_nueva():
     if not res:
         return None, ['`Resultados` está vacía: no hay de dónde calcular']
     ag = agregar(res, uno)
+    sumar_mw(ag)
     rg = rangos_de(res)
 
     cab = cabecera_oficial()
@@ -1078,10 +1141,10 @@ def tabla_nueva():
         avisos.append('la tabla pasaría de %d a %d personas (%d menos)'
                       % (hubo, ahora, hubo - ahora))
     if perdidos:
-        # ⚠️ YA NO DICE «con Rango en blanco»: el Rango se calcula desde
-        # el 23/09 y no depende de haber estado antes. Lo único que se
-        # arrastra son las tres de Most Wanted y el ✅.
-        avisos.append('%d sin fila anterior: entran con Most Wanted '
+        # ⚠️ YA NO DICE «con Rango en blanco» ni «con Most Wanted en
+        # blanco»: los dos se calculan (23/09 y 27/09). Lo único que se
+        # arrastra es el ✅.
+        avisos.append('%d sin fila anterior: entran con el ✅ '
                       'en blanco (%s%s)'
                       % (len(perdidos), ', '.join(perdidos[:6]),
                          '…' if len(perdidos) > 6 else ''))
@@ -1866,6 +1929,8 @@ def escribir_todas(dry=True):
     from escribir import Hoja
     res, uno = Hoja('Resultados').filas(), Hoja('1v1').filas()
     ag = agregar(res, uno)
+    # el MW suma a la Temporada: Podios y Mundial muestran los mismos Puntos
+    sumar_mw(ag)
     pais_de, _rango_pool = identidad()
     # 🔴 UN SOLO ORIGEN PARA EL RANGO, Y EL POOL DEJA DE SER RESPALDO.
     #
@@ -2312,11 +2377,26 @@ def _self_check():
     # `agregar()`, así que si se caen de `ARRASTRE` la próxima escritura
     # las deja **en blanco para todos** — y `sin_dueno()` no lo frena,
     # porque su trabajo es exactamente preguntar si alguien las llena.
-    lleva = ('🎯', '💀', '🛡️', '✅')
+    lleva = ('✅',)
     faltan = [c for c in lleva if c not in ARRASTRE]
     mal += bool(faltan)
-    print('   %s las que NO se calculan siguen en ARRASTRE  %s'
-          % ('✅' if not faltan else '🔴', faltan or '🎯 💀 🛡️ ✅'))
+    print('   %s la que NO se calcula sigue en ARRASTRE  %s'
+          % ('✅' if not faltan else '🔴', faltan or '✅'))
+    # 🔑 Y LAS DE MOST WANTED YA NO: se calculan en `sumar_mw()`, y si
+    # volvieran a ARRASTRE ganaría el valor viejo (que es el vacío)
+    vuelven = [c for c in ('🎯', '💀', '🛡️') if c in ARRASTRE]
+    mal += bool(vuelven)
+    print('   %s las de Most Wanted se calculan, no se arrastran  %s'
+          % ('✅' if not vuelven else '🔴', vuelven or '—'))
+    agm = {'MTZ 🇲🇽': {'Puntos': 7500}, 'Hassan': {'Puntos': 44000}, 'volk 🇨🇴': {'Puntos': 100}}
+    n_mw = sumar_mw(agm, {'MTZ': {'pts': 12000, 'caz': 1, 'czd': 0, 'sob': 0},
+                          'Volk': {'pts': 500, 'caz': 0, 'czd': 1, 'sob': 0}})
+    ok = (n_mw == 1 and agm['MTZ 🇲🇽']['Puntos'] == 19500 and agm['MTZ 🇲🇽']['🎯'] == 1
+          and agm['Hassan'] == {'Puntos': 44000, '🎯': 0, '💀': 0, '🛡️': 0}
+          and agm['volk 🇨🇴']['Puntos'] == 100)
+    mal += not ok
+    print('   %s el Most Wanted suma a los Puntos y llena 🎯 💀 🛡️ (MTZ con bandera '
+          'engancha; volk no es Volk)' % ('✅' if ok else '🔴'))
     # y que de verdad no las produzca `agregar()`, que es el porqué
     traidas = set()
     for v in ag.values():
@@ -2619,6 +2699,7 @@ def main():
             print('      pase por `sheet/procesar_entrada.py`.\n')
             return 1
         ag = agregar(res, uno)
+        sumar_mw(ag)                  # la vitrina los trae sumados
         cab = cabecera_oficial()
         viv = _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1))
         icol = {c: i for i, c in enumerate(cab)}
