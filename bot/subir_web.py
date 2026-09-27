@@ -221,7 +221,7 @@ def armar():
         'czd': p.get('czd') or 0,
         'sob': p.get('sob') or 0,
         'ult': (_ult.get(_resp._norm(p.get('raw')) + '|' + (p.get('cc') or '').lower())
-                or ([] if p.get('raw') in _choques() else _ult.get(_resp._norm(p.get('raw'))))
+                or ([] if _choque(p) else _ult.get(_resp._norm(p.get('raw'))))
                 or []),
         # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
         # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
@@ -1073,7 +1073,7 @@ def _perfiles(gente, comp, regs):
     out = {}
     for q, p in por.items():
         cp = comp_raw.get(p.get('raw')) or (comp_de.get(norm(p.get('raw')))
-                                            if p.get('raw') not in _choques() else None) or {}
+                                            if not _choque(p) else None) or {}
         fila = dict(cp)
         fila.update({k: v for k, v in p.items() if v not in (None, '')})
         req = {}
@@ -1194,8 +1194,13 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
 _CHOQUES = {}
 
 
+def _choque(p):
+    """La clave separada de esa fila si choca con otra persona, o `None`."""
+    return _choques().get((str(p.get('raw') or ''), (p.get('cc') or '').lower()))
+
+
 def _choques():
-    """`{nombre exacto: clave}` para los nombres que chocan en minúsculas.
+    """`{(nombre exacto, país): clave}` para las personas que chocan.
 
     🔴 DOS PERSONAS, UNA CLAVE. `Volk` 🇲🇽 y `volk` 🇨🇴 son dos raperos
     distintos —Dlx, 25/09/2026: *«sí, son diferentes; los dos son parte de
@@ -1207,6 +1212,12 @@ def _choques():
     puede tener tarjetas y ésas viven en R2 bajo `volk/`. El otro pasa a
     `volk-co`. Si ninguno tiene ID, los dos llevan su país y ninguno muestra
     tarjetas: la de `volk/` no se sabe de cuál de los dos es.
+
+    🔴 Y EL MISMO NOMBRE EXACTO TAMBIÉN. El 27/09/2026 el pool trajo dos
+    «Last» —uno de Uruguay y otro sin país, los dos sin Discord ID— y como
+    esto separaba sólo nombres que difieren en mayúsculas, los dos
+    compartían el link de perfil (lo marcó el self-check). Por eso la clave
+    del mapa es el nombre CON el país: ver `_choque()`.
     """
     if 'mapa' not in _CHOQUES:
         grupos = defaultdict(list)
@@ -1216,7 +1227,7 @@ def _choques():
                 grupos[_clave_r2(str(p['raw']))].append(p)
         out = {}
         for k, ps in grupos.items():
-            if len({p['raw'] for p in ps}) < 2:
+            if len(ps) < 2:
                 continue
             con_id = [p for p in ps if p.get('discord_id')]
             usados = set()
@@ -1228,7 +1239,7 @@ def _choques():
                 while c in usados:
                     c, j = '%s%d' % (base, j), j + 1
                 usados.add(c)
-                out[p['raw']] = c
+                out[(p['raw'], (p.get('cc') or '').lower())] = c
         _CHOQUES['mapa'] = out
     return _CHOQUES['mapa']
 
@@ -1258,7 +1269,7 @@ def _clave(p):
     ⚠️ SALVO QUE CHOQUE CON OTRA PERSONA: ver `_choques()`.
     """
     raw = str(p.get('raw') or '')
-    return _choques().get(raw) or _clave_r2(raw)
+    return _choque(p) or _clave_r2(raw)
 
 
 def _clave_r2(raw):
