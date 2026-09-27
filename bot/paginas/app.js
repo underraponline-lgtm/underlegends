@@ -770,11 +770,28 @@ function abrirLlave(n) {
   // juntas, adelante (ver `cara`).
   // ⚠️ QUIEN NO ESTÁ EN EL RANKING VA EN UN <span>, no suelto: suelto, su
   // bandera quedaba como hija directa de una caja flex y se estiraba.
-  var quien = function (x, sinCara) {
+  // 🔑 MOST WANTED EN LA LLAVE (Dlx, 27/09/2026): en una llave en vivo, el
+  // buscado suelto lleva 🎯 y su recompensa; en una procesada, el que cazaron
+  // ACÁ queda marcado para siempre
+  var cazas = (D.mw && D.mw.ce && D.mw.ce[String(n)]) || [];
+  var cazadoAca = {};
+  cazas.forEach(function (c) { cazadoAca[kDe(c[0]) || c[0]] = c; });
+  // ⚠️ `perdio`: el 🎯 de la caza va en la batalla que perdió, no en cada
+  // renglón donde aparece (en las que ganó antes no lo cazaron)
+  var marca = function (f, x, perdio) {
+    var k = (f && f.k) || kDe(x) || x;
+    if (cazadoAca[k]) {
+      return perdio ? '<i class="mw-b cz" title="Lo cazaron acá (' + esc(cazadoAca[k][1]) + ')">&#127919;</i>' : '';
+    }
+    var b = L.vivo && mwDe((f && f.n) || x);
+    return b && b.e === 'suelto' ? '<i class="mw-b" title="Buscado · ' + esc(b.cn) + ' · ' + num(b.v) +
+      ' pts">&#127919;</i>' : '';
+  };
+  var quien = function (x, sinCara, perdio) {
     var f = claveDe(x) && porK(claveDe(x));
     return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + (sinCara ? '' : avatar(f, 18)) +
-      '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + '</button>'
-      : '<span class="ql-n">' + conBanderas(x) + '</span>';
+      '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + marca(f, x, perdio) + '</button>'
+      : '<span class="ql-n">' + conBanderas(x) + marca(null, x, perdio) + '</span>';
   };
   var cara = function (x) {
     var f = claveDe(x) && porK(claveDe(x));
@@ -874,7 +891,28 @@ function abrirLlave(n) {
       return '<button type="button" data-lvista="' + v[0] + '" aria-pressed="' + (LL_VISTA === v[0]) + '">' +
         v[1] + '</button>';
     }).join('') + '</div>';
-  $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') +
+  // y en una en vivo, quiénes de los buscados juegan: es la invitación a cazar
+  var aca = [], visto = {};
+  if (L.vivo) {
+    (L.rondas || []).forEach(function (R) {
+      (R.b || []).forEach(function (b) {
+        (b[0] || []).forEach(function (s) {
+          String(s || '').split(/,\s*/).forEach(function (m) {
+            var y = mwDe(m);
+            if (y && y.e === 'suelto' && !visto[y.n]) { visto[y.n] = 1; aca.push(y); }
+          });
+        });
+      });
+    });
+  }
+  var cazaHtml = cazas.length || aca.length ? '<div class="l-mw">' + cazas.map(function (c) {
+    return '<p>&#127919; Acá cazaron a <b>' + esc(c[0]) + '</b> (' + esc(c[1]) + '): ' +
+      (c[2].length ? 'cobró <b>' + esc(c[2].join(' y ')) + '</b>' : 'no cobró nadie') + '.</p>';
+  }).join('') + (aca.length ? '<p>&#127919; ' + (aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + aca.length +
+    ' buscados') + ': ' + aca.map(function (y) {
+      return '<b>' + esc(y.n) + '</b> (' + esc(y.cn) + ', ' + num(y.v) + ' pts)';
+    }).join(', ') + '. Quien le gane, cobra.</p>' : '') + '</div>' : '';
+  $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') + cazaHtml +
     ley + vistas + '<div class="l-sigue" id="lSigue" aria-live="polite"></div><div id="lVista"></div>' +
     (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
@@ -1039,7 +1077,7 @@ function rondasLista(L, quien, cara) {
       // el punto va pegado al nombre de antes: suelto, al partirse el renglón
       // quedaba solo al principio del siguiente
       '<span class="bl-n">' + ms.map(function (m, i) {
-        return '<span class="bl-m">' + quien(m, eq) + (i < ms.length - 1 ? '<i class="coma">&middot;</i>' : '') + '</span>';
+        return '<span class="bl-m">' + quien(m, eq, !gano) + (i < ms.length - 1 ? '<i class="coma">&middot;</i>' : '') + '</span>';
       }).join('') + '</span>' + (copa ? '<span class="bl-ok bl-copa" title="Campeón">&#127942;' +
         (ps.length ? ' ' + (lo === hi ? num(hi) : num(lo) + '&ndash;' + num(hi)) + ' pts' : '') + '</span>'
         : gano ? '<span class="bl-ok" title="Pasó">&#10003;</span>' : '') + '</div>';
@@ -1339,6 +1377,11 @@ var COL = {
     v: function (f) { return esc((f.rch || [0, 0])[1]); } },
   ult: { t: 'Último evento', tit: 'Cómo le fue la última vez que jugó, y cuándo',
     s: function (f) { return (f.ult || [])[0] || ''; }, v: ultCelda },
+  mwp: { t: 'Cobró', tit: 'Puntos cobrados en Most Wanted', s: function (f) { return f.pts || 0; },
+    v: function (f) { return f.pts ? '<b>' + num(f.pts) + '</b>' : nada; } },
+  mwc: { t: 'Cazó', s: function (f) { return f.caz || 0; }, v: function (f) { return f.caz || nada; } },
+  mwz: { t: 'Cazado', s: function (f) { return f.czd || 0; }, v: function (f) { return f.czd || nada; } },
+  mws: { t: 'Sobrevivió', s: function (f) { return f.sob || 0; }, v: function (f) { return f.sob || nada; } },
   caz: mwCol('caz', 'Cazó', 'Most Wanted: a cuántos cazó'),
   czd: mwCol('czd', 'Cazado', 'Most Wanted: cuántas veces lo cazaron'),
   sob: mwCol('sob', 'Sobrevivió', 'Most Wanted: cuántas veces sobrevivió'),
@@ -1392,8 +1435,8 @@ var SUBS = {
     // sobrevivió, cazó, cazado… y uno nuevo que es misiones».
     cols: ['pos', 'n', 'ovr', 'rg', 'sv', 'pts', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis'],
     nota: function () {
-      return MW_ON ? '' : '<b>Most Wanted</b> y <b>Misiones</b> arrancan pronto: hasta ' +
-        'entonces sus columnas van en &mdash;.';
+      return MW_ON ? '<b>Misiones</b> arranca pronto: hasta entonces su columna va en &mdash;.'
+        : '<b>Most Wanted</b> y <b>Misiones</b> arrancan pronto: hasta entonces sus columnas van en &mdash;.';
     },
   },
   competitivo: {
@@ -1462,8 +1505,17 @@ var SUBS = {
     que: ['crew', 'crews'],
     enlace: function (f) { return ' data-crew="' + esc(f.clave || f.crew) + '"'; },
   },
-  mw: { pronto: '<b>Most Wanted</b>: quién cazó, quién fue cazado y quién sobrevivió. ' +
-    'Suma al OVR y arranca pronto.' },
+  mw: {
+    // sin período todavía queda el «pronto» de siempre (ver `pintaTabla`)
+    hay: function () { return !!(D.mw && (D.mw.b || []).length); },
+    siNo: '<b>Most Wanted</b>: quién cazó, quién fue cazado y quién sobrevivió. Suma al OVR y arranca pronto.',
+    baj: 'Los <b>cazadores</b> de la temporada: los puntos que cobraron cazando buscados y ' +
+      'sobreviviendo, a cuántos cazaron, cuántas veces los cazaron y cuántas sobrevivieron.',
+    filas: function () { return (D.mw && D.mw.caz) || []; },
+    orden: 'mwp',
+    cols: ['i', 'n', 'mwp', 'mwc', 'mwz', 'mws'],
+    vacio: function () { return 'Todavía nadie cazó a un buscado. Mirá el tablero del Inicio.'; },
+  },
   misiones: { pronto: '<b>Las misiones</b> de la temporada arrancan pronto.' },
   ligas: { pronto: '<b>El ranking de ligas</b> llega en la Temporada 2.', cuando: 'Temporada 2' },
 };
@@ -1512,7 +1564,8 @@ function elegirSub(s) {
 
 function pintaTabla() {
   var cfg = SUBS[SUB] || SUBS.temporada;
-  MW_ON = (D.tabla || []).some(function (f) { return f.caz || f.czd || f.sob; });
+  if (cfg.hay && !cfg.hay()) cfg = { pronto: cfg.siNo };
+  MW_ON = !!(D.mw && (D.mw.b || []).length) || (D.tabla || []).some(function (f) { return f.caz || f.czd || f.sob; });
   $('#bajadaRk').innerHTML = cfg.baj || cfg.pronto || '';
   $('#chipsSv').hidden = $('#chipsCc').hidden = !!(cfg.sinChips || cfg.pronto);
   $('#buscar').hidden = !!cfg.pronto;
@@ -2209,9 +2262,9 @@ function cuadro(L, quien, cara) {
   var campeon = (rs[n - 1].b[0] || [])[1] || '';
 
   // el nombre, o los del equipo, cada uno con su tarjeta si la tiene
-  var lado = function (x) {
+  var lado = function (x, perdio) {
     return String(x || '').split(/,\s*/).map(function (m) {
-      return quien(m);
+      return quien(m, false, perdio);
     }).join('<i class="coma">,</i> ');
   };
   // `clave` ata la caja con sus ramas (`data-de`/`data-a`), para encender
@@ -2230,8 +2283,8 @@ function cuadro(L, quien, cara) {
           'px" title="' + esc(s) + '">' + (eq && cara ? '<span class="eq-caras">' +
             String(s).split(/,\s*/).map(cara).join('') + '</span>' : '') +
           '<span class="nm">' + (eq ? String(s).split(/,\s*/).map(function (m) {
-            return '<span class="mb">' + quien(m, !!cara) + '</span>';
-          }).join('') : lado(s)) + '</span></div>';
+            return '<span class="mb">' + quien(m, !!cara, b[1] && !g) + '</span>';
+          }).join('') : lado(s, b[1] && !g)) + '</span></div>';
       }).join('') + '</div>';
   };
 
@@ -3153,6 +3206,8 @@ function pintaPerfil(k) {
     '<section class="blk entro" id="pfCaraSec" hidden><h2><span>&#129354;</span> Cara a cara</h2>' +
       '<p class="bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Primero, con quien ' +
       'más veces se enfrentó.</p><div class="pf-cara" id="pfCara"></div></section>' +
+    '<section class="blk entro" id="pfMwSec" hidden><h2><span>&#128128;</span> Su cacería</h2>' +
+      '<div class="pf-mw" id="pfMw"></div></section>' +
     '<section class="blk entro" id="pfDuSec" hidden><h2><span>&#9876;</span> Sus duelos</h2>' +
       '<div class="pf-du" id="pfDus"></div></section>';
 
@@ -3230,6 +3285,28 @@ function pintaPerfil(k) {
           '<span class="pe-p">' + (MEDALLA[e[1]] ? MEDALLA[e[1]] + ' ' : '') + esc(e[1]) + '</span>' +
           '<b class="pe-pts">' + num(e[2]) + '</b></div>';
       }).join('');
+    }
+    // 🔑 SU CACERÍA: Most Wanted, de todos los períodos
+    var mw = x.mw;
+    if (mw) {
+      var linea = function (r) {
+        var g = porK(kDe(r.n));
+        return '<div class="mwl"' + (g ? ' data-k="' + esc(g.k) + '"' : '') + '>' +
+          (g ? quienEs(g, 22) : conBanderas(r.n)) + '<span>' + r.t + '</span></div>';
+      };
+      $('#pfMwSec').hidden = false;
+      $('#pfMw').innerHTML =
+        '<dl class="mw-n"><div><dt>Cazó</dt><dd>' + mw.caz.length + '</dd></div>' +
+        '<div><dt>Lo cazaron</dt><dd>' + mw.czd.length + '</dd></div>' +
+        '<div><dt>Sobrevivió</dt><dd>' + mw.sob + '</dd></div>' +
+        '<div><dt>Se escondió</dt><dd>' + mw.esc + '</dd></div></dl>' +
+        (mw.caz.length ? '<h3 class="mw-h">A quién cazó</h3>' + mw.caz.slice().reverse().map(function (c) {
+          return linea({ n: c[1], t: esc(c[2]) + ' · ' + esc(c[3]) + ' · <b>+' + num(c[4]) + '</b>' });
+        }).join('') : '') +
+        (mw.czd.length ? '<h3 class="mw-h">Quién lo cazó</h3>' + mw.czd.slice().reverse().map(function (c) {
+          return linea({ n: (c[3] || [])[0] || '', t: esc(c[1]) + ' · ' + esc(c[2]) +
+            ((c[3] || []).length > 1 ? ' · con ' + esc(c[3].slice(1).join(' y ')) : '') });
+        }).join('') : '');
     }
     // 🔑 CARA A CARA. Dlx, 27/09/2026: «maybe we could create a DUELOS WIN
     // RATE between each individual… like counting the times they faced
@@ -3519,6 +3596,53 @@ function pintaNovedades() {
    MW y a la mitad, a la derecha, MISIONES… Liga hoy será la última». La del
    medio es la de quien mira: su temporada y lo que viene. */
 var PN = { pag: 0 };
+/* ── Most Wanted ──────────────────────────────────────────────────────
+   🔑 EL TABLERO VA EN EL PANEL DEL INICIO. Dlx, 27/09/2026: «por eso puse
+   el panel ahí». Cada cartel dice su categoría, por qué lo buscan, cuánto
+   vale AHORA y cómo está: suelto, cazado, sobrevivió o se escondió. Todo
+   sale de `D.mw` (`bot/most_wanted.py`, en el ciclo). */
+var MW_EST = {
+  suelto: ['&#128994;', 'Suelto'], cazado: ['&#127919;', 'Cazado'],
+  sobrevivio: ['&#128737;&#65039;', 'Sobrevivió'], escondio: ['&#128168;', 'Se escondió']
+};
+/* el cartel de alguien en el período de ahora, si lo tiene */
+function mwDe(n) {
+  var M = D.mw;
+  if (!M || !n) return null;
+  var k = kDe(n);
+  return (M.b || []).filter(function (b) { return b.n === n || (k && b.k === k); })[0] || null;
+}
+function cartelMW(b) {
+  var f = b.k && porK(b.k);
+  var e = MW_EST[b.e] || MW_EST.suelto;
+  var por = b.c ? (b.c.por || []).map(function (y) { return esc(y.n); }).join(' y ') : '';
+  return '<div class="mwc e-' + esc(b.e) + '"' + (b.k ? ' data-k="' + esc(b.k) + '"' : '') + '>' +
+    '<span class="mwc-cat">' + esc(b.cn) + '</span>' +
+    '<span class="mwc-q">' + (f ? quienEs(f, 34) : '<span class="quien">' + conBanderas(b.n) + '</span>') + '</span>' +
+    '<small class="mwc-m">' + esc(b.m) + '</small>' +
+    '<span class="mwc-v"><b>' + num(b.paga || b.v) + '</b> pts</span>' +
+    '<span class="mwc-e">' + e[0] + ' ' + (b.e === 'cazado' && por ? 'Lo cazó ' + por : e[1]) + '</span>' +
+    (b.c ? '<small class="mwc-d">en ' + esc(b.c.ev) + '</small>' : '') + '</div>';
+}
+function pintaMW() {
+  var M = D.mw, pag = $('#secPaneles .pn-pag[data-pag="0"]');
+  if (!pag || !M || !(M.b || []).length) return;
+  var sueltos = M.b.filter(function (b) { return b.e === 'suelto'; }).length;
+  pag.dataset.tit = '&#128128; Most Wanted' + (M.tipo === 'dia' ? ' de hoy' : ' de la semana');
+  pag.innerHTML = '<p class="mw-cab"><b>' + sueltos + ' de ' + M.b.length + '</b> siguen sueltos. ' +
+    'Cazalos en cualquier evento de la Liga: le ganás a uno y cobrás su recompensa. Vence el ' +
+    esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
+    '.</p><div class="mw-t">' + M.b.map(cartelMW).join('') + '</div>' +
+    '<p class="mw-pie"><a href="#/ranking/mw">Los cazadores de la temporada &#8250;</a>' +
+    '<span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
+  // la pestaña del ranking deja de decir «pronto»
+  var s = $('#subRanking [data-sub="mw"]');
+  if (s) {
+    s.classList.remove('pronto');
+    var i = s.querySelector('i');
+    if (i) i.remove();
+  }
+}
 function pintaPaneles() {
   var pags = $$('#secPaneles .pn-pag');
   if (!pags.length) return;
@@ -4741,7 +4865,7 @@ function pinta() {
   [trama, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
     pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
     pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
-    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaPaneles, aplicarCalma]
+    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaPaneles, aplicarCalma]
     .forEach(function (f) {
       try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
     });

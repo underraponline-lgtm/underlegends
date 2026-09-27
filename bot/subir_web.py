@@ -242,6 +242,14 @@ def armar():
         'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
                if _avs.get(str(p.get('discord_id') or '')) else ''),
     } for p in gente]
+    # 🔑 CAZÓ · CAZADO · SOBREVIVIÓ, DE MOST WANTED. Las columnas ya estaban
+    # en el ranking (Dlx, 25/09/2026) y leían del pool, que no las tiene: la
+    # cuenta vive en `datos/mw.json`. Ver `_mw_suma()`.
+    _mws = _mw_suma()[0]
+    for p, f in zip(gente, tabla):
+        m = _mws.get(p.get('raw'))
+        if m:
+            f.update(caz=m['caz'], czd=m['czd'], sob=m['sob'])
     # 🔑 «SIN VERIFICAR», sólo en quien le falta algo: ver `_sin_verificar()`
     _nv = _sin_verificar()
     if _nv:
@@ -429,6 +437,9 @@ def armar():
         'rachas': _rachas(gente),
         'crews': _crews(),
         'records': _records(gente, regs, _comp),
+        # 🔑 MOST WANTED: el tablero del período, los cazadores de la temporada
+        # y qué se cazó en cada llave. Ver `_mw()` y `bot/most_wanted.py`.
+        'mw': _mw(gente),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -1173,6 +1184,10 @@ def _perfiles(gente, comp, regs):
             x['rk'] = rk
         if cr:
             x['crew'] = cr[0]
+        # 🔑 su cacería: a quién cazó, quién lo cazó y cuántas sobrevivió
+        mwp = _mw_de(p.get('raw'))
+        if mwp:
+            x['mw'] = mwp
         out[q] = x
     import time
     # el promedio de la Liga en cada dimensión, para comparar en el gráfico:
@@ -1876,6 +1891,133 @@ def _crews():
         if os.path.exists(os.path.join(logos, a['clave'] + '.webp')):
             a['logo'] = 'logos/crews/%s.webp' % a['clave']
     return sorted(fuera, key=lambda a: (-a['rk'], -a['pts'], -a['n']))
+
+
+def _mw_leer():
+    """`datos/mw.json`, o `{}`. Lo escribe `bot/most_wanted.py` (paso 2b)."""
+    return _json('datos', 'mw.json') or {}
+
+
+_MW_POR = {}
+
+
+def _mw_de(raw):
+    """La cacería de una persona, para su perfil: `{caz, czd, sob, esc}` o `None`.
+
+    `caz`: a quién cazó `[[período, buscado, categoría, evento, cobró]]`;
+    `czd`: quién lo cazó `[[período, categoría, evento, [cazadores]]]`;
+    `sob` y `esc`: cuántas veces sobrevivió y cuántas se escondió.
+    """
+    if not _MW_POR:
+        d = _mw_leer()
+        pers = _MW_POR.setdefault('_', {})
+        pers.clear()
+        for per in _mw_periodos(d):
+            for b in per.get('buscados') or []:
+                y = pers.setdefault(b['n'], {'caz': [], 'czd': [], 'sob': 0, 'esc': 0})
+                if b.get('caza'):
+                    c = b['caza']
+                    y['czd'].append([per['id'], b.get('cn') or '', c.get('evento') or '',
+                                     [x['n'] for x in c.get('por') or []]])
+                    for x in c.get('por') or []:
+                        z = pers.setdefault(x['n'], {'caz': [], 'czd': [], 'sob': 0, 'esc': 0})
+                        z['caz'].append([per['id'], b['n'], b.get('cn') or '', c.get('evento') or '',
+                                         x.get('cobra') or 0])
+                elif b.get('estado') == 'sobrevivio':
+                    y['sob'] += 1
+                elif b.get('estado') == 'escondio':
+                    y['esc'] += 1
+    x = _MW_POR.get('_', {}).get(raw)
+    return x if x and (x['caz'] or x['czd'] or x['sob'] or x['esc']) else None
+
+
+def _mw_periodos(d):
+    """Los períodos que cuentan: los de la temporada del de ahora.
+
+    🔴 LO DE LA FASE DE PRUEBA SE BORRA (Dlx, 25/09/2026), y el Most Wanted
+    también: el 5 de octubre la tabla de cazadores arranca de cero. Los
+    períodos viejos quedan en `datos/mw.json`, sin contar.
+    """
+    act = d.get('actual') or {}
+    temp = act.get('temporada', 'prueba')
+    return [p for p in (d.get('historial') or []) + ([act] if act else [])
+            if p.get('temporada', 'prueba') == temp]
+
+
+def _mw_suma(d=None):
+    """Lo de cada uno en la temporada: `({raw: {pts, caz, czd, sob}}, {evento: cazas})`.
+
+    ⚠️ UNA SOLA CUENTA PARA LAS DOS TABLAS. La pestaña de cazadores y las
+    columnas Cazó · Cazado · Sobrevivió del ranking de Temporada leen de
+    acá: si cada una contara por su lado, un día dirían números distintos.
+    """
+    d = _mw_leer() if d is None else d
+    caz, ce = {}, {}
+    nuevo = lambda: {'pts': 0, 'caz': 0, 'czd': 0, 'sob': 0}
+    for per in _mw_periodos(d):
+        for b in per.get('buscados') or []:
+            if b.get('caza'):
+                c = b['caza']
+                ce.setdefault(str(c.get('n')), []).append(
+                    [b['n'], b.get('cn') or '', [y['n'] for y in c.get('por') or []]])
+                for y in c.get('por') or []:
+                    z = caz.setdefault(y['n'], nuevo())
+                    z['pts'] += y.get('cobra') or 0
+                    z['caz'] += 1
+                caz.setdefault(b['n'], nuevo())['czd'] += 1
+            elif b.get('estado') == 'sobrevivio':
+                z = caz.setdefault(b['n'], nuevo())
+                z['sob'] += 1
+                z['pts'] += b.get('paga') or 0
+    return caz, ce
+
+
+def _mw(gente):
+    """Most Wanted para la página: el tablero, los cazadores y la caza en cada llave.
+
+    🔑 Dlx, 27/09/2026: el tablero va en el panel del Inicio —*«por eso puse
+    el panel ahí»*—, la caza queda escrita en la llave del evento *«para
+    siempre»*, y los buscados se marcan en la llave en vivo. Todo sale de
+    `datos/mw.json`; acá sólo se le pone a cada nombre su clave y su bandera.
+
+    ⚠️ SIN DATO NO HAY PIEZA: sin período, `None`, y la página deja lo de
+    siempre.
+    """
+    d = _mw_leer()
+    act = d.get('actual') or {}
+    if not act.get('buscados'):
+        return None
+    por = {p.get('raw'): p for p in gente}
+
+    def persona(n):
+        p = por.get(n) or {}
+        x = {'n': n, 'k': _clave(p) if p else '', 'cc': p.get('cc') or '', 'sv': p.get('sv') or ''}
+        if p.get('fc'):
+            x['fc'] = 1              # fuera de concurso: sin número en la tabla
+        return x
+
+    def buscado(b):
+        x = dict(persona(b['n']), cat=b['cat'], cn=b.get('cn') or '', m=b.get('motivo') or '',
+                 v=b.get('valor') or 0, e=b.get('estado') or 'suelto', ev=b.get('ev') or 0)
+        if b.get('caza'):
+            c = b['caza']
+            x['c'] = {'ev': c.get('evento') or '', 'sv': c.get('sv') or '', 't': c.get('t') or '',
+                      'n': c.get('n'),
+                      'por': [dict(persona(y['n']), cobra=y.get('cobra') or 0) for y in c.get('por') or []]}
+        if b.get('paga'):
+            x['paga'] = b['paga']
+        return x
+
+    # los cazadores de la temporada, y lo que se cazó en cada llave
+    caz, ce = _mw_suma(d)
+    tabla = [dict(persona(n), **v) for n, v in caz.items()]
+    tabla.sort(key=lambda x: (-x['pts'], -x['caz'], x['n']))
+    ult = (d.get('historial') or [])[-1:] or [{}]
+    return {'id': act.get('id'), 'tipo': act.get('tipo'), 'ini': act.get('inicio'), 'fin': act.get('fin'),
+            'b': [buscado(b) for b in act['buscados']],
+            # el período anterior, cerrado: cómo terminó cada uno
+            'ant': [buscado(b) for b in ult[0].get('buscados') or []][:15] if ult[0] else [],
+            'caz': tabla[:100], 'ce': ce}
 
 
 def _records(gente, regs=None, comp=None):

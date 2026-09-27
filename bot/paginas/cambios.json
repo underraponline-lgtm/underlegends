@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.22",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T11:45:00-04:00",
+   "titulo": "Most Wanted",
+   "items": [
+    "💀 **Most Wanted, en prueba y a diario**: cada día hay de 10 a 15 **buscados**, cada uno con su categoría —El Rey, El Imparable, El Verdugo…— y su recompensa. Están en el **tablero del Inicio**.",
+    "🎯 **Cazalos en cualquier evento de la Liga**: el primero que le gana a un buscado cobra su recompensa, y más si viene de abajo en el ranking. En equipos y triples se reparte.",
+    "🛡️ **Si sos buscado**: tu recompensa sube por cada evento que jugás sin caer. Si jugaste y llegaste por lo menos a cuartos (El Rey, a semis) sin que te cacen, **sobreviviste** y te llevás la mitad. Si no jugaste, te escondiste y no ganás nada.",
+    "🏆 **Ranking → Most Wanted**: los cazadores de la temporada. En cada perfil, **Su cacería**. Y en las llaves, quién cazó a quién; en las que se juegan en vivo, qué buscados están jugando.",
+    "📅 **A diario hasta el 4 de octubre**, que termina la fase de prueba. Con la Temporada 1 pasa a ser semanal."
+   ]
+  },
+  {
    "version": "1.21",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T10:55:00-04:00",

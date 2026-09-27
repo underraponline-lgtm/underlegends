@@ -1594,6 +1594,63 @@ text-transform:uppercase}
 .teaser.ev .reloj{font-size:1.4rem}
 #secPaneles .hoy{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
 
+/* ── Most Wanted: el tablero, un cartel por buscado ─────────────────────
+   El color de arriba dice cómo está: magenta suelto, gris cazado, oro si
+   sobrevivió. El sello es del cartel de «se busca»: sólo en los dos
+   finales que se ganan o se pierden. */
+.mw-cab{margin:0 0 12px;color:var(--tx2);font-size:.94rem;line-height:1.45;max-width:72ch}
+.mw-cab b{color:var(--tx)}
+.mw-t{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(210px,100%),1fr))}
+.mwc{--c:var(--mg);position:relative;display:flex;flex-direction:column;gap:6px;min-width:0;padding:12px 13px 11px;
+background:rgba(10,15,14,.82);border:1px solid var(--bd2);border-top:3px solid var(--c);cursor:pointer;overflow:hidden}
+.mwc::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.13;
+background:radial-gradient(120% 80% at 100% 0%,var(--c),transparent 62%)}
+.mwc:hover{border-color:var(--c)}
+.mwc.e-cazado{--c:#6F7E7B}
+.mwc.e-sobrevivio{--c:var(--oro)}
+.mwc.e-escondio{--c:#3A4745}
+.mwc-cat{color:var(--c);font:800 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.mwc.e-cazado .mwc-cat{color:var(--tx2)}
+.mwc-q{min-width:0;font:800 .98rem/1.2 Archivo,sans-serif}
+.mwc-m,.mwc-d{color:var(--tx3);font-size:.8rem;line-height:1.3}
+.mwc-v{color:var(--tx2);font:700 .78rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.mwc-v b{margin-right:3px;color:var(--tx);font:900 1.3rem/1 Archivo,sans-serif}
+.mwc.e-escondio .mwc-v{opacity:.5}
+.mwc-e{margin-top:auto;color:var(--tx2);font:700 .8rem/1.25 Archivo,sans-serif}
+.mwc.e-cazado::before,.mwc.e-sobrevivio::before{position:absolute;top:10px;right:10px;padding:3px 6px;
+border:2px solid currentColor;transform:rotate(-7deg);font:900 .64rem/1 Archivo,sans-serif;letter-spacing:.14em;opacity:.9}
+.mwc.e-cazado::before{content:'CAZADO';color:var(--mg)}
+.mwc.e-sobrevivio::before{content:'SOBREVIVIÓ';color:var(--oro)}
+.mw-pie{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin-top:12px;
+color:var(--tx2);font-size:.9rem}
+.mw-pie a{color:var(--tl);font-weight:700;text-decoration:none}
+.mw-pie a:hover{text-decoration:underline}
+/* en la llave: el buscado suelto y el que cazaron ahí */
+.mw-b{margin-left:4px;font-style:normal;font-size:.82em}
+.bx .mw-b{margin-left:2px;font-size:.72em}
+.l-mw{margin:0 0 12px;padding:9px 12px;border-left:3px solid var(--mg);background:rgba(228,19,115,.07)}
+.l-mw p{color:var(--tx2);font-size:.92rem;line-height:1.4}
+.l-mw p+p{margin-top:4px}
+.l-mw b{color:var(--tx)}
+/* en el perfil: su cacería */
+.mw-n{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:4px 24px;margin-bottom:10px}
+.mw-n dt{color:var(--tx3);font:700 .66rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;text-transform:uppercase}
+.mw-n dd{margin-top:4px;font:900 1.3rem/1 Archivo,sans-serif}
+.mw-h{margin:14px 0 2px;color:var(--tx3);font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;
+text-transform:uppercase}
+.mwl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 12px;
+padding:7px 0;border-top:1px solid var(--bd2)}
+.mwl[data-k]{cursor:pointer}
+.mwl>span:last-child{color:var(--tx2);font-size:.88rem}
+.mwl>span:last-child b{color:var(--oro)}
+@media (max-width:620px){
+  /* 15 carteles uno abajo del otro son una pared: en el teléfono se deslizan */
+  .mw-t{grid-auto-flow:column;grid-auto-columns:minmax(200px,74%);grid-template-columns:none;
+  overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+  .mwc{scroll-snap-align:start}
+  .mw-n{grid-template-columns:repeat(2,auto)}
+}
+
 /* ── las redes, en grande ──────────────────────────────────────────── */
 .feed.grande .fd{padding:14px 15px 15px}
 .feed.grande .fd b{font-size:1.14rem;line-height:1.3}

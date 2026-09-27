@@ -267,8 +267,43 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El Pase de rapero es sólo para DRA**, y se avanza con **TAREAS** | *«eso sí me gustaría que sólo para DRA»* | ⏳ por diseñar |
 | 🔴 **Tareas ≠ Misiones.** Las **Tareas** son del **Pase**; las **Misiones** son del **ranking de Temporada** (para todos) | *«lo de pase viene con TAREAS no misiones.. lo de misiones es para el ranking de temporada. Tareas para el pase no confundas»* | la pestaña «Misiones» del ranking; `comun/requisitos.py` ya suma las misiones para la Temporada |
 | **DRA es el hub de la Liga: entrenamiento y eventos principales** | *«DRA será un hub con misión principal a entrenamiento también y eventos principales»* | las Tareas del Pase salen naturalmente de ahí |
+| **Most Wanted arranca ya, a diario**, para probarlo | *«podríamos empezar ahora para ver, pero sería a diario porque no tenemos mucho tiempo en esta fase de prueba»* | ✅ **hecho (1.22)**: `bot/most_wanted.py`, paso 2b del ciclo |
+| **El diario dura lo que la prueba: hasta el 4/10**. Con la T1, semanal | *«the period ends in october 4… like the periodo de prueba»* | `tipo_de()` en `bot/most_wanted.py`, con la fecha de `comun/temporada.py`: cambia solo el 5/10 a las 11 AM ET |
+| **El tablero de buscados va en el panel del Inicio** | *«sí, exacto, por eso puse el panel ahí»* | `pintaMW()` en `app.js`: la primera página del panel |
+| **La caza queda escrita en la llave para siempre**, y en vivo se marca a los buscados | a «la caza para siempre», *«sí»* · a «buscados marcados», *«sí»* | `cuadro()` y `abrirLlave()` en `app.js` |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (11 AM a 12 PM) — versión 1.22
+
+**Most Wanted, en prueba y a diario.** Dlx: *«podríamos empezar ahora para
+ver»*, y *«the period ends in october 4»*.
+
+- 🔑 **`bot/most_wanted.py`, en el ciclo (paso 2b, entre los pools y la
+  web)**. Cada período elige de 10 a 15 buscados, uno por categoría, entre
+  los **activos** (2 eventos en la última semana) y **miembros** —los fuera
+  de concurso no son buscados; cazar, sí—. Recorre las llaves procesadas en
+  cada corrida: el primero que le gana a un buscado lo caza. Guarda sólo a
+  quiénes eligió; la caza se recalcula entera, así que una llave que entra
+  tarde o se corrige cambia el resultado sin dejar nada viejo.
+- 📅 **Diario hasta el 4/10, semanal desde el 5/10**, solo: el último día de
+  prueba va del 4 a las 11 AM al 5 a las 11 AM, y el 5 es lunes. Lo de la
+  prueba **no cuenta en la T1** (se borra, como el resto): la tabla de
+  cazadores arranca de cero. Y si un período arranca sin nadie a quien
+  buscar —el primer día de la T1—, se vuelve a elegir en cada corrida, y la
+  caza cuenta desde que se eligió.
+- 🖥️ **En la página**: el tablero en el panel del Inicio (en el teléfono se
+  desliza), la pestaña **Ranking → Most Wanted** (cazadores de la temporada),
+  **«Su cacería»** en el perfil, las columnas Cazó · Cazado · Sobrevivió del
+  ranking de Temporada (ya no leen del pool: salen de `datos/mw.json`) y en
+  las llaves: «🎯 Acá cazaron a…» en la batalla que perdió, y en vivo, qué
+  buscados juegan.
+- ⚠️ **Los puntos del Most Wanted todavía NO suman a los Puntos de la
+  Temporada ni al OVR.** Se ven en su pestaña. Ver «❓ Esperando a Dlx».
+- ⚠️ **`El Muro` pide 60 % de duelos ganados**: sin piso, el primer día salió
+  uno con 4 de 8.
 
 ---
 
@@ -805,10 +840,14 @@ inglés, y `/borrar-mis-datos`.
   **«fuera de concurso»** (arriba, en las reglas): nadie desaparece, el número
   es de los miembros. Medido ese día: 57 miembros, 19 verificados fuera de DRA,
   76 sin Discord vinculado, 1 sin país.
-- **Las reglas de Misiones, Most Wanted automático y las Tareas del Pase**: qué
-  cuenta, cuánto da y qué se gana. Te las propongo con números para que las
-  corrijas; y para las Tareas, **cómo se hacen los entrenamientos de DRA**
-  (dónde se anuncian y dónde queda quién fue), porque de ahí salen.
+- **¿Los puntos del Most Wanted suman ya a la Temporada (Puntos y OVR)?**
+  Hoy se ven sólo en su pestaña. Mi recomendación: **sí, desde hoy** —es lo
+  que la prueba tiene que mostrar, y el 5/10 se borra igual—; si preferís
+  mirarlo unos días aparte, queda como está.
+- **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
+  qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
+  hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién
+  fue), porque de ahí salen.
 - **¿El tono miel te gusta** para Urban Freestyle, ya en la página?
 - **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
   el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su

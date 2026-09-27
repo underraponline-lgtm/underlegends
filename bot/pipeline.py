@@ -918,6 +918,20 @@ def _lo_barato(correr):
             if hay != hubo:
                 print('      %-42s %d -> %d' % (n, hubo, hay))
 
+    # ── 2b · Most Wanted: los buscados del período y quién los cazó ─
+    #
+    # 🔑 Dlx, 27/09/2026: *«podríamos empezar ahora para ver, pero sería a
+    # diario»*. Elige a los buscados una vez por período y recorre las llaves
+    # procesadas en cada corrida (ver `bot/most_wanted.py`). Va DESPUÉS de los
+    # pools —necesita el puesto de cada uno— y ANTES de la web, que lo muestra.
+    #
+    # ⚠️ NUNCA FRENA EL CICLO: si falla, la web sigue con el `mw.json` de la
+    # corrida anterior y el aviso queda en el log.
+    if correr:
+        paso('2b', 'Most Wanted')
+        if not corre(['bot/most_wanted.py', '--aplicar'], callado=False):
+            print('      ⚠️ Most Wanted falló: queda el de la corrida anterior')
+
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #
     # 🔴 ESTE PASO FALTABA Y LA WEB SE QUEDABA VIEJA EN SILENCIO. Medido
