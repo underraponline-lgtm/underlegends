@@ -3050,20 +3050,32 @@ function trama(n) {
 // sí los eventos no hay ninguno», y el mismo día: «durante las 3am EST y
 // 11am EST no se hará ninguna sincronización para ahorrar más». De 3 a 11
 // AM ET no corre el ciclo: la última es la de las 2:52 y la siguiente la de
-// las 11:22. El vigía de los avisos sigue cada minuto: no es una
-// sincronización, es lo que avisa si alguien anuncia un evento a esa hora.
+// las 11:22.
+// 🌙 Y DESDE EL 27/09/2026 TAMPOCO EL VIGÍA. Dlx: «eso de detección de LLAVES
+// en vivo que sea apagado entre las 3am y 11am, que siga eso de las
+// notificaciones también y el cron». Hasta ese día el vigía de los avisos
+// seguía cada minuto; ahora duerme en la misma ventana. Ver `enMadrugada()`.
 // ⚠️ La misma ventana está en `bot/madrugada.py`, y su self-check compara
 // esta línea: si se cambia una sola, CI se pone rojo.
 export const MADRUGADA = { desde: 3, hasta: 11, horas: [] };
 
-export function tocaCiclo(fecha) {
+function horaEsteDe(fecha) {
   const p = {};
   for (const x of new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', hour: 'numeric', minute: 'numeric', hourCycle: 'h23',
   }).formatToParts(fecha)) p[x.type] = x.value;
-  const h = Number(p.hour);
-  const m = Number(p.minute);
-  if (h < MADRUGADA.desde || h >= MADRUGADA.hasta) return true;
+  return { h: Number(p.hour), m: Number(p.minute) };
+}
+
+/** ¿Es de madrugada, en hora del este? El vigía duerme; el ciclo, casi. */
+export function enMadrugada(fecha) {
+  const { h } = horaEsteDe(fecha);
+  return h >= MADRUGADA.desde && h < MADRUGADA.hasta;
+}
+
+export function tocaCiclo(fecha) {
+  if (!enMadrugada(fecha)) return true;
+  const { h, m } = horaEsteDe(fecha);
   return MADRUGADA.horas.includes(h) && m >= 30;
 }
 
@@ -3188,8 +3200,11 @@ export default {
     // agotó una vez y congeló el hub. El vigía deja su latido en el Durable
     // Object —ver `/avisos/estado`—, que tiene cien veces más cupo.
     if (evento.cron === CRON_VIGIA) {
+      // 🌙 DE 3 A 11 AM ET DUERME: no lee anuncios ni llaves (ver
+      // `MADRUGADA`). Igual pasa por el objeto, que deja el latido con
+      // `dormido` —quieto a propósito no es caído— sin tocar Discord.
       await vigilar(env, SERVIDORES.map((s) => ({ sv: s.sv, nombre: s.nombre, guild: s.guild })),
-        DUENO);
+        DUENO, enMadrugada(new Date(evento.scheduledTime || Date.now())));
       return;
     }
     // 🌙 DE MADRUGADA, DOS CORRIDAS Y NO DIECISÉIS. Ver `tocaCiclo()`. Se va
@@ -3293,8 +3308,10 @@ export default {
           },
         });
       }
-      if (ruta === '/perfiles') {
-        const crudo = await env.KV.get('web:perfiles');
+      // 🔑 Y TODAS LAS LLAVES, IGUAL: la página las pide sólo cuando un link
+      // `#/llave/<n>` apunta a una que ya no viaja en el lobby
+      if (ruta === '/perfiles' || ruta === '/llaves') {
+        const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : 'web:perfiles');
         return new Response(crudo || '{}', {
           status: crudo ? 200 : 404,
           headers: {

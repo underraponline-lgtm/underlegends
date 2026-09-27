@@ -48,6 +48,8 @@ CLAVE = 'web:lobby'
 #: perfil sólo cuando alguien abre uno. Juntos, el Inicio cargaría el
 #: historial de toda la Liga para mostrar cinco nombres.
 CLAVE_PERFILES = 'web:perfiles'
+#: todas las llaves de la temporada, para los links viejos: ver `armar()`
+CLAVE_LLAVES = 'web:llaves'
 
 #: cuántos entran al ranking de la página. No son todos a propósito: el
 #: payload viaja entero en cada visita y una tabla de 300 no se lee.
@@ -368,9 +370,18 @@ def armar():
         for _n, _f in _info.items():
             if _n in llaves:
                 llaves[_n] = dict(llaves[_n], info=_f)
+        # 🔑 Y TODAS, APARTE, para que el link de una llave vieja siga
+        # andando. `#/llave/<n>` se hizo para pegarlo en Discord (Dlx,
+        # 27/09/2026), y una llave que ya no está entre las `LLAVES_WEB` del
+        # lobby caía al calendario sin decir nada (auditoría del 27/09/2026).
+        # Viajan en `CLAVE_LLAVES` y la página las pide sólo en ese caso.
+        todas = {n: dict(r, rondas=_LW.enlazar(r.get('rondas') or [])) for n, r in regs.items()}
+        for _n, _f in _info.items():
+            if _n in todas:
+                todas[_n] = dict(todas[_n], info=_f)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
-        regs, llaves, calendario = {}, {}, []
+        regs, llaves, calendario, todas = {}, {}, [], {}
 
     # 🔑 LA FASE: prueba hasta que arranca la temporada, y sus fechas. La
     # página decide qué mostrar según el día de quien mira. Ver `FECHAS`.
@@ -428,6 +439,8 @@ def armar():
         # ⚠️ LOS PERFILES NO VIAJAN EN EL LOBBY: `main()` los saca de acá y
         # los sube aparte, a `CLAVE_PERFILES`. Ver `_perfiles()`.
         '_perfiles': _perfiles(gente, list(_comp.values()), regs),
+        # ⚠️ TAMPOCO TODAS LAS LLAVES: van a `CLAVE_LLAVES`, a pedido
+        '_llaves': todas,
         'requisitos': _requisitos(),
         # ⚠️ para que la página pueda decir «esto es de hace X». Un dato
         # sin fecha no se distingue de uno viejo.
@@ -2156,8 +2169,16 @@ def _self_check():
     _SIN_RED[0] = True
     p = armar()
     perf = p.pop('_perfiles', None) or {}
+    todas = p.pop('_llaves', None)
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
+    # 🔑 LOS LINKS VIEJOS: todas las llaves aparte, con su árbol, y ninguna
+    # del lobby falta ahí
+    ok(isinstance(todas, dict) and all(str(n) in todas for n in (p.get('llaves') or {})),
+       'todas las llaves van aparte, para los links viejos  (%d)' % len(todas or {}))
+    ok(all(all(len(b) >= 4 for R in (L.get('rondas') or []) for b in R.get('b') or [])
+           for L in (todas or {}).values()),
+       'y con el árbol que dibuja el cuadro')
 
     # 🔑 «VER LLAVES»: cada anuncio con `llave` tiene su llave en el
     # payload, y ninguna llave viaja sin un anuncio que la abra.
@@ -2317,6 +2338,7 @@ def main():
         return _self_check()
     p = armar()
     perf = p.pop('_perfiles', None) or {}
+    todas = p.pop('_llaves', None) or {}
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -2355,6 +2377,15 @@ def main():
                          % (len(perf['p']), CLAVE_PERFILES,
                             len(json.dumps(perf, ensure_ascii=False)) / 1024.0)
                          if ok2 else '🔴 no pude subir los perfiles'))
+    # 🔑 TODAS LAS LLAVES, para los links viejos: cambian cuando entra un
+    # evento, así que casi nunca gastan una escritura
+    if todas:
+        ok4 = subir(todas, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_LLAVES)
+        print('   %s' % ('✓ llaves: ya estaban iguales' if ok4 is None else
+                         '✅ llaves subidas (%d) a `%s`  %.1f KB'
+                         % (len(todas), CLAVE_LLAVES,
+                            len(json.dumps(todas, ensure_ascii=False)) / 1024.0)
+                         if ok4 else '🔴 no pude subir las llaves'))
     print('')
     return 0 if okk is not False else 1
 

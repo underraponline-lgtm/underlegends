@@ -311,7 +311,9 @@ text-transform:uppercase}
 .dos .col .blk{margin-top:0}
 
 /* ── podio ──────────────────────────────────────────────────────── */
-.podio{display:grid;gap:14px;grid-template-columns:repeat(3,1fr);align-items:end}
+/* ⚠️ `minmax(0,1fr)`: con `1fr` un nombre largo («Guardia Nacional») ensanchaba
+   su columna y la tercera tarjeta se cortaba 22 px en un teléfono */
+.podio{display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end}
 .pd{position:relative;text-align:center;padding:0 4px}
 .pd button{display:block;width:100%;line-height:0;position:relative}
 .pd img{width:100%;aspect-ratio:300/438;object-fit:contain;transition:transform .25s ease}
@@ -410,9 +412,13 @@ font:700 .84rem/1 'Barlow Condensed',sans-serif;letter-spacing:.09em;
 color:var(--tx2);white-space:nowrap}
 /* la bandera como imagen: del alto de la letra, con un borde que la
    separa del fondo oscuro (el blanco de Perú o Uruguay se perdía) */
-img.bf{display:inline-block;width:auto;height:.95em;vertical-align:-.12em;
+/* 🔴 CON ANCHO FIJO (3:2), NO `auto`. Dlx, 27/09/2026, con captura: la bandera de
+   MTZ ocupaba todo el ancho de su tarjeta del podio. Con `width:auto`, dentro de
+   una caja flex en columna la imagen se estira a lo ancho (`align-items:
+   stretch`); un ancho fijo no se estira en ningún contenedor. */
+img.bf{display:inline-block;flex:none;width:1.43em;height:.95em;object-fit:cover;vertical-align:-.12em;
 border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.14)}
-.fl img.bf,.chip img.bf{height:1em}
+.fl img.bf,.chip img.bf{height:1em;width:1.5em}
 .rg{display:inline-block;min-width:34px;padding:2px 8px;border:1px solid var(--bd);
 border-radius:2px;background:#0E1614;font:900 .8rem/1.35 Archivo,sans-serif;
 text-align:center;color:var(--tx3)}
@@ -496,7 +502,9 @@ color:var(--tx);font:700 .9rem/1.1 Archivo,sans-serif;background:none}
 font:600 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;
 white-space:nowrap}
 .sug-no{padding:11px 12px;color:var(--tx2);font-size:.86rem}
-.cmp img{width:100%;max-width:270px;margin:0 auto;aspect-ratio:300/438;
+/* ⚠️ SÓLO LA TARJETA DE CADA LADO: `.cmp img` agarraba también las
+   banderas del sugeridor y las dejaba en 9×13, con bandas */
+.cmp-lado>img{width:100%;max-width:270px;margin:0 auto;aspect-ratio:300/438;
 object-fit:contain}
 .cmp .vs{grid-column:1 / -1;display:grid;gap:5px}
 .cmp .fila{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;
@@ -830,6 +838,12 @@ align-items:baseline;padding:9px 2px;border-top:1px solid var(--bd2)}
 .tp li b{font:900 1.05rem/1 Archivo,sans-serif;color:var(--tl);
 font-variant-numeric:tabular-nums;white-space:nowrap}
 .tp li b s{text-decoration:none;color:var(--tx3);font-weight:700}
+/* 🔴 LAS MEDALLAS SE APILAN EN UNA CAJA ANGOSTA. En un teléfono de 320,
+   «🥇1 🥈1 🥉1» medía 114 px de 224 y a «Colesito» le quedaban 3: se partía
+   letra por letra, un renglón por letra. Apiladas miden 36 y el número
+   sigue a la derecha, como pidió Dlx. */
+.tp .meds{display:inline-flex;gap:8px}
+@container (max-width:340px){.tp .meds{flex-direction:column;align-items:flex-end;gap:4px}}
 .tp li small{color:var(--tx3);font:700 .66rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.12em;text-transform:uppercase}
 .tp-no{color:var(--tx2);font-size:.95rem;line-height:1.5;padding:4px 2px 8px}
@@ -928,11 +942,6 @@ color:var(--tx2);font:700 .9rem/1 Archivo,sans-serif}
 box-shadow:0 0 0 1px rgba(255,210,74,.25),0 0 30px rgba(255,210,74,.16)}
 .bx.fin .ld.g{color:var(--oro);box-shadow:inset 3px 0 0 var(--oro)}
 .bx.ter{opacity:.85}
-.cuadro .camp{position:absolute;text-align:center;color:var(--oro);
-font:900 1.08rem/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cuadro .camp small{display:block;margin-bottom:5px;color:var(--tx2);
-font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.2em;text-transform:uppercase}
-.cuadro .camp .ql{text-decoration:none}
 /* los puntos en dos columnas cuando hay ancho: son 20 o 30 filas */
 .res.dos-col{columns:2 320px;column-gap:34px}
 .res.dos-col li{break-inside:avoid}
@@ -1128,6 +1137,27 @@ letter-spacing:.1em;text-transform:uppercase}
 .pe-pts{min-width:4.5ch;text-align:right;color:var(--tl);font:900 1rem/1 Archivo,sans-serif;
 font-variant-numeric:tabular-nums}
 .pf-du{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
+/* ── cara a cara: contra cada rival, ganadas–perdidas y una barra ──────── */
+.pf-cara{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr))}
+.cr{display:grid;grid-template-columns:minmax(0,1fr) auto 64px;align-items:center;gap:3px 12px;
+padding:9px 12px;background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
+.cr[data-k]{cursor:pointer}
+.cr[data-k]:hover{border-color:var(--tl)}
+.cr-q{grid-row:1 / span 2;min-width:0;font-weight:800}
+.cr-m{font:900 1.1rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cr-m i{font-style:normal;color:var(--tx3);margin:0 3px}
+.cr.g .cr-m{color:var(--tl)}
+.cr.p .cr-m{color:var(--mg)}
+.cr-b{height:6px;border-radius:3px;background:rgba(228,19,115,.5);overflow:hidden}
+.cr-b u{display:block;height:100%;background:var(--tl)}
+.cr small{grid-column:2 / span 2;justify-self:end;color:var(--tx3);font:700 .66rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+.cr-mas{grid-column:1 / -1}
+.cmp .fila.cara{border-color:rgba(41,178,152,.45)}
+.cmp .fila.cara em{color:var(--tl)}
+.cr-mas summary{cursor:pointer;padding:8px 2px;color:var(--tl);font:800 .8rem/1 Archivo,sans-serif;
+letter-spacing:.06em;text-transform:uppercase}
+.cr-mas .cr+.cr,.cr-mas summary+.cr{margin-top:6px}
 .dd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:9px 12px;
 background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
 .dd-r{padding:3px 8px;border-radius:999px;font:800 .7rem/1 Archivo,sans-serif;letter-spacing:.08em;
@@ -1169,7 +1199,11 @@ letter-spacing:.12em;text-transform:uppercase}
    sabe calcularlo (color relativo), queda el negro de siempre. */
 .btn{--c0:var(--c,var(--tl));display:inline-flex;align-items:center;justify-content:center;gap:8px;
 min-height:40px;padding:9px 16px;border-radius:10px;border:1px solid var(--c0);
-background:var(--c0);color:#050607;text-decoration:none;cursor:pointer;white-space:nowrap;
+background:var(--c0);color:#050607;text-decoration:none;cursor:pointer;
+/* 🔴 NUNCA MÁS ANCHO QUE SU CAJA: con `nowrap`, «ENTRAR A DISCORD RAP
+   ESPAÑOL» medía 313 px en una caja de 256 y un teléfono de 320 se corría
+   de costado. Si no entra, parte el renglón. */
+max-width:100%;text-align:center;
 font:800 .8rem/1.1 Archivo,sans-serif;letter-spacing:.05em;text-transform:uppercase;
 box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 6px 16px -8px rgba(0,0,0,.9);
 transition:transform .15s ease,filter .15s,background .15s,box-shadow .15s,color .15s}
@@ -1640,8 +1674,6 @@ border:1px solid var(--bd2);font-weight:800;font-size:.9rem}
    y cada renglón medía ~24: en las llaves de tríos sobraban 8 px por lado
    (medido en EL RAP FECHA 5 y TOKYO VOL.12). */
 .bx .mb{display:flex;align-items:center;min-width:0;height:21px}
-.cuadro .camp.eq{display:flex;flex-direction:column;align-items:center}
-.cuadro .camp .mb{display:block;line-height:21px}
 .l-guia{margin:2px 0 6px}
 .pgs{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}
 .pg{padding:10px 12px;background:rgba(11,18,17,.72);border:1px solid var(--bd2)}
@@ -1661,7 +1693,11 @@ border-top:1px solid var(--bd2)}
    nadie la use. */
 @media(max-width:1100px){
   .cal-dos{grid-template-columns:1fr}
-  .campeones{gap:14px}
+  /* 🔴 `.campeones.dos` TAMBIÉN: la grilla de dos filas trae su propio
+     `column-gap:24px`, más fuerte que `.campeones`, y en un teléfono de 375
+     las dos tarjetas medían 12 px más que la pantalla (la página se corría
+     de costado). */
+  .campeones,.campeones.dos{gap:14px;column-gap:14px}
   .campeones .corona{font-size:.62rem;letter-spacing:.12em}
   .hc-vacio{padding:12px 8px;gap:7px}
   .hc-vacio>b{font-size:1.1rem}
@@ -1741,7 +1777,7 @@ border-top:1px solid var(--bd2)}
   .cw-logo.grande{width:84px;height:84px}
   .pais-bandera{width:96px;height:64px}
   .nov-redes>span{flex-basis:100%;margin-bottom:2px}
-  .campeones{gap:12px}
+  .campeones,.campeones.dos{gap:12px;column-gap:12px}
   .campeones.dos .hc-marco img,.campeones .hero-carta,.hc-vacio{width:min(43vw,190px)}
   .campeones .corona{font-size:.62rem;letter-spacing:.12em}
   .hc-vacio{padding:12px 8px;gap:7px}
@@ -1765,7 +1801,12 @@ border-top:1px solid var(--bd2)}
   .ce.fut i{background:transparent;outline:1px dashed var(--c)}
   .mapa-dato>b{font-size:2.6rem}
   .hoy{grid-template-columns:1fr}
-  .lpod{grid-template-columns:1fr}
+  .lpod{grid-template-columns:1fr;gap:8px}
+  /* en el teléfono los del equipo van uno al lado del otro: uno por
+     renglón, un podio de tríos medía media pantalla antes de la llave */
+  .lp{padding:8px 10px}
+  .lp div{flex:1 1 0;flex-direction:row;flex-wrap:wrap;gap:4px 12px}
+  .lp-m{font-size:1.3rem}
   .pf-cab{padding:18px 16px;gap:16px}
   .pf-cab>.av{width:84px!important;height:84px!important}
   .pf-cifras{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -1774,6 +1815,21 @@ border-top:1px solid var(--bd2)}
   .pe-f{grid-column:1 / -1}
   .pe-p{display:none}
   .visor-caja.llave-caja{height:auto;max-height:calc(100dvh - 20px)}
+  /* 🔑 EN EL TELÉFONO, UNA FILA QUE SE DESLIZA. Los diez rankings ocupaban
+     cuatro renglones y las diecisiete banderas otros cuatro: la primera fila
+     de la tabla quedaba al pie de la pantalla (medido a 375 px). */
+  #subRanking,.cmp-cat,#chipsCc{flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;
+  scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);
+  mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent)}
+  #subRanking::-webkit-scrollbar,.cmp-cat::-webkit-scrollbar,#chipsCc::-webkit-scrollbar{display:none}
+  #subRanking .sub,.cmp-cat .sub,#chipsCc .chip{flex:none}
+  #subRanking,.cmp-cat{padding-right:26px}
+  #chipsCc{padding-right:20px}
+  /* el logo arriba y chico: centrado al lado de cinco renglones dejaba un
+     hueco a su izquierda y empujaba todo a la derecha */
+  .llave-caja .visor-cab{align-items:flex-start;gap:10px;margin-bottom:10px}
+  .llave-caja .l-logo{width:34px;height:34px;border-radius:9px}
+  .llave-caja .visor-cab h3{font-size:1.2rem}
 }
 /* 🔴 SIETE EN LA BARRA NO ENTRAN CON EL ESPACIADO DE SEIS. Medido a 375 px
    al sumar «Avisos»: cada casilla mide 54 px y «Tarjetas» ocupaba más,
@@ -1896,7 +1952,7 @@ color:var(--tx2);font-size:.86rem}
 .bx .ld:not(.g){opacity:.62}
 .bx.fin .ld.g{background:rgba(255,210,74,.08)}
 .bx:hover .ld:not(.g){opacity:.85}
-.bx.sigue,.camp.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl),0 0 18px rgba(41,178,152,.25);z-index:2}
+.bx.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl),0 0 18px rgba(41,178,152,.25);z-index:2}
 /* ── en vivo ─────────────────────────────────────────────────────────── */
 .vivo-sec::before{background:linear-gradient(90deg,var(--mg),#FF7A59)}
 .vivo-punto{display:inline-block;flex:none;width:10px;height:10px;border-radius:50%;background:var(--mg);
@@ -1922,16 +1978,43 @@ background:#0B1211}
 .l-vista button{padding:7px 14px;border-radius:7px;color:var(--tx2);font:800 .78rem/1 Archivo,sans-serif;
 letter-spacing:.04em;text-transform:uppercase}
 .l-vista button[aria-pressed="true"]{background:var(--tl);color:#050607}
-.l-sigue{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
-margin:8px 0 10px;padding:10px 12px;border:1px solid var(--tl);border-radius:10px;
-background:rgba(8,20,18,.96);box-shadow:0 8px 20px rgba(0,0,0,.45)}
-.l-sigue[hidden]{display:none}
-.ls-q{font-weight:800}
-.ls-d{color:var(--tx2);font-size:.92rem}
+/* 🔴 LA BARRA ESTÁ SIEMPRE Y MIDE SIEMPRE LO MISMO. Aparecer y desaparecer
+   arriba del cuadro lo corría 50 px con cada nombre: el parpadeo que Dlx
+   llamó «very buggy». Sin nadie seguido dice cómo se usa. */
+/* ⚠️ SE PEGA ARRIBA SÓLO CUANDO SIGUE A ALGUIEN: la ayuda no hace falta
+   mientras se baja, y pasar de `relative` a `sticky` no corre nada */
+.l-sigue{position:relative;z-index:5;display:grid;grid-template-columns:minmax(0,1fr) auto;
+align-items:center;gap:10px;box-sizing:border-box;height:64px;margin:8px 0 10px;padding:7px 12px;
+border:1px dashed #2A3D39;border-radius:10px;background:#080E0D}
+.l-sigue.on{position:sticky;top:0;border:1px solid var(--tl);background:#081412;box-shadow:0 8px 20px rgba(0,0,0,.45)}
+/* ⚠️ DOS RENGLONES COMO MUCHO: la barra tiene alto fijo, y un tercero la
+   haría crecer, que es justo lo que no puede pasar */
+.ls-idle{color:var(--tx3);font-size:.9rem;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;
+-webkit-line-clamp:2;overflow:hidden}
+.ls-q{display:flex;flex-direction:column;gap:3px;min-width:0;font-weight:800}
+.ls-d{color:var(--tx2);font-size:.88rem;line-height:18px;font-weight:700;white-space:nowrap;overflow:hidden;
+text-overflow:ellipsis}
 .ls-d b{color:var(--tl)}
-.ls-perf{min-height:32px;padding:6px 12px;margin-left:auto}
-.ls-x{width:32px;height:32px;border-radius:8px;color:var(--tx2);font-size:1.3rem;line-height:1}
+.ls-acc{display:flex;align-items:center;gap:6px}
+.ls-perf{min-height:34px;padding:6px 12px}
+.ls-x{width:34px;height:34px;border-radius:8px;color:var(--tx2);font-size:1.3rem;line-height:1}
 .ls-x:hover{color:var(--tx);background:rgba(255,255,255,.06)}
+/* 🔑 EL CAMINO SE VE COMO CAMINO: sus cajas y sus ramas encendidas, y el
+   resto del cuadro apagado. */
+.cuadro .bx,.cuadro path,.rl-lista .bl{transition:opacity .15s}
+.cuadro.siguiendo .bx:not(.sigue),.rl-lista.siguiendo .bl:not(.sigue){opacity:.32}
+.cuadro.siguiendo path:not(.sigue){opacity:.25}
+.cuadro path.sigue{stroke:var(--tl);stroke-width:2.8}
+.cuadro path.oro.sigue{stroke:var(--oro)}
+@media (prefers-reduced-motion:reduce){.cuadro .bx,.cuadro path,.rl-lista .bl{transition:none}}
+/* la copa, en el borde de la final y no en un recuadro aparte: el campeón
+   se dice una vez, con el renglón dorado */
+.bx-et span.et-copa,.bl .bx-et span.et-copa{background:#2A2410;border-color:rgba(255,210,74,.6);color:var(--oro)}
+.bl-copa{white-space:nowrap;font-size:.92rem}
+/* los nombres primero; la copa y sus puntos bajan si no entran al lado */
+.bl-l{flex-wrap:wrap}
+.bl-n{flex:1 1 11em}
+.bl-m{display:inline-flex;align-items:center;gap:6px;min-width:0;max-width:100%}
 .eq-caras{display:inline-flex;flex:none;margin-right:8px;align-self:center}
 .eq-caras .av{width:20px;height:20px;border:2px solid #0A1110;box-shadow:none}
 .eq-caras .av+.av{margin-left:-7px}
@@ -1940,7 +2023,10 @@ background:rgba(8,20,18,.96);box-shadow:0 8px 20px rgba(0,0,0,.45)}
 .bx-et span,.bl .bx-et span{padding:2px 6px;border-radius:5px;background:#1B2A26;border:1px solid #2E4A43;
 color:var(--tl);font:700 .62rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;
 white-space:nowrap}
-.rl-lista{display:grid;gap:18px;margin:6px 0 4px}
+/* ⚠️ `minmax(0,1fr)`: sin columna declarada, la grilla medía lo que el
+   renglón más ancho pedía y «Por rondas» —la vista del teléfono— se corría
+   de costado en tres llaves de quince */
+.rl-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:6px 0 4px}
 .rl-r h5{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;color:var(--tx);
 font:900 .9rem/1 Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .rl-r h5 small{color:var(--tl);font:700 .8rem/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:none}
@@ -1959,10 +2045,6 @@ border:1px solid #22332F;border-radius:10px;background:linear-gradient(180deg,#0
 letter-spacing:.14em;text-transform:uppercase;font-style:normal}
 .bl.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl)}
 .bl .ql.sigue span{color:var(--tl)}
-.bl-camp{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:4px 0 0;padding:10px 12px;
-border:1px solid rgba(255,210,74,.55);border-radius:10px;background:rgba(255,210,74,.06);font-weight:900}
-.bl-camp>span{color:var(--oro);font:800 .78rem/1 Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase}
-.bl-camp b{margin-left:auto;color:var(--oro)}
 .cuadro .ql.sigue span{color:var(--tl)}
 .bx.sigue .ld{opacity:1}
 

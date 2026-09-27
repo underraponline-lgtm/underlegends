@@ -295,9 +295,14 @@ function ir() {
   if (r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
   if (r === 'pais') pintaPais(partes[1] || '');
   if (r === 'cambios') cargarCambios(pintaCambios);
+  if (r === 'tarjetas' && D) pintaCaraCmp();
   // 🔑 `#/llave/<número>` ABRE ESA LLAVE, encima del calendario. Dlx, 27/09/2026,
   // «me gusta todo»: el link de cada llave es para pegarlo en Discord.
-  if (partes[0] === 'llave' && partes[1]) abrirLlave(dec(partes[1]));
+  if (partes[0] === 'llave' && partes[1] && !abrirLlave(dec(partes[1])) &&
+      String(partes[1]).indexOf('v:') !== 0) {
+    llaveVieja(dec(partes[1]));
+  }
+  if (r !== 'eventos' || partes[0] !== 'llave') apaga('#evAviso');
   // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
   // Inicio, y deja mandar el link de un ranking puntual.
   if (r === 'ranking') {
@@ -482,10 +487,24 @@ function pintaCampeones() {
   var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
     return (b.sc || 0) - (a.sc || 0);
   })[0];
-  if (uno && (uno.c || []).length) h.push(campeon(uno, uno.c[0], quien + ' de la temporada'));
-  if (h.length && comp && (comp.c || []).length) {
+  // 🔴 CADA UNO POR SU LADO. Si el líder de la temporada no tenía tarjeta
+  // —sin verificar, por ejemplo— se escondían las dos, también la del
+  // competitivo, que sí existía. Sin tarjeta, su lugar dice quién es y por qué.
+  var sinCarta = function (f, tit) {
+    return '<div class="hero-carta vacante"><span class="corona">' + esc(tit) + '</span>' +
+      '<div class="hc-vacio"><p class="hc-cerca" data-k="' + esc(f.k) + '">' + quienEs(f, 34) + '</p>' +
+      '<p>' + (f.nv ? 'Sin tarjeta: ' + esc(NV[f.nv] || 'le falta verificarse') + '.'
+        : 'Su tarjeta todavía no está.') + '</p></div></div>';
+  };
+  if (uno) {
+    h.push((uno.c || []).length ? campeon(uno, uno.c[0], quien + ' de la temporada')
+      : sinCarta(uno, quien + ' de la temporada'));
+  }
+  if (comp && (comp.c || []).length) {
     h.push(campeon(comp, comp.c.indexOf('competitivo') >= 0 ? 'competitivo' : comp.c[0],
       quien + ' del competitivo'));
+  } else if (comp) {
+    h.push(sinCarta(comp, quien + ' del competitivo'));
   } else if (h.length) {
     var pide = reqDe('competitivo') || 10;
     var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
@@ -640,9 +659,18 @@ function pintaVivo() {
           'Discord &#8599;</a>' : '') + '</div></article>';
   }).join('');
   // la que está abierta se redibuja con lo nuevo, sin cerrarse
+  // 🔴 SÓLO SI CAMBIÓ, Y EN SU LUGAR. Se redibujaba cada minuto aunque no
+  // hubiera nada nuevo, y el teléfono que había deslizado hasta la final
+  // volvía a la primera ronda (auditoría del 27/09/2026).
   if (LL && LL.L && LL.L.vivo && !$('#visorLlave').hidden) {
     var nuevo = VIVO_L[LL.L.id];
-    if (nuevo) { LL.L = nuevo; pintaCabVivo(nuevo); pintaVistaLlave(); }
+    if (nuevo) {
+      var firma = function (L) { return JSON.stringify([L.rondas, L.participantes, L.terminada]); };
+      var cambio = firma(nuevo) !== firma(LL.L);
+      LL.L = nuevo;
+      pintaCabVivo(nuevo);
+      if (cambio) pintaVistaLlave(true);
+    }
   }
 }
 
@@ -688,32 +716,67 @@ function conBanderas(x) {
 var LL = null;
 var LL_VISTA = '';
 var HOVER = !!(window.matchMedia && window.matchMedia('(hover:hover)').matches);
+/* 🔴 LOS LINKS DE LLAVES VIEJAS. `#/llave/<n>` se hizo para pegarlo en
+   Discord, y el lobby trae sólo las más nuevas: una llave de hace un mes caía
+   al calendario sin decir nada (auditoría del 27/09/2026). Las demás se piden
+   aparte (`/api/llaves`), una vez y sólo en ese caso. */
+var LLAVES_TODAS = null;
+function llaveVieja(n) {
+  var dic = function (t) {
+    var L = t && t[n];
+    if (L) { D.llaves = D.llaves || {}; D.llaves[n] = L; abrirLlave(n); return; }
+    avisoLlave('Esa llave no está: puede ser de otra temporada, o el link está mal copiado.');
+  };
+  if (LLAVES_TODAS) return dic(LLAVES_TODAS);
+  fetch('/api/llaves', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (t) { LLAVES_TODAS = t || {}; dic(LLAVES_TODAS); })
+    .catch(function () { avisoLlave('No pude traer esa llave. Probá de nuevo en un rato.'); });
+}
+function avisoLlave(txt) {
+  var e = $('#evAviso');
+  if (!e) {
+    e = document.createElement('p');
+    e.id = 'evAviso';
+    e.className = 'fase';
+    var v = $('.vista[data-vista="eventos"] .bajada');
+    if (!v) return;
+    v.parentNode.insertBefore(e, v.nextSibling);
+  }
+  e.textContent = txt;
+  e.hidden = false;
+}
 function abrirLlave(n) {
   // 🔑 `v:<id>` ES UNA LLAVE EN VIVO: la leyó `LlaveVivo`, sin puntos todavía
   var L = String(n).indexOf('v:') === 0 ? VIVO_L[String(n).slice(2)] : (D.llaves || {})[n];
-  if (!L) return;
-  var k = {};
-  (D.tabla || []).forEach(function (f) { k[f.n] = f.k; });
+  if (!L) return false;
+  // 🔴 Y SIN LA BANDERA: la llave escribe «Mau Kc 🇨🇴» y el ranking «Mau Kc»,
+  // así que esa persona salía sin cara y sin link a su perfil. Ver `kDe()`.
+  var claveDe = kDe;
   // 🔑 CON SU CARA Y LA BANDERA A LA DERECHA, como en el ranking; tocar
   // un nombre abre su perfil. En un equipo va sin cara: las caras van
   // juntas, adelante (ver `cara`).
+  // ⚠️ QUIEN NO ESTÁ EN EL RANKING VA EN UN <span>, no suelto: suelto, su
+  // bandera quedaba como hija directa de una caja flex y se estiraba.
   var quien = function (x, sinCara) {
-    var f = k[x] && porK(k[x]);
+    var f = claveDe(x) && porK(claveDe(x));
     return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + (sinCara ? '' : avatar(f, 18)) +
-      '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + '</button>' : conBanderas(x);
+      '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + '</button>'
+      : '<span class="ql-n">' + conBanderas(x) + '</span>';
   };
   var cara = function (x) {
-    var f = k[x] && porK(k[x]);
+    var f = claveDe(x) && porK(claveDe(x));
     return avatar(f || { n: String(x || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim() }, 20);
   };
   // los puntos y el puesto de cada uno en esta llave, para la barra de «seguir»
   var pts = {};
-  (L.tabla || []).forEach(function (r) { if (k[r[0]]) pts[k[r[0]]] = [r[1], r[2]]; });
+  (L.tabla || []).forEach(function (r) { if (claveDe(r[0])) pts[claveDe(r[0])] = [r[1], r[2]]; });
   // ⚠️ EL CUADRO PRIMERO, también en el teléfono. Dlx, 27/09/2026: «que el
   // default sea cuadros, no por rondas». «Por rondas» queda al lado.
   if (!LL_VISTA) LL_VISTA = 'cuadro';
   LL = { n: n, L: L, quien: quien, cara: cara, pts: pts };
   FIJO = '';
+  SIGUE_K = '';
   var sv = svDe(L.sv);
   $('#visorLlave .v-pos').innerHTML = sv.logo
     ? '<img class="l-logo" src="' + esc(sv.logo) + '" alt="" width="44" height="44">' : '&#127942;';
@@ -776,18 +839,22 @@ function abrirLlave(n) {
   var podio = [['Campeón', '&#129351;', 'p1'], ['Subcampeón', '&#129352;', 'p2'],
     ['Tercero', '&#129353;', 'p3']].map(function (p) {
     var rs = puesto(p[0]);
+    // ⚠️ UN EQUIPO NO SIEMPRE SUMA PAREJO: en GENESIS el revivido se llevó
+    // 3000 y sus compañeros 2500, y el podio decía «3000» para los tres
+    var ps = rs.map(function (r) { return +r[2] || 0; });
+    var lo = Math.min.apply(null, ps), hi = Math.max.apply(null, ps);
     return rs.length ? '<div class="lp ' + p[2] + '"><span class="lp-m">' + p[1] + '</span>' +
       '<div>' + rs.map(function (r) { return quien(r[0]); }).join('') + '</div>' +
-      '<small>' + p[0] + ' · ' + num(rs[0][2]) + ' pts</small></div>' : '';
+      '<small>' + p[0] + ' · ' + (lo === hi ? num(hi) : num(lo) + ' a ' + num(hi)) + ' pts</small></div>' : '';
   }).join('');
   // 🔑 CÓMO SE LEE, ARRIBA DEL CUADRO. Estaba abajo, en letra chica, y es
   // lo primero que hace falta para entender lo que sigue.
+  // ⚠️ CÓMO SEGUIR A ALGUIEN NO VA ACÁ: lo dice la barra de abajo mientras
+  // no se sigue a nadie, que es justo cuando hace falta.
   var ley = '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
     '<span class="ley-p"><i></i>Quedó afuera</span><span class="ley-o"><i></i>El camino del campeón</span>' +
-    '<span class="ley-n">' + (L.vivo ? 'Se juega ahora: los puntos llegan cuando el ciclo procesa el evento'
-      : 'Arriba de cada ronda, los puntos de quien queda afuera ahí') +
-    (HOVER ? '. Pasá el mouse por un nombre y se ve todo su camino.'
-      : '. Tocá un nombre y se ve todo su camino; tocalo otra vez para abrir su perfil.') + '</span></div>';
+    '<span class="ley-n">' + (L.vivo ? 'Se juega ahora: los puntos llegan cuando el ciclo procesa el evento.'
+      : 'Arriba de cada ronda, los puntos de quien queda afuera ahí.') + '</span></div>';
   // 🔑 DOS FORMAS DE VERLA: el cuadro, y por rondas de arriba abajo —cómoda en
   // el teléfono, donde el cuadro obliga a correrlo de costado—.
   var vistas = '<div class="l-vista" role="group" aria-label="Cómo ver la llave">' +
@@ -796,14 +863,17 @@ function abrirLlave(n) {
         v[1] + '</button>';
     }).join('') + '</div>';
   $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') +
-    ley + vistas + '<div class="l-sigue" id="lSigue" hidden></div><div id="lVista"></div>' +
+    ley + vistas + '<div class="l-sigue" id="lSigue" aria-live="polite"></div><div id="lVista"></div>' +
     (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
   if (L.vivo) pintaCabVivo(L);
-  pintaVistaLlave();
+  // ⚠️ VISIBLE ANTES DE DIBUJAR: escondido, el cuadro mide 0 de ancho y no
+  // había cómo centrarlo en la final (arrancaba en los octavos)
   $('#visorLlave').hidden = false;
+  pintaVistaLlave();
   $('#lCuerpo').scrollTop = 0;
   document.body.style.overflow = 'hidden';
+  return true;
 }
 /* la ficha de una llave en vivo: no tiene puntos ni fecha de calendario */
 function pintaCabVivo(L) {
@@ -815,40 +885,87 @@ function pintaCabVivo(L) {
       : esc(L.enJuego || 'en juego') + ' en juego') + ' &middot; se actualiza sola cada minuto &middot; ' +
     'último cambio ' + esc(cuandoSe(new Date(L.ed || L.pub || Date.now()).toISOString())) + '</span>';
 }
-function pintaVistaLlave() {
+// `quieto`: se redibuja en el lugar —la llave en vivo que cambió, o el
+// teléfono que giró— sin volver al principio
+function pintaVistaLlave(quieto) {
   if (!LL || !$('#lVista')) return;
+  var cc0 = $('#lCuerpo .cuadro-caja'), x0 = cc0 ? cc0.scrollLeft : 0;
+  var cu = $('#lCuerpo'), y0 = cu ? cu.scrollTop : 0;
   $$('[data-lvista]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lvista === LL_VISTA)); });
   $('#lVista').innerHTML = LL_VISTA === 'rondas' ? rondasLista(LL.L, LL.quien, LL.cara)
     : cuadro(LL.L, LL.quien, LL.cara);
-  // en espejo la final va en el medio: se arranca mirándola
   var cc = $('#lCuerpo .cuadro-caja');
-  if (cc && window.innerWidth >= 760 && cc.scrollWidth > cc.clientWidth) {
+  LL.ancho = window.innerWidth;
+  if (quieto) {
+    if (cc) cc.scrollLeft = x0;
+    if (cu) cu.scrollTop = y0;
+  } else if (cc && window.innerWidth >= 760 && cc.scrollWidth > cc.clientWidth) {
+    // en espejo la final va en el medio: se arranca mirándola
     cc.scrollLeft = (cc.scrollWidth - cc.clientWidth) / 2;
   }
-  if (FIJO) seguirEnLlave(FIJO, true);
+  // redibujada (otra vista, o la llave en vivo que cambió): quien se seguía
+  // se sigue siguiendo
+  seguirEnLlave(FIJO || SIGUE_K, !!FIJO);
 }
 /* 🔑 SEGUIR A ALGUIEN POR LA LLAVE, y cuánto sumó ahí. Con el mouse, al pasar
    por encima; en el teléfono, tocando el nombre (Dlx, 27/09/2026, a «tocar
-   un nombre ilumina su camino y dice cuánto sumó»: «me gusta todo»). */
-var FIJO = '';
+   un nombre ilumina su camino y dice cuánto sumó»: «me gusta todo»).
+
+   🔴 PARPADEABA, y la causa era la barra. Dlx, 27/09/2026: «this thing of
+   selecting a person and seeing his path lightned is very buggy». La barra
+   aparecía ARRIBA del cuadro al pasar el mouse, así que el cuadro bajaba 50
+   px, el nombre se iba de abajo del mouse, la barra se escondía, el cuadro
+   subía… Ahora la barra está siempre, con la misma altura: sin nadie
+   seguido dice cómo se usa.
+
+   ⚠️ Y EL CAMINO ES CAMINO: se encienden también las ramas por las que pasó,
+   y el resto del cuadro se apaga. Antes sólo cambiaba el borde de sus
+   cajas, que en una llave de 32 se perdía. */
+var FIJO = '', SIGUE_K = '';
 function seguirEnLlave(k, fijo) {
+  SIGUE_K = k || '';
   $$('#lCuerpo .sigue').forEach(function (x) { x.classList.remove('sigue'); });
+  var vis = $('#lVista .cuadro') || $('#lVista .rl-lista');
+  if (vis) vis.classList.toggle('siguiendo', !!k);
+  if (k) {
+    // ⚠️ SÓLO DENTRO DE LA VISTA: el podio y «Los puntos» tienen los mismos
+    // nombres y no son parte del camino
+    $$('#lVista .ql').forEach(function (x) {
+      if (x.dataset.k !== k) return;
+      x.classList.add('sigue');
+      var bx = x.closest('.bx,.bl');
+      if (bx) bx.classList.add('sigue');
+    });
+    // una rama es del camino si esa persona está en las dos cajas que une
+    $$('#lVista .cuadro path[data-de]').forEach(function (p) {
+      var a = $('#lVista .bx[data-b="' + p.getAttribute('data-de') + '"]');
+      var b = $('#lVista .bx[data-b="' + p.getAttribute('data-a') + '"]');
+      if (a && b && a.classList.contains('sigue') && b.classList.contains('sigue')) p.classList.add('sigue');
+    });
+  }
+  pintaBarraSigue(k, fijo);
+}
+function pintaBarraSigue(k, fijo) {
   var bar = $('#lSigue');
-  if (!k) { if (bar) bar.hidden = true; return; }
-  $$('#lCuerpo .ql').forEach(function (x) {
-    if (x.dataset.k !== k || x.closest('.lpod,.pgs,.l-sigue')) return;
-    x.classList.add('sigue');
-    var bx = x.closest('.bx,.camp,.bl');
-    if (bx) bx.classList.add('sigue');
-  });
-  var f = porK(k), p = LL && LL.pts[k];
-  if (!bar || !f) return;
-  bar.innerHTML = '<span class="ls-q">' + quienEs(f, 26) + '</span>' +
-    (p ? '<span class="ls-d">' + (MEDALLA[p[0]] ? MEDALLA[p[0]] + ' ' : '') + esc(p[0]) +
-      ' &middot; <b>' + num(p[1]) + ' pts</b></span>' : '') +
-    '<button type="button" class="btn sec ls-perf" data-k="' + esc(k) + '">Ver perfil</button>' +
-    (fijo ? '<button type="button" class="ls-x" data-sigue-x aria-label="Dejar de seguir">&times;</button>' : '');
-  bar.hidden = false;
+  if (!bar) return;
+  var f = k && porK(k), p = f && LL && LL.pts[k];
+  bar.classList.toggle('on', !!f);
+  if (!f) {
+    bar.innerHTML = '<span class="ls-idle">' + (HOVER
+      ? 'Pasá el mouse por un nombre y se ilumina su camino. Con un clic, su perfil.'
+      : 'Tocá un nombre y se ilumina su camino.') + '</span>';
+    return;
+  }
+  // 🔑 DOS RENGLONES FIJOS —quién, y cómo le fue— para que la barra mida
+  // lo mismo con cualquier nombre y en cualquier ancho
+  bar.innerHTML = '<span class="ls-q">' + quienEs(f, 26) + '<span class="ls-d">' +
+    (p ? (MEDALLA[p[0]] ? MEDALLA[p[0]] + ' ' : '') + esc(p[0]) + ' &middot; <b>' + num(p[1]) + ' pts</b>'
+      : (LL && LL.L && LL.L.vivo ? 'Se juega ahora' : 'Sin puntos en esta llave')) + '</span></span>' +
+    // con el mouse no se llega a la barra sin pasar por otros nombres: el
+    // perfil se abre con un clic en el nombre, y los botones son del toque
+    (fijo ? '<span class="ls-acc"><button type="button" class="btn sec ls-perf" data-k="' + esc(k) +
+      '">Perfil</button><button type="button" class="ls-x" data-sigue-x aria-label="Dejar de seguir">&times;</button></span>'
+      : '');
 }
 /* 🔑 LO QUE LA LLAVE NO DICE CON UN NOMBRE, CON UNA ETIQUETA: revivido,
    walk-in, pokémon, refuerzo, el tercero que dio el podio y cuántos pasan
@@ -896,18 +1013,28 @@ function rondasLista(L, quien, cara) {
   var ptsDe = ptsDeLlave(L);
   var prin = rs.filter(function (R) { return R.r !== 'Tercer puesto'; });
   var ult = prin[prin.length - 1];
-  var lado = function (s, gano) {
+  // 🔴 EL CAMPEÓN, UNA VEZ: en su renglón de la final, con la copa y sus
+  // puntos. Iba además en un recuadro debajo que repetía los mismos nombres
+  // (Dlx, 27/09/2026: «I also dont have to see 2 times that this team won»).
+  var lado = function (s, gano, copa) {
     var ms = String(s || '').split(/,\s*/).filter(Boolean);
     var eq = ms.length > 1;
+    var ps = copa ? miembrosDe(s).map(function (m) { return ptsDe[m]; })
+      .filter(function (v) { return v != null; }) : [];
+    var lo = Math.min.apply(null, ps), hi = Math.max.apply(null, ps);
     return '<div class="bl-l' + (gano ? ' g' : '') + (eq ? ' eq' : '') + '">' +
       (eq ? '<span class="eq-caras">' + ms.map(cara).join('') + '</span>' : '') +
-      '<span class="bl-n">' + ms.map(function (m) { return quien(m, eq); }).join('<i class="coma">&middot;</i>') +
-      '</span>' + (gano ? '<span class="bl-ok" title="Pasó">&#10003;</span>' : '') + '</div>';
+      // el punto va pegado al nombre de antes: suelto, al partirse el renglón
+      // quedaba solo al principio del siguiente
+      '<span class="bl-n">' + ms.map(function (m, i) {
+        return '<span class="bl-m">' + quien(m, eq) + (i < ms.length - 1 ? '<i class="coma">&middot;</i>' : '') + '</span>';
+      }).join('') + '</span>' + (copa ? '<span class="bl-ok bl-copa" title="Campeón">&#127942;' +
+        (ps.length ? ' ' + (lo === hi ? num(hi) : num(lo) + '&ndash;' + num(hi)) + ' pts' : '') + '</span>'
+        : gano ? '<span class="bl-ok" title="Pasó">&#10003;</span>' : '') + '</div>';
   };
   return '<div class="rl-lista">' + rs.map(function (R) {
     var v = valeRonda(R, ptsDe);
-    var esFin = R === ult && R.b.length === 1, camp = esFin ? (R.b[0] || [])[1] : '';
-    var ptsC = camp && ptsDe[miembrosDe(camp)[0]];
+    var esFin = R === ult && R.b.length === 1;
     return '<section class="rl-r' + (esFin ? ' fin' : '') + '"><h5>' + esc(R.r) +
       (v != null ? '<small>' + num(v) + ' pts</small>' : '') + '</h5>' +
       R.b.map(function (b) {
@@ -915,13 +1042,10 @@ function rondasLista(L, quien, cara) {
         return '<div class="bl"' + (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' +
           (et ? '<div class="bx-et">' + et + '</div>' : '') +
           (b[0] || []).map(function (s, i) {
-            return (i ? '<i class="bl-vs">vs</i>' : '') + lado(s, b[1] && (b[1] === s || comparten(b[1], s)));
+            var g = b[1] && (b[1] === s || comparten(b[1], s));
+            return (i ? '<i class="bl-vs">vs</i>' : '') + lado(s, g, g && esFin);
           }).join('') + '</div>';
-      }).join('') +
-      (camp ? '<p class="bl-camp"><span>&#127942; Campeón</span>' + String(camp).split(/,\s*/).map(function (m) {
-        return quien(m);
-      }).join('<i class="coma">&middot;</i>') + (ptsC != null ? '<b>' + num(ptsC) + ' pts</b>' : '') + '</p>' : '') +
-      '</section>';
+      }).join('') + '</section>';
   }).join('') + '</div>';
 }
 
@@ -929,6 +1053,7 @@ function cerrarLlave() {
   $('#visorLlave').hidden = true;
   if ($('#visor').hidden) document.body.style.overflow = '';
   FIJO = '';
+  SIGUE_K = '';
   // abierta por su link: al cerrarla queda el calendario, sin volver a abrirla
   if (/^#\/llave\//.test(location.hash)) history.replaceState(null, '', '#/eventos');
 }
@@ -1358,6 +1483,12 @@ function elegirSub(s) {
   SUB = s;
   ORDEN.tocado = false;
   $$('#subRanking .sub').forEach(function (o) { o.classList.toggle('on', o.dataset.sub === s); });
+  // en el teléfono la fila se desliza: la elegida, a la vista (sin mover la
+  // página de arriba abajo, por eso `scrollLeft` y no `scrollIntoView`)
+  var b = $('#subRanking .sub.on'), fila = $('#subRanking');
+  if (b && fila.scrollWidth > fila.clientWidth) {
+    fila.scrollLeft = Math.max(0, b.offsetLeft - fila.offsetLeft - (fila.clientWidth - b.offsetWidth) / 2);
+  }
   pintaTabla();
 }
 
@@ -1448,10 +1579,11 @@ function conTarjeta() {
 
 /* ── galería ──────────────────────────────────────────────────────── */
 function pintaGaleria() {
-  var q = (FIL.qc || '').toLowerCase();
+  // sin tildes, como el ranking y el Inicio: «lazaro» encuentra a Lázaro
+  var q = sinTildes(FIL.qc || '').trim();
   var hay = conTarjeta();
   var con = hay.filter(function (f) {
-    return !q || String(f.n || '').toLowerCase().indexOf(q) >= 0;
+    return !q || sinTildes(f.n).indexOf(q) >= 0;
   });
   if (!con.length) {
     // ⚠️ DOS VACÍOS DISTINTOS, DOS MENSAJES. «Nadie con ese nombre» es
@@ -1564,6 +1696,28 @@ function pintaComparar() {
     lado(0) + lado(1) +
     (a.k === b.k ? '<p class="sin">Elegí dos distintos.</p>'
                  : '<div class="vs">' + vs + '</div>');
+  $('#cmp').dataset.par = a.k + '|' + b.k;
+  pintaCaraCmp();
+}
+/* 🔑 Y SI SE CRUZARON, CARA A CARA, arriba de todo: cuántas ganó cada uno
+   contra el otro. Sale de los duelos de `/api/perfiles`, que se piden sólo
+   con «Tarjetas» a la vista (Dlx, 27/09/2026, el «duelos win rate entre cada
+   uno»). */
+function pintaCaraCmp() {
+  var par = ($('#cmp') && $('#cmp').dataset.par) || '';
+  var ab = par.split('|');
+  if (!ab[1] || ab[0] === ab[1] || (!PERF && ruta() !== 'tarjetas')) return;
+  perfiles().then(function (P) {
+    var vs = $('#cmp .vs');
+    if (!vs || $('#cmp').dataset.par !== par || vs.querySelector('.cara')) return;
+    var x = P && P.p && P.p[ab[0]];
+    var c = caraACara(x && x.du).filter(function (c) { return c.k === ab[1]; })[0];
+    if (!c) return;
+    var t = c.g + c.p;
+    vs.insertAdjacentHTML('afterbegin', '<div class="fila cara"><b class="' + (c.g > c.p ? 'gana' : '') +
+      '">' + c.g + '</b><em>Cara a cara &middot; ' + (t === 1 ? 'una vez' : t + ' veces') + '</em><b class="' +
+      (c.p > c.g ? 'gana' : '') + '">' + c.p + '</b></div>');
+  });
 }
 
 /* ── el sugeridor del comparador ──────────────────────────────────────
@@ -1593,13 +1747,13 @@ function cerrarSug() {
 
 function pintaSug(inp) {
   var con = cmpLista();
-  var q = String(inp.value || '').trim().toLowerCase();
+  var q = sinTildes(inp.value || '').trim();
   // ⚠️ POR CONTENIDO Y NO POR PREFIJO: «chula» tiene que encontrar a
   // PichulaMc. Los que empiezan igual van primero igual, porque es lo
   // que uno espera al escribir las primeras letras.
   var empieza = [], dentro = [];
   con.forEach(function (f, i) {
-    var n = String(f.n).toLowerCase();
+    var n = sinTildes(f.n);
     if (!q) { empieza.push([f, i]); return; }
     var p = n.indexOf(q);
     if (p === 0) empieza.push([f, i]);
@@ -1966,7 +2120,11 @@ function cuadro(L, quien, cara) {
   // 1.462 px y cortaba los octavos de las dos puntas.
   if (!angosto) {
     var cols = espejo ? 2 * n - 1 : n;
-    var disp = Math.min(1400, window.innerWidth * 0.97) - 44;
+    // ⚠️ EL ANCHO DE LA CAJA DE VERDAD, no el de la ventana menos un número:
+    // la cuenta a ojo no veía la barra del costado, y a 900 px diez de
+    // quince llaves medían 10 px más que su caja (una barra para nada)
+    var vis = $('#lVista');
+    var disp = (vis && vis.clientWidth) || Math.min(1400, window.innerWidth * 0.97) - 44;
     W = Math.max(132, Math.min(196, Math.floor((disp + G) / cols - G)));
   }
   var curI = { y: 0 }, curD = { y: 0 };
@@ -1995,16 +2153,10 @@ function cuadro(L, quien, cara) {
     pos[(n - 1) + ':0'] = { r: n - 1, i: 0, lado: 'c',
       y: (pos[(n - 2) + ':' + fin[0]].y + pos[(n - 2) + ':' + fin[1]].y) / 2 };
   }
-  // ⚠️ LUGAR PARA EL CAMPEÓN ARRIBA DE LA FINAL: en una llave chica la
-  // final queda pegada al techo y el nombre se cortaba.
+  // 🔴 SIN CAJA DE CAMPEÓN ARRIBA DE LA FINAL: repetía, con letra grande,
+  // el renglón dorado de la final (Dlx, 27/09/2026: «I also dont have to see
+  // 2 times that this team won»). La copa va en ese renglón.
   var pf = pos[(n - 1) + ':0'];
-  var hayCamp = !!(pf && (rs[n - 1].b[0] || [])[1] && rs[n - 1].b.length === 1);
-  // el alto del campeón: un renglón por integrante del equipo ganador
-  var campH = hayCamp ? 20 + LINEA * miembros(rs[n - 1].b[0][1]) : 0;
-  if (hayCamp) {
-    var sobra = pf.y - alto(rs[n - 1].b[0]) / 2 - campH - 12;
-    if (sobra < 0) TOPE -= sobra;
-  }
   // 🔑 CUÁNTO VALE CADA RONDA, arriba de su columna: los puntos de quien
   // queda afuera ahí. Es lo que ata el cuadro con «Los puntos, por puesto»
   // de abajo, que antes había que cruzar a mano. Sale de la tabla de la
@@ -2012,9 +2164,13 @@ function cuadro(L, quien, cara) {
   // tercer puesto), no se escribe nada antes que un número a medias.
   var ptsDe = ptsDeLlave(L);
   var vale = rs.map(function (R) { return valeRonda(R, ptsDe); });
+  // lo que se llevó el campeón; si el equipo no sumó parejo, de cuánto a cuánto
   var ptsCamp = (function () {
-    var m = miembrosDe((rs[n - 1].b[0] || [])[1])[0];
-    return m && ptsDe[m] != null ? ptsDe[m] : null;
+    var ps = miembrosDe((rs[n - 1].b[0] || [])[1]).map(function (m) { return ptsDe[m]; })
+      .filter(function (v) { return v != null; });
+    if (!ps.length) return null;
+    var lo = Math.min.apply(null, ps), hi = Math.max.apply(null, ps);
+    return lo === hi ? num(hi) : num(lo) + '&ndash;' + num(hi);
   })();
   if (vale.some(function (v) { return v != null; })) TOPE += 14;
   var ncol = espejo ? 2 * n - 1 : n;
@@ -2028,9 +2184,12 @@ function cuadro(L, quien, cara) {
       return quien(m);
     }).join('<i class="coma">,</i> ');
   };
-  var caja = function (b, x, y, cl) {
+  // `clave` ata la caja con sus ramas (`data-de`/`data-a`), para encender
+  // el camino de quien se sigue
+  var caja = function (b, x, y, cl, clave) {
     var h = alto(b);
-    return '<div class="bx' + (cl || '') + '" style="left:' + x + 'px;top:' +
+    return '<div class="bx' + (cl || '') + '"' + (clave ? ' data-b="' + clave + '"' : '') +
+      ' style="left:' + x + 'px;top:' +
       Math.round(y - h / 2) + 'px;width:' + W + 'px;height:' + h + 'px"' +
       (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' + b[0].map(function (s) {
         var g = b[1] && (b[1] === s || comparten(b[1], s));
@@ -2051,8 +2210,10 @@ function cuadro(L, quien, cara) {
   Object.keys(pos).forEach(function (k) {
     var p = pos[k], b = rs[p.r].b[p.i];
     var esFinal = p.r === n - 1 && rs[n - 1].b.length === 1;
-    html.push(caja(b, X(p), TOPE + p.y, esFinal ? ' fin' : ''));
-    var et = etiquetasHtml(b[2]);
+    html.push(caja(b, X(p), TOPE + p.y, esFinal ? ' fin' : '', k));
+    // la copa va en una etiqueta del borde, como «Revivido»: dentro del
+    // renglón le comía el ancho a los nombres de un equipo
+    var et = etiquetasHtml(b[2]) + (esFinal && b[1] ? '<span class="et-copa">&#127942; Campeón</span>' : '');
     if (et) {
       html.push('<span class="bx-et" style="left:' + X(p) + 'px;width:' + W + 'px;top:' +
         Math.round(TOPE + p.y - alto(b) / 2 - 9) + 'px">' + et + '</span>');
@@ -2065,19 +2226,10 @@ function cuadro(L, quien, cara) {
           y1 = TOPE + c.y, y2 = TOPE + p.y, xm = (x1 + x2) / 2;
       var oro = campeon && comparten(rs[c.r].b[c.i][1], campeon) &&
         comparten(b[1], campeon);
-      lineas.push('<path' + (oro ? ' class="oro"' : '') + ' d="M' + x1 + ' ' + y1 +
-        'H' + xm + 'V' + y2 + 'H' + x2 + '"/>');
+      lineas.push('<path' + (oro ? ' class="oro"' : '') + ' data-de="' + c.r + ':' + c.i +
+        '" data-a="' + k + '" d="M' + x1 + ' ' + y1 + 'H' + xm + 'V' + y2 + 'H' + x2 + '"/>');
     });
   });
-  // el campeón, arriba de la final
-  if (hayCamp) {
-    var hf = alto(rs[n - 1].b[0]);
-    html.push('<div class="camp' + (miembros(campeon) > 1 ? ' eq' : '') + '" style="left:' + (X(pf) - 20) +
-      'px;width:' + (W + 40) + 'px;top:' + Math.round(TOPE + pf.y - hf / 2 - campH - 8) +
-      'px"><small>&#127942; Campeón</small>' + (miembros(campeon) > 1
-        ? String(campeon).split(/,\s*/).map(function (m) { return '<span class="mb">' + quien(m) + '</span>'; }).join('')
-        : lado(campeon)) + '</div>');
-  }
   // el tercer puesto, debajo de la final
   if (ter && pf) {
     var bt = ter.b[0], ht = alto(bt), yt = TOPE + pf.y + alto(rs[n - 1].b[0]) / 2 + 52 + ht / 2;
@@ -2093,7 +2245,7 @@ function cuadro(L, quien, cara) {
     html.push('<span class="rl" style="left:' + c * (W + G) + 'px;width:' + W + 'px">' +
       esc(rs[r].r) + (v != null || (fin && ptsCamp != null)
         ? '<small>' + (v != null ? num(v) + ' pts' : '') +
-          (fin && ptsCamp != null ? (v != null ? ' &middot; ' : '') + '&#127942; ' + num(ptsCamp) : '') +
+          (fin && ptsCamp != null ? (v != null ? ' &middot; ' : '') + '&#127942; ' + ptsCamp : '') +
           '</small>' : '') + '</span>');
   }
   var ancho = ncol * (W + G) - G, alto2 = Math.ceil(fondo + 8);
@@ -2595,11 +2747,13 @@ function pintaTops() {
   })]);
   var med = T.filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; })
     .sort(medallero).slice(0, TOP);
+  // ⚠️ CADA MEDALLA EN SU CAJITA: en una caja angosta se apilan (ver
+  // `.meds`), y el nombre no se parte letra por letra
   cajas.push(['&#127941;', 'Podios', '#/ranking/podios', med.map(function (f, i) {
-    return fila(f, i, [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]]
+    return fila(f, i, '<span class="meds">' + [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]]
       .filter(function (x) { return x[1]; }).map(function (x) {
-        return x[0] + x[1];
-      }).join(' '));
+        return '<span>' + x[0] + x[1] + '</span>';
+      }).join('') + '</span>');
   })]);
   // 🔑 RACHAS EN EL LUGAR DE PAÍSES. Dlx, 25/09/2026: «quitar el de países
   // y ahí poner el de rachas». La que llevan ahora; si nadie lleva una, la
@@ -2884,8 +3038,15 @@ function pintaPerfil(k) {
       '<p class="bajada">Ese rapero no está en la tabla de la temporada.</p></section>';
     return;
   }
-  // la clave de verdad, aunque se haya llegado por un link viejo (`porK()`)
+  // la clave de verdad, aunque se haya llegado por un link viejo (`porK()`);
+  // y el link se corrige, así lo que se copie de acá ya es el nuevo
+  if (f.k && f.k !== k) history.replaceState(null, '', '#/r/' + encodeURIComponent(f.k));
   k = f.k || k;
+  // 🔴 LO QUE LLEGA DESPUÉS SE COMPARA CONTRA ESTA RUTA, no contra la clave:
+  // con un link viejo (`#/r/antorcha%20ol%C3%ADmpica`) ninguna de las dos
+  // formas de la clave coincidía, y «Lo que le falta» quedaba en «Cargando…»
+  // para siempre, sin sus duelos ni sus eventos
+  var aca = ruta();
   document.title = f.n + ' · Liga Global de Freestyle';
   var sv = svDe(f.sv);
   var cartas = f.c || [];
@@ -2921,10 +3082,12 @@ function pintaPerfil(k) {
       '<section class="blk entro pf-cartas"><h2><span>&#127183;</span> Sus tarjetas</h2>' +
         (cartas.length
           ? '<div class="pestanas" id="pfPest">' + cartas.map(function (c) {
+              // ⚠️ `NOMBRE_CARTA` Y NO `CARTA_TIT`: tu propio perfil trae tus
+              // Bloqueadas, y la pestaña decía «bloq-temporada»
               return '<button class="pest' + (c === cual ? ' on' : '') + '" data-pfc="' + c + '">' +
-                (CARTA_TIT[c] || c) + '</button>';
+                esc(NOMBRE_CARTA[c] || c) + '</button>';
             }).join('') + '</div><div class="pf-carta"><img id="pfImg" alt="Tarjeta ' +
-            esc(CARTA_TIT[cual] || cual) + ' de ' + esc(f.n) + '" src="' + urlCarta(f, cual) +
+            esc(NOMBRE_CARTA[cual] || cual) + ' de ' + esc(f.n) + '" src="' + urlCarta(f, cual) +
             '"></div><div class="v-acc"><button class="bajar" id="pfBajar" data-pfk="' + esc(k) +
             '"><i aria-hidden="true">&#11015;</i><span>Descargar</span></button>' +
             // 🔑 la foto, desde tu propia tarjeta (Dlx, 25/09/2026)
@@ -2953,12 +3116,15 @@ function pintaPerfil(k) {
     '</div>' +
     '<section class="blk entro" id="pfEvSec" hidden><h2><span>&#128197;</span> Sus eventos</h2>' +
       '<div class="pf-ev" id="pfEv"></div></section>' +
+    '<section class="blk entro" id="pfCaraSec" hidden><h2><span>&#129354;</span> Cara a cara</h2>' +
+      '<p class="bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Primero, con quien ' +
+      'más veces se enfrentó.</p><div class="pf-cara" id="pfCara"></div></section>' +
     '<section class="blk entro" id="pfDuSec" hidden><h2><span>&#9876;</span> Sus duelos</h2>' +
       '<div class="pf-du" id="pfDus"></div></section>';
 
   // ── lo que viene de /api/perfiles
   perfiles().then(function (P) {
-    if (ruta() !== 'r/' + encodeURIComponent(k) && ruta() !== 'r/' + k) return;
+    if (ruta() !== aca) return;
     var x = P && P.p && P.p[k];
     if (!x) {
       $('#pfReq').innerHTML = '<p class="nota">Su historial todavía no está: se arma en la ' +
@@ -2986,10 +3152,16 @@ function pintaPerfil(k) {
     $('#pfReq').innerHTML = ['temporada', 'competitivo', 'pais'].map(function (c) {
       var tiene = cartas.indexOf(c) >= 0;
       var cs = req[c] || [];
-      var listo = tiene || cs.every(function (q) { return q[0] >= q[1]; });
+      var cumple = cs.every(function (q) { return q[0] >= q[1]; });
+      // 🔴 CUMPLIR NO ES TENERLA: sin verificarse no hay tarjeta. Decía
+      // «✓ Desbloqueada» a 96 de 153 mientras «Sus tarjetas», en la misma
+      // página, decía que no tiene porque no está verificado.
+      var listo = tiene || (cumple && !f.nv);
+      var espera = !listo && cumple;
       return '<div class="rq' + (listo ? ' ok' : '') + '"><h3>' + (CARTA_TIT[c] || c) +
-        '<span>' + (listo ? '&#10003; Desbloqueada' : 'Bloqueada') + '</span></h3>' +
-        (listo ? '' : cs.map(function (q) {
+        '<span>' + (listo ? '&#10003; Desbloqueada' : espera ? 'Falta verificarse' : 'Bloqueada') +
+        '</span></h3>' + (listo ? '' : espera ? '<p class="nota">Cumple lo que pide; ' +
+          esc(NV[f.nv] || 'le falta verificarse') + '.</p>' : cs.map(function (q) {
           var pct = Math.max(0, Math.min(100, Math.round(100 * q[0] / (q[1] || 1))));
           return '<div class="rq-l"><span>' + esc(Math.min(q[0], q[1])) + '/' + esc(q[1]) + ' ' +
             esc(String(q[2]).toLowerCase()) + '</span><i><u style="width:' + pct + '%"></u></i></div>';
@@ -3023,6 +3195,29 @@ function pintaPerfil(k) {
           '<b class="pe-pts">' + num(e[2]) + '</b></div>';
       }).join('');
     }
+    // 🔑 CARA A CARA. Dlx, 27/09/2026: «maybe we could create a DUELOS WIN
+    // RATE between each individual… like counting the times they faced
+    // before». Sale de los mismos duelos de abajo, agrupados por rival.
+    var cara = caraACara(dus);
+    if (cara.length) {
+      $('#pfCaraSec').hidden = false;
+      var fila = function (c) {
+        var r = c.k && porK(c.k), t = c.g + c.p;
+        return '<div class="cr' + (c.g > c.p ? ' g' : c.g < c.p ? ' p' : '') + '"' +
+          (r ? ' data-k="' + esc(r.k) + '"' : '') + '><span class="cr-q">' +
+          (r ? quienEs(r, 24) : conBanderas(c.n)) + '</span><b class="cr-m">' + c.g +
+          '<i>&ndash;</i>' + c.p + '</b><span class="cr-b" aria-hidden="true"><u style="width:' +
+          Math.round(100 * c.g / t) + '%"></u></span><small>' + (t === 1 ? 'una vez'
+            : t + ' veces') + '</small></div>';
+      };
+      // se pliega sólo si sobran varios: «Los otros 1» escondía justo al único
+      // que le ganó a Hassan
+      var TOPE_CARA = cara.length <= 11 ? cara.length : 8;
+      $('#pfCara').innerHTML = cara.slice(0, TOPE_CARA).map(fila).join('') +
+        (cara.length > TOPE_CARA ? '<details class="cr-mas"><summary>Los otros ' +
+          (cara.length - TOPE_CARA) + '</summary>' + cara.slice(TOPE_CARA).map(fila).join('') +
+          '</details>' : '');
+    }
     if (dus.length) {
       $('#pfDuSec').hidden = false;
       $('#pfDus').innerHTML = dus.map(function (d) {
@@ -3035,14 +3230,61 @@ function pintaPerfil(k) {
     }
   });
 }
-/* la clave de alguien por su nombre, para los rivales de los duelos */
-var K_DE = null;
+/* 🔑 LOS DUELOS DE ALGUIEN, AGRUPADOS POR RIVAL: `[{k, n, g, p}]`, primero
+   con quien más veces se cruzó y, a igual cantidad, el mejor saldo. `dus`
+   son los de `/api/perfiles`: `[evento, rival, ganó]`. */
+function caraACara(dus) {
+  var por = {}, orden = [];
+  (dus || []).forEach(function (d) {
+    var k = kDe(d[1]), id = k || 'n:' + (normNombre(d[1]) || d[1]);
+    if (!por[id]) { por[id] = { k: k, n: d[1], g: 0, p: 0 }; orden.push(id); }
+    por[id][d[2] ? 'g' : 'p']++;
+  });
+  return orden.map(function (id) { return por[id]; }).sort(function (a, b) {
+    return (b.g + b.p) - (a.g + a.p) || (b.g - b.p) - (a.g - a.p);
+  });
+}
+/* 🔑 LA CLAVE DE ALGUIEN POR SU NOMBRE EN UNA LLAVE: tal cual, o sin la
+   bandera —la llave escribe «Mau Kc 🇨🇴» y el ranking «Mau Kc»—; y si el
+   nombre es de dos (Volk 🇲🇽 y volk 🇨🇴), decide la bandera. Es la regla de
+   `de()` en subir_web.py. Un solo lugar para la llave, los duelos y el cara
+   a cara: el perfil sólo probaba el nombre exacto y sus rivales con bandera
+   salían sin link. */
+var K_DE = null, K_DE_T = null;
+function banderasDe(x) {
+  var out = [], par = '';
+  Array.from(String(x || '')).forEach(function (ch) {
+    var c = ch.codePointAt(0);
+    if (c >= 0x1F1E6 && c <= 0x1F1FF) {
+      par += String.fromCharCode(c - 0x1F1E6 + 97);
+      if (par.length === 2) { out.push(par); par = ''; }
+    }
+  });
+  return out;
+}
+/* el nombre como lo compara el servidor (`_norm()` de comun/respaldo.py):
+   NFKD, minúsculas y sólo letras y números. Sin esto «ANTORCHA OLIMPICA»
+   de una llave no era «ANTORCHA OLÍMPICA» del ranking. */
+function normNombre(s) {
+  return String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+}
 function kDe(n) {
-  if (!K_DE) {
-    K_DE = {};
-    (D.tabla || []).forEach(function (f) { K_DE[f.n] = f.k; });
+  // ⚠️ se rehace si llegó otro lobby: la tabla es otra
+  if (!K_DE || K_DE_T !== D.tabla) {
+    K_DE = { k: {}, kn: {} };
+    K_DE_T = D.tabla;
+    (D.tabla || []).forEach(function (f) {
+      K_DE.k[f.n] = f.k;
+      var q = normNombre(f.n);
+      (K_DE.kn[q] = K_DE.kn[q] || []).push(f);
+    });
   }
-  return K_DE[n] || '';
+  if (K_DE.k[n]) return K_DE.k[n];
+  var c = K_DE.kn[normNombre(n)] || [];
+  if (c.length === 1) return c[0].k;
+  var ccs = banderasDe(n);
+  var m = c.filter(function (f) { return ccs.indexOf(String(f.cc || '').toLowerCase()) >= 0; });
+  return m.length === 1 ? m[0].k : '';
 }
 
 /* ── el buscador del Inicio ───────────────────────────────────────────
@@ -3180,6 +3422,11 @@ var DISCORD_ICONO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h1
 var FEED = { pag: 0, pp: 0 };
 function porPagina() { return window.innerWidth < 620 ? 1 : 2; }
 function itemFeed(x) {
+  // ⚠️ EL ID DEL VIDEO VA ADENTRO DE UN `onerror`, o sea de JavaScript en un
+  // atributo, y ahí `esc()` no protege: `&#39;` se vuelve `'` antes de que
+  // corra. Hoy viene del RSS de YouTube; igual, sólo pasa lo que tiene forma
+  // de ID (auditoría del 27/09/2026).
+  if (x.vid && !/^[\w-]{6,20}$/.test(String(x.vid))) x = Object.assign({}, x, { vid: '' });
   var yt = x.tipo === 'youtube';
   var de = yt ? (x.canal || nombreSv(x.sv) || x.sv) : 'Liga Global';
   return '<a class="fd' + (yt ? ' yt' : '') + '" href="' + esc(x.link) + '" target="_blank" ' +
@@ -3910,11 +4157,29 @@ if (MQ_CAMBIOS) {
   else if (MQ_CAMBIOS.addListener) MQ_CAMBIOS.addListener(reacomodar);
 }
 // lo que depende de la hora se vuelve a dibujar al cambiar la zona o el formato
+// 🔴 SIN `ir()`, Y CON «LO QUE VIENE», EL CHANGELOG Y LA LLAVE ABIERTA. Con
+// `ir()` cambiar la zona en un perfil cerraba Ajustes y subía la página al
+// principio; y el Inicio seguía diciendo «domingo 23:00» con el panel ya en
+// «lunes 6:00» para el mismo evento (auditoría del 27/09/2026).
 function repintarHoras() {
-  [pintaCalendario, pintaEvCab, pintaPaneles, pintaUltCampeones].forEach(function (f) {
+  [pintaHero, pintaCalendario, pintaEvCab, pintaPaneles, pintaUltCampeones].forEach(function (f) {
     try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
   });
-  if (ruta().indexOf('r/') === 0) ir();
+  var y = window.scrollY;
+  var dec = function (x) { try { return decodeURIComponent(x); } catch (e) { return x; } };
+  try {
+    if (ruta().indexOf('r/') === 0) pintaPerfil(dec(ruta().slice(2)));
+    if (ruta() === 'cambios' && CAMBIOS) pintaCambios();
+  } catch (e) { console.error('[repintarHoras]', e); }
+  window.scrollTo(0, y);
+  // la llave abierta, en su lugar: mismo scroll y mismo seguido
+  if (LL && !$('#visorLlave').hidden) {
+    var cu = $('#lCuerpo'), st = cu ? cu.scrollTop : 0, fijo = FIJO;
+    abrirLlave(LL.n);
+    FIJO = fijo;
+    if (fijo) seguirEnLlave(fijo, true);
+    if (cu) cu.scrollTop = st;
+  }
 }
 
 /* ── eventos de la página ─────────────────────────────────────────── */
@@ -3984,7 +4249,7 @@ function eventos() {
       PERF_CARTA[k] = b.dataset.pfc;
       $$('#pfPest .pest').forEach(function (p) { p.classList.toggle('on', p === b); });
       $('#pfImg').src = urlCarta(f, b.dataset.pfc);
-      $('#pfImg').alt = 'Tarjeta ' + (CARTA_TIT[b.dataset.pfc] || '') + ' de ' + f.n;
+      $('#pfImg').alt = 'Tarjeta ' + (NOMBRE_CARTA[b.dataset.pfc] || '') + ' de ' + f.n;
       return;
     }
     var d = e.target.closest('#pfBajar');
@@ -4236,19 +4501,49 @@ function eventos() {
     CMP[+s.dataset.lado] = i;
     pintaComparar();
   });
+  // 🔑 EL CUADRO SE REARMA SI CAMBIA EL ANCHO —el teléfono que gira, la
+  // ventana que se agranda—: el tamaño de las cajas sale del ancho, y se
+  // medía una sola vez al abrir. Sólo el ANCHO: la barra del navegador del
+  // teléfono cambia el alto cada vez que se desliza.
+  var AJUSTE = 0;
+  window.addEventListener('resize', function () {
+    clearTimeout(AJUSTE);
+    AJUSTE = setTimeout(function () {
+      if (!LL || $('#visorLlave').hidden || LL_VISTA !== 'cuadro') return;
+      if (Math.abs(window.innerWidth - (LL.ancho || 0)) < 40) return;
+      pintaVistaLlave(true);
+    }, 200);
+  });
   // 🔑 SEGUIR A ALGUIEN POR LA LLAVE: con el mouse encima de un nombre se
   // iluminan todas las batallas donde está. En el teléfono no hay «encima»:
-  // tocar el nombre sigue abriendo su perfil.
-  var SIGUE = '';
+  // el primer toque sigue y el segundo abre el perfil (ver `#visorLlave`).
+  var SOLTAR = 0;
+  // el nombre bajo el puntero: el suyo, o el del renglón si el renglón es
+  // de una sola persona (el nombre es angosto y el renglón no)
+  var nombreBajo = function (el) {
+    var q = el.closest && el.closest('#lVista .ql[data-k]');
+    if (q) return q;
+    var fila = el.closest && el.closest('#lVista .ld, #lVista .bl-l');
+    var qs = fila ? fila.querySelectorAll('.ql[data-k]') : [];
+    return qs.length === 1 ? qs[0] : null;
+  };
   document.addEventListener('mouseover', function (e) {
     // ⚠️ SÓLO CON MOUSE DE VERDAD: el toque del teléfono también dispara un
     // `mouseover`, y borraría el seguido que se eligió tocando
-    if (!HOVER || FIJO) return;
-    var q = e.target.closest && e.target.closest('#lVista .ql[data-k]');
-    var k = q ? q.dataset.k : '';
-    if (k === SIGUE) return;
-    SIGUE = k;
-    seguirEnLlave(k, false);
+    if (!HOVER || FIJO || !LL) return;
+    var q = nombreBajo(e.target);
+    if (q) {
+      clearTimeout(SOLTAR);
+      if (q.dataset.k !== SIGUE_K) seguirEnLlave(q.dataset.k, false);
+      return;
+    }
+    if (!SIGUE_K) return;
+    // ⚠️ SE SUELTA CON UNA PAUSA: pasar de un nombre al de abajo cruza el
+    // borde de la caja, y soltar ahí mismo era el parpadeo
+    var suya = e.target.closest && e.target.closest('#lVista .bx.sigue, #lVista .bl.sigue');
+    clearTimeout(SOLTAR);
+    if (suya) return;
+    SOLTAR = setTimeout(function () { if (!FIJO) seguirEnLlave('', false); }, 250);
   });
   // el podio: flechas, puntos y las flechas del teclado cuando tiene el foco
   $('#podAntes').addEventListener('click', function () { moverPodio(-1); });
@@ -4280,7 +4575,7 @@ function eventos() {
   });
   $('#visorLlave').addEventListener('click', function (e) {
     if (e.target.closest('[data-cerrar-llave]')) { cerrarLlave(); return; }
-    if (e.target.closest('[data-sigue-x]')) { FIJO = ''; SIGUE = ''; seguirEnLlave(''); return; }
+    if (e.target.closest('[data-sigue-x]')) { FIJO = ''; seguirEnLlave(''); return; }
     var bv = e.target.closest('[data-lvista]');
     if (bv) { LL_VISTA = bv.dataset.lvista; pintaVistaLlave(); return; }
     var cl = e.target.closest('[data-copiar-llave]');
@@ -4294,7 +4589,8 @@ function eventos() {
     }
     // 🔑 EN EL TELÉFONO, EL PRIMER TOQUE SIGUE Y EL SEGUNDO ABRE EL PERFIL.
     // Sin esto, tocar un nombre abría su perfil y el camino no se veía nunca.
-    var q = !HOVER && e.target.closest('#lVista .ql[data-k]');
+    // Tocar el renglón (y no justo el nombre) también sigue.
+    var q = !HOVER && nombreBajo(e.target);
     if (q && FIJO !== q.dataset.k) {
       e.preventDefault();
       e.stopPropagation();

@@ -992,10 +992,10 @@ export async function olvidarAvisos(env, quien) {
   }
 }
 
-export async function vigilar(env, servidores, dueno) {
+export async function vigilar(env, servidores, dueno, dormido) {
   if (!env.AVISOS) return;
   await elObjeto(env).fetch('https://avisos/vigilar', {
-    method: 'POST', body: JSON.stringify({ servidores, dueno: dueno || '' }),
+    method: 'POST', body: JSON.stringify({ servidores, dueno: dueno || '', dormido: !!dormido }),
     headers: { 'content-type': 'application/json' },
   });
 }
@@ -1191,6 +1191,19 @@ export class Avisos {
     // inválidos — la IP de Cloudflare, compartida con el resto del bot.
     const previo = this.leer('vigia') || {};
     if (previo.pausa && ahora < previo.pausa) return { ok: false, pausa: true };
+    // 🌙 DE MADRUGADA DUERME ENTERO (Dlx, 27/09/2026: las llaves en vivo, los
+    // avisos y el cron, apagados de 3 a 11 AM ET; la hora la pone el Worker,
+    // ver `MADRUGADA`). Ni anuncios, ni llaves, ni los avisos de cada uno.
+    // Deja el latido con `dormido`: quieto a propósito no es caído, y así
+    // `alertar.py` no avisa de nada.
+    // ⚠️ NADA SE PIERDE: a las 11 relee los canales, y un anuncio de esas
+    // horas se avisa si su evento todavía no empezó —`anotar()` descarta
+    // lo que llega tarde—. Lo que ya estaba programado antes de las 3 (un
+    // recordatorio) sale igual por su alarma.
+    if (d && d.dormido) {
+      this.guardar('vigia', { t: ahora, dormido: true, canales: previo.canales, limpio: previo.limpio });
+      return { ok: true, dormido: true };
+    }
 
     let canales = this.leer('canales');
     if (!canales || !canales.lista || !canales.lista.length ||
@@ -1315,6 +1328,9 @@ export class Avisos {
   vivo() {
     const ahora = Date.now();
     const v = this.leer('vivo') || {};
+    // 🌙 dormido no se lee nada: lo de antes de las 3 ya no se actualiza, y
+    // mostrarlo «en vivo, se actualiza cada minuto» sería mentir
+    if ((this.leer('vigia') || {}).dormido) return { t: v.t || 0, dormido: true, llaves: [] };
     return { t: v.t || 0, llaves: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto ' +
       'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray() };
   }
@@ -1847,6 +1863,8 @@ export class Avisos {
         hace_s: v.t ? Math.round((ahora - v.t) / 1000) : null,
         leidos: v.leidos || 0, errores: v.errores || [], error: v.error || '',
         pausa: v.pausa ? new Date(v.pausa).toISOString() : null,
+        // 🌙 de 3 a 11 AM ET duerme a propósito: late, pero no lee
+        dormido: !!v.dormido,
         canales: (c.lista || []).map((x) => ({ sv: x.sv, svn: x.svn, nombre: x.nombre })),
         // los que el servidor no le deja leer al bot: no son una falla
         sin_leer: c.sin_leer || [],

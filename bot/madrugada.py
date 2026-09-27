@@ -18,9 +18,18 @@ De 3:00 a 10:59 AM ET **no corre el ciclo**: la última corrida es la de las
 a las 10:52; se sacaron las dos. Menos commits del ciclo, menos minutos de
 Actions, menos lecturas del Sheet y de Discord.
 
-⚠️ EL VIGÍA DE LOS AVISOS NO SE TOCA: sigue cada minuto. Casi no cuesta
-—vive en el Worker, no en Actions— y es lo que avisa en el acto si alguna
-vez hay un evento a esa hora. Esto frena el ciclo, no los avisos.
+🌙 Y DESDE EL 27/09/2026 EL VIGÍA TAMBIÉN DUERME. Hasta ese día esto decía
+*«el vigía de los avisos no se toca: sigue cada minuto»*. Dlx: *«eso de
+detección de LLAVES en vivo que sea apagado entre las 3am y 11am, que siga
+eso de las notificaciones también y el cron»*. En la ventana el vigía no lee
+Discord —ni anuncios, ni llaves en vivo, ni los avisos de cada uno—: late
+con `dormido` y nada más (`vigilar()` en `bot/avisos.js`, `enMadrugada()` en
+`bot/worker.js`).
+
+⚠️ NO SE PIERDE NINGÚN AVISO QUE SIRVA: a las 11 relee los canales, y un
+anuncio de esas horas se avisa si su evento todavía no empezó (`anotar()`
+tira lo que llega tarde). Lo que ya estaba programado antes de las 3 —un
+recordatorio— sale igual, por su alarma.
 
 ⚠️ LA HORA ES LA DEL ESTE DE VERDAD, con el cambio de horario: un cron de
 GitHub no sabe de EDT y EST, así que la decisión no puede vivir en el
@@ -49,7 +58,8 @@ mano—, para un arreglo que no puede esperar a la noche.
 
 QUIÉN LA MIRA
 -------------
-  bot/worker.js      no dispara el ciclo fuera de los dos horarios
+  bot/worker.js      no dispara el ciclo fuera de los dos horarios, y le
+                     dice al vigía que duerma (`enMadrugada()`)
   ciclo.yml          el cron de respaldo de GitHub (:07 y :37) no corre en
                      la ventana: los dos horarios los cubre el Worker
   bot/alertar.py     el disparador puede callarse ~8 h y media sin que sea un fallo
@@ -175,6 +185,13 @@ def _self_check():
         tuple(int(x) for x in m.group(3).split(',') if x.strip()) == HORAS
     ok(igual, 'el Worker dispara con la misma ventana  %s'
        % (m.group(0) if m else 'no encontré MADRUGADA en worker.js'))
+    # 🌙 y el vigía duerme con esa misma ventana (Dlx, 27/09/2026)
+    ok(re.search(r'await vigilar\([^;]*enMadrugada\(', js, re.S) is not None,
+       'el vigía del Worker duerme en la ventana (vigilar recibe enMadrugada)')
+    with io.open(os.path.join(SCR, 'avisos.js'), encoding='utf-8') as fh:
+        av = fh.read()
+    ok('if (d && d.dormido)' in av and 'dormido: !!dormido' in av,
+       'y el objeto de los avisos sabe dormir')
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0

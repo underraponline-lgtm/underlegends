@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "1.20",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T09:15:00-04:00",
+   "titulo": "Cara a cara, y la llave sin saltos",
+   "items": [
+    "🥊 **Cara a cara**: en cada perfil, contra cada rival, cuántas veces se enfrentaron y cómo le fue (ganadas–perdidas). Y en **Comparar dos**, si los dos ya se cruzaron, arriba de todo dice quién va ganando.",
+    "🏆 **Seguir a alguien en una llave ya no hace saltar el cuadro**: la barra de abajo está siempre, y se iluminan también las líneas de su camino mientras el resto se apaga.",
+    "🏆 **El campeón, una vez**: la copa va en la final, sin el recuadro de arriba que repetía los mismos nombres. Si un equipo no sumó parejo, se ve de cuánto a cuánto.",
+    "🔗 **Los links de una llave andan siempre**, también los de llaves viejas.",
+    "📱 **En el teléfono**: los rankings y las banderas en una fila que se desliza —la tabla arranca mucho más arriba—, el podio de cada llave más compacto, y varias cosas que se salían de la pantalla ya no.",
+    "🔧 Arreglos: una llave en vivo ya no vuelve al principio cada minuto; cambiar la zona horaria actualiza todo sin cerrar Ajustes; los links viejos a un perfil cargan entero; los nombres con tilde o bandera en una llave se reconocen; y las búsquedas no distinguen tildes.",
+    "🌙 De **3 a 11 AM (hora del este)** la página no lee las llaves en vivo ni los anuncios: a esa hora no hay eventos. Lo que se anuncie de madrugada avisa a las 11, si el evento todavía no empezó."
+   ]
+  },
+  {
    "version": "1.19",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T08:45:00-04:00",

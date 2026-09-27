@@ -255,11 +255,61 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Las tarjetas de quien se va se borran a la semana** | *«que sus tarjetas se borren después de 1 semana si se va, así para no ir borrando y rehacer todo»* | `bot/fuera.py`, paso 2e del ciclo |
 | **El gráfico de fortalezas del perfil viejo vuelve** | *«había un gráfico donde comparaba las estadísticas del competitivo y te mostraba cuál era más fuerte y menos»* | `pintaJuego()` en `app.js` |
 | **Botones más lindos, y al costado cuando entran** | *«ya te dije que hagas que los botones se hagan más bonitos… el botón está abajo sin ninguna razón»* | `.btn` en `estilo.css` |
-| 🔮 **Para más adelante: «miembros oficiales» de la Liga** (en DRA) y **«verificados»** (ID y bandera), con más beneficios para los primeros —por ejemplo, Velatz no contaría en el puesto de la Temporada— | *«necesitamos trabajar más en esto porque puede ser peligroso… queremos que DRA sea el hub… de momento quiero esperar a que termines»* | ⏳ para discutir: no se toca nada |
+| **Las tarjetas de los 279 que no pasan el portón se borran el domingo 4/10** si para entonces no se verificaron | *«ok»* (9 AM) | `bot/fuera.py`, paso 2e |
+| **Seguir a alguien en la llave no puede saltar**, y el camino se tiene que ver como camino | *«this thing of selecting a person and seeing his path lightned is very buggy, fix that»* | `seguirEnLlave()` en `app.js` (1.20): la barra está siempre y con el mismo alto; se encienden las ramas |
+| **El campeón no se repite** arriba de la final | *«I also dont have to see 2 times that this team won»* | la copa va en la etiqueta del borde de la final (`cuadro()`) y en su renglón de «Por rondas» |
+| **Cara a cara**: el récord de cada uno contra cada rival | *«maybe we could create a DUELOS WIN RATE between each individual… counting the times they faced before»* | `caraACara()` en `app.js`: el perfil y «Comparar dos» (1.20) |
+| **La bandera no se estira** (la de MTZ en el podio de SEVEN STREET) | *«why mtz has the mexican flag all width?»* | `img.bf` con ancho fijo en `estilo.css` |
+| **Buscar bugs en todo y mejorar el teléfono** | *«take this time to fix bugs… search everywhere… improve the interface when someone is on MOBILE»* | una auditoría entera de la página: 13 hallazgos, los 13 arreglados (1.20) |
+| **De 3 a 11 AM ET no se leen las llaves en vivo ni los anuncios**, igual que el ciclo | *«eso de detección de LLAVES en vivo que sea apagado entre las 3am y 11am, que siga eso de las notificaciones también y el cron»* | `enMadrugada()` en `bot/worker.js` y `vigilar()` en `bot/avisos.js`: el vigía late con `dormido` y no lee Discord. Lo anunciado de madrugada avisa a las 11 si el evento no empezó |
+| 🔮 **«Miembros oficiales» de la Liga** (en DRA) y **«verificados»** (ID y bandera): quien no es miembro, **probablemente escondido del ranking pero con su perfil** | *«prob hide them but keep their profile»* (9 AM) · antes: *«puede ser peligroso… queremos que DRA sea el hub»* | ⏳ **medido, sin tocar**: ver «❓ Esperando a Dlx» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Domingo 27/09 (9 a 9:30 AM) — versión 1.20
+
+Lo que Dlx pidió a las 9 AM mirando el panel de llaves, y la búsqueda de
+errores que pidió: una auditoría entera de la página hecha en paralelo (13
+hallazgos) más una pasada del teléfono vista por vista a 320, 375 y 900 px.
+
+- 🏆 **Seguir a alguien en la llave, sin saltos.** La causa del «very buggy»
+  era la barra: aparecía arriba del cuadro al pasar el mouse, el cuadro bajaba
+  50 px, el nombre se iba de abajo del mouse, la barra se escondía… Ahora está
+  siempre (64 px medidos en reposo, con mouse y tocando) y sin nadie seguido
+  dice cómo se usa. Además se encienden **las ramas** del camino y el resto se
+  apaga; soltar tiene una pausa de 250 ms, y el renglón entero cuenta, no sólo
+  el nombre.
+- 🏆 **El campeón, una vez**: sin el recuadro de arriba de la final; la copa va
+  en una etiqueta del borde, como «Revivido». Y **un equipo que no sumó parejo**
+  (GENESIS: el revivido se llevó 3000 y sus compañeros 2500) dice «2500 a 3000»
+  en vez de «3000» para los tres.
+- 🥊 **Cara a cara** en el perfil —contra cada rival, cuántas veces y cómo le
+  fue— y arriba de «Comparar dos» si los dos se cruzaron. Sale de los mismos
+  duelos del perfil; no hay dato nuevo.
+- 🔗 **Los links de llaves viejas**: el lobby trae las 24 más nuevas y un link
+  más viejo caía al calendario sin decir nada. Ahora el ciclo sube todas a una
+  clave aparte (`web:llaves`, sólo si cambió) y la página la pide nada más en
+  ese caso. La primera escritura la hace la corrida de las 11:22.
+- 🌙 **De 3 a 11 AM ET el vigía duerme**: ni llaves en vivo ni anuncios.
+  Sigue latiendo (con `dormido`) para que la alerta no lo tome por caído, y
+  `madrugada.py` lo verifica en CI.
+- 📱 **El teléfono**: los rankings y las banderas en una fila que se desliza
+  (la tabla arranca 280 px más arriba), el podio de la llave compacto, y tres
+  cosas que se salían de la pantalla —las dos tarjetas del Inicio (12 px), un
+  botón largo en Tarjetas y el podio del Inicio con «Guardia Nacional»—. En
+  «Los tres de arriba», las medallas se apilan: «Colesito» se partía letra
+  por letra a 320 px.
+- 🔧 **De la auditoría**: la llave en vivo volvía a la primera ronda cada
+  minuto; la llave no arrancaba centrada en la final; un link viejo a un perfil
+  dejaba «Lo que le falta» en «Cargando…» para siempre; decía «✓ Desbloqueada»
+  a quien no está verificado (96 de 153); cambiar la zona cerraba Ajustes y no
+  actualizaba «Lo que viene»; si el líder no tuviera tarjeta se escondían las
+  dos; banderas de 9 px en el comparador; pestañas «bloq-temporada» en tu
+  perfil; búsquedas que distinguían tildes; y el cuadro no se rearmaba al girar
+  el teléfono. Más un nombre con tilde distinta («ANTORCHA OLIMPICA») que la
+  llave no reconocía.
 
 ## 📅 Domingo 27/09 (7:30 a 9 AM) — versiones 1.18 y 1.19
 
@@ -721,16 +771,17 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **«Miembros oficiales» y «verificados»** (27/09, *«de momento quiero esperar
-  a que termines y discutir los temas pendientes»*): verificados, todos los
-  que confirmaron quiénes son con ID y bandera; miembros oficiales, los que
-  están en DRA, con más beneficios y aparición —por ejemplo, Velatz no
-  contaría en el puesto de la Temporada—. Lo que hay que decidir: qué puede
-  hacer cada uno, y qué pasa con el ranking (¿se esconde al que no es
-  miembro, o se lo muestra sin puesto?). Hoy la tarjeta ya es sólo de quien
-  está en DRA; el ranking, de todos.
-- **Las tarjetas que se borran el 4/10**: son 279 personas con tarjetas en R2
-  que hoy no pasan el portón. Si alguna no se tiene que borrar, decime antes.
+- **«Miembros oficiales»: esconderlos del ranking deja 57 de 153** (27/09, 9 AM:
+  *«prob hide them but keep their profile»*). Medido sobre el ranking de hoy:
+  **57 son miembros** (Discord vinculado, país y Miembro de DRA), **19 están
+  verificados pero no en DRA** (Velatz, #3, y Provenza, #10, entre ellos), **76
+  no vincularon su Discord** y 1 no tiene país. O sea que «esconder a quien no
+  es miembro» saca a **96 personas, no a unas pocas**, y el grueso son los 76
+  sin Discord vinculado, que pueden ser de DRA y no haberlo hecho todavía. El
+  top quedaría Hassan, Makmah, **PichulaMc #3** (era #4), Colesito, Erian…
+  Lo que hay que decidir: ¿se esconde a los 96 o sólo a los 19 que están
+  verificados y no en DRA? ¿Y desde cuándo: ya, o con la T1 del 5/10? No toqué
+  nada.
 - **¿El tono miel te gusta** para Urban Freestyle, ya en la página?
 - **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
   el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su
@@ -802,7 +853,7 @@ inglés, y `/borrar-mis-datos`.
 - **La corrida de las 10:52 AM** es la primera con las marcas del disparador en el Durable Object y `meta` sin reescribir: la miro.
 - 🔔 **A7** (el Score a 40–99): te llega un DM cuando el primero llegue a 8 eventos. Pide mover los umbrales de los 8 rangos en la misma pasada.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
-- **Las llaves viajan en el payload del lobby, las 24 más nuevas** (~1,5 KB cada una). Con FFA jugando cuatro por día, en unas semanas conviene pasarlas a R2 aparte; hasta entonces las más viejas abren el mensaje de Discord en vez del cuadro.
+- ✅ ~~Las llaves viajan en el payload del lobby, las 24 más nuevas~~: desde la 1.20 **todas** van además a `web:llaves` y la página las pide sólo para un link viejo. Si el lobby pesa (hoy 115 KB), se puede bajar `LLAVES_WEB` sin romper ningún link.
 - **El emblema de arriba de la Servidor sigue siendo un archivo** (`comun/escudos_cuad/`, de `herramientas/escudos_cuadrados.py`): si un servidor cambia de logo, ése hay que rehacerlo mirándolo. El círculo del servidor en las otras cartas ya sale solo de Discord.
 - 🖼️ **El paso 5b baja las 427 caras en cada corrida** (~21 s), aunque no haya ninguna Bloqueada que redibujar: el sello de la Bloqueada incluye la foto embebida, así que para saber si cambió hace falta la foto. Se arregla con un sello previo por el etag de R2; no rompe nada y lo dejé para un rato tranquilo.
 - 🌍 **El OVR Nacional de la carta de País depende del país entero** (`datos/mundial.json`) y el sello mira sólo los datos de cada persona: si juega alguien de tu país, tu número se mueve y tu carta no se redibuja. Hoy tiene carta de País una sola persona; conviene cerrarlo antes de que sean más.
