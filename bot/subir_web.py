@@ -977,6 +977,11 @@ def _duelos_de(regs, LW):
     ⚠️ SÓLO DOS LADOS DE UNA PERSONA: la regla de Dlx (21/09, reconfirmada el
     24/09) es que los triples, las de cuatro y las de equipos no son duelos.
     """
+    # 🔴 CON LA MISMA REGLA QUE LA HOJA `1v1`, que es de donde salen los
+    # duelos de las cartas. Esto miraba sólo «dos lados sin coma», y el
+    # 27/09/2026 Colesito tenía 2/3 en su carta y 3/4 en su perfil: contaba
+    # el tercero que sale del podio y los triples que quedan de dos lados.
+    import equipos as _EQ
     inst = LW.instantes(regs)
     orden = sorted((n for n in regs if str(n).isdigit()),
                    key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)))
@@ -985,8 +990,10 @@ def _duelos_de(regs, LW):
         for R in regs[n].get('rondas') or []:
             for b in R.get('b') or []:
                 lados = b[0] if b else []
-                if len(lados) == 2 and not any(',' in (x or '') for x in lados):
-                    out.append((int(n), lados[0], lados[1], b[1] if len(b) > 1 else ''))
+                g = b[1] if len(b) > 1 else ''
+                if len(lados) == 2 and _EQ.es_duelo(lados[0], lados[1], g,
+                                                    b[2] if len(b) > 2 else ''):
+                    out.append((int(n), lados[0], lados[1], g))
     return out
 
 

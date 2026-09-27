@@ -73,6 +73,12 @@ CON_SIGNO = {'A', 'B', 'C', 'D'}
 import sys as _sys
 _sys.path.insert(0, RAIZ)
 from comun.crews import DE_CADA_UNO as CREWS
+from comun.requisitos import minimo as _minimo
+
+
+def con_puerta(letra, ev):
+    """La letra, o `''` si todavía no tiene los eventos del Competitivo."""
+    return letra if ev >= _minimo('competitivo', 'ev') else ''
 
 MIN_GRUPO = 3      # con menos de 3, el puesto dentro del grupo no dice nada
 
@@ -98,9 +104,12 @@ from comun.claves import clave as norm      # noqa: E402,F401
 # sin letras latinas, dos personas comparten fila y el pool no avisa.
 
 
-def bandera(s):
-    m = re.findall(r'[\U0001F1E6-\U0001F1FF]{2}', s)
-    return ''.join(chr(ord(c) - 0x1F1E6 + ord('a')) for c in m[0]) if m else ''
+# 🔴 LA MISMA BANDERA QUE EL POOL DE TEMPORADA: sólo países de la Liga.
+# Esta tenía su propia copia sin el filtro, así que PARK JI-SUNG salía 🇯🇵 en
+# su Servidor y sin país en su perfil (medido el 27/09/2026, 5 personas: la
+# carta y la página leían dos pools con dos reglas). Una copia no discrepa:
+# concuerda en el error hasta el día que una de las dos se arregla.
+from construir_pool_temporada import bandera  # noqa: E402
 
 
 def subrango(score):
@@ -397,8 +406,16 @@ def main():
             'dna_v': NAC[k][0], 'dna_t': NAC[k][1],
             'din_v': INT[k][0], 'din_t': INT[k][1],
             'pos': int(num(r[cc('#')])), 'total': len(filas),
-            'rango': next((x for x, u in UMBRAL if score >= u), 'E'),
-            'subrango': subrango(score),
+            # 🔴 SIN 10 EVENTOS NO HAY LETRA, TAMPOCO ACÁ. Dlx, 23/09/2026:
+            # *«sin 10 eventos no hay letra en ninguna carta»*. La Temporada
+            # y la página ya la tenían; la Servidor y la País leían ESTE
+            # campo, que no, así que el 27/09 todas las Servidor mostraban
+            # una gema que el perfil de la misma persona no. Las dos cartas
+            # ya saben dibujarse sin letra. La Competitiva no lo lee: saca
+            # la suya del Score y sólo se emite con 10.
+            'rango': con_puerta(next((x for x, u in UMBRAL if score >= u), 'E'),
+                                int(num(r[cc('Ev')]))),
+            'subrango': con_puerta(subrango(score), int(num(r[cc('Ev')]))),
             'ovr': 0, 'av': AV.get(k, ''),
         })
 

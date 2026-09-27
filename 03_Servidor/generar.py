@@ -104,7 +104,9 @@ def puestos_en_rango(comp):
     """{nombre: (puesto, total)} dentro de su rango, por Score."""
     por = {}
     for x in comp:
-        por.setdefault(x['rango'], []).append(x)
+        # ⚠️ sin letra no hay rango, y tampoco puesto dentro de él
+        if x.get('rango'):
+            por.setdefault(x['rango'], []).append(x)
     out = {}
     for lista in por.values():
         if len(lista) < UMBRAL:

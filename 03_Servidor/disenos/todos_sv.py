@@ -1031,6 +1031,12 @@ def carta(i, sufijo):
     if rg:
         piezas.append(('gem', rg, pos_rg, tot_rg, False))
 
+    # 🔴 `pos_sv=p` Y NO `max(1, p - 1)`, MÁS ABAJO EN EL TAG. En la hoja de
+    # agosto `p` era el puesto COMPETITIVO y el del servidor se simulaba
+    # restándole uno; en `generar.py` `p` ya ES `pos_sv`, así que el TAG
+    # corría a todos un puesto. Medido el 27/09/2026: Makmah, #2 de FFA,
+    # salía «👑 DUEÑO DE CASA», y Provenza, #11 de 109, «⭐ TOP DEL
+    # SERVIDOR». La cascada ya sabe qué hacer con 0 (sin puesto).
     d = diametro(len(piezas))
     # ⚠️ SI NINGUNA PIEZA LLEVA NUMERO, LA FILA NO CUELGA. La pastilla del
     # puesto solo se dibuja con el umbral de 3, asi que hay cartas donde no
@@ -1085,7 +1091,7 @@ def carta(i, sufijo):
   {pieza('eventos', val(evt, sin_datos), 4, evt == 0)}
   <div class="nom" style="font-size:{NOM.rem(nom, 1.5)}rem">{nom}</div>
   {pst}{tmp}
-  {TIT.div(dict(pos_sv=max(1, p - 1), total_sv=tot, titulos=tit, podios=pod,
+  {TIT.div(dict(pos_sv=p, total_sv=tot, titulos=tit, podios=pod,
                 racha=rch, duelos=duel, eventos=evt), A, B,
            y=y(PIE.tag_centrado(d, cuelga, Y_FILA)))}
   <div class="t1">{TEMPORADA}</div>

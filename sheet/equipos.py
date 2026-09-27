@@ -182,6 +182,31 @@ def cuenta_como_duelo(lado_a, lado_b):
     return not (es_equipo(lado_a) or es_equipo(lado_b))
 
 
+def es_duelo(lado_a, lado_b, ganador, notas=''):
+    """¿Esta batalla es un DUELO? La regla entera, en un solo lugar.
+
+    🔴 LA CARTA Y EL PERFIL CONTABAN DISTINTO. La hoja `1v1` —de donde
+    salen los duelos de las cartas— dejaba afuera los triples, el tercero
+    que sale del podio y el pokémon; el perfil de la página miraba sólo
+    que fueran dos lados sin coma. Medido el 27/09/2026: Colesito 2/3 en
+    su carta y 3/4 en su perfil —el tercero «sin batalla» del #351—, y lo
+    mismo Velatz, Xubaru, MAU KC y Kravitz.
+
+    Las cuatro condiciones, las cuatro de Dlx:
+      · los dos lados son una persona (*«solo vale cuando el formato es
+        1v1, no 1v3 o 2v2»*, 21/09);
+      · hay ganador;
+      · no es un triple partido en filas (*«triple»* en la nota);
+      · no es el tercero que dice el PODIO, que no se peleó en la llave,
+        ni una batalla con un pokémon, que aparece y no pelea (§10.2).
+    """
+    a, c, g = (str(x or '').strip() for x in (lado_a, lado_b, ganador))
+    if not (a and c and g) or not cuenta_como_duelo(a, c):
+        return False
+    n = str(notas or '').lower()
+    return not ('triple' in n or 'podio' in n or re.search(r'pokemon\s*:', n))
+
+
 def _self_check():
     print('\n══ EQUIPOS ══\n')
     mal = 0

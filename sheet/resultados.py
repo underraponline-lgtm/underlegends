@@ -128,19 +128,13 @@ def _filas_uno(ev):
         # El separador vive ahora en `sheet/equipos.py`, junto con el que
         # usa `motor.equipo()` para repartir los puntos. Eran las dos
         # mitades de la misma regla de Dlx y las dos miraban la coma.
-        from equipos import cuenta_como_duelo
-        if not cuenta_como_duelo(a, c):
-            continue
-        if 'triple' in str(b.get('notas', '')).lower():
-            continue
-        # el tercer puesto que sale del PODIO no se peleó en la llave: ver
-        # `escuchar._tercero_del_podio()`. Paga puesto, no suma duelo.
-        if 'podio' in str(b.get('notas', '')).lower():
-            continue
-        # 🔴 NI LA DEL POKEMON: aparece en la llave y no peleó (guía, Parte
-        # 2, §10.2). Un 1v1 donde un lado no estaba no es un duelo, y
-        # contarlo le regala una victoria al otro.
-        if re.search(r'pokemon\s*:', str(b.get('notas', '')), re.I):
+        # ⚠️ LA REGLA ENTERA VIVE EN `equipos.es_duelo()`: los dos lados de
+        # una persona, y ni triples, ni el tercero que sale del PODIO (paga
+        # puesto, no suma duelo), ni el pokémon (aparece y no peleó, §10.2).
+        # La usa también el perfil de la página: tenerla en dos lados era
+        # contar distinto en la carta y en el perfil.
+        from equipos import es_duelo
+        if not es_duelo(a, c, g, b.get('notas')):
             continue
         out.append([ev['num'], ev['fecha'], ev['servidor'], b.get('ronda', ''),
                     a, c, g, (c if g == a else a),

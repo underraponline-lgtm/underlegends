@@ -207,7 +207,9 @@ UMBRAL = 3
 def puestos_en_rango(gente):
     por_rango = {}
     for p in gente:
-        por_rango.setdefault(p['rango'], []).append(p)
+        # ⚠️ sin letra no hay rango, y tampoco puesto dentro de él
+        if p.get('rango'):
+            por_rango.setdefault(p['rango'], []).append(p)
     out = {}
     for rg, lista in por_rango.items():
         if len(lista) < UMBRAL:
@@ -243,7 +245,14 @@ def cargar():
     """Las 138 con todo resuelto, en el orden del pool competitivo."""
     comp = _j('competitivo_pool.json')
     temp = {x['raw']: x for x in _j('temporada_pool.json')}
-    mund = _j('mundial.json')['competitivos']
+    # 🔴 EL OVR NACIONAL SALE DE `comun.nacional.tabla()`, LO MISMO QUE EL
+    # /versus. Esto leía el Score Selección de `datos/mundial.json`, que es
+    # la hoja de la PRE-TEMPORADA: desde el 25/09 `nacional.py` lo calcula
+    # con la T1 (Dlx: *«si»*), y el commit que lo mudó no tocó esta carta.
+    # Medido el 27/09/2026: 72 de 104 cartas con otro número que el versus,
+    # +4,8 en promedio y hasta +11 (Velatz 87 contra 82).
+    from comun.nacional import tabla as _tabla_nacional
+    nacional = _tabla_nacional(comp, _j('mundial.json'))
     # ⚠️ LAS CREWS SALEN DE comun/crews.py, que es el unico que las lee. Esto
     # estaba escrito acá, en gencomp.py, en el builder y en todos_sv.py — y
     # dos de esas cuatro copias tenian una lista de 2026-07 con 13 personas.
@@ -252,7 +261,9 @@ def cargar():
     # hacen desaparecer la crew sin avisar.
     from comun.crews import DE_CADA_UNO as de_crew, norm as cnorm
 
-    # 🔴 `default=0` Y NO `max()` A SECAS. Con el pool vacio —que es el
+    # 🔴 EL POOL VACÍO NO PUEDE TIRAR EL GENERADOR, y hoy lo cubre
+    # `nacional.tabla()`, que con el pool vacío devuelve `{}`. Era `max()`
+    # a secas, y después `default=0`. Con el pool vacio —que es el
     # estado de una temporada recien arrancada, no un caso raro— esto
     # tiraba `ValueError: max() iterable argument is empty` y el generador
     # de Pais **no arrancaba**. Medido el 22/09/2026, con el pool en 0:
@@ -267,8 +278,6 @@ def cargar():
     # correr: no hay a quien dibujarle. Devolver una lista vacia es la
     # respuesta correcta a «no hay nadie», y es lo que los otros tres
     # generadores ya hacen.
-    mejor_score = max((x['score'] for x in comp), default=0)
-    mejor_pais = max((v['score_seleccion'] for v in mund.values()), default=0)
     en_rango = puestos_en_rango(comp)
 
     out = []
@@ -299,7 +308,6 @@ def cargar():
         c.setdefault('cc', '')
         c.setdefault('ev', 0)
         t = temp.get(c['raw'], {})
-        sp = mund.get(c['cc'], {}).get('score_seleccion')
         out.append({
             'nombre': c['raw'],
             'cc': c['cc'],
@@ -309,8 +317,7 @@ def cargar():
             'pos_pais': c.get('pos_pais') or '',
             'pos_rg': en_rango.get(c['raw'], ''),
             'pos_sv': c.get('pos_sv') or '',
-            'ovr': (ovr_nacional(c['score'], sp, mejor_score, mejor_pais)
-                    if sp else None),
+            'ovr': nacional.get(c['raw']),
             'sem': t.get('sem', 0),
             'evt': t.get('ev', c['ev']),
             'pod': t.get('pod', 0),

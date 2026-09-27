@@ -310,8 +310,13 @@ def _equipo_de_banderas(s):
     (`dxg🇲🇽🇨🇴`). Lo que separa es el espacio DESPUÉS de una bandera y
     ANTES de una letra.
     """
-    if len(re.findall(_BANDERA + '{2}', s)) < 2 or re.search(r'[+,&/]', s):
+    if len(re.findall(_BANDERA + '{2}', s)) < 2 or re.search(r'[+,/]', s):
         return s
+    # 🔑 Y EL `&` ENTRE BANDERAS TAMBIÉN: `MAKMA🇻🇪&PRRR🇦🇴` (AGREEMENT
+    # DOOMSDAY, FFA, 26/09/2026). `sheet/equipos.py` no parte por `&` a
+    # propósito —«Snow & Velatz» podría ser un nombre—, pero con una
+    # bandera a cada lado son dos personas: es la misma regla de arriba.
+    s = re.sub('(?<=' + _BANDERA + r')[ \t]*&[ \t]*(?=' + _MD + r'\w)', ' + ', s)
     return re.sub('(?<=' + _BANDERA + r')[ \t]+(?=' + _MD + r'\w)', ' + ', s)
 
 
@@ -327,6 +332,7 @@ def traducir(texto):
         el separador    `<:VS1:…>`, `<:VS6:…>`, `<:ins:…>`  (FFA: 🆚 o `<:VSF:…>`)
         el marco        `〈SOSA〉`, `「HASSAN🇦🇷」`           (FFA: `⌞x⌝` o `[x]`)
         el equipo       `「HASSAN🇦🇷 ABYSSUS🇵🇦」`, sin `+`  (FFA: `⌞A + B⌝`)
+        y con `&`       `[MAKMA🇻🇪&PRRR🇦🇴]` (AGREEMENT DOOMSDAY, de FFA)
         el podio        `<:1erPuesto:…> <@…>`              (FFA: `CAMPEÓN: …`)
         el tercero      `『3er Y 4º PUESTO』` de encabezado  (FFA: `TERCER LUGAR`)
         el cuarto       `[ tkl ] <:ins:…> ( MCO )`, y MCO pasó a cuartos
@@ -1813,6 +1819,10 @@ def _check_dialectos():
          traducir('<a:PAN:1>') == '🇵🇦' and traducir('<:pan:2>') == '<:pan:2>'),
         ('`3ER PUESTO: X` sigue siendo el podio',
          traducir('3ER PUESTO: Ana\n⌞A⌝ 🆚 ⌞B⌝') == '3ER PUESTO: Ana\n⌞A⌝ 🆚 ⌞B⌝'),
+        ('`&` entre banderas es un equipo; «Snow & Velatz» no se toca',
+         nombres_de_linea(traducir('[**MAKMA🇻🇪&PRRR🇦🇴**] 🆚 [LIZENINN🇦🇷&CARLOS🇪🇨]'))
+         == ['MAKMA🇻🇪 + PRRR🇦🇴', 'LIZENINN🇦🇷 + CARLOS🇪🇨']
+         and traducir('[Snow & Velatz] 🆚 [A]') == '[Snow & Velatz] 🆚 [A]'),
         ('`**PARK JI-SUNG🇯🇵**` sale sin el negrito',
          nombres_de_linea('[**PARK JI-SUNG🇯🇵**] 🆚 [OKAM🇨🇷]')
          == ['PARK JI-SUNG🇯🇵', 'OKAM🇨🇷']),

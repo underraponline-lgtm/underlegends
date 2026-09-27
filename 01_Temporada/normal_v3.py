@@ -127,6 +127,35 @@ from comun.escudos import LOGO, escudo
 # se usa una imagen de 80 px de ancho donde el repo tiene una de 1280.
 from comun.banderas import src as bandera
 
+
+def chip_bandera(cc):
+    """El <img> de la bandera, o nada si no hay país.
+
+    🔴 `bandera('')` DEVUELVE VACÍO PARA QUE NO SE DIBUJE, y esta carta lo
+    dibujaba igual: `<img class="c-flag" src="">`. El navegador pinta ahí su
+    ícono de imagen rota. Medido el 27/09/2026: **10 cartas**, las de quien
+    tiene una bandera que no es de la Liga (🇯🇵, 🇦🇿, 🇯🇴…) o ninguna. Es la
+    regla de `comun/banderas.src()` —*«sin dato no hay pieza»*— con la mitad
+    que le tocaba a esta carta sin cumplir.
+    """
+    s = bandera(cc)
+    return '<img class="c-flag" src="%s">' % s if s else ''
+
+
+def puntos_k(pts):
+    """`1250` -> `1.3K`, `12500` -> `13K`. Redondeo de los de siempre.
+
+    🔴 `'%.1f' % 1.25` DA `1.2`. Python redondea al par, así que 1.250
+    puntos salían «1.2K» y el perfil decía 1.250: parecía que faltaban 50.
+    Medido el 27/09/2026: **30 cartas** redondeaban para abajo (27 con
+    1.250, y 6.250 y 5.250). El que mira espera que 1.25 sea 1.3.
+    """
+    from decimal import Decimal, ROUND_HALF_UP
+    k = Decimal(int(pts or 0)) / 1000
+    if (pts or 0) >= 10000:
+        return '%sK' % k.quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+    return '%sK' % k.quantize(Decimal('0.1'), rounding=ROUND_HALF_UP)
+
 def tag(c):
     """Devuelve (texto, tier). El tier define el efecto visual del TAG.
        t1 dorado = legendario · t2 púrpura = épico · t3 azul = raro · t4 gris = común
@@ -194,7 +223,7 @@ def card(c):
     ini = c['raw'][0].upper()
     foto = ('<img src="%s" onerror="this.parentNode.innerHTML=\'<div class=&quot;c-initials&quot;>%s</div>\'">'
             % (av, ini)) if _hay_foto(av) else '<div class="c-initials">%s</div>' % ini
-    pts = ('%.0fK' % (c['pts']/1000)) if c['pts'] >= 10000 else ('%.1fK' % (c['pts']/1000))
+    pts = puntos_k(c['pts'])
     # SET B — las seis se leen por tema, de a pares por fila:
     #   volumen (PTS EVT) · logro (POD SEM) · most wanted (CAZ MW)
     # Fuera WR% y SRV. WR% NO se pierde: sigue pesando 16% dentro del OVR,
@@ -227,7 +256,7 @@ def card(c):
       <div class="c-ovr">%d</div>
       <div class="c-rank">%s</div>
       <div class="c-sep"></div>
-      <img class="c-flag" src="%s">
+      %s
       <img class="c-logo" src="%s">
     </div>
     <div class="c-name">%s</div>
@@ -239,7 +268,7 @@ def card(c):
   </div>
 """ % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, c.get('pos',0), TEMPORADA, tg[1], tg[0], UL,
        c['ovr'], rg,
-       bandera(c['cc']), escudo(c['sv']), c['raw'].upper(), filas, rg, c['sv'])
+       chip_bandera(c['cc']), escudo(c['sv']), c['raw'].upper(), filas, rg, c['sv'])
 
 
 
