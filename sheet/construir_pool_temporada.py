@@ -54,7 +54,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 # la planilla vieja y devuelve datos validos de la temporada equivocada.
 # No falla: miente.
 from planillas import OFICIAL as SHEET                  # noqa: E402
-SERVIDORES = ['TWR', 'TFC', 'SR', 'FTN', 'URBF', 'FRZ', 'DRA']
+# 🔴 LA LISTA DE SERVIDORES SALE DE LA VITRINA, NO SE COPIA. Esta era la de
+# la pre-temporada —siete, sin FFA ni EFA— y `rankings.py` la arregló el
+# 22/09 con un comentario que decía *«y no era sólo la vitrina: el pool de
+# temporada tiene la misma lista»*. Ésta nunca se tocó, y no se notaba: sin
+# eventos fuera de FFA las siete columnas daban cero y el `sv` caía a la
+# columna `Sv` de la vitrina, que sí está bien. El 27/09/2026 entró el
+# primer evento de Snake Rap y el argmax sobre SIETE columnas eligió SR
+# para quien jugó ahí una vez: Hassan (7 eventos en FFA, 1 en SR) salía de
+# Snake Rap, con su escudo en la carta. Y `srv` no contaba FFA nunca.
+from rankings import SERVIDORES                         # noqa: E402
 # 🔴 EL PISO DEL POOL SALE DEL REQUISITO MAS FLOJO, Y ERA 8 A MANO.
 #
 # El comentario que estaba acá decía *«el corte que desbloquea WR, rango

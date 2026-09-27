@@ -590,10 +590,15 @@ def agregar(filas_res, filas_uno, instantes=None):
         d[quien]['Último Resultado'] = ('(%s)・%s' % (fecha, pos) if pos
                                         else '(%s)' % fecha)
 
-    # el servidor es aquel donde jugo mas, igual que en el pool
+    # el servidor es aquel donde jugo mas, igual que en el pool.
+    # ⚠️ Y EL EMPATE, IGUAL QUE EN EL POOL: gana el orden de `SERVIDORES`.
+    # Era `max(vistos)` sobre (eventos, servidor), que desempata por ORDEN
+    # ALFABÉTICO: con un evento en FFA y otro en SR el Sheet decía SR y la
+    # carta —`construir_pool_temporada`, `max(SERVIDORES, …)`— FFA. No se
+    # veía hasta el 27/09/2026, cuando entró el primer evento de Snake Rap.
     for quien, r in d.items():
-        vistos = [(r.get(s, 0), s) for s in SERVIDORES if r.get(s, 0)]
-        r['Sv'] = max(vistos)[1] if vistos else ''
+        r['Sv'] = (max(SERVIDORES, key=lambda s: r.get(s, 0))
+                   if any(r.get(s, 0) for s in SERVIDORES) else '')
 
     # 🔑 LA RACHA: los eventos que JUGÓ, en el orden en que se jugaron.
     #
