@@ -316,8 +316,14 @@ def _equipo_de_banderas(s):
     # DOOMSDAY, FFA, 26/09/2026). `sheet/equipos.py` no parte por `&` a
     # propósito —«Snow & Velatz» podría ser un nombre—, pero con una
     # bandera a cada lado son dos personas: es la misma regla de arriba.
-    s = re.sub('(?<=' + _BANDERA + r')[ \t]*&[ \t]*(?=' + _MD + r'\w)', ' + ', s)
-    return re.sub('(?<=' + _BANDERA + r')[ \t]+(?=' + _MD + r'\w)', ' + ', s)
+    #
+    # ⚠️ CON EL NEGRITO EN EL MEDIO TAMBIÉN: `**FULLY🇨🇱**&DXG🇲🇽` (la misma
+    # llave, en semis: el negrito marca a uno solo de cada equipo). Sin
+    # esto el `**` separaba la bandera del `&` y el equipo quedaba como UNA
+    # persona llamada «FULLY&DXG».
+    s = re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]*&[ \t]*(?=' + _MD + r'\w)',
+               r'\1 + ', s)
+    return re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]+(?=' + _MD + r'\w)', r'\1 + ', s)
 
 
 def traducir(texto):
@@ -834,6 +840,16 @@ def _equipo(s):
     return frozenset(partes) if len(partes) > 1 else frozenset()
 
 
+def _miembros(lado):
+    """Los integrantes de un lado-equipo, como se escribieron: `A + B` -> [A, B].
+
+    `[]` si el lado es una sola persona. La historia `A(B+C)` se saca
+    antes de partir, por lo mismo que en la progresión de `resolver()`.
+    """
+    ms = [x.strip() for x in re.split(r'[+&]', HISTORIA.sub('', lado or '')) if norm(x)]
+    return ms if len(ms) > 1 else []
+
+
 def resolver(texto, conocidos=None, ids=None):
     """[(ronda, [competidores], ganador|None, por_que)] de una llave.
 
@@ -1021,6 +1037,32 @@ def resolver(texto, conocidos=None, ids=None):
                                and any(_equipo(n) < e for e in eqs)]
                         if len(sub) == 1:
                             ganan = sub
+                    # 🔑 Y LOS QUE PASAN DE DOS EQUIPOS DISTINTOS Y SE JUNTAN.
+                    # AGREEMENT: DOOMSDAY V.1 (FFA, 26/09/2026): la semi es
+                    # `[**FULLY**&DXG] ⚖️ [**SNOW**&VELATZ]` y la final
+                    # `[FULLY&SNOW]`. Pasa uno de cada equipo —el negrito
+                    # dice quién— y juntos arman el equipo de la final.
+                    # Ningún lado aparecía entero después, así que «no pasaba
+                    # nadie»: la llave quedaba sin semi, sin final y sin
+                    # campeón. El podio lo confirma: 3er puesto, DXG y VELATZ.
+                    #
+                    # ⚠️ EXACTO, COMO EL DE ARRIBA: un equipo de la ronda
+                    # siguiente hecho SÓLO con integrantes de esta batalla, y
+                    # de al menos dos de sus lados. Se escribe como los que
+                    # pasan contra los que no — la forma que el podio le da.
+                    if not ganan and len(b) >= 2 and all(_equipo(n) for n in b):
+                        todos = frozenset().union(*(_equipo(n) for n in b))
+                        fus = [s for s in sig if _equipo(s) and _equipo(s) <= todos
+                               and sum(1 for n in b if _equipo(n) & _equipo(s)) >= 2]
+                        if len(fus) == 1:
+                            pasan = _equipo(fus[0])
+                            resto = [x for n in b for x in _miembros(n)
+                                     if norm(x) not in pasan]
+                            if resto:
+                                out.append((ronda, [fus[0], ' + '.join(resto)], fus[0],
+                                            'ronda siguiente: pasan de dos equipos '
+                                            'y se juntan'))
+                                continue
                 if len(ganan) == 1:
                     out.append((ronda, b, ganan[0], 'ronda siguiente'))
                 elif not ganan:
@@ -1127,6 +1169,21 @@ def resolver(texto, conocidos=None, ids=None):
                                 break
                         if g is not None:
                             break
+                # 🔑 Y EL EQUIPO CAMPEÓN ESCRITO CON UNA MENCIÓN POR INTEGRANTE.
+                # AGREEMENT: DOOMSDAY V.1 dice `CAMPEÓN: <@FULLY>🇨🇱&<@SNOW>🇨🇴`
+                # contra el lado `FULLY + SNOW`: cada mención es UNA persona,
+                # y contra el lado entero no se parece a nada. Se busca entre
+                # los integrantes de cada lado.
+                # ⚠️ Y TIENE QUE DAR UN SOLO LADO: si una mención cae en uno y
+                # otra en el otro, la línea no se entiende y no se elige.
+                if g is None and ids:
+                    lados = []
+                    for did in MENCION.findall(camp):
+                        for cand in (ids.get(str(did)) or []):
+                            lados += [n for n in b if n not in lados and _miembros(n)
+                                      and _parecido(cand, _miembros(n))]
+                    if len(lados) == 1:
+                        g, pq = lados[0], 'línea CAMPEÓN, por mención de un integrante'
                 # 🔑 Y SI EL CAMPEON NO SE RESUELVE, EL SUBCAMPEON PUEDE
                 # DECIRLO. En una final de dos, saber quien perdio ES saber
                 # quien gano. Medido el 24/09/2026: DESGRACIAS EN TOKYO VOL
@@ -1163,6 +1220,13 @@ def resolver(texto, conocidos=None, ids=None):
                             for did in MENCION.findall(sub):
                                 for nom in (ids.get(str(did)) or []):
                                     cand.update(n for n in b if _parecido(nom, [n]))
+                        # el subcampeón por equipos, igual que el campeón:
+                        # una mención por integrante
+                        if not cand and ids:
+                            for did in MENCION.findall(sub):
+                                for nom in (ids.get(str(did)) or []):
+                                    cand.update(n for n in b if _miembros(n)
+                                                and _parecido(nom, _miembros(n)))
                         if len(cand) == 1:
                             g = next(n for n in b if n not in cand)
                             pq = 'línea SUB-CAMPEÓN: el campeón es el otro lado'
@@ -1450,6 +1514,8 @@ def unir_partidas(ms):
             b['content'] = (b.get('content') or '') + '\n' + (m.get('content') or '')
             b['edited_timestamp'] = max(b.get('edited_timestamp') or '',
                                         m.get('edited_timestamp') or '') or None
+            # las menciones de las dos mitades: el podio suele ir en la segunda
+            b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
             b['_ult'] = m['id']
             b['_partes'] += 1
             b['_rondas'] = rondas_de(traducir(plano(b['content'])))
@@ -1458,6 +1524,29 @@ def unir_partidas(ms):
         b.update(_autor=autor, _ult=m['id'], _partes=1, _rondas=rs)
         bloques.append(b)
     return sorted(bloques, key=lambda b: int(b['id']), reverse=True)
+
+
+def menciones_de(m):
+    """{discord_id: [nombres]} de la gente mencionada en un mensaje, como la
+    muestra Discord: el apodo del servidor, el nombre visible y el usuario.
+
+    🔑 EL MENSAJE TRAE QUIÉN ES CADA `<@123>`. Discord manda, junto al texto,
+    la lista de mencionados con sus nombres. El padrón resuelve a quien ya
+    tiene su ID cargado; esto resuelve también a quien todavía no —la gente
+    nueva, que es justo la que más aparece en los podios de FFA—.
+
+    ⚠️ ES UN CANDIDATO MÁS, NO UNA RESPUESTA: igual que el padrón, tiene que
+    coincidir con alguien que peleó esa batalla (ver `resolver()`).
+    """
+    out = {}
+    for u in m.get('mentions') or []:
+        did = str(u.get('id') or '')
+        if not did.isdigit():
+            continue
+        ns = [(u.get('member') or {}).get('nick'), u.get('global_name'), u.get('username')]
+        vistos = out.setdefault(did, [])
+        vistos += [x.strip() for x in ns if x and x.strip() and x.strip() not in vistos]
+    return out
 
 
 def barrer(s, por_canal=25, solo=None, guilds=None):
@@ -1518,7 +1607,8 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
                             # plano: ver `plano()`. Lo que viene detrás
                             # —titulo, plantel, marcas— lee este texto
                             'texto': texto,
-                            'partes': m.get('_partes', 1)})
+                            'partes': m.get('_partes', 1),
+                            'menciones': menciones_de(m)})
         time.sleep(0.05)
     return out, n_ch, n_msg
 
@@ -1931,6 +2021,35 @@ def _check_dialectos():
          and rf[1][3].startswith('pasan 0') and rf[1][1] == ['D', 'E', 'F']),
         ('pero si no engancha nadie de ningún grupo sigue siendo duda',
          len(rn) == 2 and all(x[3] == 'no aparece nadie después' for x in rn)),
+    ]
+    # AGREEMENT: DOOMSDAY V.1 (FFA, 26/09/2026), recortada: pasa uno de cada
+    # equipo y juntos arman el de la final; el campeón, una mención por cabeza
+    doom = ('▪️ **⚖️[•CUARTOS DE FINAL•]📰**\n'
+            '▪️   [**FULLY🇨🇱&DXG🇲🇽**] 📰 [SCOT🇦🇷&TRRRR🇯🇲]\n'
+            '▪️   [**SNOW🇨🇴&VELATZ🇨🇱**] ⚖️ [CRONOX🇨🇱&KUNI🇦🇷]\n'
+            '▪️**📰[•SEMI - FINAL•]⚖️**\n'
+            '▪️   [**FULLY🇨🇱**&DXG🇲🇽] ⚖️ [**SNOW🇨🇴**&VELATZ🇨🇱]\n'
+            '▪️**👨🏻‍⚖️[•GRAN - FINAL•]🔚**\n'
+            '▪️   [FULLY🇨🇱&SNOW🇨🇴] 📰 [MAKMA🇻🇪&PRRR🇦🇴]\n'
+            '👨🏻‍⚖️ 𝄆 **__CAMPEÓN:__** <@21>🇨🇱&<@22>🇨🇴\n')
+    rd = resolver(traducir(plano(doom)), ids={'21': ['Oasis', 'fullylo4ded'], '22': ['Snow']})
+    rd = {r: (b, g) for r, b, g, _z in rd}
+    casos += [
+        ('`**FULLY🇨🇱**&DXG🇲🇽`, con el negrito en el medio, es un equipo',
+         nombres_de_linea(traducir('[**FULLY🇨🇱**&DXG🇲🇽] ⚖️ [**SNOW🇨🇴**&VELATZ🇨🇱]'))
+         == ['FULLY🇨🇱 + DXG🇲🇽', 'SNOW🇨🇴 + VELATZ🇨🇱']),
+        ('pasan uno de cada equipo y se juntan: los que pasan contra los que no',
+         rd.get('SEMIFINALES') == (['FULLY🇨🇱 + SNOW🇨🇴', 'DXG🇲🇽 + VELATZ🇨🇱'],
+                                   'FULLY🇨🇱 + SNOW🇨🇴')),
+        ('el equipo campeón escrito con una mención por integrante',
+         (rd.get('FINAL') or (0, 0))[1] == 'FULLY🇨🇱 + SNOW🇨🇴'),
+        ('… pero si cada mención cae en un lado distinto, no se elige',
+         [g for r, _b, g, _z in resolver(traducir(plano(doom.replace('<@22>🇨🇴', '<@23>🇻🇪'))),
+                                         ids={'21': ['Fully'], '23': ['Makma']})
+          if r == 'FINAL'] == [None]),
+        ('las menciones del mensaje traen los nombres de Discord',
+         menciones_de({'mentions': [{'id': '22', 'username': 'snowzzz', 'global_name': 'Snow',
+                                     'member': {'nick': None}}]}) == {'22': ['Snow', 'snowzzz']}),
     ]
     for que, ok in casos:
         mal += not ok

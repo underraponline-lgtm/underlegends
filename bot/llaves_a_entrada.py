@@ -395,6 +395,15 @@ def titulo(texto):
     """Como se llama el evento. Solo para NOMBRARLO, nunca como clave."""
     for l in (texto or '').splitlines()[:6]:
         limpio = re.sub(r'<a?:\w+:\d+>|<@[&!]?\d+>', ' ', l)
+        # 🔴 EL `__` DEL SUBRAYADO DE DISCORD SE QUEDA, Y NO ES DESCUIDO: es
+        # parte de la IDENTIDAD de 11 eventos ya cargados. `Eventos
+        # Procesados` guarda «__ DESGRACIAS EN TOKYO VOL.10 __», y la clave es
+        # (nombre, servidor, fecha): sacarlo acá los renombra, no los
+        # encuentra y los carga OTRA VEZ con número nuevo. Pasó cerca el
+        # 27/09/2026 —el chequeo miró `datos/llaves_t1.json`, que ya viene
+        # limpio para la web, en vez del Sheet—. El nombre se limpia para
+        # MOSTRARLO (`sheet/llaves_web.py`); para cambiarlo acá hay que migrar
+        # antes las tres hojas del Operativo.
         limpio = re.sub(r'[^\w\sÁÉÍÓÚÑáéíóúñ.\-]', ' ', limpio)
         limpio = re.sub(r'\s+', ' ', limpio).strip()
         if len(limpio) < 3:
@@ -509,8 +518,16 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     # 🔑 `conocidos=` ERA EL PARAMETRO QUE FALTABA. Ver `inscriptos_de()`:
     # sin él, los nombres de la llave se resuelven contra el texto crudo y
     # salen partidos por los paréntesis y los `+` de los equipos.
-    for bat in E.resolver(txt, conocidos=inscriptos_de(sv),
-                          ids=ids_del_padron()):
+    # 🔑 Y LOS NOMBRES QUE DISCORD TRAE CON CADA MENCIÓN, después de los del
+    # padrón: resuelven a quien todavía no tiene su ID cargado. Ver
+    # `escuchar.menciones_de()`.
+    ids = ids_del_padron()
+    if hallazgo.get('menciones'):
+        ids = dict(ids)
+        for did, ns in hallazgo['menciones'].items():
+            ya = list(ids.get(did) or [])
+            ids[did] = ya + [n for n in ns if n not in ya]
+    for bat in E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids):
         ronda, lados, ganador, razon = bat
         # 🔴 EN UNA BATALLA DONDE PASAN VARIOS, LOS QUE NO PASAN CAYERON
         # AHI —y eso es un puesto—. Hasta el 24/09/2026 esto se contaba
