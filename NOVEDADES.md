@@ -236,17 +236,85 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Los íconos de estilo de la Servidor se quedan** (hoy salen de un sorteo por nombre) | *«aún no lo saques… te daré más información más adelante»* | `todos_sv.py`, `ESTILO_MUESTRA` |
 | **Seguidores, seguidos y un muro de POSTS: todavía no** | *«no lo hagas todavía, tenemos que discutir y arreglar cosas primero»* | mi opinión, abajo en «❓ Esperando a Dlx» |
 | **Urban Freestyle tiene que entrar igual que FFA y Snake Rap** | *«acuérdate que el bot está en Urban Freestyle, asegúrate que los eventos y canales sean identificados»* | sus cuatro canales de llaves se leen; ver la tanda 1.16 |
-| **Urban Freestyle, con otro naranja** que el de Snake Rap, también en Mundo | *«usa otro naranja… y para donde aparece en mundo también»* | ámbar `#FFA928` en `datos/colores_sv_marca.json` (el tono lo elegí yo; ver 1.17) |
+| **Urban Freestyle, con otro naranja** que el de Snake Rap, también en Mundo: **miel** | *«usa otro naranja… y para donde aparece en mundo también»* · entre tres tonos, *«prueba miel»* (7:22 AM) | miel `#F2B33D` en `datos/colores_sv_marca.json` |
 | **Las tarjetas del inicio no repiten el nombre** debajo | *«que digan Hassan y Makmah otra vez cuando en la tarjeta sale el nombre es innecesario»* | `campeon()` en `bot/paginas/app.js` |
-| **No son campeones todavía**: el rótulo del inicio tiene que decir otra cosa mientras se juega | *«no son campeones todavía, son top 1»* | «Líder» hasta el cierre, «Campeón» después (`temporadaCerrada()`); la palabra la propuse yo |
+| **No son campeones todavía**: arriba de las tarjetas del inicio dice **«Líder»** mientras se juega | *«no son campeones todavía, son top 1»* · a «Líder», *«sí»* | «Campeón» desde el día después del cierre (`temporadaCerrada()`) |
 | **Privacidad y Términos, dentro de Ajustes o de la cuenta**, y mejor hechas | *«¿quizás lo podamos agregar dentro de la sección de cuenta o ajustes? y hacer mejor esos sitios»* | `legalPop()` en `app.js` · `legal.css` |
 | **El changelog es de cambios, no de anuncios**, lleva la hora y usa el ancho de la compu | *«eso sólo es un anuncio, no un cambio… añade la hora de cada changelog… mezclarlo a la derecha»* | `cambios.json` · `acomodarCambios()` |
 | **«Tu servidor es donde más jugaste» sale del changelog**; cómo se asigna el servidor lo explica Dlx después | *«quita eso. Luego te comentaré cómo se hará»* | ⏳ esperando la regla |
-| **Mejoras del panel de llaves y llaves en vivo: para hablar** | *«¿qué harías tú?… quizás llaves en vivo? pero eso es otro tema… hazme saber»* | mi propuesta, en «❓ Esperando a Dlx» |
+| **El panel de llaves, con las cinco mejoras** que propuse: seguir a alguien tocando, por rondas, un link por llave, equipos en bloque y etiquetas | *«me gusta todo»* | `abrirLlave()`, `rondasLista()`, `seguirEnLlave()` en `app.js` (1.18) |
+| **El cuadro es la vista de siempre**, también en el teléfono; «Por rondas» queda al lado | *«que el default sea cuadros, no por rondas»* | `LL_VISTA` en `app.js` |
+| **Llaves en vivo, cada 1 minuto** como los avisos | *«sería de la misma forma que el de minuto… en vez de que sea 30 s que sea 1 m»* | el vigía (`bot/avisos.js`) + `bot/paginas/llave_vivo.js` (1.19) |
+| **Los links de Discord abren la app**, no la página de Discord | *«hago clic en la llave pero me lleva a Discord en el website cuando tengo la app»* | `intent://` en Android (`app.js`); en el iPhone ya lo hacía |
+| **KENNY y Kenny son una persona**, de Argentina | *«sí, de Argentina»* | `datos/akas_a_mano.json` |
+| **FFA y EFA siguen con su silueta** en las cartas | *«eso de las siluetas no lo hagas, que se quede así de momento»* | `comun/escudos.py` (`CON_ICONO`) |
+| **La Competitiva dice el puesto entre quienes tienen Competitivo**: Makmah es #1, no #4 | *«él es el único con tarjeta Competitivo, entonces debería decir #1»* | `puestos_competitivo()` en `sheet/construir_pool_competitivo.py` |
+| **La hora de un evento, con la bandera de tu país** si entraste con Discord, o «hora local»; nunca «EDT» | *«al decir EDT o EST confunde a algunos»* | `etiquetaHora()` en `app.js` |
+| **Los rangos de Snake Rap** —Insignia, 1 a 4, Chill— y sus puntos de ascenso, en cada evento suyo | el mensaje de su servidor, pasado por Dlx | `rangos` de SR en `datos/servidores.json`; **no suman en la Liga** |
+| **Que se vea quién no está verificado** | *«que aparezca en alguna parte que no está verificado»* | el perfil, con lo que le falta (`_sin_verificar()`) |
+| **Las tarjetas de quien se va se borran a la semana** | *«que sus tarjetas se borren después de 1 semana si se va, así para no ir borrando y rehacer todo»* | `bot/fuera.py`, paso 2e del ciclo |
+| **El gráfico de fortalezas del perfil viejo vuelve** | *«había un gráfico donde comparaba las estadísticas del competitivo y te mostraba cuál era más fuerte y menos»* | `pintaJuego()` en `app.js` |
+| **Botones más lindos, y al costado cuando entran** | *«ya te dije que hagas que los botones se hagan más bonitos… el botón está abajo sin ninguna razón»* | `.btn` en `estilo.css` |
+| 🔮 **Para más adelante: «miembros oficiales» de la Liga** (en DRA) y **«verificados»** (ID y bandera), con más beneficios para los primeros —por ejemplo, Velatz no contaría en el puesto de la Temporada— | *«necesitamos trabajar más en esto porque puede ser peligroso… queremos que DRA sea el hub… de momento quiero esperar a que termines»* | ⏳ para discutir: no se toca nada |
 
-⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Domingo 27/09 (7:30 a 9 AM) — versiones 1.18 y 1.19
+
+Las respuestas de Dlx de las 7:22 AM y lo que pidió en el mismo mensaje.
+Cinco commits, la página y el Worker desplegados, el payload subido. El
+ciclo no se corrió (de 3 a 11 no hay sincronización): lo que depende de él
+—AGREEMENT DOOMSDAY, el #1 de Makmah, KENNY con Kenny— entra a las 11:22.
+
+- 🔴 **Llaves en vivo (1.19).** El vigía del Worker lee cada minuto los 6
+  canales de llaves de la Liga —los que tuvieron una llave en las últimas 3 h;
+  los demás, uno cada 5 minutos— y guarda el texto, con las menciones como
+  nombres. No lo lee: lo lee el navegador con `llave_vivo.js`, una copia de
+  las reglas de `escuchar.py` atada por CI a 14 llaves reales (las 14 dan
+  idéntico a Python). El Inicio muestra «🔴 En vivo» y el panel la abre como
+  a las oficiales, redibujándose cada minuto. La primera de verdad va a ser
+  SNAKE ARENA VOL. 2, hoy a las 5 PM.
+- 🏆 **El panel de llaves (1.18)**: tocar un nombre sigue su camino con su
+  puesto y sus puntos (el segundo toque abre el perfil); «Cuadro» o «Por
+  rondas»; `#/llave/362` con «Copiar el link»; los equipos en bloque con sus
+  caras; y revivido, walk-in, «pasan 2», «no pasó nadie» y «por el podio»
+  como etiquetas.
+- 🕐 **La hora con tu bandera**: si entraste con Discord y tu dispositivo
+  está en la hora de tu país, la bandera; si no, «hora local». En el
+  calendario, «Lo que viene», Eventos, la llave y el changelog.
+- 📱 **Discord en la app**: en Android los links abren la app de Discord
+  (`intent://`, y si no está, el navegador). **Sin probar en un teléfono de
+  verdad**: acá no hay uno.
+- 💪 **Sus fortalezas**, en el perfil: el radar de las cinco dimensiones del
+  Score contra el promedio de la Liga, «su fuerte» y «a trabajar». Con menos
+  de 10 eventos dice que es provisorio.
+- 🔎 **«Sin verificar»** en el perfil, con lo que falta: 76 sin Discord
+  vinculado, 19 que no son Miembro de DRA y 1 sin país.
+- 🐍 **Los rangos de Snake Rap**: GENESIS BATTLES dice «Rango 4» y RAP
+  EXHIBITION «Rango 2», con sus puntos de ascenso en Snake Rap. **No suman en
+  la Liga**: se muestran.
+- 🏅 **El #1 de la Competitiva**: `pos` salía del Score entre las 153
+  personas; ahora primero quienes pasan la puerta de 10 eventos. Makmah pasa
+  de #4 a **#1** («🏆 #1 COMPETITIVO») en la corrida de las 11:22.
+- 🗑️ **Las tarjetas de quien se va, a la semana** (paso 2e, `bot/fuera.py`):
+  un reloj por persona que vuelve a cero si vuelve a pasar el portón, y que
+  se commitea. **Hoy 279 personas tienen tarjetas en R2 y no pasan el
+  portón** (160 no son Miembro de DRA, 82 no están en la Lista, 28 sin
+  Discord ID, 9 sin país): si nadie se verifica, **se borran el domingo
+  4/10**, el día antes de la T1. La foto no se toca.
+- 🎨 **Botones nuevos** (10 px, luz arriba, sombra del color del servidor y
+  texto negro o blanco según el fondo) y, en «Lo que pasó», al costado.
+  Urban Freestyle en **miel**.
+- 🔴 **Mis errores de esta tanda**, los cuatro sin daño pero los cuatro
+  evitables: corrí `construir_akas.py` y `subir_datos.py` con un `--auto` que
+  no tienen —rehicieron `akas.json` y escribieron `meta` en KV, lo mismo que
+  iba a escribir el ciclo—, **con una nota en mi memoria que avisaba de esos
+  dos scripts**; ahora la regla es mecánica (grep antes de correr). Un
+  simulacro del ciclo hizo un barrido completo de Discord y movió su reloj
+  (lo devolví). Y dos veces la herramienta de archivos rompió una barra o un
+  `\u2028` (los arreglé antes de subir).
 
 ## 📅 Domingo 27/09 (6:15 a 7:15 AM) — versión 1.17
 
@@ -653,35 +721,17 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **¿«KENNY» (Snake Rap, sin bandera) y «Kenny» (FFA, 🇦🇷) son la misma
-  persona?** Ninguno está en la Lista ni tiene Discord ID, y hoy son dos
-  filas con la misma clave: en R2 sus tarjetas se pisan (gana la más nueva).
-  Si son uno, va un alias en ✅ Decidir; si son dos, hay que separarlos como
-  Volk y volk.
-- **¿«Líder» te sirve?** Es lo que puse arriba de las dos tarjetas del inicio
-  mientras se juega. Otras: «#1 de la temporada», «Va primero», «Top 1».
-- **¿El ámbar te sirve para Urban Freestyle?** Si no: naranja rojizo `#FF5A2E`
-  (ΔE 10 del de Snake Rap, se parece más al fuego de su logo) o miel `#F2B33D`
-  (el más lejos, pero cerca del dorado de «Líder»).
-- **El panel de llaves: qué haría yo**, en este orden —
-  1. **Tocar un nombre ilumina su camino** y dice cuánto sumó ahí. Hoy es
-     sólo con el mouse: en el teléfono no hay «pasar por encima».
-  2. **En el teléfono, la llave por rondas** (Filtros → Cuartos → Semis →
-     Final, de arriba abajo): el árbol en espejo obliga a correrlo de costado.
-  3. **Un link a cada llave** (`#/llave/362`) para pegar en Discord.
-  4. **Los equipos como un solo bloque**, con sus caras juntas.
-  5. **Lo que la llave no dice, con una etiqueta**: revivido, walk-in,
-     pokémon, refuerzo. El lector ya lo sabe; la página no lo muestra.
-- **¿Llaves en vivo?** Se puede. El vigía de la campana ya lee Discord cada
-  minuto; leer también los canales de llaves son unos pocos pedidos más. Lo
-  difícil es el lector: son 2.000 líneas de reglas en Python y el Worker
-  tiene 10 ms. Mi propuesta: **«EN VIVO» es la llave tal como la escribe el
-  organizador** —rondas, nombres, y quién pasó por el negrito—, sin puntos,
-  con un lector chico en JS atado a las mismas pruebas (como los anuncios).
-  Los **puntos siguen saliendo del ciclo**, y cuando procesa el evento la
-  llave en vivo se cambia por la oficial. La página pregunta cada ~30 s sólo
-  mientras hay un evento en vivo. Duplicar el lector entero **no**: dos
-  copias de las reglas es la incoherencia que este proyecto persigue.
+- **«Miembros oficiales» y «verificados»** (27/09, *«de momento quiero esperar
+  a que termines y discutir los temas pendientes»*): verificados, todos los
+  que confirmaron quiénes son con ID y bandera; miembros oficiales, los que
+  están en DRA, con más beneficios y aparición —por ejemplo, Velatz no
+  contaría en el puesto de la Temporada—. Lo que hay que decidir: qué puede
+  hacer cada uno, y qué pasa con el ranking (¿se esconde al que no es
+  miembro, o se lo muestra sin puesto?). Hoy la tarjeta ya es sólo de quien
+  está en DRA; el ranking, de todos.
+- **Las tarjetas que se borran el 4/10**: son 279 personas con tarjetas en R2
+  que hoy no pasan el portón. Si alguna no se tiene que borrar, decime antes.
+- **¿El tono miel te gusta** para Urban Freestyle, ya en la página?
 - **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
   el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su
   tarjeta»—, que sale de datos que ya calcula el ciclo y no le pide nada a
@@ -714,7 +764,12 @@ inglés, y `/borrar-mis-datos`.
 ## 🔧 Pendiente mío
 
 - **Mirar la corrida de las 11:22 AM del 27/09**: tiene que entrar AGREEMENT
-  DOOMSDAY V.1 (#364 si no entra otro antes), con FULLY + SNOW campeones.
+  DOOMSDAY V.1 (#364 si no entra otro antes), con FULLY + SNOW campeones;
+  Makmah tiene que pasar a #1 en su Competitiva, y KENNY sumarse a Kenny.
+- **La primera llave en vivo de verdad**: SNAKE ARENA VOL. 2, hoy a las 5 PM
+  ET. Mirar que el vigía la guarde, que la página la lea igual que Python y
+  que se esconda cuando el ciclo la procese.
+- **Los links de Discord en la app**: probarlo en un Android de verdad.
 - **11 eventos se llaman «__ … __» en el Operativo** (el subrayado de Discord
   en el título). En la página salen limpios; en el Sheet no. Limpiarlos pide
   migrar `Eventos Procesados`, `Resultados` y `1v1` a la vez, porque el nombre
