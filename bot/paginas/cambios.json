@@ -10,6 +10,20 @@
  ],
  "cambios": [
   {
+   "version": "1.16",
+   "dia": "2026-09-27",
+   "titulo": "Las llaves de Snake Rap cuentan",
+   "items": [
+    "🐍 **Las llaves de Snake Rap cuentan**: GENESIS BATTLES, SNAKE INSIGNIA 3/8 y RAP EXHIBITION suman puntos y se ven en **Eventos**. También SEVEN STREET, de FFA, que no se leía.",
+    "🃏 **Tu tarjeta y tu perfil dicen lo mismo**: la letra de rango aparece recién con **10 eventos** en todas las cartas; el título de la Servidor corría un puesto; los duelos del perfil contaban el tercer puesto que no se peleó, y el OVR Nacional de la carta de País usaba números de la pre-temporada.",
+    "🏠 **Tu servidor es donde más jugaste**: quien jugó una vez en otro servidor aparecía como de ese servidor.",
+    "✨ **Los nombres, sin los asteriscos** del negrito de Discord, y **las banderas en emoji** de cada servidor se leen como país.",
+    "🏳️ **Sin país, sin bandera rota** en la Temporada, y **1.250 puntos se lee 1.3K** (antes redondeaba para abajo).",
+    "🛡️ **En la página, las tarjetas de quien está verificado**, igual que `/card`. Si no ves la tuya, en **Tarjetas** está cómo pedirla.",
+    "📅 **El calendario desde el teléfono**: Google sólo deja sumarlo desde la compu. En **Eventos** está cómo hacerlo y el link para copiar; después aparece solo en tu teléfono."
+   ]
+  },
+  {
    "version": "1.15",
    "dia": "2026-09-26",
    "titulo": "¿Todavía no tenés tu tarjeta?",

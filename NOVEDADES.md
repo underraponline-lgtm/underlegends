@@ -34,7 +34,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | La **guía de formatos de llave** manda: sin campeón no suma (12 h), pokémon, suplente, draft, invitado de honor, fases de filtros, Interserver retenido | Partes 1 y 2 (24/09) | `bot/escuchar.py`, `bot/llaves_a_entrada.py`, `sheet/motor.py` |
 | Eventos por equipos: los puntos se reparten; la batalla no cuenta como duelo | | `sheet/motor.py` |
 | **Los troll no entran a ningún ranking**; se marcan en ✅ Decidir con «Es un troll» | *«If it is a troll name right?»* (24/09) | `sheet/decidir.py` → `no_rankear()` |
-| **RAP EXHIBITION 1/8** (Snake Rap, 22/09) **no cuenta** | *«no debería contar»* (24/09) | `datos/decisiones.json` |
+| **RAP EXHIBITION 1/8** (Snake Rap, 22/09) **cuenta** | *«no sé por qué no cuenta si sus llaves están en #llaves de Snake Rap»* (27/09). El 24/09 se había decidido que no creyendo que su llave no estaba en ningún canal | `datos/decisiones.json` |
 | El Ranking Mundial son **países**, no selecciones | *«ese evento fifa ya no se está haciendo»* (22/09) | `sheet/rankings.py` |
 | **Avisos fuera de Discord**: 1º Web Push, después Telegram. El ping de rol de Discord **no se reemplaza**. El permiso se pide donde ya están: debajo de `/card` y en el hub | *«así la gente se va a encadenar más»* (21/09) · construido el 24/09 | `bot/avisos.js` · `#/avisos` |
 
@@ -232,10 +232,78 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La revisión de permisos de Discord va por el camino liviano**: se piden Message Content y Server Members tal como el bot funciona hoy, sin rehacerlo | *«no te preocupes mucho de eso… hay muchos bots que funcionan así»* | el formulario lo llena Dlx; las respuestas, abajo en «🔑 La revisión de permisos» |
 | **Cada uno borra lo suyo con un comando** | *«podríamos hacer un comando para delete-my-data»* | ✅ `/borrar-mis-datos` (`/delete-my-data` en inglés), en `bot/worker.js` |
 | **El bot es privado**: sólo Dlx lo suma a un servidor | *«Sí, privado»* | lo cambia Dlx en el portal: Bot → «Public Bot» |
+| **La página muestra la tarjeta sólo de quien pasa el portón**, igual que `/card` | *«sí»*, a ocultar las de quien no está verificado | `_del_porton()` en `bot/subir_web.py`: el mismo conjunto que KV |
+| **Los íconos de estilo de la Servidor se quedan** (hoy salen de un sorteo por nombre) | *«aún no lo saques… te daré más información más adelante»* | `todos_sv.py`, `ESTILO_MUESTRA` |
+| **Seguidores, seguidos y un muro de POSTS: todavía no** | *«no lo hagas todavía, tenemos que discutir y arreglar cosas primero»* | mi opinión, abajo en «❓ Esperando a Dlx» |
+| **Urban Freestyle tiene que entrar igual que FFA y Snake Rap** | *«acuérdate que el bot está en Urban Freestyle, asegúrate que los eventos y canales sean identificados»* | sus cuatro canales de llaves se leen; ver la tanda 1.16 |
 
 ⚠️ **FFA y EFA siguen con la silueta, y eso lo decidí yo**: el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Además toda la T1 es de FFA, así que pasarlo al ícono cambiaría todas las cartas de la temporada. Si lo querés con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Domingo 27/09 (4 a 6 AM) — versión 1.16
+
+Las llaves de los otros servidores y lo que la tarjeta y el perfil decían
+distinto. Cinco commits, y un ciclo corrido a mano a las 5:05 AM —adentro de
+la ventana de 3 a 11 AM— para que el redibujo grande pasara antes del día.
+
+- 🐍 **Las llaves de Snake Rap entran.** Las tres de la T1 daban **cero filas,
+  sin ningún error**: el lector se escribió mirando FFA y Snake Rap escribe
+  otro dialecto (el «vs» es un emoji propio, marcos 〈〉 y 「」, equipos sin
+  `+`, el podio con emoji y menciones). `escuchar.traducir()` pasa cada forma
+  a la de FFA. Entraron **#360 GENESIS BATTLES** y **#362 SNAKE INSIGNIA 3/8**
+  (28 de 28 personas, cero dudas), y **#361 SEVEN STREET** de FFA, que
+  tampoco entraba. **RAP EXHIBITION** entra en la próxima corrida (ver arriba).
+- ✂️ **SNAKE INSIGNIA vino partida en dos mensajes** (Discord corta a 2.000
+  letras): leída así, la segunda mitad era **otro evento con otro campeón**.
+  `unir_partidas()` las pega: misma persona, menos de 3 h, y la segunda
+  empieza en una ronda posterior.
+- 🎯 **En los FILTROS de Snake Rap pasan los mejores del total**, no uno por
+  grupo: de tres grupos no pasó nadie, y esas **11 personas** se quedaban sin
+  su participación. Ahora caen en filtros (625 en 16+).
+- ⭐ **El negrito de Discord llegaba al ranking**: había alguien llamado
+  «\*\*PARK JI-SUNG \*\*». Y las banderas en emoji propio
+  (`<a:Uruguay:…>`) se leen como país.
+- 🃏 **La tarjeta y el perfil dicen lo mismo.** Revisado con un agente carta
+  por carta: ninguna estaba vieja, pero había siete diferencias:
+  - todas las **Servidor mostraban una letra de rango** que el perfil no (sin
+    la puerta de 10 eventos);
+  - el **TAG de la Servidor corría un puesto**: Makmah, #2 de FFA, salía
+    «DUEÑO DE CASA»;
+  - los **duelos** del perfil contaban el tercer puesto sin batalla (Colesito
+    3/4 en el perfil, 2/3 en la carta): perfil = carta en 103 de 106;
+  - el **OVR Nacional** de la carta de País usaba la pre-temporada (72 de 104
+    distintos del `/versus`; ahora 0);
+  - **banderas de afuera** de la Liga en la Servidor (🇯🇵, 🇦🇿, 🇯🇴);
+  - **10 Temporada con el ícono de imagen rota** (sin país), y **1.250 puntos
+    salía «1.2K»** (Python redondea al par).
+- 🔤 **La letra de rango sale de un solo lugar**, `comun.rangos.letra_de()`:
+  la Temporada, la página y los avisos la calculaban con otro Score que el de
+  la Servidor y la País, y diferían en 7 personas. **Makmah llegó a 10
+  eventos en esta corrida**: es el primero con letra (C).
+- 🏠 **Hassan no es de Snake Rap.** Con el primer evento de SR, el pool de
+  temporada dijo que Hassan, Colesito y Zignos eran de SR: su lista de
+  servidores era la de la pre-temporada, **sin FFA**. `rankings.py` la había
+  arreglado el 22/09 y la copia del pool nunca se tocó. Ahora la importa.
+- 🛡️ **La página muestra la tarjeta sólo de quien pasa el portón**: 64 de las
+  121 personas con tarjeta en la página no lo pasaban (tu «sí»).
+- 🏙️ **Urban Freestyle**: el bot lee sus cuatro canales de llaves (55 llaves,
+  la última del 18/09; en la T1 todavía no publicó ninguna) y sus anuncios.
+  Pero **sus eventos se iban a llamar «-----------------------------»**: abren
+  la llave con una línea de guiones. Arreglado, y ningún título de la T1 cambia.
+- 📅 **Google Calendar**: el calendario estaba bien (Google lo baja: 200) y el
+  problema es el teléfono, donde **ni la app ni la web de Google dejan sumar
+  un calendario por link**. En el teléfono ahora la página lo explica y deja
+  copiar el link.
+- 🧪 **Mis errores de esta tanda**: una prueba A/B que corría la copia vieja
+  sin el padrón (me hizo creer que cambiaba nombres de FFA); una primera
+  traducción que tocaba texto de FFA sin hacer falta (la agarraron las
+  pruebas); un heredoc que se comió las barras; una falsa alarma de «los de
+  filtros cobran 0» (mi prueba usaba la etiqueta de la página y no la del
+  Config), y casi cambio la regla de `&` que yo mismo había dejado escrita como
+  «no se toca sin decidirlo»: se resolvió sólo con banderas a los dos lados.
+- 🌙 **Esta madrugada se redibujan todas** (~720): `comun/rangos.py` cambió y
+  entra en la huella de código de las cuatro. No cambia nada que se vea.
 
 ## 📅 Viernes 25/09 (2:30 PM) a sábado 26/09 (4 PM) — versión 1.15
 
@@ -507,6 +575,23 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
+- **Google Calendar**: ¿dónde lo probaste, en el teléfono o en la compu? Si
+  fue en la compu, ¿qué pasó (un error, o se sumó y no aparece nada)? Google
+  refresca un calendario por link cada varias horas: lo nuevo tarda en verse.
+- **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
+  el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su
+  tarjeta»—, que sale de datos que ya calcula el ciclo y no le pide nada a
+  nadie; contado **por la Liga**, no en primera persona «en nombre de» alguien,
+  y cada uno puede ocultarlo. En DRA, sólo los campeones, editando en vez de
+  mandar otro. **Seguir ya existe** («☆ Seguir», 1.09), pero queda **sólo en
+  tu navegador**: nadie sabe que lo seguís. Para tener **seguidores** hay que
+  guardarlo del lado del servidor, y alcanza con lo que ya hay: «Entrar con
+  Discord» (Mi cuenta) da un token que el Worker verifica, sin ningún secreto
+  nuevo. Se guardaría en el Durable Object y no en KV (KV tiene 1.000
+  escrituras por día). El aviso de «alguien que seguís ganó», por la campana,
+  nunca por DM. *(Esto lo dije mal en el chat del 27/09: dije que la página no
+  tenía login.)*
+
 1. ✅ ~~Los 16 respaldos completos del Sheet en el repo público~~: **salieron del árbol el 25/09** (siguen en esta máquina y en el repo privado) y `.gitignore` no los deja volver. El historial **no** se reescribió, a propósito: es irreversible y los mismos IDs siguen públicos en `datos/padron.json`, que el ciclo necesita. Si querés reescribirlo igual, decime.
 2. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
 
@@ -523,6 +608,22 @@ inglés, y `/borrar-mis-datos`.
 **Los avisos en la PC** (Dlx: *«¿arreglaste para que pueda tener las notificaciones en PC también?»*): del lado del servidor no había nada roto para la PC —el aviso sale igual para todos— y anoche no hubo nada que avisar (en los 10 canales, desde el 24/09 al mediodía, sólo está su «Probando…»). El sospechoso es **Opera GX**, que deja activar los avisos y en la compu a veces no los recibe. La campana lo distingue sola: «Mandar una de prueba» espera 20 s y dice si llegó (entonces es Windows) o no (entonces es el navegador: Chrome o Edge en esa compu).
 
 ## 🔧 Pendiente mío
+
+- **Equipos escritos con espacios** (Urban Freestyle: «HASSAN SEBITAS», sin
+  `+` ni banderas). Se puede resolver con una regla exacta —esos nombres
+  aparecieron solos en la ronda anterior—; hoy son la mitad de las 25 dudas
+  de sus llaves viejas. Lo hago antes de que publiquen una en la T1.
+- **Dos llaves con el mismo nombre el mismo día son un evento**: la identidad
+  sigue siendo `(nombre, servidor, fecha)`. Urban Freestyle tiene tres pares
+  así en sus llaves viejas («compe chill» dos veces el 08/09). Es el
+  pendiente de anclar el evento al mensaje de Discord (más abajo).
+- **3 duelos distintos entre carta y perfil** (Sin Límites, Focox, KC): el pool
+  tiene el conteo del 24/09, cuando el lector leía esa batalla como 1v1. Se
+  corrigen solos cuando el pool se reconstruya: lo miro en la corrida que viene.
+- **El sello no ve lo que depende de otros**: el OVR Nacional, el puesto en el
+  rango y en la crew cambian cuando cambia otra persona, y la carta no se
+  redibuja. El 25/09 quedaron 37 cartas de País viejas 3 horas, tapadas por el
+  redibujo de la madrugada.
 
 - **Los IDs por nombre siguen a mano** (`herramientas/cruzar_miembros.py`): el ciclo sólo toma el ID que llega firmado por `/card`. Emparejar un nombre con una cuenta es el paso que ya costó dos veces. Última pasada: 25/09, 12:16 PM, con Urban Freestyle (4 escritos, 63 para mirar).
 - **Sin país en ningún servidor**: 8 con ID. **5 ya tienen el Miembro de DRA** —Kevo, aze gian, Adriox, Sedelti y Elsoolar— y es lo único que les falta para la carta: con un rol de país en DRA (o la bandera en el apodo) entran solos en la corrida siguiente. Los otros 3 (Deikka, NarcoMC, TRIPLE7) están sólo en FFA. Otros 9 se miran a las 3:22 AM (hay un tope de 15 por corrida); Fabrizio tiene dos roles, España y Perú, y no lo toco.
