@@ -787,7 +787,53 @@ const RUTAS = {
   '/avisos/simular': 'POST',
   // 🔑 los avisos de cada uno: ver `vincular()` y `personales()` del objeto
   '/avisos/vincular': 'POST', '/avisos/desvincular': 'POST',
+  // 🔑 las encuestas de la página: ver `validarVoto()` y `votar()` del objeto
+  '/avisos/encuestas': 'GET', '/avisos/votar': 'POST',
 };
+
+// ── las encuestas de la página ─────────────────────────────────────────
+// 🔑 Dlx, 27/09/2026: *«eso de que los buscados lo elige la gente es
+// peak»*, en la página, y a quién vota: *«1. A. 2. A»* —cualquiera que entre
+// con Discord, y en el ×2 nadie vota a su servidor—. Qué se vota lo decide
+// el ciclo (`bot/encuestas.py`) y lo deja en KV; acá se valida cada voto
+// contra eso y se guarda en el objeto, uno por Discord ID.
+//
+// ⚠️ EL ID SALE DE DISCORD, NUNCA DE LA PÁGINA: igual que `vincular`.
+// ⚠️ AFUERA SE VE CUÁNTOS, NUNCA QUIÉN: `/avisos/encuestas` cuenta votos.
+
+//: una cuenta de Discord más nueva que esto no vota: es lo único que frena
+//: las cuentas hechas para votar, y a la gente de la Liga no le pesa
+export const EDAD_MIN_DIAS = 30;
+//: cuánto se guarda un voto: el ciclo lee el resultado al cerrar
+export const VOTOS_DIAS = 30;
+
+/** Cuándo se creó una cuenta de Discord: está en su ID (un «snowflake»). */
+export function creadaEn(id) {
+  return /^[0-9]{5,25}$/.test(String(id || '')) ? Number(BigInt(String(id)) >> 22n) + 1420070400000 : 0;
+}
+
+/**
+ * ¿Vale este voto? `{enc, op}` si vale, `{error, estado}` si no.
+ *
+ * `defs` es lo que dejó el ciclo en KV (`encuestas`: `lista`, y de qué
+ * servidor es cada uno en `sv` y quién es en `yo`), `d` lo que mandó la
+ * página y `id` el Discord ID que devolvió Discord. Pura, sin red: la
+ * prueba `bot/probar_local.mjs`.
+ */
+export function validarVoto(defs, d, id, ahora) {
+  const e = ((defs && Array.isArray(defs.lista)) ? defs.lista : []).find((x) => x && x.id === d.enc);
+  if (!e) return { error: 'no_existe', estado: 404 };
+  if (!(ahora < Date.parse(e.hasta))) return { error: 'cerrada', estado: 409 };
+  if (!Array.isArray(e.op) || e.op.indexOf(d.op) < 0) return { error: 'opcion', estado: 400 };
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
+    return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
+  }
+  // 🔑 «TU SERVIDOR» ES DONDE MÁS JUGÁS ESTA TEMPORADA (el del pool)
+  if (e.tipo === 'x2' && ((defs.sv || {})[id] || '') === d.op) return { error: 'propio', estado: 403, sv: d.op };
+  if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
+  return { enc: e.id, op: d.op };
+}
 
 const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
 
@@ -864,6 +910,32 @@ export async function rutaAvisos(req, env, ruta) {
     if (!u || !u.id) return json({ error: 'discord' }, 401);
     return elObjeto(env).fetch('https://avisos/vincular', {
       method: 'POST', body: JSON.stringify({ endpoint: d.endpoint, quien: String(u.id) }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🔑 UN VOTO: quién es lo dice Discord, qué vale lo dice el ciclo (KV)
+  if (ruta === '/avisos/votar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo); } catch (e) { d = null; }
+    const t = String((d && d.token) || '');
+    if (!d || typeof d.enc !== 'string' || typeof d.op !== 'string' || d.enc.length > 40 ||
+        d.op.length > 80 || !/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    let u = null;
+    try {
+      const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
+      if (r.ok) u = await r.json();
+    } catch (e) { u = null; }
+    if (!u || !/^[0-9]{5,25}$/.test(String(u.id || ''))) return json({ error: 'discord' }, 401);
+    let defs = null;
+    try { defs = JSON.parse((await env.KV.get('encuestas', { cacheTtl: 60 })) || 'null'); } catch (e) { defs = null; }
+    const v = validarVoto(defs, d, String(u.id), Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/votar', {
+      method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: String(u.id) }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -969,7 +1041,8 @@ export async function marcarDisparo(env, cual, v) {
 }
 
 /**
- * Suelta los dispositivos vinculados a esa persona. Lo usa `/borrar-mis-datos`.
+ * Suelta los dispositivos vinculados a esa persona y borra sus votos. Lo usa
+ * `/borrar-mis-datos`.
  *
  * ⚠️ SÓLO POR DENTRO: la ruta `/olvidar` del objeto NO está en `RUTAS`, así
  * que no se puede pedir desde afuera. Desde afuera cualquiera podría soltar
@@ -1077,6 +1150,10 @@ export class Avisos {
       // `ADD COLUMN` falla si ya está: es la migración de una sola vez.
       try { this.sql.exec("ALTER TABLE subs ADD COLUMN quien TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       this.sql.exec('CREATE TABLE IF NOT EXISTS hechos (id TEXT PRIMARY KEY, t INTEGER NOT NULL)');
+      // 🔑 LAS ENCUESTAS (27/09/2026): un voto por Discord ID y por encuesta,
+      // que se cambia hasta que cierra. Ver `validarVoto()` y `votar()`.
+      this.sql.exec('CREATE TABLE IF NOT EXISTS votos (enc TEXT NOT NULL, quien TEXT NOT NULL, ' +
+        'op TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (enc, quien))');
     });
   }
 
@@ -1097,6 +1174,7 @@ export class Avisos {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.estado(), 200, 20);
       if (ruta === '/vivo') return json(this.vivo(), 200, 20);
+      if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/alta') return this.alta(d);
@@ -1106,6 +1184,7 @@ export class Avisos {
       if (ruta === '/vincular') return this.vincular(d);
       if (ruta === '/desvincular') return this.desvincular(d);
       if (ruta === '/olvidar') return this.olvidar(d);
+      if (ruta === '/votar') return this.votar(d);
       if (ruta === '/disparo') {
         if (d.cual !== 'arranco' && d.cual !== 'ultimo') return json({ error: 'no existe' }, 404);
         this.guardar('disparo_' + d.cual, d.v || {});
@@ -1671,11 +1750,42 @@ export class Avisos {
     return json({ ok: true });
   }
 
-  /** Todos los dispositivos de esa persona, sueltos. Ver `olvidarAvisos()`. */
+  /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
   olvidar(d) {
     if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
     const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
-    return json({ ok: true, soltados: r.rowsWritten || 0 });
+    // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
+    // ya se aplicó (un Elegido, un ×2) quedó en el ciclo y no cambia.
+    const v = this.sql.exec('DELETE FROM votos WHERE quien = ?', String(d.quien));
+    return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0 });
+  }
+
+  // ── las encuestas ────────────────────────────────────────────────────
+  /** Un voto, nuevo o cambiado. Sólo lo llama `rutaAvisos`, ya validado y con el ID de Discord. */
+  votar(d) {
+    if (typeof d.enc !== 'string' || typeof d.op !== 'string' || !/^[0-9]{5,25}$/.test(String(d.quien || ''))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const ahora = Date.now();
+    this.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?) ' +
+      'ON CONFLICT(enc, quien) DO UPDATE SET op = excluded.op, t = excluded.t',
+    d.enc.slice(0, 40), String(d.quien), d.op.slice(0, 80), ahora);
+    // lo viejo se va: el ciclo lee el resultado cuando la encuesta cierra
+    this.sql.exec('DELETE FROM votos WHERE t < ?', ahora - VOTOS_DIAS * DIA_MS);
+    const cuenta = {};
+    for (const r of this.sql.exec('SELECT op, COUNT(*) AS n FROM votos WHERE enc = ? GROUP BY op', d.enc)
+      .toArray()) cuenta[r.op] = r.n;
+    // `t`: la página compara contra la de `/avisos/encuestas`, que puede venir de la caché
+    return json({ ok: true, enc: d.enc, op: d.op, cuenta, t: ahora });
+  }
+
+  /** Para `/avisos/encuestas`: cuántos votos lleva cada opción. ⚠️ Nunca quién. */
+  encuestas() {
+    const votos = {};
+    for (const r of this.sql.exec('SELECT enc, op, COUNT(*) AS n FROM votos GROUP BY enc, op').toArray()) {
+      (votos[r.enc] = votos[r.enc] || {})[r.op] = r.n;
+    }
+    return { t: Date.now(), votos };
   }
 
   /**

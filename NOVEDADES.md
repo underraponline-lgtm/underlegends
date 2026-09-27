@@ -281,12 +281,52 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La Copa de la Liga es de la persona**, no de su servidor: el próximo evento que organice, donde sea | *«a la persona»* | ✅ `organizados()`, `ranking_org()` y `copa_n()` en `bot/multiplicadores.py` (1.26) |
 | **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
 | **Insignias y Clásicos, ya** | *«sí, dale»* | ✅ `bot/insignias.py` y `multiplicadores.clasicos()` (1.28) |
-| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ⏳ encuestas y precio por cabeza (piden entrar con la cuenta) · ❌ el pronóstico en vivo (ver abajo) |
+| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ✅ encuestas (1.31) · ⏳ precio por cabeza (mueve puntos: al final) · ❌ el pronóstico en vivo (ver abajo) |
 | **El Lunes de la Liga va en «〢🌍〉rankings-liga-global» de DRA** | *«en el canal ranking global en DRA»* | ✅ `bot/lunes.py`, paso 2b3 (1.30). El bot es admin en DRA |
 | **«Con tiempo» desde 12 horas** | *«de 12 h a 24 h a más»* | ✅ `DESTACADO_H = 12` (1.30). Medido: 2 de 48 anuncios llegan |
 | **Nada interactivo en vivo, todavía: las llaves en vivo son para mirar.** Sin pronóstico del campeón en vivo y, por la misma regla, sin el aviso de la caza en vivo | *«eso de elegir quién gana en vivo creo que no deberíamos hacerlo aún… eso de ver las llaves en vivo sí, pero lo demás que tenga que ver en vivo no… es muy pronto»* (27/09, 2:40 PM) | — no se llegó a escribir nada. **Se queda** lo que la llave en vivo ya muestra, porque es para mirar: el 🎯 de los buscados, el ×N del servidor y el Clásico |
+| **Las encuestas: vota cualquiera que entre con Discord, y en el ×2 nadie vota a su servidor** («tu servidor» = donde más jugaste en la temporada) | *«1. A. 2. A»* | ✅ `bot/encuestas.py` + `validarVoto()` de `bot/avisos.js` (1.31). El Elegido ocupa un lugar del nivel del medio (siguen siendo 3 y 9); el ×2 votado es «×2 como mínimo», antes de la guerra y el Semillero. Hacen falta 3 votos. **Lo agregué yo**: las cuentas de Discord de menos de 30 días no votan (ver «❓ Esperando») |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (3:40 PM) — versión 1.31
+
+**Las encuestas: El Elegido y el ×2 votado.** Dlx: *«1. A. 2. A»* —vota
+cualquiera que entre con Discord, y en el ×2 nadie vota a su servidor—.
+
+- 🗳️ **El Elegido**: mientras corre un período del Most Wanted se vota quién
+  es buscado en el siguiente (en el Inicio, abajo de los carteles, con
+  buscador). El más votado entra primero, como «El Elegido», y **ocupa un
+  lugar del nivel del medio**: siguen siendo 3 por día y 9 por semana. Tiene
+  que poder ser buscado (activo, no fuera de concurso, no buscado ahora; la
+  misma regla, `most_wanted._activos()`) y nadie se vota a sí mismo. El
+  último día de la prueba no se vota: lo que sigue es de la T1, y en su
+  primera semana se vota El Elegido del lunes 12/10.
+- 🗳️ **El ×2 votado**: durante la semana se vota el servidor de la
+  siguiente; el más votado sale del sorteo del lunes con **×2 como mínimo**
+  (si le tocó más, se queda con lo suyo), y la guerra y el Semillero van
+  encima. En el Lunes de la Liga sale «Lo votó la gente» y una línea que
+  invita a votar.
+- 🔐 **Cómo se vota**: el voto va al Durable Object (tabla `votos`, uno por
+  Discord ID y por encuesta, se cambia hasta que cierra, se borra a los 30
+  días y con `/borrar-mis-datos`). **El ID lo da Discord, nunca la página**:
+  el Worker verifica el permiso y valida contra lo que dejó el ciclo en KV
+  (`encuestas`, sólo si cambió). Afuera se ve cuántos, nunca quién. Hacen
+  falta **3 votos**; el empate se sortea con el id de la encuesta.
+- 🧷 **«Tu servidor»** es donde más jugaste en la temporada (el `sv` del
+  pool): hoy la regla alcanza a **80 de 161**, los que tienen su Discord en
+  el padrón. Los demás todavía no se sabe de dónde son, y votan a cualquiera.
+- ⚠️ **Nunca traba el ciclo**: si no se pueden leer los votos, el Most Wanted
+  se elige y el lunes se sortea sin ellos, y lo dice.
+- 📅 Las primeras: **El Elegido del lunes 28** (28 candidatos) y **el ×2 de
+  la semana del 28**, las dos hasta mañana a las 11 AM.
+- Probado: los self-checks de `encuestas`, `most_wanted`, `multiplicadores`,
+  `lunes` y `subir_web`; `bot/probar_local.mjs` con la ruta entera (el ID de
+  la página no pasa, tu servidor no, vos no, cuenta nueva no, cerrada no); y
+  la página en local, en escritorio y en teléfono, votando de verdad contra
+  un servidor de mentira.
 
 ---
 
@@ -1058,16 +1098,13 @@ inglés, y `/borrar-mis-datos`.
 - ✅ ~~El bonus por llave limpia~~: afuera (*«la 2»*).
 - ✅ ~~El Semillero: ¿quién es «gente nueva»?~~ *«A»*: hecho en la 1.27.
 - ✅ ~~El canal del Lunes de la Liga~~ y ~~«con tiempo»~~: contestadas (1.30).
-- **Las encuestas (El Elegido del Most Wanted y el servidor ×2 votado)**, antes
-  de construirlas. *El Elegido se vota en la página* ya está decidido, y *«el
-  voto de DRA vale doble»* se descartó (*«la verdad no me sirve»*). Falta:
-  1. **¿Quién vota?** A) cualquiera que entre con Discord · B) quien tiene
-     tarjeta: **335** · C) quien tiene tarjeta y jugó la temporada: **60**
-     (medido el 27/09 a las 2:40 PM). Mi recomendación: B.
-  2. **¿Se puede votar al propio servidor?** De los 161 que jugaron, **126
-     son de FFA**: si se puede, FFA gana todas las semanas. Mi
-     recomendación: no, se vota a otro.
-  3. ¿O las encuestas también esperan, como lo en vivo?
+- ✅ ~~Las encuestas: ¿quién vota y se vota al propio servidor?~~ *«1. A. 2.
+  A»*: hechas en la 1.31.
+- **Las cuentas de Discord de menos de 30 días no votan: ¿se queda?** Lo
+  agregué yo, sin preguntarte: con «cualquiera que entre con Discord», es lo
+  único que frena a alguien que se hace cuentas para votar. A la gente de la
+  Liga no le pesa. Si no lo querés, es un número (`EDAD_MIN_DIAS` en
+  `bot/avisos.js`).
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

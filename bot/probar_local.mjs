@@ -1846,5 +1846,74 @@ console.log('\n/borrar-mis-datos\n');
   delete PUESTO['olvido:' + ID];
 }
 
+console.log('\nLAS ENCUESTAS\n');
+
+{
+  // 🔑 Dlx, 27/09/2026: «1. A. 2. A». Vota cualquiera que entre con Discord
+  // (con una cuenta de más de 30 días) y en el ×2 nadie vota a su servidor.
+  // Qué se vota lo deja el ciclo en KV (bot/encuestas.py); quién vota lo dice
+  // Discord, nunca la página.
+  const A = await import('./avisos.js');
+  const idDe = (ms, n = 7) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2020-01-01T00:00:00Z'));
+  const NUEVO = idDe(RELOJ - 5 * 86400000);
+  ok('el ID de Discord dice cuándo se creó la cuenta',
+     Math.abs(A.creadaEn(VIEJO) - Date.parse('2020-01-01T00:00:00Z')) < 1000 && A.creadaEn('x') === 0);
+  const abre = new Date(RELOJ + 6 * 3600000).toISOString();
+  const defs = { lista: [
+    { id: 'x2:2026-10-05', tipo: 'x2', hasta: abre, op: ['DRA', 'FFA', 'SR', 'URBF'] },
+    { id: 'mw:2026-09-28', tipo: 'elegido', hasta: abre, op: ['Hassan', 'Zeta'] },
+    { id: 'mw:2026-09-27', tipo: 'elegido', hasta: new Date(RELOJ - 60000).toISOString(), op: ['Hassan'] },
+  ], sv: { [VIEJO]: 'FFA' }, yo: { [VIEJO]: 'Zeta' } };
+  const v = (enc, op, id) => A.validarVoto(defs, { enc, op }, id || VIEJO, RELOJ);
+  ok('un voto bueno vale', JSON.stringify(v('x2:2026-10-05', 'SR')) === '{"enc":"x2:2026-10-05","op":"SR"}');
+  ok('a tu servidor, no (el que más jugaste)', v('x2:2026-10-05', 'FFA').error === 'propio');
+  ok('a vos, no; a otro, sí', v('mw:2026-09-28', 'Zeta').error === 'vos' && !v('mw:2026-09-28', 'Hassan').error);
+  ok('lo que ya cerró, no', v('mw:2026-09-27', 'Hassan').error === 'cerrada');
+  ok('lo que no está en la lista, no', v('mw:2026-09-28', 'Otro').error === 'opcion' &&
+     v('nada', 'x').error === 'no_existe');
+  ok('una cuenta de hace 5 días, no, y dice desde cuándo puede',
+     v('x2:2026-10-05', 'SR', NUEVO).error === 'nueva' && !!v('x2:2026-10-05', 'SR', NUEVO).desde);
+  ok('sin lo que dejó el ciclo en KV, nada vale',
+     A.validarVoto(null, { enc: 'x2:2026-10-05', op: 'SR' }, VIEJO, RELOJ).error === 'no_existe');
+
+  // la ruta entera: Discord, KV y el objeto
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
+    return new Response('{"ok":true,"cuenta":{"SR":1},"t":1}', { status: 200 });
+  } }) };
+  PUESTO.encuestas = JSON.stringify(defs);
+  globalThis.fetch = async (u) => (String(u).endsWith('/users/@me')
+    ? new Response(JSON.stringify({ id: VIEJO, username: 'x' }), { status: 200 })
+    : new Response('{}', { status: 404 }));
+  const votarR = async (cuerpo) => {
+    const r = await worker.fetch(new Request('https://x/avisos/votar', { method: 'POST',
+      body: JSON.stringify(cuerpo) }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await votarR({ token: 'x', enc: 'x2:2026-10-05', op: 'SR' });
+  ok('un permiso con forma rara se rechaza sin preguntarle a Discord', r.status === 400 && !alObjeto.length);
+  r = await votarR({ token: 'permisoBueno1234567890', enc: 'x2:2026-10-05', op: 'FFA' });
+  ok('a su servidor: 403, y el voto no llega al objeto', r.status === 403 && r.json.error === 'propio' &&
+     !alObjeto.length, JSON.stringify(r.json));
+  r = await votarR({ token: 'permisoBueno1234567890', enc: 'x2:2026-10-05', op: 'SR', quien: '111111111111111111' });
+  ok('uno bueno llega al objeto con el ID que dijo Discord, no con el que mandó la página',
+     r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/votar') &&
+     alObjeto[0][1].quien === VIEJO && alObjeto[0][1].op === 'SR', JSON.stringify(alObjeto));
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  r = await votarR({ token: 'permisoFalso1234567890', enc: 'x2:2026-10-05', op: 'SR' });
+  ok('un permiso que Discord no reconoce: 401', r.status === 401 && r.json.error === 'discord');
+  // cuántos votos: se le pregunta al objeto, que nunca dice quién
+  alObjeto.length = 0;
+  r = await worker.fetch(new Request('https://x/avisos/encuestas'), env, ctx);
+  ok('/avisos/encuestas le pregunta al objeto', r.status === 200 && alObjeto.length === 1 &&
+     alObjeto[0][0].endsWith('/encuestas'));
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  delete PUESTO.encuestas;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

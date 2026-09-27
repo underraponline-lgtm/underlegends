@@ -73,6 +73,10 @@ def armar(d=None, ahora=None, mw=None):
     ls.append('**⚡ Multiplicadores** — ' + ' · '.join(
         '%s %s%s' % (sv, _x(x), ' (%s)' % ' + '.join(pr[sv]) if pr.get(sv) else '')
         for sv, x in sorted(s['sv'].items(), key=lambda kv: -kv[1])))
+    if s.get('votado'):
+        v = s['votado']
+        ls.append('**🗳️ Lo votó la gente** — %s sale con ×2 como mínimo (%d de %d votos)'
+                  % (v['sv'], v['votos'], v['de']))
     if s.get('dorado'):
         dd = s['dorado']
         if dd.get('n'):
@@ -119,6 +123,10 @@ def armar(d=None, ahora=None, mw=None):
             pp.append('servidor **%s** (%d raperos)' % tuple(ps['servidor']))
         if pp:
             ls.append('**🏅 La semana pasada** — ' + ' · '.join(pp))
+    # 🔑 LAS ENCUESTAS DE LA PÁGINA (bot/encuestas.py): el ×2 de la que viene se
+    # vota toda la semana, y El Elegido de cada Most Wanted antes de que salga
+    ls.append('**🗳️ Votá en la página** — qué servidor se lleva el ×2 la semana que viene y quién es '
+              'El Elegido del Most Wanted')
     h = fin.hour
     hora = 'la medianoche' if h == 0 else 'las %d %s' % (h if h <= 12 else h - 12, 'AM' if h < 12 else 'PM')
     ls.append('Todo vale para la Temporada; el Competitivo no cambia. Hasta el %s %d a %s (hora del este).'
@@ -204,6 +212,11 @@ def _self_check():
     _t, ls2 = armar({'semanas': [dict(d['semanas'][1], fin=MU._iso(en(10, 19, 0)))]}, en(10, 13, 12), mw={})
     ok('Hasta el lunes 19 a la medianoche' in '\n'.join(ls2), 'una semana que termina a las 00:00 dice «medianoche»')
     ok(len(todo) < 4000, 'entra en un embed (%d caracteres)' % len(todo))
+    # 🔑 las encuestas: lo que votó la gente, y la invitación a votar
+    _t, ls3 = armar({'semanas': [dict(d['semanas'][1], votado={'sv': 'SR', 'votos': 12, 'de': 30})]},
+                    en(10, 13, 12), mw={})
+    ok('SR sale con ×2 como mínimo (12 de 30 votos)' in '\n'.join(ls3) and 'Votá en la página' in todo,
+       'el ×2 que votó la gente, y la invitación a votar')
     # publicar: una vez por semana, y se edita sólo si cambió
     import tempfile
     ruta = os.path.join(tempfile.mkdtemp(), 'lunes.json')

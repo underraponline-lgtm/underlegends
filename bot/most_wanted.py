@@ -121,6 +121,10 @@ CATEGORIAS = [
     ('veterano', 'El Veterano', 'C'),
     ('novato', 'El Novato', 'D'),
     ('comodin', 'El Comodín', 'D'),
+    # 🔑 LO VOTA LA GENTE en la página (bot/encuestas.py). No entra en el
+    # sorteo de categorías: si hay ganador va primero y ocupa un lugar de
+    # su nivel, así los buscados siguen siendo 3 por día y 9 por semana
+    ('elegido', 'El Elegido', 'B'),
 ]
 NOMBRE = {c: n for c, n, _t in CATEGORIAS}
 NIVEL = {c: t for c, _n, t in CATEGORIAS}
@@ -233,6 +237,49 @@ def periodo(ahora=None, tipo=None):
     if a and ini_u < a < fin_u:
         fin_u = a
     return ini.strftime('%Y-%m-%d'), ini_u, fin_u
+
+
+def siguiente(ahora=None):
+    """El período cuyo Elegido se vota ahora: `(id, inicio, fin, tipo)`, o `None`.
+
+    Es el que sigue al de ahora; en la espera de la primera semana de la
+    temporada, esa primera semana. ⚠️ EL ÚLTIMO DÍA DE LA PRUEBA NO SE VOTA:
+    lo que sigue es de la temporada, y lo de la prueba no pasa (Dlx,
+    25/09/2026: *«se borra»*). Se vota desde el arranque.
+    """
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    esp = _espera(ahora)
+    if esp:
+        pid, ini, fin = periodo(esp, 'semana')
+        return pid, ini, fin, 'semana'
+    _pid, _ini, fin = periodo(ahora)
+    a = _arranque()
+    if a and ahora < a <= fin:
+        return None
+    tipo = tipo_de(fin)
+    pid, ini, fin2 = periodo(fin, tipo)
+    return pid, ini, fin2, tipo
+
+
+def candidatos(ahora=None, datos=None, actual=None):
+    """`(siguiente(), [rapero])`: a quién se puede votar para El Elegido, o `None`.
+
+    Con lo jugado hasta ahora, la misma regla que la elección
+    (`_activos()`), y sin los buscados de ahora: nadie repite el período
+    siguiente. En orden de puesto. `datos` es `cargar_todo()` y `actual` el
+    período de `datos/mw.json`, para no leerlos dos veces.
+    """
+    sig = siguiente(ahora)
+    if not sig:
+        return None
+    _pid, ini, _fin, tipo = sig
+    pool, evs, R = datos or cargar_todo()
+    st = _stats(pool, evs, R, ini, 7 if tipo == 'semana' else 1)
+    act = (leer().get('actual') or {}) if actual is None else actual
+    excluir = [b['n'] for b in act.get('buscados') or []] \
+        if act.get('temporada', 'prueba') == temporada_de(ini) else []
+    acts = _activos(st, ini, tipo, excluir)
+    return sig, sorted(acts, key=lambda r: (st[r]['p'].get('o') or st[r]['p'].get('pos') or 9999, r))
 
 
 def _redondear(x):
@@ -493,33 +540,58 @@ def _stats(pool, evs, R, hasta, ventana_dias):
     return st
 
 
-def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla=''):
-    """Los buscados del período, con su categoría, el motivo y la recompensa base."""
-    tipo = tipo or tipo_de(inicio)
-    dias_v = 7 if tipo == 'semana' else 1
-    st = _stats(pool, evs, R, inicio, dias_v)
+def _activos(st, inicio, tipo, excluir=()):
+    """Quiénes pueden ser buscados en un período que arranca en `inicio`.
+
+    ⚠️ UN SOLO LUGAR PARA LA REGLA: la usan la elección (`elegir()`) y la
+    encuesta de El Elegido (`candidatos()`). Si cada una la escribiera por su
+    lado, un día se podría votar a alguien que después no puede salir.
+    """
     n_act, dias_act = ACTIVO.get(tipo, (2, 7))
     corte = inicio - dt.timedelta(days=dias_act)
     # ⚠️ FUERA DE CONCURSO NO ES BUSCADO. Ser buscado es un destacado, y los
     # destacados son de los miembros (Dlx, 27/09/2026: el número, el podio y
     # los líderes). Cazar sí puede: sus puntos cuentan igual.
-    activo = {raw for raw, s in st.items()
-              if sum(1 for t in s['ev_t'] if t >= corte) >= n_act and raw not in set(excluir)
-              and not s['p'].get('fc')}
+    return {raw for raw, s in st.items()
+            if sum(1 for t in s['ev_t'] if t >= corte) >= n_act and raw not in set(excluir)
+            and not s['p'].get('fc')}
+
+
+def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla='', votos=None):
+    """Los buscados del período, con su categoría, el motivo y la recompensa base.
+
+    `votos` es `{rapero: votos}` de la encuesta de El Elegido de este período
+    (`bot/encuestas.py`): el más votado que pueda ser buscado entra primero.
+    """
+    tipo = tipo or tipo_de(inicio)
+    dias_v = 7 if tipo == 'semana' else 1
+    st = _stats(pool, evs, R, inicio, dias_v)
+    activo = _activos(st, inicio, tipo, excluir)
     elegidos, usados = [], set()
 
-    def poner(cat, raw, motivo):
+    def poner(cat, raw, motivo, extra=None):
         cat = cat.split(':')[0]          # `dueno:FFA` es El Dueño de Casa de FFA
         if raw in usados or raw not in activo or len(elegidos) >= total:
             return False
         p = st[raw]['p']
         base = BASE_NIVEL[NIVEL[cat]] * _nivel(p.get('o') or p.get('pos'))
-        elegidos.append({'n': raw, 'cat': cat, 'cn': NOMBRE[cat], 'motivo': motivo,
-                         'nivel': NIVEL[cat], 'base': _redondear(base), 'o': p.get('o') or p.get('pos')})
+        elegidos.append(dict({'n': raw, 'cat': cat, 'cn': NOMBRE[cat], 'motivo': motivo,
+                              'nivel': NIVEL[cat], 'base': _redondear(base),
+                              'o': p.get('o') or p.get('pos')}, **(extra or {})))
         usados.add(raw)
         return True
 
     total = CUANTOS.get(tipo, 3)
+    # 🔑 EL ELEGIDO, PRIMERO: lo votó la gente. Dlx, 27/09/2026: *«eso de que
+    # los buscados lo elige la gente es peak»*. Ocupa un lugar de su nivel —
+    # ver el reparto de abajo—, no uno de más.
+    puso_elegido = False
+    if votos:
+        import encuestas as _ENC
+        g = _ENC.ganador(votos, validas=activo, semilla='mw:' + str(semilla))
+        if g:
+            puso_elegido = poner('elegido', g[0], 'lo votó la gente: %d de %d votos' % (g[1], g[2]),
+                                 {'votos': g[1], 'de': g[2]})
     cands = {}
 
     def primero(cat, lista):
@@ -593,6 +665,9 @@ def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla=''):
     # 🔑 EL REPARTO: cada nivel, sus lugares; dentro del nivel, la categoría
     # sorteada, y de cada una el primero de su lista que esté libre
     for niveles, n in CUPOS.get(tipo, CUPOS['dia']):
+        # el lugar que ya ocupa El Elegido se descuenta de su nivel
+        if puso_elegido and NIVEL['elegido'] in niveles:
+            n -= 1
         cats = sorted(c for c in cands if NIVEL[c.split(':')[0]] in niveles)
         rnd.shuffle(cats)
         puestos = 0
@@ -624,7 +699,26 @@ def cargar_todo():
     return pool, eventos(regs, LW.instantes(regs), R), R
 
 
-def correr(ahora=None, aplicar=False):
+def _votos_de(pid, votos=None):
+    """`{rapero: votos}` de El Elegido de este período, o `None`.
+
+    `votos` es todo lo de `/avisos/encuestas` (para el self-check); sin eso
+    se lee. ⚠️ SI NO SE PUEDE LEER, SE ELIGE SIN ÉL y se dice: el Most
+    Wanted del día no se queda vacío por una encuesta.
+    """
+    try:
+        import encuestas as ENC
+        v = ENC.leer_votos() if votos is None else votos
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los votos de El Elegido: %s' % str(e)[:80])
+        v = None
+    if v is None:
+        print('   ⚠️ no pude leer los votos de El Elegido: se elige sin él')
+        return None
+    return v.get('mw:' + pid) or None
+
+
+def correr(ahora=None, aplicar=False, votos=None):
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     tipo, temp, espera = tipo_de(ahora), temporada_de(ahora), _espera(ahora)
     pid, ini, fin = periodo(ahora, tipo)
@@ -667,7 +761,9 @@ def correr(ahora=None, aplicar=False):
         # ⚠️ ELEGIDOS A MITAD DE PERÍODO, LA CAZA CUENTA DESDE AHÍ: un evento de
         # antes no puede cazar a quien todavía no era buscado
         desde = ini if ahora - ini < dt.timedelta(hours=2) else ahora
-        buscados = elegir(pool, evs, R, desde, excluir=excluir, snap=snap, tipo=tipo, semilla=pid)
+        # 🔑 Y EL ELEGIDO: la encuesta de este período cerró cuando arrancó
+        buscados = elegir(pool, evs, R, desde, excluir=excluir, snap=snap, tipo=tipo, semilla=pid,
+                          votos=_votos_de(pid, votos))
         act = {'id': pid, 'tipo': tipo, 'temporada': temp, 'inicio': _iso(ini), 'fin': _iso(fin),
                'desde': _iso(desde), 'elegido': _iso(ahora), 'buscados': buscados,
                'snap': {p['raw']: p.get('o') or p.get('pos') for p in pool if p.get('raw')}}
@@ -878,6 +974,24 @@ def _self_check():
     s9 = elegir(pool9, evs9, None, t0, tipo='semana', semilla='x')
     ok(len(s9) == CUANTOS['semana'], 'por semana, %d buscados' % len(s9))
     ok(elegir(pool9, evs9, None, t0, tipo='dia', semilla='x') == d3, 'y con la misma semilla, los mismos')
+    # 🔑 EL ELEGIDO: el más votado entra primero y ocupa un lugar de su nivel
+    e3 = elegir(pool9, evs9, None, t0, tipo='dia', semilla='x', votos={'P09': 3, 'P02': 1})
+    el = [b for b in e3 if b['cat'] == 'elegido']
+    ok(len(e3) == CUANTOS['dia'] and len(el) == 1 and el[0]['n'] == 'P09' and el[0]['votos'] == 3
+       and el[0]['de'] == 4 and e3[0] is el[0],
+       'El Elegido va primero y los buscados siguen siendo %d  %s' % (CUANTOS['dia'], [(b['n'], b['cat'])
+                                                                           for b in e3]))
+    ok(not [b for b in e3 if b['cat'] != 'elegido' and NIVEL[b['cat']] == 'B'],
+       'y ocupa el lugar del nivel del medio: ese día no sale otro de ese nivel')
+    ok(elegir(pool9, evs9, None, t0, tipo='dia', semilla='x', votos={'P09': 2}) == d3,
+       'con menos de 3 votos no hay Elegido: sale lo mismo que sin encuesta')
+    ok([b['n'] for b in elegir(pool, evs3, None, t0, tipo='dia', votos={'Bea': 5, 'Cid': 3})
+        if b['cat'] == 'elegido'] == ['Cid'],
+       'al fuera de concurso no se lo puede elegir aunque lo voten: entra el siguiente')
+    s9e = elegir(pool9, evs9, None, t0, tipo='semana', semilla='x', votos={'P12': 7})
+    ok(len(s9e) == CUANTOS['semana'] and sum(1 for b in s9e if NIVEL[b['cat']] == 'B') == 3
+       and s9e[0]['cat'] == 'elegido',
+       'por semana también: %d buscados, El Elegido y dos más del medio' % len(s9e))
     # la cuenta que leen la web y las vitrinas: sólo la temporada de ahora
     per = lambda temp, bs: {'id': temp, 'temporada': temp, 'buscados': bs}
     caza = lambda quien, por, cobra: {'n': quien, 'cn': 'El Rey', 'estado': 'cazado',
@@ -899,6 +1013,10 @@ def main():
         return 1 if _self_check() else 0
     out = correr(aplicar='--aplicar' in a)
     act = out['actual']
+    if not act.get('id'):
+        # la primera semana de la temporada: sin buscados, con cuándo salen
+        print('\n══ MOST WANTED · sin buscados hasta %s ══\n' % act.get('proximo'))
+        return 0
     print('\n══ MOST WANTED · %s %s ══\n' % ('día' if act['tipo'] == 'dia' else 'semana', act['id']))
     for b in act['buscados']:
         print('   %-17s %-22s %-8s %6s  %s' % (b['cn'], b['n'][:22], b['estado'], b['valor'],

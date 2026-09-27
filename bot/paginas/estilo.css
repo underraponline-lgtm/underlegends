@@ -1645,6 +1645,45 @@ background:rgba(10,15,14,.6);opacity:.45;filter:grayscale(1)}
 .mt-x p{color:var(--tx2);font-size:.9rem;line-height:1.45}
 .mt-x b{color:var(--tx)}
 
+/* ── las encuestas: El Elegido y el ×2 votado ───────────────────────────
+   Cada opción lleva de fondo una barra del ancho de sus votos. Lo que
+   votaste, con borde teal; lo que no se puede votar (tu servidor, vos),
+   apagado. */
+.enc{grid-column:1/-1;display:grid;gap:8px;margin-top:12px;padding:12px 13px;
+background:rgba(10,15,14,.82);border:1px solid var(--bd2);border-left:3px solid var(--tl)}
+.enc[hidden]{display:none}
+.enc h4{color:var(--tx);font:800 .98rem/1.25 Archivo,sans-serif}
+.enc-b{color:var(--tx2);font-size:.9rem;line-height:1.45;max-width:72ch}
+.enc-b b{color:var(--tx)}
+.enc-busca{width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--bd);border-radius:3px;
+background:rgba(14,22,20,.92);color:var(--tx);font:500 .92rem/1.2 Archivo,sans-serif}
+.enc-busca:focus{outline:none;border-color:var(--tl)}
+.enc-busca::placeholder{color:var(--tx3)}
+.enc-ops{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(230px,100%),1fr))}
+.enc-op,.enc-sv{position:relative;display:flex;align-items:center;gap:10px;min-width:0;padding:8px 10px;
+border:1px solid var(--bd2);background:rgba(14,22,20,.7);text-align:left;overflow:hidden}
+.enc-op{justify-content:space-between}
+.enc-op .quien,.enc-sv .sv-mini,.enc-svn{position:relative;min-width:0}
+.enc-bar{position:absolute;inset:0 auto 0 0;background:rgba(41,178,152,.14);pointer-events:none;transition:width .3s}
+.enc-n{position:relative;flex:none;color:var(--tx2);font:800 .9rem/1 Archivo,sans-serif;
+font-variant-numeric:tabular-nums;white-space:nowrap}
+.enc-op:hover,.enc-sv:hover{border-color:var(--tl)}
+.enc-op.mio,.enc-sv.mio{border-color:var(--tl);box-shadow:inset 0 0 0 1px var(--tl)}
+.enc-op.mio .enc-n,.enc-sv.mio small{color:var(--tl)}
+.enc-op.va,.enc-sv.va{opacity:.6}
+.enc-op:disabled,.enc-sv:disabled{cursor:default;opacity:.45}
+.enc-op:disabled:hover,.enc-sv:disabled:hover{border-color:var(--bd2)}
+.enc-svs{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(140px,100%),1fr))}
+.enc-sv{--c:#7E8B89;border-left:3px solid var(--c);padding:9px 10px}
+.enc-sv .sv-mini{flex:none;border-radius:50%}
+.enc-svn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tx);
+font:800 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em}
+.enc-sv small{position:relative;margin-left:auto;color:var(--tx2);font:700 .78rem/1 Archivo,sans-serif;
+font-variant-numeric:tabular-nums;white-space:nowrap}
+.enc-e{color:var(--tx2);font-size:.85rem;line-height:1.4}
+.enc-e b{color:var(--tx)}
+.enc-mal{color:#FF9F6B}
+
 /* ── Most Wanted: el tablero, un cartel por buscado ─────────────────────
    El color de arriba dice cómo está: magenta suelto, gris cazado, oro si
    sobrevivió. El sello es del cartel de «se busca»: sólo en los dos

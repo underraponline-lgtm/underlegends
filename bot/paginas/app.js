@@ -603,8 +603,10 @@ function pintaMult() {
       '<div class="mt-t"><span class="mt-n" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span><b>' +
       xMult(x) + '</b></div>' +
       (x < 1 ? '<small>debuff</small>' : x >= 5 ? '<small>jackpot</small>' : pr.length ? '<small class="gw">' +
-        pr.map(function (p) { return p === 'guerra' ? 'ganó la guerra' : p === 'semillero' ? 'semillero' : esc(p); })
-          .join(' + ') + '</small>' : '') +
+        pr.map(function (p) {
+          return p === 'guerra' ? 'ganó la guerra' : p === 'semillero' ? 'semillero'
+            : p === 'votado' ? 'lo votó la gente' : esc(p);
+        }).join(' + ') + '</small>' : '') +
       '</div>';
   }).join('') + extrasMult(M);
   sec.hidden = false;
@@ -613,6 +615,11 @@ function pintaMult() {
    27/09/2026: «me gustan todas». Las reglas viven en bot/multiplicadores.py. */
 function extrasMult(M) {
   var ls = [], dd = M.dorado, g = M.guerra, a = M.ant || {};
+  // 🔑 EL ×2 VOTADO: lo que eligió la gente para esta semana
+  if (M.votado) {
+    ls.push('<b>&#128499;&#65039; Lo votó la gente</b>: <b>' + esc(nombreSv(M.votado.sv)) + '</b> salió con ' +
+      '&times;2 como mínimo (' + M.votado.votos + ' de ' + M.votado.de + ' votos).');
+  }
   if (dd) {
     ls.push('<b>&#127775; Evento dorado</b>: ' + (dd.n
       ? 'fue <b>' + esc(dd.nombre || '#' + dd.n) + '</b> (' + esc(nombreSv(dd.sv)) + '): valió &times;3 encima de su multiplicador.'
@@ -683,7 +690,9 @@ function extrasMult(M) {
   ls.push('<b>&#127873; Bonos</b>: tu segundo evento de la temporada vale <b>&times;1,5</b> si lo jugás dentro de ' +
     'los 7 días del primero. Jugar en <b>3 servidores</b> en la semana da <b>+1.500</b>, y jugar <b>3 días ' +
     'distintos</b>, <b>+1.000</b>.');
-  return '<div class="mt-x">' + ls.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+  // la votación del ×2 de la semana que viene la llena `pintaEncuestas()`
+  return '<div class="enc" id="encX2" hidden></div>' +
+    '<div class="mt-x">' + ls.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
 }
 /* el próximo evento del organizador que tiene la Copa */
 function claveOrg(s) {
@@ -3825,7 +3834,7 @@ function cartelMW(b) {
   var e = MW_EST[b.e] || MW_EST.suelto;
   var por = b.c ? (b.c.por || []).map(function (y) { return esc(y.n); }).join(' y ') : '';
   return '<div class="mwc e-' + esc(b.e) + '"' + (b.k ? ' data-k="' + esc(b.k) + '"' : '') + '>' +
-    '<span class="mwc-cat">' + esc(b.cn) + '</span>' +
+    '<span class="mwc-cat">' + (b.cat === 'elegido' ? '&#128499;&#65039; ' : '') + esc(b.cn) + '</span>' +
     '<span class="mwc-q">' + (f ? quienEs(f, 34) : '<span class="quien">' + conBanderas(b.n) + '</span>') + '</span>' +
     '<small class="mwc-m">' + esc(b.m) + '</small>' +
     '<span class="mwc-v"><b>' + num(b.paga || b.v) + '</b> pts</span>' +
@@ -3842,7 +3851,8 @@ function pintaMW() {
     pag.innerHTML = '<p class="mw-cab">Los primeros <b>buscados de la temporada</b> salen el ' +
       esc(fmtFecha(M.prox, { weekday: 'long', day: 'numeric', month: 'long' })) + ' a las ' +
       esc(fmtHora(M.prox)) + ' ' + etiquetaHora(M.prox) + '. Se eligen con lo que cada uno juegue ' +
-      'hasta entonces.</p><p class="mw-pie"><span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
+      'hasta entonces.</p><div class="enc" id="encElegido" hidden></div>' +
+      '<p class="mw-pie"><span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
     return;
   }
   var sueltos = M.b.filter(function (b) { return b.e === 'suelto'; }).length;
@@ -3851,6 +3861,8 @@ function pintaMW() {
     'Cazalos en cualquier evento de la Liga: le ganás a uno y su recompensa suma a tus Puntos. Vence el ' +
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '.</p><div class="mw-t">' + M.b.map(cartelMW).join('') + '</div>' +
+    // la votación de El Elegido del que viene: la llena `pintaEncuestas()`
+    '<div class="enc" id="encElegido" hidden></div>' +
     '<p class="mw-pie"><a href="#/ranking/mw">Los cazadores de la temporada &#8250;</a>' +
     '<span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
   // la pestaña del ranking deja de decir «pronto»
@@ -3860,6 +3872,169 @@ function pintaMW() {
     var i = s.querySelector('i');
     if (i) i.remove();
   }
+}
+/* ── las encuestas ─────────────────────────────────────────────────────
+   🔑 Dlx, 27/09/2026, del Most Wanted: «eso de que los buscados lo elige la
+   gente es peak», en la página; y a quién vota, «1. A. 2. A»: cualquiera que
+   entre con Discord, y en el ×2 nadie vota a su servidor. Qué se vota llega
+   en `D.enc` (bot/encuestas.py, cada media hora) y cuántos votos lleva cada
+   opción, de `/api/avisos/encuestas`. Quién vota lo dice Discord al Worker
+   (`validarVoto()` en bot/avisos.js), nunca la página.
+   ⚠️ AFUERA SE VE CUÁNTOS, NUNCA QUIÉN. Lo que votaste lo recuerda sólo tu
+   navegador (`lg:votos`). */
+var ENC_V = {}, ENC_T = 0, ENC_POST = {}, ENC_EST = {}, ENC_BUSCA = '';
+var ENC_MIO = leerLS('lg:votos', null) || {};
+function pedirEncuestas() {
+  if (!D || !(D.enc || []).length) return;
+  fetch('/api/avisos/encuestas', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !d.votos) return;
+      ENC_V = d.votos;
+      ENC_T = d.t || 0;
+      pintaEncuestas();
+    })
+    .catch(function () { /* sin los votos se ve igual, sin números */ });
+}
+/* los votos de una: los de mi voto, si son más nuevos que los de la caché */
+function cuentaEnc(id) {
+  var p = ENC_POST[id];
+  return p && p.t >= ENC_T ? p.cuenta : ENC_V[id] || {};
+}
+function totalEnc(c) {
+  return Object.keys(c).reduce(function (s, k) { return s + (+c[k] || 0); }, 0);
+}
+function votar(id, op) {
+  // sin el permiso de Discord en memoria: se lo va a buscar, y a la vuelta vota
+  if (!DC_TOKEN) {
+    try { sessionStorage.setItem('lg:voto', JSON.stringify({ enc: id, op: op })); } catch (e) { /* igual */ }
+    location.href = urlLogin('e');
+    return;
+  }
+  ENC_EST[id] = { va: op };
+  pintaEncuestas();
+  fetch('/api/avisos/votar', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: DC_TOKEN, enc: id, op: op }) })
+    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); })
+    .then(function (j) {
+      // el permiso venció: se pide otro (Discord no vuelve a preguntar)
+      if (j.status === 401) { DC_TOKEN = null; votar(id, op); return; }
+      if (j.ok) {
+        ENC_MIO[id] = op;
+        guardarLS('lg:votos', ENC_MIO);
+        ENC_POST[id] = { t: j.t || 0, cuenta: j.cuenta || {} };
+        ENC_EST[id] = {};
+      } else {
+        ENC_EST[id] = j;
+      }
+      pintaEncuestas();
+    })
+    .catch(function () { ENC_EST[id] = { error: 'red' }; pintaEncuestas(); });
+}
+function errorEnc(E) {
+  var e = E.error;
+  return e === 'cerrada' ? 'La votación ya cerró.'
+    : e === 'propio' ? 'No podés votar por tu servidor (' + esc(nombreSv(E.sv)) + '): votá a otro, uno ' +
+      'donde te gustaría ir a jugar.'
+    : e === 'vos' ? 'No podés votarte a vos.'
+    : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para votar: vas a poder desde el ' +
+      esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
+    : e === 'opcion' ? 'Esa opción ya no está: la lista se actualiza cada media hora.'
+    : e === 'no_existe' ? 'Esa votación ya no está.'
+    : 'No pude guardar tu voto. Probá de nuevo en un rato.';
+}
+/* el renglón de abajo: qué votaste, o qué salió mal */
+function pieEnc(E, nombre) {
+  var est = ENC_EST[E.id] || {}, mio = ENC_MIO[E.id];
+  if (est.va) return 'Guardando tu voto&hellip;';
+  if (est.error) return '<span class="enc-mal">' + errorEnc(est) + '</span>';
+  if (mio && E.op.indexOf(mio) >= 0) {
+    return 'Votaste por <b>' + esc(nombre(mio)) + '</b>. Lo podés cambiar hasta que cierre.';
+  }
+  return (DC ? 'Tocá una opción para votar.' : 'Para votar entrás con Discord: tocá una opción.') +
+    ' Nadie ve a quién votaste.';
+}
+function cabEnc(E, tot) {
+  var min = E.min || 3;
+  return 'Cierra el ' + esc(fmtFecha(E.hasta, { weekday: 'long' })) + ' a las ' + esc(fmtHora(E.hasta)) + ' ' +
+    etiquetaHora(E.hasta) + ' &middot; ' + (tot ? '<b>' + tot + (tot === 1 ? ' voto' : ' votos') + '</b>'
+    : 'todavía sin votos') + (tot < min ? ' (hacen falta ' + min + ')' : '') + '.';
+}
+/* quién soy según Discord: sólo con eso se marca «el tuyo» o «sos vos»
+   (quien eligió a mano quién es puede haber elegido a otro) */
+function yoDiscord() { return DC && DC.clave ? porK(DC.clave) : null; }
+function pintaEncuestas() {
+  var es = (D && D.enc) || [], ahora = Date.now();
+  var abierta = function (t) {
+    return es.filter(function (e) { return e.tipo === t && Date.parse(e.hasta) > ahora; })[0] || null;
+  };
+  pintaElegido(abierta('elegido'));
+  pintaX2(abierta('x2'));
+}
+/* 🔑 EL ELEGIDO: los más votados arriba; a los demás se llega buscando */
+function pintaElegido(E) {
+  var c = $('#encElegido');
+  if (!c) return;
+  if (!E || !(E.op || []).length) { c.hidden = true; return; }
+  if (c.dataset.id !== E.id) {
+    var para = E.per === 'semana' ? 'de la semana del ' + esc(fmtFecha(E.hasta, { day: 'numeric', month: 'numeric' }))
+      : 'del ' + esc(fmtFecha(E.hasta, { weekday: 'long' }));
+    c.dataset.id = E.id;
+    c.innerHTML = '<h4>&#128499;&#65039; El Elegido ' + para + '</h4><p class="enc-b"></p>' +
+      '<input type="search" class="enc-busca" placeholder="Buscá a quién votar" ' +
+      'aria-label="Buscar un rapero para votar" value="' + esc(ENC_BUSCA) + '">' +
+      '<div class="enc-ops"></div><p class="enc-e" aria-live="polite"></p>';
+  }
+  c.querySelector('.enc-b').innerHTML = 'Votá a quién buscar: el más votado entra al Most Wanted como ' +
+    '<b>El Elegido</b>. ' + cabEnc(E, totalEnc(cuentaEnc(E.id)));
+  pintaOpsElegido(E);
+  c.hidden = false;
+}
+function pintaOpsElegido(E) {
+  var c = $('#encElegido');
+  E = E || ((D && D.enc) || []).filter(function (e) { return e.tipo === 'elegido'; })[0];
+  if (!E || !c || !c.querySelector('.enc-ops')) return;
+  var cu = cuentaEnc(E.id), tot = totalEnc(cu), mio = ENC_MIO[E.id], est = ENC_EST[E.id] || {};
+  var yoF = yoDiscord();
+  var fDe = function (op) { return porK(kDe(op)); };
+  var nombre = function (op) { var f = fDe(op); return f ? f.n : op; };
+  var idx = {};
+  E.op.forEach(function (o, i) { idx[o] = i; });
+  var ops = E.op.slice().sort(function (a, b) { return (cu[b] || 0) - (cu[a] || 0) || idx[a] - idx[b]; });
+  var q = sinTildes(ENC_BUSCA).trim();
+  var ver = q ? ops.filter(function (o) { return sinTildes(nombre(o)).indexOf(q) >= 0; }).slice(0, 8)
+    : ops.slice(0, 6);
+  c.querySelector('.enc-ops').innerHTML = ver.length ? ver.map(function (op) {
+    var f = fDe(op), n = cu[op] || 0, esYo = yoF && f && f.k === yoF.k;
+    return '<button type="button" class="enc-op' + (mio === op ? ' mio' : '') + (est.va === op ? ' va' : '') +
+      '" data-votar="' + esc(E.id) + '" data-op="' + esc(op) + '"' + (esYo ? ' disabled title="Sos vos"' : '') + '>' +
+      '<i class="enc-bar" style="width:' + (tot ? Math.round(100 * n / tot) : 0) + '%"></i>' +
+      (f ? quienEs(f, 26) : '<span class="quien">' + conBanderas(op) + '</span>') +
+      '<span class="enc-n">' + (esYo ? 'sos vos' : (mio === op ? '&#10003; ' : '') + n) + '</span></button>';
+  }).join('') : '<p class="nota">Nadie con ese nombre puede ser El Elegido.</p>';
+  c.querySelector('.enc-e').innerHTML = pieEnc(E, nombre) + (!q && E.op.length > ver.length
+    ? ' Se puede votar a ' + E.op.length + ': buscá a quién.' : '');
+}
+/* 🔑 EL ×2 DE LA SEMANA QUE VIENE: los servidores, con sus votos */
+function pintaX2(E) {
+  var c = $('#encX2');
+  if (!c) return;
+  if (!E || !(E.op || []).length) { c.hidden = true; return; }
+  var cu = cuentaEnc(E.id), tot = totalEnc(cu), mio = ENC_MIO[E.id], est = ENC_EST[E.id] || {};
+  var yoF = yoDiscord(), suyo = yoF && yoF.sv, x = String(E.x || 2).replace('.', ',');
+  c.innerHTML = '<h4>&#128499;&#65039; ¿Quién se lleva el &times;' + x + ' la semana que viene?</h4>' +
+    '<p class="enc-b">El más votado sale del sorteo del lunes con <b>&times;' + x + ' como mínimo</b>. No se ' +
+    'vota al servidor de uno (el que más jugaste en la temporada). ' + cabEnc(E, tot) + '</p>' +
+    '<div class="enc-svs">' + E.op.map(function (sv) {
+      var n = cu[sv] || 0, es = suyo === sv;
+      return '<button type="button" class="enc-sv' + (mio === sv ? ' mio' : '') + (est.va === sv ? ' va' : '') +
+        '" style="--c:' + esc(colorSv(sv)) + '" data-votar="' + esc(E.id) + '" data-op="' + esc(sv) + '"' +
+        (es ? ' disabled title="Es tu servidor"' : '') + '>' + logoSv(sv, 30) +
+        '<span class="enc-svn" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span>' +
+        '<small>' + (es ? 'el tuyo' : (mio === sv ? '&#10003; ' : '') + n + (n === 1 ? ' voto' : ' votos')) +
+        '</small><i class="enc-bar" style="width:' + (tot ? Math.round(100 * n / tot) : 0) + '%"></i></button>';
+    }).join('') + '</div><p class="enc-e" aria-live="polite">' + pieEnc(E, nombreSv) + '</p>';
+  c.hidden = false;
 }
 function pintaPaneles() {
   var pags = $$('#secPaneles .pn-pag');
@@ -4070,9 +4245,9 @@ var DC = leerLS('lg:dc', null);
 var DC_TOKEN = null, REDES_MIAS = null;
 function urlLogin(modo) {
   // 'r' las redes (pide `connections`), 'v' vincular los avisos, 'f' la
-  // foto, o entrar
+  // foto, 'e' votar en una encuesta, o entrar
   var conRedes = modo === true || modo === 'r';
-  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' ? modo : 'i') +
+  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
@@ -4230,7 +4405,20 @@ function volverDeDiscord() {
   var porRedes = st.charAt(0) === 'r';
   var porAvisos = st.charAt(0) === 'v';
   var porFoto = st.charAt(0) === 'f';
-  if (porRedes || porFoto) DC_TOKEN = q.access_token;
+  // 🔑 VOTAR: el permiso queda en memoria mientras la página está abierta,
+  // para los votos que siguen; nunca en el dispositivo
+  var porVoto = st.charAt(0) === 'e';
+  if (porRedes || porFoto || porVoto) DC_TOKEN = q.access_token;
+  // el voto que se tocó antes de entrar sale ya, sin esperar a `/api/cuenta`:
+  // el Worker le pregunta a Discord por su cuenta (ver `votar()`)
+  if (porVoto) {
+    var pv = null;
+    try {
+      pv = JSON.parse(sessionStorage.getItem('lg:voto') || 'null');
+      sessionStorage.removeItem('lg:voto');
+    } catch (e) { pv = null; }
+    if (pv && pv.enc && pv.op) votar(String(pv.enc), String(pv.op));
+  }
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })
     .then(function (r) { return r.json(); })
@@ -4249,6 +4437,11 @@ function volverDeDiscord() {
       if (porAvisos) {
         vincularAvisos(q.access_token);
         $('#popCuenta').hidden = true;
+      }
+      // quien vino a votar se queda donde votó; ahora se sabe quién es («el tuyo»)
+      if (porVoto) {
+        $('#popCuenta').hidden = true;
+        if (D) pintaEncuestas();
       }
       if (porFoto) {
         pedirFoto(false).then(function (R) {
@@ -4764,6 +4957,18 @@ function eventos() {
   });
   document.addEventListener('input', function (e) {
     if (e.target.id === 'yoBusca') pintaYoRes(e.target.value);
+    // 🔑 las encuestas: buscar a quién votar (ver `pintaOpsElegido()`)
+    if (e.target.classList && e.target.classList.contains('enc-busca')) {
+      ENC_BUSCA = e.target.value;
+      pintaOpsElegido();
+    }
+  });
+  // 🔑 y votar: una opción es un botón con `data-votar` (ver `votar()`)
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-votar]');
+    if (!b || b.disabled) return;
+    e.preventDefault();
+    votar(b.dataset.votar, b.dataset.op);
   });
   document.addEventListener('change', function (e) {
     var id = e.target.id;
@@ -5082,7 +5287,7 @@ function pintaDatos() {
   [trama, pintaMult, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
     pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
     pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
-    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaPaneles, aplicarCalma]
+    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaEncuestas, pintaPaneles, aplicarCalma]
     .forEach(function (f) {
       try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
     });
@@ -5115,6 +5320,7 @@ function pinta() {
   ir();
   setInterval(pintaRelojes, 1000);
   try { pedirVivo(); } catch (e) { console.error('[pedirVivo]', e); }
+  try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
   setInterval(refrescarDatos, 5 * 60000);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible' && Date.now() - DATOS_PEDIDOS > 60000) refrescarDatos();
@@ -5131,6 +5337,8 @@ var DATOS_PEDIDOS = Date.now();
 function refrescarDatos() {
   if (document.visibilityState === 'hidden' || !D) return;
   DATOS_PEDIDOS = Date.now();
+  // los votos cambian a cada voto, no con el ciclo: se piden siempre
+  try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
   fetch('/api/lobby', { headers: { accept: 'application/json' } })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) {

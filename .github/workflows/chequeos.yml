@@ -100,7 +100,7 @@ jobs:
           PYTHONIOENCODING: utf-8
         run: |
           fallas=""
-          for f in bot/anuncios.py bot/autoverificar.py bot/avisar.py bot/avisos_casos.py bot/avisos_personales.py bot/cuando.py bot/escuchar.py bot/insignias.py \
+          for f in bot/anuncios.py bot/autoverificar.py bot/avisar.py bot/avisos_casos.py bot/avisos_personales.py bot/cuando.py bot/encuestas.py bot/escuchar.py bot/insignias.py \
                    bot/fuera.py bot/inscripciones.py bot/lunes.py bot/llaves_a_entrada.py bot/llaves_casos.py bot/madrugada.py bot/most_wanted.py bot/multiplicadores.py bot/olvidar.py \
                    bot/que_cambio.py \
                    bot/verificados.py sheet/archivar_temporada.py \

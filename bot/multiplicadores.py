@@ -60,6 +60,12 @@ Temporada), la revelación (la figura de los que debutaron esa semana), el
 cazador (el que más cobró en el Most Wanted) y el servidor (el que más gente
 movió).
 
+EL ×2 VOTADO. Durante la semana, en la página, cualquiera que entre con
+Discord vota qué servidor se lleva el ×2 la siguiente, y nadie vota al suyo
+(Dlx: *«1. A. 2. A»*). El más votado sale del sorteo con **×2 como
+mínimo**: si le tocó menos, sube a ×2; si le tocó más, se queda con lo
+suyo. La guerra y el Semillero van encima. Ver `bot/encuestas.py`.
+
 LOS BONOS DE CADA UNO.
 - **«Volvé»**: tu segundo evento de la temporada, si cae dentro de los 7
   días del primero, vale ×1,5. Es para el 42 % que juega una sola vez.
@@ -145,6 +151,8 @@ DESTACADO_H = 12
 CLASICO_PREVIOS, CLASICO_X = 2, 1.1
 #: el techo de una fila, sumando todo
 TECHO = 5
+#: el ×2 votado: lo mínimo que lleva el servidor más votado (ver `bot/encuestas.py`)
+VOTADO_X = 2
 #: desde cuándo corre cada regla. «Volvé», desde que salió; lo semanal
 #: (dorado, guerra, pasaporte, asistencia), desde la primera semana entera
 DESDE = {'volve': '2026-09-27T17:00:00Z', 'semana': '2026-09-28T15:00:00Z'}
@@ -790,7 +798,28 @@ def eventos_de(regs=None):
     return out
 
 
-def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=None, rivales=None):
+def votado(pid, svs, votos=None):
+    """`{'sv', 'votos', 'de'}` del ×2 votado para la semana `pid`, o `None`.
+
+    `votos` es todo lo de `/avisos/encuestas` (para el self-check); sin eso
+    se lee. ⚠️ SI NO SE PUEDE LEER, SE SORTEA SIN ÉL y se dice: el sorteo
+    del lunes no se traba por una encuesta.
+    """
+    try:
+        import encuestas as ENC
+        v = ENC.leer_votos() if votos is None else votos
+        if v is None:
+            print('   ⚠️ no pude leer los votos del ×2: se sortea sin ellos')
+            return None
+        g = ENC.ganador(v.get('x2:' + pid) or {}, validas=set(svs), semilla='x2:' + pid)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el ×2 votado: %s' % str(e)[:80])
+        return None
+    return {'sv': g[0], 'votos': g[1], 'de': g[2]} if g else None
+
+
+def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=None, rivales=None,
+           votos=None):
     """Sortea la semana si hace falta, anota el dorado y la Copa, y cierra la guerra
     y el organizador de la semana. Devuelve el archivo."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
@@ -852,6 +881,12 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
             if len(svs) >= 2:
                 rec['guerra'] = {'pares': emparejar(svs, pid)}
             rec['metas'] = sortear_metas(svs, ini, evs)
+            # 🔑 EL ×2 VOTADO, antes de los premios: la guerra y el Semillero van encima
+            vt = votado(pid, svs, votos)
+            if vt and vt['sv'] in rec['sv']:
+                rec['sv'][vt['sv']] = max(rec['sv'][vt['sv']], VOTADO_X)
+                rec['votado'] = vt
+                rec.setdefault('premios', {}).setdefault(vt['sv'], []).append('votado')
         # 🔑 LA GUERRA DE LA SEMANA QUE TERMINÓ: el que ganó lleva ×1,5 en ésta
         prev = semanas[-1] if semanas else None
         # 🔑 Y SU ORGANIZADOR: el primero es la sede de ésta, con la Copa
@@ -1007,12 +1042,30 @@ def _self_check():
     dg = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
                        'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1, 'DRA': 1, 'URBF': 1},
                        'guerra': {'pares': [['FFA', 'SR'], ['DRA', 'URBF']]}}]}
-    out = correr(en(10, 19, 11, 22), d=dg, eventos=evsg, org_de={}, vistos={})
+    out = correr(en(10, 19, 11, 22), d=dg, eventos=evsg, org_de={}, vistos={}, votos={})
     nueva = out['semanas'][-1]
     ok(out['semanas'][0]['guerra']['gana'] == ['SR'] and nueva.get('premios') == {'SR': ['guerra']}
        and nueva['sv']['SR'] == min(TECHO, sortear(servidores(), '2026-10-19')['SR'] * GUERRA_X)
        and nueva.get('guerra') and nueva.get('dorado'),
        'al cerrar la semana, SR ganó la guerra y lleva ×1,5 en la nueva, que trae su dorado y sus pares')
+    # 🔑 el ×2 votado: el más votado sale con ×2 como mínimo, y la guerra va encima
+    dv = lambda: {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)),
+                               'fin': _iso(en(10, 19, 11)), 'temporada': 't1',
+                               'sv': {'FFA': 1, 'SR': 1, 'DRA': 1, 'URBF': 1},
+                               'guerra': {'pares': [['FFA', 'SR'], ['DRA', 'URBF']]}}]}
+    out = correr(en(10, 19, 11, 22), d=dv(), eventos=evsg, org_de={}, vistos={},
+                 votos={'x2:2026-10-19': {'SR': 4, 'FFA': 1}})
+    nv, base = out['semanas'][-1], sortear(servidores(), '2026-10-19')['SR']
+    ok(nv.get('votado') == {'sv': 'SR', 'votos': 4, 'de': 5} and nv['premios']['SR'] == ['votado', 'guerra']
+       and nv['sv']['SR'] == min(TECHO, max(base, VOTADO_X) * GUERRA_X),
+       'SR ganó la votación: ×2 como mínimo (el sorteo le daba ×%s) y la guerra encima: ×%s'
+       % (str(base).replace('.', ','), str(nv['sv']['SR']).replace('.', ',')))
+    out = correr(en(10, 19, 11, 22), d=dv(), eventos=evsg, org_de={}, vistos={},
+                 votos={'x2:2026-10-19': {'FFA': 2}})
+    ok('votado' not in out['semanas'][-1] and 'votado' not in str(out['semanas'][-1].get('premios')),
+       'con menos de 3 votos, el sorteo queda como salió')
+    ok(votado('2026-10-19', ['FFA', 'SR'], {'x2:2026-10-19': {'EFA': 9, 'SR': 1}}) is None,
+       'un voto a un servidor que no está en el sorteo no cuenta')
     # el organizador de la semana y la Copa
     ok(_org('@!    MMC.') == 'MMC.' and _org('yo') == '' and _clave_org('@nachonc_') == 'nachonc',
        'el organizador sale del anuncio, sin arroba; «yo» no es nadie')
@@ -1029,11 +1082,11 @@ def _self_check():
     evc = evo + [(31, 'SR', en(10, 20, 20), [['t%d' % i, 'x', 1] for i in range(8)], 'otro'),
                  (32, 'FFA', en(10, 21, 20), [['u%d' % i, 'x', 1] for i in range(8)], 'LA COPA')]
     orgc = {**orgs, 31: 'Carlos', 32: '@nachonc_'}
-    out = correr(en(10, 19, 11, 22), d=dc, eventos=evc, org_de=orgc, vistos={})
+    out = correr(en(10, 19, 11, 22), d=dc, eventos=evc, org_de=orgc, vistos={}, votos={})
     nueva = out['semanas'][-1]
     ok(nueva.get('copa', {}).get('org') == '@nachonc_' and out['semanas'][0].get('organizadores_final'),
        'al cerrar la semana, el primero es la sede de la siguiente')
-    out = correr(en(10, 22, 12), d=out, eventos=evc, org_de=orgc, vistos={})
+    out = correr(en(10, 22, 12), d=out, eventos=evc, org_de=orgc, vistos={}, votos={})
     c = out['semanas'][-1]['copa']
     f2 = factor_de(out, [])
     ok(c.get('n') == 32 and c.get('nombre') == 'LA COPA' and f2('FFA', en(10, 21, 20), 32) == min(
@@ -1058,10 +1111,10 @@ def _self_check():
     ok(rs2['gana'] == 'FFA', 'con menos de 3 nuevos no se gana: SR queda afuera y gana FFA')
     ds = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
                        'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1}}]}
-    out = correr(en(10, 19, 11, 22), d=ds, eventos=evn, org_de={}, vistos=dict(vis))
+    out = correr(en(10, 19, 11, 22), d=ds, eventos=evn, org_de={}, vistos=dict(vis), votos={})
     ok(out['semanas'][0]['semillero']['gana'] == 'SR' and 'semillero' in out['semanas'][-1]['premios'].get('SR', []),
        'al cerrar la semana, SR es el Semillero y lleva ×1,5 en la nueva')
-    ok(correr(en(10, 19, 11, 22), d={'semanas': []}, eventos=evn, org_de={}, vistos={})['semanas'][-1]
+    ok(correr(en(10, 19, 11, 22), d={'semanas': []}, eventos=evn, org_de={}, vistos={}, votos={})['semanas'][-1]
        .get('semillero') is None, 'sin el registro de quién ya jugó, no hay Semillero (todos serían nuevos)')
     # la meta de comunidad: un 10 % más que su promedio, con piso
     evm = [(51, 'FFA', en(10, 7, 20), [['p%d' % i, 'x', 100] for i in range(20)], 'a'),

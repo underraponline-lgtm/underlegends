@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.31",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T15:40:00-04:00",
+   "titulo": "Las encuestas: El Elegido y el ×2",
+   "items": [
+    "🗳️ **El Elegido**: uno de los buscados del Most Wanted lo elige la gente. En el Inicio, abajo de los carteles, se vota a quién buscar en el siguiente, y el más votado entra como «El Elegido».",
+    "🗳️ **El ×2 votado**: durante la semana se vota qué servidor se lleva el ×2 la semana que viene. El más votado sale del sorteo del lunes con **×2 como mínimo**. No se vota al servidor de uno.",
+    "🔐 Vota cualquiera que entre con Discord, **un voto por persona**, y se puede cambiar hasta que cierra. Hacen falta 3 votos para que cuente, y las cuentas de Discord de menos de 30 días no votan. Nadie ve a quién votaste: sólo cuántos votos lleva cada uno.",
+    "📅 Las primeras cierran **mañana lunes 28 a las 11 AM** (hora del este): El Elegido del lunes y el ×2 de la semana."
+   ]
+  },
+  {
    "version": "1.30",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T14:20:00-04:00",

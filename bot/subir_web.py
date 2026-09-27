@@ -455,6 +455,9 @@ def armar():
         # 🔑 LOS MULTIPLICADORES DE LA SEMANA: el Inicio los muestra y cada
         # evento lleva el suyo. Ver `_mult()` y `bot/multiplicadores.py`.
         'mult': _mult(),
+        # 🔑 LAS ENCUESTAS: El Elegido y el ×2 votado. Qué se vota y hasta
+        # cuándo; los votos los pide la página aparte. Ver `_enc()`.
+        'enc': _enc(),
         # 🔑 LAS INSIGNIAS: el catálogo (las de cada uno viajan en los perfiles)
         # y las RIVALIDADES, para marcar el Clásico en una llave en vivo. Ver
         # `bot/insignias.py` y `multiplicadores.clasicos()`.
@@ -2003,7 +2006,8 @@ def _mult():
         return None
     out = {'id': s['id'], 'ini': s['inicio'], 'fin': s['fin'], 'sv': s['sv']}
     # 🔑 el dorado, la guerra y quién ganó la anterior (su ×1,5 va en `premio`)
-    for k in ('premios', 'dorado', 'guerra', 'copa', 'organizadores', 'semillero', 'metas', 'meta_va'):
+    for k in ('premios', 'dorado', 'guerra', 'copa', 'organizadores', 'semillero', 'metas', 'meta_va',
+              'votado'):
         if s.get(k):
             out[k] = s[k]
     semanas = _MU.leer().get('semanas') or []
@@ -2016,6 +2020,26 @@ def _mult():
             out['ant'] = {k: ant[k] for k in ('guerra', 'dorado', 'copa', 'semillero', 'premios_semana')
                           if ant.get(k)}
     return out
+
+
+def _enc():
+    """Las encuestas que se votan ahora, para la página: `[{id, tipo, hasta, op…}]` o `None`.
+
+    🔑 Dlx, 27/09/2026: *«1. A. 2. A»* —vota cualquiera que entre con
+    Discord, y nadie vota a su servidor—. Qué se vota, entre qué opciones y
+    hasta cuándo sale de `bot/encuestas.py`. Cuántos votos lleva cada una lo
+    pide la página aparte (`/api/avisos/encuestas`): cambia a cada voto, y
+    esto se escribe cada media hora.
+
+    ⚠️ SIN DISCORD IDs: quién es de qué servidor va sólo a KV (ver `main()`).
+    ⚠️ SIN ENCUESTA NO HAY PIEZA: `None`, y la página no muestra nada.
+    """
+    try:
+        import encuestas as _E
+        return _E.abiertas() or None
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin encuestas para la página (%s)' % str(e)[:60])
+        return None
 
 
 def _mw_leer():
@@ -2599,6 +2623,14 @@ def _self_check():
     ok(_limpio_md('# 🏆 HOLA <:CorazonLleno:152933862521543> @everyone\n▬▬▬\n**chau**')
        == ['🏆 HOLA', 'chau'], 'el texto de Discord sale sin su formato')
     ok(_org('@!    MMC.') == 'MMC.', 'y el organizador sin la arroba')
+    # 🔑 LAS ENCUESTAS: qué se vota y hasta cuándo, SIN Discord IDs (esos van
+    # sólo a KV, para el Worker: ver `main()` y `bot/encuestas.py`)
+    _en = p.get('enc') or []
+    ok(all(e.get('id') and e.get('hasta') and isinstance(e.get('op'), list) for e in _en),
+       'las encuestas traen qué se vota y hasta cuándo  (%d)' % len(_en))
+    ok(not any(k in e for e in _en for k in ('sv', 'yo')) and
+       not any(str(o).isdigit() and len(str(o)) >= 15 for e in _en for o in e.get('op') or []),
+       'y ningún Discord ID viaja en el payload')
     ok(json.dumps(p, ensure_ascii=False) and True, 'el payload es JSON')
     tam = len(json.dumps(p, ensure_ascii=False).encode('utf-8'))
     # ⚠️ KV admite 25 MB por valor; el problema no es ese sino que el
@@ -2648,6 +2680,18 @@ def main():
     ok3 = _subir_crudo('web:ics', _ics(p.get('calendario')))
     print('   %s' % ('✓ calendario .ics: igual' if ok3 is None else
                      '✅ calendario .ics subido' if ok3 else '🔴 no pude subir el .ics'))
+    # 🔑 LAS ENCUESTAS PARA EL WORKER, que valida cada voto contra esto: qué
+    # se vota, hasta cuándo, y de qué servidor es cada uno (la regla del ×2).
+    # ⚠️ CON DISCORD IDs, por eso va sólo a KV y nunca al payload. Y aunque no
+    # haya ninguna abierta: así lo que cerró deja de aceptar votos.
+    try:
+        import encuestas as _E
+        ok5 = subir(_E.para_kv(lista=p.get('enc') or []), solo_si_cambio='--siempre' not in sys.argv,
+                    clave=_E.CLAVE_KV)
+        print('   %s' % ('✓ encuestas: iguales' if ok5 is None else '✅ encuestas subidas (%d abiertas)'
+                         % len(p.get('enc') or []) if ok5 else '🔴 no pude subir las encuestas'))
+    except Exception as e:                               # noqa: BLE001
+        print('   🔴 las encuestas: %s' % str(e)[:80])
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

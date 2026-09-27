@@ -738,6 +738,16 @@ minuto** lee los canales y un **Durable Object con SQLite** guarda las
 suscripciones, **no KV**. Todo en `bot/avisos.js`; el porqué, en la
 sección 14 de `ESTADO.md`.
 
+🗳️ **LAS ENCUESTAS, DESDE EL 27/09/2026** (El Elegido del Most Wanted y
+el ×2 votado; Dlx: *«1. A. 2. A»*). Qué se vota lo decide el ciclo
+(`bot/encuestas.py`) y lo deja en KV (`encuestas`, con de qué servidor es
+cada Discord ID: por eso nunca va al payload). El voto va a
+`/api/avisos/votar`: el Worker le pregunta a Discord de quién es, lo valida
+(`validarVoto()` en `bot/avisos.js`) y el Durable Object lo guarda, uno por
+persona. El resultado lo leen `most_wanted.correr()` y
+`multiplicadores.correr()` de `/avisos/encuestas`, que cuenta votos y nunca
+dice quién.
+
 ⚠️ **El lector de anuncios está en Python y en JS**, atados por
 `bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
 lea igual. Y `python herramientas/probar_avisos.py` prueba la cadena
@@ -2044,6 +2054,8 @@ bot/              el lector de Discord y el ciclo
                   avisar.py       avisa en Discord, una vez por llave
                   olvidar.py      la salida: borrar a alguien de R2 y KV
                   subir_web.py    el payload del lobby, a KV (paso 2c)
+                  encuestas.py    El Elegido y el ×2 votado: qué se vota,
+                                  hasta cuándo y quién ganó
                   autoverificar.py el país (del rol) y el Miembro de DRA,
                                   solos en cada corrida (paso 1a2)
                   alertar.py      DM a Dlx si algo se traba; lo normal, al

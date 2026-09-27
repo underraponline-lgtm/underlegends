@@ -2182,7 +2182,7 @@ export function panelBaja(id) {
       'Esto borra, ahora y para siempre:\n' +
       '- tu perfil y tus tarjetas (también las de cada servidor),\n' +
       '- tu foto de las tarjetas,\n' +
-      '- tus redes guardadas y el vínculo de tus avisos.\n\n' +
+      '- tus redes guardadas, tus votos en las encuestas y el vínculo de tus avisos.\n\n' +
       'Además queda anotado que **no te vuelva a sumar solo**. Tus resultados en ' +
       'eventos quedan en el historial de la Liga; si querés que cambiemos tu ' +
       'nombre ahí, pedíselo a un admin.\n' +
@@ -3455,8 +3455,8 @@ export default {
         return responderPanel(RESPONDE.ACTUALIZAR, {
           content: '✅ **Listo.** ' + (h.clave
             ? 'Borré tu perfil, ' + (h.r2 ? h.r2 + ' archivo(s) entre tarjetas y foto' : 'tus tarjetas') +
-              ', tus redes y el vínculo de tus avisos. '
-            : 'No tenías perfil en la Liga; igual solté tus avisos. ') +
+              ', tus redes, tus votos y el vínculo de tus avisos. '
+            : 'No tenías perfil en la Liga; igual solté tus avisos y borré tus votos. ') +
             'Quedó anotado que no te vuelva a sumar solo.\n' +
             '-# La página se pone al día en la próxima vuelta del ciclo (menos de una hora).',
           components: [],
