@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-27T06:53:57+00:00",
+ "cuando": "2026-09-27T09:07:04+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -16,6 +16,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "HOY CADA BATALLA SUMA",
+   "fecha": "FINAL 12 DE JULIO",
    "premios": ""
   },
   {
@@ -33,6 +34,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "19:30",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -50,6 +52,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "16:00",
+   "fecha": "Hoy, Lunes 20 Jul.",
    "premios": ""
   },
   {
@@ -67,6 +70,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "🇨🇷 17:00",
+   "fecha": "Hoy, Domingo 5 Jul.",
    "premios": ""
   },
   {
@@ -84,6 +88,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "<t:1782946800:F>",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -101,6 +106,7 @@
    "rango": "",
    "modalidad": "1V1",
    "horario": "",
+   "fecha": "AHORA",
    "premios": "NADA COMPE CHILL"
   },
   {
@@ -118,6 +124,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "10:20",
+   "fecha": "Hoy, martes 30 Jun.",
    "premios": "Pts"
   },
   {
@@ -135,6 +142,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "16:00",
+   "fecha": "Hoy, Lunes 29 Jun.",
    "premios": ""
   },
   {
@@ -152,6 +160,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "Ahora",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -169,6 +178,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "8:50",
+   "fecha": "Hoy, Viernes 26 Jun.",
    "premios": "Pts"
   },
   {
@@ -186,6 +196,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "🇨🇷 16:20",
+   "fecha": "Hoy, Jueves 25 Jun.",
    "premios": "Pts"
   },
   {
@@ -203,6 +214,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "al finalizar inscripciones",
+   "fecha": "24 de Junio",
    "premios": "Puntos para el ranking interserver interserver + rol del rey de saturno 🏅"
   },
   {
@@ -220,6 +232,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "🇨🇷 16:00",
+   "fecha": "Hoy, Martes 23 Jun.",
    "premios": ""
   },
   {
@@ -237,6 +250,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "🇨🇷 21:00",
+   "fecha": "Hoy, Lunes 22 Jun.",
    "premios": ""
   },
   {
@@ -254,6 +268,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "Al llenar cupos.",
+   "fecha": "Hoy Lunes 22 Jun.",
    "premios": "Puntos para Ranking Interserver Hermandad"
   },
   {
@@ -271,6 +286,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "",
+   "fecha": "3 2V2",
    "premios": "",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -290,6 +306,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "🇨🇷 20:30",
+   "fecha": "Hoy, Sábado 26 Sept.",
    "premios": "",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -309,6 +326,7 @@
    "rango": "ʙʀᴏɴᴄᴇ ɪɪɪ 🥉",
    "modalidad": "2V2",
    "horario": "CUANDO TODO ESTÉ LISTO",
+   "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -328,6 +346,7 @@
    "rango": "ʙʀᴏɴᴄᴇ ɪɪɪ 🥉",
    "modalidad": "1V1",
    "horario": "CUANDO TODO ESTÉ LISTO",
+   "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -347,6 +366,7 @@
    "rango": "Bronce",
    "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
+   "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -366,6 +386,7 @@
    "rango": "Plata 3",
    "modalidad": "2v2",
    "horario": "EN 30 MINUTOS",
+   "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -385,6 +406,7 @@
    "rango": "Bronce",
    "modalidad": "Pandillas",
    "horario": "EN 15",
+   "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -404,6 +426,7 @@
    "rango": "ʙʀᴏɴᴄᴇ ɪɪɪ 🥉",
    "modalidad": "2v2",
    "horario": "en 10 min",
+   "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -423,6 +446,7 @@
    "rango": "ʙʀᴏɴᴄᴇ ɪɪɪ 🥉",
    "modalidad": "1V1",
    "horario": "CUANDO TODO ESTÉ LISTO",
+   "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -442,6 +466,7 @@
    "rango": "Bronce",
    "modalidad": "Pandillas",
    "horario": "EN 30 MINUTOS",
+   "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -461,6 +486,7 @@
    "rango": "Bronce",
    "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
+   "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -480,6 +506,7 @@
    "rango": "diamante tunesino a lo galatasaray",
    "modalidad": "1v1 compe trol",
    "horario": "ahora",
+   "fecha": "",
    "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -499,6 +526,7 @@
    "rango": "Bronce",
    "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
+   "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -518,6 +546,7 @@
    "rango": "bronce",
    "modalidad": "3v3",
    "horario": "en 15 se abren inscripciones",
+   "fecha": "",
    "premios": "pts para el ascenso + pts para la tabla",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -537,6 +566,7 @@
    "rango": "Competencia De Ascenso Rango ᴘʟᴀᴛᴀ ɪɪɪ",
    "modalidad": "Multiverse",
    "horario": "⭐ 4:45PM HORA MEXICO CENTRAL (INSCRIPCIONES 30 MIN ANTES) ⭐",
+   "fecha": "21 09",
    "premios": "Clasificacion ᴘʟᴀᴛᴀ ɪɪɪ  y Rol De Campeon",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -556,6 +586,7 @@
    "rango": "BRONCE",
    "modalidad": "multiverse 1 a 3",
    "horario": "EN 15",
+   "fecha": "",
    "premios": "aura + trofeo",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -575,6 +606,7 @@
    "rango": "BRONCE",
    "modalidad": "1V1 ROYAL RUMBLE_",
    "horario": "EN 15",
+   "fecha": "",
    "premios": "PTS PARA EL ASCENSO+PTS PARA LA TABLA",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -594,6 +626,7 @@
    "rango": "BRONCE",
    "modalidad": "2V2",
    "horario": "EN 15",
+   "fecha": "",
    "premios": "PTS PARA EL ASCENSO + PTS PARA LA TABLA",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -613,6 +646,7 @@
    "rango": "PLATA III",
    "modalidad": "⚔️  1VS1",
    "horario": "EN 20 MINUTOS",
+   "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -632,6 +666,7 @@
    "rango": "Plata I",
    "modalidad": "⚔️  1v1",
    "horario": "30 min",
+   "fecha": "19/09/26",
    "premios": "El respeto de todos",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -651,6 +686,7 @@
    "rango": "BRONCE",
    "modalidad": "DUPLAS RANDOM",
    "horario": "EN 1 HORA",
+   "fecha": "",
    "premios": "ROL CAMPEON",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -670,6 +706,7 @@
    "rango": "rap",
    "modalidad": "1v1",
    "horario": "ya",
+   "fecha": "",
    "premios": "aura",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -689,6 +726,7 @@
    "rango": "67",
    "modalidad": "1 v 1_",
    "horario": "ABIERTAS 15M ANTES DE COMPETENCIA!",
+   "fecha": "",
    "premios": "FOTO DE FLENNZS",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -708,6 +746,7 @@
    "rango": "",
    "modalidad": "PANDILLA",
    "horario": "EN 15",
+   "fecha": "",
    "premios": "PTS PARA EL ASCENSO",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-09-27T01:29:39"
@@ -727,6 +766,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "",
+   "fecha": "1 1V1",
    "premios": ""
   },
   {
@@ -744,6 +784,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "",
+   "fecha": "1vs1 pandilla",
    "premios": ""
   },
   {
@@ -761,6 +802,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "<t:1781556600:F>",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -778,6 +820,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "<t:1766347200:F>",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -795,6 +838,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "Domingo 00:00 🇦🇷",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -811,7 +855,8 @@
    "cupo_total": null,
    "rango": "",
    "modalidad": "",
-   "horario": "",
+   "horario": "<t:1790542800:F>",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -829,6 +874,7 @@
    "rango": "4",
    "modalidad": "PANDILLAS",
    "horario": "22:30 🇨🇱",
+   "fecha": "7",
    "premios": "PTS TABLA"
   },
   {
@@ -846,6 +892,7 @@
    "rango": "2",
    "modalidad": "1v1",
    "horario": "<t:1790109000:F>",
+   "fecha": "",
    "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de"
   },
   {
@@ -863,6 +910,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "<t:1789758000:F>",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -880,6 +928,7 @@
    "rango": "4",
    "modalidad": "1️⃣6️⃣ | 𝐎𝐂𝐓𝐀𝐕𝐎𝐒 𝐃𝐄 𝐅𝐈𝐍𝐀𝐋: 4x4 3E Libre",
    "horario": "AHORA",
+   "fecha": "",
    "premios": "PUNTOS DE ASCENSO"
   },
   {
@@ -897,6 +946,7 @@
    "rango": "4",
    "modalidad": "PANDILLAS",
    "horario": "20:30 🇨🇱",
+   "fecha": "6",
    "premios": "PTS TABLA"
   },
   {
@@ -914,6 +964,7 @@
    "rango": "",
    "modalidad": "1🆚️1",
    "horario": "<t:1789412400:t>",
+   "fecha": "14/09",
    "premios": "Puntos de ascenso + Puntos de ranking GØÐZ"
   },
   {
@@ -931,6 +982,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "<t:1789329600:F>",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -948,6 +1000,7 @@
    "rango": "4",
    "modalidad": "1V1",
    "horario": "EN 15",
+   "fecha": "8",
    "premios": "PTS PARA EL RANKING"
   },
   {
@@ -965,6 +1018,7 @@
    "rango": "4",
    "modalidad": "MULTIVERSE (1-4)",
    "horario": "en 15",
+   "fecha": "7",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
   },
   {
@@ -982,6 +1036,7 @@
    "rango": "4",
    "modalidad": "1vs1",
    "horario": "EN 15",
+   "fecha": "6",
    "premios": "PTS PARA LA TABLA + PTS PARA EL RANKING"
   },
   {
@@ -998,7 +1053,8 @@
    "cupo_total": 16,
    "rango": "",
    "modalidad": "",
-   "horario": "",
+   "horario": "<t:1788470428:t>",
+   "fecha": "<t:1788470340:d>",
    "premios": ""
   },
   {
@@ -1016,6 +1072,7 @@
    "rango": "4",
    "modalidad": "PANDILLAS",
    "horario": "EN 10",
+   "fecha": "5",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
   },
   {
@@ -1033,6 +1090,7 @@
    "rango": "4",
    "modalidad": "2V2",
    "horario": "18:00 🇨🇱",
+   "fecha": "1",
    "premios": "PTS TABLA"
   },
   {
@@ -1050,6 +1108,7 @@
    "rango": "4",
    "modalidad": "2V2",
    "horario": "en 10",
+   "fecha": "4",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA+TROFEOS"
   },
   {
@@ -1067,6 +1126,7 @@
    "rango": "4",
    "modalidad": "MULTIVERSE",
    "horario": "21:30 🇨🇱",
+   "fecha": "5",
    "premios": "PTS TABLA"
   },
   {
@@ -1084,6 +1144,7 @@
    "rango": "3️⃣",
    "modalidad": "1vs1",
    "horario": "<t:1787943600:F>",
+   "fecha": "",
    "premios": "CUPO A LA LIGA SNAKE LEAGUE: NEW CHAPTER  + PUNTOS DE ASCENSO"
   },
   {
@@ -1101,6 +1162,7 @@
    "rango": "4",
    "modalidad": "ROYAL RUMBLE",
    "horario": "en 15",
+   "fecha": "3",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
   },
   {
@@ -1118,6 +1180,7 @@
    "rango": "4",
    "modalidad": "MULTIVERSE(1-4)",
    "horario": "23 HS 🇦🇷",
+   "fecha": "2",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
   },
   {
@@ -1135,6 +1198,7 @@
    "rango": "4",
    "modalidad": "1v1",
    "horario": "en 30",
+   "fecha": "1",
    "premios": "pts para el ranking+pts para la tabla+aura"
   },
   {
@@ -1152,6 +1216,7 @@
    "rango": "4",
    "modalidad": "1V1",
    "horario": "EN 15 MINUTOS",
+   "fecha": "4",
    "premios": "PTS TABLA"
   },
   {
@@ -1169,6 +1234,7 @@
    "rango": "4",
    "modalidad": "1V1",
    "horario": "EN 15 MINUTOS",
+   "fecha": "3",
    "premios": "PTS TABLA"
   },
   {
@@ -1186,6 +1252,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1203,6 +1270,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1220,6 +1288,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1237,6 +1306,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1254,6 +1324,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1271,6 +1342,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1288,6 +1360,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1305,6 +1378,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1322,6 +1396,7 @@
    "rango": "(3K puntos de ascenso al primero y +3 campeonatos)",
    "modalidad": "PANDILLAS",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1339,6 +1414,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1356,6 +1432,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1373,6 +1450,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1390,6 +1468,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1407,6 +1486,7 @@
    "rango": "Plata",
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1424,6 +1504,7 @@
    "rango": "(2k puntos de ascenso al primero y un campeonato)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1441,6 +1522,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "Ya",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1458,6 +1540,7 @@
    "rango": "(2k puntos de ascenso al primero)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1475,6 +1558,7 @@
    "rango": "Plata",
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1492,6 +1576,7 @@
    "rango": "(2k puntos de ascenso al primero)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1509,6 +1594,7 @@
    "rango": "(2k puntos de ascenso al primero)",
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1526,6 +1612,7 @@
    "rango": "(2k puntos de ascenso al primero)",
    "modalidad": "1vs1",
    "horario": "En 8 minutos",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1543,6 +1630,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "En 9 minutos",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1560,6 +1648,7 @@
    "rango": "",
    "modalidad": "1V1",
    "horario": "AL LLENAR INSC",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1577,6 +1666,7 @@
    "rango": "",
    "modalidad": "1vs1",
    "horario": "En 8 minutos",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1594,6 +1684,7 @@
    "rango": "",
    "modalidad": "2V1 (8/4 CUPOS PARA DUPLA Y 8/4 CUPOS EN SOLITARIO)",
    "horario": "EN 20 MINUTOS",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1611,6 +1702,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "4 PM MEX/USA",
+   "fecha": "",
    "premios": ""
   },
   {
@@ -1628,6 +1720,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "4 PM mex,5 PM Col",
+   "fecha": "Viernes 11 de septiembre",
    "premios": ""
   },
   {
@@ -1645,6 +1738,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "6 PM COLOMBIA",
+   "fecha": "LUNES 10 de AGOSTO.",
    "premios": ""
   },
   {
@@ -1662,6 +1756,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "8:00 PM España.",
+   "fecha": "Sábado 01 de AGOSTO.",
    "premios": ""
   },
   {
@@ -1679,6 +1774,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "8:30-9:00pm España.",
+   "fecha": "Sábado 27 de Junio.",
    "premios": ""
   },
   {
@@ -1696,6 +1792,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "4:00pm Colombia.",
+   "fecha": "Jueves 18 de Junio.",
    "premios": ""
   },
   {
@@ -1713,6 +1810,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "",
+   "fecha": "[PRÓXIMAMENTE]",
    "premios": ""
   },
   {
@@ -1730,6 +1828,7 @@
    "rango": "",
    "modalidad": "",
    "horario": "",
+   "fecha": "[PRÓXIMAMENTE]",
    "premios": ""
   },
   {
@@ -1747,6 +1846,7 @@
    "rango": "",
    "modalidad": "CLASIFICATORIAS",
    "horario": "",
+   "fecha": "",
    "premios": ""
   }
  ],
