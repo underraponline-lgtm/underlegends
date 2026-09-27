@@ -643,7 +643,57 @@ def rondas_de(texto):
             bats.append(nombres)
     if actual and bats:
         out.append((actual, bats))
+    return _equipos_con_espacios(out)
+
+
+def _equipos_con_espacios(rs):
+    """Las rondas, con los equipos escritos sin `+` ya partidos.
+
+    🔴 URBAN FREESTYLE ESCRIBE LOS EQUIPOS CON ESPACIOS: `YINN FRANKY 🆚
+    HASSAN SEBITAS`, y el podio `CAMPEÓN 🏆 : YINN HASSAN SEBITAS`. Sin `+`,
+    sin marcos y sin banderas, cada lado era UNA persona llamada «HASSAN
+    SEBITAS» — que no existe, y que dejaba a Hassan y a Sebitas sin su
+    semifinal. Medido el 27/09/2026 sobre sus 46 llaves viejas: las dudas
+    bajan de 25 a 21, y la que las mostró —la del 09/09— se lee entera.
+
+    ⚠️ LA REGLA ES EXACTA, NO UN PARECIDO: un lado es un equipo si se
+    puede partir ENTERO en nombres que ya aparecieron SOLOS en una ronda
+    anterior de esta misma llave. HASSAN y SEBITAS pelearon cuartos cada
+    uno por su lado, así que «HASSAN SEBITAS» en semis son los dos.
+
+    ⚠️ Y SI EL NOMBRE COMPLETO YA APARECIÓ, ES UNA PERSONA: «POLLO SPORT»
+    que peleó octavos solo sigue siendo uno en cuartos, aunque existiera
+    alguien llamado POLLO. La primera ronda nunca se parte: no tiene con
+    qué compararse.
+    """
+    vistos, out = set(), []
+    for ronda, bats in rs:
+        out.append((ronda, [[_partir_equipo(x, vistos) for x in b] for b in bats]))
+        for b in bats:
+            for x in b:
+                if not re.search(r'[+,&]', x):
+                    vistos.add(norm(HISTORIA.sub('', x)))
+        vistos.discard('')
     return out
+
+
+def _partir_equipo(lado, vistos):
+    """`HASSAN SEBITAS` -> `HASSAN + SEBITAS` si los dos ya pelearon solos."""
+    if not vistos or re.search(r'[+,&()（）⌞⌝\[\]]', lado or ''):
+        return lado
+    pal = lado.split()
+    if len(pal) < 2 or norm(lado) in vistos:
+        return lado
+    # la partición con menos pedazos donde cada pedazo es alguien ya visto
+    mejor = [[]] + [None] * len(pal)
+    for i in range(1, len(pal) + 1):
+        for j in range(i):
+            if mejor[j] is not None and norm(' '.join(pal[j:i])) in vistos:
+                c = mejor[j] + [' '.join(pal[j:i])]
+                if mejor[i] is None or len(c) < len(mejor[i]):
+                    mejor[i] = c
+    g = mejor[-1]
+    return ' + '.join(g) if g and len(g) >= 2 else lado
 
 
 def es_llave(texto):
@@ -882,6 +932,15 @@ def resolver(texto, conocidos=None, ids=None):
     if mc:
         resto = (texto or '')[mc.end():].split('\n')
         camp2 = next((l.strip() for l in resto[1:3] if l.strip()), None)
+        # 🔴 PERO NO SI EL RENGLÓN DE ABAJO ES EL DEL SEGUNDO. Urban
+        # Freestyle escribe `CAMPEÓN 🏆 : …` y abajo `SEGUNDO … : POLLO
+        # MARTYNEZ NC`: cuando el campeón no enganchaba, este respaldo
+        # tomaba al SUBCAMPEÓN como ganador de la final — el resultado
+        # dado vuelta, que es el error más caro que hay. Lo encontró el
+        # 27/09/2026 una llave vieja de Urban Freestyle.
+        if camp2 and re.search(r'SEGUND|SUB[\s\-]*CAMPE|\b2\s*(?:DO|ND|°|º)\b|'
+                               r'\bPUESTO\b|\bLUGAR\b|M\.?\s*V\.?\s*P\b', camp2, re.I):
+            camp2 = None
     out = []
     for i, (ronda, bats) in enumerate(rs):
         # 🔴 `rs[i + 1][1]`, NO `rs[i + 1]`. La primera version iteraba la
@@ -1029,6 +1088,17 @@ def resolver(texto, conocidos=None, ids=None):
                 if g is None and _equipo(camp):
                     g = next((n for n in b if _equipo(n) == _equipo(camp)),
                              None)
+                # 🔑 Y EL EQUIPO ESCRITO CON ESPACIOS: Urban Freestyle pone
+                # `CAMPEÓN 🏆 : YINN HASSAN SEBITAS` contra el lado `YINN +
+                # SEBITAS + HASSAN`. Se parte con los integrantes de los
+                # lados, la misma regla exacta que `_equipos_con_espacios()`.
+                if g is None:
+                    _ms = {norm(m) for n in b for m in re.split(r'[+&,]', n)
+                           if norm(m)}
+                    _eq = _partir_equipo(' '.join(w for w in MENCION.sub('', camp).split()
+                                                  if norm(w)), _ms)
+                    if '+' in _eq:
+                        g = next((n for n in b if _equipo(n) == _equipo(_eq)), None)
                 if g is None and camp2:
                     g = _parecido(camp2, b) or next(
                         (n for n in b
@@ -1830,6 +1900,25 @@ def _check_dialectos():
         ('traducir dos veces es traducir una',
          all(traducir(traducir(plano(t))) == traducir(plano(t))
              for t in (genesis, insignia + insignia2, exhib, seven))),
+    ]
+    urbf = ('# CUARTOS\nHASSAN 🆚 GUTY\nSEBITAS 🆚 AGUSTIN\nPOLLO SPORT 🆚 NC\nPOLLO 🆚 MIA\n'
+            '# FINAL\nHASSAN SEBITAS 🆚 POLLO SPORT\n')
+    ru = rondas_de(urbf)
+    casos += [
+        ('Urban Freestyle: «HASSAN SEBITAS» es un equipo si pelearon solos',
+         ru[-1] == ('FINAL', [['HASSAN + SEBITAS', 'POLLO SPORT']])),
+        ('… y la primera ronda no se parte',
+         ru[0][1][2] == ['POLLO SPORT', 'NC']),
+        ('el campeón escrito con espacios engancha con su equipo',
+         [x[2] for x in resolver(urbf.replace('POLLO SPORT 🆚 NC\nPOLLO 🆚 MIA\n', 'POLLO 🆚 MIA\n')
+                                 + 'CAMPEÓN 🏆 : SEBITAS HASSAN\n') if x[0] == 'FINAL']
+         == ['HASSAN + SEBITAS']),
+        ('y el renglón del SEGUNDO nunca es el campeón',
+         [x[2] for x in resolver('# SEMIFINALES\nHassan + Sebitas 🆚 Yinn + Franky\n'
+                                 'Pollo + Martynez 🆚 Makma + Nc\n# FINAL\n'
+                                 'Hassan + Sebitas 🆚 Pollo + Martynez\n'
+                                 'CAMPEÓN 🏆 : Nadie\nSEGUNDO 🥈 : Pollo Martynez\n')
+          if x[0] == 'FINAL'] == [None]),
     ]
     filtro = ('`[ FILTROS ]`\n⌞A⌝ 🆚 ⌞B⌝ 🆚 ⌞C⌝\n⌞D⌝ 🆚 ⌞E⌝ 🆚 ⌞F⌝\n'
               '`[ FINAL ]`\n⌞A⌝ 🆚 ⌞B⌝\nCAMPEON: A')

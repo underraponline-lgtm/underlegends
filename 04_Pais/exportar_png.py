@@ -213,17 +213,34 @@ def main():
     if a.todas:
         elegidos = [p for p in gente if p['cc']]
     elif a.quien:
-        por = {G.norm(p['nombre']): p for p in gente}
+        # 🔴 PRIMERO EL NOMBRE EXACTO, DESPUÉS EL NORMALIZADO. El 27/09/2026
+        # el pool trajo a «Kenny» (FFA, 🇦🇷) y a «KENNY» (Snake Rap, sin
+        # bandera), dos filas con la misma clave: el dict se quedaba con
+        # la última, se le pedía Kenny y dibujaba a KENNY.
+        exacto = {p['nombre']: p for p in gente}
+        por = {}
+        for p in gente:
+            por.setdefault(G.norm(p['nombre']), []).append(p)
         elegidos, faltan = [], []
         for q in a.quien:
-            p = por.get(G.norm(q))
+            cands = por.get(G.norm(q)) or []
+            p = exacto.get(q) or next((x for x in cands if x['cc']),
+                                      cands[0] if cands else None)
             (elegidos if p else faltan).append(p or q)
         if faltan:
             raise SystemExit('no estan en el pool: %s' % ', '.join(faltan))
+        # 🔴 Y EL QUE NO TIENE PAÍS SE SALTEA, NO TUMBA LA TANDA. El ciclo
+        # manda de a diez y esto cortaba con un SystemExit: ese día una
+        # persona sin bandera se llevó puestas las cartas de País de otras
+        # diez (Jupiter, KC, Kravitz…). Quien llama cuenta carta por carta
+        # lo que salió (ver `bot/pipeline.py`), así que la que no se
+        # dibuja queda marcada sola.
         sin = [p['nombre'] for p in elegidos if not p['cc']]
         if sin:
-            raise SystemExit('sin pais, no se les emite carta: %s'
-                             % ', '.join(sin))
+            print('⚠️ sin pais, no se les emite carta: %s' % ', '.join(sin))
+            elegidos = [p for p in elegidos if p['cc']]
+        if not elegidos:
+            return
     else:
         ap.error('decime a quien, o --todas')
 
