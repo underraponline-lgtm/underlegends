@@ -10,158 +10,255 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800;900&family=Barlow+Condensed:wght@600;700&display=swap">
-<style>
-:root{--bg:#030304;--pn:#0B0D0F;--tx:#EDEDF2;--tx2:#A8B4B1;--tl:#29B298;--bd:#1A2523;color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);
-font:400 16px/1.65 Archivo,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
-padding-inline:16px;padding-block:32px 64px}
-main{max-width:70ch;margin:0 auto}
-a{color:var(--tl);text-underline-offset:3px}
-.vuelta{display:inline-block;margin-bottom:24px;text-decoration:none;
-font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
-h1{font:900 clamp(2rem,6vw,2.8rem)/1.05 Archivo,sans-serif;margin:0 0 8px;letter-spacing:-.01em}
-h1 em{font-style:normal;color:var(--tl)}
-.fecha{color:var(--tx2);margin:0 0 28px;font-size:.95rem}
-h2{font:800 1.25rem/1.25 Archivo,sans-serif;margin:34px 0 10px;text-wrap:balance}
-p,li{color:var(--tx)}
-.suave{color:var(--tx2)}
-ul{padding-left:20px;margin:8px 0}
-li{margin:6px 0}
-strong{font-weight:800}
-code{font:500 .88em ui-monospace,Consolas,monospace;background:var(--pn);padding:1px 5px;border-radius:3px}
-.idioma{margin:56px 0 0;padding-top:28px;border-top:1px solid var(--bd)}
-.etq{font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--tx2)}
-</style>
+<link rel="stylesheet" href="legal.css">
 </head>
-<body>
-<main>
-<a class="vuelta" href="/">&#8249; Liga Global</a>
-<h1>Política de <em>privacidad</em></h1>
-<p class="fecha">Última actualización: 26 de septiembre de 2026 · <a href="#en">English version</a></p>
+<body data-idioma="es">
+<header class="barra">
+  <a class="marca" href="/"><img src="ul.png" alt="" width="36" height="36"><span>Liga Global<small>Freestyle en español</small></span></a>
+  <a class="volver" href="/"><span data-lang="es">&#8249; Volver a la Liga</span><span data-lang="en">&#8249; Back to the league</span></a>
+</header>
 
-<p>Esta política explica qué datos usan el bot <strong>LIGA GLOBAL</strong> de Discord y la página
-<strong>underlegends.pages.dev</strong>, para qué, dónde se guardan y cómo pedir que se borren.</p>
+<main class="hoja">
+  <div class="cab">
+    <p class="etq" data-lang="es"><b>Privacidad</b> · Última actualización: 26 de septiembre de 2026</p>
+    <p class="etq" data-lang="en"><b>Privacy</b> · Last updated: September 26, 2026</p>
+    <h1 data-lang="es">Política de <em>privacidad</em></h1>
+    <h1 data-lang="en" lang="en">Privacy <em>policy</em></h1>
+    <div class="idiomas" role="group" aria-label="Idioma · Language">
+      <button type="button" data-i="es" aria-pressed="true">Español</button>
+      <button type="button" data-i="en" aria-pressed="false">English</button>
+    </div>
+  </div>
 
-<h2>Quiénes somos</h2>
-<p>La Liga Global de Freestyle en Español, organizada por Under Legends junto con los servidores de la Liga:
-Discord Rap Español, Freestyle For All, Snake Rap y Urban Freestyle. Contacto: un admin de la Liga en <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>.</p>
+  <div class="cuerpo">
+    <!-- ══ ESPAÑOL ══ -->
+    <div class="texto" data-lang="es">
+      <p class="suave">Qué datos usan el bot <strong>LIGA GLOBAL</strong> de Discord y la página
+      <strong>underlegends.pages.dev</strong>, para qué, dónde se guardan y cómo pedir que se borren.</p>
 
-<h2>Qué datos usamos y para qué</h2>
-<ul>
-<li><strong>Tu cuenta de Discord</strong>: tu ID de usuario, tu nombre de usuario y tu apodo, tu foto de perfil y tus
-roles en los servidores de la Liga (el rol Miembro de Discord Rap Español y los roles de país). Sirven para saber si
-podés tener tarjeta, de qué país sos y en qué servidores de la Liga estás.</li>
-<li><strong>Mensajes de los canales de eventos</strong>: el bot lee los anuncios, las llaves y las inscripciones
-que se publican en los canales de eventos de los servidores de la Liga. De ahí salen los resultados (quién jugó,
-quién ganó, los puntos), el calendario de eventos y quién se inscribió. No lee mensajes directos ni otros canales,
-y no guarda conversaciones.</li>
-<li><strong>Lo que la Liga publica</strong>: tu nombre de rapero, país, crew, resultados, puntos, rankings y
-tarjetas. Es público a propósito: es la Liga. Se ve en esta página y en Discord.</li>
-<li><strong>En la página, sólo si lo elegís</strong>: al entrar con Discord, tu ID, nombre y foto (el permiso
-<code>identify</code>). Si usás «Mis redes», tus conexiones de Discord, y guardamos sólo las que marcás para mostrar.
-Si activás los avisos, la suscripción de notificaciones de ese dispositivo y, si la vinculás, tu ID de Discord,
-para mandarte tus avisos. Tus ajustes y a quién seguís quedan sólo en tu navegador.</li>
-</ul>
+      <section class="importa">
+        <h2>Lo importante</h2>
+        <ul>
+          <li>La Liga publica tu nombre de rapero, tus resultados y tus tarjetas: <strong>es la Liga</strong>.</li>
+          <li>El bot lee <strong>sólo los canales de eventos</strong>; nunca tus mensajes directos.</li>
+          <li><strong>No vendemos ni compartimos tus datos</strong>, y no te mandamos mensajes directos.</li>
+          <li>Para borrar lo tuyo: <code>/borrar-mis-datos</code> en Discord.</li>
+        </ul>
+      </section>
 
-<h2>Lo que no hacemos</h2>
-<ul>
-<li>No vendemos tus datos ni los compartimos para publicidad.</li>
-<li>No te mandamos mensajes directos. Los avisos son notificaciones de la página que vos activás y podés apagar.</li>
-<li>No usamos tus datos para nada fuera de la Liga.</li>
-</ul>
+      <section class="sec" id="es-quienes">
+        <h2><span class="n">01</span>Quiénes somos</h2>
+        <p>La Liga Global de Freestyle en Español, organizada por Under Legends junto con los servidores de la Liga:
+        Discord Rap Español, Freestyle For All, Snake Rap y Urban Freestyle. Contacto: un admin de la Liga en
+        <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>.</p>
+      </section>
 
-<h2>Dónde se guardan</h2>
-<ul>
-<li>En la infraestructura de Cloudflare (Workers, KV, R2 y Durable Objects), en planillas de Google Sheets de la
-organización y en el repositorio de GitHub donde corre el proceso que arma la Liga.</li>
-<li>Para entregar un aviso, el servicio de notificaciones de tu navegador (Google, Apple, Mozilla o Microsoft)
-recibe el mensaje cifrado.</li>
-</ul>
+      <section class="sec" id="es-datos">
+        <h2><span class="n">02</span>Qué datos usamos y para qué</h2>
+        <ul>
+          <li><strong>Tu cuenta de Discord</strong>: tu ID de usuario, tu nombre de usuario y tu apodo, tu foto de perfil y
+          tus roles en los servidores de la Liga (el rol Miembro de Discord Rap Español y los roles de país). Sirven para
+          saber si podés tener tarjeta, de qué país sos y en qué servidores de la Liga estás.</li>
+          <li><strong>Mensajes de los canales de eventos</strong>: el bot lee los anuncios, las llaves y las inscripciones
+          que se publican en los canales de eventos de los servidores de la Liga. De ahí salen los resultados (quién jugó,
+          quién ganó, los puntos), el calendario de eventos y quién se inscribió. No lee mensajes directos ni otros
+          canales, y no guarda conversaciones.</li>
+          <li><strong>Lo que la Liga publica</strong>: tu nombre de rapero, país, crew, resultados, puntos, rankings y
+          tarjetas. Es público a propósito: es la Liga. Se ve en esta página y en Discord.</li>
+          <li><strong>En la página, sólo si lo elegís</strong>: al entrar con Discord, tu ID, nombre y foto (el permiso
+          <code>identify</code>). Si usás «Mis redes», tus conexiones de Discord, y guardamos sólo las que marcás para
+          mostrar. Si activás los avisos, la suscripción de notificaciones de ese dispositivo y, si la vinculás, tu ID de
+          Discord, para mandarte tus avisos. Tus ajustes y a quién seguís quedan sólo en tu navegador.</li>
+        </ul>
+      </section>
 
-<h2>Cuánto tiempo</h2>
-<ul>
-<li>Los resultados y las tarjetas de cada temporada se guardan mientras exista la Liga: son su historial.
-La foto de la tarjeta se guarda por temporada, porque la tarjeta Histórica muestra la cara de cada una.</li>
-<li>La suscripción a los avisos se borra cuando la desactivás, o cuando el servicio de notificaciones dice que ya
-no existe.</li>
-<li>Tus redes guardadas se borran si las quitás, y dejan de mostrarse si pasan 120 días sin revisarlas.</li>
-</ul>
+      <section class="sec" id="es-no">
+        <h2><span class="n">03</span>Lo que no hacemos</h2>
+        <ul>
+          <li>No vendemos tus datos ni los compartimos para publicidad.</li>
+          <li>No te mandamos mensajes directos. Los avisos son notificaciones de la página que vos activás y podés apagar.</li>
+          <li>No usamos tus datos para nada fuera de la Liga.</li>
+        </ul>
+      </section>
 
-<h2>Borrar tus datos</h2>
-<p>Usá <code>/borrar-mis-datos</code> en Discord (en inglés, <code>/delete-my-data</code>). Te muestra qué se borra
-y, si confirmás, borra en el acto tu perfil, tus tarjetas, tu foto, tus redes y el vínculo de tus avisos. Guardamos
-sólo tu ID de Discord en una lista de bajas, para que el sistema no te vuelva a sumar solo.</p>
-<p>Los resultados de los eventos en los que jugaste son parte del historial de la Liga. Si querés que cambiemos tu
-nombre ahí, o si no podés usar el comando, escribile a un admin de la Liga en <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>: lo hacemos en un
-plazo de 30 días.</p>
+      <section class="sec" id="es-donde">
+        <h2><span class="n">04</span>Dónde se guardan</h2>
+        <ul>
+          <li>En la infraestructura de Cloudflare (Workers, KV, R2 y Durable Objects), en planillas de Google Sheets de la
+          organización y en el repositorio de GitHub donde corre el proceso que arma la Liga.</li>
+          <li>Para entregar un aviso, el servicio de notificaciones de tu navegador (Google, Apple, Mozilla o Microsoft)
+          recibe el mensaje cifrado.</li>
+        </ul>
+      </section>
 
-<h2>Cambios</h2>
-<p>Si esta política cambia, la actualizamos acá con la fecha nueva.</p>
+      <section class="sec" id="es-cuanto">
+        <h2><span class="n">05</span>Cuánto tiempo</h2>
+        <ul>
+          <li>Los resultados y las tarjetas de cada temporada se guardan mientras exista la Liga: son su historial. La foto
+          de la tarjeta se guarda por temporada, porque la tarjeta Histórica muestra la cara de cada una.</li>
+          <li>La suscripción a los avisos se borra cuando la desactivás, o cuando el servicio de notificaciones dice que ya
+          no existe.</li>
+          <li>Tus redes guardadas se borran si las quitás, y dejan de mostrarse si pasan 120 días sin revisarlas.</li>
+        </ul>
+      </section>
 
-<section class="idioma" id="en" lang="en">
-<p class="etq">English version</p>
-<h1>Privacy <em>policy</em></h1>
-<p class="fecha">Last updated: September 26, 2026</p>
+      <section class="sec" id="es-borrar">
+        <h2><span class="n">06</span>Borrar tus datos</h2>
+        <p>Usá <code>/borrar-mis-datos</code> en Discord (en inglés, <code>/delete-my-data</code>). Te muestra qué se
+        borra y, si confirmás, borra en el acto tu perfil, tus tarjetas, tu foto, tus redes y el vínculo de tus avisos.
+        Guardamos sólo tu ID de Discord en una lista de bajas, para que el sistema no te vuelva a sumar solo.</p>
+        <p>Los resultados de los eventos en los que jugaste son parte del historial de la Liga. Si querés que cambiemos tu
+        nombre ahí, o si no podés usar el comando, escribile a un admin de la Liga en
+        <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>: lo hacemos en un plazo de 30 días.</p>
+      </section>
 
-<p>This policy explains what data the <strong>LIGA GLOBAL</strong> Discord bot and the
-<strong>underlegends.pages.dev</strong> website use, why, where it is stored and how to have it deleted.</p>
+      <section class="sec" id="es-cambios">
+        <h2><span class="n">07</span>Cambios</h2>
+        <p>Si esta política cambia, la actualizamos acá con la fecha nueva.</p>
+      </section>
+    </div>
 
-<h2>Who we are</h2>
-<p>Liga Global de Freestyle en Español, a Spanish-language freestyle rap league run by Under Legends together with
-the league's servers: Discord Rap Español, Freestyle For All, Snake Rap and Urban Freestyle. Contact: a league admin in <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>.</p>
+    <!-- ══ ENGLISH ══ -->
+    <div class="texto" data-lang="en" lang="en">
+      <p class="suave">What data the <strong>LIGA GLOBAL</strong> Discord bot and the
+      <strong>underlegends.pages.dev</strong> website use, why, where it is stored and how to have it deleted.</p>
 
-<h2>What we use and why</h2>
-<ul>
-<li><strong>Your Discord account</strong>: your user ID, username and nickname, avatar, and your roles in the
-league's servers (the Member role in Discord Rap Español and country roles). We use them to know whether you can
-have a card, which country you represent and which league servers you are in.</li>
-<li><strong>Messages in event channels</strong>: the bot reads the announcements, tournament brackets and sign-ups
-posted in the event channels of the league's servers. From them it gets the results (who played, who won, points),
-the event calendar and who signed up. It does not read direct messages or any other channels, and it does not store
-conversations.</li>
-<li><strong>What the league publishes</strong>: your rapper name, country, crew, results, points, rankings and
-cards. This is public on purpose — it is the league — and is shown on this website and in Discord.</li>
-<li><strong>On the website, only if you choose to</strong>: when you log in with Discord, your ID, name and avatar
-(the <code>identify</code> scope). If you use “My socials”, your Discord connections, and we keep only the ones you
-choose to show. If you turn on notifications, that device's push subscription and, if you link it, your Discord ID
-so we can send you your own alerts. Your settings and who you follow stay in your browser.</li>
-</ul>
+      <section class="importa">
+        <h2>The short version</h2>
+        <ul>
+          <li>The league publishes your rapper name, results and cards: <strong>that is the league</strong>.</li>
+          <li>The bot reads <strong>only event channels</strong>; never your direct messages.</li>
+          <li><strong>We don't sell or share your data</strong>, and we don't send you direct messages.</li>
+          <li>To delete yours: <code>/delete-my-data</code> in Discord.</li>
+        </ul>
+      </section>
 
-<h2>What we don't do</h2>
-<ul>
-<li>We don't sell your data or share it for advertising.</li>
-<li>We don't send you direct messages. Alerts are website notifications you turn on and can turn off.</li>
-<li>We don't use your data for anything outside the league.</li>
-</ul>
+      <section class="sec" id="en-who">
+        <h2><span class="n">01</span>Who we are</h2>
+        <p>Liga Global de Freestyle en Español, a Spanish-language freestyle rap league run by Under Legends together with
+        the league's servers: Discord Rap Español, Freestyle For All, Snake Rap and Urban Freestyle. Contact: a league
+        admin in <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>.</p>
+      </section>
 
-<h2>Where it is stored</h2>
-<ul>
-<li>On Cloudflare's infrastructure (Workers, KV, R2 and Durable Objects), in the organization's Google Sheets and in
-the GitHub repository that runs the league's processing.</li>
-<li>To deliver an alert, your browser's push service (Google, Apple, Mozilla or Microsoft) receives the encrypted
-message.</li>
-</ul>
+      <section class="sec" id="en-data">
+        <h2><span class="n">02</span>What we use and why</h2>
+        <ul>
+          <li><strong>Your Discord account</strong>: your user ID, username and nickname, avatar, and your roles in the
+          league's servers (the Member role in Discord Rap Español and country roles). We use them to know whether you can
+          have a card, which country you represent and which league servers you are in.</li>
+          <li><strong>Messages in event channels</strong>: the bot reads the announcements, tournament brackets and
+          sign-ups posted in the event channels of the league's servers. From them it gets the results (who played, who
+          won, points), the event calendar and who signed up. It does not read direct messages or any other channels, and
+          it does not store conversations.</li>
+          <li><strong>What the league publishes</strong>: your rapper name, country, crew, results, points, rankings and
+          cards. This is public on purpose — it is the league — and is shown on this website and in Discord.</li>
+          <li><strong>On the website, only if you choose to</strong>: when you log in with Discord, your ID, name and
+          avatar (the <code>identify</code> scope). If you use “My socials”, your Discord connections, and we keep only the
+          ones you choose to show. If you turn on notifications, that device's push subscription and, if you link it, your
+          Discord ID so we can send you your own alerts. Your settings and who you follow stay in your browser.</li>
+        </ul>
+      </section>
 
-<h2>How long</h2>
-<ul>
-<li>Results and cards from each season are kept for as long as the league exists: they are its history. The card
-photo is kept per season, because the all-time card shows each season's face.</li>
-<li>A push subscription is deleted when you turn notifications off, or when the push service reports it no longer
-exists.</li>
-<li>Saved socials are deleted when you remove them, and stop being shown after 120 days without review.</li>
-</ul>
+      <section class="sec" id="en-dont">
+        <h2><span class="n">03</span>What we don't do</h2>
+        <ul>
+          <li>We don't sell your data or share it for advertising.</li>
+          <li>We don't send you direct messages. Alerts are website notifications you turn on and can turn off.</li>
+          <li>We don't use your data for anything outside the league.</li>
+        </ul>
+      </section>
 
-<h2>Deleting your data</h2>
-<p>Use <code>/delete-my-data</code> in Discord (<code>/borrar-mis-datos</code> in Spanish). It shows what will be
-deleted and, if you confirm, immediately deletes your profile, cards, photo, socials and the link to your alerts. We
-keep only your Discord ID on an opt-out list, so the system does not add you back automatically.</p>
-<p>Results of events you played are part of the league's history. If you want your name replaced there, or you
-can't use the command, write to a league admin in <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>; we do it within 30 days.</p>
+      <section class="sec" id="en-where">
+        <h2><span class="n">04</span>Where it is stored</h2>
+        <ul>
+          <li>On Cloudflare's infrastructure (Workers, KV, R2 and Durable Objects), in the organization's Google Sheets and
+          in the GitHub repository that runs the league's processing.</li>
+          <li>To deliver an alert, your browser's push service (Google, Apple, Mozilla or Microsoft) receives the encrypted
+          message.</li>
+        </ul>
+      </section>
 
-<h2>Changes</h2>
-<p>If this policy changes, we update it here with the new date.</p>
-</section>
+      <section class="sec" id="en-long">
+        <h2><span class="n">05</span>How long</h2>
+        <ul>
+          <li>Results and cards from each season are kept for as long as the league exists: they are its history. The card
+          photo is kept per season, because the all-time card shows each season's face.</li>
+          <li>A push subscription is deleted when you turn notifications off, or when the push service reports it no
+          longer exists.</li>
+          <li>Saved socials are deleted when you remove them, and stop being shown after 120 days without review.</li>
+        </ul>
+      </section>
+
+      <section class="sec" id="en-delete">
+        <h2><span class="n">06</span>Deleting your data</h2>
+        <p>Use <code>/delete-my-data</code> in Discord (<code>/borrar-mis-datos</code> in Spanish). It shows what will be
+        deleted and, if you confirm, immediately deletes your profile, cards, photo, socials and the link to your alerts.
+        We keep only your Discord ID on an opt-out list, so the system does not add you back automatically.</p>
+        <p>Results of events you played are part of the league's history. If you want your name replaced there, or you
+        can't use the command, write to a league admin in <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>;
+        we do it within 30 days.</p>
+      </section>
+
+      <section class="sec" id="en-changes">
+        <h2><span class="n">07</span>Changes</h2>
+        <p>If this policy changes, we update it here with the new date.</p>
+      </section>
+    </div>
+
+    <nav class="indice" aria-label="Índice">
+      <div data-lang="es">
+        <p class="etq">En esta página</p>
+        <ol>
+          <li><a href="#es-quienes">Quiénes somos</a></li>
+          <li><a href="#es-datos">Qué datos usamos</a></li>
+          <li><a href="#es-no">Lo que no hacemos</a></li>
+          <li><a href="#es-donde">Dónde se guardan</a></li>
+          <li><a href="#es-cuanto">Cuánto tiempo</a></li>
+          <li><a href="#es-borrar">Borrar tus datos</a></li>
+          <li><a href="#es-cambios">Cambios</a></li>
+        </ol>
+        <p class="otra"><a href="terminos.html">Términos de uso &#8250;</a></p>
+      </div>
+      <div data-lang="en" lang="en">
+        <p class="etq">On this page</p>
+        <ol>
+          <li><a href="#en-who">Who we are</a></li>
+          <li><a href="#en-data">What we use</a></li>
+          <li><a href="#en-dont">What we don't do</a></li>
+          <li><a href="#en-where">Where it is stored</a></li>
+          <li><a href="#en-long">How long</a></li>
+          <li><a href="#en-delete">Deleting your data</a></li>
+          <li><a href="#en-changes">Changes</a></li>
+        </ol>
+        <p class="otra"><a href="terminos.html#en">Terms of use &#8250;</a></p>
+      </div>
+    </nav>
+  </div>
 </main>
+
+<footer class="pie">
+  <a href="/">Liga Global de Freestyle en Español</a> · <a href="privacidad.html">Privacidad</a> ·
+  <a href="terminos.html">Términos</a>
+</footer>
+
+<script>
+/* un idioma por vez: el del link (#en), el guardado, o el del navegador */
+(function () {
+  function poner(i) {
+    document.body.setAttribute('data-idioma', i);
+    document.documentElement.lang = i;
+    [].forEach.call(document.querySelectorAll('.idiomas button'), function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-i') === i ? 'true' : 'false');
+    });
+    try { localStorage.setItem('lg:idioma-legal', i); } catch (e) {}
+  }
+  var h = location.hash, g = null;
+  try { g = localStorage.getItem('lg:idioma-legal'); } catch (e) {}
+  poner(/^#en/.test(h) ? 'en' : /^#es/.test(h) ? 'es' : g || (/^en/i.test(navigator.language || '') ? 'en' : 'es'));
+  [].forEach.call(document.querySelectorAll('.idiomas button'), function (b) {
+    b.addEventListener('click', function () { poner(b.getAttribute('data-i')); });
+  });
+})();
+</script>
 </body>
 </html>

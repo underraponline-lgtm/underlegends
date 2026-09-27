@@ -6,17 +6,33 @@
   "como spoiler (eso va sólo al artifact privado). Es para jugadores: qué cambió para ellos.",
   "VERSIONES (Dlx, 25/09/2026): «cada cambio grande o pequeño se aumentará un .01». Cada",
   "tanda publicada es una versión nueva, +0.01; la primera de la lista es la actual.",
-  "`dia` en AAAA-MM-DD; en los items, **negrita** y `código` se ven como tales."
+  "`dia` en AAAA-MM-DD; en los items, **negrita** y `código` se ven como tales.",
+  "HORA: `cuando` es el instante en que se publicó (ISO, con la zona); la página lo muestra en la hora de quien mira. Sin `cuando`, sólo el día."
  ],
  "cambios": [
   {
+   "version": "1.17",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T07:10:00-04:00",
+   "titulo": "Lo que viene, más claro, y cada evento a tu calendario",
+   "items": [
+    "⏱️ **«Lo que viene», rehecho**: el próximo evento con el logo y el color de su servidor, el día y la hora en tu zona, la cuenta atrás grande y tres botones: **Agregar a Google Calendar**, ver el anuncio y activar los avisos.",
+    "📅 **Cada evento a Google Calendar con un toque, también desde el teléfono**: el botón abre la app con el evento ya cargado. Para que aparezcan todos solos, la suscripción se hace una vez desde una compu, como explica **Eventos**.",
+    "👑 **«Líder», no «Campeón»**: mientras se juega la temporada, las dos tarjetas del inicio dicen quién va primero. Pasan a «Campeón» cuando la temporada termina. Además quedan centradas entre sí y sin repetir el nombre que la tarjeta ya muestra.",
+    "🎨 **Urban Freestyle, en ámbar**: su naranja era casi igual al de Snake Rap. Ahora se distinguen en **Mundo**, en el calendario y en cada evento.",
+    "🏆 **Las llaves donde dos equipos se mezclan**: si de una semi pasa uno de cada equipo y juntos arman el de la final, y el campeón viene escrito con menciones, la llave ya se lee entera.",
+    "🔒 **Privacidad y Términos, en Ajustes y en Mi cuenta**, rehechos: en español y en inglés, con lo importante arriba.",
+    "🕐 **Se lee cuándo se actualizó todo**: «Datos actualizados hace…» más grande y claro, y este changelog con la hora de cada cambio y a lo ancho en la compu."
+   ]
+  },
+  {
    "version": "1.16",
    "dia": "2026-09-27",
+   "cuando": "2026-09-27T06:05:00-04:00",
    "titulo": "Las llaves de Snake Rap cuentan",
    "items": [
     "🐍 **Las llaves de Snake Rap cuentan**: GENESIS BATTLES, SNAKE INSIGNIA 3/8 y RAP EXHIBITION suman puntos y se ven en **Eventos**. También SEVEN STREET, de FFA, que no se leía.",
     "🃏 **Tu tarjeta y tu perfil dicen lo mismo**: la letra de rango aparece recién con **10 eventos** en todas las cartas; el título de la Servidor corría un puesto; los duelos del perfil contaban el tercer puesto que no se peleó, y el OVR Nacional de la carta de País usaba números de la pre-temporada.",
-    "🏠 **Tu servidor es donde más jugaste**: quien jugó una vez en otro servidor aparecía como de ese servidor.",
     "✨ **Los nombres, sin los asteriscos** del negrito de Discord, y **las banderas en emoji** de cada servidor se leen como país.",
     "🏳️ **Sin país, sin bandera rota** en la Temporada, y **1.250 puntos se lee 1.3K** (antes redondeaba para abajo).",
     "🛡️ **En la página, las tarjetas de quien está verificado**, igual que `/card`. Si no ves la tuya, en **Tarjetas** está cómo pedirla.",
@@ -26,9 +42,10 @@
   {
    "version": "1.15",
    "dia": "2026-09-26",
-   "titulo": "¿Todavía no tenés tu tarjeta?",
+   "cuando": "2026-09-26T16:00:04-04:00",
+   "titulo": "Tus tarjetas en la página, y tus avisos a tiempo",
    "items": [
-    "🃏 **¿Todavía no tenés tu tarjeta?** En **Tarjetas** está qué hace falta y cómo pedirla con `/verificar`, y en Discord Rap Español hay un aviso fijo en el canal de la Liga. Si ya tenés la tuya, no lo ves.",
+    "🃏 **Nuevo en Tarjetas: cómo pedir la tuya.** Si todavía no tenés tarjeta, ahí dice qué te falta y cómo pedirla con `/verificar`. Si ya la tenés, no lo ves.",
     "🖼️ **Todos ven sus tarjetas en la página**: a quienes tienen espacios o tildes en el nombre no se les mostraban sus tarjetas ni su «Mi perfil». Ya aparecen, y los links viejos a su perfil siguen andando.",
     "🔔 **Tus avisos, a tiempo y sólo tuyos**: «desbloqueaste tu tarjeta» llega cuando la tarjeta ya está dibujada con tus números de hoy, y si salís de tu cuenta en un dispositivo, ese dispositivo deja de recibir tus avisos.",
     "🔗 **Tus redes, sólo las públicas**: si una red deja de ser pública en Discord, sale de tu perfil la próxima vez que abrís «Mis redes».",
@@ -39,6 +56,7 @@
   {
    "version": "1.14",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T13:26:47-04:00",
    "titulo": "La Temporada 1 arranca de cero",
    "items": [
     "🧹 **El 5 de octubre, a las 00:00 (hora del este de EE.UU.), la Temporada 1 arranca de cero**: los puntos, los rankings y las llaves de la fase de prueba se archivan y todos empiezan igual. Tu perfil, tu país, tu foto y tus tarjetas de Servidor se quedan."
@@ -47,6 +65,7 @@
   {
    "version": "1.13",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T13:11:46-04:00",
    "titulo": "Tu foto, libre hasta el 9 de octubre",
    "items": [
     "📷 **Cambiá tu foto las veces que quieras hasta el 9 de octubre**, con `/foto` o desde la página. Desde el 10 va **una por temporada**, y lo que hayas cambiado antes no cuenta."
@@ -55,6 +74,7 @@
   {
    "version": "1.12",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T12:58:30-04:00",
    "titulo": "Cambiá tu foto desde la página",
    "items": [
     "📷 **Cambiá tu foto desde la página**: en **Mi cuenta** o abajo de tu tarjeta en tu perfil, «Cambiar mi foto». Te muestra cuál va a quedar —la de tu perfil de Discord— y la ponés con un toque. Es lo mismo que `/foto`: **una por temporada**.",
@@ -64,6 +84,7 @@
   {
    "version": "1.11",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T12:42:29-04:00",
    "titulo": "Tus avisos: rango y tarjetas",
    "items": [
     "👤 **Avisos míos**: en **Eventos → Avisos**, «Vincular con mi Discord» y te llega un aviso al celular cuando **subís de rango** o **desbloqueás una tarjeta**. Sólo a los dispositivos que vinculaste, y lo podés desvincular cuando quieras."
@@ -72,6 +93,7 @@
   {
    "version": "1.10",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T12:34:09-04:00",
    "titulo": "Tus redes en tu perfil",
    "items": [
     "🔗 **Tus redes en tu perfil**: en **Mi cuenta → Mis redes en mi perfil** elegís cuáles de las redes que ya tenés conectadas en Discord (Instagram, TikTok, YouTube, X, Twitch…) se ven en tu perfil. Sólo las que mostrás en tu perfil de Discord, sólo las que marcás, y las podés quitar cuando quieras.",
@@ -81,6 +103,7 @@
   {
    "version": "1.09",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T12:29:32-04:00",
    "titulo": "Seguir raperos, tus próximos eventos y la comunidad",
    "items": [
     "⭐ **Seguí a quien quieras**: en su perfil, «☆ Seguir». Aparece en **Mi cuenta** con su puesto de hoy, y con una ★ al lado de su nombre en toda la página. Queda en tu dispositivo.",
@@ -91,6 +114,7 @@
   {
    "version": "1.08",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T12:18:20-04:00",
    "titulo": "Urban Freestyle en naranja, y los logos de hoy",
    "items": [
     "🟠 **Urban Freestyle, en naranja**: su tarjeta de servidor pasa a naranja con la misma textura, y su **logo nuevo** —la «UK» con corona— va en la tarjeta y en la página.",
@@ -103,6 +127,7 @@
   {
    "version": "1.07",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T11:32:15-04:00",
    "titulo": "Urban Freestyle se suma, y tu perfil",
    "items": [
     "🏙️ **Urban Freestyle se sumó a la Liga**: el bot ya está en el servidor, sus eventos se escuchan y los avisos de sus torneos te llegan al celular.",
@@ -114,6 +139,7 @@
   {
    "version": "1.06",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T10:44:16-04:00",
    "titulo": "La fecha de la Temporada 1 y versiones",
    "items": [
     "📅 **La Temporada 1 tiene fecha**: del **5 de octubre** al **31 de diciembre**. Hasta entonces estamos en **fase de prueba**, y el Inicio lo dice con la cuenta de los días.",
@@ -124,7 +150,9 @@
    ]
   },
   {
+   "version": "1.05",
    "dia": "2026-09-25",
+   "cuando": "2026-09-25T10:25:20-04:00",
    "titulo": "Los avisos desde Discord y tus tarjetas en Mi cuenta",
    "items": [
     "🔔 **`/notify` ya no manda mensajes directos**: elegís en Discord de qué servidores querés los avisos (o todos) y el botón **Activar** abre la campana con eso elegido. Un toque y te llegan al celular o a la compu, aunque Discord esté cerrado.",
@@ -136,8 +164,7 @@
     "🧩 La llave de los eventos por equipos ya no se sale de su caja.",
     "🔗 El link de la página pegado en Discord ahora sale con el logo.",
     "🛠️ `/numeral` y `/settings` avisan si no pudieron guardar, en vez de «la aplicación no respondió»."
-   ],
-   "version": "1.05"
+   ]
   },
   {
    "version": "1.04",
@@ -165,6 +192,7 @@
    ]
   },
   {
+   "version": "1.02",
    "dia": "2026-09-24",
    "titulo": "La página nueva y los avisos de eventos",
    "items": [
@@ -172,8 +200,7 @@
     "🔔 **Avisos de eventos**: activás la campana y te llega una notificación al celular o a la compu cuando un servidor anuncia un evento, aunque no tengas Discord abierto. Elegís de qué servidores.",
     "🐍 **Snake Rap se sumó a la Liga**: sus eventos ya cuentan.",
     "🃏 **Descargá tu tarjeta** desde la página."
-   ],
-   "version": "1.02"
+   ]
   },
   {
    "version": "1.01",

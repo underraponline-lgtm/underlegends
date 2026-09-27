@@ -336,7 +336,13 @@ function pintaHero() {
   var pr = D.proximos || [];
   if (!pr.length) return;
   $('#viene').hidden = false;
-  $('#eventos').innerHTML = pr.map(function (e) {
+  // 🔑 EL PRIMERO, GRANDE; LOS DEMÁS, EN LISTA. Dlx, 27/09/2026: «¿editar lo
+  // que se viene? se ve algo vacío». Con un solo evento anunciado —lo normal:
+  // los servidores anuncian el mismo día— el bloque era un renglón. Ahora el
+  // próximo lleva su servidor, el día y la hora de quien mira, la cuenta
+  // atrás, los datos del anuncio y «Agregar a Google Calendar», que en el
+  // teléfono sí anda (abre la app con el evento cargado).
+  $('#eventos').innerHTML = vieneDestacado(pr[0]) + pr.slice(1).map(function (e) {
     // ⚠️ LA LINEA DE ABAJO SE ARMA CON LO QUE HAY. Servidor, cupos,
     // modalidad y premio son opcionales y la mayoría de los anuncios trae
     // dos o tres: `filter(Boolean)` evita los « · · » de los que faltan.
@@ -360,8 +366,35 @@ function pintaHero() {
       : '<span class="reloj" data-t="' + esc(e.cuando) + '">&middot;</span>';
     return '<div class="ev"><div><b>' + tit + '</b><small>' + sub +
       '</small></div>' + der + '</div>';
-  }).join('');
+  }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
+    'eventos el mismo día. Con los <a href="#/avisos">avisos</a> te enterás apenas sale uno.</p>' : '');
   pintaRelojes();
+}
+function vieneDestacado(e) {
+  var t = String(e.cuando || '').replace(/Z$/, ''), iso = t + 'Z';
+  var ir = function (tx) {
+    return e.link ? '<a href="' + esc(e.link) + '" target="_blank" rel="noopener noreferrer">' + tx +
+      '</a>' : tx;
+  };
+  var chips = [e.modalidad, e.cupos ? 'Cupos: ' + e.cupos : '', e.premios].filter(Boolean)
+    .map(function (x) { return '<span class="vi-chip">' + esc(x) + '</span>'; }).join('');
+  return '<div class="vi-prox" style="--c:' + esc(colorSv(e.sv)) + '">' +
+    '<div class="vi-cab">' + logoSv(e.sv, 40) + '<div><span class="vi-sv">' + esc(nombreSv(e.sv)) +
+      '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
+      '</b></div></div>' +
+    (e.sin_hora
+      ? '<p class="vi-cuando"><span>Anunciado ' + esc(cuandoSe(e.cuando)) + '</span></p>'
+      : '<div class="vi-cuando"><span>' + esc(fmtFecha(iso, { weekday: 'long', day: 'numeric',
+          month: 'long' })) + ' &middot; <b>' + esc(fmtHora(iso)) + ' ' + esc(zonaCorta(iso)) + '</b></span>' +
+        '<span class="reloj" data-t="' + esc(t) + '">&middot;</span></div>') +
+    (chips ? '<div class="vi-chips">' + chips + '</div>' : '') +
+    '<div class="vi-acc">' +
+      (e.sin_hora ? '' : '<a class="btn" href="' + esc(googleEv({ t: iso, n: e.nombre, sv: e.sv,
+        link: e.link })) + '" target="_blank" rel="noopener noreferrer">&#128197; Agregar a Google Calendar</a>') +
+      (e.link ? '<a class="btn sec" href="' + esc(e.link) + '" target="_blank" ' +
+        'rel="noopener noreferrer">Ver el anuncio</a>' : '') +
+      '<a class="btn sec" href="#/avisos">&#128276; Avisame</a>' +
+    '</div></div>';
 }
 
 /* ── los dos campeones ─────────────────────────────────────────────────
@@ -381,26 +414,36 @@ function reqDe(id) {
 function campeon(f, cual, tit) {
   // ⚠️ SIN «(ACTUAL)»: Dlx lo pidió a las 6:30 y lo sacó a las 8 del mismo
   // 25/09/2026, «quita el (actual) que dice en inicio»
+  // ⚠️ SIN EL NOMBRE DEBAJO. Dlx, 27/09/2026: «que digan Hassan y Makmah otra
+  // vez cuando en la tarjeta sale el nombre es innecesario». El nombre sigue
+  // en el `alt` y en el `title`, para quien no ve la imagen.
   return '<div class="hero-carta"><span class="corona">' + esc(tit) +
-    '</span><button class="hc-marco" data-carta="' + esc(f.k) + '">' +
+    '</span><button class="hc-marco" data-carta="' + esc(f.k) + '" title="' + esc(f.n) + '">' +
     '<img src="' + urlCarta(f, cual) + '" alt="Tarjeta de ' + esc(f.n) +
-    '" width="300" height="438"></button><b data-k="' + esc(f.k) + '">' + esc(f.n) +
-    '</b></div>';
+    '" width="300" height="438"></button></div>';
+}
+/* 🔑 «LÍDER» MIENTRAS SE JUEGA, «CAMPEÓN» CUANDO TERMINA. Dlx, 27/09/2026:
+   «no son campeones todavía, son top 1». El rótulo sale de las fechas de
+   la temporada (`D.fase`): el día después del cierre pasa solo a Campeón. */
+function temporadaCerrada() {
+  var t = D.fase && diaLocal(D.fase.termina);
+  return !!t && Date.now() > t.getTime() + 86400000;
 }
 function pintaCampeones() {
   var T = D.tabla || [], h = [];
+  var quien = temporadaCerrada() ? 'Campeón' : 'Líder';
   var uno = T[0];
   var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
     return (b.sc || 0) - (a.sc || 0);
   })[0];
-  if (uno && (uno.c || []).length) h.push(campeon(uno, uno.c[0], 'Campeón de la temporada'));
+  if (uno && (uno.c || []).length) h.push(campeon(uno, uno.c[0], quien + ' de la temporada'));
   if (h.length && comp && (comp.c || []).length) {
     h.push(campeon(comp, comp.c.indexOf('competitivo') >= 0 ? 'competitivo' : comp.c[0],
-      'Campeón del competitivo'));
+      quien + ' del competitivo'));
   } else if (h.length) {
     var pide = reqDe('competitivo') || 10;
     var cerca = T.slice().sort(function (a, b) { return (b.ev || 0) - (a.ev || 0); })[0];
-    h.push('<div class="hero-carta vacante"><span class="corona">Campeón del competitivo</span>' +
+    h.push('<div class="hero-carta vacante"><span class="corona">' + quien + ' del competitivo</span>' +
       '<div class="hc-vacio"><span class="hc-candado" aria-hidden="true">&#128274;</span>' +
       '<b>Vacante</b><p>Se define a los <b>' + pide + ' eventos</b>, y todavía no llegó nadie.</p>' +
       (cerca ? '<p class="hc-cerca" data-k="' + esc(cerca.k) + '"><small>El más cerca</small>' +
@@ -1803,6 +1846,16 @@ function colorSv(sv) { return colorVisible(svDe(sv).color || '#7E8B89'); }
    calendario. Se conserva el TONO de cada servidor —sigue siendo su
    violeta— y se sube la luz hasta que se lee. Los que ya se leen (DRA)
    quedan como están. */
+/* 🔴 Y SÓLO LOS QUE NO SE LEEN. Dlx, 27/09/2026: «lo de Urban Freestyle usa
+   otro naranja». El corte era la luz (L < 50 %), no si se leía, así que el
+   naranja de Snake Rap —que se lee: 5,7:1 sobre el negro— también se
+   aclaraba, y quedaba a ΔE 3 del de Urban: el mismo color a simple vista.
+   Ahora se aclara sólo lo que no llega a 4,5:1. */
+function contrasteNegro(r, g, b) {
+  var li = function (c) { return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  var y = 0.2126 * li(r) + 0.7152 * li(g) + 0.0722 * li(b);
+  return (y + 0.05) / 0.0512;   // contra --ng, #030304
+}
 function colorVisible(hex) {
   var m = /^#?([0-9a-f]{6})$/i.exec(String(hex || ''));
   if (!m) return hex || '#7E8B89';
@@ -1810,7 +1863,7 @@ function colorVisible(hex) {
   var r = (n >> 16) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
   var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2,
       d = mx - mn, h = 0, s = 0;
-  if (l >= 0.5) return '#' + m[1];
+  if (l >= 0.5 || contrasteNegro(r, g, b) >= 4.5) return '#' + m[1];
   if (d) {
     s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
     h = mx === r ? (g - b) / d + (g < b ? 6 : 0) : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
@@ -2025,7 +2078,9 @@ function pintaEvCab() {
       '<span class="evc-et">Próximo evento</span><b class="evc-n1">' + esc(prox.n) + '</b>' +
       '<div class="evc-sub">' + chipSv(prox.sv) + '<span>' + esc(fmtFecha(prox.t, { weekday: 'long' })) +
         ' &middot; ' + esc(fmtHora(prox.t)) + ' ' + esc(zonaCorta(prox.t)) + '</span></div>' +
-      '<span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) + '">&middot;</span></div>';
+      '<span class="reloj" data-t="' + esc(prox.t.replace(/Z$/, '')) + '">&middot;</span>' +
+      '<a class="evc-g" href="' + esc(googleEv(prox)) + '" target="_blank" rel="noopener noreferrer">' +
+      '&#128197; Agregar este evento a Google Calendar</a></div>';
   } else if (ult) {
     h += '<div class="evc-prox" style="--c:' + esc(colorSv(ult.sv)) + '">' +
       '<span class="evc-et">El último campeón</span>' +
@@ -2059,8 +2114,11 @@ function pintaEvCab() {
       '/calendario.ics">Apple · Outlook</a>') +
     '<button type="button" class="btn sec" id="evcCopia">&#128279; Copiar el link</button></div>' +
     '<p class="evc-no">' + (MOVIL
-      ? 'Google Calendar sólo deja sumar un calendario desde la compu: en calendar.google.com, ' +
-        '«Otros calendarios» → «+» → «Desde URL», pegá este link y listo, aparece solo en tu teléfono. '
+      ? (prox ? 'En el teléfono, cada evento se suma con un toque en «Agregar este evento a Google ' +
+          'Calendar». ' : '') +
+        'Para que aparezcan <b>todos solos</b>, suscribite una vez desde una compu —Google no lo deja ' +
+        'hacer desde la app—: en calendar.google.com, «Otros calendarios» → «+» → «Desde URL», con este ' +
+        'link. Después aparecen solos en tu teléfono. '
       : 'Si el botón de Google no te lo suma, en calendar.google.com: «Otros calendarios» → «+» → ' +
         '«Desde URL», y pegá este link. ') +
       '<code id="evcIcs">https://' + esc(ICS_HOST) + '/calendario.ics</code> ' +
@@ -3217,7 +3275,19 @@ function pintaCuenta() {
   // quien entra, sale o elige quién es cambia si el «pedila» se ve
   try { pintaPedi(); } catch (e) { console.error('[pintaPedi]', e); }
 }
+/* 🔑 PRIVACIDAD Y TÉRMINOS, EN AJUSTES Y EN MI CUENTA. Dlx, 27/09/2026: «esa
+   zona de privacidad y términos se ve algo rara… ¿quizás lo podamos agregar
+   dentro de la sección de cuenta o ajustes?». Estaban en letra chica al pie
+   del menú. Ahora van donde se piensa en los datos de uno. */
+function legalPop() {
+  return '<p class="pop-legal"><span>&#128274; Tus datos</span>' +
+    '<a href="privacidad.html">Privacidad</a><a href="terminos.html">Términos</a></p>';
+}
 function pintaPopCuenta() {
+  _pintaPopCuenta();
+  $('#popCuenta').insertAdjacentHTML('beforeend', legalPop());
+}
+function _pintaPopCuenta() {
   var f = yo(), c = $('#popCuenta');
   var entrar = '<button type="button" class="btn dc-entrar" id="dcEntrar">Entrar con Discord</button>';
   // 🔴 CON TARJETA Y SIN EVENTOS NO ES «SIN TARJETA». Quien no jugó la
@@ -3309,7 +3379,7 @@ function pintaPopAjustes() {
     '<a class="aj-cambios" href="#/cambios">&#128220; Changelog: lo nuevo de la página' +
     (CAMBIOS && CAMBIOS.length && CAMBIOS[0].version ? ' <span class="ver">v' + esc(CAMBIOS[0].version) + '</span>' : '') +
     (CAMBIOS && CAMBIOS.length && nuevaQue(versionDe(CAMBIOS[0]), CAMBIOS_VISTO) ? ' <b class="nuevo-et">Nuevo</b>' : '') +
-    '</a>';
+    '</a>' + legalPop();
   $('#ajH12').value = h;
   $('#ajTz').value = AJ.tz || '';
 }
@@ -3408,19 +3478,57 @@ function pintaCambios() {
       f = new Date(x.dia + 'T12:00:00Z').toLocaleDateString('es', { day: 'numeric', month: 'long',
         year: 'numeric', timeZone: 'UTC' });
     } catch (e) { f = x.dia; }
+    // 🔑 LA HORA, EN LA DE QUIEN MIRA. Dlx, 27/09/2026: «si es posible añade
+    // la hora de cada changelog». `cuando` es el instante de la publicación;
+    // las primeras cuatro se escribieron después y van sólo con el día.
+    if (x.cuando) f = fmtFecha(x.cuando, { day: 'numeric', month: 'long', year: 'numeric' }) +
+      ' · ' + fmtHora(x.cuando) + ' ' + zonaCorta(x.cuando);
     return '<article class="cambio' + (nueva ? ' es-nuevo' : '') + '">' +
       '<header>' + (x.version ? '<span class="ver-et">v' + esc(x.version) + '</span>' : '') +
-      '<time datetime="' + esc(x.dia) + '">' + esc(f) + '</time>' +
+      '<time datetime="' + esc(x.cuando || x.dia) + '">' + esc(f) + '</time>' +
       (nueva ? '<span class="nuevo-et">Nuevo</span>' : '') +
       '<h2>' + esc(x.titulo) + '</h2></header><ul>' +
       (x.items || []).map(function (i) { return '<li>' + mdCorto(i) + '</li>'; }).join('') +
       '</ul></article>';
   }).join('') || '<p class="nota">Todavía no hay nada anotado.</p>';
+  acomodarCambios();
   if (CAMBIOS.length) {
     CAMBIOS_VISTO = versionDe(CAMBIOS[0]);
     guardarLS('lg:cambios', CAMBIOS_VISTO);
     puntoCambios();
   }
+}
+/* 🔑 EN LA COMPU, DE A DOS Y SIN HUECOS. Dlx, 27/09/2026: «mezclarlo a la
+   derecha también, hay mucho espacio en el website desde el ordenador».
+   La más nueva va entera arriba; las demás, cada una a la columna más
+   corta, en orden. Con una grilla de filas la más larga de cada par dejaba
+   un hueco al lado: la 1.15 mide 529 px y la 1.14, 200. */
+var MQ_CAMBIOS = window.matchMedia ? window.matchMedia('(min-width:1100px)') : null;
+function acomodarCambios() {
+  var c = $('#cambios');
+  if (!c) return;
+  var todas = $$('#cambios .cambio');
+  todas.forEach(function (a) { c.appendChild(a); });
+  $$('#cambios .cambios-col').forEach(function (x) { x.remove(); });
+  var dos = !!(MQ_CAMBIOS && MQ_CAMBIOS.matches) && todas.length > 2;
+  c.classList.toggle('dos', dos);
+  if (!dos) return;
+  var cols = [0, 1].map(function () {
+    var x = document.createElement('div');
+    x.className = 'cambios-col';
+    return c.appendChild(x);
+  });
+  var alto = [0, 0];
+  todas.slice(1).forEach(function (a) {
+    var i = alto[0] <= alto[1] ? 0 : 1;
+    cols[i].appendChild(a);
+    alto[i] += a.offsetHeight + 16;
+  });
+}
+if (MQ_CAMBIOS) {
+  var reacomodar = function () { if (CAMBIOS && ruta() === 'cambios') acomodarCambios(); };
+  if (MQ_CAMBIOS.addEventListener) MQ_CAMBIOS.addEventListener('change', reacomodar);
+  else if (MQ_CAMBIOS.addListener) MQ_CAMBIOS.addListener(reacomodar);
 }
 // lo que depende de la hora se vuelve a dibujar al cambiar la zona o el formato
 function repintarHoras() {
@@ -3866,6 +3974,12 @@ function eventos() {
   window.addEventListener('hashchange', ir);
 }
 
+/* los minutos desde ese instante (NaN si no se puede leer); misma lectura que `cuandoSe()` */
+function edadMin(iso) {
+  var s = String(iso || '').replace(' ', 'T');
+  if (s && !/(Z|[+-]\d\d:?\d\d)$/.test(s)) s += 'Z';
+  return (Date.now() - Date.parse(s)) / 60000;
+}
 function cuandoSe(iso) {
   // 🔴 LA HORA VIENE EN UTC SIN ZONA, y `Date.parse` sin zona la toma como
   // hora LOCAL: en el este, «Lo que pasó» decía «recién» de algo de hace
@@ -3904,8 +4018,20 @@ function pinta() {
   // `sello` es cuándo se escribió el payload y se puede mover sin que
   // los datos se muevan —correr `subir_web.py` a mano lo pone en
   // «recién» con anuncios de hace dos horas—. Dlx lo vio tal cual.
-  $('#pie').textContent = (enPrueba() ? 'Fase de prueba' : 'Temporada ' + (D.temporada || '')) +
-    ' · datos ' + (cuandoSe(D.leido || D.sello) || 'sin fecha');
+  //
+  // 🔑 Y SE LEE. Dlx, 27/09/2026: «cuando dice que se actualizan los datos
+  // hace 3 horas, ¿puedes hacer esa parte más grande o con otra fuente? no
+  // la entiendo». Era una línea en mayúsculas condensadas de 11 px. Ahora son
+  // dos renglones en la letra de la página, y cuando los datos tienen más de
+  // una hora dice por qué: de 3 a 11 AM (hora del este) el ciclo no corre.
+  var hace = cuandoSe(D.leido || D.sello), viejo = edadMin(D.leido || D.sello) > 75;
+  $('#pie').innerHTML = '<span class="pie-fase">' +
+    esc(enPrueba() ? 'Fase de prueba' : 'Temporada ' + (D.temporada || '')) + '</span>' +
+    '<span class="pie-datos' + (viejo ? ' viejo' : '') + '"><i aria-hidden="true"></i>' +
+    esc(!hace ? 'Datos sin fecha' : hace === 'recién' ? 'Datos recién actualizados'
+      : 'Datos actualizados ' + hace) + '</span>' +
+    (viejo ? '<span class="pie-nota">De 3 a 11 AM (hora del este) no se actualiza.</span>' : '');
+  $('#pie').title = 'Se actualiza cada media hora.';
   try { pintaFase(); } catch (e) { console.error('[pintaFase]', e); }
   try { eventos(); } catch (e) { console.error('[eventos]', e); }
   ir();

@@ -1,0 +1,91 @@
+/* ── PRIVACIDAD Y TÉRMINOS ─────────────────────────────────────────────
+   🔑 Dlx, 27/09/2026: «esa zona de privacidad y términos se ve algo rara…
+   hacer mejor esos sitios». Eran texto suelto sobre negro, sin la marca de
+   la Liga y con los dos idiomas uno abajo del otro. Ahora comparten la piel
+   del hub —los mismos colores, las mismas letras, el mismo bisel— y un solo
+   CSS para las dos, así no se separan.
+
+   ⚠️ LAS DIRECCIONES NO CAMBIAN: /privacidad y /terminos son las que están
+   cargadas en el portal de Discord (docs/revision_discord.md). */
+:root{
+  --ng:#030304; --pan:#0A0A0D; --pan2:#101216;
+  --tl:#29B298; --mg:#E41373;
+  --tx:#EDEDF2; --tx2:#A8B4B1; --tx3:#77837F;
+  --bd:#1A2523;
+  --bisel:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ng);color:var(--tx);min-height:100vh;
+  font:400 16px/1.65 Archivo,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+/* la luz de fondo del hub, sin la trama: acá se lee */
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(60vw 40vh at 85% -10%,rgba(228,19,115,.16),transparent 70%),
+             radial-gradient(50vw 40vh at 0% 10%,rgba(41,178,152,.12),transparent 70%)}
+a{color:var(--tl);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--tl);outline-offset:2px}
+code{font:500 .88em ui-monospace,Consolas,monospace;background:var(--pan2);padding:2px 6px;
+  border-radius:3px;color:var(--tx);white-space:nowrap}
+
+/* la barra de arriba */
+.barra{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:12px 16px;background:rgba(3,3,4,.86);backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--bd)}
+.marca{display:flex;align-items:center;gap:10px;color:var(--tx);text-decoration:none}
+.marca img{width:36px;height:36px;border-radius:8px}
+.marca span{display:flex;flex-direction:column;font:900 1.02rem/1.05 Archivo,sans-serif}
+.marca small{font:700 .68rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tx3)}
+.volver{font:700 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  text-decoration:none;color:var(--tx);border:1px solid var(--bd);padding:10px 14px;
+  clip-path:var(--bisel);background:var(--pan)}
+.volver:hover{border-color:var(--tl);color:var(--tl)}
+
+.hoja{max-width:1120px;margin:0 auto;padding:36px 16px 72px}
+.cab{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.etq{margin:0;font:700 .8rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tx3)}
+.etq b{color:var(--tl);font-weight:700}
+h1{margin:0;font:900 clamp(2.1rem,6vw,3.2rem)/1.02 Archivo,sans-serif;letter-spacing:-.015em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--tl)}
+.idiomas{display:inline-flex;gap:0;border:1px solid var(--bd);align-self:flex-start;clip-path:var(--bisel)}
+.idiomas button{font:700 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;background:transparent;color:var(--tx2);border:0;padding:10px 16px;cursor:pointer}
+.idiomas button[aria-pressed="true"]{background:var(--tl);color:var(--ng)}
+
+/* el cuerpo: el texto y, en la compu, el índice a la derecha */
+.cuerpo{display:grid;gap:28px;align-items:start}
+@media (min-width:960px){.cuerpo{grid-template-columns:minmax(0,1fr) 260px;gap:48px}}
+.texto{max-width:72ch;display:flex;flex-direction:column;gap:18px}
+.importa{background:linear-gradient(180deg,rgba(41,178,152,.12),rgba(41,178,152,.04));
+  border:1px solid rgba(41,178,152,.35);padding:18px 20px;clip-path:var(--bisel)}
+.importa h2{margin:0 0 8px;font:800 1.05rem/1.2 Archivo,sans-serif;color:var(--tl)}
+.importa ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.sec{background:var(--pan);border:1px solid var(--bd);padding:20px 22px;clip-path:var(--bisel)}
+.sec h2{margin:0 0 10px;font:800 1.2rem/1.25 Archivo,sans-serif;text-wrap:balance;
+  display:flex;align-items:baseline;gap:10px}
+.sec h2 .n{font:700 .85rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;color:var(--mg)}
+.sec p{margin:0 0 10px}
+.sec p:last-child{margin-bottom:0}
+.sec ul{margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+.sec li::marker{color:var(--tl)}
+strong{font-weight:800}
+.suave{color:var(--tx2)}
+
+.indice{position:sticky;top:84px;display:none;border-left:2px solid var(--bd);padding-left:16px}
+@media (min-width:960px){.indice{display:block}}
+.indice p{margin:0 0 10px}
+.indice ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.indice a{color:var(--tx2);text-decoration:none;font-size:.94rem}
+.indice a:hover{color:var(--tl)}
+.indice .otra{margin-top:18px;padding-top:14px;border-top:1px solid var(--bd);font-size:.94rem}
+
+/* un idioma por vez; sin JavaScript se ven los dos */
+body[data-idioma="es"] [data-lang="en"],
+body[data-idioma="en"] [data-lang="es"]{display:none}
+
+.pie{border-top:1px solid var(--bd);margin-top:8px;padding:22px 16px 40px;color:var(--tx3);
+  font-size:.9rem;text-align:center}
+.pie a{color:var(--tx2)}

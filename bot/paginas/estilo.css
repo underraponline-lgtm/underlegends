@@ -119,9 +119,22 @@ letter-spacing:.13em;text-transform:uppercase}
 .legal a{color:var(--tx3);text-decoration:none}
 .legal a:hover,.legal a:focus-visible{color:var(--tl)}
 .vista > .legal{margin-top:28px;padding:0}
-.menu .pie{margin-top:auto;padding:14px 12px 0;color:var(--tx3);
-font:600 .68rem/1.7 'Barlow Condensed',sans-serif;letter-spacing:.13em;
-text-transform:uppercase;border-top:1px solid var(--bd2)}
+.pop-legal{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:14px 0 0;padding-top:12px;
+border-top:1px solid var(--bd);font-size:.9rem;color:var(--tx3)}
+.pop-legal span{flex-basis:100%;font:700 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase}
+.pop-legal a{color:var(--tx2);text-underline-offset:3px}
+.pop-legal a:hover,.pop-legal a:focus-visible{color:var(--tl)}
+.menu .pie{margin-top:auto;padding:14px 12px 0;color:var(--tx2);
+font:500 .88rem/1.4 Archivo,sans-serif;border-top:1px solid var(--bd2);
+display:flex;flex-direction:column;gap:4px}
+.pie-fase{font:700 .76rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.12em;
+text-transform:uppercase;color:var(--tx3)}
+.pie-datos{display:flex;align-items:center;gap:8px}
+.pie-datos i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--tl);
+box-shadow:0 0 0 3px rgba(41,178,152,.18)}
+.pie-datos.viejo i{background:#E0A020;box-shadow:0 0 0 3px rgba(224,160,32,.18)}
+.pie-nota{font-size:.8rem;color:var(--tx3)}
 
 main{min-width:0;padding:30px 38px 72px}
 .vista[hidden]{display:none}
@@ -187,11 +200,49 @@ radial-gradient(64% 58% at 50% 62%,rgba(41,178,152,.42),transparent 74%);
 filter:blur(26px)}
 .hc-marco img{width:300px;height:auto;transition:transform .3s ease}
 .hc-marco:hover img{transform:translateY(-6px) scale(1.02)}
-.hero-carta>b{display:block;margin-top:12px;cursor:pointer;
-font:900 1.32rem/1 Archivo,sans-serif;letter-spacing:-.02em}
 
 /* ── lo que viene ───────────────────────────────────────────────── */
 .viene{background:linear-gradient(180deg,rgba(16,10,18,.9),rgba(8,6,9,.9))}
+/* el próximo, grande: con el color de su servidor */
+.vi-prox{display:flex;flex-direction:column;gap:12px;margin:2px 0 4px;padding:16px 16px 16px 18px;
+border-left:3px solid var(--c);background:linear-gradient(90deg,rgba(255,255,255,.035),transparent 75%)}
+@supports (background:color-mix(in srgb,red 10%,transparent)){
+  .vi-prox{background:linear-gradient(90deg,color-mix(in srgb,var(--c) 16%,transparent),transparent 75%)}}
+.vi-cab{display:flex;align-items:center;gap:12px;min-width:0}
+.vi-cab>div{min-width:0}
+.vi-sv{display:block;font:700 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;
+text-transform:uppercase;color:var(--c)}
+.vi-n{display:block;margin-top:5px;font:900 clamp(1.3rem,2.4vw,1.7rem)/1.1 Archivo,sans-serif;
+letter-spacing:-.02em;overflow-wrap:anywhere;text-wrap:balance}
+.vi-n a{color:inherit;text-decoration:none}
+.vi-n a:hover{color:var(--tl)}
+.vi-n .ir{font-style:normal;font-size:.62em;opacity:.55;margin-left:4px}
+.vi-cuando{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 16px;
+margin:0;color:var(--tx2);font-size:.98rem}
+.vi-cuando span:first-child::first-letter{text-transform:uppercase}
+/* la hora no se parte: «17:00» en un renglón y «EDT» en otro no se lee */
+.vi-cuando b{color:var(--tx);font-weight:700;white-space:nowrap}
+/* ⚠️ `.vi-prox .reloj` Y NO UNA CLASE SUELTA: `.reloj` se declara más abajo
+   y el teléfono la achica a 1.18rem; con la misma especificidad gana la
+   última. `.reloj.vivo` —«EN VIVO»— sí tiene que ganarle, y le gana. */
+.vi-prox .reloj{font-size:2.3rem}
+.vi-chips{display:flex;flex-wrap:wrap;gap:6px}
+.vi-chip{font:700 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;
+padding:6px 9px;border:1px solid var(--bd);color:var(--tx2)}
+/* el de Google a lo ancho y los otros dos repartidos debajo: los tres en una
+   fila no entran en la columna, y el tercero quedaba solo en otro renglón */
+.vi-acc{display:flex;flex-wrap:wrap;gap:8px}
+.vi-acc .btn{flex:1 1 auto}
+.vi-acc .btn:first-child{flex-basis:100%}
+.vi-mas{margin:12px 0 0;color:var(--tx2);font-size:.92rem}
+.vi-mas a{color:var(--tl);text-underline-offset:3px}
+.evc-g{display:block;margin-top:10px;font-size:.9rem;color:var(--tl)}
+/* en el teléfono, el de Google tiene que entrar en un renglón */
+@media (max-width:620px){
+  .vi-prox{padding:14px 12px 14px 14px}
+  .vi-prox .reloj{font-size:1.9rem}
+  .vi-acc .btn{padding:10px 12px;letter-spacing:.04em}
+}
 .viene::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
 background:linear-gradient(90deg,var(--mg),var(--tl))}
 .ev{display:flex;justify-content:space-between;gap:16px;align-items:center;
@@ -462,6 +513,10 @@ font-size:.86rem;padding:10px}
 
 /* ── servidores, países, crews ──────────────────────────────────── */
 .svs{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr))}
+/* ⚠️ CUATRO SERVIDORES VAN DOS Y DOS, nunca tres y uno: con la cuenta
+   automática, Urban Freestyle quedaba solo en la segunda fila. De a cuatro
+   no entran: a 1440 px los nombres y el «Entrar» se partían en dos renglones. */
+@media (min-width:700px){.svs:has(> .sv-c:nth-child(4):last-child){grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* el logo, la cabecera con nombre completo y la sigla, y el «Entrar» */
 .sv-cab{display:flex;align-items:center;gap:14px;position:relative;min-width:0}
 .sv-cab > div{min-width:0}
@@ -1128,6 +1183,21 @@ font:700 .72rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transf
 
 /* ── los dos campeones ──────────────────────────────────────────────── */
 .campeones{display:flex;gap:24px;align-items:flex-start;justify-content:center}
+/* 🔑 LAS DOS TARJETAS CENTRADAS ENTRE SÍ, Y LOS RÓTULOS ARRIBA. Dlx, 27/09/2026:
+   «la tarjeta del competitivo que aparece al costado de la temporada, que esté
+   centrada en términos de altura… y subir un poco más los labels». La
+   Competitiva mide 485 de alto y la Temporada 438: arrancando las dos arriba,
+   la Competitiva colgaba 36 px más abajo. Con una grilla de dos filas que
+   comparten las dos —rótulo y tarjeta— los rótulos quedan a la misma altura
+   y las tarjetas sobre la misma línea del medio. (Eran tres, con el nombre
+   debajo; se sacó porque la tarjeta ya lo dice.) */
+@supports (grid-template-rows:subgrid){
+  .campeones.dos{display:grid;grid-template-columns:repeat(2,auto);grid-template-rows:auto auto;
+    justify-content:center;column-gap:24px;row-gap:0}
+  .campeones.dos .hero-carta{display:grid;grid-row:span 2;grid-template-rows:subgrid}
+  .campeones.dos .hero-carta .corona{align-self:end}
+  .campeones.dos .hero-carta .hc-marco,.campeones.dos .hero-carta .hc-vacio{align-self:center}
+}
 .campeones.dos .hc-marco img{width:228px}
 .corona i{font-style:normal;color:var(--tx2);letter-spacing:.1em}
 .campeones .hero-carta{width:228px}
@@ -1680,6 +1750,15 @@ border-radius:50%;background:var(--mg);box-shadow:0 0 0 2px var(--ng)}
 color:var(--tx2);text-decoration:none;font-size:.92rem}
 .aj-cambios:hover{color:var(--tx)}
 .cambios{display:grid;gap:16px;max-width:860px}
+/* 🔑 EN LA COMPU, A LO ANCHO. Dlx, 27/09/2026: «mezclarlo a la derecha también,
+   hay mucho espacio en el website desde el ordenador». La última va entera
+   arriba y las demás en dos columnas que arma `acomodarCambios()`: cada
+   tarjeta a la más corta, así no quedan huecos al lado de una larga. */
+@media (min-width:1100px){
+  .cambios.dos{max-width:none;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  .cambios.dos > .cambio:first-child{grid-column:1 / -1}
+  .cambios-col{display:grid;gap:16px;align-content:start;min-width:0}
+}
 .cambio{position:relative;padding:20px 24px 18px;background:linear-gradient(180deg,rgba(13,13,17,.88),rgba(7,7,9,.9));
 border:1px solid var(--bd);clip-path:var(--bisel)}
 .cambio::before{content:'';position:absolute;top:0;left:0;width:3px;bottom:0;
