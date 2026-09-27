@@ -594,13 +594,15 @@ function pintaMult() {
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '. El Competitivo no cambia.';
   $('#multLista').innerHTML = svs.map(function (sv) {
-    var x = M.sv[sv], pr = (M.premio || {})[sv];
+    var x = M.sv[sv], pr = (M.premios || {})[sv] || [];
     return '<div class="mt ' + claseMult(x) + '" style="--c:' + esc(colorSv(sv)) + '">' + logoSv(sv, 32) +
       // la sigla arriba y el número abajo: en un renglón, «Discord Rap Español»
       // se cortaba en «Discord Rap…» y hasta «FFA» quedaba en «F…»
       '<div class="mt-t"><span class="mt-n" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span><b>' +
       xMult(x) + '</b></div>' +
-      (x < 1 ? '<small>debuff</small>' : x >= 5 ? '<small>jackpot</small>' : pr ? '<small class="gw">ganó la guerra</small>' : '') +
+      (x < 1 ? '<small>debuff</small>' : x >= 5 ? '<small>jackpot</small>' : pr.length ? '<small class="gw">' +
+        pr.map(function (p) { return p === 'guerra' ? 'ganó la guerra' : p === 'semillero' ? 'semillero' : esc(p); })
+          .join(' + ') + '</small>' : '') +
       '</div>';
   }).join('') + extrasMult(M);
   sec.hidden = false;
@@ -634,6 +636,19 @@ function extrasMult(M) {
       o.slice(1, 3).map(function (x) { return esc(x[0]) + ' ' + x[1]; }).join(', ') + ')' : '') +
       '. El primero organiza la Copa de la semana que viene: su próximo evento vale &times;2. Cuenta el ' +
       '«Organiza:» del anuncio, en eventos de 8 o más.');
+  }
+  var se = M.semillero;
+  ls.push('<b>&#127793; Semillero</b>: gana el servidor que más gente nueva trae —gente que juega <b>por primera ' +
+    'vez</b> en la Liga—, en proporción a su gente y con 3 como mínimo. Lleva <b>&times;1,5</b> la semana que viene.' +
+    (function () {
+      if (!se || !se.nuevos) return '';
+      var r = Object.keys(se.nuevos).filter(function (s) { return se.nuevos[s] >= 3 && (se.gente || {})[s]; })
+        .sort(function (p, q) { return se.nuevos[q] / se.gente[q] - se.nuevos[p] / se.gente[p]; });
+      return r.length ? ' Va primero <b>' + esc(nombreSv(r[0])) + '</b>, con ' + se.nuevos[r[0]] + ' nuevos de ' +
+        se.gente[r[0]] + '.' : '';
+    })());
+  if (a.semillero && a.semillero.gana) {
+    ls.push('La semana pasada el Semillero fue <b>' + esc(nombreSv(a.semillero.gana)) + '</b>.');
   }
   if (a.guerra && (a.guerra.gana || []).length) {
     ls.push('La semana pasada ganaron la guerra: <b>' + a.guerra.gana.map(function (s) {

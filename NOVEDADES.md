@@ -279,8 +279,34 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El diseño del Pase de rapero se habla después** | *«luego hablemos del diseño del pase de rapero y todo eso»* | ⏳ |
 | **Sin bonus por llave limpia**: a los organizadores los premian el organizador de la semana, el Semillero y la sede, que son de uno solo por semana. Nada de «×1,5 a todos de gratis» | *«la 2. Pero explícame cómo sería porque tampoco queremos dar 1.5x a todos así de gratis»* | — |
 | **La Copa de la Liga es de la persona**, no de su servidor: el próximo evento que organice, donde sea | *«a la persona»* | ✅ `organizados()`, `ranking_org()` y `copa_n()` en `bot/multiplicadores.py` (1.26) |
+| **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (1:30 PM) — versión 1.27
+
+**El Semillero.** Dlx: *«A»* — nuevo es el que juega por primera vez en su
+vida en la Liga.
+
+- 🔑 **`datos/vistos.json`: quién jugó alguna vez**, con la fecha y el
+  servidor de su primer evento. **No se borra con la temporada** (el paso 0
+  vacía las llaves, no esto). Sembrado con los **735 de la pre-temporada**
+  —los 138 del pool y los 597 bloqueados, del repo privado al 20/09; 733
+  personas distintas— y los **72 que jugaron por primera vez en la prueba**
+  (FFA 52, SR 20). El padrón NO sirve para esto: su versión más vieja ya
+  tenía 876, gente que se registró sin haber jugado.
+- **La identidad** es la de la vitrina: sin banderas y con su AKA
+  (`_clave_persona()`), así «MAU KC 🇨🇴» de una llave es «Mau Kc» de la
+  pre-temporada.
+- **Gana** el que más nuevos tiene en proporción a su gente de la semana,
+  con 3 como mínimo; «trajo» a alguien el servidor de su primer evento. Lleva
+  ×1,5 la semana siguiente (`premios`, que ahora es una lista por servidor:
+  guerra y semillero se apilan con techo ×5).
+- ⚠️ **Sin el registro no hay Semillero**: si el archivo faltara, todos
+  serían nuevos y ganaría el más grande. El paso 0b lo actualiza cada
+  corrida.
 
 ---
 
@@ -957,10 +983,7 @@ inglés, y `/borrar-mis-datos`.
 - ✅ ~~¿Los puntos del Most Wanted suman ya a la Temporada?~~ *«1. sí»*: hecho
   en la 1.23.
 - ✅ ~~El bonus por llave limpia~~: afuera (*«la 2»*).
-- **El Semillero: ¿quién es «gente nueva»?** A) el que juega **por primera
-  vez en su vida** en la Liga (recomendado), o B) el que juega su primer
-  evento **de la temporada** — con B, en la primera semana de la T1 todos
-  serían nuevos y ganaría el servidor más grande sin haber traído a nadie.
+- ✅ ~~El Semillero: ¿quién es «gente nueva»?~~ *«A»*: hecho en la 1.27.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

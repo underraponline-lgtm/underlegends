@@ -38,6 +38,13 @@ evento es la Copa de la Liga y vale ×2**. Uno solo en toda la Liga, y va a
 la persona, no a su servidor (Dlx: *«a la persona»*). Quien no pone
 «Organiza:» en el anuncio no suma: eso ya empuja a anunciar bien.
 
+EL SEMILLERO. Gana el servidor que más gente nueva trae —gente que juega
+**por primera vez en su vida** en la Liga (Dlx: *«A»*), no «nueva en la
+temporada»: si no, con el reset de la T1 todos serían nuevos—, en
+proporción a su gente y con 3 como mínimo. Lleva **×1,5** la semana
+siguiente. «Trajo» a alguien el servidor de su primer evento. Quién ya
+jugó lo guarda `datos/vistos.json`, que no se borra con la temporada.
+
 LOS BONOS DE CADA UNO.
 - **«Volvé»**: tu segundo evento de la temporada, si cae dentro de los 7
   días del primero, vale ×1,5. Es para el 42 % que juega una sola vez.
@@ -78,6 +85,8 @@ except AttributeError:
     pass
 
 SALIDA = os.path.join(BASE, 'datos', 'multiplicadores.json')
+#: quién jugó alguna vez en la Liga, y cuándo y dónde por primera vez
+VISTOS = os.path.join(BASE, 'datos', 'vistos.json')
 
 # ── los números, todos acá ───────────────────────────────────────────────
 #: la semana arranca el lunes a esta hora del este (como el Most Wanted)
@@ -107,6 +116,8 @@ COPA_X = 2
 MIN_ORG = 8
 #: lo que el «Organiza:» de un anuncio a veces dice y no es nadie
 NO_ES_ORG = {'yo', 'nosotros', 'staff', 'admin', 'admins', 'mods'}
+#: el Semillero: cuántos nuevos como mínimo, y lo que lleva la semana siguiente
+SEMILLERO_MIN, SEMILLERO_X = 3, 1.5
 #: el techo de una fila, sumando todo
 TECHO = 5
 #: desde cuándo corre cada regla. «Volvé», desde que salió; lo semanal
@@ -423,6 +434,75 @@ def copa_n(semana, eventos, org_de):
     return cands[0][1] if cands else None
 
 
+def _clave_persona(nombre):
+    """La identidad de alguien de una llave, la misma en todas las temporadas.
+
+    Sin banderas ni `❓` y con su AKA (`rankings.canon()`): «MAU KC 🇨🇴» de una
+    llave y «Mau Kc» de la pre-temporada son la misma persona.
+    """
+    import re
+    import rankings as RK
+    x = re.sub(r'[\U0001F1E6-\U0001F1FF]', '', str(nombre or '')).replace('❓', '').strip()
+    return _gente(RK.canon(x)) if x else ''
+
+
+def leer_vistos(ruta=None):
+    """`datos/vistos.json`: `{persona: [primer evento, servidor]}`, o `{}`."""
+    try:
+        with io.open(ruta or VISTOS, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('vistos') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def anotar_vistos(vistos, eventos):
+    """Anota a quien juega por primera vez: su instante y su servidor. Devuelve cuántos.
+
+    ⚠️ SI UNA LLAVE VIEJA ENTRA TARDE, SU PRIMERA VEZ SE CORRE PARA ATRÁS: vale
+    el evento más temprano, no el primero que se procesó.
+    """
+    nuevos = 0
+    for e in eventos:
+        sv, t, tabla = e[1], e[2], e[3]
+        if not t:
+            continue
+        for f in tabla or []:
+            k = _clave_persona(f[0] if f else '')
+            if not k:
+                continue
+            ya = vistos.get(k)
+            if ya is None:
+                vistos[k] = [_iso(t), sv]
+                nuevos += 1
+            elif ya[0] > _iso(t):
+                vistos[k] = [_iso(t), sv]
+    return nuevos
+
+
+def resultado_semillero(semana, eventos, vistos):
+    """`{'nuevos': {sv: n}, 'gente': {sv: n}, 'gana': sv o None}` de esa semana.
+
+    Nuevos: quien jugó por primera vez en su vida esa semana, contado para el
+    servidor de ese primer evento. Gana el que más nuevos tiene en proporción
+    a su gente distinta de la semana, con `SEMILLERO_MIN` como mínimo.
+    """
+    ini, fin = _de_iso(semana['inicio']), _de_iso(semana['fin'])
+    gente = {}
+    for e in eventos:
+        sv, t, tabla = e[1], e[2], e[3]
+        if t and ini <= t < fin:
+            for f in tabla or []:
+                gente.setdefault(sv, set()).add(_clave_persona(f[0] if f else ''))
+    nuevos = {}
+    for iso, sv in vistos.values():
+        if sv and ini <= _de_iso(iso) < fin:
+            nuevos[sv] = nuevos.get(sv, 0) + 1
+    cands = [(nuevos[sv] / len(gente[sv]), nuevos[sv], sv) for sv in nuevos
+             if nuevos[sv] >= SEMILLERO_MIN and gente.get(sv)]
+    return {'nuevos': nuevos, 'gente': {sv: len(g) for sv, g in gente.items()},
+            'gana': max(cands)[2] if cands else None}
+
+
 def leer(ruta=None):
     """`datos/multiplicadores.json`, o `{}`."""
     try:
@@ -502,7 +582,7 @@ def eventos_de(regs=None):
     return out
 
 
-def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None):
+def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=None):
     """Sortea la semana si hace falta, anota el dorado y la Copa, y cierra la guerra
     y el organizador de la semana. Devuelve el archivo."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
@@ -515,6 +595,12 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None):
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ sin organizadores (%s)' % str(e)[:80])
             org_de = {}
+    # 🔑 QUIÉN JUGÓ ALGUNA VEZ: se anota antes de todo, así el Semillero lo ve.
+    # ⚠️ SIN EL REGISTRO NO HAY SEMILLERO: vacío, todos serían «nuevos».
+    vistos = leer_vistos() if vistos is None else vistos
+    semillero_ok = bool(vistos)
+    if semillero_ok:
+        anotar_vistos(vistos, evs)
     # la Copa que ya se jugó queda anotada, con su nombre
     for s in semanas:
         if s.get('copa') and not s['copa'].get('n'):
@@ -566,12 +652,22 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None):
             for sv in prev['guerra']['gana']:
                 if sv in rec['sv']:
                     rec['sv'][sv] = min(TECHO, rec['sv'][sv] * GUERRA_X)
-                    rec.setdefault('premio', {})[sv] = GUERRA_X
+                    rec.setdefault('premios', {}).setdefault(sv, []).append('guerra')
+        # 🔑 Y SU SEMILLERO: el que más gente nueva trajo lleva ×1,5 en ésta
+        if (prev and semillero_ok and _de_iso(prev['inicio']) >= _desde('semana')
+                and not (prev.get('semillero') or {}).get('final')):
+            prev['semillero'] = dict(resultado_semillero(prev, evs, vistos), final=True)
+            sv = prev['semillero']['gana']
+            if sv and sv in rec['sv']:
+                rec['sv'][sv] = min(TECHO, rec['sv'][sv] * SEMILLERO_X)
+                rec.setdefault('premios', {}).setdefault(sv, []).append('semillero')
         semanas.append(rec)
     # el organizador de la semana en curso, en vivo: la página muestra cómo va
     cur = next((s for s in semanas if s.get('id') == pid), None)
     if cur and _de_iso(cur['inicio']) >= _desde('semana'):
         cur['organizadores'] = ranking_org(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs, org_de)[:10]
+        if semillero_ok:
+            cur['semillero'] = resultado_semillero(cur, evs, vistos)
     out = {'_leeme': 'La semana de la Liga: multiplicadores, evento dorado y guerra de servidores. '
                      'Lo sortea bot/multiplicadores.py (paso 0b del ciclo) y NO se vuelve a sortear. '
                      'Las reglas viven en ese archivo.',
@@ -579,6 +675,11 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None):
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
+        if semillero_ok:
+            with io.open(VISTOS, 'w', encoding='utf-8') as f:
+                json.dump({'_leeme': 'Quién jugó alguna vez en la Liga: [primer evento, servidor]. Es del '
+                                     'Semillero de bot/multiplicadores.py y NO se borra con la temporada.',
+                           'vistos': dict(sorted(vistos.items()))}, f, ensure_ascii=False, indent=0)
     return out
 
 
@@ -674,9 +775,9 @@ def _self_check():
     dg = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
                        'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1, 'DRA': 1, 'URBF': 1},
                        'guerra': {'pares': [['FFA', 'SR'], ['DRA', 'URBF']]}}]}
-    out = correr(en(10, 19, 11, 22), d=dg, eventos=evsg)
+    out = correr(en(10, 19, 11, 22), d=dg, eventos=evsg, org_de={}, vistos={})
     nueva = out['semanas'][-1]
-    ok(out['semanas'][0]['guerra']['gana'] == ['SR'] and nueva.get('premio') == {'SR': GUERRA_X}
+    ok(out['semanas'][0]['guerra']['gana'] == ['SR'] and nueva.get('premios') == {'SR': ['guerra']}
        and nueva['sv']['SR'] == min(TECHO, sortear(servidores(), '2026-10-19')['SR'] * GUERRA_X)
        and nueva.get('guerra') and nueva.get('dorado'),
        'al cerrar la semana, SR ganó la guerra y lleva ×1,5 en la nueva, que trae su dorado y sus pares')
@@ -696,16 +797,40 @@ def _self_check():
     evc = evo + [(31, 'SR', en(10, 20, 20), [['t%d' % i, 'x', 1] for i in range(8)], 'otro'),
                  (32, 'FFA', en(10, 21, 20), [['u%d' % i, 'x', 1] for i in range(8)], 'LA COPA')]
     orgc = {**orgs, 31: 'Carlos', 32: '@nachonc_'}
-    out = correr(en(10, 19, 11, 22), d=dc, eventos=evc, org_de=orgc)
+    out = correr(en(10, 19, 11, 22), d=dc, eventos=evc, org_de=orgc, vistos={})
     nueva = out['semanas'][-1]
     ok(nueva.get('copa', {}).get('org') == '@nachonc_' and out['semanas'][0].get('organizadores_final'),
        'al cerrar la semana, el primero es la sede de la siguiente')
-    out = correr(en(10, 22, 12), d=out, eventos=evc, org_de=orgc)
+    out = correr(en(10, 22, 12), d=out, eventos=evc, org_de=orgc, vistos={})
     c = out['semanas'][-1]['copa']
     f2 = factor_de(out, [])
     ok(c.get('n') == 32 and c.get('nombre') == 'LA COPA' and f2('FFA', en(10, 21, 20), 32) == min(
         TECHO, out['semanas'][-1]['sv'].get('FFA', 1) * COPA_X),
        'su próximo evento de esa semana es la Copa y vale ×2 (el de otro organizador, no)')
+
+    # el Semillero: gente que juega por primera vez en su vida, en proporción
+    vis = {'viejo1': ['2026-01-01T00:00:00Z', ''], 'viejo2': ['2026-01-01T00:00:00Z', '']}
+    evn = [(41, 'SR', en(10, 13, 20), [['Viejo1', 'x', 1], ['n1', 'x', 1], ['n2', 'x', 1], ['n3', 'x', 1]], 'a'),
+           (42, 'FFA', en(10, 14, 20), [['viejo2', 'x', 1]] + [['f%d' % i, 'x', 1] for i in range(4)]
+            + [['v%d' % i, 'x', 1] for i in range(15)], 'b'),
+           (43, 'FFA', en(10, 15, 20), [['n1', 'x', 1]], 'c')]
+    for i in range(15):
+        vis['v%d' % i] = ['2026-09-23T00:00:00Z', 'FFA']
+    ok(anotar_vistos(vis, evn) == 7 and vis['n1'][1] == 'SR' and vis['viejo1'][1] == '',
+       'se anota quien juega por primera vez (7), con el servidor de ese primer evento; el viejo sigue viejo')
+    rs = resultado_semillero({'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11))}, evn, vis)
+    ok(rs['nuevos'] == {'SR': 3, 'FFA': 4} and rs['gana'] == 'SR',
+       'gana SR con 3 nuevos de 4 (FFA trajo 4, pero de 20): en proporción, no en cantidad  %s' % rs)
+    vis2 = {k: v for k, v in vis.items() if k not in ('n2', 'n3')}
+    rs2 = resultado_semillero({'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11))}, evn, vis2)
+    ok(rs2['gana'] == 'FFA', 'con menos de 3 nuevos no se gana: SR queda afuera y gana FFA')
+    ds = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
+                       'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1}}]}
+    out = correr(en(10, 19, 11, 22), d=ds, eventos=evn, org_de={}, vistos=dict(vis))
+    ok(out['semanas'][0]['semillero']['gana'] == 'SR' and 'semillero' in out['semanas'][-1]['premios'].get('SR', []),
+       'al cerrar la semana, SR es el Semillero y lleva ×1,5 en la nueva')
+    ok(correr(en(10, 19, 11, 22), d={'semanas': []}, eventos=evn, org_de={}, vistos={})['semanas'][-1]
+       .get('semillero') is None, 'sin el registro de quién ya jugó, no hay Semillero (todos serían nuevos)')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.27",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T13:30:00-04:00",
+   "titulo": "El Semillero",
+   "items": [
+    "🌱 **Semillero**: cada semana gana el servidor que más gente nueva trae —gente que juega **por primera vez en su vida** en la Liga—, en proporción a su gente y con 3 como mínimo. Lleva **×1,5** la semana siguiente.",
+    "🌱 Cuenta para el servidor donde esa persona jugó su primer evento, y quién ya jugó alguna vez no se borra con la temporada: volver en la Temporada 1 no te hace nuevo.",
+    "📅 Arranca con la semana del **lunes 28** a las 11 AM (hora del este)."
+   ]
+  },
+  {
    "version": "1.26",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T13:05:00-04:00",
