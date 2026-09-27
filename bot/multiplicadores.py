@@ -31,6 +31,13 @@ puntos hace **por persona** en sus eventos de la semana —puntos crudos, sin
 multiplicar: si no, ganaría siempre el del ×5—, y la semana siguiente lleva
 **×1,5** sobre su multiplicador.
 
+EL ORGANIZADOR DE LA SEMANA Y LA COPA. Cada evento de 8 o más con su llave
+le suma a su organizador —el «Organiza: X» del anuncio— tanta gente como
+juntó. El primero de la semana es la sede de la siguiente: **su próximo
+evento es la Copa de la Liga y vale ×2**. Uno solo en toda la Liga, y va a
+la persona, no a su servidor (Dlx: *«a la persona»*). Quien no pone
+«Organiza:» en el anuncio no suma: eso ya empuja a anunciar bien.
+
 LOS BONOS DE CADA UNO.
 - **«Volvé»**: tu segundo evento de la temporada, si cae dentro de los 7
   días del primero, vale ×1,5. Es para el 42 % que juega una sola vez.
@@ -94,6 +101,12 @@ VOLVE_DIAS, VOLVE_X = 7, 1.5
 #: (cuántos hacen falta, cuántos puntos da): servidores distintos y días distintos
 PASAPORTE = (3, 1500)
 ASISTENCIA = (3, 1000)
+#: la Copa de la Liga: el próximo evento del organizador de la semana
+COPA_X = 2
+#: un evento cuenta para el organizador si juntó al menos esta gente
+MIN_ORG = 8
+#: lo que el «Organiza:» de un anuncio a veces dice y no es nadie
+NO_ES_ORG = {'yo', 'nosotros', 'staff', 'admin', 'admins', 'mods'}
 #: el techo de una fila, sumando todo
 TECHO = 5
 #: desde cuándo corre cada regla. «Volvé», desde que salió; lo semanal
@@ -343,6 +356,73 @@ def bonos(filas):
     return out
 
 
+def _org(s):
+    """`@!    MMC.` -> `MMC.`: el organizador, sin la arroba; `''` si no es nadie."""
+    import re
+    x = re.sub(r'^[@!\s]+', '', str(s or '')).strip()
+    return '' if x.lower() in NO_ES_ORG else x
+
+
+def _clave_org(s):
+    return _gente(_org(s))
+
+
+def organizados(regs=None, anuncios=None):
+    """`{n: organizador}`: quién organizó cada llave, por el «Organiza: X» del anuncio.
+
+    El anuncio y la llave se unen con `llaves_web.cruzar()`, lo mismo que
+    cuelga el «Ver llave» de «Lo que pasó»: mismo servidor, fecha cercana y
+    nombre igual o parecido con los mismos números.
+    """
+    import llaves_web as LW
+    import cuando as CU
+    regs = LW.leer() if regs is None else regs
+    if anuncios is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+                anuncios = (json.load(f) or {}).get('anuncios') or []
+        except (OSError, ValueError):
+            anuncios = []
+    pas = [{'nombre': x.get('nombre'), 'sv': x.get('servidor') or '',
+            'cuando': CU.momento(x) or x.get('cuando'), 'org': _org(x.get('organizador'))}
+           for x in anuncios if x.get('nombre') and _org(x.get('organizador'))]
+    LW.cruzar(pas, regs)
+    return {int(p['llave']): p['org'] for p in pas if str(p.get('llave') or '').isdigit()}
+
+
+def ranking_org(ini, fin, eventos, org_de):
+    """`[[organizador, gente, eventos], …]` de esa semana, de más a menos.
+
+    Cada evento de `MIN_ORG` o más, con su llave, le suma su gente distinta.
+    """
+    por = {}
+    for e in eventos:
+        n, t, tabla = e[0], e[2], e[3]
+        org = org_de.get(n)
+        if not org or not t or not (ini <= t < fin):
+            continue
+        gente = len({_gente(f[0]) for f in tabla or [] if f})
+        if gente < MIN_ORG:
+            continue
+        x = por.setdefault(_clave_org(org), [org, 0, 0])
+        x[1] += gente
+        x[2] += 1
+    return sorted(por.values(), key=lambda x: (-x[1], -x[2], x[0].lower()))
+
+
+def copa_n(semana, eventos, org_de):
+    """El número del evento de la Copa de esa semana, si ya se jugó; o `None`."""
+    c = semana.get('copa')
+    if not c:
+        return None
+    if c.get('n'):
+        return c['n']
+    ini, fin = _de_iso(semana['inicio']), _de_iso(semana['fin'])
+    cands = sorted((e[2], e[0]) for e in eventos
+                   if e[2] and ini <= e[2] < fin and _clave_org(org_de.get(e[0])) == c['clave'])
+    return cands[0][1] if cands else None
+
+
 def leer(ruta=None):
     """`datos/multiplicadores.json`, o `{}`."""
     try:
@@ -386,6 +466,8 @@ def factor_de(d=None, filas=None):
     semanas = [(_de_iso(s['inicio']), _de_iso(s['fin']), s.get('sv') or {})
                for s in d.get('semanas') or []]
     dorados = {x for x in (dorado_n(s, filas) for s in d.get('semanas') or []) if x}
+    # la Copa se anota en el paso 0b (hace falta el anuncio): acá, lo anotado
+    copas = {(s.get('copa') or {}).get('n') for s in d.get('semanas') or []} - {None}
     volve = volve_de(filas)
 
     def factor(sv, instante, n=None, quien=None):
@@ -397,6 +479,8 @@ def factor_de(d=None, filas=None):
                     break
         if n is not None and n in dorados:
             x *= DORADO_X
+        if n is not None and n in copas:
+            x *= COPA_X
         if quien is not None and (quien, n) in volve:
             x *= VOLVE_X
         return min(TECHO, x)
@@ -418,12 +502,26 @@ def eventos_de(regs=None):
     return out
 
 
-def correr(ahora=None, aplicar=False, d=None, eventos=None):
-    """Sortea la semana si hace falta, anota el dorado y cierra la guerra. Devuelve el archivo."""
+def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None):
+    """Sortea la semana si hace falta, anota el dorado y la Copa, y cierra la guerra
+    y el organizador de la semana. Devuelve el archivo."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     d = leer() if d is None else d
     semanas = d.get('semanas') or []
     evs = eventos_de() if eventos is None else eventos
+    if org_de is None:
+        try:
+            org_de = organizados()
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ sin organizadores (%s)' % str(e)[:80])
+            org_de = {}
+    # la Copa que ya se jugó queda anotada, con su nombre
+    for s in semanas:
+        if s.get('copa') and not s['copa'].get('n'):
+            x = copa_n(s, evs, org_de)
+            if x:
+                s['copa']['n'] = x
+                s['copa']['nombre'] = next((e[4] for e in evs if e[0] == x and len(e) > 4), '')
     pid, ini, fin = periodo(ahora)
     # el evento dorado que ya se jugó queda anotado: la página lo muestra
     for s in semanas:
@@ -456,6 +554,13 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None):
                 rec['guerra'] = {'pares': emparejar(svs, pid)}
         # 🔑 LA GUERRA DE LA SEMANA QUE TERMINÓ: el que ganó lleva ×1,5 en ésta
         prev = semanas[-1] if semanas else None
+        # 🔑 Y SU ORGANIZADOR: el primero es la sede de ésta, con la Copa
+        if prev and _de_iso(prev['inicio']) >= _desde('semana') and 'organizadores_final' not in prev:
+            rk = ranking_org(_de_iso(prev['inicio']), _de_iso(prev['fin']), evs, org_de)
+            prev['organizadores'] = rk[:10]
+            prev['organizadores_final'] = True
+            if rk:
+                rec['copa'] = {'org': rk[0][0], 'clave': _clave_org(rk[0][0])}
         if prev and prev.get('guerra') and 'gana' not in prev['guerra']:
             prev['guerra'].update(resultado_guerra(prev, evs))
             for sv in prev['guerra']['gana']:
@@ -463,6 +568,10 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None):
                     rec['sv'][sv] = min(TECHO, rec['sv'][sv] * GUERRA_X)
                     rec.setdefault('premio', {})[sv] = GUERRA_X
         semanas.append(rec)
+    # el organizador de la semana en curso, en vivo: la página muestra cómo va
+    cur = next((s for s in semanas if s.get('id') == pid), None)
+    if cur and _de_iso(cur['inicio']) >= _desde('semana'):
+        cur['organizadores'] = ranking_org(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs, org_de)[:10]
     out = {'_leeme': 'La semana de la Liga: multiplicadores, evento dorado y guerra de servidores. '
                      'Lo sortea bot/multiplicadores.py (paso 0b del ciclo) y NO se vuelve a sortear. '
                      'Las reglas viven en ese archivo.',
@@ -571,6 +680,32 @@ def _self_check():
        and nueva['sv']['SR'] == min(TECHO, sortear(servidores(), '2026-10-19')['SR'] * GUERRA_X)
        and nueva.get('guerra') and nueva.get('dorado'),
        'al cerrar la semana, SR ganó la guerra y lleva ×1,5 en la nueva, que trae su dorado y sus pares')
+    # el organizador de la semana y la Copa
+    ok(_org('@!    MMC.') == 'MMC.' and _org('yo') == '' and _clave_org('@nachonc_') == 'nachonc',
+       'el organizador sale del anuncio, sin arroba; «yo» no es nadie')
+    evo = [(21, 'FFA', en(10, 13, 20), [['p%d' % i, 'x', 1] for i in range(12)], 'A'),
+           (22, 'SR', en(10, 14, 20), [['q%d' % i, 'x', 1] for i in range(9)], 'B'),
+           (23, 'SR', en(10, 15, 20), [['r%d' % i, 'x', 1] for i in range(5)], 'chico'),
+           (24, 'FFA', en(10, 16, 20), [['s%d' % i, 'x', 1] for i in range(10)], 'C')]
+    orgs = {21: '@nachonc_', 22: 'Carlos', 23: 'Carlos', 24: 'nachonc_'}
+    rk = ranking_org(en(10, 12, 11), en(10, 19, 11), evo, orgs)
+    ok([r[:3] for r in rk] == [['@nachonc_', 22, 2], ['Carlos', 9, 1]],
+       'suma la gente de sus eventos de 8 o más (el de 5 no cuenta)  %s' % rk)
+    dc = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
+                       'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1}}]}
+    evc = evo + [(31, 'SR', en(10, 20, 20), [['t%d' % i, 'x', 1] for i in range(8)], 'otro'),
+                 (32, 'FFA', en(10, 21, 20), [['u%d' % i, 'x', 1] for i in range(8)], 'LA COPA')]
+    orgc = {**orgs, 31: 'Carlos', 32: '@nachonc_'}
+    out = correr(en(10, 19, 11, 22), d=dc, eventos=evc, org_de=orgc)
+    nueva = out['semanas'][-1]
+    ok(nueva.get('copa', {}).get('org') == '@nachonc_' and out['semanas'][0].get('organizadores_final'),
+       'al cerrar la semana, el primero es la sede de la siguiente')
+    out = correr(en(10, 22, 12), d=out, eventos=evc, org_de=orgc)
+    c = out['semanas'][-1]['copa']
+    f2 = factor_de(out, [])
+    ok(c.get('n') == 32 and c.get('nombre') == 'LA COPA' and f2('FFA', en(10, 21, 20), 32) == min(
+        TECHO, out['semanas'][-1]['sv'].get('FFA', 1) * COPA_X),
+       'su próximo evento de esa semana es la Copa y vale ×2 (el de otro organizador, no)')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 
@@ -596,6 +731,11 @@ def main():
                                               ' → fue el #%s' % s['dorado']['n'] if s['dorado'].get('n') else ''))
     if s.get('guerra'):
         print('   guerra: %s' % ' · '.join('%s vs %s' % tuple(p) for p in s['guerra']['pares']))
+    if s.get('copa'):
+        print('   copa: el próximo evento de %s%s' % (s['copa']['org'], ' → fue el #%s' % s['copa']['n']
+                                                    if s['copa'].get('n') else ''))
+    if s.get('organizadores'):
+        print('   organizadores: %s' % ' · '.join('%s %d' % (o[0], o[1]) for o in s['organizadores'][:5]))
     if '--aplicar' not in a:
         print('\n   (simulacro: no escribí nada — `--aplicar`)')
     print()

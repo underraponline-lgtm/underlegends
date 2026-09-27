@@ -311,6 +311,8 @@ def armar():
                  else ''),
         'modalidad': x.get('modalidad') or '',
         'premios': (x.get('premios') or '')[:60],
+        # quién organiza: la página marca el evento de la Copa de la Liga
+        'org': _org(x.get('organizador')),
     } for x in CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)]
     prox += [{'nombre': _nom(x['nombre']), 'sv': x.get('servidor') or '',
               'cuando': x['cuando'], 'sin_hora': 1,
@@ -1927,15 +1929,16 @@ def _mult():
         return None
     out = {'id': s['id'], 'ini': s['inicio'], 'fin': s['fin'], 'sv': s['sv']}
     # 🔑 el dorado, la guerra y quién ganó la anterior (su ×1,5 va en `premio`)
-    for k in ('premio', 'dorado', 'guerra'):
+    for k in ('premio', 'dorado', 'guerra', 'copa', 'organizadores'):
         if s.get(k):
             out[k] = s[k]
     semanas = _MU.leer().get('semanas') or []
     ids = [x.get('id') for x in semanas]
     if s['id'] in ids and ids.index(s['id']) > 0:
         ant = semanas[ids.index(s['id']) - 1]
-        if (ant.get('guerra') or {}).get('gana') or (ant.get('dorado') or {}).get('n'):
-            out['ant'] = {k: ant[k] for k in ('guerra', 'dorado') if ant.get(k)}
+        if ((ant.get('guerra') or {}).get('gana') or (ant.get('dorado') or {}).get('n')
+                or (ant.get('copa') or {}).get('n')):
+            out['ant'] = {k: ant[k] for k in ('guerra', 'dorado', 'copa') if ant.get(k)}
     return out
 
 

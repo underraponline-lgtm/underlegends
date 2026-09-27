@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.26",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T13:05:00-04:00",
+   "titulo": "La Copa de la Liga",
+   "items": [
+    "🎤 **Organizador de la semana**: cada evento de 8 o más le suma a su organizador la gente que juntó. Cuenta el «Organiza:» del anuncio: si no lo ponés, no suma.",
+    "🏆 **La Copa de la Liga**: el primero de la semana organiza la Copa de la siguiente, y **su próximo evento vale ×2**. Uno solo en toda la Liga, y es de la persona, en el servidor que sea.",
+    "📅 La primera semana que cuenta arranca el **lunes 28** a las 11 AM (hora del este), así que la primera Copa se juega la semana del 5 de octubre."
+   ]
+  },
+  {
    "version": "1.25",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T12:45:00-04:00",

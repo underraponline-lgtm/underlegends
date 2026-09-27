@@ -433,6 +433,7 @@ function pintaHero() {
       : '<span class="reloj" data-t="' + esc(e.cuando) + '">&middot;</span>';
     return '<div class="ev"><div><b>' + tit + etiquetaMult(e.sv, String(e.cuando || '').replace(/Z$/, '') + 'Z') +
       (esDorado(e) ? '<span class="xm oro">&#127775; dorado</span>' : '') +
+      (esCopa(e) ? '<span class="xm oro">&#127942; Copa</span>' : '') +
       '</b><small>' + sub +
       '</small></div>' + der + '</div>';
   }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
@@ -450,7 +451,9 @@ function vieneDestacado(e) {
   return '<div class="vi-prox" style="--c:' + esc(colorSv(e.sv)) + '">' +
     '<div class="vi-cab">' + logoSv(e.sv, 40) + '<div><span class="vi-sv">' + esc(nombreSv(e.sv)) +
       etiquetaMult(e.sv, iso) + (esDorado(e) ? '<span class="xm oro" title="El evento dorado de la semana: ' +
-        'vale &times;3 encima de su multiplicador">&#127775; dorado</span>' : '') + '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
+        'vale &times;3 encima de su multiplicador">&#127775; dorado</span>' : '') +
+      (esCopa(e) ? '<span class="xm oro" title="La Copa de la Liga: vale &times;2">&#127942; Copa</span>' : '') +
+      '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
       '</b></div></div>' +
     (e.sin_hora
       ? '<p class="vi-cuando"><span>Anunciado ' + esc(cuandoSe(e.cuando)) + '</span></p>'
@@ -618,6 +621,20 @@ function extrasMult(M) {
     }).join(' &middot; ') + '. Gana el que más puntos hace por persona en sus eventos, y la semana que viene ' +
       'lleva &times;1,5.');
   }
+  var c = M.copa, o = M.organizadores || [];
+  if (c) {
+    ls.push('<b>&#127942; Copa de la Liga</b>: ' + (c.n
+      ? 'fue <b>' + esc(c.nombre || '#' + c.n) + '</b>, organizada por ' + esc(c.org) + ': valió &times;2.'
+      : 'el próximo evento que organice <b>' + esc(c.org) + '</b> vale <b>&times;2</b>, por ser el ' +
+        'organizador de la semana pasada.'));
+  }
+  if (o.length) {
+    ls.push('<b>&#127908; Organizador de la semana</b>: va primero <b>' + esc(o[0][0]) + '</b>, con ' + o[0][1] +
+      ' raperos en ' + o[0][2] + (o[0][2] === 1 ? ' evento' : ' eventos') + (o.length > 1 ? ' (después: ' +
+      o.slice(1, 3).map(function (x) { return esc(x[0]) + ' ' + x[1]; }).join(', ') + ')' : '') +
+      '. El primero organiza la Copa de la semana que viene: su próximo evento vale &times;2. Cuenta el ' +
+      '«Organiza:» del anuncio, en eventos de 8 o más.');
+  }
   if (a.guerra && (a.guerra.gana || []).length) {
     ls.push('La semana pasada ganaron la guerra: <b>' + a.guerra.gana.map(function (s) {
       return esc(nombreSv(s));
@@ -627,6 +644,21 @@ function extrasMult(M) {
     'los 7 días del primero. Jugar en <b>3 servidores</b> en la semana da <b>+1.500</b>, y jugar <b>3 días ' +
     'distintos</b>, <b>+1.000</b>.');
   return '<div class="mt-x">' + ls.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+}
+/* el próximo evento del organizador que tiene la Copa */
+function claveOrg(s) {
+  return String(s || '').replace(/^[@!\s]+/, '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/gi, '').toLowerCase();
+}
+function esCopa(e) {
+  var c = D.mult && D.mult.copa;
+  if (!c || c.n || !e.org || e.sin_hora || claveOrg(e.org) !== c.clave) return false;
+  var t = function (x) { return new Date(String(x.cuando || '').replace(/Z$/, '') + 'Z').getTime(); };
+  var fin = new Date(D.mult.fin).getTime();
+  var cands = (D.proximos || []).filter(function (x) {
+    return !x.sin_hora && x.org && claveOrg(x.org) === c.clave && t(x) < fin;
+  }).sort(function (x, y) { return t(x) - t(y); });
+  return cands[0] === e;
 }
 /* el próximo evento que puede ser el dorado: el primero de su servidor desde su día */
 function esDorado(e) {
