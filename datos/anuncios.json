@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-27T22:23:56+00:00",
+ "cuando": "2026-09-27T22:55:30+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -288,28 +288,8 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": "",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
-  },
-  {
-   "nombre": "777 SEVEN STREET DUPLAS 777",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1553876205864878100",
-   "cuando": "2026-09-27T21:09:17",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "🇨🇷 15:30",
-   "fecha": "Hoy, Domingo 27 Sept.",
-   "premios": "",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "FFA WORLD CUP EL ESTADIO DEL FREESTYLE 2026",
@@ -328,8 +308,8 @@
    "horario": "",
    "fecha": "27 09",
    "premios": "Compe Rango ᴏʀᴏ ɪɪ Y Rol De Campeon",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "777 ¡Vuelve SEVEN STREET! 777",
@@ -348,8 +328,8 @@
    "horario": "🇨🇷 20:30",
    "fecha": "Hoy, Sábado 26 Sept.",
    "premios": "",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "AGREEMENT: DOOMSDAY V.1",
@@ -368,8 +348,8 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "MARRUECOS EN VENTA V.1",
@@ -388,8 +368,8 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 14 1vs1",
@@ -408,8 +388,8 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 13 2VS2",
@@ -428,8 +408,8 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "ELRAP FECHA 6",
@@ -448,8 +428,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "Respeto",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "CARABOBO NUNCA SE RINDE VOL.1",
@@ -468,8 +448,8 @@
    "horario": "en 10 min",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "DESGRACIAS CON TöKĪØ V.1",
@@ -488,8 +468,8 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 12",
@@ -508,8 +488,8 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 11",
@@ -528,8 +508,8 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "el que diga 7 parrafos de vencer gana x nocaut tecnico",
@@ -548,8 +528,8 @@
    "horario": "ahora",
    "fecha": "",
    "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 10",
@@ -568,8 +548,8 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "ELRAP FECHA 5",
@@ -588,8 +568,8 @@
    "horario": "en 15 se abren inscripciones",
    "fecha": "",
    "premios": "pts para el ascenso + pts para la tabla",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "ARKA MULTIVERSE VOL.1",
@@ -608,8 +588,8 @@
    "horario": "⭐ 4:45PM HORA MEXICO CENTRAL (INSCRIPCIONES 30 MIN ANTES) ⭐",
    "fecha": "21 09",
    "premios": "Clasificacion ᴘʟᴀᴛᴀ ɪɪɪ  y Rol De Campeon",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "Lamanija 4x4",
@@ -628,8 +608,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "aura + trofeo",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "ELRAP",
@@ -648,8 +628,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "PTS PARA EL ASCENSO+PTS PARA LA TABLA",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "EL RAP FECHA 3",
@@ -668,8 +648,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "PTS PARA EL ASCENSO + PTS PARA LA TABLA",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "BELLAS ARTES VOL8",
@@ -688,8 +668,28 @@
    "horario": "EN 20 MINUTOS",
    "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-27T21:31:36"
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
+  },
+  {
+   "nombre": "Plaza FFA",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1551013580860686417",
+   "cuando": "2026-09-19T23:34:14",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata I",
+   "modalidad": "⚔️  1v1",
+   "horario": "30 min",
+   "fecha": "19/09/26",
+   "premios": "El respeto de todos",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-27T01:29:39"
   },
   {
    "nombre": "FLEIVA FREE",
