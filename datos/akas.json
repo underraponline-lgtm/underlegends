@@ -198,7 +198,8 @@
   "ricardflex": "Richard",
   "richardflex": "Richard",
   "bloodypainter": "Bloody",
-  "sebita": "Liberia"
+  "sebita": "Liberia",
+  "kenny": "Kenny"
  },
  "pares": [
   [
@@ -992,6 +993,10 @@
   [
    "SEBITA",
    "Liberia"
+  ],
+  [
+   "KENNY",
+   "Kenny"
   ]
  ],
  "no_confundir": [

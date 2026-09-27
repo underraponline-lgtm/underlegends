@@ -159,7 +159,57 @@
      "https://www.youtube.com/channel/UC1wmceEHX_k4ME_ZGq60dJg"
     ]
    ],
-   "youtube_id": "UC1wmceEHX_k4ME_ZGq60dJg"
+   "youtube_id": "UC1wmceEHX_k4ME_ZGq60dJg",
+   "rangos": {
+    "_fuente": "Dlx, 27/09/2026, con el mensaje de Snake Rap «RANGOS Y PUNTAJES EN EL RANKING DE ASCENSO». Son los puntos del ranking DE SNAKE RAP, no los de la Liga: la página los muestra junto al rango de cada evento y no suman en ningún lado.",
+    "categorias": [
+     [
+      "Alto",
+      "Clasificatorias de Rango 2 que llevan a una final de Rango 1 o Insignia. Quien gana se lleva «🜲 Campeón» y clasifica a Matanza de Dioses."
+     ],
+     [
+      "Medio",
+      "Clasificatorias de Rango 3 que llevan a una final de Rango 2. Quien gana se lleva «✯ Vencedor». Suelen ser de un solo organizador, con formatos propios."
+     ],
+     [
+      "Bajo",
+      "Clasificatorias de Rango 4 que llevan a una final de Rango 3. Quien gana se lleva «⭒ Ganador». Suelen ser por duplas o equipos, o 1vs1 de 8 cupos."
+     ],
+     [
+      "Chill",
+      "Sin rango: formatos de prueba, prácticas o ganas de rapear."
+     ]
+    ],
+    "puntos": {
+     "Insignia": [
+      15000,
+      10000,
+      7000,
+      4000
+     ],
+     "1": [
+      10000,
+      7500,
+      5000,
+      2500
+     ],
+     "2": [
+      6000,
+      4500,
+      3000
+     ],
+     "3": [
+      3000,
+      2250,
+      1500
+     ],
+     "4": [
+      1000,
+      750,
+      500
+     ]
+    }
+   }
   },
   "FTN": {
    "nombre": "Fontana",

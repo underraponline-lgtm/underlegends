@@ -10,7 +10,7 @@
   "FFA": "#26045B",
   "SR": "#E0670B",
   "FRZ": "#26B3A6",
-  "URBF": "#FFA928",
+  "URBF": "#F2B33D",
   "RZ": "#3A96F2"
  },
  "de_donde_sale": {
@@ -22,7 +22,7 @@
   "FFA": "del logo · violeta profundo",
   "SR": "del logo ORIGINAL · naranja. Dlx confirmo que el logo original de Snake Rap es naranja, no dorado ni verde. El dorado (Logo_Ciclo_8) es una version posterior y el verde no existe.",
   "FRZ": "de marca. Su logo es blanco y negro PURO: cero contenido cromatico, no hay de donde sacarlo",
-  "URBF": "ámbar, ELEGIDO y no sacado del logo (27/09/2026). Dlx: «lo de Urban Freestyle usa otro naranja». El del logo nuevo era #EA7206 y quedaba a ΔE 3 del de Snake Rap (#E0670B): el mismo color a simple vista, en los botones de Mundo y en el calendario. Con #FFA928 quedan a ΔE 19,8. El fondo de su carta de Servidor NO sale de acá: vive en 03_Servidor/disenos/los_nueve.py y no cambió.",
+  "URBF": "miel, ELEGIDO por Dlx y no sacado del logo. 27/09/2026: «lo de Urban Freestyle usa otro naranja» y, entre ámbar #FFA928, naranja rojizo #FF5A2E y miel #F2B33D, «prueba miel». El del logo nuevo era #EA7206 y quedaba a ΔE 3 del de Snake Rap (#E0670B): el mismo color a simple vista. Miel queda a ΔE 23,6 de Snake Rap (y a 9 del dorado de «Líder»). El fondo de su carta de Servidor NO sale de acá: vive en 03_Servidor/disenos/los_nueve.py y no cambió.",
   "RZ": "del logo · el punto más caliente de su fuego azul"
  },
  "_pendiente_sr": "Se acordo que Snake Rap va en VERDE, pero no hay ningun logo verde: los dos archivos que hay son dorado (Logo_Ciclo_8, el actual) y naranja (SR.png, el viejo). Tres salidas: (a) que Dlx pase la version verde, (b) usar el verde de marca #33BF5A y teñir la silueta blanca, que ya existe en comun/logos_sv/, (c) aceptar el dorado, que es el color real del logo actual. Hasta que se decida queda el dorado.",

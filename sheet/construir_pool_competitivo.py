@@ -83,6 +83,29 @@ def con_puerta(letra, ev):
 MIN_GRUPO = 3      # con menos de 3, el puesto dentro del grupo no dice nada
 
 
+def puestos_competitivo(pool):
+    """`pos` y `total` del Competitivo: primero los que pasan su puerta.
+
+    🔴 LA CARTA DECÍA #4 Y EL RANKING, #1. Dlx, 27/09/2026: *«la tarjeta
+    competitiva de Makmah dice #4 posición del Competitivo, pero él es el
+    único con tarjeta Competitivo, entonces debería decir #1»*. `pos` salía
+    del Score entre TODAS las personas del pool (`piso=0`), y las tres de
+    arriba tenían 9, 3 y 8 eventos: sin Competitivo. La vitrina ya contaba
+    con la puerta de 10; la carta no.
+
+    ⚠️ LOS DE AFUERA SIGUEN TENIENDO PUESTO, DESPUÉS DE LOS DE ADENTRO: su
+    Competitiva no se emite, pero `gencomp` compara `pos` con números y un
+    `None` lo tumbaría (lo corre entero `herramientas/puedo_generar.py`).
+    `total` es cuántos pasan la puerta: el «de N» del Ranking Competitivo.
+    """
+    pide = _minimo('competitivo', 'ev')
+    adentro = sorted((d for d in pool if d['ev'] >= pide), key=lambda d: -d['score'])
+    afuera = sorted((d for d in pool if d['ev'] < pide), key=lambda d: -d['score'])
+    for i, d in enumerate(adentro + afuera, 1):
+        d['pos'], d['total'] = i, len(adentro)
+    return pool
+
+
 def num(x):
     try:
         return float(str(x).replace(',', '').replace('%', '').strip() or 0)
@@ -220,6 +243,20 @@ def _self_check():
         print('   %s %d nacional(es) y %d internacional(es): %s'
               % ('✅' if ok else '🔴', dna, din,
                  'la carta sale' if libre else 'bloqueada'))
+
+    # el puesto del Competitivo, entre los que pasan su puerta (el caso de
+    # Makmah del 27/09: cuarto por Score, único con 10 eventos)
+    pide = _minimo('competitivo', 'ev')
+    pool = puestos_competitivo([{'n': 'a', 'ev': pide - 1, 'score': 56.8},
+                                {'n': 'b', 'ev': 3, 'score': 31.6},
+                                {'n': 'm', 'ev': pide + 1, 'score': 26.9}])
+    pos = {d['n']: (d['pos'], d['total']) for d in pool}
+    for que, ok in [('quien pasa la puerta es #1 de 1, aunque tres lo superen en Score',
+                     pos['m'] == (1, 1)),
+                    ('los de afuera quedan después, con puesto (el generador no revienta)',
+                     pos['a'] == (2, 1) and pos['b'] == (3, 1))]:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     print('')
     return mal
 
@@ -418,6 +455,8 @@ def main():
             'subrango': con_puerta(subrango(score), int(num(r[cc('Ev')]))),
             'ovr': 0, 'av': AV.get(k, ''),
         })
+
+    puestos_competitivo(pool)
 
     # puesto dentro del pais, del servidor y de la crew. Los tres por Score,
     # para que los tres numeros de la carta sean comparables entre si.

@@ -54,7 +54,12 @@
   "   Dlx lo resuelva.",
   "",
   "pares: [alias, nombre real].",
-  "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos."
+  "no_confundir: [a, b, motivo] — los que PARECEN uno y son dos.",
+  "",
+  "⚠️ KENNY->Kenny lo dijo Dlx el 27/09/2026: «Sí, de Argentina», a la",
+  "   pregunta de si «KENNY» (Snake Rap, sin bandera) y «Kenny» (FFA, 🇦🇷)",
+  "   eran la misma persona. Ninguno está en la Lista ni tiene Discord ID;",
+  "   como dos filas con la misma clave, sus tarjetas se pisaban en R2."
  ],
  "pares": [
   [
@@ -96,6 +101,10 @@
   [
    "SEBITA",
    "Liberia"
+  ],
+  [
+   "KENNY",
+   "Kenny"
   ]
  ],
  "no_confundir": [
