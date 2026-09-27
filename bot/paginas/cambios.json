@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.21",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T10:55:00-04:00",
+   "titulo": "El número es de los miembros",
+   "items": [
+    "🏅 **El puesto es de los miembros de la Liga**: estar en Discord Rap Español y verificado. Quien todavía no lo es **sigue en el ranking, con sus puntos y en su lugar**, pero sin número: en el **#** dice **—**. El podio, los líderes y los récords también son de los miembros.",
+    "✅ **Para tener tu número**: entrá a Discord Rap Español y escribí `/verificar`. Aparece en la corrida siguiente, con todos tus puntos.",
+    "🃏 El número de las tarjetas, el de tu apodo y el de las hojas de la Liga es el mismo que el de la página.",
+    "⚡ La página baja más liviana: las llaves viejas se piden recién cuando abrís una."
+   ]
+  },
+  {
    "version": "1.20",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T09:15:00-04:00",

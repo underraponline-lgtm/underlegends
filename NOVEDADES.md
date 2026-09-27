@@ -262,7 +262,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La bandera no se estira** (la de MTZ en el podio de SEVEN STREET) | *«why mtz has the mexican flag all width?»* | `img.bf` con ancho fijo en `estilo.css` |
 | **Buscar bugs en todo y mejorar el teléfono** | *«take this time to fix bugs… search everywhere… improve the interface when someone is on MOBILE»* | una auditoría entera de la página: 13 hallazgos, los 13 arreglados (1.20) |
 | **De 3 a 11 AM ET no se leen las llaves en vivo ni los anuncios**, igual que el ciclo | *«eso de detección de LLAVES en vivo que sea apagado entre las 3am y 11am, que siga eso de las notificaciones también y el cron»* | `enMadrugada()` en `bot/worker.js` y `vigilar()` en `bot/avisos.js`: el vigía late con `dormido` y no lee Discord. Lo anunciado de madrugada avisa a las 11 si el evento no empezó |
-| **«Fuera de concurso»**: nadie desaparece del ranking; el **número de puesto** —y el podio, «Líder» y el `#N` del apodo— es **sólo de los miembros**. Quien no lo es sigue en la tabla, en su lugar por puntos, sin número y con cómo conseguirlo | a esconderlos, *«tampoco quiero desaparecer a todos del ranking»*; a «fuera de concurso», *«me gusta la idea»* (9:30 AM) | ⏳ **por construir**: el número uno solo en la tabla, las tarjetas, el Sheet y el apodo. Las cuentas (OVR, Score) no cambian |
+| **«Fuera de concurso»**: nadie desaparece del ranking; el **número de puesto** —y el podio, «Líder» y el `#N` del apodo— es **sólo de los miembros**. Quien no lo es sigue en la tabla, en su lugar por puntos, sin número y con cómo conseguirlo | a esconderlos, *«tampoco quiero desaparecer a todos del ranking»*; a «fuera de concurso», *«me gusta la idea»* (9:30 AM) | ✅ **hecho (1.21)**: `verificados.numerar()` es el único lugar; lo usan las vitrinas (`sheet/rankings.py`), los dos pools, los círculos de país/servidor/crew, la portada del Sheet y la página. Las cuentas (OVR, Score) no cambian |
 | **El enganche es para todos**: Most Wanted automático, «Tu semana», avisos al teléfono, pronósticos en las llaves en vivo, Revelación y Novato de la semana, compartir la tarjeta como historia, desafíos | *«me gustó todo eso para todos… exceptuando lo del pase»* | ⏳ por construir; el objetivo, en palabras de Dlx: *«que la gente use el website y pare en nuestro HUB mayormente… atraer a la gente y engancharla»* |
 | **El Pase de rapero es sólo para DRA**, y se avanza con **TAREAS** | *«eso sí me gustaría que sólo para DRA»* | ⏳ por diseñar |
 | 🔴 **Tareas ≠ Misiones.** Las **Tareas** son del **Pase**; las **Misiones** son del **ranking de Temporada** (para todos) | *«lo de pase viene con TAREAS no misiones.. lo de misiones es para el ranking de temporada. Tareas para el pase no confundas»* | la pestaña «Misiones» del ranking; `comun/requisitos.py` ya suma las misiones para la Temporada |
@@ -271,6 +271,32 @@ Son las que no se pueden volver a preguntar ni olvidar.
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Domingo 27/09 (10 a 11 AM) — versión 1.21
+
+**«Fuera de concurso».** Dlx: *«1, sí»*. Nadie sale del ranking; el número
+es de los miembros (Discord vinculado, país y Miembro de DRA).
+
+- 🔑 **Un solo lugar**: `verificados.por_nombre()` dice quién es miembro y
+  `verificados.numerar()` numera: `[1, 2, None, 3]` para Hassan, Makmah,
+  Velatz, PichulaMc. Sin `datos/verificados.json` numeran todos: un corte de
+  Discord no deja a nadie sin puesto.
+- **Dónde se aplica**: las vitrinas del Sheet (Temporada, Competitivo,
+  Podios, Duelos: «—» en el `#`), el pool de Temporada (`pos` oficial, `fc`,
+  `o` = orden por mérito entre todos, `total` = los que tienen número), el
+  Competitivo (Makmah #1 de 1), los círculos de país, servidor y crew de las
+  tarjetas, la portada del Sheet y la página (el ranking, el podio, los
+  líderes, los tres de arriba, los mejores de cada lado, los récords, el
+  perfil). El `#N` del apodo lee la vitrina del Competitivo, así que sigue.
+- ⚠️ **Quien está fuera de concurso lleva `pos` igual en el pool**, después
+  de los miembros: `gencomp` compara `pos` con números y un `None` lo
+  tumbaría. No se ve nunca (sin portón no hay carta, y la página muestra «—»).
+  `puedo_generar.py`: las cuatro cartas salen para el pool entero.
+- **Medido hoy**: 57 con número, 96 fuera de concurso. PichulaMc pasa de #4 a
+  #3; el «#N de la temporada» del perfil es «de 57».
+- ⚡ **El lobby, más liviano**: `LLAVES_WEB` de 24 a 12, ahora que las viejas
+  se piden aparte; los botones «Ver llave» del calendario y del perfil las
+  piden si no viajaron. 124 KB → 109 KB por visita.
 
 ## 📅 Domingo 27/09 (9 a 9:30 AM) — versión 1.20
 

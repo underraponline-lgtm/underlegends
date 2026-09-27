@@ -221,6 +221,18 @@ var porK = function (k) {
   var n = normK(k);
   return n ? t.filter(function (x) { return normK(x.k) === n; })[0] : undefined;
 };
+/* 🔑 «FUERA DE CONCURSO» (Dlx, 27/09/2026): quien no es miembro de la Liga
+   —en DRA y verificado— sigue en el ranking con sus puntos y en su lugar
+   por mérito, pero SIN NÚMERO. El puesto, el podio, los líderes y los
+   récords son de los miembros. El dato lo pone el ciclo (`fc`, y `o` el
+   orden por mérito entre todos); acá sólo se respeta. */
+var oficiales = function () { return (D.tabla || []).filter(function (f) { return !f.fc; }); };
+var FC = '<span class="fc-t" title="Fuera de concurso: todavía no es miembro de la Liga">&mdash;</span>';
+var numPos = function (f) { return f && f.pos && !f.fc ? '#' + esc(f.pos) : '&mdash;'; };
+var textoPos = function (f) {
+  return f && f.fc ? 'Fuera de concurso' : f && f.pos && f.pos !== '—' ? '#' + esc(f.pos) + ' de la temporada'
+    : 'Todavía sin eventos esta temporada';
+};
 /* 🔑 LA FILA DE QUIEN ENTRÓ CON DISCORD Y NO ESTÁ EN EL RANKING: tiene carta
    (la de Servidor no pide nada) pero ningún evento de la temporada. Sirve
    para el visor de «Mis tarjetas»; sus Bloqueadas van como cartas más. */
@@ -481,7 +493,7 @@ function temporadaCerrada() {
   return !!t && Date.now() > t.getTime() + 86400000;
 }
 function pintaCampeones() {
-  var T = D.tabla || [], h = [];
+  var T = oficiales(), h = [];
   var quien = temporadaCerrada() ? 'Campeón' : 'Líder';
   var uno = T[0];
   var comp = T.filter(function (f) { return f.rg; }).sort(function (a, b) {
@@ -1069,7 +1081,7 @@ function cerrarLlave() {
    arriba»: que nadie haya llegado a los 10 eventos ES el dato. */
 var POD = { i: 0, cats: [] };
 function catsPodio() {
-  var T = D.tabla || [];
+  var T = oficiales();
   var cats = [];
   var persona = function (f) { return porK(f.k) || f; };
   cats.push({ id: 'temporada', t: 'Temporada', carta: 'temporada', gente: T.slice(0, 3),
@@ -1084,7 +1096,7 @@ function catsPodio() {
     vacio: cerca ? 'Se desbloquea a los <b>' + pide + ' eventos</b> y todavía no llegó nadie. ' +
       'El más cerca: <b>' + esc(cerca.n) + '</b>, con ' + cerca.ev + '.' : '' });
   cats.push({ id: 'duelos', t: 'Duelos', carta: 'temporada',
-    gente: (D.duelos || []).slice(0, 3).map(function (d) {
+    gente: (D.duelos || []).filter(function (d) { return !d.fc; }).slice(0, 3).map(function (d) {
       return Object.assign({}, persona(d), { _g: d.g, _t: d.t });
     }),
     v: function (f) { return '<b>' + f._g + '</b> de ' + f._t + ' ganados'; } });
@@ -1180,11 +1192,11 @@ function pintaPodio() {
    cada país, en cada crew y en cada servidor, del mismo payload. Un grupo
    con un solo servidor no se dibuja: «el mejor de FFA» es el #1 de todos. */
 function pintaUnos() {
-  var T = D.tabla || [];
+  var T = oficiales();
   var mejor = function (ok) { return T.filter(ok)[0]; };
   var item = function (cab, f, extra) {
     return '<div class="uno">' + cab + '<div class="uno-q" data-k="' + esc(f.k) + '">' +
-      avatar(f, 34) + '<span><b>' + esc(f.n) + '</b><small>#' + esc(f.pos) + ' · OVR ' +
+      avatar(f, 34) + '<span><b>' + esc(f.n) + '</b><small>' + numPos(f) + ' · OVR ' +
       (f.ovr || '—') + ' · ' + num(f.pts) + ' pts</small></span></div>' + (extra || '') + '</div>';
   };
   var partes = [];
@@ -1198,6 +1210,7 @@ function pintaUnos() {
     '<div class="unos">' + ps.join('') + '</div>');
   var cs = (D.crews || []).filter(function (c) { return c.rk !== 0 && c.mejor; }).map(function (c) {
     var f = porK(kDe(c.mejor)) || mejor(function (x) { return x.n === c.mejor; });
+    if (f && f.fc) f = null;
     return f ? item('<a class="uno-cab" href="#/crew/' + encodeURIComponent(c.clave || c.crew) + '">' +
       (c.logo ? '<img class="uno-logo" src="' + esc(c.logo) + '" alt="">' : '') + '<span>' + esc(c.crew) +
       '</span><u>' + c.n + '</u></a>', f) : '';
@@ -1289,8 +1302,13 @@ function crewCelda(c) {
    menor, porque un ranking que al tocar «Puntos» muestra primero al
    último obliga a tocar dos veces siempre. */
 var COL = {
-  pos: { t: '#', cls: 'c-pos', s: function (f) { return f.pos; }, v: function (f) { return esc(f.pos); } },
-  i: { t: '#', cls: 'c-pos', s: function (f) { return f._i; }, v: function (f) { return f._i || nada; } },
+  // ⚠️ EL `#` ORDENA POR MÉRITO (`o`), no por `pos`: quien está fuera de
+  // concurso no tiene `pos` y se iría al fondo en vez de quedar en su lugar
+  pos: { t: '#', cls: 'c-pos', s: function (f) { return f.o || f.pos; },
+    v: function (f) { return f.fc ? FC : esc(f.pos); } },
+  // `_o` es el lugar en ESTE ranking contando a todos (ver `pintaTabla`)
+  i: { t: '#', cls: 'c-pos', s: function (f) { return f._o || f._i; },
+    v: function (f) { return f._i || (f.fc ? FC : nada); } },
   n: { t: 'Rapero', cls: 'c-n', txt: 1, s: function (f) { return sinTildes(f.n); },
     v: function (f) { return quienEs(f.av !== undefined ? f : conCara(f), 30); } },
   ovr: { t: 'OVR', tit: 'El número de la temporada, de 40 a 99', s: function (f) { return f.ovr || 0; },
@@ -1499,6 +1517,12 @@ function pintaTabla() {
   $('#chipsSv').hidden = $('#chipsCc').hidden = !!(cfg.sinChips || cfg.pronto);
   $('#buscar').hidden = !!cfg.pronto;
   var nota = cfg.nota ? cfg.nota() : '';
+  // la línea que explica el «—», sólo si en este ranking hay alguien así
+  if (!cfg.pronto && cfg.filas().some(function (f) { return f.fc; })) {
+    nota = (nota ? nota + ' ' : '') + 'En el <b>#</b>, <b>&mdash;</b> es <b>fuera de concurso</b>: todavía no es miembro de ' +
+      'la Liga (tiene que estar en Discord Rap Español y verificarse). Sus puntos cuentan igual; el número ' +
+      'es de los miembros.';
+  }
   $('#notaSub').innerHTML = nota;
   $('#notaSub').hidden = !nota;
   if (cfg.pronto) {
@@ -1513,7 +1537,13 @@ function pintaTabla() {
   var cols = cfg.cols.filter(function (id) { return !COL[id].si || COL[id].si(base); });
   base = typeof cfg.orden === 'function' ? base.sort(cfg.orden)
     : ordenadas(base, cfg.orden, !COL[cfg.orden].txt && cfg.orden !== 'pos');
-  base.forEach(function (f, i) { f._i = cfg.sinPuesto && cfg.sinPuesto(f) ? '' : i + 1; });
+  // 🔑 el número salta a quien está fuera de concurso: Velatz queda en su
+  // lugar, sin número, y el que sigue es el #3
+  var nro = 0;
+  base.forEach(function (f, i) {
+    f._o = i + 1;
+    f._i = (cfg.sinPuesto && cfg.sinPuesto(f)) || f.fc ? '' : ++nro;
+  });
   var fs = filtradas(base, cfg);
   if (ORDEN.tocado) fs = ordenadas(fs, ORDEN.col, ORDEN.desc);
   // sin tocar, la flecha va en «#»: es el orden de este ranking
@@ -1536,7 +1566,7 @@ function pintaTabla() {
   }
   $('#filas').innerHTML = fs.map(function (f) {
     var cl = [f._i === 1 ? 'top1' : f._i === 2 ? 'top2' : f._i === 3 ? 'top3' : '',
-      cfg.fila ? cfg.fila(f) : ''].filter(Boolean).join(' ');
+      f.fc ? 'fc' : '', cfg.fila ? cfg.fila(f) : ''].filter(Boolean).join(' ');
     return '<tr' + (cl ? ' class="' + cl + '"' : '') + (f.k ? ' data-k="' + esc(f.k) + '"' : '') +
       (cfg.enlace ? cfg.enlace(f) : '') + '>' +
       cols.map(function (id) {
@@ -2719,7 +2749,7 @@ function dibujoMapa(topo, por) {
 // inicio». El resto está a un «Ver todo» de distancia.
 var TOP = 3;
 function pintaTops() {
-  var T = D.tabla || [];
+  var T = oficiales();
   var fila = function (f, i, v, c) {
     return '<li' + (f.k ? ' data-k="' + esc(f.k) + '"' : f.dc ? ' data-crew="' + esc(f.dc) + '"' : '') +
       '><i class="pp">' + (i + 1) +
@@ -2742,7 +2772,9 @@ function pintaTops() {
     return fila(f, i, esc(f.rg), f.rgc);
   }), cerca ? 'Se desbloquea a los <b>' + pide + ' eventos</b> y todavía no llegó nadie. ' +
     'El más cerca: <b>' + esc(cerca.n) + '</b>, con ' + cerca.ev + '.' : '']);
-  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/ranking/duelos', (D.duelos || []).slice(0, TOP).map(function (d, i) {
+  cajas.push(['&#129354;', 'Duelos <u>ganados</u>', '#/ranking/duelos', (D.duelos || []).filter(function (d) {
+    return !d.fc;
+  }).slice(0, TOP).map(function (d, i) {
     return fila(d, i, d.g + '<s>/' + d.t + '</s>');
   })]);
   var med = T.filter(function (f) { return (f.oro || 0) + (f.seg || 0) + (f.ter || 0) > 0; })
@@ -2765,7 +2797,9 @@ function pintaTops() {
                         : (b.rch[1] - a.rch[1]) || (b.pts - a.pts);
   }).slice(0, TOP);
   if (!rs.length && (D.rachas || []).length) {
-    rs = D.rachas.slice(0, TOP).map(function (r) { return { n: r.n, k: r.k, cc: r.cc, rch: [r.r, r.r] }; });
+    rs = D.rachas.filter(function (r) { return !r.fc; }).slice(0, TOP).map(function (r) {
+      return { n: r.n, k: r.k, cc: r.cc, rch: [r.r, r.r] };
+    });
     vivas = rs;
   }
   cajas.push(['&#128293;', 'Rachas <u>' + (vivas.length ? 'la actual' : 'la más larga') + '</u>',
@@ -2849,7 +2883,8 @@ function conCara(x) {
    Todo sale del lobby que ya bajó: su gente es la de la tabla. */
 function genteLista(fs) {
   return '<div class="gente">' + fs.map(function (f) {
-    return '<div class="gt" data-k="' + esc(f.k) + '"><span class="gt-p">#' + esc(f.pos) + '</span>' +
+    return '<div class="gt' + (f.fc ? ' fc' : '') + '" data-k="' + esc(f.k) + '"><span class="gt-p">' +
+      numPos(f) + '</span>' +
       '<span class="gt-n">' + quienEs(f, 30) + '</span>' +
       '<span class="gt-d"><b class="ovr">' + (f.ovr || '—') + '</b><small>OVR</small></span>' +
       '<span class="gt-d"><b>' + num(f.pts) + '</b><small>pts</small></span>' +
@@ -2877,7 +2912,7 @@ function pintaCrew(clave) {
   var conPuesto = cs.filter(function (x) { return x.rk !== 0; });
   var pos = conPuesto.indexOf(c) + 1;
   var gente = (c.gente || []).map(function (n) { return porK(kDe(n)); }).filter(Boolean)
-    .sort(function (a, b) { return (a.pos || 999) - (b.pos || 999); });
+    .sort(function (a, b) { return (a.o || a.pos || 999) - (b.o || b.pos || 999); });
   var ccs = [];
   gente.forEach(function (f) { if (f.cc && ccs.indexOf(f.cc) < 0) ccs.push(f.cc); });
   var logo = c.logo ? '<img class="cw-logo grande" src="' + esc(c.logo) + '" alt="" width="116" height="116">'
@@ -2899,7 +2934,7 @@ function pintaPais(cc) {
   var ps = D.paises || [];
   var P = ps.filter(function (x) { return String(x.cc).toLowerCase() === cc; })[0];
   var gente = (D.tabla || []).filter(function (f) { return String(f.cc).toLowerCase() === cc; })
-    .sort(function (a, b) { return (a.pos || 999) - (b.pos || 999); });
+    .sort(function (a, b) { return (a.o || a.pos || 999) - (b.o || b.pos || 999); });
   if (!P && !gente.length) {
     caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a><section class="blk entro">' +
       '<h2><span>&#128269;</span> No lo encontré</h2><p class="bajada">Ese país no tiene raperos en ' +
@@ -3062,8 +3097,7 @@ function pintaPerfil(k) {
   caja.innerHTML =
     '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
     '<header class="pf-cab">' + avatar(f, 116) +
-      '<div class="pf-id"><span class="pf-pos">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) +
-        ' de la temporada' : 'Todavía sin eventos esta temporada') + '</span>' +
+      '<div class="pf-id"><span class="pf-pos' + (f.fc ? ' fc' : '') + '">' + textoPos(f) + '</span>' +
       '<h1 class="tit">' + esc(f.n) + '</h1>' +
       (f.nv ? '<p class="pf-nv"><span class="nv-et">Sin verificar</span><span>' + esc(NV[f.nv] || '') +
         (k === YO || (DC && DC.clave === k) ? ' — en DRA, <code>/verificar</code> te dice qué hacer' : '') +
@@ -3169,7 +3203,8 @@ function pintaPerfil(k) {
     }).join('');
     // en cada ranking
     var rk = x.rk || {}, filas = [];
-    filas.push(['Temporada', '#' + f.pos + ' de ' + (D.gente || (D.tabla || []).length)]);
+    filas.push(['Temporada', f.fc ? 'Fuera de concurso'
+      : '#' + f.pos + ' de ' + (D.oficiales || D.gente || (D.tabla || []).length)]);
     if (rk.du) filas.push(['Duelos', '#' + rk.du[0] + ' de ' + rk.du[1]]);
     if (rk.pod) filas.push(['Podios', '#' + rk.pod[0] + ' de ' + rk.pod[1]]);
     if (rk.pa) filas.push([bandera(f.cc) + ' ' + esc(nombrePais(f.cc)), '#' + rk.pa[0] + ' de ' + rk.pa[1]]);
@@ -3186,8 +3221,9 @@ function pintaPerfil(k) {
         var m = E[e[0]] || [];
         var t = m[2] ? new Date(m[2]) : null;
         var fecha = t && !isNaN(t) ? fmtFecha(t) : (m[4] || '');
-        var ll = (D.llaves || {})[e[0]]
-          ? '<button class="ver-llave" data-llave="' + esc(e[0]) + '">Ver llave</button>' : '';
+        // todo evento del historial salió de una llave procesada: si no viaja
+        // en el lobby, el botón la pide aparte
+        var ll = '<button class="ver-llave" data-llave="' + esc(e[0]) + '">Ver llave</button>';
         return '<div class="pe" style="--c:' + esc(colorSv(m[1])) + '"><span class="pe-f">' + esc(fecha) +
           '</span><div><b>' + esc(m[0] || ('Evento #' + e[0])) + '</b><small>' +
           esc(nombreSv(m[1])) + (m[3] ? ' · ' + m[3] + ' raperos' : '') + '</small>' + ll + '</div>' +
@@ -3303,7 +3339,7 @@ function pintaBusca(q) {
   caja.hidden = false;
   caja.innerHTML = fs.length ? fs.map(function (f, i) {
     return '<button class="br' + (i ? '' : ' on') + '" data-k="' + esc(f.k) + '">' + quienEs(f, 26) +
-      '<span class="br-p">#' + esc(f.pos) + '</span></button>';
+      '<span class="br-p">' + numPos(f) + '</span></button>';
   }).join('') : '<p class="br-no">No hay nadie con ese nombre en la temporada.</p>';
 }
 
@@ -3517,7 +3553,7 @@ function pintaYoPanel() {
     var pide = reqDe('competitivo') || 10, r = f.rch || [0, 0];
     var falta = Math.max(0, pide - (f.ev || 0));
     c.innerHTML = '<div class="teaser yo lleno" data-k="' + esc(f.k) + '">' + avatar(f, 56) +
-      '<h3>' + esc(f.n) + '</h3><p class="yo-pos">#' + esc(f.pos) + ' de la temporada</p>' +
+      '<h3>' + esc(f.n) + '</h3><p class="yo-pos">' + textoPos(f) + '</p>' +
       '<dl class="yo-n"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
       '<div><dt>Puntos</dt><dd>' + num(f.pts) + '</dd></div>' +
       '<div><dt>Racha</dt><dd>' + (r[0] ? '&#128293;' + r[0] : '0') + '<s>/' + r[1] + '</s></dd></div></dl>' +
@@ -3962,8 +3998,8 @@ function _pintaPopCuenta() {
       secSigo();
     return;
   }
-  c.innerHTML = '<div class="pop-yo">' + avatar(f, 46) + '<div><b>' + esc(f.n) + '</b><small>#' +
-    esc(f.pos) + ' de la temporada · OVR ' + (f.ovr || '—') +
+  c.innerHTML = '<div class="pop-yo">' + avatar(f, 46) + '<div><b>' + esc(f.n) + '</b><small>' +
+    textoPos(f) + ' · OVR ' + (f.ovr || '—') +
     (DC ? ' · con Discord' : '') + '</small></div></div>' +
     '<nav class="pop-menu">' +
     '<a href="#/r/' + encodeURIComponent(f.k) + '">&#128100; Mi perfil</a>' +
@@ -3982,7 +4018,7 @@ function pintaYoRes(q) {
   var fs = q ? (D.tabla || []).filter(function (f) { return sinTildes(f.n).indexOf(q) >= 0; }).slice(0, 6) : [];
   caja.innerHTML = fs.map(function (f) {
     return '<button type="button" class="br" data-yo="' + esc(f.k) + '">' + quienEs(f, 24) +
-      '<span class="br-p">#' + esc(f.pos) + '</span></button>';
+      '<span class="br-p">' + numPos(f) + '</span></button>';
   }).join('') || (q ? '<p class="br-no">No hay nadie con ese nombre en la temporada.</p>' : '');
 }
 function pintaPopAjustes() {
@@ -4600,7 +4636,10 @@ function eventos() {
   });
   document.addEventListener('click', function (e) {
     var b = e.target.closest('[data-llave]');
-    if (b) abrirLlave(b.dataset.llave);
+    // la que no viaja en el lobby se pide aparte (ver `llaveVieja()`)
+    if (b && !abrirLlave(b.dataset.llave) && String(b.dataset.llave).indexOf('v:') !== 0) {
+      llaveVieja(b.dataset.llave);
+    }
   });
   // ⚠️ Escape cierra lo de arriba primero: la tarjeta, y después la llave
   // 🔑 EL CALENDARIO: tocar un día muestra sus eventos; las flechas

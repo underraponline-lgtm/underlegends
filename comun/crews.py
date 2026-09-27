@@ -86,23 +86,47 @@ def _cargar():
 CREWS, DE_CADA_UNO = _cargar()
 
 
-def puestos(pool, clave='raw', score='score'):
+def _oficial():
+    """`f(nombre) -> bool` del portón (`bot/verificados.py`), o `None` si no se sabe."""
+    try:
+        _bot = os.path.join(BASE, 'bot')
+        if _bot not in sys.path:
+            sys.path.insert(0, _bot)
+        import verificados as _VER
+        return _VER.por_nombre()
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+def puestos(pool, clave='raw', score='score', oficial=False):
     """{nombre normalizado: (crew, puesto, total)} por Score.
 
     ⚠️ **Sólo cuentan los que TIENEN carta.** Un puesto contra gente que no
     está en el pool no se puede explicar dentro de la carta. Y con menos de
     `MIN_GRUPO` el puesto va en 0, que es como se dibuja «sin número».
+
+    🔑 **Y SÓLO LOS MIEMBROS LLEVAN NÚMERO** («fuera de concurso», Dlx,
+    27/09/2026), igual que en el país y el servidor: quien no pasa el
+    portón conserva su crew —la crew es identidad— con el puesto en 0.
+    `oficial=None` numera a todos; sin decir nada, se le pregunta al portón.
     """
-    por = {}
+    if oficial is False:
+        oficial = _oficial()
+    por, fuera = {}, []
     for x in pool:
         cr = DE_CADA_UNO.get(norm(x[clave]))
         if cr:
-            por.setdefault(cr, []).append(x)
+            if oficial is None or oficial(x[clave]):
+                por.setdefault(cr, []).append(x)
+            else:
+                fuera.append((cr, x))
     out = {}
     for cr, v in por.items():
         v = sorted(v, key=lambda x: -float(x.get(score) or 0))
         for i, x in enumerate(v, 1):
             out[norm(x[clave])] = (cr, i if len(v) >= MIN_GRUPO else 0, len(v))
+    for cr, x in fuera:
+        out[norm(x[clave])] = (cr, 0, len(por.get(cr) or ()))
     return out
 
 

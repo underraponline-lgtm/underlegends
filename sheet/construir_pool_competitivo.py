@@ -83,7 +83,20 @@ def con_puerta(letra, ev):
 MIN_GRUPO = 3      # con menos de 3, el puesto dentro del grupo no dice nada
 
 
-def puestos_competitivo(pool):
+def _oficial():
+    """`f(nombre) -> bool` del portón (`bot/verificados.py`), o `None` si no se sabe."""
+    try:
+        _bot = os.path.join(RAIZ, 'bot')
+        if _bot not in sys.path:
+            sys.path.insert(0, _bot)
+        import verificados as _VER
+        return _VER.por_nombre()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude saber quién es miembro (%s): numero a todos' % str(e)[:80])
+        return None
+
+
+def puestos_competitivo(pool, oficial=False):
     """`pos` y `total` del Competitivo: primero los que pasan su puerta.
 
     🔴 LA CARTA DECÍA #4 Y EL RANKING, #1. Dlx, 27/09/2026: *«la tarjeta
@@ -97,11 +110,24 @@ def puestos_competitivo(pool):
     Competitiva no se emite, pero `gencomp` compara `pos` con números y un
     `None` lo tumbaría (lo corre entero `herramientas/puedo_generar.py`).
     `total` es cuántos pasan la puerta: el «de N» del Ranking Competitivo.
+
+    🔑 Y DESDE «FUERA DE CONCURSO» (Dlx, 27/09/2026), ADENTRO ES PASAR LA
+    PUERTA **Y SER MIEMBRO**: el número es de los miembros. Quien pasa la
+    puerta y no lo es queda después, con puesto numérico por lo mismo de
+    arriba. `oficial=None` numera a todos (sin saber quién es miembro no se
+    le saca el puesto a nadie).
     """
+    if oficial is False:
+        oficial = _oficial()
+    if oficial is None:
+        es = lambda d: True                              # noqa: E731
+    else:
+        es = lambda d: oficial(d.get('raw') or d.get('n') or '')   # noqa: E731
     pide = _minimo('competitivo', 'ev')
-    adentro = sorted((d for d in pool if d['ev'] >= pide), key=lambda d: -d['score'])
-    afuera = sorted((d for d in pool if d['ev'] < pide), key=lambda d: -d['score'])
-    for i, d in enumerate(adentro + afuera, 1):
+    adentro = sorted((d for d in pool if d['ev'] >= pide and es(d)), key=lambda d: -d['score'])
+    resto = sorted((d for d in pool if not (d['ev'] >= pide and es(d))),
+                   key=lambda d: (d['ev'] < pide, -d['score']))
+    for i, d in enumerate(adentro + resto, 1):
         d['pos'], d['total'] = i, len(adentro)
     return pool
 
@@ -249,7 +275,7 @@ def _self_check():
     pide = _minimo('competitivo', 'ev')
     pool = puestos_competitivo([{'n': 'a', 'ev': pide - 1, 'score': 56.8},
                                 {'n': 'b', 'ev': 3, 'score': 31.6},
-                                {'n': 'm', 'ev': pide + 1, 'score': 26.9}])
+                                {'n': 'm', 'ev': pide + 1, 'score': 26.9}], oficial=None)
     pos = {d['n']: (d['pos'], d['total']) for d in pool}
     for que, ok in [('quien pasa la puerta es #1 de 1, aunque tres lo superen en Score',
                      pos['m'] == (1, 1)),
@@ -257,6 +283,15 @@ def _self_check():
                      pos['a'] == (2, 1) and pos['b'] == (3, 1))]:
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
+    # 🔑 fuera de concurso: con 10 eventos pero sin ser miembro, no es el #1
+    pool = puestos_competitivo([{'n': 'v', 'ev': pide + 3, 'score': 70.0},
+                                {'n': 'm', 'ev': pide + 1, 'score': 26.9}],
+                               oficial=lambda n: n == 'm')
+    pos = {d['n']: (d['pos'], d['total']) for d in pool}
+    ok = pos['m'] == (1, 1) and pos['v'] == (2, 1)
+    mal += not ok
+    print('   %s fuera de concurso: el miembro es #1 de 1 aunque otro tenga más Score  %s'
+          % ('✅' if ok else '🔴', pos))
     print('')
     return mal
 
@@ -387,7 +422,9 @@ def main():
     _orden = {k: i for i, (k, _v) in enumerate(_por_pts, 1)}
     _svde = {k: v.get('Sv', '') for k, v in _ag.items()}
     Hc = list(_RK.CAB_COMPETITIVO)
-    filas = _RK.tabla_competitivo(_res, _orden, _svde, piso=0)
+    # ⚠️ `oficial=None`: acá se quieren TODOS numerados; el puesto oficial lo
+    # pone `puestos_competitivo()` más abajo
+    filas = _RK.tabla_competitivo(_res, _orden, _svde, piso=0, oficial=None)
     print('   %d fila(s) calculadas (la vitrina filtra en 10 ev; '
           'el pool las necesita todas)' % len(filas))
     cc = lambda n: Hc.index(n)
@@ -456,7 +493,8 @@ def main():
             'ovr': 0, 'av': AV.get(k, ''),
         })
 
-    puestos_competitivo(pool)
+    oficial = _oficial()
+    puestos_competitivo(pool, oficial)
 
     # puesto dentro del pais, del servidor y de la crew. Los tres por Score,
     # para que los tres numeros de la carta sean comparables entre si.
@@ -464,10 +502,16 @@ def main():
     # ser "1 de 1" no dice nada, sea en una crew, en un pais o en un servidor.
     # DRA tiene 1 persona y URBF 2, asi que el servidor tenia el mismo problema.
     # Los tres se calculan igual a proposito: si no, dejan de ser comparables.
+    # 🔑 Y LOS TRES, SÓLO ENTRE MIEMBROS («fuera de concurso», 27/09/2026): el
+    # número es de los miembros también adentro de un país, un servidor o una
+    # crew. Quien no lo es queda sin número (`''`), igual que un grupo chico.
+    es = (lambda d: True) if oficial is None else (lambda d: oficial(d['raw']))
     for campo, clave in [('cc', 'pais'), ('sv', 'sv')]:
         g = defaultdict(list)
         for d in pool:
-            g[d[campo] or '??'].append(d)
+            d['pos_' + clave], d['arc_' + clave] = '', 0
+            if es(d):
+                g[d[campo] or '??'].append(d)
         for _, v in g.items():
             v.sort(key=lambda x: -x['score'])
             for i, d in enumerate(v):
@@ -480,7 +524,9 @@ def main():
         cr = CREWS.get(norm(d['raw']))
         if cr:
             d['crew'] = cr
-            g[cr].append(d)
+            d['pos_crew'] = ''
+            if es(d):
+                g[cr].append(d)
     for cr, v in g.items():
         v.sort(key=lambda x: -x['score'])
         for i, d in enumerate(v):

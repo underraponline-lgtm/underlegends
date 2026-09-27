@@ -1056,8 +1056,10 @@ def tabla_nueva():
         [(-o, -_OVR.num(c[0]), d, f)
          for o, (c, f, d) in zip(_ovrs, filas)],
         key=lambda t: (t[0], t[1], t[2]))]
-    for n, f in enumerate(filas, 1):
-        f[icol['#']] = n
+    # 🔑 FUERA DE CONCURSO: el número es de los miembros; el resto queda en
+    # su lugar por mérito, con «—». Ver `verificados.numerar()`.
+    for f, n in zip(filas, _puestos([f[icol['Rapero']] for f in filas])):
+        f[icol['#']] = n if n else FUERA
 
     # 🔴 UN TROLL QUE SALE NO ES «LA TABLA ENCOGE». El guardián de abajo
     # cuenta personas para atajar un `Resultados` leído a medias, y el
@@ -1189,7 +1191,7 @@ CAB_MUNDIAL = ['#', 'País', 'Raperos', 'Puntos', 'Eventos', '🥇',
                'Mejor', 'Pts del mejor']
 
 
-def tabla_competitivo(res, orden_temp, sv_de, piso=None):
+def tabla_competitivo(res, orden_temp, sv_de, piso=None, oficial=False):
     """`Ranking Competitivo`: el Score y las cinco dimensiones.
 
     🔴 ESTE CALCULO NO EXISTIA. El Score se **leia** del Sheet y el Sheet
@@ -1261,11 +1263,8 @@ def tabla_competitivo(res, orden_temp, sv_de, piso=None):
             _texto_pos(orden_temp.get(quien)),
         ]))
     filas.sort(key=lambda x: -x[0])
-    out = []
-    for n, (_s, f) in enumerate(filas, 1):
-        f[0] = n
-        out.append(f)
-    return out
+    # 🔑 fuera de concurso: el `#` es de los miembros (ver `_numerar_filas`)
+    return _numerar_filas([f for _s, f in filas], oficial)
 
 
 def _texto_pos(v):
@@ -1273,7 +1272,68 @@ def _texto_pos(v):
     return '%dº' % v if v else ''
 
 
-def tabla_podios(ag, orden_temp, orden_comp):
+#: lo que va en el `#` de quien está fuera de concurso
+FUERA = '—'
+
+
+def _verificados():
+    """El módulo del portón (`bot/verificados.py`), o `None` si no se puede importar."""
+    try:
+        _b = os.path.join(BASE, 'bot')
+        if _b not in sys.path:
+            sys.path.insert(0, _b)
+        import verificados as _V
+        return _V
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude abrir el portón (%s): numero a todos' % str(e)[:80])
+        return None
+
+
+def _oficial():
+    """`f(nombre) -> bool` del portón, o `None` si no se sabe.
+
+    ⚠️ SIN EL DATO NO SE LE SACA EL NÚMERO A NADIE: `None` numera a todos,
+    como antes de «fuera de concurso». Un corte de Discord no puede
+    convertirse en 96 personas sin puesto.
+    """
+    _V = _verificados()
+    return _V.por_nombre() if _V else None
+
+
+def _puestos(nombres, oficial=False):
+    """Los puestos oficiales de `nombres`, en ese orden (`None` = fuera de concurso).
+
+    La regla vive en `verificados.numerar()`; acá sólo se le pregunta.
+    `oficial=False` lo pregunta al portón; `None` numera a todos (el
+    self-check lo usa así, sin red ni archivos).
+    """
+    if oficial is False:
+        oficial = _oficial()
+    _V = _verificados()
+    if _V is None:
+        return list(range(1, len(nombres) + 1))
+    return _V.numerar(nombres, oficial)
+
+
+def _orden_oficial(archivo, oficial):
+    """`{rapero: puesto oficial}` de un pool de `datos/`, en su orden (`pos`)."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', archivo), encoding='utf-8') as f:
+            pool = [x for x in json.load(f) if x.get('raw') and x.get('pos')]
+    except (OSError, ValueError):
+        return {}
+    pool.sort(key=lambda x: x['pos'])
+    return {x['raw']: n for x, n in zip(pool, _puestos([x['raw'] for x in pool], oficial)) if n}
+
+
+def _numerar_filas(filas, oficial=False):
+    """Pone el `#` (columna 0) de una vitrina ya ordenada: número o «—»."""
+    for f, n in zip(filas, _puestos([f[1] for f in filas], oficial)):
+        f[0] = n if n else FUERA
+    return filas
+
+
+def tabla_podios(ag, orden_temp, orden_comp, oficial=False):
     """`Ranking Podios`: quién sube más al podio. Filas ya ordenadas.
 
     ⚠️ `Pts Podio` NO ES `Puntos`. Es lo que el propio encabezado de la
@@ -1295,14 +1355,10 @@ def tabla_podios(ag, orden_temp, orden_comp):
     # ⚠️ EMPATE POR ORO. Con los mismos puntos de podio, gana el que
     # tiene mas primeros puestos: es lo que la hoja se llama.
     filas.sort(key=lambda x: (-x[0], -x[1]))
-    out = []
-    for n, (_p, _o, f) in enumerate(filas, 1):
-        f[0] = n
-        out.append(f)
-    return out
+    return _numerar_filas([f for _p, _o, f in filas], oficial)
 
 
-def tabla_duelos(ag, rangos):
+def tabla_duelos(ag, rangos, oficial=False):
     """`Ranking Duelos`: quién ganó más duelos. Dlx lo pidió el 22/09.
 
     ⚠️ SE ORDENA POR GANADOS Y NO POR Win%. Un 1/1 da 100 % y no dice
@@ -1325,11 +1381,7 @@ def tabla_duelos(ag, rangos):
             v.get('Win%', ''), v.get('_racha_duelos', ''), rangos.get(quien, ''),
         ]))
     filas.sort(key=lambda x: (-x[0], -x[1]))
-    out = []
-    for n, (_g, _w, f) in enumerate(filas, 1):
-        f[0] = n
-        out.append(f)
-    return out
+    return _numerar_filas([f for _g, _w, f in filas], oficial)
 
 
 def tabla_mundial(ag, pais_de):
@@ -1829,26 +1881,21 @@ def escribir_todas(dry=True):
     # letra que hubiera ganado.
     rango_de = rangos_de(res)
 
-    # el puesto de cada uno en las dos tablas grandes, para las columnas
-    # «Vs Ranking …» de Podios
-    por_pts = sorted(ag.items(), key=lambda kv: -int(kv[1].get('Puntos') or 0))
-    orden_temp = {k: i for i, (k, _v) in enumerate(por_pts, 1)}
-    orden_comp = {}
-    try:
-        p = os.path.join(BASE, 'datos', 'competitivo_pool.json')
-        with io.open(p, encoding='utf-8') as f:
-            for x in json.load(f):
-                if x.get('raw') and x.get('pos'):
-                    orden_comp[x['raw']] = x['pos']
-    except (OSError, ValueError):
-        pass
+    # el puesto OFICIAL de cada uno en las dos tablas grandes, para las
+    # columnas «Vs Ranking …»
+    # 🔴 SALÍA DE LOS PUNTOS, y la Temporada se ordena por OVR: la columna
+    # decía otro número que la hoja de al lado. Ahora sale del pool —el
+    # mismo orden que la carta y la página— y con «fuera de concurso».
+    oficial = _oficial()
+    orden_temp = _orden_oficial('temporada_pool.json', oficial)
+    orden_comp = _orden_oficial('competitivo_pool.json', oficial)
 
     sv_de = {k: v.get('Sv', '') for k, v in ag.items()}
     trabajos = [
-        ('competitivo', tabla_competitivo(res, orden_temp, sv_de),
+        ('competitivo', tabla_competitivo(res, orden_temp, sv_de, oficial=oficial),
          CAB_COMPETITIVO),
-        ('podios', tabla_podios(ag, orden_temp, orden_comp), None),
-        ('duelos', tabla_duelos(ag, rango_de), CAB_DUELOS),
+        ('podios', tabla_podios(ag, orden_temp, orden_comp, oficial=oficial), None),
+        ('duelos', tabla_duelos(ag, rango_de, oficial=oficial), CAB_DUELOS),
         ('mundial', tabla_mundial(ag, pais_de), CAB_MUNDIAL),
     ]
     out = {}
@@ -2179,7 +2226,7 @@ def _self_check():
     ]
     ag3 = agregar(res, uno)
 
-    d = tabla_duelos(ag3, {'Ana': 'S', 'Bea': 'A'})
+    d = tabla_duelos(ag3, {'Ana': 'S', 'Bea': 'A'}, oficial=None)
     # Ana: 3 duelos, 2 ganados. Bea: 3 duelos, 2 ganados. Cid: 2, 0.
     ok = (len(d) == 3 and d[0][1] in ('Ana', 'Bea') and d[0][4] == 2
           and d[-1][1] == 'Cid' and d[-1][4] == 0)
@@ -2199,7 +2246,18 @@ def _self_check():
     print('   %s quien no peleó ningún duelo no entra a esa hoja'
           % ('✅' if ok else '🔴'))
 
-    p = tabla_podios(ag3, {'Ana': 1, 'Bea': 2}, {})
+    p = tabla_podios(ag3, {'Ana': 1, 'Bea': 2}, {}, oficial=None)
+
+    # 🔑 FUERA DE CONCURSO: quien no es miembro queda en su lugar con «—» y
+    # los demás se numeran seguido
+    fc = _numerar_filas([[0, 'Ana'], [0, 'Bea'], [0, 'Cid']], lambda n: n != 'Bea')
+    ok = [f[0] for f in fc] == [1, FUERA, 2]
+    mal += not ok
+    print('   %s fuera de concurso: Bea sin número, Cid #2   %s'
+          % ('✅' if ok else '🔴', [f[0] for f in fc]))
+    ok = [f[0] for f in _numerar_filas([[0, 'Ana'], [0, 'Bea']], None)] == [1, 2]
+    mal += not ok
+    print('   %s sin saber quién es miembro, numeran todos' % ('✅' if ok else '🔴'))
     # Ana 2 oros = 10 pts, Bea 1 plata = 3, Cid 1 bronce = 1
     ok = len(p) == 3 and p[0][1] == 'Ana' and p[0][5] == 10
     mal += not ok

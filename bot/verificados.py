@@ -186,6 +186,57 @@ def cargar():
         return None, ''
 
 
+def por_nombre():
+    """`f(nombre) -> bool`: ¿quien se llama así pasa el portón? `None` si no se sabe.
+
+    🔑 UN SOLO LUGAR PARA «ES MIEMBRO». Lo preguntan la página (qué
+    tarjeta se muestra), las vitrinas del Sheet y los dos pools (quién
+    lleva número), y el nombre se normaliza igual que el padrón
+    (`construir_padron.norm`). Si cada uno lo armara por su lado, el día
+    que uno cambie la normalización la página diría «#3» y la carta «—».
+
+    ⚠️ `None` NO ES «NADIE», igual que `cargar()`: sin el archivo no se
+    sabe quién es miembro, y el que pregunta no filtra.
+    """
+    ids, _c = cargar()
+    if ids is None:
+        return None
+    try:
+        import construir_padron as _PAD
+    except ImportError:
+        sys.path.insert(0, os.path.join(BASE, 'sheet'))
+        import construir_padron as _PAD
+    pasan = {_PAD.norm(x['raw']) for x in _PAD.cargar()
+             if x.get('raw') and pasa(x, ids)}
+    return lambda nombre: _PAD.norm(nombre or '') in pasan
+
+
+def numerar(nombres, oficial):
+    """El puesto oficial de cada uno, en el orden dado: `[1, 2, None, 3, …]`.
+
+    🔑 «FUERA DE CONCURSO» (Dlx, 27/09/2026): nadie desaparece del
+    ranking, pero **el número es de los miembros** —*«tampoco quiero
+    desaparecer a todos del ranking»* y, a la propuesta, *«me gusta la
+    idea»*—. Quien no pasa el portón queda en su lugar por mérito, sin
+    número (`None`), y los miembros se numeran seguido: si Velatz (#3 por
+    puntos) no es miembro, PichulaMc pasa a ser el #3.
+
+    ⚠️ LAS CUENTAS NO SE TOCAN: el OVR y el Score se siguen calculando con
+    todos. Esto sólo decide quién lleva número.
+
+    ⚠️ `oficial=None` (no se sabe quién es miembro) numera a todos, como
+    antes: sin el dato no se le saca el puesto a nadie.
+    """
+    out, n = [], 0
+    for x in nombres:
+        if oficial is None or oficial(x):
+            n += 1
+            out.append(n)
+        else:
+            out.append(None)
+    return out
+
+
 def guardar(ids, miembros=0):
     """Escribe el archivo con ese conjunto de IDs.
 
@@ -275,6 +326,18 @@ def _self_check():
               % ('✅' if ok else '🔴'))
     finally:
         SALIDA = guardo
+
+    # 🔑 «FUERA DE CONCURSO»: los miembros se numeran seguido y el resto
+    # queda en su lugar sin número; sin saber quién es miembro, todos numeran
+    es = {'Hassan', 'Makmah', 'PichulaMc'}.__contains__
+    orden = ['Hassan', 'Makmah', 'Velatz', 'PichulaMc']
+    ok = numerar(orden, es) == [1, 2, None, 3]
+    mal += not ok
+    print('\n   %s fuera de concurso: Velatz sin número, PichulaMc #3  %s'
+          % ('✅' if ok else '🔴', numerar(orden, es)))
+    ok = numerar(orden, None) == [1, 2, 3, 4]
+    mal += not ok
+    print('   %s sin saber quién es miembro, numeran todos' % ('✅' if ok else '🔴'))
 
     ids, cuando = cargar()
     if ids is None:

@@ -220,6 +220,11 @@ def datos():
     res = Hoja('Resultados').filas()
     uno = Hoja('1v1').filas()
     ag = RK.agregar(res, uno)
+    # 🔑 LOS TOPS Y LAS STATS DE LA PORTADA SON DE LOS MIEMBROS («fuera de
+    # concurso», Dlx, 27/09/2026), igual que en la página: el podio no es de
+    # quien todavía no es miembro. Los contadores y los países cuentan a todos.
+    _es = RK._oficial()
+    ag_of = {k: v for k, v in ag.items() if _es is None or _es(k)}
     # ⚠️ EL CODIGO ISO SALE DE `padron.seguro()`, NO DE
     # `datos/padron.json`. Ese archivo guarda `pais` con el **nombre**
     # —«Colombia»— y pedirle `cc` devuelve cadena vacia sin fallar: la
@@ -276,7 +281,7 @@ def datos():
 
     # ── TOP 3 de cada ranking ──────────────────────────────────────
     def top(clave, n=3):
-        return sorted(ag.items(), key=lambda kv: -_num(kv[1].get(clave)))[:n]
+        return sorted(ag_of.items(), key=lambda kv: -_num(kv[1].get(clave)))[:n]
 
     medalla = ('🥇', '🥈', '🥉')
     for i, (quien, v) in enumerate(top('Puntos')):
@@ -289,7 +294,8 @@ def datos():
     try:
         with io.open(os.path.join(BASE, 'datos', 'competitivo_pool.json'),
                      encoding='utf-8') as f:
-            comp = sorted(json.load(f), key=lambda x: -(x.get('score') or 0))
+            comp = sorted((x for x in json.load(f) if _es is None or _es(x.get('raw'))),
+                          key=lambda x: -(x.get('score') or 0))
     except (OSError, ValueError):
         pass
     for i, x in enumerate(comp[:3]):
@@ -300,7 +306,7 @@ def datos():
 
     # Podios: por puntos de podio, igual que `tabla_podios()`
     pod = sorted(((v.get('🥇', 0) * 5 + v.get('🥈', 0) * 3 + v.get('🥉', 0),
-                   k, v) for k, v in ag.items()
+                   k, v) for k, v in ag_of.items()
                   if v.get('🥇') or v.get('🥈') or v.get('🥉')), reverse=True)
     for i, (_p, quien, v) in enumerate(pod[:3]):
         out['I%d' % (17 + i)] = '%s %s' % (medalla[i],
@@ -313,7 +319,7 @@ def datos():
     # ⚠️ CADA UNA DICE DE DONDE SALE, y las dos que no salen de ningun
     # lado van con `—` en vez de quedarse con el nombre de la pre.
     def mejor(f, minimo=None):
-        cands = [(f(v), k, v) for k, v in ag.items()]
+        cands = [(f(v), k, v) for k, v in ag_of.items()]
         cands = [c for c in cands if c[0] is not None]
         if minimo is not None:
             cands = [c for c in cands if _num(ag[c[1]].get('Ev')) >= minimo]

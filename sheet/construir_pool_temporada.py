@@ -430,7 +430,9 @@ def main():
     # es lo unico que tiene sentido: sin 8 eventos no hay Win%, ni rango, ni
     # numero. Ver comun/bloqueada.py.
     bloqueados = []
-    for r in filas:
+    # `_f`: el renglón de la vitrina, o sea el orden por mérito entre TODOS
+    # (ver «fuera de concurso», abajo)
+    for _fi, r in enumerate(filas):
         if num(r[col('Ev')]) < MIN_EVENTOS:
             _n = re.sub(r'[🇦-🇿]', '',
                         r[col('Rapero')]).replace('❓', '').strip()
@@ -487,6 +489,7 @@ def main():
             # el `#` de la vitrina: ver el orden, abajo. No sale al json.
             '_n': (int(num(r[col('#')])) if '#' in H and num(r[col('#')])
                    else 10 ** 6),
+            '_f': _fi,
             'full': r[col('Rapero')].strip(), 'raw': nom,
             # 🔴 EL PAIS SALE DEL PADRON. Ver sheet/padron.py y el mismo
             # comentario en construir_pool_competitivo.py: el emoji pegado
@@ -546,10 +549,35 @@ def main():
     # cómo se lee la hoja movía los puestos, y la carta decía un `#` y el
     # ranking otro. Medido el 24/09/2026: 56 de 87 cambiaron de puesto
     # entre dos corridas por el desempate, sin que nadie compitiera.
-    pool.sort(key=lambda d: (-d['ovr'], d['_n']))
-    for i, d in enumerate(pool, 1):
-        d['pos'] = i
-        d['total'] = len(pool)
+    # ⚠️ EL DESEMPATE ES EL RENGLÓN DE LA VITRINA y no su `#`: desde «fuera
+    # de concurso» el `#` de quien no es miembro es «—», y el renglón sigue
+    # siendo el orden por mérito entre todos.
+    pool.sort(key=lambda d: (-d['ovr'], d['_f']))
+    # 🔑 FUERA DE CONCURSO (Dlx, 27/09/2026): nadie sale del pool y nadie
+    # pierde sus puntos, pero **el número es de los miembros**. `o` es el
+    # orden por mérito entre todos —el que usa la página para dejar a cada
+    # uno en su lugar—, `pos` el puesto oficial y `total` cuántos lo tienen.
+    # ⚠️ QUIEN ESTÁ FUERA DE CONCURSO LLEVA `pos` IGUAL, después de los
+    # miembros: `gencomp` y las cartas comparan `pos` con números y un
+    # `None` las tumbaría (lo corre entero `herramientas/puedo_generar.py`).
+    # No se ve nunca: sin portón no hay carta, y la página muestra «—».
+    _bot = os.path.join(RAIZ, 'bot')
+    if _bot not in sys.path:
+        sys.path.insert(0, _bot)
+    import verificados as _VER
+    nums = _VER.numerar([d['raw'] for d in pool], _VER.por_nombre())
+    oficiales = sum(1 for x in nums if x)
+    sigue = oficiales
+    for i, (d, n) in enumerate(zip(pool, nums), 1):
+        d['o'] = i
+        if n:
+            d['pos'] = n
+            d.pop('fc', None)
+        else:
+            sigue += 1
+            d['pos'] = sigue
+            d['fc'] = True
+        d['total'] = oficiales
         d['rango'] = OVR.color(d['ovr'])
 
     # 🔴 Y SE COMPRUEBA: EL `#` DE LA CARTA TIENE QUE SER EL DEL RANKING. Los
@@ -558,7 +586,7 @@ def main():
     # esto grita en vez de dejar que la carta y el ranking digan dos
     # puestos distintos.
     distinto = [(d['raw'], d['_n'], d['pos']) for d in pool
-                if d['_n'] < 10 ** 6 and d['_n'] != d['pos']]
+                if not d.get('fc') and d['_n'] < 10 ** 6 and d['_n'] != d['pos']]
     if distinto:
         print('   🔴 la carta y el ranking no dan el mismo puesto en %d: %s'
               % (len(distinto), ', '.join('%s (hoja %d · carta %d)' % x
@@ -567,6 +595,7 @@ def main():
         print('   ✅ el puesto de cada carta es el del ranking (%d)' % len(pool))
     for d in pool:
         d.pop('_n', None)
+        d.pop('_f', None)
 
     salida = os.path.join(RAIZ, 'datos', 'temporada_pool.json')
     os.makedirs(os.path.dirname(salida), exist_ok=True)

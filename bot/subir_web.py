@@ -88,10 +88,12 @@ VENTANA_VIVO = 90
 #: Cuántas llaves viajan en el payload, además de las de «Lo que pasó».
 #:
 #: ⚠️ LAS MÁS NUEVAS Y NO TODAS. Una llave pesa ~1,5 KB y FFA juega cuatro
-#: por día: la temporada entera serían ~600 KB en CADA visita. Con 24 el
-#: calendario abre el cuadro de los últimos días; las de antes llevan al
-#: mensaje de Discord. El día que haga falta más, van a R2 aparte.
-LLAVES_WEB = 24
+#: por día: la temporada entera serían ~600 KB en CADA visita.
+#: 🔑 12 Y NO 24 DESDE EL 27/09/2026: las demás viajan aparte, en
+#: `CLAVE_LLAVES`, y la página las pide sólo al abrir una (`llaveVieja()`),
+#: así que achicar esto no rompe ningún botón ni ningún link. Con 24 el
+#: lobby pasaba los 120 KB que se bajan en cada visita.
+LLAVES_WEB = 12
 
 
 def _nom(s):
@@ -130,8 +132,12 @@ def armar():
     # ⚠️ ORDENADO POR PUESTO Y NO POR PUNTOS. El `pos` ya lo calculó el
     # builder con sus desempates; reordenar acá sería una segunda regla
     # de orden que puede discrepar con la del Sheet.
+    # 🔑 Y POR MÉRITO ENTRE TODOS (`o`) desde «fuera de concurso»: quien no es
+    # miembro lleva un `pos` después de los miembros —para las cartas— y así
+    # se iría al fondo en vez de quedar en su lugar. Sin `o` (un pool de
+    # antes), manda `pos`, como siempre.
     gente = sorted((p for p in pool if p.get('raw')),
-                   key=lambda p: p.get('pos') or 9999)[:TOPE]
+                   key=lambda p: p.get('o') or p.get('pos') or 9999)[:TOPE]
 
     from comun import respaldo as _resp
     _foto = _con_foto()
@@ -140,7 +146,12 @@ def armar():
     _ult = _ultimos()
     tabla = [{
         'n': p.get('raw'),
-        'pos': p.get('pos'),
+        # 🔑 FUERA DE CONCURSO (Dlx, 27/09/2026): sin número, en su lugar
+        # (`o`). El `pos` que el pool le da para las cartas no viaja: la
+        # página no tiene que poder mostrarlo.
+        'pos': None if p.get('fc') else p.get('pos'),
+        'o': p.get('o') or p.get('pos'),
+        **({'fc': 1} if p.get('fc') else {}),
         'sv': p.get('sv') or '',
         'cc': p.get('cc') or '',
         # 🔴 `pts` Y NO `total`. `total` es **cuánta gente hay en el
@@ -391,6 +402,8 @@ def armar():
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
         'gente': len(pool),
+        # 🔑 cuántos tienen número (los miembros): el «#3 de N» del perfil
+        'oficiales': sum(1 for p in pool if p.get('raw') and not p.get('fc')),
         'tabla': tabla,
         'proximos': prox,
         'pasados': pas,
@@ -1102,11 +1115,15 @@ def _perfiles(gente, comp, regs):
     duel_ord = sorted([x for x in comp if x.get('duel_real') and (x.get('duel_t') or 0)],
                       key=lambda x: (-(x.get('duel_v') or 0), -(x.get('duel_t') or 0),
                                      x.get('raw') or ''))
+    # 🔑 fuera de concurso: el puesto en cada ranking es sólo entre miembros
+    es = _miembro()
+    duel_ord = [x for x in duel_ord if es(x.get('raw'))]
     pos_du = {_clave(x): i + 1 for i, x in enumerate(duel_ord)}
     med = sorted([p for p in gente
                   if (p.get('oro') or 0) + (p.get('seg') or 0) + (p.get('ter') or 0)],
                  key=lambda p: (-(p.get('oro') or 0), -(p.get('seg') or 0),
                                 -(p.get('ter') or 0), -(p.get('pts') or 0)))
+    med = [p for p in med if not p.get('fc')]
     pos_pod = {_clave(p): i + 1 for i, p in enumerate(med)}
     por_cc = Counter((x.get('cc') or '').lower() for x in comp if x.get('cc'))
     out = {}
@@ -1232,8 +1249,9 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
         ll = str(i.get('llave') or '')
         out.append({'t': i['cuando'] + 'Z', 'n': _nom(i['nombre']), 'sv': i['sv'],
                     'link': i['link'],
-                    # la llave, si viaja en el payload; si no, el link basta
-                    'll': int(ll) if ll in llaves else 0,
+                    # la llave de todo evento procesado: si no viaja en el
+                    # payload, la página la pide aparte (`CLAVE_LLAVES`)
+                    'll': int(ll) if (ll in llaves or ll in regs) else 0,
                     'jugado': 1 if ll else 0,
                     'fut': 1 if i['cuando'] > ahora else 0,
                     'sh': i['sh'], **({'rg': i['rg']} if i.get('rg') else {}),
@@ -1477,17 +1495,28 @@ def _del_porton():
         _sh = os.path.join(BASE, 'sheet')
         if _sh not in sys.path:
             sys.path.append(_sh)
-        import construir_padron as _PAD
         import verificados as _VER
-        verif, _ = _VER.cargar()
-        if verif is None:
+        f = _VER.por_nombre()
+        if f is None:
             return None
-        pasan = {_PAD.norm(x['raw']) for x in _PAD.cargar()
-                 if x.get('raw') and _VER.pasa(x, verif)}
-        return lambda fila: _PAD.norm(fila.get('raw') or '') in pasan
+        return lambda fila: f(fila.get('raw') or '')
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude preguntar por el portón (%s): no filtro' % str(e)[:60])
         return None
+
+
+def _miembro():
+    """`f(nombre) -> bool`: ¿es miembro? Sin el dato, todos lo son (no se le
+    saca el número a nadie por no poder preguntar). Ver `verificados.por_nombre()`."""
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import verificados as _VER
+        f = _VER.por_nombre()
+    except Exception:                                    # noqa: BLE001
+        f = None
+    return f if f is not None else (lambda nombre: True)
 
 
 def _cartas(p, r2, comp=None, puede=None):
@@ -1762,10 +1791,12 @@ def _duelos(tope=10):
     tiene `rankings.tabla_duelos()`: un 1/1 da 100 % y no dice nada.
     """
     comp = _json('datos', 'competitivo_pool.json') or []
-    con = [{'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '',
-            'sv': p.get('sv') or '',
-            'g': p.get('duel_v') or 0, 't': p.get('duel_t') or 0,
-            'wr': p.get('wr') or ''}
+    # 🔑 fuera de concurso: siguen en la tabla, sin número (ver `armar()`)
+    es = _miembro()
+    con = [dict({'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '',
+                 'sv': p.get('sv') or '',
+                 'g': p.get('duel_v') or 0, 't': p.get('duel_t') or 0,
+                 'wr': p.get('wr') or ''}, **({'fc': 1} if not es(p.get('raw')) else {}))
            for p in comp if p.get('duel_real') and (p.get('duel_t') or 0)]
     con.sort(key=lambda x: (-x['g'], -x['t'], x['n'] or ''))
     return con[:tope]
@@ -1790,8 +1821,9 @@ def _rachas(gente, tope=8):
     que este repo persigue. Que la persona no aparezca en la tabla se
     nota; que aparezca con un número corregido a mano, no.
     """
-    con = [{'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '',
-            'r': p.get('racha_act') or 0, 'ev': p.get('ev') or 0}
+    con = [dict({'n': p.get('raw'), 'k': _clave(p), 'cc': p.get('cc') or '',
+                 'r': p.get('racha_act') or 0, 'ev': p.get('ev') or 0},
+                **({'fc': 1} if p.get('fc') else {}))
            for p in gente
            if 0 < (p.get('racha_act') or 0) <= (p.get('ev') or 0)]
     con.sort(key=lambda x: (-x['r'], -x['ev']))
@@ -1859,6 +1891,12 @@ def _records(gente, regs=None, comp=None):
     recién arrancada sería «1», y eso no es un récord, es que no hubo
     tiempo. Se devuelve sólo lo que tiene con qué medirse.
     """
+    # 🔑 LOS RÉCORDS SON DE LOS MIEMBROS, como el podio y los líderes
+    # («fuera de concurso», 27/09/2026). Los de un evento —la llave más
+    # grande, el día con más eventos— no son de nadie y no cambian.
+    es = _miembro()
+    gente = [p for p in gente if not p.get('fc')]
+
     def top(campo, minimo=1):
         con = [p for p in gente if (p.get(campo) or 0) >= minimo]
         if not con:
@@ -1920,7 +1958,8 @@ def _records(gente, regs=None, comp=None):
         ('srv', 'Más servidores', top('srv', 2)),
     ]
     # los duelos ganados salen del pool competitivo, que es donde viven
-    con = [x for x in (comp or {}).values() if x.get('duel_real') and (x.get('duel_v') or 0)]
+    con = [x for x in (comp or {}).values()
+           if x.get('duel_real') and (x.get('duel_v') or 0) and es(x.get('raw'))]
     if con:
         x = max(con, key=lambda x: (x.get('duel_v') or 0, -(x.get('duel_t') or 0)))
         salida.append(('duv', 'Más duelos ganados',
@@ -1931,7 +1970,7 @@ def _records(gente, regs=None, comp=None):
     mejor = None
     for r in regs.values():
         for t in r.get('tabla') or []:
-            if t and int(t[2] or 0) and (mejor is None or int(t[2]) > mejor[0]):
+            if t and int(t[2] or 0) and es(t[0]) and (mejor is None or int(t[2]) > mejor[0]):
                 mejor = (int(t[2]), t[0], r.get('nombre') or '')
     if mejor:
         p = next((g for g in gente if g.get('raw') == mejor[1]), {})
@@ -2195,8 +2234,10 @@ def _self_check():
        'el calendario viaja con instantes UTC  (%d)' % len(_cal))
     ok([c['t'] for c in _cal] == sorted(c['t'] for c in _cal),
        'y en orden')
-    ok(all(str(c['ll']) in _ll for c in _cal if c['ll']),
-       'cada «ver llave» del calendario tiene su llave en el payload')
+    # ⚠️ EN EL PAYLOAD O EN `CLAVE_LLAVES`: desde el 27/09/2026 las viejas
+    # no viajan en el lobby y la página las pide aparte (`llaveVieja()`)
+    ok(all(str(c['ll']) in _ll or str(c['ll']) in (todas or {}) for c in _cal if c['ll']),
+       'cada «ver llave» del calendario tiene su llave, en el payload o aparte')
     ok(p.get('eventos') == len(__import__('llaves_web').leer()),
        'los eventos son los procesados, no las participaciones  (%s)' % p.get('eventos'))
 

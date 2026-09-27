@@ -2069,3 +2069,13 @@ background:var(--tl);padding:4px 7px;border-radius:3px}
 .v-lnk{color:inherit;text-decoration:none;border-bottom:1px dotted currentColor;cursor:pointer}
 .v-lnk:hover{color:var(--tl)}
 .v-lnk .bf{vertical-align:-1px}
+
+/* ── fuera de concurso ───────────────────────────────────────────────
+   🔑 Dlx, 27/09/2026: quien no es miembro de la Liga sigue en el ranking,
+   en su lugar por mérito, pero sin número. Se ve un poco apagado, con «—»
+   en vez del puesto, y el nombre se lee igual: sus puntos cuentan. */
+tbody tr.fc td{opacity:.6}
+tbody tr.fc td.c-n{opacity:.82}
+.fc-t{color:var(--tx3);font-weight:800;cursor:help}
+.gt.fc{opacity:.72}
+.pf-pos.fc{color:var(--tx2)}
