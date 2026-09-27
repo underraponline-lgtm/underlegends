@@ -127,6 +127,15 @@ VOCAB = (
     (('HORA', 'INSCRIPCIONES'), 'inscripciones', 9),
     (('HORA', 'INSCRIPCION'), 'inscripciones', 9),
     (('HORARIO', 'CONFIRMADO'), 'horario', 2),
+    # 🔴 ANTES QUE «FECHA» Y «DIA», que se las comían: «📅 FECHA Y HORARIO»
+    # de Snake Rap (SNAKE ARENA VOL. 2, 26/09/2026) salía como el campo
+    # FECHA con el valor «Y HORARIO», y la marca de Discord de la línea de
+    # abajo —la hora exacta del evento— no se leía nunca. El evento no
+    # aparecía en «lo que viene» ni en su día del calendario.
+    (('FECHA', 'Y', 'HORARIO'), 'horario', 2),
+    (('FECHA', 'Y', 'HORA'), 'horario', 2),
+    (('DIA', 'Y', 'HORARIO'), 'horario', 2),
+    (('DIA', 'Y', 'HORA'), 'horario', 2),
     (('ORGANIZADO', 'POR'), 'organizador', 9),
     (('FORMATO', 'DE', 'COMPETENCIA'), 'modalidad', 9),
     (('INICIO',), 'horario', 1),
@@ -505,6 +514,14 @@ def parsear(m, servidor, canal, guild=''):
     if n.startswith(NO_TITULOS) or n == 'PRUEBA':
         return None
     a, b = cupos(puestos.get('cupos'))
+    # 🔑 SIN HORARIO, LA MARCA DE DISCORD DE CUALQUIER PARTE DEL MENSAJE. Es
+    # la hora exacta del evento (`cuando.momento()` le da prioridad), la
+    # pongan bajo el nombre que la pongan. ⚠️ Va DESPUÉS de decidir si es un
+    # anuncio: sólo completa el valor, no suma una señal.
+    if not puestos.get('horario'):
+        mk = re.search(r'<t:\d{9,11}(?::[tTfFR])?>', txt)
+        if mk:
+            puestos['horario'] = mk.group(0)
     return {
         'nombre': nom, 'servidor': servidor, 'canal': canal,
         'msg_id': m.get('id'), 'cuando': (m.get('timestamp') or '')[:19],

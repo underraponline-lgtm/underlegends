@@ -188,6 +188,11 @@ const VOCAB = [
   [['HORA', 'INSCRIPCIONES'], 'inscripciones', 9],
   [['HORA', 'INSCRIPCION'], 'inscripciones', 9],
   [['HORARIO', 'CONFIRMADO'], 'horario', 2],
+  // 🔴 antes que FECHA y DIA, como en Python: ver `VOCAB` de bot/anuncios.py
+  [['FECHA', 'Y', 'HORARIO'], 'horario', 2],
+  [['FECHA', 'Y', 'HORA'], 'horario', 2],
+  [['DIA', 'Y', 'HORARIO'], 'horario', 2],
+  [['DIA', 'Y', 'HORA'], 'horario', 2],
   [['ORGANIZADO', 'POR'], 'organizador', 9],
   [['FORMATO', 'DE', 'COMPETENCIA'], 'modalidad', 9],
   [['INICIO'], 'horario', 1],
@@ -389,6 +394,11 @@ export function parsearAnuncio(m) {
   if (tipos.size < 2 || !nombre) return null;
   const n = normLinea(nombre);
   if (NO_TITULOS.some((x) => n.startsWith(x)) || n === 'PRUEBA') return null;
+  // sin horario, la marca de Discord de cualquier parte (como en Python)
+  if (!p.horario) {
+    const mk = /<t:\d{9,11}(?::[tTfFR])?>/.exec(txt);
+    if (mk) p.horario = mk[0];
+  }
   return {
     nombre, horario: p.horario, modalidad: p.modalidad,
     cupos: p.cupos, premios: p.premios, organizador: p.organizador,
