@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.30",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T14:20:00-04:00",
+   "titulo": "El Lunes de la Liga",
+   "items": [
+    "🗓️ **El Lunes de la Liga**: cada lunes, en **#rankings-liga-global** de Discord Rap Español, un mensaje con todo lo de la semana —multiplicadores, evento dorado, guerra, Copa, metas y los buscados—. Se va actualizando solo durante la semana, sin volver a sonar.",
+    "📣 **Con tiempo** ahora es desde **12 horas**: los eventos anunciados con 12 horas o más de anticipación llevan la etiqueta.",
+    "📅 El primero sale mañana, **lunes 28**, después del sorteo de las 11 AM (hora del este)."
+   ]
+  },
+  {
    "version": "1.29",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T14:15:00-04:00",

@@ -434,7 +434,7 @@ function pintaHero() {
     return '<div class="ev"><div><b>' + tit + etiquetaMult(e.sv, String(e.cuando || '').replace(/Z$/, '') + 'Z') +
       (esDorado(e) ? '<span class="xm oro">&#127775; dorado</span>' : '') +
       (esCopa(e) ? '<span class="xm oro">&#127942; Copa</span>' : '') +
-      (e.ct ? '<span class="xm ct" title="Anunciado con 24 horas o más">&#128227;</span>' : '') +
+      (e.ct ? '<span class="xm ct" title="Anunciado con 12 horas o más">&#128227;</span>' : '') +
       '</b><small>' + sub +
       '</small></div>' + der + '</div>';
   }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
@@ -454,7 +454,7 @@ function vieneDestacado(e) {
       etiquetaMult(e.sv, iso) + (esDorado(e) ? '<span class="xm oro" title="El evento dorado de la semana: ' +
         'vale &times;3 encima de su multiplicador">&#127775; dorado</span>' : '') +
       (esCopa(e) ? '<span class="xm oro" title="La Copa de la Liga: vale &times;2">&#127942; Copa</span>' : '') +
-      (e.ct ? '<span class="xm ct" title="Anunciado con 24 horas o más">&#128227; con tiempo</span>' : '') +
+      (e.ct ? '<span class="xm ct" title="Anunciado con 12 horas o más">&#128227; con tiempo</span>' : '') +
       '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
       '</b></div></div>' +
     (e.sin_hora
@@ -2665,7 +2665,7 @@ function pintaDia(M) {
       '<div class="de-t"><b>' + esc(fmtHora(e.t)) + '</b>' + (e.sh ? '<small>anunciado</small>' : '') +
       '</div><div class="de-c"><h3>' + esc(e.n) + '</h3>' +
       '<div class="de-sub">' + chipSv(e.sv) + etiquetaMult(e.sv, e.t) +
-      (e.ct ? '<span class="xm ct" title="Anunciado con 24 horas o más">&#128227; con tiempo</span>' : '') + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
+      (e.ct ? '<span class="xm ct" title="Anunciado con 12 horas o más">&#128227; con tiempo</span>' : '') + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
       (e.rg || inf.rg ? '<span class="rg-ev">' + esc(e.rg || inf.rg) + '</span>' : '') +
       '<span class="de-est ' + (e.fut ? 'fut' : e.jugado ? 'jug' : '') + '">' + estado + '</span></div>' +
       (camp.length ? '<p class="de-camp"><span>&#127942;</span>' + camp.map(function (r) {

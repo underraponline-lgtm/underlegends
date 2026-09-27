@@ -282,8 +282,25 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
 | **Insignias y Clásicos, ya** | *«sí, dale»* | ✅ `bot/insignias.py` y `multiplicadores.clasicos()` (1.28) |
 | **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ⏳ encuestas, pronósticos y precio por cabeza (piden entrar con la cuenta) |
+| **El Lunes de la Liga va en «〢🌍〉rankings-liga-global» de DRA** | *«en el canal ranking global en DRA»* | ✅ `bot/lunes.py`, paso 2b3 (1.30). El bot es admin en DRA |
+| **«Con tiempo» desde 12 horas** | *«de 12 h a 24 h a más»* | ✅ `DESTACADO_H = 12` (1.30). Medido: 2 de 48 anuncios llegan |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (2:20 PM) — versión 1.30
+
+**El Lunes de la Liga, en su canal.** Dlx: *«en el canal ranking global en
+DRA»* y, para el destacado, *«de 12 h a 24 h a más»*.
+
+- 🗓️ `CANAL = 1498326749748924416` («〢🌍〉rankings-liga-global», categoría
+  LIGA GLOBAL; canal de anuncios). Chequeado antes: el bot es
+  **administrador** en DRA. Paso **2b3** del ciclo: manda el de la semana
+  una vez y después lo edita **sólo si cambió** (firma en
+  `datos/lunes.json`, que guarda `guardar.sh`). Desde la semana del lunes
+  28: la de hoy, de un día, no se publica.
+- 📣 `DESTACADO_H = 12`.
 
 ---
 
@@ -1039,11 +1056,7 @@ inglés, y `/borrar-mis-datos`.
   en la 1.23.
 - ✅ ~~El bonus por llave limpia~~: afuera (*«la 2»*).
 - ✅ ~~El Semillero: ¿quién es «gente nueva»?~~ *«A»*: hecho en la 1.27.
-- **El Lunes de la Liga: ¿en qué canal de DRA va?** El mensaje ya está
-  (`python bot/lunes.py --ver --lunes`); falta dónde, y que lo apruebes.
-- **«Con tiempo»: ¿24 horas o menos?** Medido: 1 de 48 anuncios sale con 24
-  h de anticipación; la mitad, 12 minutos antes. Con 24 h la etiqueta casi
-  no se va a ver; con 3 h ya sería un cambio posible de hábito.
+- ✅ ~~El canal del Lunes de la Liga~~ y ~~«con tiempo»~~: contestadas (1.30).
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

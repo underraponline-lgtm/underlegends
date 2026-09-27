@@ -15,8 +15,15 @@ completa con los premios»*.
 que el Most Wanted de cada día, la barra de la meta y el dorado que se jugó
 lo ponen al día sin volver a sonar (la regla de `bot/avisar.py`).
 
-🔴 NO SE PUBLICA SOLO HASTA QUE DLX DIGA EL CANAL: mandar a un canal de DRA
-es hablar en nombre de la Liga. `CANAL` está en `None` a propósito.
+🔑 EL CANAL LO ELIGIÓ DLX, 27/09/2026: *«en el canal ranking global en
+DRA»* — «〢🌍〉rankings-liga-global», en la categoría LIGA GLOBAL. Mandar a
+un canal de DRA es hablar en nombre de la Liga: no se cambia sin preguntar.
+
+⚠️ SÓLO DESDE LA PRIMERA SEMANA CON REGLAS (`multiplicadores.DESDE`): la
+semana de un día del domingo 27 no tiene dorado, guerra ni metas.
+
+⚠️ Y SE EDITA SÓLO SI CAMBIÓ: el ciclo corre cada media hora, y editar lo
+mismo 48 veces por día no dice nada nuevo.
 """
 import datetime as dt
 import io
@@ -34,8 +41,8 @@ try:
 except AttributeError:
     pass
 
-#: el canal de DRA donde va. ⚠️ Lo elige Dlx: hasta entonces, no se manda
-CANAL = None
+#: «〢🌍〉rankings-liga-global» de DRA (Dlx, 27/09/2026). El bot es admin ahí.
+CANAL = '1498326749748924416'
 #: dónde queda anotado qué mensaje es el de esta semana
 ESTADO = os.path.join(BASE, 'datos', 'lunes.json')
 PAGINA = 'https://underlegends.pages.dev'
@@ -120,29 +127,48 @@ def armar(d=None, ahora=None, mw=None):
     return '🗓️ Lunes de la Liga · semana del %d/%d' % (ini.day, ini.month), ls
 
 
-def publicar(ahora=None):
-    """Lo manda (una vez por semana) o edita el de la semana. `True` si salió."""
-    if not CANAL:
-        print('   🔴 falta el canal: lo elige Dlx (ver `CANAL`)')
-        return False
-    import avisar as AV
+def publicar(ahora=None, d=None, mw=None, estado=None, mandar=None):
+    """Lo manda (una vez por semana) o edita el de la semana, si cambió.
+
+    Devuelve `'nuevo'`, `'editado'`, `'igual'`, `'todavia'` (semana sin
+    reglas) o `None` si no salió. Los parámetros son para el self-check.
+    """
+    import hashlib
     import multiplicadores as MU
-    titulo, ls = armar(ahora=ahora)
+    if not CANAL:
+        print('   🔴 falta el canal (ver `CANAL`)')
+        return None
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    d = MU.leer() if d is None else d
+    s = MU.actual(d, ahora)
+    if not s or MU._de_iso(s['inicio']) < MU._desde('semana'):
+        return 'todavia'
+    titulo, ls = armar(d, ahora, mw)
     if not titulo:
-        return False
-    s = MU.actual()
+        return None
+    firma = hashlib.sha1(('\n'.join([titulo] + ls)).encode('utf-8')).hexdigest()[:12]
+    ruta = estado or ESTADO
     try:
-        with io.open(ESTADO, encoding='utf-8') as f:
+        with io.open(ruta, encoding='utf-8') as f:
             est = json.load(f) or {}
     except (OSError, ValueError):
         est = {}
-    editar = est.get('msg_id') if est.get('semana') == s['id'] else None
-    r = AV.mandar(titulo, ls, color=AMBAR, canal=CANAL, editar=editar)
-    if r and r is not True:
-        est = {'semana': s['id'], 'msg_id': r}
-        with io.open(ESTADO, 'w', encoding='utf-8') as f:
-            json.dump(est, f, ensure_ascii=False, indent=1)
-    return bool(r)
+    misma = est.get('semana') == s['id'] and est.get('msg_id')
+    if misma and est.get('firma') == firma:
+        return 'igual'
+    if mandar is None:
+        import avisar as AV
+        mandar = AV.mandar
+    r = mandar(titulo, ls, color=AMBAR, canal=CANAL, editar=est.get('msg_id') if misma else None)
+    if not r:
+        return None
+    # ⚠️ si el mensaje de la semana ya no estaba, `mandar` manda uno nuevo y
+    # devuelve su id: se guarda el nuevo
+    nuevo = r is not True
+    est = {'semana': s['id'], 'msg_id': r if nuevo else est.get('msg_id'), 'firma': firma}
+    with io.open(ruta, 'w', encoding='utf-8') as f:
+        json.dump(est, f, ensure_ascii=False, indent=1)
+    return 'nuevo' if nuevo and not misma else 'editado'
 
 
 def _self_check():
@@ -178,6 +204,24 @@ def _self_check():
     _t, ls2 = armar({'semanas': [dict(d['semanas'][1], fin=MU._iso(en(10, 19, 0)))]}, en(10, 13, 12), mw={})
     ok('Hasta el lunes 19 a la medianoche' in '\n'.join(ls2), 'una semana que termina a las 00:00 dice «medianoche»')
     ok(len(todo) < 4000, 'entra en un embed (%d caracteres)' % len(todo))
+    # publicar: una vez por semana, y se edita sólo si cambió
+    import tempfile
+    ruta = os.path.join(tempfile.mkdtemp(), 'lunes.json')
+    llamadas = []
+
+    def falso(titulo, ls, color=None, canal=None, editar=None):
+        llamadas.append(editar)
+        return True if editar else 'msg1'
+    mw1 = {'actual': {'buscados': [{'n': 'Zeta', 'cn': 'El Rey', 'valor': 12000}]}}
+    mw2 = {'actual': {'buscados': [{'n': 'Hassan', 'cn': 'El Rey', 'valor': 12000}]}}
+    r1 = publicar(en(10, 13, 12), d, mw1, ruta, falso)
+    r2 = publicar(en(10, 13, 13), d, mw1, ruta, falso)
+    r3 = publicar(en(10, 14, 12), d, mw2, ruta, falso)
+    ok((r1, r2, r3) == ('nuevo', 'igual', 'editado') and llamadas == [None, 'msg1'],
+       'la primera vez lo manda; igual, no lo toca; cuando cambia el Most Wanted, lo edita')
+    dv = {'semanas': [{'id': 'v', 'inicio': MU._iso(en(9, 27, 12)), 'fin': MU._iso(en(9, 28, 11)), 'sv': {'FFA': 1}}]}
+    ok(publicar(en(9, 27, 13), dv, {}, ruta, falso) == 'todavia',
+       'la semana de un día del 27/09, antes de las reglas, no se publica')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 
@@ -187,7 +231,12 @@ def main():
     if '--auto' in a:
         return 1 if _self_check() else 0
     if '--publicar' in a:
-        return 0 if publicar() else 1
+        r = publicar()
+        print('\n   Lunes de la Liga: %s\n' % {'nuevo': '✅ mandado', 'editado': '✅ editado',
+                                              'igual': '✓ igual, no lo toqué',
+                                              'todavia': '· todavía no (arranca con la semana del lunes 28)',
+                                              None: '🔴 no salió'}.get(r, r))
+        return 0 if r else 1
     import multiplicadores as MU
     d, ahora = None, None
     if '--lunes' in a:

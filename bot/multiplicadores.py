@@ -138,8 +138,9 @@ SEMILLERO_MIN, SEMILLERO_X = 3, 1.5
 #: la meta de comunidad: cuánto más que su promedio, el mínimo, cuántas
 #: semanas mira y lo que suma cada uno de los que jugaron si se cumple
 META_X, META_MIN, META_SEMANAS, META_BONO = 1.1, 8, 4, 1.1
-#: el destacado del calendario: anunciado con al menos estas horas de anticipación
-DESTACADO_H = 24
+#: el destacado del calendario: anunciado con al menos estas horas de anticipación.
+#: Dlx, 27/09/2026: *«de 12 h a 24 h a más»*. Medido: 2 de 48 anuncios llegan
+DESTACADO_H = 12
 #: el Clásico: cuántos cruces previos hacen falta, y lo que suma el que gana
 CLASICO_PREVIOS, CLASICO_X = 2, 1.1
 #: el techo de una fila, sumando todo

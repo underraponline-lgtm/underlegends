@@ -950,6 +950,12 @@ def _lo_barato(correr):
         paso('2b2', 'las insignias')
         if not corre(['bot/insignias.py', '--aplicar'], callado=False):
             print('      ⚠️ las insignias fallaron: quedan las de la corrida anterior')
+        # ── 2b3 · el Lunes de la Liga: el mensaje de la semana en DRA ─────
+        # 🔑 Dlx, 27/09/2026: «en el canal ranking global en DRA». Uno por
+        # semana, y se edita sólo si cambió. Ver `bot/lunes.py`.
+        paso('2b3', 'el Lunes de la Liga')
+        if not corre(['bot/lunes.py', '--publicar'], callado=False):
+            print('      ⚠️ el Lunes de la Liga no salió: se reintenta en la próxima')
 
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #
