@@ -434,6 +434,7 @@ function pintaHero() {
     return '<div class="ev"><div><b>' + tit + etiquetaMult(e.sv, String(e.cuando || '').replace(/Z$/, '') + 'Z') +
       (esDorado(e) ? '<span class="xm oro">&#127775; dorado</span>' : '') +
       (esCopa(e) ? '<span class="xm oro">&#127942; Copa</span>' : '') +
+      (e.ct ? '<span class="xm ct" title="Anunciado con 24 horas o más">&#128227;</span>' : '') +
       '</b><small>' + sub +
       '</small></div>' + der + '</div>';
   }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
@@ -453,6 +454,7 @@ function vieneDestacado(e) {
       etiquetaMult(e.sv, iso) + (esDorado(e) ? '<span class="xm oro" title="El evento dorado de la semana: ' +
         'vale &times;3 encima de su multiplicador">&#127775; dorado</span>' : '') +
       (esCopa(e) ? '<span class="xm oro" title="La Copa de la Liga: vale &times;2">&#127942; Copa</span>' : '') +
+      (e.ct ? '<span class="xm ct" title="Anunciado con 24 horas o más">&#128227; con tiempo</span>' : '') +
       '</span><b class="vi-n">' + ir(esc(e.nombre) + (e.link ? '<i class="ir">&#8599;</i>' : '')) +
       '</b></div></div>' +
     (e.sin_hora
@@ -637,6 +639,19 @@ function extrasMult(M) {
       '. El primero organiza la Copa de la semana que viene: su próximo evento vale &times;2. Cuenta el ' +
       '«Organiza:» del anuncio, en eventos de 8 o más.');
   }
+  // 🔑 LA META DE COMUNIDAD, con su barra por servidor
+  var me = M.metas, va = M.meta_va || {};
+  if (me && Object.keys(me).length) {
+    ls.push('<b>&#127919; Meta de comunidad</b>: si un servidor junta esta gente distinta en la semana, todos ' +
+      'los que jugaron ahí suman <b>+10 %</b>.<span class="metas">' + Object.keys(me).sort(function (p, q) {
+        return me[q] - me[p] || p.localeCompare(q);
+      }).map(function (sv) {
+        var n = va[sv] || 0, m = me[sv], ya = n >= m;
+        return '<span class="meta' + (ya ? ' ok' : '') + '"><b>' + esc(sv) + '</b><i><u style="width:' +
+          Math.min(100, Math.round(100 * n / m)) + '%"></u></i><small>' + n + '/' + m + (ya ? ' &#10003;' : '') +
+          '</small></span>';
+      }).join('') + '</span>');
+  }
   var se = M.semillero;
   ls.push('<b>&#127793; Semillero</b>: gana el servidor que más gente nueva trae —gente que juega <b>por primera ' +
     'vez</b> en la Liga—, en proporción a su gente y con 3 como mínimo. Lleva <b>&times;1,5</b> la semana que viene.' +
@@ -649,6 +664,16 @@ function extrasMult(M) {
     })());
   if (a.semillero && a.semillero.gana) {
     ls.push('La semana pasada el Semillero fue <b>' + esc(nombreSv(a.semillero.gana)) + '</b>.');
+  }
+  // 🔑 LOS PREMIOS DE LA SEMANA PASADA
+  var ps = a.premios_semana;
+  if (ps) {
+    var pp = [];
+    if (ps.figura) pp.push('figura <b>' + esc(ps.figura[0]) + '</b> (' + num(ps.figura[1]) + ' pts)');
+    if (ps.revelacion) pp.push('revelación <b>' + esc(ps.revelacion[0]) + '</b>');
+    if (ps.cazador) pp.push('cazador <b>' + esc(ps.cazador[0]) + '</b>');
+    if (ps.servidor) pp.push('servidor <b>' + esc(nombreSv(ps.servidor[0])) + '</b> (' + ps.servidor[1] + ' raperos)');
+    if (pp.length) ls.push('<b>&#127941; La semana pasada</b>: ' + pp.join(' &middot; ') + '.');
   }
   if (a.guerra && (a.guerra.gana || []).length) {
     ls.push('La semana pasada ganaron la guerra: <b>' + a.guerra.gana.map(function (s) {
@@ -2639,7 +2664,8 @@ function pintaDia(M) {
     return '<article class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
       '<div class="de-t"><b>' + esc(fmtHora(e.t)) + '</b>' + (e.sh ? '<small>anunciado</small>' : '') +
       '</div><div class="de-c"><h3>' + esc(e.n) + '</h3>' +
-      '<div class="de-sub">' + chipSv(e.sv) + etiquetaMult(e.sv, e.t) + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
+      '<div class="de-sub">' + chipSv(e.sv) + etiquetaMult(e.sv, e.t) +
+      (e.ct ? '<span class="xm ct" title="Anunciado con 24 horas o más">&#128227; con tiempo</span>' : '') + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
       (e.rg || inf.rg ? '<span class="rg-ev">' + esc(e.rg || inf.rg) + '</span>' : '') +
       '<span class="de-est ' + (e.fut ? 'fut' : e.jugado ? 'jug' : '') + '">' + estado + '</span></div>' +
       (camp.length ? '<p class="de-camp"><span>&#127942;</span>' + camp.map(function (r) {

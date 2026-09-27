@@ -313,6 +313,8 @@ def armar():
         'premios': (x.get('premios') or '')[:60],
         # quién organiza: la página marca el evento de la Copa de la Liga
         'org': _org(x.get('organizador')),
+        # 📣 anunciado con tiempo (ver `_con_tiempo()`)
+        'ct': 1 if _con_tiempo(x.get('cuando'), x.get('publicado')) else 0,
     } for x in CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)]
     prox += [{'nombre': _nom(x['nombre']), 'sv': x.get('servidor') or '',
               'cuando': x['cuando'], 'sin_hora': 1,
@@ -1245,7 +1247,8 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                       'link': link(x), 'rg': _rango_ev(x.get('rango'), x.get('servidor')),
                       'mod': (x.get('modalidad') or '')[:40],
                       'org': _org(x.get('organizador')),
-                      'pre': (x.get('premios') or '')[:60]})
+                      'pre': (x.get('premios') or '')[:60],
+                      'ct': 1 if ini and _con_tiempo(ini, pub) else 0})
     LW.cruzar(items, regs)
     # 🔑 LA FICHA DE CADA LLAVE: formato, rango, quién organizó y el premio,
     # que están en el anuncio y no en la llave. Dlx, 25/09/2026: «mostrar el
@@ -1281,7 +1284,8 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                     'jugado': 1 if ll else 0,
                     'fut': 1 if i['cuando'] > ahora else 0,
                     'sh': i['sh'], **({'rg': i['rg']} if i.get('rg') else {}),
-                    **({'mod': i['mod']} if i.get('mod') else {})})
+                    **({'mod': i['mod']} if i.get('mod') else {}),
+                    **({'ct': 1} if i.get('ct') else {})})
     return out
 
 
@@ -1972,6 +1976,18 @@ def _clasicos_de_llaves(*dicts):
                 d[n] = dict(d[n], clasicos=por[str(n)])
 
 
+def _con_tiempo(ini, pub):
+    """¿Se anunció con `DESTACADO_H` horas o más? El destacado del calendario."""
+    import datetime as _d
+    try:
+        import multiplicadores as _MU
+        a = _d.datetime.fromisoformat(str(ini)[:19])
+        b = _d.datetime.fromisoformat(str(pub)[:19])
+        return (a - b).total_seconds() >= _MU.DESTACADO_H * 3600
+    except (ValueError, TypeError, ImportError):
+        return False
+
+
 def _mult():
     """La semana de los multiplicadores de ahora: `{id, ini, fin, sv}`, o `None`.
 
@@ -1987,7 +2003,7 @@ def _mult():
         return None
     out = {'id': s['id'], 'ini': s['inicio'], 'fin': s['fin'], 'sv': s['sv']}
     # 🔑 el dorado, la guerra y quién ganó la anterior (su ×1,5 va en `premio`)
-    for k in ('premios', 'dorado', 'guerra', 'copa', 'organizadores', 'semillero'):
+    for k in ('premios', 'dorado', 'guerra', 'copa', 'organizadores', 'semillero', 'metas', 'meta_va'):
         if s.get(k):
             out[k] = s[k]
     semanas = _MU.leer().get('semanas') or []
@@ -1995,8 +2011,10 @@ def _mult():
     if s['id'] in ids and ids.index(s['id']) > 0:
         ant = semanas[ids.index(s['id']) - 1]
         if ((ant.get('guerra') or {}).get('gana') or (ant.get('dorado') or {}).get('n')
-                or (ant.get('copa') or {}).get('n') or (ant.get('semillero') or {}).get('gana')):
-            out['ant'] = {k: ant[k] for k in ('guerra', 'dorado', 'copa', 'semillero') if ant.get(k)}
+                or (ant.get('copa') or {}).get('n') or (ant.get('semillero') or {}).get('gana')
+                or ant.get('premios_semana')):
+            out['ant'] = {k: ant[k] for k in ('guerra', 'dorado', 'copa', 'semillero', 'premios_semana')
+                          if ant.get(k)}
     return out
 
 

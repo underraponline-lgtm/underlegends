@@ -50,6 +50,16 @@ antes: es su tercer cruce, o más. El que lo gana suma **+10 %** en ese
 evento. Los duelos se guardan en `datos/rivales.json`, que no se borra con
 la temporada: las rivalidades se acumulan.
 
+LA META DE COMUNIDAD. Cada lunes, cada servidor recibe una meta de gente
+distinta en sus eventos: un 10 % más que su promedio de las últimas semanas
+(con 8 como mínimo). Si la cumple, **todos los que jugaron ahí esa semana
+suman +10 %** en esos eventos. En el Inicio, con su barra.
+
+LOS PREMIOS DE LA SEMANA. Al cerrar cada semana: la figura (más puntos de
+Temporada), la revelación (la figura de los que debutaron esa semana), el
+cazador (el que más cobró en el Most Wanted) y el servidor (el que más gente
+movió).
+
 LOS BONOS DE CADA UNO.
 - **«Volvé»**: tu segundo evento de la temporada, si cae dentro de los 7
   días del primero, vale ×1,5. Es para el 42 % que juega una sola vez.
@@ -125,6 +135,11 @@ MIN_ORG = 8
 NO_ES_ORG = {'yo', 'nosotros', 'staff', 'admin', 'admins', 'mods'}
 #: el Semillero: cuántos nuevos como mínimo, y lo que lleva la semana siguiente
 SEMILLERO_MIN, SEMILLERO_X = 3, 1.5
+#: la meta de comunidad: cuánto más que su promedio, el mínimo, cuántas
+#: semanas mira y lo que suma cada uno de los que jugaron si se cumple
+META_X, META_MIN, META_SEMANAS, META_BONO = 1.1, 8, 4, 1.1
+#: el destacado del calendario: anunciado con al menos estas horas de anticipación
+DESTACADO_H = 24
 #: el Clásico: cuántos cruces previos hacen falta, y lo que suma el que gana
 CLASICO_PREVIOS, CLASICO_X = 2, 1.1
 #: el techo de una fila, sumando todo
@@ -601,6 +616,77 @@ def rivalidades(registro=None, minimo=CLASICO_PREVIOS):
     return {k: v for k, v in out.items() if sum(v['g'].values()) >= minimo}
 
 
+def gente_de(ini, fin, eventos):
+    """`{servidor: {personas}}`: la gente distinta de cada servidor en esa ventana."""
+    out = {}
+    for e in eventos:
+        sv, t, tabla = e[1], e[2], e[3]
+        if t and ini <= t < fin:
+            for f in tabla or []:
+                k = _clave_persona(f[0] if f else '')
+                if k:
+                    out.setdefault(sv, set()).add(k)
+    return out
+
+
+def sortear_metas(svs, ini, eventos):
+    """`{servidor: meta}`: un `META_X` más que su promedio de las últimas semanas, con piso.
+
+    El promedio es de las semanas en que ese servidor TUVO gente: una semana
+    sin eventos no le baja la meta al que recién arranca.
+    """
+    ventanas = [gente_de(ini - dt.timedelta(days=7 * k), ini - dt.timedelta(days=7 * (k - 1)), eventos)
+                for k in range(1, META_SEMANAS + 1)]
+    out = {}
+    for sv in svs:
+        cuentas = [len(v.get(sv, ())) for v in ventanas if v.get(sv)]
+        prom = sum(cuentas) / len(cuentas) if cuentas else 0
+        out[sv] = max(META_MIN, int(-(-prom * META_X // 1)))
+    return out
+
+
+def premios_semana(semana, eventos, vistos=None, mw=None, d=None):
+    """Los premios de una semana cerrada: `{'figura', 'revelacion', 'cazador', 'servidor'}`.
+
+    La figura, por puntos de Temporada (con lo de esa semana: multiplicador,
+    dorado, Copa, «Volvé», Clásicos); la revelación, la figura de los que
+    jugaron por primera vez en su vida esa semana; el cazador, el que más
+    cobró en el Most Wanted; el servidor, el que más gente movió.
+    """
+    ini, fin = _de_iso(semana['inicio']), _de_iso(semana['fin'])
+    filas = [(e[0], e[1], e[2], f[0], _num(f[2])) for e in eventos if e[2] and ini <= e[2] < fin
+             for f in (e[3] or []) if f and len(f) >= 3]
+    fx = factor_de(d if d is not None else {'semanas': [semana]}, filas, rivales=[])
+    pts, nombre = {}, {}
+    for n, sv, t, quien, p in filas:
+        k = _clave_persona(quien)
+        pts[k] = pts.get(k, 0) + p * fx(sv, t, n, quien)
+        nombre.setdefault(k, quien)
+    out = {}
+    if pts:
+        k = max(pts, key=lambda x: (pts[x], x))
+        out['figura'] = [nombre[k], int(round(pts[k]))]
+    debut = {k for k, v in (vistos or {}).items() if ini <= _de_iso(v[0]) < fin}
+    nuevos = {k: v for k, v in pts.items() if k in debut}
+    if nuevos:
+        k = max(nuevos, key=lambda x: (nuevos[x], x))
+        out['revelacion'] = [nombre[k], int(round(nuevos[k]))]
+    cobro = {}
+    for per in (mw or {}).get('historial') or []:
+        if per.get('inicio') and ini <= _de_iso(per['inicio']) < fin:
+            for b in per.get('buscados') or []:
+                for y in ((b.get('caza') or {}).get('por') or []):
+                    cobro[y['n']] = cobro.get(y['n'], 0) + (y.get('cobra') or 0)
+    if cobro:
+        q = max(cobro, key=lambda x: (cobro[x], x))
+        out['cazador'] = [q, cobro[q]]
+    g = gente_de(ini, fin, eventos)
+    if g:
+        sv = max(g, key=lambda x: (len(g[x]), x))
+        out['servidor'] = [sv, len(g[sv])]
+    return out
+
+
 def leer(ruta=None):
     """`datos/multiplicadores.json`, o `{}`."""
     try:
@@ -643,6 +729,17 @@ def factor_de(d=None, filas=None, rivales=None):
     filas = filas or []
     semanas = [(_de_iso(s['inicio']), _de_iso(s['fin']), s.get('sv') or {})
                for s in d.get('semanas') or []]
+    # 🔑 LA META DE COMUNIDAD: la de cada servidor, contra su gente distinta de
+    # esa semana en las filas (la misma identidad que el Semillero)
+    metas_ok = set()
+    for i, s in enumerate(d.get('semanas') or []):
+        if s.get('metas'):
+            ini, fin = semanas[i][0], semanas[i][1]
+            gente = {}
+            for e in filas:
+                if e[2] and ini <= e[2] < fin:
+                    gente.setdefault(e[1], set()).add(_clave_persona(e[3]))
+            metas_ok |= {(i, sv) for sv, meta in s['metas'].items() if len(gente.get(sv, ())) >= meta}
     dorados = {x for x in (dorado_n(s, filas) for s in d.get('semanas') or []) if x}
     # la Copa se anota en el paso 0b (hace falta el anuncio): acá, lo anotado
     copas = {(s.get('copa') or {}).get('n') for s in d.get('semanas') or []} - {None}
@@ -656,9 +753,11 @@ def factor_de(d=None, filas=None, rivales=None):
     def factor(sv, instante, n=None, quien=None):
         x = 1
         if instante and sv:
-            for ini, fin, m in semanas:
+            for i, (ini, fin, m) in enumerate(semanas):
                 if ini <= instante < fin:
                     x = m.get(sv, 1)
+                    if (i, sv) in metas_ok:
+                        x *= META_BONO
                     break
         if n is not None and n in dorados:
             x *= DORADO_X
@@ -751,6 +850,7 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
                 rec['dorado'] = dor
             if len(svs) >= 2:
                 rec['guerra'] = {'pares': emparejar(svs, pid)}
+            rec['metas'] = sortear_metas(svs, ini, evs)
         # 🔑 LA GUERRA DE LA SEMANA QUE TERMINÓ: el que ganó lleva ×1,5 en ésta
         prev = semanas[-1] if semanas else None
         # 🔑 Y SU ORGANIZADOR: el primero es la sede de ésta, con la Copa
@@ -766,6 +866,15 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
                 if sv in rec['sv']:
                     rec['sv'][sv] = min(TECHO, rec['sv'][sv] * GUERRA_X)
                     rec.setdefault('premios', {}).setdefault(sv, []).append('guerra')
+        # 🔑 Y SUS PREMIOS: la figura, la revelación, el cazador y el servidor
+        if prev and _de_iso(prev['inicio']) >= _desde('semana') and 'premios_semana' not in prev:
+            try:
+                import most_wanted as _MW
+                _mwd = _MW.leer()
+            except Exception:                            # noqa: BLE001
+                _mwd = {}
+            prev['premios_semana'] = premios_semana(prev, evs, vistos if semillero_ok else {}, _mwd,
+                                                    {'semanas': semanas})
         # 🔑 Y SU SEMILLERO: el que más gente nueva trajo lleva ×1,5 en ésta
         if (prev and semillero_ok and _de_iso(prev['inicio']) >= _desde('semana')
                 and not (prev.get('semillero') or {}).get('final')):
@@ -781,6 +890,9 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
         cur['organizadores'] = ranking_org(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs, org_de)[:10]
         if semillero_ok:
             cur['semillero'] = resultado_semillero(cur, evs, vistos)
+        if cur.get('metas'):
+            g = gente_de(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs)
+            cur['meta_va'] = {sv: len(g.get(sv, ())) for sv in cur['metas']}
     out = {'_leeme': 'La semana de la Liga: multiplicadores, evento dorado y guerra de servidores. '
                      'Lo sortea bot/multiplicadores.py (paso 0b del ciclo) y NO se vuelve a sortear. '
                      'Las reglas viven en ese archivo.',
@@ -950,6 +1062,32 @@ def _self_check():
        'al cerrar la semana, SR es el Semillero y lleva ×1,5 en la nueva')
     ok(correr(en(10, 19, 11, 22), d={'semanas': []}, eventos=evn, org_de={}, vistos={})['semanas'][-1]
        .get('semillero') is None, 'sin el registro de quién ya jugó, no hay Semillero (todos serían nuevos)')
+    # la meta de comunidad: un 10 % más que su promedio, con piso
+    evm = [(51, 'FFA', en(10, 7, 20), [['p%d' % i, 'x', 100] for i in range(20)], 'a'),
+           (52, 'FFA', en(9, 30, 20), [['q%d' % i, 'x', 100] for i in range(10)], 'b'),
+           (53, 'SR', en(10, 8, 20), [['r%d' % i, 'x', 100] for i in range(3)], 'c')]
+    mt = sortear_metas(['FFA', 'SR', 'URBF'], en(10, 12, 11), evm)
+    ok(mt == {'FFA': 17, 'SR': 8, 'URBF': 8},
+       'FFA: promedio de sus semanas con gente (20 y 10) + 10 %% = 17; SR y URBF, el piso de 8  %s' % mt)
+    dm = {'semanas': [{'id': 'm', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
+                       'sv': {'FFA': 1, 'SR': 1}, 'metas': {'FFA': 3, 'SR': 8}}]}
+    fm = [(61, 'FFA', en(10, 13, 20), 'Ana', 100), (61, 'FFA', en(10, 13, 20), 'Bea', 100),
+          (62, 'FFA', en(10, 14, 20), 'Cid', 100), (63, 'SR', en(10, 14, 20), 'Dan', 100)]
+    f4 = factor_de(dm, fm, rivales=[])
+    ok(abs(f4('FFA', en(10, 13, 20), 61, 'Ana') - META_BONO) < 1e-9 and f4('SR', en(10, 14, 20), 63, 'Dan') == 1,
+       'FFA juntó 3 de 3: todos los que jugaron ahí suman +10 %; SR, 1 de 8, nada')
+    # los premios de la semana
+    evp = [(71, 'FFA', en(10, 13, 20), [['Ana', 'Campeón', 5000], ['Bea', 'Octavos', 1000]], 'x'),
+           (72, 'SR', en(10, 14, 20), [['Cid', 'Campeón', 3000], ['Ana', 'Cuartos', 2000], ['Eli', 'x', 500]], 'y')]
+    mwp = {'historial': [{'inicio': _iso(en(10, 13, 11)), 'buscados': [
+        {'caza': {'por': [{'n': 'Bea', 'cobra': 9000}]}}]}]}
+    pr = premios_semana({'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)), 'sv': {}},
+                        evp, {'cid': ['2026-10-14T00:00:00Z', 'SR']}, mwp)
+    ok(pr.get('figura') == ['Ana', 8000] and pr.get('revelacion') == ['Cid', 3000]
+       and pr.get('cazador') == ['Bea', 9000] and pr.get('servidor') == ['SR', 3],
+       'la figura (Ana: 5.000 + 2.000 con «Volvé» ×1,5), la revelación (Cid, debutó), el cazador (Bea) '
+       'y el servidor (SR, 3 personas)  %s' % pr)
+
     # los Clásicos: el tercer cruce, o más, con los ganados de antes
     rv = [[1, '2026-10-13T00:00:00Z', 'Ana', 'Bea', 'Ana', 't1'],
           [2, '2026-10-14T00:00:00Z', 'Bea 🇨🇴', 'Ana', 'Bea 🇨🇴', 't1'],

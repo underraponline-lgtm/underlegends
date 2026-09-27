@@ -1629,6 +1629,16 @@ background:rgba(10,15,14,.6);opacity:.45;filter:grayscale(1)}
 .ins b{font:800 .9rem/1.2 Archivo,sans-serif}
 .ins small{color:var(--tx2);font-size:.75rem;line-height:1.3}
 #pfInsN{margin-left:6px;color:var(--tx3);font:700 .8rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em}
+/* el destacado: anunciado con tiempo */
+.xm.ct{background:rgba(120,160,255,.16);color:#9DB8FF}
+/* la meta de comunidad: una barra por servidor */
+.metas{display:grid;gap:6px;margin-top:8px}
+.meta{display:grid;grid-template-columns:3.4em minmax(0,1fr) auto;align-items:center;gap:8px}
+.meta b{color:var(--tx2)!important;font:800 .78rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em}
+.meta i{height:6px;border-radius:3px;background:var(--bd2);overflow:hidden}
+.meta i u{display:block;height:100%;background:var(--tl)}
+.meta.ok i u{background:var(--oro)}
+.meta small{color:var(--tx2);font:700 .78rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 /* el Clásico, en la etiqueta de su batalla */
 .et-cl{color:#FF9F6B!important;border-color:rgba(255,159,107,.45)!important}
 .mt-x{grid-column:1/-1;display:grid;gap:6px;margin-top:4px;padding-top:10px;border-top:1px solid var(--bd2)}

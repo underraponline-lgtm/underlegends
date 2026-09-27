@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.29",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T14:15:00-04:00",
+   "titulo": "Meta de comunidad y premios de la semana",
+   "items": [
+    "🎯 **Meta de comunidad**: cada lunes, cada servidor recibe una meta de gente distinta en sus eventos (un 10 % más que su promedio). Si la junta, **todos los que jugaron ahí esa semana suman +10 %**. En el Inicio, con su barra.",
+    "🏅 **Premios de la semana**: al cerrar cada semana, la **figura** (más puntos), la **revelación** (la figura de los que debutaron), el **cazador** del Most Wanted y el **servidor** que más gente movió. La figura y la revelación dan insignia.",
+    "📣 **Con tiempo**: los eventos anunciados con 24 horas o más de anticipación llevan su etiqueta en «Lo que viene» y en el calendario.",
+    "📅 Arranca con la semana del **lunes 28**."
+   ]
+  },
+  {
    "version": "1.28",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T14:05:00-04:00",

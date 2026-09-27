@@ -52,6 +52,8 @@ CATALOGO = (
     ('racha', '🔥', 'En llamas', 'Llegó arriba de la llave en 3 eventos seguidos'),
     ('duelista', '⚔️', 'Duelista', 'Ganó 10 duelos en una temporada'),
     ('clasico', '🤜', 'Clásico', 'Ganó un Clásico: su tercer cruce, o más, con el mismo rival'),
+    ('figura', '🌟', 'Figura', 'Fue la figura de una semana: el que más puntos hizo'),
+    ('revelacion', '✨', 'Revelación', 'Fue la revelación de la semana en que debutó'),
     ('cazador', '🎯', 'Cazador', 'Cazó a un buscado del Most Wanted'),
     ('regicida', '💀', 'Regicida', 'Cazó a El Rey del Most Wanted'),
     ('sobreviviente', '🛡️', 'Sobreviviente', 'Sobrevivió siendo buscado'),
@@ -66,7 +68,7 @@ def _n(x):
         return 0.0
 
 
-def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None):
+def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=None, revelaciones=None):
     """`{raw: {ids}}`: lo que cada uno cumple HOY con los datos de la temporada.
 
     `mw` es `{raw: {'caz', 'czd', 'sob'}}` (`most_wanted.suma()`), `reyes` el
@@ -74,6 +76,7 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None):
     `{raw: cuántos ganó}`. Todo por el nombre del pool (`raw`).
     """
     mw, reyes = mw or {}, reyes or set()
+    figuras, revelaciones = figuras or set(), revelaciones or set()
     duelos_g, clasicos_g = duelos_g or {}, clasicos_g or {}
     out = {}
     for p in pool:
@@ -89,6 +92,7 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None):
             'trotamundos': _n(p.get('srv')) >= 3, 'racha': _n(p.get('racha')) >= 3,
             'duelista': duelos_g.get(raw, 0) >= 10, 'clasico': clasicos_g.get(raw, 0) >= 1,
             'cazador': m.get('caz', 0) >= 1, 'regicida': raw in reyes, 'sobreviviente': m.get('sob', 0) >= 1,
+            'figura': raw in figuras, 'revelacion': raw in revelaciones,
         }
         ya = {k for k, v in reglas.items() if v}
         if ya:
@@ -129,7 +133,8 @@ def leer(ruta=None):
 
 
 def _datos():
-    """Lo que las reglas necesitan, desde `datos/`: `(pool, mw, reyes, duelos_g, clasicos_g)`."""
+    """Lo que las reglas necesitan, desde `datos/`: `(pool, mw, reyes, duelos_g, clasicos_g,
+    figuras, revelaciones)`."""
     import llaves_web as LW
     import most_wanted as MW
     import multiplicadores as MU
@@ -155,7 +160,17 @@ def _datos():
             r = raw_de(c['g'])
             if r:
                 clasicos_g[r] = clasicos_g.get(r, 0) + 1
-    return pool, mw, reyes, duelos_g, clasicos_g
+    # los premios de las semanas cerradas de esta temporada
+    figuras, revelaciones = set(), set()
+    for sem in MU.leer().get('semanas') or []:
+        if sem.get('temporada', 'prueba') != temp:
+            continue
+        ps = sem.get('premios_semana') or {}
+        for clave, dest in (('figura', figuras), ('revelacion', revelaciones)):
+            r = raw_de((ps.get(clave) or [''])[0])
+            if r:
+                dest.add(r)
+    return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones
 
 
 def correr(ahora=None, aplicar=False):
@@ -186,15 +201,15 @@ def _self_check():
             {'raw': 'Bea', 'ev': 1, 'oro': 0, 'seg': 0, 'ter': 0, 'srv': 1, 'racha': 0},
             {'raw': 'Cid', 'ev': 0}]
     c = cumple(pool, mw={'Bea': {'caz': 1, 'sob': 0}}, reyes={'Bea'}, duelos_g={'Ana': 10},
-               clasicos_g={'Ana': 1})
+               clasicos_g={'Ana': 1}, revelaciones={'Bea'})
     ok(c['Ana'] == {'debut', 'ev10', 'podio', 'campeon', 'tricampeon', 'trotamundos', 'racha',
                     'duelista', 'clasico'},
        'Ana: 12 eventos, 3 oros, 3 servidores, racha de 3, 10 duelos y un Clásico')
-    ok(c['Bea'] == {'debut', 'cazador', 'regicida'} and 'Cid' not in c,
-       'Bea: su debut y cazó a El Rey; Cid, que no jugó, nada')
+    ok(c['Bea'] == {'debut', 'cazador', 'regicida', 'revelacion'} and 'Cid' not in c,
+       'Bea: su debut, cazó a El Rey y fue la revelación de su semana; Cid, que no jugó, nada')
     reg = {}
     t0 = dt.datetime(2026, 9, 27, 18, tzinfo=dt.timezone.utc)
-    ok(anotar(reg, c, t0, 'prueba') == 12 and anotar(reg, c, t0, 'prueba') == 0,
+    ok(anotar(reg, c, t0, 'prueba') == 13 and anotar(reg, c, t0, 'prueba') == 0,
        'se anotan una vez: la segunda corrida no suma nada')
     c2 = cumple([{'raw': 'Ana', 'ev': 2, 'oro': 0}])
     anotar(reg, c2, t0, 't1')

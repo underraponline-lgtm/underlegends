@@ -281,8 +281,35 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La Copa de la Liga es de la persona**, no de su servidor: el próximo evento que organice, donde sea | *«a la persona»* | ✅ `organizados()`, `ranking_org()` y `copa_n()` en `bot/multiplicadores.py` (1.26) |
 | **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
 | **Insignias y Clásicos, ya** | *«sí, dale»* | ✅ `bot/insignias.py` y `multiplicadores.clasicos()` (1.28) |
+| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ⏳ encuestas, pronósticos y precio por cabeza (piden entrar con la cuenta) |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Domingo 27/09 (2:15 PM) — versión 1.29
+
+**Meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la
+Liga.** Dlx: *«ok sigamos»*.
+
+- 🎯 **Meta de comunidad** (`sortear_metas()`): al sortear, cada servidor
+  recibe como meta de gente distinta un 10 % más que su promedio de las
+  semanas en que tuvo gente (hasta 4), con 8 como mínimo. Si la junta, cada
+  fila de ese servidor esa semana suma +10 % (por `agregar_temporada()`).
+  Medido para el lunes 28: **FFA 140, SR 66, DRA 8, URBF 8** (la semana
+  pasada, 127 y 60).
+- 🏅 **Premios de la semana** (`premios_semana()`), al cerrar: figura (más
+  puntos de Temporada, con todo lo de esa semana), revelación (la figura de
+  los que debutaron, por `datos/vistos.json`), cazador (más cobrado en el
+  MW) y servidor (más gente). Dos insignias nuevas: **Figura** y
+  **Revelación** (15 en total).
+- 📣 **Con tiempo** (`DESTACADO_H`): la etiqueta en «Lo que viene» y en el
+  calendario. ⚠️ **Medido: 1 de 48 anuncios sale con 24 h; la mitad, 12
+  minutos antes.** Ver «❓».
+- 🗓️ **`bot/lunes.py`**: el mensaje de la semana, con todo (`--ver`,
+  `--ver --lunes` para el del lunes que viene). Se manda una vez y se edita
+  (la regla de `avisar.py`). **`CANAL` está en `None` hasta que Dlx diga
+  dónde va**: no está en el ciclo.
 
 ---
 
@@ -1012,6 +1039,11 @@ inglés, y `/borrar-mis-datos`.
   en la 1.23.
 - ✅ ~~El bonus por llave limpia~~: afuera (*«la 2»*).
 - ✅ ~~El Semillero: ¿quién es «gente nueva»?~~ *«A»*: hecho en la 1.27.
+- **El Lunes de la Liga: ¿en qué canal de DRA va?** El mensaje ya está
+  (`python bot/lunes.py --ver --lunes`); falta dónde, y que lo apruebes.
+- **«Con tiempo»: ¿24 horas o menos?** Medido: 1 de 48 anuncios sale con 24
+  h de anticipación; la mitad, 12 minutos antes. Con 24 h la etiqueta casi
+  no se va a ver; con 3 h ya sería un cambio posible de hábito.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién
