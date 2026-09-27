@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo } from './avisos.js';
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos } from './avisos.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -49,7 +49,7 @@ const RESPONDE = {
   ACTUALIZAR: 7,       // PISA el mensaje del botón. El que usan las cartas
 };
 const COMP = { FILA: 1, BOTON: 2, SELECT: 3, TEXTO: 10, GALERIA: 12 };
-const ESTILO = { PRIMARIO: 1, SECUNDARIO: 2 };
+const ESTILO = { PRIMARIO: 1, SECUNDARIO: 2, PELIGRO: 4 };
 
 const EFIMERO = 1 << 6;       // 64    sólo lo ve quien lo pidió
 const V2 = 1 << 15;           // 32768 IS_COMPONENTS_V2
@@ -366,10 +366,14 @@ function anotar(env, ctx, id, nick, user, glob, guild, por) {
   if (!id || !ctx || !ctx.waitUntil) return;
   ctx.waitUntil((async () => {
     try {
-      const [ya, cola] = await Promise.all([
-        env.KV.get('d:' + id), env.KV.get('reg:' + id),
+      const [ya, cola, baja] = await Promise.all([
+        env.KV.get('d:' + id), env.KV.get('reg:' + id), env.KV.get('olvido:' + id),
       ]);
       if (ya) return;                         // ya cargado
+      // 🔴 QUIEN BORRÓ SUS DATOS NO SE VUELVE A ANOTAR con un `/card` suelto:
+      // `/borrar-mis-datos` promete que no lo sumamos solo. Vuelve si se lo
+      // pide a un admin (`bot/olvidar.py --volver`).
+      if (baja) return;
       if (cola) {
         // 🔴 SI ANTES LO NOMBRÓ OTRO Y AHORA SE ANOTA ÉL, SE REESCRIBE: con
         // `por: 'otro'` no entra solo a la Lista, y el texto de `/card` le
@@ -2163,7 +2167,87 @@ function panelEstado(m, disp) {
   return L.join('\n');
 }
 
+// ── /borrar-mis-datos ──────────────────────────────────────────────────
+// 🔑 Dlx, 27/09/2026: «podríamos hacer un comando para delete-my-data». Es lo
+// que promete la política de privacidad (underlegends.pages.dev/privacidad.html):
+// cada uno borra lo suyo sin tener que pedírselo a nadie.
+//
+// ⚠️ PRIMERO PREGUNTA, CON DOS BOTONES. Borrar no se deshace, y un comando se
+// aprieta sin querer. El estado va entero en el `custom_id`, como en el resto
+// de los botones: `baja:si::<id>` o `baja:no::<id>`.
+export function panelBaja(id) {
+  return {
+    content: '## 🗑️ Borrar tus datos de la Liga\n' +
+      'Esto borra, ahora y para siempre:\n' +
+      '- tu perfil y tus tarjetas (también las de cada servidor),\n' +
+      '- tu foto de las tarjetas,\n' +
+      '- tus redes guardadas y el vínculo de tus avisos.\n\n' +
+      'Además queda anotado que **no te vuelva a sumar solo**. Tus resultados en ' +
+      'eventos quedan en el historial de la Liga; si querés que cambiemos tu ' +
+      'nombre ahí, pedíselo a un admin.\n' +
+      '-# Si después querés volver, también se lo pedís a un admin.',
+    components: [{ type: COMP.FILA, components: [
+      { type: COMP.BOTON, style: ESTILO.PELIGRO, label: 'Borrar mis datos',
+        custom_id: `baja:si::${id}` },
+      { type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: 'Cancelar',
+        custom_id: `baja:no::${id}` },
+    ] }],
+  };
+}
+
+/**
+ * Borra lo de esa persona y la anota como baja. Devuelve lo que borró.
+ *
+ * ⚠️ EL ID SALE DE LA INTERACCIÓN FIRMADA, nunca de un texto: nadie puede
+ * borrar a otro.
+ *
+ * ⚠️ LA MARCA `olvido:<id>` ES LO QUE DURA. El ciclo la lee en cada corrida
+ * (`bot/olvidar.py traer()`) y el portón deja afuera a quien la tiene
+ * (`verificados.pasa()`): sin ella, la corrida siguiente le volvería a dibujar
+ * todo. Va SIN nombre: para no sumarlo alcanza con el ID.
+ *
+ * ⚠️ R2 SE BUSCA LISTANDO, no armando la clave: una persona puede tener sus
+ * cartas bajo una grafía vieja de su nombre (ver `bot/olvidar.py`). Las cartas
+ * viven en `<clave>/…` y la foto en `fotos/<…>/<clave>.webp`.
+ */
+export async function borrarMisDatos(env, id) {
+  const hecho = { clave: '', kv: 0, r2: 0, avisos: null };
+  const clave = await env.KV.get('d:' + id);
+  hecho.clave = clave || '';
+  const kv = ['d:' + id];
+  if (clave) kv.push('p:' + clave, 'redes:' + clave, claveUso(env, clave));
+  for (const k of kv) {
+    try { await env.KV.delete(k); hecho.kv++; } catch (e) { /* se sigue con lo demás */ }
+  }
+  if (clave && env.CARTAS) {
+    const borrar = [];
+    for (const pref of [clave + '/', 'fotos/']) {
+      let cursor;
+      do {
+        const l = await env.CARTAS.list({ prefix: pref, cursor, limit: 1000 });
+        for (const o of l.objects) {
+          if (pref !== 'fotos/' || o.key.endsWith('/' + clave + '.webp')) borrar.push(o.key);
+        }
+        cursor = l.truncated ? l.cursor : undefined;
+      } while (cursor);
+    }
+    for (let j = 0; j < borrar.length; j += 1000) {
+      await env.CARTAS.delete(borrar.slice(j, j + 1000));
+    }
+    hecho.r2 = borrar.length;
+  }
+  hecho.avisos = await olvidarAvisos(env, id);
+  await env.KV.put('olvido:' + id, JSON.stringify({ t: Date.now() }));
+  return hecho;
+}
+
 const COMANDOS = {
+  async 'borrar-mis-datos'(i, env, ctx) {
+    const id = idDe(i);
+    if (!id) return aviso('No pude saber quién sos.');
+    return responderPanel(RESPONDE.MENSAJE, panelBaja(id));
+  },
+
   async help(i, env, ctx) {
     const op = ((i.data && i.data.options) || []).find(o => o.name === 'comando');
     if (!op) return aviso(AYUDA_INDICE);
@@ -3329,6 +3413,36 @@ export default {
         // está abajo.
         return responderPanel(RESPONDE.ACTUALIZAR,
           panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
+      }
+
+      // ── /borrar-mis-datos: la confirmación ─────────────────────────────
+      // ⚠️ SÓLO QUIEN LO PIDIÓ: el mensaje es efímero, pero «efímero» nunca fue
+      // un control de acceso. El ID del dueño viaja en el `custom_id`.
+      if (que === 'baja') {
+        if (!dueno || idDe(i) !== dueno) return aviso('Ese botón es de otra persona.');
+        const esperarB = frenado(idDe(i), 'click');
+        if (esperarB) return espera(esperarB);
+        if (quien !== 'si') {
+          return responderPanel(RESPONDE.ACTUALIZAR,
+            { content: 'Listo, no borré nada.', components: [] });
+        }
+        let h;
+        try {
+          h = await borrarMisDatos(env, dueno);
+        } catch (e) {
+          return responderPanel(RESPONDE.ACTUALIZAR, { content: 'No pude terminar de ' +
+            'borrar (`' + String(e).slice(0, 60) + '`). Probá de nuevo en un rato: lo ' +
+            'que ya se borró no vuelve.', components: [] });
+        }
+        return responderPanel(RESPONDE.ACTUALIZAR, {
+          content: '✅ **Listo.** ' + (h.clave
+            ? 'Borré tu perfil, ' + (h.r2 ? h.r2 + ' archivo(s) entre tarjetas y foto' : 'tus tarjetas') +
+              ', tus redes y el vínculo de tus avisos. '
+            : 'No tenías perfil en la Liga; igual solté tus avisos. ') +
+            'Quedó anotado que no te vuelva a sumar solo.\n' +
+            '-# La página se pone al día en la próxima vuelta del ciclo (menos de una hora).',
+          components: [],
+        });
       }
 
       // ── /notify: el menú de servidores y «Todos» ───────────────────────

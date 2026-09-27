@@ -1790,5 +1790,61 @@ console.log('\n/VERIFICAR\n');
   ok('sin token ni portón, hace lo de /card: anota y explica', /Ya te anoté/.test(texto(r)), texto(r));
 }
 
+console.log('\n/borrar-mis-datos\n');
+
+{
+  // 🔑 Dlx, 27/09/2026: «podríamos hacer un comando para delete-my-data».
+  const ID = '700800';
+  PUESTO['d:' + ID] = 'borrame';
+  PUESTO['p:borrame'] = '{"n":"Borrame"}';
+  PUESTO['redes:borrame'] = '{"redes":[]}';
+  const r2 = new Set(['borrame/temporada.webp', 'borrame/sv-ffa.webp', 'fotos/t1/borrame.webp',
+    'fotos/t1/otro.webp', 'otro/temporada.webp', 'borrame-co/temporada.webp']);
+  const soltados = [];
+  const envAntes = { CARTAS: env.CARTAS, AVISOS: env.AVISOS };
+  env.CARTAS = {
+    list: async ({ prefix }) => ({ objects: [...r2].filter((k) => k.startsWith(prefix)).map((key) => ({ key })),
+      truncated: false }),
+    delete: async (ks) => { for (const k of [].concat(ks)) r2.delete(k); },
+  };
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    soltados.push([String(url), JSON.parse(opc.body).quien]);
+    return new Response('{"ok":true,"soltados":2}', { status: 200 });
+  } }) };
+  const boton = (quien, cid) => pedir({ type: 3, guild_id: G.DRA, channel_id: '1',
+    member: { user: { id: quien } }, data: { custom_id: cid } });
+
+  let r = await pedir({ type: 2, guild_id: G.DRA, channel_id: '1',
+                        member: { user: { id: ID } }, data: { name: 'borrar-mis-datos' } });
+  const ids = JSON.stringify(r.json?.data?.components || []);
+  ok('pregunta antes, sólo a quien lo pidió, con los dos botones',
+     r.json?.data?.flags === 64 && ids.includes('baja:si::' + ID) && ids.includes('baja:no::' + ID),
+     ids.slice(0, 120));
+  r = await boton('700801', 'baja:si::' + ID);
+  ok('el botón de otro no borra nada', /de otra persona/.test(texto(r)) && PUESTO['d:' + ID] === 'borrame',
+     texto(r));
+  r = await boton(ID, 'baja:no::' + ID);
+  ok('«Cancelar» no borra nada', /no borré nada/.test(texto(r)) && PUESTO['d:' + ID] === 'borrame', texto(r));
+  r = await boton(ID, 'baja:si::' + ID);
+  ok('borra sus claves de KV', !('d:' + ID in PUESTO) && !('p:borrame' in PUESTO) && !('redes:borrame' in PUESTO),
+     Object.keys(PUESTO).filter((k) => k.includes('borrame') || k.includes(ID)).join(','));
+  ok('borra sus cartas y su foto, y nada de otro (tampoco «borrame-co»)',
+     [...r2].sort().join(',') === 'borrame-co/temporada.webp,fotos/t1/otro.webp,otro/temporada.webp',
+     [...r2].join(','));
+  ok('suelta sus avisos por la ruta de adentro', soltados.length === 1 && soltados[0][0].endsWith('/olvidar') &&
+     soltados[0][1] === ID, JSON.stringify(soltados));
+  ok('deja la marca de baja, sin nombre', !!PUESTO['olvido:' + ID] && !/borrame/i.test(PUESTO['olvido:' + ID]),
+     PUESTO['olvido:' + ID]);
+  ok('y lo dice', /Listo/.test(texto(r)) && /no te vuelva a sumar/.test(texto(r)), texto(r));
+  // quien se dio de baja no se vuelve a anotar con un /card suelto
+  delete PUESTO['reg:' + ID];
+  await pedir({ type: 2, guild_id: G.DRA, channel_id: '1', member: { user: { id: ID } }, data: { name: 'card' } });
+  await esperarSeguimientos();
+  ok('un /card después de la baja no lo vuelve a anotar', !('reg:' + ID in PUESTO));
+  env.CARTAS = envAntes.CARTAS;
+  env.AVISOS = envAntes.AVISOS;
+  delete PUESTO['olvido:' + ID];
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

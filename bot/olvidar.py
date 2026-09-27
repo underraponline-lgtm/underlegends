@@ -102,6 +102,15 @@ def anotar(did, quien):
                    'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00',
                                            time.gmtime())}
     _guardar(g)
+    # ⚠️ Y EN KV, que es lo que dura: ver `traer()`
+    try:
+        s = sesion()
+        s.put('%s/values/olvido:%s' % (kv_api(), did),
+              files={'value': (None, json.dumps({'t': int(time.time() * 1000)})),
+                     'metadata': (None, '{}')}, timeout=30)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude anotarlo en KV (%s): el ciclo lo va a volver a sumar'
+              % str(e)[:60])
     return g
 
 
@@ -109,7 +118,50 @@ def desanotar(did):
     g = olvidados()
     g.pop(str(did), None)
     _guardar(g)
+    try:
+        sesion().delete('%s/values/olvido:%s' % (kv_api(), did), timeout=30)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude sacarlo de KV (%s)' % str(e)[:60])
     return g
+
+
+def traer(s=None):
+    """Rehace `datos/olvidados.json` con las bajas de KV. Cuántas hay, o None.
+
+    🔑 LAS BAJAS VIVEN EN KV DESDE EL 27/09/2026, como `olvido:<id>`. Las
+    escribe `/borrar-mis-datos` (Dlx: *«podríamos hacer un comando para
+    delete-my-data»*) y `anotar()`, y este paso las trae al principio de cada
+    corrida, así el portón (`verificados.pasa()`) y la cola del bot
+    (`sheet/registrar_ids.py`) las respetan en esa misma corrida.
+
+    ⚠️ EL ARCHIVO YA NO VA AL REPO: es público, y publicar el ID de quien
+    pidió que lo borremos sería lo contrario de lo que pidió. Es un espejo
+    local que se rehace acá.
+
+    ⚠️ SI KV NO CONTESTA, SE QUEDA EL ARCHIVO QUE HAY: una baja no se deshace
+    por una caída de red.
+    """
+    s = s or sesion()
+    ids, cursor = [], None
+    try:
+        while True:
+            r = s.get('%s/keys' % kv_api(), params=dict(
+                prefix='olvido:', limit=1000, **({'cursor': cursor} if cursor else {})),
+                timeout=30).json()
+            if not r.get('success', True):
+                raise RuntimeError(str(r.get('errors'))[:80])
+            ids += [k['name'][len('olvido:'):] for k in (r.get('result') or [])]
+            cursor = ((r.get('result_info') or {}).get('cursor')) or None
+            if not cursor:
+                break
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer las bajas de KV (%s): sigo con las de antes' % str(e)[:60])
+        return None
+    g = olvidados()
+    for did in ids:
+        g.setdefault(did, {'quien': '', 'cuando': ''})
+    _guardar(g)
+    return len(g)
 
 
 def _guardar(g):

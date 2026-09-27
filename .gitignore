@@ -206,3 +206,9 @@ docs/respaldo_ids_*.json
 # 25/09; el historial no se reescribió: ver NOVEDADES.md. Se guardan en esta
 # máquina y en el repo privado.
 docs/sheet_respaldo/
+
+# 🔑 Las bajas viven en KV (`olvido:<id>`) desde el 27/09/2026 y el ciclo
+# rehace este archivo en cada corrida (`bot/olvidar.py traer()`). No va al
+# repo: es público, y publicar el ID de quien pidió que lo borremos sería lo
+# contrario de lo que pidió.
+datos/olvidados.json

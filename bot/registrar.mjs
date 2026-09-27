@@ -109,6 +109,21 @@ const COMANDOS = [
     ...EN_TODOS_LADOS,
   },
   {
+    // 🔑 Dlx, 27/09/2026: «podríamos hacer un comando para delete-my-data».
+    // Es lo que promete la política de privacidad. Pregunta antes de borrar.
+    // ⚠️ EL NOMBRE BASE ES EL QUE LLEGA AL WORKER (`data.name`) aunque el
+    // cliente lo muestre traducido: `borrar-mis-datos` en `COMANDOS`.
+    name: 'borrar-mis-datos',
+    name_localizations: { 'en-US': 'delete-my-data', 'en-GB': 'delete-my-data' },
+    type: 1,
+    description: 'borrá tu perfil, tus tarjetas y tu foto de la Liga',
+    description_localizations: {
+      'en-US': 'delete your league profile, cards and photo',
+      'en-GB': 'delete your league profile, cards and photo',
+    },
+    ...EN_TODOS_LADOS,
+  },
+  {
     name: 'help',
     type: 1,
     description: 'qué hace el bot y cómo se usa cada comando',

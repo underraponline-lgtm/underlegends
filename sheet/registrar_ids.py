@@ -329,9 +329,21 @@ def main():
     ya_estaba = []    # reg_key (mismo id, nada que hacer)
     altas = []        # (reg, reg_key, etiqueta, id): se anotó él mismo
 
+    # 🔴 QUIEN BORRÓ SUS DATOS NO VUELVE A LA LISTA POR LA COLA: su `reg:`
+    # pudo quedar de antes de `/borrar-mis-datos`. Se saca y listo.
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import olvidar as _OLV
+        bajas = set(_OLV.olvidados())
+    except Exception:                                    # noqa: BLE001
+        bajas = set()
+
     for k, reg in anotados:
         did = str(reg.get('id') or '').strip()
         if not did:
+            continue
+        if did in bajas:
+            ya_estaba.append(k)
             continue
         etiqueta = reg.get('nick') or reg.get('glob') or reg.get('user') or did
         # ¿ese id ya está puesto en alguna fila?

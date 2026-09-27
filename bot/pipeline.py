@@ -736,6 +736,18 @@ def _lo_barato(correr):
     # acaba de cargar recién se usaría en la corrida siguiente.
     #
     # ⚠️ NO FRENA EL CICLO. Que la cola no se vacíe no impide dibujar.
+    # 🔑 LAS BAJAS PRIMERO: `/borrar-mis-datos` las deja en KV y todo lo de
+    # abajo —la cola del bot, el portón, KV, las cartas— las tiene que ver en
+    # esta misma corrida. Ver `bot/olvidar.py traer()`.
+    if correr:
+        try:
+            import olvidar as _OLV
+            _n_olv = _OLV.traer()
+            if _n_olv:
+                print('      %d baja(s) de la Liga (`/borrar-mis-datos`)' % _n_olv)
+        except Exception as e:                           # noqa: BLE001
+            print('      ⚠️ no pude traer las bajas: %s' % str(e)[:60])
+
     paso('1a', 'la cola del bot (`/card` de quien no está), al Sheet')
     if not correr:
         print('      correría sheet/registrar_ids.py --aplicar')

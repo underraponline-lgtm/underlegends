@@ -834,6 +834,30 @@ export async function marcarDisparo(env, cual, v) {
   }
 }
 
+/**
+ * Suelta los dispositivos vinculados a esa persona. Lo usa `/borrar-mis-datos`.
+ *
+ * ⚠️ SÓLO POR DENTRO: la ruta `/olvidar` del objeto NO está en `RUTAS`, así
+ * que no se puede pedir desde afuera. Desde afuera cualquiera podría soltar
+ * los avisos de otro con sólo saber su ID; acá el ID sale de la interacción
+ * firmada por Discord.
+ *
+ * ⚠️ SE SUELTA EL VÍNCULO, NO LA SUSCRIPCIÓN: los avisos de eventos de ese
+ * dispositivo los eligió el dispositivo, y se apagan desde la campana.
+ */
+export async function olvidarAvisos(env, quien) {
+  if (!env.AVISOS || !/^[0-9]{5,25}$/.test(String(quien || ''))) return null;
+  try {
+    const r = await elObjeto(env).fetch('https://avisos/olvidar', {
+      method: 'POST', body: JSON.stringify({ quien: String(quien) }),
+      headers: { 'content-type': 'application/json' },
+    });
+    return r.ok ? (await r.json()).soltados : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 export async function vigilar(env, servidores, dueno) {
   if (!env.AVISOS) return;
   await elObjeto(env).fetch('https://avisos/vigilar', {
@@ -935,6 +959,7 @@ export class Avisos {
       if (ruta === '/simular') return this.simular();
       if (ruta === '/vincular') return this.vincular(d);
       if (ruta === '/desvincular') return this.desvincular(d);
+      if (ruta === '/olvidar') return this.olvidar(d);
       if (ruta === '/disparo') {
         if (d.cual !== 'arranco' && d.cual !== 'ultimo') return json({ error: 'no existe' }, 404);
         this.guardar('disparo_' + d.cual, d.v || {});
@@ -1427,6 +1452,13 @@ export class Avisos {
     if (typeof d.endpoint !== 'string') return json({ error: 'falta el endpoint' }, 400);
     this.sql.exec("UPDATE subs SET quien = '' WHERE endpoint = ?", d.endpoint);
     return json({ ok: true });
+  }
+
+  /** Todos los dispositivos de esa persona, sueltos. Ver `olvidarAvisos()`. */
+  olvidar(d) {
+    if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
+    const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
+    return json({ ok: true, soltados: r.rowsWritten || 0 });
   }
 
   /**
