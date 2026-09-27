@@ -256,6 +256,30 @@ def limpiar_huerfanas(s, pares):
     return len(sobran)
 
 
+def _canales_llaves():
+    """`[{id, sv, g}]`: los canales «llaves» conocidos de los servidores de la Liga.
+
+    ⚠️ SÓLO LOS QUE SE LLAMAN «LLAVE…»: el lector del ciclo también conoce
+    canales de plantillas, donde hay llaves vacías de ejemplo. Y sólo de los
+    servidores confirmados: LIVONIA tiene llaves y no es de la Liga.
+    """
+    import unicodedata
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'canales_llaves.json'), encoding='utf-8') as f:
+            can = (json.load(f) or {}).get('canales') or {}
+    except (OSError, ValueError):
+        return []
+    svs = _json_servidores().get('servidores') or {}
+    por_guild = {str(v.get('guild_id')): k for k, v in svs.items() if v.get('confirmado')}
+    out = []
+    for cid, x in can.items():
+        sv = por_guild.get(str(x.get('guild') or ''))
+        nom = unicodedata.normalize('NFKD', str(x.get('canal') or '')).lower()
+        if sv and 'llave' in nom:
+            out.append({'id': str(cid), 'sv': sv, 'g': str(x.get('guild') or '')})
+    return sorted(out, key=lambda c: (c['sv'], c['id']))
+
+
 def _porton(padron):
     """El portón del ciclo, en datos, para el `/verificar` del Worker.
 
@@ -665,6 +689,10 @@ def armar():
         # marca es `confirmado` de `datos/servidores.json`; acá sólo viaja.
         'liga': sorted(k for k, v in ((_json_servidores().get('servidores') or {}).items())
                        if v.get('confirmado')),
+        # 🔑 LOS CANALES DE LLAVES DE LA LIGA, para las llaves en vivo del vigía
+        # (27/09/2026). Salen de `datos/canales_llaves.json`, que arma el lector
+        # del ciclo buscando llaves por contenido: el vigía no busca, lee ésos.
+        'llaves': _canales_llaves(),
         # ⚠️ ACÁ HABÍA UN `req_competitivo` SUELTO Y NO LO LEÍA NADIE. Era de
         # antes de que viajaran los cuatro, y quedó al lado de `req` diciendo
         # lo mismo con otro nombre. No podía discrepar —los dos salen de

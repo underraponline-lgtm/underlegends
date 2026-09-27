@@ -1,0 +1,797 @@
+{
+ "_leeme": "El contrato entre escuchar.py y bot/paginas/llave_vivo.js. Se rehace con `python bot/llaves_casos.py --armar <scan>`.",
+ "casos": [
+  {
+   "que": "FFA · 1552084645695463516",
+   "texto": "#  <:FFA:1514509117459533954>EL RAP FECHA 5<:FFA:1514509117459533954>\n\n<@&1503288623544401930> \n\n`[ CUARTOS ]`\n\n♠︎ ⌞makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷⌝  <:VSF:1514914403101708288>  ⌞Sin límites 🇵🇪+Trot🇪🇸+Soneto 🇪🇨⌝  \n♠︎⌞lord+camila+dxg🇲🇽🇨🇴🇨🇴⌝ <:VSF:1514914403101708288> \n⌞Snow🇨🇴 + Velatz🇨🇱 + yinn⌝   \n♠︎ ⌞sosa+papa+ bna🇯🇴⌝ <:VSF:1514914403101708288>  ⌞marto🇦🇷+ erian 🇵🇦 + melomaniaco⌝\n♠︎ ⌞benshi+cinexfilo+Garxziiscity 🇦🇿🇲🇽\n🇻🇪🇦🇷⌝  <:VSF:1514914403101708288>  ⌞Hassan🇪🇬 +\nPichulitamc🇦🇷+ Neo🇦🇷⌝ :vsf: ⌞six+ pollo sport +rubik⌝\n\n`[ SEMIS ]`\n\n⌞makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷⌝  <:VSF:1514914403101708288>  ⌞Snow🇨🇴 + Velatz🇨🇱 + yinn⌝ \n⌞sosa+papa+ bna🇯🇴⌝  <:VSF:1514914403101708288>  ⌞Hassan🇪🇬 +\nPichulitamc🇦🇷+ Neo🇦🇷⌝ \n\n`[ FINAL ]`\n\n⌞makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷(yinn)⌝ <:VSF:1514914403101708288> ⌞Hassan🇪🇬 +\nPichulitamc🇦🇷👻+ Neo🇦🇷👻(pollo)⌝\n\n<@&1503288623544401930> \n\n**__CAMPEON:__**Hassan:flag_eg: +\nPichulitamc🇦🇷+ Neo🇦🇷👻(pollo)\n**__SUBCAMPEON: __**makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷(yinn)\n**__M.V.P: __**pollo🇦🇷",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷",
+       "Sin límites 🇵🇪+Trot🇪🇸+Soneto 🇪🇨"
+      ],
+      [
+       "lord+camila+dxg🇲🇽🇨🇴🇨🇴",
+       "Snow🇨🇴 + Velatz🇨🇱 + yinn"
+      ],
+      [
+       "sosa+papa+ bna🇯🇴",
+       "marto🇦🇷+ erian 🇵🇦 + melomaniaco"
+      ],
+      [
+       "benshi+cinexfilo+Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷",
+       "Hassan🇪🇬 + Pichulitamc🇦🇷+ Neo🇦🇷",
+       "six+ pollo sport +rubik"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷",
+       "Snow🇨🇴 + Velatz🇨🇱 + yinn"
+      ],
+      [
+       "sosa+papa+ bna🇯🇴",
+       "Hassan🇪🇬 + Pichulitamc🇦🇷+ Neo🇦🇷"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "makma 🇻🇪 + tam 🇻🇪 + agus🇦🇷(yinn)",
+       "Hassan🇪🇬 + Pichulitamc🇦🇷👻+ Neo🇦🇷👻(pollo)"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA · 1552133845069996115",
+   "texto": "**__ ↱🉐 | DESGRACIAS EN TOKYO VOL.10 |  🉐 ↲__**\n\n●❯────────｢🉐 ｣────────❮●\n\n**[•OCTAVOS DE FINAL•]**\n\n▪️   [TEITO 🇨🇴] 🆚 [SNOW 🇨🇴] 🆚 [MAU KC 🇨🇴]\n▪️   [GEOKA 🇦🇷] 🆚 [WILLY 🇲🇽] 🆚 [FILOZICO 🇲🇽]\n▪️   [SIN LIMITES 🇵🇪] 🆚 [NC 🇦🇷] 🆚 [PICHULITAMC 🇦🇷]\n▪️   [JAHNO 🇦🇷] 🆚 [MASINO 🇨🇱] 🆚 [TORMEN 🇸🇻]\n▪️   [MAKMA 🇻🇪] 🆚 [YINN 🇲🇦] 🆚 [KIPMC 🇧🇷]\n▪️   [VELATZ 🇨🇱] 🆚 [TUSICARIO 🇨🇱] 🆚 [KOREY 🇨🇱]\n▪️   [SCOT 🇦🇷] 🆚 [XXXXX 🇳🇴] 🆚 [VANDU 🇨🇦]\n▪️   [RICHARD 🇪🇨] 🆚 [LRS 🇦🇷] 🆚 [ELSOLAR 🇨🇴]\n\n\n●❯────────｢ 🉐 ｣────────❮●\n\n\n▪️ **[•CUARTOS DE FINAL•]**\n\n▪️   [MAU KC 🇨🇴] 🆚 [GEOKA 🇦🇷]\n▪️   [PICHULITA 🇦🇷] 🆚 [MASINO 🇨🇱]\n▪️   [MAKMA 🇻🇪] 🆚 [TUSICARIO 🇨🇱]\n▪️   [ELSOLAR 🇨🇴] 🆚 [XXXXX 🇳🇴]\n\n●❯────────｢💥 ｣────────❮●\n\n▪️**[•SEMI - FINAL•]**\n\n▪️   [MAU KC 🇨🇴] 🆚 [MASINO 🇨🇱]\n▪️   [MAKMA 🇻🇪] 🆚 [XXXXX 🇳🇴]\n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n▪️**[• FINAL•]**\n\n▪️ [MASINO 🇨🇱] 🆚 [MAKMA 🇻🇪]\n\n●❯────────｢🏆 ｣────────❮●\n\n\n🥇 **𝄆 CAMPEÓN: MASINO 🇨🇱\n\n🥈 𝄆 SUB-CAMPEÓN: MAKMA 🇻🇪\n\n🥉  3ER PUESTO: XXXXX 🇳🇴**",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "TEITO 🇨🇴",
+       "SNOW 🇨🇴",
+       "MAU KC 🇨🇴"
+      ],
+      [
+       "GEOKA 🇦🇷",
+       "WILLY 🇲🇽",
+       "FILOZICO 🇲🇽"
+      ],
+      [
+       "SIN LIMITES 🇵🇪",
+       "NC 🇦🇷",
+       "PICHULITAMC 🇦🇷"
+      ],
+      [
+       "JAHNO 🇦🇷",
+       "MASINO 🇨🇱",
+       "TORMEN 🇸🇻"
+      ],
+      [
+       "MAKMA 🇻🇪",
+       "YINN 🇲🇦",
+       "KIPMC 🇧🇷"
+      ],
+      [
+       "VELATZ 🇨🇱",
+       "TUSICARIO 🇨🇱",
+       "KOREY 🇨🇱"
+      ],
+      [
+       "SCOT 🇦🇷",
+       "XXXXX 🇳🇴",
+       "VANDU 🇨🇦"
+      ],
+      [
+       "RICHARD 🇪🇨",
+       "LRS 🇦🇷",
+       "ELSOLAR 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "MAU KC 🇨🇴",
+       "GEOKA 🇦🇷"
+      ],
+      [
+       "PICHULITA 🇦🇷",
+       "MASINO 🇨🇱"
+      ],
+      [
+       "MAKMA 🇻🇪",
+       "TUSICARIO 🇨🇱"
+      ],
+      [
+       "ELSOLAR 🇨🇴",
+       "XXXXX 🇳🇴"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "MAU KC 🇨🇴",
+       "MASINO 🇨🇱"
+      ],
+      [
+       "MAKMA 🇻🇪",
+       "XXXXX 🇳🇴"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "MASINO 🇨🇱",
+       "MAKMA 🇻🇪"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA · 1552159144008613962",
+   "texto": "# cuartos de final compe\n- baltrip vs con limites vs lil bacano\n- cinefilo vs solar vs marco polo\n- nc vs mi sicario vs regional (masino\n- lrs vs korri kranovitz      \n# SEMIFINAL\nlos 3 vs nacho vs baltrip\nlrs vs mark exclusivo kravis\n# final \nnacho vs lrs pichula kravitz mark xclusivo\n<:64739medalyellowfirstgoldyt:1500005329096806553> : kravitz - pichulamc - lrs\n🥈  : macho - mark\n🥉 : xclusivo\n🎖️ :kravitz\n🏅 : baltrip\n - lliages liztas @everyone",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "baltrip",
+       "con limites",
+       "lil bacano"
+      ],
+      [
+       "cinefilo",
+       "solar",
+       "marco polo"
+      ],
+      [
+       "nc",
+       "mi sicario",
+       "regional (masino"
+      ],
+      [
+       "lrs",
+       "korri kranovitz"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "los 3",
+       "nacho",
+       "baltrip"
+      ],
+      [
+       "lrs",
+       "mark exclusivo kravis"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA · 1552403100801830964",
+   "texto": "# __ ↱🉐 | DESGRACIAS EN TOKYO VOL 11 |  🉐️ ↲__\n\n\n●❯────────｢🉐 ｣────────❮●\n\n# ▪️ [•OCTAVOS DE FINAL•]\n\n▪️   [TEITO 🇨🇴] 🆚 [COLESITO 🇨🇴]\n▪️   [LIL ÑAÑO 🇪🇨] 🆚 [BLANKO 🇺🇸]\n▪️   [PRR 🇦🇴] 🆚 [CHOP 🇸🇻]\n▪️   [BALTRIP 🇩🇴] 🆚 [ISAIAS 🇪🇸]\n▪️   [AREZ 🇨🇴] 🆚 [ARDEAN 🇵🇪]\n▪️   [CAMILA 🇻🇪] 🆚 [VELATZ 🇨🇱]\n▪️   [ONZASS 🇻🇪] 🆚 [GUS 🇦🇷]\n▪️   [SEBITA 🇱🇷] 🆚 [BLOODY 🇨🇴]\n\n●❯────────｢ 🉐 ｣────────❮●\n\n# ▪️ [•CUARTOS DE FINAL•]\n\n▪️   [COLESITO 🇨🇴] 🆚 [BLANKO 🇺🇸]\n▪️   [PRR 🇦🇴] 🆚 [BALTRIP 🇩🇴]\n▪️   [ARDEAN 🇵🇪] 🆚 [VELATZ 🇨🇱]\n▪️   [SEBITA 🇱🇷] 🆚 [PICHULITA 🇦🇷]\n\n●❯────────｢💥 ｣────────❮●\n\n# ▪️ [•SEMI - FINAL•]\n\n▪️    [COLESITO 🇨🇴] 🆚 [PRR 🇦🇴] \n▪️    [VELATZ 🇨🇱] 🆚 [SEBITA 🇱🇷] \n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n# ▪️ [• FINAL•]\n\n# ▪️ [PRR 🇦🇴]  🆚 [SEBITA 🇱🇷]\n\n●❯────────｢🏆 ｣────────❮●\n\n\n# 🥇 𝄆 CAMPEÓN: JOVEN ALA 🇦🇴\n\n🥈 𝄆 **SUB-CAMPEÓN: SEBITA 🇱🇷\n\n🥉  𝄆 TERCER LUGAR: COLESITO 🇨🇴**",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "TEITO 🇨🇴",
+       "COLESITO 🇨🇴"
+      ],
+      [
+       "LIL ÑAÑO 🇪🇨",
+       "BLANKO 🇺🇸"
+      ],
+      [
+       "PRR 🇦🇴",
+       "CHOP 🇸🇻"
+      ],
+      [
+       "BALTRIP 🇩🇴",
+       "ISAIAS 🇪🇸"
+      ],
+      [
+       "AREZ 🇨🇴",
+       "ARDEAN 🇵🇪"
+      ],
+      [
+       "CAMILA 🇻🇪",
+       "VELATZ 🇨🇱"
+      ],
+      [
+       "ONZASS 🇻🇪",
+       "GUS 🇦🇷"
+      ],
+      [
+       "SEBITA 🇱🇷",
+       "BLOODY 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "COLESITO 🇨🇴",
+       "BLANKO 🇺🇸"
+      ],
+      [
+       "PRR 🇦🇴",
+       "BALTRIP 🇩🇴"
+      ],
+      [
+       "ARDEAN 🇵🇪",
+       "VELATZ 🇨🇱"
+      ],
+      [
+       "SEBITA 🇱🇷",
+       "PICHULITA 🇦🇷"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "COLESITO 🇨🇴",
+       "PRR 🇦🇴"
+      ],
+      [
+       "VELATZ 🇨🇱",
+       "SEBITA 🇱🇷"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "PRR 🇦🇴",
+       "SEBITA 🇱🇷"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA · 1552433534399025255",
+   "texto": "**__ ↱🉐 | DESGRACIAS EN TOKYO VOL.12|  🉐 ↲__**\n\n●❯────────｢ 🉐 ｣────────❮●\n\n\n▪️ **[•CUARTOS DE FINAL•]**\n\n▪️   [MINIBOY 🇨🇱] 🆚 [SNOW 🇨🇴] 🆚 [VELATZ 🇨🇱] 🆚 [GUS 🇺🇾]\n▪️   [SIX 🇦🇷] 🆚 [CAMILA 🇻🇪] 🆚 [PRR 🇦🇴] 🆚 [MARTO 🇦🇷]\n▪️   [CHOP 🇸🇻] 🆚 [PICHULITA 🇦🇷] 🆚 [COLESITO 🇨🇴] 🆚 [MAJIZTRAL 🇨🇴]\n▪️   [MAKMA 🇻🇪] 🆚 [BLOODY 🇨🇴] 🆚 [SAITO 🇨🇴] 🆚 [7 🇨🇴]\n\n●❯────────｢💥 ｣────────❮●\n\n▪️**[•SEMI - FINAL•]**\n\n▪️   [SNOW 🇨🇴] [VELATZ 🇨🇱] 🆚 [PRR 🇦🇴] [SIX 🇦🇷]\n▪️   [MAJIZTRAL 🇨🇴] [COLESITO 🇨🇴] 🆚 [BLOODY 🇨🇴] [MAKMA 🇻🇪]\n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n▪️**[• FINAL•]**\n\n▪️ [PRR 🇦🇴] [SIX 🇦🇷] [SNOW 🇨🇴] 🆚 [COLESITO 🇨🇴] [BLOODY 🇨🇴] [MAKMA 🇻🇪]\n\n●❯────────｢🏆 ｣────────❮●\n\n\n🥇 **𝄆 CAMPEÓN: PRR 🇦🇴 + SIX 🇦🇷 + SNOW 🇨🇴\n\n🥈 𝄆 SUB-CAMPEÓN: COLESITO 🇨🇴 + BLOODY 🇨🇴 + MAKMA 🇻🇪**",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "MINIBOY 🇨🇱",
+       "SNOW 🇨🇴",
+       "VELATZ 🇨🇱",
+       "GUS 🇺🇾"
+      ],
+      [
+       "SIX 🇦🇷",
+       "CAMILA 🇻🇪",
+       "PRR 🇦🇴",
+       "MARTO 🇦🇷"
+      ],
+      [
+       "CHOP 🇸🇻",
+       "PICHULITA 🇦🇷",
+       "COLESITO 🇨🇴",
+       "MAJIZTRAL 🇨🇴"
+      ],
+      [
+       "MAKMA 🇻🇪",
+       "BLOODY 🇨🇴",
+       "SAITO 🇨🇴",
+       "7 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "SNOW 🇨🇴 + VELATZ 🇨🇱",
+       "PRR 🇦🇴 + SIX 🇦🇷"
+      ],
+      [
+       "MAJIZTRAL 🇨🇴 + COLESITO 🇨🇴",
+       "BLOODY 🇨🇴 + MAKMA 🇻🇪"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "PRR 🇦🇴 + SIX 🇦🇷 + SNOW 🇨🇴",
+       "COLESITO 🇨🇴 + BLOODY 🇨🇴 + MAKMA 🇻🇪"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "SR · 1552054613014880291",
+   "texto": "🎙️🥷🏼 __**RAP EXHIBITION 1/8**__ 🥷🏼🎙️  \n\n                              [RANGO 2]\n\n➠ 『OCTAVOS DE FINAL』\n\n➢ 〈SOSA〉<:VS1:985286307729248306>〈NC〉<:VS1:985286307729248306>〈MCO〉\n➢ 〈LEONAR-T〉<:VS1:985286307729248306>〈GUESS〉<:VS1:985286307729248306>〈MAKMA〉<:VS1:985286307729248306>〈ANTORCHA OLIMPICA〉\n➢ 〈JUANPA〉<:VS1:985286307729248306> 〈PARIA〉<:VS1:985286307729248306>〈KIRITO〉\n➢ 〈PLA PLA〉<:VS1:985286307729248306> 〈DOMINICK〉<:VS1:985286307729248306>〈POLLO SPORT〉\n➢ 〈SIN LIMITES〉<:VS1:985286307729248306>〈RIQUEZA〉<:VS1:985286307729248306>〈MAXIMILIANO CALVO〉\n➢ 〈PRRR〉<:VS1:985286307729248306>〈LZZ〉<:VS1:985286307729248306>〈BLOODY〉<:VS1:985286307729248306>〈PUBLIC ENEMY〉\n➢ 〈AGRE〉<:VS1:985286307729248306>〈PARADOJA〉<:VS1:985286307729248306>〈ZETA〉<:VS1:985286307729248306>〈AGUS〉\n➢ 〈LETELETRAS〉<:VS1:985286307729248306>〈RAGE BAIT〉<:VS1:985286307729248306>〈TROT〉<:VS1:985286307729248306>〈SOL〉<:VS1:985286307729248306>〈CAMILA〉<:VS1:985286307729248306>〈LEWITO〉<:VS1:985286307729248306>〈VELATZ〉\n\n➠ 『CUARTOS DE FINAL』\n\n➢ 〈MCO〉<:VS1:985286307729248306>〈ANTORCHA OLÍMPICA〉\n➢ 〈JUANPA〉<:VS1:985286307729248306>〈POLLO SPORT〉\n➢ 〈MAXIMILIANO CALVO〉<:VS1:985286307729248306>〈LZZ〉\n➢ 〈ZETA〉<:VS1:985286307729248306>〈CAMILA〉\n\n➠ 『SEMIFINAL』\n\n➢ 〈ANTORCHA OLÍMPICA〉<:VS1:985286307729248306>〈POLLO SPORT〉\n➢ 〈LZZ〉<:VS1:985286307729248306>〈ZETA〉\n\n➠ 『3er Y 4º PUESTO』\n\n➢ 〈POLLO SPORT〉<:VS1:985286307729248306>〈LZZ〉\n\n➠ 『FINAL』\n\n➢ 〈ANTORCHA OLÍMPICA〉<:VS1:985286307729248306>〈ZETA〉\n\n\n• 『 <:1erPuesto:1131416984043663441> 』 <@1> \n• 『 <:2oPuesto:1131417087450042429> 』 <@2> \n• 『 <:3erPuesto:1131417161773101158> 』 <@3>",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "SOSA",
+       "NC",
+       "MCO"
+      ],
+      [
+       "LEONAR-T",
+       "GUESS",
+       "MAKMA",
+       "ANTORCHA OLIMPICA"
+      ],
+      [
+       "JUANPA",
+       "PARIA",
+       "KIRITO"
+      ],
+      [
+       "PLA PLA",
+       "DOMINICK",
+       "POLLO SPORT"
+      ],
+      [
+       "SIN LIMITES",
+       "RIQUEZA",
+       "MAXIMILIANO CALVO"
+      ],
+      [
+       "PRRR",
+       "LZZ",
+       "BLOODY",
+       "PUBLIC ENEMY"
+      ],
+      [
+       "AGRE",
+       "PARADOJA",
+       "ZETA",
+       "AGUS"
+      ],
+      [
+       "LETELETRAS",
+       "RAGE BAIT",
+       "TROT",
+       "SOL",
+       "CAMILA",
+       "LEWITO",
+       "VELATZ"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "MCO",
+       "ANTORCHA OLÍMPICA"
+      ],
+      [
+       "JUANPA",
+       "POLLO SPORT"
+      ],
+      [
+       "MAXIMILIANO CALVO",
+       "LZZ"
+      ],
+      [
+       "ZETA",
+       "CAMILA"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "POLLO SPORT"
+      ],
+      [
+       "LZZ",
+       "ZETA"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "POLLO SPORT",
+       "LZZ"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "ZETA"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "SR · 1553212539599454211",
+   "texto": "• • •「◆」• • • • • • [ <:SNKverde:1164919135487135775> ] • • • • • •「◆」• • •\n         🗽 __**GENESIS BATTLES**__ 🗽\n                              RANGO 4\n• • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •\n\n╭─────╯  <:EYE:1083503781674750084> 𝙲𝚄𝙰𝚁𝚃𝙾𝚂 <:EYE:1083503781674750084> ╰─────╮\n\n**「HASSAN🇦🇷」**<:VS6:1155439793954635776>「RAYITO🇲🇽」<:VS6:1155439793954635776>**「ABYSSUS🇵🇦」**\n「BNA🇦🇷」<:VS6:1155439793954635776>**「DYNOCO🇦🇷」<:VS6:1155439793954635776>「GEOKA🇦🇷」**\n**「ERIAN🇵🇦」<:VS6:1155439793954635776>「ACRY🇻🇪**」<:VS6:1155439793954635776>「LUZZANO🇦🇷」\n「NC🇦🇷」<:VS6:1155439793954635776>**「FAZER🇦🇷」<:VS6:1155439793954635776>「ZETA🇨🇴」**<:VS6:1155439793954635776>「KULRW🇦🇷」\n\n╭────╯  <:serpiente:1446243342127202366> 𝚂𝙴𝙼𝙸𝙵𝙸𝙽𝙰𝙻 <:serpiente:1446243342127202366> ╰────╮\n\n**「HASSAN🇦🇷 ABYSSUS🇵🇦」**<:VS6:1155439793954635776>「DYNOCO🇦🇷 **GEOKA🇦🇷」**\n「ERIAN🇵🇦 ACRY🇻🇪」<:VS6:1155439793954635776>「ZETA🇨🇴 FAZER🇦🇷」\n\n╭────╯ <:premio:1130124247805730836> 𝟹𝚎𝚛 𝙿𝚄𝙴𝚂𝚃𝙾 <:premio:1130124247805730836>╰────╮\n\n「DYNOCO🇦🇷」<:VS6:1155439793954635776>「ERIAN🇵🇦」\n\n╭──────╯  <:coronavacia:1155391115906781224> 𝙵𝙸𝙽𝙰𝙻 <:coronavacia:1155391115906781224> ╰──────╮\n\n**「HASSAN🇦🇷 ABYSSUS🇵🇦 GEOKA🇦🇷」**<:VS6:1155439793954635776>「ZETA🇨🇴 FAZER🇦🇷 ACRY🇻🇪」\n\n• • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • • •\n◆ <:1erPuesto:1131416984043663441> HASSAN🇦🇷 ABYSSUS🇵🇦 GEOKA🇦🇷\n◆ <:2oPuesto:1131417087450042429> ZETA🇨🇴 FAZER🇦🇷 ACRY🇻🇪\n◆ <:3erPuesto:1131417161773101158> DYNOCO🇦🇷 / ERIAN🇵🇦",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "HASSAN🇦🇷",
+       "RAYITO🇲🇽",
+       "ABYSSUS🇵🇦"
+      ],
+      [
+       "BNA🇦🇷",
+       "DYNOCO🇦🇷",
+       "GEOKA🇦🇷"
+      ],
+      [
+       "ERIAN🇵🇦",
+       "ACRY🇻🇪",
+       "LUZZANO🇦🇷"
+      ],
+      [
+       "NC🇦🇷",
+       "FAZER🇦🇷",
+       "ZETA🇨🇴",
+       "KULRW🇦🇷"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "HASSAN🇦🇷 + ABYSSUS🇵🇦",
+       "DYNOCO🇦🇷 + GEOKA🇦🇷"
+      ],
+      [
+       "ERIAN🇵🇦 + ACRY🇻🇪",
+       "ZETA🇨🇴 + FAZER🇦🇷"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "DYNOCO🇦🇷",
+       "ERIAN🇵🇦"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "HASSAN🇦🇷 + ABYSSUS🇵🇦 + GEOKA🇦🇷",
+       "ZETA🇨🇴 + FAZER🇦🇷 + ACRY🇻🇪"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "SR · 1553600655443107882",
+   "texto": "# <:SNKyllw:1107634460788277289> **SNAKE INSIGNIA** <:SNKyllw:1107634460788277289> 3/8 \n                          [Rango 2️⃣]\n\n───●  <:eyeburn:1079434786860449913> <:8snake:1130159944004550697> **FILTROS** <:8snake:1130159944004550697> <:eyeburn:1079434786860449913>  ●───\n\n●[ sabado ]<:ins:1106407282151018506>[ sin limites ]<:ins:1106407282151018506>[ jupiter ]\n●[ prosu ]<:ins:1106407282151018506>[ roda ]<:ins:1106407282151018506>[ dynoco ]\n●[ juasmio ]<:ins:1106407282151018506>[ zignos ]<:ins:1106407282151018506>[ DTR ]\n●[ KENNY  ]<:ins:1106407282151018506>[ LHYON ]<:ins:1106407282151018506>[ zeta ]\n●[ vlade ]<:ins:1106407282151018506>[ leletras ]<:ins:1106407282151018506>[ manteca sixseven ] <:ins:1106407282151018506> ( soft ) \n●[ geoka ]<:ins:1106407282151018506>[ KYSS ]<:ins:1106407282151018506>[ maldita enfermedad ] <:ins:1106407282151018506>(  makma )\n●[ tkl ]<:ins:1106407282151018506>[ cardozo ]<:ins:1106407282151018506>[ deluxe ] <:ins:1106407282151018506> ( MCO ) \n●[ colesito ]<:ins:1106407282151018506>[ JUANPA ]<:ins:1106407282151018506>[ number] <:ins:1106407282151018506> ( smaff ) \n\n───●  <:EYE:1083503781674750084> <:4snake:1130160804960931880> **CUARTOS** <:4snake:1130160804960931880> <:EYE:1083503781674750084>  ●───\n\n●[ PROSU 🇨🇴  ] <:ins:1106407282151018506> [ JUANPA 🇨🇴 ]\n●[ COLESITO 🇨🇴 ] <:ins:1106407282151018506> [ DYNOCO 🇦🇷 ]\n●[ JUASMIO 🇨🇴 ] <:ins:1106407282151018506> [ ZETA 🇨🇴 ]\n●[ MCO 🇦🇷 ] <:ins:1106407282151018506> [ ZIGNOS 🇳🇿 ]",
+   "rondas": [
+    [
+     "FILTROS",
+     [
+      [
+       "sabado",
+       "sin limites",
+       "jupiter"
+      ],
+      [
+       "prosu",
+       "roda",
+       "dynoco"
+      ],
+      [
+       "juasmio",
+       "zignos",
+       "DTR"
+      ],
+      [
+       "KENNY",
+       "LHYON",
+       "zeta"
+      ],
+      [
+       "vlade",
+       "leletras",
+       "manteca sixseven",
+       "soft"
+      ],
+      [
+       "geoka",
+       "KYSS",
+       "maldita enfermedad",
+       "makma"
+      ],
+      [
+       "tkl",
+       "cardozo",
+       "deluxe",
+       "MCO"
+      ],
+      [
+       "colesito",
+       "JUANPA",
+       "number",
+       "smaff"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "PROSU 🇨🇴",
+       "JUANPA 🇨🇴"
+      ],
+      [
+       "COLESITO 🇨🇴",
+       "DYNOCO 🇦🇷"
+      ],
+      [
+       "JUASMIO 🇨🇴",
+       "ZETA 🇨🇴"
+      ],
+      [
+       "MCO 🇦🇷",
+       "ZIGNOS 🇳🇿"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "SR · 1553600767699583098",
+   "texto": "ㅤ\n───●  <:1neon_star:1089685004239511562> <:2snake:1130162208001753158> **SEMIFINAL** <:2snake:1130162208001753158> <:1neon_star:1089685004239511562>  ●───\n\n●[ JUASMIO 🇨🇴 ] <:ins:1106407282151018506> [ COLESITO 🇨🇴 ]\n●[ ZIGNOS 🇩🇴 ] <:ins:1106407282151018506> [ JUANPA 🇨🇴 ]\n\n───● <:mp_iskull:1085232275630870658>🔺**3er Y 4º PUESTO**🔻<:mp_iskull:1085232275630870658> ●──\n\n●[ JUASMIO 🇨🇴 ] <:ins:1106407282151018506> [ JUANPA 🇨🇴 ]\n\n─────●  <:coronavacia:1155391115906781224> <:SNKorg:1106404406309703720>   **FINAL**   <:SNKorg:1106404406309703720> <:coronavacia:1155391115906781224>  ●────\n\n●[ COLESITO 🇨🇴 ] <:ins:1106407282151018506> [ ZIGNOS 🇩🇴 ] \n\n<:1erPuesto:1131416984043663441>┋ <@1> \n<:2oPuesto:1131417087450042429>┋ <@2> \n<:3erPuesto:1131417161773101158>┋ <@3>",
+   "rondas": [
+    [
+     "SEMIFINALES",
+     [
+      [
+       "JUASMIO 🇨🇴",
+       "COLESITO 🇨🇴"
+      ],
+      [
+       "ZIGNOS 🇩🇴",
+       "JUANPA 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "JUASMIO 🇨🇴",
+       "JUANPA 🇨🇴"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "COLESITO 🇨🇴",
+       "ZIGNOS 🇩🇴"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "Snake Rap: marcos 「」 y el equipo sin +",
+   "texto": "🗽 __**GENESIS BATTLES**__ 🗽\n╭──╯  <:EYE:1> 𝙲𝚄𝙰𝚁𝚃𝙾𝚂 <:EYE:1> ╰──╮\n**「HASSAN🇦🇷」**<:VS6:2>「RAYITO🇲🇽」<:VS6:2>**「ABYSSUS🇵🇦」**\n╭──╯ <:coronavacia:3> 𝙵𝙸𝙽𝙰𝙻 <:coronavacia:3> ╰──╮\n**「HASSAN🇦🇷 ABYSSUS🇵🇦」**<:VS6:2>「DYNOCO🇦🇷 **GEOKA🇦🇷」**\n◆ <:1erPuesto:4> HASSAN🇦🇷 ABYSSUS🇵🇦\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "HASSAN🇦🇷",
+       "RAYITO🇲🇽",
+       "ABYSSUS🇵🇦"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "HASSAN🇦🇷 + ABYSSUS🇵🇦",
+       "DYNOCO🇦🇷 + GEOKA🇦🇷"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "Snake Rap: el cuarto entre paréntesis y el tercer puesto de encabezado",
+   "texto": "🎙️ __**RAP EXHIBITION 1/8**__ 🎙️\n➠ 『CUARTOS』\n●[ tkl ]<:ins:6>[ cardozo ]<:ins:6>[ deluxe ] <:ins:6> ( MCO ) \n➠ 『SEMIFINAL』\n➢ 〈ANTORCHA OLÍMPICA〉<:VS1:12>〈POLLO SPORT〉\n➢ 〈LZZ〉<:VS1:12>〈ZETA〉\n➠ 『3er Y 4º PUESTO』\n\n➢ 〈POLLO SPORT〉<:VS1:12>〈LZZ〉\n➠ 『FINAL』\n➢ 〈ANTORCHA OLÍMPICA〉<:VS1:12>〈ZETA〉\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "tkl",
+       "cardozo",
+       "deluxe",
+       "MCO"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "POLLO SPORT"
+      ],
+      [
+       "LZZ",
+       "ZETA"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "POLLO SPORT",
+       "LZZ"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "ANTORCHA OLÍMPICA",
+       "ZETA"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA: la bandera en emoji propio y el refuerzo entre paréntesis",
+   "texto": "# DESGRACIAS EN TOKYO VOL.13\n`[ SEMIFINALES ]`\n⌞MAKMA 🇻🇪 + SNOW 🇨🇴⌝ 🆚 ⌞NEO 🇦🇷 + ENEK 🇪🇸⌝\n[PRR 🇦🇴] [SIX 🇦🇷] 🆚 [SNOW 🇨🇴] [VELATZ 🇨🇱]\n⌞fokox⌝ <:VSF:17> ⌞Sin limites⌝ <:VSF:17> nhp\n`[ FINAL ]`\n「Number <a:Uruguay:14>」<:1E_Bandido_UL:15>「Guess <a:ARG:16>」\n**CAMPEON:**Hassan🇪🇬 +\n(BLOODY) [Cj] [Zignos]",
+   "rondas": [
+    [
+     "SEMIFINALES",
+     [
+      [
+       "MAKMA 🇻🇪 + SNOW 🇨🇴",
+       "NEO 🇦🇷 + ENEK 🇪🇸"
+      ],
+      [
+       "PRR 🇦🇴 + SIX 🇦🇷",
+       "SNOW 🇨🇴 + VELATZ 🇨🇱"
+      ],
+      [
+       "fokox",
+       "Sin limites",
+       "nhp"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Number 🇺🇾",
+       "Guess 🇦🇷"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "Urban Freestyle: equipos con espacios",
+   "texto": "# CUARTOS\nHASSAN 🆚 GUTY\nSEBITAS 🆚 AGUSTIN\nPOLLO SPORT 🆚 NC\nPOLLO 🆚 MIA\n# FINAL\nHASSAN SEBITAS 🆚 POLLO SPORT\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "HASSAN",
+       "GUTY"
+      ],
+      [
+       "SEBITAS",
+       "AGUSTIN"
+      ],
+      [
+       "POLLO SPORT",
+       "NC"
+      ],
+      [
+       "POLLO",
+       "MIA"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "HASSAN + SEBITAS",
+       "POLLO SPORT"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA: el negrito entre la bandera y el &",
+   "texto": "▪️ **⚖️[•CUARTOS DE FINAL•]📰**\n▪️   [**FULLY🇨🇱&DXG🇲🇽**] 📰 [SCOT🇦🇷&TRRRR🇯🇲]\n▪️**📰[•SEMI - FINAL•]⚖️**\n▪️   [**FULLY🇨🇱**&DXG🇲🇽] ⚖️ [**SNOW🇨🇴**&VELATZ🇨🇱]\n▪️**👨🏻‍⚖️[•GRAN - FINAL•]🔚**\n▪️   [FULLY🇨🇱&SNOW🇨🇴] 📰 [MAKMA🇻🇪&PRRR🇦🇴]\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "FULLY🇨🇱 + DXG🇲🇽",
+       "SCOT🇦🇷 + TRRRR🇯🇲"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "FULLY🇨🇱 + DXG🇲🇽",
+       "SNOW🇨🇴 + VELATZ🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "FULLY🇨🇱 + SNOW🇨🇴",
+       "MAKMA🇻🇪 + PRRR🇦🇴"
+      ]
+     ]
+    ]
+   ]
+  }
+ ]
+}

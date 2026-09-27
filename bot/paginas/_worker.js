@@ -53,6 +53,8 @@ const AVISOS = {
   // 🔑 los avisos de cada uno (25/09/2026): ver `vincular()` en bot/avisos.js
   '/api/avisos/vincular': 'POST',
   '/api/avisos/desvincular': 'POST',
+  // 🔑 las llaves que se están jugando (27/09/2026): ver `llaves()` en bot/avisos.js
+  '/api/avisos/vivo': 'GET',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
@@ -82,6 +84,10 @@ async function avisos(req, url) {
   } else if (url.pathname.endsWith('/clave')) {
     // la clave pública no cambia: una hora en el borde
     init.cf = { cacheTtl: 3600, cacheEverything: true };
+  } else if (url.pathname.endsWith('/vivo')) {
+    // ⚠️ 30 s EN EL BORDE: la página pregunta cada minuto y el vigía escribe
+    // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker
+    init.cf = { cacheTtl: 30, cacheEverything: true };
   }
   const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
   return new Response(r.body, {

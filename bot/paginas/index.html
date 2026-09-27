@@ -150,6 +150,13 @@
          el mapa, que es lo que pidió para el Inicio. -->
     <div class="inicio-grid">
     <div class="col">
+    <!-- 🔴 EN VIVO: las llaves que se están jugando, leídas en el navegador
+         cada minuto (ver bot/paginas/llave_vivo.js). Dlx, 27/09/2026. Se
+         apaga sola cuando no se juega nada. -->
+    <section class="blk vivo-sec" id="secVivo" hidden>
+      <h2><i class="vivo-punto" aria-hidden="true"></i> En vivo</h2>
+      <div id="vivoLista"></div>
+    </section>
     <section class="blk viene" id="viene" hidden>
       <h2><span>&#9201;</span> Lo que viene</h2>
       <div id="eventos"></div>
@@ -667,6 +674,7 @@
   </div>
 </div>
 
+<script src="llave_vivo.js"></script>
 <script src="app.js"></script>
 <script src="campana.js" defer></script>
 </body>

@@ -781,6 +781,8 @@ const json = (d, estado = 200, cache = 0) => new Response(JSON.stringify(d), {
 
 const RUTAS = {
   '/avisos/clave': 'GET', '/avisos/estado': 'GET',
+  // 🔑 las llaves que se están jugando, para la página (ver `llaves()` del objeto)
+  '/avisos/vivo': 'GET',
   '/avisos/alta': 'POST', '/avisos/baja': 'POST', '/avisos/probar': 'POST',
   '/avisos/simular': 'POST',
   // 🔑 los avisos de cada uno: ver `vincular()` y `personales()` del objeto
@@ -788,6 +790,44 @@ const RUTAS = {
 };
 
 const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
+
+// ═════════════════════════════════════════════════════════════════════
+// LAS LLAVES EN VIVO
+// ═════════════════════════════════════════════════════════════════════
+//
+// 🔑 Dlx, 27/09/2026: «llaves en vivo… como las notificaciones, que se
+// chequean cada 1 minuto». El vigía ya lee Discord cada minuto: ahora también
+// los canales de llaves de la Liga, y guarda el texto de cada llave que se
+// está jugando. NO LA LEE: el lector son dos mil líneas de reglas y el Worker
+// tiene 10 ms. La lee la página, con `bot/paginas/llave_vivo.js`.
+//
+// ⚠️ UN CANAL SE LEE CADA MINUTO SÓLO SI ESTÁ «CALIENTE» —tuvo una llave en
+// las últimas 3 horas—; los demás, uno cada cinco minutos, para enterarse
+// cuando arranca una. Así el vigía no gasta pedidos cuando no se juega nada.
+
+//: cuántas horas se muestra una llave después de su último cambio
+export const VIVO_HORAS = 6;
+//: cuántos canales de llaves se leen como mucho por minuto
+export const VIVO_TOPE = 4;
+
+/** ¿Parece una llave? Barato: una ronda y al menos dos batallas o marcos. */
+export function pareceLlave(texto) {
+  // ⚠️ CON LAS LETRAS DE FANTASÍA EN LETRAS COMUNES: Snake Rap escribe sus
+  // rondas `𝙲𝚄𝙰𝚁𝚃𝙾𝚂` y `𝙵𝙸𝙽𝙰𝙻`, y sin esto sus llaves no se guardaban nunca
+  const s = String(texto || '').normalize('NFKD');
+  return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
+    (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉/gi) || []).length >= 2;
+}
+
+/** El texto con cada `<@id>` como `@Nombre`: Discord manda quién es cada mención. */
+export function conNombres(m) {
+  const n = {};
+  for (const u of (m && m.mentions) || []) {
+    const x = (u.member && u.member.nick) || u.global_name || u.username || '';
+    if (u.id && x) n[u.id] = x;
+  }
+  return String((m && m.content) || '').replace(/<@!?(\d+)>/g, (t, id) => (n[id] ? '@' + n[id] : t));
+}
 
 /**
  * `/avisos/*` del Worker. Lo llama el proxy de Pages (`/api/avisos/*`).
@@ -1006,6 +1046,17 @@ export class Avisos {
           id TEXT NOT NULL,
           t INTEGER NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS vivo (
+          id TEXT PRIMARY KEY,
+          canal TEXT NOT NULL,
+          sv TEXT NOT NULL DEFAULT '',
+          g TEXT NOT NULL DEFAULT '',
+          autor TEXT NOT NULL DEFAULT '',
+          pub INTEGER NOT NULL,
+          ed INTEGER NOT NULL,
+          texto TEXT NOT NULL,
+          visto INTEGER NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS posts (
           id TEXT PRIMARY KEY,
           cuerpo TEXT NOT NULL,
@@ -1045,6 +1096,7 @@ export class Avisos {
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.estado(), 200, 20);
+      if (ruta === '/vivo') return json(this.vivo(), 200, 20);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/alta') return this.alta(d);
@@ -1193,6 +1245,12 @@ export class Avisos {
     }
     // la re-publicación en `eventos-hoy` va en el mismo minuto
     if (!pausa) await this.publicar(ahora);
+    // 🔑 y las llaves que se están jugando. Nunca frena al vigía.
+    if (!pausa) {
+      try { await this.llaves(ahora); } catch (e) {
+        this.guardar('vivo', { t: ahora, error: String(e).slice(0, 160) });
+      }
+    }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
       this.sql.exec('DELETE FROM avisos WHERE creado < ?', ahora - 2 * 24 * HORA);
@@ -1210,6 +1268,55 @@ export class Avisos {
       this.guardar('personales', { t: ahora, error: String(e).slice(0, 120) });
     }
     return { ok: !errores.length, leidos, nuevos, errores };
+  }
+
+  /** Las llaves que se están jugando: lee sus canales y guarda el texto. */
+  async llaves(ahora) {
+    let lista = [];
+    try { lista = (JSON.parse((await this.env.KV.get('meta')) || '{}').llaves) || []; } catch (e) { lista = []; }
+    if (!lista.length) return;
+    const cal = new Set(this.sql.exec('SELECT DISTINCT canal FROM vivo WHERE ed > ?', ahora - 3 * HORA)
+      .toArray().map((r) => r.canal));
+    const min = Math.floor(ahora / MIN);
+    const leer = lista.filter((c) => cal.has(c.id))
+      .concat(lista.filter((c, i) => !cal.has(c.id) && (min + i) % 5 === 0)).slice(0, VIVO_TOPE);
+    const rs = await Promise.all(leer.map(async (c) => {
+      try {
+        const r = await fetch(`${DC}/channels/${c.id}/messages?limit=4`, {
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+        });
+        return { c, msgs: r.status === 200 ? await r.json() : null };
+      } catch (e) {
+        return { c, msgs: null };
+      }
+    }));
+    let nuevas = 0;
+    for (const { c, msgs } of rs) {
+      for (const m of msgs || []) {
+        const pub = Date.parse(String(m.timestamp || '').slice(0, 19) + 'Z');
+        const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
+        if (Number.isNaN(pub) || ahora - Math.max(pub, ed || 0) > VIVO_HORAS * HORA) continue;
+        const texto = conNombres(m).slice(0, 6000);
+        if (!pareceLlave(texto)) continue;
+        const fila = this.sql.exec('SELECT ed, texto FROM vivo WHERE id = ?', m.id).toArray()[0];
+        if (fila && fila.texto === texto) continue;
+        this.sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
+          'texto = excluded.texto, visto = excluded.visto', m.id, c.id, c.sv || '', c.g || '',
+        (m.author && m.author.id) || '', pub, Math.max(pub, ed || 0), texto, ahora);
+        nuevas++;
+      }
+    }
+    this.sql.exec('DELETE FROM vivo WHERE ed < ?', ahora - 12 * HORA);
+    this.guardar('vivo', { t: ahora, canales: leer.length, cambiaron: nuevas });
+  }
+
+  /** Para `/avisos/vivo`: el texto de las llaves de las últimas horas. */
+  vivo() {
+    const ahora = Date.now();
+    const v = this.leer('vivo') || {};
+    return { t: v.t || 0, llaves: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto ' +
+      'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray() };
   }
 
   /** ¿Hay que avisar este mensaje? Lo anota y dice si era nuevo. */

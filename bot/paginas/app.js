@@ -569,6 +569,83 @@ function pintaPasados() {
   }).join('');
 }
 
+/* ── las llaves en vivo ─────────────────────────────────────────────────
+   🔑 Dlx, 27/09/2026: «llaves en vivo… como las notificaciones, que se
+   chequean cada 1 minuto». El vigía del Worker guarda cada minuto el texto
+   de las llaves que se juegan (`/api/avisos/vivo`); acá las lee `LlaveVivo`
+   (bot/paginas/llave_vivo.js, atado al lector de Python por CI) y las dibuja
+   el mismo panel que las oficiales.
+
+   ⚠️ CUANDO EL CICLO PROCESA EL EVENTO, LA DE EN VIVO SE VA: su mensaje ya
+   está en los links de una llave oficial, que trae los puntos.
+   ⚠️ CADA MINUTO SÓLO SI HAY ALGO EN VIVO O UN EVENTO CERCA, y nunca con la
+   pestaña escondida. Si no, cada cinco: así se entera cuando arranca una. */
+var VIVO = { llaves: [] }, VIVO_L = {}, VIVO_TIMER = null, VIVO_PEDIDO = 0;
+function llavesHechas() {
+  var s = {};
+  Object.keys(D.llaves || {}).forEach(function (n) {
+    ((D.llaves[n] || {}).links || []).forEach(function (u) { s[String(u).split('/').pop()] = 1; });
+  });
+  return s;
+}
+function pedirVivo() {
+  if (!window.LlaveVivo) return;
+  VIVO_PEDIDO = Date.now();
+  fetch('/api/avisos/vivo', { headers: { accept: 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function (d) { VIVO = d || { llaves: [] }; pintaVivo(); })
+    .catch(function () { /* sin red o sin vigía: queda lo que había */ })
+    .then(programarVivo);
+}
+function programarVivo() {
+  clearTimeout(VIVO_TIMER);
+  var ahora = Date.now();
+  var cerca = (D.calendario || []).some(function (c) {
+    var t = Date.parse(c.t);
+    return t > ahora - 5 * 3600000 && t < ahora + 15 * 60000;
+  });
+  VIVO_TIMER = setTimeout(function () {
+    if (document.visibilityState === 'hidden') { programarVivo(); return; }
+    pedirVivo();
+  }, Object.keys(VIVO_L).length || cerca ? 60000 : 300000);
+}
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState === 'visible' && D && Date.now() - VIVO_PEDIDO > 55000) pedirVivo();
+});
+function pintaVivo() {
+  var caja = $('#vivoLista'), sec = $('#secVivo');
+  if (!caja || !sec || !window.LlaveVivo) return;
+  var ya = llavesHechas(), ahora = Date.now();
+  var bloques = LlaveVivo.unirPartidas((VIVO.llaves || []).filter(function (m) { return !ya[m.id]; }));
+  VIVO_L = {};
+  var ls = bloques.map(function (b) {
+    try { return LlaveVivo.aLlave(b); } catch (e) { console.error('[llave en vivo]', e); return null; }
+  }).filter(function (L) {
+    // en vivo = la tocaron en las últimas tres horas
+    return L && L.rondas.length && ahora - (L.ed || L.pub || 0) < 3 * 3600000;
+  });
+  ls.forEach(function (L) { VIVO_L[L.id] = L; });
+  sec.hidden = !ls.length;
+  caja.innerHTML = ls.map(function (L) {
+    return '<article class="vv" style="--c:' + esc(colorSv(L.sv)) + '">' +
+      '<header><span class="ps-chips">' + chipSv(L.sv) + '</span><span class="vv-t">' +
+        esc(cuandoSe(new Date(L.ed || L.pub).toISOString())) + '</span></header>' +
+      '<h3>' + esc(L.nombre) + '</h3>' +
+      '<p class="vv-e"><i class="vivo-punto" aria-hidden="true"></i><span>' +
+        (L.terminada ? 'Terminó: los puntos llegan en la próxima vuelta del ciclo'
+          : '<b>' + esc(L.enJuego || 'En juego') + '</b> en juego') +
+        (L.participantes ? ' &middot; ' + L.participantes + ' raperos' : '') + '</span></p>' +
+      '<div class="ps-acc"><button class="btn" data-llave="v:' + esc(L.id) + '">Ver la llave</button>' +
+        (L.links[0] ? '<a class="btn sec" href="' + esc(L.links[0]) + '" target="_blank" rel="noopener noreferrer">' +
+          'Discord &#8599;</a>' : '') + '</div></article>';
+  }).join('');
+  // la que está abierta se redibuja con lo nuevo, sin cerrarse
+  if (LL && LL.L && LL.L.vivo && !$('#visorLlave').hidden) {
+    var nuevo = VIVO_L[LL.L.id];
+    if (nuevo) { LL.L = nuevo; pintaCabVivo(nuevo); pintaVistaLlave(); }
+  }
+}
+
 /* ── la llave de un evento que ya pasó ────────────────────────────── */
 // 🔑 «VER LLAVES». Dlx, 25/09/2026: «un botón de ver llaves de evento y
 // vemos ahí la info y las llaves de forma detallada». La llave viaja en
@@ -612,7 +689,8 @@ var LL = null;
 var LL_VISTA = '';
 var HOVER = !!(window.matchMedia && window.matchMedia('(hover:hover)').matches);
 function abrirLlave(n) {
-  var L = (D.llaves || {})[n];
+  // 🔑 `v:<id>` ES UNA LLAVE EN VIVO: la leyó `LlaveVivo`, sin puntos todavía
+  var L = String(n).indexOf('v:') === 0 ? VIVO_L[String(n).slice(2)] : (D.llaves || {})[n];
   if (!L) return;
   var k = {};
   (D.tabla || []).forEach(function (f) { k[f.n] = f.k; });
@@ -686,8 +764,8 @@ function abrirLlave(n) {
       'rel="noopener noreferrer"><span>' +
       (t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord') +
       '</span><i class="ir">&#8599;</i></a>';
-  }).join('') + '<button type="button" class="bajar" data-copiar-llave="' + esc(n) + '">' +
-    '<i aria-hidden="true">&#128279;</i><span>Copiar el link de esta llave</span></button>';
+  }).join('') + (L.vivo ? '' : '<button type="button" class="bajar" data-copiar-llave="' + esc(n) + '">' +
+    '<i aria-hidden="true">&#128279;</i><span>Copiar el link de esta llave</span></button>');
   // ⚠️ SIN UN «PODIO» APARTE: repetía las cuatro primeras filas de «Los
   // puntos», que ya llevan su medalla. Con el cuadro arriba, el campeón
   // ya está a la vista.
@@ -706,7 +784,8 @@ function abrirLlave(n) {
   // lo primero que hace falta para entender lo que sigue.
   var ley = '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
     '<span class="ley-p"><i></i>Quedó afuera</span><span class="ley-o"><i></i>El camino del campeón</span>' +
-    '<span class="ley-n">Arriba de cada ronda, los puntos de quien queda afuera ahí' +
+    '<span class="ley-n">' + (L.vivo ? 'Se juega ahora: los puntos llegan cuando el ciclo procesa el evento'
+      : 'Arriba de cada ronda, los puntos de quien queda afuera ahí') +
     (HOVER ? '. Pasá el mouse por un nombre y se ve todo su camino.'
       : '. Tocá un nombre y se ve todo su camino; tocalo otra vez para abrir su perfil.') + '</span></div>';
   // 🔑 DOS FORMAS DE VERLA: el cuadro, y por rondas de arriba abajo —cómoda en
@@ -720,10 +799,21 @@ function abrirLlave(n) {
     ley + vistas + '<div class="l-sigue" id="lSigue" hidden></div><div id="lVista"></div>' +
     (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
     (links ? '<div class="v-acc">' + links + '</div>' : '');
+  if (L.vivo) pintaCabVivo(L);
   pintaVistaLlave();
   $('#visorLlave').hidden = false;
   $('#lCuerpo').scrollTop = 0;
   document.body.style.overflow = 'hidden';
+}
+/* la ficha de una llave en vivo: no tiene puntos ni fecha de calendario */
+function pintaCabVivo(L) {
+  $('#lNombre').textContent = L.nombre;
+  $('#lSub').innerHTML = '<span class="l-chips">' + chipSv(L.sv) +
+    '<span class="vv-et"><i class="vivo-punto" aria-hidden="true"></i>En vivo</span></span>' +
+    '<span class="l-datos">' + (L.participantes ? L.participantes + ' raperos &middot; ' : '') +
+    (L.terminada ? 'terminó: los puntos llegan cuando el ciclo la procese'
+      : esc(L.enJuego || 'en juego') + ' en juego') + ' &middot; se actualiza sola cada minuto &middot; ' +
+    'último cambio ' + esc(cuandoSe(new Date(L.ed || L.pub || Date.now()).toISOString())) + '</span>';
 }
 function pintaVistaLlave() {
   if (!LL || !$('#lVista')) return;
@@ -4342,6 +4432,7 @@ function pinta() {
   try { eventos(); } catch (e) { console.error('[eventos]', e); }
   ir();
   setInterval(pintaRelojes, 1000);
+  try { pedirVivo(); } catch (e) { console.error('[pedirVivo]', e); }
 }
 
 fetch('/api/lobby', { headers: { accept: 'application/json' } })

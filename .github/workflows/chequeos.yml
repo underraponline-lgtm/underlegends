@@ -91,6 +91,8 @@ jobs:
         run: |
           node bot/avisos_prueba.mjs
           node bot/probar_local.mjs
+          # 🔴 las llaves en vivo: el lector de la página contra el de Python
+          node bot/llave_vivo_prueba.mjs
 
       - name: los self-checks
         if: success() || failure()
@@ -99,7 +101,7 @@ jobs:
         run: |
           fallas=""
           for f in bot/anuncios.py bot/autoverificar.py bot/avisar.py bot/avisos_casos.py bot/avisos_personales.py bot/cuando.py bot/escuchar.py \
-                   bot/fuera.py bot/inscripciones.py bot/llaves_a_entrada.py bot/madrugada.py bot/olvidar.py \
+                   bot/fuera.py bot/inscripciones.py bot/llaves_a_entrada.py bot/llaves_casos.py bot/madrugada.py bot/olvidar.py \
                    bot/que_cambio.py \
                    bot/verificados.py sheet/archivar_temporada.py \
                    sheet/competitivo.py sheet/construir_pool_competitivo.py \

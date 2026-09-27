@@ -1897,6 +1897,25 @@ color:var(--tx2);font-size:.86rem}
 .bx.fin .ld.g{background:rgba(255,210,74,.08)}
 .bx:hover .ld:not(.g){opacity:.85}
 .bx.sigue,.camp.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl),0 0 18px rgba(41,178,152,.25);z-index:2}
+/* ── en vivo ─────────────────────────────────────────────────────────── */
+.vivo-sec::before{background:linear-gradient(90deg,var(--mg),#FF7A59)}
+.vivo-punto{display:inline-block;flex:none;width:10px;height:10px;border-radius:50%;background:var(--mg);
+box-shadow:0 0 0 3px rgba(228,19,115,.22);animation:lat 1.1s ease-in-out infinite;vertical-align:1px}
+.vv{padding:14px 16px 13px 18px;background:rgba(10,15,14,.82);border:1px solid var(--bd2);
+box-shadow:inset 4px 0 0 var(--c,#7E8B89)}
+.vv+.vv{margin-top:10px}
+.vv header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:10px;margin-bottom:7px}
+.vv-t{color:var(--tx2);white-space:nowrap;font:700 .92rem/1 'Barlow Condensed',sans-serif;letter-spacing:.06em;
+text-transform:uppercase}
+.vv h3{font:900 1.14rem/1.2 Archivo,sans-serif;letter-spacing:-.01em;overflow-wrap:anywhere}
+.vv-e{display:flex;align-items:baseline;gap:8px;margin-top:6px;color:var(--tx2);font-size:.95rem}
+.vv-e>span{flex:1 1 0;min-width:0}
+.vv-e b{color:var(--tx)}
+.vv-et{display:inline-flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;
+border:1px solid rgba(228,19,115,.6);background:rgba(228,19,115,.14);color:#FF8FBF;
+font:800 .7rem/1 Archivo,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.vv-et .vivo-punto{width:8px;height:8px;box-shadow:none}
+@media (prefers-reduced-motion:reduce){.vivo-punto{animation:none}}
 /* ── la llave: cómo verla, a quién se sigue, los equipos y las etiquetas ── */
 .l-vista{display:inline-flex;margin:12px 0 6px;padding:3px;border:1px solid var(--bd);border-radius:10px;
 background:#0B1211}

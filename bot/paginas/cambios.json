@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.19",
+   "dia": "2026-09-27",
+   "cuando": "2026-09-27T08:45:00-04:00",
+   "titulo": "Las llaves, en vivo",
+   "items": [
+    "🔴 **Las llaves en vivo**: mientras se juega un evento, el Inicio muestra su llave **«En vivo»**, que se actualiza sola **cada minuto** —con quién pasó cada ronda y la que se está jugando—. Los puntos llegan cuando el evento termina y se procesa, como siempre.",
+    "🏆 Se abre en el mismo panel que las demás llaves: cuadro o por rondas, y tocar un nombre sigue su camino."
+   ]
+  },
+  {
    "version": "1.18",
    "dia": "2026-09-27",
    "cuando": "2026-09-27T08:30:00-04:00",
