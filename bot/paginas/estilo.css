@@ -1684,6 +1684,34 @@ font-variant-numeric:tabular-nums;white-space:nowrap}
 .enc-e b{color:var(--tx)}
 .enc-mal{color:#FF9F6B}
 
+/* ── la tienda: la billetera y el precio por cabeza ─────────────────────
+   Los Puntos de Tienda van en oro: son otra moneda que los puntos del
+   ranking (teal), y así no se confunden. */
+.bill{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin:4px 0 10px}
+.bill .pt{color:var(--oro);font:900 2.2rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.bill small{color:var(--tx2);font-size:.9rem}
+.bill small b{color:var(--tx)}
+.pt-i{color:var(--oro);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pr-lista{display:grid;gap:6px;margin-top:10px;grid-template-columns:repeat(auto-fill,minmax(min(250px,100%),1fr))}
+.pr-c{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;padding:8px 11px;
+border:1px solid var(--bd2);background:rgba(14,22,20,.7);text-align:left}
+.pr-c:hover{border-color:var(--oro)}
+.pr-c.on{border-color:var(--oro);box-shadow:inset 0 0 0 1px var(--oro)}
+.pr-c .quien{min-width:0}
+.pr-c small{color:var(--tx3);font-size:.75rem;white-space:nowrap}
+.pr-poner{display:grid;gap:8px;margin-top:12px;padding:11px 12px;border:1px dashed rgba(255,210,74,.35)}
+.pr-poner[hidden]{display:none}
+.pr-montos{display:flex;flex-wrap:wrap;gap:6px}
+.pr-m{padding:8px 13px;border:1px solid var(--bd);border-radius:3px;background:rgba(14,22,20,.9);
+color:var(--tx);font:800 .9rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pr-m:hover{border-color:var(--oro);color:var(--oro)}
+.pr-m:disabled{opacity:.4;cursor:default}
+.pr-m:disabled:hover{border-color:var(--bd);color:var(--tx)}
+.pr-cazas{display:grid;gap:4px;margin-top:10px}
+.pr-cazas p{color:var(--tx2);font-size:.85rem;line-height:1.4}
+.pr-cazas b{color:var(--tx)}
+.pr-mios{display:grid;gap:4px;margin-top:6px;color:var(--tx2);font-size:.85rem}
+
 /* ── Most Wanted: el tablero, un cartel por buscado ─────────────────────
    El color de arriba dice cómo está: magenta suelto, gris cazado, oro si
    sobrevivió. El sello es del cartel de «se busca»: sólo en los dos
@@ -1871,9 +1899,19 @@ border-top:1px solid var(--bd2)}
   .menu .marca,.menu .pie,.m-ajustes{display:none}
   .b-icono{display:inline-grid;place-items:center}
   .barra{margin:-4px 0 12px}
-  .menu nav{flex-direction:row;width:100%;gap:0}
-  .menu nav a{flex:1 1 0;flex-direction:column;gap:4px;min-width:0;
-  padding:9px 2px calc(9px + env(safe-area-inset-bottom));
+  /* 🔑 LA BARRA SE DESLIZA DE COSTADO. Dlx, 28/09/2026: «en celular haz que
+     se deslice para ver más opciones». Son nueve: se ven cinco y media —la
+     media, y el borde que se apaga, dicen que hay más— y el resto se ve
+     deslizando. Al llegar al final (`.fin`, ver `bordeNav()` en app.js) el
+     borde deja de apagarse. */
+  .menu nav{flex-direction:row;width:100%;gap:0;overflow-x:auto;overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 86%,transparent);mask-image:linear-gradient(90deg,#000 86%,transparent)}
+  .menu nav.fin{-webkit-mask-image:none;mask-image:none}
+  .menu nav::-webkit-scrollbar{display:none}
+  .menu nav a span{white-space:nowrap}
+  .menu nav a{flex:0 0 auto;min-width:18.5%;scroll-snap-align:start;flex-direction:column;gap:4px;
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
   border-left:0;border-top:2px solid transparent;text-align:center;
   font-size:.56rem;letter-spacing:.08em;text-transform:uppercase}
   .menu nav a i{font-size:1.05rem;opacity:.9}

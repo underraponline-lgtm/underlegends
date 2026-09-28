@@ -311,6 +311,10 @@ function ir() {
   if (r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
   if (r === 'pais') pintaPais(partes[1] || '');
   if (r === 'cambios') cargarCambios(pintaCambios);
+  if (r === 'tienda' && D) {
+    try { pintaTienda(); } catch (e) { console.error('[pintaTienda]', e); }
+    if (DC_TOKEN && !BILL) pedirBilletera();
+  }
   if (r === 'tarjetas' && D) pintaCaraCmp();
   // 🔑 `#/llave/<número>` ABRE ESA LLAVE, encima del calendario. Dlx, 27/09/2026,
   // «me gusta todo»: el link de cada llave es para pegarlo en Discord.
@@ -328,6 +332,10 @@ function ir() {
   $$('#nav a').forEach(function (a) {
     a.classList.toggle('on', a.getAttribute('href') === '#/' + r);
   });
+  // 🔑 en el teléfono la barra se desliza: la opción de la vista abierta, a la vista
+  var nav = $('#nav'), on = $('#nav a.on');
+  if (nav && on && nav.scrollWidth > nav.clientWidth + 2) on.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  bordeNav();
   // Los paneles de la vista que se abre entran con su animación.
   //
   // 🔴 LA CLASE SE LLAMA `entro` Y NO `vista`, Y ESO NO ES ESTILO. Con el
@@ -3401,6 +3409,9 @@ function pintaPerfil(k) {
           '<div class="pf-rk" id="pfRk"></div></section>' +
       '</div>' +
     '</div>' +
+    // 💰 cuánto vale su cabeza, y ponerle precio: ver `pintaPrecioPerfil()`
+    '<section class="blk entro" id="pfPrecioSec" hidden><h2><span>&#128176;</span> Precio por su cabeza</h2>' +
+      '<div id="pfPrecio"></div></section>' +
     '<section class="blk entro" id="pfEvSec" hidden><h2><span>&#128197;</span> Sus eventos</h2>' +
       '<div class="pf-ev" id="pfEv"></div></section>' +
     '<section class="blk entro" id="pfCaraSec" hidden><h2><span>&#129354;</span> Cara a cara</h2>' +
@@ -3412,6 +3423,8 @@ function pintaPerfil(k) {
       '<div class="pf-mw" id="pfMw"></div></section>' +
     '<section class="blk entro" id="pfDuSec" hidden><h2><span>&#9876;</span> Sus duelos</h2>' +
       '<div class="pf-du" id="pfDus"></div></section>';
+  PR_PERFIL = f.n;
+  try { pintaPrecioPerfil(); } catch (e) { console.error('[pintaPrecioPerfil]', e); }
 
   // ── lo que viene de /api/perfiles
   perfiles().then(function (P) {
@@ -3852,6 +3865,7 @@ function pintaMW() {
       esc(fmtFecha(M.prox, { weekday: 'long', day: 'numeric', month: 'long' })) + ' a las ' +
       esc(fmtHora(M.prox)) + ' ' + etiquetaHora(M.prox) + '. Se eligen con lo que cada uno juegue ' +
       'hasta entonces.</p><div class="enc" id="encElegido" hidden></div>' +
+      '<div class="enc" id="prInicio" hidden></div>' +
       '<p class="mw-pie"><span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
     return;
   }
@@ -3863,6 +3877,8 @@ function pintaMW() {
     '.</p><div class="mw-t">' + M.b.map(cartelMW).join('') + '</div>' +
     // la votación de El Elegido del que viene: la llena `pintaEncuestas()`
     '<div class="enc" id="encElegido" hidden></div>' +
+    // y el precio por cabeza: lo llena `pintaPrecioInicio()`
+    '<div class="enc" id="prInicio" hidden></div>' +
     '<p class="mw-pie"><a href="#/ranking/mw">Los cazadores de la temporada &#8250;</a>' +
     '<span>&#127919; Las <b>misiones</b> llegan pronto.</span></p>';
   // la pestaña del ranking deja de decir «pronto»
@@ -4034,6 +4050,232 @@ function pintaX2(E) {
         '<small>' + (es ? 'el tuyo' : (mio === sv ? '&#10003; ' : '') + n + (n === 1 ? ' voto' : ' votos')) +
         '</small><i class="enc-bar" style="width:' + (tot ? Math.round(100 * n / tot) : 0) + '%"></i></button>';
     }).join('') + '</div><p class="enc-e" aria-live="polite">' + pieEnc(E, nombreSv) + '</p>';
+  c.hidden = false;
+}
+/* ── la tienda: los Puntos de Tienda y el precio por cabeza ────────────
+   🔑 Dlx, 27 y 28/09/2026: «PUNTOS de TIENDA… que todos empecemos con 5k»,
+   el precio por cabeza se paga con eso, «si nadie lo caza, vuelve», «sí 20k»,
+   y «1. Ambos. 2. B»: el que caza cobra esos Puntos de Tienda y lo mismo en
+   su Temporada, y billetera tiene cualquiera que entre con Discord. Y
+   «agrega la opción de TIENDA». Los números vienen en `D.tienda`
+   (bot/precios.py); cuánto vale cada cabeza, de `/api/avisos/precios`; tu
+   billetera, de `/api/avisos/billetera`, con el permiso de Discord.
+   ⚠️ AFUERA SE VE CUÁNTO VALE CADA CABEZA, NUNCA QUIÉN PUSO. */
+var PRECIOS = null, PRECIOS_T = 0, PR_TOT = {}, BILL = null, PR_EST = {}, PR_BUSCA = '', PR_SEL = '',
+  PR_PERFIL = '';
+function pedirPrecios() {
+  if (!D || !D.tienda) return;
+  fetch('/api/avisos/precios', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !Array.isArray(d.precios)) return;
+      PRECIOS = d.precios;
+      PRECIOS_T = d.t || 0;
+      pintaPrecios();
+    })
+    .catch(function () { /* sin precios se ve igual, sin números */ });
+}
+/* lo que vale cada cabeza ahora: lo activo, lo que todavía se puede cobrar.
+   El precio que acabo de poner manda sobre la caché, si es más nuevo. */
+function valorCabezas() {
+  var ahora = Date.now(), v = {};
+  (PRECIOS || []).forEach(function (p) {
+    if (!p.estado && p.fin > ahora) v[p.cabeza] = (v[p.cabeza] || 0) + (+p.monto || 0);
+  });
+  Object.keys(PR_TOT).forEach(function (c) { if (PR_TOT[c].t >= PRECIOS_T) v[c] = PR_TOT[c].total; });
+  return v;
+}
+/* a quién se le puede poner precio: a quien juega la temporada y no es
+   fuera de concurso (lo mismo que valida el Worker) */
+function puedeCabeza(n) {
+  var f = (D.tabla || []).filter(function (x) { return x.n === n; })[0];
+  return !!(f && !f.fc);
+}
+function nombreCabeza(n) { var f = porK(kDe(n)); return f ? f.n : n; }
+function pedirBilletera() {
+  if (!DC_TOKEN || !D || !D.tienda) return;
+  fetch('/api/avisos/billetera', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: DC_TOKEN }) })
+    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); })
+    .then(function (j) {
+      if (j.status === 401) { DC_TOKEN = null; BILL = null; pintaPrecios(); return; }
+      BILL = j.ok ? j : { error: j.error || 'red' };
+      pintaPrecios();
+    })
+    .catch(function () { BILL = { error: 'red' }; pintaPrecios(); });
+}
+function ponerPrecio(cabeza, monto) {
+  // sin el permiso de Discord en memoria: se lo va a buscar y vuelve acá
+  if (!DC_TOKEN) {
+    try {
+      sessionStorage.setItem('lg:precio', JSON.stringify({ cabeza: cabeza, monto: monto, volver: ruta() }));
+    } catch (e) { /* igual */ }
+    location.href = urlLogin('t');
+    return;
+  }
+  PR_EST[cabeza] = { va: monto };
+  pintaPrecios();
+  fetch('/api/avisos/precio', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ token: DC_TOKEN, cabeza: cabeza, monto: monto }) })
+    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); })
+    .then(function (j) {
+      if (j.status === 401) { DC_TOKEN = null; ponerPrecio(cabeza, monto); return; }
+      if (j.ok) {
+        PR_EST[cabeza] = { ok: j.monto };
+        PR_TOT[cabeza] = { t: j.t || 0, total: j.total };
+        if (BILL && BILL.ok) BILL.saldo = j.saldo;
+        pedirBilletera();
+      } else {
+        PR_EST[cabeza] = j;
+      }
+      pintaPrecios();
+    })
+    .catch(function () { PR_EST[cabeza] = { error: 'red' }; pintaPrecios(); });
+}
+function errorPrecio(E) {
+  var T = D.tienda || {}, e = E.error;
+  return e === 'saldo' ? 'No te alcanzan: tenés ' + num(E.saldo) + ' Puntos de Tienda.'
+    : e === 'tope' ? (E.queda ? 'Esa cabeza está cerca del máximo: se le pueden poner ' + num(E.queda) + ' más.'
+      : 'Esa cabeza ya vale lo máximo (' + num(T.tope) + ').')
+    : e === 'vos' ? 'No te podés poner precio a vos.'
+    : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva: vas a poder desde el ' +
+      esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
+    : e === 'cabeza' ? 'A esa persona no se le puede poner precio: tiene que jugar la temporada.'
+    : e === 'monto' ? 'Desde ' + num(E.min) + ', de a ' + num(E.paso) + '.'
+    : e === 'cerrada' ? 'La semana terminó: probá de nuevo en un rato.'
+    : e === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.'
+    : 'No pude ponerlo. Probá de nuevo en un rato.';
+}
+/* los montos: el mínimo y sus múltiplos, apagados si no entran en la cabeza
+   o en tu saldo (el Worker y el objeto lo vuelven a mirar igual) */
+function montosPrecio(c, T) {
+  var v = valorCabezas()[c] || 0, queda = T.tope - v, saldo = BILL && BILL.ok ? BILL.saldo : null;
+  return '<div class="pr-montos">' + [1, 2, 5, 10].map(function (x) { return T.min * x; }).map(function (m) {
+    var no = m > queda || (saldo != null && m > saldo);
+    return '<button type="button" class="pr-m" data-precio="' + esc(c) + '" data-monto="' + m + '"' +
+      (no ? ' disabled' : '') + '>+' + num(m) + '</button>';
+  }).join('') + '</div>';
+}
+/* poner un precio a alguien: cuánto vale, los montos y cómo salió */
+function panelPrecio(c, T) {
+  var v = valorCabezas()[c] || 0, est = PR_EST[c] || {}, f = porK(kDe(c)), yoF = yoDiscord();
+  var esYo = yoF && f && yoF.k === f.k;
+  var msg = est.va ? 'Poniendo ' + num(est.va) + '&hellip;'
+    : est.ok ? '&#10003; Pusiste <b>' + num(est.ok) + '</b>. Si nadie lo caza en la semana, vuelven a vos.'
+    : est.error ? '<span class="enc-mal">' + errorPrecio(est) + '</span>'
+    : DC_TOKEN ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
+  return '<div class="pr-sel"><p>' + (f ? quienEs(f, 26) : esc(c)) + ' vale <span class="pt-i">' + num(v) +
+    '</span>' + (v < T.tope ? ' &middot; se le pueden poner ' + num(T.tope - v) + ' más' : ' &middot; ya vale lo máximo') +
+    '</p>' + (esYo ? '<p class="nota">Sos vos: no te podés poner precio.</p>' : montosPrecio(c, T)) +
+    '<p class="enc-e" aria-live="polite">' + msg + '</p></div>';
+}
+/* 🔑 LA BARRA DEL TELÉFONO SE DESLIZA (Dlx, 28/09/2026: «en celular haz que
+   se deslice para ver más opciones»): el borde de la derecha se apaga para
+   decir que hay más, y deja de apagarse al llegar al final. */
+function bordeNav() {
+  var n = $('#nav');
+  if (n) n.classList.toggle('fin', n.scrollLeft + n.clientWidth >= n.scrollWidth - 2);
+}
+function pintaPrecios() {
+  [pintaTienda, pintaPrecioPerfil, pintaPrecioInicio].forEach(function (f) {
+    try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
+  });
+}
+function pintaTienda() {
+  var T = D && D.tienda, b = $('#secBilletera'), p = $('#secPrecios');
+  if (!b || !p) return;
+  if (!T) { b.hidden = true; p.hidden = true; return; }
+  $('#tiBaj').innerHTML = 'Tus Puntos de Tienda y el precio por cabeza. Todos arrancan con <b>' +
+    num(T.inicial) + '</b>.';
+  // 🪙 la billetera: sólo la ves vos, con tu Discord
+  var cab = '<h2><span>&#129689;</span> Tus Puntos de Tienda</h2>';
+  if (BILL && BILL.ok) {
+    var ahora = Date.now();
+    var act = (BILL.mios || []).filter(function (m) { return !m.estado && m.fin > ahora; });
+    b.innerHTML = cab + '<div class="bill"><span class="pt">' + num(BILL.saldo) + '</span><small>Puntos de Tienda' +
+      (BILL.cobrado ? ' &middot; cobraste <b>' + num(BILL.cobrado) + '</b> cazando' : '') + '</small></div>' +
+      (act.length ? '<p class="nota">Tus precios de esta semana (vuelven si nadie caza):</p><div class="pr-mios">' +
+        act.map(function (m) {
+          return '<span>' + esc(nombreCabeza(m.cabeza)) + ' &middot; <span class="pt-i">' + num(m.monto) +
+            '</span></span>';
+        }).join('') + '</div>' : '');
+  } else if (BILL && BILL.error) {
+    b.innerHTML = cab + '<p class="enc-e"><span class="enc-mal">' + (BILL.error === 'todavia'
+      ? 'La tienda todavía no está lista: probá en un rato.' : 'No pude leer tu billetera. Probá de nuevo.') +
+      '</span></p><button type="button" class="btn sec" data-billetera>Probar de nuevo</button>';
+  } else {
+    b.innerHTML = cab + '<p class="bajada">Todos arrancan con <b>' + num(T.inicial) + '</b>. Para ver los tuyos ' +
+      'entrás con Discord: los ves sólo vos.</p><button type="button" class="btn" data-billetera>Ver mis Puntos ' +
+      'de Tienda</button>';
+  }
+  b.hidden = false;
+  // 💰 el precio por cabeza: arriba lo que vale cada una, abajo para poner
+  if (p.dataset.listo !== '1') {
+    p.dataset.listo = '1';
+    p.innerHTML = '<h2><span>&#128176;</span> Precio por cabeza</h2><p class="bajada pr-cab"></p>' +
+      '<div class="pr-lista pr-top"></div><div class="pr-poner"><input type="search" class="enc-busca pr-busca" ' +
+      'placeholder="Buscá a quién ponerle precio" aria-label="Buscar un rapero para ponerle precio" value="' +
+      esc(PR_BUSCA) + '"><div class="pr-lista pr-res"></div><div class="pr-panel"></div></div>' +
+      '<div class="pr-cazas"></div>';
+  }
+  p.querySelector('.pr-cab').innerHTML = 'Poné Puntos de Tienda sobre un rapero de la temporada: el primero que ' +
+    'le gana en un evento de la Liga se los lleva, <b>y lo mismo suma a su Temporada</b>. Si nadie lo caza hasta ' +
+    'el ' + esc(fmtFecha(T.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(T.fin)) + ' ' + etiquetaHora(T.fin) +
+    ', vuelven a quien los puso. Una cabeza vale como mucho <b>' + num(T.tope) + '</b>, y nadie ve quién puso.';
+  var v = valorCabezas();
+  var top = Object.keys(v).filter(function (c) { return v[c] > 0; }).sort(function (x, y) { return v[y] - v[x]; });
+  p.querySelector('.pr-top').innerHTML = top.length ? top.map(function (c) {
+    return filaPrecio(c, v[c]);
+  }).join('') : '<p class="nota">Esta semana todavía nadie tiene precio. Buscá a alguien y ponele el primero.</p>';
+  pintaBuscaPrecio();
+  p.querySelector('.pr-panel').innerHTML = PR_SEL ? panelPrecio(PR_SEL, T) : '';
+  var cz = (T.cazas || []).slice().reverse();
+  p.querySelector('.pr-cazas').innerHTML = cz.length ? '<h3 class="mw-h">Lo último que se cobró</h3>' +
+    cz.map(function (x) {
+      return '<p>&#128176; <b>' + esc(x.por.map(function (y) { return nombreCabeza(y[0]); }).join(' y ')) +
+        '</b> le ganó a <b>' + esc(nombreCabeza(x.cabeza)) + '</b> en ' + esc(x.ev) + ' y cobró <span class="pt-i">' +
+        num(x.monto) + '</span>.</p>';
+    }).join('') : '';
+  p.hidden = false;
+}
+function filaPrecio(c, valor) {
+  var f = porK(kDe(c));
+  return '<button type="button" class="pr-c' + (PR_SEL === c ? ' on' : '') + '" data-pr-sel="' + esc(c) + '">' +
+    (f ? quienEs(f, 26) : '<span class="quien">' + esc(c) + '</span>') +
+    (valor != null ? '<span class="pt-i">' + num(valor) + '</span>' : '<small>ponerle precio</small>') + '</button>';
+}
+function pintaBuscaPrecio() {
+  var r = $('#secPrecios .pr-res');
+  if (!r) return;
+  var q = sinTildes(PR_BUSCA).trim(), v = valorCabezas();
+  var fs = q ? (D.tabla || []).filter(function (f) { return !f.fc && sinTildes(f.n).indexOf(q) >= 0; }).slice(0, 8) : [];
+  r.innerHTML = q ? (fs.length ? fs.map(function (f) { return filaPrecio(f.n, v[f.n] || null); }).join('')
+    : '<p class="nota">No hay nadie con ese nombre en la temporada.</p>') : '';
+}
+/* en el perfil: cuánto vale su cabeza y los montos para ponerle */
+function pintaPrecioPerfil() {
+  var s = $('#pfPrecioSec'), c = $('#pfPrecio'), T = D && D.tienda;
+  if (!s || !c) return;
+  if (!T || !PR_PERFIL || !puedeCabeza(PR_PERFIL)) { s.hidden = true; return; }
+  c.innerHTML = '<p class="bajada">El primero que le gane en un evento de la Liga se lleva lo que vale, en ' +
+    'Puntos de Tienda y en su Temporada. <a href="#/tienda">Cómo funciona &#8250;</a></p>' + panelPrecio(PR_PERFIL, T);
+  s.hidden = false;
+}
+/* en el Inicio, abajo de El Elegido: las cabezas que más valen */
+function pintaPrecioInicio() {
+  var c = $('#prInicio'), T = D && D.tienda;
+  if (!c) return;
+  if (!T) { c.hidden = true; return; }
+  var v = valorCabezas();
+  var top = Object.keys(v).filter(function (x) { return v[x] > 0; }).sort(function (x, y) { return v[y] - v[x]; })
+    .slice(0, 3);
+  c.innerHTML = '<h4>&#128176; Precio por cabeza</h4><p class="enc-b">' + (top.length ? 'Lo pone la gente: ' +
+    top.map(function (x) {
+      var f = porK(kDe(x));
+      return (f ? '<button type="button" class="ql" data-k="' + esc(f.k) + '">' + esc(f.n) + '</button>' : esc(x)) +
+        ' <span class="pt-i">' + num(v[x]) + '</span>';
+    }).join(' &middot; ') + '. Quien le gane, cobra.' : 'Poné Puntos de Tienda sobre un rapero: quien le gane, ' +
+    'cobra.') + ' <a href="#/tienda">Ir a la Tienda &#8250;</a></p>';
   c.hidden = false;
 }
 function pintaPaneles() {
@@ -4245,9 +4487,10 @@ var DC = leerLS('lg:dc', null);
 var DC_TOKEN = null, REDES_MIAS = null;
 function urlLogin(modo) {
   // 'r' las redes (pide `connections`), 'v' vincular los avisos, 'f' la
-  // foto, 'e' votar en una encuesta, o entrar
+  // foto, 'e' votar en una encuesta, 't' la tienda (poner un precio o ver la
+  // billetera), o entrar
   var conRedes = modo === true || modo === 'r';
-  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' ? modo : 'i') +
+  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
@@ -4396,8 +4639,14 @@ function volverDeDiscord() {
       if (i > 0) q[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1));
     } catch (e) { /* ese par no se lee */ }
   });
-  // quien vino a vincular sus avisos vuelve a la campana
-  var destino = '#/' + (String(q.state || '').charAt(0) === 'v' ? 'avisos' : '');
+  // quien vino a vincular sus avisos vuelve a la campana; quien vino a poner
+  // un precio, adonde lo tocó (la tienda o un perfil)
+  var modo0 = String(q.state || '').charAt(0), pp = null;
+  if (modo0 === 't') {
+    try { pp = JSON.parse(sessionStorage.getItem('lg:precio') || 'null'); } catch (e) { pp = null; }
+  }
+  var destino = '#/' + (modo0 === 'v' ? 'avisos' : modo0 === 't'
+    ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', location.pathname + location.search + destino); } catch (e) { location.hash = destino; }
   var st = '';
   try { st = sessionStorage.getItem('lg:estado') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) { st = ''; }
@@ -4408,7 +4657,15 @@ function volverDeDiscord() {
   // 🔑 VOTAR: el permiso queda en memoria mientras la página está abierta,
   // para los votos que siguen; nunca en el dispositivo
   var porVoto = st.charAt(0) === 'e';
-  if (porRedes || porFoto || porVoto) DC_TOKEN = q.access_token;
+  // 🔑 LA TIENDA: igual, en memoria (ver `ponerPrecio()` y `pedirBilletera()`)
+  var porTienda = st.charAt(0) === 't';
+  if (porRedes || porFoto || porVoto || porTienda) DC_TOKEN = q.access_token;
+  // el precio que se tocó antes de entrar sale ya; si no, se muestra la billetera
+  if (porTienda) {
+    try { sessionStorage.removeItem('lg:precio'); } catch (e) { /* igual */ }
+    if (pp && pp.cabeza && pp.monto) ponerPrecio(String(pp.cabeza), Number(pp.monto));
+    else pedirBilletera();
+  }
   // el voto que se tocó antes de entrar sale ya, sin esperar a `/api/cuenta`:
   // el Worker le pregunta a Discord por su cuenta (ver `votar()`)
   if (porVoto) {
@@ -4442,6 +4699,11 @@ function volverDeDiscord() {
       if (porVoto) {
         $('#popCuenta').hidden = true;
         if (D) pintaEncuestas();
+      }
+      // y quien vino a la tienda, también («sos vos» en su propio perfil)
+      if (porTienda) {
+        $('#popCuenta').hidden = true;
+        if (D) pintaPrecios();
       }
       if (porFoto) {
         pedirFoto(false).then(function (R) {
@@ -4970,6 +5232,26 @@ function eventos() {
     e.preventDefault();
     votar(b.dataset.votar, b.dataset.op);
   });
+  // 🔑 la tienda: poner un precio, elegir a quién y ver la billetera
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-precio],[data-pr-sel],[data-billetera]');
+    if (!b || b.disabled) return;
+    e.preventDefault();
+    if (b.dataset.precio) ponerPrecio(b.dataset.precio, Number(b.dataset.monto));
+    else if (b.dataset.prSel) { PR_SEL = b.dataset.prSel; pintaTienda(); }
+    else if (DC_TOKEN) pedirBilletera();
+    else location.href = urlLogin('t');
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.classList && e.target.classList.contains('pr-busca')) {
+      PR_BUSCA = e.target.value;
+      pintaBuscaPrecio();
+    }
+  });
+  // la barra del teléfono se desliza: su borde deja de apagarse al final
+  var nv = $('#nav');
+  if (nv) nv.addEventListener('scroll', bordeNav, { passive: true });
+  window.addEventListener('resize', bordeNav);
   document.addEventListener('change', function (e) {
     var id = e.target.id;
     if (id !== 'ajH12' && id !== 'ajTz' && id !== 'ajCalma') return;
@@ -5287,7 +5569,8 @@ function pintaDatos() {
   [trama, pintaMult, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
     pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
     pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
-    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaEncuestas, pintaPaneles, aplicarCalma]
+    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaEncuestas, pintaPrecios, pintaPaneles,
+    aplicarCalma]
     .forEach(function (f) {
       try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
     });
@@ -5321,6 +5604,7 @@ function pinta() {
   setInterval(pintaRelojes, 1000);
   try { pedirVivo(); } catch (e) { console.error('[pedirVivo]', e); }
   try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
+  try { pedirPrecios(); } catch (e) { console.error('[pedirPrecios]', e); }
   setInterval(refrescarDatos, 5 * 60000);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible' && Date.now() - DATOS_PEDIDOS > 60000) refrescarDatos();
@@ -5337,8 +5621,9 @@ var DATOS_PEDIDOS = Date.now();
 function refrescarDatos() {
   if (document.visibilityState === 'hidden' || !D) return;
   DATOS_PEDIDOS = Date.now();
-  // los votos cambian a cada voto, no con el ciclo: se piden siempre
+  // los votos y los precios cambian a cada rato, no con el ciclo: se piden siempre
   try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
+  try { pedirPrecios(); } catch (e) { console.error('[pedirPrecios]', e); }
   fetch('/api/lobby', { headers: { accept: 'application/json' } })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) {

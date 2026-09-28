@@ -61,12 +61,18 @@
            de rapero… próximamente». `#/duelos` sigue andando: abre el
            ranking de Duelos (ver `ALIAS` en app.js). -->
       <a href="#/pase"><i>&#127903;</i><span>Pase</span></a>
-      <!-- 🔑 «EVENTOS» Y NO UNA OCTAVA ENTRADA. Dlx, 25/09/2026, pidió la
-           sección con calendario; los avisos son de eventos, así que viven
-           adentro. Ocho casillas no entran en la barra del teléfono (siete
-           ya se midieron al límite), y `#/avisos` sigue andando: lo abre
+      <!-- 🔑 LA TIENDA Y LAS PUBLICACIONES. Dlx, 28/09/2026: «agrega la opción
+           de TIENDA y PUBLICACIONES… en el PC será normal pero en celular haz
+           que se deslice para ver más opciones». Con nueve, la barra del
+           teléfono se desliza de costado (ver `.menu nav` en estilo.css):
+           antes siete entraban justo y una octava no cabía. -->
+      <a href="#/tienda"><i>&#128722;</i><span>Tienda</span></a>
+      <!-- 🔑 «EVENTOS» Y NO UNA ENTRADA APARTE PARA LOS AVISOS. Dlx,
+           25/09/2026, pidió la sección con calendario; los avisos son de
+           eventos, así que viven adentro. `#/avisos` sigue andando: lo abre
            el botón de `/card`. -->
       <a href="#/eventos"><i>&#128197;</i><span>Eventos</span></a>
+      <a href="#/publicaciones"><i>&#128240;</i><span>Publicaciones</span></a>
       <a href="#/mundo"><i>&#127758;</i><span>Mundo</span></a>
       <a href="#/guia"><i>&#127895;</i><span>Guía</span></a>
     </nav>
@@ -416,6 +422,48 @@
     </section>
   </section>
 
+  <!-- ══ TIENDA ══════════════════════════════════════════════════
+       🔑 Dlx, 27 y 28/09/2026: «PUNTOS de TIENDA… que todos empecemos con
+       5k», y «agrega la opción de TIENDA». Acá viven la billetera de cada
+       uno y el precio por cabeza, que se paga con esos puntos; la tienda en
+       sí todavía no tiene qué vender, así que dice que viene. Lo llena
+       `pintaTienda()` con los números del payload (`tienda`). -->
+  <section class="vista" data-vista="tienda" hidden>
+    <h1 class="tit">La <em>tienda</em></h1>
+    <p class="bajada" id="tiBaj">Tus Puntos de Tienda, y el precio por cabeza.</p>
+    <section class="blk" id="secBilletera"></section>
+    <section class="blk" id="secPrecios"></section>
+    <section class="blk pase">
+      <span class="pase-tag">Próximamente</span>
+      <span class="pase-ico" aria-hidden="true">&#128722;</span>
+      <h2 class="pase-tit">La tienda abre pronto</h2>
+      <p class="bajada">Acá vas a poder gastar tus Puntos de Tienda. Cuando abra se
+      anuncia en la Liga — y si activás los avisos, te llega al teléfono.</p>
+      <div class="pase-acc">
+        <a class="btn" href="#/avisos">&#128276; Activar los avisos</a>
+      </div>
+    </section>
+  </section>
+
+  <!-- ══ PUBLICACIONES ═══════════════════════════════════════════
+       🔑 Dlx, 28/09/2026: «agrega la opción de TIENDA y PUBLICACIONES». Qué
+       van a ser todavía se habla (27/09: «seguidores, seguidos y POSTS… no
+       lo hagas todavía»), así que la página no inventa nada: dice que viene. -->
+  <section class="vista" data-vista="publicaciones" hidden>
+    <h1 class="tit"><em>Publicaciones</em></h1>
+    <section class="blk pase">
+      <span class="pase-tag">Próximamente</span>
+      <span class="pase-ico" aria-hidden="true">&#128240;</span>
+      <h2 class="pase-tit">Las publicaciones de la Liga</h2>
+      <p class="bajada">Todavía no están. Cuando salgan se anuncia en la Liga — y si
+      activás los avisos, te llega al teléfono.</p>
+      <div class="pase-acc">
+        <a class="btn" href="#/avisos">&#128276; Activar los avisos</a>
+        <a class="btn sec" href="#/">Mientras tanto, el Inicio</a>
+      </div>
+    </section>
+  </section>
+
   <!-- ══ EVENTOS ═════════════════════════════════════════════════
        🔑 Dlx, 25/09/2026: «deberíamos crear una sección de eventos, y ahí
        aparecerá en forma de calendario todos los eventos que pasaron, con
@@ -591,6 +639,13 @@
         <div><dt>El ×2 votado</dt><dd>Durante la semana se vota qué servidor se lleva el
         ×2 la siguiente: el más votado sale del sorteo del lunes con ×2 como mínimo. No se
         vota al servidor de uno (el que más jugaste en la temporada). Hacen falta 3 votos.</dd></div>
+        <div><dt>Puntos de Tienda</dt><dd>Una moneda aparte de los puntos del ranking: todos
+        arrancan con los mismos y se ven en la Tienda, entrando con Discord. Hoy sirven para
+        el precio por cabeza.</dd></div>
+        <div><dt>Precio por cabeza</dt><dd>Cualquiera pone Puntos de Tienda sobre un rapero de
+        la temporada. El primero que le gana en un evento de la Liga se los lleva: esos Puntos
+        de Tienda y lo mismo en su Temporada. Si nadie lo caza en la semana, vuelven a quien
+        los puso. Nadie ve quién puso un precio.</dd></div>
         <div><dt>Multiplicador</dt><dd>Cada lunes a las 11 AM (hora del este)
         se sortea uno por servidor: esa semana, los puntos de Temporada de sus
         eventos valen ×0,5 a ×5. El Competitivo y el Most Wanted no cambian.</dd></div>

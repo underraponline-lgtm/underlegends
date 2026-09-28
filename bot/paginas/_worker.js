@@ -59,6 +59,11 @@ const AVISOS = {
   // `validarVoto()` en bot/avisos.js: quién vota lo dice Discord, no la página
   '/api/avisos/encuestas': 'GET',
   '/api/avisos/votar': 'POST',
+  // 🔑 el precio por cabeza (28/09/2026): cuánto vale cada cabeza, poner un
+  // precio y ver tu billetera. Ver `validarPrecio()` en bot/avisos.js
+  '/api/avisos/precios': 'GET',
+  '/api/avisos/precio': 'POST',
+  '/api/avisos/billetera': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
@@ -88,7 +93,8 @@ async function avisos(req, url) {
   } else if (url.pathname.endsWith('/clave')) {
     // la clave pública no cambia: una hora en el borde
     init.cf = { cacheTtl: 3600, cacheEverything: true };
-  } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas')) {
+  } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') ||
+             url.pathname.endsWith('/precios')) {
     // ⚠️ 30 s EN EL BORDE: la página pregunta cada minuto y el vigía escribe
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto

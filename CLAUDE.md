@@ -649,10 +649,12 @@ la planilla.
 
 ## El hub web — `underlegends.pages.dev`
 
-Siete vistas con menú lateral en escritorio y barra de abajo en teléfono,
-enrutado por hash: Inicio, Ranking, Tarjetas, **Pase** (próximamente),
-**Eventos** (el calendario y la campana; `#/avisos` es un alias que baja
-hasta ella), Mundo y Guía. Vive en **`bot/paginas/`**, sin framework y sin
+Nueve vistas con menú lateral en escritorio y barra de abajo en teléfono
+—que **se desliza de costado**: Dlx, 28/09/2026—, enrutado por hash:
+Inicio, Ranking, Tarjetas, **Pase** (próximamente), **Tienda** (los Puntos de
+Tienda y el precio por cabeza), **Eventos** (el calendario y la campana;
+`#/avisos` es un alias que baja hasta ella), **Publicaciones**
+(próximamente), Mundo y Guía. Vive en **`bot/paginas/`**, sin framework y sin
 build: los archivos que están ahí son los que se sirven.
 
 🔑 **LOS RANKINGS SON UNA TABLA, NO DIEZ** (25/09/2026). Temporada,
@@ -747,6 +749,13 @@ cada Discord ID: por eso nunca va al payload). El voto va a
 persona. El resultado lo leen `most_wanted.correr()` y
 `multiplicadores.correr()` de `/avisos/encuestas`, que cuenta votos y nunca
 dice quién.
+
+💰 **EL PRECIO POR CABEZA Y LOS PUNTOS DE TIENDA, DESDE EL 28/09/2026.** La
+billetera y los precios viven en el Durable Object (`precios`, `tienda`); qué
+cabezas valen y los números, en KV (`precios`, del ciclo); quién cazó, en
+`bot/precios.py`, que se lo pasa al objeto por KV (`precios:resolucion`) y a
+la Temporada por `datos/precios.json`. **Los números están sólo en
+`bot/precios.py`**: el Worker y la página los reciben.
 
 ⚠️ **El lector de anuncios está en Python y en JS**, atados por
 `bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
@@ -2056,6 +2065,8 @@ bot/              el lector de Discord y el ciclo
                   subir_web.py    el payload del lobby, a KV (paso 2c)
                   encuestas.py    El Elegido y el ×2 votado: qué se vota,
                                   hasta cuándo y quién ganó
+                  precios.py      el precio por cabeza: quién cazó qué, lo
+                                  que vuelve, y lo cobrado a la Temporada
                   autoverificar.py el país (del rol) y el Miembro de DRA,
                                   solos en cada corrida (paso 1a2)
                   alertar.py      DM a Dlx si algo se traba; lo normal, al

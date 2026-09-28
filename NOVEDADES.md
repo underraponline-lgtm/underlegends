@@ -281,13 +281,57 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La Copa de la Liga es de la persona**, no de su servidor: el próximo evento que organice, donde sea | *«a la persona»* | ✅ `organizados()`, `ranking_org()` y `copa_n()` en `bot/multiplicadores.py` (1.26) |
 | **El Semillero cuenta a quien juega por primera vez en su vida en la Liga**, no «nuevo en la temporada»: volver en la T1 no te hace nuevo | *«A»* | ✅ `datos/vistos.json` + `resultado_semillero()` (1.27) |
 | **Insignias y Clásicos, ya** | *«sí, dale»* | ✅ `bot/insignias.py` y `multiplicadores.clasicos()` (1.28) |
-| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ✅ encuestas (1.31) · ⏳ precio por cabeza (mueve puntos: al final) · ❌ el pronóstico en vivo (ver abajo) |
+| **Seguir con la lista** | *«ok sigamos»* | ✅ meta de comunidad, premios de la semana, «con tiempo» y el Lunes de la Liga (1.29) · ✅ encuestas (1.31) · ✅ precio por cabeza (1.32) · ❌ el pronóstico en vivo (ver abajo) |
 | **El Lunes de la Liga va en «〢🌍〉rankings-liga-global» de DRA** | *«en el canal ranking global en DRA»* | ✅ `bot/lunes.py`, paso 2b3 (1.30). El bot es admin en DRA |
 | **«Con tiempo» desde 12 horas** | *«de 12 h a 24 h a más»* | ✅ `DESTACADO_H = 12` (1.30). Medido: 2 de 48 anuncios llegan |
 | **Nada interactivo en vivo, todavía: las llaves en vivo son para mirar.** Sin pronóstico del campeón en vivo y, por la misma regla, sin el aviso de la caza en vivo | *«eso de elegir quién gana en vivo creo que no deberíamos hacerlo aún… eso de ver las llaves en vivo sí, pero lo demás que tenga que ver en vivo no… es muy pronto»* (27/09, 2:40 PM) | — no se llegó a escribir nada. **Se queda** lo que la llave en vivo ya muestra, porque es para mirar: el 🎯 de los buscados, el ×N del servidor y el Clásico |
 | **Las encuestas: vota cualquiera que entre con Discord, y en el ×2 nadie vota a su servidor** («tu servidor» = donde más jugaste en la temporada) | *«1. A. 2. A»* | ✅ `bot/encuestas.py` + `validarVoto()` de `bot/avisos.js` (1.31). El Elegido ocupa un lugar del nivel del medio (siguen siendo 3 y 9); el ×2 votado es «×2 como mínimo», antes de la guerra y el Semillero. Hacen falta 3 votos. **Lo agregué yo**: las cuentas de Discord de menos de 30 días no votan (ver «❓ Esperando») |
+| **El precio por cabeza se pone con PUNTOS DE TIENDA**, una moneda aparte del ranking: todos arrancan con **5.000**; si nadie lo caza en la semana, **vuelve**; una cabeza vale como mucho **20.000** | *«1. Pues PUNTOS de TIENDA… que todos empecemos con 5k… 2. A 3. sí 20k»* | ✅ `bot/precios.py` + el Durable Object (1.32) |
+| **El que caza cobra lo mismo en los dos** (Tienda y Temporada), y **billetera tiene cualquiera que entre con Discord** | *«1. Ambos. 2. B»*, porque *«MW is for puntos temporada mainly but we need more incentives… for people to get through the website»* | ✅ `rankings.sumar_precios()` (1.32). La cuenta de Discord, de más de 30 días, como las encuestas |
+| **TIENDA y PUBLICACIONES en el menú; en el celular la barra se desliza** | *«agrega la opción de TIENDA y PUBLICACIONES… en el PC será normal pero en celular haz que se deslice para ver más opciones»* | ✅ (1.32). Publicaciones dice «pronto»: qué va ahí todavía se habla |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (7:45 AM) — versión 1.32
+
+**La Tienda y el precio por cabeza.** Dlx: *«PUNTOS de TIENDA… que todos
+empecemos con 5k»*, *«2. A 3. sí 20k»*, *«1. Ambos. 2. B»* y *«agrega la
+opción de TIENDA y PUBLICACIONES»*.
+
+- 💰 **El precio por cabeza** (`bot/precios.py`, paso **2b4** del ciclo): se
+  pone con Puntos de Tienda sobre alguien de la temporada que no sea fuera de
+  concurso, desde 500 y de a 100, y nunca a uno mismo. Lo cobra **el primero
+  que le gana** en un evento de 8 o más (la regla del Most Wanted,
+  `primera_derrota()`), **en un evento que arrancó después del precio** —a
+  mitad de llave no se puede apostar sabiendo con quién le toca—. Cobra lo
+  mismo en Tienda y en Temporada; por equipos se reparte. Si nadie lo caza,
+  vuelve 12 h después del lunes 11 AM.
+- 🪙 **La billetera** vive en el Durable Object (`precios` y `tienda`): saldo =
+  5.000 + lo cobrado − lo puesto (lo devuelto no cuenta). El saldo y el tope
+  de 20.000 los mira el objeto, que es uno solo: dos precios a la vez no
+  gastan la misma plata. Quién cazó lo resuelve el ciclo y se lo pasa por KV
+  (`precios:resolucion`); si una llave se corrige, **se reemplaza** lo
+  cobrado, no se suma. Con la temporada, las billeteras arrancan de nuevo.
+- 🔐 Como las encuestas: el ID lo da Discord, cuenta de más de 30 días, y
+  afuera se ve cuánto vale cada cabeza, nunca quién puso. Con
+  `/borrar-mis-datos` se borra lo cobrado y lo puesto queda **sin nombre**
+  (si se borrara, al que cazó se le irían sus puntos de Temporada).
+- ⚠️ Quien caza sin Discord en el padrón cobra igual la Temporada; los
+  Puntos de Tienda le llegan cuando se sepa su Discord.
+- 🛒 **La Tienda** (`#/tienda`): tu billetera (entrando con Discord), las
+  cabezas con precio, un buscador para ponerle precio a cualquiera y lo
+  último que se cobró. En cada **perfil**, cuánto vale su cabeza y los montos;
+  en el **Inicio**, las tres que más valen. La tienda en sí dice «pronto».
+- 📰 **Publicaciones** (`#/publicaciones`): «pronto».
+- 📱 **La barra del celular se desliza**: se ven cinco y media, el borde de la
+  derecha se apaga mientras hay más, y la opción de la vista abierta se trae
+  a la vista sola.
+- Probado: self-checks de `precios` (13), `rankings` (con `sumar_precios`),
+  `subir_web`; `bot/probar_local.mjs` (309, con la ruta entera del precio);
+  el SQL de la billetera contra SQLite; y la página en local, en escritorio
+  y en teléfono, poniendo un precio contra un servidor de mentira.
 
 ---
 
@@ -1100,11 +1144,14 @@ inglés, y `/borrar-mis-datos`.
 - ✅ ~~El canal del Lunes de la Liga~~ y ~~«con tiempo»~~: contestadas (1.30).
 - ✅ ~~Las encuestas: ¿quién vota y se vota al propio servidor?~~ *«1. A. 2.
   A»*: hechas en la 1.31.
-- **Las cuentas de Discord de menos de 30 días no votan: ¿se queda?** Lo
-  agregué yo, sin preguntarte: con «cualquiera que entre con Discord», es lo
-  único que frena a alguien que se hace cuentas para votar. A la gente de la
-  Liga no le pesa. Si no lo querés, es un número (`EDAD_MIN_DIAS` en
-  `bot/avisos.js`).
+- ✅ ~~Las cuentas de Discord de menos de 30 días no votan~~: *«Listo»* (27/09).
+  Vale también para poner un precio por cabeza.
+- **¿Los buscados del Most Wanted también pagan Puntos de Tienda?** Hoy el que
+  caza a un buscado cobra sólo Temporada; con el precio por cabeza cobra las
+  dos. Si *«necesitamos más incentivos para que la gente pase por la página»*,
+  pagar también Tienda en el MW es una línea.
+- **¿Qué va en Publicaciones?** Hoy dice «pronto». Mi idea sigue siendo la del
+  27/09: primero el muro automático de la Liga.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

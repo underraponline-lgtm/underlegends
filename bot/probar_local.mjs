@@ -1915,5 +1915,69 @@ console.log('\nLAS ENCUESTAS\n');
   delete PUESTO.encuestas;
 }
 
+console.log('\nEL PRECIO POR CABEZA\n');
+
+{
+  // 🔑 Dlx, 27-28/09/2026: Puntos de Tienda, 5.000 para todos, tope 20.000
+  // por cabeza, vuelve si nadie caza; «1. Ambos. 2. B». Los números llegan del
+  // ciclo por KV (`precios`, ver bot/precios.py); acá no hay ninguno escrito.
+  const A = await import('./avisos.js');
+  const idDe = (ms, n = 9) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2019-05-01T00:00:00Z'));
+  const cfg = { cabezas: ['Ana', 'Bea'], yo: { [VIEJO]: 'Bea' }, fin: new Date(RELOJ + 86400000).toISOString(),
+    desde: '', inicial: 5000, min: 500, paso: 100, tope: 20000 };
+  const v = (d, id) => A.validarPrecio(cfg, d, id || VIEJO, RELOJ);
+  const bueno = v({ cabeza: 'Ana', monto: 1500 });
+  ok('un precio bueno vale, con los números que dejó el ciclo',
+     bueno.cabeza === 'Ana' && bueno.monto === 1500 && bueno.inicial === 5000 && bueno.tope === 20000 &&
+     bueno.fin === Date.parse(cfg.fin), JSON.stringify(bueno));
+  ok('a vos mismo, no', v({ cabeza: 'Bea', monto: 1000 }).error === 'vos');
+  ok('a quien no juega la temporada (o es fuera de concurso), no', v({ cabeza: 'Zoe', monto: 1000 }).error === 'cabeza');
+  ok('menos del mínimo, o no de a 100, no', v({ cabeza: 'Ana', monto: 400 }).error === 'monto' &&
+     v({ cabeza: 'Ana', monto: 550 }).error === 'monto' && v({ cabeza: 'Ana', monto: '1e3' }).error === 'monto');
+  ok('una cuenta nueva, no', v({ cabeza: 'Ana', monto: 1000 }, idDe(RELOJ - 86400000)).error === 'nueva');
+  ok('terminada la semana, no', A.validarPrecio(cfg, { cabeza: 'Ana', monto: 1000 }, VIEJO,
+     Date.parse(cfg.fin) + 1).error === 'cerrada');
+  ok('sin los números del ciclo, nada (no se inventa un tope)',
+     A.validarPrecio({ cabezas: ['Ana'], fin: cfg.fin }, { cabeza: 'Ana', monto: 1000 }, VIEJO, RELOJ).error === 'todavia');
+
+  // la ruta entera: Discord, KV y el objeto
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
+    return new Response('{"ok":true,"saldo":3500}', { status: 200 });
+  } }) };
+  PUESTO.precios = JSON.stringify(cfg);
+  globalThis.fetch = async (u) => (String(u).endsWith('/users/@me')
+    ? new Response(JSON.stringify({ id: VIEJO, username: 'x' }), { status: 200 })
+    : new Response('{}', { status: 404 }));
+  const pedirP = async (ruta, cuerpo) => {
+    const r = await worker.fetch(new Request('https://x/avisos/' + ruta, { method: 'POST',
+      body: JSON.stringify(cuerpo) }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedirP('precio', { token: 'permisoBueno1234567890', cabeza: 'Ana', monto: 1500, quien: '42424242424' });
+  ok('un precio llega al objeto con el ID de Discord, no con el de la página, y con los números del ciclo',
+     r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/precio') &&
+     alObjeto[0][1].quien === VIEJO && alObjeto[0][1].monto === 1500 && alObjeto[0][1].tope === 20000,
+     JSON.stringify(alObjeto));
+  r = await pedirP('precio', { token: 'permisoBueno1234567890', cabeza: 'Bea', monto: 1500 });
+  ok('a sí mismo: 403, y no llega al objeto', r.status === 403 && alObjeto.length === 1);
+  r = await pedirP('billetera', { token: 'permisoBueno1234567890' });
+  ok('la billetera: pregunta al objeto por ese ID, con lo de arranque', r.status === 200 && alObjeto.length === 2 &&
+     alObjeto[1][0].endsWith('/billetera') && alObjeto[1][1].quien === VIEJO && alObjeto[1][1].inicial === 5000);
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  r = await pedirP('billetera', { token: 'permisoFalso1234567890' });
+  ok('sin un permiso que Discord reconozca, no hay billetera', r.status === 401 && alObjeto.length === 2);
+  alObjeto.length = 0;
+  r = await worker.fetch(new Request('https://x/avisos/precios'), env, ctx);
+  ok('/avisos/precios le pregunta al objeto (lo público: nunca quién puso)', r.status === 200 &&
+     alObjeto.length === 1 && alObjeto[0][0].endsWith('/precios'));
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  delete PUESTO.precios;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

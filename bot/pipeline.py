@@ -956,6 +956,13 @@ def _lo_barato(correr):
         paso('2b3', 'el Lunes de la Liga')
         if not corre(['bot/lunes.py', '--publicar'], callado=False):
             print('      ⚠️ el Lunes de la Liga no salió: se reintenta en la próxima')
+        # ── 2b4 · el precio por cabeza: quién cazó qué, y lo que vence ────
+        # 🔑 Dlx, 28/09/2026: «1. Ambos. 2. B». Resuelve los precios que la
+        # gente puso en la página (el Durable Object) contra las llaves
+        # procesadas; ver `bot/precios.py`. Nunca frena el ciclo.
+        paso('2b4', 'el precio por cabeza')
+        if not corre(['bot/precios.py', '--aplicar'], callado=False):
+            print('      ⚠️ el precio por cabeza falló: queda lo de la corrida anterior')
 
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #

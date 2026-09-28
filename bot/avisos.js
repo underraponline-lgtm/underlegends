@@ -789,6 +789,8 @@ const RUTAS = {
   '/avisos/vincular': 'POST', '/avisos/desvincular': 'POST',
   // 🔑 las encuestas de la página: ver `validarVoto()` y `votar()` del objeto
   '/avisos/encuestas': 'GET', '/avisos/votar': 'POST',
+  // 🔑 el precio por cabeza: ver `validarPrecio()`, `precio()` y `billetera()`
+  '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
 };
 
 // ── las encuestas de la página ─────────────────────────────────────────
@@ -833,6 +835,51 @@ export function validarVoto(defs, d, id, ahora) {
   if (e.tipo === 'x2' && ((defs.sv || {})[id] || '') === d.op) return { error: 'propio', estado: 403, sv: d.op };
   if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
   return { enc: e.id, op: d.op };
+}
+
+// ── el precio por cabeza ───────────────────────────────────────────────
+// 🔑 Dlx, 27 y 28/09/2026: *«PUNTOS de TIENDA… que todos empecemos con 5k»*,
+// *«si nadie lo caza, vuelve»*, *«sí 20k»* y *«1. Ambos. 2. B»*: el que caza
+// cobra Tienda y Temporada, y billetera tiene cualquiera que entre con
+// Discord. Las reglas y los números viven en `bot/precios.py` y llegan por KV
+// (`precios`): acá no se escribe ninguno, así están en un solo lugar.
+// ⚠️ AFUERA SE VE CUÁNTO VALE CADA CABEZA, NUNCA QUIÉN PUSO.
+
+/**
+ * ¿Vale este precio? `{cabeza, monto, fin, desde, inicial, tope}` si vale,
+ * `{error, estado}` si no. El saldo y el tope los mira el objeto (`precio()`).
+ * Pura, sin red: la prueba `bot/probar_local.mjs`.
+ */
+export function validarPrecio(cfg, d, id, ahora) {
+  if (!cfg || !Array.isArray(cfg.cabezas) || !Number.isInteger(cfg.inicial) || !Number.isInteger(cfg.tope) ||
+      !Number.isInteger(cfg.min) || !Number.isInteger(cfg.paso)) return { error: 'todavia', estado: 503 };
+  const fin = Date.parse(cfg.fin || '');
+  if (!(ahora < fin)) return { error: 'cerrada', estado: 409 };
+  if (cfg.cabezas.indexOf(d.cabeza) < 0) return { error: 'cabeza', estado: 400 };
+  // un número de verdad: «1e3» o «1000» en texto no son un monto
+  const m = typeof d.monto === 'number' ? d.monto : NaN;
+  if (!Number.isInteger(m) || m < cfg.min || m % cfg.paso !== 0) {
+    return { error: 'monto', estado: 400, min: cfg.min, paso: cfg.paso };
+  }
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
+    return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
+  }
+  if (((cfg.yo || {})[id] || '') === d.cabeza) return { error: 'vos', estado: 403 };
+  return { cabeza: d.cabeza, monto: m, fin, desde: Date.parse(cfg.desde || '') || 0, inicial: cfg.inicial,
+    tope: cfg.tope };
+}
+
+/** El Discord ID detrás de un permiso de la página, preguntándole a Discord. `''` si no vale. */
+async function discordDe(t) {
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(String(t || ''))) return '';
+  try {
+    const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
+    const u = r.ok ? await r.json() : null;
+    return u && /^[0-9]{5,25}$/.test(String(u.id || '')) ? String(u.id) : '';
+  } catch (e) {
+    return '';
+  }
 }
 
 const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
@@ -924,19 +971,43 @@ export async function rutaAvisos(req, env, ruta) {
         d.op.length > 80 || !/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
       return json({ error: 'faltan datos' }, 400);
     }
-    let u = null;
-    try {
-      const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
-      if (r.ok) u = await r.json();
-    } catch (e) { u = null; }
-    if (!u || !/^[0-9]{5,25}$/.test(String(u.id || ''))) return json({ error: 'discord' }, 401);
+    const id = await discordDe(t);
+    if (!id) return json({ error: 'discord' }, 401);
     let defs = null;
     try { defs = JSON.parse((await env.KV.get('encuestas', { cacheTtl: 60 })) || 'null'); } catch (e) { defs = null; }
-    const v = validarVoto(defs, d, String(u.id), Date.now());
+    const v = validarVoto(defs, d, id, Date.now());
     if (v.error) return json(v, v.estado);
     return elObjeto(env).fetch('https://avisos/votar', {
-      method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: String(u.id) }),
+      method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: id }),
       headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🔑 UN PRECIO, O LA BILLETERA: quién es lo dice Discord, qué vale lo dice
+  // el ciclo (KV `precios`), y la plata la cuenta el objeto
+  if (ruta === '/avisos/precio' || ruta === '/avisos/billetera') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo); } catch (e) { d = null; }
+    if (!d || !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token || '')) ||
+        (ruta === '/avisos/precio' && (typeof d.cabeza !== 'string' || d.cabeza.length > 80))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const id = await discordDe(String(d.token));
+    if (!id) return json({ error: 'discord' }, 401);
+    let cfg = null;
+    try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+    let cuerpo = null;
+    if (ruta === '/avisos/billetera') {
+      if (!cfg || !Number.isInteger(cfg.inicial)) return json({ error: 'todavia' }, 503);
+      cuerpo = { quien: id, desde: Date.parse(cfg.desde || '') || 0, inicial: cfg.inicial };
+    } else {
+      const v = validarPrecio(cfg, d, id, Date.now());
+      if (v.error) return json(v, v.estado);
+      cuerpo = Object.assign({ quien: id }, v);
+    }
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
     });
   }
   const sub = ruta.slice('/avisos'.length);
@@ -1154,6 +1225,14 @@ export class Avisos {
       // que se cambia hasta que cierra. Ver `validarVoto()` y `votar()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS votos (enc TEXT NOT NULL, quien TEXT NOT NULL, ' +
         'op TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (enc, quien))');
+      // 🔑 EL PRECIO POR CABEZA (28/09/2026): lo que cada uno puso (`precios`)
+      // y lo que cobró cazando (`tienda`). El saldo sale de las dos: ver
+      // `saldo()`. Quién cazó lo resuelve el ciclo (`bot/precios.py`).
+      this.sql.exec('CREATE TABLE IF NOT EXISTS precios (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+        'quien TEXT NOT NULL, cabeza TEXT NOT NULL, monto INTEGER NOT NULL, t INTEGER NOT NULL, ' +
+        "fin INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT '', por TEXT NOT NULL DEFAULT '')");
+      this.sql.exec('CREATE TABLE IF NOT EXISTS tienda (id TEXT PRIMARY KEY, ref INTEGER NOT NULL, ' +
+        'quien TEXT NOT NULL, monto INTEGER NOT NULL, t INTEGER NOT NULL)');
     });
   }
 
@@ -1175,6 +1254,7 @@ export class Avisos {
       if (ruta === '/estado') return json(this.estado(), 200, 20);
       if (ruta === '/vivo') return json(this.vivo(), 200, 20);
       if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
+      if (ruta === '/precios') return json(this.precios(), 200, 20);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/alta') return this.alta(d);
@@ -1185,6 +1265,11 @@ export class Avisos {
       if (ruta === '/desvincular') return this.desvincular(d);
       if (ruta === '/olvidar') return this.olvidar(d);
       if (ruta === '/votar') return this.votar(d);
+      if (ruta === '/precio') return this.precio(d);
+      if (ruta === '/billetera') {
+        await this.resolverPrecios(Date.now());
+        return this.billetera(d);
+      }
       if (ruta === '/disparo') {
         if (d.cual !== 'arranco' && d.cual !== 'ultimo') return json({ error: 'no existe' }, 404);
         this.guardar('disparo_' + d.cual, d.v || {});
@@ -1358,6 +1443,13 @@ export class Avisos {
     // 🔑 los avisos de cada uno. Nunca frena al vigía: ver `personales()`
     try { await this.personales(ahora); } catch (e) {
       this.guardar('personales', { t: ahora, error: String(e).slice(0, 120) });
+    }
+    // 🔑 el precio por cabeza: lo que el ciclo resolvió (cazado o devuelto),
+    // cada cinco minutos. Nunca frena al vigía: ver `resolverPrecios()`
+    if (Math.floor(ahora / MIN) % 5 === 0) {
+      try { await this.resolverPrecios(ahora); } catch (e) {
+        this.guardar('precios_error', { t: ahora, error: String(e).slice(0, 120) });
+      }
     }
     return { ok: !errores.length, leidos, nuevos, errores };
   }
@@ -1757,7 +1849,11 @@ export class Avisos {
     // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
     // ya se aplicó (un Elegido, un ×2) quedó en el ciclo y no cambia.
     const v = this.sql.exec('DELETE FROM votos WHERE quien = ?', String(d.quien));
-    return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0 });
+    // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
+    // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
+    const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
+    this.sql.exec("UPDATE precios SET quien = 'borrado' WHERE quien = ?", String(d.quien));
+    return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0 });
   }
 
   // ── las encuestas ────────────────────────────────────────────────────
@@ -1786,6 +1882,102 @@ export class Avisos {
       (votos[r.enc] = votos[r.enc] || {})[r.op] = r.n;
     }
     return { t: Date.now(), votos };
+  }
+
+  // ── el precio por cabeza ─────────────────────────────────────────────
+  /**
+   * Los Puntos de Tienda de alguien: lo de arranque + lo cobrado − lo puesto.
+   * Lo devuelto (nadie lo cazó) no cuenta como puesto. `desde` es el
+   * arranque de la temporada: lo de antes (la prueba) no cuenta.
+   */
+  saldo(quien, desde, inicial) {
+    const puesto = this.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM precios WHERE quien = ? AND t >= ? " +
+      "AND estado != 'devuelto'", quien, desde).toArray()[0].n;
+    const cobrado = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND t >= ?',
+      quien, desde).toArray()[0].n;
+    return inicial + cobrado - puesto;
+  }
+
+  /** Lo activo sobre una cabeza: lo que todavía se puede cobrar. */
+  encima(cabeza, ahora) {
+    return this.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM precios WHERE cabeza = ? AND estado = '' " +
+      'AND fin > ?', cabeza, ahora).toArray()[0].n;
+  }
+
+  /** Un precio. Sólo lo llama `rutaAvisos`, ya validado y con el ID de Discord. */
+  precio(d) {
+    const m = Number(d.monto), ini = Number(d.inicial), tope = Number(d.tope);
+    if (!/^[0-9]{5,25}$/.test(String(d.quien || '')) || typeof d.cabeza !== 'string' || !Number.isInteger(m) ||
+        m <= 0 || !Number.isInteger(ini) || !Number.isInteger(tope) || !(Number(d.fin) > 0)) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const ahora = Date.now();
+    // ⚠️ EL SALDO Y EL TOPE SE MIRAN ACÁ Y NO EN EL WORKER: el objeto es uno
+    // solo, así que dos precios a la vez no pueden gastar la misma plata
+    const s = this.saldo(String(d.quien), Number(d.desde) || 0, ini);
+    if (m > s) return json({ error: 'saldo', saldo: s }, 409);
+    const ya = this.encima(d.cabeza, ahora);
+    if (ya + m > tope) return json({ error: 'tope', queda: Math.max(0, tope - ya), total: ya }, 409);
+    this.sql.exec('INSERT INTO precios (quien, cabeza, monto, t, fin) VALUES (?, ?, ?, ?, ?)',
+      String(d.quien), d.cabeza.slice(0, 80), m, ahora, Number(d.fin));
+    return json({ ok: true, cabeza: d.cabeza, monto: m, saldo: s - m, total: ya + m, t: ahora });
+  }
+
+  /** Lo de una persona: su saldo, lo que cobró y sus precios de los últimos 30 días. */
+  billetera(d) {
+    if (!/^[0-9]{5,25}$/.test(String(d.quien || '')) || !Number.isInteger(Number(d.inicial))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const quien = String(d.quien), desde = Number(d.desde) || 0;
+    const cobrado = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND t >= ?',
+      quien, desde).toArray()[0].n;
+    const mios = this.sql.exec('SELECT id, cabeza, monto, t, fin, estado FROM precios WHERE quien = ? AND t >= ? ' +
+      'ORDER BY t DESC LIMIT 30', quien, Math.max(desde, Date.now() - VOTOS_DIAS * DIA_MS)).toArray();
+    return json({ ok: true, saldo: this.saldo(quien, desde, Number(d.inicial)), inicial: Number(d.inicial),
+      cobrado, mios });
+  }
+
+  /** Para `/avisos/precios`: los de los últimos 30 días. ⚠️ Nunca quién los puso. */
+  precios() {
+    const ahora = Date.now();
+    return { t: ahora, precios: this.sql.exec('SELECT id, cabeza, monto, t, fin, estado FROM precios ' +
+      'WHERE t > ? ORDER BY id', ahora - VOTOS_DIAS * DIA_MS).toArray() };
+  }
+
+  /**
+   * Lo que el ciclo resolvió (`bot/precios.py`, por KV): cazado —y a quién le
+   * toca cuánto— o devuelto. Se aplica sólo si cambió (`v`).
+   *
+   * ⚠️ SE REEMPLAZA, NO SE SUMA: si una llave se corrige y el cazador es
+   * otro, lo cobrado de ese precio se borra y se vuelve a anotar. Así lo
+   * anotado es siempre lo último que dijo el ciclo, y nadie cobra dos veces.
+   */
+  async resolverPrecios(ahora) {
+    const crudo = await this.env.KV.get('precios:resolucion');
+    if (!crudo) return 0;
+    let r = null;
+    try { r = JSON.parse(crudo); } catch (e) { return 0; }
+    if (!r || !r.r || r.v === this.leer('precios_v')) return 0;
+    let cambios = 0;
+    for (const [id, x] of Object.entries(r.r)) {
+      const n = Number(id);
+      const fila = this.sql.exec('SELECT estado, por FROM precios WHERE id = ?', n).toArray()[0];
+      if (!fila || (x.e !== 'cazado' && x.e !== 'devuelto')) continue;
+      const por = (Array.isArray(x.por) ? x.por : []).filter((p) => Array.isArray(p) &&
+        /^[0-9]{5,25}$/.test(String(p[0])) && Number.isInteger(p[1]) && p[1] > 0);
+      const txt = JSON.stringify(por);
+      if (fila.estado === x.e && fila.por === txt) continue;
+      this.sql.exec('UPDATE precios SET estado = ?, por = ? WHERE id = ?', x.e, txt, n);
+      this.sql.exec('DELETE FROM tienda WHERE ref = ?', n);
+      for (const [quien, monto] of por) {
+        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, ?, ?, ?, ?)',
+          'caza:' + n + ':' + quien, n, String(quien), monto, Number(x.t) || ahora);
+      }
+      cambios++;
+    }
+    this.guardar('precios_v', r.v);
+    this.guardar('precios_ultimo', { t: ahora, cambios });
+    return cambios;
   }
 
   /**

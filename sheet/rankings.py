@@ -980,6 +980,39 @@ def sumar_mw(ag, suma=None):
     return tocadas
 
 
+def sumar_precios(ag, suma=None):
+    """El precio por cabeza en la Temporada: lo que cada uno cobró cazando, a `Puntos`.
+
+    🔑 Dlx, 28/09/2026, a «el que caza, ¿qué cobra?»: *«ambos»* —los Puntos
+    de Tienda a su billetera y lo mismo a su Temporada—, porque *«MW is for
+    puntos temporada mainly»*. Quién cazó qué lo resuelve `bot/precios.py`.
+
+    ⚠️ NUNCA AL COMPETITIVO, como el Most Wanted, y por lo mismo va una
+    corrida atrás: lee el `datos/precios.json` de la anterior.
+
+    ⚠️ SI NO SE PUEDE LEER NO SUMA NADA y devuelve `None`. Sin archivo o sin
+    cazas, `0`: no hay nada que sumar. Devuelve a cuántos les sumó.
+    """
+    if suma is None:
+        try:
+            _b = os.path.join(BASE, 'bot')
+            if _b not in sys.path:
+                sys.path.insert(0, _b)
+            import precios as _PR
+            suma = (_PR.leer() or {}).get('suma') or {}
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude leer los precios por cabeza (%s): la vitrina no los suma' % str(e)[:80])
+            return None
+    por = {_como_pool(n): pts for n, pts in (suma or {}).items() if pts}
+    tocadas = 0
+    for quien, v in ag.items():
+        pts = por.get(_como_pool(quien)) or 0
+        if pts:
+            v['Puntos'] = v.get('Puntos', 0) + pts
+            tocadas += 1
+    return tocadas
+
+
 def agregar_temporada(filas_res, filas_uno, instantes=None):
     """La Temporada: `agregar()` con los multiplicadores de la semana y el Most Wanted.
 
@@ -1007,6 +1040,8 @@ def agregar_temporada(filas_res, filas_uno, instantes=None):
         if quien in ag:
             ag[quien]['Puntos'] = ag[quien].get('Puntos', 0) + b['pts']
     sumar_mw(ag)
+    # 🔑 Y EL PRECIO POR CABEZA: lo cobrado cazando (Dlx: «ambos»)
+    sumar_precios(ag)
     return ag
 
 
@@ -2448,6 +2483,12 @@ def _self_check():
     mal += not ok
     print('   %s el Most Wanted suma a los Puntos y llena 🎯 💀 🛡️ (MTZ con bandera '
           'engancha; volk no es Volk)' % ('✅' if ok else '🔴'))
+    # 🔑 el precio por cabeza: lo cobrado, a los Puntos (Dlx: «ambos»)
+    agp = {'MTZ 🇲🇽': {'Puntos': 1000}, 'Hassan': {'Puntos': 2000}}
+    n_pr = sumar_precios(agp, {'MTZ': 3000, 'Nadie': 500, 'Hassan': 0})
+    ok = n_pr == 1 and agp['MTZ 🇲🇽']['Puntos'] == 4000 and agp['Hassan']['Puntos'] == 2000
+    mal += not ok
+    print('   %s el precio por cabeza cobrado suma a los Puntos (y nada más)' % ('✅' if ok else '🔴'))
     # 🔑 el multiplicador: sólo con `factor`, por servidor y por semana
     resm = [[1, '27/09', 'SR', '16+', 'Ana', 'ar', 'Campeón', 10000, '', 0, ''],
             [2, '27/09', 'FFA', '16+', 'Ana', 'ar', 'Subcampeón', 7500, '', 0, '']]

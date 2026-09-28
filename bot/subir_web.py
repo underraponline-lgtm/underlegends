@@ -458,6 +458,9 @@ def armar():
         # 🔑 LAS ENCUESTAS: El Elegido y el ×2 votado. Qué se vota y hasta
         # cuándo; los votos los pide la página aparte. Ver `_enc()`.
         'enc': _enc(),
+        # 🔑 LA TIENDA: los números del precio por cabeza y lo último que se
+        # cazó. Cuánto vale cada cabeza lo pide la página aparte. Ver `_tienda()`.
+        'tienda': _tienda(),
         # 🔑 LAS INSIGNIAS: el catálogo (las de cada uno viajan en los perfiles)
         # y las RIVALIDADES, para marcar el Clásico en una llave en vivo. Ver
         # `bot/insignias.py` y `multiplicadores.clasicos()`.
@@ -2040,6 +2043,33 @@ def _enc():
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin encuestas para la página (%s)' % str(e)[:60])
         return None
+
+
+def _tienda():
+    """El precio por cabeza para la página: los números, hasta cuándo, y lo último cazado.
+
+    🔑 Dlx, 27 y 28/09/2026: *«PUNTOS de TIENDA… que todos empecemos con 5k»*,
+    *«sí 20k»*, *«1. Ambos. 2. B»*. Los números salen de `bot/precios.py`: si
+    la página los escribiera, el día que cambien diría otra cosa que el Worker.
+
+    ⚠️ SIN DISCORD IDs Y SIN QUIÉN PUSO: sólo quién cazó, que es lo que
+    cuenta la llave. Cuánto vale cada cabeza ahora lo pide la página a
+    `/api/avisos/precios`, porque cambia con cada precio.
+    """
+    try:
+        import precios as _PR
+        import multiplicadores as _MU
+        _pid, _ini, fin = _MU.periodo()
+        d = _PR.leer()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin la tienda para la página (%s)' % str(e)[:60])
+        return None
+    cazas = [x for x in d.get('precios') or [] if x.get('e') == 'cazado' and x.get('ev')]
+    cazas.sort(key=lambda x: x['ev'].get('t') or '')
+    return {'inicial': _PR.INICIAL, 'min': _PR.MINIMO, 'paso': _PR.PASO, 'tope': _PR.TOPE_CABEZA,
+            'fin': _PR._iso(fin),
+            'cazas': [{'cabeza': x['cabeza'], 'monto': x['monto'], 'por': x['por'],
+                       'ev': x['ev'].get('nombre') or '', 't': x['ev'].get('t') or ''} for x in cazas[-10:]]}
 
 
 def _mw_leer():
