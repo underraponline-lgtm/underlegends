@@ -59,7 +59,10 @@ except AttributeError:
 HOJA = '✅ Decidir'
 #: las filas de arriba son el título y cómo se usa; la tabla empieza abajo
 FILA_CAB = 5
-COLS = ['#', 'Tipo', 'Qué hay que decidir', 'Dónde apareció', 'Sugerencia',
+# 🔑 OCHO COLUMNAS Y NO NUEVE (28/09/2026): «Dónde apareció» pasó a ser el
+# título de cada sección —el evento— y «Sugerencia» se volvió «Pistas», que
+# junta lo que se sugiere con lo que se sabe de esa persona en la llave.
+COLS = ['#', 'Tipo', 'Qué hay que decidir', 'Pistas',
         '✍️ RESPUESTA', '📝 NOTA', 'Estado', 'id']
 # 🔴 LA COLUMNA DE NOTAS EXISTE PORQUE DLX ESCRIBIÓ EN «Sugerencia». El
 # 24/09/2026, al usarla por primera vez: *«Existe elsolar y solar. Son
@@ -71,13 +74,14 @@ COLS = ['#', 'Tipo', 'Qué hay que decidir', 'Dónde apareció', 'Sugerencia',
 # ⚠️ LAS COLUMNAS SE BUSCAN POR SU NOMBRE AL LEER, no por posición: agregar
 # ésta corrió `Estado` e `id`, y leer por número habría tomado las
 # respuestas ya escritas como vacías — y la hoja rehecha las habría borrado.
-C_RESP, C_NOTA, C_ESTADO, C_ID = 5, 6, 7, 8
+C_RESP, C_NOTA, C_ESTADO, C_ID = 4, 5, 6, 7
 POR = 'Dlx (✅ Decidir)'
 DECISIONES = os.path.join(BASE, 'datos', 'decisiones.json')
 
 #: cómo se muestra cada tipo de `Pendientes`, y en qué orden. Primero lo que
 #: mueve puntos de un evento entero; después los nombres; al final identidad.
 GRUPO = {
+    'Batalla sin ganador': (0, '⚔️ Batalla'),
     'Bracket incompleto': (0, '🏆 Evento'),
     'Evento dudoso': (0, '🏆 Evento'),
     'Llave sin resolver': (0, '🏆 Evento'),
@@ -90,6 +94,10 @@ GRUPO = {
 }
 
 NUEVO = 'Es alguien nuevo'
+#: la batalla que no se peleó (un walkover sin nadie que pase, una anulada)
+NO_SE_JUGO = 'No se jugó'
+#: entre los lados de una batalla, en el detalle de `Pendientes`
+SEP_LADOS = ' 🆚 '
 #: un nombre de broma que no es nadie: no entra a ningún ranking. Ver
 #: `no_rankear()`.
 TROLL = 'Es un troll (no cuenta)'
@@ -110,6 +118,51 @@ def clave(tipo, detalle):
 
 def _sin_bandera(s):
     return re.sub(r'\s+', ' ', _BANDERA.sub('', str(s or ''))).strip()
+
+
+# ── la batalla sin ganador ──────────────────────────────────────────────
+# 🔑 Dlx, 28/09/2026, sobre MARRUECOS EN VENTA —ocho batallas de octavos que
+# el lector no pudo resolver—: «lo resuelvo yo… pero mejora esa página de
+# decidir». Hasta acá una batalla sin ganador iba a `Pendientes` como «No
+# pude leer estas batallas», con «La corrijo en Discord» y «Dejala así» de
+# respuestas —o sea que no se podía resolver desde la hoja—, y encima se
+# cerraba sola en cuanto el evento tenía campeón. Los que perdieron esas
+# batallas no cobraban su ronda y nadie lo volvía a preguntar.
+#
+# ⚠️ LA CLAVE NO LLEVA BANDERAS NI MAYÚSCULAS, y los lados van ordenados:
+# «Mau Kc 🇨🇴» y «MAU KC» son la misma batalla escrita dos veces.
+
+def detalle_batalla(ev, sv, fecha, ronda, lados):
+    """«EVENTO · SV · 26/09 · octavos · A 🆚 B»: cómo va en `Pendientes`."""
+    return ' · '.join([str(ev or '').strip(), str(sv or ''), str(fecha or ''),
+                       str(ronda or '').strip().lower(),
+                       SEP_LADOS.join(str(x).strip() for x in lados)])
+
+
+def partes_batalla(det):
+    """`(evento, servidor, fecha, ronda, [lados])` de ese detalle, o None."""
+    p = str(det or '').rsplit(' · ', 4)
+    if len(p) != 5:
+        return None
+    lados = [x.strip() for x in p[4].split(SEP_LADOS.strip()) if x.strip()]
+    return p[0].strip(), p[1].strip(), p[2].strip(), p[3].strip(), lados
+
+
+def clave_batalla(det):
+    """La clave de una batalla en `datos/decisiones.json`."""
+    x = partes_batalla(det)
+    if not x:
+        return norm(det)
+    ev, sv, fecha, ronda, lados = x
+    return '|'.join([norm(ev), sv.upper(), fecha, norm(ronda)]
+                    + sorted(norm(_sin_bandera(l)) for l in lados))
+
+
+def decision_batalla(det):
+    """Quién ganó según ✅ Decidir: un lado del detalle, `''` si no se jugó,
+    `None` si todavía no se decidió. Lo lee `llaves_a_entrada.py`."""
+    d = (_decisiones().get('batallas') or {}).get(clave_batalla(det))
+    return None if d is None else (d.get('ganador') or '')
 
 
 # ── las preguntas ───────────────────────────────────────────────────────
@@ -214,9 +267,127 @@ def armar(abiertas, eventos=None):
         por[k] = p
     for p in por.values():
         p['que'], p['sug'], p['opciones'] = _pregunta(p)
-        if p.get('link'):
-            p['que'] += chr(10) + 'La llave: ' + p['link']
+        p['pistas'] = _pistas(p)
+        p['seccion'] = _seccion(p)
     return sorted(por.values(), key=lambda p: (p['grupo'][0], p['filas'][0]))
+
+
+# ── las pistas y la sección de cada pregunta ────────────────────────────
+_LLAVES_T1 = []
+
+
+def _llaves_t1():
+    if not _LLAVES_T1:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'),
+                         encoding='utf-8') as f:
+                _LLAVES_T1.append(json.load(f) or {})
+        except (OSError, ValueError):
+            _LLAVES_T1.append({})
+    return _LLAVES_T1[0]
+
+
+def _num_evento(p):
+    m = re.match(r'evento\s*#\s*(\d+)', p.get('origen') or '', re.I)
+    if m:
+        return m.group(1)
+    m = re.match(r'#(\d+)', p.get('donde') or '')
+    return m.group(1) if m else ''
+
+
+def _limpio(ev):
+    """«__ RAP EXHIBITION 1 8 __» -> «RAP EXHIBITION 1 8»: sin el subrayado
+    de Discord, para leer. ⚠️ Sólo para mostrar: el nombre de verdad sigue
+    siendo el de `Eventos Procesados`."""
+    return re.sub(r'^[_\s]+|[_\s]+$', '', str(ev or '')) or str(ev or '')
+
+
+def _seccion(p):
+    """`(clave, título)` de la sección donde va la pregunta: su EVENTO, o el
+    grupo si no es de un evento (identidad, MW)."""
+    t, det = p['tipo'], p['detalle']
+    ev = sv = fecha = num = ''
+    if t == 'Batalla sin ganador':
+        x = partes_batalla(det)
+        if x:
+            ev, sv, fecha = x[0], x[1], x[2]
+    elif t in ('Bracket incompleto', 'Evento dudoso', 'Llave sin resolver') and ' · ' in det:
+        partes = [x.strip() for x in det.split(' · ')]
+        if len(partes) == 3:
+            ev, sv, fecha = partes
+    if not ev:
+        m = re.match(r'#(\d+) · (.+) \((\w+), ([\d/]+)\)$', p.get('donde') or '')
+        if m:
+            num, ev, sv, fecha = m.groups()
+    if not ev:
+        return ('grupo:' + p['grupo'][1], p['grupo'][1])
+    if not num:
+        for n, L in _llaves_t1().items():
+            if norm(_limpio(L.get('nombre'))) == norm(_limpio(ev)) and L.get('fecha') == fecha:
+                num = n
+                break
+    tit = '%s · %s · %s%s' % (_limpio(ev), sv, fecha, ' · #%s' % num if num else '')
+    return ('ev:%s|%s|%s' % (norm(_limpio(ev)), sv, fecha), tit)
+
+
+def _peleas(nombre, num):
+    """Lo que hizo esa persona en ese evento, de la llave: «Cuartos: perdió
+    con X». Ayuda a saber quién es sin abrir Discord."""
+    L = _llaves_t1().get(str(num)) or {}
+    k = norm(_sin_bandera(nombre))
+    out = []
+    for R in L.get('rondas') or []:
+        for b in R.get('b') or []:
+            lados = b[0] if b else []
+            mio = [x for x in lados if k and any(norm(_sin_bandera(m)) == k
+                                                 for m in str(x).split(','))]
+            if not mio:
+                continue
+            otros = [_sin_bandera(x) for x in lados if x not in mio]
+            gano = b[1] and (b[1] in mio or any(norm(_sin_bandera(m)) == k
+                                                for m in str(b[1]).split(',')))
+            if otros:
+                # ⚠️ EN UNA BATALLA DE SIETE, DOS NOMBRES Y «N MÁS»
+                quien = (' y '.join(otros) if len(otros) <= 2
+                         else '%s, %s y %d más' % (otros[0], otros[1], len(otros) - 2))
+                out.append('%s: %s %s' % (R.get('r') or '', 'le ganó a' if gano else 'perdió con', quien))
+    return out[:2]
+
+
+def _termino(nombre, num):
+    """«Terminó Subcampeón (3.750 pts)»: su fila en la tabla de esa llave."""
+    k = norm(_sin_bandera(nombre))
+    for r in (_llaves_t1().get(str(num)) or {}).get('tabla') or []:
+        if k and norm(_sin_bandera(r[0])) == k:
+            return 'Terminó %s (%s pts)' % (r[1], '{:,}'.format(int(r[2] or 0)).replace(',', '.'))
+    return ''
+
+
+#: cómo se dice cada motivo del lector
+_MOTIVO = {
+    'no aparece nadie después': 'Ninguno aparece en la ronda siguiente, y la llave no marca quién pasó.',
+    'última ronda y no dice campeón': 'Es la última ronda y la llave no dice quién salió campeón.',
+}
+
+
+def _pistas(p):
+    """La columna «Pistas»: lo que ayuda a contestar."""
+    t, out = p['tipo'], []
+    if t == 'Nombre desconocido':
+        sug = [x for x in _sugerencias(p['match'])]
+        if sug:
+            out.append('¿Será %s?' % ' o '.join(sug))
+        out.append(_termino(p['detalle'], _num_evento(p)))
+        out += _peleas(p['detalle'], _num_evento(p))
+    elif t == 'Batalla sin ganador':
+        mot = (p['match'] or '').strip()
+        out.append(_MOTIVO.get(mot, mot) if mot else '')
+    elif t == 'alta' and p['sug'] and p['sug'] != '—':
+        out.append('¿Será %s?' % p['sug'].replace(', ', ' o '))
+    elif p['sug'] and p['sug'] != '—':
+        out.append(p['sug'])
+    # ⚠️ EL LINK DE LA LLAVE NO VA ACÁ: va una vez, en la franja de su evento
+    return '\n'.join(x for x in out if x) or '—'
 
 
 def es_fragmento(det):
@@ -326,9 +497,9 @@ def _pregunta(p):
         otras = [v for v in p.get('variantes', [det]) if v != det]
         tambien = (' (también escrito %s)' % ', '.join('«%s»' % v for v in otras)
                    if otras else '')
-        return ('¿Quién es «%s»?%s No está en la Lista de Raperos. Si es '
-                'alguien que ya está, escribí su nombre como figura ahí.'
-                % (det, tambien),
+        # ⚠️ CORTA: «no está en la Lista… escribí su nombre como figura ahí»
+        # se repetía en 44 filas, y ahora está una vez, arriba (ver `pintar()`)
+        return ('¿Quién es «%s»?%s' % (det, tambien),
                 ', '.join(sug) if sug else '—',
                 ['Es %s' % s for s in sug] + [NUEVO, TROLL])
     if t == 'alta':
@@ -354,6 +525,16 @@ def _pregunta(p):
     if t == 'Alias posible':
         return (_conflicto_en_palabras(det), match or '—',
                 ['Ya lo revisé', 'Dejar para después'])
+    if t == 'Batalla sin ganador':
+        x = partes_batalla(det)
+        lados = x[4] if x else [det]
+        dos = len(lados) == 2
+        return ('¿Quién %s en %s?\n%s' % ('ganó' if dos else 'pasó',
+                                          (x[3] if x else '') or 'esta batalla',
+                                          SEP_LADOS.join(lados)),
+                match or '—',
+                ['%s %s' % ('Ganó' if dos else 'Pasó', l) for l in lados]
+                + [NO_SE_JUGO, 'Dejar para después'])
     if t == 'Bracket incompleto':
         return ('Esta llave no dice quién ganó y lleva más de 12 h sin '
                 'cambios, así que no sumó nada. ¿Cuenta?',
@@ -404,6 +585,17 @@ def interpretar(p, respuesta):
         return ('error', '«%s» no aplica a esta pregunta' % r)
     if r == NUEVO:
         return ('cerrar', 'nuevo: queda con este nombre')
+    # ⚠️ ANTES QUE EL ALIAS: «Ganó X» no es «es X»
+    if p['tipo'] == 'Batalla sin ganador':
+        if r == NO_SE_JUGO:
+            return ('batalla', '')
+        m = re.match(r'(?:gan[oó]|pas[oó])\s+(.+)$', r, re.I)
+        quien = norm(_sin_bandera(m.group(1) if m else r))
+        x = partes_batalla(p['detalle'])
+        hit = [l for l in (x[4] if x else []) if norm(_sin_bandera(l)) == quien]
+        if len(hit) == 1:
+            return ('batalla', hit[0])
+        return ('error', '«%s» no es uno de los que pelearon: elegí de la lista' % r)
     if r in ('No cuenta', 'Sí cuenta'):
         if p['tipo'] in ('Bracket incompleto', 'Evento dudoso'):
             return ('evento', 'cuenta' if r == 'Sí cuenta' else 'no cuenta')
@@ -571,8 +763,10 @@ def _respuestas():
 
     def col(nombre, antes):
         return cab.index(nombre) if nombre in cab else antes
-    i_resp, i_id = col('✍️ RESPUESTA', 5), col('id', 7)
-    i_est, i_sug = col('Estado', 6), col('Sugerencia', 4)
+    i_resp, i_id = col('✍️ RESPUESTA', C_RESP), col('id', C_ID)
+    # ⚠️ «Pistas» en la hoja nueva, «Sugerencia» en la de antes: la primera
+    # corrida después del cambio lee la vieja
+    i_est, i_sug = col('Estado', C_ESTADO), col('Pistas', col('Sugerencia', None))
     i_nota = col('📝 NOTA', None)
     out = {}
     for f in v[1:]:
@@ -585,7 +779,8 @@ def _respuestas():
             out[k] = (r, str(f[i_est]).strip())
         if i_nota is not None and str(f[i_nota]).strip():
             _respuestas.notas[k] = str(f[i_nota]).strip()
-        _respuestas.sugerencias[k] = str(f[i_sug]).strip()
+        if i_sug is not None:
+            _respuestas.sugerencias[k] = str(f[i_sug]).strip()
     return out
 
 
@@ -596,8 +791,10 @@ def _nota(p):
     s_hoja = (getattr(_respuestas, 'sugerencias', {}) or {}).get(p['id'], '')
     # ⚠️ Lo que escribió el SISTEMA antes no es una nota: la sugerencia de
     # la corrida anterior era el «Posible match» crudo («sv FFA»).
-    if s_hoja and s_hoja not in (p['sug'], (p.get('match') or '').strip()):
-        extra = s_hoja[len(p['sug']):] if s_hoja.startswith(p['sug']) else s_hoja
+    sistema = [x for x in (p.get('pistas'), p['sug']) if x]
+    if s_hoja and s_hoja not in sistema + [(p.get('match') or '').strip()]:
+        de = next((x for x in sistema if s_hoja.startswith(x)), '')
+        extra = s_hoja[len(de):] if de else s_hoja
         extra = extra.strip(' —-·')
         if extra and extra not in nota:
             nota = (nota + ' · ' if nota else '') + extra
@@ -682,6 +879,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                                encoding='utf-8'))
     akas = AK.cargar() or {}
     estados, cierres, pares, eventos, ids = {}, [], [], {}, []
+    batallas = {}
     trolls = []
     fuera = no_rankear()
     for p in preguntas:
@@ -711,6 +909,10 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         elif que == 'troll':
             trolls.append(dato)
             cierres += [(n, 'troll: no cuenta') for n in p['filas']]
+        elif que == 'batalla':
+            batallas[p['detalle']] = dato
+            cierres += [(n, ('ganó %s: entra en la corrida siguiente' % dato) if dato
+                         else 'no se jugó: queda afuera') for n in p['filas']]
         elif que == 'alias':
             x = _persona(dato, padron, akas)
             if x is None:
@@ -739,7 +941,9 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         print('      alias: %s -> %s' % (a, b))
     for ev, dec in eventos.items():
         print('      evento: %s -> %s' % (ev, dec))
-    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls)
+    for det, g in batallas.items():
+        print('      batalla: %s -> %s' % (det, g or 'no se jugó'))
+    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas)
     # ⚠️ LAS NOTAS DE LO QUE SE CIERRA NO SE PIERDEN: van a
     # `datos/decisiones.json` con la pregunta, para quien tenga que actuar.
     cerradas = {n for n, _d in cierres}
@@ -769,6 +973,15 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         for ev, dec in eventos.items():
             d.setdefault('eventos', {})[ev] = {'decision': dec, 'cuando': ahora,
                                                'por': POR}
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    if batallas:
+        d = _decisiones()
+        ahora = _ahora_et()
+        for det, g in batallas.items():
+            d.setdefault('batallas', {})[clave_batalla(det)] = {
+                'ganador': g, 'batalla': det, 'cuando': ahora, 'por': POR}
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
@@ -845,99 +1058,264 @@ def _protecciones(sid):
     return []
 
 
+#: 🎨 los colores de la hoja (RGB de 0 a 1). Los de la Liga: el verde agua del
+#: hub y el fondo oscuro, y un color claro por tipo de pregunta.
+_OSCURO = {'red': .055, 'green': .098, 'blue': .09}
+_AGUA = {'red': .161, 'green': .698, 'blue': .596}
+_BLANCO = {'red': 1, 'green': 1, 'blue': 1}
+_GRIS = {'red': .45, 'green': .47, 'blue': .47}
+_AMARILLO = {'red': 1, 'green': .969, 'blue': .82}
+_VERDE = {'red': .85, 'green': .949, 'blue': .87}
+_ROJO = {'red': .988, 'green': .878, 'blue': .878}
+#: el fondo de la franja de cada sección, por el tipo de su primera pregunta
+_FRANJA = {'⚔️ Batalla': {'red': 1, 'green': .918, 'blue': .835},
+           '🏆 Evento': {'red': 1, 'green': .953, 'blue': .78},
+           '👤 Nombre': {'red': .867, 'green': .949, 'blue': .929},
+           '🪪 Identidad': {'red': .925, 'green': .91, 'blue': .988},
+           '🎯 MW': {'red': .992, 'green': .898, 'blue': .929}}
+
+
+def secciones(preguntas):
+    """`[(título, [preguntas])]`: una sección por evento con TODO lo de ese
+    evento —batallas, el evento, los nombres—, y al final lo que no es de un
+    evento (identidad, MW).
+
+    🔑 POR EVENTO Y NO POR TIPO. Dlx piensa en eventos —«MARRUECOS lo resuelvo
+    yo»— y la hoja los tenía desparramados: las batallas de MARRUECOS arriba,
+    sus nombres cuarenta filas más abajo. Primero van los eventos que tienen
+    algo que MUEVE PUNTOS de varios (una batalla sin ganador, un evento
+    dudoso), después los que sólo tienen nombres.
+    """
+    por, orden = {}, []
+    for p in preguntas:
+        k, tit = p.get('seccion') or _seccion(p)
+        if k not in por:
+            por[k] = (tit, [])
+            orden.append(k)
+        por[k][1].append(p)
+
+    def peso(k):
+        ps = por[k][1]
+        return (2 if k.startswith('grupo:') else 0 if min(x['grupo'][0] for x in ps) == 0 else 1,
+                min(x['grupo'][0] for x in ps), min(x['filas'][0] for x in ps))
+    out = []
+    for k in sorted(orden, key=peso):
+        tit, ps = por[k]
+        out.append((tit, sorted(ps, key=lambda x: (x['grupo'][0], x['filas'][0]))))
+    return out
+
+
+def _condicionales(sid):
+    """Cuántas reglas de formato condicional tiene esta hoja: se borran antes
+    de poner las nuevas, de atrás para adelante (ver `rankings._adornos()`)."""
+    from escribir import _pedir
+    d = _pedir('GET', '?fields=sheets(properties.sheetId,conditionalFormats)')
+    for x in d.get('sheets') or []:
+        if x['properties']['sheetId'] == sid:
+            return len(x.get('conditionalFormats') or [])
+    return 0
+
+
 def pintar(preguntas, estados, respuestas, hechas, dry=True):
-    """Rehace la hoja entera: título, cómo se usa, la tabla y lo último hecho."""
+    """Rehace la hoja entera: la franja de arriba, cómo se usa, cada evento con
+    sus preguntas, y lo último que se aplicó.
+
+    🎨 Dlx, 28/09/2026: *«mejora esa página de decidir incluso más… hazla.
+    Más mejor y bonita»*. Lo que cambió, y por qué:
+
+      · UNA SECCIÓN POR EVENTO, con su franja de color, su servidor, su fecha
+        y el link a la llave. Ver `secciones()`.
+      · LA PREGUNTA, CORTA. «No está en la Lista de Raperos. Si es alguien
+        que ya está, escribí su nombre como figura ahí» se repetía en 44
+        filas: ahora se dice una vez, arriba.
+      · «PISTAS»: con quién peleó en esa llave y si ganó, y a quién se parece
+        en la Lista (`_pistas()`). Para saber quién es sin abrir Discord.
+      · LA FILA SE PONE VERDE AL CONTESTARLA, y roja si la respuesta no se
+        entendió: se ve de un vistazo qué falta.
+      · Sin cuadrícula, con la franja de arriba oscura como el hub.
+    """
     import requests
     from escribir import _pedir
+    ANCHO = len(COLS)
     cuenta = collections.Counter(p['grupo'][1] for p in preguntas)
-    resumen = ' · '.join('%s %d' % (g, n) for g, n in sorted(
-        cuenta.items(), key=lambda x: min(p['grupo'][0] for p in preguntas
-                                          if p['grupo'][1] == x[0])))
+    DICHO = {'⚔️ Batalla': ('batalla', 'batallas'), '🏆 Evento': ('evento', 'eventos'),
+             '👤 Nombre': ('nombre', 'nombres'), '🪪 Identidad': ('de identidad', 'de identidad'),
+             '🎯 MW': ('del MW', 'del MW')}
+    resumen = '   ·   '.join(
+        '%s %d %s' % (g.split(' ')[0], n, DICHO.get(g, (g, g))[n != 1])
+        for g, n in sorted(cuenta.items(), key=lambda x: GRUPO.get(
+            next((t for t, v in GRUPO.items() if v[1] == x[0]), ''), (9, ''))[0]))
+    secs = secciones(preguntas)
     filas = [
-        ['✅ DECIDIR — lo que el sistema no pudo resolver solo'] + [''] * 8,
-        ['Elegí una respuesta en la columna ✍️ RESPUESTA (o escribí el nombre, '
-         'si es alguien de la Lista de Raperos). El ciclo la aplica sola en '
-         'menos de media hora y la pregunta sale de acá. Para aclarar algo, '
-         'usá 📝 NOTA: se guarda. Lo demás lo rehace el ciclo.'] + [''] * 8,
-        ['%d abierta(s)%s · actualizado %s'
-         % (len(preguntas), (' — ' + resumen) if resumen else '',
-            _hora_et())] + [''] * 8,
-        [''] * 9,
+        ['✅  DECIDIR'] + [''] * (ANCHO - 1),
+        ['Lo que el sistema no pudo resolver solo. Elegí una respuesta en la columna '
+         'amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribí su '
+         'nombre como figura ahí— y el ciclo la aplica en menos de media hora. La fila '
+         'se pone verde cuando está contestada. Para aclarar algo, 📝 NOTA: se guarda.']
+        + [''] * (ANCHO - 1),
+        [('%d para decidir   —   %s' % (len(preguntas), resumen) if preguntas
+          else '🎉 No hay nada para decidir')
+         + '   ·   actualizado %s' % _hora_et()] + [''] * (ANCHO - 1),
+        [''] * ANCHO,
         COLS,
     ]
-    for i, p in enumerate(preguntas, 1):
-        r = respuestas.get(p['id'])
-        # la respuesta se conserva si la pregunta sigue abierta: si se
-        # borrara, parecería aplicada
-        filas.append([str(i), p['grupo'][1], p['que'], p['donde'], p['sug'],
-                      r[0] if r else '', _nota(p), estados.get(p['id'], ''),
-                      p['id']])
+    fila_sec, fila_preg = [], []          # índices (0) de cada franja y cada pregunta
+    n = 0
+    for tit, ps in secs:
+        fila_sec.append((len(filas), ps[0]['grupo'][1]))
+        link = next((p['link'] for p in ps if p.get('link')), '') or next(
+            (((_llaves_t1().get(_num_evento(p)) or {}).get('links') or [''])[-1]
+             for p in ps if _num_evento(p)), '')
+        filas.append(['▸  %s%s' % (tit, ('   ·   la llave: %s' % link) if link else '')]
+                     + [''] * (ANCHO - 1))
+        for p in ps:
+            n += 1
+            r = respuestas.get(p['id'])
+            # la respuesta se conserva si la pregunta sigue abierta: si se
+            # borrara, parecería aplicada
+            fila_preg.append((len(filas), p))
+            filas.append([str(n), p['grupo'][1], p['que'], p.get('pistas') or p['sug'],
+                          r[0] if r else '', _nota(p), estados.get(p['id'], ''), p['id']])
     if not preguntas:
-        filas.append(['', '', '🎉 No hay nada para decidir.'] + [''] * 6)
+        filas.append(['', '', '🎉 No hay nada para decidir.'] + [''] * (ANCHO - 3))
+    fila_hechas = None
     if hechas:
-        filas += [[''] * 9, ['', '', '✔️ Lo último que se aplicó'] + [''] * 6]
-        for n, d in hechas[-8:][::-1]:
-            filas.append(['', GRUPO.get(d['Tipo'], (4, d['Tipo']))[1],
-                          d['Detalle'], d['Origen'], '', d['Resolución'], '',
-                          '✔️ aplicado', ''])
+        filas.append([''] * ANCHO)
+        fila_hechas = len(filas)
+        filas.append(['✔️  Lo último que se aplicó'] + [''] * (ANCHO - 1))
+        for _n, d in hechas[-8:][::-1]:
+            filas.append(['', GRUPO.get(d['Tipo'], (4, d['Tipo']))[1], d['Detalle'],
+                          d['Origen'], d['Resolución'], '', '✔️ aplicado', ''])
     if dry:
-        print('   (simulacro) la hoja tendría %d fila(s): %d pregunta(s)'
-              % (len(filas), len(preguntas)))
+        print('   (simulacro) la hoja tendría %d fila(s): %d pregunta(s) en %d sección(es)'
+              % (len(filas), len(preguntas), len(secs)))
+        pintar.filas = filas
         return
     sid = _hoja_id(crear=True)
-    _pedir('POST', '/values/%s:clear' % requests.utils.quote("'%s'!A1:I2000" % HOJA))
+    _pedir('POST', '/values/%s:clear' % requests.utils.quote("'%s'!A1:J2000" % HOJA))
     _pedir('PUT', '/values/%s?valueInputOption=RAW'
            % requests.utils.quote("'%s'!A1" % HOJA), json={'values': filas})
-    n_preg = len(preguntas)
+    fin = len(filas)
+
+    def rango(f0, f1, c0=0, c1=ANCHO):
+        return {'sheetId': sid, 'startRowIndex': f0, 'endRowIndex': f1,
+                'startColumnIndex': c0, 'endColumnIndex': c1}
+
+    def pinta(r, fmt, campos):
+        return {'repeatCell': {'range': r, 'cell': {'userEnteredFormat': fmt},
+                               'fields': 'userEnteredFormat(%s)' % campos}}
     reqs = [
-        # la tabla, limpia de lo que haya quedado de una corrida anterior
-        {'setDataValidation': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB,
-                                         'startColumnIndex': C_RESP, 'endColumnIndex': C_NOTA + 1}}},
-        {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': 0,
-                                  'endRowIndex': 2000},
-                        'cell': {'userEnteredFormat': {}},
+        # lo de la corrida anterior: formato, validaciones, uniones, reglas
+        {'unmergeCells': {'range': rango(0, 2000, 0, 10)}},
+        {'setDataValidation': {'range': rango(FILA_CAB, 2000, 0, 10)}},
+        {'repeatCell': {'range': rango(0, 2000, 0, 10), 'cell': {'userEnteredFormat': {}},
                         'fields': 'userEnteredFormat'}},
-        {'updateSheetProperties': {'properties': {
-            'sheetId': sid, 'gridProperties': {'frozenRowCount': FILA_CAB}},
-            'fields': 'gridProperties.frozenRowCount'}},
-        {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': 0,
-                                  'endRowIndex': 1},
-                        'cell': {'userEnteredFormat': {'textFormat': {
-                            'bold': True, 'fontSize': 14}}},
-                        'fields': 'userEnteredFormat.textFormat'}},
-        {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': 1,
-                                  'endRowIndex': 3},
-                        'cell': {'userEnteredFormat': {'textFormat': {
-                            'foregroundColor': {'red': .35, 'green': .35,
-                                                'blue': .35}}}},
-                        'fields': 'userEnteredFormat.textFormat'}},
-        {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB - 1,
-                                  'endRowIndex': FILA_CAB},
-                        'cell': {'userEnteredFormat': {
-                            'textFormat': {'bold': True},
-                            'backgroundColor': {'red': .9, 'green': .93,
-                                                'blue': .98}}},
-                        'fields': 'userEnteredFormat(textFormat,backgroundColor)'}},
-        {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB,
-                                  'endRowIndex': FILA_CAB + n_preg + 20,
-                                  'startColumnIndex': 2, 'endColumnIndex': 8},
-                        'cell': {'userEnteredFormat': {'wrapStrategy': 'WRAP',
-                                                       'verticalAlignment': 'TOP'}},
-                        'fields': 'userEnteredFormat(wrapStrategy,verticalAlignment)'}},
-        # las dos columnas para escribir, que se vea que son para escribir
-        {'repeatCell': {'range': {'sheetId': sid, 'startRowIndex': FILA_CAB,
-                                  'endRowIndex': FILA_CAB + n_preg,
-                                  'startColumnIndex': C_RESP, 'endColumnIndex': C_NOTA + 1},
-                        'cell': {'userEnteredFormat': {
-                            'backgroundColor': {'red': 1, 'green': .97,
-                                                'blue': .82}}},
-                        'fields': 'userEnteredFormat.backgroundColor'}},
     ]
-    for i, ancho in enumerate((36, 100, 430, 260, 150, 230, 230, 230, 60)):
+    for k in range(_condicionales(sid) - 1, -1, -1):
+        reqs.append({'deleteConditionalFormatRule': {'sheetId': sid, 'index': k}})
+    reqs += [
+        {'updateSheetProperties': {'properties': {
+            'sheetId': sid, 'tabColorStyle': {'rgbColor': _AGUA},
+            'gridProperties': {'frozenRowCount': FILA_CAB, 'hideGridlines': True}},
+            'fields': 'tabColorStyle,gridProperties.frozenRowCount,gridProperties.hideGridlines'}},
+        # 🔝 la franja de arriba: oscura, como el hub
+        {'mergeCells': {'range': rango(0, 1), 'mergeType': 'MERGE_ALL'}},
+        {'mergeCells': {'range': rango(1, 2), 'mergeType': 'MERGE_ALL'}},
+        {'mergeCells': {'range': rango(2, 3), 'mergeType': 'MERGE_ALL'}},
+        pinta(rango(0, 3), {'backgroundColor': _OSCURO, 'wrapStrategy': 'WRAP',
+                            'verticalAlignment': 'MIDDLE', 'padding': {'left': 14, 'top': 6, 'bottom': 6},
+                            'textFormat': {'foregroundColor': _BLANCO, 'fontSize': 10}},
+              'backgroundColor,wrapStrategy,verticalAlignment,padding,textFormat'),
+        pinta(rango(0, 1), {'textFormat': {'foregroundColor': _BLANCO, 'fontSize': 20, 'bold': True}},
+              'textFormat'),
+        pinta(rango(2, 3), {'textFormat': {'foregroundColor': _AGUA, 'fontSize': 11, 'bold': True}},
+              'textFormat'),
+        pinta(rango(3, 4), {'backgroundColor': _OSCURO}, 'backgroundColor'),
+        # la cabecera de la tabla
+        pinta(rango(FILA_CAB - 1, FILA_CAB), {
+            'backgroundColor': {'red': .106, 'green': .169, 'blue': .157},
+            'textFormat': {'foregroundColor': _BLANCO, 'bold': True, 'fontSize': 10},
+            'verticalAlignment': 'MIDDLE', 'padding': {'left': 8}},
+            'backgroundColor,textFormat,verticalAlignment,padding'),
+        # el cuerpo: se lee de arriba abajo, con aire
+        pinta(rango(FILA_CAB, fin), {'wrapStrategy': 'WRAP', 'verticalAlignment': 'TOP',
+                                     'padding': {'left': 8, 'right': 8, 'top': 6, 'bottom': 6},
+                                     'textFormat': {'fontSize': 10}},
+              'wrapStrategy,verticalAlignment,padding,textFormat'),
+        {'updateDimensionProperties': {'range': {'sheetId': sid, 'dimension': 'ROWS',
+                                                 'startIndex': 0, 'endIndex': 1},
+                                       'properties': {'pixelSize': 52}, 'fields': 'pixelSize'}},
+        {'updateDimensionProperties': {'range': {'sheetId': sid, 'dimension': 'ROWS',
+                                                 'startIndex': 3, 'endIndex': 4},
+                                       'properties': {'pixelSize': 8}, 'fields': 'pixelSize'}},
+    ]
+    # ▸ la franja de cada evento
+    for f, grupo in fila_sec:
+        reqs += [
+            {'mergeCells': {'range': rango(f, f + 1), 'mergeType': 'MERGE_ALL'}},
+            pinta(rango(f, f + 1), {'backgroundColor': _FRANJA.get(grupo, _FRANJA['👤 Nombre']),
+                                    'verticalAlignment': 'MIDDLE', 'wrapStrategy': 'CLIP',
+                                    'padding': {'left': 10, 'top': 8, 'bottom': 8},
+                                    'textFormat': {'bold': True, 'fontSize': 11}},
+                  'backgroundColor,verticalAlignment,wrapStrategy,padding,textFormat'),
+        ]
+    # las preguntas: el número y el tipo, apagados; la pregunta, en negrita;
+    # las pistas, en gris; y las dos columnas para escribir, amarillas
+    for f, p in fila_preg:
+        reqs.append({'setDataValidation': {
+            'range': rango(f, f + 1, C_RESP, C_RESP + 1),
+            # ⚠️ NO ESTRICTA: «Es X» con un X que no está en la lista se
+            # escribe a mano, y una validación estricta lo rechazaría.
+            'rule': {'condition': {'type': 'ONE_OF_LIST', 'values': [
+                {'userEnteredValue': o} for o in p['opciones']]},
+                'strict': False, 'showCustomUi': True}}})
+    if fila_preg:
+        f0, f1 = fila_preg[0][0], fila_preg[-1][0] + 1
+        reqs += [
+            pinta(rango(f0, f1, 0, 2), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9},
+                                        'horizontalAlignment': 'CENTER'},
+                  'textFormat,horizontalAlignment'),
+            pinta(rango(f0, f1, 2, 3), {'textFormat': {'bold': True, 'fontSize': 10}}, 'textFormat'),
+            pinta(rango(f0, f1, 3, 4), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}},
+                  'textFormat'),
+            pinta(rango(f0, f1, C_ESTADO, C_ESTADO + 1),
+                  {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}}, 'textFormat'),
+        ]
+        for f, _p in fila_preg:
+            reqs.append(pinta(rango(f, f + 1, C_RESP, C_NOTA + 1),
+                              {'backgroundColor': _AMARILLO}, 'backgroundColor'))
+            # una línea finita entre pregunta y pregunta, sin la cuadrícula
+            reqs.append({'updateBorders': {'range': rango(f, f + 1),
+                                           'bottom': {'style': 'SOLID', 'colorStyle': {
+                                               'rgbColor': {'red': .9, 'green': .91, 'blue': .91}}}}})
+        # ✅ la fila contestada, verde; ⚠️ la que no se entendió, roja
+        reqs += [
+            {'addConditionalFormatRule': {'index': 0, 'rule': {
+                'ranges': [rango(f0, f1)],
+                'booleanRule': {'condition': {'type': 'CUSTOM_FORMULA', 'values': [
+                    {'userEnteredValue': '=AND($H%d<>"",$E%d<>"")' % (f0 + 1, f0 + 1)}]},
+                    'format': {'backgroundColor': _VERDE}}}}},
+            {'addConditionalFormatRule': {'index': 0, 'rule': {
+                'ranges': [rango(f0, f1)],
+                'booleanRule': {'condition': {'type': 'CUSTOM_FORMULA', 'values': [
+                    {'userEnteredValue': '=LEFT($G%d,1)="⚠"' % (f0 + 1)}]},
+                    'format': {'backgroundColor': _ROJO}}}}},
+        ]
+    if fila_hechas is not None:
+        reqs += [
+            {'mergeCells': {'range': rango(fila_hechas, fila_hechas + 1), 'mergeType': 'MERGE_ALL'}},
+            pinta(rango(fila_hechas, fila_hechas + 1), {
+                'backgroundColor': {'red': .93, 'green': .94, 'blue': .94},
+                'textFormat': {'bold': True, 'fontSize': 10, 'foregroundColor': _GRIS},
+                'padding': {'left': 10, 'top': 6, 'bottom': 6}},
+                'backgroundColor,textFormat,padding'),
+            pinta(rango(fila_hechas + 1, fin), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}},
+                  'textFormat'),
+        ]
+    for k, ancho in enumerate((34, 92, 420, 300, 230, 200, 170, 60)):
         reqs.append({'updateDimensionProperties': {
-            'range': {'sheetId': sid, 'dimension': 'COLUMNS',
-                      'startIndex': i, 'endIndex': i + 1},
-            'properties': {'pixelSize': ancho, 'hiddenByUser': i == C_ID},
+            'range': {'sheetId': sid, 'dimension': 'COLUMNS', 'startIndex': k, 'endIndex': k + 1},
+            'properties': {'pixelSize': ancho, 'hiddenByUser': k == C_ID},
             'fields': 'pixelSize,hiddenByUser'}})
     # 🔴 LO QUE NO ES PARA ESCRIBIR, AVISA SI SE ESCRIBE. Protección con
     # aviso —no bloquea: la hoja es de Dlx—: quien edite fuera de RESPUESTA
@@ -949,22 +1327,10 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         'range': {'sheetId': sid},
         'description': PROTECCION,
         'warningOnly': True,
-        'unprotectedRanges': [{'sheetId': sid, 'startRowIndex': FILA_CAB,
-                               'endRowIndex': FILA_CAB + max(n_preg, 1),
-                               'startColumnIndex': C_RESP,
-                               'endColumnIndex': C_NOTA + 1}]}}})
-    for i, p in enumerate(preguntas):
-        reqs.append({'setDataValidation': {
-            'range': {'sheetId': sid, 'startRowIndex': FILA_CAB + i,
-                      'endRowIndex': FILA_CAB + i + 1,
-                      'startColumnIndex': C_RESP, 'endColumnIndex': C_RESP + 1},
-            # ⚠️ NO ESTRICTA: «Es X» con un X que no está en la lista se
-            # escribe a mano, y una validación estricta lo rechazaría.
-            'rule': {'condition': {'type': 'ONE_OF_LIST', 'values': [
-                {'userEnteredValue': o} for o in p['opciones']]},
-                'strict': False, 'showCustomUi': True}}})
+        'unprotectedRanges': [rango(f, f + 1, C_RESP, C_NOTA + 1) for f, _p in fila_preg][:200]
+        or [rango(FILA_CAB, FILA_CAB + 1, C_RESP, C_NOTA + 1)]}}})
     _pedir('POST', ':batchUpdate', json={'requests': reqs})
-    print('   ✅ `%s`: %d pregunta(s)' % (HOJA, len(preguntas)))
+    print('   ✅ `%s`: %d pregunta(s) en %d sección(es)' % (HOJA, len(preguntas), len(secs)))
 
 
 def correr(dry=True):
@@ -1013,8 +1379,10 @@ def _self_check():
                       'Detalle': 'COPA Y · FFA · 24/09',
                       'Posible match': 'es una llave rumbo al Interserver. NO se sumó nada. · ' + _lk,
                       'Estado': 'Pendiente'})])[0]
-    ok(dud['que'].endswith('La llave: ' + _lk) and dud['que'].count(_lk) == 1,
-       'la pregunta de un evento trae el link a la llave, una vez')
+    ok(dud['link'] == _lk and _lk not in dud['que'] and _lk not in dud['pistas'],
+       'el link a la llave queda aparte: va una vez, en la franja del evento')
+    pintar([dud], {}, {}, [], dry=True)
+    ok(sum(str(f[0]).count(_lk) for f in pintar.filas) == 1, 'y la franja lo trae')
     ok(_lk not in dud['match'], 'y el motivo queda sin el link')
     ok(len(ps) == 3, 'las dos filas de JAHNO son UNA pregunta')
     ok(ps[0]['grupo'][1] == '🏆 Evento', 'los eventos van primero')
@@ -1057,8 +1425,10 @@ def _self_check():
     ok('discord.com/users/146' in c and 'discord.com/users/821' in c,
        'el conflicto del sync, en palabras y con los dos perfiles')
     _respuestas.notas, _respuestas.sugerencias = {}, {mau['id']: '— son la misma'}
-    mau['sug'] = '—'
-    ok(_nota(mau) == 'son la misma', 'lo escrito en «Sugerencia» se rescata como nota')
+    mau['sug'], mau['pistas'] = '—', '—'
+    ok(_nota(mau) == 'son la misma', 'lo escrito en «Pistas» se rescata como nota')
+    _respuestas.sugerencias = {mau['id']: mau['pistas'] + ' los dos de Colombia'}
+    ok(_nota(mau) == 'los dos de Colombia', 'y lo agregado al final de las pistas, también')
     _respuestas.sugerencias = {mau['id']: 'sv FFA'}
     mau['match'] = 'sv FFA'
     ok(_nota(mau) == '', 'y lo que puso el sistema antes, no')
@@ -1085,6 +1455,34 @@ def _self_check():
     ok((_persona('Juano', pad, {}) or {}).get('raw') == 'Juano',
        'el nombre se busca en la lista')
     ok(_persona('Zzz', pad, {}) is None, 'y lo que no está no se inventa')
+    # ⚔️ la batalla sin ganador (28/09/2026): una pregunta por batalla
+    det = detalle_batalla('__ MARRUECOS EN VENTA V.1 __', 'FFA', '26/09', 'OCTAVOS',
+                          ['Richard 🇪🇨', 'Number 🇺🇾'])
+    bt = armar([(20, {'Tipo': 'Batalla sin ganador', 'Origen': 'llaves de Discord',
+                      'Detalle': det, 'Posible match': 'no aparece nadie después · ' + _lk,
+                      'Estado': 'Pendiente'}),
+                (21, {'Tipo': nd, 'Detalle': 'OKAM🇨🇷', 'Origen': 'evento #359'})],
+               {'359': ('__ MARRUECOS EN VENTA V.1 __', 'FFA', '26/09')})
+    b = next(p for p in bt if p['tipo'] == 'Batalla sin ganador')
+    ok(b['opciones'][:2] == ['Ganó Richard 🇪🇨', 'Ganó Number 🇺🇾'] and NO_SE_JUGO in b['opciones'],
+       'la batalla se contesta eligiendo quién ganó')
+    ok(interpretar(b, 'Ganó Number 🇺🇾') == ('batalla', 'Number 🇺🇾')
+       and interpretar(b, 'gano number') == ('batalla', 'Number 🇺🇾'),
+       'con o sin bandera, con o sin tilde')
+    ok(interpretar(b, NO_SE_JUGO) == ('batalla', '') and interpretar(b, 'Ganó Zzz')[0] == 'error',
+       '«No se jugó» cierra sin ganador, y un nombre que no peleó es un error')
+    ok(clave_batalla(det) == clave_batalla(det.replace('Richard 🇪🇨', 'RICHARD')),
+       'la clave no depende de banderas ni mayúsculas')
+    ok(partes_batalla(det)[4] == ['Richard 🇪🇨', 'Number 🇺🇾'], 'el detalle se lee de vuelta')
+    sec = secciones(bt)
+    ok(len(sec) == 1 and sec[0][0].startswith('MARRUECOS EN VENTA V.1 · FFA · 26/09')
+       and [p['tipo'] for p in sec[0][1]] == ['Batalla sin ganador', nd],
+       'la batalla y el nombre del mismo evento van en UNA sección, la batalla primero')
+    ok('Richard 🇪🇨 🆚 Number 🇺🇾' in b['que'] and 'ronda siguiente' in b['pistas'],
+       'la pregunta dice quiénes pelearon, y las pistas por qué no se sabe')
+    pintar(bt, {}, {}, [], dry=True)
+    ok(any(str(f[0]).startswith('▸  MARRUECOS') for f in pintar.filas),
+       'la hoja tiene la franja del evento')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

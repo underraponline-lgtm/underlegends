@@ -294,9 +294,50 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Entrar con Discord una vez alcanza**: nada de mandar a autorizar en cada voto | *«cada vez que presiono para votar me redirige a DISCORD… lo hice miles de veces»* (28/09, con capturas) | ✅ la sesión (1.35): `sesionNueva()` en `bot/avisos.js`, cookie `lg_ses` HttpOnly, 30 días, sin secreto nuevo |
 | **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ✅ **en vivo** (1.38): el vigía lee los canales de veredictos mientras su servidor juega. ⏳ **falta cargarlo solo** (el ciclo) |
 | **Hay muchos formatos** (5 vidas, pandillas, multiverse…). Lo que el motor necesita de cualquiera es lo mismo: **el lugar final** de cada uno (eso paga) y **las batallas 1v1** (eso es duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor | *«hay muchos formatos de rap, este es uno de ellos… es confuso, hay pandillas, multiverse, etc.»* (28/09) | ✅ la regla (1.36). En un 5 vidas el lugar es **el orden en que cayeron** (*«sí dale»*); los que terminan en pie con las mismas vidas **empatan y se reparten el pozo** (guía, §10.1: la #320 dio 2.166 cada uno, y el motor da lo mismo) |
+| **Los 5 vidas: A y B** — el ciclo los carga solo desde #veredictos, y aparecen en ✅ Decidir para confirmarlos o descartarlos; si una batalla quedó pareja en el texto (un juez que vota con imagen), se pregunta quién ganó | *«1. A y b»* (28/09, 10 AM) | ⏳ lo que sigue |
+| **MARRUECOS lo resuelve Dlx en ✅ Decidir**, y la hoja tiene que ser más clara y más linda | *«Lo resuelvo yo… pero mejora esa página de decidir incluso más… hazla. Más mejor y bonita»* (28/09) | ✅ **«¿quién ganó esta batalla?»** y la hoja rehecha (ver abajo) |
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (10:10 AM) — ✅ Decidir rehecha
+
+Dlx: *«Lo resuelvo yo… pero mejora esa página de decidir incluso más…
+hazla. Más mejor y bonita»*.
+
+- ⚔️ **«¿Quién ganó esta batalla?»**: una pregunta por batalla sin
+  ganador, con las opciones «Ganó A», «Ganó B», «No se jugó». Lo contestado
+  queda en `datos/decisiones.json` (`batallas`) y el lector lo aplica en la
+  corrida siguiente: el que perdió cobra su ronda y, de a dos, es un duelo
+  (`decidir.detalle_batalla()` / `decision_batalla()`). 🔴 **Antes esto no
+  se podía resolver desde la hoja**: iba como «No pude leer estas batallas»
+  con «La corrijo en Discord / Dejala así», y encima se cerraba sola en
+  cuanto el evento tenía campeón — o sea que los que perdieron esas batallas
+  no cobraban y nadie lo volvía a preguntar. Hoy son **11**: las 8 de
+  MARRUECOS, MATI contra MTZ en la World Cup y dos de TOKYO. Se cierra sola
+  si el organizador completa la llave (`datos/batallas_sin_ganador.json`).
+- 👤 **Las menciones son gente**: la pregunta dice «Richard 🇪🇨 🆚 Number
+  🇺🇾» y no `<@750…>`, y el plantel las cuenta. **MARRUECOS pasa de 8 a 22
+  participantes** → escala 16+ (la guía: más de 16, 16+), así que sus
+  puntos suben en la corrida de las 11:22. ⚠️ La cuenta que ahí es «PARK
+  JI-SUNG» y en la World Cup «FULLY» figura en el padrón como **«Oasis»**:
+  no lo toco (identidad), queda para «¿Quién es FULLY?».
+- 🎨 **La hoja**: una sección por EVENTO con todo lo de ese evento
+  —batallas primero, después los nombres— con su franja de color, servidor,
+  fecha y el link a la llave; la pregunta corta (la instrucción que se
+  repetía en 44 filas va una vez, arriba); una columna **«Pistas»** con cómo
+  terminó esa persona en la llave y con quién peleó («Terminó Subcampeón
+  (3.750 pts) · 5 vidas: le ganó a Humildad»), más a quién se parece; la
+  fila se pone **verde** al contestarla y **roja** si no se entendió; sin
+  cuadrícula, con la franja oscura del hub. Las columnas se leen por nombre,
+  así que lo ya escrito no se pierde.
+- 🔴 **Walk-in de la FFA WORLD CUP** (9:55 AM): filtros de tres por UN lugar
+  hacían «Walk-in 1» a los quince que entraron directo a octavos — FULLY
+  cobraba 5.000 en vez de 10.000. Si la primera ronda es una previa que no
+  llena la siguiente, la entrada es la siguiente. Medido: sólo cambia la
+  World Cup, de 8 walk-ins falsos a 0.
 
 ---
 

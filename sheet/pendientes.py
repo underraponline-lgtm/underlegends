@@ -77,7 +77,7 @@ ULTIMA = chr(ord('A') + ANCHO - 1)          # 'H'
 # el self-check los compara.
 TIPOS = ('Nombre desconocido', 'Alias posible', 'Evento dudoso',
          'Bracket incompleto', 'MW pendiente', 'Llave sin resolver',
-         'alta', 'conflicto', 'ambiguo')
+         'Batalla sin ganador', 'alta', 'conflicto', 'ambiguo')
 
 
 def _did(detalle):
@@ -259,6 +259,28 @@ def _resuelto_ya(fila, resolver):
         if not (set(fallo) - antes):
             return ('el nombre ya resuelve (%d integrante(s))' % len(ms)
                     if len(ms) > 1 else 'el nombre ya resuelve')
+        return ''
+    if tipo == 'Batalla sin ganador':
+        # 🔑 SE CIERRA SI YA SE DECIDIÓ, O SI LA LLAVE YA DICE QUIÉN GANÓ.
+        # Lo segundo lo sabe el lector, que deja en cada corrida la lista
+        # de las que siguen sin ganador. ⚠️ Sólo si esa lista es de las
+        # últimas horas: una vieja cerraría preguntas que siguen abiertas.
+        try:
+            import datetime
+            import json
+            import decidir as _D
+            g = _D.decision_batalla(detalle)
+            if g is not None:
+                return 'decidido: %s' % (('ganó ' + g) if g else 'no se jugó')
+            with io.open(os.path.join(BASE, 'datos', 'batallas_sin_ganador.json'),
+                         encoding='utf-8') as f:
+                d = json.load(f) or {}
+            t = datetime.datetime.strptime(d.get('t', ''), '%Y-%m-%dT%H:%M:%SZ')
+            fresca = (datetime.datetime.utcnow() - t).total_seconds() < 3 * 3600
+            if fresca and detalle not in set(d.get('batallas') or []):
+                return 'la llave ya dice quién ganó'
+        except Exception:                                # noqa: BLE001
+            pass
         return ''
     if tipo == 'Llave sin resolver':
         # 🔴 LA SEÑAL ES QUE EL EVENTO TENGA CAMPEON, no que se haya

@@ -312,7 +312,35 @@ def _norm_simple(s):
     return re.sub(r'[^a-z0-9]', '', str(s or '').lower())
 
 
-def plantel(texto):
+def ids_de(hallazgo):
+    """`{discord_id: [nombres]}`: el padrón y lo que Discord trae con cada
+    mención de ese mensaje. Ver `escuchar.menciones_de()`."""
+    ids = ids_del_padron()
+    if hallazgo and hallazgo.get('menciones'):
+        ids = dict(ids)
+        for did, ns in hallazgo['menciones'].items():
+            ya = list(ids.get(did) or [])
+            ids[did] = ya + [n for n in ns if n not in ya]
+    return ids
+
+
+def nombre_visible(lado, ids):
+    """`[<@750…>🇪🇨]` -> `ricardflex 🇪🇨`: la mención, con su nombre.
+
+    🔴 MARRUECOS EN VENTA escribe sus octavos SÓLO con menciones, y la
+    pregunta de ✅ Decidir decía `<@750718442050551858>🇪🇨 vs <@458…>🇺🇾`:
+    para contestarla había que ir a buscar a mano quién era cada uno. El
+    nombre que va es el del padrón, si esa cuenta está; si no, el de Discord.
+    """
+    def _n(m):
+        ns = (ids or {}).get(m.group(1)) or []
+        return ' %s ' % (ns[0] if ns else '@' + m.group(1))
+    s = re.sub(r'\s+', ' ', E.MENCION.sub(_n, str(lado or ''))).strip()
+    # el nombre del padrón ya trae su bandera: `tormen 🇳🇮 🇳🇮` va una vez
+    return re.sub('([\U0001F1E6-\U0001F1FF]{2})(?:\\s*\\1)+', r'\1', s)
+
+
+def plantel(texto, ids=None):
     """El conjunto de competidores de TODAS las rondas, normalizado.
 
     🔴 ERA SOLO LA PRIMERA RONDA, Y ESO ROMPIA EL CASO QUE `agrupar()`
@@ -363,10 +391,22 @@ def plantel(texto):
     sólo si no se parece a nadie ya contado.
     """
     from equipos import _PAREN
-    out, adentro = set(), set()
+    out, adentro, mencionados = set(), set(), set()
     for _ronda, bats in E.rondas_de(texto):
         for b in bats:
             for n in b:
+                # 🔴 UNA MENCIÓN ES ALGUIEN, AUNQUE `norm()` LA BORRE.
+                # MARRUECOS EN VENTA escribió sus octavos sólo con `<@…>` y
+                # el plantel contaba a los ocho de cuartos: 8 personas, la
+                # escala 8-15, cuando jugaron unas 20 (y la guía dice 16+).
+                # Se cuenta por su nombre —el del padrón o el de Discord—
+                # para no contarla dos veces si la ronda siguiente la
+                # escribe con letras.
+                if not E.norm(_PAREN.sub('', n)) and E.MENCION.search(n):
+                    for did in E.MENCION.findall(n):
+                        ns = [E.norm(x) for x in (ids or {}).get(did) or []]
+                        mencionados.add(next((k for k in ns if len(k) >= 2), 'id' + did))
+                    continue
                 # ⚠️ EL POKEMON NO SUMA AL PLANTEL (guía, §2 regla 3): no
                 # peleó. Va primero porque su marca `(P)` es un paréntesis.
                 n = E._sin_pokemon(n)
@@ -381,6 +421,11 @@ def plantel(texto):
                         out.add(k)
     for k in sorted(adentro - out):
         if not (E._parecido(k, list(out)) or any(
+                min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
+                for c in out)):
+            out.add(k)
+    for k in sorted(mencionados - out):
+        if k.startswith('id') or not (E._parecido(k, list(out)) or any(
                 min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
                 for c in out)):
             out.add(k)
@@ -500,7 +545,8 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     sv, por_que = codigo_servidor(hallazgo['guild'])
     ev = nombre or titulo(txt) or '(sin titulo)'
     fecha = fecha or hallazgo.get('fecha') or ''
-    gente = plantel(txt)
+    ids = ids_de(hallazgo)
+    gente = plantel(txt, ids)
     filas, dudas, sabidas = [], [], collections.Counter()
 
     if por_que == 'identidad':
@@ -521,12 +567,6 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     # 🔑 Y LOS NOMBRES QUE DISCORD TRAE CON CADA MENCIÓN, después de los del
     # padrón: resuelven a quien todavía no tiene su ID cargado. Ver
     # `escuchar.menciones_de()`.
-    ids = ids_del_padron()
-    if hallazgo.get('menciones'):
-        ids = dict(ids)
-        for did, ns in hallazgo['menciones'].items():
-            ya = list(ids.get(did) or [])
-            ids[did] = ya + [n for n in ns if n not in ya]
     for bat in E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids):
         ronda, lados, ganador, razon = bat
         # 🔴 EN UNA BATALLA DONDE PASAN VARIOS, LOS QUE NO PASAN CAYERON
@@ -577,7 +617,9 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
             if 'tercer puesto' in razon or 'pasan' in razon:
                 sabidas[razon] += 1
             else:
-                dudas.append((ev, ronda, ' vs '.join(lados), razon))
+                # el quinto: los lados con su nombre, para preguntar quién ganó
+                dudas.append((ev, ronda, ' vs '.join(lados), razon,
+                              [nombre_visible(l, ids) for l in lados]))
             continue
         # 🔴 UNA BATALLA A TRES BANDAS SE PARTE EN UNA FILA POR PERDEDOR,
         # Y ANTES SE TIRABA ENTERA.
@@ -1110,7 +1152,7 @@ def agrupar(hallazgos):
     """Junta las llaves que son el MISMO evento, por plantel."""
     grupos = []
     for h in hallazgos:
-        p = plantel(h['texto'])
+        p = plantel(h['texto'], ids_de(h))
         if len(p) < MIN_PLANTEL:
             h['_chico'] = True
             grupos.append({'plantel': p, 'llaves': [h]})
@@ -1462,6 +1504,7 @@ def main():
     link_de = {}                        # (evento, fecha) y evento -> link
     import decidir as DEC
     repes = 0
+    decididas = 0
     for g in grupos:
         # 🔴 UN NOMBRE POR GRUPO Y LAS BATALLAS SIN REPETIR. Ver
         # `nombre_de()` y `sin_repetir()`: dos mensajes del mismo evento
@@ -1563,6 +1606,30 @@ def main():
                                     ['%s: %s' % (d[1].lower(), d[2])
                                      for d in d_grupo]))
             continue
+        # 🔑 LA BATALLA QUE DECIDIÓ DLX EN ✅ DECIDIR entra como una batalla
+        # más: el que perdió cobra su ronda y, de a dos, es un duelo. La que
+        # sigue sin decidir se pregunta sola, UNA POR BATALLA (ver
+        # `decidir.detalle_batalla()`), con el link de la llave.
+        base, quedan = (limpias[0] if limpias else {}), []
+        for d in d_grupo:
+            if len(d) < 5 or not ligas:
+                quedan.append(d)
+                continue
+            det = DEC.detalle_batalla(nom, ligas[0], fec, d[1], d[4])
+            gano = DEC.decision_batalla(det)
+            if gano is None:
+                quedan.append(tuple(d) + (det, _lk[-1] if _lk else ''))
+                continue
+            decididas += 1
+            for otro in [x for x in d[4] if x != gano] if gano else []:
+                limpias.append({
+                    'evento': base.get('evento') or nom, 'servidor': base.get('servidor') or ligas[0],
+                    'fecha': base.get('fecha') or fec,
+                    'participantes': base.get('participantes') or len(g['plantel']),
+                    'ronda': d[1].lower(), 'ladoA': gano, 'ladoB': otro, 'ganador': gano,
+                    'notas': ('triple (%d bandas); ' % len(d[4]) if len(d[4]) > 2 else '')
+                    + 'ganador: ✅ Decidir'})
+        d_grupo = quedan
         dudas += d_grupo
         repes += len(del_grupo) - len(limpias)
         todas += limpias
@@ -1587,10 +1654,12 @@ def main():
     # evento, no una batalla suelta: veinte avisos de la misma llave
     # son un aviso.
     por_evento = collections.defaultdict(list)
-    for ev, ronda, quienes, razon in dudas:
+    for ev, ronda, quienes, razon, *_ in dudas:
         por_evento[ev].append('%s: %s' % (ronda.lower(), quienes))
 
     print('   %d fila(s) para `Entrada`' % len(todas))
+    if decididas:
+        print('   %d batalla(s) con el ganador que eligió Dlx en ✅ Decidir' % decididas)
     print('   %d evento(s) a `Pendientes`   (de %d batalla(s) sin resolver)'
           % (len(por_evento), len(dudas)))
     print('\n   -- limitaciones conocidas: se cuentan, NO se encolan --')
@@ -1704,8 +1773,29 @@ def main():
     # ⚠️ EL LINK VA AL FINAL DEL «POSIBLE MATCH», separado por « · »:
     # `decidir._link_llave()` lo saca de ahí y lo pone en la pregunta.
     con_link = lambda t, k: ('%s · %s' % (t, link_de[k]) if link_de.get(k) else t)
-    lote = [('Llave sin resolver', 'llaves de Discord', ev,
-             con_link(' | '.join(cosas[:4]), ev)) for ev, cosas in por_evento.items()]
+    # 🔑 UNA PREGUNTA POR BATALLA, y no una por evento con cuatro batallas
+    # pegadas: cada una se contesta eligiendo quién ganó. En ✅ Decidir van
+    # juntas bajo su evento, que es lo que pedía «una persona revisa un
+    # evento, no una batalla suelta». Lo que no es una batalla —un servidor
+    # sin código— sigue yendo como antes.
+    batallas_q = [d for d in dudas if len(d) >= 7]
+    lote = [('Batalla sin ganador', 'llaves de Discord', d[5],
+             ('%s · %s' % (d[3], d[6])) if d[6] else d[3]) for d in batallas_q]
+    lote += [('Llave sin resolver', 'llaves de Discord', ev,
+              con_link(' | '.join(cosas[:4]), ev))
+             for ev, cosas in por_evento.items()
+             if not any(d[0] == ev for d in batallas_q)]
+    # ⚠️ Y LA LISTA DE LAS QUE SIGUEN SIN GANADOR, para que `Pendientes` cierre
+    # sola la pregunta de una batalla que el organizador completó en Discord
+    # (ver `pendientes._resuelto_ya()`). Se escribe en cada corrida.
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'batallas_sin_ganador.json'), 'w',
+                     encoding='utf-8', newline='\n') as _f:
+            json.dump({'t': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+                       'batallas': sorted(d[5] for d in batallas_q)}, _f, ensure_ascii=False, indent=1)
+            _f.write('\n')
+    except OSError as e:
+        print('   ⚠️ no pude dejar la lista de batallas sin ganador (%s)' % str(e)[:60])
     # ⚠️ EL DETALLE LLEVA SERVIDOR Y FECHA, no sólo el nombre: la cola no
     # duplica por (tipo, detalle), y dos llaves sin título son dos eventos
     # que con el nombre solo se volverían una fila.
