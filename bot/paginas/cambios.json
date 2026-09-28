@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.43",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T16:50:00-04:00",
+   "titulo": "Solo o en equipo, del tamaño que sea",
+   "items": [
+    "👥 **Las llaves con equipos de cualquier tamaño se leen enteras**: 2 contra 2, 1 contra 3 u 8 contra 1, como en el MULTIVERSE. El puesto se reparte entre el equipo.",
+    "📡 **«En vivo» ya no muestra una llave que se borró en Discord**: sale al minuto."
+   ]
+  },
+  {
    "version": "1.42",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T15:35:00-04:00",
