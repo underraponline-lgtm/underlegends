@@ -1205,7 +1205,7 @@
   ],
   "n": 354,
   "nombre": "CARABOBO NO SE RINDE VOL.1",
-  "participantes": 16,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -4468,14 +4468,14 @@
  },
  "368": {
   "dia": "2026-09-28",
-  "escala": "8-15",
+  "escala": "16+",
   "fecha": "28/09",
   "links": [
    "https://discord.com/channels/1467763447117778989/1511963625793912892/1554203282082373804"
   ],
   "n": 368,
   "nombre": "COMPE DEL VACILE 1",
-  "participantes": 15,
+  "participantes": 16,
   "rondas": [
    {
     "b": [
@@ -4518,6 +4518,14 @@
       ],
       "Juasmio",
       ""
+     ],
+     [
+      [
+       "Motera",
+       "Majiztral"
+      ],
+      "Motera",
+      "Revivido: Majiztral 🇨🇴"
      ],
      [
       [
@@ -4615,77 +4623,77 @@
    [
     "Juasmio",
     "Campeón",
-    7500
+    10000
    ],
    [
     "Panchok",
     "Subcampeón",
-    5000
+    7500
    ],
    [
     "Cinexfilo",
     "Semifinal",
-    3500
+    5250
    ],
    [
     "Majiztral",
     "Semifinal",
-    3500
+    3875
    ],
    [
     "Motera",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Steven🇨🇴",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Teito 🇨🇴",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Yeyox",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Adachi 🇻🇪",
     "Octavos",
-    0
+    1250
    ],
    [
     "Clitax🇪🇨",
     "Octavos",
-    0
+    1250
    ],
    [
     "Korey🇨🇱",
     "Octavos",
-    0
+    1250
    ],
    [
     "Krish",
     "Octavos",
-    0
+    1250
    ],
    [
     "MHS🇦🇷",
     "Octavos",
-    0
+    1250
    ],
    [
     "TG🇪🇨",
     "Octavos",
-    0
+    1250
    ],
    [
     "Tusicario",
     "Octavos",
-    0
+    1250
    ]
   ]
  }
