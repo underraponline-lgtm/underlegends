@@ -1213,10 +1213,10 @@
    "temporada": "f0c4081d1a6a:873a4e49a6c4"
   },
   "Makmah": {
-   "competitivo": "edc446b75f79:04d09c20226a",
+   "competitivo": "15f4d3177ec1:04d09c20226a",
    "pais": "50c528bbdc86:3900eda1957f",
    "servidor": "a33afa9c879d:f7d331d5d876:c589ca",
-   "temporada": "5ccf773539e5:719b47b69f79"
+   "temporada": "60c54e6573c3:719b47b69f79"
   },
   "Malova": {
    "servidor": "6405aece4f3b:f7d331d5d876:15af16"
@@ -1770,10 +1770,10 @@
    "servidor": "0b8817be5297:028630b6c8cf"
   },
   "Snow": {
-   "competitivo": "5702c3fc7fda:04d09c20226a",
-   "pais": "a91543c7766d:3900eda1957f",
-   "servidor": "a145dace1bf0:f7d331d5d876:43d041",
-   "temporada": "350d078b01f0:719b47b69f79"
+   "competitivo": "0a7306da8577:04d09c20226a",
+   "pais": "7590460db435:3900eda1957f",
+   "servidor": "0dccb5118657:f7d331d5d876:43d041",
+   "temporada": "2f770830dd1f:719b47b69f79"
   },
   "Soft": {
    "competitivo": "39d6c5386cfe:04d09c20226a",
@@ -2253,5 +2253,5 @@
    "servidor": "1bf89fc89aa8:268f13735110"
   }
  },
- "cuando": "2026-09-28T15:39:02+00:00"
+ "cuando": "2026-09-28T15:56:10+00:00"
 }
