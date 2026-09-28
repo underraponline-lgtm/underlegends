@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.41",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T14:35:00-04:00",
+   "titulo": "Las llaves se leen enteras",
+   "items": [
+    "🔗 **Una llave con @menciones se sigue ronda por ronda**: si un organizador escribe una ronda con menciones y la siguiente con nombres, el bot ya sabe quién pasó, y **los que caían en esa ronda ahora cobran sus puntos**.",
+    "👥 **Los equipos, con todos sus integrantes**: si alguien se suma a un equipo después de inscribirlo, también cobra su parte.",
+    "🧮 Contar cuántos jugaron (lo que define la escala de puntos) ya no cuenta dos veces a quien aparece una vez como mención y otra con su nombre.",
+    "🃏 **La tarjeta de País se actualiza cuando se mueve tu país**: el OVR Nacional depende de tus compatriotas, y ahora la tarjeta se redibuja cuando cambia. Lo mismo con tu crew y tu puesto dentro de ella."
+   ]
+  },
+  {
    "version": "1.40",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T12:05:00-04:00",
