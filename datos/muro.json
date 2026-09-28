@@ -619,7 +619,8 @@
 "jult": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "kc": {
@@ -882,5 +883,14 @@
 "c": []
 }
 },
-"cambios": []
+"cambios": [
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T19:07:36Z",
+"quien": [
+"Jult"
+],
+"carta": "temporada"
+}
+]
 }
