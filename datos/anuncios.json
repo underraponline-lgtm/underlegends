@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-28T19:25:17+00:00",
+ "cuando": "2026-09-28T19:53:51+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1178,6 +1178,26 @@
    "premios": "PTS TABLA"
   },
   {
+   "nombre": "PLAYER ES ALTO CACORRO",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1554219543025426493",
+   "cuando": "2026-09-28T19:53:35",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "yo",
+   "cupos_texto": "4/8",
+   "inscriptos": 4,
+   "cupo_total": 8,
+   "rango": "(2k puntos de ascenso al primero y un campeonato)",
+   "modalidad": "1vs1",
+   "horario": "después de la compe del cacorro",
+   "fecha": "",
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T18:22:36"
+  },
+  {
    "nombre": "COMPE DEL VACILE T2 #1",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -1658,26 +1678,6 @@
    "inscripciones_cuando": "2026-09-28T18:22:36"
   },
   {
-   "nombre": "COMPE MTZ ANUNCIA LAS PERRAS PUTAS BATALLAS PARA GANAR RAPIDO UNDER Y ",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1542307576509628437",
-   "cuando": "2026-08-26T22:59:40",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1V1",
-   "horario": "AL LLENAR INSC",
-   "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-28T18:22:36"
-  },
-  {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
    "servidor": "URBF",
    "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
@@ -1859,6 +1859,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "TG🇪🇨",
+   "quien": "m_zeta",
+   "discord_id": "459142393938182144",
+   "msg_id": "1554216183191048353",
+   "cuando": "2026-09-28T19:40:14"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
