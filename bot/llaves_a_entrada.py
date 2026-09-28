@@ -786,6 +786,10 @@ def fase_sin_batallas(texto):
     return halladas[0] if halladas else None
 
 
+#: las rondas que pueden ser una PREVIA —un filtro para unos pocos lugares—
+PREVIAS = {'FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES'}
+
+
 def marcar_walkins(filas, textos=()):
     """Anota `Walk-in N: nombre` a quien aparece recien en una ronda avanzada.
 
@@ -814,7 +818,19 @@ def marcar_walkins(filas, textos=()):
     equipo es un drafteado o un absorbido (§3.2, §4.1: «no aplica a
     drafteados de pandilla»), no un walk-in. Y no cuenta si se parece a
     alguien de una ronda anterior: `PICHULITAMC` en octavos y `PICHULITA`
-    en cuartos son la misma persona escrita distinto.
+    en cuartos son la misma persona escrita distinto — ni si su nombre
+    EMPIEZA con el de alguien de antes: `MATI` en octavos y `MATICERNA` en
+    cuartos (FFA WORLD CUP, 27/09/2026).
+
+    🔴 UNA RONDA PREVIA QUE NO LLENA LA SIGUIENTE NO ES LA ENTRADA DE TODOS.
+    La FFA WORLD CUP (27/09/2026) tuvo FILTROS de tres por UN lugar en
+    octavos; los otros quince entraron directo a octavos, como estaba
+    armado. Contando desde los filtros, los quince eran «Walk-in 1»: el
+    campeón cobraba 5.000 en vez de 10.000. La Guía lo define como *«entrar
+    a una llave ya empezada, salteando rondas»*, y nadie saltó nada. Si la
+    primera ronda es una previa (filtros, clasificatoria, preliminar) con
+    menos batallas que lugares tiene la ronda siguiente, la entrada es la
+    siguiente.
     """
     def _k(n):
         return E.norm(E.HISTORIA.sub('', n or ''))
@@ -826,11 +842,14 @@ def marcar_walkins(filas, textos=()):
     # las rondas del texto, en orden, con TODOS los nombres que aparecen
     # —tambien los de adentro de un parentesis: son gente que ya peleo—
     en_texto = collections.defaultdict(set)
+    n_bat, n_lados = collections.Counter(), collections.Counter()
     for t in textos:
         for ronda, bats in E.rondas_de(t):
             r = _ronda(ronda)
             if r not in E.ORDEN or r == 'TERCER LUGAR':
                 continue
+            n_bat[r] += len(bats)
+            n_lados[r] += sum(len(b) for b in bats)
             for b in bats:
                 for n in b:
                     for parte in re.split(r'[+,&()]', n):
@@ -849,6 +868,9 @@ def marcar_walkins(filas, textos=()):
     if len(rondas) < 2:
         return filas
     pos = {r: i for i, r in enumerate(rondas)}
+    # la ronda donde entra la mayoría: la previa que no llena la siguiente, no
+    base = 1 if (rondas[0] in PREVIAS and n_bat[rondas[0]]
+                 and n_bat[rondas[0]] < n_lados[rondas[1]]) else 0
 
     # ⚠️ NI EL POKEMON NI EL INVITADO DE HONOR SON WALK-IN (guía, Parte 2,
     # §9.2): el primero no peleó esa ronda y el segundo cobra el 100 %.
@@ -869,12 +891,14 @@ def marcar_walkins(filas, textos=()):
             if k and (k not in primera or pos[r] < primera[k][0]):
                 primera[k] = (pos[r], lado, f)
     for k, (i, nombre, f) in primera.items():
-        if i == 0:
+        if i <= base:
             continue
         previos = set().union(*(en_texto[rondas[j]] for j in range(i)))
         if k in previos or E._parecido(k, list(previos)):
             continue
-        nota = 'Walk-in %d: %s' % (min(i, 3), E.HISTORIA.sub('', nombre).strip())
+        if any(len(p) >= 4 and (k.startswith(p) or p.startswith(k)) for p in previos):
+            continue
+        nota = 'Walk-in %d: %s' % (min(i - base, 3), E.HISTORIA.sub('', nombre).strip())
         f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
     return filas
 
@@ -1314,6 +1338,19 @@ def _self_check():
           '⌞Ana⌝ 🆚 ⌞Konan⌝\n`[ FINAL ]`\n⌞Konan⌝ 🆚 ⌞Caro⌝\n'
           'INVITADO DE HONOR: Konan\n🥇 CAMPEÓN: Konan')
     fw = marcar_walkins(filas_de(dict(h, texto=wk))[0], [wk])
+    # la FFA WORLD CUP recortada: un filtro de tres por un lugar y los demás
+    # directo a octavos; en cuartos, `MATI` pasa a escribirse `MATICERNA`
+    wc = ('# FILTROS\n⌞VELATZ⌝ 🆚 ⌞DREXX⌝ 🆚 ⌞EZEE⌝\n# OCTAVOS\n'
+          '⌞NC⌝ 🆚 ⌞FULLY⌝\n⌞SNOW⌝ 🆚 ⌞MAKMA⌝\n⌞YINN⌝ 🆚 ⌞PROVENZA⌝\n⌞MATI⌝ 🆚 ⌞MTZ⌝\n'
+          '⌞SOL⌝ 🆚 ⌞NACIO⌝\n⌞SONETO⌝ 🆚 ⌞DXG⌝\n⌞ABYSSUS⌝ 🆚 ⌞MOLUSCO⌝\n⌞PICHULITA⌝ 🆚 ⌞EZEE⌝\n'
+          '# CUARTOS\n⌞FULLY⌝ 🆚 ⌞SOL⌝\n⌞SNOW⌝ 🆚 ⌞DXG⌝\n⌞YINN⌝ 🆚 ⌞MOLUSCO⌝\n⌞EZEE⌝ 🆚 ⌞MATICERNA⌝\n'
+          '# SEMIFINALES\n⌞FULLY⌝ 🆚 ⌞MOLUSCO⌝\n⌞SNOW⌝ 🆚 ⌞EZEE⌝\n# FINAL\n⌞FULLY⌝ 🆚 ⌞SNOW⌝\n'
+          'CAMPEÓN: FULLY')
+    fwc = marcar_walkins(filas_de(dict(h, texto=wc))[0], [wc])
+    # la misma, con ZETA apareciendo en cuartos en lugar de MOLUSCO
+    wc2 = wc.replace('⌞YINN⌝ 🆚 ⌞MOLUSCO⌝', '⌞YINN⌝ 🆚 ⌞ZETA⌝').replace(
+        '⌞FULLY⌝ 🆚 ⌞MOLUSCO⌝', '⌞FULLY⌝ 🆚 ⌞ZETA⌝')
+    fwc2 = marcar_walkins(filas_de(dict(h, texto=wc2))[0], [wc2])
     casos = [
         ('el pokemon de la final queda anotado en esa fila',
          len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
@@ -1335,6 +1372,12 @@ def _self_check():
          'Revivido: Beto' in ' '.join(f['notas'] for f in fr)),
         ('el invitado de honor no es walk-in (§9.2)',
          not any('Walk-in' in f['notas'] for f in fw)),
+        ('filtros de 3 por un lugar: los que entran directo a octavos no son '
+         'walk-in (FFA WORLD CUP)', not any('Walk-in' in f['notas'] for f in fwc)),
+        ('… y MATI en octavos es MATICERNA en cuartos', not any(
+            'MATICERNA' in f['notas'] for f in fwc)),
+        ('pero el que aparece recién en cuartos sigue siendo walk-in',
+         [f['notas'] for f in fwc2 if 'Walk-in' in f['notas']] == ['Walk-in 1: ZETA']),
         ('filtros con nombres y sin batallas: se descarta',
          fase_sin_batallas('# COPA\nFILTROS\nAna\nBeto\nCaro\nDani\n'
                            'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
