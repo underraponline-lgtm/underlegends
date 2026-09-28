@@ -1086,7 +1086,11 @@ def tabla_nueva():
     cab = cabecera_oficial()
     icol = {c: i for i, c in enumerate(cab)}
     viejo = {}
-    for f in _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1)):
+    # ⚠️ LO LEÍDO SE GUARDA: `main()` lo compara con lo calculado para no
+    # reescribir una vitrina que ya dice lo mismo (`ya_dice()`), sin volver
+    # a leerla
+    tabla_nueva.leidas = _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1))
+    for f in tabla_nueva.leidas:
         f = list(f) + [''] * len(cab)
         nom = str(f[icol.get('Rapero', 1)]).strip()
         # 🔴 LA MISMA CLAVE PARA GUARDAR Y PARA BUSCAR. Acá se guardaba
@@ -1757,6 +1761,43 @@ def escribir_vitrina(filas, cab, sid=None, hoja=None, fila_cab=None):
             'total_malas': len(malas)}
 
 
+def ya_dice(sid, hoja, fila_cab, cab, filas, leido=None):
+    """¿La vitrina ya dice exactamente `filas`, con esa cabecera y vestida?
+
+    🔴 LAS CINCO VITRINAS SE REESCRIBÍAN EN CADA CORRIDA, IGUALES. Medido el
+    28/09/2026 leyendo el log de una corrida quieta: el paso 1c tardaba 37 s
+    en escribir, leer de vuelta y volver a vestir cinco hojas que no habían
+    cambiado —el Sheet sólo cambia cuando entra un evento—, con la cuota en
+    60 pedidos por minuto que ya tumbó corridas enteras.
+
+    ⚠️ SE COMPARA COMO VERIFICA `escribir_vitrina()`: celda por celda con
+    `_mismo()`, contra lo que la hoja muestra. Y la cola cuenta —una fila
+    vieja colgando abajo es un cambio—.
+
+    ⚠️ Y TIENE QUE ESTAR VESTIDA: si una corrida escribió y el diseño falló,
+    los datos ya coinciden y sin esto nunca se volvería a vestir.
+
+    `leido` evita la lectura cuando quien llama ya leyó el cuerpo (desde la
+    fila siguiente a la cabecera): es lo que hace `tabla_nueva()`.
+    """
+    ancho = len(cab)
+    if leido is None:
+        todo = _leer(sid, '%s!A%d:%s' % (hoja, fila_cab, _col(ancho)))
+        if not todo or [str(c).strip() for c in todo[0]][:ancho] != \
+                [str(c).strip() for c in cab]:
+            return False
+        leido = todo[1:]
+    if len(leido) != len(filas):
+        return False
+    for f, g in zip(filas, leido):
+        f = list(f) + [''] * (ancho - len(f))
+        g = list(g) + [''] * (ancho - len(g))
+        if not all(_mismo(a, b) for a, b in zip(f[:ancho], g[:ancho])):
+            return False
+    bandas, _n = _adornos(sid, hoja)
+    return bool(bandas)
+
+
 def hoja_existe(sid, nombre):
     """`True` si esa pestaña está en el documento. Ver `_meta()`."""
     return nombre in _meta(sid)
@@ -2061,6 +2102,12 @@ def escribir_todas(dry=True):
         out[cual] = {'filas': len(filas), 'hoja': nombre, 'cab': len(cab)}
         if dry:
             out[cual]['muestra'] = filas[:3]
+            continue
+        # 🔑 LA QUE YA DICE LO MISMO NO SE REHACE: una lectura en vez de
+        # borrar, escribir, leer de vuelta y vestir. Ver `ya_dice()`.
+        if ya_dice(OFICIAL, nombre, fila_cab, cab, filas):
+            out[cual]['r'] = {'escritas': 0, 'quedaron': len(filas), 'malas': [],
+                              'total_malas': 0, 'igual': True}
             continue
         # 🔴 LAS QUE NACEN O CAMBIAN DE FORMA SE **REHACEN**; las que
         # conservan su maqueta se escriben encima.
@@ -2561,6 +2608,36 @@ def _self_check():
     print('   %s el piso sale de comun/requisitos.py (%s)'
           % ('✅' if ok else '🔴', piso))
 
+    # 🔑 LA VITRINA QUE YA DICE LO MISMO NO SE REESCRIBE (`ya_dice()`)
+    print('\n  una vitrina igual no se reescribe')
+    global _leer, _adornos
+    _l, _a = _leer, _adornos
+    hoja = [['Rapero', 'Puntos'], ['Ana', '1250'], ['Bea', '900']]
+    vestida = [True]
+    try:
+        _leer = lambda sid, rng: [list(f) for f in hoja]              # noqa: E731
+        _adornos = lambda sid, n: ([7] if vestida[0] else [], 0)       # noqa: E731
+        cab = ['Rapero', 'Puntos']
+        casos = [
+            ('igual, con los números como los muestra la hoja',
+             ya_dice('x', 'H', 1, cab, [['Ana', 1250.0], ['Bea', 900]]), True),
+            ('un número distinto', ya_dice('x', 'H', 1, cab, [['Ana', 1300], ['Bea', 900]]), False),
+            ('una fila de menos: la cola vieja es un cambio',
+             ya_dice('x', 'H', 1, cab, [['Ana', 1250]]), False),
+            ('otra cabecera', ya_dice('x', 'H', 1, ['Rapero', 'Pts'], [['Ana', 1250], ['Bea', 900]]), False),
+            ('lo ya leído sirve, sin volver a leer',
+             ya_dice('x', 'H', 1, cab, [['Ana', 1250]], leido=[['Ana', '1250']]), True),
+        ]
+        vestida[0] = False
+        casos.append(('igual pero sin vestir: se reescribe, o nunca se vestiría',
+                      ya_dice('x', 'H', 1, cab, [['Ana', 1250], ['Bea', 900]]), False))
+    finally:
+        _leer, _adornos = _l, _a
+    for que, dio, esp in casos:
+        ok = dio == esp
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     return mal
 
 
@@ -2603,6 +2680,10 @@ def main():
                 continue
             malas = r.get('total_malas') or 0
             mal += bool(malas)
+            if r.get('igual'):
+                print('   %-10s %-22s ✓ igual: %d fila(s), no la reescribo'
+                      % (cual, d['hoja'], r.get('quedaron', 0)))
+                continue
             print('   %-10s %-22s %3d escritas · %d quedaron  %s'
                   % (cual, d['hoja'], r.get('escritas', 0),
                      r.get('quedaron', 0),
@@ -2714,6 +2795,12 @@ def main():
                       'engancharon: es gente nueva)'
                       % (n, len(viejo_ids) - len(huerfanas)))
 
+        # 🔑 SI YA DICE LO MISMO, NO SE TOCA. Ver `ya_dice()`: sin eventos
+        # nuevos, la vitrina es igual corrida tras corrida.
+        if ya_dice(OFICIAL, HOJA, fila_cabecera(HOJA), cab, filas,
+                   leido=getattr(tabla_nueva, 'leidas', None)):
+            print('\n   ✓ la vitrina ya dice esto: no la reescribo\n')
+            return 0
         print('\n   escribiendo…')
         r = escribir_vitrina(filas, cab)
         # ⚠️ LA PORTADA TAMBIEN SE VISTE. Es la hoja que más se mira y
