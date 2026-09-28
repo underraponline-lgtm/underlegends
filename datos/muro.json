@@ -10,6 +10,13 @@
 "temporada"
 ]
 },
+"snow": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "makmah": {
 "rg": "C",
 "c": [
@@ -25,13 +32,6 @@
 "fully": {
 "rg": "",
 "c": []
-},
-"snow": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "pichulamc": {
 "rg": "",
