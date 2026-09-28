@@ -1613,6 +1613,12 @@ inglés, y `/borrar-mis-datos`.
   eso, mi voto es la **A**. **A** · que cargue solo (y si algo no se lee, ✅
   Decidir pregunta la batalla) · **B** · que se retenga entero hasta que
   digas «Sí cuenta».
+  **Terminó a las 3:55 PM** (campeón PRAISERIZA, subcampeón Panchok) y lo
+  pasé por el lector y el motor antes de que lo cargue el ciclo: 15 batallas
+  sin una duda, 24 participantes (escala 16+) y los equipos reparten bien
+  —Bloody y Saz 2.625 cada uno, el equipo de Snow 1.312 cada uno, Bootrax,
+  Trot y Tuca 416 cada uno—. Como no hay regla, **entra solo en la corrida
+  de las 4:22 PM**; si preferís la B, «No cuenta» en ✅ Decidir lo saca.
 - 🆕 **Tres ideas** (28/09), para cuando quieras: **un probador de llaves en la
   web** (el organizador pega su llave y ve cómo la lee el bot antes de
   publicarla; corre en el navegador, no gasta nada); **los debutantes de la
