@@ -2864,7 +2864,7 @@
   "raw": "DNK",
   "pais": "Argentina",
   "sv": "",
-  "verificado": "",
+  "verificado": "✅",
   "discord_id": "1516945861307793491",
   "av_sheet": "",
   "notas": ""
@@ -3834,7 +3834,7 @@
   "raw": "JVO",
   "pais": "Colombia",
   "sv": "",
-  "verificado": "✅",
+  "verificado": "",
   "discord_id": "1488670857265156217",
   "av_sheet": "https://cdn.discordapp.com/avatars/1488670857265156217/b591905e46048c3a9910016a21c459b2.png?size=256",
   "notas": ""
@@ -8814,9 +8814,19 @@
   "raw": "dxg",
   "pais": "México",
   "sv": "",
-  "verificado": "",
+  "verificado": "✅",
   "discord_id": "1223701976655859805",
   "av_sheet": "",
   "notas": "alta automática · /card en FFA · 27/09/2026 4:54 PM ET"
+ },
+ {
+  "full": "Tiglar 🇪🇸",
+  "raw": "Tiglar",
+  "pais": "España",
+  "sv": "",
+  "verificado": "✅",
+  "discord_id": "1393145778935038004",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1393145778935038004/c068239aa9e833c92f205faa1b0ece0d.png?size=256",
+  "notas": ""
  }
 ]
