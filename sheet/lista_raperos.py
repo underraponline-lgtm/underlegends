@@ -181,6 +181,51 @@ def agregar(nombre, cc, did, nota='', aplicar=False):
     return n
 
 
+def agregar_varios(personas, aplicar=False):
+    """Varias filas nuevas de una vez: `[(nombre, cc, did, nota)]`.
+
+    Las mismas reglas que `agregar()` —no entra un nombre que ya está ni un
+    Discord que ya es de otra fila—, con UNA lectura y UNA escritura para
+    todos: ✅ Decidir agrega de a decenas (`decidir.por_discord()`), y de a
+    una eran dos pedidos por persona contra una cuota de 60 por minuto.
+    Devuelve `{did: número de fila}` de los que entran (o entrarían).
+    """
+    if not personas:
+        return {}
+    v = leer()
+    i, col = mapa(v)
+    ultima = max(k + 1 for k, f in enumerate(v) if k > i and _celda(f, col['Rapero']))
+    filas, out, vistos_n, vistos_id = [], {}, set(), set()
+    for nombre, cc, did, nota in personas:
+        if filas_de(v, nombre) or PAD.norm(nombre) in vistos_n:
+            print('   ⚠️ «%s» ya está en la Lista: no se agrega' % nombre)
+            continue
+        if did and (_id_usado(v, did) or did in vistos_id):
+            print('   ⚠️ el ID %s ya está en la Lista: «%s» no se agrega' % (did, nombre))
+            continue
+        fila = [''] * len(COLUMNAS)
+        pon = lambda c, x, f=fila: f.__setitem__(COLUMNAS.index(c), x)
+        pon('Rapero', ('%s %s' % (nombre, _bandera(cc))).strip())
+        pon('Bandera', _pais_de(v, cc) or _nombre_pais(cc))
+        pon('Verificado', '❓')
+        pon('Discord ID', did or '')
+        pon('Notas', nota)
+        pon('Nombre', nombre)
+        pon('País', (cc or '').lower())
+        filas.append(fila)
+        out[did] = ultima + len(filas)
+        vistos_n.add(PAD.norm(nombre))
+        vistos_id.add(did)
+    for fila in filas:
+        print('   + %s' % ' | '.join(x for x in fila if x))
+    if not filas or not aplicar:
+        return out
+    respaldar(v, 'agregar_varios')
+    _E().poner(_rango(HOJA, 'A%d:J%d' % (ultima + 1, ultima + len(filas))), filas)
+    print('   ✅ %d agregado(s)' % len(filas))
+    return out
+
+
 # ── poner un Discord ID ────────────────────────────────────────────────
 def poner_id(nombre, did, aplicar=False):
     v = leer()

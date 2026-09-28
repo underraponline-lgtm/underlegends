@@ -470,6 +470,136 @@ def _en_discord(nombre):
     return pista, en_lista
 
 
+#: un nombre de hasta tantas letras es «corto»: se parece a demasiada gente
+CORTO = 4
+#: cuántos se resuelven solos por corrida, como mucho
+TOPE_DISCORD = 30
+#: quién figura en `Pendientes` como que lo resolvió
+POR_DISCORD = 'el ciclo (su cuenta de Discord)'
+
+
+def _iso(bandera):
+    """`🇻🇪` -> `'ve'`."""
+    return ''.join(chr(ord(c) - 0x1F1E6 + 97) for c in bandera)
+
+
+def por_discord(preguntas, respuestas, eventos, dry=True):
+    """🔑 «¿QUIÉN ES X?» SE CONTESTA SOLO CUANDO X TIENE UNA SOLA CUENTA.
+
+    Dlx, 28/09/2026: *«tú que tienes acceso a los 5 servidores puedes buscar
+    los nombres de los MCs que necesitas saber»*, y a «¿lo agrego a la Lista
+    con esa cuenta?», *«A»*. Hasta ese día `_en_discord()` era una pista y la
+    respuesta la escribía él.
+
+    Sólo las preguntas sin contestar, y sólo si el nombre es el de UNA cuenta
+    de los servidores de la Liga (apodo, nombre visible o usuario):
+
+        la cuenta ya está en la Lista   alias de esa persona (hoja AKAs)
+        no está                         fila nueva en la Lista, con esa cuenta
+                                        y la bandera del nombre de la llave
+
+    ⚠️ LOS NOMBRES CORTOS, SÓLO SI LA CUENTA ESTÁ EN EL SERVIDOR DEL EVENTO: «MHS»
+    se parece a demasiada gente, y quien jugó un evento de FFA está en FFA.
+    ⚠️ Y NUNCA CONTRA UN PAR DECLARADO DISTINTO en AKAs, ni con un troll.
+    Las tarjetas siguen pidiendo lo de siempre: Miembro de DRA y país.
+
+    Devuelve los ids de las preguntas que resolvió (o resolvería, en seco).
+    """
+    import construir_akas as AK
+    akas = AK.cargar() or {}
+    fuera = no_rankear()
+    por_id = {str(r.get('discord_id')): (r.get('raw') or r.get('full'))
+              for r in _datos('padron') or [] if r.get('discord_id')}
+    svs = _datos('servidores_de') or {}
+    en_lista_n = {norm(_sin_bandera(r.get('raw') or r.get('full') or ''))
+                  for r in _datos('padron') or []}
+    # 🔴 LA BANDERA DE LA LLAVE, SÓLO SI ES UNA Y ES DE LA LIGA. La misma
+    # cuenta aparece como «LAST 🇬🇶» y «Last 🇺🇾», y hay banderas de broma
+    # (🇯🇲, 🇦🇸): sin esto, Last entraba como de Guinea Ecuatorial. Si hay dudas
+    # entra sin país, y lo completa `bot/autoverificar.py` con sus roles —la
+    # regla del país que ya decidió Dlx (25/09)—.
+    try:
+        from padron_t1 import PAIS_ISO
+        liga = set(PAIS_ISO.values())
+    except Exception:                                    # noqa: BLE001
+        liga = set()
+    banderas_de = {}
+    for p in preguntas:
+        if p['tipo'] != 'Nombre desconocido':
+            continue
+        ids = _apodos().get(norm(_sin_bandera(p['detalle']))) or set()
+        if len(ids) == 1:
+            for v in p.get('variantes') or [p['detalle']]:
+                banderas_de.setdefault(next(iter(ids)), set()).update(
+                    _iso(b) for b in _BANDERA.findall(v))
+    pares, nuevos, hechas = [], [], []
+    for p in preguntas:
+        if p['tipo'] != 'Nombre desconocido' or p['id'] in respuestas:
+            continue
+        det = p['detalle']
+        k = norm(_sin_bandera(det))
+        if len(k) < 3 or k in fuera or es_fragmento(det):
+            continue
+        ids = sorted(_apodos().get(k) or set())
+        if len(ids) != 1:
+            continue
+        did = ids[0]
+        # ⚠️ UNA CUENTA QUE HOY NO ESTÁ EN NINGÚN SERVIDOR DE LA LIGA NO SIRVE:
+        # «pollo» (EL RAP FECHA 5) daba la de «Rorromeo», que ya se fue, y
+        # casi seguro es Pollo Sport. Medido el 28/09/2026.
+        if not svs.get(did):
+            continue
+        if len(k) <= CORTO:
+            ev = eventos.get(_num_evento(p)) or ()
+            if len(ev) < 2 or ev[1] not in (svs.get(did) or []):
+                continue
+        real = por_id.get(did)
+        if real:
+            if AK.son_distintos(det, real, akas):
+                continue
+            pares.append([_sin_bandera(det), real, ''.join(_BANDERA.findall(det))])
+            hechas.append((p, 'alias de %s: la misma cuenta de Discord' % real))
+        elif len(k) > CORTO and any(k in c or c in k for c in en_lista_n if len(c) > CORTO):
+            # ⚠️ ALGUIEN DE LA LISTA SE LLAMA PARECIDO («pollo» y Pollo Sport):
+            # puede ser la misma persona sin su cuenta cargada. Eso lo decide
+            # Dlx; agregar a otro sería partir a una persona en dos.
+            continue
+        elif len(nuevos) < TOPE_DISCORD and did not in {x[3] for x in nuevos}:
+            # ⚠️ UNA FILA POR CUENTA: la otra grafía («Arez» y «AREZ») queda
+            # abierta y la corrida siguiente la resuelve como alias, porque
+            # su cuenta ya va a estar en la Lista
+            cc = banderas_de.get(did) or set()
+            nuevos.append((p, _sin_bandera(det).strip(),
+                           next(iter(cc)) if len(cc) == 1 and cc <= liga else '', did))
+    if not (pares or nuevos):
+        return set()
+    print('\n   🔎 resueltos con Discord: %d alias · %d nuevo(s) a la Lista'
+          % (len(pares), len(nuevos)))
+    for a, b, _f in pares:
+        print('      alias: %s -> %s' % (a, b))
+    for _p, n, cc, did in nuevos:
+        print('      nuevo: %s %s (Discord %s)' % (n, cc or '(sin bandera)', did))
+    if dry:
+        return {p['id'] for p, _r in hechas} | {p['id'] for p, *_ in nuevos}
+    import lista_raperos as LR
+    entraron = LR.agregar_varios(
+        [(n, cc, did, 'alta automática · su nombre en Discord · %s' % _ahora_et())
+         for _p, n, cc, did in nuevos], aplicar=True) if nuevos else {}
+    for p, n, cc, did in nuevos:
+        if did in entraron:
+            hechas.append((p, 'nuevo: entró a la Lista con su Discord (%s)' % did))
+    if pares:
+        _agregar_akas(pares, [])
+    if hechas:
+        from escribir import _pedir
+        _pedir('POST', '/values:batchUpdate', json={
+            'valueInputOption': 'RAW',
+            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n),
+                      'values': [['Resuelto', res, POR_DISCORD]]}
+                     for p, res in hechas for n in p['filas']]})
+    return {p['id'] for p, _r in hechas}
+
+
 #: cómo se dice cada motivo del lector
 _MOTIVO = {
     'no aparece nadie después': 'Ninguno aparece en la ronda siguiente, y la llave no marca quién pasó.',
@@ -1589,7 +1719,17 @@ def correr(dry=True):
     print('\n══ ✅ DECIDIR ══\n')
     print('   %d pregunta(s) abierta(s) · %d fila(s) repetida(s) en '
           '`Pendientes`' % (len(preguntas), len(repetidas)))
+    # 🔑 PRIMERO LO QUE SE CONTESTA SOLO CON DISCORD: ver `por_discord()`
+    try:
+        solas = por_discord(preguntas, respuestas, eventos, dry=dry)
+    except Exception as e:                               # noqa: BLE001
+        # ⚠️ NO FRENA ✅ DECIDIR: si falla, las preguntas quedan para Dlx
+        print('   ⚠️ no pude resolver con Discord (%s)' % str(e)[:80])
+        solas = set()
+    preguntas = [p for p in preguntas if p['id'] not in solas]
     estados = aplicar(preguntas, respuestas, repetidas, dry=dry)
+    if solas and not dry:
+        aplicar.hubo = True
     # lo que se acaba de cerrar ya no se pregunta. ⚠️ Y SI NO SE CERRÓ NADA
     # NO SE RELEE: dos lecturas menos en cada corrida, que es la mayoría.
     if not dry and getattr(aplicar, 'hubo', True):
@@ -1787,6 +1927,33 @@ def _self_check():
     pintar(bt, {}, {}, [], dry=True)
     ok(any(str(f[0]).startswith('▸  MARRUECOS') for f in pintar.filas),
        'la hoja tiene la franja del evento')
+
+    # 🔑 «¿quién es X?» con una sola cuenta, en seco (28/09/2026, «2. A»)
+    antes = dict(_DATOS)
+    try:
+        _DATOS['apodos'] = {'praiseriza': {'1'}, 'kulrw': {'2'}, 'mhs': {'3'},
+                            'rorro': {'4'}, 'pollo': {'5'}}
+        _DATOS['padron'] = [{'raw': 'Jult', 'discord_id': '2'}, {'raw': 'Pollo Sport'}]
+        _DATOS['servidores_de'] = {'1': ['FFA'], '2': ['FFA'], '3': ['DRA'], '5': ['FFA']}
+        ev = {'359': ('MARRUECOS', 'FFA', '26/09')}
+        qs = armar([(30, {'Tipo': nd, 'Detalle': 'PRAISERIZA 🇻🇪', 'Origen': 'evento #359'}),
+                    (31, {'Tipo': nd, 'Detalle': 'KULRW🇦🇷', 'Origen': 'evento #359'}),
+                    (32, {'Tipo': nd, 'Detalle': 'MHS 🇦🇷', 'Origen': 'evento #359'}),
+                    (33, {'Tipo': nd, 'Detalle': 'RORRO', 'Origen': 'evento #359'}),
+                    (34, {'Tipo': nd, 'Detalle': 'pollo', 'Origen': 'evento #359'})], ev)
+        ids = {p['detalle']: p['id'] for p in qs}
+        solas = por_discord(qs, {}, ev, dry=True)
+        ok(ids['PRAISERIZA 🇻🇪'] in solas and ids['KULRW🇦🇷'] in solas,
+           'con una sola cuenta: nuevo (PRAISERIZA) o alias (KULRW = Jult)')
+        ok(ids['MHS 🇦🇷'] not in solas,
+           'un nombre corto con la cuenta en OTRO servidor que el del evento, no')
+        ok(ids['RORRO'] not in solas and ids['pollo'] not in solas,
+           'ni una cuenta que no está en la Liga, ni un nombre que se parece a alguien de la Lista')
+        ok(not por_discord(qs, {ids['PRAISERIZA 🇻🇪']: ('Es alguien nuevo',)}, ev, dry=True)
+           - {ids['KULRW🇦🇷']}, 'lo que Dlx ya contestó no se toca')
+    finally:
+        _DATOS.clear()
+        _DATOS.update(antes)
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
