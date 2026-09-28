@@ -419,6 +419,16 @@ optimizaciones»*.
   Number: ninguno de los dos aparece en cuartos, así que ahí hace falta tu
   respuesta. Medido sobre todas las llaves de la T1, viejo contra nuevo:
   ninguna otra fila cambia.
+- 🔴 **✅ Decidir seguía preguntando lo que ya se había resuelto solo**
+  (3 PM). El barrido que cierra esas preguntas corría sólo cuando había
+  tarjetas para dibujar; en una tarde tranquila, una batalla que la llave ya
+  resolvía o un nombre que ya tenía alias se seguían preguntando. Ahora
+  corre en cada corrida, antes de pintar ✅ Decidir. Lo mostró MARRUECOS: la
+  corrida de las 2:52 PM ya resolvía sus 7 batallas y la hoja las seguía
+  mostrando.
+- 🧰 **`herramientas/comparar_lector.py`**: el lector de un commit contra el
+  de ahora, sobre todas las llaves reales (sin escribir nada). Todos los
+  arreglos al lector de hoy se midieron así antes de subirlos.
 
 ---
 
