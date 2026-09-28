@@ -300,7 +300,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
-## 📅 Lunes 28/09 (10:15 AM) — versión 1.37
+## 📅 Lunes 28/09 (8:55 AM) — versión 1.37
 
 **Lo que empezó, en vivo; y la FFA WORLD CUP, que no entraba.** Los bugs de
 las capturas de Dlx (*«así se veía esto cuando había 2 en vivo… es un
@@ -354,7 +354,7 @@ bug»*), más lo que apareció buscándolos.
 
 ---
 
-## 📅 Lunes 28/09 (9 AM) — versión 1.36
+## 📅 Lunes 28/09 (8:25 AM) — versión 1.36
 
 **Los 5 vidas.** Dlx: *«SNAKE ARENA es formato TIPO 5 VIDAS donde sólo hay
 5 competidores, como la Red Bull 5 Vidas… en veredictos está todo lo que
