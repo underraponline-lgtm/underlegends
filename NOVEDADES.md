@@ -402,6 +402,23 @@ optimizaciones»*.
   corrida de las 2:22 PM redibuja una vez **137 de País, 25 Competitivas y
   25 Servidor** (~5 min); después, sólo las que cambian de verdad. Era el
   pendiente del 25/09 («el sello no ve lo que depende de otros»).
+  Verificado: la corrida de las 2:22 PM pidió justo esas 187 y ya no dijo
+  «cambió el CÓDIGO».
+- 🔴 **MARRUECOS: 7 de sus 8 preguntas de ✅ Decidir se contestan solas**
+  (2:30 PM). La llave del 26/09 escribe los octavos **sólo con menciones**
+  (`<@…>`) y los cuartos con nombres, y el lector no sabía seguir una
+  mención a la ronda siguiente: las 8 batallas de octavos iban a ✅ Decidir
+  y **los 10 que cayeron en octavos no cobraban nada** (tormen, yinn,
+  Partim, Jult, Sin Límites, marto, Xclusivo, Erian, Geoka, Elinge). Los
+  nombres de cada cuenta ya estaban (Lista, alias, inscripción, Discord);
+  ahora se usan también para esto, y el que pasa se llama como lo
+  escribieron en cuartos (si no, la misma persona entraba con dos nombres y
+  cobraba dos veces). De paso, PROVENZA —que pasó una batalla de cuatro
+  donde pasan dos— iba a salir «walk-in» en cuartos (la mitad de sus
+  puntos): también arreglado. **Queda una sola pregunta**, Richard contra
+  Number: ninguno de los dos aparece en cuartos, así que ahí hace falta tu
+  respuesta. Medido sobre todas las llaves de la T1, viejo contra nuevo:
+  ninguna otra fila cambia.
 
 ---
 
