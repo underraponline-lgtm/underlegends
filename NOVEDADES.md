@@ -1645,6 +1645,12 @@ inglés, y `/borrar-mis-datos`.
   ET. Mirar que el vigía la guarde, que la página la lea igual que Python y
   que se esconda cuando el ciclo la procese.
 - **Los links de Discord en la app**: probarlo en un Android de verdad.
+- **Una llave EN VIVO escrita con menciones se ve con `<@123…>`** en la
+  página (28/09): el lector de la página no tiene los nombres de cada cuenta,
+  y el vigía no los manda. Sólo pasa con el organizador que escribe así
+  (MARRUECOS); cuando la llave se procesa, sale con nombres. Va con el remake
+  de la web: el vigía tendría que mandar el nombre de cada mención, como ya
+  hace Python.
 - **11 eventos se llaman «__ … __» en el Operativo** (el subrayado de Discord
   en el título). En la página salen limpios; en el Sheet no. Limpiarlos pide
   migrar `Eventos Procesados`, `Resultados` y `1v1` a la vez, porque el nombre
