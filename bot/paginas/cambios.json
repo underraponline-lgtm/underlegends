@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.42",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T15:35:00-04:00",
+   "titulo": "Más formatos de llave",
+   "items": [
+    "🔗 **Las llaves escritas con `{nombre} VS {nombre}`** se leen con los nombres limpios, también en vivo.",
+    "🃏 Las tarjetas muestran los mismos duelos que el perfil: tres mostraban uno que ya no contaba."
+   ]
+  },
+  {
    "version": "1.41",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T14:35:00-04:00",
