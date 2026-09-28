@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-28T03:23:55+00:00",
+ "cuando": "2026-09-28T03:54:03+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1817,6 +1817,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Pichulamc",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1553973655782948926",
+   "cuando": "2026-09-28T03:36:30"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
