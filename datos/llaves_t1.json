@@ -2213,8 +2213,72 @@
   ],
   "n": 359,
   "nombre": "MARRUECOS EN VENTA V.1",
-  "participantes": 22,
+  "participantes": 20,
   "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "tormen 🇳🇮"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "yinn"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "SHULIOT🇦🇷",
+       "Partim"
+      ],
+      "SHULIOT🇦🇷",
+      ""
+     ],
+     [
+      [
+       "OKAM🇨🇷",
+       "Jult",
+       "Sin Limites"
+      ],
+      "OKAM🇨🇷",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Masino",
+       "Marto",
+       "Xclusivo",
+       "Erian"
+      ],
+      "Masino",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Soneto",
+       "Geoka"
+      ],
+      "Soneto",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Elinge_TIMP 🇨🇱"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
    {
     "b": [
      [
@@ -2328,6 +2392,56 @@
     "Soneto",
     "Cuartos",
     2500
+   ],
+   [
+    "Elinge_TIMP 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto",
+    "Octavos",
+    1250
+   ],
+   [
+    "Partim",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ],
+   [
+    "tormen 🇳🇮",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
    ]
   ]
  },
