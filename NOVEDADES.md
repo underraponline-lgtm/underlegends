@@ -1674,7 +1674,7 @@ inglés, y `/borrar-mis-datos`.
 - **Inscribirse y no ir** (lo que va a cortar la racha): hay que guardar las inscripciones de cada evento antes de que el servidor las borre. Lo armo cuando lo pidas.
 - **Knowledge Sombrío** aparece en Mundo **sin puesto**: de sus seis, sólo Zignos jugó la T1. Tiene puesto en cuanto jueguen tres.
 - **Dos personas con el mismo nombre en minúsculas** (Volk y volk) ya se separan en la página, pero **R2 y KV todavía arman la clave del nombre**: el día que los dos estén verificados, sus tarjetas chocan. Hoy ninguno lo está.
-- **La corrida de las 10:52 AM** es la primera con las marcas del disparador en el Durable Object y `meta` sin reescribir: la miro.
+- ✅ ~~**La corrida de las 10:52 AM** es la primera con las marcas del disparador en el Durable Object~~: verificado el 28/09 en `/avisos/estado` —`arranco` y `ultimo` a las 1:52 PM, `ok` con `204`—.
 - 🔔 **A7** (el Score a 40–99): te llega un DM cuando el primero llegue a 8 eventos. Pide mover los umbrales de los 8 rangos en la misma pasada.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - ✅ ~~Las llaves viajan en el payload del lobby, las 24 más nuevas~~: desde la 1.20 **todas** van además a `web:llaves` y la página las pide sólo para un link viejo. Si el lobby pesa (hoy 115 KB), se puede bajar `LLAVES_WEB` sin romper ningún link.
