@@ -25,12 +25,12 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "D",
+"oasis": {
+"rg": "",
 "c": []
 },
-"fully": {
-"rg": "",
+"velatz": {
+"rg": "D",
 "c": []
 },
 "pichulamc": {
@@ -103,10 +103,6 @@
 ]
 },
 "antorchaolimpica": {
-"rg": "",
-"c": []
-},
-"parkjisung": {
 "rg": "",
 "c": []
 },
@@ -855,6 +851,14 @@
 "servidor",
 "temporada"
 ]
+},
+"fully": {
+"rg": "",
+"c": []
+},
+"parkjisung": {
+"rg": "",
+"c": []
 }
 },
 "cambios": []
