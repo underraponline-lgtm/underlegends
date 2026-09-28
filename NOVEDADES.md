@@ -365,6 +365,23 @@ optimizaciones»*.
 - 🔑 Para la tanda final de tokens: los `#` de los logs de GitHub salen
   `***` porque `.env` tiene dos renglones que son sólo `#` (ver
   `ACCESOS.md`).
+- 🔕 **La alarma que sonaba en cada corrida** (2 PM): *«cambió el CÓDIGO
+  de la pais: le toca a todo el pool»*, y no se redibujaba ninguna País.
+  Eran 5 personas sin país con un sello viejo de esa carta, más **132
+  nombres viejos** —los de antes de cada fusión y cada alias— que el sello
+  no borraba nunca: lo que una corrida sacaba volvía del commit anterior al
+  guardar. Ahora se borra (`herramientas/unir_sellos.py`) y la alarma sólo
+  cuenta cartas que se pueden dibujar (`que_cambio.por_que()`). **Ninguna
+  tarjeta salió mal por esto**: era ruido, pero ruido que tapaba la vez que
+  fuera de verdad. Los 132 se limpian solos en la próxima corrida que
+  dibuje.
+- 👯 La corrida de la 1:52 PM **arrancó dos veces** (34 s de diferencia):
+  Cloudflare repitió el cron. Inofensivo —la segunda esperó a la primera y
+  no encontró nada nuevo— y pasó 2 veces en las últimas 40 corridas. No lo
+  toco.
+- ✅ **Las vitrinas, verificadas**: la corrida de la 1:52 PM las vistió una
+  vez para guardar la huella del diseño, y la segunda ya dijo «✓ igual» en
+  las cinco.
 
 ---
 
