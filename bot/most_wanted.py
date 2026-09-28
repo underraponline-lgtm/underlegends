@@ -91,6 +91,11 @@ FASE_MINIMA = 'Cuartos'
 FASE_MINIMA_REY = 'Semifinal'
 #: lo que se lleva el que sobrevive, sobre su recompensa final
 PAGA_SOBREVIVIR = 0.5
+#: lo que además se cobra en Puntos de Tienda, sobre lo cobrado (cazando o
+#: sobreviviendo). Dlx, 28/09/2026: *«b»* —12.000 de Temporada y 1.200 de
+#: Tienda—, porque todos arrancan con 5.000 y una caza entera los pasaría
+#: del doble. Lo manda a la billetera `bot/precios.py` (paso 2b4)
+TIENDA = 0.10
 #: para poder ser buscado: eventos en los últimos días
 ACTIVO = {'dia': (2, 7), 'semana': (2, 14)}
 #: un evento con menos gente no cuenta para cazar

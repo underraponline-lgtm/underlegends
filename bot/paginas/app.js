@@ -3875,8 +3875,10 @@ function pintaMW() {
   }
   var sueltos = M.b.filter(function (b) { return b.e === 'suelto'; }).length;
   pag.dataset.tit = '&#128128; Most Wanted' + (M.tipo === 'dia' ? ' de hoy' : ' de la semana');
+  var tmw = D.tienda && D.tienda.mw;
   pag.innerHTML = '<p class="mw-cab"><b>' + sueltos + ' de ' + M.b.length + '</b> siguen sueltos. ' +
-    'Cazalos en cualquier evento de la Liga: le ganás a uno y su recompensa suma a tus Puntos. Vence el ' +
+    'Cazalos en cualquier evento de la Liga: le ganás a uno y su recompensa suma a tus Puntos' +
+    (tmw ? ' (y el ' + Math.round(tmw * 100) + ' % en Puntos de Tienda)' : '') + '. Vence el ' +
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '.</p><div class="mw-t">' + M.b.map(cartelMW).join('') + '</div>' +
     // la votación de El Elegido del que viene: la llena `pintaEncuestas()`
@@ -4303,9 +4305,10 @@ function pintaTienda() {
       ? 'La tienda todavía no está lista: probá en un rato.' : 'No pude leer tu billetera. Probá de nuevo.') +
       '</span></p><button type="button" class="btn sec" data-billetera>Probar de nuevo</button>';
   } else {
-    b.innerHTML = cab + '<p class="bajada">Todos arrancan con <b>' + num(T.inicial) + '</b>. Para ver los tuyos ' +
-      'entrás con Discord: los ves sólo vos.</p><button type="button" class="btn" data-billetera>Ver mis Puntos ' +
-      'de Tienda</button>';
+    b.innerHTML = cab + '<p class="bajada">Todos arrancan con <b>' + num(T.inicial) + '</b>, y se ganan cazando: ' +
+      'todo el precio por cabeza' + (T.mw ? ', y el <b>' + Math.round(T.mw * 100) + ' %</b> de lo que pagan los ' +
+      'buscados del Most Wanted' : '') + '. Para ver los tuyos entrás con Discord: los ves sólo vos.</p>' +
+      '<button type="button" class="btn" data-billetera>Ver mis Puntos de Tienda</button>';
   }
   b.hidden = false;
   // 💰 el precio por cabeza: arriba lo que vale cada una, abajo para poner

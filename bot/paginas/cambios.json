@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.34",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T08:05:00-04:00",
+   "titulo": "El Most Wanted paga también en la Tienda",
+   "items": [
+    "🎯 Cazar a un buscado del **Most Wanted** ahora da, además de sus puntos de Temporada, **el 10 % en Puntos de Tienda**: si cazás al Rey y cobrás 12.000, te llevás también 1.200 para la Tienda. Lo mismo el que sobrevive.",
+    "🪙 Los ves en la **Tienda**, entrando con Discord."
+   ]
+  },
+  {
    "version": "1.33",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T08:00:00-04:00",

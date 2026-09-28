@@ -2059,6 +2059,7 @@ def _tienda():
     try:
         import precios as _PR
         import multiplicadores as _MU
+        import most_wanted as _MWT
         _pid, _ini, fin = _MU.periodo()
         d = _PR.leer()
     except Exception as e:                               # noqa: BLE001
@@ -2068,6 +2069,8 @@ def _tienda():
     cazas.sort(key=lambda x: x['ev'].get('t') or '')
     return {'inicial': _PR.INICIAL, 'min': _PR.MINIMO, 'paso': _PR.PASO, 'tope': _PR.TOPE_CABEZA,
             'fin': _PR._iso(fin),
+            # lo que el Most Wanted paga además en Tienda (Dlx: «b»)
+            'mw': _MWT.TIENDA,
             'cazas': [{'cabeza': x['cabeza'], 'monto': x['monto'], 'por': x['por'],
                        'ev': x['ev'].get('nombre') or '', 't': x['ev'].get('t') or ''} for x in cazas[-10:]]}
 

@@ -290,8 +290,26 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El que caza cobra lo mismo en los dos** (Tienda y Temporada), y **billetera tiene cualquiera que entre con Discord** | *«1. Ambos. 2. B»*, porque *«MW is for puntos temporada mainly but we need more incentives… for people to get through the website»* | ✅ `rankings.sumar_precios()` (1.32). La cuenta de Discord, de más de 30 días, como las encuestas |
 | **TIENDA y PUBLICACIONES en el menú; en el celular la barra se desliza** | *«agrega la opción de TIENDA y PUBLICACIONES… en el PC será normal pero en celular haz que se deslice para ver más opciones»* | ✅ (1.32). Publicaciones dice «pronto»: qué va ahí todavía se habla |
 | **Publicaciones es un muro automático de la Liga, y los anuncios de todos los servidores** | *«sí un muro automático, pero anuncios de todos los servidores también»* | ✅ `bot/muro.py` (1.33): campeones, rangos, tarjetas, cazas, precios, premios, El Elegido, anuncios y novedades. Contado por la Liga, en tercera persona |
+| **El Most Wanted paga además el 10 % en Puntos de Tienda**, al que caza y al que sobrevive (12.000 de Temporada → 1.200 de Tienda) | *«b»* (28/09, 7:45 AM) | ✅ `most_wanted.TIENDA` + `precios.tienda_mw()` (1.34). Se reemplaza entero en cada corrida: una llave corregida no paga dos veces |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (8:05 AM) — versión 1.34
+
+**El Most Wanted paga también en la Tienda.** Dlx: *«b»*.
+
+- 🎯 Al que caza, el 10 % de lo que cobró en Puntos de Tienda; al que
+  sobrevive, el 10 % de lo que se llevó (`most_wanted.TIENDA`). Lo manda a
+  la billetera `bot/precios.py` (`tienda_mw()`), por la misma KV que los
+  precios (`precios:resolucion`, clave `mw`).
+- ⚠️ **Se reemplaza entero en cada corrida** (el objeto borra lo `mw:` y lo
+  vuelve a anotar): si una llave se corrige y el cazador es otro, lo cobra el
+  nuevo y el viejo lo pierde. Los precios por cabeza no se tocan.
+- Sólo la temporada del período de ahora: con la T1, lo de la prueba sale.
+- La página lo dice con el número del payload (`tienda.mw`): en el tablero
+  del Most Wanted, en la Tienda y en la Guía.
 
 ---
 
@@ -1175,11 +1193,8 @@ inglés, y `/borrar-mis-datos`.
   A»*: hechas en la 1.31.
 - ✅ ~~Las cuentas de Discord de menos de 30 días no votan~~: *«Listo»* (27/09).
   Vale también para poner un precio por cabeza.
-- **¿Los buscados del Most Wanted también pagan Puntos de Tienda?** (Dlx:
-  *«explica»*, explicado el 28/09 a las 7:30 AM.) A) lo mismo que la
-  Temporada · B) una parte, el 10 % —mi recomendación: el MW paga hasta
-  20.000 y todos arrancan con 5.000— · C) no. Vale también para el que
-  sobrevive.
+- ✅ ~~¿El Most Wanted también paga Puntos de Tienda?~~ *«b»*: el 10 %, hecho
+  en la 1.34. (La pregunta se entendió a la tercera, con el ejemplo del Rey.)
 - ✅ ~~¿Qué va en Publicaciones?~~ *«sí un muro automático, pero anuncios de
   todos los servidores también»*: hecho en la 1.33.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y

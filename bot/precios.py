@@ -209,12 +209,43 @@ def resolver(precios, evs, ahora=None):
     return out
 
 
-def para_objeto(res, dids):
-    """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}}`.
+def tienda_mw(mw, dids):
+    """`{id: [discord_id, puntos, ms]}`: lo que el Most Wanted paga en Puntos de Tienda.
+
+    🔑 Dlx, 28/09/2026: *«b»*. Al que caza, el `most_wanted.TIENDA` de lo que
+    cobró; al que sobrevive, lo mismo de lo que se llevó. Sólo la temporada
+    del período de ahora (`most_wanted.periodos()`): con la T1, lo de la
+    prueba deja de mandarse y el objeto lo borra.
+
+    ⚠️ SE MANDA ENTERO EN CADA CORRIDA Y EL OBJETO LO REEMPLAZA ENTERO: una
+    llave corregida cambia quién cazó, y así nadie cobra dos veces.
+    """
+    import most_wanted as MW
+    out = {}
+    for per in MW.periodos(mw or {}):
+        for b in per.get('buscados') or []:
+            if b.get('caza'):
+                c = b['caza']
+                t = _de_iso(c.get('t') or per.get('fin'))
+                for y in c.get('por') or []:
+                    m = int(round((y.get('cobra') or 0) * MW.TIENDA))
+                    if m > 0 and y.get('n') in dids and t:
+                        out['%s:%s:%s' % (per.get('id'), b['n'], y['n'])] = [dids[y['n']], m, _ms(t)]
+            elif b.get('estado') == 'sobrevivio' and b.get('paga'):
+                m = int(round(b['paga'] * MW.TIENDA))
+                t = _de_iso(per.get('fin'))
+                if m > 0 and b['n'] in dids and t:
+                    out['%s:%s:sobrevivio' % (per.get('id'), b['n'])] = [dids[b['n']], m, _ms(t)]
+    return out
+
+
+def para_objeto(res, dids, mw=None):
+    """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
-    va todavía: le llega cuando se sepa. `v` es la huella, para que el objeto
-    no lo vuelva a aplicar si no cambió.
+    va todavía: le llega cuando se sepa. `mw` es lo que el Most Wanted paga
+    en Tienda (`tienda_mw()`). `v` es la huella, para que el objeto no lo
+    vuelva a aplicar si no cambió.
     """
     r = {}
     for x in res:
@@ -224,8 +255,9 @@ def para_objeto(res, dids):
                                'por': [[dids[n], m] for n, m in x['por'] if n in dids]}
         elif x['e'] == 'devuelto':
             r[str(x['id'])] = {'e': 'devuelto', 'por': []}
-    v = hashlib.sha1(json.dumps(r, sort_keys=True).encode()).hexdigest()[:16]
-    return {'v': v, 'r': r}
+    m = tienda_mw(mw, dids) if mw is not None else {}
+    v = hashlib.sha1(json.dumps([r, m], sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
+    return {'v': v, 'r': r, 'mw': m}
 
 
 def _de_iso(s):
@@ -280,7 +312,8 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
         _subir(config(ahora, pool), CLAVE_KV, 'lo que valida el Worker')
-        _subir(para_objeto(res, discords(pool)), CLAVE_RES, 'lo cazado y lo devuelto')
+        # 🔑 y lo que el Most Wanted paga en Tienda (Dlx: «b»), por el mismo camino
+        _subir(para_objeto(res, discords(pool), MW.leer()), CLAVE_RES, 'lo cazado, lo devuelto y el MW')
     return out
 
 
@@ -349,6 +382,20 @@ def _self_check():
        and '3' not in po['r'] and '5' not in po['r'],
        'al objeto va lo resuelto; quien cazó sin Discord conocido (Gus) no, todavía')
     ok(para_objeto(list(res.values()), {})['v'] != po['v'], 'y cambia la huella si cambia algo')
+    # 🔑 el Most Wanted también paga Tienda: el 10 % (Dlx: «b»)
+    D1, D2 = '111111111111111111', '222222222222222222'
+    mwd = {'actual': {'id': 'p1', 'temporada': 'prueba', 'fin': '2026-10-19T15:00:00Z', 'buscados': [
+        {'n': 'Bea', 'estado': 'cazado', 'caza': {'t': '2026-10-13T22:00:00Z',
+                                                  'por': [{'n': 'Dan', 'cobra': 9500}, {'n': 'Gus', 'cobra': 9500}]}},
+        {'n': 'Fer', 'estado': 'sobrevivio', 'paga': 3000}, {'n': 'Hal', 'estado': 'escondio'}]}}
+    tm = tienda_mw(mwd, {'Dan': D1, 'Fer': D2})
+    ok(tm == {'p1:Bea:Dan': [D1, 950, _ms(_de_iso('2026-10-13T22:00:00Z'))],
+              'p1:Fer:sobrevivio': [D2, 300, _ms(_de_iso('2026-10-19T15:00:00Z'))]},
+       'el Most Wanted paga el %d %% en Tienda, al que caza y al que sobrevive (sin Discord conocido, todavía no)'
+       % round(MW.TIENDA * 100))
+    po2 = para_objeto([], {'Dan': D1, 'Fer': D2}, mwd)
+    ok(po2['mw'] == tm and po2['v'] != para_objeto([], {'Dan': D1, 'Fer': D2})['v'],
+       'y viaja con lo de los precios, cambiando la huella')
     pool = [{'raw': 'Ana', 'discord_id': '123456789012345678'}, {'raw': 'Bea', 'fc': True},
             {'raw': 'Cid', 'discord_id': ''}]
     ok(cabezas(pool) == ['Ana', 'Cid'] and discords(pool) == {'Ana': '123456789012345678'},

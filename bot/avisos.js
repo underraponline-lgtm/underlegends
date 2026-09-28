@@ -1975,6 +1975,18 @@ export class Avisos {
       }
       cambios++;
     }
+    // 🔑 EL MOST WANTED TAMBIÉN PAGA TIENDA (Dlx, 28/09/2026: «b»): el ciclo
+    // manda todo lo de la temporada y se REEMPLAZA entero, así una llave
+    // corregida no hace cobrar dos veces. `ref` 0: no es un precio.
+    if (r.mw && typeof r.mw === 'object') {
+      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'mw:%'");
+      for (const [id, x] of Object.entries(r.mw)) {
+        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
+        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+          'mw:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
+        cambios++;
+      }
+    }
     this.guardar('precios_v', r.v);
     this.guardar('precios_ultimo', { t: ahora, cambios });
     return cambios;
