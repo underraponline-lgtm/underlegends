@@ -1658,9 +1658,12 @@ inglés, y `/borrar-mis-datos`.
   sigue siendo `(nombre, servidor, fecha)`. Urban Freestyle tiene tres pares
   así en sus llaves viejas («compe chill» dos veces el 08/09). Es el
   pendiente de anclar el evento al mensaje de Discord (más abajo).
-- **3 duelos distintos entre carta y perfil** (Sin Límites, Focox, KC): el pool
-  tiene el conteo del 24/09, cuando el lector leía esa batalla como 1v1. Se
-  corrigen solos cuando el pool se reconstruya: lo miro en la corrida que viene.
+- ✅ ~~**3 duelos distintos entre carta y perfil** (Sin Límites, Focox, KC)~~:
+  no se iban a corregir solos. El pool arrancaba los duelos de **su propio
+  JSON anterior** y la hoja `1v1` sólo pisaba a quien tiene duelos ahí, así
+  que un duelo que dejó de serlo quedaba para siempre. Arreglado el 28/09
+  (2:40 PM): con la hoja con datos, manda entera. Medido: cambian esos tres
+  y nada más.
 - ✅ ~~**El sello no ve lo que depende de otros**: el OVR Nacional, el puesto en
   el rango y en la crew~~: los tres entran al sello desde el 28/09 (2:15 PM),
   y también **quién está en cada crew** (`datos/crews.json` no estaba en
