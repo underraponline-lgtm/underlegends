@@ -304,7 +304,9 @@ def _resuelto_ya(fila, resolver):
                          encoding='utf-8') as f:
                 d = json.load(f) or {}
             t = datetime.datetime.strptime(d.get('t', ''), '%Y-%m-%dT%H:%M:%SZ')
-            fresca = (datetime.datetime.utcnow() - t).total_seconds() < 3 * 3600
+            # naive y en UTC, como `t`: `utcnow()` está deprecado desde 3.12
+            ahora = datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+            fresca = (ahora - t).total_seconds() < 3 * 3600
             if fresca and detalle not in set(d.get('batallas') or []):
                 return 'la llave ya dice quién ganó'
         except Exception:                                # noqa: BLE001

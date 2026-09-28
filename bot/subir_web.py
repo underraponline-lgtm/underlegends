@@ -915,7 +915,8 @@ def _hoy_este():
         from zoneinfo import ZoneInfo
         return dt.datetime.now(ZoneInfo('America/New_York')).date()
     except Exception:                                    # noqa: BLE001
-        return dt.datetime.utcnow().date()
+        # `utcnow()` está deprecado desde 3.12
+        return dt.datetime.now(dt.timezone.utc).date()
 
 
 def _con_redes(perf):
