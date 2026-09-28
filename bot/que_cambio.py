@@ -269,6 +269,32 @@ def por_campo():
     return inv, m.get('medido', '?')
 
 
+def _puestos_en_rango(comp, umbral=3):
+    """{nombre: (puesto, total)} dentro de su letra, por Score.
+
+    ⚠️ ES LA REGLA DE LAS DOS CARTAS QUE LO DIBUJAN, copiada a propósito:
+    `04_Pais/generar.puestos_en_rango()` y `03_Servidor/generar.
+    puestos_en_rango()`. Importarlas acá no se puede —los dos módulos se
+    llaman `generar` y el segundo import devuelve el primero— y mudarlas a
+    `comun/` redibuja las cuatro cartas de todo el pool. El self-check
+    compara las tres sobre el pool de verdad y sobre uno armado: si una
+    carta cambia la regla y ésta no, se pone rojo.
+    """
+    por = {}
+    for x in comp:
+        # sin letra no hay rango, y tampoco puesto dentro de él
+        if x.get('rango'):
+            por.setdefault(x['rango'], []).append(x)
+    out = {}
+    for lista in por.values():
+        if len(lista) < umbral:
+            continue
+        orden = sorted(lista, key=lambda x: -x['score'])
+        for n, x in enumerate(orden, 1):
+            out[x['raw']] = (n, len(orden))
+    return out
+
+
 def huellas():
     """{persona: {carta: '<datos>:<codigo>'}} del estado de AHORA.
 
@@ -410,6 +436,11 @@ def huellas():
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude leer las crews (%s)' % str(e)[:60])
         crew, de_crew = {}, {}
+    # 🔴 Y EL PUESTO DENTRO DE TU LETRA (País y Servidor), por lo mismo: se
+    # mueve cuando alguien de tu letra sube o baja. Ver `_puestos_en_rango()`.
+    # Como la crew, sólo a quien tiene puesto: el 28/09 no lo tenía nadie
+    # (tres personas con letra, ninguna letra con tres).
+    en_rango = _puestos_en_rango(_j('datos', 'competitivo_pool.json') or [])
     out = {}
     for quien, dos in est.items():
         h = {}
@@ -429,6 +460,9 @@ def huellas():
                 crudo.append('crew=%r' % (tuple(crew[_CL(quien)]),))
             elif carta == 'pais' and de_crew.get(_CL(quien)):
                 crudo.append('crew=%r' % de_crew[_CL(quien)])
+            # y el puesto en la letra, en País y Servidor
+            if carta in ('pais', 'servidor') and en_rango.get(quien):
+                crudo.append('rg=%r' % (en_rango[quien],))
             h[carta] = '%s:%s' % (
                 hashlib.sha1('\n'.join(crudo).encode('utf-8')).hexdigest()[:12],
                 cod.get(carta, '?'))
@@ -768,6 +802,37 @@ def _self_check():
         g.update(orig)
         if ya is not None:
             os.environ['REDIBUJAR_YA'] = ya
+
+    # 🔴 el puesto en la letra: la copia de acá contra las dos cartas que lo
+    # dibujan. Ver `_puestos_en_rango()`. Se cargan con otro nombre porque
+    # los dos módulos se llaman `generar`.
+    try:
+        import importlib.util as _ilu
+
+        def _carta(nombre, rel):
+            ruta = os.path.join(BASE, rel)
+            if os.path.dirname(ruta) not in sys.path:
+                sys.path.insert(0, os.path.dirname(ruta))
+            spec = _ilu.spec_from_file_location(nombre, ruta)
+            m = _ilu.module_from_spec(spec)
+            spec.loader.exec_module(m)
+            return m
+        _P = _carta('_qc_pais', os.path.join('04_Pais', 'generar.py'))
+        _S = _carta('_qc_servidor', os.path.join('03_Servidor', 'generar.py'))
+        armado = [{'raw': r, 'rango': g, 'score': s} for r, g, s in (
+            ('a', 'A', 50), ('b', 'A', 55), ('c', 'A', 49), ('d', 'B', 40),
+            ('e', 'B', 41), ('f', 'C', 30), ('g', 'C', 31), ('h', 'C', 29),
+            ('i', 'C', 35), ('j', '', 90))]
+        for que, pool in (('uno armado', armado),
+                          ('el de hoy', _j('datos', 'competitivo_pool.json') or [])):
+            q = _puestos_en_rango(pool)
+            ok(q == _S.puestos_en_rango(pool)
+               and {k: v[0] for k, v in q.items()} == _P.puestos_en_rango(pool),
+               'el puesto en la letra da lo mismo que las dos cartas (%s, %d)'
+               % (que, len(q)))
+    except Exception as e:                               # noqa: BLE001
+        ok(False, 'no pude comparar el puesto en la letra con las cartas (%s)'
+           % str(e)[:60])
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
