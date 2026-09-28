@@ -1609,7 +1609,15 @@ inglés, y `/borrar-mis-datos`.
   en la 1.34. (La pregunta se entendió a la tercera, con el ejemplo del Rey.)
 - ✅ ~~¿Qué va en Publicaciones?~~ *«sí un muro automático, pero anuncios de
   todos los servidores también»*: hecho en la 1.33.
-- 🆕 **«Es alguien nuevo» con cuenta de Discord** (28/09): cuando la pista de
+- ✅ **«Es alguien nuevo» con cuenta de Discord: A** (Dlx, 28/09, 5 PM, después
+  de *«tú que tienes acceso a los 5 servidores puedes buscar los nombres de
+  los MCs»*). Los nombres con UNA cuenta en los servidores se resuelven
+  solos: si la cuenta ya está en la Lista, alias; si no, entra a la Lista con
+  esa cuenta y la bandera de la llave (los nombres cortos, sólo si la cuenta
+  está en el servidor del evento). Ese día eran 4 alias y 25 nuevos. Y
+  **Richard contra Number (MARRUECOS): ganó Number** (*«3. A»*). Lo que sigue
+  es cómo estaba planteada.
+- ~~**«Es alguien nuevo» con cuenta de Discord**~~ (28/09): cuando la pista de
   ✅ Decidir muestra que el nombre es una cuenta de Discord que no está en la
   Lista, ¿al contestar «Es alguien nuevo» lo agrego a la Lista con esa
   cuenta? Así, con bandera y el Miembro de DRA, le salen las cartas solo.
