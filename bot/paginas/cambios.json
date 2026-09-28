@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.37",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T10:15:00-04:00",
+   "titulo": "Lo que empezó, en vivo",
+   "items": [
+    "🔴 **Lo que ya empezó pasa de «Lo que viene» a «En vivo»**, solo, sin recargar la página. Ya no queda un «EN VIVO» con el botón de «Agregar a Google Calendar» al lado.",
+    "📡 **Dos eventos a la vez se ven los dos.** Si un evento empezó y todavía no hay llave publicada —como un 5 vidas, que se sigue en Discord—, aparece igual en «En vivo», con el link al anuncio.",
+    "🐛 **La llave en vivo ya no muestra filas raras («⌝ ⌞») ni dice «Final en juego» mientras se juegan los cuartos**: los huecos vacíos de la plantilla ya no se leen como gente.",
+    "🏆 **La FFA WORLD CUP** (27/09) entra con su campeón: el podio estaba en un mensaje aparte y ahora se lee junto con la llave.",
+    "🥉 **Cuando el podio pone a dos en el tercer puesto**, los dos cobran lo mismo, sin inventar quién fue tercero y quién cuarto."
+   ]
+  },
+  {
    "version": "1.36",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T09:00:00-04:00",

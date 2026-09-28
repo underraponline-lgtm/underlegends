@@ -300,6 +300,60 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Lunes 28/09 (10:15 AM) — versión 1.37
+
+**Lo que empezó, en vivo; y la FFA WORLD CUP, que no entraba.** Los bugs de
+las capturas de Dlx (*«así se veía esto cuando había 2 en vivo… es un
+bug»*), más lo que apareció buscándolos.
+
+- 🏆 **La FFA WORLD CUP (27/09) no iba a entrar nunca.** La llave vino en dos
+  mensajes con la final **con los dos en negrita**, y el campeón estaba en un
+  tercero, sólo el podio. Suelto no es una llave y se tiraba: quedaba «en
+  curso, sin campeón» y a las 12 h iba a `Pendientes` como Bracket
+  incompleto. `escuchar.unir_partidas()` ahora pega el podio a su llave con
+  las mismas condiciones (misma persona, mismo canal, menos de 3 h), si la
+  llave ya llegó a la FINAL y **si el campeón que nombra es uno de los
+  finalistas** (`_podio_de()`): así no se le pega a una llave el podio de
+  otra. Igual en la página (`llave_vivo.js`) y en el vigía (`pareceLlave()`
+  guarda el podio suelto). Entra en el ciclo de las 11:22 con FULLY
+  campeón; queda **una** batalla a `Pendientes` (MATI contra MTZ en
+  octavos: en cuartos está escrito «MATICERNA»).
+- 🥉 **El tercero compartido, al promedio** (guía §4.5 y §10.7). El podio de
+  FFA pone el segundo tercero **en el renglón de abajo, sin etiqueta**, y
+  `_tercero_del_podio()` leía uno solo: EZEE salía tercero y MOLUSCO cuarto.
+  Ahora un renglón que sigue sin etiqueta es otro nombre del mismo puesto.
+- 🐛 **La fila «⌝ ⌞» de la captura: los huecos de la plantilla.** Las llaves
+  se llenan sobre la plantilla, así que en vivo las rondas que faltan son
+  `⌞⌝ 🆚 ⌞⌝`: el marco pedía un carácter adentro y la captura saltaba de un
+  ⌞ al siguiente ⌝ (un lado llamado «⌝ ⌞»); y `⌞ + ⌝` o `［ ］` daban lados
+  vacíos que nadie ganó, así que la página decía «Final en juego» con los
+  cuartos en juego. Arreglado en **los dos lectores** (Python y JS), con la
+  plantilla a medio llenar como caso nuevo del contrato
+  (`bot/llaves_casos.json`). ⚠️ Una **mención** sí es alguien aunque
+  `norm()` la borre: MARRUECOS EN VENTA escribe sus octavos sólo con
+  `[<@…>]`, y la primera versión del arreglo los hacía desaparecer sin
+  preguntar. Lo encontró comparar las dudas antes y después (11 → 3 → 11).
+- 🔴 **«Lo que viene» → «En vivo».** Al llegar a cero la cuenta atrás, el
+  evento sale de «Lo que viene» y pasa a «En vivo» (sin recargar: ver
+  `redibujarPorHora()`); los adelantos de Eventos y de Mi cuenta pasan al
+  siguiente. En «En vivo»: su llave si la hay (`llaveDeEvento()`: mismo
+  servidor, publicada entre 1 h antes y 5 h después, y comparte palabras
+  con el nombre), y si no, una tarjeta «Empezó a las… la llave todavía no
+  está publicada». Es lo que faltaba con la SNAKE ARENA: se jugaba en
+  #veredictos y no había llave que leer. Los 90 minutos salen del payload
+  (`vivo_min`, `VENTANA_VIVO` de `subir_web.py`), no se escriben en la
+  página.
+- ⏳ **Lo que sigue**: leer los 5 vidas en vivo — #veredictos de Snake Rap
+  y el tablero de corazones de FFA (su plantilla: `[PARTICIPANTE]
+  ❤️❤️❤️❤️❤️` y el podio 🥇🥈🥉).
+- ❓ **MARRUECOS EN VENTA V.1 (#359) tiene 8 batallas de octavos en
+  `Pendientes`**, escritas sólo con menciones, y en cuartos aparece un
+  nombre de fantasía («PARK JI-SUNG» es la mención de FULLY en el podio).
+  Se cargó con 8 participantes (escala 8-15) cuando jugaron unos 20: los que
+  cayeron en octavos no cobraron. Es para mirarlo en ✅ Decidir.
+
+---
+
 ## 📅 Lunes 28/09 (9 AM) — versión 1.36
 
 **Los 5 vidas.** Dlx: *«SNAKE ARENA es formato TIPO 5 VIDAS donde sólo hay

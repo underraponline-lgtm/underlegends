@@ -40,7 +40,10 @@
   var PALABRA = /[\p{L}\p{N}_]/u;
   var SEP = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/i;
   var SEP_G = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/gi;
-  var DELIMS = [/⌞(.+?)⌝/gu, /\[([^\[\]\n]{1,30})\]/gu];
+  // 🔴 SIN LOS MARCOS ADENTRO: con el hueco vacío de la plantilla (`⌞⌝ 🆚 ⌞⌝`)
+  // la captura saltaba de un ⌞ al siguiente ⌝ y daba el lado «⌝ ⌞». Ver
+  // `escuchar.DELIMS`.
+  var DELIMS = [/⌞([^⌞⌝]+?)⌝/gu, /\[([^\[\]\n]{1,30})\]/gu];
   var VACIO = { 'suplente': 1 };
   var POKEMON = /\(\s*(?:P|pok[eé]mon)\s*\)|\bpok[eé]mon\b/i;
   var MENCION = /<@!?(\d+)>/g;
@@ -200,8 +203,10 @@
       if (lados.length < n) return [];
     }
     for (i = 0; i < DELIMS.length; i++) {
+      // sin nombre no hay lado: el hueco `⌞ + ⌝` o `［ ］` de la plantilla. Una
+      // mención sí es alguien, aunque `norm()` la borre (ver `escuchar.py`)
       var hay = hallar(DELIMS[i], l).map(function (x) { return x.trim(); })
-        .filter(function (x) { return !VACIO[norm(x)]; });
+        .filter(function (x) { return (norm(x) || /<@!?\d+>/.test(x)) && !VACIO[norm(x)]; });
       if (hay.length >= 2) return hay.map(sinMarcas);
     }
     return [];
@@ -331,10 +336,14 @@
         if (!sig) {
           // la última ronda: el campeón, si ya lo escribieron
           var c = norm(camp), ce = equipo(camp);
+          // ⚠️ `CAMPEÓN: FULLY🇨🇱 @FULLY`: la mención ya viene como nombre
+          // (`conNombres()` del vigía), así que la línea EMPIEZA con el
+          // finalista y no es igual a él. Python la borra antes de comparar.
           var g = !c ? [] : b.filter(function (s) {
-            var e = equipo(s);
-            return clave(s) === c || (e.length && ce.length && mismos(e, ce)) ||
-              (e.length && e.every(function (m) { return c.indexOf(m) >= 0; }));
+            var e = equipo(s), k = clave(s);
+            return k === c || (e.length && ce.length && mismos(e, ce)) ||
+              (e.length && e.every(function (m) { return c.indexOf(m) >= 0; })) ||
+              (!e.length && k.length >= 2 && c.indexOf(k) === 0);
           });
           return [b, g.length === 1 ? g[0] : '', ''];
         }
@@ -422,11 +431,33 @@
   var PARTIDA_MS = 3 * 3600 * 1000;
   function rondaN(r) { r = ALIAS[r] || r; return ORDEN.indexOf(r); }
 
-  /* `escuchar.unir_partidas()`: la llave que vino en dos mensajes, en uno */
+  /* `escuchar._podio_de()`: ¿`t` es SÓLO el podio de la llave `rs`? La línea
+     CAMPEÓN sin batallas, la llave con su FINAL y el campeón, un finalista */
+  function podioDe(t, rs) {
+    var camp = lineaCampeon(t);
+    if (!camp || rondasDe(t).some(function (R) { return R[1].length; })) return false;
+    var fin = [];
+    rs.forEach(function (R) { if (rondaN(R[0]) === rondaN('FINAL')) fin = fin.concat(R[1]); });
+    if (!fin.length) return false;
+    var nc = norm(camp.replace(/<@!?\d+>/g, ''));
+    if (!nc) return true;
+    return fin.some(function (b) {
+      return b.some(function (lado) {
+        return String(lado).split(/[+,&]/).some(function (x) {
+          x = norm(x);
+          return x.length >= 2 && (nc.indexOf(x) >= 0 || x.indexOf(nc) >= 0);
+        });
+      });
+    });
+  }
+
+  /* `escuchar.unir_partidas()`: la llave que vino en dos mensajes, en uno.
+     🔴 Y EL PODIO EN SU PROPIO MENSAJE (FFA WORLD CUP, 27/09/2026): ver allá */
   function unirPartidas(ms) {
     var bloques = [];
     ms.slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; }).forEach(function (m) {
-      var rs = rondasDe(traducir(plano(m.texto || '')));
+      var t = traducir(plano(m.texto || ''));
+      var rs = rondasDe(t);
       var b = bloques[bloques.length - 1];
       if (b && rs.length && b.rs.length && m.autor && m.autor === b.autor && m.canal === b.canal &&
           m.pub - b.ult <= PARTIDA_MS && rondaN(rs[0][0]) > rondaN(b.rs[b.rs.length - 1][0])) {
@@ -434,6 +465,14 @@
         b.ult = m.pub;
         b.ed = Math.max(b.ed, m.ed || 0);
         b.rs = rondasDe(traducir(plano(b.texto)));
+        return;
+      }
+      if (b && b.rs.length && !b.podio && m.autor && m.autor === b.autor && m.canal === b.canal &&
+          m.pub - b.ult <= PARTIDA_MS && podioDe(t, b.rs)) {
+        b.texto += '\n' + (m.texto || '');
+        b.ult = m.pub;
+        b.ed = Math.max(b.ed, m.ed || 0);
+        b.podio = true;
         return;
       }
       bloques.push({ id: m.id, canal: m.canal, sv: m.sv, g: m.g, autor: m.autor, pub: m.pub,

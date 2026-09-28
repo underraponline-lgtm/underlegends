@@ -990,6 +990,10 @@ export function pareceLlave(texto) {
   // ⚠️ CON LAS LETRAS DE FANTASÍA EN LETRAS COMUNES: Snake Rap escribe sus
   // rondas `𝙲𝚄𝙰𝚁𝚃𝙾𝚂` y `𝙵𝙸𝙽𝙰𝙻`, y sin esto sus llaves no se guardaban nunca
   const s = String(texto || '').normalize('NFKD');
+  // 🔑 Y EL PODIO SUELTO: a veces el campeón va en un mensaje aparte (FFA
+  // WORLD CUP, 27/09/2026) y la página lo pega a su llave (`unirPartidas()`
+  // de `llave_vivo.js`). Sin guardarlo, la final quedaba «en juego» siempre.
+  if (/CAMPEON|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO/i.test(s.replace(/[\u0300-\u036f]/g, ''))) return true;
   return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
     (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉/gi) || []).length >= 2;
 }

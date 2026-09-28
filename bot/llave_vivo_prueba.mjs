@@ -71,12 +71,34 @@ const partes = LV.unirPartidas([
 ]);
 ok('la llave partida en dos mensajes es una', partes.length === 1 && partes[0].id === '1553600655443107882' &&
   partes[0].rs.map((r) => r[0]).join(',') === 'CUARTOS,SEMIFINALES,FINAL', js(partes.map((p) => p.rs.map((r) => r[0]))));
+// 🔴 FFA WORLD CUP (27/09/2026): la final con los dos en negrita y el campeón
+// en un tercer mensaje, sólo el podio. Es el mismo caso que `escuchar.py`.
+const wc = [
+  { id: '1553929267509727264', canal: 'c', autor: 'a', pub: 1000, ed: 1000,
+    texto: '# FFA WORLD CUP\n# OCTAVOS\n[NC🇦🇫] 🆚 [**FULLY🇨🇱**]\n[**SNOW🇨🇴**] 🆚 [MAKMA🇻🇪]\n' +
+      '[ABYSSUS🇵🇦] 🆚 [**MOLUSCO🇦🇷**]\n[PICHULITA🇦🇷] 🆚 [**EZEE🇦🇷**]' },
+  { id: '1553937058337398886', canal: 'c', autor: 'a', pub: 2000, ed: 2000,
+    texto: '# SEMI FINAL\n[**FULLY🇨🇱**] 🆚 [MOLUSCO🇦🇷]\n[**SNOW🇨🇴**] 🆚 [EZEE🇦🇷]\n' +
+      '# FINAL\n[**FULLY🇨🇱**] 🆚 [**SNOW🇨🇴**]' },
+  { id: '1553966185043853344', canal: 'c', autor: 'a', pub: 3000, ed: 3000,
+    texto: '│ CAMPEÓN: **FULLY🇨🇱** @FULLY\n│ SUBCAMPEÓN: SNOW🇨🇴 @Snow\n│ TERCER LUGAR: 🇦🇷EZEE @Ezee' },
+];
+const bwc = LV.unirPartidas(wc);
+const lwc = bwc.length === 1 ? LV.aLlave(bwc[0]) : null;
+const fwc = lwc && lwc.rondas.filter((x) => x.r === 'Final')[0];
+ok('el podio en su propio mensaje se pega a su llave, y dice el campeón',
+  bwc.length === 1 && fwc && fwc.b[0][1] === 'FULLY🇨🇱' && lwc.terminada, js(bwc.map((b) => b.id)));
+ok('un podio que no nombra a un finalista no se pega',
+  LV.unirPartidas([wc[0], wc[1], Object.assign({}, wc[2], { texto: wc[2].texto.replace(/FULLY/g, 'OTRO') })]).length === 2);
+ok('ni a una llave que no llegó a la final', LV.unirPartidas([wc[0], wc[2]]).length === 2);
 
 console.log('\n3 · lo que guarda el vigía (bot/avisos.js)\n');
 const { pareceLlave, conNombres } = await import('./avisos.js');
 ok('una llave de verdad parece una llave', casos.every((c) => pareceLlave(c.texto)),
   casos.filter((c) => !pareceLlave(c.texto)).map((c) => c.que).join(', '));
 ok('un anuncio no', !pareceLlave('# COPA DE PRUEBA\nMODALIDAD: 1vs1\nHORARIO: en media hora\nCUPOS: 16'));
+ok('el podio suelto sí, para que la página lo pegue a su llave',
+  pareceLlave('│ CAMPEÓN: **FULLY🇨🇱** @FULLY\n│ SUBCAMPEÓN: SNOW🇨🇴') && pareceLlave('𝐂𝐀𝐌𝐏𝐄𝐎́𝐍: X'));
 ok('las menciones pasan a nombre, con el apodo del servidor primero',
   conNombres({ content: 'CAMPEÓN: <@1>🇨🇱&<@2>🇨🇴 y <@3>', mentions: [
     { id: '1', username: 'fullylo4ded', member: { nick: 'FULLY' } },

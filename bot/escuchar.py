@@ -174,7 +174,12 @@ RONDA = re.compile(
 # caracteres y con datos reales no se notaba, porque los nombres de las
 # llaves que mire eran largos. Lo destapo el self-check — y no es un caso
 # inventado: **«7» es una persona de verdad**, tiene sus cartas en R2.
-DELIMS = (re.compile(r'⌞(.+?)⌝'),
+# 🔴 SIN LOS MARCOS ADENTRO: `⌞(.+?)⌝` pedía un carácter y, con el hueco
+# vacío de la plantilla —`⌞⌝ 🆚 ⌞⌝`, las rondas que todavía no se jugaron—,
+# la captura saltaba del primer ⌞ al siguiente ⌝ y daba un lado llamado
+# «⌝ 🆚 ⌞». Es la fila rara de la captura de SEVEN STREET DUPLAS en vivo
+# (Dlx, 27/09/2026).
+DELIMS = (re.compile(r'⌞([^⌞⌝]+?)⌝'),
           re.compile(r'\[([^\[\]\n]{1,30})\]'))
 # ⚠️ `:vsf:` TAMBIEN: hay llaves que mezclan el emoji `<:VSF:…>` con su
 # shortcode en la MISMA linea (EL RAP FECHA 5, #349), y sin el segundo dos
@@ -523,8 +528,14 @@ def nombres_de_linea(l):
             return [_sin_marcas(x) for x in lados]
         if len(lados) < n_lados:
             return []
+    # ⚠️ SIN NOMBRE NO HAY LADO: el hueco `⌞ + ⌝` o `［ ］` de la plantilla daba
+    # lados «+» o vacíos, una batalla que nadie ganó —y la página creía que
+    # se jugaba la final mientras iban los cuartos—. 🔴 Pero una MENCIÓN sí es
+    # alguien, aunque `norm()` la borre: MARRUECOS EN VENTA escribe sus
+    # octavos sólo con `[<@…>🇪🇨]`, y sin esto se caían sin preguntar.
     for d in DELIMS:
-        hay = [x.strip() for x in d.findall(l) if norm(x) not in VACIO]
+        hay = [x.strip() for x in d.findall(l)
+               if (norm(x) or MENCION.search(x)) and norm(x) not in VACIO]
         if len(hay) >= 2:
             return [_sin_marcas(x) for x in hay]
     return []
@@ -1270,6 +1281,19 @@ TERCERO = re.compile(
     r'([^\n]{1,80})', re.I)
 
 
+def _continuacion_podio(l):
+    """¿El renglón `l` sigue la línea del podio de arriba, con otro nombre?
+
+    Sin etiqueta propia (CAMPEÓN, PUESTO, LUGAR, MVP), sin 🆚, sin ronda, y
+    con un nombre o una mención. Un `@everyone` no es nadie.
+    """
+    if not (l or '').strip() or PODIO.search(l) or CONTRA.search(l):
+        return False
+    if rondas_de(l) or re.search(r'@(?:everyone|here)\b', l, re.I):
+        return False
+    return bool(MENCION.search(l) or len(norm(l)) >= 2)
+
+
 def _tercero_del_podio(texto, out, ids=None):
     """El tercer puesto que dice el PODIO, si nombra a uno solo.
 
@@ -1300,6 +1324,14 @@ def _tercero_del_podio(texto, out, ids=None):
     if not m:
         return out
     linea = MENCION.sub('', m.group(1))
+    # 🔴 EL SEGUNDO TERCERO PUEDE ESTAR EN EL RENGLÓN DE ABAJO, sin etiqueta.
+    # FFA WORLD CUP (27/09/2026) escribe `TERCER LUGAR: EZEE @Ezee` y abajo,
+    # sangrado, `MOLUSCO @Molusco`: los dos en 🥉. Leyendo sólo el renglón de
+    # la etiqueta había UN nombre, así que EZEE salía tercero y MOLUSCO
+    # cuarto — el orden que la guía pide no inventar (§10.7). Un renglón que
+    # sigue sin etiqueta propia es otro nombre del mismo puesto: el promedio.
+    if _continuacion_podio(((texto or '')[m.end():].split('\n') + ['', ''])[1]):
+        return out
     partes = [x for x in re.split(r'\s[-\u2013\u2014/]\s|,|\s+y\s+|\+|&', linea)
               if norm(x)]
     # 🔑 LA MENCION TAMBIEN NOMBRA A UNO, con el padrón: es la misma regla
@@ -1476,6 +1508,27 @@ def _ronda_n(r):
     return ORDEN.index(r) if r in ORDEN else -1
 
 
+def _podio_de(t, rondas):
+    """¿`t` es SÓLO el podio de la llave `rondas`? Ver `unir_partidas()`.
+
+    La línea CAMPEÓN y ninguna batalla; la llave, con su FINAL; y el campeón,
+    uno de los que la pelearon. ⚠️ ESTO ÚLTIMO es lo que impide pegarle a una
+    llave el podio de otra: si la línea sólo trae menciones —el podio de Snake
+    Rap—, no hay texto con qué comparar y deciden las otras condiciones.
+    """
+    mc = CAMPEON.search(t or '')
+    if not mc or any(bs for _r, bs in rondas_de(t)):
+        return False
+    fin = [b for r, bs in rondas if _ronda_n(r) == _ronda_n('FINAL') for b in bs]
+    if not fin:
+        return False
+    nc = norm(mc.group(1))
+    if not nc:
+        return True
+    ms = {norm(x) for b in fin for lado in b for x in re.split(r'[+,&]', lado)}
+    return any(len(x) >= 2 and (x in nc or nc in x) for x in ms)
+
+
 def unir_partidas(ms):
     """Los mensajes de un canal, con cada llave partida en dos ya pegada.
 
@@ -1499,12 +1552,22 @@ def unir_partidas(ms):
     ⚠️ EL ORDEN DE SALIDA ES EL DE DISCORD, del más nuevo al más viejo:
     `llaves_a_entrada.sin_repetir()` se queda con la primera copia y
     cuenta con que sea la corregida.
+
+    🔴 Y EL PODIO EN SU PROPIO MENSAJE TAMBIÉN SE PEGA. FFA WORLD CUP
+    (27/09/2026): la llave vino en dos mensajes y terminaba en una final con
+    los DOS finalistas en negrita; el campeón estaba en un tercero, sólo el
+    podio. Suelto no es una llave y se tiraba, así que el evento quedaba
+    «en curso, sin campeón» y a las 12 h iba a `Pendientes` como Bracket
+    incompleto — con el campeón publicado a la vista. Se pega con las
+    mismas dos primeras condiciones, si la llave ya llegó a la FINAL y si
+    el campeón que nombra es uno de los finalistas (`_podio_de()`).
     """
     if not all(str(m.get('id', '')).isdigit() for m in ms):
         return list(ms)
     bloques = []
     for m in sorted(ms, key=lambda m: int(m['id'])):
-        rs = rondas_de(traducir(plano(m.get('content') or '')))
+        t = traducir(plano(m.get('content') or ''))
+        rs = rondas_de(t)
         autor = (m.get('author') or {}).get('id')
         b = bloques[-1] if bloques else None
         if (b and rs and b['_rondas'] and autor and autor == b['_autor']
@@ -1519,6 +1582,19 @@ def unir_partidas(ms):
             b['_ult'] = m['id']
             b['_partes'] += 1
             b['_rondas'] = rondas_de(traducir(plano(b['content'])))
+            continue
+        if (b and b['_rondas'] and not b.get('_podio') and autor
+                and autor == b['_autor']
+                and ((int(m['id']) >> 22) - (int(b['_ult']) >> 22)
+                     <= PARTIDA_H * 3600000)
+                and _podio_de(t, b['_rondas'])):
+            b['content'] = (b.get('content') or '') + '\n' + (m.get('content') or '')
+            b['edited_timestamp'] = max(b.get('edited_timestamp') or '',
+                                        m.get('edited_timestamp') or '') or None
+            b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
+            b['_ult'] = m['id']
+            b['_partes'] += 1
+            b['_podio'] = True
             continue
         b = dict(m)
         b.update(_autor=autor, _ult=m['id'], _partes=1, _rondas=rs)
@@ -1923,6 +1999,24 @@ def _check_dialectos():
     ins = traducir(plano(bl[0]['content'])) if len(bl) == 1 else ''
     ids = {'11': ['Zignos'], '33': ['Juasmio']}
     r_ins = resolver(ins, ids=ids)
+    # 🔴 FFA WORLD CUP (27/09/2026), recortada: dos mensajes de llave con la
+    # final en negrita para los dos, y el podio en un tercero
+    wc_msgs = [
+        {'id': '1553929267509727264', 'author': {'id': '7'},
+         'content': '# FFA WORLD CUP\n# FILTROS\n[VELATZ🇨🇱] 🆚 [DREXX🇵🇪] 🆚 [EZEE🇦🇷]\n'
+                    '# OCTAVOS\n[NC🇦🇫] 🆚 [**FULLY🇨🇱**]\n[**SNOW🇨🇴**] 🆚 [MAKMA🇻🇪]\n'
+                    '[ABYSSUS🇵🇦] 🆚 [**MOLUSCO🇦🇷**]\n[PICHULITA🇦🇷] 🆚 [**EZEE🇦🇷**]'},
+        {'id': '1553937058337398886', 'author': {'id': '7'},
+         'content': '# CUARTOS\n[**FULLY🇨🇱**] 🆚 [SOL🇵🇪]\n[**SNOW🇨🇴**] 🆚 [DXG🇲🇽]\n'
+                    '[YINN🇲🇦] 🆚 [**MOLUSCO🇦🇷**]\n[**EZEE🇦🇷**] 🆚 [MATI🇦🇷]\n'
+                    '# SEMI FINAL\n[**FULLY🇨🇱**] 🆚 [MOLUSCO🇦🇷]\n[**SNOW🇨🇴**] 🆚 [EZEE🇦🇷]\n'
+                    '# FINAL\n[**FULLY🇨🇱**] 🆚 [**SNOW🇨🇴**]'},
+        {'id': '1553966185043853344', 'author': {'id': '7'},
+         'content': '╭──────╮\n│ CAMPEÓN: **FULLY🇨🇱** <@1>\n│ SUBCAMPEÓN: SNOW🇨🇴 <@2>\n'
+                    '│ TERCER LUGAR: 🇦🇷EZEE <@3>🇦🇷\n    🇦🇷MOLUSCO <@4> 🇦🇷\n'
+                    '│ MVP: MATI CERNA🇦🇷 <@5>\n╰──────╯'}]
+    wc = unir_partidas(wc_msgs)
+    r_wc = resolver(traducir(plano(wc[0]['content']))) if len(wc) == 1 else []
     exhib = ('🎙️ __**RAP EXHIBITION 1/8**__ 🎙️\n'
              '➠ 『SEMIFINAL』\n'
              '➢ 〈ANTORCHA OLÍMPICA〉<:VS1:12>〈POLLO SPORT〉\n'
@@ -1966,6 +2060,21 @@ def _check_dialectos():
          == [('TERCER LUGAR', 'JUASMIO 🇨🇴'), ('FINAL', 'ZIGNOS 🇩🇴')]),
         ('otro autor no se pega',
          len(unir_partidas([dict(msgs[0], author={'id': '8'}), msgs[1]])) == 2),
+        ('el podio en su propio mensaje se pega a su llave (FFA WORLD CUP)',
+         len(wc) == 1 and wc[0].get('_partes') == 3
+         and [g for r, _b, g, _z in r_wc if r == 'FINAL'] == ['FULLY🇨🇱']),
+        ('… y el tercero compartido va al promedio: sin batalla por el 3.º (§10.7)',
+         not [r for r, _b, _g, _z in r_wc if r == 'TERCER LUGAR']),
+        ('un podio que no nombra a un finalista no se pega',
+         len(unir_partidas(wc_msgs[:2] + [dict(wc_msgs[2], content=wc_msgs[2]['content']
+                                                  .replace('FULLY', 'OTRO'))])) == 2),
+        ('ni a una llave que no llegó a la final',
+         len(unir_partidas([wc_msgs[0], wc_msgs[2]])) == 2),
+        ('un solo nombre en el 3.º sigue siendo tercero y cuarto',
+         [(r, g) for r, _b, g, _z in _tercero_del_podio(
+             'TERCER LUGAR: EZEE\nMVP: SOL', [('SEMIFINALES', ['FULLY', 'MOLUSCO'], 'FULLY', ''),
+                                              ('SEMIFINALES', ['SNOW', 'EZEE'], 'SNOW', '')])
+          if r == 'TERCER LUGAR'] == [('TERCER LUGAR', 'EZEE')]),
         ('una llave repostada entera tampoco',
          len(unir_partidas([dict(msgs[1], id='1553600767699583098'),
                             msgs[1]])) == 2),

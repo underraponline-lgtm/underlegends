@@ -71,6 +71,9 @@ INVENTADOS = [
     ('Urban Freestyle: equipos con espacios',
      '# CUARTOS\nHASSAN 🆚 GUTY\nSEBITAS 🆚 AGUSTIN\nPOLLO SPORT 🆚 NC\nPOLLO 🆚 MIA\n'
      '# FINAL\nHASSAN SEBITAS 🆚 POLLO SPORT\n'),
+    # 🔴 los huecos de la plantilla no son nombres (SEVEN STREET DUPLAS, 27/09)
+    ('FFA: la plantilla a medio llenar, con los huecos vacíos',
+     '`[ CUARTOS ]`\n\n**⌞Abyssus🇵🇦  + Erian🇵🇦⌝**  <:VSF:17>  ⌞Geekto🇦🇷 + **Lewito🇦🇷⌝ **\n⌞EIDP🇺🇾 + **Bloddy🇨🇴⌝**  <:VSF:17>  **⌞Hassan🇦🇷 + Molusco🇦🇷⌝ **\n\n`[ SEMIFINALES ]`\n\n**⌞Abyssus🇵🇦 + Erian🇵🇦 + Lewito🇦🇷⌝** <:VSF:17> ⌞  ⌝\n⌞⌝  <:VSF:17>  ⌞⌝\n\n`[ 3ER PUESTO ]`\n\n⌞ + ⌝  <:VSF:17>  ⌞ + ⌝\n\n`[ FINAL ]`\n\n［ ］ 𝙑𝙎 ［ ］\n'),
     ('FFA: el negrito entre la bandera y el &',
      '▪️ **⚖️[•CUARTOS DE FINAL•]📰**\n'
      '▪️   [**FULLY🇨🇱&DXG🇲🇽**] 📰 [SCOT🇦🇷&TRRRR🇯🇲]\n'

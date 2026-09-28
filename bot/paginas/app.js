@@ -378,19 +378,41 @@ function trama() {
    🔑 EL PAYLOAD TRAE EL INSTANTE, NO LOS MINUTOS. Se escribe una vez por
    hora: mandar «faltan 30 min» sería un contador que miente desde el
    segundo uno. El reloj es el de quien mira. */
+/* 🔴 AL LLEGAR A CERO, EL EVENTO DEJA DE SER «LO QUE VIENE». Decía «EN VIVO»
+   y se quedaba ahí con «Agregar a Google Calendar» y «Avisame» de algo que ya
+   empezó (Dlx, con capturas, 27/09/2026). Ahora se redibuja lo que depende de
+   la hora: el evento pasa a «En vivo» y el «próximo» es el siguiente. */
+var RELOJ_CERO = false;
+function empezo(e) {
+  if (!e || e.sin_hora) return false;
+  var t = Date.parse(String(e.cuando || '').replace(/Z$/, '') + 'Z');
+  return !isNaN(t) && t <= Date.now();
+}
+function redibujarPorHora() {
+  RELOJ_CERO = false;
+  [pintaHero, pintaVivo, pintaEvCab, pintaYoPanel].forEach(function (f) {
+    try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
+  });
+}
 function pintaRelojes() {
   var ahora = Date.now();
   $$('.reloj').forEach(function (el) {
     var t = Date.parse(el.dataset.t + 'Z');
     if (isNaN(t)) { el.textContent = ''; return; }
     var f = t - ahora;
-    if (f <= 0) { el.textContent = 'EN VIVO'; el.classList.add('vivo'); return; }
+    if (f <= 0) {
+      el.textContent = 'EMPEZÓ';
+      el.classList.add('vivo');
+      if (!el.dataset.cero) { el.dataset.cero = '1'; RELOJ_CERO = true; }
+      return;
+    }
     el.classList.remove('vivo');
     var s = Math.floor(f / 1000), h = Math.floor(s / 3600),
         m = Math.floor(s % 3600 / 60), q = s % 60;
     var dd = function (n) { return (n < 10 ? '0' : '') + n; };
     el.textContent = h ? h + ':' + dd(m) + ':' + dd(q) : m + ':' + dd(q);
   });
+  if (RELOJ_CERO) setTimeout(redibujarPorHora, 0);
 }
 
 /* ── cabecera ─────────────────────────────────────────────────────── */
@@ -412,9 +434,10 @@ function pintaHero() {
 
   pintaCampeones();
 
-  var pr = D.proximos || [];
+  // ⚠️ SÓLO LO QUE NO EMPEZÓ: lo que empezó está en «En vivo» (`pintaVivo()`)
+  var pr = (D.proximos || []).filter(function (e) { return !empezo(e); });
+  $('#viene').hidden = !pr.length;
   if (!pr.length) return;
-  $('#viene').hidden = false;
   // 🔑 EL PRIMERO, GRANDE; LOS DEMÁS, EN LISTA. Dlx, 27/09/2026: «¿editar lo
   // que se viene? se ve algo vacío». Con un solo evento anunciado —lo normal:
   // los servidores anuncian el mismo día— el bloque era un renglón. Ahora el
@@ -820,6 +843,27 @@ function programarVivo() {
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState === 'visible' && D && Date.now() - VIVO_PEDIDO > 55000) pedirVivo();
 });
+/* ¿Cuál de las llaves en vivo es la de este anuncio? El mismo servidor, publicada
+   desde una hora antes hasta cinco después de la hora del anuncio y, si hay más
+   de una, la que comparte palabras con el nombre. ⚠️ Con un solo candidato
+   también tiene que compartir alguna, salvo que la llave no tenga título: dos
+   eventos del mismo servidor en la misma noche no se confunden. */
+function llaveDeEvento(e, ls) {
+  var t = Date.parse(String(e.cuando || '').replace(/Z$/, '') + 'Z');
+  var pal = function (s) {
+    return String(s || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
+      .filter(function (w) { return w.length > 2; });
+  };
+  var pe = pal(e.nombre);
+  var comun = function (L) { return pal(L.nombre).filter(function (w) { return pe.indexOf(w) >= 0; }).length; };
+  var cand = (ls || []).filter(function (L) {
+    var p = L.pub || L.ed || 0;
+    return (!e.sv || !L.sv || e.sv === L.sv) && p >= t - 3600000 && p <= t + 5 * 3600000 &&
+      (comun(L) > 0 || !pal(L.nombre).length || L.nombre === 'La llave');
+  });
+  cand.sort(function (a, b) { return comun(b) - comun(a); });
+  return cand[0] || null;
+}
 function pintaVivo() {
   var caja = $('#vivoLista'), sec = $('#secVivo');
   if (!caja || !sec || !window.LlaveVivo) return;
@@ -833,7 +877,17 @@ function pintaVivo() {
     return L && L.rondas.length && ahora - (L.ed || L.pub || 0) < 3 * 3600000;
   });
   ls.forEach(function (L) { VIVO_L[L.id] = L; });
-  sec.hidden = !ls.length;
+  // 🔑 Y LO QUE EMPEZÓ SIN LLAVE A LA VISTA. Con dos eventos a la vez se veía
+  // uno: la SNAKE ARENA (27/09/2026) era un 5 vidas y se jugaba en
+  // #veredictos, donde no hay llave que leer. El anuncio dice que empezó, y
+  // eso se muestra —hasta `vivo_min` después, como «Lo que viene»—; si
+  // aparece su llave, queda la llave.
+  var vent = (D.vivo_min || 90) * 60000;
+  var emp = (D.proximos || []).filter(function (e) {
+    var t = Date.parse(String(e.cuando || '').replace(/Z$/, '') + 'Z');
+    return empezo(e) && ahora - t < vent && !llaveDeEvento(e, ls);
+  });
+  sec.hidden = !ls.length && !emp.length;
   caja.innerHTML = ls.map(function (L) {
     return '<article class="vv" style="--c:' + esc(colorSv(L.sv)) + '">' +
       '<header><span class="ps-chips">' + chipSv(L.sv) + '</span><span class="vv-t">' +
@@ -846,6 +900,17 @@ function pintaVivo() {
       '<div class="ps-acc"><button class="btn" data-llave="v:' + esc(L.id) + '">Ver la llave</button>' +
         (L.links[0] ? '<a class="btn sec" href="' + esc(L.links[0]) + '" target="_blank" rel="noopener noreferrer">' +
           'Discord &#8599;</a>' : '') + '</div></article>';
+  }).join('') + emp.map(function (e) {
+    var iso = String(e.cuando || '').replace(/Z$/, '') + 'Z';
+    return '<article class="vv vv-sin" style="--c:' + esc(colorSv(e.sv)) + '">' +
+      '<header><span class="ps-chips">' + chipSv(e.sv) + etiquetaMult(e.sv, iso) + '</span><span class="vv-t">' +
+        'empezó ' + esc(cuandoSe(iso)) + '</span></header>' +
+      '<h3>' + esc(e.nombre) + '</h3>' +
+      '<p class="vv-e"><i class="vivo-punto" aria-hidden="true"></i><span>Empezó a las <b>' +
+        esc(fmtHora(iso)) + '</b> ' + etiquetaHora(iso) + ' &middot; la llave todavía no está publicada: ' +
+        'se sigue en Discord</span></p>' +
+      (e.link ? '<div class="ps-acc"><a class="btn sec" href="' + esc(e.link) + '" target="_blank" ' +
+        'rel="noopener noreferrer">Ver el anuncio &#8599;</a></div>' : '') + '</article>';
   }).join('');
   // la que está abierta se redibuja con lo nuevo, sin cerrarse
   // 🔴 SÓLO SI CAMBIÓ, Y EN SU LUGAR. Se redibujaba cada minuto aunque no
@@ -5828,6 +5893,9 @@ function pinta() {
   try { eventos(); } catch (e) { console.error('[eventos]', e); }
   ir();
   setInterval(pintaRelojes, 1000);
+  // «En vivo» se dibuja ya con lo que dice el payload (lo que empezó), sin
+  // esperar al vigía: si no contesta, igual se ve
+  try { pintaVivo(); } catch (e) { console.error('[pintaVivo]', e); }
   try { pedirVivo(); } catch (e) { console.error('[pedirVivo]', e); }
   try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
   try { pedirPrecios(); } catch (e) { console.error('[pedirPrecios]', e); }

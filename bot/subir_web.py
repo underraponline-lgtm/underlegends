@@ -426,6 +426,9 @@ def armar():
         'oficiales': sum(1 for p in pool if p.get('raw') and not p.get('fc')),
         'tabla': tabla,
         'proximos': prox,
+        # 🔑 cuánto sigue «en vivo» un evento que empezó sin llave a la vista:
+        # la página lo lee de acá y no lo escribe (ver `VENTANA_VIVO`)
+        'vivo_min': VENTANA_VIVO,
         'pasados': pas,
         'llaves': llaves,
         # 🔑 LA TEMPORADA EN UN CALENDARIO: lo que pasó y lo que viene. Ver
