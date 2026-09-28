@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-28T23:23:08+00:00",
+ "cuando": "2026-09-28T23:53:21+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1136,6 +1136,24 @@
    "premios": "PTS TABLA"
   },
   {
+   "nombre": "CCFF V.3",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1554273545805373471",
+   "cuando": "2026-09-28T23:28:10",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "@Carlos",
+   "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "(2k puntos de ascenso al primero y un campeonato)",
+   "modalidad": "1vs1",
+   "horario": "Cuando se llene",
+   "fecha": "",
+   "premios": ""
+  },
+  {
    "nombre": "COMPE DEL VACILE T2 #1",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -1568,24 +1586,6 @@
    "premios": ""
   },
   {
-   "nombre": "COMPE MTZ ANUNCIA LAS PERRAS PUTAS BATALLAS PARA GANAR RAPIDO UNDER Y ",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1542307576509628437",
-   "cuando": "2026-08-26T22:59:40",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1V1",
-   "horario": "AL LLENAR INSC",
-   "fecha": "",
-   "premios": ""
-  },
-  {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
    "servidor": "URBF",
    "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
@@ -1749,6 +1749,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1554275078227759146",
+   "cuando": "2026-09-28T23:34:15"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Erian",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1554274942101753978",
+   "cuando": "2026-09-28T23:33:43"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1554274843770355835",
+   "cuando": "2026-09-28T23:33:19"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "GEUSHINER OLDAVID GENIOLOUSKI🇷🇪",
+   "quien": "csgo47.",
+   "discord_id": "1493317254581063680",
+   "msg_id": "1554274372225605663",
+   "cuando": "2026-09-28T23:31:27"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "VR🇨🇴",
+   "quien": "1mrvargas",
+   "discord_id": "1456416455405863038",
+   "msg_id": "1554273641905131611",
+   "cuando": "2026-09-28T23:28:33"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1554273629930528900",
+   "cuando": "2026-09-28T23:28:30"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Teito 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1554273618824011867",
+   "cuando": "2026-09-28T23:28:27"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
