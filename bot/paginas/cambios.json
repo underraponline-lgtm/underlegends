@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.38",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T09:10:00-04:00",
+   "titulo": "Los 5 vidas, en vivo",
+   "items": [
+    "❤️ **Un 5 vidas se sigue en vivo**: mientras se juega, «En vivo» muestra cuántas vidas le quedan a cada uno y todas las batallas, con los votos de los jueces. Sale de los veredictos del servidor, así que no hace falta que publiquen una llave.",
+    "⚖️ Si un juez vota con una imagen y los votos quedan parejos, cuenta el que **siguió peleando**: en un 5 vidas, el que gana se queda. Y la réplica se marca como réplica.",
+    "ℹ️ Es para mirar: los puntos del evento llegan cuando se carga, como siempre."
+   ]
+  },
+  {
    "version": "1.37",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T08:55:00-04:00",

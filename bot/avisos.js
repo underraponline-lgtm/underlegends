@@ -83,7 +83,45 @@ export const PATRON_VIGIA = /evento|competenc/i;
 // 4: sólo los servidores confirmados de la Liga (`meta.liga`); ver `descubrir()`
 // 5: Urban Freestyle le dio al bot su rol (25/09/2026) y «Data⋅Eventos»,
 // que daba 403, ya se puede leer: se vuelve a buscar sin esperar las 6 h.
-const CANALES_V = 5;
+// 6: también los canales de VEREDICTOS (28/09/2026); ver `veredictos()`.
+const CANALES_V = 6;
+
+//: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
+//: pendiente de todos los canales de eventos cuando hay un evento en vivo…
+//: en veredictos está todo lo que pasó»*. Snake Rap juega sus 5 vidas ahí,
+//: sin llave. Se descubren por nombre —los que dicen «llave» ya los lee
+//: `llaves()`— y se leen SÓLO mientras su servidor tiene un evento en juego:
+//: Urban Freestyle tiene ocho, y leerlos siempre sería gastar el minuto.
+export const PATRON_VEREDICTOS = /veredict/i;
+//: cuántos canales de veredictos se leen como mucho por minuto
+export const VER_TOPE = 6;
+//: un servidor está «en vivo» desde 15 min antes del arranque hasta 5 h después
+const VER_ANTES = 15 * MIN;
+const VER_DESPUES = 5 * HORA;
+
+/** Los servidores con un evento en juego, de los anuncios que anotó el vigía. */
+export function svsEnVivo(cuerpos, ahora) {
+  const out = new Set();
+  for (const c of cuerpos || []) {
+    let d = null;
+    try { d = typeof c === 'string' ? JSON.parse(c) : c; } catch (e) { d = null; }
+    if (!d || d.tipo !== 'evento' || d.ini == null || !d.sv) continue;
+    if (d.ini - VER_ANTES <= ahora && ahora <= d.ini + VER_DESPUES) out.add(d.sv);
+  }
+  return out;
+}
+
+/**
+ * Qué canales de veredictos leer este minuto: los que tuvieron mensajes hace
+ * poco, siempre; y los de un servidor en vivo, rotando, hasta `tope`.
+ */
+export function veredictosALeer(lista, vivos, calientes, minuto, tope = VER_TOPE) {
+  const cal = (lista || []).filter((c) => calientes.has(c.id));
+  const resto = (lista || []).filter((c) => !calientes.has(c.id) && vivos.has(c.sv));
+  const n = Math.max(0, tope - cal.length);
+  const ini = resto.length && n ? (minuto * n) % resto.length : 0;
+  return cal.slice(0, tope).concat(resto.slice(ini).concat(resto.slice(0, ini)).slice(0, n));
+}
 //: 🔑 DONDE SE RE-PUBLICAN LOS ANUNCIOS DE TODA LA LIGA. Dlx, 25/09/2026:
 //: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
@@ -1290,6 +1328,16 @@ export class Avisos {
           texto TEXT NOT NULL,
           visto INTEGER NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS veredictos (
+          id TEXT PRIMARY KEY,
+          canal TEXT NOT NULL,
+          sv TEXT NOT NULL DEFAULT '',
+          g TEXT NOT NULL DEFAULT '',
+          autor TEXT NOT NULL DEFAULT '',
+          pub INTEGER NOT NULL,
+          ed INTEGER NOT NULL,
+          texto TEXT NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS posts (
           id TEXT PRIMARY KEY,
           cuerpo TEXT NOT NULL,
@@ -1383,6 +1431,7 @@ export class Avisos {
   // renombra o mueve su canal, el lector deja de leer y no falla.
   async descubrir(servidores, ahora) {
     const lista = [];
+    const ver = [];
     let sinAcceso = 0;
     // 🔴 SÓLO LOS SERVIDORES DE LA LIGA. Dlx, 25/09/2026, después de una
     // alerta por un canal de TFC: «Olvida TFC, ya te dije que no está». La
@@ -1418,12 +1467,16 @@ export class Avisos {
         // No falla: el servidor queda sin avisos y nadie se entera. NFKD las
         // vuelve letras comunes, como en `anuncios.py`.
         const n = (c.name || '').normalize('NFKD');
+        // 🔑 los de veredictos, aparte: ver `veredictos()`
+        if (PATRON_VEREDICTOS.test(n) && !/llave/i.test(n) && !STAFF.test(n)) {
+          ver.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild });
+        }
         // los de staff también dicen «evento», y el bot los lee
         if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON_VIGIA.test(n)) continue;
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild });
       }
     }
-    const canales = { t: ahora, v: CANALES_V, yo, lista, sin_acceso: sinAcceso };
+    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, sin_acceso: sinAcceso };
     // ⚠️ UNA BUSQUEDA QUE NO ENCONTRO NADA NO PISA A UNA QUE SÍ. Si Discord
     // contestó mal a todo, quedarse sin canales es dejar de avisar callado.
     const antes = this.leer('canales');
@@ -1521,6 +1574,10 @@ export class Avisos {
       try { await this.llaves(ahora); } catch (e) {
         this.guardar('vivo', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 🔑 y los veredictos de lo que se está jugando. Nunca frena al vigía.
+      try { await this.veredictos(ahora); } catch (e) {
+        this.guardar('veredictos', { t: ahora, error: String(e).slice(0, 160) });
+      }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
@@ -1589,15 +1646,63 @@ export class Avisos {
     this.guardar('vivo', { t: ahora, canales: leer.length, cambiaron: nuevas });
   }
 
+  /** Los veredictos de los servidores con un evento en juego. Ver `PATRON_VEREDICTOS`. */
+  async veredictos(ahora) {
+    const lista = (this.leer('canales') || {}).veredictos || [];
+    if (!lista.length) return;
+    const vivos = svsEnVivo(this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
+      ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo), ahora);
+    // también el servidor que tiene una llave que se está tocando
+    for (const r of this.sql.exec('SELECT DISTINCT sv FROM vivo WHERE ed > ?', ahora - 3 * HORA).toArray()) {
+      if (r.sv) vivos.add(r.sv);
+    }
+    const calientes = new Set(this.sql.exec('SELECT DISTINCT canal FROM veredictos WHERE pub > ?',
+      ahora - 30 * MIN).toArray().map((r) => r.canal));
+    const leer = veredictosALeer(lista, vivos, calientes, Math.floor(ahora / MIN));
+    let nuevos = 0;
+    if (leer.length) {
+      const rs = await Promise.all(leer.map(async (c) => {
+        try {
+          const r = await fetch(`${DC}/channels/${c.id}/messages?limit=25`, {
+            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+          });
+          return { c, msgs: r.status === 200 ? await r.json() : null };
+        } catch (e) {
+          return { c, msgs: null };
+        }
+      }));
+      for (const { c, msgs } of rs) {
+        for (const m of msgs || []) {
+          const pub = Date.parse(String(m.timestamp || '').slice(0, 19) + 'Z');
+          const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
+          if (Number.isNaN(pub) || ahora - pub > VIVO_HORAS * HORA) continue;
+          const texto = conNombres(m).slice(0, 400);
+          const fila = this.sql.exec('SELECT texto FROM veredictos WHERE id = ?', m.id).toArray()[0];
+          if (fila && fila.texto === texto) continue;
+          this.sql.exec('INSERT INTO veredictos (id, canal, sv, g, autor, pub, ed, texto) ' +
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
+            'texto = excluded.texto', m.id, c.id, c.sv || '', c.g || '',
+          (m.author && m.author.id) || '', pub, Math.max(pub, ed || 0), texto);
+          nuevos++;
+        }
+      }
+    }
+    this.sql.exec('DELETE FROM veredictos WHERE pub < ?', ahora - 12 * HORA);
+    this.guardar('veredictos', { t: ahora, canales: leer.length, vivos: [...vivos], cambiaron: nuevos });
+  }
+
   /** Para `/avisos/vivo`: el texto de las llaves de las últimas horas. */
   vivo() {
     const ahora = Date.now();
     const v = this.leer('vivo') || {};
     // 🌙 dormido no se lee nada: lo de antes de las 3 ya no se actualiza, y
     // mostrarlo «en vivo, se actualiza cada minuto» sería mentir
-    if ((this.leer('vigia') || {}).dormido) return { t: v.t || 0, dormido: true, llaves: [] };
+    if ((this.leer('vigia') || {}).dormido) return { t: v.t || 0, dormido: true, llaves: [], veredictos: [] };
     return { t: v.t || 0, llaves: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto ' +
-      'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray() };
+      'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray(),
+    // 🔑 los veredictos, para que la página arme las batallas de un 5 vidas
+    veredictos: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM veredictos ' +
+      'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray() };
   }
 
   /** ¿Hay que avisar este mensaje? Lo anota y dice si era nuevo. */

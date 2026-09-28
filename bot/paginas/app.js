@@ -876,6 +876,19 @@ function pintaVivo() {
     // en vivo = la tocaron en las últimas tres horas
     return L && L.rondas.length && ahora - (L.ed || L.pub || 0) < 3 * 3600000;
   });
+  // 🔑 Y LOS 5 VIDAS DE LOS VEREDICTOS (ver `LlaveVivo.veredictos()`): sin
+  // llave, con el nombre del anuncio que les corresponde
+  var ver = [];
+  try { ver = LlaveVivo.veredictos ? LlaveVivo.veredictos(VIVO.veredictos || []) : []; } catch (e) {
+    console.error('[veredictos en vivo]', e);
+  }
+  ver.filter(function (L) { return ahora - (L.ed || L.pub || 0) < 3 * 3600000; }).forEach(function (L) {
+    var e = (D.proximos || []).concat(D.calendario || []).filter(function (x) {
+      return llaveDeEvento({ cuando: x.cuando || x.t, sv: x.sv, nombre: x.nombre || x.n }, [L]);
+    })[0];
+    L.nombre = e ? (e.nombre || e.n) : '5 vidas · ' + nombreSv(L.sv);
+    ls.push(L);
+  });
   ls.forEach(function (L) { VIVO_L[L.id] = L; });
   // 🔑 Y LO QUE EMPEZÓ SIN LLAVE A LA VISTA. Con dos eventos a la vez se veía
   // uno: la SNAKE ARENA (27/09/2026) era un 5 vidas y se jugaba en
@@ -895,6 +908,7 @@ function pintaVivo() {
       '<h3>' + esc(L.nombre) + '</h3>' +
       '<p class="vv-e"><i class="vivo-punto" aria-hidden="true"></i><span>' +
         (L.terminada ? 'Terminó: los puntos llegan en la próxima vuelta del ciclo'
+          : L.veredictos ? '<b>' + esc(L.rondas[0].r) + '</b> &middot; ' + esc(L.enJuego) + ' en juego'
           : '<b>' + esc(L.enJuego || 'En juego') + '</b> en juego') +
         (L.participantes ? ' &middot; ' + L.participantes + ' raperos' : '') + '</span></p>' +
       '<div class="ps-acc"><button class="btn" data-llave="v:' + esc(L.id) + '">Ver la llave</button>' +
@@ -1356,13 +1370,20 @@ function vidasVista(L, quien, N) {
     if (perd[p] === N) cae[p] = i + 1;
     sale.push([p, perd[p]]);
   });
-  // en el orden de la tabla del motor: del campeón al último
+  // en el orden de la tabla del motor: del campeón al último. ⚠️ EN VIVO NO
+  // HAY TABLA —los puntos llegan con el ciclo—: primero los que siguen en pie,
+  // con más vidas arriba, y después los que cayeron, del último al primero.
+  // Es la misma regla que `motor.lugares_vidas()`.
   var gente = Object.keys(perd);
   var lugar = {};
   (L.tabla || []).forEach(function (r, i) {
     gente.forEach(function (s) { if (!(s in lugar) && comparten(r[0], s)) lugar[s] = i; });
   });
-  gente.sort(function (a, b) { return (a in lugar ? lugar[a] : 99) - (b in lugar ? lugar[b] : 99); });
+  var ordenVivo = function (s) { return cae[s] ? 1000 - cae[s] : perd[s]; };
+  gente.sort(function (a, b) {
+    return (L.tabla || []).length ? (a in lugar ? lugar[a] : 99) - (b in lugar ? lugar[b] : 99)
+      : ordenVivo(a) - ordenVivo(b);
+  });
   var corazones = function (s) {
     var out = '';
     for (var k = 0; k < N; k++) {
@@ -1380,8 +1401,10 @@ function vidasVista(L, quien, N) {
     var x = sale[i];
     var ult = x && x[1] === N;
     var et = etiquetasHtml(b[2]) + etiquetaClasico(L, b);
+    // en vivo, lo que dijeron los votos: «votos 2–1», «réplica»…
+    var nota = L.veredictos && b[2] ? '<span class="vd-v">' + esc(b[2]) + '</span>' : '';
     return '<div class="bl"' + (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' +
-      '<div class="bx-et"><span>Batalla ' + (i + 1) + '</span>' + et + '</div>' +
+      '<div class="bx-et"><span>Batalla ' + (i + 1) + '</span>' + nota + et + '</div>' +
       (b[0] || []).map(function (s, j) {
         var g = b[1] && (b[1] === s || comparten(b[1], s));
         var menos = x && x[0] === s;
@@ -1391,7 +1414,9 @@ function vidasVista(L, quien, N) {
             : menos ? '<span class="vd-m' + (ult ? ' vd-ult' : '') + '">' +
               (ult ? 'sin vidas' : '&minus;1 &#9829; (le quedan ' + (N - x[1]) + ')') + '</span>' : '') +
           '</div>';
-      }).join('') + (x ? '' : '<p class="vd-sin">Sin ganador: no le sacó vida a nadie.</p>') + '</div>';
+      }).join('') + (x ? '' : '<p class="vd-sin">' + (/réplica/.test(b[2] || '') ? 'Réplica: se vuelve a pelear.'
+        : L.vivo && i === bs.length - 1 ? 'Se está votando.' : 'Sin ganador: no le sacó vida a nadie.') +
+        '</p>') + '</div>';
   }).join('');
   return '<div class="rl-lista vd">' + tablero + '<section class="rl-r"><h5>Batalla por batalla<small>' +
     bs.length + ' batallas</small></h5>' + lista + '</section></div>';

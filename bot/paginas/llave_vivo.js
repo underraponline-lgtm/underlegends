@@ -511,8 +511,118 @@
     };
   }
 
+  /* ── los veredictos en vivo ────────────────────────────────────────────
+     🔑 Dlx, 28/09/2026: «tienes que estar pendiente de todos los canales de
+     eventos cuando hay un evento en vivo… en veredictos está todo lo que
+     pasó». Snake Rap juega sus 5 VIDAS en #veredictos, sin llave: un título
+     `# A 🆚 B` por batalla y un mensaje por juez con el nombre que vota.
+
+     Esto arma las batallas —el último voto de cada juez, y gana la mayoría—
+     y devuelve las tandas que son un formato de VIDAS con la forma de una
+     llave, para que las dibuje `vidasVista()` de la página. ⚠️ SÓLO PARA
+     MIRAR: los puntos los sigue sacando el ciclo, de las batallas cargadas.
+
+     ⚠️ Lo que el texto no dice no se inventa: un juez que vota con una
+     imagen no cuenta, y un empate queda sin ganador. En un formato de vidas
+     el que gana SE QUEDA, así que un empate lo desempata la batalla de
+     después: el que sigue peleando es el que ganó (y si la de después es la
+     misma pareja, fue una réplica). */
+  var TANDA_MS = 45 * 60000;
+  function menorId(a, b) {
+    return a.length !== b.length ? a.length - b.length : a < b ? -1 : a > b ? 1 : 0;
+  }
+  function tituloBatalla(t) {
+    var ls = lineas(t);
+    for (var i = 0; i < ls.length; i++) {
+      var ns = nombresDeLinea(ls[i].replace(/^\s*#+\s*/, ''));
+      if (ns.length === 2) return ns.map(sinMarcas);
+    }
+    return null;
+  }
+  /* el voto de un juez: un renglón con un solo nombre (`**FAZER 🇦🇷**`, `# ***DELUXE***`) */
+  function votoDe(t) {
+    var ls = lineas(t).map(function (x) { return x.trim(); }).filter(Boolean);
+    return ls.length === 1 ? norm(ls[0].replace(/^#+\s*/, '').replace(MARCAS, '')) : '';
+  }
+  function veredictos(rows) {
+    var porCanal = {}, tandas = [];
+    (rows || []).slice().sort(function (a, b) { return menorId(String(a.id), String(b.id)); })
+      .forEach(function (m) { (porCanal[m.canal] = porCanal[m.canal] || []).push(m); });
+    Object.keys(porCanal).forEach(function (c) {
+      var tanda = null;
+      porCanal[c].forEach(function (m) {
+        if (!tanda || m.pub - tanda.ult > TANDA_MS) {
+          tanda = { canal: c, sv: m.sv, g: m.g, id: m.id, pub: m.pub, ult: m.pub, ed: m.ed || m.pub, bs: [], nom: {} };
+          tandas.push(tanda);
+        }
+        tanda.ult = m.pub;
+        tanda.ed = Math.max(tanda.ed, m.ed || m.pub);
+        var t = traducir(plano(m.texto || ''));
+        var tit = tituloBatalla(t);
+        // 🔴 CADA PERSONA CON UN SOLO NOMBRE EN TODA LA TANDA: el título pone la
+        // bandera a veces antes y a veces después («🇦🇷 DELUXE», «DELUXE 🇦🇷»), y
+        // eran dos personas con la mitad de las derrotas cada una
+        if (tit) {
+          var un = function (x) { var k = norm(x); return tanda.nom[k] || (tanda.nom[k] = x); };
+          tanda.bs.push({ a: un(tit[0]), b: un(tit[1]), votos: {}, id: m.id });
+          return;
+        }
+        var cur = tanda.bs[tanda.bs.length - 1], v = votoDe(t);
+        if (!cur || !v || !m.autor) return;
+        var na = norm(cur.a), nb = norm(cur.b);
+        var ea = v === na || (na.length > 2 && v.indexOf(na) >= 0);
+        var eb = v === nb || (nb.length > 2 && v.indexOf(nb) >= 0);
+        if (ea !== eb) cur.votos[m.autor] = ea ? 'a' : 'b';
+      });
+    });
+    return tandas.map(vidasDeTanda).filter(Boolean);
+  }
+  function vidasDeTanda(T) {
+    var bs = T.bs, N = 5;
+    if (bs.length < 3) return null;
+    var gente = {}, pares = {}, vidas = false;
+    bs.forEach(function (x, i) {
+      gente[norm(x.a)] = 1;
+      gente[norm(x.b)] = 1;
+      var k = [norm(x.a), norm(x.b)].sort().join('|');
+      // ⚠️ LA MISMA PAREJA, NO SEGUIDA: en una llave no se repite (salvo la
+      // réplica, que va seguida); en un formato de vidas, sí
+      if (pares[k] != null && pares[k] < i - 1) vidas = true;
+      pares[k] = i;
+    });
+    var n = Object.keys(gente).length;
+    if (!vidas || n > 8) return null;
+    bs.forEach(function (x, i) {
+      var va = 0, vb = 0;
+      Object.keys(x.votos).forEach(function (j) { if (x.votos[j] === 'a') va++; else vb++; });
+      x.g = va > vb ? x.a : vb > va ? x.b : '';
+      x.nota = va + vb ? 'votos ' + Math.max(va, vb) + '–' + Math.min(va, vb) : '';
+      var sig = bs[i + 1];
+      if (!x.g && sig) {
+        var misma = [norm(x.a), norm(x.b)].sort().join('|') === [norm(sig.a), norm(sig.b)].sort().join('|');
+        var sigue = [x.a, x.b].filter(function (s) { return norm(s) === norm(sig.a) || norm(s) === norm(sig.b); });
+        if (misma) x.nota = (x.nota ? x.nota + ' · ' : '') + 'réplica';
+        else if (sigue.length === 1) { x.g = sigue[0]; x.nota = (x.nota ? x.nota + ' · ' : '') + 'siguió peleando'; }
+      }
+    });
+    var perd = {}, fuera = 0;
+    bs.forEach(function (x) {
+      if (!x.g) return;
+      var p = norm(x.g) === norm(x.a) ? x.b : x.a;
+      perd[norm(p)] = (perd[norm(p)] || 0) + 1;
+      if (perd[norm(p)] === N) fuera++;
+    });
+    return {
+      vivo: true, veredictos: true, id: 'ver:' + T.id, nombre: '', sv: T.sv || '', participantes: n,
+      rondas: [{ r: N + ' vidas', b: bs.map(function (x) { return [[x.a, x.b], x.g, x.nota, []]; }) }],
+      tabla: [], links: T.g && T.canal ? ['https://discord.com/channels/' + T.g + '/' + T.canal + '/' + T.id] : [],
+      pub: T.pub, ed: T.ed, terminada: n > 1 && fuera === n - 1, enJuego: 'Batalla ' + bs.length
+    };
+  }
+
   var LlaveVivo = { plano: plano, traducir: traducir, norm: norm, nombresDeLinea: nombresDeLinea,
     unirContinuadas: unirContinuadas, rondasDe: rondasDe, resolver: resolver, enlazar: enlazar,
-    titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon };
+    titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon,
+    veredictos: veredictos };
   raiz.LlaveVivo = LlaveVivo;
 })(typeof window !== 'undefined' ? window : globalThis);

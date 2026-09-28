@@ -2269,6 +2269,7 @@ padding:7px 10px;border:1px solid #22332F;border-radius:10px;background:#0E1514}
 .vd-m{margin-left:auto;color:#E5484D;font-size:.8rem;font-weight:800;white-space:nowrap}
 .vd-m.vd-ult{color:var(--tx);background:rgba(229,72,77,.18);padding:2px 7px;border-radius:6px}
 .vd-sin{margin:4px 8px 2px;color:var(--tx3);font-size:.82rem}
+.vd .bx-et .vd-v{color:var(--tl);font-weight:800}
 @media (max-width:420px){.vd-f{grid-template-columns:2em minmax(0,1fr)}.vd-cs{grid-column:2}}
 .bl .ql.sigue span{color:var(--tl)}
 .cuadro .ql.sigue span{color:var(--tl)}

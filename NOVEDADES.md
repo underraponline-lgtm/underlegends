@@ -292,11 +292,49 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Publicaciones es un muro automático de la Liga, y los anuncios de todos los servidores** | *«sí un muro automático, pero anuncios de todos los servidores también»* | ✅ `bot/muro.py` (1.33): campeones, rangos, tarjetas, cazas, precios, premios, El Elegido, anuncios y novedades. Contado por la Liga, en tercera persona |
 | **El Most Wanted paga además el 10 % en Puntos de Tienda**, al que caza y al que sobrevive (12.000 de Temporada → 1.200 de Tienda) | *«b»* (28/09, 7:45 AM) | ✅ `most_wanted.TIENDA` + `precios.tienda_mw()` (1.34). Se reemplaza entero en cada corrida: una llave corregida no paga dos veces |
 | **Entrar con Discord una vez alcanza**: nada de mandar a autorizar en cada voto | *«cada vez que presiono para votar me redirige a DISCORD… lo hice miles de veces»* (28/09, con capturas) | ✅ la sesión (1.35): `sesionNueva()` en `bot/avisos.js`, cookie `lg_ses` HttpOnly, 30 días, sin secreto nuevo |
-| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ⏳ **falta leerlo solo**: el vigía no mira veredictos todavía |
+| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ✅ **en vivo** (1.38): el vigía lee los canales de veredictos mientras su servidor juega. ⏳ **falta cargarlo solo** (el ciclo) |
 | **Hay muchos formatos** (5 vidas, pandillas, multiverse…). Lo que el motor necesita de cualquiera es lo mismo: **el lugar final** de cada uno (eso paga) y **las batallas 1v1** (eso es duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor | *«hay muchos formatos de rap, este es uno de ellos… es confuso, hay pandillas, multiverse, etc.»* (28/09) | ✅ la regla (1.36). En un 5 vidas el lugar es **el orden en que cayeron** (*«sí dale»*); los que terminan en pie con las mismas vidas **empatan y se reparten el pozo** (guía, §10.1: la #320 dio 2.166 cada uno, y el motor da lo mismo) |
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (9:10 AM) — versión 1.38
+
+**Los 5 vidas, en vivo.** Dlx: *«tienes que estar pendiente de todos los
+canales de eventos cuando hay un evento en vivo… en veredictos está todo lo
+que pasó»*.
+
+- 🔑 **El vigía descubre los canales de veredictos** por nombre (`/veredict/`,
+  sin los que dicen «llave», que ya lee `llaves()`): SR tiene dos, Urban
+  Freestyle **ocho**. Por eso **no se leen siempre**: sólo mientras su
+  servidor tiene un evento en juego —de 15 min antes a 5 h después del
+  arranque de un anuncio, o con una llave que se está tocando— y el que tuvo
+  mensajes hace poco; hasta 6 por minuto, rotando. Las dos decisiones son
+  funciones puras con prueba (`svsEnVivo()` y `veredictosALeer()` en
+  `bot/avisos.js`); los mensajes, 12 h en la tabla `veredictos`, y viajan
+  en `/avisos/vivo`.
+- 🔑 **La página arma las batallas** (`LlaveVivo.veredictos()`): el título
+  `# A 🆚 B` abre una, cada juez vota con un renglón (con o sin negrita, con
+  o sin `#`) y gana la mayoría. Una tanda es un 5 vidas si la misma pareja
+  vuelve a pelear **no seguida** (en una llave sólo se repite la réplica, que
+  va seguida). Lo que el texto no dice no se inventa: el juez que vota con
+  imagen no cuenta, y un empate lo desempata **el que siguió peleando**
+  (el ganador se queda); la misma pareja otra vez es réplica.
+- ✅ **Probado con los 106 mensajes reales de la Snake Arena Vol. 2**: saca
+  las mismas 24 batallas que armé a mano ayer, con la 19 por «siguió
+  peleando» y la 23 como réplica; la 24 queda «se está votando» porque el
+  tercer voto fue una imagen. 🔴 **Y encontró un bug**: el título pone la
+  bandera antes o después del nombre, y «🇦🇷 DELUXE» y «DELUXE 🇦🇷» eran
+  dos personas con la mitad de las derrotas cada una. Ahora cada una queda
+  con su primer nombre de la tanda.
+- La tarjeta de «En vivo» lleva el nombre del anuncio que le corresponde, y
+  abre el tablero de vidas (el mismo de 1.36), ordenado en vivo por las
+  vidas que quedan.
+- ⏳ **Lo que falta**: que el **ciclo** cargue solo un 5 vidas desde los
+  veredictos (hoy se carga a mano, como el #365), y el tablero de corazones
+  de FFA (su plantilla: `[PARTICIPANTE] ❤️❤️❤️❤️❤️` y el podio).
 
 ---
 

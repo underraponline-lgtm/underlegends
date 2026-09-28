@@ -104,5 +104,55 @@ ok('las menciones pasan a nombre, con el apodo del servidor primero',
     { id: '1', username: 'fullylo4ded', member: { nick: 'FULLY' } },
     { id: '2', username: 'snowzzz', global_name: 'Snow' }] }) === 'CAMPEÓN: @FULLY🇨🇱&@Snow🇨🇴 y <@3>');
 
+console.log('\n4 · los veredictos en vivo (5 vidas)\n');
+const { svsEnVivo, veredictosALeer } = await import('./avisos.js');
+const H = 3600000, T0 = Date.UTC(2026, 8, 27, 21, 30);
+const vivos = svsEnVivo([JSON.stringify({ tipo: 'evento', sv: 'SR', ini: T0 }),
+  JSON.stringify({ tipo: 'evento', sv: 'FFA', ini: T0 + 3 * H }),
+  JSON.stringify({ tipo: 'antes', sv: 'URBF', ini: T0 }), 'no es json'], T0 + H);
+ok('en vivo: el que empezó hace una hora, no el de dentro de dos ni el recordatorio',
+  [...vivos].join(',') === 'SR', [...vivos].join(','));
+const lista = [{ id: 'sr1', sv: 'SR' }, { id: 'u1', sv: 'URBF' }, { id: 'u2', sv: 'URBF' }, { id: 'u3', sv: 'URBF' }];
+ok('se leen sólo los canales de un servidor en vivo',
+  veredictosALeer(lista, new Set(['SR']), new Set(), 7).map((c) => c.id).join(',') === 'sr1');
+ok('y el que tuvo mensajes hace poco, aunque su evento no figure',
+  veredictosALeer(lista, new Set(), new Set(['u2']), 7).map((c) => c.id).join(',') === 'u2');
+const r1 = veredictosALeer(lista, new Set(['URBF']), new Set(), 0, 2).map((c) => c.id);
+const r2 = veredictosALeer(lista, new Set(['URBF']), new Set(), 1, 2).map((c) => c.id);
+ok('con más canales que el tope, rotan de un minuto al otro', r1.length === 2 && r2.length === 2 &&
+  r1.join() !== r2.join(), r1.join() + ' / ' + r2.join());
+// la SNAKE ARENA VOL. 2 recortada, con jueces de mentira: el título de cada
+// batalla, los votos (con y sin negrita, uno con `#`) y un juez que vota con
+// una imagen (sin texto)
+let n = 0;
+const fila = (autor, texto) => ({ id: String(1553883626993881189n + BigInt(++n)), canal: 'ver', sv: 'SR', g: 'g',
+  autor, pub: T0 + n * 60000, ed: T0 + n * 60000, texto });
+const bat = (a, b, votos) => [fila('org', '# 🇦🇷 ' + a + ' <:VS2:1> ' + b + ' 🇦🇷')].concat(votos.map((v, i) =>
+  fila('j' + i, v ? (i % 2 ? '🇦🇷 ' + v : '**' + v + ' 🇦🇷**') : '')));
+const ver = [].concat(
+  bat('DELUXE', 'FAZER', ['FAZER', 'DELUXE', 'FAZER']),
+  bat('LHYON', 'FAZER', ['LHYON', 'LHYON', '']),
+  bat('LHYON', 'DTR', ['DTR', 'DTR', 'LHYON']),
+  bat('DELUXE', 'FAZER', ['DELUXE', 'DELUXE', '']),
+  bat('DELUXE', 'JIMMY', ['JIMMY', 'DELUXE', '']),
+  bat('DELUXE', 'LHYON', ['# ***DELUXE***', 'DELUXE', '']),
+  // la bandera del otro lado del nombre: es la misma persona
+  [fila('org', '# DELUXE 🇦🇷 <:VS2:1> 🇦🇷 DTR')], bat('DELUXE', 'DTR', ['DTR', 'DTR', '']).slice(1));
+const Lv = LV.veredictos(ver);
+const bv = Lv.length === 1 ? Lv[0].rondas[0].b : [];
+ok('una tanda de veredictos con la misma pareja otra vez, no seguida, es un 5 vidas',
+  Lv.length === 1 && Lv[0].rondas[0].r === '5 vidas' && Lv[0].participantes === 5, js(Lv.map((L) => L.rondas[0].r)));
+// los nombres quedan como los escribió el título, con su bandera: se comparan sin ella
+const gv = bv.map((b) => LV.norm(b[1]));
+ok('gana la mayoría de los votos, con o sin negrita', gv.slice(0, 4).join(',') === 'fazer,lhyon,dtr,deluxe',
+  gv.join(','));
+ok('un empate lo desempata el que siguió peleando (el ganador se queda)', gv[4] === 'deluxe' &&
+  /siguió/.test(bv[4][2]), js(bv[4]));
+ok('`# ***DELUXE***` es un voto, no una batalla', bv.length === 7 && gv[5] === 'deluxe', js(bv[5]));
+ok('«DELUXE 🇦🇷» y «🇦🇷 DELUXE» son la misma persona: un solo nombre en toda la tanda',
+  Lv.length === 1 && Lv[0].participantes === 5 && bv[6][0][0] === bv[0][0][0], js(bv[6]));
+ok('una llave no es un 5 vidas: la réplica va seguida', LV.veredictos([].concat(
+  bat('A', 'B', ['A', 'B', '']), bat('A', 'B', ['A', 'A', '']), bat('A', 'C', ['C', 'C', '']))).length === 0);
+
 console.log(mal ? `\n🔴 ${mal} mal\n` : '\n   todo ok\n');
 process.exit(mal ? 1 : 0);
