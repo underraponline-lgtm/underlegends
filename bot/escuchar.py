@@ -1048,7 +1048,7 @@ def resolver(texto, conocidos=None, ids=None):
                 # guía dice que conserva ENTERA (§10.3).
                 sig.update(x for x in (_sin_pokemon(l) for l in b) if x)
             break
-        for b in bats:
+        for _ib, b in enumerate(bats):
             # el tercer puesto no puede salir de la progresion: su motivo
             # es propio para que no se lea como una duda del sistema
             if ronda == 'TERCER LUGAR':
@@ -1159,6 +1159,19 @@ def resolver(texto, conocidos=None, ids=None):
                 if sust:
                     b = [sust.get(x, x) for x in b]
                     ganan = [sust.get(x, x) for x in ganan]
+                # 🔑 EL REVIVIDO NO PASÓ ESA BATALLA: la perdió y volvió más
+                # abajo. En una de dos lados «pasan los dos» sólo si uno de
+                # ellos aparece OTRA VEZ más abajo en la MISMA ronda —la guía
+                # (§3.7): «el mismo nombre dos veces en la misma ronda, el
+                # segundo es el revivido», de arriba hacia abajo—, así que
+                # ganó el otro. COMPE DEL VACILE #1 (Urban Freestyle,
+                # 28/09/2026): Majiztral contra Motera en octavos y Majiztral
+                # contra TG más abajo; la primera quedaba sin ganador.
+                if len(b) == 2 and len(ganan) == 2:
+                    abajo = {norm(HISTORIA.sub('', m)) for bb in bats[_ib + 1:] for m in bb}
+                    rev = [n for n in ganan if norm(HISTORIA.sub('', n)) in abajo]
+                    if len(rev) == 1:
+                        ganan = [n for n in ganan if n != rev[0]]
                 if len(ganan) == 1:
                     out.append((ronda, b, ganan[0], 'ronda siguiente'))
                 elif not ganan:
@@ -2622,6 +2635,14 @@ def _check_dialectos():
          oct_[1][1] == ['SHULIOT🇦🇷', '<@34>🇧🇷']),
         ('si ninguno de los dos aparece después, sigue siendo duda',
          oct_[2][3] == 'no aparece nadie después'),
+    ]
+    # COMPE DEL VACILE #1 (URBF, 28/09/2026), recortada: MAJI pierde con MOTE,
+    # revive más abajo en los mismos octavos y gana; los dos llegan a cuartos
+    rev = [x for x in resolver('# OCTAVOS\n⌞MAJI⌝ 🆚 ⌞MOTE⌝\n⌞TG⌝ 🆚 ⌞MAJI⌝\n'
+                               '# CUARTOS\n⌞MOTE⌝ 🆚 ⌞MAJI⌝\n') if x[0] == 'OCTAVOS']
+    casos2 += [
+        ('el que revive más abajo en la misma ronda perdió la de arriba',
+         [x[2] for x in rev] == ['MOTE', 'MAJI']),
     ]
     casos += casos2
     for que, ok in casos:

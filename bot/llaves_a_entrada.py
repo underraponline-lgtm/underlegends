@@ -445,6 +445,30 @@ def plantel(texto, ids=None):
     return out
 
 
+def repetidos_en_la_primera(texto):
+    """Cuántos lugares de la primera ronda ocupa alguien que ya estaba en ella.
+
+    Es lo que le falta al plantel —que cuenta nombres DISTINTOS— para ser el
+    formato de la llave: el que revive aparece dos veces en la misma ronda (la
+    guía, §3.7) y ocupa dos lugares. Dlx, 28/09/2026: *«en sí el formato es
+    de 16»*. Sólo la primera ronda: ahí están todos los lugares de la llave.
+    """
+    rs = E.rondas_de(texto or '')
+    if not rs:
+        return 0
+    vistos, extra = set(), 0
+    for b in rs[0][1]:
+        for lado in b:
+            for m in (E._miembros(lado) or [lado]):
+                k = E.norm(E.HISTORIA.sub('', m))
+                if not k:
+                    continue
+                if k in vistos:
+                    extra += 1
+                vistos.add(k)
+    return extra
+
+
 def parecido(a, b):
     return len(a & b) / float(len(a | b)) if (a or b) else 0.0
 
@@ -560,6 +584,13 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     fecha = fecha or hallazgo.get('fecha') or ''
     ids = ids_de(hallazgo)
     gente = plantel(txt, ids)
+    # 🔴 LA ESCALA SALE DEL FORMATO, NO DE CUÁNTOS NOMBRES DISTINTOS HAY. Dlx,
+    # 28/09/2026, por la COMPE DEL VACILE (Majiztral dos veces en octavos, 15
+    # nombres en una llave de 16): *«en sí el formato es de 16»*. El que
+    # revive ocupa dos lugares de la primera ronda, así que se cuenta dos
+    # veces para elegir la escala (`motor.escala_de()`). Ver
+    # `repetidos_en_la_primera()`.
+    n_part = len(gente_grupo or gente) + repetidos_en_la_primera(txt)
     filas, dudas, sabidas = [], [], collections.Counter()
 
     if por_que == 'identidad':
@@ -618,7 +649,7 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
         if ganador is None and razon.startswith('pasan 0'):
             for p in lados:
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
-                              'participantes': len(gente_grupo or gente),
+                              'participantes': n_part,
                               'ronda': ronda.lower(),
                               'ladoA': '', 'ladoB': _v(p), 'ganador': '',
                               'notas': 'triple (%d bandas, pasan 0)' % len(lados)})
@@ -629,7 +660,7 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
             caen = [l for l in lados if l not in pasan]
             for p in caen:
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
-                              'participantes': len(gente_grupo or gente),
+                              'participantes': n_part,
                               'ronda': ronda.lower(),
                               'ladoA': _v(pasan[0]), 'ladoB': _v(p),
                               'ganador': _v(pasan[0]),
@@ -670,7 +701,7 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
             perdedores = [l for l in lados if l != ganador]
             for p in perdedores:
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
-                              'participantes': len(gente_grupo or gente),
+                              'participantes': n_part,
                               'ronda': ronda.lower(),
                               'ladoA': _v(ganador), 'ladoB': _v(p),
                               'ganador': _v(ganador),
@@ -691,7 +722,7 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                       # mensajes, `motor.procesar()` se queda con el
                       # `max`, que no es la unión: 6 y 7 dan «4-7»
                       # cuando el evento tuvo 12 y le tocaba «8-15».
-                      'participantes': len(gente_grupo or gente),
+                      'participantes': n_part,
                       'ronda': ronda.lower(),
                       'ladoA': _v(ganador), 'ladoB': _v(otro),
                       'ganador': _v(ganador),
@@ -1656,6 +1687,10 @@ def _self_check():
             'MATICERNA' in f['notas'] for f in fwc)),
         ('pero el que aparece recién en cuartos sigue siendo walk-in',
          [f['notas'] for f in fwc2 if 'Walk-in' in f['notas']] == ['Walk-in 1: ZETA']),
+        ('el que revive en la primera ronda ocupa dos lugares: la escala es del formato',
+         repetidos_en_la_primera('# OCTAVOS\n⌞MAJI⌝ 🆚 ⌞MOTE⌝\n⌞TG⌝ 🆚 ⌞MAJI⌝\n'
+                                 '# CUARTOS\n⌞MOTE⌝ 🆚 ⌞MAJI⌝\n') == 1
+         and repetidos_en_la_primera('# CUARTOS\n⌞A⌝ 🆚 ⌞B⌝\n# FINAL\n⌞A⌝ 🆚 ⌞C⌝\n') == 0),
         ('el que pasó octavos escrito como mención no es walk-in (MARRUECOS)',
          not any('Walk-in' in f['notas'] for f in fwm)),
         ('… y sin los nombres de la mención lo era: la prueba mide algo',
