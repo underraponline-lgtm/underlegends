@@ -295,10 +295,66 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ✅ **en vivo** (1.38): el vigía lee los canales de veredictos mientras su servidor juega. ✅ **se carga solo** (1.39): el ciclo lee #veredictos y lo suma |
 | **Hay muchos formatos** (5 vidas, pandillas, multiverse…). Lo que el motor necesita de cualquiera es lo mismo: **el lugar final** de cada uno (eso paga) y **las batallas 1v1** (eso es duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor | *«hay muchos formatos de rap, este es uno de ellos… es confuso, hay pandillas, multiverse, etc.»* (28/09) | ✅ la regla (1.36). En un 5 vidas el lugar es **el orden en que cayeron** (*«sí dale»*); los que terminan en pie con las mismas vidas **empatan y se reparten el pozo** (guía, §10.1: la #320 dio 2.166 cada uno, y el motor da lo mismo) |
 | **Los 5 vidas: A y B** — el ciclo los carga solo desde #veredictos, y aparecen en ✅ Decidir para confirmarlos o descartarlos; si una batalla quedó pareja en el texto (un juez que vota con imagen), se pregunta quién ganó | *«1. A y b»* (28/09, 10 AM) | ✅ (1.39): `escuchar.vidas()` + `llaves_a_entrada.filas_vidas()`; en ✅ Decidir, «❤️ Vidas» con «Está bien así / No cuenta», y «No cuenta» **lo saca** del ranking (`procesar_entrada.sacar_descartados()`). La Snake Arena ya estaba aprobada (*«sí dale»*): no se vuelve a preguntar |
+| **DNK pasa a su cuenta nueva** (la de la Lista no estaba en ningún servidor; la nueva es Miembro de DRA) | *«1. Sí, pásala»* (28/09, 10:55 AM) | ✅ la Lista, fila 296, y la pregunta cerrada con eso |
+| **En el menú, Publicaciones y Tarjetas cambian de lugar** | *«quiero que intercambies la posición entre tarjetas y publicaciones»* (28/09) | ✅ (1.40): Inicio · Ranking · Publicaciones · Pase · Tienda · Eventos · Tarjetas · Mundo · Guía |
+| **La web se rehace más adelante, con Dlx y con connectors** | *«después de que termines esto planeo REMAKE el website contigo y con unos connectors»* (28/09) | ⏳ cuando Dlx lo abra; hasta entonces, sólo arreglos y pedidos puntuales |
 | **MARRUECOS lo resuelve Dlx en ✅ Decidir**, y la hoja tiene que ser más clara y más linda | *«Lo resuelvo yo… pero mejora esa página de decidir incluso más… hazla. Más mejor y bonita»* (28/09) | ✅ **«¿quién ganó esta batalla?»** y la hoja rehecha (ver abajo) |
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (12 PM) — versión 1.40
+
+Dlx: *«estas 2 horas voy a estar ocupado pero me gustaría que te tomes el
+tiempo para arreglar y buscar bugs. Mejorar el sistema completo. Buscar
+optimizaciones»*.
+
+- 🔴 **`Pendientes` se escribía ENCIMA de sus primeras filas.**
+  `anotar_varios()` agregaba con `append` sobre `A2` y `OVERWRITE`, y la API
+  busca la tabla en esa celda: la columna A (`#`) está vacía en todas las
+  filas, así que escribía desde la fila 2 **pisando lo que había**. En la
+  corrida de las 11:22 el lector anotó las 11 batallas y `procesar_entrada`
+  las pisó siete segundos después con 35 nombres, que además borraron las 7
+  preguntas de identidad. Los nombres volvían solos en la corrida siguiente
+  —por eso no se veía—; se perdía justo lo que no se regenera. Ahora la fila
+  la calculamos nosotros (`pendientes._poner()`). **Restauradas** las 7 de
+  identidad (la de DNK, cerrada). ⚠️ **Lo que se perdió en corridas
+  anteriores no se puede saber**: si una pregunta que ya contestaste vuelve
+  a aparecer —un «Es alguien nuevo», sobre todo—, es por esto; contestala
+  otra vez y ya queda.
+- 🔴 **✅ Decidir: preguntas en blanco.** Una fila que en la pintada anterior
+  era franja estaba combinada de A a H, y escribir en una combinada se traga
+  el valor sin error. Con las batallas nuevas las secciones se corrieron y 4
+  preguntas salieron vacías. Ahora se descombina antes de escribir.
+- 🔎 **Pista de Discord en los nombres desconocidos**: si el nombre es el
+  apodo, el nombre visible o el usuario de alguien de los servidores de la
+  Liga, la pista lo dice —«En Discord es la cuenta de «Jult» en la Lista»— y
+  «Es Jult» va primero. **32 de 66** preguntas la tienen; 4 son cuentas que
+  ya están en la Lista con otro nombre: KULRW = Jult, nacioenmilan = Deuxs,
+  ADACCHI = Nobu, DENIK = fleivaman. El índice va en `.cache/` (en
+  `.gitignore`): son los nombres de ~10.000 personas y el repo es público.
+- ⚡ **El ciclo, más liviano**: las 427 caras se guardan de una corrida a la
+  otra (caché de Actions: eran 16 s y 427 pedidos en ráfaga a Cloudflare, un
+  tercio de su tope); las cinco vitrinas no se reescriben si ya dicen lo
+  mismo (`rankings.ya_dice()`: eran 37 s y la cuota de Google); y el ID del
+  Operativo se confirma una vez por ciclo y no en cada uno de los ~15
+  scripts (una de esas preguntas tardó 30 s a las 11:54).
+- 🧹 5 vidas: el número de batalla va en la nota y en la guarda de `Entrada`
+  (dos revanchas con el mismo ganador eran la misma clave), y lo guardado
+  espera 21 días a que contestes.
+- 🗓️ La llave «(sin titulo)» de FFA estaba con fecha en UTC (23/09) y el
+  lector la calcula en hora del este (22/09): iba a abrir una segunda
+  pregunta por la misma llave. Corregida la fila.
+- 📊 **La corrida de las 11:22**: entró la **FFA World Cup (#366)**, la Snake
+  Arena ya la carga el ciclo (igual que a mano), MARRUECOS pasó a 16+,
+  Publicaciones se publicó (73) y salió el Lunes de la Liga. ⚠️ **FULLY**
+  (27.500, campeón de la World Cup) queda sin puesto hasta que contestes
+  «¿Quién es FULLY?»: su cuenta en la Lista es **Oasis**.
+- 🔑 Para la tanda final de tokens: los `#` de los logs de GitHub salen
+  `***` porque `.env` tiene dos renglones que son sólo `#` (ver
+  `ACCESOS.md`).
 
 ---
 

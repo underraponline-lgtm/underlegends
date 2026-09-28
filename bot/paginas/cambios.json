@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.40",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T12:05:00-04:00",
+   "titulo": "Publicaciones, más a mano",
+   "items": [
+    "📰 **Publicaciones sube en el menú** y Tarjetas baja: en el celular queda entre las primeras.",
+    "🧾 Publicaciones ya muestra lo que pasa en la Liga: campeones, el Most Wanted y los anuncios de todos los servidores.",
+    "⚡ Las actualizaciones de la Liga corren más livianas: lo que no cambió no se vuelve a escribir."
+   ]
+  },
+  {
    "version": "1.39",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T11:00:00-04:00",
