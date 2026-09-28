@@ -508,7 +508,21 @@
 "rg": "",
 "c": []
 },
+"jult": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "sosa": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"last": {
 "rg": "",
 "c": [
 "servidor",
@@ -588,15 +602,7 @@
 "temporada"
 ]
 },
-"kulrw": {
-"rg": "",
-"c": []
-},
 "rayito": {
-"rg": "",
-"c": []
-},
-"last-x": {
 "rg": "",
 "c": []
 },
@@ -611,19 +617,18 @@
 "temporada"
 ]
 },
-"nacioenmilan": {
+"deuxs": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "papa": {
 "rg": "",
 "c": []
 },
 "saz": {
-"rg": "",
-"c": []
-},
-"adacchi": {
 "rg": "",
 "c": []
 },
@@ -698,13 +703,6 @@
 "temporada"
 ]
 },
-"jult": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "kc": {
 "rg": "",
 "c": []
@@ -734,7 +732,10 @@
 },
 "lewito": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "lilnano": {
 "rg": "",
@@ -746,6 +747,13 @@
 "lizeninn": {
 "rg": "",
 "c": []
+},
+"nobu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "paradoja": {
 "rg": "",
@@ -835,7 +843,10 @@
 },
 "melomaniaco": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "rubik": {
 "rg": "",
@@ -877,10 +888,6 @@
 "temporada"
 ]
 },
-"last-uy": {
-"rg": "",
-"c": []
-},
 "malditaenfermedad": {
 "rg": "",
 "c": []
@@ -920,6 +927,30 @@
 ]
 },
 "infecte": {
+"rg": "",
+"c": []
+},
+"btrx": {
+"rg": "",
+"c": []
+},
+"kulrw": {
+"rg": "",
+"c": []
+},
+"last-x": {
+"rg": "",
+"c": []
+},
+"nacioenmilan": {
+"rg": "",
+"c": []
+},
+"adacchi": {
+"rg": "",
+"c": []
+},
+"last-uy": {
 "rg": "",
 "c": []
 },
@@ -974,6 +1005,38 @@
 "t": "2026-09-28T22:23:57Z",
 "quien": [
 "tormen"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T22:40:07Z",
+"quien": [
+"LEWITO"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T22:40:07Z",
+"quien": [
+"LEWITO"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T22:40:07Z",
+"quien": [
+"melomaniaco"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T22:40:07Z",
+"quien": [
+"melomaniaco"
 ],
 "carta": "temporada"
 }

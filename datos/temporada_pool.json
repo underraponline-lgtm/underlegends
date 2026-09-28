@@ -26,7 +26,7 @@
   "ovr": 90,
   "o": 1,
   "pos": 1,
-  "total": 68,
+  "total": 73,
   "rango": "SSS"
  },
  {
@@ -56,7 +56,7 @@
   "ovr": 85,
   "o": 2,
   "pos": 2,
-  "total": 68,
+  "total": 73,
   "rango": "SS"
  },
  {
@@ -86,7 +86,7 @@
   "ovr": 83,
   "o": 3,
   "pos": 3,
-  "total": 68,
+  "total": 73,
   "rango": "SS"
  },
  {
@@ -116,7 +116,7 @@
   "ovr": 82,
   "o": 4,
   "pos": 4,
-  "total": 68,
+  "total": 73,
   "rango": "SS"
  },
  {
@@ -145,9 +145,9 @@
   "av": "",
   "ovr": 79,
   "o": 5,
-  "pos": 69,
+  "pos": 74,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "S"
  },
  {
@@ -176,9 +176,9 @@
   "av": "",
   "ovr": 77,
   "o": 6,
-  "pos": 70,
+  "pos": 75,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "S"
  },
  {
@@ -208,7 +208,7 @@
   "ovr": 74,
   "o": 7,
   "pos": 5,
-  "total": 68,
+  "total": 73,
   "rango": "S"
  },
  {
@@ -238,7 +238,7 @@
   "ovr": 74,
   "o": 8,
   "pos": 6,
-  "total": 68,
+  "total": 73,
   "rango": "S"
  },
  {
@@ -268,11 +268,11 @@
   "ovr": 73,
   "o": 9,
   "pos": 7,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
-  "full": "PRAISERIZA 🇻🇪",
+  "full": "PRAISERIZA",
   "raw": "PRAISERIZA",
   "cc": "ve",
   "sv": "FFA",
@@ -297,9 +297,9 @@
   "av": "",
   "ovr": 73,
   "o": 10,
-  "pos": 71,
+  "pos": 76,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -329,7 +329,7 @@
   "ovr": 72,
   "o": 11,
   "pos": 8,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -359,7 +359,7 @@
   "ovr": 69,
   "o": 12,
   "pos": 9,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -388,9 +388,9 @@
   "av": "",
   "ovr": 68,
   "o": 13,
-  "pos": 72,
+  "pos": 77,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -420,7 +420,7 @@
   "ovr": 68,
   "o": 14,
   "pos": 10,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -450,7 +450,7 @@
   "ovr": 68,
   "o": 15,
   "pos": 11,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -480,7 +480,7 @@
   "ovr": 68,
   "o": 16,
   "pos": 12,
-  "total": 68,
+  "total": 73,
   "rango": "A"
  },
  {
@@ -510,7 +510,7 @@
   "ovr": 66,
   "o": 17,
   "pos": 13,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -540,7 +540,7 @@
   "ovr": 66,
   "o": 18,
   "pos": 14,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -570,7 +570,7 @@
   "ovr": 66,
   "o": 19,
   "pos": 15,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -599,9 +599,9 @@
   "av": "",
   "ovr": 66,
   "o": 20,
-  "pos": 73,
+  "pos": 78,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -631,7 +631,7 @@
   "ovr": 66,
   "o": 21,
   "pos": 16,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -660,9 +660,9 @@
   "av": "",
   "ovr": 64,
   "o": 22,
-  "pos": 74,
+  "pos": 79,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -692,7 +692,7 @@
   "ovr": 64,
   "o": 23,
   "pos": 17,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -721,9 +721,9 @@
   "av": "",
   "ovr": 64,
   "o": 24,
-  "pos": 75,
+  "pos": 80,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -753,7 +753,7 @@
   "ovr": 63,
   "o": 25,
   "pos": 18,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -783,7 +783,7 @@
   "ovr": 62,
   "o": 26,
   "pos": 19,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -812,9 +812,9 @@
   "av": "",
   "ovr": 62,
   "o": 27,
-  "pos": 76,
+  "pos": 81,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -843,9 +843,9 @@
   "av": "",
   "ovr": 62,
   "o": 28,
-  "pos": 77,
+  "pos": 82,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -875,11 +875,11 @@
   "ovr": 62,
   "o": 29,
   "pos": 20,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
-  "full": "MTZ 🇲🇽",
+  "full": "MTZ",
   "raw": "MTZ",
   "cc": "mx",
   "sv": "FFA",
@@ -904,9 +904,9 @@
   "av": "",
   "ovr": 62,
   "o": 30,
-  "pos": 78,
+  "pos": 83,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -936,7 +936,7 @@
   "ovr": 61,
   "o": 31,
   "pos": 21,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -966,7 +966,7 @@
   "ovr": 61,
   "o": 32,
   "pos": 22,
-  "total": 68,
+  "total": 73,
   "rango": "B"
  },
  {
@@ -995,9 +995,9 @@
   "av": "",
   "ovr": 60,
   "o": 33,
-  "pos": 79,
+  "pos": 84,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1026,9 +1026,9 @@
   "av": "",
   "ovr": 60,
   "o": 34,
-  "pos": 80,
+  "pos": 85,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1057,9 +1057,9 @@
   "av": "",
   "ovr": 59,
   "o": 35,
-  "pos": 81,
+  "pos": 86,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1089,7 +1089,7 @@
   "ovr": 59,
   "o": 36,
   "pos": 23,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1119,7 +1119,7 @@
   "ovr": 59,
   "o": 37,
   "pos": 24,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1148,9 +1148,9 @@
   "av": "",
   "ovr": 58,
   "o": 38,
-  "pos": 82,
+  "pos": 87,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1180,7 +1180,7 @@
   "ovr": 58,
   "o": 39,
   "pos": 25,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1209,9 +1209,9 @@
   "av": "",
   "ovr": 58,
   "o": 40,
-  "pos": 83,
+  "pos": 88,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1240,9 +1240,9 @@
   "av": "",
   "ovr": 58,
   "o": 41,
-  "pos": 84,
+  "pos": 89,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1271,9 +1271,9 @@
   "av": "",
   "ovr": 58,
   "o": 42,
-  "pos": 85,
+  "pos": 90,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1303,7 +1303,7 @@
   "ovr": 56,
   "o": 43,
   "pos": 26,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1333,7 +1333,7 @@
   "ovr": 56,
   "o": 44,
   "pos": 27,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1362,9 +1362,9 @@
   "av": "",
   "ovr": 56,
   "o": 45,
-  "pos": 86,
+  "pos": 91,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1394,7 +1394,7 @@
   "ovr": 56,
   "o": 46,
   "pos": 28,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1423,9 +1423,9 @@
   "av": "",
   "ovr": 56,
   "o": 47,
-  "pos": 87,
+  "pos": 92,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1454,9 +1454,9 @@
   "av": "",
   "ovr": 56,
   "o": 48,
-  "pos": 88,
+  "pos": 93,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1486,7 +1486,7 @@
   "ovr": 56,
   "o": 49,
   "pos": 29,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1515,9 +1515,9 @@
   "av": "",
   "ovr": 56,
   "o": 50,
-  "pos": 89,
+  "pos": 94,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1547,7 +1547,7 @@
   "ovr": 56,
   "o": 51,
   "pos": 30,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1577,7 +1577,7 @@
   "ovr": 56,
   "o": 52,
   "pos": 31,
-  "total": 68,
+  "total": 73,
   "rango": "C"
  },
  {
@@ -1606,9 +1606,9 @@
   "av": "",
   "ovr": 55,
   "o": 53,
-  "pos": 90,
+  "pos": 95,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1637,9 +1637,9 @@
   "av": "",
   "ovr": 55,
   "o": 54,
-  "pos": 91,
+  "pos": 96,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1669,7 +1669,7 @@
   "ovr": 55,
   "o": 55,
   "pos": 32,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1699,7 +1699,7 @@
   "ovr": 55,
   "o": 56,
   "pos": 33,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1728,9 +1728,9 @@
   "av": "",
   "ovr": 55,
   "o": 57,
-  "pos": 92,
+  "pos": 97,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1760,7 +1760,7 @@
   "ovr": 55,
   "o": 58,
   "pos": 34,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1789,13 +1789,13 @@
   "av": "",
   "ovr": 55,
   "o": 59,
-  "pos": 93,
+  "pos": 98,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
-  "full": "OKAM🇨🇷",
+  "full": "OKAM",
   "raw": "OKAM",
   "cc": "cr",
   "sv": "FFA",
@@ -1820,9 +1820,9 @@
   "av": "",
   "ovr": 55,
   "o": 60,
-  "pos": 94,
+  "pos": 99,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1852,7 +1852,7 @@
   "ovr": 55,
   "o": 61,
   "pos": 35,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1882,7 +1882,7 @@
   "ovr": 55,
   "o": 62,
   "pos": 36,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1912,7 +1912,7 @@
   "ovr": 54,
   "o": 63,
   "pos": 37,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1942,7 +1942,7 @@
   "ovr": 54,
   "o": 64,
   "pos": 38,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -1971,9 +1971,9 @@
   "av": "",
   "ovr": 54,
   "o": 65,
-  "pos": 95,
+  "pos": 100,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2003,7 +2003,7 @@
   "ovr": 54,
   "o": 66,
   "pos": 39,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2032,9 +2032,9 @@
   "av": "",
   "ovr": 54,
   "o": 67,
-  "pos": 96,
+  "pos": 101,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2064,7 +2064,7 @@
   "ovr": 53,
   "o": 68,
   "pos": 40,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2093,9 +2093,9 @@
   "av": "",
   "ovr": 53,
   "o": 69,
-  "pos": 97,
+  "pos": 102,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2125,7 +2125,7 @@
   "ovr": 53,
   "o": 70,
   "pos": 41,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2155,7 +2155,7 @@
   "ovr": 53,
   "o": 71,
   "pos": 42,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2184,9 +2184,9 @@
   "av": "",
   "ovr": 53,
   "o": 72,
-  "pos": 98,
+  "pos": 103,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2216,7 +2216,7 @@
   "ovr": 53,
   "o": 73,
   "pos": 43,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2245,9 +2245,9 @@
   "av": "",
   "ovr": 53,
   "o": 74,
-  "pos": 99,
+  "pos": 104,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2276,9 +2276,9 @@
   "av": "",
   "ovr": 53,
   "o": 75,
-  "pos": 100,
+  "pos": 105,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2307,9 +2307,9 @@
   "av": "",
   "ovr": 53,
   "o": 76,
-  "pos": 101,
+  "pos": 106,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2338,9 +2338,9 @@
   "av": "",
   "ovr": 53,
   "o": 77,
-  "pos": 102,
+  "pos": 107,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2369,13 +2369,13 @@
   "av": "",
   "ovr": 52,
   "o": 78,
-  "pos": 103,
+  "pos": 108,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
-  "full": "Korey🇨🇱",
+  "full": "Korey",
   "raw": "Korey",
   "cc": "cl",
   "sv": "FFA",
@@ -2400,9 +2400,9 @@
   "av": "",
   "ovr": 52,
   "o": 79,
-  "pos": 104,
+  "pos": 109,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2431,9 +2431,9 @@
   "av": "",
   "ovr": 52,
   "o": 80,
-  "pos": 105,
+  "pos": 110,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2463,11 +2463,11 @@
   "ovr": 52,
   "o": 81,
   "pos": 44,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
-  "full": "MHS 🇦🇷",
+  "full": "MHS",
   "raw": "MHS",
   "cc": "ar",
   "sv": "FFA",
@@ -2492,9 +2492,9 @@
   "av": "",
   "ovr": 52,
   "o": 82,
-  "pos": 106,
+  "pos": 111,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2523,9 +2523,9 @@
   "av": "",
   "ovr": 52,
   "o": 83,
-  "pos": 107,
+  "pos": 112,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2555,7 +2555,7 @@
   "ovr": 52,
   "o": 84,
   "pos": 45,
-  "total": 68,
+  "total": 73,
   "rango": "D"
  },
  {
@@ -2585,7 +2585,7 @@
   "ovr": 51,
   "o": 85,
   "pos": 46,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2614,9 +2614,9 @@
   "av": "",
   "ovr": 51,
   "o": 86,
-  "pos": 108,
+  "pos": 113,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2645,9 +2645,9 @@
   "av": "",
   "ovr": 51,
   "o": 87,
-  "pos": 109,
+  "pos": 114,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2676,9 +2676,9 @@
   "av": "",
   "ovr": 51,
   "o": 88,
-  "pos": 110,
+  "pos": 115,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2708,7 +2708,7 @@
   "ovr": 51,
   "o": 89,
   "pos": 47,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2737,9 +2737,39 @@
   "av": "",
   "ovr": 51,
   "o": 90,
-  "pos": 111,
+  "pos": 116,
   "fc": true,
-  "total": 68,
+  "total": 73,
+  "rango": "E"
+ },
+ {
+  "full": "Jult",
+  "raw": "Jult",
+  "cc": "ar",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1445635276478353468",
+  "verificado": true,
+  "pts": 3250,
+  "ev": 2,
+  "wr": "",
+  "pod": 0,
+  "oro": 0,
+  "sem": 0,
+  "seg": 0,
+  "ter": 0,
+  "caz": 0,
+  "czd": 0,
+  "sob": 0,
+  "srv": 2,
+  "racha": 0,
+  "racha_act": 0,
+  "score": 0.0,
+  "av": "",
+  "ovr": 50,
+  "o": 91,
+  "pos": 48,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2767,13 +2797,43 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 91,
-  "pos": 48,
-  "total": 68,
+  "o": 92,
+  "pos": 49,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "MATICERNA🇦🇷",
+  "full": "LAST",
+  "raw": "LAST",
+  "cc": "uy",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "483070865081237505",
+  "verificado": false,
+  "pts": 2187,
+  "ev": 3,
+  "wr": "0.0%",
+  "pod": 0,
+  "oro": 0,
+  "sem": 0,
+  "seg": 0,
+  "ter": 0,
+  "caz": 0,
+  "czd": 0,
+  "sob": 0,
+  "srv": 1,
+  "racha": 0,
+  "racha_act": 0,
+  "score": 0.0,
+  "av": "",
+  "ovr": 50,
+  "o": 93,
+  "pos": 50,
+  "total": 73,
+  "rango": "E"
+ },
+ {
+  "full": "MATICERNA",
   "raw": "MATICERNA",
   "cc": "ar",
   "sv": "FFA",
@@ -2797,10 +2857,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 92,
-  "pos": 112,
+  "o": 94,
+  "pos": 117,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2828,10 +2888,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 93,
-  "pos": 113,
+  "o": 95,
+  "pos": 118,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2859,13 +2919,13 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 94,
-  "pos": 49,
-  "total": 68,
+  "o": 96,
+  "pos": 51,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "tormen 🇳🇮",
+  "full": "tormen",
   "raw": "tormen",
   "cc": "ni",
   "sv": "FFA",
@@ -2889,9 +2949,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 95,
-  "pos": 50,
-  "total": 68,
+  "o": 97,
+  "pos": 52,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2919,10 +2979,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 96,
-  "pos": 114,
+  "o": 98,
+  "pos": 119,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2950,10 +3010,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 97,
-  "pos": 115,
+  "o": 99,
+  "pos": 120,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -2981,10 +3041,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 98,
-  "pos": 116,
+  "o": 100,
+  "pos": 121,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3012,10 +3072,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 49,
-  "o": 99,
-  "pos": 117,
+  "o": 101,
+  "pos": 122,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3043,10 +3103,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 100,
-  "pos": 118,
+  "o": 102,
+  "pos": 123,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3074,10 +3134,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 101,
-  "pos": 119,
+  "o": 103,
+  "pos": 124,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3105,10 +3165,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 102,
-  "pos": 120,
+  "o": 104,
+  "pos": 125,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3136,10 +3196,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 103,
-  "pos": 121,
+  "o": 105,
+  "pos": 126,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3167,10 +3227,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 104,
-  "pos": 122,
+  "o": 106,
+  "pos": 127,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3198,10 +3258,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 105,
-  "pos": 123,
+  "o": 107,
+  "pos": 128,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3229,10 +3289,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 106,
-  "pos": 124,
+  "o": 108,
+  "pos": 129,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3260,40 +3320,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 107,
-  "pos": 51,
-  "total": 68,
-  "rango": "E"
- },
- {
-  "full": "KULRW🇦🇷",
-  "raw": "KULRW",
-  "cc": "ar",
-  "sv": "SR",
-  "crew": "",
-  "discord_id": "",
-  "verificado": false,
-  "pts": 2000,
-  "ev": 1,
-  "wr": "",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 48,
-  "o": 108,
-  "pos": 125,
-  "fc": true,
-  "total": 68,
+  "o": 109,
+  "pos": 53,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3321,41 +3350,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 48,
-  "o": 109,
-  "pos": 126,
-  "fc": true,
-  "total": 68,
-  "rango": "E"
- },
- {
-  "full": "Last🇬🇶",
-  "raw": "Last",
-  "cc": "",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "483070865081237505",
-  "verificado": false,
-  "pts": 1562,
-  "ev": 2,
-  "wr": "0.0%",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 48,
   "o": 110,
-  "pos": 127,
+  "pos": 130,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3384,9 +3382,9 @@
   "av": "",
   "ovr": 48,
   "o": 111,
-  "pos": 128,
+  "pos": 131,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3415,18 +3413,18 @@
   "av": "",
   "ovr": 47,
   "o": 112,
-  "pos": 52,
-  "total": 68,
+  "pos": 54,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "nacioenmilan 🇮🇹",
-  "raw": "nacioenmilan",
-  "cc": "",
+  "full": "Deuxs",
+  "raw": "Deuxs",
+  "cc": "cl",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
-  "verificado": false,
+  "discord_id": "1338567692239765617",
+  "verificado": true,
   "pts": 1875,
   "ev": 1,
   "wr": "0.0%",
@@ -3445,9 +3443,8 @@
   "av": "",
   "ovr": 47,
   "o": 113,
-  "pos": 129,
-  "fc": true,
-  "total": 68,
+  "pos": 55,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3476,9 +3473,9 @@
   "av": "",
   "ovr": 47,
   "o": 114,
-  "pos": 130,
+  "pos": 132,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3507,46 +3504,15 @@
   "av": "",
   "ovr": 47,
   "o": 115,
-  "pos": 131,
+  "pos": 133,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "ADACCHI 🇻🇪",
-  "raw": "ADACCHI",
-  "cc": "ve",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "",
-  "verificado": false,
-  "pts": 1250,
-  "ev": 1,
-  "wr": "",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 47,
-  "o": 116,
-  "pos": 132,
-  "fc": true,
-  "total": 68,
-  "rango": "E"
- },
- {
-  "full": "Arez 🇪🇨",
-  "raw": "Arez",
-  "cc": "ec",
+  "full": "AREZ",
+  "raw": "AREZ",
+  "cc": "",
   "sv": "FFA",
   "crew": "",
   "discord_id": "960929883532435456",
@@ -3568,10 +3534,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 117,
-  "pos": 133,
+  "o": 116,
+  "pos": 134,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3599,10 +3565,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 118,
-  "pos": 134,
+  "o": 117,
+  "pos": 135,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3630,10 +3596,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 119,
-  "pos": 135,
+  "o": 118,
+  "pos": 136,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3661,13 +3627,13 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 120,
-  "pos": 53,
-  "total": 68,
+  "o": 119,
+  "pos": 56,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "Elinge_TIMP 🇨🇱",
+  "full": "Elinge_TIMP",
   "raw": "Elinge_TIMP",
   "cc": "cl",
   "sv": "FFA",
@@ -3691,14 +3657,14 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 121,
-  "pos": 136,
+  "o": 120,
+  "pos": 137,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "EricRJ🇦🇷",
+  "full": "EricRJ",
   "raw": "EricRJ",
   "cc": "ar",
   "sv": "FFA",
@@ -3722,10 +3688,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 122,
-  "pos": 137,
+  "o": 121,
+  "pos": 138,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3753,9 +3719,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 123,
-  "pos": 54,
-  "total": 68,
+  "o": 122,
+  "pos": 57,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3783,10 +3749,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 124,
-  "pos": 138,
+  "o": 123,
+  "pos": 139,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3814,9 +3780,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 125,
-  "pos": 55,
-  "total": 68,
+  "o": 124,
+  "pos": 58,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3844,10 +3810,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 126,
-  "pos": 139,
+  "o": 125,
+  "pos": 140,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3875,9 +3841,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 127,
-  "pos": 56,
-  "total": 68,
+  "o": 126,
+  "pos": 59,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3905,10 +3871,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 128,
-  "pos": 140,
+  "o": 127,
+  "pos": 141,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3936,10 +3902,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 129,
-  "pos": 141,
+  "o": 128,
+  "pos": 142,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -3967,39 +3933,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 130,
-  "pos": 57,
-  "total": 68,
-  "rango": "E"
- },
- {
-  "full": "Jult",
-  "raw": "Jult",
-  "cc": "ar",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1445635276478353468",
-  "verificado": true,
-  "pts": 1250,
-  "ev": 1,
-  "wr": "",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 47,
-  "o": 131,
-  "pos": 58,
-  "total": 68,
+  "o": 129,
+  "pos": 60,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4027,10 +3963,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 132,
-  "pos": 142,
+  "o": 130,
+  "pos": 143,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4058,10 +3994,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 133,
-  "pos": 143,
+  "o": 131,
+  "pos": 144,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4089,10 +4025,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 134,
-  "pos": 144,
+  "o": 132,
+  "pos": 145,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4120,9 +4056,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 135,
-  "pos": 59,
-  "total": 68,
+  "o": 133,
+  "pos": 61,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4150,10 +4086,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 136,
-  "pos": 145,
+  "o": 134,
+  "pos": 146,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4181,16 +4117,16 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 137,
-  "pos": 146,
+  "o": 135,
+  "pos": 147,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
   "full": "LEWITO",
   "raw": "LEWITO",
-  "cc": "",
+  "cc": "ar",
   "sv": "SR",
   "crew": "",
   "discord_id": "1086485696572817418",
@@ -4212,10 +4148,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 138,
-  "pos": 147,
-  "fc": true,
-  "total": 68,
+  "o": 136,
+  "pos": 62,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4243,9 +4178,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 139,
-  "pos": 60,
-  "total": 68,
+  "o": 137,
+  "pos": 63,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4273,10 +4208,40 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 140,
+  "o": 138,
   "pos": 148,
   "fc": true,
-  "total": 68,
+  "total": 73,
+  "rango": "E"
+ },
+ {
+  "full": "Nobu",
+  "raw": "Nobu",
+  "cc": "ve",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1445803811758276660",
+  "verificado": true,
+  "pts": 1250,
+  "ev": 1,
+  "wr": "",
+  "pod": 0,
+  "oro": 0,
+  "sem": 0,
+  "seg": 0,
+  "ter": 0,
+  "caz": 0,
+  "czd": 0,
+  "sob": 0,
+  "srv": 1,
+  "racha": 0,
+  "racha_act": 0,
+  "score": 0.0,
+  "av": "",
+  "ovr": 47,
+  "o": 139,
+  "pos": 64,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4304,10 +4269,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 141,
+  "o": 140,
   "pos": 149,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4335,9 +4300,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 142,
-  "pos": 61,
-  "total": 68,
+  "o": 141,
+  "pos": 65,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4365,10 +4330,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 143,
+  "o": 142,
   "pos": 150,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4396,10 +4361,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 144,
+  "o": 143,
   "pos": 151,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4427,10 +4392,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 145,
+  "o": 144,
   "pos": 152,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4458,10 +4423,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 146,
+  "o": 145,
   "pos": 153,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4489,10 +4454,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 147,
+  "o": 146,
   "pos": 154,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4520,9 +4485,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 148,
-  "pos": 62,
-  "total": 68,
+  "o": 147,
+  "pos": 66,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4550,10 +4515,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 149,
+  "o": 148,
   "pos": 155,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4581,10 +4546,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 150,
+  "o": 149,
   "pos": 156,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4612,14 +4577,14 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 151,
+  "o": 150,
   "pos": 157,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "Valdoza 🇨🇱",
+  "full": "Valdoza",
   "raw": "Valdoza",
   "cc": "cl",
   "sv": "FFA",
@@ -4643,10 +4608,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 152,
+  "o": 151,
   "pos": 158,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4674,10 +4639,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 153,
+  "o": 152,
   "pos": 159,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4705,10 +4670,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 154,
+  "o": 153,
   "pos": 160,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4736,10 +4701,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 155,
+  "o": 154,
   "pos": 161,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4767,16 +4732,16 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 156,
+  "o": 155,
   "pos": 162,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
   "full": "ZTR",
   "raw": "ZTR",
-  "cc": "",
+  "cc": "co",
   "sv": "FFA",
   "crew": "",
   "discord_id": "1548906948307451906",
@@ -4798,10 +4763,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 47,
-  "o": 157,
+  "o": 156,
   "pos": 163,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4829,10 +4794,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 158,
+  "o": 157,
   "pos": 164,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4860,10 +4825,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 159,
+  "o": 158,
   "pos": 165,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4891,16 +4856,16 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 160,
+  "o": 159,
   "pos": 166,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
   "full": "melomaniaco",
   "raw": "melomaniaco",
-  "cc": "",
+  "cc": "ar",
   "sv": "FFA",
   "crew": "",
   "discord_id": "653011056184000513",
@@ -4922,10 +4887,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 161,
-  "pos": 167,
-  "fc": true,
-  "total": 68,
+  "o": 160,
+  "pos": 67,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -4953,13 +4917,13 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 162,
-  "pos": 63,
-  "total": 68,
+  "o": 161,
+  "pos": 68,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "1200 🇵🇪",
+  "full": "1200",
   "raw": "1200",
   "cc": "pe",
   "sv": "FFA",
@@ -4983,10 +4947,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 163,
-  "pos": 168,
+  "o": 162,
+  "pos": 167,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5014,10 +4978,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 164,
-  "pos": 169,
+  "o": 163,
+  "pos": 168,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5045,10 +5009,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 165,
-  "pos": 170,
+  "o": 164,
+  "pos": 169,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5076,9 +5040,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 166,
-  "pos": 64,
-  "total": 68,
+  "o": 165,
+  "pos": 69,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5106,9 +5070,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 167,
-  "pos": 65,
-  "total": 68,
+  "o": 166,
+  "pos": 70,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5136,40 +5100,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 168,
-  "pos": 66,
-  "total": 68,
-  "rango": "E"
- },
- {
-  "full": "Last🇺🇾",
-  "raw": "Last",
-  "cc": "uy",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "483070865081237505",
-  "verificado": false,
-  "pts": 625,
-  "ev": 1,
-  "wr": "",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 46,
-  "o": 169,
-  "pos": 171,
-  "fc": true,
-  "total": 68,
+  "o": 167,
+  "pos": 71,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5197,10 +5130,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 170,
-  "pos": 172,
+  "o": 168,
+  "pos": 170,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5228,10 +5161,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 171,
-  "pos": 173,
+  "o": 169,
+  "pos": 171,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5259,9 +5192,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 172,
-  "pos": 67,
-  "total": 68,
+  "o": 170,
+  "pos": 72,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5289,10 +5222,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 173,
-  "pos": 174,
+  "o": 171,
+  "pos": 172,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5320,10 +5253,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 174,
-  "pos": 175,
+  "o": 172,
+  "pos": 173,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5351,10 +5284,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 175,
-  "pos": 176,
+  "o": 173,
+  "pos": 174,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5382,10 +5315,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 176,
-  "pos": 177,
+  "o": 174,
+  "pos": 175,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5413,9 +5346,9 @@
   "score": 0.0,
   "av": "",
   "ovr": 46,
-  "o": 177,
-  "pos": 68,
-  "total": 68,
+  "o": 175,
+  "pos": 73,
+  "total": 73,
   "rango": "E"
  },
  {
@@ -5443,19 +5376,19 @@
   "score": 0.0,
   "av": "",
   "ovr": 45,
-  "o": 178,
-  "pos": 178,
+  "o": 176,
+  "pos": 176,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  },
  {
-  "full": "BOOTRAX HUMILDE 🇵🇪",
-  "raw": "BOOTRAX HUMILDE",
+  "full": "BTRX",
+  "raw": "BTRX",
   "cc": "pe",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1122273746099638354",
   "verificado": false,
   "pts": 208,
   "ev": 1,
@@ -5474,10 +5407,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 45,
-  "o": 179,
-  "pos": 179,
+  "o": 177,
+  "pos": 177,
   "fc": true,
-  "total": 68,
+  "total": 73,
   "rango": "E"
  }
 ]
