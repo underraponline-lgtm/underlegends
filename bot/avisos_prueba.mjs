@@ -230,6 +230,24 @@ const ok = (cond, que) => {
 }
 
 
+// ── las llaves en vivo que se borraron en Discord (28/09/2026) ──────
+{
+  const m = (...ids) => ids.map((id) => ({ id: String(id) }));
+  ok(A.borradasDelCanal(['1554223046741467277'], null, 4).length === 0,
+    'si la lectura falló no se saca nada');
+  ok(JSON.stringify(A.borradasDelCanal(['12', '9', '14'], m(13, 12, 11, 10), 4)) === '["14"]',
+    'se saca la guardada más nueva que la lectura y que no vino (se borró)');
+  ok(!A.borradasDelCanal(['9'], m(13, 12, 11, 10), 4).length,
+    'la más vieja que la lectura se queda: la lectura no la cubre');
+  ok(JSON.stringify(A.borradasDelCanal(['4', '6'], m(6, 5), 4)) === '["4"]',
+    'con menos de 4 mensajes la lectura es el canal entero');
+  ok(JSON.stringify(A.borradasDelCanal(['1554223046741467277', '1554203282082373804'],
+    m('1554203282082373804', '1553957529648767098', '1550360301994639381', '1550272189805232213'), 4))
+    === '["1554223046741467277"]',
+  'el caso real: la llave de burla borrada sale, la COMPE DEL VACILE se queda');
+}
+
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

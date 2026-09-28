@@ -1020,6 +1020,40 @@ const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
 
 //: cuántas horas se muestra una llave después de su último cambio
 export const VIVO_HORAS = 6;
+/** cuántos mensajes se le piden a cada canal de llaves por lectura */
+export const VIVO_LEE = 4;
+
+/**
+ * 🔴 LAS LLAVES QUE SE BORRARON EN DISCORD, SE BORRAN ACÁ. El vigía guarda
+ * cada llave hasta `VIVO_HORAS` y no recibe los borrados: el 28/09/2026 una
+ * llave de burla —«PLAYER ES CACORRO», en las llaves de Urban Freestyle— se
+ * borró a los minutos y la página la siguió mostrando «en vivo» al lado de
+ * la de verdad.
+ *
+ * La lectura trae los `limite` mensajes más nuevos del canal, así que todo
+ * lo guardado que sea MÁS NUEVO que el más viejo de la lectura tendría que
+ * estar ahí: si no está, lo borraron. Si trajo menos de `limite`, la lectura
+ * es el canal entero. Si falló (`msgs` no es una lista), no se sabe nada y no
+ * se toca nada. Devuelve los ids a sacar.
+ */
+export function borradasDelCanal(guardadas, msgs, limite) {
+  if (!Array.isArray(msgs)) return [];
+  const ids = new Set(msgs.map((m) => String(m.id)));
+  let piso = null;
+  try {
+    for (const m of msgs) {
+      const n = BigInt(String(m.id));
+      if (piso === null || n < piso) piso = n;
+    }
+  } catch (e) {
+    return [];
+  }
+  return guardadas.map(String).filter((id) => {
+    if (ids.has(id)) return false;
+    if (msgs.length < limite) return true;
+    try { return piso !== null && BigInt(id) > piso; } catch (e) { return false; }
+  });
+}
 //: cuántos canales de llaves se leen como mucho por minuto
 export const VIVO_TOPE = 4;
 
@@ -1617,7 +1651,7 @@ export class Avisos {
       .concat(lista.filter((c, i) => !cal.has(c.id) && (min + i) % 5 === 0)).slice(0, VIVO_TOPE);
     const rs = await Promise.all(leer.map(async (c) => {
       try {
-        const r = await fetch(`${DC}/channels/${c.id}/messages?limit=4`, {
+        const r = await fetch(`${DC}/channels/${c.id}/messages?limit=${VIVO_LEE}`, {
           headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
         });
         return { c, msgs: r.status === 200 ? await r.json() : null };
@@ -1626,7 +1660,15 @@ export class Avisos {
       }
     }));
     let nuevas = 0;
+    let borradas = 0;
     for (const { c, msgs } of rs) {
+      // lo que se borró en Discord: ver `borradasDelCanal()`
+      const guardadas = this.sql.exec('SELECT id FROM vivo WHERE canal = ?', c.id).toArray()
+        .map((r) => r.id);
+      for (const id of borradasDelCanal(guardadas, msgs, VIVO_LEE)) {
+        this.sql.exec('DELETE FROM vivo WHERE id = ?', id);
+        borradas++;
+      }
       for (const m of msgs || []) {
         const pub = Date.parse(String(m.timestamp || '').slice(0, 19) + 'Z');
         const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
@@ -1643,7 +1685,7 @@ export class Avisos {
       }
     }
     this.sql.exec('DELETE FROM vivo WHERE ed < ?', ahora - 12 * HORA);
-    this.guardar('vivo', { t: ahora, canales: leer.length, cambiaron: nuevas });
+    this.guardar('vivo', { t: ahora, canales: leer.length, cambiaron: nuevas, borradas });
   }
 
   /** Los veredictos de los servidores con un evento en juego. Ver `PATRON_VEREDICTOS`. */
