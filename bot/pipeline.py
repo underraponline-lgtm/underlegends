@@ -1076,6 +1076,17 @@ def main():
     correr = '--correr' in sys.argv
     t0 = time.time()
     print('\n══ EL CICLO %s ══' % ('' if correr else '(simulacro)'))
+    # 🔑 EL ID DEL OPERATIVO, UNA VEZ: los scripts que se lanzan abajo lo
+    # heredan en `ID_OPERATIVO` en vez de preguntarle cada uno a Apps
+    # Script. Ver `explorar_operativo.id_operativo()`. Si falla, cada uno
+    # vuelve a su forma de siempre.
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'sheet'))
+        from explorar_operativo import id_operativo as _id_op
+        os.environ.setdefault('ID_OPERATIVO', _id_op())
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no confirmé el ID del Operativo (%s): cada paso lo busca solo'
+              % str(e)[:60])
 
     # 🔴 `--solo-dibujar`: EL TRABAJO `dibujar` NO REPITE LO DE `escuchar`.
     # Corría el ciclo entero otra vez —leer Discord, cargar los eventos,

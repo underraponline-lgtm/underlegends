@@ -87,6 +87,14 @@ def id_operativo():
     """
     if _ID[0]:
         return _ID[0]
+    # 🔑 UNA VEZ POR CICLO, NO UNA POR SCRIPT. `bot/pipeline.py` lo confirma
+    # al arrancar y lo deja en `ID_OPERATIVO` para los ~15 scripts que lanza:
+    # cada uno le preguntaba a Apps Script por un dato que no cambia, y el
+    # 28/09/2026 a las 11:54 AM ET una de esas preguntas tardó 30 s en
+    # rendirse —la corrida esperó sin hacer nada—.
+    if os.environ.get('ID_OPERATIVO', '').strip():
+        _ID[0] = os.environ['ID_OPERATIVO'].strip()
+        return _ID[0]
     guardado = None
     if os.path.exists(_ID_CACHE):
         with io.open(_ID_CACHE, encoding='utf-8') as f:
@@ -97,10 +105,12 @@ def id_operativo():
         cr = service_account.Credentials.from_service_account_file(
             CREDS, scopes=['https://www.googleapis.com/auth/script.projects'])
         cr.refresh(Request())
+        # ⚠️ 10 s Y NO 30: contesta en menos de uno, y con el ID guardado
+        # esperar más no arregla nada
         r = requests.get('https://script.googleapis.com/v1/projects/%s'
                          % SCRIPT_OPERATIVO,
                          headers={'Authorization': 'Bearer ' + cr.token},
-                         timeout=30)
+                         timeout=10)
         r.raise_for_status()
         p = r.json().get('parentId')
         if not p:
