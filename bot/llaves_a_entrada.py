@@ -402,10 +402,18 @@ def plantel(texto, ids=None):
                 # Se cuenta por su nombre —el del padrón o el de Discord—
                 # para no contarla dos veces si la ronda siguiente la
                 # escribe con letras.
+                # 🔴 Y CON TODOS SUS NOMBRES, NO SÓLO EL PRIMERO. El primero
+                # es el de la Lista o el de Discord, y la ronda siguiente la
+                # escribe como le parece: en esa misma MARRUECOS, Oasis es
+                # «PARK JI-SUNG» en cuartos y `$$hulio↑ ElDojo` es SHULIOT.
+                # Comparando sólo el primero se contaban dos veces: 22 donde
+                # hubo 20 (28/09/2026). Con 15 reales y un doble, la escala
+                # pasa de 8-15 a 16+ y cambian los puntos de todo el evento.
                 if not E.norm(_PAREN.sub('', n)) and E.MENCION.search(n):
                     for did in E.MENCION.findall(n):
                         ns = [E.norm(x) for x in (ids or {}).get(did) or []]
-                        mencionados.add(next((k for k in ns if len(k) >= 2), 'id' + did))
+                        ns = tuple(k for k in ns if len(k) >= 2)
+                        mencionados.add(ns or ('id' + did,))
                     continue
                 # ⚠️ EL POKEMON NO SUMA AL PLANTEL (guía, §2 regla 3): no
                 # peleó. Va primero porque su marca `(P)` es un paréntesis.
@@ -424,11 +432,16 @@ def plantel(texto, ids=None):
                 min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
                 for c in out)):
             out.add(k)
-    for k in sorted(mencionados - out):
-        if k.startswith('id') or not (E._parecido(k, list(out)) or any(
-                min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
-                for c in out)):
-            out.add(k)
+    def _ya(k):
+        return k in out or E._parecido(k, list(out)) or any(
+            min(len(k), len(c)) >= 4 and (c.startswith(k) or k.startswith(c))
+            for c in out)
+
+    for ns in sorted(mencionados):
+        if ns[0].startswith('id') and len(ns) == 1:
+            out.add(ns[0])
+        elif not any(_ya(k) for k in ns):
+            out.add(ns[0])
     return out
 
 
