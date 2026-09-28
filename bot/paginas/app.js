@@ -317,7 +317,7 @@ function ir() {
   }
   if (r === 'tienda' && D) {
     try { pintaTienda(); } catch (e) { console.error('[pintaTienda]', e); }
-    if (DC_TOKEN && !BILL) pedirBilletera();
+    if (!BILL) pedirBilletera(false);
   }
   if (r === 'tarjetas' && D) pintaCaraCmp();
   // 🔑 `#/llave/<número>` ABRE ESA LLAVE, encima del calendario. Dlx, 27/09/2026,
@@ -3926,21 +3926,56 @@ function cuentaEnc(id) {
 function totalEnc(c) {
   return Object.keys(c).reduce(function (s, k) { return s + (+c[k] || 0); }, 0);
 }
+/* 🔑 LO QUE PIDE SABER QUIÉN SOS —votar, poner un precio, la billetera—: con
+   la SESIÓN (la cookie que deja entrar con Discord, 30 días) o con el permiso
+   recién traído, y a Discord UNA sola vez.
+   🔴 Dlx, 28/09/2026: «cada vez que presiono para votar me redirige a DISCORD
+   para autorizar mi cuenta… lo hice miles de veces». Un 401 borraba el
+   permiso y volvía a votar, que volvía a mandar a Discord: si Discord no
+   contestaba bien, era un ciclo. Ahora: si recién se volvió de Discord y el
+   servidor sigue sin saber quién sos, se dice y no se manda a ningún lado; y
+   si Discord no contesta (503), también. */
+var DC_VUELTA = false;
+function pedirConCuenta(ruta, cuerpo, conPermiso) {
+  var b = Object.assign({}, cuerpo);
+  if (conPermiso && DC_TOKEN) b.token = DC_TOKEN;
+  return fetch(ruta, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(b) })
+    .then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { j.status = r.status; return j; });
+    });
+}
+/* `modo`, `clave` y `pendiente`: a qué entrar y qué hacer a la vuelta. Sin
+   `modo`, no se va a ningún lado (lo que se pide solo, como la billetera al
+   abrir la Tienda). Devuelve la respuesta, o `null` si se fue a Discord. */
+function conCuenta(ruta, cuerpo, modo, clave, pendiente) {
+  var irse = function (j) {
+    if (!modo || DC_VUELTA) return j;
+    try { if (clave) sessionStorage.setItem(clave, JSON.stringify(pendiente)); } catch (e) { /* igual */ }
+    location.href = urlLogin(modo);
+    return null;
+  };
+  return pedirConCuenta(ruta, cuerpo, false).then(function (j) {
+    if (j.status !== 401) return j;
+    if (!DC_TOKEN) return irse(j);
+    return pedirConCuenta(ruta, cuerpo, true).then(function (k) {
+      if (k.status !== 401) return k;
+      DC_TOKEN = null;
+      return irse(k);
+    });
+  });
+}
+/* lo que se le dice a quien no pudo entrar */
+function errorCuenta(e) {
+  return e === 'discord_ocupado' ? 'Discord no contesta ahora: probá de nuevo en un minuto.'
+    : e === 'discord' || e === 'sin_sesion' ? 'Discord no confirmó tu cuenta. Probá entrar de nuevo desde Mi cuenta.'
+    : '';
+}
 function votar(id, op) {
-  // sin el permiso de Discord en memoria: se lo va a buscar, y a la vuelta vota
-  if (!DC_TOKEN) {
-    try { sessionStorage.setItem('lg:voto', JSON.stringify({ enc: id, op: op })); } catch (e) { /* igual */ }
-    location.href = urlLogin('e');
-    return;
-  }
   ENC_EST[id] = { va: op };
   pintaEncuestas();
-  fetch('/api/avisos/votar', { method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ token: DC_TOKEN, enc: id, op: op }) })
-    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); })
+  conCuenta('/api/avisos/votar', { enc: id, op: op }, 'e', 'lg:voto', { enc: id, op: op })
     .then(function (j) {
-      // el permiso venció: se pide otro (Discord no vuelve a preguntar)
-      if (j.status === 401) { DC_TOKEN = null; votar(id, op); return; }
+      if (!j) return;
       if (j.ok) {
         ENC_MIO[id] = op;
         guardarLS('lg:votos', ENC_MIO);
@@ -3955,7 +3990,7 @@ function votar(id, op) {
 }
 function errorEnc(E) {
   var e = E.error;
-  return e === 'cerrada' ? 'La votación ya cerró.'
+  return errorCuenta(e) || (e === 'cerrada' ? 'La votación ya cerró.'
     : e === 'propio' ? 'No podés votar por tu servidor (' + esc(nombreSv(E.sv)) + '): votá a otro, uno ' +
       'donde te gustaría ir a jugar.'
     : e === 'vos' ? 'No podés votarte a vos.'
@@ -3963,7 +3998,7 @@ function errorEnc(E) {
       esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
     : e === 'opcion' ? 'Esa opción ya no está: la lista se actualiza cada media hora.'
     : e === 'no_existe' ? 'Esa votación ya no está.'
-    : 'No pude guardar tu voto. Probá de nuevo en un rato.';
+    : 'No pude guardar tu voto. Probá de nuevo en un rato.');
 }
 /* el renglón de abajo: qué votaste, o qué salió mal */
 function pieEnc(E, nombre) {
@@ -4098,39 +4133,31 @@ function puedeCabeza(n) {
   return !!(f && !f.fc);
 }
 function nombreCabeza(n) { var f = porK(kDe(n)); return f ? f.n : n; }
-function pedirBilletera() {
-  if (!DC_TOKEN || !D || !D.tienda) return;
-  fetch('/api/avisos/billetera', { method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ token: DC_TOKEN }) })
-    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); })
+/* `entrar`: si no se sabe quién sos, ir a Discord (el botón); sin eso, se
+   prueba con la sesión y, si no hay, queda el botón (al abrir la Tienda) */
+function pedirBilletera(entrar) {
+  if (!D || !D.tienda) return;
+  conCuenta('/api/avisos/billetera', {}, entrar ? 't' : '', null, null)
     .then(function (j) {
-      if (j.status === 401) { DC_TOKEN = null; BILL = null; pintaPrecios(); return; }
+      if (!j) return;
+      if (j.status === 401) { BILL = entrar ? { error: j.error } : null; pintaPrecios(); return; }
       BILL = j.ok ? j : { error: j.error || 'red' };
       pintaPrecios();
     })
     .catch(function () { BILL = { error: 'red' }; pintaPrecios(); });
 }
 function ponerPrecio(cabeza, monto) {
-  // sin el permiso de Discord en memoria: se lo va a buscar y vuelve acá
-  if (!DC_TOKEN) {
-    try {
-      sessionStorage.setItem('lg:precio', JSON.stringify({ cabeza: cabeza, monto: monto, volver: ruta() }));
-    } catch (e) { /* igual */ }
-    location.href = urlLogin('t');
-    return;
-  }
   PR_EST[cabeza] = { va: monto };
   pintaPrecios();
-  fetch('/api/avisos/precio', { method: 'POST', headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ token: DC_TOKEN, cabeza: cabeza, monto: monto }) })
-    .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); })
+  conCuenta('/api/avisos/precio', { cabeza: cabeza, monto: monto }, 't', 'lg:precio',
+    { cabeza: cabeza, monto: monto, volver: ruta() })
     .then(function (j) {
-      if (j.status === 401) { DC_TOKEN = null; ponerPrecio(cabeza, monto); return; }
+      if (!j) return;
       if (j.ok) {
         PR_EST[cabeza] = { ok: j.monto };
         PR_TOT[cabeza] = { t: j.t || 0, total: j.total };
         if (BILL && BILL.ok) BILL.saldo = j.saldo;
-        pedirBilletera();
+        pedirBilletera(false);
       } else {
         PR_EST[cabeza] = j;
       }
@@ -4140,7 +4167,7 @@ function ponerPrecio(cabeza, monto) {
 }
 function errorPrecio(E) {
   var T = D.tienda || {}, e = E.error;
-  return e === 'saldo' ? 'No te alcanzan: tenés ' + num(E.saldo) + ' Puntos de Tienda.'
+  return errorCuenta(e) || (e === 'saldo' ? 'No te alcanzan: tenés ' + num(E.saldo) + ' Puntos de Tienda.'
     : e === 'tope' ? (E.queda ? 'Esa cabeza está cerca del máximo: se le pueden poner ' + num(E.queda) + ' más.'
       : 'Esa cabeza ya vale lo máximo (' + num(T.tope) + ').')
     : e === 'vos' ? 'No te podés poner precio a vos.'
@@ -4150,7 +4177,7 @@ function errorPrecio(E) {
     : e === 'monto' ? 'Desde ' + num(E.min) + ', de a ' + num(E.paso) + '.'
     : e === 'cerrada' ? 'La semana terminó: probá de nuevo en un rato.'
     : e === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.'
-    : 'No pude ponerlo. Probá de nuevo en un rato.';
+    : 'No pude ponerlo. Probá de nuevo en un rato.');
 }
 /* los montos: el mínimo y sus múltiplos, apagados si no entran en la cabeza
    o en tu saldo (el Worker y el objeto lo vuelven a mirar igual) */
@@ -4169,7 +4196,7 @@ function panelPrecio(c, T) {
   var msg = est.va ? 'Poniendo ' + num(est.va) + '&hellip;'
     : est.ok ? '&#10003; Pusiste <b>' + num(est.ok) + '</b>. Si nadie lo caza en la semana, vuelven a vos.'
     : est.error ? '<span class="enc-mal">' + errorPrecio(est) + '</span>'
-    : DC_TOKEN ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
+    : DC ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
   return '<div class="pr-sel"><p>' + (f ? quienEs(f, 26) : esc(c)) + ' vale <span class="pt-i">' + num(v) +
     '</span>' + (v < T.tope ? ' &middot; se le pueden poner ' + num(T.tope - v) + ' más' : ' &middot; ya vale lo máximo') +
     '</p>' + (esYo ? '<p class="nota">Sos vos: no te podés poner precio.</p>' : montosPrecio(c, T)) +
@@ -4301,8 +4328,9 @@ function pintaTienda() {
             '</span></span>';
         }).join('') + '</div>' : '');
   } else if (BILL && BILL.error) {
-    b.innerHTML = cab + '<p class="enc-e"><span class="enc-mal">' + (BILL.error === 'todavia'
-      ? 'La tienda todavía no está lista: probá en un rato.' : 'No pude leer tu billetera. Probá de nuevo.') +
+    b.innerHTML = cab + '<p class="enc-e"><span class="enc-mal">' + (errorCuenta(BILL.error) ||
+      (BILL.error === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.'
+        : 'No pude leer tu billetera. Probá de nuevo.')) +
       '</span></p><button type="button" class="btn sec" data-billetera>Probar de nuevo</button>';
   } else {
     b.innerHTML = cab + '<p class="bajada">Todos arrancan con <b>' + num(T.inicial) + '</b>, y se ganan cazando: ' +
@@ -4600,6 +4628,14 @@ function urlLogin(modo) {
     '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : 'identify') +
     '&prompt=' + (conRedes ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
 }
+/* 🔑 «SALIR» CIERRA LA SESIÓN: el Worker la borra y le saca la cookie al
+   navegador. Y lo que se sabía de la billetera se olvida acá. */
+function cerrarSesion() {
+  DC_TOKEN = null;
+  BILL = null;
+  fetch('/api/cuenta/salir', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
+    .catch(function () { /* se cierra sola a los 30 días */ });
+}
 /* ⚠️ «SALIR» SUELTA TAMBIÉN LOS AVISOS DE ESTE DISPOSITIVO. En uno compartido,
    el que entraba después seguía recibiendo los avisos del anterior (revisión
    del 25/09/2026). */
@@ -4762,11 +4798,13 @@ function volverDeDiscord() {
   // 🔑 LA TIENDA: igual, en memoria (ver `ponerPrecio()` y `pedirBilletera()`)
   var porTienda = st.charAt(0) === 't';
   if (porRedes || porFoto || porVoto || porTienda) DC_TOKEN = q.access_token;
+  // recién vuelto de Discord: si igual no se sabe quién sos, no se vuelve a ir
+  DC_VUELTA = true;
   // el precio que se tocó antes de entrar sale ya; si no, se muestra la billetera
   if (porTienda) {
     try { sessionStorage.removeItem('lg:precio'); } catch (e) { /* igual */ }
     if (pp && pp.cabeza && pp.monto) ponerPrecio(String(pp.cabeza), Number(pp.monto));
-    else pedirBilletera();
+    else pedirBilletera(false);
   }
   // el voto que se tocó antes de entrar sale ya, sin esperar a `/api/cuenta`:
   // el Worker le pregunta a Discord por su cuenta (ver `votar()`)
@@ -5295,6 +5333,7 @@ function eventos() {
     }
     if (e.target.closest('#yoOlvidar')) {
       desvincularAvisos();
+      cerrarSesion();
       YO = '';
       DC = null;
       guardarLS('lg:yo', null);
@@ -5307,6 +5346,7 @@ function eventos() {
     if (e.target.closest('.pop-menu a,.pop-menu [data-carta]')) cerrarPops();
     if (e.target.closest('#ajBorrar')) {
       desvincularAvisos();
+      cerrarSesion();
       AJ = {};
       YO = '';
       DC = null;
@@ -5341,8 +5381,7 @@ function eventos() {
     e.preventDefault();
     if (b.dataset.precio) ponerPrecio(b.dataset.precio, Number(b.dataset.monto));
     else if (b.dataset.prSel) { PR_SEL = b.dataset.prSel; pintaTienda(); }
-    else if (DC_TOKEN) pedirBilletera();
-    else location.href = urlLogin('t');
+    else pedirBilletera(true);
   });
   document.addEventListener('input', function (e) {
     if (e.target.classList && e.target.classList.contains('pr-busca')) {

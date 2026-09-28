@@ -291,8 +291,40 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **TIENDA y PUBLICACIONES en el menú; en el celular la barra se desliza** | *«agrega la opción de TIENDA y PUBLICACIONES… en el PC será normal pero en celular haz que se deslice para ver más opciones»* | ✅ (1.32). Publicaciones dice «pronto»: qué va ahí todavía se habla |
 | **Publicaciones es un muro automático de la Liga, y los anuncios de todos los servidores** | *«sí un muro automático, pero anuncios de todos los servidores también»* | ✅ `bot/muro.py` (1.33): campeones, rangos, tarjetas, cazas, precios, premios, El Elegido, anuncios y novedades. Contado por la Liga, en tercera persona |
 | **El Most Wanted paga además el 10 % en Puntos de Tienda**, al que caza y al que sobrevive (12.000 de Temporada → 1.200 de Tienda) | *«b»* (28/09, 7:45 AM) | ✅ `most_wanted.TIENDA` + `precios.tienda_mw()` (1.34). Se reemplaza entero en cada corrida: una llave corregida no paga dos veces |
+| **Entrar con Discord una vez alcanza**: nada de mandar a autorizar en cada voto | *«cada vez que presiono para votar me redirige a DISCORD… lo hice miles de veces»* (28/09, con capturas) | ✅ la sesión (1.35): `sesionNueva()` en `bot/avisos.js`, cookie `lg_ses` HttpOnly, 30 días, sin secreto nuevo |
+| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ⏳ por hacer. Las llaves de esa noche las borraron |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (8 AM) — versión 1.35
+
+**Entrar con Discord una vez.** Dlx, con capturas: *«cada vez que presiono
+para votar me redirige a DISCORD para autorizar mi cuenta… lo hice miles de
+veces»*.
+
+- 🔴 **Era un ciclo**: un 401 del Worker borraba el permiso y volvía a
+  votar, que volvía a mandar a Discord. Y el Worker daba 401 también cuando
+  Discord **no contestaba** (un 429 o un 5xx): todo lo que no fuera 200 era
+  «permiso malo». `discordDe()` ahora separa los dos, y un Discord ocupado es
+  un 503 que la página dice, sin mandar a nadie a ningún lado.
+- 🔑 **La sesión**: al entrar con Discord (`/cuenta`), el Durable Object anota
+  una sesión de 30 días (tabla `sesiones`, con el **hash** del número, no el
+  número) y el navegador la guarda en una cookie `lg_ses` **HttpOnly, Secure,
+  SameSite=Strict, sólo `/api`**: el JS de la página no la ve. El proxy de
+  Pages la pasa como `x-lg-ses`. **Sin secreto nuevo**: es un número al azar
+  que sólo existe en el objeto, no una firma.
+- La página prueba primero con la sesión, después con el permiso recién
+  traído, y va a Discord **una sola vez**: si recién volvió y el servidor
+  sigue sin saber quién es, lo dice. La billetera se muestra sola al abrir
+  la Tienda si hay sesión.
+- 🚪 «Salir» (y «borrar ajustes») cierran la sesión; `/borrar-mis-datos`
+  borra todas las de esa persona. La privacidad lo dice.
+- Probado: 10 pruebas nuevas en `probar_local.mjs` (sin sesión 401, con
+  sesión vota con el ID de la sesión, Discord ocupado 503, la cookie al
+  entrar y al salir, el proxy de ida y de vuelta) y los cuatro caminos de la
+  página en el navegador.
 
 ---
 

@@ -37,7 +37,8 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos } from './avisos.js';
+import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
+  sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -1274,13 +1275,17 @@ async function cuentaDiscord(req, env) {
   if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
     return new Response('{"error":"token"}', { status: 400, headers: h });
   }
-  let u = null;
-  try {
-    const r = await fetch('https://discord.com/api/v10/users/@me', {
-      headers: { Authorization: 'Bearer ' + t } });
-    if (r.ok) u = await r.json();
-  } catch (e) { u = null; }
+  // 🔴 CON `discordDe()`: un Discord que no contesta (429, 5xx) no es un
+  // permiso malo, y esto antes decía «discord» igual. Ver `discordDe()`.
+  const q = await discordDe(t);
+  if (q.error === 'ocupado') return new Response('{"error":"discord_ocupado"}', { status: 503, headers: h });
+  const u = q.u;
   if (!u || !u.id) return new Response('{"error":"discord"}', { status: 401, headers: h });
+  // 🔑 Y LA SESIÓN: entrar una vez alcanza para votar, poner precios y ver la
+  // billetera `SESION_DIAS` días, sin volver a Discord (Dlx, 28/09/2026: «me
+  // sigue preguntando y redirigiéndome»). Ver `sesionNueva()` en avisos.js.
+  const ses = await sesionNueva(env, u.id);
+  if (ses && ses.ses) h['set-cookie'] = cookieSesion(ses.ses, SESION_DIAS * 86400);
   // ⚠️ EL RAPERO SALE DEL MISMO LUGAR QUE `/card`: `d:<id>` existe sólo para
   // quien pasa el portón. Quien no está, entra igual y la página le dice qué
   // le falta.
@@ -3290,6 +3295,12 @@ export default {
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
     // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
     if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);
+    // 🔑 «SALIR» CIERRA LA SESIÓN: la borra del objeto y la cookie del navegador
+    if (camino === '/cuenta/salir' && req.method === 'POST') {
+      await sesionFin(env, req);
+      return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8',
+        'cache-control': 'no-store', 'set-cookie': cookieSesion('', 0) } });
+    }
     if (camino === '/cuenta/redes' && req.method === 'POST') return cuentaRedes(req, env);
     if (camino === '/cuenta/foto' && req.method === 'POST') return cuentaFoto(req, env);
 

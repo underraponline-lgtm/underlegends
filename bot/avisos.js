@@ -870,16 +870,98 @@ export function validarPrecio(cfg, d, id, ahora) {
     tope: cfg.tope };
 }
 
-/** El Discord ID detrás de un permiso de la página, preguntándole a Discord. `''` si no vale. */
-async function discordDe(t) {
-  if (!/^[A-Za-z0-9._-]{10,300}$/.test(String(t || ''))) return '';
+/**
+ * Quién es el dueño de un permiso de la página, preguntándole a Discord:
+ * `{id, u}` si vale, `{error: 'token'}` si Discord dice que no, y
+ * `{error: 'ocupado'}` si Discord no contesta o frena (429, 5xx, la red).
+ *
+ * 🔴 «OCUPADO» NO ES UN PERMISO MALO, y confundirlos armaba un ciclo. Dlx,
+ * 28/09/2026: *«cada vez que presiono para votar me redirige a DISCORD para
+ * autorizar mi cuenta… lo hice miles de veces»*. Todo lo que no fuera 200 se
+ * leía como «permiso malo», la página lo mandaba a autorizar de nuevo, volvía,
+ * Discord volvía a frenar… Ahora la página sabe cuál de las dos es.
+ */
+export async function discordDe(t) {
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(String(t || ''))) return { error: 'token' };
   try {
     const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
-    const u = r.ok ? await r.json() : null;
-    return u && /^[0-9]{5,25}$/.test(String(u.id || '')) ? String(u.id) : '';
+    if (r.status === 401 || r.status === 403) return { error: 'token' };
+    if (!r.ok) return { error: 'ocupado', estado: r.status };
+    const u = await r.json();
+    return u && /^[0-9]{5,25}$/.test(String(u.id || '')) ? { id: String(u.id), u } : { error: 'token' };
   } catch (e) {
-    return '';
+    return { error: 'ocupado' };
   }
+}
+
+// ── la sesión: entrar una vez ───────────────────────────────────────────
+// 🔑 Dlx, 28/09/2026, con el ciclo de arriba: el permiso de Discord vivía
+// sólo en la memoria de la página, así que cada visita era otro viaje a
+// Discord para votar. Ahora, al entrar con Discord (`/cuenta`), el objeto
+// anota una SESIÓN de `SESION_DIAS` y el navegador la guarda en una cookie
+// que el JS de la página no puede leer (HttpOnly, SameSite=Strict, sólo
+// `/api`). El proxy de Pages la pasa al Worker como `x-lg-ses`.
+//
+// ⚠️ SIN SECRETO NUEVO (los tokens nuevos quedaron para el final): la sesión
+// es un número al azar que sólo existe en el objeto, no una firma. Y el
+// objeto guarda su hash, no el número: una copia de la base no sirve para
+// entrar.
+export const SESION_DIAS = 30;
+export const COOKIE = 'lg_ses';
+
+/** El `Set-Cookie` de la sesión; con `segundos` 0, la borra. */
+export function cookieSesion(ses, segundos) {
+  return `${COOKIE}=${ses}; Path=/api; HttpOnly; Secure; SameSite=Strict; Max-Age=${segundos}`;
+}
+
+async function alObjetoSesion(env, sub, cuerpo) {
+  if (!env.AVISOS) return null;
+  try {
+    const r = await elObjeto(env).fetch('https://avisos/sesion/' + sub, {
+      method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
+    });
+    return r.ok ? await r.json() : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/** Una sesión nueva para ese Discord ID: `{ses, vence}`, o `null`. */
+export async function sesionNueva(env, quien) {
+  if (!/^[0-9]{5,25}$/.test(String(quien || ''))) return null;
+  return alObjetoSesion(env, 'nueva', { quien: String(quien) });
+}
+
+const sesDe = (req) => {
+  const s = String((req && req.headers && req.headers.get('x-lg-ses')) || '');
+  return /^[A-Za-z0-9_-]{30,100}$/.test(s) ? s : '';
+};
+
+/** El Discord ID de la sesión de este pedido, o `''`. */
+export async function sesionDe(env, req) {
+  const ses = sesDe(req);
+  if (!ses) return '';
+  const r = await alObjetoSesion(env, 'quien', { ses });
+  return r && /^[0-9]{5,25}$/.test(String(r.quien || '')) ? String(r.quien) : '';
+}
+
+/** Cierra la sesión de este pedido («Salir»). */
+export async function sesionFin(env, req) {
+  const ses = sesDe(req);
+  return ses ? alObjetoSesion(env, 'fin', { ses }) : null;
+}
+
+/**
+ * Quién pide: con un permiso de Discord recién traído (`token`), o con su
+ * sesión. `{id}` o `{error, estado}`: 401 si hay que entrar con Discord, 503
+ * si Discord no contesta (y entonces NO se manda a nadie a autorizar).
+ */
+async function quienPide(req, env, d) {
+  const t = String((d && d.token) || '');
+  const q = t ? await discordDe(t) : { id: await sesionDe(env, req) };
+  if (q.id) return { id: q.id };
+  if (q.error === 'ocupado') return { error: 'discord_ocupado', estado: 503 };
+  return { error: t ? 'discord' : 'sin_sesion', estado: 401 };
 }
 
 const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
@@ -967,12 +1049,14 @@ export async function rutaAvisos(req, env, ruta) {
     let d = null;
     try { d = JSON.parse(crudo); } catch (e) { d = null; }
     const t = String((d && d.token) || '');
+    // el permiso de Discord es optativo: sin él, vale la sesión (ver `quienPide()`)
     if (!d || typeof d.enc !== 'string' || typeof d.op !== 'string' || d.enc.length > 40 ||
-        d.op.length > 80 || !/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
+        d.op.length > 80 || (t && !/^[A-Za-z0-9._-]{10,300}$/.test(t))) {
       return json({ error: 'faltan datos' }, 400);
     }
-    const id = await discordDe(t);
-    if (!id) return json({ error: 'discord' }, 401);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const id = q.id;
     let defs = null;
     try { defs = JSON.parse((await env.KV.get('encuestas', { cacheTtl: 60 })) || 'null'); } catch (e) { defs = null; }
     const v = validarVoto(defs, d, id, Date.now());
@@ -989,12 +1073,13 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
     try { d = JSON.parse(crudo); } catch (e) { d = null; }
-    if (!d || !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token || '')) ||
+    if (!d || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
         (ruta === '/avisos/precio' && (typeof d.cabeza !== 'string' || d.cabeza.length > 80))) {
       return json({ error: 'faltan datos' }, 400);
     }
-    const id = await discordDe(String(d.token));
-    if (!id) return json({ error: 'discord' }, 401);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const id = q.id;
     let cfg = null;
     try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
     let cuerpo = null;
@@ -1233,6 +1318,10 @@ export class Avisos {
         "fin INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT '', por TEXT NOT NULL DEFAULT '')");
       this.sql.exec('CREATE TABLE IF NOT EXISTS tienda (id TEXT PRIMARY KEY, ref INTEGER NOT NULL, ' +
         'quien TEXT NOT NULL, monto INTEGER NOT NULL, t INTEGER NOT NULL)');
+      // 🔑 LAS SESIONES (28/09/2026): entrar con Discord una vez. Se guarda el
+      // hash del número, no el número. Ver `sesionNueva()` y `sesion()`.
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sesiones (h TEXT PRIMARY KEY, quien TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, vence INTEGER NOT NULL)');
     });
   }
 
@@ -1265,6 +1354,7 @@ export class Avisos {
       if (ruta === '/desvincular') return this.desvincular(d);
       if (ruta === '/olvidar') return this.olvidar(d);
       if (ruta === '/votar') return this.votar(d);
+      if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
@@ -1853,6 +1943,8 @@ export class Avisos {
     // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
     const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
     this.sql.exec("UPDATE precios SET quien = 'borrado' WHERE quien = ?", String(d.quien));
+    // y sus sesiones: en ningún dispositivo queda adentro
+    this.sql.exec('DELETE FROM sesiones WHERE quien = ?', String(d.quien));
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0 });
   }
 
@@ -1882,6 +1974,34 @@ export class Avisos {
       (votos[r.enc] = votos[r.enc] || {})[r.op] = r.n;
     }
     return { t: Date.now(), votos };
+  }
+
+  // ── las sesiones ─────────────────────────────────────────────────────
+  /** `/sesion/nueva`, `/sesion/quien` y `/sesion/fin`. Sólo por dentro: no están en `RUTAS`. */
+  async sesion(ruta, d) {
+    const ahora = Date.now();
+    const hash = async (s) => [...new Uint8Array(await crypto.subtle.digest('SHA-256', utf8(s)))]
+      .map((b) => b.toString(16).padStart(2, '0')).join('');
+    if (ruta === '/sesion/nueva') {
+      if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'faltan datos' }, 400);
+      const ses = b64u.enc(crypto.getRandomValues(new Uint8Array(32)));
+      const vence = ahora + SESION_DIAS * DIA_MS;
+      this.sql.exec('DELETE FROM sesiones WHERE vence < ?', ahora);
+      this.sql.exec('INSERT INTO sesiones (h, quien, t, vence) VALUES (?, ?, ?, ?)', await hash(ses),
+        String(d.quien), ahora, vence);
+      return json({ ses, vence });
+    }
+    if (!/^[A-Za-z0-9_-]{30,100}$/.test(String(d.ses || ''))) return json({ error: 'faltan datos' }, 400);
+    const h = await hash(String(d.ses));
+    if (ruta === '/sesion/quien') {
+      const f = this.sql.exec('SELECT quien FROM sesiones WHERE h = ? AND vence > ?', h, ahora).toArray()[0];
+      return f ? json({ quien: f.quien }) : json({ error: 'no' }, 404);
+    }
+    if (ruta === '/sesion/fin') {
+      this.sql.exec('DELETE FROM sesiones WHERE h = ?', h);
+      return json({ ok: true });
+    }
+    return json({ error: 'no existe' }, 404);
   }
 
   // ── el precio por cabeza ─────────────────────────────────────────────

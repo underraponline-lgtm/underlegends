@@ -1915,6 +1915,90 @@ console.log('\nLAS ENCUESTAS\n');
   delete PUESTO.encuestas;
 }
 
+console.log('\nLA SESIÓN: ENTRAR CON DISCORD UNA VEZ\n');
+
+{
+  // 🔴 Dlx, 28/09/2026: «cada vez que presiono para votar me redirige a
+  // DISCORD… lo hice miles de veces». Ahora entrar deja una sesión (cookie
+  // HttpOnly, 30 días) y un Discord que no contesta NO es un permiso malo.
+  const idDe = (ms, n = 3) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2018-03-01T00:00:00Z'));
+  const SES = 'a'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/nueva')) return new Response(JSON.stringify({ ses: SES, vence: RELOJ + 1 }), { status: 200 });
+    if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
+      { status: 200 }) : new Response('{"error":"no"}', { status: 404 });
+    return new Response('{"ok":true,"cuenta":{"SR":1},"t":1}', { status: 200 });
+  } }) };
+  PUESTO.encuestas = JSON.stringify({ lista: [{ id: 'x2:1', tipo: 'x2', hasta: new Date(RELOJ + 3600000).toISOString(),
+    op: ['SR', 'FFA'] }], sv: {}, yo: {} });
+  let discordDa = 200;
+  globalThis.fetch = async (u) => (String(u).endsWith('/users/@me')
+    ? new Response(discordDa === 200 ? JSON.stringify({ id: VIEJO, username: 'x' }) : '{"message":"x"}',
+      { status: discordDa })
+    : new Response('{}', { status: 404 }));
+  const votarS = async (cuerpo, ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/votar', { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await votarS({ enc: 'x2:1', op: 'SR' });
+  ok('sin permiso y sin sesión: 401 «sin_sesion» (la página va a Discord una vez)',
+     r.status === 401 && r.json.error === 'sin_sesion' && !alObjeto.length, JSON.stringify(r.json));
+  r = await votarS({ enc: 'x2:1', op: 'SR' }, SES);
+  ok('con la sesión vota, sin preguntarle a Discord, y con el ID de la sesión',
+     r.status === 200 && alObjeto.some(([u, b]) => u.endsWith('/votar') && b.quien === VIEJO), JSON.stringify(alObjeto));
+  r = await votarS({ enc: 'x2:1', op: 'SR' }, 'b'.repeat(43));
+  ok('con una sesión que no existe: 401', r.status === 401 && r.json.error === 'sin_sesion');
+  discordDa = 429;
+  r = await votarS({ enc: 'x2:1', op: 'SR', token: 'permisoBueno1234567890' });
+  ok('si Discord frena (429), 503 «discord_ocupado» y NO 401: nadie vuelve a autorizar por eso',
+     r.status === 503 && r.json.error === 'discord_ocupado', JSON.stringify(r.json));
+  // entrar: /cuenta deja la cookie
+  discordDa = 200;
+  alObjeto.length = 0;
+  let rc = await worker.fetch(new Request('https://x/cuenta', { method: 'POST',
+    body: JSON.stringify({ token: 'permisoBueno1234567890' }) }), env, ctx);
+  const ck = rc.headers.get('set-cookie') || '';
+  ok('entrar con Discord deja la sesión en una cookie HttpOnly, Strict y sólo para /api',
+     rc.status === 200 && ck.startsWith('lg_ses=' + SES) && /HttpOnly/.test(ck) && /SameSite=Strict/.test(ck) &&
+     /Path=\/api/.test(ck) && /Max-Age=2592000/.test(ck), ck);
+  discordDa = 503;
+  rc = await worker.fetch(new Request('https://x/cuenta', { method: 'POST',
+    body: JSON.stringify({ token: 'permisoBueno1234567890' }) }), env, ctx);
+  ok('y si Discord no contesta al entrar, también 503 y no «permiso malo»', rc.status === 503);
+  // salir: la borra
+  alObjeto.length = 0;
+  rc = await worker.fetch(new Request('https://x/cuenta/salir', { method: 'POST', body: '{}',
+    headers: { 'x-lg-ses': SES } }), env, ctx);
+  ok('«Salir» borra la sesión del objeto y la cookie', rc.status === 200 &&
+     /Max-Age=0/.test(rc.headers.get('set-cookie') || '') && alObjeto.some(([u, b]) => u.endsWith('/sesion/fin') &&
+       b.ses === SES));
+  // el proxy de Pages: la cookie va al Worker como x-lg-ses, y el Set-Cookie vuelve
+  const { default: proxy } = await import('./paginas/_worker.js');
+  let fue = null;
+  globalThis.fetch = async (u, opc) => {
+    fue = { u: String(u), h: (opc && opc.headers) || {} };
+    return new Response('{"ok":true}', { status: 200, headers: { 'set-cookie': 'lg_ses=' + SES + '; Path=/api' } });
+  };
+  const envP = { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/votar', { method: 'POST', body: '{}',
+    headers: { cookie: 'otra=1; lg_ses=' + SES } }), envP);
+  ok('el proxy le pasa la sesión al Worker (x-lg-ses)', fue && fue.h['x-lg-ses'] === SES, JSON.stringify(fue));
+  const rp = await proxy.fetch(new Request('https://underlegends.pages.dev/api/cuenta', { method: 'POST',
+    body: '{"token":"x"}' }), envP);
+  ok('y el Set-Cookie del Worker le llega al navegador', (rp.headers.get('set-cookie') || '').startsWith('lg_ses='));
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/votar', { method: 'POST', body: '{}' }), envP);
+  ok('sin cookie, no inventa ninguna sesión', fue && !fue.h['x-lg-ses']);
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  delete PUESTO.encuestas;
+}
+
 console.log('\nEL PRECIO POR CABEZA\n');
 
 {

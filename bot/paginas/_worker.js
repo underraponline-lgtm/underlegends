@@ -79,7 +79,18 @@ const CUENTA = {
   '/api/cuenta': '/cuenta',
   '/api/cuenta/redes': '/cuenta/redes',
   '/api/cuenta/foto': '/cuenta/foto',
+  // 🔑 «Salir» cierra la sesión (28/09/2026)
+  '/api/cuenta/salir': '/cuenta/salir',
 };
+
+// 🔑 LA SESIÓN (28/09/2026): entrar con Discord una vez. La cookie `lg_ses`
+// —HttpOnly: el JS de la página no la ve— viaja al Worker como `x-lg-ses`,
+// y el `Set-Cookie` del Worker vuelve tal cual. Ver `sesionNueva()` en
+// bot/avisos.js. Sólo en los POST: lo que se lee (GET) es público y se cachea.
+function sesion(req) {
+  const m = /(?:^|;\s*)lg_ses=([A-Za-z0-9_-]{30,100})/.exec(req.headers.get('cookie') || '');
+  return m ? m[1] : '';
+}
 
 async function avisos(req, url) {
   const metodo = AVISOS[url.pathname];
@@ -90,6 +101,7 @@ async function avisos(req, url) {
     if (cuerpo.length > 4096) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';
+    if (sesion(req)) init.headers['x-lg-ses'] = sesion(req);
   } else if (url.pathname.endsWith('/clave')) {
     // la clave pública no cambia: una hora en el borde
     init.cf = { cacheTtl: 3600, cacheEverything: true };
@@ -167,11 +179,13 @@ export default {
       const cuerpo = await req.text();
       // las redes elegidas viajan en el cuerpo: 2 KB alcanzan de sobra
       if (cuerpo.length > 2048) return new Response('grande', { status: 413 });
-      const r = await fetch(ORIGEN + CUENTA[url.pathname], {
-        method: 'POST', body: cuerpo, headers: { 'content-type': 'application/json' },
-      });
-      return new Response(r.body, { status: r.status, headers: {
-        'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+      const hs = { 'content-type': 'application/json' };
+      if (sesion(req)) hs['x-lg-ses'] = sesion(req);
+      const r = await fetch(ORIGEN + CUENTA[url.pathname], { method: 'POST', body: cuerpo, headers: hs });
+      const vuelta = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+      // la sesión: el Worker la abre (entrar) o la cierra (salir) con su cookie
+      if (r.headers.get('set-cookie')) vuelta['set-cookie'] = r.headers.get('set-cookie');
+      return new Response(r.body, { status: r.status, headers: vuelta });
     }
     // 🔑 las llaves viejas, a pedido: ver `llaveVieja()` en app.js. Y el muro
     // de Publicaciones (28/09/2026): ver `pedirMuro()`
