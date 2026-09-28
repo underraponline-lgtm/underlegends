@@ -1407,6 +1407,16 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         pintar.filas, pintar.links = filas, links
         return
     sid = _hoja_id(crear=True)
+    # 🔴 PRIMERO SE DESCOMBINA, DESPUÉS SE ESCRIBE. Una fila que en la
+    # pintada anterior era la franja de un evento está combinada de A a H,
+    # y escribir en una celda combinada se traga el valor SIN ERROR: quedaba
+    # el número en A y la pregunta vacía. Medido el 28/09/2026 a las 11:54
+    # AM ET: entraron las 11 batallas, las secciones se corrieron, y cuatro
+    # preguntas —la batalla de cuatro de MARRUECOS entre ellas— salieron en
+    # blanco. El `unmergeCells` del batch de abajo llegaba tarde.
+    _pedir('POST', ':batchUpdate', json={'requests': [{'unmergeCells': {'range': {
+        'sheetId': sid, 'startRowIndex': 0, 'endRowIndex': 2000,
+        'startColumnIndex': 0, 'endColumnIndex': 10}}}]})
     _pedir('POST', '/values/%s:clear' % requests.utils.quote("'%s'!A1:J2000" % HOJA))
     _pedir('PUT', '/values/%s?valueInputOption=RAW'
            % requests.utils.quote("'%s'!A1" % HOJA), json={'values': filas})
