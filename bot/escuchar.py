@@ -179,8 +179,12 @@ RONDA = re.compile(
 # la captura saltaba del primer ⌞ al siguiente ⌝ y daba un lado llamado
 # «⌝ 🆚 ⌞». Es la fila rara de la captura de SEVEN STREET DUPLAS en vivo
 # (Dlx, 27/09/2026).
+# 🔴 Y UN `[x]` CON `+` ADENTRO ES UN EQUIPO, Y UN EQUIPO PUEDE SER LARGO. En el
+# MULTIVERSE cada uno va solo o en equipo del tamaño que quiera —Dlx,
+# 28/09/2026: *«puede haber 2v2, 1v3 o 8v1»*—, y `[A 🇦🇷 + B 🇨🇱 + … + H 🇺🇾]`
+# pasa de 30: el lado se perdía y la línea se pegaba con la de abajo.
 DELIMS = (re.compile(r'⌞([^⌞⌝]+?)⌝'),
-          re.compile(r'\[([^\[\]\n]{1,30})\]'))
+          re.compile(r'\[([^\[\]\n]{1,30}|[^\[\]\n]*[+&][^\[\]\n]*)\]'))
 # ⚠️ `:vsf:` TAMBIEN: hay llaves que mezclan el emoji `<:VSF:…>` con su
 # shortcode en la MISMA linea (EL RAP FECHA 5, #349), y sin el segundo dos
 # equipos quedaban pegados en uno de seis.
@@ -526,7 +530,13 @@ def nombres_de_linea(l):
                 lados.append(enm[0])
             else:
                 t = re.sub(r'[⌞⌝\[\]]', '', seg).strip(' .·▪️♠︎-–—*_`')
-                if 1 < len(norm(t)) <= 28:
+                # 🔴 UN EQUIPO SE MIDE POR INTEGRANTE, NO ENTERO. El tope de 28
+                # es para que un texto suelto no pase por nombre; aplicado al
+                # equipo entero, uno de cuatro entraba justo (27) y uno de
+                # ocho se caía. Ver `DELIMS`.
+                partes = [p for p in re.split(r'[+&]', t) if norm(p)]
+                if (len(partes) > 1 and all(len(norm(p)) <= 28 for p in partes)) \
+                        or 1 < len(norm(t)) <= 28:
                     lados.append(t)
         # el cupo vacío no es un lado: `X 🆚 [SUPLENTE]` es X que pasa solo
         n_lados = len(lados)

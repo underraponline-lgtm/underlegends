@@ -839,6 +839,42 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "MULTIVERSE: solo o en equipo de cualquier tamaño, 8v1, 2v2 y 1v3 (Dlx, 28/09/2026)",
+   "texto": "# ▪️ [•CUARTOS DE FINAL•]\n▪️   [ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸 + HOTEL 🇺🇾] 🆚 [SOLO 🇦🇷]\n▪️   [UNO 🇨🇴 + DOS 🇨🇱] 🆚 [TRES 🇻🇪 + CUATRO 🇵🇪]\n▪️   [CINCO 🇦🇷] 🆚 [SEIS 🇲🇽 + SIETE 🇪🇸 + OCHO 🇺🇾]\nSIN MARCO + CON UNO + Y OTRO + Y OTRO MAS 🆚 SUELTO\n# ▪️ [• FINAL•]\n# ▪️ [ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸 + HOTEL 🇺🇾]  🆚 [TRES 🇻🇪 + CUATRO 🇵🇪]\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸 + HOTEL 🇺🇾",
+       "SOLO 🇦🇷"
+      ],
+      [
+       "UNO 🇨🇴 + DOS 🇨🇱",
+       "TRES 🇻🇪 + CUATRO 🇵🇪"
+      ],
+      [
+       "CINCO 🇦🇷",
+       "SEIS 🇲🇽 + SIETE 🇪🇸 + OCHO 🇺🇾"
+      ],
+      [
+       "SIN MARCO + CON UNO + Y OTRO + Y OTRO MAS",
+       "SUELTO"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸 + HOTEL 🇺🇾",
+       "TRES 🇻🇪 + CUATRO 🇵🇪"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

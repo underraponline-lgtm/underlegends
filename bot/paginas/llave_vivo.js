@@ -43,7 +43,8 @@
   // 🔴 SIN LOS MARCOS ADENTRO: con el hueco vacío de la plantilla (`⌞⌝ 🆚 ⌞⌝`)
   // la captura saltaba de un ⌞ al siguiente ⌝ y daba el lado «⌝ ⌞». Ver
   // `escuchar.DELIMS`.
-  var DELIMS = [/⌞([^⌞⌝]+?)⌝/gu, /\[([^\[\]\n]{1,30})\]/gu];
+  // y un `[x]` con `+` adentro es un equipo, que puede ser largo (MULTIVERSE: 8v1)
+  var DELIMS = [/⌞([^⌞⌝]+?)⌝/gu, /\[([^\[\]\n]{1,30}|[^\[\]\n]*[+&][^\[\]\n]*)\]/gu];
   var VACIO = { 'suplente': 1 };
   var POKEMON = /\(\s*(?:P|pok[eé]mon)\s*\)|\bpok[eé]mon\b/i;
   var MENCION = /<@!?(\d+)>/g;
@@ -196,7 +197,10 @@
         else {
           var t = quitarBordes(seg.replace(/[⌞⌝\[\]]/g, ''),
             [' ', '.', '·', '▪', '️', '♠', '︎', '-', '–', '—', '*', '_', '`']);
-          if (norm(t).length > 1 && norm(t).length <= 28) lados.push(t);
+          // un equipo se mide por integrante: ver `escuchar.nombres_de_linea()`
+          var partes = t.split(/[+&]/).filter(function (p) { return norm(p); });
+          if ((partes.length > 1 && partes.every(function (p) { return norm(p).length <= 28; })) ||
+              (norm(t).length > 1 && norm(t).length <= 28)) lados.push(t);
         }
       });
       var n = lados.length;
