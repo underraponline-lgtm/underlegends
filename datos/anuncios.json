@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-28T02:24:06+00:00",
+ "cuando": "2026-09-28T02:54:04+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1118,6 +1118,26 @@
    "premios": "PTS TABLA"
   },
   {
+   "nombre": "ISLA DE SOCOTRA V.2",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1553956673188532356",
+   "cuando": "2026-09-28T02:29:02",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "yo",
+   "cupos_texto": "4/8/12",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "(2k puntos de ascenso al primero y un campeonato)",
+   "modalidad": "1vs1",
+   "horario": "Cuando se llene",
+   "fecha": "",
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
+  },
+  {
    "nombre": "COMPE NOCTURNA",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -1133,7 +1153,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "CCFF V.2",
@@ -1151,7 +1173,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "COMPE SOLO 4X4",
@@ -1169,7 +1193,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "CCFF V.1",
@@ -1187,7 +1213,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.15",
@@ -1205,7 +1233,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1223,7 +1253,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.14",
@@ -1241,7 +1273,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.13",
@@ -1259,7 +1293,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "WACHINTON",
@@ -1277,7 +1313,9 @@
    "modalidad": "PANDILLAS",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "STEVE JOSEO",
@@ -1295,7 +1333,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "ISLA DE SOCOTRA",
@@ -1313,7 +1353,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.12",
@@ -1331,7 +1373,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.11",
@@ -1349,7 +1393,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "Arima Kinen Triple Crown | Clasificatoria N°1",
@@ -1367,7 +1413,9 @@
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.10",
@@ -1385,7 +1433,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
@@ -1403,7 +1453,9 @@
    "modalidad": "1vs1",
    "horario": "Ya",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.9",
@@ -1421,7 +1473,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "FF Freestyle: Classic VOL.1",
@@ -1439,7 +1493,9 @@
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.8",
@@ -1457,7 +1513,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.7",
@@ -1475,7 +1533,9 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.6",
@@ -1493,7 +1553,9 @@
    "modalidad": "1vs1",
    "horario": "En 8 minutos",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.5",
@@ -1511,7 +1573,9 @@
    "modalidad": "1vs1",
    "horario": "En 9 minutos",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "COMPE MTZ ANUNCIA LAS PERRAS PUTAS BATALLAS PARA GANAR RAPIDO UNDER Y ",
@@ -1529,7 +1593,9 @@
    "modalidad": "1V1",
    "horario": "AL LLENAR INSC",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PNC V.4",
@@ -1547,25 +1613,9 @@
    "modalidad": "1vs1",
    "horario": "En 8 minutos",
    "fecha": "",
-   "premios": ""
-  },
-  {
-   "nombre": "LA VIDA SECRETA DE LOS RAPEROS",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1541619803184304289",
-   "cuando": "2026-08-25T01:26:42",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "",
-   "cupos_texto": "8/16/32",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "2V1 (8/4 CUPOS PARA DUPLA Y 8/4 CUPOS EN SOLITARIO)",
-   "horario": "EN 20 MINUTOS",
-   "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
@@ -1583,7 +1633,9 @@
    "modalidad": "",
    "horario": "4 PM MEX/USA",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
@@ -1601,7 +1653,9 @@
    "modalidad": "",
    "horario": "4 PM mex,5 PM Col",
    "fecha": "Viernes 11 de septiembre",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1619,7 +1673,9 @@
    "modalidad": "",
    "horario": "6 PM COLOMBIA",
    "fecha": "LUNES 10 de AGOSTO.",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1637,7 +1693,9 @@
    "modalidad": "",
    "horario": "8:00 PM España.",
    "fecha": "Sábado 01 de AGOSTO.",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1655,7 +1713,9 @@
    "modalidad": "",
    "horario": "8:30-9:00pm España.",
    "fecha": "Sábado 27 de Junio.",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1673,7 +1733,9 @@
    "modalidad": "",
    "horario": "4:00pm Colombia.",
    "fecha": "Jueves 18 de Junio.",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1691,7 +1753,9 @@
    "modalidad": "",
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1709,7 +1773,9 @@
    "modalidad": "",
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   },
   {
    "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
@@ -1727,10 +1793,120 @@
    "modalidad": "CLASIFICATORIAS",
    "horario": "",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-28T02:29:44"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Redmythechildren🇮🇨",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1553959215746523147",
+   "cuando": "2026-09-28T02:39:08"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "velatz",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1553958160329478255",
+   "cuando": "2026-09-28T02:34:56"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1553957700034109461",
+   "cuando": "2026-09-28T02:33:06"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "No quiero rapia 🇲🇽",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1553957555204661362",
+   "cuando": "2026-09-28T02:32:32"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Agustín la reliquia 🇸🇲",
+   "quien": "fabrythenoob7n76687",
+   "discord_id": "595648807920861205",
+   "msg_id": "1553957240359362571",
+   "cuando": "2026-09-28T02:31:17"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "yinn",
+   "quien": "yinnmtz",
+   "discord_id": "1538896358679908437",
+   "msg_id": "1553957187766976594",
+   "cuando": "2026-09-28T02:31:04"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1553957001183109275",
+   "cuando": "2026-09-28T02:30:20"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "agustin51k 🇨🇱",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1553956938042310737",
+   "cuando": "2026-09-28T02:30:05"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1553956915783016550",
+   "cuando": "2026-09-28T02:29:59"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "nc🇯🇴primera",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1553956893112664145",
+   "cuando": "2026-09-28T02:29:54"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1553956887702142997",
+   "cuando": "2026-09-28T02:29:53"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Prosu",
+   "quien": "prosufk",
+   "discord_id": "1177668622227886112",
+   "msg_id": "1553956883084218400",
+   "cuando": "2026-09-28T02:29:52"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
