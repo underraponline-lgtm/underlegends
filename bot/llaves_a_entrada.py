@@ -1148,10 +1148,13 @@ def filas_vidas(h, ev, sv, fecha):
                 sabidas['%s: batalla que no se jugó (✅ Decidir)' % V['ronda']] += 1
                 continue
             gana, nota = dec, 'ganador: ✅ Decidir'
+        # ⚠️ EL NÚMERO DE BATALLA VA EN LA NOTA: es lo único que separa dos
+        # revanchas con el mismo ganador, y la guarda contra duplicados de
+        # `Entrada` la mira (ver `_clave()` en `main()`)
         filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha, 'participantes': V['n'],
                       'ronda': V['ronda'], 'ladoA': gana,
                       'ladoB': b if E.norm(gana) == E.norm(a) else a,
-                      'ganador': gana, 'notas': nota or ''})
+                      'ganador': gana, 'notas': 'batalla %d%s' % (i, ' · ' + nota if nota else '')})
     return filas, dudas, sabidas
 
 
@@ -1620,7 +1623,9 @@ def _self_check():
          any('réplica' in k for k in s1)),
         ('con la respuesta de ✅ Decidir entra EN SU LUGAR, y son las 23 de la carga a mano',
          len(f2) == 23 and not d2 and f2[-1]['ganador'] == 'DELUXE 🇦🇷'
-         and f2[-1]['notas'] == 'ganador: ✅ Decidir'),
+         and f2[-1]['notas'] == 'batalla 24 · ganador: ✅ Decidir'),
+        ('cada fila lleva su número de batalla: dos revanchas no son una copia',
+         len({x['notas'].split(' · ')[0] for x in f2}) == 23),
         ('las revanchas se quedan: DELUXE contra FAZER cinco veces',
          sum(1 for x in f2 if {x['ladoA'], x['ladoB']} == {'DELUXE 🇦🇷', 'FAZER 🇦🇷'}) == 5),
         ('y el resumen para confirmar dice el campeón y el orden',
@@ -1976,10 +1981,15 @@ def main():
     # los dos lados— y no la fila entera: el `ganador` puede corregirse
     # en una repostada, y esa correccion tiene que poder entrar.
     def _clave(f):
-        return (str(f.get('evento', '')).strip(),
-                str(f.get('ronda', '')).strip().lower(),
-                str(f.get('ladoA', '')).strip(),
-                str(f.get('ladoB', '')).strip())
+        k = (str(f.get('evento', '')).strip(),
+             str(f.get('ronda', '')).strip().lower(),
+             str(f.get('ladoA', '')).strip(),
+             str(f.get('ladoB', '')).strip())
+        # 🔴 EN UN 5 VIDAS LA MISMA PAREJA PELEA VARIAS VECES, y con esta
+        # clave la segunda revancha «ya estaba»: se la saltaba. La nota trae
+        # el número de batalla (`filas_vidas()`).
+        return k + ((str(f.get('notas', '')).strip(),)
+                    if re.match(r'^\d+\s*vidas?$', k[1]) else ())
 
     ya = set()
     for f in h.filas():
