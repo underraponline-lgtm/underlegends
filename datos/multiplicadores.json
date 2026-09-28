@@ -48,15 +48,25 @@
     "SR": 68,
     "URBF": 8
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "Lewis",
+     24,
+     1
+    ]
+   ],
    "semillero": {
-    "nuevos": {},
-    "gente": {},
+    "nuevos": {
+     "FFA": 2
+    },
+    "gente": {
+     "FFA": 24
+    },
     "gana": null
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 0,
+    "FFA": 24,
     "SR": 0,
     "URBF": 0
    }

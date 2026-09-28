@@ -25,6 +25,13 @@
 "temporada"
 ]
 },
+"panchok": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "oasis": {
 "rg": "",
 "c": []
@@ -41,9 +48,21 @@
 "temporada"
 ]
 },
+"praiseriza": {
+"rg": "",
+"c": []
+},
 "colesito": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"juasmio": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -135,10 +154,6 @@
 "rg": "",
 "c": []
 },
-"praiseriza": {
-"rg": "",
-"c": []
-},
 "yinn": {
 "rg": "",
 "c": [
@@ -149,6 +164,13 @@
 "geoka": {
 "rg": "",
 "c": []
+},
+"majiztral": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "eze": {
 "rg": "",
@@ -165,14 +187,14 @@
 "rg": "",
 "c": []
 },
-"dxg": {
+"cinexfilo": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"juasmio": {
+"dxg": {
 "rg": "",
 "c": [
 "servidor",
@@ -183,18 +205,15 @@
 "rg": "",
 "c": []
 },
+"teito": {
+"rg": "",
+"c": []
+},
 "jimmy": {
 "rg": "",
 "c": []
 },
 "xubaru": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"panchok": {
 "rg": "",
 "c": [
 "servidor",
@@ -340,6 +359,17 @@
 "temporada"
 ]
 },
+"steven": {
+"rg": "",
+"c": []
+},
+"yeyox": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "lhyon": {
 "rg": "",
 "c": []
@@ -354,13 +384,6 @@
 "sol-pe": {
 "rg": "",
 "c": []
-},
-"cinexfilo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "elsoolar": {
 "rg": "",
@@ -381,10 +404,6 @@
 ]
 },
 "enek": {
-"rg": "",
-"c": []
-},
-"teito": {
 "rg": "",
 "c": []
 },
@@ -456,15 +475,21 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "",
-"c": []
-},
-"majiztral": {
+"tusicario": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
+]
+},
+"tam": {
+"rg": "",
+"c": []
+},
+"motera": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "sosa": {
@@ -474,12 +499,13 @@
 "temporada"
 ]
 },
-"tusicario": {
+"korey": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
+},
+"mhs": {
+"rg": "",
+"c": []
 },
 "maticerna": {
 "rg": "",
@@ -516,10 +542,6 @@
 "rg": "",
 "c": []
 },
-"korey": {
-"rg": "",
-"c": []
-},
 "prove": {
 "rg": "",
 "c": []
@@ -548,10 +570,6 @@
 "c": []
 },
 "rayito": {
-"rg": "",
-"c": []
-},
-"mhs": {
 "rg": "",
 "c": []
 },
@@ -878,10 +896,6 @@
 "temporada"
 ]
 },
-"infecte": {
-"rg": "",
-"c": []
-},
 "krish": {
 "rg": "",
 "c": [
@@ -889,7 +903,23 @@
 "temporada"
 ]
 },
+"infecte": {
+"rg": "",
+"c": []
+},
 "bootraxhumilde": {
+"rg": "",
+"c": []
+},
+"adachi": {
+"rg": "",
+"c": []
+},
+"clitax": {
+"rg": "",
+"c": []
+},
+"tg": {
 "rg": "",
 "c": []
 },
@@ -910,6 +940,14 @@
 "Jult"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T20:54:51Z",
+"quien": [
+"Juasmio"
+],
+"carta": "pais"
 }
 ]
 }

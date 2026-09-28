@@ -4452,5 +4452,228 @@
     416
    ]
   ]
+ },
+ "368": {
+  "dia": "2026-09-28",
+  "escala": "8-15",
+  "fecha": "28/09",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1554203282082373804"
+  ],
+  "n": 368,
+  "nombre": "COMPE DEL VACILE 1",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Cinexfilo",
+       "MHS🇦🇷"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Steven🇨🇴",
+       "Adachi 🇻🇪"
+      ],
+      "Steven🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Yeyox",
+       "Clitax🇪🇨"
+      ],
+      "Yeyox",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Tusicario"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Juasmio",
+       "Korey🇨🇱"
+      ],
+      "Juasmio",
+      ""
+     ],
+     [
+      [
+       "Teito 🇨🇴",
+       "Krish"
+      ],
+      "Teito 🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "TG🇪🇨"
+      ],
+      "Majiztral",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Cinexfilo",
+       "Steven🇨🇴"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Yeyox"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Juasmio",
+       "Motera"
+      ],
+      "Juasmio",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Teito 🇨🇴"
+      ],
+      "Majiztral",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Cinexfilo"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Juasmio",
+       "Majiztral"
+      ],
+      "Juasmio",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Juasmio",
+       "Panchok"
+      ],
+      "Juasmio",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Juasmio",
+    "Campeón",
+    7500
+   ],
+   [
+    "Panchok",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Cinexfilo",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Motera",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Steven🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Yeyox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adachi 🇻🇪",
+    "Octavos",
+    0
+   ],
+   [
+    "Clitax🇪🇨",
+    "Octavos",
+    0
+   ],
+   [
+    "Korey🇨🇱",
+    "Octavos",
+    0
+   ],
+   [
+    "Krish",
+    "Octavos",
+    0
+   ],
+   [
+    "MHS🇦🇷",
+    "Octavos",
+    0
+   ],
+   [
+    "TG🇪🇨",
+    "Octavos",
+    0
+   ],
+   [
+    "Tusicario",
+    "Octavos",
+    0
+   ]
+  ]
  }
 }
