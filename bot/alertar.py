@@ -272,6 +272,65 @@ def salud():
                      '8 rangos.' % (top.get('raw'), top.get('ev')))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude mirar el recordatorio de A7 (%s)' % str(e)[:80])
+    # 5 · 🔔 LAS BATALLAS QUE ESPERAN EN ✅ DECIDIR
+    try:
+        esperando()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude mirar las batallas que esperan (%s)' % str(e)[:80])
+
+
+#: cuántas horas puede esperar una batalla en ✅ Decidir antes del DM
+ESPERA_H = 24
+
+
+def esperando(ahora=None):
+    """Un DM a Dlx cuando una batalla lleva más de `ESPERA_H` en ✅ Decidir.
+
+    🔑 Dlx, 28/09/2026, a *«un DM sólo a vos cuando una batalla lleve más de
+    24 h esperando en ✅ Decidir»*: *«C»*. Una batalla sin ganador no suma: los
+    dos se quedan sin esa ronda —y en un 5 vidas, el evento entero espera—.
+
+    ⚠️ LA LISTA LA DEJA EL LECTOR en cada corrida
+    (`datos/batallas_sin_ganador.json`), y sólo se le cree si es de las
+    últimas horas. `Pendientes` no guarda fechas, así que desde cuándo
+    espera cada una se anota acá, en `datos/alertas.json`: se cuenta desde
+    que este paso la vio por primera vez.
+    ⚠️ UN SOLO DM CON TODAS LAS QUE CUMPLEN, y cada una una sola vez: una
+    batalla que sigue esperando no vuelve a sonar. Las que se resolvieron se
+    olvidan solas.
+    """
+    ahora = ahora or _ahora()
+    with io.open(os.path.join(BASE, 'datos', 'batallas_sin_ganador.json'),
+                 encoding='utf-8') as f:
+        sg = json.load(f) or {}
+    t = datetime.datetime.strptime(sg.get('t', ''), '%Y-%m-%dT%H:%M:%SZ').replace(
+        tzinfo=datetime.timezone.utc)
+    if (ahora - t).total_seconds() > 3 * 3600:
+        return []
+    actuales = set(sg.get('batallas') or [])
+    d = _leer()
+    desde = {b: x for b, x in (d.get('batallas_desde') or {}).items() if b in actuales}
+    for b in actuales:
+        desde.setdefault(b, ahora.isoformat())
+    avisadas = set(d.get('batallas_avisadas') or []) & actuales
+    viejas = sorted(b for b in actuales - avisadas
+                    if (ahora - datetime.datetime.fromisoformat(desde[b])).total_seconds()
+                    > ESPERA_H * 3600)
+    d['batallas_desde'], d['batallas_avisadas'] = desde, sorted(avisadas)
+    _guardar(d)
+    if not viejas:
+        return []
+    una = len(viejas) == 1
+    texto = ('%s más de %d h esperando en ✅ Decidir. Hasta que %s, %s:\n%s' % (
+        'Una batalla lleva' if una else '%d batallas llevan' % len(viejas), ESPERA_H,
+        'la contestes' if una else 'las contestes',
+        'no suma' if una else 'no suman', '\n'.join('• ' + b for b in viejas[:10])))
+    if dm('🔔 ' + texto):
+        d = _leer()
+        d['batallas_avisadas'] = sorted(set(d.get('batallas_avisadas') or []) | set(viejas))
+        _guardar(d)
+        print('   📨 DM a Dlx: %d batalla(s) esperando' % len(viejas))
+    return viejas
 
 
 def main():
