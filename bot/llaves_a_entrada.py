@@ -1289,6 +1289,53 @@ def horas_quieta(grupo, ahora=None):
     return None if ult is None else (ahora - ult).total_seconds() / 3600.0
 
 
+def _primera_ronda(h):
+    """`(ronda, {parejas})` de la primera ronda de una llave: cada pareja es
+    el conjunto de sus lados normalizados."""
+    rs = E.rondas_de(h.get('texto') or '')
+    if not rs:
+        return None, set()
+    r, bs = rs[0]
+    pares = set()
+    for b in bs:
+        lados = frozenset(E.norm(x) for x in b if E.norm(x))
+        if len(lados) >= 2:
+            pares.add(lados)
+    return E.ALIAS.get(r, r), pares
+
+
+def sin_sorteos_viejos(llaves):
+    """Las llaves de un evento sin los sorteos que el organizador rehízo.
+
+    🔴 DESGRACIAS EN TOKYO VOL 15 MULTIVERSE (FFA, 28/09/2026) SE PUBLICÓ DOS
+    VECES CON OTRO SORTEO, y la vieja quedó en el canal. Las dos tienen la
+    misma gente, así que `agrupar()` las junta —bien: es un evento—, pero
+    las batallas de la vieja nunca se pelearon: cuando se llenara la nueva,
+    las de la vieja iban a ✅ Decidir como «¿Quién ganó?» de peleas que no
+    existieron. Y la página mostraba dos «En vivo» del mismo evento.
+
+    ⚠️ LA REGLA: la más nueva manda, y una más vieja se descarta si su
+    primera ronda es LA MISMA RONDA con otras parejas —menos del 80 % de las
+    suyas están en la nueva—. Una reposteada idéntica, o la misma llave más
+    llena, comparte las parejas y se sigue juntando como siempre; la mitad
+    de una llave partida empieza en otra ronda y no se toca.
+    """
+    if len(llaves) < 2:
+        return llaves
+    orden = sorted(llaves, key=lambda h: str(h.get('cuando') or ''), reverse=True)
+    r0, p0 = _primera_ronda(orden[0])
+    out = [orden[0]]
+    for h in orden[1:]:
+        r, p = _primera_ronda(h)
+        if r0 and r == r0 and p and p0 and len(p & p0) < 0.8 * len(p):
+            h['_sorteo_viejo'] = True
+            continue
+        out.append(h)
+    # el orden de siempre: el que traían (ver `sin_repetir()`)
+    quedan = {id(h) for h in out}
+    return [h for h in llaves if id(h) in quedan]
+
+
 def agrupar(hallazgos):
     """Junta las llaves que son el MISMO evento, por plantel."""
     grupos = []
@@ -1586,6 +1633,42 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    # 🔴 EL SORTEO REHECHO: DESGRACIAS EN TOKYO VOL 15 MULTIVERSE (28/09/2026),
+    # los dos mensajes de verdad, recortados a los octavos
+    print('\n  el sorteo que el organizador rehízo')
+    _t = lambda x: E.traducir(E.plano(x))                            # noqa: E731
+    vieja = _t('# DESGRACIAS EN TOKYO VOL 15 MULTIVERSE\n# ▪️ [•OCTAVOS DE FINAL•]\n'
+               '▪️   [TUSICARIO 🇨🇱 + KOREY 🇨🇱] 🆚 [JUASMIO 🇨🇴]\n'
+               '▪️   [YINN 🇲🇦 + VELATZ 🇨🇱 + PROVENZA 🇺🇲] 🆚 [TEITO  🇨🇴]\n'
+               '▪️   [PARK JI SUNG 🇰🇷] 🆚 [LIAM 🇺🇾]\n'
+               '▪️   [MAJIZTRAL 🇨🇴] 🆚 [BOOTRAX HUMILDE 🇵🇪 + TROT 🇪🇦]\n'
+               '▪️   [OG 🇻🇪] 🆚 [CINEXFILO 🇻🇪]\n▪️   [] 🆚 []')
+    nueva = _t('# DESGRACIAS EN TOKYO VOL 15 MULTIVERSE\n# ▪️ [•OCTAVOS DE FINAL•]\n'
+               '▪️   [SNOW 🇨🇴] 🆚 [ABYSSUS 🇨🇦]\n'
+               '▪️   [PRAISERIZA 🇻🇪] 🆚 [BOOTRAX HUMILDE 🇵🇪 + TROT 🇪🇸]\n'
+               '▪️   [OG 🇻🇪] 🆚 [VELATZ 🇨🇱 + YINN 🇲🇦 + PROVENZA 🇺🇸]\n'
+               '▪️   [TUSICARIO 🇨🇱 + KOREY 🇨🇱] 🆚 [CINEXFILO 🇻🇪]\n'
+               '▪️   [TEITO 🇨🇴 + MAJIZTRAL 🇨🇴] 🆚 [JUASMIO 🇨🇴]\n'
+               '▪️   [LIAM 🇺🇾] 🆚 [PARK JI SUNG 🇰🇷]\n▪️   [MHS 🇦🇷] 🆚 []')
+    hv = {'texto': vieja, 'cuando': '2026-09-28T17:14:00+00:00'}
+    hn = {'texto': nueva, 'cuando': '2026-09-28T17:33:00+00:00'}
+    llena = _t(nueva + '\n# ▪️ [•CUARTOS DE FINAL•]\n▪️   [SNOW 🇨🇴] 🆚 [OG 🇻🇪]')
+    semis = _t('# DESGRACIAS EN TOKYO VOL 15 MULTIVERSE\n# ▪️ [•SEMI - FINAL•]\n'
+               '▪️   [SNOW 🇨🇴] 🆚 [LIAM 🇺🇾]')
+    casos = [
+        ('otro sorteo de la misma ronda: se queda la llave nueva',
+         sin_sorteos_viejos([hv, hn]) == [hn] and hv.get('_sorteo_viejo')),
+        ('la misma llave reposteada se sigue juntando',
+         len(sin_sorteos_viejos([dict(hn, cuando='2026-09-28T17:40:00+00:00'), hn])) == 2),
+        ('la misma llave, más llena, también',
+         len(sin_sorteos_viejos([hn, {'texto': llena, 'cuando': '2026-09-28T19:00:00+00:00'}])) == 2),
+        ('y la mitad de una llave partida, que empieza en otra ronda, no se toca',
+         len(sin_sorteos_viejos([hn, {'texto': semis, 'cuando': '2026-09-28T20:00:00+00:00'}])) == 2),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     # ❤️ LOS 5 VIDAS DE #VEREDICTOS, con la SNAKE ARENA VOL. 2 de verdad —la
     # del contrato con la página (`bot/llaves_casos.json`)—
     print('\n  los 5 vidas de #veredictos')
@@ -1700,6 +1783,13 @@ def main():
     repes = 0
     decididas = 0
     for g in grupos:
+        # 🔴 EL SORTEO QUE EL ORGANIZADOR REHÍZO NO CUENTA: ver
+        # `sin_sorteos_viejos()`. Antes del nombre y la fecha, que salen de
+        # las llaves que quedan.
+        antes_n = len(g['llaves'])
+        g['llaves'] = sin_sorteos_viejos(g['llaves'])
+        if len(g['llaves']) < antes_n:
+            sabidas['sorteo rehecho: se queda la llave nueva'] += antes_n - len(g['llaves'])
         # 🔴 UN NOMBRE POR GRUPO Y LAS BATALLAS SIN REPETIR. Ver
         # `nombre_de()` y `sin_repetir()`: dos mensajes del mismo evento
         # daban dos nombres -> dos numeros de evento -> contado dos

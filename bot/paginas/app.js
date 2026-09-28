@@ -889,6 +889,21 @@ function pintaVivo() {
     L.nombre = e ? (e.nombre || e.n) : '5 vidas · ' + nombreSv(L.sv);
     ls.push(L);
   });
+  // 🔴 EL MISMO EVENTO, UNA VEZ. DESGRACIAS EN TOKYO VOL 15 MULTIVERSE (FFA,
+  // 28/09/2026) se sorteó dos veces y la llave vieja quedó en el canal: «En
+  // vivo» mostraba dos tarjetas del mismo evento, con 14 y 17 raperos. Mismo
+  // servidor y mismo nombre en estas tres horas es el mismo evento: queda la
+  // más nueva (el lector del ciclo hace lo mismo, `sin_sorteos_viejos()`).
+  var visto = {};
+  ls = ls.slice().sort(function (a, b) { return (b.pub || 0) - (a.pub || 0); }).filter(function (L) {
+    var k = LlaveVivo.norm(L.nombre || '');
+    // sin título no se sabe si son el mismo: «La llave» es el de relleno
+    if (!k || L.veredictos || L.nombre === 'La llave') return true;
+    k = (L.sv || '') + '|' + k;
+    if (visto[k]) return false;
+    visto[k] = 1;
+    return true;
+  }).sort(function (a, b) { return ls.indexOf(a) - ls.indexOf(b); });
   ls.forEach(function (L) { VIVO_L[L.id] = L; });
   // 🔑 Y LO QUE EMPEZÓ SIN LLAVE A LA VISTA. Con dos eventos a la vez se veía
   // uno: la SNAKE ARENA (27/09/2026) era un 5 vidas y se jugaba en
