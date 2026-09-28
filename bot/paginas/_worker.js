@@ -173,8 +173,9 @@ export default {
       return new Response(r.body, { status: r.status, headers: {
         'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
     }
-    // 🔑 las llaves viejas, a pedido: ver `llaveVieja()` en app.js
-    if (url.pathname === '/api/perfiles' || url.pathname === '/api/llaves') {
+    // 🔑 las llaves viejas, a pedido: ver `llaveVieja()` en app.js. Y el muro
+    // de Publicaciones (28/09/2026): ver `pedirMuro()`
+    if (url.pathname === '/api/perfiles' || url.pathname === '/api/llaves' || url.pathname === '/api/muro') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       const r = await fetch(ORIGEN + url.pathname.slice(4), {
         method: 'GET',

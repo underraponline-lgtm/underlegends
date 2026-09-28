@@ -1712,6 +1712,27 @@ color:var(--tx);font:800 .9rem/1 Archivo,sans-serif;font-variant-numeric:tabular
 .pr-cazas b{color:var(--tx)}
 .pr-mios{display:grid;gap:4px;margin-top:6px;color:var(--tx2);font-size:.85rem}
 
+/* ── Publicaciones: el muro ──────────────────────────────────────────────
+   Una publicación por renglón, con su ícono a la izquierda. Lo que es un
+   anuncio lleva el borde magenta (lo dijo alguien); lo que pasó en la Liga,
+   teal (lo cuenta la Liga). */
+.mu-fil{margin:4px 0 2px}
+.muro{display:grid;gap:8px}
+.mu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:11px 13px;
+background:rgba(10,15,14,.82);border:1px solid var(--bd2);border-left:3px solid var(--tl)}
+.mu[data-tipo="anuncio"],.mu[data-tipo="liga"]{border-left-color:var(--mg)}
+.mu-i{font-size:1.3rem;line-height:1.25}
+.mu-c{min-width:0}
+.mu-c p{color:var(--tx2);font-size:.95rem;line-height:1.45;overflow-wrap:anywhere}
+.mu-c p b{color:var(--tx)}
+.mu-c small{display:block;margin-top:3px;color:var(--tx3);font-size:.78rem}
+.mu-q{color:var(--tx);font-weight:800}
+.mu-q:hover{color:var(--tl);text-decoration:underline}
+.mu-x{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:7px}
+.mu-a{color:var(--tl);font:700 .85rem/1.2 Archivo,sans-serif;text-decoration:none}
+.mu-a:hover{text-decoration:underline}
+.mu .rg{display:inline-block;padding:0 6px;border:1px solid;border-radius:4px;font:900 .82rem/1.4 Archivo,sans-serif}
+
 /* ── Most Wanted: el tablero, un cartel por buscado ─────────────────────
    El color de arriba dice cómo está: magenta suelto, gris cazado, oro si
    sobrevivió. El sello es del cartel de «se busca»: sólo en los dos

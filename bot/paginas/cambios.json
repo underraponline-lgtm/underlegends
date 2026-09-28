@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.33",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T08:00:00-04:00",
+   "titulo": "Publicaciones",
+   "items": [
+    "📰 **Publicaciones**: el muro de la Liga. Lo que pasa, contado solo —campeones, subidas de rango, tarjetas desbloqueadas, cazas del Most Wanted, precios por cabeza cobrados y premios de la semana—, y **los anuncios de eventos de todos los servidores**, con su link a Discord.",
+    "🔎 Se filtra en **En la Liga** o **Anuncios**. Cada nombre abre su perfil, y cada campeón, su llave.",
+    "⏰ Se actualiza solo con el ciclo, cada media hora."
+   ]
+  },
+  {
    "version": "1.32",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T07:45:00-04:00",

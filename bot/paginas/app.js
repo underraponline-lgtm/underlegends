@@ -311,6 +311,10 @@ function ir() {
   if (r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
   if (r === 'pais') pintaPais(partes[1] || '');
   if (r === 'cambios') cargarCambios(pintaCambios);
+  if (r === 'publicaciones') {
+    if (MURO === null) pedirMuro();
+    pintaMuro();
+  }
   if (r === 'tienda' && D) {
     try { pintaTienda(); } catch (e) { console.error('[pintaTienda]', e); }
     if (DC_TOKEN && !BILL) pedirBilletera();
@@ -4169,6 +4173,101 @@ function panelPrecio(c, T) {
     '</p>' + (esYo ? '<p class="nota">Sos vos: no te podés poner precio.</p>' : montosPrecio(c, T)) +
     '<p class="enc-e" aria-live="polite">' + msg + '</p></div>';
 }
+/* ── Publicaciones: el muro de la Liga ─────────────────────────────────
+   🔑 Dlx, 28/09/2026, a «¿qué va en Publicaciones?»: «sí un muro automático,
+   pero anuncios de todos los servidores también». Lo arma el ciclo
+   (`bot/muro.py`) con lo que ya calcula —campeones, rangos, tarjetas, cazas,
+   precios, premios— y los anuncios; la página lo pide al abrir la vista
+   (`/api/muro`), así no viaja en cada visita. Contado por la Liga, en
+   tercera persona: nunca «en nombre de» nadie. */
+var MURO = null, MURO_FIL = '', MURO_VER = 20;
+var MURO_ANUNCIO = { anuncio: 1, liga: 1 };
+function pedirMuro() {
+  fetch('/api/muro', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) { MURO = d && Array.isArray(d.items) ? d.items : (MURO || []); pintaMuro(); })
+    .catch(function () { MURO = MURO || []; pintaMuro(); });
+}
+/* los nombres de una publicación: cada uno abre su perfil, si está en la tabla */
+function nombresMuro(ns) {
+  return (ns || []).map(function (n) {
+    var f = porK(kDe(n));
+    return f ? '<button type="button" class="mu-q" data-k="' + esc(f.k) + '">' + esc(f.n) + '</button>'
+      : '<b>' + conBanderas(n) + '</b>';
+  }).join(' y ');
+}
+function pastillaRango(r) {
+  var x = (D.rangos || []).filter(function (y) { return y.r === r; })[0];
+  return '<span class="rg" style="color:' + esc((x && x.color) || '') + ';border-color:' +
+    esc((x && x.color) || '#1A2523') + '">' + esc(r) + '</span>';
+}
+function itemMuro(x) {
+  var q = nombresMuro(x.quien), n = (x.quien || []).length, ico = '', txt = '', mas = '';
+  if (x.tipo === 'campeon') {
+    ico = '&#127942;';
+    txt = q + (n > 1 ? ' ganaron ' : ' ganó ') + '<b>' + esc(x.ev) + '</b>';
+    mas = chipSv(x.sv) + (x.ll ? '<button type="button" class="mu-a" data-llave="' + esc(x.ll) + '">Ver la llave</button>' : '');
+  } else if (x.tipo === 'rango') {
+    ico = x.primero ? '&#127894;&#65039;' : '&#11014;&#65039;';
+    txt = q + (x.primero ? ' ya tiene rango ' : ' subió a rango ') + pastillaRango(x.rg);
+  } else if (x.tipo === 'tarjeta') {
+    var f = porK(kDe((x.quien || [])[0]));
+    ico = '&#127183;';
+    txt = q + ' desbloqueó su tarjeta <b>' + esc(NOMBRE_CARTA[x.carta] || x.carta) + '</b>';
+    mas = f ? '<button type="button" class="mu-a" data-carta="' + esc(f.k) + '">Ver sus tarjetas</button>' : '';
+  } else if (x.tipo === 'caza') {
+    ico = '&#127919;';
+    txt = q + ' cazó a ' + nombresMuro([x.a]) + ' (' + esc(x.cat) + ') en ' + esc(x.ev) + ' y cobró <b>' +
+      num(x.pts) + '</b>';
+  } else if (x.tipo === 'sobrevivio') {
+    ico = '&#128737;&#65039;';
+    txt = q + ' sobrevivió al Most Wanted (' + esc(x.cat) + ') y se llevó <b>' + num(x.pts) + '</b>';
+  } else if (x.tipo === 'precio') {
+    ico = '&#128176;';
+    txt = q + ' le ' + (n > 1 ? 'ganaron' : 'ganó') + ' a ' + nombresMuro([x.a]) + ' en ' + esc(x.ev) +
+      ' y cobró el precio por su cabeza: <span class="pt-i">' + num(x.pts) + '</span>';
+  } else if (x.tipo === 'premios') {
+    ico = '&#129351;';
+    txt = 'Premios de la semana: ' + [x.figura ? 'figura ' + nombresMuro([x.figura[0]]) : '',
+      x.revelacion ? 'revelación ' + nombresMuro([x.revelacion[0]]) : '',
+      x.cazador ? 'cazador ' + nombresMuro([x.cazador[0]]) : '',
+      x.servidor ? 'servidor <b>' + esc(nombreSv(x.servidor[0])) + '</b>' : ''].filter(Boolean).join(' &middot; ');
+  } else if (x.tipo === 'elegido') {
+    ico = '&#128499;&#65039;';
+    txt = 'La gente eligió a ' + q + ' como El Elegido del Most Wanted' + (x.de ? ' (' + x.votos + ' de ' +
+      x.de + ' votos)' : '');
+  } else if (x.tipo === 'anuncio') {
+    ico = '&#128226;';
+    // ⚠️ TODO ESCAPADO: es texto que escribió alguien en Discord
+    var det = [x.mod ? esc(x.mod) : '', x.org ? 'organiza ' + esc(x.org) : '',
+      x.pre ? '&#127941; ' + esc(x.pre) : ''].filter(Boolean);
+    txt = '<b>' + esc(x.ev) + '</b>' + (det.length ? ' — ' + det.join(' &middot; ') : '');
+    mas = chipSv(x.sv) + (x.link ? '<a class="mu-a" href="' + esc(x.link) + '" target="_blank" rel="noopener ' +
+      'noreferrer">Ver en Discord &#8599;</a>' : '');
+  } else if (x.tipo === 'liga') {
+    ico = '&#128240;';
+    txt = '<b>' + esc(x.tit) + '</b>' + (x.tx ? ' — ' + esc(x.tx) : '');
+    mas = x.link ? '<a class="mu-a" href="' + esc(x.link) + '" target="_blank" rel="noopener noreferrer">Ver en ' +
+      'Discord &#8599;</a>' : '';
+  } else {
+    return '';
+  }
+  return '<article class="mu" data-tipo="' + esc(x.tipo) + '"><span class="mu-i" aria-hidden="true">' + ico + '</span>' +
+    '<div class="mu-c"><p>' + txt + '</p><small>' + esc(cuandoSe(x.t)) + '</small>' +
+    (mas ? '<div class="mu-x">' + mas + '</div>' : '') + '</div></article>';
+}
+function pintaMuro() {
+  var c = $('#muro');
+  if (!c) return;
+  $$('[data-mufil]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mufil === MURO_FIL)); });
+  if (MURO === null) { c.innerHTML = '<p class="nota">Cargando&hellip;</p>'; return; }
+  var ls = MURO.filter(function (x) {
+    return !MURO_FIL || (MURO_FIL === 'anuncios') === !!MURO_ANUNCIO[x.tipo];
+  });
+  c.innerHTML = ls.length ? ls.slice(0, MURO_VER).map(itemMuro).join('')
+    : '<p class="nota">Todavía no hay nada acá: lo que pase en la Liga va apareciendo solo.</p>';
+  $('#muroMas').hidden = ls.length <= MURO_VER;
+}
 /* 🔑 LA BARRA DEL TELÉFONO SE DESLIZA (Dlx, 28/09/2026: «en celular haz que
    se deslice para ver más opciones»): el borde de la derecha se apaga para
    decir que hay más, y deja de apagarse al llegar al final. */
@@ -5248,6 +5347,14 @@ function eventos() {
       pintaBuscaPrecio();
     }
   });
+  // 🔑 Publicaciones: los filtros y «ver más» (ver `pintaMuro()`)
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mufil],#muroMas');
+    if (!b) return;
+    if (b.id === 'muroMas') MURO_VER += 20;
+    else { MURO_FIL = b.dataset.mufil; MURO_VER = 20; }
+    pintaMuro();
+  });
   // la barra del teléfono se desliza: su borde deja de apagarse al final
   var nv = $('#nav');
   if (nv) nv.addEventListener('scroll', bordeNav, { passive: true });
@@ -5624,6 +5731,7 @@ function refrescarDatos() {
   // los votos y los precios cambian a cada rato, no con el ciclo: se piden siempre
   try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
   try { pedirPrecios(); } catch (e) { console.error('[pedirPrecios]', e); }
+  if (MURO !== null) pedirMuro();
   fetch('/api/lobby', { headers: { accept: 'application/json' } })
     .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
     .then(function (d) {

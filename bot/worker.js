@@ -3310,8 +3310,11 @@ export default {
       }
       // 🔑 Y TODAS LAS LLAVES, IGUAL: la página las pide sólo cuando un link
       // `#/llave/<n>` apunta a una que ya no viaja en el lobby
-      if (ruta === '/perfiles' || ruta === '/llaves') {
-        const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : 'web:perfiles');
+      // 🔑 Y EL MURO DE PUBLICACIONES (28/09/2026), igual: se pide al abrir la
+      // vista, así no viaja en cada visita. Lo arma `bot/muro.py`
+      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro') {
+        const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : ruta === '/muro' ? 'web:muro'
+          : 'web:perfiles');
         return new Response(crudo || '{}', {
           status: crudo ? 200 : 404,
           headers: {

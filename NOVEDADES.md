@@ -289,8 +289,37 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El precio por cabeza se pone con PUNTOS DE TIENDA**, una moneda aparte del ranking: todos arrancan con **5.000**; si nadie lo caza en la semana, **vuelve**; una cabeza vale como mucho **20.000** | *«1. Pues PUNTOS de TIENDA… que todos empecemos con 5k… 2. A 3. sí 20k»* | ✅ `bot/precios.py` + el Durable Object (1.32) |
 | **El que caza cobra lo mismo en los dos** (Tienda y Temporada), y **billetera tiene cualquiera que entre con Discord** | *«1. Ambos. 2. B»*, porque *«MW is for puntos temporada mainly but we need more incentives… for people to get through the website»* | ✅ `rankings.sumar_precios()` (1.32). La cuenta de Discord, de más de 30 días, como las encuestas |
 | **TIENDA y PUBLICACIONES en el menú; en el celular la barra se desliza** | *«agrega la opción de TIENDA y PUBLICACIONES… en el PC será normal pero en celular haz que se deslice para ver más opciones»* | ✅ (1.32). Publicaciones dice «pronto»: qué va ahí todavía se habla |
+| **Publicaciones es un muro automático de la Liga, y los anuncios de todos los servidores** | *«sí un muro automático, pero anuncios de todos los servidores también»* | ✅ `bot/muro.py` (1.33): campeones, rangos, tarjetas, cazas, precios, premios, El Elegido, anuncios y novedades. Contado por la Liga, en tercera persona |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (8 AM) — versión 1.33
+
+**Publicaciones: el muro de la Liga.** Dlx: *«sí un muro automático, pero
+anuncios de todos los servidores también»*.
+
+- 📰 `bot/muro.py`, corrido desde `subir_web.py --aplicar` (paso 2c, porque
+  usa la tabla que arma ahí). Entran: 🏆 campeones (de las llaves), ⬆️
+  subidas de rango y 🎖️ primer rango, 🃏 tarjetas desbloqueadas, 🎯 cazas y
+  🛡️ sobrevivientes del Most Wanted, 🗳️ El Elegido, 💰 precios cobrados, 🥇
+  premios de la semana, 📢 los anuncios de eventos de todos los servidores
+  (`datos/anuncios.json`) y 📰 las novedades de la Liga en DRA.
+- ⚠️ **Subir de rango y desbloquear no se pueden recalcular**: son un cambio
+  entre dos corridas, así que se anotan en `datos/muro.json` con cómo estaba
+  cada uno. La primera vez que se ve a alguien sólo se anota (si no, el muro
+  arrancaría con cien «desbloqueó» que no pasaron hoy). Lo demás se rearma
+  en cada corrida desde su fuente.
+- Viaja **aparte del lobby** (`web:muro`, `/api/muro`): se pide al abrir la
+  vista, y el lobby sigue en 107 KB. Lo de los últimos 21 días, y desde el
+  arranque de la T1 nada de la prueba.
+- El «Organiza: yo» o «staff» de un anuncio no se muestra: es la regla de la
+  Copa (`multiplicadores._org()`).
+- Probado: self-check de `muro` (11), `subir_web`, `probar_local.mjs` (con
+  `/api/muro` en el proxy), y la vista en local con los datos de verdad —69
+  publicaciones: 46 anuncios, 16 campeones y 7 novedades—, en escritorio y en
+  teléfono.
 
 ---
 
@@ -1146,12 +1175,13 @@ inglés, y `/borrar-mis-datos`.
   A»*: hechas en la 1.31.
 - ✅ ~~Las cuentas de Discord de menos de 30 días no votan~~: *«Listo»* (27/09).
   Vale también para poner un precio por cabeza.
-- **¿Los buscados del Most Wanted también pagan Puntos de Tienda?** Hoy el que
-  caza a un buscado cobra sólo Temporada; con el precio por cabeza cobra las
-  dos. Si *«necesitamos más incentivos para que la gente pase por la página»*,
-  pagar también Tienda en el MW es una línea.
-- **¿Qué va en Publicaciones?** Hoy dice «pronto». Mi idea sigue siendo la del
-  27/09: primero el muro automático de la Liga.
+- **¿Los buscados del Most Wanted también pagan Puntos de Tienda?** (Dlx:
+  *«explica»*, explicado el 28/09 a las 7:30 AM.) A) lo mismo que la
+  Temporada · B) una parte, el 10 % —mi recomendación: el MW paga hasta
+  20.000 y todos arrancan con 5.000— · C) no. Vale también para el que
+  sobrevive.
+- ✅ ~~¿Qué va en Publicaciones?~~ *«sí un muro automático, pero anuncios de
+  todos los servidores también»*: hecho en la 1.33.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién

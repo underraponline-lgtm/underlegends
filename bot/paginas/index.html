@@ -446,21 +446,22 @@
   </section>
 
   <!-- ══ PUBLICACIONES ═══════════════════════════════════════════
-       🔑 Dlx, 28/09/2026: «agrega la opción de TIENDA y PUBLICACIONES». Qué
-       van a ser todavía se habla (27/09: «seguidores, seguidos y POSTS… no
-       lo hagas todavía»), así que la página no inventa nada: dice que viene. -->
+       🔑 Dlx, 28/09/2026: «agrega la opción de TIENDA y PUBLICACIONES», y a
+       qué va ahí: «sí un muro automático, pero anuncios de todos los
+       servidores también». Lo arma el ciclo (`bot/muro.py`) y la página lo
+       pide al abrir la vista (`pedirMuro()`): no viaja en el lobby. -->
   <section class="vista" data-vista="publicaciones" hidden>
     <h1 class="tit"><em>Publicaciones</em></h1>
-    <section class="blk pase">
-      <span class="pase-tag">Próximamente</span>
-      <span class="pase-ico" aria-hidden="true">&#128240;</span>
-      <h2 class="pase-tit">Las publicaciones de la Liga</h2>
-      <p class="bajada">Todavía no están. Cuando salgan se anuncia en la Liga — y si
-      activás los avisos, te llega al teléfono.</p>
-      <div class="pase-acc">
-        <a class="btn" href="#/avisos">&#128276; Activar los avisos</a>
-        <a class="btn sec" href="#/">Mientras tanto, el Inicio</a>
-      </div>
+    <p class="bajada">Lo que pasa en la Liga, contado solo, y los anuncios de eventos de todos
+    los servidores.</p>
+    <div class="l-vista mu-fil" role="group" aria-label="Qué mostrar">
+      <button type="button" data-mufil="" aria-pressed="true">Todo</button>
+      <button type="button" data-mufil="liga" aria-pressed="false">En la Liga</button>
+      <button type="button" data-mufil="anuncios" aria-pressed="false">Anuncios</button>
+    </div>
+    <section class="blk" id="secMuro">
+      <div class="muro" id="muro"><p class="nota">Cargando&hellip;</p></div>
+      <button type="button" class="btn sec ancho" id="muroMas" hidden>Ver más</button>
     </section>
   </section>
 

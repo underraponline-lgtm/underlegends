@@ -2710,6 +2710,15 @@ def main():
     ok3 = _subir_crudo('web:ics', _ics(p.get('calendario')))
     print('   %s' % ('✓ calendario .ics: igual' if ok3 is None else
                      '✅ calendario .ics subido' if ok3 else '🔴 no pude subir el .ics'))
+    # 🔑 EL MURO DE PUBLICACIONES: lo que pasa en la Liga y los anuncios de
+    # todos los servidores. Aparte del lobby, en `web:muro`; ver `bot/muro.py`
+    try:
+        import muro as _MR
+        ok6, n6 = _MR.publicar(p, subir)
+        print('   %s' % ('✓ muro: igual (%d publicaciones)' % n6 if ok6 is None else
+                         '✅ muro subido (%d publicaciones)' % n6 if ok6 else '🔴 no pude subir el muro'))
+    except Exception as e:                               # noqa: BLE001
+        print('   🔴 el muro: %s' % str(e)[:80])
     # 🔑 LAS ENCUESTAS PARA EL WORKER, que valida cada voto contra esto: qué
     # se vota, hasta cuándo, y de qué servidor es cada uno (la regla del ×2).
     # ⚠️ CON DISCORD IDs, por eso va sólo a KV y nunca al payload. Y aunque no

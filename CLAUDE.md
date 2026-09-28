@@ -653,8 +653,9 @@ Nueve vistas con menú lateral en escritorio y barra de abajo en teléfono
 —que **se desliza de costado**: Dlx, 28/09/2026—, enrutado por hash:
 Inicio, Ranking, Tarjetas, **Pase** (próximamente), **Tienda** (los Puntos de
 Tienda y el precio por cabeza), **Eventos** (el calendario y la campana;
-`#/avisos` es un alias que baja hasta ella), **Publicaciones**
-(próximamente), Mundo y Guía. Vive en **`bot/paginas/`**, sin framework y sin
+`#/avisos` es un alias que baja hasta ella), **Publicaciones** (el muro
+de la Liga y los anuncios de todos los servidores, `bot/muro.py`), Mundo y
+Guía. Vive en **`bot/paginas/`**, sin framework y sin
 build: los archivos que están ahí son los que se sirven.
 
 🔑 **LOS RANKINGS SON UNA TABLA, NO DIEZ** (25/09/2026). Temporada,
@@ -2067,6 +2068,8 @@ bot/              el lector de Discord y el ciclo
                                   hasta cuándo y quién ganó
                   precios.py      el precio por cabeza: quién cazó qué, lo
                                   que vuelve, y lo cobrado a la Temporada
+                  muro.py         Publicaciones: lo que pasa en la Liga y los
+                                  anuncios; lo corre subir_web.py
                   autoverificar.py el país (del rol) y el Miembro de DRA,
                                   solos en cada corrida (paso 1a2)
                   alertar.py      DM a Dlx si algo se traba; lo normal, al
