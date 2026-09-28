@@ -97,6 +97,12 @@
 "prueba"
 ]
 },
+"BOOTRAX HUMILDE": {
+"debut": [
+"2026-09-28T20:24:52Z",
+"prueba"
+]
+},
 "Baltrip": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -851,9 +857,45 @@
 "prueba"
 ]
 },
+"PRAISERIZA": {
+"campeon": [
+"2026-09-28T20:24:52Z",
+"prueba"
+],
+"cazador": [
+"2026-09-28T20:24:52Z",
+"prueba"
+],
+"debut": [
+"2026-09-28T20:24:52Z",
+"prueba"
+],
+"podio": [
+"2026-09-28T20:24:52Z",
+"prueba"
+]
+},
 "PUBLIC ENEMY": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+]
+},
+"Panchok": {
+"cazador": [
+"2026-09-28T20:24:52Z",
+"prueba"
+],
+"debut": [
+"2026-09-28T20:24:52Z",
+"prueba"
+],
+"podio": [
+"2026-09-28T20:24:52Z",
+"prueba"
+],
+"regicida": [
+"2026-09-28T20:24:52Z",
 "prueba"
 ]
 },
@@ -1004,6 +1046,12 @@
 "Santi": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+]
+},
+"Saz": {
+"debut": [
+"2026-09-28T20:24:52Z",
 "prueba"
 ]
 },
@@ -1306,6 +1354,10 @@
 "yinn": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+],
+"racha": [
+"2026-09-28T20:24:52Z",
 "prueba"
 ]
 },

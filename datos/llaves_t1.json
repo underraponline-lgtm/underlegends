@@ -4176,5 +4176,281 @@
     625
    ]
   ]
+ },
+ "367": {
+  "dia": "2026-09-28",
+  "escala": "16+",
+  "fecha": "28/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1554184484453355602"
+  ],
+  "n": 367,
+  "nombre": "DESGRACIAS EN TOKYO VOL 15 MULTIVERSE",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Juasmio"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA 🇻🇪",
+       "BOOTRAX HUMILDE 🇵🇪, Trot, Tuca"
+      ],
+      "PRAISERIZA 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Velatz"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Bloody, Saz",
+       "Tusicario, KOREY 🇨🇱"
+      ],
+      "Bloody, Saz",
+      ""
+     ],
+     [
+      [
+       "Snow, Pollo Sport, Provenza, yinn",
+       "Teito🇨🇴, Majiztral"
+      ],
+      "Snow, Pollo Sport, Provenza, yinn",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Agre"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Cinexfilo",
+       "MHS 🇦🇷"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Colesito"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA 🇻🇪",
+       "Abyssus"
+      ],
+      "PRAISERIZA 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Bloody, Saz",
+       "OG"
+      ],
+      "Bloody, Saz",
+      ""
+     ],
+     [
+      [
+       "Snow, Pollo Sport, yinn, Provenza",
+       "Oasis"
+      ],
+      "Snow, Pollo Sport, yinn, Provenza",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Cinexfilo"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA 🇻🇪",
+       "Bloody, Saz"
+      ],
+      "PRAISERIZA 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "yinn, Provenza, Pollo Sport, Snow"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA 🇻🇪",
+       "Panchok"
+      ],
+      "PRAISERIZA 🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA 🇻🇪",
+    "Campeón",
+    10000
+   ],
+   [
+    "Panchok",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Saz",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Abyssus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Pollo Sport",
+    "Semifinal",
+    1312
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1312
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    1312
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    1312
+   ],
+   [
+    "Agre",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Juasmio",
+    "Octavos",
+    1250
+   ],
+   [
+    "MHS 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "KOREY 🇨🇱",
+    "Octavos",
+    625
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    625
+   ],
+   [
+    "Teito🇨🇴",
+    "Octavos",
+    625
+   ],
+   [
+    "Tusicario",
+    "Octavos",
+    625
+   ],
+   [
+    "BOOTRAX HUMILDE 🇵🇪",
+    "Octavos",
+    416
+   ],
+   [
+    "Trot",
+    "Octavos",
+    416
+   ],
+   [
+    "Tuca",
+    "Octavos",
+    416
+   ]
+  ]
  }
 }
