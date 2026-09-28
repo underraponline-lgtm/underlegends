@@ -2033,6 +2033,11 @@ comun/            las definiciones canonicas. Cada una trae la medicion que
                                  solo los de datos
                   + logos_sv/, logos_color/, escudos_cuad/, fonts/
 herramientas/     puedo_generar.py        si las cuatro cartas salen para las 138
+                  comparar_lector.py      el lector de llaves de un commit contra
+                                          el de ahora, sobre las llaves reales:
+                                          qué filas, preguntas y planteles cambian.
+                                          Correrlo antes de subir un cambio al
+                                          lector (nunca a las :22 ni a las :52)
                   probar_avisos.py        si los avisos llegan de verdad: hace de
                                           navegador con el push de Mozilla
                   secretos_en_git.py      si algun secreto entro al repo o a su
