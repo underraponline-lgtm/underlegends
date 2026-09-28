@@ -298,6 +298,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **FULLY y PARK JI-SUNG son Oasis** (la misma cuenta de Discord; ya se sabía que «fullylo4ded» lo era, 18/09) | *«Park Jin sung es Oasis también»* (28/09, 1:30 PM, contestando si FULLY era Oasis) | ✅ alias en la hoja AKAs vía ✅ Decidir y `akas.json` rearmado a mano: desde la corrida de las 1:52 PM Oasis se lleva la World Cup y lo de MARRUECOS. ⚠️ **Oasis no es Miembro de DRA** (sólo está en FFA): suma los puntos pero queda **fuera de concurso**, sin número ni cartas, hasta que tenga el rol |
 | **DNK pasa a su cuenta nueva** (la de la Lista no estaba en ningún servidor; la nueva es Miembro de DRA) | *«1. Sí, pásala»* (28/09, 10:55 AM) | ✅ la Lista, fila 296, y la pregunta cerrada con eso |
 | **En el menú, Publicaciones y Tarjetas cambian de lugar** | *«quiero que intercambies la posición entre tarjetas y publicaciones»* (28/09) | ✅ (1.40): Inicio · Ranking · Publicaciones · Pase · Tienda · Eventos · Tarjetas · Mundo · Guía |
+| **El MULTIVERSE se carga solo, como cualquier llave.** Cada uno va solo o en equipo del tamaño que quiera: 2v2, 1v3, 8v1 | *«En multiverse uno tiene la opción de ir solo o en ir en equipo. Puede haber 2v2, 1v3 o 8v1… yo creo que tú podrías identificar esto fácilmente.. es simplemente entender las llaves»* (28/09, 4:40 PM) | ✅ el #367 quedó cargado. Probado con un 8v1: el lado de 8 se perdía y rompía la llave entera; arreglado en los dos lectores (`escuchar.DELIMS` y `nombres_de_linea()`), con el caso en el contrato |
 | **La web se rehace más adelante, con Dlx y con connectors** | *«después de que termines esto planeo REMAKE el website contigo y con unos connectors»* (28/09) | ⏳ cuando Dlx lo abra; hasta entonces, sólo arreglos y pedidos puntuales |
 | **MARRUECOS lo resuelve Dlx en ✅ Decidir**, y la hoja tiene que ser más clara y más linda | *«Lo resuelvo yo… pero mejora esa página de decidir incluso más… hazla. Más mejor y bonita»* (28/09) | ✅ **«¿quién ganó esta batalla?»** y la hoja rehecha (ver abajo) |
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
@@ -436,6 +437,20 @@ optimizaciones»*.
   verificado en la página: la llave en vivo ya sale con los nombres limpios.
   Sólo convierte llaves en par: la única otra llave con una `}` (una vieja de
   Snake Rap) queda igual.
+- 🔴 **«En vivo» mostraba llaves borradas** (4:35 PM). Dlx: *«no sé por qué
+  hay 2 eventos en vivo de URBF»*. Uno era de verdad (COMPE DEL VACILE #1);
+  el otro, «PLAYER ES CACORRO», una llave de broma publicada a las 4:07 PM
+  en el mismo canal y borrada al rato. El vigía guarda cada llave hasta 6
+  horas y no se enteraba de los borrados. Ahora, si un mensaje que tenía ya
+  no está en la lectura del canal, lo saca (`borradasDelCanal()` en
+  `bot/avisos.js`, probado y desplegado): salió en la primera pasada.
+- 🔴 **Un MULTIVERSE con un equipo de 8 rompía la llave entera** (4:45 PM).
+  Probado a partir de lo que dijo Dlx (*«puede haber 2v2, 1v3 o 8v1»*): el
+  lado de 8 se perdía por dos topes de largo pensados para nombres sueltos,
+  y la línea se pegaba con la de abajo —salía un triple que no existe y la
+  final desaparecía—. Un equipo de 4 con nombres cortos entraba justo. Ahora
+  un equipo se mide por integrante. Medido sobre las llaves de hoy: 313
+  filas, ninguna cambia.
 
 ---
 
@@ -1600,7 +1615,9 @@ inglés, y `/borrar-mis-datos`.
   cuenta? Así, con bandera y el Miembro de DRA, le salen las cartas solo.
   **A** · sí · **B** · no, que sólo quede anotado (como hoy). Toca el portón,
   por eso se pregunta.
-- 🆕 **¿Un MULTIVERSE se carga solo o se retiene para que lo mires?**
+- ✅ ~~**¿Un MULTIVERSE se carga solo o se retiene para que lo mires?**~~
+  **Se carga solo** (Dlx, 4:40 PM: *«es simplemente entender las llaves»*;
+  ver las reglas). Lo que sigue es cómo estaba planteada.
   (28/09). Tu guía (§3.8) dice que es «el formato donde más se rompe todo» y
   que los de Fontana y TFC piden revisión humana —«Marcá y preguntá»—. Hoy
   el lector no tiene una regla para eso (sí para los Interserver). Hoy a la
