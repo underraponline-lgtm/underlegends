@@ -489,7 +489,8 @@
 "motera": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "sosa": {
@@ -948,6 +949,14 @@
 "Juasmio"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T21:07:49Z",
+"quien": [
+"Motera"
+],
+"carta": "temporada"
 }
 ]
 }

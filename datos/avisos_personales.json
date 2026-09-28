@@ -1603,6 +1603,7 @@
 },
 "729439360545587291": {
 "cs": [
+"pais",
 "servidor",
 "temporada"
 ],
@@ -1982,13 +1983,15 @@
 },
 "885365894606381068": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
 "896609871460442142": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
