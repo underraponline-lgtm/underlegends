@@ -117,3 +117,26 @@ runs:
     # el otro —una persona con el repo recien clonado corriendo
     # `pipeline.py --correr`—. Vive en `bot/pipeline.py`, paso 3, que
     # ademas solo lo paga los dias que hay algo que dibujar.
+    #
+    # 🔑 LO QUE SÍ VA ACÁ ES QUE LA CARPETA SOBREVIVA DE UNA CORRIDA A LA
+    # OTRA. Quien baja sigue siendo `pipeline.py` (`fotos.espejo()`, que
+    # saltea lo que ya está con el mismo peso); esto sólo evita que un
+    # runner limpio arranque vacío. Medido el 28/09/2026: el paso 5b bajaba
+    # las **427 caras en CADA corrida** —16 s y 427 pedidos a la API de
+    # Cloudflare en ráfaga, un tercio de su tope de 1.200 cada 5 minutos—.
+    # Con la carpeta guardada queda el listado de R2 y lo que cambió.
+    #
+    # ⚠️ LA CLAVE ES `fotos_etag.json`: la caché se vuelve a guardar sólo
+    # cuando cambian las fotos. Una que cambió por otro lado (`/foto` del
+    # Worker) se baja igual, porque `espejo()` compara con R2 y no con esto.
+    # La clave sale de un paso de shell y no de `hashFiles()`, que en una
+    # acción compuesta depende de la versión del runner.
+    - name: clave de las caras
+      id: caras
+      shell: bash
+      run: echo "k=$( (sha256sum datos/fotos_etag.json 2>/dev/null || echo sin) | cut -c1-16)" >> "$GITHUB_OUTPUT"
+    - uses: actions/cache@v4
+      with:
+        path: comun/fotos
+        key: fotos-${{ steps.caras.outputs.k }}
+        restore-keys: fotos-
