@@ -295,6 +295,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ✅ **en vivo** (1.38): el vigía lee los canales de veredictos mientras su servidor juega. ✅ **se carga solo** (1.39): el ciclo lee #veredictos y lo suma |
 | **Hay muchos formatos** (5 vidas, pandillas, multiverse…). Lo que el motor necesita de cualquiera es lo mismo: **el lugar final** de cada uno (eso paga) y **las batallas 1v1** (eso es duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor | *«hay muchos formatos de rap, este es uno de ellos… es confuso, hay pandillas, multiverse, etc.»* (28/09) | ✅ la regla (1.36). En un 5 vidas el lugar es **el orden en que cayeron** (*«sí dale»*); los que terminan en pie con las mismas vidas **empatan y se reparten el pozo** (guía, §10.1: la #320 dio 2.166 cada uno, y el motor da lo mismo) |
 | **Los 5 vidas: A y B** — el ciclo los carga solo desde #veredictos, y aparecen en ✅ Decidir para confirmarlos o descartarlos; si una batalla quedó pareja en el texto (un juez que vota con imagen), se pregunta quién ganó | *«1. A y b»* (28/09, 10 AM) | ✅ (1.39): `escuchar.vidas()` + `llaves_a_entrada.filas_vidas()`; en ✅ Decidir, «❤️ Vidas» con «Está bien así / No cuenta», y «No cuenta» **lo saca** del ranking (`procesar_entrada.sacar_descartados()`). La Snake Arena ya estaba aprobada (*«sí dale»*): no se vuelve a preguntar |
+| **FULLY y PARK JI-SUNG son Oasis** (la misma cuenta de Discord; ya se sabía que «fullylo4ded» lo era, 18/09) | *«Park Jin sung es Oasis también»* (28/09, 1:30 PM, contestando si FULLY era Oasis) | ✅ alias en la hoja AKAs vía ✅ Decidir y `akas.json` rearmado a mano: desde la corrida de las 1:52 PM Oasis se lleva la World Cup y lo de MARRUECOS |
 | **DNK pasa a su cuenta nueva** (la de la Lista no estaba en ningún servidor; la nueva es Miembro de DRA) | *«1. Sí, pásala»* (28/09, 10:55 AM) | ✅ la Lista, fila 296, y la pregunta cerrada con eso |
 | **En el menú, Publicaciones y Tarjetas cambian de lugar** | *«quiero que intercambies la posición entre tarjetas y publicaciones»* (28/09) | ✅ (1.40): Inicio · Ranking · Publicaciones · Pase · Tienda · Eventos · Tarjetas · Mundo · Guía |
 | **La web se rehace más adelante, con Dlx y con connectors** | *«después de que termines esto planeo REMAKE el website contigo y con unos connectors»* (28/09) | ⏳ cuando Dlx lo abra; hasta entonces, sólo arreglos y pedidos puntuales |
@@ -1513,6 +1514,18 @@ inglés, y `/borrar-mis-datos`.
   en la 1.34. (La pregunta se entendió a la tercera, con el ejemplo del Rey.)
 - ✅ ~~¿Qué va en Publicaciones?~~ *«sí un muro automático, pero anuncios de
   todos los servidores también»*: hecho en la 1.33.
+- 🆕 **«Es alguien nuevo» con cuenta de Discord** (28/09): cuando la pista de
+  ✅ Decidir muestra que el nombre es una cuenta de Discord que no está en la
+  Lista, ¿al contestar «Es alguien nuevo» lo agrego a la Lista con esa
+  cuenta? Así, con bandera y el Miembro de DRA, le salen las cartas solo.
+  **A** · sí · **B** · no, que sólo quede anotado (como hoy). Toca el portón,
+  por eso se pregunta.
+- 🆕 **Tres ideas** (28/09), para cuando quieras: **un probador de llaves en la
+  web** (el organizador pega su llave y ve cómo la lee el bot antes de
+  publicarla; corre en el navegador, no gasta nada); **los debutantes de la
+  semana en el Lunes de la Liga** (el 42 % jugó una sola vez); **un DM sólo a
+  vos** cuando una batalla lleve más de 24 h esperando en ✅ Decidir (frena los
+  puntos de todo el evento).
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién
@@ -1590,7 +1603,7 @@ inglés, y `/borrar-mis-datos`.
 - **La identidad de un evento es `(nombre, servidor, fecha)`**: si un organizador le cambia el título a una llave **después** de que se procesó, el ciclo la toma por otro evento y la cuenta dos veces. Lo seguro es anclarla al mensaje de Discord (el link ya se guarda); pide migrar `Eventos Procesados` y lo dejo para cuando haya un rato sin eventos.
 - ✅ ~~Las llaves viajan en el payload del lobby, las 24 más nuevas~~: desde la 1.20 **todas** van además a `web:llaves` y la página las pide sólo para un link viejo. Si el lobby pesa (hoy 115 KB), se puede bajar `LLAVES_WEB` sin romper ningún link.
 - **El emblema de arriba de la Servidor sigue siendo un archivo** (`comun/escudos_cuad/`, de `herramientas/escudos_cuadrados.py`): si un servidor cambia de logo, ése hay que rehacerlo mirándolo. El círculo del servidor en las otras cartas ya sale solo de Discord.
-- 🖼️ **El paso 5b baja las 427 caras en cada corrida** (~21 s), aunque no haya ninguna Bloqueada que redibujar: el sello de la Bloqueada incluye la foto embebida, así que para saber si cambió hace falta la foto. Se arregla con un sello previo por el etag de R2; no rompe nada y lo dejé para un rato tranquilo.
+- ✅ ~~🖼️ El paso 5b baja las 427 caras en cada corrida~~: desde la 1.40 la carpeta se guarda de una corrida a la otra (caché de Actions) y se bajan sólo las que cambiaron.
 - 🌍 **El OVR Nacional de la carta de País depende del país entero** (`datos/mundial.json`) y el sello mira sólo los datos de cada persona: si juega alguien de tu país, tu número se mueve y tu carta no se redibuja. Hoy tiene carta de País una sola persona; conviene cerrarlo antes de que sean más.
 - ⚠️ **El mapa campo→carta no se puede regenerar con el pool de hoy**: nadie cumple el requisito de País, así que la medición casi no la dibuja y le faltan `cc`, `sv` y los duelos. El aviso del ciclo dice «Regenerá» y **hoy no hay que hacerle caso**; lo probé y lo revertí.
-- Medir cuántas lecturas del Sheet hace cada corrida, para ver el margen contra la cuota.
+- Medir cuántas lecturas del Sheet hace cada corrida, para ver el margen contra la cuota. **Visto el 28/09**: en 2 de 4 corridas la carga de `Resultados` esperó por 429 hasta el 3.er intento (≈60 s). No es riesgo —son 6 intentos con hasta 200 s y la cuota se renueva por minuto— pero es tiempo. Lo que queda es contar quién lee cuánto.
