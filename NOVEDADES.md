@@ -392,6 +392,16 @@ optimizaciones»*.
   no saca ni agrega a nadie): 625 para cada uno de los cuatro. Si algún
   evento viejo tenía el mismo problema, se corrige solo en la próxima
   corrida, que relee toda la temporada.
+- 🔴 **Tres números de las tarjetas no se actualizaban** (2:15 PM), porque
+  dependen de otra gente y el sello sólo miraba los datos de cada uno: el
+  **OVR Nacional** (el número grande de la de País: sale de tu Score, de los
+  cinco mejores de tu país y de los mejores del pool), **la crew y el puesto
+  adentro** (Competitiva y Servidor; `datos/crews.json` no estaba en ninguna
+  huella, así que sumar a alguien a una crew no redibujaba nada) y **el
+  puesto dentro de tu letra** (País y Servidor). Ahora entran los tres. La
+  corrida de las 2:22 PM redibuja una vez **137 de País, 25 Competitivas y
+  25 Servidor** (~5 min); después, sólo las que cambian de verdad. Era el
+  pendiente del 25/09 («el sello no ve lo que depende de otros»).
 
 ---
 
@@ -1634,10 +1644,10 @@ inglés, y `/borrar-mis-datos`.
 - **3 duelos distintos entre carta y perfil** (Sin Límites, Focox, KC): el pool
   tiene el conteo del 24/09, cuando el lector leía esa batalla como 1v1. Se
   corrigen solos cuando el pool se reconstruya: lo miro en la corrida que viene.
-- **El sello no ve lo que depende de otros**: el OVR Nacional, el puesto en el
-  rango y en la crew cambian cuando cambia otra persona, y la carta no se
-  redibuja. El 25/09 quedaron 37 cartas de País viejas 3 horas, tapadas por el
-  redibujo de la madrugada.
+- ✅ ~~**El sello no ve lo que depende de otros**: el OVR Nacional, el puesto en
+  el rango y en la crew~~: los tres entran al sello desde el 28/09 (2:15 PM),
+  y también **quién está en cada crew** (`datos/crews.json` no estaba en
+  ninguna huella). Ver la 1.40.
 
 - **Los IDs por nombre siguen a mano** (`herramientas/cruzar_miembros.py`): el ciclo sólo toma el ID que llega firmado por `/card`. Emparejar un nombre con una cuenta es el paso que ya costó dos veces. Última pasada: 25/09, 12:16 PM, con Urban Freestyle (4 escritos, 63 para mirar).
 - **Sin país en ningún servidor**: 8 con ID. **5 ya tienen el Miembro de DRA** —Kevo, aze gian, Adriox, Sedelti y Elsoolar— y es lo único que les falta para la carta: con un rol de país en DRA (o la bandera en el apodo) entran solos en la corrida siguiente. Los otros 3 (Deikka, NarcoMC, TRIPLE7) están sólo en FFA. Otros 9 se miran a las 3:22 AM (hay un tope de 15 por corrida); Fabrizio tiene dos roles, España y Perú, y no lo toco.
@@ -1653,6 +1663,6 @@ inglés, y `/borrar-mis-datos`.
 - ✅ ~~Las llaves viajan en el payload del lobby, las 24 más nuevas~~: desde la 1.20 **todas** van además a `web:llaves` y la página las pide sólo para un link viejo. Si el lobby pesa (hoy 115 KB), se puede bajar `LLAVES_WEB` sin romper ningún link.
 - **El emblema de arriba de la Servidor sigue siendo un archivo** (`comun/escudos_cuad/`, de `herramientas/escudos_cuadrados.py`): si un servidor cambia de logo, ése hay que rehacerlo mirándolo. El círculo del servidor en las otras cartas ya sale solo de Discord.
 - ✅ ~~🖼️ El paso 5b baja las 427 caras en cada corrida~~: desde la 1.40 la carpeta se guarda de una corrida a la otra (caché de Actions) y se bajan sólo las que cambiaron.
-- 🌍 **El OVR Nacional de la carta de País depende del país entero** (`datos/mundial.json`) y el sello mira sólo los datos de cada persona: si juega alguien de tu país, tu número se mueve y tu carta no se redibuja. Hoy tiene carta de País una sola persona; conviene cerrarlo antes de que sean más.
+- ✅ ~~🌍 **El OVR Nacional de la carta de País depende del país entero**~~: entra al sello desde el 28/09 (ver la 1.40).
 - ⚠️ **El mapa campo→carta no se puede regenerar con el pool de hoy**: nadie cumple el requisito de País, así que la medición casi no la dibuja y le faltan `cc`, `sv` y los duelos. El aviso del ciclo dice «Regenerá» y **hoy no hay que hacerle caso**; lo probé y lo revertí.
 - Medir cuántas lecturas del Sheet hace cada corrida, para ver el margen contra la cuota. **Visto el 28/09**: en 2 de 4 corridas la carga de `Resultados` esperó por 429 hasta el 3.er intento (≈60 s). No es riesgo —son 6 intentos con hasta 200 s y la cuota se renueva por minuto— pero es tiempo. Lo que queda es contar quién lee cuánto.
