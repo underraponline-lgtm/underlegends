@@ -1060,6 +1060,37 @@ def resolver(texto, conocidos=None, ids=None):
                          or _parecido(HISTORIA.sub('', n), sig_l)
                          or (not _equipo(n)
                              and _parecido(HISTORIA.sub('', n), miembros))]
+                # 🔑 EL LADO ESCRITO COMO MENCIÓN, POR SUS NOMBRES CONOCIDOS.
+                # MARRUECOS EN VENTA V.1 (FFA, 26/09/2026) escribe los octavos
+                # SÓLO con `<@id>` y los cuartos con nombres: `norm()` borra la
+                # mención, así que nadie «aparecía después» y las 8 batallas
+                # de octavos se iban a ✅ Decidir. Los nombres de cada ID ya
+                # estaban —el padrón, sus alias, la inscripción y lo que
+                # Discord trae con la mención (`ids`)— y sólo los usaba la
+                # línea CAMPEÓN.
+                #
+                # ⚠️ Y EL QUE PASA SE LLAMA COMO LO ESCRIBIERON DESPUÉS: la
+                # mención se reemplaza por el nombre de la ronda siguiente que
+                # la encontró. Con el nombre de Discord, la misma persona
+                # entraba con dos grafías —«$$hulio↑ ElDojo» en octavos y
+                # «SHULIOT» en cuartos— y el motor le pagaba a dos.
+                sust = {}
+                if ids:
+                    crudo_de = {HISTORIA.sub('', x): x for x in sig}
+                    for n in b:
+                        if n in ganan or _equipo(n) or not MENCION.search(n):
+                            continue
+                        for did in MENCION.findall(n):
+                            for cand in (ids.get(str(did)) or []):
+                                s = _parecido(cand, sig_l)
+                                s = crudo_de.get(s, s) if s is not None else \
+                                    _parecido(cand, miembros)
+                                if s is not None:
+                                    sust[n] = s
+                                    break
+                            if n in sust:
+                                break
+                    ganan += [n for n in b if n in sust]
                 if not ganan:
                     # el mismo equipo escrito al reves. Ver `_equipo()`.
                     eqs = {_equipo(s) for s in sig} - {frozenset()}
@@ -1101,6 +1132,10 @@ def resolver(texto, conocidos=None, ids=None):
                                             'ronda siguiente: pasan de dos equipos '
                                             'y se juntan'))
                                 continue
+                # la mención que pasó, con el nombre de la ronda siguiente
+                if sust:
+                    b = [sust.get(x, x) for x in b]
+                    ganan = [sust.get(x, x) for x in ganan]
                 if len(ganan) == 1:
                     out.append((ronda, b, ganan[0], 'ronda siguiente'))
                 elif not ganan:
@@ -2543,6 +2578,27 @@ def _check_dialectos():
          _mismos_integrantes('Botrax Humilde + Trot + Tokio', trio[0])),
         ('y uno que cambia de integrante, no',
          not _mismos_integrantes('Bootrax Humilde + Trot + Tuca', trio[0])),
+    ]
+    # MARRUECOS EN VENTA V.1 (FFA, 26/09/2026), recortada: octavos SÓLO con
+    # menciones, cuartos con nombres. IDs cambiados; la forma no.
+    marr = ('▪️ **🈯[•OCTAVOS DE FINAL•]🈯**\n'
+            '▪️   [<@31>🇳🇮] 🈯 [<@32>🇦🇷]\n'
+            '▪️   [<@33>🇦🇷] 🈯 [<@34>🇧🇷] (×2)\n'
+            '▪️   [<@35>🇪🇨] 🈯 **[<@36>🇺🇾]**\n'
+            '▪️ **🈚[•CUARTOS DE FINAL•]🈚**\n'
+            '▪️   [**OKAM🇨🇷**] 🈚 [MCO 🇦🇷] (df)\n'
+            '▪️   [SHULIOT🇦🇷] 🈚 [**PARK JI-SUNG🇯🇵**]\n')
+    ids_m = {'31': ['tormen 🇳🇮'], '32': ['MCO', 'Juancito//MCO'],
+             '33': ['$$hulio↑ ElDojo', 'shuliott'], '34': ['Partim'],
+             '35': ['Richard'], '36': ['Number']}
+    oct_ = [x for x in resolver(traducir(plano(marr)), ids=ids_m) if x[0] == 'OCTAVOS']
+    casos2 += [
+        ('octavos con menciones y cuartos con nombres: la mención pasa por sus nombres',
+         [x[2] for x in oct_] == ['MCO 🇦🇷', 'SHULIOT🇦🇷', None]),
+        ('y el que pasó se llama como en cuartos; el que cayó sigue siendo mención',
+         oct_[1][1] == ['SHULIOT🇦🇷', '<@34>🇧🇷']),
+        ('si ninguno de los dos aparece después, sigue siendo duda',
+         oct_[2][3] == 'no aparece nadie después'),
     ]
     casos += casos2
     for que, ok in casos:

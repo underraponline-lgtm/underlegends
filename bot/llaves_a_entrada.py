@@ -570,6 +570,15 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     # 🔑 Y LOS NOMBRES QUE DISCORD TRAE CON CADA MENCIÓN, después de los del
     # padrón: resuelven a quien todavía no tiene su ID cargado. Ver
     # `escuchar.menciones_de()`.
+    # 🔑 EL QUE SIGUE SIENDO MENCIÓN EN UNA FILA —el que perdió y no aparece
+    # después— entra con su nombre: el del padrón si está, si no el de
+    # Discord (`nombre_visible()`), lo mismo que ya hacen las batallas que
+    # decide Dlx en ✅ Decidir. Un `<@id>` en `Entrada` no es nadie para el
+    # motor. El que pasó ya viene con el nombre de la ronda siguiente (ver
+    # `escuchar.resolver()`).
+    def _v(lado):
+        return nombre_visible(lado, ids) if lado and E.MENCION.search(lado) else lado
+
     for bat in E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids):
         ronda, lados, ganador, razon = bat
         # 🔴 EN UNA BATALLA DONDE PASAN VARIOS, LOS QUE NO PASAN CAYERON
@@ -598,7 +607,7 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
                               'participantes': len(gente_grupo or gente),
                               'ronda': ronda.lower(),
-                              'ladoA': '', 'ladoB': p, 'ganador': '',
+                              'ladoA': '', 'ladoB': _v(p), 'ganador': '',
                               'notas': 'triple (%d bandas, pasan 0)' % len(lados)})
             sabidas['filtro de %d donde no pasa nadie -> %d fila(s), sin duelo'
                     % (len(lados), len(lados))] += 1
@@ -609,8 +618,8 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
                               'participantes': len(gente_grupo or gente),
                               'ronda': ronda.lower(),
-                              'ladoA': pasan[0], 'ladoB': p,
-                              'ganador': pasan[0],
+                              'ladoA': _v(pasan[0]), 'ladoB': _v(p),
+                              'ganador': _v(pasan[0]),
                               'notas': 'triple (%d bandas, pasan %d)'
                                        % (len(lados), len(pasan))})
             sabidas['batalla de %d donde pasan %d -> %d fila(s), sin duelo'
@@ -650,8 +659,8 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
                               'participantes': len(gente_grupo or gente),
                               'ronda': ronda.lower(),
-                              'ladoA': ganador, 'ladoB': p,
-                              'ganador': ganador,
+                              'ladoA': _v(ganador), 'ladoB': _v(p),
+                              'ganador': _v(ganador),
                               'notas': 'triple (%d bandas)' % len(lados)})
             sabidas['batalla de %d bandas -> %d fila(s), sin duelo'
                     % (len(lados), len(perdedores))] += 1
@@ -671,8 +680,8 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                       # cuando el evento tuvo 12 y le tocaba «8-15».
                       'participantes': len(gente_grupo or gente),
                       'ronda': ronda.lower(),
-                      'ladoA': ganador, 'ladoB': otro,
-                      'ganador': ganador,
+                      'ladoA': _v(ganador), 'ladoB': _v(otro),
+                      'ganador': _v(ganador),
                       # ⚠️ EL TERCERO QUE SALE DEL PODIO NO ES UN DUELO: la
                       # llave no trae esa batalla y no se sabe si se peleó.
                       # Con la nota, `resultados._filas_uno()` la deja
@@ -835,7 +844,7 @@ def fase_sin_batallas(texto):
 PREVIAS = {'FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES'}
 
 
-def marcar_walkins(filas, textos=()):
+def marcar_walkins(filas, textos=(), ids=None):
     """Anota `Walk-in N: nombre` a quien aparece recien en una ronda avanzada.
 
     🔴 LA GUIA DE FORMATOS LO TIENE COMO EL ERROR #4 —«walk-in sin
@@ -876,6 +885,13 @@ def marcar_walkins(filas, textos=()):
     primera ronda es una previa (filtros, clasificatoria, preliminar) con
     menos batallas que lugares tiene la ronda siguiente, la entrada es la
     siguiente.
+
+    🔴 Y UNA MENCIÓN ES ALGUIEN QUE ESTUVO, con los nombres que se le
+    conocen (`ids`: el padrón, sus alias, la inscripción y Discord).
+    MARRUECOS EN VENTA V.1 (26/09/2026) escribe los octavos sólo con
+    `<@id>`, y `norm()` borra la mención: PROVENZA, que pasó una batalla de
+    cuatro donde pasan dos, no quedaba en ninguna fila de octavos y en
+    cuartos salía «Walk-in 1» —la mitad de sus puntos— por haber jugado.
     """
     def _k(n):
         return E.norm(E.HISTORIA.sub('', n or ''))
@@ -901,6 +917,11 @@ def marcar_walkins(filas, textos=()):
                         k = E.norm(parte)
                         if k:
                             en_texto[r].add(k)
+                        # la mención, con sus nombres: ver el docstring
+                        for did in E.MENCION.findall(parte):
+                            for nom in ((ids or {}).get(str(did)) or []):
+                                if E.norm(nom):
+                                    en_texto[r].add(E.norm(nom))
     for f in filas:
         r = _ronda(f.get('ronda'))
         if r in E.ORDEN and r != 'TERCER LUGAR':
@@ -1581,6 +1602,20 @@ def _self_check():
     wc2 = wc.replace('⌞YINN⌝ 🆚 ⌞MOLUSCO⌝', '⌞YINN⌝ 🆚 ⌞ZETA⌝').replace(
         '⌞FULLY⌝ 🆚 ⌞MOLUSCO⌝', '⌞FULLY⌝ 🆚 ⌞ZETA⌝')
     fwc2 = marcar_walkins(filas_de(dict(h, texto=wc2))[0], [wc2])
+    # MARRUECOS EN VENTA V.1 recortada: octavos sólo con menciones, una
+    # batalla de cuatro donde pasan dos (OKAM y PROVENZA)
+    wm = ('# OCTAVOS\n[<@41>] 🆚 [<@42>] 🆚 [<@43>] 🆚 [<@44>]\n'
+          '# CUARTOS\n[OKAM] 🆚 [PROVENZA]\n')
+
+    def _fm():
+        return [dict(ronda='octavos', ladoA='OKAM', ladoB='Jult', ganador='OKAM',
+                     notas='triple (4 bandas, pasan 2)'),
+                dict(ronda='octavos', ladoA='OKAM', ladoB='Sin Limites', ganador='OKAM',
+                     notas='triple (4 bandas, pasan 2)'),
+                dict(ronda='cuartos', ladoA='OKAM', ladoB='PROVENZA', ganador='OKAM',
+                     notas='')]
+    ids_w = {'41': ['Okam'], '42': ['Jult'], '43': ['Provenza'], '44': ['Sin Limites']}
+    fwm, fwm0 = marcar_walkins(_fm(), [wm], ids_w), marcar_walkins(_fm(), [wm])
     casos = [
         ('el pokemon de la final queda anotado en esa fila',
          len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
@@ -1608,6 +1643,10 @@ def _self_check():
             'MATICERNA' in f['notas'] for f in fwc)),
         ('pero el que aparece recién en cuartos sigue siendo walk-in',
          [f['notas'] for f in fwc2 if 'Walk-in' in f['notas']] == ['Walk-in 1: ZETA']),
+        ('el que pasó octavos escrito como mención no es walk-in (MARRUECOS)',
+         not any('Walk-in' in f['notas'] for f in fwm)),
+        ('… y sin los nombres de la mención lo era: la prueba mide algo',
+         any('Walk-in 1: PROVENZA' in f['notas'] for f in fwm0)),
         ('filtros con nombres y sin batallas: se descarta',
          fase_sin_batallas('# COPA\nFILTROS\nAna\nBeto\nCaro\nDani\n'
                            'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
@@ -1820,10 +1859,16 @@ def main():
             d_grupo += d
             sabidas.update(sab)
         _txt = [h.get('texto') or '' for h in g['llaves']]
+        # los nombres de cada mención de estas llaves, para los walk-ins
+        _ids = {}
+        for h in g['llaves']:
+            for did, ns in ids_de(h).items():
+                _ids.setdefault(did, [])
+                _ids[did] += [n for n in ns if n not in _ids[did]]
         # ⚠️ LAS MARCAS DE LLAVE NO SON PARA UN 5 VIDAS: `sin_repetir()` se
         # comería las revanchas, y las marcas tocan las filas en su lugar
         limpias = [] if any(h.get('vidas') for h in g['llaves']) else marcar_revividos(
-            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt), _txt)
+            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids), _txt)
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
