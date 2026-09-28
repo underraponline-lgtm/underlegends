@@ -389,7 +389,16 @@ def main():
         if DE_1V1:
             print('   la hoja `1v1` tiene duelos de %d persona(s): mandan ella'
                   % len(DE_1V1))
-            DUE.update(DE_1V1)
+            # 🔴 ENTERA, NO ENCIMA DEL JSON ANTERIOR. Era `DUE.update(DE_1V1)`:
+            # pisaba a quien tiene duelos en la hoja y dejaba al resto con
+            # lo que traía el pool viejo. Quien DEJÓ de tener un duelo —el
+            # lector pasó su batalla a «triple» el 24/09— conservaba el
+            # número viejo para siempre: Sin Limites, Focox y KC salían con
+            # un duelo en la carta y ninguno en el perfil, cuatro días
+            # (medido el 28/09/2026). Es «una columna que se arrastra de sí
+            # misma» (CLAUDE.md). Con la hoja con datos, lo que no está en
+            # la hoja es cero.
+            DUE = dict(DE_1V1)
         else:
             print('   la hoja `1v1` está vacía: los duelos siguen saliendo '
                   'del JSON anterior')
