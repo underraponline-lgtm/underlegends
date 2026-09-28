@@ -374,6 +374,25 @@ def huellas():
     from comun.claves import clave as _CL
     # 🔴 LAS CAMISETAS, EN LA DE SERVIDOR: ver `camisetas()`
     camis = camisetas(list(est))
+
+    # 🔴 EL OVR NACIONAL, EN LA DE PAÍS. Es el número grande de esa carta y
+    # NO es un campo de la fila de nadie: sale de tu Score, del Score
+    # Selección de tu país (sus cinco mejores) y de los dos mejores del pool
+    # (`comun.nacional.tabla()`, lo mismo que usa `04_Pais/generar.py`). O
+    # sea que se mueve cuando juega un compatriota o cuando cambia el
+    # primero, y hasta el 28/09/2026 **tu carta no se enteraba**: el sello
+    # miraba sólo tus campos. Anotado como pendiente desde el 25/09.
+    #
+    # ⚠️ Es un entero redondeado, así que el sello cambia sólo si cambia el
+    # número que se ve. Y es un DATO, no dibujo: va en la primera parte y se
+    # redibuja en el acto, como cualquier número de la carta.
+    try:
+        from comun.nacional import tabla as _tabla_nacional
+        nac = _tabla_nacional(_j('datos', 'competitivo_pool.json') or [],
+                              _j('datos', 'mundial.json'))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude calcular el OVR Nacional (%s)' % str(e)[:60])
+        nac = {}
     out = {}
     for quien, dos in est.items():
         h = {}
@@ -385,6 +404,9 @@ def huellas():
                 crudo.append('%s=%r|%r' % (k, dos['c'].get(k), dos['t'].get(k)))
             # ⚠️ La cara, en las cuatro. Ver el bloque de arriba.
             crudo.append('cara=%s' % cara)
+            # y el OVR Nacional, en la de País: ver arriba
+            if carta == 'pais':
+                crudo.append('nac=%r' % nac.get(quien))
             h[carta] = '%s:%s' % (
                 hashlib.sha1('\n'.join(crudo).encode('utf-8')).hexdigest()[:12],
                 cod.get(carta, '?'))
