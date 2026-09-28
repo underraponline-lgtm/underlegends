@@ -29,6 +29,8 @@
   var ALIAS = { 'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
     'FILTRO': 'FILTROS', 'SEMI - FINAL': 'SEMIFINALES', 'SEMI-FINAL': 'SEMIFINALES',
     'SEMI FINAL': 'SEMIFINALES', 'SEMIFINAL': 'SEMIFINALES', 'SEMIS': 'SEMIFINALES',
+    // y el plural con espacio de Urban Freestyle: ver `escuchar.ALIAS`
+    'SEMI - FINALES': 'SEMIFINALES', 'SEMI-FINALES': 'SEMIFINALES', 'SEMI FINALES': 'SEMIFINALES',
     'SEMI': 'SEMIFINALES', 'GRAN FINAL': 'FINAL' };
   // cómo se lee cada ronda en la página: lo mismo que `llaves_web.ETIQUETA`
   var ETIQUETA = { 'FILTROS': 'Filtros', 'CLASIFICATORIAS': 'Clasificatorias',

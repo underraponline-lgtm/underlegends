@@ -59,6 +59,11 @@ INVENTADOS = [
      '# ▪️ [• FINAL•]\n'
      '# ▪️ [ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸'
      ' + HOTEL 🇺🇾]  🆚 [TRES 🇻🇪 + CUATRO 🇵🇪]\n'),
+    ('Urban Freestyle: -SEMI FINALES-, en plural y con espacio (28/09/2026)',
+     '## COMPE DEL VACILE #1🤙\n## -CUARTOS-\n'
+     '**{Cinexfilo🇻🇪} VS {Steven🇨🇴}**\n**{Yeyox🇲🇽} VS {Panchok 🇨🇱}**\n'
+     '## -SEMI FINALES-\n**{Cinexfilo🇻🇪} VS {Panchok🇨🇱}**\n'
+     '## -FINAL-\n**{Juasmio🇨🇴} VS {Panchok🇨🇱}**\n'),
     ('Urban Freestyle: marcos con llaves {x}, COMPE DEL VACILE #1 (28/09/2026)',
      '## COMPE DEL VACILE #1🤙\n# -----------------------------\n## -OCTAVOS-\n'
      '**{MHS🇦🇷} VS {Cinexfilo🇻🇪}**\n**{Adachi 🇻🇪} VS {Steven🇨🇴}**\n'

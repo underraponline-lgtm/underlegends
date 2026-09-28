@@ -147,10 +147,16 @@ import requests                                          # noqa: E402
 ORDEN = ['FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS',
          'OCTAVOS',
          'CUARTOS', 'SEMIFINALES', 'TERCER LUGAR', 'FINAL']
+# 🔴 Y EL PLURAL CON ESPACIO: Urban Freestyle escribe `-SEMI FINALES-` (COMPE
+# DEL VACILE #1, 28/09/2026). La ronda se leía con ese nombre, fuera de
+# `ORDEN`, y el motor no le encontraba valor en la escala: los que perdían la
+# semi cobraban 0.
 ALIAS = {'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
          'FILTRO': 'FILTROS',
          'SEMI - FINAL': 'SEMIFINALES', 'SEMI-FINAL': 'SEMIFINALES',
          'SEMI FINAL': 'SEMIFINALES', 'SEMIFINAL': 'SEMIFINALES',
+         'SEMI - FINALES': 'SEMIFINALES', 'SEMI-FINALES': 'SEMIFINALES',
+         'SEMI FINALES': 'SEMIFINALES',
          'SEMIS': 'SEMIFINALES', 'SEMI': 'SEMIFINALES',
          'GRAN FINAL': 'FINAL'}
 

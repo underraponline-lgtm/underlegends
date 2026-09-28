@@ -875,6 +875,43 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "Urban Freestyle: -SEMI FINALES-, en plural y con espacio (28/09/2026)",
+   "texto": "## COMPE DEL VACILE #1🤙\n## -CUARTOS-\n**{Cinexfilo🇻🇪} VS {Steven🇨🇴}**\n**{Yeyox🇲🇽} VS {Panchok 🇨🇱}**\n## -SEMI FINALES-\n**{Cinexfilo🇻🇪} VS {Panchok🇨🇱}**\n## -FINAL-\n**{Juasmio🇨🇴} VS {Panchok🇨🇱}**\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Cinexfilo🇻🇪",
+       "Steven🇨🇴"
+      ],
+      [
+       "Yeyox🇲🇽",
+       "Panchok 🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "Cinexfilo🇻🇪",
+       "Panchok🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Juasmio🇨🇴",
+       "Panchok🇨🇱"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [
