@@ -57,6 +57,39 @@ def _mil(n):
     return '{:,}'.format(int(n)).replace(',', '.')
 
 
+def debutantes(semana, vistos=None, pool=None):
+    """Quién jugó por primera vez en su vida en esa semana, con su nombre.
+
+    La primera vez sale de `datos/vistos.json` (la misma que el Semillero) y
+    el nombre, del pool de Temporada; si no está, la clave.
+    """
+    import multiplicadores as MU
+    vistos = MU.leer_vistos() if vistos is None else vistos
+    if pool is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+                pool = json.load(f) or []
+        except (OSError, ValueError):
+            pool = []
+    nombre = {}
+    for x in pool:
+        k = MU._clave_persona(x.get('raw') or '')
+        if k:
+            nombre.setdefault(k, x.get('raw'))
+    ini, fin = MU._de_iso(semana['inicio']), MU._de_iso(semana['fin'])
+    # ⚠️ POR LOS ALIAS DE HOY: «nacioenmilan» debutó como nombre, pero es
+    # Deuxs, que ya había jugado. Vale la primera vez de la PERSONA.
+    primera = {}
+    for k, (iso, _sv) in vistos.items():
+        if not iso:
+            continue
+        c = MU._clave_persona(k) or k
+        if c not in primera or iso < primera[c]:
+            primera[c] = iso
+    return sorted((nombre.get(c) or c for c, iso in primera.items()
+                   if ini <= MU._de_iso(iso) < fin), key=lambda s: s.lower())
+
+
 def armar(d=None, ahora=None, mw=None):
     """`(título, [renglones])` del mensaje de la semana que contiene a `ahora`."""
     import multiplicadores as MU
@@ -123,6 +156,17 @@ def armar(d=None, ahora=None, mw=None):
             pp.append('servidor **%s** (%d raperos)' % tuple(ps['servidor']))
         if pp:
             ls.append('**🏅 La semana pasada** — ' + ' · '.join(pp))
+        # 🌱 LOS DEBUTANTES DE LA SEMANA PASADA. Dlx, 28/09/2026, a «los
+        # debutantes de la semana en el Lunes de la Liga»: *«B»* (de «B y C»).
+        # El 42 % de la Liga jugó una sola vez: nombrar a quien se estrena es
+        # lo más barato que hay para que vuelva. «Debutar» es lo mismo que
+        # cuenta el Semillero: jugar por primera vez en la vida en la Liga
+        # (`datos/vistos.json`), no «nuevo en la temporada».
+        deb = debutantes(d['semanas'][ids.index(s['id']) - 1])
+        if deb:
+            ls.append('**🌱 Debutaron la semana pasada** — %s%s. ¡Bienvenidos!' % (
+                ', '.join('**%s**' % x for x in deb[:12]),
+                ' y %d más' % (len(deb) - 12) if len(deb) > 12 else ''))
     # 🔑 LAS ENCUESTAS DE LA PÁGINA (bot/encuestas.py): el ×2 de la que viene se
     # vota toda la semana, y El Elegido de cada Most Wanted antes de que salga
     ls.append('**🗳️ Votá en la página** — qué servidor se lleva el ×2 la semana que viene y quién es '
