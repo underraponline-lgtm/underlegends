@@ -1786,8 +1786,11 @@ N_VIDAS = 5
 #: cuántas horas hacia atrás se leen, y cuántos mensajes como mucho
 VER_HORAS = 36
 VER_TOPE = 300
-#: cuántos días se guardan en `datos/veredictos.json`
-VER_DIAS = 10
+#: cuántos días se guardan en `datos/veredictos.json`. ⚠️ Mientras el
+#: evento está guardado, su batalla sin ganador sigue en la lista del
+#: lector; cuando sale, `pendientes._resuelto_ya()` cierra la pregunta. Tres
+#: semanas le dan tiempo a Dlx; una pregunta más vieja ya no se contesta.
+VER_DIAS = 21
 VER_MEMORIA = os.path.join(BASE, 'datos', 'veredictos.json')
 _EPOCA_DISCORD = 1420070400000
 
