@@ -13,6 +13,53 @@
     "FFA": 1.5,
     "URBF": 1.5
    }
+  },
+  {
+   "id": "2026-09-28",
+   "inicio": "2026-09-28T15:00:00Z",
+   "fin": "2026-10-05T04:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-09-28T15:22:35Z",
+   "sv": {
+    "URBF": 2,
+    "FFA": 0.5,
+    "DRA": 1.5,
+    "SR": 1.5
+   },
+   "dorado": {
+    "sv": "SR",
+    "desde": "2026-09-29T04:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "FFA",
+      "DRA"
+     ],
+     [
+      "SR",
+      "URBF"
+     ]
+    ]
+   },
+   "metas": {
+    "DRA": 8,
+    "FFA": 140,
+    "SR": 68,
+    "URBF": 8
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "DRA": 0,
+    "FFA": 0,
+    "SR": 0,
+    "URBF": 0
+   }
   }
  ]
 }
