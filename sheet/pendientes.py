@@ -381,6 +381,9 @@ def _en_la_lista():
     return _LISTA['d']
 
 
+_HOJAS = {}
+
+
 def _tiene_campeon(nombre_evento):
     """`True` si ese evento ya dejó un Campeón en `Resultados`.
 
@@ -396,14 +399,19 @@ def _tiene_campeon(nombre_evento):
     try:
         from escribir import Hoja
         objetivo = norm_simple(nombre_evento)
+        # ⚠️ LAS DOS HOJAS, UNA VEZ POR CORRIDA: esto se pregunta por cada
+        # llave incompleta de la cola, y eran dos lecturas por fila.
+        if 'ep' not in _HOJAS:
+            _HOJAS['ep'] = Hoja('Eventos Procesados').filas()
+            _HOJAS['res'] = Hoja('Resultados').filas()
         nums = set()
-        for f in Hoja('Eventos Procesados').filas():
+        for f in _HOJAS['ep']:
             f = list(f) + [''] * 3
             if norm_simple(f[1]) == objetivo and str(f[0]).strip().isdigit():
                 nums.add(str(f[0]).strip())
         if not nums:
             return False
-        for f in Hoja('Resultados').filas():
+        for f in _HOJAS['res']:
             f = list(f) + [''] * 8
             if str(f[0]).strip() in nums and _es_campeon(f[6]):
                 return True
