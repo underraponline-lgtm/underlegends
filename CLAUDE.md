@@ -1106,6 +1106,16 @@ Ahora cada hash es `<datos>:<código>` y el código sale de
   sin eso tocar la herramienta cuesta 552 cartas. Es una regla resuelta con
   `__file__`, no una lista de excepciones a mano.
 
+🔴 **Y TAMPOCO VE LO QUE DEPENDE DE OTROS.** El sello hashea los campos de
+**tu** fila, y tres números de las cartas no son de tu fila: el **OVR
+Nacional** (tu Score, los cinco mejores de tu país y los mejores del pool),
+**la crew y el puesto adentro** (`datos/crews.json` no estaba en ninguna
+huella) y **el puesto dentro de tu letra**. Se movían cuando jugaba otro y
+tu carta no se enteraba. Desde el 28/09/2026 entran a `que_cambio.huellas()`
+—calculados igual que los dibuja la carta, y sólo a quien los tiene, para no
+redibujar al pool entero—. **Si una carta empieza a dibujar un número que
+sale de otra gente, va ahí también**, o vuelve este bug.
+
 ⚠️ **Y el guardián que existía para esto miraba `mtime`.** `mapa_viejo()`
 comparaba la fecha de los archivos contra la del mapa — y **un `git
 checkout` le pone a todos la hora del checkout**, así que en Actions, el
