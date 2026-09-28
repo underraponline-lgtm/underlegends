@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.39",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T11:00:00-04:00",
+   "titulo": "Los 5 vidas cuentan solos",
+   "items": [
+    "❤️ **Un 5 vidas suma solo**: cuando un servidor lo juega en sus veredictos, el evento se carga con sus puntos y sus duelos, sin que nadie tenga que publicar una llave.",
+    "📋 Lleva el nombre de su anuncio, y el lugar de cada uno es el orden en que se quedó sin vidas.",
+    "⚖️ Si una batalla queda pareja porque un juez votó con una imagen, la decide la organización, y el evento espera: nunca suma a medias."
+   ]
+  },
+  {
    "version": "1.38",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T09:10:00-04:00",

@@ -292,13 +292,67 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Publicaciones es un muro automático de la Liga, y los anuncios de todos los servidores** | *«sí un muro automático, pero anuncios de todos los servidores también»* | ✅ `bot/muro.py` (1.33): campeones, rangos, tarjetas, cazas, precios, premios, El Elegido, anuncios y novedades. Contado por la Liga, en tercera persona |
 | **El Most Wanted paga además el 10 % en Puntos de Tienda**, al que caza y al que sobrevive (12.000 de Temporada → 1.200 de Tienda) | *«b»* (28/09, 7:45 AM) | ✅ `most_wanted.TIENDA` + `precios.tienda_mw()` (1.34). Se reemplaza entero en cada corrida: una llave corregida no paga dos veces |
 | **Entrar con Discord una vez alcanza**: nada de mandar a autorizar en cada voto | *«cada vez que presiono para votar me redirige a DISCORD… lo hice miles de veces»* (28/09, con capturas) | ✅ la sesión (1.35): `sesionNueva()` en `bot/avisos.js`, cookie `lg_ses` HttpOnly, 30 días, sin secreto nuevo |
-| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ✅ **en vivo** (1.38): el vigía lee los canales de veredictos mientras su servidor juega. ⏳ **falta cargarlo solo** (el ciclo) |
+| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ✅ **en vivo** (1.38): el vigía lee los canales de veredictos mientras su servidor juega. ✅ **se carga solo** (1.39): el ciclo lee #veredictos y lo suma |
 | **Hay muchos formatos** (5 vidas, pandillas, multiverse…). Lo que el motor necesita de cualquiera es lo mismo: **el lugar final** de cada uno (eso paga) y **las batallas 1v1** (eso es duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor | *«hay muchos formatos de rap, este es uno de ellos… es confuso, hay pandillas, multiverse, etc.»* (28/09) | ✅ la regla (1.36). En un 5 vidas el lugar es **el orden en que cayeron** (*«sí dale»*); los que terminan en pie con las mismas vidas **empatan y se reparten el pozo** (guía, §10.1: la #320 dio 2.166 cada uno, y el motor da lo mismo) |
-| **Los 5 vidas: A y B** — el ciclo los carga solo desde #veredictos, y aparecen en ✅ Decidir para confirmarlos o descartarlos; si una batalla quedó pareja en el texto (un juez que vota con imagen), se pregunta quién ganó | *«1. A y b»* (28/09, 10 AM) | ⏳ lo que sigue |
+| **Los 5 vidas: A y B** — el ciclo los carga solo desde #veredictos, y aparecen en ✅ Decidir para confirmarlos o descartarlos; si una batalla quedó pareja en el texto (un juez que vota con imagen), se pregunta quién ganó | *«1. A y b»* (28/09, 10 AM) | ✅ (1.39): `escuchar.vidas()` + `llaves_a_entrada.filas_vidas()`; en ✅ Decidir, «❤️ Vidas» con «Está bien así / No cuenta», y «No cuenta» **lo saca** del ranking (`procesar_entrada.sacar_descartados()`). La Snake Arena ya estaba aprobada (*«sí dale»*): no se vuelve a preguntar |
 | **MARRUECOS lo resuelve Dlx en ✅ Decidir**, y la hoja tiene que ser más clara y más linda | *«Lo resuelvo yo… pero mejora esa página de decidir incluso más… hazla. Más mejor y bonita»* (28/09) | ✅ **«¿quién ganó esta batalla?»** y la hoja rehecha (ver abajo) |
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (11 AM) — versión 1.39
+
+**Los 5 vidas se cargan solos, y se confirman en ✅ Decidir.** Dlx:
+*«1. A y b»*.
+
+- ❤️ **A — el ciclo los carga**: `escuchar.vidas()` busca los #veredictos
+  de la Liga (hoy Snake Rap tiene 2 y Urban Freestyle 8), lee las últimas
+  36 h y arma las batallas con **las mismas reglas que «En vivo»**: gana la
+  mayoría de los jueces; si queda parejo, el que siguió peleando; la réplica
+  la decide la de después. El nombre sale del **anuncio de ese servidor a
+  esa hora** («SNAKE ARENA VOL. 2»); sin anuncio, «5 VIDAS 17:38».
+  Medido con la Snake Arena real: **las mismas 23 batallas, en el mismo
+  orden y con el mismo podio** que la carga a mano del #365.
+- 🔑 **Python y la página leen igual**: el contrato
+  (`bot/llaves_casos.json`) tiene ahora los 106 mensajes reales de la Snake
+  Arena, con los jueces tapados; CI se pone rojo si uno de los dos lectores
+  cambia solo.
+- ⚖️ **Una batalla pareja en el texto se pregunta** en ✅ Decidir, con su
+  número («5 vidas, batalla 24»: la misma pareja puede empatar dos veces), y
+  **el evento espera la respuesta** — no suma a medias ni pasa a «bracket
+  incompleto». Contestada, **entra en su lugar**: en un 5 vidas el orden es
+  quién cayó primero.
+- ✅ **B — se confirma o se saca**: cada 5 vidas cargado solo aparece como
+  «❤️ Vidas» con el campeón y el orden; «Está bien así» queda como decisión
+  del evento y **«No cuenta» lo saca** de `Resultados`, `1v1`, `Eventos
+  Procesados` y del hub. 🔴 **Antes «no cuenta» no sacaba nada**: sólo
+  impedía volver a escribirlo, así que lo ya cargado quedaba para siempre.
+- 🔒 **Lo que se guarda es el evento armado, no los mensajes**
+  (`datos/veredictos.json`): el repo es público, y la charla de los jueces
+  y quién votó qué quedarían en git para siempre. Se guarda para no perder
+  un evento que espera una respuesta más de 36 h.
+- 🐍 La Snake Arena ya estaba aprobada (*«sí dale»*), así que lleva las dos
+  decisiones anotadas: cuenta, y la última batalla —1–1 en el texto, un
+  juez votó con una imagen— la ganó DELUXE. No se vuelve a preguntar.
+
+**✅ Decidir, pulida** (10:25 AM):
+
+- 🐛 **Las franjas de evento salían grises, chicas y centradas** desde la
+  segunda: el formato de las columnas iba de la primera pregunta a la
+  última y las pisaba. Ahora va por tramo.
+- 🔗 **Los links se tocan**: «ver la llave ↗» en cada franja y «perfil ↗»
+  en las preguntas de identidad, en vez de 120 caracteres de URL que no
+  eran link.
+- 🪪 **Las preguntas de identidad dicen qué es cada cuenta**: en qué
+  servidores está, si es Miembro de DRA, cómo figura en la Lista y cuántos
+  eventos jugó. Salen cosas: la cuenta de la Lista de **DNK** no está en
+  ningún servidor de la Liga, y la «otra» cuenta de **o.e.p** es la de
+  **MILICA**. Las opciones pasan a «Es la misma persona / Es otra persona»
+  y dicen que **sólo se anota** (ningún Discord ID se mueve).
+- 🧹 La llave sin campeón muestra sus batallas en Pistas, y las pistas de
+  una versión anterior ya no se copian a 📝 NOTA.
 
 ---
 
