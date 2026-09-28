@@ -266,7 +266,7 @@
       [
        "Masino",
        "JAHNO 🇦🇷",
-       "tormen 🇳🇮"
+       "tormen"
       ],
       "Masino",
       "triple (3 bandas)"
@@ -284,7 +284,7 @@
       [
        "Tusicario",
        "Velatz",
-       "Korey🇨🇱"
+       "Korey"
       ],
       "Tusicario",
       "triple (3 bandas)"
@@ -453,7 +453,7 @@
     1250
    ],
    [
-    "Korey🇨🇱",
+    "Korey",
     "Octavos",
     1250
    ],
@@ -508,7 +508,7 @@
     1250
    ],
    [
-    "tormen 🇳🇮",
+    "tormen",
     "Octavos",
     1250
    ],
@@ -567,7 +567,7 @@
      [
       [
        "ARDEAN 🇵🇪",
-       "Arez 🇪🇨"
+       "AREZ"
       ],
       "ARDEAN 🇵🇪",
       ""
@@ -714,7 +714,7 @@
     2500
    ],
    [
-    "Arez 🇪🇨",
+    "AREZ",
     "Octavos",
     1250
    ],
@@ -930,7 +930,7 @@
        "Makmah",
        "Vandu",
        "Tuca",
-       "EricRJ🇦🇷"
+       "EricRJ"
       ],
       "Makmah",
       "triple (4 bandas)"
@@ -1135,7 +1135,7 @@
     1250
    ],
    [
-    "EricRJ🇦🇷",
+    "EricRJ",
     "Octavos",
     1250
    ],
@@ -1236,7 +1236,7 @@
      [
       [
        "MCNadie, NC",
-       "SUDAKA🇦🇷, ADACCHI 🇻🇪",
+       "SUDAKA🇦🇷, Nobu",
        "L 🇨🇴, Shadow"
       ],
       "MCNadie, NC",
@@ -1323,11 +1323,6 @@
     2625
    ],
    [
-    "ADACCHI 🇻🇪",
-    "Cuartos",
-    1250
-   ],
-   [
     "Crack and Krank",
     "Cuartos",
     1250
@@ -1344,6 +1339,11 @@
    ],
    [
     "L 🇨🇴",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Nobu",
     "Cuartos",
     1250
    ],
@@ -1564,7 +1564,7 @@
      [
       [
        "Teito🇨🇴, Dominick",
-       "MHS 🇦🇷, FALON 🇨🇱"
+       "MHS, FALON 🇨🇱"
       ],
       "Teito🇨🇴, Dominick",
       ""
@@ -1604,7 +1604,7 @@
      [
       [
        "ENEK 🇪🇸, Neo",
-       "Last🇺🇾, Trot"
+       "LAST, Trot"
       ],
       "ENEK 🇪🇸, Neo",
       ""
@@ -1612,7 +1612,7 @@
      [
       [
        "Eze, Six",
-       "Fin, 1200 🇵🇪"
+       "Fin, 1200"
       ],
       "Eze, Six",
       ""
@@ -1742,7 +1742,7 @@
     1250
    ],
    [
-    "1200 🇵🇪",
+    "1200",
     "Octavos",
     625
    ],
@@ -1782,12 +1782,12 @@
     625
    ],
    [
-    "Last🇺🇾",
+    "LAST",
     "Octavos",
     625
    ],
    [
-    "MHS 🇦🇷",
+    "MHS",
     "Octavos",
     625
    ],
@@ -1879,7 +1879,7 @@
      [
       [
        "Provenza",
-       "Valdoza 🇨🇱"
+       "Valdoza"
       ],
       "Provenza",
       ""
@@ -1887,7 +1887,7 @@
      [
       [
        "Abyssus",
-       "Last🇬🇶"
+       "LAST"
       ],
       "Abyssus",
       ""
@@ -2020,7 +2020,7 @@
     1250
    ],
    [
-    "Last🇬🇶",
+    "LAST",
     "Octavos",
     1250
    ],
@@ -2035,7 +2035,7 @@
     1250
    ],
    [
-    "Valdoza 🇨🇱",
+    "Valdoza",
     "Octavos",
     1250
    ],
@@ -2220,7 +2220,7 @@
      [
       [
        "MCO",
-       "tormen 🇳🇮"
+       "tormen"
       ],
       "MCO",
       ""
@@ -2243,11 +2243,11 @@
      ],
      [
       [
-       "OKAM🇨🇷",
+       "OKAM",
        "Jult",
        "Sin Limites"
       ],
-      "OKAM🇨🇷",
+      "OKAM",
       "triple (4 bandas, pasan 2)"
      ],
      [
@@ -2271,7 +2271,7 @@
      [
       [
        "Makmah",
-       "Elinge_TIMP 🇨🇱"
+       "Elinge_TIMP"
       ],
       "Makmah",
       ""
@@ -2291,10 +2291,10 @@
     "b": [
      [
       [
-       "OKAM🇨🇷",
+       "OKAM",
        "MCO"
       ],
-      "OKAM🇨🇷",
+      "OKAM",
       ""
      ],
      [
@@ -2329,7 +2329,7 @@
      [
       [
        "Oasis",
-       "OKAM🇨🇷"
+       "OKAM"
       ],
       "Oasis",
       ""
@@ -2377,7 +2377,7 @@
     5250
    ],
    [
-    "OKAM🇨🇷",
+    "OKAM",
     "Semifinal",
     5250
    ],
@@ -2402,7 +2402,7 @@
     2500
    ],
    [
-    "Elinge_TIMP 🇨🇱",
+    "Elinge_TIMP",
     "Octavos",
     1250
    ],
@@ -2447,7 +2447,7 @@
     1250
    ],
    [
-    "tormen 🇳🇮",
+    "tormen",
     "Octavos",
     1250
    ],
@@ -2499,7 +2499,7 @@
       [
        "Fazer",
        "NC",
-       "KULRW🇦🇷"
+       "Jult"
       ],
       "Fazer",
       "triple (4 bandas, pasan 2)"
@@ -2570,7 +2570,7 @@
     2000
    ],
    [
-    "KULRW🇦🇷",
+    "Jult",
     "Cuartos",
     2000
    ],
@@ -2674,10 +2674,10 @@
      ],
      [
       [
-       "MTZ 🇲🇽",
+       "MTZ",
        "Makmah"
       ],
-      "MTZ 🇲🇽",
+      "MTZ",
       ""
      ],
      [
@@ -2711,10 +2711,10 @@
      ],
      [
       [
-       "MTZ 🇲🇽",
+       "MTZ",
        "LRS"
       ],
-      "MTZ 🇲🇽",
+      "MTZ",
       ""
      ],
      [
@@ -2732,10 +2732,10 @@
     "b": [
      [
       [
-       "MTZ 🇲🇽",
+       "MTZ",
        "Lord"
       ],
-      "MTZ 🇲🇽",
+      "MTZ",
       ""
      ],
      [
@@ -2767,7 +2767,7 @@
      [
       [
        "Prosu",
-       "MTZ 🇲🇽"
+       "MTZ"
       ],
       "Prosu",
       ""
@@ -2784,7 +2784,7 @@
     10000
    ],
    [
-    "MTZ 🇲🇽",
+    "MTZ",
     "Subcampeón",
     7500
    ],
@@ -3534,7 +3534,7 @@
       [
        "Prove🇦🇷, yinn",
        "Miniboy, Krish",
-       "INFECTE🇨🇴, LAST🇬🇶"
+       "INFECTE🇨🇴, LAST"
       ],
       "Prove🇦🇷, yinn",
       "triple (3 bandas)"
@@ -3702,7 +3702,7 @@
     312
    ],
    [
-    "LAST🇬🇶",
+    "LAST",
     "R32",
     312
    ],
@@ -3997,7 +3997,7 @@
      [
       [
        "SOL🇵🇪",
-       "nacioenmilan 🇮🇹"
+       "Deuxs"
       ],
       "SOL🇵🇪",
       ""
@@ -4058,7 +4058,7 @@
      [
       [
        "Eze",
-       "MATICERNA🇦🇷"
+       "MATICERNA"
       ],
       "Eze",
       ""
@@ -4124,7 +4124,7 @@
     5250
    ],
    [
-    "MATICERNA🇦🇷",
+    "MATICERNA",
     "Cuartos",
     2500
    ],
@@ -4145,6 +4145,11 @@
    ],
    [
     "Abyssus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deuxs",
     "Octavos",
     1250
    ],
@@ -4170,11 +4175,6 @@
    ],
    [
     "Soneto",
-    "Octavos",
-    1250
-   ],
-   [
-    "nacioenmilan 🇮🇹",
     "Octavos",
     1250
    ],
@@ -4213,10 +4213,10 @@
      ],
      [
       [
-       "PRAISERIZA 🇻🇪",
-       "BOOTRAX HUMILDE 🇵🇪, Trot, Tuca"
+       "PRAISERIZA",
+       "BTRX, Trot, Tuca"
       ],
-      "PRAISERIZA 🇻🇪",
+      "PRAISERIZA",
       ""
      ],
      [
@@ -4230,7 +4230,7 @@
      [
       [
        "Bloody, Saz",
-       "Tusicario, KOREY 🇨🇱"
+       "Tusicario, Korey"
       ],
       "Bloody, Saz",
       ""
@@ -4254,7 +4254,7 @@
      [
       [
        "Cinexfilo",
-       "MHS 🇦🇷"
+       "MHS"
       ],
       "Cinexfilo",
       ""
@@ -4274,10 +4274,10 @@
     "b": [
      [
       [
-       "PRAISERIZA 🇻🇪",
+       "PRAISERIZA",
        "Abyssus"
       ],
-      "PRAISERIZA 🇻🇪",
+      "PRAISERIZA",
       ""
      ],
      [
@@ -4311,10 +4311,10 @@
     "b": [
      [
       [
-       "PRAISERIZA 🇻🇪",
+       "PRAISERIZA",
        "Bloody, Saz"
       ],
-      "PRAISERIZA 🇻🇪",
+      "PRAISERIZA",
       ""
      ],
      [
@@ -4332,10 +4332,10 @@
     "b": [
      [
       [
-       "PRAISERIZA 🇻🇪",
+       "PRAISERIZA",
        "Panchok"
       ],
-      "PRAISERIZA 🇻🇪",
+      "PRAISERIZA",
       ""
      ]
     ],
@@ -4345,7 +4345,7 @@
   "sv": "FFA",
   "tabla": [
    [
-    "PRAISERIZA 🇻🇪",
+    "PRAISERIZA",
     "Campeón",
     10000
    ],
@@ -4420,7 +4420,7 @@
     1250
    ],
    [
-    "MHS 🇦🇷",
+    "MHS",
     "Octavos",
     1250
    ],
@@ -4430,7 +4430,7 @@
     1250
    ],
    [
-    "KOREY 🇨🇱",
+    "Korey",
     "Octavos",
     625
    ],
@@ -4450,7 +4450,7 @@
     625
    ],
    [
-    "BOOTRAX HUMILDE 🇵🇪",
+    "BTRX",
     "Octavos",
     416
    ],
@@ -4482,7 +4482,7 @@
      [
       [
        "Cinexfilo",
-       "MHS🇦🇷"
+       "MHS"
       ],
       "Cinexfilo",
       ""
@@ -4514,7 +4514,7 @@
      [
       [
        "Juasmio",
-       "Korey🇨🇱"
+       "Korey"
       ],
       "Juasmio",
       ""
@@ -4671,7 +4671,7 @@
     1250
    ],
    [
-    "Korey🇨🇱",
+    "Korey",
     "Octavos",
     1250
    ],
@@ -4681,7 +4681,7 @@
     1250
    ],
    [
-    "MHS🇦🇷",
+    "MHS",
     "Octavos",
     1250
    ],

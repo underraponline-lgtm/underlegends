@@ -532,7 +532,10 @@
 },
 "tormen": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "isaias": {
 "rg": "",
@@ -955,6 +958,22 @@
 "t": "2026-09-28T21:07:49Z",
 "quien": [
 "Motera"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T22:23:57Z",
+"quien": [
+"tormen"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-28T22:23:57Z",
+"quien": [
+"tormen"
 ],
 "carta": "temporada"
 }
