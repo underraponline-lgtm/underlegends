@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-28T02:54:04+00:00",
+ "cuando": "2026-09-28T03:23:55+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -630,6 +630,24 @@
    "horario": "EN 20 MINUTOS",
    "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II"
+  },
+  {
+   "nombre": "Plaza FFA",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1551013580860686417",
+   "cuando": "2026-09-19T23:34:14",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata I",
+   "modalidad": "⚔️  1v1",
+   "horario": "30 min",
+   "fecha": "19/09/26",
+   "premios": "El respeto de todos"
   },
   {
    "nombre": "FLEIVA FREE",
