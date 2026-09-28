@@ -49,6 +49,12 @@ import escuchar as E  # noqa: E402
 #: 🔑 FORMAS QUE LAS LLAVES REALES TODAVÍA NO TRAEN, recortadas del
 #: self-check de `escuchar.py`: cada una es algo que el lector ya sabe leer.
 INVENTADOS = [
+    ('Urban Freestyle: marcos con llaves {x}, COMPE DEL VACILE #1 (28/09/2026)',
+     '## COMPE DEL VACILE #1🤙\n# -----------------------------\n## -OCTAVOS-\n'
+     '**{MHS🇦🇷} VS {Cinexfilo🇻🇪}**\n**{Adachi 🇻🇪} VS {Steven🇨🇴}**\n'
+     '# -----------------------------\n## -CUARTOS-\n'
+     '**{Cinexfilo🇻🇪} VS {Steven🇨🇴}**\n**{Juasmio🇨🇴} VS {}**\n'
+     '## -FINAL-\n**{} VS {}**\n**CAMPEÓN 🏆:**\n'),
     ('Snake Rap: marcos 「」 y el equipo sin +',
      '🗽 __**GENESIS BATTLES**__ 🗽\n╭──╯  <:EYE:1> 𝙲𝚄𝙰𝚁𝚃𝙾𝚂 <:EYE:1> ╰──╮\n'
      '**「HASSAN🇦🇷」**<:VS6:2>「RAYITO🇲🇽」<:VS6:2>**「ABYSSUS🇵🇦」**\n'

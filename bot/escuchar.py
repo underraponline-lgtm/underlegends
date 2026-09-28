@@ -375,6 +375,13 @@ def traducir(texto):
     # los marcos, con el negrito que los envuelve
     t = re.sub(_MD + r'[「〈][ \t]*', '⌞', t)
     t = re.sub(r'[ \t]*[」〉]' + _MD, '⌝', t)
+    # 🔑 Y LAS LLAVES `{x}`: Urban Freestyle escribe `**{MHS🇦🇷} VS
+    # {Cinexfilo🇻🇪}**` (COMPE DEL VACILE #1, 28/09/2026). Sin esto la llave
+    # se leía igual —`VS` separa— pero los nombres quedaban con las llaves
+    # pegadas, `{Steven🇨🇴}`, y así entraban al ranking y a ✅ Decidir.
+    # ⚠️ SÓLO EN PAR Y EN LA MISMA LÍNEA: una llave vieja de Snake Rap
+    # (TOKYO VOL.5) trae una `}` suelta en el título.
+    t = re.sub(r'\{[ \t]*([^{}\n]*?)[ \t]*\}', '⌞\\1⌝', t)
     # el cuarto entre paréntesis, DESPUÉS de un separador: es un lado.
     # ⚠️ Sólo con un emoji delante: `(BLOODY) [Cj] [Zignos]` es un refuerzo
     # que no peleó (guía §4.2), y ése no lleva separador.

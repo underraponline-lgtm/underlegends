@@ -141,6 +141,8 @@
     t = t.replace(/[『「〈][ \t]*(\d(?:ER|DO) PUESTO:)[ \t]*[』」〉]/g, '$1');
     t = t.replace(new RegExp(MD + '[「〈][ \\t]*', 'g'), '⌞');
     t = t.replace(new RegExp('[ \\t]*[」〉]' + MD, 'g'), '⌝');
+    // y las llaves `{x}` de Urban Freestyle, sólo en par: ver `escuchar.traducir()`
+    t = t.replace(/\{[ \t]*([^{}\n]*?)[ \t]*\}/g, '⌞$1⌝');
     t = t.replace(/([⌝\]])[ \t]*<a?:\w+:\d+>[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)/gu, '$1 🆚 ⌞$2⌝');
     t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*(?!<a?:[vV][sS][fF]?:)<a?:\\w+:\\d+>[ \\t]*(?=' +
       MD + '[⌞\\[])', 'gu'), '$1 🆚 ');
