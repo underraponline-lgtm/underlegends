@@ -2250,6 +2250,23 @@ border:1px solid #22332F;border-radius:10px;background:linear-gradient(180deg,#0
 .bl-vs{align-self:center;padding:0 8px;color:var(--tx3);font:700 .68rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.14em;text-transform:uppercase;font-style:normal}
 .bl.sigue{border-color:var(--tl);box-shadow:0 0 0 1px var(--tl)}
+/* ── 1.36: un evento de vidas (5 VIDAS): el tablero y batalla por batalla ── */
+.vd-t{display:grid;gap:6px}
+.vd-f{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;align-items:center;gap:4px 10px;
+padding:7px 10px;border:1px solid #22332F;border-radius:10px;background:#0E1514}
+.vd-f small{grid-column:2 / -1;color:var(--tx3);font-size:.8rem}
+.vd-f.vd-pie{border-color:rgba(255,210,74,.45);background:rgba(255,210,74,.06)}
+.vd-f.vd-pie small{color:var(--oro)}
+.vd-l{color:var(--tx2);font:900 .95rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.vd-n{min-width:0}
+.vd-cs{display:inline-flex;gap:2px;white-space:nowrap}
+.vd-c{font-style:normal;color:#E5484D;font-size:1.02rem;line-height:1}
+.vd-c.vd-x{color:var(--tx3);opacity:.55}
+.vd .bx-et span:first-child{color:var(--tx3)}
+.vd-m{margin-left:auto;color:#E5484D;font-size:.8rem;font-weight:800;white-space:nowrap}
+.vd-m.vd-ult{color:var(--tx);background:rgba(229,72,77,.18);padding:2px 7px;border-radius:6px}
+.vd-sin{margin:4px 8px 2px;color:var(--tx3);font-size:.82rem}
+@media (max-width:420px){.vd-f{grid-template-columns:2em minmax(0,1fr)}.vd-cs{grid-column:2}}
 .bl .ql.sigue span{color:var(--tl)}
 .cuadro .ql.sigue span{color:var(--tl)}
 .bx.sigue .ld{opacity:1}

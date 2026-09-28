@@ -3585,5 +3585,235 @@
     312
    ]
   ]
+ },
+ "365": {
+  "dia": "2026-09-27",
+  "escala": "4-7",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208026508623883/1553883626993881189"
+  ],
+  "n": 365,
+  "nombre": "SNAKE ARENA VOL. 2",
+  "participantes": 5,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Deluxe",
+       "Fazer"
+      ],
+      "Fazer",
+      ""
+     ],
+     [
+      [
+       "Lhyon",
+       "Fazer"
+      ],
+      "Lhyon",
+      ""
+     ],
+     [
+      [
+       "Lhyon",
+       "Humildad"
+      ],
+      "Humildad",
+      ""
+     ],
+     [
+      [
+       "Humildad",
+       "JIMMY 🇵🇪"
+      ],
+      "JIMMY 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "JIMMY 🇵🇪",
+       "Deluxe"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Fazer"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Lhyon"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Humildad"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "JIMMY 🇵🇪"
+      ],
+      "JIMMY 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "JIMMY 🇵🇪",
+       "Fazer"
+      ],
+      "Fazer",
+      ""
+     ],
+     [
+      [
+       "Lhyon",
+       "Fazer"
+      ],
+      "Fazer",
+      ""
+     ],
+     [
+      [
+       "Humildad",
+       "Fazer"
+      ],
+      "Fazer",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Fazer"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "JIMMY 🇵🇪"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Lhyon"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Humildad"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Fazer"
+      ],
+      "Fazer",
+      ""
+     ],
+     [
+      [
+       "Fazer",
+       "JIMMY 🇵🇪"
+      ],
+      "JIMMY 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Lhyon",
+       "JIMMY 🇵🇪"
+      ],
+      "Lhyon",
+      ""
+     ],
+     [
+      [
+       "Lhyon",
+       "Humildad"
+      ],
+      "Humildad",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Humildad"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Fazer"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "JIMMY 🇵🇪"
+      ],
+      "Deluxe",
+      ""
+     ]
+    ],
+    "r": "5 vidas"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Deluxe",
+    "Campeón",
+    5000
+   ],
+   [
+    "JIMMY 🇵🇪",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Fazer",
+    "Tercero",
+    3000
+   ],
+   [
+    "Humildad",
+    "Cuarto",
+    2250
+   ],
+   [
+    "Lhyon",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

@@ -147,7 +147,9 @@ META_X, META_MIN, META_SEMANAS, META_BONO = 1.1, 8, 4, 1.1
 #: el destacado del calendario: anunciado con al menos estas horas de anticipación.
 #: Dlx, 27/09/2026: *«de 12 h a 24 h a más»*. Medido: 2 de 48 anuncios llegan
 DESTACADO_H = 12
-#: el Clásico: cuántos cruces previos hacen falta, y lo que suma el que gana
+#: el Clásico: en cuántos EVENTOS distintos se tienen que haber cruzado antes,
+#: y lo que suma el que gana. ⚠️ EVENTOS, NO DUELOS: en un 5 vidas los mismos
+#: dos pelean hasta cinco veces en una noche (la Snake Arena Vol. 2, 28/09).
 CLASICO_PREVIOS, CLASICO_X = 2, 1.1
 #: el techo de una fila, sumando todo
 TECHO = 5
@@ -585,12 +587,20 @@ def anotar_duelos(registro, regs=None, temporada=None):
 def clasicos(registro=None):
     """Los Clásicos, en orden: `[{'n', 'temporada', 'a', 'b', 'g', 'pa', 'pb'}]`.
 
-    Un duelo es Clásico si esos dos ya se habían cruzado `CLASICO_PREVIOS`
-    veces: `pa` y `pb` son los que había ganado cada uno ANTES de éste. La
-    identidad es la de la vitrina, así «MAU KC 🇨🇴» y «Mau Kc» son uno.
+    Un duelo es Clásico si esos dos ya se habían cruzado en `CLASICO_PREVIOS`
+    EVENTOS distintos: `pa` y `pb` son los duelos que había ganado cada uno
+    en esos eventos, ANTES de éste. La identidad es la de la vitrina, así
+    «MAU KC 🇨🇴» y «Mau Kc» son uno.
+
+    🔴 EVENTOS Y NO DUELOS. Contaba duelos, y en un formato de vidas los
+    mismos dos pelean varias veces la misma noche: en la Snake Arena Vol. 2
+    (SR, 27/09/2026) DELUXE y FAZER se cruzaron CINCO veces, así que el
+    tercero ya era «Clásico» y los dos cobraban el +10 % de una rivalidad que
+    nació esa noche. Lo que pasa dentro del evento no cuenta para ese evento.
     """
     registro = leer_rivales() if registro is None else registro
     orden = sorted(enumerate(registro), key=lambda x: (x[1][1] or '', x[1][0], x[0]))
+    # {pareja: {evento: {clave: ganados}}}
     hist, out = {}, []
     for _i, d in orden:
         n, _iso_, a, b, g, temp = d[:6]
@@ -598,31 +608,38 @@ def clasicos(registro=None):
         if not ka or not kb or ka == kb:
             continue
         h = hist.setdefault(tuple(sorted((ka, kb))), {})
-        if sum(h.values()) >= CLASICO_PREVIOS:
+        antes = [x for e, x in h.items() if e != n]
+        if len(antes) >= CLASICO_PREVIOS:
             out.append({'n': n, 'temporada': temp, 'a': a, 'b': b, 'g': g,
-                        'pa': h.get(ka, 0), 'pb': h.get(kb, 0)})
+                        'pa': sum(x.get(ka, 0) for x in antes),
+                        'pb': sum(x.get(kb, 0) for x in antes)})
         kg = _clave_persona(g)
-        h[kg] = h.get(kg, 0) + 1
+        e = h.setdefault(n, {})
+        e[kg] = e.get(kg, 0) + 1
     return out
 
 
 def rivalidades(registro=None, minimo=CLASICO_PREVIOS):
-    """`{(clave_a, clave_b): {'nombres', 'g'}}`: las parejas que ya se cruzaron `minimo` veces.
+    """`{(clave_a, clave_b): {'nombres', 'g'}}`: las parejas que ya se cruzaron en `minimo` eventos.
 
-    Para la llave EN VIVO: el próximo cruce de una de estas parejas es un Clásico.
+    Para la llave EN VIVO: el próximo cruce de una de estas parejas es un
+    Clásico. `g` son los duelos que ganó cada uno. ⚠️ EVENTOS distintos, como
+    en `clasicos()`: una noche de 5 vidas no hace una rivalidad.
     """
     registro = leer_rivales() if registro is None else registro
     out = {}
     for d in registro:
-        a, b, g = d[2], d[3], d[4]
+        n, a, b, g = d[0], d[2], d[3], d[4]
         ka, kb = _clave_persona(a), _clave_persona(b)
         if not ka or not kb or ka == kb:
             continue
-        x = out.setdefault(tuple(sorted((ka, kb))), {'nombres': {}, 'g': {}})
+        x = out.setdefault(tuple(sorted((ka, kb))), {'nombres': {}, 'g': {}, 'ev': set()})
         x['nombres'][ka], x['nombres'][kb] = a, b
+        x['ev'].add(n)
         kg = _clave_persona(g)
         x['g'][kg] = x['g'].get(kg, 0) + 1
-    return {k: v for k, v in out.items() if sum(v['g'].values()) >= minimo}
+    return {k: {'nombres': v['nombres'], 'g': v['g']}
+            for k, v in out.items() if len(v['ev']) >= minimo}
 
 
 def gente_de(ini, fin, eventos):
@@ -1154,6 +1171,20 @@ def _self_check():
     rz = rivalidades(rv)
     ok(list(rz) == [('ana', 'bea')] and rz[('ana', 'bea')]['g'] == {'ana': 3, 'bea': 1},
        'para la llave en vivo: Ana y Bea ya se cruzaron (3–1)')
+    # 🔴 un 5 vidas: los mismos dos, cuatro veces en la misma noche. No es un
+    # Clásico —ni el tercero ni el cuarto— y todavía no son rivales; al
+    # tercer EVENTO sí, con los duelos de las dos noches anteriores
+    rv3 = [[10, '2026-10-20T00:00:00Z', 'Eli', 'Fede', 'Eli', 't1'],
+           [10, '2026-10-20T00:00:00Z', 'Fede', 'Eli', 'Fede', 't1'],
+           [10, '2026-10-20T00:00:00Z', 'Eli', 'Fede', 'Eli', 't1'],
+           [10, '2026-10-20T00:00:00Z', 'Eli', 'Fede', 'Eli', 't1']]
+    ok(clasicos(rv3) == [] and rivalidades(rv3) == {},
+       'cuatro cruces en un mismo evento (un 5 vidas) no hacen un Clásico ni una rivalidad')
+    rv3 += [[11, '2026-10-21T00:00:00Z', 'Eli', 'Fede', 'Fede', 't1'],
+            [12, '2026-10-22T00:00:00Z', 'Fede', 'Eli', 'Eli', 't1']]
+    c3 = [(c['n'], c['g'], c['pa'], c['pb']) for c in clasicos(rv3)]
+    ok(c3 == [(12, 'Eli', 2, 3)] and list(rivalidades(rv3)) == [('eli', 'fede')],
+       'al tercer evento sí, con los duelos de antes (Fede 2, Eli 3)  %s' % c3)
     rv2 = list(rv)
     anotar_duelos(rv2, regs={}, temporada='t1')
     ok(len(rv2) == 5, 'sin llaves de esa temporada, los duelos guardados quedan como estaban')

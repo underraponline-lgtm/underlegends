@@ -1057,13 +1057,17 @@ function abrirLlave(n) {
   // lo primero que hace falta para entender lo que sigue.
   // ⚠️ CÓMO SEGUIR A ALGUIEN NO VA ACÁ: lo dice la barra de abajo mientras
   // no se sigue a nadie, que es justo cuando hace falta.
-  var ley = '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
+  var vid = vidasDe(L);
+  var ley = vid ? '<div class="l-ley"><span class="ley-n">' + vid + ' vidas: cada batalla le saca una al que ' +
+    'pierde y el que gana se queda. Con ' + vid + ' derrotas quedás afuera, y el lugar es el orden en que ' +
+    'cayeron.</span></div>' :
+    '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
     '<span class="ley-p"><i></i>Quedó afuera</span><span class="ley-o"><i></i>El camino del campeón</span>' +
     '<span class="ley-n">' + (L.vivo ? 'Se juega ahora: los puntos llegan cuando el ciclo procesa el evento.'
       : 'Arriba de cada ronda, los puntos de quien queda afuera ahí.') + '</span></div>';
   // 🔑 DOS FORMAS DE VERLA: el cuadro, y por rondas de arriba abajo —cómoda en
   // el teléfono, donde el cuadro obliga a correrlo de costado—.
-  var vistas = '<div class="l-vista" role="group" aria-label="Cómo ver la llave">' +
+  var vistas = vid ? '' : '<div class="l-vista" role="group" aria-label="Cómo ver la llave">' +
     [['cuadro', 'Cuadro'], ['rondas', 'Por rondas']].map(function (v) {
       return '<button type="button" data-lvista="' + v[0] + '" aria-pressed="' + (LL_VISTA === v[0]) + '">' +
         v[1] + '</button>';
@@ -1119,7 +1123,9 @@ function pintaVistaLlave(quieto) {
   var cc0 = $('#lCuerpo .cuadro-caja'), x0 = cc0 ? cc0.scrollLeft : 0;
   var cu = $('#lCuerpo'), y0 = cu ? cu.scrollTop : 0;
   $$('[data-lvista]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lvista === LL_VISTA)); });
-  $('#lVista').innerHTML = LL_VISTA === 'rondas' ? rondasLista(LL.L, LL.quien, LL.cara)
+  var vid = vidasDe(LL.L);
+  $('#lVista').innerHTML = vid ? vidasVista(LL.L, LL.quien, vid)
+    : LL_VISTA === 'rondas' ? rondasLista(LL.L, LL.quien, LL.cara)
     : cuadro(LL.L, LL.quien, LL.cara);
   var cc = $('#lCuerpo .cuadro-caja');
   LL.ancho = window.innerWidth;
@@ -1209,8 +1215,8 @@ function etiquetasNota(nota) {
   if (/^podio/i.test(s)) out.push('Por el podio');
   return out;
 }
-/* 🔑 EL CLÁSICO: el tercer cruce, o más, de los mismos dos (ver
-   `multiplicadores.clasicos()`). En una llave jugada, con lo que había ganado
+/* 🔑 EL CLÁSICO: los mismos dos, cruzándose en su tercer evento o más (ver
+   `multiplicadores.clasicos()`: eventos y no duelos, por los 5 vidas). En una llave jugada, con lo que había ganado
    cada uno ANTES; en vivo, con lo que llevan. El que gana suma +10 %. */
 function clasicoDe(L, b) {
   var ls = (b && b[0]) || [];
@@ -1255,6 +1261,77 @@ function valeRonda(R, ptsDe) {
   });
   return vs.length && vs.every(function (v) { return v === vs[0]; }) ? vs[0] : null;
 }
+/* 🔑 UN EVENTO DE VIDAS NO ES UNA LLAVE. Dlx, 28/09/2026: «SNAKE ARENA es
+   formato TIPO 5 VIDAS… como la Red Bull 5 Vidas». Cada batalla le saca una
+   vida al que pierde y el que gana se queda, así que un cuadro no tiene ramas
+   que dibujar: saldría una columna de 23 cajas. Arriba, las vidas de cada uno
+   y cuándo cayó; abajo, las batallas en el orden en que se pelearon —el de
+   las filas, que ES el dato—.
+   ⚠️ EL LUGAR NO SE CALCULA ACÁ: lo da el motor (`motor.lugares_vidas()`) y
+   llega en `L.tabla`. Acá sólo se cuentan las vidas para mostrarlas. */
+function vidasDe(L) {
+  var rs = ((L && L.rondas) || []).filter(function (R) { return R.b.length; });
+  var m = rs.length === 1 && /^(\d+)\s*vidas?$/i.exec(String(rs[0].r || '').trim());
+  return m ? +m[1] : 0;
+}
+function vidasVista(L, quien, N) {
+  var bs = L.rondas.filter(function (R) { return R.b.length; })[0].b;
+  var perd = {}, cae = {}, sale = [];
+  var perdedor = function (b) {
+    var ls = b[0] || [];
+    if (!b[1] || ls.length !== 2) return null;
+    var p = ls.filter(function (s) { return s !== b[1] && !comparten(b[1], s); });
+    return p.length === 1 ? p[0] : null;
+  };
+  bs.forEach(function (b, i) {
+    (b[0] || []).forEach(function (s) { if (!(s in perd)) perd[s] = 0; });
+    var p = perdedor(b);
+    if (p == null) { sale.push(null); return; }
+    perd[p] += 1;
+    if (perd[p] === N) cae[p] = i + 1;
+    sale.push([p, perd[p]]);
+  });
+  // en el orden de la tabla del motor: del campeón al último
+  var gente = Object.keys(perd);
+  var lugar = {};
+  (L.tabla || []).forEach(function (r, i) {
+    gente.forEach(function (s) { if (!(s in lugar) && comparten(r[0], s)) lugar[s] = i; });
+  });
+  gente.sort(function (a, b) { return (a in lugar ? lugar[a] : 99) - (b in lugar ? lugar[b] : 99); });
+  var corazones = function (s) {
+    var out = '';
+    for (var k = 0; k < N; k++) {
+      out += k < N - perd[s] ? '<i class="vd-c">&#9829;</i>' : '<i class="vd-c vd-x">&#9825;</i>';
+    }
+    return '<span class="vd-cs" aria-label="' + (N - perd[s]) + ' de ' + N + ' vidas">' + out + '</span>';
+  };
+  var tablero = '<div class="vd-t">' + gente.map(function (s, i) {
+    var fin = cae[s] ? 'cayó en la batalla ' + cae[s] : 'en pie';
+    return '<div class="vd-f' + (cae[s] ? '' : ' vd-pie') + '"><b class="vd-l">' + (i + 1) + '.º</b>' +
+      '<span class="vd-n">' + quien(s) + '</span>' + corazones(s) +
+      '<small>' + (cae[s] ? '' : '&#127942; ') + fin + '</small></div>';
+  }).join('') + '</div>';
+  var lista = bs.map(function (b, i) {
+    var x = sale[i];
+    var ult = x && x[1] === N;
+    var et = etiquetasHtml(b[2]) + etiquetaClasico(L, b);
+    return '<div class="bl"' + (b[2] ? ' title="' + esc(b[2]) + '"' : '') + '>' +
+      '<div class="bx-et"><span>Batalla ' + (i + 1) + '</span>' + et + '</div>' +
+      (b[0] || []).map(function (s, j) {
+        var g = b[1] && (b[1] === s || comparten(b[1], s));
+        var menos = x && x[0] === s;
+        return (j ? '<i class="bl-vs">vs</i>' : '') + '<div class="bl-l' + (g ? ' g' : '') + '">' +
+          '<span class="bl-n"><span class="bl-m">' + quien(s, false, !g) + '</span></span>' +
+          (g ? '<span class="bl-ok" title="Ganó y se queda">&#10003;</span>'
+            : menos ? '<span class="vd-m' + (ult ? ' vd-ult' : '') + '">' +
+              (ult ? 'sin vidas' : '&minus;1 &#9829; (le quedan ' + (N - x[1]) + ')') + '</span>' : '') +
+          '</div>';
+      }).join('') + (x ? '' : '<p class="vd-sin">Sin ganador: no le sacó vida a nadie.</p>') + '</div>';
+  }).join('');
+  return '<div class="rl-lista vd">' + tablero + '<section class="rl-r"><h5>Batalla por batalla<small>' +
+    bs.length + ' batallas</small></h5>' + lista + '</section></div>';
+}
+
 /* 🔑 LA LLAVE POR RONDAS: cada ronda con su valor, y cada batalla con quién
    pasó marcado. Es la vista del teléfono: se lee bajando, como un chat. */
 function rondasLista(L, quien, cara) {

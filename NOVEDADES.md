@@ -292,9 +292,50 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Publicaciones es un muro automático de la Liga, y los anuncios de todos los servidores** | *«sí un muro automático, pero anuncios de todos los servidores también»* | ✅ `bot/muro.py` (1.33): campeones, rangos, tarjetas, cazas, precios, premios, El Elegido, anuncios y novedades. Contado por la Liga, en tercera persona |
 | **El Most Wanted paga además el 10 % en Puntos de Tienda**, al que caza y al que sobrevive (12.000 de Temporada → 1.200 de Tienda) | *«b»* (28/09, 7:45 AM) | ✅ `most_wanted.TIENDA` + `precios.tienda_mw()` (1.34). Se reemplaza entero en cada corrida: una llave corregida no paga dos veces |
 | **Entrar con Discord una vez alcanza**: nada de mandar a autorizar en cada voto | *«cada vez que presiono para votar me redirige a DISCORD… lo hice miles de veces»* (28/09, con capturas) | ✅ la sesión (1.35): `sesionNueva()` en `bot/avisos.js`, cookie `lg_ses` HttpOnly, 30 días, sin secreto nuevo |
-| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ⏳ por hacer. Las llaves de esa noche las borraron |
+| **SNAKE ARENA es formato 5 VIDAS** (5 competidores, como la Red Bull), no una llave. Durante un evento en vivo hay que mirar **todos los canales de eventos**; en **veredictos** está quién ganó, quién votó y quién participó | *«por eso tienes que estar pendiente de todos los canales de eventos cuando hay un evento en vivo… en veredictos está todo lo que pasó»* | ✅ **el formato** (1.36): la ronda «5 vidas» en `Entrada`, `motor.lugares_vidas()`, y la Vol. 2 cargada a mano desde #veredictos (#365). ⏳ **falta leerlo solo**: el vigía no mira veredictos todavía |
+| **Hay muchos formatos** (5 vidas, pandillas, multiverse…). Lo que el motor necesita de cualquiera es lo mismo: **el lugar final** de cada uno (eso paga) y **las batallas 1v1** (eso es duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor | *«hay muchos formatos de rap, este es uno de ellos… es confuso, hay pandillas, multiverse, etc.»* (28/09) | ✅ la regla (1.36). En un 5 vidas el lugar es **el orden en que cayeron** (*«sí dale»*); los que terminan en pie con las mismas vidas **empatan y se reparten el pozo** (guía, §10.1: la #320 dio 2.166 cada uno, y el motor da lo mismo) |
+| **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Lunes 28/09 (9 AM) — versión 1.36
+
+**Los 5 vidas.** Dlx: *«SNAKE ARENA es formato TIPO 5 VIDAS donde sólo hay
+5 competidores, como la Red Bull 5 Vidas… en veredictos está todo lo que
+pasó»*, y al plan: *«sí dale»*. Después: *«hay muchos formatos de rap…
+pandillas, multiverse, etc.»*.
+
+- 🔑 **El motor entiende «N vidas»** (`sheet/motor.py`): si TODAS las
+  batallas de un evento tienen la ronda «5 vidas», no busca final ni semis:
+  cuenta las derrotas batalla por batalla, el que llega a 5 queda afuera, y
+  el lugar es **el orden en que cayeron** (el que sigue en pie, campeón).
+  Del 5.º al 8.º paga lo de cuartos, que es lo que pagó la #320 de la guía.
+  Si el evento se corta con varios en pie, se ordenan por las vidas que les
+  quedan y **los que tienen las mismas empatan y se reparten el pozo**
+  (§10.1): probado, da 2.166 cada uno, el número de la guía. Una batalla sin
+  ganador no quita vidas. Todo lo raro se avisa como `VIDAS:` y va a
+  `Pendientes`.
+- 🐍 **SNAKE ARENA VOL. 2, #365**, cargada desde #veredictos de Snake Rap:
+  23 batallas (la réplica empatada de las 7:18 PM no entra, como se
+  aprobó). Deluxe 5.000 · JIMMY 3.750 · Fazer 3.000 · Humildad (DTR, su AKA
+  registrado) 2.250 · Lhyon 1.250, antes del multiplicador. **JIMMY no está
+  en el padrón**: fue a `Pendientes` como nombre desconocido. La hora del
+  evento sale del primer veredicto (27/09, 5:38 PM ET). El ciclo de las
+  11:22 la pasa a las vitrinas, los pools y las tarjetas (el paso 1c corre
+  siempre).
+- ❤️ **La página**: un evento de vidas se ve como vidas (`vidasVista()` en
+  `app.js`): el lugar, los corazones que le quedan a cada uno y en qué
+  batalla cayó, y batalla por batalla con «−1 ♥». Sin el botón de «Cuadro /
+  Por rondas»: no hay ramas que dibujar.
+- 🤜 **El Clásico cuenta eventos** (`multiplicadores.clasicos()` y
+  `rivalidades()`): lo que pasa dentro de un evento no hace rivalidad para
+  ese evento.
+- 🔴 **El motor no estaba en CI**: su self-check pedía el Sheet. Ahora usa
+  la copia de `datos/escala.json` si no hay credenciales
+  (`motor.tablas_guardadas()`, verificada igual a `Config`) y entró a
+  `chequeos.yml`. Probado de las dos formas.
 
 ---
 

@@ -244,7 +244,8 @@ def main():
         # un alias, así que va a `Pendientes`, como los nombres desconocidos.
         alias_mal += [(ev['num'], a) for a in ev['avisos']
                       if 'pelean en la misma batalla' in a
-                      or a.startswith('ESCALA:') or a.startswith('SUMA:')]
+                      or a.startswith('ESCALA:') or a.startswith('SUMA:')
+                      or a.startswith('VIDAS:')]
 
     if alias_mal and aplicar:
         try:

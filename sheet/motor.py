@@ -115,6 +115,30 @@ DE_LLAVE = {
 }
 
 
+#: 🔑 LOS FORMATOS DE VIDAS NO SON UNA LLAVE. Dlx, 28/09/2026: *«SNAKE ARENA
+#: es formato TIPO 5 VIDAS donde sólo hay 5 competidores, como la Red Bull 5
+#: Vidas»*. Cada batalla le quita una vida al que pierde, el ganador se queda
+#: y el que llega a N derrotas queda afuera. No hay final ni semis: el lugar
+#: sale del ORDEN EN QUE CAYERON, que es puntuar por posición y no por nombre
+#: de ronda (guía de Dlx, §3.6). La ronda se escribe «5 vidas» en `Entrada`.
+#:
+#: ⚠️ Y SON UNO DE MUCHOS. Dlx, el mismo día: *«hay muchos formatos de rap…
+#: pandillas, multiverse, etc.»*. Lo que el motor necesita de cualquiera es
+#: lo mismo: el LUGAR final de cada uno (eso paga) y las batallas 1v1 (eso es
+#: duelo). Un formato nuevo es otra forma de sacar el lugar, no otro motor.
+VIDAS = re.compile(r'^(\d+)\s*vidas?$')
+
+
+def puesto_de_lugar(n):
+    """Lo que paga el lugar `n` cuando el formato ordena por POSICIÓN.
+
+    Del 5.º al 8.º es lo de cuartos y del 9.º al 16.º lo de octavos: es lo
+    que pagó la #320 5 VIDAS, donde el 5.º cobró 1.250 (guía, §10.1).
+    """
+    return ({1: 'campeon', 2: 'subcampeon', 3: 'tercero', 4: 'cuarto'}.get(n)
+            or ('cuartos' if n <= 8 else 'octavos' if n <= 16 else 'r32'))
+
+
 def norm(s):
     """minusculas sin tildes. Es `normPos` de Code.gs, igual."""
     s = unicodedata.normalize('NFD', str(s or '').lower())
@@ -214,6 +238,26 @@ def tablas():
     return out
 
 
+def tablas_guardadas():
+    """`tablas()` y `modificadores()` desde `datos/escala.json`, sin el Sheet.
+
+    Es la copia de `Config` que `bot/subir_web.py` refresca cada vez que la
+    lee bien, con los puestos como los muestra la Guía («Dieciseisavos» es
+    `r32`). ⚠️ SÓLO PARA EL SELF-CHECK: procesar un evento de verdad con una
+    copia es justo lo que el docstring de este módulo pide no hacer.
+    """
+    import io
+    import json
+    with io.open(os.path.join(BASE, 'datos', 'escala.json'), encoding='utf-8') as f:
+        d = json.load(f) or {}
+    de = {'dieciseisavos': 'r32'}
+    tab = {e: {de.get(norm(k), norm(k)): int(v) for k, v in filas}
+           for e, filas in (d.get('tablas') or {}).items()}
+    walkin = {0: 1.0}
+    walkin.update({int(k): v / 100.0 for k, v in d.get('walkin') or []})
+    return tab, {'revivido': (d.get('revivido') or 50) / 100.0, 'walkin': walkin}
+
+
 def modificadores():
     filas = {}
     for i, f in enumerate(_leer(MODS)):
@@ -252,6 +296,7 @@ def _resolvedor():
     except Exception:                                    # noqa: BLE001
         _pelado.fallo = set()
         _pelado.padron = {}
+        _pelado.n_padron = 0
         return _pelado, 0
     porclave = {}
     for d in p.values():
@@ -339,6 +384,8 @@ def _resolvedor():
         return hallado
     resolver.fallo = set()
     resolver.padron = porclave
+    # cuántos del PADRÓN (sin los alias): 0 es «no se pudo leer»
+    resolver.n_padron = len(p)
     return resolver, len(porclave)
 
 
@@ -381,6 +428,72 @@ def _perdedor(b):
     if g in [norm(x) for x in equipo(c)]:
         return a
     return None
+
+
+def vidas_de(batallas):
+    """Cuántas vidas tiene el formato, si TODAS las batallas son de vidas.
+
+    0 si no lo es —una llave común— o si mezcla: una fase de vidas seguida
+    de una final no está en la guía, y adivinar cómo se paga es justo lo que
+    la regla del «dejá una nota» pide no hacer. Esas rondas se avisan solas
+    (`ESCALA:`), como cualquier ronda que la escala no conoce.
+    """
+    ns = set()
+    for b in batallas:
+        m = VIDAS.match(ronda_de(b.get('ronda')))
+        if not m:
+            return 0
+        ns.add(int(m.group(1)))
+    return ns.pop() if len(ns) == 1 else 0
+
+
+def lugares_vidas(batallas, vidas, resolver):
+    """El orden final de un evento de vidas: `(grupos, avisos)`.
+
+    Cada grupo son los que comparten un lugar, del primero al último; casi
+    siempre es una sola persona.
+
+    🔑 EL LUGAR LO DA EL ORDEN EN QUE CAYERON: el último en quedarse sin
+    vidas es 2.º, el anterior 3.º, y el que sigue en pie es el campeón. Es
+    lo que Dlx aprobó para la Snake Arena Vol. 2 (*«sí dale»*, 28/09/2026).
+    Las filas van en el orden en que se pelearon: ese orden ES el dato.
+
+    ⚠️ LOS QUE TERMINAN EN PIE SE ORDENAN POR LAS VIDAS QUE LES QUEDAN, y con
+    las mismas EMPATAN: un empate cobra el POZO de los lugares que comparte
+    (guía, §10.1). La #320 5 VIDAS terminó con tres compartiendo del 3.º al
+    5.º. Dos no pueden caer a la vez: cada batalla quita una sola vida.
+
+    ⚠️ Una batalla sin ganador —una réplica empatada— no quita vidas.
+    """
+    perdidas, cayeron, vistos, avisos = {}, [], [], []
+    for b in batallas:
+        for q in (resolver(b.get('ladoA')), resolver(b.get('ladoB'))):
+            if not q:
+                continue
+            if q not in perdidas:
+                perdidas[q] = 0
+                vistos.append(q)
+            elif q in cayeron:
+                avisos.append('VIDAS: %s pelea después de perder sus %d '
+                              'vidas — revisar el orden de las filas'
+                              % (q, vidas))
+        p = _perdedor(b)
+        if p is None:
+            continue
+        q = resolver(p)
+        perdidas[q] = perdidas.get(q, 0) + 1
+        if perdidas[q] == vidas:
+            cayeron.append(q)
+    vivos = [q for q in vistos if q not in cayeron]
+    grupos = [[q for q in vivos if perdidas[q] == k]
+              for k in sorted({perdidas[q] for q in vivos})]
+    grupos += [[q] for q in reversed(cayeron)]
+    if len(vivos) != 1:
+        avisos.append('VIDAS: terminan %d en pie (%s): se ordenan por las '
+                      'vidas que les quedan y los que tienen las mismas '
+                      'empatan — revisar si el evento terminó así'
+                      % (len(vivos), ', '.join(vivos) or '—'))
+    return grupos, avisos
 
 
 def procesar(batallas, num, fecha, servidor, participantes=None,
@@ -463,6 +576,33 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         # COMPARAR. Ver su comentario: el lector escribe `semifinales` y
         # acá se pregunta por `semifinal`.
         return [b for b in batallas if ronda_de(b.get('ronda')) == r]
+
+    # 🔑 UN FORMATO DE VIDAS PAGA POR LUGAR, no por ronda. Sus batallas no
+    # tienen final ni semis, así que lo de abajo no encuentra nada que pagar.
+    vidas = vidas_de(batallas)
+    if vidas:
+        grupos, av = lugares_vidas(batallas, vidas, resolver)
+        avisos += av
+        gente = sum(len(g) for g in grupos)
+        if gente != participantes:
+            avisos.append('VIDAS: la fila dice %d participantes y pelearon %d'
+                          % (participantes, gente))
+        lugar = 1
+        for g in grupos:
+            hasta = lugar + len(g) - 1
+            # 🔴 EL POZO (guía, §10.1): los que empatan se reparten lo que
+            # valen JUNTOS los lugares que comparten. Nunca sale más de lo
+            # que esos lugares valen.
+            pozo = sum(tab.get(puesto_de_lugar(x), 0)
+                       for x in range(lugar, hasta + 1))
+            for q in g:
+                sumar(q, pozo // len(g), puesto_de_lugar(lugar))
+                if len(g) > 1:
+                    # el chequeo de SUMA mira un puesto de un solo dueño; un
+                    # empate reparte un pozo y la guía lo da como correcto
+                    aportes[q][-1] = ('pozo', pozo // len(g))
+                    res[q]['notas'] += 'Empate %d-%d ' % (lugar, hasta)
+            lugar = hasta + 1
 
     final = (por('final') or [None])[0]
     tercer = (por('tercer puesto') or [None])[0]
@@ -683,6 +823,8 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     for r in sorted({ronda_de(b.get('ronda')) for b in batallas}):
         if r in ('final', 'tercer puesto', 'semifinal'):
             continue
+        if vidas and VIDAS.match(r):
+            continue
         puesto = dict(CAIDA).get(r)
         if not puesto or not tab.get(puesto):
             avisos.append('ESCALA: la ronda «%s» no tiene valor en la escala '
@@ -780,9 +922,19 @@ def _self_check():
     """
     mal = 0
     print('\n══ EL MOTOR, SOBRE LA LLAVE DE 16 ══\n')
+    # 🔑 CON EL SHEET SI SE PUEDE, Y SI NO CON LA COPIA. Sin esto el self-check
+    # pedía credenciales y por eso no estaba en CI: el motor, que es el que
+    # reparte los puntos, era lo único central que ningún push probaba.
+    try:
+        tab0, mods0 = tablas(), modificadores()
+    except Exception as e:                               # noqa: BLE001
+        print('   (sin el Sheet: %s — con la copia de `datos/escala.json`)\n'
+              % str(e)[:50])
+        tab0, mods0 = tablas_guardadas()
+    res0, _n0 = _resolvedor()
     try:
         ev = procesar(_llave16(), num=9999, fecha='20/09', servidor='DRA',
-                      participantes=16)
+                      participantes=16, tab=tab0, mods=mods0, resolver=res0)
     except Exception as e:                               # noqa: BLE001
         print('   🔴 no pudo procesar la llave: %s' % str(e)[:80])
         return 1
@@ -815,7 +967,7 @@ def _self_check():
                      and r['rapero'] not in ('Krtman', 'Trot')), None)
         if solo is None:
             # nadie mas quedo cuarto: se compara contra la tabla
-            t = tablas()[ev['escala']]
+            t = tab0[ev['escala']]
             solo = int(t.get('cuarto') or 0)
         ok('el dúo cobra la MITAD de un cuarto solo',
            solo and duo[0]['puntos'] * 2 == solo,
@@ -869,8 +1021,13 @@ def _self_check():
            len(del_duo) >= 1, '%d' % len(del_duo))
     except Exception as e:                               # noqa: BLE001
         ok('las batallas del dúo NO entran a `1v1`', False, str(e)[:60])
-    ok('ningún nombre quedó sin resolver', not ev.get('sin_resolver'),
-       '%s' % (ev.get('sin_resolver') or '—'))
+    # sin el padrón (CI no tiene credenciales) todo nombre es desconocido:
+    # la pregunta no tiene con qué contestarse, y no es una falla del motor
+    if getattr(res0, 'n_padron', 0):
+        ok('ningún nombre quedó sin resolver', not ev.get('sin_resolver'),
+           '%s' % (ev.get('sin_resolver') or '—'))
+    else:
+        print('   ·  sin el padrón no se pregunta si los nombres resuelven')
 
     # 🔴 QUE EL MOTOR ENTIENDA **TODAS** LAS RONDAS QUE EL LECTOR ESCRIBE.
     #
@@ -960,6 +1117,59 @@ def _self_check():
         ok('contra un pokemon no hay duelo', uno == [], '%d fila(s)' % len(uno))
     except Exception as e:                               # noqa: BLE001
         ok('contra un pokemon no hay duelo', False, str(e)[:50])
+
+    # 7 · LOS FORMATOS DE VIDAS: la SNAKE ARENA VOL. 2 (SR, 27/09/2026),
+    #     batalla por batalla, con su tabla de 4-7 escrita acá.
+    t47 = {'4-7': {'campeon': 5000, 'subcampeon': 3750, 'tercero': 3000,
+                   'cuarto': 2250, 'cuartos': 1250}}
+    arena = [('De', 'Fa', 'Fa'), ('Lh', 'Fa', 'Lh'), ('Lh', 'Dt', 'Dt'),
+             ('Dt', 'Ji', 'Ji'), ('Ji', 'De', 'De'), ('De', 'Fa', 'De'),
+             ('De', 'Lh', 'De'), ('De', 'Dt', 'De'), ('De', 'Ji', 'Ji'),
+             ('Ji', 'Fa', 'Fa'), ('Lh', 'Fa', 'Fa'), ('Dt', 'Fa', 'Fa'),
+             ('De', 'Fa', 'De'), ('De', 'Ji', 'De'), ('De', 'Lh', 'De'),
+             ('De', 'Dt', 'De'), ('De', 'Fa', 'Fa'), ('Fa', 'Ji', 'Ji'),
+             ('Lh', 'Ji', 'Lh'), ('Lh', 'Dt', 'Dt'), ('De', 'Dt', 'De'),
+             ('De', 'Fa', 'De'), ('De', 'Ji', ''), ('De', 'Ji', 'De')]
+
+    def _vd(bs, n=5):
+        e = procesar([{'ronda': '5 vidas', 'ladoA': a, 'ladoB': c,
+                       'ganador': g} for a, c, g in bs], num=1,
+                     fecha='27/09', servidor='SR', participantes=n,
+                     tab=t47, mods=mods, resolver=_yo)
+        return {r['rapero']: r for r in e['resultados']}, e
+
+    va, eva = _vd(arena)
+    orden = [q for q, _r in sorted(va.items(), key=lambda kv: -kv[1]['puntos'])]
+    ok('5 vidas: el lugar es el orden en que cayeron',
+       orden == ['De', 'Ji', 'Fa', 'Dt', 'Lh'], '%s' % orden)
+    ok('y el 5.º cobra lo de cuartos (la #320)',
+       va.get('Lh', {}).get('puntos') == 1250,
+       '%s' % va.get('Lh', {}).get('puntos'))
+    ok('la réplica sin ganador no quita vidas', not eva['avisos'],
+       '%s' % (eva['avisos'] or '—'))
+    try:
+        import resultados as _R5
+        uno = _R5._filas_uno({'num': 1, 'fecha': '27/09', 'servidor': 'SR',
+                              'duelos': eva['duelos']})
+        ok('las 23 con ganador van a `1v1`; la réplica no',
+           len(uno) == 23, '%d de %d' % (len(uno), len(eva['duelos'])))
+    except Exception as e:                               # noqa: BLE001
+        ok('las 23 con ganador van a `1v1`; la réplica no', False,
+           str(e)[:50])
+    # el evento se corta con todos en pie: A no perdió, B perdió una y C, D
+    # y E dos cada uno. Los tres empatan del 3.º al 5.º, como la #320 (§10.1)
+    em, eem = _vd([('A', 'B', 'A'), ('A', 'C', 'A'), ('A', 'C', 'A'),
+                   ('A', 'D', 'A'), ('A', 'D', 'A'), ('A', 'E', 'A'),
+                   ('A', 'E', 'A')])
+    pozo = (3000 + 2250 + 1250) // 3
+    ok('los que empatan cobran el POZO (§10.1)',
+       [em.get(x, {}).get('puntos') for x in 'CDE'] == [pozo] * 3,
+       '%s' % [em.get(x, {}).get('puntos') for x in 'CDE'])
+    ok('y el empate se avisa, no se calla',
+       any(a.startswith('VIDAS:') for a in eem['avisos']))
+    ok('un pozo no dispara el chequeo de SUMA (§13)',
+       not any(a.startswith('SUMA:') for a in eem['avisos']),
+       '%s' % ([a for a in eem['avisos'] if a.startswith('SUMA:')] or '—'))
 
     mal = nonlocal_mal[0]
     print('')
