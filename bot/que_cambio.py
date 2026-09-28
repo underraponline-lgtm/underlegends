@@ -393,6 +393,23 @@ def huellas():
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude calcular el OVR Nacional (%s)' % str(e)[:60])
         nac = {}
+
+    # 🔴 Y LA CREW, que tampoco es un campo de nadie: la identidad sale de
+    # `datos/crews.json` (que no está en ninguna huella) y el puesto, de
+    # `comun.crews.puestos()` sobre el pool competitivo —lo mismo que
+    # dibujan la Competitiva y la Servidor; la de País dibuja sólo la
+    # crew—. Sin esto, sumar a alguien a una crew o que un compañero lo
+    # pase no redibujaba nada (28/09/2026).
+    #
+    # ⚠️ SÓLO SE AGREGA A QUIEN TIENE CREW: los demás conservan su huella,
+    # así que el día que entró esto se redibujaron 24 personas, no 440.
+    try:
+        from comun import crews as _CW
+        crew = _CW.puestos(_j('datos', 'competitivo_pool.json') or [])
+        de_crew = _CW.DE_CADA_UNO
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer las crews (%s)' % str(e)[:60])
+        crew, de_crew = {}, {}
     out = {}
     for quien, dos in est.items():
         h = {}
@@ -407,6 +424,11 @@ def huellas():
             # y el OVR Nacional, en la de País: ver arriba
             if carta == 'pais':
                 crudo.append('nac=%r' % nac.get(quien))
+            # y la crew, en las tres que la dibujan: ver arriba
+            if carta in ('competitivo', 'servidor') and crew.get(_CL(quien)):
+                crudo.append('crew=%r' % (tuple(crew[_CL(quien)]),))
+            elif carta == 'pais' and de_crew.get(_CL(quien)):
+                crudo.append('crew=%r' % de_crew[_CL(quien)])
             h[carta] = '%s:%s' % (
                 hashlib.sha1('\n'.join(crudo).encode('utf-8')).hexdigest()[:12],
                 cod.get(carta, '?'))
