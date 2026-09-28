@@ -429,6 +429,13 @@ optimizaciones»*.
 - 🧰 **`herramientas/comparar_lector.py`**: el lector de un commit contra el
   de ahora, sobre todas las llaves reales (sin escribir nada). Todos los
   arreglos al lector de hoy se midieron así antes de subirlos.
+- 🔴 **Urban Freestyle escribe `{A} VS {B}`** (3:30 PM): la COMPE DEL VACILE
+  #1, que se está jugando, marca cada lado con llaves. Se leía, pero los
+  nombres quedaban `{Steven🇨🇴}` y así iban a entrar al ranking y a ✅
+  Decidir. Arreglado en los dos lectores (el del ciclo y el de la página) y
+  verificado en la página: la llave en vivo ya sale con los nombres limpios.
+  Sólo convierte llaves en par: la única otra llave con una `}` (una vieja de
+  Snake Rap) queda igual.
 
 ---
 
