@@ -81,6 +81,9 @@ DECISIONES = os.path.join(BASE, 'datos', 'decisiones.json')
 #: cómo se muestra cada tipo de `Pendientes`, y en qué orden. Primero lo que
 #: mueve puntos de un evento entero; después los nombres; al final identidad.
 GRUPO = {
+    # ❤️ el 5 vidas que el ciclo cargó solo desde #veredictos (Dlx, 28/09/2026:
+    # «A y b»): se confirma o se saca. Va primero: ya suma puntos.
+    'Vidas cargado': (0, '❤️ Vidas'),
     'Batalla sin ganador': (0, '⚔️ Batalla'),
     'Bracket incompleto': (0, '🏆 Evento'),
     'Evento dudoso': (0, '🏆 Evento'),
@@ -311,7 +314,8 @@ def _seccion(p):
         x = partes_batalla(det)
         if x:
             ev, sv, fecha = x[0], x[1], x[2]
-    elif t in ('Bracket incompleto', 'Evento dudoso', 'Llave sin resolver') and ' · ' in det:
+    elif t in ('Bracket incompleto', 'Evento dudoso', 'Llave sin resolver',
+               'Vidas cargado') and ' · ' in det:
         partes = [x.strip() for x in det.split(' · ')]
         if len(partes) == 3:
             ev, sv, fecha = partes
@@ -444,6 +448,9 @@ def _pistas(p):
             out += ['La que tiene: ' + _cuenta(m.group(1)), 'La otra: ' + _cuenta(m.group(2))]
         elif m2:
             out.append('Esa cuenta: ' + _cuenta(m2.group(1)))
+    elif t == 'Vidas cargado':
+        # cómo quedó: las batallas, el campeón y el orden en que cayeron
+        out += [x.strip() for x in (p['match'] or '').split(' | ') if x.strip()]
     elif t == 'Bracket incompleto':
         # lo que la llave sí dice: sus batallas, para decidir sin abrirla
         for x in (p['match'] or '').split(' | ')[1:5]:
@@ -609,6 +616,11 @@ def _pregunta(p):
                 match or '—',
                 ['%s %s' % ('Ganó' if dos else 'Pasó', l) for l in lados]
                 + [NO_SE_JUGO, 'Dejar para después'])
+    if t == 'Vidas cargado':
+        ev = det.split(' · ')[0].strip()
+        return ('«%s» es un 5 vidas que el ciclo cargó solo desde #veredictos: '
+                'los puntos ya están en el ranking. ¿Está bien?' % ev,
+                '—', ['Está bien así', 'No cuenta'])
     if t == 'Bracket incompleto':
         return ('Esta llave no dice quién ganó y lleva más de 12 h sin '
                 'cambios, así que no sumó nada. ¿Cuenta?',
@@ -651,6 +663,10 @@ def interpretar(p, respuesta):
         return None
     if r in ESPERAN:
         return ('esperar', r)
+    # ⚠️ ANTES QUE `CIERRAN`: en un 5 vidas cargado, «Está bien así» no sólo
+    # cierra —queda como decisión del evento, y la pregunta no vuelve—
+    if p['tipo'] == 'Vidas cargado' and r in ('Está bien así', 'Sí cuenta'):
+        return ('evento', 'cuenta')
     if r in CIERRAN:
         return ('cerrar', r)
     # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
@@ -673,7 +689,7 @@ def interpretar(p, respuesta):
             return ('batalla', hit[0])
         return ('error', '«%s» no es uno de los que pelearon: elegí de la lista' % r)
     if r in ('No cuenta', 'Sí cuenta'):
-        if p['tipo'] in ('Bracket incompleto', 'Evento dudoso'):
+        if p['tipo'] in ('Bracket incompleto', 'Evento dudoso', 'Vidas cargado'):
             return ('evento', 'cuenta' if r == 'Sí cuenta' else 'no cuenta')
         return ('error', '«%s» no aplica a esta pregunta' % r)
     if p['tipo'] in ('Nombre desconocido', 'alta'):
@@ -996,7 +1012,11 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             cierres += [(n, dato) for n in p['filas']]
         elif que == 'evento':
             eventos[p['detalle']] = dato
-            cierres += [(n, 'evento: %s' % dato) for n in p['filas']]
+            # 🔴 UN 5 VIDAS YA ESTÁ EN EL RANKING: «no cuenta» lo saca
+            # `procesar_entrada.sacar_descartados()` en la corrida siguiente
+            cierres += [(n, ('no cuenta: sale del ranking en la corrida siguiente'
+                             if p['tipo'] == 'Vidas cargado' and dato == 'no cuenta'
+                             else 'evento: %s' % dato)) for n in p['filas']]
         elif que == 'troll':
             trolls.append(dato)
             cierres += [(n, 'troll: no cuenta') for n in p['filas']]
@@ -1159,7 +1179,8 @@ _AMARILLO = {'red': 1, 'green': .969, 'blue': .82}
 _VERDE = {'red': .85, 'green': .949, 'blue': .87}
 _ROJO = {'red': .988, 'green': .878, 'blue': .878}
 #: el fondo de la franja de cada sección, por el tipo de su primera pregunta
-_FRANJA = {'⚔️ Batalla': {'red': 1, 'green': .918, 'blue': .835},
+_FRANJA = {'❤️ Vidas': {'red': .992, 'green': .878, 'blue': .886},
+           '⚔️ Batalla': {'red': 1, 'green': .918, 'blue': .835},
            '🏆 Evento': {'red': 1, 'green': .953, 'blue': .78},
            '👤 Nombre': {'red': .867, 'green': .949, 'blue': .929},
            '🪪 Identidad': {'red': .925, 'green': .91, 'blue': .988},
@@ -1269,6 +1290,7 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
     ANCHO = len(COLS)
     cuenta = collections.Counter(p['grupo'][1] for p in preguntas)
     DICHO = {'⚔️ Batalla': ('batalla', 'batallas'), '🏆 Evento': ('evento', 'eventos'),
+             '❤️ Vidas': ('5 vidas para confirmar', '5 vidas para confirmar'),
              '👤 Nombre': ('nombre', 'nombres'), '🪪 Identidad': ('de identidad', 'de identidad'),
              '🎯 MW': ('del MW', 'del MW')}
     resumen = '   ·   '.join(
@@ -1620,6 +1642,17 @@ def _self_check():
        '\nLa otra: no está en ningún servidor de la Liga',
        'las pistas dicen qué es cada cuenta')
     _DATOS.clear()
+    _vi = {'tipo': 'Vidas cargado', 'detalle': 'SNAKE ARENA VOL. 2 · SR · 27/09', 'sug': '—',
+           'origen': 'veredictos de Discord',
+           'match': '23 batallas · 5 raperos | Campeón: DELUXE 🇦🇷 | 2.º JIMMY 🇵🇪 · 3.º DTR 🇨🇴'}
+    ok(_pregunta(_vi)[2] == ['Está bien así', 'No cuenta']
+       and interpretar(_vi, 'Está bien así') == ('evento', 'cuenta')
+       and interpretar(_vi, 'No cuenta') == ('evento', 'no cuenta'),
+       'el 5 vidas cargado se confirma o se saca, y queda como decisión del evento')
+    ok(_pistas(_vi).split('\n')[1] == 'Campeón: DELUXE 🇦🇷'
+       and _seccion(_vi)[0] == 'ev:snakearenavol2|SR|27/09'
+       and _seccion(_vi)[1].startswith('SNAKE ARENA VOL. 2 · SR · 27/09'),
+       'con el campeón en las pistas, en la sección de su evento')
     _br = {'tipo': 'Bracket incompleto', 'detalle': 'X · FFA · 23/09', 'sug': '—', 'match':
            'sin campeón | cuartos: a vs b | semifinales: c vs d'}
     ok(_pistas(_br) == 'Cuartos: a vs b\nSemifinales: c vs d', 'la llave incompleta muestra sus batallas')

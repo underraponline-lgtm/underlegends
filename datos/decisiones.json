@@ -11,6 +11,12 @@
    "cuando": "2026-09-27 5:30 AM ET",
    "por": "Dlx (chat)",
    "nota": "el 24/09 se decidió «no cuenta» creyendo que su llave no estaba en ningún canal; sí está, en ［🔑］llaves de Snake Rap, y se lee entera (31 personas). Dlx, 27/09: «no sé por qué no cuenta si sus llaves están en #llaves de Snake Rap»"
+  },
+  "SNAKE ARENA VOL. 2 · SR · 27/09": {
+   "decision": "cuenta",
+   "cuando": "2026-09-28 10:43 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "cargado a mano el 28/09 con #veredictos; Dlx al resultado: «sí dale». Desde el 28/09 el ciclo lo carga solo (5 vidas, «A y b»)."
   }
  },
  "no_rankear": {
@@ -38,6 +44,15 @@
    "pregunta": "ELSOLAR 🇨🇴",
    "nota": "Existe elsolar y solar. SOn personas diferentes. SOlar es de chile y su ID es 1155972121848201256",
    "cuando": "2026-09-24 7:54 PM ET"
+  }
+ },
+ "batallas": {
+  "snakearenavol2|SR|27/09|5vidasbatalla24|deluxe|jimmy": {
+   "ganador": "DELUXE 🇦🇷",
+   "batalla": "SNAKE ARENA VOL. 2 · SR · 27/09 · 5 vidas, batalla 24 · DELUXE 🇦🇷 🆚 JIMMY 🇵🇪",
+   "cuando": "2026-09-28 10:43 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "la última batalla quedó 1–1 en el texto (un juez votó con una imagen); DELUXE campeón es el resultado que Dlx aprobó: «sí dale»."
   }
  }
 }

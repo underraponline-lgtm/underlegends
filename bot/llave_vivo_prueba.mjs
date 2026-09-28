@@ -154,5 +154,16 @@ ok('«DELUXE 🇦🇷» y «🇦🇷 DELUXE» son la misma persona: un solo nomb
 ok('una llave no es un 5 vidas: la réplica va seguida', LV.veredictos([].concat(
   bat('A', 'B', ['A', 'B', '']), bat('A', 'B', ['A', 'A', '']), bat('A', 'C', ['C', 'C', '']))).length === 0);
 
+// 🔑 EL CONTRATO CON PYTHON: `escuchar.veredictos()` carga los 5 vidas en el
+// ciclo (Dlx, 28/09/2026: «A y b»), así que la página tiene que armar LAS
+// MISMAS batallas con los mismos ganadores. Los casos son reales, con los
+// autores tapados: ver `python bot/llaves_casos.py --veredictos`.
+console.log('\n5 · los veredictos, contra Python (bot/llaves_casos.json)\n');
+for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')).veredictos || []) {
+  const r = LV.veredictos(c.filas).map((L) => ({ n: L.participantes, ronda: L.rondas[0].r, terminada: L.terminada,
+    batallas: L.rondas[0].b.map((x) => [x[0], x[1], x[2]]) }));
+  ok(c.que, js(r) === js(c.eventos), `JS:     ${js(r).slice(0, 400)}\n      Python: ${js(c.eventos).slice(0, 400)}`);
+}
+
 console.log(mal ? `\n🔴 ${mal} mal\n` : '\n   todo ok\n');
 process.exit(mal ? 1 : 0);

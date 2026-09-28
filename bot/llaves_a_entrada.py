@@ -560,6 +560,9 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
         dudas.append((ev, '(servidor)', hallazgo['servidor'][:30],
                       'no está en `servidores` ni en `solo_identidad`'))
         return filas, dudas, sabidas
+    # 🔑 un evento de vidas de #veredictos: sus batallas ya vienen armadas
+    if hallazgo.get('vidas'):
+        return filas_vidas(hallazgo, ev, sv, fecha)
 
     # 🔑 `conocidos=` ERA EL PARAMETRO QUE FALTABA. Ver `inscriptos_de()`:
     # sin él, los nombres de la llave se resuelven contra el texto crudo y
@@ -1046,6 +1049,132 @@ def marcar_revividos(filas, textos=()):
     return filas
 
 
+_ANUNCIOS = [None]
+
+
+def _anuncios():
+    if _ANUNCIOS[0] is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+                _ANUNCIOS[0] = (json.load(f) or {}).get('anuncios') or []
+        except (OSError, ValueError):
+            _ANUNCIOS[0] = []
+    return _ANUNCIOS[0]
+
+
+def nombre_vidas(h, anuncios=None):
+    """El nombre de un evento de vidas de #veredictos: el del anuncio de su
+    servidor que arrancó cerca —de una hora antes a cinco después de la
+    primera batalla, la misma ventana que la página (`llaveDeEvento()`)—.
+
+    ⚠️ SIN ANUNCIO, CON LA HORA: «5 VIDAS 17:38». El nombre es un tercio de
+    la identidad del evento —(nombre, servidor, fecha)—, y dos 5 vidas del
+    mismo servidor el mismo día sin nombre serían UN evento.
+    """
+    import cuando as CU
+    V = h['vidas']
+    sv = codigo_servidor(h.get('guild'))[0]
+    # la hora de la primera batalla, no la del primer mensaje de la tanda
+    t0 = E._ms(V['batallas'][0][3]) if V.get('batallas') else int(V['pub'])
+    mejor = None
+    for a in (anuncios if anuncios is not None else _anuncios()):
+        if a.get('servidor') != sv or not a.get('nombre'):
+            continue
+        ini = CU.momento(a)
+        if not ini:
+            continue
+        try:
+            ti = datetime.datetime.fromisoformat(ini).replace(
+                tzinfo=datetime.timezone.utc).timestamp() * 1000
+        except ValueError:
+            continue
+        if ti - 3600000 <= t0 <= ti + 5 * 3600000 and (mejor is None or abs(t0 - ti) < mejor[0]):
+            mejor = (abs(t0 - ti), a['nombre'].strip())
+    if mejor:
+        return mejor[1]
+    hora = datetime.datetime.fromtimestamp(t0 / 1000.0, datetime.timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        hora = hora.astimezone(ZoneInfo('America/New_York'))
+    except Exception:                                    # noqa: BLE001
+        hora = hora.astimezone(datetime.timezone(datetime.timedelta(hours=-4)))
+    return '%d VIDAS %s' % (V['vidas'], hora.strftime('%H:%M'))
+
+
+def _bandera_al_final(nombre):
+    """«🇦🇷 DELUXE» -> «DELUXE 🇦🇷»: como se escriben en el resto de la Liga.
+    Sólo para mostrar: el padrón compara sin banderas."""
+    m = re.match(r'^\s*((?:[\U0001F1E6-\U0001F1FF]{2}\s*)+)(.+?)\s*$', nombre or '')
+    return ('%s %s' % (m.group(2), re.sub(r'\s+', '', m.group(1)))) if m \
+        else str(nombre or '').strip()
+
+
+def filas_vidas(h, ev, sv, fecha):
+    """(filas, dudas, sabidas) de un evento de vidas de #veredictos.
+
+    🔑 UNA FILA POR BATALLA Y EN EL ORDEN EN QUE SE PELEARON: el motor saca
+    el lugar del orden en que cayeron (`motor.lugares_vidas()`), así que ese
+    orden ES el dato. Por eso nada de `sin_repetir()`: en un 5 vidas la
+    misma pareja se cruza varias veces, y eso no es una copia.
+
+    🔑 LA BATALLA QUE QUEDÓ PAREJA EN EL TEXTO —un juez que vota con una
+    imagen— se pregunta en ✅ Decidir (Dlx, 28/09/2026: «A y b»), una por
+    batalla y con su número, porque la misma pareja puede empatar dos veces.
+    Lo que se contesta entra EN SU LUGAR, no al final: al final correría
+    quién cayó primero.
+
+    ⚠️ La réplica empatada no se pregunta: la decide la de después, que es
+    la misma pareja.
+    """
+    import decidir as DEC
+    V = h['vidas']
+    filas, dudas, sabidas = [], [], collections.Counter()
+    for i, (lados, g, nota, _mid) in enumerate(V['batallas'], 1):
+        a, b = [_bandera_al_final(x) for x in lados]
+        gana = _bandera_al_final(g) if g else ''
+        if not gana:
+            if 'réplica' in (nota or ''):
+                sabidas['%s: réplica empatada, la decide la de después' % V['ronda']] += 1
+                continue
+            cual = '%s, batalla %d' % (V['ronda'], i)
+            dec = DEC.decision_batalla(DEC.detalle_batalla(ev, sv, fecha, cual, [a, b]))
+            if dec is None:
+                dudas.append((ev, cual, '%s vs %s' % (a, b),
+                              ('quedó %s en el texto: un juez pudo votar con una imagen'
+                               % nota.replace('votos ', '')) if nota else
+                              'ningún juez votó con texto', [a, b]))
+                continue
+            if not dec:
+                sabidas['%s: batalla que no se jugó (✅ Decidir)' % V['ronda']] += 1
+                continue
+            gana, nota = dec, 'ganador: ✅ Decidir'
+        filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha, 'participantes': V['n'],
+                      'ronda': V['ronda'], 'ladoA': gana,
+                      'ladoB': b if E.norm(gana) == E.norm(a) else a,
+                      'ganador': gana, 'notas': nota or ''})
+    return filas, dudas, sabidas
+
+
+def resumen_vidas(filas, vidas):
+    """«23 batallas · 5 raperos | Campeón: X | 2.º Y · 3.º Z…» para ✅ Decidir."""
+    import motor
+    grupos, avisos = motor.lugares_vidas(filas, vidas, lambda x: x)
+    gente = {x for f in filas for x in (f['ladoA'], f['ladoB'])}
+    lugares = []
+    k = 1
+    for gr in grupos:
+        lugares.append('%s %s' % ('%d.º' % k if len(gr) == 1 else '%d.º-%d.º' % (k, k + len(gr) - 1),
+                                  ' y '.join(gr)))
+        k += len(gr)
+    out = ['%d batallas · %d raperos' % (len(filas), len(gente))]
+    if grupos and len(grupos[0]) == 1:
+        out.append('Campeón: %s' % grupos[0][0])
+    out.append(' · '.join(lugares[1:] if grupos and len(grupos[0]) == 1 else lugares))
+    if avisos:
+        out.append('⚠️ terminó con más de uno en pie: comparten el lugar')
+    return ' | '.join(x for x in out if x)
+
+
 def nombre_de(grupo):
     """UN nombre para todo el grupo. El más repetido; si empatan, el 1º.
 
@@ -1055,7 +1184,13 @@ def nombre_de(grupo):
     la forma en que el evento se escribió de verdad, y no depende del
     orden en que Discord los devolvió — que cambia si se borra un
     mensaje.
+
+    🔑 Un evento de vidas de #veredictos no tiene título: lleva el de su
+    anuncio (`nombre_vidas()`).
     """
+    vs = [h for h in grupo['llaves'] if h.get('vidas')]
+    if vs:
+        return nombre_vidas(vs[0])
     tits = [t for t in (titulo(h['texto']) for h in grupo['llaves']) if t]
     if not tits:
         return '(sin titulo)'
@@ -1115,6 +1250,9 @@ def sin_repetir(filas):
 #: que no dice quién ganó. Un evento dura una noche; la llave se va
 #: completando mientras tanto, así que menos que esto es «en curso».
 QUIETA_H = 12
+#: lo mismo para un 5 vidas de #veredictos, que no se edita después: la
+#: tanda se corta a los 45 min sin mensajes (`escuchar.TANDA_MIN`)
+VIDAS_CERRADO_H = 0.75
 
 
 def tiene_campeon(filas):
@@ -1445,6 +1583,54 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    # ❤️ LOS 5 VIDAS DE #VEREDICTOS, con la SNAKE ARENA VOL. 2 de verdad —la
+    # del contrato con la página (`bot/llaves_casos.json`)—
+    print('\n  los 5 vidas de #veredictos')
+    import decidir as DEC
+    with io.open(os.path.join(SCR, 'llaves_casos.json'), encoding='utf-8') as f:
+        _filas = (json.load(f).get('veredictos') or [{}])[0].get('filas') or []
+    _ev = (E.veredictos(_filas) or [None])[0]
+    _t0 = int(datetime.datetime(2026, 9, 27, 21, 38, tzinfo=datetime.timezone.utc).timestamp() * 1000)
+    _hv = {'guild': '492346406976356374', 'vidas': _ev}
+    _ann = [{'servidor': 'SR', 'nombre': 'SNAKE ARENA VOL. 2', 'horario': '<t:1790542800:F>'},
+            {'servidor': 'SR', 'nombre': 'SNAKE INSIGNIA', 'horario': '<t:1790564400:F>'},
+            {'servidor': 'FFA', 'nombre': 'OTRO', 'horario': '<t:1790542800:F>'}]
+    _ult = '5 vidas, batalla 24'
+    _det = DEC.detalle_batalla('SNAKE ARENA VOL. 2', 'SR', '27/09', _ult, ['DELUXE 🇦🇷', 'JIMMY 🇵🇪'])
+    _antes = DEC._decisiones
+    try:
+        DEC._decisiones = lambda: {}
+        f1, d1, s1 = filas_vidas(_hv, 'SNAKE ARENA VOL. 2', 'SR', '27/09') if _ev else ([], [], {})
+        DEC._decisiones = lambda: {'batallas': {DEC.clave_batalla(_det): {'ganador': 'DELUXE 🇦🇷'}}}
+        f2, d2, _s2 = filas_vidas(_hv, 'SNAKE ARENA VOL. 2', 'SR', '27/09') if _ev else ([], [], {})
+    finally:
+        DEC._decisiones = _antes
+    casos = [
+        ('el 5 vidas lleva el nombre de su anuncio, el de SU servidor y a SU hora',
+         _ev is not None and abs(E._ms(_ev['batallas'][0][3]) - _t0) < 60000
+         and nombre_vidas(_hv, _ann) == 'SNAKE ARENA VOL. 2'),
+        ('sin anuncio, «5 VIDAS» y la hora ET: dos del mismo día no son uno',
+         nombre_vidas(_hv, []) == '5 VIDAS 17:38'),
+        ('la bandera va después del nombre, como en el resto de la Liga',
+         _bandera_al_final('🇦🇷 DELUXE') == 'DELUXE 🇦🇷'
+         and _bandera_al_final('DELUXE 🇦🇷') == 'DELUXE 🇦🇷'),
+        ('la batalla pareja en el texto se pregunta, con su número',
+         len(f1) == 22 and len(d1) == 1 and d1[0][1] == _ult and d1[0][4] == ['DELUXE 🇦🇷', 'JIMMY 🇵🇪']),
+        ('la réplica empatada no se pregunta: la decide la de después',
+         any('réplica' in k for k in s1)),
+        ('con la respuesta de ✅ Decidir entra EN SU LUGAR, y son las 23 de la carga a mano',
+         len(f2) == 23 and not d2 and f2[-1]['ganador'] == 'DELUXE 🇦🇷'
+         and f2[-1]['notas'] == 'ganador: ✅ Decidir'),
+        ('las revanchas se quedan: DELUXE contra FAZER cinco veces',
+         sum(1 for x in f2 if {x['ladoA'], x['ladoB']} == {'DELUXE 🇦🇷', 'FAZER 🇦🇷'}) == 5),
+        ('y el resumen para confirmar dice el campeón y el orden',
+         resumen_vidas(f2, 5).startswith('23 batallas · 5 raperos | Campeón: DELUXE 🇦🇷 | 2.º ')
+         if f2 else False),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     print('\n  la fila, contra la forma de la hoja')
     try:
         from procesar_entrada import COL_A, CAMPOS as CAMPOS_E
@@ -1483,9 +1669,11 @@ def main():
     for h in hallazgos:
         # `escuchar.barrer` devuelve `cuando` en ISO; la hoja usa dd/mm
         h['fecha'] = _ddmm(h.get('cuando'))
-    print('   barrido %s · %d canal(es) · %d mensaje(s) · %d llave(s)'
+    n_v = sum(1 for h in hallazgos if h.get('vidas'))
+    print('   barrido %s · %d canal(es) · %d mensaje(s) · %d llave(s)%s'
           % ('completo' if info['completo'] else 'dirigido',
-             n_ch, n_msg, len(hallazgos)))
+             n_ch, n_msg, len(hallazgos) - n_v,
+             ' · %d 5 vidas de #veredictos' % n_v if n_v else ''))
     if info.get('nuevos'):
         print('   🆕 el bot está en un servidor nuevo: %s — por eso el '
               'barrido es completo' % ', '.join(info['nuevos']))
@@ -1500,6 +1688,7 @@ def main():
 
     todas, dudas, sabidas = [], [], collections.Counter()
     en_curso, incompletos, retenidos, descartados = [], [], [], []
+    esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
     link_de = {}                        # (evento, fecha) y evento -> link
     import decidir as DEC
@@ -1536,8 +1725,10 @@ def main():
             d_grupo += d
             sabidas.update(sab)
         _txt = [h.get('texto') or '' for h in g['llaves']]
-        limpias = marcar_revividos(marcar_walkins(
-            marcar_pokemones(sin_repetir(del_grupo), _txt), _txt), _txt)
+        # ⚠️ LAS MARCAS DE LLAVE NO SON PARA UN 5 VIDAS: `sin_repetir()` se
+        # comería las revanchas, y las marcas tocan las filas en su lugar
+        limpias = [] if any(h.get('vidas') for h in g['llaves']) else marcar_revividos(
+            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt), _txt)
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
@@ -1579,6 +1770,40 @@ def main():
         dec = DEC.decision_evento(nom, ligas[0], fec) if ligas else None
         if dec == 'no cuenta':
             descartados.append((nom, ligas[0], fec))
+            continue
+        # 🔑 UN EVENTO DE VIDAS DE #VEREDICTOS (Dlx, 28/09/2026: «A y b»): se
+        # carga solo (A) y va a ✅ Decidir para confirmarlo (B). Ver
+        # `filas_vidas()` y `escuchar.vidas()`.
+        #
+        # ⚠️ SUS FILAS VAN TAL CUAL, sin `sin_repetir()` ni las marcas de
+        # llave: la misma pareja se cruza varias veces y el orden es el dato.
+        vs = [h for h in g['llaves'] if h.get('vidas')]
+        if vs and ligas:
+            V = vs[0]['vidas']
+            hq = horas_quieta(g)
+            # en juego: la tanda se corta a los 45 min sin mensajes
+            if not V['terminada'] and hq is not None and hq < VIDAS_CERRADO_H:
+                en_curso.append((nom, hq))
+                continue
+            # 🔴 UNA BATALLA SIN GANADOR FRENA EL EVENTO ENTERO: cambia quién
+            # cayó y cuándo. Se pregunta, y el evento espera la respuesta —no
+            # es un bracket incompleto—.
+            if d_grupo:
+                for d in d_grupo:
+                    dudas.append(tuple(d) + (DEC.detalle_batalla(nom, ligas[0], fec, d[1], d[4]),
+                                             _lk[0] if _lk else ''))
+                esperan.append((nom, len(d_grupo)))
+                continue
+            if not del_grupo:
+                continue
+            todas += del_grupo
+            links_llaves['|'.join((nom, ligas[0], fec))] = _lk
+            vidas_cargados.append((nom, ligas[0], fec, len(del_grupo)))
+            if dec is None:
+                vidas_b.append(('Vidas cargado', 'veredictos de Discord',
+                                '%s · %s · %s' % (nom, ligas[0], fec),
+                                resumen_vidas(del_grupo, V['vidas'])
+                                + (' · %s' % _lk[0] if _lk else '')))
             continue
         motivo = None
         for h in g['llaves']:
@@ -1658,6 +1883,10 @@ def main():
         por_evento[ev].append('%s: %s' % (ronda.lower(), quienes))
 
     print('   %d fila(s) para `Entrada`' % len(todas))
+    for ev, sv_i, fec_i, nb in vidas_cargados:
+        print('   ❤️ %s (%s · %s): 5 vidas de #veredictos, %d batalla(s)' % (ev, sv_i, fec_i, nb))
+    for ev, nb in esperan:
+        print('   ⏸️ %s: 5 vidas que espera %d batalla(s) en ✅ Decidir' % (ev, nb))
     if decididas:
         print('   %d batalla(s) con el ganador que eligió Dlx en ✅ Decidir' % decididas)
     print('   %d evento(s) a `Pendientes`   (de %d batalla(s) sin resolver)'
@@ -1811,6 +2040,8 @@ def main():
                          + cosas[:3]) + (' · %s' % link_de[(ev, sv_i, fec_i)]
                                          if link_de.get((ev, sv_i, fec_i)) else ''))
              for ev, sv_i, fec_i, cosas in incompletos]
+    # ❤️ B: cada 5 vidas cargado solo, para que Dlx lo confirme o lo saque
+    lote += vidas_b
     if lote:
         k = P.anotar_varios(lote)
         print('   ✅ %d nueva(s) en `Pendientes` (%d ya estaban)'

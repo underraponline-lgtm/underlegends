@@ -1748,9 +1748,346 @@ def escuchar(s, forzar=None, por_canal=25):
     if completo:
         mem['ultimo_completo'] = datetime.datetime.now(
             datetime.timezone.utc).isoformat(timespec='seconds')
+    # 🔑 Y LOS 5 VIDAS DE #VEREDICTOS, que no son llaves: ver `vidas()`. Van
+    # DESPUÉS de anotar los canales de llaves, para no mezclar las dos
+    # memorias. ⚠️ Nunca frenan a las llaves: si Discord no contesta, esta
+    # corrida no trae vidas y la que viene sí.
+    n_vidas = 0
+    try:
+        vs = vidas(s, mem, guilds, completo)
+        out += vs
+        n_vidas = len(vs)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer los veredictos (%s)' % str(e)[:80])
     _guardar_conocidos(mem)
     return out, {'completo': completo, 'canales': n_ch, 'mensajes': n_msg,
-                 'nuevos': nuevos}
+                 'nuevos': nuevos, 'vidas': n_vidas}
+
+
+# ── los 5 vidas de #veredictos ─────────────────────────────────────────
+#
+# 🔑 Dlx, 28/09/2026: «SNAKE ARENA es formato TIPO 5 VIDAS… en veredictos
+# está todo lo que pasó», y a cómo cargarlos, «A y b»: que el ciclo los
+# cargue solo (A) y que aparezcan en ✅ Decidir para confirmarlos (B).
+#
+# Snake Rap no publica una llave: juega en #veredictos, con un título por
+# batalla (`# 🇦🇷 DELUXE 🆚 FAZER 🇦🇷`) y un mensaje por juez con el nombre
+# que vota. `veredictos()` arma las batallas —gana la mayoría— con LAS
+# MISMAS REGLAS que `bot/paginas/llave_vivo.js`, que ya las dibujaba en vivo;
+# el contrato está en `bot/llaves_casos.json` (`veredictos`).
+
+#: el canal donde se juegan: el mismo patrón que el vigía (`avisos.js`)
+VEREDICTOS = re.compile(r'veredict', re.I)
+STAFF = re.compile(r'staff|moderat|admin', re.I)
+#: minutos sin mensajes que parten dos tandas (`TANDA_MS` de la página)
+TANDA_MIN = 45
+#: las vidas de cada uno: el formato que Dlx describió
+N_VIDAS = 5
+#: cuántas horas hacia atrás se leen, y cuántos mensajes como mucho
+VER_HORAS = 36
+VER_TOPE = 300
+#: cuántos días se guardan en `datos/veredictos.json`
+VER_DIAS = 10
+VER_MEMORIA = os.path.join(BASE, 'datos', 'veredictos.json')
+_EPOCA_DISCORD = 1420070400000
+
+
+def _lineas(t):
+    return str(t or '').splitlines()
+
+
+def _titulo_batalla(t):
+    """`[A, B]` si el mensaje es el título de una batalla, o `None`."""
+    for l in _lineas(t):
+        ns = nombres_de_linea(re.sub(r'^\s*#+\s*', '', l))
+        if len(ns) == 2:
+            return [_sin_marcas(x) for x in ns]
+    return None
+
+
+def _voto_de(t):
+    """El voto de un juez: un renglón con un solo nombre (`**FAZER 🇦🇷**`,
+    `# ***DELUXE***`), normalizado. `''` si no es eso."""
+    ls = [x.strip() for x in _lineas(t) if x.strip()]
+    return norm(MARCAS.sub('', re.sub(r'^#+\s*', '', ls[0]))) if len(ls) == 1 else ''
+
+
+def _clave_par(a, b):
+    return '|'.join(sorted([norm(a), norm(b)]))
+
+
+def _vidas_de_tanda(T, n_vidas=N_VIDAS):
+    """La tanda como un evento de vidas, o `None` si no lo es.
+
+    ⚠️ LA MISMA PAREJA, NO SEGUIDA, ES LO QUE LO DELATA: en una llave una
+    pareja no se repite (salvo la réplica, que va seguida); en un formato de
+    vidas el que gana se queda y vuelve a cruzarse con todos.
+
+    ⚠️ Lo que el texto no dice no se inventa: un juez que vota con una
+    imagen no cuenta, y un empate queda sin ganador. Como el que gana SE
+    QUEDA, el empate lo desempata la batalla de después: el que sigue
+    peleando es el que ganó (y si la de después es la misma pareja, fue una
+    réplica).
+    """
+    bs = T['bs']
+    if len(bs) < 3:
+        return None
+    gente, pares, es_vidas = set(), {}, False
+    for i, x in enumerate(bs):
+        gente |= {norm(x['a']), norm(x['b'])}
+        k = _clave_par(x['a'], x['b'])
+        if k in pares and pares[k] < i - 1:
+            es_vidas = True
+        pares[k] = i
+    n = len(gente)
+    if not es_vidas or n > 8:
+        return None
+    for i, x in enumerate(bs):
+        va = sum(1 for v in x['votos'].values() if v == 'a')
+        vb = len(x['votos']) - va
+        x['g'] = x['a'] if va > vb else x['b'] if vb > va else ''
+        x['nota'] = ('votos %d–%d' % (max(va, vb), min(va, vb))) if va + vb else ''
+        sig = bs[i + 1] if i + 1 < len(bs) else None
+        if not x['g'] and sig:
+            sigue = [s_ for s_ in (x['a'], x['b']) if norm(s_) in (norm(sig['a']), norm(sig['b']))]
+            if _clave_par(x['a'], x['b']) == _clave_par(sig['a'], sig['b']):
+                x['nota'] = (x['nota'] + ' · ' if x['nota'] else '') + 'réplica'
+            elif len(sigue) == 1:
+                x['g'] = sigue[0]
+                x['nota'] = (x['nota'] + ' · ' if x['nota'] else '') + 'siguió peleando'
+    perd, fuera = {}, 0
+    for x in bs:
+        if not x['g']:
+            continue
+        p = x['b'] if norm(x['g']) == norm(x['a']) else x['a']
+        perd[norm(p)] = perd.get(norm(p), 0) + 1
+        if perd[norm(p)] == n_vidas:
+            fuera += 1
+    return {'id': T['id'], 'canal': T['canal'], 'sv': T['sv'], 'g': T['g'],
+            'pub': T['pub'], 'ed': T['ed'], 'n': n, 'vidas': n_vidas,
+            'ronda': '%d vidas' % n_vidas,
+            'batallas': [[[x['a'], x['b']], x['g'], x['nota'], x['id']] for x in bs],
+            'terminada': n > 1 and fuera == n - 1}
+
+
+def veredictos(rows):
+    """Los eventos de VIDAS que hay en los mensajes de #veredictos.
+
+    `rows` son `{id, canal, sv, g, autor, pub, ed, texto}` —`pub` y `ed` en
+    milisegundos—, la forma en que el vigía los guarda (`avisos.js`) y la
+    que lee la página (`LlaveVivo.veredictos()`). Ver `fila_de_mensaje()`
+    para pasar un mensaje de Discord a esa forma.
+
+    🔴 CADA PERSONA CON UN SOLO NOMBRE EN TODA LA TANDA: el título pone la
+    bandera a veces antes y a veces después («🇦🇷 DELUXE», «DELUXE 🇦🇷»), y
+    eran dos personas con la mitad de las derrotas cada una.
+    """
+    por_canal = {}
+    for m in sorted(rows or [], key=lambda m: (len(str(m['id'])), str(m['id']))):
+        por_canal.setdefault(m.get('canal'), []).append(m)
+    tandas = []
+    for c, ms in por_canal.items():
+        tanda = None
+        for m in ms:
+            pub = int(m.get('pub') or 0)
+            if not tanda or pub - tanda['ult'] > TANDA_MIN * 60000:
+                tanda = {'canal': c, 'sv': m.get('sv') or '', 'g': m.get('g') or '',
+                         'id': str(m['id']), 'pub': pub, 'ult': pub,
+                         'ed': int(m.get('ed') or pub), 'bs': [], 'nom': {}}
+                tandas.append(tanda)
+            tanda['ult'] = pub
+            tanda['ed'] = max(tanda['ed'], int(m.get('ed') or pub))
+            t = traducir(plano(m.get('texto') or ''))
+            tit = _titulo_batalla(t)
+            if tit:
+                un = lambda x: tanda['nom'].setdefault(norm(x), x)   # noqa: E731
+                tanda['bs'].append({'a': un(tit[0]), 'b': un(tit[1]), 'votos': {},
+                                    'id': str(m['id'])})
+                continue
+            cur = tanda['bs'][-1] if tanda['bs'] else None
+            v = _voto_de(t)
+            if not cur or not v or not m.get('autor'):
+                continue
+            na, nb = norm(cur['a']), norm(cur['b'])
+            ea = v == na or (len(na) > 2 and na in v)
+            eb = v == nb or (len(nb) > 2 and nb in v)
+            if ea != eb:
+                cur['votos'][str(m['autor'])] = 'a' if ea else 'b'
+    return [x for x in (_vidas_de_tanda(T) for T in tandas) if x]
+
+
+def _ms(snowflake):
+    """El instante de un ID de Discord, en milisegundos."""
+    return (int(snowflake) >> 22) + _EPOCA_DISCORD
+
+
+def _iso(ms):
+    return datetime.datetime.fromtimestamp(int(ms) / 1000.0, datetime.timezone.utc) \
+        .isoformat(timespec='seconds')
+
+
+def con_nombres(m):
+    """El texto con cada `<@id>` cambiado por `@nombre`, como `conNombres()`
+    de `avisos.js`: el apodo del servidor, el nombre visible o el usuario."""
+    n = {}
+    for u in m.get('mentions') or []:
+        x = (u.get('member') or {}).get('nick') or u.get('global_name') or u.get('username') or ''
+        if u.get('id') and x:
+            n[str(u['id'])] = x
+    return re.sub(r'<@!?(\d+)>', lambda k: '@' + n[k.group(1)] if k.group(1) in n else k.group(0),
+                  m.get('content') or '')
+
+
+def fila_de_mensaje(m, canal, sv='', guild=''):
+    """Un mensaje de la API de Discord, en la forma de `veredictos()`."""
+    pub = _ms(m['id'])
+    ed = m.get('edited_timestamp') or ''
+    try:
+        ed = int(datetime.datetime.fromisoformat(str(ed).replace('Z', '+00:00'))
+                 .timestamp() * 1000) if ed else pub
+    except ValueError:
+        ed = pub
+    return {'id': str(m['id']), 'canal': str(canal), 'sv': sv, 'g': str(guild or ''),
+            'autor': str((m.get('author') or {}).get('id') or ''),
+            'pub': pub, 'ed': max(pub, ed), 'texto': con_nombres(m)[:400]}
+
+
+def canales_veredictos(s, mem, guilds, completo):
+    """`{canal_id: {servidor, guild, canal}}`: los #veredictos de la Liga.
+
+    ⚠️ SE BUSCAN EN EL BARRIDO COMPLETO, y el resto de las corridas se usa lo
+    que quedó en la memoria (`datos/canales_llaves.json`, `veredictos`): es
+    la misma cadencia que las llaves, y cuesta un pedido por servidor una
+    vez por día. Sin memoria —la primera corrida— se buscan igual.
+    """
+    if not completo and isinstance(mem.get('veredictos'), dict):
+        return mem['veredictos']
+    liga = _guilds_liga()
+    out = {}
+    for g in [g for g in (guilds or []) if not liga or str(g.get('id')) in liga]:
+        r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g['id'], timeout=30)
+        if r.status_code != 200:
+            continue
+        for c in r.json():
+            n = unicodedata.normalize('NFKD', c.get('name') or '')
+            if (c.get('type') in (0, 5) and VEREDICTOS.search(n)
+                    and not re.search('llave', n, re.I) and not STAFF.search(n)):
+                out[str(c['id'])] = {'servidor': g.get('name') or '?', 'guild': str(g['id']),
+                                     'canal': n}
+    # ⚠️ UNA BÚSQUEDA QUE NO ENCONTRÓ NADA NO PISA A UNA QUE SÍ: si Discord
+    # contestó mal, quedarse sin canales es dejar de cargar callado
+    if out or not mem.get('veredictos'):
+        mem['veredictos'] = out
+    return mem.get('veredictos') or {}
+
+
+def _memoria_veredictos():
+    """`{id: evento}`: los eventos de vidas ya armados que se guardaron."""
+    try:
+        with io.open(VER_MEMORIA, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('eventos') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _unir_vidas(guardados, frescos):
+    """Los guardados con los recién leídos encima.
+
+    ⚠️ EL MISMO EVENTO PUEDE VENIR CON DOS IDS: la ventana de lectura corta
+    una tanda por la mitad y el pedazo empieza en otro mensaje. Si dos
+    comparten una batalla son el mismo, y se queda el que tiene más
+    batallas —a igual cantidad, el recién leído—.
+    """
+    out = dict(guardados)
+    for e in frescos:
+        mias = {b[3] for b in e['batallas']}
+        pisa = True
+        for k in [k for k, x in out.items() if k != e['id'] and mias & {b[3] for b in x['batallas']}]:
+            if len(out[k]['batallas']) > len(e['batallas']):
+                pisa = False
+            else:
+                del out[k]
+        if pisa:
+            out[e['id']] = e
+    return out
+
+
+def leer_veredictos(s, canales, ahora_ms=None):
+    """Las filas de los últimos `VER_HORAS` de cada canal, `VER_TOPE` como mucho."""
+    ahora_ms = ahora_ms or int(time.time() * 1000)
+    corte = ahora_ms - VER_HORAS * 3600000
+    filas = []
+    for cid, d in sorted((canales or {}).items()):
+        antes, leidos = None, 0
+        while leidos < VER_TOPE:
+            params = {'limit': 100}
+            if antes:
+                params['before'] = antes
+            r = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
+                      params=params, timeout=30)
+            if r.status_code != 200:
+                break
+            ms = r.json() or []
+            leidos += len(ms)
+            viejo = False
+            for m in ms:
+                if _ms(m['id']) < corte:
+                    viejo = True
+                    continue
+                filas.append(fila_de_mensaje(m, cid, d.get('servidor') or '', d.get('guild') or ''))
+            if viejo or len(ms) < 100:
+                break
+            antes = ms[-1]['id']
+            time.sleep(0.05)
+    return filas
+
+
+def vidas(s, mem, guilds, completo):
+    """Los eventos de vidas de #veredictos, como hallazgos para
+    `llaves_a_entrada.py`: `texto` vacío y las batallas en `vidas`.
+
+    🔴 SE GUARDAN EN `datos/veredictos.json`, y no por prolijidad. Una llave
+    se puede releer días después —queda en su canal—; un veredicto no:
+    atrás vienen cientos de mensajes. Si una batalla quedó empatada en el
+    texto, el evento espera a que Dlx diga quién ganó en ✅ Decidir, y eso
+    puede tardar más que la ventana de lectura. Sin la copia, el evento se
+    perdía justo mientras esperaba la respuesta.
+
+    ⚠️ SE GUARDA EL EVENTO YA ARMADO, NO LOS MENSAJES. El repo es público:
+    los mensajes traen la charla de los jueces y quién votó qué, y en git
+    quedarían para siempre. Lo que hace falta para cargarlo —quién peleó con
+    quién, quién ganó y por cuántos votos— es lo que ya se publica.
+    """
+    canales = canales_veredictos(s, mem, guilds, completo)
+    ahora_ms = int(time.time() * 1000)
+    evs = _unir_vidas(_memoria_veredictos(), veredictos(leer_veredictos(s, canales, ahora_ms)))
+    evs = {k: e for k, e in evs.items() if ahora_ms - int(e.get('pub') or 0) <= VER_DIAS * 86400000}
+    try:
+        os.makedirs(os.path.dirname(VER_MEMORIA), exist_ok=True)
+        with io.open(VER_MEMORIA, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump({'_leeme': 'Los eventos de vidas de #veredictos ya armados —quién peleó con '
+                                 'quién y quién ganó—, para cargarlos aunque ya no estén entre los '
+                                 'últimos mensajes del canal. Sin los mensajes: el repo es público. '
+                                 'Lo escribe bot/escuchar.py (vidas()).',
+                       'eventos': {k: evs[k] for k in sorted(evs)}},
+                      f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    except OSError as e:
+        print('   ⚠️ no pude guardar los veredictos (%s)' % str(e)[:60])
+    evs = [evs[k] for k in sorted(evs, key=lambda k: (len(k), k))]
+    out = []
+    for e in evs:
+        d = (canales or {}).get(e['canal']) or {}
+        # ⚠️ EL EVENTO EMPIEZA EN LA PRIMERA BATALLA, no en el primer mensaje
+        # de la tanda: la SNAKE ARENA arrancó con un mensaje suelto 40 min
+        # antes. De acá salen el link, la fecha y la hora del nombre.
+        primera = e['batallas'][0][3]
+        out.append({'servidor': d.get('servidor') or e['sv'] or '?',
+                    'guild': d.get('guild') or e['g'], 'canal': d.get('canal') or '?',
+                    'canal_id': e['canal'], 'msg_id': primera, 'autor': '',
+                    'cuando': _iso(_ms(primera)), 'editado': _iso(e['ed']),
+                    'texto': '', 'partes': 1, 'menciones': {}, 'vidas': e})
+    return out
 
 
 def _self_check():
@@ -2186,9 +2523,11 @@ class _Discord(object):
     LLAVE = ('`[ OCTAVOS ]`\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n'
              '`[ FINAL ]`\n⌞A⌝ 🆚 ⌞C⌝')
 
-    def __init__(self, guilds=None):
+    def __init__(self, guilds=None, ver=None):
         self.urls = []
         self.guilds = guilds or [{'id': 'g1', 'name': 'FFA'}]
+        # los mensajes de un #veredictos, si la prueba los necesita
+        self.ver = ver
 
     def get(self, url, params=None, timeout=None):
         self.urls.append(url)
@@ -2198,7 +2537,11 @@ class _Discord(object):
             # el de voz (type 2) esta a proposito: tiene que quedar fuera
             return _Resp([{'id': 'c1', 'name': 'llaves', 'type': 0},
                           {'id': 'c2', 'name': 'charla', 'type': 0},
-                          {'id': 'c3', 'name': 'voz', 'type': 2}])
+                          {'id': 'c3', 'name': 'voz', 'type': 2}]
+                         + ([{'id': 'v1', 'name': '⚖️veredictos', 'type': 0}]
+                            if self.ver is not None else []))
+        if '/channels/v1/' in url:
+            return _Resp(self.ver or [])
         txt = self.LLAVE if '/channels/c1/' in url else 'hola que tal'
         return _Resp([{'id': 'm1', 'content': txt,
                        'timestamp': '2026-09-21T10:00:00+00:00',
@@ -2249,9 +2592,12 @@ def _check_cadencia():
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
     print('\n  las dos cadencias, contra un Discord de mentira')
-    guardo = MEMORIA
+    global VER_MEMORIA
+    guardo, guardo_ver = MEMORIA, VER_MEMORIA
     tmp = tempfile.mkdtemp()
     MEMORIA = os.path.join(tmp, 'canales_llaves.json')
+    # ⚠️ Y LOS VEREDICTOS TAMBIÉN: sin esto la prueba pisaba la copia de verdad
+    VER_MEMORIA = os.path.join(tmp, 'veredictos.json')
     # ⚠️ los servidores de mentira no están en `datos/servidores.json`: sin
     # esto el filtro de la Liga los descartaría y ninguna prueba vería nada
     global _LIGA_PRUEBA
@@ -2317,11 +2663,60 @@ def _check_cadencia():
         casos.append(('un servidor que no es de la Liga no se barre',
                       any('/guilds/g1/' in u for u in d7.urls)
                       and not any('/guilds/g9/' in u for u in d7.urls)))
+
+        # 🔑 LOS 5 VIDAS DE #VEREDICTOS: un evento chiquito, con IDs de verdad
+        ahora_ms = int(time.time() * 1000)
+        ver, k = [], [0]
+
+        def _m(autor, texto):
+            k[0] += 1
+            t = ahora_ms - 3600000 + k[0] * 60000
+            ver.append({'id': str((t - _EPOCA_DISCORD) << 22), 'content': texto,
+                        'author': {'id': autor}, 'timestamp': _iso(t)})
+        for a, b, g in (('ANA', 'BETO', 'ANA'), ('ANA', 'CARO', 'CARO'), ('CARO', 'BETO', 'BETO'),
+                        ('BETO', 'ANA', 'ANA'), ('ANA', 'CARO', 'ANA')):
+            _m('org', '# %s 🆚 %s' % (a, b))
+            for j in ('j1', 'j2', 'j3'):
+                _m(j, '**%s**' % g)
+        ver.reverse()                     # Discord devuelve del más nuevo al más viejo
+        _guardar_conocidos({'canales': {}, 'ultimo_completo': ''})
+        h8, i8 = escuchar(_Discord(ver=ver), forzar=True, por_canal=5)
+        v8 = [h for h in h8 if h.get('vidas')]
+        casos += [
+            ('#veredictos: el 5 vidas sale como un hallazgo aparte, sin texto',
+             len(v8) == 1 and i8['vidas'] == 1 and v8[0]['texto'] == ''
+             and len(v8[0]['vidas']['batallas']) == 5),
+            ('con sus ganadores, en el orden en que se pelearon',
+             [b[1] for b in v8[0]['vidas']['batallas']] == ['ANA', 'CARO', 'BETO', 'ANA', 'ANA']
+             if v8 else False),
+            ('y el canal queda anotado aparte de los de llaves',
+             sorted(conocidos().get('veredictos') or {}) == ['v1']
+             and 'v1' not in (conocidos().get('canales') or {})),
+        ]
+        # 🔴 Y SI DISCORD YA NO LO DEVUELVE, SIGUE: la copia de `VER_MEMORIA`
+        h9, _i9 = escuchar(_Discord(ver=[]), forzar=False, por_canal=5)
+        with io.open(VER_MEMORIA, encoding='utf-8') as f:
+            _copia = f.read()
+        casos += [
+            ('cuando Discord ya no lo trae, sale de la copia guardada',
+             len([h for h in h9 if h.get('vidas')]) == 1),
+            ('y la copia es el evento armado, sin los mensajes ni los jueces',
+             '"j1"' not in _copia and '**ANA**' not in _copia and '"ANA"' in _copia),
+        ]
+        _a = {'id': '1', 'pub': 0, 'batallas': [[['A', 'B'], 'A', '', '10'], [['A', 'C'], 'A', '', '11']]}
+        _b = {'id': '2', 'pub': 0, 'batallas': [[['A', 'C'], 'A', '', '11']]}
+        _c = {'id': '3', 'pub': 0, 'batallas': [[['X', 'Y'], 'X', '', '20']]}
+        casos += [
+            ('el mismo evento cortado por la ventana no se duplica: queda el entero',
+             sorted(_unir_vidas({'1': _a}, [_b, _c])) == ['1', '3']),
+            ('y si lo guardado era el pedazo, lo pisa el entero',
+             sorted(_unir_vidas({'2': _b}, [_a])) == ['1']),
+        ]
         for que, ok in casos:
             mal += not ok
             print('   %s %s' % ('✅' if ok else '🔴', que))
     finally:
-        MEMORIA = guardo
+        MEMORIA, VER_MEMORIA = guardo, guardo_ver
         _LIGA_PRUEBA = None
         shutil.rmtree(tmp, ignore_errors=True)
     return mal

@@ -164,10 +164,69 @@ def numeros_por_evento(h):
     return out
 
 
+def _no_cuentan():
+    """¿Hay algún evento que Dlx marcó «no cuenta» en ✅ Decidir? Se mira en
+    el archivo, sin leer el Sheet: casi nunca hay, y la cuota es por minuto."""
+    try:
+        import decidir as DEC
+        return any((v or {}).get('decision') == 'no cuenta'
+                   for v in (DEC._decisiones().get('eventos') or {}).values())
+    except Exception:                                    # noqa: BLE001
+        return False
+
+
+def sacar_descartados(hproc, ya, aplicar):
+    """Los eventos YA CARGADOS que Dlx dijo que no cuentan, fuera de las tres
+    hojas y de la llave del hub. `[(num, nombre, sv, fecha)]`.
+
+    🔴 «NO CUENTA» NO SACABA NADA. El lector lo respetaba —no volvía a
+    escribir el evento—, pero lo que ya estaba en `Resultados` se quedaba ahí
+    para siempre. Daba igual mientras sólo se preguntaba ANTES de cargar; con
+    los 5 vidas de #veredictos, que se cargan solos y se confirman después
+    (Dlx, 28/09/2026: «A y b»), «No cuenta» tiene que poder deshacer.
+
+    ⚠️ SE BORRAN LAS FILAS, NO LA LLAVE DE DISCORD: si Dlx cambia de idea, con
+    sacar la decisión de `datos/decisiones.json` vuelve a entrar sola.
+    """
+    import decidir as DEC
+    fuera = [(n, nom, sv, fe) for (nom, sv, fe), n in sorted(ya.items(), key=lambda x: x[1])
+             if DEC.decision_evento(nom, sv, fe) == 'no cuenta']
+    for n, nom, sv, fe in fuera:
+        print('   🗑️ #%d  %s · %s · %s: Dlx dijo que no cuenta%s'
+              % (n, nom, sv, fe, '' if aplicar else ' (se sacaría)'))
+    if not fuera or not aplicar:
+        return fuera
+    nums = [n for n, *_r in fuera]
+    RES.reescribir(Hoja('Resultados'), nums, [])
+    RES.reescribir(Hoja('1v1'), nums, [])
+    RES.reescribir(hproc, nums, [])
+    try:
+        p = os.path.join(BASE, 'datos', 'llaves_t1.json')
+        with io.open(p, encoding='utf-8') as f:
+            ll = json.load(f)
+        if any(str(n) in ll for n in nums):
+            for n in nums:
+                ll.pop(str(n), None)
+            with io.open(p, 'w', encoding='utf-8', newline='\n') as f:
+                json.dump(ll, f, ensure_ascii=False, indent=1)
+                f.write('\n')
+    except (OSError, ValueError) as e:
+        print('   ⚠️ no pude sacar la llave del hub (%s)' % str(e)[:60])
+    print('   ✅ %d evento(s) fuera de `Resultados`, `1v1` y `Eventos Procesados`' % len(fuera))
+    return fuera
+
+
 def main():
     aplicar = '--aplicar' in sys.argv
     limpiar = '--limpiar' in sys.argv
     print('\n══ `Entrada` → `Resultados` · `1v1` · `Eventos Procesados` ══\n')
+
+    # 🔴 PRIMERO LO QUE NO CUENTA, aunque `Entrada` esté vacía: un evento que
+    # Dlx sacó en ✅ Decidir no vuelve a entrar, así que nada lo va a
+    # reprocesar — si no se saca acá, no se saca nunca.
+    if _no_cuentan():
+        _hp = Hoja('Eventos Procesados')
+        sacar_descartados(_hp, numeros_por_evento(_hp), aplicar)
 
     batallas, hent = leer_entrada()
     if not batallas:

@@ -116,22 +116,66 @@ def armar(scan):
                 vistos += 1
     for que, t in INVENTADOS:
         casos.append({'que': que, 'texto': t, 'rondas': rondas(t)})
+    # ⚠️ LOS DE #VEREDICTOS SE QUEDAN: no salen de un barrido de llaves
+    try:
+        with io.open(CASOS, encoding='utf-8') as f:
+            ver = json.load(f).get('veredictos') or []
+    except (OSError, ValueError):
+        ver = []
     with io.open(CASOS, 'w', encoding='utf-8', newline='\n') as f:
         json.dump({'_leeme': 'El contrato entre escuchar.py y bot/paginas/llave_vivo.js. '
-                             'Se rehace con `python bot/llaves_casos.py --armar <scan>`.',
-                   'casos': casos}, f, ensure_ascii=False, indent=1)
+                             'Se rehace con `python bot/llaves_casos.py --armar <scan>`; '
+                             'los de #veredictos, con `--veredictos <que> <filas.json>`.',
+                   'casos': casos, 'veredictos': ver}, f, ensure_ascii=False, indent=1)
     print('%d casos en %s' % (len(casos), os.path.relpath(CASOS, BASE)))
+
+
+def vidas(filas):
+    """Lo que la página tiene que leer igual de #veredictos: cada evento de
+    vidas con sus batallas `[[A, B], ganador, nota]`, en orden."""
+    return [{'n': e['n'], 'ronda': e['ronda'], 'terminada': e['terminada'],
+             'batallas': [[list(b[0]), b[1], b[2]] for b in e['batallas']]}
+            for e in E.veredictos(filas)]
+
+
+def armar_veredictos(que, archivo):
+    """Agrega (o rehace) un caso de #veredictos desde un json de filas
+    `{id, canal, sv, g, autor, pub, ed, texto}`.
+
+    ⚠️ LOS AUTORES VAN TAPADOS (`j1`, `j2`…), como las menciones: el repo es
+    público, y para el lector sólo importa que sean distintos.
+    """
+    with io.open(archivo, encoding='utf-8') as f:
+        filas = json.load(f)
+    alias = {}
+    for x in filas:
+        x['autor'] = 'j%d' % alias.setdefault(x.get('autor') or '', len(alias) + 1) \
+            if x.get('autor') else ''
+        x['texto'] = tapar(x.get('texto') or '')
+    with io.open(CASOS, encoding='utf-8') as f:
+        d = json.load(f)
+    ver = [c for c in d.get('veredictos') or [] if c['que'] != que]
+    ver.append({'que': que, 'filas': filas, 'eventos': vidas(filas)})
+    d['veredictos'] = ver
+    with io.open(CASOS, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+    print('%d caso(s) de veredictos en %s' % (len(ver), os.path.relpath(CASOS, BASE)))
 
 
 def _self_check():
     with io.open(CASOS, encoding='utf-8') as f:
-        casos = json.load(f)['casos']
+        d = json.load(f)
+    casos = d['casos']
     mal = 0
     print('\n══ el lector de llaves: Python contra lo anotado ══\n')
     for c in casos:
         ok = rondas(c['texto']) == c['rondas']
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', c['que']))
+    for c in d.get('veredictos') or []:
+        ok = vidas(c['filas']) == c['eventos']
+        mal += not ok
+        print('   %s veredictos: %s' % ('✅' if ok else '🔴', c['que']))
     print('')
     return mal
 
@@ -141,5 +185,9 @@ if __name__ == '__main__':
         sys.exit(1 if _self_check() else 0)
     if '--armar' in sys.argv:
         armar(sys.argv[sys.argv.index('--armar') + 1])
+        sys.exit(0)
+    if '--veredictos' in sys.argv:
+        i = sys.argv.index('--veredictos')
+        armar_veredictos(sys.argv[i + 1], sys.argv[i + 2])
         sys.exit(0)
     print(__doc__)

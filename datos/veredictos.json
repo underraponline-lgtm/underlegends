@@ -1,0 +1,235 @@
+{
+ "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
+ "eventos": {
+  "1553873566674714736": {
+   "id": "1553873566674714736",
+   "canal": "863208026508623883",
+   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
+   "g": "492346406976356374",
+   "pub": 1790542727870,
+   "ed": 1790551815592,
+   "n": 5,
+   "vidas": 5,
+   "ronda": "5 vidas",
+   "batallas": [
+    [
+     [
+      "🇦🇷 DELUXE",
+      "FAZER 🇦🇷"
+     ],
+     "FAZER 🇦🇷",
+     "votos 2–1",
+     "1553883626993881189"
+    ],
+    [
+     [
+      "🇵🇪 LHYON",
+      "FAZER 🇦🇷"
+     ],
+     "🇵🇪 LHYON",
+     "votos 3–0",
+     "1553884429737267312"
+    ],
+    [
+     [
+      "🇵🇪 LHYON",
+      "DTR 🇨🇴"
+     ],
+     "DTR 🇨🇴",
+     "votos 2–1",
+     "1553885736120352920"
+    ],
+    [
+     [
+      "DTR 🇨🇴",
+      "JIMMY 🇵🇪"
+     ],
+     "JIMMY 🇵🇪",
+     "votos 3–0",
+     "1553886766262386825"
+    ],
+    [
+     [
+      "JIMMY 🇵🇪",
+      "🇦🇷 DELUXE"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 3–0",
+     "1553887631996223569"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "FAZER 🇦🇷"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–1",
+     "1553888425403486280"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "🇵🇪 LHYON"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–1",
+     "1553889593470885999"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "DTR 🇨🇴"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 3–0",
+     "1553890623189164185"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "JIMMY 🇵🇪"
+     ],
+     "JIMMY 🇵🇪",
+     "votos 3–0",
+     "1553891876522823763"
+    ],
+    [
+     [
+      "JIMMY 🇵🇪",
+      "FAZER 🇦🇷"
+     ],
+     "FAZER 🇦🇷",
+     "votos 3–0",
+     "1553892641786171514"
+    ],
+    [
+     [
+      "🇵🇪 LHYON",
+      "FAZER 🇦🇷"
+     ],
+     "FAZER 🇦🇷",
+     "votos 3–0",
+     "1553893737208356865"
+    ],
+    [
+     [
+      "DTR 🇨🇴",
+      "FAZER 🇦🇷"
+     ],
+     "FAZER 🇦🇷",
+     "votos 2–1",
+     "1553895210558296175"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "FAZER 🇦🇷"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 3–0",
+     "1553896102196027464"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "JIMMY 🇵🇪"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–1",
+     "1553897811219714089"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "🇵🇪 LHYON"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–1",
+     "1553899025936162938"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "DTR 🇨🇴"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–1",
+     "1553900277529051248"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "FAZER 🇦🇷"
+     ],
+     "FAZER 🇦🇷",
+     "votos 3–0",
+     "1553901316168880262"
+    ],
+    [
+     [
+      "FAZER 🇦🇷",
+      "JIMMY 🇵🇪"
+     ],
+     "JIMMY 🇵🇪",
+     "votos 3–0",
+     "1553902137161945220"
+    ],
+    [
+     [
+      "🇵🇪 LHYON",
+      "JIMMY 🇵🇪"
+     ],
+     "🇵🇪 LHYON",
+     "votos 1–1 · siguió peleando",
+     "1553903684704927857"
+    ],
+    [
+     [
+      "🇵🇪 LHYON",
+      "DTR 🇨🇴"
+     ],
+     "DTR 🇨🇴",
+     "votos 2–0",
+     "1553904679597899821"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "DTR 🇨🇴"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–0",
+     "1553906537414660119"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "FAZER 🇦🇷"
+     ],
+     "🇦🇷 DELUXE",
+     "votos 2–0",
+     "1553907466251673693"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "JIMMY 🇵🇪"
+     ],
+     "",
+     "votos 1–1 · réplica",
+     "1553908645111144499"
+    ],
+    [
+     [
+      "🇦🇷 DELUXE",
+      "JIMMY 🇵🇪"
+     ],
+     "",
+     "votos 1–1",
+     "1553909727816319037"
+    ]
+   ],
+   "terminada": false
+  }
+ }
+}
