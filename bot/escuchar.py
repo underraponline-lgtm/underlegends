@@ -851,6 +851,29 @@ def _equipo(s):
     return frozenset(partes) if len(partes) > 1 else frozenset()
 
 
+def _mismos_integrantes(a, b, corte=0.85):
+    """¿`a` y `b` son el mismo equipo, salvo un typo por integrante?
+
+    🔴 EL PARECIDO DEL NOMBRE ENTERO NO ALCANZA PARA UN EQUIPO. En
+    DESGRACIAS EN TOKYO VOL 15 MULTIVERSE (FFA, 28/09/2026) pelearon
+    `BOOTRAX HUMILDE + TROT + TOKIO + TUCA`, y la inscripción era del trío
+    sin Tuca: pegados dan 0.92, arriba del corte, así que el lado se
+    «corregía» al trío y **Tuca se quedaba sin sus puntos**. Un typo cambia
+    una letra; no saca ni agrega a nadie. Por eso: la misma cantidad, y
+    cada integrante parecido a uno distinto del otro.
+    """
+    ma = sorted(_equipo(HISTORIA.sub('', a or '')))
+    mb = list(_equipo(HISTORIA.sub('', b or '')))
+    if len(ma) != len(mb):
+        return False
+    for x in ma:
+        c = difflib.get_close_matches(x, mb, n=1, cutoff=corte)
+        if not c:
+            return False
+        mb.remove(c[0])
+    return True
+
+
 def _miembros(lado):
     """Los integrantes de un lado-equipo, como se escribieron: `A + B` -> [A, B].
 
@@ -939,8 +962,12 @@ def resolver(texto, conocidos=None, ids=None):
                 # `Erik`/`Erika` 0.89—, todos por encima de este corte.
                 if cerca and frozenset((nb, cerca[0])) in distintos:
                     cerca = []
+                # ⚠️ Y UN EQUIPO, SÓLO CON UN EQUIPO DE LOS MISMOS: ver
+                # `_mismos_integrantes()` — el trío inscripto se comía al
+                # cuarto integrante (el MULTIVERSE del 28/09/2026).
                 if cerca and (bool(_equipo(n))
-                              == bool(_equipo(mapa[cerca[0]]))):
+                              == bool(_equipo(mapa[cerca[0]]))) and (
+                        not _equipo(n) or _mismos_integrantes(n, mapa[cerca[0]])):
                     r = mapa[cerca[0]]
             canon[n] = r
             return r
@@ -2500,6 +2527,24 @@ def _check_dialectos():
          menciones_de({'mentions': [{'id': '22', 'username': 'snowzzz', 'global_name': 'Snow',
                                      'member': {'nick': None}}]}) == {'22': ['Snow', 'snowzzz']}),
     ]
+    # DESGRACIAS EN TOKYO VOL 15 MULTIVERSE (FFA, 28/09/2026): el trío
+    # inscripto no puede comerse al cuarto que peleó con ellos
+    multi = ('# ▪️ [•OCTAVOS DE FINAL•]\n'
+             '▪️   [PRAISERIZA 🇻🇪] 🆚 [BOOTRAX HUMILDE 🇵🇪 + TROT 🇪🇸 + TOKIO 🇺🇸 + TUCA 🇦🇷]\n'
+             '▪️   [SNOW 🇨🇴] 🆚 [ABYSSUS 🇨🇦]\n'
+             '# ▪️ [•CUARTOS DE FINAL•]\n'
+             '▪️   [SNOW 🇨🇴] 🆚 [BOOTRAX HUMILDE 🇵🇪 + TROT 🇪🇸 + TOKIO 🇺🇸 + TUCA 🇦🇷]\n')
+    trio = ['Bootrax Humilde🇵🇪 + Trot🇪🇸 +  Tokio🇺🇸', 'PRAISERIZA 🇻🇪', 'snow']
+    rm = resolver(multi, conocidos=trio)
+    casos2 = [
+        ('un equipo de 4 no se «corrige» al trío inscripto: Tuca cobra',
+         any('TUCA' in l for _r, b, _g, _z in rm[:1] for l in b)),
+        ('pero un typo dentro del mismo equipo sí se corrige',
+         _mismos_integrantes('Botrax Humilde + Trot + Tokio', trio[0])),
+        ('y uno que cambia de integrante, no',
+         not _mismos_integrantes('Bootrax Humilde + Trot + Tuca', trio[0])),
+    ]
+    casos += casos2
     for que, ok in casos:
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
