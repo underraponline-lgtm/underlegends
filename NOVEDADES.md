@@ -298,12 +298,12 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **FULLY y PARK JI-SUNG son Oasis** (la misma cuenta de Discord; ya se sabía que «fullylo4ded» lo era, 18/09) | *«Park Jin sung es Oasis también»* (28/09, 1:30 PM, contestando si FULLY era Oasis) | ✅ alias en la hoja AKAs vía ✅ Decidir y `akas.json` rearmado a mano: desde la corrida de las 1:52 PM Oasis se lleva la World Cup y lo de MARRUECOS. ⚠️ **Oasis no es Miembro de DRA** (sólo está en FFA): suma los puntos pero queda **fuera de concurso**, sin número ni cartas, hasta que tenga el rol |
 | **DNK pasa a su cuenta nueva** (la de la Lista no estaba en ningún servidor; la nueva es Miembro de DRA) | *«1. Sí, pásala»* (28/09, 10:55 AM) | ✅ la Lista, fila 296, y la pregunta cerrada con eso |
 | **En el menú, Publicaciones y Tarjetas cambian de lugar** | *«quiero que intercambies la posición entre tarjetas y publicaciones»* (28/09) | ✅ (1.40): Inicio · Ranking · Publicaciones · Pase · Tienda · Eventos · Tarjetas · Mundo · Guía |
-| **La escala sale del FORMATO de la llave, no de cuántos nombres distintos hay**: si alguien revive y aparece dos veces en la misma ronda, igual es una llave de 16 | *«En sí son 16.. sólo que quizás haya revivido pero en sí el formato es de 16»* (28/09, 5:10 PM, por la COMPE DEL VACILE: Majiztral dos veces en octavos) | ⏳ haciéndolo |
+| **La escala sale del FORMATO de la llave, no de cuántos nombres distintos hay**: si alguien revive y aparece dos veces en la misma ronda, igual es una llave de 16 | *«En sí son 16.. sólo que quizás haya revivido pero en sí el formato es de 16»* (28/09, 5:10 PM, por la COMPE DEL VACILE: Majiztral dos veces en octavos) | ✅ (1.44): `llaves_a_entrada.repetidos_en_la_primera()` suma al revivido a los participantes, y `escuchar.resolver()` le da la batalla que perdió al otro (el revivido es el que aparece otra vez más abajo en la misma ronda, guía §3.7) |
 | **El miel de Urban Freestyle queda** | *«Está bien»* (28/09) | ✅ |
-| **Banner grande en la vista previa del link** | *«Siii»* (28/09) | ⏳ haciéndolo |
-| **Los debutantes de la semana en el Lunes de la Liga, y un DM sólo a Dlx cuando una batalla lleve más de 24 h en ✅ Decidir** | *«B y C»* (28/09) | ⏳ haciéndolo |
-| **«Tu servidor» lo elige cada uno**, no sale de dónde jugaste | *«La idea es que la gente decida por su cuenta»* (28/09) | ⏳ por diseñar |
-| **Seguidores y seguidos, guardados de verdad** (con «Entrar con Discord», en el Durable Object; el aviso por la campana, nunca por DM) | *«Si hay que hacer eso»* (28/09) | ⏳ por hacer |
+| **Banner grande en la vista previa del link** | *«Siii»* (28/09) | ✅ (1.44): `bot/paginas/og.png`, 1200×630, con la piel de la página; lo arma `herramientas/banner_link.py`. Los links ya pegados pueden mostrar la vista vieja un tiempo (Discord la guarda) |
+| **Los debutantes de la semana en el Lunes de la Liga, y un DM sólo a Dlx cuando una batalla lleve más de 24 h en ✅ Decidir** | *«B y C»* (28/09) | ✅ (1.44): `lunes.debutantes()` y `alertar.esperando()` (un solo DM con todas las que pasaron las 24 h; la que ya sonó no vuelve a sonar) |
+| **«Tu servidor» lo elige cada uno**, no sale de dónde jugaste | *«La idea es que la gente decida por su cuenta»* (28/09) | ⏳ por diseñar: tres preguntas abajo, en «❓ Esperando» |
+| **Seguidores y seguidos, guardados de verdad** (con «Entrar con Discord», en el Durable Object; el aviso por la campana, nunca por DM) | *«Si hay que hacer eso»* (28/09) | ✅ (1.44): tabla `sigue` en el objeto (`seguir()`, `sigo()`, `seguidores()`); el aviso sale del muro (`seguidos()` lee `web:muro`, que ahora trae la clave de cada persona: `muro.con_claves()`) — sin KV nuevo. Afuera se ve cuántos, nunca quién; quién te sigue lo ves vos, y sólo los que son raperos. Las cuentas de menos de 30 días siguen pero no cuentan |
 | **El remake de la web va después de todo lo demás, incluido lo de seguidores** | *«luego de que hayas hecho todo lo demás y lo 8 haremos eso»* (28/09) | ⏳ |
 | **Misiones, Tareas y el diseño del Pase: más adelante**, lo cuenta Dlx | *«Más adelante te contaré»* · *«Sí»* (28/09) | ⏳ |
 | **El MULTIVERSE se carga solo, como cualquier llave.** Cada uno va solo o en equipo del tamaño que quiera: 2v2, 1v3, 8v1 | *«En multiverse uno tiene la opción de ir solo o en ir en equipo. Puede haber 2v2, 1v3 o 8v1… yo creo que tú podrías identificar esto fácilmente.. es simplemente entender las llaves»* (28/09, 4:40 PM) | ✅ el #367 quedó cargado. Probado con un 8v1: el lado de 8 se perdía y rompía la llave entera; arreglado en los dos lectores (`escuchar.DELIMS` y `nombres_de_linea()`), con el caso en el contrato |
@@ -1653,18 +1653,32 @@ inglés, y `/borrar-mis-datos`.
   Trot y Tuca 416 cada uno—. Como no hay regla, **entra solo en la corrida
   de las 4:22 PM**; si preferís la B, decímelo y lo saco (queda anotado en
   `datos/decisiones.json` como que no cuenta, y el ciclo lo retira solo).
-- 🆕 **Tres ideas** (28/09), para cuando quieras: **un probador de llaves en la
-  web** (el organizador pega su llave y ve cómo la lee el bot antes de
-  publicarla; corre en el navegador, no gasta nada); **los debutantes de la
-  semana en el Lunes de la Liga** (el 42 % jugó una sola vez); **un DM sólo a
-  vos** cuando una batalla lleve más de 24 h esperando en ✅ Decidir (frena los
-  puntos de todo el evento).
+- 🆕 **«Tu servidor» lo elige cada uno** (28/09, *«la idea es que la gente
+  decida por su cuenta»*). Hoy «tu servidor» es donde más jugaste, y sirve
+  para una sola cosa: **en el ×2 votado no podés votar al tuyo**. Tres
+  preguntas antes de hacerlo:
+  1. **¿Dónde se elige?** **A** · en Mi cuenta de la página (con Discord) ·
+     **B** · también con un comando en Discord.
+  2. **¿Cada cuánto se puede cambiar?** **A** · una vez por temporada, como la
+     foto · **B** · cuando quieras.
+  3. **Si cada uno elige, alguien de FFA puede elegir otro servidor para
+     votar a FFA en el ×2.** **A** · se acepta: el ×2 excluye el que elegiste
+     y listo · **B** · el ×2 deja de excluir: cualquiera vota a cualquiera ·
+     **C** · se elige una sola vez por temporada y eso lo frena.
+  Mi voto: **1A, 2A, 3C**. La carta de Servidor **no cambia**: mide los datos
+  de ese servidor, y elegir uno donde no jugaste la dejaría en cero.
+- ✅ ~~**Tres ideas** (28/09)~~: *«B y C»* — los debutantes en el Lunes de la
+  Liga y el DM a vos por lo que espera más de 24 h, hechos (1.44). El
+  probador de llaves en la web queda para cuando quieras.
 - **Las reglas de Misiones y las Tareas del Pase**: qué cuenta, cuánto da y
   qué se gana (Most Wanted ya corre: ver 1.22). Y para las Tareas, **cómo se
   hacen los entrenamientos de DRA** (dónde se anuncian y dónde queda quién
   fue), porque de ahí salen.
-- **¿El tono miel te gusta** para Urban Freestyle, ya en la página?
-- **Seguidores, seguidos y POSTS** (27/09, para discutir). Mi opinión: primero
+- ✅ ~~¿El tono miel te gusta para Urban Freestyle?~~ *«Está bien»*.
+- ✅ **Seguidores y seguidos: hechos** (1.44, *«sí, hay que hacer eso»*, 28/09)
+  tal como estaba planteado abajo. **Los POSTS de la gente siguen sin
+  hacerse**: el muro es automático.
+- ~~**Seguidores, seguidos y POSTS**~~ (27/09, para discutir). Mi opinión: primero
   el **muro automático** —«🏆 X ganó…», «subió a rango B», «desbloqueó su
   tarjeta»—, que sale de datos que ya calcula el ciclo y no le pide nada a
   nadie; contado **por la Liga**, no en primera persona «en nombre de» alguien,
@@ -1679,7 +1693,7 @@ inglés, y `/borrar-mis-datos`.
   tenía login.)*
 
 1. ✅ ~~Los 16 respaldos completos del Sheet en el repo público~~: **salieron del árbol el 25/09** (siguen en esta máquina y en el repo privado) y `.gitignore` no los deja volver. El historial **no** se reescribió, a propósito: es irreversible y los mismos IDs siguen públicos en `datos/padron.json`, que el ciclo necesita. Si querés reescribirlo igual, decime.
-2. **¿Una imagen grande en la vista previa del link?** Hoy el link pegado en Discord sale con el logo chico a la derecha. Si querés una imagen grande abajo del texto (1200×630, tipo banner), pasame la imagen o la armo con el diseño de la página.
+2. ✅ ~~¿Una imagen grande en la vista previa del link?~~ *«Siii»*: hecha con el diseño de la página (1.44).
 
 ### La página vieja del Apps Script, comparada (25/09, 5:30 AM)
 
@@ -1694,6 +1708,18 @@ inglés, y `/borrar-mis-datos`.
 **Los avisos en la PC** (Dlx: *«¿arreglaste para que pueda tener las notificaciones en PC también?»*): del lado del servidor no había nada roto para la PC —el aviso sale igual para todos— y anoche no hubo nada que avisar (en los 10 canales, desde el 24/09 al mediodía, sólo está su «Probando…»). El sospechoso es **Opera GX**, que deja activar los avisos y en la compu a veces no los recibe. La campana lo distingue sola: «Mandar una de prueba» espera 20 s y dice si llegó (entonces es Windows) o no (entonces es el navegador: Chrome o Edge en esa compu).
 
 ## 🔧 Pendiente mío
+
+- **El payload del lobby está al borde de su techo** (28/09, 6 PM): 116 KB
+  compacto contra 117 (`subir_web --auto` lo marca en rojo; CI no lo corre
+  porque pide el token). No es un error: crece con cada persona nueva —la
+  tabla son 63 KB para 179— y hoy entraron 16. Viaja comprimido (~20 KB),
+  así que no apura; lo que hay que decidir es qué columnas de la tabla
+  pasan a `/api/perfiles`, que se pide sólo al abrir un perfil.
+- **Seguir raperos, de punta a punta con un teléfono de verdad**: todo lo
+  que se puede probar sin una cuenta está probado (el objeto contra SQLite,
+  las rutas, la página en local y el Worker en vivo). Falta que alguien
+  siga a otro desde la página, con la campana vinculada, y le llegue el
+  aviso cuando esa persona gane.
 
 - **Mirar la corrida de las 11:22 AM del 27/09**: tiene que entrar AGREEMENT
   DOOMSDAY V.1 (#364 si no entra otro antes), con FULLY + SNOW campeones;

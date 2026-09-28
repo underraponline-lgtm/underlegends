@@ -3551,6 +3551,8 @@ function pintaPerfil(k) {
         '</span></p>' : '') +
       '<p class="pf-sub">' + sub +
       '<span id="pfCrew"></span></p><p class="pf-redes" id="pfRedes" hidden></p>' +
+      // 🔑 cuántos lo siguen: lo público (`/api/avisos/seguidores`), también en el tuyo
+      '<p class="pf-seg" id="pfSeg" data-k="' + esc(k) + '" hidden></p>' +
       // no se sigue uno mismo
       (k === YO || (DC && DC.clave === k) ? '' : '<p class="pf-acc">' + botonSigo(k) + '</p>') + '</div>' +
       '<dl class="pf-cifras"><div><dt>OVR</dt><dd class="ovr">' + (f.ovr || '—') + '</dd></div>' +
@@ -3611,6 +3613,9 @@ function pintaPerfil(k) {
       '<div class="pf-du" id="pfDus"></div></section>';
   PR_PERFIL = f.n;
   try { pintaPrecioPerfil(); } catch (e) { console.error('[pintaPrecioPerfil]', e); }
+  // ★ cuántos lo siguen
+  pintaSeguidores(k);
+  pedirSeguidores().then(function () { pintaSeguidores(k); });
 
   // ── lo que viene de /api/perfiles
   perfiles().then(function (P) {
@@ -4467,16 +4472,34 @@ function itemMuro(x) {
     '<div class="mu-c"><p>' + txt + '</p><small>' + esc(cuandoSe(x.t)) + '</small>' +
     (mas ? '<div class="mu-x">' + mas + '</div>' : '') + '</div></article>';
 }
+/* ★ ¿es de alguien que seguís? Con las claves que trae el muro (`ks`, de
+   bot/muro.py), o por el nombre si es un muro de antes */
+function deQuienSigo(x) {
+  var ks = Array.isArray(x.ks) ? x.ks : x.ks ? Object.keys(x.ks).map(function (r) { return x.ks[r]; })
+    : (x.quien || []).map(kDe);
+  return ks.some(sigoA);
+}
+/* el filtro «A quien sigo» se ve sólo si seguís a alguien */
+function pintaMuroFiltros() {
+  var b = $('[data-mufil="sigo"]');
+  if (!b) return;
+  b.hidden = !SIGO.length;
+  if (!SIGO.length && MURO_FIL === 'sigo') { MURO_FIL = ''; pintaMuro(); }
+}
 function pintaMuro() {
   var c = $('#muro');
   if (!c) return;
+  pintaMuroFiltros();
   $$('[data-mufil]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.mufil === MURO_FIL)); });
   if (MURO === null) { c.innerHTML = '<p class="nota">Cargando&hellip;</p>'; return; }
   var ls = MURO.filter(function (x) {
+    if (MURO_FIL === 'sigo') return deQuienSigo(x);
     return !MURO_FIL || (MURO_FIL === 'anuncios') === !!MURO_ANUNCIO[x.tipo];
   });
   c.innerHTML = ls.length ? ls.slice(0, MURO_VER).map(itemMuro).join('')
-    : '<p class="nota">Todavía no hay nada acá: lo que pase en la Liga va apareciendo solo.</p>';
+    : MURO_FIL === 'sigo' ? '<p class="nota">Nada todavía de la gente que seguís: cuando ganen, suban de ' +
+      'rango o desbloqueen una tarjeta, aparece acá.</p>'
+      : '<p class="nota">Todavía no hay nada acá: lo que pase en la Liga va apareciendo solo.</p>';
   $('#muroMas').hidden = ls.length <= MURO_VER;
 }
 /* 🔑 LA BARRA DEL TELÉFONO SE DESLIZA (Dlx, 28/09/2026: «en celular haz que
@@ -4724,35 +4747,144 @@ var YO = leerLS('lg:yo', '');
 function yo() { return YO ? porK(YO) : null; }
 
 /* ── seguir raperos ───────────────────────────────────────────────────
-   🔑 Dlx, 25/09/2026, a las ideas de Mi cuenta: «todas». Seguir a alguien es
-   de este dispositivo, como `lg:yo`: no viaja a ningún lado y no hace falta
-   entrar con Discord. Se ve en tres lugares: el botón del perfil, la lista
-   de Mi cuenta y una ★ al lado de su nombre en toda la página. */
+   🔑 Dlx, 25/09/2026, a las ideas de Mi cuenta: «todas». Se ve en tres
+   lugares: el botón del perfil, la lista de Mi cuenta y una ★ al lado de su
+   nombre en toda la página.
+   🔑 Y DESDE EL 28/09/2026, GUARDADO DE VERDAD (Dlx: «sí, hay que hacer
+   eso»). Con «Entrar con Discord», a quién seguís vive en el servidor
+   (`seguir()` en bot/avisos.js): se ve en todos tus dispositivos, cuenta
+   como seguidor y te llega un aviso por la campana —nunca por DM— cuando esa
+   persona gana, sube de rango o desbloquea una tarjeta. Sin entrar, sigue
+   siendo de este dispositivo, como antes.
+   ⚠️ LO DE ESTE DISPOSITIVO SUBE UNA SOLA VEZ (`lg:sigo_srv`): después manda
+   el servidor. Si subiera siempre, lo que dejaste de seguir en el teléfono
+   volvería desde la compu. */
+var SIGO_TOPE = 200;
 var SIGO = leerLS('lg:sigo', []);
 if (!Array.isArray(SIGO)) SIGO = [];
+var SIGO_SRV = leerLS('lg:sigo_srv', false) === true;
+var SIGO_EST = {}, ME_SIGUEN = null, SEGUIDORES = null, SEGUIDORES_T = 0;
 function sigoA(k) { return !!k && SIGO.indexOf(k) >= 0; }
-function alternarSigo(k) {
-  var i = SIGO.indexOf(k);
-  if (i >= 0) SIGO.splice(i, 1); else SIGO.unshift(k);
-  SIGO = SIGO.slice(0, 60);
+function guardarSigo(lista) {
+  SIGO = (lista || []).slice(0, SIGO_TOPE);
   guardarLS('lg:sigo', SIGO.length ? SIGO : null);
 }
-function botonSigo(k) {
-  var si = sigoA(k);
-  return '<button type="button" class="btn sec seguir' + (si ? ' on' : '') + '" data-seguir="' +
-    esc(k) + '" aria-pressed="' + si + '">' + (si ? '&#9733; Siguiendo' : '&#9734; Seguir') + '</button>';
+function marcarSigoSrv(si) {
+  SIGO_SRV = si;
+  guardarLS('lg:sigo_srv', si || null);
 }
-/* lo que va en Mi cuenta: a quién seguís, con su puesto de hoy */
+/* lo que cambia en la página cuando cambia a quién seguís */
+function repintarSigo(k) {
+  $$('[data-segw]').forEach(function (b) {
+    if (!k || b.dataset.segw === k) b.outerHTML = botonSigo(b.dataset.segw);
+  });
+  if (k) pintaSeguidores(k);
+  var pop = $('#popCuenta');
+  if (pop && !pop.hidden) pintaPopCuenta();
+  try { pintaMuroFiltros(); } catch (e) { console.error('[pintaMuroFiltros]', e); }
+}
+function alternarSigo(k) {
+  var i = SIGO.indexOf(k), si = i < 0, antes = SIGO.slice();
+  if (i >= 0) SIGO.splice(i, 1); else SIGO.unshift(k);
+  guardarSigo(SIGO);
+  if (!DC) return;
+  // ⚠️ SI HAY QUE VOLVER A ENTRAR (la sesión venció), lo de este dispositivo
+  // sube a la vuelta: por eso se marca antes de pedir
+  marcarSigoSrv(false);
+  SIGO_EST[k] = { va: true };
+  conCuenta('/api/avisos/seguir', { a: k, si: si }, 's').then(function (j) {
+    if (!j) return;
+    SIGO_EST[k] = {};
+    if (j.status === 200 && Array.isArray(j.sigo)) {
+      guardarSigo(j.sigo);
+      marcarSigoSrv(true);
+      if (j.n && SEGUIDORES) SEGUIDORES[k] = j.n[k] || 0;
+    } else {
+      guardarSigo(antes);
+      SIGO_EST[k] = { error: j.error === 'tope' ? 'Ya seguís a ' + SIGO_TOPE + ': dejá de seguir a alguien primero.'
+        : errorCuenta(j.error) || 'No pude guardarlo. Probá de nuevo en un rato.' };
+    }
+    repintarSigo(k);
+  }).catch(function () {
+    guardarSigo(antes);
+    SIGO_EST[k] = { error: 'Sin conexión: probá de nuevo.' };
+    repintarSigo(k);
+  });
+}
+/* 🔑 A QUIÉN SEGUÍS, DEL SERVIDOR: al abrir la página con Discord y al
+   entrar. La primera vez sube lo que este dispositivo ya seguía. */
+function pedirSigo() {
+  if (!DC) return;
+  pedirConCuenta('/api/avisos/sigo', {}, false).then(function (j) {
+    if (!j || j.status !== 200 || !Array.isArray(j.sigo)) return;
+    var subir = SIGO_SRV ? [] : SIGO.filter(function (k) { return j.sigo.indexOf(k) < 0; }).slice(0, 60);
+    ME_SIGUEN = j.me_siguen || null;
+    guardarSigo(j.sigo.concat(subir));
+    if (!subir.length) { marcarSigoSrv(true); repintarSigo(); return; }
+    pedirConCuenta('/api/avisos/seguir', { a: subir, si: true }, false).then(function (k) {
+      if (k && Array.isArray(k.sigo)) guardarSigo(k.sigo);
+      if (k && (k.status === 200 || k.status === 409)) marcarSigoSrv(true);
+      repintarSigo();
+    }).catch(function () { /* se sube la próxima vez */ });
+  }).catch(function () { /* sin red, queda lo de este dispositivo */ });
+}
+/* cuántos siguen a cada uno: lo público, una vez cada cinco minutos */
+function pedirSeguidores() {
+  if (SEGUIDORES && Date.now() - SEGUIDORES_T < 5 * 60000) return Promise.resolve(SEGUIDORES);
+  return fetch('/api/avisos/seguidores', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      if (j && j.n) { SEGUIDORES = j.n; SEGUIDORES_T = Date.now(); }
+      return SEGUIDORES;
+    })
+    .catch(function () { return SEGUIDORES; });
+}
+function pintaSeguidores(k) {
+  var c = $('#pfSeg');
+  if (!c || c.dataset.k !== k) return;
+  var n = (SEGUIDORES || {})[k] || 0;
+  c.hidden = !n;
+  c.innerHTML = n ? '<b>' + num(n) + '</b> ' + (n === 1 ? 'seguidor' : 'seguidores') : '';
+}
+/* el botón va con su aviso de error en una caja: se reemplazan juntos */
+function botonSigo(k) {
+  var si = sigoA(k), est = SIGO_EST[k] || {};
+  return '<span class="seg-w" data-segw="' + esc(k) + '"><button type="button" class="btn sec seguir' +
+    (si ? ' on' : '') + '" data-seguir="' + esc(k) + '" aria-pressed="' + si + '"' + (est.va ? ' disabled' : '') + '>' +
+    (si ? '&#9733; Siguiendo' : '&#9734; Seguir') + '</button>' +
+    (est.error ? '<span class="seg-e" role="status">' + est.error + '</span>' : '') + '</span>';
+}
+/* lo que va en Mi cuenta: a quién seguís, con su puesto de hoy, y quién te sigue */
 function secSigo() {
   var fs = SIGO.map(function (k) { return porK(k); }).filter(Boolean);
-  if (!fs.length) return '';
-  return '<section class="pop-sec"><h4>&#9733; Siguiendo <small>' + fs.length + '</small></h4>' +
-    '<div class="pop-sigo">' + fs.slice(0, 6).map(function (f) {
-      return '<a href="#/r/' + encodeURIComponent(f.k) + '">' + avatar(f, 26) + '<span class="ps-n">' +
-        esc(f.n) + '</span><span class="ps-d">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) : '—') +
-        ' &middot; OVR ' + (f.ovr || '—') + '</span></a>';
-    }).join('') + '</div>' + (fs.length > 6 ? '<p class="nota">y ' + (fs.length - 6) +
-      ' más: tienen la &#9733; en el ranking.</p>' : '') + '</section>';
+  var ms = ME_SIGUEN && ME_SIGUEN.n ? ME_SIGUEN : null;
+  var suyos = ms ? (ms.perfiles || []).map(function (k) { return porK(k); }).filter(Boolean) : [];
+  var out = '';
+  if (fs.length) {
+    out += '<section class="pop-sec"><h4>&#9733; Siguiendo <small>' + fs.length + '</small></h4>' +
+      '<div class="pop-sigo">' + fs.slice(0, 6).map(function (f) {
+        return '<a href="#/r/' + encodeURIComponent(f.k) + '">' + avatar(f, 26) + '<span class="ps-n">' +
+          esc(f.n) + '</span><span class="ps-d">' + (f.pos && f.pos !== '—' ? '#' + esc(f.pos) : '—') +
+          ' &middot; OVR ' + (f.ovr || '—') + '</span></a>';
+      }).join('') + '</div>' + (fs.length > 6 ? '<p class="nota">y ' + (fs.length - 6) +
+        ' más: tienen la &#9733; en el ranking.</p>' : '') +
+      // sin Discord no hay aviso: el servidor no sabe a quién seguís
+      (DC ? '<p class="nota">Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta ' +
+        '(<a href="#/avisos">activá los avisos</a> en este dispositivo).</p>'
+        : '<p class="nota">Entrá con Discord y te avisamos cuando ganen o suban de rango.</p>') + '</section>';
+  }
+  if (ms) {
+    var otros = ms.n - suyos.length;
+    out += '<section class="pop-sec"><h4>&#128101; Te siguen <small>' + num(ms.n) + '</small></h4>' +
+      (suyos.length ? '<div class="pop-sigo">' + suyos.slice(0, 6).map(function (f) {
+        return '<a href="#/r/' + encodeURIComponent(f.k) + '">' + avatar(f, 26) + '<span class="ps-n">' +
+          esc(f.n) + '</span></a>';
+      }).join('') + '</div>' : '') +
+      (otros > 0 || suyos.length > 6 ? '<p class="nota">' + (suyos.length > 6 ? 'y ' + (suyos.length - 6) +
+        ' raperos más' + (otros > 0 ? ', y ' : '') : '') + (otros > 0 ? num(otros) + (otros === 1 ? ' persona' : ' personas') +
+        ' que no compiten' : '') + '.</p>' : '') + '</section>';
+  }
+  return out;
 }
 /* 🔑 TUS PRÓXIMOS EVENTOS: los anunciados en los servidores donde estás
    (lo sabe `/api/cuenta`); sin eso, los de toda la Liga. El link es el
@@ -5009,6 +5141,8 @@ function volverDeDiscord() {
       guardarLS('lg:dc', DC);
       YO = c.clave && porK(c.clave) ? c.clave : c.rapero ? kDe(c.rapero) : '';
       guardarLS('lg:yo', YO || null);
+      // ★ a quién seguís, del servidor (y lo de este dispositivo sube)
+      try { pedirSigo(); } catch (e) { console.error('[pedirSigo]', e); }
       pintaCuenta();
       pintaPaneles();
       pintaPopCuenta();
@@ -5455,8 +5589,10 @@ function eventos() {
     }
     var sg = e.target.closest('[data-seguir]');
     if (sg) {
-      alternarSigo(sg.dataset.seguir);
-      sg.outerHTML = botonSigo(sg.dataset.seguir);
+      var sk = sg.dataset.seguir, sw = sg.closest('[data-segw]');
+      SIGO_EST[sk] = {};
+      alternarSigo(sk);
+      if (sw) sw.outerHTML = botonSigo(sk); else sg.outerHTML = botonSigo(sk);
       return;
     }
     var y = e.target.closest('[data-yo]');
@@ -5516,6 +5652,8 @@ function eventos() {
     if (e.target.closest('#yoOlvidar')) {
       desvincularAvisos();
       cerrarSesion();
+      // ★ a quién seguías queda en el servidor, con tu cuenta: no en este dispositivo
+      if (DC) { guardarSigo([]); marcarSigoSrv(false); ME_SIGUEN = null; }
       YO = '';
       DC = null;
       guardarLS('lg:yo', null);
@@ -5529,6 +5667,9 @@ function eventos() {
     if (e.target.closest('#ajBorrar')) {
       desvincularAvisos();
       cerrarSesion();
+      guardarSigo([]);
+      marcarSigoSrv(false);
+      ME_SIGUEN = null;
       AJ = {};
       YO = '';
       DC = null;
@@ -5939,6 +6080,11 @@ function pinta() {
   try { pedirVivo(); } catch (e) { console.error('[pedirVivo]', e); }
   try { pedirEncuestas(); } catch (e) { console.error('[pedirEncuestas]', e); }
   try { pedirPrecios(); } catch (e) { console.error('[pedirPrecios]', e); }
+  // ★ con Discord, a quién seguís sale del servidor (quien vuelve de Discord
+  // lo pide al terminar de entrar: ver `volverDeDiscord()`)
+  if (DC && !DC_VUELTA) {
+    try { pedirSigo(); } catch (e) { console.error('[pedirSigo]', e); }
+  }
   setInterval(refrescarDatos, 5 * 60000);
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible' && Date.now() - DATOS_PEDIDOS > 60000) refrescarDatos();

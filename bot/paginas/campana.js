@@ -259,7 +259,7 @@
     pinta();
   }
   window.addEventListener('lg:vinculado', function () {
-    MSG = '✅ Listo: te llegan tus avisos (rango y tarjetas) en este dispositivo.';
+    MSG = '✅ Listo: te llegan tus avisos (rango y tarjetas) y los de la gente que seguís en este dispositivo.';
     pinta();
   });
   window.addEventListener('lg:vinculado-no', function () {
@@ -361,8 +361,9 @@
       // rango, desbloqueaste una tarjeta. Sólo si este dispositivo se
       // vinculó entrando con Discord; el ID lo pone Discord, no la página.
       var yo = leer('campana:yo', null);
+      // ⭐ y desde el 28/09/2026, lo de la gente que seguís (ver `seguidos()`)
       h += '<div class="cp-yo"><p class="cp-tx"><b>&#128100; Avisos míos</b>: cuando subís de ' +
-        'rango o desbloqueás una tarjeta.</p>' + (yo && yo.id
+        'rango o desbloqueás una tarjeta, y cuando alguien que seguís gana o sube.</p>' + (yo && yo.id
         ? '<p class="cp-ok">✅ Vinculado con tu Discord' + (yo.n ? ' (' + esc(yo.n) + ')' : '') +
           '.</p><button class="bajar cp-no" data-cp="desvincular"><span>Desvincular</span></button>'
         : '<button class="bajar" data-cp="vincular"><i aria-hidden="true">&#128279;</i>' +

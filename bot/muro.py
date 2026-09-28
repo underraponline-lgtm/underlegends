@@ -224,6 +224,77 @@ def cambios(estado, tabla, ahora):
     return pubs, nuevo
 
 
+# ── de quién es cada publicación: para los seguidores ────────────────────
+#: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
+DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios')
+#: los premios de la semana que son de una persona (el de servidor no)
+PREMIOS = ('figura', 'revelacion', 'cazador')
+
+
+def _norm(s):
+    """El nombre para comparar: lo mismo que `normNombre()` de la página."""
+    import unicodedata
+    return ''.join(c for c in unicodedata.normalize('NFKD', str(s or '')).lower() if c.isalnum())
+
+
+def _banderas(s):
+    """Los países de las banderas de un nombre («Ana 🇦🇷» -> ['ar']), como `banderasDe()`."""
+    out, par = [], ''
+    for ch in str(s or ''):
+        c = ord(ch)
+        if 0x1F1E6 <= c <= 0x1F1FF:
+            par += chr(c - 0x1F1E6 + 97)
+            if len(par) == 2:
+                out.append(par)
+                par = ''
+    return out
+
+
+def k_de(n, tabla):
+    """La clave del perfil de ese nombre, igual que `kDe()` de la página; `''` si no es seguro."""
+    exacto = [f for f in tabla or [] if f.get('k') and f.get('n') == n]
+    if exacto:
+        return exacto[0]['k']
+    c = [f for f in tabla or [] if f.get('k') and _norm(f.get('n')) == _norm(n)]
+    if len(c) == 1:
+        return c[0]['k']
+    ccs = _banderas(n)
+    m = [f for f in c if str(f.get('cc') or '').lower() in ccs]
+    return m[0]['k'] if len(m) == 1 else ''
+
+
+def con_claves(items, tabla):
+    """Cada publicación que es de alguien, con la clave de su perfil (`ks`).
+
+    🔑 PARA LOS SEGUIDORES (Dlx, 28/09/2026: *«sí, hay que hacer eso»*). El
+    Durable Object lee este muro y le avisa a quien sigue a esa persona
+    (`seguidos()` en `bot/avisos.js`). Allá no hay tabla para pasar de un
+    nombre a un perfil; acá sí. Y así no hace falta otra clave de KV: el muro
+    ya se escribe sólo si cambió.
+
+    ⚠️ `ks` VA ALINEADO CON `quien` —una clave por nombre, `''` si no se
+    sabe—; en los premios es `{figura|revelacion|cazador: clave}`. Son las
+    claves de los links `#/r/<clave>`: públicas, como el muro. Ningún
+    Discord ID.
+    """
+    out = []
+    for x in items:
+        if x.get('tipo') not in DE_ALGUIEN:
+            out.append(x)
+            continue
+        y = dict(x)
+        if x['tipo'] == 'premios':
+            ks = {r: k_de(x[r][0], tabla) for r in PREMIOS if x.get(r)}
+            ks = {r: k for r, k in ks.items() if k}
+        else:
+            ks = [k_de(n, tabla) for n in x.get('quien') or []]
+            ks = ks if any(ks) else None
+        if ks:
+            y['ks'] = ks
+        out.append(y)
+    return out
+
+
 def armar(p, guardado=None, ahora=None, fuentes=None):
     """`(muro para la página, lo que se guarda)` con el payload del lobby `p`.
 
@@ -266,7 +337,7 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
         lista.append(x)
     lista.sort(key=lambda x: x['t'], reverse=True)
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
-            'items': lista[:VIAJAN]}
+            'items': con_claves(lista[:VIAJAN], p.get('tabla'))}
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
                'estado': estado, 'cambios': anotados}
@@ -344,6 +415,17 @@ def _self_check():
     ok(sorted(x['tipo'] for x in m2['items']) == ['rango', 'tarjeta'],
        'en la corrida siguiente los cambios siguen ahí y no se repiten')
     ok(json.dumps(muro) and 'discord_id' not in json.dumps(muro), 'y ningún Discord ID viaja')
+    # 🔑 las claves, para los seguidores
+    por = {x['tipo']: x for x in muro['items']}
+    ok(por['campeon'].get('ks') == ['ana'] and por['caza'].get('ks') == ['ana'] and por['rango'].get('ks') == ['ana'],
+       'cada publicación de alguien lleva la clave de su perfil, alineada con los nombres')
+    ok(por['premios'].get('ks') == {'figura': 'ana'} and 'ks' not in por['anuncio'] and 'ks' not in por['liga'],
+       'los premios, por premio; los anuncios y las novedades no son de nadie')
+    t2 = [{'k': 'volk', 'n': 'Volk', 'cc': 'mx'}, {'k': 'volk-co', 'n': 'volk', 'cc': 'co'},
+          {'k': 'lazaro', 'n': 'Lázaro', 'cc': 'cu'}]
+    ok([k_de(n, t2) for n in ('Volk', 'volk', 'VOLK 🇨🇴', 'VOLK', 'lazaro 🇨🇺', 'Nadie')]
+       == ['volk', 'volk-co', 'volk-co', '', 'lazaro', ''],
+       'el nombre se lleva a la clave como en la página: exacto, sin tildes ni banderas, y la bandera desempata')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

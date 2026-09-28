@@ -64,6 +64,11 @@ const AVISOS = {
   '/api/avisos/precios': 'GET',
   '/api/avisos/precio': 'POST',
   '/api/avisos/billetera': 'POST',
+  // 🔑 seguir raperos (28/09/2026): seguir, a quién seguís y cuántos siguen a
+  // cada uno. Ver `seguir()` en bot/avisos.js: quién sigue lo dice Discord
+  '/api/avisos/seguir': 'POST',
+  '/api/avisos/sigo': 'POST',
+  '/api/avisos/seguidores': 'GET',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
@@ -111,6 +116,10 @@ async function avisos(req, url) {
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto
     init.cf = { cacheTtl: 30, cacheEverything: true };
+  } else if (url.pathname.endsWith('/seguidores')) {
+    // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
+    // de atraso no le cambia nada a nadie
+    init.cf = { cacheTtl: 60, cacheEverything: true };
   }
   const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
   return new Response(r.body, {

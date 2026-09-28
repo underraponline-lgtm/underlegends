@@ -1560,6 +1560,12 @@ font:700 .9rem/1.2 Archivo,sans-serif}
 .redes-el .red{pointer-events:none}
 .seguir{padding:8px 14px}
 .seguir.on{--c:#E0B341;color:#E0B341;border-color:#E0B341}
+/* el botón y su aviso van juntos: si no se pudo guardar, lo dice al lado */
+.seg-w{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 12px}
+.seg-e{color:#FF9F6B;font:600 .82rem/1.35 Archivo,sans-serif;max-width:32ch}
+/* cuántos lo siguen */
+.pf-seg{margin-top:8px;color:var(--tx2);font:600 .88rem/1.3 Archivo,sans-serif}
+.pf-seg b{color:#E0B341;font-weight:800}
 .sigo-et{font-style:normal;color:#E0B341;font-size:.85em;margin-left:4px}
 .calma *,.calma *::before,.calma *::after{animation:none!important;transition:none!important}
 .calma .blk{opacity:1;transform:none}
@@ -1716,7 +1722,14 @@ color:var(--tx);font:800 .9rem/1 Archivo,sans-serif;font-variant-numeric:tabular
    Una publicación por renglón, con su ícono a la izquierda. Lo que es un
    anuncio lleva el borde magenta (lo dijo alguien); lo que pasó en la Liga,
    teal (lo cuenta la Liga). */
-.mu-fil{margin:4px 0 2px}
+.mu-fil{margin:4px 0 2px;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.mu-fil::-webkit-scrollbar{display:none}
+/* ⚠️ CON «★ A QUIEN SIGO» SON CUATRO: en el teléfono se partían en tres
+   renglones. Medido a 375 px: los cuatro textos son 310 px y hay 336, así
+   que ahí dice «★ SIGO» y los botones van más angostos (329 px). Si igual
+   no entran, se deslizan en vez de partirse */
+.mu-fil button{white-space:nowrap;flex:none}
+@media (max-width:420px){.l-vista.mu-fil button{padding:7px 10px}.mu-fil .mu-largo{display:none}}
 .muro{display:grid;gap:8px}
 .mu{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;padding:11px 13px;
 background:rgba(10,15,14,.82);border:1px solid var(--bd2);border-left:3px solid var(--tl)}

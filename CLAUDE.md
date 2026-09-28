@@ -758,6 +758,15 @@ cabezas valen y los números, en KV (`precios`, del ciclo); quién cazó, en
 la Temporada por `datos/precios.json`. **Los números están sólo en
 `bot/precios.py`**: el Worker y la página los reciben.
 
+⭐ **SEGUIR RAPEROS, GUARDADO DE VERDAD, DESDE EL 28/09/2026** (Dlx: *«sí,
+hay que hacer eso»*). Con «Entrar con Discord», a quién seguís vive en el
+Durable Object (tabla `sigue`: `seguir()`, `sigo()`, `seguidores()`); sin
+entrar, en el navegador (`lg:sigo`), como antes. El aviso de «alguien que
+seguís ganó» lo arma el vigía **leyendo el muro** (`seguidos()` sobre
+`web:muro`, que trae la clave de cada persona: `muro.con_claves()`), así que
+no hay otra clave de KV. **Afuera se ve cuántos, nunca quién**; quién te
+sigue lo ves vos, y sólo los que son raperos. Nunca por DM.
+
 ⚠️ **El lector de anuncios está en Python y en JS**, atados por
 `bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
 lea igual. Y `python herramientas/probar_avisos.py` prueba la cadena

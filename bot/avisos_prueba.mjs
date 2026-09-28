@@ -248,6 +248,37 @@ const ok = (cond, que) => {
 }
 
 
+// ── seguir raperos: lo que se les avisa a los seguidores (28/09/2026) ──
+{
+  ok(['makma', 'volk-co', 'last-x2', 'ржунимагу', 'lazaro'].every(A.claveValida) &&
+    !['', 'a/b', 'a b', '-x', '../x', 'x'.repeat(61), null, 7].some(A.claveValida),
+  'una clave de perfil: letras y números de cualquier alfabeto y el -cc de los choques; nada más');
+  const ahora = Date.parse('2026-10-14T15:00:00Z');
+  const muro = [
+    { tipo: 'campeon', t: '2026-10-14T02:00:00Z', quien: ['Ana 🇦🇷', 'Bea'], ks: ['ana', 'bea'], ev: 'COPA', sv: 'SR' },
+    { tipo: 'rango', t: '2026-10-14T12:22:00Z', quien: ['Cid'], ks: ['cid'], rg: 'B', primero: true },
+    { tipo: 'tarjeta', t: '2026-10-14T12:22:00Z', quien: ['Dan'], ks: [''], carta: 'pais' },
+    { tipo: 'premios', t: '2026-10-13T15:00:00Z', figura: ['Ana 🇦🇷', 9000], servidor: ['SR', 3], ks: { figura: 'ana' } },
+    { tipo: 'caza', t: '2026-10-12T22:00:00Z', quien: ['Eva'], ks: ['eva'], a: 'Cid', ev: 'VIEJA' },
+    { tipo: 'anuncio', t: '2026-10-14T14:00:00Z', ev: 'SNAKE ARENA', sv: 'SR' },
+  ];
+  const c = A.paraSeguidores(muro, ahora);
+  ok(c.length === 4 && c.map((x) => x.k).join() === 'ana,bea,cid,ana',
+    'de las últimas 24 h y de alguien con perfil: el equipo campeón, el rango y el premio; ' +
+    'la tarjeta sin perfil, la caza de hace dos días y el anuncio, no  ' + c.map((x) => x.k).join());
+  ok(c[0].pub === c[1].pub && c[0].pub !== c[3].pub,
+    'los dos del mismo equipo son la misma publicación: a quien sigue a los dos le llega uno');
+  ok(c[0].titulo === '🏆 Ana 🇦🇷 y su equipo ganaron COPA' && c[2].titulo === '🎖️ Cid ya tiene rango: B' &&
+    c[3].titulo === '🥇 Ana 🇦🇷 es la figura de la semana', c.map((x) => x.titulo).join(' | '));
+  ok(c[0].url === 'https://underlegends.pages.dev/#/r/ana' && A.paraSeguidores(muro, ahora)[0].pub === c[0].pub,
+    'el aviso abre su perfil, y la misma publicación da siempre el mismo número (no se repite)');
+  ok(A.tituloSeguido({ tipo: 'tarjeta', carta: 'competitivo' }, 'Ana') === '🃏 Ana desbloqueó su tarjeta Competitiva' &&
+    A.tituloSeguido({ tipo: 'anuncio' }, 'Ana') === '', 'la tarjeta con su nombre; lo que no es de nadie, nada');
+  ok(!A.paraSeguidores(null, ahora).length && !A.paraSeguidores([{ tipo: 'rango', t: 'x', ks: ['a'] }], ahora).length,
+    'sin muro, o con una fecha rota, nada');
+}
+
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

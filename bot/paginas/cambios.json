@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "1.44",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T18:15:00-04:00",
+   "titulo": "Seguí a quien quieras",
+   "items": [
+    "⭐ **Seguir a alguien ahora es de verdad**: entrando con Discord, a quién seguís se guarda con tu cuenta —lo ves igual en el teléfono y en la compu— y **te llega un aviso** cuando esa persona gana un evento, sube de rango, desbloquea una tarjeta o caza en el Most Wanted (con los avisos activados en ese dispositivo). Nunca por mensaje privado.",
+    "👥 **Cada perfil dice cuántos lo siguen**, y en Mi cuenta ves quién te sigue. Lo que ya seguías sin cuenta en ese dispositivo se guarda solo la primera vez que entrás.",
+    "📰 **En Publicaciones, «★ A quien sigo»**: sólo lo de la gente que seguís.",
+    "🔁 **Cuando alguien revive en una llave, la batalla que perdió ya tiene ganador** (antes quedaba en duda y frenaba los puntos del evento entero) y la escala es la del formato: una llave de 16 es de 16 aunque un nombre aparezca dos veces.",
+    "🆕 **Si jugaste con un nombre nuevo y tenés una sola cuenta de Discord en los servidores de la Liga, tus puntos te llegan solos**, sin esperar a que alguien pregunte quién sos.",
+    "🌱 **El Lunes de la Liga saluda a quienes debutaron la semana anterior.**",
+    "🖼️ **El link de la página, pegado en Discord, sale con una imagen grande.**"
+   ]
+  },
+  {
    "version": "1.43",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T16:50:00-04:00",

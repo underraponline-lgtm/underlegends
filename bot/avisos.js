@@ -829,7 +829,93 @@ const RUTAS = {
   '/avisos/encuestas': 'GET', '/avisos/votar': 'POST',
   // 🔑 el precio por cabeza: ver `validarPrecio()`, `precio()` y `billetera()`
   '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
+  // 🔑 seguir raperos: ver `seguir()`, `sigo()`, `seguidores()` y `seguidos()`
+  '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
 };
+
+// ── seguir raperos ─────────────────────────────────────────────────────
+// 🔑 Dlx, 28/09/2026, a «¿guardar de verdad a quién seguís?»: *«sí, hay que
+// hacer eso»*. Seguir existía desde el 25/09 (`lg:sigo`) pero quedaba en el
+// navegador: nadie sabía que lo seguías y no te llegaba nada. Ahora, con
+// «Entrar con Discord», se guarda en el objeto (tabla `sigue`), cuenta
+// seguidores y te avisa por la campana —NUNCA por DM— cuando alguien que
+// seguís sale en Publicaciones: ganó, subió de rango, desbloqueó una tarjeta…
+//
+// ⚠️ AFUERA SE VE CUÁNTOS, NUNCA QUIÉN: `/avisos/seguidores` cuenta. Quién te
+// sigue lo ve sólo el dueño (`sigo()`), y sólo los que son raperos.
+// ⚠️ SIN KV NUEVO: qué pasó y de quién lo lee el vigía del muro que el ciclo
+// ya sube (`web:muro`, con la clave de cada persona: ver `bot/muro.py`).
+
+//: cuántos puede seguir una persona
+export const SIGUE_TOPE = 200;
+//: de cuántas horas atrás se avisa una publicación a quien sigue a esa persona
+export const SIGUE_HORAS = 24;
+//: cuántos envíos por invocación del vigía: comparte los 50 subpedidos
+export const TOPE_SEGUIDOS = 8;
+//: lo que dice cada tarjeta en un aviso, como `NOMBRE` de `bot/avisos_personales.py`
+const CARTA_AVISO = { temporada: 'de Temporada', competitivo: 'Competitiva', pais: 'de País', servidor: 'de Servidor' };
+
+/**
+ * ¿Es la clave de un perfil (`#/r/<clave>`)? Letras y números de cualquier
+ * alfabeto —`comun/claves.py`— y el `-cc` de dos personas con el mismo
+ * nombre (`_choques()` de `bot/subir_web.py`).
+ */
+export function claveValida(k) {
+  return typeof k === 'string' && k.length >= 1 && k.length <= 60 && /^[\p{L}\p{N}][\p{L}\p{N}-]*$/u.test(k);
+}
+
+/** Un número corto y estable para un texto (FNV-1a de 32 bits). */
+function huella(s) {
+  let h = 0x811c9dc5;
+  for (const ch of String(s)) {
+    h ^= ch.codePointAt(0);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(36);
+}
+
+/** El título del aviso de una publicación del muro, para quien sigue a `n`; `''` si no se avisa. */
+export function tituloSeguido(x, n, rol) {
+  const ev = String(x.ev || '').slice(0, 60);
+  const t = x.tipo === 'campeon' ? `🏆 ${n} ${(x.quien || []).length > 1 ? 'y su equipo ganaron' : 'ganó'} ${ev}`
+    : x.tipo === 'rango' ? (x.primero ? `🎖️ ${n} ya tiene rango: ${x.rg}` : `⬆️ ${n} subió a rango ${x.rg}`)
+      : x.tipo === 'tarjeta' ? (CARTA_AVISO[x.carta] ? `🃏 ${n} desbloqueó su tarjeta ${CARTA_AVISO[x.carta]}` : '')
+        : x.tipo === 'caza' ? `🎯 ${n} cazó a ${x.a}${ev ? ' en ' + ev : ''}`
+          : x.tipo === 'sobrevivio' ? `🛡️ ${n} sobrevivió al Most Wanted`
+            : x.tipo === 'elegido' ? `🗳️ ${n} es El Elegido del Most Wanted`
+              : x.tipo === 'precio' ? `💰 ${n} cobró el precio por la cabeza de ${x.a}`
+                : x.tipo === 'premios' ? ({ figura: `🥇 ${n} es la figura de la semana`,
+                  revelacion: `🌟 ${n} es la revelación de la semana`,
+                  cazador: `🎯 ${n} es el cazador de la semana` })[rol] || '' : '';
+  return t.slice(0, 120);
+}
+
+/**
+ * De las publicaciones del muro, lo que se les avisa a los seguidores: lo de
+ * las últimas `SIGUE_HORAS` que es de alguien con perfil. Uno por persona de
+ * cada publicación: `{pub, k, t, titulo, cuerpo, url}`; `pub` es la
+ * publicación, para que a quien sigue a dos del mismo equipo le llegue UNO.
+ * Pura, sin red: la prueba `bot/avisos_prueba.mjs`.
+ */
+export function paraSeguidores(items, ahora) {
+  const out = [];
+  const desde = ahora - SIGUE_HORAS * HORA;
+  for (const x of Array.isArray(items) ? items : []) {
+    const t = Date.parse((x && x.t) || '');
+    if (!x || !x.ks || !(t >= desde && t <= ahora + HORA)) continue;
+    const pares = Array.isArray(x.ks) ? x.ks.map((k, i) => [k, (x.quien || [])[i], ''])
+      : Object.keys(x.ks).map((r) => [x.ks[r], (Array.isArray(x[r]) ? x[r][0] : '') || '', r]);
+    const pub = huella([x.tipo, x.t, x.ev || '', x.rg || '', x.carta || '', x.a || '', JSON.stringify(x.ks)].join('|'));
+    for (const [k, n, rol] of pares) {
+      if (!claveValida(k) || typeof n !== 'string' || !n) continue;
+      const titulo = tituloSeguido(x, n, rol);
+      if (!titulo) continue;
+      out.push({ pub, k, t, titulo, cuerpo: `Seguís a ${n} en la Liga · tocá para ver su perfil`.slice(0, 240),
+        url: 'https://underlegends.pages.dev/#/r/' + encodeURIComponent(k) });
+    }
+  }
+  return out;
+}
 
 // ── las encuestas de la página ─────────────────────────────────────────
 // 🔑 Dlx, 27/09/2026: *«eso de que los buscados lo elige la gente es
@@ -1171,6 +1257,33 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🔑 SEGUIR, Y A QUIÉN SEGUÍS: quién sigue lo dice Discord (o la sesión),
+  // nunca la página; a quién, la página, con una clave de perfil válida
+  if (ruta === '/avisos/seguir' || ruta === '/avisos/sigo') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    let as = null;
+    if (ruta === '/avisos/seguir') {
+      as = Array.isArray(d.a) ? d.a : [d.a];
+      if (!as.length || as.length > 60 || !as.every(claveValida) ||
+          (d.si !== undefined && typeof d.si !== 'boolean')) return json({ error: 'clave' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    // 🔑 TU PROPIO PERFIL, el de tu Discord (como `/card`): para no seguirte y
+    // para que la lista de quién te sigue diga que sos vos
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '', a: as, si: d.si !== false }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -1408,6 +1521,14 @@ export class Avisos {
       // hash del número, no el número. Ver `sesionNueva()` y `sesion()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS sesiones (h TEXT PRIMARY KEY, quien TEXT NOT NULL, ' +
         't INTEGER NOT NULL, vence INTEGER NOT NULL)');
+      // 🔑 SEGUIR RAPEROS (28/09/2026): quién (Discord ID) sigue a qué perfil
+      // (la clave de `#/r/`), desde cuándo, cuál es su propio perfil (`de`,
+      // para no avisarle de sí mismo) y cuándo se creó su cuenta de Discord
+      // (`creada`: las de menos de 30 días siguen, pero no cuentan). Ver `seguir()`.
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sigue (quien TEXT NOT NULL, a TEXT NOT NULL, ' +
+        "t INTEGER NOT NULL, de TEXT NOT NULL DEFAULT '', creada INTEGER NOT NULL DEFAULT 0, " +
+        'PRIMARY KEY (quien, a))');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
     });
   }
 
@@ -1430,6 +1551,7 @@ export class Avisos {
       if (ruta === '/vivo') return json(this.vivo(), 200, 20);
       if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
       if (ruta === '/precios') return json(this.precios(), 200, 20);
+      if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/alta') return this.alta(d);
@@ -1440,6 +1562,8 @@ export class Avisos {
       if (ruta === '/desvincular') return this.desvincular(d);
       if (ruta === '/olvidar') return this.olvidar(d);
       if (ruta === '/votar') return this.votar(d);
+      if (ruta === '/seguir') return this.seguir(d);
+      if (ruta === '/sigo') return this.sigo(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
@@ -1628,6 +1752,10 @@ export class Avisos {
     // 🔑 los avisos de cada uno. Nunca frena al vigía: ver `personales()`
     try { await this.personales(ahora); } catch (e) {
       this.guardar('personales', { t: ahora, error: String(e).slice(0, 120) });
+    }
+    // 🔑 y lo que le pasó a quien seguís. Nunca frena al vigía: ver `seguidos()`
+    try { await this.seguidos(ahora); } catch (e) {
+      this.guardar('seguidos', { t: ahora, error: String(e).slice(0, 120) });
     }
     // 🔑 el precio por cabeza: lo que el ciclo resolvió (cazado o devuelto),
     // cada cinco minutos. Nunca frena al vigía: ver `resolverPrecios()`
@@ -2096,7 +2224,145 @@ export class Avisos {
     this.sql.exec("UPDATE precios SET quien = 'borrado' WHERE quien = ?", String(d.quien));
     // y sus sesiones: en ningún dispositivo queda adentro
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', String(d.quien));
-    return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0 });
+    // 🔑 Y A QUIÉN SEGUÍA: también va con su Discord ID
+    const s = this.sql.exec('DELETE FROM sigue WHERE quien = ?', String(d.quien));
+    return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
+      sigue: s.rowsWritten || 0 });
+  }
+
+  // ── seguir raperos ───────────────────────────────────────────────────
+  /** A quién sigue esa persona, lo más nuevo primero. */
+  sigoDe(quien) {
+    return this.sql.exec('SELECT a FROM sigue WHERE quien = ? ORDER BY t DESC', quien).toArray().map((r) => r.a);
+  }
+
+  /** Cuántos siguen a cada uno: sólo las cuentas de más de `EDAD_MIN_DIAS`. */
+  cuantos(as, ahora) {
+    const out = {};
+    for (const a of as) {
+      out[a] = this.sql.exec('SELECT COUNT(*) AS n FROM sigue WHERE a = ? AND creada > 0 AND creada < ?',
+        a, ahora - EDAD_MIN_DIAS * DIA_MS).toArray()[0].n;
+    }
+    return out;
+  }
+
+  /**
+   * Seguir (`si`) o dejar de seguir una o varias claves. Sólo lo llama
+   * `rutaAvisos`, con el ID que dijo Discord y las claves ya validadas.
+   * Devuelve a quién seguís ahora y cuántos siguen a esas claves.
+   *
+   * ⚠️ VARIAS DE UNA VEZ ES PARA LA PRIMERA VEZ: lo que ese dispositivo ya
+   * seguía sin cuenta (`lg:sigo`) sube entero al entrar con Discord.
+   */
+  seguir(d) {
+    const quien = String(d.quien || '');
+    const as = (Array.isArray(d.a) ? d.a : []).filter(claveValida).slice(0, 60);
+    if (!/^[0-9]{5,25}$/.test(quien) || !as.length) return json({ error: 'faltan datos' }, 400);
+    const ahora = Date.now(), de = claveValida(d.de) ? d.de : '';
+    let tope = false;
+    if (d.si === false) {
+      for (const a of as) this.sql.exec('DELETE FROM sigue WHERE quien = ? AND a = ?', quien, a);
+    } else {
+      let lugar = SIGUE_TOPE - this.sql.exec('SELECT COUNT(*) AS n FROM sigue WHERE quien = ?', quien).toArray()[0].n;
+      for (const a of as) {
+        // a uno mismo no se lo sigue
+        if (a === de || this.sql.exec('SELECT 1 AS x FROM sigue WHERE quien = ? AND a = ?', quien, a).toArray()[0]) continue;
+        if (lugar <= 0) { tope = true; break; }
+        this.sql.exec('INSERT INTO sigue (quien, a, t, de, creada) VALUES (?, ?, ?, ?, ?)',
+          quien, a, ahora, de, creadaEn(quien));
+        lugar--;
+      }
+    }
+    return json(Object.assign({ ok: !tope, sigo: this.sigoDe(quien), n: this.cuantos(as, ahora) },
+      tope ? { error: 'tope', tope: SIGUE_TOPE } : {}), tope ? 409 : 200);
+  }
+
+  /**
+   * A quién seguís y quién te sigue. Sólo lo llama `rutaAvisos`, con el ID de
+   * Discord. `de` es tu perfil: de ahí sale quién te sigue.
+   *
+   * ⚠️ DE QUIÉN TE SIGUE SE DICEN SÓLO LOS PERFILES —los que son raperos de
+   * la Liga—; los demás, cuántos. Un Discord ID no sale nunca.
+   */
+  sigo(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
+    const de = claveValida(d.de) ? d.de : '';
+    // tu perfil puede haber cambiado (entraste con otro nombre): se corrige acá
+    if (de) this.sql.exec('UPDATE sigue SET de = ? WHERE quien = ? AND de != ?', de, quien, de);
+    let meSiguen = null;
+    if (de) {
+      const fs = this.sql.exec('SELECT de FROM sigue WHERE a = ? ORDER BY t DESC', de).toArray();
+      const perfiles = [...new Set(fs.map((r) => r.de).filter(Boolean))].slice(0, 60);
+      meSiguen = { n: this.cuantos([de], Date.now())[de], todos: fs.length, perfiles };
+    }
+    return json({ ok: true, sigo: this.sigoDe(quien), yo: de, me_siguen: meSiguen });
+  }
+
+  /** Lo público: cuántos siguen a cada perfil (sólo los que tienen alguno). */
+  seguidores() {
+    const ahora = Date.now(), n = {};
+    for (const r of this.sql.exec('SELECT a, COUNT(*) AS n FROM sigue WHERE creada > 0 AND creada < ? GROUP BY a',
+      ahora - EDAD_MIN_DIAS * DIA_MS).toArray()) n[r.a] = r.n;
+    return { t: ahora, n };
+  }
+
+  /**
+   * 🔑 LO QUE LE PASÓ A QUIEN SEGUÍS, AL CELULAR. Lee el muro que dejó el
+   * ciclo (`web:muro`), y de cada publicación de las últimas `SIGUE_HORAS`
+   * le avisa a quien sigue a esa persona desde ANTES de que pasara, en los
+   * dispositivos que vinculó. Nunca por DM.
+   *
+   * ⚠️ EL MURO CAMBIA CUANDO CORRE EL CICLO, así que se lee cada cinco
+   * minutos —o al minuto, si quedó algo por mandar—: son 288 lecturas de KV
+   * por día y no 1.440. Y sin nadie que siga a nadie, ni eso.
+   *
+   * ⚠️ UNA VEZ POR PUBLICACIÓN Y PERSONA (`hechos`, 30 días): a quien sigue
+   * a dos del mismo equipo campeón le llega uno.
+   */
+  async seguidos(ahora) {
+    if (!this.sql.exec('SELECT 1 AS x FROM sigue LIMIT 1').toArray()[0]) return 0;
+    const previo = this.leer('seguidos') || {};
+    if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
+    let items = [];
+    try { items = (JSON.parse((await this.env.KV.get('web:muro')) || '{}').items) || []; } catch (e) { items = []; }
+    const cands = paraSeguidores(items, ahora);
+    let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0;
+    for (const c of cands) {
+      const fs = this.sql.exec('SELECT quien FROM sigue WHERE a = ? AND t <= ? AND de != ?', c.k, c.t, c.k).toArray();
+      for (const f of fs) {
+        const id = 'sg:' + c.pub + ':' + f.quien;
+        if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+        const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
+        if (pedidos + subs.length > TOPE_SEGUIDOS && pedidos) { quedan++; continue; }
+        this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+        if (!subs.length) { sinVinculo++; continue; }
+        pedidos += subs.length;
+        const cuerpo = cuerpoPersonal({ id: 'sg' + c.pub, titulo: c.titulo, cuerpo: c.cuerpo, url: c.url });
+        const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo,
+          { ttl: 24 * 3600, topic: ('sg' + c.pub).slice(0, 32) }, this.env, new Map())));
+        let llego = 0, reintentar = false;
+        estados.forEach((e, i) => {
+          if (e >= 200 && e < 300) { enviados++; llego++; }
+          else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+          else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+        });
+        if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+      }
+    }
+    this.guardar('seguidos', { t: ahora, publicaciones: cands.length, enviados, sin_vinculo: sinVinculo, quedan });
+    return enviados;
+  }
+
+  /** Para `estado()`, con try como `estadoPersonales()`. */
+  estadoSeguidos() {
+    try {
+      const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT a) AS a FROM sigue')
+        .toArray()[0];
+      return { filas: r.n, siguen: r.p, seguidos: r.a, ultima: this.leer('seguidos') };
+    } catch (e) {
+      return { error: String(e).slice(0, 80) };
+    }
   }
 
   // ── las encuestas ────────────────────────────────────────────────────
@@ -2458,6 +2724,8 @@ export class Avisos {
       // 🔑 los avisos de cada uno: cuántos dispositivos están vinculados a
       // una persona y cómo salió la última cola
       personales: this.estadoPersonales(),
+      // 🔑 seguir raperos: cuántas filas, cuántos siguen y cómo salió el último reparto
+      seguidos: this.estadoSeguidos(),
       ultimas_24h: { avisos: dia.n, enviados: dia.e },
       ultimo: ult ? {
         t: new Date(ult.creado).toISOString(), sv: ult.sv, titulo: tit,

@@ -2063,5 +2063,70 @@ console.log('\nEL PRECIO POR CABEZA\n');
   delete PUESTO.precios;
 }
 
+console.log('\nSEGUIR RAPEROS\n');
+
+{
+  // 🔑 Dlx, 28/09/2026: «sí, hay que hacer eso». Quién sigue lo dice Discord
+  // (o la sesión); a quién, la página; tu perfil, KV (`d:<id>`).
+  const idDe = (ms, n = 5) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2019-02-01T00:00:00Z'));
+  const SES = 'c'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
+      { status: 200 }) : new Response('{"error":"no"}', { status: 404 });
+    return new Response('{"ok":true,"sigo":["ana"],"n":{"ana":1}}', { status: 200 });
+  } }) };
+  PUESTO['d:' + VIEJO] = 'bea';
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedirS = async (ruta, cuerpo, ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/' + ruta, { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedirS('seguir', { a: 'ana', quien: '42424242424' }, SES);
+  const al = alObjeto.filter(([u]) => u.endsWith('/seguir'));
+  ok('seguir llega al objeto con el ID de la sesión (no el de la página) y con tu perfil de KV',
+     r.status === 200 && al.length === 1 && al[0][1].quien === VIEJO && al[0][1].de === 'bea' &&
+     JSON.stringify(al[0][1].a) === '["ana"]' && al[0][1].si === true, JSON.stringify(al));
+  r = await pedirS('seguir', { a: 'ana', si: false }, SES);
+  ok('dejar de seguir va con si:false', r.status === 200 && alObjeto.filter(([u]) => u.endsWith('/seguir'))[1][1].si === false);
+  alObjeto.length = 0;
+  r = await pedirS('seguir', { a: '../x' }, SES);
+  ok('una clave que no es de perfil: 400, sin preguntarle a nadie', r.status === 400 && !alObjeto.length);
+  r = await pedirS('seguir', { a: Array(61).fill('ana') }, SES);
+  ok('más de 60 de una vez: 400', r.status === 400 && !alObjeto.length);
+  r = await pedirS('seguir', { a: 'ana' });
+  ok('sin sesión ni permiso: 401 «sin_sesion» y no llega al objeto',
+     r.status === 401 && r.json.error === 'sin_sesion' && !alObjeto.some(([u]) => u.endsWith('/seguir')));
+  r = await pedirS('sigo', {}, SES);
+  ok('a quién seguís: con tu ID y tu perfil', r.status === 200 &&
+     alObjeto.some(([u, b]) => u.endsWith('/sigo') && b.quien === VIEJO && b.de === 'bea'));
+  alObjeto.length = 0;
+  r = await worker.fetch(new Request('https://x/avisos/seguidores'), env, ctx);
+  ok('/avisos/seguidores le pregunta al objeto (lo público: cuántos, nunca quién)',
+     r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/seguidores'));
+  // el proxy de Pages: las tres pasan, con la sesión en los POST
+  const { default: proxy } = await import('./paginas/_worker.js');
+  let fue = null;
+  globalThis.fetch = async (u, opc) => {
+    fue = { u: String(u), h: (opc && opc.headers) || {}, cf: opc && opc.cf };
+    return new Response('{"ok":true}', { status: 200 });
+  };
+  const envP = { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/seguir', { method: 'POST', body: '{"a":"ana"}',
+    headers: { cookie: 'lg_ses=' + SES } }), envP);
+  ok('el proxy deja pasar /seguir con la sesión', fue && fue.u.endsWith('/avisos/seguir') && fue.h['x-lg-ses'] === SES);
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/seguidores'), envP);
+  ok('y /seguidores, con un minuto en el borde', fue && fue.u.endsWith('/avisos/seguidores') && fue.cf &&
+     fue.cf.cacheTtl === 60);
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  delete PUESTO['d:' + VIEJO];
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);
