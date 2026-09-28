@@ -34,6 +34,19 @@ y la corrida siguiente los redibujaba. Nunca deja una carta vieja —un
 sello viejo sólo pide redibujar— pero es trabajo tirado. Con la BASE (el
 archivo como estaba en el checkout) gana lo mío **sólo donde cambió**.
 
+🔴 Y LO QUE YO BORRÉ, TAMBIÉN. Hasta el 28/09/2026 se unía sólo lo
+que estaba: `sellar()` sacaba del sello a quien ya no está en el pool, y
+acá volvía de origin. Eran **132 nombres viejos** —los de antes de cada
+fusión y cada alias— que cada corrida anunciaba como «ya no están en el
+pool», y cinco cartas de País de gente sin país que hacían decir
+«cambió el CÓDIGO» en todas. Con la base se sabe qué borré: si origin
+tiene lo mismo que la base, el otro no lo tocó y el borrado vale. Si lo
+renovó, gana el suyo —un sello de más sólo pide un redibujo—.
+
+⚠️ Y SÓLO SI MI ARCHIVO SE LEYÓ Y TRAE ALGO. Un `mio` que no se pudo
+leer es «no sé», no «borré todo»: sin esta guarda, un archivo roto
+vaciaba el sello y la corrida siguiente redibujaba todo.
+
 ⚠️ DOS FORMAS DE SELLO. El de las cartas es `{cartas: {...}, cuando}`;
 el de las Bloqueadas, `datos/bloqueadas_selladas.json`, es plano. Se
 une igual y se escribe en la forma en que vino.
@@ -69,6 +82,8 @@ def unir(mio, remoto, base=None):
     a, en_cartas_a = _sellos(mio)
     b, en_cartas_b = _sellos(remoto)
     c, _ = _sellos(base)
+    # lo que borré sólo cuenta si sé qué había (la base) y mi archivo trae algo
+    borrar = base is not None and bool(a)
     junto = dict(b)
     for k, v in a.items():
         # 🔴 POR CARTA CUANDO EL VALOR ES DE CARTAS. Desde el 25/09/2026 se
@@ -81,9 +96,19 @@ def unir(mio, remoto, base=None):
             for carta, h in v.items():
                 if base is None or carta not in b[k] or cb.get(carta) != h:
                     fila[carta] = h
+            # la carta que saqué y el otro no tocó
+            if borrar:
+                for carta in list(fila):
+                    if carta not in v and carta in cb and fila[carta] == cb[carta]:
+                        del fila[carta]
             junto[k] = fila
         elif base is None or k not in b or c.get(k) != v:
             junto[k] = v
+    # la persona que saqué y el otro no tocó
+    if borrar:
+        for k in list(junto):
+            if k not in a and k in c and junto[k] == c[k]:
+                del junto[k]
     del_remoto = len([k for k in junto if junto[k] != a.get(k)])
     if en_cartas_a or en_cartas_b:
         cuando = max((mio or {}).get('cuando') or '',
@@ -126,6 +151,20 @@ def _self_check():
     j3, _ = unir(m2, r2, b2)
     ver('por carta: lo mío y lo del otro de la MISMA persona quedan los dos',
         j3['cartas']['K'] == {'competitivo': 'c2', 'servidor': 's2'})
+    # 🔴 lo que borré (28/09/2026): G se fue del pool, y a P le saqué la País
+    b4 = {'G': {'servidor': 's1'}, 'P': {'pais': 'p1', 'servidor': 's1'}}
+    m4 = {'P': {'servidor': 's1'}}
+    j4, _ = unir({'cartas': m4}, {'cartas': b4}, {'cartas': b4})
+    ver('quien saqué del sello no vuelve de origin', 'G' not in j4['cartas'])
+    ver('la carta que saqué tampoco', j4['cartas']['P'] == {'servidor': 's1'})
+    r5 = {'G': {'servidor': 's9'}, 'P': {'pais': 'p9', 'servidor': 's1'}}
+    j5, _ = unir({'cartas': m4}, {'cartas': r5}, {'cartas': b4})
+    ver('pero si el otro lo renovó, se queda el suyo',
+        j5['cartas']['G'] == {'servidor': 's9'} and j5['cartas']['P']['pais'] == 'p9')
+    j6, _ = unir(None, {'cartas': b4}, {'cartas': b4})
+    ver('un «mío» que no se leyó no borra nada', j6['cartas'] == b4)
+    j7, _ = unir({'x': '1'}, {'x': '1', 'y': '1'}, {'x': '1', 'y': '1'})
+    ver('la forma plana borra igual', j7 == {'x': '1'})
     return mal
 
 

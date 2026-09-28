@@ -406,17 +406,27 @@ def huellas():
     return out
 
 
-def por_que(antes, hoy):
+def por_que(antes, hoy, est=None):
     """De un sello viejo a uno nuevo: que cambio, si los datos o el codigo.
 
     ⚠️ ES DERIVADO, NO GUARDADO. Las dos mitades estan en el mismo campo,
     asi que esto no necesita ningun estado extra que pueda quedar
     desfasado del que decide. Devuelve {carta: (n_datos, codigo_cambio)}.
+
+    🔴 CON `est`, SÓLO LAS CARTAS QUE SE LE PUEDEN EMITIR — las mismas que
+    mira `cambios()`. Sin eso, cinco personas sin país con un sello de País
+    viejo hacían decir «cambió el CÓDIGO de la pais: le toca a todo el
+    pool» en TODAS las corridas del 28/09/2026, sin que se redibujara una
+    sola carta de País. Una alarma que suena siempre tapa la vez que es de
+    verdad.
     """
     out = {}
+    emi = ({q: emitibles(q, est) for q in hoy} if est is not None else None)
     for carta in TODAS:
         n, codcam = 0, False
         for quien, h in hoy.items():
+            if emi is not None and carta not in emi[quien]:
+                continue
             v, a = h.get(carta), (antes.get(quien) or {}).get(carta)
             if a is None or v == a:
                 continue
@@ -519,14 +529,14 @@ def cambios(motivos=None, ahora=None):
             antes = (json.load(f) or {}).get('cartas')
     if antes is None:
         return {}, sorted(hoy), [], False
+    est = estado()
     if motivos is not None:
-        motivos.append(por_que(antes, hoy))
+        motivos.append(por_que(antes, hoy, est))
 
     import madrugada as _MD
     ya = _MD.es_hora_de_redibujar(ahora)
     esperan = {}
     viejas, nuevas = set(antes), set(hoy)
-    est = estado()
     out = {}
     for quien in sorted(nuevas & viejas):
         d = {c for c in TODAS if antes[quien].get(c) != hoy[quien].get(c)}
@@ -605,6 +615,14 @@ def sellar(solo=None):
         for quien in list(nuevo):
             if quien not in h:
                 del nuevo[quien]
+            # 🔴 Y LAS CARTAS QUE YA NO SE LE PUEDEN EMITIR, también. La
+            # fila se arrastra de `previo`, así que la País de quien perdió
+            # el país se quedaba sellada para siempre con el código de ese
+            # día —ver `por_que()`—. Sacarla sólo puede pedir un redibujo el
+            # día que vuelva a tener país, que es la dirección segura.
+            else:
+                nuevo[quien] = {c: v for c, v in nuevo[quien].items()
+                                if c in h[quien]}
     else:
         nuevo = h
     from datetime import datetime, timezone
@@ -686,6 +704,22 @@ def _self_check():
            'una camiseta nueva espera a la madrugada, y ahí se dibuja')
         ok(por_que(antes, hoy)['servidor'] == (0, False),
            'y no se informa como un cambio de código')
+        # 🔴 una carta que no se puede emitir no es «cambió el código», y
+        # sale del sello en vez de arrastrarse (28/09/2026)
+        g['emitibles'] = (lambda quien, est=None:
+                          set(TODAS) - ({'pais'} if quien == 'P' else set()))
+        antes = {q: {c: 'd1:c1' for c in TODAS} for q in ('K', 'P')}
+        hoy = {'K': dict(antes['K']), 'P': dict(antes['P'], pais='d1:c2')}
+        ok(por_que(antes, hoy, {})['pais'] == (0, False),
+           'la País que no se puede emitir no se informa como cambio de código')
+        ok(por_que(antes, hoy)['pais'] == (0, True), 'sin `est`, como antes')
+        with io.open(SELLO, 'w', encoding='utf-8') as f:
+            json.dump({'cartas': antes}, f)
+        sellar({'K': {'temporada'}})
+        with io.open(SELLO, encoding='utf-8') as f:
+            s3 = json.load(f)['cartas']
+        ok('pais' not in s3['P'] and s3['P']['servidor'] == 'd1:c1',
+           'y sale del sello: la fila no la arrastra')
     finally:
         g.update(orig)
         if ya is not None:
