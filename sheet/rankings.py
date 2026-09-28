@@ -1761,6 +1761,47 @@ def escribir_vitrina(filas, cab, sid=None, hoja=None, fila_cab=None):
             'total_malas': len(malas)}
 
 
+#: la huella del diseño con que se vistió cada vitrina. Ver `huella_diseno()`.
+DISENO = os.path.join(BASE, 'datos', 'vitrinas_diseno.json')
+
+
+def huella_diseno(cab, filas):
+    """Lo que `vestir()` le mandaría a esa vitrina, resumido en 12 caracteres.
+
+    🔴 UNA CACHÉ QUE MIRA LOS DATOS NO VE EL CÓDIGO, y `ya_dice()` miraba
+    sólo los datos: si cambia `sheet/estilo.py` —un color, una banda— y los
+    números no, la vitrina decía «igual» y el diseño nuevo no se aplicaba
+    hasta el próximo evento. Es la forma que `CLAUDE.md` documenta con las
+    cartas. Se hashea lo que se mandaría (con la hoja 0, para que no dependa
+    del id), así que cualquier cambio de diseño cambia la huella.
+    """
+    import hashlib
+    pet = (estilo.formato(0, cab, len(filas)) + estilo.por_fila(0, cab, filas)
+           + estilo.condicionales(0, cab, len(filas)))
+    return hashlib.sha1(json.dumps(pet, sort_keys=True, ensure_ascii=False,
+                                   default=str).encode('utf-8')).hexdigest()[:12]
+
+
+def _disenos():
+    try:
+        with io.open(DISENO, encoding='utf-8') as f:
+            return json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def anotar_diseno(hoja, cab, filas):
+    """Guarda con qué diseño quedó vestida esa vitrina."""
+    d = _disenos()
+    d[hoja] = huella_diseno(cab, filas)
+    try:
+        with io.open(DISENO, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
+    except OSError:
+        pass
+
+
 def ya_dice(sid, hoja, fila_cab, cab, filas, leido=None):
     """¿La vitrina ya dice exactamente `filas`, con esa cabecera y vestida?
 
@@ -1777,9 +1818,14 @@ def ya_dice(sid, hoja, fila_cab, cab, filas, leido=None):
     ⚠️ Y TIENE QUE ESTAR VESTIDA: si una corrida escribió y el diseño falló,
     los datos ya coinciden y sin esto nunca se volvería a vestir.
 
+    ⚠️ Y CON EL MISMO DISEÑO: ver `huella_diseno()`. Se pregunta primero
+    porque no cuesta ninguna lectura.
+
     `leido` evita la lectura cuando quien llama ya leyó el cuerpo (desde la
     fila siguiente a la cabecera): es lo que hace `tabla_nueva()`.
     """
+    if _disenos().get(hoja) != huella_diseno(cab, filas):
+        return False
     ancho = len(cab)
     if leido is None:
         todo = _leer(sid, '%s!A%d:%s' % (hoja, fila_cab, _col(ancho)))
@@ -2121,6 +2167,9 @@ def escribir_todas(dry=True):
             r, _ = rehacer_hoja(OFICIAL, nombre, cab, filas,
                                 color=REHACER[cual])
             out[cual]['r'] = r
+            # la huella del diseño con que quedó: ver `huella_diseno()`
+            if not r.get('total_malas'):
+                anotar_diseno(nombre, cab, filas)
         else:
             out[cual]['r'] = escribir_vitrina(filas, cab, hoja=nombre,
                                               fila_cab=fila_cab)
@@ -2129,8 +2178,8 @@ def escribir_todas(dry=True):
             # columnas se mantienen, y aun asi tiene que verse como las
             # otras cuatro. Sin esto el rediseño se notaba en las tres
             # hojas que nadie abre.
-            if fila_cab == 1:
-                vestir(OFICIAL, nombre, cab, filas)
+            if fila_cab == 1 and vestir(OFICIAL, nombre, cab, filas):
+                anotar_diseno(nombre, cab, filas)
     return out
 
 
@@ -2610,14 +2659,16 @@ def _self_check():
 
     # 🔑 LA VITRINA QUE YA DICE LO MISMO NO SE REESCRIBE (`ya_dice()`)
     print('\n  una vitrina igual no se reescribe')
-    global _leer, _adornos
-    _l, _a = _leer, _adornos
+    global _leer, _adornos, _disenos
+    _l, _a, _d = _leer, _adornos, _disenos
     hoja = [['Rapero', 'Puntos'], ['Ana', '1250'], ['Bea', '900']]
     vestida = [True]
+    cab = ['Rapero', 'Puntos']
+    diseno = {'H': huella_diseno(cab, [['Ana', 1250.0], ['Bea', 900]])}
     try:
         _leer = lambda sid, rng: [list(f) for f in hoja]              # noqa: E731
         _adornos = lambda sid, n: ([7] if vestida[0] else [], 0)       # noqa: E731
-        cab = ['Rapero', 'Puntos']
+        _disenos = lambda: diseno                                     # noqa: E731
         casos = [
             ('igual, con los números como los muestra la hoja',
              ya_dice('x', 'H', 1, cab, [['Ana', 1250.0], ['Bea', 900]]), True),
@@ -2626,13 +2677,18 @@ def _self_check():
              ya_dice('x', 'H', 1, cab, [['Ana', 1250]]), False),
             ('otra cabecera', ya_dice('x', 'H', 1, ['Rapero', 'Pts'], [['Ana', 1250], ['Bea', 900]]), False),
             ('lo ya leído sirve, sin volver a leer',
-             ya_dice('x', 'H', 1, cab, [['Ana', 1250]], leido=[['Ana', '1250']]), True),
+             ya_dice('x', 'H', 1, cab, [['Ana', 1250], ['Bea', 900]],
+                     leido=[['Ana', '1250'], ['Bea', '900']]), True),
         ]
         vestida[0] = False
         casos.append(('igual pero sin vestir: se reescribe, o nunca se vestiría',
                       ya_dice('x', 'H', 1, cab, [['Ana', 1250], ['Bea', 900]]), False))
+        vestida[0] = True
+        diseno['H'] = 'otro-diseno'
+        casos.append(('igual pero con otro diseño (cambió `estilo.py`): se reescribe',
+                      ya_dice('x', 'H', 1, cab, [['Ana', 1250], ['Bea', 900]]), False))
     finally:
-        _leer, _adornos = _l, _a
+        _leer, _adornos, _disenos = _l, _a, _d
     for que, dio, esp in casos:
         ok = dio == esp
         mal += not ok
@@ -2809,6 +2865,7 @@ def main():
             f = fila_cabecera(HOJA)
             if f == 1 and vestir(OFICIAL, HOJA, cab, filas):
                 print('   ✨ diseño aplicado')
+                anotar_diseno(HOJA, cab, filas)
         except Exception as e:                           # noqa: BLE001
             # el diseño no puede tumbar una escritura que ya salió bien
             print('   ⚠️ el diseño no se aplicó: %s' % str(e)[:80])
