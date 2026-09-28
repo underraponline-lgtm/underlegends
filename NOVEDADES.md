@@ -382,6 +382,16 @@ optimizaciones»*.
 - ✅ **Las vitrinas, verificadas**: la corrida de la 1:52 PM las vistió una
   vez para guardar la huella del diseño, y la segunda ya dijo «✓ igual» en
   las cinco.
+- 🔴 **Un equipo de 4 perdía a su cuarto** (2:05 PM). Al corregir typos
+  contra las inscripciones, el lector aceptaba un equipo «parecido» con
+  **otra gente adentro**: en el MULTIVERSE de hoy pelean Bootrax Humilde +
+  Trot + Tokio + **Tuca**, la inscripción era del trío, y los nombres
+  pegados se parecen un 92 %. Simulado con la llave completada a mano, el
+  motor repartía entre tres y Tuca no cobraba. Ahora un equipo sólo se
+  corrige a otro con **los mismos integrantes** (un typo cambia una letra,
+  no saca ni agrega a nadie): 625 para cada uno de los cuatro. Si algún
+  evento viejo tenía el mismo problema, se corrige solo en la próxima
+  corrida, que relee toda la temporada.
 
 ---
 
@@ -1550,10 +1560,15 @@ inglés, y `/borrar-mis-datos`.
   (28/09). Tu guía (§3.8) dice que es «el formato donde más se rompe todo» y
   que los de Fontana y TFC piden revisión humana —«Marcá y preguntá»—. Hoy
   el lector no tiene una regla para eso (sí para los Interserver). Hoy a la
-  1:54 PM FFA juega **DESGRACIAS EN TOKYO VOL 15 MULTIVERSE**: miro cómo se
-  lee la llave y te cuento. **A** · que cargue solo (y si algo no se lee, ✅
-  Decidir pregunta la batalla) · **B** · que se retenga entero hasta que digas
-  «Sí cuenta».
+  1:54 PM FFA juega **DESGRACIAS EN TOKYO VOL 15 MULTIVERSE**, con lados de
+  1, 2, 3 y 4 personas y un pase libre. **Lo probé** con su llave de las
+  2 PM completada a mano: se leen las 14 batallas sin una duda, los equipos
+  se reparten el puesto y no cuentan como duelo. **Y encontré un error, ya
+  arreglado**: el trío inscripto (Bootrax Humilde + Trot + Tokio) «corregía»
+  al equipo de cuatro que peleó, y **Tuca se quedaba sin sus puntos**. Con
+  eso, mi voto es la **A**. **A** · que cargue solo (y si algo no se lee, ✅
+  Decidir pregunta la batalla) · **B** · que se retenga entero hasta que
+  digas «Sí cuenta».
 - 🆕 **Tres ideas** (28/09), para cuando quieras: **un probador de llaves en la
   web** (el organizador pega su llave y ve cómo la lee el bot antes de
   publicarla; corre en el navegador, no gasta nada); **los debutantes de la
