@@ -181,7 +181,8 @@ def anotar_varios(dudas, dry=False):
     if not nuevas:
         return 0
     h = _hoja()
-    hay = _filas(h)
+    con_n = _filas_con_n(h)
+    hay = [f for _n, f in con_n]
     ya = {(str((list(f) + [''] * ANCHO)[1]).strip(),
            str((list(f) + [''] * ANCHO)[3]).strip()) for f in hay}
     # y un alta con ese ID que siga abierta, con el nombre que sea
@@ -196,16 +197,43 @@ def anotar_varios(dudas, dry=False):
             print('   [dry] %s · %s · %s' % (f[1], f[2], f[3]))
         return len(nuevas)
     if nuevas:
-        # ⚠️ OVERWRITE Y NO INSERT_ROWS: insertar mete filas ENTERAS, y
-        # eso empujaba para abajo todo lo que estaba a la derecha. Así se
-        # partió el panel de instrucciones de esta hoja —pasos 1-3 en la
-        # fila 31 y 4-6 en la 123—. Escribir en las filas vacías de abajo
-        # no mueve nada.
-        _pedir('POST', '/values/%s!A%d:append?valueInputOption=RAW'
-               '&insertDataOption=OVERWRITE'
-               % (requests.utils.quote(HOJA), h.fila_datos),
-               json={'values': nuevas})
+        # ⚠️ NO INSERT_ROWS: insertar mete filas ENTERAS, y eso empujaba
+        # para abajo todo lo que estaba a la derecha. Así se partió el panel
+        # de instrucciones de esta hoja —pasos 1-3 en la fila 31 y 4-6 en la
+        # 123—. Escribir en las filas vacías de abajo no mueve nada.
+        #
+        # 🔴 PERO «LAS DE ABAJO» LAS CALCULAMOS NOSOTROS, NO LA API. Era un
+        # `append` sobre `Pendientes!A2` con `OVERWRITE`, y la API busca la
+        # tabla empezando en esa celda: la columna A (`#`) está VACÍA en
+        # todas las filas, así que no encontraba ninguna y escribía desde la
+        # fila 2, PISANDO lo que había. Medido el 28/09/2026 en la corrida de
+        # las 11:22 AM: el lector anotó las 11 «Batalla sin ganador» y
+        # `procesar_entrada` las pisó siete segundos después con 35 nombres,
+        # que de paso borraron las 7 preguntas de identidad de las filas
+        # 27–33. Las de nombres volvían solas en la corrida siguiente, y por
+        # eso nadie lo vio: se perdía justo lo que no se vuelve a generar.
+        desde = (max(n for n, _f in con_n) + 1) if con_n else h.fila_datos
+        _poner(desde, nuevas)
     return len(nuevas)
+
+
+def _poner(desde, filas):
+    """Escribe `filas` en A:H desde la fila `desde`. Si la grilla no alcanza,
+    le agrega filas y vuelve a probar (un 400 «exceeds grid limits»)."""
+    rng = '%s!A%d:%s%d' % (HOJA, desde, ULTIMA, desde + len(filas) - 1)
+    try:
+        _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(rng),
+               json={'values': filas})
+    except Exception as e:                               # noqa: BLE001
+        if 'grid limits' not in str(e):
+            raise
+        props = _pedir('GET', '?fields=sheets.properties')
+        sid = next(s_['properties']['sheetId'] for s_ in props.get('sheets') or []
+                   if s_['properties']['title'] == HOJA)
+        _pedir('POST', ':batchUpdate', json={'requests': [{'appendDimension': {
+            'sheetId': sid, 'dimension': 'ROWS', 'length': len(filas) + 200}}]})
+        _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(rng),
+               json={'values': filas})
 
 
 def _resuelto_ya(fila, resolver):
@@ -519,6 +547,30 @@ def _self_check():
         ok(set(_DC.GRUPO) == set(TIPOS), 'los tipos son los mismos que pregunta ✅ Decidir')
     except Exception as e:                               # noqa: BLE001
         ok(False, 'no pude comparar con decidir.GRUPO (%s)' % str(e)[:50])
+
+    # 🔴 LO NUEVO VA DEBAJO DE LA ÚLTIMA FILA, NUNCA ENCIMA. Una hoja de
+    # mentira con la columna A vacía —como la de verdad— y un hueco.
+    global _pedir, _hoja, _filas_con_n
+    _p, _h, _f = _pedir, _hoja, _filas_con_n
+    pedidos = []
+
+    class _H(object):
+        fila_datos = 2
+    try:
+        _pedir = lambda metodo, cola, **kw: pedidos.append((metodo, cola, kw)) or {}   # noqa: E731
+        _hoja = lambda: _H()                                                           # noqa: E731
+        _filas_con_n = lambda h: [(2, ['', 'Nombre desconocido', 'x', 'Ana']),         # noqa: E731
+                                  (3, ['', 'Alias posible', 'backfill', 'AKA Bea']),
+                                  (7, ['', 'alta', 'bot', 'Cyn = 1'])]
+        n = anotar_varios([('Batalla sin ganador', 'llaves', 'E · FFA · 26/09 · octavos · A 🆚 B', ''),
+                           ('Nombre desconocido', 'x', 'Ana', '')])
+    finally:
+        _pedir, _hoja, _filas_con_n = _p, _h, _f
+    puts = [c for m, c, _kw in pedidos if m == 'PUT']
+    ok(n == 1 and len(puts) == 1 and 'A8%3AH8' in puts[0].replace(':', '%3A'),
+       'lo nuevo va debajo de la última fila con datos (la 8), aunque la columna A esté vacía')
+    ok(not any(':append' in c for _m, c, _kw in pedidos),
+       'y sin `append`: la API buscaba la tabla en la columna A, vacía, y escribía encima')
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
