@@ -57,18 +57,20 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 2
+     "FFA": 2,
+     "URBF": 4
     },
     "gente": {
-     "FFA": 24
+     "FFA": 24,
+     "URBF": 15
     },
-    "gana": null
+    "gana": "URBF"
    },
    "meta_va": {
     "DRA": 0,
     "FFA": 24,
     "SR": 0,
-    "URBF": 0
+    "URBF": 15
    }
   }
  ]

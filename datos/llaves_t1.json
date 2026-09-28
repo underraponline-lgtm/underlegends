@@ -2275,6 +2275,14 @@
       ],
       "Makmah",
       ""
+     ],
+     [
+      [
+       "Number",
+       "Richard"
+      ],
+      "Number",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -2420,6 +2428,11 @@
    ],
    [
     "Partim",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
     "Octavos",
     1250
    ],

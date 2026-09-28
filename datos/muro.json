@@ -48,16 +48,16 @@
 "temporada"
 ]
 },
-"praiseriza": {
-"rg": "",
-"c": []
-},
 "colesito": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"praiseriza": {
+"rg": "",
+"c": []
 },
 "juasmio": {
 "rg": "",
@@ -250,6 +250,13 @@
 "rg": "",
 "c": []
 },
+"richard": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "mco": {
 "rg": "",
 "c": [
@@ -294,6 +301,13 @@
 "temporada"
 ]
 },
+"number": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "metienesincuidado": {
 "rg": "",
 "c": []
@@ -325,20 +339,6 @@
 ]
 },
 "jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"richard": {
 "rg": "",
 "c": [
 "servidor",
