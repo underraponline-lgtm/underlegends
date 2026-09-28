@@ -363,6 +363,56 @@ def _termino(nombre, num):
     return ''
 
 
+_DATOS = {}
+
+
+def _datos(nombre):
+    """Un json de `datos/`, leído una vez. Vacío si no está."""
+    if nombre not in _DATOS:
+        try:
+            with io.open(os.path.join(BASE, 'datos', nombre + '.json'),
+                         encoding='utf-8') as f:
+                _DATOS[nombre] = json.load(f)
+        except (OSError, ValueError):
+            _DATOS[nombre] = {}
+    return _DATOS[nombre]
+
+
+def _y(cosas):
+    cosas = [str(x) for x in cosas if x]
+    return ' y '.join(cosas) if len(cosas) <= 2 else '%s y %s' % (', '.join(cosas[:-1]), cosas[-1])
+
+
+def _cuenta(did):
+    """Lo que se sabe de una cuenta de Discord, en una línea: «en DRA y FFA ·
+    Miembro de DRA · en la Lista como Shadow · 3 eventos en la T1».
+
+    🔑 PARA CONTESTAR «¿ES LA MISMA PERSONA?» SIN ABRIR DISCORD. La pregunta
+    traía dos links y nada más: había que abrir los dos perfiles para ver
+    que uno está en tres servidores de la Liga y el otro en ninguno —que es
+    casi siempre la respuesta—. Sale de lo que el ciclo ya guarda:
+    `servidores_de`, `verificados`, `padron` y el pool de Temporada.
+    """
+    did = str(did or '').strip()
+    if not did.isdigit():
+        return ''
+    svs = (_datos('servidores_de') or {}).get(did) or []
+    out = ['en %s' % _y(svs) if svs else 'no está en ningún servidor de la Liga']
+    if 'dra' not in _DATOS:
+        _DATOS['dra'] = set((_datos('verificados') or {}).get('ids') or [])
+    if did in _DATOS['dra']:
+        out.append('Miembro de DRA')
+    fila = next((r for r in _datos('padron') or []
+                 if str(r.get('discord_id') or '') == did), None)
+    if fila:
+        out.append('en la Lista como %s' % (fila.get('raw') or fila.get('full')))
+    t1 = next((r for r in _datos('temporada_pool') or []
+               if str(r.get('discord_id') or '') == did), None)
+    if t1 and t1.get('ev'):
+        out.append('%d evento%s en la T1' % (t1['ev'], '' if t1['ev'] == 1 else 's'))
+    return ' · '.join(out)
+
+
 #: cómo se dice cada motivo del lector
 _MOTIVO = {
     'no aparece nadie después': 'Ninguno aparece en la ronda siguiente, y la llave no marca quién pasó.',
@@ -382,8 +432,23 @@ def _pistas(p):
     elif t == 'Batalla sin ganador':
         mot = (p['match'] or '').strip()
         out.append(_MOTIVO.get(mot, mot) if mot else '')
-    elif t == 'alta' and p['sug'] and p['sug'] != '—':
-        out.append('¿Será %s?' % p['sug'].replace(', ', ' o '))
+    elif t == 'alta':
+        if p['sug'] and p['sug'] != '—':
+            out.append('¿Será %s?' % p['sug'].replace(', ', ' o '))
+        did = p['detalle'].split(' = ')[-1].strip() if ' = ' in p['detalle'] else ''
+        out.append(('Su cuenta: ' + _cuenta(did)) if _cuenta(did) else '')
+    elif t == 'Alias posible':
+        m = re.search(r"ya tiene ID (\d+), el log trae (\d+)", p['detalle'])
+        m2 = re.search(r"^ID (\d+) ya pertenece", p['detalle'])
+        if m:
+            out += ['La que tiene: ' + _cuenta(m.group(1)), 'La otra: ' + _cuenta(m.group(2))]
+        elif m2:
+            out.append('Esa cuenta: ' + _cuenta(m2.group(1)))
+    elif t == 'Bracket incompleto':
+        # lo que la llave sí dice: sus batallas, para decidir sin abrirla
+        for x in (p['match'] or '').split(' | ')[1:5]:
+            x = x.strip()
+            out.append(x[:1].upper() + x[1:])
     elif p['sug'] and p['sug'] != '—':
         out.append(p['sug'])
     # ⚠️ EL LINK DE LA LLAVE NO VA ACÁ: va una vez, en la franja de su evento
@@ -445,19 +510,24 @@ def _conflicto_en_palabras(det):
     dos números a mano. Ahora dice qué pasó y deja los dos perfiles a un
     click.
     """
+    # ⚠️ «SÓLO QUEDA ANOTADO» VA DICHO: contestar no mueve ningún Discord
+    # ID —`_poner_ids()` nunca pisa uno—, y sin la frase «es la misma
+    # persona» parecía que la Lista pasaba a la cuenta nueva.
     m = re.search(r"AKA '(.+?)' \(fila \d+\) ya tiene ID (\d+), el log trae (\d+)", det)
     if m:
         return ('«%s» ya tiene una cuenta de Discord en la Lista, y el sync '
                 'encontró OTRA cuenta con ese nombre. ¿Es la misma persona '
-                'con dos cuentas, u otra persona?\nLa que tiene: '
+                'con dos cuentas, u otra persona? (Contestar sólo lo anota: '
+                'la Lista se queda con la cuenta que tiene.)\nLa que tiene: '
                 'https://discord.com/users/%s\nLa otra: '
                 'https://discord.com/users/%s' % m.groups())
     m = re.search(r"ID (\d+) ya pertenece a fila \d+ \((.+?)\); no se asignó a '(.+?)'", det)
     if m:
         did, dueno, otro = m.groups()
-        return ('La cuenta https://discord.com/users/%s es de «%s» en la '
-                'Lista, y el sync la encontró también como «%s». ¿«%s» es %s?'
-                % (did, dueno, otro, otro, _sin_bandera(dueno)))
+        return ('La cuenta de Discord de «%s» en la Lista apareció en el sync '
+                'también como «%s». ¿«%s» es %s? (Contestar sólo lo anota.)'
+                '\nLa cuenta: https://discord.com/users/%s'
+                % (dueno, otro, otro, _sin_bandera(dueno), did))
     return 'Conflicto de identidad que encontró el sync: %s' % det
 
 
@@ -523,8 +593,12 @@ def _pregunta(p):
                 'Revisalo en Discord.' % (quien, match or t),
                 match or '—', ['Ya lo revisé', 'Dejar para después'])
     if t == 'Alias posible':
+        # ⚠️ LA PREGUNTA ES «¿ES LA MISMA PERSONA?» Y LAS OPCIONES ERAN «YA LO
+        # REVISÉ»: contestar no decía qué se había decidido. Las dos cierran
+        # igual —no hay nada que mover: la Lista se queda con la cuenta que
+        # tiene—, pero queda escrito cuál fue.
         return (_conflicto_en_palabras(det), match or '—',
-                ['Ya lo revisé', 'Dejar para después'])
+                [MISMA, OTRA, 'Dejar para después'])
     if t == 'Batalla sin ganador':
         x = partes_batalla(det)
         lados = x[4] if x else [det]
@@ -555,8 +629,10 @@ def _pregunta(p):
 # ── las respuestas ──────────────────────────────────────────────────────
 
 #: lo que cierra la pregunta tal cual, sin hacer nada más
+MISMA, OTRA = 'Es la misma persona', 'Es otra persona'
 CIERRAN = {'Ya lo revisé', 'Ya está resuelto', 'La completo en Discord',
-           'Está bien así', 'La corrijo en Discord', 'Dejala así', 'Hecho'}
+           'Está bien así', 'La corrijo en Discord', 'Dejala así', 'Hecho',
+           MISMA, OTRA}
 #: lo que la deja abierta, con la respuesta anotada
 ESPERAN = {'Dejar para después', 'Hay que revisarlo'}
 
@@ -784,6 +860,13 @@ def _respuestas():
     return out
 
 
+#: las líneas que escribe `_pistas()`, de esta versión y de las anteriores
+_PISTA_SISTEMA = re.compile(
+    r'^(—|¿Será .*\?|Terminó .*\(.* pts\)|[^:]{1,40}: (le ganó a|perdió con) .*'
+    r'|(La que tiene|La otra|Su cuenta|Esa cuenta): .*|[^:]{1,40}: .+ vs .+'
+    r'|Ninguno aparece en la ronda siguiente.*|Es la última ronda.*)$')
+
+
 def _nota(p):
     """La nota de esa pregunta: la de 📝 NOTA, más lo que se haya escrito en
     «Sugerencia» encima de lo que puso el sistema."""
@@ -795,6 +878,14 @@ def _nota(p):
     if s_hoja and s_hoja not in sistema + [(p.get('match') or '').strip()]:
         de = next((x for x in sistema if s_hoja.startswith(x)), '')
         extra = s_hoja[len(de):] if de else s_hoja
+        if not de:
+            # 🔴 CUANDO CAMBIAN LAS PISTAS, LAS DE LA CORRIDA ANTERIOR NO
+            # SON UNA NOTA. «¿Será King?» pasó a «¿Será King?» + «Su
+            # cuenta: …», y lo que había en la hoja ya no era el comienzo
+            # de lo nuevo: se copiaba entero a 📝 NOTA. Línea por línea, lo
+            # que tiene forma de pista es del sistema.
+            extra = '\n'.join(x for x in extra.split('\n')
+                              if x.strip() and not _PISTA_SISTEMA.match(x.strip()))
         extra = extra.strip(' —-·')
         if extra and extra not in nota:
             nota = (nota + ' · ' if nota else '') + extra
@@ -1105,6 +1196,45 @@ def secciones(preguntas):
     return out
 
 
+def _u16(texto):
+    """El largo en unidades UTF-16, que es como cuenta la API de Sheets los
+    índices de un tramo de texto: un emoji son dos."""
+    return len(texto.encode('utf-16-le')) // 2
+
+
+def con_links(texto):
+    """`(texto, [(desde, hasta, url)])`: cada URL cambiada por una palabra
+    que se toca —«perfil ↗», «ver la llave ↗»—.
+
+    🔴 LAS URL IBAN ESCRITAS ENTERAS Y NO ERAN LINKS: la API escribe en
+    RAW, y una URL dentro de un texto queda como texto. Ciento veinte
+    caracteres de `discord.com/channels/4923…` en cada franja, y para
+    abrirla había que copiarla a mano.
+    """
+    out, runs, i = '', [], 0
+    for m in re.finditer(r'https?://[^\s»)]+', texto or ''):
+        out += texto[i:m.start()]
+        url = m.group(0)
+        et = ('perfil ↗' if '/users/' in url else 'ver la llave ↗' if '/channels/' in url
+              else 'abrir ↗')
+        runs.append((_u16(out), _u16(out) + _u16(et), url))
+        out += et
+        i = m.end()
+    return out + (texto or '')[i:], runs
+
+
+def tramos(filas):
+    """`[(desde, hasta)]` de las rachas de filas seguidas, `hasta` excluido:
+    `3, 4, 5, 7, 8` → `(3, 6), (7, 9)`."""
+    out = []
+    for f in sorted(filas):
+        if out and out[-1][1] == f:
+            out[-1][1] = f + 1
+        else:
+            out.append([f, f + 1])
+    return [tuple(t) for t in out]
+
+
 def _condicionales(sid):
     """Cuántas reglas de formato condicional tiene esta hoja: se borran antes
     de poner las nuevas, de atrás para adelante (ver `rankings._adornos()`)."""
@@ -1160,21 +1290,27 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         COLS,
     ]
     fila_sec, fila_preg = [], []          # índices (0) de cada franja y cada pregunta
+    links = []                            # (fila, columna, texto, [(desde, hasta, url)])
     n = 0
     for tit, ps in secs:
         fila_sec.append((len(filas), ps[0]['grupo'][1]))
         link = next((p['link'] for p in ps if p.get('link')), '') or next(
             (((_llaves_t1().get(_num_evento(p)) or {}).get('links') or [''])[-1]
              for p in ps if _num_evento(p)), '')
-        filas.append(['▸  %s%s' % (tit, ('   ·   la llave: %s' % link) if link else '')]
-                     + [''] * (ANCHO - 1))
+        txt, runs = con_links('▸  %s%s' % (tit, ('   ·   %s' % link) if link else ''))
+        if runs:
+            links.append((len(filas), 0, txt, runs))
+        filas.append([txt] + [''] * (ANCHO - 1))
         for p in ps:
             n += 1
             r = respuestas.get(p['id'])
             # la respuesta se conserva si la pregunta sigue abierta: si se
             # borrara, parecería aplicada
             fila_preg.append((len(filas), p))
-            filas.append([str(n), p['grupo'][1], p['que'], p.get('pistas') or p['sug'],
+            que, runs = con_links(p['que'])
+            if runs:
+                links.append((len(filas), 2, que, runs))
+            filas.append([str(n), p['grupo'][1], que, p.get('pistas') or p['sug'],
                           r[0] if r else '', _nota(p), estados.get(p['id'], ''), p['id']])
     if not preguntas:
         filas.append(['', '', '🎉 No hay nada para decidir.'] + [''] * (ANCHO - 3))
@@ -1189,7 +1325,7 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
     if dry:
         print('   (simulacro) la hoja tendría %d fila(s): %d pregunta(s) en %d sección(es)'
               % (len(filas), len(preguntas), len(secs)))
-        pintar.filas = filas
+        pintar.filas, pintar.links = filas, links
         return
     sid = _hoja_id(crear=True)
     _pedir('POST', '/values/%s:clear' % requests.utils.quote("'%s'!A1:J2000" % HOJA))
@@ -1210,6 +1346,9 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         {'setDataValidation': {'range': rango(FILA_CAB, 2000, 0, 10)}},
         {'repeatCell': {'range': rango(0, 2000, 0, 10), 'cell': {'userEnteredFormat': {}},
                         'fields': 'userEnteredFormat'}},
+        # los links de la corrida anterior: la fila que era franja ahora
+        # puede ser una pregunta
+        {'updateCells': {'range': rango(0, 2000, 0, 10), 'fields': 'textFormatRuns'}},
     ]
     for k in range(_condicionales(sid) - 1, -1, -1):
         reqs.append({'deleteConditionalFormatRule': {'sheetId': sid, 'index': k}})
@@ -1271,16 +1410,21 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
                 'strict': False, 'showCustomUi': True}}})
     if fila_preg:
         f0, f1 = fila_preg[0][0], fila_preg[-1][0] + 1
-        reqs += [
-            pinta(rango(f0, f1, 0, 2), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9},
-                                        'horizontalAlignment': 'CENTER'},
-                  'textFormat,horizontalAlignment'),
-            pinta(rango(f0, f1, 2, 3), {'textFormat': {'bold': True, 'fontSize': 10}}, 'textFormat'),
-            pinta(rango(f0, f1, 3, 4), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}},
-                  'textFormat'),
-            pinta(rango(f0, f1, C_ESTADO, C_ESTADO + 1),
-                  {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}}, 'textFormat'),
-        ]
+        # ⚠️ POR TRAMO, NO DE LA PRIMERA A LA ÚLTIMA: entre medio están las
+        # franjas de los eventos, y un formato de columna de f0 a f1 las
+        # pisaba —la segunda franja en adelante salía gris, chica y
+        # centrada—. Un tramo es una racha de preguntas seguidas.
+        for a, b in tramos(f for f, _p in fila_preg):
+            reqs += [
+                pinta(rango(a, b, 0, 2), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9},
+                                          'horizontalAlignment': 'CENTER'},
+                      'textFormat,horizontalAlignment'),
+                pinta(rango(a, b, 2, 3), {'textFormat': {'bold': True, 'fontSize': 10}}, 'textFormat'),
+                pinta(rango(a, b, 3, 4), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}},
+                      'textFormat'),
+                pinta(rango(a, b, C_ESTADO, C_ESTADO + 1),
+                      {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}}, 'textFormat'),
+            ]
         for f, _p in fila_preg:
             reqs.append(pinta(rango(f, f + 1, C_RESP, C_NOTA + 1),
                               {'backgroundColor': _AMARILLO}, 'backgroundColor'))
@@ -1312,6 +1456,21 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
             pinta(rango(fila_hechas + 1, fin), {'textFormat': {'foregroundColor': _GRIS, 'fontSize': 9}},
                   'textFormat'),
         ]
+    # 🔗 los links, al final: van sobre el texto ya escrito y ya formateado.
+    # El tramo del link lleva su color; el que sigue vuelve al de la celda.
+    for f, c, txt, runs in links:
+        tr = []
+        for a, b, url in runs:
+            tr.append({'startIndex': a, 'format': {
+                'link': {'uri': url}, 'underline': True, 'bold': True,
+                'foregroundColor': {'red': .02, 'green': .45, 'blue': .38}}})
+            if b < _u16(txt):
+                tr.append({'startIndex': b, 'format': {}})
+        reqs.append({'updateCells': {
+            'range': rango(f, f + 1, c, c + 1),
+            'rows': [{'values': [{'userEnteredValue': {'stringValue': txt},
+                                  'textFormatRuns': tr}]}],
+            'fields': 'userEnteredValue,textFormatRuns'}})
     for k, ancho in enumerate((34, 92, 420, 300, 230, 200, 170, 60)):
         reqs.append({'updateDimensionProperties': {
             'range': {'sheetId': sid, 'dimension': 'COLUMNS', 'startIndex': k, 'endIndex': k + 1},
@@ -1382,7 +1541,20 @@ def _self_check():
     ok(dud['link'] == _lk and _lk not in dud['que'] and _lk not in dud['pistas'],
        'el link a la llave queda aparte: va una vez, en la franja del evento')
     pintar([dud], {}, {}, [], dry=True)
-    ok(sum(str(f[0]).count(_lk) for f in pintar.filas) == 1, 'y la franja lo trae')
+    ok(not any(_lk in str(c) for f in pintar.filas for c in f)
+       and [u for _f, _c, _t, rs in pintar.links for _a, _b, u in rs] == [_lk]
+       and any('ver la llave ↗' in t for _f, _c, t, _r in pintar.links),
+       'y la franja lo trae, una vez y como link: «ver la llave ↗»')
+    _t, _r = con_links('La que tiene: https://discord.com/users/146\nLa otra: https://discord.com/users/821')
+    ok(_t == 'La que tiene: perfil ↗\nLa otra: perfil ↗'
+       and [u for _a, _b, u in _r] == ['https://discord.com/users/146', 'https://discord.com/users/821']
+       and _t.encode('utf-16-le')[2 * _r[0][0]:2 * _r[0][1]].decode('utf-16-le') == 'perfil ↗',
+       'los perfiles, como links cortos, con los índices en UTF-16')
+    _t, _r = con_links('▸  🐍 SNAKE · https://discord.com/channels/1/2/3')
+    ok(_t.encode('utf-16-le')[2 * _r[0][0]:2 * _r[0][1]].decode('utf-16-le') == 'ver la llave ↗',
+       'un emoji antes del link no corre el tramo')
+    ok(tramos([7, 3, 4, 5, 8]) == [(3, 6), (7, 9)] and tramos([]) == [],
+       'el formato de las preguntas va por tramo: no pisa las franjas de en medio')
     ok(_lk not in dud['match'], 'y el motivo queda sin el link')
     ok(len(ps) == 3, 'las dos filas de JAHNO son UNA pregunta')
     ok(ps[0]['grupo'][1] == '🏆 Evento', 'los eventos van primero')
@@ -1432,6 +1604,25 @@ def _self_check():
     _respuestas.sugerencias = {mau['id']: 'sv FFA'}
     mau['match'] = 'sv FFA'
     ok(_nota(mau) == '', 'y lo que puso el sistema antes, no')
+    _respuestas.sugerencias = {mau['id']: '¿Será King?\nOctavos: perdió con Zeta'}
+    mau['pistas'] = '¿Será King?\nSu cuenta: en SR'
+    ok(_nota(mau) == '', 'ni las pistas de una versión anterior')
+    _respuestas.sugerencias = {mau['id']: '¿Será King?\nes el de SR, seguro'}
+    ok(_nota(mau) == 'es el de SR, seguro', 'pero lo que se escribió entre medio, sí')
+    _alias = {'tipo': 'Alias posible', 'detalle': "AKA 'Shadow' (fila 237) ya tiene ID 146, "
+              "el log trae 821", 'match': 'Shadow', 'sug': 'Shadow', 'origen': 'backfill'}
+    ok(_pregunta(_alias)[2][:2] == [MISMA, OTRA]
+       and interpretar(_alias, MISMA)[0] == 'cerrar' and interpretar(_alias, OTRA)[0] == 'cerrar',
+       '«¿es la misma persona?» se contesta con «es la misma» u «otra», y cierra')
+    _DATOS.update({'servidores_de': {'146': ['DRA', 'FFA']}, 'dra': {'146'},
+                   'padron': [{'raw': 'Shadow', 'discord_id': '146'}], 'temporada_pool': []})
+    ok(_pistas(_alias) == 'La que tiene: en DRA y FFA · Miembro de DRA · en la Lista como Shadow'
+       '\nLa otra: no está en ningún servidor de la Liga',
+       'las pistas dicen qué es cada cuenta')
+    _DATOS.clear()
+    _br = {'tipo': 'Bracket incompleto', 'detalle': 'X · FFA · 23/09', 'sug': '—', 'match':
+           'sin campeón | cuartos: a vs b | semifinales: c vs d'}
+    ok(_pistas(_br) == 'Cuartos: a vs b\nSemifinales: c vs d', 'la llave incompleta muestra sus batallas')
     _respuestas.notas, _respuestas.sugerencias = {}, {}
     ok(interpretar(jahno, 'Es Juano') == ('alias', 'Juano'),
        '«Es Juano» es un alias')
