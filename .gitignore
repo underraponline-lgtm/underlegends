@@ -212,3 +212,9 @@ docs/sheet_respaldo/
 # repo: es público, y publicar el ID de quien pidió que lo borremos sería lo
 # contrario de lo que pidió.
 datos/olvidados.json
+
+# 🔑 LO QUE EL CICLO USA Y NO PUBLICA (`.cache/`): los nombres de Discord de
+# cada cuenta de los servidores de la Liga, para las Pistas de ✅ Decidir
+# (`herramientas/servidores_de.py`, 28/09/2026). Son ~12.000 personas de
+# cuatro servidores: las listas no son nuestras, y el repo es público.
+.cache/

@@ -71,6 +71,17 @@ GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
 # más nuevo, y el orden es la prioridad de los mensajes directos.
 SOLO_PADRON = {'SR', 'URBF'}
 SALIDA = os.path.join(BASE, 'datos', 'servidores_de.json')
+#: 🔑 LOS NOMBRES DE CADA CUENTA —apodo del servidor, nombre visible y
+#: usuario—, para las Pistas de ✅ Decidir: «¿Quién es KULRW?» se contesta
+#: solo si KULRW es el apodo de la cuenta que en la Lista es Jult. Medido el
+#: 28/09/2026: 24 de 53 nombres desconocidos coinciden con alguien.
+#:
+#: ⚠️ EN `.cache/` Y NO EN `datos/`: está en `.gitignore` y el ciclo no lo
+#: commitea. Son los nombres de ~12.000 personas de cuatro servidores, y la
+#: regla de arriba vale igual: las listas no son nuestras. Vive lo que dura
+#: el runner —lo escribe el paso 1b y lo lee el 2d, en el mismo trabajo—.
+APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
+_NOMBRES = {}                # discord_id -> [nombres]
 
 
 def env(clave):
@@ -98,6 +109,10 @@ def miembros(s, gid):
             # los bots no son gente: ni tienen carta ni cuentan en la comunidad
             if u.get('id') and not u.get('bot'):
                 out.add(u['id'])
+                ns = _NOMBRES.setdefault(u['id'], [])
+                for x in (m.get('nick'), u.get('global_name'), u.get('username')):
+                    if x and x.strip() and x.strip() not in ns:
+                        ns.append(x.strip())
         # 🔴 `key=int` NO ES COSMETICO. Los snowflakes tienen 17, 18 y 19
         # digitos, y `max()` sobre cadenas compara alfabeticamente: asi
         # '999999999999999999' le gana a '1000000000000000000', que es
@@ -215,6 +230,17 @@ def main():
                   ensure_ascii=False)
         print('-> %s   (%d ids)' % (os.path.relpath(SALIDA, BASE), len(mapa)))
         print('-> %s   %s' % (os.path.relpath(p2, BASE), bot_en))
+        # los nombres, fuera de git: ver `APODOS`
+        try:
+            os.makedirs(os.path.dirname(APODOS), exist_ok=True)
+            with io.open(APODOS, 'w', encoding='utf-8') as f:
+                json.dump({'_leeme': 'Los nombres de Discord de cada cuenta de los servidores '
+                                     'de la Liga, para las Pistas de ✅ Decidir. NO SE COMMITEA.',
+                           'nombres': _NOMBRES}, f, ensure_ascii=False)
+            print('-> %s   (%d cuentas, fuera de git)'
+                  % (os.path.relpath(APODOS, BASE), len(_NOMBRES)))
+        except OSError as e:
+            print('⚠️ no pude dejar los apodos para ✅ Decidir (%s)' % str(e)[:60])
     else:
         print('\n  (no escribi nada — corré con --json)')
 

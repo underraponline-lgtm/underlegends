@@ -417,6 +417,59 @@ def _cuenta(did):
     return ' · '.join(out)
 
 
+#: los nombres de Discord de cada cuenta, del paso 1b. Ver `_en_discord()`.
+APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
+
+
+def _apodos():
+    """`{nombre normalizado: {discord_id}}` de `APODOS`, o `{}` si no está."""
+    if 'apodos' not in _DATOS:
+        idx = {}
+        try:
+            with io.open(APODOS, encoding='utf-8') as f:
+                for did, ns in ((json.load(f) or {}).get('nombres') or {}).items():
+                    for n in ns or []:
+                        k = norm(_sin_bandera(n))
+                        if len(k) >= 3:
+                            idx.setdefault(k, set()).add(str(did))
+        except (OSError, ValueError):
+            pass
+        _DATOS['apodos'] = idx
+    return _DATOS['apodos']
+
+
+def _en_discord(nombre):
+    """`(pista, [nombres de la Lista])` de un nombre desconocido: si es el
+    apodo, el nombre visible o el usuario de alguna cuenta de los servidores
+    de la Liga, y si esa cuenta ya está en la Lista con OTRO nombre.
+
+    🔑 «¿QUIÉN ES KULRW?» SE CONTESTABA ABRIENDO DISCORD. Medido el
+    28/09/2026: 24 de 53 nombres desconocidos son el nombre de alguien en
+    los servidores de la Liga, y 4 son cuentas que ya están en la Lista
+    como otra persona —KULRW es Jult, nacioenmilan es Deuxs, ADACCHI es
+    Nobu—. ⚠️ ES UNA PISTA, NO UNA RESPUESTA: la identidad no se interpreta,
+    se pregunta; esto sólo pone la respuesta probable al alcance de un click.
+    """
+    k = norm(_sin_bandera(nombre))
+    ids = sorted((_apodos().get(k) or set()) if len(k) >= 3 else set())
+    if not ids:
+        return '', []
+    if 'lista_por_id' not in _DATOS:
+        _DATOS['lista_por_id'] = {str(r.get('discord_id')): (r.get('raw') or r.get('full'))
+                                  for r in _datos('padron') or [] if r.get('discord_id')}
+    en_lista = [_DATOS['lista_por_id'][d] for d in ids if d in _DATOS['lista_por_id']]
+    fuera = len(ids) - len(en_lista)
+    if len(ids) == 1:
+        pista = ('En Discord es la cuenta de «%s» en la Lista' % en_lista[0] if en_lista
+                 else 'En Discord hay una cuenta con ese nombre, que no está en la Lista')
+    else:
+        pista = 'En Discord hay %d cuentas con ese nombre%s' % (len(ids), (
+            ': %s en la Lista%s' % (_y(['«%s»' % x for x in en_lista]),
+                                     ' y %d que no' % fuera if fuera else '')
+            if en_lista else ', ninguna en la Lista'))
+    return pista, en_lista
+
+
 #: cómo se dice cada motivo del lector
 _MOTIVO = {
     'no aparece nadie después': 'Ninguno aparece en la ronda siguiente, y la llave no marca quién pasó.',
@@ -431,6 +484,7 @@ def _pistas(p):
         sug = [x for x in _sugerencias(p['match'])]
         if sug:
             out.append('¿Será %s?' % ' o '.join(sug))
+        out.append(_en_discord(p['detalle'])[0])
         out.append(_termino(p['detalle'], _num_evento(p)))
         out += _peleas(p['detalle'], _num_evento(p))
     elif t == 'Batalla sin ganador':
@@ -576,9 +630,12 @@ def _pregunta(p):
                    if otras else '')
         # ⚠️ CORTA: «no está en la Lista… escribí su nombre como figura ahí»
         # se repetía en 44 filas, y ahora está una vez, arriba (ver `pintar()`)
+        # 🔑 Y PRIMERO LA CUENTA DE DISCORD QUE YA ESTÁ EN LA LISTA con otro
+        # nombre: es la respuesta más probable. Ver `_en_discord()`.
+        dc = [x for x in _en_discord(det)[1] if norm(x) not in {norm(s) for s in sug}]
         return ('¿Quién es «%s»?%s' % (det, tambien),
                 ', '.join(sug) if sug else '—',
-                ['Es %s' % s for s in sug] + [NUEVO, TROLL])
+                ['Es %s' % s for s in dc + sug] + [NUEVO, TROLL])
     if t == 'alta':
         quien = _sin_decoracion(_reparar(det.split(' = ')[0].strip()))
         did = det.split(' = ')[-1].strip() if ' = ' in det else ''
@@ -879,7 +936,7 @@ def _respuestas():
 #: las líneas que escribe `_pistas()`, de esta versión y de las anteriores
 _PISTA_SISTEMA = re.compile(
     r'^(—|¿Será .*\?|Terminó .*\(.* pts\)|[^:]{1,40}: (le ganó a|perdió con) .*'
-    r'|(La que tiene|La otra|Su cuenta|Esa cuenta): .*|[^:]{1,40}: .+ vs .+'
+    r'|(La que tiene|La otra|Su cuenta|Esa cuenta): .*|[^:]{1,40}: .+ vs .+|En Discord .*'
     r'|Ninguno aparece en la ronda siguiente.*|Es la última ronda.*)$')
 
 
@@ -1641,6 +1698,19 @@ def _self_check():
     ok(_pistas(_alias) == 'La que tiene: en DRA y FFA · Miembro de DRA · en la Lista como Shadow'
        '\nLa otra: no está en ningún servidor de la Liga',
        'las pistas dicen qué es cada cuenta')
+    # 🔑 el nombre desconocido que es el apodo de alguien de la Lista
+    _DATOS.clear()
+    _DATOS.update({'apodos': {'kulrw': {'500'}, 'sol': {'7', '8'}},
+                   'padron': [{'raw': 'Jult', 'discord_id': '500'}]})
+    _ku = {'tipo': 'Nombre desconocido', 'detalle': 'KULRW🇦🇷', 'match': '', 'variantes': ['KULRW🇦🇷'],
+           'origen': 'evento #360', 'donde': ''}
+    _so = dict(_ku, detalle='SOL🇵🇪', variantes=['SOL🇵🇪'])
+    ok(_en_discord('KULRW🇦🇷') == ('En Discord es la cuenta de «Jult» en la Lista', ['Jult'])
+       and _pregunta(_ku)[2][0] == 'Es Jult',
+       'el apodo de Discord de alguien de la Lista: la pista lo dice y «Es Jult» va primero')
+    ok(_en_discord('SOL🇵🇪')[0] == 'En Discord hay 2 cuentas con ese nombre, ninguna en la Lista'
+       and _pregunta(_so)[2][0] == NUEVO and _en_discord('L🇨🇴') == ('', []),
+       'dos cuentas sin Lista se dicen, y un nombre de una letra no busca nada')
     _DATOS.clear()
     _vi = {'tipo': 'Vidas cargado', 'detalle': 'SNAKE ARENA VOL. 2 · SR · 27/09', 'sug': '—',
            'origen': 'veredictos de Discord',
