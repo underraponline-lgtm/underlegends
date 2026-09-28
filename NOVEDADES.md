@@ -342,6 +342,15 @@ optimizaciones»*.
   mismo (`rankings.ya_dice()`: eran 37 s y la cuota de Google); y el ID del
   Operativo se confirma una vez por ciclo y no en cada uno de los ~15
   scripts (una de esas preguntas tardó 30 s a las 11:54).
+- 🔴 **El sorteo rehecho** (1:45 PM): DESGRACIAS EN TOKYO VOL 15
+  MULTIVERSE se publicó dos veces con otro sorteo y la vieja quedó en el
+  canal. «En vivo» mostraba dos tarjetas del mismo evento, y el lector iba
+  a preguntar en ✅ Decidir por batallas del sorteo abandonado. Ahora manda
+  la llave nueva (`llaves_a_entrada.sin_sorteos_viejos()` y `pintaVivo()`).
+- 🎨 **Vitrinas con huella de diseño**: si cambia `sheet/estilo.py`, se
+  vuelven a vestir aunque los números sean los mismos
+  (`datos/vitrinas_diseno.json`). Y medido: desde las 12:52 las cinco dan
+  «✓ igual» y el ciclo bajó de ~150 s a ~100 s.
 - 🧹 5 vidas: el número de batalla va en la nota y en la guarda de `Entrada`
   (dos revanchas con el mismo ganador eran la misma clave), y lo guardado
   espera 21 días a que contestes.
