@@ -1618,7 +1618,8 @@ inglés, y `/borrar-mis-datos`.
   sin una duda, 24 participantes (escala 16+) y los equipos reparten bien
   —Bloody y Saz 2.625 cada uno, el equipo de Snow 1.312 cada uno, Bootrax,
   Trot y Tuca 416 cada uno—. Como no hay regla, **entra solo en la corrida
-  de las 4:22 PM**; si preferís la B, «No cuenta» en ✅ Decidir lo saca.
+  de las 4:22 PM**; si preferís la B, decímelo y lo saco (queda anotado en
+  `datos/decisiones.json` como que no cuenta, y el ciclo lo retira solo).
 - 🆕 **Tres ideas** (28/09), para cuando quieras: **un probador de llaves en la
   web** (el organizador pega su llave y ve cómo la lee el bot antes de
   publicarla; corre en el navegador, no gasta nada); **los debutantes de la
