@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-09-29T20:55:21Z",
+ "cuando": "2026-09-29T21:25:22Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 123.5,
+ "dur_s": 122.9,
  "pasos": [
   {
    "n": "0b",
@@ -15,7 +15,7 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 20.3
+   "s": 16.7
   },
   {
    "n": "1c",
@@ -27,31 +27,31 @@
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 1.9
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 21.0
+   "s": 21.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.3
+   "s": 1.5
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.7
+   "s": 5.6
   },
   {
    "n": "2b",
@@ -69,55 +69,55 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.6
+   "s": 2.2
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 16.9
+   "s": 19.9
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 13.8
+   "s": 13.4
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 8.4
+   "s": 7.9
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.4
+   "s": 1.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.0
+   "s": 5.1
   }
  ],
  "fallas": [],
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-09-29T20:53:41Z",
+  "cuando": "2026-09-29T21:23:40Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 186,
   "un_evento": 104,
@@ -152,15 +152,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 551,
-   "read": 25951
+   "write": 555,
+   "read": 26799
   },
   "worker": {
-   "pedidos": 3504,
+   "pedidos": 3459,
    "errores": 0,
-   "sub": 3180,
-   "p50_ms": 1.06,
-   "p99_ms": 3.44
+   "sub": 3133,
+   "p50_ms": 1.08,
+   "p99_ms": 3.51
   },
   "r2": {
    "objetos": 8869,

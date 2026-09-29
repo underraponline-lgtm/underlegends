@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T20:54:00+00:00",
+ "cuando": "2026-09-29T21:23:57+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2079,6 +2079,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1554601217718616237",
+   "cuando": "2026-09-29T21:10:13"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "RIOLU🇪🇸",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1554599072722190369",
+   "cuando": "2026-09-29T21:01:41"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
