@@ -356,6 +356,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El remake no toca las cartas**: la web es la pared y las cartas son los afiches pegados | *«A»* (29/09, 11:30 AM) | 📌 regla del remake |
 | **La foto queda como hoy**: la web nueva trae «ocultar mi foto» en ajustes, y nada más | *«podemos añadir la opción en ajustes… somos algo muy amateur todavía»* (11:30 AM) | 📌 va con el remake |
 | **Primero el remake, después lo nuevo** | *«después del remake haríamos el pase, la tienda… y otras cosas»* (11:55 AM) | 📌 orden |
+| **Under Legends es la marca; la Liga Global es de DRA**: UL es como Red Bull y la Liga Global como Red Bull Batalla. DRA y FFA están dentro de UL; DRA patrocina la Liga Global. La web es la de Under Legends | *«UNDER LEGENDS es la marca… DRA es lo que es la liga global»*, *«Red Bull = Under Legends · DRA o LIGA GLOBAL = Red Bull Batalla»* (1 PM) | 📌 las subdivisiones se revisan después |
 | **Se mide quién vuelve a jugar un segundo evento**: por semana de debut, otro evento **otro día** dentro de 14; va en el mapa en vivo | *«Va»* (29/09) | ✅ `rankings.retencion()` → `datos/estado_escuchar.json` → el medidor «Vuelven a jugar» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).

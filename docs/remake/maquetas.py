@@ -64,6 +64,11 @@ def ico(nombre, t=20):
         'buscar': '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>',
         'candado': '<rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V8a4 4 0 118 0v3"/>',
         'compartir': '<path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/>',
+        'tarjetas': '<rect x="4" y="3" width="11" height="15" rx="1"/><path d="M9 21h10a1 1 0 001-1V8"/>',
+        'publicaciones': '<path d="M4 10v4h3l6 4V6L7 10zM17 9a4 4 0 010 6"/>',
+        'tienda': '<path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 016 0v2"/>',
+        'mundo': '<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 2.5 14.4 0 17M12 3.5c-2.5 2.6-2.5 14.4 0 17"/>',
+        'guia': '<path d="M5 4h9a3 3 0 013 3v13H8a3 3 0 01-3-3zM17 20h2V6"/>',
         'trofeo': '<path d="M8 4h8v5a4 4 0 01-8 0zM8 6H4v2a4 4 0 004 4M16 6h4v2a4 4 0 01-4 4M12 13v4M8 20h8"/>',
     }[nombre]
     return ('<svg class="ico" width="%d" height="%d" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -126,7 +131,8 @@ CSS['barda'] = '''
   --berm:#C2330F;--cromo:#FFC21A;--verde:#1E8A50;--uva:#6B3FC4}
 .app{background:var(--cal);color:var(--tinta);font:16px/1.4 "Atkinson Hyperlegible Next",sans-serif}
 .top{display:flex;align-items:center;justify-content:space-between;padding:16px}
-.marca{font:22px/1 Bungee,sans-serif;background:var(--anil);color:var(--cal);padding:9px 12px 7px;
+.marca small{display:block;font:800 11px/1.2 "Atkinson Hyperlegible Next",sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-top:4px;color:var(--cromo)}
+.marca{font:20px/1 Bungee,sans-serif;background:var(--anil);color:var(--cal);padding:9px 12px 7px;
   border:2px solid var(--tinta);box-shadow:4px 4px 0 var(--tinta);letter-spacing:.02em}
 .btn-ico{width:44px;height:44px;display:grid;place-items:center;background:var(--papel);border:2px solid var(--tinta);
   box-shadow:3px 3px 0 var(--tinta);border-radius:2px}
@@ -240,7 +246,8 @@ CSS['fanzine'] = '''
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E")}
 .titular{font-family:Anybody,sans-serif;font-stretch:140%;font-weight:900;text-transform:uppercase;letter-spacing:-.01em}
 .top{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 10px}
-.marca{font:900 23px/.95 Anybody,sans-serif;font-stretch:150%;color:var(--azul);text-shadow:3px 2px 0 rgba(255,72,176,.9);text-transform:uppercase}
+.marca small{display:block;font:600 11px/1.3 "IBM Plex Mono",monospace;letter-spacing:.12em;color:var(--tinta);text-shadow:none;margin-top:5px}
+.marca{font:900 22px/.95 Anybody,sans-serif;font-stretch:150%;color:var(--azul);text-shadow:3px 2px 0 rgba(255,72,176,.9);text-transform:uppercase}
 .btn-ico{width:44px;height:44px;display:grid;place-items:center;border:1.5px solid var(--tinta);background:var(--hoja);transform:rotate(3deg)}
 .bloque{position:relative;margin:0 16px 20px;background:var(--hoja);border:1.5px solid var(--tinta);padding:16px 14px 14px}
 .bloque:nth-of-type(odd){transform:rotate(-.7deg)}.bloque:nth-of-type(even){transform:rotate(.6deg)}
@@ -448,6 +455,7 @@ CSS['diario'] = '''
 .cabecera{padding:14px 16px 0;text-align:center}
 .cabecera .fecha{display:flex;justify-content:space-between;font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);border-bottom:1px solid var(--tinta);padding-bottom:6px}
 .marca{font:48px/1 "DM Serif Display",serif;margin:8px 0 6px;letter-spacing:-.01em}
+.sub-marca{font:italic 16px/1 "DM Serif Display",serif;color:var(--rojo);margin:-2px 0 8px}
 .cabecera .raya{border-top:3px double var(--tinta);border-bottom:1px solid var(--tinta);height:3px;margin-bottom:12px}
 .top{display:none}
 .btn-ico{display:none}
@@ -563,12 +571,13 @@ def cabeza(e, pantalla):
     """La parte de arriba de cada pantalla: cambia de FORMA según el estilo."""
     if e == 'diario':
         return ('<div class="cabecera"><div class="fecha"><span>Martes 29 de septiembre</span><span>Temporada 1</span></div>'
-                '<div class="marca">Liga Global</div><div class="raya"></div></div>')
+                '<div class="marca">Under Legends</div><div class="sub-marca">Liga Global</div><div class="raya"></div></div>')
     if e == 'tvpirata':
-        return ('<div class="tele"><span>P100 <b>LIGA GLOBAL</b></span><span>29 SEP 21:00:15</span></div>'
-                '<div class="top"><div class="marca">LIGA<br>GLOBAL<small>CANAL DEL FREESTYLE</small></div>'
+        return ('<div class="tele"><span>P100 <b>UNDER LEGENDS</b></span><span>29 SEP 21:00:15</span></div>'
+                '<div class="top"><div class="marca">UNDER<br>LEGENDS<small>LIGA GLOBAL</small></div>'
                 '<span class="btn-ico">' + ico('campana', 22) + '</span></div>')
-    return ('<div class="top"><div class="marca">LIGA GLOBAL</div><span class="btn-ico">' + ico('campana', 22) + '</span></div>')
+    return ('<div class="top"><div class="marca">UNDER LEGENDS<small>Liga Global</small></div>'
+            '<span class="btn-ico">' + ico('campana', 22) + '</span></div>')
 
 
 def nav(activa):
@@ -580,44 +589,60 @@ def st(e, clave):
     return '<div class="st">%s</div>' % VOZ[e][clave]
 
 
-def hoy(e):
+# ── las piezas: las mismas en el celular y en la computadora ────────────────
+def b_vivo(e):
     v = VOZ[e]
-    h = [cabeza(e, 'hoy')]
-    titulo_vivo = VIVO['evento'] if e != 'diario' else 'TOKYO VOL 16 se define en los cuartos de final'
+    titulo = VIVO['evento'] if e != 'diario' else 'TOKYO VOL 16 se define en los cuartos de final'
     meta = '%s · %s' % (VIVO['sv'], VIVO['ronda']) if e != 'diario' else '%s · en vivo' % VIVO['sv']
-    h.append('<section class="bloque vivo"><span class="tag">%s</span><h2>%s</h2><p class="meta">servidor %s</p>'
-             '<ul class="cruces">%s</ul><a class="btn">Ver llave</a></section>' % (
-                 v['vivo'], titulo_vivo, meta,
-                 ''.join('<li><span>%s</span><em>vs</em><span>%s</span></li>' % c for c in VIVO['cruces'])))
-    h.append('<section class="bloque">%s<h3 class="ev-t">%s</h3><div class="chips"><span class="chip sv">%s</span>'
-             '<span class="chip">%s</span><span class="chip">%d inscriptos</span></div>'
-             '<div class="hora">%s <small>(tu hora)</small></div><div class="cuenta"><b>%s</b><small>para que arranque</small></div>'
-             '<a class="btn accion">%sQuiero aviso</a></section>' % (
-                 st(e, 'prox'), PROX['evento'], PROX['sv'], PROX['formato'], PROX['inscriptos'], PROX['hora'],
-                 PROX['cuenta'], ico('campana', 18)))
-    h.append('<section class="bloque">%s<div class="casillas">%s</div></section>' % (
-        st(e, 'semana'), ''.join('<div><b>%s</b><small>%s</small></div>' % s for s in SEMANA)))
-    h.append('<section class="bloque">%s<ul class="lista">%s</ul></section>' % (
+    return ('<section class="bloque vivo"><span class="tag">%s</span><h2>%s</h2><p class="meta">servidor %s</p>'
+            '<ul class="cruces">%s</ul><a class="btn">Ver llave</a></section>' % (
+                v['vivo'], titulo, meta,
+                ''.join('<li><span>%s</span><em>vs</em><span>%s</span></li>' % c for c in VIVO['cruces'])))
+
+
+def b_prox(e):
+    return ('<section class="bloque prox">%s<h3 class="ev-t">%s</h3><div class="chips"><span class="chip sv">%s</span>'
+            '<span class="chip">%s</span><span class="chip">%d inscriptos</span></div>'
+            '<div class="hora">%s <small>(tu hora)</small></div><div class="cuenta"><b>%s</b><small>para que arranque</small></div>'
+            '<a class="btn accion">%sQuiero aviso</a></section>' % (
+                st(e, 'prox'), PROX['evento'], PROX['sv'], PROX['formato'], PROX['inscriptos'], PROX['hora'],
+                PROX['cuenta'], ico('campana', 18)))
+
+
+def b_semana(e):
+    return '<section class="bloque">%s<div class="casillas">%s</div></section>' % (
+        st(e, 'semana'), ''.join('<div><b>%s</b><small>%s</small></div>' % s for s in SEMANA))
+
+
+def b_busca(e):
+    return '<section class="bloque">%s<ul class="lista">%s</ul></section>' % (
         st(e, 'busca'), ''.join('<li><span class="mono">%s</span><span class="nom">%s</span><span class="precio">%s</span></li>'
-                                % (mono(n), n, p) for n, p in BUSCA)))
-    h.append('<section class="bloque">%s<ul class="lista">%s</ul></section>' % (
+                                % (mono(n), n, p) for n, p in BUSCA))
+
+
+def b_paso(e):
+    return '<section class="bloque">%s<ul class="lista">%s</ul></section>' % (
         st(e, 'paso'), ''.join('<li>%s<span class="nom">%s<small class="sub">'
                                'Campeón: %s</small></span><a class="lnk">Ver llave</a></li>' % (ico('trofeo', 20), ev, c)
-                               for ev, c in PASO)))
-    h.append(nav('hoy'))
-    return ''.join(h)
+                               for ev, c in PASO))
 
 
-def ranking(e):
-    h = ['<div class="tele"><span>P101 <b>LIGA GLOBAL</b></span><span>29 SEP 21:00:15</span></div>' if e == 'tvpirata' else '']
-    if e == 'diario':
-        h.append(cabeza(e, 'ranking'))
+def r_cab(e):
     tit = 'Ranking' if e != 'tvpirata' else 'P.101 RANKING'
-    h.append('<div class="cab"><h1>%s</h1><p>Temporada 1</p></div>' % tit)
-    h.append('<div class="tabs">%s</div>' % ''.join('<span class="%s">%s</span>' % ('on' if i == 0 else '', t)
-                                                    for i, t in enumerate(TABS)))
-    h.append('<div class="buscar">%s<span>Buscar rapero</span></div>' % ico('buscar', 20))
-    h.append('<div class="filtros"><span class="on">Todos</span><span>Mi servidor</span><span>Mi país</span></div>')
+    return '<div class="cab"><h1>%s</h1><p>Temporada 1</p></div>' % tit
+
+
+def r_tabs():
+    return '<div class="tabs">%s</div>' % ''.join('<span class="%s">%s</span>' % ('on' if i == 0 else '', t)
+                                                 for i, t in enumerate(TABS))
+
+
+def r_buscar():
+    return ('<div class="buscar">%s<span>Buscar rapero</span></div>' % ico('buscar', 20) +
+            '<div class="filtros"><span class="on">Todos</span><span>Mi servidor</span><span>Mi país</span></div>')
+
+
+def r_tabla(e):
     filas = []
     for p, c, n, pa, r, pts in TABLA:
         cls = 'sube' if c.startswith('▲') else 'baja' if c.startswith('▼') else 'igual'
@@ -630,60 +655,252 @@ def ranking(e):
     if e == 'diario':
         cab_tabla = ('<div class="tabla-cab"><span>Pos</span><span></span><span>Rapero</span><span>Rg</span>'
                      '<span style="text-align:right">Pts</span></div>')
-    h.append('<div class="tabla">%s%s</div>' % (cab_tabla, ''.join(filas)))
-    h.append('<div class="yo"><div><b>Tu posición: %s</b><small>%s pts · %s</small></div>'
-             '<a class="btn">Encontrarme</a></div>' % (YO['pos'], YO['pts'], YO['cambio']))
-    h.append(nav('ranking'))
+    return '<div class="tabla">%s%s</div>' % (cab_tabla, ''.join(filas))
+
+
+def r_yo():
+    return ('<div class="yo"><div><b>Tu posición: %s</b><small>%s pts · %s</small></div>'
+            '<a class="btn">Encontrarme</a></div>' % (YO['pos'], YO['pts'], YO['cambio']))
+
+
+def p_cab(e):
+    P = PERFIL
+    kicker = '<div class="kicker">La figura</div>' if e == 'diario' else ''
+    return ('<div class="perfil-cab">%s<h1>%s</h1><div class="chips"><span class="chip">%s</span>'
+            '<span class="chip sv">%s</span><span class="chip">%s</span></div>'
+            '<div class="acciones"><a class="btn prim">Seguir · %d</a><a class="btn claro">%sCompartir</a></div></div>'
+            % (kicker, P['nombre'] if e == 'diario' else P['nombre'].upper(), P['pais'], P['sv'], P['crew'],
+               P['seguidores'], ico('compartir', 18)))
+
+
+def p_pared(e):
+    sello = '<span class="sello">EN RACHA</span>' if e == 'fanzine' else ''
+    return '<div class="pared"><div class="afiche">%s%s</div></div>' % (carta(), sello)
+
+
+def p_selector():
+    return '<div class="selector">%s</div>' % ''.join(
+        '<span class="%s">%s%s</span>' % ('on' if i == 0 else ('bloq' if b else ''), n,
+                                          '<small>%s %s</small>' % ('🔒', b) if b else '')
+        for i, (n, b) in enumerate(CARTAS))
+
+
+def p_stats():
+    P = PERFIL
+    return ('<section class="bloque"><div class="stats">%s</div><div class="rango-fila">%s<b>Score %s</b></div></section>'
+            % (''.join('<div><b>%s</b><small>%s</small></div>' % s for s in P['stats']), rango(P['rango']), P['score']))
+
+
+def p_prog(e):
+    n, t = PERFIL['progreso']
+    return ('<section class="bloque">%s<div class="progreso">%s</div><small>%d de %d eventos</small></section>'
+            % (st(e, 'prog'), ''.join('<i class="%s"></i>' % ('si' if i < n else '') for i in range(t)), n, t))
+
+
+def p_eventos(e):
+    return '<section class="bloque">%s<ul class="lista">%s</ul></section>' % (
+        st(e, 'ev'), ''.join('<li><span class="nom">%s</span><span class="lnk" style="text-decoration:none">%s</span></li>'
+                             % x for x in PERFIL['eventos']))
+
+
+def p_boton():
+    return '<div class="pie-btn"><a class="btn accion">%sCompartir carta</a></div>' % ico('compartir', 18)
+
+
+def tele(pag):
+    return '<div class="tele"><span>%s <b>UNDER LEGENDS</b></span><span>29 SEP 21:00:15</span></div>' % pag
+
+
+# ── el celular ───────────────────────────────────────────────────────────────
+def hoy(e):
+    return cabeza(e, 'hoy') + b_vivo(e) + b_prox(e) + b_semana(e) + b_busca(e) + b_paso(e) + nav('hoy')
+
+
+def ranking(e):
+    h = [tele('P101') if e == 'tvpirata' else '']
+    if e == 'diario':
+        h.append(cabeza(e, 'ranking'))
+    h += [r_cab(e), r_tabs(), r_buscar(), r_tabla(e), r_yo(), nav('ranking')]
     return ''.join(h)
 
 
 def perfil(e):
-    P = PERFIL
     h = []
     if e == 'diario':
         h.append(cabeza(e, 'perfil'))
     if e == 'tvpirata':
-        h.append('<div class="tele"><span>P210 <b>LIGA GLOBAL</b></span><span>29 SEP 21:00:15</span></div>')
-    kicker = '<div class="kicker">La figura</div>' if e == 'diario' else ''
-    h.append('<div class="perfil-cab">%s<h1>%s</h1><div class="chips"><span class="chip">%s</span>'
-             '<span class="chip sv">%s</span><span class="chip">%s</span></div>'
-             '<div class="acciones"><a class="btn prim">Seguir · %d</a><a class="btn claro">%sCompartir</a></div></div>'
-             % (kicker, P['nombre'] if e == 'diario' else P['nombre'].upper(), P['pais'], P['sv'], P['crew'],
-                P['seguidores'], ico('compartir', 18)))
-    sello = '<span class="sello">EN RACHA</span>' if e == 'fanzine' else ''
-    h.append('<div class="pared"><div class="afiche">%s%s</div></div>' % (carta(), sello))
-    h.append('<div class="selector">%s</div>' % ''.join(
-        '<span class="%s">%s%s</span>' % ('on' if i == 0 else ('bloq' if b else ''), n,
-                                          '<small>%s %s</small>' % ('🔒', b) if b else '')
-        for i, (n, b) in enumerate(CARTAS)))
-    h.append('<section class="bloque"><div class="stats">%s</div><div class="rango-fila">%s<b>Score %s</b></div></section>'
-             % (''.join('<div><b>%s</b><small>%s</small></div>' % s for s in P['stats']), rango(P['rango']), P['score']))
-    n, t = P['progreso']
-    h.append('<section class="bloque">%s<div class="progreso">%s</div><small>%d de %d eventos</small></section>'
-             % (st(e, 'prog'), ''.join('<i class="%s"></i>' % ('si' if i < n else '') for i in range(t)), n, t))
-    h.append('<section class="bloque">%s<ul class="lista">%s</ul></section>' % (
-        st(e, 'ev'), ''.join('<li><span class="nom">%s</span><span class="lnk" style="text-decoration:none">%s</span></li>'
-                             % x for x in P['eventos'])))
-    h.append('<div class="pie-btn"><a class="btn accion">%sCompartir carta</a></div>' % ico('compartir', 18))
-    h.append(nav('yo'))
+        h.append(tele('P210'))
+    h += [p_cab(e), p_pared(e), p_selector(), p_stats(), p_prog(e), p_eventos(e), p_boton(), nav('yo')]
     return ''.join(h)
 
 
-BASE = '''*{box-sizing:border-box}html,body{margin:0;background:#888}
+# ── la computadora: menú al costado (el Diario, arriba) y columnas ──────────
+LADO = [('Hoy', 'hoy', '100'), ('Eventos', 'eventos', '200'), ('Ranking', 'ranking', '101'),
+        ('Tarjetas', 'tarjetas', '300'), ('Publicaciones', 'publicaciones', '400'), ('Tienda', 'tienda', '500'),
+        ('Mundo', 'mundo', '600'), ('Guía', 'guia', '700')]
+
+
+def lado(e, activa):
+    if e == 'diario':
+        return ('<header class="cabecera ancha"><div class="fecha"><span>Martes 29 de septiembre de 2026</span>'
+                '<span>Temporada 1 · Edición digital</span></div><div class="marca">Under Legends</div>'
+                '<div class="sub-marca">Liga Global</div>'
+                '<nav class="secciones">%s<a class="%s">Yo</a></nav></header>'
+                % (''.join('<a class="%s">%s</a>' % ('on' if k == activa else '', n) for n, k, _ in LADO),
+                   'on' if activa == 'yo' else ''))
+    items = ''.join('<a class="%s">%s<span>%s</span>%s</a>' % (
+        'on' if k == activa else '', ico(k, 20), n, '<i>P%s</i>' % pg if e == 'tvpirata' else '') for n, k, pg in LADO)
+    marca = ('<div class="marca">UNDER<br>LEGENDS<small>LIGA GLOBAL</small></div>' if e == 'tvpirata'
+             else '<div class="marca">UNDER LEGENDS<small>Liga Global</small></div>')
+    return ('<aside class="lado">%s<nav class="menu">%s</nav><a class="yo-chip %s"><span class="mono">KA</span>'
+            '<span>Kairos<small>Mi cuenta</small></span></a></aside>' % (marca, items, 'on' if activa == 'yo' else ''))
+
+
+def barra(e, titulo):
+    if e == 'diario':
+        return ''
+    return ('<div class="barra-sup"><div class="saludo">%s</div><div class="barra-der"><div class="buscar mini">%s'
+            '<span>Buscar rapero</span></div><span class="btn-ico">%s</span></div></div>'
+            % (titulo, ico('buscar', 18), ico('campana', 20)))
+
+
+def esc(e, activa, cuerpo):
+    pags = dict((k, pg) for _, k, pg in LADO)
+    arriba = tele('P%s' % pags.get(activa, '210')) if e == 'tvpirata' else ''
+    return '%s<div class="esc">%s<main class="cuerpo">%s</main></div>' % (arriba, lado(e, activa), cuerpo)
+
+
+def hoy_pc(e):
+    return esc(e, 'hoy', barra(e, 'Hola, Kairos') + '<div class="grilla-hoy">' + b_vivo(e) + b_prox(e) +
+               b_semana(e) + b_busca(e) + b_paso(e) + '</div>')
+
+
+def ranking_pc(e):
+    ley = ('<section class="bloque leyenda"><div class="st">Los rangos</div><div class="rangos">%s</div></section>'
+           % ''.join(rango(r) for r in RANGO))
+    return esc(e, 'ranking', barra(e, 'Temporada 1') + r_cab(e) + r_tabs() +
+               '<div class="grilla-rk"><div class="rk-izq">' + r_buscar() + r_tabla(e) + '</div>'
+               '<aside class="rk-der">' + r_yo() + ley + '</aside></div>')
+
+
+def perfil_pc(e):
+    return esc(e, 'yo', barra(e, 'Perfil') + '<div class="grilla-pf"><div class="pf-izq">' + p_cab(e) + p_pared(e) +
+               p_selector() + '</div><div class="pf-der">' + p_stats() + p_prog(e) + p_eventos(e) + p_boton() +
+               '</div></div>')
+
+
+ESC_BASE = """
+.app.pc{width:1280px}
+.esc{display:grid;grid-template-columns:236px 1fr;min-height:860px;align-items:stretch}
+.cuerpo{padding:26px 36px 40px;min-width:0}
+.barra-sup{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 18px}
+.saludo{font-weight:700;font-size:15px;opacity:.8}
+.barra-der{display:flex;align-items:center;gap:10px}
+.cuerpo .buscar.mini{margin:0;min-width:280px}
+.lado{display:flex;flex-direction:column;gap:18px;padding:22px 18px}
+.lado .marca{align-self:flex-start}
+.menu{display:grid;gap:4px}
+.menu a{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.menu a i{margin-left:auto;font-style:normal;opacity:.7}
+.yo-chip{margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 12px}
+.yo-chip small{display:block;font-size:12px;opacity:.75}
+.grilla-hoy{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:24px;align-items:start}
+.grilla-hoy .bloque{margin:0}
+.grilla-hoy .vivo{grid-column:1 / span 2}
+.cuerpo .cab{padding:0 0 8px}
+.cuerpo .tabs{padding:6px 0 16px;margin-left:0;margin-right:0}
+.grilla-rk{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}
+.rk-izq .buscar,.rk-izq .filtros{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
+.rk-izq .filtros{padding-bottom:14px}
+.rk-izq .tabla{margin:0}
+.grilla-rk .fila{grid-template-columns:52px 48px 1fr 60px 110px;padding-top:9px;padding-bottom:9px}
+.grilla-rk .tabla-cab{grid-template-columns:52px 48px 1fr 60px 110px}
+.rk-der{display:grid;gap:18px}
+.rk-der .yo{margin:0}
+.rk-der .bloque{margin:0}
+.rangos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.rangos .rg{height:34px}
+.grilla-pf{display:grid;grid-template-columns:440px 1fr;gap:36px;align-items:start}
+.pf-izq .perfil-cab{padding:0}
+.pf-izq .selector{margin-left:0;margin-right:0}
+.pf-der{display:grid;gap:20px}
+.pf-der .bloque{margin:0}
+.pf-der .pie-btn{padding:0}
+.pf-izq .pared{padding:40px 0 30px}
+.pf-izq .carta-demo{zoom:1.35}
+"""
+
+ESC = {}
+ESC['barda'] = """
+.lado{background:var(--cal);border-right:2px solid var(--tinta)}
+.menu a{font:13px/1 Bungee,sans-serif;border:2px solid transparent}
+.menu a.on{background:var(--anil);color:var(--cal);border-color:var(--tinta);box-shadow:4px 4px 0 var(--tinta)}
+.yo-chip{border:2px solid var(--tinta);background:var(--papel);box-shadow:3px 3px 0 var(--tinta);font-weight:800}
+.yo-chip.on{background:var(--anil);color:var(--cal)}
+.leyenda .rg{font-size:14px}
+.prox .cuenta b{font-size:21px;white-space:nowrap}
+"""
+ESC['fanzine'] = """
+.lado{background:var(--papel);border-right:1.5px dashed var(--tinta)}
+.menu a{font:900 14px/1 Anybody,sans-serif;font-stretch:120%;text-transform:uppercase}
+.menu a.on{background:linear-gradient(transparent 50%,rgba(255,72,176,.6) 50%);transform:rotate(-1.5deg)}
+.yo-chip{border:1.5px solid var(--tinta);background:var(--hoja);font-weight:700;transform:rotate(1deg)}
+.yo-chip.on{background:var(--rosa)}
+"""
+ESC['tvpirata'] = """
+.lado{background:var(--negro);gap:22px}
+.lado .marca{font-size:40px}
+.menu a{font:21px/1 VT323,monospace;color:var(--blanco);padding:8px 8px}
+.menu a i{font-size:17px}
+.menu a i{color:var(--amar);opacity:1}
+.menu a.on{background:var(--amar);color:var(--negro)}
+.menu a.on i{color:var(--negro)}
+.yo-chip{font:22px/1 VT323,monospace;border:1px solid var(--cian);color:var(--blanco)}
+.yo-chip small{font:16px/1 VT323,monospace;color:var(--cian);opacity:1}
+.yo-chip.on{background:var(--cian);color:var(--negro)}
+.saludo{font:24px/1 VT323,monospace;color:var(--cian);opacity:1}
+.grilla-hoy .bloque{padding-left:0;padding-right:0}
+.grilla-hoy .vivo{padding:14px 18px}
+.grilla-rk .tabla{padding:8px 0}
+.rk-der .yo{padding:12px 14px}
+.cuerpo .cab h1{font-size:60px}
+"""
+ESC['diario'] = """
+.esc{display:block}
+.cabecera.ancha{padding:18px 48px 0;text-align:center}
+.cabecera.ancha .marca{font-size:72px;margin:10px 0 8px}
+.secciones{display:flex;justify-content:center;gap:26px;border-top:3px double var(--tinta);border-bottom:1px solid var(--tinta);padding:10px 0}
+.secciones a{font:700 13px/1 "Inter Tight",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);padding-bottom:4px}
+.secciones a.on{color:var(--tinta);box-shadow:inset 0 -3px 0 var(--rojo)}
+.cuerpo{padding:26px 48px 44px}
+.grilla-hoy{gap:0 34px}
+.grilla-hoy .vivo h2{font-size:46px}
+.grilla-hoy .bloque{padding-bottom:18px}
+.cuerpo .cab h1{font-size:56px}
+.cuerpo .tabs{border-bottom:1px solid var(--tinta);margin-bottom:16px}
+.pf-izq .perfil-cab h1{font-size:72px}
+"""
+
+
+BASE = """*{box-sizing:border-box}html,body{margin:0;background:#888}
 body{padding:0}.app{width:360px;margin:0}
 a{color:inherit;text-decoration:none}h1,h2,h3,p{margin:0}
 .ico{flex:none}
 .btn{white-space:nowrap}
-'''
+"""
 
 
-def pagina(e, pantalla):
-    cuerpo = {'hoy': hoy, 'ranking': ranking, 'perfil': perfil}[pantalla](e)
+def pagina(e, pantalla, pc=False):
+    f = ({'hoy': hoy_pc, 'ranking': ranking_pc, 'perfil': perfil_pc} if pc
+         else {'hoy': hoy, 'ranking': ranking, 'perfil': perfil})
+    cuerpo = f[pantalla](e)
+    extra = (ESC_BASE + ESC[e]) if pc else ''
     return ('<!doctype html><html lang="es"><head><meta charset="utf-8">'
-            '<meta name="viewport" content="width=360,initial-scale=1">'
+            '<meta name="viewport" content="width=%d,initial-scale=1">'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?%s&%s&display=block">'
-            '<style>%s%s%s</style></head><body><div class="app">%s</div></body></html>'
-            % (FUENTES[e], CARTA_FUENTES, BASE, CSS[e], CARTA_CSS, cuerpo))
+            '<style>%s%s%s%s</style></head><body><div class="app%s">%s</div></body></html>'
+            % (1280 if pc else 360, FUENTES[e], CARTA_FUENTES, BASE, CSS[e], CARTA_CSS, extra,
+               ' pc' if pc else '', cuerpo))
 
 
 ESTILOS = ['barda', 'fanzine', 'tvpirata', 'diario']
@@ -696,7 +913,9 @@ def main():
     for e in ESTILOS:
         for p in PANTALLAS:
             io.open(os.path.join(salida, '%s_%s.html' % (e, p)), 'w', encoding='utf-8', newline='\n').write(pagina(e, p))
-    print('ok ·', len(ESTILOS) * len(PANTALLAS), 'páginas en', salida)
+            io.open(os.path.join(salida, '%s_%s_pc.html' % (e, p)), 'w', encoding='utf-8',
+                    newline='\n').write(pagina(e, p, pc=True))
+    print('ok ·', 2 * len(ESTILOS) * len(PANTALLAS), 'páginas en', salida)
 
 
 if __name__ == '__main__':

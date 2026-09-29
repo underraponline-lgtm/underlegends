@@ -26,17 +26,22 @@ def main():
     mal = []
     with sync_playwright() as pw:
         b = pw.chromium.launch()
-        pg = b.new_page(viewport={'width': 360, 'height': 800}, device_scale_factor=2)
+        cel = b.new_page(viewport={'width': 360, 'height': 800}, device_scale_factor=2)
+        pc = b.new_page(viewport={'width': 1280, 'height': 900}, device_scale_factor=1)
         for f in sorted(os.listdir(carpeta)):
-            if not f.endswith('.html'):
+            if not f.endswith('.html') or f.startswith('_') or '_' not in f:
                 continue
             estilo = f.split('_')[0]
+            if estilo not in FAMILIAS:
+                continue
+            # el celular a 360 px y el doble de densidad; la computadora a 1280 y densidad 1
+            pg = pc if f.endswith('_pc.html') else cel
             pg.goto('file:///' + os.path.join(carpeta, f).replace('\\', '/'))
             pg.wait_for_load_state('networkidle')
             pg.evaluate('document.fonts.ready')
             # la carta de ejemplo (y sus dos fuentes) sólo aparece en el Perfil:
             # el navegador no baja una fuente que la página no usa
-            carta = ['Archivo', 'Barlow Condensed'] if f.endswith('_perfil.html') else []
+            carta = ['Archivo', 'Barlow Condensed'] if ('_perfil' in f) else []
             for fam in FAMILIAS[estilo] + carta:
                 ok = pg.evaluate('(f) => document.fonts.check("16px \\"" + f + "\\"")', fam)
                 cargada = pg.evaluate('(f) => [...document.fonts].some(x => x.family.replace(/"/g, "") === f && x.status === "loaded")', fam)
