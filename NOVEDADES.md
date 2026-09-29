@@ -346,6 +346,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Crack and Krank queda como está** | *«8. No lo sé la verdad»* | ✅ nada que hacer |
 | **La llamada resuelve sola** cuando el nombre raro de la llave es **exactamente** el de una sola persona que estaba en la llamada mientras se jugaba y esa persona ya está en la Lista: alias, aunque ese nombre sea de varias cuentas. Si no está en la Lista, la llamada no da de alta a nadie | *«1. A»* (29/09, 6:15 AM) | ✅ `decidir._cuenta_de()`, fuente «llamada» |
 | **Los commits viejos no se le piden borrar a GitHub**: quedan sueltos hasta su limpieza | *«2. B»* | ✅ nada que hacer |
+| **Para el remake no se usa Penpot**; se conectan todos los demás de la guía, más las Extensiones de la app y los conectores de claude.ai, aunque lleve más tiempo | *«no, no usaremos PENPOT»* · *«si toma más tiempo está bien»* (29/09, 6:10 AM) | ⏳ Dlx corre los pasos; yo verifico cada uno |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
