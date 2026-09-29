@@ -2,6 +2,7 @@
  "_leeme": "El reloj de bot/fuera.py: desde qué día cada carpeta de R2 no pasa el portón. A los 7 días seguidos se borran sus tarjetas (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
   "1200": "2026-09-27",
+  "27": "2026-09-29",
   "27piyi": "2026-09-28",
   "7": "2026-09-27",
   "aby": "2026-09-28",
@@ -300,6 +301,6 @@
   "ржунимагу": "2026-09-27"
  },
  "pasaban": 341,
- "cuando": "2026-09-29T03:54:15Z",
+ "cuando": "2026-09-29T04:24:57Z",
  "borradas": []
 }

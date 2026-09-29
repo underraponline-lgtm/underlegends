@@ -63,6 +63,13 @@
 "temporada"
 ]
 },
+"six": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "praiseriza": {
 "rg": "",
 "c": []
@@ -120,10 +127,6 @@
 "servidor",
 "temporada"
 ]
-},
-"antorchaolimpica": {
-"rg": "",
-"c": []
 },
 "presagio": {
 "rg": "",
@@ -262,13 +265,6 @@
 ]
 },
 "mco": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"six": {
 "rg": "",
 "c": [
 "servidor",
@@ -985,6 +981,10 @@
 "c": []
 },
 "btrx": {
+"rg": "",
+"c": []
+},
+"antorchaolimpica": {
 "rg": "",
 "c": []
 },
