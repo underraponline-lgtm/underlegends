@@ -40,6 +40,7 @@ import difflib
 import io
 import json
 import os
+import re
 import sys
 import unicodedata
 
@@ -87,6 +88,42 @@ def clave_nombre(s):
 
 def _digitos(s):
     return ''.join(c for c in s if c.isdigit())
+
+
+#: 🔑 «T2» ES LA TEMPORADA DEL ORGANIZADOR, NO LA EDICIÓN. Urban Freestyle
+#: anunció «COMPE DEL VACILE T2 #1» y su llave dice «COMPE DEL VACILE 1»:
+#: comparando todos los dígitos juntos era «21» contra «1», no se juntaban y
+#: el calendario mostraba el evento dos veces (Dlx, 28/09/2026, con captura).
+_TEMPORADA = re.compile(r'(?i)(?<![a-z0-9])(?:temporada|season|temp|t)\s*[.#:-]?\s*(\d+)')
+#: 🔑 Y LA MODALIDAD TAMPOCO: FFA anunció «DESGRACIAS EN TOKYO VOL 14 1vs1»
+#: y su llave dice «VOL.14»: era «1411» contra «14», y la VOL 13 «2VS2»
+#: igual. Medido sobre los 97 anuncios de la T1 al arreglar la temporada.
+_MODALIDAD = re.compile(r'(?i)(?<![a-z0-9])\d+\s*(?:vs|v|x)\s*\d+(?![a-z0-9])')
+
+
+def _numeros(nombre):
+    """`(temporada, edición)` de un nombre, en dígitos.
+
+    «COMPE DEL VACILE T2 #1» -> ('2', '1') · «TOKYO VOL 11» -> ('', '11')
+    · «SNAKE INSIGNIA 3/8» -> ('', '38').
+    """
+    # ⚠️ NFKD, COMO `clave_nombre()`: la llave de SEVEN STREET escribe «⁷⁷⁷»
+    # en superíndice y el anuncio «777». Sin normalizar, eran dos números
+    s = _MODALIDAD.sub(' ', unicodedata.normalize('NFKD', str(nombre or '')))
+    return ''.join(m.group(1) for m in _TEMPORADA.finditer(s)), _digitos(_TEMPORADA.sub(' ', s))
+
+
+def _chocan(x, y):
+    """¿Los números de dos nombres se contradicen?
+
+    La EDICIÓN distinta, sí: «VOL 11» y «VOL 12» son dos eventos. Un número
+    contra ninguno, no: «SNAKE INSIGNIA» y su llave «SNAKE INSIGNIA 3/8». Y
+    la TEMPORADA sólo choca si la dicen los dos: el anuncio dice «T2 #1» y la
+    llave, «1».
+    """
+    tx, ex = _numeros(x)
+    ty, ey = _numeros(y)
+    return bool((ex and ey and ex != ey) or (tx and ty and tx != ty))
 
 
 def fecha_iso(fecha):
@@ -435,8 +472,8 @@ def cruzar(pasados, regs):
             # NO. Snake Rap anuncia «SNAKE INSIGNIA» y su llave dice «SNAKE
             # INSIGNIA 3/8» (la edición): nada se contradice, y sin esto su
             # anuncio no llevaba nunca el botón. VOL 11 contra VOL 12 sigue
-            # afuera.
-            elif _digitos(a) and _digitos(b) and _digitos(a) != _digitos(b):
+            # afuera. Y la temporada del organizador aparte: ver `_chocan()`.
+            elif _chocan(p.get('nombre'), r.get('nombre')):
                 continue
             else:
                 puntaje = difflib.SequenceMatcher(None, a, b).ratio()
@@ -576,6 +613,23 @@ def _self_check():
     cruzar(q, sr)
     ok(q[0].get('llave') == 360,
        'el anuncio sin número engancha con la llave que dice la edición (3/8)')
+    # 🔑 la temporada del organizador (Dlx, 28/09/2026, con captura del calendario)
+    ub = {'368': {'nombre': 'COMPE DEL VACILE 1', 'sv': 'URBF', 'dia': '2026-09-28'},
+          '380': {'nombre': 'COMPE DEL VACILE 2', 'sv': 'URBF', 'dia': '2026-09-28'}}
+    q = [{'nombre': 'COMPE DEL VACILE T2 #1', 'sv': 'URBF', 'cuando': '2026-09-28T18:21:45'},
+         {'nombre': 'COMPE DEL VACILE T3 #1', 'sv': 'URBF', 'cuando': '2026-09-28T18:21:45'}]
+    cruzar(q, ub)
+    ok(q[0].get('llave') == 368, '«T2 #1» engancha con la llave «1»: el 2 es la temporada, no la edición')
+    ok(q[1].get('llave') == 368 and not cruzar([{'nombre': 'COMPE T2 #1', 'sv': 'URBF',
+                                                 'cuando': '2026-09-28T18:21:45'}],
+                                               {'9': {'nombre': 'COMPE T3 1', 'sv': 'URBF', 'dia': '2026-09-28'}}),
+       'y la temporada sólo choca si la dicen los dos (T2 contra T3, no)')
+    ok([_numeros(x) for x in ('COMPE DEL VACILE T2 #1', 'DESGRACIAS EN TOKYO VOL 11', 'SNAKE INSIGNIA 3/8',
+                              'TEMPORADA 3 FECHA 7', 'TOKYO', '⁷⁷⁷ SEVEN STREET ⁷⁷⁷',
+                              'DESGRACIAS EN TOKYO VOL 14 1vs1', 'VOL 13 2VS2', 'MULTI 8v1')]
+       == [('2', '1'), ('', '11'), ('', '38'), ('3', '7'), ('', ''), ('', '777777'), ('', '14'), ('', '13'),
+           ('', '')],
+       'temporada y edición: la T de TOKYO no es una temporada, «⁷⁷⁷» es 777 y la modalidad (1vs1) no cuenta')
 
     # 🌳 el árbol: por nombre aunque venga fuera de orden (#354), lo suelto
     # al hueco de al lado (el segundo que pasa de 3 bandas, #353), las filas
