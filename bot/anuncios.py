@@ -546,6 +546,49 @@ def parsear(m, servidor, canal, guild=''):
     }
 
 
+# ── lo que guardó el vigía ────────────────────────────────────────────
+WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
+
+
+def del_vigia():
+    """Las inscripciones que el vigía leyó cada minuto (`/avisos/inscritos`),
+    en la forma de `leer()`. `[]` si no contesta.
+
+    🔑 Dlx, 29/09/2026: *«tienes que estar chequeando las inscripciones
+    constantemente»*. Los organizadores limpian el canal después del evento,
+    y este lector pasa cada media hora: lo que se anotaba y se borraba en el
+    medio no quedaba en ningún lado. El vigía (`bot/avisos.js`) lo lee cada
+    minuto mientras hay un evento y lo guarda tres días.
+
+    ⚠️ CON LA MISMA REGLA DE ACÁ (`es_inscripcion`, hasta 60 letras): el vigía
+    guarda todo lo del canal, charla incluida.
+    ⚠️ LA CLAVE SALE DEL TOKEN DEL BOT (`claveCiclo()` del Worker): la ruta
+    trae Discord IDs y no es pública.
+    """
+    import datetime as dt
+    import hashlib
+    import requests
+    import fotos as F
+    try:
+        k = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
+        r = requests.get(WORKER + '/avisos/inscritos', headers={'x-lg-ciclo': k}, timeout=20)
+        filas = (r.json() or {}).get('inscritos') or [] if r.ok else []
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el vigía no dio sus inscripciones (%s)' % str(e)[:60])
+        return []
+    out = []
+    for f in filas:
+        txt = (f.get('texto') or '').strip()
+        if not txt or len(txt) > 60 or not es_inscripcion(txt) or not f.get('id'):
+            continue
+        cuando = dt.datetime.fromtimestamp(int(f.get('pub') or 0) / 1000.0, dt.timezone.utc)
+        out.append({'servidor': f.get('sv') or '', 'canal': f.get('nombre') or '',
+                    'texto': txt[:60], 'quien': f.get('autor') or '',
+                    'discord_id': f.get('autor_id') or '', 'msg_id': str(f['id']),
+                    'cuando': cuando.strftime('%Y-%m-%dT%H:%M:%S')})
+    return out
+
+
 # ── Discord ──────────────────────────────────────────────────────────
 def _sesion():
     import requests
@@ -1127,6 +1170,15 @@ def main():
         return _self_check()
     s = _sesion()
     anuncios, inscr = leer(s)
+    # 🔑 Y LAS QUE EL VIGÍA LEYÓ CADA MINUTO, aunque el canal ya las haya
+    # borrado: las del canal primero, así un mensaje editado queda como está
+    # hoy (ver `del_vigia()` y `guardar()`)
+    vig = del_vigia()
+    if vig:
+        vistos = {i.get('msg_id') for i in inscr}
+        extra = [i for i in vig if i['msg_id'] not in vistos]
+        inscr = list(inscr) + extra
+        print('   inscripciones del vigía: %d (%d que el canal ya no tiene)' % (len(vig), len(extra)))
     # ⚠️ LOS ANUNCIOS SE PISAN (`guardar()`), así que un canal que no se pudo
     # leer borraba de la web los eventos de ese servidor hasta la corrida
     # siguiente. Se quedan los de antes, sólo de ese servidor.

@@ -85,7 +85,7 @@ export const PATRON_VIGIA = /evento|competenc/i;
 // que daba 403, ya se puede leer: se vuelve a buscar sin esperar las 6 h.
 // 6: también los canales de VEREDICTOS (28/09/2026); ver `veredictos()`.
 // 7: entra FFS, sin las categorías de sus ligas (`meta.fuera`, 28/09/2026).
-const CANALES_V = 7;
+const CANALES_V = 8;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -107,6 +107,42 @@ const VER_DESPUES = 5 * HORA;
 export function firmaLiga(meta) {
   const m = meta || {};
   return JSON.stringify([Array.isArray(m.liga) ? m.liga : [], (m.fuera && typeof m.fuera === 'object') ? m.fuera : {}]);
+}
+
+// 🔑 LAS INSCRIPCIONES, CADA MINUTO. Dlx, 29/09/2026: «cuando anuncian un
+// evento, tienes que estar chequeando las inscripciones constantemente». Los
+// organizadores LIMPIAN el canal después del evento —el de FFA no tenía ni un
+// mensaje de la noche de la VOL 16 2VS2 a la mañana siguiente—, y el ciclo lo
+// lee cada media hora: lo que se anota y se borra en el medio se perdía. El
+// vigía los lee mientras un servidor tiene un evento anunciado o en juego y
+// los guarda (`inscritos`); el ciclo los suma (`bot/anuncios.py`).
+const INSC_ANTES = 12 * HORA;
+const INSC_DESPUES = 5 * HORA;
+//: cuántos canales de inscripciones por minuto: comparte los 50 subpedidos
+const INSC_TOPE = 4;
+//: cuánto se guarda: alcanza para que el ciclo los lea aunque falle un día
+const INSC_GUARDA = 3 * 24 * HORA;
+
+/** Los servidores que se están anotando: un evento anunciado de acá a 12 h, o en juego. */
+export function svsInscribiendo(cuerpos, ahora) {
+  const out = new Set();
+  for (const c of cuerpos || []) {
+    let d = null;
+    try { d = typeof c === 'string' ? JSON.parse(c) : c; } catch (e) { d = null; }
+    if (!d || d.tipo !== 'evento' || d.ini == null || !d.sv) continue;
+    if (d.ini - INSC_ANTES <= ahora && ahora <= d.ini + INSC_DESPUES) out.add(d.sv);
+  }
+  return out;
+}
+
+/**
+ * La clave con que el ciclo pide lo que el vigía guardó (`/avisos/inscritos`).
+ * ⚠️ SALE DEL TOKEN DEL BOT, QUE LOS DOS YA TIENEN: no es un secreto nuevo (los
+ * tokens nuevos, al final: Dlx). Esa ruta trae Discord IDs y no es pública.
+ */
+export async function claveCiclo(token) {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('lg-ciclo:' + String(token || '')));
+  return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 
 /** Los servidores con un evento en juego, de los anuncios que anotó el vigía. */
@@ -856,6 +892,8 @@ const RUTAS = {
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
   // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
+  // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
+  '/avisos/inscritos': 'GET',
 };
 
 // ── seguir raperos ─────────────────────────────────────────────────────
@@ -1251,6 +1289,13 @@ export async function rutaAvisos(req, env, ruta) {
       : json({ error: 'los avisos todavía no tienen clave' }, 503);
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
+  // 🔑 LO QUE SE ANOTÓ, PARA EL CICLO: trae Discord IDs, así que sin la clave
+  // del ciclo contesta que no existe (ver `claveCiclo()`)
+  if (ruta === '/avisos/inscritos') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/inscritos');
+  }
   // 🔑 VINCULAR UN DISPOSITIVO A UNA PERSONA: el Discord ID sale de Discord
   // —con el permiso que la página trae de entrar con Discord—, nunca de la
   // página. Así nadie puede anotarse los avisos de otro.
@@ -1647,6 +1692,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS servidor (quien TEXT NOT NULL, temporada TEXT NOT NULL, ' +
         "sv TEXT NOT NULL, de TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, fijo INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, temporada))');
+      // 🔑 LO QUE SE ANOTÓ EN LOS CANALES DE INSCRIPCIONES (29/09/2026): ver `inscripciones()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS inscritos (id TEXT PRIMARY KEY, canal TEXT NOT NULL, ' +
+        "nombre TEXT NOT NULL DEFAULT '', sv TEXT NOT NULL DEFAULT '', autor_id TEXT NOT NULL DEFAULT '', " +
+        "autor TEXT NOT NULL DEFAULT '', pub INTEGER NOT NULL, ed INTEGER NOT NULL, texto TEXT NOT NULL DEFAULT '')");
       // 🔑 UN ERROR EN UNA LLAVE (28/09/2026): ver `reportar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
@@ -1675,6 +1724,7 @@ export class Avisos {
       if (ruta === '/precios') return json(this.precios(), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
+      if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/alta') return this.alta(d);
@@ -1715,6 +1765,7 @@ export class Avisos {
   async descubrir(servidores, ahora) {
     const lista = [];
     const ver = [];
+    const insc = [];
     let sinAcceso = 0;
     // 🔴 SÓLO LOS SERVIDORES DE LA LIGA. Dlx, 25/09/2026, después de una
     // alerta por un canal de TFC: «Olvida TFC, ya te dije que no está». La
@@ -1768,12 +1819,15 @@ export class Avisos {
         if (PATRON_VEREDICTOS.test(n) && !/llave/i.test(n) && !STAFF.test(n)) {
           ver.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild });
         }
+        // 🔑 los de inscripciones, aparte: ver `inscripciones()`
+        if (PATRON_INSC.test(n) && !STAFF.test(n)) insc.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild });
         // los de staff también dicen «evento», y el bot los lee
         if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON_VIGIA.test(n)) continue;
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild });
       }
     }
-    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, sin_acceso: sinAcceso, firma };
+    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, inscripciones: insc,
+      sin_acceso: sinAcceso, firma };
     // ⚠️ UNA BUSQUEDA QUE NO ENCONTRO NADA NO PISA A UNA QUE SÍ. Si Discord
     // contestó mal a todo, quedarse sin canales es dejar de avisar callado.
     const antes = this.leer('canales');
@@ -1882,6 +1936,10 @@ export class Avisos {
       // 🔑 y los veredictos de lo que se está jugando. Nunca frena al vigía.
       try { await this.veredictos(ahora); } catch (e) {
         this.guardar('veredictos', { t: ahora, error: String(e).slice(0, 160) });
+      }
+      // 🔑 y quién se anota, mientras hay un evento. Nunca frena al vigía.
+      try { await this.inscripciones(ahora); } catch (e) {
+        this.guardar('inscritos', { t: ahora, error: String(e).slice(0, 160) });
       }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
@@ -2006,6 +2064,62 @@ export class Avisos {
     }
     this.sql.exec('DELETE FROM veredictos WHERE pub < ?', ahora - 12 * HORA);
     this.guardar('veredictos', { t: ahora, canales: leer.length, vivos: [...vivos], cambiaron: nuevos });
+  }
+
+  /**
+   * Quién se anota: los canales de inscripciones de los servidores con un
+   * evento anunciado o en juego, cada minuto. Ver `INSC_ANTES`.
+   * ⚠️ SE GUARDA LO QUE DESPUÉS SE BORRA: esa es la gracia. Un mensaje editado
+   * se actualiza; uno borrado se queda.
+   */
+  async inscripciones(ahora) {
+    const lista = (this.leer('canales') || {}).inscripciones || [];
+    if (!lista.length) return;
+    const svs = svsInscribiendo(this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
+      ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo), ahora);
+    // también el servidor que tiene una llave que se está tocando
+    for (const r of this.sql.exec('SELECT DISTINCT sv FROM vivo WHERE ed > ?', ahora - 3 * HORA).toArray()) {
+      if (r.sv) svs.add(r.sv);
+    }
+    const leer = lista.filter((c) => svs.has(c.sv)).slice(0, INSC_TOPE);
+    let nuevos = 0;
+    if (leer.length) {
+      const rs = await Promise.all(leer.map(async (c) => {
+        try {
+          const r = await fetch(`${DC}/channels/${c.id}/messages?limit=50`, {
+            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+          });
+          return { c, msgs: r.status === 200 ? await r.json() : null };
+        } catch (e) {
+          return { c, msgs: null };
+        }
+      }));
+      for (const { c, msgs } of rs) {
+        for (const m of msgs || []) {
+          if (m.author && m.author.bot) continue;
+          const pub = Date.parse(String(m.timestamp || '').slice(0, 19) + 'Z');
+          const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
+          if (Number.isNaN(pub) || ahora - pub > INSC_GUARDA) continue;
+          const texto = String(m.content || '').slice(0, 200);
+          const fila = this.sql.exec('SELECT texto FROM inscritos WHERE id = ?', m.id).toArray()[0];
+          if (fila && fila.texto === texto) continue;
+          this.sql.exec('INSERT INTO inscritos (id, canal, nombre, sv, autor_id, autor, pub, ed, texto) ' +
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
+            'texto = excluded.texto', m.id, c.id, c.nombre || '', c.sv || '',
+          (m.author && m.author.id) || '', (m.author && m.author.username) || '', pub,
+          Math.max(pub, ed || 0), texto);
+          nuevos++;
+        }
+      }
+    }
+    this.sql.exec('DELETE FROM inscritos WHERE pub < ?', ahora - INSC_GUARDA);
+    this.guardar('inscritos', { t: ahora, canales: leer.length, svs: [...svs], cambiaron: nuevos });
+  }
+
+  /** Para `/avisos/inscritos` (sólo el ciclo): lo que se anotó en los últimos días. */
+  inscritosLista() {
+    return { t: Date.now(), inscritos: this.sql.exec('SELECT id, canal, nombre, sv, autor_id, autor, pub, ed, ' +
+      'texto FROM inscritos ORDER BY pub DESC LIMIT 2000').toArray() };
   }
 
   /** Para `/avisos/vivo`: el texto de las llaves de las últimas horas. */

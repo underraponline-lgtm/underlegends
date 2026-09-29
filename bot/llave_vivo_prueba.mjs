@@ -14,6 +14,9 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { webcrypto } from 'node:crypto';
+// en el Worker `crypto` es global; en Node 18 no (la clave del ciclo lo usa)
+if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
 const aqui = dirname(fileURLToPath(import.meta.url));
 const ctx = {};
@@ -136,6 +139,21 @@ ok('las menciones pasan a nombre, con el apodo del servidor primero',
   conNombres({ content: 'CAMPEÓN: <@1>🇨🇱&<@2>🇨🇴 y <@3>', mentions: [
     { id: '1', username: 'fullylo4ded', member: { nick: 'FULLY' } },
     { id: '2', username: 'snowzzz', global_name: 'Snow' }] }) === 'CAMPEÓN: @FULLY🇨🇱&@Snow🇨🇴 y <@3>');
+
+// 🔑 LAS INSCRIPCIONES, CADA MINUTO (Dlx, 29/09/2026: «tienes que estar
+// chequeando las inscripciones constantemente»)
+{
+  const { svsInscribiendo, claveCiclo } = await import('./avisos.js');
+  const H0 = 3600000, T = Date.UTC(2026, 8, 29, 1, 0);
+  const s = svsInscribiendo([JSON.stringify({ tipo: 'evento', sv: 'FFA', ini: T + 10 * H0 }),
+    JSON.stringify({ tipo: 'evento', sv: 'SR', ini: T + 14 * H0 }),
+    JSON.stringify({ tipo: 'evento', sv: 'URBF', ini: T - 6 * H0 }), 'no es json'], T);
+  ok('se leen las inscripciones de un evento anunciado de acá a 12 h, no de uno a 14 h ni de uno terminado',
+    [...s].join(',') === 'FFA', [...s].join(','));
+  const k1 = await claveCiclo('token-uno'), k2 = await claveCiclo('token-dos');
+  ok('la clave del ciclo sale del token: la misma siempre, y otra con otro token',
+    k1.length === 64 && k1 === await claveCiclo('token-uno') && k1 !== k2);
+}
 
 console.log('\n4 · los veredictos en vivo (5 vidas)\n');
 const { svsEnVivo, veredictosALeer } = await import('./avisos.js');
