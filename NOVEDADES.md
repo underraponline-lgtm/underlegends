@@ -316,6 +316,34 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ---
 
+## 📅 Lunes 28/09 (10 PM) — versión 1.46
+
+Dlx mandó una captura del calendario de Eventos, sin texto.
+
+- 🔴 **Un evento salía dos veces**: «COMPE DEL VACILE T2 #1» (anunciado,
+  2:21 PM) y «COMPE DEL VACILE 1» (jugado, 2:48 PM). `llaves_web.cruzar()`
+  junta anuncio y llave si los números del nombre coinciden —para no juntar
+  «VOL 11» con «VOL 12»— y comparaba todos los dígitos juntos: «21» contra
+  «1». Ahora `_numeros()` separa la **temporada del organizador** (T2) de la
+  **edición**: la edición tiene que coincidir, la temporada sólo choca si la
+  dicen los dos.
+- 🔴 **Y lo mismo con la modalidad**, que apareció al medir los 97 anuncios
+  de la T1: «DESGRACIAS EN TOKYO VOL 14 **1vs1**» contra su llave «VOL.14»
+  era «1411» contra «14»; la VOL 13 «2VS2» igual. De 17 a **20** anuncios con
+  su llave, ninguno cambia de llave, y queda una sola llave sin anuncio (la
+  primera MARRUECOS, del 23/09, cuyo anuncio no está en lo que leemos).
+- ⏱️ **Lo jugado lleva la hora de su llave** si el anuncio no decía a qué
+  hora: CCFF V.3 decía «19:28 · anunciado» al lado de «jugado». Lo que no se
+  jugó y no tiene hora dice «del anuncio».
+- 🔎 **«¿Por qué no deja ver las llaves de URBF?»** (Dlx, 10 PM, con el canal
+  `1511963625793912892`). El canal se lee bien: #368 y #369 salen de ahí y
+  «Ver llave» las abre. La fila de su captura no tenía el botón por lo de
+  arriba («T2 #1» contra «1»); ya lo tiene. El único evento de URBF de la T1
+  sin llave es **ISLA DE SOCOTRA V.2** (27/09, 10:29 PM): lo único que hay
+  después en ese canal es una llave de broma, «DENME MODERADOR LPM» (10:32
+  PM, la final «(pichula) 🆚 (mi mamá)», campeón «MAMÁ ERIAN»), que el ciclo
+  **no cargó**. Pregunta abajo.
+
 ## 📅 Lunes 28/09 (12 PM) — versión 1.40
 
 Dlx: *«estas 2 horas voy a estar ocupado pero me gustaría que te tomes el
@@ -1600,6 +1628,11 @@ inglés, y `/borrar-mis-datos`.
    los links a capturas que pide para cada permiso.
 
 ## ❓ Esperando a Dlx
+
+- 🆕 **¿Se jugó ISLA DE SOCOTRA V.2** (Urban Freestyle, 27/09, 10:29 PM)? En
+  su canal de llaves sólo hay una de broma («DENME MODERADOR LPM»), que no se
+  cargó. **A** · no se jugó: queda como anunciado, sin llave · **B** · se
+  jugó: decime quién ganó (o dónde está la llave de verdad) y la cargo.
 
 - ✅ ~~«Miembros oficiales»: ¿esconder a los 96?~~ Resuelto a las 9:30 AM con
   **«fuera de concurso»** (arriba, en las reglas): nadie desaparece, el número
