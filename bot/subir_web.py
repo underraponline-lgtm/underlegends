@@ -281,8 +281,26 @@ def armar():
     # anunciaba. Van con su hora de publicación y `sin_hora`: la página dice
     # «anunciado hace X» en vez de una cuenta atrás.
     SIN_HORA_H = 3
+    # 🔴 LO QUE YA SE JUGÓ NO «VIENE». Un anuncio sin hora se quedaba 3 horas en
+    # «Lo que viene» aunque ya tuviera su llave: CCFF V.3 (URBF, 28/09/2026) se
+    # jugó a las 7:32 PM y a las 10:25 decía «anunciado hace 3 h» (Dlx, con
+    # captura). Y uno con hora, en «En vivo», decía «empezó… la llave todavía no
+    # está publicada» después de terminado. Si ya tiene llave procesada, sale de
+    # acá y va a «Lo que pasó», que es donde está.
+    ann_v = ann
+    try:
+        _sh0 = os.path.join(BASE, 'sheet')
+        if _sh0 not in sys.path:
+            sys.path.append(_sh0)
+        import llaves_web as _LW0
+        _c = [{'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '', 'cuando': x.get('cuando') or ''}
+              for x in ann]
+        _LW0.cruzar(_c, _LW0.leer())
+        ann_v = [x for x, c in zip(ann, _c) if not c.get('llave')]
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude mirar qué anuncios ya se jugaron (%s)' % str(e)[:60])
     sin_hora = []
-    for x in ann:
+    for x in ann_v:
         if CU.momento(x) or not x.get('cuando'):
             continue
         pub = CU._leer_iso(x['cuando'])
@@ -315,7 +333,7 @@ def armar():
         'org': _org(x.get('organizador')),
         # 📣 anunciado con tiempo (ver `_con_tiempo()`)
         'ct': 1 if _con_tiempo(x.get('cuando'), x.get('publicado')) else 0,
-    } for x in CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO)]
+    } for x in CU.proximos(ann_v, cuantos=5, margen_min=VENTANA_VIVO)]
     prox += [{'nombre': _nom(x['nombre']), 'sv': x.get('servidor') or '',
               'cuando': x['cuando'], 'sin_hora': 1,
               'cupos': x.get('cupos_texto') or '', 'link': _link(x),
@@ -338,7 +356,7 @@ def armar():
     # dos veces —una como «en vivo» y otra como «pasó»— que es exactamente
     # el tipo de contradicción en pantalla que este proyecto persigue.
     _ya = {x.get('msg_id') for x in
-           CU.proximos(ann, cuantos=5, margen_min=VENTANA_VIVO) + sin_hora}
+           CU.proximos(ann_v, cuantos=5, margen_min=VENTANA_VIVO) + sin_hora}
     # 🔴 «PASÓ» ES QUE ARRANCÓ, NO QUE SE PUBLICÓ. Esto comparaba la hora de
     # publicación, así que un evento anunciado para la noche figuraba como
     # pasado desde que se anunciaba. Ahora cuenta el arranque; y el que no
