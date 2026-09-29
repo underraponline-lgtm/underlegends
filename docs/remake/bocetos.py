@@ -163,7 +163,7 @@ def carta_sin_letra(nombre, ovr, pais, pts, ev, pod, zoom):
     return c.replace('<div class="c-rk">E</div>', '').replace('--rg:%s' % P.RANGO['E'], '--rg:#8A8A86')
 
 
-def tuliga(pc):
+def tuliga(pc, con_escena=True):
     yo = ('Rima Suelta', 'uy', 'Uruguay', 'C', 78, '3.120', 7, 1)
     heroe = ('<section class="yo-hero"><div class="yo-carta">%s<span class="sticker2">TU CARTA</span></div>'
              '<div class="yo-dat"><span class="yo-hola">HOLA, RIMA SUELTA</span><b class="yo-pos">#47</b>'
@@ -190,8 +190,9 @@ def tuliga(pc):
     vivo = ('<a class="aviso-vivo"><span class="tag">EN VIVO</span><b>TOKYO VOL 16 · Kairos vs Nébula</b>%s</a>' % P.ico('flecha', 18))
     if pc:
         return (cab(True, True) + vivo + '<div class="yo2"><div class="yo-izq">%s%s</div><div class="yo-der">%s%s%s%s</div></div>'
-                % (heroe, semana, prox, rivales, siguen, escena(3)))
-    return cab(False, True) + vivo + heroe + prox + semana + rivales + siguen + escena(2) + tabbar(0)
+                % (heroe, semana, prox, rivales, siguen, escena(3) if con_escena else ''))
+    return (cab(False, True) + vivo + heroe + prox + semana + rivales + siguen + (escena(2) if con_escena else '')
+            + tabbar(0))
 
 
 CSS_B = r"""

@@ -14,6 +14,7 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 
 FAMILIAS = {
+    'sitio': ['Archivo', 'Space Mono'],
     'boceto2': ['Archivo', 'Space Mono'],
     'boceto3': ['Archivo', 'Space Mono', 'Barlow Condensed'],
     'boceto4': ['Archivo', 'Space Mono', 'Barlow Condensed'],
