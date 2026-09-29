@@ -61,6 +61,11 @@ import requests                                      # noqa: E402
 import fotos as F                                    # noqa: E402
 from comun.temporada import carpeta_r2               # noqa: E402
 
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+
 OLVIDADOS = os.path.join(BASE, 'datos', 'olvidados.json')
 ESPEJO = os.path.join(BASE, 'comun', 'fotos')
 

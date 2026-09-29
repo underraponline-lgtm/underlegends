@@ -36,6 +36,11 @@ import sys
 import unicodedata
 import urllib.parse
 
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
+
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path[:0] = [os.path.join(BASE, 'bot'), os.path.join(BASE, 'sheet'), BASE]
 
