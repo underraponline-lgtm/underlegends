@@ -93,6 +93,31 @@ def _hash(datos, ruta):
     return hashlib.sha256(datos + ext.encode()).hexdigest()[:32]
 
 
+def dueno_distinto():
+    """El texto del problema si el dueño de `mapa.js` no es el de `worker.js`; `''` si coinciden.
+
+    🗺️ El mapa en vivo (`paginas/mapa.html`, Dlx 29/09/2026) sólo se muestra
+    si la página dice que entró Dlx, y su ID vive en `bot/worker.js`
+    (`DUENO`). La página no puede leer ese archivo, así que lleva una copia:
+    acá se compara antes de subir, para que un cambio de un lado no deje el
+    mapa mostrándose a otro —o a nadie— sin avisar.
+    """
+    import re
+    def uno(ruta):
+        with io.open(ruta, encoding='utf-8') as f:
+            m = re.search(r"(?:var|const) DUENO = '(\d+)'", f.read())
+        return m.group(1) if m else None
+    w = uno(os.path.join(SCR, 'worker.js'))
+    p = os.path.join(SITIO, 'mapa.js')
+    if not os.path.exists(p):
+        return ''
+    m = uno(p)
+    if not w or not m or w != m:
+        return ('🔴 el DUENO de paginas/mapa.js (%s) no es el de bot/worker.js (%s): '
+                'no subo la página' % (m, w))
+    return ''
+
+
 def main():
     import requests
     aplicar = '--aplicar' in sys.argv
@@ -105,6 +130,9 @@ def main():
                        timeout=30).json()['result'][0]['id']
 
     fs = archivos()
+    mal = dueno_distinto()
+    if mal:
+        sys.exit(mal)
     print('\n══ %s → Cloudflare Pages ══\n' % os.path.relpath(SITIO, BASE))
     for r, d in fs:
         print('   %-16s %7.1f KB' % (r, len(d) / 1024))

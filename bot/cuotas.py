@@ -125,6 +125,32 @@ def main():
     print('   que sobra (100.000 al dia contra 1.000).')
 
     print('\nEL WORKER — las ultimas 24 h')
+    w = worker_24h(s)
+    if w is None:
+        print('   no pude leer analytics')
+        return
+    if not w:
+        print('   sin datos en la ventana')
+    else:
+        pet, err, p50, p99 = w['pedidos'], w['errores'], w['p50_ms'], w['p99_ms']
+        print('   %d peticiones   %s' % (pet, barra(pet, LIM['worker_peticiones_dia'])))
+        print('   %d errores%s' % (err, '   ✅' if err == 0 else '   ⚠️'))
+        print('   subpeticiones %d  (las invitaciones salen por aca)' % w['sub'])
+        print('\n   CPU POR PETICION, contra los 10 ms que deciden todo:')
+        print('      p50  %5.2f ms   %s' % (p50, barra(p50, LIM['worker_cpu_ms'])))
+        print('      p99  %5.2f ms   %s' % (p99, barra(p99, LIM['worker_cpu_ms'])))
+        if p99 > LIM['worker_cpu_ms'] * 0.8:
+            print('      ⚠️ el p99 pasa el 80% del presupuesto')
+    print('')
+
+
+def worker_24h(s):
+    """El Worker en las últimas 24 h: `{'pedidos', 'errores', 'sub', 'p50_ms',
+    'p99_ms'}`, `{}` si no hubo pedidos y `None` si no se pudo preguntar.
+
+    La usan este script y el mapa en vivo (`bot/pipeline.py` la deja en
+    `datos/estado_*.json`): una sola consulta, en un solo lugar.
+    """
     desde = (datetime.datetime.now(datetime.timezone.utc)
              - datetime.timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%SZ')
     q = ('{ viewer { accounts(filter:{accountTag:"%s"}) {'
@@ -132,31 +158,35 @@ def main():
          ' sum { requests errors subrequests }'
          ' quantiles { cpuTimeP50 cpuTimeP99 }'
          ' dimensions { scriptName } } } } }' % (CUENTA, desde))
-    g = requests.post('https://api.cloudflare.com/client/v4/graphql',
-                      headers=dict(s.headers), json={'query': q}, timeout=40)
     try:
+        g = requests.post('https://api.cloudflare.com/client/v4/graphql',
+                          headers=dict(s.headers), json={'query': q}, timeout=40)
         filas = g.json()['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
-    except Exception:
-        print('   no pude leer analytics: %s' % str(g.text)[:160])
-        return
-    if not filas:
-        print('   sin datos en la ventana')
-    for f in filas:
-        if f['dimensions']['scriptName'] != WORKER:
-            continue
-        pet, err = f['sum']['requests'], f['sum']['errors']
-        p50 = f['quantiles']['cpuTimeP50'] / 1000.0      # us -> ms
-        p99 = f['quantiles']['cpuTimeP99'] / 1000.0
-        print('   %d peticiones   %s' % (pet, barra(pet, LIM['worker_peticiones_dia'])))
-        print('   %d errores%s' % (err, '   ✅' if err == 0 else '   ⚠️'))
-        print('   subpeticiones %d  (las invitaciones salen por aca)'
-              % f['sum']['subrequests'])
-        print('\n   CPU POR PETICION, contra los 10 ms que deciden todo:')
-        print('      p50  %5.2f ms   %s' % (p50, barra(p50, LIM['worker_cpu_ms'])))
-        print('      p99  %5.2f ms   %s' % (p99, barra(p99, LIM['worker_cpu_ms'])))
-        if p99 > LIM['worker_cpu_ms'] * 0.8:
-            print('      ⚠️ el p99 pasa el 80% del presupuesto')
-    print('')
+    except Exception:                                    # noqa: BLE001
+        return None
+    for f in filas or []:
+        if f['dimensions']['scriptName'] == WORKER:
+            # ⚠️ `cpuTimeP50` viene en MICROSEGUNDOS (ver el encabezado)
+            return {'pedidos': f['sum']['requests'], 'errores': f['sum']['errors'],
+                    'sub': f['sum']['subrequests'],
+                    'p50_ms': round(f['quantiles']['cpuTimeP50'] / 1000.0, 2),
+                    'p99_ms': round(f['quantiles']['cpuTimeP99'] / 1000.0, 2)}
+    return {}
+
+
+def r2_total(s):
+    """`{'objetos', 'gb'}` del bucket de las cartas, o `None` si no se pudo.
+
+    ⚠️ Cuesta un pedido por cada 1.000 objetos (hoy ~9): el mapa en vivo lo
+    pide como mucho cada 12 h, no en cada corrida.
+    """
+    try:
+        from subir_cartas import listar
+        objs = listar(s)
+    except Exception:                                    # noqa: BLE001
+        return None
+    return {'objetos': len(objs),
+            'gb': round(sum(int(o['size']) for o in objs) / 1024 ** 3, 3)}
 
 
 if __name__ == '__main__':

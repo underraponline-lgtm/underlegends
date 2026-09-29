@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- 🗺️ EL MAPA DE LA LIGA, EN VIVO. No está en el menú y no se indexa: es de
+     Dlx (29/09/2026, «1. C»). Ver el encabezado de `mapa.js`. El artifact
+     privado «El mapa de la Liga» se arma con lo que hay entre las marcas
+     MAPA:CABEZA y MAPA:CUERPO de este mismo archivo. -->
+<meta name="robots" content="noindex,nofollow">
+<!--MAPA:CABEZA-->
+<title>El mapa de la Liga</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+/* Un solo tema, a propósito: es el de la Liga (bot/paginas/estilo.css). */
+:root{
+  color-scheme:dark;
+  --ng:#030304; --pan:#0A0A0D; --pan2:#0F1314;
+  --tl:#29B298; --tl2:#1F8A76; --tls:#0D3A31;
+  --mg:#E41373; --mgs:#470C25;
+  --tx:#EDEDF2; --tx2:#9CAAA7; --tx3:#7F8E8B;
+  --bd:#1A2523; --bd2:#121A19;
+  --oro:#FFD24A;
+  --gris:#56645F;
+  --disp:'Barlow Condensed','Arial Narrow','Roboto Condensed',sans-serif;
+  --txt:'Archivo','Segoe UI',system-ui,sans-serif;
+  --mono:ui-monospace,'Cascadia Code',Consolas,monospace;
+  --bisel:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ng);color:var(--tx);font-family:var(--txt);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:18px 36px}
+.pagina{max-width:1720px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+code{font-family:var(--mono);font-size:.86em;color:var(--tx);background:var(--bd2);padding:.08em .38em;border-radius:3px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--tl);outline-offset:2px}
+[hidden]{display:none!important}
+
+/* ── la cabecera ── */
+.cab{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 28px;align-items:end}
+.ceja{font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--tl)}
+.cab h1{font-weight:900;font-size:clamp(28px,3.8vw,44px);line-height:1.02;margin-top:4px}
+.fresco{color:var(--tx3);font-size:13px;margin-top:6px}
+.ahora{justify-self:end;max-width:440px;background:var(--pan);border:1px solid var(--bd);clip-path:var(--bisel);padding:11px 18px 12px}
+.ahora .reloj{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2);display:flex;align-items:center;gap:8px}
+.latido{width:8px;height:8px;border-radius:50%;background:var(--tl);animation:latir 2s ease-out infinite}
+.latido.duerme{background:#3E504C;animation:none}
+@keyframes latir{0%{box-shadow:0 0 0 0 rgba(41,178,152,.55)}80%,100%{box-shadow:0 0 0 9px rgba(41,178,152,0)}}
+.ahora ul{list-style:none;margin:7px 0 0;padding:0;display:grid;gap:3px;font-size:13.5px;color:var(--tx2)}
+.ahora b{color:var(--tx);font-weight:700}
+@media (max-width:860px){.cab{grid-template-columns:1fr}.ahora{justify-self:stretch;max-width:none}}
+
+/* ── medidores ── */
+.medidores{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.med{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:5px;background:var(--pan);border:1px solid var(--bd);padding:11px 14px 12px;min-width:0}
+.med:hover{border-color:#2A3A37}
+.med:focus-visible{outline:2px solid var(--tl);outline-offset:2px}
+.med .l{font-family:var(--disp);font-weight:600;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tx2);line-height:1.2}
+.med .v{font-weight:800;font-size:24px;line-height:1.1;font-variant-numeric:tabular-nums}
+.med .v small{font-size:13px;font-weight:600;color:var(--tx2);margin-left:4px}
+.med .de,.med .n{font-size:12.5px;color:var(--tx3);line-height:1.35}
+.barra{height:5px;background:var(--bd);position:relative;overflow:hidden}
+.barra i{position:absolute;inset:0 auto 0 0;background:var(--tl)}
+.est-ojo .barra i{background:var(--oro)}.est-falla .barra i{background:var(--mg)}
+.est-ojo .v{color:var(--oro)}.est-falla .v{color:#FF5C9E}
+.dias{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;height:5px}
+.dias i{background:var(--tl)}.dias i.falla{background:var(--mg)}.dias i.va{background:var(--oro)}.dias i.nada{background:var(--gris)}
+
+/* ── recorridos ── */
+.recorridos{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.recorridos .t{font-family:var(--disp);font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2);margin-right:6px}
+.chip-rec{all:unset;cursor:pointer;font-weight:600;font-size:14px;padding:7px 14px;border:1px solid var(--bd);background:var(--pan);clip-path:var(--bisel)}
+.chip-rec:hover{border-color:var(--tl2);color:#fff}
+.chip-rec[aria-pressed="true"]{background:var(--tls);border-color:var(--tl);color:#fff}
+.chip-rec:focus-visible{outline:2px solid var(--tl);outline-offset:2px}
+
+/* ── cuerpo: lienzo + panel ── */
+.cuerpo{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:16px;align-items:start}
+.marco{position:relative;background:var(--pan);border:1px solid var(--bd);height:clamp(520px,74vh,960px);overflow:hidden}
+#lienzo{display:block;width:100%;height:100%;cursor:grab;touch-action:none;background-image:radial-gradient(#131B1A 1px,transparent 1px);background-size:22px 22px}
+#lienzo:active{cursor:grabbing}
+.herr{position:absolute;top:10px;left:10px;right:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;pointer-events:none}
+.herr > *{pointer-events:auto}
+.buscar{position:relative;flex:0 1 280px;min-width:180px}
+.buscar input{width:100%;box-sizing:border-box;background:rgba(10,10,13,.92);border:1px solid #24322F;color:var(--tx);font:inherit;font-size:14px;padding:8px 12px}
+.buscar input::placeholder{color:var(--tx3)}
+.resultados{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#0B0E0F;border:1px solid #24322F;z-index:3;max-height:320px;overflow:auto}
+.resultados button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;justify-content:space-between;gap:10px;width:100%;padding:8px 12px;font-size:14px;border-bottom:1px solid var(--bd2)}
+.resultados button:hover,.resultados button:focus-visible{background:var(--tls)}
+.resultados button span{color:var(--tx3);font-size:12.5px}
+.resultados p{margin:0;padding:10px 12px;color:var(--tx3);font-size:13.5px}
+/* ⚠️ `all:unset` también deja `pointer-events` en heredado, y `.herr` lo tiene en
+   `none`: sin el `auto` de acá, estos botones no se podían tocar */
+.bt{all:unset;pointer-events:auto;cursor:pointer;font-weight:700;font-size:13.5px;padding:8px 12px;background:rgba(10,10,13,.92);border:1px solid #24322F;color:var(--tx)}
+.bt:hover{border-color:var(--tl2)}
+.bt[aria-pressed="true"]{border-color:var(--tl);color:var(--tl)}
+.bt:focus-visible{outline:2px solid var(--tl)}
+.zoom{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:6px}
+.zoom .bt{text-align:center;min-width:18px;padding:6px 10px;font-size:16px}
+
+/* el grafo */
+#lienzo .col{fill:rgba(255,255,255,.012);stroke:#131B1A}
+#lienzo .col-t{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.16em;fill:var(--tx2)}
+#lienzo .col-s{font-family:var(--txt);font-size:12px;fill:var(--tx3)}
+#lienzo .franja{stroke:#16201E;stroke-dasharray:3 5}
+#lienzo .banda-t{font-family:var(--disp);font-weight:700;font-size:14px;letter-spacing:.16em;fill:var(--tx3)}
+#lienzo .banda-s{font-family:var(--txt);font-size:11px;fill:var(--tx3)}
+#carriles{opacity:0;transition:opacity .5s}
+#lienzo.ordenado #carriles{opacity:1}
+.l{stroke:#26332F;stroke-width:1.3;fill:none;transition:opacity .2s}
+.l.lp{stroke:#1D2A27;stroke-width:1}
+.l.hov{stroke:var(--tl2);stroke-width:1.8}
+.l.on{stroke:var(--tl);stroke-width:2.3;stroke-dasharray:7 5;animation:fluir .9s linear infinite}
+.l.tenue{opacity:.14}
+@keyframes fluir{to{stroke-dashoffset:-12}}
+.n{cursor:pointer;outline:none}
+.n .halo{fill:var(--kc);opacity:0;transition:opacity .2s}
+.n .c{fill:var(--kf);stroke:var(--kc);stroke-width:1.8;transition:stroke .2s,fill .2s}
+.n .lbl{font-family:var(--txt);font-weight:700;font-size:15px;fill:var(--tx);paint-order:stroke;stroke:#050607;stroke-width:4px;stroke-linejoin:round}
+.n .sub{font-family:var(--txt);font-weight:500;font-size:12.5px;fill:var(--tx2);paint-order:stroke;stroke:#050607;stroke-width:4px;stroke-linejoin:round}
+/* el nombre de una parte, escondido, no se toca: sería elegir algo que no se ve */
+.n.parte .lbl{font-weight:600;font-size:12px;fill:var(--tx2);opacity:0;transition:opacity .2s;pointer-events:none}
+#lienzo.cerca .n.parte .lbl,.n.parte.foco .lbl,.n.parte.sel .lbl{opacity:1;pointer-events:auto}
+.n:hover .halo,.n.vecino .halo{opacity:.14}
+.n.sel .halo{opacity:.3}
+.n.sel .c{stroke-width:2.8;filter:url(#brillo)}
+.n.k-gente.sel .c{filter:url(#brillo-mg)}
+.n:focus-visible .c{stroke:#fff;stroke-width:2.8}
+.n.tenue{opacity:.22}
+.k-fuente{--kc:#8FA39F;--kf:#101615}
+.k-corre{--kc:#29B298;--kf:#0B1F1B}
+.k-guarda{--kc:#B9C4C1;--kf:#121516}
+.k-gente{--kc:#E41373;--kf:#1C0A12}
+.n.parte .c{fill:var(--kc);stroke:none;opacity:.8}
+.est{fill:none;stroke:none}
+.est.nivel-ok{fill:var(--tl);stroke:#050607;stroke-width:1.5}
+.est.nivel-ojo{fill:var(--oro);stroke:#050607;stroke-width:1.5}
+.est.nivel-falla{fill:var(--mg);stroke:#050607;stroke-width:1.5}
+.est.nivel-duerme{fill:#56645F;stroke:#050607;stroke-width:1.5}
+.est.est-p.nivel-ok{fill:#050607}.est.est-p.nivel-falla{fill:#fff}
+.etq rect{fill:#07090A;stroke:rgba(41,178,152,.55);stroke-width:1}
+.etq text{font-family:var(--txt);font-weight:600;font-size:11.5px;fill:var(--tx)}
+#pulso{fill:#fff;filter:url(#brillo)}
+
+/* ── el panel ── */
+.panel{position:sticky;top:max(12px,env(safe-area-inset-top,0px));max-height:calc(100vh - 24px);overflow:auto;background:var(--pan);border:1px solid var(--bd);display:flex;flex-direction:column}
+.panel-barra{display:none}
+.panel-cuerpo{padding:18px 20px 22px;display:flex;flex-direction:column;gap:14px}
+.p-cab{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font-family:var(--disp);font-weight:700;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border:1px solid currentColor}
+.chip.k-fuente{color:#8FA39F}.chip.k-corre{color:var(--tl)}.chip.k-guarda{color:#B9C4C1}.chip.k-gente{color:#FF5C9E}.chip.rec{color:var(--oro)}
+.donde{font-size:13px;color:var(--tx3)}
+.panel h2{font-weight:900;font-size:25px;line-height:1.1}
+.cada{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--tl)}
+.panel p.que{font-size:14.5px}
+.panel h3{font-family:var(--disp);font-weight:700;font-size:13.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tx2);margin-bottom:6px}
+.ahora-p{border:1px solid var(--bd);padding:10px 12px;background:rgba(41,178,152,.05)}
+.ahora-p.nivel-ojo{border-color:#4A3D14;background:rgba(255,210,74,.06)}
+.ahora-p.nivel-falla{border-color:#5A1733;background:rgba(228,19,115,.07)}
+.ahora-p.nivel-duerme{background:rgba(86,100,95,.08)}
+.ahora-p ul{margin:0;padding-left:18px;display:grid;gap:3px;font-size:13.5px}
+.ojo{border:1px solid #4A3D14;background:rgba(255,210,74,.06);padding:10px 12px;font-size:14px}
+.ojo strong{font-family:var(--disp);font-weight:700;letter-spacing:.12em;color:var(--oro);margin-right:6px}
+.partes-lista{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.partes-lista button{all:unset;cursor:pointer;font-size:13px;padding:4px 9px;border:1px solid var(--bd);color:var(--tx2)}
+.partes-lista button:hover{border-color:var(--tl2);color:var(--tx)}
+.partes-lista button.p-ok{border-color:rgba(41,178,152,.45)}
+.partes-lista button.p-falla{border-color:var(--mg);color:#FF5C9E}
+.partes-lista button:focus-visible{outline:2px solid var(--tl)}
+.boton-chico{all:unset;cursor:pointer;font-weight:700;font-size:13px;color:var(--tl)}
+.boton-chico:hover{text-decoration:underline}
+.con{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.con button{all:unset;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline;width:100%;box-sizing:border-box;padding:5px 8px;border:1px solid transparent;font-size:14px}
+.con button:hover{border-color:var(--bd);background:var(--pan2)}
+.con button:focus-visible{outline:2px solid var(--tl)}
+.con .a{font-weight:700;white-space:nowrap}
+.con .q{color:var(--tx3);font-size:13px}
+.arch{display:flex;flex-wrap:wrap;gap:6px}
+.pasos{margin:0;padding:0;list-style:none;counter-reset:p;display:grid;gap:6px}
+.pasos li{counter-increment:p;display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:8px 10px;border:1px solid var(--bd);font-size:14px;color:var(--tx2);transition:border-color .25s,background .25s,color .25s}
+.pasos li::before{content:counter(p);font-family:var(--disp);font-weight:700;font-size:18px;line-height:1.2;color:var(--tx3)}
+.pasos li.va,.pasos li.fue{color:var(--tx)}
+.pasos li.va{border-color:var(--tl);background:var(--tls)}
+.pasos li.va::before,.pasos li.fue::before{color:var(--tl)}
+.boton{all:unset;cursor:pointer;align-self:flex-start;font-weight:700;font-size:14px;padding:8px 16px;border:1px solid var(--tl);color:var(--tl);clip-path:var(--bisel)}
+.boton:hover{background:var(--tls);color:#fff}
+.hallazgos{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.hallazgos li{border:1px solid var(--bd);padding:11px 13px;font-size:14px;color:var(--tx2)}
+.hallazgos li b{color:var(--tx);display:block;margin-bottom:2px}
+.hallazgos li.nivel-ojo{border-color:#4A3D14}.hallazgos li.nivel-falla{border-color:#5A1733}
+.hallazgos .ir{all:unset;cursor:pointer;color:var(--tl);font-weight:700;font-size:13.5px;margin-top:4px;display:inline-block}
+.leyenda{display:grid;gap:7px;font-size:13.5px;color:var(--tx2)}
+.leyenda .fila{display:flex;gap:10px;align-items:center}
+.leyenda b{color:var(--tx)}
+.sw{width:14px;height:14px;border:2px solid;border-radius:50%;background:var(--ng);flex:none}
+/* ⚠️ `pt-ojo` y no `ojo`: `.ojo` es la caja de «OJO» del panel, con relleno */
+.pt{display:inline-block;width:9px;height:9px;border-radius:50%;vertical-align:middle;margin-inline:2px}
+.pt-ok{background:var(--tl)}.pt-ojo{background:var(--oro)}.pt-falla{background:var(--mg)}.pt-duerme{background:#56645F}
+
+.puerta{max-width:560px;margin:12vh auto 0;background:var(--pan);border:1px solid var(--bd);padding:26px 28px;display:grid;gap:12px}
+.puerta h1{font-size:28px;font-weight:900}
+.puerta p{color:var(--tx2)}
+.puerta a{color:var(--tl);font-weight:700}
+
+@media (prefers-reduced-motion:reduce){.l.on,.latido{animation:none}.pasos li{transition:none}}
+@media (max-width:1099px){
+  body{padding-bottom:84px}
+  /* en el teléfono los recorridos van en una fila que se desliza: tres filas de
+     botones empujaban el mapa fuera de la primera pantalla */
+  .recorridos{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}
+  .chip-rec{flex:none}
+  .cuerpo{grid-template-columns:1fr}
+  .marco{height:66vh}
+  .panel{position:fixed;left:0;right:0;bottom:0;top:auto;max-height:62vh;z-index:5;border-width:1px 0 0;border-color:#24322F;box-shadow:0 -12px 30px rgba(0,0,0,.6);transform:translateY(calc(100% - 58px));transition:transform .28s ease}
+  .panel.abierto{transform:none}
+  .panel-barra{display:flex;align-items:center;gap:12px;min-height:58px;padding:0 16px;padding-bottom:env(safe-area-inset-bottom,0px);border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--pan);z-index:1}
+  .panel-barra .titulo{flex:1;min-width:0;font-weight:800;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .panel-barra button{all:unset;cursor:pointer;font-family:var(--disp);font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:14px;color:var(--tl);padding:8px 4px}
+}
+@media (max-width:1099px) and (prefers-reduced-motion:reduce){.panel{transition:none}}
+</style>
+<!--/MAPA:CABEZA-->
+</head>
+<body>
+<!--MAPA:CUERPO-->
+<div class="pagina">
+  <div class="puerta" id="puerta" hidden>
+    <div class="ceja">Liga Global · underlegends</div>
+    <h1>El mapa de la Liga</h1>
+    <p>Esta vista es del admin de la Liga. Entra con Discord desde «Mi cuenta» en <a href="/">la página</a> y vuelve a abrir este link.</p>
+  </div>
+  <div class="puerta" id="sin-d3" hidden>
+    <h1>No cargó el dibujo</h1>
+    <p>Falta la librería del grafo (d3), que viene de cdnjs. Probá recargar la página.</p>
+  </div>
+
+  <div id="app">
+    <header class="cab">
+      <div>
+        <div class="ceja">Liga Global · underlegends</div>
+        <h1>El mapa de la Liga</h1>
+        <p class="fresco" id="fresco">…</p>
+      </div>
+      <div class="ahora" aria-live="polite">
+        <div class="reloj"><span class="latido" id="latido"></span><span id="reloj">Ahora</span></div>
+        <ul id="ahora-lista"><li>…</li></ul>
+      </div>
+    </header>
+
+    <div class="medidores" id="medidores" style="margin-top:16px"></div>
+
+    <nav class="recorridos" aria-label="Recorridos" style="margin-top:16px">
+      <span class="t">Recorridos</span>
+      <span id="chips-rec" style="display:contents"></span>
+    </nav>
+
+    <div class="cuerpo" style="margin-top:16px">
+      <div class="marco">
+        <svg id="lienzo" role="group" aria-label="El mapa de la Liga: las piezas del sistema y lo que las une. Se puede arrastrar y hacer zoom.">
+          <defs>
+            <marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3A4A46"/></marker>
+            <marker id="m-hov" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1F8A76"/></marker>
+            <marker id="m-on" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#29B298"/></marker>
+            <filter id="brillo" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#29B298" flood-opacity=".75"/></filter>
+            <filter id="brillo-mg" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#E41373" flood-opacity=".7"/></filter>
+          </defs>
+          <g id="mundo">
+            <g id="carriles" pointer-events="none"></g>
+            <g id="links"></g>
+            <g id="nodos"></g>
+            <g id="etqs" pointer-events="none"></g>
+            <circle id="pulso" r="5" cx="-9999" cy="-9999" pointer-events="none"/>
+          </g>
+        </svg>
+        <div class="herr">
+          <div class="buscar">
+            <input id="buscar" type="search" placeholder="Buscar una pieza: KV, Lista, /card…" aria-label="Buscar una pieza del mapa" autocomplete="off">
+            <div class="resultados" id="resultados" hidden></div>
+          </div>
+          <button type="button" class="bt" id="b-orden" aria-pressed="false">Libre</button>
+          <button type="button" class="bt" id="b-todo" aria-pressed="false">Abrir todo</button>
+        </div>
+        <div class="zoom">
+          <button type="button" class="bt" id="b-mas" aria-label="Acercar">+</button>
+          <button type="button" class="bt" id="b-menos" aria-label="Alejar">−</button>
+          <button type="button" class="bt" id="b-centrar" aria-label="Ver todo">⤢</button>
+        </div>
+      </div>
+
+      <aside class="panel" id="panel" aria-label="Detalle">
+        <div class="panel-barra">
+          <span class="titulo" id="panel-titulo">…</span>
+          <button type="button" id="panel-boton" aria-expanded="false" aria-controls="panel-cuerpo">Abrir</button>
+        </div>
+        <div class="panel-cuerpo" id="panel-cuerpo"></div>
+      </aside>
+    </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="mapa_datos.js"></script>
+<script src="mapa.js"></script>
+<!--/MAPA:CUERPO-->
+</body>
+</html>

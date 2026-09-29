@@ -197,16 +197,27 @@ def _avisar_actions(hay, personas, cartas):
         pass
 
 
-def corre(args, callado=True, mostrar=()):
+def corre(args, callado=True, mostrar=(), eco=False):
     """⚠️ encoding utf-8 explicito: ver el comentario de bot/rehacer.py.
 
     `mostrar`: pedazos de texto; las líneas de la salida que los contengan
     se imprimen aunque la llamada vaya callada. Es para el chequeo que un
     paso hace de sí mismo y que no tiene que frenar el ciclo, pero sí verse.
+
+    `eco`: la salida se imprime entera, como sin callar, y además queda en
+    `_ULTIMA_SALIDA[0]` para que el paso lea un número de ahí (el mapa en
+    vivo cuenta así las preguntas de ✅ Decidir).
     """
     r = subprocess.run([sys.executable] + args, cwd=BASE,
-                       capture_output=callado, text=True,
+                       capture_output=callado or eco, text=True,
                        encoding='utf-8', errors='replace')
+    if eco:
+        sys.stdout.write(r.stdout or '')
+        sys.stdout.write(r.stderr or '')
+        sys.stdout.flush()
+        _ULTIMA_SALIDA[0] = r.stdout or ''
+    if r.returncode:
+        _marcar_falla(args)
     if callado and mostrar:
         for l in (r.stdout or '').splitlines():
             if any(m in l for m in mostrar):
@@ -238,7 +249,129 @@ def paso(n, que):
     # ⚠️ `%s` y no `%d`: hay un paso «1b». Se agrego entre el 1 y el 2 y
     # renumerar los seis siguientes habria ensuciado el diff con ruido que
     # esconde el cambio de verdad.
+    _abrir_paso(n, que)
     print('\n── %s · %s' % (n, que))
+
+
+# 🗺️ LO QUE LEE EL MAPA EN VIVO (`bot/paginas/mapa.html`). Dlx, 29/09/2026:
+# «1. C» — el mapa de la Liga, también en vivo y sólo para él. Cada trabajo
+# deja su foto en `datos/estado_<trabajo>.json`: qué pasos corrió, cuánto
+# tardó cada uno, cuáles fallaron y las cuotas del plan gratis a esa hora.
+# La página lo baja del repo público: no gasta KV ni pasa por el Worker.
+#
+# ⚠️ SIN NOMBRES NI IDS: el repo es público. Van pasos, segundos, conteos y
+# el nombre del último evento, que ya está en `datos/llaves_t1.json`.
+#
+# ⚠️ Y NUNCA TUMBA EL CICLO: si algo de esto falla, se avisa y se sigue.
+_ESTADO = {'t0': time.time(), 'pasos': {}, 'orden': [], 'abierto': None,
+           'fallas': [], 'decidir': None}
+_ULTIMA_SALIDA = ['']
+
+
+def _cerrar_paso():
+    n = _ESTADO['abierto']
+    if n is not None:
+        p = _ESTADO['pasos'][n]
+        p['s'] = round(p.get('s', 0) + time.time() - p.pop('_t', time.time()), 1)
+        _ESTADO['abierto'] = None
+
+
+def _abrir_paso(n, que):
+    """Un paso que vuelve —las tandas del 5— suma su tiempo al mismo."""
+    _cerrar_paso()
+    n = str(n)
+    if n not in _ESTADO['pasos']:
+        _ESTADO['pasos'][n] = {'n': n, 'que': que, 'ok': True}
+        _ESTADO['orden'].append(n)
+    _ESTADO['pasos'][n]['_t'] = time.time()
+    _ESTADO['abierto'] = n
+
+
+def _marcar_falla(args):
+    n = _ESTADO['abierto']
+    if n is not None:
+        _ESTADO['pasos'][n]['ok'] = False
+    if len(_ESTADO['fallas']) < 20:
+        _ESTADO['fallas'].append({'paso': n, 'que': ' '.join(args[:2])})
+
+
+def _ultimo_evento():
+    """El evento procesado más nuevo, de `datos/llaves_t1.json`, o `None`."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+            ll = json.load(f) or {}
+        n = max((k for k in ll if str(k).isdigit()), key=int)
+        e = ll[n] or {}
+        return {'n': n, 'nombre': e.get('nombre') or '', 'sv': e.get('sv') or '',
+                'dia': e.get('dia') or ''}
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
+def _estado_final(codigo, destino=None, cuotas=True):
+    """Escribe `datos/estado_<trabajo>.json`. Sólo en una corrida de verdad
+    (`--correr` con `--sin-dibujar` o `--solo-dibujar`), o en `destino`."""
+    try:
+        trabajo = ('dibujar' if '--solo-dibujar' in sys.argv else
+                   'escuchar' if '--sin-dibujar' in sys.argv else None)
+        if destino is None and ('--correr' not in sys.argv or trabajo is None):
+            return None
+        _cerrar_paso()
+        p = destino or os.path.join(BASE, 'datos', 'estado_%s.json' % trabajo)
+        viejo = {}
+        try:
+            with io.open(p, encoding='utf-8') as f:
+                viejo = json.load(f) or {}
+        except (OSError, ValueError):
+            pass
+        if not isinstance(codigo, int):
+            codigo = 0 if codigo is None else 1
+        out = {'v': 1, 'cuando': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+               'trabajo': trabajo or 'prueba', 'codigo': codigo,
+               'dur_s': round(time.time() - _ESTADO['t0'], 1),
+               'pasos': [{k: v for k, v in _ESTADO['pasos'][n].items()
+                          if not k.startswith('_')} for n in _ESTADO['orden']],
+               'fallas': _ESTADO['fallas']}
+        # lo que esta corrida no midió sigue valiendo: si ✅ Decidir no se
+        # repintó es porque no cambió
+        dec = _ESTADO['decidir'] if _ESTADO['decidir'] is not None else viejo.get('decidir')
+        if dec is not None:
+            out['decidir'] = dec
+        ev = _ultimo_evento()
+        if ev:
+            out['ultimo_evento'] = ev
+        if cuotas:
+            q = {}
+            try:
+                from subir_cartas import sesion
+                from cuotas import kv_hoy, worker_24h, r2_total
+                s = sesion()
+                kv = kv_hoy(s)
+                if kv:
+                    q['kv'] = {'write': kv.get('write', 0), 'read': kv.get('read', 0)}
+                w = worker_24h(s)
+                if w:
+                    q['worker'] = w
+                # R2 cuesta ~9 pedidos: como mucho cada 12 h
+                r2 = (viejo.get('cuotas') or {}).get('r2')
+                if not r2 or time.time() - (r2.get('ts') or 0) > 12 * 3600:
+                    nuevo = r2_total(s)
+                    if nuevo:
+                        r2 = dict(nuevo, ts=int(time.time()))
+                if r2:
+                    q['r2'] = r2
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ el estado del mapa va sin cuotas: %s' % str(e)[:120])
+            if q:
+                out['cuotas'] = q
+        with io.open(p, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(out, f, ensure_ascii=False, indent=1)
+        print('   🗺️ estado para el mapa en vivo: %s (%d pasos, %d fallas)'
+              % (os.path.relpath(p, BASE), len(out['pasos']), len(out['fallas'])))
+        return out
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude escribir el estado del mapa: %s' % str(e)[:120])
+        return None
 
 
 def _pool(nombre):
@@ -1095,7 +1228,13 @@ def _lo_barato(correr):
         # (Dlx, 28/09/2026: «ok»), antes de pintar: sale en ✅ Decidir en esta
         # misma corrida. Ver `bot/reportes.py`.
         corre(['bot/reportes.py', '--aplicar'], callado=False)
-        corre(['sheet/decidir.py', '--aplicar'], callado=False)
+        # 🗺️ con `eco`: la salida se ve igual y el mapa en vivo lee cuántas
+        # preguntas quedaron (ver `_estado_final`)
+        if corre(['sheet/decidir.py', '--aplicar'], callado=False, eco=True):
+            import re as _re
+            m = _re.search(r'(\d+) pregunta\(s\)', _ULTIMA_SALIDA[0])
+            if m:
+                _ESTADO['decidir'] = int(m.group(1))
         corre(['sheet/construir_akas.py'], callado=False)
 
     # ── 2e · las tarjetas de quien se fue, a la semana ──────────────
@@ -1531,4 +1670,15 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    # 🗺️ el estado para el mapa en vivo se escribe también si el ciclo
+    # termina con `sys.exit()` o revienta: justo esas son las que hay que ver
+    try:
+        _codigo = main()
+    except SystemExit as _e:
+        _estado_final(_e.code)
+        raise
+    except BaseException:
+        _estado_final(1)
+        raise
+    _estado_final(_codigo)
+    sys.exit(_codigo)
