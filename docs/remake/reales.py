@@ -27,6 +27,13 @@ Qué cambia contra `sitio.py` (la maqueta con gente inventada), además de los d
 - **Esta semana**: los multiplicadores, el evento dorado, la guerra de servidores
   y la meta de comunidad, que ya existen y la portada no mostraba.
 - **La Mercancía no tiene prendas** (Dlx: *«aún no hay mercancía»*): una línea.
+- **Los que mandan tiene flechas** (Dlx, 29/09 ~6:30 PM): las siete categorías del
+  podio de la web de hoy, con cinco en vez de tres. Y **el panel de abajo también**:
+  Misiones + el Pase, tus eventos + tu temporada y la Liga en números. Las Misiones y
+  el Pase todavía no existen: van **de ejemplo** y lo dicen; el progreso de las
+  Misiones sí es el de verdad, sacado de las llaves de la semana.
+- **Se busca, los servidores y el pie van en negro**: los afiches pasan a papel sobre
+  la pared.
 """
 import datetime as dt
 import os
@@ -599,7 +606,7 @@ class Liga:
 
     def ir_a(self):
         s = [('envivo', 'Ahora'), ('fechas', 'Fechas'), ('semana', 'Esta semana'), ('noticias', 'Lo último'),
-             ('raperos', 'Los que mandan'), ('ranking', 'Ranking'), ('sebusca', 'Se busca'), ('tienda', 'Tienda'),
+             ('raperos', 'Los que mandan'), ('panel', 'Misiones'), ('sebusca', 'Se busca'), ('tienda', 'Tienda'),
              ('servidores', 'Servidores')]
         return ('<nav class="ir-a" aria-label="Ir a"><span class="ir-t">IR A</span>%s</nav>'
                 % ''.join('<a href="#%s">%s</a>' % x for x in s))
@@ -740,13 +747,167 @@ class Liga:
                    ('<div class="te-buscan"><b>HOY TE BUSCAN</b><span>%s por tu cabeza · %s · hasta %s</span></div>'
                     % (num(bus['v']) + ' pts', bus['cn'], self.dia(self.d['mw']['fin'])) if bus else '')))
 
+    # ── secciones con pestañas y flechas (Dlx, 29/09: «añadir las flechas para ir hacia competitivo, países, rachas») ──
+    def pest(self, id_, titulo, enlace, items, extra='', titulos=False):
+        """Una sección con pestañas y flechas. `items` = [(clave, pestaña, título, html)]: se ve la primera y las
+        demás esperan; en el prototipo las cambian las flechas, las pestañas y el dedo. Con `titulos`, el título de
+        la sección es el de la pestaña que se ve (el panel de abajo junta cosas distintas)."""
+        tabs = ''.join('<button type="button" class="%s" data-t="%s">%s</button>' % ('on' if n == 0 else '', t, et)
+                       for n, (_c, et, t, _h) in enumerate(items))
+        pistas = ''.join('<div class="pz%s" data-c="%s">%s</div>' % (' on' if n == 0 else '', c, h)
+                         for n, (c, _et, _t, h) in enumerate(items))
+        fl = ('<span class="pz-fl"><button type="button" class="pz-b izq" data-dir="-1" aria-label="Anterior">%s</button>'
+              '<button type="button" class="pz-b der" data-dir="1" aria-label="Siguiente">%s</button></span>'
+              % (P.ico('flecha', 18), P.ico('flecha', 18)))
+        cuerpo = '<div class="pz-cab"><nav class="pz-tabs" aria-label="%s">%s</nav>%s</div>%s' % (titulo, tabs, fl, pistas)
+        sec = self.sec(id_, items[0][2] if titulos else titulo, enlace, cuerpo, ('pest ' + extra).strip())
+        return sec.replace('<section ', '<section data-titulos="1" ', 1) if titulos else sec
+
+    def mc_persona(self, f, dato, cual='temporada'):
+        return ('<article class="mc">%s<div class="mc-pie"><span class="mc-pais"><img alt="" src="%s">%s</span><b>%s</b>'
+                '<small>%s</small></div></article>'
+                % (self.carta(f['k'], cual, cls='ci mc-ci'), bandera(f.get('cc', '')), PAIS.get(f.get('cc', ''), (f.get('cc') or '').upper()),
+                   limpio(f['n']), dato))
+
+    def mc_grupo(self, n, img, nombre, dato):
+        return ('<article class="mc grupo"><div class="mc-tile"><span class="mc-n">#%d</span>%s</div><div class="mc-pie"><b>%s</b>'
+                '<small>%s</small></div></article>' % (n, img, nombre, dato))
+
     def raperos(self, pc):
-        top = self.oficiales()[:5]
-        return self.sec('raperos', 'Los que mandan', 'Todos los raperos', '<div class="rail mcs2">%s</div>' % ''.join(
-            '<article class="mc">%s<div class="mc-pie"><span class="mc-pais"><img alt="" src="%s">%s</span><b>%s</b>'
-            '<small>#%d · OVR %d · %s PTS</small></div></article>'
-            % (self.carta(f['k'], cls='ci mc-ci'), bandera(f['cc']), PAIS.get(f['cc'], f['cc'].upper()), f['n'], f['pos'], f['ovr'],
-               num(f['pts'])) for f in top), 'oscura')
+        """Los que mandan, por categoría: las mismas siete que el podio de la web de hoy (`catsPodio()` de app.js),
+        con cinco en vez de tres. Sólo los oficiales: fuera de concurso no tiene número."""
+        T = self.oficiales()
+        cats = [('temporada', 'Temporada', [self.mc_persona(f, '#%d · OVR %d · %s PTS' % (f['pos'], f['ovr'], num(f['pts'])))
+                                            for f in T[:5]])]
+        comp = sorted([f for f in T if f.get('rg')], key=lambda f: -(f.get('sc') or 0))[:5]
+        cats.append(('competitivo', 'Competitivo', [self.mc_persona(f, 'RANGO %s · SCORE %s' % (f['rg'], f.get('sc')), 'competitivo')
+                                                    for f in comp]))
+        du = [d for d in self.d.get('duelos', []) if not d.get('fc') and d['k'] in self.T][:5]
+        cats.append(('duelos', 'Duelos', [self.mc_persona(self.T[d['k']], '%d DE %d DUELOS GANADOS' % (d['g'], d['t'])) for d in du]))
+        med = sorted([f for f in T if (f.get('oro') or 0) + (f.get('seg') or 0) + (f.get('ter') or 0)],
+                     key=lambda f: (-(f.get('oro') or 0), -(f.get('seg') or 0), -(f.get('ter') or 0), f['pos']))[:5]
+        cats.append(('podios', 'Podios', [self.mc_persona(f, '1.º ×%d · 2.º ×%d · 3.º ×%d' % (f.get('oro') or 0, f.get('seg') or 0,
+                                                                                         f.get('ter') or 0)) for f in med]))
+        con = [f for f in T if len(f.get('rch') or []) > 1 and f['rch'][1]]
+        vivas = [f for f in con if f['rch'][0]]
+        ra = sorted(vivas or con, key=lambda f: (-(f['rch'][0] if vivas else f['rch'][1]), f['pos']))[:5]
+        cats.append(('rachas', 'Rachas', [self.mc_persona(f, '%d EVENTOS SEGUIDOS' % (f['rch'][0] if vivas else f['rch'][1]))
+                                          for f in ra]))
+        pa = [p for p in self.d.get('paises', []) if p.get('n')][:5]
+        cats.append(('paises', 'Países', [self.mc_grupo(n + 1, '<img class="mc-bandera" alt="" src="%s">' % bandera(p['cc'])
+                                                        if bandera(p['cc']) else '', PAIS.get(p['cc'], p['cc'].upper()),
+                                                        '%s PTS · %d RAPEROS' % (num(p['pts']), p['n'])) for n, p in enumerate(pa)]))
+        cr = [c for c in self.d.get('crews', []) if c.get('rk') != 0][:5]
+        cats.append(('crews', 'Crews', [self.mc_grupo(n + 1, self.logo_crew(c), limpio(c['crew']),
+                                                      '%s PTS · %d RAPEROS' % (num(c['pts']), c['n'])) for n, c in enumerate(cr)]))
+        items = [(c, et, 'Los que mandan', '<div class="rail mcs2">%s</div>' % ''.join(h)) for c, et, h in cats if h]
+        return self.pest('raperos', 'Los que mandan', 'Todos los raperos', items, 'negra')
+
+    def logo_crew(self, c):
+        ruta = c.get('logo') or ''
+        if ruta and os.path.exists(os.path.join(P.PAG, ruta)):
+            return '<img class="mc-logo" alt="" src="%s">' % P.dato(ruta, 'image/webp')
+        return '<span class="mc-ini">%s</span>' % (limpio(c['crew'])[:2].upper() or '?')
+
+    # ── el panel de abajo (Dlx, 29/09): Misiones + el Pase · Tus eventos + Tu temporada · La Liga en números ──
+    def panel(self, pc):
+        items = [('misiones', 'Misiones', 'Misiones', '<div class="pz-2">%s%s</div>' % (self.misiones(), self.pase())),
+                 ('eventos', 'Tus eventos', 'Tus eventos', '<div class="pz-2">%s%s</div>' % (self.tus_eventos(), self.tu_temporada())),
+                 ('liga', 'La Liga', 'La Liga en números', self.numeros())]
+        return self.pest('panel', 'Misiones', 'Tu perfil', items, 'panel', titulos=True)
+
+    def desde_lunes(self):
+        m = self.d.get('mult') or {}
+        return utc(m['ini']) if m.get('ini') else self.ahora - dt.timedelta(days=7)
+
+    def duelos_de(self, k, desde):
+        """Los duelos que ganó y jugó alguien desde una fecha, sacados de las llaves del payload."""
+        yo = limpio(self.T[k]['n']).lower()
+        g = j = 0
+        for ll in self.d['llaves'].values():
+            if utc(self.fecha_llave(ll)) < desde:
+                continue
+            for r in ll['rondas']:
+                for b in r['b']:
+                    lados = [limpio(x if isinstance(x, str) else ' & '.join(x)).lower() for x in b[0]]
+                    if yo in lados and len(lados) == 2:
+                        j += 1
+                        g += limpio(b[1] if isinstance(b[1], str) else ' & '.join(b[1])).lower() == yo
+        return g, j
+
+    def misiones(self):
+        """Las Misiones son de la Temporada y para todos ([[pase-tareas-misiones]]); todavía no existen, así que las
+        cuatro son DE EJEMPLO. El progreso sí es de verdad: sale de las llaves de esta semana de quien mira."""
+        f = self.yo
+        if not f:
+            return ''
+        desde = self.desde_lunes()
+        mias = [(ll, res) for ll, res, _p in self.semana_de(f['k']) if utc(self.fecha_llave(ll)) >= desde]
+        final = any(res in ('Campeón', 'Subcampeón') for _ll, res in mias)
+        svs = {ll['sv'] for ll, _r in mias}
+        g, _j = self.duelos_de(f['k'], desde)
+        filas = [('Jugá 2 eventos', min(len(mias), 2), 2, 300), ('Llegá a una final', int(final), 1, 500),
+                 ('Ganá 5 duelos', min(g, 5), 5, 300), ('Jugá en 2 servidores distintos', min(len(svs), 2), 2, 400)]
+        li = ''.join('<li class="%s"><span class="mis-ok">%s</span><div class="mis-txt"><b>%s</b><span class="mb"><i style="width:%d%%">'
+                     '</i></span><small>%d de %d</small></div><span class="mis-pts">+%s<small>PTS</small></span></li>'
+                     % ('hecha' if v >= t else '', '✓' if v >= t else '', q, round(100 * v / t), v, t, num(p)) for q, v, t, p in filas)
+        return ('<section class="mis"><div class="mis-cab"><span>MISIONES DE LA SEMANA · SUMAN A TU TEMPORADA</span>'
+                '<em>DE EJEMPLO</em></div><ol>%s</ol></section>' % li)
+
+    def pase(self):
+        """El Pase es sólo de DRA y se avanza con Tareas ([[pase-tareas-misiones]]). Todavía no existe: el
+        recuadro es para ver el lugar, con números de ejemplo."""
+        return ('<section class="tu pase"><div class="tu-t">PASE DE TEMPORADA · %s<span class="tag-pronto">PRÓXIMAMENTE</span></div>'
+                '<div class="tu-fila"><div class="tu-pos"><b>NIVEL 3</b><small>240 de 500 para el nivel 4</small></div>'
+                '<span class="pase-sig">4</span></div><span class="mb pase-b"><i style="width:48%%"></i></span>'
+                '<ul class="pase-l"><li><span>Tareas de esta semana</span><b>2 de 5</b></li>'
+                '<li><span>Próxima recompensa</span><b>Marco dorado para tu carta</b></li></ul>'
+                '<a class="btn negro">Ver el pase</a><small class="pase-nota">Sólo para los miembros de Discord Rap Español. '
+                'Los números son de ejemplo.</small></section>' % self.d.get('temporada', 't1').upper())
+
+    def tus_eventos(self):
+        """Los últimos eventos de la Liga y cómo le fue a quien mira en cada uno."""
+        f = self.yo
+        yo = limpio(f['n']).lower() if f else ''
+        filas = []
+        for ll in self.llaves()[:5]:
+            res = next(((fila[1], fila[2]) for fila in ll.get('tabla', []) if limpio(fila[0]).lower() == yo), None)
+            gana = self.campeon(ll)
+            if res:
+                cls = 'campeon' if res[0] == 'Campeón' else ''
+                vos = '<span class="te-vos %s">%s<small>+%s</small></span>' % (cls, res[0].upper(), num(res[1]))
+            else:
+                vos = '<span class="te-vos no">—<small>no jugaste</small></span>'
+            filas.append('<li><img alt="" src="%s"><div><b>%s</b><small>%s · %s · %d raperos · %s: %s</small></div>%s</li>'
+                         % (self.logo(ll['sv']), limpio(ll['nombre']), ll['sv'], self.cuando(self.fecha_llave(ll)),
+                            ll['participantes'], 'campeones' if len(gana) > 1 else 'campeón', ' y '.join(gana), vos))
+        return ('<section class="te"><div class="mis-cab"><span>LOS ÚLTIMOS EVENTOS · Y CÓMO TE FUE</span><em>TODOS %s</em></div>'
+                '<ol class="te-l">%s</ol></section>' % (P.ico('flecha', 14), ''.join(filas)))
+
+    def numeros(self):
+        """La Liga en números, como «La Liga hoy» de la web de hoy: la comunidad, la actividad de dos semanas y los récords."""
+        c = self.d.get('comunidad') or {}
+        a = self.d.get('actividad') or {}
+        grandes = [('PERSONAS', c.get('personas'), 'en %d servidores' % c.get('servidores', 0)),
+                   ('EN LA LISTA', c.get('lista'), 'compitieron o se anotaron'),
+                   ('CON SU DISCORD', c.get('con_id'), 'el bot sabe quiénes son'),
+                   ('VERIFICADAS', c.get('verificados'), 'con las cuatro tarjetas')]
+        cuatro = ''.join('<div><span>%s</span><b>%s</b><small>%s</small></div>' % (t, num(v), d) for t, v, d in grandes if v)
+        dias = a.get('dias') or []
+        tope = max([sum(x.values()) for _d, x in dias] + [1])
+        cols = ''
+        for d, x in dias:
+            dd = dt.date.fromisoformat(d)
+            seg = ''.join('<u style="height:%.1f%%;background:%s" title="%s %d"></u>'
+                          % (100 * n / tope, (self.svs.get(sv) or {}).get('color', '#A5A5A0'), sv, n) for sv, n in sorted(x.items()))
+            cols += '<i><span class="act-b">%s</span><em>%s</em></i>' % (seg, DIAS[dd.weekday()][:1].upper())
+        act = ('<section class="act"><div class="mis-cab"><span>LO QUE SE JUGÓ · DOS SEMANAS</span><em>%d EVENTOS ESTA SEMANA</em></div>'
+               '<div class="act-g">%s</div><p class="act-n"><b>%s</b> participaciones · <b>%s</b> raperos distintos en 7 días</p></section>'
+               % (a.get('ev', 0), cols, num(a.get('part', 0)), num(a.get('gente', 0)))) if dias else ''
+        rec = ''.join('<li><span>%s</span><b>%s</b><em>%s</em></li>' % (r['que'], limpio(r['n']), num(r['v']) if isinstance(r['v'], int) else r['v'])
+                      for r in (self.d.get('records') or [])[:6])
+        return ('<div class="num-g"><div><div class="num-4">%s</div>%s</div><section class="rec"><div class="mis-cab"><span>LOS RÉCORDS DE LA T1'
+                '</span></div><ol>%s</ol></section></div>' % (cuatro, act, rec))
 
     def ranking_top(self):
         top = self.oficiales()[:5]
@@ -785,7 +946,7 @@ class Liga:
                '<button type="button" class="mw-b" data-dir="1" aria-label="Siguientes">→</button></span></div>'
                % (len(mw['b']), 'hoy' if diario else 'esta semana', self.dia(mw['fin'])))
         return self.sec('sebusca', 'Se busca', 'Most Wanted', cab + '<div class="mw-rail">%s</div><p class="p-nota">Quien le gane, cobra en '
-                        'su Temporada y el 10 %% en Puntos de Tienda.</p>' % rail)
+                        'su Temporada y el 10 %% en Puntos de Tienda.</p>' % rail, 'negra')
 
     def tienda(self):
         t = self.d.get('tienda') or {}
@@ -810,11 +971,11 @@ class Liga:
             % (s['color'], self.logo(s['sv']), s['sv'], s['nombre'], s.get('tag', '').lower(), num(s['n']) if s['n'] else '—',
                'raperos' if s['n'] else 'sin eventos')
             for s in sorted(self.svs.values(), key=lambda s: -s['n']))
-        return self.sec('servidores', 'Los servidores de la Liga', 'Mundo', '<div class="svs2">%s</div>' % filas)
+        return self.sec('servidores', 'Los servidores de la Liga', 'Mundo', '<div class="svs2">%s</div>' % filas, 'negra')
 
     def pie(self):
         c = self.d.get('comunidad') or {}
-        return ('<footer class="pie"><div class="pie-marca"><img alt="" src="%s"><span>UNDER LEGENDS<small>LIGA GLOBAL · TEMPORADA 1</small></span></div>'
+        return ('<footer class="pie negra"><div class="pie-marca"><img alt="" src="%s"><span>UNDER LEGENDS<small>LIGA GLOBAL · TEMPORADA 1</small></span></div>'
                 '<p class="pie-c">%s personas en %d servidores · %s verificados</p>'
                 '<nav><a>Guía</a><a>Publicaciones</a><a>Tienda</a><a>Mundo</a><a>Privacidad</a></nav>'
                 '<small>Los datos se actualizan solos cada media hora.</small></footer>'
@@ -823,11 +984,10 @@ class Liga:
     def inicio(self, pc):
         if pc:
             return (self.cabecera(True, 'Inicio') + self.historias(True) + self.hero(True) + self.ir_a() + self.fechas()
-                    + self.semana() + self.noticias() + self.raperos(True)
-                    + '<div class="fila2 par">%s%s</div>' % (self.ranking_top(), self.tu_temporada())
+                    + self.semana() + self.noticias() + self.raperos(True) + self.panel(True)
                     + self.buscados() + self.tienda() + self.mercancia() + self.servidores() + self.pie())
         return (self.cabecera(False, 'Inicio') + self.historias(False) + self.hero(False) + self.ir_a() + self.fechas()
-                + self.semana() + self.noticias() + self.raperos(False) + self.ranking_top() + self.tu_temporada()
+                + self.semana() + self.noticias() + self.raperos(False) + self.panel(False)
                 + self.buscados() + self.tienda() + self.mercancia() + self.servidores() + self.pie() + self.tabbar('inicio'))
 
     # ── Eventos ─────────────────────────────────────────────────────────────
@@ -1520,6 +1680,119 @@ CSS_R = r"""
 .hero.carrusel .mo-cuenta{flex-wrap:wrap;gap:4px 10px}
 .hero.carrusel .mo-cuenta b{font-size:24px}
 .pc .hero.carrusel .mo-cuenta b{font-size:34px}
+
+/* décima vuelta (Dlx, 29/09 ~6:30 PM): secciones con pestañas y flechas, y bandas negras con los mismos tokens que
+   la cabecera negra (así lo de adentro se da vuelta solo). «Los que mandan» deja `oscura`: en la noche era magenta */
+.sec.negra,.pie.negra{--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;--inv:#F6F6F6;
+  --inv-tinta:#030304;background:var(--fondo);color:var(--tinta)}
+.sec.negra{margin-top:18px;padding-bottom:26px}
+.pc .sec.negra{padding-bottom:36px}
+.noche .sec.negra,.noche .pie.negra{--fondo:#121214}
+.sec.negra+.pie.negra{margin-top:0;border-top-color:#2A2A2E}
+.pz-cab{display:flex;align-items:center;gap:12px;margin:-2px 0 16px}
+.pz-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding:2px 0}
+.pz-tabs::-webkit-scrollbar{display:none}
+.pz-tabs button{flex:none;font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta);
+  background:transparent;border:1.5px solid var(--linea);padding:9px 10px;cursor:pointer}
+.pz-tabs button.on{background:var(--tinta);color:var(--fondo)}
+.pz-fl{display:flex;gap:12px;flex:none;padding:0 4px 4px 4px}
+.pz-b{width:38px;height:38px;display:grid;place-items:center;padding:0;background:#F6F6F6;color:#030304;border:2px solid #030304;
+  cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}
+.pz-b.izq{box-shadow:-4px 4px 0 var(--verde)}
+.pz-b.izq svg{transform:scaleX(-1)}
+.pz-b.der{box-shadow:4px 4px 0 var(--magenta)}
+.pz-b.izq:hover{background:var(--verde)}
+.pz-b.der:hover{background:var(--magenta);color:#fff}
+.pz-b.izq:active{transform:translate(-3px,3px);box-shadow:-1px 1px 0 var(--verde)}
+.pz-b.der:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--magenta)}
+.pz-b:focus-visible,.pz-tabs button:focus-visible{outline:3px solid var(--magenta);outline-offset:3px}
+.pc .pz-b{width:44px;height:44px}
+.pz{display:none}
+.pz.on{display:block}
+@media (prefers-reduced-motion: reduce){.pz-b{transition:none}}
+/* los que mandan: países y crews como afiches del mismo tamaño que las cartas */
+.mc-tile{position:relative;aspect-ratio:300/438;border:2px solid var(--linea);background:var(--caja);display:grid;place-items:center;overflow:hidden}
+.mc-n{position:absolute;left:10px;top:8px;font:900 30px/1 Archivo,sans-serif;font-stretch:125%}
+.mc-bandera{width:76%;aspect-ratio:3/2;object-fit:cover;border:2px solid var(--linea)}
+.mc-logo{width:72%;aspect-ratio:1;object-fit:contain}
+.mc-ini{font:900 44px/1 Archivo,sans-serif;font-stretch:125%;color:var(--gris)}
+.pc .mc-n{font-size:40px}
+/* el panel de abajo */
+.pz-2{display:grid;gap:16px}
+.pc .pz-2{grid-template-columns:1.25fr 1fr;gap:28px;align-items:start}
+.pz .tu{margin:0}
+.mis,.te,.rec,.act{border:2px solid var(--linea);background:var(--fondo)}
+.mis-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:11px 14px;border-bottom:2px solid var(--linea);
+  font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.08em}
+.mis-cab em{font-style:normal;color:var(--magenta);white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+.mis ol,.te-l,.rec ol{list-style:none;margin:0;padding:0}
+.mis li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--suave)}
+.mis li:last-child,.te-l li:last-child,.rec li:last-child{border-bottom:0}
+.mis-ok{width:28px;height:28px;border:2px solid var(--linea);display:grid;place-items:center;font:900 15px/1 Archivo,sans-serif}
+.mis li.hecha .mis-ok{background:var(--verde);border-color:var(--verde);color:#030304}
+.mis-txt{display:grid;gap:6px}
+.mis-txt b{font:800 15px/1.2 Archivo,sans-serif}
+.mis-txt .mb{height:10px}
+.mis li.hecha .mb i{background:var(--verde)}
+.mis-txt small{font:700 11px/1 "Space Mono",monospace;color:var(--gris)}
+.mis-pts{font:900 18px/1 Archivo,sans-serif;font-stretch:120%;text-align:right;white-space:nowrap}
+.mis-pts small{display:block;font:700 10px/1.4 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
+.mis li.hecha .mis-pts{color:var(--gris)}
+.tu.pase .tu-t{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.tag-pronto{font:700 10px/1 "Space Mono",monospace;letter-spacing:.1em;background:#E7B622;color:#030304;padding:4px 6px}
+.pase-sig{width:48px;height:48px;display:grid;place-items:center;border:2px dashed var(--gris);color:var(--gris);font:900 22px/1 Archivo,sans-serif}
+.pase-b{height:14px}
+.pase-b i{background:var(--magenta)}
+.pase-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pase-l li{display:flex;justify-content:space-between;gap:12px;font:400 14px/1.3 Archivo,sans-serif;color:var(--gris);
+  border-bottom:1px solid var(--suave);padding-bottom:8px}
+.pase-l b{color:var(--tinta);font-weight:800;text-align:right}
+.pase-nota{font:700 10.5px/1.4 "Space Mono",monospace;color:var(--gris)}
+.te-l li{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--suave)}
+.te-l img{width:40px;height:40px;border-radius:50%;border:2px solid var(--linea)}
+.te-l b{display:block;font:800 14px/1.15 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase}
+.te-l small{font:700 10.5px/1.35 "Space Mono",monospace;color:var(--gris)}
+.te-vos{text-align:right;font:900 13px/1.1 Archivo,sans-serif;font-stretch:115%;padding:6px 8px;border:2px solid var(--linea);white-space:nowrap}
+.te-vos small{display:block;font:700 10px/1.3 "Space Mono",monospace}
+.te-vos.campeon{background:var(--verde);border-color:var(--verde);color:#030304}
+.te-vos.no{border-color:var(--suave);color:var(--gris)}
+.num-g{display:grid;gap:16px}
+.pc .num-g{grid-template-columns:1.35fr 1fr;gap:28px;align-items:start}
+.num-4{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--linea);margin-bottom:16px}
+.pc .num-4{grid-template-columns:repeat(4,1fr)}
+.num-4 div{padding:12px 14px;display:grid;gap:4px;border-right:1px solid var(--suave);border-bottom:1px solid var(--suave)}
+.num-4 span{font:700 10px/1.2 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.num-4 b{font:900 30px/1 Archivo,sans-serif;font-stretch:125%}
+.num-4 small{font:400 12px/1.3 Archivo,sans-serif;color:var(--gris)}
+.act-g{display:grid;grid-template-columns:repeat(14,1fr);gap:5px;padding:14px 14px 6px}
+.act-g i{display:grid;gap:4px;font-style:normal}
+.act-b{height:84px;display:flex;flex-direction:column-reverse;border-bottom:2px solid var(--linea)}
+.act-b u{display:block;text-decoration:none}
+.act-g em{font:700 10px/1 "Space Mono",monospace;font-style:normal;color:var(--gris);text-align:center}
+.act-n{margin:0;padding:6px 14px 12px;font:700 11px/1.4 "Space Mono",monospace;color:var(--gris)}
+.act-n b{color:var(--tinta)}
+.rec li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:10px 14px;border-bottom:1px solid var(--suave)}
+.rec li span{grid-column:1/-1;font:700 10px/1.2 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.rec li b{font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.rec li em{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;font-style:normal;color:var(--magenta)}
+/* Se busca en negro: los afiches pasan a papel, pegados en la pared */
+.negra .poster{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
+.negra .p-foto{border-color:#030304;background:#E2E2DE;color:#030304}
+.negra .p-cat{color:#6E6E6A}
+.negra .poster.hecho .p-precio{background:#6E6E6A}
+.negra .poster.cazadores li b{color:#030304}
+.negra .p-sello.gris{color:#6E6E6A;border-color:#6E6E6A}
+/* los cinco servidores entran en la computadora: una grilla `1fr` no achica texto sin cortar */
+.pc .svs2{grid-template-columns:repeat(5,minmax(0,1fr))}
+.sv2>div{min-width:0}
+/* Se busca: la división «AYER» es una línea, no un afiche vacío */
+.mw-rail{grid-auto-columns:max-content}
+.mw-rail .poster{width:146px}
+.pc .mw-rail{grid-auto-columns:max-content}
+.pc .mw-rail .poster{width:184px}
+.mw-div{width:34px;padding:0}
+/* la meta de «Esta semana»: las barras terminan todas en el mismo lugar */
+.sm-meta b{min-width:7ch}
 """
 
 
