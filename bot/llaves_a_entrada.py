@@ -626,6 +626,16 @@ def marcar_equipos(filas, textos=(), cuando=None, inscripciones=None, decidir=No
                 for lado in b:
                     for m in E._miembros(lado):
                         otros.add(E.norm(E.HISTORIA.sub('', m)))
+    # ⚠️ QUIEN JUEGA SOLO NO ES UN EQUIPO: en un 2VS2 al que no le vino la
+    # pareja, el lado de un nombre es una PERSONA del padrón o de los AKAs, y
+    # cobra como siempre
+    try:
+        personas = E._personas()
+    except Exception:                                    # noqa: BLE001
+        personas = set()
+    equipos = {k: v for k, v in equipos.items() if k not in personas}
+    if not equipos:
+        return filas, []
     f0 = filas[0]
     ev, sv, fe = f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or ''
     if decidir is None:
@@ -2050,7 +2060,16 @@ def _self_check():
         {'servidor': 'FFA', 'texto': 'TEAM VENECIA: Paria + Prrr', 'cuando': '2026-09-28T23:00:00'}])
     _eq_dec, _ = marcar_equipos(_feq(), [_teq], cuando=_cu, inscripciones=[],
                                 decidir=lambda *a: ['Uno', 'Dos'])
+    _pv = E._PERSONAS[0]
+    E._PERSONAS[0] = {'teamvenecia'}            # como si fuera alguien del padrón
+    try:
+        _eq_per, _eq_per_i = marcar_equipos(_feq(), [_teq], cuando=_cu, inscripciones=[],
+                                            decidir=_nada)
+    finally:
+        E._PERSONAS[0] = _pv
     casos = [
+        ('quien juega solo en un 2VS2 (alguien del padrón) no es un equipo: cobra como siempre',
+         'Sin integrantes' not in _eq_per[0]['notas'] and not _eq_per_i),
         ('TEAM VENECIA sin inscripción: la fila queda, con «Sin integrantes», y no cobra nadie',
          _eq_sin[0]['ladoB'] == 'TEAM VENECIA' and 'Sin integrantes: TEAM VENECIA' in _eq_sin[0]['notas']
          and _eq_sin_i[0][4] == [] and equipos_con_nombre(_teq) == (['TEAM VENECIA'], 2)),

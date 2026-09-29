@@ -1093,18 +1093,19 @@ function abrirLlave(n) {
   (L.sin || []).forEach(function (x) { sinK[sinP(x)] = 1; });
   var esSin = function (x) { return !!sinK[sinP(x)]; };
   var quien = function (x, sinCara, perdio) {
-    if (esSin(x)) {
+    var f = claveDe(x) && porK(claveDe(x));
+    // ⚠️ quien tiene perfil es una persona que jugó sola, no un equipo
+    if (!f && esSin(x)) {
       return '<span class="ql-n ql-eq" title="Un equipo de este evento: la llave no dice quiénes son, así que no suma puntos">' +
         conBanderas(x) + '<small>equipo</small></span>';
     }
-    var f = claveDe(x) && porK(claveDe(x));
     return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + (sinCara ? '' : avatar(f, 18)) +
       '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + marca(f, x, perdio) + '</button>'
       : '<span class="ql-n">' + conBanderas(x) + marca(null, x, perdio) + '</span>';
   };
   var cara = function (x) {
-    if (esSin(x)) return '<span class="av ini av-eq" style="width:20px;height:20px;font-size:11px" aria-hidden="true">&#128101;</span>';
     var f = claveDe(x) && porK(claveDe(x));
+    if (!f && esSin(x)) return '<span class="av ini av-eq" style="width:20px;height:20px;font-size:11px" aria-hidden="true">&#128101;</span>';
     return avatar(f || { n: String(x || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim() }, 20);
   };
   // los puntos y el puesto de cada uno en esta llave, para la barra de «seguir»
