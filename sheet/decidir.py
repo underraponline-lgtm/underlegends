@@ -2136,6 +2136,10 @@ def _self_check():
                             'rorro': {'4'}, 'pollo': {'5'}}
         _DATOS['padron'] = [{'raw': 'Jult', 'discord_id': '2'}, {'raw': 'Pollo Sport'}]
         _DATOS['servidores_de'] = {'1': ['FFA'], '2': ['FFA'], '3': ['DRA'], '5': ['FFA']}
+        # 🔴 AISLADO DE LOS DATOS DE VERDAD: sin esto leía `datos/anuncios.json`
+        # —PRAISERIZA sí se anotó— y el caché de apodos de la máquina, y pasaba
+        # acá y fallaba en CI, que no tiene caché (28/09/2026)
+        _DATOS.update({'inscritos': {}, 'donde': {}, 'podio': {}})
         ev = {'359': ('MARRUECOS', 'FFA', '26/09')}
         qs = armar([(30, {'Tipo': nd, 'Detalle': 'PRAISERIZA 🇻🇪', 'Origen': 'evento #359'}),
                     (31, {'Tipo': nd, 'Detalle': 'KULRW🇦🇷', 'Origen': 'evento #359'}),
