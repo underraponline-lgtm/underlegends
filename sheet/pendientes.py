@@ -77,7 +77,8 @@ ULTIMA = chr(ord('A') + ANCHO - 1)          # 'H'
 # el self-check los compara.
 TIPOS = ('Nombre desconocido', 'Alias posible', 'Evento dudoso',
          'Bracket incompleto', 'MW pendiente', 'Llave sin resolver',
-         'Batalla sin ganador', 'Vidas cargado', 'alta', 'conflicto', 'ambiguo')
+         'Batalla sin ganador', 'Vidas cargado', 'alta', 'conflicto', 'ambiguo',
+         'Reporte')
 
 
 def _did(detalle):

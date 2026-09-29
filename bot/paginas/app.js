@@ -1214,7 +1214,11 @@ function abrirLlave(n) {
   $('#lCuerpo').innerHTML = (podio ? '<div class="lpod">' + podio + '</div>' : '') + cazaHtml +
     ley + vistas + '<div class="l-sigue" id="lSigue" aria-live="polite"></div><div id="lVista"></div>' +
     (puntos ? '<h4>Los puntos, por puesto</h4><div class="pgs">' + puntos + '</div>' : '') +
-    (links ? '<div class="v-acc">' + links + '</div>' : '');
+    '<div class="v-acc">' + links +
+    // 🔑 ¿ALGO ESTÁ MAL? (Dlx, 28/09/2026: «ok»): lo revisa la Liga, nunca por DM
+    '<button type="button" class="bajar" data-rep-abrir><i aria-hidden="true">&#9873;</i>' +
+    '<span>¿Algo está mal en esta llave?</span></button></div>' +
+    '<div class="l-rep" id="lRep" hidden></div>';
   if (L.vivo) pintaCabVivo(L);
   // ⚠️ VISIBLE ANTES DE DIBUJAR: escondido, el cuadro mide 0 de ancho y no
   // había cómo centrarlo en la final (arrancaba en los octavos)
@@ -1223,6 +1227,53 @@ function abrirLlave(n) {
   $('#lCuerpo').scrollTop = 0;
   document.body.style.overflow = 'hidden';
   return true;
+}
+/* ── ¿algo está mal en esta llave? ────────────────────────────────────
+   🔑 Dlx, 28/09/2026, a «"Reportar un error" en cada llave: quien ve mal su
+   batalla la marca desde la página y va a ✅ Decidir, nunca por DM»: «ok».
+   Quién reporta lo dice Discord —la sesión de Mi cuenta—, no la página: sin
+   haber entrado se le pide que entre. Lo lee el ciclo (`bot/reportes.py`) y
+   lo pone en la sección de su evento. Ver `validarReporte()` en avisos.js. */
+var REP_QUE = [['ganador', 'El ganador está mal'], ['gente', 'Falta o sobra alguien'],
+  ['nombre', 'Un nombre está mal'], ['otro', 'Otra cosa']];
+var REP = { que: '' };
+function pintaReporte(est) {
+  var el = $('#lRep');
+  if (!el) return;
+  el.innerHTML = '<p class="rep-t">Contanos qué está mal y lo revisa la Liga.</p>' +
+    '<div class="rep-q" role="group" aria-label="Qué está mal">' + REP_QUE.map(function (q) {
+      return '<button type="button" data-rep-que="' + q[0] + '" aria-pressed="' + (REP.que === q[0]) + '">' +
+        esc(q[1]) + '</button>';
+    }).join('') + '</div>' +
+    '<textarea id="lRepTxt" maxlength="300" rows="3" placeholder="Qué batalla y qué pasó' +
+      (REP.que === 'otro' ? '' : ' (si querés)') + '">' + esc(REP.txt || '') + '</textarea>' +
+    '<div class="rep-pie"><button type="button" class="btn" data-rep-enviar' +
+      (REP.que && !REP.va ? '' : ' disabled') + '>' + (REP.va ? 'Enviando…' : 'Enviar') + '</button>' +
+    '<span class="rep-est" aria-live="polite">' + (est || '') + '</span></div>';
+}
+function enviarReporte() {
+  var t = (($('#lRepTxt') && $('#lRepTxt').value) || '').replace(/\s+/g, ' ').trim();
+  REP.txt = t;
+  if (!REP.que || !LL || REP.va) return;
+  if (REP.que === 'otro' && t.length < 3) { pintaReporte('Contá qué pasó.'); return; }
+  REP.va = true;
+  pintaReporte();
+  conCuenta('/api/avisos/reportar', { llave: String(LL.n), que: REP.que, texto: t })
+    .then(function (j) {
+      REP.va = false;
+      if (j && j.ok) {
+        REP = { que: '' };
+        var el = $('#lRep');
+        if (el) el.innerHTML = '<p class="rep-ok">&#10003; ¡Gracias! Lo revisa la Liga.</p>';
+        return;
+      }
+      var e = (j && j.error) || '';
+      pintaReporte(errorCuenta(e) || (j && j.status === 401 ? 'Para reportar, entrá con Discord desde Mi cuenta.'
+        : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para reportar.'
+        : e === 'tope' ? 'Ya mandaste varios hoy: probá mañana.'
+        : 'No pude mandarlo. Probá de nuevo en un rato.'));
+    })
+    .catch(function () { REP.va = false; pintaReporte('No pude mandarlo. Probá de nuevo en un rato.'); });
 }
 /* la ficha de una llave en vivo: no tiene puntos ni fecha de calendario */
 function pintaCabVivo(L) {
@@ -6104,6 +6155,22 @@ function eventos() {
     if (e.target.closest('[data-sigue-x]')) { FIJO = ''; seguirEnLlave(''); return; }
     var bv = e.target.closest('[data-lvista]');
     if (bv) { LL_VISTA = bv.dataset.lvista; pintaVistaLlave(); return; }
+    if (e.target.closest('[data-rep-abrir]')) {
+      var rp = $('#lRep');
+      if (rp) {
+        rp.hidden = !rp.hidden;
+        if (!rp.hidden) { REP = { que: '' }; pintaReporte(); rp.scrollIntoView({ block: 'nearest' }); }
+      }
+      return;
+    }
+    var rq = e.target.closest('[data-rep-que]');
+    if (rq) {
+      REP.txt = ($('#lRepTxt') && $('#lRepTxt').value) || '';
+      REP.que = rq.getAttribute('data-rep-que');
+      pintaReporte();
+      return;
+    }
+    if (e.target.closest('[data-rep-enviar]')) { enviarReporte(); return; }
     var cl = e.target.closest('[data-copiar-llave]');
     if (cl) {
       var u = location.origin + location.pathname + '#/llave/' + cl.dataset.copiarLlave;

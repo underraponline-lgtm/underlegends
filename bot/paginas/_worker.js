@@ -59,6 +59,8 @@ const AVISOS = {
   // `validarVoto()` en bot/avisos.js: quién vota lo dice Discord, no la página
   '/api/avisos/encuestas': 'GET',
   '/api/avisos/votar': 'POST',
+  // un error en una llave (28/09/2026): con la sesión, como el voto
+  '/api/avisos/reportar': 'POST',
   // 🔑 el precio por cabeza (28/09/2026): cuánto vale cada cabeza, poner un
   // precio y ver tu billetera. Ver `validarPrecio()` en bot/avisos.js
   '/api/avisos/precios': 'GET',

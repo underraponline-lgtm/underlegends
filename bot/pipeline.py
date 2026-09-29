@@ -1049,7 +1049,7 @@ def _lo_barato(correr):
     # ⚠️ NO FRENA EL CICLO. Si la hoja no contesta, las dudas esperan.
     paso('2d', 'lo contestado en ✅ Decidir, y los alias de la hoja AKAs')
     if not correr:
-        print('      correría sheet/pendientes.py --barrer --aplicar, '
+        print('      correría sheet/pendientes.py --barrer --aplicar, bot/reportes.py --aplicar, '
               'sheet/decidir.py --aplicar y sheet/construir_akas.py')
     else:
         # 🔴 PRIMERO SE CIERRA LO QUE SE ARREGLÓ SOLO, y ACÁ, antes de pintar
@@ -1061,6 +1061,10 @@ def _lo_barato(correr):
         # Decidir las seguía mostrando. Va después del paso 1, que deja la
         # lista fresca de las batallas sin ganador.
         corre(['sheet/pendientes.py', '--barrer', '--aplicar'], callado=False)
+        # 📣 y lo que la gente avisó desde la página que está mal en una llave
+        # (Dlx, 28/09/2026: «ok»), antes de pintar: sale en ✅ Decidir en esta
+        # misma corrida. Ver `bot/reportes.py`.
+        corre(['bot/reportes.py', '--aplicar'], callado=False)
         corre(['sheet/decidir.py', '--aplicar'], callado=False)
         corre(['sheet/construir_akas.py'], callado=False)
 

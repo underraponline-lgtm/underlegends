@@ -839,6 +839,8 @@ const RUTAS = {
   '/avisos/vincular': 'POST', '/avisos/desvincular': 'POST',
   // 🔑 las encuestas de la página: ver `validarVoto()` y `votar()` del objeto
   '/avisos/encuestas': 'GET', '/avisos/votar': 'POST',
+  // 🔑 un error en una llave (Dlx, 28/09/2026: «ok»): ver `validarReporte()` y `reportar()`
+  '/avisos/reportar': 'POST',
   // 🔑 el precio por cabeza: ver `validarPrecio()`, `precio()` y `billetera()`
   '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
   // 🔑 seguir raperos: ver `seguir()`, `sigo()`, `seguidores()` y `seguidos()`
@@ -975,6 +977,45 @@ export function validarVoto(defs, d, id, ahora) {
   // (el que más jugó); ahora «tu servidor» lo elige cada uno y no frena el voto.
   if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
   return { enc: e.id, op: d.op };
+}
+
+// ── un error en una llave ──────────────────────────────────────────────
+// 🔑 Dlx, 28/09/2026, a «"Reportar un error" en cada llave: quien ve mal su
+// batalla la marca desde la página y va a ✅ Decidir, nunca por DM»: *«ok»*.
+// Quién reporta lo dice Discord (la sesión); el objeto guarda y deja los
+// últimos en KV (`reportes`), y el ciclo los pone en ✅ Decidir, en la sección
+// de su evento (`bot/reportes.py`). ⚠️ Nunca por DM, y una cuenta de menos de
+// 30 días no reporta, como no vota.
+//: qué se puede reportar. Viaja la clave; el texto de cada una lo pone la página
+export const QUE_REPORTE = {
+  ganador: 'El ganador está mal', gente: 'Falta o sobra alguien',
+  nombre: 'Un nombre está mal', otro: 'Otra cosa',
+};
+//: cuántos reportes puede mandar una persona en 24 h
+export const REPORTE_TOPE = 5;
+//: cuántos viajan en la cola de KV para el ciclo
+const REPORTES_COLA = 50;
+
+/**
+ * ¿Vale este reporte? `{llave, que, texto, batalla}` si vale, `{error, estado}`
+ * si no. `llave` es el número del evento, o `v:<mensaje>` para una llave en
+ * vivo que todavía no tiene número. Pura, sin red: `bot/probar_local.mjs`.
+ */
+export function validarReporte(d, id, ahora) {
+  const llave = String((d && d.llave) || '');
+  if (!/^(\d{1,6}|v:\d{15,22})$/.test(llave)) return { error: 'llave', estado: 400 };
+  const que = String((d && d.que) || '');
+  if (!Object.prototype.hasOwnProperty.call(QUE_REPORTE, que)) return { error: 'que', estado: 400 };
+  const texto = String((d && d.texto) || '').replace(/\s+/g, ' ').trim();
+  if (texto.length > 300) return { error: 'largo', estado: 413 };
+  // «otra cosa» sin decir qué no se puede revisar
+  if (que === 'otro' && texto.length < 3) return { error: 'texto', estado: 400 };
+  const batalla = String((d && d.batalla) || '').replace(/\s+/g, ' ').trim().slice(0, 120);
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
+    return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
+  }
+  return { llave, que, texto, batalla };
 }
 
 // ── el precio por cabeza ───────────────────────────────────────────────
@@ -1241,6 +1282,24 @@ export async function rutaAvisos(req, env, ruta) {
     if (v.error) return json(v, v.estado);
     return elObjeto(env).fetch('https://avisos/votar', {
       method: 'POST', body: JSON.stringify({ enc: v.enc, op: v.op, quien: id }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🔑 UN ERROR EN UNA LLAVE: quién lo dice Discord; qué, la persona
+  if (ruta === '/avisos/reportar') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo); } catch (e) { d = null; }
+    if (!d || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const v = validarReporte(d, q.id, Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/reportar', {
+      method: 'POST', body: JSON.stringify(Object.assign({ quien: q.id }, v)),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -1575,6 +1634,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS servidor (quien TEXT NOT NULL, temporada TEXT NOT NULL, ' +
         "sv TEXT NOT NULL, de TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, fijo INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, temporada))');
+      // 🔑 UN ERROR EN UNA LLAVE (28/09/2026): ver `reportar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+        "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
+        "batalla TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
     });
   }
 
@@ -1607,7 +1670,8 @@ export class Avisos {
       if (ruta === '/simular') return this.simular();
       if (ruta === '/vincular') return this.vincular(d);
       if (ruta === '/desvincular') return this.desvincular(d);
-      if (ruta === '/olvidar') return this.olvidar(d);
+      if (ruta === '/olvidar') return await this.olvidar(d);
+      if (ruta === '/reportar') return await this.reportar(d);
       if (ruta === '/votar') return this.votar(d);
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
@@ -2273,7 +2337,7 @@ export class Avisos {
   }
 
   /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
-  olvidar(d) {
+  async olvidar(d) {
     if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
     const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
     // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
@@ -2288,8 +2352,51 @@ export class Avisos {
     // 🔑 Y A QUIÉN SEGUÍA, Y QUÉ SERVIDOR ELIGIÓ: también van con su Discord ID
     const s = this.sql.exec('DELETE FROM sigue WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM servidor WHERE quien = ?', String(d.quien));
+    // 🔑 Y SUS REPORTES, y la cola de KV sin ellos: van con su Discord ID
+    const rp = this.sql.exec('DELETE FROM reportes WHERE quien = ?', String(d.quien));
+    if (rp.rowsWritten) await this.colaReportes(Date.now());
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
-      sigue: s.rowsWritten || 0 });
+      sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0 });
+  }
+
+  // ── un error en una llave ────────────────────────────────────────────
+  /**
+   * Guarda un reporte y deja los últimos en KV (`reportes`) para el ciclo.
+   * ⚠️ Con tope por persona (`REPORTE_TOPE` en 24 h), y el mismo reporte dos
+   * veces es uno: la página puede reintentar sin duplicar.
+   */
+  async reportar(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || typeof d.llave !== 'string' || typeof d.que !== 'string') {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const ahora = Date.now();
+    const texto = String(d.texto || '').slice(0, 300);
+    const batalla = String(d.batalla || '').slice(0, 120);
+    const igual = this.sql.exec('SELECT id FROM reportes WHERE quien = ? AND llave = ? AND que = ? ' +
+      'AND texto = ? AND t > ?', quien, d.llave, d.que, texto, ahora - DIA_MS).toArray()[0];
+    if (igual) return json({ ok: true, id: igual.id, repetido: true });
+    const n = this.sql.exec('SELECT COUNT(*) AS n FROM reportes WHERE quien = ? AND t > ?',
+      quien, ahora - DIA_MS).toArray()[0].n;
+    if (n >= REPORTE_TOPE) return json({ error: 'tope' }, 429);
+    this.sql.exec('INSERT INTO reportes (quien, llave, que, texto, batalla, t) VALUES (?, ?, ?, ?, ?, ?)',
+      quien, d.llave, d.que, texto, batalla, ahora);
+    const id = this.sql.exec('SELECT MAX(id) AS id FROM reportes').toArray()[0].id;
+    await this.colaReportes(ahora);
+    return json({ ok: true, id });
+  }
+
+  /** Los últimos reportes a KV (`reportes`), para `bot/reportes.py`. */
+  async colaReportes(ahora) {
+    // lo de más de un mes se va: el ciclo ya lo pasó a ✅ Decidir
+    this.sql.exec('DELETE FROM reportes WHERE t < ?', ahora - 30 * DIA_MS);
+    const cola = this.sql.exec('SELECT id, quien, llave, que, texto, batalla, t FROM reportes ' +
+      'ORDER BY id DESC LIMIT ?', REPORTES_COLA).toArray().reverse();
+    try {
+      await this.env.KV.put('reportes', JSON.stringify(cola));
+    } catch (e) {
+      this.guardar('ultimo_error', { t: ahora, ruta: '/reportar', error: String(e).slice(0, 160) });
+    }
   }
 
   // ── «tu servidor» ────────────────────────────────────────────────────

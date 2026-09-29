@@ -88,6 +88,9 @@ GRUPO = {
     'Bracket incompleto': (0, '🏆 Evento'),
     'Evento dudoso': (0, '🏆 Evento'),
     'Llave sin resolver': (0, '🏆 Evento'),
+    # 📣 alguien avisó desde la página que algo de esa llave está mal (Dlx,
+    # 28/09/2026: «ok»). Va con su evento. Ver `bot/reportes.py`.
+    'Reporte': (0, '📣 Reporte'),
     'Nombre desconocido': (1, '👤 Nombre'),
     'alta': (2, '🪪 Identidad'),
     'ambiguo': (2, '🪪 Identidad'),
@@ -889,6 +892,11 @@ def _sugerencias(match):
 def _pregunta(p):
     """(qué, sugerencia, opciones) de una pregunta, en palabras."""
     t, det, match = p['tipo'], p['detalle'], p['match']
+    if t == 'Reporte':
+        # `detalle` es «<qué>: <texto> · #<id>» y `match`, quién lo mandó
+        que = re.sub(r'\s*·\s*#\d+$', '', det)
+        return ('Alguien avisó desde la página que algo de esta llave está mal: «%s»' % que,
+                match or '—', ['Ya lo revisé', 'Dejar para después'])
     if t == 'Nombre desconocido':
         sug = _sugerencias(match)
         otras = [v for v in p.get('variantes', [det]) if v != det]

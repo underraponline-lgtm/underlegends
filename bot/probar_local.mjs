@@ -1880,6 +1880,19 @@ console.log('\nLAS ENCUESTAS\n');
   ok('sin lo que dejó el ciclo en KV, nada vale',
      A.validarVoto(null, { enc: 'x2:2026-10-05', op: 'SR' }, VIEJO, RELOJ).error === 'no_existe');
 
+  // 📣 «¿algo está mal en esta llave?» (Dlx, 28/09/2026: «ok»): mismo portón que el voto
+  const rep = (d, id) => A.validarReporte(d, id || VIEJO, RELOJ);
+  ok('un reporte bueno vale, de una llave cargada o en vivo',
+     JSON.stringify(rep({ llave: '370', que: 'ganador', texto: '  la ganó  Paria ' })) ===
+       '{"llave":"370","que":"ganador","texto":"la ganó Paria","batalla":""}' &&
+     !rep({ llave: 'v:1554310239942213663', que: 'gente' }).error);
+  ok('lo que no es una llave, no es una razón o es muy largo, no',
+     rep({ llave: '../x', que: 'ganador' }).error === 'llave' && rep({ llave: '370', que: 'x' }).error === 'que' &&
+     rep({ llave: '370', que: 'ganador', texto: 'x'.repeat(301) }).error === 'largo');
+  ok('«otra cosa» sin decir qué, no', rep({ llave: '370', que: 'otro', texto: ' ' }).error === 'texto');
+  ok('y una cuenta de hace 5 días, no, como el voto',
+     rep({ llave: '370', que: 'ganador' }, NUEVO).error === 'nueva');
+
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];

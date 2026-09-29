@@ -2354,3 +2354,14 @@ tbody tr.fc td.c-n{opacity:.82}
 .fc-t{color:var(--tx3);font-weight:800;cursor:help}
 .gt.fc{opacity:.72}
 .pf-pos.fc{color:var(--tx2)}
+
+/* ¿algo está mal en esta llave? (28/09/2026): los mismos tokens que «Cómo ver la llave» */
+.l-rep{margin:10px 0 4px;padding:12px;border:1px solid var(--bd);border-radius:12px;display:grid;gap:10px;background:var(--pan)}
+.l-rep .rep-t{font-size:.85rem;color:var(--tx2)}
+.l-rep .rep-q{display:flex;flex-wrap:wrap;gap:6px}
+.l-rep .rep-q button{padding:7px 12px;border-radius:7px;border:1px solid var(--bd);color:var(--tx2);font:800 .74rem/1 Archivo,sans-serif;letter-spacing:.03em}
+.l-rep .rep-q button[aria-pressed="true"]{background:var(--tl);border-color:var(--tl);color:#050607}
+.l-rep textarea{font:inherit;font-size:.85rem;width:100%;resize:vertical;min-height:64px;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--ng);color:var(--tx)}
+.l-rep .rep-pie{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.l-rep .rep-est{font-size:.8rem;color:var(--tx2)}
+.l-rep .rep-ok{font-size:.9rem;color:var(--tl)}
