@@ -5193,5 +5193,266 @@
     1250
    ]
   ]
+ },
+ "372": {
+  "dia": "2026-09-29",
+  "escala": "16+",
+  "fecha": "29/09",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1554591243067990058"
+  ],
+  "n": 372,
+  "nombre": "RAP EXHIBITION 2 8",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "sir one x🇨🇦",
+       "GP"
+      ],
+      "sir one x🇨🇦",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "melztube🇨🇴"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Soneto"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Juanpa",
+       "Sin Limites"
+      ],
+      "Juanpa",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Alonso",
+       "Aktybo🇦🇷"
+      ],
+      "Deluxe",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Six",
+       "Riolu"
+      ],
+      "Six",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "EMMY"
+      ],
+      "Erian",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "MCO",
+       "Ceegee 🇦🇷",
+       "Zeta"
+      ],
+      "MCO",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "sir one x🇨🇦",
+       "Deluxe"
+      ],
+      "sir one x🇨🇦",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "Six"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Erian"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Juanpa",
+       "MCO"
+      ],
+      "Juanpa",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "sir one x🇨🇦"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Juanpa",
+       "Hassan"
+      ],
+      "Juanpa",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hassan",
+       "sir one x🇨🇦"
+      ],
+      "Hassan",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Juanpa"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    10000
+   ],
+   [
+    "Juanpa",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Hassan",
+    "Tercero",
+    6000
+   ],
+   [
+    "sir one x🇨🇦",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Deluxe",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aktybo🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Alonso",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ceegee 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "EMMY",
+    "Octavos",
+    1250
+   ],
+   [
+    "GP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Riolu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zeta",
+    "Octavos",
+    1250
+   ],
+   [
+    "melztube🇨🇴",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

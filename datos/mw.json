@@ -45,10 +45,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 17,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 7250,
+    "caza": {
+     "n": 372,
+     "evento": "RAP EXHIBITION 2 8",
+     "sv": "SR",
+     "t": "2026-09-29T20:30:35Z",
+     "por": [
+      {
+       "n": "sir one x",
+       "cobra": 9250
+      }
+     ]
+    }
    },
    {
     "n": "Makmah",

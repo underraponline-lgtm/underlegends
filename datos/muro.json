@@ -2,7 +2,7 @@
 "_leeme": "El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.",
 "estado": {
 "hassan": {
-"rg": "A",
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -13,6 +13,14 @@
 "snow": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"liberia": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -46,7 +54,21 @@
 "temporada"
 ]
 },
+"six": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "colesito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"praiseriza": {
 "rg": "",
 "c": [
 "servidor",
@@ -61,7 +83,7 @@
 "temporada"
 ]
 },
-"praiseriza": {
+"erian": {
 "rg": "",
 "c": [
 "servidor",
@@ -76,14 +98,14 @@
 "temporada"
 ]
 },
-"six": {
+"juanpa": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"liberia": {
+"deluxe": {
 "rg": "",
 "c": [
 "pais",
@@ -106,13 +128,6 @@
 "temporada"
 ]
 },
-"erian": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "yinn": {
 "rg": "",
 "c": [
@@ -120,15 +135,7 @@
 "temporada"
 ]
 },
-"deluxe": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"masino": {
+"zeta": {
 "rg": "",
 "c": [
 "servidor",
@@ -136,6 +143,13 @@
 ]
 },
 "zignos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"masino": {
 "rg": "",
 "c": [
 "servidor",
@@ -156,21 +170,14 @@
 "temporada"
 ]
 },
-"nc": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"zeta": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "presagio": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"nc": {
 "rg": "",
 "c": [
 "servidor",
@@ -212,6 +219,10 @@
 "temporada"
 ]
 },
+"sironex": {
+"rg": "",
+"c": []
+},
 "geoka": {
 "rg": "",
 "c": [
@@ -220,6 +231,13 @@
 ]
 },
 "eze": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mco": {
 "rg": "",
 "c": [
 "servidor",
@@ -247,34 +265,20 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "",
-"c": []
-},
 "rizas": {
 "rg": "",
 "c": []
 },
-"neo": {
+"soneto": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"molusco": {
+"teito": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"jimmy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "xubaru": {
 "rg": "",
@@ -290,7 +294,42 @@
 "temporada"
 ]
 },
+"neo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"molusco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "saito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"jimmy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"noone": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"sinlimites": {
 "rg": "",
 "c": [
 "servidor",
@@ -301,7 +340,7 @@
 "rg": "",
 "c": []
 },
-"noone": {
+"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -322,21 +361,7 @@
 "temporada"
 ]
 },
-"mco": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "kravitz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"soneto": {
 "rg": "",
 "c": [
 "servidor",
@@ -350,7 +375,7 @@
 "temporada"
 ]
 },
-"number": {
+"lrs": {
 "rg": "",
 "c": [
 "servidor",
@@ -417,27 +442,6 @@
 "temporada"
 ]
 },
-"lrs": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"camila": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"juanpa": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "paria": {
 "rg": "",
 "c": [
@@ -452,21 +456,7 @@
 "temporada"
 ]
 },
-"elsoolar": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"fleivaman": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"sinlimites": {
+"camila": {
 "rg": "",
 "c": [
 "servidor",
@@ -495,6 +485,20 @@
 "rg": "",
 "c": []
 },
+"elsoolar": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"fleivaman": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "tusicario": {
 "rg": "",
 "c": [
@@ -503,13 +507,6 @@
 ]
 },
 "dynoco": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"marto": {
 "rg": "",
 "c": [
 "servidor",
@@ -546,6 +543,13 @@
 "c": []
 },
 "nobu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"marto": {
 "rg": "",
 "c": [
 "servidor",
@@ -624,6 +628,40 @@
 ]
 },
 "vr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"aktybo": {
+"rg": "",
+"c": []
+},
+"alonso": {
+"rg": "",
+"c": []
+},
+"ceegee": {
+"rg": "",
+"c": []
+},
+"emmy": {
+"rg": "",
+"c": []
+},
+"gp": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"melztube": {
+"rg": "",
+"c": []
+},
+"riolu": {
 "rg": "",
 "c": [
 "servidor",
@@ -2481,6 +2519,15 @@
 "BTRX"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-09-29T22:24:45Z",
+"quien": [
+"Hassan"
+],
+"rg": "S",
+"primero": false
 }
 ]
 }
