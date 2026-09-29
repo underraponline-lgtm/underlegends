@@ -249,8 +249,9 @@
    "guild_id": "1367688812892913774",
    "invitacion": "",
    "en_el_sheet": false,
-   "nota": "28/09/2026: el bot entró (Dlx) y FFS es de la Liga — «A · sí, como los otros cuatro». Future Free Series: PLAZAS FFS, FFS BULL y seis ligas regionales; las ligas van más adelante al Ranking de Ligas (Dlx: «A»), así que sus categorías no se leen (ver categorias_fuera). La etiqueta la decide Dlx con su dueño. Sin invitación todavía: no tiene URL propia y el bot no puede listar las suyas; el logo y los miembros de «Mundo» salen del servidor (subir_web._guild_del_bot()).",
+   "nota": "28/09/2026: el bot entró (Dlx) y FFS es de la Liga — «A · sí, como los otros cuatro». Future Free Series: PLAZAS FFS, FFS BULL y seis ligas regionales; las ligas van más adelante al Ranking de Ligas (Dlx: «A»), así que sus categorías no se leen (ver categorias_fuera). Etiqueta: EVOLUCIÓN (Dlx, 29/09/2026: «Pon EVOLUCION para FFS como el tag»). Sin invitación todavía: no tiene URL propia y el bot no puede listar las suyas; el logo y los miembros de «Mundo» salen del servidor (subir_web._guild_del_bot()).",
    "confirmado": true,
+   "tag": "EVOLUCIÓN",
    "categorias_fuera": {
     "_por_que": "Las ligas regionales de FFS (jornadas, veredictos y tabla) no son eventos: Dlx, 28/09/2026, «más adelante, al ranking de ligas». Sus canales ANUNCIOS y VEREDICTOS se leerían como eventos y 5 vidas.",
     "ids": [
@@ -322,7 +323,7 @@
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
- "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026).",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026).",
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal."
