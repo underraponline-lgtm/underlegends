@@ -627,7 +627,7 @@ function pintaMult() {
   var svs = M && M.sv ? Object.keys(M.sv) : [];
   if (!svs.length || Date.now() >= new Date(M.fin).getTime()) { sec.hidden = true; return; }
   svs.sort(function (a, b) { return M.sv[b] - M.sv[a] || a.localeCompare(b); });
-  $('#multBaj').innerHTML = 'Esta semana los puntos de Temporada de cada evento valen esto, hasta el ' +
+  $('#multBaj').innerHTML = 'Los puntos de Temporada de cada evento, hasta el ' +
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '. El Competitivo no cambia.';
   $('#multLista').innerHTML = svs.map(function (sv) {
@@ -643,49 +643,70 @@ function pintaMult() {
             : p === 'votado' ? 'lo votó la gente' : esc(p);
         }).join(' + ') + '</small>' : '') +
       '</div>';
-  }).join('') + extrasMult(M);
+  }).join('');
+  $('#multPremios').innerHTML = premiosMult(M);
+  $('#multMeta').innerHTML = metaMult(M);
   sec.hidden = false;
+  pintaMultPags();
 }
-/* 🔑 EL DORADO, LA GUERRA Y LOS BONOS: debajo de los multiplicadores. Dlx,
-   27/09/2026: «me gustan todas». Las reglas viven en bot/multiplicadores.py. */
-function extrasMult(M) {
-  var ls = [], dd = M.dorado, g = M.guerra, a = M.ant || {};
-  // 🔑 EL ×2 VOTADO: lo que eligió la gente para esta semana
+/* cada regla, entera, está en la Guía: acá va lo de esta semana */
+var GUIA_MULT = '<p class="nota mp-guia"><a href="#/guia">Cómo funciona cada uno, en la Guía &#8250;</a></p>';
+/* un renglón de las páginas de abajo: el ícono, qué es y lo de esta semana */
+function renglonMult(ico, que, txt) {
+  return '<div class="mp-r"><span class="mp-i" aria-hidden="true">' + ico + '</span><div><b>' + que +
+    '</b><span>' + txt + '</span></div></div>';
+}
+/* 🔑 LOS PREMIOS DE LA SEMANA, UN RENGLÓN CADA UNO. Dlx, 27/09/2026: «me
+   gustan todas»; y el 28/09, «es demasiado»: eran párrafos. Las reglas
+   viven en bot/multiplicadores.py; la Guía las explica enteras. */
+function premiosMult(M) {
+  var ls = [], dd = M.dorado, g = M.guerra, a = M.ant || {}, c = M.copa, o = M.organizadores || [];
   if (M.votado) {
-    ls.push('<b>&#128499;&#65039; Lo votó la gente</b>: <b>' + esc(nombreSv(M.votado.sv)) + '</b> salió con ' +
-      '&times;2 como mínimo (' + M.votado.votos + ' de ' + M.votado.de + ' votos).');
+    ls.push(renglonMult('&#128499;&#65039;', 'Lo votó la gente', '<b>' + esc(nombreSv(M.votado.sv)) + '</b> salió con ' +
+      '&times;2 como mínimo (' + M.votado.votos + ' de ' + M.votado.de + ' votos)'));
   }
   if (dd) {
-    ls.push('<b>&#127775; Evento dorado</b>: ' + (dd.n
-      ? 'fue <b>' + esc(dd.nombre || '#' + dd.n) + '</b> (' + esc(nombreSv(dd.sv)) + '): valió &times;3 encima de su multiplicador.'
+    ls.push(renglonMult('&#127775;', 'Evento dorado', dd.n
+      ? '<b>' + esc(dd.nombre || '#' + dd.n) + '</b> (' + esc(nombreSv(dd.sv)) + ') valió &times;3'
       : 'el primer evento de <b>' + esc(nombreSv(dd.sv)) + '</b> desde el ' +
-        esc(fmtFecha(dd.desde, { weekday: 'long', day: 'numeric' })) + ' vale <b>&times;3</b> encima de su multiplicador.'));
+        esc(fmtFecha(dd.desde, { weekday: 'long', day: 'numeric' })) + ' vale <b>&times;3</b>'));
   }
   if (g && (g.pares || []).length) {
-    ls.push('<b>&#9876;&#65039; Guerra de servidores</b>: ' + g.pares.map(function (p) {
+    ls.push(renglonMult('&#9876;&#65039;', 'Guerra de servidores', g.pares.map(function (p) {
       return esc(p[0]) + ' vs ' + esc(p[1]);
-    }).join(' &middot; ') + '. Gana el que más puntos hace por persona en sus eventos, y la semana que viene ' +
-      'lleva &times;1,5.');
+    }).join(' &middot; ') + ': el que más puntos hace por persona lleva &times;1,5 la semana que viene'));
   }
-  var c = M.copa, o = M.organizadores || [];
   if (c) {
-    ls.push('<b>&#127942; Copa de la Liga</b>: ' + (c.n
-      ? 'fue <b>' + esc(c.nombre || '#' + c.n) + '</b>, organizada por ' + esc(c.org) + ': valió &times;2.'
-      : 'el próximo evento que organice <b>' + esc(c.org) + '</b> vale <b>&times;2</b>, por ser el ' +
-        'organizador de la semana pasada.'));
+    ls.push(renglonMult('&#127942;', 'Copa de la Liga', c.n
+      ? '<b>' + esc(c.nombre || '#' + c.n) + '</b>, de ' + orgHtml(c.org, 18) + ', valió &times;2'
+      : 'el próximo evento que organice ' + orgHtml(c.org, 18) + ' vale <b>&times;2</b>'));
   }
   if (o.length) {
-    ls.push('<b>&#127908; Organizador de la semana</b>: va primero <b>' + esc(o[0][0]) + '</b>, con ' + o[0][1] +
-      ' raperos en ' + o[0][2] + (o[0][2] === 1 ? ' evento' : ' eventos') + (o.length > 1 ? ' (después: ' +
-      o.slice(1, 3).map(function (x) { return esc(x[0]) + ' ' + x[1]; }).join(', ') + ')' : '') +
-      '. El primero organiza la Copa de la semana que viene: su próximo evento vale &times;2. Cuenta el ' +
-      '«Organiza:» del anuncio, en eventos de 8 o más.');
+    ls.push(renglonMult('&#127908;', 'Organizador de la semana', 'va primero ' + orgHtml(o[0][0], 18) + ', con ' +
+      o[0][1] + ' raperos en ' + o[0][2] + (o[0][2] === 1 ? ' evento' : ' eventos') +
+      ': organiza la Copa de la semana que viene'));
   }
-  // 🔑 LA META DE COMUNIDAD, con su barra por servidor
-  var me = M.metas, va = M.meta_va || {};
+  ls.push(renglonMult('&#127873;', 'Bonos', 'tu 2.º evento dentro de los 7 días del primero, <b>&times;1,5</b> &middot; ' +
+    '3 servidores en la semana, <b>+1.500</b> &middot; 3 días distintos, <b>+1.000</b>'));
+  // 🔑 LA SEMANA PASADA, EN UN RENGLÓN
+  var ps = a.premios_semana || {}, pp = [];
+  if (ps.figura) pp.push('figura <b>' + esc(ps.figura[0]) + '</b>');
+  if (ps.revelacion) pp.push('revelación <b>' + esc(ps.revelacion[0]) + '</b>');
+  if (ps.cazador) pp.push('cazador <b>' + esc(ps.cazador[0]) + '</b>');
+  if (ps.servidor) pp.push('servidor <b>' + esc(nombreSv(ps.servidor[0])) + '</b>');
+  if (a.guerra && (a.guerra.gana || []).length) {
+    pp.push('ganaron la guerra <b>' + a.guerra.gana.map(function (s) { return esc(nombreSv(s)); }).join(' y ') + '</b>');
+  }
+  if (a.semillero && a.semillero.gana) pp.push('semillero <b>' + esc(nombreSv(a.semillero.gana)) + '</b>');
+  if (pp.length) ls.push(renglonMult('&#127941;', 'La semana pasada', pp.join(' &middot; ')));
+  return ls.join('') + GUIA_MULT;
+}
+/* 🔑 LA META DE COMUNIDAD, CON SUS BARRAS, Y EL SEMILLERO */
+function metaMult(M) {
+  var ls = [], me = M.metas, va = M.meta_va || {}, se = M.semillero;
   if (me && Object.keys(me).length) {
-    ls.push('<b>&#127919; Meta de comunidad</b>: si un servidor junta esta gente distinta en la semana, todos ' +
-      'los que jugaron ahí suman <b>+10 %</b>.<span class="metas">' + Object.keys(me).sort(function (p, q) {
+    ls.push(renglonMult('&#127919;', 'Meta de comunidad', 'si un servidor junta esta gente distinta en la semana, ' +
+      'todos los que jugaron ahí suman <b>+10 %</b>') + '<span class="metas">' + Object.keys(me).sort(function (p, q) {
         return me[q] - me[p] || p.localeCompare(q);
       }).map(function (sv) {
         var n = va[sv] || 0, m = me[sv], ya = n >= m;
@@ -694,40 +715,39 @@ function extrasMult(M) {
           '</small></span>';
       }).join('') + '</span>');
   }
-  var se = M.semillero;
-  ls.push('<b>&#127793; Semillero</b>: gana el servidor que más gente nueva trae —gente que juega <b>por primera ' +
-    'vez</b> en la Liga—, en proporción a su gente y con 3 como mínimo. Lleva <b>&times;1,5</b> la semana que viene.' +
-    (function () {
-      if (!se || !se.nuevos) return '';
-      var r = Object.keys(se.nuevos).filter(function (s) { return se.nuevos[s] >= 3 && (se.gente || {})[s]; })
-        .sort(function (p, q) { return se.nuevos[q] / se.gente[q] - se.nuevos[p] / se.gente[p]; });
-      return r.length ? ' Va primero <b>' + esc(nombreSv(r[0])) + '</b>, con ' + se.nuevos[r[0]] + ' nuevos de ' +
-        se.gente[r[0]] + '.' : '';
-    })());
-  if (a.semillero && a.semillero.gana) {
-    ls.push('La semana pasada el Semillero fue <b>' + esc(nombreSv(a.semillero.gana)) + '</b>.');
+  var va1 = '';
+  if (se && se.nuevos) {
+    var r = Object.keys(se.nuevos).filter(function (s) { return se.nuevos[s] >= 3 && (se.gente || {})[s]; })
+      .sort(function (p, q) { return se.nuevos[q] / se.gente[q] - se.nuevos[p] / se.gente[p]; });
+    if (r.length) va1 = '. Va primero <b>' + esc(nombreSv(r[0])) + '</b>, con ' + se.nuevos[r[0]] + ' nuevos de ' +
+      se.gente[r[0]];
   }
-  // 🔑 LOS PREMIOS DE LA SEMANA PASADA
-  var ps = a.premios_semana;
-  if (ps) {
-    var pp = [];
-    if (ps.figura) pp.push('figura <b>' + esc(ps.figura[0]) + '</b> (' + num(ps.figura[1]) + ' pts)');
-    if (ps.revelacion) pp.push('revelación <b>' + esc(ps.revelacion[0]) + '</b>');
-    if (ps.cazador) pp.push('cazador <b>' + esc(ps.cazador[0]) + '</b>');
-    if (ps.servidor) pp.push('servidor <b>' + esc(nombreSv(ps.servidor[0])) + '</b> (' + ps.servidor[1] + ' raperos)');
-    if (pp.length) ls.push('<b>&#127941; La semana pasada</b>: ' + pp.join(' &middot; ') + '.');
-  }
-  if (a.guerra && (a.guerra.gana || []).length) {
-    ls.push('La semana pasada ganaron la guerra: <b>' + a.guerra.gana.map(function (s) {
-      return esc(nombreSv(s));
-    }).join(' y ') + '</b>.');
-  }
-  ls.push('<b>&#127873; Bonos</b>: tu segundo evento de la temporada vale <b>&times;1,5</b> si lo jugás dentro de ' +
-    'los 7 días del primero. Jugar en <b>3 servidores</b> en la semana da <b>+1.500</b>, y jugar <b>3 días ' +
-    'distintos</b>, <b>+1.000</b>.');
-  // la votación del ×2 de la semana que viene la llena `pintaEncuestas()`
-  return '<div class="enc" id="encX2" hidden></div>' +
-    '<div class="mt-x">' + ls.map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+  ls.push(renglonMult('&#127793;', 'Semillero', 'el servidor que más gente trae por primera vez (en proporción, ' +
+    '3 como mínimo) lleva <b>&times;1,5</b> la semana que viene' + va1));
+  return ls.join('') + GUIA_MULT;
+}
+/* 🔑 LAS PÁGINAS DEL PANEL (Dlx, 28/09/2026: «A»): las mismas flechas y
+   puntitos que el panel de la derecha. Una página sin nada —la votación
+   cuando no hay ninguna abierta— no se cuenta. */
+var MP = { pag: 0 };
+function pintaMultPags() {
+  var sec = $('#secMult');
+  if (!sec) return;
+  var todas = $$('#secMult .mp-pag');
+  var pags = todas.filter(function (p) {
+    return p.querySelector('#encX2') ? !$('#encX2').hidden : !!p.textContent.trim();
+  });
+  if (!pags.length) return;
+  MP.pag = Math.max(0, Math.min(MP.pag, pags.length - 1));
+  todas.forEach(function (p) { p.hidden = p !== pags[MP.pag]; });
+  $('#mpTit').innerHTML = pags[MP.pag].dataset.tit || '';
+  $('#mpDots').innerHTML = pags.map(function (p, i) {
+    return '<button type="button" class="pn-dot' + (i === MP.pag ? ' on' : '') + '" data-mp="' + i +
+      '" aria-label="Página ' + (i + 1) + '"></button>';
+  }).join('');
+  $('#mpNav').hidden = pags.length < 2;
+  $('#mpAntes').disabled = MP.pag === 0;
+  $('#mpDespues').disabled = MP.pag === pags.length - 1;
 }
 /* el próximo evento del organizador que tiene la Copa */
 function claveOrg(s) {
@@ -4315,12 +4335,14 @@ function pintaOpsElegido(E) {
 function pintaX2(E) {
   var c = $('#encX2');
   if (!c) return;
-  if (!E || !(E.op || []).length) { c.hidden = true; return; }
+  // la página de la votación en el panel de multiplicadores aparece y se va con ella
+  if (!E || !(E.op || []).length) { c.hidden = true; pintaMultPags(); return; }
   var cu = cuentaEnc(E.id), tot = totalEnc(cu), mio = ENC_MIO[E.id], est = ENC_EST[E.id] || {};
   var x = String(E.x || 2).replace('.', ',');
-  // 🔑 CUALQUIERA VOTA A CUALQUIERA, también al suyo (Dlx, 28/09/2026: «3. B y C»)
-  c.innerHTML = '<h4>&#128499;&#65039; ¿Quién se lleva el &times;' + x + ' la semana que viene?</h4>' +
-    '<p class="enc-b">El más votado sale del sorteo del lunes con <b>&times;' + x + ' como mínimo</b>. ' +
+  // 🔑 CUALQUIERA VOTA A CUALQUIERA, también al suyo (Dlx, 28/09/2026: «3. B y C»).
+  // ⚠️ Sin el título de antes: ahora es el de su página en el panel
+  c.innerHTML = '<p class="enc-b">¿Quién se lleva el &times;' + x + ' la semana que viene? El más votado sale ' +
+    'del sorteo del lunes con <b>&times;' + x + ' como mínimo</b>. ' +
     cabEnc(E, tot) + '</p>' +
     '<div class="enc-svs">' + E.op.map(function (sv) {
       var n = cu[sv] || 0;
@@ -4331,6 +4353,7 @@ function pintaX2(E) {
         '</small><i class="enc-bar" style="width:' + (tot ? Math.round(100 * n / tot) : 0) + '%"></i></button>';
     }).join('') + '</div><p class="enc-e" aria-live="polite">' + pieEnc(E, nombreSv) + '</p>';
   c.hidden = false;
+  pintaMultPags();
 }
 /* ── la tienda: los Puntos de Tienda y el precio por cabeza ────────────
    🔑 Dlx, 27 y 28/09/2026: «PUNTOS de TIENDA… que todos empecemos con 5k»,
@@ -5912,6 +5935,13 @@ function eventos() {
   $('#novDespues').addEventListener('click', function () { NOV.pag++; pintaNovedades(); });
   $('#pnAntes').addEventListener('click', function () { PN.pag--; pintaPaneles(); });
   $('#pnDespues').addEventListener('click', function () { PN.pag++; pintaPaneles(); });
+  // 🔑 las del panel de multiplicadores (Dlx, 28/09/2026: «A»)
+  $('#mpAntes').addEventListener('click', function () { MP.pag--; pintaMultPags(); });
+  $('#mpDespues').addEventListener('click', function () { MP.pag++; pintaMultPags(); });
+  $('#mpDots').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mp]');
+    if (b) { MP.pag = +b.dataset.mp; pintaMultPags(); }
+  });
   $('#pnDots').addEventListener('click', function (e) {
     var b = e.target.closest('[data-pn]');
     if (b) { PN.pag = +b.dataset.pn; pintaPaneles(); }

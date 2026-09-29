@@ -1661,6 +1661,20 @@ background:rgba(10,15,14,.6);opacity:.45;filter:grayscale(1)}
 .meta small{color:var(--tx2);font:700 .78rem/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 /* el Clásico, en la etiqueta de su batalla */
 .et-cl{color:#FF9F6B!important;border-color:rgba(255,159,107,.45)!important}
+/* 🔑 LAS PÁGINAS DEL PANEL (Dlx, 28/09/2026: «es demasiado… no encaja»):
+   un renglón por cosa —ícono, qué es y lo de esta semana—, sin párrafos */
+.mp-pag[hidden]{display:none}
+.mp-pag .enc{margin-top:0}
+.mp-lista{display:grid;gap:0}
+.mp-r{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0;
+border-top:1px solid var(--bd2)}
+.mp-r:first-child{border-top:0;padding-top:2px}
+.mp-i{font-size:1.15rem;line-height:1.3;text-align:center}
+.mp-r b{color:var(--tx);font-weight:800}
+.mp-r>div>b:first-child{display:block;margin-bottom:2px;font-size:.92rem}
+.mp-r>div>span{color:var(--tx2);font-size:.88rem;line-height:1.45}
+.mp-lista .metas{margin:0 0 6px 38px}
+.mp-guia{margin:6px 0 0 38px}
 .mt-x{grid-column:1/-1;display:grid;gap:6px;margin-top:4px;padding-top:10px;border-top:1px solid var(--bd2)}
 .mt-x p{color:var(--tx2);font-size:.9rem;line-height:1.45}
 .mt-x b{color:var(--tx)}

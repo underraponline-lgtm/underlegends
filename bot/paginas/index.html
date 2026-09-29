@@ -167,10 +167,31 @@
     <!-- 🔑 LOS MULTIPLICADORES DE LA SEMANA. Dlx, 27/09/2026: «cada semana
          haya un multiplicador de puntos… FFA x1, Snake Rap 2x, URBF x5…
          debuffs también», y «desde ya». Ver bot/multiplicadores.py. -->
+    <!-- 🔑 CON PÁGINAS, COMO EL PANEL DE LA DERECHA. Dlx, 28/09/2026: «es
+         interesante pero es bastante incómodo de ver… es demasiado… no
+         encaja con lo demás», y a las tres formas, «A»: una cosa por página.
+         Ver `pintaMultPags()`; la página sin nada (sin votación abierta) no
+         se cuenta. -->
     <section class="blk mult-sec" id="secMult" hidden>
-      <h2><span>&#9889;</span> Multiplicadores de la semana</h2>
-      <p class="bajada" id="multBaj"></p>
-      <div class="mult" id="multLista"></div>
+      <div class="nov-cab"><h2 id="mpTit"><span>&#9889;</span> Multiplicadores de la semana</h2>
+        <div class="feed-nav" id="mpNav">
+          <button class="cal-ir" id="mpAntes" aria-label="Página anterior">&#8249;</button>
+          <span class="pn-dots" id="mpDots"></span>
+          <button class="cal-ir" id="mpDespues" aria-label="Página siguiente">&#8250;</button>
+        </div></div>
+      <div class="mp-pag" data-tit="&#9889; Multiplicadores de la semana">
+        <p class="bajada" id="multBaj"></p>
+        <div class="mult" id="multLista"></div>
+      </div>
+      <div class="mp-pag" data-tit="&#128499;&#65039; El &times;2 de la semana que viene" hidden>
+        <div class="enc" id="encX2" hidden></div>
+      </div>
+      <div class="mp-pag" data-tit="&#127942; Premios de la semana" hidden>
+        <div class="mp-lista" id="multPremios"></div>
+      </div>
+      <div class="mp-pag" data-tit="&#127919; Meta y Semillero" hidden>
+        <div class="mp-lista" id="multMeta"></div>
+      </div>
     </section>
     <section class="blk vivo-sec" id="secVivo" hidden>
       <h2><i class="vivo-punto" aria-hidden="true"></i> En vivo</h2>
