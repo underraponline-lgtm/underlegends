@@ -1510,6 +1510,47 @@ _FRANJA = {'❤️ Vidas': {'red': .992, 'green': .878, 'blue': .886},
            '🎯 MW': {'red': .992, 'green': .898, 'blue': .929}}
 
 
+#: 🔑 CONTESTAR UN EVENTO ENTERO. Dlx, 28/09/2026, a «un botón para decir
+#: "todos los nombres de este evento son gente nueva"»: *«va»*. RAP EXHIBITION
+#: 1/8 tenía diez nombres fuera de la Lista, y contestar «Es alguien nuevo»
+#: diez veces es lo que hace que una hoja se deje de usar.
+EN_BLOQUE = 'Todos son gente nueva'
+#: desde cuántos nombres desconocidos en un evento aparece la fila del bloque
+BLOQUE_MIN = 2
+
+
+def id_bloque(k):
+    """El id de la fila «⚡ Todo el evento» de la sección `k`."""
+    return 'todos:' + hashlib.sha1(str(k).encode('utf-8')).hexdigest()[:10]
+
+
+def bloques(preguntas):
+    """`{id_bloque: [preguntas]}`: los nombres desconocidos de cada evento, si son varios."""
+    por = collections.defaultdict(list)
+    for p in preguntas:
+        if p['tipo'] == 'Nombre desconocido':
+            k = (p.get('seccion') or _seccion(p))[0]
+            if str(k).startswith('ev:'):
+                por[id_bloque(k)].append(p)
+    return {b: ps for b, ps in por.items() if len(ps) >= BLOQUE_MIN}
+
+
+def repartir(preguntas, respuestas):
+    """Las respuestas, con la de «⚡ Todo el evento» repartida a cada nombre.
+
+    ⚠️ LA RESPUESTA DE CADA FILA MANDA: si uno de los diez es de la Lista, se
+    contesta en su fila y el bloque no la pisa.
+    """
+    out = dict(respuestas)
+    for b, ps in bloques(preguntas).items():
+        if (respuestas.get(b) or ('',))[0] != EN_BLOQUE:
+            continue
+        for p in ps:
+            if not (respuestas.get(p['id']) or ('',))[0]:
+                out[p['id']] = (NUEVO, '')
+    return out
+
+
 def secciones(preguntas):
     """`[(título, [preguntas])]`: una sección por evento con TODO lo de ese
     evento —batallas, el evento, los nombres—, y al final lo que no es de un
@@ -1646,6 +1687,20 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
         if runs:
             links.append((len(filas), 0, txt, runs))
         filas.append([txt] + [''] * (ANCHO - 1))
+        # ⚡ el evento entero, cuando tiene varios nombres fuera de la Lista.
+        # ⚠️ Una fila y no la franja: la franja está combinada de A a H.
+        nd = [p for p in ps if p['tipo'] == 'Nombre desconocido']
+        k0 = (ps[0].get('seccion') or _seccion(ps[0]))[0]
+        if len(nd) >= BLOQUE_MIN and str(k0).startswith('ev:'):
+            b = id_bloque(k0)
+            rb = respuestas.get(b)
+            fila_preg.append((len(filas), {'opciones': [EN_BLOQUE, 'Dejar para después'], 'id': b}))
+            filas.append(['', '⚡ Todo el evento',
+                          '¿Los %d nombres de este evento que no están en la Lista son todos '
+                          'gente nueva?' % len(nd),
+                          ('Si alguno ya está en la Lista, contestalo en su fila: esa respuesta '
+                           'manda. · %s' % ', '.join(_sin_bandera(p['detalle']) for p in nd))[:500],
+                          rb[0] if rb else '', '', estados.get(b, ''), b])
         for p in ps:
             n += 1
             r = respuestas.get(p['id'])
@@ -1863,6 +1918,8 @@ def correr(dry=True):
         print('   ⚠️ no pude resolver con Discord (%s)' % str(e)[:80])
         solas = set()
     preguntas = [p for p in preguntas if p['id'] not in solas]
+    # ⚡ lo que se contestó para el evento entero, a cada nombre sin respuesta
+    respuestas = repartir(preguntas, respuestas)
     estados = aplicar(preguntas, respuestas, repetidas, dry=dry)
     if solas and not dry:
         aplicar.hubo = True
@@ -2145,6 +2202,24 @@ def _self_check():
         ids = {p['detalle']: p['id'] for p in qs}
         ok(por_discord(qs, {}, ev3, dry=True) == {ids['ANTORCHA OLIMPICA']},
            'el campeón que el podio menciona se resuelve con esa cuenta; el que no sube al podio, no')
+        # ⚡ el evento entero (Dlx, 28/09/2026: «va»)
+        qs = armar([(80, {'Tipo': nd, 'Detalle': 'KIRITO', 'Origen': 'evento #363'}),
+                    (81, {'Tipo': nd, 'Detalle': 'PLA PLA', 'Origen': 'evento #363'}),
+                    (82, {'Tipo': nd, 'Detalle': 'RIQUEZA', 'Origen': 'evento #363'}),
+                    (83, {'Tipo': nd, 'Detalle': 'SOLITO', 'Origen': 'evento #359'})],
+                   dict(ev3, **ev))
+        ids = {p['detalle']: p['id'] for p in qs}
+        bq = bloques(qs)
+        ok(len(bq) == 1 and len(next(iter(bq.values()))) == 3,
+           'la fila «⚡ Todo el evento» sale en el evento con varios nombres, no en el de uno')
+        b = next(iter(bq))
+        rp = repartir(qs, {b: (EN_BLOQUE, ''), ids['PLA PLA']: ('Es Pollo Sport', '')})
+        ok(rp[ids['KIRITO']][0] == NUEVO and rp[ids['RIQUEZA']][0] == NUEVO
+           and rp[ids['PLA PLA']][0] == 'Es Pollo Sport' and ids['SOLITO'] not in rp,
+           'y «Todos son gente nueva» contesta a los que no tienen respuesta: la de su fila manda')
+        pintar(qs, {}, {b: (EN_BLOQUE, '')}, [], dry=True)
+        ok(sum(1 for f in pintar.filas if f[-1] == b) == 1,
+           'la hoja tiene la fila del bloque, con su id')
     finally:
         _DATOS.clear()
         _DATOS.update(antes)
