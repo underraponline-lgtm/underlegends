@@ -77,9 +77,14 @@
 "liberia": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
+},
+"provenza": {
+"rg": "",
+"c": []
 },
 "erian": {
 "rg": "",
@@ -102,10 +107,6 @@
 "servidor",
 "temporada"
 ]
-},
-"provenza": {
-"rg": "",
-"c": []
 },
 "deluxe": {
 "rg": "",
@@ -215,7 +216,7 @@
 "temporada"
 ]
 },
-"betelgeuse": {
+"betelguese": {
 "rg": "",
 "c": []
 },
@@ -621,10 +622,6 @@
 "rg": "",
 "c": []
 },
-"prove": {
-"rg": "",
-"c": []
-},
 "volk-mx": {
 "rg": "",
 "c": []
@@ -837,10 +834,6 @@
 "rg": "",
 "c": []
 },
-"trrrr": {
-"rg": "",
-"c": []
-},
 "valdoza": {
 "rg": "",
 "c": []
@@ -854,10 +847,6 @@
 "c": []
 },
 "xclusivo": {
-"rg": "",
-"c": []
-},
-"yshows": {
 "rg": "",
 "c": []
 },
@@ -994,6 +983,22 @@
 "c": []
 },
 "btrx": {
+"rg": "",
+"c": []
+},
+"betelgeuse": {
+"rg": "",
+"c": []
+},
+"prove": {
+"rg": "",
+"c": []
+},
+"trrrr": {
+"rg": "",
+"c": []
+},
+"yshows": {
 "rg": "",
 "c": []
 },
@@ -1191,6 +1196,14 @@
 "Bloody"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T18:55:31Z",
+"quien": [
+"Liberia"
+],
+"carta": "pais"
 }
 ]
 }
