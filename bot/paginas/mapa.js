@@ -42,8 +42,13 @@
   var TZ = 'America/New_York';
   var fH = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit', hour12: true });
   var fHs = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
-  var fDia = new Intl.DateTimeFormat('es-AR', { timeZone: TZ, weekday: 'short', day: '2-digit', month: '2-digit' });
+  // ⚠️ el día se arma a mano: `es-AR` con día y mes da «29-09» en Chromium, y la Liga escribe 29/09
+  var fSem = new Intl.DateTimeFormat('es-AR', { timeZone: TZ, weekday: 'short' });
   var fP = new Intl.DateTimeFormat('en-US', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23' });
+  function dia(d) {
+    var p = partes(d);
+    return fSem.format(d).replace('.', '') + ' ' + ('0' + p.day).slice(-2) + '/' + ('0' + p.month).slice(-2);
+  }
   function partes(d) { var o = {}; fP.formatToParts(d).forEach(function (p) { o[p.type] = +p.value; }); return o; }
   function madrugada(h) { return h >= 3 && h < 11; }
   function proxima(ahora) {
@@ -59,7 +64,7 @@
     if (!t) return '';
     var d = new Date(t), a = new Date();
     var mismo = partes(d).day === partes(a).day && Math.abs(a - d) < 864e5;
-    return mismo ? fH.format(d) : fDia.format(d) + ' ' + fH.format(d);
+    return mismo ? fH.format(d) : dia(d) + ' ' + fH.format(d);
   }
   function hace(t) {
     if (!t) return '';
@@ -746,7 +751,7 @@
     $('#latido').classList.toggle('duerme', noche || !!(v && v.dormido));
     $('#fresco').textContent = EST.modo === 'vivo'
       ? (EST.medido ? 'En vivo · actualizado ' + hace(EST.medido) : 'En vivo · cargando…')
-      : 'Foto tomada el ' + fDia.format(new Date(EST.medido)) + ' a las ' + fH.format(new Date(EST.medido)) + ' ET · la versión en vivo está en la página de la Liga';
+      : 'Foto tomada el ' + dia(new Date(EST.medido)) + ' a las ' + fH.format(new Date(EST.medido)) + ' ET · la versión en vivo está en la página de la Liga';
   }
 
   /* ── arranque ─────────────────────────────────────────────── */
