@@ -347,9 +347,44 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La llamada resuelve sola** cuando el nombre raro de la llave es **exactamente** el de una sola persona que estaba en la llamada mientras se jugaba y esa persona ya está en la Lista: alias, aunque ese nombre sea de varias cuentas. Si no está en la Lista, la llamada no da de alta a nadie | *«1. A»* (29/09, 6:15 AM) | ✅ `decidir._cuenta_de()`, fuente «llamada» |
 | **Los commits viejos no se le piden borrar a GitHub**: quedan sueltos hasta su limpieza | *«2. B»* | ✅ nada que hacer |
 | **Para el remake no se usa Penpot**; se conectan todos los demás de la guía, más las Extensiones de la app y los conectores de claude.ai, aunque lleve más tiempo | *«no, no usaremos PENPOT»* · *«si toma más tiempo está bien»* (29/09, 6:10 AM) | ⏳ Dlx corre los pasos; yo verifico cada uno |
-| **El remake va con React (o un framework)**: el estilo de la Liga es la razón principal del remake, y no se quiere que la página se parezca a «copero» | *«el estilo de la liga es la razón principal por la cual quiero hacer el remake… usaremos react o framework»* (29/09, 8 AM) | ⏳ propuesta: Vite + React + Tailwind exportado a estáticos en Pages (sin SSR: el Worker tiene 10 ms) |
+| **El remake va con React (o un framework)**: el estilo de la Liga es la razón principal del remake, y no se quiere que la página se parezca a «copero» | *«el estilo de la liga es la razón principal por la cual quiero hacer el remake… usaremos react o framework»* (29/09, 7:20 AM) | ⏳ propuesta: Vite + React + Tailwind exportado a estáticos en Pages (sin SSR: el Worker tiene 10 ms) |
+| **Un mapa de la Liga y un mapa del código, los dos**: el del sistema (artifact privado: dónde corre cada pieza, cada cuánto y cuánto del plan gratis gasta) y Serena para navegar el código por símbolos, **sólo lectura** | *«Creo que las 2 no?»* (29/09, 7:23 AM) | ✅ el artifact «El mapa de la Liga» y Serena en Claude Code, fuera del repo |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Martes 29/09 (8 AM) — el mapa de la Liga y Serena
+
+Sin versión nueva: la página no cambia. Tu *«Creo que las 2 no?»*, después
+del reel del grafo:
+
+- **El mapa de la Liga**, en un artifact privado (el link va por el chat):
+  las 23 piezas en cinco columnas —dónde corren— y cuatro franjas —cada
+  cuánto—, con lo que lee y escribe cada una, cinco recorridos que siguen un
+  dato de punta a punta y un reloj en vivo con la próxima corrida.
+- **Serena**, un mapa del código para mí: busca funciones por nombre en vez de
+  leer archivos de 2.000 líneas. Va **sólo lectura** y con un modo propio: el
+  que trae para Claude Code prohíbe las herramientas de siempre y guarda sus
+  propias memorias, y las dos cosas eran lo «raro» que no querías. Su
+  configuración y su índice viven fuera del repo (`~/.serena`).
+
+Lo que se midió para el mapa (7:40 AM ET):
+
+| | medido | el límite |
+|---|---|---|
+| KV, escrituras | **396** hoy (desde las 8 PM ET) | 1.000 por día; el ciclo se frena en 850 |
+| KV, por hora | casi siempre 0 a 10; ráfagas al redibujar, **192** el lunes a las 6 PM | — |
+| Worker, CPU | la mitad 0,98 ms, el peor 1 % 3,44 ms | 10 ms |
+| Worker, pedidos | 3.885 en 24 h, 0 errores | 100.000 por día |
+| R2 | 8.869 archivos, 0,91 GB | 10 GB |
+| el ciclo | escuchar 2 a 6 min; dibujar de 40 s a 31 min | 20 y 120 min |
+| quién lo arranca | **10 de las últimas 12** corridas, el Worker (:22 y :52) | — |
+
+⚠️ **El repo de sync falló el 28/09 a las 12:22 PM ET** por la cuota de
+lecturas por minuto de Sheets (429), a la misma hora que arrancaba el ciclo.
+El ciclo reintenta los 429 (`sheet/escribir.py`, hasta 90 s); el sync no. La
+pregunta está abajo.
 
 ---
 
@@ -418,7 +453,7 @@ lo del día, y deja las reglas al final (en cada tema, la más nueva primero).
     quien se vio desde 1 h antes de publicada la llave hasta 5 h después.
     Un nombre parecido es sólo pista (en la llamada también hay público);
     el nombre EXACTO de una sola persona que ya está en la Lista se
-    resuelve solo como su alias (*«1. A»*, 6:15 AM).
+    resuelve solo como su alias (*«1. A»*, 6 AM).
   - Se prueba de verdad la primera noche con un evento (a verificar).
   - `websocket-client` entra a `requirements.txt`, y la auditoría de
     dependencias ya sabe que `import websocket` es ese paquete.
@@ -1973,7 +2008,11 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- ✅ ~~**Para el remake: ¿sin framework o React?**~~ **React** (29/09, 8 AM): *«el
+- **El sync y la cuota de Sheets** (falló el 28/09 a las 12:22 PM ET, ver
+  arriba). **A** · le pongo al sync el mismo reintento que tiene el ciclo:
+  espera y reintenta, hasta 90 s · **B** · se deja así: si falla, lo rehace al
+  día siguiente.
+- ✅ ~~**Para el remake: ¿sin framework o React?**~~ **React** (29/09, 7:20 AM): *«el
   estilo de la liga es la razón principal… usaremos react o framework»*.
 - **Para el remake**: ¿«copero» es otra página? Pasame el link cuando
   arranquemos, así sé de qué look alejarnos.
