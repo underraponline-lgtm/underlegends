@@ -353,6 +353,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El mapa, explorable y en vivo**: como el grafo del reel (arrastrar, zoom, abrir cada pieza en sus partes) y con el estado de cada pieza ahora, **sólo para Dlx** | *«1. C»* (29/09, 8:29 AM) | ✅ `bot/paginas/mapa.html` en vivo; el artifact, una foto con los mismos archivos |
 | **The Cosmic Rap: el bot está ahí sólo para reconocer IDs** | *«agregué el bot a the cosmic rap pero solo usa eso para reconocimiento de IDs nada más»* (8:29 AM) | ✅ `datos/servidores.json` → `solo_identidad`, como LIVONIA y CONFED |
 | **El remake se planea juntos antes de arrancar**: aviso antes de tocar la página nueva | *«cuando vayas a hacer el rework de la página me avisas para antes planearlo»* (9 AM) | ⏳ aviso antes |
+| **El remake no toca las cartas**: la web es la pared y las cartas son los afiches pegados | *«A»* (29/09, 11:30 AM) | 📌 regla del remake |
+| **La foto queda como hoy**: la web nueva trae «ocultar mi foto» en ajustes, y nada más | *«podemos añadir la opción en ajustes… somos algo muy amateur todavía»* (11:30 AM) | 📌 va con el remake |
+| **Primero el remake, después lo nuevo** | *«después del remake haríamos el pase, la tienda… y otras cosas»* (11:55 AM) | 📌 orden |
 | **Se mide quién vuelve a jugar un segundo evento**: por semana de debut, otro evento **otro día** dentro de 14; va en el mapa en vivo | *«Va»* (29/09) | ✅ `rankings.retencion()` → `datos/estado_escuchar.json` → el medidor «Vuelven a jugar» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
