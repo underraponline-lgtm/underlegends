@@ -464,6 +464,18 @@ Vive en **`comun/requisitos.py`**, con su self-check — **y esa es la fuente**.
 Correr `python comun/requisitos.py` imprime la tabla de arriba con los números
 del pool de hoy.
 
+🔑 **Y EL PORTÓN YA NO ES DE TODAS, desde el 29/09/2026.** Dlx: *«Dale»*. La
+**Temporada** y la **Servidor** son de todos los que jugaron y están en la
+Lista, verificados o no; la Competitiva, la de País y las que vengan piden
+el portón (`verificados.LIBRES` y `puede()`). Quien no lo pasa entra a KV
+con `nv` y su ID en **`dn:<id>`, no en `d:`**: `d:` abre todo lo de la
+cuenta —/foto, Mis redes, seguir, avisos— y eso sigue siendo de los
+verificados. `dn:` lo leen **sólo las cartas** (`claveCarta()` de
+`bot/worker.js`), y la Competitiva y la de País le salen con candado.
+
+⚠️ **Y el borrado de la semana va por carta** (`bot/fuera.py`): a quien
+sigue en la Lista nunca se le borran la Temporada ni la Servidor.
+
 ⚠️ **La columna «pasan, de los 138» se sacó a propósito.** Eran números de la
 pre-temporada, y desde el reset del 22/09/2026 el pool está en **0**: cualquier
 cifra ahí sería de un mundo que ya no existe. El número de hoy lo da el
@@ -1128,7 +1140,8 @@ de verificarse.
 
 **El inventario de R2 sigue sirviendo, pero para otra pregunta: qué hay
 subido.** Quien *tiene que* tener carta lo decide el portón
-(`bot/verificados.py`).
+(`bot/verificados.py`) — y desde el 29/09/2026, **carta por carta**:
+`verificados.puede(persona, verificados, carta)`.
 
 ### El pool vacío es un ESTADO, no un error — y aparece cuatro veces
 
