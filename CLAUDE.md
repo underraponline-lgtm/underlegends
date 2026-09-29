@@ -470,7 +470,7 @@ Lista, verificados o no; la Competitiva, la de País y las que vengan piden
 el portón (`verificados.LIBRES` y `puede()`). Quien no lo pasa entra a KV
 con `nv` y su ID en **`dn:<id>`, no en `d:`**: `d:` abre todo lo de la
 cuenta —/foto, Mis redes, seguir, avisos— y eso sigue siendo de los
-verificados. `dn:` lo leen **sólo las cartas** (`claveCarta()` de
+verificados (Dlx, *«A»*, el mismo 29/09). `dn:` lo leen **sólo las cartas** (`claveCarta()` de
 `bot/worker.js`), y la Competitiva y la de País le salen con candado.
 
 ⚠️ **Y el borrado de la semana va por carta** (`bot/fuera.py`): a quien

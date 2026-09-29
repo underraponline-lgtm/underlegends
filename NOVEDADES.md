@@ -18,7 +18,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | regla | Dlx | dónde vive |
 |---|---|---|
 | **Para tener carta: estar en DRA y verificado**, con Discord ID y país — **salvo la Temporada y la Servidor desde el 29/09**: ésas son de todos los que jugaron y están en la Lista (fila de abajo) | *«to get cards all need to be in DRA server and verified»* (24/09) | `bot/verificados.py` |
-| **La Temporada y la Servidor, sin verificar**: de todos los que jugaron y están en la Lista. La Competitiva, la de País y las que vengan, sólo verificados. BNA y los de `no_verificar`, ninguna. **Lo de la cuenta** (/foto, Mis redes, seguir, avisos personales) sigue siendo de los verificados hasta que Dlx diga | *«Dale»* (29/09, 4:46 PM) | `verificados.LIBRES` y `puede()` · KV `dn:<id>` (lo lee sólo la carta) · `nv` en `p:` |
+| **La Temporada y la Servidor, sin verificar**: de todos los que jugaron y están en la Lista. La Competitiva, la de País y las que vengan, sólo verificados. BNA y los de `no_verificar`, ninguna. **Lo de la cuenta** (/foto, Mis redes, seguir, avisos personales) sigue siendo **sólo de los verificados** | *«Dale»* (29/09, 4:46 PM) · la cuenta, *«A»* (29/09, 5:55 PM) | `verificados.LIBRES` y `puede()` · KV `dn:<id>` (lo lee sólo la carta) · `nv` en `p:` |
 | **Verificado = sólo el rol Miembro de DRA** | *«El rol de verificado es miembro en DRA únicamente»* (24/09) | `bot/verificados.py` |
 | De FFA, LIVONIA, La Confederación, **Snake Rap y Urban Freestyle**: se saca el ID, **no se verifica** | *«saca su ID, sí, pero no lo verifiques»* (19/09) · Urban Freestyle, *«quiero que hagas reconocimiento de IDs»* (25/09) | `herramientas/cruzar_miembros.py` |
 | **Autoverificar**: IDs de Snake Rap → Sheet → si están en DRA **y tienen país** (bandera o rol de país en DRA, FFA, LIVONIA o Snake Rap) → Miembro de DRA | *«only those [that] have a country flag or role can be verified»* (24/09) | **en el ciclo** desde el 25/09 (`bot/autoverificar.py`, paso 1a2) · los IDs por nombre, a mano (`herramientas/cruzar_miembros.py`) |
@@ -2090,6 +2090,10 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
+- ✅ ~~**Lo de la cuenta, ¿también para los que no se verificaron?**~~
+  *«A»* (29/09, 5:55 PM): la foto (`/foto`), Mis redes, seguir y los avisos
+  personales siguen **sólo para verificados**. Ya estaba así: no se tocó
+  nada.
 - ✅ ~~**El mapa, más interactivo**~~ *«1. C»* (8:29 AM): hecho, arriba.
 - **El remake**: te aviso antes de arrancar y lo planeamos juntos (*«me
   avisas para antes planearlo»*).
