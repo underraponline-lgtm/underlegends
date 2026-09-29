@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.52",
+   "dia": "2026-09-29",
+   "cuando": "2026-09-29T17:50:00-04:00",
+   "titulo": "Tu Temporada y tu Servidor, sin verificarte",
+   "items": [
+    "🃏 **La tarjeta de Temporada y la de Servidor son de todos los que juegan estando en la Lista**, verificados o no. La **Competitiva** y la de **País** siguen siendo de los verificados en Discord Rap Español.",
+    "🔒 **En `/card`, la Competitiva y la de País llevan candado** si todavía no te verificaste: al tocarlas, el bot te dice qué te falta. `/verificar` te lo dice paso por paso.",
+    "📖 **La Guía dice qué pide cada tarjeta**, incluido estar verificado para la Competitiva y la de País."
+   ]
+  },
+  {
    "version": "1.51",
    "dia": "2026-09-29",
    "cuando": "2026-09-29T05:30:00-04:00",

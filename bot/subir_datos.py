@@ -198,7 +198,7 @@ def versus_de(k, c, t, nac):
 # ⚠️ `pnick:` EMPIEZA CON `p` Y NO ES NUESTRO. Por eso se compara el
 # prefijo con los dos puntos y no la primera letra: `k.startswith('p')`
 # habría borrado la configuración de apodos.
-MIOS = ('p:', 'd:')
+MIOS = ('p:', 'd:', 'dn:')
 
 
 def limpiar_huerfanas(s, pares):
@@ -407,6 +407,15 @@ def armar():
     _padron = PAD.cargar()
     del_porton = {PAD.norm(p['raw']) for p in _padron
                   if verif is not None and VERIF.pasa(p, verif)}
+    # 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): quien jugó la T1 y está en la
+    # Lista tiene su Temporada y su Servidor aunque no pase el portón. Entra
+    # con `nv` y sólo esas dos; a la Competitiva y la de País el bot le
+    # contesta «verificate». Los de `no_verificar` y los trolls no entran
+    # (`verificados.puede()`).
+    jugaron = {PAD.norm(r) for r in temp}
+    libres = {PAD.norm(p['raw']) for p in _padron
+              if verif is not None and p.get('raw') and PAD.norm(p['raw']) in jugaron
+              and not VERIF.pasa(p, verif) and VERIF.puede(p, verif, 'temporada')}
     # 🔴 LOS QUE YA ESTAN CARGADOS Y NO PASAN. Ver el comentario de
     # `cargados` en `meta`, mas abajo: sin esto el Worker les promete una
     # carga que ya esta hecha. Se arma acá, donde el porton ya se
@@ -414,8 +423,9 @@ def armar():
     cargados_sin_carta = {
         str(p.get('discord_id')) for p in _padron
         if str(p.get('discord_id') or '')
-        and not (verif is not None and VERIF.pasa(p, verif))}
-    candidatos = sorted(set(inventario) | del_porton)
+        and not (verif is not None and VERIF.pasa(p, verif))
+        and PAD.norm(p.get('raw') or '') not in libres}
+    candidatos = sorted(set(inventario) | del_porton | libres)
     nuevos = len(del_porton - set(inventario))
     if nuevos:
         print('  %d pasan el portón y todavía no tienen carta en R2: '
@@ -424,7 +434,7 @@ def armar():
     gente, fuera = [], 0
     for k in candidatos:
         p_id = idx.get(k, {})
-        if verif is not None and not VERIF.pasa(p_id, verif):
+        if verif is not None and not VERIF.pasa(p_id, verif) and k not in libres:
             fuera += 1
             continue
         x = por_pool.get(k)
@@ -442,6 +452,7 @@ def armar():
     por_id, dup_id = {}, []
     # la entrada `d:<id>` de cada ID, para poder corregirla en su lugar
     par_d = {}
+    par_dn = {}                     # y la `dn:<id>` de los que tienen sólo las libres
     for k, x in gente:
         p = idx.get(k, {})
         t = temp.get(x['raw'], {})
@@ -562,11 +573,19 @@ def armar():
                           if c.startswith('sv-')
                           and (not svs or c[3:].upper() in svs)),
         }
+        # 🔑 LAS LIBRES: sin el portón, sólo la Temporada y la Servidor. `nv`
+        # le dice al Worker que la Competitiva y la de País no le faltan por
+        # jugar sino por verificarse.
+        nv = k in libres
+        if nv:
+            valor['nv'] = 1
+            valor['cs'] = [c for c in valor['cs'] if c in VERIF.LIBRES]
         # 🔴 LAS BLOQUEADAS QUE TIENE SUBIDAS. Sin esto el Worker no puede
         # distinguir «no existe» de «todavía no», y las dos hacen desaparecer
         # el botón: a Lil Drako le salía UNO solo. Con `bl` el botón va y
         # lleva a una carta que dice cuánto le falta.
-        bl = sorted(c[5:] for c in inventario.get(k, {}) if c.startswith('bloq-'))
+        bl = sorted(c[5:] for c in inventario.get(k, {}) if c.startswith('bloq-')
+                    and (not nv or c[5:] in VERIF.LIBRES))
         if bl:
             valor['bl'] = bl
         # ⚠️ `svs` SOLO SI SE SABE. Una lista vacía y «no lo averigüé» son
@@ -588,10 +607,28 @@ def armar():
         # eso el OVR Nacional viene de `comun/nacional.py`, que es de donde
         # ahora lo lee también `04_Pais/generar.py`.
         v = versus_de(k, x, temp.get(x['raw'], {}), nac)
+        if v and nv:
+            v = {c: n for c, n in v.items() if c in ('t', 's')}    # sin Competitiva ni País
         if v:
             valor['vs'] = v
         pares.append({'key': 'p:' + k, 'value': json.dumps(valor, ensure_ascii=False)})
         did = p.get('discord_id')
+        if did and nv:
+            # 🔑 `dn:` Y NO `d:`. `d:<id>` es la llave de TODO lo de la cuenta
+            # —/foto, Mis redes, seguir, los avisos personales— y eso sigue
+            # siendo de los verificados; `dn:` lo lee sólo `/card`. Cuando se
+            # verifique pasa a `d:` solo, y `limpiar_huerfanas()` borra ésta.
+            # ⚠️ Y UNA SOLA POR ID, como `d:`: si dos filas comparten el ID
+            # (pasa: 979878… figura como Oasis y como Fullylo4ded), dos
+            # entradas iguales se turnarían en KV corrida a corrida.
+            if did in par_dn:
+                if not _es_alias_de(k, par_dn[did]['value']):
+                    par_dn[did]['value'] = k
+                continue
+            par_dn[did] = {'key': 'dn:' + did, 'value': k}
+            pares.append(par_dn[did])
+            con_id += 1
+            continue
         if did:
             # 🔴 DOS PERSONAS CON EL MISMO ID ES UNA QUE SE QUEDA SIN
             # CARTA, Y EN SILENCIO. La clave `d:<id>` es un mapa: el

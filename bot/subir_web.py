@@ -1651,7 +1651,11 @@ def _sin_verificar():
 
 
 def _del_porton():
-    """`f(fila) -> bool`: ¿pasa el portón de identidad? `None` si no se sabe.
+    """`f(fila, carta) -> bool`: ¿puede tener ESA carta? `None` si no se sabe.
+
+    🔑 POR CARTA DESDE EL 29/09/2026 (Dlx, «Dale»): la Temporada y la Servidor
+    son de todos los que jugaron y están en la Lista, verificados o no; las
+    demás piden el portón. Es `verificados.puede()`, la misma que arma KV.
 
     🔴 LA PÁGINA MOSTRABA TARJETAS QUE `/card` NO DA. `/card` le contesta
     «todavía no estás verificado» a quien no pasa el portón —Discord ID,
@@ -1674,10 +1678,12 @@ def _del_porton():
         if _sh not in sys.path:
             sys.path.append(_sh)
         import verificados as _VER
-        f = _VER.por_nombre()
-        if f is None:
+        import construir_padron as _PAD
+        verif, _c = _VER.cargar()
+        if verif is None:
             return None
-        return lambda fila: f(fila.get('raw') or '')
+        idx = _PAD.por_nombre()
+        return lambda fila, carta: _VER.puede(idx.get(_PAD.norm(fila.get('raw') or '')) or {}, verif, carta)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude preguntar por el portón (%s): no filtro' % str(e)[:60])
         return None
@@ -1733,14 +1739,14 @@ def _cartas(p, r2, comp=None, puede=None):
     inventario, porque una carta que le corresponde y todavía no se
     dibujó tampoco se puede mostrar. Son las dos condiciones, no una.
     """
-    # 🔴 PRIMERO EL PORTÓN, como `/card`: ver `_del_porton()`
-    if puede is not None and not puede(p):
-        return []
     tiene = r2.get(_clave(p)) or {}
     # los duelos de País viven en el pool competitivo; el resto acá
     fila = dict(comp or {}, **p)
     out = []
     for c in CARTAS:
+        # 🔴 PRIMERO EL PORTÓN, como `/card`, y por carta: ver `_del_porton()`
+        if puede is not None and not puede(p, c):
+            continue
         if c not in tiene:
             continue
         try:
@@ -2483,15 +2489,25 @@ def _requisitos():
         'servidor': 'Lo tuyo dentro del servidor donde más jugaste.',
         'pais': 'Tu OVR Nacional y tu puesto dentro de tu país.',
     }
+    # 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): las que no son libres piden
+    # además el portón. Sale de `verificados.LIBRES`, no se escribe acá.
+    try:
+        import verificados as _VER
+        libres = set(_VER.LIBRES)
+    except Exception:                                    # noqa: BLE001
+        libres = None
     out = []
     for k in ('temporada', 'competitivo', 'servidor', 'pais'):
         cs = REQUISITOS.get(k) or []
         partes = [como_se_dice(k, m, '<sv>', i).lower()
                   for i, (m, _c, _q) in enumerate(cs) if m]
+        pide = [('%d %s' % (m, p)) for (m, _c, _q), p
+                in zip([c for c in cs if c[0]], partes)]
+        if libres is not None and k not in libres:
+            pide.append('estar verificado en DRA')
         out.append({
             'id': k, 'titulo': titulo[k], 'mide': mide[k],
-            'pide': [('%d %s' % (m, p)) for (m, _c, _q), p
-                     in zip([c for c in cs if c[0]], partes)] or ['nada'],
+            'pide': pide or ['nada'],
         })
     return out
 

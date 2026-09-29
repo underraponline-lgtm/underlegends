@@ -552,8 +552,9 @@ function pintaCampeones() {
   var sinCarta = function (f, tit) {
     return '<div class="hero-carta vacante"><span class="corona">' + esc(tit) + '</span>' +
       '<div class="hc-vacio"><p class="hc-cerca" data-k="' + esc(f.k) + '">' + quienEs(f, 34) + '</p>' +
-      '<p>' + (f.nv ? 'Sin tarjeta: ' + esc(NV[f.nv] || 'le falta verificarse') + '.'
-        : 'Su tarjeta todavía no está.') + '</p></div></div>';
+      // 🔑 SIN VERIFICAR YA NO ES SIN TARJETA (las LIBRES, 29/09/2026): la
+      // Temporada es de todos los que juegan estando en la Lista.
+      '<p>Su tarjeta todavía no está.</p></div></div>';
   };
   if (uno) {
     h.push((uno.c || []).length ? campeon(uno, uno.c[0], quien + ' de la temporada')
@@ -3730,8 +3731,8 @@ function pintaPerfil(k) {
             // 🔑 la foto, desde tu propia tarjeta (Dlx, 25/09/2026)
             (DC && DC.clave === k ? '<button class="bajar" type="button" data-foto><i aria-hidden="true">' +
               '&#128247;</i><span>Cambiar mi foto</span></button>' : '') + '</div>'
-          : '<p class="sin-carta">' + (f.nv ? 'No tiene tarjetas porque no está verificado: ' +
-            esc(NV[f.nv] || '') + '.' : 'Todavía no tiene ninguna tarjeta emitida.') + '</p>') +
+          // 🔑 las LIBRES: sin verificar igual tiene la Temporada y la Servidor
+          : '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>') +
       '</section>' +
       '<div class="col">' +
         '<section class="blk entro"><h2><span>&#128202;</span> Sus números</h2><div class="pf-nums">' +
@@ -3810,7 +3811,8 @@ function pintaPerfil(k) {
       // 🔴 CUMPLIR NO ES TENERLA: sin verificarse no hay tarjeta. Decía
       // «✓ Desbloqueada» a 96 de 153 mientras «Sus tarjetas», en la misma
       // página, decía que no tiene porque no está verificado.
-      var listo = tiene || (cumple && !f.nv);
+      // 🔑 salvo la Temporada, que no pide verificarse (las LIBRES, 29/09/2026)
+      var listo = tiene || (cumple && (!f.nv || c === 'temporada'));
       var espera = !listo && cumple;
       return '<div class="rq' + (listo ? ' ok' : '') + '"><h3>' + (CARTA_TIT[c] || c) +
         '<span>' + (listo ? '&#10003; Desbloqueada' : espera ? 'Falta verificarse' : 'Bloqueada') +
@@ -4051,8 +4053,9 @@ function pintaPedi() {
       '<p class="bajada">La pide cada uno y es un minuto: escribí <code>/verificar</code> en ' +
       'Discord. El bot te dice qué te falta y, si está todo, te carga solo: en menos de una hora ' +
       'tenés tu tarjeta.</p>' +
-      '<p class="bajada">Hace falta estar en <b>Discord Rap Español</b> con el rol <b>Miembro</b> ' +
-      'y tu <b>país</b> (la bandera en el apodo o el rol de tu país).</p>' +
+      '<p class="bajada">Tu <b>Temporada</b> y tu <b>Servidor</b> salen solas cuando jugás estando en ' +
+      'la Lista. Para las cuatro hace falta estar en <b>Discord Rap Español</b> con el rol ' +
+      '<b>Miembro</b> y tu <b>país</b> (la bandera en el apodo o el rol de tu país).</p>' +
       '<div class="pedi-bt">' +
       (dra.invita ? '<a class="btn" href="' + esc(dra.invita) + '" target="_blank" ' +
         'rel="noopener noreferrer">Entrar a Discord Rap Español &#8599;</a>' : '') +
@@ -5494,8 +5497,9 @@ function _pintaPopCuenta() {
   if (!f && DC) {
     c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
       esc(DC.n) + '</b><small>Conectado con Discord</small></div></div>' +
-      '<p class="nota">Todavía no tenés tarjeta en la Liga. Escribí <code>/verificar</code> en ' +
-      'Discord: te dice qué te falta.</p><nav class="pop-menu">' +
+      '<p class="nota">Todavía no estás verificado en la Liga: escribí <code>/verificar</code> en ' +
+      'Discord y te dice qué te falta. Si estás en la Lista y ya jugaste, tu Temporada y tu ' +
+      'Servidor salen igual con <code>/card</code>.</p><nav class="pop-menu">' +
       '<a href="#/guia">&#127915; Cómo conseguir tu tarjeta</a>' +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
       '<button type="button" id="yoOlvidar">Salir</button></nav>' + secMiServidor() + secProximos() + secSigo();

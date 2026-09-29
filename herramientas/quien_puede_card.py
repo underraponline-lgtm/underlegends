@@ -23,6 +23,12 @@ padron y 7 con ID pero sin el rol. Los 23 necesitan **una accion
 humana** —registrarse o verificarse—, no un arreglo. Lo que esta
 herramienta evita es buscarlo a mano cada vez.
 
+🔑 Y DESDE EL 29/09/2026 «SIN VERIFICAR» NO ES «SIN CARTA». Dlx aprobó que
+la Temporada y la Servidor sean de todos los que juegan estando en la
+Lista (las LIBRES de `bot/verificados.py`). A quien no pasa el portón le
+faltan sólo la Competitiva y la de País, y si sus dos libres no están
+dibujadas o KV no lo indexa, eso SÍ es un fallo nuestro.
+
 🔴 LA CLAVE DE KV ES `p:<nombre normalizado>`, NO EL DISCORD ID. Buscar
 por ID devuelve 404 para todo el mundo y parece que el bot no tiene a
 nadie: me paso, dos veces seguidas, antes de mirar una clave de verdad.
@@ -59,8 +65,8 @@ def estado(nombres=None, con_kv=True):
     ver = _json('datos', 'verificados.json') or {}
     ids = set(str(x) for x in (ver.get('ids') or []))
     inv = _json('datos', 'cartas_r2.json') or {}
-    pid = {p.get('raw'): str(p.get('discord_id') or '')
-           for p in padron if p.get('raw')}
+    per = {p.get('raw'): p for p in padron if p.get('raw')}
+    import verificados as VER
 
     if nombres is None:
         pool = _json('datos', 'temporada_pool.json') or []
@@ -70,25 +76,37 @@ def estado(nombres=None, con_kv=True):
     out = []
     for n in nombres:
         k = CL(n)
-        did = pid.get(n)
-        if n not in pid:
+        p = per.get(n)
+        if p is None:
             out.append((n, 'sin padrón', 'no está en `datos/padron.json`'))
-        elif not did:
-            out.append((n, 'sin Discord ID',
-                        'está en el padrón pero sin ID: se registra'))
-        elif did not in ids:
-            out.append((n, 'sin verificar',
-                        'ID %s, pero no tiene el rol en DRA' % did))
+            continue
+        did = str(p.get('discord_id') or '')
+        pasa = VER.pasa(p, ids)
+        # 🔑 LAS LIBRES: sin el portón igual le tocan la Temporada y la Servidor
+        libres = not pasa and VER.puede(p, ids, 'temporada')
+        if not pasa and not libres:
+            out.append((n, 'no se toca',
+                        'está en la Lista, pero es de los que no se tocan '
+                        '(`no_verificar`, trolls) o pidió salir'))
         elif not inv.get(k):
             out.append((n, 'sin dibujar',
-                        'pasa el portón y no hay PNG en R2 — esto SÍ es un '
+                        ('pasa el portón' if pasa else 'le tocan la Temporada y la '
+                         'Servidor') + ' y no hay PNG en R2 — esto SÍ es un '
                         'fallo del ciclo'))
         elif en_kv is not None and k not in en_kv:
             out.append((n, 'sin indexar',
                         'tiene cartas en R2 y KV no la indexa — esto SÍ es '
                         'un fallo'))
-        else:
+        elif pasa:
             out.append((n, 'ok', ', '.join(sorted(inv.get(k) or {}))[:60]))
+        elif not did:
+            out.append((n, 'sin Discord ID',
+                        'tiene la Temporada y la Servidor (`/card nombre:`); para '
+                        'las otras dos se registra y se verifica'))
+        else:
+            out.append((n, 'sin verificar',
+                        'ID %s: tiene la Temporada y la Servidor; para las otras '
+                        'dos le falta el rol en DRA' % did))
     return out
 
 
@@ -140,14 +158,20 @@ def _self_check():
     r = dict((n, e) for n, e, _d in estado(con_kv=False))
     ok(bool(r), 'contesta por los que compiten (%d)' % len(r))
     razones = set(r.values())
-    ok(razones <= {'ok', 'sin padrón', 'sin Discord ID', 'sin verificar',
+    ok(razones <= {'ok', 'sin padrón', 'no se toca', 'sin Discord ID', 'sin verificar',
                    'sin dibujar', 'sin indexar'},
        'todas las razones son conocidas  %s' % sorted(razones))
     # 🔴 UN NOMBRE INVENTADO NO PUEDE SALIR «ok»
     r2 = estado(['__NO_EXISTE__'], con_kv=False)
     ok(r2 and r2[0][1] == 'sin padrón', 'un nombre inventado cae en `sin padrón`')
-    ok(not (set(NUESTRO) & {'sin Discord ID', 'sin verificar'}),
+    ok(not (set(NUESTRO) & {'sin Discord ID', 'sin verificar', 'no se toca'}),
        'registrarse y verificarse NO cuentan como fallo nuestro')
+    # 🔑 LAS LIBRES: quien no pasa el portón y está en la Lista tiene sus dos
+    # libres, así que «sin verificar» sólo sale si ESTÁN dibujadas
+    import verificados as VER
+    per = {'raw': 'Prueba', 'discord_id': '1', 'pais': 'Chile'}
+    ok(VER.puede(per, set(), 'temporada') and not VER.puede(per, set(), 'competitivo'),
+       'sin el rol: la Temporada sí, la Competitiva no')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

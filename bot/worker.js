@@ -343,6 +343,31 @@ async function quienEs(i, env) {
   return uid ? await env.KV.get('d:' + uid) : null;
 }
 
+// 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): la Temporada y la Servidor son de
+// todos los que jugaron y están en la Lista, verificados o no; la Competitiva
+// y la de País siguen pidiendo el portón. Quien no lo pasa tiene su ID en
+// `dn:` y no en `d:`, a propósito: `d:` abre todo lo de la cuenta —/foto,
+// Mis redes, seguir, los avisos personales— y eso sigue siendo de los
+// verificados. Por eso `dn:` lo leen SÓLO las cartas (`/card`, `/versus` y
+// sus botones) y nunca `quienEs()`.
+//
+// ⚠️ `d:` PRIMERO: es la de casi todos, así que la segunda lectura la paga
+// sólo quien no está verificado.
+async function claveCarta(env, id) {
+  if (!id) return null;
+  return (await env.KV.get('d:' + id)) || (await env.KV.get('dn:' + id));
+}
+const quienEsCarta = (i, env) => claveCarta(env, idDe(i));
+
+// ¿Esta carta le falta por no estar verificado? Sólo a quien vino con `nv`
+// (lo pone `bot/subir_datos.py`), y nunca la Temporada ni la Servidor. Es la
+// `LIBRES` de `bot/verificados.py`: si cambia allá, cambia acá.
+const LIBRES = ['temporada', 'servidor'];
+const sinVerificar = (g, id) => !!(g && g.nv) && LIBRES.indexOf(id) < 0;
+// «la Competitiva», pero «la de País»
+const laDe = (id) => (id === 'pais' ? 'la de **País**'
+  : `la **${(CARTAS.find(c => c.id === id) || {}).et || id}**`);
+
 // ── Se anota a quien el bot no conoce, para que NO SE PIERDA ────────────────
 // Dlx, 19/09/2026: «no puedes hacer q automaticamente registre su ID en el
 // sheet minimamente?». Sí — pero no desde acá directo, y el porqué es la
@@ -371,10 +396,13 @@ function anotar(env, ctx, id, nick, user, glob, guild, por) {
   if (!id || !ctx || !ctx.waitUntil) return;
   ctx.waitUntil((async () => {
     try {
-      const [ya, cola, baja] = await Promise.all([
-        env.KV.get('d:' + id), env.KV.get('reg:' + id), env.KV.get('olvido:' + id),
+      const [ya, yaN, cola, baja] = await Promise.all([
+        env.KV.get('d:' + id), env.KV.get('dn:' + id), env.KV.get('reg:' + id),
+        env.KV.get('olvido:' + id),
       ]);
-      if (ya) return;                         // ya cargado
+      // ya cargado: verificado (`d:`) o en la Lista sin verificar (`dn:`, las
+      // LIBRES del 29/09/2026). Anotarlo sería trabajo para nadie.
+      if (ya || yaN) return;
       // 🔴 QUIEN BORRÓ SUS DATOS NO SE VUELVE A ANOTAR con un `/card` suelto:
       // `/borrar-mis-datos` promete que no lo sumamos solo. Vuelve si se lo
       // pide a un admin (`bot/olvidar.py --volver`).
@@ -427,7 +455,7 @@ const datosDe = (i, id) => {
 async function quienPidieron(env, i, ops, optUsuario, optNombre) {
   const u = ops.find(o => o.name === optUsuario);
   if (u) {
-    const clave = await env.KV.get('d:' + u.value);
+    const clave = await claveCarta(env, u.value);
     return { clave, como: `<@${u.value}>`, id: u.value };
   }
   const n = ops.find(o => o.name === optNombre);
@@ -467,13 +495,19 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
       // ⚠️ Los otros tres NO pueden ser grises: si todos son Secundario, la
       // única diferencia es el 50% de opacidad del deshabilitado, y sobre el
       // gris de Discord casi no se ve. El contraste tiene que venir del color.
-      components: CARTAS.filter(c => tiene(g, c.id)).map(c => ({
+      //
+      // 🔑 Y LAS DE QUIEN NO SE VERIFICÓ VAN CON CANDADO (las LIBRES,
+      // 29/09/2026). La Competitiva y la de País no le faltan por jugar sino
+      // por verificarse: es un «todavía no», no un «no existe», así que el
+      // botón está y al apretarlo lo dice, sin cambiar la carta.
+      components: CARTAS.filter(c => tiene(g, c.id) || sinVerificar(g, c.id)).map(c => Object.assign({
         type: COMP.BOTON,
         style: c.id === cual ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
         label: c.et,
         custom_id: `c:${quien}:${c.id}:${dueno}`,
         disabled: apagado || c.id === cual,
-      })).concat(botonAvisos(CARTAS.filter(c => tiene(g, c.id)).length)),
+      }, sinVerificar(g, c.id) ? { emoji: { name: '🔒' } } : {}))
+        .concat(botonAvisos(CARTAS.filter(c => tiene(g, c.id) || sinVerificar(g, c.id)).length)),
     },
   ];
 
@@ -923,6 +957,14 @@ const YA_TE_ANOTE = 'Ya te anoté ✍️ — si Discord sabe tu país (bandera e
   'tu apodo o un rol de país), entrás a la Liga solo en menos de una hora; ' +
   'si no, te carga un admin.';
 
+// 🔑 QUÉ PIDE CADA CARTA, en una línea (las LIBRES, Dlx 29/09/2026): la
+// Temporada y la Servidor salen al jugar estando en la Lista; la Competitiva
+// y la de País piden además el portón. Lo usan `/card` y `/versus`.
+const QUE_PIDE = 'Estando en la Lista, tu **Temporada** y tu **Servidor** ' +
+  'salen solas cuando juegues. La **Competitiva** y la de **País** piden ' +
+  'además **estar en DRA** y **verificarte** ahí; si ya estás en DRA, eso ' +
+  'también sale solo.';
+
 // «Verificate…» -> «verificate…», para seguir una frase
 const minuscula = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
 
@@ -1290,9 +1332,12 @@ async function cuentaDiscord(req, env) {
   // sigue preguntando y redirigiéndome»). Ver `sesionNueva()` en avisos.js.
   const ses = await sesionNueva(env, u.id);
   if (ses && ses.ses) h['set-cookie'] = cookieSesion(ses.ses, SESION_DIAS * 86400);
-  // ⚠️ EL RAPERO SALE DEL MISMO LUGAR QUE `/card`: `d:<id>` existe sólo para
-  // quien pasa el portón. Quien no está, entra igual y la página le dice qué
-  // le falta.
+  // ⚠️ EL RAPERO SALE DE `d:<id>`, que existe sólo para quien pasa el portón.
+  // Quien no está, entra igual y la página le dice qué le falta.
+  //
+  // 🔑 Y NO LEE `dn:` A PROPÓSITO (las LIBRES, 29/09/2026): `/card` sí, porque
+  // la Temporada y la Servidor son de todos los de la Lista, pero la cuenta
+  // —foto, redes, seguir, avisos— sigue siendo de los verificados.
   //
   // 🔴 Y CON SUS CARTAS, NO SÓLO EL NOMBRE. La página buscaba al rapero en el
   // ranking de la temporada, y quien tiene carta pero todavía no jugó la T1
@@ -1701,7 +1746,9 @@ const AYUDA = {
     'tarjeta que dice **cuánto te falta**. El botón sólo desaparece cuando la ' +
     'tarjeta no se puede emitir — por ejemplo País sin país cargado.',
     '',
-    '⚠️ Y para tener tarjeta hace falta **estar en DRA y verificarte ahí**.',
+    '⚠️ La **Temporada** y la **Servidor** salen al jugar estando en la ' +
+    'Lista. La **Competitiva** y la de **País** piden además **estar en DRA y ' +
+    'verificarte ahí**.',
   ].join('\n'),
 
   versus: () => [
@@ -1806,10 +1853,11 @@ const AYUDA = {
   ].join('\n'),
 
   verificar: () => [
-    '## `/verificar` — qué te falta para tu tarjeta',
+    '## `/verificar` — qué te falta para verificarte',
     'Mira en este momento, en Discord Rap Español, las tres cosas que hacen ' +
     'falta: estar en el servidor, el rol **Miembro** y un **país**. Te dice ' +
-    'cuál falta y cómo arreglarlo.',
+    'cuál falta y cómo arreglarlo. Verificado tenés las cuatro tarjetas; sin ' +
+    'verificar, la Temporada y la Servidor.',
     '',
     'El rol de Miembro lo da el bot solo, en su vuelta de cada media hora: no ' +
     'hace falta pedírselo a nadie.',
@@ -1832,7 +1880,7 @@ const AYUDA_INDICE = [
   'Las tarjetas de la Liga, adentro de Discord.',
   '',
   '· **`/card`** — tu tarjeta, o la de quien elijas',
-  '· **`/verificar`** — qué te falta para tener tu tarjeta',
+  '· **`/verificar`** — qué te falta para verificarte (y tener las cuatro)',
   '· **`/notify`** — activá los avisos de eventos en tu celular o compu',
   '· **`/website`** — la página de la Liga',
   '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
@@ -2277,6 +2325,15 @@ const COMANDOS = {
     const { id, hash } = avatarDe(i);
     const quien = id ? await env.KV.get('d:' + id) : null;
     if (!quien) {
+      // 🔑 LAS LIBRES (29/09/2026): quien está en la Lista sin verificar ya
+      // tiene la Temporada y la Servidor, pero la foto es de la cuenta, y la
+      // cuenta sigue siendo de los verificados. «No estás en la Liga» le
+      // mentiría.
+      if (id && await env.KV.get('dn:' + id)) {
+        return aviso('La foto se cambia estando **verificado en DRA**. Tus ' +
+                     'tarjetas de Temporada y Servidor ya están; `/verificar` ' +
+                     'te dice qué te falta para lo demás.');
+      }
       return aviso('Todavía no estás en la Liga, así que no hay carta donde ' +
                    'poner la foto.\nProbá `/card` y te anoto.');
     }
@@ -2479,7 +2536,7 @@ const COMANDOS = {
       `${si(unPais)} Tener un país` + (unPais ? ' ' + emojiBandera(dg.paises[0]) : ''),
     ].join('\n');
     if (!dg.enDra) {
-      return aviso('Para tener tarjeta hace falta estar en **Discord Rap Español**, y ahí ' +
+      return aviso('Para verificarte hace falta estar en **Discord Rap Español**, y ahí ' +
                    'no te encuentro.\n\n' + lista + '\n\n' + v.texto +
                    '\nCuando entres, volvé a escribir `/verificar`.', v.botones);
     }
@@ -2534,7 +2591,7 @@ const COMANDOS = {
     // sigue estando — no es redundancia, es el único camino para los otros 37.
     let quien, comoDije;
     if (porUsuario) {
-      quien = await env.KV.get('d:' + porUsuario.value);
+      quien = await claveCarta(env, porUsuario.value);
       comoDije = `<@${porUsuario.value}>`;
       if (!quien) {
         // La persona elegida no está cargada, pero SU ID lo tenemos acá mismo
@@ -2549,7 +2606,7 @@ const COMANDOS = {
       quien = norm(porNombre.value);
       comoDije = `**${porNombre.value}**`;
     } else {
-      quien = await quienEs(i, env);
+      quien = await quienEsCarta(i, env);
       comoDije = 'vos';
       if (!quien) {
         // El caso de la captura de Lil Drako: corrió /card, el bot no lo tenía.
@@ -2581,20 +2638,21 @@ const COMANDOS = {
         // ya está en DRA con su país: `bot/autoverificar.py` le da el
         // Miembro solo (#9 de Dlx). Para el resto sigue siendo suyo.
         if (cargado) {
+          // 🔑 DESDE LAS LIBRES (29/09/2026) NO TODO ES VERIFICARSE: quien
+          // está en la Lista y todavía no jugó tiene la Temporada y la
+          // Servidor en cuanto juegue. Verificarse es para las otras dos.
           return aviso('Ya estás cargado en la Liga ✅ — no hace falta que ' +
-                       'nadie te agregue.\n\nLo que falta es **verificarte ' +
-                       'en DRA**:\n• si ya estás en DRA y Discord sabe tu ' +
-                       'país (bandera en tu apodo o un rol de país), el bot ' +
-                       'te verifica solo en la próxima vuelta (~30 min);\n' +
-                       '• si no, ' + minuscula(v.texto) +
-                       '\n\nUna vez verificado, tu tarjeta sale sola.', v.botones);
+                       'nadie te agregue.\n\nTu **Temporada** y tu ' +
+                       '**Servidor** salen solas cuando juegues tu primer ' +
+                       'evento. Para la **Competitiva** y la de **País** ' +
+                       'falta **verificarte en DRA**:\n• si ya estás en DRA ' +
+                       'y Discord sabe tu país (bandera en tu apodo o un rol ' +
+                       'de país), el bot te verifica solo en la próxima ' +
+                       'vuelta (~30 min);\n• si no, ' + minuscula(v.texto), v.botones);
         }
         const d = datosDe(i, yo);
         anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
-        return aviso(YA_TE_ANOTE + '\n\n' +
-                     'Para tener carta hace falta **estar en DRA** y ' +
-                     '**verificarte** ahí; si ya estás en DRA, eso también ' +
-                     'sale solo.\n' + v.texto +
+        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + v.texto +
                      '\n\nSi ya competís y esto te parece un error, probá ' +
                      '`/card nombre:<tu nombre>`.', v.botones);
       }
@@ -2696,16 +2754,13 @@ const COMANDOS = {
     // ⚠️ `contra` ES OPCIONAL Y POR DEFECTO SOS VOS. Que se pueda enfrentar a
     // dos terceros no es un lujo: la mitad de los usos son de un organizador
     // armando un cruce entre otras dos personas.
-    const mio = pedido || { clave: await quienEs(i, env), como: 'vos' };
+    const mio = pedido || { clave: await quienEsCarta(i, env), como: 'vos' };
     if (!mio.clave) {
       if (!pedido) {
         const d = datosDe(i, idDe(i));
         anotar(env, ctx, idDe(i), d.nick, d.user, d.glob, i.guild_id, 'yo');
         const vf = comoVerificarse(aquiEs(i.guild_id));
-        return aviso(YA_TE_ANOTE + '\n\n' +
-                     'Para tener carta hace falta **estar en DRA** y ' +
-                     '**verificarte** ahí; si ya estás en DRA, eso también ' +
-                     'sale solo.\n' + vf.texto, vf.botones);
+        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + vf.texto, vf.botones);
       }
       if (mio.id) {
         const d = datosDe(i, mio.id);
@@ -2746,6 +2801,10 @@ const COMANDOS = {
       return aviso(
         faltan.map(([q, g]) => bloqueada(g, cual)
           ? `${q.como} todavía no desbloqueó la **${et}** — le falta competir.`
+          // 🔑 las LIBRES: no le falta competir, le falta verificarse
+          : sinVerificar(g, cual)
+            ? (q.como === 'vos' ? 'Vos todavía no te verificaste' : `${q.como} todavía no se verificó`) +
+              ` en DRA, y ${laDe(cual)} es de los verificados.`
           : `${q.como} no tiene carta de **${et}**.`).join('\n') +
         (juntas.length
           ? '\nLas que tienen los dos: ' + juntas.map(c => `**${c.et}**`).join(' · ') + '.'
@@ -3599,6 +3658,24 @@ export default {
       }
 
       if (que === 'c') {
+        // 🔑 EL CANDADO DE LAS LIBRES (29/09/2026): la Competitiva y la de
+        // País de quien no se verificó. No cambia la carta —no hay otra que
+        // mostrar—: contesta aparte y efímero qué falta, y a quién le habla
+        // depende de si la carta es del que aprieta.
+        if (sinVerificar(g, extra)) {
+          const yo = await quienEsCarta(i, env);
+          if (yo && yo === quien) {
+            const v = comoVerificarse(aqui);
+            return aviso('🔒 L' + laDe(extra).slice(1) + ' es de los verificados en DRA — tu ' +
+                         '**Temporada** y tu **Servidor** ya están. `/verificar` ' +
+                         'te dice qué te falta:\n• si ya estás en DRA y Discord ' +
+                         'sabe tu país (bandera en tu apodo o un rol de país), el ' +
+                         'bot te verifica solo en la próxima vuelta (~30 min);\n' +
+                         '• si no, ' + minuscula(v.texto), v.botones);
+          }
+          return aviso(`🔒 **${g.n || quien}** todavía no se verificó en DRA, así ` +
+                       `que no tiene ${laDe(extra)}: es de los verificados.`);
+        }
         // ⚠️ UN BOTÓN VIEJO PUEDE PEDIR UNA CARTA QUE YA NO ESTÁ. El mensaje
         // queda en el canal para siempre y su custom_id no caduca: si mañana
         // alguien pierde su carta de País —se queda sin país en el Sheet— el
@@ -3627,7 +3704,7 @@ export default {
       // habla. Una lectura de KV en el camino del click: son 100.000 por día
       // y se usan 4.500, así que cuesta nada y evita mandarle a Dlx una
       // invitación que era para Sombra.
-      const yoSoy = await env.KV.get('d:' + idDe(i));
+      const yoSoy = await quienEsCarta(i, env);
       const esMia = !!yoSoy && yoSoy === quien;
       const suyo = (g && g.n) || quien;
 

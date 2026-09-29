@@ -82,6 +82,13 @@ const KV_FALSO = {
   'd:999333': 'veterano',
   'd:999555': 'jugador',
   'd:999666': 'recien',
+  // 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): en la Lista, jugó, y NO pasa el
+  // portón. Tiene la Temporada y la Servidor; su ID va en `dn:`, que lee sólo
+  // la carta, y no en `d:`, que abre la cuenta. Lo escribe `subir_datos.py`.
+  'p:libre': JSON.stringify({ n: 'Libre', sv: 'FFA', svp: 'FFA', cc: 'cl', ev: 2, nv: 1,
+                              cs: ['temporada', 'servidor'], svs: ['FFA'],
+                              svc: ['FFA'] }),
+  'dn:999777': 'libre',
 };
 // ⚠️ `meta` va aparte y es MUTABLE porque `svs` es lo que enciende las cartas
 // de los otros servidores cuando el pipeline las sube. Hay que poder probar
@@ -1801,6 +1808,83 @@ console.log('\n/VERIFICAR\n');
   r = await pedir({ type: 2, guild_id: G.DRA, channel_id: '1',
                     member: { user: { id: '700005' } }, data: { name: 'verificar' } });
   ok('sin token ni portón, hace lo de /card: anota y explica', /Ya te anoté/.test(texto(r)), texto(r));
+}
+
+console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
+
+{
+  // su propia carta, por su ID, que está en `dn:` y no en `d:`
+  let r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777' } },
+    data: { name: 'card' } });
+  let c = r.json?.data?.components;
+  ok('/card encuentra a quien está en `dn:`', r.json?.type === 4 && !!galeria(c),
+     (r.json?.data?.content || '').slice(0, 80));
+  ok('y abre en su Servidor', (galeria(c)?.items?.[0]?.media?.url || '').includes('/libre/'),
+     galeria(c)?.items?.[0]?.media?.url || '');
+  const bs = botones(c);
+  ok('están los cuatro botones', bs.length === 4, bs.map(b => b.label).join());
+  const conCandado = bs.filter(b => b.emoji && b.emoji.name === '🔒').map(b => b.label).sort();
+  ok('la Competitiva y la de País llevan candado', conCandado.join() === 'Competitiva,País',
+     conCandado.join());
+  ok('la Temporada y la Servidor no', bs.filter(b => !b.emoji).map(b => b.label).sort().join() ===
+     'Servidor,Temporada');
+  ok('la fila no pasa de cinco', (filaBotones(c)?.components || []).length <= 5);
+
+  // el candado, apretado por el dueño: «verificate», sin tocar la carta
+  r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:libre:competitivo:999777' },
+    member: { user: { id: '999777' } } });
+  let txt = r.json?.data?.content || '';
+  ok('el candado contesta aparte (4), no pisa la carta', r.json?.type === 4, `type ${r.json?.type}`);
+  ok('y es efímero', ((r.json?.data?.flags || 0) & (1 << 6)) !== 0);
+  ok('le dice que es de los verificados', txt.includes('verificados') && txt.includes('Competitiva'), txt);
+  ok('y cómo verificarse, con el botón', (r.json?.data?.components?.[0]?.components || [])
+     .some(b => b.label === 'Verificarme'));
+
+  // las libres sí cambian la carta
+  r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:libre:temporada:999777' },
+    member: { user: { id: '999777' } } });
+  ok('la Temporada sí se abre (7)', r.json?.type === 7 &&
+     (galeria(r.json?.data?.components)?.items?.[0]?.media?.url || '').includes('/libre/temporada.webp'));
+
+  // la carta de otro: el candado habla de ÉL, no del que mira
+  r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999111' } },
+    data: { name: 'card', options: [{ name: 'nombre', value: 'Libre' }] } });
+  ok('por nombre también sale', r.json?.type === 4 && botones(r.json?.data?.components).length === 4);
+  r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:libre:pais:999111' },
+    member: { user: { id: '999111' } } });
+  txt = r.json?.data?.content || '';
+  ok('en la de otro, dice que ÉL no se verificó', txt.includes('**Libre** todavía no se verificó'), txt);
+
+  // elegido en el selector
+  r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999111' } },
+    data: { name: 'card', options: [{ name: 'quien', value: '999777' }] } });
+  ok('y elegido en el selector, por su `dn:`', r.json?.type === 4 && !!galeria(r.json?.data?.components),
+     (r.json?.data?.content || '').slice(0, 80));
+
+  // /versus: la Competitiva no es «no tiene carta», es «no se verificó»
+  r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999333' } },
+    data: { name: 'versus', options: [{ name: 'rival', value: '999777' },
+                                      { name: 'carta', value: 'competitivo' }] } });
+  txt = r.json?.data?.content || '';
+  ok('/versus en Competitiva: «todavía no se verificó»', txt.includes('todavía no se verificó'), txt);
+  r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777' } },
+    data: { name: 'versus', options: [{ name: 'rival', value: '999333' },
+                                      { name: 'carta', value: 'competitivo' }] } });
+  txt = r.json?.data?.content || '';
+  ok('y si es él: «vos todavía no te verificaste»', txt.includes('Vos todavía no te verificaste'), txt);
+
+  // lo de la cuenta sigue siendo de los verificados
+  r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777', avatar: 'abc' } },
+    data: { name: 'foto' } });
+  txt = r.json?.data?.content || '';
+  ok('/foto: no es «no estás en la Liga», es «verificate»', txt.includes('verificado en DRA') &&
+     !txt.includes('no estás en la Liga'), txt);
+  r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777' } },
+    data: { name: 'verificar' } });
+  txt = r.json?.data?.content || '';
+  ok('/verificar no le dice «ya estás verificado»', !txt.includes('Ya estás verificado'), txt.slice(0, 80));
+  await esperarSeguimientos();
+  ok('y no lo vuelve a anotar en la cola: ya está en la Lista', !('reg:999777' in PUESTO));
 }
 
 console.log('\n/borrar-mis-datos\n');
