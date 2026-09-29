@@ -120,8 +120,24 @@ FUENTES = {
     'fanzine': 'family=Anybody:wdth,wght@50..150,400..900&family=IBM+Plex+Mono:wght@400;600;700',
     'tvpirata': 'family=VT323&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;700',
     'diario': 'family=DM+Serif+Display:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800',
+    'calle': 'family=Archivo:wdth,wght@62..125,100..900&family=Space+Mono:wght@400;700',
+    'callenoche': 'family=Archivo:wdth,wght@62..125,100..900&family=Space+Mono:wght@400;700',
 }
 CARTA_FUENTES = 'family=Archivo:wght@800;900&family=Barlow+Condensed:wght@700;800'
+
+def _logo_ul():
+    """El logo de Under Legends (bot/paginas/ul.png) a 128 px, embebido: la maqueta no pide nada afuera."""
+    import base64
+    from io import BytesIO
+    from PIL import Image
+    ruta = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'bot', 'paginas', 'ul.png')
+    im = Image.open(ruta).convert('RGBA').resize((128, 128), Image.LANCZOS)
+    b = BytesIO()
+    im.save(b, 'PNG', optimize=True)
+    return 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()
+
+
+LOGO_UL = _logo_ul()
 
 CSS = {}
 
@@ -549,6 +565,224 @@ CSS['diario'] = '''
 .pie-btn .btn{width:100%}
 '''
 
+CSS['calle'] = '''
+:root{--fondo:#FFFFFF;--tinta:#030304;--linea:#030304;--suave:#D8D8D4;--gris:#6E6E6A;--pared:#EDEDEA;
+  --inv:#030304;--inv-tinta:#F6F6F6;--vivo-fondo:#030304;--vivo-tinta:#F6F6F6;--vivo-meta:#BDBDB8;--vivo-linea:#333336;
+  --verde:#29B298;--magenta:#E41373;--sube:#127A63;--vs:#29B298}
+.app{background:var(--fondo);color:var(--tinta);font:400 15px/1.45 Archivo,sans-serif}
+.barra-ul{height:6px;background:linear-gradient(90deg,var(--verde) 50%,var(--magenta) 50%)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
+.marca{display:flex;align-items:center;gap:10px;font:900 18px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em}
+.marca img{width:40px;height:40px;border-radius:50%;flex:none}
+.marca small{display:block;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.12em;margin-top:5px;color:var(--gris)}
+.btn-ico{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--linea)}
+.bloque{margin:0 16px 22px;padding:12px 0 0;border-top:2px solid var(--linea)}
+.bloque>small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.st{display:flex;gap:10px;align-items:baseline;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.st b{color:var(--magenta)}
+.vivo{background:var(--vivo-fondo);color:var(--vivo-tinta);padding:16px;border-top:0}
+.tag{display:inline-flex;align-items:center;gap:8px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;background:var(--magenta);color:#fff;padding:6px 8px}
+.tag:before{content:"";width:8px;height:8px;background:var(--verde)}
+.vivo h2{font:900 34px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:14px 0 8px}
+.meta{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--vivo-meta);margin:0 0 12px}
+.cruces{list-style:none;margin:0 0 16px;padding:0}
+.cruces li{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--vivo-linea);font:800 16px/1.2 Archivo,sans-serif;font-stretch:110%}
+.cruces em{font:700 11px/1 "Space Mono",monospace;font-style:normal;color:var(--vs)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;font:800 14px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:.02em;background:var(--inv);color:var(--inv-tinta);border:2px solid var(--inv)}
+.vivo .btn{background:var(--verde);color:#030304;border-color:var(--verde)}
+.btn.accion{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.btn.prim{background:var(--inv);color:var(--inv-tinta)}
+.btn.claro{background:transparent;color:var(--tinta);border-color:var(--linea)}
+.ev-t{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.chip{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--linea);padding:5px 7px}
+.chip.sv{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.hora{font-weight:700;margin:0 0 8px}
+.hora small{font-weight:400;color:var(--gris)}
+.cuenta{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 14px}
+.cuenta b{font:900 40px/.9 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;white-space:nowrap}
+.cuenta small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+.casillas{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--linea)}
+.casillas div{padding:12px 10px;border-left:2px solid var(--linea)}
+.casillas div:first-child{border-left:0;background:var(--verde);color:#030304}
+.casillas b{display:block;font:900 26px/1 Archivo,sans-serif;font-stretch:120%;margin-bottom:6px}
+.casillas small{font:700 11px/1.25 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;display:block}
+.lista{list-style:none;margin:0;padding:0}
+.lista li{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--suave)}
+.lista li:first-child{border-top:0}
+.mono{width:36px;height:36px;display:grid;place-items:center;background:var(--inv);color:var(--inv-tinta);font:700 12px/1 "Space Mono",monospace;flex:none}
+.nom{font:800 16px/1.2 Archivo,sans-serif;flex:1}
+.sub{display:block;font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-top:2px}
+.precio{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;background:var(--magenta);color:#fff;padding:6px 9px;transform:rotate(-3deg)}
+.lnk{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;color:var(--tinta)}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--linea);background:var(--fondo)}
+.nav a{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+.nav a.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 -4px 0 var(--verde)}
+.cab{padding:16px 16px 6px}
+.cab h1{font:900 44px/.9 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:0}
+.cab p{margin:8px 0 0;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta)}
+.tabs{display:flex;gap:16px;overflow:hidden;padding:10px 16px 0;margin:0 0 12px;border-bottom:2px solid var(--linea)}
+.tabs span{flex:none;font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:0 0 10px;color:var(--gris)}
+.tabs span.on{color:var(--tinta);box-shadow:inset 0 -4px 0 var(--verde)}
+.buscar{margin:0 16px 10px;display:flex;align-items:center;gap:8px;border:2px solid var(--linea);padding:0 12px;min-height:46px;font-weight:600;color:var(--gris)}
+.filtros{display:flex;gap:6px;padding:0 16px 12px}
+.filtros span{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--linea);padding:7px 9px}
+.filtros span.on{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.tabla{margin:0 16px 14px;border-top:2px solid var(--linea)}
+.fila{display:grid;grid-template-columns:44px 30px 1fr 30px 66px;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid var(--suave)}
+.pos{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-align:center;padding:6px 0}
+.fila.p1 .pos{background:var(--verde);color:#030304}
+.fila.p2 .pos{background:var(--magenta);color:#fff}
+.fila.p3 .pos{background:var(--inv);color:var(--inv-tinta)}
+.cam{font:700 11px/1 "Space Mono",monospace;text-align:center}
+.sube{color:var(--sube)}.baja{color:var(--magenta)}.igual{color:var(--gris)}
+.rap b{display:block;font:800 16px/1.15 Archivo,sans-serif}
+.rap small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.rg{display:grid;place-items:center;height:24px;font:700 11px/1 "Space Mono",monospace;color:#030304;border:1.5px solid #030304}
+.pts{text-align:right;font:800 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.yo{margin:0 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--inv);color:var(--inv-tinta);padding:12px 12px 12px 14px}
+.yo b{font:900 16px/1.1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.yo small{display:block;font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.08em;margin-top:3px;opacity:.75}
+.yo .btn{min-height:40px;padding:0 12px;font-size:12px;background:var(--verde);color:#030304;border-color:var(--verde)}
+.perfil-cab{padding:16px 16px 6px}
+.perfil-cab h1{font:900 48px/.9 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:0}
+.perfil-cab .chips{margin:12px 0}
+.acciones{display:flex;gap:10px}
+.pared{display:grid;place-items:center;padding:30px 0 24px;background:var(--pared);margin:16px 0}
+.afiche{position:relative;outline:2px solid var(--linea);outline-offset:6px}
+.sticker-ul{position:absolute;right:-28px;top:-26px;width:66px;height:66px;border-radius:50%;transform:rotate(12deg);border:3px solid #fff;z-index:3}
+.selector{display:grid;grid-template-columns:repeat(4,1fr);margin:0 16px 16px;border:2px solid var(--linea)}
+.selector span{padding:8px 4px;text-align:center;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;border-left:2px solid var(--linea)}
+.selector span:first-child{border-left:0}
+.selector span.on{background:var(--inv);color:var(--inv-tinta)}
+.selector span.bloq{color:var(--gris)}
+.selector small{display:block;font:400 11px/1.25 "Space Mono",monospace;margin-top:3px;text-transform:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--linea)}
+.stats div{padding:10px 4px;text-align:center;border-left:2px solid var(--linea)}
+.stats div:first-child{border-left:0}
+.stats b{display:block;font:900 18px/1 Archivo,sans-serif;font-stretch:115%}
+.stats small{font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.rango-fila{display:flex;align-items:center;gap:12px;margin-top:14px}
+.rango-fila .rg{width:44px;height:40px;font-size:18px}
+.rango-fila b{font:900 18px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.progreso{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:8px 0 6px}
+.progreso i{height:18px;border:2px solid var(--linea)}
+.progreso i.si{background:var(--verde)}
+.pie-btn{padding:4px 16px 20px}
+.pie-btn .btn{width:100%}
+'''
+CSS['callenoche'] = '''
+:root{--fondo:#FFFFFF;--tinta:#030304;--linea:#030304;--suave:#D8D8D4;--gris:#6E6E6A;--pared:#EDEDEA;
+  --inv:#030304;--inv-tinta:#F6F6F6;--vivo-fondo:#030304;--vivo-tinta:#F6F6F6;--vivo-meta:#BDBDB8;--vivo-linea:#333336;
+  --verde:#29B298;--magenta:#E41373;--sube:#127A63;--vs:#29B298}
+.app{background:var(--fondo);color:var(--tinta);font:400 15px/1.45 Archivo,sans-serif}
+.barra-ul{height:6px;background:linear-gradient(90deg,var(--verde) 50%,var(--magenta) 50%)}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px}
+.marca{display:flex;align-items:center;gap:10px;font:900 18px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;letter-spacing:-.01em}
+.marca img{width:40px;height:40px;border-radius:50%;flex:none}
+.marca small{display:block;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.12em;margin-top:5px;color:var(--gris)}
+.btn-ico{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--linea)}
+.bloque{margin:0 16px 22px;padding:12px 0 0;border-top:2px solid var(--linea)}
+.bloque>small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.st{display:flex;gap:10px;align-items:baseline;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.st b{color:var(--magenta)}
+.vivo{background:var(--vivo-fondo);color:var(--vivo-tinta);padding:16px;border-top:0}
+.tag{display:inline-flex;align-items:center;gap:8px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;background:var(--magenta);color:#fff;padding:6px 8px}
+.tag:before{content:"";width:8px;height:8px;background:var(--verde)}
+.vivo h2{font:900 34px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:14px 0 8px}
+.meta{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--vivo-meta);margin:0 0 12px}
+.cruces{list-style:none;margin:0 0 16px;padding:0}
+.cruces li{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--vivo-linea);font:800 16px/1.2 Archivo,sans-serif;font-stretch:110%}
+.cruces em{font:700 11px/1 "Space Mono",monospace;font-style:normal;color:var(--vs)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;font:800 14px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:.02em;background:var(--inv);color:var(--inv-tinta);border:2px solid var(--inv)}
+.vivo .btn{background:var(--verde);color:#030304;border-color:var(--verde)}
+.btn.accion{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.btn.prim{background:var(--inv);color:var(--inv-tinta)}
+.btn.claro{background:transparent;color:var(--tinta);border-color:var(--linea)}
+.ev-t{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:0 0 10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.chip{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--linea);padding:5px 7px}
+.chip.sv{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.hora{font-weight:700;margin:0 0 8px}
+.hora small{font-weight:400;color:var(--gris)}
+.cuenta{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 14px}
+.cuenta b{font:900 40px/.9 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;white-space:nowrap}
+.cuenta small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+.casillas{display:grid;grid-template-columns:repeat(3,1fr);border:2px solid var(--linea)}
+.casillas div{padding:12px 10px;border-left:2px solid var(--linea)}
+.casillas div:first-child{border-left:0;background:var(--verde);color:#030304}
+.casillas b{display:block;font:900 26px/1 Archivo,sans-serif;font-stretch:120%;margin-bottom:6px}
+.casillas small{font:700 11px/1.25 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;display:block}
+.lista{list-style:none;margin:0;padding:0}
+.lista li{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--suave)}
+.lista li:first-child{border-top:0}
+.mono{width:36px;height:36px;display:grid;place-items:center;background:var(--inv);color:var(--inv-tinta);font:700 12px/1 "Space Mono",monospace;flex:none}
+.nom{font:800 16px/1.2 Archivo,sans-serif;flex:1}
+.sub{display:block;font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);margin-top:2px}
+.precio{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;background:var(--magenta);color:#fff;padding:6px 9px;transform:rotate(-3deg)}
+.lnk{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;color:var(--tinta)}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);border-top:2px solid var(--linea);background:var(--fondo)}
+.nav a{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+.nav a.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 -4px 0 var(--verde)}
+.cab{padding:16px 16px 6px}
+.cab h1{font:900 44px/.9 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:0}
+.cab p{margin:8px 0 0;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta)}
+.tabs{display:flex;gap:16px;overflow:hidden;padding:10px 16px 0;margin:0 0 12px;border-bottom:2px solid var(--linea)}
+.tabs span{flex:none;font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:0 0 10px;color:var(--gris)}
+.tabs span.on{color:var(--tinta);box-shadow:inset 0 -4px 0 var(--verde)}
+.buscar{margin:0 16px 10px;display:flex;align-items:center;gap:8px;border:2px solid var(--linea);padding:0 12px;min-height:46px;font-weight:600;color:var(--gris)}
+.filtros{display:flex;gap:6px;padding:0 16px 12px}
+.filtros span{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid var(--linea);padding:7px 9px}
+.filtros span.on{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.tabla{margin:0 16px 14px;border-top:2px solid var(--linea)}
+.fila{display:grid;grid-template-columns:44px 30px 1fr 30px 66px;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid var(--suave)}
+.pos{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-align:center;padding:6px 0}
+.fila.p1 .pos{background:var(--verde);color:#030304}
+.fila.p2 .pos{background:var(--magenta);color:#fff}
+.fila.p3 .pos{background:var(--inv);color:var(--inv-tinta)}
+.cam{font:700 11px/1 "Space Mono",monospace;text-align:center}
+.sube{color:var(--sube)}.baja{color:var(--magenta)}.igual{color:var(--gris)}
+.rap b{display:block;font:800 16px/1.15 Archivo,sans-serif}
+.rap small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.rg{display:grid;place-items:center;height:24px;font:700 11px/1 "Space Mono",monospace;color:#030304;border:1.5px solid #030304}
+.pts{text-align:right;font:800 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.yo{margin:0 16px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--inv);color:var(--inv-tinta);padding:12px 12px 12px 14px}
+.yo b{font:900 16px/1.1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.yo small{display:block;font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.08em;margin-top:3px;opacity:.75}
+.yo .btn{min-height:40px;padding:0 12px;font-size:12px;background:var(--verde);color:#030304;border-color:var(--verde)}
+.perfil-cab{padding:16px 16px 6px}
+.perfil-cab h1{font:900 48px/.9 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;margin:0}
+.perfil-cab .chips{margin:12px 0}
+.acciones{display:flex;gap:10px}
+.pared{display:grid;place-items:center;padding:30px 0 24px;background:var(--pared);margin:16px 0}
+.afiche{position:relative;outline:2px solid var(--linea);outline-offset:6px}
+.sticker-ul{position:absolute;right:-28px;top:-26px;width:66px;height:66px;border-radius:50%;transform:rotate(12deg);border:3px solid #fff;z-index:3}
+.selector{display:grid;grid-template-columns:repeat(4,1fr);margin:0 16px 16px;border:2px solid var(--linea)}
+.selector span{padding:8px 4px;text-align:center;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;border-left:2px solid var(--linea)}
+.selector span:first-child{border-left:0}
+.selector span.on{background:var(--inv);color:var(--inv-tinta)}
+.selector span.bloq{color:var(--gris)}
+.selector small{display:block;font:400 11px/1.25 "Space Mono",monospace;margin-top:3px;text-transform:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--linea)}
+.stats div{padding:10px 4px;text-align:center;border-left:2px solid var(--linea)}
+.stats div:first-child{border-left:0}
+.stats b{display:block;font:900 18px/1 Archivo,sans-serif;font-stretch:115%}
+.stats small{font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.rango-fila{display:flex;align-items:center;gap:12px;margin-top:14px}
+.rango-fila .rg{width:44px;height:40px;font-size:18px}
+.rango-fila b{font:900 18px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.progreso{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:8px 0 6px}
+.progreso i{height:18px;border:2px solid var(--linea)}
+.progreso i.si{background:var(--verde)}
+.pie-btn{padding:4px 16px 20px}
+.pie-btn .btn{width:100%}
+
+:root{--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2C;--gris:#A5A5A0;--pared:#121214;
+  --inv:#F6F6F6;--inv-tinta:#030304;--vivo-fondo:#E41373;--vivo-tinta:#FFFFFF;--vivo-meta:#FFE1EE;--vivo-linea:rgba(255,255,255,.35);
+  --sube:#29B298;--vs:#FFFFFF}
+.cab p,.st b{color:var(--verde)}
+'''
+
 # lo que cambia de NOMBRE según el estilo (el contenido es el mismo)
 VOZ = {
     'barda': {'vivo': 'EN VIVO', 'prox': 'Próximo evento', 'semana': 'Tu semana', 'busca': 'Se busca',
@@ -560,7 +794,11 @@ VOZ = {
                  'prog': '<i>P.212</i>Hacia la Competitiva'},
     'diario': {'vivo': 'Último momento', 'prox': 'Próximo evento', 'semana': 'Tu semana', 'busca': 'Se busca',
                'paso': 'Lo que pasó', 'ev': 'Últimos eventos', 'prog': 'Hacia la carta Competitiva'},
+    'calle': {'vivo': 'EN VIVO', 'prox': '<b>01</b>Próximo evento', 'semana': '<b>02</b>Tu semana',
+              'busca': '<b>03</b>Se busca', 'paso': '<b>04</b>Lo que pasó', 'ev': '<b>03</b>Últimos eventos',
+              'prog': '<b>02</b>Hacia la carta Competitiva'},
 }
+VOZ['callenoche'] = VOZ['calle']
 
 
 def mayus(e, s):
@@ -572,6 +810,10 @@ def cabeza(e, pantalla):
     if e == 'diario':
         return ('<div class="cabecera"><div class="fecha"><span>Martes 29 de septiembre</span><span>Temporada 1</span></div>'
                 '<div class="marca">Under Legends</div><div class="sub-marca">Liga Global</div><div class="raya"></div></div>')
+    if e.startswith('calle'):
+        return ('<div class="barra-ul"></div><div class="top"><div class="marca"><img alt="" src="%s">'
+                '<span>UNDER LEGENDS<small>LIGA GLOBAL · T1</small></span></div>'
+                '<span class="btn-ico">%s</span></div>' % (LOGO_UL, ico('campana', 22)))
     if e == 'tvpirata':
         return ('<div class="tele"><span>P100 <b>UNDER LEGENDS</b></span><span>29 SEP 21:00:15</span></div>'
                 '<div class="top"><div class="marca">UNDER<br>LEGENDS<small>LIGA GLOBAL</small></div>'
@@ -675,6 +917,8 @@ def p_cab(e):
 
 def p_pared(e):
     sello = '<span class="sello">EN RACHA</span>' if e == 'fanzine' else ''
+    if e.startswith('calle'):
+        sello = '<img class="sticker-ul" alt="" src="%s">' % LOGO_UL
     return '<div class="pared"><div class="afiche">%s%s</div></div>' % (carta(), sello)
 
 
@@ -717,7 +961,7 @@ def hoy(e):
 
 
 def ranking(e):
-    h = [tele('P101') if e == 'tvpirata' else '']
+    h = [tele('P101') if e == 'tvpirata' else ('<div class="barra-ul"></div>' if e.startswith('calle') else '')]
     if e == 'diario':
         h.append(cabeza(e, 'ranking'))
     h += [r_cab(e), r_tabs(), r_buscar(), r_tabla(e), r_yo(), nav('ranking')]
@@ -730,6 +974,8 @@ def perfil(e):
         h.append(cabeza(e, 'perfil'))
     if e == 'tvpirata':
         h.append(tele('P210'))
+    if e.startswith('calle'):
+        h.append('<div class="barra-ul"></div>')
     h += [p_cab(e), p_pared(e), p_selector(), p_stats(), p_prog(e), p_eventos(e), p_boton(), nav('yo')]
     return ''.join(h)
 
@@ -752,6 +998,9 @@ def lado(e, activa):
         'on' if k == activa else '', ico(k, 20), n, '<i>P%s</i>' % pg if e == 'tvpirata' else '') for n, k, pg in LADO)
     marca = ('<div class="marca">UNDER<br>LEGENDS<small>LIGA GLOBAL</small></div>' if e == 'tvpirata'
              else '<div class="marca">UNDER LEGENDS<small>Liga Global</small></div>')
+    if e.startswith('calle'):
+        marca = ('<div class="marca"><img alt="" src="%s"><span>UNDER<br>LEGENDS<small>LIGA GLOBAL · T1</small>'
+                 '</span></div>' % LOGO_UL)
     return ('<aside class="lado">%s<nav class="menu">%s</nav><a class="yo-chip %s"><span class="mono">KA</span>'
             '<span>Kairos<small>Mi cuenta</small></span></a></aside>' % (marca, items, 'on' if activa == 'yo' else ''))
 
@@ -767,6 +1016,8 @@ def barra(e, titulo):
 def esc(e, activa, cuerpo):
     pags = dict((k, pg) for _, k, pg in LADO)
     arriba = tele('P%s' % pags.get(activa, '210')) if e == 'tvpirata' else ''
+    if e.startswith('calle'):
+        arriba = '<div class="barra-ul"></div>'
     return '%s<div class="esc">%s<main class="cuerpo">%s</main></div>' % (arriba, lado(e, activa), cuerpo)
 
 
@@ -810,7 +1061,8 @@ ESC_BASE = """
 .cuerpo .cab{padding:0 0 8px}
 .cuerpo .tabs{padding:6px 0 16px;margin-left:0;margin-right:0}
 .grilla-rk{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start}
-.rk-izq .buscar,.rk-izq .filtros{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
+.rk-izq .buscar{margin-left:0;margin-right:0}
+.rk-izq .filtros{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
 .rk-izq .filtros{padding-bottom:14px}
 .rk-izq .tabla{margin:0}
 .grilla-rk .fila{grid-template-columns:52px 48px 1fr 60px 110px;padding-top:9px;padding-bottom:9px}
@@ -865,6 +1117,22 @@ ESC['tvpirata'] = """
 .rk-der .yo{padding:12px 14px}
 .cuerpo .cab h1{font-size:60px}
 """
+ESC['calle'] = '''
+.lado{background:var(--fondo);border-right:2px solid var(--linea)}
+.lado .marca{font-size:17px}
+.menu a{font:800 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:.02em}
+.menu a.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 5px 0 0 var(--verde)}
+.yo-chip{border:2px solid var(--linea);font-weight:800}
+.yo-chip.on{background:var(--inv);color:var(--inv-tinta)}
+.yo-chip.on .mono{background:var(--verde);color:#030304}
+.saludo{font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;text-transform:uppercase;opacity:1;color:var(--gris)}
+.grilla-hoy .vivo{padding:20px}
+.grilla-hoy .vivo h2{font-size:48px}
+.cuerpo .cab h1{font-size:64px}
+.pf-izq .perfil-cab h1{font-size:64px}
+.pf-izq .pared{margin:20px 0}
+'''
+ESC['callenoche'] = ESC['calle']
 ESC['diario'] = """
 .esc{display:block}
 .cabecera.ancha{padding:18px 48px 0;text-align:center}
@@ -899,11 +1167,13 @@ def pagina(e, pantalla, pc=False):
             '<meta name="viewport" content="width=%d,initial-scale=1">'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?%s&%s&display=block">'
             '<style>%s%s%s%s</style></head><body><div class="app%s">%s</div></body></html>'
-            % (1280 if pc else 360, FUENTES[e], CARTA_FUENTES, BASE, CSS[e], CARTA_CSS, extra,
+            % (1280 if pc else 360, FUENTES[e],
+               'family=Barlow+Condensed:wght@700;800' if e.startswith('calle') else CARTA_FUENTES,
+               BASE, CSS[e], CARTA_CSS, extra,
                ' pc' if pc else '', cuerpo))
 
 
-ESTILOS = ['barda', 'fanzine', 'tvpirata', 'diario']
+ESTILOS = ['calle', 'callenoche', 'barda', 'fanzine', 'tvpirata', 'diario']
 PANTALLAS = ['hoy', 'ranking', 'perfil']
 
 

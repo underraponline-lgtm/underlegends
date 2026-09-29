@@ -14,6 +14,8 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 
 FAMILIAS = {
+    'calle': ['Archivo', 'Space Mono'],
+    'callenoche': ['Archivo', 'Space Mono'],
     'barda': ['Bungee', 'Atkinson Hyperlegible Next'],
     'fanzine': ['Anybody', 'IBM Plex Mono'],
     'tvpirata': ['VT323', 'Space Grotesk'],
@@ -43,7 +45,9 @@ def main():
             # el navegador no baja una fuente que la página no usa
             carta = ['Archivo', 'Barlow Condensed'] if ('_perfil' in f) else []
             for fam in FAMILIAS[estilo] + carta:
-                ok = pg.evaluate('(f) => document.fonts.check("16px \\"" + f + "\\"")', fam)
+                # una familia que la página sólo usa en negrita no tiene la 400: se pregunta por las dos
+                ok = pg.evaluate('(f) => document.fonts.check("16px \\"" + f + "\\"") || '
+                                 'document.fonts.check("700 16px \\"" + f + "\\"")', fam)
                 cargada = pg.evaluate('(f) => [...document.fonts].some(x => x.family.replace(/"/g, "") === f && x.status === "loaded")', fam)
                 if not (ok and cargada):
                     mal.append((f, fam))
