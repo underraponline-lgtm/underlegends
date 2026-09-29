@@ -939,6 +939,79 @@ def autores_conocidos(hallazgos, links=None, guardadas=None):
     return out
 
 
+# ── el podio con mención ───────────────────────────────────────────────
+# 🔑 Dlx, 28/09/2026, a «si el podio menciona al campeón (1ER PUESTO:
+# @alguien), ¿eso resuelve su nombre solo?»: *«A · sí, como las
+# inscripciones»*. RAP EXHIBITION 1/8 (Snake Rap) escribe «1ER PUESTO:
+# <@639232575461654538>» y el campeón de su final es ANTORCHA OLÍMPICA, que
+# no está en la Lista: la llave misma dice qué cuenta es.
+#
+# ⚠️ SÓLO LO QUE NO SE PRESTA A DUDA: un renglón del podio con UNA mención,
+# contra un lado de UNA persona. Un equipo con dos menciones no dice cuál es
+# cuál, y un puesto que aparece dos veces con cuentas distintas (dos
+# terceros) tampoco. Lo usa `decidir.por_discord()`, como una inscripción.
+#
+#: `{'<evento normalizado>|<sv>|<dd/mm>': {'<nombre normalizado>': discord_id}}`
+PODIO = os.path.join(BASE, 'datos', 'podio_menciones.json')
+_P_SEGUNDO = re.compile(r'SUB\s*-?\s*CAMPEON|\b2\s*(?:DO|ND|°|º)?\s*(?:PUESTO|LUGAR)\b'
+                        r'|\bSEGUNDO\s+(?:PUESTO|LUGAR)|🥈')
+_P_PRIMERO = re.compile(r'CAMPEON|\b1\s*(?:ER|RO|°|º)?\s*(?:PUESTO|LUGAR)\b'
+                        r'|\bPRIMER\s+(?:PUESTO|LUGAR)|🥇')
+_P_TERCERO = re.compile(r'\b3\s*(?:ER|RO|°|º)?\s*(?:PUESTO|LUGAR)\b|\bTERCER\s+(?:PUESTO|LUGAR)|🥉')
+
+
+def menciones_podio(texto):
+    """`{1: id, 2: id, 3: id}`: los renglones del podio con UNA sola mención."""
+    import unicodedata
+    vistos = {}
+    for l in str(texto or '').splitlines():
+        ids = set(E.MENCION.findall(l))
+        if len(ids) != 1:
+            continue
+        s = ''.join(c for c in unicodedata.normalize('NFKD', l)
+                    if not unicodedata.combining(c)).upper()
+        if re.search(r'M\.?\s*V\.?\s*P\b', s):
+            continue
+        p = (2 if _P_SEGUNDO.search(s) else 1 if _P_PRIMERO.search(s)
+             else 3 if _P_TERCERO.search(s) else None)
+        if p:
+            vistos.setdefault(p, set()).update(ids)
+    return {p: next(iter(v)) for p, v in vistos.items() if len(v) == 1}
+
+
+def podio_de_grupo(g, filas, norm_nombre):
+    """`{nombre normalizado: id}` de quien sube al podio y la llave menciona.
+
+    1º y 2º salen de la final; 3º, del tercer puesto. `norm_nombre` es la
+    clave con que ✅ Decidir busca el nombre (`decidir.norm` sin bandera).
+    """
+    pos = {}
+    for h in g.get('llaves') or []:
+        for p, did in menciones_podio(h.get('texto') or '').items():
+            pos.setdefault(p, set()).add(did)
+    pos = {p: next(iter(v)) for p, v in pos.items() if len(v) == 1}
+    if not pos:
+        return {}
+    r = lambda f: str(f.get('ronda') or '').strip().lower()     # noqa: E731
+    fin = [f for f in filas if r(f) == 'final' and f.get('ganador')]
+    ter = [f for f in filas if r(f) in ('tercer puesto', 'tercer lugar') and f.get('ganador')]
+    lados = {}
+    if len(fin) == 1:
+        lados[1] = fin[0]['ganador']
+        lados[2] = fin[0]['ladoB'] if fin[0]['ladoA'] == fin[0]['ganador'] else fin[0]['ladoA']
+    if len(ter) == 1:
+        lados[3] = ter[0]['ganador']
+    out = {}
+    for p, did in pos.items():
+        lado = lados.get(p) or ''
+        if not lado or E._miembros(lado) or E.MENCION.search(lado):
+            continue
+        k = norm_nombre(lado)
+        if len(k) >= 2:
+            out[k] = did
+    return out
+
+
 def llave_de_broma(g, conocidos, anuncios, nom, sv, fec):
     """El motivo para retener una llave como de broma, o `None`.
 
@@ -1804,6 +1877,9 @@ def _self_check():
            {'autor_id': 'B2', 'autor': 'organiza', 'cuando': '2026-09-25T02:00:00+00:00', 'msg_id': '22'},
            {'autor_id': 'C3', 'autor': 'troll', 'cuando': '2026-09-30T02:00:00+00:00', 'msg_id': '33'}]
     _con = {huella_autor(_hb[0]), huella_autor(_hb[1])}
+    # la clave con que ✅ Decidir busca un nombre: sin bandera y sin signos
+    _nn = lambda x: ''.join(c for c in __import__('unicodedata').normalize(   # noqa: E731
+        'NFKD', re.sub('[\U0001F1E6-\U0001F1FF]', '', x)) if c.isalnum()).lower()
     casos = [
         ('el pokemon de la final queda anotado en esa fila',
          len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
@@ -1857,6 +1933,20 @@ def _self_check():
          llave_de_broma({'llaves': [dict(_hb[2], autor_id='B2')]}, _con, [], 'X', 'URBF', '29/09') is None
          and llave_de_broma({'llaves': [dict(_hb[2], cuando='2026-09-27T02:00:00+00:00')]}, _con, [],
                             'X', 'URBF', '27/09') is None),
+        # 🔑 el podio con mención (Dlx, 28/09/2026: «A · sí, como las inscripciones»)
+        ('el podio con una mención por puesto dice quién es cada uno (RAP EXHIBITION 1/8)',
+         menciones_podio('• 1ER PUESTO: <@639> \n• 2DO PUESTO: <@535> \n• 3ER PUESTO: <@716>')
+         == {1: '639', 2: '535', 3: '716'}),
+        ('pero no el equipo con dos menciones, ni el MVP, ni un puesto con dos cuentas',
+         menciones_podio('CAMPEÓN: <@1>🇨🇱&<@2>🇨🇴\n🥈 SUB-CAMPEÓN: <@3>\nM.V.P: <@4>\n'
+                         '3ER PUESTO: <@5>\nTERCER LUGAR: <@6>') == {2: '3'}),
+        ('y va contra la final: 1º el que ganó, 2º el otro; nunca un lado de equipo',
+         podio_de_grupo({'llaves': [{'texto': '1ER PUESTO: <@639>\n2DO PUESTO: <@535>'}]},
+                        [{'ronda': 'final', 'ladoA': 'ANTORCHA OLÍMPICA', 'ladoB': 'ZETA 🇩🇴',
+                          'ganador': 'ANTORCHA OLÍMPICA'}], _nn) == {'antorchaolimpica': '639', 'zeta': '535'}
+         and podio_de_grupo({'llaves': [{'texto': '1ER PUESTO: <@639>'}]},
+                            [{'ronda': 'final', 'ladoA': 'A + B', 'ladoB': 'C + D', 'ganador': 'A + B'}],
+                            _nn) == {}),
         ('el que pasó octavos escrito como mención no es walk-in (MARRUECOS)',
          not any('Walk-in' in f['notas'] for f in fwm)),
         ('… y sin los nombres de la mención lo era: la prueba mide algo',
@@ -2039,6 +2129,7 @@ def main():
     en_curso, incompletos, retenidos, descartados = [], [], [], []
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
+    podio_ev = {}                       # 'evento|servidor|fecha' -> {nombre: id}
     link_de = {}                        # (evento, fecha) y evento -> link
     import decidir as DEC
     repes = 0
@@ -2226,6 +2317,12 @@ def main():
         # quien publicó una llave que se carga ya no es nuevo
         if limpias:
             conocidos.update(k for k in map(huella_autor, g['llaves']) if k)
+            # y el podio con mención dice quién es quién (Dlx, 28/09, «A»)
+            _pm = podio_de_grupo(g, limpias, lambda x: DEC.norm(DEC._sin_bandera(x)))
+            if _pm:
+                podio_ev['%s|%s|%s' % (DEC.norm(limpias[0].get('evento') or nom),
+                                       limpias[0].get('servidor') or '',
+                                       limpias[0].get('fecha') or fec)] = _pm
         # 🔑 LOS LINKS DE LA LLAVE EN DISCORD, para «Ver llaves» del hub.
         # Acá es el único lugar donde existen: `Entrada` tiene nueve
         # columnas y el mensaje no es una. Van todos los del grupo —un
@@ -2310,6 +2407,27 @@ def main():
             _f.write('\n')
     except OSError as e:
         print('   ⚠️ no pude guardar quién ya publicó una llave (%s)' % str(e)[:60])
+    # y el podio con mención, sumado a lo de antes: la pregunta de ✅ Decidir
+    # puede seguir abierta cuando la llave ya no está entre las que se leen
+    try:
+        try:
+            with io.open(PODIO, encoding='utf-8') as _f:
+                podio_todo = (json.load(_f) or {}).get('eventos') or {}
+        except (OSError, ValueError):
+            podio_todo = {}
+        podio_todo.update(podio_ev)
+        with io.open(PODIO, 'w', encoding='utf-8', newline='\n') as _f:
+            json.dump({'_leeme': 'Quién es quién en el podio de cada llave, cuando el renglón '
+                                 'menciona a UNA cuenta y el lado es UNA persona: evento|sv|fecha '
+                                 '-> {nombre normalizado: Discord ID}. Lo usa decidir.por_discord(), '
+                                 'como una inscripción. Dlx, 28/09/2026: «A · sí».',
+                       'eventos': podio_todo}, _f, ensure_ascii=False, indent=1, sort_keys=True)
+            _f.write('\n')
+        if podio_ev:
+            print('   🥇 el podio menciona a %d persona(s) en %d evento(s)'
+                  % (sum(len(v) for v in podio_ev.values()), len(podio_ev)))
+    except OSError as e:
+        print('   ⚠️ no pude guardar el podio con mención (%s)' % str(e)[:60])
 
     from escribir import Hoja
     import pendientes as P

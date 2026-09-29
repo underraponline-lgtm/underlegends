@@ -530,7 +530,25 @@ def _cuenta_de(p, eventos):
     ins = sorted(((_inscritos().get(ev[1]) or {}).get(k) or set()) if len(ev) > 1 else set())
     if ins:
         return ins, 'inscripción'
+    # 🔑 EL PODIO CON MENCIÓN (Dlx, 28/09/2026: «A · sí, como las
+    # inscripciones»): «1ER PUESTO: @alguien» y el campeón de la final es este
+    # nombre. Lo arma `llaves_a_entrada.podio_de_grupo()`.
+    if len(ev) > 2:
+        did = (_podio().get('%s|%s|%s' % (norm(ev[0]), ev[1], ev[2])) or {}).get(k)
+        if did:
+            return [str(did)], 'podio'
     return sorted(_apodos().get(k) or set()) if len(k) >= 3 else [], 'Discord'
+
+
+def _podio():
+    """`{'evento|sv|fecha': {nombre: id}}` de `datos/podio_menciones.json`."""
+    if 'podio' not in _DATOS:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'podio_menciones.json'), encoding='utf-8') as f:
+                _DATOS['podio'] = (json.load(f) or {}).get('eventos') or {}
+        except (OSError, ValueError):
+            _DATOS['podio'] = {}
+    return _DATOS['podio']
 
 
 def _en_discord(nombre):
@@ -660,11 +678,13 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         # con Snake Rap entero en la cuenta (7.297 personas) un nombre común
         # alcanza para dar con otro: «ISAIAS» jugó un evento de FFA y la única
         # cuenta «Isaias» está sólo en Snake Rap (28/09/2026).
-        if fuente != 'inscripción':
+        # ⚠️ el podio con mención tampoco: lo escribió el organizador del evento
+        if fuente not in ('inscripción', 'podio'):
             ev = eventos.get(_num_evento(p)) or ()
             if len(ev) < 2 or ev[1] not in donde:
                 continue
-        porque = 'se anotó así en inscripciones' if fuente == 'inscripción' else 'la misma cuenta de Discord'
+        porque = {'inscripción': 'se anotó así en inscripciones',
+                  'podio': 'el podio de la llave lo menciona'}.get(fuente, 'la misma cuenta de Discord')
         real = por_id.get(did)
         if real:
             if AK.son_distintos(det, real, akas):
@@ -695,13 +715,15 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         return {p['id'] for p, _r in hechas} | {p['id'] for p, *_ in nuevos}
     import lista_raperos as LR
     entraron = LR.agregar_varios(
-        [(n, cc, did, 'alta automática · %s · %s' % ('se anotó así en inscripciones' if fu == 'inscripción'
-                                                    else 'su nombre en Discord', _ahora_et()))
+        [(n, cc, did, 'alta automática · %s · %s' % ({'inscripción': 'se anotó así en inscripciones',
+                                                     'podio': 'el podio de la llave lo menciona'}
+                                                    .get(fu, 'su nombre en Discord'), _ahora_et()))
          for _p, n, cc, did, fu in nuevos], aplicar=True) if nuevos else {}
     for p, n, cc, did, fu in nuevos:
         if did in entraron:
             hechas.append((p, 'nuevo: entró a la Lista con %s (%s)' % (
-                'la cuenta con que se anotó' if fu == 'inscripción' else 'su Discord', did)))
+                {'inscripción': 'la cuenta con que se anotó', 'podio': 'la cuenta que menciona el podio'}
+                .get(fu, 'su Discord'), did)))
     if pares:
         _agregar_akas(pares, [])
     if hechas:
@@ -2114,6 +2136,15 @@ def _self_check():
         qs = armar([(60, {'Tipo': nd, 'Detalle': '27 🇺🇸 Piyi 🇲🇽', 'Origen': 'evento #359'})], ev)
         ok(not por_discord(qs, {}, ev, dry=True),
            'y un lado que son dos nombres no se resuelve como una cuenta, aunque alguien se llame así')
+        # 🔑 el podio con mención (Dlx, 28/09/2026: «A · sí, como las inscripciones»)
+        _DATOS['podio'] = {'rapexhibition18|SR|22/09': {'antorchaolimpica': '30'}}
+        _DATOS['donde'].update({'30': ['SR']})
+        ev3 = {'363': ('__ RAP EXHIBITION 1 8 __', 'SR', '22/09')}
+        qs = armar([(70, {'Tipo': nd, 'Detalle': 'ANTORCHA OLIMPICA', 'Origen': 'evento #363'}),
+                    (71, {'Tipo': nd, 'Detalle': 'KIRITO', 'Origen': 'evento #363'})], ev3)
+        ids = {p['detalle']: p['id'] for p in qs}
+        ok(por_discord(qs, {}, ev3, dry=True) == {ids['ANTORCHA OLIMPICA']},
+           'el campeón que el podio menciona se resuelve con esa cuenta; el que no sube al podio, no')
     finally:
         _DATOS.clear()
         _DATOS.update(antes)
