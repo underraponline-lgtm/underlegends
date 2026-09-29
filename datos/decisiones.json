@@ -80,5 +80,17 @@
    "por": "Claude, al sumar FFS (Dlx lo vio en la pregunta: «su último anuncio es una broma»)",
    "nota": "El anuncio más nuevo de PLAZAS FFS es una broma: «EL Q SE INSCRIBE SE CANCELA LA COMPE», CUPOS: 0, MODALIDAD: 0. Con FFS en la Liga se leía como un evento del 25/09 en el calendario. Si alguna vez hace falta, se saca de acá y vuelve."
   }
+ },
+ "equipos": {
+  "_leeme": "Quiénes eran los equipos que una llave nombra con UN nombre: «evento · servidor · fecha · equipo» -> integrantes ([] = nadie). Lo lee llaves_a_entrada.marcar_equipos() antes que la inscripción.",
+  "DESGRACIAS EN TOKYO VOL.13 · FFA · 25/09 · ME TIENE SIN CUIDADO 🇯🇲": {
+   "integrantes": [
+    "Paria",
+    "Kravitz"
+   ],
+   "cuando": "2026-09-29 1:40 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "se anotó como «Me tiene sin cuidado🇯🇲🔥(PARIA+KRAVITZ)», y la llave también los pone como pareja aparte en octavos. Dlx, 29/09: «2. A» (eran ellos: cobran el subcampeonato, 3.750 cada uno)"
+  }
  }
 }

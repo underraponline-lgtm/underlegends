@@ -81,6 +81,10 @@ ETIQUETA = {'campeon': 'Campeón', 'subcampeon': 'Subcampeón',
 # las rondas eliminatorias, de la mas honda a la menos, con su puesto
 CAIDA = [('cuartos', 'cuartos'), ('octavos', 'octavos'), ('r32', 'r32')]
 
+#: la fase de eliminación de una NAVE DE FUNA: paga por lugar, con empate.
+#: Ver `procesar()` y `llaves_a_entrada.filas_funa()`.
+FUNA_R = 'fase de eliminacion'
+
 # 🔴 EL PUENTE ENTRE DOS VOCABULARIOS QUE TENIAN QUE COINCIDIR Y NO
 # COINCIDIAN. `bot/escuchar.py` normaliza **toda** forma de escribir una
 # ronda a un juego de nombres —`SEMIFINALES`, `TERCER LUGAR`,
@@ -662,6 +666,54 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                 if p is not None:
                     sumar(p, sf, 'semifinal', fuera=_pk(b))
 
+    # 🔑 LA NAVE DE FUNA (CYPHER, aniquilación). Dlx, 29/09/2026: la fase de
+    # eliminación saca a uno por ronda de beats —el que más reacciones junta
+    # en Discord— y la llave sólo marca con ❌ a los que cayeron, NO EN QUÉ
+    # ORDEN. Así que empatan: se reparten lo que valen JUNTOS los lugares
+    # que ocupan, después de todos los que llegaron más lejos (la final, el
+    # tercero, las semis si las hubo). Es la regla del empate de los 5 vidas
+    # (guía, §10.1: «el pozo»). Quien quedó en pie sin llegar a la final va
+    # antes que los que cayeron. Ver `llaves_a_entrada.filas_funa()`.
+    fase = [b for b in batallas if ronda_de(b.get('ronda')) == FUNA_R]
+    if fase:
+        arriba = set()
+        for b in batallas:
+            if b in fase:
+                continue
+            for lado in (b.get('ladoA'), b.get('ladoB'), b.get('ganador')):
+                for m in (equipo(lado) if lado else []):
+                    if not (nadie and _clave_lado(m) in nadie):
+                        arriba.add(resolver(m))
+        grupos, vistos = [], set(arriba)
+        for pie in (True, False):
+            g = []
+            for b in fase:
+                if ('quedo en pie' in norm(b.get('notas'))) != pie:
+                    continue
+                p = _perdedor(b)
+                for m in (equipo(p) if p else []):
+                    q = resolver(m)
+                    if q and q not in vistos:
+                        g.append(q)
+                        vistos.add(q)
+            if g:
+                grupos.append(g)
+        lugar = len(arriba) + 1
+        for g in grupos:
+            hasta = lugar + len(g) - 1
+            pozo = sum(tab.get(puesto_de_lugar(x), 0) for x in range(lugar, hasta + 1))
+            for q in g:
+                # ⚠️ EL PUESTO ES EL DEL ÚLTIMO LUGAR DEL EMPATE, no el del
+                # primero: «Cuarto» cuenta como semifinal (`rankings.POS`) y
+                # le daría una semi —SEM, la racha, la T del Competitivo— a
+                # trece que cayeron en la fase. Cobran el pozo igual.
+                sumar(q, pozo // len(g), puesto_de_lugar(hasta))
+                if q in aportes and aportes[q]:
+                    aportes[q][-1] = ('pozo', pozo // len(g))
+                if q in res:
+                    res[q]['notas'] += 'Nave de funa %d-%d ' % (lugar, hasta)
+            lugar = hasta + 1
+
     # ⚠️ EL QUE YA TIENE PUESTO NO SE PISA. Quien perdio en cuartos pero
     # jugo el tercer puesto ya cobro; el original lo cuida igual.
     for ronda, puesto in CAIDA:
@@ -849,7 +901,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # LEAGUE pagó 625, NITRO KINGS pagó cuartos por posición— y su regla
     # para eso es «dejá una nota diciendo qué hiciste». Esto la deja.
     for r in sorted({ronda_de(b.get('ronda')) for b in batallas}):
-        if r in ('final', 'tercer puesto', 'semifinal'):
+        if r in ('final', 'tercer puesto', 'semifinal', FUNA_R):
             continue
         if vidas and VIDAS.match(r):
             continue
@@ -1176,6 +1228,31 @@ def _self_check():
        and rtv.get('Ana', {}).get('puntos') == 2500 // 2
        and rtv.get('Caro', {}).get('puntos') == 10000 // 2,
        '%s · %s' % (sorted(rtv), etv['sin_resolver'] or '—'))
+
+    # 🔑 LA NAVE DE FUNA (Dlx, 29/09/2026): la de Revo del 2/5, 16 en la fase,
+    #    13 con ❌, final tam–Guess y multi tercero por el podio. Los 13
+    #    empatan en los lugares 4 a 16: (4.500 + 4×2.500 + 8×1.250) / 13
+    _fu = [{'ronda': 'final', 'ladoA': 'Tam', 'ladoB': 'Guess', 'ganador': 'Tam'},
+           {'ronda': 'tercer lugar', 'ladoA': 'Multi', 'ladoB': '', 'ganador': 'Multi',
+            'notas': 'podio: tercer puesto sin batalla en la llave'}]
+    _fu += [{'ronda': 'fase de eliminación', 'ladoA': '', 'ladoB': 'C%d' % i, 'ganador': '',
+             'notas': 'nave de funa: cayó (16 en la fase, pasan 3)'} for i in range(13)]
+    rfu, efu = _pp(_fu)
+    ok('nave de funa: los 13 que cayeron se reparten los lugares 4 a 16',
+       all(rfu.get('C%d' % i, {}).get('puntos') == 24500 // 13 for i in range(13))
+       and rfu.get('Tam', {}).get('puntos') == 10000 and rfu.get('Multi', {}).get('puntos') == 6000,
+       '%s' % sorted({r['puntos'] for r in efu['resultados']}))
+    ok('y su puesto no es una semifinal (Octavos, el último del empate)',
+       rfu.get('C0', {}).get('posicion') == ETIQUETA['octavos'], rfu.get('C0', {}).get('posicion'))
+    ok('la fase no reparte de más ni avisa una ronda sin escala',
+       not any(a.startswith(('SUMA:', 'ESCALA:')) for a in efu['avisos']), efu['avisos'] or '—')
+    try:
+        import resultados as _R
+        _uno = _R._filas_uno(dict(efu, num=1, fecha='29/09', servidor='FFA'))
+        ok('y el único duelo es la final de dos', [(x[4], x[5]) for x in _uno] == [('Tam', 'Guess')],
+           '%s' % [(x[4], x[5]) for x in _uno])
+    except Exception as e:                               # noqa: BLE001
+        ok('y el único duelo es la final de dos', False, str(e)[:50])
 
     # 7 · LOS FORMATOS DE VIDAS: la SNAKE ARENA VOL. 2 (SR, 27/09/2026),
     #     batalla por batalla, con su tabla de 4-7 escrita acá.

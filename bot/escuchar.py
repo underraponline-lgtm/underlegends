@@ -686,6 +686,94 @@ def rondas_de(texto):
     return _equipos_con_espacios(out)
 
 
+# ── la NAVE DE FUNA (CYPHER, aniquilación) ─────────────────────────────
+#: el encabezado de la fase: `[ FASE DE ELIMINACIÓN ]`, `nave de funa:`, `[ CYPHER ]`
+FUNA = re.compile(r'FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|\bC[IY]PHER\b',
+                  re.I)
+#: quién cayó en la fase: ❌ ✖ ✗ ✘ ❎ 🚫
+CAYO = re.compile('[❌✖✗✘❎\U0001F6AB]')
+#: un nombre suelto en su marco: `『NC🇦🇷』`, `⌞ Dnk🇦🇷 ⌝`, `[Tam]`, `「X」`
+_UNO = re.compile(r'[『「⌞\[]\s*([^』」⌝\]]+?)\s*[』」⌝\]]')
+#: las medallas del podio, cuando el renglón no dice CAMPEÓN ni PUESTO: `🥇 tam`
+MEDALLA = {'\U0001F947': 1, '\U0001F948': 2, '\U0001F949': 3}
+
+
+def uno_de_renglon(l):
+    """`(nombre, cayó)` de un renglón de la fase de una nave de funa, o None."""
+    s = re.sub(r'^[>\s]+', '', plano(l or '').strip())      # la cita de Discord
+    cayo = bool(CAYO.search(s))
+    s = CAYO.sub('', s)
+    s = re.sub(r'<@&\d+>|@everyone|@here|▋', '', s)          # el rol del aviso
+    s = re.sub(r'^\s*(?:\d{1,3}\s*[-.)–—]\s*|[▪️•·*\-–—]+\s*)', '', s)
+    m = _UNO.search(s)
+    t = _sin_marcas(m.group(1) if m else s).strip(' .·▪️*_`:-–—️')
+    if not (norm(t) or MENCION.search(t)) or len(norm(t)) > 28:
+        return None
+    if SEP.search(t) or RONDA.search(t) or PODIO.search(t) or FUNA.search(t):
+        return None
+    return (t, cayo)
+
+
+def funa_de(texto):
+    """La fase de eliminación de una NAVE DE FUNA: `[(nombre, cayó)]`, o None.
+
+    🔑 Dlx, 29/09/2026: *«el formato CYPHER o mejor conocido como NAVE DE FUNA
+    o aniquilación… los raperos rapean rondas de beats y al finalizar el
+    nombre que tiene más reacciones en Discord es eliminado. Así hasta que el
+    formato lo elija»*, con tres llaves de ejemplo. La fase es una LISTA, un
+    nombre por renglón —`『NC🇦🇷』`, `> ⌞ Dnk🇦🇷 ⌝ ❌`, `4 - [Tam]`—, con ❌ en
+    los que cayeron. Lo que sigue (la final de dos o de tres, las semis, el
+    podio) es lo que el organizador decida, y se lee como cualquier llave.
+
+    🔴 HASTA HOY LA FASE NO LA LEÍA NADIE: la llave quedaba con la final
+    sola, de 2 o 3 personas —«no hay escala», el mínimo es 4— y los otros
+    9 a 13 no existían.
+
+    ⚠️ LA LISTA NO DICE EN QUÉ ORDEN CAYERON: la ❌ dice quién, no cuándo.
+    Los que cayeron empatan (ver `motor`, la fase de eliminación).
+    ⚠️ Un encabezado y al menos 4 nombres sueltos hasta la ronda o el podio
+    que siguen: un evento que se LLAMA «Cypher algo» y trae su llave con
+    batallas no es esto.
+    """
+    ls = plano(texto or '').splitlines()
+    for i, l in enumerate(ls):
+        if not FUNA.search(l) or nombres_de_linea(l):
+            continue
+        out = []
+        for l2 in ls[i + 1:]:
+            if not l2.strip():
+                continue
+            if FUNA.search(l2) and not nombres_de_linea(l2):
+                continue                         # otro encabezado de la fase
+            if nombres_de_linea(l2) or RONDA.search(l2) or PODIO.search(l2) \
+                    or any(x in l2 for x in MEDALLA):
+                break
+            u = uno_de_renglon(l2)
+            if u:
+                out.append(u)
+        if len(out) >= 4:
+            return out
+    return None
+
+
+def medallas_de(texto):
+    """`{1: nombre, 2: nombre, 3: nombre}` de los renglones `🥇 tam` del podio.
+
+    ⚠️ SÓLO LOS QUE NO DICEN CAMPEÓN, PUESTO NI LUGAR: `🥇 𝄆 CAMPEÓN: X` ya lo
+    lee la línea del campeón, y leerlo dos veces daría «𝄆 CAMPEÓN: X» de nombre.
+    """
+    out = {}
+    for l in plano(texto or '').splitlines():
+        s = l.strip().lstrip('>#*_ ')
+        n = MEDALLA.get(s[:1])
+        if not n or n in out or PODIO.search(s):
+            continue
+        t = _sin_marcas(s[1:].strip(' :-–—️'))
+        if norm(t) or MENCION.search(t):
+            out[n] = t
+    return out
+
+
 def _equipos_con_espacios(rs):
     """Las rondas, con los equipos escritos sin `+` ya partidos.
 
@@ -2435,6 +2523,20 @@ def _self_check():
         ('`(P)` y `pokemon` son la marca; `Pepe` no',
          bool(POKEMON.search('Axinu (P)')) and bool(POKEMON.search('Luzzano pokemon'))
          and not POKEMON.search('Pepe (Perú)')),
+        # 🔑 la NAVE DE FUNA (Dlx, 29/09/2026): la fase es una lista con ❌
+        ('nave de funa: la lista de la fase, con quién cayó, en los tres estilos',
+         funa_de('[ NAVE DE FUNA ]\n[ FASE DE ELIMINACIÓN ]\n> ⌞ Dnk🇦🇷 ⌝ ❌\n> ⌞ Heat🇵🇷 ⌝\n'
+                 '> ⌞ Sombra🇵🇷 ⌝\n> ⌞ Xubaru🇻🇪 ⌝❌\n[ FINAL ]\n⌞ Heat🇵🇷 ⌝ 🆚 ⌞ Sombra🇵🇷 ⌝')
+         == [('Dnk🇦🇷', True), ('Heat🇵🇷', False), ('Sombra🇵🇷', False), ('Xubaru🇻🇪', True)]
+         and funa_de('nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n4 - [Tam]\n'
+                     '9 - [multi]\n\nFinal\n\n[Guess] 🆚 [tam]')[0] == ('Black demon', True)
+         and len(funa_de('[ FASE DE ELIMINACIÓN ]\n『 Xplicit🇨🇱』\n『Rbk 🇻🇪』\n『Mco 🇦🇷』\n'
+                         '『NC🇦🇷』\n[ FINAL ]\n⌞ Mco 🇦🇷 ⌝ 🆚 ⌞ NC🇦🇷 ⌝') or []) == 4),
+        ('una llave común no es una nave de funa, aunque se llame «Cypher»',
+         funa_de('# CYPHER CUP\n# CUARTOS\n[A] 🆚 [B]\n[C] 🆚 [D]\n# FINAL\n[A] 🆚 [C]') is None),
+        ('el podio con medallas: 🥇 tam; «🥇 CAMPEÓN: X» lo lee la línea del campeón',
+         medallas_de('🥇 tam\n🥈 guess\n🥉 multi') == {1: 'tam', 2: 'guess', 3: 'multi'}
+         and medallas_de('🥇 𝄆 CAMPEÓN: 27 🇺🇸 + PIYI 🇲🇽') == {}),
     ]
     for que, ok in casos:
         mal += not ok

@@ -460,7 +460,102 @@ def plantel(texto, ids=None):
             out.add(ns[0])
         elif not any(_ya(k) for k in ns):
             out.add(ns[0])
+    # 🔑 LA FASE DE UNA NAVE DE FUNA ES DE TODOS: los que cayeron no aparecen
+    # en ninguna batalla y son la mayoría del evento (ver `escuchar.funa_de()`)
+    for n, _cayo in E.funa_de(texto) or ():
+        k = E.norm(n)
+        if k and not _ya(k):
+            out.add(k)
     return out
+
+
+def filas_funa(filas, fu, texto, base):
+    """Las filas de una NAVE DE FUNA: la fase, la final que dice el podio y el tercero.
+
+    🔑 Dlx, 29/09/2026, con tres llaves de ejemplo: la fase es una lista con ❌
+    en los que cayeron —por reacciones de Discord, una por ronda de beats— y
+    *«lo que sigue está a disposición del organizador»*: final de dos o de
+    tres, a veces semis, y el podio (CAMPEÓN / SUBCAMPEÓN / TERCER LUGAR, o
+    🥇 🥈 🥉).
+
+      · cada uno que cayó en la fase: una fila `fase de eliminación` con el
+        lado que pasa VACÍO —como el grupo del filtro donde no pasó nadie—,
+        y el motor los paga juntos (empatan: la llave no dice el orden);
+      · sin ❌ en la lista (Anything Goes Vol.15), cayeron todos los que no
+        llegaron a la final;
+      · la final de TRES se rehace con el podio: campeón contra subcampeón
+        (sin duelo, porque fue de tres) y el tercero aparte; la de dos que no
+        dice campeón toma el del podio (`🥇 tam`);
+      · quien quedó en pie sin llegar a la final (Sombra, en la del 15/5) es
+        el tercero si el podio no nombra a otro.
+
+    `base`: los campos de todas las filas (evento, servidor, fecha,
+    participantes). Devuelve `(filas, resuelta)`: `resuelta` si la final
+    recién ahora tiene campeón, para sacar la duda de «no dice campeón».
+    """
+    k = lambda x: E.norm(E.HISTORIA.sub('', x or ''))       # noqa: E731
+    pl = E.plano(texto or '')
+    med = E.medallas_de(texto)
+    m = E.SUBCAMPEON.search(pl)
+    sub_l = m.group(1) if m else med.get(2)
+    ter = next((x for x in E.TERCERO.finditer(pl)
+                if E.norm(E.MENCION.sub('', x.group(1)))), None)
+    ter_l = ter.group(1) if ter else med.get(3)
+
+    def _cual(linea, entre):
+        """El de `entre` que nombra el renglón del podio, si es uno solo."""
+        kl = k(linea)
+        c = [x for x in entre if kl and k(x) and (k(x) == kl or kl.startswith(k(x)))]
+        return c[0] if len(c) == 1 else None
+
+    finales = [f for f in filas if (f.get('ronda') or '').lower() == 'final']
+    if finales:
+        lados_fin = []
+        for f in finales:
+            for x in (f.get('ladoA'), f.get('ladoB')):
+                if x and k(x) not in [k(y) for y in lados_fin]:
+                    lados_fin.append(x)
+        camp = next((f.get('ganador') for f in finales if f.get('ganador')), None)
+    else:
+        # la final sin campeón escrito no dejó fila: sus lados, de la llave
+        fin = [b for r, bs in E.rondas_de(texto or '') if r == 'FINAL' for b in bs]
+        lados_fin = [E._sin_marcas(x) for x in fin[-1]] if len(fin) == 1 else []
+        camp = _cual(med.get(1), lados_fin)
+    resuelta, tercero = False, None
+    if camp and len(lados_fin) == 3:
+        sub = _cual(sub_l, [x for x in lados_fin if k(x) != k(camp)])
+        otros = [x for x in lados_fin if k(x) not in (k(camp), k(sub or ''))]
+        if sub and len(otros) == 1:
+            # la final de tres, con el podio: campeón contra subcampeón y el
+            # tercero aparte. Sin duelo: fue de tres.
+            filas = [f for f in filas if f not in finales]
+            filas.append(dict(base, ronda='final', ladoA=camp, ladoB=sub, ganador=camp,
+                              notas='triple (3 bandas); nave de funa: el podio dice el orden'))
+            tercero, resuelta = otros[0], not finales
+    elif camp and len(lados_fin) == 2 and not finales:
+        otro = next(x for x in lados_fin if k(x) != k(camp))
+        filas.append(dict(base, ronda='final', ladoA=camp, ladoB=otro, ganador=camp, notas=''))
+        resuelta = True
+    arriba = {k(x) for f in filas for x in (f.get('ladoA'), f.get('ladoB'), f.get('ganador')) if x}
+    arriba |= {k(x) for x in lados_fin}
+    hay_ter = any((f.get('ronda') or '').lower() in ('tercer lugar', 'tercer puesto') for f in filas)
+    marcas = any(c for _n, c in fu)
+    sueltos = [n for n, c in fu if not c and k(n) not in arriba] if marcas else []
+    if tercero is None and not hay_ter and camp:
+        tercero = _cual(ter_l, sueltos) if ter_l else (sueltos[0] if len(sueltos) == 1 else None)
+    if tercero is not None and not hay_ter:
+        filas.append(dict(base, ronda='tercer lugar', ladoA=tercero, ladoB='', ganador=tercero,
+                          notas='podio: tercer puesto sin batalla en la llave'))
+        arriba.add(k(tercero))
+    caen = [n for n, c in fu if c] if marcas else [n for n, _c in fu if k(n) not in arriba]
+    pasan = len(fu) - len(caen)
+    for n in [x for x in sueltos if k(x) not in arriba] + caen:
+        if k(n) in arriba:
+            continue
+        filas.append(dict(base, ronda='fase de eliminación', ladoA='', ladoB=n, ganador='',
+                          notas='nave de funa: %s (%d en la fase, pasan %d)'
+                          % ('quedó en pie' if n in sueltos else 'cayó', len(fu), pasan)))
+    return filas, resuelta
 
 
 def repetidos_en_la_primera(texto):
@@ -939,6 +1034,15 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                       # afuera de `1v1` y el motor igual paga 3ro y 4to.
                       'notas': ('podio: tercer puesto sin batalla en la llave'
                                 if razon.startswith('podio') else '')})
+    # 🔑 LA NAVE DE FUNA (Dlx, 29/09/2026): la fase de eliminación no tiene
+    # batallas, así que ninguna fila de arriba la trae. Ver `filas_funa()`.
+    fu = E.funa_de(txt)
+    if fu:
+        base = {'evento': ev, 'servidor': sv, 'fecha': fecha, 'participantes': n_part}
+        filas, resuelta = filas_funa(filas, fu, txt, base)
+        if resuelta:
+            dudas = [d for d in dudas if str(d[1]).upper() != 'FINAL']
+        sabidas['nave de funa: %d en la fase' % len(fu)] += 1
     return filas, dudas, sabidas
 
 
@@ -1228,6 +1332,14 @@ def fase_sin_batallas(texto):
     título»*), y una lista de inscriptos antes de la primera ronda no es
     una fase.
     """
+    # 🔑 PERO LA NAVE DE FUNA SÍ DICE QUIÉN CAYÓ. Dlx, 29/09/2026, con tres
+    # llaves de ejemplo: la fase es una lista con ❌ en los que cayeron, y la
+    # final y el podio vienen después. No hay batallas, pero no es «la parte
+    # clara» de algo que no se sabe: se sabe quién cayó —no en qué orden, y
+    # por eso empatan—. Se carga (`filas_funa()`); lo que §12 descarta es
+    # la fase que lista gente sin decir qué les pasó.
+    if E.funa_de(texto):
+        return None
     halladas = []
     actual, gente, bats = None, 0, 0
     for l in E.unir_continuadas(E.plano(texto or '')).splitlines():
@@ -2067,7 +2179,22 @@ def _self_check():
                                             decidir=_nada)
     finally:
         E._PERSONAS[0] = _pv
+    # la NAVE DE FUNA de Revo (2/5): la fase con ❌, la final de dos sin
+    # «CAMPEÓN» y el podio con medallas (Dlx, 29/09/2026)
+    _nf = ('nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n3 - [Saiko] ❌\n4 - [Tam]\n'
+           '5 - [Diego] ❌\n6 - [multi]\n7 - [Guess]\n8 - [xubaru] ❌\n\nFinal\n\n[Guess] 🆚 [tam]\n\n'
+           '🥇 tam\n🥈 guess\n🥉 multi')
+    _fnf, _dnf, _ = filas_de({'texto': _nf, 'guild': '1468472442925092958', 'servidor': 'FFA',
+                              'fecha': '02/05'}, nombre='NAVE', fecha='02/05')
+    _fase = [f for f in _fnf if f['ronda'] == 'fase de eliminación']
     casos = [
+        ('nave de funa: la final sale del podio (🥇 tam), el 🥉 es tercero y los 5 ❌ caen en la fase',
+         [(f['ladoA'], f['ganador']) for f in _fnf if f['ronda'] == 'final'] == [('tam', 'tam')]
+         and [f['ladoA'] for f in _fnf if f['ronda'] == 'tercer lugar'] == ['multi']
+         and sorted(f['ladoB'] for f in _fase) == ['Black demon', 'Darkomc', 'Diego', 'Saiko', 'xubaru']
+         and not _dnf and all(f['participantes'] == 8 for f in _fnf)),
+        ('una fase de NAVE DE FUNA no descarta el evento (la lista dice quién cayó)',
+         fase_sin_batallas(_nf) is None),
         ('quien juega solo en un 2VS2 (alguien del padrón) no es un equipo: cobra como siempre',
          'Sin integrantes' not in _eq_per[0]['notas'] and not _eq_per_i),
         ('TEAM VENECIA sin inscripción: la fila queda, con «Sin integrantes», y no cobra nadie',

@@ -1110,6 +1110,8 @@ def integrantes_equipo(ev, sv, fecha, equipo):
         p = [x.strip() for x in clave.split(' · ')]
         if (len(p) == 4 and norm(p[0]) == norm(ev) and p[1] == sv
                 and p[2] in (fecha, '*') and norm(_sin_bandera(p[3])) == ke):
+            if isinstance(v, dict):                  # con quién y cuándo
+                v = v.get('integrantes')
             return [str(x).strip() for x in (v or []) if str(x).strip()]
     return None
 
