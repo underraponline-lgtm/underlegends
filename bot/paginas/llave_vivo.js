@@ -612,24 +612,96 @@
     return Object.keys(out).length;
   }
 
+  /* ── la NAVE DE FUNA (CYPHER, aniquilación) ─────────────────────────────
+     `escuchar.funa_de()` y `escuchar.medallas_de()`: la fase de eliminación es
+     una lista, un nombre por renglón, con ❌ en los que cayeron (Dlx,
+     29/09/2026). Lo que sigue —final, podio— se lee como cualquier llave. */
+  var FUNA = /FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|\bC[IY]PHER\b/i;
+  var CAYO = /[❌✖✗✘❎\u{1F6AB}]/gu;
+  var UNO = /[『「⌞\[]\s*([^』」⌝\]]+?)\s*[』」⌝\]]/u;
+  var MEDALLA = { '\u{1F947}': 1, '\u{1F948}': 2, '\u{1F949}': 3 };
+  var PUNTAS = ' .·▪️*_`:-–—️';
+  function recortar(s) {
+    var a = Array.from(String(s || ''));
+    while (a.length && PUNTAS.indexOf(a[0]) >= 0) a.shift();
+    while (a.length && PUNTAS.indexOf(a[a.length - 1]) >= 0) a.pop();
+    return a.join('');
+  }
+  function unoDeRenglon(l) {
+    var s = plano(String(l || '')).trim().replace(/^[>\s]+/, '');
+    CAYO.lastIndex = 0;
+    var cayo = CAYO.test(s);
+    s = s.replace(CAYO, '').replace(/<@&\d+>|@everyone|@here|▋/g, '');
+    s = s.replace(/^\s*(?:\d{1,3}\s*[-.)–—]\s*|[▪️•·*\-–—]+\s*)/u, '');
+    var m = UNO.exec(s);
+    var t = recortar(sinMarcas(m ? m[1] : s));
+    MENCION.lastIndex = 0;
+    if (!(norm(t) || MENCION.test(t)) || norm(t).length > 28) return null;
+    if (SEP.test(t) || buscarRonda(t) || PODIO.test(t) || FUNA.test(t)) return null;
+    return [t, cayo];
+  }
+  function funaDe(texto) {
+    var ls = lineas(plano(texto || ''));
+    for (var i = 0; i < ls.length; i++) {
+      if (!FUNA.test(ls[i]) || nombresDeLinea(ls[i]).length) continue;
+      var out = [];
+      for (var j = i + 1; j < ls.length; j++) {
+        var l = ls[j];
+        if (!l.trim()) continue;
+        if (FUNA.test(l) && !nombresDeLinea(l).length) continue;
+        if (nombresDeLinea(l).length || buscarRonda(l) || PODIO.test(l) ||
+            Object.keys(MEDALLA).some(function (x) { return l.indexOf(x) >= 0; })) break;
+        var u = unoDeRenglon(l);
+        if (u) out.push(u);
+      }
+      if (out.length >= 4) return out;
+    }
+    return null;
+  }
+  function medallasDe(texto) {
+    var out = {};
+    lineas(plano(texto || '')).forEach(function (l) {
+      var s = l.trim().replace(/^[>#*_ ]+/, '');
+      var c = Array.from(s)[0], n = MEDALLA[c];
+      if (!n || out[n] || PODIO.test(s)) return;
+      var t = sinMarcas(recortar(s.slice(c.length)));
+      MENCION.lastIndex = 0;
+      if (norm(t) || MENCION.test(t)) out[n] = t;
+    });
+    return out;
+  }
+
   /* 🔑 LA LLAVE PARA LA PÁGINA, con la misma forma que `datos/llaves_t1.json` */
   function aLlave(b) {
     var texto = traducir(plano(b.texto));
     var rs = b.rs || rondasDe(texto);
-    if (rs.length < 1) return null;
+    // 🔑 una nave de funa se ve desde la fase, antes de que haya una batalla
+    var fu = funaDe(texto);
+    if (rs.length < 1 && !fu) return null;
     var coma = function (s) { return String(s || '').split(/\s*[+&]\s*/).filter(Boolean).join(', '); };
     var rondas = resolver(rs, texto).map(function (R) {
       return { r: ETIQUETA[R[0]] || R[0], b: R[1].map(function (x) {
         return [x[0].map(coma), coma(x[1]), x[2], []];
       }) };
     });
-    var fin = rs[rs.length - 1][0] === 'FINAL' && rondas[rondas.length - 1].b.length === 1 &&
+    // la final de una nave de funa que no dice CAMPEÓN pero sí «🥇 tam»
+    // (`llaves_a_entrada.filas_funa()`)
+    if (fu) {
+      var med = medallasDe(texto), F = rondas.filter(function (R) { return R.r === ETIQUETA.FINAL; })[0];
+      if (F && F.b.length === 1 && !F.b[0][1] && med[1]) {
+        var gm = F.b[0][0].filter(function (s) { return clave(s) && clave(s) === clave(med[1]); });
+        if (gm.length === 1) F.b[0][1] = gm[0];
+      }
+    }
+    var fin = rs.length && rs[rs.length - 1][0] === 'FINAL' && rondas[rondas.length - 1].b.length === 1 &&
       rondas[rondas.length - 1].b[0][1];
     return {
       vivo: true, id: b.id, nombre: titulo(b.texto) || 'La llave', sv: b.sv || '',
       // la misma cuenta que el ciclo (`filas_de()`): la que elige la escala de puntos
-      participantes: plantel(rs) + repetidosEnLaPrimera(rs) + faltanEnEquipos(rs), rondas: enlazar(rondas), tabla: [],
+      participantes: Math.max(plantel(rs) + repetidosEnLaPrimera(rs) + faltanEnEquipos(rs), fu ? fu.length : 0),
+      rondas: enlazar(rondas), tabla: [],
       sin: equiposConNombre(rs)[0],
+      funa: fu || undefined,
       links: b.g && b.canal ? ['https://discord.com/channels/' + b.g + '/' + b.canal + '/' + b.id] : [],
       pub: b.pub, ed: b.ed, terminada: !!fin,
       // la ronda que se está jugando: la última que tiene batallas sin ganador
@@ -637,7 +709,7 @@
         for (var i = rondas.length - 1; i >= 0; i--) {
           if (rondas[i].r !== 'Tercer puesto' && rondas[i].b.some(function (x) { return !x[1]; })) return rondas[i].r;
         }
-        return rondas.length ? rondas[rondas.length - 1].r : '';
+        return rondas.length ? rondas[rondas.length - 1].r : fu ? 'Fase de eliminación' : '';
       })()
     };
   }
@@ -754,6 +826,6 @@
   var LlaveVivo = { plano: plano, traducir: traducir, norm: norm, nombresDeLinea: nombresDeLinea,
     unirContinuadas: unirContinuadas, rondasDe: rondasDe, resolver: resolver, enlazar: enlazar,
     titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon,
-    veredictos: veredictos };
+    veredictos: veredictos, funaDe: funaDe, medallasDe: medallasDe };
   raiz.LlaveVivo = LlaveVivo;
 })(typeof window !== 'undefined' ? window : globalThis);

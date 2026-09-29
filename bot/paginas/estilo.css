@@ -1191,6 +1191,16 @@ letter-spacing:.12em;text-transform:uppercase}
 .ql-eq small{flex:0 0 auto;color:var(--tx3);font:600 .62rem/1 'Barlow Condensed',sans-serif;
 letter-spacing:.12em;text-transform:uppercase;font-style:normal}
 .av.av-eq{background:#12201D;box-shadow:0 0 0 1.5px rgba(255,255,255,.08) inset}
+/* 🔑 la fase de una nave de funa: una lista, con ❌ en los que cayeron */
+.funa{margin:0 0 14px;padding:12px 14px;border:1px solid var(--bd);border-radius:12px;background:var(--pan)}
+.funa h4{margin:0 0 10px;color:var(--tx2);font:800 .78rem/1.2 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase}
+.funa h4 small{margin-left:8px;color:var(--tx3);font-weight:600;letter-spacing:.08em}
+.funa ul{list-style:none;margin:0;padding:0;display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 12px}
+.funa li{display:flex;align-items:center;gap:6px;min-width:0}
+.funa li.cae{opacity:.55}
+.funa .cae-x{flex:0 0 auto;font-style:normal;font-size:.7rem}
 
 /* ── los botones, del color del servidor ────────────────────────────
    🔑 Dlx, 25/09/2026: «hacer los botones más bonitos, quizás como los que

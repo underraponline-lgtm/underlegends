@@ -333,9 +333,17 @@ def armar(ev, links=()):
     """
     import motor
     rondas, donde, orden = [], {}, {}
+    fase = []                     # la fase de una nave de funa: [nombre, cayó]
     for i, d in enumerate(ev.get('duelos') or ()):
         crudo = str(d.get('ronda') or '').strip()
         canon = motor.ronda_de(crudo)
+        # 🔑 LA FASE DE UNA NAVE DE FUNA NO SON BATALLAS: es una lista, con ❌ en
+        # los que cayeron (Dlx, 29/09/2026). Dibujada como cuadro serían trece
+        # «batallas» contra nadie. Ver `llaves_a_entrada.filas_funa()`.
+        if canon == motor.FUNA_R:
+            if d.get('b'):
+                fase.append([d['b'], 'en pie' not in str(d.get('notas') or '')])
+            continue
         etq = ETIQUETA.get(motor.norm(crudo)) or crudo.capitalize() or '—'
         if etq not in donde:
             donde[etq] = len(rondas)
@@ -354,6 +362,17 @@ def armar(ev, links=()):
     sin = sorted({x.strip() for R in rondas for b in R['b']
                   for x in re.findall(r'sin integrantes\s*:\s*([^;|]+)', str(b[2] or ''), re.I)
                   if x.strip()})
+    # la fase entera: primero los que pasaron (están en alguna batalla de
+    # después), y los que cayeron
+    if fase:
+        pasaron = []
+        for R in rondas:
+            for b in R['b']:
+                for x in b[0]:
+                    for m in [p.strip() for p in str(x).split(',') if p.strip()]:
+                        if m not in pasaron:
+                            pasaron.append(m)
+        fase = [[m, False] for m in pasaron] + fase
     return {
         'n': int(ev['num']),
         'nombre': limpio(ev.get('nombre')),
@@ -367,6 +386,7 @@ def armar(ev, links=()):
                    int(r.get('puntos') or 0)] for r in res],
         'links': list(links or ()),
         **({'sin': sin} if sin else {}),
+        **({'funa': fase} if fase else {}),
     }
 
 

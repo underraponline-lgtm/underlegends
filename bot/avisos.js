@@ -1218,6 +1218,10 @@ export function pareceLlave(texto) {
   // WORLD CUP, 27/09/2026) y la página lo pega a su llave (`unirPartidas()`
   // de `llave_vivo.js`). Sin guardarlo, la final quedaba «en juego» siempre.
   if (/CAMPEON|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO/i.test(s.replace(/[\u0300-\u036f]/g, ''))) return true;
+  // \ud83d\udd11 LA NAVE DE FUNA, desde la fase: una lista con \u274c y sin \ud83c\udd9a todav\u00eda (Dlx,
+  // 29/09/2026). La p\u00e1gina la lee con `funaDe()` de `llave_vivo.js`.
+  if (/fase\s+de\s+eliminaci|nave\s+de\s+funa|aniquilaci|c[iy]pher/i.test(s) &&
+      (s.match(/[\u231d\]\u300d\u300f\u274c]/g) || []).length >= 4) return true;
   return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
     (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉/gi) || []).length >= 2;
 }

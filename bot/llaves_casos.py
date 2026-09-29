@@ -183,6 +183,48 @@ def armar_veredictos(que, archivo):
     print('%d caso(s) de veredictos en %s' % (len(ver), os.path.relpath(CASOS, BASE)))
 
 
+#: 🔑 LAS NAVES DE FUNA QUE PASÓ DLX (29/09/2026): la fase de eliminación y el
+#: podio con medallas, que la página tiene que leer igual que el ciclo. Son de
+#: la pre-temporada y los nombres son los de las capturas; el rol del aviso
+#: va con un id inventado.
+FUNA = [
+    ('Anything Goes Vol.15: 『』, sin ❌, final de tres y CAMPEON/SUBCAMPEON/TERCER LUGAR',
+     '⚕️Anything Goes. Vol.15 Nave de Funa⚕️\n\n<@&1> ▋\n\n[ FASE DE ELIMINACIÓN ]\n\n'
+     '『 Xplicit🇨🇱』\n『Rbk 🇻🇪』\n『Mco 🇦🇷』\n『Corrta🇯🇵』\n『Argenfifa🇦🇷』\n'
+     '『sin limites🇵🇪』\n『Roda🇦🇹』\n『Khalil 🇨🇱』\n『 Matioo 🇪🇨 』\n『Laura 🇦🇷 』\n'
+     '『Trot🇪🇸』\n『Kyle🇵🇪』\n『Kinkross🇪🇸』\n『NC🇦🇷』\n\n[ FINAL ]\n\n'
+     '⌞ Argenfifa 🇦🇷 ⌝ 🆚 ⌞ NC🇦🇷 ⌝ 🆚 ⌞ sin limites🇵🇪 ⌝\n\n<@&1> ▋\n\n'
+     'CAMPEON: NC🇦🇷\nSUBCAMPEON: sin limites🇵🇪\nTERCER LUGAR: Argenfifa 🇦🇷'),
+    ('Revo 2/5: «1 - [x] ❌», final de dos y el podio con medallas',
+     'nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n3 - [Saiko] ❌\n4 - [Tam]\n'
+     '5 - [Corazón de fleiva] ❌\n6 - [Diego] ❌\n7 - [Joba] ❌\n8 - [silence] ❌\n9 - [multi]\n'
+     '10 - [Chekerau] ❌\n11 - [Guess]\n12 - [xubaru] ❌\n13 - [kyron] ❌\n14 - [dnk] ❌\n'
+     '15 - [mussito] ❌\n16 - [rodopro] ❌\n\nFinal\n\n[Guess] 🆚 [tam]\n\n🥇 tam\n🥈 guess\n🥉 multi'),
+    ('Revo 15/5: la cita de Discord, «⌞ x ⌝❌» y sin podio todavía',
+     '[ NAVE DE FUNA ]\n\n<@&1> ▋\n\n[ FASE DE ELIMINACIÓN ]\n\n> ⌞ Dnk🇦🇷 ⌝ ❌\n'
+     '> ⌞ Pwopwo🇦🇷 ⌝❌\n> ⌞ Heat🇵🇷 ⌝\n> ⌞ Sombra🇵🇷 ⌝\n> ⌞ Xubaru🇻🇪 ⌝ ❌\n> ⌞ Dryk🇵🇪 ⌝❌\n'
+     '> ⌞ Blue🇵🇦 ⌝ ❌\n> ⌞ Bonais🇻🇪 ⌝ ❌\n> ⌞ Arkane🇵🇷 ⌝\n> ⌞ Valentin🇦🇷 ⌝ ❌\n'
+     '> ⌞ Rodas🇵🇷 ⌝ ❌\n> ⌞ Nz🇲🇽 ⌝ ❌\n\n[ FINAL ]\n\n⌞ Heat🇵🇷 ⌝ 🆚 ⌞ Arkane🇵🇷 ⌝\n\n<@&1> ▋'),
+]
+
+
+def funa(texto):
+    """Lo que la página tiene que leer igual de una nave de funa."""
+    fu = E.funa_de(texto)
+    return {'fase': [[n, c] for n, c in fu] if fu else None,
+            'medallas': {str(k): v for k, v in sorted(E.medallas_de(texto).items())}}
+
+
+def armar_funa():
+    """Rehace la lista `funa` del contrato, sin tocar las demás."""
+    with io.open(CASOS, encoding='utf-8') as f:
+        d = json.load(f)
+    d['funa'] = [dict({'que': q, 'texto': t}, **funa(t)) for q, t in FUNA]
+    with io.open(CASOS, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+    print('%d caso(s) de nave de funa en %s' % (len(d['funa']), os.path.relpath(CASOS, BASE)))
+
+
 def _self_check():
     with io.open(CASOS, encoding='utf-8') as f:
         d = json.load(f)
@@ -197,6 +239,10 @@ def _self_check():
         ok = vidas(c['filas']) == c['eventos']
         mal += not ok
         print('   %s veredictos: %s' % ('✅' if ok else '🔴', c['que']))
+    for c in d.get('funa') or []:
+        ok = funa(c['texto']) == {'fase': c['fase'], 'medallas': c['medallas']}
+        mal += not ok
+        print('   %s nave de funa: %s' % ('✅' if ok else '🔴', c['que']))
     print('')
     return mal
 
@@ -210,5 +256,8 @@ if __name__ == '__main__':
     if '--veredictos' in sys.argv:
         i = sys.argv.index('--veredictos')
         armar_veredictos(sys.argv[i + 1], sys.argv[i + 2])
+        sys.exit(0)
+    if '--funa' in sys.argv:
+        armar_funa()
         sys.exit(0)
     print(__doc__)

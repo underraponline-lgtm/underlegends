@@ -972,7 +972,8 @@ function pintaVivo() {
   if (LL && LL.L && LL.L.vivo && !$('#visorLlave').hidden) {
     var nuevo = VIVO_L[LL.L.id];
     if (nuevo) {
-      var firma = function (L) { return JSON.stringify([L.rondas, L.participantes, L.terminada]); };
+      // (y la fase de una nave de funa: una ❌ nueva no cambia ninguna ronda)
+      var firma = function (L) { return JSON.stringify([L.rondas, L.participantes, L.terminada, L.funa]); };
       var cambio = firma(nuevo) !== firma(LL.L);
       LL.L = nuevo;
       pintaCabVivo(nuevo);
@@ -1303,15 +1304,33 @@ function pintaCabVivo(L) {
 }
 // `quieto`: se redibuja en el lugar —la llave en vivo que cambió, o el
 // teléfono que giró— sin volver al principio
+/* 🔑 LA FASE DE UNA NAVE DE FUNA (CYPHER, aniquilación). Dlx, 29/09/2026: se
+   rapean rondas de beats y sale el nombre con más reacciones en Discord. La
+   llave la escribe como una LISTA con ❌ en los que cayeron, sin el orden: se
+   ven todos juntos, los que siguen primero. `funa` viene del lector —en vivo,
+   `LlaveVivo.funaDe()`; procesada, `llaves_web.armar()`—: `[nombre, cayó]`. */
+function funaVista(L, quien) {
+  var fs = (L && L.funa) || [];
+  if (!fs.length) return '';
+  var quedan = fs.filter(function (x) { return !x[1]; }).length;
+  return '<section class="funa"><h4>Fase de eliminación <small>' + fs.length + ' raperos &middot; ' +
+    (quedan === fs.length ? 'se juega' : 'quedan ' + quedan) + '</small></h4><ul>' +
+    fs.map(function (x) {
+      return '<li' + (x[1] ? ' class="cae"' : '') + '>' + quien(x[0], false, !!x[1]) +
+        (x[1] ? '<i class="cae-x" title="Cayó en la fase">&#10060;</i>' : '') + '</li>';
+    }).join('') + '</ul></section>';
+}
 function pintaVistaLlave(quieto) {
   if (!LL || !$('#lVista')) return;
   var cc0 = $('#lCuerpo .cuadro-caja'), x0 = cc0 ? cc0.scrollLeft : 0;
   var cu = $('#lCuerpo'), y0 = cu ? cu.scrollTop : 0;
   $$('[data-lvista]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lvista === LL_VISTA)); });
   var vid = vidasDe(LL.L);
+  var hayR = (LL.L.rondas || []).some(function (R) { return R.b && R.b.length; });
   $('#lVista').innerHTML = vid ? vidasVista(LL.L, LL.quien, vid)
-    : LL_VISTA === 'rondas' ? rondasLista(LL.L, LL.quien, LL.cara)
-    : cuadro(LL.L, LL.quien, LL.cara);
+    : funaVista(LL.L, LL.quien) + (!hayR ? ''
+      : LL_VISTA === 'rondas' ? rondasLista(LL.L, LL.quien, LL.cara)
+      : cuadro(LL.L, LL.quien, LL.cara));
   var cc = $('#lCuerpo .cuadro-caja');
   LL.ancho = window.innerWidth;
   if (quieto) {

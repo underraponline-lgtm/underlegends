@@ -768,7 +768,7 @@ def medallas_de(texto):
         n = MEDALLA.get(s[:1])
         if not n or n in out or PODIO.search(s):
             continue
-        t = _sin_marcas(s[1:].strip(' :-–—️'))
+        t = _sin_marcas(s[1:].strip(' .·▪️*_`:-–—️'))
         if norm(t) or MENCION.search(t):
             out[n] = t
     return out

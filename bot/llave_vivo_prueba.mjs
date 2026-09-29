@@ -127,6 +127,9 @@ const { pareceLlave, conNombres } = await import('./avisos.js');
 ok('una llave de verdad parece una llave', casos.every((c) => pareceLlave(c.texto)),
   casos.filter((c) => !pareceLlave(c.texto)).map((c) => c.que).join(', '));
 ok('un anuncio no', !pareceLlave('# COPA DE PRUEBA\nMODALIDAD: 1vs1\nHORARIO: en media hora\nCUPOS: 16'));
+ok('la nave de funa sí, desde la fase (sin 🆚 todavía)',
+  pareceLlave('[ NAVE DE FUNA ]\n[ FASE DE ELIMINACIÓN ]\n> ⌞ Dnk🇦🇷 ⌝ ❌\n> ⌞ Heat🇵🇷 ⌝\n> ⌞ Sombra🇵🇷 ⌝\n> ⌞ Blue🇵🇦 ⌝ ❌') &&
+  !pareceLlave('# NAVE DE FUNA el viernes\nInscripciones abiertas\nCUPOS: 16'));
 ok('el podio suelto sí, para que la página lo pegue a su llave',
   pareceLlave('│ CAMPEÓN: **FULLY🇨🇱** @FULLY\n│ SUBCAMPEÓN: SNOW🇨🇴') && pareceLlave('𝐂𝐀𝐌𝐏𝐄𝐎́𝐍: X'));
 ok('las menciones pasan a nombre, con el apodo del servidor primero',
@@ -194,6 +197,25 @@ for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')
     batallas: L.rondas[0].b.map((x) => [x[0], x[1], x[2]]) }));
   ok(c.que, js(r) === js(c.eventos), `JS:     ${js(r).slice(0, 400)}\n      Python: ${js(c.eventos).slice(0, 400)}`);
 }
+
+// 🔑 LA NAVE DE FUNA (Dlx, 29/09/2026): la fase de eliminación y el podio con
+// medallas, igual que `escuchar.funa_de()` y `escuchar.medallas_de()`.
+console.log('\n6 · la nave de funa, contra Python (bot/llaves_casos.json)\n');
+for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')).funa || []) {
+  const r = { fase: LV.funaDe(c.texto), medallas: LV.medallasDe(c.texto) };
+  const e = { fase: c.fase, medallas: c.medallas };
+  ok(c.que, js(r) === js(e), `JS:     ${js(r).slice(0, 400)}\n      Python: ${js(e).slice(0, 400)}`);
+  const L = LV.aLlave({ id: '1', texto: c.texto });
+  ok('  y la llave la trae: la fase entera y el plantel de todos',
+    L && L.funa && L.funa.length === c.fase.length && L.participantes >= c.fase.length,
+    js(L && [L.funa && L.funa.length, L.participantes]));
+}
+const soloFase = LV.aLlave({ id: '1', texto: '[ FASE DE ELIMINACIÓN ]\n⌞A⌝ ❌\n⌞B⌝\n⌞C⌝ ❌\n⌞D⌝\n' });
+ok('una nave de funa se ve desde la fase, antes de la final',
+  soloFase && soloFase.funa.length === 4 && soloFase.enJuego === 'Fase de eliminación', js(soloFase && soloFase.enJuego));
+const conMedalla = LV.aLlave({ id: '1', texto: 'nave de funa:\n1 - [A] ❌\n2 - [B]\n3 - [C] ❌\n4 - [D]\nFinal\n[B] 🆚 [D]\n🥇 D\n🥈 B' });
+ok('y la final sin «CAMPEÓN» toma el 🥇 del podio', conMedalla && conMedalla.terminada &&
+  conMedalla.rondas[conMedalla.rondas.length - 1].b[0][1] === 'D', js(conMedalla && conMedalla.rondas));
 
 console.log(mal ? `\n🔴 ${mal} mal\n` : '\n   todo ok\n');
 process.exit(mal ? 1 : 0);

@@ -2181,5 +2181,200 @@
     }
    ]
   }
+ ],
+ "funa": [
+  {
+   "que": "Anything Goes Vol.15: 『』, sin ❌, final de tres y CAMPEON/SUBCAMPEON/TERCER LUGAR",
+   "texto": "⚕️Anything Goes. Vol.15 Nave de Funa⚕️\n\n<@&1> ▋\n\n[ FASE DE ELIMINACIÓN ]\n\n『 Xplicit🇨🇱』\n『Rbk 🇻🇪』\n『Mco 🇦🇷』\n『Corrta🇯🇵』\n『Argenfifa🇦🇷』\n『sin limites🇵🇪』\n『Roda🇦🇹』\n『Khalil 🇨🇱』\n『 Matioo 🇪🇨 』\n『Laura 🇦🇷 』\n『Trot🇪🇸』\n『Kyle🇵🇪』\n『Kinkross🇪🇸』\n『NC🇦🇷』\n\n[ FINAL ]\n\n⌞ Argenfifa 🇦🇷 ⌝ 🆚 ⌞ NC🇦🇷 ⌝ 🆚 ⌞ sin limites🇵🇪 ⌝\n\n<@&1> ▋\n\nCAMPEON: NC🇦🇷\nSUBCAMPEON: sin limites🇵🇪\nTERCER LUGAR: Argenfifa 🇦🇷",
+   "fase": [
+    [
+     "Xplicit🇨🇱",
+     false
+    ],
+    [
+     "Rbk 🇻🇪",
+     false
+    ],
+    [
+     "Mco 🇦🇷",
+     false
+    ],
+    [
+     "Corrta🇯🇵",
+     false
+    ],
+    [
+     "Argenfifa🇦🇷",
+     false
+    ],
+    [
+     "sin limites🇵🇪",
+     false
+    ],
+    [
+     "Roda🇦🇹",
+     false
+    ],
+    [
+     "Khalil 🇨🇱",
+     false
+    ],
+    [
+     "Matioo 🇪🇨",
+     false
+    ],
+    [
+     "Laura 🇦🇷",
+     false
+    ],
+    [
+     "Trot🇪🇸",
+     false
+    ],
+    [
+     "Kyle🇵🇪",
+     false
+    ],
+    [
+     "Kinkross🇪🇸",
+     false
+    ],
+    [
+     "NC🇦🇷",
+     false
+    ]
+   ],
+   "medallas": {}
+  },
+  {
+   "que": "Revo 2/5: «1 - [x] ❌», final de dos y el podio con medallas",
+   "texto": "nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n3 - [Saiko] ❌\n4 - [Tam]\n5 - [Corazón de fleiva] ❌\n6 - [Diego] ❌\n7 - [Joba] ❌\n8 - [silence] ❌\n9 - [multi]\n10 - [Chekerau] ❌\n11 - [Guess]\n12 - [xubaru] ❌\n13 - [kyron] ❌\n14 - [dnk] ❌\n15 - [mussito] ❌\n16 - [rodopro] ❌\n\nFinal\n\n[Guess] 🆚 [tam]\n\n🥇 tam\n🥈 guess\n🥉 multi",
+   "fase": [
+    [
+     "Black demon",
+     true
+    ],
+    [
+     "Darkomc",
+     true
+    ],
+    [
+     "Saiko",
+     true
+    ],
+    [
+     "Tam",
+     false
+    ],
+    [
+     "Corazón de fleiva",
+     true
+    ],
+    [
+     "Diego",
+     true
+    ],
+    [
+     "Joba",
+     true
+    ],
+    [
+     "silence",
+     true
+    ],
+    [
+     "multi",
+     false
+    ],
+    [
+     "Chekerau",
+     true
+    ],
+    [
+     "Guess",
+     false
+    ],
+    [
+     "xubaru",
+     true
+    ],
+    [
+     "kyron",
+     true
+    ],
+    [
+     "dnk",
+     true
+    ],
+    [
+     "mussito",
+     true
+    ],
+    [
+     "rodopro",
+     true
+    ]
+   ],
+   "medallas": {
+    "1": "tam",
+    "2": "guess",
+    "3": "multi"
+   }
+  },
+  {
+   "que": "Revo 15/5: la cita de Discord, «⌞ x ⌝❌» y sin podio todavía",
+   "texto": "[ NAVE DE FUNA ]\n\n<@&1> ▋\n\n[ FASE DE ELIMINACIÓN ]\n\n> ⌞ Dnk🇦🇷 ⌝ ❌\n> ⌞ Pwopwo🇦🇷 ⌝❌\n> ⌞ Heat🇵🇷 ⌝\n> ⌞ Sombra🇵🇷 ⌝\n> ⌞ Xubaru🇻🇪 ⌝ ❌\n> ⌞ Dryk🇵🇪 ⌝❌\n> ⌞ Blue🇵🇦 ⌝ ❌\n> ⌞ Bonais🇻🇪 ⌝ ❌\n> ⌞ Arkane🇵🇷 ⌝\n> ⌞ Valentin🇦🇷 ⌝ ❌\n> ⌞ Rodas🇵🇷 ⌝ ❌\n> ⌞ Nz🇲🇽 ⌝ ❌\n\n[ FINAL ]\n\n⌞ Heat🇵🇷 ⌝ 🆚 ⌞ Arkane🇵🇷 ⌝\n\n<@&1> ▋",
+   "fase": [
+    [
+     "Dnk🇦🇷",
+     true
+    ],
+    [
+     "Pwopwo🇦🇷",
+     true
+    ],
+    [
+     "Heat🇵🇷",
+     false
+    ],
+    [
+     "Sombra🇵🇷",
+     false
+    ],
+    [
+     "Xubaru🇻🇪",
+     true
+    ],
+    [
+     "Dryk🇵🇪",
+     true
+    ],
+    [
+     "Blue🇵🇦",
+     true
+    ],
+    [
+     "Bonais🇻🇪",
+     true
+    ],
+    [
+     "Arkane🇵🇷",
+     false
+    ],
+    [
+     "Valentin🇦🇷",
+     true
+    ],
+    [
+     "Rodas🇵🇷",
+     true
+    ],
+    [
+     "Nz🇲🇽",
+     true
+    ]
+   ],
+   "medallas": {}
+  }
  ]
 }
