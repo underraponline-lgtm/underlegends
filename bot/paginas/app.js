@@ -3535,11 +3535,10 @@ function pintaPerfil(k) {
   var cual = PERF_CARTA[k] && cartas.indexOf(PERF_CARTA[k]) >= 0 ? PERF_CARTA[k] : cartas[0];
   var rg = f.rg ? '<span class="rg pf-rg" style="color:' + esc(f.rgc || '') + ';border-color:' +
     esc(f.rgc || '#1A2523') + '">' + esc(f.rg) + '</span>' : '';
-  var sub = [
-    f.cc ? '<a class="pf-pais" href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' ' +
-      esc(nombrePais(f.cc)) + '</a>' : '',
-    f.sv ? chipSv(f.sv) : '',
-  ].filter(Boolean).join(' <i class="sep">·</i> ');
+  // 🏠 el servidor: el que eligió en Mi cuenta, o donde más jugó (ver `svPerfil()`)
+  var sub = (f.cc ? '<a class="pf-pais" href="#/pais/' + esc(f.cc) + '">' + bandera(f.cc) + ' ' +
+      esc(nombrePais(f.cc)) + '</a>' : '') +
+    '<span id="pfSv" data-k="' + esc(k) + '" data-sep="' + (f.cc ? 1 : 0) + '">' + svPerfil(k, f) + '</span>';
   var med = [['&#129351;', f.oro], ['&#129352;', f.seg], ['&#129353;', f.ter]];
   caja.innerHTML =
     '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
@@ -3616,6 +3615,11 @@ function pintaPerfil(k) {
   // ★ cuántos lo siguen
   pintaSeguidores(k);
   pedirSeguidores().then(function () { pintaSeguidores(k); });
+  // 🏠 y el servidor que eligió
+  pedirElegidos().then(function () {
+    var c = $('#pfSv');
+    if (c && c.dataset.k === k) c.innerHTML = svPerfil(k, f);
+  });
 
   // ── lo que viene de /api/perfiles
   perfiles().then(function (P) {
@@ -4085,7 +4089,8 @@ function pintaMW() {
 /* ── las encuestas ─────────────────────────────────────────────────────
    🔑 Dlx, 27/09/2026, del Most Wanted: «eso de que los buscados lo elige la
    gente es peak», en la página; y a quién vota, «1. A. 2. A»: cualquiera que
-   entre con Discord, y en el ×2 nadie vota a su servidor. Qué se vota llega
+   entre con Discord. En el ×2, desde el 28/09 cualquiera vota a cualquiera,
+   también al suyo («3. B y C»). Qué se vota llega
    en `D.enc` (bot/encuestas.py, cada media hora) y cuántos votos lleva cada
    opción, de `/api/avisos/encuestas`. Quién vota lo dice Discord al Worker
    (`validarVoto()` en bot/avisos.js), nunca la página.
@@ -4178,8 +4183,6 @@ function votar(id, op) {
 function errorEnc(E) {
   var e = E.error;
   return errorCuenta(e) || (e === 'cerrada' ? 'La votación ya cerró.'
-    : e === 'propio' ? 'No podés votar por tu servidor (' + esc(nombreSv(E.sv)) + '): votá a otro, uno ' +
-      'donde te gustaría ir a jugar.'
     : e === 'vos' ? 'No podés votarte a vos.'
     : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para votar: vas a poder desde el ' +
       esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
@@ -4265,17 +4268,17 @@ function pintaX2(E) {
   if (!c) return;
   if (!E || !(E.op || []).length) { c.hidden = true; return; }
   var cu = cuentaEnc(E.id), tot = totalEnc(cu), mio = ENC_MIO[E.id], est = ENC_EST[E.id] || {};
-  var yoF = yoDiscord(), suyo = yoF && yoF.sv, x = String(E.x || 2).replace('.', ',');
+  var x = String(E.x || 2).replace('.', ',');
+  // 🔑 CUALQUIERA VOTA A CUALQUIERA, también al suyo (Dlx, 28/09/2026: «3. B y C»)
   c.innerHTML = '<h4>&#128499;&#65039; ¿Quién se lleva el &times;' + x + ' la semana que viene?</h4>' +
-    '<p class="enc-b">El más votado sale del sorteo del lunes con <b>&times;' + x + ' como mínimo</b>. No se ' +
-    'vota al servidor de uno (el que más jugaste en la temporada). ' + cabEnc(E, tot) + '</p>' +
+    '<p class="enc-b">El más votado sale del sorteo del lunes con <b>&times;' + x + ' como mínimo</b>. ' +
+    cabEnc(E, tot) + '</p>' +
     '<div class="enc-svs">' + E.op.map(function (sv) {
-      var n = cu[sv] || 0, es = suyo === sv;
+      var n = cu[sv] || 0;
       return '<button type="button" class="enc-sv' + (mio === sv ? ' mio' : '') + (est.va === sv ? ' va' : '') +
-        '" style="--c:' + esc(colorSv(sv)) + '" data-votar="' + esc(E.id) + '" data-op="' + esc(sv) + '"' +
-        (es ? ' disabled title="Es tu servidor"' : '') + '>' + logoSv(sv, 30) +
-        '<span class="enc-svn" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span>' +
-        '<small>' + (es ? 'el tuyo' : (mio === sv ? '&#10003; ' : '') + n + (n === 1 ? ' voto' : ' votos')) +
+        '" style="--c:' + esc(colorSv(sv)) + '" data-votar="' + esc(E.id) + '" data-op="' + esc(sv) + '">' +
+        logoSv(sv, 30) + '<span class="enc-svn" title="' + esc(nombreSv(sv)) + '">' + esc(sv) + '</span>' +
+        '<small>' + (mio === sv ? '&#10003; ' : '') + n + (n === 1 ? ' voto' : ' votos') +
         '</small><i class="enc-bar" style="width:' + (tot ? Math.round(100 * n / tot) : 0) + '%"></i></button>';
     }).join('') + '</div><p class="enc-e" aria-live="polite">' + pieEnc(E, nombreSv) + '</p>';
   c.hidden = false;
@@ -4886,6 +4889,98 @@ function secSigo() {
   }
   return out;
 }
+/* ── «tu servidor» ─────────────────────────────────────────────────────
+   🔑 Dlx, 28/09/2026: «La idea es q la gente decida por su cuenta», y
+   «1. A 2. A 3. B y C»: se elige en Mi cuenta (con Discord), uno por
+   temporada como la foto —libre hasta el 9 de octubre—, y no frena ningún
+   voto. Se ve en tu perfil, en lugar del servidor donde más jugaste.
+   ⚠️ LA TARJETA DE SERVIDOR NO CAMBIA: mide los datos del servidor donde
+   jugaste, y uno elegido donde no jugaste la dejaría en cero. */
+var ELEGIDOS = null, ELEGIDOS_T = 0, MISV = null, MISV_EST = {}, MISV_PIDE = false;
+function pedirElegidos() {
+  if (ELEGIDOS && Date.now() - ELEGIDOS_T < 5 * 60000) return Promise.resolve(ELEGIDOS);
+  return fetch('/api/avisos/servidores', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      if (j && j.n) { ELEGIDOS = j.n; ELEGIDOS_T = Date.now(); }
+      return ELEGIDOS;
+    })
+    .catch(function () { return ELEGIDOS; });
+}
+/* el que eligió, si es un servidor de la Liga; si no, '' */
+function svElegido(k) {
+  var s = (ELEGIDOS || {})[k];
+  return s && ((D && D.svs) || []).some(function (x) { return x.sv === s; }) ? s : '';
+}
+/* lo que va en la cabecera del perfil: el elegido, o donde más jugó */
+function svPerfil(k, f) {
+  var el = svElegido(k), sv = el || f.sv;
+  if (!sv) return '';
+  return (f.cc ? ' <i class="sep">·</i> ' : '') + '<span title="' +
+    esc(el ? 'Eligió ' + nombreSv(el) + ' como su servidor' : 'Donde más jugó esta temporada') + '">' +
+    chipSv(sv) + '</span>';
+}
+/* lo tuyo: cuál elegiste y si todavía se puede cambiar */
+function pedirMiServidor() {
+  if (!DC || MISV || MISV_PIDE) return;
+  MISV_PIDE = true;
+  pedirConCuenta('/api/avisos/mi-servidor', {}, false).then(function (j) {
+    MISV_PIDE = false;
+    MISV = j && j.status === 200 ? j : { error: (j && j.error) || 'red' };
+    repintarMiServidor();
+  }).catch(function () { MISV_PIDE = false; MISV = { error: 'red' }; repintarMiServidor(); });
+}
+function repintarMiServidor() {
+  var pop = $('#popCuenta');
+  if (pop && !pop.hidden) pintaPopCuenta();
+}
+function elegirMiServidor(sv) {
+  MISV_EST = { va: sv };
+  repintarMiServidor();
+  conCuenta('/api/avisos/mi-servidor', { sv: sv }, 's').then(function (j) {
+    if (!j) return;
+    if (j.status === 200) {
+      MISV = j;
+      MISV_EST = { ok: true };
+      if (DC && DC.clave) { ELEGIDOS = ELEGIDOS || {}; ELEGIDOS[DC.clave] = j.sv; }
+    } else if (j.status === 409) {
+      MISV = Object.assign({}, MISV || {}, { sv: j.sv, fijo: true, puede: false, libre: false });
+      MISV_EST = { error: 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.' };
+    } else {
+      MISV_EST = { error: errorCuenta(j.error) || 'No pude guardarlo. Probá de nuevo en un rato.' };
+    }
+    repintarMiServidor();
+  }).catch(function () { MISV_EST = { error: 'Sin conexión: probá de nuevo.' }; repintarMiServidor(); });
+}
+function secMiServidor() {
+  var svs = (D && D.svs) || [];
+  if (!DC || !svs.length) return '';
+  pedirMiServidor();
+  var M = MISV || {}, est = MISV_EST;
+  var hasta = M.libre_hasta ? fmtFecha(new Date(M.libre_hasta - 60000).toISOString(),
+    { day: 'numeric', month: 'long' }) : '';
+  var nota = !MISV ? 'Cargando&hellip;'
+    : est.error ? '<span class="enc-mal">' + est.error + '</span>'
+    : M.error ? '<span class="enc-mal">' + (errorCuenta(M.error) || 'No pude leerlo. Probá en un rato.') + '</span>'
+    : est.va ? 'Guardando&hellip;'
+    : M.libre ? 'Cambialo cuantas veces quieras hasta el ' + esc(hasta) + '; después, uno por temporada.'
+    : M.puede ? (M.sv ? 'Podés cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
+    : 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.';
+  return '<section class="pop-sec"><h4>&#127968; Tu servidor' + (M.sv ? ' <small>' + esc(nombreSv(M.sv)) +
+    '</small>' : '') + '</h4><p class="nota">El que representás en la Liga: sale en tu perfil. Tu tarjeta de ' +
+    'Servidor sigue siendo la de donde jugás.</p><div class="ms-svs">' + svs.map(function (s) {
+      var on = M.sv === s.sv, pide = est.pide === s.sv;
+      return '<button type="button" class="ms-sv' + (on ? ' on' : '') + (pide ? ' pide' : '') + '" data-misv="' +
+        esc(s.sv) + '" style="--c:' + esc(colorSv(s.sv)) + '" aria-pressed="' + on + '"' +
+        ((MISV && !M.error && !M.puede && !on) || est.va ? ' disabled' : '') + '>' + logoSv(s.sv, 24) +
+        '<span>' + esc(s.nombre || s.sv) + '</span></button>';
+    }).join('') + '</div>' +
+    // pasada la ventana libre, elegir es para toda la temporada: se confirma
+    (est.pide ? '<p class="ms-ok"><button type="button" class="btn" data-misv-ok="' + esc(est.pide) + '">Elegir ' +
+      esc(nombreSv(est.pide)) + '</button><span>Queda hasta la temporada que viene.</span></p>' : '') +
+    '<p class="nota" role="status">' + nota + '</p></section>';
+}
+
 /* 🔑 TUS PRÓXIMOS EVENTOS: los anunciados en los servidores donde estás
    (lo sabe `/api/cuenta`); sin eso, los de toda la Liga. El link es el
    anuncio, que es donde cada servidor dice cómo anotarse. */
@@ -5227,8 +5322,8 @@ function _pintaPopCuenta() {
         ' Mi país</a>' : '') +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
       (DC.clave ? '<button type="button" data-foto>&#128247; Cambiar mi foto</button>' : '') +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secFoto() + secRedes() + secProximos() +
-      secSigo();
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secFoto() + secRedes() + secMiServidor() +
+      secProximos() + secSigo();
     return;
   }
   if (!f && DC) {
@@ -5238,7 +5333,7 @@ function _pintaPopCuenta() {
       'Discord: te dice qué te falta.</p><nav class="pop-menu">' +
       '<a href="#/guia">&#127915; Cómo conseguir tu tarjeta</a>' +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
-      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secProximos() + secSigo();
+      '<button type="button" id="yoOlvidar">Salir</button></nav>' + secMiServidor() + secProximos() + secSigo();
     return;
   }
   if (!f) {
@@ -5262,7 +5357,7 @@ function _pintaPopCuenta() {
     (DC && DC.clave ? '<button type="button" data-foto>&#128247; Cambiar mi foto</button>' : '') +
     '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
     (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar) +
-    secFoto() + secRedes() + secProximos() + secSigo();
+    secFoto() + secRedes() + secMiServidor() + secProximos() + secSigo();
 }
 function pintaYoRes(q) {
   var caja = $('#yoRes');
@@ -5587,6 +5682,17 @@ function eventos() {
       abrirPop('#popCuenta', pintaPopCuenta);
       return;
     }
+    // 🏠 «tu servidor»: durante la ventana libre se elige al toque; después,
+    // como es para toda la temporada, se confirma
+    var ms = e.target.closest('[data-misv]');
+    if (ms) {
+      var msv = ms.dataset.misv;
+      if (MISV && MISV.sv === msv) return;
+      if (MISV && !MISV.libre) { MISV_EST = { pide: msv }; repintarMiServidor(); } else elegirMiServidor(msv);
+      return;
+    }
+    var mo = e.target.closest('[data-misv-ok]');
+    if (mo) { elegirMiServidor(mo.dataset.misvOk); return; }
     var sg = e.target.closest('[data-seguir]');
     if (sg) {
       var sk = sg.dataset.seguir, sw = sg.closest('[data-segw]');
@@ -5654,6 +5760,8 @@ function eventos() {
       cerrarSesion();
       // ★ a quién seguías queda en el servidor, con tu cuenta: no en este dispositivo
       if (DC) { guardarSigo([]); marcarSigoSrv(false); ME_SIGUEN = null; }
+      MISV = null;
+      MISV_EST = {};
       YO = '';
       DC = null;
       guardarLS('lg:yo', null);
@@ -5670,6 +5778,8 @@ function eventos() {
       guardarSigo([]);
       marcarSigoSrv(false);
       ME_SIGUEN = null;
+      MISV = null;
+      MISV_EST = {};
       AJ = {};
       YO = '';
       DC = null;

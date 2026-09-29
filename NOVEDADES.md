@@ -302,7 +302,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El miel de Urban Freestyle queda** | *«Está bien»* (28/09) | ✅ |
 | **Banner grande en la vista previa del link** | *«Siii»* (28/09) | ✅ (1.44): `bot/paginas/og.png`, 1200×630, con la piel de la página; lo arma `herramientas/banner_link.py`. Los links ya pegados pueden mostrar la vista vieja un tiempo (Discord la guarda) |
 | **Los debutantes de la semana en el Lunes de la Liga, y un DM sólo a Dlx cuando una batalla lleve más de 24 h en ✅ Decidir** | *«B y C»* (28/09) | ✅ (1.44): `lunes.debutantes()` y `alertar.esperando()` (un solo DM con todas las que pasaron las 24 h; la que ya sonó no vuelve a sonar) |
-| **«Tu servidor» lo elige cada uno**, no sale de dónde jugaste | *«La idea es que la gente decida por su cuenta»* (28/09) | ⏳ por diseñar: tres preguntas abajo, en «❓ Esperando» |
+| **«Tu servidor» lo elige cada uno**, no sale de dónde jugaste | *«La idea es que la gente decida por su cuenta»* (28/09) | ✅ (1.45), abajo |
+| **«Tu servidor» se elige en Mi cuenta, una vez por temporada como la foto** (libre hasta el 9/10, la misma ventana), y **en el ×2 cualquiera vota a cualquiera**, también al suyo | *«1. A 2. A 3. B y C»* (28/09, 8 PM) | ✅ (1.45): tabla `servidor` del objeto (`miServidor()`, `servidoresElegidos()`); sale en el perfil en lugar de donde más jugó. `validarVoto()` ya no mira el servidor y `encuestas.py` dejó de mandar a KV de qué servidor es cada Discord ID. **La tarjeta de Servidor no cambia**: es de donde jugás |
 | **Seguidores y seguidos, guardados de verdad** (con «Entrar con Discord», en el Durable Object; el aviso por la campana, nunca por DM) | *«Si hay que hacer eso»* (28/09) | ✅ (1.44): tabla `sigue` en el objeto (`seguir()`, `sigo()`, `seguidores()`); el aviso sale del muro (`seguidos()` lee `web:muro`, que ahora trae la clave de cada persona: `muro.con_claves()`) — sin KV nuevo. Afuera se ve cuántos, nunca quién; quién te sigue lo ves vos, y sólo los que son raperos. Las cuentas de menos de 30 días siguen pero no cuentan |
 | **El remake de la web va después de todo lo demás, incluido lo de seguidores** | *«luego de que hayas hecho todo lo demás y lo 8 haremos eso»* (28/09) | ⏳ |
 | **Misiones, Tareas y el diseño del Pase: más adelante**, lo cuenta Dlx | *«Más adelante te contaré»* · *«Sí»* (28/09) | ⏳ |
@@ -1653,7 +1654,10 @@ inglés, y `/borrar-mis-datos`.
   Trot y Tuca 416 cada uno—. Como no hay regla, **entra solo en la corrida
   de las 4:22 PM**; si preferís la B, decímelo y lo saco (queda anotado en
   `datos/decisiones.json` como que no cuenta, y el ciclo lo retira solo).
-- 🆕 **«Tu servidor» lo elige cada uno** (28/09, *«la idea es que la gente
+- ✅ **«Tu servidor»: 1A, 2A, 3B y C** (28/09, 8 PM). Hecho en la 1.45: en
+  Mi cuenta, uno por temporada como la foto, y en el ×2 se vota a cualquiera.
+  Lo que sigue es cómo estaba planteada.
+- ~~**«Tu servidor» lo elige cada uno**~~ (28/09, *«la idea es que la gente
   decida por su cuenta»*). Hoy «tu servidor» es donde más jugaste, y sirve
   para una sola cosa: **en el ×2 votado no podés votar al tuyo**. Tres
   preguntas antes de hacerlo:

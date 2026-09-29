@@ -69,6 +69,10 @@ const AVISOS = {
   '/api/avisos/seguir': 'POST',
   '/api/avisos/sigo': 'POST',
   '/api/avisos/seguidores': 'GET',
+  // 🔑 «tu servidor» (28/09/2026): elegirlo, y cuál eligió cada perfil.
+  // Ver `miServidor()` en bot/avisos.js
+  '/api/avisos/mi-servidor': 'POST',
+  '/api/avisos/servidores': 'GET',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
@@ -116,7 +120,7 @@ async function avisos(req, url) {
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto
     init.cf = { cacheTtl: 30, cacheEverything: true };
-  } else if (url.pathname.endsWith('/seguidores')) {
+  } else if (url.pathname.endsWith('/seguidores') || url.pathname.endsWith('/servidores')) {
     // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
     // de atraso no le cambia nada a nadie
     init.cf = { cacheTtl: 60, cacheEverything: true };

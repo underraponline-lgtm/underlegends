@@ -831,6 +831,8 @@ const RUTAS = {
   '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
   // 🔑 seguir raperos: ver `seguir()`, `sigo()`, `seguidores()` y `seguidos()`
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
+  // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
+  '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
 };
 
 // ── seguir raperos ─────────────────────────────────────────────────────
@@ -920,7 +922,8 @@ export function paraSeguidores(items, ahora) {
 // ── las encuestas de la página ─────────────────────────────────────────
 // 🔑 Dlx, 27/09/2026: *«eso de que los buscados lo elige la gente es
 // peak»*, en la página, y a quién vota: *«1. A. 2. A»* —cualquiera que entre
-// con Discord, y en el ×2 nadie vota a su servidor—. Qué se vota lo decide
+// con Discord—. En el ×2, desde el 28/09 cualquiera vota a cualquiera
+// (*«3. B y C»*: ver `validarVoto()`). Qué se vota lo decide
 // el ciclo (`bot/encuestas.py`) y lo deja en KV; acá se valida cada voto
 // contra eso y se guarda en el objeto, uno por Discord ID.
 //
@@ -955,8 +958,9 @@ export function validarVoto(defs, d, id, ahora) {
   if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
     return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
   }
-  // 🔑 «TU SERVIDOR» ES DONDE MÁS JUGÁS ESTA TEMPORADA (el del pool)
-  if (e.tipo === 'x2' && ((defs.sv || {})[id] || '') === d.op) return { error: 'propio', estado: 403, sv: d.op };
+  // 🔑 EN EL ×2 CUALQUIERA VOTA A CUALQUIERA, también al suyo. Dlx,
+  // 28/09/2026: «3. B y C». Hasta ese día nadie podía votar a «su servidor»
+  // (el que más jugó); ahora «tu servidor» lo elige cada uno y no frena el voto.
   if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
   return { enc: e.id, op: d.op };
 }
@@ -1284,6 +1288,30 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🔑 «TU SERVIDOR». Dlx, 28/09/2026: «La idea es q la gente decida por su
+  // cuenta», y dónde y cada cuánto, «1. A 2. A»: en Mi cuenta, uno por
+  // temporada como la foto. Quién es lo dice Discord (o la sesión).
+  if (ruta === '/avisos/mi-servidor') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
+        (d.sv !== undefined && !/^[A-Z]{2,5}$/.test(String(d.sv)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    // ⚠️ LA MISMA TEMPORADA Y LA MISMA VENTANA LIBRE QUE LA FOTO: los dos
+    // bindings que `bot/desplegar.py` saca de `comun/temporada.py`
+    // (`temporadaDe()` y `libreHasta()` en worker.js)
+    return elObjeto(env).fetch('https://avisos/mi-servidor', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '',
+        sv: d.sv === undefined ? undefined : String(d.sv), temporada: String((env && env.TEMPORADA) || 't1'),
+        libre_hasta: Date.parse((env && env.FOTO_LIBRE_HASTA) || '') || 0 }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -1529,6 +1557,12 @@ export class Avisos {
         "t INTEGER NOT NULL, de TEXT NOT NULL DEFAULT '', creada INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, a))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
+      // 🔑 «TU SERVIDOR» (28/09/2026): el que cada uno elige en Mi cuenta, uno
+      // por temporada. `fijo` dice si se eligió con el límite rigiendo: como
+      // la foto, hasta el 9/10 se cambia libre. Ver `miServidor()`.
+      this.sql.exec('CREATE TABLE IF NOT EXISTS servidor (quien TEXT NOT NULL, temporada TEXT NOT NULL, ' +
+        "sv TEXT NOT NULL, de TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, fijo INTEGER NOT NULL DEFAULT 0, " +
+        'PRIMARY KEY (quien, temporada))');
     });
   }
 
@@ -1552,6 +1586,7 @@ export class Avisos {
       if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
       if (ruta === '/precios') return json(this.precios(), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
+      if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/alta') return this.alta(d);
@@ -1564,6 +1599,7 @@ export class Avisos {
       if (ruta === '/votar') return this.votar(d);
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
+      if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
@@ -2224,10 +2260,61 @@ export class Avisos {
     this.sql.exec("UPDATE precios SET quien = 'borrado' WHERE quien = ?", String(d.quien));
     // y sus sesiones: en ningún dispositivo queda adentro
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', String(d.quien));
-    // 🔑 Y A QUIÉN SEGUÍA: también va con su Discord ID
+    // 🔑 Y A QUIÉN SEGUÍA, Y QUÉ SERVIDOR ELIGIÓ: también van con su Discord ID
     const s = this.sql.exec('DELETE FROM sigue WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM servidor WHERE quien = ?', String(d.quien));
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
       sigue: s.rowsWritten || 0 });
+  }
+
+  // ── «tu servidor» ────────────────────────────────────────────────────
+  /**
+   * Leer «tu servidor» (sin `sv`) o elegirlo. Sólo lo llama `rutaAvisos`,
+   * con el ID que dijo Discord, tu perfil (`de`), la temporada y hasta cuándo
+   * se cambia libre (`libre_hasta`, la misma ventana que la foto).
+   *
+   * ⚠️ UNO POR TEMPORADA, COMO LA FOTO. Mientras dura la ventana libre se
+   * cambia cuantas veces se quiera y no gasta nada; pasada, el que se elige
+   * queda (`fijo`) hasta la temporada que viene. Elegir el que ya tenés no
+   * gasta. Sin elegir en esta temporada, se ve el de la anterior.
+   */
+  miServidor(d) {
+    const quien = String(d.quien || ''), temp = String(d.temporada || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !/^[a-z0-9]{1,10}$/.test(temp)) return json({ error: 'faltan datos' }, 400);
+    const ahora = Date.now(), hasta = Number(d.libre_hasta) || 0, libre = ahora < hasta;
+    const de = claveValida(d.de) ? d.de : '';
+    let fila = this.sql.exec('SELECT sv, fijo FROM servidor WHERE quien = ? AND temporada = ?', quien, temp)
+      .toArray()[0];
+    if (d.sv !== undefined && d.sv !== null) {
+      const sv = String(d.sv);
+      if (!/^[A-Z]{2,5}$/.test(sv)) return json({ error: 'servidor' }, 400);
+      if (!fila || fila.sv !== sv) {
+        if (fila && fila.fijo && !libre) return json({ error: 'ya', sv: fila.sv, fijo: true, libre: false }, 409);
+        this.sql.exec('INSERT INTO servidor (quien, temporada, sv, de, t, fijo) VALUES (?, ?, ?, ?, ?, ?) ' +
+          'ON CONFLICT(quien, temporada) DO UPDATE SET sv = excluded.sv, de = excluded.de, t = excluded.t, ' +
+          'fijo = excluded.fijo', quien, temp, sv, de, ahora, libre ? 0 : 1);
+        fila = { sv, fijo: libre ? 0 : 1 };
+      }
+    } else if (fila && de) {
+      // tu perfil puede haber cambiado (entraste con otro nombre): se corrige acá
+      this.sql.exec('UPDATE servidor SET de = ? WHERE quien = ? AND temporada = ? AND de != ?', de, quien, temp, de);
+    }
+    const antes = fila ? null : this.sql.exec('SELECT sv FROM servidor WHERE quien = ? ORDER BY t DESC LIMIT 1',
+      quien).toArray()[0];
+    return json({ ok: true, sv: fila ? fila.sv : antes ? antes.sv : '', fijo: !!(fila && fila.fijo), libre,
+      libre_hasta: hasta, puede: libre || !(fila && fila.fijo) });
+  }
+
+  /** Lo público: el servidor que eligió cada perfil (sólo raperos) y cuántos eligieron cada uno. */
+  servidoresElegidos() {
+    const n = {}, cuantos = {};
+    // el más nuevo de cada uno, de cualquier temporada
+    for (const r of this.sql.exec('SELECT s.sv, s.de FROM servidor s WHERE s.t = ' +
+      '(SELECT MAX(t) FROM servidor WHERE quien = s.quien)').toArray()) {
+      cuantos[r.sv] = (cuantos[r.sv] || 0) + 1;
+      if (r.de) n[r.de] = r.sv;
+    }
+    return { t: Date.now(), n, cuantos };
   }
 
   // ── seguir raperos ───────────────────────────────────────────────────

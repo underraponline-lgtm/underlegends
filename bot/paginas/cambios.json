@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.45",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T20:50:00-04:00",
+   "titulo": "Elegí tu servidor",
+   "items": [
+    "🏠 **Tu servidor lo elegís vos**: en Mi cuenta, entrando con Discord, elegís el servidor que representás en la Liga y sale en tu perfil. Al arrancar la temporada se cambia libre (Mi cuenta dice hasta cuándo, igual que con la foto); después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde jugás.",
+    "🗳️ **En la votación del ×2 se puede votar a cualquier servidor, también al tuyo.**"
+   ]
+  },
+  {
    "version": "1.44",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T18:15:00-04:00",

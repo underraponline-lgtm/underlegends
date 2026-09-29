@@ -767,6 +767,13 @@ seguís ganó» lo arma el vigía **leyendo el muro** (`seguidos()` sobre
 no hay otra clave de KV. **Afuera se ve cuántos, nunca quién**; quién te
 sigue lo ves vos, y sólo los que son raperos. Nunca por DM.
 
+🏠 **«TU SERVIDOR» LO ELIGE CADA UNO, DESDE EL 28/09/2026** (Dlx: *«la
+idea es q la gente decida por su cuenta»*, *«1. A 2. A 3. B y C»*): en Mi
+cuenta, uno por temporada con la misma ventana libre que la foto (tabla
+`servidor` del objeto, `miServidor()`), y sale en el perfil. **No es el
+`sv` de los pools**, que sigue siendo donde más jugaste y es el de la
+tarjeta de Servidor. Y en el ×2 votado se vota a cualquiera, también al suyo.
+
 ⚠️ **El lector de anuncios está en Python y en JS**, atados por
 `bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
 lea igual. Y `python herramientas/probar_avisos.py` prueba la cadena

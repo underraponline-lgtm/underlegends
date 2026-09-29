@@ -2033,7 +2033,8 @@ def _enc():
     """Las encuestas que se votan ahora, para la página: `[{id, tipo, hasta, op…}]` o `None`.
 
     🔑 Dlx, 27/09/2026: *«1. A. 2. A»* —vota cualquiera que entre con
-    Discord, y nadie vota a su servidor—. Qué se vota, entre qué opciones y
+    Discord—, y desde el 28/09 en el ×2 se vota a cualquiera, también al
+    suyo (*«3. B y C»*). Qué se vota, entre qué opciones y
     hasta cuándo sale de `bot/encuestas.py`. Cuántos votos lleva cada una lo
     pide la página aparte (`/api/avisos/encuestas`): cambia a cada voto, y
     esto se escribe cada media hora.

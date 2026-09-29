@@ -1867,7 +1867,8 @@ console.log('\nLAS ENCUESTAS\n');
   ], sv: { [VIEJO]: 'FFA' }, yo: { [VIEJO]: 'Zeta' } };
   const v = (enc, op, id) => A.validarVoto(defs, { enc, op }, id || VIEJO, RELOJ);
   ok('un voto bueno vale', JSON.stringify(v('x2:2026-10-05', 'SR')) === '{"enc":"x2:2026-10-05","op":"SR"}');
-  ok('a tu servidor, no (el que más jugaste)', v('x2:2026-10-05', 'FFA').error === 'propio');
+  // 🔑 Dlx, 28/09/2026: «3. B y C» — en el ×2 cualquiera vota a cualquiera
+  ok('a tu servidor, también (desde el 28/09)', !v('x2:2026-10-05', 'FFA').error);
   ok('a vos, no; a otro, sí', v('mw:2026-09-28', 'Zeta').error === 'vos' && !v('mw:2026-09-28', 'Hassan').error);
   ok('lo que ya cerró, no', v('mw:2026-09-27', 'Hassan').error === 'cerrada');
   ok('lo que no está en la lista, no', v('mw:2026-09-28', 'Otro').error === 'opcion' &&
@@ -1896,8 +1897,9 @@ console.log('\nLAS ENCUESTAS\n');
   let r = await votarR({ token: 'x', enc: 'x2:2026-10-05', op: 'SR' });
   ok('un permiso con forma rara se rechaza sin preguntarle a Discord', r.status === 400 && !alObjeto.length);
   r = await votarR({ token: 'permisoBueno1234567890', enc: 'x2:2026-10-05', op: 'FFA' });
-  ok('a su servidor: 403, y el voto no llega al objeto', r.status === 403 && r.json.error === 'propio' &&
-     !alObjeto.length, JSON.stringify(r.json));
+  ok('a su servidor, también: llega al objeto (Dlx, 28/09: «3. B y C»)', r.status === 200 &&
+     alObjeto.length === 1 && alObjeto[0][1].op === 'FFA', JSON.stringify(r.json));
+  alObjeto.length = 0;
   r = await votarR({ token: 'permisoBueno1234567890', enc: 'x2:2026-10-05', op: 'SR', quien: '111111111111111111' });
   ok('uno bueno llega al objeto con el ID que dijo Discord, no con el que mandó la página',
      r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/votar') &&
@@ -2125,6 +2127,73 @@ console.log('\nSEGUIR RAPEROS\n');
      fue.cf.cacheTtl === 60);
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
+  delete PUESTO['d:' + VIEJO];
+}
+
+console.log('\n«TU SERVIDOR»\n');
+
+{
+  // 🔑 Dlx, 28/09/2026: «La idea es q la gente decida por su cuenta» y
+  // «1. A 2. A»: en Mi cuenta, uno por temporada como la foto.
+  const idDe = (ms, n = 6) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2019-03-01T00:00:00Z'));
+  const SES = 'd'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const antesT = env.TEMPORADA, antesL = env.FOTO_LIBRE_HASTA;
+  env.TEMPORADA = 't1';
+  env.FOTO_LIBRE_HASTA = '2026-10-09T04:00:00Z';
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
+      { status: 200 }) : new Response('{"error":"no"}', { status: 404 });
+    return new Response('{"ok":true,"sv":"FFA"}', { status: 200 });
+  } }) };
+  PUESTO['d:' + VIEJO] = 'bea';
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedirM = async (cuerpo, ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/mi-servidor', { method: 'POST',
+      body: JSON.stringify(cuerpo), headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedirM({ sv: 'FFA', quien: '42424242424' }, SES);
+  const al = alObjeto.filter(([u]) => u.endsWith('/mi-servidor'));
+  ok('elegir llega al objeto con el ID de la sesión, tu perfil, la temporada y la ventana libre de la foto',
+     r.status === 200 && al.length === 1 && al[0][1].quien === VIEJO && al[0][1].de === 'bea' &&
+     al[0][1].sv === 'FFA' && al[0][1].temporada === 't1' &&
+     al[0][1].libre_hasta === Date.parse('2026-10-09T04:00:00Z'), JSON.stringify(al));
+  r = await pedirM({}, SES);
+  ok('sin servidor, sólo lo lee', r.status === 200 &&
+     alObjeto.filter(([u]) => u.endsWith('/mi-servidor'))[1][1].sv === undefined);
+  alObjeto.length = 0;
+  r = await pedirM({ sv: 'ffa; drop' }, SES);
+  ok('un servidor con forma rara: 400, sin preguntarle a nadie', r.status === 400 && !alObjeto.length);
+  r = await pedirM({ sv: 'SR' });
+  ok('sin sesión ni permiso: 401 y no llega al objeto', r.status === 401 &&
+     !alObjeto.some(([u]) => u.endsWith('/mi-servidor')));
+  alObjeto.length = 0;
+  r = await worker.fetch(new Request('https://x/avisos/servidores'), env, ctx);
+  ok('/avisos/servidores le pregunta al objeto (lo público: el servidor de cada perfil)',
+     r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/servidores'));
+  const { default: proxy } = await import('./paginas/_worker.js');
+  let fue = null;
+  globalThis.fetch = async (u, opc) => {
+    fue = { u: String(u), h: (opc && opc.headers) || {}, cf: opc && opc.cf };
+    return new Response('{"ok":true}', { status: 200 });
+  };
+  const envP = { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/mi-servidor', { method: 'POST',
+    body: '{"sv":"FFA"}', headers: { cookie: 'lg_ses=' + SES } }), envP);
+  ok('el proxy deja pasar /mi-servidor con la sesión', fue && fue.u.endsWith('/avisos/mi-servidor') &&
+     fue.h['x-lg-ses'] === SES);
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/servidores'), envP);
+  ok('y /servidores, con un minuto en el borde', fue && fue.u.endsWith('/avisos/servidores') && fue.cf &&
+     fue.cf.cacheTtl === 60);
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  env.TEMPORADA = antesT;
+  env.FOTO_LIBRE_HASTA = antesL;
   delete PUESTO['d:' + VIEJO];
 }
 

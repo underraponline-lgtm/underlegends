@@ -134,11 +134,13 @@ def abiertas(ahora=None, datos=None):
 
 
 def gente(pool=None):
-    """`{'sv': {discord_id: servidor}, 'yo': {discord_id: rapero}}` de los que jugaron.
+    """`{'yo': {discord_id: rapero}}` de los que jugaron: nadie se vota a sí mismo en El Elegido.
 
-    🔑 «TU SERVIDOR» ES DONDE MÁS JUGÁS ESTA TEMPORADA: el `sv` del pool de
-    Temporada, el mismo de la carta Servidor. Quien no jugó no tiene: vota a
-    cualquiera. Y `yo` es para que nadie se vote a sí mismo en El Elegido.
+    🔑 EN EL ×2 CUALQUIERA VOTA A CUALQUIERA, también al suyo. Dlx,
+    28/09/2026: *«3. B y C»*. Hasta ese día esto mandaba también `sv` —de
+    qué servidor era cada Discord ID, el que más jugó— para que nadie votara
+    al suyo; ahora «tu servidor» lo elige cada uno en Mi cuenta y no frena
+    ningún voto, así que ese dato no viaja más: un Discord ID menos en KV.
     """
     if pool is None:
         try:
@@ -146,22 +148,18 @@ def gente(pool=None):
                 pool = json.load(f) or []
         except (OSError, ValueError):
             pool = []
-    sv, yo = {}, {}
+    yo = {}
     for p in pool:
         did = str(p.get('discord_id') or '').strip()
-        if not did.isdigit():
-            continue
-        if p.get('sv'):
-            sv[did] = p['sv']
-        if p.get('raw'):
+        if did.isdigit() and p.get('raw'):
             yo[did] = p['raw']
-    return {'sv': sv, 'yo': yo}
+    return {'yo': yo}
 
 
 def para_kv(ahora=None, datos=None, lista=None):
     """Lo que lee el Worker para validar un voto. ⚠️ Con Discord IDs: sólo a KV."""
     g = gente(datos[0] if datos else None)
-    return {'lista': abiertas(ahora, datos) if lista is None else lista, 'sv': g['sv'], 'yo': g['yo']}
+    return {'lista': abiertas(ahora, datos) if lista is None else lista, 'yo': g['yo']}
 
 
 # ── cómo van, y quién ganó ───────────────────────────────────────────────
@@ -234,13 +232,12 @@ def _self_check():
        'el empate se sortea, y con la misma semilla sale lo mismo  %s' % (e1,))
     ok(ganador({'A': '3', 'B': 'x', 'C': -1}) == ('A', 3, 3), 'lo que no es un número no suma')
 
-    # quién es de qué servidor
+    # quién es quién: para que nadie se vote a sí mismo en El Elegido
     g = gente([{'raw': 'Ana', 'sv': 'FFA', 'discord_id': '123456789012345678'},
                {'raw': 'Bea', 'sv': 'SR', 'discord_id': ''},
                {'raw': 'Cid', 'sv': '', 'discord_id': 987654321098765432}])
-    ok(g == {'sv': {'123456789012345678': 'FFA'},
-             'yo': {'123456789012345678': 'Ana', '987654321098765432': 'Cid'}},
-       'tu servidor es el del pool; sin Discord ID no hay regla, y sin servidor votás a cualquiera')
+    ok(g == {'yo': {'123456789012345678': 'Ana', '987654321098765432': 'Cid'}},
+       'sólo quién es quién; sin Discord ID no hay regla, y el servidor ya no viaja (en el ×2 se vota a cualquiera)')
 
     # cuándo se vota el ×2
     x = x2(dt.datetime(2026, 9, 27, 15, 0, tzinfo=et))
