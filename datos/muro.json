@@ -86,17 +86,17 @@
 "rg": "",
 "c": []
 },
-"erian": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "bloody": {
 "rg": "D",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"erian": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -706,6 +706,10 @@
 ]
 },
 "elingetimp": {
+"rg": "",
+"c": []
+},
+"erianelpapadecolesito": {
 "rg": "",
 "c": []
 },

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T20:24:17+00:00",
+ "cuando": "2026-09-29T20:43:24+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2079,6 +2079,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Zeta 🇨🇴",
+   "quien": "zetaenmsi",
+   "discord_id": "535579351710957568",
+   "msg_id": "1554592325114658938",
+   "cuando": "2026-09-29T20:34:53"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "sir one x🇨🇦",
+   "quien": "gianlam4ld4d",
+   "discord_id": "1514844014325796977",
+   "msg_id": "1554591577995739207",
+   "cuando": "2026-09-29T20:31:55"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
