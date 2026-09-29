@@ -347,6 +347,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La llamada resuelve sola** cuando el nombre raro de la llave es **exactamente** el de una sola persona que estaba en la llamada mientras se jugaba y esa persona ya está en la Lista: alias, aunque ese nombre sea de varias cuentas. Si no está en la Lista, la llamada no da de alta a nadie | *«1. A»* (29/09, 6:15 AM) | ✅ `decidir._cuenta_de()`, fuente «llamada» |
 | **Los commits viejos no se le piden borrar a GitHub**: quedan sueltos hasta su limpieza | *«2. B»* | ✅ nada que hacer |
 | **Para el remake no se usa Penpot**; se conectan todos los demás de la guía, más las Extensiones de la app y los conectores de claude.ai, aunque lleve más tiempo | *«no, no usaremos PENPOT»* · *«si toma más tiempo está bien»* (29/09, 6:10 AM) | ⏳ Dlx corre los pasos; yo verifico cada uno |
+| **El remake va con React (o un framework)**: el estilo de la Liga es la razón principal del remake, y no se quiere que la página se parezca a «copero» | *«el estilo de la liga es la razón principal por la cual quiero hacer el remake… usaremos react o framework»* (29/09, 8 AM) | ⏳ propuesta: Vite + React + Tailwind exportado a estáticos en Pages (sin SSR: el Worker tiene 10 ms) |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
@@ -1972,10 +1973,10 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **Para el remake (cuando lo abramos juntos)**: el hub es sin framework y sin
-  build; shadcn y Magic UI son de React. **A** · seguimos sin framework, con
-  criterio (`frontend-design` o Impeccable) y ojos (el navegador, más
-  Lighthouse) · **B** · pasamos a React y ahí sí sirven esas librerías.
+- ✅ ~~**Para el remake: ¿sin framework o React?**~~ **React** (29/09, 8 AM): *«el
+  estilo de la liga es la razón principal… usaremos react o framework»*.
+- **Para el remake**: ¿«copero» es otra página? Pasame el link cuando
+  arranquemos, así sé de qué look alejarnos.
 - ✅ ~~**¿La llamada también resuelve sola?**~~ *«1. A»*: hecho, sólo alias y
   sólo con el nombre exacto de una persona de la Lista.
 - ✅ ~~**Los commits viejos en GitHub**~~ *«2. B»*: no se pide nada.
