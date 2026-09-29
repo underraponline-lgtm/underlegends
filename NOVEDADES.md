@@ -311,10 +311,78 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La web se rehace más adelante, con Dlx y con connectors** | *«después de que termines esto planeo REMAKE el website contigo y con unos connectors»* (28/09) | ⏳ cuando Dlx lo abra; hasta entonces, sólo arreglos y pedidos puntuales |
 | **MARRUECOS lo resuelve Dlx en ✅ Decidir**, y la hoja tiene que ser más clara y más linda | *«Lo resuelvo yo… pero mejora esa página de decidir incluso más… hazla. Más mejor y bonita»* (28/09) | ✅ **«¿quién ganó esta batalla?»** y la hoja rehecha (ver abajo) |
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
+| **ISLA DE SOCOTRA V.2 se borra: fue un evento falso que nunca salió** | *«you can delete it bc its a fake event that never got released»* (28/09, 10:40 PM) | ✅ `anuncios_fuera` en `datos/decisiones.json`: `anuncios.guardar()` no lo vuelve a traer (1.47) |
+| **Snow no es de Follombia** | *«X cierto SNOW no es parte de follombia me comentó»* (28/09) | ✅ fuera de `datos/crews.json`, con la baja en `_bajas` (1.47) |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Lunes 28/09 (11:15 PM) — versión 1.47
+
+Dlx, 10:35 PM: *«enfocate en buscar errores para solucionar, generar nuevas
+ideas, chequear donde hay más errores que es la detección de llaves,
+optimizaciones… piensa otros POV»*. Y en el medio, tres pedidos.
+
+- 🗑️ **ISLA DE SOCOTRA V.2, fuera** (*«it's a fake event that never got
+  released»*): queda en `anuncios_fuera` de `datos/decisiones.json` y
+  `anuncios.guardar()` no lo vuelve a traer.
+- 👥 **Snow no es de Follombia**: fuera de `datos/crews.json`, con la baja
+  anotada.
+- ⏳ **«Lo que viene» ya no muestra lo que se jugó** (tu captura: CCFF V.3
+  seguía ahí con su llave cargada): `subir_web` arma «Lo que viene» sólo con
+  los anuncios que no tienen llave procesada.
+- 🛡️ **Un canal adentro de una categoría de staff no se lee**, aunque el
+  canal no lo diga (`categorias_staff()` en los tres lectores). 🔴 **Corrijo
+  lo que dije en el commit** («en los otros cuatro no hay canales de eventos
+  adentro de una categoría así»): en URBF había uno, **«Registro»** adentro de
+  «【🧰】Staff【🧰】», que por el nombre se leía como inscripciones. Medido:
+  **ninguna** inscripción salió de ahí. Y FFS tiene «ℝ𝔼𝔾𝕀𝕊𝕋ℝ𝕆» adentro de
+  su ADMINISTRACIÓN: con esto, si entra, no se lee.
+- 🏆 **La llave en vivo sabe lo que el ciclo ya sabía.** Comparé el lector
+  de la página contra el de Python sobre **las 74 llaves reales** guardadas:
+  las rondas dan iguales en las 74, pero **el campeón y la cuenta de gente
+  diferían en 29** —el contrato de CI sólo mira las rondas—. Ahora:
+  - el **SUB-CAMPEÓN dice quién ganó** una final de dos (TOKYO VOL 11:
+    «CAMPEÓN: JOVEN ALA» con el lado PRR, dos alias de Hassan);
+  - el **campeón partido en dos renglones** se lee (EL RAP FECHA 5), y el
+    nombre en el renglón de abajo, nunca si es el del segundo;
+  - la **cuenta de gente es la del ciclo**: ELRAP FECHA 6 decía 34 en vivo y
+    29 al cargarse; COMPE DEL VACILE 1, 15 y 16.
+  Quedan 13, y siete son de Livonia (no es de la Liga). El resto necesita el
+  padrón —menciones con otro nombre— o es Python preguntando donde la página
+  muestra su mejor lectura. Seis casos nuevos en `llave_vivo_prueba.mjs`.
+- ✅ **Decidir: 8 preguntas se contestan solas desde la corrida de las 11:22
+  PM.** El «¿quién es X?» automático descartaba la cuenta «que no está en
+  ningún servidor de la Liga» mirando `datos/servidores_de.json`, que de
+  Snake Rap y Urban guarda **sólo a quien ya está en la Lista** (va al repo
+  público). O sea, justo a quien se pregunta. Ahora mira también el caché
+  de apodos, que tiene a todos y nunca sale del runner. **6 se habían
+  anotado con ese nombre en inscripciones** (leteletras, rayito, SMAFF,
+  Soft, maldita enfermedad, Aby) y **2 son la única cuenta con ese nombre
+  en el servidor del evento** (JIMMY, Clitax).
+  🔴 **Y se endureció**: la cuenta que sale sólo por el nombre tiene que
+  estar en el servidor del evento (antes, sólo los nombres cortos). Con los
+  7.297 de Snake Rap en la cuenta, «ISAIAS», que jugó en FFA, daba la única
+  cuenta «Isaias», que está sólo en Snake Rap. Sigue como pregunta.
+- 🧹 **Y una pregunta vieja se cierra sola**: el «algo raro al puntuar» de
+  COMPE DEL VACILE 1 («octavos no tiene valor en la escala 8-15») era de
+  cuando contaba 15; con 16 ya paga 1.250. `pendientes.barrer()` ahora
+  reproduce ese aviso contra la escala con la que el evento quedó cargado.
+  **✅ Decidir: de 65 a 56.**
+- 📦 **El lobby pesa 117 KB, pero viaja comprimido: 26 KB por visita.** No
+  urge. Para el remake, cuatro recortes medidos: los campos vacíos de cada
+  fila, el color del rango repetido en las 180 filas, la lista de tarjetas y
+  la clave igual al nombre (~25 % menos).
+- 🔔 **El vigía tiene 50 pedidos por minuto y en el peor minuto suma ~52**
+  (14 canales + publicar + llaves + veredictos + avisos). Ya estaba
+  previsto: lo que no entra sale al minuto siguiente, y los canales van
+  primero. FFS no le suma canales: no tiene ninguno con «evento» en el
+  nombre, salvo DATA-EVENTOS.
+- 🔎 **Lo que miré y no era bug**: un 2v2 escrito «[ANA & BETO]» se cuenta
+  como dos personas y no cuatro, pero es a propósito —hay gente que se
+  llama «prove&shows», y los puntos tampoco parten por «&»—; una llave así
+  termina en ✅ Decidir, no en puntos mal pagados. Ninguna de las 74 lo usa.
 
 ## 📅 Lunes 28/09 (10 PM) — versión 1.46
 
@@ -1668,9 +1736,43 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- ✅ ~~**¿Se jugó ISLA DE SOCOTRA V.2?**~~ *«A»* (28/09, 10:35 PM): **no se
-  jugó**. Queda como anunciado, sin llave, y la llave de broma de su canal
-  («DENME MODERADOR LPM») sigue sin cargarse.
+- **FFS LEAGUE** (28/09: *«añádele su sesión, su color, y dame ideas de
+  tags»*). Es **Future Free Series** (así se llama su categoría): PLAZAS FFS
+  (anuncios, llaves, inscripciones), FFS BULL, seis ligas regionales
+  (Tricolor, Argentina, Chile, Caribe, Internacional, Sudamérica) y su
+  propio sistema de rangos con puntos, como Snake Rap. Hoy juega poco: la
+  última llave de PLAZAS es del **30/07**, y las ligas terminaron sus
+  temporadas entre abril y julio.
+  1. **Color.** El logo es casi todo lavanda (#6C6CE4), el mismo tono que
+     DRA (#5964E0): con la regla de siempre («manda el logo») quedan iguales
+     en el ranking. **A** · periwinkle claro `#8E9BFF` —el tono del logo, más
+     claro— · **B** · lila `#B37BFF` · **C** · magenta lila `#D66BFF`, el
+     más distinto. Mi voto: **A**.
+  2. **Etiqueta** (DRA ENTRENAMIENTO, FFA COMUNIDAD, SR TALENTOS, URBF NUEVA
+     GENERACIÓN). **A** · LIGAS —es lo único que ningún otro tiene— ·
+     **B** · SERIES · **C** · ASCENSO —tienen tabla de ascenso— · **D** ·
+     FUTURO (se pisa con la de URBF). Mi voto: **A**.
+  3. **¿Sus eventos suman a la Liga?** **A** · sí, como los otros cuatro ·
+     **B** · todavía no: sólo aparece en Mundo. ⚠️ Su último anuncio (25/09)
+     es una broma —«EL Q SE INSCRIBE SE CANCELA LA COMPE», CUPOS: 0— que
+     entraría como evento. Y con **A**, la tarjeta de Servidor necesita su
+     camiseta (sería la décima): la hago con el mismo molde que las nueve.
+  4. **¿Y sus ligas regionales?** (jornadas, veredictos y tabla, no llaves)
+     **A** · más adelante, al «Ranking de Ligas» que hoy dice «pronto» ·
+     **B** · no se leen.
+- **Llaves de broma** (DENME MODERADOR LPM: la final «(pichula) 🆚 (mi
+  mamá)»). Regla: **una llave de alguien que nunca publicó una, y sin
+  anuncio que la respalde, pasa por ✅ Decidir antes de cargarse.** Medido
+  sobre las 21 llaves de la T1 (11 autores): **no retiene ninguna real** y
+  atrapa las dos de broma. **A** · sí · **B** · no.
+- **El podio con mención dice quién es.** RAP EXHIBITION 1/8 (Snake Rap)
+  escribe «1ER PUESTO: @alguien», y el campeón de la final es **ANTORCHA
+  OLÍMPICA**: esa cuenta es ANTORCHA. Hoy hay 10 nombres de ese evento en ✅
+  Decidir. **A** · que se resuelva solo, como las inscripciones · **B** ·
+  sólo como pista, lo contestás vos.
+- ✅ ~~**¿Se jugó ISLA DE SOCOTRA V.2?**~~ *«A»* (28/09, 10:35 PM) y después
+  *«you can delete it bc its a fake event that never got released»*:
+  **borrado** (1.47).
 
 - ✅ ~~«Miembros oficiales»: ¿esconder a los 96?~~ Resuelto a las 9:30 AM con
   **«fuera de concurso»** (arriba, en las reglas): nadie desaparece, el número

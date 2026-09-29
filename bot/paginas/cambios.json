@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.47",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T23:15:00-04:00",
+   "titulo": "Menos preguntas, llaves más claras",
+   "items": [
+    "🏆 **La llave en vivo reconoce al campeón aunque lo escriban con otro nombre**: si dice quién salió segundo, ya sabe quién ganó. Y cuenta a la gente igual que cuando se carga el evento.",
+    "🪪 **Si te anotaste en las inscripciones de Snake Rap o Urban Freestyle, tus puntos te llegan con tu cuenta**, aunque todavía no estuvieras en la Lista.",
+    "⏳ **«Lo que viene» ya no muestra lo que ya se jugó.**",
+    "🗓️ **Un evento que nunca salió ya no aparece en el calendario.**"
+   ]
+  },
+  {
    "version": "1.46",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T22:30:00-04:00",
