@@ -2066,6 +2066,10 @@ herramientas/     puedo_generar.py        si las cuatro cartas salen para las 13
                                           lector (nunca a las :22 ni a las :52)
                   probar_avisos.py        si los avisos llegan de verdad: hace de
                                           navegador con el push de Mozilla
+                  ensayo_arranque.py      qué hace cada pieza con fecha a las 00:00
+                                          ET del arranque de la temporada, y el
+                                          paso 0 en simulacro. La fecha sale de
+                                          comun/temporada.py: sirve si se mueve
                   secretos_en_git.py      si algun secreto entro al repo o a su
                                           historial. Sabe cuales NO son secretos
                   workflows_validos.py    si los .yml valen para GITHUB y no
