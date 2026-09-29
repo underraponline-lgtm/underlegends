@@ -438,6 +438,75 @@ def _apodos():
     return _DATOS['apodos']
 
 
+#: los separadores de una inscripción de varios: «snow🇨🇴 + nc», «27 🇺🇸 Piyi 🇲🇽» no
+_SEP_INSC = re.compile(r'\s*(?:\+|&|,|/|\by\b|\be\b)\s*', re.I)
+
+
+def _nombres_insc(texto):
+    """Los nombres de una inscripción, normalizados y sin la nota entre paréntesis."""
+    t = re.sub(r'\(.*?\)|\(.*$', ' ', str(texto or ''))
+    return [x for x in (norm(_sin_bandera(p)) for p in _SEP_INSC.split(t)) if len(x) >= 2]
+
+
+def _inscritos():
+    """`{servidor: {nombre normalizado: {discord_id}}}`: quién se anotó SOLO, y con qué nombre.
+
+    🔑 Dlx, 28/09/2026, con la DESGRACIAS EN TOKYO VOL 16 2VS2 en juego: *«en
+    el canal de inscripciones puedes observar los inscritos y combinar con sus
+    IDs porque hay personas nuevas o con nombres trolls»*. Una inscripción la
+    escribe la propia persona, así que el autor es su cuenta, firmada por
+    Discord (ver `bot/inscripciones.py`): «Prrr🇦🇴» desde la cuenta *ndfue* es
+    PRRR, aunque el nombre sea de broma.
+
+    ⚠️ SÓLO LAS DE UN NOMBRE. «PARIA SIN REMEDIO + PRRR» la escribió uno de
+    los dos —o un tercero: «(me pidieron…)»—, y no dice quién es quién.
+    ⚠️ Y NO LAS DE QUIEN ANOTA A OTROS: una cuenta que se anotó sola con dos
+    nombres distintos («Player» y «Steven», desde la del organizador) está
+    anotando gente, no a sí misma. Dos grafías del mismo («prr» y «prrr»,
+    «guty» y «guty campeón…») sí valen. Medido el 28/09/2026 sobre 249
+    inscripciones: 140 de un nombre, de 126 cuentas; 14 con más de un nombre,
+    y de ésas 6 eran el mismo escrito distinto.
+    """
+    if 'inscritos' not in _DATOS:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+                _DATOS['inscritos'] = indice_inscritos((json.load(f) or {}).get('inscripciones') or [])
+        except (OSError, ValueError):
+            _DATOS['inscritos'] = {}
+    return _DATOS['inscritos']
+
+
+def indice_inscritos(inscripciones):
+    """El índice de `_inscritos()`, de la lista cruda de `datos/anuncios.json`. Pura."""
+    solos = collections.defaultdict(list)
+    for x in inscripciones or []:
+        ns, did = _nombres_insc(x.get('texto')), str(x.get('discord_id') or '')
+        if len(ns) == 1 and did.isdigit():
+            solos[did].append((x.get('servidor') or '', ns[0]))
+    idx = {}
+    for did, xs in solos.items():
+        corto = min((n for _s, n in xs), key=len)
+        if all(corto in n for _s, n in xs):
+            for sv, n in xs:
+                idx.setdefault(sv, {}).setdefault(n, set()).add(did)
+    return idx
+
+
+def _cuenta_de(p, eventos):
+    """`([discord_id…], fuente)` de un «¿quién es X?»: primero la inscripción, después el apodo.
+
+    ⚠️ LA INSCRIPCIÓN MANDA: la escribió esa persona en el servidor del
+    evento. Si ahí hay más de una cuenta con ese nombre, no se adivina con el
+    apodo: se pregunta.
+    """
+    k = norm(_sin_bandera(p['detalle']))
+    ev = eventos.get(_num_evento(p)) or ()
+    ins = sorted(((_inscritos().get(ev[1]) or {}).get(k) or set()) if len(ev) > 1 else set())
+    if ins:
+        return ins, 'inscripción'
+    return sorted(_apodos().get(k) or set()) if len(k) >= 3 else [], 'Discord'
+
+
 def _en_discord(nombre):
     """`(pista, [nombres de la Lista])` de un nombre desconocido: si es el
     apodo, el nombre visible o el usuario de alguna cuenta de los servidores
@@ -527,7 +596,7 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
     for p in preguntas:
         if p['tipo'] != 'Nombre desconocido':
             continue
-        ids = _apodos().get(norm(_sin_bandera(p['detalle']))) or set()
+        ids, _f = _cuenta_de(p, eventos)
         if len(ids) == 1:
             for v in p.get('variantes') or [p['detalle']]:
                 banderas_de.setdefault(next(iter(ids)), set()).update(
@@ -540,7 +609,9 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         k = norm(_sin_bandera(det))
         if len(k) < 3 or k in fuera or es_fragmento(det):
             continue
-        ids = sorted(_apodos().get(k) or set())
+        # 🔑 LA CUENTA: la que se anotó con ese nombre en el servidor del
+        # evento, o si no, la única de la Liga con ese apodo. Ver `_cuenta_de()`
+        ids, fuente = _cuenta_de(p, eventos)
         if len(ids) != 1:
             continue
         did = ids[0]
@@ -549,16 +620,19 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         # casi seguro es Pollo Sport. Medido el 28/09/2026.
         if not svs.get(did):
             continue
-        if len(k) <= CORTO:
+        # los nombres cortos, con la cuenta en el servidor del evento: la
+        # inscripción ya lo es (se anotó ahí)
+        if len(k) <= CORTO and fuente != 'inscripción':
             ev = eventos.get(_num_evento(p)) or ()
             if len(ev) < 2 or ev[1] not in (svs.get(did) or []):
                 continue
+        porque = 'se anotó así en inscripciones' if fuente == 'inscripción' else 'la misma cuenta de Discord'
         real = por_id.get(did)
         if real:
             if AK.son_distintos(det, real, akas):
                 continue
             pares.append([_sin_bandera(det), real, ''.join(_BANDERA.findall(det))])
-            hechas.append((p, 'alias de %s: la misma cuenta de Discord' % real))
+            hechas.append((p, 'alias de %s: %s' % (real, porque)))
         elif len(k) > CORTO and any(k in c or c in k for c in en_lista_n if len(c) > CORTO):
             # ⚠️ ALGUIEN DE LA LISTA SE LLAMA PARECIDO («pollo» y Pollo Sport):
             # puede ser la misma persona sin su cuenta cargada. Eso lo decide
@@ -570,24 +644,26 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             # su cuenta ya va a estar en la Lista
             cc = banderas_de.get(did) or set()
             nuevos.append((p, _sin_bandera(det).strip(),
-                           next(iter(cc)) if len(cc) == 1 and cc <= liga else '', did))
+                           next(iter(cc)) if len(cc) == 1 and cc <= liga else '', did, fuente))
     if not (pares or nuevos):
         return set()
-    print('\n   🔎 resueltos con Discord: %d alias · %d nuevo(s) a la Lista'
+    print('\n   🔎 resueltos con Discord y las inscripciones: %d alias · %d nuevo(s) a la Lista'
           % (len(pares), len(nuevos)))
     for a, b, _f in pares:
         print('      alias: %s -> %s' % (a, b))
-    for _p, n, cc, did in nuevos:
-        print('      nuevo: %s %s (Discord %s)' % (n, cc or '(sin bandera)', did))
+    for _p, n, cc, did, fu in nuevos:
+        print('      nuevo: %s %s (Discord %s, por %s)' % (n, cc or '(sin bandera)', did, fu))
     if dry:
         return {p['id'] for p, _r in hechas} | {p['id'] for p, *_ in nuevos}
     import lista_raperos as LR
     entraron = LR.agregar_varios(
-        [(n, cc, did, 'alta automática · su nombre en Discord · %s' % _ahora_et())
-         for _p, n, cc, did in nuevos], aplicar=True) if nuevos else {}
-    for p, n, cc, did in nuevos:
+        [(n, cc, did, 'alta automática · %s · %s' % ('se anotó así en inscripciones' if fu == 'inscripción'
+                                                    else 'su nombre en Discord', _ahora_et()))
+         for _p, n, cc, did, fu in nuevos], aplicar=True) if nuevos else {}
+    for p, n, cc, did, fu in nuevos:
         if did in entraron:
-            hechas.append((p, 'nuevo: entró a la Lista con su Discord (%s)' % did))
+            hechas.append((p, 'nuevo: entró a la Lista con %s (%s)' % (
+                'la cuenta con que se anotó' if fu == 'inscripción' else 'su Discord', did)))
     if pares:
         _agregar_akas(pares, [])
     if hechas:
@@ -1951,6 +2027,26 @@ def _self_check():
            'ni una cuenta que no está en la Liga, ni un nombre que se parece a alguien de la Lista')
         ok(not por_discord(qs, {ids['PRAISERIZA 🇻🇪']: ('Es alguien nuevo',)}, ev, dry=True)
            - {ids['KULRW🇦🇷']}, 'lo que Dlx ya contestó no se toca')
+        # 🔑 y la inscripción (Dlx, 28/09/2026: «combinar con sus IDs»)
+        _DATOS['inscritos'] = indice_inscritos([
+            {'servidor': 'FFA', 'texto': 'Prrr🇦🇴', 'discord_id': '9'},
+            {'servidor': 'FFA', 'texto': 'PARIA SIN REMEDIO🇧🇲 +PRRR🇦🇴', 'discord_id': '9'},
+            {'servidor': 'FFA', 'texto': 'Player 🇻🇪', 'discord_id': '7'},
+            {'servidor': 'FFA', 'texto': 'Steven 🇨🇴', 'discord_id': '7'},
+            {'servidor': 'URBF', 'texto': 'Iguana 🇵🇪', 'discord_id': '8'}])
+        ok(_DATOS['inscritos'] == {'FFA': {'prrr': {'9'}}, 'URBF': {'iguana': {'8'}}},
+           'sólo las de un nombre, y no las de quien anota a otros (Player y Steven)  %s' % _DATOS['inscritos'])
+        _DATOS['servidores_de'].update({'9': ['FFA'], '7': ['FFA'], '8': ['URBF']})
+        qs = armar([(40, {'Tipo': nd, 'Detalle': 'PRRR 🇦🇴', 'Origen': 'evento #359'}),
+                    (41, {'Tipo': nd, 'Detalle': 'PARIA SIN REMEDIO 🇧🇲', 'Origen': 'evento #359'}),
+                    (42, {'Tipo': nd, 'Detalle': 'IGUANA 🇵🇪', 'Origen': 'evento #359'}),
+                    (43, {'Tipo': nd, 'Detalle': 'Steven', 'Origen': 'evento #359'})], ev)
+        ids = {p['detalle']: p['id'] for p in qs}
+        solas = por_discord(qs, {}, ev, dry=True)
+        ok(ids['PRRR 🇦🇴'] in solas and ids['PARIA SIN REMEDIO 🇧🇲'] not in solas,
+           'PRRR se anotó solo desde su cuenta: sale; PARIA SIN REMEDIO sólo va en la de dos, no')
+        ok(ids['IGUANA 🇵🇪'] not in solas and ids['Steven'] not in solas,
+           'la inscripción de OTRO servidor no vale, ni la de quien anota a otros')
     finally:
         _DATOS.clear()
         _DATOS.update(antes)

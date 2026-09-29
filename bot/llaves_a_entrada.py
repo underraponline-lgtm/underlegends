@@ -469,6 +469,35 @@ def repetidos_en_la_primera(texto):
     return extra
 
 
+def faltan_en_equipos(texto):
+    """Cuántas personas no cuenta el plantel porque la llave nombra a un equipo con UN nombre.
+
+    🔑 DESGRACIAS EN TOKYO VOL 16 2VS2 (FFA, 28/09/2026): siete lados son
+    parejas —«[JOTA P + IGUANA]»— y uno es «[TEAM VENECIA 🇲🇦🇻🇪]», dos
+    personas con nombre de equipo. El plantel contaba 15 y el formato es de 16
+    (8 parejas): con 15 la escala bajaba de «16+» a «8-15» para todos. Es la
+    misma regla que `repetidos_en_la_primera()`: la escala sale del FORMATO.
+
+    ⚠️ SÓLO SI LOS DEMÁS LADOS DE LA PRIMERA RONDA SON TODOS DEL MISMO TAMAÑO
+    (2, 3…) y son la gran mayoría: en un MULTIVERSE (2v2, 1v3, 8v1) el que va
+    solo va solo, y en un 1vs1 no hay equipos.
+    """
+    rs = E.rondas_de(texto or '')
+    if not rs:
+        return 0
+    tams = []
+    for b in rs[0][1]:
+        for lado in b:
+            ms = [m for m in (E._miembros(lado) or [lado]) if E.norm(E.HISTORIA.sub('', m))]
+            if ms:
+                tams.append(len(ms))
+    grandes = [t for t in tams if t >= 2]
+    solos = len(tams) - len(grandes)
+    if not grandes or len(set(grandes)) != 1 or not solos or len(grandes) < 3 * solos:
+        return 0
+    return solos * (grandes[0] - 1)
+
+
 def parecido(a, b):
     return len(a & b) / float(len(a | b)) if (a or b) else 0.0
 
@@ -589,8 +618,9 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     # nombres en una llave de 16): *«en sí el formato es de 16»*. El que
     # revive ocupa dos lugares de la primera ronda, así que se cuenta dos
     # veces para elegir la escala (`motor.escala_de()`). Ver
-    # `repetidos_en_la_primera()`.
-    n_part = len(gente_grupo or gente) + repetidos_en_la_primera(txt)
+    # `repetidos_en_la_primera()`. Y el equipo que la llave nombra con un
+    # solo nombre («TEAM VENECIA» en un 2VS2) es de dos: `faltan_en_equipos()`.
+    n_part = len(gente_grupo or gente) + repetidos_en_la_primera(txt) + faltan_en_equipos(txt)
     filas, dudas, sabidas = [], [], collections.Counter()
 
     if por_que == 'identidad':
@@ -1691,6 +1721,11 @@ def _self_check():
          repetidos_en_la_primera('# OCTAVOS\n⌞MAJI⌝ 🆚 ⌞MOTE⌝\n⌞TG⌝ 🆚 ⌞MAJI⌝\n'
                                  '# CUARTOS\n⌞MOTE⌝ 🆚 ⌞MAJI⌝\n') == 1
          and repetidos_en_la_primera('# CUARTOS\n⌞A⌝ 🆚 ⌞B⌝\n# FINAL\n⌞A⌝ 🆚 ⌞C⌝\n') == 0),
+        ('el equipo con nombre de un 2VS2 son dos (TEAM VENECIA); en un MULTIVERSE o un 1vs1, nada',
+         faltan_en_equipos('# CUARTOS\n[JOTA P + IGUANA] VS [TEAM VENECIA]\n[DOS + PIYI] VS [SOUL B + CHAR]\n'
+                           '[PARIA + PRRR] VS [VANDU + MAKMA]\n[ELSOLAR + METO] VS [SNOW + NC]\n') == 1
+         and faltan_en_equipos('# CUARTOS\n[ANA + BEA] VS [CID]\n[DAN + EVA + FEDE] VS [GUS]\n') == 0
+         and faltan_en_equipos('# CUARTOS\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n') == 0),
         ('el que pasó octavos escrito como mención no es walk-in (MARRUECOS)',
          not any('Walk-in' in f['notas'] for f in fwm)),
         ('… y sin los nombres de la mención lo era: la prueba mide algo',
