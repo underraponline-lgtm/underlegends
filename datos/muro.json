@@ -174,7 +174,8 @@
 "polosport": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "cinexfilo": {
@@ -1162,6 +1163,14 @@
 "t": "2026-09-29T15:28:56Z",
 "quien": [
 "Kenny"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T15:44:55Z",
+"quien": [
+"Polosport"
 ],
 "carta": "temporada"
 }

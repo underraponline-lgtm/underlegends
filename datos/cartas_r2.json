@@ -4203,6 +4203,7 @@
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/sv-dra.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/temporada.webp"
  },
  "keozz": {
@@ -4870,7 +4871,9 @@
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-ffs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-sr.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/temporada.webp"
  },
  "lgbd": {
@@ -5048,6 +5051,7 @@
  "lord": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lord/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lord/bloq-pais.webp",
+  "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lord/bloq-temporada.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lord/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lord/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lord/servidor.webp",
@@ -7042,6 +7046,7 @@
  "pollosport": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pollosport/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pollosport/bloq-pais.webp",
+  "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pollosport/bloq-temporada.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pollosport/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pollosport/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pollosport/servidor.webp",
@@ -7060,6 +7065,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/bloq-pais.webp",
   "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/bloq-temporada.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-dra.webp",
@@ -7070,7 +7076,8 @@
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-sr.webp",
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-twr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/temporada.webp"
  },
  "pomberito": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pomberito/bloq-competitivo.webp",
@@ -7722,6 +7729,7 @@
  "sabado": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sabado/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sabado/bloq-pais.webp",
+  "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sabado/bloq-temporada.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sabado/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sabado/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sabado/servidor.webp",
