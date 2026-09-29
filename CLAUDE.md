@@ -2121,6 +2121,14 @@ bot/              el lector de Discord y el ciclo
                   avisos_casos.py el contrato Python<->JS del lector de
                                   anuncios, con avisos_casos.json
                   paginas/        underlegends.pages.dev — el hub, 7 vistas
+                  paginas/mapa.html  el mapa de la Liga EN VIVO, sólo para
+                                  Dlx (29/09/2026, «1. C»): las piezas en
+                                  `mapa_datos.js`, el dibujo en `mapa.js`. Lee
+                                  el vigía, GitHub y `datos/estado_*.json`, que
+                                  deja `pipeline.py` al final de cada trabajo.
+                                  El artifact privado es su foto, armada con
+                                  los mismos archivos. Si una pieza cambia, se
+                                  cambia en `mapa_datos.js`
                   paginas_viejas/ liga-global.pages.dev — sólo un 301
                   ci/guardar.sh   lo que se commitea. Lo llaman los DOS
                                   trabajos del ciclo, por eso no vive en

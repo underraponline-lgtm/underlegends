@@ -197,6 +197,18 @@ def probar(nombre, const, romper):
     if not hasattr(mod, const):
         return 'sin la constante %s' % const, ''
 
+    # 🔍 UNA RUTA QUE NO EXISTE EN ESTE ARBOL NO SE PUEDE ROMPER. Si la
+    # constante apunta a una carpeta que aca no esta, cambiarla por
+    # '/no/existe' no cambia nada y el chequeo sale «ciego» sin serlo.
+    # Paso con `comun.respaldo` y `FOTOS` en la auditoria del 29/09/2026:
+    # el repo publico no lleva las fotos —son de gente real—, asi que en
+    # Actions esa carpeta no existe. Es un hecho que se mira, no una
+    # adivinanza, y se hace aca y no en el modulo porque tocar `comun/`
+    # redibuja el pool entero (ver `comun/huella_codigo.py`).
+    orig = getattr(mod, const)
+    if isinstance(orig, str) and os.path.isabs(orig) and not os.path.exists(orig):
+        return 'sin datos para medir', const
+
     # 1 · como esta hoy, para tener con que comparar
     s1, r1, e1 = _silencio(fn)
 
