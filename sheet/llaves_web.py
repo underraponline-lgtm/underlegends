@@ -30,6 +30,13 @@ y «TOKYO VOL 12» se parecen un 95 %, y son dos eventos distintos.
 ⚠️ SI NO ESTÁ SEGURO, NO CUELGA NADA. Un botón que abre la llave de otro
 evento es peor que no tener botón: *sin dato no hay pieza*.
 
+🔑 Y A VECES EL NÚMERO ESTÁ MAL ESCRITO (Dlx, 29/09/2026, con captura): FFA
+anunció «DESGRACIAS EN TOKYO VOL 17 1VS1» y la llave de ese evento dice
+«VOL 16». *«A veces pasa esto que el anuncio y el título de la llave no
+tienen sentido pero son del mismo… asegúrate de tener cuidado con ello»*.
+Para eso está la segunda pasada de `cruzar()`, la de la llave huérfana:
+ver `_huerfanas()`.
+
 ⚠️ VIAJA DENTRO DEL LOBBY Y NO EN UNA CLAVE PROPIA DE KV. Son las llaves
 de «Lo que pasó» —seis como mucho, ~12 KB— y el lobby ya se escribe sólo
 cuando cambia. Una clave aparte gastaría escrituras de una cuota de 1.000
@@ -73,6 +80,17 @@ PARECIDO = 0.8
 #: la llave se publica el mismo día del anuncio o hasta dos después
 #: (un evento de las 11 PM termina pasada la medianoche)
 DIAS = (-1, 2)
+
+#: 🔑 LA LLAVE HUÉRFANA: el anuncio que la primera pasada dejó sin llave
+#: porque los números chocan («VOL 17» contra «VOL 16», el mismo evento).
+#: Se la lleva sólo si todo lo demás coincide —ver `_huerfanas()`—: la
+#: llave puede salir hasta estos minutos ANTES del anuncio…
+HUERFANA_ANTES_MIN = 15
+#: …y hasta estas horas después, o hasta el siguiente anuncio de la serie
+HUERFANA_HORAS = 24
+#: cuánto tiene que parecerse la serie (el nombre sin números ni modalidad).
+#: Más que `PARECIDO`: acá el número ya no ayuda a separar.
+SERIE = 0.9
 
 
 def limpio(nombre):
@@ -124,6 +142,73 @@ def _chocan(x, y):
     tx, ex = _numeros(x)
     ty, ey = _numeros(y)
     return bool((ex and ey and ex != ey) or (tx and ty and tx != ty))
+
+
+def _nfkd(s):
+    # 🆚 no se descompone con NFKD: «1🆚️1» (URBF) es un 1vs1. Y trae el
+    # selector de variante pegado (U+FE0F), que no es espacio para la regex
+    s = unicodedata.normalize('NFKD', str(s or '')).replace('\U0001f19a', 'vs')
+    return s.replace('️', '').replace('︎', '')
+
+
+def _serie(nombre):
+    """El nombre sin números ni modalidad: la serie del organizador.
+
+    «DESGRACIAS EN TOKYO VOL 17 1VS1» y «DESGRACIAS EN TOKYO VOL 16» son
+    la misma: `'desgraciasentokyovol'`.
+    """
+    s = _TEMPORADA.sub(' ', _MODALIDAD.sub(' ', _nfkd(nombre)))
+    return clave_nombre(''.join(c for c in s if not c.isdigit()))
+
+
+def _misma_serie(a, b):
+    return bool(a and b and (a == b or difflib.SequenceMatcher(None, a, b).ratio() >= SERIE))
+
+
+_FORMA = re.compile(r'(?i)(?<![a-z0-9])(\d+)\s*(?:vs|v)\s*(\d+)(?![a-z0-9])')
+
+
+def forma_anuncio(mod):
+    """`'solos'`, `'equipos'` o `''` (no se sabe), por la modalidad del anuncio.
+
+    ⚠️ «4x4» NO es de equipos: en el rap son entradas de 4 compases (la
+    modalidad de SNAKE INSIGNIA dice «4x4 3E Libre»). Por eso la `x` no
+    cuenta acá, aunque `_MODALIDAD` la saque del número. Y el MULTIVERSE
+    es de cualquier tamaño (2v2, 1v3, 8v1): no se sabe.
+
+    ⚠️ Y «PANDILLAS» TAMPOCO SE SABE: ELRAP FECHA 6 se anunció así y su
+    llave son batallas de 3 y 4 personas, cada una por su cuenta. Con
+    «pandillas = equipos» perdía su llave (medido al escribir esto).
+    """
+    s = _nfkd(mod)
+    t = s.lower()
+    if 'multiverse' in t or 'pandilla' in t:
+        return ''
+    if re.search(r'dupla|equipo', t):
+        return 'equipos'
+    m = _FORMA.search(s)
+    if not m:
+        return ''
+    a, b = int(m.group(1)), int(m.group(2))
+    return 'solos' if a == b == 1 else ('equipos' if a == b else '')
+
+
+def forma_llave(r):
+    """`'solos'`, `'equipos'` o `''`, por los lados de la llave guardada: un
+    lado de equipo trae los nombres con coma («27, Piyi»)."""
+    lados = [str(l) for x in (r.get('rondas') or ()) for b in (x.get('b') or ())
+             for l in ((b[0] if b else None) or ())]
+    if not lados:
+        return ''
+    eq = sum(1 for l in lados if ',' in l)
+    return 'equipos' if eq * 2 > len(lados) else ('solos' if not eq else '')
+
+
+def _formas_chocan(p, r):
+    """¿Un 1vs1 contra una llave de equipos, o al revés?"""
+    a = forma_anuncio(p.get('mod') or p.get('modalidad'))
+    b = forma_llave(r)
+    return bool(a and b and a != b)
 
 
 def anunciado(nombre, sv, dia, anuncios):
@@ -486,63 +571,157 @@ def enlazar(rondas):
     return out
 
 
-def cruzar(pasados, regs):
+def _elegir(p, regs):
+    """La primera pasada: la llave de un anuncio por su nombre, o `None`.
+
+    Mismo servidor, la llave entre un día antes y dos después del anuncio,
+    y el nombre igual —o parecido y con los mismos números—. Con un empate
+    no se elige.
+    """
+    dia = _dia_este(p.get('cuando'))
+    _ini = _instante_iso(p.get('cuando'))
+    ini = int(_ini.timestamp() * 1000) if _ini else None
+    a = clave_nombre(p.get('nombre'))
+    if not dia or not a:
+        return None
+    cands = []
+    for n, r in (regs or {}).items():
+        if (r.get('sv') or '') != (p.get('sv') or ''):
+            continue
+        try:
+            rd = datetime.date.fromisoformat(r.get('dia') or '')
+        except ValueError:
+            continue
+        dd = (rd - dia).days
+        if not DIAS[0] <= dd <= DIAS[1]:
+            continue
+        b = clave_nombre(r.get('nombre'))
+        if not b:
+            continue
+        # 🔑 UN 1VS1 NO SE LLEVA UNA LLAVE DE EQUIPOS, NI AL REVÉS. La noche
+        # del 28/09 FFA jugó la TOKYO VOL 16 dos veces —el 2VS2 y el 1VS1—
+        # y las dos llaves dicen «VOL 16»: el nombre solo no las separa.
+        if _formas_chocan(p, r):
+            continue
+        if a == b:
+            puntaje = 2.0
+        # ⚠️ DOS NÚMEROS DISTINTOS SE DESCARTAN; UN NÚMERO CONTRA NINGUNO,
+        # NO. Snake Rap anuncia «SNAKE INSIGNIA» y su llave dice «SNAKE
+        # INSIGNIA 3/8» (la edición): nada se contradice, y sin esto su
+        # anuncio no llevaba nunca el botón. VOL 11 contra VOL 12 sigue
+        # afuera —si fue un error de tipeo, lo levanta `_huerfanas()`—. Y la
+        # temporada del organizador aparte: ver `_chocan()`.
+        elif _chocan(p.get('nombre'), r.get('nombre')):
+            continue
+        else:
+            puntaje = difflib.SequenceMatcher(None, a, b).ratio()
+        if puntaje >= PARECIDO:
+            # ⚠️ LO MÁS CERCA EN EL TIEMPO, EN MINUTOS Y NO EN DÍAS: dos
+            # llaves con el mismo nombre el mismo día empataban siempre y
+            # el anuncio se quedaba sin botón. Con el instante de la
+            # llave, gana la que se publicó más cerca del arranque.
+            ms = _primero(r.get('links'))
+            cerca = (-(abs(ms - ini) // 60000) if ms is not None and ini
+                     else -abs(dd) * 1440)
+            cands.append((puntaje, cerca, str(n)))
+    if not cands:
+        return None
+    cands.sort(reverse=True)
+    if len(cands) > 1 and cands[0][:2] == cands[1][:2]:
+        return None
+    return cands[0][2]
+
+
+def _pub_ms(p):
+    """Cuándo se publicó el anuncio —no cuándo arranca el evento—, en ms.
+
+    ⚠️ «Lo que pasó» y el calendario guardan en `cuando` el ARRANQUE, y la
+    llave de TOKYO VOL 17 salió 19 minutos antes del arranque («EN 30
+    MINUTOS»). Por eso sale del ID del mensaje del anuncio cuando viene el
+    link, igual que `instante()` con la llave.
+    """
+    ms = instante(p.get('link')) if p.get('link') else None
+    if ms:
+        return ms
+    t = _instante_iso(p.get('pub') or p.get('cuando'))
+    return int(t.timestamp() * 1000) if t else None
+
+
+def _huerfanas(faltan, ctx, regs, tomadas):
+    """La segunda pasada: `[(anuncio, n)]` para los que quedaron sin llave
+    porque el número del nombre no coincide.
+
+    🔑 Dlx, 29/09/2026: el anuncio decía «TOKYO VOL 17 1VS1» y la llave
+    «VOL 16». No se relaja el número —«VOL 11» y «VOL 12» SÍ son dos
+    eventos—: se pide TODO lo demás, y cada cosa descarta por sí sola:
+
+    - el mismo servidor y la misma **serie** (el nombre sin números ni
+      modalidad, `_serie()`);
+    - una llave que **ningún otro anuncio se llevó** en la primera pasada
+      (`tomadas`, calculada sobre TODOS los anuncios y no sólo los que se
+      muestran);
+    - publicada **después del anuncio** —con `HUERFANA_ANTES_MIN` de gracia—
+      y **antes del siguiente anuncio de esa serie** en ese servidor, o de
+      `HUERFANA_HORAS`;
+    - la misma **forma**: un 1vs1 no se lleva una llave de equipos.
+
+    Con dos candidatas no elige: *sin dato no hay pieza*.
+    """
+    out = []
+    for p in faltan:
+        sv, serie, pub = p.get('sv') or '', _serie(p.get('nombre')), _pub_ms(p)
+        if not serie or pub is None:
+            continue
+        hasta = pub + HUERFANA_HORAS * 3600000
+        for q in ctx:
+            qp = _pub_ms(q)
+            if (q is not p and (q.get('sv') or '') == sv and qp is not None
+                    and pub < qp < hasta and _misma_serie(_serie(q.get('nombre')), serie)):
+                hasta = qp
+        cands = []
+        for n, r in (regs or {}).items():
+            if str(n) in tomadas or (r.get('sv') or '') != sv:
+                continue
+            ms = _primero(r.get('links'))
+            if ms is None or not pub - HUERFANA_ANTES_MIN * 60000 <= ms < hasta:
+                continue
+            if not _misma_serie(_serie(r.get('nombre')), serie) or _formas_chocan(p, r):
+                continue
+            cands.append(str(n))
+        if len(cands) == 1:
+            out.append((p, cands[0]))
+            tomadas.add(cands[0])
+    return out
+
+
+def cruzar(pasados, regs, todos=None):
     """Cuelga `llave: n` de cada anuncio de «Lo que pasó» que tenga su
     llave, y devuelve `{n: registro}` con las que colgó.
 
-    Ver el encabezado: mismo servidor, la llave entre un día antes y dos
-    después del anuncio, y el nombre igual —o parecido y con los mismos
-    números—. Con un empate no se elige.
+    Dos pasadas: por nombre (`_elegir()`) y, para el que quedó sin llave, la
+    huérfana (`_huerfanas()`). `todos` son los demás anuncios —con la misma
+    forma que `pasados`—, para saber qué llaves ya son de otro: «Lo que
+    pasó» muestra seis, y la llave de un séptimo no es huérfana.
     """
     out = {}
+    regs = regs or {}
     for p in pasados:
         p.pop('llave', None)
-        dia = _dia_este(p.get('cuando'))
-        _ini = _instante_iso(p.get('cuando'))
-        ini = int(_ini.timestamp() * 1000) if _ini else None
-        a = clave_nombre(p.get('nombre'))
-        if not dia or not a:
-            continue
-        cands = []
-        for n, r in (regs or {}).items():
-            if (r.get('sv') or '') != (p.get('sv') or ''):
-                continue
-            try:
-                rd = datetime.date.fromisoformat(r.get('dia') or '')
-            except ValueError:
-                continue
-            dd = (rd - dia).days
-            if not DIAS[0] <= dd <= DIAS[1]:
-                continue
-            b = clave_nombre(r.get('nombre'))
-            if not b:
-                continue
-            if a == b:
-                puntaje = 2.0
-            # ⚠️ DOS NÚMEROS DISTINTOS SE DESCARTAN; UN NÚMERO CONTRA NINGUNO,
-            # NO. Snake Rap anuncia «SNAKE INSIGNIA» y su llave dice «SNAKE
-            # INSIGNIA 3/8» (la edición): nada se contradice, y sin esto su
-            # anuncio no llevaba nunca el botón. VOL 11 contra VOL 12 sigue
-            # afuera. Y la temporada del organizador aparte: ver `_chocan()`.
-            elif _chocan(p.get('nombre'), r.get('nombre')):
-                continue
-            else:
-                puntaje = difflib.SequenceMatcher(None, a, b).ratio()
-            if puntaje >= PARECIDO:
-                # ⚠️ LO MÁS CERCA EN EL TIEMPO, EN MINUTOS Y NO EN DÍAS: dos
-                # llaves con el mismo nombre el mismo día empataban siempre y
-                # el anuncio se quedaba sin botón. Con el instante de la
-                # llave, gana la que se publicó más cerca del arranque.
-                ms = _primero(r.get('links'))
-                cerca = (-(abs(ms - ini) // 60000) if ms is not None and ini
-                         else -abs(dd) * 1440)
-                cands.append((puntaje, cerca, str(n)))
-        if not cands:
-            continue
-        cands.sort(reverse=True)
-        if len(cands) > 1 and cands[0][:2] == cands[1][:2]:
-            continue
-        n = cands[0][2]
+        n = _elegir(p, regs)
+        if n is not None:
+            p['llave'] = int(n)
+            out[n] = regs[n]
+    faltan = [p for p in pasados if not p.get('llave')]
+    if not faltan:
+        return out
+    ya = {p.get('link') for p in pasados if p.get('link')}
+    otros = [q for q in (todos or ()) if not (q.get('link') and q.get('link') in ya)]
+    tomadas = {str(p['llave']) for p in pasados if p.get('llave')}
+    for q in otros:
+        n = _elegir(q, regs)
+        if n is not None:
+            tomadas.add(str(n))
+    for p, n in _huerfanas(faltan, list(pasados) + otros, regs, tomadas):
         p['llave'] = int(n)
         out[n] = regs[n]
     return out
@@ -681,6 +860,60 @@ def _self_check():
        == [('2', '1'), ('', '11'), ('', '38'), ('3', '7'), ('', ''), ('', '777777'), ('', '14'), ('', '13'),
            ('', '')],
        'temporada y edición: la T de TOKYO no es una temporada, «⁷⁷⁷» es 777 y la modalidad (1vs1) no cuenta')
+
+    # 🔑 la llave huérfana (Dlx, 29/09/2026, con captura): el 1VS1 se anunció
+    # «VOL 17» y su llave dice «VOL 16», la misma noche que el 2VS2 VOL 16
+    def lk(iso):
+        t = _instante_iso(iso)
+        return 'https://discord.com/channels/1/2/%d' % ((int(t.timestamp() * 1000) - 1420070400000) << 22)
+
+    eq = lambda *xs: {'r': 'Cuartos', 'b': [[list(x), x[0], ''] for x in xs]}  # noqa: E731
+    tk = {'370': {'nombre': 'DESGRACIAS EN TOKYO VOL 16 2VS2', 'sv': 'FFA', 'dia': '2026-09-28',
+                  'links': [lk('2026-09-29T01:53:58')],
+                  'rondas': [eq(('27, Piyi', 'Soulb, Char'), ('Paria, Oasis', 'Vandu, Makmah'))]},
+          '371': {'nombre': 'DESGRACIAS EN TOKYO VOL 16', 'sv': 'FFA', 'dia': '2026-09-28',
+                  'links': [lk('2026-09-29T03:41:12')],
+                  'rondas': [eq(('NC', 'Makmah'), ('yinn', 'tormen'))]}}
+    a16 = {'nombre': 'DESGRACIAS EN TOKYO VOL 16 2VS2', 'sv': 'FFA', 'cuando': '2026-09-29T01:29:43',
+           'pub': '2026-09-29T00:59:43', 'mod': '2VS2', 'link': 'a16'}
+    a17 = {'nombre': 'DESGRACIAS EN TOKYO VOL 17 1VS1', 'sv': 'FFA', 'cuando': '2026-09-29T04:00:44',
+           'pub': '2026-09-29T03:30:44', 'mod': '1VS1', 'link': 'a17'}
+    q = [dict(a17), dict(a16)]
+    cruzar(q, tk)
+    ok([x.get('llave') for x in q] == [371, 370],
+       'TOKYO: el anuncio «VOL 17 1VS1» se lleva la llave «VOL 16» del 1vs1, y el 2VS2 la suya  %s'
+       % [x.get('llave') for x in q])
+    q = [dict(a17)]
+    cruzar(q, tk, todos=[dict(a16), dict(a17)])
+    ok(q[0].get('llave') == 371, 'y en «Lo que pasó» con sólo el VOL 17 a la vista, igual')
+    q = [dict(a17, mod='2VS2')]
+    cruzar(q, {'371': tk['371']})
+    ok(q[0].get('llave') is None, 'un anuncio de equipos no se lleva la llave huérfana de un 1vs1')
+    q = [dict(a17)]
+    cruzar(q, {'371': dict(tk['371'], links=[lk('2026-09-29T03:00:00')])})
+    ok(q[0].get('llave') is None, 'ni una llave publicada media hora antes del anuncio')
+    dos = {'371': tk['371'], '372': dict(tk['371'], links=[lk('2026-09-29T05:00:00')])}
+    q = [dict(a17)]
+    cruzar(q, dos)
+    ok(q[0].get('llave') is None, 'con dos huérfanas posibles no elige')
+    # el anuncio siguiente de la serie cierra la ventana: la llave con el
+    # número mal escrito es del que se anunció justo antes de publicarla
+    a20 = {'nombre': 'TOKYO VOL 20', 'sv': 'FFA', 'cuando': '2026-10-01T00:00:00', 'mod': '1v1'}
+    a21 = {'nombre': 'TOKYO VOL 21', 'sv': 'FFA', 'cuando': '2026-10-01T02:00:00', 'mod': '1v1'}
+    l22 = {'9': {'nombre': 'TOKYO VOL 22', 'sv': 'FFA', 'dia': '2026-09-30',
+                 'links': [lk('2026-10-01T02:10:00')], 'rondas': [eq(('A', 'B'))]}}
+    q = [dict(a20), dict(a21)]
+    cruzar(q, l22)
+    ok([x.get('llave') for x in q] == [None, 9],
+       'la del «VOL 22» mal escrito es del VOL 21, que se anunció antes de publicarla  %s'
+       % [x.get('llave') for x in q])
+    q = [dict(a20)]
+    cruzar(q, {'9': dict(l22['9'], nombre='CARABOBO VOL 22')})
+    ok(q[0].get('llave') is None, 'y de otra serie, nunca')
+    ok([forma_anuncio(m) for m in ('1VS1', '1🆚️1', '1V1 ROYAL RUMBLE_', '2V2', '3v3', 'DUPLAS', 'Pandillas',
+                                    'MULTIVERSE (1-4)', '1️⃣6️⃣ | OCTAVOS: 4x4 3E Libre', '')]
+       == ['solos', 'solos', 'solos', 'equipos', 'equipos', 'equipos', '', '', '', ''],
+       'la forma del anuncio: «4x4» no es de equipos, Pandillas y MULTIVERSE no se saben')
 
     # 🌳 el árbol: por nombre aunque venga fuera de orden (#354), lo suelto
     # al hueco de al lado (el segundo que pasa de 3 bandas, #353), las filas

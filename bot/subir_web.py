@@ -293,7 +293,8 @@ def armar():
         if _sh0 not in sys.path:
             sys.path.append(_sh0)
         import llaves_web as _LW0
-        _c = [{'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '', 'cuando': x.get('cuando') or ''}
+        _c = [{'nombre': x.get('nombre') or '', 'sv': x.get('servidor') or '', 'cuando': x.get('cuando') or '',
+               'modalidad': x.get('modalidad') or '', 'link': _link(x)}
               for x in ann]
         _LW0.cruzar(_c, _LW0.leer())
         ann_v = [x for x, c in zip(ann, _c) if not c.get('llave')]
@@ -399,7 +400,12 @@ def armar():
             sys.path.append(_sh)
         import llaves_web as _LW
         regs = _LW.leer()
-        llaves = _LW.cruzar(pas, regs)
+        # ⚠️ CON TODOS LOS ANUNCIOS DE CONTEXTO: «Lo que pasó» muestra seis, y
+        # la llave de un séptimo no es huérfana (`llaves_web._huerfanas()`)
+        llaves = _LW.cruzar(pas, regs, todos=[
+            {'nombre': _nom(x.get('nombre')), 'sv': x.get('servidor') or '', 'cuando': _ini(x),
+             'modalidad': x.get('modalidad') or '', 'link': _link(x)}
+            for x in ann if x.get('cuando')])
         # 🔑 Y LAS MÁS NUEVAS, para que el calendario de «Eventos» abra su
         # cuadro. Ver `LLAVES_WEB`.
         _inst = _LW.instantes(regs)
