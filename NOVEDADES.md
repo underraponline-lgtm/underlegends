@@ -350,10 +350,45 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El remake va con React (o un framework)**: el estilo de la Liga es la razón principal del remake, y no se quiere que la página se parezca a «copero» | *«el estilo de la liga es la razón principal por la cual quiero hacer el remake… usaremos react o framework»* (29/09, 7:20 AM) | ⏳ propuesta: Vite + React + Tailwind exportado a estáticos en Pages (sin SSR: el Worker tiene 10 ms) |
 | **Un mapa de la Liga y un mapa del código, los dos**: el del sistema (artifact privado: dónde corre cada pieza, cada cuánto y cuánto del plan gratis gasta) y Serena para navegar el código por símbolos, **sólo lectura** | *«Creo que las 2 no?»* (29/09, 7:23 AM) | ✅ el artifact «El mapa de la Liga» y Serena en Claude Code, fuera del repo |
 | **El sync reintenta el 429 igual que el ciclo**: espera 5, 15, 30, 60 y 90 s, y cubre también el abrir la planilla, que era lo que quedaba afuera | *«A»* (29/09, 8:06 AM) | ✅ `liga-global-sync` 5c391bd (`ClienteConEspera`), con su autotest |
+| **El mapa, explorable y en vivo**: como el grafo del reel (arrastrar, zoom, abrir cada pieza en sus partes) y con el estado de cada pieza ahora, **sólo para Dlx** | *«1. C»* (29/09, 8:29 AM) | ✅ `bot/paginas/mapa.html` en vivo; el artifact, una foto con los mismos archivos |
+| **The Cosmic Rap: el bot está ahí sólo para reconocer IDs** | *«agregué el bot a the cosmic rap pero solo usa eso para reconocimiento de IDs nada más»* (8:29 AM) | ✅ `datos/servidores.json` → `solo_identidad`, como LIVONIA y CONFED |
+| **El remake se planea juntos antes de arrancar**: aviso antes de tocar la página nueva | *«cuando vayas a hacer el rework de la página me avisas para antes planearlo»* (9 AM) | ⏳ aviso antes |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Martes 29/09 (9:15 AM) — el mapa en vivo, The Cosmic Rap y la auditoría
+
+Sin versión nueva para la gente: nada de esto se ve en el menú.
+
+- 🗺️ **El mapa, en vivo** (tu *«1. C»*): `underlegends.pages.dev/mapa.html`,
+  sólo si entraste con tu Discord en la página. Se explora como el grafo del
+  reel: arrastrar, zoom, **Libre** u **Ordenado**, cada pieza se abre en sus
+  partes (los 19 pasos de escuchar, las hojas del Operativo, las claves de
+  KV…), buscar por nombre y los cinco recorridos. Y cada pieza tiene un punto
+  que dice cómo está **ahora**, de tres fuentes que ya eran públicas: el
+  vigía (`/api/avisos/estado`), las corridas de GitHub y lo que deja el ciclo
+  en `datos/estado_<trabajo>.json` (pasos, cuánto tardó cada uno, qué falló,
+  las preguntas de ✅ Decidir y las cuotas). **No gasta KV.**
+- ⚠️ **La puerta no es un candado**: la vista se abre si la página dice que
+  sos vos; los datos que muestra ya son públicos (el repo y Actions lo son).
+- 📸 El artifact «El mapa de la Liga» pasa a ser la **foto** del mismo mapa,
+  armada con los mismos archivos: un artifact no puede pedir datos afuera.
+- 🛰 **The Cosmic Rap** quedó como servidor **de identidad**, igual que
+  LIVONIA y CONFED: sus miembros sirven para sacar Discord ID y nada más (ni
+  eventos, ni llaves, ni carta de servidor, ni campana, ni #N). Medido al
+  entrar: 371 miembros y **ningún ID nuevo hoy** — ninguno de los 264 del
+  padrón sin ID coincide con alguien de ahí.
+- 🔴 **La auditoría del lunes había fallado** (28/09, 3:53 PM ET; te llegó
+  el DM): tres scripts —`navegador.py`, `olvidar.py`, `invitaciones.py`—
+  podían caerse al imprimir un emoji en una consola de Windows. Arreglado
+  con el arreglo de la propia herramienta. Y **no era una sola: eran tres**, y la primera tapaba a las otras dos. Al correrla de nuevo cayó en «¿los self-check chequean algo?» —una carpeta de fotos que el repo público no lleva; la regla fue a la herramienta y no a `comun/`, para no redibujar el pool— y en «la web contra sus casos de borde» —no tenía navegador y no conocía las rutas de la campana—. ✅ **Arregladas las tres: la de las 9:27 AM pasó entera.**
+- 🧩 **¿Hay una extensión que haga esto?** Para el **código**, sí: el plugin
+  **code-map** del directorio de Anthropic arma un mapa así (grafo, panel,
+  búsqueda, recorridos) desde los archivos. Lo que ninguno sabe es cómo está
+  el **sistema** ahora (si el ciclo falló, cuánto KV va), que es lo que suma
+  este.
 
 ## 📅 Martes 29/09 (8 AM) — el mapa de la Liga y Serena
 
@@ -2015,11 +2050,9 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **El mapa, más interactivo** (*«pensé que sería más interactuable»*):
-  **A** · como el del reel: arrastrar, hacer zoom y abrir cada pieza en sus
-  partes · **B** · vivo: en la página y sólo para vos, cada pieza con su estado
-  de hoy (la última corrida, el KV del día, lo que espera en ✅ Decidir) ·
-  **C** · las dos.
+- ✅ ~~**El mapa, más interactivo**~~ *«1. C»* (8:29 AM): hecho, arriba.
+- **El remake**: te aviso antes de arrancar y lo planeamos juntos (*«me
+  avisas para antes planearlo»*).
 - ✅ ~~**El sync y la cuota de Sheets**~~ *«A»* (8:06 AM): hecho, arriba.
 - ✅ ~~**Para el remake: ¿sin framework o React?**~~ **React** (29/09, 7:20 AM): *«el
   estilo de la liga es la razón principal… usaremos react o framework»*.
