@@ -248,6 +248,19 @@ const ok = (cond, que) => {
 }
 
 
+// ── las categorías de staff (FFS LEAGUE, 28/09/2026) ──
+{
+  const cs = [
+    { id: '1', type: 4, name: '🈺𝒜𝒟𝑀𝐼𝒩𝐼𝒮𝒯𝑅𝒜𝒞𝐼𝒪𝒩🫅' },
+    { id: '2', type: 4, name: '𝐏𝐋𝐀𝐙𝐀𝐒 𝐅𝐅𝐒👑' },
+    { id: '3', type: 0, name: '🏛️𝔸ℕ𝕌ℕℂ𝕀𝕆𝕊🏛️', parent_id: '1' },
+    { id: '4', type: 4, name: 'STAFF ZONE' },
+  ];
+  const f = A.categoriasStaff(cs);
+  ok(f.has('1') && f.has('4') && !f.has('2') && !f.has('3') && f.size === 2,
+    'la categoría de administración (en letras decoradas) es de staff; la de las plazas, no: ' + [...f].join(','));
+}
+
 // ── seguir raperos: lo que se les avisa a los seguidores (28/09/2026) ──
 {
   ok(['makma', 'volk-co', 'last-x2', 'ржунимагу', 'lazaro'].every(A.claveValida) &&

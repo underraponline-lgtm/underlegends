@@ -582,8 +582,14 @@ def canales(s):
         if r.status_code != 200:
             sin_acceso += 1
             continue
-        for c in r.json():
-            if c.get('type') not in (0, 5):
+        cs = r.json()
+        # 🔴 NI LOS DE UNA CATEGORÍA DE STAFF: FFS LEAGUE (28/09/2026) tiene
+        # «𝔸ℕ𝕌ℕℂ𝕀𝕆𝕊» adentro de «𝒜𝒟𝑀𝐼𝒩𝐼𝒮𝒯𝑅𝒜𝒞𝐼𝒪𝒩», y el canal no dice
+        # «staff». Ver `escuchar.categorias_staff()`.
+        fuera = {str(x.get('id')) for x in cs if x.get('type') == 4 and
+                 STAFF.search(unicodedata.normalize('NFKD', x.get('name') or ''))}
+        for c in cs:
+            if c.get('type') not in (0, 5) or str(c.get('parent_id') or '') in fuera:
                 continue
             # 🔴 NORMALIZADO: los canales de Urban Freestyle (25/09/2026) se
             # llaman «「🏆」𝙀𝙫𝙚𝙣𝙩𝙤𝙨», en letras matemáticas, y el patrón no

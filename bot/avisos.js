@@ -165,6 +165,17 @@ export const PATRON = /evento|anuncio|novedad|torneo|competenc/i;
 export const PATRON_INSC = /inscrip|registro|anotad|convocat/i;
 export const STAFF = /staff|moderat|admin/i;
 
+/**
+ * Los ids de las CATEGORÍAS de staff de un servidor: `STAFF` sobre su nombre,
+ * normalizado. El filtro miraba sólo el nombre del canal, y FFS LEAGUE (entró
+ * el 28/09/2026) guarda «𝔸ℕ𝕌ℕℂ𝕀𝕆𝕊» adentro de «🈺𝒜𝒟𝑀𝐼𝒩𝐼𝒮𝒯𝑅𝒜𝒞𝐼𝒪𝒩🫅».
+ * Lo mismo que `escuchar.categorias_staff()` del ciclo. Pura.
+ */
+export function categoriasStaff(canales) {
+  return new Set((canales || []).filter((c) => c && c.type === 4 && STAFF.test(String(c.name || '').normalize('NFKD')))
+    .map((c) => String(c.id)));
+}
+
 const CAMPOS = {
   organizador: 'ORGANIZADOR',
   cupos: 'CUPOS',
@@ -1653,8 +1664,14 @@ export class Avisos {
         headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
       });
       if (r.status !== 200) { sinAcceso++; continue; }
-      for (const c of await r.json()) {
+      const cs = await r.json();
+      // 🔴 NI LOS DE UNA CATEGORÍA DE STAFF (28/09/2026): FFS LEAGUE tiene
+      // «𝔸ℕ𝕌ℕℂ𝕀𝕆𝕊» adentro de «𝒜𝒟𝑀𝐼𝒩𝐼𝒮𝒯𝑅𝒜𝒞𝐼𝒪𝒩», y un anuncio interno
+      // sonaba en la campana de todos. Ver `categoriasStaff()`.
+      const fuera = categoriasStaff(cs);
+      for (const c of cs) {
         if (c.type !== 0 && c.type !== 5) continue;
+        if (fuera.has(String(c.parent_id || ''))) continue;
         // 🔴 NORMALIZADO, O LAS LETRAS DECORADAS NO MATCHEAN. Urban Freestyle
         // (25/09/2026) llama a su canal «「🏆」𝙀𝙫𝙚𝙣𝙩𝙤𝙨»: son letras matemáticas
         // (U+1D400 y siguientes), no «Eventos», y /evento/ no las encuentra.

@@ -1591,9 +1591,27 @@ def _canales(s, solo=None, guilds=None):
                   timeout=30)
         if r.status_code != 200:
             continue
-        for c in r.json():
-            if c['type'] in (0, 5):
+        cs = r.json()
+        # 🔴 NI LOS CANALES DE UNA CATEGORÍA DE STAFF: ver `categorias_staff()`
+        fuera = categorias_staff(cs)
+        for c in cs:
+            if c['type'] in (0, 5) and str(c.get('parent_id') or '') not in fuera:
                 yield c['id'], c['name'], g['name'], g['id']
+
+
+def categorias_staff(canales):
+    """Los ids de las CATEGORÍAS de staff de un servidor (`STAFF` sobre su nombre, normalizado).
+
+    🔴 EL FILTRO DE STAFF MIRABA SÓLO EL NOMBRE DEL CANAL. FFS LEAGUE (entró el
+    28/09/2026) tiene una categoría «🈺𝒜𝒟𝑀𝐼𝒩𝐼𝒮𝒯𝑅𝒜𝒞𝐼𝒪𝒩🫅» con canales que se
+    llaman «𝔸ℕ𝕌ℕℂ𝕀𝕆𝕊» y «ℙ𝕃𝔸ℕ𝕋𝕀𝕃𝕃𝔸𝕊»: el bot es administrador y los ve, y
+    ninguno dice «staff». Un anuncio interno iba a la página y a la campana, y
+    una plantilla de llave, al ranking. Se mira también la categoría, en los
+    cuatro lugares que buscan canales por nombre: acá (llaves y veredictos),
+    `anuncios.canales()` y el vigía (`avisos.js`, `categoriasStaff()`).
+    """
+    return {str(c.get('id')) for c in canales or []
+            if c.get('type') == 4 and STAFF.search(unicodedata.normalize('NFKD', c.get('name') or ''))}
 
 
 #: horas entre dos mensajes de la misma llave partida en dos
@@ -2069,9 +2087,11 @@ def canales_veredictos(s, mem, guilds, completo):
         r = s.get('https://discord.com/api/v10/guilds/%s/channels' % g['id'], timeout=30)
         if r.status_code != 200:
             continue
-        for c in r.json():
+        cs = r.json()
+        fuera = categorias_staff(cs)
+        for c in cs:
             n = unicodedata.normalize('NFKD', c.get('name') or '')
-            if (c.get('type') in (0, 5) and VEREDICTOS.search(n)
+            if (c.get('type') in (0, 5) and VEREDICTOS.search(n) and str(c.get('parent_id') or '') not in fuera
                     and not re.search('llave', n, re.I) and not STAFF.search(n)):
                 out[str(c['id'])] = {'servidor': g.get('name') or '?', 'guild': str(g['id']),
                                      'canal': n}
