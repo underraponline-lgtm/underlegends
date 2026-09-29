@@ -500,20 +500,169 @@ def faltan_en_equipos(texto):
     (2, 3…) y son la gran mayoría: en un MULTIVERSE (2v2, 1v3, 8v1) el que va
     solo va solo, y en un 1vs1 no hay equipos.
     """
+    solos, k = equipos_con_nombre(texto)
+    return len(solos) * (k - 1) if solos else 0
+
+
+def equipos_con_nombre(texto):
+    """Los lados de la primera ronda que son un equipo escrito con UN nombre.
+
+    `([lado tal cual…], cuántos son)`, o `([], 0)`. La regla es la de
+    `faltan_en_equipos()`, que la usa para contar: en una llave de parejas
+    (o de tríos), el lado de un solo nombre es un equipo con nombre.
+    """
     rs = E.rondas_de(texto or '')
     if not rs:
-        return 0
-    tams = []
+        return [], 0
+    tams, solos = [], []
     for b in rs[0][1]:
         for lado in b:
             ms = [m for m in (E._miembros(lado) or [lado]) if E.norm(E.HISTORIA.sub('', m))]
             if ms:
                 tams.append(len(ms))
+                if len(ms) == 1:
+                    solos.append(lado)
     grandes = [t for t in tams if t >= 2]
-    solos = len(tams) - len(grandes)
-    if not grandes or len(set(grandes)) != 1 or not solos or len(grandes) < 3 * solos:
-        return 0
-    return solos * (grandes[0] - 1)
+    if not grandes or len(set(grandes)) != 1 or not solos or len(grandes) < 3 * len(solos):
+        return [], 0
+    return solos, grandes[0]
+
+
+#: cuánto antes de la llave vale una inscripción para decir quién es un equipo
+EQUIPO_INSC_H = 36
+#: «Me tiene sin cuidado🇯🇲🔥(PARIA+KRAVITZ)» · «TEAM X: A + B» · «TEAM X = A y B»
+_INSC_EQUIPO = re.compile(r'^(?P<nom>[^(:=\uff08]{2,60}?)\s*(?:[(\uff08](?P<par>[^()\uff08\uff09]+)[)\uff09]'
+                          r'|[:=]\s*(?P<pos>.+))\s*$')
+_INSC_T = [None]
+
+
+def _instante(x):
+    """Un ISO de Discord o de `anuncios.json` -> datetime UTC sin zona, o None."""
+    import datetime as _dt
+    try:
+        d = _dt.datetime.fromisoformat(str(x or '').replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    return d.replace(tzinfo=None) if d.tzinfo is None else \
+        d.astimezone(_dt.timezone.utc).replace(tzinfo=None)
+
+
+def integrantes_inscritos(equipo, sv, cuando=None, inscripciones=None):
+    """Con quiénes se anotó un equipo, según su inscripción; `[]` si no se sabe.
+
+    🔑 «Me tiene sin cuidado🇯🇲🔥(PARIA+KRAVITZ)» (FFA, 25/09/2026): el nombre
+    del equipo y, entre paréntesis o después de `:`, quiénes son. Sólo del
+    mismo servidor y de las `EQUIPO_INSC_H` horas antes de la llave: un
+    nombre de equipo es de ESE evento (Dlx: *«solo un equipo creado x este
+    evento»*), y otra noche el mismo nombre puede ser otra gente.
+    """
+    k = E.norm(E.HISTORIA.sub('', equipo or ''))
+    if not k:
+        return []
+    if inscripciones is None:
+        if _INSC_T[0] is None:
+            try:
+                with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+                    _INSC_T[0] = (json.load(f) or {}).get('inscripciones') or []
+            except (OSError, ValueError):
+                _INSC_T[0] = []
+        inscripciones = _INSC_T[0]
+    import datetime as _dt
+    t0 = _instante(cuando)
+    for x in inscripciones:
+        if (x.get('servidor') or '') != sv:
+            continue
+        if t0 is not None:
+            ti = _instante(x.get('cuando'))
+            if ti is None or not (t0 - _dt.timedelta(hours=EQUIPO_INSC_H) <= ti <= t0 + _dt.timedelta(hours=6)):
+                continue
+        for renglon in str(x.get('texto') or '').splitlines():
+            m = _INSC_EQUIPO.match(renglon.strip())
+            if not m or E.norm(m.group('nom')) != k:
+                continue
+            ms = [p.strip() for p in re.split(r'[+,&/]|\s+y\s+', m.group('par') or m.group('pos') or '')
+                  if E.norm(p)]
+            if len(ms) >= 2:
+                return ms
+    return []
+
+
+def marcar_equipos(filas, textos=(), cuando=None, inscripciones=None, decidir=None):
+    """El equipo que la llave nombra con UN nombre: cobran sus integrantes, o nadie.
+
+    🔴 «TEAM VENECIA 🇲🇦 🇻🇪» (FFA, DESGRACIAS EN TOKYO VOL 16 2VS2, 28/09/2026)
+    entró como UNA persona y cobró la semifinal entera de su pareja: 5.250
+    puntos, tarjetas y un lugar en el ranking para alguien que no existe.
+    Dlx, 29/09: *«debería reconocer los integrantes del equipo; si no se
+    puede, ya fue. Pero TEAM VENECIA no es un participante, es un equipo…
+    no una crew ojo… solo un equipo creado x este evento»*.
+
+    Quiénes son, en este orden:
+      1. lo que Dlx dijo (`decidir.integrantes_equipo()`);
+      2. su inscripción (`integrantes_inscritos()`), si nombra a tantos
+         como el formato y ninguno juega además en otro lado de la llave
+         —ME TIENE SIN CUIDADO (VOL.13) se anotó como PARIA + KRAVITZ, y la
+         llave los pone también como pareja aparte: eso no se adivina—.
+    Con integrantes, el lado pasa a ser ellos (`Equipo: nombre` en la nota)
+    y cada uno cobra su parte. Sin integrantes, el lado queda como lo
+    escribió la llave con `Sin integrantes: lado`: el motor no le paga a
+    nadie ni lo trata como un nombre desconocido (`motor.nadie`).
+
+    Devuelve `(filas, [(evento, servidor, fecha, equipo, [integrantes], por_qué)])`.
+    """
+    equipos = {}
+    for t in textos:
+        solos, n = equipos_con_nombre(t)
+        for lado in solos:
+            equipos.setdefault(E.norm(E.HISTORIA.sub('', lado)), (lado, n))
+    if not equipos or not filas:
+        return filas, []
+    # quién juega en OTRO lado de la llave: si la inscripción dice que el
+    # equipo son ellos, la llave se contradice
+    otros = set()
+    for t in textos:
+        for _r, bats in E.rondas_de(t):
+            for b in bats:
+                for lado in b:
+                    for m in E._miembros(lado):
+                        otros.add(E.norm(E.HISTORIA.sub('', m)))
+    f0 = filas[0]
+    ev, sv, fe = f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or ''
+    if decidir is None:
+        try:
+            import decidir as DEC
+            decidir = DEC.integrantes_equipo
+        except Exception:                                # noqa: BLE001
+            decidir = lambda *a: None
+    plan, informe = {}, []
+    for k, (crudo, n) in equipos.items():
+        nombre = re.sub(r'\s+', ' ', E.HISTORIA.sub('', crudo)).strip()
+        ms = decidir(ev, sv, fe, nombre)
+        por = 'lo decidió Dlx'
+        if ms is None:
+            ms = integrantes_inscritos(nombre, sv, cuando, inscripciones)
+            por = 'su inscripción'
+            if ms and len(ms) != n:
+                ms, por = [], 'la inscripción nombra a %d y el formato es de %d' % (len(ms), n)
+            elif ms and any(E.norm(E.HISTORIA.sub('', m)) in otros for m in ms):
+                ms, por = [], 'la inscripción dice %s, y la llave los pone también en otro lado' % ' + '.join(ms)
+            elif not ms:
+                por = 'ni la llave ni una inscripción dicen quiénes son'
+        plan[k] = (ms, nombre)
+        informe.append((ev, sv, fe, nombre, ms, por))
+    for f in filas:
+        for campo in ('ladoA', 'ladoB', 'ganador'):
+            v = f.get(campo) or ''
+            k = E.norm(E.HISTORIA.sub('', v))
+            if k not in plan:
+                continue
+            ms, nombre = plan[k]
+            if ms:
+                f[campo] = ' + '.join(ms)
+                _con_nota(f, 'Equipo: %s' % nombre)
+            else:
+                _con_nota(f, 'Sin integrantes: %s' % v)
+    return filas, informe
 
 
 def parecido(a, b):
@@ -953,6 +1102,8 @@ def autores_conocidos(hallazgos, links=None, guardadas=None):
 #
 #: `{'<evento normalizado>|<sv>|<dd/mm>': {'<nombre normalizado>': discord_id}}`
 PODIO = os.path.join(BASE, 'datos', 'podio_menciones.json')
+#: los equipos que una llave nombra con UN nombre: ver `marcar_equipos()`
+EQUIPOS = os.path.join(BASE, 'datos', 'equipos_llaves.json')
 _P_SEGUNDO = re.compile(r'SUB\s*-?\s*CAMPEON|\b2\s*(?:DO|ND|°|º)?\s*(?:PUESTO|LUGAR)\b'
                         r'|\bSEGUNDO\s+(?:PUESTO|LUGAR)|🥈')
 _P_PRIMERO = re.compile(r'CAMPEON|\b1\s*(?:ER|RO|°|º)?\s*(?:PUESTO|LUGAR)\b'
@@ -1880,7 +2031,37 @@ def _self_check():
     # la clave con que ✅ Decidir busca un nombre: sin bandera y sin signos
     _nn = lambda x: ''.join(c for c in __import__('unicodedata').normalize(   # noqa: E731
         'NFKD', re.sub('[\U0001F1E6-\U0001F1FF]', '', x)) if c.isalnum()).lower()
+    # el equipo con UN nombre en un 2VS2 (TEAM VENECIA, Dlx 29/09/2026)
+    _teq = ('# CUARTOS\n[JOTA P + IGUANA] VS [TEAM VENECIA]\n[DOS + PIYI] VS [SOUL B + CHAR]\n'
+            '[PARIA + PRRR] VS [VANDU + MAKMA]\n[ELSOLAR + METO] VS [SNOW + NC]\n')
+
+    def _feq():
+        return [{'evento': 'X 2VS2', 'servidor': 'FFA', 'fecha': '28/09', 'ronda': 'cuartos',
+                 'ladoA': 'JOTA P + IGUANA', 'ladoB': 'TEAM VENECIA', 'ganador': 'TEAM VENECIA',
+                 'notas': ''}]
+    _nada = lambda *a: None                               # noqa: E731
+    _cu = '2026-09-29T01:53:58+00:00'
+    _eq_sin, _eq_sin_i = marcar_equipos(_feq(), [_teq], cuando=_cu, inscripciones=[], decidir=_nada)
+    _eq_con, _ = marcar_equipos(_feq(), [_teq], cuando=_cu, decidir=_nada, inscripciones=[
+        {'servidor': 'FFA', 'texto': 'Team Venecia 🇲🇦🔥(RUDO+TITO)', 'cuando': '2026-09-28T23:00:00'}])
+    _eq_vieja, _ = marcar_equipos(_feq(), [_teq], cuando=_cu, decidir=_nada, inscripciones=[
+        {'servidor': 'FFA', 'texto': 'Team Venecia (RUDO+TITO)', 'cuando': '2026-09-25T19:00:00'}])
+    _eq_choca, _eq_choca_i = marcar_equipos(_feq(), [_teq], cuando=_cu, decidir=_nada, inscripciones=[
+        {'servidor': 'FFA', 'texto': 'TEAM VENECIA: Paria + Prrr', 'cuando': '2026-09-28T23:00:00'}])
+    _eq_dec, _ = marcar_equipos(_feq(), [_teq], cuando=_cu, inscripciones=[],
+                                decidir=lambda *a: ['Uno', 'Dos'])
     casos = [
+        ('TEAM VENECIA sin inscripción: la fila queda, con «Sin integrantes», y no cobra nadie',
+         _eq_sin[0]['ladoB'] == 'TEAM VENECIA' and 'Sin integrantes: TEAM VENECIA' in _eq_sin[0]['notas']
+         and _eq_sin_i[0][4] == [] and equipos_con_nombre(_teq) == (['TEAM VENECIA'], 2)),
+        ('con su inscripción «NOMBRE (A+B)», el lado pasa a ser A + B, también de ganador',
+         _eq_con[0]['ladoB'] == 'RUDO + TITO' and _eq_con[0]['ganador'] == 'RUDO + TITO'
+         and 'Equipo: TEAM VENECIA' in _eq_con[0]['notas']),
+        ('la inscripción de otra noche no dice quiénes son hoy',
+         _eq_vieja[0]['ladoB'] == 'TEAM VENECIA' and 'Sin integrantes' in _eq_vieja[0]['notas']),
+        ('si la inscripción nombra a quien juega en otro lado de la llave, no se adivina (VOL.13)',
+         _eq_choca[0]['ladoB'] == 'TEAM VENECIA' and 'otro lado' in _eq_choca_i[0][5]),
+        ('lo que decidió Dlx manda', _eq_dec[0]['ladoB'] == 'Uno + Dos'),
         ('el pokemon de la final queda anotado en esa fila',
          len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
         ('y no se lo cuenta como revivido (§10.3)', 'Revivido' not in notas),
@@ -2130,6 +2311,7 @@ def main():
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
     podio_ev = {}                       # 'evento|servidor|fecha' -> {nombre: id}
+    equipos_inf = []                    # los equipos con un solo nombre
     link_de = {}                        # (evento, fecha) y evento -> link
     import decidir as DEC
     repes = 0
@@ -2182,6 +2364,13 @@ def main():
         # comería las revanchas, y las marcas tocan las filas en su lugar
         limpias = [] if any(h.get('vidas') for h in g['llaves']) else marcar_revividos(
             marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids), _txt)
+        # 🔑 EL EQUIPO CON UN SOLO NOMBRE (TEAM VENECIA), AL FINAL: el revivido
+        # y el walk-in se miran con la llave tal cual la escribieron. Ver
+        # `marcar_equipos()`.
+        if limpias:
+            _cu = min((str(h.get('cuando') or '') for h in g['llaves']), default='')
+            limpias, _inf = marcar_equipos(limpias, _txt, cuando=_cu)
+            equipos_inf += _inf
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
@@ -2383,9 +2572,32 @@ def main():
             print('     %-32s %s · %s\n        %s' % (ev[:32], sv_i, fec_i,
                                                    mot))
 
+    if equipos_inf:
+        print('\n   -- equipos con un solo nombre: quiénes cobran --')
+        for ev, sv_i, fec_i, nom_i, ms, por in equipos_inf:
+            print('     %-28s %s · %s · %s: %s (%s)'
+                  % (ev[:28], sv_i, fec_i, nom_i,
+                     ' + '.join(ms) if ms else 'nadie', por))
+
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
+
+    # y los equipos con un solo nombre, para que `Pendientes` no pregunte
+    # quién es «TEAM VENECIA» como si fuera una persona
+    try:
+        with io.open(EQUIPOS, 'w', encoding='utf-8', newline='\n') as _f:
+            json.dump({'_leeme': 'Los equipos que una llave nombra con UN nombre (TEAM VENECIA): '
+                                 'quiénes cobran, y por qué. Lo escribe marcar_equipos() de '
+                                 'bot/llaves_a_entrada.py en cada corrida; lo lee Pendientes para '
+                                 'no preguntar por ellos como si fueran personas. Dlx, 29/09/2026.',
+                       'equipos': [{'evento': e, 'sv': s_, 'fecha': fe, 'equipo': n_,
+                                    'integrantes': ms, 'por': p_}
+                                   for e, s_, fe, n_, ms, p_ in equipos_inf]},
+                      _f, ensure_ascii=False, indent=1)
+            _f.write('\n')
+    except OSError as e:
+        print('   ⚠️ no pude guardar los equipos con un solo nombre (%s)' % str(e)[:60])
 
     # los links de cada llave, para que `procesar_entrada` los cuelgue de
     # su evento en `datos/llaves_t1.json` (misma corrida, mismo runner)

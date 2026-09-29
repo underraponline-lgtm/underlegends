@@ -112,6 +112,15 @@ ok('la gente sin el paréntesis: `gekto(chianluka+makma)` es una persona más la
   cuenta('# COPA\n`[ CUARTOS ]`\n⌞gekto(chianluka+makma)⌝ 🆚 ⌞nhp⌝\n⌞makma⌝ 🆚 ⌞luz⌝\n`[ FINAL ]`\n⌞gekto⌝ 🆚 ⌞makma⌝\n'));
 ok('y el que revive ocupa dos lugares de la primera ronda (COMPE DEL VACILE 1)',
   cuenta('# COPA\n`[ CUARTOS ]`\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n⌞E⌝ 🆚 ⌞F⌝\n⌞C⌝ 🆚 ⌞G⌝\n') === 8);
+// 🔑 el equipo con UN nombre en un 2VS2 (Dlx, 29/09/2026: «TEAM VENECIA no es un participante»)
+const v16 = '# ▪️ [•CUARTOS DE FINAL•]\n▪️   [JOTA P 🇻🇪 + IGUANA 🇵🇪] 🆚 [TEAM VENECIA 🇲🇦 🇻🇪]\n' +
+  '▪️   [27 🇺🇸 + PIYI 🇲🇽] 🆚 [SOUL B 🇨🇱 + CHAR 🇨🇴]\n▪️   [PARIA SIN REMEDIO 🇧🇲 + OASIS 🇨🇱] 🆚 [VANDU 🇨🇦 + MAKMA 🇻🇪]\n' +
+  '▪️   [ELSOLAR 🇨🇴 + METORITO 🇲🇽] 🆚 [SNOW 🇨🇴 + NC 🇦🇷]\n';
+const lv16 = LV.aLlave({ id: '1', texto: v16 });
+ok('TEAM VENECIA va como equipo sin integrantes (`sin`), y cuenta dos para la escala',
+  JSON.stringify(lv16.sin) === JSON.stringify(['TEAM VENECIA 🇲🇦 🇻🇪']) && lv16.participantes === 16,
+  JSON.stringify([lv16.sin, lv16.participantes]));
+ok('en un 1vs1 no hay equipos', !LV.aLlave({ id: '1', texto: '# CUARTOS\n[A] 🆚 [B]\n[C] 🆚 [D]\n' }).sin.length);
 
 console.log('\n3 · lo que guarda el vigía (bot/avisos.js)\n');
 const { pareceLlave, conNombres } = await import('./avisos.js');

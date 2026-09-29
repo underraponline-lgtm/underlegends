@@ -534,20 +534,28 @@
      demás lados de la primera ronda son todos del mismo tamaño y la gran
      mayoría, el de un nombre cuenta ese tamaño. En un MULTIVERSE, nada. */
   function faltanEnEquipos(rs) {
-    if (!rs.length) return 0;
-    var tams = [];
+    var e = equiposConNombre(rs);
+    return e[0].length * Math.max(e[1] - 1, 0);
+  }
+  /* `equipos_con_nombre()`: [los lados de un nombre que son un equipo, de cuántos].
+     La página los dibuja como equipo, sin perfil (Dlx, 29/09/2026: «TEAM
+     VENECIA no es un participante… es un equipo»). */
+  function equiposConNombre(rs) {
+    if (!rs.length) return [[], 0];
+    var tams = [], solos = [];
     rs[0][1].forEach(function (b) {
       b.forEach(function (lado) {
         var n = String(lado).replace(HISTORIA, '').split(/[+&]/).filter(function (m) { return norm(m); }).length;
         if (n) tams.push(n);
+        if (n === 1) solos.push(lado);
       });
     });
     var grandes = tams.filter(function (t) { return t >= 2; });
-    var solos = tams.length - grandes.length, k = grandes[0];
-    if (!grandes.length || grandes.some(function (t) { return t !== k; }) || !solos || grandes.length < 3 * solos) {
-      return 0;
+    var k = grandes[0];
+    if (!grandes.length || grandes.some(function (t) { return t !== k; }) || !solos.length || grandes.length < 3 * solos.length) {
+      return [[], 0];
     }
-    return solos * (k - 1);
+    return [solos, k];
   }
 
   /* `repetidos_en_la_primera()`: el que revive aparece dos veces en la primera
@@ -621,6 +629,7 @@
       vivo: true, id: b.id, nombre: titulo(b.texto) || 'La llave', sv: b.sv || '',
       // la misma cuenta que el ciclo (`filas_de()`): la que elige la escala de puntos
       participantes: plantel(rs) + repetidosEnLaPrimera(rs) + faltanEnEquipos(rs), rondas: enlazar(rondas), tabla: [],
+      sin: equiposConNombre(rs)[0],
       links: b.g && b.canal ? ['https://discord.com/channels/' + b.g + '/' + b.canal + '/' + b.id] : [],
       pub: b.pub, ed: b.ed, terminada: !!fin,
       // la ronda que se está jugando: la última que tiene batallas sin ganador

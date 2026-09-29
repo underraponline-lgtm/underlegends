@@ -1082,13 +1082,28 @@ function abrirLlave(n) {
     return b && b.e === 'suelto' ? '<i class="mw-b" title="Buscado · ' + esc(b.cn) + ' · ' + num(b.v) +
       ' pts">&#127919;</i>' : '';
   };
+  // 🔑 EL EQUIPO QUE LA LLAVE NOMBRA CON UN SOLO NOMBRE Y NADIE SABE QUIÉNES
+  // SON (`sin`, del lector). Dlx, 29/09/2026: «TEAM VENECIA no es un
+  // participante… es un equipo… solo un equipo creado x este evento». Va
+  // como equipo —sin cara, sin perfil y sin puntos—, no como una persona.
+  // ⚠️ sin el paréntesis: «[ME TIENE SIN CUIDADO (ABYSSUS)]» en la final es
+  // el mismo equipo, con quien entró por uno de ellos
+  var sinP = function (x) { return normNombre(String(x || '').replace(/[(（][^()（）]*[)）]/g, '')); };
+  var sinK = {};
+  (L.sin || []).forEach(function (x) { sinK[sinP(x)] = 1; });
+  var esSin = function (x) { return !!sinK[sinP(x)]; };
   var quien = function (x, sinCara, perdio) {
+    if (esSin(x)) {
+      return '<span class="ql-n ql-eq" title="Un equipo de este evento: la llave no dice quiénes son, así que no suma puntos">' +
+        conBanderas(x) + '<small>equipo</small></span>';
+    }
     var f = claveDe(x) && porK(claveDe(x));
     return f ? '<button class="ql" data-k="' + esc(f.k) + '">' + (sinCara ? '' : avatar(f, 18)) +
       '<span>' + esc(f.n) + '</span>' + (bandera(f.cc) || '') + marca(f, x, perdio) + '</button>'
       : '<span class="ql-n">' + conBanderas(x) + marca(null, x, perdio) + '</span>';
   };
   var cara = function (x) {
+    if (esSin(x)) return '<span class="av ini av-eq" style="width:20px;height:20px;font-size:11px" aria-hidden="true">&#128101;</span>';
     var f = claveDe(x) && porK(claveDe(x));
     return avatar(f || { n: String(x || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim() }, 20);
   };
@@ -3940,6 +3955,13 @@ function kDe(n) {
   if (K_DE.k[n]) return K_DE.k[n];
   var c = K_DE.kn[normNombre(n)] || [];
   if (c.length === 1) return c[0].k;
+  // 🔑 Y POR SU ALIAS, si el nombre no es de nadie (`alias` del lobby: la
+  // hoja AKAs). Dlx, 29/09/2026, con la VOL 16 en juego: «¿por qué en la
+  // llave sigue diciendo PARK JI SUNG? Debería mostrarse el aka principal,
+  // que es Oasis». El ciclo ya lo resolvía; la llave en vivo la arma la
+  // página, y acá sólo había nombres de la tabla: MAKMA (Makmah) y PRR
+  // (Hassan) tampoco abrían su perfil.
+  if (!c.length) return (D.alias && D.alias[normNombre(n)]) || '';
   var ccs = banderasDe(n);
   var m = c.filter(function (f) { return ccs.indexOf(String(f.cc || '').toLowerCase()) >= 0; });
   return m.length === 1 ? m[0].k : '';

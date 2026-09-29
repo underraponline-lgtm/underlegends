@@ -44,6 +44,7 @@ que es exactamente como se perdieron las `📖 Instrucciones` de `Config`
 el 20/09/2026.
 """
 import io
+import json
 import os
 import re
 import sys
@@ -79,6 +80,24 @@ TIPOS = ('Nombre desconocido', 'Alias posible', 'Evento dudoso',
          'Bracket incompleto', 'MW pendiente', 'Llave sin resolver',
          'Batalla sin ganador', 'Vidas cargado', 'alta', 'conflicto', 'ambiguo',
          'Reporte')
+
+
+def _es_equipo_con_nombre(detalle):
+    """¿`detalle` es un equipo que una llave nombra con UN nombre? Lo dice el
+    lector en `datos/equipos_llaves.json` (`llaves_a_entrada.marcar_equipos()`)."""
+    import unicodedata
+
+    def _n(s):
+        s = re.sub(r'\([^)]*\)', '', unicodedata.normalize('NFKD', str(s or '')))
+        return ''.join(c for c in s if c.isalnum()).lower()
+    try:
+        with io.open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                  'datos', 'equipos_llaves.json'), encoding='utf-8') as f:
+            eqs = (json.load(f) or {}).get('equipos') or []
+    except (OSError, ValueError):
+        return False
+    k = _n(detalle)
+    return bool(k) and any(_n(e.get('equipo')) == k for e in eqs)
 
 
 def _did(detalle):
@@ -258,6 +277,10 @@ def _resuelto_ya(fila, resolver):
     tipo, detalle = fila.get('Tipo', ''), fila.get('Detalle', '')
     if (fila.get('Estado') or '').strip().lower() not in ('', 'pendiente'):
         return ''                                    # ya lo tocó alguien
+    if tipo == 'Nombre desconocido' and _es_equipo_con_nombre(detalle):
+        # 🔑 «TEAM VENECIA» NO ES UNA PERSONA: es un equipo que la llave
+        # nombra con un solo nombre (Dlx, 29/09/2026). No hay a quién buscar.
+        return 'es un equipo, no una persona'
     if tipo == 'Nombre desconocido':
         # ⚠️ SE PREGUNTA POR CADA INTEGRANTE. Las filas viejas traen el
         # lado entero —«A + B + C»— porque se anotaron antes de que se

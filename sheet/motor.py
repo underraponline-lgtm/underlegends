@@ -168,6 +168,12 @@ def _sin_anotaciones(n):
     return _EMOJI.sub('', _ANOTACION.sub('', str(n or ''))).strip()
 
 
+def _clave_lado(n):
+    """Un lado para compararlo con la nota `Sin integrantes:` —sin banderas,
+    paréntesis, tildes ni espacios de más—. Ver `nadie` en `procesar()`."""
+    return re.sub(r'\s+', ' ', norm(_sin_anotaciones(n)))
+
+
 def equipo(nombre):
     """Los integrantes de un lado. Vive en `sheet/equipos.py`.
 
@@ -548,7 +554,24 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             r'pokemon\s*:\s*([^;|]+)', str((b or {}).get('notas') or ''),
             re.I)) if q}
 
+    # 🔴 EL EQUIPO SIN INTEGRANTES NO ES NADIE. Dlx, 29/09/2026, sobre la
+    # DESGRACIAS EN TOKYO VOL 16 2VS2: *«team venecia no es un participante..
+    # es un equipo.. no una crew ojo.. solo un equipo creado x este
+    # evento»*. La llave lo escribe con UN nombre —«[TEAM VENECIA 🇲🇦 🇻🇪]»—,
+    # así que era un integrante solo y cobraba la semifinal ENTERA de un
+    # 2VS2: 5.250 a una persona que no existe. El lector lo marca
+    # (`llaves_a_entrada.marcar_equipos()`) cuando no sabe quiénes son; acá
+    # se deja de pagar y no se pregunta por él como nombre desconocido.
+    nadie = set()
+    for b in batallas:
+        for x in re.findall(r'sin integrantes\s*:\s*([^;|]+)',
+                            str(b.get('notas') or ''), re.I):
+            if _clave_lado(x):
+                nadie.add(_clave_lado(x))
+
     def sumar(lado, pts, puesto, salvo=(), fuera=()):
+        if nadie and _clave_lado(lado) in nadie:
+            return
         ms = equipo(lado)
         # 🔴 EL POKEMON NO COBRA NI DIVIDE (guía, Parte 2, §10.2 y §10.4):
         # *«equipo campeón de 4, uno es pokemon: 10.000 ÷ 3, no ÷ 4»*. Y
@@ -644,7 +667,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     for ronda, puesto in CAIDA:
         for b in por(ronda):
             p = _perdedor(b)
-            if p is None:
+            if p is None or (nadie and _clave_lado(p) in nadie):
                 continue
             # 🔴 SE MIRA A CADA INTEGRANTE, NO SÓLO AL PRIMERO. Esto
             # preguntaba si el PRIMER integrante del equipo perdedor ya
@@ -737,7 +760,8 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         n = str(b.get('notas') or '').lower()
         if not n:
             continue
-        lados = equipo(b.get('ladoA')) + equipo(b.get('ladoB'))
+        lados = [x for x in equipo(b.get('ladoA')) + equipo(b.get('ladoB'))
+                 if not (nadie and _clave_lado(x) in nadie)]
         if 'revivido' in n and not re.search(r'revivido\s*:', n):
             for x in lados:
                 d = res.get(resolver(x))
@@ -792,6 +816,10 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         n = str(x or '').strip()
         if not n:
             return ''
+        # el equipo sin integrantes queda como lo escribió la llave: no
+        # es un nombre desconocido (ver `nadie`)
+        if nadie and _clave_lado(n) in nadie:
+            return n
         ms = equipo(n)
         if len(ms) <= 1:
             return resolver(n)
@@ -845,6 +873,8 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # global y la contradicción sólo se ve dentro de un evento.
     for b in batallas:
         a, c = b.get('ladoA'), b.get('ladoB')
+        if nadie and nadie & {_clave_lado(a), _clave_lado(c)}:
+            continue
         if a and c and len(equipo(a)) <= 1 and len(equipo(c)) <= 1:
             ra, rc = resolver(a), resolver(c)
             if ra and ra == rc and _sin_anotaciones(a) != _sin_anotaciones(c):
@@ -1115,8 +1145,37 @@ def _self_check():
                                          'b': 'Beto', 'ganador': 'Ana',
                                          'notas': 'Pokemon: Beto'}]})
         ok('contra un pokemon no hay duelo', uno == [], '%d fila(s)' % len(uno))
+        uno = _R._filas_uno({'num': 1, 'fecha': '28/09', 'servidor': 'FFA',
+                             'duelos': [{'ronda': 'cuartos', 'a': 'Ana',
+                                         'b': 'TEAM VENECIA', 'ganador': 'Ana',
+                                         'notas': 'Sin integrantes: TEAM VENECIA'}]})
+        ok('contra un equipo sin integrantes no hay duelo', uno == [], '%d fila(s)' % len(uno))
     except Exception as e:                               # noqa: BLE001
         ok('contra un pokemon no hay duelo', False, str(e)[:50])
+
+    # 🔑 EL EQUIPO SIN INTEGRANTES (TEAM VENECIA, Dlx 29/09/2026): no cobra, no
+    #    es un nombre desconocido y no le saca nada a nadie
+    def _conocidos(n):
+        n = str(n or '').strip()
+        if n not in ('Ana', 'Beto', 'Caro', 'Dani', 'Eze', 'Fer'):
+            _conocidos.fallo.add(n)
+        return n
+    _conocidos.fallo = set()
+    _tv = 'TEAM VENECIA 🇲🇦 🇻🇪'
+    etv = procesar([
+        {'ronda': 'cuartos', 'ladoA': 'Ana + Beto', 'ladoB': _tv, 'ganador': _tv,
+         'notas': 'Sin integrantes: ' + _tv},
+        {'ronda': 'cuartos', 'ladoA': 'Caro + Dani', 'ladoB': 'Eze + Fer', 'ganador': 'Caro + Dani'},
+        {'ronda': 'final', 'ladoA': _tv, 'ladoB': 'Caro + Dani', 'ganador': 'Caro + Dani',
+         'notas': 'Sin integrantes: ' + _tv}],
+        num=1, fecha='28/09', servidor='FFA', participantes=16, tab=t16, mods=mods,
+        resolver=_conocidos)
+    rtv = {r['rapero']: r for r in etv['resultados']}
+    ok('el equipo sin integrantes no cobra ni es un nombre desconocido',
+       not any('VENECIA' in k for k in rtv) and not etv['sin_resolver']
+       and rtv.get('Ana', {}).get('puntos') == 2500 // 2
+       and rtv.get('Caro', {}).get('puntos') == 10000 // 2,
+       '%s · %s' % (sorted(rtv), etv['sin_resolver'] or '—'))
 
     # 7 · LOS FORMATOS DE VIDAS: la SNAKE ARENA VOL. 2 (SR, 27/09/2026),
     #     batalla por batalla, con su tabla de 4-7 escrita acá.

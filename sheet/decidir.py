@@ -1090,6 +1090,30 @@ def decision_evento(ev, sv, fecha):
     return (d or {}).get('decision')
 
 
+def integrantes_equipo(ev, sv, fecha, equipo):
+    """Quiénes eran un equipo que la llave nombra con UN nombre, si Dlx lo dijo.
+
+    `datos/decisiones.json`, `equipos`: «evento · sv · fecha · equipo» ->
+    `[nombres]`, y `[]` es «nadie: no se sabe». `None` si no hay decisión:
+    entonces manda la inscripción (`llaves_a_entrada.marcar_equipos()`).
+
+    🔑 Dlx, 29/09/2026, sobre TEAM VENECIA: *«debería reconocer los
+    integrantes del equipo; si no se puede, ya fue»*. Lo que el lector no
+    puede saber —ME TIENE SIN CUIDADO se anotó como PARIA + KRAVITZ y la
+    llave los pone además como pareja aparte— lo dice él, acá.
+    """
+    eq = _decisiones().get('equipos') or {}
+    ke = norm(_sin_bandera(equipo))
+    for clave, v in eq.items():
+        if clave.startswith('_'):
+            continue
+        p = [x.strip() for x in clave.split(' · ')]
+        if (len(p) == 4 and norm(p[0]) == norm(ev) and p[1] == sv
+                and p[2] in (fecha, '*') and norm(_sin_bandera(p[3])) == ke):
+            return [str(x).strip() for x in (v or []) if str(x).strip()]
+    return None
+
+
 def _persona(nombre, padron, akas):
     """El nombre de la Lista de Raperos al que se refiere, o None."""
     k = norm(_sin_bandera(nombre))

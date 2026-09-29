@@ -1185,6 +1185,12 @@ letter-spacing:.12em;text-transform:uppercase}
 .ql{display:inline-flex;align-items:center;gap:6px;max-width:100%}
 .ql span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bx .ql .av{box-shadow:none}
+/* 🔑 el equipo que la llave nombra con un nombre y nadie sabe quiénes son
+   (TEAM VENECIA): se lee como equipo, no como una persona sin perfil */
+.ql-eq{display:inline-flex;align-items:baseline;gap:6px;max-width:100%;font-style:italic}
+.ql-eq small{flex:0 0 auto;color:var(--tx3);font:600 .62rem/1 'Barlow Condensed',sans-serif;
+letter-spacing:.12em;text-transform:uppercase;font-style:normal}
+.av.av-eq{background:#12201D;box-shadow:0 0 0 1.5px rgba(255,255,255,.08) inset}
 
 /* ── los botones, del color del servidor ────────────────────────────
    🔑 Dlx, 25/09/2026: «hacer los botones más bonitos, quizás como los que

@@ -349,6 +349,11 @@ def armar(ev, links=()):
     rondas.sort(key=lambda r: orden[r['r']])
     res = sorted(ev.get('resultados') or (),
                  key=lambda r: (-int(r.get('puntos') or 0), str(r.get('rapero'))))
+    # 🔑 LOS EQUIPOS SIN INTEGRANTES (TEAM VENECIA): la página los dibuja como
+    # equipo y no como una persona sin perfil. Ver `llaves_a_entrada.marcar_equipos()`.
+    sin = sorted({x.strip() for R in rondas for b in R['b']
+                  for x in re.findall(r'sin integrantes\s*:\s*([^;|]+)', str(b[2] or ''), re.I)
+                  if x.strip()})
     return {
         'n': int(ev['num']),
         'nombre': limpio(ev.get('nombre')),
@@ -361,6 +366,7 @@ def armar(ev, links=()):
         'tabla': [[r.get('rapero') or '', r.get('posicion') or '',
                    int(r.get('puntos') or 0)] for r in res],
         'links': list(links or ()),
+        **({'sin': sin} if sin else {}),
     }
 
 

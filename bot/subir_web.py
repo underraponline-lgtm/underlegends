@@ -510,6 +510,9 @@ def armar():
         # el día que cambie un peso.
         'guia': _guia(),
         'redes': _redes(),
+        # 🔑 LOS AKAS, para que la llave en vivo diga «Oasis» donde el
+        # organizador escribió «PARK JI SUNG». Ver `_alias()`.
+        'alias': _alias(tabla),
         # ⚠️ LOS PERFILES NO VIAJAN EN EL LOBBY: `main()` los saca de acá y
         # los sube aparte, a `CLAVE_PERFILES`. Ver `_perfiles()`.
         '_perfiles': _perfiles(gente, list(_comp.values()), regs),
@@ -979,6 +982,37 @@ def _subir_crudo(clave, texto, tipo='text/plain'):
     r = requests.put('%s/values/%s' % (SD.API, clave), headers={'Authorization': 'Bearer ' + tok},
                      files={'value': (None, texto), 'metadata': (None, '{}')}, timeout=60)
     return r.status_code == 200
+
+
+def _alias(tabla):
+    """Los AKAs de quien está en la tabla: `{nombre normalizado: clave}`.
+
+    🔴 LA LLAVE EN VIVO DECÍA «PARK JI SUNG» DONDE VA OASIS. Dlx, 29/09/2026,
+    con la DESGRACIAS EN TOKYO VOL 16 en juego: *«¿por qué en la llave sigue
+    diciendo Park Ji Sung? Debería mostrarse el aka principal, que es
+    Oasis»*. El ciclo lo resolvía —la hoja AKAs, `datos/akas.json`—, pero la
+    llave en vivo la arma la página, y `kDe()` sólo conocía los nombres de
+    la tabla: MAKMA (Makmah) y PRR (Hassan) tampoco abrían su perfil.
+
+    ⚠️ SÓLO LOS DE QUIEN TIENE PERFIL, y nunca un alias que ya es el nombre
+    de otro: la página prueba primero el nombre, y el alias es el respaldo.
+    Normalizados como `normNombre()` de la página (`respaldo._norm`), no con
+    la clave del json de AKAs, que es la del lector y no tiene por qué
+    coincidir con la del navegador.
+    """
+    from comun import respaldo as _resp
+    a = _json('datos', 'akas.json') or {}
+    ks = defaultdict(set)
+    for f in tabla:
+        ks[_resp._norm(f.get('n'))].add(f.get('k'))
+    out = {}
+    for par in a.get('pares') or []:
+        if not isinstance(par, list) or len(par) < 2:
+            continue
+        al, canon = _resp._norm(par[0]), ks.get(_resp._norm(par[1])) or set()
+        if al and len(canon) == 1 and al not in ks:
+            out[al] = next(iter(canon))
+    return out
 
 
 def _redes():
@@ -2622,6 +2656,14 @@ def _self_check():
     todas = p.pop('_llaves', None)
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
+    # 🔑 LOS AKAS DE LA LLAVE EN VIVO (PARK JI SUNG -> Oasis): cada alias lleva
+    # a alguien de la tabla, y ninguno es el nombre de otra persona
+    from comun import respaldo as _rsp
+    _ks = {f['k'] for f in p['tabla']}
+    _ns = {_rsp._norm(f['n']) for f in p['tabla']}
+    _al = p.get('alias') or {}
+    ok(all(v in _ks for v in _al.values()) and not (set(_al) & _ns),
+       'los alias llevan a un perfil y no pisan a nadie  (%d)' % len(_al))
     # 🔑 LOS LINKS VIEJOS: todas las llaves aparte, con su árbol, y ninguna
     # del lobby falta ahí
     ok(isinstance(todas, dict) and all(str(n) in todas for n in (p.get('llaves') or {})),

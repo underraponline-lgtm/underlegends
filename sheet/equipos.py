@@ -204,7 +204,11 @@ def es_duelo(lado_a, lado_b, ganador, notas=''):
     if not (a and c and g) or not cuenta_como_duelo(a, c):
         return False
     n = str(notas or '').lower()
-    return not ('triple' in n or 'podio' in n or re.search(r'pokemon\s*:', n))
+    # ⚠️ Y EL EQUIPO QUE LA LLAVE NOMBRA CON UN NOMBRE («TEAM VENECIA», Dlx
+    # 29/09/2026): parece un lado de una persona y son dos que no se sabe
+    # quiénes son. Ver `llaves_a_entrada.marcar_equipos()`.
+    return not ('triple' in n or 'podio' in n or re.search(r'pokemon\s*:', n)
+                or re.search(r'sin integrantes\s*:', n))
 
 
 def _self_check():
