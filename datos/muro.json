@@ -222,7 +222,8 @@
 "badterne": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "geoka": {
@@ -638,7 +639,10 @@
 },
 "aktybo": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "alonso": {
 "rg": "",
@@ -661,12 +665,16 @@
 "ifx": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "melztube": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "riolu": {
 "rg": "",
@@ -2557,6 +2565,54 @@
 "t": "2026-09-29T22:38:54Z",
 "quien": [
 "Alonso"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T23:01:18Z",
+"quien": [
+"Badterne"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T23:01:18Z",
+"quien": [
+"Aktybo"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T23:01:18Z",
+"quien": [
+"Aktybo"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T23:01:18Z",
+"quien": [
+"IFX"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T23:01:18Z",
+"quien": [
+"melztube"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T23:01:18Z",
+"quien": [
+"melztube"
 ],
 "carta": "temporada"
 }
