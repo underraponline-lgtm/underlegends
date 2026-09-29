@@ -2056,8 +2056,7 @@ inglés, y `/borrar-mis-datos`.
 - ✅ ~~**El sync y la cuota de Sheets**~~ *«A»* (8:06 AM): hecho, arriba.
 - ✅ ~~**Para el remake: ¿sin framework o React?**~~ **React** (29/09, 7:20 AM): *«el
   estilo de la liga es la razón principal… usaremos react o framework»*.
-- **Para el remake**: ¿«copero» es otra página? Pasame el link cuando
-  arranquemos, así sé de qué look alejarnos.
+- ✅ ~~**Para el remake: ¿«copero» es otra página?**~~ Es **copero.com.ar**: fútbol argentino (resultados, prodes, minijuegos) y un juego de navegador de carrera de futbolista con valoraciones estilo FIFA («99»). Lo que hace que se confunda: fondo casi negro, títulos blancos en una sans geométrica, tarjetas redondeadas con arte degradado, botones blancos tipo píldora con flecha y números de valoración grandes. Eso es lo que el remake evita.
 - ✅ ~~**¿La llamada también resuelve sola?**~~ *«1. A»*: hecho, sólo alias y
   sólo con el nombre exacto de una persona de la Lista.
 - ✅ ~~**Los commits viejos en GitHub**~~ *«2. B»*: no se pide nada.
