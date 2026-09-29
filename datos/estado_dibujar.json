@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-09-29T20:49:27Z",
+ "cuando": "2026-09-29T22:38:56Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 261.5,
+ "dur_s": 808.1,
  "pasos": [
   {
    "n": "3",
@@ -15,45 +15,45 @@
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.5
+   "s": 27.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 216.4
+   "s": 748.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.9
+   "s": 9.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 16.3
+   "s": 18.4
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "371",
-  "nombre": "DESGRACIAS EN TOKYO VOL 16",
-  "sv": "FFA",
-  "dia": "2026-09-28"
+  "n": "372",
+  "nombre": "RAP EXHIBITION 2 8",
+  "sv": "SR",
+  "dia": "2026-09-29"
  },
  "cuotas": {
   "kv": {
-   "write": 545,
-   "read": 25212
+   "write": 691,
+   "read": 28562
   },
   "worker": {
-   "pedidos": 3512,
+   "pedidos": 3398,
    "errores": 0,
-   "sub": 3187,
-   "p50_ms": 1.06,
-   "p99_ms": 3.44
+   "sub": 3085,
+   "p50_ms": 1.1,
+   "p99_ms": 3.54
   },
   "r2": {
    "objetos": 8877,

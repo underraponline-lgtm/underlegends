@@ -640,7 +640,10 @@
 },
 "alonso": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "ceegee": {
 "rg": "",
@@ -2528,6 +2531,22 @@
 ],
 "rg": "S",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T22:38:54Z",
+"quien": [
+"Alonso"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T22:38:54Z",
+"quien": [
+"Alonso"
+],
+"carta": "temporada"
 }
 ]
 }
