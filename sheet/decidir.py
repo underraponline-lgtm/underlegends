@@ -424,18 +424,36 @@ APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
 def _apodos():
     """`{nombre normalizado: {discord_id}}` de `APODOS`, o `{}` si no está."""
     if 'apodos' not in _DATOS:
-        idx = {}
+        idx, donde = {}, {}
         try:
             with io.open(APODOS, encoding='utf-8') as f:
-                for did, ns in ((json.load(f) or {}).get('nombres') or {}).items():
-                    for n in ns or []:
-                        k = norm(_sin_bandera(n))
-                        if len(k) >= 3:
-                            idx.setdefault(k, set()).add(str(did))
+                crudo = json.load(f) or {}
+            for did, ns in (crudo.get('nombres') or {}).items():
+                for n in ns or []:
+                    k = norm(_sin_bandera(n))
+                    if len(k) >= 3:
+                        idx.setdefault(k, set()).add(str(did))
+            donde = {str(d): list(s or []) for d, s in (crudo.get('servidores') or {}).items()}
         except (OSError, ValueError):
             pass
         _DATOS['apodos'] = idx
+        _DATOS['donde'] = donde
     return _DATOS['apodos']
+
+
+def _servidores_de(did, svs):
+    """En qué servidores de la Liga está esa cuenta hoy.
+
+    🔴 `datos/servidores_de.json` SOLO NO ALCANZA. De Snake Rap y Urban
+    Freestyle guarda sólo a quien ya está en la Lista —el repo es público y
+    esas listas no son nuestras—, y un «¿quién es X?» es por definición de
+    alguien que todavía no está. `por_discord()` daba a esas cuentas por idas
+    de la Liga: medido el 28/09/2026, 10 de 50 nombres desconocidos, seis de
+    ellos anotados con ese mismo nombre en las inscripciones del evento.
+    El caché de apodos (sólo en el runner, nunca en git) trae a todos.
+    """
+    _apodos()
+    return list(svs.get(did) or []) or list(_DATOS.get('donde', {}).get(str(did)) or [])
 
 
 #: los separadores de una inscripción de varios: «snow🇨🇴 + nc», «27 🇺🇸 Piyi 🇲🇽» no
@@ -567,8 +585,10 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         no está                         fila nueva en la Lista, con esa cuenta
                                         y la bandera del nombre de la llave
 
-    ⚠️ LOS NOMBRES CORTOS, SÓLO SI LA CUENTA ESTÁ EN EL SERVIDOR DEL EVENTO: «MHS»
-    se parece a demasiada gente, y quien jugó un evento de FFA está en FFA.
+    ⚠️ LA CUENTA QUE SALE SÓLO POR EL NOMBRE, SÓLO SI ESTÁ EN EL SERVIDOR DEL
+    EVENTO: «MHS» se parece a demasiada gente, y quien jugó un evento de FFA
+    está en FFA. Era sólo para los cortos hasta que Snake Rap entró entero a la
+    cuenta (28/09/2026): ahí «Isaias» también es demasiada gente.
     ⚠️ Y NUNCA CONTRA UN PAR DECLARADO DISTINTO en AKAs, ni con un troll.
     Las tarjetas siguen pidiendo lo de siempre: Miembro de DRA y país.
 
@@ -616,15 +636,20 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             continue
         did = ids[0]
         # ⚠️ UNA CUENTA QUE HOY NO ESTÁ EN NINGÚN SERVIDOR DE LA LIGA NO SIRVE:
-        # «pollo» (EL RAP FECHA 5) daba la de «Rorromeo», que ya se fue, y
-        # casi seguro es Pollo Sport. Medido el 28/09/2026.
-        if not svs.get(did):
+        # «pollo» (EL RAP FECHA 5) daba la de «Rorromeo», y casi seguro es
+        # Pollo Sport. Medido el 28/09/2026. ⚠️ Con `_servidores_de()`, que
+        # también mira Snake Rap y Urban Freestyle enteros.
+        donde = _servidores_de(did, svs)
+        if not donde:
             continue
-        # los nombres cortos, con la cuenta en el servidor del evento: la
-        # inscripción ya lo es (se anotó ahí)
-        if len(k) <= CORTO and fuente != 'inscripción':
+        # la cuenta que sale sólo por el nombre, en el servidor del evento: la
+        # inscripción ya lo es (se anotó ahí). 🔴 ERA SÓLO PARA LOS CORTOS, y
+        # con Snake Rap entero en la cuenta (7.297 personas) un nombre común
+        # alcanza para dar con otro: «ISAIAS» jugó un evento de FFA y la única
+        # cuenta «Isaias» está sólo en Snake Rap (28/09/2026).
+        if fuente != 'inscripción':
             ev = eventos.get(_num_evento(p)) or ()
-            if len(ev) < 2 or ev[1] not in (svs.get(did) or []):
+            if len(ev) < 2 or ev[1] not in donde:
                 continue
         porque = 'se anotó así en inscripciones' if fuente == 'inscripción' else 'la misma cuenta de Discord'
         real = por_id.get(did)
@@ -2047,6 +2072,23 @@ def _self_check():
            'PRRR se anotó solo desde su cuenta: sale; PARIA SIN REMEDIO sólo va en la de dos, no')
         ok(ids['IGUANA 🇵🇪'] not in solas and ids['Steven'] not in solas,
            'la inscripción de OTRO servidor no vale, ni la de quien anota a otros')
+        # 🔴 y la cuenta de Snake Rap o Urban que todavía no está en la Lista:
+        # `servidores_de.json` no la tiene —guarda sólo las del padrón—, el
+        # caché de apodos sí. 28/09/2026: 10 de 50 preguntas quedaban por eso.
+        _DATOS['inscritos'] = indice_inscritos([
+            {'servidor': 'SR', 'texto': 'leteletras🇨🇱', 'discord_id': '11'}])
+        _DATOS['apodos'].update({'isaias': {'12'}, 'jimmy': {'13'}})
+        _DATOS['donde'] = {'11': ['SR'], '12': ['SR'], '13': ['SR']}
+        ev2 = {'363': ('RAP EXHIBITION', 'SR', '22/09'), '351': ('TOKYO VOL 11', 'FFA', '23/09')}
+        qs = armar([(50, {'Tipo': nd, 'Detalle': 'leteletras🇨🇱', 'Origen': 'evento #363'}),
+                    (51, {'Tipo': nd, 'Detalle': 'ISAIAS 🇪🇸', 'Origen': 'evento #351'}),
+                    (52, {'Tipo': nd, 'Detalle': 'JIMMY 🇵🇪', 'Origen': 'evento #363'})], ev2)
+        ids = {p['detalle']: p['id'] for p in qs}
+        solas = por_discord(qs, {}, ev2, dry=True)
+        ok(ids['leteletras🇨🇱'] in solas and ids['JIMMY 🇵🇪'] in solas,
+           'la cuenta que sólo está en Snake Rap y no en la Lista: por su inscripción, o por su nombre en el servidor del evento')
+        ok(ids['ISAIAS 🇪🇸'] not in solas,
+           'pero no un nombre suelto con la cuenta en otro servidor que el del evento (ISAIAS)')
     finally:
         _DATOS.clear()
         _DATOS.update(antes)

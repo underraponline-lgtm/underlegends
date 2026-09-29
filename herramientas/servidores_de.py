@@ -233,10 +233,19 @@ def main():
         # los nombres, fuera de git: ver `APODOS`
         try:
             os.makedirs(os.path.dirname(APODOS), exist_ok=True)
+            # 🔑 Y EN QUÉ SERVIDORES ESTÁ CADA CUENTA, SIN EL FILTRO DEL PADRÓN.
+            # `servidores_de.json` guarda de Snake Rap y Urban Freestyle sólo a
+            # quien ya está en la Lista (va al repo público), y «¿quién es X?»
+            # es justo de alguien que todavía no está: `decidir.por_discord()`
+            # lo daba por ido de la Liga. Medido el 28/09/2026: 10 de 50
+            # nombres desconocidos, seis de ellos anotados con ese nombre en
+            # inscripciones. Acá sí van todos: esto no sale del runner.
             with io.open(APODOS, 'w', encoding='utf-8') as f:
                 json.dump({'_leeme': 'Los nombres de Discord de cada cuenta de los servidores '
-                                     'de la Liga, para las Pistas de ✅ Decidir. NO SE COMMITEA.',
-                           'nombres': _NOMBRES}, f, ensure_ascii=False)
+                                     'de la Liga, y en cuáles está, para ✅ Decidir. NO SE COMMITEA.',
+                           'nombres': _NOMBRES,
+                           'servidores': {did: [sv for sv, _ in GUILDS if did in dentro[sv]]
+                                          for did in todas}}, f, ensure_ascii=False)
             print('-> %s   (%d cuentas, fuera de git)'
                   % (os.path.relpath(APODOS, BASE), len(_NOMBRES)))
         except OSError as e:
