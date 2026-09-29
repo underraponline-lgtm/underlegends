@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T17:54:19+00:00",
+ "cuando": "2026-09-29T18:24:08+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -287,6 +287,26 @@
    "modalidad": "",
    "horario": "",
    "fecha": "3 2V2",
+   "premios": "",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-09-29T03:41:47"
+  },
+  {
+   "nombre": "LEWITO CARREANDO FFA V.1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1554553511532961924",
+   "cuando": "2026-09-29T18:00:39",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
    "premios": "",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-09-29T03:41:47"
@@ -668,26 +688,6 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "aura + trofeo",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-09-29T03:41:47"
-  },
-  {
-   "nombre": "ELRAP",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1551348577824145529",
-   "cuando": "2026-09-20T21:45:23",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "cupos_texto": ":infinity:",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE",
-   "modalidad": "1V1 ROYAL RUMBLE_",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "PTS PARA EL ASCENSO+PTS PARA LA TABLA",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-09-29T03:41:47"
   },
