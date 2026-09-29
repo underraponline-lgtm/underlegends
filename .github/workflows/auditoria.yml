@@ -81,8 +81,9 @@ jobs:
           node-version: '20'
 
       - name: instalar
-        # ⚠️ sin `playwright install`: la auditoria no dibuja nada, solo
-        # mira. Bajar el navegador serian ~2 min por corrida para nada.
+        # ⚠️ sin `playwright install` acá: la auditoria no dibuja nada.
+        # El unico paso que abre un navegador —`web_en_borde.py`— lo pide
+        # solo con `bot/navegador.py` (29/09/2026: sin eso, fallaba).
         run: pip install -r requirements.txt
 
       - name: credenciales

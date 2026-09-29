@@ -63,6 +63,15 @@ CASOS = {'vacio': VACIO, 'uno_sin_carta': UNO, 'api_caida': None}
 
 
 async def main():
+    # 🔴 LA AUDITORÍA NO BAJA EL NAVEGADOR Y ESTE CHEQUEO LO USA. Su `.yml`
+    # dice «sin `playwright install`: la auditoría no dibuja nada, sólo
+    # mira», y era cierto hasta que llegó este chequeo, que abre la página
+    # en Chromium: la del 29/09/2026 cayó acá con «Executable doesn't
+    # exist». La regla del repo es que el navegador lo pide quien lo usa
+    # (`bot/navegador.py`): fuera de Actions no hace nada si ya está.
+    sys.path.insert(0, os.path.join(BASE, 'bot'))
+    from navegador import hace_falta
+    hace_falta()
     from playwright.async_api import async_playwright
     async with async_playwright() as p:
         b = await p.chromium.launch()
@@ -90,6 +99,20 @@ async def main():
                                     content_type='application/json',
                                     body=cuerpo)
             await pg.route('**/api/lobby*', ruta)
+
+            # 🔴 LA PÁGINA PIDE MÁS QUE EL LOBBY, Y ESTA PRUEBA NO LO SABÍA.
+            # Desde el 24/09/2026 también llama a `/api/avisos/estado` y
+            # `/api/avisos/vivo` (la campana, las llaves en vivo); el
+            # servidor de la prueba contestaba 404 y los tres casos salían
+            # en rojo por eso, no por la página (auditoría del 29/09). Se
+            # contestan vacíos —otro caso de borde: sin dato no hay pieza—
+            # y caídos junto con el lobby en `api_caida`.
+            async def avisos(r):
+                if cuerpo is None:
+                    await r.fulfill(status=503, body='no')
+                else:
+                    await r.fulfill(status=200, content_type='application/json', body='{}')
+            await pg.route('**/api/avisos/**', avisos)
             # ⚠️ POR HTTP Y NO POR `file://`: el navegador rechaza un
             # `fetch('/api/lobby')` desde un archivo local antes de que
             # Playwright pueda interceptarlo, así que la prueba probaba
