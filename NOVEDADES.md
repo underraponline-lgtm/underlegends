@@ -349,6 +349,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Para el remake no se usa Penpot**; se conectan todos los demás de la guía, más las Extensiones de la app y los conectores de claude.ai, aunque lleve más tiempo | *«no, no usaremos PENPOT»* · *«si toma más tiempo está bien»* (29/09, 6:10 AM) | ⏳ Dlx corre los pasos; yo verifico cada uno |
 | **El remake va con React (o un framework)**: el estilo de la Liga es la razón principal del remake, y no se quiere que la página se parezca a «copero» | *«el estilo de la liga es la razón principal por la cual quiero hacer el remake… usaremos react o framework»* (29/09, 7:20 AM) | ⏳ propuesta: Vite + React + Tailwind exportado a estáticos en Pages (sin SSR: el Worker tiene 10 ms) |
 | **Un mapa de la Liga y un mapa del código, los dos**: el del sistema (artifact privado: dónde corre cada pieza, cada cuánto y cuánto del plan gratis gasta) y Serena para navegar el código por símbolos, **sólo lectura** | *«Creo que las 2 no?»* (29/09, 7:23 AM) | ✅ el artifact «El mapa de la Liga» y Serena en Claude Code, fuera del repo |
+| **El sync reintenta el 429 igual que el ciclo**: espera 5, 15, 30, 60 y 90 s, y cubre también el abrir la planilla, que era lo que quedaba afuera | *«A»* (29/09, 8:06 AM) | ✅ `liga-global-sync` 5c391bd (`ClienteConEspera`), con su autotest |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
@@ -383,8 +384,14 @@ Lo que se midió para el mapa (7:40 AM ET):
 
 ⚠️ **El repo de sync falló el 28/09 a las 12:22 PM ET** por la cuota de
 lecturas por minuto de Sheets (429), a la misma hora que arrancaba el ciclo.
-El ciclo reintenta los 429 (`sheet/escribir.py`, hasta 90 s); el sync no. La
-pregunta está abajo.
+El ciclo reintenta los 429 (`sheet/escribir.py`, hasta 90 s); el sync no.
+
+✅ **Tu «A» (8:06 AM): el sync ya reintenta.** Y no le faltaba del todo:
+tenía `sheet_read()`, pero envolvía la llamada de afuera, así que el
+`open_by_key()` —el pedido que murió— corría antes de entrar. Ahora la espera
+vive en el cliente de gspread (`ClienteConEspera`) y cubre todo pedido. Su
+autotest suma cuatro casos sin red, y se probó abriendo el Operativo con el
+cliente nuevo.
 
 ---
 
@@ -2008,10 +2015,12 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **El sync y la cuota de Sheets** (falló el 28/09 a las 12:22 PM ET, ver
-  arriba). **A** · le pongo al sync el mismo reintento que tiene el ciclo:
-  espera y reintenta, hasta 90 s · **B** · se deja así: si falla, lo rehace al
-  día siguiente.
+- **El mapa, más interactivo** (*«pensé que sería más interactuable»*):
+  **A** · como el del reel: arrastrar, hacer zoom y abrir cada pieza en sus
+  partes · **B** · vivo: en la página y sólo para vos, cada pieza con su estado
+  de hoy (la última corrida, el KV del día, lo que espera en ✅ Decidir) ·
+  **C** · las dos.
+- ✅ ~~**El sync y la cuota de Sheets**~~ *«A»* (8:06 AM): hecho, arriba.
 - ✅ ~~**Para el remake: ¿sin framework o React?**~~ **React** (29/09, 7:20 AM): *«el
   estilo de la liga es la razón principal… usaremos react o framework»*.
 - **Para el remake**: ¿«copero» es otra página? Pasame el link cuando
