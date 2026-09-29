@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T01:53:26+00:00",
+ "cuando": "2026-09-29T02:23:53+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -630,24 +630,6 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "PTS PARA EL ASCENSO+PTS PARA LA TABLA"
-  },
-  {
-   "nombre": "EL RAP FECHA 3",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1551084730965958747",
-   "cuando": "2026-09-20T04:16:57",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE",
-   "modalidad": "2V2",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "PTS PARA EL ASCENSO + PTS PARA LA TABLA"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1749,6 +1731,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Erian",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1554314216297472003",
+   "cuando": "2026-09-29T02:09:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "White Verse 🇺🇾",
+   "quien": "deathh2005",
+   "discord_id": "1361593768394100827",
+   "msg_id": "1554311858910134336",
+   "cuando": "2026-09-29T02:00:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "el padre de tu padre 🇦🇩  al trote 🇦🇫",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1554311522002534534",
+   "cuando": "2026-09-29T01:59:04"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
