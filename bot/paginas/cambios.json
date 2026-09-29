@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.49",
+   "dia": "2026-09-29",
+   "cuando": "2026-09-29T01:30:00-04:00",
+   "titulo": "La llave en vivo con el nombre de siempre, y los equipos con nombre",
+   "items": [
+    "🏷️ **La llave en vivo muestra el nombre principal de cada uno**: si el organizador escribe un apodo que ya conocemos, sale con su nombre, su cara y su perfil.",
+    "👥 **Un equipo con nombre ya no cuenta como un participante**: si la llave dice «TEAM X» sin decir quiénes son, se ve como equipo y no le suma puntos a alguien que no existe. Si su inscripción dice quiénes son, cobran ellos.",
+    "📱 **FFS League**: sus redes (Instagram y YouTube) en «Mundo», y sus videos en el Inicio.",
+    "🔗 **Entrar a cada servidor** desde «Mundo» o desde el bot, con la invitación de la Liga."
+   ]
+  },
+  {
    "version": "1.48",
    "dia": "2026-09-29",
    "cuando": "2026-09-29T00:30:00-04:00",

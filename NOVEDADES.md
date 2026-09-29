@@ -323,10 +323,56 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **✅ Decidir: el evento entero en una fila** («Todos son gente nueva») | *«va»* | ✅ `bloques()` y `repartir()` en `sheet/decidir.py` |
 | **«¿Algo está mal en esta llave?»**: la gente lo avisa y va a ✅ Decidir, nunca por DM | *«ok»* | ✅ `/avisos/reportar` + `bot/reportes.py` |
 | **El ensayo del arranque**, sin la fecha escrita: *«probablemente se extienda por la apelación»* | *«dale»* | ✅ `herramientas/ensayo_arranque.py` |
+| **La primera semana de la T1 va sin Elegido votado** | *«1, B»* (29/09, 12:35 AM) | ✅ nada que construir |
+| **RAP EXHIBITION 1/8 se jugó con nombres de personaje** (ANTORCHA OLÍMPICA = Six) | *«2. correcto»* | en ✅ Decidir, ese evento no va con «Todos son gente nueva» |
+| **La llave en vivo dice el aka principal**: PARK JI SUNG es Oasis, MAKMA es Makmah, PRR es Hassan | *«porq en la llave sigue diciendo park ji sung? deberia mostrarse el aka principal q es oasis.. lo mismo con Makma que no carga su perfil.. PRR»* | ✅ `alias` del lobby (`subir_web._alias()`) + `kDe()` en `app.js` (1.49) |
+| **Un equipo con nombre no es un participante, ni una crew**: «TEAM VENECIA» son dos personas de ese evento. Se reconocen sus integrantes; si no se puede, no cobra nadie | *«deberia reconocer los integrantes del equipo si es q no se puede ya fue pero team venecia no es un participante.. es un equipo.. no una crew ojo.. solo un equipo creado x este evento»* | ✅ `llaves_a_entrada.marcar_equipos()` + `motor.nadie` (1.49) |
+| **Una invitación permanente de la Liga por servidor**, para contar cuántos entran por ella | *«si puedes crea una invitacion permanente para cada servidor, y de esta manera podemos reconocer cuantas personas se unieron por ti la liga global»* | ✅ `bot/invitaciones.py` (1.49); la cuenta, en el paso 2b5 → `datos/invitaciones.json` |
+| **Las redes de FFS**, de su canal de redes | *«agrega las redes de FFS... mas info esta en el canal de redes en FFS»* | ✅ Instagram y YouTube en `datos/servidores.json` |
+| **CYPHER, NAVE DE FUNA o aniquilación**: se rapean rondas de beats y al final de cada una **sale el nombre con más reacciones en Discord**; así hasta que el formato diga —a veces el evento entero, lo usual hasta que quedan 4 y ahí semis normales— | *«el nombre que tiene mas reacciones en discord, es eliminado. Asi asi hasta que el formato lo elija»* (29/09) | ⏳ falta ver una llave de verdad (pregunta abajo) |
+| **La sección de llaves tiene que mejorar bastante** | *«Como te dije la seccion de llaves de eventos tiene que mejorar bastante»* | ⏳ con el remake de la web |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Martes 29/09 (1:30 AM) — versión 1.49
+
+Tus tres capturas de las llaves, y *«1, B · 2. correcto · 3. crea una
+invitación permanente para cada servidor… agrega las redes de FFS»*.
+
+- 🏷️ **La llave en vivo dice el aka principal.** El ciclo ya sabía que
+  PARK JI-SUNG es Oasis (la hoja AKAs, 28/09), pero la llave **en vivo** la
+  arma la página, y la página sólo conocía los nombres de la tabla. Ahora el
+  lobby trae los AKAs de quien tiene perfil (85; `alias`): **PARK JI SUNG →
+  Oasis, MAKMA → Makmah, PRR → Hassan**, con su cara y su perfil. Sólo de
+  respaldo: si el nombre es de otra persona, gana esa persona.
+- 👥 **TEAM VENECIA ya no es una persona.** Una llave de parejas que nombra a
+  un equipo con UN nombre lo cargaba como un rapero, y cobraba la parte del
+  equipo entero: **5.250 puntos, tarjetas y un lugar en el ranking** para
+  alguien que no existe. Y había otro: **ME TIENE SIN CUIDADO** (VOL.13,
+  25/09), **7.500**. Ahora `marcar_equipos()` busca quiénes son —lo que
+  digas vos, o su inscripción «NOMBRE (A+B)» de esa noche— y si no se puede
+  saber, «Sin integrantes»: nadie cobra, no hay duelo, ✅ Decidir no pregunta
+  «¿quién es TEAM VENECIA?», y la llave lo dibuja como equipo (👥, sin
+  perfil). Comparado sobre las llaves reales: **cambian esas 6 filas y
+  ninguna más**. TEAM VENECIA no tiene inscripción; ME TIENE SIN CUIDADO sí
+  —*«(PARIA+KRAVITZ)»*—, pero la llave pone además a PARIA + KRAVITZ como
+  pareja aparte en octavos, y eso no se adivina (pregunta abajo).
+- 🔗 **Una invitación permanente por servidor** (sin vencimiento ni tope, al
+  canal de bienvenida que ve @everyone): DRA `5jUM3WXDXe`, FFA `JrmE78qdMd`,
+  SR `EME4p3RhAp` (su bienvenida no la ve @everyone: va a su canal de
+  reglas), URBF `WSXBZDumBb` y FFS `whrjpJUfuz`. Son las de «Mundo» y las
+  del bot; las de antes quedaron en `invitacion_antes`. El ciclo cuenta cada
+  media hora cuántos entraron por ellas (`datos/invitaciones.json`). **En FFS
+  no se puede contar**: el bot sólo puede crear invitaciones, no verlas.
+- 📱 **Las redes de FFS**: Instagram **@freestylefutureseries** y YouTube
+  **@FreestyleFutureSeries** (sus videos entran al feed del Inicio). Su canal
+  「📱」redes enlaza publicaciones, no cuentas: la de Instagram salió de sus
+  posts.
+- 🔔 **La campana ya escucha a FFS** («「👑」DATA-EVENTOS»), dos minutos
+  después de que el ciclo escribió la lista nueva: la búsqueda por cambio de
+  lista (`firmaLiga()`, 1.48) anduvo a la primera.
 
 ## 📅 Martes 29/09 (12:30 AM) — versión 1.48
 
@@ -1796,19 +1842,30 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
+- **NAVE DE FUNA / CYPHER**: para leerla necesito ver una. Pasame el link de
+  una llave (o una captura) y, si se vota con reacciones, el canal donde se
+  vota. **Mi propuesta**: paga **por lugar**, como los 5 vidas —el orden en
+  que caen es el lugar—, las semis y la final como siempre, y la fase de
+  reacciones no es duelo. **A** · así · **B** · otra cosa (contame cuál).
+- **ME TIENE SIN CUIDADO (VOL.13)**: se anotó como *«(PARIA+KRAVITZ)»*, pero
+  la llave también pone a PARIA + KRAVITZ como pareja aparte en octavos. Hoy
+  no cobra nadie (antes, 7.500 a una persona que no existe). **A** · eran
+  ellos: cobran el subcampeonato, 3.750 cada uno · **B** · no se sabe, queda
+  así.
+- **TEAM VENECIA (🇲🇦 🇻🇪)**: si sabés quiénes eran, cobran 2.625 cada uno; si
+  no, queda sin cobrar (*«ya fue»*).
+- **¿Cuántos entraron por la Liga, a la vista?** **A** · en «Mundo», en cada
+  servidor · **B** · sólo para vos (acá y en el artifact).
+- **FFS**: para contar sus entradas, el bot necesita «Gestionar servidor» ahí
+  (hoy sólo crea invitaciones). **A** · se lo pedís al dueño · **B** · así
+  está.
 - ✅ ~~**FFS**~~: color A, etiqueta EVOLUCIÓN, eventos A, ligas A, camiseta
-  «está bueno» (hecho en la 1.48). **Falta su invitación**: cuando la tengas,
-  va en `datos/servidores.json` y en `bot/worker.js`.
+  «está bueno» (1.48); su invitación y sus redes, en la 1.49.
 - ✅ ~~**Llaves de broma**~~ *«A»* y ~~**el podio con mención**~~ *«A»*: hechas
   (1.48).
-- **La primera semana de la T1 no tiene Elegido votado** (lo encontró el
-  ensayo): el último día de la prueba no se vota y desde el arranque ya se
-  vota la semana siguiente. **A** · que se vote el domingo 4/10 · **B** · así
-  está bien (esa semana va sin Elegido).
-- **RAP EXHIBITION 1/8 se jugó con nombres de personaje**: ANTORCHA OLÍMPICA
-  resultó ser Six. Los otros 8 nombres de ese evento (KIRITO, PUBLIC ENEMY,
-  RAGE BAIT…) probablemente también son gente conocida: ahí **no conviene**
-  el «Todos son gente nueva».
+- ✅ ~~**La primera semana de la T1 sin Elegido votado**~~: *«1, B»*, así está
+  bien.
+- ✅ ~~**RAP EXHIBITION 1/8 con nombres de personaje**~~: *«2. correcto»*.
 - ✅ ~~**¿Se jugó ISLA DE SOCOTRA V.2?**~~ *«A»* (28/09, 10:35 PM) y después
   *«you can delete it bc its a fake event that never got released»*:
   **borrado** (1.47).
