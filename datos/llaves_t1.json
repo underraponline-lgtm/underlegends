@@ -4766,5 +4766,162 @@
     2625
    ]
   ]
+ },
+ "370": {
+  "dia": "2026-09-28",
+  "escala": "16+",
+  "fecha": "28/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1554310239942213663"
+  ],
+  "n": 370,
+  "nombre": "DESGRACIAS EN TOKYO VOL 16 2VS2",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "TEAM VENECIA 🇲🇦 🇻🇪",
+       "Jotap, Iguana"
+      ],
+      "TEAM VENECIA 🇲🇦 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "27 🇺🇸 Piyi 🇲🇽",
+       "Soulb, Char"
+      ],
+      "27 🇺🇸 Piyi 🇲🇽",
+      ""
+     ],
+     [
+      [
+       "PARIA SIN REMEDIO 🇧🇲, Oasis",
+       "Vandu, Makmah"
+      ],
+      "PARIA SIN REMEDIO 🇧🇲, Oasis",
+      ""
+     ],
+     [
+      [
+       "Snow, NC",
+       "ELSOLAR 🇨🇴, METORITO 🇲🇽"
+      ],
+      "Snow, NC",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "27 🇺🇸 Piyi 🇲🇽",
+       "TEAM VENECIA 🇲🇦 🇻🇪"
+      ],
+      "27 🇺🇸 Piyi 🇲🇽",
+      ""
+     ],
+     [
+      [
+       "PARIA SIN REMEDIO 🇧🇲, Oasis",
+       "NC, Snow"
+      ],
+      "PARIA SIN REMEDIO 🇧🇲, Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "27 🇺🇸 Piyi 🇲🇽",
+       "PARIA SIN REMEDIO 🇧🇲, Oasis"
+      ],
+      "27 🇺🇸 Piyi 🇲🇽",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "27 🇺🇸 Piyi 🇲🇽",
+    "Campeón",
+    10000
+   ],
+   [
+    "TEAM VENECIA 🇲🇦 🇻🇪",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "PARIA SIN REMEDIO 🇧🇲",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "NC",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Char",
+    "Cuartos",
+    1250
+   ],
+   [
+    "ELSOLAR 🇨🇴",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Iguana",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Jotap",
+    "Cuartos",
+    1250
+   ],
+   [
+    "METORITO 🇲🇽",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }
