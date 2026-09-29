@@ -1858,6 +1858,9 @@ letter-spacing:.12em;text-transform:uppercase}
 .de-est{color:var(--tx3);font:700 .7rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .de-est.jug{color:var(--tl)}
 .de-est.fut{color:var(--oro)}
+/* 📡 lo que se está jugando: el mismo magenta del punto de «En vivo» */
+.de-est.viv{color:var(--mg);display:inline-flex;align-items:center;gap:5px}
+.de-est.viv .vivo-punto{width:7px;height:7px;box-shadow:none}
 .de-camp{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;font-weight:800;font-size:.95rem}
 .lch{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;
 background:rgba(255,255,255,.06);border:1px solid var(--bd);color:var(--tx);

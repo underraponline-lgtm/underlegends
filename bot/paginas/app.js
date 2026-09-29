@@ -941,6 +941,10 @@ function pintaVivo() {
       (e.link ? '<div class="ps-acc"><a class="btn sec" href="' + esc(e.link) + '" target="_blank" ' +
         'rel="noopener noreferrer">Ver el anuncio &#8599;</a></div>' : '') + '</article>';
   }).join('');
+  // 📡 y el día abierto del calendario de Eventos: su «Ver la llave en vivo»
+  try { if (typeof CAL !== 'undefined' && CAL.dia && $('#diaLista')) pintaDia(); } catch (e) {
+    console.error('[pintaDia]', e);
+  }
   // la que está abierta se redibuja con lo nuevo, sin cerrarse
   // 🔴 SÓLO SI CAMBIÓ, Y EN SU LUGAR. Se redibujaba cada minuto aunque no
   // hubiera nada nuevo, y el teléfono que había deslizado hasta la final
@@ -2853,17 +2857,28 @@ function pintaDia(M) {
   // 🔑 CADA EVENTO, UNA TARJETA: la hora grande a la izquierda, lo que es
   // arriba y lo que se puede hacer abajo, en una fila. Dlx, 25/09/2026: «la
   // zona de la derecha está rara, quizás podamos reorganizarlo mejor».
+  // 📡 las llaves que se están jugando (ver `pintaVivo()`)
+  var vivas = Object.keys(VIVO_L).map(function (k) { return VIVO_L[k]; });
   $('#diaLista').innerHTML = evs.map(function (e) {
     var L = e.ll && (D.llaves || {})[e.ll];
     var inf = (L && L.info) || {};
     var mod = e.mod || inf.mod || '';
     var camp = L ? (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; }) : [];
-    var acc = (e.ll ? '<button class="btn" data-llave="' + e.ll + '">&#127942; Ver llave</button>' : '') +
-      (e.fut ? '<a class="btn" href="' + esc(googleEv(e)) + '" target="_blank" ' +
+    // 🔑 LO QUE SE ESTÁ JUGANDO, CON SU LLAVE EN VIVO. Dlx, 28/09/2026, con
+    // la VOL 16 2VS2 en cuartos: «no deja ver las llaves de este evento en
+    // vivo en la sección de eventos». El calendario sólo miraba la llave ya
+    // procesada (`ll`); la en vivo la une `llaveDeEvento()`, igual que «En vivo».
+    var V = !e.ll && vivas.length ? llaveDeEvento({ cuando: e.t, sv: e.sv, nombre: e.n }, vivas) : null;
+    // ⚠️ «POR JUGARSE» CON EL RELOJ DE QUIEN MIRA: el `fut` del payload es de
+    // cuando corrió el ciclo, y hasta media hora después seguía diciéndolo
+    var fut = Date.parse(e.t) > Date.now();
+    var acc = (e.ll ? '<button class="btn" data-llave="' + e.ll + '">&#127942; Ver llave</button>'
+      : V ? '<button class="btn" data-llave="v:' + esc(V.id) + '">&#128225; Ver la llave en vivo</button>' : '') +
+      (fut && !V ? '<a class="btn" href="' + esc(googleEv(e)) + '" target="_blank" ' +
         'rel="noopener noreferrer">&#128197; Agregar a Google</a>' : '') +
       (e.link ? '<a class="btn sec" href="' + esc(e.link) + '" target="_blank" ' +
         'rel="noopener noreferrer">Discord &#8599;</a>' : '');
-    var estado = e.fut ? 'por jugarse' : e.jugado ? 'jugado' : 'anunciado';
+    var estado = e.jugado ? 'jugado' : V ? (V.terminada ? 'terminó' : 'en vivo') : fut ? 'por jugarse' : 'anunciado';
     return '<article class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
       // ⚠️ «DEL ANUNCIO» Y NO «ANUNCIADO»: el anuncio no decía la hora y ésta es
       // cuándo se publicó. «Anunciado» al lado de «jugado» se leía como dos
@@ -2874,7 +2889,8 @@ function pintaDia(M) {
       '<div class="de-sub">' + chipSv(e.sv) + etiquetaMult(e.sv, e.t) +
       (e.ct ? '<span class="xm ct" title="Anunciado con 12 horas o más">&#128227; con tiempo</span>' : '') + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
       (e.rg || inf.rg ? '<span class="rg-ev">' + esc(e.rg || inf.rg) + '</span>' : '') +
-      '<span class="de-est ' + (e.fut ? 'fut' : e.jugado ? 'jug' : '') + '">' + estado + '</span></div>' +
+      '<span class="de-est ' + (e.jugado ? 'jug' : V ? 'viv' : fut ? 'fut' : '') + '">' +
+        (V && !V.terminada ? '<i class="vivo-punto" aria-hidden="true"></i>' : '') + estado + '</span></div>' +
       (camp.length ? '<p class="de-camp"><span>&#127942;</span>' + camp.map(function (r) {
         var f = porK(kDe(r[0]));
         return f ? quienEs(f, 20) : conBanderas(r[0]);
