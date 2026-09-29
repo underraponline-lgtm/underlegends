@@ -353,10 +353,26 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El mapa, explorable y en vivo**: como el grafo del reel (arrastrar, zoom, abrir cada pieza en sus partes) y con el estado de cada pieza ahora, **sólo para Dlx** | *«1. C»* (29/09, 8:29 AM) | ✅ `bot/paginas/mapa.html` en vivo; el artifact, una foto con los mismos archivos |
 | **The Cosmic Rap: el bot está ahí sólo para reconocer IDs** | *«agregué el bot a the cosmic rap pero solo usa eso para reconocimiento de IDs nada más»* (8:29 AM) | ✅ `datos/servidores.json` → `solo_identidad`, como LIVONIA y CONFED |
 | **El remake se planea juntos antes de arrancar**: aviso antes de tocar la página nueva | *«cuando vayas a hacer el rework de la página me avisas para antes planearlo»* (9 AM) | ⏳ aviso antes |
+| **Se mide quién vuelve a jugar un segundo evento**: por semana de debut, otro evento **otro día** dentro de 14; va en el mapa en vivo | *«Va»* (29/09) | ✅ `rankings.retencion()` → `datos/estado_escuchar.json` → el medidor «Vuelven a jugar» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Martes 29/09 (11:10 AM) — quién vuelve a jugar
+
+- 📈 **Se mide en cada corrida quién vuelve a jugar un segundo evento**: de
+  los que debutaron cada semana, cuántos jugaron otro **otro día** dentro de
+  los 14 días (dos llaves la misma noche no es volver). Sale de las filas que
+  ya arma `rankings.agregar()`, con los alias resueltos y sin trolls, así que
+  no lee nada de más. Sólo conteos. En el mapa: el medidor «Vuelven a jugar»
+  y el detalle en la pieza de las Llaves.
+- 📏 **El primer número** (11 AM): 188 jugaron en la T1 y 106 jugaron un solo
+  evento. De los 164 que debutaron la semana del 21/09, **75 ya volvieron**
+  (46 %); esa semana se cierra el 11/10.
+- 🔑 `secretos_en_git.py` marcaba `GH_REPO` como filtrado: es el nombre del
+  repo público, que el mapa usa para leer las corridas. Ahora está en su lista
+  de lo que no es secreto.
 
 ## 📅 Martes 29/09 (9:15 AM) — el mapa en vivo, The Cosmic Rap y la auditoría
 
