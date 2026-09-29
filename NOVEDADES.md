@@ -318,7 +318,14 @@ Son las que no se pueden volver a preguntar ni olvidar.
 
 ## 📅 Lunes 28/09 (10 PM) — versión 1.46
 
-Dlx mandó una captura del calendario de Eventos, sin texto.
+Dlx, con capturas del calendario de Eventos y de la DESGRACIAS EN TOKYO VOL
+16 2VS2 mientras se jugaba.
+
+✅ **Verificado en la corrida de las 10:22 PM**: la COMPE sale una vez, a las
+2:48 PM y con su llave; CCFF V.3 a las 7:32 PM; la VOL 13 y la VOL 14 del
+25/09 unidas con su llave; los 9 organizadores con perfil en el payload; e
+**Izaya 🇨🇱 entró solo a la Lista por su inscripción**. La VOL 16 todavía no
+tiene campeón: PRRR → Hassan y TEAM VENECIA = 2 se ven cuando se procese.
 
 - 🔴 **Un evento salía dos veces**: «COMPE DEL VACILE T2 #1» (anunciado,
   2:21 PM) y «COMPE DEL VACILE 1» (jugado, 2:48 PM). `llaves_web.cruzar()`
@@ -335,6 +342,38 @@ Dlx mandó una captura del calendario de Eventos, sin texto.
 - ⏱️ **Lo jugado lleva la hora de su llave** si el anuncio no decía a qué
   hora: CCFF V.3 decía «19:28 · anunciado» al lado de «jugado». Lo que no se
   jugó y no tiene hora dice «del anuncio».
+- 📡 **Eventos no dejaba ver la llave en vivo** (Dlx, con la VOL 16 2VS2 en
+  cuartos): el calendario sólo miraba la llave ya procesada. Ahora lo que se
+  juega dice «en vivo» y abre su llave en vivo (`llaveDeEvento()`, la misma
+  unión que «En vivo»); «por jugarse» sale con el reloj de quien mira.
+- 🪪 **Las inscripciones resuelven nombres** (Dlx: *«en el canal de
+  inscripciones puedes observar los inscritos y combinar con sus IDs porque
+  hay personas nuevas o con nombres trolls»*): `decidir._inscritos()` —quién
+  se anotó SOLO y con qué nombre, por servidor— va antes que el apodo en el
+  «¿quién es X?» automático (tu «2. A»). Sólo inscripciones de un nombre, y
+  no las de cuentas que anotan a otros (la del organizador de URBF anotó a
+  «Player» y a «Steven»). **Y PRRR es Hassan**: se anotó «Prrr🇦🇴» desde
+  su cuenta (*ndfue*), la misma de su avatar; cuando se procese la VOL 16,
+  PRRR queda como su alias y los puntos van a él.
+- 👥 **Un equipo con nombre cuenta completo**: «[TEAM VENECIA]» en un 2VS2
+  son dos, y el plantel contaba 15 donde el formato es de 16 (la escala
+  bajaba a «8-15» para todos). `faltan_en_equipos()` en el ciclo y en la
+  llave en vivo; comparado sobre las llaves de la T1, sólo cambia la VOL 13
+  2VS2 (31 → 32, la misma escala).
+- 🎤 **Organizadores con su perfil y su cara** (Dlx: *«¿puedes hacer que los
+  organizadores se muestren sus perfiles también con su avatar?»*):
+  `subir_web._orgs()` lleva el «Organiza:» a un perfil por nombre o por su
+  usuario de Discord (nachonc_ es NC, ignac.07 es FAZER, CANTU es DELUXE:
+  9 hoy). Y «Cómo se juega» cuenta junto «1vs1», «1V1» y «1 VS 1».
+- ⚡ **Multiplicadores de la semana, con páginas** (Dlx: *«es interesante
+  pero es bastante incómodo de ver… es demasiado… no encaja con lo demás»*,
+  y a las tres formas, *«A»*): cuatro páginas con las flechas y puntitos de
+  «Paneles» —las fichas · la votación del ×2 · los premios de la semana ·
+  meta y semillero—, un renglón por cosa y un link a la Guía. De ~750 px a
+  entre 230 y 406.
+- 🔃 **El día, de lo más nuevo a lo más viejo**, y 🔴 **la celda de hoy
+  entera**: llevaba la clase `hoy`, que es la grilla de dos columnas del
+  panel del Inicio, y se partía en dos (pasa a `es-hoy`).
 - 🔎 **«¿Por qué no deja ver las llaves de URBF?»** (Dlx, 10 PM, con el canal
   `1511963625793912892`). El canal se lee bien: #368 y #369 salen de ahí y
   «Ver llave» las abre. La fila de su captura no tenía el botón por lo de

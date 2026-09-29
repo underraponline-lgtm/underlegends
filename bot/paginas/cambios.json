@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "1.46",
+   "dia": "2026-09-28",
+   "cuando": "2026-09-28T22:30:00-04:00",
+   "titulo": "El calendario, más claro",
+   "items": [
+    "📡 **En Eventos, lo que se está jugando dice «en vivo» y tiene su botón para ver la llave en vivo.**",
+    "📅 **Cada evento sale una vez**, aunque el anuncio y la llave lo nombren distinto (con la temporada del organizador, «T2 #1», o con la modalidad, «VOL 14 1vs1»). Y lo que ya se jugó muestra la hora a la que se jugó.",
+    "🔃 **El día del calendario va de lo más nuevo a lo más viejo**, y la celda de hoy ya no se aprieta.",
+    "⚡ **Los multiplicadores de la semana, más cómodos**: una cosa por página —los multiplicadores, la votación del ×2, los premios de la semana y la meta con el semillero—, con flechas como el panel de al lado.",
+    "🎤 **Los organizadores con perfil salen con su cara** y abren su perfil: en «Cómo se juega», en «Lo que pasó», en cada llave y en los anuncios. Y «1vs1», «1V1» y «1 VS 1» ya cuentan como el mismo formato.",
+    "👥 **Un equipo que la llave nombra con un solo nombre** («TEAM VENECIA» en un 2 vs 2) **cuenta como lo que es**: dos personas. La escala de puntos sale del formato.",
+    "🪪 **Si te anotás en el canal de inscripciones con un nombre nuevo, tus puntos te llegan con tu cuenta**, aunque el nombre sea de broma."
+   ]
+  },
+  {
    "version": "1.45",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T20:50:00-04:00",
