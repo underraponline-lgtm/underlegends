@@ -1,0 +1,27 @@
+{
+ "_leeme": "Quién es quién en el podio de cada llave, cuando el renglón menciona a UNA cuenta y el lado es UNA persona: evento|sv|fecha -> {nombre normalizado: Discord ID}. Lo usa decidir.por_discord(), como una inscripción. Dlx, 28/09/2026: «A · sí».",
+ "eventos": {
+  "desgraciascontokiøv1|FFA|23/09": {
+   "prrr": "1405241805733105704",
+   "velatz": "1426686911908675628"
+  },
+  "ffaworldcupelestadiodelfreestyle2026|FFA|27/09": {
+   "fully": "979878316846768139",
+   "snow": "1097714486795849748"
+  },
+  "marruecosenventav1|FFA|26/09": {
+   "makma": "897942226955563068",
+   "parkjisung": "979878316846768139"
+  },
+  "rapexhibition18|SR|22/09": {
+   "antorchaolimpica": "639232575461654538",
+   "pollosport": "716016310202400848",
+   "zeta": "535579351710957568"
+  },
+  "snakeinsignia38|SR|26/09": {
+   "colesito": "790016013680771102",
+   "juasmio": "729439360545587291",
+   "zignos": "1071185986366742630"
+  }
+ }
+}

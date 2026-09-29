@@ -51,8 +51,8 @@
    "organizadores": [
     [
      "Lewis",
-     24,
-     1
+     38,
+     2
     ],
     [
      "Player",
@@ -63,17 +63,17 @@
    "semillero": {
     "nuevos": {
      "URBF": 6,
-     "FFA": 2
+     "FFA": 7
     },
     "gente": {
-     "FFA": 24,
+     "FFA": 36,
      "URBF": 19
     },
     "gana": "URBF"
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 24,
+    "FFA": 36,
     "SR": 0,
     "URBF": 19
    }

@@ -2,6 +2,7 @@
  "_leeme": "El reloj de bot/fuera.py: desde qué día cada carpeta de R2 no pasa el portón. A los 7 días seguidos se borran sus tarjetas (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
   "1200": "2026-09-27",
+  "27piyi": "2026-09-28",
   "7": "2026-09-27",
   "aby": "2026-09-28",
   "adacchi": "2026-09-27",
@@ -170,6 +171,7 @@
   "mctona": "2026-09-27",
   "md": "2026-09-27",
   "metienesincuidado": "2026-09-27",
+  "metorito": "2026-09-28",
   "mhs": "2026-09-27",
   "mingo": "2026-09-27",
   "miniboy": "2026-09-27",
@@ -199,9 +201,11 @@
   "papa": "2026-09-27",
   "paradoja": "2026-09-27",
   "paria": "2026-09-27",
+  "pariasinremedio": "2026-09-28",
   "parkjisung": "2026-09-27",
   "pcyka": "2026-09-27",
   "pepemujica": "2026-09-27",
+  "piyi": "2026-09-28",
   "plapla": "2026-09-27",
   "pollosport": "2026-09-27",
   "pomberito": "2026-09-27",
@@ -256,6 +260,7 @@
   "tainming": "2026-09-27",
   "taktill": "2026-09-27",
   "tam": "2026-09-27",
+  "teamvenecia": "2026-09-28",
   "teito": "2026-09-27",
   "tema": "2026-09-27",
   "tg": "2026-09-28",
@@ -295,6 +300,6 @@
   "ржунимагу": "2026-09-27"
  },
  "pasaban": 341,
- "cuando": "2026-09-29T03:24:19Z",
+ "cuando": "2026-09-29T03:54:15Z",
  "borradas": []
 }
