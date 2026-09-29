@@ -290,7 +290,9 @@ console.log('\nLA CARTA\n');
   ok('ahora SÍ aparece el menú', select(c) !== null);
   ok('el menú va en su propia fila', filas(c).length === 2,
      'un select no comparte Action Row con botones');
-  ok('lista los nueve servidores', select(c)?.options?.length === 9,
+  // ⚠️ CUÁNTOS, DE LA TABLA Y NO ESCRITO: eran nueve hasta FFS (28/09/2026)
+  ok('lista todos los servidores de la tabla',
+     select(c)?.options?.length === (await import('./worker.js')).SERVIDORES.length,
      `${select(c)?.options?.length}`);
   // ⚠️ EL «BLOQUEADA» VOLVIÓ, PERO SIGNIFICA OTRA COSA. El del 16/09 era un
   // requisito de eventos y se saco porque mentia. El de ahora (Dlx, 19/09)
@@ -1028,7 +1030,7 @@ const menuDe = (r) => {
   const libres = op.filter(o => !/BLOQUEADA/.test(o.label)).map(o => o.value);
   ok('el menú le abre SÓLO los dos servidores que tiene',
      libres.join(',') === 'DRA,FFA', libres.join(', ') || '(ninguno)');
-  ok('y los otros siete salen bloqueados', op.length - libres.length === 7,
+  ok('y los otros salen bloqueados', op.length - libres.length === op.length - 2 && op.length > 2,
      `${op.length - libres.length} de ${op.length}`);
 }
 {

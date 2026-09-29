@@ -180,6 +180,10 @@ export const SERVIDORES = [
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
   { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/vThvc9f5xy' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax' },
+  // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
+  // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
+  // vacío el bot no manda nada, que es lo que dice `datos/servidores.json`.
+  { sv: 'FFS', nombre: 'FFS League', guild: '1367688812892913774', invita: '' },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());

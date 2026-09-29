@@ -52,6 +52,9 @@ LOGO = {
     'TWR': '1115145044127666196/cf3638283222e016b59f25f57e7a1ee0',
     'FRZ': '838593179187544064/f55de8e5e5604b2a1813bb03cae9a9ad',
     'URBF': '1467763447117778989/2af5df69cf7bd371a1a68e8a8eb018d4',
+    # 🟣 FFS (28/09/2026): su ícono es su logo —una ilustración, ocho figuras en
+    # un círculo—; la carta de Servidor lo lleva a sangre (`escudos_cuad`)
+    'FFS': '1367688812892913774/6bbef45a086586a7a47d0d4e99a7f9a8',
 }
 
 # los que hay que buscar como silueta si no estan en LOGO. URBF sigue acá

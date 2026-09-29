@@ -1598,11 +1598,28 @@ def _canales(s, solo=None, guilds=None):
         if r.status_code != 200:
             continue
         cs = r.json()
-        # 🔴 NI LOS CANALES DE UNA CATEGORÍA DE STAFF: ver `categorias_staff()`
-        fuera = categorias_staff(cs)
+        # 🔴 NI LOS CANALES DE UNA CATEGORÍA DE STAFF: ver `categorias_staff()`,
+        # ni los de las que el servidor declara afuera (`categorias_fuera()`)
+        fuera = categorias_staff(cs) | categorias_fuera(g['id'])
         for c in cs:
             if c['type'] in (0, 5) and str(c.get('parent_id') or '') not in fuera:
                 yield c['id'], c['name'], g['name'], g['id']
+
+
+def categorias_fuera(gid):
+    """Las categorías que ese servidor declara afuera en `datos/servidores.json`.
+
+    🔑 LAS LIGAS REGIONALES DE FFS (Dlx, 28/09/2026: «más adelante, al ranking
+    de ligas»): sus ANUNCIOS y VEREDICTOS son de jornadas de liga, no de
+    eventos, y leídos como tales entraban al calendario y como 5 vidas.
+    """
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            svs = (json.load(f) or {}).get('servidores') or {}
+    except (OSError, ValueError):
+        return set()
+    return {str(i) for d in svs.values() if str(d.get('guild_id')) == str(gid)
+            for i in ((d.get('categorias_fuera') or {}).get('ids') or [])}
 
 
 def categorias_staff(canales):
@@ -2098,7 +2115,7 @@ def canales_veredictos(s, mem, guilds, completo):
         if r.status_code != 200:
             continue
         cs = r.json()
-        fuera = categorias_staff(cs)
+        fuera = categorias_staff(cs) | categorias_fuera(g['id'])
         for c in cs:
             n = unicodedata.normalize('NFKD', c.get('name') or '')
             if (c.get('type') in (0, 5) and VEREDICTOS.search(n) and str(c.get('parent_id') or '') not in fuera

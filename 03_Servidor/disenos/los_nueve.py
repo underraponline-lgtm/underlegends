@@ -237,6 +237,25 @@ def defs():
         'box-shadow:inset 0 0 0 4px #E8A144,inset 0 0 0 6px rgba(0,0,0,.55)',
         'cuero fino sobre el cobre del logo + vivo al borde')
 
+    # FFS · Future Free Series (FFS LEAGUE), la décima. Dlx, 28/09/2026: «A ·
+    # sí, como los otros cuatro», y el color «A · periwinkle claro #8E9BFF».
+    #
+    # ⚠️ SU LOGO ES EL MISMO LAVANDA QUE DRA (#6C6CE4 contra #5964E0, ΔE 3.8),
+    # así que la carta no puede ser «otro azul»: va con un AÑIL más violeta y
+    # oscuro que DRA (#2E2A78), y lo que la separa es el gesto —un GALÓN DE
+    # ASCENSO, la V invertida que sube hacia el emblema: su liga tiene tabla
+    # de ascenso— y el periwinkle claro de acento. La tela, porque es camiseta
+    # (ninguna de las nueve la usa).
+    A, B = '#2E2A78', '#8E9BFF'
+    _g = f'transparent 0 calc(50% - 7px),{B} calc(50% - 7px) calc(50% + 7px),transparent calc(50% + 7px)'
+    d['FFS'] = (B, A,
+        f'linear-gradient(to bottom right,{_g}) left bottom/50% 44% no-repeat,'
+        f'linear-gradient(to bottom left,{_g}) right bottom/50% 44% no-repeat,'
+        f'linear-gradient(166deg,{t(A,.30)} 0%,{A} 44%,{t(A,-.72)} 100%)',
+        f'background-image:url({tx("tela")});background-size:cover;'
+        'background-position:center;mix-blend-mode:soft-light;opacity:.34',
+        '', 'galón de ascenso periwinkle + tela de camiseta')
+
     # RZ · Rap Zone. Servidor ASOCIADO, no de la Hermandad.
     #
     # Su fuego NO esta simulado: sale extraido de su propio logo con
@@ -268,7 +287,7 @@ def defs():
 
 
 D = defs()
-ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'RZ']
+ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'RZ']
 
 
 ESTRELLAS = json.load(open(os.path.join(BASE, 'datos', 'estrellas.json'),

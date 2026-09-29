@@ -243,6 +243,26 @@
    "guild_id": "1222746296377675867",
    "invitacion": "https://discord.gg/DDc3SqE8ax",
    "en_el_sheet": false
+  },
+  "FFS": {
+   "nombre": "FFS League",
+   "guild_id": "1367688812892913774",
+   "invitacion": "",
+   "en_el_sheet": false,
+   "nota": "28/09/2026: el bot entró (Dlx) y FFS es de la Liga — «A · sí, como los otros cuatro». Future Free Series: PLAZAS FFS, FFS BULL y seis ligas regionales; las ligas van más adelante al Ranking de Ligas (Dlx: «A»), así que sus categorías no se leen (ver categorias_fuera). La etiqueta la decide Dlx con su dueño. Sin invitación todavía: no tiene URL propia y el bot no puede listar las suyas; el logo y los miembros de «Mundo» salen del servidor (subir_web._guild_del_bot()).",
+   "confirmado": true,
+   "categorias_fuera": {
+    "_por_que": "Las ligas regionales de FFS (jornadas, veredictos y tabla) no son eventos: Dlx, 28/09/2026, «más adelante, al ranking de ligas». Sus canales ANUNCIOS y VEREDICTOS se leerían como eventos y 5 vidas.",
+    "ids": [
+     "1419776321663533096",
+     "1419776379272302683",
+     "1420873323562406010",
+     "1426585741118410792",
+     "1457450968684695683",
+     "1468407952778989634"
+    ],
+    "_ids": "las seis categorías FFS LEAGUE: TRICOLOR, ARGENTINA, CHILE, CARIBE, INTERNACIONAL y SUR AMERICA"
+   }
   }
  },
  "_fuera_de_la_tabla": [

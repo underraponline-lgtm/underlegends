@@ -399,6 +399,10 @@ def main():
     fi, H = _cabecera(v, 'Rapero', 'Puntos')
     filas = [r for r in v[fi + 1:] if r and r[0].strip()]
     col = lambda n: H.index(n)
+    # 🔴 SÓLO LOS SERVIDORES QUE LA VITRINA TIENE: un servidor nuevo (FFS,
+    # 28/09/2026) entra a `SERVIDORES` antes de que la vitrina lo escriba, y
+    # `H.index()` de una columna que no está tumbaba el pool entero.
+    svs_h = [s for s in SERVIDORES if s in H]
 
     AV = avatares_conocidos()
 
@@ -481,8 +485,8 @@ def main():
         # El REWORK del 20/08 tiene el mismo error en su Parte F y lo correcto
         # en su linea 86. Ver docs/rework_revision.md.
         sv = (SV_MANUAL.get(norm(r[col('Rapero')]))
-              or (max(SERVIDORES, key=lambda s: num(r[col(s)]))
-                  if any(num(r[col(s)]) > 0 for s in SERVIDORES) else '')
+              or (max(svs_h, key=lambda s: num(r[col(s)]))
+                  if any(num(r[col(s)]) > 0 for s in svs_h) else '')
               or r[col('Sv')].strip())
         _p = PAD.get(norm(r[col('Rapero')]), {})
         pool.append({
@@ -519,7 +523,7 @@ def main():
             'seg': int(num(r[col('🥈')])), 'ter': int(num(r[col('🥉')])),
             'caz': int(num(r[col('🎯')])), 'czd': int(num(r[col('💀')])),
             'sob': int(num(r[col('🛡️')])),
-            'srv': sum(1 for s in SERVIDORES if num(r[col(s)]) > 0),
+            'srv': sum(1 for s in svs_h if num(r[col(s)]) > 0),
             'racha': racha_maxima(r[col('🔥')]),
             # ⚠️ LAS DOS: la tarjeta y «Racha más larga» usan la máxima, y
             # «Rachas» del hub dice quién viene encadenando AHORA

@@ -1796,12 +1796,13 @@ def _miembros(svs):
     out = {}
     for sv, x in svs.items():
         cod = (x.get('invitacion') or '').rstrip('/').split('/')[-1]
-        if not cod:
-            continue
         try:
-            r = requests.get('https://discord.com/api/v10/invites/%s' % cod,
-                             params={'with_counts': 'true'}, timeout=15)
-            j = r.json() if r.status_code == 200 else {}
+            if cod:
+                r = requests.get('https://discord.com/api/v10/invites/%s' % cod,
+                                 params={'with_counts': 'true'}, timeout=15)
+                j = r.json() if r.status_code == 200 else {}
+            else:
+                j = _guild_del_bot(x.get('guild_id'))
         except (OSError, ValueError):
             continue
         n = j.get('approximate_member_count')
@@ -1823,6 +1824,26 @@ def _miembros(svs):
         if d:
             out[sv] = d
     return out
+
+
+def _guild_del_bot(gid):
+    """Lo mismo que trae una invitación, preguntándoselo al servidor con el bot.
+
+    🔑 PARA EL SERVIDOR QUE TODAVÍA NO TIENE INVITACIÓN CARGADA. FFS LEAGUE
+    entró el 28/09/2026 sin invitación pública (sin URL propia, y el bot no
+    puede listar las suyas), y sin esto «Mundo» lo dibujaba sin logo ni
+    gente. Si el bot no está en ese servidor, Discord contesta 403 y queda
+    como antes: sin dato no hay pieza.
+    """
+    s = _discord() if gid else None
+    if s is None:
+        return {}
+    r = s.get('https://discord.com/api/v10/guilds/%s' % gid, params={'with_counts': 'true'}, timeout=15)
+    if r.status_code != 200:
+        return {}
+    g = r.json()
+    return {'approximate_member_count': g.get('approximate_member_count'),
+            'guild': {'id': g.get('id'), 'icon': g.get('icon')}}
 
 
 def _servidores(gente):

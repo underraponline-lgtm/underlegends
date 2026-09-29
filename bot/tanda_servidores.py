@@ -38,7 +38,7 @@ SALIDA = os.path.join(BASE, '03_Servidor', 'salida')
 # arregla las 138 que ya estan arriba—, despues los dos servidores donde el
 # bot VIVE (DRA y FFA), que son los unicos donde hoy puede funcionar «la carta
 # del servidor donde escribiste». El resto solo se alcanza por el menu.
-ORDEN = ['', 'DRA', 'FFA', 'TFC', 'TWR', 'SR', 'FTN', 'FRZ', 'URBF', 'EFA']
+ORDEN = ['', 'DRA', 'FFA', 'TFC', 'TWR', 'SR', 'FTN', 'FRZ', 'URBF', 'EFA', 'FFS']
 
 
 def listas():

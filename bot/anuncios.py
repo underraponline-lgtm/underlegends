@@ -588,6 +588,10 @@ def canales(s):
         # «staff». Ver `escuchar.categorias_staff()`.
         fuera = {str(x.get('id')) for x in cs if x.get('type') == 4 and
                  STAFF.search(unicodedata.normalize('NFKD', x.get('name') or ''))}
+        # 🔑 Y LAS QUE EL SERVIDOR DECLARA AFUERA: las seis ligas regionales de
+        # FFS (Dlx, 28/09/2026: «más adelante, al ranking de ligas»). Ver
+        # `escuchar.categorias_fuera()`.
+        fuera |= {str(i) for i in ((d.get('categorias_fuera') or {}).get('ids') or [])}
         for c in cs:
             if c.get('type') not in (0, 5) or str(c.get('parent_id') or '') in fuera:
                 continue

@@ -84,7 +84,8 @@ export const PATRON_VIGIA = /evento|competenc/i;
 // 5: Urban Freestyle le dio al bot su rol (25/09/2026) y «Data⋅Eventos»,
 // que daba 403, ya se puede leer: se vuelve a buscar sin esperar las 6 h.
 // 6: también los canales de VEREDICTOS (28/09/2026); ver `veredictos()`.
-const CANALES_V = 6;
+// 7: entra FFS, sin las categorías de sus ligas (`meta.fuera`, 28/09/2026).
+const CANALES_V = 7;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -1642,11 +1643,17 @@ export class Avisos {
     // alerta por un canal de TFC: «Olvida TFC, ya te dije que no está». La
     // lista es `confirmado` de `datos/servidores.json`, que viaja en `meta`
     // (`liga`); sin ella —una `meta` vieja— se escucha lo de siempre.
+    // 🔑 Y LAS CATEGORÍAS QUE CADA SERVIDOR DECLARA AFUERA (`meta.fuera`): las
+    // ligas regionales de FFS, que son jornadas de liga y no eventos (Dlx,
+    // 28/09/2026: «más adelante, al ranking de ligas»).
+    let fueraSv = {};
     try {
-      const liga = (JSON.parse((await this.env.KV.get('meta')) || '{}').liga) || null;
+      const meta = JSON.parse((await this.env.KV.get('meta')) || '{}');
+      const liga = meta.liga || null;
       if (Array.isArray(liga) && liga.length) {
         servidores = (servidores || []).filter((s) => liga.indexOf(s.sv) >= 0);
       }
+      fueraSv = (meta.fuera && typeof meta.fuera === 'object') ? meta.fuera : {};
     } catch (e) { /* sin meta, la lista entera */ }
     // 🔴 QUIÉN SOY, PARA NO LEERME. El bot publica en `eventos-hoy`, que es
     // también un canal que este vigía escucha: sin esto, su propia
@@ -1669,6 +1676,7 @@ export class Avisos {
       // «𝔸ℕ𝕌ℕℂ𝕀𝕆𝕊» adentro de «𝒜𝒟𝑀𝐼𝒩𝐼𝒮𝒯𝑅𝒜𝒞𝐼𝒪𝒩», y un anuncio interno
       // sonaba en la campana de todos. Ver `categoriasStaff()`.
       const fuera = categoriasStaff(cs);
+      for (const id of fueraSv[s.sv] || []) fuera.add(String(id));
       for (const c of cs) {
         if (c.type !== 0 && c.type !== 5) continue;
         if (fuera.has(String(c.parent_id || ''))) continue;

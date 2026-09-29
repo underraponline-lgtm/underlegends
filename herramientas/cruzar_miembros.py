@@ -77,7 +77,10 @@ def _guilds():
          # pidió «reconocimiento de IDs» ahí y en Snake Rap. Igual que FFA
          # y Snake Rap: sólo se CAPTURA el ID. Verificar sigue siendo sólo
          # el Miembro de DRA.
-         ('URBF', '1467763447117778989')]
+         ('URBF', '1467763447117778989'),
+         # 🟣 FFS, DESDE EL 28/09/2026: de la Liga (Dlx: «A · sí»). Igual que
+         # los demás: sólo se CAPTURA el ID.
+         ('FFS', '1367688812892913774')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:

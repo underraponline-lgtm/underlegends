@@ -689,6 +689,12 @@ def armar():
         # marca es `confirmado` de `datos/servidores.json`; acá sólo viaja.
         'liga': sorted(k for k, v in ((_json_servidores().get('servidores') or {}).items())
                        if v.get('confirmado')),
+        # 🔑 Y LAS CATEGORÍAS QUE CADA UNO DECLARA AFUERA: las ligas regionales
+        # de FFS (Dlx, 28/09/2026: «más adelante, al ranking de ligas»). El
+        # vigía las salta igual que las de staff. Ver `escuchar.categorias_fuera()`.
+        'fuera': {k: [str(i) for i in ((v.get('categorias_fuera') or {}).get('ids') or [])]
+                  for k, v in ((_json_servidores().get('servidores') or {}).items())
+                  if v.get('confirmado') and (v.get('categorias_fuera') or {}).get('ids')},
         # 🔑 LOS CANALES DE LLAVES DE LA LIGA, para las llaves en vivo del vigía
         # (27/09/2026). Salen de `datos/canales_llaves.json`, que arma el lector
         # del ciclo buscando llaves por contenido: el vigía no busca, lee ésos.
