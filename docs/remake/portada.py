@@ -130,8 +130,10 @@ def hero(pc):
 
 
 def ir_a():
-    return ('<nav class="ir-a" aria-label="Ir a"><span class="ir-t">IR A</span><a>En vivo</a><a>Fechas</a><a>Noticias</a>'
-            '<a>Raperos</a><a>Ranking</a><a>Se busca</a><a>Servidores</a></nav>')
+    secciones = [('envivo', 'En vivo'), ('fechas', 'Fechas'), ('noticias', 'Noticias'), ('raperos', 'Raperos'),
+                 ('ranking', 'Ranking'), ('sebusca', 'Se busca'), ('servidores', 'Servidores')]
+    return ('<nav class="ir-a" aria-label="Ir a"><span class="ir-t">IR A</span>%s</nav>'
+            % ''.join('<a href="#%s">%s</a>' % s for s in secciones))
 
 
 def fechas():
