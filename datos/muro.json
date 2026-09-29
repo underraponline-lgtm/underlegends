@@ -219,9 +219,11 @@
 "temporada"
 ]
 },
-"sironex": {
+"badterne": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "geoka": {
 "rg": "",
@@ -645,10 +647,6 @@
 "temporada"
 ]
 },
-"ceegee": {
-"rg": "",
-"c": []
-},
 "emmy": {
 "rg": "",
 "c": []
@@ -658,6 +656,12 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"ifx": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "melztube": {
@@ -1231,6 +1235,14 @@
 "servidor",
 "temporada"
 ]
+},
+"sironex": {
+"rg": "",
+"c": []
+},
+"ceegee": {
+"rg": "",
+"c": []
 },
 "betelgeuse": {
 "rg": "",

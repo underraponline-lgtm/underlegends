@@ -28,7 +28,9 @@
    },
    "dorado": {
     "sv": "SR",
-    "desde": "2026-09-29T04:00:00Z"
+    "desde": "2026-09-29T04:00:00Z",
+    "n": 372,
+    "nombre": "RAP EXHIBITION 2 8"
    },
    "guerra": {
     "pares": [
@@ -55,6 +57,11 @@
      2
     ],
     [
+     "Rubik",
+     18,
+     1
+    ],
+    [
      "Player",
      15,
      1
@@ -63,18 +70,20 @@
    "semillero": {
     "nuevos": {
      "FFA": 12,
-     "URBF": 6
+     "URBF": 6,
+     "SR": 4
     },
     "gente": {
      "FFA": 45,
-     "URBF": 19
+     "URBF": 19,
+     "SR": 18
     },
     "gana": "URBF"
    },
    "meta_va": {
     "DRA": 0,
     "FFA": 45,
-    "SR": 0,
+    "SR": 18,
     "URBF": 19
    }
   }

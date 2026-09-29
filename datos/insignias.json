@@ -183,6 +183,16 @@
 "prueba"
 ]
 },
+"Badterne": {
+"cazador": [
+"2026-09-29T22:54:28Z",
+"prueba"
+],
+"debut": [
+"2026-09-29T22:54:28Z",
+"prueba"
+]
+},
 "Baltrip": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -562,6 +572,12 @@
 "Humildad": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+]
+},
+"IFX": {
+"debut": [
+"2026-09-29T22:54:28Z",
 "prueba"
 ]
 },

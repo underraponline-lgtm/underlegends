@@ -21,10 +21,10 @@
   "duel_v": 15,
   "duel_t": 18,
   "duel_real": true,
-  "dna_v": 4,
-  "dna_t": 5,
-  "din_v": 8,
-  "din_t": 9,
+  "dna_v": 5,
+  "dna_t": 6,
+  "din_v": 9,
+  "din_t": 10,
   "pos": 1,
   "total": 3,
   "rango": "S",
@@ -132,8 +132,8 @@
   "duel_v": 9,
   "duel_t": 10,
   "duel_real": true,
-  "dna_v": 2,
-  "dna_t": 3,
+  "dna_v": 3,
+  "dna_t": 4,
   "din_v": 6,
   "din_t": 6,
   "pos": 7,
@@ -967,7 +967,7 @@
   "av": "",
   "pos_pais": "6/17",
   "arc_pais": 71,
-  "pos_sv": "1/14",
+  "pos_sv": "1/15",
   "arc_sv": 100,
   "pos_crew": ""
  },
@@ -1179,7 +1179,7 @@
   "duel_t": 15,
   "duel_real": true,
   "dna_v": 3,
-  "dna_t": 5,
+  "dna_t": 6,
   "din_v": 6,
   "din_t": 7,
   "pos": 32,
@@ -1190,7 +1190,7 @@
   "av": "",
   "pos_pais": "7/23",
   "arc_pais": 74,
-  "pos_sv": "2/14",
+  "pos_sv": "2/15",
   "arc_sv": 93
  },
  {
@@ -1375,8 +1375,8 @@
   "av": "",
   "pos_pais": "8/17",
   "arc_pais": 59,
-  "pos_sv": "3/14",
-  "arc_sv": 86
+  "pos_sv": "3/15",
+  "arc_sv": 87
  },
  {
   "full": "Nhp",
@@ -1491,12 +1491,12 @@
   "arc_sv": 69
  },
  {
-  "full": "sir one x🇨🇦",
-  "raw": "sir one x",
-  "cc": "",
+  "full": "Badterne",
+  "raw": "Badterne",
+  "cc": "ar",
   "sv": "SR",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1514844014325796977",
   "verificado": false,
   "ev": 1,
   "score": 13.1,
@@ -1512,10 +1512,10 @@
   "duel_v": 2,
   "duel_t": 4,
   "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 0,
-  "din_t": 0,
+  "dna_v": 1,
+  "dna_t": 3,
+  "din_v": 1,
+  "din_t": 1,
   "pos": 41,
   "total": 3,
   "rango": "",
@@ -1932,8 +1932,8 @@
   "av": "",
   "pos_pais": "4/7",
   "arc_pais": 57,
-  "pos_sv": "4/14",
-  "arc_sv": 79,
+  "pos_sv": "4/15",
+  "arc_sv": 80,
   "pos_crew": ""
  },
  {
@@ -2269,8 +2269,8 @@
   "av": "",
   "pos_pais": "12/23",
   "arc_pais": 52,
-  "pos_sv": "5/14",
-  "arc_sv": 71
+  "pos_sv": "5/15",
+  "arc_sv": 73
  },
  {
   "full": "papa",
@@ -2528,8 +2528,8 @@
   "av": "",
   "pos_pais": "14/23",
   "arc_pais": 43,
-  "pos_sv": "6/14",
-  "arc_sv": 64,
+  "pos_sv": "6/15",
+  "arc_sv": 67,
   "pos_crew": ""
  },
  {
@@ -2566,8 +2566,8 @@
   "av": "",
   "pos_pais": "11/17",
   "arc_pais": 41,
-  "pos_sv": "7/14",
-  "arc_sv": 57
+  "pos_sv": "7/15",
+  "arc_sv": 60
  },
  {
   "full": "Sin Limites",
@@ -2863,8 +2863,8 @@
   "av": "",
   "pos_pais": "16/23",
   "arc_pais": 35,
-  "pos_sv": "8/14",
-  "arc_sv": 50
+  "pos_sv": "8/15",
+  "arc_sv": 53
  },
  {
   "full": "Korey",
@@ -4605,8 +4605,8 @@
   "av": "",
   "pos_pais": "19/23",
   "arc_pais": 22,
-  "pos_sv": "9/14",
-  "arc_sv": 43
+  "pos_sv": "9/15",
+  "arc_sv": 47
  },
  {
   "full": "WILLY 🇲🇽",
@@ -6041,7 +6041,7 @@
   "dna_v": 0,
   "dna_t": 0,
   "din_v": 0,
-  "din_t": 0,
+  "din_t": 1,
   "pos": 163,
   "total": 3,
   "rango": "",
@@ -6050,16 +6050,16 @@
   "av": "",
   "pos_pais": "7/7",
   "arc_pais": 14,
-  "pos_sv": "10/14",
-  "arc_sv": 36
+  "pos_sv": "10/15",
+  "arc_sv": 40
  },
  {
-  "full": "melztube🇨🇴",
+  "full": "melztube",
   "raw": "melztube",
   "cc": "co",
   "sv": "SR",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "796816573331275787",
   "verificado": false,
   "ev": 1,
   "score": 1.6,
@@ -6078,7 +6078,7 @@
   "dna_v": 0,
   "dna_t": 0,
   "din_v": 0,
-  "din_t": 0,
+  "din_t": 1,
   "pos": 164,
   "total": 3,
   "rango": "",
@@ -6128,12 +6128,12 @@
   "arc_sv": 0
  },
  {
-  "full": "Aktybo🇦🇷",
+  "full": "Aktybo",
   "raw": "Aktybo",
   "cc": "ar",
   "sv": "SR",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1230341652841758750",
   "verificado": false,
   "ev": 1,
   "score": 1.6,
@@ -6198,8 +6198,8 @@
   "av": "",
   "pos_pais": "5/5",
   "arc_pais": 20,
-  "pos_sv": "11/14",
-  "arc_sv": 29
+  "pos_sv": "11/15",
+  "arc_sv": 33
  },
  {
   "full": "EMMY",
@@ -6239,13 +6239,13 @@
   "arc_sv": 0
  },
  {
-  "full": "Ceegee 🇦🇷",
-  "raw": "Ceegee",
-  "cc": "ar",
+  "full": "IFX",
+  "raw": "IFX",
+  "cc": "",
   "sv": "SR",
   "crew": "",
-  "discord_id": "",
-  "verificado": false,
+  "discord_id": "598344541770219550",
+  "verificado": true,
   "ev": 1,
   "score": 1.6,
   "conf": 0.3,
@@ -6272,8 +6272,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
+  "pos_sv": "12/15",
+  "arc_sv": 27
  },
  {
   "full": "leteletras",
@@ -6792,8 +6792,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "12/14",
-  "arc_sv": 21
+  "pos_sv": "13/15",
+  "arc_sv": 20
  },
  {
   "full": "Vlade",
@@ -6829,8 +6829,8 @@
   "av": "",
   "pos_pais": "17/17",
   "arc_pais": 6,
-  "pos_sv": "13/14",
-  "arc_sv": 14,
+  "pos_sv": "14/15",
+  "arc_sv": 13,
   "pos_crew": "6/6"
  },
  {
@@ -6941,7 +6941,7 @@
   "av": "",
   "pos_pais": "9/9",
   "arc_pais": 11,
-  "pos_sv": "14/14",
+  "pos_sv": "15/15",
   "arc_sv": 7,
   "pos_crew": ""
  },

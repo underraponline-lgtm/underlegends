@@ -5209,16 +5209,16 @@
     "b": [
      [
       [
-       "sir one x🇨🇦",
+       "Badterne",
        "GP"
       ],
-      "sir one x🇨🇦",
+      "Badterne",
       ""
      ],
      [
       [
        "Hassan",
-       "melztube🇨🇴"
+       "melztube"
       ],
       "Hassan",
       ""
@@ -5243,7 +5243,7 @@
       [
        "Deluxe",
        "Alonso",
-       "Aktybo🇦🇷"
+       "Aktybo"
       ],
       "Deluxe",
       "triple (3 bandas)"
@@ -5267,7 +5267,7 @@
      [
       [
        "MCO",
-       "Ceegee 🇦🇷",
+       "IFX 🇦🇷",
        "Zeta"
       ],
       "MCO",
@@ -5280,10 +5280,10 @@
     "b": [
      [
       [
-       "sir one x🇨🇦",
+       "Badterne",
        "Deluxe"
       ],
-      "sir one x🇨🇦",
+      "Badterne",
       ""
      ],
      [
@@ -5318,7 +5318,7 @@
      [
       [
        "Liberia",
-       "sir one x🇨🇦"
+       "Badterne"
       ],
       "Liberia",
       ""
@@ -5339,7 +5339,7 @@
      [
       [
        "Hassan",
-       "sir one x🇨🇦"
+       "Badterne"
       ],
       "Hassan",
       ""
@@ -5379,7 +5379,7 @@
     6000
    ],
    [
-    "sir one x🇨🇦",
+    "Badterne",
     "Cuarto",
     4500
    ],
@@ -5404,17 +5404,12 @@
     2500
    ],
    [
-    "Aktybo🇦🇷",
+    "Aktybo",
     "Octavos",
     1250
    ],
    [
     "Alonso",
-    "Octavos",
-    1250
-   ],
-   [
-    "Ceegee 🇦🇷",
     "Octavos",
     1250
    ],
@@ -5425,6 +5420,11 @@
    ],
    [
     "GP",
+    "Octavos",
+    1250
+   ],
+   [
+    "IFX 🇦🇷",
     "Octavos",
     1250
    ],
@@ -5449,7 +5449,7 @@
     1250
    ],
    [
-    "melztube🇨🇴",
+    "melztube",
     "Octavos",
     1250
    ]
