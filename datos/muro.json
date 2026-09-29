@@ -19,7 +19,10 @@
 },
 "oasis": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "makmah": {
 "rg": "C",
@@ -38,7 +41,10 @@
 },
 "velatz": {
 "rg": "D",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "colesito": {
 "rg": "",
@@ -57,7 +63,10 @@
 },
 "praiseriza": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "pichulamc": {
 "rg": "",
@@ -84,7 +93,10 @@
 },
 "provenza": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "bloody": {
 "rg": "D",
@@ -146,7 +158,10 @@
 },
 "nc": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "zeta": {
 "rg": "",
@@ -164,7 +179,10 @@
 },
 "fazer": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "abyssus": {
 "rg": "",
@@ -189,11 +207,17 @@
 },
 "mtz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "geoka": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "eze": {
 "rg": "",
@@ -218,7 +242,10 @@
 },
 "betelguese": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "teito": {
 "rg": "",
@@ -230,7 +257,10 @@
 },
 "neo": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "molusco": {
 "rg": "",
@@ -241,7 +271,10 @@
 },
 "jimmy": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "xubaru": {
 "rg": "",
@@ -259,7 +292,10 @@
 },
 "saito": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "maukc": {
 "rg": "",
@@ -267,7 +303,10 @@
 },
 "noone": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "richard": {
 "rg": "",
@@ -320,7 +359,10 @@
 },
 "miniboy": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "humildad": {
 "rg": "",
@@ -331,11 +373,17 @@
 },
 "luzzano": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "cj": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "motera": {
 "rg": "",
@@ -357,11 +405,17 @@
 },
 "nhp": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "okam": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "lrs": {
 "rg": "",
@@ -372,7 +426,10 @@
 },
 "camila": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "juanpa": {
 "rg": "",
@@ -383,7 +440,10 @@
 },
 "paria": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "jupiter": {
 "rg": "",
@@ -401,7 +461,10 @@
 },
 "fleivaman": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "sinlimites": {
 "rg": "",
@@ -416,7 +479,10 @@
 },
 "lhyon": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "agus": {
 "rg": "",
@@ -445,7 +511,10 @@
 },
 "marto": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mcnadie": {
 "rg": "",
@@ -456,11 +525,17 @@
 },
 "ardean": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "baltrip": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "blanko": {
 "rg": "",
@@ -479,11 +554,17 @@
 },
 "korey": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "chop": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "gus": {
 "rg": "",
@@ -494,11 +575,17 @@
 },
 "mhs": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "scot": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "acry": {
 "rg": "",
@@ -517,15 +604,24 @@
 },
 "tam": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "pomberito": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "aby": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "vr": {
 "rg": "",
@@ -543,7 +639,10 @@
 },
 "denik": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "bna": {
 "rg": "",
@@ -558,7 +657,10 @@
 },
 "agre": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "guess": {
 "rg": "",
@@ -587,7 +689,10 @@
 },
 "maticerna": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "sosa": {
 "rg": "",
@@ -598,7 +703,10 @@
 },
 "dominick": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "focox": {
 "rg": "",
@@ -616,11 +724,17 @@
 },
 "clitax": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "tg": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "volk-mx": {
 "rg": "",
@@ -628,7 +742,10 @@
 },
 "7": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "maximilianocalvo": {
 "rg": "",
@@ -654,15 +771,24 @@
 },
 "leteletras": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "tuca": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "rayito": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "cronox": {
 "rg": "",
@@ -684,19 +810,31 @@
 },
 "saz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "arez": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "carlos": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "crackandkrank": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "crk": {
 "rg": "",
@@ -707,7 +845,10 @@
 },
 "elingetimp": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "erianelpapadecolesito": {
 "rg": "",
@@ -715,7 +856,10 @@
 },
 "ericrj": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "filozico": {
 "rg": "",
@@ -726,7 +870,10 @@
 },
 "fleivacheck": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "g8": {
 "rg": "",
@@ -734,7 +881,10 @@
 },
 "izaya": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "jahno": {
 "rg": "",
@@ -772,7 +922,10 @@
 },
 "leonart": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "lewito": {
 "rg": "",
@@ -790,7 +943,10 @@
 },
 "lizeninn": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "paradoja": {
 "rg": "",
@@ -821,7 +977,10 @@
 },
 "santi": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "shadow": {
 "rg": "",
@@ -840,7 +999,10 @@
 },
 "valdoza": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "volk-co": {
 "rg": "",
@@ -852,19 +1014,31 @@
 },
 "xclusivo": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "ztr": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "drexx": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "benshi": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "garxziiscity": {
 "rg": "",
@@ -886,11 +1060,17 @@
 },
 "1200": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "blitz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "cardozo": {
 "rg": "",
@@ -898,7 +1078,10 @@
 },
 "char": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "elsolar": {
 "rg": "",
@@ -924,7 +1107,10 @@
 },
 "jotap": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "kyss": {
 "rg": "",
@@ -935,7 +1121,10 @@
 },
 "malditaenfermedad": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mantecasixseven": {
 "rg": "",
@@ -947,7 +1136,10 @@
 },
 "mva": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "rodas": {
 "rg": "",
@@ -958,11 +1150,17 @@
 },
 "smaff": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "soft": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "soulb": {
 "rg": "",
@@ -988,7 +1186,10 @@
 },
 "btrx": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "betelgeuse": {
 "rg": "",
@@ -1208,6 +1409,1078 @@
 "Liberia"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Oasis"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Oasis"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Velatz"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Velatz"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"PRAISERIZA"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"PRAISERIZA"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Provenza"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Provenza"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"NC"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"NC"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Fazer"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Fazer"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MTZ"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MTZ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Geoka"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Geoka"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Betelguese"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Betelguese"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Neo"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Neo"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"JIMMY"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"JIMMY"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Saito"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Saito"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Noone"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Noone"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Miniboy"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Miniboy"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Luzzano"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Luzzano"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"CJ"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"CJ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Nhp"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Nhp"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"OKAM"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"OKAM"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Camila"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Camila"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Paria"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Paria"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"fleivaman"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"fleivaman"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Lhyon"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Lhyon"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Marto"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Marto"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"ARDEAN"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"ARDEAN"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Baltrip"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Baltrip"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Korey"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Korey"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Chop"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Chop"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MHS"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MHS"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Scot"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Scot"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Tam"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Tam"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Pomberito"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Pomberito"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Aby"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Aby"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Denik"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Denik"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Agre"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Agre"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MATICERNA"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MATICERNA"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Dominick"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Dominick"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Clitax"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Clitax"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"TG"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"TG"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"7"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"7"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"leteletras"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"leteletras"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Tuca"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Tuca"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"rayito"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"rayito"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Saz"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Saz"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"AREZ"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"AREZ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Carlos"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Carlos"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Crack and Krank"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Crack and Krank"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Elinge_TIMP"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Elinge_TIMP"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"EricRJ"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"EricRJ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Fleivacheck"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Fleivacheck"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Izaya"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Izaya"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Leonart"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Leonart"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Lizeninn"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Lizeninn"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Santi"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Santi"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Valdoza"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Valdoza"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Xclusivo"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Xclusivo"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"ZTR"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"ZTR"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Drexx"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Drexx"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Benshi"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Benshi"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"1200"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"1200"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"BLITZ"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"BLITZ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Char"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Char"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Jotap"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Jotap"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"maldita enfermedad"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"maldita enfermedad"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MvA"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"MvA"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"SMAFF"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"SMAFF"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Soft"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Soft"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"BTRX"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"BTRX"
+],
+"carta": "temporada"
 }
 ]
 }
