@@ -349,6 +349,17 @@ def _resuelto_ya(fila, resolver):
         quien = _en_la_lista().get(did) if did else None
         return ('su Discord ya está en la Lista, como «%s»' % quien) if quien else ''
     if tipo == 'Evento dudoso':
+        # 🔑 LA LLAVE RETENIDA QUE DESPUÉS SE CARGÓ. Una de broma se suelta
+        # sola si su anuncio aparece en la corrida siguiente (ver
+        # `llaves_a_entrada.llave_de_broma()`), y entonces la pregunta ya no
+        # hace falta. La misma señal que `Bracket incompleto`: el evento tiene
+        # Campeón. Una retenida por Interserver no se carga hasta el «Sí
+        # cuenta», así que ésa sigue abierta.
+        if 'llaves' in (fila.get('Origen') or '').lower():
+            nombre = detalle.split(' · ')[0].strip()
+            if nombre and nombre != '(sin titulo)' and _tiene_campeon(nombre):
+                return 'el evento ya se cargó'
+            return ''
         return _escala_ya_paga(fila)
     # 🔴 `Alias posible` NO SE CIERRA SOLO, Y LO INTENTE. La regla era
     # «si ese AKA ya está en el padrón, la duda se cerró» — y es

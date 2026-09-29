@@ -456,14 +456,22 @@ def _servidores_de(did, svs):
     return list(svs.get(did) or []) or list(_DATOS.get('donde', {}).get(str(did)) or [])
 
 
-#: los separadores de una inscripción de varios: «snow🇨🇴 + nc», «27 🇺🇸 Piyi 🇲🇽» no
+#: los separadores de una inscripción de varios: «snow🇨🇴 + nc»
 _SEP_INSC = re.compile(r'\s*(?:\+|&|,|/|\by\b|\be\b)\s*', re.I)
+#: 🔴 Y LA BANDERA ENTRE DOS NOMBRES TAMBIÉN SEPARA. «27 🇺🇸 Piyi 🇲🇽» (FFA,
+#: 28/09/2026) es una PAREJA —la llave de la VOL 16 2VS2 la escribió después
+#: «[27 🇺🇸 + PIYI 🇲🇽]»— anotada desde la cuenta de Eliot, y sin esto era «un
+#: solo nombre»: `por_discord()` dio de alta a «27 Piyi» en la Lista con la
+#: cuenta de Eliot. La bandera del final no separa («Prrr🇦🇴», «TEAM VENECIA 🇲🇦
+#: 🇻🇪»): sólo la que tiene un nombre a cada lado.
+_ENTRE_BANDERAS = re.compile('(?:[\U0001F1E6-\U0001F1FF]{2}\\s*)+(?=[^\\s\U0001F1E6-\U0001F1FF])')
 
 
 def _nombres_insc(texto):
     """Los nombres de una inscripción, normalizados y sin la nota entre paréntesis."""
     t = re.sub(r'\(.*?\)|\(.*$', ' ', str(texto or ''))
-    return [x for x in (norm(_sin_bandera(p)) for p in _SEP_INSC.split(t)) if len(x) >= 2]
+    partes = [q for p in _SEP_INSC.split(t) for q in _ENTRE_BANDERAS.split(p)]
+    return [x for x in (norm(_sin_bandera(p)) for p in partes) if len(x) >= 2]
 
 
 def _inscritos():
@@ -628,6 +636,11 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         det = p['detalle']
         k = norm(_sin_bandera(det))
         if len(k) < 3 or k in fuera or es_fragmento(det):
+            continue
+        # 🔴 UN LADO QUE SON DOS NOMBRES NO ES UNA CUENTA: «27 🇺🇸 Piyi 🇲🇽» es
+        # una pareja escrita sin «+», y resolverla dio de alta a «27 Piyi»
+        # con la cuenta de quien los anotó (28/09/2026). Ver `_ENTRE_BANDERAS`.
+        if len(_nombres_insc(det)) > 1:
             continue
         # 🔑 LA CUENTA: la que se anotó con ese nombre en el servidor del
         # evento, o si no, la única de la Liga con ese apodo. Ver `_cuenta_de()`
@@ -2089,6 +2102,18 @@ def _self_check():
            'la cuenta que sólo está en Snake Rap y no en la Lista: por su inscripción, o por su nombre en el servidor del evento')
         ok(ids['ISAIAS 🇪🇸'] not in solas,
            'pero no un nombre suelto con la cuenta en otro servidor que el del evento (ISAIAS)')
+        # 🔴 una pareja escrita sin «+» no es una persona (VOL 16 2VS2, 28/09/2026)
+        _DATOS['inscritos'] = indice_inscritos([
+            {'servidor': 'FFA', 'texto': '27 🇺🇸 Piyi 🇲🇽', 'discord_id': '20'},
+            {'servidor': 'FFA', 'texto': 'Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷', 'discord_id': '21'}])
+        ok(_DATOS['inscritos'] == {'FFA': {'garxziiscity': {'21'}}},
+           'la bandera ENTRE dos nombres separa («27 🇺🇸 Piyi 🇲🇽» son dos); las del final no  %s'
+           % _DATOS['inscritos'])
+        _DATOS['apodos'].update({'27piyi': {'20'}})
+        _DATOS['donde'].update({'20': ['FFA']})
+        qs = armar([(60, {'Tipo': nd, 'Detalle': '27 🇺🇸 Piyi 🇲🇽', 'Origen': 'evento #359'})], ev)
+        ok(not por_discord(qs, {}, ev, dry=True),
+           'y un lado que son dos nombres no se resuelve como una cuenta, aunque alguien se llame así')
     finally:
         _DATOS.clear()
         _DATOS.update(antes)

@@ -1784,6 +1784,10 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
                             'canal': canal, 'canal_id': cid,
                             'msg_id': m['id'],
                             'autor': (m.get('author') or {}).get('username'),
+                            # 🔑 y su cuenta, que no cambia como el usuario:
+                            # la regla de las llaves de broma pregunta quién
+                            # ya publicó una (ver `llaves_a_entrada`)
+                            'autor_id': str((m.get('author') or {}).get('id') or ''),
                             # ⚠️ LA FECHA VA Y NO ES OPCIONAL:
                             # `motor.py` agrupa por (evento, servidor,
                             # fecha), asi que sin ella dos ediciones

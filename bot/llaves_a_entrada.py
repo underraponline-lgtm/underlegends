@@ -855,6 +855,96 @@ CYPHER = re.compile(r'^\W*(?:(?:fase|ronda)\s+(?:de\s+)?)?c[iy]pher\W*$'
 INTERSERVER = re.compile(r'inter\s*-?\s*server|camino\s+a\s+la\s+hermandad',
                          re.I)
 
+# ── las llaves de broma ────────────────────────────────────────────────
+# 🔑 Dlx, 28/09/2026, a «¿una llave de alguien que nunca publicó una, y sin
+# anuncio que la respalde, espera en ✅ Decidir antes de cargarse?»: *«A · sí»*.
+# El caso fue «DENME MODERADOR LPM» (URBF, 27/09): la final «(pichula) 🆚
+# (mi mamá)», campeón «MAMÁ ERIAN», en el canal de llaves de verdad. El lector
+# no mira quién publica, así que una llave de broma terminada se cargaba igual
+# que una real.
+#
+# ⚠️ LAS DOS COSAS A LA VEZ, y es lo que la hace barata: medido sobre las 21
+# llaves de la T1 (11 autores), pedir sólo «autor nuevo» retenía llaves
+# reales —un organizador nuevo con su anuncio— y pedir sólo «sin anuncio»
+# también —hay llaves que se anuncian con otro nombre—. Juntas no retienen
+# ninguna real y atrapan las dos de broma.
+#
+# ⚠️ Y SE SUELTA SOLA: «Sí cuenta» en ✅ Decidir la carga y suma a su autor a
+# los conocidos (`AUTORES`); si el anuncio aparece después, la corrida
+# siguiente ya no la retiene y `pendientes.barrer()` cierra la pregunta.
+#
+#: desde cuándo se revisa: lo publicado antes ya se cargó (o no) sin esto
+BROMA_DESDE = '2026-09-29T04:00:00'
+#: las huellas de quien ya publicó una llave que se cargó. Sólo la huella, no
+#: la cuenta: va al repo público y para esto alcanza con reconocerla.
+AUTORES = os.path.join(BASE, 'datos', 'autores_llaves.json')
+
+
+def huella_autor(h):
+    """La huella de quien publicó la llave `h`: su cuenta, o su usuario si
+    es un hallazgo viejo sin cuenta. `''` si no trae ninguno."""
+    import hashlib
+    x = str(h.get('autor_id') or '').strip() or (
+        'u:' + str(h.get('autor') or '').strip().lower() if h.get('autor') else '')
+    return hashlib.sha1(('lg-autor:' + x).encode('utf-8')).hexdigest()[:16] if x else ''
+
+
+def autores_conocidos(hallazgos, links=None, guardadas=None):
+    """Las huellas de quien ya publicó una llave que cuenta.
+
+    Las guardadas, más las de toda llave anterior a la temporada (`INICIO`:
+    la pre-temporada no pasó por esto) y las de toda llave que ya se cargó
+    (su mensaje está en `datos/llaves_links.json`). ⚠️ NO las de cualquier
+    llave vieja: «DENME MODERADOR LPM» es del 27/09 y nunca se cargó, así que
+    su autor sigue siendo nuevo.
+    """
+    if guardadas is None:
+        try:
+            with io.open(AUTORES, encoding='utf-8') as f:
+                guardadas = (json.load(f) or {}).get('huellas') or []
+        except (OSError, ValueError):
+            guardadas = []
+    if links is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'llaves_links.json'), encoding='utf-8') as f:
+                links = json.load(f) or {}
+        except (OSError, ValueError):
+            links = {}
+    cargados = {str(u).rstrip('/').rsplit('/', 1)[-1]
+                for us in (links or {}).values() for u in (us or [])}
+    out = set(guardadas)
+    for h in hallazgos or ():
+        k = huella_autor(h)
+        if k and (str(h.get('cuando') or '') < TEMP.INICIO_PRUEBA[:19]
+                  or str(h.get('msg_id') or '') in cargados):
+            out.add(k)
+    return out
+
+
+def llave_de_broma(g, conocidos, anuncios, nom, sv, fec):
+    """El motivo para retener una llave como de broma, o `None`.
+
+    De broma = publicada desde `BROMA_DESDE`, por alguien que no está en
+    `conocidos` (ningún mensaje del grupo), y sin un anuncio de su servidor
+    que la respalde (`llaves_web.anunciado()`).
+    """
+    hs = g.get('llaves') or []
+    if not hs or all(str(h.get('cuando') or '') < BROMA_DESDE for h in hs):
+        return None
+    if any(huella_autor(h) in conocidos for h in hs):
+        return None
+    import llaves_web as LW
+    try:
+        dia = datetime.date.fromisoformat(LW.fecha_iso(fec))
+    except ValueError:
+        dia = None
+    if dia and LW.anunciado(nom, sv, dia, anuncios):
+        return None
+    quien = sorted({str(h.get('autor') or '?') for h in hs})
+    return ('la publicó %s, que nunca había publicado una llave, y ningún anuncio de %s '
+            'la respalda: puede ser de broma. Si es de verdad, «Sí cuenta»'
+            % (', '.join(quien), sv))
+
 
 def _cuantos_nombres(l):
     """Cuántos nombres trae una línea que no es una batalla."""
@@ -1690,6 +1780,12 @@ def _self_check():
                      notas='')]
     ids_w = {'41': ['Okam'], '42': ['Jult'], '43': ['Provenza'], '44': ['Sin Limites']}
     fwm, fwm0 = marcar_walkins(_fm(), [wm], ids_w), marcar_walkins(_fm(), [wm])
+    # las llaves de broma: A publicó en la pre-temporada, B una que se cargó
+    # (su mensaje está en los links) y C una que nunca se cargó
+    _hb = [{'autor_id': 'A1', 'autor': 'viejo', 'cuando': '2026-09-10T02:00:00+00:00', 'msg_id': '11'},
+           {'autor_id': 'B2', 'autor': 'organiza', 'cuando': '2026-09-25T02:00:00+00:00', 'msg_id': '22'},
+           {'autor_id': 'C3', 'autor': 'troll', 'cuando': '2026-09-30T02:00:00+00:00', 'msg_id': '33'}]
+    _con = {huella_autor(_hb[0]), huella_autor(_hb[1])}
     casos = [
         ('el pokemon de la final queda anotado en esa fila',
          len(fin) == 1 and 'Pokemon: Beto' in fin[0]['notas']),
@@ -1726,6 +1822,23 @@ def _self_check():
                            '[PARIA + PRRR] VS [VANDU + MAKMA]\n[ELSOLAR + METO] VS [SNOW + NC]\n') == 1
          and faltan_en_equipos('# CUARTOS\n[ANA + BEA] VS [CID]\n[DAN + EVA + FEDE] VS [GUS]\n') == 0
          and faltan_en_equipos('# CUARTOS\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n') == 0),
+        # 🔑 las llaves de broma (Dlx, 28/09/2026: «A · sí»)
+        ('quien ya publicó una llave que se cargó, o en la pre-temporada, es conocido; '
+         'quien sólo publicó una que nunca se cargó (DENME MODERADOR LPM), no',
+         autores_conocidos(_hb, links={'X|FFA|24/09': ['https://discord.com/channels/1/2/22']},
+                           guardadas=[]) == {huella_autor(_hb[0]), huella_autor(_hb[1])}),
+        ('una llave nueva de alguien nuevo y sin anuncio se retiene, y dice quién la publicó',
+         'troll' in (llave_de_broma({'llaves': [_hb[2]]}, _con, [], 'DENME MODERADOR LPM',
+                                    'URBF', '29/09') or '')),
+        ('con un anuncio de su servidor que la respalda, no',
+         llave_de_broma({'llaves': [_hb[2]]}, _con,
+                        [{'nombre': 'DENME MODERADOR LPM', 'servidor': 'URBF',
+                          'cuando': '2026-09-29T20:00:00'}], 'DENME MODERADOR LPM', 'URBF',
+                        '29/09') is None),
+        ('ni de alguien que ya publicó una que se cargó, ni una de antes de la regla',
+         llave_de_broma({'llaves': [dict(_hb[2], autor_id='B2')]}, _con, [], 'X', 'URBF', '29/09') is None
+         and llave_de_broma({'llaves': [dict(_hb[2], cuando='2026-09-27T02:00:00+00:00')]}, _con, [],
+                            'X', 'URBF', '27/09') is None),
         ('el que pasó octavos escrito como mención no es walk-in (MARRUECOS)',
          not any('Walk-in' in f['notas'] for f in fwm)),
         ('… y sin los nombres de la mención lo era: la prueba mide algo',
@@ -1875,6 +1988,14 @@ def main():
     # Llamar a `barrer` directo anda igual y cuesta 48 s todas las veces.
     hallazgos, info = E.escuchar(s)
     n_ch, n_msg = info['canales'], info['mensajes']
+    # 🔑 QUIÉN YA PUBLICÓ UNA LLAVE, con la lista entera —la pre-temporada
+    # también cuenta—, antes de filtrar. Ver `llave_de_broma()`.
+    conocidos = autores_conocidos(hallazgos)
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as _f:
+            anuncios_l = (json.load(_f) or {}).get('anuncios') or []
+    except (OSError, ValueError):
+        anuncios_l = []
     hallazgos, viejas = de_esta_temporada(hallazgos)
     for h in hallazgos:
         # `escuchar.barrer` devuelve `cuando` en ISO; la hoja usa dd/mm
@@ -2042,6 +2163,9 @@ def main():
                           'propio sistema de puntos (guía, Parte 2, §11.2): '
                           '¿cuenta también para el Ranking Global?')
                 break
+        # 🔑 Y LA LLAVE DE BROMA: autor nuevo y sin anuncio (Dlx, 28/09, «A»)
+        if ligas and not motivo and dec != 'cuenta':
+            motivo = llave_de_broma(g, conocidos, anuncios_l, nom, ligas[0], fec)
         if ligas and motivo and dec != 'cuenta':
             retenidos.append((nom, ligas[0], fec, motivo))
             continue
@@ -2081,6 +2205,9 @@ def main():
         dudas += d_grupo
         repes += len(del_grupo) - len(limpias)
         todas += limpias
+        # quien publicó una llave que se carga ya no es nuevo
+        if limpias:
+            conocidos.update(k for k in map(huella_autor, g['llaves']) if k)
         # 🔑 LOS LINKS DE LA LLAVE EN DISCORD, para «Ver llaves» del hub.
         # Acá es el único lugar donde existen: `Entrada` tiene nueve
         # columnas y el mensaje no es una. Van todos los del grupo —un
@@ -2154,6 +2281,17 @@ def main():
                       sort_keys=True)
     except OSError as e:
         print('   ⚠️ no pude dejar los links de las llaves (%s)' % str(e)[:60])
+    # y quién ya publicó una llave que se cargó, para las de broma
+    try:
+        with io.open(AUTORES, 'w', encoding='utf-8', newline='\n') as _f:
+            json.dump({'_leeme': 'Las huellas (sha1 recortado, no la cuenta) de quien ya publicó una '
+                                 'llave que se cargó. Una llave de alguien que no está acá y sin '
+                                 'anuncio espera en ✅ Decidir: ver llave_de_broma() en '
+                                 'bot/llaves_a_entrada.py. Dlx, 28/09/2026: «A · sí».',
+                       'huellas': sorted(conocidos)}, _f, ensure_ascii=False, indent=1)
+            _f.write('\n')
+    except OSError as e:
+        print('   ⚠️ no pude guardar quién ya publicó una llave (%s)' % str(e)[:60])
 
     from escribir import Hoja
     import pendientes as P

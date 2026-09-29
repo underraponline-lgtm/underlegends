@@ -126,6 +126,31 @@ def _chocan(x, y):
     return bool((ex and ey and ex != ey) or (tx and ty and tx != ty))
 
 
+def anunciado(nombre, sv, dia, anuncios):
+    """¿Algún anuncio de ese servidor respalda la llave `nombre` del día `dia`?
+
+    El mismo criterio que `cruzar()`, mirado desde la llave: mismo servidor,
+    la llave entre un día antes y dos después del anuncio, y el nombre igual
+    —o parecido y sin números que choquen—. `dia` es un `date`; `anuncios`,
+    los de `datos/anuncios.json` (con `servidor`) o los del payload (con
+    `sv`). Lo usa la regla de las llaves de broma de `bot/llaves_a_entrada.py`.
+    """
+    b = clave_nombre(nombre)
+    if not b or not dia:
+        return False
+    for p in anuncios or ():
+        if (p.get('servidor') or p.get('sv') or '') != sv:
+            continue
+        pd = _dia_este(p.get('cuando'))
+        if not pd or not DIAS[0] <= (dia - pd).days <= DIAS[1]:
+            continue
+        a = clave_nombre(p.get('nombre'))
+        if a and (a == b or (not _chocan(p.get('nombre'), nombre)
+                             and difflib.SequenceMatcher(None, a, b).ratio() >= PARECIDO)):
+            return True
+    return False
+
+
 def fecha_iso(fecha):
     """`'24/09'` -> `'2026-09-24'`. La llave no trae año: sale del
     arranque de la temporada, como en `rankings._orden_fecha()`."""
@@ -651,6 +676,18 @@ def _self_check():
     ok(ar[3]['b'][0][3] == [0, 1] and ar[2]['b'][0][3] == [],
        'la final viene de las dos semis; el tercer puesto no es parte del árbol')
     ok(len(rs[0]['b']) == 5, 'y no toca las rondas que le pasan')
+
+    # 🔑 `anunciado()`: el mismo criterio que `cruzar()`, desde la llave
+    an = [{'nombre': 'COMPE DEL VACILE T2 #1', 'servidor': 'URBF', 'cuando': '2026-09-28T18:21:45'},
+          {'nombre': 'SNAKE INSIGNIA', 'sv': 'SR', 'cuando': '2026-09-26T20:00:00'}]
+    d28, d26 = datetime.date(2026, 9, 28), datetime.date(2026, 9, 26)
+    ok(anunciado('COMPE DEL VACILE 1', 'URBF', d28, an) and anunciado('SNAKE INSIGNIA 3/8', 'SR', d26, an),
+       'la llave con su anuncio: la temporada del organizador y la edición no la separan')
+    ok(not anunciado('DENME MODERADOR LPM', 'URBF', d28, an)
+       and not anunciado('COMPE DEL VACILE 1', 'FFA', d28, an)
+       and not anunciado('COMPE DEL VACILE 1', 'URBF', datetime.date(2026, 10, 3), an)
+       and not anunciado('COMPE DEL VACILE 2', 'URBF', d28, an),
+       'y sin él: otro nombre, otro servidor, otra semana u otra edición')
 
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
