@@ -845,6 +845,27 @@ sobre todas las herramientas; `.21st/DESIGN.md` es una copia.
 hoy: `comun/rangos.py` y `datos/colores_sv_marca.json`. El remake no los
 escribe en su CSS.
 
+🔴 **LA LISTA DE CONTROL ES `docs/remake/inventario.md`**: 13 vistas, 27
+llamadas a `/api`, 19 claves del navegador y 9 formatos de link que ya
+circulan en Discord. Su §6 es lo que no se puede romper. Las cinco más caras:
+
+1. **`/sw.js` en la raíz, con scope `/`** y sus manejadores de push: las
+   campanas que ya existen están atadas a ese registro y a la clave VAPID.
+2. **Entrar con Discord vuelve a `https://underlegends.pages.dev/`** con el
+   token en el hash, y se lee **antes** del router.
+3. **`/api/*` en el mismo origen**, por la lista cerrada de `_worker.js`: la
+   cookie `lg_ses` tiene `Path=/api`. Y `_worker.js` se despliega como campo
+   aparte, nunca como archivo servible.
+4. **Los links `#/…` que ya circulan** tienen que seguir abriendo lo mismo,
+   también si el remake pasa a rutas de verdad.
+5. **Las URL fijas**: `/privacidad` y `/terminos` (registradas en Discord),
+   `manifest.json`, `/og.png`, `/aviso.png`, `/calendario.ics`,
+   `cambios.json` y `mapa.html`, que depende de `lg:dc` con su `id`.
+
+⚠️ **Y el ciclo despliega la web solo**: `bot/pipeline.py` hashea
+`bot/paginas/` y sube lo que cambió. Con un paso de build, el ciclo tiene
+que construir antes, o el hash y el despliegue tienen que mirar la salida.
+
 ---
 
 ## El bot de Discord
