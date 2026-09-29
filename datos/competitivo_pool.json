@@ -71,8 +71,7 @@
   "pos_pais": "1/16",
   "arc_pais": 100,
   "pos_sv": "2/60",
-  "arc_sv": 98,
-  "pos_crew": "1/7"
+  "arc_sv": 98
  },
  {
   "full": "Oasis",
@@ -408,7 +407,7 @@
   "arc_pais": 81,
   "pos_sv": "10/60",
   "arc_sv": 85,
-  "pos_crew": "2/7"
+  "pos_crew": "1/6"
  },
  {
   "full": "Velatz",
@@ -744,7 +743,7 @@
   "arc_pais": 0,
   "pos_sv": "13/60",
   "arc_sv": 80,
-  "pos_crew": "3/7"
+  "pos_crew": "2/6"
  },
  {
   "full": "CJ",
@@ -857,7 +856,7 @@
   "arc_pais": 75,
   "pos_sv": "14/60",
   "arc_sv": 78,
-  "pos_crew": "4/7"
+  "pos_crew": "3/6"
  },
  {
   "full": "Geoka",
@@ -3162,7 +3161,7 @@
   "arc_pais": 31,
   "pos_sv": "35/60",
   "arc_sv": 43,
-  "pos_crew": "5/7"
+  "pos_crew": "4/6"
  },
  {
   "full": "MAXIMILIANO CALVO",
@@ -5238,7 +5237,7 @@
   "arc_pais": 19,
   "pos_sv": "51/60",
   "arc_sv": 17,
-  "pos_crew": "6/7"
+  "pos_crew": "5/6"
  },
  {
   "full": "Xclusivo",
@@ -6314,7 +6313,7 @@
   "arc_pais": 6,
   "pos_sv": "10/11",
   "arc_sv": 18,
-  "pos_crew": "7/7"
+  "pos_crew": "6/6"
  },
  {
   "full": "manteca sixseven🇦🇸",
