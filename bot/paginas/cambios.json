@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.48",
+   "dia": "2026-09-29",
+   "cuando": "2026-09-29T00:30:00-04:00",
+   "titulo": "FFS League se suma, y podés avisar si una llave está mal",
+   "items": [
+    "🌍 **FFS League se suma a la Liga** —«Evolución»—: sus eventos cuentan como los de los otros cuatro servidores, y tiene su tarjeta de Servidor.",
+    "⚑ **¿Algo está mal en una llave?** Avisalo desde la misma llave (entrando con Discord) y lo revisa la Liga.",
+    "🥇 **Si el podio de una llave te menciona, los puntos te llegan a tu cuenta**, aunque en la llave figures con otro nombre.",
+    "👥 **Una pareja escrita sin «+» ahora cuenta como dos**, y cada uno cobra lo suyo."
+   ]
+  },
+  {
    "version": "1.47",
    "dia": "2026-09-28",
    "cuando": "2026-09-28T23:15:00-04:00",

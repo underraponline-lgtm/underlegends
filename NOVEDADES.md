@@ -313,10 +313,70 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El Clásico cuenta EVENTOS, no batallas** | lo decidí yo: en la Snake Arena, DELUXE y FAZER se cruzaron **5 veces** en una noche, así que la 3.ª ya era «Clásico» y los dos cobraban +10 % | ✅ `multiplicadores.clasicos()` y `rivalidades()` (1.36). Las 4 parejas que ya eran rivales lo siguen siendo: cada una se cruzó en 2 eventos |
 | **ISLA DE SOCOTRA V.2 se borra: fue un evento falso que nunca salió** | *«you can delete it bc its a fake event that never got released»* (28/09, 10:40 PM) | ✅ `anuncios_fuera` en `datos/decisiones.json`: `anuncios.guardar()` no lo vuelve a traer (1.47) |
 | **Snow no es de Follombia** | *«X cierto SNOW no es parte de follombia me comentó»* (28/09) | ✅ fuera de `datos/crews.json`, con la baja en `_bajas` (1.47) |
+| **FFS League es de la Liga**: sus eventos suman como los de los otros cuatro | *«A · sí, como los otros cuatro»* (28/09, 11:22 PM) | ✅ (1.48): `confirmado` en `datos/servidores.json` y las ocho listas de servidores |
+| **FFS va en periwinkle claro #8E9BFF** (su logo es el lavanda de DRA) | *«A · periwinkle claro #8E9BFF»* | ✅ `datos/colores_sv_marca.json` |
+| **La etiqueta de FFS es EVOLUCIÓN** | *«Pon EVOLUCION para FFS como el tag»* (29/09, 12:15 AM) | ✅ `datos/servidores.json` (con tilde, como NUEVA GENERACIÓN) |
+| **Las ligas regionales de FFS van más adelante al Ranking de Ligas**: hoy no se leen | *«A · más adelante, al ranking de ligas»* | ✅ `categorias_fuera` en `datos/servidores.json`: ni llaves, ni veredictos, ni anuncios, ni la campana |
+| **La camiseta de FFS**: añil violeta, galón de ascenso en periwinkle y tela | *«oh wow está bueno»* (29/09, 12:05 AM) | ✅ `03_Servidor/disenos/los_nueve.py` |
+| **Una llave de alguien que nunca publicó una, y sin anuncio, espera en ✅ Decidir** | *«A · sí»* | ✅ `llave_de_broma()` en `bot/llaves_a_entrada.py`, desde el 29/09 00:00 ET |
+| **El podio con mención resuelve el nombre solo, como una inscripción** | *«A · sí, como las inscripciones»* | ✅ `podio_de_grupo()` + `decidir._cuenta_de()` |
+| **✅ Decidir: el evento entero en una fila** («Todos son gente nueva») | *«va»* | ✅ `bloques()` y `repartir()` en `sheet/decidir.py` |
+| **«¿Algo está mal en esta llave?»**: la gente lo avisa y va a ✅ Decidir, nunca por DM | *«ok»* | ✅ `/avisos/reportar` + `bot/reportes.py` |
+| **El ensayo del arranque**, sin la fecha escrita: *«probablemente se extienda por la apelación»* | *«dale»* | ✅ `herramientas/ensayo_arranque.py` |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Martes 29/09 (12:30 AM) — versión 1.48
+
+Tus respuestas del formulario (11:22 PM) y las tres ideas (*«1. dale… 2. ok
+3. va»*).
+
+- 🌍 **FFS League entra a la Liga** (*«A · sí»*): sus eventos suman como los
+  de DRA, FFA, Snake Rap y Urban; **periwinkle claro #8E9BFF** (su logo es el
+  mismo lavanda que DRA, ΔE 3,8); etiqueta **EVOLUCIÓN**; y su **camiseta**
+  de la tarjeta de Servidor, la décima (*«está bueno»*). Sus **seis ligas
+  regionales no se leen** hasta el Ranking de Ligas: sus ANUNCIOS y
+  VEREDICTOS son jornadas, no eventos (`categorias_fuera`, en los tres
+  lectores y la campana). El anuncio de broma de PLAZAS («EL Q SE INSCRIBE
+  SE CANCELA LA COMPE», CUPOS: 0) va a `anuncios_fuera`, como SOCOTRA. Sin
+  invitación todavía: «Mundo» saca su logo y sus 455 miembros del servidor
+  mismo, con el bot. Los multiplicadores la suman el lunes 5/10 (la semana
+  ya sorteada no se toca).
+- 🃏 **Llaves de broma a ✅ Decidir** (*«A»*): autor que nunca publicó una
+  llave que se cargó **y** sin anuncio de su servidor que la respalde.
+  Simulado sobre las 23 llaves de la T1: frena las 2 de broma y ninguna
+  real. Rige desde el 29/09 00:00 ET, y se suelta sola si el anuncio aparece.
+- 🥇 **El podio con mención** (*«A»*): «1ER PUESTO: @alguien» contra el
+  campeón de la final. En la primera corrida resolvió **ANTORCHA OLÍMPICA =
+  Six** (la cuenta que menciona el podio es la de Six en la Lista).
+- ⚡ **✅ Decidir por evento** (*«va»*): la fila «⚡ Todo el evento» cuando
+  hay 2 o más nombres nuevos; la respuesta de cada fila manda.
+- ⚑ **«¿Algo está mal en esta llave?»** (*«ok»*): al pie de cada llave, con
+  la sesión de Mi cuenta (cuentas de 30 días o más, 5 por día). El ciclo lo
+  pone en ✅ Decidir en la sección de su evento, con el nombre de quien lo
+  mandó y nunca su ID.
+- 🧪 **El ensayo del arranque** (*«dale»*): `herramientas/ensayo_arranque.py`
+  pregunta a cada pieza con fecha qué hace a las 00:00 ET, y corre el paso 0
+  en simulacro. La fecha sale de `comun/temporada.py`: si la apelación la
+  corre, se cambia ahí y se vuelve a desplegar el Worker.
+- 🔴 **Un error mío de la regla de inscripciones, y deshecho**: la cuenta de
+  **Eliot** anotó a una pareja como «27 🇺🇸 Piyi 🇲🇽» (sin «+»), y la corrida
+  de las 11:22 dio de alta a **«27 Piyi»** en la Lista como una persona con la
+  cuenta de Eliot. Vaciada la fila (era la última, con respaldo) y arreglado
+  en tres lugares: la bandera **entre** dos nombres separa, ✅ Decidir no
+  resuelve un lado que son dos nombres, y la canonización ya no convierte a
+  un equipo en una persona. **La VOL 16 le paga 5.000 a cada uno.**
+- 🔔 **La campana vuelve a buscar canales cuando cambia la lista de
+  servidores** (`firmaLiga()`): con FFS recién sumado, la búsqueda siguiente
+  era a las 6 h —de madrugada, dormida—. El próximo servidor tampoco espera.
+- 🔴 **CI estuvo en rojo media hora**: el self-check de ✅ Decidir leía datos
+  de esta máquina y fallaba en la nube. Aislado; verde.
+- 🔴 **Y otro error mío, sin daño**: corrí `construir_pool_temporada.py
+  --auto` creyendo que era un chequeo —no tiene— y reescribió el pool local.
+  Devuelto antes de commitear; anotado en la memoria para el loop que lo
+  hizo.
 
 ## 📅 Lunes 28/09 (11:15 PM) — versión 1.47
 
@@ -1736,40 +1796,19 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **FFS LEAGUE** (28/09: *«añádele su sesión, su color, y dame ideas de
-  tags»*). Es **Future Free Series** (así se llama su categoría): PLAZAS FFS
-  (anuncios, llaves, inscripciones), FFS BULL, seis ligas regionales
-  (Tricolor, Argentina, Chile, Caribe, Internacional, Sudamérica) y su
-  propio sistema de rangos con puntos, como Snake Rap. Hoy juega poco: la
-  última llave de PLAZAS es del **30/07**, y las ligas terminaron sus
-  temporadas entre abril y julio.
-  1. **Color.** El logo es casi todo lavanda (#6C6CE4), el mismo tono que
-     DRA (#5964E0): con la regla de siempre («manda el logo») quedan iguales
-     en el ranking. **A** · periwinkle claro `#8E9BFF` —el tono del logo, más
-     claro— · **B** · lila `#B37BFF` · **C** · magenta lila `#D66BFF`, el
-     más distinto. Mi voto: **A**.
-  2. **Etiqueta** (DRA ENTRENAMIENTO, FFA COMUNIDAD, SR TALENTOS, URBF NUEVA
-     GENERACIÓN). **A** · LIGAS —es lo único que ningún otro tiene— ·
-     **B** · SERIES · **C** · ASCENSO —tienen tabla de ascenso— · **D** ·
-     FUTURO (se pisa con la de URBF). Mi voto: **A**.
-  3. **¿Sus eventos suman a la Liga?** **A** · sí, como los otros cuatro ·
-     **B** · todavía no: sólo aparece en Mundo. ⚠️ Su último anuncio (25/09)
-     es una broma —«EL Q SE INSCRIBE SE CANCELA LA COMPE», CUPOS: 0— que
-     entraría como evento. Y con **A**, la tarjeta de Servidor necesita su
-     camiseta (sería la décima): la hago con el mismo molde que las nueve.
-  4. **¿Y sus ligas regionales?** (jornadas, veredictos y tabla, no llaves)
-     **A** · más adelante, al «Ranking de Ligas» que hoy dice «pronto» ·
-     **B** · no se leen.
-- **Llaves de broma** (DENME MODERADOR LPM: la final «(pichula) 🆚 (mi
-  mamá)»). Regla: **una llave de alguien que nunca publicó una, y sin
-  anuncio que la respalde, pasa por ✅ Decidir antes de cargarse.** Medido
-  sobre las 21 llaves de la T1 (11 autores): **no retiene ninguna real** y
-  atrapa las dos de broma. **A** · sí · **B** · no.
-- **El podio con mención dice quién es.** RAP EXHIBITION 1/8 (Snake Rap)
-  escribe «1ER PUESTO: @alguien», y el campeón de la final es **ANTORCHA
-  OLÍMPICA**: esa cuenta es ANTORCHA. Hoy hay 10 nombres de ese evento en ✅
-  Decidir. **A** · que se resuelva solo, como las inscripciones · **B** ·
-  sólo como pista, lo contestás vos.
+- ✅ ~~**FFS**~~: color A, etiqueta EVOLUCIÓN, eventos A, ligas A, camiseta
+  «está bueno» (hecho en la 1.48). **Falta su invitación**: cuando la tengas,
+  va en `datos/servidores.json` y en `bot/worker.js`.
+- ✅ ~~**Llaves de broma**~~ *«A»* y ~~**el podio con mención**~~ *«A»*: hechas
+  (1.48).
+- **La primera semana de la T1 no tiene Elegido votado** (lo encontró el
+  ensayo): el último día de la prueba no se vota y desde el arranque ya se
+  vota la semana siguiente. **A** · que se vote el domingo 4/10 · **B** · así
+  está bien (esa semana va sin Elegido).
+- **RAP EXHIBITION 1/8 se jugó con nombres de personaje**: ANTORCHA OLÍMPICA
+  resultó ser Six. Los otros 8 nombres de ese evento (KIRITO, PUBLIC ENEMY,
+  RAGE BAIT…) probablemente también son gente conocida: ahí **no conviene**
+  el «Todos son gente nueva».
 - ✅ ~~**¿Se jugó ISLA DE SOCOTRA V.2?**~~ *«A»* (28/09, 10:35 PM) y después
   *«you can delete it bc its a fake event that never got released»*:
   **borrado** (1.47).
