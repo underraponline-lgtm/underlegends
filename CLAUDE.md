@@ -2109,6 +2109,9 @@ bot/              el lector de Discord y el ciclo
                                   solos en cada corrida (paso 1a2)
                   alertar.py      DM a Dlx si algo se traba; lo normal, al
                                   canal de Logs
+                  invitaciones.py la invitación permanente de la Liga en cada
+                                  servidor (se crea a mano) y cuántos entran
+                                  por ella (paso 2b5 → datos/invitaciones.json)
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
                   avisos_casos.py el contrato Python<->JS del lector de
