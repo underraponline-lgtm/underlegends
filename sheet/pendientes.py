@@ -348,6 +348,8 @@ def _resuelto_ya(fila, resolver):
         did = _did(detalle)
         quien = _en_la_lista().get(did) if did else None
         return ('su Discord ya está en la Lista, como «%s»' % quien) if quien else ''
+    if tipo == 'Evento dudoso':
+        return _escala_ya_paga(fila)
     # 🔴 `Alias posible` NO SE CIERRA SOLO, Y LO INTENTE. La regla era
     # «si ese AKA ya está en el padrón, la duda se cerró» — y es
     # exactamente al revés: esas filas las escribe el **backfill** del
@@ -366,6 +368,49 @@ def _resuelto_ya(fila, resolver):
     # un nombre que hoy resuelve, una llave que hoy tiene campeón. Una
     # decisión de identidad no se reproduce, se toma.
     return ''
+
+
+#: `ESCALA: la ronda «octavos» no tiene valor en la escala 8-15…`, de `motor.py`
+_ESCALA = re.compile(r'^ESCALA: la ronda «([^»]+)» no tiene valor en la escala (\S+)')
+#: `{'tablas': …, 'llaves': …}`, una lectura por corrida (y lo que pone el self-check)
+_ESC = {}
+
+
+def _escala_ya_paga(fila):
+    """Por qué un aviso de ESCALA ya no hace falta. `''` si todavía hace falta.
+
+    🔑 SE REPRODUCE, COMO UN NOMBRE QUE HOY RESUELVE. COMPE DEL VACILE 1
+    (#368, URBF, 28/09/2026) se cargó con 15 personas —escala 8-15, donde
+    octavos no paga— y quedó la pregunta «¿está bien así?». Después
+    `repetidos_en_la_primera()` lo contó como su formato, 16, y se volvió a
+    cargar con 16+: los de octavos cobran 1.250 y la pregunta seguía abierta,
+    pidiéndole a Dlx que revise algo que ya no pasa.
+
+    ⚠️ SÓLO SI LA ESCALA CAMBIÓ Y ESA RONDA AHORA PAGA. Con la misma escala
+    el aviso sigue siendo cierto —una CLASIFICATORIA que no paga en ninguna—
+    y se queda. La escala es la del evento cargado (`datos/llaves_t1.json`,
+    la misma con la que el motor pagó).
+    """
+    m = _ESCALA.match(fila.get('Detalle', '') or '')
+    n = re.search(r'#\s*(\d+)', fila.get('Origen', '') or '')
+    if not (m and n):
+        return ''
+    try:
+        import motor
+        if 'llaves' not in _ESC:
+            import json
+            with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+                _ESC['llaves'] = json.load(f) or {}
+        esc = ((_ESC['llaves'].get(n.group(1)) or {}).get('escala') or '').strip()
+        if not esc or esc == m.group(2):
+            return ''
+        if 'tablas' not in _ESC:
+            _ESC['tablas'] = motor.tablas()
+        puesto = dict(motor.CAIDA).get(motor.ronda_de(m.group(1)))
+        paga = (_ESC['tablas'].get(esc) or {}).get(puesto) if puesto else None
+        return ('la escala ya es %s y «%s» paga %s' % (esc, m.group(1), paga)) if paga else ''
+    except Exception:                                    # noqa: BLE001
+        return ''
 
 
 _LISTA = {}
@@ -552,6 +597,19 @@ def _self_check():
                      'Detalle': 'Otro = 111222333444555666'}, r) == '',
        'y uno cuyo ID no está, sigue abierto')
     _LISTA.clear()
+
+    # 🔑 el aviso de ESCALA que ya no pasa (COMPE DEL VACILE 1, 28/09/2026)
+    _ESC.update({'llaves': {'368': {'escala': '16+'}, '370': {'escala': '8-15'}},
+                 'tablas': {'16+': {'octavos': 1250}, '8-15': {'cuartos': 1250}}})
+    av = 'ESCALA: la ronda «octavos» no tiene valor en la escala 8-15 y sus eliminados cobran 0 — revisar'
+    v = _resuelto_ya({'Tipo': 'Evento dudoso', 'Estado': '', 'Origen': 'evento #368', 'Detalle': av}, r)
+    ok('16+' in v and '1250' in v, 'un aviso de ESCALA se cierra si el evento se volvió a cargar con otra escala que sí paga  (%s)' % v)
+    ok(_resuelto_ya({'Tipo': 'Evento dudoso', 'Estado': '', 'Origen': 'evento #370', 'Detalle': av}, r) == '',
+       'y sigue abierto si la escala es la misma')
+    ok(_resuelto_ya({'Tipo': 'Evento dudoso', 'Estado': '', 'Origen': 'evento #368',
+                     'Detalle': 'SUMA: algo que no se reproduce'}, r) == '',
+       'y los demás avisos del motor no se cierran solos')
+    _ESC.clear()
     try:
         import decidir as _DC
         ok(set(_DC.GRUPO) == set(TIPOS), 'los tipos son los mismos que pregunta ✅ Decidir')
