@@ -153,6 +153,17 @@
     if (EST.cuotas) return { q: EST.cuotas, t: EST.cuotas_t || EST.medido };
     return null;
   }
+  // quién vuelve a jugar un segundo evento: lo deja el ciclo (`rankings.retencion()`)
+  function retencion() {
+    var r = (EST.escuchar && EST.escuchar.retencion) || EST.retencion;
+    return r && r.cohortes ? r : null;
+  }
+  // «2026-09-21» -> «21/09»; con `mas`, esa cantidad de días después
+  function semana(iso, mas) {
+    var p = String(iso).split('-').map(Number);
+    var d = new Date(Date.UTC(p[0], p[1] - 1, p[2] + (mas || 0)));
+    return ('0' + d.getUTCDate()).slice(-2) + '/' + ('0' + (d.getUTCMonth() + 1)).slice(-2);
+  }
   function paso(trabajo, n) {
     var e = EST[trabajo];
     if (!e || !e.pasos) return null;
@@ -265,8 +276,16 @@
       }
       case 'llaves': {
         var ev = (EST.escuchar && EST.escuchar.ultimo_evento) || EST.ultimo_evento;
-        if (!ev) return null;
-        return { nivel: 'ok', txt: '#' + ev.n + ' · ' + ev.sv, lineas: ['Último evento cargado: #' + ev.n + ' «' + ev.nombre + '» (' + ev.sv + '), ' + ev.dia.split('-').reverse().slice(0, 2).join('/')] };
+        var rt = retencion();
+        if (!ev && !rt) return null;
+        l = ev ? ['Último evento cargado: #' + ev.n + ' «' + ev.nombre + '» (' + ev.sv + '), ' + ev.dia.split('-').reverse().slice(0, 2).join('/')] : [];
+        if (rt) {
+          l.push(rt.jugadores + ' jugaron en la temporada; ' + rt.un_evento + ' jugaron un solo evento, y ' + rt.diez_o_mas + ' llegaron a 10');
+          rt.cohortes.slice(-4).forEach(function (c) {
+            l.push('Debutaron la semana del ' + semana(c.semana) + ': ' + c.nuevos + ' · volvieron ' + c.volvieron + ' (' + Math.round(100 * c.volvieron / Math.max(1, c.nuevos)) + ' %)' + (c.completa ? '' : ', todavía en curso'));
+          });
+        }
+        return { nivel: 'ok', txt: ev ? '#' + ev.n + ' · ' + ev.sv : rt.jugadores + ' jugadores', lineas: l };
       }
       case 'dlx': {
         var n = EST.escuchar && EST.escuchar.decidir;
@@ -719,6 +738,15 @@
     if (c.length) {
       var bien = c.filter(function (r) { return r.fin_ok === 'success'; }).length, mal = c.filter(function (r) { return r.fin_ok === 'failure'; }).length;
       M.push({ ir: 'escuchar', l: 'El ciclo · últimas ' + c.length, v: String(bien), u: 'bien', de: mal ? mal + ' con falla' : 'ninguna falló', dias: c.slice().reverse().map(function (r) { return r.estado !== 'completed' ? 'va' : r.fin_ok === 'success' ? 'ok' : r.fin_ok === 'failure' ? 'falla' : 'nada'; }), est: mal ? 'falla' : '', n: 'la última, ' + hace(c[0].t) });
+    }
+    // 🔑 quién vuelve a jugar (Dlx, 29/09: «Va»): la última semana cerrada, o
+    // la que va si todavía no se cerró ninguna
+    var rt = retencion();
+    if (rt && rt.cohortes.length) {
+      var cerradas = rt.cohortes.filter(function (c) { return c.completa; });
+      var co = cerradas.length ? cerradas[cerradas.length - 1] : rt.cohortes.slice().sort(function (a, b) { return b.nuevos - a.nuevos; })[0];
+      var pct = Math.round(100 * co.volvieron / Math.max(1, co.nuevos));
+      M.push({ ir: 'llaves', l: 'Vuelven a jugar', v: String(pct), u: '%', de: 'volvieron ' + co.volvieron + ' de ' + co.nuevos + ' que debutaron la semana del ' + semana(co.semana), p: pct, n: co.completa ? 'otro día, dentro de los 14 días' : 'todavía en curso: se cierra el ' + semana(co.semana, 20) });
     }
     var dib = EST.dibujar && EST.dibujar.cuando ? EST.dibujar : null;
     if (dib) M.push({ ir: 'dibujar', l: 'dibujar · la última', v: String(Math.round(dib.dur_s / 60)), u: 'min', de: 'de 120 min de techo', p: dib.dur_s / 72, n: hace(dib.cuando) });

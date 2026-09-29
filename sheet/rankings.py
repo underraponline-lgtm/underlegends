@@ -497,6 +497,85 @@ def _trolls():
         return lambda q: False
 
 
+#: los días que tiene alguien, desde su primer evento, para «volver a jugar»
+VUELVE_DIAS = 14
+
+
+def retencion(filas, ahora=None):
+    """Quién vuelve a jugar un segundo evento, por semana de debut. Sin nombres.
+
+    Dlx, 29/09/2026 (a la «tasa de segundo evento» del Deep Research): *«Va»*.
+    La pre-temporada terminó con el 42 % jugando UNA sola vez: esto dice,
+    cada semana, si eso se mueve.
+
+    `filas` son las de `agregar.filas`: `(evento, servidor, instante UTC,
+    rapero canónico, puntos)`, ya sin trolls. Vuelve quien juega otro evento
+    **otro día** (en hora del este) dentro de `VUELVE_DIAS` de su primero:
+    dos llaves la misma noche no es volver. La semana se nombra por su lunes
+    en hora del este, y está `completa` cuando a todos sus debutantes ya se
+    les cumplieron los 14 días; antes, `volvieron` es lo que va.
+
+    ⚠️ SÓLO CONTEOS: el archivo va al repo público.
+    """
+    try:
+        from zoneinfo import ZoneInfo
+        et = ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = _dt.timezone(_dt.timedelta(hours=-4))
+    ahora = ahora or _dt.datetime.now(_dt.timezone.utc)
+    por = defaultdict(dict)                 # rapero -> {evento: instante}
+    for num, _sv, t, quien, _pts in filas:
+        if t is None or not quien:
+            continue
+        viejo = por[quien].get(num)
+        if viejo is None or t < viejo:
+            por[quien][num] = t
+    semanas = defaultdict(lambda: [0, 0])
+    un_evento = diez = 0
+    for evs in por.values():
+        ts = sorted(evs.values())
+        un_evento += len(ts) == 1
+        diez += len(ts) >= 10
+        t1 = ts[0]
+        d1 = t1.astimezone(et).date()
+        lunes = d1 - _dt.timedelta(days=d1.weekday())
+        c = semanas[lunes]
+        c[0] += 1
+        c[1] += any(t.astimezone(et).date() > d1
+                    and t - t1 <= _dt.timedelta(days=VUELVE_DIAS) for t in ts[1:])
+    hoy = ahora.astimezone(et).date()
+    return {
+        'v': 1, 'cuando': ahora.astimezone(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'definicion': 'jugó otro evento, otro día, dentro de los %d días de su primero' % VUELVE_DIAS,
+        'jugadores': len(por), 'un_evento': un_evento, 'diez_o_mas': diez,
+        'cohortes': [{'semana': l.isoformat(), 'nuevos': c[0], 'volvieron': c[1],
+                      'completa': hoy > l + _dt.timedelta(days=6 + VUELVE_DIAS)}
+                     for l, c in sorted(semanas.items())],
+    }
+
+
+#: donde la deja para `pipeline._estado_final`, que la mete en
+#: `datos/estado_escuchar.json`. En `.cache/` (no se commitea) para no tener
+#: el mismo dato en dos archivos del repo.
+RETENCION = os.path.join(BASE, '.cache', 'retencion.json')
+
+
+def escribir_retencion(filas):
+    """Quién vuelve a jugar, en `RETENCION`, para el mapa en vivo."""
+    try:
+        r = retencion(filas)
+        os.makedirs(os.path.dirname(RETENCION), exist_ok=True)
+        with io.open(RETENCION, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(r, f, ensure_ascii=False, indent=1)
+        ult = [c for c in r['cohortes'] if c['completa']]
+        print('   🗺️ quién vuelve a jugar: %d jugadores, %d con un solo evento%s'
+              % (r['jugadores'], r['un_evento'],
+                 (' · semana del %s: volvieron %d de %d' % (ult[-1]['semana'], ult[-1]['volvieron'], ult[-1]['nuevos']))
+                 if ult else ''))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude medir quién vuelve a jugar: %s' % str(e)[:100])
+
+
 def agregar(filas_res, filas_uno, instantes=None, factor=None):
     """Las filas crudas -> {rapero: {columna: valor}}.
 
@@ -2694,6 +2773,36 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    # 🔑 QUIÉN VUELVE A JUGAR (`retencion()`): otro DÍA, dentro de los 14
+    print('\n  quién vuelve a jugar un segundo evento')
+    utc = _dt.timezone.utc
+    d0 = _dt.datetime(2026, 9, 22, 1, 0, tzinfo=utc)       # lunes 21/09, 9 PM ET
+    dia = _dt.timedelta(days=1)
+    filas = [(1, 'FFA', d0, 'Ana', 0), (2, 'FFA', d0 + 5 * dia, 'Ana', 0),      # vuelve
+             (1, 'FFA', d0, 'Bea', 0),                                         # una sola
+             (1, 'FFA', d0, 'Cris', 0), (3, 'SR', d0, 'Cris', 0),              # dos la misma noche
+             (1, 'FFA', d0, 'Dani', 0), (4, 'FFA', d0 + 20 * dia, 'Dani', 0),  # vuelve tarde
+             (4, 'FFA', d0 + 20 * dia, 'Eli', 0),                              # otra semana
+             (5, 'FFA', None, 'Fede', 0)]                                      # sin fecha: no cuenta
+    r1 = retencion(filas, ahora=d0 + 10 * dia)
+    r2 = retencion(filas, ahora=d0 + 40 * dia)
+    c1 = r2['cohortes'][0] if r2['cohortes'] else {}
+    casos = [
+        ('la semana se nombra por su lunes, en hora del este', c1.get('semana'), '2026-09-21'),
+        ('4 debutaron esa semana y volvió 1 (dos la misma noche no es volver; a los 20 días, tarde)',
+         (c1.get('nuevos'), c1.get('volvieron')), (4, 1)),
+        ('a los 10 días la semana todavía no está completa', r1['cohortes'][0]['completa'], False),
+        ('a los 40, sí', c1.get('completa'), True),
+        ('la otra semana es otra cohorte', [c['nuevos'] for c in r2['cohortes']], [4, 1]),
+        ('jugadores, con un solo evento y con 10 o más (sin fecha no cuenta)',
+         (r2['jugadores'], r2['un_evento'], r2['diez_o_mas']), (5, 2, 0)),
+        ('sin nombres adentro', 'Ana' in json.dumps(r2), False),
+    ]
+    for que, dio, esp in casos:
+        ok = dio == esp
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     return mal
 
 
@@ -2780,6 +2889,9 @@ def main():
             print('   ⚠️ Es una hoja PÚBLICA. El respaldo completo está en')
             print('      docs/sheet_respaldo/ (sheet/respaldar.py).\n')
             return 0
+
+        # 🗺️ quién vuelve a jugar, con las mismas filas: no se lee nada más
+        escribir_retencion(getattr(agregar, 'filas', None) or [])
 
         # 🔴 TRES PUERTAS ANTES DE TOCAR UNA HOJA PÚBLICA, y cada una
         # tapa una forma distinta de romperla sin que nada falle.

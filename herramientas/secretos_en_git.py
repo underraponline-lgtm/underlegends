@@ -43,6 +43,10 @@ PUBLICOS = {
     'DISCORD_APP_ID':     'un ID, es público',
     'MEE6_APP_ID':        'un ID, es público',
     'DISCORD_GUILD_PRUEBA': 'el guild de FFA, es público',
+    # 🗺️ el nombre del repo público: está en el remote y en `paginas/mapa.js`,
+    # que lee sus corridas por la API de GitHub (29/09/2026). Marcado como
+    # filtrado pedía «rotarlo», que para un nombre de repo no existe.
+    'GH_REPO':            'el nombre del repo público: lo lee mapa.js',
 }
 
 # Debajo de esto no se busca: un valor corto da coincidencias por casualidad

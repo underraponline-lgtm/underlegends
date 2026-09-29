@@ -340,6 +340,16 @@ def _estado_final(codigo, destino=None, cuotas=True):
         ev = _ultimo_evento()
         if ev:
             out['ultimo_evento'] = ev
+        # quién vuelve a jugar un segundo evento: lo mide `rankings.py` en el
+        # paso 1c (`rankings.RETENCION`); si esta corrida no lo midió, sigue
+        # valiendo el de la anterior
+        try:
+            with io.open(os.path.join(BASE, '.cache', 'retencion.json'), encoding='utf-8') as f:
+                ret = json.load(f)
+        except (OSError, ValueError):
+            ret = viejo.get('retencion')
+        if ret:
+            out['retencion'] = ret
         if cuotas:
             q = {}
             try:
