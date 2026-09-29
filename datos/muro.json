@@ -105,17 +105,17 @@
 "temporada"
 ]
 },
-"badterne": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "deluxe": {
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"badterne": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
