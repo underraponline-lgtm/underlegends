@@ -344,6 +344,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Pollo Sport = Polosport, Lord = Lord Viruzz, Adachi = Nobu, Sábado = Guess** | *«6. A»* | ✅ `datos/akas_a_mano.json`; el «no confundir» Lord/Lord Viruzz, fuera |
 | **Denik es dnk.x** (su ID estaba en la fila de fleivaman) | *«7. A»* | ✅ la Lista, con nota y respaldo |
 | **Crack and Krank queda como está** | *«8. No lo sé la verdad»* | ✅ nada que hacer |
+| **La llamada resuelve sola** cuando el nombre raro de la llave es **exactamente** el de una sola persona que estaba en la llamada mientras se jugaba y esa persona ya está en la Lista: alias, aunque ese nombre sea de varias cuentas. Si no está en la Lista, la llamada no da de alta a nadie | *«1. A»* (29/09, 6:15 AM) | ✅ `decidir._cuenta_de()`, fuente «llamada» |
+| **Los commits viejos no se le piden borrar a GitHub**: quedan sueltos hasta su limpieza | *«2. B»* | ✅ nada que hacer |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
@@ -412,7 +414,9 @@ lo del día, y deja las reglas al final (en cada tema, la más nueva primero).
     de FFA, mientras se jugaba, estaba «MOTERA» (en la Lista: Jult)»*, y si
     esa cuenta está en la Lista, «Es Jult» entra como opción. Sólo cuenta
     quien se vio desde 1 h antes de publicada la llave hasta 5 h después.
-    ⚠️ Pista y no respuesta: en la llamada también hay público.
+    Un nombre parecido es sólo pista (en la llamada también hay público);
+    el nombre EXACTO de una sola persona que ya está en la Lista se
+    resuelve solo como su alias (*«1. A»*, 6:15 AM).
   - Se prueba de verdad la primera noche con un evento (a verificar).
   - `websocket-client` entra a `requirements.txt`, y la auditoría de
     dependencias ya sabe que `import websocket` es ese paquete.
@@ -1967,15 +1971,13 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **¿La llamada también resuelve sola?** Hoy es una pista en ✅ Decidir. Si
-  el nombre raro de la llave es **exactamente** el de una sola persona que
-  estaba en la llamada y esa persona está en la Lista, se podría anotar el
-  alias solo, como la regla de «una sola cuenta». **A** · sí, solo · **B** ·
-  no, que quede como pista (así está).
-- **Los commits viejos en GitHub**: ya no los muestra ninguna rama, pero
-  quien tenga el código exacto todavía los abre, hasta que GitHub limpie.
-  **A** · te dejo el texto y se lo mandás a GitHub Support desde la cuenta
-  dueña (sólo esa puede) · **B** · no hace falta.
+- **Para el remake (cuando lo abramos juntos)**: el hub es sin framework y sin
+  build; shadcn y Magic UI son de React. **A** · seguimos sin framework, con
+  criterio (`frontend-design` o Impeccable) y ojos (el navegador, más
+  Lighthouse) · **B** · pasamos a React y ahí sí sirven esas librerías.
+- ✅ ~~**¿La llamada también resuelve sola?**~~ *«1. A»*: hecho, sólo alias y
+  sólo con el nombre exacto de una persona de la Lista.
+- ✅ ~~**Los commits viejos en GitHub**~~ *«2. B»*: no se pide nada.
 - ✅ ~~**El historial limpio no sube**~~: subió a las 5:43 AM, con HTTP/1.1.
 - **Y para mirar juntos después**: 5 con cuenta nueva probable (el ID que
   tenían ya no existe): Incognito, DUI, JUANK, Ambidextro (JANDER) y Camila,

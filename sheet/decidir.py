@@ -543,6 +543,16 @@ def _cuenta_de(p, eventos):
         did = (_podio().get('%s|%s|%s' % (norm(ev[0]), ev[1], ev[2])) or {}).get(k)
         if did:
             return [str(did)], 'podio'
+    # 🎙️ LA LLAMADA (Dlx, 29/09/2026, «1. A»): UNA sola persona que estaba en
+    # la llamada de ese servidor mientras se jugaba esa llave, con EXACTAMENTE
+    # ese nombre, y que ya está en la Lista. Va antes que el nombre suelto:
+    # cuando «Sol» es de cinco cuentas, la que estaba ahí es la que jugó.
+    # ⚠️ SÓLO ALIAS: si esa cuenta no está en la Lista, la llamada no da de
+    # alta a nadie —sigue la regla de siempre, por el nombre—.
+    if len(k) >= 3:
+        _ev, exactos, _par = _de_la_llamada(p['detalle'], _num_evento(p), eventos)
+        if len(exactos) == 1 and exactos[0][0] in _lista_por_id():
+            return [exactos[0][0]], 'llamada'
     return sorted(_apodos().get(k) or set()) if len(k) >= 3 else [], 'Discord'
 
 
@@ -618,21 +628,15 @@ def _llamada(sv):
     return c[sv]
 
 
-def _en_llamada(nombre, num):
-    """`(pista, [nombres de la Lista])`: si el nombre desconocido es el de
-    alguien que estaba en la llamada de ese servidor mientras se jugaba esa
-    llave. La foto la saca el ciclo sólo con un evento en vivo; sin foto,
-    no hay pista.
-
-    🔑 Dlx, 29/09/2026: *«quizás para facilitar el proceso podrías chequear
-    quiénes están en la llamada?»* — el suplente, o el que jugó sin
-    anotarse. ⚠️ PISTA Y NO RESPUESTA, como `_en_discord()`: en la llamada
-    también hay público, y un nombre parecido no prueba nada solo.
+def _de_la_llamada(nombre, num, eventos=None):
+    """`(evento, exactos, parecidos)`: quién estaba en la llamada de ese
+    servidor mientras se jugaba esa llave, con ese nombre (`exactos`) o uno
+    parecido. Cada uno es `(discord_id, {n, c, t})`. Sin foto, listas vacías.
     """
-    ev = (_DATOS.get('eventos') or {}).get(str(num or ''))
+    ev = (eventos if eventos is not None else (_DATOS.get('eventos') or {})).get(str(num or ''))
     k = norm(_sin_bandera(nombre))
     if not ev or len(k) < 3:
-        return '', []
+        return ev, [], []
     import llaves_web as LW
     ms = LW._primero((_llaves_t1().get(str(num)) or {}).get('links'))
     if ms is not None:
@@ -641,7 +645,7 @@ def _en_llamada(nombre, num):
         # sin el link de la llave, el día entero (hora del este)
         ms = LW.ms_de_fecha(ev[2])
         if ms is None:
-            return '', []
+            return ev, [], []
         desde, hasta = ms - 12 * 3600000, ms + 12 * 3600000
     exactos, parecidos = [], []
     for did, e in _llamada(ev[1]).items():
@@ -653,6 +657,22 @@ def _en_llamada(nombre, num):
         elif any(len(x) >= CORTO and (k in x or x in k or difflib.SequenceMatcher(None, k, x).ratio() >= 0.8)
                  for x in ks):
             parecidos.append((did, e))
+    return ev, exactos, parecidos
+
+
+def _en_llamada(nombre, num):
+    """`(pista, [nombres de la Lista])`: si el nombre desconocido es el de
+    alguien que estaba en la llamada de ese servidor mientras se jugaba esa
+    llave. La foto la saca el ciclo sólo con un evento en vivo; sin foto,
+    no hay pista.
+
+    🔑 Dlx, 29/09/2026: *«quizás para facilitar el proceso podrías chequear
+    quiénes están en la llamada?»* — el suplente, o el que jugó sin
+    anotarse. ⚠️ UN NOMBRE PARECIDO ES SÓLO PISTA: en la llamada también hay
+    público. El nombre EXACTO de una sola persona que ya está en la Lista se
+    resuelve solo (`_cuenta_de()`, «1. A» del 29/09).
+    """
+    ev, exactos, parecidos = _de_la_llamada(nombre, num)
     cuales = exactos or parecidos
     if not cuales:
         return '', []
@@ -692,6 +712,11 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         la cuenta ya está en la Lista   alias de esa persona (hoja AKAs)
         no está                         fila nueva en la Lista, con esa cuenta
                                         y la bandera del nombre de la llave
+
+    🎙️ Y LA LLAMADA (Dlx, 29/09/2026, «1. A»): el nombre EXACTO de una sola
+    persona que estaba en la llamada mientras se jugaba esa llave, si ya está
+    en la Lista, es alias suyo aunque ese nombre sea de varias cuentas. Si no
+    está en la Lista, la llamada no da de alta a nadie. Ver `_cuenta_de()`.
 
     ⚠️ LA CUENTA QUE SALE SÓLO POR EL NOMBRE, SÓLO SI ESTÁ EN EL SERVIDOR DEL
     EVENTO: «MHS» se parece a demasiada gente, y quien jugó un evento de FFA
@@ -766,13 +791,17 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             if len(ev) < 2 or ev[1] not in donde:
                 continue
         porque = {'inscripción': 'se anotó así en inscripciones',
-                  'podio': 'el podio de la llave lo menciona'}.get(fuente, 'la misma cuenta de Discord')
+                  'podio': 'el podio de la llave lo menciona',
+                  'llamada': 'estaba en la llamada del evento con ese nombre'}.get(fuente, 'la misma cuenta de Discord')
         real = por_id.get(did)
         if real:
             if AK.son_distintos(det, real, akas):
                 continue
             pares.append([_sin_bandera(det), real, ''.join(_BANDERA.findall(det))])
             hechas.append((p, 'alias de %s: %s' % (real, porque)))
+        elif fuente == 'llamada':
+            # la llamada sólo hace alias (ver `_cuenta_de()`): no da de alta
+            continue
         elif len(k) > CORTO and any(k in c or c in k for c in en_lista_n if len(c) > CORTO):
             # ⚠️ ALGUIEN DE LA LISTA SE LLAMA PARECIDO («pollo» y Pollo Sport):
             # puede ser la misma persona sin su cuenta cargada. Eso lo decide
@@ -2367,6 +2396,19 @@ def _self_check():
                'un nombre parecido dice «parecido», no «estaba»')
             ok(_en_llamada('ZORRO', '371')[0] == '' and _en_llamada('MOTERA', '999')[0] == '',
                'quien estuvo en la llamada tres días antes no cuenta, y sin evento no hay pista')
+            # 🔑 «1. A» (29/09): el nombre EXACTO de UNA persona de la llamada
+            # que ya está en la Lista se resuelve solo, como alias
+            ok(por_discord(qs, {}, ev4, dry=True) == {qs[0]['id']},
+               'la llamada resuelve sola: «MOTERA» es alias de Jult, que estaba en la llamada con ese nombre')
+            _DATOS['llamada']['FFA']['5'] = {'n': ['Motera'], 'c': ['🎤'], 't': [t0 + 900000]}
+            qs = armar([(91, {'Tipo': nd, 'Detalle': 'MOTERA 🇨🇴', 'Origen': 'evento #371'})], ev4)
+            ok(por_discord(qs, {}, ev4, dry=True) == set(),
+               'con dos «MOTERA» en la llamada no elige: queda la pregunta')
+            del _DATOS['llamada']['FFA']['5']
+            _DATOS['llamada']['FFA']['6'] = {'n': ['RAREZA'], 'c': ['🎤'], 't': [t0 + 900000]}
+            qs = armar([(92, {'Tipo': nd, 'Detalle': 'RAREZA', 'Origen': 'evento #371'})], ev4)
+            ok(por_discord(qs, {}, ev4, dry=True) == set() and 'estaba «RAREZA»' in qs[0]['pistas'],
+               'quien no está en la Lista no entra por la llamada: sólo la pista')
         finally:
             _LLAVES_T1[:] = viejas
     finally:
