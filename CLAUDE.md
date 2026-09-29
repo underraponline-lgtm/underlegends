@@ -2112,6 +2112,10 @@ bot/              el lector de Discord y el ciclo
                   invitaciones.py la invitación permanente de la Liga en cada
                                   servidor (se crea a mano) y cuántos entran
                                   por ella (paso 2b5 → datos/invitaciones.json)
+                  en_llamada.py   quién está en la llamada, SÓLO con un evento
+                                  en vivo: una foto por el Gateway (paso 1b2)
+                                  a KV `voz:<SV>`, nunca al repo ni al log.
+                                  La usa ✅ Decidir como pista del «¿quién es?»
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
                   avisos_casos.py el contrato Python<->JS del lector de

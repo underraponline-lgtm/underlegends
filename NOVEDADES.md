@@ -337,9 +337,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **La sección de llaves tiene que mejorar bastante** | *«Como te dije la seccion de llaves de eventos tiene que mejorar bastante»* | ⏳ con el remake de la web |
 | **El anuncio y su llave pueden decir distinto número y ser el mismo evento** (TOKYO VOL 17 se anunció «VOL 17 1VS1» y su llave dice «VOL 16»): se juntan por la serie, el horario y la forma; nunca por el número solo, y con dos posibles no se elige | *«aquí se equivocaron en el anuncio. Pusieron 17 cuando era 16… A veces pasa esto que el anuncio y el título de la llave no tienen sentido pero son del mismo… asegúrate de tener cuidado con ello»* (29/09, 4:30 AM) | ✅ `llaves_web._huerfanas()` (1.51) |
 | **La NAVE DE FUNA cuenta** | *«1. A»* (29/09, 4 AM) | ✅ ya estaba (1.50) |
-| **La llamada se mira sólo con un evento en vivo**, una foto y sin quedarse conectado | *«Si pero fíjate muy bien para no gastar recursos y solo cuando en vivo seria rentable»* | ⏳ en construcción |
+| **La llamada se mira sólo con un evento en vivo**, una foto y sin quedarse conectado | *«Si pero fíjate muy bien para no gastar recursos y solo cuando en vivo seria rentable»* | ✅ `bot/en_llamada.py` (paso 1b2), a KV `voz:<SV>`; la pista, en ✅ Decidir (`_en_llamada()`) |
 | **La cuenta de las invitaciones no se muestra en ningún lado** | *«3. ninguno. no hagas nada de ahí»* | ✅ nada que hacer: sigue guardándose sola en `datos/invitaciones.json` |
-| **IDs y apodos de la gente no van al repo público, tampoco en el historial**; antes de reescribirlo, respaldo | *«4. A y haz el back up xq los akas son importantes»* | 🟡 respaldo hecho y el historial limpio en la PC (rama `limpio`); **falta subirlo** (ver ❓) |
+| **IDs y apodos de la gente no van al repo público, tampoco en el historial**; antes de reescribirlo, respaldo | *«4. A y haz el back up xq los akas son importantes»* | ✅ respaldo fuera del repo y **el historial limpio en GitHub desde las 5:43 AM**. GitHub todavía sirve los commits viejos a quien tenga su código exacto (ver ❓) |
 | **Los 8 IDs de la T1**: Eze, Noone, TG, Carlos, Santi, Ardean, Kenny y Fleivacheck | *«5. A»* | ✅ la Lista (4 en su fila, 4 filas nuevas) |
 | **Pollo Sport = Polosport, Lord = Lord Viruzz, Adachi = Nobu, Sábado = Guess** | *«6. A»* | ✅ `datos/akas_a_mano.json`; el «no confundir» Lord/Lord Viruzz, fuera |
 | **Denik es dnk.x** (su ID estaba en la fila de fleivaman) | *«7. A»* | ✅ la Lista, con nota y respaldo |
@@ -374,20 +374,48 @@ lo del día, y deja las reglas al final (en cada tema, la más nueva primero).
 - 🪪 **Tus 5, 6 y 7**, en la Lista y en `akas_a_mano.json` (commit de las
   4:04 AM). Eze y Kenny son Miembros: su tarjeta sale en la corrida de las
   11:22 AM (a verificar).
-- 🧹 **El historial (4 · A)**: respaldo verificado fuera del repo
-  (`LigaGlobal_Tarjetas_respaldos/`, el bundle de 88 MB con los 593 commits y
-  los 4 archivos de apodos) y el historial reescrito en la PC, con el árbol
-  idéntico. **Subirlo no anduvo**: son 88 MB (el historial nuevo no comparte
-  commits con el viejo, así que git manda todo) y el WiFi de la PC se cortó
-  las tres veces. Un atajo —una rama puente que volvía a colgar los commits
-  viejos— lo frenó el control de seguridad, con razón: republicaba justo lo
-  que se quiere sacar. Queda como pregunta (❓).
-  - Mientras tanto se trabaja sobre el historial público (rama `publico`), y
-    el limpio queda en la rama `limpio`. **Antes del push forzado** hay que
-    pasar al limpio todo lo que llegue a `main` después de `9505f4e`:
-    `git rebase --onto limpio 9505f4e publico`, y el lease sobre la punta
-    nueva del remoto.
-- 🎙️ **La llamada (2)**: en construcción.
+- 🧹 **El historial (4 · A), subido a las 5:43 AM.** Respaldo verificado
+  fuera del repo (`LigaGlobal_Tarjetas_respaldos/`: el bundle de 88 MB con
+  los 593 commits y los 4 archivos de apodos) y los 593 commits reescritos
+  con el árbol idéntico. Los tres primeros intentos se cortaron: el
+  historial nuevo no comparte commits con el viejo, así que git manda los
+  88 MB enteros, y sobre HTTP/2 la subida se colgaba (una vez llegó al
+  100 % y GitHub cortó al final). **Forzar HTTP/1.1 lo destrabó**
+  (`git -c http.version=HTTP/1.1 push`). Un atajo —una rama puente que
+  volvía a colgar los commits viejos en el repo público— lo frenó el
+  control de seguridad, con razón: republicaba justo lo que se quería
+  sacar.
+  - Antes del push se pasaron al historial limpio los dos commits de hoy
+    (TOKYO y estas novedades) y el lease fue sobre la punta del remoto.
+    En la PC se borraron `refs/original`, el reflog y los objetos viejos:
+    no queda ningún `docs/apodos_*`. 0 forks del repo.
+  - ⚠️ **GitHub todavía sirve el commit viejo a quien tenga su código
+    exacto** (`9505f4e…` responde): queda suelto, sin rama que lo muestre,
+    hasta que GitHub haga su limpieza. Para borrarlo ya, se le pide a
+    GitHub Support desde la cuenta dueña (ver ❓).
+- 🎙️ **La llamada (2), hecha: `bot/en_llamada.py`, paso 1b2 del ciclo.**
+  - **Sólo con un evento en vivo**, con la ventana del vigía: de 15 min
+    antes del arranque a 5 h después, o una llave publicada en las últimas
+    3 h (`/avisos/vivo`). Sin eso no se conecta.
+  - **Discord sólo lo dice por el Gateway** (no hay ruta REST que liste un
+    canal de voz): una conexión de segundos con `GUILDS` y
+    `GUILD_VOICE_STATES`, ninguno privilegiado. Sin el de presencias, el
+    estado de cada servidor trae como miembros sólo al bot y a quien está
+    en voz. Probado contra Discord a las 5:50 AM: READY con los 7
+    servidores, y cada uno con miembros=1 (el bot) y nadie en voz a esa
+    hora. La red de la PC estaba en ~10 KB/s; en el runner son segundos.
+  - 🔒 **Son IDs de gente**: van a KV (`voz:<SV>`, vence a los 3 días) y el
+    log dice cuántos, nunca quién —los logs de Actions son públicos—. Se
+    guarda **cuándo se vio a cada uno**, no la fecha: un evento de las
+    11:50 PM con la llave de las 12:05 AM cae en dos días.
+  - **✅ Decidir lo usa como pista** del «¿quién es X?»: *«🎙️ En la llamada
+    de FFA, mientras se jugaba, estaba «MOTERA» (en la Lista: Jult)»*, y si
+    esa cuenta está en la Lista, «Es Jult» entra como opción. Sólo cuenta
+    quien se vio desde 1 h antes de publicada la llave hasta 5 h después.
+    ⚠️ Pista y no respuesta: en la llamada también hay público.
+  - Se prueba de verdad la primera noche con un evento (a verificar).
+  - `websocket-client` entra a `requirements.txt`, y la auditoría de
+    dependencias ya sabe que `import websocket` es ese paquete.
 ## 📅 Martes 29/09 (2:30 AM) — versión 1.50
 
 Tus tres NAVES DE FUNA de ejemplo, *«2. A»*, *«3. no lo sé… tienes que estar
@@ -1939,11 +1967,16 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **El historial limpio no sube** (29/09, 5:30 AM): 88 MB y el WiFi de la PC
-  se corta a mitad. **A** · lo sigo intentando solo hasta que la conexión
-  aguante · **B** · lo subo en partes de ~15 MB por una rama temporal que tiene
-  sólo el historial limpio, y la borro al final · **C** · lo corrés vos desde
-  otra conexión (un comando).
+- **¿La llamada también resuelve sola?** Hoy es una pista en ✅ Decidir. Si
+  el nombre raro de la llave es **exactamente** el de una sola persona que
+  estaba en la llamada y esa persona está en la Lista, se podría anotar el
+  alias solo, como la regla de «una sola cuenta». **A** · sí, solo · **B** ·
+  no, que quede como pista (así está).
+- **Los commits viejos en GitHub**: ya no los muestra ninguna rama, pero
+  quien tenga el código exacto todavía los abre, hasta que GitHub limpie.
+  **A** · te dejo el texto y se lo mandás a GitHub Support desde la cuenta
+  dueña (sólo esa puede) · **B** · no hace falta.
+- ✅ ~~**El historial limpio no sube**~~: subió a las 5:43 AM, con HTTP/1.1.
 - **Y para mirar juntos después**: 5 con cuenta nueva probable (el ID que
   tenían ya no existe): Incognito, DUI, JUANK, Ambidextro (JANDER) y Camila,
   que juega la T1.

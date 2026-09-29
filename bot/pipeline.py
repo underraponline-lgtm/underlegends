@@ -828,6 +828,19 @@ def _lo_barato(correr):
             print('      %-42s %d -> %d'
                   % ('en qué servidores está cada uno', antes_s, hay_s))
 
+    # 🎙️ QUIÉN ESTÁ EN LA LLAMADA, sólo con un evento en vivo. Dlx,
+    # 29/09/2026: «fíjate muy bien para no gastar recursos y solo cuando en
+    # vivo seria rentable». Sin nada en vivo no se conecta; con algo, una
+    # foto de unos segundos por el Gateway, a KV (son IDs: nunca al repo ni
+    # al log). Va DESPUÉS de 1c, que refresca los anuncios, y ANTES de 2d,
+    # donde ✅ Decidir la usa como pista. Ver `bot/en_llamada.py`.
+    paso('1b2', 'quién está en la llamada (sólo con un evento en vivo)')
+    if not correr:
+        print('      miraría si hay un evento en vivo y, si hay, quién está '
+              'en la llamada')
+    else:
+        corre(['bot/en_llamada.py', '--aplicar'], callado=False)
+
     # ── 2 · los pools, desde el Sheet ───────────────────────────────
     paso(2, 'el padrón y los pools, desde el Sheet')
     if '--sin-pools' in sys.argv:

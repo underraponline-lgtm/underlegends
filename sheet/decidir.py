@@ -39,6 +39,7 @@ y lo que se decide acá vuelve a ella como `Resuelto`, con quién y qué.
 """
 import collections
 import datetime
+import difflib
 import hashlib
 import io
 import json
@@ -236,6 +237,8 @@ def armar(abiertas, eventos=None):
     a todas.
     """
     eventos = eventos or {}
+    # para las pistas que necesitan el servidor y la fecha del evento
+    _DATOS['eventos'] = eventos
     por = collections.OrderedDict()
     grupo_de = {}
     for n, f in abiertas:
@@ -570,10 +573,8 @@ def _en_discord(nombre):
     ids = sorted((_apodos().get(k) or set()) if len(k) >= 3 else set())
     if not ids:
         return '', []
-    if 'lista_por_id' not in _DATOS:
-        _DATOS['lista_por_id'] = {str(r.get('discord_id')): (r.get('raw') or r.get('full'))
-                                  for r in _datos('padron') or [] if r.get('discord_id')}
-    en_lista = [_DATOS['lista_por_id'][d] for d in ids if d in _DATOS['lista_por_id']]
+    por_id = _lista_por_id()
+    en_lista = [por_id[d] for d in ids if d in por_id]
     fuera = len(ids) - len(en_lista)
     if len(ids) == 1:
         pista = ('En Discord es la cuenta de «%s» en la Lista' % en_lista[0] if en_lista
@@ -584,6 +585,84 @@ def _en_discord(nombre):
                                      ' y %d que no' % fuera if fuera else '')
             if en_lista else ', ninguna en la Lista'))
     return pista, en_lista
+
+
+def _lista_por_id():
+    """`{discord_id: nombre en la Lista}`, del padrón."""
+    if 'lista_por_id' not in _DATOS:
+        _DATOS['lista_por_id'] = {str(r.get('discord_id')): (r.get('raw') or r.get('full'))
+                                  for r in _datos('padron') or [] if r.get('discord_id')}
+    return _DATOS['lista_por_id']
+
+
+#: 🎙️ estar en la llamada cuenta desde 1 hora antes de publicada la llave
+#: hasta 5 después: la llave sale al arrancar y un evento dura hasta 3 o 4 h
+LLAMADA_H = (1, 5)
+#: el self-check no sale a la red: sin foto cargada a mano, no hay llamada
+SIN_RED = False
+
+
+def _llamada(sv):
+    """`{discord_id: {n, c, t}}`: quién se vio en la llamada de ese servidor
+    en los últimos 3 días (`bot/en_llamada.py`, en KV), o `{}`."""
+    c = _DATOS.setdefault('llamada', {})
+    if sv not in c:
+        c[sv] = {}
+        if not SIN_RED:
+            try:
+                sys.path.append(os.path.join(BASE, 'bot'))
+                import en_llamada as LL
+                c[sv] = (LL.leer(sv) or {}).get('gente') or {}
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ no pude leer la llamada de %s: %s' % (sv, str(e)[:60]))
+    return c[sv]
+
+
+def _en_llamada(nombre, num):
+    """`(pista, [nombres de la Lista])`: si el nombre desconocido es el de
+    alguien que estaba en la llamada de ese servidor mientras se jugaba esa
+    llave. La foto la saca el ciclo sólo con un evento en vivo; sin foto,
+    no hay pista.
+
+    🔑 Dlx, 29/09/2026: *«quizás para facilitar el proceso podrías chequear
+    quiénes están en la llamada?»* — el suplente, o el que jugó sin
+    anotarse. ⚠️ PISTA Y NO RESPUESTA, como `_en_discord()`: en la llamada
+    también hay público, y un nombre parecido no prueba nada solo.
+    """
+    ev = (_DATOS.get('eventos') or {}).get(str(num or ''))
+    k = norm(_sin_bandera(nombre))
+    if not ev or len(k) < 3:
+        return '', []
+    import llaves_web as LW
+    ms = LW._primero((_llaves_t1().get(str(num)) or {}).get('links'))
+    if ms is not None:
+        desde, hasta = ms - LLAMADA_H[0] * 3600000, ms + LLAMADA_H[1] * 3600000
+    else:
+        # sin el link de la llave, el día entero (hora del este)
+        ms = LW.ms_de_fecha(ev[2])
+        if ms is None:
+            return '', []
+        desde, hasta = ms - 12 * 3600000, ms + 12 * 3600000
+    exactos, parecidos = [], []
+    for did, e in _llamada(ev[1]).items():
+        if not any(desde <= t <= hasta for t in e.get('t') or ()):
+            continue
+        ks = {norm(_sin_bandera(x)) for x in e.get('n') or ()} - {''}
+        if k in ks:
+            exactos.append((did, e))
+        elif any(len(x) >= CORTO and (k in x or x in k or difflib.SequenceMatcher(None, k, x).ratio() >= 0.8)
+                 for x in ks):
+            parecidos.append((did, e))
+    cuales = exactos or parecidos
+    if not cuales:
+        return '', []
+    por_id = _lista_por_id()
+    quienes = ['«%s»%s' % ((e.get('n') or ['?'])[0], ' (en la Lista: %s)' % por_id[d] if d in por_id else '')
+               for d, e in cuales[:3]]
+    pista = '🎙️ En la llamada de %s, mientras se jugaba, %s %s' % (
+        ev[1], 'estaba' if exactos else ('había alguien parecido:' if len(cuales) == 1
+                                         else 'había %d parecidos:' % len(cuales)), _y(quienes))
+    return pista, [por_id[d] for d, _ in cuales if d in por_id]
 
 
 #: un nombre de hasta tantas letras es «corto»: se parece a demasiada gente
@@ -754,6 +833,7 @@ def _pistas(p):
         if sug:
             out.append('¿Será %s?' % ' o '.join(sug))
         out.append(_en_discord(p['detalle'])[0])
+        out.append(_en_llamada(p['detalle'], _num_evento(p))[0])
         out.append(_termino(p['detalle'], _num_evento(p)))
         out += _peleas(p['detalle'], _num_evento(p))
     elif t == 'Batalla sin ganador':
@@ -907,9 +987,12 @@ def _pregunta(p):
         # 🔑 Y PRIMERO LA CUENTA DE DISCORD QUE YA ESTÁ EN LA LISTA con otro
         # nombre: es la respuesta más probable. Ver `_en_discord()`.
         dc = [x for x in _en_discord(det)[1] if norm(x) not in {norm(s) for s in sug}]
+        # 🎙️ y quien estaba en la llamada con ese nombre, si está en la Lista
+        ll = [x for x in _en_llamada(det, _num_evento(p))[1]
+              if norm(x) not in {norm(s) for s in dc + sug}]
         return ('¿Quién es «%s»?%s' % (det, tambien),
                 ', '.join(sug) if sug else '—',
-                ['Es %s' % s for s in dc + sug] + [NUEVO, TROLL])
+                ['Es %s' % s for s in dc + ll + sug] + [NUEVO, TROLL])
     if t == 'alta':
         quien = _sin_decoracion(_reparar(det.split(' = ')[0].strip()))
         did = det.split(' = ')[-1].strip() if ' = ' in det else ''
@@ -1967,8 +2050,11 @@ def correr(dry=True):
 
 
 def _self_check():
+    global SIN_RED
     print('\n  decidir.py — self-check\n')
     mal = 0
+    # la llamada vive en KV: el self-check no la pide (ver `_llamada()`)
+    SIN_RED = True
 
     def ok(cond, que):
         nonlocal mal
@@ -2258,6 +2344,31 @@ def _self_check():
         pintar(qs, {}, {b: (EN_BLOQUE, '')}, [], dry=True)
         ok(sum(1 for f in pintar.filas if f[-1] == b) == 1,
            'la hoja tiene la fila del bloque, con su id')
+        # 🎙️ la llamada (Dlx, 29/09/2026: «podrías chequear quiénes están en
+        # la llamada?»): la foto se carga a mano, el self-check no sale a la red
+        t0 = 1790660472174                 # 03:41 UTC del 29/09, la llave del 1vs1
+        viejas = list(_LLAVES_T1)
+        _LLAVES_T1[:] = [{'371': {'links': ['https://discord.com/channels/1/2/%d'
+                                            % ((t0 - 1420070400000) << 22)]}}]
+        _DATOS.pop('lista_por_id', None)
+        _DATOS['llamada'] = {'FFA': {
+            '2': {'n': ['MOTERA', 'motera_x'], 'c': ['🎤'], 't': [t0 + 600000]},
+            '7': {'n': ['snowzzzz'], 'c': ['🎤'], 't': [t0 + 1200000]},
+            '8': {'n': ['ZORRO'], 'c': ['🎤'], 't': [t0 - 3 * 86400000]}}}
+        ev4 = {'371': ('DESGRACIAS EN TOKYO VOL 16', 'FFA', '28/09')}
+        try:
+            qs = armar([(90, {'Tipo': nd, 'Detalle': 'MOTERA 🇨🇴', 'Origen': 'evento #371'})], ev4)
+            pz, en = _en_llamada('MOTERA 🇨🇴', '371')
+            ok('estaba «MOTERA» (en la Lista: Jult)' in pz and en == ['Jult'],
+               'el nombre raro de la llave estaba en la llamada mientras se jugaba: es una cuenta de la Lista  %s' % pz)
+            ok('Es Jult' in qs[0]['opciones'] and pz in qs[0]['pistas'],
+               'y va como pista y como opción de la pregunta')
+            ok('había alguien parecido: «snowzzzz»' in _en_llamada('snow', '371')[0],
+               'un nombre parecido dice «parecido», no «estaba»')
+            ok(_en_llamada('ZORRO', '371')[0] == '' and _en_llamada('MOTERA', '999')[0] == '',
+               'quien estuvo en la llamada tres días antes no cuenta, y sin evento no hay pista')
+        finally:
+            _LLAVES_T1[:] = viejas
     finally:
         _DATOS.clear()
         _DATOS.update(antes)

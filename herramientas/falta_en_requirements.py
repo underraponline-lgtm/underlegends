@@ -57,6 +57,9 @@ PAQUETE = {
     'PIL': 'pillow',
     'yaml': 'pyyaml',
     'dateutil': 'python-dateutil',
+    # la llamada: `bot/en_llamada.py`. ⚠️ NO es el paquete `websocket` de
+    # PyPI, que es otro y no sirve: es `websocket-client`
+    'websocket': 'websocket-client',
 }
 
 

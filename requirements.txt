@@ -14,6 +14,10 @@ google-auth
 requests
 playwright
 pillow
+# 🎙️ QUIÉN ESTÁ EN LA LLAMADA sólo lo dice el Gateway de Discord (no hay
+# ruta REST que liste un canal de voz). Lo usa `bot/en_llamada.py`, y sólo
+# mientras un servidor tiene un evento en vivo.
+websocket-client
 # 🔴 NUMPY FALTABA Y TIRABA DOS DE LAS CUATRO CARTAS. Los exportadores de
 # la Competitiva y la de País lo usan para medir la unión de lo que
 # sobresale del recorte y para verificar que las cuatro esquinas del PNG
