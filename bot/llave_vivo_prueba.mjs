@@ -91,6 +91,27 @@ ok('el podio en su propio mensaje se pega a su llave, y dice el campeón',
 ok('un podio que no nombra a un finalista no se pega',
   LV.unirPartidas([wc[0], wc[1], Object.assign({}, wc[2], { texto: wc[2].texto.replace(/FULLY/g, 'OTRO') })]).length === 2);
 ok('ni a una llave que no llegó a la final', LV.unirPartidas([wc[0], wc[2]]).length === 2);
+// 🔑 LO QUE EL CICLO YA SABÍA Y LA PÁGINA NO (28/09/2026), medido sobre las 74
+// llaves reales guardadas: el campeón que no engancha, y la cuenta de gente.
+const fin = (t) => { const x = LV.aLlave({ id: '1', texto: t }); return x && x.rondas[x.rondas.length - 1].b[0][1]; };
+const semis = '# COPA\n`[ SEMIFINALES ]`\n⌞PRR 🇦🇴⌝ 🆚 ⌞ZETA⌝\n⌞SEBITA 🇱🇷⌝ 🆚 ⌞OMEGA⌝\n`[ FINAL ]`\n⌞PRR 🇦🇴⌝ 🆚 ⌞SEBITA 🇱🇷⌝\n';
+ok('el campeón con otro alias lo dice el SUB-CAMPEÓN: el otro lado (DESGRACIAS EN TOKYO VOL 11)',
+  fin(semis + '# 🥇 𝄆 CAMPEÓN: JOVEN ALA 🇦🇴\n🥈 𝄆 SUB-CAMPEÓN: SEBITA 🇱🇷') === 'PRR 🇦🇴',
+  fin(semis + '# 🥇 𝄆 CAMPEÓN: JOVEN ALA 🇦🇴\n🥈 𝄆 SUB-CAMPEÓN: SEBITA 🇱🇷'));
+ok('pero no si la línea del segundo nombra a los dos',
+  fin(semis + 'CAMPEÓN: JOVEN ALA\nSUB-CAMPEÓN: [SEBITA] [PRR]') === '');
+ok('el equipo campeón partido en dos renglones (EL RAP FECHA 5)',
+  fin('# COPA\n`[ FINAL ]`\n⌞makma + tam⌝ 🆚 ⌞Hassan🇪🇬 + Neo🇦🇷(pollo)⌝\n' +
+    '**__CAMPEON:__**Hassan🇪🇬 +\nNeo🇦🇷(pollo)\n**__SUBCAMPEON: __**makma + tam') === 'Hassan🇪🇬, Neo🇦🇷(pollo)');
+ok('y el nombre en el renglón de abajo, nunca el del segundo',
+  fin(semis + 'CAMPEÓN DEL TORNEO 🏆\nSEBITA 🇱🇷') === 'SEBITA 🇱🇷' &&
+  fin(semis + 'CAMPEÓN 🏆 :\nSEGUNDO 🥈 : SEBITA') === '');
+const cuenta = (t) => LV.aLlave({ id: '1', texto: t }).participantes;
+ok('la gente sin el paréntesis: `gekto(chianluka+makma)` es una persona más las de adentro que no están',
+  cuenta('# COPA\n`[ CUARTOS ]`\n⌞gekto(chianluka+makma)⌝ 🆚 ⌞nhp⌝\n⌞makma⌝ 🆚 ⌞luz⌝\n`[ FINAL ]`\n⌞gekto⌝ 🆚 ⌞makma⌝\n') === 5,
+  cuenta('# COPA\n`[ CUARTOS ]`\n⌞gekto(chianluka+makma)⌝ 🆚 ⌞nhp⌝\n⌞makma⌝ 🆚 ⌞luz⌝\n`[ FINAL ]`\n⌞gekto⌝ 🆚 ⌞makma⌝\n'));
+ok('y el que revive ocupa dos lugares de la primera ronda (COMPE DEL VACILE 1)',
+  cuenta('# COPA\n`[ CUARTOS ]`\n⌞A⌝ 🆚 ⌞B⌝\n⌞C⌝ 🆚 ⌞D⌝\n⌞E⌝ 🆚 ⌞F⌝\n⌞C⌝ 🆚 ⌞G⌝\n') === 8);
 
 console.log('\n3 · lo que guarda el vigía (bot/avisos.js)\n');
 const { pareceLlave, conNombres } = await import('./avisos.js');

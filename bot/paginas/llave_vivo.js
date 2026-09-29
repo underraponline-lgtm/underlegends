@@ -321,11 +321,41 @@
     while ((m = re.exec(texto))) { if (!m[1]) return m[2].trim(); }
     return '';
   }
+  /* `camp2` de `escuchar.resolver()`: el renglón de abajo de la línea del
+     campeón —el nombre puede estar ahí, o seguir ahí: «CAMPEON: Hassan🇪🇬 +» y
+     abajo el resto del equipo (EL RAP FECHA 5)—, salvo que sea el del segundo */
+  function renglonDeAbajo(texto) {
+    var re = /(SUB[\s\-]*)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
+    while ((m = re.exec(texto)) && m[1]) { /* el del SUB-campeón no */ }
+    if (!m) return '';
+    var abajo = lineas(texto.slice(m.index + m[0].length)).slice(1, 3).map(function (l) { return l.trim(); })
+      .filter(Boolean)[0] || '';
+    return /SEGUND|SUB[\s\-]*CAMPE|\b2\s*(?:DO|ND|°|º)\b|\bPUESTO\b|\bLUGAR\b|M\.?\s*V\.?\s*P\b/i.test(abajo) ? '' : abajo;
+  }
+  /* `escuchar.SUBCAMPEON`: en una final de dos, saber quién perdió es saber quién ganó */
+  function lineaSubcampeon(texto) {
+    var m = /(?:SUB[\s\-]*CAMPE[OÓ]N|\b(?:2\s*(?:DO|DO\.)|SEGUNDO)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/i.exec(texto);
+    return m ? m[1].trim() : '';
+  }
+
+  /* los lados de la final que dice la línea del campeón (uno solo, o no dice) */
+  function campeonDe(camp, b) {
+    var c = norm(camp), ce = equipo(camp);
+    // ⚠️ `CAMPEÓN: FULLY🇨🇱 @FULLY`: la mención ya viene como nombre
+    // (`conNombres()` del vigía), así que la línea EMPIEZA con el
+    // finalista y no es igual a él. Python la borra antes de comparar.
+    return !c ? [] : b.filter(function (s) {
+      var e = equipo(s), k = clave(s);
+      return k === c || (e.length && ce.length && mismos(e, ce)) ||
+        (e.length && e.every(function (m) { return c.indexOf(m) >= 0; })) ||
+        (!e.length && k.length >= 2 && c.indexOf(k) === 0);
+    });
+  }
 
   /* quién pasó en cada batalla: el que aparece en la ronda siguiente */
   function resolver(rs, texto) {
     var arbol = rs.filter(function (R) { return R[0] !== 'TERCER LUGAR'; });
-    var camp = lineaCampeon(texto);
+    var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto);
     return rs.map(function (R) {
       var k = arbol.indexOf(R), sig = k >= 0 && k + 1 < arbol.length ? arbol[k + 1] : null;
       var lados = [], miembros = [], eqs = [];
@@ -343,16 +373,25 @@
         if (R[0] === 'TERCER LUGAR') return [b, '', ''];
         if (!sig) {
           // la última ronda: el campeón, si ya lo escribieron
-          var c = norm(camp), ce = equipo(camp);
-          // ⚠️ `CAMPEÓN: FULLY🇨🇱 @FULLY`: la mención ya viene como nombre
-          // (`conNombres()` del vigía), así que la línea EMPIEZA con el
-          // finalista y no es igual a él. Python la borra antes de comparar.
-          var g = !c ? [] : b.filter(function (s) {
-            var e = equipo(s), k = clave(s);
-            return k === c || (e.length && ce.length && mismos(e, ce)) ||
-              (e.length && e.every(function (m) { return c.indexOf(m) >= 0; })) ||
-              (!e.length && k.length >= 2 && c.indexOf(k) === 0);
-          });
+          var g = campeonDe(camp, b);
+          // el equipo partido en dos renglones, y el nombre en el de abajo
+          if (g.length !== 1 && camp2 && /[+&]$/.test(camp)) g = campeonDe(camp + ' ' + camp2, b);
+          if (g.length !== 1 && camp2) g = campeonDe(camp2, b);
+          // 🔑 `escuchar.resolver()`: si el campeón no engancha —DESGRACIAS EN
+          // TOKYO VOL 11 dice `CAMPEÓN: JOVEN ALA` con el lado `PRR`, dos
+          // alias de Hassan—, el SUB-CAMPEÓN lo dice. Sólo con dos lados, sólo
+          // si engancha con uno, y nunca si la línea nombra a un equipo o a
+          // los dos (`SUB-CAMPEÓN: [Nc] [Mcnadie]`, CARABOBO).
+          if (g.length !== 1 && b.length === 2) {
+            var sub = lineaSubcampeon(texto), ns = norm(sub);
+            if (ns && !equipo(sub).length && (sub.match(/\[/g) || []).length <= 1) {
+              var pierde = b.filter(function (s) {
+                var k = clave(s);
+                return k && (k === ns || (k.length >= 2 && ns.indexOf(k) >= 0));
+              });
+              if (pierde.length === 1) g = b.filter(function (s) { return s !== pierde[0]; });
+            }
+          }
           return [b, g.length === 1 ? g[0] : '', ''];
         }
         var ganan = b.filter(function (s) {
@@ -511,16 +550,68 @@
     return solos * (k - 1);
   }
 
+  /* `repetidos_en_la_primera()`: el que revive aparece dos veces en la primera
+     ronda y ocupa dos lugares. Dlx, 28/09/2026: «en sí el formato es de 16»
+     (COMPE DEL VACILE 1: Majiztral dos veces en octavos). */
+  function repetidosEnLaPrimera(rs) {
+    if (!rs.length) return 0;
+    var vistos = {}, extra = 0;
+    rs[0][1].forEach(function (b) {
+      b.forEach(function (lado) {
+        String(lado).replace(HISTORIA, '').split(/[+&]/).forEach(function (m) {
+          var k = norm(m.replace(HISTORIA, ''));
+          if (!k) return;
+          if (vistos[k]) extra++;
+          vistos[k] = 1;
+        });
+      });
+    });
+    return extra;
+  }
+
+  /* 🔑 `llaves_a_entrada.plantel()`, sin el padrón: la gente de TODAS las
+     rondas. 🔴 El paréntesis se saca antes de partir —`gekto(chianluka+makma)`
+     partido por `+` daba `gektochianluka` y `makma)`: ELRAP FECHA 6 contaba
+     34 donde Python dice 29—, y lo de adentro cuenta sólo si es alguien nuevo.
+     ⚠️ Se parte por `+ , /` y « - », NO por `&`: igual que Python y que los
+     puntos (`sheet/equipos.py`), porque hay gente que se llama `prove&shows`. */
+  var PAREN = /[(（][^)）]*[)）]?/g;
+  function plantel(rs) {
+    var out = {}, adentro = {};
+    rs.forEach(function (R) {
+      R[1].forEach(function (b) {
+        b.forEach(function (n) {
+          n = sinPokemon(String(n || ''));
+          (n.match(PAREN) || []).forEach(function (x) {
+            x.replace(/[()（）]/g, '').split(/[+,\/]/).forEach(function (p) {
+              if (norm(p).length >= 2) adentro[norm(p)] = 1;
+            });
+          });
+          var partes = n.replace(PAREN, '').split(/[+,\/]|\s-\s/);
+          partes.forEach(function (p) {
+            var k = norm(p);
+            if (k.length >= 2 || (k && partes.length === 1)) out[k] = 1;
+          });
+        });
+      });
+    });
+    Object.keys(adentro).sort().forEach(function (k) {
+      var ya = out[k] || Object.keys(out).some(function (c) {
+        return Math.min(k.length, c.length) >= 4 && (c.indexOf(k) === 0 || k.indexOf(c) === 0);
+      });
+      if (!ya) out[k] = 1;
+    });
+    return Object.keys(out).length;
+  }
+
   /* 🔑 LA LLAVE PARA LA PÁGINA, con la misma forma que `datos/llaves_t1.json` */
   function aLlave(b) {
     var texto = traducir(plano(b.texto));
     var rs = b.rs || rondasDe(texto);
     if (rs.length < 1) return null;
     var coma = function (s) { return String(s || '').split(/\s*[+&]\s*/).filter(Boolean).join(', '); };
-    var gente = {};
     var rondas = resolver(rs, texto).map(function (R) {
       return { r: ETIQUETA[R[0]] || R[0], b: R[1].map(function (x) {
-        x[0].forEach(function (s) { String(s).split(/[+&]/).forEach(function (m) { if (norm(m)) gente[norm(m)] = 1; }); });
         return [x[0].map(coma), coma(x[1]), x[2], []];
       }) };
     });
@@ -528,7 +619,8 @@
       rondas[rondas.length - 1].b[0][1];
     return {
       vivo: true, id: b.id, nombre: titulo(b.texto) || 'La llave', sv: b.sv || '',
-      participantes: Object.keys(gente).length + faltanEnEquipos(rs), rondas: enlazar(rondas), tabla: [],
+      // la misma cuenta que el ciclo (`filas_de()`): la que elige la escala de puntos
+      participantes: plantel(rs) + repetidosEnLaPrimera(rs) + faltanEnEquipos(rs), rondas: enlazar(rondas), tabla: [],
       links: b.g && b.canal ? ['https://discord.com/channels/' + b.g + '/' + b.canal + '/' + b.id] : [],
       pub: b.pub, ed: b.ed, terminada: !!fin,
       // la ronda que se está jugando: la última que tiene batallas sin ganador
