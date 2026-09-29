@@ -67,6 +67,7 @@ sys.path.insert(0, os.path.join(BASE, 'sheet'))
 from comun import bloqueada as BL      # noqa: E402
 from comun.claves import clave as CLAVE   # noqa: E402
 from comun import requisitos as REQ    # noqa: E402
+import verificados as VERIF            # noqa: E402
 
 SALIDA = os.path.join(BASE, 'bot', 'salida', 'bloqueadas')
 # la Servidor queda afuera por lo que dice el encabezado
@@ -241,12 +242,21 @@ def cc_de_pais():
     return mapa
 
 
+def _verificados():
+    """El portón de hoy, o `None` si no se sabe (y entonces no se filtra)."""
+    try:
+        return VERIF.cargar()[0]
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
 def plan():
     """[(clave, nombre, cc, ev, carta)] de todo lo que hay que dibujar."""
     import construir_padron as PAD
     inv = inventario()
     idx = PAD.por_nombre()
     mapa_cc = cc_de_pais()
+    verif = _verificados()
     pools = {}
     for f in ('competitivo_pool.json', 'temporada_pool.json'):
         with io.open(os.path.join(BASE, 'datos', f), encoding='utf-8') as fh:
@@ -262,6 +272,13 @@ def plan():
         cc = p.get('cc') or mapa_cc.get((per.get('pais') or '').strip()) or ''
         ev = int(p.get('ev') or 0)
         for c in CARTAS:
+            # 🔑 SIN LA CARTA NO VA SU BLOQUEADA (las LIBRES, 29/09/2026). A
+            # quien no pasa el portón la Competitiva y la de País no le
+            # faltan por eventos sino por verificarse: una Bloqueada que
+            # dijera «te faltan 7 eventos» le mentiría, porque con los 7
+            # tampoco la tendría. Eso lo dicen el bot y la página.
+            if verif is not None and not VERIF.puede(per, verif, c):
+                continue
             # 🔴 MANDA EL REQUISITO, NO EL INVENTARIO DE R2. Acá decía
             # `if c in tiene: continue  # ya la tiene de verdad`, y tener
             # el archivo arriba **no es** haberla ganado: es que alguna
@@ -421,10 +438,16 @@ def mudos(todo=None):
     plan_de = {}
     for k, _n, _cc, _ev, c, _p in todo:
         plan_de.setdefault(k, set()).add(c)
+    import construir_padron as PAD
+    idx = PAD.por_nombre()
+    verif = _verificados()
     out = []
     for k, tiene in sorted(inv.items()):
         for c in CARTAS:
             if not REQ.condiciones(c):
+                continue
+            # la carta que no puede tener no es un botón mudo: no es suya
+            if verif is not None and not VERIF.puede(idx.get(k) or {}, verif, c):
                 continue
             if c in tiene:
                 continue                      # la carta de verdad

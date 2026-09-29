@@ -196,6 +196,21 @@ def _hay_foto(av):
     return hay_foto(av)
 
 
+def puesto(c):
+    """El número de arriba a la derecha: el puesto OFICIAL, o «—».
+
+    🔴 QUIEN ESTÁ FUERA DE CONCURSO LLEVA «—», NO SU `pos`. El pool le pone
+    un `pos` después de los miembros (`construir_pool_temporada.py`) para que
+    las comparaciones no se caigan, y ese número no existe en ningún ranking:
+    Oasis salía «#80» con 79 oficiales. Mientras sin portón no había carta no
+    se veía; desde el 29/09/2026 la Temporada es de todos los que están en la
+    Lista (Dlx: «Dale»), así que se ve.
+    """
+    if c.get('fc') or not c.get('pos'):
+        return '—'
+    return '#%d' % c['pos']
+
+
 def card(c):
     # 🔴 SIN 10 EVENTOS NO HAY LETRA. Dlx, 23/09/2026, mirando esta
     # misma carta: *«no — sin 10 eventos no hay letra en ninguna carta»*.
@@ -242,7 +257,7 @@ def card(c):
     <div class="c-tex"></div><div class="c-shine"></div><div class="c-vig"></div>
     <div class="c-photo">%s</div>
     <div class="c-edge"></div>
-    <div class="c-pos">#%d</div>
+    <div class="c-pos">%s</div>
     <div class="c-fila">
       <div class="c-season">%s</div>
       <div class="c-band %s">%s</div>
@@ -262,7 +277,7 @@ def card(c):
   </div>
   <div class="tag">Rango %s · %s</div>
   </div>
-""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, c.get('pos',0), TEMPORADA, tg[1], tg[0], UL,
+""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, tg[1], tg[0], UL,
        c['ovr'], rg,
        chip_bandera(c['cc']), escudo(c['sv']), c['raw'].upper(), filas, rg, c['sv'])
 

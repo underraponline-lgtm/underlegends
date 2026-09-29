@@ -588,8 +588,14 @@ class Liga:
                          % (tipo, ' on' if i == 0 else '', i, txt, vis) for i, (tipo, _, txt, vis) in enumerate(mo))
         pestanas = ''.join('<button type="button" class="%s%s" data-mo="%d">%s</button>'
                            % ('on' if i == 0 else '', ' vivo' if tipo == 'vivo' else '', i, et) for i, (tipo, et, _, _) in enumerate(mo))
+        flecha = ('<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" '
+                  'stroke-linecap="square" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>')
+        flechas = ('<button type="button" class="mo-fl izq" data-dir="-1" aria-label="Momento anterior">%s</button>'
+                   '<button type="button" class="mo-fl der" data-dir="1" aria-label="Momento siguiente">%s</button>'
+                   % (flecha, flecha)) if len(mo) > 1 else ''
         return ('<section class="hero carrusel" id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora">'
-                '<div class="hero-in">%s</div><nav class="mo-tabs" aria-label="Momentos">%s</nav></section>' % (pistas, pestanas))
+                '<div class="hero-in">%s</div>%s<nav class="mo-tabs" aria-label="Momentos">%s</nav></section>'
+                % (pistas, flechas, pestanas))
 
     def ir_a(self):
         s = [('envivo', 'Ahora'), ('fechas', 'Fechas'), ('semana', 'Esta semana'), ('noticias', 'Lo último'),
@@ -1485,6 +1491,35 @@ CSS_R = r"""
 .pc .mo-logo img{width:220px;height:220px}
 .pc .mo-tabs{margin:18px 0 0;padding:0 0 22px}
 .pc .mo-llave .cm-wrap{margin:0;padding:0}
+
+/* novena vuelta: las flechas del escenario, con estilo */
+.hero.carrusel{padding-left:48px;padding-right:48px}
+.hero.carrusel .mo-tabs{margin-left:-48px;margin-right:-48px;padding-left:16px;padding-right:16px}
+.hero.carrusel .cm-wrap{margin:0 -48px;padding:0 48px}
+.hero.carrusel .hero-ev.largo{font-size:28px}
+.mo-fl{position:absolute;top:calc(50% - 44px);z-index:3;width:38px;height:38px;display:grid;place-items:center;padding:0;
+  background:#F6F6F6;color:#030304;border:2px solid #030304;cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}
+.mo-fl.izq{left:5px;box-shadow:-4px 4px 0 var(--verde)}
+.mo-fl.izq svg{transform:scaleX(-1)}
+.mo-fl.der{right:5px;box-shadow:4px 4px 0 var(--magenta)}
+.mo-fl.izq:hover{background:var(--verde)}
+.mo-fl.der:hover{background:var(--magenta);color:#fff}
+.mo-fl.izq:active{transform:translate(-3px,3px);box-shadow:-1px 1px 0 var(--verde)}
+.mo-fl.der:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--magenta)}
+.mo-fl:focus-visible{outline:3px solid var(--magenta);outline-offset:3px}
+.pc .hero.carrusel{padding-left:104px;padding-right:104px}
+.pc .hero.carrusel .mo-tabs{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
+.pc .hero.carrusel .cm-wrap{margin:0;padding:0}
+.pc .hero.carrusel .hero-ev.largo{font-size:54px}
+.pc .mo-fl{width:56px;height:56px;top:calc(50% - 50px)}
+.pc .mo-fl svg{width:28px;height:28px}
+.pc .mo-fl.izq{left:28px;box-shadow:-6px 6px 0 var(--verde)}
+.pc .mo-fl.der{right:28px;box-shadow:6px 6px 0 var(--magenta)}
+.pc .mo{grid-template-columns:minmax(0,1fr) 430px}
+@media (prefers-reduced-motion: reduce){.mo-fl{transition:none}}
+.hero.carrusel .mo-cuenta{flex-wrap:wrap;gap:4px 10px}
+.hero.carrusel .mo-cuenta b{font-size:24px}
+.pc .hero.carrusel .mo-cuenta b{font-size:34px}
 """
 
 

@@ -160,6 +160,31 @@ def estado():
         t = {k: v for k, v in (temp.get(x['raw']) or {}).items() if k != 'av'}
         out[x['raw']] = {'c': c, 't': t}
 
+    # 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): quien jugó y está en la Lista
+    # tiene la Temporada y la Servidor aunque no pase el portón; quien no está
+    # en la Lista —o es de los que no se tocan—, ninguna. Se marca acá y lo
+    # lee `emitibles()`: 1 = sólo las libres, 0 = nada. Quien pasa el portón
+    # no lleva marca y sigue con las cuatro.
+    #
+    # ⚠️ SIN `datos/verificados.json` NO SE MARCA A NADIE, la regla de
+    # `verificados.cargar()`: sin saber quién pasa, no se filtra.
+    try:
+        import sys as _s
+        for _d in ('bot', 'sheet'):
+            if os.path.join(BASE, _d) not in _s.path:
+                _s.path.insert(0, os.path.join(BASE, _d))
+        import verificados as _V
+        import construir_padron as _PAD
+        verif, _c = _V.cargar()
+        if verif is not None:
+            idx = _PAD.por_nombre()
+            for nom, ent in out.items():
+                p = idx.get(_PAD.norm(nom)) or {}
+                if not _V.pasa(p, verif):
+                    ent['libres'] = 1 if _V.puede(p, verif, 'temporada') else 0
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude marcar quién tiene sólo las libres (%s)' % str(e)[:60])
+
     # 🔴 Y LOS QUE PASAN EL PORTON PERO NO ESTAN EN NINGUN POOL. Sin esto
     # el ciclo **no los ve existir**: `cambios()` compara contra este
     # dict, no los encuentra, y decide que no hay nada que dibujar.
@@ -560,12 +585,17 @@ def emitibles(quien, est=None):
     if ent.get('fuera'):
         return {'servidor'}
 
+    # 🔑 LAS LIBRES: sin el portón, la Temporada y la Servidor si está en la
+    # Lista, y nada si no. Ver la marca en `estado()`.
+    if ent.get('libres') == 0:
+        return set()
+
     fila = ent.get('c') or {}
-    if not fila:
-        return set(TODAS)
     out = set(TODAS)
-    if not str(fila.get('cc') or '').strip():
+    if fila and not str(fila.get('cc') or '').strip():
         out.discard('pais')
+    if ent.get('libres') == 1:
+        out &= {'temporada', 'servidor'}
     return out
 
 

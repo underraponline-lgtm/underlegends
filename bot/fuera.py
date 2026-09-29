@@ -28,6 +28,13 @@ se pide: `/borrar-mis-datos` (ver `bot/olvidar.py`).
 datos: si la persona vuelve a pasar el portón, el ciclo se la dibuja de
 nuevo en la corrida siguiente —es el camino de «quien se verifica hoy»—.
 
+🔑 Y VA POR CARTA DESDE EL 29/09/2026. Dlx aprobó que la Temporada y la
+Servidor sean de todos los que jugaron y están en la Lista, verificados o no
+(«Dale»). A quien está en la Lista y no pasa el portón le sobran sólo la
+Competitiva, la de País y sus Bloqueadas: el reloj corre por ésas y al vencer
+se borran ésas. Antes se borraba la carpeta entera — y ese 4/10 se iban las
+Temporadas de 57 personas que ahora sí pueden tenerlas.
+
 🔴 Y FRENA SI EL PORTÓN SE CAE. Si `datos/verificados.json` no está, o si de
 una corrida a la otra pasan la mitad de los que pasaban, no es que se fue
 media Liga: es que Discord no contestó bien. En ese caso no se anota a
@@ -65,6 +72,24 @@ def hoy_et():
         return datetime.datetime.now(ZoneInfo('America/New_York')).date()
     except Exception:                                    # noqa: BLE001
         return (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=4)).date()
+
+
+def libre(carta):
+    """¿Esta carta del inventario es de las LIBRES? `sv-*` son las camisetas de la
+    Servidor y `bloq-temporada` la Bloqueada de la Temporada."""
+    import verificados as VERIF
+    base = carta[len('bloq-'):] if carta.startswith('bloq-') else carta
+    return base in VERIF.LIBRES or carta.startswith('sv-')
+
+
+def sobran(cartas, pasa, en_lista):
+    """Las cartas del inventario que esa persona ya no puede tener: ninguna si pasa
+    el portón, las que no son libres si está en la Lista, y todas si no."""
+    if pasa:
+        return []
+    if en_lista:
+        return sorted(c for c in cartas if not libre(c))
+    return sorted(cartas)
 
 
 def estado(claves, pasa, hoy, previo):
@@ -124,6 +149,12 @@ def main():
         return 0
     idx = PAD.por_nombre()
     pasa = lambda k: VERIF.pasa(idx.get(k, {}), verif)          # noqa: E731
+    # 🔑 POR CARTA: lo que le sobra a cada uno. El reloj corre mientras le sobre algo.
+    sobran_de = lambda k: sobran(inv.get(k) or {}, pasa(k),     # noqa: E731
+                                 VERIF.puede(idx.get(k, {}), verif, 'temporada'))
+    en_regla = lambda k: not sobran_de(k)                       # noqa: E731
+    # ⚠️ EL FRENO SIGUE MIRANDO EL PORTÓN: si pasan la mitad que ayer, no se fue
+    # media Liga, se cayó Discord.
     pasan = sum(1 for k in inv if pasa(k))
     ant = leer()
     if ant.get('pasaban') and pasan < ant['pasaban'] * 0.5:
@@ -132,7 +163,7 @@ def main():
               % (pasan, ant['pasaban']))
         return 0
     hoy = hoy_et()
-    desde, vencidas = estado(inv, pasa, hoy, ant.get('desde') or {})
+    desde, vencidas = estado(inv, en_regla, hoy, ant.get('desde') or {})
     nuevos = sorted(set(desde) - set(ant.get('desde') or {}))
     volvieron = sorted(set(ant.get('desde') or {}) - set(desde))
     print('   con tarjetas en R2: %d · pasan el portón: %d · con el reloj andando: %d'
@@ -152,21 +183,28 @@ def main():
         if aplicar:
             import olvidar as OLV
             s = OLV.sesion()
-            claves = [c for k in lote for c in claves_r2(inv.get(k))]
+            quitar = {k: sobran_de(k) for k in lote}
+            claves = [c for k in lote
+                      for c in claves_r2({x: u for x, u in (inv.get(k) or {}).items() if x in quitar[k]})]
             idos, quedan = OLV.borrar_r2(s, claves)
             print('   R2: %d de %d objetos borrados%s'
                   % (idos, len(claves), (' · 🔴 quedan %d' % len(quedan)) if quedan else ''))
             no_del_todo = {q.rpartition('/')[0] for q in quedan}
             listas = [k for k in lote if k not in no_del_todo]
             for k in listas:
-                inv.pop(k, None)
+                # 🔑 SE SACAN LAS QUE SOBRABAN, no la persona: a quien está en la
+                # Lista le quedan la Temporada y la Servidor.
+                for x in quitar[k]:
+                    (inv.get(k) or {}).pop(x, None)
+                if not inv.get(k):
+                    inv.pop(k, None)
                 desde.pop(k, None)
                 borradas.append([k, hoy.isoformat()])
             # el inventario sin ellos: si no, la corrida siguiente los vuelve
             # a encontrar y los intenta borrar otra vez
             with io.open(INVENTARIO, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(inv, f, ensure_ascii=False, indent=1)
-            print('   %d personas sin tarjetas desde hoy' % len(listas))
+            print('   %d persona(s): se les borraron las que ya no pueden tener' % len(listas))
     if aplicar:
         with io.open(ARCHIVO, 'w', encoding='utf-8', newline='\n') as f:
             json.dump({'_leeme': 'El reloj de bot/fuera.py: desde qué día cada carpeta de R2 '
@@ -197,6 +235,13 @@ def _self_check():
         ('quien no pasa por primera vez arranca hoy', desde.get('nueva') == '2026-10-04'),
         ('una fecha ilegible arranca de nuevo, no se borra', desde.get('rara') == '2026-10-04'),
         ('quien pasa nunca entra', 'siempre' not in desde),
+        ('en la Lista sin verificar: le sobran la Competitiva, la de País y sus Bloqueadas',
+         sobran(['temporada', 'servidor', 'sv-ffa', 'competitivo', 'pais', 'bloq-competitivo',
+                 'bloq-pais', 'bloq-temporada'], False, True)
+         == ['bloq-competitivo', 'bloq-pais', 'competitivo', 'pais']),
+        ('fuera de la Lista: le sobran todas',
+         sobran(['temporada', 'servidor'], False, False) == ['servidor', 'temporada']),
+        ('verificado: no le sobra ninguna', sobran(['temporada', 'competitivo'], True, True) == []),
         ('las claves salen de la URL pública',
          claves_r2({'temporada': 'https://pub-x.r2.dev/7po/temporada.webp', 'mal': 'sin-r2'})
          == ['7po/temporada.webp']),

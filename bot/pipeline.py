@@ -1337,7 +1337,12 @@ def main():
     # pieza»— y pedirla es un fallo permanente que se reintenta todos
     # los dias. Ver `que_cambio.emitibles()`.
     for quien in nuevas:
-        trabajo[quien] = QC.emitibles(quien)
+        # ⚠️ SIN CARTAS QUE EMITIR NO ES TRABAJO: quien no está en la Lista
+        # no tiene ninguna (las LIBRES, 29/09/2026), y un `set()` acá
+        # arrancaba el job de dibujar para no dibujar nada.
+        cs = QC.emitibles(quien)
+        if cs:
+            trabajo[quien] = cs
     for quien, cs in cam.items():
         trabajo.setdefault(quien, set()).update(cs)
 

@@ -13,12 +13,20 @@
     «el requisito para tener una tarjeta, cualquier tarjeta, es estar
      verificado en DRA — o sea ID y bandera»
 
-O sea que para tener **cualquier** carta hacen falta TRES cosas, y
-ninguna es de rendimiento:
+O sea que para pasar el portón hacen falta TRES cosas, y ninguna es de
+rendimiento:
 
     1. `discord_id` cargado en el padron
     2. pais (bandera) en el padron
     3. el rol **Miembro** de DRA, que es lo que se da al verificarse
+
+🔑 Y DESDE EL 29/09/2026 EL PORTÓN YA NO ES PARA TODAS LAS CARTAS. Dlx,
+con el número delante —de los 185 que jugaron tenían carta 79; así, 147—:
+*«Dale»*. **La Temporada y la Servidor son de todos los que jugaron y están
+en la Lista**, verificados o no; la Competitiva, la de País y las que vengan
+siguen pidiendo las tres. Lo contesta `puede(persona, verificados, carta)`;
+`pasa()` sigue siendo «verificado en DRA» para todo lo que no es una carta
+(el número oficial del ranking, las crews, la cuenta de la portada).
 
 ⚠️ ESTO NO ES UN REQUISITO DE CARTA Y POR ESO NO VIVE EN
 `comun/requisitos.py`. Alla se mide **desempeño**, que sale del Sheet y
@@ -169,6 +177,79 @@ def pasa(persona, verificados):
         and did in verificados
 
 
+# 🔑 DLX, 29/09/2026, 4:46 PM ET: «Dale», con el número delante —de los 185
+# que jugaron tenían carta 79, y con esto 147—. LA TEMPORADA Y LA SERVIDOR
+# SON DE TODOS LOS QUE JUGARON Y ESTÁN EN LA LISTA, verificados o no. La
+# Competitiva, la de País y las que vengan (Prime, Histórica) siguen pidiendo
+# el portón entero.
+#
+# ⚠️ «JUGARON» NO SE PREGUNTA ACÁ: lo pone cada carta con su requisito
+# (`comun/requisitos.py` — la Temporada pide 1 participación y la Servidor
+# sale del servidor donde más jugaste). Esto contesta sólo la identidad.
+LIBRES = ('temporada', 'servidor')
+
+#: Los nombres que no reciben las LIBRES aunque estén en la Lista: los de
+#: `no_verificar` (BNA, baneado; los de broma; las identidades sin confirmar)
+#: y los trolls de `decidir.no_rankear()`. Es la misma lista que saltea
+#: `bot/autoverificar.py`: a quien no se verifica tampoco se le regala carta.
+#: `None` = todavía no se leyó.
+intocables_cache = None
+
+
+def _intocables():
+    global intocables_cache
+    if intocables_cache is None:
+        out = set()
+        try:
+            import construir_padron as _PAD
+            with io.open(os.path.join(BASE, 'datos', 'identidades.json'), encoding='utf-8') as f:
+                out |= {_PAD.norm(k) for k in (json.load(f).get('no_verificar') or {})}
+            try:
+                import decidir as _DEC
+                out |= {_PAD.norm(x) for x in _DEC.no_rankear()}
+            except Exception:                            # noqa: BLE001
+                pass
+        except (OSError, ValueError, ImportError):
+            pass
+        intocables_cache = out
+    return intocables_cache
+
+
+def puede(persona, verificados, carta):
+    """¿Esta persona puede tener ESA carta?
+
+    Las LIBRES piden estar en la Lista (`persona` es una fila del padrón); las
+    demás, pasar el portón.
+
+    ⚠️ `pasa()` NO CAMBIA Y POR ESO ESTO ES OTRA FUNCIÓN. «Verificado en DRA»
+    lo siguen preguntando el número oficial del ranking, las crews, la cuenta
+    de verificados de la portada y la Competitiva: si `pasa()` se abriera,
+    todos ellos se abrirían con ella sin que nadie lo decidiera.
+
+    ⚠️ EL OLVIDO VALE PARA TODAS: quien pidió salir no tiene ninguna.
+    """
+    did = str(persona.get('discord_id') or '')
+    if did and did in _olvidados():
+        return False
+    if carta in LIBRES:
+        nombre = (persona.get('raw') or persona.get('full') or '').strip()
+        if not nombre:
+            return False
+        try:
+            import construir_padron as _PAD
+            if _PAD.norm(nombre) in _intocables():
+                return False
+        except ImportError:
+            pass
+        return True
+    return pasa(persona, verificados)
+
+
+def cartas_de(persona, verificados, todas=('temporada', 'competitivo', 'servidor', 'pais')):
+    """Las cartas que esta persona puede tener, en el orden dado."""
+    return [c for c in todas if puede(persona, verificados, c)]
+
+
 def cargar():
     """`(conjunto de discord_id, cuando se escribio)`. `(None, '')` si no hay.
 
@@ -312,6 +393,38 @@ def _self_check():
     print('   %s %-38s -> %s'
           % ('✅' if ok else '🔴', 'el que pidió salir, con las tres',
              'no' if not despues else '🔴 TIENE CARTA IGUAL'))
+
+    # 🔑 LAS LIBRES (Dlx, 29/09/2026): la Temporada y la Servidor piden estar
+    # en la Lista; las demás, el portón entero. Y el olvido, para todas.
+    print('')
+    oasis = {'raw': 'Oasis', 'discord_id': '979', 'pais': 'Chile'}   # en la Lista, sin el rol de DRA
+    libres = [
+        ('en la Lista sin verificar: Temporada', oasis, 'temporada', True),
+        ('en la Lista sin verificar: Servidor', oasis, 'servidor', True),
+        ('en la Lista sin verificar: Competitiva', oasis, 'competitivo', False),
+        ('en la Lista sin verificar: País', oasis, 'pais', False),
+        ('sin ID ni país, pero en la Lista: Temporada', {'raw': 'Kip'}, 'temporada', True),
+        ('fuera de la Lista: Temporada', {}, 'temporada', False),
+        ('verificado: Competitiva', {'raw': 'H', 'discord_id': '111', 'pais': 'Argentina'}, 'competitivo', True),
+    ]
+    for que, p, carta, esp in libres:
+        ok = puede(p, ver, carta) == esp
+        mal += not ok
+        print('   %s %-44s -> %s' % ('✅' if ok else '🔴', que, 'la tiene' if puede(p, ver, carta) else 'no'))
+    guardo_c = olvidados_cache
+    olvidados_cache = {'979': {'quien': 'x'}}
+    ok = not puede(oasis, ver, 'temporada')
+    olvidados_cache = guardo_c
+    mal += not ok
+    print('   %s %-44s -> %s' % ('✅' if ok else '🔴', 'el que pidió salir: Temporada', 'no' if ok else '🔴 LA TIENE'))
+    # los de `no_verificar` (BNA, baneado) tampoco reciben las libres
+    global intocables_cache
+    guardo_i = intocables_cache
+    intocables_cache = {'bna'}
+    ok = not puede({'raw': 'BNA', 'discord_id': '5', 'pais': 'Chile'}, ver, 'temporada')
+    intocables_cache = guardo_i
+    mal += not ok
+    print('   %s %-44s -> %s' % ('✅' if ok else '🔴', 'el baneado (no_verificar): Temporada', 'no' if ok else '🔴 LA TIENE'))
 
     # ⚠️ `cargar()` SIN ARCHIVO TIENE QUE DAR `None`, NO UN CONJUNTO
     # VACIO. Vacio significaria «nadie verificado» y dejaria a las 319
