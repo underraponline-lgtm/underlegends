@@ -4696,5 +4696,75 @@
     1250
    ]
   ]
+ },
+ "369": {
+  "dia": "2026-09-28",
+  "escala": "4-7",
+  "fecha": "28/09",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1554274756302213162"
+  ],
+  "n": 369,
+  "nombre": "CCFF V.3",
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "BETELGEUSE",
+       "VR"
+      ],
+      "BETELGEUSE",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Aby🇦🇷"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "BETELGEUSE"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    5000
+   ],
+   [
+    "BETELGEUSE",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Aby🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "VR",
+    "Semifinal",
+    2625
+   ]
+  ]
  }
 }
