@@ -32,8 +32,9 @@ Qué cambia contra `sitio.py` (la maqueta con gente inventada), además de los d
   Misiones + el Pase, tus eventos + tu temporada y la Liga en números. Las Misiones y
   el Pase todavía no existen: van **de ejemplo** y lo dicen; el progreso de las
   Misiones sí es el de verdad, sacado de las llaves de la semana.
-- **Se busca, los servidores y el pie van en negro**: los afiches pasan a papel sobre
-  la pared.
+- **Se busca y el pie van en negro**: los afiches pasan a papel sobre la pared. Los
+  servidores, en blanco (Dlx: *«los servidores de la liga make it white»*).
+- **Lo último va arriba de Esta semana** (Dlx, 29/09 ~6:50 PM).
 """
 import datetime as dt
 import os
@@ -605,7 +606,7 @@ class Liga:
                 % (pistas, flechas, pestanas))
 
     def ir_a(self):
-        s = [('envivo', 'Ahora'), ('fechas', 'Fechas'), ('semana', 'Esta semana'), ('noticias', 'Lo último'),
+        s = [('envivo', 'Ahora'), ('fechas', 'Fechas'), ('noticias', 'Lo último'), ('semana', 'Esta semana'),
              ('raperos', 'Los que mandan'), ('panel', 'Misiones'), ('sebusca', 'Se busca'), ('tienda', 'Tienda'),
              ('servidores', 'Servidores')]
         return ('<nav class="ir-a" aria-label="Ir a"><span class="ir-t">IR A</span>%s</nav>'
@@ -971,7 +972,7 @@ class Liga:
             % (s['color'], self.logo(s['sv']), s['sv'], s['nombre'], s.get('tag', '').lower(), num(s['n']) if s['n'] else '—',
                'raperos' if s['n'] else 'sin eventos')
             for s in sorted(self.svs.values(), key=lambda s: -s['n']))
-        return self.sec('servidores', 'Los servidores de la Liga', 'Mundo', '<div class="svs2">%s</div>' % filas, 'negra')
+        return self.sec('servidores', 'Los servidores de la Liga', 'Mundo', '<div class="svs2">%s</div>' % filas)
 
     def pie(self):
         c = self.d.get('comunidad') or {}
@@ -984,10 +985,10 @@ class Liga:
     def inicio(self, pc):
         if pc:
             return (self.cabecera(True, 'Inicio') + self.historias(True) + self.hero(True) + self.ir_a() + self.fechas()
-                    + self.semana() + self.noticias() + self.raperos(True) + self.panel(True)
+                    + self.noticias() + self.semana() + self.raperos(True) + self.panel(True)
                     + self.buscados() + self.tienda() + self.mercancia() + self.servidores() + self.pie())
         return (self.cabecera(False, 'Inicio') + self.historias(False) + self.hero(False) + self.ir_a() + self.fechas()
-                + self.semana() + self.noticias() + self.raperos(False) + self.panel(False)
+                + self.noticias() + self.semana() + self.raperos(False) + self.panel(False)
                 + self.buscados() + self.tienda() + self.mercancia() + self.servidores() + self.pie() + self.tabbar('inicio'))
 
     # ── Eventos ─────────────────────────────────────────────────────────────
