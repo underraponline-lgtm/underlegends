@@ -489,6 +489,28 @@
     return bloques;
   }
 
+  /* 🔑 EL EQUIPO QUE LA LLAVE NOMBRA CON UN SOLO NOMBRE: «[TEAM VENECIA]» en
+     un 2VS2 son dos personas (Dlx, 28/09/2026, con la VOL 16 en juego). La
+     misma regla que `faltan_en_equipos()` de bot/llaves_a_entrada.py: si los
+     demás lados de la primera ronda son todos del mismo tamaño y la gran
+     mayoría, el de un nombre cuenta ese tamaño. En un MULTIVERSE, nada. */
+  function faltanEnEquipos(rs) {
+    if (!rs.length) return 0;
+    var tams = [];
+    rs[0][1].forEach(function (b) {
+      b.forEach(function (lado) {
+        var n = String(lado).replace(HISTORIA, '').split(/[+&]/).filter(function (m) { return norm(m); }).length;
+        if (n) tams.push(n);
+      });
+    });
+    var grandes = tams.filter(function (t) { return t >= 2; });
+    var solos = tams.length - grandes.length, k = grandes[0];
+    if (!grandes.length || grandes.some(function (t) { return t !== k; }) || !solos || grandes.length < 3 * solos) {
+      return 0;
+    }
+    return solos * (k - 1);
+  }
+
   /* 🔑 LA LLAVE PARA LA PÁGINA, con la misma forma que `datos/llaves_t1.json` */
   function aLlave(b) {
     var texto = traducir(plano(b.texto));
@@ -506,7 +528,7 @@
       rondas[rondas.length - 1].b[0][1];
     return {
       vivo: true, id: b.id, nombre: titulo(b.texto) || 'La llave', sv: b.sv || '',
-      participantes: Object.keys(gente).length, rondas: enlazar(rondas), tabla: [],
+      participantes: Object.keys(gente).length + faltanEnEquipos(rs), rondas: enlazar(rondas), tabla: [],
       links: b.g && b.canal ? ['https://discord.com/channels/' + b.g + '/' + b.canal + '/' + b.id] : [],
       pub: b.pub, ed: b.ed, terminada: !!fin,
       // la ronda que se está jugando: la última que tiene batallas sin ganador

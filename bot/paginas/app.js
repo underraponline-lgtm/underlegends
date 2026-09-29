@@ -776,7 +776,7 @@ function pintaPasados() {
         var f = porK(kDe(r[0]));
         return f ? quienEs(f, 22) : conBanderas(r[0]);
       }) : [];
-    var datos = [e.org ? 'Organizó <b>' + esc(e.org) + '</b>' : '',
+    var datos = [e.org ? 'Organizó ' + orgHtml(e.org, 18) : '',
       L && L.participantes ? L.participantes + ' raperos' : '',
       e.modalidad ? esc(e.modalidad) : ''].filter(Boolean).join(' &middot; ');
     // 🔑 EL RANGO DEL EVENTO, cuando el anuncio lo dice: es el de SU
@@ -1103,7 +1103,7 @@ function abrirLlave(n) {
     '<span class="l-datos">' + [cal ? esc(fmtFecha(cal.t, { weekday: 'short', day: 'numeric', month: 'short' })) +
       ' &middot; ' + esc(fmtHora(cal.t)) + ' ' + etiquetaHora(cal.t) : esc(L.fecha),
     L.participantes ? esc(L.participantes) + ' raperos' : '',
-    org ? 'organizó <b>' + esc(org) + '</b>' : '',
+    org ? 'organizó ' + orgHtml(org, 18) : '',
     inf.pre ? '&#127941; ' + esc(inf.pre) : ''].filter(Boolean).join(' &middot; ') + '</span>';
   // 🔑 LOS PUNTOS, POR PUESTO: todos los campeones juntos, después los
   // subcampeones… En una llave por equipos, cada equipo queda junto.
@@ -2813,7 +2813,9 @@ function pintaCalendario() {
     var d = new Date(CAL.y, CAL.m, 1 - arranque + i);
     var k = claveDia(d), evs = M[k] || [];
     h += '<button class="cal-d' + (d.getMonth() !== CAL.m ? ' otro' : '') +
-      (k === hoyK ? ' hoy' : '') + (k === CAL.dia ? ' sel' : '') +
+      // 🔴 «es-hoy» Y NO «hoy»: `.hoy` es la grilla de dos columnas del panel
+      // del Inicio, y partía la celda de hoy en dos (Dlx, 28/09/2026, con captura)
+      (k === hoyK ? ' es-hoy' : '') + (k === CAL.dia ? ' sel' : '') +
       (evs.length ? ' con' : '') + '" data-dia="' + k + '"' +
       (evs.length ? ' aria-label="' + d.getDate() + ': ' + evs.length +
         (evs.length === 1 ? ' evento' : ' eventos') + '"' : '') + '><b>' + d.getDate() +
@@ -2840,8 +2842,10 @@ function pintaCalendario() {
 
 function pintaDia(M) {
   M = M || porDia();
+  // 🔑 LO MÁS NUEVO ARRIBA (Dlx, 28/09/2026: «que los eventos recientes estén
+  // de recientes a menos recientes en el día»)
   var evs = (M[CAL.dia] || []).slice().sort(function (a, b) {
-    return a.t < b.t ? -1 : 1;
+    return a.t < b.t ? 1 : -1;
   });
   var d = CAL.dia ? new Date(CAL.dia + 'T12:00:00') : null;
   var txt = d ? d.toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' }) : '';
@@ -2929,6 +2933,26 @@ function pintaUltCampeones() {
         .filter(Boolean).join(' &middot; ') + '</small></button>';
   }).join('');
 }
+/* 🔑 QUIÉN ORGANIZA, CON SU PERFIL Y SU CARA. Dlx, 28/09/2026: «¿puedes
+   hacer que los organizadores se muestren sus perfiles también con su
+   avatar?». El ciclo lleva el «Organiza:» del anuncio a un perfil —por el
+   nombre o por su usuario de Discord— y lo manda en `D.orgs` (ver `_orgs()`
+   en bot/subir_web.py). Sin perfil, el nombre en texto, como antes. */
+function orgPerfil(o) {
+  var k = (D.orgs || {})[o];
+  return k ? porK(k) : null;
+}
+function orgHtml(o, tam) {
+  var f = orgPerfil(o);
+  return f ? '<button type="button" class="org-p" data-k="' + esc(f.k) + '" title="Ver su perfil">' +
+    quienEs(f, tam || 18) + '</button>' : '<b>' + esc(o) + '</b>';
+}
+/* «1vs1», «1V1» y «1 VS 1» son el mismo formato (Dlx, 28/09/2026, con captura) */
+function claveFormato(m) {
+  var k = String(m || '').toLowerCase().replace(/\s+/g, '');
+  var x = /^(\d+)(?:vs|v|x)(\d+)$/.exec(k);
+  return x ? x[1] + 'vs' + x[2] : k;
+}
 function pintaFormatos() {
   var ls = jugadas();
   var fmt = {}, org = {}, con = 0, gente = 0;
@@ -2936,16 +2960,21 @@ function pintaFormatos() {
     var L = D.llaves[c.ll], inf = L.info || {};
     if (inf.mod) {
       var m = inf.mod.trim().replace(/\s+/g, ' ');
-      var k = m.toLowerCase();
-      fmt[k] = fmt[k] || { n: 0, t: m };
+      var k = claveFormato(m);
+      fmt[k] = fmt[k] || { n: 0, t: /^\d+vs\d+$/.test(k) ? k.toUpperCase() : m };
       fmt[k].n++;
       con++;
     }
-    if (inf.org) org[inf.org] = (org[inf.org] || 0) + 1;
+    // el mismo organizador escrito de dos maneras («Carlos», «carlos») suma junto
+    if (inf.org) {
+      var f = orgPerfil(inf.org), ko = f ? 'k:' + f.k : 't:' + inf.org.toLowerCase();
+      org[ko] = org[ko] || [inf.org, 0];
+      org[ko][1]++;
+    }
     gente += L.participantes || 0;
   });
   var fs = Object.keys(fmt).map(function (k) { return fmt[k]; }).sort(function (a, b) { return b.n - a.n; });
-  var os = Object.keys(org).map(function (k) { return [k, org[k]]; }).sort(function (a, b) { return b[1] - a[1]; });
+  var os = Object.keys(org).map(function (k) { return org[k]; }).sort(function (a, b) { return b[1] - a[1]; });
   if (!fs.length && !os.length) { apaga('#secFormatos'); return; }
   $('#secFormatos').hidden = false;
   var max = fs.length ? fs[0].n : 1;
@@ -2955,7 +2984,7 @@ function pintaFormatos() {
         Math.round(100 * x.n / max) + '%"></u></i><b>' + x.n + '</b></div>';
     }).join('') : '') +
     (os.length ? '<h3 class="gh">Quién organiza</h3><div class="orgs">' + os.slice(0, 8).map(function (x) {
-      return '<span class="org">' + esc(x[0]) + '<u>' + x[1] + '</u></span>';
+      return '<span class="org">' + (orgPerfil(x[0]) ? orgHtml(x[0], 20) : esc(x[0])) + '<u>' + x[1] + '</u></span>';
     }).join('') + '</div>' : '') +
     '<p class="nota">Sobre las ' + ls.length + ' llaves más nuevas' +
     (ls.length ? ': ' + Math.round(gente / ls.length) + ' raperos por llave, en promedio' : '') + '.</p>';
@@ -4478,7 +4507,7 @@ function itemMuro(x) {
   } else if (x.tipo === 'anuncio') {
     ico = '&#128226;';
     // ⚠️ TODO ESCAPADO: es texto que escribió alguien en Discord
-    var det = [x.mod ? esc(x.mod) : '', x.org ? 'organiza ' + esc(x.org) : '',
+    var det = [x.mod ? esc(x.mod) : '', x.org ? 'organiza ' + orgHtml(x.org, 18) : '',
       x.pre ? '&#127941; ' + esc(x.pre) : ''].filter(Boolean);
     txt = '<b>' + esc(x.ev) + '</b>' + (det.length ? ' — ' + det.join(' &middot; ') : '');
     mas = chipSv(x.sv) + (x.link ? '<a class="mu-a" href="' + esc(x.link) + '" target="_blank" rel="noopener ' +

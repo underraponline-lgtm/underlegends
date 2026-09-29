@@ -434,6 +434,9 @@ def armar():
         # 🔑 LA TEMPORADA EN UN CALENDARIO: lo que pasó y lo que viene. Ver
         # `_calendario()`.
         'calendario': calendario,
+        # 🔑 QUIÉN ORGANIZA, CON SU PERFIL: la página los dibuja con su cara
+        # (Dlx, 28/09/2026). Ver `_orgs()`.
+        'orgs': _orgs(ann, tabla, pool),
         # 🔴 LOS EVENTOS DE LA TEMPORADA, NO LAS PARTICIPACIONES. El Inicio
         # sumaba `ev` de cada persona y decía «134 eventos» con siete
         # jugados (auditoría del 25/09/2026).
@@ -516,6 +519,63 @@ def armar():
 def _org(s):
     """`@!    MMC.` -> `MMC.`: el organizador, sin la arroba ni el relleno."""
     return re.sub(r'^[@!\s]+', '', str(s or '')).strip()
+
+
+#: los nombres de cada cuenta de los servidores (apodo, nombre visible y
+#: usuario): lo escribe `herramientas/servidores_de.py` en el paso 1b y vive
+#: lo que dura el runner. Ver `APODOS` allá.
+APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
+
+
+def _norm_id(s):
+    """La misma clave que `decidir.norm()`: letras y números, sin tildes ni banderas."""
+    import unicodedata
+    s = unicodedata.normalize('NFKD', re.sub('[\U0001F1E6-\U0001F1FF]', '', str(s or '')))
+    return ''.join(c for c in s if c.isalnum()).lower()
+
+
+def _orgs(ann, tabla, pool, apodos=None):
+    """`{organizador: clave de su perfil}`, de los que organizan y además tienen perfil.
+
+    🔑 Dlx, 28/09/2026: *«¿puedes hacer que los organizadores se muestren sus
+    perfiles también con su avatar?»*. El «Organiza:» del anuncio es texto
+    suelto, y muchas veces es el USUARIO de Discord de quien organiza
+    («nachonc_», «ignac.07»): por nombre coincidían 5 de 20. Por eso, si el
+    nombre no es el de un perfil, se busca la cuenta de Discord que se llama
+    así (UNA sola) y el perfil de esa cuenta.
+
+    ⚠️ EL DISCORD ID NO VIAJA: acá se resuelve a la clave del perfil, que es
+    pública (`#/r/<clave>`). Quien organiza y no tiene perfil sigue en texto.
+    """
+    import muro as _MU
+    if apodos is None:
+        apodos = {}
+        try:
+            with io.open(APODOS, encoding='utf-8') as f:
+                apodos = (json.load(f) or {}).get('nombres') or {}
+        except (OSError, ValueError):
+            apodos = {}
+    idx = {}
+    for did, ns in apodos.items():
+        for n in ns or []:
+            k = _norm_id(n)
+            if len(k) >= 3:
+                idx.setdefault(k, set()).add(str(did))
+    por_did = {str(p.get('discord_id')): p for p in pool or [] if p.get('discord_id')}
+    claves = {f.get('k') for f in tabla or []}
+    out = {}
+    for x in ann or []:
+        o = _org(x.get('organizador'))
+        if not o or o in out or len(_norm_id(o)) < 3:
+            continue
+        k = _MU.k_de(o, tabla)
+        if not k:
+            ids = idx.get(_norm_id(o)) or set()
+            p = por_did.get(next(iter(ids))) if len(ids) == 1 else None
+            k = _clave(p) if p else ''
+        if k and k in claves:
+            out[o] = k
+    return out
 
 
 _EMOJI = re.compile(r'<a?:\w+:\d+>')
