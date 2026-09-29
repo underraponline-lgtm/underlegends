@@ -152,6 +152,24 @@ _IDS = [None]
 _INSC = [None]
 
 
+#: una bandera con un nombre antes y otro después: ahí va un «+»
+_BANDERA_ENTRE = re.compile('([^\\s\U0001F1E6-\U0001F1FF]\\s*(?:[\U0001F1E6-\U0001F1FF]{2})+)'
+                            '\\s+(?=[^\\s\U0001F1E6-\U0001F1FF+&,/(])')
+
+
+def con_mas(texto):
+    """La inscripción de una pareja escrita con banderas, como equipo.
+
+    🔴 «27 🇺🇸 Piyi 🇲🇽» (FFA, 28/09/2026) son DOS: la llave de la VOL 16 2VS2
+    los escribe «[27 🇺🇸 + PIYI 🇲🇽]». Como candidato de la canonización sin
+    «+», convertía al equipo en una persona. La bandera del final no separa
+    («TEAM VENECIA 🇲🇦 🇻🇪», «Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷») ni la de adelante
+    («🇦🇷 DELUXE»): sólo la que tiene un nombre a cada lado. Es la misma regla
+    que `decidir._ENTRE_BANDERAS`.
+    """
+    return _BANDERA_ENTRE.sub(r'\1 + ', str(texto or ''))
+
+
 def inscriptos_de(sv):
     """Los nombres que se anotaron en el canal de inscripciones de `sv`.
 
@@ -196,7 +214,7 @@ def inscriptos_de(sv):
                 for x in (json.load(f) or {}).get('inscripciones') or []:
                     t = (x.get('texto') or '').strip()
                     if t:
-                        d.setdefault(x.get('servidor') or '', []).append(t)
+                        d.setdefault(x.get('servidor') or '', []).append(con_mas(t))
         except (OSError, ValueError):
             # ⚠️ SIN INSCRIPTOS SE SIGUE, con el comportamiento de antes.
             # Quedarse sin procesar una llave porque falta un json es peor

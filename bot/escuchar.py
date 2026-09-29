@@ -974,8 +974,14 @@ def resolver(texto, conocidos=None, ids=None):
                 return canon[n]
             nb = norm(HISTORIA.sub('', n))
             r = n
+            # 🔴 LA REGLA 1 TAMBIÉN RESPETA LA FORMA. `norm()` borra el «+»,
+            # así que el lado «27 🇺🇸 + PIYI 🇲🇽» (VOL 16 2VS2, FFA,
+            # 28/09/2026) era igual a la inscripción «27 🇺🇸 Piyi 🇲🇽» —la
+            # pareja escrita sin «+»— y la canonización lo dejaba así: el
+            # equipo campeón pasaba a ser UNA persona con los 10.000 enteros.
             if nb in mapa:
-                r = mapa[nb]
+                if bool(_equipo(n)) == bool(_equipo(mapa[nb])):
+                    r = mapa[nb]
             elif nb and nb not in personas:
                 cerca = difflib.get_close_matches(nb, list(mapa), n=1,
                                                   cutoff=0.85)
