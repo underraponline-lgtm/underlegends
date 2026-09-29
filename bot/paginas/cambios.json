@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.50",
+   "dia": "2026-09-29",
+   "cuando": "2026-09-29T02:30:00-04:00",
+   "titulo": "La nave de funa, el # del apodo y las inscripciones",
+   "items": [
+    "🌀 **La nave de funa (cypher, aniquilación) ya se lee**: la fase de eliminación se ve como una lista con ❌, y los que caen en ella suman puntos —empatan, porque la llave no dice en qué orden cayeron—. También en vivo, antes de la final.",
+    "#️⃣ **El # del apodo es tu puesto en el Ranking Competitivo**, y sólo lo llevan quienes están ahí (10 eventos). Los números viejos de la prueba se sacaron solos.",
+    "📝 **Tu inscripción no se pierde** aunque el organizador limpie el canal después del evento.",
+    "👥 **Los equipos con nombre cobran de a dos** cuando se sabe quiénes eran."
+   ]
+  },
+  {
    "version": "1.49",
    "dia": "2026-09-29",
    "cuando": "2026-09-29T01:30:00-04:00",

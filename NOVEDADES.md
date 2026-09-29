@@ -329,12 +329,61 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Un equipo con nombre no es un participante, ni una crew**: «TEAM VENECIA» son dos personas de ese evento. Se reconocen sus integrantes; si no se puede, no cobra nadie | *«deberia reconocer los integrantes del equipo si es q no se puede ya fue pero team venecia no es un participante.. es un equipo.. no una crew ojo.. solo un equipo creado x este evento»* | ✅ `llaves_a_entrada.marcar_equipos()` + `motor.nadie` (1.49) |
 | **Una invitación permanente de la Liga por servidor**, para contar cuántos entran por ella | *«si puedes crea una invitacion permanente para cada servidor, y de esta manera podemos reconocer cuantas personas se unieron por ti la liga global»* | ✅ `bot/invitaciones.py` (1.49); la cuenta, en el paso 2b5 → `datos/invitaciones.json` |
 | **Las redes de FFS**, de su canal de redes | *«agrega las redes de FFS... mas info esta en el canal de redes en FFS»* | ✅ Instagram y YouTube en `datos/servidores.json` |
-| **CYPHER, NAVE DE FUNA o aniquilación**: se rapean rondas de beats y al final de cada una **sale el nombre con más reacciones en Discord**; así hasta que el formato diga —a veces el evento entero, lo usual hasta que quedan 4 y ahí semis normales— | *«el nombre que tiene mas reacciones en discord, es eliminado. Asi asi hasta que el formato lo elija»* (29/09) | ⏳ falta ver una llave de verdad (pregunta abajo) |
+| **CYPHER, NAVE DE FUNA o aniquilación**: se rapean rondas de beats y al final de cada una **sale el nombre con más reacciones en Discord**; así hasta que el formato diga —a veces el evento entero, lo usual hasta que quedan 4 y ahí semis normales— | *«el nombre que tiene mas reacciones en discord, es eliminado. Asi asi hasta que el formato lo elija»* · con tres llaves de ejemplo: *«lo que sigue está a disposición del organizador»* (29/09) | ✅ (1.50): `escuchar.funa_de()`, `llaves_a_entrada.filas_funa()` y el pozo del motor. **Los que caen en la fase empatan** —la llave no dice el orden— y se reparten lo que valen juntos sus lugares (§10.1); con el puesto del último lugar, para no regalar semifinales |
+| **ME TIENE SIN CUIDADO (VOL.13) eran Paria y Kravitz** | *«2. A»* | ✅ `equipos` en `datos/decisiones.json`: cobran el subcampeonato, 3.750 cada uno |
+| **El «#» del apodo es sólo de quien está en el Competitivo, en toda la Liga** | *«los que tienen el # … el nombre automáticamente debería cambiar … ÚNICAMENTE a las personas que están en el competitivo… esto en toda la liga»* | ✅ (1.50): `herramientas/sincronizar_puesto.py`, paso 2b6 del ciclo, y `/numeral` |
+| **Las inscripciones se miran constantemente** mientras hay un evento: los organizadores limpian el canal | *«cuando anuncian un evento, tienes que estar chequeando las inscripciones constantemente»* | ✅ (1.50): el vigía las lee cada minuto y las guarda 3 días (`inscripciones()` en `bot/avisos.js`); el ciclo las suma (`anuncios.del_vigia()`) |
+| **Si ya hay un link permanente de FFS creado por mí, va ése** | *«si ya creaste un link de ffs por tu propia cuenta usa ese»* | ✅ `discord.gg/whrjpJUfuz` (el que pasó Dlx vence el 29/10) |
 | **La sección de llaves tiene que mejorar bastante** | *«Como te dije la seccion de llaves de eventos tiene que mejorar bastante»* | ⏳ con el remake de la web |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Martes 29/09 (2:30 AM) — versión 1.50
+
+Tus tres NAVES DE FUNA de ejemplo, *«2. A»*, *«3. no lo sé… tienes que estar
+chequeando las inscripciones constantemente»*, *«5. A, ya se lo dije»* y el «#»
+del apodo.
+
+- 🌀 **La NAVE DE FUNA se lee y se paga.** Hasta hoy la fase de eliminación
+  no la leía nadie: la llave quedaba con la final sola (2 o 3 personas: «no
+  hay escala») y los otros 9 a 13 no existían. Ahora la fase —la lista con
+  ❌, en los tres estilos de tus ejemplos— entra entera; la final de tres se
+  ordena con el podio; el 🥇 sirve de campeón; y **los que cayeron empatan**:
+  la llave dice quién cayó, no en qué orden, así que se reparten lo que valen
+  juntos sus lugares, como el empate de los 5 vidas (§10.1). Probado con tus
+  ejemplos (16+): tam 10.000, Guess 7.500, multi 6.000 y los 13 de la fase
+  1.884 cada uno; un solo duelo, la final. En la página, la fase es una
+  lista (los que siguen primero, los que cayeron apagados con ❌), también en
+  vivo antes de que haya final. Ninguna de las 74 llaves reales guardadas se
+  confunde con una. ⚠️ Tu guía (§12) decía descartar las fases de cypher sin
+  batallas: ésta no se descarta porque dice quién cayó (pregunta abajo).
+- 👥 **ME TIENE SIN CUIDADO eran Paria y Kravitz** (*«A»*): cobran el
+  subcampeonato de la VOL.13, 3.750 cada uno.
+- ✅ **TEAM VENECIA confirmado fuera**: la corrida de la 1:22 lo sacó de la
+  tabla de su evento y del pool; la llave lo muestra como equipo. Y **la VOL
+  16 quedó con Oasis campeón** (PARK JI SUNG), Hassan (PRR) y Makmah (MAKMA)
+  con su nombre.
+- #️⃣ **El «#» del apodo, sólo del Competitivo y en toda la Liga.** Había
+  **139 apodos con un número de la pre-temporada** (57 en DRA, 82 en FFA).
+  Aplicado a la 1:53 AM: 136 perdieron el número (queda su nombre) y
+  **Hassan es «#1 | Hassan» y Makmah «#2 | Makmah»** —los dos que hoy tienen
+  número: pasan los 10 eventos y son Miembros (Velatz los pasa pero no es
+  Miembro: fuera de concurso)—. Sigue solo en cada ciclo (2b6), en los cinco
+  servidores; en FFS el bot no puede cambiar apodos. Y `/numeral`, a quien
+  no tiene número, le saca el viejo y le explica que se entra con 10 eventos.
+- 📝 **Las inscripciones, cada minuto.** El canal de inscripciones de FFA no
+  tenía ni un mensaje de la noche de la 2VS2: el organizador lo limpia.
+  Ahora el vigía lee los canales de inscripciones cada minuto mientras hay un
+  evento anunciado o en juego, y guarda tres días lo que se anota —aunque
+  después lo borren—; el ciclo lo suma. En el primer minuto ya tenía 34. La
+  ruta trae Discord IDs y no es pública.
+- 🔴 **Y dos cosas mías o viejas, arregladas**: los respaldos de apodos del
+  19/09 (Discord IDs y apodos de ~140 personas) estaban commiteados en
+  `docs/` del repo público: salieron del árbol (en el historial siguen,
+  pregunta abajo). Y la herramienta del «#», con el número apagado, le
+  **ponía** un apodo a quien no tenía: ahora sólo saca el número.
 
 ## 📅 Martes 29/09 (1:30 AM) — versión 1.49
 
@@ -1842,23 +1891,27 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- **NAVE DE FUNA / CYPHER**: para leerla necesito ver una. Pasame el link de
-  una llave (o una captura) y, si se vota con reacciones, el canal donde se
-  vota. **Mi propuesta**: paga **por lugar**, como los 5 vidas —el orden en
-  que caen es el lugar—, las semis y la final como siempre, y la fase de
-  reacciones no es duelo. **A** · así · **B** · otra cosa (contame cuál).
-- **ME TIENE SIN CUIDADO (VOL.13)**: se anotó como *«(PARIA+KRAVITZ)»*, pero
-  la llave también pone a PARIA + KRAVITZ como pareja aparte en octavos. Hoy
-  no cobra nadie (antes, 7.500 a una persona que no existe). **A** · eran
-  ellos: cobran el subcampeonato, 3.750 cada uno · **B** · no se sabe, queda
-  así.
-- **TEAM VENECIA (🇲🇦 🇻🇪)**: si sabés quiénes eran, cobran 2.625 cada uno; si
-  no, queda sin cobrar (*«ya fue»*).
-- **¿Cuántos entraron por la Liga, a la vista?** **A** · en «Mundo», en cada
-  servidor · **B** · sólo para vos (acá y en el artifact).
-- **FFS**: para contar sus entradas, el bot necesita «Gestionar servidor» ahí
-  (hoy sólo crea invitaciones). **A** · se lo pedís al dueño · **B** · así
-  está.
+- **La NAVE DE FUNA ya cuenta, aunque tu guía (§12) descartaba las fases de
+  cypher sin batallas.** La diferencia: la lista dice quién cayó (❌). **A** ·
+  así, cuentan · **B** · se descartan, como decía la guía.
+- **¿Chequear quién está en la llamada?** Se puede: el ciclo se conecta un
+  instante a Discord y ve quién está en cada canal de voz (sin quedarse
+  conectado). Sirve para el suplente o el que no se anotó —un nombre raro de
+  la llave que coincide con alguien que estaba en la llamada del evento—. No
+  sirve para un equipo como TEAM VENECIA: la llamada no dice quién iba con
+  quién. **A** · lo armo · **B** · no por ahora.
+- **(Reformulada) La cuenta de las invitaciones**: las cinco invitaciones de
+  la Liga cuentan cuánta gente entró a cada servidor por ellas (hoy, 0 en
+  todas). ¿Ese número se ve en la página? **A** · sí, en «Mundo», al lado de
+  cada servidor: «12 entraron desde la Liga» · **B** · no, lo ves sólo vos.
+- **Los respaldos de apodos del 19/09 siguen en el historial del repo
+  público.** **A** · reescribo el historial para sacarlos del todo (es un
+  push forzado; el ciclo no se entera) · **B** · así queda.
+- ✅ ~~**NAVE DE FUNA / CYPHER**~~: tres ejemplos (29/09), hecha en la 1.50.
+- ✅ ~~**ME TIENE SIN CUIDADO**~~ *«A»* y ~~**TEAM VENECIA**~~ *«no lo sé»*:
+  hechos (1.50).
+- ✅ ~~**FFS, «Gestionar servidor»**~~: *«A, ya se lo dije»*. Cuando lo dé, el
+  ciclo empieza a contar solo.
 - ✅ ~~**FFS**~~: color A, etiqueta EVOLUCIÓN, eventos A, ligas A, camiseta
   «está bueno» (1.48); su invitación y sus redes, en la 1.49.
 - ✅ ~~**Llaves de broma**~~ *«A»* y ~~**el podio con mención**~~ *«A»*: hechas
