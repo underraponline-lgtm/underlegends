@@ -64,7 +64,7 @@
   "DRA": {
    "nombre": "Discord Rap Español",
    "guild_id": "841017460341604382",
-   "invitacion": "https://discord.gg/SFVnEmVnKz",
+   "invitacion": "https://discord.gg/5jUM3WXDXe",
    "en_el_sheet": true,
    "nota": "el lobby principal de la Liga",
    "confirmado": true,
@@ -95,12 +95,19 @@
      "https://kick.com/underlegends"
     ]
    ],
-   "youtube_id": "UCnuSKqHzVgjQYLkLual97WA"
+   "youtube_id": "UCnuSKqHzVgjQYLkLual97WA",
+   "invitacion_antes": "https://discord.gg/SFVnEmVnKz",
+   "invitacion_liga": {
+    "codigo": "5jUM3WXDXe",
+    "canal": "•「👋」bienvenido-lee-esto",
+    "canal_id": "1498326090169712812",
+    "creada": "2026-09-29"
+   }
   },
   "FFA": {
    "nombre": "Freestyle For All",
    "guild_id": "1468472442925092958",
-   "invitacion": "https://discord.gg/4TBvDP2Chm",
+   "invitacion": "https://discord.gg/JrmE78qdMd",
    "en_el_sheet": false,
    "nota": "donde se prueba el bot",
    "confirmado": true,
@@ -119,7 +126,14 @@
      "https://www.youtube.com/@somosfreeforall"
     ]
    ],
-   "youtube_id": "UCqTZD3I0_C0BLSPw5Rle3Jg"
+   "youtube_id": "UCqTZD3I0_C0BLSPw5Rle3Jg",
+   "invitacion_antes": "https://discord.gg/4TBvDP2Chm",
+   "invitacion_liga": {
+    "codigo": "JrmE78qdMd",
+    "canal": "✦👋︱bienvenidos",
+    "canal_id": "1468475400559656960",
+    "creada": "2026-09-29"
+   }
   },
   "TWR": {
    "nombre": "The Warren Rap",
@@ -137,7 +151,7 @@
   "SR": {
    "nombre": "Snake Rap",
    "guild_id": "492346406976356374",
-   "invitacion": "https://discord.gg/qhKcQgU47v",
+   "invitacion": "https://discord.gg/EME4p3RhAp",
    "en_el_sheet": true,
    "confirmado": true,
    "tag": "TALENTOS",
@@ -209,6 +223,13 @@
       500
      ]
     }
+   },
+   "invitacion_antes": "https://discord.gg/qhKcQgU47v",
+   "invitacion_liga": {
+    "codigo": "EME4p3RhAp",
+    "canal": "［📈］ascenso",
+    "canal_id": "863208038859800606",
+    "creada": "2026-09-29"
    }
   },
   "FTN": {
@@ -226,7 +247,7 @@
   "URBF": {
    "nombre": "Urban Freestyle",
    "guild_id": "1467763447117778989",
-   "invitacion": "https://discord.gg/vThvc9f5xy",
+   "invitacion": "https://discord.gg/WSXBZDumBb",
    "en_el_sheet": true,
    "nota": "el link que venia en la lista (B4FZA2YYcc) llevaba a VFA, otro servidor; Dlx paso el nuevo y verifica · 25/09/2026: el bot entró (Dlx) y se confirmó; TikTok de Dlx · 25/09/2026: Dlx, «para el nombre usa el real, no es Urban Freestyle Battles» — en Discord es «Urban Freestyle | A New Era»",
    "confirmado": true,
@@ -236,7 +257,14 @@
      "tiktok",
      "https://www.tiktok.com/@urban_freestyle627"
     ]
-   ]
+   ],
+   "invitacion_antes": "https://discord.gg/vThvc9f5xy",
+   "invitacion_liga": {
+    "codigo": "WSXBZDumBb",
+    "canal": "‧《👋🏻》𝘽𝙞𝙚𝙣𝙫𝙚𝙣𝙞𝙙𝙖𝙨-𝘿𝙚𝙨𝙥𝙚𝙙𝙞𝙙𝙖𝙨",
+    "canal_id": "1511961765032759316",
+    "creada": "2026-09-29"
+   }
   },
   "EFA": {
    "nombre": "EFA",
@@ -247,9 +275,9 @@
   "FFS": {
    "nombre": "FFS League",
    "guild_id": "1367688812892913774",
-   "invitacion": "",
+   "invitacion": "https://discord.gg/whrjpJUfuz",
    "en_el_sheet": false,
-   "nota": "28/09/2026: el bot entró (Dlx) y FFS es de la Liga — «A · sí, como los otros cuatro». Future Free Series: PLAZAS FFS, FFS BULL y seis ligas regionales; las ligas van más adelante al Ranking de Ligas (Dlx: «A»), así que sus categorías no se leen (ver categorias_fuera). Etiqueta: EVOLUCIÓN (Dlx, 29/09/2026: «Pon EVOLUCION para FFS como el tag»). Sin invitación todavía: no tiene URL propia y el bot no puede listar las suyas; el logo y los miembros de «Mundo» salen del servidor (subir_web._guild_del_bot()).",
+   "nota": "28/09/2026: el bot entró (Dlx) y FFS es de la Liga — «A · sí, como los otros cuatro». Future Free Series: PLAZAS FFS, FFS BULL y seis ligas regionales; las ligas van más adelante al Ranking de Ligas (Dlx: «A»), así que sus categorías no se leen (ver categorias_fuera). Etiqueta: EVOLUCIÓN (Dlx, 29/09/2026: «Pon EVOLUCION para FFS como el tag»). Invitación: la permanente de la Liga (bot/invitaciones.py, 29/09/2026); el bot no puede listar las invitaciones de FFS, así que ahí no se sabe cuántos entraron por ella. Redes: su canal 「📱」redes (Dlx, 29/09/2026: «agrega las redes de FFS… más info está en el canal de redes»): Instagram y YouTube; la cuenta de Instagram sale de sus publicaciones.",
    "confirmado": true,
    "tag": "EVOLUCIÓN",
    "categorias_fuera": {
@@ -263,7 +291,24 @@
      "1468407952778989634"
     ],
     "_ids": "las seis categorías FFS LEAGUE: TRICOLOR, ARGENTINA, CHILE, CARIBE, INTERNACIONAL y SUR AMERICA"
-   }
+   },
+   "invitacion_liga": {
+    "codigo": "whrjpJUfuz",
+    "canal": "「😇」𝐁𝐈𝐄𝐍𝐕𝐄𝐍𝐈𝐃𝐀👋🏼",
+    "canal_id": "1373393995862118512",
+    "creada": "2026-09-29"
+   },
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/freestylefutureseries/"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/@FreestyleFutureSeries"
+    ]
+   ],
+   "youtube_id": "UC6hd1EYdjZi18NjjXbnr0iw"
   }
  },
  "_fuera_de_la_tabla": [
@@ -324,7 +369,8 @@
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
  "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026).",
- "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal.",
+ "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal. FFS: su canal 「📱」redes (29/09/2026), que enlaza publicaciones de @freestylefutureseries en Instagram y videos de @FreestyleFutureSeries en YouTube.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
- "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal."
+ "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",
+ "_invitacion_liga_leeme": "invitacion_liga: la invitación permanente que creó el bot en cada servidor (Dlx, 29/09/2026: «crea una invitación permanente para cada servidor, y de esta manera podemos reconocer cuántas personas se unieron por ti la Liga Global»). Es la de `invitacion`; la de antes quedó en `invitacion_antes`. Cuántos entraron: datos/invitaciones.json (bot/invitaciones.py --contar)."
 }

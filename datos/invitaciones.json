@@ -1,0 +1,26 @@
+{
+ "_leeme": "Cuántos entraron a cada servidor por la invitación permanente de la Liga (`uses` de Discord). Lo escribe bot/invitaciones.py --contar en cada corrida, sólo si cambió. usos null = el bot no puede ver las invitaciones de ese servidor (falta «Gestionar servidor»). Dlx, 29/09/2026.",
+ "servidores": {
+  "DRA": {
+   "codigo": "5jUM3WXDXe",
+   "usos": 0
+  },
+  "FFA": {
+   "codigo": "JrmE78qdMd",
+   "usos": 0
+  },
+  "SR": {
+   "codigo": "EME4p3RhAp",
+   "usos": 0
+  },
+  "URBF": {
+   "codigo": "WSXBZDumBb",
+   "usos": 0
+  },
+  "FFS": {
+   "codigo": "whrjpJUfuz",
+   "usos": null,
+   "por_que": "el bot no puede ver sus invitaciones"
+  }
+ }
+}

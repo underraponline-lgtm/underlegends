@@ -171,19 +171,19 @@ const bloqueada = (g, id) => !!(g && g.bl && g.bl.indexOf(id) >= 0
 // Sin cruzar invitación contra id se habría cargado un invite a otro servidor,
 // y el bot habría mandado gente al lugar equivocado sin fallar nunca.
 export const SERVIDORES = [
-  { sv: 'DRA', nombre: 'Discord Rap Español', guild: '841017460341604382', invita: 'https://discord.gg/SFVnEmVnKz' },
-  { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/4TBvDP2Chm' },
+  { sv: 'DRA', nombre: 'Discord Rap Español', guild: '841017460341604382', invita: 'https://discord.gg/5jUM3WXDXe' },
+  { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/JrmE78qdMd' },
   { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
   { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
-  { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/qhKcQgU47v' },
+  { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
-  { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/vThvc9f5xy' },
+  { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax' },
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
   // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
   // vacío el bot no manda nada, que es lo que dice `datos/servidores.json`.
-  { sv: 'FFS', nombre: 'FFS League', guild: '1367688812892913774', invita: '' },
+  { sv: 'FFS', nombre: 'FFS League', guild: '1367688812892913774', invita: 'https://discord.gg/whrjpJUfuz' },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());

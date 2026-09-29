@@ -963,6 +963,15 @@ def _lo_barato(correr):
         paso('2b4', 'el precio por cabeza')
         if not corre(['bot/precios.py', '--aplicar'], callado=False):
             print('      ⚠️ el precio por cabeza falló: queda lo de la corrida anterior')
+        # ── 2b5 · cuántos entraron a cada servidor por la Liga ────────────
+        # 🔑 Dlx, 29/09/2026: «crea una invitación permanente para cada
+        # servidor, y de esta manera podemos reconocer cuántas personas se
+        # unieron por ti la Liga Global». Sólo lee los `uses` de Discord; si
+        # alguien borró la invitación, lo avisa y no la vuelve a crear. Ver
+        # `bot/invitaciones.py`. Nunca frena el ciclo.
+        paso('2b5', 'las invitaciones de la Liga')
+        if not corre(['bot/invitaciones.py', '--contar', '--aplicar'], callado=False):
+            print('      ⚠️ no pude contar las invitaciones: queda la cuenta de antes')
 
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #
