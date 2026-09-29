@@ -1559,7 +1559,7 @@
        "Chop, OG"
       ],
       "ME TIENE SIN CUIDADO 🇯🇲",
-      ""
+      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲"
      ],
      [
       [
@@ -1628,7 +1628,7 @@
        "Teito🇨🇴, Dominick"
       ],
       "ME TIENE SIN CUIDADO 🇯🇲",
-      ""
+      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲"
      ],
      [
       [
@@ -1665,7 +1665,7 @@
        "Bloody, Colesito"
       ],
       "ME TIENE SIN CUIDADO 🇯🇲",
-      ""
+      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲"
      ]
     ],
     "r": "Semifinales"
@@ -1675,22 +1675,21 @@
      [
       [
        "ENEK 🇪🇸, Neo",
-       "ME TIENE SIN CUIDADO 🇯🇲"
+       "ME TIENE SIN CUIDADO 🇯🇲 (ABYSSUS 🇵🇦)"
       ],
       "ENEK 🇪🇸, Neo",
-      ""
+      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲 (ABYSSUS 🇵🇦)"
      ]
     ],
     "r": "Final"
    }
   ],
+  "sin": [
+   "ME TIENE SIN CUIDADO 🇯🇲",
+   "ME TIENE SIN CUIDADO 🇯🇲 (ABYSSUS 🇵🇦)"
+  ],
   "sv": "FFA",
   "tabla": [
-   [
-    "ME TIENE SIN CUIDADO 🇯🇲",
-    "Subcampeón",
-    7500
-   ],
    [
     "ENEK 🇪🇸",
     "Campeón",
@@ -4786,7 +4785,7 @@
        "Jotap, Iguana"
       ],
       "TEAM VENECIA 🇲🇦 🇻🇪",
-      ""
+      "Sin integrantes: TEAM VENECIA 🇲🇦 🇻🇪"
      ],
      [
       [
@@ -4823,7 +4822,7 @@
        "TEAM VENECIA 🇲🇦 🇻🇪"
       ],
       "27 🇺🇸, Piyi 🇲🇽",
-      ""
+      "Sin integrantes: TEAM VENECIA 🇲🇦 🇻🇪"
      ],
      [
       [
@@ -4850,13 +4849,11 @@
     "r": "Final"
    }
   ],
+  "sin": [
+   "TEAM VENECIA 🇲🇦 🇻🇪"
+  ],
   "sv": "FFA",
   "tabla": [
-   [
-    "TEAM VENECIA 🇲🇦 🇻🇪",
-    "Semifinal",
-    5250
-   ],
    [
     "27 🇺🇸",
     "Campeón",
@@ -4925,6 +4922,255 @@
    [
     "Vandu",
     "Cuartos",
+    1250
+   ]
+  ]
+ },
+ "371": {
+  "dia": "2026-09-28",
+  "escala": "16+",
+  "fecha": "28/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1554337223090905109"
+  ],
+  "n": 371,
+  "nombre": "DESGRACIAS EN TOKYO VOL 16",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Makmah"
+      ],
+      "NC",
+      ""
+     ],
+     [
+      [
+       "yinn",
+       "tormen"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Focox"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Pomberito",
+       "Vandu"
+      ],
+      "Pomberito",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "BLITZ 🇲🇽"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "MvA🇻🇪"
+      ],
+      "Snow",
+      ""
+     ],
+     [
+      [
+       "RIZAS 🇻🇪",
+       "Soneto"
+      ],
+      "RIZAS 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Richard"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "NC"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Pomberito"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "Snow"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "RIZAS 🇻🇪",
+       "Colesito"
+      ],
+      "RIZAS 🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "yinn"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "RIZAS 🇻🇪",
+       "Hassan"
+      ],
+      "RIZAS 🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Hassan"
+      ],
+      "yinn",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "RIZAS 🇻🇪"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "RIZAS 🇻🇪",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "yinn",
+    "Tercero",
+    6000
+   ],
+   [
+    "Hassan",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Pomberito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BLITZ 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Focox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "MvA🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "tormen",
+    "Octavos",
     1250
    ]
   ]
