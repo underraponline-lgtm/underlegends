@@ -59,7 +59,9 @@
   "⚠️ KENNY->Kenny lo dijo Dlx el 27/09/2026: «Sí, de Argentina», a la",
   "   pregunta de si «KENNY» (Snake Rap, sin bandera) y «Kenny» (FFA, 🇦🇷)",
   "   eran la misma persona. Ninguno está en la Lista ni tiene Discord ID;",
-  "   como dos filas con la misma clave, sus tarjetas se pisaban en R2."
+  "   como dos filas con la misma clave, sus tarjetas se pisaban en R2.",
+  "",
+  "🔑 Pollo Sport, Lord, Adachi y Sábado (Dlx, 29/09/2026, «6. A»): en los cuatro, la misma cuenta de Discord se anota con los dos nombres (reconocimiento de toda la Liga). Lord y Lord Viruzz estaban como «distintos» desde el 19/09: se sacó de la hoja AKAs y de identidades.json."
  ],
  "pares": [
   [
@@ -105,6 +107,22 @@
   [
    "KENNY",
    "Kenny"
+  ],
+  [
+   "Pollo Sport",
+   "Polosport"
+  ],
+  [
+   "Lord",
+   "Lord Viruzz"
+  ],
+  [
+   "Adachi",
+   "Nobu"
+  ],
+  [
+   "Sábado",
+   "Guess"
   ]
  ],
  "no_confundir": [

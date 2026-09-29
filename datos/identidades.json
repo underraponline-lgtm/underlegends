@@ -14,7 +14,11 @@
   "no_fusionar    : pares de personas DISTINTAS. Si una cuenta matchea a las",
   "                 dos, no es de ninguna: va a revision.",
   "ids_cruzados   : IDs que pertenecen a UNO y quedaron en la fila del otro.",
-  "                 El que figura en `de` es el dueno real."
+  "                 El que figura en `de` es el dueno real.",
+  "",
+  "29/09/2026: «Lord» y «Lord Viruzz» dejaron de ser un par distinto. Dlx, «6. A»:",
+  "la cuenta de Lord Viruzz se anota «Lord 🇨🇴» en FFA (24, 25 y 27/09). El alias",
+  "va en datos/akas_a_mano.json; el «no confundir» de la hoja AKAs se sacó."
  ],
 
  "no_verificar": {
@@ -29,7 +33,6 @@
   ["Deluxe", "Delux"],
   ["Luck", "Lucky"],
   ["Vargas", "VR"],
-  ["Lord", "Lord Viruzz"],
   ["Zeta CO", "Zeta MX"],
   ["Erik", "Erika"],
   ["Reyes", "Reyes Mc"],

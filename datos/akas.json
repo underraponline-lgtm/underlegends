@@ -206,7 +206,11 @@
   "richardflex": "Richard",
   "bloodypainter": "Bloody",
   "sebita": "Liberia",
-  "kenny": "Kenny"
+  "kenny": "Kenny",
+  "pollosport": "Polosport",
+  "lord": "Lord Viruzz",
+  "adachi": "Nobu",
+  "sabado": "Guess"
  },
  "pares": [
   [
@@ -1032,6 +1036,22 @@
   [
    "KENNY",
    "Kenny"
+  ],
+  [
+   "Pollo Sport",
+   "Polosport"
+  ],
+  [
+   "Lord",
+   "Lord Viruzz"
+  ],
+  [
+   "Adachi",
+   "Nobu"
+  ],
+  [
+   "Sábado",
+   "Guess"
   ]
  ],
  "no_confundir": [
@@ -1159,11 +1179,6 @@
    "Lukas 🇦🇷",
    "Luka 🇨🇴",
    "DOS Lukas (Dlx)"
-  ],
-  [
-   "Lord Viruzz 🇨🇴",
-   "Lord 🇨🇴",
-   "Distintos"
   ],
   [
    "IsaMc 🇲🇽",
