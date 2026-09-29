@@ -805,6 +805,46 @@ en `subir_web.py`), para el calendario de «Eventos».
 instante en UTC (`calendario`) y el día lo pone el navegador. Un calendario
 en una sola zona le correría la fecha a media Liga.
 
+### 🛠️ EL REMAKE DE LA WEB, EN CURSO DESDE EL 29/09/2026
+
+La web se rehace en **React (Vite + Tailwind v4 + shadcn/ui)**, exportada a
+estáticos en Pages: sin SSR, para no gastar el Worker. Todo lo del remake vive
+en **`docs/remake/`**: el inventario de la web de hoy, las cuatro direcciones
+de estilo (`direcciones/`) y las pantallas que se comparan.
+
+Lo que Dlx decidió (ver `NOVEDADES.md`):
+
+- **Las cartas no cambian**: la web es la pared, las cartas son los afiches.
+- **La foto queda como hoy**, con «ocultar mi foto» en ajustes.
+- **El cambio se hace de una vez**, cuando esté todo (*«1. A»*). Hasta ese
+  día la web de hoy no se toca: la nueva se prueba en otra dirección.
+- **Primero el remake**; lo nuevo, después.
+
+⚠️ **21st: buscar sí, traer código NO sin el OK de Dlx.** `search`,
+`search_picker`, `get_inspiration`, `get_theme` y `search_logo` son gratis.
+`get_component`, `21st get`, `21st add` y `npx shadcn add
+https://21st.dev/r/…` gastan de **2 por día** (cuenta free, sin IA: medido
+con `get_usage` el 29/09). Antes de pedir código, mirar si el autor tiene un
+repo MIT público y leerlo ahí. Cada copia se anota en
+`docs/remake/21st-log.md`. Y **nunca `21st init --client`**: escribe otra
+conexión MCP y duplica la que ya hay.
+
+⚠️ **Las cuatro skills de 21st están en `.claude/skills/`** (cli-use,
+ui-explore, ui-build y ui-review), bajadas del espejo oficial el 29/09 y
+**commiteadas para fijar la versión**: son espejos vivos que cambian del
+lado del servidor. `21st-cli-use` se activa sola con un `components.json`;
+la regla de arriba manda sobre ella.
+
+⚠️ **Prohibido en el remake**: degradés, blur, glass, radios de más de
+4 px, `motion`/`framer-motion`/`gsap` y fuentes por CDN (se autoalojan,
+recortadas). **Nunca se pega el HTML de Stitch**: se reconstruye con shadcn
+y los tokens. **Un solo `DESIGN.md`** en la raíz del proyecto nuevo manda
+sobre todas las herramientas; `.21st/DESIGN.md` es una copia.
+
+⚠️ **Los colores de rango y de servidor siguen saliendo del payload**, como
+hoy: `comun/rangos.py` y `datos/colores_sv_marca.json`. El remake no los
+escribe en su CSS.
+
 ---
 
 ## El bot de Discord
