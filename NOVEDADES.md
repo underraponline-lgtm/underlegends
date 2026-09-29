@@ -364,7 +364,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **En tu perfil elegís qué carta ven los demás** («Tus cartas») | *«en mi perfil, que te deje seleccionar la carta»* (2:37 PM) | 📌 va con el remake |
 | **Las páginas de cada país y de cada crew, más adelante** | *«también podría ver cuentas de los países y crews… pero vamos poco a poco»* (2:37 PM) | ⏳ después |
 | **Arriba dice «Discord Rap En Español / Liga Global · T1»**: es el nombre de DRA; Under Legends queda en el logo y en el pie | *«ahí arriba pon Discord Rap En Español / Liga Global - T1»* (2:42 PM) | 📌 va con el remake |
-| **El Inicio suma la Tienda (los Puntos de Tienda) y la Mercancía** | *«pon la sección de tienda puntos, y otra de mercancía»* (2:42 PM) | 📌 va con el remake; las prendas de la maqueta son de muestra |
+| **El Inicio suma la Tienda (los Puntos de Tienda) y la Mercancía** | *«pon la sección de tienda puntos, y otra de mercancía»* (2:42 PM) | 📌 va con el remake; sin prendas: *«aún no hay mercancía»* (3:11 PM) |
+| **La cabecera va en negro**: sólo la barra de arriba; la fila de servidores sigue con el fondo de la página | *«que la cabecera, la parte de arriba, esté en negro… sólo la de arriba, no la de los servidores… para ver cómo queda»* (3:09 PM) | 👀 para ver cómo queda |
+| **Las maquetas del remake usan los datos y las tarjetas de verdad**: `docs/remake/reales.py` lee lo mismo que la web (`/api/lobby` y `/api/muro`); las tarjetas y las caras se bajan aparte y no entran al repo | *«usa información real y tarjetas reales para ver más precisamente»* (3:09 PM) | 📌 regla del remake |
 | **Se mide quién vuelve a jugar un segundo evento**: por semana de debut, otro evento **otro día** dentro de 14; va en el mapa en vivo | *«Va»* (29/09) | ✅ `rankings.retencion()` → `datos/estado_escuchar.json` → el medidor «Vuelven a jugar» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
