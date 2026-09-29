@@ -1271,8 +1271,18 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                     ficha['anuncio'] = i['link']
                 if ficha:
                     info[str(i['llave'])] = ficha
-    usadas = {str(i['llave']) for i in items if i.get('llave')}
     import datetime as _d
+    # 🔑 LA HORA DE LO JUGADO SALE DE LA LLAVE cuando el anuncio no decía a
+    # qué hora (`sh`): la llave se publica al empezar. Sin esto el calendario
+    # mostraba «19:28 · anunciado» —la hora del anuncio— al lado de «jugado»
+    # (Dlx, 28/09/2026, con captura de CCFF V.3).
+    for i in items:
+        if i.get('llave') and i.get('sh'):
+            ms = LW._primero((regs.get(str(i['llave'])) or {}).get('links'))
+            if ms is not None:
+                i['cuando'] = _d.datetime.fromtimestamp(ms / 1000, _d.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S')
+                i['sh'] = 0
+    usadas = {str(i['llave']) for i in items if i.get('llave')}
     for n, r in regs.items():
         if str(n) in usadas:
             continue

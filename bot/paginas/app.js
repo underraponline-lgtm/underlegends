@@ -2865,7 +2865,11 @@ function pintaDia(M) {
         'rel="noopener noreferrer">Discord &#8599;</a>' : '');
     var estado = e.fut ? 'por jugarse' : e.jugado ? 'jugado' : 'anunciado';
     return '<article class="de" style="--c:' + esc(colorSv(e.sv)) + '">' +
-      '<div class="de-t"><b>' + esc(fmtHora(e.t)) + '</b>' + (e.sh ? '<small>anunciado</small>' : '') +
+      // ⚠️ «DEL ANUNCIO» Y NO «ANUNCIADO»: el anuncio no decía la hora y ésta es
+      // cuándo se publicó. «Anunciado» al lado de «jugado» se leía como dos
+      // estados (Dlx, 28/09/2026, con captura). Lo jugado ya trae la hora de la llave
+      '<div class="de-t"><b>' + esc(fmtHora(e.t)) + '</b>' +
+      (e.sh ? '<small title="El anuncio no decía la hora: es cuándo se publicó">del anuncio</small>' : '') +
       '</div><div class="de-c"><h3>' + esc(e.n) + '</h3>' +
       '<div class="de-sub">' + chipSv(e.sv) + etiquetaMult(e.sv, e.t) +
       (e.ct ? '<span class="xm ct" title="Anunciado con 12 horas o más">&#128227; con tiempo</span>' : '') + (mod ? '<span class="lch">&#127908; ' + esc(mod) + '</span>' : '') +
