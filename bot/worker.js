@@ -2790,6 +2790,29 @@ const COMANDOS = {
                    'DRA y no en FFA.');
     }
     const sv = aquiEs(gid) || 'este servidor';
+    // 🔴 EL «#» ES SÓLO DE QUIEN ESTÁ EN EL COMPETITIVO. Dlx, 29/09/2026: «los
+    // que tienen el #, ese comando solo debería… ÚNICAMENTE a las personas que
+    // están en el competitivo». Sin número (menos de 10 eventos, o fuera de
+    // concurso) no hay nada que mostrar: se le saca el «#» viejo si lo tiene
+    // y se le dice cómo se consigue. El número lo manda el ciclo en `p:`
+    // (`vs.c.n`, `versus_de()` de `bot/subir_datos.py`).
+    let numero = 0;
+    try {
+      const clave = await env.KV.get('d:' + uid);
+      const p = clave ? JSON.parse((await env.KV.get('p:' + clave)) || '{}') : {};
+      numero = (p.vs && p.vs.c && p.vs.c.n) || 0;
+    } catch (e) { numero = 0; }
+    if (!numero) {
+      const actualSin = (i.member && i.member.nick) || '';
+      let quite = '';
+      if (MARCA_PUESTO.test(actualSin)) {
+        const r = await cambiarApodo(env, gid, uid, sinPuesto(actualSin));
+        quite = r === 'ok' ? '\nTe saqué el número viejo del apodo.' : '';
+      }
+      return aviso('El **#** del apodo es tu puesto en el **Ranking Competitivo**, y ahí se entra ' +
+                   'con **10 eventos** en la temporada. Todavía no tenés número: cuando entres, ' +
+                   'aparece solo (y con `/numeral` lo podés esconder).' + quite);
+    }
     const [mio, cfg] = await Promise.all([eleccionNick(env, gid, uid), ajustes(env, gid)]);
     // lo que rige hoy: lo tuyo si elegiste, si no lo del servidor
     const ahoraOn = mio ? !!mio.on : cfg.nick !== false;
@@ -2812,8 +2835,11 @@ const COMANDOS = {
     const yaEraMio = mio && !!mio.on === quiere;
 
     const actual = (i.member && i.member.nick) || '';
+    // ⚠️ CON EL NÚMERO DE HOY, no con el apodo guardado: ese podía traer el
+    // de la pre-temporada. El nombre es el que tiene, sin el «#».
+    const u0 = (i.member && i.member.user) || {};
     const destino = quiere
-      ? ((mio && mio.antes) || actual)   // el que tenía guardado, si lo hay
+      ? ('#' + numero + ' | ' + (sinPuesto(actual) || u0.global_name || u0.username || '')).slice(0, 32)
       : sinPuesto(actual);
 
     // 🔴 SI KV NO ESCRIBE, SE DICE Y NO SE TOCA EL APODO. El 24/09/2026 a

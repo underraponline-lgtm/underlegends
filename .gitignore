@@ -218,3 +218,6 @@ datos/olvidados.json
 # (`herramientas/servidores_de.py`, 28/09/2026). Son ~12.000 personas de
 # cuatro servidores: las listas no son nuestras, y el repo es público.
 .cache/
+
+# los respaldos de apodos: Discord IDs y apodos de gente real (herramientas/sincronizar_puesto.py)
+docs/apodos_*.json

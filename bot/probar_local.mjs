@@ -1273,7 +1273,18 @@ const cmdPuesto = (guild, uid, valor, nick = '#22 | Bloody') => ({
 const texto = (r) => r.json?.data?.content || '';
 const leerNick = (g, u) => { try { return JSON.parse(PUESTO[`pnick:${g}:${u}`]); }
                              catch { return null; } };
+// 🔑 LOS DE ESTAS PRUEBAS TIENEN NÚMERO EN EL COMPETITIVO (`c.n` en `p:`): desde
+// el 29/09/2026 el «#» es sólo de ellos (`vs.c.n`) (Dlx: «ÚNICAMENTE a las personas que
+// están en el competitivo»). El que no tiene, más abajo.
+PUESTO['p:bloody'] = JSON.stringify({ n: 'Bloody', vs: { c: { sc: 60.1, n: 22 } } });
+for (const u of ['777002', '777003', '777004', '777005', '777006']) PUESTO['d:' + u] = 'bloody';
 
+{
+  const r = await pedir(cmdPuesto(G.FFA, '777009'));
+  ok('sin número en el Competitivo, /numeral explica cómo se consigue y no guarda nada',
+     /10 eventos/.test(texto(r)) && /Todavía no tenés número/.test(texto(r)) && leerNick(G.FFA, '777009') === null,
+     texto(r).slice(0, 90));
+}
 {
   const r = await pedir({ type: 2, user: { id: '777001' }, data: { name: 'numeral' } });
   ok('por mensaje directo avisa que va adentro de un servidor',

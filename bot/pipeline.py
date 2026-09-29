@@ -972,6 +972,14 @@ def _lo_barato(correr):
         paso('2b5', 'las invitaciones de la Liga')
         if not corre(['bot/invitaciones.py', '--contar', '--aplicar'], callado=False):
             print('      ⚠️ no pude contar las invitaciones: queda la cuenta de antes')
+        # ── 2b6 · el «#N» del apodo, sólo de quien está en el Competitivo ──
+        # 🔑 Dlx, 29/09/2026: «el nombre automáticamente debería cambiar…
+        # ÚNICAMENTE a las personas que están en el competitivo… en toda la
+        # liga». Después de los pools, que traen el número. Casi siempre no
+        # hay nada que cambiar; nunca frena el ciclo.
+        paso('2b6', 'el #N del apodo')
+        if not corre(['herramientas/sincronizar_puesto.py', '--ciclo'], callado=False):
+            print('      ⚠️ no pude sincronizar el #N de los apodos: se reintenta en la próxima')
 
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #

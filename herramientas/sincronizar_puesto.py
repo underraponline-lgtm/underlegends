@@ -1,9 +1,29 @@
 # -*- coding: utf-8 -*-
-"""PONER EL «#PUESTO» DEL RANKING COMPETITIVO EN EL APODO, EN DRA Y EN FFA.
+"""EL «#PUESTO» DEL RANKING COMPETITIVO EN EL APODO, EN TODA LA LIGA.
 
     python herramientas/sincronizar_puesto.py             muestra el plan
     python herramientas/sincronizar_puesto.py --aplicar   cambia los apodos
+    python herramientas/sincronizar_puesto.py --ciclo     lo mismo, desde el ciclo (paso 2b6)
     python herramientas/sincronizar_puesto.py --revertir  deshace la ultima tanda
+    python herramientas/sincronizar_puesto.py --auto      el self-check
+
+🔴 DLX, 29/09/2026: *«los que tienen el # … el nombre automáticamente debería
+cambiar … ÚNICAMENTE a las personas que están en el competitivo… esto en toda
+la liga»*. Tres cosas cambiaron ese día:
+
+  · QUIEN NO ESTÁ EN EL COMPETITIVO PIERDE EL «#N». Hasta acá se lo
+    reportaba y no se lo tocaba («elegirle una marca nueva sería inventar la
+    convención del servidor»): se le saca el número y queda su nombre, sin
+    marca nueva. Medido ese día: 139 apodos con un número de la
+    pre-temporada —57 en DRA y 82 en FFA— y en la T1 tienen número dos.
+  · EN TODOS LOS SERVIDORES DE LA LIGA donde está el bot, no sólo DRA y FFA.
+  · EL NÚMERO SALE DEL POOL, no del Sheet: `datos/competitivo_pool.json`,
+    `pos` hasta `total` —los que pasan la puerta de 10 eventos y son
+    miembros, el mismo número de la vitrina y de la carta—. Así corre solo
+    en el ciclo, sin la cuenta de servicio.
+
+⚠️ LOS RESPALDOS VAN A `.cache/`, NO A `docs/`: tienen Discord IDs y apodos, y
+`docs/` es público. Los tres del 19/09 estaban commiteados.
 
 Dlx, 19/09/2026: el `#` del apodo pasa de salir del **Ranking Temporada (top
 30)** a salir del **Ranking Competitivo (los 138)**. Son rankings distintos, asi
@@ -78,12 +98,26 @@ BASE = os.path.dirname(SCR)
 sys.path.insert(0, os.path.join(BASE, 'sheet'))
 
 API = 'https://discord.com/api/v10'
+CACHE = os.path.join(BASE, '.cache')
 # el KV del Worker, donde `/puesto` guarda quien no quiere su numero
 CUENTA = 'a85733396fd158a8e9660b02e20f33c8'
 KV = 'a87399a3a0b647b0803aa90509ccce56'
 KV_API = ('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/namespaces/%s'
           % (CUENTA, KV))
-GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'))
+def _servidores():
+    """[(sv, guild)] de la Liga donde está el bot: el «#N» va en todos (Dlx, 29/09)."""
+    try:
+        d = json.load(io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8'))
+        en = set(json.load(io.open(os.path.join(BASE, 'datos', 'bot_en.json'), encoding='utf-8')))
+    except (OSError, ValueError):
+        return [('DRA', '841017460341604382'), ('FFA', '1468472442925092958')]
+    out = [(sv, x['guild_id']) for sv, x in (d.get('servidores') or {}).items()
+           if sv in en and x.get('confirmado') and x.get('guild_id')]
+    # DRA primero: el nombre sale de ahí (ver `nombre_de`)
+    return sorted(out, key=lambda t: t[0] != 'DRA')
+
+
+GUILDS = tuple(_servidores())
 # ⚠️ EL ID VIVE EN `sheet/planillas.py`, NO ACA. Estaba copiado en
 # cinco archivos: hoy coinciden y por eso no se nota, pero **la T1
 # estrena planilla nueva** y ese dia el que se olvide de actualizar su
@@ -104,6 +138,27 @@ def env(clave):
 
 def sin_bandera(s):
     return re.sub(r'[\U0001F1E6-\U0001F1FF‍️]', '', s).strip()
+
+
+def numerados(pool=None):
+    """{discord_id: (puesto, nombre)} de quienes tienen número en el Competitivo.
+
+    `pos` hasta `total` del pool: pasan la puerta de 10 eventos Y son miembros
+    (`construir_pool_competitivo.puestos_competitivo()`). Quien pasa la
+    puerta y no es miembro queda después, sin número: fuera de concurso.
+    """
+    if pool is None:
+        try:
+            pool = json.load(io.open(os.path.join(BASE, 'datos', 'competitivo_pool.json'),
+                                     encoding='utf-8'))
+        except (OSError, ValueError):
+            return {}
+    out = {}
+    for p in pool or []:
+        n, t, did = p.get('pos'), p.get('total'), str(p.get('discord_id') or '')
+        if did and n and t and int(n) <= int(t):
+            out[did] = (int(n), sin_bandera(p.get('raw') or p.get('full') or ''))
+    return out
 
 
 def ranking():
@@ -266,23 +321,60 @@ def solo_el_nombre(apodo):
     return (apodo.split('|', 1)[1] if '|' in apodo else apodo).strip()
 
 
+def sin_numero(apodo):
+    """«#148 | OG» -> «OG» · «#5» -> «» · «🐉 | Vandu» queda igual: sólo se va el número."""
+    return MARCA.sub('', apodo or '', count=1).strip()
+
+
 def destino(puesto, nombre):
     return ('#%d | %s' % (puesto, nombre))[:TOPE]
 
 
+def _self_check():
+    print('\n══ EL «#N» DEL APODO ══\n')
+    mal = 0
+
+    def ok(que, cond, det=''):
+        nonlocal mal
+        print('   %s %s%s' % ('✅' if cond else '🔴', que, ('  ' + str(det)) if det else ''))
+        mal += 0 if cond else 1
+    pool = [{'raw': 'Hassan', 'pos': 1, 'total': 2, 'discord_id': '1'},
+            {'raw': 'Makmah', 'pos': 2, 'total': 2, 'discord_id': '2'},
+            {'raw': 'Velatz', 'pos': 3, 'total': 2, 'discord_id': '3'},
+            {'raw': 'Oasis 🇨🇱', 'pos': 4, 'total': 2, 'discord_id': '4'},
+            {'raw': 'Sin ID', 'pos': 1, 'total': 2}]
+    n = numerados(pool)
+    ok('número sólo para quien pasa la puerta y es miembro (pos hasta total)',
+       n == {'1': (1, 'Hassan'), '2': (2, 'Makmah')}, n)
+    ok('sin nadie en el Competitivo, nadie tiene número', numerados([]) == {})
+    ok('al sacarle el número queda el nombre: «#148 | OG» -> «OG», y la marca de otro no se toca',
+       sin_numero('#148 | OG') == 'OG' and sin_numero('🐉 | Vandu') == '🐉 | Vandu')
+    ok('y un apodo que era sólo «#5» queda sin apodo', (sin_numero('#5') or None) is None)
+    ok('la marca reconoce «#12 | Zeta» y no «Zeta #12»',
+       bool(MARCA.match('#12 | Zeta')) and not MARCA.match('Zeta #12'))
+    ok('va a todos los servidores de la Liga donde está el bot, DRA primero',
+       GUILDS and GUILDS[0][0] == 'DRA' and len(GUILDS) >= 2, [g for g, _ in GUILDS])
+    print('\n   %s\n' % ('todo ok' if not mal else '🔴 %d mal' % mal))
+    return 1 if mal else 0
+
+
 def main():
     import requests
-    import construir_padron as PAD
+    if '--auto' in sys.argv:
+        sys.exit(_self_check())
 
     s = requests.Session()
     s.headers['Authorization'] = 'Bot ' + env('DISCORD_TOKEN')
 
     if '--revertir' in sys.argv:
-        resp = sorted(f for f in os.listdir(os.path.join(BASE, 'docs'))
-                      if f.startswith('apodos_'))
+        resp = sorted((f, d) for d in (CACHE, os.path.join(BASE, 'docs')) if os.path.isdir(d)
+                      for f in os.listdir(d) if f.startswith('apodos_'))
         if not resp:
             sys.exit('no hay respaldo de apodos que revertir')
-        datos = json.load(io.open(os.path.join(BASE, 'docs', resp[-1]), encoding='utf-8'))
+        resp = [(f, d) for f, d in resp]
+        f_, d_ = max(resp, key=lambda x: x[0].split('_')[-2:])
+        datos = json.load(io.open(os.path.join(d_, f_), encoding='utf-8'))
+        resp = [f_]
         print('\nrevirtiendo %d apodo(s) desde %s\n' % (len(datos['cambios']), resp[-1]))
         n = 0
         for c in datos['cambios']:
@@ -292,22 +384,11 @@ def main():
         print('  revertidos: %d de %d\n' % (n, len(datos['cambios'])))
         return
 
-    print('\nleyendo el Ranking Competitivo...')
-    rank = ranking()
-    print('   %d puestos (del #%d al #%d)' % (len(rank), rank[0][0], rank[-1][0]))
-
-    pad = PAD.cargar()
-    idx = {PAD.norm(x['raw']): x for x in pad}
-    puesto_de = {}          # discord_id -> (puesto, nombre)
+    print('\nquién tiene número en el Competitivo (datos/competitivo_pool.json)...')
+    puesto_de = numerados()          # discord_id -> (puesto, nombre)
     sin_id = []
-    for n, nombre in rank:
-        did = (idx.get(PAD.norm(nombre)) or {}).get('discord_id')
-        if did:
-            puesto_de[did] = (n, nombre)
-        else:
-            sin_id.append('#%d %s' % (n, nombre))
-    print('   con Discord ID: %d   ·   sin ID (no se les puede tocar): %d'
-          % (len(puesto_de), len(sin_id)))
+    print('   %d con número: %s' % (len(puesto_de), ', '.join(
+        '#%d %s' % v for v in sorted(puesto_de.values())) or '—'))
 
     miembros = {}
     for sv, gid in GUILDS:
@@ -332,6 +413,7 @@ def main():
               % (nom, 'ACTIVADO' if on else 'APAGADO'))
 
     plan, viejos, ocultos = [], [], 0
+    poder = {}                       # los servidores donde el bot no puede tocar apodos
     for sv, gid in GUILDS:
         for did, m in miembros[sv].items():
             actual = m.get('nick') or ''
@@ -348,7 +430,11 @@ def main():
                 # puesto para siempre — lo contrario de lo que pidió.
                 if not lleva:
                     ocultos += 1
-                    nuevo = solo_el_nombre(actual) or nombre_de(did, del_ranking)
+                    # ⚠️ SÓLO SE SACA EL NÚMERO: a quien no tiene apodo ahí no se
+                    # le pone uno. Antes quedaba el de DRA, y con SR en la lista
+                    # (29/09/2026) eso le cambiaba el nombre a gente que no lo
+                    # había tocado nunca.
+                    nuevo = sin_numero(actual) or None if MARCA.match(actual) else actual
                 else:
                     nuevo = destino(n, nombre_de(did, del_ranking))
                 if nuevo != actual:
@@ -356,36 +442,55 @@ def main():
                                  'nuevo': nuevo, 'oculto': not lleva,
                                  'user': (m.get('user') or {}).get('username')})
             elif MARCA.match(actual):
-                # tiene un #N viejo y ya no esta en el ranking
+                # 🔴 UN «#N» DE QUIEN NO ESTÁ EN EL COMPETITIVO SE SACA (Dlx,
+                # 29/09/2026: «ÚNICAMENTE a las personas que están en el
+                # competitivo»). Queda su nombre, sin marca nueva; sin nombre,
+                # sin apodo.
                 viejos.append((sv, actual, (m.get('user') or {}).get('username')))
+                plan.append({'guild': gid, 'sv': sv, 'id': did, 'antes': actual,
+                             'nuevo': sin_numero(actual) or None, 'sin_numero': True,
+                             'user': (m.get('user') or {}).get('username')})
 
     print('\n  ✅ apodos a cambiar: %d   ·   con el puesto oculto por pedido: %d'
           % (len(plan), ocultos))
-    for c in plan[:45]:
+    for c in [x for x in plan if not x.get('sin_numero')][:45]:
         print('     [%s] %-24s -> %-24s%s'
-              % (c['sv'], (c['antes'] or '(sin apodo)')[:24], c['nuevo'][:24],
+              % (c['sv'], (c['antes'] or '(sin apodo)')[:24], (c['nuevo'] or '(sin apodo)')[:24],
                  '  🙈 /puesto off' if c.get('oculto') else ''))
     if len(plan) > 45:
         print('     … y %d mas' % (len(plan) - 45))
-    print('  🔎 tienen #N viejo y NO estan en el Competitivo (no se tocan): %d' % len(viejos))
-    for sv, ap, u in viejos:
+    print('  ✂️  tienen #N y NO estan en el Competitivo: se les saca: %d' % len(viejos))
+    for sv, ap, u in viejos[:30]:
         print('     [%s] %-24s @%s' % (sv, ap[:24], u))
+    if len(viejos) > 30:
+        print('     … y %d mas' % (len(viejos) - 30))
     if sin_id:
         print('  ❔ en el ranking pero sin Discord ID: %d' % len(sin_id))
         print('     %s' % ', '.join(sin_id[:18]))
 
-    if '--aplicar' not in sys.argv:
+    if '--aplicar' not in sys.argv and '--ciclo' not in sys.argv:
         print('\n  (nada cambiado — corré con --aplicar)\n')
         return
+    if not plan:
+        print('\n  ✅ nada que cambiar\n')
+        return
 
-    p = os.path.join(BASE, 'docs', 'apodos_%s.json' % time.strftime('%Y%m%d_%H%M'))
+    os.makedirs(CACHE, exist_ok=True)
+    p = os.path.join(CACHE, 'apodos_%s.json' % time.strftime('%Y%m%d_%H%M'))
     json.dump({'cuando': time.strftime('%Y-%m-%d %H:%M'), 'cambios': plan},
               io.open(p, 'w', encoding='utf-8', newline='\n'), ensure_ascii=False, indent=1)
     print('\n  respaldo -> %s' % os.path.relpath(p, BASE))
 
     ok, fallos = 0, []
     for c in plan:
+        # ⚠️ UN SERVIDOR QUE NO DEJA (FFS: el bot no puede cambiar apodos) se
+        # intenta una vez y se saltea entero, no cien
+        if poder.get(c['guild']) is False:
+            fallos.append((c['sv'], c['user'], 'el bot no puede cambiar apodos ahí'))
+            continue
         bien, err = poner_apodo(s, c['guild'], c['id'], c['nuevo'])
+        if not bien and err.startswith('403') and 'Missing Permissions' in err and not ok:
+            poder[c['guild']] = False
         if bien:
             ok += 1
             if ok % 25 == 0:
