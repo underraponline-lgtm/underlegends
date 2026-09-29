@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T06:54:28+00:00",
+ "cuando": "2026-09-29T15:26:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -764,6 +764,24 @@
    "premios": ""
   },
   {
+   "nombre": "RAP EXHIBITION 2/8",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1554505506767241236",
+   "cuando": "2026-09-29T14:49:54",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "@Rubik",
+   "cupos_texto": "ILIMITADOS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "2",
+   "modalidad": "1v1",
+   "horario": "<t:1790713800:F>",
+   "fecha": "",
+   "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de"
+  },
+  {
    "nombre": "SNAKE INSIGNIA",
    "servidor": "SR",
    "canal": "[🏆]eventos",
@@ -1157,24 +1175,6 @@
    "modalidad": "1V1",
    "horario": "EN 15 MINUTOS",
    "fecha": "4",
-   "premios": "PTS TABLA"
-  },
-  {
-   "nombre": "GENESIS BATTLES",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1536880333109076110",
-   "cuando": "2026-08-11T23:33:45",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "1V1",
-   "horario": "EN 15 MINUTOS",
-   "fecha": "3",
    "premios": "PTS TABLA"
   },
   {

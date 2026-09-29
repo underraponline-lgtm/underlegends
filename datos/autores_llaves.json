@@ -1,19 +1,23 @@
 {
  "_leeme": "Las huellas (sha1 recortado, no la cuenta) de quien ya publicó una llave que se cargó. Una llave de alguien que no está acá y sin anuncio espera en ✅ Decidir: ver llave_de_broma() en bot/llaves_a_entrada.py. Dlx, 28/09/2026: «A · sí».",
  "huellas": [
+  "0560094902c636fb",
   "0ed040919881f966",
   "17c65cab2445e141",
   "211322958af20ae2",
+  "37b94e49fd764312",
   "39e7b5d06eab058a",
   "423b9d3a10944056",
   "608cfa4b650ba173",
   "609f06df4468e376",
   "60e38ff03c62af68",
+  "64f00d6bfbe33d75",
   "6a4dfd082a18bc77",
   "6a6481d106eda6d3",
   "70f678176a53acf5",
   "78a9632c77e88d80",
   "7cc3316a3e5f345f",
+  "8388f8384ed60e3e",
   "86326b67ad6d9a94",
   "95af2d0a8a6b7330",
   "9dbbad01fab207c3",
@@ -23,6 +27,7 @@
   "c36f9caea613c5c9",
   "d78e14906a1810bb",
   "d83234c3da26ac85",
+  "e046f1512375cad7",
   "f121e59b56d05233"
  ]
 }

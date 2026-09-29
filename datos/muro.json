@@ -171,9 +171,11 @@
 "temporada"
 ]
 },
-"pollosport": {
+"polosport": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "cinexfilo": {
 "rg": "",
@@ -192,7 +194,10 @@
 },
 "eze": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "majiztral": {
 "rg": "",
@@ -296,9 +301,12 @@
 "temporada"
 ]
 },
-"lord": {
+"lordviruzz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "number": {
 "rg": "",
@@ -478,6 +486,13 @@
 "temporada"
 ]
 },
+"nobu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "krish": {
 "rg": "",
 "c": [
@@ -492,6 +507,13 @@
 "agre": {
 "rg": "",
 "c": []
+},
+"guess": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "tormen": {
 "rg": "",
@@ -575,13 +597,6 @@
 "rg": "",
 "c": []
 },
-"guess": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "focox": {
 "rg": "",
 "c": [
@@ -595,10 +610,6 @@
 "servidor",
 "temporada"
 ]
-},
-"adachi": {
-"rg": "",
-"c": []
 },
 "clitax": {
 "rg": "",
@@ -637,7 +648,10 @@
 },
 "kenny": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "leteletras": {
 "rg": "",
@@ -774,13 +788,6 @@
 "lizeninn": {
 "rg": "",
 "c": []
-},
-"nobu": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "paradoja": {
 "rg": "",
@@ -969,10 +976,6 @@
 "temporada"
 ]
 },
-"sabado": {
-"rg": "",
-"c": []
-},
 "tkl": {
 "rg": "",
 "c": []
@@ -989,6 +992,22 @@
 "c": []
 },
 "btrx": {
+"rg": "",
+"c": []
+},
+"pollosport": {
+"rg": "",
+"c": []
+},
+"lord": {
+"rg": "",
+"c": []
+},
+"adachi": {
+"rg": "",
+"c": []
+},
+"sabado": {
 "rg": "",
 "c": []
 },
@@ -1111,6 +1130,38 @@
 "t": "2026-09-28T22:40:07Z",
 "quien": [
 "melomaniaco"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T15:28:56Z",
+"quien": [
+"Eze"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T15:28:56Z",
+"quien": [
+"Eze"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T15:28:56Z",
+"quien": [
+"Kenny"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T15:28:56Z",
+"quien": [
+"Kenny"
 ],
 "carta": "temporada"
 }

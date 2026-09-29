@@ -23,7 +23,7 @@
      [
       [
        "Snow, Velatz, yinn",
-       "Lord, Camila, dxg"
+       "Lord Viruzz, Camila, dxg"
       ],
       "Snow, Velatz, yinn",
       ""
@@ -40,7 +40,7 @@
       [
        "Hassan, PichulaMc, Neo",
        "Benshi, Cinexfilo, Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷",
-       "Six, Pollo Sport, Rubik"
+       "Six, Polosport, Rubik"
       ],
       "Hassan, PichulaMc, Neo",
       "triple (3 bandas)"
@@ -171,7 +171,7 @@
     833
    ],
    [
-    "Lord",
+    "Lord Viruzz",
     "Cuartos",
     833
    ],
@@ -181,7 +181,7 @@
     833
    ],
    [
-    "Pollo Sport",
+    "Polosport",
     "Cuartos",
     833
    ],
@@ -566,10 +566,10 @@
      ],
      [
       [
-       "ARDEAN 🇵🇪",
+       "ARDEAN",
        "AREZ"
       ],
-      "ARDEAN 🇵🇪",
+      "ARDEAN",
       ""
      ],
      [
@@ -612,7 +612,7 @@
      [
       [
        "Velatz",
-       "ARDEAN 🇵🇪"
+       "ARDEAN"
       ],
       "Velatz",
       ""
@@ -699,7 +699,7 @@
     4500
    ],
    [
-    "ARDEAN 🇵🇪",
+    "ARDEAN",
     "Cuartos",
     2500
    ],
@@ -955,7 +955,7 @@
       [
        "fleivaman",
        "Iguana",
-       "Fleivacheck 🇧🇴"
+       "Fleivacheck"
       ],
       "fleivaman",
       "triple (3 bandas)"
@@ -982,7 +982,7 @@
      [
       [
        "moneymaker",
-       "DENIK 🇵🇪",
+       "Denik",
        "CJ"
       ],
       "moneymaker",
@@ -1125,7 +1125,7 @@
     1250
    ],
    [
-    "DENIK 🇵🇪",
+    "Denik",
     "Octavos",
     1250
    ],
@@ -1140,7 +1140,7 @@
     1250
    ],
    [
-    "Fleivacheck 🇧🇴",
+    "Fleivacheck",
     "Octavos",
     1250
    ],
@@ -1211,10 +1211,10 @@
     "b": [
      [
       [
-       "Mau Kc 🇨🇴, Denik 🇵🇪",
+       "Mau Kc 🇨🇴, Denik",
        "NC, g8🇯🇴"
       ],
-      "Mau Kc 🇨🇴, Denik 🇵🇪",
+      "Mau Kc 🇨🇴, Denik",
       "Revivido: nc🇯🇴"
      ],
      [
@@ -1250,7 +1250,7 @@
      [
       [
        "CJ, Zignos",
-       "Mau Kc 🇨🇴, Denik 🇵🇪"
+       "Mau Kc 🇨🇴, Denik"
       ],
       "CJ, Zignos",
       ""
@@ -1308,7 +1308,7 @@
     2625
    ],
    [
-    "Denik 🇵🇪",
+    "Denik",
     "Semifinal",
     2625
    ],
@@ -2653,10 +2653,10 @@
      ],
      [
       [
-       "Lord",
+       "Lord Viruzz",
        "Kenny"
       ],
-      "Lord",
+      "Lord Viruzz",
       ""
      ],
      [
@@ -2690,10 +2690,10 @@
     "b": [
      [
       [
-       "Lord",
+       "Lord Viruzz",
        "Noone"
       ],
-      "Lord",
+      "Lord Viruzz",
       ""
      ],
      [
@@ -2728,7 +2728,7 @@
      [
       [
        "MTZ",
-       "Lord"
+       "Lord Viruzz"
       ],
       "MTZ",
       ""
@@ -2749,7 +2749,7 @@
      [
       [
        "Erian",
-       "Lord"
+       "Lord Viruzz"
       ],
       "Erian",
       ""
@@ -2789,7 +2789,7 @@
     6000
    ],
    [
-    "Lord",
+    "Lord Viruzz",
     "Cuarto",
     4500
    ],
@@ -2870,7 +2870,7 @@
     "b": [
      [
       [
-       "Sábado 🇦🇷",
+       "Guess",
        "Sin Limites",
        "Jupiter"
       ],
@@ -3082,6 +3082,11 @@
     625
    ],
    [
+    "Guess",
+    "R32",
+    625
+   ],
+   [
     "Humildad",
     "R32",
     625
@@ -3133,11 +3138,6 @@
    ],
    [
     "Soft",
-    "R32",
-    625
-   ],
-   [
-    "Sábado 🇦🇷",
     "R32",
     625
    ],
@@ -3216,11 +3216,11 @@
      ],
      [
       [
-       "Pollo Sport",
+       "Polosport",
        "PLA PLA",
        "Dominick"
       ],
-      "Pollo Sport",
+      "Polosport",
       "triple (3 bandas)"
      ],
      [
@@ -3280,10 +3280,10 @@
      ],
      [
       [
-       "Pollo Sport",
+       "Polosport",
        "Juanpa"
       ],
-      "Pollo Sport",
+      "Polosport",
       ""
      ],
      [
@@ -3310,7 +3310,7 @@
      [
       [
        "Six",
-       "Pollo Sport"
+       "Polosport"
       ],
       "Six",
       ""
@@ -3330,10 +3330,10 @@
     "b": [
      [
       [
-       "Pollo Sport",
+       "Polosport",
        "Luzzano"
       ],
-      "Pollo Sport",
+      "Polosport",
       ""
      ]
     ],
@@ -3366,7 +3366,7 @@
     7500
    ],
    [
-    "Pollo Sport",
+    "Polosport",
     "Tercero",
     6000
    ],
@@ -4232,10 +4232,10 @@
      ],
      [
       [
-       "Snow, Pollo Sport, Provenza, yinn",
+       "Snow, Polosport, Provenza, yinn",
        "Teito🇨🇴, Majiztral"
       ],
-      "Snow, Pollo Sport, Provenza, yinn",
+      "Snow, Polosport, Provenza, yinn",
       ""
      ],
      [
@@ -4285,10 +4285,10 @@
      ],
      [
       [
-       "Snow, Pollo Sport, yinn, Provenza",
+       "Snow, Polosport, yinn, Provenza",
        "Oasis"
       ],
-      "Snow, Pollo Sport, yinn, Provenza",
+      "Snow, Polosport, yinn, Provenza",
       ""
      ],
      [
@@ -4315,7 +4315,7 @@
      [
       [
        "Panchok",
-       "yinn, Provenza, Pollo Sport, Snow"
+       "yinn, Provenza, Polosport, Snow"
       ],
       "Panchok",
       ""
@@ -4380,7 +4380,7 @@
     2500
    ],
    [
-    "Pollo Sport",
+    "Polosport",
     "Semifinal",
     1312
    ],
@@ -4485,7 +4485,7 @@
      [
       [
        "Steven🇨🇴",
-       "Adachi 🇻🇪"
+       "Nobu"
       ],
       "Steven🇨🇴",
       ""
@@ -4533,7 +4533,7 @@
      [
       [
        "Majiztral",
-       "TG🇪🇨"
+       "TG"
       ],
       "Majiztral",
       ""
@@ -4656,11 +4656,6 @@
     2500
    ],
    [
-    "Adachi 🇻🇪",
-    "Octavos",
-    1250
-   ],
-   [
     "Clitax",
     "Octavos",
     1250
@@ -4681,7 +4676,12 @@
     1250
    ],
    [
-    "TG🇪🇨",
+    "Nobu",
+    "Octavos",
+    1250
+   ],
+   [
+    "TG",
     "Octavos",
     1250
    ],
