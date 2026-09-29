@@ -1891,6 +1891,24 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
+- 🪪 **EL RECONOCIMIENTO DE TODA LA LIGA, medido y sin tocar nada** (29/09,
+  3 AM; pedido: *«reconocimiento de IDs sobre toda la liga… miembro por
+  miembro»*). Siete servidores bajados enteros: DRA 2.731, FFA 1.682, Snake
+  Rap 7.336, URBF 438, FFS 455, LIVONIA 1.083 y CONFED 34.
+  - **El portón**, de los que ya tienen ID: **341 lo pasan**; **190 tienen ID
+    y no están en DRA** (sin carta hasta que entren); **44 tienen un ID que ya
+    no está en ningún servidor**; 4 son Miembros sin país en ningún lado.
+    `autoverificar` está al día: no queda nadie trabado por el país.
+  - **Los 64 de la T1 sin Discord ID** (sin carta por eso): 8 IDs listos, 4
+    alias, 1 ID mal puesto, 1 equipo tomado por persona, 11 dudosos y 39 sin
+    ninguna cuenta con ese nombre (nombres de personaje de RAP EXHIBITION,
+    equipos, gente que no está en ningún servidor).
+  - ⚠️ **Lo que aprendí midiendo**: una inscripción la puede escribir otro
+    —`jesuslgamer31` anotó a «Steven» y a «Player»—, así que sólo prueba
+    quién es cuando el autor no anota a otros. Y un nombre único puede ser
+    otra persona: la cuenta de Denik es `dnk.x` (se anotó «kc + denik»), no
+    la otra «DENIK» que entró a FFA el 24/09.
+  - Las decisiones, abajo (5 a 8).
 - **La NAVE DE FUNA ya cuenta, aunque tu guía (§12) descartaba las fases de
   cypher sin batallas.** La diferencia: la lista dice quién cayó (❌). **A** ·
   así, cuentan · **B** · se descartan, como decía la guía.
@@ -1907,6 +1925,20 @@ inglés, y `/borrar-mis-datos`.
 - **Los respaldos de apodos del 19/09 siguen en el historial del repo
   público.** **A** · reescribo el historial para sacarlos del todo (es un
   push forzado; el ciclo no se entera) · **B** · así queda.
+- **5 · IDs de la T1**: **A** · escribo los 8 —Eze, Noone, TG, Carlos y Santi
+  (se anotaron ellos mismos) y Ardean, Kenny y Fleivacheck (una sola cuenta
+  con ese nombre)— · **B** · sólo los 5 que se anotaron · **C** · ninguno.
+  Eze y Kenny ya son Miembros de DRA: con el ID les sale la tarjeta.
+- **6 · Alias**: Pollo Sport = **Polosport**, Lord = **Lord Viruzz**, Adachi =
+  **Nobu**, Sábado = **Guess** (en los cuatro, la misma cuenta se anota con
+  los dos nombres). **A** · los cuatro · **B** · decime cuál no.
+- **7 · Denik**: su cuenta (`dnk.x`) está puesta en la Lista a **fleivaman**.
+  **A** · se la paso a Denik y fleivaman queda sin ID · **B** · no.
+- **8 · «Crack and Krank»** cobra como una persona: es «CyK», lo anota Pcyka.
+  **A** · es un equipo sin integrantes, como TEAM VENECIA · **B** · es Pcyka.
+- **Y para mirar juntos después**: 5 con cuenta nueva probable (el ID que
+  tenían ya no existe): Incognito, DUI, JUANK, Ambidextro (JANDER) y Camila,
+  que juega la T1.
 - ✅ ~~**NAVE DE FUNA / CYPHER**~~: tres ejemplos (29/09), hecha en la 1.50.
 - ✅ ~~**ME TIENE SIN CUIDADO**~~ *«A»* y ~~**TEAM VENECIA**~~ *«no lo sé»*:
   hechos (1.50).
