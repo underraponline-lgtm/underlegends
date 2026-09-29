@@ -335,11 +335,59 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Las inscripciones se miran constantemente** mientras hay un evento: los organizadores limpian el canal | *«cuando anuncian un evento, tienes que estar chequeando las inscripciones constantemente»* | ✅ (1.50): el vigía las lee cada minuto y las guarda 3 días (`inscripciones()` en `bot/avisos.js`); el ciclo las suma (`anuncios.del_vigia()`) |
 | **Si ya hay un link permanente de FFS creado por mí, va ése** | *«si ya creaste un link de ffs por tu propia cuenta usa ese»* | ✅ `discord.gg/whrjpJUfuz` (el que pasó Dlx vence el 29/10) |
 | **La sección de llaves tiene que mejorar bastante** | *«Como te dije la seccion de llaves de eventos tiene que mejorar bastante»* | ⏳ con el remake de la web |
+| **El anuncio y su llave pueden decir distinto número y ser el mismo evento** (TOKYO VOL 17 se anunció «VOL 17 1VS1» y su llave dice «VOL 16»): se juntan por la serie, el horario y la forma; nunca por el número solo, y con dos posibles no se elige | *«aquí se equivocaron en el anuncio. Pusieron 17 cuando era 16… A veces pasa esto que el anuncio y el título de la llave no tienen sentido pero son del mismo… asegúrate de tener cuidado con ello»* (29/09, 4:30 AM) | ✅ `llaves_web._huerfanas()` (1.51) |
+| **La NAVE DE FUNA cuenta** | *«1. A»* (29/09, 4 AM) | ✅ ya estaba (1.50) |
+| **La llamada se mira sólo con un evento en vivo**, una foto y sin quedarse conectado | *«Si pero fíjate muy bien para no gastar recursos y solo cuando en vivo seria rentable»* | ⏳ en construcción |
+| **La cuenta de las invitaciones no se muestra en ningún lado** | *«3. ninguno. no hagas nada de ahí»* | ✅ nada que hacer: sigue guardándose sola en `datos/invitaciones.json` |
+| **IDs y apodos de la gente no van al repo público, tampoco en el historial**; antes de reescribirlo, respaldo | *«4. A y haz el back up xq los akas son importantes»* | 🟡 respaldo hecho y el historial limpio en la PC (rama `limpio`); **falta subirlo** (ver ❓) |
+| **Los 8 IDs de la T1**: Eze, Noone, TG, Carlos, Santi, Ardean, Kenny y Fleivacheck | *«5. A»* | ✅ la Lista (4 en su fila, 4 filas nuevas) |
+| **Pollo Sport = Polosport, Lord = Lord Viruzz, Adachi = Nobu, Sábado = Guess** | *«6. A»* | ✅ `datos/akas_a_mano.json`; el «no confundir» Lord/Lord Viruzz, fuera |
+| **Denik es dnk.x** (su ID estaba en la fila de fleivaman) | *«7. A»* | ✅ la Lista, con nota y respaldo |
+| **Crack and Krank queda como está** | *«8. No lo sé la verdad»* | ✅ nada que hacer |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
 
+## 📅 Martes 29/09 (5:30 AM) — versión 1.51
+
+Tus ocho respuestas de las 4 AM y tu captura de TOKYO: *«pusieron 17 cuando
+era 16… asegúrate de tener cuidado con ello»*. Y *«¿puedes poner lo más
+reciente arriba?»*: el artifact de novedades ahora arranca por tus preguntas y
+lo del día, y deja las reglas al final (en cada tema, la más nueva primero).
+
+- 🔗 **TOKYO VOL 17 ya tiene su llave.** El anuncio decía «VOL 17 1VS1» y la
+  llave «VOL 16», y `cruzar()` exige el mismo número —«VOL 11» y «VOL 12» sí
+  son dos eventos—. No se relajó el número: hay una **segunda pasada**
+  (`_huerfanas()`) sólo para el anuncio que quedó sin llave, que pide la misma
+  **serie** (el nombre sin números ni modalidad), una llave que **ningún otro
+  anuncio se llevó** (contando todos, no sólo los seis de «Lo que pasó»),
+  publicada **después del anuncio y antes del siguiente de esa serie**, y de
+  la misma **forma** (1vs1 contra equipos). Con dos posibles no elige.
+  **Medido sobre los 113 anuncios: cambia uno solo.** El lobby se subió a
+  las 5:15 AM: ya está en la página.
+- ⚠️ La forma entró también a la primera pasada: esa noche las dos llaves
+  dicen «VOL 16» (el 2VS2 y el 1VS1). Y la medición encontró un error mío
+  antes de subir: con «Pandillas = equipos», **ELRAP FECHA 6 perdía su
+  llave** —sus batallas son de 3 y 4 personas, cada una sola—. «Pandillas»,
+  «MULTIVERSE» y «4x4» (compases) quedan como «no se sabe».
+- 🪪 **Tus 5, 6 y 7**, en la Lista y en `akas_a_mano.json` (commit de las
+  4:04 AM). Eze y Kenny son Miembros: su tarjeta sale en la corrida de las
+  11:22 AM (a verificar).
+- 🧹 **El historial (4 · A)**: respaldo verificado fuera del repo
+  (`LigaGlobal_Tarjetas_respaldos/`, el bundle de 88 MB con los 593 commits y
+  los 4 archivos de apodos) y el historial reescrito en la PC, con el árbol
+  idéntico. **Subirlo no anduvo**: son 88 MB (el historial nuevo no comparte
+  commits con el viejo, así que git manda todo) y el WiFi de la PC se cortó
+  las tres veces. Un atajo —una rama puente que volvía a colgar los commits
+  viejos— lo frenó el control de seguridad, con razón: republicaba justo lo
+  que se quiere sacar. Queda como pregunta (❓).
+  - Mientras tanto se trabaja sobre el historial público (rama `publico`), y
+    el limpio queda en la rama `limpio`. **Antes del push forzado** hay que
+    pasar al limpio todo lo que llegue a `main` después de `9505f4e`:
+    `git rebase --onto limpio 9505f4e publico`, y el lease sobre la punta
+    nueva del remoto.
+- 🎙️ **La llamada (2)**: en construcción.
 ## 📅 Martes 29/09 (2:30 AM) — versión 1.50
 
 Tus tres NAVES DE FUNA de ejemplo, *«2. A»*, *«3. no lo sé… tienes que estar
@@ -1891,54 +1939,19 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- 🪪 **EL RECONOCIMIENTO DE TODA LA LIGA, medido y sin tocar nada** (29/09,
-  3 AM; pedido: *«reconocimiento de IDs sobre toda la liga… miembro por
-  miembro»*). Siete servidores bajados enteros: DRA 2.731, FFA 1.682, Snake
-  Rap 7.336, URBF 438, FFS 455, LIVONIA 1.083 y CONFED 34.
-  - **El portón**, de los que ya tienen ID: **341 lo pasan**; **190 tienen ID
-    y no están en DRA** (sin carta hasta que entren); **44 tienen un ID que ya
-    no está en ningún servidor**; 4 son Miembros sin país en ningún lado.
-    `autoverificar` está al día: no queda nadie trabado por el país.
-  - **Los 64 de la T1 sin Discord ID** (sin carta por eso): 8 IDs listos, 4
-    alias, 1 ID mal puesto, 1 equipo tomado por persona, 11 dudosos y 39 sin
-    ninguna cuenta con ese nombre (nombres de personaje de RAP EXHIBITION,
-    equipos, gente que no está en ningún servidor).
-  - ⚠️ **Lo que aprendí midiendo**: una inscripción la puede escribir otro
-    —`jesuslgamer31` anotó a «Steven» y a «Player»—, así que sólo prueba
-    quién es cuando el autor no anota a otros. Y un nombre único puede ser
-    otra persona: la cuenta de Denik es `dnk.x` (se anotó «kc + denik»), no
-    la otra «DENIK» que entró a FFA el 24/09.
-  - Las decisiones, abajo (5 a 8).
-- **La NAVE DE FUNA ya cuenta, aunque tu guía (§12) descartaba las fases de
-  cypher sin batallas.** La diferencia: la lista dice quién cayó (❌). **A** ·
-  así, cuentan · **B** · se descartan, como decía la guía.
-- **¿Chequear quién está en la llamada?** Se puede: el ciclo se conecta un
-  instante a Discord y ve quién está en cada canal de voz (sin quedarse
-  conectado). Sirve para el suplente o el que no se anotó —un nombre raro de
-  la llave que coincide con alguien que estaba en la llamada del evento—. No
-  sirve para un equipo como TEAM VENECIA: la llamada no dice quién iba con
-  quién. **A** · lo armo · **B** · no por ahora.
-- **(Reformulada) La cuenta de las invitaciones**: las cinco invitaciones de
-  la Liga cuentan cuánta gente entró a cada servidor por ellas (hoy, 0 en
-  todas). ¿Ese número se ve en la página? **A** · sí, en «Mundo», al lado de
-  cada servidor: «12 entraron desde la Liga» · **B** · no, lo ves sólo vos.
-- **Los respaldos de apodos del 19/09 siguen en el historial del repo
-  público.** **A** · reescribo el historial para sacarlos del todo (es un
-  push forzado; el ciclo no se entera) · **B** · así queda.
-- **5 · IDs de la T1**: **A** · escribo los 8 —Eze, Noone, TG, Carlos y Santi
-  (se anotaron ellos mismos) y Ardean, Kenny y Fleivacheck (una sola cuenta
-  con ese nombre)— · **B** · sólo los 5 que se anotaron · **C** · ninguno.
-  Eze y Kenny ya son Miembros de DRA: con el ID les sale la tarjeta.
-- **6 · Alias**: Pollo Sport = **Polosport**, Lord = **Lord Viruzz**, Adachi =
-  **Nobu**, Sábado = **Guess** (en los cuatro, la misma cuenta se anota con
-  los dos nombres). **A** · los cuatro · **B** · decime cuál no.
-- **7 · Denik**: su cuenta (`dnk.x`) está puesta en la Lista a **fleivaman**.
-  **A** · se la paso a Denik y fleivaman queda sin ID · **B** · no.
-- **8 · «Crack and Krank»** cobra como una persona: es «CyK», lo anota Pcyka.
-  **A** · es un equipo sin integrantes, como TEAM VENECIA · **B** · es Pcyka.
+- **El historial limpio no sube** (29/09, 5:30 AM): 88 MB y el WiFi de la PC
+  se corta a mitad. **A** · lo sigo intentando solo hasta que la conexión
+  aguante · **B** · lo subo en partes de ~15 MB por una rama temporal que tiene
+  sólo el historial limpio, y la borro al final · **C** · lo corrés vos desde
+  otra conexión (un comando).
 - **Y para mirar juntos después**: 5 con cuenta nueva probable (el ID que
   tenían ya no existe): Incognito, DUI, JUANK, Ambidextro (JANDER) y Camila,
   que juega la T1.
+- ✅ ~~**Las ocho del reconocimiento**~~ (29/09, 4 AM): *«1. A. 2. Sí pero
+  fíjate muy bien… 3. ninguno… 4. A y haz el back up… 5. A 6. A 7. A 8. No lo
+  sé»*. Hechas (1.51), salvo la llamada (en construcción) y subir el historial
+  (arriba). Medido ese día: 341 pasan el portón, 190 con ID fuera de DRA, 44
+  con un ID que ya no existe; 64 de la T1 sin ID.
 - ✅ ~~**NAVE DE FUNA / CYPHER**~~: tres ejemplos (29/09), hecha en la 1.50.
 - ✅ ~~**ME TIENE SIN CUIDADO**~~ *«A»* y ~~**TEAM VENECIA**~~ *«no lo sé»*:
   hechos (1.50).

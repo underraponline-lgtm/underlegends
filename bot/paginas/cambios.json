@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.51",
+   "dia": "2026-09-29",
+   "cuando": "2026-09-29T05:30:00-04:00",
+   "titulo": "La llave aparece aunque el anuncio diga otro número",
+   "items": [
+    "🔗 **«Ver llave» también cuando el anuncio y la llave no dicen el mismo número**: pasó con DESGRACIAS EN TOKYO, anunciada «VOL 17» con la llave «VOL 16». Se juntan si todo lo demás coincide —la misma serie, el horario y si es 1vs1 o por equipos— y, si hay dos posibles, no se elige ninguna.",
+    "🪪 **Ocho raperos de la T1 ya tienen su cuenta de Discord vinculada** y cuatro nombres más se reconocen como la persona de siempre: sus puntos van a su perfil."
+   ]
+  },
+  {
    "version": "1.50",
    "dia": "2026-09-29",
    "cuando": "2026-09-29T02:30:00-04:00",
