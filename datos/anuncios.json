@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T00:53:22+00:00",
+ "cuando": "2026-09-29T01:23:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -288,6 +288,24 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": ""
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 16 2VS2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1554296587822305424",
+   "cuando": "2026-09-29T00:59:43",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "Lewis",
+   "cupos_texto": "12 / 16 / 24",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "2VS2",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
+   "premios": "Respeto"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 15 MULTIVERSE",
@@ -630,24 +648,6 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "PTS PARA EL ASCENSO + PTS PARA LA TABLA"
-  },
-  {
-   "nombre": "BELLAS ARTES VOL8",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1551040155052286083",
-   "cuando": "2026-09-20T01:19:49",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA III",
-   "modalidad": "⚔️  1VS1",
-   "horario": "EN 20 MINUTOS",
-   "fecha": "HOY PE MANO",
-   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1749,6 +1749,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Iguana 🇵🇪",
+   "quien": "iguanajoshua",
+   "discord_id": "818314359218241567",
+   "msg_id": "1554301826126446693",
+   "cuando": "2026-09-29T01:20:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "PARIA SIN REMEDIO🇧🇲 +PRRR🇦🇴",
+   "quien": "ndfue",
+   "discord_id": "1405241805733105704",
+   "msg_id": "1554299949095850046",
+   "cuando": "2026-09-29T01:13:05"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Metorito🇲🇽+ DXG🇲🇽",
+   "quien": "metorito0807",
+   "discord_id": "1435007249268478148",
+   "msg_id": "1554299560128680098",
+   "cuando": "2026-09-29T01:11:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Soul B 🇨🇱 + Char 🇨🇴",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1554298833805115474",
+   "cuando": "2026-09-29T01:08:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "METEORITO🇲🇽+DXG🇲🇽 (me pidieron qlos anote)",
+   "quien": "ndfue",
+   "discord_id": "1405241805733105704",
+   "msg_id": "1554298479554203730",
+   "cuando": "2026-09-29T01:07:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1554297521415921667",
+   "cuando": "2026-09-29T01:03:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bootrax🇵🇪  + O.E.P🇦🇷",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1554297393913139202",
+   "cuando": "2026-09-29T01:02:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "27 🇺🇸 Piyi 🇲🇽",
+   "quien": "eliotsanity",
+   "discord_id": "617251110939525121",
+   "msg_id": "1554296924230914102",
+   "cuando": "2026-09-29T01:01:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "snow🇨🇴 + nc",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1554296745939439777",
+   "cuando": "2026-09-29T01:00:21"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
