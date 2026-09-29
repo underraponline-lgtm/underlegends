@@ -100,6 +100,15 @@ export const VER_TOPE = 6;
 const VER_ANTES = 15 * MIN;
 const VER_DESPUES = 5 * HORA;
 
+/**
+ * La firma de la lista de servidores de la Liga en `meta`: `liga` y `fuera`.
+ * 🔑 Si cambia, el vigía vuelve a buscar canales en el momento (ver `vigilar()`).
+ */
+export function firmaLiga(meta) {
+  const m = meta || {};
+  return JSON.stringify([Array.isArray(m.liga) ? m.liga : [], (m.fuera && typeof m.fuera === 'object') ? m.fuera : {}]);
+}
+
 /** Los servidores con un evento en juego, de los anuncios que anotó el vigía. */
 export function svsEnVivo(cuerpos, ahora) {
   const out = new Set();
@@ -1710,9 +1719,10 @@ export class Avisos {
     // 🔑 Y LAS CATEGORÍAS QUE CADA SERVIDOR DECLARA AFUERA (`meta.fuera`): las
     // ligas regionales de FFS, que son jornadas de liga y no eventos (Dlx,
     // 28/09/2026: «más adelante, al ranking de ligas»).
-    let fueraSv = {};
+    let fueraSv = {}, firma = '';
     try {
       const meta = JSON.parse((await this.env.KV.get('meta')) || '{}');
+      firma = firmaLiga(meta);
       const liga = meta.liga || null;
       if (Array.isArray(liga) && liga.length) {
         servidores = (servidores || []).filter((s) => liga.indexOf(s.sv) >= 0);
@@ -1759,12 +1769,13 @@ export class Avisos {
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild });
       }
     }
-    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, sin_acceso: sinAcceso };
+    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, sin_acceso: sinAcceso, firma };
     // ⚠️ UNA BUSQUEDA QUE NO ENCONTRO NADA NO PISA A UNA QUE SÍ. Si Discord
     // contestó mal a todo, quedarse sin canales es dejar de avisar callado.
     const antes = this.leer('canales');
     if (!lista.length && antes && antes.lista && antes.lista.length) {
       antes.t = ahora;
+      antes.firma = firma;
       antes.fallo = 'la última búsqueda no encontró canales';
       this.guardar('canales', antes);
       return antes;
@@ -1800,8 +1811,15 @@ export class Avisos {
     }
 
     let canales = this.leer('canales');
+    // 🔑 Y SI CAMBIÓ LA LISTA DE SERVIDORES DE LA LIGA (`meta.liga` y `meta.fuera`)
+    // se vuelve a buscar en el momento. FFS entró el 29/09/2026 y, sin esto, la
+    // campana lo encontraba recién en la búsqueda de las 6 h —de madrugada,
+    // dormida: a las 11 AM—. `meta` ya se lee cada minuto (`llaves()`).
+    let firma = '';
+    try { firma = firmaLiga(JSON.parse((await this.env.KV.get('meta', { cacheTtl: 60 })) || '{}')); } catch (e) { firma = ''; }
     if (!canales || !canales.lista || !canales.lista.length ||
-        canales.v !== CANALES_V || ahora - (canales.t || 0) > REDESCUBRIR) {
+        canales.v !== CANALES_V || ahora - (canales.t || 0) > REDESCUBRIR ||
+        (firma && canales.firma !== firma)) {
       canales = await this.descubrir(d && d.servidores, ahora);
     }
     this.yo = canales.yo || '';
