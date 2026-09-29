@@ -105,6 +105,13 @@
 "temporada"
 ]
 },
+"badterne": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "deluxe": {
 "rg": "",
 "c": [
@@ -213,13 +220,6 @@
 ]
 },
 "mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"badterne": {
 "rg": "",
 "c": [
 "servidor",
