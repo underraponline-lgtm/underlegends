@@ -35,6 +35,10 @@ Qué cambia contra `sitio.py` (la maqueta con gente inventada), además de los d
 - **Se busca y el pie van en negro**: los afiches pasan a papel sobre la pared. Los
   servidores, en blanco (Dlx: *«los servidores de la liga make it white»*).
 - **Lo último va arriba de Esta semana** (Dlx, 29/09 ~6:50 PM).
+- **Esta semana es una tira debajo del en vivo** (Dlx, ~7 PM: *«me gusta 3»*): los
+  multiplicadores y el dorado. La meta y la guerra, a «Lunes de la Liga».
+- **IR A aparece al bajar**, como barra negra pegada arriba; en el celular es un
+  selector. Y **en el celular entra todo**: las pestañas en filas y un paginador.
 """
 import datetime as dt
 import os
@@ -606,11 +610,17 @@ class Liga:
                 % (pistas, flechas, pestanas))
 
     def ir_a(self):
-        s = [('envivo', 'Ahora'), ('fechas', 'Fechas'), ('noticias', 'Lo último'), ('semana', 'Esta semana'),
+        """IR A: ya no va arriba (Dlx, 29/09 ~7 PM: «mover esa línea de opciones blanca… su formato o su posición»).
+        Es una barra negra que aparece pegada arriba cuando pasaste el escenario; en la computadora trae las secciones
+        en fila y en el celular un selector, que entra entero. En las fotos no se ve: aparece al bajar."""
+        s = [('envivo', 'Ahora'), ('semana', 'Esta semana'), ('fechas', 'Fechas'), ('noticias', 'Lo último'),
              ('raperos', 'Los que mandan'), ('panel', 'Misiones'), ('sebusca', 'Se busca'), ('tienda', 'Tienda'),
              ('servidores', 'Servidores')]
-        return ('<nav class="ir-a" aria-label="Ir a"><span class="ir-t">IR A</span>%s</nav>'
-                % ''.join('<a href="#%s">%s</a>' % x for x in s))
+        return ('<nav class="ir-a" aria-label="Ir a"><div class="ir-in"><span class="ir-t">IR A</span>'
+                '<span class="ir-l">%s</span><select class="ir-s" aria-label="Ir a">%s</select>'
+                '<a class="ir-arr" href="#envivo" aria-label="Volver arriba">%s</a></div></nav>'
+                % (''.join('<a href="#%s">%s</a>' % x for x in s), ''.join('<option value="%s">%s</option>' % x for x in s),
+                   P.ico('flecha', 16)))
 
     def fechas(self):
         tarjetas = []
@@ -633,8 +643,26 @@ class Liga:
             for c, dia, hora, sv, ev, det, badge in tarjetas))
 
     def semana(self):
+        """Esta semana, en una tira debajo del en vivo (Dlx, 29/09 ~7 PM: «me gusta 3»): cuánto valen los puntos en
+        cada servidor y el evento dorado. En la computadora es una línea; en el celular, una grilla de cuatro, así
+        entran todos. La meta y la guerra van a «Lunes de la Liga» (`semana_tabla()`)."""
+        m = self.d.get('mult') or {}
+        xs = m.get('sv') or {}
+        if not xs:
+            return ''
+        g = self.dorado()
+        chips = ''.join('<li class="%s"><span class="ts-id"><img alt="" src="%s"><b>%s</b></span><span class="ts-x">%s</span></li>'
+                        % ('sube' if x > 1 else ('baja' if x < 1 else ''), self.logo(sv), sv, mult(x))
+                        for sv, x in sorted(xs.items(), key=lambda p: (-p[1], p[0])))
+        dor = ('<p class="ts-dor"><b>DORADO ×3</b><span>%s · %s · %s</span></p>' % (limpio(g['n']), g['sv'], self.dia(g['t']))
+               if g else '')
+        return ('<section class="tira-s" id="semana" aria-label="Esta semana"><div class="ts-cab"><b class="ts-t">ESTA SEMANA</b>'
+                '<a class="ts-a">Lunes de la Liga %s</a></div><ul class="ts-l">%s</ul>%s</section>'
+                % (P.ico('flecha', 14), chips, dor))
+
+    def semana_tabla(self):
         """Esta semana, una fila por servidor: cuánto valen sus puntos, la meta de comunidad, contra quién es la guerra
-        y, si le toca, el evento dorado. La misma tabla en la computadora y en el celular."""
+        y, si le toca, el evento dorado. Era la del Inicio hasta el 29/09; queda para «Lunes de la Liga»."""
         m = self.d.get('mult') or {}
         if not m:
             return ''
@@ -760,7 +788,9 @@ class Liga:
         fl = ('<span class="pz-fl"><button type="button" class="pz-b izq" data-dir="-1" aria-label="Anterior">%s</button>'
               '<button type="button" class="pz-b der" data-dir="1" aria-label="Siguiente">%s</button></span>'
               % (P.ico('flecha', 18), P.ico('flecha', 18)))
-        cuerpo = '<div class="pz-cab"><nav class="pz-tabs" aria-label="%s">%s</nav>%s</div>%s' % (titulo, tabs, fl, pistas)
+        sel = '<select class="pz-sel" aria-label="%s">%s</select>' % (titulo, ''.join(
+            '<option value="%d">%s</option>' % (n, et) for n, (_c, et, _t, _h) in enumerate(items)))
+        cuerpo = '<div class="pz-cab"><nav class="pz-tabs" aria-label="%s">%s</nav>%s%s</div>%s' % (titulo, tabs, sel, fl, pistas)
         sec = self.sec(id_, items[0][2] if titulos else titulo, enlace, cuerpo, ('pest ' + extra).strip())
         return sec.replace('<section ', '<section data-titulos="1" ', 1) if titulos else sec
 
@@ -984,11 +1014,11 @@ class Liga:
 
     def inicio(self, pc):
         if pc:
-            return (self.cabecera(True, 'Inicio') + self.historias(True) + self.hero(True) + self.ir_a() + self.fechas()
-                    + self.noticias() + self.semana() + self.raperos(True) + self.panel(True)
+            return (self.cabecera(True, 'Inicio') + self.historias(True) + self.hero(True) + self.semana() + self.ir_a()
+                    + self.fechas() + self.noticias() + self.raperos(True) + self.panel(True)
                     + self.buscados() + self.tienda() + self.mercancia() + self.servidores() + self.pie())
-        return (self.cabecera(False, 'Inicio') + self.historias(False) + self.hero(False) + self.ir_a() + self.fechas()
-                + self.noticias() + self.semana() + self.raperos(False) + self.panel(False)
+        return (self.cabecera(False, 'Inicio') + self.historias(False) + self.hero(False) + self.semana() + self.ir_a()
+                + self.fechas() + self.noticias() + self.raperos(False) + self.panel(False)
                 + self.buscados() + self.tienda() + self.mercancia() + self.servidores() + self.pie() + self.tabbar('inicio'))
 
     # ── Eventos ─────────────────────────────────────────────────────────────
@@ -1442,11 +1472,6 @@ CSS_R = r"""
 .sv2 small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sv2-n b{font-size:20px}
 .pc .semana .sec-t+.mult{margin-bottom:0}
-.pc #semana{display:grid;grid-template-columns:auto 1fr 1fr;column-gap:28px;align-items:start}
-.pc #semana .sec-t{grid-column:1/-1}
-.pc #semana .mult{grid-template-columns:repeat(2,120px);grid-row:span 3}
-.pc #semana .sem-fila{border-top:0;border-left:1px solid var(--suave);padding:0 0 0 20px}
-.pc #semana .sem-fila:last-child{grid-column:2/-1}
 .f-minis{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;align-items:end}
 .f-mini{width:100%;height:auto;display:block}
 .f-minis .sincarta{aspect-ratio:900/1314;padding:4px;gap:2px}
@@ -1584,7 +1609,6 @@ CSS_R = r"""
 .st-mini img{width:100%;height:100%;object-fit:cover}
 
 /* sexta vuelta: «Esta semana» como tabla, igual en las dos pantallas */
-.pc #semana{display:block}
 .sm{list-style:none;margin:0;padding:0;border-top:2px solid var(--linea)}
 .sm li{display:grid;grid-template-columns:28px 44px 54px minmax(0,1fr) 62px;column-gap:10px;row-gap:6px;align-items:center;
   padding:10px 0;border-bottom:1px solid var(--suave)}
@@ -1792,6 +1816,62 @@ CSS_R = r"""
 .pc .mw-rail{grid-auto-columns:max-content}
 .pc .mw-rail .poster{width:184px}
 .mw-div{width:34px;padding:0}
+/* doceava vuelta (Dlx, 29/09 ~7 PM): la Tira de «Esta semana», el IR A que aparece al bajar, y en el celular entra todo */
+.tira-s{background:#030304;color:#F6F6F6;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"t a" "l l" "d d";
+  gap:10px 14px;padding:12px 16px 16px;border-top:1px solid #2A2A2E;scroll-margin-top:58px}
+.ts-cab{display:contents}
+.ts-t{grid-area:t;align-self:center;font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;color:#29B298}
+.ts-a{grid-area:a;align-self:center;display:inline-flex;align-items:center;gap:6px;font:700 11px/1 "Space Mono",monospace;
+  letter-spacing:.08em;text-transform:uppercase;color:#F6F6F6;white-space:nowrap}
+.ts-l{grid-area:l;list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ts-l li{display:grid;justify-items:center;gap:7px;border:1.5px solid #3A3A3E;padding:8px 4px}
+.ts-id{display:flex;align-items:center;gap:5px;min-width:0}
+.ts-l img{width:20px;height:20px;border-radius:50%;flex:none}
+.ts-l b{font:900 12px/1 Archivo,sans-serif;font-stretch:115%}
+.ts-x{font:900 15px/1 Archivo,sans-serif;font-stretch:120%;padding:5px 6px;border:1.5px solid #F6F6F6;min-width:52px;text-align:center}
+.ts-l li.sube .ts-x{background:#29B298;border-color:#29B298;color:#030304}
+.ts-dor{grid-area:d;margin:0;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;background:#E7B622;color:#030304;padding:8px 10px;
+  font:700 12px/1.35 "Space Mono",monospace}
+.ts-dor b{font:900 13px/1 Archivo,sans-serif;font-stretch:120%}
+.pc .tira-s{grid-template-columns:auto auto minmax(0,1fr) auto;grid-template-areas:"t l d a";align-items:center;gap:18px;padding:14px 40px 18px}
+.pc .ts-l{grid-template-columns:none;grid-auto-flow:column;gap:10px}
+.pc .ts-l li{display:flex;align-items:center;gap:8px;padding:4px 5px 4px 6px}
+.pc .ts-l img{width:24px;height:24px}
+.pc .ts-l b{font-size:13px}
+.pc .ts-x{font-size:14px;min-width:0;padding:4px 6px}
+.pc .ts-dor{justify-self:start;flex-wrap:nowrap;white-space:nowrap}
+/* IR A: una barra negra pegada arriba que aparece cuando pasaste el escenario (la muestra el prototipo al bajar) */
+.app .ir-a{position:sticky;top:0;z-index:40;height:0;margin:0;padding:0;border:0;background:none;box-shadow:none;display:block;
+  overflow:visible;width:auto}
+.ir-in{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;gap:10px;padding:8px 16px;background:#030304;color:#F6F6F6;
+  border-bottom:2px solid #2A2A2E;transform:translateY(-100%);opacity:0;pointer-events:none;transition:transform .18s,opacity .18s}
+.ir-a.ver .ir-in{transform:none;opacity:1;pointer-events:auto}
+.app .ir-a .ir-t{color:#29B298;margin:0;flex:none}
+.ir-l{display:none}
+.pc .ir-l{display:flex;gap:2px;flex:1;min-width:0}
+.app .ir-a .ir-l a,.app .ir-a .ir-l a:first-of-type{font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;
+  color:#F6F6F6;background:transparent;border:0;padding:9px 10px}
+.app .ir-a .ir-l a.activo{background:#F6F6F6;color:#030304}
+.ir-s{flex:1;min-width:0;appearance:none;-webkit-appearance:none;border-radius:0;background:#030304;color:#F6F6F6;border:1.5px solid #F6F6F6;
+  font:700 12px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;padding:11px 10px;cursor:pointer}
+.pc .ir-s{display:none}
+.app .ir-a .ir-arr{flex:none;width:38px;height:38px;display:grid;place-items:center;border:1.5px solid #F6F6F6;color:#F6F6F6;padding:0;
+  background:transparent}
+.ir-arr svg{transform:rotate(-90deg)}
+@media (prefers-reduced-motion: reduce){.ir-in{transition:none}}
+/* el escenario, en el celular: las pestañas en dos filas de tres, todas a la vista */
+.movil .hero.carrusel .mo-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}
+.movil .mo-tabs button{text-align:center;padding:9px 4px}
+/* Los que mandan y el panel, en el celular: ‹ selector › en vez de una fila de pestañas que se corta */
+.pz-sel{display:none}
+.movil .pz-tabs{display:none}
+.movil .pz-cab{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center}
+.movil .pz-fl{display:contents}
+.movil .pz-b.izq{grid-column:1;grid-row:1;margin-left:4px}
+.movil .pz-sel{display:block;grid-column:2;grid-row:1;width:100%;appearance:none;-webkit-appearance:none;border-radius:0;
+  background:var(--fondo);color:var(--tinta);border:2px solid var(--linea);font:700 12px/1 "Space Mono",monospace;letter-spacing:.06em;
+  text-transform:uppercase;text-align:center;text-align-last:center;padding:11px 8px;cursor:pointer}
+.movil .pz-b.der{grid-column:3;grid-row:1;margin-right:4px}
 /* la meta de «Esta semana»: las barras terminan todas en el mismo lugar */
 .sm-meta b{min-width:7ch}
 """
