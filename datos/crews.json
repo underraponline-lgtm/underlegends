@@ -7,13 +7,20 @@
   "KS": "Knowledge Sombrío"
  },
  "_ks_leeme": "Dlx, 25/09/2026: «era Sombra, Heat, Jere, Kain, Zaylax y quizás personas que no sé más». Zignos ya estaba desde el 20/08 y se queda.",
+ "_bajas_leeme": "Quién salió de una crew, con lo que dijo Dlx. Se saca de la lista: las cartas y la página leen sólo `crews`.",
+ "_bajas": {
+  "Snow": {
+   "crew": "Follombia",
+   "cuando": "2026-09-28 10:40 PM ET",
+   "nota": "Dlx: «SNOW no es parte de Follombia, me comentó»."
+  }
+ },
  "crews": {
   "Follombia": [
    "Prosu",
    "Vandu",
    "Kirito",
    "Erian",
-   "Snow",
    "Bloody",
    "Vlade",
    "97",
