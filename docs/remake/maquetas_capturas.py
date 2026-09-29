@@ -14,6 +14,7 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 
 FAMILIAS = {
+    'portada': ['Archivo', 'Space Mono', 'Barlow Condensed'],
     'calle': ['Archivo', 'Space Mono'],
     'callenoche': ['Archivo', 'Space Mono'],
     'barda': ['Bungee', 'Atkinson Hyperlegible Next'],
@@ -39,7 +40,10 @@ def main():
             # el celular a 360 px y el doble de densidad; la computadora a 1280 y densidad 1
             pg = pc if f.endswith('_pc.html') else cel
             pg.goto('file:///' + os.path.join(carpeta, f).replace('\\', '/'))
-            pg.wait_for_load_state('networkidle')
+            try:
+                pg.wait_for_load_state('networkidle', timeout=45000)
+            except Exception:
+                pass  # las fuentes se verifican abajo: si no cargaron, lo dice
             pg.evaluate('document.fonts.ready')
             # la carta de ejemplo (y sus dos fuentes) sólo aparece en el Perfil:
             # el navegador no baja una fuente que la página no usa
