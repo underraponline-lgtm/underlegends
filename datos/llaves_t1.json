@@ -1555,11 +1555,11 @@
     "b": [
      [
       [
-       "ME TIENE SIN CUIDADO 🇯🇲",
+       "Paria, Kravitz",
        "Chop, OG"
       ],
-      "ME TIENE SIN CUIDADO 🇯🇲",
-      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲"
+      "Paria, Kravitz",
+      "Equipo: ME TIENE SIN CUIDADO 🇯🇲"
      ],
      [
       [
@@ -1624,11 +1624,11 @@
     "b": [
      [
       [
-       "ME TIENE SIN CUIDADO 🇯🇲",
+       "Paria, Kravitz",
        "Teito🇨🇴, Dominick"
       ],
-      "ME TIENE SIN CUIDADO 🇯🇲",
-      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲"
+      "Paria, Kravitz",
+      "Equipo: ME TIENE SIN CUIDADO 🇯🇲"
      ],
      [
       [
@@ -1661,11 +1661,11 @@
     "b": [
      [
       [
-       "ME TIENE SIN CUIDADO 🇯🇲",
+       "Paria, Kravitz",
        "Bloody, Colesito"
       ],
-      "ME TIENE SIN CUIDADO 🇯🇲",
-      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲"
+      "Paria, Kravitz",
+      "Equipo: ME TIENE SIN CUIDADO 🇯🇲"
      ]
     ],
     "r": "Semifinales"
@@ -1675,18 +1675,14 @@
      [
       [
        "ENEK 🇪🇸, Neo",
-       "ME TIENE SIN CUIDADO 🇯🇲 (ABYSSUS 🇵🇦)"
+       "Paria, Kravitz"
       ],
       "ENEK 🇪🇸, Neo",
-      "Sin integrantes: ME TIENE SIN CUIDADO 🇯🇲 (ABYSSUS 🇵🇦)"
+      "Equipo: ME TIENE SIN CUIDADO 🇯🇲"
      ]
     ],
     "r": "Final"
    }
-  ],
-  "sin": [
-   "ME TIENE SIN CUIDADO 🇯🇲",
-   "ME TIENE SIN CUIDADO 🇯🇲 (ABYSSUS 🇵🇦)"
   ],
   "sv": "FFA",
   "tabla": [
@@ -1699,6 +1695,16 @@
     "Neo",
     "Campeón",
     5000
+   ],
+   [
+    "Kravitz",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Paria",
+    "Subcampeón",
+    3750
    ],
    [
     "Abyssus",
@@ -1776,11 +1782,6 @@
     625
    ],
    [
-    "Kravitz",
-    "Octavos",
-    625
-   ],
-   [
     "LAST",
     "Octavos",
     625
@@ -1797,11 +1798,6 @@
    ],
    [
     "OG",
-    "Octavos",
-    625
-   ],
-   [
-    "Paria",
     "Octavos",
     625
    ],
@@ -4974,7 +4970,7 @@
      [
       [
        "Hassan",
-       "BLITZ 🇲🇽"
+       "BLITZ"
       ],
       "Hassan",
       ""
@@ -4982,7 +4978,7 @@
      [
       [
        "Snow",
-       "MvA🇻🇪"
+       "MvA"
       ],
       "Snow",
       ""
@@ -5134,7 +5130,7 @@
     2500
    ],
    [
-    "BLITZ 🇲🇽",
+    "BLITZ",
     "Octavos",
     1250
    ],
@@ -5149,7 +5145,7 @@
     1250
    ],
    [
-    "MvA🇻🇪",
+    "MvA",
     "Octavos",
     1250
    ],

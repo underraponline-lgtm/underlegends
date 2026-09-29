@@ -14,8 +14,11 @@
    "sv": "FFA",
    "fecha": "25/09",
    "equipo": "ME TIENE SIN CUIDADO 🇯🇲",
-   "integrantes": [],
-   "por": "la inscripción dice PARIA + KRAVITZ, y la llave los pone también en otro lado"
+   "integrantes": [
+    "Paria",
+    "Kravitz"
+   ],
+   "por": "lo decidió Dlx"
   }
  ]
 }

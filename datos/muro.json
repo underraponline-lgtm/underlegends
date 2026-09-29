@@ -282,6 +282,13 @@
 "temporada"
 ]
 },
+"kravitz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "",
 "c": [
@@ -369,6 +376,10 @@
 "servidor",
 "temporada"
 ]
+},
+"paria": {
+"rg": "",
+"c": []
 },
 "sol-pe": {
 "rg": "",
@@ -481,13 +492,6 @@
 "agre": {
 "rg": "",
 "c": []
-},
-"kravitz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "tormen": {
 "rg": "",
@@ -636,10 +640,6 @@
 "c": []
 },
 "leteletras": {
-"rg": "",
-"c": []
-},
-"paria": {
 "rg": "",
 "c": []
 },
