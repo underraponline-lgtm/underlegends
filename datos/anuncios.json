@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-29T20:43:24+00:00",
+ "cuando": "2026-09-29T20:54:00+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2079,6 +2079,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Pulido🇪🇸",
+   "quien": "pulido6207",
+   "discord_id": "384414196785479680",
+   "msg_id": "1554594807400108074",
+   "cuando": "2026-09-29T20:44:45"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
