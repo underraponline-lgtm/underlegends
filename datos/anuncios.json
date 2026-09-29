@@ -1154,24 +1154,6 @@
    "premios": "1 Campeonato + Puntos de ascenso"
   },
   {
-   "nombre": "ISLA DE SOCOTRA V.2",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1553956673188532356",
-   "cuando": "2026-09-28T02:29:02",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "yo",
-   "cupos_texto": "4/8/12",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "(2k puntos de ascenso al primero y un campeonato)",
-   "modalidad": "1vs1",
-   "horario": "Cuando se llene",
-   "fecha": "",
-   "premios": ""
-  },
-  {
    "nombre": "COMPE NOCTURNA",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",

@@ -3,7 +3,8 @@
   "Lo que Dlx decidió sobre eventos en la hoja ✅ Decidir.",
   "La clave es «evento · servidor · fecha», como en Pendientes.",
   "llaves_a_entrada.py lo respeta: «no cuenta» no se suma nunca;",
-  "«cuenta» no se retiene por Interserver ni por fase sin batallas."
+  "«cuenta» no se retiene por Interserver ni por fase sin batallas.",
+  "«anuncios_fuera»: los anuncios que no se muestran —un evento falso o que nunca salió—, por el id del mensaje; bot/anuncios.py no los guarda."
  ],
  "eventos": {
   "RAP EXHIBITION 1/8 · SR · *": {
@@ -60,6 +61,16 @@
    "cuando": "2026-09-28 5:03 PM ET",
    "por": "Dlx (chat)",
    "nota": "la llave marca a Number en negrita, que en esa llave es siempre el que pasó; no aparece en cuartos (su lugar lo ocupó Provenza). Dlx: «3. A»."
+  }
+ },
+ "anuncios_fuera": {
+  "1553956673188532356": {
+   "nombre": "ISLA DE SOCOTRA V.2",
+   "sv": "URBF",
+   "anunciado": "2026-09-27 10:29 PM ET",
+   "cuando": "2026-09-28 10:40 PM ET",
+   "por": "Dlx (chat)",
+   "nota": "Dlx: «you can delete it bc its a fake event that never got released». En su canal de llaves sólo había una de broma («DENME MODERADOR LPM»), que nunca se cargó."
   }
  }
 }

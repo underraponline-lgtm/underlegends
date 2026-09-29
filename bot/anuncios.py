@@ -899,6 +899,18 @@ def guardar(anuncios, inscr):
     deja de haber pasado.
     """
     os.makedirs(os.path.dirname(SALIDA), exist_ok=True)
+    # 🔑 LOS ANUNCIOS QUE DLX SACÓ: un evento falso o que nunca salió. Dlx,
+    # 28/09/2026, de ISLA DE SOCOTRA V.2 (URBF): *«you can delete it bc its a
+    # fake event that never got released»*. El mensaje sigue en el canal del
+    # servidor —no es nuestro—, así que el lector lo vuelve a leer en cada
+    # corrida: se saca acá, por su id, y no llega ni al calendario, ni a «Lo que
+    # pasó», ni al muro. Viven en `datos/decisiones.json` (`anuncios_fuera`).
+    fuera = anuncios_fuera()
+    if fuera:
+        antes = len(anuncios)
+        anuncios = [a for a in anuncios if str(a.get('msg_id') or '') not in fuera]
+        if len(anuncios) < antes:
+            print('   anuncios: %d fuera por decisión de Dlx' % (antes - len(anuncios)))
     previas = (cargar() or {}).get('inscripciones') or []
 
     # 🔴 DOS LLAVES, Y HAY QUE MIRAR LAS DOS. `msg_id` es la estable,
@@ -953,6 +965,15 @@ def cargar():
             return json.load(f)
     except (OSError, ValueError):
         return {'anuncios': [], 'inscripciones': [], 'cuando': ''}
+
+
+def anuncios_fuera():
+    """Los `msg_id` de los anuncios que no se muestran (`decisiones.json`, `anuncios_fuera`)."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'decisiones.json'), encoding='utf-8') as f:
+            return {str(k) for k in ((json.load(f) or {}).get('anuncios_fuera') or {})}
+    except (OSError, ValueError):
+        return set()
 
 
 # ── self-check ───────────────────────────────────────────────────────

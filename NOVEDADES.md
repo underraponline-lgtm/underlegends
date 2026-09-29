@@ -1668,10 +1668,9 @@ inglés, y `/borrar-mis-datos`.
 
 ## ❓ Esperando a Dlx
 
-- 🆕 **¿Se jugó ISLA DE SOCOTRA V.2** (Urban Freestyle, 27/09, 10:29 PM)? En
-  su canal de llaves sólo hay una de broma («DENME MODERADOR LPM»), que no se
-  cargó. **A** · no se jugó: queda como anunciado, sin llave · **B** · se
-  jugó: decime quién ganó (o dónde está la llave de verdad) y la cargo.
+- ✅ ~~**¿Se jugó ISLA DE SOCOTRA V.2?**~~ *«A»* (28/09, 10:35 PM): **no se
+  jugó**. Queda como anunciado, sin llave, y la llave de broma de su canal
+  («DENME MODERADOR LPM») sigue sin cargarse.
 
 - ✅ ~~«Miembros oficiales»: ¿esconder a los 96?~~ Resuelto a las 9:30 AM con
   **«fuera de concurso»** (arriba, en las reglas): nadie desaparece, el número
