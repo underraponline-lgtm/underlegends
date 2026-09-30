@@ -61,7 +61,13 @@
   "   eran la misma persona. Ninguno está en la Lista ni tiene Discord ID;",
   "   como dos filas con la misma clave, sus tarjetas se pisaban en R2.",
   "",
-  "🔑 Pollo Sport, Lord, Adachi y Sábado (Dlx, 29/09/2026, «6. A»): en los cuatro, la misma cuenta de Discord se anota con los dos nombres (reconocimiento de toda la Liga). Lord y Lord Viruzz estaban como «distintos» desde el 19/09: se sacó de la hoja AKAs y de identidades.json."
+  "🔑 Pollo Sport, Lord, Adachi y Sábado (Dlx, 29/09/2026, «6. A»): en los cuatro, la misma cuenta de Discord se anota con los dos nombres (reconocimiento de toda la Liga). Lord y Lord Viruzz estaban como «distintos» desde el 19/09: se sacó de la hoja AKAs y de identidades.json.",
+  "",
+  "⚠️ RIZAS->PRAISERIZA lo confirmó Dlx el 29/09/2026: «sí, son la misma",
+  "   persona». La inscripción al evento de FFA de la medianoche del 29/09",
+  "   (la llave #371) la hizo la cuenta de PRAISERIZA en la Lista, con el",
+  "   nombre «praiseriza»; en la llave figura RIZAS 🇻🇪, subcampeón, y",
+  "   ningún otro RIZAS se inscribió."
  ],
  "pares": [
   [
@@ -123,6 +129,10 @@
   [
    "Sábado",
    "Guess"
+  ],
+  [
+   "RIZAS",
+   "PRAISERIZA"
   ]
  ],
  "no_confundir": [
