@@ -83,15 +83,6 @@
 "temporada"
 ]
 },
-"pichulamc": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "juasmio": {
 "rg": "",
 "c": [
@@ -103,6 +94,14 @@
 "erian": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"pichulamc": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1040,6 +1039,10 @@
 "servidor",
 "temporada"
 ]
+},
+"pichula": {
+"rg": "",
+"c": []
 },
 "plapla": {
 "rg": "",
