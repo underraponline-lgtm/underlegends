@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-30T22:24:08+00:00",
+ "cuando": "2026-09-30T22:54:17+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -288,6 +288,24 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": ""
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 18 2VS2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1554983108565278781",
+   "cuando": "2026-09-30T22:27:43",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "Lewis",
+   "cupos_texto": "12 / 16 / 24",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "2VS2",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
+   "premios": "Respeto"
   },
   {
    "nombre": "manija nocturna",
@@ -630,24 +648,6 @@
    "horario": "ahora",
    "fecha": "",
    "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 10",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1552130049619001465",
-   "cuando": "2026-09-23T01:30:41",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Lewis",
-   "cupos_texto": "12 / 16",
-   "inscriptos": 12,
-   "cupo_total": 16,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 30 MINUTOS",
-   "fecha": "",
-   "premios": "Respeto"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -2103,6 +2103,186 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichula + hassan 🇺🇬🇺🇬",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1554989139173048401",
+   "cuando": "2026-09-30T22:51:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "six",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1554989123121586258",
+   "cuando": "2026-09-30T22:51:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Iguana 🇵🇪",
+   "quien": "iguanajoshua",
+   "discord_id": "818314359218241567",
+   "msg_id": "1554987860019384452",
+   "cuando": "2026-09-30T22:46:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Elpibeosiris🇦🇷-loloelguacho🇦🇷",
+   "quien": "elpibeosiris2001",
+   "discord_id": "1551401043152343183",
+   "msg_id": "1554987087303024731",
+   "cuando": "2026-09-30T22:43:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Abyssus 🇨🇦 + oasis 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1554985631715692646",
+   "cuando": "2026-09-30T22:37:44"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Paria🇦🇷 + Jawa🇺🇾",
+   "quien": "jawa._19",
+   "discord_id": "1138939531903643718",
+   "msg_id": "1554985512190742590",
+   "cuando": "2026-09-30T22:37:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Geoka🇦🇷  elsoolar 🇨🇴",
+   "quien": "elsoolar",
+   "discord_id": "758073934645297262",
+   "msg_id": "1554985223924744253",
+   "cuando": "2026-09-30T22:36:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam🇻🇪 zignos 🇩🇴",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1554985047029850143",
+   "cuando": "2026-09-30T22:35:25"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yo + krnan 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1554984701192704222",
+   "cuando": "2026-09-30T22:34:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teito🇨🇴+dominick🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1554984573060784189",
+   "cuando": "2026-09-30T22:33:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teito🇨🇴+dominick🇵🇪",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1554984541721075743",
+   "cuando": "2026-09-30T22:33:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Paria🇦🇷",
+   "quien": "elconocimientoeslibertad",
+   "discord_id": "1286348537499488299",
+   "msg_id": "1554984201248579737",
+   "cuando": "2026-09-30T22:32:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc+gocho🇮🇶🇮🇶",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1554984081421373442",
+   "cuando": "2026-09-30T22:31:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "elsoolar🇨🇴  con no c",
+   "quien": "elsoolar",
+   "discord_id": "758073934645297262",
+   "msg_id": "1554983863237746759",
+   "cuando": "2026-09-30T22:30:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Geoka 🇦🇷 + paria 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1554983802559012895",
+   "cuando": "2026-09-30T22:30:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "snow🇨🇴  yinn🇲🇦 ( primera )",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1554983505388376115",
+   "cuando": "2026-09-30T22:29:17"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Elpibeosiris🇦🇷",
+   "quien": "elpibeosiris2001",
+   "discord_id": "1551401043152343183",
+   "msg_id": "1554983275074822206",
+   "cuando": "2026-09-30T22:28:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc 🇦🇷 <@979878316846768139>  🇵🇱",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1554983228626964561",
+   "cuando": "2026-09-30T22:28:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yo + mnzana 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1554983225737216132",
+   "cuando": "2026-09-30T22:28:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teito🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1554983167583191051",
+   "cuando": "2026-09-30T22:27:57"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
