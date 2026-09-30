@@ -131,3 +131,33 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
   background:transparent;color:inherit;border:0;cursor:pointer}
 .x-seg button+button{border-left:2px solid currentColor}
 .x-seg button[aria-pressed="true"]{background:var(--inv);color:var(--inv-tinta)}
+
+/* ── 30/09, segunda vuelta ──────────────────────────────────────────────────────────────────────── */
+/* los títulos del escenario se parten parejos: «RAP EXHIBITION 2 8» dejaba el 8 solo */
+.hero-ev{text-wrap:balance}
+/* IR A arranca donde arranca la página, no pegada al borde de la pantalla */
+@media (min-width: 900px){.app .ir-in{padding-left:var(--gut);padding-right:var(--gut)}}
+/* tu cuenta arriba: en la computadora el chip con tu cara y tu nombre; en el celular, un círculo al lado de la campana */
+@media (min-width: 900px){.cab .cuenta-m{display:none}}
+.cab .cuenta-m{padding:0;background:transparent;color:inherit;cursor:pointer}
+.cuenta-m .cara{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#F6F6F6;color:#030304;
+  font:900 13px/1 Archivo,sans-serif}
+.cuenta-m .cara img{width:100%;height:100%;object-fit:cover;display:block}
+span.tab-av{display:grid;place-items:center;overflow:hidden;font:900 11px/1 Archivo,sans-serif}
+span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
+/* el visor de historias: el círculo de arriba lleva a su perfil, y flechas para pasar (Dlx, 30/09) */
+.hv-quien{display:flex;align-items:center;gap:10px;min-width:0;color:inherit;text-decoration:none}
+.hv-quien span{min-width:0}
+@media (hover: hover) and (pointer: fine){.hv-quien:hover b{text-decoration:underline}}
+.hv-fl{position:absolute;top:calc(50% - 22px);z-index:3;width:44px;height:44px;display:grid;place-items:center;padding:0;background:#F6F6F6;
+  color:#030304;border:2px solid #030304;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.hv-fl.izq{left:10px;box-shadow:-4px 4px 0 var(--verde)}
+.hv-fl.izq svg{transform:scaleX(-1)}
+.hv-fl.der{right:10px;box-shadow:4px 4px 0 var(--magenta)}
+.hv-fl:active{transform:translate(2px,2px)}
+@media (min-width: 600px){.hv-fl{width:52px;height:52px;top:calc(50% - 26px)}.hv-fl.izq{left:calc(50% - 215px - 80px)}.hv-fl.der{right:calc(50% - 215px - 80px)}}
+/* Misiones y Tus eventos ya no van con pestañas: sus tarjetas perdían el `.pz .tu{margin:0}` y quedaban corridas */
+.pz-2 .tu,.pz-2 .mis,.pz-2 .te{margin:0}
+/* la cabecera del celular con tu cuenta: tres botones de 40 y el nombre en dos renglones, no en cuatro */
+@media (max-width: 899.98px){.app .cab{gap:10px}.app .cab-der{gap:6px}.app .cab .btn-ico{width:40px;height:40px}.app .marca .lockup b{white-space:nowrap}}
+@media (max-width: 420px){.app .marca{font-size:15px;gap:8px}.app .marca img{width:36px;height:36px}}

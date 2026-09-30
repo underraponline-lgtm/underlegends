@@ -41,8 +41,20 @@ function Buscar({ liga }) {
   );
 }
 
-export function Cabecera({ liga, onMenu }) {
+// la cara de la cuenta de Discord con la que entraste (`lg:dc`), aunque no seas rapero: Dlx, 30/09/2026, «arriba
+// debería estar el círculo de mi cuenta conectada con Discord». El `av` es `id/hash`, como el de la tabla.
+export function CaraDc({ dc, cls = 'cara' }) {
+  const [mal, setMal] = useState(false);
+  if (dc && dc.av && !mal) {
+    return <span className={cls}><img alt="" src={'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=64'} onError={() => setMal(true)} /></span>;
+  }
+  return <span className={cls + ' ini'}>{(limpio(dc && dc.n).slice(0, 1) || '?').toUpperCase()}</span>;
+}
+
+export function Cabecera({ liga, dc, onMenu }) {
   const yo = liga.yo;
+  const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
+  const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
   return (
     <header className="cab negra">
       <Marca liga={liga} />
@@ -52,11 +64,15 @@ export function Cabecera({ liga, onMenu }) {
       <div className="cab-der">
         <Buscar liga={liga} />
         <a className="btn-ico" href="#/avisos" aria-label="Avisos de eventos"><Ico n="campana" t={20} /></a>
-        {yo ? (
-          <button type="button" className="yo-chip" onClick={accion.cuenta}><Cara liga={liga} k={yo.k} nombre={yo.n} /><span>{limpio(yo.n)}</span></button>
+        {cara ? (
+          <button type="button" className="yo-chip" onClick={accion.cuenta} aria-label="Mi cuenta">{cara}<span>{nombre}</span></button>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.cuenta}>Entrar</button>
         )}
+        {/* en el celular, la cuenta es un círculo al lado de la campana */}
+        <button type="button" className="btn-ico cuenta-m" onClick={accion.cuenta} aria-label={cara ? 'Mi cuenta' : 'Entrar con Discord'}>
+          {cara || <Ico n="yo" t={20} />}
+        </button>
         <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
       </div>
     </header>
@@ -66,6 +82,8 @@ export function Cabecera({ liga, onMenu }) {
 // ── las historias: lo que se abre al tocar cada círculo de arriba ─────────────────────────────────────
 // un título de video de 70 letras ocupaba seis renglones del escenario: pasado de 42, un cuerpo menos
 const largo = (t) => 'hero-ev largo' + (String(t || '').length > 42 ? ' muy-largo' : '');
+// «RAP EXHIBITION 2 8» (el «/» se pierde en el dato) partía el 8 solo en el tercer renglón: los números van juntos
+const juntos = (t) => String(t || '').replace(/(\d) (\d)/g, '$1' + String.fromCharCode(160) + '$2');
 function Slide(tag, cuerpo, cuando, cta, ir) { return { tag, cuerpo, cuando, cta, ir }; }
 
 function slidesDe(liga, items) {
@@ -424,7 +442,7 @@ function momentos(liga, vivoL) {
     const cu = liga.cuando(liga.fechaLlave(ll));
     out.push({
       tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1),
-      txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · LA LLAVE</span></div><h1 className={largo(limpio(ll.nombre))}>{limpio(ll.nombre)}</h1>
+      txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · LA LLAVE</span></div><h1 className={largo(limpio(ll.nombre))}>{juntos(limpio(ll.nombre))}</h1>
         <p className="hero-p">{ll.sv} · {ll.participantes} raperos. {gana.length > 1 ? 'Campeones:' : 'Campeón:'} {gana.join(' y ')}.</p>
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave entera</button></div></>,
       vis: <div className="cm-wrap"><CuadroMini liga={liga} ll={ll} /></div>,
@@ -539,13 +557,26 @@ export function Tira({ liga }) {
 
 // ── IR A: una barra negra pegada arriba que aparece cuando pasaste el escenario ─────────────────────
 const SECCIONES = [['envivo', 'Ahora'], ['semana', 'Esta semana'], ['fechas', 'Fechas'], ['noticias', 'Lo último'],
-  ['raperos', 'Los que mandan'], ['encuestas', 'Encuestas'], ['panel', 'Misiones'], ['sebusca', 'Se busca'], ['merch', 'Merchandising']];
+  ['raperos', 'Los que mandan'], ['encuestas', 'Encuestas'], ['panel', 'Misiones'], ['sebusca', 'Se busca'], ['merch', 'Merchandising'],
+  ['numeros', 'La Liga']];
 
 export function IrA({ raiz }) {
   const barra = useRef(null);
   const [ver, setVer] = useState(false);
   const [act, setAct] = useState('envivo');
   const fijo = useRef(0);
+  // qué secciones hay se mira en la página, después de dibujarla: una que se apaga por no tener datos no va. La de
+  // las encuestas se llama como su título («Encuestas» o «Tus eventos», si no hay ninguna abierta)
+  const [hay, setHay] = useState(SECCIONES);
+  useEffect(() => {
+    const r = raiz.current;
+    if (!r) return;
+    const nuevo = SECCIONES.filter(([id]) => r.querySelector('#' + id)).map(([id, n]) => {
+      const h = id === 'encuestas' ? r.querySelector('#encuestas > .sec-t h2') : null;
+      return [id, h ? h.textContent : n];
+    });
+    if (JSON.stringify(nuevo) !== JSON.stringify(hay)) setHay(nuevo);
+  });
   useEffect(() => {
     const mostrar = () => { if (barra.current) setVer(barra.current.getBoundingClientRect().top <= 1); };
     window.addEventListener('scroll', mostrar, { passive: true });
@@ -564,7 +595,6 @@ export function IrA({ raiz }) {
     const s = raiz.current && raiz.current.querySelector('#' + id);
     if (s) { fijo.current = Date.now() + 900; s.scrollIntoView({ behavior: 'smooth', block: 'start' }); setAct(id); }
   };
-  const hay = SECCIONES.filter(([id]) => !raiz.current || raiz.current.querySelector('#' + id));
   return (
     <nav className={'ir-a' + (ver ? ' ver' : '')} aria-label="Ir a" ref={barra}>
       <div className="ir-in">

@@ -4,8 +4,8 @@
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
-import { Cara, Ico, Sec, accion } from './piezas.jsx';
-import { CaraH, MENU } from './arriba.jsx';
+import { Cara, Chevron, Ico, Sec, accion } from './piezas.jsx';
+import { CaraDc, CaraH, MENU } from './arriba.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
 function Poster({ liga, b }) {
@@ -86,14 +86,14 @@ export function Pie({ liga }) {
 }
 
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
-export function Tabbar({ liga }) {
+export function Tabbar({ liga, dc }) {
   const yo = liga.yo;
   const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'], ['Publicaciones', 'publicaciones', '#/publicaciones']];
   return (
     <nav className="tabbar" aria-label="Secciones">
       {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
       {yo ? <a href={'#/r/' + encodeURIComponent(yo.k)}>{liga.avUrl(yo.k) ? <img className="tab-av" alt="" src={liga.avUrl(yo.k)} /> : <Ico n="yo" t={22} />}<span>Yo</span></a>
-        : <button type="button" className="sin-boton tab-b" onClick={accion.cuenta}><Ico n="yo" t={22} /><span>Yo</span></button>}
+        : <button type="button" className="sin-boton tab-b" onClick={accion.cuenta}>{dc ? <CaraDc dc={dc} cls="tab-av" /> : <Ico n="yo" t={22} />}<span>Yo</span></button>}
     </nav>
   );
 }
@@ -183,6 +183,10 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
   }, [onCerrar, raiz]);
   if (!g) return null;
   const s = g.slides[Math.min(si, g.slides.length - 1)];
+  const perfil = g.tipo === 'gente' ? '#/r/' + encodeURIComponent(g.k)
+    : g.tipo === 'pais' ? '#/pais/' + g.cc
+      : g.tipo === 'crew' ? '#/crew/' + encodeURIComponent(g.crew.clave || g.crew.crew)
+        : g.tipo === 'sv' ? '#/mundo' : '#/eventos';
   const circulo = g.tipo === 'gente' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
     : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
       : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
@@ -192,13 +196,16 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
       <div className="hv-box" role="dialog" aria-modal="true" aria-label="Historias"
         onPointerDown={() => { pausa.current = true; }} onPointerUp={() => { pausa.current = false; }} onPointerLeave={() => { pausa.current = false; }}>
         <div className="hv-bars">{g.slides.map((_, i) => <i key={i} className={i < si ? 'hecho' : ''}><b style={{ width: (i === si ? Math.min(100, avance / DUR * 100) : 0) + '%' }} /></i>)}</div>
-        <div className="hv-cab">{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span>
+        <div className="hv-cab">
+          <a className="hv-quien" href={perfil} onClick={onCerrar} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
         <div className="hv-cuerpo"><div className="st"><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
         {s.cta && s.ir && (s.ir.link || !s.ir.link) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null}
         <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={anterior} />
         <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={siguiente} />
       </div>
+      <button type="button" className="hv-fl izq" aria-label="Historia anterior" onClick={anterior}><Chevron /></button>
+      <button type="button" className="hv-fl der" aria-label="Historia siguiente" onClick={siguiente}><Chevron /></button>
     </div>
   );
 }

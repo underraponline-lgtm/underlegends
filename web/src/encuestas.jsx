@@ -3,7 +3,8 @@
 // donde ocupaban lugar y se veían raras. Los votos los guarda y los cuenta app.js (`votar`, `ENC_*`): acá se muestran.
 import { useState } from 'react';
 import { limpio, norm } from './liga.js';
-import { Cara, Sec, accion } from './piezas.jsx';
+import { Cara, Pest, Sec, accion } from './piezas.jsx';
+import { TuTemporada, TusEventos } from './medio.jsx';
 
 const suma = (cu) => Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0);
 const votos = (n) => n + (n === 1 ? ' voto' : ' votos');
@@ -78,16 +79,26 @@ function Elegido({ liga, enc, E }) {
   );
 }
 
+// El lugar de las encuestas lleva también Tus eventos. Dlx, 30/09/2026: «creo que ahí debería ir tus eventos si
+// es que las encuestas ya no están». Con encuestas abiertas, las dos cosas con flechas (primero las encuestas); sin
+// ninguna, Tus eventos solo.
 export function Encuestas({ liga, enc }) {
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
-  if (!x2 && !el) return null;
-  return (
-    <Sec id="encuestas" titulo="Encuestas">
+  const yo = liga.yo;
+  const tuyos = <div className="pz-2"><TusEventos liga={liga} /><TuTemporada liga={liga} /></div>;
+  const enlace = yo ? 'Tu perfil' : 'Entrar';
+  const href = yo ? '#/r/' + encodeURIComponent(yo.k) : undefined;
+  const onEnlace = yo ? undefined : accion.cuenta;
+  if (!x2 && !el) return <Sec id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace}>{tuyos}</Sec>;
+  const items = [
+    { c: 'encuestas', et: 'Encuestas', t: 'Encuestas', cuerpo: (
       <div className={'en-g' + (x2 && el ? ' dos' : '')}>
         {x2 ? <X2 liga={liga} enc={enc} E={x2} /> : null}
         {el ? <Elegido liga={liga} enc={enc} E={el} /> : null}
       </div>
-    </Sec>
-  );
+    ) },
+    { c: 'tuseventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: tuyos },
+  ];
+  return <Pest id="encuestas" titulo="Encuestas" enlace={enlace} href={href} onEnlace={onEnlace} items={items} extra="panel" titulos />;
 }

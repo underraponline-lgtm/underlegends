@@ -4,7 +4,7 @@
 import { Component, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Liga, aQuienSigo, quienMira } from './liga.js';
 import { Cabecera, Hero, Historias, IrA, Tira, gruposHistorias } from './arriba.jsx';
-import { Fechas, LosQueMandan, Noticias, Panel } from './medio.jsx';
+import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 
@@ -158,7 +158,7 @@ export default function App() {
   return (
     <div className={'app ' + tema} ref={raiz}>
       <div className="barra-ul" />
-      <Aislada n="Cabecera"><Cabecera liga={liga} onMenu={() => setMenu(true)} /></Aislada>
+      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
       <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL} /></Aislada>
       <Aislada n="Tira"><Tira liga={liga} /></Aislada>
@@ -170,8 +170,9 @@ export default function App() {
       <Aislada n="Panel"><Panel liga={liga} /></Aislada>
       <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
       <Aislada n="Merch"><Merch /></Aislada>
+      <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
-      <Aislada n="Tabbar"><Tabbar liga={liga} /></Aislada>
+      <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} /></Aislada>
       <Aislada n="Menu"><Menu abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} raiz={raiz} /></Aislada> : null}
     </div>

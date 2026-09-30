@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "1.55",
+   "dia": "2026-09-30",
+   "cuando": "2026-09-30T10:00:00-04:00",
+   "titulo": "Tu cuenta arriba, y las historias con flechas",
+   "items": [
+    "👤 **Tu cuenta de Discord, arriba**: con tu foto y tu nombre en la computadora, y como un círculo al lado de la campana en el celular. Ahora también si entraste y no sos rapero.",
+    "⭕ **En las historias, flechas para pasar** y el círculo de arriba lleva a su perfil: el de la persona, su país, su crew o los servidores.",
+    "🩷 **El dorado, en el rosa de la Liga.**",
+    "↔️ **En la computadora, las flechas del escenario van a los costados** de la pantalla.",
+    "🗳️ **Encuestas y Tus eventos, juntos**: con encuestas abiertas, las dos con flechas; sin encuestas, Tus eventos. Abajo quedan sólo las Misiones.",
+    "📊 **La Liga en números**, sola, debajo del Merchandising."
+   ]
+  },
+  {
    "version": "1.54",
    "dia": "2026-09-30",
    "cuando": "2026-09-30T08:45:00-04:00",

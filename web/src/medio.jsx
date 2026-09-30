@@ -158,7 +158,7 @@ function Pase({ liga }) {
 }
 // Dlx, 30/09/2026: «tus últimos eventos son raros porque dice que son los últimos eventos». Decía «Tus eventos» en
 // la pestaña y mostraba los de la Liga, que ya están en Fechas. Ahora son los tuyos, o cómo verlos.
-function TusEventos({ liga }) {
+export function TusEventos({ liga }) {
   const f = liga.yo;
   if (!f) {
     return (
@@ -259,13 +259,21 @@ function Numeros({ liga }) {
     </div>
   );
 }
+// Misiones, solas: Dlx, 30/09/2026, «dejar abajo solo las misiones». Tus eventos subió al lugar de las encuestas y
+// La Liga en números bajó, debajo del Merchandising.
 export function Panel({ liga }) {
-  const items = [
-    { c: 'misiones', et: 'Misiones', t: 'Misiones', cuerpo: <div className="pz-2"><Misiones /><Pase liga={liga} /></div> },
-    { c: 'eventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: <div className="pz-2"><TusEventos liga={liga} /><TuTemporada liga={liga} /></div> },
-    { c: 'liga', et: 'La Liga', t: 'La Liga en números', cuerpo: <Numeros liga={liga} /> },
-  ];
-  const yo = liga.yo;
-  return <Pest id="panel" titulo="Misiones" enlace={yo ? 'Tu perfil' : 'Entrar'} href={yo ? '#/r/' + encodeURIComponent(yo.k) : undefined}
-    onEnlace={yo ? undefined : accion.cuenta} items={items} extra="panel" titulos />;
+  return (
+    <Sec id="panel" titulo="Misiones">
+      <div className="pz-2"><Misiones /><Pase liga={liga} /></div>
+    </Sec>
+  );
+}
+
+// La Liga en números, sola, debajo del Merchandising (Dlx, 30/09/2026). Sin datos, no se dibuja
+export function LaLiga({ liga }) {
+  const c = liga.d.comunidad || {};
+  const a = liga.d.actividad || {};
+  const hay = c.personas || c.lista || c.con_id || c.verificados || (a.dias || []).length || (liga.d.records || []).length;
+  if (!hay) return null;
+  return <Sec id="numeros" titulo="La Liga en números" enlace="Mundo" href="#/mundo"><Numeros liga={liga} /></Sec>;
 }
