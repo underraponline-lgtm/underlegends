@@ -35,6 +35,40 @@
 <link rel="preconnect" href="https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="estilo.css">
+<!-- 🛠️ EL INICIO NUEVO (el remake; Dlx, 29/09/2026: «1. B. 2. B»). Lo pone web/montar.py: no se edita a mano.
+     La app vive en web/ y se construye a inicio/; se ve sólo en el Inicio y el resto sigue siendo esta página. -->
+<link rel="stylesheet" href="/inicio/inicio.css">
+<style id="ini-css">
+#inicio-nuevo{display:none}
+html.ini-nuevo #inicio-nuevo{display:block;position:relative;z-index:4}
+html.ini-nuevo .aurora,html.ini-nuevo .trama,html.ini-nuevo .velo,html.ini-nuevo aside.menu{display:none}
+html.ini-nuevo .app{display:block;max-width:none}
+html.ini-nuevo main{padding:0}
+html.ini-nuevo main > section.vista[data-vista=""]{display:none}
+html.ini-nuevo .barra{position:fixed;top:0;right:0;height:0;margin:0;padding:0;border:0;background:none;z-index:80}
+html.ini-nuevo .barra > :not(.pop){visibility:hidden}
+html.ini-nuevo .barra .pop{top:64px;right:12px}
+html.ini-nuevo body{background:#FFFFFF}
+html.ini-nuevo.ini-noche body{background:#030304}
+html.ini-nuevo{scroll-padding-top:0}
+</style>
+<script>
+(function () {
+  // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, #/, lo que vuelve de Discord, o algo que
+  // no es una vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
+  var V = {"cambios":1,"crew":1,"eventos":1,"guia":1,"mundo":1,"pais":1,"pase":1,"publicaciones":1,"r":1,"ranking":1,"tarjetas":1,"tienda":1,"avisos":1,"duelos":1,"llave":1};
+  var h = location.hash || '', ini = /^#(access_token|error)=/.test(h);
+  if (!ini) { var p = h.replace(/^#\/?/, '').split('?')[0].split('/')[0]; ini = !p || !V[p]; }
+  var c = document.documentElement.classList;
+  if (ini) c.add('ini-nuevo');
+  try { if (localStorage.getItem('lg:tema') === 'noche') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
+  // si la app no llegó a montarse (red lenta, un navegador viejo), vuelve el Inicio de hoy
+  setTimeout(function () {
+    var el = document.getElementById('inicio-nuevo');
+    if (!el || !el.shadowRoot) { window.__inicioSinDatos = true; c.remove('ini-nuevo'); }
+  }, 8000);
+})();
+</script>
 </head>
 <body>
 
@@ -99,6 +133,9 @@
        contraseña: este dispositivo recuerda quién sos, y nada sale de acá.
        En el teléfono el menú de la izquierda no está, así que los Ajustes
        también viven acá. -->
+  <!-- 🛠️ acá se monta el Inicio nuevo (web/src/main.jsx) -->
+  <div id="inicio-nuevo"></div>
+
   <div class="barra">
     <button class="b-icono" id="bAjustes2" type="button" aria-label="Ajustes">&#9881;</button>
     <button class="cuenta" id="bCuenta" type="button" aria-haspopup="dialog">
@@ -816,6 +853,7 @@
 
 <script src="llave_vivo.js"></script>
 <script src="app.js"></script>
+<script type="module" src="/inicio/inicio.js"></script>
 <script src="campana.js" defer></script>
 </body>
 </html>

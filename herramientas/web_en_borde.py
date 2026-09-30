@@ -113,6 +113,10 @@ async def main():
                 else:
                     await r.fulfill(status=200, content_type='application/json', body='{}')
             await pg.route('**/api/avisos/**', avisos)
+            # 🛠️ Y EL INICIO NUEVO PIDE EL MURO AL ABRIR (29/09/2026, el
+            # remake): sin esto el 404 del servidor de la prueba salía como
+            # error de la página. Vacío o caído, igual que los avisos.
+            await pg.route('**/api/muro*', avisos)
             # ⚠️ POR HTTP Y NO POR `file://`: el navegador rechaza un
             # `fetch('/api/lobby')` desde un archivo local antes de que
             # Playwright pueda interceptarlo, así que la prueba probaba

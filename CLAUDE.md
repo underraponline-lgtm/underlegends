@@ -819,8 +819,10 @@ en una sola zona le correría la fecha a media Liga.
 
 ### 🛠️ EL REMAKE DE LA WEB, EN CURSO DESDE EL 29/09/2026
 
-La web se rehace en **React (Vite + Tailwind v4 + shadcn/ui)**, exportada a
-estáticos en Pages: sin SSR, para no gastar el Worker. Todo lo del remake vive
+La web se rehace en **React (Vite)**, exportada a estáticos en Pages: sin SSR,
+para no gastar el Worker. Se había planeado con Tailwind v4 y shadcn/ui; el
+Inicio salió **sin ninguno de los dos**, con el CSS del prototipo que Dlx
+aprobó (ver abajo). Todo lo del remake vive
 en **`docs/remake/`**: el inventario de la web de hoy, las cuatro direcciones
 de estilo (`direcciones/`) y las pantallas que se comparan.
 
@@ -828,9 +830,44 @@ Lo que Dlx decidió (ver `NOVEDADES.md`):
 
 - **Las cartas no cambian**: la web es la pared, las cartas son los afiches.
 - **La foto queda como hoy**, con «ocultar mi foto» en ajustes.
-- **El cambio se hace de una vez**, cuando esté todo (*«1. A»*). Hasta ese
-  día la web de hoy no se toca: la nueva se prueba en otra dirección.
+- ~~**El cambio se hace de una vez**, cuando esté todo (*«1. A»*).~~ **Dejó
+  de valer a las 7:30 PM del mismo 29/09** (*«1. B. 2. B»*): **el Inicio
+  nuevo salió solo, en React y con los datos en vivo**, y el resto de la
+  página se cambia por partes.
 - **Primero el remake**; lo nuevo, después.
+
+#### El Inicio nuevo: cómo está armado (29/09/2026)
+
+| dónde | qué es |
+|---|---|
+| **`web/`** | la app: Vite + React, **sin** Tailwind ni shadcn |
+| `web/src/estilo.css` | **generado** desde el prototipo (`docs/remake/reales.py`) con `python web/css_del_prototipo.py`. **No se edita a mano** |
+| `web/src/vivo.css` | lo que es sólo de la página de verdad: botones, votos, el menú ☰ |
+| **`bot/paginas/inicio/`** | lo construido (`npx vite build`, en `web/`). **Se commitea**: el ciclo no construye nada, sube lo que hay |
+| `web/montar.py` | engancha la app en `index.html`: el CSS que apaga el marco de hoy, `#inicio-nuevo` y el script. Ya está hecho; se usa sólo si el HTML se rehace |
+
+⚠️ **VIVE ADENTRO DE LA PÁGINA DE HOY, NO LA REEMPLAZA.** Se monta en
+`#inicio-nuevo`, en un **shadow root** —así el CSS de las dos no se pisa— y
+sólo se ve en el Inicio: cualquier otra ruta saca la clase `ini-nuevo` y
+vuelve el marco de `app.js`. **Qué es una vista sale del HTML y del `ALIAS` de
+`app.js`**, así que una vista nueva entra sola.
+
+⚠️ **SE ENTERA DE LOS DATOS POR `app.js`**: envuelve `pintaDatos`,
+`pintaEncuestas`, `pintaVivo` e `ir`, lee `window.D`, `VIVO_L`, `ENC_*` y
+`DC`, y le pide a `app.js` la cuenta, los visores de cartas y llaves y el
+voto. **Si alguna de esas funciones o variables cambia de nombre, el Inicio
+deja de enterarse sin fallar.** Se busca en `web/src/` antes de renombrar.
+
+⚠️ **EL INICIO VIEJO SIGUE EN EL DOM, ESCONDIDO: es el respaldo.** Si la app no
+se monta en 8 s, si se rompe entera o si `/api/lobby` no contesta, vuelve el
+de hoy con su «No pude cargar los datos» —que es lo que mira
+`herramientas/web_en_borde.py`—. Cada sección va aislada, como en
+`pintaDatos()`: una rota no apaga las demás.
+
+⚠️ **LAS CLASES DEL PROTOTIPO SON GLOBALES ADENTRO DEL SHADOW ROOT**, y ya
+chocaron cuatro veces: `.llave` y `.prox` le cambiaban la forma a los tags del
+escenario, `.pronto` pintaba de amarillo los canjes y `.st-l` volvía magenta
+la Tira. **Antes de nombrar una clase, buscarla en `estilo.css`.**
 
 ⚠️ **21st: buscar sí, traer código NO sin el OK de Dlx.** `search`,
 `search_picker`, `get_inspiration`, `get_theme` y `search_logo` son gratis.

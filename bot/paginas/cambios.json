@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "1.53",
+   "dia": "2026-09-29",
+   "cuando": "2026-09-29T21:20:00-04:00",
+   "titulo": "El Inicio nuevo: arranca el remake de la página",
+   "items": [
+    "🛠️ **Arranca el remake de la página, por el Inicio.** Arriba, lo que está pasando: el evento en vivo, el próximo con su cuenta atrás, la última llave y el último video.",
+    "⭕ **Las historias**, como en Instagram: los servidores, las crews y las cartas nuevas de la semana.",
+    "📅 **Esta semana, en una línea**: el multiplicador de cada servidor, el Dorado y la votación del ×2.",
+    "🏆 **Los que mandan**: el top 5 de Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, con flechas para pasar de uno a otro.",
+    "🎯 **Se busca, la Tienda y los servidores de la Liga**, en la misma página. Las Misiones y el Pase aparecen como «próximamente».",
+    "📱 **En el celular entra todo**, con la barra de abajo y el menú ☰, donde también se elige el tema claro u oscuro.",
+    "↩️ **El resto de la página sigue como siempre** (Ranking, Tarjetas, Eventos…): se va cambiando por partes."
+   ]
+  },
+  {
    "version": "1.52",
    "dia": "2026-09-29",
    "cuando": "2026-09-29T17:50:00-04:00",
