@@ -544,7 +544,7 @@ class Liga:
             dor = self.es_dorado(e['nombre'], e['sv'])
             det = ' · '.join(x for x in [e['sv'], e.get('modalidad'), ('cupos %s' % e['cupos'].lower()) if e.get('cupos') else '',
                                          ('organiza %s' % e['org']) if e.get('org') else ''] if x)
-            txt = ('<div class="hero-t"><img class="hv-logo" alt="" src="%s"><span class="tag prox">PRÓXIMO · %s</span></div>'
+            txt = ('<div class="hero-t"><img class="hv-logo" alt="" src="%s"><span class="tag tg-prox">PRÓXIMO · %s</span></div>'
                    '<h1 class="hero-ev%s">%s</h1><p class="hero-p">%s%s</p><div class="mo-cuenta"><small>EMPIEZA EN</small><b>%s</b></div>'
                    '<div class="hero-acc"><a class="btn verde">%sQuiero aviso</a><a class="btn borde">+ Calendario</a></div>'
                    % (self.logo(e['sv']), self.dia(e['cuando']).upper(), ' largo' if len(limpio(e['nombre'])) > 16 else '',
@@ -556,7 +556,7 @@ class Liga:
         ll = self.llaves()[0]
         gana = self.campeon(ll)
         cuando = self.cuando(self.fecha_llave(ll))
-        txt = ('<div class="hero-t"><span class="tag llave">%s · LA LLAVE</span></div><h1 class="hero-ev largo">%s</h1>'
+        txt = ('<div class="hero-t"><span class="tag tg-llave">%s · LA LLAVE</span></div><h1 class="hero-ev largo">%s</h1>'
                '<p class="hero-p">%s · %d raperos. %s %s.</p><div class="hero-acc"><a class="btn verde">Ver la llave entera</a></div>'
                % (cuando.upper(), limpio(ll['nombre']), ll['sv'], ll['participantes'],
                   'Campeones:' if len(gana) > 1 else 'Campeón:', ' y '.join(gana)))
@@ -566,7 +566,7 @@ class Liga:
             self.pedidas.add(('__yt__', video['vid']))
             src = self.r.carta('__yt__', video['vid'])
             fecha = utc(video['t']).astimezone(ET)
-            txt = ('<div class="hero-t"><span class="tag video">ÚLTIMO VIDEO · %s</span></div><h1 class="hero-ev largo">%s</h1>'
+            txt = ('<div class="hero-t"><span class="tag tg-video">ÚLTIMO VIDEO · %s</span></div><h1 class="hero-ev largo">%s</h1>'
                    '<p class="hero-p">Subido el %d de %s.</p><div class="hero-acc"><a class="btn verde">Mirar en YouTube ↗</a></div>'
                    % (limpio(video.get('canal', '')).upper(), limpio(video['tit']), fecha.day, MESES[fecha.month - 1]))
             vis = ('<div class="mo-video">%s<span class="mo-play">▶</span></div>'
@@ -574,7 +574,7 @@ class Liga:
             out.append(('video', 'Video', txt, vis))
         nov = next((x for x in self.d.get('novedades', [])), None)
         if nov:
-            txt = ('<div class="hero-t"><span class="tag liga">LA LIGA · %s</span></div><h1 class="hero-ev largo">%s</h1>'
+            txt = ('<div class="hero-t"><span class="tag tg-liga">LA LIGA · %s</span></div><h1 class="hero-ev largo">%s</h1>'
                    '<p class="hero-p">%s</p><div class="hero-acc"><a class="btn verde">Leer en Discord ↗</a></div>'
                    % (self.cuando(nov['t']).upper(), limpio(nov['tit']), recorte(nov.get('tx', ''), 180)))
             out.append(('liga', 'La Liga', txt, '<div class="mo-logo ul"><img alt="" src="%s"></div>' % P.UL))
@@ -587,7 +587,7 @@ class Liga:
                 if not x:
                     continue
                 k = sorted(ks)[0]
-                txt = ('<div class="hero-t"><span class="tag seguis">DE LOS QUE SEGUÍS · %s</span></div><h1 class="hero-ev largo">%s</h1>'
+                txt = ('<div class="hero-t"><span class="tag tg-seguis">DE LOS QUE SEGUÍS · %s</span></div><h1 class="hero-ev largo">%s</h1>'
                        '<p class="hero-p">%s.</p><div class="hero-acc"><a class="btn verde">Ver su perfil</a></div>'
                        % (x[3].upper(), x[1], x[0].capitalize()))
                 out.append(('seguis', 'Seguís', txt, '<div class="mo-cara">%s</div>' % self.cara(k, self.T[k]['n'], 'st-cara')))
@@ -1645,10 +1645,10 @@ CSS_R = r"""
 .mo.on{display:grid}
 .mo-txt{min-width:0}
 .mo-vis{min-width:0}
-.tag.prox{background:#E7B622;color:#030304}
-.tag.prox:before{background:#030304}
-.tag.llave,.tag.video,.tag.liga,.tag.seguis{background:#F6F6F6;color:#030304}
-.tag.llave:before,.tag.video:before,.tag.liga:before,.tag.seguis:before{background:var(--magenta)}
+.tag.tg-prox{background:#E7B622;color:#030304}
+.tag.tg-prox:before{background:#030304}
+.tag.tg-llave,.tag.tg-video,.tag.tg-liga,.tag.tg-seguis{background:#F6F6F6;color:#030304}
+.tag.tg-llave:before,.tag.tg-video:before,.tag.tg-liga:before,.tag.tg-seguis:before{background:var(--magenta)}
 .mo-cuenta{display:flex;align-items:baseline;gap:10px;margin-top:14px}
 .mo-cuenta small{font:700 11px/1 "Space Mono",monospace;letter-spacing:.12em;color:var(--esc-gris)}
 .mo-cuenta b{font:900 30px/1 Archivo,sans-serif;font-stretch:125%;color:#E7B622}

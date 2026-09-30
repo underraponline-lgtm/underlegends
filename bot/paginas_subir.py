@@ -56,6 +56,11 @@ try:
 except AttributeError:
     pass
 
+# ⚠️ `mimetypes` no conoce estos dos en Windows (y depende de /etc/mime.types en Linux): salían como
+# `application/octet-stream`. Las fuentes del Inicio nuevo (inicio/f/*.woff2) son las que más lo necesitan.
+mimetypes.add_type('font/woff2', '.woff2')
+mimetypes.add_type('image/webp', '.webp')
+
 
 def env():
     d = dict(os.environ)

@@ -1,0 +1,94 @@
+/* Lo que es sólo de la página de verdad, encima del CSS del prototipo (estilo.css, generado). */
+.app{min-height:100vh;overflow-x:clip}
+.cargando{padding:80px 16px;font:700 13px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris);text-align:center}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #E41373;outline-offset:2px}
+#envivo,.sec[id],#semana{scroll-margin-top:58px}
+
+/* lo que en el prototipo era una caja y acá es un botón o un link */
+.sin-boton{display:block;width:100%;margin:0;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:inherit;cursor:pointer}
+button.fecha,a.fecha{font:inherit;color:inherit;text-align:left;cursor:pointer}
+button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.notas li{display:block;padding:0}
+.nota-b{display:flex;gap:12px;align-items:center;padding:10px 0;text-align:left}
+.te-l li{display:block;padding:0}
+.te-b{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 14px;text-align:left}
+.historias .h{background:none;border:0;padding:0;margin:0;color:inherit;font:inherit;cursor:pointer}
+.mc-pie a:hover b,.rec a:hover b{text-decoration:underline}
+.historias,.rail,.dias,.llave-wrap,.mw-rail,.cm-wrap{overflow-x:auto;scrollbar-width:none}
+.historias::-webkit-scrollbar,.rail::-webkit-scrollbar,.dias::-webkit-scrollbar,.llave-wrap::-webkit-scrollbar,.mw-rail::-webkit-scrollbar,.cm-wrap::-webkit-scrollbar{display:none}
+
+/* la cabecera: en el celular, la marca, la campana y el ☰; en la computadora, todo menos el ☰ */
+@media (max-width: 899.98px){.cab .menu,.cab .buscar-w,.cab .yo-chip,.cab .entrar{display:none}}
+@media (min-width: 900px){.cab .hamb{display:none}}
+.yo-chip{background:transparent;color:inherit;cursor:pointer}
+.buscar-w{position:relative}
+.buscar input{flex:1;min-width:0;border:0;background:transparent;color:var(--tinta);font:600 14px/1 Archivo,sans-serif;outline:none;padding:0}
+.buscar input::placeholder{color:var(--gris)}
+.busca-res{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:25;list-style:none;margin:0;padding:0;background:var(--fondo);
+  color:var(--tinta);border:2px solid var(--linea)}
+.busca-res a{display:flex;align-items:center;gap:10px;padding:8px 10px;font:800 14px/1.2 Archivo,sans-serif}
+.busca-res a:hover{background:var(--suave)}
+.busca-res .cara{width:28px;height:28px;overflow:hidden}
+.busca-res .cara img{width:100%;height:100%;object-fit:cover}
+
+/* la barra de abajo: sólo en el celular, pegada abajo */
+.tabbar{position:sticky;bottom:0;z-index:30;padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabbar .tab-b{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;
+  text-transform:uppercase}
+@media (min-width: 900px){.tabbar{display:none}}
+
+/* Misiones y Pase: «Próximamente», sin números de ejemplo (Dlx, «3. sí») */
+.pronto-p{margin:14px;font:400 15px/1.5 Archivo,sans-serif;color:var(--gris);max-width:60ch}
+.tu .pronto-p{margin:0}
+
+/* las votaciones: el ×2 en la Tira y El Elegido en Se busca (las cuenta y las guarda app.js) */
+.vt-x2{grid-column:1/-1;border-top:1px solid #2A2A2E;padding-top:10px}
+.vt-t{margin:0;font:700 12px/1.45 "Space Mono",monospace;color:#F6F6F6}
+.vt-t span{display:block;font-weight:400;color:#A5A5A0}
+.vt-svs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.vt-sv{position:relative;overflow:hidden;display:flex;align-items:center;gap:6px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
+  padding:6px 10px 8px 6px;font:900 13px/1 Archivo,sans-serif;font-stretch:115%;cursor:pointer}
+.vt-sv img{width:22px;height:22px;border-radius:50%}
+.vt-sv small{font:700 11px/1 "Space Mono",monospace;color:#A5A5A0}
+.vt-sv.mio{border-color:#29B298}
+.vt-sv.va{opacity:.7}
+.vt-bar{position:absolute;left:0;bottom:0;height:3px;background:#29B298;pointer-events:none}
+.vt-e{margin:8px 0 0;font:700 11px/1.45 "Space Mono",monospace;color:#A5A5A0}
+.vt-el{margin-top:22px;border:2px solid var(--linea);background:var(--fondo)}
+.vt-b{margin:12px 14px 0;font:400 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.vt-b b{color:var(--tinta)}
+.vt-busca{display:block;margin:12px 14px 0;width:calc(100% - 28px);border:2px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);
+  font:700 13px/1 "Space Mono",monospace;padding:11px 10px}
+.vt-ops{display:grid;gap:6px;padding:12px 14px}
+@media (min-width: 900px){.vt-ops{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.vt-op{position:relative;overflow:hidden;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;border:1.5px solid var(--suave);
+  background:transparent;color:var(--tinta);padding:8px 10px;cursor:pointer;text-align:left;font:800 14px/1.2 Archivo,sans-serif}
+.vt-op[disabled]{opacity:.5;cursor:default}
+.vt-op.mio{border-color:var(--verde)}
+.vt-op.va{opacity:.7}
+.vt-cara{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;overflow:hidden;background:var(--inv);color:var(--inv-tinta);
+  font:900 13px/1 Archivo,sans-serif}
+.vt-cara img{width:100%;height:100%;object-fit:cover}
+.vt-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vt-c{font:700 12px/1 "Space Mono",monospace;color:var(--gris)}
+.vt-el .vt-e{margin:0 14px 14px;color:var(--gris)}
+
+/* el menú ☰ (del prototipo) */
+.x-menu{position:fixed;inset:0;z-index:50;background:rgba(3,3,4,.55);display:flex;justify-content:flex-end}
+.x-caja{width:min(330px,88%);height:100%;overflow-y:auto;background:var(--fondo);color:var(--tinta);border-left:2px solid var(--linea);
+  padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 24px;display:grid;align-content:start;gap:18px}
+.x-caja-cab{display:flex;justify-content:space-between;align-items:center}
+.x-caja-cab b{font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;color:var(--gris)}
+.x-cerrar{background:none;border:0;color:inherit;cursor:pointer;padding:0}
+.x-lista{display:grid;border-top:2px solid var(--linea)}
+.x-lista a{display:flex;justify-content:space-between;align-items:center;min-height:56px;border-bottom:2px solid var(--linea);
+  font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.x-aj{display:grid;gap:14px}
+.x-aj-t{font:700 11px/1 "Space Mono",monospace;letter-spacing:.14em;color:var(--gris)}
+.x-fila{display:flex;justify-content:space-between;align-items:center;gap:12px;font:800 15px/1.2 Archivo,sans-serif}
+.x-fila small{display:block;font:700 11px/1.35 "Space Mono",monospace;color:var(--gris);margin-top:3px}
+.x-seg{display:inline-flex;border:2px solid currentColor}
+.x-seg button{font:800 13px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;min-height:44px;padding:0 14px;
+  background:transparent;color:inherit;border:0;cursor:pointer}
+.x-seg button+button{border-left:2px solid currentColor}
+.x-seg button[aria-pressed="true"]{background:var(--inv);color:var(--inv-tinta)}
