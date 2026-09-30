@@ -195,3 +195,62 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 /* ⚠️ `.rec` choca con la pastilla verde del prototipo (`grid-row:span 2`, padding, letra de 18): los récords ocupaban
    dos filas de la grilla y por eso las columnas nunca quedaban parejas */
 .num-g>.rec{grid-row:auto;padding:0;font:400 15px/1.45 Archivo,sans-serif;color:var(--tinta)}
+
+/* ── A · tu puesto, debajo del top 5 ─────────────────────────────────────────────────────────────── */
+.mc-yo{display:flex;align-items:center;gap:12px;margin-top:14px;padding:10px 12px;border:2px solid var(--linea);background:var(--caja)}
+.mc-yo-c{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;overflow:hidden;background:var(--inv);color:var(--inv-tinta);
+  font:900 16px/1 Archivo,sans-serif}
+.mc-yo-c img{width:100%;height:100%;object-fit:cover}
+.mc-yo-flag{width:40px;height:27px;object-fit:cover;flex:none;border:1.5px solid var(--linea)}
+.mc-yo-q{display:grid;gap:3px;flex:none}
+.mc-yo-q small{font:700 10px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.mc-yo-q b{font:900 26px/1 Archivo,sans-serif;font-stretch:120%}
+.mc-yo-t{flex:1;min-width:0;font:700 13px/1.35 "Space Mono",monospace}
+.mc-yo-a{flex:none;display:inline-flex;align-items:center;gap:6px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase}
+@media (max-width: 599.98px){.mc-yo{flex-wrap:wrap}.mc-yo-a{width:100%;justify-content:flex-end}}
+.mc-yo.invita{justify-content:space-between}
+
+/* ── B · lo tuyo en el escenario: el afiche y tu carta ───────────────────────────────────────────── */
+.mo-poster{display:grid;place-items:center}
+.mo-poster .poster{width:190px;transform:rotate(-3deg)}
+.mo-carta-w{display:grid;place-items:center}
+.mo-carta{width:170px;height:auto;display:block;transform:rotate(3deg)}
+@media (min-width: 900px){.app .mo-poster .poster{width:230px}.app .mo-carta{width:220px}}
+
+/* los `.btn` del prototipo eran enlaces: como <button> traían el fondo gris del navegador y «Compartir» no se leía */
+button.btn{background:transparent;cursor:pointer}
+/* ── D · compartir ───────────────────────────────────────────────────────────────────────────────── */
+.compartir{gap:8px}
+.tu-acc{display:flex;flex-wrap:wrap;gap:10px}
+.tu-acc .btn{flex:1 1 180px}
+.hv-comp{margin-left:auto;width:44px;height:44px;display:grid;place-items:center;background:none;border:0;color:#F6F6F6;cursor:pointer;padding:0}
+.hv-comp span:empty{display:none}
+.hv-comp+.hv-x{margin-left:0}
+
+/* ── E · el perfil de cada servidor ──────────────────────────────────────────────────────────────── */
+.svp{position:relative;z-index:1;display:grid;gap:18px;padding:26px 16px 22px;color:var(--esc-tinta)}
+.svp-logo{width:110px;height:110px;border-radius:50%;border:4px solid #F6F6F6;box-shadow:6px 6px 0 var(--mo-c,var(--magenta));background:#030304}
+.svp-tx{display:grid;gap:10px;justify-items:start;min-width:0}
+.svp-tx .hero-ev{margin:0;text-wrap:balance}
+.svp-redes{display:flex;flex-wrap:wrap;gap:8px}
+.svp-redes a{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;border:1.5px solid #F6F6F6;padding:8px 10px}
+.svp-num{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.svp-num div{border:2px solid #F6F6F6;padding:10px 12px;background:rgba(3,3,4,.72)}
+.svp-num dt{font:700 10px/1 "Space Mono",monospace;letter-spacing:.12em;color:#A5A5A0}
+.svp-num dd{margin:6px 0 0;font:900 24px/1 Archivo,sans-serif;font-stretch:120%}
+.svp-num dd.sube{color:var(--verde)}
+.svp-semana{position:relative;z-index:1;list-style:none;margin:0;padding:0 16px 22px;display:flex;flex-wrap:wrap;gap:8px}
+.svp-semana li{display:flex;gap:8px;align-items:baseline;border:1.5px solid #3A3A3E;padding:8px 10px;background:rgba(3,3,4,.72);color:#F6F6F6;
+  font:700 12px/1.3 "Space Mono",monospace}
+.svp-semana b{font:900 13px/1 Archivo,sans-serif;font-stretch:120%;color:var(--verde)}
+.svp-semana li.dor{background:var(--magenta);border-color:var(--magenta)}
+.svp-semana li.dor b{color:#fff}
+.svp-otros{display:flex;flex-wrap:wrap;gap:10px}
+.svp-otros a{display:flex;align-items:center;gap:8px;border:2px solid var(--linea);border-left:8px solid var(--c);padding:8px 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%}
+.svp-otros img{width:30px;height:30px;border-radius:50%}
+.ts-sv{display:contents;color:inherit}
+@media (min-width: 900px){
+  .app .svp{grid-template-columns:auto minmax(0,1fr) minmax(280px,auto);align-items:center;gap:32px;padding:44px var(--gut) 28px}
+  .app .svp-logo{width:160px;height:160px}
+  .app .svp-semana{padding:0 var(--gut) 34px}
+}

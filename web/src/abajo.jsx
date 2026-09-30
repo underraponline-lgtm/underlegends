@@ -4,29 +4,10 @@
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
-import { Cara, Chevron, Ico, Sec, accion } from './piezas.jsx';
+import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace } from './piezas.jsx';
 import { CaraDc, CaraH, MENU } from './arriba.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
-function Poster({ liga, b }) {
-  let pie = b.m || '';
-  let sello = null;
-  let cls = '';
-  if (b.e === 'cazado') {
-    const por = ((b.c || {}).por || []).map((p) => p.n).join(' y ');
-    sello = <span className="p-sello">CAZADO</span>; cls = 'hecho'; pie = 'por ' + por + ' · cobró ' + num(b.v);
-  } else if (b.e === 'escondio') {
-    sello = <span className="p-sello gris">SE ESCONDIÓ</span>; cls = 'hecho'; pie = 'no jugó: nadie cobró';
-  }
-  return (
-    <a className={'poster ' + cls} href={'#/r/' + encodeURIComponent(b.k)}>
-      <span className="p-t">SE BUSCA</span>
-      <span className="p-fw"><Cara liga={liga} k={b.k} nombre={b.n} cls="p-foto" />{sello}</span>
-      <b>{limpio(b.n)}</b><span className="p-cat">{String(b.cn || '').toUpperCase()}</span>
-      <span className="p-precio">{num(b.v)} PTS</span><small>{pie}</small>
-    </a>
-  );
-}
 
 
 export function SeBusca({ liga }) {
@@ -137,7 +118,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
   const DUR = 5000;
   useEffect(() => { setGi(abierto); setSi(0); setAvance(0); }, [abierto]);
   const g = gi !== null && gi !== undefined ? grupos[gi] : null;
-  useEffect(() => { if (g) onVisto(g.id); }, [g, onVisto]);
+  useEffect(() => { if (g) onVisto(g.id, g.firma); }, [g, onVisto]);
   const siguiente = () => {
     if (!g) return;
     if (si < g.slides.length - 1) { setSi(si + 1); setAvance(0); } else if (gi < grupos.length - 1) { setGi(gi + 1); setSi(0); setAvance(0); } else onCerrar();
@@ -183,10 +164,14 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
   }, [onCerrar, raiz]);
   if (!g) return null;
   const s = g.slides[Math.min(si, g.slides.length - 1)];
+  // lo que se comparte de una historia: la carta (la imagen), la llave o el perfil al que lleva
+  const d = s.ir || {};
+  const compartir = d.carta ? liga.cartaUrl(d.carta, 'temporada') || enlace('#/r/' + encodeURIComponent(d.carta))
+    : d.llave ? enlace('#/llave/' + d.llave) : d.perfil ? enlace('#/r/' + encodeURIComponent(d.perfil)) : null;
   const perfil = g.tipo === 'gente' ? '#/r/' + encodeURIComponent(g.k)
     : g.tipo === 'pais' ? '#/pais/' + g.cc
       : g.tipo === 'crew' ? '#/crew/' + encodeURIComponent(g.crew.clave || g.crew.crew)
-        : g.tipo === 'sv' ? '#/mundo' : '#/eventos';
+        : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : '#/eventos';
   const circulo = g.tipo === 'gente' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
     : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
       : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
@@ -198,6 +183,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
         <div className="hv-bars">{g.slides.map((_, i) => <i key={i} className={i < si ? 'hecho' : ''}><b style={{ width: (i === si ? Math.min(100, avance / DUR * 100) : 0) + '%' }} /></i>)}</div>
         <div className="hv-cab">
           <a className="hv-quien" href={perfil} onClick={onCerrar} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
+          {compartir ? <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" /> : null}
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
         <div className="hv-cuerpo"><div className="st"><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
         {s.cta && s.ir && (s.ir.link || !s.ir.link) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null}

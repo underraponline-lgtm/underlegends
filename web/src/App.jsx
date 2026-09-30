@@ -7,6 +7,7 @@ import { Cabecera, Hero, Historias, IrA, Tira, gruposHistorias } from './arriba.
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
+import { PerfilSv } from './servidor.jsx';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -99,15 +100,18 @@ export default function App() {
   const [tema, setTema] = useState(leerTema);
   const [menu, setMenu] = useState(false);
   const [historia, setHistoria] = useState(null);
-  const [vistos, setVistos] = useState(() => new Set());
+  // las historias vistas quedan vistas aunque recargues (Dlx, 30/09: «me gustan todas», la C): {id: firma}. Si llega
+  // algo más nuevo, la firma cambia y el círculo vuelve a verde
+  const [vistos, setVistos] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:historias')) || {}; } catch (e) { return {}; } });
   const [yo, setYo] = useState(quienMira);
+  const [hash, setHash] = useState(() => location.hash);
   const raiz = useRef(null);
 
   useEffect(() => {
     const datos = () => { setD(window.D || null); setAhora(new Date()); setYo(quienMira()); setEnc(estadoEnc()); marcarRuta(); };
     const votos = () => setEnc(estadoEnc());
     const vivo = () => setVivoL(Object.assign({}, window.VIVO_L || {}));
-    const ruta = () => { marcarRuta(); setYo(quienMira()); };
+    const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(location.hash); };
     window.addEventListener('lg:datos', datos);
     window.addEventListener('lg:enc', votos);
     window.addEventListener('lg:vivo', vivo);
@@ -149,9 +153,18 @@ export default function App() {
   const elegirTema = useCallback((t) => { setTema(t); try { localStorage.setItem('lg:tema', t); } catch (e) { /* igual */ } }, []);
   useEffect(() => { document.documentElement.classList.toggle('ini-noche', tema === 'noche'); }, [tema]);
   const cerrarHistoria = useCallback(() => setHistoria(null), []);
-  const visto = useCallback((id) => setVistos((v) => (v.has(id) ? v : new Set(v).add(id))), []);
+  const visto = useCallback((id, firma) => setVistos((v) => {
+    if (v[id] === firma) return v;
+    const n = Object.assign({}, v, { [id]: firma });
+    try { localStorage.setItem('lg:historias', JSON.stringify(n)); } catch (e) { /* sin guardar */ }
+    return n;
+  }), []);
 
   const liga = useMemo(() => (D ? new Liga(D, muro, ahora, yo.k, aQuienSigo()) : null), [D, muro, ahora, yo]);
+  // el perfil de un servidor (#/sv/<SIGLA>): app.js no conoce la ruta y la deja en el Inicio, y acá se dibuja el perfil
+  const mSv = /^#\/sv\/([^/?#]+)/i.exec(hash || '');
+  const sv = mSv ? decodeURIComponent(mSv[1]).toUpperCase() : null;
+  useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
   const grupos = useMemo(() => (liga ? gruposHistorias(liga) : []), [liga]);
 
   if (!liga) return <div className={'app ' + tema}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
@@ -159,17 +172,19 @@ export default function App() {
     <div className={'app ' + tema} ref={raiz}>
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} onMenu={() => setMenu(true)} /></Aislada>
-      <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
-      <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
-      <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
-      <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
-      <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
-      <Aislada n="LosQueMandan"><LosQueMandan liga={liga} /></Aislada>
-      <Aislada n="Panel"><Panel liga={liga} /></Aislada>
-      <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} /></Aislada>
-      <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
-      <Aislada n="Merch"><Merch /></Aislada>
-      <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
+      {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada> : <>
+        <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
+        <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
+        <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
+        <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
+        <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
+        <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
+        <Aislada n="Panel"><Panel liga={liga} /></Aislada>
+        <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} /></Aislada>
+        <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
+        <Aislada n="Merch"><Merch /></Aislada>
+        <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
+      </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} /></Aislada>
       <Aislada n="Menu"><Menu abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>

@@ -1,7 +1,7 @@
 // Las piezas chicas del Inicio: íconos, cartas, caras, rangos, banderas, secciones y las secciones con pestañas.
 // Las clases son las del prototipo (docs/remake/reales.py): su CSS se genera de ahí (web/css_del_prototipo.py).
 import { useEffect, useRef, useState } from 'react';
-import { PAIS, limpio } from './liga.js';
+import { PAIS, limpio, num } from './liga.js';
 
 const TRAZOS = {
   inicio: <path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" />,
@@ -14,6 +14,7 @@ const TRAZOS = {
   yo: <><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" /></>,
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   cerrar: <path d="M6 6l12 12M18 6L6 18" />,
+  compartir: <><circle cx="18" cy="5" r="2.5" /><circle cx="6" cy="12" r="2.5" /><circle cx="18" cy="19" r="2.5" /><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" /></>,
 };
 export function Ico({ n, t = 20 }) {
   return (
@@ -42,7 +43,34 @@ export const accion = {
   }),
   perfil: (k) => { location.hash = '#/r/' + encodeURIComponent(k); },
   votar: (id, op) => { if (window.votar) window.votar(id, op); },
+  // bajar hasta una sección del Inicio: viven en el shadow root, así que `#id` en la dirección no llega
+  ir: (id) => {
+    const h = document.getElementById('inicio-nuevo');
+    const el = h && h.shadowRoot && h.shadowRoot.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  },
 };
+
+// la dirección de algo de la página, para compartirla (sirve también en las direcciones de prueba de Pages)
+export const enlace = (ruta) => location.origin + '/' + ruta;
+
+// ── compartir: el menú de compartir del teléfono (WhatsApp, Discord…) o, en la computadora, el link copiado.
+// Dlx, 30/09/2026: «me gustan todas» (la D: compartir tu carta o una llave). Cada carta que circula trae gente.
+export function Compartir({ url, texto, titulo = 'Liga Global', cls = 'btn borde', etiqueta = 'Compartir' }) {
+  const [dijo, setDijo] = useState('');
+  const avisar = (t) => { setDijo(t); setTimeout(() => setDijo(''), 2500); };
+  const dar = async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: titulo, text: texto, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText((texto ? texto + ' ' : '') + url); avisar('Link copiado'); } catch (e) { avisar('No pude copiarlo'); }
+  };
+  return (
+    <button type="button" className={cls + ' compartir'} onClick={dar} aria-live="polite">
+      <Ico n="compartir" t={18} /><span>{dijo || etiqueta}</span>
+    </button>
+  );
+}
 
 export function Bandera({ cc, cls = 'r-flag' }) {
   const [mal, setMal] = useState(false);
@@ -135,5 +163,26 @@ export function Pest({ id, titulo, enlace, href, onEnlace, items, extra = '', ti
       </div>
       {items.map((it, k) => <div key={it.c} className={'pz' + (k === i ? ' on' : '')} data-c={it.c}>{k === i ? it.cuerpo : null}</div>)}
     </Sec>
+  );
+}
+
+// ── el afiche de Se busca ──────────────────────────────────────────────────────────────────────────────────────
+export function Poster({ liga, b }) {
+  let pie = b.m || '';
+  let sello = null;
+  let cls = '';
+  if (b.e === 'cazado') {
+    const por = ((b.c || {}).por || []).map((p) => p.n).join(' y ');
+    sello = <span className="p-sello">CAZADO</span>; cls = 'hecho'; pie = 'por ' + por + ' · cobró ' + num(b.v);
+  } else if (b.e === 'escondio') {
+    sello = <span className="p-sello gris">SE ESCONDIÓ</span>; cls = 'hecho'; pie = 'no jugó: nadie cobró';
+  }
+  return (
+    <a className={'poster ' + cls} href={'#/r/' + encodeURIComponent(b.k)}>
+      <span className="p-t">SE BUSCA</span>
+      <span className="p-fw"><Cara liga={liga} k={b.k} nombre={b.n} cls="p-foto" />{sello}</span>
+      <b>{limpio(b.n)}</b><span className="p-cat">{String(b.cn || '').toUpperCase()}</span>
+      <span className="p-precio">{num(b.v)} PTS</span><small>{pie}</small>
+    </a>
   );
 }

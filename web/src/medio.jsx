@@ -1,7 +1,7 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, limpio, num, utc } from './liga.js';
-import { Bandera, Cara, Carta, Ico, Pest, Rango, Sec, accion, nombrePais } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, accion, enlace, nombrePais } from './piezas.jsx';
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
 export function Fechas({ liga }) {
@@ -90,7 +90,7 @@ export function Noticias({ liga, raiz }) {
 }
 
 // ── Los que mandan: las siete categorías del podio de la web de hoy, cinco en cada una ──────────────
-function McPersona({ liga, f, dato, cual = 'temporada' }) {
+export function McPersona({ liga, f, dato, cual = 'temporada' }) {
   return (
     <article className="mc">
       <Carta liga={liga} k={f.k} cual={cual} cls="ci mc-ci" />
@@ -110,29 +110,76 @@ function McGrupo({ n, img, nombre, dato, href }) {
     </a>
   );
 }
-export function LosQueMandan({ liga }) {
+// ── tu puesto, debajo del top 5 (Dlx, 30/09/2026: «me gustan todas», la A): dónde estás y a cuánto del de arriba.
+// Sólo si no estás en el top 5 —ahí ya te ves—; sin haber entrado, la invitación a entrar.
+function Puesto({ cara, quien, pos, txt, href }) {
+  return (
+    <div className="mc-yo">
+      {cara}
+      <span className="mc-yo-q"><small>{quien}</small><b>{pos}</b></span>
+      <span className="mc-yo-t">{txt}</span>
+      {href ? <a className="mc-yo-a" href={href}>Ver el ranking <Ico n="flecha" t={14} /></a> : null}
+    </div>
+  );
+}
+function puestoDe(liga, lista, esMio, valor, unidad, dec = 0) {
+  const i = lista.findIndex(esMio);
+  if (i < 5) return null;
+  const d = valor(lista[i - 1]) - valor(lista[i]);
+  const dist = dec ? d.toFixed(dec).replace('.', ',') : num(d);
+  return { i, txt: d > 0 ? 'a ' + dist + ' ' + unidad + ' del #' + i : 'empatado con el #' + i };
+}
+
+export function LosQueMandan({ liga, dc }) {
   const T = liga.oficiales();
+  const yo = liga.yo;
+  const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="mc-yo-c" /> : null;
+  const quien = yo ? limpio(yo.n).toUpperCase() : '';
+  const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + (x.i + 1)} txt={x.txt} href={href} /> : null);
   const cats = [];
-  cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'#' + f.pos + ' · OVR ' + f.ovr + ' · ' + num(f.pts) + ' PTS'} />)]);
-  const comp = T.filter((f) => f.rg).sort((a, b) => (b.sc || 0) - (a.sc || 0)).slice(0, 5);
-  cats.push(['competitivo', 'Competitivo', comp.map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" dato={'RANGO ' + f.rg + ' · SCORE ' + f.sc} />)]);
-  const du = (liga.d.duelos || []).filter((d) => !d.fc && liga.T[d.k]).slice(0, 5);
-  cats.push(['duelos', 'Duelos', du.map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />)]);
-  const med = T.filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0))
-    .sort((a, b) => (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) || (b.ter || 0) - (a.ter || 0) || a.pos - b.pos).slice(0, 5);
-  cats.push(['podios', 'Podios', med.map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'1.º ×' + (f.oro || 0) + ' · 2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0)} />)]);
+  cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'#' + f.pos + ' · OVR ' + f.ovr + ' · ' + num(f.pts) + ' PTS'} />),
+    yo ? fila(puestoDe(liga, T, (f) => f.k === yo.k, (f) => f.pts || 0, 'pts'), '#/ranking/temporada') : null]);
+  const compT = T.filter((f) => f.rg).sort((a, b) => (b.sc || 0) - (a.sc || 0));
+  let yoComp = null;
+  if (yo && !yo.rg) {
+    const falta = Math.max(0, 10 - (yo.ev || 0));
+    yoComp = <Puesto cara={cara} quien={quien} pos="—" txt={falta ? 'Te faltan ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' para tu letra' : 'Tu letra llega con la próxima corrida'} href="#/ranking/competitivo" />;
+  } else if (yo) {
+    yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
+  }
+  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" dato={'RANGO ' + f.rg + ' · SCORE ' + f.sc} />), yoComp]);
+  const duT = (liga.d.duelos || []).filter((d) => !d.fc && liga.T[d.k]);
+  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />),
+    yo ? fila(puestoDe(liga, duT, (d) => d.k === yo.k, (d) => d.g || 0, 'duelos ganados'), '#/ranking/duelos') : null]);
+  const medT = T.filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0))
+    .sort((a, b) => (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) || (b.ter || 0) - (a.ter || 0) || a.pos - b.pos);
+  const iMed = yo ? medT.findIndex((f) => f.k === yo.k) : -1;
+  cats.push(['podios', 'Podios', medT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'1.º ×' + (f.oro || 0) + ' · 2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0)} />),
+    iMed >= 5 ? <Puesto cara={cara} quien={quien} pos={'#' + (iMed + 1)} txt={'1.º ×' + (yo.oro || 0) + ' · 2.º ×' + (yo.seg || 0) + ' · 3.º ×' + (yo.ter || 0)} href="#/ranking/podios" /> : null]);
   const con = T.filter((f) => (f.rch || []).length > 1 && f.rch[1]);
   const vivas = con.filter((f) => f.rch[0]);
-  const ra = (vivas.length ? vivas : con).slice().sort((a, b) => (vivas.length ? b.rch[0] - a.rch[0] : b.rch[1] - a.rch[1]) || a.pos - b.pos).slice(0, 5);
-  cats.push(['rachas', 'Rachas', ra.map((f) => <McPersona key={f.k} liga={liga} f={f} dato={(vivas.length ? f.rch[0] : f.rch[1]) + ' EVENTOS SEGUIDOS'} />)]);
-  const pa = (liga.d.paises || []).filter((p) => p.n).slice(0, 5);
-  cats.push(['paises', 'Países', pa.map((p, i) => <McGrupo key={p.cc} n={i + 1} href={'#/pais/' + p.cc} img={<Bandera cc={p.cc} cls="mc-bandera" />}
-    nombre={nombrePais(p.cc)} dato={num(p.pts) + ' PTS · ' + p.n + ' RAPEROS'} />)]);
-  const cr = (liga.d.crews || []).filter((c) => c.rk !== 0).slice(0, 5);
-  cats.push(['crews', 'Crews', cr.map((c, i) => <McGrupo key={c.crew} n={i + 1} href={'#/crew/' + encodeURIComponent(c.clave || c.crew)}
+  const raT = (vivas.length ? vivas : con).slice().sort((a, b) => (vivas.length ? b.rch[0] - a.rch[0] : b.rch[1] - a.rch[1]) || a.pos - b.pos);
+  const racha = (f) => (vivas.length ? f.rch[0] : f.rch[1]);
+  cats.push(['rachas', 'Rachas', raT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={racha(f) + ' EVENTOS SEGUIDOS'} />),
+    yo ? fila(puestoDe(liga, raT, (f) => f.k === yo.k, racha, 'eventos seguidos'), '#/ranking/rachas') : null]);
+  const paT = (liga.d.paises || []).filter((p) => p.n);
+  const miPais = yo && yo.cc ? puestoDe(liga, paT, (p) => p.cc === yo.cc, (p) => p.pts || 0, 'pts') : null;
+  cats.push(['paises', 'Países', paT.slice(0, 5).map((p, i) => <McGrupo key={p.cc} n={i + 1} href={'#/pais/' + p.cc} img={<Bandera cc={p.cc} cls="mc-bandera" />}
+    nombre={nombrePais(p.cc)} dato={num(p.pts) + ' PTS · ' + p.n + ' RAPEROS'} />),
+  miPais ? <Puesto cara={<Bandera cc={yo.cc} cls="mc-yo-flag" />} quien={'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase()} pos={'#' + (miPais.i + 1)} txt={miPais.txt} href="#/ranking/paises" /> : null]);
+  const crT = (liga.d.crews || []).filter((c) => c.rk !== 0);
+  const miCrew = yo ? liga.crewDe(yo) : null;
+  const xCrew = miCrew ? puestoDe(liga, crT, (c) => c.crew === miCrew.crew, (c) => c.pts || 0, 'pts') : null;
+  cats.push(['crews', 'Crews', crT.slice(0, 5).map((c, i) => <McGrupo key={c.crew} n={i + 1} href={'#/crew/' + encodeURIComponent(c.clave || c.crew)}
     img={c.logo ? <img className="mc-logo" alt="" src={'/' + c.logo} /> : <span className="mc-ini">{limpio(c.crew).slice(0, 2).toUpperCase()}</span>}
-    nombre={limpio(c.crew)} dato={num(c.pts) + ' PTS · ' + c.n + ' RAPEROS'} />)]);
-  const items = cats.filter((c) => c[2].length).map(([c, et, h]) => ({ c, et, t: 'Los que mandan', cuerpo: <div className="rail mcs2">{h}</div> }));
+    nombre={limpio(c.crew)} dato={num(c.pts) + ' PTS · ' + c.n + ' RAPEROS'} />),
+  xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + (xCrew.i + 1)} txt={xCrew.txt} href="#/ranking/crews" /> : null]);
+  // sin haber entrado (ni con Discord ni eligiendo quién sos), la invitación a verse
+  const invita = !yo && !dc ? (
+    <div className="mc-yo invita"><span className="mc-yo-t">¿Y vos? Entrá con Discord y ves tu puesto en cada categoría.</span>
+      <button type="button" className="btn verde chico" onClick={accion.cuenta}>Entrar</button></div>
+  ) : null;
+  const items = cats.filter((c) => c[2].length).map(([c, et, h, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <><div className="rail mcs2">{h}</div>{yoFila || invita}</> }));
   return <Pest id="raperos" titulo="Los que mandan" enlace="Todos los raperos" href="#/ranking" items={items} extra="negra" />;
 }
 
@@ -216,7 +263,8 @@ export function TuTemporada({ liga }) {
         <small>{falta ? 'Todavía sin letra: ' + ev + ' de 10 eventos. Te faltan ' + falta + ' para tu rango.' : 'Ya tenés letra.'}</small>
       </div>
       {bus ? <div className="te-buscan"><b>HOY TE BUSCAN</b><span>{num(bus.v)} pts por tu cabeza · {bus.cn} · hasta {liga.dia(mw.fin)}</span></div> : null}
-      <a className="btn negro" href={'#/r/' + encodeURIComponent(f.k)}>Ver mi perfil</a>
+      <div className="tu-acc"><a className="btn negro" href={'#/r/' + encodeURIComponent(f.k)}>Ver mi perfil</a>
+        <Compartir cls="btn borde2" url={liga.cartaUrl(f.k, 'temporada') || enlace('#/r/' + encodeURIComponent(f.k))} texto="Mi carta de la Liga Global" etiqueta="Compartir mi carta" /></div>
     </section>
   );
 }

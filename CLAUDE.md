@@ -864,6 +864,11 @@ de hoy con su «No pude cargar los datos» —que es lo que mira
 `herramientas/web_en_borde.py`—. Cada sección va aislada, como en
 `pintaDatos()`: una rota no apaga las demás.
 
+🔑 **Y DIBUJA RUTAS QUE `app.js` NO CONOCE**: `#/sv/<SIGLA>` es el perfil de cada
+servidor (30/09/2026). `app.js` deja cualquier ruta desconocida en el Inicio, así que
+el Inicio nuevo queda a la vista y mira la dirección (`App.jsx`, `servidor.jsx`). Una
+página nueva del remake puede nacer así, sin tocar `app.js`.
+
 ⚠️ **LAS CLASES DEL PROTOTIPO SON GLOBALES ADENTRO DEL SHADOW ROOT**, y ya
 chocaron cuatro veces: `.llave` y `.prox` le cambiaban la forma a los tags del
 escenario, `.pronto` pintaba de amarillo los canjes y `.st-l` volvía magenta

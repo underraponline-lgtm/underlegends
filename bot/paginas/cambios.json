@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.58",
+   "dia": "2026-09-30",
+   "cuando": "2026-09-30T13:30:00-04:00",
+   "titulo": "Tu puesto, lo tuyo arriba y el perfil de cada servidor",
+   "items": [
+    "📍 **Tu puesto en Los que mandan**: si no estás en el top 5, debajo ves tu lugar y a cuánto estás del de arriba, en cada categoría. Tu país y tu crew también.",
+    "🎯 **Lo tuyo, primero en el escenario**: si hoy te buscan, es lo primero que ves; y tu último evento, si fue en estos dos días.",
+    "⭕ **Las historias vistas quedan vistas** aunque recargues: el círculo verde vuelve sólo cuando hay algo nuevo.",
+    "📤 **Compartir**: la llave, tu carta y las historias, al WhatsApp o al Discord desde el celular (en la computadora, el link se copia).",
+    "🏠 **Cada servidor tiene su perfil**: su gente, sus eventos, lo último, a quién buscan y cómo le va esta semana. Se abre desde las historias y desde «Esta semana»."
+   ]
+  },
+  {
    "version": "1.57",
    "dia": "2026-09-30",
    "cuando": "2026-09-30T12:00:00-04:00",
