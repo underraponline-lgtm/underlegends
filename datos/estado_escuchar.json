@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-09-30T16:55:38Z",
+ "cuando": "2026-09-30T17:25:58Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 128.1,
+ "dur_s": 137.8,
  "pasos": [
   {
    "n": "0b",
@@ -21,13 +21,13 @@
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 28.4
+   "s": 26.5
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 22.0
+   "s": 23.1
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.9
+   "s": 5.7
   },
   {
    "n": "2b",
@@ -75,31 +75,31 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.7
+   "s": 0.9
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 1.9
+   "s": 2.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 19.0
+   "s": 21.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 11.8
+   "s": 14.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 7.7
+   "s": 7.4
   },
   {
    "n": "2e",
@@ -111,13 +111,13 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.4
+   "s": 1.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.3
+   "s": 13.2
   }
  ],
  "fallas": [],
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-09-30T16:53:59Z",
+  "cuando": "2026-09-30T17:24:03Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 196,
   "un_evento": 110,
@@ -153,10 +153,10 @@
  "cuotas": {
   "kv": {
    "write": 202,
-   "read": 17993
+   "read": 18950
   },
   "worker": {
-   "pedidos": 2567,
+   "pedidos": 2565,
    "errores": 0,
    "sub": 2315,
    "p50_ms": 1.2,
