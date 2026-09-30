@@ -1090,7 +1090,8 @@
 "luffy": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "rayo": {
@@ -2654,6 +2655,14 @@
 "PichulaMc"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-30T15:48:12Z",
+"quien": [
+"Luffy"
+],
+"carta": "temporada"
 }
 ]
 }
