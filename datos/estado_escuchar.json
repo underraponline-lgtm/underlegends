@@ -1,81 +1,81 @@
 {
  "v": 1,
- "cuando": "2026-09-30T00:26:06Z",
+ "cuando": "2026-09-30T00:55:57Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 125.6,
+ "dur_s": 147.9,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.1
+   "s": 0.2
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 20.8
+   "s": 19.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 24.0
+   "s": 20.7
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.4
+   "s": 0.7
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.1
+   "s": 0.2
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 21.4
+   "s": 22.2
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.8
+   "s": 1.9
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.3
+   "s": 26.0
   },
   {
    "n": "2b",
    "que": "Most Wanted",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.7
+   "s": 1.3
   },
   {
    "n": "2b5",
@@ -87,37 +87,37 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 20.3
+   "s": 19.2
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 11.7
+   "s": 16.4
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 6.8
+   "s": 7.9
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.1
+   "s": 0.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.1
+   "s": 1.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.9
+   "s": 6.2
   }
  ],
  "fallas": [],
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-09-30T00:24:25Z",
+  "cuando": "2026-09-30T00:53:53Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 194,
   "un_evento": 112,
@@ -152,15 +152,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 0,
-   "read": 76
+   "write": 38,
+   "read": 1890
   },
   "worker": {
-   "pedidos": 3494,
+   "pedidos": 3506,
    "errores": 0,
-   "sub": 3157,
-   "p50_ms": 1.1,
-   "p99_ms": 3.54
+   "sub": 3174,
+   "p50_ms": 1.09,
+   "p99_ms": 3.47
   },
   "r2": {
    "objetos": 8869,
