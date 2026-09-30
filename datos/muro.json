@@ -47,6 +47,13 @@
 "temporada"
 ]
 },
+"praiseriza": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "velatz": {
 "rg": "D",
 "c": [
@@ -62,13 +69,6 @@
 ]
 },
 "colesito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"praiseriza": {
 "rg": "",
 "c": [
 "servidor",
@@ -267,10 +267,6 @@
 "servidor",
 "temporada"
 ]
-},
-"rizas": {
-"rg": "",
-"c": []
 },
 "soneto": {
 "rg": "",
@@ -1243,6 +1239,10 @@
 "servidor",
 "temporada"
 ]
+},
+"rizas": {
+"rg": "",
+"c": []
 },
 "sironex": {
 "rg": "",
