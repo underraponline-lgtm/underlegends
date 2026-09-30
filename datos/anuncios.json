@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-30T05:24:25+00:00",
+ "cuando": "2026-09-30T05:54:28+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -289,7 +289,27 @@
    "fecha": "3 2V2",
    "premios": "",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
+  },
+  {
+   "nombre": "manija nocturna",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1554729451583971411",
+   "cuando": "2026-09-30T05:39:46",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "cupos_texto": ":infinity:",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "1v1 sin replica",
+   "horario": "EN 15",
+   "fecha": "",
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "ONE PIECE / REGRESO A SABAODY",
@@ -309,7 +329,7 @@
    "fecha": "30 09",
    "premios": "### Competencia De Ascenso Rango C 🏴‍☠️",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "FELIZ CUMPLEAÑOS XCLUSIVO",
@@ -329,7 +349,7 @@
    "fecha": "",
    "premios": "UN BESO DE XCLUSIVO",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "MONTE CHINGOLO REPRESENT V.2",
@@ -349,7 +369,7 @@
    "fecha": "",
    "premios": "Literalmente nada",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 17 1VS1",
@@ -369,7 +389,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 16 2VS2",
@@ -389,7 +409,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 15 MULTIVERSE",
@@ -409,7 +429,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "FFA WORLD CUP EL ESTADIO DEL FREESTYLE 2026",
@@ -429,7 +449,7 @@
    "fecha": "27 09",
    "premios": "Compe Rango ᴏʀᴏ ɪɪ Y Rol De Campeon",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "777 ¡Vuelve SEVEN STREET! 777",
@@ -449,7 +469,7 @@
    "fecha": "Hoy, Sábado 26 Sept.",
    "premios": "",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "AGREEMENT: DOOMSDAY V.1",
@@ -469,7 +489,7 @@
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "MARRUECOS EN VENTA V.1",
@@ -489,7 +509,7 @@
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 14 1vs1",
@@ -509,7 +529,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 13 2VS2",
@@ -529,7 +549,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "ELRAP FECHA 6",
@@ -549,7 +569,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "CARABOBO NUNCA SE RINDE VOL.1",
@@ -569,7 +589,7 @@
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS CON TöKĪØ V.1",
@@ -589,7 +609,7 @@
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 12",
@@ -609,7 +629,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 11",
@@ -629,7 +649,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "el que diga 7 parrafos de vencer gana x nocaut tecnico",
@@ -649,7 +669,7 @@
    "fecha": "",
    "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 10",
@@ -669,27 +689,7 @@
    "fecha": "",
    "premios": "Respeto",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
-  },
-  {
-   "nombre": "ELRAP FECHA 5",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1552076099540750467",
-   "cuando": "2026-09-22T21:56:18",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "bronce",
-   "modalidad": "3v3",
-   "horario": "en 15 se abren inscripciones",
-   "fecha": "",
-   "premios": "pts para el ascenso + pts para la tabla",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-09-30T05:04:23"
+   "inscripciones_cuando": "2026-09-30T05:48:14"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -2079,6 +2079,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kyss",
+   "quien": "ominouspoetry",
+   "discord_id": "1190746928774922311",
+   "msg_id": "1554732454491725845",
+   "cuando": "2026-09-30T05:51:42"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
