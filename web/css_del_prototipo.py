@@ -128,6 +128,13 @@ def convertir(css):
 
 
 def main():
+    # 🔒 DESDE EL 30/09/2026 estilo.css SE EDITA A MANO: el Inicio está en línea y el prototipo quedó congelado.
+    # Generarlo de nuevo pisaría esos cambios (la llave, el dorado en rosa, las flechas del celular…), así que sólo
+    # corre con --pisar, y sabiendo que después hay que volver a poner lo que se pierda.
+    ruta = os.path.join(AQUI, 'src', 'estilo.css')
+    if os.path.exists(ruta) and '--pisar' not in sys.argv:
+        raise SystemExit('🔴 src/estilo.css se edita a mano desde el 30/09/2026: generarlo pisaría los cambios. '
+                         'Si de verdad hace falta, `--pisar`.')
     css = R.Liga.css(None, True, 'inicio')
     out = convertir(css)
     cab = ('/* GENERADO por web/css_del_prototipo.py desde docs/remake/reales.py: no se edita a mano.\n'
@@ -135,7 +142,6 @@ def main():
            ':host{display:block}\n'
            '.app{--gut:40px}\n'
            '@media (min-width: 1281px){.app{--gut:calc((100vw - 1200px) / 2)}}\n')
-    ruta = os.path.join(AQUI, 'src', 'estilo.css')
     io.open(ruta, 'w', encoding='utf-8', newline='\n').write(cab + out + '\n')
     quedan = [ln for ln in out.split('\n') if ln.startswith(PC) and '40px' in ln]
     print('ok · %d KB · %d reglas de computadora siguen con 40px (revisar si son de costado)' % (len(out) // 1024, len(quedan)))

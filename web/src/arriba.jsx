@@ -2,7 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, mult, num, recorte, utc } from './liga.js';
-import { Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
+import { Cara, Carta, Chevron, Ico, accion, nombrePais } from './piezas.jsx';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
@@ -174,21 +174,69 @@ export function gruposHistorias(liga) {
     }
     grupos.push({ id: 'sv-' + sv.toLowerCase(), tipo: 'sv', nombre: s.nombre, logo: liga.logo(sv), nom: sv, nuevo: propios.length > 0, slides });
   });
-  (liga.d.crews || []).slice().sort((a, b) => b.pts - a.pts).slice(0, 6).forEach((c) => {
+  // ── después, lo tuyo: tu país, tu crew y la gente que seguís. Dlx, 30/09/2026: «no hay necesidad de seguir a
+  // todos… que ahí arriba aparezca simplemente tu país, tu crew si estás en una y las personas que tú sigues». Antes
+  // iban las seis crews más grandes y cualquiera con una carta nueva, muchos sin foto.
+  const yo = liga.yo;
+  const pa = yo ? liga.paisDe(yo.cc) : null;
+  if (pa) {
+    const ks = new Set(pa.gente.map((f) => f.k));
+    ks.delete(yo.k);
+    const propios = muro.filter((it) => (it.ks || []).some((k) => ks.has(k)));
+    const nom = nombrePais(pa.cc);
+    const top = pa.gente.slice(0, 6);
+    const slides = [Slide('TU PAÍS', <><span className="st-bandera"><img alt="" src={'/banderas/g/' + pa.cc + '.webp'} /></span><h3 className="st-h">{nom}</h3>
+      <small className="st-s">{pa.pos ? '#' + pa.pos + ' de la Liga · ' : ''}{pa.n} {pa.n === 1 ? 'rapero' : 'raperos'}{pa.pts ? ' · ' + num(pa.pts) + ' pts' : ''}</small>
+      {top.length ? <ul className="st-gente">{top.map((f) => <li key={f.k}><Cara liga={liga} k={f.k} nombre={f.n} cls="st-mini" /><span>#{f.pos} {limpio(f.n)}</span></li>)}</ul> : null}</>,
+    'esta temporada', 'Ver ' + nom, { ruta: '#/pais/' + pa.cc })];
+    slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
+    grupos.push({ id: 'pais-' + pa.cc, tipo: 'pais', nombre: nom, cc: pa.cc, nom, nuevo: propios.length > 0, slides });
+  }
+  const c = yo ? liga.crewDe(yo) : null;
+  if (c) {
     const ks = new Set(c.gente.map((n) => liga.fila(n)).filter(Boolean).map((f) => f.k));
-    const slides = [Slide('CREW', <><CrewCirculo c={c} cls="st-crew" /><h3 className="st-h">{limpio(c.crew).toUpperCase()}</h3>
+    ks.delete(yo.k);
+    const slides = [Slide('TU CREW', <><CrewCirculo c={c} cls="st-crew" /><h3 className="st-h">{limpio(c.crew).toUpperCase()}</h3>
       <small className="st-s">{c.n} {c.n !== 1 ? 'raperos' : 'rapero'} · {num(c.pts)} pts · el mejor: {limpio(c.mejor)}</small>
       <ul className="st-gente">{c.gente.slice(0, 8).map((n, i) => { const f = liga.fila(n); return <li key={i}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="st-mini" /><span>{limpio(n)}</span></li>; })}</ul></>,
     'esta temporada', 'Ver la crew', { ruta: '#/crew/' + encodeURIComponent(c.clave || c.crew) })];
     const propios = muro.filter((it) => (it.ks || []).some((k) => ks.has(k)));
     slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
     grupos.push({ id: 'crew-' + claveCrew(c.crew), tipo: 'crew', nombre: limpio(c.crew), crew: c, nom: limpio(c.crew), nuevo: propios.length > 0, slides });
-  });
-  liga.novedadesGente().slice(0, 8).forEach(([k, n, et]) => {
+  }
+  const ETIQUETA = { tarjeta: 'carta nueva', campeon: 'campeón', caza: 'cazó' };
+  const sig = liga.sigue.map((k) => {
+    const f = liga.T[k];
     const propios = muro.filter((it) => (it.ks || []).includes(k));
-    grupos.push({ id: 'p-' + k, tipo: 'gente', nombre: n, k, nom: n, et, nuevo: true, slides: slidesDe(liga, propios).slice(0, 4) });
+    let slides = slidesDe(liga, propios).slice(0, 4);
+    // alguien que seguís y no hizo nada nuevo igual tiene su círculo: su carta y cómo va
+    if (!slides.length) {
+      slides = [Slide('SEGUÍS A', <><Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /><h3 className="st-h">{limpio(f.n)}</h3>
+        <small className="st-s">{f.pos ? '#' + f.pos + ' · ' : ''}OVR {f.ovr || '—'} · {num(f.pts)} pts · {f.ev || 0} {f.ev === 1 ? 'evento' : 'eventos'}</small></>,
+      'esta temporada', 'Ver su perfil', { perfil: k })];
+    }
+    const u = propios[0];
+    const et = u ? (u.tipo === 'rango' ? 'rango ' + (u.rg || '') : ETIQUETA[u.tipo] || '') : (f.pos ? '#' + f.pos : '');
+    return { id: 'p-' + k, tipo: 'gente', nombre: limpio(f.n), k, cc: f.cc, nom: limpio(f.n), et, nuevo: !!u, t: u ? String(u.t) : '', pos: f.pos || 1e9, slides };
   });
+  // primero los que tienen algo nuevo, lo más reciente adelante; después por el ranking
+  sig.sort((a, b) => (Number(b.nuevo) - Number(a.nuevo)) || b.t.localeCompare(a.t) || (a.pos - b.pos));
+  sig.slice(0, 15).forEach((g) => grupos.push(g));
   return grupos.filter((g) => g.slides.length);
+}
+
+// la cara de alguien en un círculo: su foto o, si no tiene, la inicial sobre su bandera (una inicial sobre negro,
+// fila tras fila, era lo que se veía «sin avatar»)
+export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {
+  const [mal, setMal] = useState(false);
+  const src = k ? liga.avUrl(k) : null;
+  if (src && !mal) return <span className={cls}><img alt="" src={src} onError={() => setMal(true)} /></span>;
+  const ini = (limpio(nombre).slice(0, 1) || '?').toUpperCase();
+  return (
+    <span className={cls + ' ini' + (cc ? ' con-bandera' : '')} style={cc ? { backgroundImage: 'url(/banderas/g/' + cc + '.webp)' } : undefined}>
+      <b>{ini}</b>
+    </span>
+  );
 }
 
 export function Historias({ liga, grupos, vistos, onAbrir }) {
@@ -204,14 +252,23 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
         <span className="h-badge">EN VIVO</span></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'sv') {
       partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} /></span><small>{g.nom}</small></button>);
+    } else if (g.tipo === 'pais') {
+      partes.push(<button type="button" key={g.id} className={'h pais' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}>
+        <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span><small>{g.nom}</small><em>tu país</em></button>);
     } else if (g.tipo === 'crew') {
-      partes.push(<button type="button" key={g.id} className={'h crew' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><CrewCirculo c={g.crew} /><small>{g.nom}</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h crew' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><CrewCirculo c={g.crew} /><small>{g.nom}</small><em>tu crew</em></button>);
     } else {
-      partes.push(<button type="button" key={g.id} className={'h gente nuevo' + visto} onClick={abrir}><Cara liga={liga} k={g.k} nombre={g.nom} cls="h-c" /><small>{g.nom}</small><em>{g.et}</em></button>);
+      partes.push(<button type="button" key={g.id} className={'h gente' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}>
+        <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} /><small>{g.nom}</small><em>{g.et}</em></button>);
     }
   });
+  // sin nadie a quien seguir, el lugar de esa gente invita a empezar: se sigue desde el perfil de cada uno
+  if (!liga.sigue.length && (liga.d.tabla || []).length) {
+    if (partes.length) partes.push(<span key="s-sumar" className="h-sep" aria-hidden="true" />);
+    partes.push(<a key="sumar" className="h sumar" href="#/ranking"><span className="h-c mas" aria-hidden="true">+</span><small>Seguí a alguien</small><em>desde su perfil</em></a>);
+  }
   if (!partes.length) return null;
-  return <nav className="historias" aria-label="Historias: en vivo, servidores, crews y gente">{partes}</nav>;
+  return <nav className="historias" aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién seguís">{partes}</nav>;
 }
 
 // ── el cuadro de cruces: cuartos, semis, final y el campeón, con líneas ─────────────────────────────
@@ -234,11 +291,35 @@ function CuadroRondas({ ll }) {
   );
 }
 
+// ── el cuadro chico del escenario. Dlx, 30/09/2026: «estas llaves hay que hacerlas más bonitas». Va con la cara de
+// cada uno, el ganador de cada cruce en blanco, el camino del campeón en verde y el perdedor apagado (sin tachar:
+// tachado se leía como un error). En el celular y en pantallas medianas, semis y final: con los cuartos, el campeón
+// quedaba afuera de la pantalla. La llave entera está a un botón.
+const MEDIDAS = {
+  movil: { rondas: 2, W: 104, G: 12, CAMP: 88 },
+  medio: { rondas: 2, W: 116, G: 16, CAMP: 96 },
+  pc: { rondas: 3, W: 106, G: 14, CAMP: 96 },
+};
+function useMedida() {
+  const q = (m) => (typeof window !== 'undefined' && window.matchMedia ? window.matchMedia(m).matches : false);
+  const leer = () => (q('(max-width: 599.98px)') ? 'movil' : (q('(max-width: 1099.98px)') ? 'medio' : 'pc'));
+  const [m, setM] = useState(leer);
+  useEffect(() => {
+    const f = () => setM(leer());
+    window.addEventListener('resize', f);
+    return () => window.removeEventListener('resize', f);
+  }, []);
+  return MEDIDAS[m];
+}
+
 export function CuadroMini({ liga, ll }) {
-  const rondas = (ll.rondas || []).filter((r) => !['Filtros', 'Tercer puesto', 'Clasificatorias', 'Preliminares'].includes(r.r)).slice(-3);
+  const M = useMedida();
+  const todas = (ll.rondas || []).filter((r) => !['Filtros', 'Tercer puesto', 'Clasificatorias', 'Preliminares'].includes(r.r));
+  const rondas = todas.slice(-M.rondas);
   const regular = rondas.length && rondas.every((r, i) => i === rondas.length - 1 || rondas[i + 1].b.length * 2 === r.b.length);
   if (!regular) return <CuadroRondas ll={ll} />;
-  const W = 94; const G = 18; const R = 30; const HB = 46; const TOP = 22; const CAMP = 92;
+  const { W, G, CAMP } = M;
+  const R = 31; const HB = 52; const TOP = 28;
   const n0 = rondas[0].b.length;
   const campeon = ganador(rondas[rondas.length - 1].b[0]);
   const pend = [];
@@ -247,14 +328,18 @@ export function CuadroMini({ liga, ll }) {
   const alto = 2 * n0 * R + TOP;
   rondas.forEach((r, ci) => {
     const x = ci * (W + G);
-    etiquetas.push(<b key={'e' + ci} className="cm-r" style={{ left: x }}>{String(r.r).toUpperCase()}</b>);
+    etiquetas.push(<b key={'e' + ci} className="cm-r" style={{ left: x, width: W }}>{String(r.r).toUpperCase()}</b>);
     r.b.forEach((b, j) => {
       const y = TOP + R * (2 ** ci) * (2 * j + 1);
       const g = ganador(b);
       const est = pend[0] === ci + ':' + j ? 'ahora' : (pend[1] === ci + ':' + j ? 'sigue' : '');
       cajas.push(
-        <div key={ci + '-' + j} className={'cm-m ' + est} style={{ left: x, top: y - HB / 2 }}>
-          {lados(b).map((x_, i) => <span key={i} className={(g && x_ === g ? 'g' : (g ? 'x' : '')) + (x_ === campeon && g ? ' camino' : '')}>{x_}</span>)}
+        <div key={ci + '-' + j} className={'cm-m ' + est} style={{ left: x, top: y - HB / 2, width: W }}>
+          {lados(b).map((n, i) => {
+            const f = liga.fila(n);
+            const cls = (g ? (n === g ? 'g' : 'x') : '') + (g && n === campeon ? ' camino' : '');
+            return <span key={i} className={cls}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cm-av" /><em>{n}</em></span>;
+          })}
           {est ? <i>{est === 'ahora' ? 'AHORA' : 'SIGUE'}</i> : null}
         </div>,
       );
@@ -268,13 +353,17 @@ export function CuadroMini({ liga, ll }) {
   const yc = TOP + n0 * R;
   const f = liga.fila(campeon);
   const ancho = xc + CAMP;
+  // la cara del campeón, a la altura de la línea de la final; abajo, el sello y el nombre
+  const altoCamp = 124;
+  const top = Math.max(0, yc - 32);
+  const total = Math.max(alto + 8, top + altoCamp);
   return (
-    <div className="cm" style={{ width: ancho, height: alto + 6 }}>
-      <svg className="cm-l" width={ancho} height={alto + 6} aria-hidden="true">{lineas}</svg>
+    <div className="cm" style={{ width: ancho, height: total }}>
+      <svg className="cm-l" width={ancho} height={total} aria-hidden="true">{lineas}</svg>
       {etiquetas}{cajas}
-      <div className="cm-camp" style={{ left: xc, top: yc - 52 }}>
+      <div className="cm-camp" style={{ left: xc, top, width: CAMP }}>
         {campeon ? <Cara liga={liga} k={f ? f.k : ''} nombre={campeon} cls="cm-cara" /> : <span className="cm-cara ini">?</span>}
-        <small>CAMPEÓN</small>{campeon ? <b>{campeon}</b> : null}
+        <small>{campeon ? 'CAMPEÓN' : 'EN JUEGO'}</small>{campeon ? <b>{campeon}</b> : null}
       </div>
     </div>
   );
@@ -424,8 +513,8 @@ export function Hero({ liga, vivoL }) {
   );
 }
 
-// ── Esta semana: la Tira (Dlx, 29/09 ~7 PM: «me gusta 3»), y la votación del ×2 de la semana que viene ──
-export function Tira({ liga, enc }) {
+// ── Esta semana: la Tira (Dlx, 29/09 ~7 PM: «me gusta 3»). La votación del ×2 se mudó a Encuestas (30/09) ──
+export function Tira({ liga }) {
   const m = liga.d.mult || {};
   const xs = m.sv || {};
   const svs = Object.keys(xs).sort((a, b) => (xs[b] - xs[a]) || (a < b ? -1 : 1));
@@ -443,42 +532,14 @@ export function Tira({ liga, enc }) {
           return <li key={sv} className={x > 1 ? 'sube' : (x < 1 ? 'baja' : '')}><span className="ts-id"><img alt="" src={liga.logo(sv)} /><b>{sv}</b></span><span className="ts-x">{mult(x)}</span></li>;
         })}
       </ul>
-      {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {g.sv} · {liga.dia(g.t)}</span></p> : null}
-      <VotoX2 liga={liga} enc={enc} />
+      {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {g.sv} · {utc(g.t) < liga.ahora ? 'se jugó ' + liga.cuando(g.t) : liga.dia(g.t)}</span></p> : null}
     </section>
-  );
-}
-
-function VotoX2({ liga, enc }) {
-  const E = ((liga.d.enc || []).filter((e) => e.tipo === 'x2' && utc(e.hasta) > liga.ahora))[0];
-  if (!E || !(E.op || []).length) return null;
-  const cu = enc.cuenta(E.id);
-  const tot = Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0);
-  const mio = enc.mio[E.id];
-  const est = enc.est[E.id] || {};
-  const x = String(E.x || 2).replace('.', ',');
-  return (
-    <div className="vt-x2">
-      <p className="vt-t">¿Quién se lleva el ×{x} la semana que viene? <span>El más votado sale del sorteo del lunes con ×{x} como mínimo · {tot ? tot + (tot === 1 ? ' voto' : ' votos') : 'todavía sin votos'}{tot < (E.min || 3) ? ' (hacen falta ' + (E.min || 3) + ')' : ''}</span></p>
-      <div className="vt-svs">
-        {E.op.map((sv) => {
-          const n = Number(cu[sv] || 0);
-          return (
-            <button type="button" key={sv} className={'vt-sv' + (mio === sv ? ' mio' : '') + (est.va === sv ? ' va' : '')} onClick={() => accion.votar(E.id, sv)}>
-              <img alt="" src={liga.logo(sv)} /><b>{sv}</b><small>{mio === sv ? '✓ ' : ''}{n}</small>
-              <i className="vt-bar" style={{ width: (tot ? Math.round(100 * n / tot) : 0) + '%' }} />
-            </button>
-          );
-        })}
-      </div>
-      <p className="vt-e" aria-live="polite">{enc.pie(E, (v) => v)}</p>
-    </div>
   );
 }
 
 // ── IR A: una barra negra pegada arriba que aparece cuando pasaste el escenario ─────────────────────
 const SECCIONES = [['envivo', 'Ahora'], ['semana', 'Esta semana'], ['fechas', 'Fechas'], ['noticias', 'Lo último'],
-  ['raperos', 'Los que mandan'], ['panel', 'Misiones'], ['sebusca', 'Se busca'], ['tienda', 'Tienda'], ['servidores', 'Servidores']];
+  ['raperos', 'Los que mandan'], ['encuestas', 'Encuestas'], ['panel', 'Misiones'], ['sebusca', 'Se busca'], ['merch', 'Merchandising']];
 
 export function IrA({ raiz }) {
   const barra = useRef(null);

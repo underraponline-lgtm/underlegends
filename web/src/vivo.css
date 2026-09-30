@@ -13,7 +13,7 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .te-l li{display:block;padding:0}
 .te-b{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 14px;text-align:left}
 .historias .h{background:none;border:0;padding:0;margin:0;color:inherit;font:inherit;cursor:pointer}
-.mc-pie a:hover b,.rec a:hover b{text-decoration:underline}
+@media (hover: hover) and (pointer: fine){.mc-pie a:hover b,.rec a:hover b{text-decoration:underline}}
 .historias,.rail,.dias,.llave-wrap,.mw-rail,.cm-wrap{overflow-x:auto;scrollbar-width:none}
 .historias::-webkit-scrollbar,.rail::-webkit-scrollbar,.dias::-webkit-scrollbar,.llave-wrap::-webkit-scrollbar,.mw-rail::-webkit-scrollbar,.cm-wrap::-webkit-scrollbar{display:none}
 
@@ -27,7 +27,7 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .busca-res{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:25;list-style:none;margin:0;padding:0;background:var(--fondo);
   color:var(--tinta);border:2px solid var(--linea)}
 .busca-res a{display:flex;align-items:center;gap:10px;padding:8px 10px;font:800 14px/1.2 Archivo,sans-serif}
-.busca-res a:hover{background:var(--suave)}
+@media (hover: hover) and (pointer: fine){.busca-res a:hover{background:var(--suave)}}
 .busca-res .cara{width:28px;height:28px;overflow:hidden}
 .busca-res .cara img{width:100%;height:100%;object-fit:cover}
 
@@ -41,37 +41,76 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .pronto-p{margin:14px;font:400 15px/1.5 Archivo,sans-serif;color:var(--gris);max-width:60ch}
 .tu .pronto-p{margin:0}
 
-/* las votaciones: el ×2 en la Tira y El Elegido en Se busca (las cuenta y las guarda app.js) */
-.vt-x2{grid-column:1/-1;border-top:1px solid #2A2A2E;padding-top:10px}
-.vt-t{margin:0;font:700 12px/1.45 "Space Mono",monospace;color:#F6F6F6}
-.vt-t span{display:block;font-weight:400;color:#A5A5A0}
-.vt-svs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.vt-sv{position:relative;overflow:hidden;display:flex;align-items:center;gap:6px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;
-  padding:6px 10px 8px 6px;font:900 13px/1 Archivo,sans-serif;font-stretch:115%;cursor:pointer}
-.vt-sv img{width:22px;height:22px;border-radius:50%}
-.vt-sv small{font:700 11px/1 "Space Mono",monospace;color:#A5A5A0}
-.vt-sv.mio{border-color:#29B298}
-.vt-sv.va{opacity:.7}
-.vt-bar{position:absolute;left:0;bottom:0;height:3px;background:#29B298;pointer-events:none}
-.vt-e{margin:8px 0 0;font:700 11px/1.45 "Space Mono",monospace;color:#A5A5A0}
-.vt-el{margin-top:22px;border:2px solid var(--linea);background:var(--fondo)}
-.vt-b{margin:12px 14px 0;font:400 14px/1.45 Archivo,sans-serif;color:var(--gris)}
-.vt-b b{color:var(--tinta)}
-.vt-busca{display:block;margin:12px 14px 0;width:calc(100% - 28px);border:2px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);
-  font:700 13px/1 "Space Mono",monospace;padding:11px 10px}
-.vt-ops{display:grid;gap:6px;padding:12px 14px}
-@media (min-width: 900px){.vt-ops{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.vt-op{position:relative;overflow:hidden;display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;border:1.5px solid var(--suave);
-  background:transparent;color:var(--tinta);padding:8px 10px;cursor:pointer;text-align:left;font:800 14px/1.2 Archivo,sans-serif}
-.vt-op[disabled]{opacity:.5;cursor:default}
-.vt-op.mio{border-color:var(--verde)}
-.vt-op.va{opacity:.7}
-.vt-cara{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;overflow:hidden;background:var(--inv);color:var(--inv-tinta);
-  font:900 13px/1 Archivo,sans-serif}
-.vt-cara img{width:100%;height:100%;object-fit:cover}
-.vt-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vt-c{font:700 12px/1 "Space Mono",monospace;color:var(--gris)}
-.vt-el .vt-e{margin:0 14px 14px;color:var(--gris)}
+/* Encuestas: el ×2 y El Elegido juntos, arriba de Misiones (Dlx, 30/09/2026). Los votos los cuenta app.js */
+.en-g{display:grid;gap:16px}
+@media (min-width: 900px){.app .en-g.dos{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}}
+.en{border:2px solid var(--linea);background:var(--fondo);display:grid}
+.en-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:11px 14px;border-bottom:2px solid var(--linea);
+  font:700 11px/1.25 "Space Mono",monospace;letter-spacing:.1em}
+.en-cab em{font-style:normal;color:var(--magenta);white-space:nowrap}
+.en-p{margin:14px 14px 0;font:900 21px/1.05 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase;text-wrap:balance}
+.en-b{margin:6px 14px 0;font:400 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.en-b b{color:var(--tinta)}
+.en-ops{display:grid;gap:8px;padding:14px}
+.en-svs{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
+.en-op{position:relative;overflow:hidden;display:flex;align-items:center;gap:9px;min-height:46px;padding:6px 10px;border:2px solid var(--linea);
+  background:var(--fondo);color:var(--tinta);font:800 14px/1.1 Archivo,sans-serif;font-stretch:110%;text-align:left;cursor:pointer;
+  transition:box-shadow .12s,transform .12s}
+.en-op>:not(.en-bar){position:relative}
+.en-op img{width:26px;height:26px;border-radius:50%;flex:none}
+.en-op b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.en-bar{position:absolute;left:0;top:0;bottom:0;background:rgba(41,178,152,.2);pointer-events:none}
+.en-n{font:700 12px/1 "Space Mono",monospace;color:var(--gris);white-space:nowrap}
+.en-op.mia{border-color:var(--verde);box-shadow:4px 4px 0 var(--verde)}
+.en-op.mia .en-n{color:var(--tinta)}
+.en-op.va{opacity:.6}
+.en-op[disabled]{opacity:.45;cursor:default}
+.en-op:active:not([disabled]){transform:translate(2px,2px)}
+.en-cara{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;overflow:hidden;background:var(--inv);color:var(--inv-tinta);
+  font:900 12px/1 Archivo,sans-serif}
+.en-cara img{width:100%;height:100%;object-fit:cover}
+.en-busca{display:block;margin:0 14px;width:calc(100% - 28px);border:2px solid var(--linea);border-radius:0;background:transparent;color:var(--tinta);
+  font:700 13px/1 "Space Mono",monospace;padding:12px 10px}
+.en-busca::placeholder{color:var(--gris)}
+.en-e{margin:10px 14px 14px;font:700 11px/1.45 "Space Mono",monospace;color:var(--gris)}
+.n-vis.n-enc{display:grid;place-items:center;background:var(--verde);color:#030304;border-color:var(--linea);font:900 20px/1 Archivo,sans-serif;font-stretch:120%}
+
+/* las historias: lo tuyo (tu país, tu crew, a quién seguís) y la invitación a seguir a alguien */
+.h em{font-style:normal}
+.h.pais .h-c,.h.crew .h-c{box-shadow:0 0 0 3px var(--suave)}
+.h.pais.nuevo .h-c{box-shadow:0 0 0 3px var(--verde)}
+.h-c.bandera{padding:0;background:#F6F6F6}
+.h-c.bandera img{border-radius:50%;object-fit:cover}
+.h small{max-width:68px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.h-c.ini{background:var(--inv);color:var(--inv-tinta)}
+.h-c.con-bandera{background-size:cover;background-position:center;padding:0}
+.h-c.con-bandera b{width:100%;height:100%;display:grid;place-items:center;border-radius:50%;background:rgba(3,3,4,.28);color:#fff;
+  font:900 18px/1 Archivo,sans-serif;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.h.sumar{text-align:center;color:inherit}
+.h-c.mas{background:var(--fondo);color:var(--tinta);box-shadow:0 0 0 3px var(--linea);font:900 28px/1 Archivo,sans-serif;border:2px dashed var(--gris)}
+.st-bandera{width:150px;height:100px;overflow:hidden;border:3px solid #F6F6F6}
+.st-bandera img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* el dorado de la Tira: en la computadora se estiraba sobre «Lunes de la Liga» y lo tapaba. Ahora no pasa de su
+   columna, y si no entra en una línea va en dos (cortado con «…» se perdía justo el «se jugó») */
+.ts-dor{min-width:0;max-width:100%}
+@media (min-width: 1240px){.app .ts-dor{flex-wrap:wrap;white-space:normal}}
+/* entre 900 y 1240 no entra en la misma fila: va abajo, a lo ancho y en una línea */
+@media (min-width: 900px) and (max-width: 1239.98px){.app .tira-s{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"t l a" "d d d";row-gap:12px}.app .ts-dor{flex-wrap:nowrap;white-space:nowrap}}
+
+/* Tus eventos, sin entrar */
+.te-acc{padding:0 14px 14px}
+.te-link{text-decoration:underline;font-weight:700;color:var(--tinta)}
+
+/* el Merchandising, donde estaba la Tienda (Dlx, 30/09/2026) */
+.merch{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center;border:2px solid var(--linea);background:var(--caja);padding:16px}
+.merch-logo{width:72px;height:72px;border-radius:50%;box-shadow:4px 4px 0 var(--magenta)}
+.merch-tx{display:grid;gap:8px;justify-items:start}
+.merch-tx h3{font:900 20px/1.05 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase}
+.merch-tx p{font:400 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+
+/* tocar en el celular: sin el recuadro azul del navegador y sin la espera del doble toque */
+.mo-fl,.pz-b,.mw-b,.mo-tabs button,.pz-tabs button,.en-op,.h,.fecha,.destacada,.nota-b,.te-b,.btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 
 /* el menú ☰ (del prototipo) */
 .x-menu{position:fixed;inset:0;z-index:50;background:rgba(3,3,4,.55);display:flex;justify-content:flex-end}

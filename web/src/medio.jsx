@@ -41,7 +41,19 @@ function Vis({ liga, v, cls = 'n-vis' }) {
   if (v[0] === 'rango') return <span className={cls + ' rgv'} style={{ background: liga.colorRg(v[1]) }}>{v[1]}</span>;
   if (v[0] === 'cara') return <Cara liga={liga} k={v[1]} nombre={v[2]} cls={cls + ' n-cara'} />;
   if (v[0] === 'sv') return <img className={cls} alt="" src={liga.logo(v[1])} />;
+  if (v[0] === 'enc') return <span className={cls + ' n-enc'}>{v[1]}</span>;
   return <img className={cls} alt="" src="/ul.png" />;
+}
+// una encuesta abierta, como novedad: lleva a Encuestas (Dlx, 30/09: «¿por qué no lo ponemos en la sección de lo
+// último?», del ×2)
+function notaEncuesta(liga) {
+  const x2 = liga.encuesta('x2');
+  const el = liga.encuesta('elegido');
+  const E = x2 || el;
+  if (!E) return null;
+  const x = String(E.x || 2).replace('.', ',');
+  const tit = x2 ? '¿Qué servidor se lleva el ×' + x + ' la semana que viene? Votá' : '¿A quién salimos a buscar? Votá a El Elegido';
+  return ['ENCUESTA', tit, ['enc', x2 ? '×' + x : '?'], 'cierra ' + liga.dia(E.hasta), { ancla: 'encuestas' }];
 }
 function irA(d, raiz) {
   if (!d) return;
@@ -56,7 +68,8 @@ export function Noticias({ liga, raiz }) {
   const items = liga.variados(6);
   if (!items.length) return null;
   const dest = items.find((x) => x[2][0] === 'carta') || items[0];
-  const resto = items.filter((x) => x !== dest).slice(0, 4);
+  const enc = notaEncuesta(liga);
+  const resto = (enc ? [enc] : []).concat(items.filter((x) => x !== dest)).slice(0, 4);
   return (
     <Sec id="noticias" titulo="Lo último" enlace="Publicaciones" href="#/publicaciones">
       <div className="notas-g">
@@ -143,26 +156,36 @@ function Pase({ liga }) {
     </section>
   );
 }
+// Dlx, 30/09/2026: «tus últimos eventos son raros porque dice que son los últimos eventos». Decía «Tus eventos» en
+// la pestaña y mostraba los de la Liga, que ya están en Fechas. Ahora son los tuyos, o cómo verlos.
 function TusEventos({ liga }) {
   const f = liga.yo;
-  const yo = f ? limpio(f.n).toLowerCase() : '';
+  if (!f) {
+    return (
+      <section className="te">
+        <div className="mis-cab"><span>CÓMO TE FUE</span></div>
+        <p className="pronto-p">Entrá con Discord y acá aparecen los eventos que jugaste esta temporada, con tu puesto y los puntos que sumaste.</p>
+        <div className="te-acc"><button type="button" className="btn negro" onClick={accion.cuenta}>Entrar con Discord</button></div>
+      </section>
+    );
+  }
+  const mios = liga.semanaDe(f.k).slice(0, 5);
   return (
     <section className="te">
-      <div className="mis-cab"><span>LOS ÚLTIMOS EVENTOS{f ? ' · Y CÓMO TE FUE' : ''}</span><em><a href="#/eventos">TODOS <Ico n="flecha" t={14} /></a></em></div>
-      <ol className="te-l">
-        {liga.llaves().slice(0, 5).map((ll) => {
-          const res = f ? (ll.tabla || []).find((x) => limpio(x[0]).toLowerCase() === yo) : null;
-          const gana = liga.campeon(ll);
-          return (
+      <div className="mis-cab"><span>CÓMO TE FUE · {liga.temp}</span><em>{f.ev || 0} {f.ev === 1 ? 'EVENTO' : 'EVENTOS'}</em></div>
+      {mios.length ? (
+        <ol className="te-l">
+          {mios.map(([ll, res, pts]) => (
             <li key={ll.n}><button type="button" className="sin-boton te-b" onClick={() => accion.llave(ll.n)}>
               <img alt="" src={liga.logo(ll.sv)} />
-              <div><b>{limpio(ll.nombre)}</b><small>{ll.sv} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos · {gana.length > 1 ? 'campeones' : 'campeón'}: {gana.join(' y ')}</small></div>
-              {f ? (res ? <span className={'te-vos' + (res[1] === 'Campeón' ? ' campeon' : '')}>{String(res[1]).toUpperCase()}<small>+{num(res[2])}</small></span>
-                : <span className="te-vos no">—<small>no jugaste</small></span>) : null}
+              <div><b>{limpio(ll.nombre)}</b><small>{ll.sv} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos</small></div>
+              <span className={'te-vos' + (res === 'Campeón' ? ' campeon' : '')}>{String(res).toUpperCase()}<small>+{num(pts)} pts</small></span>
             </button></li>
-          );
-        })}
-      </ol>
+          ))}
+        </ol>
+      ) : (
+        <p className="pronto-p">Todavía no jugaste en esta temporada. Los próximos eventos están en el <a className="te-link" href="#/eventos">calendario</a>.</p>
+      )}
     </section>
   );
 }
@@ -239,7 +262,7 @@ function Numeros({ liga }) {
 export function Panel({ liga }) {
   const items = [
     { c: 'misiones', et: 'Misiones', t: 'Misiones', cuerpo: <div className="pz-2"><Misiones /><Pase liga={liga} /></div> },
-    { c: 'eventos', et: 'Tus eventos', t: liga.yo ? 'Tus eventos' : 'Los últimos eventos', cuerpo: <div className="pz-2"><TusEventos liga={liga} /><TuTemporada liga={liga} /></div> },
+    { c: 'eventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: <div className="pz-2"><TusEventos liga={liga} /><TuTemporada liga={liga} /></div> },
     { c: 'liga', et: 'La Liga', t: 'La Liga en números', cuerpo: <Numeros liga={liga} /> },
   ];
   const yo = liga.yo;

@@ -164,6 +164,25 @@ export class Liga {
     return out;
   }
   buscado(k) { return ((this.d.mw || {}).b || []).find((b) => b.k === k) || null; }
+  // la crew de alguien (la de su fila), con su gente
+  crewDe(f) {
+    if (!f || !f.crew) return null;
+    const c = limpio(f.crew).toLowerCase();
+    return (this.d.crews || []).find((x) => limpio(x.crew).toLowerCase() === c) || null;
+  }
+  // un país: su puesto en la Liga y su gente, en el orden del ranking
+  paisDe(cc) {
+    if (!cc) return null;
+    const ps = (this.d.paises || []).filter((p) => p.n);
+    const i = ps.findIndex((p) => p.cc === cc);
+    const gente = this.oficiales().filter((f) => f.cc === cc);
+    if (i < 0 && !gente.length) return null;
+    return { cc, pos: i >= 0 ? i + 1 : null, pts: i >= 0 ? ps[i].pts : 0, n: i >= 0 ? ps[i].n : gente.length, gente };
+  }
+  // una encuesta abierta (`elegido` o `x2`), o nada
+  encuesta(tipo) {
+    return (this.d.enc || []).find((e) => e.tipo === tipo && utc(e.hasta) > this.ahora && (e.op || []).length) || null;
+  }
   desdeLunes() {
     const m = this.d.mult || {};
     return m.ini ? utc(m.ini) : new Date(this.ahora - 7 * 86400000);

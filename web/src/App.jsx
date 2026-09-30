@@ -5,7 +5,8 @@ import { Component, useCallback, useEffect, useMemo, useRef, useState } from 're
 import { Liga, aQuienSigo, quienMira } from './liga.js';
 import { Cabecera, Hero, Historias, IrA, Tira, gruposHistorias } from './arriba.jsx';
 import { Fechas, LosQueMandan, Noticias, Panel } from './medio.jsx';
-import { Menu, Mercancia, Pie, SeBusca, Servidores, Tabbar, Tienda, Visor } from './abajo.jsx';
+import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
+import { Encuestas } from './encuestas.jsx';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -160,16 +161,15 @@ export default function App() {
       <Aislada n="Cabecera"><Cabecera liga={liga} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
       <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL} /></Aislada>
-      <Aislada n="Tira"><Tira liga={liga} enc={enc} /></Aislada>
+      <Aislada n="Tira"><Tira liga={liga} /></Aislada>
       <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
       <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
       <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
       <Aislada n="LosQueMandan"><LosQueMandan liga={liga} /></Aislada>
+      <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} /></Aislada>
       <Aislada n="Panel"><Panel liga={liga} /></Aislada>
-      <Aislada n="SeBusca"><SeBusca liga={liga} enc={enc} /></Aislada>
-      <Aislada n="Tienda"><Tienda liga={liga} /></Aislada>
-      <Aislada n="Mercancia"><Mercancia /></Aislada>
-      <Aislada n="Servidores"><Servidores liga={liga} /></Aislada>
+      <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
+      <Aislada n="Merch"><Merch /></Aislada>
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} /></Aislada>
       <Aislada n="Menu"><Menu abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>

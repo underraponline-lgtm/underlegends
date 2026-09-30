@@ -1,10 +1,11 @@
-// Lo de abajo del Inicio: Se busca (con la votación de El Elegido), la Tienda, la Mercancía, los servidores, el pie,
-// la barra de abajo del celular, el menú ☰ y el visor de historias. Traducido de docs/remake/reales.py y del
-// prototipo (prototipo.js).
+// Lo de abajo del Inicio: Se busca, el Merchandising, el pie, la barra de abajo del celular, el menú ☰ y el visor de
+// historias. Nació de docs/remake/reales.py y del prototipo (prototipo.js). El 30/09/2026 se fueron de acá la Tienda
+// y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
+// estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { limpio, norm, num, utc } from './liga.js';
+import { limpio, num } from './liga.js';
 import { Cara, Ico, Sec, accion } from './piezas.jsx';
-import { MENU } from './arriba.jsx';
+import { CaraH, MENU } from './arriba.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
 function Poster({ liga, b }) {
@@ -27,51 +28,11 @@ function Poster({ liga, b }) {
   );
 }
 
-function Elegido({ liga, enc }) {
-  const [q, setQ] = useState('');
-  const E = ((liga.d.enc || []).filter((e) => e.tipo === 'elegido' && utc(e.hasta) > liga.ahora))[0];
-  if (!E || !(E.op || []).length) return null;
-  const cu = enc.cuenta(E.id);
-  const tot = Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0);
-  const mio = enc.mio[E.id];
-  const est = enc.est[E.id] || {};
-  const fDe = (op) => liga.fila(op);
-  const nombre = (op) => { const f = fDe(op); return f ? limpio(f.n) : limpio(op); };
-  const idx = {};
-  E.op.forEach((o, i) => { idx[o] = i; });
-  const ops = E.op.slice().sort((a, b) => (cu[b] || 0) - (cu[a] || 0) || idx[a] - idx[b]);
-  const t = norm(q).trim();
-  const ver = t ? ops.filter((o) => norm(nombre(o)).includes(t)).slice(0, 8) : ops.slice(0, 6);
-  const yoK = enc.yoDiscord;
-  return (
-    <div className="vt-el">
-      <div className="mis-cab"><span>EL ELEGIDO · VOTÁ A QUIÉN BUSCAR</span><em>{tot ? tot + (tot === 1 ? ' VOTO' : ' VOTOS') : 'SIN VOTOS'}</em></div>
-      <p className="vt-b">El más votado entra al Most Wanted como <b>El Elegido</b>. Cierra {liga.dia(E.hasta)}{tot < (E.min || 3) ? ' · hacen falta ' + (E.min || 3) + ' votos' : ''}.</p>
-      <input type="search" className="vt-busca" placeholder="Buscá a quién votar" aria-label="Buscar un rapero para votar" value={q} onChange={(e) => setQ(e.target.value)} />
-      <div className="vt-ops">
-        {ver.length ? ver.map((op) => {
-          const f = fDe(op);
-          const n = Number(cu[op] || 0);
-          const esYo = yoK && f && f.k === yoK;
-          return (
-            <button type="button" key={op} className={'vt-op' + (mio === op ? ' mio' : '') + (est.va === op ? ' va' : '')} disabled={!!esYo}
-              title={esYo ? 'Sos vos' : undefined} onClick={() => accion.votar(E.id, op)}>
-              <i className="vt-bar" style={{ width: (tot ? Math.round(100 * n / tot) : 0) + '%' }} />
-              <Cara liga={liga} k={f ? f.k : ''} nombre={op} cls="vt-cara" /><span className="vt-n">{nombre(op)}</span>
-              <span className="vt-c">{esYo ? 'sos vos' : (mio === op ? '✓ ' : '') + n}</span>
-            </button>
-          );
-        }) : <p className="vt-b">Nadie con ese nombre puede ser El Elegido.</p>}
-      </div>
-      <p className="vt-e" aria-live="polite">{enc.pie(E, nombre)}{!t && E.op.length > ver.length ? ' Se puede votar a ' + E.op.length + ': buscá a quién.' : ''}</p>
-    </div>
-  );
-}
 
-export function SeBusca({ liga, enc }) {
+export function SeBusca({ liga }) {
   const mw = liga.d.mw || {};
   const tira = useRef(null);
-  if (!(mw.b || []).length) return <ElegidoSolo liga={liga} enc={enc} />;
+  if (!(mw.b || []).length) return null;
   const diario = mw.tipo === 'dia';
   const correr = (d) => { if (tira.current) tira.current.scrollBy({ left: d * tira.current.clientWidth * 0.8, behavior: 'smooth' }); };
   return (
@@ -90,56 +51,27 @@ export function SeBusca({ liga, enc }) {
         ) : null}
       </div>
       <p className="p-nota">Quien le gane, cobra en su Temporada y el 10 % en Puntos de Tienda.</p>
-      <Elegido liga={liga} enc={enc} />
     </Sec>
   );
 }
-function ElegidoSolo({ liga, enc }) {
-  const E = (liga.d.enc || []).find((e) => e.tipo === 'elegido' && utc(e.hasta) > liga.ahora);
-  if (!E) return null;
-  return <Sec id="sebusca" titulo="Se busca" enlace="Most Wanted" href="#/ranking/mw" extra="negra"><Elegido liga={liga} enc={enc} /></Sec>;
-}
 
-// ── la Tienda y la Mercancía ──────────────────────────────────────────────────────────────────────
-export function Tienda({ liga }) {
-  const t = liga.d.tienda || {};
-  if (!liga.d.tienda) return null;
+// ── el Merchandising: donde estaba la Tienda (Dlx, 30/09/2026). Todavía no salió nada, y se dice así ───────────
+export function Merch() {
   return (
-    <Sec id="tienda" titulo="Tienda" enlace="Ir a la tienda" href="#/tienda">
-      <div className="tienda-g">
-        <div className="billetera"><span className="b-t">TUS PUNTOS DE TIENDA</span><b>{num(t.inicial || 5000)} PT</b>
-          <small>Todos arrancan con {num(t.inicial || 5000)}. No son los puntos del ranking.</small></div>
-        <div className="usos">
-          <article><b>Ponele precio a una cabeza</b><small>De {num(t.min || 500)} a {num(t.tope || 20000)} PT. Quien le gane, cobra; si nadie la caza en la semana, te vuelve.</small>
-            <a className="btn negro chico" href="#/tienda">Poner precio</a></article>
-          <article className="pronto"><b>Canjes</b><small>Próximamente: lo que se compra con los puntos.</small></article>
+    <Sec id="merch" titulo="Merchandising">
+      <div className="merch">
+        <img className="merch-logo" alt="" src="/ul.png" />
+        <div className="merch-tx">
+          <span className="tag-pronto">PRÓXIMAMENTE</span>
+          <h3>El merchandising de Under Legends</h3>
+          <p>Todavía no salió nada. Cuando salga, lo ves acá primero.</p>
         </div>
       </div>
     </Sec>
   );
 }
-export function Mercancia() {
-  return <section className="merch-mini" id="merch"><b>MERCANCÍA</b><span>Todavía no hay. Cuando salga, aparece acá.</span></section>;
-}
 
-// ── los servidores y el pie ───────────────────────────────────────────────────────────────────────
-export function Servidores({ liga }) {
-  const svs = Object.values(liga.svs).sort((a, b) => b.n - a.n);
-  if (!svs.length) return null;
-  return (
-    <Sec id="servidores" titulo="Los servidores de la Liga" enlace="Mundo" href="#/mundo">
-      <div className="svs2">
-        {svs.map((s) => (
-          <a key={s.sv} className="sv2" style={{ '--c': s.color }} href={s.invita || '#/mundo'} target={s.invita ? '_blank' : undefined} rel="noopener noreferrer">
-            <img alt="" src={liga.logo(s.sv)} />
-            <div><b>{s.sv}</b><small>{s.nombre} · {String(s.tag || '').toLowerCase()}</small></div>
-            <span className="sv2-n"><b>{s.n ? num(s.n) : '—'}</b><small>{s.n ? 'raperos' : 'sin eventos'}</small></span>
-          </a>
-        ))}
-      </div>
-    </Sec>
-  );
-}
+// ── el pie ────────────────────────────────────────────────────────────────────────────────────────
 export function Pie({ liga }) {
   const c = liga.d.comunidad || {};
   return (
@@ -251,9 +183,10 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
   }, [onCerrar, raiz]);
   if (!g) return null;
   const s = g.slides[Math.min(si, g.slides.length - 1)];
-  const circulo = g.tipo === 'gente' ? <Cara liga={liga} k={g.k} nombre={g.nom} cls="h-c" />
-    : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
-      : <span className="h-c"><img alt="" src={g.logo} /></span>;
+  const circulo = g.tipo === 'gente' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
+    : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
+      : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
+        : <span className="h-c"><img alt="" src={g.logo} /></span>;
   return (
     <div className="hv-ov" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="hv-box" role="dialog" aria-modal="true" aria-label="Historias"

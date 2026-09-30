@@ -841,7 +841,7 @@ Lo que Dlx decidió (ver `NOVEDADES.md`):
 | dónde | qué es |
 |---|---|
 | **`web/`** | la app: Vite + React, **sin** Tailwind ni shadcn |
-| `web/src/estilo.css` | **generado** desde el prototipo (`docs/remake/reales.py`) con `python web/css_del_prototipo.py`. **No se edita a mano** |
+| `web/src/estilo.css` | nació **generado** desde el prototipo (`docs/remake/reales.py`) con `python web/css_del_prototipo.py`. **Desde el 30/09/2026 se edita acá**: el Inicio está en línea, el prototipo quedó congelado y el generador se niega a pisarlo sin `--pisar` |
 | `web/src/vivo.css` | lo que es sólo de la página de verdad: botones, votos, el menú ☰ |
 | **`bot/paginas/inicio/`** | lo construido (`npx vite build`, en `web/`). **Se commitea**: el ciclo no construye nada, sube lo que hay |
 | `web/montar.py` | engancha la app en `index.html`: el CSS que apaga el marco de hoy, `#inicio-nuevo` y el script. Ya está hecho; se usa sólo si el HTML se rehace |
