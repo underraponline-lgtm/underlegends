@@ -3,7 +3,9 @@
    Lo que es sólo de la página de verdad va en src/vivo.css. */
 :host{display:block}
 .app{--gut:40px}
-@media (min-width: 1281px){.app{--gut:calc((100vw - 1200px) / 2)}}
+/* el margen de los costados, en % y no en vw: con la página agrandada (zoom, ver vivo.css) un 100vw se agranda
+   también y el contenido se salía de la pantalla. Todo lo que lo usa ocupa el ancho entero de .app */
+@media (min-width: 900px){.app{--gut:max(40px, calc((100% - 1200px) / 2))}}
 *{box-sizing:border-box}
 html,body{margin:0;background:#888}
 a{color:inherit;text-decoration:none}

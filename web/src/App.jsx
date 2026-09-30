@@ -160,8 +160,7 @@ export default function App() {
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
-      <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL} /></Aislada>
-      <Aislada n="Tira"><Tira liga={liga} /></Aislada>
+      <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
       <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
       <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
       <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>

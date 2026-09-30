@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.56",
+   "dia": "2026-09-30",
+   "cuando": "2026-09-30T11:30:00-04:00",
+   "titulo": "El Inicio, más grande en la computadora",
+   "items": [
+    "🖥️ **En pantallas grandes, todo más grande**: letras, cartas, la llave y los botones, con la misma escala, y el contenido usa más ancho.",
+    "🎬 **Arriba, un solo panel**: «Esta semana» va adentro del escenario, sin la línea que lo cortaba.",
+    "🎨 **Cada momento con los colores de su servidor**: el círculo grande en su color y su logo de fondo. Pasa solo al siguiente cada 15 segundos.",
+    "🖼️ **Los logos de hoy de cada servidor**, los mismos que usan en Discord.",
+    "📊 **La Liga en números, pareja**: las dos columnas terminan a la misma altura."
+   ]
+  },
+  {
    "version": "1.55",
    "dia": "2026-09-30",
    "cuando": "2026-09-30T10:00:00-04:00",

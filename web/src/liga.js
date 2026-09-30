@@ -95,7 +95,15 @@ export class Liga {
     const f = this.T[k];
     return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=128' : null;
   }
-  logo(sv) { return sv ? '/logos/' + String(sv).toLowerCase() + '.webp' : ''; }
+  // el logo de HOY de cada servidor: el payload trae el ícono actual de Discord (`svs[].logo`, ver `subir_web.py`) y
+  // el guardado sólo de respaldo. Dlx, 30/09/2026: «usa los LOGOS actuales de cada servidor». El Inicio usaba
+  // siempre el archivo guardado, y el de URBF (y la cobra de SR) ya no eran los de hoy
+  logo(sv) {
+    if (!sv) return '';
+    const s = this.svs && this.svs[sv];
+    if (s && s.logo) return /^https?:/.test(s.logo) ? s.logo : '/' + String(s.logo).replace(/^\//, '');
+    return '/logos/' + String(sv).toLowerCase() + '.webp';
+  }
   colorRg(rg) { return this.rg[rg] || '#A5A5A0'; }
 
   // ── utilidades de datos ──
