@@ -377,7 +377,10 @@
 },
 "noxvell": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "kravitz": {
 "rg": "",
@@ -2683,6 +2686,22 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-30T21:05:28Z",
+"quien": [
+"Noxvell"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-30T21:05:28Z",
+"quien": [
+"Noxvell"
+],
+"carta": "temporada"
 }
 ]
 }
