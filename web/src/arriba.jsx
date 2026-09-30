@@ -584,7 +584,7 @@ export function Tira({ liga }) {
 
 // ── IR A: una barra negra pegada arriba que aparece cuando pasaste el escenario ─────────────────────
 const SECCIONES = [['envivo', 'Ahora'], ['semana', 'Esta semana'], ['fechas', 'Fechas'], ['noticias', 'Lo último'],
-  ['raperos', 'Los que mandan'], ['encuestas', 'Encuestas'], ['panel', 'Misiones'], ['sebusca', 'Se busca'], ['merch', 'Merchandising'],
+  ['raperos', 'Los que mandan'], ['panel', 'Misiones'], ['encuestas', 'Encuestas'], ['sebusca', 'Se busca'], ['merch', 'Merchandising'],
   ['numeros', 'La Liga']];
 
 export function IrA({ raiz }) {

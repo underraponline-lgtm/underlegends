@@ -165,8 +165,8 @@ export default function App() {
       <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
       <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
       <Aislada n="LosQueMandan"><LosQueMandan liga={liga} /></Aislada>
-      <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} /></Aislada>
       <Aislada n="Panel"><Panel liga={liga} /></Aislada>
+      <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} /></Aislada>
       <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
       <Aislada n="Merch"><Merch /></Aislada>
       <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>

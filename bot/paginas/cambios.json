@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.57",
+   "dia": "2026-09-30",
+   "cuando": "2026-09-30T12:00:00-04:00",
+   "titulo": "Misiones arriba, y las encuestas donde van",
+   "items": [
+    "🎯 **Misiones sube** a debajo de Los que mandan; **Encuestas y Tus eventos bajan**, antes de Se busca.",
+    "🗳️ **Si ya votaste en todas las encuestas abiertas, el panel abre en Tus eventos** y las encuestas quedan en la segunda página."
+   ]
+  },
+  {
    "version": "1.56",
    "dia": "2026-09-30",
    "cuando": "2026-09-30T11:30:00-04:00",

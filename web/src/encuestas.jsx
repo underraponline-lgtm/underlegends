@@ -82,9 +82,14 @@ function Elegido({ liga, enc, E }) {
 // El lugar de las encuestas lleva también Tus eventos. Dlx, 30/09/2026: «creo que ahí debería ir tus eventos si
 // es que las encuestas ya no están». Con encuestas abiertas, las dos cosas con flechas (primero las encuestas); sin
 // ninguna, Tus eventos solo.
+// Y si ya votaste en todas las abiertas, Tus eventos va primero y las encuestas quedan de segunda página (Dlx,
+// 30/09: «que encuesta sea la segunda página de ese panel si ya votaste»). El orden se decide al abrir la página: si
+// cambiara en el momento de votar, lo que la persona está mirando se le iría de abajo del dedo.
 export function Encuestas({ liga, enc }) {
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
+  const abiertas = [x2, el].filter(Boolean);
+  const [votaste] = useState(() => abiertas.length > 0 && abiertas.every((E) => enc.mio[E.id]));
   const yo = liga.yo;
   const tuyos = <div className="pz-2"><TusEventos liga={liga} /><TuTemporada liga={liga} /></div>;
   const enlace = yo ? 'Tu perfil' : 'Entrar';
@@ -100,5 +105,6 @@ export function Encuestas({ liga, enc }) {
     ) },
     { c: 'tuseventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: tuyos },
   ];
-  return <Pest id="encuestas" titulo="Encuestas" enlace={enlace} href={href} onEnlace={onEnlace} items={items} extra="panel" titulos />;
+  if (votaste) items.reverse();
+  return <Pest id="encuestas" titulo={items[0].t} enlace={enlace} href={href} onEnlace={onEnlace} items={items} extra="panel" titulos />;
 }
