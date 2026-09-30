@@ -70,6 +70,11 @@
      "nachonc_",
      11,
      1
+    ],
+    [
+     "FASOO",
+     8,
+     1
     ]
    ],
    "semillero": {
@@ -80,16 +85,16 @@
     },
     "gente": {
      "FFA": 52,
-     "URBF": 19,
+     "URBF": 24,
      "SR": 18
     },
-    "gana": "URBF"
+    "gana": "FFA"
    },
    "meta_va": {
     "DRA": 0,
     "FFA": 52,
     "SR": 18,
-    "URBF": 19
+    "URBF": 24
    }
   }
  ]
