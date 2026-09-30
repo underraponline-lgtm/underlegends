@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-09-30T00:55:57Z",
+ "cuando": "2026-09-30T01:25:25Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 147.9,
+ "dur_s": 116.6,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 19.5
+   "s": 18.0
   },
   {
    "n": "1c",
@@ -27,7 +27,7 @@
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.7
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 22.2
+   "s": 19.4
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.9
+   "s": 1.2
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 26.0
+   "s": 5.7
   },
   {
    "n": "2b",
@@ -69,31 +69,31 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.3
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 1.9
+   "s": 2.1
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 19.2
+   "s": 17.6
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 16.4
+   "s": 13.9
   },
   {
    "n": "2d",
@@ -111,13 +111,13 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.3
+   "s": 1.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.2
+   "s": 5.7
   }
  ],
  "fallas": [],
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-09-30T00:53:53Z",
+  "cuando": "2026-09-30T01:23:50Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 194,
   "un_evento": 112,
@@ -152,15 +152,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 38,
-   "read": 1890
+   "write": 42,
+   "read": 2822
   },
   "worker": {
-   "pedidos": 3506,
+   "pedidos": 3531,
    "errores": 0,
-   "sub": 3174,
+   "sub": 3190,
    "p50_ms": 1.09,
-   "p99_ms": 3.47
+   "p99_ms": 3.44
   },
   "r2": {
    "objetos": 8869,

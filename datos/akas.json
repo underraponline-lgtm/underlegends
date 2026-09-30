@@ -217,7 +217,8 @@
   "pollosport": "Polosport",
   "lord": "Lord Viruzz",
   "adachi": "Nobu",
-  "sabado": "Guess"
+  "sabado": "Guess",
+  "rizas": "PRAISERIZA"
  },
  "pares": [
   [
@@ -1087,6 +1088,10 @@
   [
    "Sábado",
    "Guess"
+  ],
+  [
+   "RIZAS",
+   "PRAISERIZA"
   ]
  ],
  "no_confundir": [
