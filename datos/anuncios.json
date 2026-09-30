@@ -1,5 +1,5 @@
 {
- "cuando": "2026-09-30T03:54:12+00:00",
+ "cuando": "2026-09-30T04:24:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -287,7 +287,9 @@
    "modalidad": "",
    "horario": "",
    "fecha": "3 2V2",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "FELIZ CUMPLEAÑOS XCLUSIVO",
@@ -305,7 +307,9 @@
    "modalidad": "TROLL",
    "horario": "AHORA",
    "fecha": "",
-   "premios": "UN BESO DE XCLUSIVO"
+   "premios": "UN BESO DE XCLUSIVO",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "MONTE CHINGOLO REPRESENT V.2",
@@ -323,7 +327,9 @@
    "modalidad": "DUPLAS",
    "horario": "AHORA",
    "fecha": "",
-   "premios": "Literalmente nada"
+   "premios": "Literalmente nada",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 17 1VS1",
@@ -341,7 +347,9 @@
    "modalidad": "1VS1",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 16 2VS2",
@@ -359,7 +367,9 @@
    "modalidad": "2VS2",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 15 MULTIVERSE",
@@ -377,7 +387,9 @@
    "modalidad": "MULTIVERSE",
    "horario": "EN 1 HORA",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "FFA WORLD CUP EL ESTADIO DEL FREESTYLE 2026",
@@ -395,7 +407,9 @@
    "modalidad": "1 VS 1",
    "horario": "",
    "fecha": "27 09",
-   "premios": "Compe Rango ᴏʀᴏ ɪɪ Y Rol De Campeon"
+   "premios": "Compe Rango ᴏʀᴏ ɪɪ Y Rol De Campeon",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "777 ¡Vuelve SEVEN STREET! 777",
@@ -413,7 +427,9 @@
    "modalidad": "",
    "horario": "🇨🇷 20:30",
    "fecha": "Hoy, Sábado 26 Sept.",
-   "premios": ""
+   "premios": "",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "AGREEMENT: DOOMSDAY V.1",
@@ -431,7 +447,9 @@
    "modalidad": "2V2",
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
-   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP"
+   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "MARRUECOS EN VENTA V.1",
@@ -449,7 +467,9 @@
    "modalidad": "1V1",
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
-   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP"
+   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 14 1vs1",
@@ -467,7 +487,9 @@
    "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 13 2VS2",
@@ -485,7 +507,9 @@
    "modalidad": "2v2",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "ELRAP FECHA 6",
@@ -503,7 +527,9 @@
    "modalidad": "Pandillas",
    "horario": "EN 15",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "CARABOBO NUNCA SE RINDE VOL.1",
@@ -521,7 +547,9 @@
    "modalidad": "2v2",
    "horario": "en 10 min",
    "fecha": "",
-   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP"
+   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS CON TöKĪØ V.1",
@@ -539,7 +567,9 @@
    "modalidad": "1V1",
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
-   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP"
+   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 12",
@@ -557,7 +587,9 @@
    "modalidad": "Pandillas",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 11",
@@ -575,7 +607,9 @@
    "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "el que diga 7 parrafos de vencer gana x nocaut tecnico",
@@ -593,7 +627,9 @@
    "modalidad": "1v1 compe trol",
    "horario": "ahora",
    "fecha": "",
-   "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7"
+   "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T2, 3 4 5 6 7",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 10",
@@ -611,7 +647,9 @@
    "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
-   "premios": "Respeto"
+   "premios": "Respeto",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "ELRAP FECHA 5",
@@ -629,7 +667,9 @@
    "modalidad": "3v3",
    "horario": "en 15 se abren inscripciones",
    "fecha": "",
-   "premios": "pts para el ascenso + pts para la tabla"
+   "premios": "pts para el ascenso + pts para la tabla",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "ARKA MULTIVERSE VOL.1",
@@ -647,7 +687,9 @@
    "modalidad": "Multiverse",
    "horario": "⭐ 4:45PM HORA MEXICO CENTRAL (INSCRIPCIONES 30 MIN ANTES) ⭐",
    "fecha": "21 09",
-   "premios": "Clasificacion ᴘʟᴀᴛᴀ ɪɪɪ  y Rol De Campeon"
+   "premios": "Clasificacion ᴘʟᴀᴛᴀ ɪɪɪ  y Rol De Campeon",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-09-30T03:54:21"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -2037,6 +2079,159 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "andres 🇨🇱",
+   "quien": "andresnhp",
+   "discord_id": "1468995046161256706",
+   "msg_id": "1554705429827682327",
+   "cuando": "2026-09-30T04:04:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1554705220607545445",
+   "cuando": "2026-09-30T04:03:29"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "garxzii26@gmail.com 🇦🇿🇲🇽",
+   "quien": "sebs._.fs",
+   "discord_id": "1217564137383526470",
+   "msg_id": "1554704691198304369",
+   "cuando": "2026-09-30T04:01:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "pombe",
+   "quien": "pomberito42",
+   "discord_id": "1431738563330052239",
+   "msg_id": "1554704045078487195",
+   "cuando": "2026-09-30T03:58:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "praiseriza",
+   "quien": "lein7426",
+   "discord_id": "1078792444080046271",
+   "msg_id": "1554703817977897051",
+   "cuando": "2026-09-30T03:57:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Blitz",
+   "quien": "nahanah",
+   "discord_id": "1023727385822122104",
+   "msg_id": "1554703446266089483",
+   "cuando": "2026-09-30T03:56:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "melgar🇲🇽",
+   "quien": "ventu._.x",
+   "discord_id": "913850096062439456",
+   "msg_id": "1554703366376919091",
+   "cuando": "2026-09-30T03:56:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tormen 🇳🇮",
+   "quien": "6573170772j",
+   "discord_id": "1523714474132115537",
+   "msg_id": "1554703339583832215",
+   "cuando": "2026-09-30T03:56:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "no erian 🇩🇴",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1554703089800446004",
+   "cuando": "2026-09-30T03:55:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian 🇩🇴",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1554703083379097631",
+   "cuando": "2026-09-30T03:55:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Prosu",
+   "quien": "prosufk",
+   "discord_id": "1177668622227886112",
+   "msg_id": "1554703071618015285",
+   "cuando": "2026-09-30T03:54:57"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "hace compe for ril no hagas compe troll cronox moño🇵🇷primera",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1554703037401010187",
+   "cuando": "2026-09-30T03:54:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Soneto 🇪🇨",
+   "quien": "pllsuax",
+   "discord_id": "745324578347286528",
+   "msg_id": "1554703013292015638",
+   "cuando": "2026-09-30T03:54:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kyss",
+   "quien": "ominouspoetry",
+   "discord_id": "1190746928774922311",
+   "msg_id": "1554703002357727283",
+   "cuando": "2026-09-30T03:54:40"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Last🇬🇶",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1554702992811229187",
+   "cuando": "2026-09-30T03:54:38"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1554702963052781583",
+   "cuando": "2026-09-30T03:54:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mi cumpleaños fue ayer cronoxz moñazo🇲🇽",
+   "quien": "wackmc1",
+   "discord_id": "1493013247488430202",
+   "msg_id": "1554702925551636521",
+   "cuando": "2026-09-30T03:54:22"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
