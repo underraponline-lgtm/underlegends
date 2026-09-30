@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-09-30T17:25:58Z",
+ "cuando": "2026-09-30T17:55:51Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 137.8,
+ "dur_s": 132.9,
  "pasos": [
   {
    "n": "0b",
@@ -15,13 +15,13 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 19.0
+   "s": 22.0
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 26.5
+   "s": 25.1
   },
   {
    "n": "1a",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 23.1
+   "s": 22.0
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.7
+   "s": 6.3
   },
   {
    "n": "2b",
@@ -81,25 +81,25 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.3
+   "s": 2.0
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 21.4
+   "s": 22.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 14.0
+   "s": 14.2
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 7.4
+   "s": 8.3
   },
   {
    "n": "2e",
@@ -111,13 +111,13 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.1
+   "s": 1.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 13.2
+   "s": 5.3
   }
  ],
  "fallas": [],
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-09-30T17:24:03Z",
+  "cuando": "2026-09-30T17:54:05Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 196,
   "un_evento": 110,
@@ -152,15 +152,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 202,
-   "read": 18950
+   "write": 203,
+   "read": 19888
   },
   "worker": {
-   "pedidos": 2565,
+   "pedidos": 2562,
    "errores": 0,
-   "sub": 2315,
+   "sub": 2316,
    "p50_ms": 1.2,
-   "p99_ms": 3.56
+   "p99_ms": 3.65
   },
   "r2": {
    "objetos": 8920,
