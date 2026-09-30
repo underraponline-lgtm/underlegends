@@ -592,7 +592,9 @@ class Liga:
                        % (x[3].upper(), x[1], x[0].capitalize()))
                 out.append(('seguis', 'Seguís', txt, '<div class="mo-cara">%s</div>' % self.cara(k, self.T[k]['n'], 'st-cara')))
                 break
-        return out
+        # un título de video de 70 letras ocupaba seis renglones del escenario: pasado de 42, un cuerpo menos
+        return [(t, n, re.sub(r'<h1 class="hero-ev largo">([^<]{43,})</h1>', r'<h1 class="hero-ev largo muy-largo">\1</h1>', x), v)
+                for t, n, x, v in out]
 
     def hero(self, pc):
         mo = self.momentos()
@@ -1682,6 +1684,7 @@ CSS_R = r"""
 .hero.carrusel .mo-tabs{margin-left:-48px;margin-right:-48px;padding-left:16px;padding-right:16px}
 .hero.carrusel .cm-wrap{margin:0 -48px;padding:0 48px}
 .hero.carrusel .hero-ev.largo{font-size:28px}
+.hero.carrusel .hero-ev.muy-largo{font-size:23px;line-height:1}
 .mo-fl{position:absolute;top:calc(50% - 44px);z-index:3;width:38px;height:38px;display:grid;place-items:center;padding:0;
   background:#F6F6F6;color:#030304;border:2px solid #030304;cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}
 .mo-fl.izq{left:5px;box-shadow:-4px 4px 0 var(--verde)}
@@ -1696,6 +1699,7 @@ CSS_R = r"""
 .pc .hero.carrusel .mo-tabs{margin-left:0;margin-right:0;padding-left:0;padding-right:0}
 .pc .hero.carrusel .cm-wrap{margin:0;padding:0}
 .pc .hero.carrusel .hero-ev.largo{font-size:54px}
+.pc .hero.carrusel .hero-ev.muy-largo{font-size:40px}
 .pc .mo-fl{width:56px;height:56px;top:calc(50% - 50px)}
 .pc .mo-fl svg{width:28px;height:28px}
 .pc .mo-fl.izq{left:28px;box-shadow:-6px 6px 0 var(--verde)}

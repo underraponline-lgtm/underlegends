@@ -64,6 +64,8 @@ export function Cabecera({ liga, onMenu }) {
 }
 
 // ── las historias: lo que se abre al tocar cada círculo de arriba ─────────────────────────────────────
+// un título de video de 70 letras ocupaba seis renglones del escenario: pasado de 42, un cuerpo menos
+const largo = (t) => 'hero-ev largo' + (String(t || '').length > 42 ? ' muy-largo' : '');
 function Slide(tag, cuerpo, cuando, cta, ir) { return { tag, cuerpo, cuando, cta, ir }; }
 
 function slidesDe(liga, items) {
@@ -333,7 +335,7 @@ function momentos(liga, vivoL) {
     const cu = liga.cuando(liga.fechaLlave(ll));
     out.push({
       tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1),
-      txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · LA LLAVE</span></div><h1 className="hero-ev largo">{limpio(ll.nombre)}</h1>
+      txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · LA LLAVE</span></div><h1 className={largo(limpio(ll.nombre))}>{limpio(ll.nombre)}</h1>
         <p className="hero-p">{ll.sv} · {ll.participantes} raperos. {gana.length > 1 ? 'Campeones:' : 'Campeón:'} {gana.join(' y ')}.</p>
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave entera</button></div></>,
       vis: <div className="cm-wrap"><CuadroMini liga={liga} ll={ll} /></div>,
@@ -344,7 +346,7 @@ function momentos(liga, vivoL) {
     const d = utc(video.t);
     out.push({
       tipo: 'video', et: 'Video',
-      txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><h1 className="hero-ev largo">{limpio(video.tit)}</h1>
+      txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><h1 className={largo(limpio(video.tit))}>{limpio(video.tit)}</h1>
         <p className="hero-p">Subido el {d.getDate()} de {MESES[d.getMonth()]}.</p>
         <div className="hero-acc"><a className="btn verde" href={video.link} target="_blank" rel="noopener noreferrer">Mirar en YouTube ↗</a></div></>,
       vis: <a className="mo-video" href={video.link} target="_blank" rel="noopener noreferrer" aria-label="Mirar en YouTube">
@@ -355,7 +357,7 @@ function momentos(liga, vivoL) {
   if (nov) {
     out.push({
       tipo: 'liga', et: 'La Liga',
-      txt: <><div className="hero-t"><span className="tag tg-liga">LA LIGA · {liga.cuando(nov.t).toUpperCase()}</span></div><h1 className="hero-ev largo">{limpio(nov.tit)}</h1>
+      txt: <><div className="hero-t"><span className="tag tg-liga">LA LIGA · {liga.cuando(nov.t).toUpperCase()}</span></div><h1 className={largo(limpio(nov.tit))}>{limpio(nov.tit)}</h1>
         <p className="hero-p">{recorte(nov.tx || '', 180)}</p>
         {nov.link ? <div className="hero-acc"><a className="btn verde" href={nov.link} target="_blank" rel="noopener noreferrer">Leer en Discord ↗</a></div> : null}</>,
       vis: <div className="mo-logo ul"><img alt="" src="/ul.png" /></div>,
@@ -371,7 +373,7 @@ function momentos(liga, vivoL) {
       const k = ks.sort()[0];
       out.push({
         tipo: 'seguis', et: 'Seguís',
-        txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SEGUÍS · {x[3].toUpperCase()}</span></div><h1 className="hero-ev largo">{x[1]}</h1>
+        txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SEGUÍS · {x[3].toUpperCase()}</span></div><h1 className={largo(x[1])}>{x[1]}</h1>
           <p className="hero-p">{x[0].charAt(0) + x[0].slice(1).toLowerCase()}.</p>
           <div className="hero-acc"><a className="btn verde" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div></>,
         vis: <div className="mo-cara"><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="st-cara" /></div>,
