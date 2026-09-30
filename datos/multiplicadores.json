@@ -65,16 +65,21 @@
      "Player",
      15,
      1
+    ],
+    [
+     "nachonc_",
+     11,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 12,
+     "FFA": 13,
      "URBF": 6,
      "SR": 4
     },
     "gente": {
-     "FFA": 44,
+     "FFA": 52,
      "URBF": 19,
      "SR": 18
     },
@@ -82,7 +87,7 @@
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 44,
+    "FFA": 52,
     "SR": 18,
     "URBF": 19
    }
