@@ -5601,5 +5601,132 @@
     2000
    ]
   ]
+ },
+ "374": {
+  "dia": "2026-09-30",
+  "escala": "8-15",
+  "fecha": "30/09",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1554936751594807417"
+  ],
+  "n": 374,
+  "nombre": "COMPE CHILL DE FASO",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Bloody",
+       "Indígena"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Noxvell",
+       "Dominick"
+      ],
+      "Noxvell",
+      ""
+     ],
+     [
+      [
+       "Lord Viruzz",
+       "VR"
+      ],
+      "Lord Viruzz",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "MHS"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Bloody",
+       "Noxvell"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "Lord Viruzz"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Motera",
+       "Bloody"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Noxvell",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Indígena",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MHS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "VR",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

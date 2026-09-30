@@ -54,6 +54,14 @@
 "temporada"
 ]
 },
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "velatz": {
 "rg": "D",
 "c": [
@@ -106,6 +114,13 @@
 "temporada"
 ]
 },
+"motera": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "deluxe": {
 "rg": "",
 "c": [
@@ -124,14 +139,6 @@
 "provenza": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"bloody": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -235,6 +242,13 @@
 ]
 },
 "mco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"lordviruzz": {
 "rg": "",
 "c": [
 "servidor",
@@ -361,6 +375,10 @@
 "temporada"
 ]
 },
+"noxvell": {
+"rg": "",
+"c": []
+},
 "kravitz": {
 "rg": "",
 "c": [
@@ -368,7 +386,14 @@
 "temporada"
 ]
 },
-"lordviruzz": {
+"vr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mhs": {
 "rg": "",
 "c": [
 "servidor",
@@ -397,13 +422,6 @@
 ]
 },
 "cj": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"motera": {
 "rg": "",
 "c": [
 "servidor",
@@ -487,6 +505,13 @@
 "sol-pe": {
 "rg": "",
 "c": []
+},
+"dominick": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "elsoolar": {
 "rg": "",
@@ -577,13 +602,6 @@
 "temporada"
 ]
 },
-"mhs": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "scot": {
 "rg": "",
 "c": [
@@ -621,13 +639,6 @@
 ]
 },
 "aby": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"vr": {
 "rg": "",
 "c": [
 "servidor",
@@ -737,6 +748,13 @@
 "rg": "",
 "c": []
 },
+"indigena": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "maticerna": {
 "rg": "",
 "c": [
@@ -752,13 +770,6 @@
 ]
 },
 "sosa": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"dominick": {
 "rg": "",
 "c": [
 "servidor",
@@ -2663,6 +2674,15 @@
 "Luffy"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-09-30T20:55:23Z",
+"quien": [
+"Bloody"
+],
+"rg": "C",
+"primero": false
 }
 ]
 }

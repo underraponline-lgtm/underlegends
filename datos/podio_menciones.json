@@ -1,6 +1,9 @@
 {
  "_leeme": "Quién es quién en el podio de cada llave, cuando el renglón menciona a UNA cuenta y el lado es UNA persona: evento|sv|fecha -> {nombre normalizado: Discord ID}. Lo usa decidir.por_discord(), como una inscripción. Dlx, 28/09/2026: «A · sí».",
  "eventos": {
+  "compechilldefaso|URBF|30/09": {
+   "motera": "885365894606381068"
+  },
   "desgraciascontokiøv1|FFA|23/09": {
    "prrr": "1405241805733105704",
    "velatz": "1426686911908675628"
