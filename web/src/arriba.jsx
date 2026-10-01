@@ -312,7 +312,10 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
 }
 
 // ── el cuadro de cruces: cuartos, semis, final y el campeón, con líneas ─────────────────────────────
-const lados = (b) => (b[0] || []).slice(0, 2).map((z) => limpio(typeof z === 'string' ? z : z.join(' & ')));
+// 🔴 TODOS LOS LADOS, NO DOS. Dlx, 01/10/2026, «check the llaves», con la del Desgracias en Tokyo: los Octavos eran
+// TRIANGULARES (CRK vs O.E.P vs ELSOLAR) y esto se quedaba con los dos primeros, así que ELSOLAR y ZIGNOS —que
+// ganaron y pasaron a Cuartos— no aparecían, y esos cruces quedaban sin ganador. «Ver la llave» ya los dibujaba
+const lados = (b) => (b[0] || []).map((z) => limpio(typeof z === 'string' ? z : z.join(' & ')));
 const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & '));
 
 function CuadroRondas({ ll }) {
@@ -363,6 +366,8 @@ function useMedida() {
 // cruce jugado va en SU lugar, el de los ganadores que lo forman, no en el orden en que llegó.
 // ⚠️ Sólo si la primera ronda es potencia de 2 y ninguna trae más cruces de los que caben: si no, no se inventa la forma.
 const NOMBRE_RONDA = { 1: 'Final', 2: 'Semis', 4: 'Cuartos', 8: 'Octavos', 16: '16avos' };
+// hasta dónde puede crecer de alto la llave del escenario (los Octavos de 16 en 1 contra 1 miden 524)
+const ALTO_LLAVE = 540;
 export function completar(todas) {
   const n0 = todas.length ? todas[0].b.length : 0;
   if (!n0 || (n0 & (n0 - 1))) return todas;
@@ -390,10 +395,23 @@ export function CuadroMini({ liga, ll }) {
   // 🔑 QUÉ RONDAS SE VEN: con la llave completa, las últimas de una llave en vivo son lugares vacíos —en el celular
   // eran Semis y Final sin nadie—. Se ven desde la que SE ESTÁ JUGANDO, sin pasarse del final; terminada, las últimas.
   // Y la primera que se ve no puede tener más de 8 cruces: más alto no entra en el escenario
-  const enJuego = todas.findIndex((r) => r.b.some((b) => !ganador(b) && lados(b).length === 2));
+  // el alto de cada casilla sale de cuántos lados tiene (un triangular son tres), y con más de dos las filas son más
+  // bajas: un triangular no puede estirar el escenario (Dlx, 01/10/2026: «tampoco hagas que se expanda demasiado en
+  // altura innecesariamente, porque se ve algo raro»). El alto de cada lugar sale del cruce más alto de su ronda
+  const TOP = 28;
+  const nLados = (b) => Math.max(2, lados(b).length);
+  const masLados = (r) => Math.max(...r.b.map(nLados));
+  const filaDe = (r) => (masLados(r) >= 4 ? 19 : (masLados(r) === 3 ? 20 : 26));
+  const mitad = (r) => Math.max(31, (filaDe(r) * masLados(r) + 8) / 2);
+  const altoDesde = (i) => 2 * todas[i].b.length * mitad(todas[i]) + TOP;
+  const decidida = (r) => r.b.every((b) => !!ganador(b));
+  const enJuego = todas.findIndex((r) => r.b.some((b) => !ganador(b) && lados(b).length >= 2));
   let desde = Math.max(0, todas.length - M.rondas);
   if (enJuego >= 0) desde = Math.min(enJuego, desde);
   while (desde < todas.length - 1 && todas[desde].b.length > 8) desde += 1;
+  // y si así no entra de alto, la primera ronda que ya terminó queda para «Ver la llave»: lo que se mira en vivo es
+  // lo que se está jugando (los Octavos triangulares terminados llevaban la llave a 814 px)
+  while (desde < todas.length - 1 && altoDesde(desde) > ALTO_LLAVE && decidida(todas[desde])) desde += 1;
   const rondas = todas.slice(desde, desde + M.rondas);
   const conFinal = desde + rondas.length === todas.length;
   const regular = rondas.length && rondas.every((r, i) => i === rondas.length - 1 || rondas[i + 1].b.length * 2 === r.b.length);
@@ -401,25 +419,31 @@ export function CuadroMini({ liga, ll }) {
   const { W, G } = M;
   // el campeón sólo si se ve la Final: si no, el «campeón» sería el ganador de otra ronda
   const CAMP = conFinal ? M.CAMP : 0;
-  const R = 31; const HB = 52; const TOP = 28;
+  const R = mitad(rondas[0]);
   const n0 = rondas[0].b.length;
   const campeon = conFinal ? ganador(rondas[rondas.length - 1].b[0]) : '';
   // «AHORA» y «SIGUE» sólo en cruces con los dos lados: un lugar vacío todavía no se juega
   const pend = [];
-  rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length === 2) pend.push(ci + ':' + j); }));
+  rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
   const cajas = []; const lineas = []; const etiquetas = [];
   const alto = 2 * n0 * R + TOP;
   rondas.forEach((r, ci) => {
     const x = ci * (W + G);
     etiquetas.push(<b key={'e' + ci} className="cm-r" style={{ left: x, width: W }}>{String(r.r).toUpperCase()}</b>);
+    const F = filaDe(r);
     r.b.forEach((b, j) => {
       const y = TOP + R * (2 ** ci) * (2 * j + 1);
       const g = ganador(b);
       const est = pend[0] === ci + ':' + j ? 'ahora' : (pend[1] === ci + ':' + j ? 'sigue' : '');
+      // un lado solo: pasa directo si ya ganó, y si no, falta definir el otro
+      const ls = lados(b);
+      const filas = ls.length >= 2 ? ls : [ls[0] || null, null];
+      const falta = !ls.length ? 'por jugarse' : (g ? 'pasa directo' : 'por definir');
       cajas.push(
-        <div key={ci + '-' + j} className={'cm-m ' + est + (lados(b).length ? '' : ' vacio')} style={{ left: x, top: y - HB / 2, width: W }}>
-          {(lados(b).length ? lados(b) : ['', '']).map((n, i) => {
-            if (!n) return <span key={i} className="vac"><em>por jugarse</em></span>;
+        <div key={ci + '-' + j} className={'cm-m ' + est + (ls.length ? '' : ' vacio')}
+          style={{ left: x, top: y - F * filas.length / 2, width: W, height: F * filas.length, gridTemplateRows: 'repeat(' + filas.length + ',1fr)' }}>
+          {filas.map((n, i) => {
+            if (!n) return <span key={i} className="vac"><em>{falta}</em></span>;
             const f = liga.fila(n);
             const cls = (g ? (n === g ? 'g' : 'x') : '') + (g && n === campeon ? ' camino' : '');
             return <span key={i} className={cls}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cm-av" /><em>{n}</em></span>;

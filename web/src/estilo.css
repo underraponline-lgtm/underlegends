@@ -720,6 +720,8 @@ h1,h2,h3,p{margin:0}
 .mo{display:none;gap:18px}
 .mo.on{display:grid}
 .mo-txt{min-width:0}
+/* un nombre de evento con una palabra muy larga se corta antes de meterse debajo de la llave */
+.mo-txt h1{overflow-wrap:anywhere}
 .mo-vis{min-width:0}
 .tag.tg-prox{background:#E7B622;color:#030304}
 .tag.tg-prox:before{background:#030304}

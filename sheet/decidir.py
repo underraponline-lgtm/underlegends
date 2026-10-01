@@ -547,13 +547,43 @@ def _cuenta_de(p, eventos):
     # la llamada de ese servidor mientras se jugaba esa llave, con EXACTAMENTE
     # ese nombre, y que ya está en la Lista. Va antes que el nombre suelto:
     # cuando «Sol» es de cinco cuentas, la que estaba ahí es la que jugó.
-    # ⚠️ SÓLO ALIAS: si esa cuenta no está en la Lista, la llamada no da de
-    # alta a nadie —sigue la regla de siempre, por el nombre—.
+    # (Hasta el 01/10/2026 sólo hacía alias de alguien de la Lista: ver abajo.)
+    #
+    # 🔑 Y DESDE EL 01/10/2026, ESTÉ O NO EN LA LISTA. Dlx, con los nombres troll de la DESGRACIAS EN TOKYO VOL 20:
+    # *«que el BOT haga la mayoría de las cosas por su propia cuenta… hasta el máximo. Si el bot no puede después de
+    # haber intentado todo, ahí sí en Decidir»*. «TITO CALDERON» era UNA cuenta de la llamada con ese nombre exacto,
+    # en DRA y FFA, y fuera de la Lista: es quien jugó, y entra (`por_discord()` pide que esté en el servidor).
     if len(k) >= 3:
-        _ev, exactos, _par = _de_la_llamada(p['detalle'], _num_evento(p), eventos)
-        if len(exactos) == 1 and exactos[0][0] in _lista_por_id():
+        _ev, exactos, parecidos = _de_la_llamada(p['detalle'], _num_evento(p), eventos)
+        if len(exactos) == 1:
             return [exactos[0][0]], 'llamada'
+        # 🔑 Y EL PARECIDO DE UNA SOLA PERSONA DE LA LISTA QUE ESTABA EN LA LLAMADA: «ELSOLAR» era Elsoolar —en la
+        # llamada mientras se jugaba—, y no Solar, que no estaba. Se compara su nombre de Discord y su nombre en
+        # la Lista; con dos candidatos no se elige.
+        if not exactos and len(k) > CORTO:
+            cand = _parecidos_de_lista(k, _num_evento(p), eventos, parecidos)
+            if len(cand) == 1:
+                return cand, 'llamada_parecido'
     return sorted(_apodos().get(k) or set()) if len(k) >= 3 else [], 'Discord'
+
+
+def _parecidos_de_lista(k, num, eventos, parecidos):
+    """Las cuentas de la Lista que estaban en la llamada del evento con un nombre parecido a `k` (normalizado):
+    por su nombre de Discord (`parecidos`, de `_de_la_llamada()`) o por su nombre en la Lista. Si en la llamada hay
+    además alguien parecido FUERA de la Lista, no se puede elegir: vacío."""
+    por_id = _lista_por_id()
+    if any(d not in por_id for d, _e in parecidos):
+        return []
+    cand = {d for d, _e in parecidos}
+    ev, desde, hasta = _ventana(num, eventos)
+    if desde is not None:
+        for d, e in _llamada(ev[1]).items():
+            n = norm(_sin_bandera(por_id.get(d) or ''))
+            if d in cand or len(n) <= CORTO or not any(desde <= t <= hasta for t in e.get('t') or ()):
+                continue
+            if k in n or n in k or difflib.SequenceMatcher(None, k, n).ratio() >= 0.8:
+                cand.add(d)
+    return sorted(cand)
 
 
 def _podio():
@@ -628,25 +658,32 @@ def _llamada(sv):
     return c[sv]
 
 
+def _ventana(num, eventos=None):
+    """`(evento, desde, hasta)`: el evento de ese número y cuándo se jugaba su llave, en ms —de 1 hora antes de
+    publicada a 5 después (`LLAMADA_H`); sin el link de la llave, el día entero (hora del este)—. Sin evento o sin
+    fecha, `desde` y `hasta` son `None`."""
+    ev = (eventos if eventos is not None else (_DATOS.get('eventos') or {})).get(str(num or ''))
+    if not ev:
+        return ev, None, None
+    import llaves_web as LW
+    ms = LW._primero((_llaves_t1().get(str(num)) or {}).get('links'))
+    if ms is not None:
+        return ev, ms - LLAMADA_H[0] * 3600000, ms + LLAMADA_H[1] * 3600000
+    ms = LW.ms_de_fecha(ev[2])
+    if ms is None:
+        return ev, None, None
+    return ev, ms - 12 * 3600000, ms + 12 * 3600000
+
+
 def _de_la_llamada(nombre, num, eventos=None):
     """`(evento, exactos, parecidos)`: quién estaba en la llamada de ese
     servidor mientras se jugaba esa llave, con ese nombre (`exactos`) o uno
     parecido. Cada uno es `(discord_id, {n, c, t})`. Sin foto, listas vacías.
     """
-    ev = (eventos if eventos is not None else (_DATOS.get('eventos') or {})).get(str(num or ''))
+    ev, desde, hasta = _ventana(num, eventos)
     k = norm(_sin_bandera(nombre))
-    if not ev or len(k) < 3:
+    if not ev or len(k) < 3 or desde is None:
         return ev, [], []
-    import llaves_web as LW
-    ms = LW._primero((_llaves_t1().get(str(num)) or {}).get('links'))
-    if ms is not None:
-        desde, hasta = ms - LLAMADA_H[0] * 3600000, ms + LLAMADA_H[1] * 3600000
-    else:
-        # sin el link de la llave, el día entero (hora del este)
-        ms = LW.ms_de_fecha(ev[2])
-        if ms is None:
-            return ev, [], []
-        desde, hasta = ms - 12 * 3600000, ms + 12 * 3600000
     exactos, parecidos = [], []
     for did, e in _llamada(ev[1]).items():
         if not any(desde <= t <= hasta for t in e.get('t') or ()):
@@ -714,9 +751,11 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                                         y la bandera del nombre de la llave
 
     🎙️ Y LA LLAMADA (Dlx, 29/09/2026, «1. A»): el nombre EXACTO de una sola
-    persona que estaba en la llamada mientras se jugaba esa llave, si ya está
-    en la Lista, es alias suyo aunque ese nombre sea de varias cuentas. Si no
-    está en la Lista, la llamada no da de alta a nadie. Ver `_cuenta_de()`.
+    persona que estaba en la llamada mientras se jugaba esa llave es esa
+    persona aunque el nombre sea de varias cuentas: alias si está en la Lista, y
+    desde el 01/10/2026 alta si no está (Dlx: «hasta el máximo»). Y un nombre
+    PARECIDO al de una sola persona de la Lista que estaba en la llamada, alias
+    suyo. Ver `_cuenta_de()`.
 
     ⚠️ LA CUENTA QUE SALE SÓLO POR EL NOMBRE, SÓLO SI ESTÁ EN EL SERVIDOR DEL
     EVENTO: «MHS» se parece a demasiada gente, y quien jugó un evento de FFA
@@ -792,15 +831,16 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                 continue
         porque = {'inscripción': 'se anotó así en inscripciones',
                   'podio': 'el podio de la llave lo menciona',
-                  'llamada': 'estaba en la llamada del evento con ese nombre'}.get(fuente, 'la misma cuenta de Discord')
+                  'llamada': 'estaba en la llamada del evento con ese nombre',
+                  'llamada_parecido': 'estaba en la llamada del evento con un nombre parecido'}.get(fuente, 'la misma cuenta de Discord')
         real = por_id.get(did)
         if real:
             if AK.son_distintos(det, real, akas):
                 continue
             pares.append([_sin_bandera(det), real, ''.join(_BANDERA.findall(det))])
             hechas.append((p, 'alias de %s: %s' % (real, porque)))
-        elif fuente == 'llamada':
-            # la llamada sólo hace alias (ver `_cuenta_de()`): no da de alta
+        elif fuente == 'llamada_parecido':
+            # el parecido sólo hace alias de alguien de la Lista (ver `_cuenta_de()`): nunca da de alta
             continue
         elif len(k) > CORTO and any(k in c or c in k for c in en_lista_n if len(c) > CORTO):
             # ⚠️ ALGUIEN DE LA LISTA SE LLAMA PARECIDO («pollo» y Pollo Sport):
@@ -827,13 +867,15 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
     import lista_raperos as LR
     entraron = LR.agregar_varios(
         [(n, cc, did, 'alta automática · %s · %s' % ({'inscripción': 'se anotó así en inscripciones',
-                                                     'podio': 'el podio de la llave lo menciona'}
+                                                     'podio': 'el podio de la llave lo menciona',
+                                                     'llamada': 'estaba en la llamada del evento con ese nombre'}
                                                     .get(fu, 'su nombre en Discord'), _ahora_et()))
          for _p, n, cc, did, fu in nuevos], aplicar=True) if nuevos else {}
     for p, n, cc, did, fu in nuevos:
         if did in entraron:
             hechas.append((p, 'nuevo: entró a la Lista con %s (%s)' % (
-                {'inscripción': 'la cuenta con que se anotó', 'podio': 'la cuenta que menciona el podio'}
+                {'inscripción': 'la cuenta con que se anotó', 'podio': 'la cuenta que menciona el podio',
+                 'llamada': 'la cuenta que estaba en la llamada con ese nombre'}
                 .get(fu, 'su Discord'), did)))
     if pares:
         _agregar_akas(pares, [])
@@ -2408,7 +2450,32 @@ def _self_check():
             _DATOS['llamada']['FFA']['6'] = {'n': ['RAREZA'], 'c': ['🎤'], 't': [t0 + 900000]}
             qs = armar([(92, {'Tipo': nd, 'Detalle': 'RAREZA', 'Origen': 'evento #371'})], ev4)
             ok(por_discord(qs, {}, ev4, dry=True) == set() and 'estaba «RAREZA»' in qs[0]['pistas'],
-               'quien no está en la Lista no entra por la llamada: sólo la pista')
+               'una cuenta de la llamada que no está en NINGÚN servidor de la Liga no entra: sólo la pista')
+            # 🔑 01/10/2026 (Dlx: «que el BOT haga la mayoría de las cosas por su propia cuenta… hasta el máximo»):
+            # UNA cuenta con ese nombre exacto en la llamada, en el servidor del evento, entra a la Lista aunque no
+            # estuviera. Es «TITO CALDERON» de la DESGRACIAS EN TOKYO VOL 20
+            _DATOS['servidores_de']['6'] = ['FFA']
+            qs = armar([(93, {'Tipo': nd, 'Detalle': 'RAREZA', 'Origen': 'evento #371'})], ev4)
+            ok(por_discord(qs, {}, ev4, dry=True) == {qs[0]['id']},
+               'una sola cuenta con ese nombre exacto en la llamada, en el servidor del evento: entra a la Lista')
+            # 🔑 y el PARECIDO de una sola persona de la Lista que estaba en la llamada: «ELSOLAR» era Elsoolar (en
+            # la llamada), no Solar (que no estaba)
+            _DATOS['padron'] = list(_DATOS['padron']) + [{'raw': 'Elsoolar', 'discord_id': '20'},
+                                                         {'raw': 'Solar', 'discord_id': '21'}]
+            _DATOS.pop('lista_por_id', None)
+            _DATOS['llamada']['FFA']['20'] = {'n': ['elsoolar'], 'c': ['🎤'], 't': [t0 + 900000]}
+            qs = armar([(94, {'Tipo': nd, 'Detalle': 'ELSOLAR 🇨🇴', 'Origen': 'evento #371'})], ev4)
+            ok(_cuenta_de(qs[0], ev4) == (['20'], 'llamada_parecido') and por_discord(qs, {}, ev4, dry=True) == {qs[0]['id']},
+               'un nombre parecido al de UNA persona de la Lista que estaba en la llamada: es alias suyo (Elsoolar)')
+            _DATOS['llamada']['FFA']['21'] = {'n': ['Solar'], 'c': ['🎤'], 't': [t0 + 950000]}
+            qs = armar([(95, {'Tipo': nd, 'Detalle': 'ELSOLAR 🇨🇴', 'Origen': 'evento #371'})], ev4)
+            ok(por_discord(qs, {}, ev4, dry=True) == set(),
+               'con dos parecidos en la llamada (Elsoolar y Solar) no elige: queda la pregunta')
+            del _DATOS['llamada']['FFA']['21']
+            _DATOS['llamada']['FFA']['22'] = {'n': ['elsolarr'], 'c': ['🎤'], 't': [t0 + 950000]}
+            qs = armar([(96, {'Tipo': nd, 'Detalle': 'ELSOLAR 🇨🇴', 'Origen': 'evento #371'})], ev4)
+            ok(por_discord(qs, {}, ev4, dry=True) == set(),
+               'y si en la llamada hay además un parecido FUERA de la Lista, tampoco')
         finally:
             _LLAVES_T1[:] = viejas
     finally:

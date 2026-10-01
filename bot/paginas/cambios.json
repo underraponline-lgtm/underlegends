@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.68",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T18:44:00-04:00",
+   "titulo": "Llaves de cualquier formato, y quién es quién",
+   "items": [
+    "🏆 **Triangulares, cuadrangulares, 2v2 y pases directos**: la llave del Inicio muestra a todos los de cada cruce. En las triangulares se perdía uno, y a veces era el que había ganado.",
+    "📏 **La llave no crece de alto sin necesidad**: si una ronda ya terminó y no entra, se ve desde la que se está jugando. La llave entera sigue en «Ver la llave».",
+    "🤖 **Quién es quién, solo y esa misma noche**: si alguien juega con un nombre que no está en la Lista, el bot lo reconoce también por la llamada del evento, además de las inscripciones y los apodos de Discord.",
+    "📧 **Un contacto fuera de Discord**: underlegendscontacto@gmail.com, en la privacidad y en los términos. Y la edad mínima: 13 años, o la que fije la ley de tu país."
+   ]
+  },
+  {
    "version": "1.67",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T18:12:00-04:00",
