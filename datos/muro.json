@@ -1013,7 +1013,8 @@
 "lambroggini": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "leonart": {
@@ -1251,7 +1252,10 @@
 },
 "oep": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "onzass": {
 "rg": "",
@@ -2823,6 +2827,30 @@
 "t": "2026-10-01T06:36:18Z",
 "quien": [
 "JEIXDER"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-01T23:39:49Z",
+"quien": [
+"Lambroggini"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-01T23:39:49Z",
+"quien": [
+"OEP"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-01T23:39:49Z",
+"quien": [
+"OEP"
 ],
 "carta": "temporada"
 }
