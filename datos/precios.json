@@ -1,5 +1,46 @@
 {
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
- "precios": [],
+ "precios": [
+  {
+   "id": 1,
+   "cabeza": "Panchok",
+   "monto": 1000,
+   "t": "2026-10-01T20:52:11Z",
+   "fin": "2026-10-05T04:00:00Z",
+   "e": "activo"
+  },
+  {
+   "id": 2,
+   "cabeza": "Majiztral",
+   "monto": 1000,
+   "t": "2026-10-01T20:52:27Z",
+   "fin": "2026-10-05T04:00:00Z",
+   "e": "activo"
+  },
+  {
+   "id": 3,
+   "cabeza": "Bloody",
+   "monto": 1000,
+   "t": "2026-10-01T20:52:40Z",
+   "fin": "2026-10-05T04:00:00Z",
+   "e": "activo"
+  },
+  {
+   "id": 4,
+   "cabeza": "Makmah",
+   "monto": 1000,
+   "t": "2026-10-01T20:52:51Z",
+   "fin": "2026-10-05T04:00:00Z",
+   "e": "activo"
+  },
+  {
+   "id": 5,
+   "cabeza": "Colesito",
+   "monto": 1000,
+   "t": "2026-10-01T20:53:08Z",
+   "fin": "2026-10-05T04:00:00Z",
+   "e": "activo"
+  }
+ ],
  "suma": {}
 }
