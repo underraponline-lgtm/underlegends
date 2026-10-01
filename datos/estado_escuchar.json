@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-01T19:26:09Z",
+ "cuando": "2026-10-01T19:55:55Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 143.4,
+ "dur_s": 139.9,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 22.6
+   "s": 23.8
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 25.5
+   "s": 26.0
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 22.8
+   "s": 20.5
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.7
+   "s": 7.2
   },
   {
    "n": "2b",
@@ -75,31 +75,31 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 6.5
+   "s": 1.9
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 24.2
+   "s": 18.0
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 14.8
+   "s": 21.4
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.3
+   "s": 10.4
   },
   {
    "n": "2e",
@@ -117,7 +117,7 @@
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.7
+   "s": 5.5
   }
  ],
  "fallas": [],
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-01T19:24:13Z",
+  "cuando": "2026-10-01T19:54:04Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 205,
   "un_evento": 114,
@@ -153,14 +153,14 @@
  "cuotas": {
   "kv": {
    "write": 379,
-   "read": 22569
+   "read": 23538
   },
   "worker": {
-   "pedidos": 2209,
+   "pedidos": 2308,
    "errores": 0,
-   "sub": 2171,
-   "p50_ms": 1.15,
-   "p99_ms": 3.52
+   "sub": 2255,
+   "p50_ms": 1.13,
+   "p99_ms": 3.48
   },
   "r2": {
    "objetos": 8945,
