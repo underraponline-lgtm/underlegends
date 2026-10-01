@@ -10,14 +10,6 @@
 "temporada"
 ]
 },
-"snow": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "oasis": {
 "rg": "",
 "c": [
@@ -44,6 +36,14 @@
 "praiseriza": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"snow": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -93,6 +93,13 @@
 "temporada"
 ]
 },
+"abyssus": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "erian": {
 "rg": "",
 "c": [
@@ -130,20 +137,6 @@
 "temporada"
 ]
 },
-"badterne": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"provenza": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "zignos": {
 "rg": "",
 "c": [
@@ -151,7 +144,7 @@
 "temporada"
 ]
 },
-"abyssus": {
+"provenza": {
 "rg": "",
 "c": [
 "servidor",
@@ -166,6 +159,13 @@
 ]
 },
 "zeta": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"badterne": {
 "rg": "",
 "c": [
 "servidor",
@@ -221,6 +221,13 @@
 "temporada"
 ]
 },
+"mtz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "polosport": {
 "rg": "",
 "c": [
@@ -242,21 +249,14 @@
 "temporada"
 ]
 },
-"dxg": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "eze": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"dxg": {
 "rg": "",
 "c": [
 "servidor",
@@ -280,6 +280,13 @@
 "teito": {
 "rg": "",
 "c": []
+},
+"molusco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "betelguese": {
 "rg": "",
@@ -310,13 +317,6 @@
 ]
 },
 "soneto": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"molusco": {
 "rg": "",
 "c": [
 "servidor",
@@ -528,6 +528,13 @@
 ]
 },
 "agus": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"maticerna": {
 "rg": "",
 "c": [
 "servidor",
@@ -773,13 +780,6 @@
 "temporada"
 ]
 },
-"maticerna": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "jult": {
 "rg": "",
 "c": [
@@ -883,6 +883,13 @@
 "temporada"
 ]
 },
+"lambroggini": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "rayito": {
 "rg": "",
 "c": [
@@ -902,6 +909,10 @@
 "c": []
 },
 "gs": {
+"rg": "",
+"c": []
+},
+"gian": {
 "rg": "",
 "c": []
 },
@@ -1009,13 +1020,6 @@
 "l": {
 "rg": "",
 "c": []
-},
-"lambroggini": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "leonart": {
 "rg": "",

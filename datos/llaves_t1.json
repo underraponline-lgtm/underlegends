@@ -1673,7 +1673,7 @@
        "Makmah, Snow"
       ],
       "Neo, ENEK 🇪🇸",
-      "ganador: ✅ Decidir"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -1855,7 +1855,7 @@
   ],
   "n": 357,
   "nombre": "DESGRACIAS EN TOKYO VOL.14",
-  "participantes": 18,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -2242,6 +2242,14 @@
     "b": [
      [
       [
+       "Number",
+       "Richard"
+      ],
+      "Number",
+      ""
+     ],
+     [
+      [
        "MCO",
        "tormen"
       ],
@@ -2298,14 +2306,6 @@
       ],
       "Makmah",
       ""
-     ],
-     [
-      [
-       "Number",
-       "Richard"
-      ],
-      "Number",
-      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -4014,6 +4014,14 @@
      ],
      [
       [
+       "MATICERNA",
+       "MTZ"
+      ],
+      "MATICERNA",
+      ""
+     ],
+     [
+      [
        "SOL🇵🇪",
        "Deuxs"
       ],
@@ -4168,6 +4176,11 @@
    ],
    [
     "Deuxs",
+    "Octavos",
+    1250
+   ],
+   [
+    "MTZ",
     "Octavos",
     1250
    ],
@@ -5738,7 +5751,7 @@
   ],
   "n": 375,
   "nombre": "DESGRACIAS EN TOKYO VOL 18 2VS2",
-  "participantes": 34,
+  "participantes": 33,
   "rondas": [
    {
     "b": [
@@ -5748,6 +5761,14 @@
        "Marto, Gus"
       ],
       "Eze, Zignos",
+      ""
+     ],
+     [
+      [
+       "PARIA SIN REMEDIO 🇦🇷, Selek",
+       "ELPIBEOSIRIS 🇦🇷, LOLOELGAUCHO 🇦🇷"
+      ],
+      "PARIA SIN REMEDIO 🇦🇷, Selek",
       ""
      ],
      [
@@ -5784,10 +5805,10 @@
      ],
      [
       [
-       "PichulaMc, SIX 🇦🇷 R",
-       "Cronox, RICKYFORT 🇦🇷 R"
+       "PichulaMc, Six",
+       "Cronox, RICKYFORT 🇦🇷"
       ],
-      "PichulaMc, SIX 🇦🇷 R",
+      "PichulaMc, Six",
       ""
      ],
      [
@@ -5842,6 +5863,14 @@
     "b": [
      [
       [
+       "Abyssus, Oasis",
+       "Eze, Zignos"
+      ],
+      "Abyssus, Oasis",
+      ""
+     ],
+     [
+      [
        "PichulaMc, Six",
        "Molusco, Gian"
       ],
@@ -5886,6 +5915,26 @@
     "Six",
     "Subcampeón",
     3750
+   ],
+   [
+    "Eze",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Gian",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    2625
    ],
    [
     "Elsoolar",
@@ -5953,12 +6002,22 @@
     625
    ],
    [
+    "ELPIBEOSIRIS 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
     "Gus",
     "Octavos",
     625
    ],
    [
     "KRNAN 🇨🇱",
+    "Octavos",
+    625
+   ],
+   [
+    "LOLOELGAUCHO 🇦🇷",
     "Octavos",
     625
    ],
@@ -5973,7 +6032,7 @@
     625
    ],
    [
-    "RICKYFORT 🇦🇷 R",
+    "RICKYFORT 🇦🇷",
     "Octavos",
     625
    ],
@@ -6178,8 +6237,8 @@
      [
       [
        "Liberia",
-       "Slasher🇨🇱",
-       "ONZASS 🇻🇪"
+       "Slasher",
+       "ONZASS"
       ],
       "Liberia",
       "triple (3 bandas)"
@@ -6187,7 +6246,7 @@
      [
       [
        "Cinexfilo",
-       "Malva  🇨🇱",
+       "Malva",
        "PichulaMc"
       ],
       "Cinexfilo",
@@ -6205,7 +6264,7 @@
      [
       [
        "Zignos",
-       "METRO 🇨🇱",
+       "METRO",
        "Geoka"
       ],
       "Zignos",
@@ -6215,7 +6274,7 @@
       [
        "PRAISERIZA",
        "Snow",
-       "tito calderon 🇦🇷"
+       "tito calderon"
       ],
       "PRAISERIZA",
       "triple (3 bandas)"
@@ -6385,12 +6444,12 @@
     1250
    ],
    [
-    "METRO 🇨🇱",
+    "METRO",
     "Octavos",
     1250
    ],
    [
-    "Malva  🇨🇱",
+    "Malva",
     "Octavos",
     1250
    ],
@@ -6400,7 +6459,7 @@
     1250
    ],
    [
-    "ONZASS 🇻🇪",
+    "ONZASS",
     "Octavos",
     1250
    ],
@@ -6410,7 +6469,7 @@
     1250
    ],
    [
-    "Slasher🇨🇱",
+    "Slasher",
     "Octavos",
     1250
    ],
@@ -6435,7 +6494,7 @@
     1250
    ],
    [
-    "tito calderon 🇦🇷",
+    "tito calderon",
     "Octavos",
     1250
    ]
