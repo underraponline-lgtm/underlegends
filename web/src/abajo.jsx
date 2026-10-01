@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace } from './piezas.jsx';
-import { Buscar, CaraDc, CaraH, MENU } from './arriba.jsx';
+import { Buscar, CaraH, MENU } from './arriba.jsx';
 import { nuevaQue } from './cambios.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -68,22 +68,13 @@ export function Pie({ liga }) {
 }
 
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
-// la foto de la barra de abajo: si el link de Discord venció, el ícono y no la imagen rota
-function TabAv({ liga, k }) {
-  const [mal, setMal] = useState(null);
-  const src = liga.avUrl(k);
-  if (!src || mal === src) return <Ico n="yo" t={22} />;
-  return <img className="tab-av" alt="" src={src} onError={() => setMal(src)} />;
-}
-
-export function Tabbar({ liga, dc, pagina = '' }) {
-  const yo = liga.yo;
-  const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'], ['Publicaciones', 'publicaciones', '#/publicaciones']];
+export function Tabbar({ pagina = '' }) {
+  // tu cuenta vive arriba, en el círculo (Dlx, 01/10/2026: «B»). Abajo, en el lugar de «Yo», las Tarjetas
+  const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'],
+    ['Publicaciones', 'publicaciones', '#/publicaciones'], ['Tarjetas', 'tarjetas', '#/tarjetas']];
   return (
     <nav className="tabbar" aria-label="Secciones">
       {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' && !pagina ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
-      {yo ? <a href={'#/r/' + encodeURIComponent(yo.k)}><TabAv liga={liga} k={yo.k} /><span>Yo</span></a>
-        : <button type="button" className="sin-boton tab-b" onClick={accion.cuenta}>{dc ? <CaraDc dc={dc} cls="tab-av" /> : <Ico n="yo" t={22} />}<span>Yo</span></button>}
     </nav>
   );
 }
@@ -119,7 +110,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
               <button type="button" aria-pressed={tema === 'noche'} onClick={() => onTema('noche')}>Noche</button>
             </div></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
-            <button type="button" className="btn negro chico" onClick={() => { onCerrar(); accion.ajustes(); }}>Abrir</button></div>
+            <a className="btn negro chico" href="#/ajustes/hora" onClick={onCerrar}>Abrir</a></div>
           {cambios}
           <div className="x-fila"><span>Mi cuenta<small>Entrar con Discord, tu foto, tus redes y tus avisos.</small></span>
             <button type="button" className="btn negro chico" onClick={() => { onCerrar(); accion.cuenta(); }}>Abrir</button></div>

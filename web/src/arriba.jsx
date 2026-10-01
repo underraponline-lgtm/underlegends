@@ -82,12 +82,14 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
       <div className="cab-der">
         <Buscar liga={liga} />
         <a className="btn-ico" href="#/avisos" aria-label="Avisos de eventos"><Ico n="campana" t={20} /></a>
+        {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta») */}
+        <a className="btn-ico ajustes-b" href="#/ajustes" aria-label="Ajustes"><Ico n="engranaje" t={20} /></a>
         {cara ? (
           <button type="button" className="yo-chip" onClick={accion.cuenta} aria-label="Mi cuenta">{cara}<span>{nombre}</span></button>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.cuenta}>Entrar</button>
         )}
-        {/* en el celular, la cuenta es un círculo al lado de la campana */}
+        {/* en el celular, la cuenta es un círculo al lado del ⚙ (Dlx, 01/10/2026: «B»: queda arriba) */}
         <button type="button" className="btn-ico cuenta-m" onClick={accion.cuenta} aria-label={cara ? 'Mi cuenta' : 'Entrar con Discord'}>
           {cara || <Ico n="yo" t={20} />}
         </button>
@@ -614,6 +616,8 @@ export function Hero({ liga, vivoL, children }) {
     if (n < 2 || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return undefined;
     const t = setInterval(() => {
       if (quieto.current || document.visibilityState !== 'visible' || Date.now() - ultimo.current < 15000) return;
+      // «Menos animaciones» (Ajustes): no pasa solo
+      if (document.documentElement.classList.contains('calma')) return;
       ultimo.current = Date.now();
       const l = lista.current;
       if (!l.length) return;

@@ -9,6 +9,7 @@ import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { PerfilSv } from './servidor.jsx';
 import { Cambios } from './cambios.jsx';
+import { Cuenta } from './cuenta.jsx';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -145,6 +146,9 @@ export default function App() {
     const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(location.hash); };
     const cuenta = () => setYo(quienMira());
     const sigo = () => setSigoV((v) => v + 1);
+    // cambiar la hora, la zona o el formato en Ajustes: todo lo que tiene horas se vuelve a dibujar
+    const ajustes = () => setAhora(new Date());
+    window.addEventListener('lg:ajustes', ajustes);
     window.addEventListener('lg:cuenta', cuenta);
     window.addEventListener('lg:sigo', sigo);
     window.addEventListener('lg:datos', datos);
@@ -172,6 +176,7 @@ export default function App() {
       window.removeEventListener('lg:vivo', vivo); window.removeEventListener('lg:ruta', ruta);
       window.removeEventListener('hashchange', ruta); window.removeEventListener('storage', ruta);
       window.removeEventListener('lg:cuenta', cuenta); window.removeEventListener('lg:sigo', sigo);
+      window.removeEventListener('lg:ajustes', ajustes);
       clearInterval(plazo); clearInterval(reloj);
     };
   }, []);
@@ -219,7 +224,8 @@ export default function App() {
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={pagina} onMenu={() => setMenu(true)} /></Aislada>
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
-        : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada> : <>
+        : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
+        : pagina === 'ajustes' ? <Aislada n="Ajustes"><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada> : <>
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>

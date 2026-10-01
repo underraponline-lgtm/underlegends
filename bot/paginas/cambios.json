@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.64",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T16:48:00-04:00",
+   "titulo": "Ajustes, con su página y su ⚙",
+   "items": [
+    "⚙️ **Ajustes tiene su página**: tema, hora y zona, menos animaciones, tus avisos e instalar la app. Se abre con el ⚙ de arriba, al lado de la campana.",
+    "🕐 **La hora y la zona se cambian tocando**, sin listas que se despliegan, y toda la página las usa al toque.",
+    "🎞️ **Con «menos animaciones», el escenario del Inicio ya no pasa solo.**",
+    "🃏 **Abajo, en el celular, ahora está Tarjetas**: tu cuenta queda arriba, en el círculo."
+   ]
+  },
+  {
    "version": "1.63",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T16:32:00-04:00",
