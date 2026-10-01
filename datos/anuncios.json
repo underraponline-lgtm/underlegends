@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-01T03:54:26+00:00",
+ "cuando": "2026-10-01T04:24:09+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -288,6 +288,24 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": ""
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 19 MULTIVERSE",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1555066915863527425",
+   "cuando": "2026-10-01T04:00:44",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "Lewis",
+   "cupos_texto": "12 / 16 / 24",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "MULTIVERSE",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
+   "premios": "Respeto"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 18 2VS2",
@@ -2103,6 +2121,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Fokox🇲🇽",
+   "quien": "esometilin",
+   "discord_id": "881358841319682079",
+   "msg_id": "1555071276882858036",
+   "cuando": "2026-10-01T04:18:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ivo'capra 🇱🇰",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1555069820666646559",
+   "cuando": "2026-10-01T04:12:17"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1555069542609330239",
+   "cuando": "2026-10-01T04:11:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1555069392557969439",
+   "cuando": "2026-10-01T04:10:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Scot",
+   "quien": "ros81",
+   "discord_id": "1498545536708382722",
+   "msg_id": "1555069148176846939",
+   "cuando": "2026-10-01T04:09:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1555069132825952267",
+   "cuando": "2026-10-01T04:09:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Paria🇦🇷",
+   "quien": "elconocimientoeslibertad",
+   "discord_id": "1286348537499488299",
+   "msg_id": "1555068668222636033",
+   "cuando": "2026-10-01T04:07:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1555068053547393088",
+   "cuando": "2026-10-01T04:05:15"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Prosu + Sami + Partim 🇨🇴  🇨🇴 🇨🇴",
+   "quien": "prosufk",
+   "discord_id": "1177668622227886112",
+   "msg_id": "1555067781224075277",
+   "cuando": "2026-10-01T04:04:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Marto 🇦🇷",
+   "quien": "legski2",
+   "discord_id": "1164262480067952772",
+   "msg_id": "1555067030040879189",
+   "cuando": "2026-10-01T04:01:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Soneto 🇪🇨",
+   "quien": "pllsuax",
+   "discord_id": "745324578347286528",
+   "msg_id": "1555067026442158133",
+   "cuando": "2026-10-01T04:01:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Jupiter 🇲🇽",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1555067012093575219",
+   "cuando": "2026-10-01T04:01:07"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
