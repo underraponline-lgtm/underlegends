@@ -413,6 +413,9 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El buscador de arriba encuentra también servidores, países y crews** | *«sí»* (01/10) | ✅ 1.60 · y en el celular vive en el menú ☰, porque arriba no entra |
 | **Las llaves guardan la clave de cada persona**, no sólo el nombre: es lo único que separa a los que se llaman igual | *«diría que sí, si eso te facilita las cosas»* (01/10) | ✅ 1.60 · sólo en las filas cuyo nombre se repite (`_quien()` en `bot/subir_web.py`) |
 | **«Tu próximo evento»** en el escenario: a quien todavía no tiene letra, el próximo de su servidor en 36 h, con cuánto le falta | *«explícate más»* → *«me gusta tu idea»* (01/10) | ✅ 1.60, como se describió: a todos los que no tienen letra (1 a 9 eventos) |
+| **Las secciones que siguen: Mi perfil, Mi cuenta, Ajustes y el changelog** — primero el changelog | *«trabajemos en otras secciones… mi perfil o mi cuenta o ajustes o changelog»* → *«1. A»* (01/10) | ✅ el changelog (1.61) |
+| **Mi cuenta y Ajustes, como los ajustes de Discord** | *«a mí me gusta como lo tiene Discord ahí puesto, quizás puedas pensar en eso»* (01/10) | ❓ la propuesta, en el chat |
+| **En el celular, tu cuenta aparece dos veces** (el círculo de arriba y «Yo» abajo) | *«lo veo algo inútil… aparece arriba y abajo… me gustan ambas, pero es algo tonto»* (01/10) | ❓ cuál queda, en el chat |
 | **Los que mandan con flechas**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cinco por categoría | *«donde dice los que mandan podrías añadir las flechas para ir hacia competitivo el top 5, países, rachas, etc.»* (6:20 PM) | 📌 va con el remake |
 | **El panel de abajo con flechas** en lugar del Ranking (que ya está en Los que mandan): **Misiones** con la previa del Pase al costado · **Tus eventos** con Tu temporada · **La Liga en números** | *«el default sería misiones y al costado una previa del pase de temporada… luego… últimos eventos y tus resultados y al costado tu temporada… luego otra flecha con estadísticas de la liga global»* (6:20 PM) | 📌 va con el remake. Las Misiones y el Pase van de ejemplo: todavía no existen |
 | **Se busca y el pie en negro**; los afiches de Se busca pasan a papel pegado en la pared. **Los servidores, en blanco** | *«quizás poner todo negro esa parte, igualmente los servidores de la liga»* (6:20 PM) · *«los servidores de la liga make it white»* (6:50 PM) | 📌 va con el remake |
@@ -423,6 +426,32 @@ Son las que no se pueden volver a preguntar ni olvidar.
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Jueves 01/10 (3:45 PM) — versión 1.61: el changelog nuevo
+
+Dlx: *«trabajemos en otras secciones»* y, para empezar, el changelog (*«1. A»*). Es **la primera
+página que el Inicio nuevo le saca a la de hoy**: hasta acá sólo dibujaba rutas que `app.js` no
+conocía (`#/sv/<SIGLA>`).
+
+- 📜 **Por día, con la última abierta y lo no visto marcado y abierto**; los días viejos se
+  pliegan con cuántas versiones traen. Medido en el celular: de **31.000 px a 3.300**.
+- 🔗 **`#/cambios/<versión>`** abre esa sola, con su día, y la deja a la vista. Cada versión trae
+  «Compartir».
+- ☰ **El menú** tiene la fila «Changelog», con «NUEVO» si hay algo que no viste.
+
+🔑 **Cómo se queda con una vista que `app.js` SÍ conoce** (`PROPIAS`, la misma lista en
+`web/montar.py` y en `web/src/App.jsx`): el script del principio la trata como del Inicio, el
+CSS esconde **todas** las vistas viejas mientras manda el Inicio nuevo (antes escondía sólo la
+del Inicio) y `app.js` la sigue dibujando escondida. Si la app no carga, a los 8 s vuelve la vieja
+sola: probado bloqueando `inicio.js`.
+
+⚠️ **`app.js` da el changelog por visto apenas dibuja el suyo**, y lo hace antes que el Inicio
+nuevo: abriendo `#/cambios` directo no salía ningún «NUEVO». El script del principio guarda qué
+habías visto antes (`window.__cambiosVisto`) y, si se llega navegando, el Inicio lo toma justo
+antes de que `app.js` vuelva a pintar (envuelve `pintaCambios`).
+
+⚠️ **`index.html` estaba distinto de lo que arma `web/montar.py`**: el aviso de instalar de la 1.60
+se había agregado a mano. Ahora el bloque sale igual de los dos lados (comprobado comparándolos).
 
 ## 📅 Jueves 01/10 (2:07 PM) — versión 1.60: tu próximo evento, el buscador, la app y las llaves con la clave
 

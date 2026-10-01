@@ -281,3 +281,44 @@ button.btn{background:transparent;cursor:pointer}
 .inst-tx small{font:700 11px/1.35 "Space Mono",monospace;color:var(--gris)}
 .instalar .inst-x{flex:none;border:0;background:transparent;color:var(--tinta);cursor:pointer}
 @media (min-width: 900px){.app .instalar{margin:14px var(--gut) 0}}
+/* ── el changelog, #/cambios (Dlx, 01/10/2026: «1. A»). Por día, la última abierta, lo no visto marcado ── */
+.cb-cab{position:relative;z-index:1;display:grid;gap:12px;justify-items:start;padding:26px 16px 24px;color:var(--esc-tinta)}
+.cb-cab .hero-ev{margin:0;text-wrap:balance}
+/* en el celular el círculo verde ocupa la mitad derecha: el texto gris encima no se leía */
+.cb-cab .hero-p{max-width:30ch}
+@media (min-width: 900px){.app .cb-cab .hero-p{max-width:62ch}}
+.cb-n{font:700 12px/1 "Space Mono",monospace;letter-spacing:.06em;padding:6px 7px;border:1.5px solid currentColor;white-space:nowrap}
+.cb-lista{display:grid;gap:12px;padding-bottom:18px}
+.cb-dia{display:grid;gap:10px}
+.cb-dia.abierto{margin-bottom:12px}
+.cb-dh{margin:0}
+.cb-d{display:flex;align-items:center;gap:10px;width:100%;padding:10px 0;background:transparent;border:0;border-bottom:1.5px solid var(--suave);
+  color:var(--tinta);cursor:pointer;text-align:left;font:700 12px/1.2 "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase}
+.cb-d small{color:var(--gris);letter-spacing:.06em;text-transform:none;font-weight:700}
+.cb-d svg{margin-left:auto;flex:none;width:16px;height:16px;transition:transform .15s}
+.cb-dia.abierto .cb-d svg{transform:rotate(90deg)}
+.cb-vs{display:grid;gap:10px;min-width:0}
+.cb-v{border:2px solid var(--linea);background:var(--fondo);min-width:0}
+.cb-v.nueva{box-shadow:inset 6px 0 0 var(--magenta)}
+.cb-s{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:12px 12px 12px 14px;
+  background:transparent;border:0;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.cb-v.nueva .cb-s .cb-n{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.cb-t{display:grid;gap:5px;min-width:0}
+.cb-t b{font:900 16px/1.15 Archivo,sans-serif;font-stretch:110%;overflow-wrap:anywhere}
+.cb-t small{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:700 11px/1 "Space Mono",monospace;color:var(--gris)}
+.cb-t em{font-style:normal;color:var(--magenta);letter-spacing:.1em}
+.cb-s svg{flex:none;transition:transform .15s}
+.cb-v.abierta .cb-s svg{transform:rotate(90deg)}
+.cb-c{display:grid;gap:14px;justify-items:start;padding:0 14px 16px 14px}
+.cb-i{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:15px;line-height:1.45;max-width:72ch}
+.cb-i code{font:600 13px/1 "Space Mono",monospace;background:var(--caja);padding:2px 4px}
+.x-nuevo{font-style:normal;font:700 10px/1 "Space Mono",monospace;letter-spacing:.08em;background:var(--magenta);color:#fff;padding:3px 5px;margin-right:8px}
+@media (min-width: 900px){
+  .app .cb-cab{padding:44px var(--gut) 34px}
+  .app .cb-dia.abierto{grid-template-columns:210px minmax(0,1fr);gap:28px;align-items:start}
+  .app .cb-dia.abierto .cb-dh{position:sticky;top:24px}
+  .app .cb-dia.abierto .cb-d{flex-wrap:wrap;border-bottom:0;padding-top:14px}
+  .app .cb-dia.abierto .cb-d small{order:3;width:100%}
+  .app .cb-t b{font-size:18px}
+}
+@media (prefers-reduced-motion: reduce){.cb-s svg,.cb-d svg{transition:none}}

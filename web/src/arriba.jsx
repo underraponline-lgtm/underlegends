@@ -69,7 +69,7 @@ export function CaraDc({ dc, cls = 'cara' }) {
   return <span className={cls + ' ini'}>{(limpio(dc && dc.n).slice(0, 1) || '?').toUpperCase()}</span>;
 }
 
-export function Cabecera({ liga, dc, onMenu }) {
+export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   const yo = liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
   const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
@@ -77,7 +77,7 @@ export function Cabecera({ liga, dc, onMenu }) {
     <header className="cab negra">
       <Marca liga={liga} />
       <nav className="menu" aria-label="Secciones">
-        {MENU.map(([n, r]) => <a key={n} href={r} className={n === 'Inicio' ? 'on' : ''}>{n}</a>)}
+        {MENU.map(([n, r]) => <a key={n} href={r} className={n === 'Inicio' && !pagina ? 'on' : ''}>{n}</a>)}
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />

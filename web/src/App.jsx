@@ -8,6 +8,7 @@ import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { PerfilSv } from './servidor.jsx';
+import { Cambios } from './cambios.jsx';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -33,6 +34,29 @@ envolver('ir', 'lg:ruta');
 envolver('pintaCuenta', 'lg:cuenta');
 envolver('guardarSigo', 'lg:sigo');
 
+// ── el changelog: qué versión habías visto ANTES de abrirlo. app.js la da por vista apenas dibuja el suyo, que sigue
+// dibujándose escondido, y lo hace antes que esto. Si la página se abrió en `#/cambios`, ya pasó antes de que cargara
+// este módulo: por eso el script del principio de index.html la guarda (`__cambiosVisto`, ver web/montar.py). Si se
+// llega navegando, se toma justo antes de que app.js vuelva a pintar el suyo
+let cambiosAntes = (() => {
+  if (typeof window.__cambiosVisto === 'string') return window.__cambiosVisto;
+  try { return JSON.parse(localStorage.getItem('lg:cambios')) || ''; } catch (e) { return ''; }
+})();
+(function () {
+  const f = window.pintaCambios;
+  if (typeof f !== 'function' || f.__inicio) return;
+  const g = function () {
+    if (typeof window.CAMBIOS_VISTO === 'string') cambiosAntes = window.CAMBIOS_VISTO;
+    return f.apply(this, arguments);
+  };
+  g.__inicio = true;
+  window.pintaCambios = g;
+})();
+
+// las vistas de la página de hoy que ya dibuja el Inicio nuevo: la vieja sigue escondida, de respaldo. La misma lista
+// que `PROPIAS` de web/montar.py (el script del principio de index.html)
+const PROPIAS = { cambios: 1 };
+
 // ── ¿la ruta es el Inicio? La misma regla que `ir()` de app.js: vacío, `#/` o algo que no es una vista ──
 function esInicio() {
   const h = location.hash || '';
@@ -40,6 +64,7 @@ function esInicio() {
   const r = h.replace(/^#\/?/, '').split('?')[0];
   const p = r.split('/')[0];
   if (!p) return true;
+  if (PROPIAS[p]) return true;
   const alias = { avisos: 1, duelos: 1, llave: 1 };
   if (alias[p]) return false;
   return !document.querySelector('section.vista[data-vista="' + p.replace(/"/g, '') + '"]');
@@ -179,6 +204,9 @@ export default function App() {
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
+  // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
+  const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
+  const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
   const grupos = useMemo(() => {
     if (!liga) return [];
@@ -189,8 +217,9 @@ export default function App() {
   return (
     <div className={'app ' + tema} ref={raiz}>
       <div className="barra-ul" />
-      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} onMenu={() => setMenu(true)} /></Aislada>
-      {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada> : <>
+      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={pagina} onMenu={() => setMenu(true)} /></Aislada>
+      {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
+        : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada> : <>
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
@@ -205,7 +234,7 @@ export default function App() {
         <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
-      <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} /></Aislada>
+      <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={pagina} /></Aislada>
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} raiz={raiz} /></Aislada> : null}
     </div>

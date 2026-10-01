@@ -160,6 +160,21 @@ export class Liga {
     if (dias === 1) return 'mañana ' + hora(b);
     return DIAS[diaSemana(b)] + ' ' + diaMes(b) + ' · ' + hora(b);
   }
+  // el día (AAAA-MM-DD) de un instante en la zona de quien mira: para agrupar por día
+  diaClave(t) {
+    const b = utc(t);
+    return isNaN(b) ? '' : diaISO(b);
+  }
+  // «hoy», «ayer» o «martes 29 de septiembre», en la zona de quien mira
+  fechaLarga(t) {
+    const b = utc(t);
+    if (isNaN(b)) return '';
+    const d = diasEntre(b, this.ahora);
+    if (d === 0) return 'hoy';
+    if (d === 1) return 'ayer';
+    const m = Number(diaISO(b).split('-')[1]);
+    return DIAS[diaSemana(b)] + ' ' + diaMes(b) + ' de ' + MESES[m - 1];
+  }
   falta(t) {
     const seg = Math.floor((utc(t) - this.ahora) / 1000);
     const h = Math.floor(seg / 3600);

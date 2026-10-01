@@ -875,6 +875,15 @@ servidor (30/09/2026). `app.js` deja cualquier ruta desconocida en el Inicio, as
 el Inicio nuevo queda a la vista y mira la dirección (`App.jsx`, `servidor.jsx`). Una
 página nueva del remake puede nacer así, sin tocar `app.js`.
 
+🔑 **Y SE QUEDA CON VISTAS QUE `app.js` SÍ CONOCE** (01/10/2026: `#/cambios`). Van en
+`PROPIAS`, la misma lista en `web/montar.py` y en `App.jsx`: el script del principio las trata
+como del Inicio, el CSS esconde **todas** las vistas viejas mientras manda el Inicio nuevo, y
+`app.js` las sigue dibujando escondidas, así que si la app se rompe vuelve la vieja sola.
+⚠️ Lo que `app.js` hace al abrir esa vista pasa ANTES que el Inicio nuevo (el changelog se da
+por visto): lo que haga falta saber de antes lo guarda el script del principio
+(`__cambiosVisto`). **El bloque de `index.html` sale de `montar.py`**: si se cambia a mano, se
+cambia también ahí.
+
 ⚠️ **LAS CLASES DEL PROTOTIPO SON GLOBALES ADENTRO DEL SHADOW ROOT**, y ya
 chocaron cuatro veces: `.llave` y `.prox` le cambiaban la forma a los tags del
 escenario, `.pronto` pintaba de amarillo los canjes y `.st-l` volvía magenta

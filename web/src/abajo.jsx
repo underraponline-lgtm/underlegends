@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU } from './arriba.jsx';
+import { nuevaQue } from './cambios.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
 
@@ -75,12 +76,12 @@ function TabAv({ liga, k }) {
   return <img className="tab-av" alt="" src={src} onError={() => setMal(src)} />;
 }
 
-export function Tabbar({ liga, dc }) {
+export function Tabbar({ liga, dc, pagina = '' }) {
   const yo = liga.yo;
   const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'], ['Publicaciones', 'publicaciones', '#/publicaciones']];
   return (
     <nav className="tabbar" aria-label="Secciones">
-      {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
+      {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' && !pagina ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
       {yo ? <a href={'#/r/' + encodeURIComponent(yo.k)}><TabAv liga={liga} k={yo.k} /><span>Yo</span></a>
         : <button type="button" className="sin-boton tab-b" onClick={accion.cuenta}>{dc ? <CaraDc dc={dc} cls="tab-av" /> : <Ico n="yo" t={22} />}<span>Yo</span></button>}
     </nav>
@@ -95,6 +96,14 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
     return () => window.removeEventListener('keydown', k);
   }, [abierto, onCerrar]);
   if (!abierto) return null;
+  // el changelog, con su «NUEVO» si hay una versión que no viste (lo que app.js ya cargó para el punto del menú)
+  const C = window.CAMBIOS;
+  const ult = Array.isArray(C) && C[0] ? C[0].version : '';
+  const nuevo = !!ult && nuevaQue(ult, window.CAMBIOS_VISTO);
+  const cambios = (
+    <div className="x-fila"><span>Changelog<small>Lo nuevo de la página{ult ? ', hasta la v' + ult : ''}.</small></span>
+      <a className="btn negro chico" href="#/cambios" onClick={onCerrar}>{nuevo ? <em className="x-nuevo">NUEVO</em> : null}Ver</a></div>
+  );
   return (
     <div className="x-menu" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="x-caja" role="dialog" aria-modal="true" aria-label="Menú">
@@ -111,6 +120,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
             </div></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
             <button type="button" className="btn negro chico" onClick={() => { onCerrar(); accion.ajustes(); }}>Abrir</button></div>
+          {cambios}
           <div className="x-fila"><span>Mi cuenta<small>Entrar con Discord, tu foto, tus redes y tus avisos.</small></span>
             <button type="button" className="btn negro chico" onClick={() => { onCerrar(); accion.cuenta(); }}>Abrir</button></div>
         </div>

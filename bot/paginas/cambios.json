@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.61",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T15:45:00-04:00",
+   "titulo": "Este changelog, nuevo",
+   "items": [
+    "📜 **El changelog, con el estilo nuevo**: por día, con la última versión abierta y lo que no viste marcado como **NUEVO**. Los días viejos se pliegan: en el celular pasó de 37 pantallas a 4.",
+    "🔗 **Cada versión tiene su link** para compartirla (por ejemplo, `#/cambios/1.60`).",
+    "☰ **En el menú**, una fila «Changelog» que avisa cuando hay algo nuevo."
+   ]
+  },
+  {
    "version": "1.60",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T14:07:00-04:00",

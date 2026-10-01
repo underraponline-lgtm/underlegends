@@ -36,6 +36,10 @@ BASE = os.path.dirname(WEB)
 PAG = os.path.join(BASE, 'bot', 'paginas')
 MARCA = 'inicio-nuevo'
 
+#: las vistas de la página de hoy que ya dibuja el Inicio nuevo: su ruta es suya, y la vieja se sigue dibujando
+#: escondida, de respaldo. `cambios` desde el 01/10/2026 (Dlx: «1. A»). La misma lista que `PROPIAS` de App.jsx
+PROPIAS = ('cambios',)
+
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except AttributeError:
@@ -46,7 +50,7 @@ html.ini-nuevo #inicio-nuevo{display:block;position:relative;z-index:4}
 html.ini-nuevo .aurora,html.ini-nuevo .trama,html.ini-nuevo .velo,html.ini-nuevo aside.menu{display:none}
 html.ini-nuevo .app{display:block;max-width:none}
 html.ini-nuevo main{padding:0}
-html.ini-nuevo main > section.vista[data-vista=""]{display:none}
+html.ini-nuevo main > section.vista{display:none}
 html.ini-nuevo .barra{position:fixed;top:0;right:0;height:0;margin:0;padding:0;border:0;background:none;z-index:80}
 html.ini-nuevo .barra > :not(.pop){visibility:hidden}
 html.ini-nuevo .barra .pop{top:64px;right:12px}
@@ -61,7 +65,7 @@ def vistas(html, appjs):
     alias = re.findall(r'(\w+)\s*:', m.group(1)) if m else []
     if not v or not alias:
         raise SystemExit('🔴 no encontré las vistas (%d) o el ALIAS de app.js (%d)' % (len(v), len(alias)))
-    return v + [a for a in alias if a not in v]
+    return [x for x in v + [a for a in alias if a not in v] if x not in PROPIAS]
 
 
 def script(nombres):
@@ -75,6 +79,14 @@ def script(nombres):
   var c = document.documentElement.classList;
   if (ini) c.add('ini-nuevo');
   try { if (localStorage.getItem('lg:tema') === 'noche') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
+  // la última versión del changelog que se vio, ANTES de que app.js la dé por vista (lo lee el Inicio nuevo)
+  try { window.__cambiosVisto = JSON.parse(localStorage.getItem('lg:cambios') || '""') || ''; } catch (e) { /* sin guardar */ }
+  // «Instalar» (01/10/2026): Chrome avisa que la página se puede instalar una sola vez y puede ser antes de que el
+  // Inicio monte. Se guarda acá y el Inicio pone su propio botón; sin esto, Chrome mostraba el suyo cuando quería
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); window.__instalar = e; window.dispatchEvent(new Event('lg:instalar'));
+  });
+  window.addEventListener('appinstalled', function () { window.__instalar = null; window.dispatchEvent(new Event('lg:instalar')); });
   // si la app no llegó a montarse (red lenta, un navegador viejo), vuelve el Inicio de hoy
   setTimeout(function () {
     var el = document.getElementById('inicio-nuevo');
