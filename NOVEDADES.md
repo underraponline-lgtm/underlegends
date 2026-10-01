@@ -420,6 +420,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **El pie sin la línea de números** (personas, servidores y verificados: ya están en La Liga en números) | *«hay info que se repite»* (01/10) | ✅ 1.63 |
 | **Ajustes con su ⚙ arriba**, al lado de la campana y la cuenta (más chicos, para que entre todo) o en lugar de la cuenta en el celular; el ☰ queda como está | *«como está la de hoy… ¿podrías agregar el símbolo de engranaje de ajustes al costado de la campanita y la cuenta?»* (01/10) · la A: *«creo que ya te había dicho»* | ✅ 1.64: los cuatro íconos, a 36 px en el celular (medido: en 360 px quedan 10 px de aire); Ajustes con su página (`#/ajustes`), que guarda en el mismo `AJ` que la ventanita de hoy; abajo, Tarjetas |
 | **Verificarse desde la página** (lo que hace `/verificar`: qué te falta, con botones, y te anota; el rol lo sigue dando el ciclo) | *«ahí dice sin tarjeta… haz una opción para que la gente se verifique desde la página web»* (01/10) | ✅ 1.65: `#/cuenta/verificar`. Con el permiso «unirse a servidores» **el bot te mete en DRA** si no estás; **el país se elige en la página** y el bot pone ese rol (*«A»*), **recién después de aceptar las reglas de DRA** (un rol puesto a alguien «pendiente» puede saltearlas); **el Miembro lo da el ciclo** (*«A»*). `/card` y `/verificar` llevan un solo botón: «Verificarme en la página». ⏳ falta probarlo con una cuenta de verdad que no esté en DRA |
+| **Instalar la app, más específico y con imágenes de cada paso** | *«sé más específico, e incluso si puedes crea y saca imágenes o genera imágenes que reflejen cada paso»* (01/10, con la captura de Ajustes) | ✅ 1.66: Android (4 pasos) y iPhone (5), cada uno con un dibujo de la pantalla y lo que se toca marcado en verde. **Dibujos y no capturas**: el menú de Chrome y el de Safari no se pueden fotografiar desde la página y cambian con cada versión; por eso sólo se escribe lo que se toca y el resto son barras grises (`web/src/instalar.jsx`) |
+| **Las tarjetas sin foto: que aparezca la opción de verificarse en la página** | *«todavía hay algunas personas sin su foto… en vez de que le aparezca esto, que le aparezca la opción… para verificarse a través del website»* (01/10, con el `/card` de MILICA) | ✅ 1.66. **La causa era otra**: las fotos se bajaban a mano y la última vez fue el 20/09, así que **24 verificados con foto en Discord** tenían la inicial (MILICA entre ellos). Se bajaron 23 (una el CDN ya no la sirve) y ahora **el ciclo las trae solo** (paso 2f). Y al pedir tu carta sin foto, el bot te avisa sólo a vos: sin verificar, «verificate en la página» con el botón; verificado, te la guarda ahí mismo; sin foto en Discord, que te pongas una |
 | **La lista de 20 cosas legales** (privacidad, términos, cookies, edad, contacto, borrado, contraste, teclado…) | *«también asegurémonos de todo esto»* (01/10, con la captura de la lista) | ⏳ auditada el 01/10 contra la página en vivo y el código: lo que falta y en qué orden, con Dlx |
 | **Los enlaces de Under Legends como Red Bull**: la portada es la marca y la Liga Global vive en su sección | *«sería underlegends.pages.dev/onlinerap quizás… underlegends será más cosas… dame ideas de enlaces»* (01/10) → *«freestyle — todo lo de la liga global estará dentro de ahí»* → *«/freestyle-rap, put it like that, better»* | ✅ **`/freestyle-rap`**: la Liga Global entera adentro (`/freestyle-rap/ranking`, `/freestyle-rap/r/hassan`…); tu cuenta y el changelog en la raíz (`/cuenta`, `/cambios`); la portada, de UL. ⏳ falta construirlo. ⚠️ Hoy `/liga/ranking` ya abre la página pero **rota**: pide sus archivos con ruta relativa; es lo primero a arreglar |
 | **Los que mandan con flechas**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cinco por categoría | *«donde dice los que mandan podrías añadir las flechas para ir hacia competitivo el top 5, países, rachas, etc.»* (6:20 PM) | 📌 va con el remake |
@@ -430,6 +432,37 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Se mide quién vuelve a jugar un segundo evento**: por semana de debut, otro evento **otro día** dentro de 14; va en el mapa en vivo | *«Va»* (29/09) | ✅ `rankings.retencion()` → `datos/estado_escuchar.json` → el medidor «Vuelven a jugar» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Jueves 01/10 (5:50 PM) — versión 1.66: instalar paso a paso, y las fotos que faltaban
+
+**Instalar la app.** Dlx, con la captura de la parte de Ajustes: *«sé más específico, e incluso si
+puedes crea y saca imágenes o genera imágenes que reflejen cada paso»*. Ahora son pasos con un
+dibujo cada uno —Android con Chrome y iPhone con Safari, elegido solo según el teléfono—, y si
+el navegador deja instalar de un toque, el botón va arriba. **No son capturas**: los menús del
+navegador no son parte de la página y cambian con cada versión, así que se dibuja la pantalla, se
+escribe sólo lo que hay que tocar y lo demás son barras grises. Un renglón gris no envejece.
+
+**Las fotos.** Dlx, con el `/card` de MILICA: *«todavía hay algunas personas sin su foto»*. Medido:
+
+| | |
+|---|---|
+| verificados | 346 |
+| con su foto de la T1 | 302 |
+| **con foto en Discord y sin la de la T1** | **24** — se bajaron 23; la de ropomc el CDN no la sirve |
+| sin foto en Discord | 20 — van con la inicial, a propósito |
+| en la Lista sin verificar, fuera de DRA | 36 — la foto es de los verificados |
+
+🔴 **La causa: las fotos se bajaban a mano** (`bot/fotos.py --bajar`) y nada lo volvió a correr
+desde el 20/09. Y el conteo de `--ver` leía un volcado de KV de una semana: decía 324 verificados.
+Ahora `fotos.para_el_ciclo()` lee KV en vivo y es el **paso 2f** del ciclo, justo antes de «qué
+cambió», así la cara entra al sello y la tarjeta sale con ella en la misma vuelta.
+
+**Y lo que pidió Dlx, en el bot**: quien pide **su** carta y no tiene foto recibe un mensaje que
+ve sólo él (`avisoFoto()` en `bot/worker.js`). Sin verificar: «la foto es de los verificados»,
+con el botón «Verificarme en la página». Verificado y con foto en Discord: se la guarda ahí mismo
+(la primera no gasta el cambio de la temporada). Sin foto en Discord: que se ponga una.
 
 ---
 

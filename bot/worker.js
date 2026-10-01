@@ -2122,6 +2122,56 @@ async function fotoAR2(env, quien, id, hash, arranco) {
   return { ok: true, anotado: true };
 }
 
+/**
+ * 📸 TU CARTA SIN TU FOTO. Dlx, 01/10/2026, con la captura del `/card` de
+ * MILICA (una «M» gigante donde iba su cara): «todavía hay algunas personas
+ * sin su foto… en vez de que le aparezca esto, que le aparezca la opción, o
+ * sea el link en un botón o como sea, para verificarse a través del website».
+ *
+ * Sólo a quien pide SU carta, y en un mensaje que ve sólo esa persona: la
+ * carta pública no cambia. Tres casos:
+ *   · sin verificar (`nv`) → la foto es de la cuenta, y la cuenta de los
+ *     verificados (lo mismo que dice `/foto`): «verificate en la página»,
+ *     con el botón
+ *   · verificado y con foto en Discord → se la guarda ya. La primera NO
+ *     gasta el cambio de la temporada (`fotoAR2(…, false)`): no es cambiar
+ *     la foto, es la que el ciclo le tenía que haber guardado
+ *   · verificado sin foto en Discord → que se ponga una: el ciclo la toma
+ *     sola (`fotos.para_el_ciclo()`)
+ *
+ * 🔴 LA CAUSA ERA OTRA Y ESTÁ ARREGLADA APARTE: las fotos se bajaban a mano
+ * y la última vez fue el 20/09, así que 24 verificados con foto en Discord
+ * tenían la tarjeta con la inicial. Ahora es un paso del ciclo (2f).
+ *
+ * ⚠️ VA EN `waitUntil`: preguntarle a R2 no demora la carta. Y si algo falla
+ * no dice nada: la carta ya salió, y el ciclo vuelve a intentar.
+ */
+async function avisoFoto(env, i, quien, g) {
+  if (!env.CARTAS || !quien) return;
+  try {
+    if (await env.CARTAS.head(claveFoto(env, quien))) return;
+  } catch (e) {
+    return;
+  }
+  if (g && g.nv) {
+    const v = comoVerificarse(aquiEs(i.guild_id));
+    return seguir(i, '📸 Tu tarjeta va sin tu foto: la foto es de los verificados en ' +
+                     'DRA. ' + v.texto, v.botones);
+  }
+  const { id, hash } = avatarDe(i);
+  if (!hash) {
+    return seguir(i, '📸 Tu tarjeta va con tu inicial porque no tenés foto en Discord. ' +
+                     'Ponete una y el bot la toma sola en la próxima vuelta.');
+  }
+  const res = await fotoAR2(env, quien, id, hash, false);
+  if (!res.ok) return;
+  const vuelta = proximaVuelta(Date.now());
+  // `<t:…:t>`: Discord la muestra en la hora de quien la lee
+  return seguir(i, '📸 Tu tarjeta no tenía tu foto: **ya la guardé**. Sale en la ' +
+                   'próxima vuelta del bot' +
+                   (vuelta ? ', a las <t:' + Math.floor(vuelta.getTime() / 1000) + ':t>' : '') + '.');
+}
+
 // 🔑 HASTA CUÁNDO LA FOTO ES LIBRE: el instante que `bot/desplegar.py` saca
 // de `comun/temporada.py` (`FOTO_LIBRE`). Dlx, 25/09/2026: «Sí. O sea hay
 // cambios ilimitados hasta el 9». Sin el binding, 0: la regla de antes.
@@ -2833,6 +2883,10 @@ const COMANDOS = {
     }
     const abre = ((g.cs || []).indexOf('competitivo') >= 0)
       ? 'competitivo' : 'servidor';
+    // 📸 tu carta sin tu foto: un aviso que ves sólo vos (ver `avisoFoto()`)
+    if (comoDije === 'vos' || (porUsuario && String(porUsuario.value) === String(idDe(i)))) {
+      luego(ctx, avisoFoto(env, i, quien, g));
+    }
     return responder(RESPONDE.MENSAJE,
       carta(quien, g, abre, null, idDe(i), m, aquiEs(i.guild_id)));
   },

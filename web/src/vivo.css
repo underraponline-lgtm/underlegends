@@ -458,3 +458,36 @@ button.btn{background:transparent;cursor:pointer}
 .cu-sola .cu-parte{max-width:760px}
 .cu-chk li[aria-busy=true],.cu-chk[aria-busy=true]{opacity:.6}
 .cu-pais select{min-height:44px;padding:0 10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px Archivo,sans-serif}
+/* instalar la app, paso a paso y con un dibujo por paso (Dlx, 01/10/2026: «genera imágenes que reflejen cada paso»).
+   Los dibujos toman los colores del tema: en Noche, el teléfono también es oscuro */
+.pi-ya{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:2px solid var(--verde)}
+.pi-ya span{display:grid;gap:3px;flex:1;min-width:0}
+.pi-ya small{color:var(--gris);font-size:13px}
+.pi-cual{margin-top:4px}
+.pi-pasos{list-style:none;margin:8px 0 0;padding:0;width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px 14px}
+.pi-paso{display:grid;gap:10px;align-content:start}
+.pi-paso p{margin:0;font-size:15px;line-height:1.45}
+.pi-paso b{font-weight:800}
+.pi-fig{position:relative;padding:14px 14px 0;border:2px solid var(--linea);background:var(--caja);color:var(--tinta);overflow:hidden}
+.pi-n{position:absolute;top:8px;left:8px;z-index:1;width:28px;height:28px;display:grid;place-items:center;background:var(--inv);color:var(--inv-tinta);
+  font:900 15px/1 Archivo,sans-serif}
+.pi-svg{display:block;width:100%;max-width:300px;height:auto;margin:0 auto}
+.pi-tel{fill:var(--fondo)}
+.pi-borde{fill:none;stroke:currentColor;stroke-width:2.5}
+.pi-velo{fill:#000;fill-opacity:.4}
+.pi-g{fill:var(--suave)}
+.pi-t{fill:currentColor}
+.pi-trazo{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.pi-menu,.pi-caja{fill:var(--fondo);stroke:var(--suave);stroke-width:1.5}
+.pi-anillo{fill:none;stroke:var(--verde);stroke-width:3}
+.pi-tx{font:700 8.5px Archivo,sans-serif;fill:currentColor}
+.pi-tit{font-size:10px;font-weight:800}
+.pi-chico{font-size:6.5px}
+.pi-med{font-size:7.4px}
+.pi-gr{fill:var(--gris)}
+.pi-acc{fill:var(--verde);font-weight:800}
+.pi-url{font:600 6px Archivo,sans-serif;fill:var(--gris)}
+.pi-fondo-ini{fill:var(--verde);fill-opacity:.16}
+.pi-app{fill:var(--fondo)}
+.pi-sw{fill:var(--verde)}
+@media (max-width: 599.98px){.pi-pasos{grid-template-columns:1fr}.pi-svg{max-width:280px}}

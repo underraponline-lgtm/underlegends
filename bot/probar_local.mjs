@@ -1982,6 +1982,65 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
   }
 }
 
+console.log('\nTU CARTA SIN TU FOTO\n');
+
+{
+  // 📸 Dlx, 01/10/2026, con la captura de MILICA: «que le aparezca la opción…
+  // para verificarse a través del website». Sólo a quien pide SU carta.
+  const antes = globalThis.fetch, antesR2 = env.CARTAS;
+  const R2 = {}, puestos = [], mandados = [];
+  env.CARTAS = {
+    head: async (k) => (k in R2 ? { key: k } : null),
+    put: async (k) => { puestos.push(k); R2[k] = 1; },
+  };
+  let cdn = 200;
+  globalThis.fetch = async (url, opc = {}) => {
+    const u = String(url);
+    if (u.includes('cdn.discordapp.com')) return new Response(cdn === 200 ? 'webp' : '', { status: cdn });
+    if (u.includes('/webhooks/')) mandados.push(JSON.parse(opc.body));
+    return new Response('{}', { status: 200 });
+  };
+  const pedirMia = async (id, avatar, extra = {}) => {
+    mandados.length = 0;
+    const r = await pedir(Object.assign({ type: 2, guild_id: G.FFA, application_id: 'app', token: 'tk',
+      member: { user: { id, avatar } }, data: { name: 'card' } }, extra));
+    await esperarSeguimientos();
+    return r;
+  };
+  try {
+    let r = await pedirMia('999111', 'abc123');
+    ok('la carta sale igual, pública', r.json?.type === 4 && !(r.json?.data?.flags & 64));
+    ok('verificado, con foto en Discord y sin la de la temporada: se la guarda ya',
+       puestos.includes('fotos/t1/konan.webp'), JSON.stringify(puestos));
+    ok('y se lo dice sólo a él, con la hora en la de quien lee',
+       mandados.length === 1 && (mandados[0].flags & 64) && /ya la guardé/.test(mandados[0].content) &&
+       /<t:\d+:t>/.test(mandados[0].content), JSON.stringify(mandados));
+    ok('🔴 la primera foto NO gasta el cambio de la temporada', !PUESTO['foto:t1:konan']);
+    r = await pedirMia('999111', 'abc123');
+    ok('con la foto ya guardada, ni un mensaje ni otra escritura', !mandados.length &&
+       puestos.filter((k) => k === 'fotos/t1/konan.webp').length === 1);
+    delete R2['fotos/t1/konan.webp'];
+    puestos.length = 0;
+    r = await pedirMia('999111', null);
+    ok('sin foto en Discord: que se ponga una, sin guardar el gris de Discord',
+       !puestos.length && mandados.length === 1 && /no tenés foto en Discord/.test(mandados[0].content));
+    cdn = 404;
+    r = await pedirMia('999111', 'muerto');
+    ok('si el CDN no la da, se calla: la carta ya salió y el ciclo reintenta', !puestos.length && !mandados.length);
+    cdn = 200;
+    r = await pedirMia('999777', 'abc123');
+    const b = (mandados[0]?.components?.[0]?.components || [])[0] || {};
+    ok('sin verificar: «verificate en la página», con el botón (lo que pidió Dlx)',
+       mandados.length === 1 && /verificados en DRA/.test(mandados[0].content) &&
+       b.url === 'https://underlegends.pages.dev/#/cuenta/verificar' && !puestos.length, JSON.stringify(mandados));
+    r = await pedirMia('999555', 'abc123', { data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } });
+    ok('la carta de OTRO: ningún aviso, ninguna foto', !mandados.length && !puestos.length);
+  } finally {
+    globalThis.fetch = antes;
+    env.CARTAS = antesR2;
+  }
+}
+
 console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
 
 {

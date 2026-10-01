@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.66",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T17:46:00-04:00",
+   "titulo": "Instalar la app, paso a paso, y las fotos que faltaban",
+   "items": [
+    "📲 **Instalar la app, paso a paso y con un dibujo por paso**, para Android y para iPhone: en Ajustes → Instalar la app. El aviso del Inicio lleva ahí.",
+    "📸 **23 tarjetas recuperan su foto**: era gente verificada con foto en Discord que nunca se había guardado. Desde ahora el bot trae solo las que falten, en cada vuelta.",
+    "📸 **Si pedís tu carta y no tiene tu foto, el bot te dice por qué**, en un mensaje que ves sólo vos: si no estás verificado, con el botón para verificarte en la página."
+   ]
+  },
+  {
    "version": "1.65",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T17:13:00-04:00",

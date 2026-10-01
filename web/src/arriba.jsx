@@ -683,8 +683,10 @@ export function Instalar() {
     <aside className="instalar" aria-label="Instalar la página como app">
       <img alt="" src="/ul-192.png" />
       <span className="inst-tx"><b>La Liga en tu celular</b>
-        <small>{ev ? 'Instalala como app: queda en tu pantalla y se abre de un toque.' : 'En el iPhone: tocá Compartir y «Agregar a inicio». Así también te llegan los avisos.'}</small></span>
-      {ev ? <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button> : null}
+        <small>{ev ? 'Instalala como app: queda en tu pantalla y se abre de un toque.' : 'En el iPhone se instala desde Safari, y así también te llegan los avisos.'}</small></span>
+      {ev ? <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button>
+        // los pasos, con un dibujo por paso, viven en Ajustes (Dlx, 01/10/2026: «sé más específico»)
+        : <a className="btn verde chico" href="#/ajustes/instalar">Ver cómo</a>}
       <button type="button" className="btn-ico inst-x" aria-label="No mostrar más" onClick={cerrar}><Ico n="cerrar" t={18} /></button>
     </aside>
   );

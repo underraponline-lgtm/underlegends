@@ -459,6 +459,122 @@ def desde_disco(s, dry=True):
     return subidas, saltadas, fallaron
 
 
+def subir_caras(r2, faltan, cada=25):
+    """Baja del CDN y sube a R2 cada `(nombre, discord_id, hash)`. Devuelve
+    `(subidas, fallaron, anchos)`. La usan `--bajar` y el ciclo
+    (`para_el_ciclo()`): el mismo guardado por las dos puertas."""
+    ok = mal = 0
+    chico = []
+    for i, (nombre, did, h) in enumerate(faltan, 1):
+        u = url_avatar(did, h)
+        try:
+            r = requests.get(u, timeout=30)
+            if r.status_code != 200:
+                print('   🔴 %-16s el CDN dio %s' % (nombre, r.status_code))
+                mal += 1
+                continue
+            datos, tam = a_webp(r.content)
+        except Exception as e:                       # noqa: BLE001
+            print('   🔴 %-16s %s' % (nombre, str(e)[:60]))
+            mal += 1
+            continue
+        # ⚠️ SE MIRA EL ANCHO DE LA IMAGEN, NO QUE EL ARCHIVO EXISTA. Es la
+        # lección de `herramientas/bajar_avatares.py`: con «ya está» mirando
+        # el archivo, el arreglo del tamaño no habría llegado a ninguna de las
+        # que ya estaban guardadas a 128 px.
+        chico.append(tam[0])
+        err = subir(r2, clave_de(nombre), datos)
+        if err:
+            print('   🔴 %-16s R2: %s' % (nombre, err))
+            mal += 1
+            continue
+        ok += 1
+        if cada and (i % cada == 0 or i == len(faltan)):
+            print('   %d/%d  (%d subidas, %d fallaron)' % (i, len(faltan), ok, mal))
+    return ok, mal, chico
+
+
+def gente_de_kv(s):
+    """`{clave: discord_id}` de los `d:` de KV, EN VIVO.
+
+    🔴 NO DEL VOLCADO. `bot/_kv_volcado.json` lo arma `volcar_kv.py` a mano:
+    el 01/10/2026 tenía una semana y decía 324 verificados cuando eran 346,
+    y en Actions ni existe. Para el ciclo hace falta el KV de hoy.
+
+    ⚠️ SÓLO `d:`, NO `dn:`: la foto es de la cuenta, y la cuenta es de los
+    verificados (lo mismo que `/foto` le dice a quien está en la Lista sin
+    verificar). A ésos el bot y la página los mandan a verificarse.
+    """
+    import volcar_kv as VK
+    claves, cursor = [], None
+    while True:
+        pars = {'limit': 1000, 'prefix': 'd:'}
+        if cursor:
+            pars['cursor'] = cursor
+        j = s.get(VK.API + '/keys', params=pars, timeout=40).json()
+        if not j.get('success'):
+            raise RuntimeError('KV no listó: %s' % j.get('errors'))
+        claves += [k['name'] for k in j.get('result') or []]
+        cursor = (j.get('result_info') or {}).get('cursor')
+        if not cursor:
+            break
+    out = {}
+    for i in range(0, len(claves), 100):
+        lote = claves[i:i + 100]
+        # ⚠️ `bulk/get`, no `/values/<clave>`: el segundo sirve una copia vieja
+        # (ver `volcar_kv.py`)
+        r = s.post('%s/bulk/get' % VK.API, json={'keys': lote}, timeout=40)
+        vals = ((r.json().get('result') or {}).get('values') or {}) if r.ok else {}
+        for k in lote:
+            v = vals.get(k)
+            if isinstance(v, str) and v:
+                out[v] = k[2:]
+    return out
+
+
+def para_el_ciclo(limite=40):
+    """📸 Las fotos que faltan, de Discord a R2: el paso del ciclo.
+
+    🔴 EXISTE PORQUE LAS FOTOS SE BAJABAN A MANO. `--bajar` se corrió el
+    20/09/2026 y nada lo volvió a correr: el 01/10 había **24 verificados
+    con foto en Discord y sin foto en la tarjeta** —MILICA entre ellos, y
+    Dlx lo vio en su `/card`—. No fallaba nada: la carta salía con la
+    inicial, que es lo que tiene que hacer cuando no hay foto.
+
+    ⚠️ SÓLO LAS QUE FALTAN, nunca las que ya están: la foto de la temporada
+    queda congelada (la Histórica necesita la de cada una), y cambiarla es
+    `/foto`. Quien no tiene foto en Discord se vuelve a mirar en cada
+    vuelta, así que el día que se ponga una, entra sola.
+
+    ⚠️ BARATO CUANDO NO FALTA NADA: si todos los verificados tienen foto no
+    le pregunta nada a Discord; si faltan, son 3 pedidos (la lista de DRA).
+    Devuelve cuántas subió.
+    """
+    r2 = requests.Session()
+    r2.headers['Authorization'] = 'Bearer ' + env('CLOUDFLARE_API_TOKEN')
+    porid = gente_de_kv(r2)
+    tengo = ya_en_r2(r2)
+    sin = {n: d for n, d in porid.items() if clave_de(n) not in tengo}
+    if not sin:
+        print('      los %d verificados tienen su foto' % len(porid))
+        return 0
+    dc = requests.Session()
+    dc.headers['Authorization'] = 'Bot ' + env('DISCORD_TOKEN')
+    av = avatares_del_servidor(dc, guild('DRA'))
+    faltan = [(n, d, av[d]) for n, d in sorted(sin.items()) if av.get(d)]
+    sin_foto = sum(1 for d in sin.values() if d in av and not av[d])
+    fuera = sum(1 for d in sin.values() if d not in av)
+    print('      %d verificados · %d sin foto guardada: %d se pueden bajar, %d sin '
+          'foto en Discord, %d fuera de DRA'
+          % (len(porid), len(sin), len(faltan), sin_foto, fuera))
+    if not faltan:
+        return 0
+    ok, mal, _ = subir_caras(r2, faltan[:limite], cada=0)
+    print('      📸 %d foto(s) nuevas en R2%s'
+          % (ok, ' · %d fallaron' % mal if mal else ''))
+    return ok
+
+
 def main():
     ver = '--ver' in sys.argv
     bajar = '--bajar' in sys.argv
@@ -563,34 +679,7 @@ def main():
         print('\n  --limite %d: sólo las primeras %d' % (limite, len(faltan)))
 
     print('\n══ BAJANDO Y SUBIENDO ══\n')
-    ok = mal = 0
-    chico = []
-    for i, (nombre, did, h) in enumerate(faltan, 1):
-        u = url_avatar(did, h)
-        try:
-            r = requests.get(u, timeout=30)
-            if r.status_code != 200:
-                print('   🔴 %-16s el CDN dio %s' % (nombre, r.status_code))
-                mal += 1
-                continue
-            datos, tam = a_webp(r.content)
-        except Exception as e:                       # noqa: BLE001
-            print('   🔴 %-16s %s' % (nombre, str(e)[:60]))
-            mal += 1
-            continue
-        # ⚠️ SE MIRA EL ANCHO DE LA IMAGEN, NO QUE EL ARCHIVO EXISTA. Es la
-        # lección de `herramientas/bajar_avatares.py`: con «ya está» mirando
-        # el archivo, el arreglo del tamaño no habría llegado a ninguna de las
-        # que ya estaban guardadas a 128 px.
-        chico.append(tam[0])
-        err = subir(r2, clave_de(nombre), datos)
-        if err:
-            print('   🔴 %-16s R2: %s' % (nombre, err))
-            mal += 1
-            continue
-        ok += 1
-        if i % 25 == 0 or i == len(faltan):
-            print('   %d/%d  (%d subidas, %d fallaron)' % (i, len(faltan), ok, mal))
+    ok, mal, chico = subir_caras(r2, faltan)
 
     print('\n  ✅ %d foto(s) subidas a fotos/%s/' % (ok, TEMPORADA))
     if chico:

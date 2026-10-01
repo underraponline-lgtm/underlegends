@@ -1300,6 +1300,29 @@ def main():
         if r is not None:
             return r
 
+    # ── 2f · las fotos que faltan ───────────────────────────────────
+    # 📸 01/10/2026: EL CICLO NO TRAÍA LA FOTO DE NADIE. Se bajaban a mano
+    # (`bot/fotos.py --bajar`), la última vez el 20/09, así que quien se
+    # verificó después tenía la tarjeta con la inicial: **24** el 01/10,
+    # MILICA entre ellos, y Dlx lo vio en su `/card`. Nada fallaba —sin foto
+    # la carta va con la inicial—, por eso nadie se enteró en diez días.
+    #
+    # ⚠️ VA JUSTO ANTES DE «QUÉ CAMBIÓ»: la foto nueva entra al sello de esta
+    # misma corrida (`cara=` en `que_cambio`) y la tarjeta sale con la cara
+    # ahora, no en la vuelta siguiente.
+    #
+    # ⚠️ NO FRENA EL CICLO: sin foto, la carta sale igual, con la inicial.
+    paso('2f', 'las fotos que faltan, de Discord a R2')
+    if not correr:
+        print('      bajaría las fotos que faltan (`fotos.para_el_ciclo()`)')
+    else:
+        try:
+            sys.path.insert(0, SCR)
+            import fotos as _FT
+            _FT.para_el_ciclo()
+        except Exception as e:                           # noqa: BLE001
+            print('      ⚠️ las fotos: %s — sigo con las que hay' % str(e)[:70])
+
     # ── 2 · que cambio ──────────────────────────────────────────────
     paso(3, 'qué cambió')
     import que_cambio as QC

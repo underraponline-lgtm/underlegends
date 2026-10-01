@@ -10,6 +10,7 @@ import { PAIS, hora, limpio } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { nuevaQue } from './cambios.jsx';
+import { PasosInstalar } from './instalar.jsx';
 
 const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
 const W = typeof window !== 'undefined' ? window : {};
@@ -69,25 +70,11 @@ function ParteCalma() {
   );
 }
 
+// paso a paso y con un dibujo por paso: ver web/src/instalar.jsx (Dlx, 01/10/2026: «sé más específico»)
 function ParteInstalar() {
-  const [ev, setEv] = useState(() => W.__instalar || null);
-  useEffect(() => {
-    const f = () => setEv(W.__instalar || null);
-    W.addEventListener('lg:instalar', f);
-    return () => W.removeEventListener('lg:instalar', f);
-  }, []);
-  const app = !!(W.matchMedia && W.matchMedia('(display-mode: standalone)').matches) || W.navigator.standalone === true;
-  const instalar = async () => {
-    const e = ev;
-    W.__instalar = null;
-    setEv(null);
-    try { e.prompt(); await e.userChoice; } catch (err) { /* el navegador no quiso */ }
-  };
   return (
-    <Caja t="La Liga en tu celular" d={app ? 'Ya la estás usando como app.' : 'Instalada, queda en tu pantalla y se abre de un toque. En el iPhone es además lo que habilita los avisos.'}>
-      {ev ? <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button> : null}
-      {!app ? <ol className="cu-pasos"><li>En Android: el menú de Chrome (⋮) → «Instalar app».</li>
-        <li>En el iPhone: en Safari, Compartir → «Agregar a inicio».</li></ol> : null}
+    <Caja t="La Liga en tu celular" d="Instalada, queda en tu pantalla de inicio y se abre de un toque, como cualquier app. En el iPhone es además lo que habilita los avisos de eventos.">
+      <PasosInstalar />
     </Caja>
   );
 }
