@@ -511,36 +511,30 @@ console.log('\nLOS DATOS\n');
 {
   const r = await pedir({ type: 2, guild_id: '1',
     member: { user: { id: '000000' } }, data: { name: 'card' } });
-  // ⚠️ SE PIDE EL CAMINO, NO LA FRASE. Lo que no puede faltar es cómo entrar:
-  // desde un guild que no es de la Liga va la invitación a DRA más la URL del
-  // canal. Afirmar el texto entero haría fallar la prueba por una coma.
+  // ⚠️ SE PIDE EL CAMINO, NO LA FRASE. Lo que no puede faltar es cómo
+  // verificarse. Afirmar el texto entero haría fallar la prueba por una coma.
   const c = r.json?.data?.content || '';
   ok('un ID desconocido avisa en vez de reventar', c.includes('DRA'), c.slice(0, 48));
-  // ⚠️ SON DOS BOTONES Y EL ORDEN IMPORTA. El canal de verificación no se ve
-  // hasta estar adentro, así que «Verificarme» antes de entrar lleva a una
-  // pantalla vacía. Discord los dibuja de izquierda a derecha.
+  // 🔑 DESDE EL 01/10/2026 ES UN BOTÓN, A LA PÁGINA (Dlx: «que esto te
+  // redirija, y que te entres a DRA automáticamente»). Antes eran dos —la
+  // invitación y el canal de DRA—, y la página hace los dos pasos.
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
-  ok('y le da los dos botones, entrar y verificarse', bs.length === 2,
-     bs.map(b => b.label).join(' · '));
-  ok('primero entrar, después verificarse',
-     (bs[0]?.url || '').includes('discord.gg/') &&
-     (bs[1]?.url || '').includes('/channels/'),
-     `${bs[0]?.label} → ${bs[1]?.label}`);
+  ok('y le da UN botón: verificarse en la página', bs.length === 1 &&
+     (bs[0]?.url || '') === 'https://underlegends.pages.dev/#/cuenta/verificar',
+     bs.map(b => b.label + ' ' + b.url).join(' · '));
+  ok('que dice que si no está en DRA, la página lo mete', /te mete/.test(c), c.slice(-120));
 }
 {
-  // ⚠️ EL MISMO CASO PERO PARADO EN DRA, Y TIENE QUE CONTESTAR DISTINTO. Una
-  // mención `<#id>` sólo se dibuja para quien ya ve ese canal: adentro es un
-  // link con el nombre del canal, y afuera sería una mención rota. Por eso
-  // afuera va la URL completa. Si alguien "simplifica" el helper a un solo
-  // texto, la mitad de la gente recibe algo que no se puede clickear.
+  // ⚠️ EL MISMO CASO PERO PARADO EN DRA: el mismo botón, sin prometerle que
+  // lo mete (ya está adentro: la interacción vino de ahí).
   const r = await pedir({ type: 2, guild_id: G.DRA,
     member: { user: { id: '000000' } }, data: { name: 'card' } });
   const c = r.json?.data?.content || '';
-  ok('parado en DRA le menciona el canal', c.includes(`<#${VERIFICA.canal}>`),
-     c.slice(-50));
+  ok('parado en DRA también va a la página, sin «te mete»',
+     c.includes('Verificate en la página') && !/te mete/.test(c), c.slice(-90));
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
-  ok('y le queda UN solo botón, el de verificarse', bs.length === 1,
-     bs.map(b => b.label).join(' · '));
+  ok('y le queda UN solo botón, el de verificarse', bs.length === 1 &&
+     /#\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
   ok('y NO le manda la invitación a donde ya está',
      !c.includes('discord.gg/') && !bs.some(b => (b.url || '').includes('discord.gg/')),
      'la interacción vino de DRA: ya está adentro');
@@ -1810,6 +1804,184 @@ console.log('\n/VERIFICAR\n');
   ok('sin token ni portón, hace lo de /card: anota y explica', /Ya te anoté/.test(texto(r)), texto(r));
 }
 
+console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
+
+{
+  // 🔑 Dlx, 01/10/2026: «que te entres a DRA automáticamente», el país elegido
+  // en la página (su «A») y el Miembro, del ciclo (su otra «A»).
+  const P = { guild: G.DRA, rol: 'MIEMBRO', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
+              revisa: ['700699'] };
+  // un Discord de mentira: de quién es cada permiso, quién está en DRA y todo lo que se le pidió
+  const USUARIOS = {
+    permisoNuevo1234567890: { id: '700601', username: 'nuevo', global_name: 'Nuevo' },
+    permisoChile1234567890: { id: '700602', username: 'chileno', global_name: 'Chileno' },
+    permisoDosBand12345678: { id: '700603', username: 'dos', global_name: 'Dos 🇦🇷🇨🇱' },
+    permisoRevisa123456789: { id: '700699', username: 'revisado', global_name: 'Revisado' },
+    permisoKonan1234567890: { id: '999111', username: 'konan', global_name: 'Konan' },
+    permisoBaja12345678901: { id: '700650', username: 'baja', global_name: 'Baja' },
+    permisoLleno1234567890: { id: '700660', username: 'lleno', global_name: 'Lleno' },
+  };
+  const DRA = {
+    700602: { roles: ['R_CL'], pending: false, user: { id: '700602', username: 'chileno' } },
+    700603: { roles: [], pending: false, nick: '', user: { id: '700603', username: 'dos', global_name: 'Dos 🇦🇷🇨🇱' } },
+    700699: { roles: [], pending: false, user: { id: '700699', username: 'revisado' } },
+  };
+  const LLAMADAS = [];
+  let entrarDa = null;   // lo que contesta el PUT de entrar, cuando no es lo normal
+  let usuariosDa = 200;
+  const antes = globalThis.fetch;
+  globalThis.fetch = async (url, opc = {}) => {
+    const u = String(url), m = String(opc.method || 'GET').toUpperCase(), hs = opc.headers || {};
+    LLAMADAS.push({ u, m, hs, body: opc.body ? JSON.parse(opc.body) : null });
+    if (u.endsWith('/users/@me')) {
+      if (usuariosDa !== 200) return new Response('{"message":"x"}', { status: usuariosDa });
+      const yo = USUARIOS[String(hs.Authorization || '').replace(/^Bearer /, '')];
+      return yo ? new Response(JSON.stringify(yo), { status: 200 })
+        : new Response('{"message":"401: Unauthorized"}', { status: 401 });
+    }
+    const mr = u.match(/\/guilds\/(\d+)\/members\/(\d+)(?:\/roles\/(\w+))?$/);
+    if (!mr) return new Response('{}', { status: 404 });
+    const [, , id, rol] = mr;
+    if (rol && m === 'PUT') {
+      if (!DRA[id]) return new Response('{"code":10007}', { status: 404 });
+      DRA[id].roles.push(rol);
+      return new Response(null, { status: 204 });
+    }
+    if (m === 'PUT') {
+      if (entrarDa) return new Response(JSON.stringify(entrarDa.cuerpo || {}), { status: entrarDa.status });
+      if (DRA[id]) return new Response(null, { status: 204 });
+      DRA[id] = { roles: [], pending: true, user: { id, username: 'x' } };
+      return new Response(JSON.stringify(DRA[id]), { status: 201 });
+    }
+    return DRA[id] ? new Response(JSON.stringify(DRA[id]), { status: 200 })
+      : new Response('{"message":"Unknown Member","code":10007}', { status: 404 });
+  };
+  env.DISCORD_TOKEN = 'x';
+  META.porton = P;
+  const ver = async (cuerpo, seguido = false) => {
+    RELOJ += seguido ? 5 : 60000;
+    const r = await worker.fetch(new Request('https://x/cuenta/verificar', { method: 'POST',
+      body: JSON.stringify(cuerpo) }), env, ctx);
+    let j = null;
+    try { j = JSON.parse(await r.text()); } catch (e) { j = null; }
+    return { status: r.status, json: j || {} };
+  };
+  const pusoRol = (id) => LLAMADAS.filter((l) => l.m === 'PUT' && l.u.indexOf('/members/' + id + '/roles/') >= 0);
+  try {
+    let r = await ver({ token: 'corto' });
+    ok('un permiso con forma rara se rechaza sin preguntarle a Discord', r.status === 400 && !LLAMADAS.length);
+    r = await ver({ token: 'permisoQueNoExiste12345' });
+    ok('un permiso que Discord no reconoce: 401', r.status === 401 && r.json.error === 'discord');
+
+    // 1 · quien no está en DRA: el bot lo mete, y entra pendiente
+    LLAMADAS.length = 0;
+    r = await ver({ token: 'permisoNuevo1234567890' });
+    const entro = LLAMADAS.find((l) => l.m === 'PUT' && /\/members\/700601$/.test(l.u));
+    ok('fuera de DRA: el bot lo mete, con su permiso', r.status === 200 && r.json.entro === true && entro &&
+       entro.body.access_token === 'permisoNuevo1234567890' && /^Bot /.test(entro.hs.Authorization),
+       JSON.stringify(r.json));
+    ok('sin ningún rol en el cuerpo: entra pendiente y el país va después', entro && !('roles' in entro.body));
+    ok('y el registro de auditoría de DRA dice de dónde vino', entro && /underlegends/.test(
+      decodeURIComponent(entro.hs['X-Audit-Log-Reason'] || '')));
+    ok('la página se entera de que falta aceptar las reglas, y de los países para elegir',
+       r.json.pendiente === true && r.json.completo === false && r.json.opciones.join() === 'ar,cl,us',
+       JSON.stringify(r.json));
+    // 2 · pendiente y elige país: no se le pone nada todavía
+    LLAMADAS.length = 0;
+    r = await ver({ token: 'permisoNuevo1234567890', pais: 'ar' });
+    ok('🔴 pendiente: el país NO se pone (un rol puede saltearse las reglas de DRA)',
+       r.status === 200 && r.json.pendiente && !r.json.puso && !pusoRol('700601').length, JSON.stringify(r.json));
+    ok('ni se lo vuelve a meter: ya está', !LLAMADAS.some((l) => l.m === 'PUT'));
+    await esperarSeguimientos();
+    ok('y pendiente no se anota: el ciclo no lo busca todavía', !PUESTO['reg:700601']);
+    // 3 · aceptó las reglas: ahora sí
+    DRA['700601'].pending = false;
+    r = await ver({ token: 'permisoNuevo1234567890' });
+    ok('aceptó las reglas y no tiene país: lo pide', !r.json.pendiente && !r.json.paises.length &&
+       !r.json.completo && !pusoRol('700601').length, JSON.stringify(r.json));
+    r = await ver({ token: 'permisoNuevo1234567890', pais: 'ar' });
+    ok('elige Argentina: el bot le pone ESE rol de DRA, y una sola vez',
+       r.json.puso === 'ar' && r.json.paises.join() === 'ar' && r.json.completo === true &&
+       pusoRol('700601').length === 1 && /\/roles\/R_AR$/.test(pusoRol('700601')[0].u), JSON.stringify(r.json));
+    await esperarSeguimientos();
+    const reg = JSON.parse(PUESTO['reg:700601'] || '{}');
+    ok('completo: queda anotado como «yo», así la vuelta del ciclo lo encuentra',
+       reg.id === '700601' && reg.por === 'yo' && reg.sv === 'DRA', JSON.stringify(reg));
+    ok('y dice cuándo es esa vuelta', /^\d{4}-\d\d-\d\dT\d\d:(22|52):00/.test(r.json.vuelta || ''), r.json.vuelta);
+    r = await ver({ token: 'permisoNuevo1234567890', pais: 'cl' });
+    ok('con rol de país ya puesto, otro país no se pone: cambiarlo es cosa de DRA',
+       pusoRol('700601').length === 1 && r.json.paises.join() === 'ar' && !r.json.puso);
+
+    // 4 · los que ya estaban en DRA
+    LLAMADAS.length = 0;
+    r = await ver({ token: 'permisoChile1234567890', pais: 'ar' });
+    ok('ya en DRA con su rol de Chile: no se lo mete ni se le toca el país',
+       r.json.entro === false && r.json.paises.join() === 'cl' && !LLAMADAS.some((l) => l.m === 'PUT'),
+       JSON.stringify(r.json));
+    r = await ver({ token: 'permisoDosBand12345678' });
+    ok('dos banderas en el nombre y ningún rol: dos países, y se pueden arreglar acá',
+       r.json.paises.length === 2 && r.json.porRol === false && !r.json.completo, JSON.stringify(r.json));
+    r = await ver({ token: 'permisoDosBand12345678', pais: 'cl' });
+    ok('elige uno: el rol gana sobre las banderas, como en pais_por_rol',
+       r.json.puso === 'cl' && r.json.paises.join() === 'cl', JSON.stringify(r.json));
+    r = await ver({ token: 'permisoRevisa123456789', pais: 'ar' });
+    await esperarSeguimientos();
+    ok('a quien revisa un admin: el país sí, pero no se anota ni se le promete nada',
+       r.json.revisa === true && !r.json.completo && !PUESTO['reg:700699'], JSON.stringify(r.json));
+    ok('🔴 y el rol de Miembro no lo pone nunca la página: lo da el ciclo',
+       !LLAMADAS.some((l) => /\/roles\/MIEMBRO$/.test(l.u)));
+    r = await ver({ token: 'permisoChile1234567890', pais: 'zz' });
+    ok('un país que DRA no tiene: 400, sin tocar nada', r.status === 400 && r.json.error === 'pais');
+
+    // 5 · lo que no es el camino normal
+    LLAMADAS.length = 0;
+    r = await ver({ token: 'permisoKonan1234567890' });
+    ok('quien ya está cargado (`d:`): «listo», sin mirar DRA', r.json.listo === true &&
+       !LLAMADAS.some((l) => /\/guilds\//.test(l.u)));
+    PUESTO['olvido:700650'] = '1';
+    r = await ver({ token: 'permisoBaja12345678901' });
+    ok('quien borró sus datos no vuelve con un toque: ni entra a DRA', r.json.olvido === true &&
+       !LLAMADAS.some((l) => /\/members\/700650/.test(l.u)));
+    delete PUESTO['olvido:700650'];
+    entrarDa = { status: 400, cuerpo: { code: 30001, message: 'Maximum number of guilds reached (100)' } };
+    r = await ver({ token: 'permisoLleno1234567890' });
+    ok('con el máximo de servidores lo dice («lleno»)', r.status === 403 && r.json.error === 'lleno');
+    entrarDa = { status: 403, cuerpo: { code: 40007, message: 'The user is banned from this guild.' } };
+    r = await ver({ token: 'permisoLleno1234567890' });
+    ok('si DRA no lo deja entrar, «no_deja»', r.status === 403 && r.json.error === 'no_deja');
+    entrarDa = { status: 403, cuerpo: { code: 50001, message: 'Missing Access' } };
+    r = await ver({ token: 'permisoLleno1234567890' });
+    ok('un permiso sin «unirse a servidores»: «permiso», para pedirlo de nuevo',
+       r.status === 403 && r.json.error === 'permiso');
+    entrarDa = null;
+    usuariosDa = 429;
+    r = await ver({ token: 'permisoChile1234567890' });
+    ok('si Discord frena (429): 503, no «permiso malo»', r.status === 503 && r.json.error === 'discord_ocupado');
+    usuariosDa = 200;
+    delete META.porton;
+    r = await ver({ token: 'permisoChile1234567890' });
+    ok('sin el portón en KV no inventa: 503 «porton»', r.status === 503 && r.json.error === 'porton');
+    META.porton = P;
+    let frenada = null;
+    for (let k = 0; k < 8 && !frenada; k++) {
+      const x = await ver({ token: 'permisoChile1234567890' }, true);
+      if (x.status === 429) frenada = x;
+    }
+    ok('y lleva el freno de Mi cuenta (escribe en Discord)', frenada && frenada.json.error === 'espera');
+    // el proxy de Pages la deja pasar
+    const { default: proxy } = await import('./paginas/_worker.js');
+    let fue = null;
+    globalThis.fetch = async (u) => { fue = String(u); return new Response('{"ok":true}', { status: 200 }); };
+    await proxy.fetch(new Request('https://underlegends.pages.dev/api/cuenta/verificar', { method: 'POST',
+      body: '{"token":"x"}' }), { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } });
+    ok('el proxy de la página la manda al Worker', !!fue && /\/cuenta\/verificar$/.test(fue), fue);
+  } finally {
+    globalThis.fetch = antes;
+    delete env.DISCORD_TOKEN;
+    delete META.porton;
+  }
+}
+
 console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
 
 {
@@ -1838,7 +2010,7 @@ console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
   ok('y es efímero', ((r.json?.data?.flags || 0) & (1 << 6)) !== 0);
   ok('le dice que es de los verificados', txt.includes('verificados') && txt.includes('Competitiva'), txt);
   ok('y cómo verificarse, con el botón', (r.json?.data?.components?.[0]?.components || [])
-     .some(b => b.label === 'Verificarme'));
+     .some(b => b.label === 'Verificarme en la página'));
 
   // las libres sí cambian la carta
   r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:libre:temporada:999777' },

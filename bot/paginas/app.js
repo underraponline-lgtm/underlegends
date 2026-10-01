@@ -5195,21 +5195,62 @@ var DC_TOKEN = null, REDES_MIAS = null;
 function urlLogin(modo) {
   // 'r' las redes (pide `connections`), 'v' vincular los avisos, 'f' la
   // foto, 'e' votar en una encuesta, 't' la tienda (poner un precio o ver la
-  // billetera), o entrar
+  // billetera), 'd' verificarse (pide `guilds.join`: el bot te mete en DRA),
+  // o entrar
   var conRedes = modo === true || modo === 'r';
-  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' ? modo : 'i') +
+  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' || modo === 'd' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
     '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
-    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : 'identify') +
+    '&scope=' + encodeURIComponent(conRedes ? 'identify connections' : modo === 'd' ? 'identify guilds.join' : 'identify') +
     '&prompt=' + (conRedes ? 'consent' : 'none') + '&state=' + encodeURIComponent(st);
 }
 /* 🔑 «SALIR» CIERRA LA SESIÓN: el Worker la borra y le saca la cookie al
    navegador. Y lo que se sabía de la billetera se olvida acá. */
+/* 🔑 VERIFICARSE DESDE LA PÁGINA. Dlx, 01/10/2026: «haz que la gente se
+   verifique por la página web… y que te entres a DRA automáticamente». Con
+   el permiso de «unirse a servidores» el Worker te mete en DRA y, si elegís
+   tu país, te pone ese rol allá (`cuentaVerificar()` en bot/worker.js). Lo
+   que contesta queda en `VERIF` y la página nueva se entera por `lg:verif`.
+   ⚠️ Un error NO manda solo a Discord: se muestra con su botón. Un permiso
+   que vuelve mal y reenvía solo es un bucle (pasó con los votos, 28/09). */
+var VERIF = null;
+function avisarVerif() {
+  try { window.dispatchEvent(new Event('lg:verif')); } catch (e) { /* navegador viejo */ }
+}
+function verificarme(pais) {
+  if (!DC_TOKEN) {
+    // sin el permiso en memoria (se recargó la página): a Discord, que con el
+    // permiso ya dado vuelve de rebote, y el país elegido espera acá
+    try {
+      if (pais) sessionStorage.setItem('lg:verif-pais', String(pais));
+      else sessionStorage.removeItem('lg:verif-pais');
+    } catch (e) { /* sin sesión: se elige de nuevo al volver */ }
+    location.href = urlLogin('d');
+    return Promise.resolve(null);
+  }
+  VERIF = Object.assign({}, VERIF && !VERIF.error ? VERIF : {}, { cargando: true });
+  avisarVerif();
+  return fetch('/api/cuenta/verificar', { method: 'POST', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(pais ? { token: DC_TOKEN, pais: String(pais) } : { token: DC_TOKEN }) })
+    .then(function (r) {
+      return r.json().catch(function () { return { error: 'red' }; })
+        .then(function (j) { j = j || {}; j.estadoHttp = r.status; return j; });
+    })
+    .then(function (j) {
+      // un permiso vencido se olvida: el botón de reintentar va a buscar otro
+      if (j.error === 'discord' || j.error === 'token' || j.error === 'permiso') DC_TOKEN = null;
+      VERIF = j;
+      avisarVerif();
+      return j;
+    })
+    .catch(function () { VERIF = { error: 'red' }; avisarVerif(); return VERIF; });
+}
 function cerrarSesion() {
   DC_TOKEN = null;
   BILL = null;
+  VERIF = null;
   fetch('/api/cuenta/salir', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
     .catch(function () { /* se cierra sola a los 30 días */ });
 }
@@ -5360,11 +5401,16 @@ function volverDeDiscord() {
   if (modo0 === 't') {
     try { pp = JSON.parse(sessionStorage.getItem('lg:precio') || 'null'); } catch (e) { pp = null; }
   }
-  var destino = '#/' + (modo0 === 'v' ? 'avisos' : modo0 === 't'
+  var destino = '#/' + (modo0 === 'v' ? 'avisos' : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', location.pathname + location.search + destino); } catch (e) { location.hash = destino; }
   var st = '';
   try { st = sessionStorage.getItem('lg:estado') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) { st = ''; }
+  // quien canceló el permiso de verificarse vuelve a la página y lo lee ahí
+  if (modo0 === 'd' && !q.access_token && q.error) {
+    VERIF = { error: q.error === 'access_denied' ? 'cancelado' : 'discord_error' };
+    avisarVerif();
+  }
   if (!q.access_token || !st || q.state !== st) return;
   var porRedes = st.charAt(0) === 'r';
   var porAvisos = st.charAt(0) === 'v';
@@ -5374,7 +5420,15 @@ function volverDeDiscord() {
   var porVoto = st.charAt(0) === 'e';
   // 🔑 LA TIENDA: igual, en memoria (ver `ponerPrecio()` y `pedirBilletera()`)
   var porTienda = st.charAt(0) === 't';
-  if (porRedes || porFoto || porVoto || porTienda) DC_TOKEN = q.access_token;
+  // 🔑 VERIFICARSE: también en memoria, para «Revisar» y para elegir el país
+  var porVerif = st.charAt(0) === 'd';
+  if (porRedes || porFoto || porVoto || porTienda || porVerif) DC_TOKEN = q.access_token;
+  // y se mira ya, sin esperar a `/api/cuenta`: el Worker le pregunta a Discord por su cuenta
+  if (porVerif) {
+    var vp = '';
+    try { vp = sessionStorage.getItem('lg:verif-pais') || ''; sessionStorage.removeItem('lg:verif-pais'); } catch (e) { vp = ''; }
+    verificarme(vp || null);
+  }
   // recién vuelto de Discord: si igual no se sabe quién sos, no se vuelve a ir
   DC_VUELTA = true;
   // el precio que se tocó antes de entrar sale ya; si no, se muestra la billetera
@@ -5423,6 +5477,11 @@ function volverDeDiscord() {
       if (porTienda) {
         $('#popCuenta').hidden = true;
         if (D) pintaPrecios();
+      }
+      // y quien vino a verificarse se queda en su página de verificarse
+      if (porVerif) {
+        $('#popCuenta').hidden = true;
+        avisarVerif();
       }
       if (porFoto) {
         pedirFoto(false).then(function (R) {
@@ -5497,9 +5556,11 @@ function _pintaPopCuenta() {
   if (!f && DC) {
     c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
       esc(DC.n) + '</b><small>Conectado con Discord</small></div></div>' +
-      '<p class="nota">Todavía no estás verificado en la Liga: escribí <code>/verificar</code> en ' +
-      'Discord y te dice qué te falta. Si estás en la Lista y ya jugaste, tu Temporada y tu ' +
-      'Servidor salen igual con <code>/card</code>.</p><nav class="pop-menu">' +
+      '<p class="nota">Todavía no estás verificado en la Liga. Verificate acá, en un toque: si no ' +
+      'estás en Discord Rap Español te metemos, y te decimos qué te falta. Si estás en la Lista y ' +
+      'ya jugaste, tu Temporada y tu Servidor salen igual con <code>/card</code>.</p><nav class="pop-menu">' +
+      // 🔑 Dlx, 01/10/2026: «haz que la gente se verifique por la página web»
+      '<a href="#/cuenta/verificar">&#9989; Verificarme</a>' +
       '<a href="#/guia">&#127915; Cómo conseguir tu tarjeta</a>' +
       '<a href="#/avisos">&#128276; Mis avisos</a>' +
       '<button type="button" id="yoOlvidar">Salir</button></nav>' + secMiServidor() + secProximos() + secSigo();

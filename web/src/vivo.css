@@ -454,4 +454,7 @@ button.btn{background:transparent;cursor:pointer}
 .cu-chk-t b{font:800 15px/1.2 Archivo,sans-serif}
 .cu-chk-t small{color:var(--gris);font-size:13px;line-height:1.4}
 .cu-pais{display:flex;flex-wrap:wrap;gap:8px}
+.cu-band{width:21px;height:14px;margin-left:4px;vertical-align:-1px;object-fit:cover;border:1px solid var(--suave)}
+.cu-sola .cu-parte{max-width:760px}
+.cu-chk li[aria-busy=true],.cu-chk[aria-busy=true]{opacity:.6}
 .cu-pais select{min-height:44px;padding:0 10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px Archivo,sans-serif}

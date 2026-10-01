@@ -419,7 +419,8 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Los que mandan sin el texto de abajo**: Temporada y Competitivo, la tarjeta sola; Duelos, Podios y Rachas, una línea con lo que la tarjeta no dice. También en «Los que mandan» de cada servidor | *«las cosas de abajo son innecesarias porque la tarjeta ya tiene esa info»* (01/10) | ✅ 1.62 |
 | **El pie sin la línea de números** (personas, servidores y verificados: ya están en La Liga en números) | *«hay info que se repite»* (01/10) | ✅ 1.63 |
 | **Ajustes con su ⚙ arriba**, al lado de la campana y la cuenta (más chicos, para que entre todo) o en lugar de la cuenta en el celular; el ☰ queda como está | *«como está la de hoy… ¿podrías agregar el símbolo de engranaje de ajustes al costado de la campanita y la cuenta?»* (01/10) · la A: *«creo que ya te había dicho»* | ✅ 1.64: los cuatro íconos, a 36 px en el celular (medido: en 360 px quedan 10 px de aire); Ajustes con su página (`#/ajustes`), que guarda en el mismo `AJ` que la ventanita de hoy; abajo, Tarjetas |
-| **Verificarse desde la página** (lo que hace `/verificar`: qué te falta, con botones, y te anota; el rol lo sigue dando el ciclo) | *«ahí dice sin tarjeta… haz una opción para que la gente se verifique desde la página web»* (01/10) | ⏳ decidido: **el país se elige en la página** (el bot pone el rol en DRA, *«A»*) y **el rol de Miembro lo da el ciclo** (*«A»*). Se construye después de Ajustes |
+| **Verificarse desde la página** (lo que hace `/verificar`: qué te falta, con botones, y te anota; el rol lo sigue dando el ciclo) | *«ahí dice sin tarjeta… haz una opción para que la gente se verifique desde la página web»* (01/10) | ✅ 1.65: `#/cuenta/verificar`. Con el permiso «unirse a servidores» **el bot te mete en DRA** si no estás; **el país se elige en la página** y el bot pone ese rol (*«A»*), **recién después de aceptar las reglas de DRA** (un rol puesto a alguien «pendiente» puede saltearlas); **el Miembro lo da el ciclo** (*«A»*). `/card` y `/verificar` llevan un solo botón: «Verificarme en la página». ⏳ falta probarlo con una cuenta de verdad que no esté en DRA |
+| **La lista de 20 cosas legales** (privacidad, términos, cookies, edad, contacto, borrado, contraste, teclado…) | *«también asegurémonos de todo esto»* (01/10, con la captura de la lista) | ⏳ auditada el 01/10 contra la página en vivo y el código: lo que falta y en qué orden, con Dlx |
 | **Los enlaces de Under Legends como Red Bull**: la portada es la marca y la Liga Global vive en su sección | *«sería underlegends.pages.dev/onlinerap quizás… underlegends será más cosas… dame ideas de enlaces»* (01/10) → *«freestyle — todo lo de la liga global estará dentro de ahí»* → *«/freestyle-rap, put it like that, better»* | ✅ **`/freestyle-rap`**: la Liga Global entera adentro (`/freestyle-rap/ranking`, `/freestyle-rap/r/hassan`…); tu cuenta y el changelog en la raíz (`/cuenta`, `/cambios`); la portada, de UL. ⏳ falta construirlo. ⚠️ Hoy `/liga/ranking` ya abre la página pero **rota**: pide sus archivos con ruta relativa; es lo primero a arreglar |
 | **Los que mandan con flechas**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cinco por categoría | *«donde dice los que mandan podrías añadir las flechas para ir hacia competitivo el top 5, países, rachas, etc.»* (6:20 PM) | 📌 va con el remake |
 | **El panel de abajo con flechas** en lugar del Ranking (que ya está en Los que mandan): **Misiones** con la previa del Pase al costado · **Tus eventos** con Tu temporada · **La Liga en números** | *«el default sería misiones y al costado una previa del pase de temporada… luego… últimos eventos y tus resultados y al costado tu temporada… luego otra flecha con estadísticas de la liga global»* (6:20 PM) | 📌 va con el remake. Las Misiones y el Pase van de ejemplo: todavía no existen |
@@ -429,6 +430,37 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **Se mide quién vuelve a jugar un segundo evento**: por semana de debut, otro evento **otro día** dentro de 14; va en el mapa en vivo | *«Va»* (29/09) | ✅ `rankings.retencion()` → `datos/estado_escuchar.json` → el medidor «Vuelven a jugar» |
 
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
+
+---
+
+## 📅 Jueves 01/10 (5:15 PM) — versión 1.65: verificarte desde la página
+
+Dlx, con la captura de un `/card` que decía «todavía no estás verificado»: *«en vez de que le
+aparezca así, haz que la gente se verifique por la página web, así más rápido, y que esto te
+redirija, y que te entres a DRA automáticamente al hacer eso»*. Con sus dos «A»: el país se elige
+en la página (el bot pone el rol en DRA) y el Miembro lo da el ciclo.
+
+| pieza | qué hace | dónde |
+|---|---|---|
+| **la página** | `#/cuenta/verificar`: qué tenés y qué te falta, con el botón que lo arregla | `PaginaVerificar` en `web/src/cuenta.jsx` |
+| **el permiso** | Discord pide `identify guilds.join` (modo `d` de `urlLogin()`); se usa una vez y no se guarda | `verificarme()` en `app.js` |
+| **el Worker** | te mete en DRA (`PUT /guilds/{dra}/members/{vos}`), pone el rol de país elegido y te anota (`reg:`), como `/verificar` | `cuentaVerificar()` en `bot/worker.js` |
+| **el bot** | `/card`, `/verificar` y el candado de las libres: un solo botón, «Verificarme en la página» | `comoVerificarse()` |
+
+⚠️ **El país va DESPUÉS de las reglas de DRA.** DRA tiene pantalla de reglas (medido con su API: y
+su bienvenida no pregunta el país), así que quien entra queda «pendiente» hasta aceptarlas. Un rol
+puesto por un bot a alguien pendiente puede saltearse esa pantalla: mientras estés pendiente, la
+página te manda a DRA y recién después te pone el país. Tampoco te anota hasta entonces.
+
+⚠️ **Sólo a quien no tiene rol de país.** Con uno ya puesto no se toca: cambiar de país es cosa de
+DRA. Con dos banderas en el nombre y ningún rol, sí: el rol gana sobre las banderas, como en
+`pais_por_rol`.
+
+Probado: 28 pruebas nuevas del Worker (`bot/probar_local.mjs`: nunca pone el Miembro, nunca a un
+pendiente, el freno, «lleno», «no te deja entrar», el proxy) y la página en el navegador con cada
+respuesta, la vuelta de Discord y la cancelación. Al probar «Cancelar» apareció un bug viejo: si
+`app.js` cambiaba la dirección antes de que el Inicio nuevo escuchara, se quedaba en la vieja.
+Arreglado en `App.jsx`.
 
 ---
 

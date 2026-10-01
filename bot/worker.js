@@ -944,12 +944,6 @@ export const VERIFICA = {
   mensaje: '1514898497265078423',
 };
 
-// Devuelve `{texto, botones}`: el camino entero en un par de clicks.
-//
-// ⚠️ EL ORDEN DE LOS BOTONES NO ES ESTÉTICO. Primero entrar, después
-// verificarse: el canal de verificación **no se ve hasta estar adentro**, así
-// que un «Verificarme» apretado antes de entrar lleva a una pantalla vacía.
-// Discord los dibuja de izquierda a derecha y así se leen.
 // 🔑 QUIEN SE ANOTA A SÍ MISMO ENTRA SOLO (25/09/2026, #11 de Dlx), si
 // Discord sabe su país. Si no —o si su nombre se parece al de alguien que ya
 // está— lo decide un admin, que es lo que este texto prometía siempre.
@@ -968,25 +962,26 @@ const QUE_PIDE = 'Estando en la Lista, tu **Temporada** y tu **Servidor** ' +
 // «Verificate…» -> «verificate…», para seguir una frase
 const minuscula = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
 
+// 🔑 DESDE EL 01/10/2026, A LA PÁGINA. Dlx, con la captura de un `/card` que
+// decía «todavía no estás verificado»: «en vez de que le aparezca así, haz que
+// la gente se verifique por la página web, así más rápido, y que esto te
+// redirija, y que te entres a DRA automáticamente». La página te mete en DRA si
+// no estás, te pide el país y te anota (`cuentaVerificar()`): el camino entero
+// en un botón. Antes eran dos —entrar a DRA y después su canal—, y el orden de
+// los dos era la mitad de este comentario.
+//
+// ⚠️ UN SOLO BOTÓN, también estando en DRA: adentro te falta lo mismo (el país,
+// las reglas) y la página lo dice igual. El canal de DRA sigue existiendo
+// (`VERIFICA`), para quien prefiera hacerlo allá. Devuelve `{texto, botones}`.
+const URL_VERIFICAR = HUB_URL + '/#/cuenta/verificar';
 function comoVerificarse(aqui) {
   const s = SV_DE(VERIFICA.sv);
-  if (!s) return { texto: '', botones: [] };
-  const url = s.guild
-    ? `https://discord.com/channels/${s.guild}/${VERIFICA.canal}` +
-      (VERIFICA.mensaje ? `/${VERIFICA.mensaje}` : '')
-    : '';
-  const botones = [];
-  // Estando adentro no hace falta invitarlo: la interacción vino de ahí, o
-  // sea que Discord ya probó que está.
-  if (aqui !== VERIFICA.sv && s.invita) {
-    botones.push(botonLink(`Entrar a ${s.sv}`, s.invita));
-  }
-  if (url) botones.push(botonLink('Verificarme', url));
-  // La mención sólo se dibuja para quien ya ve el canal, así que adentro va
-  // la mención y afuera el nombre del servidor. El link ya está en el botón.
+  const nombre = (s && s.nombre) || 'Discord Rap Español';
+  const botones = [botonLink('Verificarme en la página', URL_VERIFICAR)];
   const texto = aqui === VERIFICA.sv
-    ? `Verificate en <#${VERIFICA.canal}> 👇`
-    : `Entrá a **${s.nombre}** y verificate ahí 👇`;
+    ? 'Verificate en la página, en un toque: te pide tu país y te dice qué te falta 👇'
+    : `Verificate en la página, en un toque: si no estás en **${nombre}** te mete, ` +
+      'te pide tu país y te dice qué te falta 👇';
   return { texto, botones };
 }
 
@@ -1358,6 +1353,127 @@ async function cuentaDiscord(req, env) {
   } catch (e) { rapero = ''; yo = {}; }
   return new Response(JSON.stringify(Object.assign({ id: u.id, n: u.global_name || u.username || '',
     av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {})), { headers: h });
+}
+
+// ── Verificarse desde la página ───────────────────────────────────────────
+// 🔑 Dlx, 01/10/2026: «haz que la gente se verifique por la página web, así
+// más rápido, y que te entres a DRA automáticamente al hacer eso». Es
+// `/verificar` más dos cosas que el comando no puede hacer:
+//
+//   1. METERTE EN DRA. Con el permiso `guilds.join`, que la página pide sólo
+//      para esto, el bot te agrega (`PUT /guilds/{dra}/members/{vos}`: su
+//      token y tu permiso, de la misma app). Si ya estás, no se toca nada.
+//   2. PONERTE EL PAÍS (Dlx: «A»). Se elige en la página y el bot pone ese
+//      rol de DRA. SÓLO A QUIEN NO TIENE ROL DE PAÍS: el que ya tiene uno no
+//      se toca, porque cambiar de país es cosa de DRA.
+//
+// 🔴 Y NUNCA ANTES DE QUE ACEPTES LAS REGLAS DE DRA. DRA tiene pantalla de
+// reglas: quien entra queda «pendiente» hasta aceptarlas allá, y un rol puesto
+// por un bot a alguien pendiente puede saltearse esa pantalla. Las reglas de
+// DRA son de DRA: mientras estés pendiente, la página te manda a aceptarlas y
+// recién después te pone el país. Medido el 01/10/2026 con la API: su
+// bienvenida no pregunta el país, así que sin esto nadie nuevo lo tendría.
+//
+// ⚠️ EL ROL DE MIEMBRO NO LO DA ESTO (Dlx: «A»), por lo mismo que no lo da
+// `/verificar`: lo da `bot/autoverificar.py` con sus topes y su lista de a
+// quién no. Lo que sí hace es ANOTARTE, así esa vuelta te encuentra.
+//
+// ⚠️ EL PERMISO SE USA Y SE TIRA, como el de entrar: acá no se guarda nada.
+const DC_API = 'https://discord.com/api/v10';
+// lo que lee un admin de DRA en el registro de auditoría
+const RAZON_WEB = encodeURIComponent('Se verificó en underlegends.pages.dev');
+
+export async function cuentaVerificar(req, env, ctx) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const json = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: h });
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const t = String((d && d.token) || '');
+  if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) return json({ error: 'token' }, 400);
+  const q = await discordDe(t);
+  if (q.error === 'ocupado') return json({ error: 'discord_ocupado' }, 503);
+  const u = q.u;
+  if (!u || !u.id) return json({ error: 'discord' }, 401);
+  const esperar = frenado(u.id, 'cuenta');
+  if (esperar) return json({ error: 'espera', s: esperar }, 429);
+  const [ya, baja, mCrudo] = await Promise.all([
+    env.KV.get('d:' + u.id), env.KV.get('olvido:' + u.id), env.KV.get('meta')]);
+  if (ya) return json({ listo: true });
+  // 🔴 quien borró sus datos no vuelve con un toque: `/borrar-mis-datos`
+  // promete que no lo sumamos solo (ver `anotar()`)
+  if (baja) return json({ olvido: true });
+  let mm = null;
+  try { mm = mCrudo ? JSON.parse(mCrudo) : null; } catch (e) { mm = null; }
+  const P = mm && mm.porton;
+  if (!P || !P.guild || !env.DISCORD_TOKEN) return json({ error: 'porton' }, 503);
+  const tabla = P.paises || {};
+  const opciones = Object.keys(tabla).map((r) => tabla[r])
+    .filter((c, i, xs) => xs.indexOf(c) === i).sort();
+  const cc = String((d && d.pais) || '').toLowerCase();
+  const rolPais = /^[a-z]{2}$/.test(cc) ? (Object.keys(tabla).find((r) => tabla[r] === cc) || '') : '';
+  if (cc && !rolPais) return json({ error: 'pais', opciones }, 400);
+
+  let { estado, miembro } = await miembroDra(env, P.guild, u.id);
+  if (!miembro && estado !== 404) return json({ error: 'dra', estado }, 503);
+  const bot = { 'Authorization': 'Bot ' + env.DISCORD_TOKEN, 'X-Audit-Log-Reason': RAZON_WEB };
+  let entro = false;
+  if (!miembro) {
+    // ⚠️ SIN `roles` EN EL CUERPO: entra pendiente y el país va después
+    let r = null;
+    try {
+      r = await fetch(`${DC_API}/guilds/${P.guild}/members/${u.id}`, {
+        method: 'PUT', headers: Object.assign({ 'content-type': 'application/json' }, bot),
+        body: JSON.stringify({ access_token: t }) });
+    } catch (e) { r = null; }
+    if (!r) return json({ error: 'dra', estado: -1 }, 503);
+    if (r.status === 201) {
+      entro = true;
+      try { miembro = await r.json(); } catch (e) { miembro = null; }
+    }
+    // 204: ya estaba (entró entre las dos preguntas). Y un 201 sin cuerpo se vuelve a mirar
+    if (!miembro && (r.status === 201 || r.status === 204)) {
+      ({ miembro } = await miembroDra(env, P.guild, u.id));
+    }
+    if (!miembro) {
+      if (r.status === 201 || r.status === 204) return json({ error: 'dra', estado: -1 }, 503);
+      let c = 0;
+      try { c = Number((await r.json()).code) || 0; } catch (e) { c = 0; }
+      // 30001: ya está en el máximo de servidores · 40007: DRA no lo deja entrar
+      // · 401/403: el permiso no trae `guilds.join` (o se venció)
+      const e = c === 30001 ? 'lleno' : c === 40007 ? 'no_deja'
+        : (r.status === 401 || r.status === 403) ? 'permiso' : 'entrar';
+      return json({ error: e, estado: r.status }, e === 'entrar' ? 502 : 403);
+    }
+  }
+  const pendiente = miembro.pending === true;
+  const conRol = (miembro.roles || []).filter((r) => tabla[r]);
+  let dg = diagnostico(miembro, P);
+  let puso = '';
+  if (rolPais && !pendiente && !conRol.length && dg.paises.length !== 1) {
+    let ok = false;
+    try {
+      const r = await fetch(`${DC_API}/guilds/${P.guild}/members/${u.id}/roles/${rolPais}`,
+        { method: 'PUT', headers: bot });
+      ok = r.status === 204;
+    } catch (e) { ok = false; }
+    if (!ok) return json({ error: 'rol', opciones }, 502);
+    miembro.roles = (miembro.roles || []).concat(rolPais);
+    puso = cc;
+    dg = diagnostico(miembro, P);
+  }
+  const revisa = (P.revisa || []).indexOf(String(u.id)) >= 0;
+  const completo = !pendiente && dg.paises.length === 1 && !revisa;
+  // lo tuyo está completo: el ciclo hace lo que falta, y para eso te anota
+  if (completo) {
+    anotar(env, ctx, u.id, miembro.nick || '', u.username || '', u.global_name || '', P.guild, 'yo');
+  }
+  const vuelta = proximaVuelta(Date.now());
+  return json({
+    enDra: true, entro, pendiente, rol: dg.rol, paises: dg.paises,
+    // con varios países: si alguno es rol, se arregla en DRA; si son banderas del nombre, eligiendo acá
+    porRol: conRol.length > 0, puso, revisa, completo,
+    vuelta: vuelta ? vuelta.toISOString() : '', opciones,
+  });
 }
 
 // ── «Mis redes» en el perfil: las conexiones PÚBLICAS de Discord ─────────
@@ -2537,8 +2653,7 @@ const COMANDOS = {
     ].join('\n');
     if (!dg.enDra) {
       return aviso('Para verificarte hace falta estar en **Discord Rap Español**, y ahí ' +
-                   'no te encuentro.\n\n' + lista + '\n\n' + v.texto +
-                   '\nCuando entres, volvé a escribir `/verificar`.', v.botones);
+                   'no te encuentro.\n\n' + lista + '\n\n' + v.texto, v.botones);
     }
     if (dg.paises.length > 1) {
       return aviso(lista + '\n\nTenés **' + dg.paises.length + ' países** en DRA (' +
@@ -2546,8 +2661,10 @@ const COMANDOS = {
                    'escribir `/verificar`.');
     }
     if (!unPais) {
-      return aviso(lista + '\n\nNo encuentro tu **país** en DRA. Elegí tu rol de país ' +
-                   'ahí, o poné tu bandera en el apodo, y volvé a escribir `/verificar`.');
+      // 🔑 y desde el 01/10/2026 se elige en la página: el bot te pone el rol
+      return aviso(lista + '\n\nNo encuentro tu **país** en DRA. Elegilo en la página y el ' +
+                   'bot te pone el rol 👇 (o elegí tu rol de país en DRA, o poné tu bandera ' +
+                   'en el apodo, y volvé a escribir `/verificar`).', v.botones);
     }
     // lo tuyo está completo: lo que falta lo hace el ciclo
     if ((P.revisa || []).indexOf(String(yo)) >= 0) {
@@ -3392,6 +3509,8 @@ export default {
     }
     if (camino === '/cuenta/redes' && req.method === 'POST') return cuentaRedes(req, env);
     if (camino === '/cuenta/foto' && req.method === 'POST') return cuentaFoto(req, env);
+    // 🔑 verificarse desde la página, entrando a DRA (01/10/2026)
+    if (camino === '/cuenta/verificar' && req.method === 'POST') return cuentaVerificar(req, env, ctx);
 
     if (req.method === 'GET') {
       const ruta = camino;

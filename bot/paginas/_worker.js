@@ -92,6 +92,8 @@ const CUENTA = {
   '/api/cuenta/foto': '/cuenta/foto',
   // 🔑 «Salir» cierra la sesión (28/09/2026)
   '/api/cuenta/salir': '/cuenta/salir',
+  // 🔑 verificarse desde la página, entrando a DRA (01/10/2026)
+  '/api/cuenta/verificar': '/cuenta/verificar',
 };
 
 // 🔑 LA SESIÓN (28/09/2026): entrar con Discord una vez. La cookie `lg_ses`

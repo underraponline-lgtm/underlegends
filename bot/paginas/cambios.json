@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.65",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T17:13:00-04:00",
+   "titulo": "Verificarte desde la página",
+   "items": [
+    "✅ **Te verificás en la página, en un toque**: si no estás en Discord Rap Español, el bot te mete solo, y la página te dice qué te falta.",
+    "🏳️ **Tu país se elige en la página** y el bot te pone ese rol en DRA, después de que aceptes sus reglas.",
+    "🤖 **El botón del bot ahora lleva ahí**: `/card` y `/verificar` tienen «Verificarme en la página».",
+    "🔒 **La privacidad nombra el permiso nuevo** («unirse a servidores»): se usa una vez y no se guarda."
+   ]
+  },
+  {
    "version": "1.64",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T16:48:00-04:00",

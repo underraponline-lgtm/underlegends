@@ -3,10 +3,11 @@
 // `#/cuenta` es la lista; `#/cuenta/<parte>` abre una. En el celular se entra y se vuelve con «‹»; en la computadora,
 // la lista a la izquierda y la parte a la derecha. Lo que hace cada cosa por dentro —entrar con Discord, la foto, las
 // redes, la campana— sigue siendo de app.js: acá cambia la cara.
-// ⚠️ PREVIEW: se mira y no se publica hasta que Dlx diga.
+// ⚠️ EN LÍNEA: Ajustes (`#/ajustes`) y Verificarme (`#/cuenta/verificar`). El resto de Mi cuenta es todavía la
+// PREVIEW: se mira y no se publica hasta que Dlx diga.
 import { useEffect, useState } from 'react';
-import { hora, limpio } from './liga.js';
-import { Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
+import { PAIS, hora, limpio } from './liga.js';
+import { Bandera, Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { nuevaQue } from './cambios.jsx';
 
@@ -172,8 +173,9 @@ function Parte({ id, liga, dc, tema, onTema }) {
           ) : <button type="button" className="btn verde" onClick={accion.cuenta}>Entrar con Discord</button>}
         </Caja>
         {dc && !yo ? (
-          <Caja t="Tu tarjeta" d="Para tener tarjeta hay que jugar en la Liga y estar verificado en DRA. En Discord, /verificar te dice qué te falta.">
-            <a className="btn borde2 chico" href="#/guia">Cómo conseguir tu tarjeta</a>
+          <Caja t="Tu tarjeta" d="Para tener tus tarjetas hay que jugar en la Liga y estar verificado en DRA. Te verificás acá, en un toque.">
+            <div className="cu-btns"><a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>
+              <a className="btn borde2 chico" href="#/guia">Cómo conseguir tu tarjeta</a></div>
           </Caja>
         ) : null}
       </>
@@ -272,37 +274,137 @@ function Parte({ id, liga, dc, tema, onTema }) {
 }
 
 // ── verificarse desde la página (Dlx, 01/10/2026: «haz que la gente se verifique por la página web, así más rápido,
-// y que entres a DRA automáticamente»). Lo mismo que /verificar —qué te falta, con el botón que lo arregla, y te
-// anota— más meterte en DRA con el permiso «unirse a servidores» de Discord. PREVIEW: el resultado es de muestra
-function Verificar({ liga, dc }) {
-  const [listo, setListo] = useState(() => leer('lg:prev-ver', '') === 'despues');
-  const prox = (() => { const d = new Date(); const m = d.getMinutes(); d.setMinutes(m < 22 ? 22 : (m < 52 ? 52 : 82), 0, 0); return d; })();
-  const filas = [
-    ['ok', 'Tu Discord', dc ? limpio(dc.n) : 'conectado'],
-    ['ok', 'Estás en Discord Rap Español', 'te metimos recién'],
-    ['aviso', 'Aceptá las reglas de DRA', 'Discord las pide al entrar: es un toque.', <a key="a" className="btn borde2 chico" href="https://discord.com/channels/841017460341604382" target="_blank" rel="noopener noreferrer">Abrir DRA ↗</a>],
-    ['falta', 'Tu país', 'Elegilo y el bot te pone el rol en DRA.', <span key="p" className="cu-pais"><select aria-label="Tu país" defaultValue=""><option value="" disabled>Elegí tu país</option>{['Argentina', 'Chile', 'Colombia', 'México', 'Perú', 'Venezuela', 'Uruguay', 'España'].map((p) => <option key={p}>{p}</option>)}</select><button type="button" className="btn verde chico">Guardar</button></span>],
-    ['espera', 'Tu rol de Miembro', 'Lo da el ciclo en la próxima vuelta: ' + hora(prox.toISOString()) + '. Con eso salen tus cuatro tarjetas.'],
-  ];
+// y que te entres a DRA automáticamente»). Lo mismo que /verificar —qué te falta, con el botón que lo arregla, y te
+// anota— más meterte en DRA con el permiso «unirse a servidores» de Discord. El trabajo lo hacen app.js
+// (`verificarme()`) y el Worker (`cuentaVerificar()`); acá se dibuja lo que contestaron: `VERIF`, aviso `lg:verif`.
+// ⚠️ El país se pone SÓLO después de aceptar las reglas de DRA (ver el Worker), así que la página lo pide recién ahí.
+const DRA_URL = 'https://discord.com/channels/841017460341604382';
+const ERR_VERIF = {
+  cancelado: 'Cancelaste el permiso en Discord. Sin él no podemos mirar DRA ni meterte.',
+  discord_error: 'Discord no dio el permiso. Probá de nuevo en un rato.',
+  permiso: 'Discord no nos dio permiso para meterte en DRA. Probá de nuevo y aceptá «Unirse a servidores».',
+  discord: 'Tu permiso de Discord se venció. Probá de nuevo.',
+  token: 'Tu permiso de Discord se venció. Probá de nuevo.',
+  discord_ocupado: 'Discord está ocupado ahora mismo. Probá en un minuto.',
+  dra: 'No pude mirar Discord Rap Español ahora mismo. Probá en un minuto.',
+  porton: 'La verificación no está disponible ahora. Probá en un rato, o con /verificar en Discord.',
+  lleno: 'Estás en el máximo de servidores que permite Discord. Salí de alguno y probá de nuevo.',
+  no_deja: 'Discord Rap Español no nos deja meterte. Si creés que es un error, hablá con un admin de DRA.',
+  entrar: 'No pude meterte en DRA ahora mismo. Probá de nuevo en un rato.',
+  rol: 'No pude ponerte el país en DRA. Probá de nuevo en un rato.',
+  pais: 'Ese país no está en DRA. Elegí otro.',
+  espera: 'Fueron muchos intentos seguidos. Esperá un minuto y probá de nuevo.',
+  red: 'No pude conectarme. Revisá tu internet y probá de nuevo.',
+};
+// los que piden un permiso nuevo de Discord; el resto se reintenta con el que hay
+const REPERMISO = { cancelado: 1, discord_error: 1, permiso: 1, discord: 1, token: 1 };
+
+function useVerif() {
+  const [v, setV] = useState(() => W.VERIF || null);
+  useEffect(() => {
+    const f = () => setV(W.VERIF ? Object.assign({}, W.VERIF) : null);
+    W.addEventListener('lg:verif', f);
+    f();
+    return () => W.removeEventListener('lg:verif', f);
+  }, []);
+  return v;
+}
+const irADiscord = () => { if (W.urlLogin) W.location.href = W.urlLogin('d'); };
+const revisar = (pais) => { if (W.verificarme) W.verificarme(pais || null); else irADiscord(); };
+
+function ElegirPais({ v }) {
+  const [pais, setPais] = useState('');
+  const ops = (v.opciones || []).slice().sort((a, b) => (PAIS[a] || a).localeCompare(PAIS[b] || b, 'es'));
   return (
-    <>
-      <Caja t="Qué es estar verificado" d="Estar en Discord Rap Español, con el rol de Miembro y tu país. Con eso tenés las cuatro tarjetas: la Temporada y la Servidor ya las tenés con sólo jugar.">
-        {!listo ? (
-          <>
-            <button type="button" className="btn verde" onClick={() => setListo(true)}>Verificarme con Discord</button>
-            <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por vos (para meterte en DRA si todavía no estás).</small>
-          </>
-        ) : null}
+    <span className="cu-pais">
+      <select aria-label="Tu país" value={pais} onChange={(e) => setPais(e.target.value)}>
+        <option value="" disabled>Elegí tu país</option>
+        {ops.map((c) => <option key={c} value={c}>{PAIS[c] || c.toUpperCase()}</option>)}
+      </select>
+      <button type="button" className="btn verde chico" disabled={!pais || v.cargando} onClick={() => revisar(pais)}>Guardar</button>
+    </span>
+  );
+}
+
+function Verificar({ liga, dc }) {
+  const v = useVerif();
+  const yo = liga.yo;
+  // ya cargado: con su clave de la Liga (`d:`), que sólo tiene quien pasó el portón
+  if ((dc && dc.rapero) || (v && v.listo)) {
+    return (
+      <Caja t="Ya estás verificado ✅" d="Tus tarjetas salen con /card en Discord, y tu perfil está en la página.">
+        {yo ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a> : null}
       </Caja>
-      {listo ? (
-        <Caja t="Lo que hicimos y lo que falta" d="Te anotamos: el ciclo te encuentra en la próxima vuelta.">
-          <ul className="cu-chk">{filas.map(([e, t, d, acc]) => (
-            <li key={t} className={e}><span className="cu-chk-i"><Ico n={e} t={18} /></span><span className="cu-chk-t"><b>{t}</b><small>{d}</small></span>{acc || null}</li>
-          ))}</ul>
-          <button type="button" className="btn borde2 chico" onClick={() => setListo(false)}>Revisar de nuevo</button>
-        </Caja>
-      ) : null}
-    </>
+    );
+  }
+  if (v && v.olvido) {
+    return <Caja t="Borraste tus datos de la Liga" d="Con /borrar-mis-datos pediste que no te sumemos solos. Para volver, pedíselo a un admin de la Liga en DRA." />;
+  }
+  if (!v || (v.cargando && !v.enDra)) {
+    return (
+      <Caja t="Qué es estar verificado" d="Estar en Discord Rap Español, con tu país y el rol de Miembro. Con eso se abren tu tarjeta Competitiva y la de País —cada una con su requisito— y tu perfil, con tu foto y tus redes. La Temporada y la Servidor salen con sólo jugar.">
+        <button type="button" className="btn verde" disabled={!!(v && v.cargando)} onClick={() => (W.DC_TOKEN ? revisar() : irADiscord())}>
+          {v && v.cargando ? 'Mirando Discord Rap Español…' : 'Verificarme con Discord'}</button>
+        <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por vos, que es lo que deja al bot meterte en Discord Rap Español si todavía no estás. Se usa una vez y no se guarda.</small>
+      </Caja>
+    );
+  }
+  if (v.error) {
+    return (
+      <Caja t="No se pudo" d={ERR_VERIF[v.error] || ERR_VERIF.red}>
+        <button type="button" className="btn verde chico" onClick={() => (REPERMISO[v.error] ? irADiscord() : revisar())}>Probar de nuevo</button>
+      </Caja>
+    );
+  }
+  const paises = v.paises || [];
+  const abrir = <a key="dra" className="btn borde2 chico" href={DRA_URL} target="_blank" rel="noopener noreferrer">Abrir DRA ↗</a>;
+  let pais;
+  if (paises.length === 1) {
+    pais = ['ok', <>Tu país: {PAIS[paises[0]] || paises[0].toUpperCase()} <Bandera cc={paises[0]} cls="cu-band" /></>,
+      v.puso ? 'Te pusimos el rol en DRA recién.' : ''];
+  } else if (v.pendiente) {
+    pais = ['espera', 'Tu país', 'Lo elegís acá cuando aceptes las reglas.'];
+  } else if (paises.length > 1 && v.porRol) {
+    pais = ['aviso', 'Tenés ' + paises.length + ' países en DRA', 'Dejá uno solo en tus roles de DRA y tocá «Revisar de nuevo».', abrir];
+  } else {
+    pais = ['falta', 'Tu país', paises.length > 1 ? 'Tu nombre tiene ' + paises.length + ' banderas: elegí la tuya y el bot te pone ese rol en DRA.'
+      : 'Elegilo y el bot te pone ese rol en DRA.', <ElegirPais key="p" v={v} />];
+  }
+  const vuelta = v.vuelta ? hora(v.vuelta) : '';
+  const miembro = v.rol ? ['ok', 'Tenés el rol de Miembro', '']
+    : v.revisa ? ['aviso', 'Tu caso lo revisa un admin', 'No hace falta que hagas nada más.']
+      : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él salen tus tarjetas.']
+        : ['espera', 'Tu rol de Miembro', 'Te lo da el bot cuando completes lo de arriba.'];
+  const filas = [
+    ['ok', 'Tu Discord', dc ? limpio(dc.n) : 'Conectado'],
+    ['ok', 'Estás en Discord Rap Español', v.entro ? 'Te metimos recién.' : 'Ya estabas adentro.'],
+    v.pendiente ? ['aviso', 'Aceptá las reglas de DRA', 'Discord te las muestra al abrir el servidor: es un toque. Después volvé acá y tocá «Revisar de nuevo».', abrir]
+      : ['ok', 'Aceptaste las reglas de DRA', ''],
+    pais,
+    miembro,
+  ];
+  const resumen = v.completo
+    ? (v.rol ? 'Estás verificado en DRA ✅. Tus tarjetas salen cuando el bot te cargue' + (vuelta ? ': en la vuelta de las ' + vuelta + ' o en la siguiente.' : '.')
+      : 'Lo tuyo está completo ✅. El resto lo hace el bot solo.')
+    : v.revisa ? 'Lo tuyo está completo. Tu caso lo revisa un admin.' : 'Te falta lo que está marcado abajo.';
+  return (
+    <Caja t={v.completo ? 'Listo de tu lado' : 'Lo que falta'} d={resumen}>
+      <ul className="cu-chk" aria-busy={!!v.cargando}>{filas.map(([e, t, d, acc], i) => (
+        <li key={i} className={e}><span className="cu-chk-i"><Ico n={e} t={18} /></span><span className="cu-chk-t"><b>{t}</b>{d ? <small>{d}</small> : null}</span>{acc || null}</li>
+      ))}</ul>
+      <button type="button" className="btn borde2 chico" disabled={!!v.cargando} onClick={() => revisar()}>{v.cargando ? 'Mirando…' : 'Revisar de nuevo'}</button>
+    </Caja>
+  );
+}
+
+// `#/cuenta/verificar`, sola: el resto de Mi cuenta todavía no está en línea (Dlx, 01/10/2026: primero esto)
+export function PaginaVerificar({ liga, dc }) {
+  useEffect(() => { W.scrollTo(0, 0); }, []);
+  return (
+    <div className="cu cu-sola">
+      <div className="cu-cab"><h1 className="cu-h">Verificarme</h1></div>
+      <section className="cu-parte" aria-label="Verificarme"><Verificar liga={liga} dc={dc} /></section>
+    </div>
   );
 }
 
