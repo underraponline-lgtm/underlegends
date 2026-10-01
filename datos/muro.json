@@ -1246,7 +1246,8 @@
 "selek": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "smaff": {
@@ -2763,6 +2764,14 @@
 "PichulaMc"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-01T02:36:33Z",
+"quien": [
+"Selek"
+],
+"carta": "temporada"
 }
 ]
 }
