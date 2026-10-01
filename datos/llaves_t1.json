@@ -5728,5 +5728,260 @@
     2000
    ]
   ]
+ },
+ "375": {
+  "dia": "2026-09-30",
+  "escala": "16+",
+  "fecha": "30/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1554995126781222953"
+  ],
+  "n": 375,
+  "nombre": "DESGRACIAS EN TOKYO VOL 18 2VS2",
+  "participantes": 34,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Eze, Zignos",
+       "Marto, Gus"
+      ],
+      "Eze, Zignos",
+      ""
+     ],
+     [
+      [
+       "Tam, Iguana",
+       "NC, Gocho"
+      ],
+      "Tam, Iguana",
+      "Revivido: nc; Revivido: gocho🇮🇶🇮🇶"
+     ],
+     [
+      [
+       "Geoka, Elsoolar",
+       "QUEEN 🇦🇷, Dominick"
+      ],
+      "Geoka, Elsoolar",
+      ""
+     ],
+     [
+      [
+       "Velatz, Snow",
+       "PichulaMc, Agre"
+      ],
+      "Velatz, Snow",
+      ""
+     ],
+     [
+      [
+       "Molusco, Gian",
+       "yinn, KRNAN 🇨🇱"
+      ],
+      "Molusco, Gian",
+      ""
+     ],
+     [
+      [
+       "PichulaMc, SIX 🇦🇷 R",
+       "Cronox, RICKYFORT 🇦🇷 R"
+      ],
+      "PichulaMc, SIX 🇦🇷 R",
+      ""
+     ],
+     [
+      [
+       "Abyssus, Oasis",
+       "NC, Gocho"
+      ],
+      "Abyssus, Oasis",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Eze, Zignos",
+       "PARIA SIN REMEDIO 🇦🇷, JAWA 🇺🇾"
+      ],
+      "Eze, Zignos",
+      ""
+     ],
+     [
+      [
+       "Abyssus, Oasis",
+       "Iguana, Tam"
+      ],
+      "Abyssus, Oasis",
+      ""
+     ],
+     [
+      [
+       "Molusco, Gian",
+       "Snow, Velatz"
+      ],
+      "Molusco, Gian",
+      ""
+     ],
+     [
+      [
+       "PichulaMc, Six",
+       "Geoka, Elsoolar"
+      ],
+      "PichulaMc, Six",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc, Six",
+       "Molusco, Gian"
+      ],
+      "PichulaMc, Six",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Abyssus",
+       "PichulaMc, Six"
+      ],
+      "Oasis, Abyssus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    5000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Elsoolar",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Iguana",
+    "Cuartos",
+    1250
+   ],
+   [
+    "JAWA 🇺🇾",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PARIA SIN REMEDIO 🇦🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Gocho",
+    "Octavos",
+    937
+   ],
+   [
+    "NC",
+    "Octavos",
+    937
+   ],
+   [
+    "Agre",
+    "Octavos",
+    625
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    625
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    625
+   ],
+   [
+    "Gus",
+    "Octavos",
+    625
+   ],
+   [
+    "KRNAN 🇨🇱",
+    "Octavos",
+    625
+   ],
+   [
+    "Marto",
+    "Octavos",
+    625
+   ],
+   [
+    "QUEEN 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "RICKYFORT 🇦🇷 R",
+    "Octavos",
+    625
+   ],
+   [
+    "yinn",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }
