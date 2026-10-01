@@ -90,15 +90,14 @@ export function Noticias({ liga, raiz }) {
 }
 
 // ── Los que mandan: las siete categorías del podio de la web de hoy, cinco en cada una ──────────────
+// la tarjeta ya dice quién es, de dónde, su puesto y sus números: abajo va sólo lo que la tarjeta NO dice (los duelos
+// ganados, los podios, la racha). Dlx, 01/10/2026: «las cosas de abajo son innecesarias porque la tarjeta ya tiene esa
+// info». El perfil sigue a un toque: la tarjeta abre su visor, que tiene «Ver su perfil»
 export function McPersona({ liga, f, dato, cual = 'temporada' }) {
   return (
     <article className="mc">
       <Carta liga={liga} k={f.k} cual={cual} cls="ci mc-ci" />
-      <div className="mc-pie">
-        <span className="mc-pais"><Bandera cc={f.cc} cls="" />{nombrePais(f.cc)}</span>
-        <a href={'#/r/' + encodeURIComponent(f.k)}><b>{limpio(f.n)}</b></a>
-        <small>{dato}</small>
-      </div>
+      {dato ? <div className="mc-pie"><small>{dato}</small></div> : null}
     </article>
   );
 }
@@ -140,7 +139,7 @@ export function LosQueMandan({ liga, dc }) {
   const quien = yo ? limpio(yo.n).toUpperCase() : '';
   const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + x.pos} txt={x.txt} href={href} /> : null);
   const cats = [];
-  cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'#' + f.pos + ' · OVR ' + f.ovr + ' · ' + num(f.pts) + ' PTS'} />),
+  cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} />),
     yo ? fila(puestoDe(liga, T, (f) => f.k === yo.k, (f) => f.pts || 0, 'pts', 0, (f) => f.pos), '#/ranking/temporada') : null]);
   const compT = T.filter((f) => f.rg).sort((a, b) => (b.sc || 0) - (a.sc || 0));
   let yoComp = null;
@@ -150,7 +149,7 @@ export function LosQueMandan({ liga, dc }) {
   } else if (yo) {
     yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
   }
-  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" dato={'RANGO ' + f.rg + ' · SCORE ' + f.sc} />), yoComp]);
+  cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" />), yoComp]);
   const duT = (liga.d.duelos || []).filter((d) => !d.fc && liga.T[d.k]);
   cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />),
     yo ? fila(puestoDe(liga, duT, (d) => d.k === yo.k, (d) => d.g || 0, 'duelos ganados'), '#/ranking/duelos') : null]);

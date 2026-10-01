@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.62",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T16:28:00-04:00",
+   "titulo": "Los que mandan, más limpio",
+   "items": [
+    "🃏 **Debajo de cada tarjeta ya no se repite lo que la tarjeta dice** (el nombre, el país, el puesto, el OVR): en Temporada y Competitivo va la tarjeta sola. En Duelos, Podios y Rachas queda una línea con lo que la tarjeta no dice, como «15 de 18 duelos ganados».",
+    "👤 **El perfil sigue a un toque**: tocás la tarjeta y su visor tiene «Ver su perfil»."
+   ]
+  },
+  {
    "version": "1.61",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T15:45:00-04:00",

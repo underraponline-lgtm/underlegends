@@ -102,7 +102,7 @@ export function PerfilSv({ liga, sv }) {
       </div>
       {gente.length ? (
         <Sec id="sv-gente" titulo={'Los que mandan en ' + sv} enlace="Todos los raperos" href="#/ranking" extra="negra">
-          <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'#' + f.pos + ' · OVR ' + f.ovr + ' · ' + num(f.pts) + ' PTS'} />)}</div>
+          <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
         </Sec>
       ) : null}
       {fechas.length ? (
