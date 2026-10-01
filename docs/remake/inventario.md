@@ -676,6 +676,9 @@ además `/avisos/inscritos`, que es sólo para el ciclo y **no** pasa por el pro
 | `campana:yo` | `{id, n}`: este dispositivo está vinculado a tu Discord | `campana.js:244`, `257`, `363`; `app.js:5217-5218`, `5245` | lo escriben los dos archivos |
 | `lg:idioma-legal` | idioma de las páginas legales | `privacidad.html:267-270`, `terminos.html` | |
 | `mapa:orden` | vista ordenada del mapa | `mapa.js:553`, `786` | sólo el mapa |
+| `lg:tema` | `clara` o `noche`, el tema del Inicio nuevo | `web/src/App.jsx`, `index.html` | el inline lo lee antes de pintar |
+| `lg:historias` | `{id: firma}` las historias vistas | `web/src/App.jsx` | el verde vuelve si cambia la firma |
+| `lg:instalar` | `no`: se cerró «La Liga en tu celular» | `web/src/arriba.jsx` (`Instalar`) | no vuelve a aparecer |
 
 Todo va dentro de `try`: en ventana privada la página anda igual (`app.js:74-87`).
 

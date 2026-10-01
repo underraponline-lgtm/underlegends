@@ -810,8 +810,14 @@ seguro, no cuelga el botón.
 `app.js`): cada batalla trae de qué batallas vienen sus lados —`b[3]`, lo
 arma `llaves_web.enlazar()` por los nombres de los ganadores— y la página
 sólo lo pinta. En espejo si la final tiene dos ramas; de un lado en el
-teléfono. Viajan las de «Lo que pasó» **y las 24 más nuevas** (`LLAVES_WEB`
+teléfono. Viajan las de «Lo que pasó» **y las 12 más nuevas** (`LLAVES_WEB`
 en `subir_web.py`), para el calendario de «Eventos».
+
+🔑 **LA FILA DE CADA UNO LLEVA SU CLAVE CUANDO EL NOMBRE SE REPITE** (01/10/2026):
+`[nombre, puesto, puntos, clave]`. La llave trae sólo el nombre, y a dos «SOL»
+los separa la bandera escrita; `_quien()` de `subir_web.py` lo resuelve —la
+misma búsqueda para los perfiles y el último resultado— y la página usa la
+clave cuando viene (`kDe` en `app.js`, `semanaDe` en `web/src/liga.js`).
 
 ⚠️ **El calendario va en la hora de quien mira**: el payload trae el
 instante en UTC (`calendario`) y el día lo pone el navegador. Un calendario

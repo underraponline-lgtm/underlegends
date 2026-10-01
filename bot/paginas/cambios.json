@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.60",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T14:07:00-04:00",
+   "titulo": "Tu próximo evento, el buscador y la Liga en tu celular",
+   "items": [
+    "🎯 **Tu próximo evento**: si todavía no tenés letra, el escenario te muestra primero el próximo evento de tu servidor, con la cuenta atrás y cuánto te falta para tu letra.",
+    "🔎 **El buscador encuentra servidores, países y crews**, además de raperos. En el celular está en el menú ☰.",
+    "📲 **La Liga como app**: en Android, un botón para instalarla; en el iPhone, cómo agregarla a la pantalla de inicio (y así te llegan los avisos).",
+    "👥 **Los que se llaman igual, separados en las llaves**: cada uno ve sus eventos y su último resultado, y el campeón lleva a su perfil."
+   ]
+  },
+  {
    "version": "1.59",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T13:19:00-04:00",

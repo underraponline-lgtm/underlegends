@@ -62,6 +62,12 @@ html.ini-nuevo{scroll-padding-top:0}
   var c = document.documentElement.classList;
   if (ini) c.add('ini-nuevo');
   try { if (localStorage.getItem('lg:tema') === 'noche') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
+  // «Instalar» (01/10/2026): Chrome avisa que la página se puede instalar una sola vez y puede ser antes de que el
+  // Inicio monte. Se guarda acá y el Inicio pone su propio botón; sin esto, Chrome mostraba el suyo cuando quería
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); window.__instalar = e; window.dispatchEvent(new Event('lg:instalar'));
+  });
+  window.addEventListener('appinstalled', function () { window.__instalar = null; window.dispatchEvent(new Event('lg:instalar')); });
   // si la app no llegó a montarse (red lenta, un navegador viejo), vuelve el Inicio de hoy
   setTimeout(function () {
     var el = document.getElementById('inicio-nuevo');

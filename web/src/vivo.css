@@ -263,3 +263,21 @@ button.btn{background:transparent;cursor:pointer}
 }
 /* el tema noche: las barras de un color muy oscuro (el violeta de FFA) se perdían contra el fondo */
 .noche .act-b u{box-shadow:inset 0 0 0 1px rgba(246,246,246,.22)}
+/* el buscador: qué es cada resultado (Dlx, 01/10/2026: servidores, países y crews además de raperos) */
+.busca-res a span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.busca-res .br-t{margin-left:auto;flex:none;font:700 10px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.busca-res .cara{flex:none;border-radius:50%}
+.busca-res .cara.mono{display:grid;place-items:center;background:var(--inv);color:var(--inv-tinta);font:900 10px/1 Archivo,sans-serif}
+/* en el menú ☰ del celular: el buscador ocupa el ancho y los resultados empujan, no flotan */
+.x-busca{padding:12px 16px 4px}
+.x-busca .buscar{display:flex;align-items:center;gap:8px;border:2px solid var(--linea);min-height:44px;padding:0 12px;color:var(--gris)}
+.x-busca .buscar input{flex:1;min-width:0;border:0;background:none;font:600 16px/1.2 Archivo,sans-serif;color:var(--tinta);outline:none}
+.x-busca .busca-res{position:static;margin-top:6px}
+/* instalar como app */
+.instalar{display:flex;align-items:center;gap:12px;margin:14px 16px 0;padding:10px 8px 10px 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta)}
+.instalar>img{width:40px;height:40px;flex:none}
+.inst-tx{display:grid;gap:4px;flex:1;min-width:0}
+.inst-tx b{font:900 14px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.inst-tx small{font:700 11px/1.35 "Space Mono",monospace;color:var(--gris)}
+.instalar .inst-x{flex:none;border:0;background:transparent;color:var(--tinta);cursor:pointer}
+@media (min-width: 900px){.app .instalar{margin:14px var(--gut) 0}}

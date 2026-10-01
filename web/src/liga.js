@@ -200,7 +200,8 @@ export class Liga {
   semanaDe(k) {
     const out = [];
     this.llaves().forEach((ll) => (ll.tabla || []).forEach((f) => {
-      if (this.esDe(f[0], k)) out.push([ll, f[1], f[2]]);
+      // la clave, si la llave la trae (el ciclo la pone cuando el nombre se repite: dos «SOL»); si no, el nombre
+      if (f[3] ? f[3] === k : this.esDe(f[0], k)) out.push([ll, f[1], f[2]]);
     }));
     return out;
   }

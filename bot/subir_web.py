@@ -143,7 +143,8 @@ def armar():
     _foto = _con_foto()
     _ver, _vieja = _versiones()
     _avs = _avatares()
-    _ult = _ultimos()
+    _de = _quien(gente)
+    _ult = _ultimos(_de)
     tabla = [{
         'n': p.get('raw'),
         # 🔑 FUERA DE CONCURSO (Dlx, 27/09/2026): sin número, en su lugar
@@ -240,7 +241,8 @@ def armar():
         'caz': p.get('caz') or 0,
         'czd': p.get('czd') or 0,
         'sob': p.get('sob') or 0,
-        'ult': (_ult.get(_resp._norm(p.get('raw')) + '|' + (p.get('cc') or '').lower())
+        'ult': (_ult.get('k:' + _clave(p))
+                or _ult.get(_resp._norm(p.get('raw')) + '|' + (p.get('cc') or '').lower())
                 or ([] if _choque(p) else _ult.get(_resp._norm(p.get('raw'))))
                 or []),
         # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
@@ -434,6 +436,10 @@ def armar():
                 todas[_n] = dict(todas[_n], info=_f)
         # 🔑 los Clásicos de cada llave: la página los marca en su batalla
         _clasicos_de_llaves(llaves, todas)
+        # 🔑 LA CLAVE DE LOS QUE SE LLAMAN IGUAL (Dlx, 01/10/2026, la F): en
+        # las filas cuyo nombre comparte más de una persona. Ver `_quien()`.
+        llaves = _con_claves(llaves, _de)
+        todas = _con_claves(todas, _de)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
         regs, llaves, calendario, todas = {}, {}, [], {}
@@ -843,11 +849,14 @@ def _guia():
     return out
 
 
-def _ultimos():
+def _ultimos(de=None):
     """`{nombre normalizado: [fecha, puesto]}` del último evento de cada uno.
 
     Sale de las llaves procesadas, en el orden en que se jugaron (la hora
     de la llave). Es el `Último Resultado` del ranking oficial.
+
+    🔑 Y `{'k:<clave>': …}` cuando se le pasa `_quien()`: «SOL» sin bandera
+    no tenía `ult` porque se buscaba por `nombre|país` (01/10/2026).
     """
     try:
         sys.path.append(os.path.join(BASE, 'sheet'))
@@ -869,6 +878,9 @@ def _ultimos():
                 # y por bandera: `Volk` 🇲🇽 y `volk` 🇨🇴 normalizan igual
                 for cc in _banderas(t[0]):
                     out[_resp._norm(t[0]) + '|' + cc] = v
+                k = de(t[0]) if de else None
+                if k:
+                    out['k:' + k] = v
     return out
 
 
@@ -1225,19 +1237,8 @@ def _perfiles(gente, comp, regs):
     por = {_clave(p): p for p in gente if p.get('raw')}
     comp_raw = {x.get('raw'): x for x in comp if x.get('raw')}
     comp_de = {norm(x.get('raw')): x for x in comp if x.get('raw')}
-    candidatos = defaultdict(list)
-    for p in gente:
-        if p.get('raw'):
-            candidatos[norm(p['raw'])].append(((p.get('cc') or '').lower(), _clave(p)))
-
-    def de(nombre):
-        """El nombre de una llave -> la clave de la persona, o None."""
-        c = candidatos.get(norm(nombre)) or []
-        if len(c) == 1:
-            return c[0][1]
-        ccs = _banderas(nombre)
-        m = [k for cc, k in c if cc in ccs]
-        return m[0] if len(m) == 1 else None
+    # el nombre de una llave -> la clave: la misma búsqueda que la tabla y las llaves (`_quien`)
+    de = _quien(gente)
     inst = LW.instantes(regs)
     orden = sorted((n for n in regs if str(n).isdigit()),
                    key=lambda n: LW.orden(inst.get(int(n)), regs[n].get('fecha'), int(n)),
@@ -1492,6 +1493,64 @@ def _banderas(nombre):
                 par = ''
         else:
             par = ''
+    return out
+
+
+def _quien(gente):
+    """El nombre de una llave -> la clave de la persona en la tabla, o None.
+
+    🔴 DOS PERSONAS, UN NOMBRE (Dlx, 01/10/2026, la F). Las llaves traen sólo
+    el nombre, y lo único que separa a dos «SOL» —uno de Perú y otro sin
+    país— es la BANDERA ESCRITA: `rankings.canon()` agrupa a los que no están
+    en el padrón por nombre y banderas, así que el ranking tiene un «SOL🇵🇪»
+    y un «SOL». Por eso se compara primero contra las banderas del nombre con
+    el que cada uno está en el ranking (`full`), y recién después contra el
+    país del padrón, que era lo único que se miraba: «SOL» sin bandera y
+    «PARIA SIN REMEDIO 🇧🇲» (Bermudas no es un país de la Liga) quedaban sin
+    nadie, y sus perfiles salían sin eventos.
+
+    ⚠️ Dos que se escriben IGUAL, con las mismas banderas, ya son una sola
+    fila del pool: eso no lo separa nada de acá (ver NOVEDADES, 01/10/2026).
+    """
+    from comun import respaldo as _resp
+    norm = _resp._norm
+    cand = defaultdict(list)
+    for p in gente:
+        if p.get('raw'):
+            cand[norm(p['raw'])].append(((p.get('cc') or '').lower(), _clave(p),
+                                         frozenset(_banderas(p.get('full') or ''))))
+
+    def de(nombre):
+        c = cand.get(norm(nombre)) or []
+        if len(c) == 1:
+            return c[0][1]
+        bs = frozenset(_banderas(nombre))
+        m = [k for _, k, fb in c if fb == bs]
+        if len(m) == 1:
+            return m[0]
+        m = [k for cc, k, _ in c if cc in bs]
+        return m[0] if len(m) == 1 else None
+    # los nombres que más de una persona comparte: sólo esas filas llevan la clave
+    de.dobles = {n for n, c in cand.items() if len(c) > 1}
+    de.norm = norm
+    return de
+
+
+def _con_claves(llaves, de):
+    """Cada fila de cada llave cuyo nombre se repite, con la clave como cuarto
+    elemento: `[nombre, puesto, puntos, clave]`. Sólo esas: en las demás el
+    nombre alcanza, y el lobby ya pasó dos veces los 120 KB."""
+    out = {}
+    for n, L in llaves.items():
+        t = L.get('tabla') or []
+        if not any(f and de.norm(f[0]) in de.dobles for f in t):
+            out[n] = L
+            continue
+        filas = []
+        for f in t:
+            k = de(f[0]) if f and de.norm(f[0]) in de.dobles else None
+            filas.append(list(f[:3]) + [k] if k else f)
+        out[n] = dict(L, tabla=filas)
     return out
 
 
@@ -2693,6 +2752,12 @@ def _self_check():
     ok(all(all(len(b) >= 4 for R in (L.get('rondas') or []) for b in R.get('b') or [])
            for L in (todas or {}).values()),
        'y con el árbol que dibuja el cuadro')
+    # 🔑 LA CLAVE DE LOS QUE SE LLAMAN IGUAL: cada fila que la trae lleva a
+    # alguien de la tabla
+    _kt = {f['k'] for f in p['tabla']}
+    _fk = [f for L in (todas or {}).values() for f in (L.get('tabla') or []) if len(f) > 3]
+    ok(all(f[3] in _kt for f in _fk),
+       'las filas de los que se llaman igual llevan a un perfil  (%d)' % len(_fk))
 
     # 🔑 «VER LLAVES»: cada anuncio con `llave` tiene su llave en el
     # payload, y ninguna llave viaja sin un anuncio que la abra.

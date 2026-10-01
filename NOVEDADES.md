@@ -408,11 +408,11 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **C · las historias vistas quedan vistas** (`lg:historias`, con la firma de lo más nuevo de cada una) | *«me gustan todas»* | ✅ 1.58 |
 | **D · compartir** la llave, tu carta (la imagen de R2) y las historias: el menú del teléfono o, en la compu, el link copiado | *«me gustan todas»* | ✅ 1.58 |
 | **Los perfiles de país y de crew con el estilo nuevo**, como el de servidor | *«sí, eso haremos con el remake a todo. Espera, poco a poco»* (01/10) | 📌 va con el remake, de a una |
-| **Instalar la página como app en Android**: un botón en el Inicio cuando el teléfono lo permite | *«Ok…»* (01/10) | ⏳ próxima tanda |
+| **Instalar la página como app en Android**: un botón en el Inicio cuando el teléfono lo permite | *«Ok…»* (01/10) | ✅ 1.60 · y en el iPhone, cómo se hace a mano (ahí instalarla es lo que habilita los avisos) |
 | **El tema por defecto es el normal** (claro): no sigue al del celular | *«por default el normal»* (01/10) | ✅ ya era así |
-| **El buscador de arriba encuentra también servidores, países y crews** | *«sí»* (01/10) | ⏳ próxima tanda |
-| **Las llaves guardan la clave de cada persona**, no sólo el nombre: es lo único que separa a los que se llaman igual | *«diría que sí, si eso te facilita las cosas»* (01/10) | ⏳ próxima tanda |
-| **«Tu segundo evento»** en el escenario, para quien jugó poco | *«explícate más»* (01/10) | ❓ explicado en el chat; esperando 1, 2 o 3 |
+| **El buscador de arriba encuentra también servidores, países y crews** | *«sí»* (01/10) | ✅ 1.60 · y en el celular vive en el menú ☰, porque arriba no entra |
+| **Las llaves guardan la clave de cada persona**, no sólo el nombre: es lo único que separa a los que se llaman igual | *«diría que sí, si eso te facilita las cosas»* (01/10) | ✅ 1.60 · sólo en las filas cuyo nombre se repite (`_quien()` en `bot/subir_web.py`) |
+| **«Tu próximo evento»** en el escenario: a quien todavía no tiene letra, el próximo de su servidor en 36 h, con cuánto le falta | *«explícate más»* → *«me gusta tu idea»* (01/10) | ✅ 1.60, como se describió: a todos los que no tienen letra (1 a 9 eventos) |
 | **Los que mandan con flechas**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cinco por categoría | *«donde dice los que mandan podrías añadir las flechas para ir hacia competitivo el top 5, países, rachas, etc.»* (6:20 PM) | 📌 va con el remake |
 | **El panel de abajo con flechas** en lugar del Ranking (que ya está en Los que mandan): **Misiones** con la previa del Pase al costado · **Tus eventos** con Tu temporada · **La Liga en números** | *«el default sería misiones y al costado una previa del pase de temporada… luego… últimos eventos y tus resultados y al costado tu temporada… luego otra flecha con estadísticas de la liga global»* (6:20 PM) | 📌 va con el remake. Las Misiones y el Pase van de ejemplo: todavía no existen |
 | **Se busca y el pie en negro**; los afiches de Se busca pasan a papel pegado en la pared. **Los servidores, en blanco** | *«quizás poner todo negro esa parte, igualmente los servidores de la liga»* (6:20 PM) · *«los servidores de la liga make it white»* (6:50 PM) | 📌 va con el remake |
@@ -423,6 +423,44 @@ Son las que no se pueden volver a preguntar ni olvidar.
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Jueves 01/10 (2:07 PM) — versión 1.60: tu próximo evento, el buscador, la app y las llaves con la clave
+
+Lo que Dlx aprobó de las sugerencias de la revisión (*«me gusta tu idea»*, *«ok…»*, *«sí»*,
+*«diría que sí»*). Probado con una prueba por cosa (`probar_bce.py`, `probar_f.py`) y la
+auditoría completa, que sigue limpia.
+
+- 🎯 **Tu próximo evento** (`momentosTuyos()` en `web/src/arriba.jsx`): a quien todavía no
+  tiene letra, el próximo de **su** servidor en 36 h —si no hay, el que sigue en la Liga—, con
+  la cuenta atrás, «Quiero aviso», «+ Calendario» y cuánto le falta para su letra. El
+  «Próximo» de la Liga no repite ese mismo evento. Lo ve sólo esa persona, en la página.
+- 🔎 **El buscador** encuentra raperos, servidores, países y crews (exacto, después «empieza
+  así», después «contiene»; a igual coincidencia, raperos primero). **En el celular el de
+  arriba está escondido**, así que vive también en el menú ☰.
+- 📲 **Instalar como app** (`Instalar`): Chrome avisa una sola vez que se puede, y puede ser
+  antes de que el Inicio monte, así que `index.html` guarda el aviso (`window.__instalar`).
+  Sólo en pantallas táctiles; con la ✕ no vuelve (`lg:instalar`). En el iPhone no hay botón
+  posible: va cómo se hace a mano.
+- 👥 **Las llaves con la clave de cada uno** (la F). Las llaves traen sólo el nombre, y a dos
+  «SOL» —uno de Perú y otro sin país— los separa **la bandera escrita**: así los agrupa
+  `rankings.canon()`. `_quien()` compara primero contra las banderas del nombre con el que
+  cada uno está en el ranking (`full`) y después contra el país del padrón, que era lo único
+  que se miraba. La clave va como cuarto elemento de la fila **sólo cuando el nombre se
+  repite** (hoy, seis filas). La misma búsqueda arregla dos cosas que estaban rotas:
+  - **Los perfiles de `sol-x` y `pariasinremedio-x` salían sin eventos**, y su último
+    resultado vacío: «SOL» sin bandera y «PARIA SIN REMEDIO 🇧🇲» (Bermudas no es un país de
+    la Liga) no encontraban a nadie.
+  - **La página vieja** usa la clave en los campeones de cada llave (`porK(r[3] || kDe(r[0]))`)
+    y el Inicio nuevo en «Tus eventos».
+
+⚠️ **Dos que se escriben IGUAL y con las mismas banderas ya son una sola fila del pool**: eso
+no lo separa nada de acá. Haría falta llevar la identidad desde que se lee la llave —los IDs
+de las menciones ya están en `bot/llaves_a_entrada.py`— hasta `Resultados` y el pool.
+
+⚠️ **El lobby pesa 133,4 KB y su propio self-check pide menos de 120** (`subir_web.py --auto`
+da 🔴). No es de esta tanda —sin ella pesa 133,4 igual; las seis claves suman 0,1 KB— y no
+frena nada: ni el ciclo ni los chequeos de CI corren ese self-check. Es el pendiente de
+siempre: qué columnas de la tabla pasan a los perfiles, que se piden sólo al abrir uno.
 
 ## 📅 Jueves 01/10 (1:19 PM) — versión 1.59: la revisión de bugs del Inicio
 

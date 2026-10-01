@@ -794,7 +794,7 @@ function pintaPasados() {
     var L = e.llave && (D.llaves || {})[e.llave];
     var camp = L ? (L.tabla || []).filter(function (r) { return r[1] === 'Campeón'; })
       .map(function (r) {
-        var f = porK(kDe(r[0]));
+        var f = porK(r[3] || kDe(r[0]));
         return f ? quienEs(f, 22) : conBanderas(r[0]);
       }) : [];
     var datos = [e.org ? 'Organizó ' + orgHtml(e.org, 18) : '',
@@ -3003,7 +3003,7 @@ function pintaDia(M) {
       '<span class="de-est ' + (e.jugado ? 'jug' : V ? 'viv' : fut ? 'fut' : '') + '">' +
         (V && !V.terminada ? '<i class="vivo-punto" aria-hidden="true"></i>' : '') + estado + '</span></div>' +
       (camp.length ? '<p class="de-camp"><span>&#127942;</span>' + camp.map(function (r) {
-        var f = porK(kDe(r[0]));
+        var f = porK(r[3] || kDe(r[0]));
         return f ? quienEs(f, 20) : conBanderas(r[0]);
       }).join('<i class="coma">,</i> ') + '</p>' : '') +
       (acc ? '<div class="de-acc">' + acc + '</div>' : '') + '</div></article>';
@@ -3033,7 +3033,7 @@ function pintaUltCampeones() {
       esc(colorSv(c.sv)) + '"><span class="uc-top">' + chipSv(c.sv) + '<small>' +
       esc(fmtFecha(c.t)) + '</small></span><b class="uc-n">' + esc(c.n) + '</b>' +
       '<span class="uc-camp">&#127942; ' + (camp.length ? camp.map(function (r) {
-        var f = porK(kDe(r[0]));
+        var f = porK(r[3] || kDe(r[0]));
         return f ? quienEs(f, 22) : conBanderas(r[0]);
       }).join('<i class="coma">,</i> ') : '—') + '</span>' +
       '<small class="uc-d">' + [inf.mod ? esc(inf.mod) : '', L.participantes ? L.participantes + ' raperos' : '']
@@ -3143,7 +3143,7 @@ function pintaEvCab() {
     h += '<div class="evc-prox" style="--c:' + esc(colorSv(ult.sv)) + '">' +
       '<span class="evc-et">El último campeón</span>' +
       (camp.length ? '<b class="evc-n1">' + camp.map(function (r) {
-        var f = porK(kDe(r[0]));
+        var f = porK(r[3] || kDe(r[0]));
         return f ? quienEs(f, 34) : conBanderas(r[0]);
       }).join('<i class="coma">,</i> ') + '</b>' : '') +
       '<div class="evc-sub">' + chipSv(ult.sv) + '<span>' + esc(ult.nombre) + ' &middot; ' +

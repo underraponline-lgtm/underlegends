@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, limpio, mult, num, recorte, resultado, utc } from './liga.js';
+import { MESES, limpio, mult, norm, num, recorte, resultado, utc } from './liga.js';
 import { Cara, Carta, Chevron, Compartir, Ico, Poster, accion, enlace, nombrePais } from './piezas.jsx';
 
 export const MENU = [
@@ -18,23 +18,41 @@ function Marca({ liga }) {
   );
 }
 
-function Buscar({ liga }) {
+// ── el buscador: raperos, y también servidores, países y crews (Dlx, 01/10/2026: «sí», la E). Primero lo que es
+// exactamente lo buscado, después lo que empieza así y al final lo que lo contiene; a igual coincidencia, raperos
+// primero. Vive arriba en la computadora y en el menú ☰ en el celular, donde arriba no entra
+const TIPOS = { rapero: 0, servidor: 1, pais: 2, crew: 3 };
+const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew' };
+export function Buscar({ liga, onIr }) {
   const [q, setQ] = useState('');
   const res = useMemo(() => {
-    const t = q.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+    const t = norm(q).trim();
     if (!t) return [];
-    return (liga.d.tabla || []).filter((f) => f.n.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().includes(t)).slice(0, 6);
+    const nota = (...xs) => Math.min(...xs.map((x) => { const n = norm(x).trim(); return n === t ? 0 : (n.startsWith(t) ? 1 : (n.includes(t) ? 2 : 9)); }));
+    const todo = [];
+    (liga.d.tabla || []).forEach((f) => todo.push({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k, x: nota(f.n) }));
+    Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || s.sv), sub: s.sv, href: '#/sv/' + s.sv, logo: liga.logo(s.sv), x: nota(s.sv, s.nombre || '') }));
+    (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
+    (liga.d.crews || []).forEach((c) => todo.push({ tipo: 'crew', id: 'c' + (c.clave || c.crew), n: limpio(c.crew), href: '#/crew/' + encodeURIComponent(c.clave || c.crew), crew: c, x: nota(c.crew) }));
+    return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
   }, [q, liga]);
+  const ir = () => { setQ(''); if (onIr) onIr(); };
+  const icono = (r) => {
+    if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls="cara" />;
+    if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
+    if (r.tipo === 'pais') return <span className="cara"><img alt="" src={'/banderas/g/' + r.cc + '.webp'} /></span>;
+    return <CrewCirculo c={r.crew} cls="cara" />;
+  };
   return (
     <div className="buscar-w">
       <label className="buscar">
         <Ico n="buscar" t={18} />
-        <input type="search" placeholder="Buscar rapero" aria-label="Buscar rapero" value={q} onChange={(e) => setQ(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) accion.perfil(res[0].k); if (e.key === 'Escape') setQ(''); }} />
+        <input type="search" placeholder="Buscar en la Liga" aria-label="Buscar raperos, servidores, países y crews" value={q} onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) { location.hash = res[0].href; ir(); } if (e.key === 'Escape') setQ(''); }} />
       </label>
       {res.length ? (
         <ul className="busca-res">
-          {res.map((f) => <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara" /><span>{limpio(f.n)}</span></a></li>)}
+          {res.map((r) => <li key={r.id}><a href={r.href} onClick={ir}>{icono(r)}<span>{r.n}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
         </ul>
       ) : null}
     </div>
@@ -436,6 +454,31 @@ function momentosTuyos(liga) {
       vis: <div className="mo-carta-w"><Carta liga={liga} k={yo.k} cual="temporada" cls="mo-carta" /></div>,
     });
   }
+  // ── tu próximo evento (Dlx, 01/10/2026: «me gusta tu idea», la B): a quien todavía no tiene letra, el próximo de SU
+  // servidor en las próximas 36 h —o, si no hay, el que sigue en la Liga— con cuánto le falta para su letra. Lo ve sólo
+  // esa persona, en la página: nada de DMs. De los 188 que jugaron la T1, 106 jugaron uno solo (29/09), y quien ya
+  // jugó uno es el más fácil de traer de vuelta
+  if (!yo.rg) {
+    const cerca = liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600);
+    const e = cerca.find((x) => x.sv === yo.sv) || cerca[0];
+    if (e) {
+      const ev = yo.ev || 0;
+      const falta = Math.max(0, 10 - ev);
+      const m = liga.multSv(e.sv);
+      const n = limpio(e.nombre);
+      const cuantos = ev === 0 ? 'Tu primer evento en la ' + liga.temp : (ev === 1 ? 'Jugaste 1 evento en la ' + liga.temp : 'Llevás ' + ev + ' eventos en la ' + liga.temp);
+      out.push({
+        tipo: 'tuprox', et: 'Tu próximo', sv: e.sv, ev: e,
+        txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-seguis">TU PRÓXIMO EVENTO · {liga.dia(e.cuando).toUpperCase()}</span></div>
+          <h1 className={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</h1>
+          <p className="hero-p">{cuantos}{falta ? (falta === 1 ? ': te falta 1 para tu letra' : ': te faltan ' + falta + ' para tu letra') : ''}{m > 1 ? '. ' + e.sv + ' va ' + mult(m) + ' esta semana' : ''}.</p>
+          <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
+          <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
+            <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a></div></>,
+        vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv)} />{liga.esDorado(e.nombre, e.sv) ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
+      });
+    }
+  }
   return out;
 }
 
@@ -459,7 +502,9 @@ function momentos(liga, vivoL) {
       vis: L ? <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div> : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv)} /></div>,
     });
   });
-  liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600).slice(0, 1).forEach((e) => {
+  // el próximo de la Liga, si no es el mismo que ya va como «tu próximo»
+  const tuyo = out.find((m) => m.tipo === 'tuprox');
+  liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600 && !(tuyo && tuyo.ev === x)).slice(0, 1).forEach((e) => {
     const dor = liga.esDorado(e.nombre, e.sv);
     const det = [e.sv, e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : '', e.org ? 'organiza ' + e.org : ''].filter(Boolean).join(' · ');
     const n = limpio(e.nombre);
@@ -604,6 +649,40 @@ export function Hero({ liga, vivoL, children }) {
       </section>
       {children}
     </div>
+  );
+}
+
+// ── instalar la página como app (Dlx, 01/10/2026: «ok…», la C). En Android, cuando Chrome dice que se puede
+// (`beforeinstallprompt`, que se guarda en index.html antes de que monte esto); en el iPhone no hay botón posible y va
+// cómo se hace a mano —y ahí instalarla es lo que habilita los avisos—. Sólo en pantallas táctiles, una vez: con la ✕
+// no vuelve (`lg:instalar`)
+export function Instalar() {
+  const [ev, setEv] = useState(() => window.__instalar || null);
+  const [no, setNo] = useState(() => { try { return localStorage.getItem('lg:instalar') === 'no'; } catch (e) { return false; } });
+  useEffect(() => {
+    const f = () => setEv(window.__instalar || null);
+    window.addEventListener('lg:instalar', f);
+    return () => window.removeEventListener('lg:instalar', f);
+  }, []);
+  const mm = (q) => !!(window.matchMedia && window.matchMedia(q).matches);
+  const app = mm('(display-mode: standalone)') || navigator.standalone === true;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (no || app || !mm('(pointer: coarse)') || (!ev && !ios)) return null;
+  const cerrar = () => { setNo(true); try { localStorage.setItem('lg:instalar', 'no'); } catch (e) { /* igual */ } };
+  const instalar = async () => {
+    const e = ev;
+    window.__instalar = null;
+    setEv(null);
+    try { e.prompt(); const r = await e.userChoice; if (r && r.outcome === 'accepted') cerrar(); } catch (err) { /* el navegador no quiso */ }
+  };
+  return (
+    <aside className="instalar" aria-label="Instalar la página como app">
+      <img alt="" src="/ul-192.png" />
+      <span className="inst-tx"><b>La Liga en tu celular</b>
+        <small>{ev ? 'Instalala como app: queda en tu pantalla y se abre de un toque.' : 'En el iPhone: tocá Compartir y «Agregar a inicio». Así también te llegan los avisos.'}</small></span>
+      {ev ? <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button> : null}
+      <button type="button" className="btn-ico inst-x" aria-label="No mostrar más" onClick={cerrar}><Ico n="cerrar" t={18} /></button>
+    </aside>
   );
 }
 

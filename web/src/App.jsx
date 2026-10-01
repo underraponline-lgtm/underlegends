@@ -3,7 +3,7 @@
 // pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
 import { Component, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Liga, aQuienSigo, quienMira } from './liga.js';
-import { Cabecera, Hero, Historias, IrA, Tira, gruposHistorias } from './arriba.jsx';
+import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias } from './arriba.jsx';
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
@@ -194,6 +194,7 @@ export default function App() {
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
+        <Aislada n="Instalar"><Instalar /></Aislada>
         <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
@@ -205,7 +206,7 @@ export default function App() {
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} /></Aislada>
-      <Aislada n="Menu"><Menu abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
+      <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} raiz={raiz} /></Aislada> : null}
     </div>
   );
