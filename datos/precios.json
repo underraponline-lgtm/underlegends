@@ -23,7 +23,19 @@
    "monto": 1000,
    "t": "2026-10-01T20:52:40Z",
    "fin": "2026-10-05T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Abyssus",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 377,
+    "nombre": "DESGRACIAS EN TOKYO VOL 20",
+    "sv": "FFA",
+    "t": "2026-10-01T21:25:37Z"
+   }
   },
   {
    "id": 4,
@@ -39,8 +51,23 @@
    "monto": 1000,
    "t": "2026-10-01T20:53:08Z",
    "fin": "2026-10-05T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Lambroggini",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 377,
+    "nombre": "DESGRACIAS EN TOKYO VOL 20",
+    "sv": "FFA",
+    "t": "2026-10-01T21:25:37Z"
+   }
   }
  ],
- "suma": {}
+ "suma": {
+  "Abyssus": 1000,
+  "Lambroggini": 1000
+ }
 }

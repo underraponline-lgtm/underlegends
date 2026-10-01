@@ -2278,7 +2278,7 @@
        "Masino",
        "Marto",
        "Xclusivo",
-       "Erian"
+       "Ab'l 🇦🇷 🇩🇴"
       ],
       "Masino",
       "triple (4 bandas)"
@@ -2425,12 +2425,12 @@
     2500
    ],
    [
-    "Elinge_TIMP",
+    "Ab'l 🇦🇷 🇩🇴",
     "Octavos",
     1250
    ],
    [
-    "Erian",
+    "Elinge_TIMP",
     "Octavos",
     1250
    ],
@@ -6141,6 +6141,303 @@
     "dxg",
     "Semifinal",
     1750
+   ]
+  ]
+ },
+ "377": {
+  "dia": "2026-10-01",
+  "escala": "16+",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1555329868605038715"
+  ],
+  "n": 377,
+  "nombre": "DESGRACIAS EN TOKYO VOL 20",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Elsoolar",
+       "Crk",
+       "OEP"
+      ],
+      "Elsoolar",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Riolu",
+       "Vandu",
+       "Teito🇨🇴"
+      ],
+      "Riolu",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Liberia",
+       "Slasher🇨🇱",
+       "ONZASS 🇻🇪"
+      ],
+      "Liberia",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Cinexfilo",
+       "Malva  🇨🇱",
+       "PichulaMc"
+      ],
+      "Cinexfilo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Lambroggini",
+       "Erian",
+       "Colesito"
+      ],
+      "Lambroggini",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Zignos",
+       "METRO 🇨🇱",
+       "Geoka"
+      ],
+      "Zignos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Snow",
+       "tito calderon 🇦🇷"
+      ],
+      "PRAISERIZA",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Abyssus",
+       "dxg",
+       "Bloody"
+      ],
+      "Abyssus",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Riolu",
+       "Elsoolar"
+      ],
+      "Riolu",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Cinexfilo"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "Lambroggini"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Abyssus"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Riolu"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Zignos"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos",
+       "Riolu"
+      ],
+      "Zignos",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Liberia"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Zignos",
+    "Tercero",
+    6000
+   ],
+   [
+    "Riolu",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Abyssus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Elsoolar",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lambroggini",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "METRO 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Malva  🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "OEP",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Slasher🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
+    "Octavos",
+    1250
+   ],
+   [
+    "tito calderon 🇦🇷",
+    "Octavos",
+    1250
    ]
   ]
  }

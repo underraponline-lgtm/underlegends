@@ -45,10 +45,22 @@
     "nivel": "B",
     "base": 9000,
     "o": 3,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 9000,
+    "caza": {
+     "n": 377,
+     "evento": "DESGRACIAS EN TOKYO VOL 20",
+     "sv": "FFA",
+     "t": "2026-10-01T21:25:37Z",
+     "por": [
+      {
+       "n": "PRAISERIZA",
+       "cobra": 9500
+      }
+     ]
+    }
    },
    {
     "n": "Bloody",
@@ -58,10 +70,22 @@
     "nivel": "C",
     "base": 7500,
     "o": 9,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7500
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 7500,
+    "caza": {
+     "n": 377,
+     "evento": "DESGRACIAS EN TOKYO VOL 20",
+     "sv": "FFA",
+     "t": "2026-10-01T21:25:37Z",
+     "por": [
+      {
+       "n": "Abyssus",
+       "cobra": 9250
+      }
+     ]
+    }
    }
   ],
   "snap": {
