@@ -41,7 +41,7 @@
         <ul>
           <li>La Liga publica tu nombre de rapero, tus resultados y tus tarjetas: <strong>es la Liga</strong>.</li>
           <li>El bot lee <strong>sólo los canales de eventos</strong>; nunca tus mensajes directos.</li>
-          <li><strong>No vendemos ni compartimos tus datos</strong>, y no te mandamos mensajes directos.</li>
+          <li><strong>No vendemos tus datos ni los usamos para publicidad</strong>, y no te mandamos mensajes directos.</li>
           <li>Para borrar lo tuyo: <code>/borrar-mis-datos</code> en Discord.</li>
         </ul>
       </section>
@@ -49,7 +49,7 @@
       <section class="sec" id="es-quienes">
         <h2><span class="n">01</span>Quiénes somos</h2>
         <p>La Liga Global de Freestyle en Español, organizada por Under Legends junto con los servidores de la Liga:
-        Discord Rap Español, Freestyle For All, Snake Rap y Urban Freestyle. Contacto: un admin de la Liga en
+        Discord Rap Español, Freestyle For All, Snake Rap, Urban Freestyle y FFS League. Contacto: un admin de la Liga en
         <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>.</p>
       </section>
 
@@ -63,6 +63,8 @@
           que se publican en los canales de eventos de los servidores de la Liga. De ahí salen los resultados (quién jugó,
           quién ganó, los puntos), el calendario de eventos y quién se inscribió. No lee mensajes directos ni otros
           canales, y no guarda conversaciones.</li>
+          <li><strong>Mientras hay un evento en vivo</strong>, el bot mira quién está en la llamada de ese evento (sólo
+          los IDs de Discord), para ayudar a los admins a cargar los resultados. Se guarda 3 días y no se publica.</li>
           <li><strong>Lo que la Liga publica</strong>: tu nombre de rapero, país, crew, resultados, puntos, rankings y
           tarjetas. Es público a propósito: es la Liga. Se ve en esta página y en Discord.</li>
           <li><strong>En la página, sólo si lo elegís</strong>: al entrar con Discord, tu ID, nombre y foto (el permiso
@@ -74,7 +76,11 @@
           Discord, para mandarte tus avisos. Si votás en una encuesta, tu voto con tu ID de Discord (uno por persona):
           se muestra cuántos votos lleva cada opción, nunca quién votó. Si ponés un precio por cabeza, el precio y tu
           billetera de Puntos de Tienda, con tu ID de Discord: se muestra cuánto vale cada cabeza, nunca quién puso.
-          Tus ajustes y a quién seguís quedan sólo en tu navegador.</li>
+          Si elegís «tu servidor», se guarda con tu ID de Discord y sale en tu perfil. Si reportás un error en una
+          llave, tu texto con tu ID de Discord, 30 días, para revisarlo. Tus ajustes quedan sólo en tu navegador. A
+          quién seguís, también, salvo que hayas entrado con Discord: ahí se guarda con tu ID, para que lo veas en
+          tus otros dispositivos y te avisemos cuando gane. Se muestra cuántos seguidores tiene cada uno, nunca
+          quiénes.</li>
         </ul>
       </section>
 
@@ -91,7 +97,15 @@
         <h2><span class="n">04</span>Dónde se guardan</h2>
         <ul>
           <li>En la infraestructura de Cloudflare (Workers, KV, R2 y Durable Objects), en planillas de Google Sheets de la
-          organización y en el repositorio de GitHub donde corre el proceso que arma la Liga.</li>
+          organización y en el repositorio de GitHub donde corre el proceso que arma la Liga. <strong>Ese repositorio
+          es público</strong>: además de los resultados y los rankings, ahí quedan las listas con las que se arma la
+          Liga, con tu nombre de rapero, tu país, en qué servidores de la Liga estás y tu ID de Discord.</li>
+          <li><strong>En tu navegador</strong>: una cookie de sesión (<code>lg_ses</code>, 30 días), sólo si entrás con
+          Discord, para no tener que autorizar en cada acción; y en su almacenamiento local, tus ajustes, quién sos, a
+          quién seguís si no entraste, tus avisos de ese dispositivo y lo que ya viste (historias, novedades). No hay
+          cookies de publicidad ni de estadísticas.</li>
+          <li>Para mostrar fotos y logos, la página los pide al CDN de Discord, y algunas páginas piden sus fuentes a
+          Google Fonts: esos servicios ven tu dirección IP, como con cualquier imagen de internet.</li>
           <li>Para entregar un aviso, el servicio de notificaciones de tu navegador (Google, Apple, Mozilla o Microsoft)
           recibe el mensaje cifrado.</li>
         </ul>
@@ -118,7 +132,8 @@
         Guardamos sólo tu ID de Discord en una lista de bajas, para que el sistema no te vuelva a sumar solo.</p>
         <p>Los resultados de los eventos en los que jugaste son parte del historial de la Liga. Si querés que cambiemos tu
         nombre ahí, o si no podés usar el comando, escribile a un admin de la Liga en
-        <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>: lo hacemos en un plazo de 30 días.</p>
+        <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>: lo hacemos en un plazo de 30 días. Lo mismo si
+        querés saber qué tenemos de vos o corregir algo.</p>
       </section>
 
       <section class="sec" id="es-cambios">
@@ -137,7 +152,7 @@
         <ul>
           <li>The league publishes your rapper name, results and cards: <strong>that is the league</strong>.</li>
           <li>The bot reads <strong>only event channels</strong>; never your direct messages.</li>
-          <li><strong>We don't sell or share your data</strong>, and we don't send you direct messages.</li>
+          <li><strong>We don't sell your data or use it for advertising</strong>, and we don't send you direct messages.</li>
           <li>To delete yours: <code>/delete-my-data</code> in Discord.</li>
         </ul>
       </section>
@@ -145,7 +160,7 @@
       <section class="sec" id="en-who">
         <h2><span class="n">01</span>Who we are</h2>
         <p>Liga Global de Freestyle en Español, a Spanish-language freestyle rap league run by Under Legends together with
-        the league's servers: Discord Rap Español, Freestyle For All, Snake Rap and Urban Freestyle. Contact: a league
+        the league's servers: Discord Rap Español, Freestyle For All, Snake Rap, Urban Freestyle and FFS League. Contact: a league
         admin in <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>.</p>
       </section>
 
@@ -159,6 +174,8 @@
           sign-ups posted in the event channels of the league's servers. From them it gets the results (who played, who
           won, points), the event calendar and who signed up. It does not read direct messages or any other channels, and
           it does not store conversations.</li>
+          <li><strong>While an event is live</strong>, the bot checks who is in that event's voice call (Discord IDs
+          only), to help admins enter the results. It is kept for 3 days and never published.</li>
           <li><strong>What the league publishes</strong>: your rapper name, country, crew, results, points, rankings and
           cards. This is public on purpose — it is the league — and is shown on this website and in Discord.</li>
           <li><strong>On the website, only if you choose to</strong>: when you log in with Discord, your ID, name and
@@ -171,7 +188,11 @@
           Discord ID so we can send you your own alerts. If you vote in a poll, your vote with your Discord ID (one per
           person): we show how many votes each option has, never who voted. If you put a bounty on someone, the bounty
           and your Shop Points wallet, with your Discord ID: we show how much each head is worth, never who put it.
-          Your settings and who you follow stay in your browser.</li>
+          If you pick “your server”, it is saved with your Discord ID and shown on your profile. If you report a
+          mistake in a bracket, your text with your Discord ID, for 30 days, so we can check it. Your settings stay in
+          your browser. So does who you follow, unless you logged in with Discord: then it is saved with your ID, so
+          you see it on your other devices and we can alert you when they win. We show how many followers each
+          person has, never who.</li>
         </ul>
       </section>
 
@@ -188,7 +209,15 @@
         <h2><span class="n">04</span>Where it is stored</h2>
         <ul>
           <li>On Cloudflare's infrastructure (Workers, KV, R2 and Durable Objects), in the organization's Google Sheets and
-          in the GitHub repository that runs the league's processing.</li>
+          in the GitHub repository that runs the league's processing. <strong>That repository is public</strong>:
+          besides results and rankings, it holds the lists the league is built from, with your rapper name, your
+          country, which league servers you are in and your Discord ID.</li>
+          <li><strong>In your browser</strong>: a session cookie (<code>lg_ses</code>, 30 days), only if you log in with
+          Discord, so you don't have to authorize every action; and in its local storage, your settings, who you are,
+          who you follow if you didn't log in, your alerts on that device and what you've already seen (stories,
+          updates). There are no advertising or analytics cookies.</li>
+          <li>To show photos and logos, the website requests them from Discord's CDN, and some pages request their
+          fonts from Google Fonts: those services see your IP address, as with any image on the internet.</li>
           <li>To deliver an alert, your browser's push service (Google, Apple, Mozilla or Microsoft) receives the encrypted
           message.</li>
         </ul>
@@ -215,7 +244,7 @@
         We keep only your Discord ID on an opt-out list, so the system does not add you back automatically.</p>
         <p>Results of events you played are part of the league's history. If you want your name replaced there, or you
         can't use the command, write to a league admin in <a href="https://discord.gg/SFVnEmVnKz">Discord Rap Español</a>;
-        we do it within 30 days.</p>
+        we do it within 30 days. The same if you want to know what we have about you, or to correct something.</p>
       </section>
 
       <section class="sec" id="en-changes">

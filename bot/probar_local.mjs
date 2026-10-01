@@ -2169,9 +2169,21 @@ console.log('\n/borrar-mis-datos\n');
   await pedir({ type: 2, guild_id: G.DRA, channel_id: '1', member: { user: { id: ID } }, data: { name: 'card' } });
   await esperarSeguimientos();
   ok('un /card después de la baja no lo vuelve a anotar', !('reg:' + ID in PUESTO));
+  // 🔴 LAS LIBRES (`dn:`): la auditoría del 01/10/2026 encontró que esto no
+  // les borraba nada en el momento, porque leía sólo `d:`
+  const IDN = '700810';
+  PUESTO['dn:' + IDN] = 'librebaja';
+  PUESTO['p:librebaja'] = '{"n":"Librebaja","nv":1}';
+  r2.add('librebaja/temporada.webp');
+  r2.add('librebaja/servidor.webp');
+  r = await boton(IDN, 'baja:si::' + IDN);
+  ok('a quien está en la Lista sin verificar también le borra todo, en el momento',
+     !('dn:' + IDN in PUESTO) && !('p:librebaja' in PUESTO) && ![...r2].some((k) => k.startsWith('librebaja/')),
+     Object.keys(PUESTO).filter((k) => k.includes('librebaja') || k.includes(IDN)).join(',') + ' · ' + [...r2].join(','));
   env.CARTAS = envAntes.CARTAS;
   env.AVISOS = envAntes.AVISOS;
   delete PUESTO['olvido:' + ID];
+  delete PUESTO['olvido:' + IDN];
 }
 
 console.log('\nLAS ENCUESTAS\n');

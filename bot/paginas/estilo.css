@@ -2380,4 +2380,5 @@ tbody tr.fc td.c-n{opacity:.82}
 .l-rep textarea{font:inherit;font-size:.85rem;width:100%;resize:vertical;min-height:64px;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--ng);color:var(--tx)}
 .l-rep .rep-pie{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .l-rep .rep-est{font-size:.8rem;color:var(--tx2)}
+.l-rep .rep-nota{margin:0;font-size:.75rem;color:var(--tx2)}
 .l-rep .rep-ok{font-size:.9rem;color:var(--tl)}

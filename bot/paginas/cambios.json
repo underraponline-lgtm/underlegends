@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.67",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T18:12:00-04:00",
+   "titulo": "La llave en vivo, entera, y la privacidad al día",
+   "items": [
+    "🏆 **La llave en vivo se ve entera**: Octavos, Cuartos, Semis y Final, con los cruces que faltan como lugares vacíos y el texto más a la izquierda para que entre. En el celular, las rondas que se están jugando.",
+    "🎨 **Se veía gris**: las casillas eran blancas con letras blancas. Ahora van oscuras, como el resto del escenario.",
+    "🔒 **La privacidad, corregida**: dice que el repositorio del proceso es público, que con un evento en vivo se mira quién está en la llamada, qué guarda tu navegador y que a quién seguís se guarda si entrás con Discord.",
+    "🗑️ **`/borrar-mis-datos` borra en el momento también a quien está en la Lista sin verificar**, que antes esperaba a la limpieza semanal.",
+    "♿ **Más legible y con teclado**: textos chicos con más contraste, el foco del buscador se ve, «Mis redes» arranca sin nada marcado y los Términos están en el pie."
+   ]
+  },
+  {
    "version": "1.66",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T17:46:00-04:00",

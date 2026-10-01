@@ -339,10 +339,14 @@ const MEDIDAS = {
   movil: { rondas: 2, W: 104, G: 12, CAMP: 88 },
   medio: { rondas: 2, W: 116, G: 16, CAMP: 96 },
   pc: { rondas: 3, W: 106, G: 14, CAMP: 96 },
+  // en una pantalla ancha, cuatro rondas: con Octavos entra la llave entera de 16 (Dlx, 01/10: «mostrar todas las
+  // llaves»). Desde 1280: debajo, cuatro rondas no entran al lado del texto
+  ancho: { rondas: 4, W: 116, G: 14, CAMP: 96 },
 };
 function useMedida() {
   const q = (m) => (typeof window !== 'undefined' && window.matchMedia ? window.matchMedia(m).matches : false);
-  const leer = () => (q('(max-width: 599.98px)') ? 'movil' : (q('(max-width: 1099.98px)') ? 'medio' : 'pc'));
+  const leer = () => (q('(max-width: 599.98px)') ? 'movil' : (q('(max-width: 1099.98px)') ? 'medio'
+    : (q('(max-width: 1279.98px)') ? 'pc' : 'ancho')));
   const [m, setM] = useState(leer);
   useEffect(() => {
     const f = () => setM(leer());
@@ -352,18 +356,57 @@ function useMedida() {
   return MEDIDAS[m];
 }
 
+// ── la llave completa: las rondas que faltan y los cruces que todavía no se jugaron, vacíos ──────────────────────
+// Dlx, 01/10/2026, con la llave en vivo de «Desgracias en Tokyo»: «para mostrar todas las llaves». Con los Cuartos a
+// medio jugar (2 de 4) la llave no daba «regular» y caía al cuadro por rondas: sin caras, sin líneas y sin Semis ni
+// Final. Se completa desde la primera ronda —cada una con la mitad de cruces que la anterior, hasta la Final— y cada
+// cruce jugado va en SU lugar, el de los ganadores que lo forman, no en el orden en que llegó.
+// ⚠️ Sólo si la primera ronda es potencia de 2 y ninguna trae más cruces de los que caben: si no, no se inventa la forma.
+const NOMBRE_RONDA = { 1: 'Final', 2: 'Semis', 4: 'Cuartos', 8: 'Octavos', 16: '16avos' };
+export function completar(todas) {
+  const n0 = todas.length ? todas[0].b.length : 0;
+  if (!n0 || (n0 & (n0 - 1))) return todas;
+  const out = [{ r: todas[0].r, b: todas[0].b.slice() }];
+  for (let n = n0 / 2, i = 1; n >= 1; n /= 2, i += 1) {
+    const r = todas[i];
+    if (r && r.b.length > n) return todas;
+    const previa = out[i - 1].b;
+    const lugar = new Array(n).fill(null);
+    (r ? r.b : []).forEach((b) => {
+      const ls = lados(b);
+      let k = previa.findIndex((p) => { const g = ganador(p); return !!g && ls.includes(g); });
+      k = k >= 0 ? Math.floor(k / 2) : -1;
+      if (k < 0 || lugar[k]) k = lugar.indexOf(null);
+      if (k >= 0) lugar[k] = b;
+    });
+    out.push({ r: (r && r.r) || NOMBRE_RONDA[n] || 'Ronda ' + (i + 1), b: lugar.map((b) => b || [[], '']) });
+  }
+  return todas.length > out.length ? todas : out;
+}
+
 export function CuadroMini({ liga, ll }) {
   const M = useMedida();
-  const todas = (ll.rondas || []).filter((r) => !['Filtros', 'Tercer puesto', 'Clasificatorias', 'Preliminares'].includes(r.r));
-  const rondas = todas.slice(-M.rondas);
+  const todas = completar((ll.rondas || []).filter((r) => !['Filtros', 'Tercer puesto', 'Clasificatorias', 'Preliminares'].includes(r.r)));
+  // 🔑 QUÉ RONDAS SE VEN: con la llave completa, las últimas de una llave en vivo son lugares vacíos —en el celular
+  // eran Semis y Final sin nadie—. Se ven desde la que SE ESTÁ JUGANDO, sin pasarse del final; terminada, las últimas.
+  // Y la primera que se ve no puede tener más de 8 cruces: más alto no entra en el escenario
+  const enJuego = todas.findIndex((r) => r.b.some((b) => !ganador(b) && lados(b).length === 2));
+  let desde = Math.max(0, todas.length - M.rondas);
+  if (enJuego >= 0) desde = Math.min(enJuego, desde);
+  while (desde < todas.length - 1 && todas[desde].b.length > 8) desde += 1;
+  const rondas = todas.slice(desde, desde + M.rondas);
+  const conFinal = desde + rondas.length === todas.length;
   const regular = rondas.length && rondas.every((r, i) => i === rondas.length - 1 || rondas[i + 1].b.length * 2 === r.b.length);
   if (!regular) return <CuadroRondas ll={ll} />;
-  const { W, G, CAMP } = M;
+  const { W, G } = M;
+  // el campeón sólo si se ve la Final: si no, el «campeón» sería el ganador de otra ronda
+  const CAMP = conFinal ? M.CAMP : 0;
   const R = 31; const HB = 52; const TOP = 28;
   const n0 = rondas[0].b.length;
-  const campeon = ganador(rondas[rondas.length - 1].b[0]);
+  const campeon = conFinal ? ganador(rondas[rondas.length - 1].b[0]) : '';
+  // «AHORA» y «SIGUE» sólo en cruces con los dos lados: un lugar vacío todavía no se juega
   const pend = [];
-  rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b)) pend.push(ci + ':' + j); }));
+  rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length === 2) pend.push(ci + ':' + j); }));
   const cajas = []; const lineas = []; const etiquetas = [];
   const alto = 2 * n0 * R + TOP;
   rondas.forEach((r, ci) => {
@@ -374,8 +417,9 @@ export function CuadroMini({ liga, ll }) {
       const g = ganador(b);
       const est = pend[0] === ci + ':' + j ? 'ahora' : (pend[1] === ci + ':' + j ? 'sigue' : '');
       cajas.push(
-        <div key={ci + '-' + j} className={'cm-m ' + est} style={{ left: x, top: y - HB / 2, width: W }}>
-          {lados(b).map((n, i) => {
+        <div key={ci + '-' + j} className={'cm-m ' + est + (lados(b).length ? '' : ' vacio')} style={{ left: x, top: y - HB / 2, width: W }}>
+          {(lados(b).length ? lados(b) : ['', '']).map((n, i) => {
+            if (!n) return <span key={i} className="vac"><em>por jugarse</em></span>;
             const f = liga.fila(n);
             const cls = (g ? (n === g ? 'g' : 'x') : '') + (g && n === campeon ? ' camino' : '');
             return <span key={i} className={cls}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cm-av" /><em>{n}</em></span>;
@@ -396,15 +440,17 @@ export function CuadroMini({ liga, ll }) {
   // la cara del campeón, a la altura de la línea de la final; abajo, el sello y el nombre
   const altoCamp = 124;
   const top = Math.max(0, yc - 32);
-  const total = Math.max(alto + 8, top + altoCamp);
+  const total = conFinal ? Math.max(alto + 8, top + altoCamp) : alto + 8;
   return (
     <div className="cm" style={{ width: ancho, height: total }}>
       <svg className="cm-l" width={ancho} height={total} aria-hidden="true">{lineas}</svg>
       {etiquetas}{cajas}
-      <div className="cm-camp" style={{ left: xc, top, width: CAMP }}>
-        {campeon ? <Cara liga={liga} k={f ? f.k : ''} nombre={campeon} cls="cm-cara" /> : <span className="cm-cara ini">?</span>}
-        <small>{campeon ? 'CAMPEÓN' : 'EN JUEGO'}</small>{campeon ? <b>{campeon}</b> : null}
-      </div>
+      {conFinal ? (
+        <div className="cm-camp" style={{ left: xc, top, width: CAMP }}>
+          {campeon ? <Cara liga={liga} k={f ? f.k : ''} nombre={campeon} cls="cm-cara" /> : <span className="cm-cara ini">?</span>}
+          <small>{campeon ? 'CAMPEÓN' : 'EN JUEGO'}</small>{campeon ? <b>{campeon}</b> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

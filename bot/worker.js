@@ -2436,9 +2436,14 @@ export function panelBaja(id) {
  */
 export async function borrarMisDatos(env, id) {
   const hecho = { clave: '', kv: 0, r2: 0, avisos: null };
-  const clave = await env.KV.get('d:' + id);
+  // 🔴 Y TAMBIÉN `dn:`. Desde las LIBRES (29/09/2026) quien está en la Lista
+  // sin verificar tiene sus cartas bajo `dn:<id>`, y esto leía sólo `d:`: no
+  // encontraba su clave y no borraba nada en el momento, aunque el mensaje
+  // decía que sí. Lo encontró la auditoría legal del 01/10.
+  const [cd, cdn] = await Promise.all([env.KV.get('d:' + id), env.KV.get('dn:' + id)]);
+  const clave = cd || cdn;
   hecho.clave = clave || '';
-  const kv = ['d:' + id];
+  const kv = ['d:' + id, 'dn:' + id];
   if (clave) kv.push('p:' + clave, 'redes:' + clave, claveUso(env, clave));
   for (const k of kv) {
     try { await env.KV.delete(k); hecho.kv++; } catch (e) { /* se sigue con lo demás */ }

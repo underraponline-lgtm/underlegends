@@ -1267,7 +1267,9 @@ function pintaReporte(est) {
       (REP.que === 'otro' ? '' : ' (si querés)') + '">' + esc(REP.txt || '') + '</textarea>' +
     '<div class="rep-pie"><button type="button" class="btn" data-rep-enviar' +
       (REP.que && !REP.va ? '' : ' disabled') + '>' + (REP.va ? 'Enviando…' : 'Enviar') + '</button>' +
-    '<span class="rep-est" aria-live="polite">' + (est || '') + '</span></div>';
+    '<span class="rep-est" aria-live="polite">' + (est || '') + '</span></div>' +
+    // lo que se guarda, dicho al lado de «Enviar» (auditoría legal del 01/10/2026)
+    '<p class="rep-nota">Se guarda con tu cuenta de Discord 30 días, para revisarlo.</p>';
 }
 function enviarReporte() {
   var t = (($('#lRepTxt') && $('#lRepTxt').value) || '').replace(/\s+/g, ' ').trim();
@@ -5371,7 +5373,9 @@ function secRedes() {
   var nada = !(R.guardadas || []).length;
   return cab + '<div class="redes-el">' + R.publicas.map(function (r) {
     var id = r.t + ':' + r.n;
-    return '<label><input type="checkbox" value="' + esc(id) + '"' + (nada || ya[id] ? ' checked' : '') +
+    // ⚠️ NINGUNA MARCADA DE ENTRADA: se muestra lo que la persona elige, no lo que
+    // la página eligió por ella (auditoría legal del 01/10/2026)
+    return '<label><input type="checkbox" value="' + esc(id) + '"' + (ya[id] ? ' checked' : '') +
       '><span class="red chica">' + (RED_ICONO[r.t] || '') + '</span><span>' + esc(RED_NOMBRE[r.t] || r.t) +
       ' <small>' + esc(r.n) + '</small></span></label>';
   }).join('') + '</div><button type="button" class="btn ancho" id="dcRedesGuardar">Guardar en mi perfil</button>' +
