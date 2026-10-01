@@ -160,6 +160,19 @@ ALIAS = {'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
          'SEMIS': 'SEMIFINALES', 'SEMI': 'SEMIFINALES',
          'GRAN FINAL': 'FINAL'}
 
+# 🔑 EL CYPHER CON BATALLAS ES LA FASE PREVIA, como los filtros: POESÍA CRUDA
+# (Urban Freestyle, 01/10/2026) escribe `[ CYPHER ]` y abajo grupos de tres
+# —`⌞A⌝ vs. ⌞B⌝ vs. ⌞C⌝`— antes de los cuartos. Sin ser ronda, esos grupos
+# caían antes del primer encabezado y se tiraban: en vivo la página no tenía
+# nada que mostrar, y al cargarse los que cayeron ahí quedaban sin puntos.
+#
+# ⚠️ SÓLO EL ENCABEZADO SOLO, NO LA PALABRA: «CYPHER KINGS VOL 2» es el nombre de
+# un evento y su llave cuenta (§14.2); con `CYPHER` en `RONDA` el título pasaba
+# a ser la fase previa y `fase_sin_batallas()` descartaba el evento entero. Y el
+# cypher SIN batallas sigue siendo lo que era: la nave de funa (`funa_de()`) o la
+# fase que la guía descarta (§12).
+CYPHER_ENC = re.compile(r'^[\W_]*(?:(?:fase|ronda)\s+(?:de\s+)?)?c[iy]pher[\W_]*$', re.I)
+
 # 🔴 `FINAL(?:ES)?` Y NO `FINALES?`. El patron decia `SEMI…FINALES?`, o sea
 # «FINALE» con la S opcional: la E era obligatoria. `SEMIFINALES` y `SEMI -
 # FINAL` andaban por otros caminos (la segunda por `SEMIS?`), pero una llave
@@ -548,7 +561,8 @@ def nombres_de_linea(l):
         n_lados = len(lados)
         lados = [x for x in lados if norm(x) not in VACIO]
         if len(lados) >= 2:
-            return [_sin_marcas(x) for x in lados]
+            # 🔑 sin el refuerzo ni la «R» suelta: ver `sin_refuerzos()`
+            return [sin_refuerzos(_sin_marcas(x)) for x in lados]
         if len(lados) < n_lados:
             return []
     # ⚠️ SIN NOMBRE NO HAY LADO: el hueco `⌞ + ⌝` o `［ ］` de la plantilla daba
@@ -560,7 +574,7 @@ def nombres_de_linea(l):
         hay = [x.strip() for x in d.findall(l)
                if (norm(x) or MENCION.search(x)) and norm(x) not in VACIO]
         if len(hay) >= 2:
-            return [_sin_marcas(x) for x in hay]
+            return [sin_refuerzos(_sin_marcas(x)) for x in hay]
     return []
 
 
@@ -647,6 +661,15 @@ def unir_continuadas(texto):
 
 def rondas_de(texto):
     """[(ronda, [[competidor,...],...])] en el orden en que aparecen."""
+    return _equipos_con_espacios([(r, [n for n, _l in bats])
+                                  for r, bats in _rondas_crudas(texto)])
+
+
+def _rondas_crudas(texto):
+    """Lo de `rondas_de()` con la LÍNEA de cada batalla al lado:
+    `[(ronda, [(competidores, línea), …])]`, antes de partir los equipos con
+    espacios —que no cambia ni cuántas batallas hay ni su orden—. Existe para
+    que `_negritas()` mire exactamente las mismas líneas."""
     out, actual, bats = [], None, []
     texto = plano(texto)
     # ⚠️ PRIMERO SE UNEN LAS CONTINUADAS. Ver `unir_continuadas()`: sin
@@ -657,8 +680,10 @@ def rondas_de(texto):
         nombres = nombres_de_linea(l)
         # ⚠️ UNA LINEA QUE TRAE LOS DOS es una batalla, no un encabezado:
         # `FINAL: A vs B` existe y perderla corta la llave al medio.
-        if m and not nombres:
-            e = re.sub(r'\s+', ' ', m.group(1).upper()).strip()
+        # 🔑 y `[ CYPHER ]` solo en su renglón es la fase previa: ver `CYPHER_ENC`
+        cy = not nombres and not m and CYPHER_ENC.match(l.strip())
+        if (m or cy) and not nombres:
+            e = 'FILTROS' if cy else re.sub(r'\s+', ' ', m.group(1).upper()).strip()
             if actual and bats:
                 out.append((actual, bats))
             actual, bats = ALIAS.get(e, e), []
@@ -680,10 +705,58 @@ def rondas_de(texto):
         # si es una batalla
         if nombres and actual and not (PODIO.search(l)
                                        and not CONTRA.search(l)):
-            bats.append(nombres)
+            bats.append((nombres, l))
     if actual and bats:
         out.append((actual, bats))
-    return _equipos_con_espacios(out)
+    return out
+
+
+def _es_negrita(pedazo):
+    """¿El lado de este pedazo de línea está ENTERO en negrita? `[**X**]`,
+    `**[X]**` o `**X**`. Medio lado no cuenta: `⌞DYNOCO + **GEOKA⌝` marca a un
+    integrante (GENESIS BATTLES: el que se suma al equipo del ganador)."""
+    s = re.sub(r'<a?:\w+:\d+>', '', pedazo or '').strip(' \t▪️•·-–—')
+    if len(s) > 4 and s.startswith('**') and s.endswith('**'):
+        return True
+    m = re.search(r'[\[⌞]\s*(.+?)\s*[\]⌝]', s)
+    adentro = m.group(1).strip() if m else ''
+    return len(adentro) > 4 and adentro.startswith('**') and adentro.endswith('**')
+
+
+def _negritas_de_linea(l, nombres):
+    """`[bool]`, uno por lado de `nombres`: cuál está en negrita. `None` si no
+    se puede saber qué pedazo de la línea es cada lado."""
+    if SEP.search(l):
+        pedazos = SEP.split(l)
+    else:
+        # sin separador: cada marco con lo que lo rodea hasta el siguiente
+        d = next((d for d in DELIMS if len(d.findall(l)) >= 2), None)
+        if d is None:
+            return None
+        ms = list(d.finditer(l))
+        pedazos = []
+        for j, m in enumerate(ms):
+            a = ms[j - 1].end() if j else 0
+            z = ms[j + 1].start() if j + 1 < len(ms) else len(l)
+            antes, despues = l[a:m.start()].rstrip(), l[m.end():z].lstrip()
+            pedazos.append(('**' if antes.endswith('**') else '') + m.group(0)
+                           + ('**' if despues.startswith('**') else ''))
+    out, desde = [], 0
+    for n in nombres:
+        k, ids = norm(n), MENCION.findall(n)
+        j = next((j for j in range(desde, len(pedazos))
+                  if (k and k in norm(pedazos[j]))
+                  or (ids and set(ids) <= set(MENCION.findall(pedazos[j])))), None)
+        if j is None:
+            return None
+        out.append(_es_negrita(pedazos[j]))
+        desde = j + 1
+    return out
+
+
+def _negritas(texto):
+    """`[(ronda, [[bool por lado] | None, …])]`, alineado con `rondas_de()`."""
+    return [(r, [_negritas_de_linea(l, n) for n, l in bats]) for r, bats in _rondas_crudas(texto)]
 
 
 # ── la NAVE DE FUNA (CYPHER, aniquilación) ─────────────────────────────
@@ -834,6 +907,44 @@ def es_llave(texto):
 #: Solo al FINAL del lado, y el cierre es opcional porque hay llaves
 #: que lo cortan. Es el mismo criterio que `sheet/equipos._PAREN`.
 HISTORIA = re.compile(r'\s*[(\uff08][^()\uff08\uff09]*[)\uff09]?\s*$')
+
+#: \ud83d\udd11 EL REFUERZO ADENTRO DEL MARCO: alguien entre par\u00e9ntesis, CON SU BANDERA,
+#: al principio del lado o al final con un espacio delante. Las finales de
+#: DESGRACIAS EN TOKYO (FFA) suman as\u00ed a uno que ya qued\u00f3 afuera para que
+#: ayude \u2014`[ENEK \ud83c\uddea\ud83c\uddf8 + NEO \ud83c\udde6\ud83c\uddf7  (EZE \ud83c\udde6\ud83c\uddf7)]`, `[(EZE \ud83c\udde6\ud83c\uddf7) PICHULITA \ud83c\udde6\ud83c\uddf7 + SIX \ud83c\udde6\ud83c\uddf7]`\u2014
+#: y no es del lado: es el refuerzo que no pele\u00f3 de la gu\u00eda (\u00a74.2), el mismo
+#: que `(BLOODY) [Cj] [Zignos]` escribe afuera del marco.
+#:
+#: \ud83d\udd34 ADENTRO ROMP\u00cdA LA RONDA ANTERIOR, Y COSTABA PUNTOS. El equipo de la final
+#: era `{enek, neo (eze)}`, ya no `{neo, enek}`, as\u00ed que \u00abno pasaba nadie\u00bb de
+#: la semi y la semi no se escrib\u00eda: medido el 01/10/2026 en la VOL 18 2VS2,
+#: **Molusco, Gian, Eze y Zignos sin sus puntos de semifinal**. En la VOL.13 Dlx
+#: tuvo que contestarlo a mano en \u2705 Decidir: *\u00abgan\u00f3 neo y enek porque ellos
+#: avanzaron a la final, no?\u00bb*.
+#:
+#: \u26a0\ufe0f LA HISTORIA `gekto\ud83c\udde6\ud83c\uddf7(chianluka\ud83c\udde6\ud83c\uddf7)` NO ES ESTO: va pegada, sin espacio, y
+#: dice a qui\u00e9n le gan\u00f3. Esa la sigue sacando `HISTORIA` donde hace falta.
+_PAR_A, _PAR_C = '(' + chr(0xFF08), ')' + chr(0xFF09)
+REFUERZO_INI = re.compile(r'^\s*[' + _PAR_A + r'][^' + _PAR_A + _PAR_C + r']*' + _BANDERA
+                          + r'[^' + _PAR_A + _PAR_C + r']*[' + _PAR_C + r']\s*')
+REFUERZO_FIN = re.compile(r'\s+[' + _PAR_A + r'][^' + _PAR_A + _PAR_C + r']*' + _BANDERA
+                          + r'[^' + _PAR_A + _PAR_C + r']*[' + _PAR_C + r']\s*$')
+#: \ud83d\udd11 Y LA \u00abR\u00bb SUELTA DESPU\u00c9S DE LA BANDERA: `SIX \ud83c\udde6\ud83c\uddf7 R`, `GOCHO \ud83c\udde8\ud83c\uddf4 R` (VOL 18
+#: 2VS2). Es una marca, no el nombre: \u00abSIX R\u00bb llegaba a \u2705 Decidir como alguien
+#: desconocido y \u00abRICKYFORT \ud83c\udde6\ud83c\uddf7 R\u00bb entraba as\u00ed al ranking. \u26a0\ufe0f S\u00f3lo se limpia el
+#: nombre: qui\u00e9n es revivido lo sigue diciendo `marcar_revividos()`, por la
+#: notaci\u00f3n de la gu\u00eda \u2014`(R)`, `1R`\u2014 o por aparecer dos veces.
+R_SUELTA = re.compile(r'(?<=' + _BANDERA + r')\s+R\s*$')
+
+
+def sin_refuerzos(lado):
+    """El lado sin el refuerzo `(X \ud83c\udff3\ufe0f)` del principio o del final, y cada
+    integrante sin la \u00abR\u00bb suelta. `[(EZE \ud83c\udde6\ud83c\uddf7) PICHULITA \ud83c\udde6\ud83c\uddf7 + SIX \ud83c\udde6\ud83c\uddf7 R]` ->
+    `PICHULITA \ud83c\udde6\ud83c\uddf7 + SIX \ud83c\udde6\ud83c\uddf7`. Si no queda nada, el lado tal cual vino."""
+    s = REFUERZO_FIN.sub('', REFUERZO_INI.sub('', lado or ''))
+    partes = re.split(r'(\s*[+&]\s*)', s)
+    s = ''.join(R_SUELTA.sub('', p) if i % 2 == 0 else p for i, p in enumerate(partes)).strip()
+    return s if norm(s) or MENCION.search(s) else (lado or '')
 
 _PERSONAS = [None]
 
@@ -1014,6 +1125,10 @@ def resolver(texto, conocidos=None, ids=None):
     """
     texto = plano(texto)
     rs = rondas_de(texto)
+    # 🔑 LO QUE LA LLAVE DICE DE QUIÉN ES QUIÉN, para ✅ Decidir: la mención que
+    # pasó con un nombre, y el nombre que creció de una ronda a otra. Ver
+    # `Resueltas` y `llaves_a_entrada.identidad_de_grupo()`.
+    cambios = []
     _c = None
     if conocidos:
         canon = {}
@@ -1204,14 +1319,17 @@ def resolver(texto, conocidos=None, ids=None):
                                     _parecido(cand, miembros)
                                 if s is not None:
                                     sust[n] = s
+                                    cambios.append(('mencion', str(did), s))
                                     break
                             if n in sust:
                                 break
                     ganan += [n for n in b if n in sust]
                 if not ganan:
                     # el mismo equipo escrito al reves. Ver `_equipo()`.
-                    eqs = {_equipo(s) for s in sig} - {frozenset()}
-                    ganan = [n for n in b if _equipo(n) in eqs]
+                    # ⚠️ SIN LA HISTORIA `A(B+C)`, igual que `sig_l`: pegada al
+                    # último integrante lo cambiaba de nombre
+                    eqs = {_equipo(HISTORIA.sub('', s)) for s in sig} - {frozenset()}
+                    ganan = [n for n in b if _equipo(HISTORIA.sub('', n)) in eqs]
                     # 🔑 Y EL EQUIPO QUE LLEGA CON UNO MAS. En los formatos
                     # hibridos el perdedor de una semi puede ser ABSORBIDO
                     # por el ganador (guia §3.2, «Klk 4»): `[SNOW] [VELATZ]
@@ -1266,8 +1384,21 @@ def resolver(texto, conocidos=None, ids=None):
                     rev = [n for n in ganan if norm(HISTORIA.sub('', n)) in abajo]
                     if len(rev) == 1:
                         ganan = [n for n in ganan if n != rev[0]]
+                # 🔑 EL NOMBRE QUE CRECE DE UNA RONDA A LA OTRA: `MATI🇦🇷` en
+                # octavos es `MATICERNA🇦🇷` en cuartos, `[PARIA 🇦🇷 + JAWA 🇺🇾]`
+                # es `[PARIA SIN REMEDIO 🇦🇷 + JAWA 🇺🇾]`. Ver `_crecio()`. Pasa
+                # con el nombre de después, igual que la mención de arriba.
+                crecio = None
+                if not ganan:
+                    crecio = _crecio(b, sig, bats, rs)
+                    if crecio:
+                        b = [crecio[1] if x == crecio[0] else x for x in b]
+                        ganan = [crecio[1]]
+                        cambios.append(('crece',) + crecio[2])
                 if len(ganan) == 1:
-                    out.append((ronda, b, ganan[0], 'ronda siguiente'))
+                    out.append((ronda, b, ganan[0],
+                                'ronda siguiente, con el nombre más largo o más corto'
+                                if crecio else 'ronda siguiente'))
                 elif not ganan:
                     out.append((ronda, b, None, 'no aparece nadie después'))
                 else:
@@ -1445,6 +1576,13 @@ def resolver(texto, conocidos=None, ids=None):
                                 'de la batalla'))
             else:
                 out.append((ronda, b, None, 'última ronda y no dice campeón'))
+    # 🔑 LA NEGRITA, CUANDO NADA MÁS LO DICE. Ver `_por_negrita()`. Va antes del
+    # filtro de abajo: un grupo que la negrita resuelve no es «pasan 0».
+    if '**' in texto:
+        try:
+            out = _por_negrita(out, rs, _negritas(texto))
+        except Exception:                                # noqa: BLE001
+            pass
     # 🔑 EN UN FILTRO PUEDE NO PASAR NADIE DE UN GRUPO, y eso es un
     # resultado. SNAKE INSIGNIA 3/8 (Snake Rap, 26/09/2026) arma ocho grupos
     # de tres o cuatro y pasan los ocho mejores DEL TOTAL: de tres grupos
@@ -1464,7 +1602,152 @@ def resolver(texto, conocidos=None, ids=None):
                     out[k] = Batalla((r, out[k][1], None,
                                       'pasan 0: del filtro pasan los mejores '
                                       'de todos los grupos'), pasan=())
-    return _tercero_del_podio(texto, out, ids)
+    res = Resueltas(_tercero_del_podio(texto, out, ids))
+    res.cambios = cambios
+    return res
+
+
+class Resueltas(list):
+    """Lo que devuelve `resolver()`: la lista de batallas de siempre, que
+    además dice lo que la llave enseñó de quién es quién (`.cambios`):
+
+        ('mencion', discord_id, nombre)   el `<@id>` que pasó con ese nombre
+        ('crece', antes, después)         el mismo, escrito distinto
+
+    ⚠️ ES UNA LISTA A PROPÓSITO, como `Batalla` es una tupla: todos los que
+    llaman la recorren igual, y el que no pregunta por `.cambios` no se
+    entera de que existe.
+    """
+    cambios = ()
+
+
+def _crece(a, b):
+    """¿`a` y `b` (normalizados) son el mismo nombre, uno el principio del
+    otro? `mati` y `maticerna`, `paria` y `pariasinremedio`. Desde 4 letras:
+    `nc` es el principio de demasiada gente."""
+    if not a or not b or a == b:
+        return False
+    corto, largo = sorted((a, b), key=len)
+    return len(corto) >= 4 and largo.startswith(corto)
+
+
+def _banderas(s):
+    return sorted(re.findall(_BANDERA + _BANDERA, s or ''))
+
+
+def _crecio(b, sig, bats, rs=()):
+    """`(lado de b, ese lado en la ronda siguiente, (integrante, cómo se llama
+    después))` si de esta batalla pasó uno con el nombre cambiado; si no, None.
+
+    🔴 «NO APARECE NADIE DESPUÉS» Y SÍ APARECÍA, CON EL NOMBRE COMPLETO. FFA
+    WORLD CUP (27/09/2026) escribe `MATI🇦🇷` en octavos y `MATICERNA🇦🇷` en
+    cuartos; la VOL 18 2VS2 (30/09) `[PARIA 🇦🇷 + JAWA 🇺🇾]` en octavos y
+    `[PARIA SIN REMEDIO 🇦🇷 + JAWA 🇺🇾]` en cuartos. `mati` contra `maticerna`
+    da 0,62 de parecido, abajo del corte, así que esas batallas iban a ✅
+    Decidir y **los que perdieron —MTZ, ELPIBEOSIRIS y LOLOELGAUCHO— se
+    quedaban sin sus puntos de octavos**.
+
+    ⚠️ ES EXACTO Y NO UN PARECIDO. El nombre de la ronda siguiente tiene que:
+      · no estar en esta ronda (es alguien que «aparece»);
+      · empezar con el de UNO SOLO de los de esta ronda, o al revés, desde 4
+        letras —`_crece()`—, y con la misma bandera;
+      · y si es un equipo, el resto del equipo tiene que ser el mismo.
+    Si dos de esta ronda podrían ser él, no se elige. Y sólo se pregunta
+    cuando nadie de la batalla aparece después: no cambia ninguna batalla
+    que ya se resolvía.
+
+    🔴 Y LO QUE SE AGREGA NO PUEDE SER OTRA PERSONA DE LA LLAVE. «DENME
+    MODERADOR LPM» (URBF) escribe en semis el equipo `Prosu velatz player
+    erian 7`, con espacios: empieza con «Prosu», pero velatz, player y erian
+    pelearon cuartos. Es un equipo, no Prosu con el nombre largo.
+    """
+    def _ms(x):
+        return [m.strip() for m in re.split(r'[+&]', HISTORIA.sub('', x or '')) if norm(m)]
+
+    def _con_otros(corto, largo):
+        """¿Las palabras que `largo` le agrega a `corto` son gente de la llave?"""
+        pal = [norm(w) for w in re.split(r'\s+', largo.strip())]
+        return len(pal) > 1 and any(w and w != norm(corto) and w in todos for w in pal)
+
+    aca = {norm(m) for bb in bats for x in bb for m in _ms(x)}
+    todos = {norm(m) for _r, bbs in rs for bb in bbs for x in bb for m in _ms(x)} | aca
+    distintos = _distintos()
+    hallados = []
+    for s in sig:
+        for m2 in _ms(s):
+            k2 = norm(m2)
+            if k2 in aca:
+                continue
+            quienes = [(x, m) for bb in bats for x in bb for m in _ms(x)
+                       if _crece(norm(m), k2) and _banderas(m) == _banderas(m2)
+                       and frozenset((norm(m), k2)) not in distintos]
+            if len(quienes) != 1 or quienes[0][0] not in b:
+                continue
+            x, m = quienes[0]
+            corto, largo = sorted((m, m2), key=lambda y: len(norm(y)))
+            if _con_otros(corto, largo):
+                continue
+            antes = [norm(y) for y in _ms(x)]
+            despues = [norm(y) for y in _ms(s)]
+            antes.remove(norm(m))
+            despues.remove(k2)
+            if sorted(antes) == sorted(despues):
+                hallados.append((x, s, (m, m2)))
+    if len(hallados) != 1:
+        return None
+    return hallados[0]
+
+
+def _por_negrita(out, rs, negr):
+    """Las batallas que nadie más resolvió, con el lado que la llave puso en
+    negrita —si en ESTA llave la negrita ya dijo la verdad—.
+
+    🔴 HAY LLAVES QUE MARCAN AL GANADOR Y NO LO REPITEN DESPUÉS. MARRUECOS EN
+    VENTA V.1 (FFA, 26/09/2026) escribe `[<@…>🇪🇨] 🈯 **[<@…>🇺🇾]**` en octavos
+    y el de la negrita no sigue en cuartos: Dlx tuvo que contestar en ✅
+    Decidir quién ganó, y contestó el de la negrita. FFA WORLD CUP pone
+    `[**MATI🇦🇷**] 🆚 [MTZ🇲🇽]`. Medido el 01/10/2026 sobre las 30 llaves de la
+    T1: donde la llave ya decía quién pasó, la negrita de un lado entero
+    coincidió **39 de 39 veces**.
+
+    ⚠️ SE GANA LA CONFIANZA EN LA MISMA LLAVE: hacen falta tres batallas donde
+    la negrita coincidió con quien pasó, y ninguna donde no. En GENESIS
+    BATTLES (Snake Rap) la negrita marca a UN integrante —el que se suma al
+    equipo del ganador— y no a un lado entero: `_es_negrita()` no la cuenta.
+    """
+    plano_ = [(i, k) for i, (_r, bats) in enumerate(rs) for k in range(len(bats))]
+    if (len(negr) != len(rs) or len(out) < len(plano_)
+            or any(len(negr[i][1]) != len(bats) for i, (_r, bats) in enumerate(rs))):
+        return out
+
+    def _cual(idx):
+        i, k = plano_[idx]
+        fl = negr[i][1][k]
+        lados = out[idx][1]
+        if not fl or sum(fl) != 1 or len(fl) != len(lados):
+            return None
+        return lados[fl.index(True)]
+
+    bien = mal = 0
+    for idx in range(len(plano_)):
+        g, n = out[idx][2], _cual(idx)
+        if g is None or n is None:
+            continue
+        if norm(HISTORIA.sub('', n)) == norm(HISTORIA.sub('', g)):
+            bien += 1
+        else:
+            mal += 1
+    if bien < 3 or mal:
+        return out
+    for idx in range(len(plano_)):
+        r, b, g, z = out[idx]
+        if g is not None or z not in ('no aparece nadie después',
+                                      'última ronda y no dice campeón'):
+            continue
+        n = _cual(idx)
+        if n is not None:
+            out[idx] = (r, b, n, 'la negrita: la llave marca quién ganó')
+    return out
 
 
 #: `3ER PUESTO:` / `TERCER LUGAR:` del podio (y el typo `TECER`)
@@ -2537,6 +2820,48 @@ def _self_check():
         ('el podio con medallas: 🥇 tam; «🥇 CAMPEÓN: X» lo lee la línea del campeón',
          medallas_de('🥇 tam\n🥈 guess\n🥉 multi') == {1: 'tam', 2: 'guess', 3: 'multi'}
          and medallas_de('🥇 𝄆 CAMPEÓN: 27 🇺🇸 + PIYI 🇲🇽') == {}),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
+    # 🔑 LAS FORMAS DEL 01/10/2026: medidas sobre las 30 llaves de la T1
+    print('\n  el refuerzo, la «R», el nombre que crece y la negrita')
+    ref = resolver('# SEMI - FINAL\n[MAKMA 🇻🇪 + SNOW 🇨🇴] 🆚 [NEO 🇦🇷 + ENEK 🇪🇸]\n'
+                   '[A 🇦🇷 + B 🇦🇷] 🆚 [C 🇦🇷 + D 🇦🇷]\n'
+                   '# FINAL\n[ENEK 🇪🇸 + NEO 🇦🇷  (EZE 🇦🇷)] 🆚 [(EZE 🇦🇷) C 🇦🇷 + D 🇦🇷]')
+    crece = resolver('# OCTAVOS\n[MATI🇦🇷] 🆚 [MTZ🇲🇽]\n[SNOW🇨🇴] 🆚 [MAKMA🇻🇪]\n'
+                     '# CUARTOS\n[SNOW🇨🇴] 🆚 [MATICERNA🇦🇷]')
+    equipo = resolver('# OCTAVOS\n[ELPIBE 🇦🇷 + LOLO 🇦🇷] 🆚 [PARIA 🇦🇷 + JAWA 🇺🇾]\n'
+                      '[EZE 🇦🇷 + ZIGNOS 🇩🇴] 🆚 [MARTO 🇦🇷 + GUS 🇺🇾]\n'
+                      '# CUARTOS\n[EZE 🇦🇷 + ZIGNOS 🇩🇴] 🆚 [PARIA SIN REMEDIO 🇦🇷 + JAWA 🇺🇾]')
+    otros = resolver('# OCTAVOS\n[PROSU] 🆚 [ZETA]\n[VELATZ] 🆚 [PLAYER]\n'
+                     '# CUARTOS\n[PROSU VELATZ NUEVO] 🆚 [OTRO]')
+    negra = ('# OCTAVOS\n[**A1🇦🇷**] 🆚 [B1🇦🇷]\n[**A2🇦🇷**] 🆚 [B2🇦🇷]\n[**A3🇦🇷**] 🆚 [B3🇦🇷]\n'
+             '[C4🇦🇷] 🆚 [**D4🇺🇾**]\n# CUARTOS\n[A1🇦🇷] 🆚 [A2🇦🇷]\n[A3🇦🇷] 🆚 [OTRO🇦🇷]')
+    casos = [
+        ('el refuerzo `(EZE 🇦🇷)` adentro del marco no es del lado, ni al final ni al principio',
+         [x[2] for x in ref[:2]] == ['NEO 🇦🇷 + ENEK 🇪🇸', 'C 🇦🇷 + D 🇦🇷']
+         and ref[2][1] == ['ENEK 🇪🇸 + NEO 🇦🇷', 'C 🇦🇷 + D 🇦🇷']),
+        ('la historia pegada `gekto🇦🇷(chianluka🇦🇷)` se queda como venía',
+         sin_refuerzos('gekto🇦🇷(chianluka🇦🇷)') == 'gekto🇦🇷(chianluka🇦🇷)'),
+        ('la «R» suelta después de la bandera se va; sin bandera, no se toca',
+         sin_refuerzos('PICHULITA 🇦🇷 + SIX 🇦🇷 R') == 'PICHULITA 🇦🇷 + SIX 🇦🇷'
+         and sin_refuerzos('ROMEO R') == 'ROMEO R'),
+        ('`MATI🇦🇷` que pasa como `MATICERNA🇦🇷`: ganó MATI, y la llave lo enseña',
+         crece[0][2] == 'MATICERNA🇦🇷' and crece[0][1] == ['MATICERNA🇦🇷', 'MTZ🇲🇽']
+         and ('crece', 'MATI🇦🇷', 'MATICERNA🇦🇷') in crece.cambios),
+        ('el equipo con un integrante que crece: PARIA -> PARIA SIN REMEDIO, con JAWA igual',
+         equipo[0][2] == 'PARIA SIN REMEDIO 🇦🇷 + JAWA 🇺🇾'),
+        ('lo que se agrega no puede ser otra persona de la llave (`PROSU VELATZ NUEVO`)',
+         otros[0][2] is None),
+        ('la negrita de un lado entero decide, si ya acertó tres veces en la llave',
+         resolver(negra)[3][2] == 'D4🇺🇾'),
+        ('con dos aciertos no alcanza',
+         resolver(negra.replace('[**A3🇦🇷**]', '[A3🇦🇷]'))[3][2] is None),
+        ('medio lado en negrita no es negrita (GENESIS BATTLES)',
+         not _es_negrita('⌞DYNOCO🇦🇷 + **GEOKA🇦🇷⌝') and _es_negrita('[**MATI🇦🇷**]')
+         and _es_negrita('**[<@458519920330670086>🇺🇾]**')),
     ]
     for que, ok in casos:
         mal += not ok

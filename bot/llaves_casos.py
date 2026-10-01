@@ -59,6 +59,19 @@ INVENTADOS = [
      '# ▪️ [• FINAL•]\n'
      '# ▪️ [ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸'
      ' + HOTEL 🇺🇾]  🆚 [TRES 🇻🇪 + CUATRO 🇵🇪]\n'),
+    ('Urban Freestyle: `[ CYPHER ]` con grupos de tres antes de los cuartos (POESÍA CRUDA, 01/10/2026)',
+     '# [ 𝓟𝓞𝓔𝓢Í𝓐 𝓒𝓡𝓤𝓓𝓐 🖊️ ]\n\n`[ CYPHER ]`\n'
+     '⌞PICHULAMC 🇦🇷⌝   vs.   ⌞Júpiter 🇲🇽⌝  vs.   ⌞Riferian 🇵🇦⌝\n'
+     '⌞⌝   vs.   ⌞  ⌝  vs.   ⌞  ⌝\n'
+     '⌞Bsk 🇦🇷⌝   vs.   ⌞Cinexfilo 🇻🇪⌝  vs.   ⌞El Hombre Eyau 🇦🇷⌝\n\n'
+     '`[ CUARTOS ]`\n⌞PICHULAMC 🇦🇷⌝   vs.   ⌞Júpiter 🇲🇽⌝\n⌞⌝   vs.   ⌞  ⌝\n\n'
+     '`[ FINAL ]`\n ⌞⌝   vs.   ⌞  ⌝\n\n@everyone\n'),
+    ('FFA: el refuerzo adentro del marco y la «R» suelta (VOL 18 2VS2, 30/09/2026)',
+     '# ▪️ [•OCTAVOS DE FINAL•]\n'
+     '▪️   [PICHULITA 🇦🇷 + SIX 🇦🇷 R] 🆚 [CRONOX 🇨🇱 + RICKYFORT 🇦🇷 R]\n'
+     '▪️   [ABYSSUS 🇨🇦 + OASIS 🇨🇦] 🆚 [NC 🇦🇷 + GOCHO 🇨🇴 R]\n'
+     '# ▪️ [• FINAL•]\n'
+     '# ▪️ [(EZE 🇦🇷) PICHULITA 🇦🇷 + SIX 🇦🇷]  🆚 [OASIS 🇨🇦 + ABYSSUS 🇨🇦 (ZIGNOS 🇩🇴)]\n'),
     ('Urban Freestyle: -SEMI FINALES-, en plural y con espacio (28/09/2026)',
      '## COMPE DEL VACILE #1🤙\n## -CUARTOS-\n'
      '**{Cinexfilo🇻🇪} VS {Steven🇨🇴}**\n**{Yeyox🇲🇽} VS {Panchok 🇨🇱}**\n'

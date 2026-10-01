@@ -318,15 +318,19 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
 const lados = (b) => (b[0] || []).map((z) => limpio(typeof z === 'string' ? z : z.join(' & ')));
 const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & '));
 
-function CuadroRondas({ ll }) {
-  const rondas = (ll.rondas || []).filter((r) => !['Filtros', 'Tercer puesto'].includes(r.r));
+// 🔑 `previa`: la llave en vivo que todavía sólo tiene la fase previa —el CYPHER de POESÍA CRUDA (URBF, 01/10/2026),
+// grupos de tres y los cuartos vacíos—. Sin esto no se veía nada: los filtros no van en el cuadro.
+const PREVIAS = ['Filtros', 'Clasificatorias', 'Preliminares'];
+function CuadroRondas({ ll, previa }) {
+  const rondas = (ll.rondas || []).filter((r) => r.r !== 'Tercer puesto' && (previa || r.r !== 'Filtros'));
   return (
     <>
       <div className="llave-cab"><span>CUADRO</span><span className="apag">POR RONDAS</span></div>
       <div className="llave-wrap"><div className="llave" style={{ gridTemplateColumns: 'repeat(' + rondas.length + ',150px)' }}>
         {rondas.map((r, ri) => (
           <div className="ronda" key={ri}><h4>{r.r}</h4>
-            {(r.b || []).map((b, bi) => { const g = ganador(b); return <div className="m hecho" key={bi}>{lados(b).map((x, xi) => <span key={xi} className={x === g ? 'g' : 'x'}>{x}</span>)}</div>; })}
+            {/* sin ganador todavía nadie va apagado: tachado se lee como que perdió */}
+            {(r.b || []).map((b, bi) => { const g = ganador(b); return <div className={'m' + (g ? ' hecho' : '')} key={bi}>{lados(b).map((x, xi) => <span key={xi} className={g ? (x === g ? 'g' : 'x') : undefined}>{x}</span>)}</div>; })}
           </div>
         ))}
       </div></div>
@@ -368,10 +372,13 @@ function useMedida() {
 const NOMBRE_RONDA = { 1: 'Final', 2: 'Semis', 4: 'Cuartos', 8: 'Octavos', 16: '16avos' };
 // hasta dónde puede crecer de alto la llave del escenario (los Octavos de 16 en 1 contra 1 miden 524)
 const ALTO_LLAVE = 540;
+// 🔴 CUÁNTOS CRUCES TIENE UNA RONDA LO DICE SU NOMBRE, NO CUÁNTOS YA SE CARGARON. POESÍA CRUDA (URBF, 01/10/2026) cargó
+// el primer cruce de Cuartos y el escenario lo dibujó como una Final: un cruce y el «?» del campeón al lado.
+const CRUCES = { 'Dieciseisavos': 16, '16avos': 16, 'Octavos': 8, 'Cuartos': 4, 'Semifinales': 2, 'Semis': 2, 'Final': 1 };
 export function completar(todas) {
-  const n0 = todas.length ? todas[0].b.length : 0;
+  const n0 = todas.length ? Math.max(todas[0].b.length, CRUCES[todas[0].r] || 0) : 0;
   if (!n0 || (n0 & (n0 - 1))) return todas;
-  const out = [{ r: todas[0].r, b: todas[0].b.slice() }];
+  const out = [{ r: todas[0].r, b: todas[0].b.concat(new Array(n0 - todas[0].b.length).fill([[], ''])) }];
   for (let n = n0 / 2, i = 1; n >= 1; n /= 2, i += 1) {
     const r = todas[i];
     if (r && r.b.length > n) return todas;
@@ -391,7 +398,8 @@ export function completar(todas) {
 
 export function CuadroMini({ liga, ll }) {
   const M = useMedida();
-  const todas = completar((ll.rondas || []).filter((r) => !['Filtros', 'Tercer puesto', 'Clasificatorias', 'Preliminares'].includes(r.r)));
+  const todas = completar((ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r)));
+  if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas ll={ll} previa />;
   // 🔑 QUÉ RONDAS SE VEN: con la llave completa, las últimas de una llave en vivo son lugares vacíos —en el celular
   // eran Semis y Final sin nadie—. Se ven desde la que SE ESTÁ JUGANDO, sin pasarse del final; terminada, las últimas.
   // Y la primera que se ve no puede tener más de 8 cruces: más alto no entra en el escenario

@@ -925,7 +925,10 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     def _v(lado):
         return nombre_visible(lado, ids) if lado and E.MENCION.search(lado) else lado
 
-    for bat in E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids):
+    res = E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids)
+    # 🔑 lo que la llave enseñó de quién es quién: ver `identidad_de_grupo()`
+    hallazgo['_cambios'] = list(getattr(res, 'cambios', ()) or ())
+    for bat in res:
         ronda, lados, ganador, razon = bat
         # 🔴 EN UNA BATALLA DONDE PASAN VARIOS, LOS QUE NO PASAN CAYERON
         # AHI —y eso es un puesto—. Hasta el 24/09/2026 esto se contaba
@@ -1274,6 +1277,87 @@ def podio_de_grupo(g, filas, norm_nombre):
         k = norm_nombre(lado)
         if len(k) >= 2:
             out[k] = did
+    return out
+
+
+# ── quién es quién, según la llave ─────────────────────────────────────
+# 🔑 Dlx, 01/10/2026: *«mejorar el sistema de detección de llaves y de personas
+# automáticamente… el formato, las personas»*. La llave dice más de lo que se
+# usaba para identificar a la gente, y lo dice el organizador:
+#
+#   · `NOMBRE <@id>` en cualquier renglón —el MVP, un podio de dos (`OKAM🇨🇷/
+#     MASINO🇨🇱 <@a>/<@b>`)—: el podio con UNA mención ya contaba (Dlx, 28/09,
+#     «A · sí, como las inscripciones»), éstos no;
+#   · la mención que el lector hizo pasar a la ronda siguiente con un nombre
+#     (`<@1273…>` en octavos, «SHULIOT🇦🇷» en cuartos): ese nombre es esa cuenta;
+#   · el nombre que crece de una ronda a otra (`escuchar._crecio()`): PARIA en
+#     octavos, «PARIA SIN REMEDIO» en cuartos, con el mismo compañero.
+#
+# Va a `IDENTIDAD`, por evento, y lo usa ✅ Decidir (`decidir._cuenta_de()` y
+# `decidir.por_discord()`), igual que el podio. Medido el 01/10/2026: de las 39
+# preguntas «¿quién es?» abiertas, SHULIOT tenía su cuenta en la propia llave.
+#
+#: `{'<evento normalizado>|<sv>|<dd/mm>': {'menciones': {nombre normalizado: id},
+#:   'crece': [[antes, después], …]}}`
+IDENTIDAD = os.path.join(BASE, 'datos', 'identidad_llaves.json')
+#: lo que en un renglón del podio es una etiqueta y no un nombre
+_ETIQUETA = re.compile(
+    r'.*?(?:SUB\s*-?\s*CAMPE[OÓ]N|CAMPE[OÓ]N|M\.?\s*V\.?\s*P\.?'
+    # ⚠️ «TERCER LUGAR» entero antes que «TERCER» solo: si no, «LUGAR» quedaba como nombre
+    r'|(?:\b(?:PRIMER[OA]?|SEGUND[OA]|TERCER[OA]?)\s*)?(?:PUESTO|LUGAR)'
+    # `# SEGUNDO <:TrofeoSegundo:…> : BLOODY` (Urban Freestyle): el puesto sin «PUESTO»
+    r'|\bPRIMER[OA]?\b|\bSEGUND[OA]\b|\bTERCER[OA]?\b)'
+    r'(?:\s*<a?:\w+:\d+>)?\s*[*_`~|:┋]*\s*', re.I)
+
+
+def menciones_con_nombre(texto):
+    """`{nombre normalizado: discord_id}` de los renglones `NOMBRE <@id>`.
+
+    ⚠️ SÓLO LO QUE NO SE PRESTA A DUDA: tantos nombres como menciones, en el
+    mismo orden —`A/B <@a>/<@b>`—, y nunca un renglón de batalla. Un nombre que
+    sale con dos cuentas distintas en la misma llave no es de ninguna.
+    """
+    import unicodedata
+    vistos = {}
+    for l in str(texto or '').splitlines():
+        ms = E.MENCION.findall(l)
+        if not ms or E.SEP.search(l) or len(E.DELIMS[1].findall(l)) >= 2 \
+                or len(E.DELIMS[0].findall(l)) >= 2:
+            continue
+        # ⚠️ sin tildes para encontrar la etiqueta; el nombre sólo se usa normalizado
+        antes = ''.join(c for c in unicodedata.normalize('NFKD', l[:E.MENCION.search(l).start()])
+                        if not unicodedata.combining(c))
+        m = _ETIQUETA.match(antes)
+        antes = re.sub(r'<a?:\w+:\d+>', ' ', antes[m.end():] if m else antes)
+        partes = [x for x in re.split(r'\s*[/+&,]\s*', antes) if E.norm(x)]
+        if len(partes) != len(ms):
+            continue
+        for x, did in zip(partes, ms):
+            k = E.norm(x)
+            if len(k) >= 2:
+                vistos.setdefault(k, set()).add(did)
+    return {k: next(iter(v)) for k, v in vistos.items() if len(v) == 1}
+
+
+def identidad_de_grupo(g):
+    """`{'menciones': {nombre normalizado: id}, 'crece': [[antes, después]]}` de las
+    llaves de un grupo: lo que dicen sus renglones y lo que `resolver()` aprendió
+    (`_cambios`, que deja `filas_de()` en cada llave). `{}` si no dice nada."""
+    menc, crece = {}, []
+    for h in g.get('llaves') or []:
+        for k, did in menciones_con_nombre(h.get('texto') or '').items():
+            menc.setdefault(k, set()).add(did)
+        for c in h.get('_cambios') or ():
+            if c[0] == 'mencion' and E.norm(c[2]):
+                menc.setdefault(E.norm(c[2]), set()).add(c[1])
+            elif c[0] == 'crece' and [c[1], c[2]] not in crece:
+                crece.append([c[1], c[2]])
+    menc = {k: next(iter(v)) for k, v in menc.items() if len(v) == 1}
+    out = {}
+    if menc:
+        out['menciones'] = menc
+    if crece:
+        out['crece'] = crece
     return out
 
 
@@ -2274,6 +2358,17 @@ def _self_check():
          and podio_de_grupo({'llaves': [{'texto': '1ER PUESTO: <@639>'}]},
                             [{'ronda': 'final', 'ladoA': 'A + B', 'ladoB': 'C + D', 'ganador': 'A + B'}],
                             _nn) == {}),
+        # 🔑 lo demás que la llave dice de quién es quién (01/10/2026)
+        ('`NOMBRE <@id>` en cualquier renglón del podio: el MVP, dos terceros, «SEGUNDO» sin PUESTO',
+         menciones_con_nombre('TERCER LUGAR: 🇦🇷EZEE <@3>🇦🇷\n🉐 𝄆 **__3ER PUESTO:__** OKAM🇨🇷/MASINO🇨🇱 <@1>/<@2>\n'
+                              '# SEGUNDO <:T:9> : BLOODY 🇨🇴 <@4>\nMVP: MATI CERNA🇦🇷 <@5>')
+         == {'ezee': '3', 'okam': '1', 'masino': '2', 'bloody': '4', 'maticerna': '5'}),
+        ('pero no una batalla con menciones, ni dos nombres para una mención',
+         menciones_con_nombre('[<@1>🇪🇨] 🈯 **[<@2>🇺🇾]**\nCAMPEÓN: A + B <@7>') == {}),
+        ('y el grupo junta lo de sus llaves: la mención que pasó y el nombre que creció',
+         identidad_de_grupo({'llaves': [{'texto': 'MVP: SOL🇵🇪 <@8>', '_cambios': [
+             ('mencion', '9', 'SHULIOT🇦🇷'), ('crece', 'MATI🇦🇷', 'MATICERNA🇦🇷')]}]})
+         == {'menciones': {'sol': '8', 'shuliot': '9'}, 'crece': [['MATI🇦🇷', 'MATICERNA🇦🇷']]}),
         ('el que pasó octavos escrito como mención no es walk-in (MARRUECOS)',
          not any('Walk-in' in f['notas'] for f in fwm)),
         ('… y sin los nombres de la mención lo era: la prueba mide algo',
@@ -2457,6 +2552,7 @@ def main():
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
     podio_ev = {}                       # 'evento|servidor|fecha' -> {nombre: id}
+    ident_ev = {}                       # 'evento|servidor|fecha' -> lo de identidad_de_grupo()
     equipos_inf = []                    # los equipos con un solo nombre
     link_de = {}                        # (evento, fecha) y evento -> link
     import decidir as DEC
@@ -2658,6 +2754,12 @@ def main():
                 podio_ev['%s|%s|%s' % (DEC.norm(limpias[0].get('evento') or nom),
                                        limpias[0].get('servidor') or '',
                                        limpias[0].get('fecha') or fec)] = _pm
+            # y lo demás que la llave dice de quién es quién (01/10/2026)
+            _id = identidad_de_grupo(g)
+            if _id:
+                ident_ev['%s|%s|%s' % (DEC.norm(limpias[0].get('evento') or nom),
+                                       limpias[0].get('servidor') or '',
+                                       limpias[0].get('fecha') or fec)] = _id
         # 🔑 LOS LINKS DE LA LLAVE EN DISCORD, para «Ver llaves» del hub.
         # Acá es el único lugar donde existen: `Entrada` tiene nueve
         # columnas y el mensaje no es una. Van todos los del grupo —un
@@ -2786,6 +2888,31 @@ def main():
                   % (sum(len(v) for v in podio_ev.values()), len(podio_ev)))
     except OSError as e:
         print('   ⚠️ no pude guardar el podio con mención (%s)' % str(e)[:60])
+    # y lo demás que las llaves dicen de quién es quién, sumado a lo de antes
+    try:
+        try:
+            with io.open(IDENTIDAD, encoding='utf-8') as _f:
+                ident_todo = (json.load(_f) or {}).get('eventos') or {}
+        except (OSError, ValueError):
+            ident_todo = {}
+        ident_todo.update(ident_ev)
+        with io.open(IDENTIDAD, 'w', encoding='utf-8', newline='\n') as _f:
+            json.dump({'_leeme': 'Quién es quién según cada llave: evento|sv|fecha -> menciones '
+                                 '{nombre normalizado: Discord ID} (renglones «NOMBRE <@id>» y la '
+                                 'mención que pasó de ronda con un nombre) y crece [[antes, después]] '
+                                 '(el mismo, escrito más largo o más corto de una ronda a otra). Lo '
+                                 'escribe identidad_de_grupo() de bot/llaves_a_entrada.py y lo usa '
+                                 'sheet/decidir.py. Dlx, 01/10/2026: «mejorar la detección de '
+                                 'personas automáticamente».',
+                       'eventos': ident_todo}, _f, ensure_ascii=False, indent=1, sort_keys=True)
+            _f.write('\n')
+        if ident_ev:
+            print('   🪪 las llaves dicen quién es quién: %d mención(es) con nombre y %d nombre(s) '
+                  'que cambian, en %d evento(s)'
+                  % (sum(len(v.get('menciones') or {}) for v in ident_ev.values()),
+                     sum(len(v.get('crece') or ()) for v in ident_ev.values()), len(ident_ev)))
+    except OSError as e:
+        print('   ⚠️ no pude guardar quién es quién de las llaves (%s)' % str(e)[:60])
 
     from escribir import Hoja
     import pendientes as P

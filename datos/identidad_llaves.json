@@ -1,0 +1,4 @@
+{
+ "_leeme": "Quién es quién según cada llave: evento|sv|fecha -> menciones {nombre normalizado: Discord ID} (renglones «NOMBRE <@id>» y la mención que pasó de ronda con un nombre) y crece [[antes, después]] (el mismo, escrito más largo o más corto de una ronda a otra). Lo escribe identidad_de_grupo() de bot/llaves_a_entrada.py y lo usa sheet/decidir.py. Dlx, 01/10/2026: «mejorar la detección de personas automáticamente».",
+ "eventos": {}
+}

@@ -32,6 +32,8 @@
     // y el plural con espacio de Urban Freestyle: ver `escuchar.ALIAS`
     'SEMI - FINALES': 'SEMIFINALES', 'SEMI-FINALES': 'SEMIFINALES', 'SEMI FINALES': 'SEMIFINALES',
     'SEMI': 'SEMIFINALES', 'GRAN FINAL': 'FINAL' };
+  // y `[ CYPHER ]` solo en su renglón es la fase previa (POESÍA CRUDA, 01/10): `escuchar.CYPHER_ENC`
+  var CYPHER_ENC = /^[\W_]*(?:(?:fase|ronda)\s+(?:de\s+)?)?c[iy]pher[\W_]*$/i;
   // cómo se lee cada ronda en la página: lo mismo que `llaves_web.ETIQUETA`
   var ETIQUETA = { 'FILTROS': 'Filtros', 'CLASIFICATORIAS': 'Clasificatorias',
     'PRELIMINARES': 'Preliminares', 'DIECISEISAVOS': 'Dieciseisavos', 'OCTAVOS': 'Octavos',
@@ -207,7 +209,7 @@
       });
       var n = lados.length;
       lados = lados.filter(function (x) { return !VACIO[norm(x)]; });
-      if (lados.length >= 2) return lados.map(sinMarcas);
+      if (lados.length >= 2) return lados.map(function (x) { return sinRefuerzos(sinMarcas(x)); });
       if (lados.length < n) return [];
     }
     for (i = 0; i < DELIMS.length; i++) {
@@ -215,9 +217,23 @@
       // mención sí es alguien, aunque `norm()` la borre (ver `escuchar.py`)
       var hay = hallar(DELIMS[i], l).map(function (x) { return x.trim(); })
         .filter(function (x) { return (norm(x) || /<@!?\d+>/.test(x)) && !VACIO[norm(x)]; });
-      if (hay.length >= 2) return hay.map(sinMarcas);
+      if (hay.length >= 2) return hay.map(function (x) { return sinRefuerzos(sinMarcas(x)); });
     }
     return [];
+  }
+
+  /* 🔑 `escuchar.sin_refuerzos()`: el refuerzo `(EZE 🇦🇷)` adentro del marco, al
+     principio o al final del lado, no es del lado; y la «R» suelta después de la
+     bandera (`SIX 🇦🇷 R`) es una marca, no el nombre. ⚠️ Sin lookbehind: un
+     iPhone con Safari viejo no lo entiende y se caería la página entera. */
+  var REFUERZO_INI = new RegExp('^\\s*[(（][^()（）]*' + BANDERA + '[^()（）]*[)）]\\s*', 'u');
+  var REFUERZO_FIN = new RegExp('\\s+[(（][^()（）]*' + BANDERA + '[^()（）]*[)）]\\s*$', 'u');
+  var R_SUELTA = new RegExp('(' + BANDERA + ')\\s+R\\s*$', 'u');
+  function sinRefuerzos(lado) {
+    var s = String(lado || '').replace(REFUERZO_INI, '').replace(REFUERZO_FIN, '');
+    s = s.split(/(\s*[+&]\s*)/).map(function (p, i) { return i % 2 ? p : p.replace(R_SUELTA, '$1'); })
+      .join('').trim();
+    return norm(s) || /<@!?\d+>/.test(s) ? s : String(lado || '');
   }
 
   /* `escuchar.unir_continuadas()` */
@@ -284,8 +300,9 @@
     texto = plano(texto);
     lineas(unirContinuadas(texto)).forEach(function (l) {
       var m = buscarRonda(l), nombres = nombresDeLinea(l);
-      if (m && !nombres.length) {
-        var e = m[0].toUpperCase().replace(/\s+/g, ' ').trim();
+      var cy = !m && !nombres.length && CYPHER_ENC.test(l.trim());
+      if ((m || cy) && !nombres.length) {
+        var e = cy ? 'FILTROS' : m[0].toUpperCase().replace(/\s+/g, ' ').trim();
         if (actual && bats.length) out.push([actual, bats]);
         actual = ALIAS[e] || e;
         bats = [];

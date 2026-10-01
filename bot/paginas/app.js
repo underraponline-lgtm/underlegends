@@ -871,8 +871,10 @@ document.addEventListener('visibilitychange', function () {
    eventos del mismo servidor en la misma noche no se confunden. */
 function llaveDeEvento(e, ls) {
   var t = Date.parse(String(e.cuando || '').replace(/Z$/, '') + 'Z');
+  // ⚠️ NFKD ANTES de pasar a minúsculas: `𝓟𝓞𝓔𝓢Í𝓐 𝓒𝓡𝓤𝓓𝓐` (URBF, 01/10/2026) sale de NFKD en MAYÚSCULAS, y al revés
+  // el filtro de abajo se comía el título entero
   var pal = function (s) {
-    return String(s || '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
+    return String(s || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
       .filter(function (w) { return w.length > 2; });
   };
   var pe = pal(e.nombre);
