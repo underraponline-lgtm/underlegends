@@ -54,12 +54,12 @@ export function Merch() {
 }
 
 // ── el pie ────────────────────────────────────────────────────────────────────────────────────────
+// sin «10.143 personas en 5 servidores · 346 verificados»: es lo mismo que La Liga en números, justo arriba (Dlx,
+// 01/10/2026: «hay info que se repite»)
 export function Pie({ liga }) {
-  const c = liga.d.comunidad || {};
   return (
     <footer className="pie negra">
       <div className="pie-marca"><img alt="" src="/ul.png" /><span>UNDER LEGENDS<small>LIGA GLOBAL · {liga.tempLarga}</small></span></div>
-      <p className="pie-c">{num(c.personas || 0)} personas en {c.servidores || 0} servidores · {num(c.verificados || 0)} verificados</p>
       <nav><a href="#/guia">Guía</a><a href="#/publicaciones">Publicaciones</a><a href="#/tienda">Tienda</a><a href="#/mundo">Mundo</a>
         <a href="#/cambios">Cambios</a><a href="/privacidad.html">Privacidad</a></nav>
       <small>Los datos se actualizan solos cada media hora.</small>

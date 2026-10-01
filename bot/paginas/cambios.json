@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.63",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T16:32:00-04:00",
+   "titulo": "El pie, sin repetir",
+   "items": [
+    "🧹 **El pie de la página ya no repite** cuántas personas, servidores y verificados hay: está en «La Liga en números», justo arriba."
+   ]
+  },
+  {
    "version": "1.62",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T16:28:00-04:00",
