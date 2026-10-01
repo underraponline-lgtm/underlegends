@@ -1,59 +1,59 @@
 {
  "v": 1,
- "cuando": "2026-09-30T23:59:13Z",
+ "cuando": "2026-10-01T02:03:48Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 172.8,
+ "dur_s": 464.0,
  "pasos": [
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.5
+   "s": 1.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.7
+   "s": 26.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 127.7
+   "s": 402.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.4
+   "s": 9.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 17.6
+   "s": 22.9
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "374",
-  "nombre": "COMPE CHILL DE FASO",
-  "sv": "URBF",
+  "n": "375",
+  "nombre": "DESGRACIAS EN TOKYO VOL 18 2VS2",
+  "sv": "FFA",
   "dia": "2026-09-30"
  },
  "cuotas": {
   "kv": {
-   "write": 364,
-   "read": 32917
+   "write": 14,
+   "read": 3743
   },
   "worker": {
-   "pedidos": 2335,
+   "pedidos": 2214,
    "errores": 0,
-   "sub": 2168,
-   "p50_ms": 1.21,
-   "p99_ms": 3.59
+   "sub": 2076,
+   "p50_ms": 1.23,
+   "p99_ms": 3.61
   },
   "r2": {
    "objetos": 8924,
