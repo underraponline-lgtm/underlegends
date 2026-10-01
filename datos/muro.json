@@ -1203,10 +1203,6 @@
 "temporada"
 ]
 },
-"jawa": {
-"rg": "",
-"c": []
-},
 "jotap": {
 "rg": "",
 "c": [
@@ -1247,6 +1243,12 @@
 "temporada"
 ]
 },
+"selek": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "smaff": {
 "rg": "",
 "c": [
@@ -1278,6 +1280,10 @@
 "servidor",
 "temporada"
 ]
+},
+"jawa": {
+"rg": "",
+"c": []
 },
 "pariasinremedio": {
 "rg": "",

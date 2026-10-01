@@ -53,8 +53,8 @@
    "organizadores": [
     [
      "Lewis",
-     38,
-     2
+     61,
+     3
     ],
     [
      "Rubik",
@@ -79,20 +79,20 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 13,
+     "FFA": 16,
      "URBF": 6,
      "SR": 4
     },
     "gente": {
-     "FFA": 52,
+     "FFA": 65,
      "URBF": 24,
      "SR": 18
     },
-    "gana": "FFA"
+    "gana": "URBF"
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 52,
+    "FFA": 65,
     "SR": 18,
     "URBF": 24
    }
