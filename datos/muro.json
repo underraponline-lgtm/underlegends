@@ -1115,7 +1115,10 @@
 },
 "jeixder": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "luffy": {
 "rg": "",
@@ -2778,6 +2781,22 @@
 "t": "2026-10-01T02:36:33Z",
 "quien": [
 "Selek"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-01T06:36:18Z",
+"quien": [
+"JEIXDER"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-01T06:36:18Z",
+"quien": [
+"JEIXDER"
 ],
 "carta": "temporada"
 }
