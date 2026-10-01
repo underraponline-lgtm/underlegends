@@ -205,6 +205,7 @@
   "ceegee": "IFX",
   "sironex": "Badterne",
   "jawa": "Selek",
+  "ivocapra": "PichulaMc",
   "makma": "Makmah",
   "fokox": "Focox",
   "gekto": "Presagio",
@@ -1037,6 +1038,10 @@
   [
    "JAWA",
    "Selek"
+  ],
+  [
+   "IVOCAPRA",
+   "PichulaMc"
   ],
   [
    "Makma",

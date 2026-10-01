@@ -1,57 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-01T05:25:40Z",
+ "cuando": "2026-10-01T05:56:11Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 134.7,
+ "dur_s": 158.1,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 20.5
+   "s": 21.9
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
-   "ok": false,
-   "s": 22.4
+   "ok": true,
+   "s": 30.6
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 21.5
+   "s": 20.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.6
+   "s": 1.8
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.4
+   "s": 6.7
   },
   {
    "n": "2b",
@@ -69,76 +69,65 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.8
+   "s": 2.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 28.4
+   "s": 23.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 10.9
+   "s": 14.7
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.4
+   "s": 31.6
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.6
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 5.2
+   "s": 1.2
   }
  ],
- "fallas": [
-  {
-   "paso": "1c",
-   "que": "sheet/rankings.py --escribir"
-  }
- ],
- "decidir": 55,
+ "fallas": [],
+ "decidir": 57,
  "ultimo_evento": {
-  "n": "375",
-  "nombre": "DESGRACIAS EN TOKYO VOL 18 2VS2",
+  "n": "376",
+  "nombre": "DESGRACIAS EN TOKYO VOL 19 MULTIVERSE",
   "sv": "FFA",
-  "dia": "2026-09-30"
+  "dia": "2026-10-01"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-01T05:23:50Z",
+  "cuando": "2026-10-01T05:53:59Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 204,
-  "un_evento": 113,
+  "jugadores": 206,
+  "un_evento": 115,
   "diez_o_mas": 6,
   "cohortes": [
    {
@@ -149,22 +138,22 @@
    },
    {
     "semana": "2026-09-28",
-    "nuevos": 41,
-    "volvieron": 2,
+    "nuevos": 43,
+    "volvieron": 3,
     "completa": false
    }
   ]
  },
  "cuotas": {
   "kv": {
-   "write": 239,
-   "read": 10298
+   "write": 242,
+   "read": 11244
   },
   "worker": {
-   "pedidos": 2173,
+   "pedidos": 2171,
    "errores": 0,
-   "sub": 2046,
-   "p50_ms": 1.23,
+   "sub": 2044,
+   "p50_ms": 1.24,
    "p99_ms": 3.61
   },
   "r2": {

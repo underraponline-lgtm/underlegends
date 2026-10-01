@@ -5983,5 +5983,165 @@
     625
    ]
   ]
+ },
+ "376": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1555071935082401835"
+  ],
+  "n": 376,
+  "nombre": "DESGRACIAS EN TOKYO VOL 19 MULTIVERSE",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "ivo'capra 🇱🇰",
+       "JEIXDER 🇵🇪",
+       "Sin Limites"
+      ],
+      "ivo'capra 🇱🇰",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "PRAISERIZA, Oasis",
+       "Colesito"
+      ],
+      "PRAISERIZA, Oasis",
+      ""
+     ],
+     [
+      [
+       "Marto, Abyssus",
+       "Focox"
+      ],
+      "Marto, Abyssus",
+      ""
+     ],
+     [
+      [
+       "Paria",
+       "Lord Viruzz",
+       "Scot",
+       "Cinexfilo"
+      ],
+      "Paria",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA, Oasis",
+       "IVOCAPRA 🇱🇰, dxg"
+      ],
+      "PRAISERIZA, Oasis",
+      ""
+     ],
+     [
+      [
+       "Marto, Abyssus",
+       "Paria"
+      ],
+      "Marto, Abyssus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA, Oasis",
+       "Abyssus, Marto"
+      ],
+      "PRAISERIZA, Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    3750
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3750
+   ],
+   [
+    "Paria",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Marto",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Focox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "JEIXDER 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Scot",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "IVOCAPRA 🇱🇰",
+    "Semifinal",
+    1750
+   ],
+   [
+    "dxg",
+    "Semifinal",
+    1750
+   ]
+  ]
  }
 }
