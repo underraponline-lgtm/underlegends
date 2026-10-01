@@ -50,7 +50,9 @@ function Elegido({ liga, enc, E }) {
   E.op.forEach((o, i) => { idx[o] = i; });
   const ops = E.op.slice().sort((a, b) => (cu[b] || 0) - (cu[a] || 0) || idx[a] - idx[b]);
   const t = norm(q).trim();
-  const ver = t ? ops.filter((o) => norm(nombre(o)).includes(t)).slice(0, 6) : ops.slice(0, 4);
+  let ver = t ? ops.filter((o) => norm(nombre(o)).includes(t)).slice(0, 6) : ops.slice(0, 4);
+  // tu voto queda a la vista aunque no esté entre los cuatro más votados: si no, no sabías a quién habías votado
+  if (!t && mio && E.op.includes(mio) && !ver.includes(mio)) ver = ver.concat([mio]);
   const yoK = enc.yoDiscord;
   return (
     <article className="en">
@@ -85,14 +87,14 @@ function Elegido({ liga, enc, E }) {
 // Y si ya votaste en todas las abiertas, Tus eventos va primero y las encuestas quedan de segunda página (Dlx,
 // 30/09: «que encuesta sea la segunda página de ese panel si ya votaste»). El orden se decide al abrir la página: si
 // cambiara en el momento de votar, lo que la persona está mirando se le iría de abajo del dedo.
-export function Encuestas({ liga, enc }) {
+export function Encuestas({ liga, enc, dc }) {
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
   const abiertas = [x2, el].filter(Boolean);
   const [votaste] = useState(() => abiertas.length > 0 && abiertas.every((E) => enc.mio[E.id]));
   const yo = liga.yo;
-  const tuyos = <div className="pz-2"><TusEventos liga={liga} /><TuTemporada liga={liga} /></div>;
-  const enlace = yo ? 'Tu perfil' : 'Entrar';
+  const tuyos = <div className="pz-2"><TusEventos liga={liga} dc={dc} /><TuTemporada liga={liga} dc={dc} /></div>;
+  const enlace = yo ? 'Tu perfil' : (dc ? 'Mi cuenta' : 'Entrar');
   const href = yo ? '#/r/' + encodeURIComponent(yo.k) : undefined;
   const onEnlace = yo ? undefined : accion.cuenta;
   if (!x2 && !el) return <Sec id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace}>{tuyos}</Sec>;

@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, limpio, mult, num, recorte, utc } from './liga.js';
+import { MESES, limpio, mult, num, recorte, resultado, utc } from './liga.js';
 import { Cara, Carta, Chevron, Compartir, Ico, Poster, accion, enlace, nombrePais } from './piezas.jsx';
 
 export const MENU = [
@@ -44,9 +44,9 @@ function Buscar({ liga }) {
 // la cara de la cuenta de Discord con la que entraste (`lg:dc`), aunque no seas rapero: Dlx, 30/09/2026, «arriba
 // debería estar el círculo de mi cuenta conectada con Discord». El `av` es `id/hash`, como el de la tabla.
 export function CaraDc({ dc, cls = 'cara' }) {
-  const [mal, setMal] = useState(false);
-  if (dc && dc.av && !mal) {
-    return <span className={cls}><img alt="" src={'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=64'} onError={() => setMal(true)} /></span>;
+  const [mal, setMal] = useState(null);
+  if (dc && dc.av && mal !== dc.av) {
+    return <span className={cls}><img alt="" src={'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=64'} onError={() => setMal(dc.av)} /></span>;
   }
   return <span className={cls + ' ini'}>{(limpio(dc && dc.n).slice(0, 1) || '?').toUpperCase()}</span>;
 }
@@ -101,9 +101,9 @@ function slidesDe(liga, items) {
     const c = liga.cuando(it.t);
     if (it.tipo === 'tarjeta' && g.length > 1) {
       const quienes = [];
-      g.forEach((o) => { const x = limpio(o.quien[0]); if (!quienes.includes(x)) quienes.push(x); });
+      g.forEach((o) => { const x = limpio((o.quien || [])[0]); if (x && !quienes.includes(x)) quienes.push(x); });
       const txt = quienes.length > 1 ? quienes.slice(0, -1).join(', ') + ' y ' + quienes[quienes.length - 1] : quienes[0];
-      out.push(Slide('CARTAS NUEVAS', <><div className="st-minis">{g.slice(0, 4).map((o, i) => <Carta key={i} liga={liga} k={o.ks[0]} cual={o.carta} cls="st-mini-c" abre={false} />)}</div>
+      out.push(Slide('CARTAS NUEVAS', <><div className="st-minis">{g.slice(0, 4).map((o, i) => <Carta key={i} liga={liga} k={(o.ks || [])[0]} cual={o.carta} cls="st-mini-c" abre={false} />)}</div>
         <h3 className="st-h">{txt} ya tienen sus cartas</h3></>, c, 'Ver sus perfiles', { perfil: ks[0] }));
     } else if (it.tipo === 'tarjeta') {
       const nombre = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' }[it.carta];
@@ -161,7 +161,7 @@ export function gruposHistorias(liga) {
   liga.vivo().forEach((e) => {
     const m = liga.multSv(e.sv);
     grupos.push({
-      id: 'vivo', tipo: 'vivo', nombre: 'En vivo · ' + e.sv, logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
+      id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + e.sv, logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
       slides: [Slide('EN VIVO AHORA · ' + e.sv, <><img className="st-logo grande" alt="" src={liga.logo(e.sv)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
         <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}. La llave aparece acá apenas la carguen.</small></>,
       'ahora', 'Mirar en Discord', { link: e.link })],
@@ -174,7 +174,7 @@ export function gruposHistorias(liga) {
     const m = (mm.sv || {})[sv];
     const lineas = [];
     const g = liga.dorado();
-    if (g && g.sv === sv) lineas.push(<li key="d"><b>DORADO ×3</b>{limpio(g.n)}, {liga.dia(g.t)}</li>);
+    if (g && g.sv === sv) lineas.push(<li key="d"><b>DORADO ×3</b>{limpio(g.n)}, {utc(g.t) < liga.ahora ? 'se jugó ' + liga.cuando(g.t) : liga.dia(g.t)}</li>);
     const par = ((mm.guerra || {}).pares || []).find((p) => p.includes(sv));
     if (par) lineas.push(<li key="g"><b>GUERRA</b>contra {par[0] === sv ? par[1] : par[0]}: gana el que más puntos hace por persona</li>);
     const meta = (mm.metas || {})[sv];
@@ -248,9 +248,9 @@ export function gruposHistorias(liga) {
 // la cara de alguien en un círculo: su foto o, si no tiene, la inicial sobre su bandera (una inicial sobre negro,
 // fila tras fila, era lo que se veía «sin avatar»)
 export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {
-  const [mal, setMal] = useState(false);
+  const [mal, setMal] = useState(null);
   const src = k ? liga.avUrl(k) : null;
-  if (src && !mal) return <span className={cls}><img alt="" src={src} onError={() => setMal(true)} /></span>;
+  if (src && mal !== src) return <span className={cls}><img alt="" src={src} onError={() => setMal(src)} /></span>;
   const ini = (limpio(nombre).slice(0, 1) || '?').toUpperCase();
   return (
     <span className={cls + ' ini' + (cc ? ' con-bandera' : '')} style={cc ? { backgroundImage: 'url(/banderas/g/' + cc + '.webp)' } : undefined}>
@@ -429,7 +429,7 @@ function momentosTuyos(liga) {
     out.push({
       tipo: 'tuevento', et: 'Tu evento', sv: ll.sv,
       txt: <><div className="hero-t"><span className="tag tg-seguis">TU ÚLTIMO EVENTO · {liga.cuando(liga.fechaLlave(ll)).toUpperCase()}</span></div>
-        <h1 className="hero-ev">{String(res).toUpperCase()}</h1>
+        <h1 className="hero-ev">{resultado(res)}</h1>
         <p className="hero-p">{limpio(ll.nombre)} · {ll.sv} · {ll.participantes} raperos · +{num(pts)} pts para tu Temporada.</p>
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave</button>
           {carta ? <Compartir cls="btn borde" url={carta} texto="Mi carta de la Liga Global" etiqueta="Compartir mi carta" /> : null}</div></>,
@@ -552,22 +552,32 @@ function fondoDe(liga, m) {
 // también el que hace la persona. Ya no se frena con el mouse encima: en la compu parecía que no andaba.
 export function Hero({ liga, vivoL, children }) {
   const mo = momentos(liga, vivoL);
-  const [i, setI] = useState(0);
+  // ⚠️ el momento que se mira se sigue por su TIPO, no por su lugar: si empieza un evento en vivo, el suyo entra
+  // adelante y corría a todos un lugar, y lo que estabas leyendo cambiaba solo (revisión del 01/10/2026)
+  const [tipo, setTipo] = useState(null);
   const quieto = useRef(false);
   const x0 = useRef(null);
   const ultimo = useRef(Date.now());
+  const lista = useRef(mo);
+  lista.current = mo;
+  const actual = useRef(tipo);
+  actual.current = tipo;
   const n = mo.length;
-  const ver = (k) => { ultimo.current = Date.now(); setI(((k % n) + n) % n); };
+  const j = Math.max(0, mo.findIndex((m) => m.tipo === tipo));
+  const ver = (k) => { ultimo.current = Date.now(); setTipo(mo[((k % n) + n) % n].tipo); };
   useEffect(() => {
     if (n < 2 || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return undefined;
     const t = setInterval(() => {
-      if (quieto.current || document.visibilityState !== 'visible') return;
-      if (Date.now() - ultimo.current >= 15000) { ultimo.current = Date.now(); setI((v) => (v + 1) % n); }
+      if (quieto.current || document.visibilityState !== 'visible' || Date.now() - ultimo.current < 15000) return;
+      ultimo.current = Date.now();
+      const l = lista.current;
+      if (!l.length) return;
+      const a = Math.max(0, l.findIndex((m) => m.tipo === actual.current));
+      setTipo(l[(a + 1) % l.length].tipo);
     }, 1000);
     return () => clearInterval(t);
   }, [n]);
   if (!n) return children ? <div className="escena" style={fondoDe(liga, null)}>{children}</div> : null;
-  const j = Math.min(i, n - 1);
   return (
     <div className="escena" style={fondoDe(liga, mo[j])}>
       <section className="hero carrusel" id="envivo" aria-roledescription="carrusel" aria-label="Lo de ahora"
@@ -656,10 +666,14 @@ export function IrA({ raiz }) {
       SECCIONES.forEach(([id]) => { const s = raiz.current.querySelector('#' + id); if (s) io.observe(s); });
     }
     return () => { window.removeEventListener('scroll', mostrar); if (io) io.disconnect(); };
-  }, [raiz]);
+    // 🔴 con [raiz] solo, una sección que aparece después de montar —Lo último llega con el muro— no se miraba
+    // nunca, y IR A no la marcaba al pasar (revisión del 30/09/2026)
+  }, [raiz, hay.map((h) => h[0]).join()]);
   const ir = (id) => {
     const s = raiz.current && raiz.current.querySelector('#' + id);
     if (s) { fijo.current = Date.now() + 900; s.scrollIntoView({ behavior: 'smooth', block: 'start' }); setAct(id); }
+    // sin momentos no hay escenario al que volver: «volver arriba» igual vuelve
+    else if (id === 'envivo') window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return (
     <nav className={'ir-a' + (ver ? ' ver' : '')} aria-label="Ir a" ref={barra}>

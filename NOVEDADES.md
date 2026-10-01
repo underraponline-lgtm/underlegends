@@ -407,6 +407,12 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **B · lo tuyo primero en el escenario**: «hoy te buscan» y tu último evento de los últimos dos días. «Jugás esta noche» espera a que el payload traiga las inscripciones | *«me gustan todas»* | ✅ 1.58 |
 | **C · las historias vistas quedan vistas** (`lg:historias`, con la firma de lo más nuevo de cada una) | *«me gustan todas»* | ✅ 1.58 |
 | **D · compartir** la llave, tu carta (la imagen de R2) y las historias: el menú del teléfono o, en la compu, el link copiado | *«me gustan todas»* | ✅ 1.58 |
+| **Los perfiles de país y de crew con el estilo nuevo**, como el de servidor | *«sí, eso haremos con el remake a todo. Espera, poco a poco»* (01/10) | 📌 va con el remake, de a una |
+| **Instalar la página como app en Android**: un botón en el Inicio cuando el teléfono lo permite | *«Ok…»* (01/10) | ⏳ próxima tanda |
+| **El tema por defecto es el normal** (claro): no sigue al del celular | *«por default el normal»* (01/10) | ✅ ya era así |
+| **El buscador de arriba encuentra también servidores, países y crews** | *«sí»* (01/10) | ⏳ próxima tanda |
+| **Las llaves guardan la clave de cada persona**, no sólo el nombre: es lo único que separa a los que se llaman igual | *«diría que sí, si eso te facilita las cosas»* (01/10) | ⏳ próxima tanda |
+| **«Tu segundo evento»** en el escenario, para quien jugó poco | *«explícate más»* (01/10) | ❓ explicado en el chat; esperando 1, 2 o 3 |
 | **Los que mandan con flechas**: Temporada, Competitivo, Duelos, Podios, Rachas, Países y Crews, cinco por categoría | *«donde dice los que mandan podrías añadir las flechas para ir hacia competitivo el top 5, países, rachas, etc.»* (6:20 PM) | 📌 va con el remake |
 | **El panel de abajo con flechas** en lugar del Ranking (que ya está en Los que mandan): **Misiones** con la previa del Pase al costado · **Tus eventos** con Tu temporada · **La Liga en números** | *«el default sería misiones y al costado una previa del pase de temporada… luego… últimos eventos y tus resultados y al costado tu temporada… luego otra flecha con estadísticas de la liga global»* (6:20 PM) | 📌 va con el remake. Las Misiones y el Pase van de ejemplo: todavía no existen |
 | **Se busca y el pie en negro**; los afiches de Se busca pasan a papel pegado en la pared. **Los servidores, en blanco** | *«quizás poner todo negro esa parte, igualmente los servidores de la liga»* (6:20 PM) · *«los servidores de la liga make it white»* (6:50 PM) | 📌 va con el remake |
@@ -417,6 +423,47 @@ Son las que no se pueden volver a preguntar ni olvidar.
 ⚠️ **FFA y EFA siguen con la silueta, y ya lo decidió Dlx** (*«que se quede así de momento»*): el ícono de FFA es un póster con micrófonos, llamas y texto, y a 30 px es ruido. Si algún día va con el ícono, es una línea (`CON_ICONO` en `comun/escudos.py`).
 
 ---
+
+## 📅 Jueves 01/10 (1:19 PM) — versión 1.59: la revisión de bugs del Inicio
+
+Dlx, 30/09: *«Ok lets check some bugs in this new system… Take ur time»* y *«Sigue.
+Tómate tu tiempo»*. Se buscaron **midiendo la página**, no leyendo el diff: una
+auditoría con Playwright en ocho anchos (360 a 2560), cuatro personas (sin entrar,
+Discord sin ser rapero, rapero, buscado) y el tema de noche, más una prueba por
+cada arreglo. Lo que salió:
+
+| bug | cómo se vio | arreglo |
+|---|---|---|
+| **El visor de historias y el escenario seguían lo que mirás por su LUGAR** | los datos se rehacen cada minuto: si empezaba un evento en vivo, su círculo entraba primero y corría a todos un lugar, y saltabas a otra historia a mitad. El reloj de cada historia volvía a cero en cada refresco | por **id** (historias) y por **tipo** (momentos); el visor se cierra si su historia desaparece (`abajo.jsx`, `arriba.jsx`) |
+| **Dos personas, un nombre** | hoy «Volk» 🇲🇽 y «volk» 🇨🇴, dos «SOL» y dos «PARIA SIN REMEDIO». Las llaves traen sólo el nombre y se comparaba sin mayúsculas: cada uno veía en «Tus eventos» y en «Tu último evento» los del otro | si el nombre se repite vale sólo el exacto, como en el perfil de `app.js` (`liga.esDe()`). ⚠️ **Los dos «SOL» y los dos «PARIA SIN REMEDIO» se escriben igual y siguen sin separarse**: para eso las llaves tendrían que traer la clave de cada uno |
+| **Los cuatro servidores de «Esta semana» no se alcanzaban con el teclado** | medido: `display:contents` en el `<a>` lo deja en 0×0 y sin foco, ni con Tab | el link es la caja; el dibujo sale igual (diferencia máxima 4 de 255) |
+| **Una carta de R2 que no cargaba** mostraba el ícono de imagen rota | cortando las `.webp` en la prueba | un reintento y después «SIN CARTA»; las fallas cuentan por dirección, así que una carta nueva se vuelve a intentar |
+| **Una cara que fallaba quedaba fallada** para la persona siguiente en el mismo lugar | `mal` era un sí/no | se recuerda la dirección que falló (`Cara`, `CaraH`, `CaraDc`, `Bandera`, la barra de abajo) |
+| **Quien entró con Discord y no es rapero** leía «Entrá con Discord» en Tus eventos y Tu temporada | la persona «discord» de la auditoría | su propio texto y «Mi cuenta» |
+| **Un `%` suelto en `#/sv/…` tiraba el Inicio entero** al de respaldo | `URIError` | `decodeURIComponent` con `try` |
+| **Armar las historias fuera de las secciones aisladas**: si fallaba, se caía todo el Inicio | leyendo `App.jsx` | con `try`: sin historias, el resto sigue |
+| **Dos eventos en vivo a la vez** compartían el id `vivo` | | `vivo-<sv>-<nombre>` |
+| **El IR A dejaba de marcar** las secciones que aparecen después de montar (Lo último llega con el muro) | | el observador se rearma cuando cambian |
+| **Los enlaces de cada sección sin `href`** («Entrar», «Mi cuenta») no se abrían con Enter | | Enter y espacio |
+| **Las pestañas de un panel que se achica** apagaban la sección | `items[i]` ya no existía | el índice se recorta |
+| **El puesto de la Temporada** debajo del top 5 decía el lugar en la lista, no el oficial (hay empates) | | `pos` |
+| **Compartir en la computadora** abría el menú de Windows | | sólo en pantallas táctiles; en la compu se copia el link |
+| **«R32», «Cuartos»** en grande no decían nada | | «LLEGASTE A 16AVOS», «SEMIFINALISTA», «3.º» (`resultado()`) |
+| **El dorado que ya se jugó** decía su fecha en la historia del servidor | | «se jugó el …» |
+| **Tu voto de El Elegido** desaparecía si no estaba entre los cuatro más votados | | queda a la vista |
+| **Una fecha que falta** se escribía «el undefined» | | vacía |
+
+⚠️ **La auditoría se trabó una vez en IR A y no era un bug**: después de «Ahora» la barra
+se esconde —estás arriba— y no se puede tocar, como tiene que ser. Con el CSS de antes
+fallaba igual. La prueba ahora vuelve a bajar antes de cada clic.
+
+⚠️ **Y los tres avisos que deja son de diseño, no bugs**: «Ahora» y «Esta semana» viven
+adentro del panel de arriba, así que al ir ahí la barra se esconde; y «La Liga» es la
+última sección, así que en una pantalla grande la página no puede bajar lo suficiente para
+dejarla pegada a la barra. Los ocho anchos con las cuatro personas, sin un solo hallazgo.
+
+⚠️ **No correr dos pruebas a la vez contra el servidor local de pruebas**: se colgó y
+parecía que la página no cargaba un perfil de servidor.
 
 ## 📅 Martes 29/09 (11:10 AM) — quién vuelve a jugar
 

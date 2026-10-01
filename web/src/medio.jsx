@@ -1,6 +1,6 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
-import { DIAS, hora, limpio, num, utc } from './liga.js';
+import { DIAS, hora, limpio, num, resultado, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, accion, enlace, nombrePais } from './piezas.jsx';
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
@@ -122,12 +122,15 @@ function Puesto({ cara, quien, pos, txt, href }) {
     </div>
   );
 }
-function puestoDe(liga, lista, esMio, valor, unidad, dec = 0) {
+function puestoDe(liga, lista, esMio, valor, unidad, dec = 0, posDe = null) {
   const i = lista.findIndex(esMio);
   if (i < 5) return null;
   const d = valor(lista[i - 1]) - valor(lista[i]);
   const dist = dec ? d.toFixed(dec).replace('.', ',') : num(d);
-  return { i, txt: d > 0 ? 'a ' + dist + ' ' + unidad + ' del #' + i : 'empatado con el #' + i };
+  // el puesto: el oficial si la lista lo trae (la Temporada tiene empates), si no el lugar en la lista
+  const pos = posDe ? posDe(lista[i]) : i + 1;
+  const arriba = posDe ? posDe(lista[i - 1]) : i;
+  return { i, pos, txt: d > 0 ? 'a ' + dist + ' ' + unidad + ' del #' + arriba : 'empatado con el #' + arriba };
 }
 
 export function LosQueMandan({ liga, dc }) {
@@ -135,10 +138,10 @@ export function LosQueMandan({ liga, dc }) {
   const yo = liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="mc-yo-c" /> : null;
   const quien = yo ? limpio(yo.n).toUpperCase() : '';
-  const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + (x.i + 1)} txt={x.txt} href={href} /> : null);
+  const fila = (x, href) => (x ? <Puesto cara={cara} quien={quien} pos={'#' + x.pos} txt={x.txt} href={href} /> : null);
   const cats = [];
   cats.push(['temporada', 'Temporada', T.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} dato={'#' + f.pos + ' · OVR ' + f.ovr + ' · ' + num(f.pts) + ' PTS'} />),
-    yo ? fila(puestoDe(liga, T, (f) => f.k === yo.k, (f) => f.pts || 0, 'pts'), '#/ranking/temporada') : null]);
+    yo ? fila(puestoDe(liga, T, (f) => f.k === yo.k, (f) => f.pts || 0, 'pts', 0, (f) => f.pos), '#/ranking/temporada') : null]);
   const compT = T.filter((f) => f.rg).sort((a, b) => (b.sc || 0) - (a.sc || 0));
   let yoComp = null;
   if (yo && !yo.rg) {
@@ -166,14 +169,14 @@ export function LosQueMandan({ liga, dc }) {
   const miPais = yo && yo.cc ? puestoDe(liga, paT, (p) => p.cc === yo.cc, (p) => p.pts || 0, 'pts') : null;
   cats.push(['paises', 'Países', paT.slice(0, 5).map((p, i) => <McGrupo key={p.cc} n={i + 1} href={'#/pais/' + p.cc} img={<Bandera cc={p.cc} cls="mc-bandera" />}
     nombre={nombrePais(p.cc)} dato={num(p.pts) + ' PTS · ' + p.n + ' RAPEROS'} />),
-  miPais ? <Puesto cara={<Bandera cc={yo.cc} cls="mc-yo-flag" />} quien={'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase()} pos={'#' + (miPais.i + 1)} txt={miPais.txt} href="#/ranking/paises" /> : null]);
+  miPais ? <Puesto cara={<Bandera cc={yo.cc} cls="mc-yo-flag" />} quien={'TU PAÍS · ' + nombrePais(yo.cc).toUpperCase()} pos={'#' + miPais.pos} txt={miPais.txt} href="#/ranking/paises" /> : null]);
   const crT = (liga.d.crews || []).filter((c) => c.rk !== 0);
   const miCrew = yo ? liga.crewDe(yo) : null;
   const xCrew = miCrew ? puestoDe(liga, crT, (c) => c.crew === miCrew.crew, (c) => c.pts || 0, 'pts') : null;
   cats.push(['crews', 'Crews', crT.slice(0, 5).map((c, i) => <McGrupo key={c.crew} n={i + 1} href={'#/crew/' + encodeURIComponent(c.clave || c.crew)}
     img={c.logo ? <img className="mc-logo" alt="" src={'/' + c.logo} /> : <span className="mc-ini">{limpio(c.crew).slice(0, 2).toUpperCase()}</span>}
     nombre={limpio(c.crew)} dato={num(c.pts) + ' PTS · ' + c.n + ' RAPEROS'} />),
-  xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + (xCrew.i + 1)} txt={xCrew.txt} href="#/ranking/crews" /> : null]);
+  xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + xCrew.pos} txt={xCrew.txt} href="#/ranking/crews" /> : null]);
   // sin haber entrado (ni con Discord ni eligiendo quién sos), la invitación a verse
   const invita = !yo && !dc ? (
     <div className="mc-yo invita"><span className="mc-yo-t">¿Y vos? Entrá con Discord y ves tu puesto en cada categoría.</span>
@@ -205,8 +208,17 @@ function Pase({ liga }) {
 }
 // Dlx, 30/09/2026: «tus últimos eventos son raros porque dice que son los últimos eventos». Decía «Tus eventos» en
 // la pestaña y mostraba los de la Liga, que ya están en Fechas. Ahora son los tuyos, o cómo verlos.
-export function TusEventos({ liga }) {
+export function TusEventos({ liga, dc }) {
   const f = liga.yo;
+  if (!f && dc) {
+    return (
+      <section className="te">
+        <div className="mis-cab"><span>CÓMO TE FUE</span></div>
+        <p className="pronto-p">Tu cuenta de Discord todavía no tiene eventos en la {liga.temp}. Con el primero que juegues, acá aparecen tu puesto y los puntos que sumaste.</p>
+        <div className="te-acc"><a className="btn negro" href="#/eventos">Ver los próximos eventos</a></div>
+      </section>
+    );
+  }
   if (!f) {
     return (
       <section className="te">
@@ -226,7 +238,7 @@ export function TusEventos({ liga }) {
             <li key={ll.n}><button type="button" className="sin-boton te-b" onClick={() => accion.llave(ll.n)}>
               <img alt="" src={liga.logo(ll.sv)} />
               <div><b>{limpio(ll.nombre)}</b><small>{ll.sv} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos</small></div>
-              <span className={'te-vos' + (res === 'Campeón' ? ' campeon' : '')}>{String(res).toUpperCase()}<small>+{num(pts)} pts</small></span>
+              <span className={'te-vos' + (res === 'Campeón' ? ' campeon' : '')}>{resultado(res, true)}<small>+{num(pts)} pts</small></span>
             </button></li>
           ))}
         </ol>
@@ -236,8 +248,17 @@ export function TusEventos({ liga }) {
     </section>
   );
 }
-export function TuTemporada({ liga }) {
+export function TuTemporada({ liga, dc }) {
   const f = liga.yo;
+  if (!f && dc) {
+    return (
+      <section className="tu">
+        <div className="tu-t">TU TEMPORADA</div>
+        <p className="pronto-p">Todavía no jugaste en la {liga.temp}. Con tu primer evento aparecen tu puesto, tu OVR y tu carta.</p>
+        <button type="button" className="btn negro" onClick={accion.cuenta}>Mi cuenta</button>
+      </section>
+    );
+  }
   if (!f) {
     return (
       <section className="tu">
@@ -255,7 +276,7 @@ export function TuTemporada({ liga }) {
     <section className="tu" id="tu">
       <div className="tu-t">TU TEMPORADA · {limpio(f.n).toUpperCase()}</div>
       <div className="tu-fila">
-        <div className="tu-pos"><b>{f.pos ? '#' + f.pos : '—'}</b><small>OVR {f.ovr} · {num(f.pts)} pts · {ev} eventos</small></div>
+        <div className="tu-pos"><b>{f.pos ? '#' + f.pos : '—'}</b><small>OVR {f.ovr || '—'} · {num(f.pts)} pts · {ev} eventos</small></div>
         {f.rg ? <Rango liga={liga} rg={f.rg} /> : <span className="rg sinletra">?</span>}
       </div>
       <div className="tu-prog">

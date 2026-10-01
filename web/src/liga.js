@@ -24,6 +24,16 @@ export function recorte(s, n = 120) {
   const i = t.lastIndexOf(' ');
   return (i > 0 ? t.slice(0, i) : t).replace(/[ ,.;:]+$/, '') + '…';
 }
+// el resultado de una llave, en palabras: «R32» o «Cuartos» solos no dicen nada en grande. `corto` para una ficha
+const RES = {
+  'Campeón': ['CAMPEÓN', 'CAMPEÓN'], 'Subcampeón': ['SUBCAMPEÓN', 'SUBCAMPEÓN'], 'Tercero': ['TERCER PUESTO', '3.º'],
+  'Cuarto': ['CUARTO PUESTO', '4.º'], 'Semifinal': ['SEMIFINALISTA', 'SEMIS'], 'Cuartos': ['LLEGASTE A CUARTOS', 'CUARTOS'],
+  'Octavos': ['LLEGASTE A OCTAVOS', 'OCTAVOS'], 'R32': ['LLEGASTE A 16AVOS', '16AVOS'],
+};
+export function resultado(r, corto = false) {
+  const x = RES[r];
+  return x ? x[corto ? 1 : 0] : String(r || '').toUpperCase();
+}
 export const num = (n) => String(Math.trunc(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 export const mult = (x) => '×' + String(x || 1).replace('.', ',');
 export const norm = (s) => String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -71,7 +81,13 @@ export class Liga {
     this.ahora = ahora || new Date();
     this.T = {};
     this.N = {};
-    (D.tabla || []).forEach((r) => { this.T[r.k] = r; this.N[limpio(r.n).toLowerCase()] = r; });
+    this.E = {};
+    this.dobles = new Set();
+    (D.tabla || []).forEach((r) => {
+      const n = limpio(r.n).toLowerCase();
+      if (this.N[n]) this.dobles.add(n);
+      this.T[r.k] = r; this.N[n] = r; this.E[limpio(r.n)] = r;
+    });
     this.svs = {};
     (D.svs || []).forEach((s) => { this.svs[s.sv] = s; });
     this.rg = {};
@@ -107,10 +123,27 @@ export class Liga {
   colorRg(rg) { return this.rg[rg] || '#A5A5A0'; }
 
   // ── utilidades de datos ──
-  fila(nombre) { return this.N[limpio(nombre).toLowerCase()] || null; }
+  // 🔴 DOS PERSONAS, UN NOMBRE: «Volk» 🇲🇽 y «volk» 🇨🇴, «DXG» y «dxg», «Kenny» y «KENNY» y dos «Last» (medido el
+  // 01/10/2026). Las llaves traen sólo el nombre, y comparado sin mayúsculas cada uno veía en «Tus eventos» y en «Tu
+  // último evento» los del otro. Cuando el nombre se repite, vale sólo el exacto —como en el perfil de app.js—; si no,
+  // sin mayúsculas, como siempre. Los dos «Last» se escriben igual y siguen sin poder separarse
+  fila(nombre) {
+    const a = limpio(nombre);
+    const n = a.toLowerCase();
+    return (this.dobles.has(n) ? this.E[a] : this.N[n]) || null;
+  }
+  esDe(nombre, k) {
+    const f = this.T[k];
+    if (!f) return false;
+    const a = limpio(nombre);
+    const b = limpio(f.n);
+    return this.dobles.has(b.toLowerCase()) ? a === b : a.toLowerCase() === b.toLowerCase();
+  }
   oficiales() { return (this.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos); }
+  // una fecha que falta no se escribe: decía «el undefined»
   cuando(t) {
     const b = utc(t);
+    if (isNaN(b)) return '';
     const seg = (this.ahora - b) / 1000;
     if (seg < 0) return this.dia(t);
     if (seg < 3600) return 'hace ' + Math.max(1, Math.floor(seg / 60)) + ' min';
@@ -121,6 +154,7 @@ export class Liga {
   }
   dia(t) {
     const b = utc(t);
+    if (isNaN(b)) return '';
     const dias = diasEntre(this.ahora, b);
     if (dias === 0) return 'hoy ' + hora(b);
     if (dias === 1) return 'mañana ' + hora(b);
@@ -164,10 +198,9 @@ export class Liga {
     return !!(g && g.sv === sv && limpio(g.n) === limpio(nombre));
   }
   semanaDe(k) {
-    const yo = limpio(this.T[k].n).toLowerCase();
     const out = [];
     this.llaves().forEach((ll) => (ll.tabla || []).forEach((f) => {
-      if (limpio(f[0]).toLowerCase() === yo) out.push([ll, f[1], f[2]]);
+      if (this.esDe(f[0], k)) out.push([ll, f[1], f[2]]);
     }));
     return out;
   }
@@ -263,16 +296,15 @@ export class Liga {
   }
   // los duelos que ganó y jugó alguien desde una fecha
   duelosDe(k, desde) {
-    const yo = limpio(this.T[k].n).toLowerCase();
     let g = 0;
     let j = 0;
     Object.values(this.d.llaves || {}).forEach((ll) => {
       if (utc(this.fechaLlave(ll)) < desde) return;
       (ll.rondas || []).forEach((r) => (r.b || []).forEach((b) => {
-        const lados = (b[0] || []).map((x) => limpio(typeof x === 'string' ? x : x.join(' & ')).toLowerCase());
-        if (lados.includes(yo) && lados.length === 2) {
+        const lados = (b[0] || []).map((x) => (typeof x === 'string' ? x : x.join(' & ')));
+        if (lados.length === 2 && lados.some((x) => this.esDe(x, k))) {
           j += 1;
-          if (limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & ')).toLowerCase() === yo) g += 1;
+          if (this.esDe(typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & '), k)) g += 1;
         }
       }));
     });

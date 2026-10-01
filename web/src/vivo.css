@@ -248,9 +248,18 @@ button.btn{background:transparent;cursor:pointer}
 .svp-otros{display:flex;flex-wrap:wrap;gap:10px}
 .svp-otros a{display:flex;align-items:center;gap:8px;border:2px solid var(--linea);border-left:8px solid var(--c);padding:8px 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%}
 .svp-otros img{width:30px;height:30px;border-radius:50%}
-.ts-sv{display:contents;color:inherit}
+/* el link de cada servidor ES la caja: con display:contents un <a> mide 0x0 y no recibe el foco (medido el
+   30/09/2026, ni con Tab: los cuatro de la tira quedaban fuera del teclado y del lector de pantalla) */
+.ts-l li{padding:0;justify-items:stretch}
+.ts-sv{display:grid;justify-items:center;gap:7px;padding:8px 4px;color:inherit}
+@media (min-width: 900px){
+  .app .ts-l li{padding:0}
+  .app .ts-sv{display:flex;align-items:center;gap:8px;padding:4px 5px 4px 6px;flex:1}
+}
 @media (min-width: 900px){
   .app .svp{grid-template-columns:auto minmax(0,1fr) minmax(280px,auto);align-items:center;gap:32px;padding:44px var(--gut) 28px}
   .app .svp-logo{width:160px;height:160px}
   .app .svp-semana{padding:0 var(--gut) 34px}
 }
+/* el tema noche: las barras de un color muy oscuro (el violeta de FFA) se perdían contra el fondo */
+.noche .act-b u{box-shadow:inset 0 0 0 1px rgba(246,246,246,.22)}

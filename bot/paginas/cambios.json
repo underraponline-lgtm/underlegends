@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "1.59",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T13:19:00-04:00",
+   "titulo": "Una revisión del Inicio nuevo",
+   "items": [
+    "🧭 **Las historias y el escenario ya no saltan solos**: si empieza un evento en vivo mientras mirás, seguís donde estabas. Y el reloj de cada historia ya no vuelve a cero cuando se actualizan los datos.",
+    "👥 **Dos raperos que se llaman igual** (con otra mayúscula) ya no ven los eventos del otro en «Tus eventos».",
+    "🃏 **Una carta que no carga ya no muestra la imagen rota**: se vuelve a pedir y, si no llega, va la cara con «SIN CARTA».",
+    "👤 **Si entraste con Discord y todavía no jugaste**, «Tus eventos» y «Tu temporada» te lo dicen, en vez de pedirte que entres.",
+    "🗳️ **El Elegido**: tu voto queda a la vista aunque no esté entre los cuatro más votados.",
+    "⌨️ **Con el teclado**: los servidores de «Esta semana» y los enlaces de cada sección se abren; las historias toman el foco al abrirse.",
+    "🌙 Detalles: el evento dorado que ya pasó dice «se jugó» también en la historia de su servidor, y en el tema de noche se ven las barras oscuras de «Lo que se jugó»."
+   ]
+  },
+  {
    "version": "1.58",
    "dia": "2026-09-30",
    "cuando": "2026-09-30T13:30:00-04:00",

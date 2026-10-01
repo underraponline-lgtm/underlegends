@@ -27,6 +27,11 @@ envolver('pintaDatos', 'lg:datos');
 envolver('pintaEncuestas', 'lg:enc');
 envolver('pintaVivo', 'lg:vivo');
 envolver('ir', 'lg:ruta');
+// 🔴 ENTRAR CON DISCORD TERMINA SOLO: `volverDeDiscord()` guarda la cuenta cuando vuelve un fetch y llama a
+// `pintaCuenta()`, sin `ir()` ni datos nuevos. Sin esto el Inicio seguía mostrando «Entrar» (30/09/2026, revisión).
+// Y a quién seguís lo guarda siempre `guardarSigo()`.
+envolver('pintaCuenta', 'lg:cuenta');
+envolver('guardarSigo', 'lg:sigo');
 
 // ── ¿la ruta es el Inicio? La misma regla que `ir()` de app.js: vacío, `#/` o algo que no es una vista ──
 function esInicio() {
@@ -105,6 +110,7 @@ export default function App() {
   const [vistos, setVistos] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:historias')) || {}; } catch (e) { return {}; } });
   const [yo, setYo] = useState(quienMira);
   const [hash, setHash] = useState(() => location.hash);
+  const [sigoV, setSigoV] = useState(0);
   const raiz = useRef(null);
 
   useEffect(() => {
@@ -112,6 +118,10 @@ export default function App() {
     const votos = () => setEnc(estadoEnc());
     const vivo = () => setVivoL(Object.assign({}, window.VIVO_L || {}));
     const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(location.hash); };
+    const cuenta = () => setYo(quienMira());
+    const sigo = () => setSigoV((v) => v + 1);
+    window.addEventListener('lg:cuenta', cuenta);
+    window.addEventListener('lg:sigo', sigo);
     window.addEventListener('lg:datos', datos);
     window.addEventListener('lg:enc', votos);
     window.addEventListener('lg:vivo', vivo);
@@ -136,6 +146,7 @@ export default function App() {
       window.removeEventListener('lg:datos', datos); window.removeEventListener('lg:enc', votos);
       window.removeEventListener('lg:vivo', vivo); window.removeEventListener('lg:ruta', ruta);
       window.removeEventListener('hashchange', ruta); window.removeEventListener('storage', ruta);
+      window.removeEventListener('lg:cuenta', cuenta); window.removeEventListener('lg:sigo', sigo);
       clearInterval(plazo); clearInterval(reloj);
     };
   }, []);
@@ -160,12 +171,19 @@ export default function App() {
     return n;
   }), []);
 
-  const liga = useMemo(() => (D ? new Liga(D, muro, ahora, yo.k, aQuienSigo()) : null), [D, muro, ahora, yo]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const liga = useMemo(() => (D ? new Liga(D, muro, ahora, yo.k, aQuienSigo()) : null), [D, muro, ahora, yo, sigoV]);
   // el perfil de un servidor (#/sv/<SIGLA>): app.js no conoce la ruta y la deja en el Inicio, y acá se dibuja el perfil
   const mSv = /^#\/sv\/([^/?#]+)/i.exec(hash || '');
-  const sv = mSv ? decodeURIComponent(mSv[1]).toUpperCase() : null;
+  let sv = null;
+  // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
+  if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const grupos = useMemo(() => (liga ? gruposHistorias(liga) : []), [liga]);
+  // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
+  const grupos = useMemo(() => {
+    if (!liga) return [];
+    try { return gruposHistorias(liga); } catch (e) { console.error('[inicio] las historias:', e); return []; }
+  }, [liga]);
 
   if (!liga) return <div className={'app ' + tema}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
@@ -180,7 +198,7 @@ export default function App() {
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Panel"><Panel liga={liga} /></Aislada>
-        <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} /></Aislada>
+        <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} /></Aislada>
         <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
         <Aislada n="Merch"><Merch /></Aislada>
         <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>

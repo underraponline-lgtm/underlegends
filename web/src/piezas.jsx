@@ -60,7 +60,8 @@ export function Compartir({ url, texto, titulo = 'Liga Global', cls = 'btn borde
   const [dijo, setDijo] = useState('');
   const avisar = (t) => { setDijo(t); setTimeout(() => setDijo(''), 2500); };
   const dar = async () => {
-    if (navigator.share) {
+    const tactil = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+    if (navigator.share && tactil) {
       try { await navigator.share({ title: titulo, text: texto, url }); return; } catch (e) { if (e && e.name === 'AbortError') return; }
     }
     try { await navigator.clipboard.writeText((texto ? texto + ' ' : '') + url); avisar('Link copiado'); } catch (e) { avisar('No pude copiarlo'); }
@@ -73,15 +74,17 @@ export function Compartir({ url, texto, titulo = 'Liga Global', cls = 'btn borde
 }
 
 export function Bandera({ cc, cls = 'r-flag' }) {
-  const [mal, setMal] = useState(false);
-  if (!cc || mal) return null;
-  return <img className={cls} alt="" src={'/banderas/g/' + cc + '.webp'} onError={() => setMal(true)} />;
+  const [mal, setMal] = useState(null);
+  if (!cc || mal === cc) return null;
+  return <img className={cls} alt="" src={'/banderas/g/' + cc + '.webp'} onError={() => setMal(cc)} />;
 }
 
+// ⚠️ lo que falló se recuerda POR DIRECCIÓN, no como un sí/no: el mismo lugar de una lista pasa a mostrar a otra
+// persona y, con un sí/no, heredaba la inicial aunque su foto anduviera (revisión del 01/10/2026)
 export function Cara({ liga, k, nombre, cls = 'cara' }) {
-  const [mal, setMal] = useState(false);
+  const [mal, setMal] = useState(null);
   const src = k ? liga.avUrl(k) : null;
-  if (src && !mal) return <span className={cls}><img alt="" src={src} onError={() => setMal(true)} /></span>;
+  if (src && mal !== src) return <span className={cls}><img alt="" src={src} onError={() => setMal(src)} /></span>;
   return <span className={cls + ' ini'}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;
 }
 
@@ -98,10 +101,17 @@ export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
 
 // una carta de verdad (de R2) o, si esa persona no la tiene, su cara con «SIN CARTA». Nunca una carta inventada.
 export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) {
+  const [fallo, setFallo] = useState({ src: null, n: 0 });
   const f = liga.T[k];
-  const src = liga.cartaUrl(k, cual);
-  if (!src) return <SinCarta liga={liga} k={k} nombre={f ? f.n : k} cc={f ? f.cc : ''} cls={cls} />;
-  const img = <img className={cls} alt={'Carta ' + cual + ' de ' + f.n} src={src} loading="lazy" />;
+  const src0 = liga.cartaUrl(k, cual);
+  // las fallas cuentan para ESA dirección: una carta nueva (otra `?v=`) se vuelve a intentar
+  const fallas = fallo.src === src0 ? fallo.n : 0;
+  if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : k} cc={f ? f.cc : ''} cls={cls} />;
+  // 🔴 una carta que no carga (R2 corta a veces) mostraba el ícono de imagen rota: se reintenta una vez y, si
+  // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026)
+  const src = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;
+  const img = <img className={cls} alt={'Carta ' + cual + ' de ' + f.n} src={src} loading="lazy"
+    onError={() => setTimeout(() => setFallo((x) => ({ src: src0, n: (x.src === src0 ? x.n : 0) + 1 })), fallas ? 0 : 1200)} />;
   if (!abre) return img;
   return <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver la carta de ' + f.n}>{img}</button>;
 }
@@ -120,7 +130,8 @@ export function Sec({ id, titulo, enlace, href, onEnlace, extra = '', children, 
       <div className="sec-t">
         <h2>{titulo}</h2>
         {enlace ? (
-          <a href={href || undefined} onClick={onEnlace} role={href ? undefined : 'button'} tabIndex={href ? undefined : 0}>
+          <a href={href || undefined} onClick={onEnlace} role={href ? undefined : 'button'} tabIndex={href ? undefined : 0}
+            onKeyDown={href ? undefined : (e) => { if ((e.key === 'Enter' || e.key === ' ') && onEnlace) { e.preventDefault(); onEnlace(e); } }}>
             {enlace} <Ico n="flecha" t={16} />
           </a>
         ) : null}
@@ -133,9 +144,12 @@ export function Sec({ id, titulo, enlace, href, onEnlace, extra = '', children, 
 // una sección con pestañas y flechas (Dlx, 29/09: «Los que mandan» y el panel de abajo). En el celular, un paginador
 // ‹ selector ›. Con `titulos`, el título de la sección es el de la pestaña que se ve.
 export function Pest({ id, titulo, enlace, href, onEnlace, items, extra = '', titulos = false }) {
-  const [i, setI] = useState(0);
+  const [i0, setI] = useState(0);
   const x0 = useRef(null);
   const n = items.length;
+  // 🔴 si los datos cambian y la pestaña que mirabas desaparece (una categoría que queda vacía), `items[i]` no
+  // existía y la sección entera se apagaba (revisión del 30/09/2026)
+  const i = Math.max(0, Math.min(i0, n - 1));
   const ver = (k) => setI(((k % n) + n) % n);
   const tabs = useRef(null);
   useEffect(() => {

@@ -67,13 +67,21 @@ export function Pie({ liga }) {
 }
 
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
+// la foto de la barra de abajo: si el link de Discord venció, el ícono y no la imagen rota
+function TabAv({ liga, k }) {
+  const [mal, setMal] = useState(null);
+  const src = liga.avUrl(k);
+  if (!src || mal === src) return <Ico n="yo" t={22} />;
+  return <img className="tab-av" alt="" src={src} onError={() => setMal(src)} />;
+}
+
 export function Tabbar({ liga, dc }) {
   const yo = liga.yo;
   const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'], ['Publicaciones', 'publicaciones', '#/publicaciones']];
   return (
     <nav className="tabbar" aria-label="Secciones">
       {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
-      {yo ? <a href={'#/r/' + encodeURIComponent(yo.k)}>{liga.avUrl(yo.k) ? <img className="tab-av" alt="" src={liga.avUrl(yo.k)} /> : <Ico n="yo" t={22} />}<span>Yo</span></a>
+      {yo ? <a href={'#/r/' + encodeURIComponent(yo.k)}><TabAv liga={liga} k={yo.k} /><span>Yo</span></a>
         : <button type="button" className="sin-boton tab-b" onClick={accion.cuenta}>{dc ? <CaraDc dc={dc} cls="tab-av" /> : <Ico n="yo" t={22} />}<span>Yo</span></button>}
     </nav>
   );
@@ -111,21 +119,34 @@ export function Menu({ abierto, onCerrar, tema, onTema }) {
 
 // ── el visor de historias, como las de Instagram ──────────────────────────────────────────────────
 export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
-  const [gi, setGi] = useState(abierto);
+  // 🔴 el grupo abierto se sigue por su ID, no por su lugar en la fila: los datos se rehacen cada minuto y, si
+  // empezaba un evento en vivo con el visor abierto, su círculo entraba primero y corría a todos un lugar (saltabas a
+  // otra historia a mitad). Y el reloj de cada historia volvía a cero en cada refresco (revisión del 01/10/2026)
+  const [gid, setGid] = useState(() => (grupos[abierto] || {}).id);
   const [si, setSi] = useState(0);
   const [avance, setAvance] = useState(0);
   const pausa = useRef(false);
+  const cerrarB = useRef(null);
   const DUR = 5000;
-  useEffect(() => { setGi(abierto); setSi(0); setAvance(0); }, [abierto]);
-  const g = gi !== null && gi !== undefined ? grupos[gi] : null;
-  useEffect(() => { if (g) onVisto(g.id, g.firma); }, [g, onVisto]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { setGid((grupos[abierto] || {}).id); setSi(0); setAvance(0); }, [abierto]);
+  const gi = grupos.findIndex((x) => x.id === gid);
+  const g = gi >= 0 ? grupos[gi] : null;
+  const hay = !!g;
+  const firmaG = g ? g.firma : '';
+  useEffect(() => { if (hay) onVisto(gid, firmaG); }, [gid, firmaG, hay, onVisto]);
+  // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
+  useEffect(() => { if (!hay) onCerrar(); }, [hay, onCerrar]);
+  // el foco entra al visor: con el teclado, Escape y las flechas ya andaban, pero el Tab seguía en la página de atrás
+  useEffect(() => { if (cerrarB.current) cerrarB.current.focus({ preventScroll: true }); }, []);
+  const a = (i) => { setGid(grupos[i].id); setSi(0); setAvance(0); };
   const siguiente = () => {
     if (!g) return;
-    if (si < g.slides.length - 1) { setSi(si + 1); setAvance(0); } else if (gi < grupos.length - 1) { setGi(gi + 1); setSi(0); setAvance(0); } else onCerrar();
+    if (si < g.slides.length - 1) { setSi(si + 1); setAvance(0); } else if (gi < grupos.length - 1) a(gi + 1); else onCerrar();
   };
   const anterior = () => {
     if (!g) return;
-    if (si > 0) { setSi(si - 1); setAvance(0); } else if (gi > 0) { setGi(gi - 1); setSi(0); setAvance(0); }
+    if (si > 0) { setSi(si - 1); setAvance(0); } else if (gi > 0) a(gi - 1);
   };
   // el reloj de cada historia: un solo requestAnimationFrame por historia, y la que sigue la pide la última versión
   // de `siguiente` (un ref), no la de cuando arrancó el reloj
@@ -145,13 +166,13 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [gi, si, g]);
+  }, [gid, si, hay]);
   useEffect(() => {
-    if (!g) return undefined;
+    if (!hay) return undefined;
     const k = (e) => { if (e.key === 'Escape') onCerrar(); if (e.key === 'ArrowRight') sig.current(); if (e.key === 'ArrowLeft') ant.current(); };
     window.addEventListener('keydown', k);
     return () => window.removeEventListener('keydown', k);
-  }, [g, onCerrar]);
+  }, [hay, onCerrar]);
   const ir = useMemo(() => (d) => {
     if (!d) return;
     onCerrar();
@@ -184,9 +205,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
         <div className="hv-cab">
           <a className="hv-quien" href={perfil} onClick={onCerrar} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
           {compartir ? <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" /> : null}
-          <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
+          <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         <div className="hv-cuerpo"><div className="st"><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
-        {s.cta && s.ir && (s.ir.link || !s.ir.link) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null}
+        {s.cta && s.ir && Object.values(s.ir).some(Boolean) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null}
         <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={anterior} />
         <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={siguiente} />
       </div>
