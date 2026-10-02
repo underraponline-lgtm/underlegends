@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.76",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T23:55:00-04:00",
+   "titulo": "Te avisamos cuando te toca",
+   "items": [
+    "🎤 **«¡Te toca!»**: si vinculaste la campana con tu Discord, te llega una notificación cuando tu batalla es la próxima («Sos el próximo») y cuando te toca. Si no entrás a la llamada, vuelve a sonar cada minuto, hasta tres veces; se corta sola cuando entrás, cuando tu batalla ya tiene ganador o si el organizador te reemplazó.",
+    "⚠️ La primera batalla de cada llave no avisa (la llave se publica antes de que empiece el evento), y si las batallas no se juegan en orden, no avisa hasta saber cuál va.",
+    "❌ **Si un evento se cancela, la copia en #eventos-hoy de DRA también lo dice**: el bot la edita a «CANCELADO»."
+   ]
+  },
+  {
    "version": "1.75",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T22:50:00-04:00",
