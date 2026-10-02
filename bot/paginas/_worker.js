@@ -75,6 +75,8 @@ const AVISOS = {
   // Ver `miServidor()` en bot/avisos.js
   '/api/avisos/mi-servidor': 'POST',
   '/api/avisos/servidores': 'GET',
+  // 🙈 «ocultar mi foto» (02/10/2026): en Mi cuenta → Privacidad. Ver `miFoto()` en bot/avisos.js
+  '/api/avisos/mi-foto': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por

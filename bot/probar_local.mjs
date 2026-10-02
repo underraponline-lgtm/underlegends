@@ -277,7 +277,8 @@ console.log('\nLA CARTA\n');
   ok('abajo va la campana de avisos', !!cp, cp ? cp.label : 'no está');
   ok('y es un LINK al hub, no un botón que gaste interacción',
      cp?.type === 2 && cp?.style === 5 && !cp?.custom_id &&
-     cp?.url === 'https://underlegends.pages.dev/#/avisos', cp?.url || '');
+     // la Liga vive en /freestyle-rap desde el 01/10/2026 (ver `rutaLG()` en web/montar.py)
+     cp?.url === 'https://underlegends.pages.dev/freestyle-rap/avisos', cp?.url || '');
   ok('la fila no pasa de cinco', (filaBotones(c)?.components || []).length <= 5);
 }
 
@@ -520,7 +521,7 @@ console.log('\nLOS DATOS\n');
   // invitación y el canal de DRA—, y la página hace los dos pasos.
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
   ok('y le da UN botón: verificarse en la página', bs.length === 1 &&
-     (bs[0]?.url || '') === 'https://underlegends.pages.dev/#/cuenta/verificar',
+     (bs[0]?.url || '') === 'https://underlegends.pages.dev/cuenta/verificar',
      bs.map(b => b.label + ' ' + b.url).join(' · '));
   ok('que dice que si no está en DRA, la página lo mete', /te mete/.test(c), c.slice(-120));
 }
@@ -534,7 +535,7 @@ console.log('\nLOS DATOS\n');
      c.includes('Verificate en la página') && !/te mete/.test(c), c.slice(-90));
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
   ok('y le queda UN solo botón, el de verificarse', bs.length === 1 &&
-     /#\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
+     /\.dev\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
   ok('y NO le manda la invitación a donde ya está',
      !c.includes('discord.gg/') && !bs.some(b => (b.url || '').includes('discord.gg/')),
      'la interacción vino de DRA: ya está adentro');
@@ -1715,22 +1716,22 @@ console.log('\n/WEBSITE Y /NOTIFY\n');
   const b2 = (r2.json?.data?.components || []).flatMap((f) => f.components || []);
   const act = (bs) => bs.find((b) => b.style === 5) || {};
   ok('/notify en FFA viene con FFA elegido y el botón lleva a la campana con eso',
-     /underlegends\.pages\.dev\/#\/avisos\/FFA$/.test(act(b2).url || ''), JSON.stringify(b2).slice(0, 160));
+     /underlegends\.pages\.dev\/freestyle-rap\/avisos\/FFA$/.test(act(b2).url || ''), JSON.stringify(b2).slice(0, 160));
   ok('trae el menú de servidores y «Todos»', b2.some((b) => b.custom_id === 'ntf:svs') &&
      b2.some((b) => b.custom_id === 'ntf:todos'));
   ok('y dice que es para el celular o la compu', /celular o compu/.test(texto(r2)), texto(r2).slice(0, 80));
   const r3 = await pedir({ type: 2, user: { id: '700902' }, data: { name: 'notify' } });
   const b3 = (r3.json?.data?.components || []).flatMap((f) => f.components || []);
-  ok('fuera de un servidor de la Liga, todos', /#\/avisos\/todos$/.test(act(b3).url || ''), JSON.stringify(b3).slice(0, 160));
+  ok('fuera de un servidor de la Liga, todos', /\/freestyle-rap\/avisos\/todos$/.test(act(b3).url || ''), JSON.stringify(b3).slice(0, 160));
   const r4 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700903' } },
                            data: { custom_id: 'ntf:svs', component_type: 3, values: ['FFA', 'SR'] } });
   const b4 = (r4.json?.data?.components || []).flatMap((f) => f.components || []);
   ok('elegir en el menú redibuja el panel con la elección en el link',
-     r4.json?.type === 7 && /#\/avisos\/FFA,SR$/.test(act(b4).url || ''), act(b4).url);
+     r4.json?.type === 7 && /\/freestyle-rap\/avisos\/FFA,SR$/.test(act(b4).url || ''), act(b4).url);
   const r5 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700904' } },
                            data: { custom_id: 'ntf:todos', component_type: 2 } });
   ok('«Todos» deja el link en todos y se saca el botón',
-     /#\/avisos\/todos$/.test(act((r5.json?.data?.components || []).flatMap((f) => f.components || [])).url || '') &&
+     /\/freestyle-rap\/avisos\/todos$/.test(act((r5.json?.data?.components || []).flatMap((f) => f.components || [])).url || '') &&
      !(r5.json?.data?.components || []).flatMap((f) => f.components || []).some((b) => b.custom_id === 'ntf:todos'));
   const r6 = await pedir({ type: 3, guild_id: G.FFA, member: { user: { id: '700905' } },
                            data: { custom_id: 'ntf:off', component_type: 2 } });
@@ -2032,7 +2033,7 @@ console.log('\nTU CARTA SIN TU FOTO\n');
     const b = (mandados[0]?.components?.[0]?.components || [])[0] || {};
     ok('sin verificar: «verificate en la página», con el botón (lo que pidió Dlx)',
        mandados.length === 1 && /verificados en DRA/.test(mandados[0].content) &&
-       b.url === 'https://underlegends.pages.dev/#/cuenta/verificar' && !puestos.length, JSON.stringify(mandados));
+       b.url === 'https://underlegends.pages.dev/cuenta/verificar' && !puestos.length, JSON.stringify(mandados));
     r = await pedirMia('999555', 'abc123', { data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } });
     ok('la carta de OTRO: ningún aviso, ninguna foto', !mandados.length && !puestos.length);
   } finally {
@@ -2543,6 +2544,32 @@ console.log('\n«TU SERVIDOR»\n');
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/servidores'), envP);
   ok('y /servidores, con un minuto en el borde', fue && fue.u.endsWith('/avisos/servidores') && fue.cf &&
      fue.cf.cacheTtl === 60);
+  // 🙈 «ocultar mi foto» (02/10/2026): lo mismo que «tu servidor», con un sí/no
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  alObjeto.length = 0;
+  const pedirF = async (cuerpo, ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/mi-foto', { method: 'POST',
+      body: JSON.stringify(cuerpo), headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status };
+  };
+  r = await pedirF({ ocultar: true, quien: '42424242424' }, SES);
+  const af = alObjeto.filter(([u]) => u.endsWith('/mi-foto'));
+  ok('ocultar la foto llega al objeto con el ID de la sesión (no el que manda la página)',
+     r.status === 200 && af.length === 1 && af[0][1].quien === VIEJO && af[0][1].ocultar === true, JSON.stringify(af));
+  r = await pedirF({}, SES);
+  ok('sin «ocultar», sólo lo lee', r.status === 200 && alObjeto.filter(([u]) => u.endsWith('/mi-foto'))[1][1].ocultar === undefined);
+  alObjeto.length = 0;
+  r = await pedirF({ ocultar: 'sí' }, SES);
+  ok('un «ocultar» que no es sí/no: 400, sin preguntarle a nadie', r.status === 400 && !alObjeto.length);
+  r = await pedirF({ ocultar: true });
+  ok('sin sesión ni permiso: 401 y no llega al objeto', r.status === 401 && !alObjeto.some(([u]) => u.endsWith('/mi-foto')));
+  globalThis.fetch = async (u, opc) => {
+    fue = { u: String(u), h: (opc && opc.headers) || {}, cf: opc && opc.cf };
+    return new Response('{"ok":true}', { status: 200 });
+  };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/mi-foto', { method: 'POST',
+    body: '{"ocultar":true}', headers: { cookie: 'lg_ses=' + SES } }), envP);
+  ok('el proxy deja pasar /mi-foto con la sesión', fue && fue.u.endsWith('/avisos/mi-foto') && fue.h['x-lg-ses'] === SES);
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
   env.TEMPORADA = antesT;

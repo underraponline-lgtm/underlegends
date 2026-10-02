@@ -1068,6 +1068,8 @@ const RUTAS = {
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
   // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
+  // 🙈 «ocultar mi foto»: en Mi cuenta → Privacidad. Ver `miFoto()`
+  '/avisos/mi-foto': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
 };
@@ -1617,6 +1619,21 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🙈 «OCULTAR MI FOTO»: como «tu servidor», quién es lo dice Discord (o la sesión). Ver `miFoto()`
+  if (ruta === '/avisos/mi-foto') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
+        (d.ocultar !== undefined && typeof d.ocultar !== 'boolean')) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/mi-foto', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, ocultar: d.ocultar }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -1868,6 +1885,8 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS servidor (quien TEXT NOT NULL, temporada TEXT NOT NULL, ' +
         "sv TEXT NOT NULL, de TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, fijo INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, temporada))');
+      // 🔑 «OCULTAR MI FOTO» (Dlx, 02/10/2026: «1. A»): quién la ocultó. Ver `miFoto()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS foto_oculta (quien TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🔑 LO QUE SE ANOTÓ EN LOS CANALES DE INSCRIPCIONES (29/09/2026): ver `inscripciones()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS inscritos (id TEXT PRIMARY KEY, canal TEXT NOT NULL, ' +
         "nombre TEXT NOT NULL DEFAULT '', sv TEXT NOT NULL DEFAULT '', autor_id TEXT NOT NULL DEFAULT '', " +
@@ -1918,6 +1937,7 @@ export class Avisos {
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
+      if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
@@ -2881,6 +2901,8 @@ export class Avisos {
     // 🔑 Y A QUIÉN SEGUÍA, Y QUÉ SERVIDOR ELIGIÓ: también van con su Discord ID
     const s = this.sql.exec('DELETE FROM sigue WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM servidor WHERE quien = ?', String(d.quien));
+    // 🙈 y si había ocultado su foto: también es un dato suyo (y la lista del ciclo se rehace sin él)
+    if (this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', String(d.quien)).rowsWritten) await this.espejarOcultas();
     // 🔑 Y SUS REPORTES, y la cola de KV sin ellos: van con su Discord ID
     const rp = this.sql.exec('DELETE FROM reportes WHERE quien = ?', String(d.quien));
     if (rp.rowsWritten) await this.colaReportes(Date.now());
@@ -2964,6 +2986,35 @@ export class Avisos {
       quien).toArray()[0];
     return json({ ok: true, sv: fila ? fila.sv : antes ? antes.sv : '', fijo: !!(fila && fila.fijo), libre,
       libre_hasta: hasta, puede: libre || !(fila && fila.fijo) });
+  }
+
+  /**
+   * 🙈 «OCULTAR MI FOTO» (Dlx, 29/09/2026: «la foto queda como hoy, con ocultar mi foto en ajustes»; el 02/10: «1. A»).
+   * Con `ocultar` (sí/no) la cambia; sin él, sólo dice cómo está. Quien la oculta sale con su inicial en la página y en
+   * sus tarjetas: la página muestra las tarjetas, así que ocultarla sólo en los círculos no servía.
+   * 🔑 EL CICLO SE ENTERA POR KV (`fotos:ocultas`, la lista de Discord IDs), que se escribe sólo cuando cambia: es lo
+   * que lee `bot/fotos.py` (`ocultas()`) antes de sellar y dibujar. ⚠️ No va al repo ni al payload: quién ocultó su
+   * foto es un dato de esa persona.
+   */
+  async miFoto(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
+    if (typeof d.ocultar === 'boolean') {
+      const antes = !!this.sql.exec('SELECT 1 FROM foto_oculta WHERE quien = ?', quien).toArray()[0];
+      if (d.ocultar !== antes) {
+        if (d.ocultar) this.sql.exec('INSERT OR REPLACE INTO foto_oculta (quien, t) VALUES (?, ?)', quien, Date.now());
+        else this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', quien);
+        await this.espejarOcultas();
+      }
+    }
+    const oculta = !!this.sql.exec('SELECT 1 FROM foto_oculta WHERE quien = ?', quien).toArray()[0];
+    return json({ ok: true, oculta });
+  }
+
+  /** La lista para el ciclo, en KV. Si KV falla, la próxima vez que alguien cambie se vuelve a escribir entera. */
+  async espejarOcultas() {
+    const ids = this.sql.exec('SELECT quien FROM foto_oculta ORDER BY quien').toArray().map((r) => r.quien);
+    try { await this.env.KV.put('fotos:ocultas', JSON.stringify({ v: 1, ids })); } catch (e) { /* se reintenta al próximo cambio */ }
   }
 
   /** Lo público: el servidor que eligió cada perfil (sólo raperos) y cuántos eligieron cada uno. */
