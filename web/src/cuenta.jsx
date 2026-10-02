@@ -608,6 +608,22 @@ export function PaginaVerificar({ liga, dc }) {
   );
 }
 
+// 🔍 MI CUENTA Y AJUSTES EN TARJETAS, EN PREVIEW (Dlx, 02/10/2026: «haz una preview a lo que te referís»): sólo en el
+// navegador que tiene `lg:prev-cu`, y sólo en la compu. Con un menú más alto que la parte de al lado quedaba media
+// página vacía; en tarjetas, todas las partes a la vista y en dos columnas. En el celular sigue la lista
+function prevCu() {
+  try { return !!localStorage.getItem('lg:prev-cu'); } catch (e) { return false; }
+}
+// las tarjetas: una por parte, y las tres de «La Liga» juntas (cada una es un link: separadas repetían el título)
+function tarjetasDe(gs) {
+  const out = [];
+  gs.forEach(([t, xs]) => {
+    if (t === 'LA LIGA') out.push({ id: 'la-liga', ico: 'guia', n: 'La Liga', partes: xs.map((x) => x[0]) });
+    else xs.forEach(([id, ico, n]) => out.push({ id, ico, n, partes: [id] }));
+  });
+  return out;
+}
+
 export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
   const gs = grupos(liga, dc, tema, cual);
   const todas = gs.flatMap((g) => g[1]);
@@ -624,6 +640,13 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
     return () => { if (m.removeEventListener) m.removeEventListener('change', f); };
   }, []);
   const abierta = actual || (ancha ? todas[0] : null);
+  const enTarjetas = ancha && !extra && prevCu();
+  const cartas = enTarjetas ? tarjetasDe(gs) : [];
+  useEffect(() => {
+    if (!enTarjetas || !parte) return;
+    const c = cartas.find((x) => x.partes.includes(parte));
+    if (c) accion.ir('cu-' + c.id);
+  }, [enTarjetas, parte]); // eslint-disable-line react-hooks/exhaustive-deps
   const lista = (
     <nav className="cu-nav" aria-label="Mi cuenta">
       {gs.map(([t, xs]) => (
@@ -636,6 +659,23 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
       {cual === 'cuenta' && (dc || liga.yo) ? <button type="button" className="cu-salir" onClick={accion.salir}><Ico n="salir" t={20} />{dc ? 'Salir' : 'No soy yo'}</button> : null}
     </nav>
   );
+  if (enTarjetas) {
+    return (
+      <div className="cu tarjetas">
+        <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1></div>
+        {cual === 'cuenta' ? <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div> : null}
+        <div className="cu-tarjetas">
+          {cartas.map((c) => (
+            <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
+              <h2 className="cu-tjt"><Ico n={c.ico} t={22} />{c.n}</h2>
+              {c.partes.map((id) => <Parte key={id} id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} />)}
+            </section>
+          ))}
+        </div>
+        {cual === 'cuenta' && (dc || liga.yo) ? <button type="button" className="cu-salir" onClick={accion.salir}><Ico n="salir" t={20} />{dc ? 'Salir' : 'No soy yo'}</button> : null}
+      </div>
+    );
+  }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
       <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : (cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta')}</h1></div>

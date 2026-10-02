@@ -490,6 +490,13 @@ button.btn{background:transparent;cursor:pointer}
   .app .cu-parte{padding:0}
   .app .cu-volver{display:none}
   .app .cu-pt{margin-top:0;font-size:38px}
+  /* 🔍 en tarjetas (preview, `lg:prev-cu`): dos columnas que se acomodan solas, como un tablero */
+  .app .cu.tarjetas .cu-tarjetas{column-count:2;column-gap:24px}
+  .app .cu-tj{break-inside:avoid;display:inline-block;width:100%;margin:0 0 24px;padding:18px 20px 20px;border:2px solid var(--linea);background:var(--fondo)}
+  .app .cu-tjt{display:flex;align-items:center;gap:10px;margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+  .app .cu-tj > .cu-caja:first-of-type{margin-top:14px;padding-top:0;border-top:0}
+  .app .cu-tj-quien{margin:0 0 24px}
+  .app .cu.tarjetas .cu-salir{width:auto;padding:0 28px;margin:0}
 }
 /* el ⚙ arriba (Dlx, 01/10/2026): en el celular van cuatro —campana, ⚙, tu cuenta y ☰—, más chicos para que entren.
    Medido: en 360 px quedan 10 px de aire entre el logo y la campana */
