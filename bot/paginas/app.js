@@ -5099,7 +5099,8 @@ function secSigo() {
 /* ── «tu servidor» ─────────────────────────────────────────────────────
    🔑 Dlx, 28/09/2026: «La idea es q la gente decida por su cuenta», y
    «1. A 2. A 3. B y C»: se elige en Mi cuenta (con Discord), uno por
-   temporada como la foto —libre hasta el 9 de octubre—, y no frena ningún
+   temporada como la foto —libre hasta el fin de `FOTO_LIBRE`, en
+   comun/temporada.py—, y no frena ningún
    voto. Se ve en tu perfil, en lugar del servidor donde más jugaste.
    ⚠️ LA TARJETA DE SERVIDOR NO CAMBIA: mide los datos del servidor donde
    jugaste, y uno elegido donde no jugaste la dejaría en cero. */

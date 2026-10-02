@@ -1864,7 +1864,7 @@ export class Avisos {
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
       // 🔑 «TU SERVIDOR» (28/09/2026): el que cada uno elige en Mi cuenta, uno
       // por temporada. `fijo` dice si se eligió con el límite rigiendo: como
-      // la foto, hasta el 9/10 se cambia libre. Ver `miServidor()`.
+      // la foto, se cambia libre hasta el fin de `FOTO_LIBRE` (comun/temporada.py). Ver `miServidor()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS servidor (quien TEXT NOT NULL, temporada TEXT NOT NULL, ' +
         "sv TEXT NOT NULL, de TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, fijo INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, temporada))');

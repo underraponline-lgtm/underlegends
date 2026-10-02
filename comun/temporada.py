@@ -54,7 +54,11 @@ INICIO_PRUEBA = '2026-09-22T00:00:00+00:00'
 # Dlx, 25/09/2026, a «¿el 5 de octubre lo de la fase de prueba se borra y
 # todos arrancan de cero, o sigue sumando?»: *«Se borra»*. Ver `inicio()` y
 # el paso 0 de `bot/pipeline.py`.
-FECHAS = {'t1': ('2026-10-05', '2026-12-31')}
+#
+# 📅 SE MOVIÓ AL 12 (Dlx, 02/10/2026: *«El 12»*), con la idea de llegar a 8
+# servidores antes de arrancar. La fase de prueba dura una semana más y el
+# final no se toca.
+FECHAS = {'t1': ('2026-10-12', '2026-12-31')}
 
 # 🔑 HASTA CUÁNDO LA FOTO SE CAMBIA SIN LÍMITE, inclusive y en hora del este.
 # Dlx, 25/09/2026, a «¿la foto es libre hasta el 5 de octubre?»: *«Sí. O sea
@@ -62,7 +66,10 @@ FECHAS = {'t1': ('2026-10-05', '2026-12-31')}
 # —`/foto` y la página, que usan la misma regla— y lo que se haya cambiado
 # antes NO cuenta como el cambio de la temporada. `bot/desplegar.py` se lo
 # pasa al Worker como `FOTO_LIBRE_HASTA`.
-FOTO_LIBRE = {'t1': '2026-10-09'}
+#
+# 📅 Con el arranque en el 12, pasa al 16: los mismos cuatro días después del
+# arranque que había entre el 5 y el 9.
+FOTO_LIBRE = {'t1': '2026-10-16'}
 
 
 def _medianoche_et(dia):
@@ -242,14 +249,14 @@ def clave_foto(nombre, cual=None):
 def mal_fechas():
     """Las fechas, sin red: cuántas cosas dan mal. Lo corre CI (`--auto`)."""
     casos = [
-        ('el arranque de la T1 es las 00:00 ET del 5/10',
-         arranque('t1') == '2026-10-05T04:00:00+00:00'),
-        ('la foto es libre hasta el fin del 9/10 ET',
-         foto_libre_hasta('t1') == '2026-10-10T04:00:00Z'),
+        ('el arranque de la T1 es las 00:00 ET del 12/10',
+         arranque('t1') == '2026-10-12T04:00:00+00:00'),
+        ('la foto es libre hasta el fin del 16/10 ET',
+         foto_libre_hasta('t1') == '2026-10-17T04:00:00Z'),
         ('antes del arranque cuentan las llaves desde la fase de prueba',
-         inicio('2026-10-05T03:59:59+00:00') == INICIO_PRUEBA),
+         inicio('2026-10-12T03:59:59+00:00') == INICIO_PRUEBA),
         ('desde el arranque, sólo las de la temporada',
-         inicio('2026-10-05T04:00:00+00:00') == arranque('t1')),
+         inicio('2026-10-12T04:00:00+00:00') == arranque('t1')),
         ('en invierno la medianoche del este es a las 05:00 UTC',
          _medianoche_et('2027-01-15').strftime('%H') == '05'),
     ]

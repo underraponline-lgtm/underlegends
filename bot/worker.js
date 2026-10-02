@@ -2194,7 +2194,8 @@ const libreHastaTexto = (env) => {
  *
  * ⚠️ SÓLO CUENTA EL QUE SE HIZO CON EL LÍMITE RIGIENDO. Durante la fase de
  * prueba el límite ya corría —el 25/09/2026 había dos marcas, dlx y makmah—
- * y Dlx decidió que hasta el 9/10 es libre: esas marcas no gastan nada. Una
+ * y Dlx decidió que hasta el fin de la ventana libre (`FOTO_LIBRE` en
+ * comun/temporada.py: el 16/10 desde que el arranque pasó al 12) es libre: esas marcas no gastan nada. Una
  * marca sin fecha sí cuenta: ante la duda, el lado conservador. */
 async function fotoUsada(env, quien) {
   const v = await env.KV.get(claveUso(env, quien));

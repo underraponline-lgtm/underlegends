@@ -868,6 +868,13 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
                 s['copa']['n'] = x
                 s['copa']['nombre'] = next((e[4] for e in evs if e[0] == x and len(e) > 4), '')
     pid, ini, fin = periodo(ahora)
+    # 📅 SI EL ARRANQUE SE MOVIÓ, LA SEMANA EN CURSO SE ACOMODA. Su `fin` se guardó al sortearla, con el corte del
+    # arranque de ese momento: el 02/10/2026 el arranque pasó del 5 al 12 (Dlx: «El 12») y la semana guardada seguía
+    # terminando a las 00:00 del 5 —once horas sin multiplicador, hasta el sorteo de las 11—. Sólo la que está
+    # corriendo, y sólo su final: lo que ya se jugó no cambia.
+    for s in semanas:
+        if s.get('id') == pid and s.get('fin') and s['fin'] != _iso(fin) and ahora < max(_de_iso(s['fin']), fin):
+            s['fin'] = _iso(fin)
     # el evento dorado que ya se jugó queda anotado: la página lo muestra
     for s in semanas:
         if s.get('dorado') and not s['dorado'].get('n'):
@@ -1133,6 +1140,15 @@ def _self_check():
        'al cerrar la semana, SR es el Semillero y lleva ×1,5 en la nueva')
     ok(correr(en(10, 19, 11, 22), d={'semanas': []}, eventos=evn, org_de={}, vistos={}, votos={})['semanas'][-1]
        .get('semillero') is None, 'sin el registro de quién ya jugó, no hay Semillero (todos serían nuevos)')
+    # 📅 el arranque se movió (Dlx, 02/10/2026: «El 12»): la semana en curso se acomoda, la anterior no se toca
+    pidc, inic, finc = periodo(en(10, 2, 12))
+    dmov = {'semanas': [{'id': 'vieja', 'inicio': _iso(inic - dt.timedelta(days=7)), 'fin': _iso(inic),
+                         'temporada': 'prueba', 'sv': {}},
+                        {'id': pidc, 'inicio': _iso(inic), 'fin': _iso(finc - dt.timedelta(hours=11)),
+                         'temporada': 'prueba', 'sv': {'FFA': 1}}]}
+    out = correr(finc - dt.timedelta(hours=2), d=dmov, eventos=[], org_de={}, vistos={}, votos={})
+    ok(out['semanas'][1]['fin'] == _iso(finc) and out['semanas'][0]['fin'] == _iso(inic),
+       'si el arranque se mueve, la semana en curso termina cuando le toca (sin hueco), y la anterior no cambia')
     # la meta de comunidad: un 10 % más que su promedio, con piso
     evm = [(51, 'FFA', en(10, 7, 20), [['p%d' % i, 'x', 100] for i in range(20)], 'a'),
            (52, 'FFA', en(9, 30, 20), [['q%d' % i, 'x', 100] for i in range(10)], 'b'),
