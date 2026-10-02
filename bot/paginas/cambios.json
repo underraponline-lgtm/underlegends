@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.82",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T11:15:00-04:00",
+   "titulo": "La compu, sin la barra del celular",
+   "items": [
+    "🖥️ **En la compu ya no sale la barra de abajo**: desde esta mañana aparecía también ahí, con tu cuenta abajo además de arriba. Es sólo del celular.",
+    "🔠 **Los títulos de arriba ya no parten palabras**: «GENERACIONES» salía cortada en dos renglones. Ahora la letra se achica hasta que entra la palabra más larga."
+   ]
+  },
+  {
    "version": "1.81",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T09:55:00-04:00",

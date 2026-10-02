@@ -37,11 +37,14 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .tabbar{position:sticky;bottom:0;z-index:30;padding-bottom:env(safe-area-inset-bottom,0px)}
 .tabbar .tab-b{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;
   text-transform:uppercase}
-@media (min-width: 900px){.tabbar{display:none}}
 /* 🔑 LA TIRA QUE SE DESLIZA (Dlx, 28/09 y 02/10/2026): las nueve secciones de la cabecera de la compu, y se ven
    cuatro y media —la media dice que hay más, como en la barra de la página de hoy—. Sin borde que se apaga: en el
    remake no hay degradés. «Yo» queda fijo afuera de la tira */
 .tabbar{display:flex;align-items:stretch}
+/* 🔴 Y ESCONDERLA OTRA VEZ ACÁ, DESPUÉS DEL `display:flex`. El `display:none` de la compu estaba arriba y esta regla,
+   con el mismo peso, lo pisaba: del 02/10 en adelante la barra salió también en la compu, con tu cuenta abajo además
+   de arriba (Dlx: «en ordenador la cuenta sólo esté arriba, no abajo») */
+@media (min-width: 900px){.tabbar{display:none}}
 .tb-tira{display:flex;flex:1;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
   scrollbar-width:none}
 .tb-tira::-webkit-scrollbar{display:none}
@@ -153,6 +156,12 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 /* ── 30/09, segunda vuelta ──────────────────────────────────────────────────────────────────────── */
 /* los títulos del escenario se parten parejos: «RAP EXHIBITION 2 8» dejaba el 8 solo */
 .hero-ev{text-wrap:balance}
+/* 🔴 Y NO PARTE PALABRAS (Dlx, 02/10/2026, con una captura: «GENERACION / ES UN»). `Tit` (arriba.jsx) pone en `--pal`
+   las letras de la palabra más larga; `1em` es el tamaño que el h1 ya traía para ese ancho y 100cqi el ancho de la
+   columna, y gana el menor. El .98 es lo que mide una letra de Archivo 900 a 125 %, medido sobre palabras de
+   eventos: de .79 (EXHIBITION) a .95 (CAMPEONATO). Debajo de 20 px se deja partir, que es lo que ya hacía */
+.mo-txt{container-type:inline-size}
+.mo-txt .ev-pal{display:block;font-size:max(20px,min(1em,calc(100cqi / (var(--pal) * .98))))}
 /* IR A arranca donde arranca la página, no pegada al borde de la pantalla */
 @media (min-width: 900px){.app .ir-in{padding-left:var(--gut);padding-right:var(--gut)}}
 /* tu cuenta arriba: en la computadora el chip con tu cara y tu nombre; en el celular, un círculo al lado de la campana */
