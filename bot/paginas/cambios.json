@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.75",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T22:50:00-04:00",
+   "titulo": "Si un evento se cancela, te enterás",
+   "items": [
+    "❌ **El evento cancelado avisa**: si un servidor borra el anuncio de un evento (o lo edita a «cancelado») antes de que empiece, a quien tenía la campana de ese servidor le llega «Cancelado», en lugar del aviso del evento. Y el Inicio lo dice: en Fechas sale «CANCELADO», y ya no aparece como próximo ni en vivo.",
+    "🔁 **La «R» después de la bandera es revivido**: «SIX 🇦🇷 R» en una llave quiere decir que entró revivido, y cobra la mitad de su puesto (la regla de los revividos). Cambia una sola llave de la T1: DESGRACIAS EN TOKYO VOL 18 2VS2.",
+    "🖼️ **Los logos guardados, en máxima calidad**: los de los servidores y las crews pasan de 128 a 512 px (los que vienen más chicos, de su tamaño).",
+    "🔒 **La privacidad, al día**: mientras hay un evento en vivo, el bot anota cada minuto quién está en la llamada (antes era una mirada cada media hora). Sigue siendo para cargar los resultados: se guarda 3 días y no se publica."
+   ]
+  },
+  {
    "version": "1.74",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T22:11:00-04:00",
