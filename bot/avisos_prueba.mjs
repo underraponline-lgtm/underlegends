@@ -305,7 +305,7 @@ const ok = (cond, que) => {
     'los dos del mismo equipo son la misma publicación: a quien sigue a los dos le llega uno');
   ok(c[0].titulo === '🏆 Ana 🇦🇷 y su equipo ganaron COPA' && c[2].titulo === '🎖️ Cid ya tiene rango: B' &&
     c[3].titulo === '🥇 Ana 🇦🇷 es la figura de la semana', c.map((x) => x.titulo).join(' | '));
-  ok(c[0].url === 'https://underlegends.pages.dev/#/r/ana' && A.paraSeguidores(muro, ahora)[0].pub === c[0].pub,
+  ok(c[0].url === 'https://underlegends.pages.dev/freestyle-rap/r/ana' && A.paraSeguidores(muro, ahora)[0].pub === c[0].pub,
     'el aviso abre su perfil, y la misma publicación da siempre el mismo número (no se repite)');
   ok(A.tituloSeguido({ tipo: 'tarjeta', carta: 'competitivo' }, 'Ana') === '🃏 Ana desbloqueó su tarjeta Competitiva' &&
     A.tituloSeguido({ tipo: 'anuncio' }, 'Ana') === '', 'la tarjeta con su nombre; lo que no es de nadie, nada');

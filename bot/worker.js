@@ -826,7 +826,8 @@ const botonLink = (label, url) => ({ type: 2, style: 5, label, url });
 // freno. Y SÓLO SI HAY LUGAR: una fila lleva cinco botones y Discord
 // rechaza el mensaje entero con el sexto. El día que haya cinco cartas,
 // la campana se cae sola en vez de romper `/card`.
-const AVISOS_URL = 'https://underlegends.pages.dev/#/avisos';
+// la Liga vive en /freestyle-rap desde el 01/10/2026 (los `/#/…` viejos siguen andando: los traduce la página)
+const AVISOS_URL = 'https://underlegends.pages.dev/freestyle-rap/avisos';
 const HUB_URL = 'https://underlegends.pages.dev';
 const botonAvisos = (ocupados) => (ocupados < 5
   ? [{ type: 2, style: 5, label: 'Avisos', emoji: { name: '🔔' }, url: AVISOS_URL }]
@@ -973,7 +974,7 @@ const minuscula = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
 // ⚠️ UN SOLO BOTÓN, también estando en DRA: adentro te falta lo mismo (el país,
 // las reglas) y la página lo dice igual. El canal de DRA sigue existiendo
 // (`VERIFICA`), para quien prefiera hacerlo allá. Devuelve `{texto, botones}`.
-const URL_VERIFICAR = HUB_URL + '/#/cuenta/verificar';
+const URL_VERIFICAR = HUB_URL + '/cuenta/verificar';
 function comoVerificarse(aqui) {
   const s = SV_DE(VERIFICA.sv);
   const nombre = (s && s.nombre) || 'Discord Rap Español';
@@ -2674,7 +2675,7 @@ const COMANDOS = {
   // 🔑 Dlx, 25/09/2026: «/website, que te redirigiría a la página».
   async website(i, env, ctx) {
     return aviso('🌐 **La Liga Global**: los rankings, el perfil de cada rapero, las llaves ' +
-                 'de cada evento y el calendario.', [botonLink('Abrir la página', HUB_URL)]);
+                 'de cada evento y el calendario.', [botonLink('Abrir la página', HUB_URL + '/freestyle-rap/')]);
   },
 
   async verificar(i, env, ctx) {

@@ -2,7 +2,7 @@
  * LOS AVISOS DE EVENTOS — la campana del hub.
  *
  * Cuando un servidor de la Liga anuncia un evento en su canal, a quien se
- * suscribió en `underlegends.pages.dev/#/avisos` le llega una notificación
+ * suscribió en `underlegends.pages.dev/freestyle-rap/avisos` le llega una notificación
  * al teléfono o a la compu, aunque no tenga Discord abierto.
  *
  * 🔴 TIENE QUE SER AL MINUTO, Y ESO LO DECIDIERON LOS DATOS. Medido el
@@ -194,7 +194,7 @@ export function veredictosALeer(lista, vivos, calientes, minuto, tope = VER_TOPE
 //: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
 export const CANAL_RED = '1500690475089399858';
-const HUB_AVISOS = 'https://underlegends.pages.dev/#/avisos';
+const HUB_AVISOS = 'https://underlegends.pages.dev/freestyle-rap/avisos';
 //: a dónde lleva el aviso de un evento cancelado: el calendario, en la pestaña de la página si hay una (`sw.js`)
 const HUB_EVENTOS = '/freestyle-rap/eventos';
 //: cuántos anuncios se le preguntan a Discord cada 2 minutos para ver si se cancelaron (ver `cancelaciones()`)
@@ -1000,7 +1000,7 @@ export function paraSeguidores(items, ahora) {
       const titulo = tituloSeguido(x, n, rol);
       if (!titulo) continue;
       out.push({ pub, k, t, titulo, cuerpo: `Seguís a ${n} en la Liga · tocá para ver su perfil`.slice(0, 240),
-        url: 'https://underlegends.pages.dev/#/r/' + encodeURIComponent(k) });
+        url: 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
     }
   }
   return out;
@@ -2394,11 +2394,11 @@ export class Avisos {
     const texto = p.n
       ? `🧪 Leí tu «${p.texto}» en ${donde} (${hora}) y te la mandé a **${p.n} ` +
         `dispositivo${p.n === 1 ? '' : 's'}** con 🧪 Pruebas. Si en alguno no apareció, ` +
-        'abrí ahí <https://underlegends.pages.dev/#/avisos> y tocá «Mandar una de ' +
+        'abrí ahí <https://underlegends.pages.dev/freestyle-rap/avisos> y tocá «Mandar una de ' +
         'prueba»: te dice si es el navegador o el sistema.'
       : `🧪 Leí tu «${p.texto}» en ${donde} (${hora}), pero **ningún dispositivo tiene ` +
         '🧪 Pruebas** marcado, así que no se la mandé a nadie. En cada dispositivo abrí ' +
-        '<https://underlegends.pages.dev/#/avisos>, tocá «🧪 Pruebas» y volvé a escribir ' +
+        '<https://underlegends.pages.dev/freestyle-rap/avisos>, tocá «🧪 Pruebas» y volvé a escribir ' +
         '«probando».';
     try {
       const r = await fetch(`${DC}/users/@me/channels`, { method: 'POST', headers: h,
@@ -3126,7 +3126,7 @@ export class Avisos {
     const id = 'sim:' + Math.floor(ahora / CADA_SIMULACRO);
     const cuerpo = {
       v: 1, tipo: 'evento', id, t: 'PRUEBA DEL VIGIA', sv: SV_PRUEBA, svn: 'Prueba',
-      ini: ahora + 15 * MIN, mod: '1vs1', cup: '16', pre: '', url: HUB + '/#/avisos',
+      ini: ahora + 15 * MIN, mod: '1vs1', cup: '16', pre: '', url: HUB + '/freestyle-rap/avisos',
     };
     const antes = this.sql.exec('SELECT 1 FROM avisos WHERE id = ?', id).toArray().length;
     if (antes) return json({ error: 'ya hubo uno en estos cinco minutos' }, 429);

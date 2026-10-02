@@ -41,7 +41,7 @@ function armar(d) {
     return {
       titulo: '🔔 Avisos activados',
       cuerpo: 'Así te va a llegar cada evento de la Liga. Tocá para abrir el hub.',
-      url: '/#/avisos', tag: 'prueba',
+      url: '/freestyle-rap/avisos', tag: 'prueba',
     };
   }
   if (d.tipo === 'evento' || d.tipo === 'antes') {
