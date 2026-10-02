@@ -70,6 +70,71 @@ const ok = (cond, que) => {
     'y un 403, un 5xx o sin red no dicen nada: no se cancela porque Discord no contestó');
 }
 
+// ── 0c · «te toca» y la copia cancelada de `eventos-hoy` (Dlx, 01/10/2026) ──
+{
+  console.log('0c · te toca');
+  // ⚠️ los mismos casos que `clave_turno()` en bot/avisos_personales.py
+  ok(['Geoka 🇦🇷', 'Júpiter 🇲🇽', 'tito calderon 🇦🇷', 'Park-Ji Sung🇰🇷', '𝐑𝐚𝐧𝐠𝐨'].map(A.claveTurno).join('|') ===
+    'geoka|jupiter|titocalderon|parkjisung|rango', 'la clave de un nombre, igual que en Python');
+  const R = (b) => ({ id: '9', nombre: 'COPA', links: ['https://discord.com/channels/1/2/9'], rondas: [{ r: 'Cuartos', b }] });
+  const t = A.turnosDe(R([[['A', 'B'], 'A', ''], [['C', 'D'], '', ''], [['E', 'F'], '', ''], [['G'], '', '']]));
+  ok(t && t.ahora.lados.join() === 'C,D' && t.sigue.lados.join() === 'E,F',
+    'en orden: AHORA la primera sin ganador, SIGUE la de después; el cruce que espera rival no cuenta');
+  ok(A.turnosDe(R([[['A', 'B'], 'A', ''], [['C', 'D'], '', ''], [['E', 'F'], 'E', '']])) === null,
+    'fuera de orden (una de más adelante ya decidida): no se sabe cuál va, no se avisa');
+  ok(A.turnosDe(R([[['A', 'B', 'C'], '', 'pasan 2'], [['D', 'E'], '', '']])).ahora.lados.join() === 'D,E',
+    'un grupo resuelto sin un ganador (pasan 2) ya se jugó');
+  const hueco = A.turnosDe(R([[['A', 'B'], 'A', ''], [['C', 'D'], '', ''], [['E', 'F'], 'E', ''], [['G', 'H'], 'G', ''],
+    [['I', 'J'], '', ''], [['K', 'L'], '', '']]));
+  ok(hueco && hueco.ahora.lados.join() === 'I,J' && hueco.sigue.lados.join() === 'K,L',
+    'una sin ganador con DOS jugadas después quedó atrás: se sigue desde la última jugada');
+  ok(A.turnosDe(R([[['A', 'B'], 'A', '']])) === null, 'sin nada por jugar, nada');
+  ok(A.turnosDe(R([[['A', 'B'], '', ''], [['C', 'D'], '', '']])) === null,
+    'sin nada jugado todavía, nada: la llave se publica antes de que el evento arranque');
+  // los frenos de Dlx: (a) lo reemplazaron, (b) ya está en la llamada, (c) la batalla se jugó
+  const LL = R([[['Ana', 'Bea'], 'Ana', ''], [['Cami', 'Dora'], '', ''], [['Eli + Fer', 'Gabo + Hugo'], '', '']]);
+  const IDX = { cami: '3', dora: '4', eli: '5', hugo: '8' };
+  const T0 = 1790000000000;
+  const de = (hs) => (id) => (id in hs ? hs[id] : null);
+  const ll0 = A.aLlamar(LL, A.turnosDe(LL), IDX, de({}), T0);
+  ok(ll0.map((c) => c.tipo + ':' + c.did + ':' + c.n).join() === 'ahora:3:1,ahora:4:1,sigue:5:1,sigue:8:1',
+    'AHORA y la que SIGUE, a cada uno con su Discord; en un 2v2, a los dos de cada lado');
+  const b3 = ll0[0].base;
+  ok(A.aLlamar(LL, A.turnosDe(LL), IDX, de({ [b3 + ':ahora:1']: T0 - 20000 }), T0).filter((c) => c.did === '3').length === 0,
+    'no vuelve a sonar antes del minuto');
+  const otra = A.aLlamar(LL, A.turnosDe(LL), IDX, de({ [b3 + ':ahora:1']: T0 - 61000 }), T0).find((c) => c.did === '3');
+  ok(otra && otra.n === 2 && /:ahora:2$/.test(otra.clave), 'al minuto vuelve a sonar: el segundo toque');
+  ok(!A.aLlamar(LL, A.turnosDe(LL), IDX, de({ [b3 + ':ahora:1']: T0 - 300000, [b3 + ':ahora:2']: T0 - 240000,
+    [b3 + ':ahora:3']: T0 - 180000 }), T0).some((c) => c.did === '3'), 'después de ' + A.TOQUES + ' toques, no más');
+  ok(!A.aLlamar(LL, A.turnosDe(LL), IDX, de({ [b3 + ':voz']: T0 - 60000 }), T0).some((c) => c.did === '3'),
+    '(b) con la llamada confirmada no se lo llama más por esa batalla');
+  const reemplazo = R([[['Ana', 'Bea'], 'Ana', ''], [['Iván', 'Dora'], '', ''], [['Eli + Fer', 'Gabo + Hugo'], '', '']]);
+  ok(!A.aLlamar(reemplazo, A.turnosDe(reemplazo), IDX, de({}), T0).some((c) => c.did === '3'),
+    '(a) si el organizador lo reemplazó, la llave ya no lo nombra y no se lo llama');
+  const jugada = R([[['Ana', 'Bea'], 'Ana', ''], [['Cami', 'Dora'], 'Dora', ''], [['Eli + Fer', 'Gabo + Hugo'], '', '']]);
+  const ll2 = A.aLlamar(jugada, A.turnosDe(jugada), IDX, de({}), T0);
+  ok(!ll2.some((c) => c.did === '3') && ll2.some((c) => c.did === '5' && c.tipo === 'ahora'),
+    '(c) con la batalla jugada se deja de llamar, y le toca a la siguiente');
+  // el lector de la página, cargado como módulo: lo que hace el vigía (`turnos()`)
+  await import('./paginas/llave_vivo.js');
+  const LV = globalThis.LlaveVivo;
+  ok(!!(LV && LV.aLlave), 'el lector de la página carga como módulo, como en el Worker');
+  const L = LV.aLlave(LV.unirPartidas([{ id: '7', canal: '2', sv: 'FFA', g: '1', autor: 'x', pub: 1, ed: 1,
+    texto: '# COPA\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n' }])[0]);
+  const tl = A.turnosDe(L);
+  ok(tl && tl.ahora.lados.join(' vs ') === 'Cami 🇻🇪 vs Dora 🇲🇽' && tl.sigue === null,
+    'con una llave de verdad: le toca a Cami contra Dora');
+  const c = A.cuerpoTurno(L, tl.ahora, 'ahora');
+  ok(c.tipo === 'turno' && /¡Te toca!/.test(c.t) && /Cami 🇻🇪 vs Dora 🇲🇽/.test(c.b) && /llamada/.test(c.b) &&
+    /reemplaza/.test(c.b), 'el aviso dice que te toca, contra quién, que entres a la llamada y que si no te reemplazan');
+  ok(/¡Te están llamando!/.test(A.cuerpoTurno(L, tl.ahora, 'ahora', 2).t), 'el segundo toque dice que te están llamando');
+  const mc = A.mensajeRedCancelado({ t: 'VOL 21 2v2', sv: 'FFA', svn: 'Freestyle For All', ini: 1790000000000,
+    url: 'https://discord.com/channels/1/2/3' }, 'borrado');
+  ok(/^❌ CANCELADO/.test(mc.embeds[0].title) && mc.allowed_mentions.parse.length === 0 &&
+    !mc.components[0].components.some((x) => x.label === 'Ir al anuncio'),
+  'la copia cancelada: dice CANCELADO, no menciona a nadie y no lleva al anuncio borrado');
+}
+
 // ── 0b · los avisos de cada uno ───────────────────────────────────────
 {
   console.log('0b · los avisos de cada uno');

@@ -238,6 +238,87 @@ def _guardar_estado(hoy):
                    'gente': gente}, f, ensure_ascii=False, indent=0, sort_keys=True)
 
 
+# ── 🎤 «TE TOCA»: de los nombres de una llave al Discord ID ──────────────────
+#
+# Dlx, 01/10/2026: «podrías arrancar eso que te avisen por la web cuando te
+# toque». Lo avisa el vigía (`turnos()` en bot/avisos.js), que lee las llaves
+# en vivo cada minuto; de qué cuenta es cada nombre lo dice este índice, armado
+# con lo que ya está decidido —la Lista (`raw` y `full`) y los alias—. ⚠️ Una
+# clave de dos personas se saca: ante la duda no se avisa a nadie, porque «te
+# toca» a quien no le toca es peor que no avisar.
+
+#: la clave de KV que lee el vigía
+TURNOS = 'turnos:nombres'
+
+
+def clave_turno(nombre):
+    """⚠️ La misma que `claveTurno()` de bot/avisos.js: sin banderas, sin tildes ni signos, en minúsculas."""
+    import re
+    import unicodedata
+    s = re.sub('[\U0001F1E6-\U0001F1FF]', '', str(nombre or ''))
+    return ''.join(c for c in unicodedata.normalize('NFKD', s) if c.isalnum()).lower()
+
+
+def indice_turnos(padron, alias):
+    """`{clave: discord_id}` de quien tiene Discord ID: sus nombres de la Lista y sus alias, sin las claves que chocan."""
+    out, chocan, por_nombre = {}, set(), {}
+
+    def poner(nombre, did):
+        k = clave_turno(nombre)
+        if not k:
+            return
+        if k in out and out[k] != did:
+            chocan.add(k)
+        out.setdefault(k, did)
+
+    for r in padron or ():
+        did = str(r.get('discord_id') or '').strip()
+        if not did.isdigit():
+            continue
+        for n in (r.get('raw'), r.get('full')):
+            if n:
+                poner(n, did)
+                por_nombre.setdefault(clave_turno(n), set()).add(did)
+    for a, canon in (alias or {}).items():
+        dids = por_nombre.get(clave_turno(canon)) or set()
+        if len(dids) == 1:
+            poner(a, next(iter(dids)))
+    for k in chocan:
+        out.pop(k, None)
+    return out
+
+
+def subir_turnos(aplicar):
+    """El índice a KV, sólo si cambió (se lee antes y se compara: una escritura de KV por cambio, no por corrida)."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
+            padron = json.load(f)
+        with io.open(os.path.join(BASE, 'datos', 'akas.json'), encoding='utf-8') as f:
+            alias = (json.load(f) or {}).get('alias') or {}
+    except (OSError, ValueError) as e:
+        print('   🎤 te toca: no pude leer la Lista o los alias (%s)' % str(e)[:60])
+        return
+    idx = indice_turnos(padron, alias)
+    nuevo = json.dumps({'v': 1, 'n': idx}, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+    print('   🎤 te toca: %d nombre(s) con su Discord ID' % len(idx))
+    if not aplicar:
+        return
+    import requests
+    import subir_datos as SD
+    import fotos as F
+    s = requests.Session()
+    s.headers['Authorization'] = 'Bearer ' + F.env('CLOUDFLARE_API_TOKEN')
+    try:
+        r = s.get('%s/values/%s' % (SD.API, TURNOS), timeout=30)
+        if r.status_code == 200 and r.content.decode('utf-8') == nuevo:
+            return
+        r = s.put('%s/values/%s' % (SD.API, TURNOS),
+                  files={'value': (None, nuevo), 'metadata': (None, '{}')}, timeout=30)
+        print('      %s' % ('subido a KV' if r.status_code == 200 else '⚠️ no pude subirlo (%s)' % r.status_code))
+    except (OSError, ValueError) as e:
+        print('      ⚠️ no pude subirlo (%s)' % str(e)[:60])
+
+
 def encolar(nuevos):
     """Suma los avisos a la cola de KV. `True` si quedó escrita.
 
@@ -279,6 +360,11 @@ def main():
     antes = _leer_estado()
     print('\n══ LOS AVISOS DE CADA UNO ══\n')
     print('   %d persona(s) con Discord ID y tarjeta' % len(hoy))
+    # 🎤 el índice de «te toca»: nunca frena los avisos de cada uno
+    try:
+        subir_turnos(aplicar)
+    except Exception as e:                                # noqa: BLE001
+        print('   🎤 te toca: ⚠️ %s' % str(e)[:80])
     if antes is None:
         print('   primera vez: anoto cómo está cada uno y no aviso nada')
         if aplicar:
@@ -341,6 +427,16 @@ def _self_check():
     b = eventos({'1': base}, {'1': dict(base, rg='S')})
     ok(a[0]['id'] == b[0]['id'], 'el mismo aviso tiene el mismo id (el objeto no lo repite)')
     ok(_nivel('SSS') > _nivel('A+') > _nivel('A') > _nivel('A−') > _nivel('E'), 'el orden de los rangos')
+    # 🎤 te toca: ⚠️ los mismos casos que `claveTurno()` en bot/avisos_prueba.mjs
+    ok([clave_turno(x) for x in ('Geoka 🇦🇷', 'Júpiter 🇲🇽', 'tito calderon 🇦🇷', 'Park-Ji Sung🇰🇷', '𝐑𝐚𝐧𝐠𝐨')]
+       == ['geoka', 'jupiter', 'titocalderon', 'parkjisung', 'rango'],
+       'la clave de un nombre: sin bandera, tildes ni signos (igual que en el vigía)')
+    idx = indice_turnos([{'raw': 'Ana', 'full': 'Ana 🇦🇷', 'discord_id': '1'},
+                         {'raw': 'Bea', 'full': 'Bea 🇨🇱', 'discord_id': '2'},
+                         {'raw': 'ana', 'full': 'ANA 🇲🇽', 'discord_id': '3'},
+                         {'raw': 'Cami', 'full': 'Cami', 'discord_id': ''}], {'cf': 'Bea'})
+    ok(idx == {'bea': '2', 'cf': '2'},
+       'el índice: la Lista y los alias; sin Discord ID no entra, y un nombre de dos personas tampoco  %s' % idx)
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0

@@ -167,6 +167,148 @@ export function cancelado(estado, m, cuerpo, avisado) {
   return CANCELADO.test(String(m.content || '')) ? 'editado' : '';
 }
 
+// ═════════════════════════════════════════════════════════════════════
+// 🎤 «TE TOCA» (Dlx, 01/10/2026: «podrías arrancar eso que te avisen por la web cuando te toque»)
+// ═════════════════════════════════════════════════════════════════════
+//
+// Cada minuto el vigía lee las llaves en vivo con el lector de la página (`paginas/llave_vivo.js`, subido como un
+// módulo más del Worker: las mismas reglas que se ven). A quien pelea la batalla de AHORA le llega «¡Te toca!», y a quien
+// pelea la que SIGUE, «Sos el próximo»: sólo a quien vinculó la campana con su Discord (`subs.quien`, como los avisos de
+// cada uno), nunca por DM.
+//
+// 🔑 «¡TE TOCA!» SUENA HASTA QUE PASE ALGO (Dlx, el mismo día: «si no viene durante un tiempo esa misma persona es
+// reemplazada por el mismo organizador… no hay necesidad de seguir llamándolo. Otra forma para parar esto es cuando
+// confirmas que el usuario está en la llamada compitiendo»). Vuelve a sonar cada minuto, hasta `TOQUES` veces, y se
+// deja de llamar a alguien:
+//   (a) cuando ya no está en la llave: el organizador lo reemplazó. Sale solo: la llave se lee de nuevo cada minuto
+//       y sólo se llama a quien la llave nombra; a quien entró en su lugar le llega su propio aviso;
+//   (b) cuando está en la llamada: se le pregunta a Discord antes de cada aviso (`enLaLlamada()`), y con un sí no se
+//       lo vuelve a llamar por esa batalla;
+//   (c) cuando su batalla ya tiene ganador.
+//
+// ⚠️ NO ANTES DE QUE SE JUEGUE LA PRIMERA. La llave se publica antes de que el evento arranque, y ahí la primera
+// batalla parece la de AHORA: se avisa recién cuando hay una batalla decidida.
+// ⚠️ SÓLO SI SE SABE CUÁL VA. Dlx, el mismo día: «a veces se hacen batallas de otras llaves antes que la anterior».
+// Con una batalla de más adelante decidida justo antes que una de más atrás, no se sabe cuál va: no se avisa (ver
+// `turnosDe()`, que deja pasar el hueco cuando ya quedó claramente atrás).
+// ⚠️ Y SÓLO CON UN NOMBRE QUE NO DEJA DUDAS: el nombre de la llave se busca en el índice que arma el ciclo con la Lista y
+// los alias (`turnos:nombres` en KV, ver `bot/avisos_personales.py`). Si no está, o es de dos personas, no se avisa.
+
+/** La clave de un nombre para el índice de turnos. ⚠️ La misma que `clave_turno()` de `bot/avisos_personales.py`. */
+export function claveTurno(n) {
+  return String(n || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').normalize('NFKD')
+    .replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+}
+
+/**
+ * La batalla de AHORA y la que SIGUE de una llave en vivo (`LlaveVivo.aLlave()`), o `null` si no se puede saber: no va
+ * en orden, o ya no queda nada por jugar. Una batalla cuenta si tiene dos lados o más; está jugada si tiene ganador o se
+ * resolvió sin uno (`pasan N`).
+ */
+export function turnosDe(L) {
+  const orden = [];
+  for (const R of (L && L.rondas) || []) {
+    (R.b || []).forEach((b, i) => {
+      const lados = (b[0] || []).filter(Boolean);
+      if (lados.length < 2) return;
+      orden.push({ r: R.r, i, lados, hecha: !!b[1] || /^pasan \d/.test(String(b[2] || '')) });
+    });
+  }
+  let ult = -1;
+  orden.forEach((x, k) => { if (x.hecha) ult = k; });
+  // ⚠️ sin nada jugado todavía: la llave se publica antes de que el evento arranque
+  if (ult < 0) return null;
+  // 🔑 UNA BATALLA SIN GANADOR QUE QUEDÓ ATRÁS. Con UNA jugada después puede ser la que se postergó y va ahora —no se
+  // sabe: no se avisa—; con DOS o más, el organizador no la marcó o no se jugó, y la llave sigue desde la última
+  // jugada. ⚠️ La página es más estricta (`enOrden()` de `web/src/arriba.jsx`: cualquier hueco apaga su «AHORA»), y
+  // acá no alcanzaba: «Dos Generaciones Un Destino Vol 2» (FFA, 01/10/2026) terminó con dos batallas de octavos sin
+  // ganador. Revelada batalla por batalla, con la regla de la página el bot avisaba 4 de sus 15; con ésta, 10 —la
+  // primera nunca, ver arriba—. Cada hueco cuesta las dos batallas que se jugaron justo después.
+  for (let k = 0; k < ult; k++) {
+    if (!orden[k].hecha && orden.slice(k + 1).filter((x) => x.hecha).length < 2) return null;
+  }
+  const pend = orden.slice(ult + 1);
+  if (!pend.length) return null;
+  return { ahora: pend[0], sigue: pend[1] || null };
+}
+
+/**
+ * A quién llamar este minuto: `[{did, tipo, bat, base, clave, n}]`. `t` sale de `turnosDe(L)`, `idx` es el índice de
+ * nombres y `hecho(id)` dice cuándo se anotó esa clave en `hechos` (o `null`). Los frenos (a), (b) y (c) de arriba:
+ * (a) y (c) salen de que sólo se mira a quien la llave nombra hoy en AHORA o en la que SIGUE; (b) es la clave `…:voz`.
+ */
+export function aLlamar(L, t, idx, hecho, ahora) {
+  const out = [];
+  if (!L || !t) return out;
+  for (const [tipo, bat] of [['ahora', t.ahora], ['sigue', t.sigue]]) {
+    if (!bat) continue;
+    const quienes = new Set();
+    for (const lado of bat.lados) {
+      for (const m of String(lado).split(/\s*[,+&]\s*/)) {
+        const did = (idx || {})[claveTurno(m)];
+        if (did) quienes.add(String(did));
+      }
+    }
+    for (const did of quienes) {
+      const base = 'turno:' + L.id + ':' + claveTurno(bat.r) + ':' + bat.i + ':' + did;
+      if (hecho(base + ':voz') != null) continue;
+      if (tipo === 'sigue') {
+        if (hecho(base + ':sigue') == null) out.push({ did, tipo, bat, base, clave: base + ':sigue', n: 1 });
+        continue;
+      }
+      let n = 0, ult = 0;
+      for (let k = 1; k <= TOQUES; k++) {
+        const h = hecho(base + ':ahora:' + k);
+        if (h == null) break;
+        n = k; ult = h;
+      }
+      if (n >= TOQUES || (n && ahora - ult < ENTRE_TOQUES)) continue;
+      out.push({ did, tipo, bat, base, clave: base + ':ahora:' + (n + 1), n: n + 1 });
+    }
+  }
+  return out;
+}
+
+/** El aviso: «¡Te toca!» (y «¡Te están llamando!» las veces siguientes) o «Sos el próximo», con la batalla y adónde
+ *  ir (la llave, en Discord). */
+export function cuerpoTurno(L, bat, tipo, n = 1) {
+  const vs = bat.lados.join(' vs ');
+  const evento = String((L && L.nombre) || 'la llave').slice(0, 60);
+  return {
+    v: 1, tipo: 'turno', id: (L && L.id) || '',
+    t: (tipo !== 'ahora' ? '⏳ Sos el próximo · ' : n > 1 ? '🎤 ¡Te están llamando! · ' : '🎤 ¡Te toca! · ') + evento,
+    b: tipo === 'ahora'
+      ? `${vs} (${bat.r}). Entrá a la llamada: si no llegás, el organizador te reemplaza.`
+      : `Después de la batalla que se está jugando: ${vs} (${bat.r}). Andá entrando a la llamada.`,
+    url: ((L && L.links) || [])[0] || HUB + '/freestyle-rap/',
+  };
+}
+
+/** La copia de `eventos-hoy` de un evento que se canceló (Dlx, 01/10/2026: «A», que la edite). Ver `mensajeRed()`. */
+export function mensajeRedCancelado(c, por) {
+  const seg = c.ini ? Math.floor(c.ini / 1000) : 0;
+  const lineas = [`**${c.svn || c.sv}** · ${c.sv}`];
+  if (seg) lineas.push(`~~Era <t:${seg}:t>~~`);
+  lineas.push(por === 'editado' ? 'El servidor lo marcó como cancelado.' : 'El servidor borró el anuncio: el evento no se hace.');
+  return {
+    allowed_mentions: { parse: [] },
+    embeds: [{
+      title: ('❌ CANCELADO · ' + (c.t || 'evento')).slice(0, 256),
+      description: lineas.join('\n').slice(0, 4000),
+      color: 0xE41373,
+      footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse', icon_url: HUB + '/aviso.png' },
+    }],
+    // el anuncio borrado ya no existe: sin «Ir al anuncio»
+    components: [{
+      type: 1,
+      components: [
+        ...(por === 'editado' && c.url ? [{ type: 2, style: 5, label: 'Ir al anuncio', url: c.url }] : []),
+        { type: 2, style: 5, label: 'Avisos en tu teléfono', emoji: { name: '🔔' }, url: HUB_AVISOS },
+      ],
+    }],
+  };
+}
+
 /** Los servidores con un evento en juego, de los anuncios que anotó el vigía. */
 export function svsEnVivo(cuerpos, ahora) {
   const out = new Set();
@@ -198,7 +340,15 @@ const HUB_AVISOS = 'https://underlegends.pages.dev/freestyle-rap/avisos';
 //: a dónde lleva el aviso de un evento cancelado: el calendario, en la pestaña de la página si hay una (`sw.js`)
 const HUB_EVENTOS = '/freestyle-rap/eventos';
 //: cuántos anuncios se le preguntan a Discord cada 2 minutos para ver si se cancelaron (ver `cancelaciones()`)
-const CANCELA_TOPE = 8;
+const CANCELA_TOPE = 4;
+//: cuántos pedidos de «te toca» por minuto —la pregunta a Discord y los envíos—: comparte los 50 subpedidos (ver `turnos()`)
+export const TOPE_TURNOS = 8;
+//: cuántas veces suena «¡Te toca!» por batalla y persona, y cada cuánto: una por minuto (el vigía corre cada minuto;
+//: 50 s y no 60 para que un minuto un poco corto no se saltee un toque)
+export const TOQUES = 3;
+const ENTRE_TOQUES = 50 * 1000;
+//: una llave que nadie tocó en 40 minutos no está en juego (el evento terminó o se cortó): no se llama a nadie
+const LLAVE_QUIETA = 40 * 60 * 1000;
 //: cuántas notificaciones por invocación. El plan gratis da 50 subpedidos
 //: por invocación: 20 envíos + 20 reintentos entran con margen.
 const LOTE = 20;
@@ -1980,6 +2130,10 @@ export class Avisos {
       try { await this.llamada(ahora); } catch (e) {
         this.guardar('llamada', { ...(this.leer('llamada') || {}), error: String(e).slice(0, 160) });
       }
+      // 🎤 y a quién le toca. Nunca frena al vigía: ver `turnos()`
+      try { await this.turnos(ahora); } catch (e) {
+        this.guardar('turnos', { t: ahora, error: String(e).slice(0, 160) });
+      }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
@@ -2184,6 +2338,90 @@ export class Avisos {
   }
 
   /**
+   * 🎤 «TE TOCA»: ver `turnosDe()`. Cada minuto, con las llaves que se tocaron en las últimas 3 horas. Devuelve cuántos
+   * avisos salieron. ⚠️ El lector se carga recién acá (`import()`): las pruebas de Node importan este archivo sin él.
+   */
+  async turnos(ahora) {
+    const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
+      ahora - 3 * HORA).toArray();
+    if (!filas.length) return 0;
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const LV = globalThis.LlaveVivo;
+    if (!LV) return 0;
+    if (!this.indiceTurnos || ahora - (this.indiceTurnosT || 0) > 10 * MIN) {
+      try { this.indiceTurnos = JSON.parse((await this.env.KV.get('turnos:nombres')) || '{}') || {}; } catch (e) { this.indiceTurnos = {}; }
+      this.indiceTurnosT = ahora;
+    }
+    const idx = (this.indiceTurnos && this.indiceTurnos.n) || {};
+    const hecho = (id) => {
+      const r = this.sql.exec('SELECT t FROM hechos WHERE id = ?', id).toArray()[0];
+      return r ? r.t : null;
+    };
+    let llaves = 0;
+    const cands = [];
+    for (const b of LV.unirPartidas(filas)) {
+      let L = null;
+      try { L = LV.aLlave(b); } catch (e) { L = null; }
+      if (!L) continue;
+      llaves++;
+      if (ahora - (L.ed || 0) > LLAVE_QUIETA) continue;
+      for (const c of aLlamar(L, turnosDe(L), idx, hecho, ahora)) cands.push({ ...c, L, g: b.g });
+    }
+    // primero los de AHORA, y de ésos los que todavía no sonaron
+    cands.sort((a, b) => (a.tipo === 'ahora' ? 0 : 1) - (b.tipo === 'ahora' ? 0 : 1) || a.n - b.n);
+    let enviados = 0, pedidos = 0, sinVinculo = 0, enLlamada = 0;
+    for (const c of cands) {
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', c.did).toArray();
+      if (!subs.length) { sinVinculo++; continue; }
+      // ⚠️ LA PERSONA ENTERA O NADA —la pregunta a Discord y sus envíos—: si no entra en el tope de este minuto, sale
+      // en el siguiente (no se anota nada)
+      if (pedidos + 1 + subs.length > TOPE_TURNOS) continue;
+      pedidos++;
+      // (b) ya está en la llamada: no se lo llama más por esta batalla
+      if (await this.enLaLlamada(c.g, c.did) === true) {
+        this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', c.base + ':voz', ahora);
+        enLlamada++;
+        continue;
+      }
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', c.clave, ahora);
+      pedidos += subs.length;
+      const cuerpo = cuerpoTurno(c.L, c.bat, c.tipo, c.n);
+      // ⚠️ con el mismo `topic`: si el teléfono estaba apagado, le llega sólo el último y no tres
+      const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo,
+        { ttl: c.tipo === 'ahora' ? 3 * 60 : 10 * 60, topic: 'turno' + String(c.L.id).slice(-20) },
+        this.env, new Map())));
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) enviados++;
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+      });
+    }
+    if (llaves) {
+      this.guardar('turnos', { t: ahora, llaves, llamados: cands.length, enviados, en_llamada: enLlamada,
+        sin_vinculo: sinVinculo, pedidos });
+    }
+    return enviados;
+  }
+
+  /**
+   * ¿Está en un canal de voz de ese servidor? `true`, `false`, o `null` si no se pudo saber —y entonces se lo llama
+   * igual: es peor no avisar que avisar de más—. Discord lo contesta solo (`GET /guilds/{g}/voice-states/{id}`): 200
+   * con el canal, o 404 con el código 10065 si no está en ninguno. Medido el 01/10/2026 con FFA en vivo: los de la
+   * llamada daban 200, el resto 10065.
+   */
+  async enLaLlamada(g, did) {
+    if (!g || !did) return null;
+    try {
+      const r = await fetch(`${DC}/guilds/${g}/voice-states/${did}`, {
+        headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+      });
+      const v = await r.json().catch(() => ({}));
+      if (r.status === 200) return !!(v && v.channel_id);
+      if (r.status === 404 && v && v.code === 10065) return false;
+    } catch (e) { /* sin red: no se sabe */ }
+    return null;
+  }
+
+  /**
    * 🎙️ QUIÉN ESTÁ EN LA LLAMADA, MINUTO A MINUTO (Dlx, 01/10/2026, respuesta 5: «cada minuto de hecho si es posible»).
    * Lo hace un trabajo de Actions —`.github/workflows/llamada.yml`, `bot/en_llamada.py --seguir`— que se conecta UNA vez
    * al Gateway mientras dure lo en vivo. Acá sólo se lo larga: con un servidor en vivo (un anuncio en su ventana, o una
@@ -2267,6 +2505,23 @@ export class Avisos {
             'cx:' + f.id, f.sv, JSON.stringify(cx), ahora, ahora + 2 * HORA, ahora);
         }
       });
+      // 🔑 Y LA COPIA DE `eventos-hoy` (Dlx, 01/10/2026: «A», que el bot la edite): si todavía no salió, no sale; si
+      // salió, dice «❌ CANCELADO». Una edición no le suena a nadie: Discord no notifica un PATCH
+      const post = this.sql.exec('SELECT hecho, msg FROM posts WHERE id = ?', f.id).toArray()[0];
+      if (post && post.hecho === 0) {
+        this.sql.exec('UPDATE posts SET hecho = 2 WHERE id = ?', f.id);
+      } else if (post && post.hecho === 1 && /^\d+$/.test(post.msg || '')) {
+        let est = 0;
+        try {
+          const r = await fetch(`${DC}/channels/${CANAL_RED}/messages/${post.msg}`, {
+            method: 'PATCH',
+            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'Content-Type': 'application/json' },
+            body: JSON.stringify(mensajeRedCancelado(c, por)),
+          });
+          est = r.status;
+        } catch (e) { est = 0; }
+        this.sql.exec('UPDATE posts SET error = ? WHERE id = ?', 'cancelado: editado ' + est, f.id);
+      }
     }
     if (pedidos || hubo) this.guardar('cancelados', { t: ahora, pedidos, hubo });
     return hubo;
@@ -3206,6 +3461,9 @@ export class Avisos {
       // pedidos y si falló, por qué. Ver `cancelaciones()` y `llamada()`
       cancelados: this.leer('cancelados'),
       llamada: this.leer('llamada'),
+      // 🎤 y el último minuto de «te toca»: cuántas llaves en vivo, a cuántos había que llamar, cuántos avisos
+      // salieron, cuántos ya estaban en la llamada y cuántos no tienen la campana vinculada. Ver `turnos()`
+      turnos: this.leer('turnos'),
       vigia: {
         t: v.t ? new Date(v.t).toISOString() : null,
         hace_s: v.t ? Math.round((ahora - v.t) / 1000) : null,

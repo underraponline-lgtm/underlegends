@@ -47,7 +47,11 @@ COMPAT = '2026-09-16'
 
 #: los módulos del Worker. `worker.js` es el principal: Cloudflare busca ahí
 #: las clases de los Durable Objects, y por eso re-exporta `Avisos`.
-MODULOS = ('worker.js', 'avisos.js')
+MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js')
+#: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
+#: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
+#: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—
+RUTA_MODULO = {'llave_vivo.js': os.path.join('paginas', 'llave_vivo.js')}
 
 #: 🔑 LAS MIGRACIONES DE DURABLE OBJECTS, EN ORDEN Y PARA SIEMPRE. Una clase
 #: con estado no se crea, se MIGRA: Cloudflare guarda en qué etiqueta está
@@ -290,7 +294,7 @@ def main():
     partes = {'metadata': (None, json.dumps(meta), 'application/json')}
     total = 0
     for mod in MODULOS:
-        with io.open(os.path.join(SCR, mod), encoding='utf-8') as f:
+        with io.open(os.path.join(SCR, RUTA_MODULO.get(mod, mod)), encoding='utf-8') as f:
             b = f.read().encode('utf-8')
         partes[mod] = (mod, b, 'application/javascript+module')
         total += len(b)
@@ -520,7 +524,7 @@ def ver_igual(sesion, cid):
         print('  ⚠️ no pude bajar el desplegado (%s)' % e)
         return
     for mod in MODULOS:
-        local = io.open(os.path.join(SCR, mod), encoding='utf-8').read()
+        local = io.open(os.path.join(SCR, RUTA_MODULO.get(mod, mod)), encoding='utf-8').read()
         a = ' '.join((arriba.get(mod) or '').split())
         b = ' '.join(local.split())
         if a == b:

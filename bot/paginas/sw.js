@@ -65,6 +65,11 @@ function armar(d) {
       url: d.url || '/', tag: 'ev' + (d.id || ''),
     };
   }
+  // 🎤 TE TOCA (01/10/2026): «Sos el próximo» y después «¡Te toca!», con el mismo `tag` —el segundo reemplaza al
+  // primero y vuelve a sonar— y la llave en Discord, que es donde está la llamada
+  if (d.tipo === 'turno') {
+    return { titulo: d.t || '🎤 ¡Te toca!', cuerpo: d.b || '', url: d.url || '/', tag: 'turno' + (d.id || '') };
+  }
   // 🔑 LOS AVISOS DE CADA UNO: subiste de rango, desbloqueaste una tarjeta
   if (d.tipo === 'personal') {
     return { titulo: d.t || 'Liga Global', cuerpo: d.b || '', url: d.url || '/', tag: 'yo' + (d.id || '') };

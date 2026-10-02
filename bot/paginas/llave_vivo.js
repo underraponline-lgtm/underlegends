@@ -20,7 +20,14 @@
    página la cambia por la oficial.
 
    ⚠️ SIN LOOKBEHIND: Safari lo entiende recién desde la 16.4, y una expresión
-   que un navegador no entiende tumba el archivo entero. */
+   que un navegador no entiende tumba el archivo entero.
+
+   🎤 Y DESDE EL 01/10/2026 LO USA TAMBIÉN EL VIGÍA, para «te toca»
+   (`turnos()` en `bot/avisos.js`): `bot/desplegar.py` sube este mismo
+   archivo como un módulo más del Worker. Por eso vale para los dos lados
+   —`raiz` es `window` o `globalThis`— y por eso el bot llama con las mismas
+   llaves que ve la página. Ahí sí corre en el Worker, pero una vez por
+   minuto y sólo con llaves en vivo, no por cada visita. */
 (function (raiz) {
   'use strict';
 
