@@ -736,8 +736,8 @@ h1,h2,h3,p{margin:0}
 .mo-logo.ul img{border-color:var(--verde)}
 .mo-sello{position:absolute;bottom:4px;left:50%;transform:translateX(-50%) rotate(-6deg);font:900 14px/1 Archivo,sans-serif;font-stretch:120%;
   background:var(--magenta);color:#fff;padding:6px 9px;border:2px solid #030304;white-space:nowrap}
-.mo-video{position:relative;aspect-ratio:16/9;background:#121214;border:2px solid var(--esc-linea);overflow:hidden}
-.mo-video img{width:100%;height:100%;object-fit:cover;display:block}
+.mo-yt{position:relative;aspect-ratio:16/9;background:#121214;border:2px solid var(--esc-linea);overflow:hidden}
+.mo-yt img{width:100%;height:100%;object-fit:cover;display:block}
 .mo-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;display:grid;place-items:center;
   background:var(--magenta);color:#fff;font:900 22px/1 Archivo,sans-serif}
 .mo-cara{display:grid;place-items:center}

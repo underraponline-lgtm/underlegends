@@ -10,6 +10,7 @@ import { Encuestas } from './encuestas.jsx';
 import { PerfilSv } from './servidor.jsx';
 import { Cambios } from './cambios.jsx';
 import { Cuenta, PaginaVerificar } from './cuenta.jsx';
+import { VentanaVideo } from './video.jsx';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -247,7 +248,8 @@ export default function App() {
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={pagina} /></Aislada>
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
-      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} raiz={raiz} /></Aislada> : null}
+      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos} raiz={raiz} /></Aislada> : null}
+      <Aislada n="Video"><VentanaVideo /></Aislada>
     </div>
   );
 }

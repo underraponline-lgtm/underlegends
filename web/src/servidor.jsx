@@ -70,9 +70,9 @@ export function PerfilSv({ liga, sv }) {
   fechas.splice(5);
   return (
     <>
-      <div className="escena sv-cab" style={{ '--mo-c': s.color || '#29B298', '--mo-o': 0.9, '--mo-logo': 'url("' + liga.logo(sv) + '")' }}>
+      <div className="escena sv-cab" style={{ '--mo-c': s.color || '#29B298', '--mo-o': 0.9, '--mo-logo': 'url("' + liga.logo(sv, true) + '")' }}>
         <section className="svp" id="sv-perfil">
-          <img className="svp-logo" alt="" src={liga.logo(sv)} />
+          <img className="svp-logo" alt="" src={liga.logo(sv, true)} />
           <div className="svp-tx">
             {s.tag ? <span className="tag">{String(s.tag).toUpperCase()}</span> : null}
             <h1 className="hero-ev largo">{s.nombre || sv}</h1>

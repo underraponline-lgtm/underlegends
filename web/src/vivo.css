@@ -493,3 +493,22 @@ button.btn{background:transparent;cursor:pointer}
 .pi-app{fill:var(--fondo)}
 .pi-sw{fill:var(--verde)}
 @media (max-width: 599.98px){.pi-pasos{grid-template-columns:1fr}.pi-svg{max-width:280px}}
+/* ── el video, en la página (video.jsx). Dlx, 01/10/2026: «deja que se vea el video en la página misma» ── */
+button.mo-yt{display:block;width:100%;padding:0;cursor:pointer;font:inherit;color:inherit}
+button.mo-yt:hover .mo-play,button.mo-yt:focus-visible .mo-play{background:#F6F6F6;color:#0D0D0F}
+button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
+.vid-fondo{position:fixed;inset:0;z-index:1000;background:rgba(6,6,8,.88);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
+.vid-caja{width:min(1100px,100%);display:grid;gap:10px}
+.vid-cab{display:flex;align-items:center;gap:12px;color:#F6F6F6}
+.vid-t{flex:1;min-width:0;font:900 clamp(15px,2vw,20px)/1.15 Archivo,sans-serif;text-transform:uppercase;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vid-yt{flex:none;color:#F6F6F6;font:700 13px/1 Archivo,sans-serif;border:2px solid #F6F6F6;padding:8px 10px;
+  text-decoration:none}
+.vid-yt:hover{background:#F6F6F6;color:#0D0D0F}
+.vid-x{flex:none;width:40px;height:40px;border:2px solid #F6F6F6;background:#0D0D0F;color:#F6F6F6;
+  font:900 18px/1 Archivo,sans-serif;cursor:pointer}
+.vid-x:hover,.vid-x:focus-visible{background:var(--magenta);border-color:var(--magenta)}
+.vid-marco{position:relative;aspect-ratio:16/9;background:#000;border:2px solid #2A2A2E}
+.vid-marco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media (max-width: 599.98px){.vid-yt{display:none}}

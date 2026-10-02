@@ -41,6 +41,11 @@ export const norm = (s) => String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g,
 // las fechas del payload: con Z o sin zona (y entonces son UTC, como en el Python)
 export function utc(s) {
   if (!s) return new Date(NaN);
+  // 🔴 UNA FECHA YA ES UN INSTANTE: se devuelve tal cual. `dia()` le pasaba a `hora()` el `Date` ya convertido, y
+  // `String(Date)` —«Thu Oct 01 2026 18:29:10 GMT-0400 (…)»— con una «Z» pegada se volvía a leer como UTC: toda hora
+  // del Inicio salía corrida por el huso de quien mira. POESÍA CRUDA empezó a las 6:29 PM ET y decía «empezó 14:29»
+  // (Dlx, 01/10/2026, en sus capturas)
+  if (s instanceof Date) return s;
   const t = String(s);
   return new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(t) ? t : t + 'Z');
 }
@@ -117,15 +122,23 @@ export class Liga {
   }
   avUrl(k) {
     const f = this.T[k];
-    return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=128' : null;
+    // a 256: las caras de las historias y del perfil se dibujan a ~100 px, el doble en una pantalla de celular
+    return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=256' : null;
   }
   // el logo de HOY de cada servidor: el payload trae el ícono actual de Discord (`svs[].logo`, ver `subir_web.py`) y
   // el guardado sólo de respaldo. Dlx, 30/09/2026: «usa los LOGOS actuales de cada servidor». El Inicio usaba
   // siempre el archivo guardado, y el de URBF (y la cobra de SR) ya no eran los de hoy
-  logo(sv) {
+  // 🔴 EN MÁXIMA CALIDAD. Dlx, 01/10/2026: «que las imágenes o logotipos en todos los lugares estén en máxima
+  // calidad». El ícono llegaba pedido a 128 px y el escenario lo dibuja a ~330: se veía borroso. Se pide a 512 en todos
+  // lados —una sola imagen por servidor, que el navegador reusa— y a 1024 donde se dibuja grande (`grande`). El CDN de
+  // Discord devuelve lo que se subió, nunca más: pedir de más no agranda nada, sólo deja de achicar
+  logo(sv, grande = false) {
     if (!sv) return '';
     const s = this.svs && this.svs[sv];
-    if (s && s.logo) return /^https?:/.test(s.logo) ? s.logo : '/' + String(s.logo).replace(/^\//, '');
+    if (s && s.logo) {
+      if (!/^https?:/.test(s.logo)) return '/' + String(s.logo).replace(/^\//, '');
+      return /cdn\.discordapp\.com/.test(s.logo) ? s.logo.replace(/([?&]size=)\d+/, '$1' + (grande ? 1024 : 512)) : s.logo;
+    }
     return '/logos/' + String(sv).toLowerCase() + '.webp';
   }
   colorRg(rg) { return this.rg[rg] || '#A5A5A0'; }
@@ -189,12 +202,29 @@ export class Liga {
     const m = Math.floor((seg % 3600) / 60);
     return h ? h + ' H ' + m + ' MIN' : Math.max(1, m) + ' MIN';
   }
+  // 🔴 EN VIVO MIENTRAS SU LLAVE SE JUEGA, NO SÓLO 90 MINUTOS. Dlx, 01/10/2026 a las 8 PM: «no veo el evento de URBF
+  // que está en vivo, desapareció». POESÍA CRUDA empezó a las 6:29 PM y a las 7:59 salió del escenario con los
+  // Cuartos a medio jugar: `vivo_min` es lo que dura una llave CUANDO NO HAY LLAVE A LA VISTA. Con su llave en vivo
+  // (`VIVO_L` de app.js: tocada en las últimas 3 h y sin campeón) sigue, hasta 8 h; y si ya salió de `proximos`, se
+  // la busca en el calendario. ⚠️ Sin llave, los 90 minutos de siempre (Dlx, 24/09: lo pasado mostrado como en vivo).
   vivo() {
     const m = this.d.vivo_min || 90;
-    return (this.d.proximos || []).filter((e) => {
-      const s = (this.ahora - utc(e.cuando)) / 1000;
-      return s >= 0 && s <= m * 60;
+    const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => !L.terminada) : [];
+    const sigue = (e) => {
+      if (!ls.length || !window.llaveDeEvento) return false;
+      try { return !!window.llaveDeEvento(e, ls); } catch (err) { return false; }
+    };
+    const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
+    const out = (this.d.proximos || []).filter((e) => {
+      const s = desde(e);
+      return s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e)));
     });
+    (this.d.calendario || []).forEach((c) => {
+      const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };
+      const s = desde(e);
+      if (s > m * 60 && s <= 8 * 3600 && !out.some((x) => x.sv === e.sv && limpio(x.nombre) === limpio(e.nombre)) && sigue(e)) out.push(e);
+    });
+    return out;
   }
   luego() { return (this.d.proximos || []).filter((e) => utc(e.cuando) > this.ahora); }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }

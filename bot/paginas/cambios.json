@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.70",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T20:28:00-04:00",
+   "titulo": "Lo en vivo se queda, el video se mira acá y las horas, bien",
+   "items": [
+    "🔴 **Lo que se está jugando no se va**: un evento seguía «en vivo» sólo 90 minutos después del anuncio, aunque su llave se siguiera jugando. Ahora se queda mientras su llave se juega. Y si hay dos a la vez, se ven los dos.",
+    "🕐 **Las horas del Inicio, bien**: salían corridas por el huso horario de quien mira (en la hora del este, 4 horas antes: un evento de las 6:29 PM decía «empezó 14:29»).",
+    "▶️ **Los videos se miran en la página**: «Mirar acá» abre el video en una ventana, sin salir. La miniatura es la grande, y la diapositiva ya no es ese recuadro gris enorme.",
+    "📖 **Las historias, como Instagram**: en orden y desde la primera que no viste. Antes, cada novedad te hacía ver otra vez las que ya habías visto.",
+    "🖼️ **Los logos en máxima calidad**: los de los servidores se pedían a 128 px y el escenario los dibuja a más de 300. Ahora van a 512, y a 1024 donde se ven grandes. Las caras, a 256."
+   ]
+  },
+  {
    "version": "1.69",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T20:08:00-04:00",

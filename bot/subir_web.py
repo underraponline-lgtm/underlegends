@@ -1924,7 +1924,9 @@ def _miembros(svs):
             # dentro del presupuesto (ver `subir_datos.presupuesto()`).
             d['miembros'] = int(n)
         if g.get('icon'):
-            d['icono'] = ('https://cdn.discordapp.com/icons/%s/%s.webp?size=128'
+            # ⚠️ A 512, NO A 128: «los logotipos en todos los lugares en máxima calidad» (Dlx, 01/10/2026). El escenario
+            # los dibuja a ~330 px y a 128 se veían borrosos. El Inicio pide 1024 donde los dibuja grandes (`liga.logo()`)
+            d['icono'] = ('https://cdn.discordapp.com/icons/%s/%s.webp?size=512'
                           % (g['id'], g['icon']))
         if d:
             out[sv] = d

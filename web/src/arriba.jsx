@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, mult, norm, num, recorte, resultado, utc } from './liga.js';
 import { Cara, Carta, Chevron, Compartir, Ico, Poster, accion, enlace, nombrePais } from './piezas.jsx';
+import { Miniatura, abrirVideo } from './video.jsx';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
@@ -64,7 +65,7 @@ export function Buscar({ liga, onIr }) {
 export function CaraDc({ dc, cls = 'cara' }) {
   const [mal, setMal] = useState(null);
   if (dc && dc.av && mal !== dc.av) {
-    return <span className={cls}><img alt="" src={'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=64'} onError={() => setMal(dc.av)} /></span>;
+    return <span className={cls}><img alt="" src={'https://cdn.discordapp.com/avatars/' + dc.av + '.webp?size=128'} onError={() => setMal(dc.av)} /></span>;
   }
   return <span className={cls + ' ini'}>{(limpio(dc && dc.n).slice(0, 1) || '?').toUpperCase()}</span>;
 }
@@ -116,6 +117,8 @@ function slidesDe(liga, items) {
   const out = [];
   grupos.forEach((g) => {
     const it = g[0];
+    // cada historia lleva la hora de lo que cuenta: el visor abre en la primera que no viste (ver `Visor`)
+    const n0 = out.length;
     const q = (it.quien || []).map(limpio);
     const ks = it.ks || [];
     const c = liga.cuando(it.t);
@@ -158,6 +161,7 @@ function slidesDe(liga, items) {
         {liga.esDorado(it.ev, it.sv) ? <span className="st-dor">EVENTO DORADO ×3</span> : null}<small className="st-s">{cu || c}</small></>,
         c, 'Quiero aviso', { ruta: '#/avisos' }));
     }
+    for (let i = n0; i < out.length; i++) out[i].t = String(it.t || '');
   });
   return out;
 }
@@ -182,7 +186,7 @@ export function gruposHistorias(liga) {
     const m = liga.multSv(e.sv);
     grupos.push({
       id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + e.sv, logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
-      slides: [Slide('EN VIVO AHORA · ' + e.sv, <><img className="st-logo grande" alt="" src={liga.logo(e.sv)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
+      slides: [Slide('EN VIVO AHORA · ' + e.sv, <><img className="st-logo grande" alt="" src={liga.logo(e.sv, true)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
         <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}. La llave aparece acá apenas la carguen.</small></>,
       'ahora', 'Mirar en Discord', { link: e.link })],
     });
@@ -207,9 +211,10 @@ export function gruposHistorias(liga) {
         {m ? <b className={'st-mult ' + (m > 1 ? 'sube' : 'baja')}>{mult(m)}</b> : null}<ul className="st-l">{lineas}</ul></>, 'lunes', 'Lunes de la Liga', { ancla: 'semana' }));
     }
     const propios = muro.filter((it) => liga.svDe(it) === sv);
-    slidesDe(liga, propios).slice(0, 6).forEach((x) => slides.push(x));
+    // en orden, de la más vieja a la más nueva, como Instagram: el visor abre en la primera que no viste
+    slidesDe(liga, propios).slice(0, 6).reverse().forEach((x) => slides.push(x));
     if (!propios.length) {
-      slides.push(Slide(String(s.nombre || sv).toUpperCase(), <><img className="st-logo grande" alt="" src={liga.logo(sv)} /><h3 className="st-h">Todavía sin eventos en la {liga.temp}</h3>
+      slides.push(Slide(String(s.nombre || sv).toUpperCase(), <><img className="st-logo grande" alt="" src={liga.logo(sv, true)} /><h3 className="st-h">Todavía sin eventos en la {liga.temp}</h3>
         <small className="st-s">{String(s.tag || '').charAt(0) + String(s.tag || '').slice(1).toLowerCase()}</small></>, '', s.invita ? 'Entrar al servidor' : '', { link: s.invita }));
     }
     grupos.push({ id: 'sv-' + sv.toLowerCase(), tipo: 'sv', nombre: s.nombre, logo: liga.logo(sv), nom: sv, nuevo: propios.length > 0, firma: firma(propios, 'sem:' + (mm.ini || '')), slides });
@@ -229,7 +234,7 @@ export function gruposHistorias(liga) {
       <small className="st-s">{pa.pos ? '#' + pa.pos + ' de la Liga · ' : ''}{pa.n} {pa.n === 1 ? 'rapero' : 'raperos'}{pa.pts ? ' · ' + num(pa.pts) + ' pts' : ''}</small>
       {top.length ? <ul className="st-gente">{top.map((f) => <li key={f.k}><Cara liga={liga} k={f.k} nombre={f.n} cls="st-mini" /><span>#{f.pos} {limpio(f.n)}</span></li>)}</ul> : null}</>,
     'esta temporada', 'Ver ' + nom, { ruta: '#/pais/' + pa.cc })];
-    slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
+    slidesDe(liga, propios).slice(0, 3).reverse().forEach((x) => slides.push(x));
     grupos.push({ id: 'pais-' + pa.cc, tipo: 'pais', nombre: nom, cc: pa.cc, nom, nuevo: propios.length > 0, firma: firma(propios, 'pais'), slides });
   }
   const c = yo ? liga.crewDe(yo) : null;
@@ -241,14 +246,14 @@ export function gruposHistorias(liga) {
       <ul className="st-gente">{c.gente.slice(0, 8).map((n, i) => { const f = liga.fila(n); return <li key={i}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="st-mini" /><span>{limpio(n)}</span></li>; })}</ul></>,
     'esta temporada', 'Ver la crew', { ruta: '#/crew/' + encodeURIComponent(c.clave || c.crew) })];
     const propios = muro.filter((it) => (it.ks || []).some((k) => ks.has(k)));
-    slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
+    slidesDe(liga, propios).slice(0, 3).reverse().forEach((x) => slides.push(x));
     grupos.push({ id: 'crew-' + claveCrew(c.crew), tipo: 'crew', nombre: limpio(c.crew), crew: c, nom: limpio(c.crew), nuevo: propios.length > 0, firma: firma(propios, 'crew'), slides });
   }
   const ETIQUETA = { tarjeta: 'carta nueva', campeon: 'campeón', caza: 'cazó' };
   const sig = liga.sigue.map((k) => {
     const f = liga.T[k];
     const propios = muro.filter((it) => (it.ks || []).includes(k));
-    let slides = slidesDe(liga, propios).slice(0, 4);
+    let slides = slidesDe(liga, propios).slice(0, 4).reverse();
     // alguien que seguís y no hizo nada nuevo igual tiene su círculo: su carta y cómo va
     if (!slides.length) {
       slides = [Slide('SEGUÍS A', <><Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /><h3 className="st-h">{limpio(f.n)}</h3>
@@ -555,7 +560,7 @@ function momentosTuyos(liga) {
           <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
           <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
             <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a></div></>,
-        vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv)} />{liga.esDorado(e.nombre, e.sv) ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
+        vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{liga.esDorado(e.nombre, e.sv) ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
       });
     }
   }
@@ -564,12 +569,15 @@ function momentosTuyos(liga) {
 
 function momentos(liga, vivoL) {
   const out = momentosTuyos(liga);
-  liga.vivo().slice(0, 1).forEach((e) => {
+  // 🔴 TODOS LOS QUE SE ESTÁN JUGANDO, NO SÓLO EL PRIMERO (hasta tres). El 01/10/2026 a las 8 PM se jugaban a la vez
+  // POESÍA CRUDA (URBF) y la VOL 21 2v2 (FFA), y el escenario mostraba uno: Dlx creyó que el de URBF había desaparecido
+  const vivos = liga.vivo().slice(0, 3);
+  vivos.forEach((e, iv) => {
     const m = liga.multSv(e.sv);
     const L = llaveEnVivo(e, vivoL);
     const n = limpio(e.nombre);
     out.push({
-      tipo: 'vivo', et: 'En vivo', sv: e.sv,
+      tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: vivos.length > 1 ? 'En vivo · ' + e.sv : 'En vivo', sv: e.sv,
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag">EN VIVO AHORA</span>
         <span className="hero-meta">{e.sv} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <h1 className={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</h1>
@@ -579,7 +587,7 @@ function momentos(liga, vivoL) {
           {e.link ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={e.link} target="_blank" rel="noopener noreferrer">Mirar en Discord ↗</a> : null}
           <a className="btn borde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
         </div></>,
-      vis: L ? <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div> : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv)} /></div>,
+      vis: L ? <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div> : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
     });
   });
   // el próximo de la Liga, si no es el mismo que ya va como «tu próximo»
@@ -596,7 +604,7 @@ function momentos(liga, vivoL) {
         <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
         <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
           <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a></div></>,
-      vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
+      vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
     });
   });
   const ll = liga.llaves()[0];
@@ -619,9 +627,13 @@ function momentos(liga, vivoL) {
       tipo: 'video', et: 'Video', color: '#E41373',
       txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><h1 className={largo(limpio(video.tit))}>{limpio(video.tit)}</h1>
         <p className="hero-p">Subido el {d.getDate()} de {MESES[d.getMonth()]}.</p>
-        <div className="hero-acc"><a className="btn verde" href={video.link} target="_blank" rel="noopener noreferrer">Mirar en YouTube ↗</a></div></>,
-      vis: <a className="mo-video" href={video.link} target="_blank" rel="noopener noreferrer" aria-label="Mirar en YouTube">
-        <img alt="" src={'https://i.ytimg.com/vi/' + video.vid + '/mqdefault.jpg'} /><span className="mo-play">▶</span></a>,
+        <div className="hero-acc">{video.vid ? <button type="button" className="btn verde" onClick={() => abrirVideo({ vid: video.vid, tit: limpio(video.tit), link: video.link })}>▶ Mirar acá</button> : null}
+          <a className={'btn ' + (video.vid ? 'borde' : 'verde')} href={video.link} target="_blank" rel="noopener noreferrer">En YouTube ↗</a></div></>,
+      // 🔑 se mira acá, en la ventana de `video.jsx`; la miniatura es la grande (era la de 320×180, estirada)
+      vis: video.vid ? (
+        <button type="button" className="mo-yt" onClick={() => abrirVideo({ vid: video.vid, tit: limpio(video.tit), link: video.link })} aria-label="Mirar el video acá">
+          <Miniatura vid={video.vid} /><span className="mo-play">▶</span></button>
+      ) : null,
     });
   }
   const nov = (liga.d.novedades || [])[0];
@@ -664,7 +676,7 @@ function momentos(liga, vivoL) {
 function fondoDe(liga, m) {
   const s = m && m.sv ? liga.svs[m.sv] : null;
   const col = (s && s.color) || (m && m.color) || '#29B298';
-  const logo = m && m.sv ? liga.logo(m.sv) : '/ul.png';
+  const logo = m && m.sv ? liga.logo(m.sv, true) : '/ul.png';
   const x = /^#?([0-9a-f]{6})$/i.exec(col);
   const n = x ? parseInt(x[1], 16) : 0;
   const luz = (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
@@ -688,19 +700,28 @@ export function Hero({ liga, vivoL, children }) {
   const actual = useRef(tipo);
   actual.current = tipo;
   const n = mo.length;
-  const j = Math.max(0, mo.findIndex((m) => m.tipo === tipo));
-  const ver = (k) => { ultimo.current = Date.now(); setTipo(mo[((k % n) + n) % n].tipo); };
+  // cada momento se sigue por su clave: dos en vivo a la vez son dos momentos (`clave`), con el mismo `tipo`
+  const idDe = (m) => m.clave || m.tipo;
+  const j = Math.max(0, mo.findIndex((m) => idDe(m) === tipo));
+  const ver = (k) => { ultimo.current = Date.now(); setTipo(idDe(mo[((k % n) + n) % n])); };
+  // mientras se mira un video (`video.jsx`), el escenario no pasa solo
+  const video = useRef(false);
+  useEffect(() => {
+    const f = (e) => { video.current = !!e.detail; ultimo.current = Date.now(); };
+    window.addEventListener('lg:video-abierto', f);
+    return () => window.removeEventListener('lg:video-abierto', f);
+  }, []);
   useEffect(() => {
     if (n < 2 || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return undefined;
     const t = setInterval(() => {
-      if (quieto.current || document.visibilityState !== 'visible' || Date.now() - ultimo.current < 15000) return;
+      if (quieto.current || video.current || document.visibilityState !== 'visible' || Date.now() - ultimo.current < 15000) return;
       // «Menos animaciones» (Ajustes): no pasa solo
       if (document.documentElement.classList.contains('calma')) return;
       ultimo.current = Date.now();
       const l = lista.current;
       if (!l.length) return;
-      const a = Math.max(0, l.findIndex((m) => m.tipo === actual.current));
-      setTipo(l[(a + 1) % l.length].tipo);
+      const a = Math.max(0, l.findIndex((m) => (m.clave || m.tipo) === actual.current));
+      setTipo(l[(a + 1) % l.length].clave || l[(a + 1) % l.length].tipo);
     }, 1000);
     return () => clearInterval(t);
   }, [n]);
@@ -716,7 +737,7 @@ export function Hero({ liga, vivoL, children }) {
         }}>
         <div className="hero-in">
           {mo.map((m, k) => (
-            <article key={m.tipo} className={'mo mo-' + m.tipo + (k === j ? ' on' : '')} aria-hidden={k !== j}>
+            <article key={idDe(m)} className={'mo mo-' + m.tipo + (k === j ? ' on' : '')} aria-hidden={k !== j}>
               <div className="mo-txt">{m.txt}</div><div className="mo-vis">{m.vis}</div>
             </article>
           ))}
@@ -726,7 +747,7 @@ export function Hero({ liga, vivoL, children }) {
           <button type="button" className="mo-fl der" aria-label="Momento siguiente" onClick={() => ver(j + 1)}><Chevron /></button>
         </> : null}
         <nav className="mo-tabs" aria-label="Momentos">
-          {mo.map((m, k) => <button type="button" key={m.tipo} className={(k === j ? 'on' : '') + (m.tipo === 'vivo' ? ' vivo' : '')} onClick={() => ver(k)}>{m.et}</button>)}
+          {mo.map((m, k) => <button type="button" key={idDe(m)} className={(k === j ? 'on' : '') + (m.tipo === 'vivo' ? ' vivo' : '')} onClick={() => ver(k)}>{m.et}</button>)}
         </nav>
       </section>
       {children}

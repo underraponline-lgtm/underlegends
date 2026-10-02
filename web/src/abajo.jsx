@@ -121,28 +121,46 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
 }
 
 // ── el visor de historias, como las de Instagram ──────────────────────────────────────────────────
-export function Visor({ liga, grupos, abierto, onCerrar, onVisto, raiz }) {
+export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, raiz }) {
   // 🔴 el grupo abierto se sigue por su ID, no por su lugar en la fila: los datos se rehacen cada minuto y, si
   // empezaba un evento en vivo con el visor abierto, su círculo entraba primero y corría a todos un lugar (saltabas a
   // otra historia a mitad). Y el reloj de cada historia volvía a cero en cada refresco (revisión del 01/10/2026)
+  // 🔴 Y SE ABRE EN LA PRIMERA QUE NO VISTE. Dlx, 01/10/2026: «cada vez que hay algo nuevo me hace repetir las
+  // historias que ya vi, no me muestra la actual». Lo guardado de cada círculo es la hora de lo último que viste
+  // (`firma`); se arranca en la primera historia más nueva que eso. Si ya viste todo, desde el principio
+  const inicio = (g) => {
+    const v = g ? String(vistos[g.id] || '') : '';
+    if (!g || !/^\d/.test(v) || v === g.firma) return 0;
+    const i = g.slides.findIndex((s) => s.t && s.t > v);
+    return i > 0 ? i : 0;
+  };
   const [gid, setGid] = useState(() => (grupos[abierto] || {}).id);
-  const [si, setSi] = useState(0);
+  const [si, setSi] = useState(() => inicio(grupos[abierto]));
   const [avance, setAvance] = useState(0);
   const pausa = useRef(false);
   const cerrarB = useRef(null);
   const DUR = 5000;
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { setGid((grupos[abierto] || {}).id); setSi(0); setAvance(0); }, [abierto]);
+  useEffect(() => { setGid((grupos[abierto] || {}).id); setSi(inicio(grupos[abierto])); setAvance(0); }, [abierto]);
   const gi = grupos.findIndex((x) => x.id === gid);
   const g = gi >= 0 ? grupos[gi] : null;
   const hay = !!g;
   const firmaG = g ? g.firma : '';
-  useEffect(() => { if (hay) onVisto(gid, firmaG); }, [gid, firmaG, hay, onVisto]);
+  // lo visto avanza historia por historia, hasta la que estás mirando: si cerrás a la mitad, la próxima vez sigue de
+  // ahí. Un círculo sin horas (la semana, tu país sin novedades) se da por visto al abrirlo, como antes
+  const tAct = g ? String((g.slides[Math.min(si, g.slides.length - 1)] || {}).t || '') : '';
+  const yaVisto = String(vistos[gid] || '');
+  useEffect(() => {
+    if (!hay) return;
+    if (!/^\d/.test(firmaG)) { onVisto(gid, firmaG); return; }
+    const hasta = [tAct, /^\d/.test(yaVisto) ? yaVisto : ''].sort().pop();
+    if (hasta) onVisto(gid, hasta >= firmaG ? firmaG : hasta);
+  }, [gid, firmaG, hay, onVisto, tAct, yaVisto]);
   // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
   useEffect(() => { if (!hay) onCerrar(); }, [hay, onCerrar]);
   // el foco entra al visor: con el teclado, Escape y las flechas ya andaban, pero el Tab seguía en la página de atrás
   useEffect(() => { if (cerrarB.current) cerrarB.current.focus({ preventScroll: true }); }, []);
-  const a = (i) => { setGid(grupos[i].id); setSi(0); setAvance(0); };
+  const a = (i) => { setGid(grupos[i].id); setSi(inicio(grupos[i])); setAvance(0); };
   const siguiente = () => {
     if (!g) return;
     if (si < g.slides.length - 1) { setSi(si + 1); setAvance(0); } else if (gi < grupos.length - 1) a(gi + 1); else onCerrar();
