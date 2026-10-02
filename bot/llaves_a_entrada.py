@@ -342,6 +342,121 @@ def ids_de(hallazgo):
     return ids
 
 
+#: las personas de cada nombre que no dependen del servidor (la Lista y los AKAs), y las de cada servidor
+_PERS = [None]
+_PERS_SV = {}
+
+
+def _personas_base():
+    """`(idx, de_la_lista)`: `{nombre normalizado: {persona}}` de la Lista y los AKAs, y qué personas son de la
+    Lista. Una persona es `id:<Discord ID>`, o `n:<nombre>` si la Lista no tiene su cuenta. Se cachea."""
+    if _PERS[0] is None:
+        idx, lista = collections.defaultdict(set), set()
+        try:
+            import construir_padron as PAD
+            filas = PAD.cargar() or []
+        except Exception:                                # noqa: BLE001
+            filas = []
+        for x in filas:
+            p = ('id:%s' % x['discord_id']) if x.get('discord_id') else ('n:%s' % E.norm(x.get('raw') or ''))
+            if p in ('n:', 'id:'):
+                continue
+            lista.add(p)
+            for n in (x.get('raw'), x.get('full')):
+                if E.norm(n):
+                    idx[E.norm(n)].add(p)
+        try:
+            import construir_akas as AK
+            mapa = (AK.cargar() or {}).get('alias') or {}
+        except Exception:                                # noqa: BLE001
+            mapa = {}
+        for a in mapa:
+            # siguiendo la cadena, como `ids_del_padron()`
+            vis, k = set(), E.norm(a)
+            while k in mapa and k not in vis:
+                vis.add(k)
+                k = E.norm(mapa[k])
+            reales = {p for p in idx.get(k) or () if p in lista}
+            if len(reales) == 1 and E.norm(a):
+                idx[E.norm(a)] |= reales
+        _PERS[0] = (idx, lista)
+    return _PERS[0]
+
+
+def _inscripciones_solas(sv):
+    """`{nombre normalizado: {id:<cuenta>}}`: con qué nombre se anotó cada cuenta en el servidor `sv`.
+
+    ⚠️ SÓLO LAS DE UN NOMBRE, Y NO LAS DE QUIEN ANOTA A OTROS: es la regla de `decidir._inscritos()`. Una
+    inscripción de pareja no dice quién es quién, y una cuenta que se anotó con dos nombres distintos («Player» y
+    «Steven», desde la del organizador) está anotando gente, no a sí misma. Dos grafías del mismo sí valen.
+    """
+    if sv not in _PERS_SV:
+        try:
+            import decidir as D
+            with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+                ins = (json.load(f) or {}).get('inscripciones') or []
+        except (OSError, ValueError, ImportError):
+            ins, D = [], None
+        por = collections.defaultdict(list)
+        for x in ins:
+            did = str(x.get('discord_id') or '')
+            if D is None or (x.get('servidor') or '') != sv or not did.isdigit():
+                continue
+            t = re.sub(r'\(.*?\)|\(.*$', ' ', str(x.get('texto') or ''))
+            partes = [q for p in D._SEP_INSC.split(t) for q in D._ENTRE_BANDERAS.split(p)]
+            ns = [E.norm(p) for p in partes if len(E.norm(p)) >= 2]
+            if len(ns) == 1:
+                por[did].append(ns[0])
+        out = collections.defaultdict(set)
+        for did, ns in por.items():
+            corto = min(ns, key=len)
+            if all(corto in n for n in ns):
+                for n in ns:
+                    out[n].add('id:%s' % did)
+        _PERS_SV[sv] = out
+    return _PERS_SV[sv]
+
+
+def personas(sv='', menciones=None):
+    """`quien(nombre) -> frozenset de personas`: de quién es un nombre de llave, con lo que el sistema SABE.
+
+    🔑 Dlx, 02/10/2026: *«te dije múltiples vías para detectar quiénes participan… esto es lo más difícil de este
+    sistema, reconocer a las personas, y más cuando hacen esas cosas troll»*. La DOS GENERACIONES UN DESTINO VOL 2
+    (FFA, 01/10) lo mostró: Oasis jugó octavos como «Park-Ji Sung🇰🇷» y cuartos como «Oasis🇨🇱», y el lector no los
+    unía —el campeón salió walk-in y cobró la mitad—, cuando la hoja AKAs ya decía que eran el mismo y la inscripción
+    «Park-Ji Sung🇰🇷» la había escrito su cuenta.
+
+    Los nombres de una persona salen de cuatro lugares, y ninguno es un parecido:
+
+        la Lista            su nombre y su nombre completo
+        la hoja AKAs        sus alias, siguiendo la cadena
+        las inscripciones   la de su propia cuenta en ESE servidor (`_inscripciones_solas()`)
+        las menciones       lo que Discord trae de cada `<@ID>` del mensaje
+
+    ⚠️ UN NOMBRE DE DOS PERSONAS DE LA LISTA NO ES DE NINGUNA: devuelve vacío y la llave se lee como antes. Una
+    persona de la Lista sin cuenta (`n:`) y la cuenta que se anotó con ese nombre (`id:`) sí van juntas: es la
+    misma regla que `decidir._se_anoto_como()`.
+    ⚠️ LOS NOMBRES DE 1 Y 2 LETRAS NO: «7» y «27» existen, y se parecen a demasiado.
+    """
+    idx, lista = _personas_base()
+    insc = _inscripciones_solas(sv or '')
+    men = collections.defaultdict(set)
+    for did, ns in (menciones or {}).items():
+        for n in ns or ():
+            if E.norm(n):
+                men[E.norm(n)].add('id:%s' % did)
+
+    def quien(nombre):
+        k = E.norm(nombre)
+        if len(k) < 3:
+            return frozenset()
+        ps = set(idx.get(k) or ()) | set(insc.get(k) or ()) | set(men.get(k) or ())
+        if len(ps & lista) > 1:
+            return frozenset()
+        return frozenset(ps)
+    return quien
+
+
 def nombre_visible(lado, ids):
     """`[<@750…>🇪🇨]` -> `ricardflex 🇪🇨`: la mención, con su nombre.
 
@@ -925,7 +1040,10 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     def _v(lado):
         return nombre_visible(lado, ids) if lado and E.MENCION.search(lado) else lado
 
-    res = E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids)
+    # 🔑 Y QUIÉN ES CADA NOMBRE, por su cuenta: el que cambia de nombre de una ronda a otra sigue
+    # siendo él (02/10/2026, Oasis como «Park-Ji Sung🇰🇷»). Ver `personas()`.
+    res = E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids,
+                     quien=personas(sv, hallazgo.get('menciones')))
     # 🔑 lo que la llave enseñó de quién es quién: ver `identidad_de_grupo()`
     hallazgo['_cambios'] = list(getattr(res, 'cambios', ()) or ())
     for bat in res:
@@ -1458,8 +1576,15 @@ def fase_sin_batallas(texto):
 PREVIAS = {'FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES'}
 
 
-def marcar_walkins(filas, textos=(), ids=None):
+def marcar_walkins(filas, textos=(), ids=None, quien=None):
     """Anota `Walk-in N: nombre` a quien aparece recien en una ronda avanzada.
+
+    🔴 Y NO ES WALK-IN QUIEN ESTUVO ANTES CON OTRO NOMBRE (02/10/2026). Oasis
+    jugó los octavos de la DOS GENERACIONES UN DESTINO VOL 2 como «Park-Ji
+    Sung🇰🇷» y salió «Walk-in 1» en cuartos: el campeón cobró 5.000. `quien`
+    (`personas()`) dice de quién es cada nombre por su cuenta —la Lista, los
+    AKAs, la inscripción, la mención—, y si la persona ya estaba en una ronda
+    anterior, no salteó nada.
 
     🔴 LA GUIA DE FORMATOS LO TIENE COMO EL ERROR #4 —«walk-in sin
     descuento», 19 de 78 eventos— Y EL LECTOR NO LO MIRABA. Dlx,
@@ -1577,6 +1702,9 @@ def marcar_walkins(filas, textos=(), ids=None):
         if k in previos or E._parecido(k, list(previos)):
             continue
         if any(len(p) >= 4 and (k.startswith(p) or p.startswith(k)) for p in previos):
+            continue
+        # la misma persona, con otro nombre en una ronda anterior: ver el docstring
+        if quien is not None and quien(k) and any(quien(k) & quien(p) for p in previos):
             continue
         nota = 'Walk-in %d: %s' % (min(i - base, 3), E.HISTORIA.sub('', nombre).strip())
         f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
@@ -2237,6 +2365,33 @@ def _self_check():
                      notas='')]
     ids_w = {'41': ['Okam'], '42': ['Jult'], '43': ['Provenza'], '44': ['Sin Limites']}
     fwm, fwm0 = marcar_walkins(_fm(), [wm], ids_w), marcar_walkins(_fm(), [wm])
+    # 🔑 LA MISMA PERSONA CON OTRO NOMBRE: la DOS GENERACIONES UN DESTINO VOL 2 recortada (FFA, 01/10/2026). Oasis
+    # juega octavos como «Park-Ji Sung🇰🇷» y la semi como «Oasis🇨🇱». Quién es quién va de mentira y fijo —dos
+    # «Sol» en la Lista, Oasis con su alias— para que la prueba no dependa de la Lista de hoy
+    _sv_h = codigo_servidor(h.get('guild'))[0]
+    _pers_antes, _sv_antes = _PERS[0], dict(_PERS_SV)
+    _PERS[0] = ({'sol': {'id:1', 'id:2'}, 'oasis': {'id:9'}, 'parkjisung': {'id:9'}}, {'id:1', 'id:2', 'id:9'})
+    _PERS_SV.clear()
+    _PERS_SV[_sv_h] = {}
+    try:
+        _qt = personas(_sv_h)
+        pj = ('# DOS GENERACIONES\n`[ OCTAVOS ]`\n⌞Soneto⌝ 🆚 ⌞ACH⌝\n'
+              '⌞DXG🇲🇽⌝ 🆚 ⌞tito calderon 🇦🇷⌝ 🆚 ⌞Park-Ji Sung🇰🇷⌝\n'
+              '`[ SEMIFINALES ]`\n⌞Soneto⌝ 🆚 ⌞Oasis🇨🇱⌝\nCAMPEÓN: Oasis🇨🇱')
+        _oc = [b for b in E.resolver(pj, quien=_qt) if b[0] == 'OCTAVOS' and 'DXG🇲🇽' in b[1]]
+        _oc0 = [b for b in E.resolver(pj) if b[0] == 'OCTAVOS' and 'DXG🇲🇽' in b[1]]
+        fpj = marcar_walkins(filas_de(dict(h, texto=pj))[0], [pj], quien=_qt)
+        # el que ya se llama Oasis en octavos es el Oasis de la semi: Park-Ji Sung no se lo lleva
+        px = ('# OTRA\n`[ OCTAVOS ]`\n⌞Oasis🇨🇱⌝ 🆚 ⌞Beto⌝\n⌞Park-Ji Sung🇰🇷⌝ 🆚 ⌞Caro⌝\n'
+              '`[ SEMIFINALES ]`\n⌞Oasis🇨🇱⌝ 🆚 ⌞Dani⌝\n')
+        _ox = [b for b in E.resolver(px, quien=_qt) if b[0] == 'OCTAVOS' and 'Caro' in b[1]]
+        _sol = personas(_sv_h)('Sol')
+        _PERS[0] = ({}, set())
+        fpj0 = marcar_walkins(filas_de(dict(h, texto=pj))[0], [pj], quien=personas(_sv_h))
+    finally:
+        _PERS[0] = _pers_antes
+        _PERS_SV.clear()
+        _PERS_SV.update(_sv_antes)
     # las llaves de broma: A publicó en la pre-temporada, B una que se cargó
     # (su mensaje está en los links) y C una que nunca se cargó
     _hb = [{'autor_id': 'A1', 'autor': 'viejo', 'cuando': '2026-09-10T02:00:00+00:00', 'msg_id': '11'},
@@ -2386,6 +2541,16 @@ def _self_check():
          not any('Walk-in' in f['notas'] for f in fwm)),
         ('… y sin los nombres de la mención lo era: la prueba mide algo',
          any('Walk-in 1: PROVENZA' in f['notas'] for f in fwm0)),
+        ('la misma persona con otro nombre pasa de ronda: «Park-Ji Sung» es Oasis (Dos Generaciones Vol 2)',
+         _oc and _oc[0][2] == 'Oasis🇨🇱' and 'Oasis🇨🇱' in _oc[0][1] and 'Park-Ji Sung🇰🇷' not in _oc[0][1]),
+        ('… y en cuartos no es walk-in: el campeón cobra entero',
+         not any('Walk-in' in f['notas'] for f in fpj)),
+        ('… y sin saber quién es quién, como antes: sin ganador y walk-in (la prueba mide algo)',
+         _oc0 and _oc0[0][2] is None and any('Walk-in 1: Oasis' in f['notas'] for f in fpj0)),
+        ('… pero el nombre que ya es de otro por su propio nombre no se le da a nadie más',
+         _ox and _ox[0][2] is None),
+        ('… y un nombre de dos personas de la Lista no es de ninguna',
+         _sol == frozenset()),
         ('filtros con nombres y sin batallas: se descarta',
          fase_sin_batallas('# COPA\nFILTROS\nAna\nBeto\nCaro\nDani\n'
                            'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
@@ -2618,7 +2783,10 @@ def main():
         # ⚠️ LAS MARCAS DE LLAVE NO SON PARA UN 5 VIDAS: `sin_repetir()` se
         # comería las revanchas, y las marcas tocan las filas en su lugar
         limpias = [] if any(h.get('vidas') for h in g['llaves']) else marcar_revividos(
-            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids), _txt)
+            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids,
+                           quien=personas(codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0],
+                                          {d: n for h in g['llaves'] for d, n in (h.get('menciones') or {}).items()})),
+            _txt)
         # 🔑 EL EQUIPO CON UN SOLO NOMBRE (TEAM VENECIA), AL FINAL: el revivido
         # y el walk-in se miran con la llave tal cual la escribieron. Ver
         # `marcar_equipos()`.

@@ -417,7 +417,40 @@
   }
 
   /* quién pasó en cada batalla: el que aparece en la ronda siguiente */
-  function resolver(rs, texto) {
+  /* 🔑 LA MISMA PERSONA CON OTRO NOMBRE (02/10/2026), como `escuchar.resolver()` con `quien`. `quien(nombre)` —opcional,
+     lo da la página con lo que sabe: la tabla, los alias y lo que el vigía reconoció en vivo— devuelve las claves de
+     persona de un nombre. Un lado de esta ronda pasa si su persona es la de UN nombre de la ronda siguiente que ningún
+     lado de esta ronda explica por su propio nombre, y uno a uno; pasa con el nombre de después, para que el cuadro lo
+     una. Sin `quien`, como siempre: el vigía de «te toca» llama sin él. */
+  function porPersona(R, sig, quien) {
+    var ren = {};
+    if (!quien || !sig) return ren;
+    var propios = {};
+    R[1].forEach(function (bb) { bb.forEach(function (s) { propios[clave(s)] = 1; }); });
+    var libres = {};
+    sig[1].forEach(function (bb) {
+      bb.forEach(function (x) {
+        x = sinPokemon(x);
+        if (equipo(x).length || propios[clave(x)]) return;
+        (quien(String(x).replace(HISTORIA, '')) || []).forEach(function (q) { (libres[q] = libres[q] || []).push(x); });
+      });
+    });
+    var tomados = {};
+    R[1].forEach(function (bb) {
+      bb.forEach(function (s) {
+        if (equipo(s).length) return;
+        var xs = [];
+        (quien(String(s).replace(HISTORIA, '')) || []).forEach(function (q) {
+          (libres[q] || []).forEach(function (x) { if (xs.indexOf(x) < 0) xs.push(x); });
+        });
+        if (xs.length === 1) (tomados[xs[0]] = tomados[xs[0]] || []).push(s);
+      });
+    });
+    Object.keys(tomados).forEach(function (x) { if (tomados[x].length === 1) ren[tomados[x][0]] = x; });
+    return ren;
+  }
+
+  function resolver(rs, texto, quien) {
     var arbol = rs.filter(function (R) { return R[0] !== 'TERCER LUGAR'; });
     var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto);
     return rs.map(function (R) {
@@ -433,7 +466,17 @@
           });
         });
       }
+      var ren = porPersona(R, sig, quien);
       return [R[0], R[1].map(function (b) {
+        // el lado que es otra persona con otro nombre pasa con el nombre de después
+        if (sig && Object.keys(ren).length && b.some(function (s) { return ren[s]; })) {
+          var gp = b.filter(function (s) { return ren[s]; });
+          var bp = b.map(function (s) { return ren[s] || s; });
+          var otros = b.filter(function (s) {
+            return !ren[s] && (lados.indexOf(clave(s)) >= 0 || (!equipo(s).length && miembros.indexOf(clave(s)) >= 0));
+          });
+          if (gp.length === 1 && !otros.length) return [bp, ren[gp[0]], ''];
+        }
         if (R[0] === 'TERCER LUGAR') return [b, '', ''];
         if (!sig) {
           // la última ronda: el campeón, si ya lo escribieron
@@ -754,14 +797,14 @@
   }
 
   /* 🔑 LA LLAVE PARA LA PÁGINA, con la misma forma que `datos/llaves_t1.json` */
-  function aLlave(b) {
+  function aLlave(b, quien) {
     var texto = traducir(plano(b.texto));
     var rs = b.rs || rondasDe(texto);
     // 🔑 una nave de funa se ve desde la fase, antes de que haya una batalla
     var fu = funaDe(texto);
     if (rs.length < 1 && !fu) return null;
     var coma = function (s) { return String(s || '').split(/\s*[+&]\s*/).filter(Boolean).join(', '); };
-    var rondas = resolver(rs, texto).map(function (R) {
+    var rondas = resolver(rs, texto, quien).map(function (R) {
       return { r: ETIQUETA[R[0]] || R[0], b: R[1].map(function (x) {
         return [x[0].map(coma), coma(x[1]), x[2], []];
       }) };

@@ -926,7 +926,7 @@ function pintaVivo() {
   var bloques = LlaveVivo.unirPartidas((VIVO.llaves || []).filter(function (m) { return !ya[m.id]; }));
   VIVO_L = {};
   var ls = bloques.map(function (b) {
-    try { return LlaveVivo.aLlave(b); } catch (e) { console.error('[llave en vivo]', e); return null; }
+    try { return LlaveVivo.aLlave(b, quienVivo(b.sv)); } catch (e) { console.error('[llave en vivo]', e); return null; }
   }).filter(function (L) {
     // en vivo = la tocaron en las últimas tres horas
     return L && L.rondas.length && ahora - (L.ed || L.pub || 0) < 3 * 3600000;
@@ -4030,6 +4030,18 @@ function kDe(n) {
   var ccs = banderasDe(n);
   var m = c.filter(function (f) { return ccs.indexOf(String(f.cc || '').toLowerCase()) >= 0; });
   return m.length === 1 ? m[0].k : '';
+}
+
+/* 🔑 QUIÉN ES CADA NOMBRE DE UNA LLAVE EN VIVO (02/10/2026), para `LlaveVivo.aLlave()`: la clave de su perfil por la
+   tabla y los alias del ciclo (`kDe()`), o por lo que el vigía reconoció en vivo —la inscripción de su cuenta, la
+   llamada, la mención— (`VIVO.quien`, por servidor). Así quien juega octavos como «Park-Ji Sung» y cuartos como
+   «Oasis» es uno solo, y el cuadro lo une. Dlx: «esto es lo más difícil de este sistema, reconocer a las personas». */
+function quienVivo(sv) {
+  var vivo = (VIVO && VIVO.quien && VIVO.quien[sv]) || {};
+  return function (n) {
+    var k = kDe(n) || vivo[normNombre(n)] || '';
+    return k ? [k] : [];
+  };
 }
 
 /* ── el buscador del Inicio ───────────────────────────────────────────

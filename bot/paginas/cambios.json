@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.83",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T11:40:00-04:00",
+   "titulo": "La llave reconoce a quien cambia de nombre",
+   "items": [
+    "🕵️ **La misma persona con otro nombre**: si alguien juega una ronda con un apodo y la siguiente con su nombre, la llave ahora sabe que es la misma persona, por su cuenta de Discord: con qué nombre se anotó, sus alias o la mención. Antes, ese cruce quedaba sin ganador, los que perdieron con él no cobraban su ronda y a él se lo tomaba como un walk-in, que cobra menos.",
+    "📡 **También en vivo**: el cuadro de una llave que se está jugando une las rondas aunque el nombre cambie."
+   ]
+  },
+  {
    "version": "1.82",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T11:15:00-04:00",

@@ -1169,8 +1169,23 @@ def _miembros(lado):
     return ms if len(ms) > 1 else []
 
 
-def resolver(texto, conocidos=None, ids=None):
+def _explicado(x, bats):
+    """¿Algún lado de esta ronda ES `x` por su propio nombre, igual o parecido?
+
+    Lo pregunta `quien` en `resolver()`: un nombre de la ronda siguiente que ya
+    tiene dueño por su nombre no se le da a otro por ser «la misma persona».
+    """
+    xl = HISTORIA.sub('', x)
+    return any(_parecido(n, [x]) or _parecido(HISTORIA.sub('', n), [xl])
+               for bb in bats for n in bb)
+
+
+def resolver(texto, conocidos=None, ids=None, quien=None):
     """[(ronda, [competidores], ganador|None, por_que)] de una llave.
+
+    `quien(nombre)` —opcional— da el conjunto de personas de un nombre (ver
+    `llaves_a_entrada.personas()`): con él, quien cambia de nombre de una
+    ronda a otra sigue siendo quien es. Sin él, se lee como siempre.
 
     `conocidos` son los nombres de los inscriptos de ese evento. Cuando
     estan, el parecido se busca contra ~16 candidatos en vez de contra
@@ -1387,6 +1402,48 @@ def resolver(texto, conocidos=None, ids=None):
                             if n in sust:
                                 break
                     ganan += [n for n in b if n in sust]
+                # 🔑 LA MISMA PERSONA CON OTRO NOMBRE (02/10/2026). En la DOS
+                # GENERACIONES UN DESTINO VOL 2 (FFA, 01/10) Oasis jugó octavos
+                # como «Park-Ji Sung🇰🇷» y cuartos como «Oasis🇨🇱»: no se
+                # parecen, así que «no aparecía nadie después», el octavo se iba
+                # a ✅ Decidir —DXG y tito calderon sin sus puntos— y Oasis salía
+                # «Walk-in 1» en cuartos: el campeón cobraba 5.000 y no 10.000.
+                # El dato estaba DOS veces: la hoja AKAs dice que Park Ji-Sung
+                # es Oasis, y la inscripción «Park-Ji Sung🇰🇷» la escribió la
+                # cuenta de Oasis. Dlx, ese día: *«esto es lo más difícil de
+                # este sistema, reconocer a las personas, y más cuando hacen
+                # esas cosas troll»*.
+                #
+                # `quien(nombre)` da las personas de un nombre según lo que el
+                # sistema SABE —la Lista, los AKAs, la inscripción de la propia
+                # cuenta, la mención— y no según un parecido. Ver
+                # `llaves_a_entrada.personas()`.
+                #
+                # ⚠️ SÓLO PARA EL NOMBRE DE LA RONDA SIGUIENTE QUE NADIE DE ESTA
+                # RONDA EXPLICA POR SU PROPIO NOMBRE (`_explicado()`), y uno a
+                # uno: si a un lado le tocan dos, o a uno le tocan dos lados, no
+                # se elige. Pasa con el nombre de después, como la mención: con
+                # los dos, el motor le pagaría a dos personas.
+                if quien is not None:
+                    libres = {}
+                    for x in sig:
+                        if _equipo(HISTORIA.sub('', x)) or _explicado(x, bats):
+                            continue
+                        for q in quien(HISTORIA.sub('', x)):
+                            libres.setdefault(q, set()).add(x)
+                    tomados = {}
+                    for n in b:
+                        if n in ganan or n in sust or _equipo(n):
+                            continue
+                        xs = set().union(*(libres.get(q) or set() for q in quien(HISTORIA.sub('', n))))
+                        if len(xs) == 1:
+                            x = next(iter(xs))
+                            if frozenset((norm(n), norm(x))) not in _distintos():
+                                tomados.setdefault(x, []).append(n)
+                    for x, ns in tomados.items():
+                        if len(ns) == 1:
+                            sust[ns[0]] = x
+                            ganan.append(ns[0])
                 if not ganan:
                     # el mismo equipo escrito al reves. Ver `_equipo()`.
                     # ⚠️ SIN LA HISTORIA `A(B+C)`, igual que `sig_l`: pegada al
