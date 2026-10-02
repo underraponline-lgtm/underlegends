@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.77",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T08:00:00-04:00",
+   "titulo": "La Temporada 1 arranca el 12 de octubre",
+   "items": [
+    "📅 **La Temporada 1 arranca el lunes 12 de octubre** (antes, el 5) y termina el 31 de diciembre. La fase de prueba sigue una semana más: lo que se juegue hasta el domingo 11 es de prueba.",
+    "📷 **La foto se cambia libre hasta el 16 de octubre** (antes, el 9). Después va una por temporada."
+   ]
+  },
+  {
    "version": "1.76",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T23:35:00-04:00",
