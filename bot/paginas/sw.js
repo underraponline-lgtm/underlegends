@@ -55,6 +55,16 @@ function armar(d) {
       url: d.url || '/', tag: 'ev' + (d.id || ''),
     };
   }
+  // 🔴 EL EVENTO SE CANCELÓ (01/10/2026, Dlx: «B»). Con el mismo `tag` que su aviso: si todavía está en el
+  // teléfono, lo reemplaza, y con `renotify` vuelve a sonar
+  if (d.tipo === 'cancelado') {
+    return {
+      titulo: '❌ Cancelado: ' + (d.t || 'el evento'),
+      cuerpo: [d.svn || d.sv, d.ini ? 'era a las ' + hora(d.ini) : ''].filter(Boolean).join(' · ') +
+        (d.por === 'editado' ? '\nEl servidor lo marcó como cancelado.' : '\nEl servidor borró el anuncio.'),
+      url: d.url || '/', tag: 'ev' + (d.id || ''),
+    };
+  }
   // 🔑 LOS AVISOS DE CADA UNO: subiste de rango, desbloqueaste una tarjeta
   if (d.tipo === 'personal') {
     return { titulo: d.t || 'Liga Global', cuerpo: d.b || '', url: d.url || '/', tag: 'yo' + (d.id || '') };

@@ -444,6 +444,8 @@ h1,h2,h3,p{margin:0}
 .fechas2{grid-auto-columns:158px}
 .fecha.hecho{background:var(--caja)}
 .fecha.hecho .f-hora{color:var(--gris)}
+.fecha.cancelado .f-hora{color:var(--magenta);font-weight:900}
+.fecha.cancelado .f-ev{text-decoration:line-through;opacity:.7}
 .fecha.dorado{border-color:var(--magenta);box-shadow:inset 0 0 0 2px var(--magenta)}
 .f-dia b{font-size:22px}
 .f-badge{justify-self:start;font:900 11px/1 Archivo,sans-serif;font-stretch:120%;background:var(--magenta);color:#fff;padding:5px 6px}

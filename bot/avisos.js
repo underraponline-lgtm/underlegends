@@ -145,6 +145,24 @@ export async function claveCiclo(token) {
   return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 
+/**
+ * 🔴 EL EVENTO QUE SE CANCELA. Dlx, 01/10/2026: «B» —que diga «Cancelado» y le avise a quien activó la campana para
+ * ese servidor—. Esa noche FFA anunció DESGRACIAS EN TOKYO VOL 21 2v2 para las 7:20 PM y lo borró: la campana ya
+ * había sonado y nadie supo que no se hacía.
+ *
+ * `estado` es lo que contestó Discord al pedir el anuncio (`GET /channels/<c>/messages/<id>`) y `m` el mensaje.
+ * Borrado (404), o editado diciendo «cancelado» o «suspendido». ⚠️ La palabra sólo cuenta si el anuncio NO la traía
+ * cuando se avisó (`cx` del cuerpo): «si no te presentás, tu cupo queda cancelado» es una regla, no una cancelación,
+ * y FFS anunció en broma «EL Q SE INSCRIBE SE CANCELA LA COMPE». ⚠️ Y cualquier otra respuesta (un 403, un 5xx, la
+ * red) no dice nada: no se cancela un evento porque Discord no contestó.
+ */
+export const CANCELADO = /\bcancelad[oa]s?\b|\bsuspendid[oa]s?\b|\bse\s+cancel[aó]\b/i;
+export function cancelado(estado, m, cuerpo) {
+  if (estado === 404) return 'borrado';
+  if (estado !== 200 || !m || (cuerpo && cuerpo.cx)) return '';
+  return CANCELADO.test(String(m.content || '')) ? 'editado' : '';
+}
+
 /** Los servidores con un evento en juego, de los anuncios que anotó el vigía. */
 export function svsEnVivo(cuerpos, ahora) {
   const out = new Set();
@@ -173,6 +191,10 @@ export function veredictosALeer(lista, vivos, calientes, minuto, tope = VER_TOPE
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
 export const CANAL_RED = '1500690475089399858';
 const HUB_AVISOS = 'https://underlegends.pages.dev/#/avisos';
+//: a dónde lleva el aviso de un evento cancelado: el calendario, en la pestaña de la página si hay una (`sw.js`)
+const HUB_EVENTOS = '/freestyle-rap/eventos';
+//: cuántos anuncios se le preguntan a Discord cada 2 minutos para ver si se cancelaron (ver `cancelaciones()`)
+const CANCELA_TOPE = 8;
 //: cuántas notificaciones por invocación. El plan gratis da 50 subpedidos
 //: por invocación: 20 envíos + 20 reintentos entran con margen.
 const LOTE = 20;
@@ -1700,6 +1722,9 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
         "batalla TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS cancelados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, ' +
+        "cuerpo TEXT NOT NULL, t INTEGER NOT NULL, por TEXT NOT NULL DEFAULT '')");
     });
   }
 
@@ -1941,10 +1966,17 @@ export class Avisos {
       try { await this.inscripciones(ahora); } catch (e) {
         this.guardar('inscritos', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 🔑 y el evento que se canceló. Nunca frena al vigía: ver `cancelaciones()`
+      try {
+        if (await this.cancelaciones(ahora)) nuevos++;
+      } catch (e) {
+        this.guardar('cancelados', { t: ahora, error: String(e).slice(0, 160) });
+      }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
       this.sql.exec('DELETE FROM avisos WHERE creado < ?', ahora - 2 * 24 * HORA);
+      this.sql.exec('DELETE FROM cancelados WHERE t < ?', ahora - 3 * 24 * HORA);
       this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
     }
@@ -2133,7 +2165,62 @@ export class Avisos {
       'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray(),
     // 🔑 los veredictos, para que la página arme las batallas de un 5 vidas
     veredictos: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM veredictos ' +
-      'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray() };
+      'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray(),
+    // 🔑 y lo que se canceló en el último día, para que la página lo diga (ver `cancelaciones()`)
+    cancelados: this.sql.exec('SELECT id, sv, cuerpo, t, por FROM cancelados WHERE t > ? ORDER BY t DESC LIMIT 20',
+      ahora - 24 * HORA).toArray().map((r) => {
+      let c = {};
+      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+      return { id: r.id, sv: r.sv, n: c.t || '', ini: c.ini || null, t: r.t, por: r.por };
+    }) };
+  }
+
+  /**
+   * 🔴 EL EVENTO QUE SE CANCELÓ: su anuncio se borró o se editó a «cancelado» (ver `cancelado()`). Cada 2 minutos se
+   * le pregunta a Discord por cada anuncio avisado de los últimos dos días que todavía no empezó (o empezó hace menos de
+   * media hora): son pocos, uno por evento. Al que se canceló, lo que no salió no sale —el aviso y su recordatorio— y a
+   * quien ya le llegó, el de cancelado (`tipo: 'cancelado'`, ver `armar()` en `sw.js`). Devuelve si hubo alguno.
+   */
+  async cancelaciones(ahora) {
+    if (Math.floor(ahora / MIN) % 2) return false;
+    const filas = this.sql.exec("SELECT id, sv, cuerpo, estado, cursor FROM avisos WHERE estado IN (0, 1) " +
+      "AND creado > ? AND instr(id, ':') = 0", ahora - 2 * 24 * HORA).toArray();
+    let pedidos = 0, hubo = false;
+    for (const f of filas) {
+      let c = null;
+      try { c = JSON.parse(f.cuerpo); } catch (e) { c = null; }
+      if (!c || c.tipo !== 'evento' || !c.url) continue;
+      if (c.ini != null && ahora > c.ini + 30 * MIN) continue;
+      if (this.sql.exec('SELECT 1 FROM cancelados WHERE id = ?', f.id).toArray().length) continue;
+      const p = /\/channels\/\d+\/(\d+)\/(\d+)/.exec(c.url);
+      if (!p || pedidos >= CANCELA_TOPE) continue;
+      pedidos++;
+      let estado = 0, m = null;
+      try {
+        const r = await fetch(`${DC}/channels/${p[1]}/messages/${p[2]}`, {
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+        });
+        estado = r.status;
+        if (estado === 200) m = await r.json();
+      } catch (e) { estado = 0; }
+      const por = cancelado(estado, m, c);
+      if (!por) continue;
+      hubo = true;
+      this.state.storage.transactionSync(() => {
+        this.sql.exec('INSERT OR IGNORE INTO cancelados (id, sv, cuerpo, t, por) VALUES (?, ?, ?, ?, ?)',
+          f.id, f.sv, f.cuerpo, ahora, por);
+        // lo que todavía no salió, no sale: el aviso del evento y su recordatorio
+        this.sql.exec('UPDATE avisos SET estado = 2 WHERE (id = ? OR id = ?) AND estado = 0', f.id, f.id + ':antes');
+        // y si a alguien ya le llegó el del evento, el de cancelado (el mismo `tag` lo reemplaza en el teléfono)
+        if (f.estado === 1 || f.cursor) {
+          const cx = { v: 1, tipo: 'cancelado', id: c.id, t: c.t, sv: c.sv, svn: c.svn, ini: c.ini, url: HUB_EVENTOS, por };
+          this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) VALUES (?, ?, ?, ?, ?, ?)',
+            'cx:' + f.id, f.sv, JSON.stringify(cx), ahora, ahora + 2 * HORA, ahora);
+        }
+      });
+    }
+    if (pedidos || hubo) this.guardar('cancelados', { t: ahora, pedidos, hubo });
+    return hubo;
   }
 
   /** ¿Hay que avisar este mensaje? Lo anota y dice si era nuevo. */
@@ -2199,6 +2286,8 @@ export class Avisos {
       mod: a.modalidad.slice(0, 60), cup: a.cupos.slice(0, 40),
       pre: a.premios.slice(0, 60),
       url: `https://discord.com/channels/${c.g}/${c.id}/${m.id}`,
+      // el anuncio ya decía «cancelado» al avisarlo: esa palabra no lo cancela (ver `cancelado()`)
+      cx: CANCELADO.test(String(m.content || '')) ? 1 : undefined,
     };
     const hasta = ini != null ? ini + GRACIA : publicado + EDAD_SIN_HORA;
     this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +

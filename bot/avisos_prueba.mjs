@@ -48,6 +48,21 @@ const ok = (cond, que) => {
   ok(!A.releer({ estado: 2, hasta: 999, cuerpo: '{"t":"X"}' }, ed), 'ni lo vencido');
 }
 
+// ── 0a · el evento cancelado (Dlx, 01/10/2026: «B») ─────────────────
+{
+  console.log('0a · el evento cancelado');
+  const ev = { tipo: 'evento', t: 'DESGRACIAS EN TOKYO VOL 21 2v2' };
+  ok(A.cancelado(404, null, ev) === 'borrado', 'el anuncio borrado (404) es un evento cancelado');
+  ok(A.cancelado(200, { content: '❌ EVENTO CANCELADO, perdón' }, ev) === 'editado',
+    'el editado diciendo «cancelado» también');
+  ok(A.cancelado(200, { content: 'SUSPENDIDO hasta nuevo aviso' }, ev) === 'editado', 'y «suspendido»');
+  ok(A.cancelado(200, { content: 'si no te presentás tu cupo queda cancelado' }, { ...ev, cx: 1 }) === '',
+    'pero no si el anuncio ya decía la palabra al avisarlo (una regla, no una cancelación)');
+  ok(A.cancelado(200, { content: 'TOKYO VOL 21 · 2v2 · cupos 16' }, ev) === '', 'el anuncio que sigue igual, no');
+  ok(A.cancelado(403, null, ev) === '' && A.cancelado(500, null, ev) === '' && A.cancelado(0, null, ev) === '',
+    'y un 403, un 5xx o sin red no dicen nada: no se cancela porque Discord no contestó');
+}
+
 // ── 0b · los avisos de cada uno ───────────────────────────────────────
 {
   console.log('0b · los avisos de cada uno');

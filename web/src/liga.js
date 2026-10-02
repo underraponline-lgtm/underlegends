@@ -207,6 +207,17 @@ export class Liga {
   // Cuartos a medio jugar: `vivo_min` es lo que dura una llave CUANDO NO HAY LLAVE A LA VISTA. Con su llave en vivo
   // (`VIVO_L` de app.js: tocada en las últimas 3 h y sin campeón) sigue, hasta 8 h; y si ya salió de `proximos`, se
   // la busca en el calendario. ⚠️ Sin llave, los 90 minutos de siempre (Dlx, 24/09: lo pasado mostrado como en vivo).
+  // 🔴 LOS EVENTOS CANCELADOS (01/10/2026, Dlx: «B»): el vigía ve que el anuncio se borró —o se editó a «cancelado»— y
+  // lo dice en `/api/avisos/vivo` (`window.VIVO.cancelados` de app.js, el último día). El payload lo saca recién en la
+  // corrida siguiente del ciclo (hasta 30 min), y mientras tanto el evento seguía «en vivo» o «próximo»
+  cancelados() {
+    const cs = (typeof window !== 'undefined' && window.VIVO && window.VIVO.cancelados) || [];
+    return Array.isArray(cs) ? cs : [];
+  }
+  esCancelado(e) {
+    const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
+    return !!m && this.cancelados().some((c) => String(c.id) === m[1]);
+  }
   vivo() {
     const m = this.d.vivo_min || 90;
     const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => !L.terminada) : [];
@@ -217,16 +228,16 @@ export class Liga {
     const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
     const out = (this.d.proximos || []).filter((e) => {
       const s = desde(e);
-      return s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e)));
+      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e)));
     });
     (this.d.calendario || []).forEach((c) => {
       const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };
       const s = desde(e);
-      if (s > m * 60 && s <= 8 * 3600 && !out.some((x) => x.sv === e.sv && limpio(x.nombre) === limpio(e.nombre)) && sigue(e)) out.push(e);
+      if (s > m * 60 && s <= 8 * 3600 && !this.esCancelado(e) && !out.some((x) => x.sv === e.sv && limpio(x.nombre) === limpio(e.nombre)) && sigue(e)) out.push(e);
     });
     return out;
   }
-  luego() { return (this.d.proximos || []).filter((e) => utc(e.cuando) > this.ahora); }
+  luego() { return (this.d.proximos || []).filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)); }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }
   campeon(ll) {
     const t = ll.tabla || [];

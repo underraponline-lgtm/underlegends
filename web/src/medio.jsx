@@ -14,6 +14,14 @@ export function Fechas({ liga }) {
     t.push({ c: dor ? 'dorado' : '', dia: liga.dia(e.cuando).split(' ')[0].toUpperCase(), hora: hora(e.cuando) + ' · tu hora',
       sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: e.link });
   });
+  // 🔴 lo que se canceló (el vigía vio que el anuncio se borró, ver `liga.cancelados()`): dice «CANCELADO» hasta seis
+  // horas después de la hora en que era, en vez de desaparecer como si nada (Dlx, 01/10/2026: «B»)
+  liga.cancelados().forEach((c) => {
+    const ini = c.ini ? new Date(c.ini) : null;
+    if (ini && (liga.ahora - ini) > 6 * 3600000) return;
+    t.push({ c: 'cancelado', dia: ini ? liga.dia(ini).split(' ')[0].toUpperCase() : 'HOY', hora: 'CANCELADO',
+      sv: c.sv, ev: limpio(c.n), det: ini ? 'era a las ' + hora(ini) : 'el servidor lo canceló' });
+  });
   liga.llaves().slice(0, 3).forEach((ll) => {
     const g = liga.campeon(ll);
     t.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos', sv: ll.sv,
