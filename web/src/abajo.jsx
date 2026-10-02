@@ -69,16 +69,22 @@ export function Pie({ liga }) {
 
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
 export function Tabbar({ liga, dc, pagina = '' }) {
-  // tu cuenta vive abajo, en «Yo», como el «Tú» de Discord, y arriba queda el ⚙ (Dlx, 02/10/2026: «el engranaje en vez
-  // de la cuenta»). Las Tarjetas siguen en el menú ☰
-  const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'],
-    ['Publicaciones', 'publicaciones', '#/publicaciones']];
+  // 🔑 UNA TIRA QUE SE DESLIZA, con todas las secciones como en la compu. Dlx, 28/09/2026: «en el PC será normal pero
+  // en celular haz que se deslice para ver más opciones», y el 02/10, al ver cinco fijas: «pensé que habíamos acordado
+  // que lo de abajo sería en una tira como está en el ordenador». Las mismas de `MENU` (la cabecera de la compu): una
+  // sección nueva entra en las dos. Y tu cuenta, «Yo», fija a la derecha y fuera de la tira (02/10: «el engranaje en
+  // vez de la cuenta»), como el «Tú» de Discord
   const yo = liga && liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
   return (
     <nav className="tabbar" aria-label="Secciones">
-      {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' && !pagina ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
-      <a href="#/cuenta" className={pagina === 'cuenta' ? 'on' : ''} aria-label="Mi cuenta">{cara || <Ico n="yo" t={22} />}<span>Yo</span></a>
+      <div className="tb-tira">
+        {MENU.map(([n, r]) => {
+          const k = r.replace(/^#\/?/, '') || 'inicio';
+          return <a key={k} href={r} className={k === 'inicio' && !pagina ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
+        })}
+      </div>
+      <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Mi cuenta">{cara || <Ico n="yo" t={22} />}<span>Yo</span></a>
     </nav>
   );
 }

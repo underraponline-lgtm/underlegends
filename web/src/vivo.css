@@ -38,6 +38,16 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .tabbar .tab-b{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;
   text-transform:uppercase}
 @media (min-width: 900px){.tabbar{display:none}}
+/* 🔑 LA TIRA QUE SE DESLIZA (Dlx, 28/09 y 02/10/2026): las nueve secciones de la cabecera de la compu, y se ven
+   cuatro y media —la media dice que hay más, como en la barra de la página de hoy—. Sin borde que se apaga: en el
+   remake no hay degradés. «Yo» queda fijo afuera de la tira */
+.tabbar{display:flex;align-items:stretch}
+.tb-tira{display:flex;flex:1;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
+  scrollbar-width:none}
+.tb-tira::-webkit-scrollbar{display:none}
+.tabbar .tb-tira a{flex:0 0 auto;min-width:68px;padding-inline:10px;scroll-snap-align:start}
+.tabbar .tb-tira a span{white-space:nowrap}
+.tabbar .tb-yo{flex:0 0 auto;min-width:64px;border-left:2px solid var(--linea)}
 /* «Yo», con tu cara (02/10/2026): del tamaño de los íconos de al lado, y con borde si la pestaña está marcada */
 .tabbar .tb-cara{width:24px;height:24px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
   background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif}
