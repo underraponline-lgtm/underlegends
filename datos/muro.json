@@ -48,18 +48,18 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "",
+"pichulamc": {
+"rg": "B",
 "c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
 },
-"pichulamc": {
-"rg": "C",
+"panchok": {
+"rg": "",
 "c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -201,14 +201,14 @@
 "temporada"
 ]
 },
-"trot": {
+"cinexfilo": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"cinexfilo": {
+"trot": {
 "rg": "",
 "c": [
 "servidor",
@@ -256,6 +256,10 @@
 "servidor",
 "temporada"
 ]
+},
+"riferian": {
+"rg": "",
+"c": []
 },
 "lordviruzz": {
 "rg": "",
@@ -311,6 +315,13 @@
 ]
 },
 "soneto": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -405,6 +416,12 @@
 "temporada"
 ]
 },
+"kochi": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "noxvell": {
 "rg": "",
 "c": [
@@ -420,6 +437,13 @@
 ]
 },
 "mhs": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"sosa": {
 "rg": "",
 "c": [
 "servidor",
@@ -493,7 +517,7 @@
 "temporada"
 ]
 },
-"jupiter": {
+"aby": {
 "rg": "",
 "c": [
 "servidor",
@@ -645,13 +669,6 @@
 "temporada"
 ]
 },
-"sosa": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "agre": {
 "rg": "",
 "c": [
@@ -682,13 +699,6 @@
 "c": []
 },
 "pomberito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"aby": {
 "rg": "",
 "c": [
 "servidor",
@@ -793,6 +803,10 @@
 "servidor",
 "temporada"
 ]
+},
+"bsk": {
+"rg": "",
+"c": []
 },
 "indigena": {
 "rg": "",
@@ -3104,6 +3118,15 @@
 "Dyzz"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-02T16:26:23Z",
+"quien": [
+"PichulaMc"
+],
+"rg": "B",
+"primero": false
 }
 ]
 }

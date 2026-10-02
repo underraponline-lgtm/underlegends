@@ -211,6 +211,7 @@
   "kur": "Jult",
   "azillmoyta": "Gocho",
   "kurl": "Jult",
+  "bsk": "Velatz",
   "makma": "Makmah",
   "fokox": "Focox",
   "gekto": "Presagio",
@@ -1068,6 +1069,10 @@
   [
    "kurl",
    "Jult"
+  ],
+  [
+   "Bsk",
+   "Velatz"
   ],
   [
    "Makma",

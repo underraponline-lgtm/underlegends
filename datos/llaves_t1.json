@@ -587,6 +587,14 @@
       ],
       "Liberia",
       ""
+     ],
+     [
+      [
+       "onzass",
+       "gus"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -6725,6 +6733,15 @@
       ],
       "Snow",
       "triple (3 bandas)"
+     ],
+     [
+      [
+       "Korey🇨🇱",
+       "Eyou",
+       "Tayo🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -6920,6 +6937,151 @@
     "tito calderon",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "380": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1555357529846972507"
+  ],
+  "n": 380,
+  "nombre": "POESÍA CRUDA",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Bsk🇦🇷",
+       "El Hombre Eyau🇦🇷"
+      ],
+      "Bsk🇦🇷",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Sosa"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Jupiter",
+       "Cinexfilo"
+      ],
+      "Jupiter",
+      ""
+     ],
+     [
+      [
+       "Riferian 🇵🇦",
+       "Bsk🇦🇷"
+      ],
+      "Riferian 🇵🇦",
+      ""
+     ],
+     [
+      [
+       "Kochi",
+       "Aby"
+      ],
+      "Kochi",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Jupiter"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Riferian 🇵🇦",
+       "Kochi"
+      ],
+      "Riferian 🇵🇦",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Riferian 🇵🇦"
+      ],
+      "PichulaMc",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Riferian 🇵🇦",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Jupiter",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Kochi",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Aby",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Bsk🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "El Hombre Eyau🇦🇷",
+    "R32",
+    0
    ]
   ]
  }
