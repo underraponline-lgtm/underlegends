@@ -1210,7 +1210,10 @@
 },
 "ach": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "blitz": {
 "rg": "",
@@ -1232,7 +1235,10 @@
 },
 "dyzz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "elsolar": {
 "rg": "",
@@ -3057,6 +3063,38 @@
 "t": "2026-10-02T03:08:33Z",
 "quien": [
 "Emily Family"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T03:37:26Z",
+"quien": [
+"ACH"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T03:37:26Z",
+"quien": [
+"ACH"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T03:37:26Z",
+"quien": [
+"Dyzz"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T03:37:26Z",
+"quien": [
+"Dyzz"
 ],
 "carta": "temporada"
 }
