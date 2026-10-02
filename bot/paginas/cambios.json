@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.84",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T11:50:00-04:00",
+   "titulo": "En vivo, cada nombre con su cara",
+   "items": [
+    "🕵️ **La llave en vivo reconoce a la gente con nombres raros**: cada minuto, el bot mira con qué nombre se anotó cada cuenta, quién está en la llamada y a quién mencionan, y con eso dice quién es cada nombre de la llave. Así, quien juega con un nombre de broma sale con su cara y su perfil mientras se juega, y no recién cuando se procesa el evento.",
+    "🔒 A la página llega sólo de qué perfil es cada nombre, nunca la cuenta de nadie."
+   ]
+  },
+  {
    "version": "1.83",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T11:40:00-04:00",

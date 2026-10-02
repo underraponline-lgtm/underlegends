@@ -1452,6 +1452,89 @@ export function conNombres(m) {
   return String((m && m.content) || '').replace(/<@!?(\d+)>/g, (t, id) => (n[id] ? '@' + n[id] : t));
 }
 
+// ── 🕵️ QUIÉN ES CADA NOMBRE DE UNA LLAVE EN VIVO (02/10/2026) ───────────────────────────────────────────────────
+// Dlx: «te dije múltiples vías para detectar quiénes participan: las inscripciones dentro del canal de inscritos,
+// quiénes están en las llamadas y los veredictos… asegúrate de que en vivo se mejore más aún… esto es lo más difícil de
+// este sistema, reconocer a las personas, y más cuando hacen esas cosas troll». El ciclo ya cruzaba esas pistas, pero
+// cada media hora y para la planilla; la llave en vivo sólo sabía los nombres de la tabla y los alias. Ahora el vigía,
+// cada minuto y sólo con llaves en vivo, dice de qué cuenta es cada nombre:
+//   · la INSCRIPCIÓN de la propia cuenta en ese servidor, con un solo nombre —y no la de quien anota a otros: la regla
+//     de `decidir._inscritos()`—;
+//   · la LLAMADA de ese servidor (`voz:<SV>`, ver `bot/en_llamada.py`): el apodo, el nombre visible o el usuario;
+//   · la MENCIÓN de la llave: lo que Discord trae de cada `<@ID>`.
+// ⚠️ SÓLO EL NOMBRE EXACTO (sin banderas ni tildes) Y DE UNA SOLA CUENTA: dos cuentas para un nombre no son ninguna.
+// ⚠️ Y A LA PÁGINA VA EL PERFIL, NUNCA EL ID: de la cuenta al perfil por `d:`/`dn:`, las claves de `/card`.
+
+const HISTORIA_VIVO = /\s*[(（][^()（）]*[)）]?\s*$/u;
+
+/** El nombre como lo compara la página (`normNombre()` de app.js), sin la historia `(…)` del final. */
+export function normPagina(s) {
+  return String(s || '').replace(HISTORIA_VIVO, '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+}
+
+/** Los nombres de una inscripción, como `decidir._nombres_insc()`: sin la nota entre paréntesis, partidos por `+ & , /`,
+ *  «y», «e» y la bandera que separa dos nombres. */
+export function nombresInscripcion(texto) {
+  const t = String(texto || '').replace(/\(.*?\)|\(.*$/g, ' ');
+  const out = [];
+  for (const p of t.split(/\s*(?:\+|&|,|\/|\by\b|\be\b)\s*/i)) {
+    for (const q of p.split(/(?:[\u{1F1E6}-\u{1F1FF}]{2}\s*)+(?=[^\s\u{1F1E6}-\u{1F1FF}])/u)) {
+      const n = normPagina(q);
+      if (n.length >= 2) out.push(n);
+    }
+  }
+  return out;
+}
+
+/** `{id: [apodo, nombre visible, usuario]}` de las menciones de un mensaje (`escuchar.menciones_de()`). */
+export function mencionesDe(m) {
+  const out = {};
+  for (const u of (m && m.mentions) || []) {
+    if (!u || !/^\d+$/.test(String(u.id || ''))) continue;
+    const ns = [(u.member && u.member.nick) || '', u.global_name || '', u.username || ''].filter(Boolean);
+    if (ns.length) out[u.id] = ns;
+  }
+  return out;
+}
+
+/** `Map(nombre normalizado -> Set(cuentas))` con las tres pistas. Ver el encabezado de esta sección. */
+export function indiceVivo(inscritos, voz, menciones) {
+  const idx = new Map();
+  const poner = (n, id) => {
+    const k = normPagina(n);
+    if (k.length < 3 || !id) return;
+    if (!idx.has(k)) idx.set(k, new Set());
+    idx.get(k).add(String(id));
+  };
+  const por = new Map();
+  for (const x of inscritos || []) {
+    const id = String((x && x.autor_id) || '');
+    const ns = nombresInscripcion(x && x.texto);
+    if (!/^\d+$/.test(id) || ns.length !== 1) continue;
+    if (!por.has(id)) por.set(id, []);
+    por.get(id).push(ns[0]);
+  }
+  // dos grafías del mismo («prr» y «prrr») valen; dos nombres distintos desde una cuenta son alguien anotando a otros
+  for (const [id, ns] of por) {
+    const corto = ns.reduce((a, b) => (b.length < a.length ? b : a));
+    if (ns.every((n) => n.indexOf(corto) >= 0)) ns.forEach((n) => poner(n, id));
+  }
+  for (const [id, e] of Object.entries(voz || {})) for (const n of (e && e.n) || []) poner(n, id);
+  for (const [id, ns] of Object.entries(menciones || {})) for (const n of ns || []) poner(n, id);
+  return idx;
+}
+
+/** `{nombre normalizado: cuenta}` de los nombres que tienen UNA sola cuenta en el índice. */
+export function quienesDe(nombres, idx) {
+  const out = {};
+  for (const n of nombres || []) {
+    const k = normPagina(n);
+    const s = idx.get(k);
+    if (k.length >= 3 && s && s.size === 1) out[k] = [...s][0];
+  }
+  return out;
+}
+
 /**
  * `/avisos/*` del Worker. Lo llama el proxy de Pages (`/api/avisos/*`).
  *
@@ -1891,6 +1974,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS inscritos (id TEXT PRIMARY KEY, canal TEXT NOT NULL, ' +
         "nombre TEXT NOT NULL DEFAULT '', sv TEXT NOT NULL DEFAULT '', autor_id TEXT NOT NULL DEFAULT '', " +
         "autor TEXT NOT NULL DEFAULT '', pub INTEGER NOT NULL, ed INTEGER NOT NULL, texto TEXT NOT NULL DEFAULT '')");
+      // 🕵️ QUIÉN ES CADA NOMBRE EN VIVO (02/10/2026): las menciones de cada llave, y de qué perfil es cada cuenta
+      // (`d:`/`dn:` de KV, guardado unas horas para no pedirlo cada minuto). Ver `quienes()`
+      try { this.sql.exec("ALTER TABLE vivo ADD COLUMN men TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      this.sql.exec("CREATE TABLE IF NOT EXISTS idk (id TEXT PRIMARY KEY, k TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 🔑 UN ERROR EN UNA LLAVE (28/09/2026): ver `reportar()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
@@ -2154,6 +2241,10 @@ export class Avisos {
       try { await this.turnos(ahora); } catch (e) {
         this.guardar('turnos', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 🕵️ y quién es cada nombre de las llaves en vivo. Nunca frena al vigía: ver `quienes()`
+      try { await this.quienes(ahora); } catch (e) {
+        this.guardar('quien', { ...(this.leer('quien') || {}), error: String(e).slice(0, 160) });
+      }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
@@ -2224,10 +2315,12 @@ export class Avisos {
         if (!pareceLlave(texto)) continue;
         const fila = this.sql.exec('SELECT ed, texto FROM vivo WHERE id = ?', m.id).toArray()[0];
         if (fila && fila.texto === texto) continue;
-        this.sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto) ' +
-          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
-          'texto = excluded.texto, visto = excluded.visto', m.id, c.id, c.sv || '', c.g || '',
-        (m.author && m.author.id) || '', pub, Math.max(pub, ed || 0), texto, ahora);
+        // 🕵️ y de quién es cada mención: el texto ya la trae como `@apodo` (ver `quienes()`)
+        const men = JSON.stringify(mencionesDe(m));
+        this.sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+          'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
+          'texto = excluded.texto, visto = excluded.visto, men = excluded.men', m.id, c.id, c.sv || '', c.g || '',
+        (m.author && m.author.id) || '', pub, Math.max(pub, ed || 0), texto, ahora, men);
         nuevas++;
       }
     }
@@ -2348,6 +2441,8 @@ export class Avisos {
     // 🔑 los veredictos, para que la página arme las batallas de un 5 vidas
     veredictos: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM veredictos ' +
       'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray(),
+    // 🕵️ y quién es cada nombre de esas llaves, por la inscripción, la llamada o la mención: ver `quienes()`
+    quien: (this.leer('quien') || {}).svs || {},
     // 🔑 y lo que se canceló en el último día, para que la página lo diga (ver `cancelaciones()`)
     cancelados: this.sql.exec('SELECT id, sv, cuerpo, t, por FROM cancelados WHERE t > ? ORDER BY t DESC LIMIT 20',
       ahora - 24 * HORA).toArray().map((r) => {
@@ -2420,6 +2515,75 @@ export class Avisos {
         sin_vinculo: sinVinculo, pedidos });
     }
     return enviados;
+  }
+
+  /**
+   * 🕵️ QUIÉN ES CADA NOMBRE DE LAS LLAVES EN VIVO, cada minuto (02/10/2026): ver `indiceVivo()`. Lo lee la página en
+   * `/avisos/vivo` (`quien`, `{SV: {nombre normalizado: perfil}}`) para la cara, el perfil y para unir las rondas de
+   * quien cambia de nombre (`quienVivo()` de app.js).
+   * ⚠️ SÓLO CON LLAVES EN VIVO, y cuesta poco: la llamada se lee de KV cada 5 minutos por servidor, y de qué perfil es
+   * cada cuenta se guarda 6 horas (`idk`), con un tope de cuentas nuevas por minuto. Nunca frena al vigía.
+   */
+  async quienes(ahora) {
+    const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto, men FROM vivo WHERE ed > ?',
+      ahora - 3 * HORA).toArray();
+    if (!filas.length) {
+      if (Object.keys((this.leer('quien') || {}).svs || {}).length) this.guardar('quien', { t: ahora, svs: {} });
+      return;
+    }
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const LV = globalThis.LlaveVivo;
+    if (!LV) return;
+    const porSv = {};
+    for (const b of LV.unirPartidas(filas)) {
+      let L = null;
+      try { L = LV.aLlave(b); } catch (e) { L = null; }
+      if (!L || !b.sv) continue;
+      const s = porSv[b.sv] = porSv[b.sv] || { nombres: new Set(), men: {} };
+      for (const R of L.rondas) for (const x of R.b) for (const lado of x[0]) {
+        for (const n of String(lado).split(/\s*,\s*/)) if (n) s.nombres.add(n);
+      }
+    }
+    for (const f of filas) {
+      if (!f.sv || !porSv[f.sv] || !f.men) continue;
+      try { Object.assign(porSv[f.sv].men, JSON.parse(f.men) || {}); } catch (e) { /* una fila rara no frena */ }
+    }
+    this.vozCache = this.vozCache || {};
+    const out = {};
+    let pedidos = 0, cuentas = 0;
+    for (const [sv, s] of Object.entries(porSv)) {
+      const insc = this.sql.exec('SELECT autor_id, texto FROM inscritos WHERE sv = ? AND pub > ?', sv,
+        ahora - 36 * HORA).toArray();
+      let vc = this.vozCache[sv];
+      if (!vc || ahora - vc.t > 5 * MIN) {
+        let g = {};
+        try { g = ((JSON.parse((await this.env.KV.get('voz:' + sv)) || '{}') || {}).gente) || {}; } catch (e) { g = {}; }
+        vc = this.vozCache[sv] = { t: ahora, gente: g };
+      }
+      // de la llamada, quien se vio en las últimas 6 horas
+      const voz = {};
+      for (const [id, e] of Object.entries(vc.gente || {})) {
+        if (((e && e.t) || []).some((t) => ahora - t < 6 * HORA)) voz[id] = e;
+      }
+      const ids = quienesDe([...s.nombres], indiceVivo(insc, voz, s.men));
+      const m = {};
+      for (const [n, id] of Object.entries(ids)) {
+        cuentas++;
+        const fila = this.sql.exec('SELECT k, t FROM idk WHERE id = ?', id).toArray()[0];
+        let k = fila && ahora - fila.t < 6 * HORA ? fila.k : null;
+        if (k === null) {
+          if (pedidos >= 30) continue;          // el resto, el minuto que viene
+          pedidos++;
+          try { k = (await this.env.KV.get('d:' + id)) || (await this.env.KV.get('dn:' + id)) || ''; } catch (e) { continue; }
+          this.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET k = excluded.k, ' +
+            't = excluded.t', id, k, ahora);
+        }
+        if (k) m[n] = k;
+      }
+      if (Object.keys(m).length) out[sv] = m;
+    }
+    this.sql.exec('DELETE FROM idk WHERE t < ?', ahora - 24 * HORA);
+    this.guardar('quien', { t: ahora, svs: out, cuentas, pedidos });
   }
 
   /**

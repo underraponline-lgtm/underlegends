@@ -475,7 +475,10 @@
           var otros = b.filter(function (s) {
             return !ren[s] && (lados.indexOf(clave(s)) >= 0 || (!equipo(s).length && miembros.indexOf(clave(s)) >= 0));
           });
-          if (gp.length === 1 && !otros.length) return [bp, ren[gp[0]], ''];
+          // y si con él pasan varios (un grupo de tres donde siguen dos), «pasan N», como abajo
+          var npasan = gp.length + otros.length;
+          if (npasan === 1) return [bp, ren[gp[0]], ''];
+          if (npasan > 1) return [bp, '', 'pasan ' + npasan];
         }
         if (R[0] === 'TERCER LUGAR') return [b, '', ''];
         if (!sig) {

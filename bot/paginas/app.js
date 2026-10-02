@@ -4026,7 +4026,9 @@ function kDe(n) {
   // que es Oasis». El ciclo ya lo resolvía; la llave en vivo la arma la
   // página, y acá sólo había nombres de la tabla: MAKMA (Makmah) y PRR
   // (Hassan) tampoco abrían su perfil.
-  if (!c.length) return (D.alias && D.alias[normNombre(n)]) || '';
+  // 🕵️ y, si tampoco es un alias, lo que el vigía reconoció en vivo: la inscripción de su cuenta, la llamada o la
+  // mención (02/10/2026). Ver `kVivo()`
+  if (!c.length) return (D.alias && D.alias[normNombre(n)]) || kVivo(n) || '';
   var ccs = banderasDe(n);
   var m = c.filter(function (f) { return ccs.indexOf(String(f.cc || '').toLowerCase()) >= 0; });
   return m.length === 1 ? m[0].k : '';
@@ -4039,9 +4041,18 @@ function kDe(n) {
 function quienVivo(sv) {
   var vivo = (VIVO && VIVO.quien && VIVO.quien[sv]) || {};
   return function (n) {
-    var k = kDe(n) || vivo[normNombre(n)] || '';
+    var k = kDe(n) || vivo[normVivo(n)] || '';
     return k ? [k] : [];
   };
+}
+/* el nombre como lo guarda el vigía (`normPagina()` de bot/avisos.js): sin la historia `(…)` del final */
+function normVivo(n) { return normNombre(String(n || '').replace(/\s*[(（][^()（）]*[)）]?\s*$/u, '')); }
+/* 🕵️ el perfil que el vigía reconoció en vivo para un nombre (`VIVO.quien`), si es uno solo en todos los servidores */
+function kVivo(n) {
+  var q = (VIVO && VIVO.quien) || {}, k = normVivo(n), hay = {};
+  Object.keys(q).forEach(function (sv) { if (q[sv] && q[sv][k]) hay[q[sv][k]] = 1; });
+  var ks = Object.keys(hay);
+  return ks.length === 1 ? ks[0] : '';
 }
 
 /* ── el buscador del Inicio ───────────────────────────────────────────

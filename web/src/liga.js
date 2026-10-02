@@ -52,6 +52,8 @@ export function utc(s) {
 
 // ── las horas: en la zona y el formato que la persona eligió en Ajustes (las funciones de app.js) ──
 const W = typeof window !== 'undefined' ? window : {};
+// como `normNombre()` de app.js: la clave de `alias` en el payload (`respaldo._norm`)
+const normNombre = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 export function hora(t) {
   const d = utc(t);
   if (W.fmtHora) return W.fmtHora(d);
@@ -159,7 +161,13 @@ export class Liga {
   fila(nombre) {
     const a = limpio(nombre);
     const n = a.toLowerCase();
-    return (this.dobles.has(n) ? this.E[a] : this.N[n]) || null;
+    const f = (this.dobles.has(n) ? this.E[a] : this.N[n]) || null;
+    if (f || this.dobles.has(n)) return f;
+    // 🕵️ si el nombre no es de nadie de la tabla: su alias (la hoja AKAs, `alias` del payload) o lo que el vigía
+    // reconoció en vivo —la inscripción de su cuenta, la llamada o la mención— (02/10/2026). Es lo mismo que `kDe()` de
+    // app.js: una llave en vivo con «Park-Ji Sung» muestra a Oasis
+    const k = (this.d.alias || {})[normNombre(nombre)] || (W.kVivo ? W.kVivo(nombre) : '');
+    return (k && this.T[k]) || null;
   }
   esDe(nombre, k) {
     const f = this.T[k];

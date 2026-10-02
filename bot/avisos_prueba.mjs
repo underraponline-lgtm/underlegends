@@ -378,6 +378,36 @@ const ok = (cond, que) => {
     'sin muro, o con una fecha rota, nada');
 }
 
+// ── 🕵️ quién es cada nombre de una llave en vivo (Dlx, 02/10/2026: «múltiples vías para detectar quiénes participan») ──
+{
+  console.log('\n  quién es cada nombre en vivo: la inscripción, la llamada y la mención');
+  ok(A.normPagina('Park-Ji Sung🇰🇷') === 'parkjisung' && A.normPagina('@Six (pichula)') === 'six' &&
+    A.normPagina('Agustín') === 'agustin', 'como la página: sin banderas, signos, tildes ni la historia del final');
+  ok(JSON.stringify(A.nombresInscripcion('Park-Ji Sung🇰🇷')) === '["parkjisung"]' &&
+    A.nombresInscripcion('Dxg 🇲🇽 x Soneto 🇪🇨').length === 2 && A.nombresInscripcion('ACH + Yor').length === 2 &&
+    JSON.stringify(A.nombresInscripcion('Zaik 🇪🇸 (suplente)')) === '["zaik"]',
+  'una inscripción: un nombre, una pareja (con «x» entre banderas, o «+»), y la nota entre paréntesis afuera');
+  const insc = [
+    { autor_id: '9', texto: 'Park-Ji Sung🇰🇷' },              // la de Oasis, con su nombre troll
+    { autor_id: '7', texto: 'prr' }, { autor_id: '7', texto: 'prrr 🇦🇴' },   // dos grafías del mismo: valen
+    { autor_id: '5', texto: 'Player' }, { autor_id: '5', texto: 'Steven' },  // anota a otros: no vale
+    { autor_id: '3', texto: 'Korey + Tayo' },                 // una pareja: no dice quién es quién
+  ];
+  const voz = { 4: { n: ['ANTORCHA OLÍMPICA', 'carlos vive', 'ivanjajaa'] }, 8: { n: ['Sol'] }, 6: { n: ['Sol'] } };
+  const men = { 2: ['MAKMA', 'makmah'] };
+  const idx = A.indiceVivo(insc, voz, men);
+  const q = A.quienesDe(['Park-Ji Sung🇰🇷', 'PRRR', 'Steven', 'Korey', 'ANTORCHA OLÍMPICA 🇦🇷', '@MAKMA', 'Sol', 'Yo'], idx);
+  ok(q.parkjisung === '9' && q.prrr === '7' && q.antorchaolimpica === '4' && q.makma === '2',
+    'el nombre troll por la inscripción de su cuenta, las dos grafías, el apodo de la llamada y la mención: ' + JSON.stringify(q));
+  ok(!q.steven && !q.player && !q.korey && !q.tayo,
+    'quien anota a otros no es ninguno de ellos, y una pareja no dice quién es quién');
+  ok(!q.sol && !q.yo, 'un nombre de dos cuentas no es de ninguna, y uno de dos letras tampoco');
+  const m = A.mencionesDe({ mentions: [{ id: '11', username: 'oasis', global_name: 'Oasis', member: { nick: 'Park-Ji Sung' } },
+    { id: 'x', username: 'roto' }] });
+  ok(JSON.stringify(m) === '{"11":["Park-Ji Sung","Oasis","oasis"]}',
+    'la mención trae el apodo, el nombre visible y el usuario; un id que no es un número, no');
+}
+
 
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
