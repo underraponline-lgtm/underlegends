@@ -564,6 +564,13 @@
 "rg": "",
 "c": []
 },
+"jult": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "scot": {
 "rg": "",
 "c": [
@@ -632,13 +639,6 @@
 ]
 },
 "chop": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"jult": {
 "rg": "",
 "c": [
 "servidor",
@@ -815,6 +815,13 @@
 "temporada"
 ]
 },
+"gocho": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "clitax": {
 "rg": "",
 "c": [
@@ -877,13 +884,6 @@
 ]
 },
 "tuca": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"gocho": {
 "rg": "",
 "c": [
 "servidor",
@@ -1212,10 +1212,6 @@
 "rg": "",
 "c": []
 },
-"azillmoyta": {
-"rg": "",
-"c": []
-},
 "blitz": {
 "rg": "",
 "c": [
@@ -1260,10 +1256,6 @@
 "temporada"
 ]
 },
-"kurl": {
-"rg": "",
-"c": []
-},
 "malditaenfermedad": {
 "rg": "",
 "c": [
@@ -1286,10 +1278,6 @@
 "rg": "",
 "c": []
 },
-"kur": {
-"rg": "",
-"c": []
-},
 "metro": {
 "rg": "",
 "c": [
@@ -1303,6 +1291,18 @@
 "servidor",
 "temporada"
 ]
+},
+"azillmoyta": {
+"rg": "",
+"c": []
+},
+"kurl": {
+"rg": "",
+"c": []
+},
+"kur": {
+"rg": "",
+"c": []
 },
 "oep": {
 "rg": "",

@@ -6667,7 +6667,7 @@
      [
       [
        "Soneto",
-       "ACH 🇦🇷",
+       "ACH",
        "Yor"
       ],
       "Soneto",
@@ -6676,7 +6676,7 @@
      [
       [
        "Abyssus",
-       "kurl 🇦🇷"
+       "Jult"
       ],
       "Abyssus",
       "triple (3 bandas, pasan 2)"
@@ -6694,7 +6694,7 @@
       [
        "Cinexfilo",
        "Tusicario",
-       "Azillmoyta🇨🇴"
+       "Gocho"
       ],
       "Cinexfilo",
       "triple (3 bandas)"
@@ -6702,7 +6702,7 @@
      [
       [
        "Sosa",
-       "Dyzz🇨🇱",
+       "Dyzz",
        "Zignos"
       ],
       "Sosa",
@@ -6848,7 +6848,7 @@
     2500
    ],
    [
-    "ACH 🇦🇷",
+    "ACH",
     "Octavos",
     1250
    ],
@@ -6858,17 +6858,22 @@
     1250
    ],
    [
-    "Azillmoyta🇨🇴",
-    "Octavos",
-    1250
-   ],
-   [
-    "Dyzz🇨🇱",
+    "Dyzz",
     "Octavos",
     1250
    ],
    [
     "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gocho",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
     "Octavos",
     1250
    ],
@@ -6894,11 +6899,6 @@
    ],
    [
     "Zignos",
-    "Octavos",
-    1250
-   ],
-   [
-    "kurl 🇦🇷",
     "Octavos",
     1250
    ]
