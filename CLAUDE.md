@@ -662,13 +662,28 @@ la planilla.
 ## El hub web — `underlegends.pages.dev`
 
 Nueve vistas con menú lateral en escritorio y barra de abajo en teléfono
-—que **se desliza de costado**: Dlx, 28/09/2026—, enrutado por hash:
+—que **se desliza de costado**: Dlx, 28/09/2026—, en `/freestyle-rap/…` (ver abajo):
 Inicio, Ranking, Tarjetas, **Pase** (próximamente), **Tienda** (los Puntos de
 Tienda y el precio por cabeza), **Eventos** (el calendario y la campana;
 `#/avisos` es un alias que baja hasta ella), **Publicaciones** (el muro
 de la Liga y los anuncios de todos los servidores, `bot/muro.py`), Mundo y
 Guía. Vive en **`bot/paginas/`**, sin framework y sin
 build: los archivos que están ahí son los que se sirven.
+
+🔑 **LA LIGA VIVE EN `/freestyle-rap`, DESDE EL 01/10/2026** (Dlx: *«/freestyle-rap,
+put it like that, better»*): `/freestyle-rap/ranking`, `/freestyle-rap/r/hassan`;
+lo de toda la marca en la raíz (`/cuenta`, `/cambios`, `/ajustes`), y la raíz
+sola lleva a la Liga hasta que UL tenga portada. **El código sigue hablando en
+`#/…`**: el script del principio de `index.html` (sale de `web/montar.py`)
+traduce en un solo lugar —`rutaLG()` lee, `urlLG()` escribe—, ataja los links
+`#/…` sin recargar y avisa **un** `lg:dir` por cambio. Pages sirve `index.html`
+en cualquier dirección que no sea un archivo, y `<base href="/">` hace que la
+página pida sus archivos a la raíz.
+
+⚠️ **Un `location.hash = …` dispara `popstate` Y `hashchange`**: escuchar los
+dos enrutaba dos veces, y la segunda cerraba la llave recién abierta. Se
+escucha `lg:dir`. ⚠️ Y con `<base>`, `replaceState(null, '', '#/x')` deja la
+dirección en `/#/x`: para escribir una ruta, `urlDe()` (app.js) o `urlLG()`.
 
 🔑 **LOS RANKINGS SON UNA TABLA, NO DIEZ** (25/09/2026). Temporada,
 Competitivo, Duelos, Podios, Rachas, Países y Crews, más tres «pronto»
@@ -926,7 +941,9 @@ circulan en Discord. Su §6 es lo que no se puede romper. Las cinco más caras:
    cookie `lg_ses` tiene `Path=/api`. Y `_worker.js` se despliega como campo
    aparte, nunca como archivo servible.
 4. **Los links `#/…` que ya circulan** tienen que seguir abriendo lo mismo,
-   también si el remake pasa a rutas de verdad.
+   también si el remake pasa a rutas de verdad. ✅ Desde el 01/10/2026 las
+   rutas son de verdad (`/freestyle-rap/…`) y `/#/r/hassan` llega a
+   `/freestyle-rap/r/hassan`: lo hace `limpiar()`, en el script del principio.
 5. **Las URL fijas**: `/privacidad` y `/terminos` (registradas en Discord),
    `manifest.json`, `/og.png`, `/aviso.png`, `/calendario.ics`,
    `cambios.json` y `mapa.html`, que depende de `lg:dc` con su `id`.

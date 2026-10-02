@@ -59,9 +59,17 @@ let cambiosAntes = (() => {
 // que `PROPIAS` de web/montar.py (el script del principio de index.html)
 const PROPIAS = { cambios: 1 };
 
+// ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
+// del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
+function rutaHash() {
+  const h = location.hash || '';
+  if (/^#(access_token|error)=/.test(h) || !window.rutaLG) return h;
+  return '#/' + window.rutaLG();
+}
+
 // ── ¿la ruta es el Inicio? La misma regla que `ir()` de app.js: vacío, `#/` o algo que no es una vista ──
 function esInicio() {
-  const h = location.hash || '';
+  const h = rutaHash();
   if (/^#(access_token|error)=/.test(h)) return true;
   const r = h.replace(/^#\/?/, '').split('?')[0];
   const p = r.split('/')[0];
@@ -136,7 +144,7 @@ export default function App() {
   // algo más nuevo, la firma cambia y el círculo vuelve a verde
   const [vistos, setVistos] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:historias')) || {}; } catch (e) { return {}; } });
   const [yo, setYo] = useState(quienMira);
-  const [hash, setHash] = useState(() => location.hash);
+  const [hash, setHash] = useState(rutaHash);
   const [sigoV, setSigoV] = useState(0);
   const raiz = useRef(null);
 
@@ -144,7 +152,7 @@ export default function App() {
     const datos = () => { setD(window.D || null); setAhora(new Date()); setYo(quienMira()); setEnc(estadoEnc()); marcarRuta(); };
     const votos = () => setEnc(estadoEnc());
     const vivo = () => setVivoL(Object.assign({}, window.VIVO_L || {}));
-    const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(location.hash); };
+    const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(rutaHash()); };
     const cuenta = () => setYo(quienMira());
     const sigo = () => setSigoV((v) => v + 1);
     // cambiar la hora, la zona o el formato en Ajustes: todo lo que tiene horas se vuelve a dibujar
@@ -157,6 +165,8 @@ export default function App() {
     window.addEventListener('lg:vivo', vivo);
     window.addEventListener('lg:ruta', ruta);
     window.addEventListener('hashchange', ruta);
+    // `lg:dir`: atrás/adelante y los links `#/…` que ataja el script del principio (la dirección cambia sin recargar)
+    window.addEventListener('lg:dir', ruta);
     window.addEventListener('storage', ruta);
     // 🔴 Y LA DIRECCIÓN TAMBIÉN: quien vuelve de Discord vuelve a `/#access_token=…` y app.js la cambia con
     // replaceState (sin hashchange) al destino —`#/cuenta/verificar`—. Si eso pasó entre el primer dibujo y este
@@ -179,6 +189,7 @@ export default function App() {
       window.removeEventListener('lg:datos', datos); window.removeEventListener('lg:enc', votos);
       window.removeEventListener('lg:vivo', vivo); window.removeEventListener('lg:ruta', ruta);
       window.removeEventListener('hashchange', ruta); window.removeEventListener('storage', ruta);
+      window.removeEventListener('lg:dir', ruta);
       window.removeEventListener('lg:cuenta', cuenta); window.removeEventListener('lg:sigo', sigo);
       window.removeEventListener('lg:ajustes', ajustes);
       clearInterval(plazo); clearInterval(reloj);

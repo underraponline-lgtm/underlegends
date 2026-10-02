@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.71",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T21:02:00-04:00",
+   "titulo": "La Liga tiene su dirección: /freestyle-rap",
+   "items": [
+    "🔗 **La Liga Global vive en `underlegends.pages.dev/freestyle-rap`**: el ranking en `/freestyle-rap/ranking`, cada perfil en `/freestyle-rap/r/<nombre>`, cada servidor en `/freestyle-rap/sv/<sigla>`. Under Legends va a ser más cosas, y la Liga es su sección de freestyle.",
+    "👤 **Lo tuyo, en la raíz**: tu cuenta en `/cuenta`, los ajustes en `/ajustes` y estas novedades en `/cambios`.",
+    "↩️ **Los links viejos siguen andando**: un `/#/r/<nombre>` que ya circula en Discord te lleva solo a la dirección nueva. Y los que copiás o compartís (una llave, un perfil, tu carta) ya salen con la nueva.",
+    "⚡ Cambiar de sección no recarga la página, y atrás y adelante del navegador funcionan como siempre."
+   ]
+  },
+  {
    "version": "1.70",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T20:28:00-04:00",

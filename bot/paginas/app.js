@@ -263,21 +263,29 @@ var nombrePais = function (cc) {
 };
 
 /* ── el enrutado ────────────────────────────────────────────────────
-   🔴 POR HASH, NO POR RUTAS DE SERVIDOR. `#/ranking` lo resuelve el
-   navegador sin pedirle nada a nadie: no hace falta que Pages sepa que
-   esa ruta existe, el botón de atrás funciona solo y un link a
-   `underlegends.pages.dev/#/tarjetas` abre directo ahí.
+   🔑 DESDE EL 01/10/2026 LA DIRECCIÓN ES DE VERDAD: `/freestyle-rap/ranking`
+   (Dlx: «/freestyle-rap, put it like that, better»). Pero este archivo
+   sigue hablando en `#/ranking`, a propósito: el script del principio de
+   index.html (lo arma `web/montar.py`) traduce en un solo lugar —`rutaLG()`
+   lee la ruta, `urlLG()` la escribe— y ataja los links `#/…`, así que un
+   link que ya circula (`underlegends.pages.dev/#/tarjetas`) abre lo mismo.
 
-   Con rutas de verdad (`/ranking`) habría que servir el mismo HTML en
-   cada una —una regla más que mantener— y cada cambio de vista sería
-   una descarga. Acá el payload se baja UNA vez y las seis vistas ya
-   están en la página.
+   ⚠️ NADA SE DESCARGA AL CAMBIAR DE VISTA: Pages sirve esta misma página en
+   cualquier dirección, y al tocar un link la dirección cambia sin recargar
+   (`pushState`). El payload se baja UNA vez, como antes.
+
+   ⚠️ CON `<base href="/">` UN `replaceState(null, '', '#/x')` DEJA LA
+   DIRECCIÓN EN `/#/x`: para escribir una ruta, `urlDe()`.
 
    ⚠️ Y SE VUELVE ARRIBA AL CAMBIAR. Sin eso, entrar a «Tarjetas» desde
    el final del ranking te deja mirando la mitad de la galería sin
    entender por qué. */
 function ruta() {
-  return (location.hash || '#/').replace(/^#\/?/, '').split('?')[0];
+  return (window.rutaLG ? window.rutaLG() : (location.hash || '#/').replace(/^#\/?/, '')).split('?')[0];
+}
+// la dirección de una ruta: «#/ranking» -> «/freestyle-rap/ranking» (sin el script del principio, como antes)
+function urlDe(r) {
+  return window.urlLG ? window.urlLG(r) : '#/' + String(r || '').replace(/^#?\/?/, '');
 }
 
 // 🔑 `#/avisos` ES AHORA UN LUGAR ADENTRO DE «EVENTOS»: el botón de
@@ -1602,7 +1610,7 @@ function cerrarLlave() {
   FIJO = '';
   SIGUE_K = '';
   // abierta por su link: al cerrarla queda el calendario, sin volver a abrirla
-  if (/^#\/llave\//.test(location.hash)) history.replaceState(null, '', '#/eventos');
+  if (/^llave\//.test(ruta())) history.replaceState(null, '', urlDe('eventos'));
 }
 
 /* ── podio y récords ──────────────────────────────────────────────── */
@@ -3682,7 +3690,7 @@ function pintaPerfil(k) {
   }
   // la clave de verdad, aunque se haya llegado por un link viejo (`porK()`);
   // y el link se corrige, así lo que se copie de acá ya es el nuevo
-  if (f.k && f.k !== k) history.replaceState(null, '', '#/r/' + encodeURIComponent(f.k));
+  if (f.k && f.k !== k) history.replaceState(null, '', urlDe('r/' + encodeURIComponent(f.k)));
   k = f.k || k;
   // 🔴 LO QUE LLEGA DESPUÉS SE COMPARA CONTRA ESTA RUTA, no contra la clave:
   // con un link viejo (`#/r/antorcha%20ol%C3%ADmpica`) ninguna de las dos
@@ -5409,7 +5417,7 @@ function volverDeDiscord() {
   }
   var destino = '#/' + (modo0 === 'v' ? 'avisos' : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
-  try { history.replaceState(null, '', location.pathname + location.search + destino); } catch (e) { location.hash = destino; }
+  try { history.replaceState(null, '', urlDe(destino)); } catch (e) { location.hash = destino; }
   var st = '';
   try { st = sessionStorage.getItem('lg:estado') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) { st = ''; }
   // quien canceló el permiso de verificarse vuelve a la página y lo lee ahí
@@ -6090,7 +6098,7 @@ function eventos() {
     var b = e.target.closest('.sub'); if (!b) return;
     elegirSub(b.dataset.sub);
     // el link queda en la barra para mandarlo, sin saltar arriba
-    try { history.replaceState(null, '', '#/ranking/' + b.dataset.sub); } catch (x) { /* nada */ }
+    try { history.replaceState(null, '', urlDe('ranking/' + b.dataset.sub)); } catch (x) { /* nada */ }
   });
   // las flechas del feed
   $('#feedAntes').addEventListener('click', function () { FEED.pag--; pintaFeed(); });
@@ -6286,7 +6294,7 @@ function eventos() {
     if (e.target.closest('[data-rep-enviar]')) { enviarReporte(); return; }
     var cl = e.target.closest('[data-copiar-llave]');
     if (cl) {
-      var u = location.origin + location.pathname + '#/llave/' + cl.dataset.copiarLlave;
+      var u = location.origin + urlDe('llave/' + cl.dataset.copiarLlave);
       var listo = function () { cl.querySelector('span').textContent = '✓ Link copiado'; };
       try {
         navigator.clipboard.writeText(u).then(listo, function () { window.prompt('Copiá el link:', u); });
@@ -6372,7 +6380,11 @@ function eventos() {
   }, { rootMargin: '0px 0px -8% 0px' });
   $$('.blk').forEach(function (s) { ver.observe(s); });
 
-  window.addEventListener('hashchange', ir);
+  // 🔑 `lg:dir` lo manda el script del principio de index.html, UNA vez por cambio de dirección: atrás/adelante, un
+  // link `#/…` que ataja o un `location.hash = …`. ⚠️ No `popstate` + `hashchange`: un cambio de hash dispara los
+  // dos, y enrutar dos veces cerraba la llave que la primera vuelta acababa de abrir
+  if (window.rutaLG) window.addEventListener('lg:dir', ir);
+  else window.addEventListener('hashchange', ir);
 }
 
 /* los minutos desde ese instante (NaN si no se puede leer); misma lectura que `cuandoSe()` */

@@ -50,7 +50,7 @@
   // `null` = no vino del link; `[]` = todos.
   var PEDIDO = pedidoDelLink();
   function pedidoDelLink() {
-    var m = /^#\/avisos\/([A-Za-z0-9,]+)$/.exec(location.hash || '');
+    var m = /^#\/avisos\/([A-Za-z0-9,]+)$/.exec(window.rutaLG ? '#/' + window.rutaLG().split('?')[0] : location.hash || '');
     if (!m) return null;
     return m[1].toLowerCase() === 'todos' ? [] : m[1].toUpperCase().split(',').filter(Boolean);
   }
@@ -83,7 +83,7 @@
     PEDIDO = null;
     // ⚠️ SE APLICA UNA VEZ: con el `#/avisos/FFA` en la dirección, recargar o
     // volver atrás lo reenviaba y pisaba lo que la persona cambió después
-    try { history.replaceState(null, '', location.pathname + location.search + '#/avisos'); } catch (e) { /* igual */ }
+    try { history.replaceState(null, '', window.urlLG ? window.urlLG('avisos') : '#/avisos'); } catch (e) { /* igual */ }
     SVS = conPrueba(v);
     guardar('campana:svs', SVS);
     MSG = 'Guardando…';
@@ -461,10 +461,13 @@
   }
 
   // el link de `/notify` con la página ya abierta
-  window.addEventListener('hashchange', function () {
+  var alLink = function () {
     PEDIDO = pedidoDelLink();
     if (PEDIDO) { if (SUB) aplicarPedido(); else pinta(); }
-  });
+  };
+  // `lg:dir`: uno por cambio de dirección (el script del principio de index.html); sin él, el hash como antes
+  if (window.rutaLG) window.addEventListener('lg:dir', alLink);
+  else window.addEventListener('hashchange', alLink);
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
   else arrancar();

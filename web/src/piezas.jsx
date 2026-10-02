@@ -69,8 +69,9 @@ export const accion = {
   },
 };
 
-// la dirección de algo de la página, para compartirla (sirve también en las direcciones de prueba de Pages)
-export const enlace = (ruta) => location.origin + '/' + ruta;
+// la dirección de algo de la página, para compartirla (sirve también en las direcciones de prueba de Pages):
+// «#/r/hassan» -> «https://…/freestyle-rap/r/hassan», con `urlLG()` del script del principio (web/montar.py)
+export const enlace = (ruta) => location.origin + (window.urlLG ? window.urlLG(ruta) : '/' + ruta);
 
 // ── compartir: el menú de compartir del teléfono (WhatsApp, Discord…) o, en la computadora, el link copiado.
 // Dlx, 30/09/2026: «me gustan todas» (la D: compartir tu carta o una llave). Cada carta que circula trae gente.

@@ -2,6 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<!-- 🔑 LA LIGA VIVE EN /freestyle-rap (01/10/2026): la misma página se sirve en /freestyle-rap/ranking,
+     /freestyle-rap/r/hassan… y sin esto pediría estilo.css, app.js y las imágenes a /freestyle-rap/. Va primero:
+     sólo cambia las direcciones que vienen DESPUÉS. Las rutas las traduce el script del principio (web/montar.py). -->
+<base href="/">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#030304">
 <title>Liga Global de Freestyle</title>
@@ -17,7 +21,7 @@
      en `summary_large_image` se estiraba; por eso la imagen se arma aparte,
      con `herramientas/banner_link.py`. -->
 <meta property="og:site_name" content="Under Legends">
-<meta property="og:url" content="https://underlegends.pages.dev/">
+<meta property="og:url" content="https://underlegends.pages.dev/freestyle-rap/">
 <meta property="og:image" content="https://underlegends.pages.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -54,11 +58,79 @@ html.ini-nuevo{scroll-padding-top:0}
 </style>
 <script>
 (function () {
-  // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, #/, lo que vuelve de Discord, o algo que
-  // no es una vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
+  // 🔑 LAS RUTAS DE VERDAD: /freestyle-rap/ranking en vez de #/ranking (ver web/montar.py). Todo el código de la
+  // página sigue pidiendo y escribiendo `#/…`: acá se traduce, en un solo lugar.
+  //   rutaLG()  la ruta pedida, sin «/» adelante: «ranking/temporada». Un `#/…` (un link viejo) gana
+  //   urlLG(r)  «#/ranking» -> «/freestyle-rap/ranking»; «#/cuenta» -> «/cuenta» (lo de toda la marca, en la raíz)
+  //   lg:dir    el evento de «cambió la dirección»: uno por cambio (ver `avisar()`)
+  var PRE = '/freestyle-rap', RAIZ = {"cuenta":1,"cambios":1,"ajustes":1};
+  function rutaLG() {
+    var h = location.hash || '';
+    if (/^#\//.test(h)) return h.replace(/^#\/?/, '');
+    var p = location.pathname || '/', pm = p.toLowerCase();
+    if (pm === PRE || pm.indexOf(PRE + '/') === 0) p = p.slice(PRE.length);
+    else if (pm === '/index.html') p = '/';
+    return p.replace(/^\/+/, '').replace(/\/+$/, '') + (location.search || '');
+  }
+  function urlLG(r) {
+    r = String(r || '').replace(/^#?\/?/, '');
+    return (RAIZ[r.split(/[\/?]/)[0]] ? '/' : PRE + '/') + r;
+  }
+  window.rutaLG = rutaLG;
+  window.urlLG = urlLG;
+  // cada dirección pasa a la suya, en el mismo lugar del historial: un `#/…` —un link que ya circula, o un
+  // `location.hash = …` del código—, la raíz sola (a la Liga), `/ranking` sin la Liga o `/freestyle-rap/cuenta`.
+  // ⚠️ Lo que vuelve de Discord (`#access_token=…`) no se toca: lo lee app.js antes de enrutar (`volverDeDiscord()`)
+  function limpiar() {
+    var h = location.hash || '';
+    if (/^#(access_token|error)=/.test(h)) return;
+    var u = urlLG(rutaLG()) + (/^#\//.test(h) ? '' : h);
+    if (u === location.pathname + location.search + h) return;
+    try { history.replaceState(history.state, '', u); } catch (e) { /* queda como vino: rutaLG() la lee igual */ }
+  }
+  limpiar();
+  // 🔑 UN AVISO POR CAMBIO DE DIRECCIÓN: `lg:dir`, que escuchan app.js, la campana y el Inicio. 🔴 No alcanza con
+  // escuchar `popstate` y `hashchange`: un `location.hash = …` dispara LOS DOS (Chrome, primero popstate), y app.js
+  // enrutaba dos veces — la segunda cerraba la llave que la primera acababa de abrir. El hashchange que llega
+  // detrás de su popstate, con la misma ruta, no avisa
+  var porPop = null;
+  function avisar() { window.dispatchEvent(new Event('lg:dir')); }
+  window.addEventListener('popstate', function () { limpiar(); porPop = rutaLG(); avisar(); });
+  window.addEventListener('hashchange', function () {
+    limpiar();
+    var r = rutaLG(), p = porPop;
+    porPop = null;
+    if (r !== p) avisar();
+  });
+  // 🔴 LOS LINKS `#/…` SE ATAJAN: con <base href="/"> el navegador los llevaría a «/#/…», recargando la página. Se
+  // cambia la dirección sin recargar y se avisa. Un ancla de la misma página (`#semana`) baja hasta ella. Si otro ya
+  // atajó el click, no se hace nada; con Ctrl o la rueda, el navegador abre `/#/…` en otra pestaña y `limpiar()` la
+  // deja en su lugar
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var camino = e.composedPath ? e.composedPath() : [e.target], a = null;
+    for (var i = 0; i < camino.length; i++) { if (camino[i] && camino[i].tagName === 'A') { a = camino[i]; break; } }
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+    var href = a.getAttribute('href') || '';
+    if (href.charAt(0) !== '#') return;
+    e.preventDefault();
+    if (/^#\//.test(href)) {
+      var u = urlLG(href);
+      if (u === location.pathname + location.search && !location.hash) return;
+      history.pushState(null, '', u);
+      porPop = null;
+      avisar();
+      return;
+    }
+    var id = href.slice(1), r = a.getRootNode ? a.getRootNode() : document;
+    var el = id && ((r.getElementById && r.getElementById(id)) || document.getElementById(id));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, lo que vuelve de Discord, o algo que no es una
+  // vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
   var V = {"crew":1,"eventos":1,"guia":1,"mundo":1,"pais":1,"pase":1,"publicaciones":1,"r":1,"ranking":1,"tarjetas":1,"tienda":1,"avisos":1,"duelos":1,"llave":1};
   var h = location.hash || '', ini = /^#(access_token|error)=/.test(h);
-  if (!ini) { var p = h.replace(/^#\/?/, '').split('?')[0].split('/')[0]; ini = !p || !V[p]; }
+  if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || !V[p]; }
   var c = document.documentElement.classList;
   if (ini) c.add('ini-nuevo');
   try { if (localStorage.getItem('lg:tema') === 'noche') c.add('ini-noche'); } catch (e) { /* sin guardar */ }

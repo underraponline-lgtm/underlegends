@@ -977,7 +977,7 @@ def _ics(cal):
                fold('SUMMARY:' + _ics_texto('%s · %s' % (c.get('n') or 'Evento', c.get('sv') or ''))),
                fold('DESCRIPTION:' + _ics_texto('Evento de la Liga Global de Freestyle. ' +
                                                 (c.get('link') or ''))),
-               fold('URL:' + (c.get('link') or 'https://underlegends.pages.dev/#/eventos')),
+               fold('URL:' + (c.get('link') or 'https://underlegends.pages.dev/freestyle-rap/eventos')),
                'END:VEVENT']
     ls.append('END:VCALENDAR')
     return '\r\n'.join(ls) + '\r\n'

@@ -50,7 +50,8 @@ for _p in (BASE, SCR, os.path.join(BASE, 'sheet')):
 ESTADO = os.path.join(BASE, 'datos', 'avisos_personales.json')
 #: la misma clave que `COLA_PERSONAL` de `bot/avisos.js`
 COLA = 'avisos:personales'
-WEB = 'https://underlegends.pages.dev/#/r/'
+#: el perfil, en la dirección de la Liga (01/10/2026: /freestyle-rap). Los `/#/r/…` viejos siguen andando
+WEB = 'https://underlegends.pages.dev/freestyle-rap/r/'
 AVISA_BAJADA = False
 #: cómo se nombra cada carta en un aviso: «tu tarjeta Competitiva»
 NOMBRE = {'temporada': 'de Temporada', 'competitivo': 'Competitiva',
@@ -327,7 +328,7 @@ def _self_check():
     ok(eventos({}, {'1': base}) == [], 'a quien se ve por primera vez no se le avisa nada')
     ok(eventos({'1': base}, {'1': base}) == [], 'sin cambios, nada')
     e = eventos({'1': base}, {'1': dict(base, cs=['servidor', 'temporada'])})
-    ok(len(e) == 1 and 'Temporada' in e[0]['titulo'] and e[0]['url'].endswith('#/r/konan'),
+    ok(len(e) == 1 and 'Temporada' in e[0]['titulo'] and e[0]['url'].endswith('/freestyle-rap/r/konan'),
        'una tarjeta nueva, un aviso con el link al perfil')
     e = eventos({'1': base}, {'1': dict(base, rg='B')})
     ok(len(e) == 1 and e[0]['titulo'] == '🏅 Ya tenés rango: B', 'el primer rango')
