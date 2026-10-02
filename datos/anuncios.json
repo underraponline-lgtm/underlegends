@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-02T22:23:53+00:00",
+ "cuando": "2026-10-02T22:54:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1233,9 +1233,7 @@
    "modalidad": "",
    "horario": "",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "COMPE CHILL DE FASO",
@@ -1253,9 +1251,7 @@
    "modalidad": "1v1",
    "horario": "cuando se llene/cuando me pinte",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "CCFF V.3",
@@ -1273,9 +1269,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "COMPE DEL VACILE T2 #1",
@@ -1293,9 +1287,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": "1 Campeonato + Puntos de ascenso",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": "1 Campeonato + Puntos de ascenso"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1313,9 +1305,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "CCFF V.2",
@@ -1333,9 +1323,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "COMPE SOLO 4X4",
@@ -1353,9 +1341,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "CCFF V.1",
@@ -1373,9 +1359,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.15",
@@ -1393,9 +1377,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1413,9 +1395,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.14",
@@ -1433,9 +1413,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.13",
@@ -1453,9 +1431,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "WACHINTON",
@@ -1473,9 +1449,7 @@
    "modalidad": "PANDILLAS",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "STEVE JOSEO",
@@ -1493,9 +1467,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "ISLA DE SOCOTRA",
@@ -1513,9 +1485,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.12",
@@ -1533,9 +1503,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.11",
@@ -1553,9 +1521,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "Arima Kinen Triple Crown | Clasificatoria N°1",
@@ -1573,9 +1539,7 @@
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.10",
@@ -1593,9 +1557,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
@@ -1613,9 +1575,7 @@
    "modalidad": "1vs1",
    "horario": "Ya",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.9",
@@ -1633,9 +1593,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "FF Freestyle: Classic VOL.1",
@@ -1653,9 +1611,7 @@
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.8",
@@ -1673,9 +1629,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PNC V.7",
@@ -1693,9 +1647,7 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
@@ -1713,9 +1665,7 @@
    "modalidad": "",
    "horario": "4 PM MEX/USA",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
@@ -1733,9 +1683,7 @@
    "modalidad": "",
    "horario": "4 PM mex,5 PM Col",
    "fecha": "Viernes 11 de septiembre",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1753,9 +1701,7 @@
    "modalidad": "",
    "horario": "6 PM COLOMBIA",
    "fecha": "LUNES 10 de AGOSTO.",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1773,9 +1719,7 @@
    "modalidad": "",
    "horario": "8:00 PM España.",
    "fecha": "Sábado 01 de AGOSTO.",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1793,9 +1737,7 @@
    "modalidad": "",
    "horario": "8:30-9:00pm España.",
    "fecha": "Sábado 27 de Junio.",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1813,9 +1755,7 @@
    "modalidad": "",
    "horario": "4:00pm Colombia.",
    "fecha": "Jueves 18 de Junio.",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1833,9 +1773,7 @@
    "modalidad": "",
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1853,9 +1791,7 @@
    "modalidad": "",
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
@@ -1873,9 +1809,7 @@
    "modalidad": "CLASIFICATORIAS",
    "horario": "",
    "fecha": "",
-   "premios": "",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-01T22:29:10"
+   "premios": ""
   },
   {
    "nombre": "Dos barras",
