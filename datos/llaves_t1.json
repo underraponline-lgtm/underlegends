@@ -6543,8 +6543,8 @@
       [
        "PRAISERIZA",
        "Vandu",
-       "Emily Family 🇵🇾",
-       "kur 🇦🇷"
+       "Emily Family",
+       "Jult"
       ],
       "PRAISERIZA",
       "triple (4 bandas)"
@@ -6620,7 +6620,12 @@
     2000
    ],
    [
-    "Emily Family 🇵🇾",
+    "Emily Family",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jult",
     "Cuartos",
     2000
    ],
@@ -6643,11 +6648,259 @@
     "Vandu",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "379": {
+  "dia": "2026-10-01",
+  "escala": "16+",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1555383065625239593"
+  ],
+  "n": 379,
+  "nombre": "Dos Generaciones Un Destino Vol 2",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soneto",
+       "ACH 🇦🇷",
+       "Yor"
+      ],
+      "Soneto",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Abyssus",
+       "kurl 🇦🇷"
+      ],
+      "Abyssus",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Geoka",
+       "AREZ",
+       "Richard"
+      ],
+      "Geoka",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Cinexfilo",
+       "Tusicario",
+       "Azillmoyta🇨🇴"
+      ],
+      "Cinexfilo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Sosa",
+       "Dyzz🇨🇱",
+       "Zignos"
+      ],
+      "Sosa",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "Elsoolar",
+       "Vandu"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Soneto"
+      ],
+      "Oasis",
+      "Walk-in 1: Oasis🇨🇱"
+     ],
+     [
+      [
+       "Six",
+       "Sosa"
+      ],
+      "Six",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Geoka"
+      ],
+      "Snow",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Cinexfilo"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Abyssus"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Six"
+      ],
+      "Snow",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Six"
+      ],
+      "Abyssus",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Snow"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Snow",
+    "Subcampeón",
+    7500
    ],
    [
-    "kur 🇦🇷",
+    "Abyssus",
+    "Tercero",
+    6000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Six",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Cinexfilo",
     "Cuartos",
-    2000
+    2500
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Soneto",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ACH 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "AREZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Azillmoyta🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tusicario",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ],
+   [
+    "kurl 🇦🇷",
+    "Octavos",
+    1250
    ]
   ]
  }
