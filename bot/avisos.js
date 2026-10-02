@@ -1976,6 +1976,10 @@ export class Avisos {
       } catch (e) {
         this.guardar('cancelados', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 🎙️ y quién está en la llamada, minuto a minuto. Nunca frena al vigía: ver `llamada()`
+      try { await this.llamada(ahora); } catch (e) {
+        this.guardar('llamada', { ...(this.leer('llamada') || {}), error: String(e).slice(0, 160) });
+      }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
@@ -2177,6 +2181,47 @@ export class Avisos {
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
       return { id: r.id, sv: r.sv, n: c.t || '', ini: c.ini || null, t: r.t, por: r.por };
     }) };
+  }
+
+  /**
+   * 🎙️ QUIÉN ESTÁ EN LA LLAMADA, MINUTO A MINUTO (Dlx, 01/10/2026, respuesta 5: «cada minuto de hecho si es posible»).
+   * Lo hace un trabajo de Actions —`.github/workflows/llamada.yml`, `bot/en_llamada.py --seguir`— que se conecta UNA vez
+   * al Gateway mientras dure lo en vivo. Acá sólo se lo larga: con un servidor en vivo (un anuncio en su ventana, o una
+   * llave tocada en las últimas 3 h), cada 10 minutos se le pregunta a GitHub si ese trabajo está andando o en cola, y si
+   * no, se lo dispara. ⚠️ Cada 10 y no cada minuto: son dos pedidos a la API de GitHub, y el trabajo tarda un minuto en
+   * arrancar.
+   */
+  async llamada(ahora) {
+    if (!this.env.GH_TOKEN || !this.env.GH_REPO) return;
+    const vivos = svsEnVivo(this.sql.exec('SELECT cuerpo FROM avisos WHERE estado != 2 AND creado > ?',
+      ahora - 2 * 24 * HORA).toArray().map((r) => r.cuerpo), ahora);
+    for (const r of this.sql.exec('SELECT DISTINCT sv FROM vivo WHERE ed > ?', ahora - 3 * HORA).toArray()) {
+      if (r.sv) vivos.add(r.sv);
+    }
+    vivos.delete(SV_PRUEBA);
+    if (!vivos.size) return;
+    const prev = this.leer('llamada') || {};
+    if (ahora - (prev.mirado || 0) < 10 * MIN) return;
+    const gh = (ruta, opc) => fetch(`https://api.github.com/repos/${this.env.GH_REPO}${ruta}`, {
+      ...(opc || {}),
+      headers: {
+        // ⚠️ GitHub rechaza sin User-Agent (ver el disparador del ciclo, en worker.js)
+        'User-Agent': 'liga-global-bot', 'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${this.env.GH_TOKEN}`, 'Content-Type': 'application/json',
+      },
+    });
+    let anda = false;
+    for (const st of ['in_progress', 'queued']) {
+      const r = await gh(`/actions/workflows/llamada.yml/runs?status=${st}&per_page=1`);
+      if (r.status === 200 && ((await r.json()).total_count || 0) > 0) { anda = true; break; }
+    }
+    let disparo = prev.disparo || 0, estado = 0;
+    if (!anda) {
+      const r = await gh('/actions/workflows/llamada.yml/dispatches', { method: 'POST', body: JSON.stringify({ ref: 'main' }) });
+      estado = r.status;
+      if (estado === 204) disparo = ahora;
+    }
+    this.guardar('llamada', { mirado: ahora, anda, disparo, estado: estado || undefined, vivos: [...vivos] });
   }
 
   /**

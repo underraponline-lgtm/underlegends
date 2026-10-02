@@ -7,6 +7,10 @@
     python bot/en_llamada.py --auto     el self-check (sin red)
     python bot/en_llamada.py --probar DRA   la foto de ese servidor aunque no esté
                                         en vivo (no guarda): que el Gateway anda
+    python bot/en_llamada.py --seguir   la llamada minuto a minuto mientras haya
+                                        algo en vivo (lo corre `llamada.yml`; ver
+                                        «4 · la llamada, minuto a minuto»)
+    python bot/en_llamada.py --seguir --minutos 3 --simulacro   probarlo a mano
 
 Dlx, 29/09/2026: *«quizás para facilitar el proceso podrías chequear quiénes
 están en la llamada?»* — para el nombre raro de una llave: un suplente, o
@@ -257,6 +261,252 @@ def en_la_ventana(e, desde_ms, hasta_ms):
     return any(desde_ms <= t <= hasta_ms for t in e.get('t') or ())
 
 
+# ── 4 · la llamada, minuto a minuto, mientras dure lo en vivo ────────────────
+#
+# 🔑 Dlx, 01/10/2026 (respuesta 5): *«yo pensé que ya hacía eso… y cada minuto
+# de hecho si es posible, así como se actualizan las llaves, pero como veas
+# necesario»*. La foto del ciclo era una cada media hora: el que entró a pelear
+# y se fue entre dos fotos no quedaba en ningún lado.
+#
+# ⚠️ UNA CONEXIÓN Y NO UNA POR MINUTO. Discord deja 1.000 IDENTIFY por día y, si
+# se pasa, RESETEA EL TOKEN DEL BOT (los tokens nuevos, al final: Dlx). Así que
+# un trabajo de Actions (`.github/workflows/llamada.yml`, lo larga el vigía del
+# Worker cuando hay algo en vivo) se conecta UNA vez, late, y sigue cada entrada
+# y salida (`VOICE_STATE_UPDATE`). Cada minuto anota quién está en la llamada de
+# los servidores en vivo; cada 10, lo suma a KV (`voz:<SV>`, el mismo formato
+# que la foto, con una marca por minuto). Termina solo: 15 minutos sin nada en
+# vivo, o a las 5 h 50 (el tope de un trabajo de Actions es 6 h; si sigue en
+# vivo, el vigía larga otro).
+#
+# ⚠️ GUARDA TODO LO DE LA SESIÓN Y LO VUELVE A SUMAR EN CADA GUARDADO: la foto
+# del ciclo también escribe `voz:<SV>`, y si las dos leen y escriben a la vez una
+# pisa a la otra. Las marcas son un conjunto, así que sumar de nuevo no duplica
+# y la próxima vuelta repara lo que se haya pisado.
+#
+# 🔑 Y DA LOS MINUTOS DE CADA UNO: una marca por minuto es lo que pide la idea
+# de la tarea del Pase («escuchá 10 minutos de batallas en vivo»).
+
+#: cada cuánto se suma a KV lo de la sesión
+GUARDAR_CADA_S = 10 * 60
+#: cuánto se espera sin nada en vivo antes de irse
+QUIETO_S = 15 * 60
+#: el tope: un trabajo de Actions dura hasta 6 h
+TOPE_S = 5 * 3600 + 50 * 60
+#: cuántas veces se reconecta antes de rendirse (cada una es un IDENTIFY)
+RECONEXIONES = 5
+RAW = 'https://raw.githubusercontent.com/underraponline-lgtm/underlegends/main/datos/anuncios.json'
+
+
+def nueva_voz():
+    """El estado de voz de un servidor: quién está en qué canal, sus nombres y los canales."""
+    return {'voz': {}, 'nombres': {}, 'canales': {}, 'bots': set()}
+
+
+def evento_gateway(estados, t, d):
+    """Aplica un evento del Gateway a `estados` (`{guild_id: nueva_voz()}`).
+
+    `GUILD_CREATE` trae la foto inicial (canales, los miembros en voz y sus
+    `voice_states`); `VOICE_STATE_UPDATE`, cada entrada, salida o cambio de
+    canal; `CHANNEL_CREATE`/`UPDATE`, el nombre de un canal.
+    """
+    d = d or {}
+    if t == 'GUILD_CREATE' and d.get('id'):
+        e = estados[str(d['id'])] = nueva_voz()
+        e['canales'] = {c.get('id'): c.get('name') or '' for c in d.get('channels') or ()}
+        for m in d.get('members') or ():
+            u = m.get('user') or {}
+            if u.get('id'):
+                if u.get('bot'):
+                    e['bots'].add(u['id'])
+                e['nombres'][u['id']] = [x for x in (m.get('nick'), u.get('global_name'), u.get('username')) if x]
+        for v in d.get('voice_states') or ():
+            if v.get('user_id') and v.get('channel_id'):
+                e['voz'][str(v['user_id'])] = v['channel_id']
+    elif t == 'VOICE_STATE_UPDATE' and d.get('guild_id'):
+        e = estados.setdefault(str(d['guild_id']), nueva_voz())
+        uid = str(d.get('user_id') or '')
+        if not uid:
+            return
+        m = d.get('member') or {}
+        u = m.get('user') or {}
+        if u.get('bot'):
+            e['bots'].add(uid)
+        ns = [x for x in (m.get('nick'), u.get('global_name'), u.get('username')) if x]
+        if ns:
+            e['nombres'][uid] = ns
+        if d.get('channel_id'):
+            e['voz'][uid] = d['channel_id']
+        else:
+            e['voz'].pop(uid, None)
+    elif t in ('CHANNEL_CREATE', 'CHANNEL_UPDATE') and d.get('guild_id') and d.get('id'):
+        estados.setdefault(str(d['guild_id']), nueva_voz())['canales'][d['id']] = d.get('name') or ''
+
+
+def en_voz(e):
+    """`[{id, n, c}]` de quien está ahora en un canal de voz de ese servidor, sin los bots."""
+    return [{'id': uid, 'n': e['nombres'].get(uid) or [], 'c': e['canales'].get(cid, '')}
+            for uid, cid in sorted(e['voz'].items()) if uid not in e['bots']]
+
+
+def anotar_minuto(sesion, sv, gente, minuto_ms):
+    """Suma a `sesion` (`{sv: {id: {n, c, t}}}`) la marca de este minuto de cada uno de `gente`."""
+    s = sesion.setdefault(sv, {})
+    for p in gente:
+        e = s.setdefault(p['id'], {'n': [], 'c': [], 't': []})
+        e['n'] = list(dict.fromkeys(list(e['n']) + list(p.get('n') or [])))[:6]
+        if p.get('c') and p['c'] not in e['c']:
+            e['c'] = (e['c'] + [p['c']])[-4:]
+        if minuto_ms not in e['t']:
+            e['t'].append(minuto_ms)
+
+
+def fusionar_sesion(viejo, de_sv, ahora_ms):
+    """Lo guardado en KV más todo lo de la sesión de ese servidor (`{id: {n, c, t}}`).
+    Las marcas son un conjunto: sumar dos veces lo mismo no cambia nada."""
+    out = fusionar(viejo, [], ahora_ms)
+    for did, p in (de_sv or {}).items():
+        e = out['gente'].setdefault(did, {'n': [], 'c': [], 't': []})
+        e['n'] = list(dict.fromkeys(list(e['n']) + list(p.get('n') or [])))[:6]
+        for c in p.get('c') or ():
+            if c not in e['c']:
+                e['c'] = (e['c'] + [c])[-4:]
+        e['t'] = sorted(set(e['t']) | set(p.get('t') or ()))
+    return out
+
+
+def anuncios_frescos():
+    """Los anuncios del repo: los de GitHub (el ciclo los escribe cada media hora) o los del checkout."""
+    try:
+        import requests
+        r = requests.get(RAW, timeout=15)
+        if r.status_code == 200:
+            return (r.json() or {}).get('anuncios') or []
+    except Exception:                                    # noqa: BLE001
+        pass
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+            return (json.load(f) or {}).get('anuncios') or []
+    except (OSError, ValueError):
+        return []
+
+
+def guardar_sesion(sesion, svs):
+    """Suma a KV lo de la sesión de cada servidor de `svs`. `{sv: True/False}`."""
+    s, api = _kv()
+    out = {}
+    if not s:
+        return {sv: False for sv in svs}
+    ahora = int(time.time() * 1000)
+    for sv in svs:
+        try:
+            r = s.get('%s/values/%s' % (api, CLAVE % sv), timeout=30)
+            viejo = r.json() if r.status_code == 200 else {}
+        except (ValueError, OSError):
+            viejo = {}
+        nuevo = fusionar_sesion(viejo if isinstance(viejo, dict) else {}, sesion.get(sv), ahora)
+        r = s.put('%s/values/%s' % (api, CLAVE % sv), params={'expiration_ttl': VENCE_S},
+                  files={'value': (None, json.dumps(nuevo, ensure_ascii=False)), 'metadata': (None, '{}')},
+                  timeout=60)
+        out[sv] = r.status_code == 200
+    return out
+
+
+def seguir(token, aplicar=True, tope_s=TOPE_S):
+    """El trabajo de la llamada: una conexión mientras haya algo en vivo. Ver arriba."""
+    import random
+    import websocket
+    inicio = time.time()
+    estados, sesion = {}, {}
+    anuncios, anuncios_t = anuncios_frescos(), time.time()
+    vivos, ultimo_vivo = {}, time.time()
+    guardado_t, minuto_t = time.time(), 0.0
+    reconectado = 0
+    sucios = set()
+
+    def _guardar(motivo):
+        nonlocal guardado_t
+        guardado_t = time.time()
+        if not sucios:
+            return
+        if aplicar:
+            r = guardar_sesion(sesion, sorted(sucios))
+            print('   💾 %s: %s' % (motivo, ', '.join('%s %s' % (sv, 'ok' if ok else '⚠️') for sv, ok in sorted(r.items()))))
+        else:
+            print('   (simulacro) %s: no guardo %s' % (motivo, ', '.join(sorted(sucios))))
+        sucios.clear()
+
+    while True:
+        ws = websocket.create_connection(GATEWAY, timeout=15)
+        try:
+            hola = json.loads(ws.recv())
+            if hola.get('op') != 10:
+                raise RuntimeError('el Gateway no saludó (op %s)' % hola.get('op'))
+            latido = (hola.get('d') or {}).get('heartbeat_interval', 41250) / 1000.0
+            ws.send(json.dumps({'op': 2, 'd': {
+                'token': token, 'intents': INTENTS,
+                'properties': {'os': 'linux', 'browser': 'liga-global', 'device': 'liga-global'}}}))
+            seq, proximo_latido, ack = None, time.time() + latido * random.random(), True
+            while True:
+                ahora = time.time()
+                if ahora >= proximo_latido:
+                    if not ack:
+                        raise RuntimeError('el Gateway no contestó el latido')
+                    ws.send(json.dumps({'op': 1, 'd': seq}))
+                    ack, proximo_latido = False, ahora + latido
+                if ahora - minuto_t >= 60:
+                    minuto_t = ahora
+                    if ahora - anuncios_t > 10 * 60:
+                        anuncios, anuncios_t = anuncios_frescos(), ahora
+                    vivos = en_vivo(anuncios, llaves_del_vigia(), int(ahora * 1000))
+                    if vivos:
+                        ultimo_vivo = ahora
+                    marca = int(ahora // 60) * 60000
+                    cuantos = []
+                    for gid, sv in sorted(vivos.items()):
+                        gente = en_voz(estados[gid]) if gid in estados else []
+                        if gente:
+                            anotar_minuto(sesion, sv, gente, marca)
+                            sucios.add(sv)
+                        cuantos.append('%s %d' % (sv, len(gente)))
+                    # 🔒 cuántos, nunca quién: el log de Actions es público
+                    print('   %s · %s' % (time.strftime('%H:%M'), ', '.join(cuantos) or 'nada en vivo'))
+                    if ahora - guardado_t >= GUARDAR_CADA_S:
+                        _guardar('cada 10 minutos')
+                    if ahora - ultimo_vivo >= QUIETO_S or ahora - inicio >= tope_s:
+                        _guardar('fin')
+                        print('   🎙️ termino: %s' % ('15 minutos sin nada en vivo' if ahora - ultimo_vivo >= QUIETO_S
+                                                    else 'el tope de tiempo'))
+                        return 0
+                ws.settimeout(1.0)
+                try:
+                    m = json.loads(ws.recv())
+                except websocket.WebSocketTimeoutException:
+                    continue
+                op = m.get('op')
+                if m.get('s') is not None:
+                    seq = m['s']
+                if op == 11:
+                    ack = True
+                elif op == 1:
+                    ws.send(json.dumps({'op': 1, 'd': seq}))
+                elif op in (7, 9):
+                    raise RuntimeError('el Gateway pidió reconectar (op %s)' % op)
+                elif op == 0:
+                    evento_gateway(estados, m.get('t'), m.get('d'))
+        except Exception as e:                               # noqa: BLE001
+            reconectado += 1
+            print('   ⚠️ se cortó la conexión (%s); reconexión %d de %d' % (str(e)[:70], reconectado, RECONEXIONES))
+            if reconectado > RECONEXIONES:
+                _guardar('fin, sin conexión')
+                return 1
+            time.sleep(5)
+        finally:
+            try:
+                ws.close()
+            except Exception:                                # noqa: BLE001
+                pass
+
+
 # ── el paso del ciclo ────────────────────────────────────────────────────────
 
 def correr(aplicar=True, foto_sola=False, probar=''):
@@ -346,6 +596,25 @@ def _self_check():
     ok(en_la_ventana(e, 1500, 2500) and not en_la_ventana(e, 2500, 3000), 'se la vio entre tal y tal hora')
     ok(INTENTS == 129, 'pide sólo GUILDS y GUILD_VOICE_STATES (129), ninguno privilegiado')
 
+    # 4 · minuto a minuto: el estado sigue cada entrada y salida
+    est = {}
+    evento_gateway(est, 'GUILD_CREATE', gc)
+    evento_gateway(est, 'VOICE_STATE_UPDATE', {'guild_id': '1', 'user_id': '104', 'channel_id': '10',
+                                               'member': {'user': {'id': '104', 'username': 'abyssus'}}})
+    evento_gateway(est, 'VOICE_STATE_UPDATE', {'guild_id': '1', 'user_id': '102', 'channel_id': None})
+    ok([p['id'] for p in en_voz(est['1'])] == ['100', '104'],
+       'el que entró está, el que salió no, y el bot nunca')
+    ses = {}
+    anotar_minuto(ses, 'FFA', en_voz(est['1']), 60000)
+    anotar_minuto(ses, 'FFA', en_voz(est['1']), 120000)
+    anotar_minuto(ses, 'FFA', en_voz(est['1']), 120000)
+    ok(ses['FFA']['104']['t'] == [60000, 120000] and ses['FFA']['104']['n'] == ['abyssus'],
+       'una marca por minuto, sin repetir: dos minutos, dos marcas')
+    kv = fusionar_sesion({'gente': {'104': {'n': ['Abyssus'], 'c': [], 't': [30000]}}}, ses['FFA'], 130000)
+    ok(kv['gente']['104']['t'] == [30000, 60000, 120000] and kv['gente']['100']['c'] == ['🎤 Escenario'],
+       'lo de la sesión se suma a lo de KV, en orden y sin perder la foto del ciclo')
+    ok(fusionar_sesion(kv, ses['FFA'], 130000) == kv, 'y sumarlo dos veces no cambia nada (se repara lo que se pisó)')
+
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
@@ -357,6 +626,14 @@ def main():
         pass
     if '--auto' in sys.argv:
         return _self_check()
+    if '--seguir' in sys.argv:
+        # el trabajo de `.github/workflows/llamada.yml`. `--minutos N` lo corta antes (para probarlo a mano) y
+        # `--simulacro` no guarda nada
+        import escuchar as E
+        mins = int(sys.argv[sys.argv.index('--minutos') + 1]) if '--minutos' in sys.argv[:-1] else 0
+        print('   🎙️ sigo la llamada mientras haya algo en vivo%s' % (' (%d min)' % mins if mins else ''))
+        return seguir(E._env('DISCORD_TOKEN'), aplicar='--simulacro' not in sys.argv,
+                      tope_s=mins * 60 if mins else TOPE_S)
     probar = sys.argv[sys.argv.index('--probar') + 1] if '--probar' in sys.argv[:-1] else ''
     return correr(aplicar='--aplicar' in sys.argv, foto_sola='--foto' in sys.argv, probar=probar)
 

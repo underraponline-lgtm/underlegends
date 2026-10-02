@@ -1,0 +1,42 @@
+name: llamada
+
+# ══════════════════════════════════════════════════════════════════
+# 🎙️ QUIÉN ESTÁ EN LA LLAMADA, MINUTO A MINUTO, MIENTRAS HAY ALGO EN VIVO.
+#
+# Dlx, 01/10/2026 (respuesta 5): «cada minuto de hecho si es posible, así
+# como se actualizan las llaves». Lo larga el vigía del Worker (`llamada()`
+# en bot/avisos.js) cuando un servidor está en vivo y este trabajo no anda;
+# se conecta UNA vez al Gateway y se va solo: 15 minutos sin nada en vivo,
+# o a las 5 h 50. Ver «4 · la llamada, minuto a minuto» en bot/en_llamada.py.
+#
+# ⚠️ UNO POR VEZ (`concurrency`): dos trabajos serían dos conexiones y el
+# doble de escrituras en KV. El segundo espera; si al arrancar ya no hay
+# nada en vivo, se va en 15 minutos sin escribir nada.
+#
+# 🔒 El log dice cuántos hay en la llamada, nunca quién: el repo es público.
+# ══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: llamada
+  cancel-in-progress: false
+
+jobs:
+  seguir:
+    runs-on: ubuntu-24.04
+    # un trabajo de Actions dura hasta 6 h; el script se va a las 5 h 50
+    timeout-minutes: 358
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+
+      - name: seguir la llamada
+        run: python bot/en_llamada.py --seguir

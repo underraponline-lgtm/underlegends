@@ -2264,6 +2264,12 @@ bot/              el lector de Discord y el ciclo
                                   en vivo: una foto por el Gateway (paso 1b2)
                                   a KV `voz:<SV>`, nunca al repo ni al log.
                                   La usa ✅ Decidir como pista del «¿quién es?»
+                                  Y desde el 01/10/2026, minuto a minuto
+                                  (`--seguir`, `.github/workflows/llamada.yml`):
+                                  UNA conexión mientras dure lo en vivo, la
+                                  larga el vigía (`llamada()` en avisos.js).
+                                  ⚠️ Nunca una conexión por minuto: 1.000
+                                  IDENTIFY por día y Discord resetea el token
                   avisos.js       la campana: vigía de cada minuto, cola y
                                   envío cifrado (Durable Object + SQLite)
                   avisos_casos.py el contrato Python<->JS del lector de
