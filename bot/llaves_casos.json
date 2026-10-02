@@ -970,6 +970,62 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "FFA: el podio con medallas al pie (`🏆 |X`) y la 🥉 sola de encabezado (ONE PIECE, 30/09)",
+   "texto": "# ••• SEMIFINALES •••\n•••[Ana 🇦🇷] VS [Bea 🇨🇱]•••\n\n•••[Cami 🇻🇪] VS [Dora 🇲🇽]•••\n▬▬▬▬▬▬\n# ••• 🥉  •••\n•••[Bea 🇨🇱] VS [Dora 🇲🇽]•••\n▬▬▬▬▬▬\n# 🔱☄️   ••• FINAL ••• ☄️ 🔱\n•••[Ana 🇦🇷] VS [Cami 🇻🇪]•••\n▬▬▬▬▬▬\n\n# 🏆  |Cami 🇻🇪\n## 🥈 |Ana 🇦🇷 \n### 🥉 |Bea 🇨🇱 + Dora 🇲🇽",
+   "rondas": [
+    [
+     "SEMIFINALES",
+     [
+      [
+       "Ana 🇦🇷",
+       "Bea 🇨🇱"
+      ],
+      [
+       "Cami 🇻🇪",
+       "Dora 🇲🇽"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "Bea 🇨🇱",
+       "Dora 🇲🇽"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Ana 🇦🇷",
+       "Cami 🇻🇪"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA: el cruce que espera rival, `⌞Geoka⌝ VS ⌞⌝`, no se pega con el de abajo (Dos Generaciones Vol 2, 01/10)",
+   "texto": "`[ CUARTOS ]`\n\n⌞Soneto 🇪🇨⌝  <:VSF:17>  ⌞Oasis🇨🇱⌝ \n⌞Six🇦🇷⌝  <:VSF:17>  ⌞Sosa🇨🇱⌝ \n⌞Geoka 🇦🇷⌝  <:VSF:17>  ⌞⌝\n⌞Cinexfilo 🇻🇪⌝  <:VSF:17>  ⌞⌝  \n\n`[ SEMIFINALES ]`\n\n⌞⌝ <:VSF:17> ⌞⌝\n⌞⌝ <:VSF:17> ⌞⌝\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Soneto 🇪🇨",
+       "Oasis🇨🇱"
+      ],
+      [
+       "Six🇦🇷",
+       "Sosa🇨🇱"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

@@ -354,6 +354,46 @@ def _equipo_de_banderas(s):
     return re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]+(?=' + _MD + r'\w)', r'\1 + ', s)
 
 
+#: 🔑 EL PODIO CON MEDALLAS AL PIE DE LA LLAVE (ONE PIECE - REGRESO A SABAODY,
+#: FFA, 30/09/2026): `# 🏆 |PRAISERIZA 🇻🇪`, `## 🥈 |Pichulamc 🇦🇷`, `### 🥉
+#: |Skratch 🇨🇱 + Makhma 🇻🇪`. Sin la palabra CAMPEÓN el lector no lo veía y
+#: la final quedaba «sin campeón» con el campeón escrito (Dlx: «asegurate de
+#: chequear bien las llaves»). Se traduce a la forma de FFA, `CAMPEÓN: X`.
+MEDALLA_PODIO = {'\U0001F3C6': 'CAMPEÓN', '\U0001F947': 'CAMPEÓN',
+                 '\U0001F948': 'SUBCAMPEÓN', '\U0001F949': '3ER PUESTO'}
+_PUNTAS_PODIO = ' .·▪️*_`:-–—️|┋'
+
+
+def _podio_con_medallas(ls):
+    """Los renglones `🏆 |X` del podio, como `CAMPEÓN: X` (y 🥈, 🥉 igual).
+
+    ⚠️ SÓLO DEBAJO DE LA ÚLTIMA BATALLA, y sólo el puesto que la llave no
+    escribe ya con palabras: un `🏆 PREMIO: …` de arriba no es el campeón, y
+    una línea `CAMPEÓN:` de verdad manda sobre la medalla. Sin nombre, sin
+    tocar: `🏆 FINAL 🏆` es un encabezado.
+    """
+    ult = -1
+    for i, l in enumerate(ls):
+        if CONTRA.search(l) and nombres_de_linea(l):
+            ult = i
+    if ult < 0:
+        return ls
+    todo = '\n'.join(ls)
+    ya = {'CAMPEÓN': bool(CAMPEON.search(todo)), 'SUBCAMPEÓN': bool(SUBCAMPEON.search(todo)),
+          '3ER PUESTO': bool(TERCERO.search(todo))}
+    for i in range(ult + 1, len(ls)):
+        s = ls[i].strip().lstrip('>#*_ ')
+        et = MEDALLA_PODIO.get(s[:1])
+        if not et or ya[et] or PODIO.search(s) or RONDA.search(s) or CONTRA.search(s):
+            continue
+        resto = _sin_marcas(s[1:].strip(_PUNTAS_PODIO))
+        if not (norm(resto) or MENCION.search(resto)):
+            continue
+        ls[i] = '%s: %s' % (et, resto)
+        ya[et] = True
+    return ls
+
+
 def traducir(texto):
     """La llave escrita en el dialecto de otro servidor, en el que este lector lee.
 
@@ -421,8 +461,16 @@ def traducir(texto):
     # `3er Y 4º PUESTO` como encabezado: sólo si abajo hay una batalla,
     # así la línea del podio (`3ER PUESTO: X`) no cambia.
     # ⚠️ `split` y no `splitlines`: el salto del final se queda donde estaba
-    ls = t.split('\n')
+    ls = _podio_con_medallas(t.split('\n'))
     for i, l in enumerate(ls):
+        # 🔑 Y LA MEDALLA SOLA DE ENCABEZADO: `# ••• 🥉 •••` arriba de la batalla
+        # por el tercero (ONE PIECE, FFA 30/09/2026). Sin letras ni números:
+        # la batalla de abajo quedaba sumada a las semifinales
+        if '\U0001F949' in l and not re.search(r'[^\W_]', l):
+            sig = next((x for x in ls[i + 1:] if x.strip()), '')
+            if nombres_de_linea(sig):
+                ls[i] = 'TERCER LUGAR'
+            continue
         m = TERCER_ENC.search(l)
         if not m or RONDA.search(l) or nombres_de_linea(l):
             continue
@@ -578,6 +626,10 @@ def nombres_de_linea(l):
     return []
 
 
+#: el lugar vacío de la plantilla: `⌞⌝`, `⌞ ⌝`, `[ ]`. El rival que todavía no se sabe
+VACIO_MARCO = re.compile(r'⌞\s*⌝|\[\s*\]')
+
+
 def unir_continuadas(texto):
     """Junta las lineas que son la continuacion de la de arriba.
 
@@ -624,7 +676,11 @@ def unir_continuadas(texto):
         # 2 · hay un «vs» y NO hay dos competidores: falta el rival.
         #     Es `⌞lord+camila+dxg⌝ <VS>` con el rival abajo — los
         #     delimitadores cuadran, asi que el balance no lo agarra.
-        if SEP.search(s) and len(nombres_de_linea(s)) < 2:
+        #     🔴 SALVO QUE EL RIVAL ESTÉ VACÍO A LA VISTA: `⌞Geoka 🇦🇷⌝ VS ⌞⌝`
+        #     es un cruce esperando a su rival, no un renglón a medias. Dos
+        #     Generaciones Vol 2 (FFA, 01/10/2026) tenía dos así en Cuartos y
+        #     se pegaban en UN cruce, «Geoka vs Cinexfilo», que no existe
+        if SEP.search(s) and len(nombres_de_linea(s)) < 2 and not VACIO_MARCO.search(s):
             return True
         # 3 · termina en el separador de equipos. Es la linea del
         #     campeon: `**CAMPEON:**Hassan🇪🇬 +` y los otros dos abajo.
@@ -2862,6 +2918,27 @@ def _self_check():
         ('medio lado en negrita no es negrita (GENESIS BATTLES)',
          not _es_negrita('⌞DYNOCO🇦🇷 + **GEOKA🇦🇷⌝') and _es_negrita('[**MATI🇦🇷**]')
          and _es_negrita('**[<@458519920330670086>🇺🇾]**')),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
+    print('\n  el podio con medallas y el rival por llegar')
+    medal = traducir('# SEMIFINALES\n•••[Ana 🇦🇷] VS [Bea 🇨🇱]•••\n•••[Cami 🇻🇪] VS [Dora 🇲🇽]•••\n'
+                     '# ••• 🥉 •••\n•••[Bea 🇨🇱] VS [Dora 🇲🇽]•••\n# ••• FINAL •••\n•••[Ana 🇦🇷] VS [Cami 🇻🇪]•••\n'
+                     '# 🏆  |Cami 🇻🇪\n## 🥈 |Ana 🇦🇷\n### 🥉 |Bea 🇨🇱 + Dora 🇲🇽')
+    rm = resolver(medal)
+    premio = traducir('# 🏆 PREMIO: 500 de aura\n# FINAL\n[Ana 🇦🇷] 🆚 [Cami 🇻🇪]\nCAMPEÓN: Ana 🇦🇷\n🏆 |Cami 🇻🇪')
+    espera = rondas_de(traducir('# CUARTOS\n⌞A 🇦🇷⌝ 🆚 ⌞B 🇨🇱⌝\n⌞Geoka 🇦🇷⌝ 🆚 ⌞⌝\n⌞Cinexfilo 🇻🇪⌝ 🆚 ⌞⌝'))
+    casos = [
+        ('`🏆 |Cami` al pie es el campeón, y `🥉` solo de encabezado es la batalla por el tercero (ONE PIECE)',
+         [(r, g) for r, _b, g, _z in rm][-2:] == [('TERCER LUGAR', None), ('FINAL', 'Cami 🇻🇪')]
+         and '3ER PUESTO: Bea 🇨🇱 + Dora 🇲🇽' in medal),
+        ('una línea CAMPEÓN de verdad manda sobre la medalla, y un 🏆 de arriba no es el campeón',
+         [g for r, _b, g, _z in resolver(premio) if r == 'FINAL'] == ['Ana 🇦🇷'] and '🏆 |Cami 🇻🇪' in premio),
+        ('`⌞Geoka⌝ 🆚 ⌞⌝` espera rival: no se pega con el de abajo (Dos Generaciones Vol 2)',
+         espera == [('CUARTOS', [['A 🇦🇷', 'B 🇨🇱']])]),
+        ('y sigue siendo idempotente', traducir(medal) == medal),
     ]
     for que, ok in casos:
         mal += not ok

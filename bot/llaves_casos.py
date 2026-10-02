@@ -115,6 +115,10 @@ INVENTADOS = [
      '▪️   [**FULLY🇨🇱**&DXG🇲🇽] ⚖️ [**SNOW🇨🇴**&VELATZ🇨🇱]\n'
      '▪️**👨🏻‍⚖️[•GRAN - FINAL•]🔚**\n'
      '▪️   [FULLY🇨🇱&SNOW🇨🇴] 📰 [MAKMA🇻🇪&PRRR🇦🇴]\n'),
+    ('FFA: el podio con medallas al pie (`🏆 |X`) y la 🥉 sola de encabezado (ONE PIECE, 30/09)',
+     '# ••• SEMIFINALES •••\n•••[Ana 🇦🇷] VS [Bea 🇨🇱]•••\n\n•••[Cami 🇻🇪] VS [Dora 🇲🇽]•••\n▬▬▬▬▬▬\n# ••• 🥉  •••\n•••[Bea 🇨🇱] VS [Dora 🇲🇽]•••\n▬▬▬▬▬▬\n# 🔱☄️   ••• FINAL ••• ☄️ 🔱\n•••[Ana 🇦🇷] VS [Cami 🇻🇪]•••\n▬▬▬▬▬▬\n\n# 🏆  |Cami 🇻🇪\n## 🥈 |Ana 🇦🇷 \n### 🥉 |Bea 🇨🇱 + Dora 🇲🇽'),
+    ('FFA: el cruce que espera rival, `⌞Geoka⌝ VS ⌞⌝`, no se pega con el de abajo (Dos Generaciones Vol 2, 01/10)',
+     '`[ CUARTOS ]`\n\n⌞Soneto 🇪🇨⌝  <:VSF:17>  ⌞Oasis🇨🇱⌝ \n⌞Six🇦🇷⌝  <:VSF:17>  ⌞Sosa🇨🇱⌝ \n⌞Geoka 🇦🇷⌝  <:VSF:17>  ⌞⌝\n⌞Cinexfilo 🇻🇪⌝  <:VSF:17>  ⌞⌝  \n\n`[ SEMIFINALES ]`\n\n⌞⌝ <:VSF:17> ⌞⌝\n⌞⌝ <:VSF:17> ⌞⌝\n'),
 ]
 
 

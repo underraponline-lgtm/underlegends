@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.73",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T21:54:00-04:00",
+   "titulo": "Las llaves en vivo, como se juegan",
+   "items": [
+    "🔴 **Un cruce esperando rival ya no se junta con el de abajo**: «Geoka vs (por llegar)» y «Cinexfilo vs (por llegar)» salían como un cruce que no existe, «Geoka vs Cinexfilo».",
+    "🌳 **Las batallas no siempre van en orden**: si un servidor arma la ronda siguiente con los ganadores a medida que llegan, la llave se muestra por rondas en vez de unir cada cruce con grupos que no son los suyos. Y el «AHORA» sólo aparece cuando se juega en orden: si no, no se sabe cuál se está jugando.",
+    "🏆 **El podio con medallas cuenta**: una llave que termina con «🏆 | nombre», «🥈», «🥉» en vez de «CAMPEÓN:» ahora se lee entera. ONE PIECE · REGRESO A SABAODY (FFA, 30/09) ya tiene campeón: PRAISERIZA."
+   ]
+  },
+  {
    "version": "1.72",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T21:11:00-04:00",

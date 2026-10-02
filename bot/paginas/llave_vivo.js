@@ -134,6 +134,35 @@
       '$1$2 + ');
   }
 
+  /* `escuchar._podio_con_medallas()`: `🏆 |X` del pie de la llave, como `CAMPEÓN: X` (y 🥈, 🥉 igual). Sólo debajo
+     de la última batalla y sólo el puesto que la llave no escribe ya con palabras (ONE PIECE, FFA, 30/09/2026) */
+  var MEDALLA_PODIO = { '\u{1F3C6}': 'CAMPEÓN', '\u{1F947}': 'CAMPEÓN', '\u{1F948}': 'SUBCAMPEÓN', '\u{1F949}': '3ER PUESTO' };
+  var PUNTAS_PODIO = Array.from(' .·▪️*_`:-–—️|┋');
+  var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
+  function hayCampeon(texto) {
+    var re = /(SUB[\s\-]?)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
+    while ((m = re.exec(texto))) { if (!m[1]) return true; }
+    return false;
+  }
+  function podioConMedallas(ls) {
+    var ult = -1;
+    ls.forEach(function (l, i) { if (CONTRA.test(l) && nombresDeLinea(l).length) ult = i; });
+    if (ult < 0) return ls;
+    var todo = ls.join('\n');
+    var ya = { 'CAMPEÓN': hayCampeon(todo), 'SUBCAMPEÓN': !!lineaSubcampeon(todo), '3ER PUESTO': TERCERO.test(todo) };
+    for (var i = ult + 1; i < ls.length; i++) {
+      var s = ls[i].trim().replace(/^[>#*_ ]+/, '');
+      var c = Array.from(s)[0], et = c && MEDALLA_PODIO[c];
+      if (!et || ya[et] || PODIO.test(s) || buscarRonda(s) || CONTRA.test(s)) continue;
+      var resto = sinMarcas(quitarBordes(s.slice(c.length), PUNTAS_PODIO));
+      MENCION.lastIndex = 0;
+      if (!(norm(resto) || MENCION.test(resto))) continue;
+      ls[i] = et + ': ' + resto;
+      ya[et] = true;
+    }
+    return ls;
+  }
+
   /* `escuchar.traducir()`: los dialectos de los otros servidores */
   function traducir(texto) {
     if (!texto) return texto || '';
@@ -153,9 +182,17 @@
       MD + '[⌞\\[])', 'gu'), '$1 🆚 ');
     t = t.replace(/⌞([^⌞⌝\n]{1,80})⌝/gu, function (_m, x) { return '⌞' + equipoDeBanderas(x) + '⌝'; });
     t = t.replace(/\[([^\[\]\n]{1,40})\]/gu, function (_m, x) { return '[' + equipoDeBanderas(x) + ']'; });
-    var ls = t.split('\n');
+    var ls = podioConMedallas(t.split('\n'));
     for (var i = 0; i < ls.length; i++) {
-      var l = ls[i], m = TERCER_ENC.exec(l);
+      var l = ls[i];
+      // la medalla sola de encabezado (`# ••• 🥉 •••`): abajo va la batalla por el tercero
+      if (l.indexOf('\u{1F949}') >= 0 && !/[\p{L}\p{N}]/u.test(l)) {
+        var sg = '';
+        for (var j2 = i + 1; j2 < ls.length; j2++) { if (ls[j2].trim()) { sg = ls[j2]; break; } }
+        if (nombresDeLinea(sg).length) ls[i] = 'TERCER LUGAR';
+        continue;
+      }
+      var m = TERCER_ENC.exec(l);
       if (!m || buscarRonda(l) || nombresDeLinea(l).length) continue;
       if (/^\s*[:：]\s*[^\s*_`~|]/.test(l.slice(m.index + m[0].length))) continue;
       var sig = '';
@@ -241,7 +278,8 @@
     var abiertas = function (s) { return (s.split('⌞').length - 1) - (s.split('⌝').length - 1); };
     var sigue = function (s) {
       if (abiertas(s) > 0) return true;
-      if (SEP.test(s) && nombresDeLinea(s).length < 2) return true;
+      // ⚠️ salvo el rival vacío a la vista: `⌞Geoka⌝ VS ⌞⌝` espera a su rival (`escuchar.unir_continuadas()`)
+      if (SEP.test(s) && nombresDeLinea(s).length < 2 && !/⌞\s*⌝|\[\s*\]/.test(s)) return true;
       return /\+$/.test(s.replace(/\s+$/, ''));
     };
     var salida = [], buf = null;

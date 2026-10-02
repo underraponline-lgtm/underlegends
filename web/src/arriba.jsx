@@ -401,10 +401,37 @@ export function completar(todas) {
   return todas.length > out.length ? todas : out;
 }
 
+// 🔴 UNA LLAVE NO SIEMPRE SE ARMA COMO UN ÁRBOL. Dlx, 01/10/2026: «a veces se hacen batallas de otras llaves antes que la
+// anterior». Dos Generaciones Vol 2 (FFA) armó sus Cuartos con los ganadores a medida que llegaban —el del grupo 2 contra
+// el del 6— y el árbol unía cada cruce con los grupos de al lado, que no eran los suyos. Si un cruce no está en el lugar
+// de los grupos de donde salen sus lados, el árbol mentiría: va por rondas, sin líneas
+export function esArbol(todas) {
+  for (let i = 1; i < todas.length; i += 1) {
+    const previa = todas[i - 1].b;
+    for (let j = 0; j < todas[i].b.length; j += 1) {
+      const ks = lados(todas[i].b[j]).map((x) => previa.findIndex((p) => !!ganador(p) && ganador(p) === x));
+      if (ks.some((k) => k >= 0 && Math.floor(k / 2) !== j)) return false;
+    }
+  }
+  return true;
+}
+// …y por lo mismo, «AHORA» sólo si se juega en orden: con un cruce de más adelante ya decidido antes que uno de más
+// atrás, no se sabe cuál se está jugando, y no se adivina
+export function enOrden(todas) {
+  let pendiente = false;
+  for (const r of todas) {
+    for (const b of r.b) {
+      if (ganador(b)) { if (pendiente) return false; } else if (lados(b).length >= 2) pendiente = true;
+    }
+  }
+  return true;
+}
+
 export function CuadroMini({ liga, ll }) {
   const M = useMedida();
   const todas = completar((ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r)));
   if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas ll={ll} previa />;
+  if (!esArbol(todas)) return <CuadroRondas ll={ll} />;
   // 🔑 QUÉ RONDAS SE VEN: con la llave completa, las últimas de una llave en vivo son lugares vacíos —en el celular
   // eran Semis y Final sin nadie—. Se ven desde la que SE ESTÁ JUGANDO, sin pasarse del final; terminada, las últimas.
   // Y la primera que se ve no puede tener más de 8 cruces: más alto no entra en el escenario
@@ -437,7 +464,7 @@ export function CuadroMini({ liga, ll }) {
   const campeon = conFinal ? ganador(rondas[rondas.length - 1].b[0]) : '';
   // «AHORA» y «SIGUE» sólo en cruces con los dos lados: un lugar vacío todavía no se juega
   const pend = [];
-  rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
+  if (enOrden(todas)) rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
   const cajas = []; const lineas = []; const etiquetas = [];
   const alto = 2 * n0 * R + TOP;
   rondas.forEach((r, ci) => {
