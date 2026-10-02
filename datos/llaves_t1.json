@@ -6664,7 +6664,7 @@
   "escala": "16+",
   "fecha": "01/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1555383065625239593"
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1555384653068636223"
   ],
   "n": 379,
   "nombre": "Dos Generaciones Un Destino Vol 2",
@@ -6675,19 +6675,19 @@
      [
       [
        "Soneto",
-       "ACH",
        "Yor"
       ],
       "Soneto",
-      "triple (3 bandas)"
+      ""
      ],
      [
       [
-       "Abyssus",
-       "Jult"
+       "Six",
+       "Jult",
+       "Abyssus"
       ],
-      "Abyssus",
-      "triple (3 bandas, pasan 2)"
+      "Six",
+      "triple (3 bandas)"
      ],
      [
       [
@@ -6710,7 +6710,7 @@
      [
       [
        "Oasis",
-       "dxg",
+       "LRS",
        "tito calderon"
       ],
       "Oasis",
@@ -6736,12 +6736,14 @@
      ],
      [
       [
-       "Korey🇨🇱",
-       "Eyou",
+       "Abyssus",
+       "Zignos",
+       "Korey",
+       "LOLOELGAUCHO",
        "Tayo🇵🇪"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Abyssus",
+      "triple (5 bandas)"
      ]
     ],
     "r": "Octavos"
@@ -6766,18 +6768,18 @@
      ],
      [
       [
-       "Snow",
-       "Geoka"
-      ],
-      "Snow",
-      ""
-     ],
-     [
-      [
        "Abyssus",
        "Cinexfilo"
       ],
       "Abyssus",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Zignos"
+      ],
+      "Snow",
       ""
      ]
     ],
@@ -6808,19 +6810,6 @@
     "b": [
      [
       [
-       "Abyssus",
-       "Six"
-      ],
-      "Abyssus",
-      "podio: tercer puesto sin batalla en la llave"
-     ]
-    ],
-    "r": "Tercer puesto"
-   },
-   {
-    "b": [
-     [
-      [
        "Oasis",
        "Snow"
       ],
@@ -6844,22 +6833,17 @@
     7500
    ],
    [
-    "Abyssus",
-    "Tercero",
-    6000
+    "Six",
+    "Semifinal",
+    5250
    ],
    [
-    "Six",
-    "Cuarto",
-    4500
+    "Abyssus",
+    "Semifinal",
+    3875
    ],
    [
     "Cinexfilo",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Geoka",
     "Cuartos",
     2500
    ],
@@ -6874,9 +6858,9 @@
     2500
    ],
    [
-    "ACH",
-    "Octavos",
-    1250
+    "Zignos",
+    "Cuartos",
+    2500
    ],
    [
     "AREZ",
@@ -6904,7 +6888,27 @@
     1250
    ],
    [
+    "Korey",
+    "Octavos",
+    1250
+   ],
+   [
+    "LOLOELGAUCHO",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
     "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tayo🇵🇪",
     "Octavos",
     1250
    ],
@@ -6920,16 +6924,6 @@
    ],
    [
     "Yor",
-    "Octavos",
-    1250
-   ],
-   [
-    "Zignos",
-    "Octavos",
-    1250
-   ],
-   [
-    "dxg",
     "Octavos",
     1250
    ],
@@ -6955,10 +6949,10 @@
     "b": [
      [
       [
-       "Bsk🇦🇷",
-       "El Hombre Eyau🇦🇷"
+       "Velatz",
+       "El Hombre Eyau"
       ],
-      "Bsk🇦🇷",
+      "Velatz",
       "triple (3 bandas, pasan 2)"
      ]
     ],
@@ -6985,7 +6979,7 @@
      [
       [
        "Riferian 🇵🇦",
-       "Bsk🇦🇷"
+       "Velatz"
       ],
       "Riferian 🇵🇦",
       ""
@@ -7064,11 +7058,6 @@
     2000
    ],
    [
-    "Bsk🇦🇷",
-    "Cuartos",
-    2000
-   ],
-   [
     "Cinexfilo",
     "Cuartos",
     2000
@@ -7079,7 +7068,12 @@
     2000
    ],
    [
-    "El Hombre Eyau🇦🇷",
+    "Velatz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "El Hombre Eyau",
     "R32",
     0
    ]

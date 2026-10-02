@@ -1,5 +1,5 @@
 {
- "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
+ "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {
   "1553873566674714736": {
    "id": "1553873566674714736",
@@ -312,6 +312,339 @@
    "b": "Riferian 🇵🇦",
    "ganador": "PICHULAMC 🇦🇷",
    "votos": "1–0"
+  },
+  "1555384781049430080": {
+   "id": "1555384781049430080",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790903029454,
+   "a": "Yor 🇪🇸",
+   "b": "Soneto 🇪🇨",
+   "ganador": "Soneto 🇪🇨",
+   "votos": "1–0"
+  },
+  "1555399181114548288": {
+   "id": "1555399181114548288",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790906462697,
+   "a": "Soneto 🇪🇨",
+   "b": "Oasis🇨🇱",
+   "ganador": "Oasis🇨🇱",
+   "votos": "1–0"
+  },
+  "1555400427716091915": {
+   "id": "1555400427716091915",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790906759910,
+   "a": "Six🇦🇷",
+   "b": "Sosa🇨🇱",
+   "ganador": "Six🇦🇷",
+   "votos": "1–0"
+  },
+  "1555402362141540353": {
+   "id": "1555402362141540353",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790907221113,
+   "a": "Cinexfilo 🇻🇪",
+   "b": "Abyssus 🇨🇦",
+   "ganador": "Abyssus 🇨🇦",
+   "votos": "1–0"
+  },
+  "1555403123906838599": {
+   "id": "1555403123906838599",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790907402732,
+   "a": "Zignos 🇦🇷",
+   "b": "Snow 🇨🇴",
+   "ganador": "Snow 🇨🇴",
+   "votos": "1–0"
+  },
+  "1555404623395946499": {
+   "id": "1555404623395946499",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790907760238,
+   "a": "Oasis🇨🇱",
+   "b": "Abyssus 🇨🇦",
+   "ganador": "Oasis🇨🇱",
+   "votos": "1–0"
+  },
+  "1555406690017615893": {
+   "id": "1555406690017615893",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790908252959,
+   "a": "Six🇦🇷",
+   "b": "Snow 🇨🇴",
+   "ganador": "Snow 🇨🇴",
+   "votos": "1–0"
+  },
+  "1555408745629098067": {
+   "id": "1555408745629098067",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1790908743055,
+   "a": "Oasis🇨🇱",
+   "b": "Snow 🇨🇴",
+   "ganador": "Oasis🇨🇱",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
+  "1555366417480548383": {
+   "id": "1555366417480548383",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1790898651238,
+   "ed": 1790900911320,
+   "texto": "`[ CUARTOS ]`\n⌞Sosa 🇦🇷⌝ 🆚 ⌞PICHULAMC 🇦🇷⌝\n⌞Júpiter 🇲🇽⌝ 🆚 ⌞Cinexfilo 🇻🇪⌝\n⌞Bsk 🇦🇷⌝ 🆚 ⌞Riferian 🇵🇦⌝\n⌞Kochi 🇨🇱⌝ 🆚 ⌞Aby 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞Júpiter 🇲🇽⌝\n⌞Riferian 🇵🇦⌝ 🆚 ⌞Kochi 🇨🇱⌝\n`[ FINAL ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞Riferian 🇵🇦⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Sosa 🇦🇷",
+      "PICHULAMC 🇦🇷"
+     ],
+     "PICHULAMC 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Júpiter 🇲🇽",
+      "Cinexfilo 🇻🇪"
+     ],
+     "Júpiter 🇲🇽",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Bsk 🇦🇷",
+      "Riferian 🇵🇦"
+     ],
+     "Riferian 🇵🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Kochi 🇨🇱",
+      "Aby 🇦🇷"
+     ],
+     "Kochi 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PICHULAMC 🇦🇷",
+      "Júpiter 🇲🇽"
+     ],
+     "PICHULAMC 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Riferian 🇵🇦",
+      "Kochi 🇨🇱"
+     ],
+     "Riferian 🇵🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PICHULAMC 🇦🇷",
+      "Riferian 🇵🇦"
+     ],
+     "PICHULAMC 🇦🇷",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1555384653068636223": {
+   "id": "1555384653068636223",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1790902998941,
+   "ed": 1790909348346,
+   "texto": "`[ OCTAVOS ]`\n⌞Yor 🇪🇸⌝ 🆚 ⌞Soneto 🇪🇨⌝\n⌞Kurlw🇦🇷⌝ 🆚 ⌞Abyssus 🇨🇦⌝ 🆚 ⌞Six🇦🇷⌝\n⌞Arez 🇪🇨⌝ 🆚 ⌞Geoka 🇦🇷⌝ 🆚 ⌞Richard🇪🇨⌝\n⌞Tusicario 🇨🇱⌝ 🆚 ⌞Cinexfilo 🇻🇪⌝ 🆚 ⌞Azillmoyta🇨🇴⌝\n⌞Lrs🇦🇷⌝ 🆚 ⌞tito calderon 🇦🇷⌝ 🆚 ⌞Park-Ji Sung🇰🇷⌝\n⌞Dyzz🇨🇱⌝ 🆚 ⌞sosa🇨🇱⌝ 🆚 ⌞Zignos🇩🇴⌝\n⌞ElSolaar🇨🇴⌝ 🆚 ⌞snow🇨🇴⌝ 🆚 ⌞Vandu🇨🇴⌝\n⌞Zignos⌝ 🆚 ⌞Abyssus⌝ 🆚 ⌞Korey🇨🇱⌝ 🆚 ⌞Eyou🇲🇽⌝ 🆚 ⌞Tayo🇵🇪⌝\n`[ CUARTOS ]`\n⌞Soneto 🇪🇨⌝ 🆚 ⌞Oasis🇨🇱⌝\n⌞Six🇦🇷⌝ 🆚 ⌞Sosa🇨🇱⌝\n⌞Cinexfilo 🇻🇪⌝ 🆚 ⌞Abyssus 🇨🇦⌝\n⌞Zignos 🇦🇷⌝ 🆚 ⌞Snow 🇨🇴⌝\n`[ SEMIFINALES ]`\n⌞Oasis🇨🇱⌝ 🆚 ⌞Abyssus 🇨🇦⌝\n⌞Six🇦🇷⌝ 🆚 ⌞Snow 🇨🇴⌝\n`[ FINAL ]`\n⌞Oasis🇨🇱⌝ 🆚 ⌞Snow 🇨🇴⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Yor 🇪🇸",
+      "Soneto 🇪🇨"
+     ],
+     "Soneto 🇪🇨",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Kurlw🇦🇷",
+      "Abyssus 🇨🇦",
+      "Six🇦🇷"
+     ],
+     "Six🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Arez 🇪🇨",
+      "Geoka 🇦🇷",
+      "Richard🇪🇨"
+     ],
+     "Geoka 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Tusicario 🇨🇱",
+      "Cinexfilo 🇻🇪",
+      "Azillmoyta🇨🇴"
+     ],
+     "Cinexfilo 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Lrs🇦🇷",
+      "tito calderon 🇦🇷",
+      "Park-Ji Sung🇰🇷"
+     ],
+     "Park-Ji Sung🇰🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Dyzz🇨🇱",
+      "sosa🇨🇱",
+      "Zignos🇩🇴"
+     ],
+     "sosa🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ElSolaar🇨🇴",
+      "snow🇨🇴",
+      "Vandu🇨🇴"
+     ],
+     "snow🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Zignos",
+      "Abyssus",
+      "Korey🇨🇱",
+      "Eyou🇲🇽",
+      "Tayo🇵🇪"
+     ],
+     "Abyssus",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Soneto 🇪🇨",
+      "Oasis🇨🇱"
+     ],
+     "Oasis🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Six🇦🇷",
+      "Sosa🇨🇱"
+     ],
+     "Six🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Cinexfilo 🇻🇪",
+      "Abyssus 🇨🇦"
+     ],
+     "Abyssus 🇨🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Zignos 🇦🇷",
+      "Snow 🇨🇴"
+     ],
+     "Snow 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Oasis🇨🇱",
+      "Abyssus 🇨🇦"
+     ],
+     "Oasis🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Six🇦🇷",
+      "Snow 🇨🇴"
+     ],
+     "Snow 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Oasis🇨🇱",
+      "Snow 🇨🇴"
+     ],
+     "Oasis🇨🇱",
+     "veredicto",
+     []
+    ]
+   ]
   }
  }
 }
