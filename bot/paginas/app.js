@@ -877,6 +877,23 @@ document.addEventListener('visibilitychange', function () {
    de una, la que comparte palabras con el nombre. ⚠️ Con un solo candidato
    también tiene que compartir alguna, salvo que la llave no tenga título: dos
    eventos del mismo servidor en la misma noche no se confunden. */
+// las palabras que están en el nombre de cualquier evento: no alcanzan para decir que una llave es de ése
+var RELLENO_LL = { vol: 1, volumen: 1, edicion: 1, fecha: 1, the: 1, los: 1, las: 1, del: 1, con: 1, por: 1,
+  una: 1, uno: 1, '1v1': 1, '2v2': 1, '3v3': 1, '4v4': 1, '1vs1': 1, '2vs2': 1, '3vs3': 1, '4vs4': 1 };
+// `[temporada, edición]` de un nombre, en dígitos: lo mismo que `_numeros()` de sheet/llaves_web.py. Sin la
+// modalidad («1v1», «2VS2», «1🆚1») ni la temporada del organizador («T2») mezcladas en la edición
+function numerosLL(s) {
+  var t = '';
+  s = String(s || '').normalize('NFKD').replace(/🆚/g, 'vs').replace(/[︎️]/g, '')
+    .replace(/(^|[^a-z0-9])\d+\s*(?:vs|v|x)\s*\d+(?![a-z0-9])/gi, '$1 ')
+    .replace(/(^|[^a-z0-9])(?:temporada|season|temp|t)\s*[.#:-]?\s*(\d+)/gi, function (m, a, d) { t += d; return a + ' '; });
+  return [t, s.replace(/\D/g, '')];
+}
+// ¿se contradicen? Dos ediciones distintas sí («VOL 20» y «Vol 2»); un número contra ninguno, no
+function chocanLL(x, y) {
+  var a = numerosLL(x), b = numerosLL(y);
+  return !!((a[1] && b[1] && a[1] !== b[1]) || (a[0] && b[0] && a[0] !== b[0]));
+}
 function llaveDeEvento(e, ls) {
   var t = Date.parse(String(e.cuando || '').replace(/Z$/, '') + 'Z');
   // ⚠️ NFKD ANTES de pasar a minúsculas: `𝓟𝓞𝓔𝓢Í𝓐 𝓒𝓡𝓤𝓓𝓐` (URBF, 01/10/2026) sale de NFKD en MAYÚSCULAS, y al revés
@@ -886,10 +903,17 @@ function llaveDeEvento(e, ls) {
       .filter(function (w) { return w.length > 2; });
   };
   var pe = pal(e.nombre);
-  var comun = function (L) { return pal(L.nombre).filter(function (w) { return pe.indexOf(w) >= 0; }).length; };
+  // 🔴 «VOL» NO DICE NADA, Y LOS NÚMEROS SÍ (01/10/2026, Dlx: «ahora hay 3 en vivos, CHEQUEA»): «DESGRACIAS EN TOKYO
+  // VOL 20 1v1» se llevaba la llave en vivo de «Dos Generaciones Un Destino Vol 2» —las dos de FFA, el mismo día—
+  // por la palabra «vol», y salía en vivo tres horas después de empezar. Ahora una palabra de relleno no junta, y
+  // dos ediciones distintas no se juntan nunca: la regla de `_chocan()` de sheet/llaves_web.py
+  var comun = function (L) {
+    return pal(L.nombre).filter(function (w) { return !RELLENO_LL[w] && pe.indexOf(w) >= 0; }).length;
+  };
   var cand = (ls || []).filter(function (L) {
     var p = L.pub || L.ed || 0;
     return (!e.sv || !L.sv || e.sv === L.sv) && p >= t - 3600000 && p <= t + 5 * 3600000 &&
+      !chocanLL(e.nombre, L.nombre) &&
       (comun(L) > 0 || !pal(L.nombre).length || L.nombre === 'La llave');
   });
   cand.sort(function (a, b) { return comun(b) - comun(a); });

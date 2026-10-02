@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.72",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T21:11:00-04:00",
+   "titulo": "En vivo, sólo lo que está en vivo",
+   "items": [
+    "🔴 **Un evento de hace tres horas salía «en vivo»** con la llave de otro: «DESGRACIAS EN TOKYO VOL 20» tomaba la de «Dos Generaciones, Un Destino Vol 2» —las dos de FFA, el mismo día— porque las dos dicen «Vol». Ahora una llave sólo es de un evento si el nombre coincide en algo más que «Vol», y nunca si los números no coinciden (VOL 20 no es Vol 2)."
+   ]
+  },
+  {
    "version": "1.71",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T21:02:00-04:00",
