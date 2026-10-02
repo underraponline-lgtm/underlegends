@@ -1,5 +1,8 @@
 /* Lo que es sólo de la página de verdad, encima del CSS del prototipo (estilo.css, generado). */
 .app{min-height:100vh;overflow-x:clip}
+/* con una página corta, la app mide la pantalla y su blanco seguía abajo del pie. El negro del pie se estira hasta el
+   final con una sombra que arranca en su borde de arriba: no mueve nada ni tapa lo de arriba (Dlx, 02/10/2026) */
+.app .pie.negra{box-shadow:0 100vh 0 100vh #030304}
 .cargando{padding:80px 16px;font:700 13px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris);text-align:center}
 a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #E41373;outline-offset:2px}
 #envivo,.sec[id],#semana{scroll-margin-top:58px}
@@ -293,6 +296,18 @@ button.btn{background:transparent;cursor:pointer}
 @media (min-width: 900px){
   .app .ts-l li{padding:0}
   .app .ts-sv{display:flex;align-items:center;gap:8px;padding:4px 5px 4px 6px;flex:1}
+}
+/* «Esta semana» también es una tira en el celular, como en la compu (Dlx, 02/10/2026: «te dije que lo de abajo que dice
+   esta semana sea tiras como está el ordenador»): logo, servidor y multiplicador en un renglón. Eran cuatro fichas
+   altas, una al lado de la otra; si no entran, la tira se desliza de costado */
+@media (max-width: 899.98px){
+  .app .ts-l{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:max-content;gap:8px;overflow-x:auto;scrollbar-width:none;
+    margin:0 -16px;padding:0 16px}
+  .app .ts-l::-webkit-scrollbar{display:none}
+  .app .ts-sv{display:flex;align-items:center;gap:6px;padding:3px 4px 3px 5px}
+  .app .ts-id{gap:4px}
+  .app .ts-l img{width:18px;height:18px}
+  .app .ts-x{font-size:13px;min-width:0;padding:3px 5px}
 }
 @media (min-width: 900px){
   .app .svp{grid-template-columns:auto minmax(0,1fr) minmax(280px,auto);align-items:center;gap:32px;padding:44px var(--gut) 28px}
@@ -740,12 +755,10 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 @media (min-width: 900px){
   .app .rk-subs-in{padding:0 calc(var(--gut) - 10px)}
   .app .rk-esc:before{top:-160px;bottom:auto;right:-120px}
-  /* el título arriba y lo de actualizado/compartir abajo, a la altura del podio: con `align-items:end` el título se
-     iba al fondo y arriba quedaban ~180 px vacíos (Dlx, 02/10/2026: «un espacio tan grande vacío») */
-  .app .rk-cab{grid-template-columns:minmax(0,1fr) auto;align-items:stretch;gap:48px;padding:40px var(--gut) 36px}
-  .app .rk-tx{display:flex;flex-direction:column;align-items:flex-start}
-  .app .rk-tx > .hero-p{margin-bottom:auto}
-  .app .rk-podio{align-self:end}
+  /* el texto, en un solo bloque y centrado a la altura del podio. Con `align-items:end` el título se iba al fondo y
+     arriba quedaban ~180 px vacíos; partido —título arriba, «actualizado» abajo— el hueco se mudaba al medio (Dlx,
+     02/10/2026: «un espacio tan grande vacío», y después «acomoda bien todo»). Centrado, lo que sobra se reparte */
+  .app .rk-cab{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:48px;padding:40px var(--gut) 36px}
 
   .app .rk-tx .hero-p{max-width:44ch;font-size:15px}
   .app .rk-podio{grid-template-columns:168px 204px 168px;gap:14px}
@@ -1036,13 +1049,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-oc{width:22px;height:22px;font:800 10px/1 Archivo,sans-serif}
 @media (min-width: 900px){
   .app .evp-esc:before{top:-160px;bottom:auto;right:-120px}
-  /* el título arriba y los números abajo, a la altura de la tarjeta de al lado. Con `align-items:end` el título se
-     iba al fondo y arriba quedaban 262 px vacíos a 1333 de ancho (Dlx, 02/10/2026, con la captura: «a big BLANK
-     space»). La tarjeta va abajo: si es más baja que el título, queda a la par de los números */
-  .app .evp-cab{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:stretch;gap:40px;padding:40px var(--gut) 34px}
-  .app .evp-cabtx{grid-template-rows:auto auto auto 1fr}
-  .app .evp-cabtx .evp-num{align-self:end}
-  .app .evp-mo{align-self:end}
+  /* el texto y la tarjeta, centrados uno contra el otro. Con `align-items:end` el título se iba al fondo y arriba
+     quedaban 262 px vacíos a 1333 de ancho (Dlx, 02/10/2026, con la captura: «a big BLANK space»); partido —título
+     arriba, números abajo— el hueco se mudaba al medio («acomoda bien todo»). Centrado, lo que sobra se reparte */
+  .app .evp-cab{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:center;gap:40px;padding:40px var(--gut) 34px}
   /* y en la compu la carta del campeón va a la izquierda de todo: la tarjeta sale ancha y baja, en vez de alta */
   .app .evp-mo.ult{grid-template-columns:120px minmax(0,1fr);grid-template-areas:"carta tag" "carta txt" "carta acc";column-gap:18px;align-content:start}
   .app .evp-mo.ult .evp-mo-carta{align-self:start}

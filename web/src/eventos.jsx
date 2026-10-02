@@ -267,10 +267,15 @@ function useAncho() {
   }, []);
   return [ref, w];
 }
-// el evento abierto: el podio y el cuadro. En una tarjeta ancha, el podio en dos columnas y el cuadro llenando el ancho
-// (vivo.css, por el ancho de la tarjeta); en el teléfono, como siempre
-function Abierto({ liga, ll }) {
+// el cuadro de una llave, llenando el ancho que tiene (`lugar` de CuadroMini): el de un evento terminado, el de uno en
+// vivo y el de arriba. Con la medida de la pantalla quedaba en la mitad de la tarjeta (Dlx, 02/10/2026: «too much white»)
+function CuadroLleno({ liga, ll }) {
   const [ref, w] = useAncho();
+  return <div className="evp-cm" ref={ref}><CuadroMini liga={liga} ll={ll} lugar={w || undefined} /></div>;
+}
+// el evento abierto: el podio y el cuadro. En una tarjeta ancha, el podio en dos columnas (vivo.css, por el ancho de la
+// tarjeta); en el teléfono, como siempre
+function Abierto({ liga, ll }) {
   return (
     <div className="evp-abierto">
       <ol className="podio2">
@@ -279,7 +284,7 @@ function Abierto({ liga, ll }) {
           return <li key={r[0] + i}><b>{i + 1}</b><span className="evp-pq"><Cara liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pc" />{limpio(r[0])}</span><em>{resultado(r[1], true)} · +{num(r[2])}</em></li>;
         })}
       </ol>
-      <div className="evp-cm" ref={ref}><CuadroMini liga={liga} ll={ll} lugar={w || undefined} /></div>
+      <CuadroLleno liga={liga} ll={ll} />
     </div>
   );
 }
@@ -312,7 +317,7 @@ function Evento({ liga, e, est, L, abierto }) {
       ) : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
-      {est === 'vivo' && L ? <div className="evp-cm"><CuadroMini liga={liga} ll={L} /></div> : null}
+      {est === 'vivo' && L ? <CuadroLleno liga={liga} ll={L} /> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
       <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} />
     </article>
@@ -596,7 +601,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         <span className="tag">EN VIVO AHORA</span>
         <div className="evp-mo-n"><img alt="" src={liga.logo(vivoAhora.sv)} /><b>{limpio(vivoAhora.nombre)}</b></div>
         <small className="evp-mo-s">{vivoAhora.sv} · empezó {liga.dia(vivoAhora.cuando).replace(/^hoy /, '')}</small>
-        {L ? <div className="evp-cm"><CuadroMini liga={liga} ll={L} /></div> : <p className="hero-p">La llave aparece apenas la carguen. Mientras, se mira en Discord.</p>}
+        {L ? <CuadroLleno liga={liga} ll={L} /> : <p className="hero-p">La llave aparece apenas la carguen. Mientras, se mira en Discord.</p>}
         <div className="hero-acc">
           {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
           {vivoAhora.link ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={vivoAhora.link} target="_blank" rel="noopener noreferrer">Mirar en Discord ↗</a> : null}

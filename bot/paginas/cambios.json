@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "1.96",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T18:53:00-04:00",
+   "titulo": "Todo acomodado, también en el celular",
+   "items": [
+    "📱 **«Esta semana» en el celular es una tira**, como en la compu: servidor y multiplicador en un renglón, y se desliza de costado.",
+    "📱 **Las pestañas del escenario del Inicio, en un renglón**: «La Liga» ya no queda sola abajo.",
+    "🧭 **El Ranking y Eventos, con el texto centrado** al lado del podio y de la tarjeta de arriba, sin un hueco en el medio.",
+    "📅 **Las fechas del Inicio, en orden**: de lo más nuevo a lo más viejo.",
+    "🏆 **La llave en vivo llena su tarjeta**, en Eventos y arriba, como la de los terminados.",
+    "⬛ **Abajo de una página corta**, el negro del pie llega hasta el final."
+   ]
+  },
+  {
    "version": "1.95",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T17:37:00-04:00",

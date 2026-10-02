@@ -934,7 +934,9 @@ h1,h2,h3,p{margin:0}
   background:transparent}
 .ir-arr svg{transform:rotate(-90deg)}
 @media (prefers-reduced-motion: reduce){.ir-in{transition:none}}
-@media (max-width: 899.98px){.app .hero.carrusel .mo-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:visible}}
+/* las pestañas del escenario, todas en un renglón y del mismo ancho: de a tres, la cuarta («LA LIGA») quedaba sola
+   abajo (Dlx, 02/10/2026, con la captura del iPhone: «acomoda bien todo») */
+@media (max-width: 899.98px){.app .hero.carrusel .mo-tabs{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);overflow:visible}}
 @media (max-width: 899.98px){.app .mo-tabs button{text-align:center;padding:9px 4px}}
 .pz-sel{display:none}
 @media (max-width: 899.98px){.app .pz-tabs{display:none}}

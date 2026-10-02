@@ -25,7 +25,10 @@ export function Fechas({ liga }) {
   // lo que pasó, hasta completar la fila de cinco de la compu (de diez si lo que viene ya pasa de cinco): con tres
   // fijas, sin nada anunciado quedaban dos lugares vacíos al lado (Dlx, 02/10/2026: «un espacio tan grande vacío»)
   const fila = t.length > 4 ? 10 : 5;
-  liga.llaves().slice(0, Math.max(t.length > 4 ? 0 : 1, fila - t.length)).forEach((ll) => {
+  // y por FECHA, del más nuevo al más viejo: el número de la llave es el orden en que se cargó, y con cinco «ayer» salía
+  // después de «el miércoles»
+  const porFecha = liga.llaves().slice().sort((a, b) => utc(liga.fechaLlave(b)) - utc(liga.fechaLlave(a)));
+  porFecha.slice(0, Math.max(t.length > 4 ? 0 : 1, fila - t.length)).forEach((ll) => {
     const g = liga.campeon(ll);
     t.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos', sv: ll.sv,
       ev: limpio(ll.nombre), det: (g.length > 1 ? 'Campeones: ' : 'Campeón: ') + g.join(' y '), llave: ll.n });
