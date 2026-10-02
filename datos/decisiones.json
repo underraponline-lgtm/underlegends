@@ -103,5 +103,14 @@
    "por": "Dlx (chat)",
    "nota": "se anotó como «Me tiene sin cuidado🇯🇲🔥(PARIA+KRAVITZ)», y la llave también los pone como pareja aparte en octavos. Dlx, 29/09: «2. A» (eran ellos: cobran el subcampeonato, 3.750 cada uno)"
   }
+ },
+ "cobra": {
+  "_leeme": "Quien GANÓ su ronda y después no siguió (otro peleó en su lugar), si Dlx dijo que la cobra: «evento · servidor · fecha · nombre» -> la ronda. Lo lee llaves_a_entrada.marcar_cobra() (nota «cobra: X») y sheet/motor.py le paga esa ronda como a quien la perdió. Es por persona y no una regla: ver decidir.cobra_ronda().",
+  "Dos Generaciones Un Destino Vol 2 · FFA · 01/10 · Geoka": {
+   "ronda": "octavos",
+   "cuando": "2026-10-02 2:15 PM ET",
+   "por": "Dlx (chat)",
+   "nota": "ganó su octavo (con AREZ y Richard) y en cuartos peleó Zignos en su lugar, contra Snow. Dlx, 02/10: «3. B» (cobra lo que jugó: el octavo, 1.250)"
+  }
  }
 }

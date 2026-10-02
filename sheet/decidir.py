@@ -1471,6 +1471,34 @@ def integrantes_equipo(ev, sv, fecha, equipo):
     return None
 
 
+def cobra_ronda(ev, sv, fecha):
+    """Quiénes cobran una ronda que GANARON y después no siguieron, si Dlx lo dijo: `{nombre: ronda}`.
+
+    `datos/decisiones.json`, `cobra`: «evento · sv · fecha · nombre» -> `{"ronda": "octavos", ...}`. Lo lee
+    `llaves_a_entrada.marcar_cobra()`, que deja la nota `cobra: <nombre>` en esa batalla, y `sheet/motor.py` le paga
+    la ronda como a quien la perdió.
+
+    🔑 Dlx, 02/10/2026, sobre Geoka en la DOS GENERACIONES VOL 2 (FFA, 01/10): ganó su octavo y en cuartos peleó
+    Zignos en su lugar. El motor paga al que PIERDE cada ronda, así que quien gana y no sigue se queda en 0. *«3. B»*:
+    cobra lo que jugó, el octavo.
+
+    ⚠️ NO ES UNA REGLA GENERAL, A PROPÓSITO. Quien gana y no vuelve a aparecer también puede ser un nombre troll que
+    el lector no unió con su dueño —Oasis jugó octavos como «Park-Ji Sung»—, y pagarle crearía puntos para alguien
+    que no existe. Por eso se decide por persona.
+    """
+    out = {}
+    for clave, v in (_decisiones().get('cobra') or {}).items():
+        if clave.startswith('_'):
+            continue
+        p = [x.strip() for x in clave.split(' · ')]
+        if (len(p) == 4 and norm(p[0]) == norm(ev) and p[1] == sv
+                and p[2] in (fecha, '*') and p[3]):
+            r = v.get('ronda') if isinstance(v, dict) else v
+            if r:
+                out[p[3]] = str(r).strip().lower()
+    return out
+
+
 def _persona(nombre, padron, akas):
     """El nombre de la Lista de Raperos al que se refiere, o None."""
     k = norm(_sin_bandera(nombre))

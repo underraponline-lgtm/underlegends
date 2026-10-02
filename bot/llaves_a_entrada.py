@@ -1274,6 +1274,39 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     return filas, dudas, sabidas
 
 
+def marcar_cobra(filas, decidir=None):
+    """La ronda que alguien GANÓ y después no siguió, si Dlx dijo que la cobra: `cobra: <nombre>` en esa batalla.
+
+    🔑 Dlx, 02/10/2026 (Geoka en la DOS GENERACIONES VOL 2: ganó su octavo y en cuartos peleó Zignos en su lugar):
+    *«3. B»*, cobra el octavo. La decisión vive en `datos/decisiones.json` (`cobra`, ver `decidir.cobra_ronda()`);
+    `sheet/motor.py` lee la nota y le paga la ronda como a quien la perdió. ⚠️ Sólo por decisión: ver por qué en
+    `cobra_ronda()`.
+    """
+    if not filas:
+        return filas
+    f0 = filas[0]
+    ev, sv, fe = f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or ''
+    if decidir is None:
+        try:
+            import decidir as DEC
+            decidir = DEC.cobra_ronda
+        except Exception:                                # noqa: BLE001
+            return filas
+    try:
+        plan = decidir(ev, sv, fe) or {}
+    except Exception:                                    # noqa: BLE001
+        plan = {}
+    for nombre, ronda in plan.items():
+        k = E.norm(E.HISTORIA.sub('', nombre))
+        for f in filas:
+            if E.norm(f.get('ronda')) != E.norm(ronda):
+                continue
+            g = f.get('ganador') or ''
+            if k and E.norm(E.HISTORIA.sub('', g)) == k:
+                _con_nota(f, 'cobra: %s' % g.strip())
+    return filas
+
+
 def _con_nota(f, nota):
     """Agrega `nota` a la fila si no la tiene ya."""
     if nota.lower() not in (f.get('notas') or '').lower():
@@ -2565,6 +2598,13 @@ def _self_check():
                                             decidir=_nada)
     finally:
         E._PERSONAS[0] = _pv
+    # quien ganó su ronda y no siguió, con la decisión de Dlx (Geoka en la DOS GENERACIONES VOL 2, 02/10/2026: «B»)
+    _fc = [{'evento': 'DOS GEN', 'servidor': 'FFA', 'fecha': '01/10', 'ronda': 'octavos', 'ladoA': 'Arez 🇪🇨',
+            'ladoB': 'Geoka 🇦🇷', 'ganador': 'Geoka 🇦🇷', 'notas': 'triple (3 bandas)'},
+           {'evento': 'DOS GEN', 'servidor': 'FFA', 'fecha': '01/10', 'ronda': 'cuartos', 'ladoA': 'Zignos',
+            'ladoB': 'Snow', 'ganador': 'Snow', 'notas': ''}]
+    _fc_si = marcar_cobra([dict(f) for f in _fc], decidir=lambda *a: {'Geoka': 'octavos'})
+    _fc_no = marcar_cobra([dict(f) for f in _fc], decidir=lambda *a: {})
     # la NAVE DE FUNA de Revo (2/5): la fase con ❌, la final de dos sin
     # «CAMPEÓN» y el podio con medallas (Dlx, 29/09/2026)
     _nf = ('nave de funa:\n\n1 - [Black demon] ❌\n2 - [Darkomc] ❌\n3 - [Saiko] ❌\n4 - [Tam]\n'
@@ -2574,6 +2614,9 @@ def _self_check():
                               'fecha': '02/05'}, nombre='NAVE', fecha='02/05')
     _fase = [f for f in _fnf if f['ronda'] == 'fase de eliminación']
     casos = [
+        ('ganó su octavo y no siguió: con la decisión de Dlx, su batalla dice «cobra: Geoka» y nada más cambia',
+         _fc_si[0]['notas'] == 'triple (3 bandas); cobra: Geoka 🇦🇷' and _fc_si[1]['notas'] == ''
+         and not any('cobra' in f['notas'] for f in _fc_no)),
         ('nave de funa: la final sale del podio (🥇 tam), el 🥉 es tercero y los 5 ❌ caen en la fase',
          [(f['ladoA'], f['ganador']) for f in _fnf if f['ronda'] == 'final'] == [('tam', 'tam')]
          and [f['ladoA'] for f in _fnf if f['ronda'] == 'tercer lugar'] == ['multi']
@@ -2962,6 +3005,8 @@ def main():
             _cu = min((str(h.get('cuando') or '') for h in g['llaves']), default='')
             limpias, _inf = marcar_equipos(limpias, _txt, cuando=_cu)
             equipos_inf += _inf
+            # quien ganó su ronda y no siguió, si Dlx dijo que la cobra (Geoka, 02/10/2026)
+            limpias = marcar_cobra(limpias)
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y

@@ -735,6 +735,21 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                 continue
             sumar(p, tab.get(puesto, 0), puesto, salvo=ya, fuera=_pk(b))
 
+    # 🔑 EL QUE GANÓ SU RONDA Y NO SIGUIÓ, si Dlx dijo que la cobra (`cobra: X` en la nota de esa batalla; ver
+    # `decidir.cobra_ronda()`). Se le paga la ronda como a quien la perdió, y sólo si no tiene ya un puesto: el motor
+    # paga al que PIERDE, así que sin esto se quedaba en 0. Dlx, 02/10/2026, Geoka en la DOS GENERACIONES VOL 2: «B»
+    COBRA = dict(CAIDA, semifinal='semifinal')
+    for b in batallas:
+        for mq in re.finditer(r'cobra\s*:\s*([^;|]+)', str(b.get('notas') or ''), re.I):
+            x = mq.group(1).strip()
+            q = resolver(x)
+            puesto = COBRA.get(ronda_de(b.get('ronda')))
+            if not q or not puesto or q in res:
+                continue
+            sumar(x, tab.get(puesto, 0), puesto)
+            if q in res:
+                res[q]['notas'] += 'Ganó y no siguió '
+
     # 🔴 EL REVIVIDO: 50 % DE SU PUESTO FINAL + LA PRIMERA DERROTA ENTERA.
     # Guía de formatos de Dlx (23/09/2026, §3.7): «TORNEO DE PLAZAS — RBK
     # pierde octavos vs Ragna, revive vs Ian → 1250 completos + 625 (el
@@ -1201,6 +1216,20 @@ def _self_check():
     ok('el que entra revivido y aparece una vez cobra la mitad de su puesto',
        rr.get('Caro', {}).get('puntos') == 7500 // 2 and rr.get('Ana', {}).get('puntos') == 10000,
        '%s · %s' % (rr.get('Caro', {}).get('puntos'), rr.get('Ana', {}).get('puntos')))
+    # el que ganó su octavo y no siguió —en cuartos peleó otro en su lugar—: con la decisión de Dlx cobra el octavo;
+    # sin ella, nada (Geoka en la DOS GENERACIONES VOL 2, 02/10/2026: «B»)
+    _oct = [{'ronda': 'octavos', 'ladoA': 'Geo', 'ladoB': 'Rich', 'ganador': 'Geo'},
+            {'ronda': 'octavos', 'ladoA': 'Ana', 'ladoB': 'Zig', 'ganador': 'Ana'},
+            {'ronda': 'cuartos', 'ladoA': 'Ana', 'ladoB': 'Zig', 'ganador': 'Ana'},
+            {'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Caro', 'ganador': 'Ana'}]
+    sin_c, _ = _pp([dict(b) for b in _oct])
+    con_c, _ = _pp([dict(b, notas='cobra: Geo') if b['ganador'] == 'Geo' else dict(b) for b in _oct])
+    ok('ganó su octavo y no siguió: sin la decisión, nada',
+       'Geo' not in sin_c and sin_c.get('Rich', {}).get('puntos') == 1250, '%s' % sin_c.get('Geo'))
+    ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
+       con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
+       and con_c.get('Ana', {}).get('puntos') == 10000,
+       '%s · %s' % (con_c.get('Geo', {}).get('puntos'), con_c.get('Geo', {}).get('posicion')))
     ok('ninguno de los dos reparte de más (§13)',
        not any(a.startswith('SUMA:') for a in epk['avisos'] + edr['avisos']),
        '%s' % ([a for a in epk['avisos'] + edr['avisos']
