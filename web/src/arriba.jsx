@@ -558,7 +558,7 @@ export function CuadroMini({ liga, ll }) {
 }
 
 // ── el escenario: un carrusel de momentos. Siempre hay algo: la llave de anoche no falta nunca ─────
-function gcal(e) {
+export function gcal(e) {
   const t = utc(e.cuando);
   const f = (d) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const fin = new Date(t.getTime() + 2 * 3600000);
@@ -566,7 +566,7 @@ function gcal(e) {
     '&dates=' + f(t) + '/' + f(fin) + '&details=' + encodeURIComponent(e.link || 'https://underlegends.pages.dev/freestyle-rap/eventos');
 }
 
-function llaveEnVivo(e, vivoL) {
+export function llaveEnVivo(e, vivoL) {
   if (!vivoL || !window.llaveDeEvento) return null;
   try { return window.llaveDeEvento(e, Object.values(vivoL)); } catch (err) { return null; }
 }

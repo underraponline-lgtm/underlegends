@@ -561,7 +561,9 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
    con el podio (las cartas de verdad paradas en su escalón), la tabla y «tu lugar» pegado abajo ── */
 .clara{--rk-yo:#DDF3EE}
 .noche{--rk-yo:#0E2A25}
-.rk-subs{position:sticky;top:0;z-index:35;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
+/* las tiras pegadas van en 20: arriba del contenido (≤5), abajo de lo que sale del buscador (25) y de la barra de abajo (30).
+   En 35 tapaban los resultados del buscador, y en Eventos —que arranca con la tira abajo de todo— las etiquetas de la barra */
+.rk-subs{position:sticky;top:0;z-index:20;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
 .rk-subs-in{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 6px}
 .rk-subs-in::-webkit-scrollbar{display:none}
 .rk-subs a{flex:none;display:inline-flex;align-items:center;gap:6px;padding:15px 10px 12px;margin-bottom:-2px;
@@ -814,4 +816,177 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .rk-det-in{padding:6px 16px 0}
   .app .rk-det-carta{width:120px}
   .app .rk-det-e{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));column-gap:24px}
+}
+
+/* ── Eventos, #/eventos (02/10/2026, en preview con `lg:prev-ev`): el tablero aprobado el 29/09 —los días, lo de cada
+   día en grupos con su llave, el mes, la campana y los últimos campeones—. Usa las piezas del tablero que ya estaban
+   (`.t-ev`, `.g-t`, `.mes-g`, `.podio2`) y agrega lo suyo con `evp-` ── */
+.evp-esc:before{top:auto;bottom:-170px;right:-120px}
+.evp-cab{display:grid;gap:22px;padding:24px 16px 24px}
+.evp-cabtx{display:grid;gap:12px;justify-items:start;align-content:start;min-width:0}
+.evp-cabtx .hero-ev{margin:0}
+.evp-cabtx .hero-p{max-width:40ch}
+.evp-num{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;margin:4px 0 0;width:100%}
+.evp-num div{display:grid;gap:5px}
+.evp-num dt{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+.evp-num dd{margin:0;display:flex;align-items:center;gap:6px;font:900 22px/1 Archivo,sans-serif;font-stretch:115%;color:#F6F6F6;font-variant-numeric:tabular-nums}
+.evp-num dd.evp-sv{font-size:16px}
+.evp-num img{width:22px;height:22px;border-radius:50%;object-fit:cover}
+.evp-num dt{white-space:normal}
+/* el momento: lo que se juega ahora, lo próximo o el último campeón */
+.evp-mo{display:grid;gap:10px;justify-items:start;align-content:start;min-width:0;padding:16px;border:2px solid #F6F6F6;background:rgba(3,3,4,.72);color:#F6F6F6}
+.evp-mo.vivo{border-color:#E41373}
+.evp-mo .tag{white-space:normal}
+.evp-mo-n{display:flex;align-items:center;gap:10px;min-width:0}
+.evp-mo-n img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #F6F6F6}
+.evp-mo-n b{font:900 22px/1.05 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
+.evp-mo-s{font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.04em;color:#A5A5A0;text-transform:uppercase}
+.evp-mo .mo-cuenta{margin-top:2px}
+.evp-mo .hero-acc{margin-top:4px}
+.evp-mo-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;width:100%}
+.evp-mo-txt{display:grid;gap:8px;justify-items:start;min-width:0}
+.evp-mo-carta{width:96px}
+.evp-mo-n b{min-width:0}
+/* en el celular, al lado de la carta, el nombre no entra con el logo: el servidor ya está abajo, en la línea chica.
+   Y se achica en vez de partirse («PICHULAM / C») */
+.evp-mo.ult .evp-mo-n img{display:none}
+.evp-mo.ult .evp-mo-n b{font-size:19px;overflow-wrap:normal;word-break:normal}
+.evp-mo-ci{display:block;width:100%;height:auto}
+.evp-mo .evp-cm{width:100%}
+/* la tira de los días, pegada arriba */
+.evp-dias{position:sticky;top:0;z-index:20;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
+.evp-dias-in{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 12px}
+.evp-dias-in::-webkit-scrollbar{display:none}
+.evp-dias button{flex:none;display:grid;justify-items:center;gap:3px;min-width:62px;padding:7px 8px 6px;border:1.5px solid #3A3A3E;background:transparent;
+  color:#F6F6F6;cursor:pointer}
+.evp-dias button span{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
+.evp-dias button b{font:900 20px/1 Archivo,sans-serif;font-stretch:115%}
+.evp-dias button i{font:700 9.5px/1 "Space Mono",monospace;font-style:normal;color:#A5A5A0;white-space:nowrap}
+.evp-dias button.sin b{color:#6E6E6A}
+.evp-dias button.hoy{border-color:#29B298}
+.evp-dias button.on{background:#F6F6F6;border-color:#F6F6F6;color:#030304}
+.evp-dias button.on span,.evp-dias button.on i{color:#030304}
+.evp-dias button.on b{color:#030304}
+.evp-dias .evp-mes-b{align-content:center;gap:5px}
+.evp-dias .evp-mes-b.on{background:#29B298;border-color:#29B298}
+/* el tablero */
+.evp-t3{display:grid;gap:0}
+.evp-centro{min-width:0;padding:6px 0 18px}
+.evp-centro .grupo{padding:12px 16px 0}
+.evp-dia{display:flex;align-items:baseline;gap:12px;margin:0;padding:14px 16px 2px;font:900 24px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.evp-dia small{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris);text-transform:uppercase}
+.evp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.evp-chips button{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);
+  font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.evp-chips button.on{background:var(--inv);color:var(--inv-tinta)}
+.evp-chips img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.evp-filtro{padding:12px 16px 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.evp-filtro::-webkit-scrollbar{display:none}
+.evp-filtro button{flex:none}
+.evp-ev{border-left-width:2px}
+.evp-ev header{grid-template-columns:40px minmax(0,1fr) auto}
+.evp-ev header img{object-fit:cover}
+.evp-nm{display:grid;gap:3px;min-width:0}
+.evp-nm b{overflow-wrap:anywhere}
+.evp-h{font:700 12px/1 "Space Mono",monospace;letter-spacing:.04em;color:var(--tinta)}
+.evp-ev.prox .t-est{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.evp-ev.hecho .t-est{color:var(--gris);border-color:var(--suave)}
+.evp-ev.cancelado{opacity:.7}
+.evp-ev.cancelado .t-est{border-style:dashed}
+.evp-ev.dorado{border-color:#E7B622;box-shadow:inset 0 0 0 1px #E7B622}
+.evp-xtra{display:flex;flex-wrap:wrap;gap:6px 10px;padding:0 12px 10px}
+.evp-dor,.evp-mult{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;padding:5px 7px;background:#E7B622;color:#030304}
+.evp-mult{background:#29B298}
+.evp-premio{font:400 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.evp-camp{display:flex;align-items:center;gap:6px;margin:0;padding:0 12px 10px;font:600 14px/1.3 Archivo,sans-serif;color:var(--gris)}
+.evp-camp b{color:var(--tinta)}
+.evp-abierto{display:grid;gap:4px;border-top:1px solid var(--suave);padding-top:8px}
+.evp-pq{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.evp-pc{width:26px;height:26px;font:800 11px/1 Archivo,sans-serif}
+.evp-cm{overflow-x:auto;scrollbar-width:thin;padding:4px 12px 10px}
+.evp-cm .cm{margin:0}
+.evp-nada{display:grid;gap:12px;justify-items:start;padding:18px 16px 4px}
+.evp-nada p{margin:0;max-width:56ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
+/* la columna de al lado: el mes, la campana y el calendario */
+.evp-der{display:grid;gap:0;align-content:start;border-top:2px solid var(--linea)}
+.evp-bloque{padding:18px 16px 16px;border-bottom:2px solid var(--linea)}
+.evp-h2{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:900 20px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.evp-mes-pc{display:none}
+.evp-mes-movil{padding:14px 16px 4px}
+.evp-mes-t{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.evp-mes-t b{font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.evp-fl{display:grid;place-items:center;width:34px;height:34px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);cursor:pointer;transform:scaleX(-1)}
+.evp-fl.der{transform:none}
+.evp-g button{display:grid;justify-items:center;gap:3px;padding:6px 0;min-height:42px;border:1px solid var(--suave);background:var(--fondo);color:var(--tinta);
+  font:800 13px/1 Archivo,sans-serif;cursor:pointer}
+.evp-g button.con{border-color:var(--linea)}
+.evp-g button.hoy{box-shadow:inset 0 0 0 2px #29B298}
+.evp-g button.sel{background:var(--inv);color:var(--inv-tinta)}
+.evp-g button em{display:flex;gap:2px;font-style:normal}
+.evp-g button i{width:6px;height:6px;border-radius:50%}
+.evp-g button u{font:700 9px/1 "Space Mono",monospace;text-decoration:none}
+.evp-vacio{border:0}
+.evp-ley{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
+.evp-ley span{display:inline-flex;align-items:center;gap:5px}
+.evp-ley i{width:8px;height:8px;border-radius:50%}
+.evp-tx{margin:0;font:400 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.evp-campana,.evp-cal{display:grid;gap:12px;justify-items:start}
+.evp-ok{margin:0;font:700 14.5px/1.4 Archivo,sans-serif;color:var(--tinta)}
+.evp-pasos{margin:0;padding-left:20px;display:grid;gap:4px;font:400 14.5px/1.45 Archivo,sans-serif}
+.evp-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.evp-lnk{background:none;border:0;padding:0;color:var(--tinta);font:700 12px/1 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;
+  text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.evp-yo{display:grid;gap:8px;justify-items:start;padding-top:10px;border-top:1px solid var(--suave);width:100%}
+.evp-msg{margin:0;font:700 12px/1.4 "Space Mono",monospace;color:var(--magenta-tx)}
+.evp-vig,.evp-nota{margin:0;font:700 10.5px/1.45 "Space Mono",monospace;color:var(--gris)}
+.evp-ics{font:700 11px/1.3 "Space Mono",monospace;background:var(--caja);padding:6px 8px;overflow-wrap:anywhere;user-select:all}
+/* los últimos campeones, con su carta */
+.evp-campeones .sec-t{align-items:center}
+.evp-comp{background:none;border:0;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:700 11px/1 "Space Mono",monospace;
+  letter-spacing:.08em;text-transform:uppercase}
+.evp-camps{grid-auto-columns:140px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px}
+.evp-camps::-webkit-scrollbar{display:none}
+.evp-cp{display:grid;gap:6px;justify-items:start;align-content:start;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
+.evp-cp-ci{display:block;width:100%;height:auto}
+.evp-cp-sin{display:grid;place-items:center;width:100%;aspect-ratio:900/1314;border:2px dashed #6E6E6A}
+.evp-cp-cara{width:64px;height:64px;font:900 24px/1 Archivo,sans-serif}
+.evp-cp small{display:flex;align-items:center;gap:5px;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.04em;color:#A5A5A0}
+.evp-cp small img{width:16px;height:16px;border-radius:50%}
+.evp-cp b{font:900 14px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
+.evp-cp span{font:400 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
+/* cómo se juega */
+.evp-como{display:grid;gap:18px}
+.evp-et{display:block;margin-bottom:8px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.evp-bar{display:grid;grid-template-columns:110px minmax(0,1fr) 30px;gap:10px;align-items:center;padding:4px 0;font:700 13px/1.2 Archivo,sans-serif}
+.evp-bar i{height:12px;background:var(--caja)}
+.evp-bar u{display:block;height:100%;background:#29B298;text-decoration:none}
+.evp-bar b{text-align:right;font-variant-numeric:tabular-nums}
+.evp-orgs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.evp-orgs li{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);font:700 13px/1 Archivo,sans-serif}
+.evp-orgs a{display:inline-flex;align-items:center;gap:6px;color:var(--tinta)}
+.evp-orgs em{font:700 10.5px/1 "Space Mono",monospace;font-style:normal;color:var(--gris)}
+.evp-oc{width:22px;height:22px;font:800 10px/1 Archivo,sans-serif}
+@media (min-width: 900px){
+  .app .evp-esc:before{top:-160px;bottom:auto;right:-120px}
+  .app .evp-cab{grid-template-columns:minmax(0,1fr) minmax(0,520px);align-items:end;gap:40px;padding:40px var(--gut) 34px}
+  .app .evp-dias-in{padding:10px calc(var(--gut) - 4px)}
+  .app .evp-dias .evp-mes-b{display:none}
+  .app .evp-t3{grid-template-columns:minmax(0,1fr) 360px;padding:0 var(--gut)}
+  .app .evp-centro{padding:6px 28px 24px 0;border-right:2px solid var(--linea)}
+  .app .evp-centro .grupo,.app .evp-dia,.app .evp-filtro{padding-left:0;padding-right:0}
+  .app .evp-nada{padding-left:0}
+  .app .evp-der{border-top:0}
+  .app .evp-bloque{padding:20px 0 18px 24px}
+  .app .evp-mes-pc{display:block}
+  .app .evp-mes-movil{display:none}
+  .app .evp-num{display:flex;flex-wrap:wrap;gap:12px 28px;width:auto}
+  .app .evp-num dd{font-size:28px}
+  .app .evp-num dd.evp-sv{font-size:22px}
+  .app .evp-mo-carta{width:120px}
+  .app .evp-mo.ult .evp-mo-n img{display:block}
+  .app .evp-mo.ult .evp-mo-n b{font-size:24px}
+  /* en la compu, los ocho en una fila (`.app .rail` los pasaba a cinco por fila, enormes) */
+  .app .evp-camps{grid-auto-flow:row;grid-template-columns:repeat(8,minmax(0,1fr));overflow:visible}
+  .app .evp-como{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+  .app .evp-como .evp-nota{grid-column:1 / -1}
 }

@@ -304,6 +304,9 @@
 
   // ── dibujar ─────────────────────────────────────────────────────────
   function pinta() {
+    // la página nueva (Eventos del remake) dibuja su propia campana: cada cambio se le avisa, aunque la vista vieja
+    // no esté (ver `window.Campana`, abajo)
+    try { window.dispatchEvent(new Event('lg:campana')); } catch (e) { /* navegador viejo */ }
     var caja = $('#campana');
     var cta = $('#campanaCta');
     // ⚠️ `Notification` NO EXISTE en Safari de iPhone fuera de la pantalla
@@ -469,6 +472,40 @@
   // `lg:dir`: uno por cambio de dirección (el script del principio de index.html); sin él, el hash como antes
   if (window.rutaLG) window.addEventListener('lg:dir', alLink);
   else window.addEventListener('hashchange', alLink);
+
+  // 🔑 LA CAMPANA PARA LA PÁGINA NUEVA (Eventos del remake, 02/10/2026): el estado y las acciones, sin el HTML. La
+  // página nueva vive en un shadow root —`$()` no la ve— y dibuja la suya con esto; se entera de cada cambio por
+  // `lg:campana` (lo emite `pinta()`). Lo de arriba sigue dibujando la vista vieja igual: es el respaldo.
+  // ⚠️ Lo que la página nueva elige o activa pasa por ACÁ, por las mismas funciones: un solo lugar que anota el
+  // dispositivo en el Worker
+  function correr(f) {
+    return Promise.resolve().then(f).catch(function (err) {
+      MSG = '⚠️ ' + (err && err.message ? err.message : 'no se pudo');
+      pinta();
+    });
+  }
+  window.Campana = {
+    estado: function () {
+      var negado = typeof Notification !== 'undefined' && Notification.permission === 'denied';
+      var svs = servidores();
+      var reales = SVS.filter(function (x) { return x !== PRUEBA; });
+      var v = SUB ? null : pedidoValido();
+      return {
+        soporta: SOPORTA, ios: IOS, instalada: INSTALADA, negado: negado, activa: !!SUB,
+        svs: svs, todos: !reales.length || reales.length >= svs.length, elegidos: reales,
+        prueba: SVS.indexOf(PRUEBA) >= 0, pruebaSv: PRUEBA,
+        pedido: v ? textoPedido(v) : '', yo: leer('campana:yo', null), msg: MSG,
+        vigia: EST && EST.vigia && EST.vigia.t ? { t: EST.vigia.t, ok: !!EST.ok, dispositivos: EST.suscripciones || 0 } : null,
+        ultimo: EST && EST.ultimo && EST.ultimo.titulo ? { titulo: EST.ultimo.titulo, sv: EST.ultimo.sv, t: EST.ultimo.t } : null,
+      };
+    },
+    activar: function () { return correr(activar); },
+    probar: function () { return correr(function () { return probar(false); }); },
+    desactivar: function () { return correr(desactivar); },
+    vincular: function () { return correr(vincular); },
+    desvincular: function () { return correr(desvincular); },
+    elegir: function (sv) { elegir(sv); },
+  };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', arrancar);
   else arrancar();
