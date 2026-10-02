@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.87",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T12:40:00-04:00",
+   "titulo": "El escenario, más bajo",
+   "items": [
+    "📐 **La llave de arriba baja hasta la fila de los botones** (Anoche · Video · La Liga), que está sólo a la izquierda: a la derecha ese espacio quedaba vacío. El escenario mide 74 px menos cuando muestra una llave grande."
+   ]
+  },
+  {
    "version": "1.86",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T12:10:00-04:00",

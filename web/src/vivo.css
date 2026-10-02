@@ -161,6 +161,15 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
    columna, y gana el menor. El .98 es lo que mide una letra de Archivo 900 a 125 %, medido sobre palabras de
    eventos: de .79 (EXHIBITION) a .95 (CAMPEONATO). Debajo de 20 px se deja partir, que es lo que ya hacía */
 .mo-txt{container-type:inline-size}
+/* 🔑 LA LLAVE BAJA HASTA LA FILA DE LOS MOMENTOS (Dlx, 02/10/2026, con una captura: «puedes ahorrar espacio si mueves
+   las llaves hacia abajo un poco, porque hay espacio de sobra»). Los botones de abajo (ANOCHE · VIDEO · LA LIGA) van sólo
+   a la izquierda, debajo del texto: a la derecha esa franja quedaba vacía y la llave alta empujaba el escenario hacia
+   abajo. Ahora la llave ocupa esa franja —74 px: el margen y el alto de la fila— y el escenario mide eso menos. La fila
+   es tan ancha como sus botones, para no taparle nada a la llave */
+@media (min-width: 900px){
+  .app .mo-vis:has(.cm){margin-bottom:-74px}
+  .app .hero.carrusel .mo-tabs{width:max-content;max-width:100%}
+}
 /* la batalla de una llave terminada que espera respuesta: «SIN GANADOR», en gris (no es «AHORA») */
 .cm-m.singan{border-style:dashed}
 .cm-m.singan i{background:#2A2A2E;color:#F6F6F6}
