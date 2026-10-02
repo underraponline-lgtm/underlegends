@@ -53,10 +53,10 @@
    "temporada": "26c08a85c034:146101b6ee32"
   },
   "Agus": {
-   "competitivo": "1ce1863d4caa:945fdcc5bb5d",
+   "competitivo": "5b0783cf0e88:945fdcc5bb5d",
    "pais": "1cef48913349:81ca9569ff4e",
    "servidor": "1ef82619fb1c:aee1635d8702:c589ca",
-   "temporada": "afd598832c02:146101b6ee32"
+   "temporada": "dc8d91224644:146101b6ee32"
   },
   "Aguzz": {
    "servidor": "0a55555cd98d:351cab14eb16:980594"
@@ -191,7 +191,7 @@
   },
   "Camila": {
    "servidor": "75d717768ef2:351cab14eb16:da39a3",
-   "temporada": "2e578bc97d56:146101b6ee32"
+   "temporada": "cc116e0c42be:146101b6ee32"
   },
   "Carlos": {
    "servidor": "c6b350da79b1:351cab14eb16:68c13e",
@@ -869,7 +869,7 @@
   },
   "Luzzano": {
    "servidor": "2e792b92575d:351cab14eb16:cd7216",
-   "temporada": "92ac8ccc8044:146101b6ee32"
+   "temporada": "658cd1486f23:146101b6ee32"
   },
   "Lvel": {
    "servidor": "dd91d9534640:351cab14eb16:43d041"
@@ -1379,10 +1379,10 @@
    "servidor": "0d4d33216a18:351cab14eb16:43d041"
   },
   "Soneto": {
-   "competitivo": "13645aac0c5f:945fdcc5bb5d",
+   "competitivo": "09b08e5eb005:945fdcc5bb5d",
    "pais": "805a9097eef7:81ca9569ff4e",
    "servidor": "35b0e8797ef8:aee1635d8702:43d041",
-   "temporada": "72ad1b073eef:146101b6ee32"
+   "temporada": "6eb6d4da73ce:146101b6ee32"
   },
   "Sosa": {
    "competitivo": "6e573d6bb7f3:945fdcc5bb5d",
@@ -1691,5 +1691,5 @@
    "servidor": "994982e6deaa:351cab14eb16:0a3db8"
   }
  },
- "cuando": "2026-10-02T18:57:04+00:00"
+ "cuando": "2026-10-02T21:56:53+00:00"
 }
