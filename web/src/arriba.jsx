@@ -83,17 +83,15 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
       <div className="cab-der">
         <Buscar liga={liga} />
         <a className="btn-ico" href="#/avisos" aria-label="Avisos de eventos"><Ico n="campana" t={20} /></a>
-        {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta») */}
+        {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta»). Y en el celular, en
+            el lugar de tu cuenta, que vuelve abajo como «Yo» (Dlx, 02/10/2026: «el engranaje en vez de la cuenta. En
+            el celular. En la PC que esté arriba, por supuesto») */}
         <a className="btn-ico ajustes-b" href="#/ajustes" aria-label="Ajustes"><Ico n="engranaje" t={20} /></a>
         {cara ? (
-          <button type="button" className="yo-chip" onClick={accion.cuenta} aria-label="Mi cuenta">{cara}<span>{nombre}</span></button>
+          <a className="yo-chip" href="#/cuenta" aria-label="Mi cuenta">{cara}<span>{nombre}</span></a>
         ) : (
-          <button type="button" className="btn verde chico entrar" onClick={accion.cuenta}>Entrar</button>
+          <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>
         )}
-        {/* en el celular, la cuenta es un círculo al lado del ⚙ (Dlx, 01/10/2026: «B»: queda arriba) */}
-        <button type="button" className="btn-ico cuenta-m" onClick={accion.cuenta} aria-label={cara ? 'Mi cuenta' : 'Entrar con Discord'}>
-          {cara || <Ico n="yo" t={20} />}
-        </button>
         <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
       </div>
     </header>

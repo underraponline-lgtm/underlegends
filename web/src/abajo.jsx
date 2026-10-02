@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace } from './piezas.jsx';
-import { Buscar, CaraH, MENU } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, MENU } from './arriba.jsx';
 import { nuevaQue } from './cambios.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -68,13 +68,17 @@ export function Pie({ liga }) {
 }
 
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
-export function Tabbar({ pagina = '' }) {
-  // tu cuenta vive arriba, en el círculo (Dlx, 01/10/2026: «B»). Abajo, en el lugar de «Yo», las Tarjetas
+export function Tabbar({ liga, dc, pagina = '' }) {
+  // tu cuenta vive abajo, en «Yo», como el «Tú» de Discord, y arriba queda el ⚙ (Dlx, 02/10/2026: «el engranaje en vez
+  // de la cuenta»). Las Tarjetas siguen en el menú ☰
   const tabs = [['Inicio', 'inicio', '#/'], ['Eventos', 'eventos', '#/eventos'], ['Ranking', 'ranking', '#/ranking'],
-    ['Publicaciones', 'publicaciones', '#/publicaciones'], ['Tarjetas', 'tarjetas', '#/tarjetas']];
+    ['Publicaciones', 'publicaciones', '#/publicaciones']];
+  const yo = liga && liga.yo;
+  const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
   return (
     <nav className="tabbar" aria-label="Secciones">
       {tabs.map(([n, k, r]) => <a key={k} href={r} className={k === 'inicio' && !pagina ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>)}
+      <a href="#/cuenta" className={pagina === 'cuenta' ? 'on' : ''} aria-label="Mi cuenta">{cara || <Ico n="yo" t={22} />}<span>Yo</span></a>
     </nav>
   );
 }

@@ -5143,8 +5143,9 @@ function pedirMiServidor() {
   }).catch(function () { MISV_PIDE = false; MISV = { error: 'red' }; repintarMiServidor(); });
 }
 function repintarMiServidor() {
-  var pop = $('#popCuenta');
-  if (pop && !pop.hidden) pintaPopCuenta();
+  // ⚠️ SIEMPRE, aunque la ventana esté cerrada: Mi cuenta nueva se entera de cada cambio por `pintaPopCuenta()`
+  // (ver `nuevaCuenta()`), y con la ventana cerrada no se enteraba
+  pintaPopCuenta();
 }
 function elegirMiServidor(sv) {
   MISV_EST = { va: sv };
@@ -5447,7 +5448,11 @@ function volverDeDiscord() {
   if (modo0 === 't') {
     try { pp = JSON.parse(sessionStorage.getItem('lg:precio') || 'null'); } catch (e) { pp = null; }
   }
-  var destino = '#/' + (modo0 === 'v' ? 'avisos' : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 't'
+  // 🔑 Y QUIEN VINO A ENTRAR, A CAMBIAR SU FOTO O A ELEGIR SUS REDES VUELVE A MI CUENTA (02/10/2026), no a una
+  // ventana encima del Inicio: ver `nuevaCuenta()`
+  var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
+  var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'v' ? 'avisos'
+    : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', urlDe(destino)); } catch (e) { location.hash = destino; }
   var st = '';
@@ -5509,7 +5514,8 @@ function volverDeDiscord() {
       pintaCuenta();
       pintaPaneles();
       pintaPopCuenta();
-      $('#popCuenta').hidden = false;
+      // con Mi cuenta nueva no hay ventana: ya se volvió a `#/cuenta` (ver `aCuenta`)
+      if (!aCuenta) $('#popCuenta').hidden = false;
       if (porAvisos) {
         vincularAvisos(q.access_token);
         $('#popCuenta').hidden = true;
@@ -5533,14 +5539,14 @@ function volverDeDiscord() {
         pedirFoto(false).then(function (R) {
           FOTO = R;
           pintaPopCuenta();
-          $('#popCuenta').hidden = false;
+          if (!aCuenta) $('#popCuenta').hidden = false;
         }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       }
       if (porRedes) {
         pedirRedes(null).then(function (R) {
           REDES_MIAS = R;
           pintaPopCuenta();
-          $('#popCuenta').hidden = false;
+          if (!aCuenta) $('#popCuenta').hidden = false;
         }).catch(function () { REDES_MIAS = { error: 'red' }; pintaPopCuenta(); });
       }
     })
@@ -5667,6 +5673,78 @@ function pintaPopAjustes() {
   $('#ajTz').value = AJ.tz || '';
 }
 function cerrarPops() { $$('.pop').forEach(function (p) { p.hidden = true; }); }
+
+/* 🔑 MI CUENTA, EN SU PÁGINA (Dlx, 02/10/2026: «ajustes y cuenta separados, y me gusta cómo lo propusiste»).
+   La ventana de arriba a la derecha pasa a ser una página, como los ajustes de Discord: la dibuja el Inicio nuevo
+   (`web/src/cuenta.jsx`). Lo que hace cada cosa por dentro sigue acá —la foto, las redes, «tu servidor», salir— y
+   la página nueva llama a estas funciones; se entera de cada cambio porque envuelve `pintaPopCuenta()`, que corre
+   después de cada uno. ⚠️ LA VENTANA QUEDA DE RESPALDO: se abre sólo si la página nueva no se monta. */
+function nuevaCuenta() {
+  return !!document.getElementById('inicio-nuevo') && !window.__inicioSinDatos;
+}
+function cuentaFotoNo() { FOTO = null; pintaPopCuenta(); }
+function cuentaFotoSi() {
+  return pedirFoto(true).then(function (R) {
+    FOTO = R && R.ok ? { hecho: true, temporada: R.temporada, libre: R.libre, libre_hasta: R.libre_hasta }
+      : { error: (R && (R.paso || R.error)) || 'red', temporada: R && R.temporada };
+    pintaPopCuenta();
+  }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
+}
+/* guarda las redes elegidas (`[]` las quita todas) y dice cómo salió */
+function cuentaRedes(elegidas) {
+  return pedirRedes(elegidas).then(function (R) {
+    if (R && R.guardadas) REDES_MIAS = R;
+    pintaPopCuenta();
+    if (R && R.error === 'tope') return 'Ya cambiaste tus redes muchas veces hoy: probá mañana.';
+    if (R && R.error === 'espera') return 'Esperá un minuto y probá de nuevo.';
+    if (!R || !R.guardadas) return 'No pude guardar. Probá de nuevo.';
+    return '✓ Guardado. ' + (R.guardadas.length ? 'Tu perfil va a mostrar ' + R.guardadas.length +
+      (R.guardadas.length === 1 ? ' red' : ' redes') : 'Tu perfil no muestra ninguna') +
+      ' desde la próxima actualización (cada media hora).';
+  }).catch(function () { return 'No pude guardar. Probá de nuevo.'; });
+}
+/* «tu servidor»: durante la ventana libre se elige al toque; después, como es para toda la temporada, se confirma */
+function cuentaServidor(sv) {
+  if (MISV && MISV.sv === sv) return;
+  if (MISV && !MISV.libre) { MISV_EST = { pide: sv }; repintarMiServidor(); } else elegirMiServidor(sv);
+}
+function cuentaSalir() {
+  desvincularAvisos();
+  cerrarSesion();
+  // ★ a quién seguías queda en el servidor, con tu cuenta: no en este dispositivo
+  if (DC) { guardarSigo([]); marcarSigoSrv(false); ME_SIGUEN = null; }
+  MISV = null;
+  MISV_EST = {};
+  YO = '';
+  DC = null;
+  guardarLS('lg:yo', null);
+  guardarLS('lg:dc', null);
+  pintaCuenta();
+  pintaPopCuenta();
+  pintaPaneles();
+}
+/* olvidar todo lo de este dispositivo: quién sos y los ajustes */
+function cuentaOlvidarTodo() {
+  desvincularAvisos();
+  cerrarSesion();
+  guardarSigo([]);
+  marcarSigoSrv(false);
+  ME_SIGUEN = null;
+  MISV = null;
+  MISV_EST = {};
+  AJ = {};
+  YO = '';
+  DC = null;
+  guardarLS('lg:ajustes', null);
+  guardarLS('lg:yo', null);
+  guardarLS('lg:dc', null);
+  aplicarCalma();
+  pintaCuenta();
+  pintaPopCuenta();
+  pintaPopAjustes();
+  repintarHoras();
+  try { window.dispatchEvent(new Event('lg:ajustes')); } catch (e) { /* navegador viejo */ }
+}
 
 /* ── la fase: prueba, o la temporada en juego ─────────────────────────
    🔑 Dlx, 25/09/2026: «estamos en prueba todavía» y «la temporada 1 ya
@@ -5943,7 +6021,11 @@ function eventos() {
     var inp = p.querySelector('input[type=search]');
     if (inp) inp.focus();
   };
-  $('#bCuenta').addEventListener('click', function () { abrirPop('#popCuenta', pintaPopCuenta); });
+  // Mi cuenta es una página (ver `nuevaCuenta()`); la ventana, sólo si la página nueva no se montó
+  $('#bCuenta').addEventListener('click', function () {
+    if (nuevaCuenta()) { cerrarPops(); location.hash = '#/cuenta'; return; }
+    abrirPop('#popCuenta', pintaPopCuenta);
+  });
   ['#bAjustes', '#bAjustes2'].forEach(function (b) {
     $(b).addEventListener('click', function () { abrirPop('#popAjustes', pintaPopAjustes); });
   });
@@ -5955,18 +6037,14 @@ function eventos() {
     if (e.target.closest('[data-abrir-cuenta]')) {
       e.preventDefault();
       window.scrollTo(0, 0);
-      abrirPop('#popCuenta', pintaPopCuenta);
+      if (nuevaCuenta()) location.hash = '#/cuenta';
+      else abrirPop('#popCuenta', pintaPopCuenta);
       return;
     }
     // 🏠 «tu servidor»: durante la ventana libre se elige al toque; después,
     // como es para toda la temporada, se confirma
     var ms = e.target.closest('[data-misv]');
-    if (ms) {
-      var msv = ms.dataset.misv;
-      if (MISV && MISV.sv === msv) return;
-      if (MISV && !MISV.libre) { MISV_EST = { pide: msv }; repintarMiServidor(); } else elegirMiServidor(msv);
-      return;
-    }
+    if (ms) { cuentaServidor(ms.dataset.misv); return; }
     var mo = e.target.closest('[data-misv-ok]');
     if (mo) { elegirMiServidor(mo.dataset.misvOk); return; }
     var sg = e.target.closest('[data-seguir]');
@@ -5998,75 +6076,25 @@ function eventos() {
       location.href = urlLogin('f');
       return;
     }
-    if (e.target.closest('#dcFotoNo')) {
-      FOTO = null;
-      pintaPopCuenta();
-      return;
-    }
+    if (e.target.closest('#dcFotoNo')) { cuentaFotoNo(); return; }
     var fs = e.target.closest('#dcFotoSi');
-    if (fs) {
-      fs.disabled = true;
-      pedirFoto(true).then(function (R) {
-        FOTO = R && R.ok ? { hecho: true, temporada: R.temporada, libre: R.libre, libre_hasta: R.libre_hasta }
-          : { error: (R && (R.paso || R.error)) || 'red', temporada: R && R.temporada };
-        pintaPopCuenta();
-      }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
-      return;
-    }
+    if (fs) { fs.disabled = true; cuentaFotoSi(); return; }
     var rg = e.target.closest('#dcRedesGuardar,#dcRedesQuitar');
     if (rg) {
       var elegidas = rg.id === 'dcRedesQuitar' ? [] : $$('#secMisRedes input:checked').map(function (x) {
         return x.value;
       });
       rg.disabled = true;
-      pedirRedes(elegidas).then(function (R) {
-        if (R && R.guardadas) REDES_MIAS = R;
-        pintaPopCuenta();
+      cuentaRedes(elegidas).then(function (msg) {
         var n = $('#redesNota');
-        if (n && R && R.error === 'tope') n.textContent = 'Ya cambiaste tus redes muchas veces hoy: probá mañana.';
-        else if (n && R && R.error === 'espera') n.textContent = 'Esperá un minuto y probá de nuevo.';
-        else if (n) n.innerHTML = R && R.guardadas ? '&#10003; Guardado. ' + (R.guardadas.length ? 'Tu perfil va a ' +
-          'mostrar ' + R.guardadas.length + (R.guardadas.length === 1 ? ' red' : ' redes') : 'Tu perfil no ' +
-          'muestra ninguna') + ' desde la próxima actualización (cada media hora).' : 'No pude guardar. Probá de nuevo.';
-      }).catch(function () { rg.disabled = false; });
+        if (n) n.textContent = msg;
+        rg.disabled = false;
+      });
       return;
     }
-    if (e.target.closest('#yoOlvidar')) {
-      desvincularAvisos();
-      cerrarSesion();
-      // ★ a quién seguías queda en el servidor, con tu cuenta: no en este dispositivo
-      if (DC) { guardarSigo([]); marcarSigoSrv(false); ME_SIGUEN = null; }
-      MISV = null;
-      MISV_EST = {};
-      YO = '';
-      DC = null;
-      guardarLS('lg:yo', null);
-      guardarLS('lg:dc', null);
-      pintaCuenta();
-      pintaPopCuenta();
-      pintaPaneles();
-      return;
-    }
+    if (e.target.closest('#yoOlvidar')) { cuentaSalir(); return; }
     if (e.target.closest('.pop-menu a,.pop-menu [data-carta]')) cerrarPops();
-    if (e.target.closest('#ajBorrar')) {
-      desvincularAvisos();
-      cerrarSesion();
-      guardarSigo([]);
-      marcarSigoSrv(false);
-      ME_SIGUEN = null;
-      MISV = null;
-      MISV_EST = {};
-      AJ = {};
-      YO = '';
-      DC = null;
-      guardarLS('lg:ajustes', null);
-      guardarLS('lg:yo', null);
-      guardarLS('lg:dc', null);
-      aplicarCalma();
-      pintaCuenta();
-      pintaPopAjustes();
-      repintarHoras();
-    }
+    if (e.target.closest('#ajBorrar')) cuentaOlvidarTodo();
   });
   document.addEventListener('input', function (e) {
     if (e.target.id === 'yoBusca') pintaYoRes(e.target.value);

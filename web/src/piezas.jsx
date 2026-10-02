@@ -52,7 +52,14 @@ export function Chevron() {
 // (retargeteado al host del shadow root). Abriendo después, ese mismo clic no la cierra.
 const luego = (f) => setTimeout(f, 0);
 export const accion = {
+  // Mi cuenta (desde el 02/10/2026 es una página: el botón de app.js lleva a `#/cuenta`, y abre su ventana sólo si
+  // el Inicio nuevo no se montó)
   cuenta: () => luego(() => { const b = document.getElementById('bCuenta'); if (b) b.click(); }),
+  // lo que pasa por Discord: entrar, la foto y las redes (`urlLogin()` de app.js; al volver, a `#/cuenta`)
+  entrar: () => { if (window.urlLogin) location.href = window.urlLogin(); },
+  foto: () => { if (window.urlLogin) location.href = window.urlLogin('f'); },
+  redes: () => { if (window.urlLogin) location.href = window.urlLogin(true); },
+  salir: () => luego(() => { if (window.cuentaSalir) window.cuentaSalir(); }),
   ajustes: () => luego(() => { const b = document.getElementById('bAjustes2'); if (b) b.click(); }),
   carta: (k) => luego(() => { if (window.abrir) window.abrir(k); }),
   llave: (n) => luego(() => {

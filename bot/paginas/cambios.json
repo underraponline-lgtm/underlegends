@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.79",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T09:00:00-04:00",
+   "titulo": "Mi cuenta, en su página",
+   "items": [
+    "👤 **Mi cuenta, en su página**: tu tarjeta arriba y todo lo tuyo en partes, como los ajustes de Discord — tu foto de la tarjeta, tus redes, tu servidor, a quién seguís y quién te sigue. Los Ajustes, aparte, con el ⚙.",
+    "📱 **En el celular, el ⚙ arriba y vos abajo**: la barra de abajo vuelve a tener «Yo», con tu cara, y arriba quedan la campana, el ⚙ y el menú. Las Tarjetas siguen en el menú."
+   ]
+  },
+  {
    "version": "1.78",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T08:25:00-04:00",

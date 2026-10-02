@@ -35,6 +35,9 @@ envolver('ir', 'lg:ruta');
 // Y a quién seguís lo guarda siempre `guardarSigo()`.
 envolver('pintaCuenta', 'lg:cuenta');
 envolver('guardarSigo', 'lg:sigo');
+// 👤 Y LO DE MI CUENTA (02/10/2026): la foto, las redes, «tu servidor». app.js vuelve a pintar su ventana después de
+// cada cambio —aunque esté cerrada—, así que ése es el aviso. Ver `nuevaCuenta()` en app.js
+envolver('pintaPopCuenta', 'lg:cuentaest');
 
 // ── el changelog: qué versión habías visto ANTES de abrirlo. app.js la da por vista apenas dibuja el suyo, que sigue
 // dibujándose escondido, y lo hace antes que esto. Si la página se abrió en `#/cambios`, ya pasó antes de que cargara
@@ -240,8 +243,9 @@ export default function App() {
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={pagina} onMenu={() => setMenu(true)} /></Aislada>
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
-        // verificarse desde la página (01/10/2026): de Mi cuenta, sólo esta parte está en línea
+        // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada n="Verificar"><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
+        : pagina === 'cuenta' ? <Aislada n="Cuenta"><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>
         : pagina === 'ajustes' ? <Aislada n="Ajustes"><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada> : <>
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
