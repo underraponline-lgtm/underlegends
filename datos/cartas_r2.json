@@ -426,6 +426,10 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/anbeck/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/anbeck/sv-urbf.webp"
  },
+ "andres": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andres/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andres/temporada.webp"
+ },
  "androide": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/androide/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/androide/bloq-pais.webp",
@@ -7641,6 +7645,7 @@
  "rickyfort": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rickyfort/servidor.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rickyfort/sv-ffa.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rickyfort/sv-sr.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rickyfort/temporada.webp"
  },
  "riolu": {

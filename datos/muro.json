@@ -1135,7 +1135,10 @@
 },
 "andres": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "emilyfamily": {
 "rg": "",
@@ -2976,6 +2979,22 @@
 "t": "2026-10-02T00:25:20Z",
 "quien": [
 "SHULIOT"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T02:40:30Z",
+"quien": [
+"Andres"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T02:40:30Z",
+"quien": [
+"Andres"
 ],
 "carta": "temporada"
 }
