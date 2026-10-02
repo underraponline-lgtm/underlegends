@@ -81,7 +81,8 @@ export function Tabbar({ liga, dc, pagina = '' }) {
       <div className="tb-tira">
         {MENU.map(([n, r]) => {
           const k = r.replace(/^#\/?/, '') || 'inicio';
-          return <a key={k} href={r} className={k === 'inicio' && !pagina ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
+          // la de la página que se ve: el Inicio sin ruta, y las que dibuja el Inicio nuevo por su nombre (el Ranking)
+          return <a key={k} href={r} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
         })}
       </div>
       <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Mi cuenta">{cara || <Ico n="yo" t={22} />}<span>Yo</span></a>

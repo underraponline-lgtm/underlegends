@@ -10,6 +10,7 @@ import { Encuestas } from './encuestas.jsx';
 import { PerfilSv } from './servidor.jsx';
 import { Cambios } from './cambios.jsx';
 import { Cuenta, PaginaVerificar } from './cuenta.jsx';
+import { Ranking } from './ranking.jsx';
 import { VentanaVideo } from './video.jsx';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
@@ -61,6 +62,13 @@ let cambiosAntes = (() => {
 // las vistas de la página de hoy que ya dibuja el Inicio nuevo: la vieja sigue escondida, de respaldo. La misma lista
 // que `PROPIAS` de web/montar.py (el script del principio de index.html)
 const PROPIAS = { cambios: 1 };
+// 🔍 EL RANKING NUEVO, EN PREVIEW (02/10/2026): sólo en el navegador que tiene `lg:prev-rk`. Para todos los demás,
+// `#/ranking` sigue siendo la tabla de app.js. Cuando Dlx diga que sí, `ranking` pasa a `PROPIAS` (acá y en
+// web/montar.py) y esto se va
+function prevRk() {
+  try { return !!localStorage.getItem('lg:prev-rk'); } catch (e) { return false; }
+}
+const esPropia = (p) => !!PROPIAS[p] || (p === 'ranking' && prevRk());
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -77,7 +85,7 @@ function esInicio() {
   const r = h.replace(/^#\/?/, '').split('?')[0];
   const p = r.split('/')[0];
   if (!p) return true;
-  if (PROPIAS[p]) return true;
+  if (esPropia(p)) return true;
   const alias = { avisos: 1, duelos: 1, llave: 1 };
   if (alias[p]) return false;
   return !document.querySelector('section.vista[data-vista="' + p.replace(/"/g, '') + '"]');
@@ -227,6 +235,8 @@ export default function App() {
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
+  const enRanking = /^#\/ranking(\/|$|\?)/.test(hash || '') && prevRk();
+  useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
   const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
@@ -243,6 +253,7 @@ export default function App() {
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={pagina} onMenu={() => setMenu(true)} /></Aislada>
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
+        : pagina === 'ranking' && prevRk() ? <Aislada n="Ranking"><Ranking liga={liga} sub={partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada n="Verificar"><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
         : pagina === 'cuenta' ? <Aislada n="Cuenta"><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>

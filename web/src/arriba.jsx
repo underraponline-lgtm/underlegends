@@ -78,7 +78,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
     <header className="cab negra">
       <Marca liga={liga} />
       <nav className="menu" aria-label="Secciones">
-        {MENU.map(([n, r]) => <a key={n} href={r} className={n === 'Inicio' && !pagina ? 'on' : ''}>{n}</a>)}
+        {MENU.map(([n, r]) => <a key={n} href={r} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />

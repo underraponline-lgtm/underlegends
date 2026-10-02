@@ -556,3 +556,184 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .vid-marco{position:relative;aspect-ratio:16/9;background:#000;border:2px solid #2A2A2E}
 .vid-marco iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 @media (max-width: 599.98px){.vid-yt{display:none}}
+
+/* ── el Ranking, #/ranking (02/10/2026, en preview con `lg:prev-rk`). La tira de rankings pegada arriba, la cabecera
+   con el podio (las cartas de verdad paradas en su escalón), la tabla y «tu lugar» pegado abajo ── */
+.clara{--rk-yo:#DDF3EE}
+.noche{--rk-yo:#0E2A25}
+.rk-subs{position:sticky;top:0;z-index:35;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
+.rk-subs-in{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 6px}
+.rk-subs-in::-webkit-scrollbar{display:none}
+.rk-subs a{flex:none;display:inline-flex;align-items:center;gap:6px;padding:15px 10px 12px;margin-bottom:-2px;
+  font:700 12px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0;
+  border-bottom:3px solid transparent;white-space:nowrap}
+.rk-subs a:hover{color:#F6F6F6}
+.rk-subs a.on{color:#F6F6F6;border-bottom-color:#29B298}
+.rk-subs a i{font-style:normal;font-size:9.5px;letter-spacing:.06em;border:1.5px solid currentColor;padding:2px 4px}
+.rk-subs a.pronto:not(.on){color:#6E6E6A}
+/* en el celular el círculo de color va abajo, detrás del podio: arriba quedaba debajo del texto gris */
+.rk-esc:before{top:auto;bottom:-150px;right:-110px}
+.rk-cab{display:grid;gap:24px;padding:24px 16px 22px}
+.rk-tx{display:grid;gap:12px;justify-items:start;align-content:start;min-width:0}
+.rk-tx .hero-ev{margin:0;text-wrap:balance}
+.rk-tx .hero-p{max-width:38ch;text-wrap:pretty}
+.rk-tx .hero-acc{margin-top:4px}
+.rk-meta{margin:0;font:700 11px/1.55 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#A5A5A0}
+/* el podio: el 1 en el medio y más alto; los escalones con los colores de la marca, planos */
+.rk-podio{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:end;gap:10px}
+.rk-p{display:grid;gap:6px;min-width:0;grid-row:1}
+.rk-p.p1{grid-column:2}
+.rk-p.p2{grid-column:1}
+.rk-p.p3{grid-column:3}
+.rk-pv{display:grid;gap:4px;justify-items:center;min-width:0}
+.rk-pv>.sin-boton{display:block;width:100%}
+.rk-ci{display:block;width:100%;height:auto}
+.rk-ci.sincarta{gap:6px;padding:8px 4px}
+.rk-ci.sincarta b{font-size:12px}
+.rk-ci.sincarta .sc-cara{width:46px;height:46px;font-size:20px}
+.rk-pnota{font:700 9.5px/1.2 "Space Mono",monospace;letter-spacing:.04em;color:#A5A5A0;text-align:center}
+.rk-ped{display:grid;align-content:start;justify-items:center;gap:5px;padding:9px 4px 10px;text-align:center}
+.rk-p.p1 .rk-ped{background:#29B298;color:#030304;min-height:88px}
+.rk-p.p2 .rk-ped{background:#E41373;color:#FFFFFF;min-height:66px}
+.rk-p.p3 .rk-ped{background:#F6F6F6;color:#030304;min-height:50px}
+.rk-ped-n{font:900 32px/.82 Archivo,sans-serif;font-stretch:125%}
+.rk-p.p1 .rk-ped-n{font-size:44px}
+.rk-ped b{font:900 11.5px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;overflow-wrap:anywhere}
+.rk-ped small{font:700 10.5px/1.15 "Space Mono",monospace;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.rk-pvis{display:block;width:100%}
+.rk-pflag{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border:2px solid #F6F6F6}
+.rk-plogo{display:grid;place-items:center;width:100%;aspect-ratio:1;object-fit:cover;border:2px solid #F6F6F6;background:#121214;
+  color:#F6F6F6;font:900 26px/1 Archivo,sans-serif;font-stretch:125%}
+/* la tabla */
+.rk-sec{padding-top:18px}
+.rk-fil{display:grid;gap:10px;margin-bottom:14px}
+.rk-buscar{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--gris)}
+.rk-buscar:focus-within{outline:3px solid #E41373;outline-offset:2px}
+.rk-buscar input{flex:1;min-width:0;padding:11px 0;border:0;background:transparent;color:var(--tinta);font:500 16px/1.2 Archivo,sans-serif;outline:0}
+.rk-buscar input::placeholder{color:var(--gris);opacity:1}
+.rk-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:3px 3px 4px;margin:-3px -3px 0}
+.rk-chips::-webkit-scrollbar{display:none}
+.rk-chips button,.rk-sel{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 12px;border:1.5px solid var(--linea);
+  background:var(--fondo);color:var(--tinta);font:700 11.5px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.rk-chips button.on,.rk-sel.on{background:var(--inv);color:var(--inv-tinta)}
+.rk-chips img{width:20px;height:20px;border-radius:50%;object-fit:cover;flex:none}
+.rk-sel{position:relative;padding:0}
+.rk-sel select{appearance:none;-webkit-appearance:none;border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;
+  text-transform:inherit;padding:0 32px 0 12px;min-height:37px;cursor:pointer}
+.rk-sel select:focus-visible{outline:3px solid #E41373;outline-offset:2px}
+.rk-sel select option{background:var(--fondo);color:var(--tinta);text-transform:none}
+.rk-sel svg{position:absolute;right:11px;top:50%;margin-top:-6px;pointer-events:none}
+.rk-invita{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;margin:0 0 14px;padding:12px 14px;
+  background:var(--caja);font:600 14px/1.35 Archivo,sans-serif}
+.rk-tw{border-top:2px solid var(--linea)}
+.rk-t{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.rk-t th{position:sticky;top:45px;z-index:4;padding:0;background:var(--fondo);text-align:right;box-shadow:inset 0 -1.5px 0 var(--linea)}
+.rk-t th button{display:inline-flex;align-items:center;justify-content:flex-end;gap:5px;width:100%;min-height:40px;padding:0 8px;border:0;
+  background:transparent;color:var(--gris);font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.rk-t th button:hover,.rk-t th.on button{color:var(--tinta)}
+.rk-fl{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;opacity:0}
+.rk-t th.on .rk-fl{opacity:1}
+.rk-t th.on.asc .rk-fl{transform:rotate(180deg)}
+.rk-t th.c-n,.rk-t th.c-izq{text-align:left}
+.rk-t th.c-n button,.rk-t th.c-izq button{justify-content:flex-start}
+.rk-t th.c-pos button{justify-content:center}
+.rk-t td{padding:9px 8px;border-bottom:1px solid var(--suave);text-align:right;vertical-align:middle;white-space:nowrap;
+  font:600 15px/1.2 Archivo,sans-serif}
+.rk-t td.on{font-weight:800;background:var(--caja)}
+.rk-t td.c-pos{width:50px;text-align:center;padding-left:4px;padding-right:4px}
+.rk-t td.c-n{width:100%;max-width:0;text-align:left}
+.rk-t td.c-izq{text-align:left}
+.rk-t tbody tr{cursor:pointer}
+.rk-t tbody tr:hover td{background:var(--caja)}
+.rk-t tr.yo td,.rk-t tr.yo:hover td{background:var(--rk-yo)}
+.rk-t tr.chica td{color:var(--gris)}
+.rk-t tr.brilla td{animation:rk-brilla 2s cubic-bezier(.16,1,.3,1)}
+@keyframes rk-brilla{0%,25%{background:#29B298}100%{background:var(--rk-yo)}}
+@media (prefers-reduced-motion: reduce){.rk-t tr.brilla td{animation:none}}
+.rk-n{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 4px;font:900 17px/1 Archivo,sans-serif;font-stretch:115%}
+.rk-n.p1{background:#29B298;color:#030304}
+.rk-n.p2{background:#E41373;color:#FFFFFF}
+.rk-n.p3{background:var(--inv);color:var(--inv-tinta)}
+.rk-n.sin{color:var(--gris);font-weight:700}
+.rk-nada{color:var(--gris);font-weight:600}
+.rk-q{display:flex;align-items:center;gap:10px;min-width:0}
+.rk-cara{width:36px;height:36px;font:800 15px/1 Archivo,sans-serif}
+.rk-qn{display:grid;gap:3px;min-width:0}
+.rk-qa{display:flex;align-items:center;gap:7px;min-width:0}
+.rk-qa a,.rk-qa b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta);
+  font:800 15px/1.2 Archivo,sans-serif;font-stretch:105%}
+.rk-qa a:hover{text-decoration:underline;text-underline-offset:3px}
+.rk-flag{flex:none;width:20px;height:auto;box-shadow:0 0 0 1px var(--suave)}
+.rk-gflag{flex:none;width:42px;height:28px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
+.rk-clogo{flex:none;display:grid;place-items:center;width:36px;height:36px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);
+  font:900 13px/1 Archivo,sans-serif}
+.rk-qn small{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;
+  font:700 10.5px/1.1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.rk-qn small:empty{display:none}
+.rk-vos,.rk-sigo{flex:none;font-style:normal;font-size:9.5px;letter-spacing:.08em;padding:2px 4px}
+.rk-vos{background:#E41373;color:#FFFFFF}
+.rk-sigo{border:1px solid currentColor;color:var(--tinta)}
+.rk-rg{width:38px;height:26px}
+.rk-rch{font-weight:800}
+.rk-rch.viva{color:var(--magenta-tx)}
+.rk-rch span{color:var(--gris);font-weight:600}
+.rk-ult{display:inline-grid;justify-items:end;gap:3px}
+.rk-ult b{font:800 12px/1 Archivo,sans-serif;font-stretch:110%}
+.rk-ult small{font:700 10.5px/1 "Space Mono",monospace;color:var(--gris);text-transform:uppercase}
+.rk-lnk{background:none;border:0;padding:0;color:var(--tinta);font:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.rk-vacio{margin:6px 0 10px;max-width:62ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
+.rk-vacio b{color:var(--tinta)}
+.rk-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:14px 0 4px;
+  font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.rk-pie-acc{display:flex;flex-wrap:wrap;gap:8px}
+.rk-nota{margin:10px 0 18px;max-width:72ch;font:400 13.5px/1.5 Archivo,sans-serif;color:var(--gris)}
+.rk-nota b{color:var(--tinta)}
+.rk-pronto{display:grid;gap:12px;justify-items:start;padding:6px 0 26px}
+.rk-pronto p{margin:0;max-width:60ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
+/* en el celular, «todas las columnas» se desliza de costado con el puesto y el nombre fijos */
+.rk-tw.todas{overflow-x:auto}
+.rk-tw.todas .rk-t th{position:static}
+.rk-tw.todas td.c-n{max-width:none;min-width:168px;width:auto}
+.rk-tw.todas .c-pos,.rk-tw.todas .c-n{position:sticky;z-index:2;background:var(--fondo)}
+.rk-tw.todas .c-pos{left:0}
+.rk-tw.todas .c-n{left:50px;box-shadow:inset -1.5px 0 0 var(--suave)}
+.rk-tw.todas tr.yo td.c-pos,.rk-tw.todas tr.yo td.c-n{background:var(--rk-yo)}
+/* tu lugar: pegado abajo (encima de la barra del celular) mientras tu fila no se ve */
+.rk-lugar{position:sticky;bottom:var(--rk-tb,0px);z-index:31;display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;align-items:center;
+  gap:10px;padding:10px 16px;background:#030304;color:#F6F6F6;border-top:3px solid #29B298;transition:transform .25s cubic-bezier(.16,1,.3,1),opacity .2s}
+.rk-lugar.oculto{transform:translateY(110%);opacity:0;pointer-events:none}
+.rk-lugar .rk-n.sin{color:#A5A5A0}
+.rk-lugar .rk-n:not(.p1):not(.p2):not(.p3):not(.sin){background:#F6F6F6;color:#030304}
+.rk-lcara{width:38px;height:38px;font:800 15px/1 Archivo,sans-serif;background:#F6F6F6;color:#030304}
+.rk-lflag{width:42px;height:28px;object-fit:cover}
+.rk-llogo{display:grid;place-items:center;width:38px;height:38px;object-fit:cover;background:#F6F6F6;color:#030304;font:900 13px/1 Archivo,sans-serif}
+.rk-lt{display:grid;gap:4px;min-width:0}
+.rk-lt small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-lt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-lugar .btn{min-height:40px;padding:0 12px}
+@media (prefers-reduced-motion: reduce){.rk-lugar{transition:none}}
+/* en un celular angosto la cara se va y la grilla pierde esa columna: con la de 4, el texto caía en una `auto` y
+   empujaba «Encontrarme» fuera de la pantalla (medido en Duelos a 390 px) */
+@media (max-width: 420px){
+  .rk-lugar{grid-template-columns:auto minmax(0,1fr) auto;gap:8px;padding:9px 12px}
+  .rk-lugar .rk-lcara,.rk-lugar .rk-lflag,.rk-lugar .rk-llogo{display:none}
+  .rk-lt b{font-size:13px}
+}
+@media (min-width: 900px){
+  .app .rk-subs-in{padding:0 calc(var(--gut) - 10px)}
+  .app .rk-esc:before{top:-160px;bottom:auto;right:-120px}
+  .app .rk-cab{grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:48px;padding:40px var(--gut) 36px}
+  .app .rk-tx .hero-p{max-width:44ch;font-size:15px}
+  .app .rk-podio{grid-template-columns:168px 204px 168px;gap:14px}
+  .app .rk-ped-n{font-size:46px}
+  .app .rk-p.p1 .rk-ped-n{font-size:60px}
+  .app .rk-p.p1 .rk-ped{min-height:116px}
+  .app .rk-p.p2 .rk-ped{min-height:88px}
+  .app .rk-p.p3 .rk-ped{min-height:68px}
+  .app .rk-ped b{font-size:13px}
+  .app .rk-ped small{font-size:11.5px}
+  .app .rk-sec{padding:26px var(--gut) 6px}
+  .app .rk-fil{grid-template-columns:minmax(240px,340px) minmax(0,1fr);align-items:center}
+  .app .rk-t td{padding:10px 10px}
+  .app .rk-lugar{bottom:16px;margin:0 var(--gut) 16px;border:2px solid #29B298;border-top-width:3px}
+}
