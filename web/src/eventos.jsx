@@ -254,6 +254,35 @@ function Acciones({ liga, e, L, fut, ll }) {
     </div>
   );
 }
+// el ancho de verdad de una caja (sin su relleno), y cada vez que cambia
+function useAncho() {
+  const ref = useRef(null);
+  const [w, setW] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver((xs) => { const n = Math.floor(xs[0].contentRect.width); setW((v) => (Math.abs(v - n) > 2 ? n : v)); });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, w];
+}
+// el evento abierto: el podio y el cuadro. En una tarjeta ancha, el podio en dos columnas y el cuadro llenando el ancho
+// (vivo.css, por el ancho de la tarjeta); en el teléfono, como siempre
+function Abierto({ liga, ll }) {
+  const [ref, w] = useAncho();
+  return (
+    <div className="evp-abierto">
+      <ol className="podio2">
+        {(ll.tabla || []).slice(0, 4).map((r, i) => {
+          const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]);
+          return <li key={r[0] + i}><b>{i + 1}</b><span className="evp-pq"><Cara liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pc" />{limpio(r[0])}</span><em>{resultado(r[1], true)} · +{num(r[2])}</em></li>;
+        })}
+      </ol>
+      <div className="evp-cm" ref={ref}><CuadroMini liga={liga} ll={ll} lugar={w || undefined} /></div>
+    </div>
+  );
+}
 function Evento({ liga, e, est, L, abierto }) {
   const ll = e.ll ? (liga.d.llaves || {})[e.ll] : null;
   const inf = (ll && ll.info) || {};
@@ -282,17 +311,7 @@ function Evento({ liga, e, est, L, abierto }) {
         </div>
       ) : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
-      {abierto && ll ? (
-        <div className="evp-abierto">
-          <ol className="podio2">
-            {(ll.tabla || []).slice(0, 4).map((r, i) => {
-              const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]);
-              return <li key={r[0] + i}><b>{i + 1}</b><span className="evp-pq"><Cara liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pc" />{limpio(r[0])}</span><em>{resultado(r[1], true)} · +{num(r[2])}</em></li>;
-            })}
-          </ol>
-          <div className="evp-cm"><CuadroMini liga={liga} ll={ll} /></div>
-        </div>
-      ) : null}
+      {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
       {est === 'vivo' && L ? <div className="evp-cm"><CuadroMini liga={liga} ll={L} /></div> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
       <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} />
@@ -313,7 +332,7 @@ function Mes({ liga, porDia, dia, onDia, ym, setYm, color }) {
     const k = y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
     const evs = porDia[k] || [];
     celdas.push(
-      <button type="button" key={k} className={(k === hoyK ? 'hoy ' : '') + (k === dia ? 'sel ' : '') + (evs.length ? 'con' : '')}
+      <button type="button" key={k} className={(k === hoyK ? 'hoy ' : '') + (k === dia ? 'sel ' : '') + (evs.length ? 'con' : '') + (evs.length && k < hoyK ? ' pas' : '')}
         onClick={() => onDia(k)} aria-label={d + (evs.length ? ': ' + evs.length + (evs.length === 1 ? ' evento' : ' eventos') : '')} aria-pressed={k === dia}>
         {d}<em>{evs.slice(0, 4).map((e, i) => <i key={i} style={{ background: color(e.sv) }} />)}{evs.length > 4 ? <u>+{evs.length - 4}</u> : null}</em>
       </button>,
@@ -601,18 +620,17 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     const g = liga.campeon(ultima);
     const r = (ultima.tabla || []).find((x) => x[1] === 'Campeón') || [];
     const f = r[3] ? liga.T[r[3]] : liga.fila(r[0] || g[0]);
-    // la carta del campeón al lado de su nombre (en el celular, una columna de texto al lado de la carta se cortaba)
+    // la carta del campeón al lado de su nombre (en el celular, una columna de texto al lado de la carta se cortaba). Los
+    // pedazos van sueltos, sin caja que los agrupe: así la grilla los acomoda distinto en el celular —la carta al lado
+    // del nombre— y en la compu —la carta a la izquierda de todo, para que la tarjeta no sea más alta que el título—
     momento = (
-      <div className="evp-mo ult">
+      <div className={'evp-mo ult' + (f ? '' : ' sin-carta')}>
         <span className="tag">ÚLTIMO CAMPEÓN · {liga.cuando(liga.fechaLlave(ultima)).toUpperCase()}</span>
-        <div className="evp-mo-top">
-          {f ? <div className="evp-mo-carta"><Carta liga={liga} k={f.k} cual="temporada" cls="evp-mo-ci" /></div> : null}
-          <div className="evp-mo-txt">
-            <div className="evp-mo-n"><img alt="" src={liga.logo(ultima.sv)} /><b>{g.join(' y ')}</b></div>
-            <small className="evp-mo-s">{limpio(ultima.nombre)} · {ultima.sv} · {ultima.participantes} raperos</small>
-          </div>
+        {f ? <div className="evp-mo-carta"><Carta liga={liga} k={f.k} cual="temporada" cls="evp-mo-ci" /></div> : null}
+        <div className="evp-mo-txt">
+          <div className="evp-mo-n"><img alt="" src={liga.logo(ultima.sv)} /><b>{g.join(' y ')}</b></div>
+          <small className="evp-mo-s">{limpio(ultima.nombre)} · {ultima.sv} · {ultima.participantes} raperos</small>
         </div>
-        <p className="hero-p">Nada anunciado por ahora: los servidores anuncian cada evento unos 15 minutos antes. Con la campana te llega al minuto.</p>
         <div className="hero-acc">
           <button type="button" className="btn verde" onClick={() => accion.llave(ultima.n)}>Ver la llave</button>
           {g.length ? <BotonCampeon liga={liga} ll={ultima} estilo="borde" ic /> : null}
@@ -633,7 +651,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           <div className="evp-cabtx">
             <span className="tag">EVENTOS · {liga.temp}</span>
             <h1 className="hero-ev largo">Eventos</h1>
-            <p className="hero-p">Lo que se juega en la Liga, día por día, con el color de cada servidor. Tocá uno terminado para ver su llave.</p>
+            {/* lo de los 15 minutos vivía en la tarjeta del último campeón, y la hacía más alta que el título: en la compu
+                quedaba un hueco grande al lado (Dlx, 02/10/2026). Acá vale siempre, haya o no algo anunciado */}
+            <p className="hero-p">Lo que se juega en la Liga, día por día, con el color de cada servidor. Cada evento se anuncia unos 15 minutos antes: con la campana te llega al minuto.</p>
             {/* el día del arranque, sin un evento todavía, una fila de ceros dice «no pasa nada»: no se dibuja (la regla de
                 «La Liga en números» del Inicio) */}
             {liga.d.eventos || A.ev ? <dl className="evp-num">

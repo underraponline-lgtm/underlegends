@@ -843,9 +843,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-mo-s{font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.04em;color:#A5A5A0;text-transform:uppercase}
 .evp-mo .mo-cuenta{margin-top:2px}
 .evp-mo .hero-acc{margin-top:4px}
-.evp-mo-top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;width:100%}
 .evp-mo-txt{display:grid;gap:8px;justify-items:start;min-width:0}
 .evp-mo-carta{width:96px}
+/* el último campeón: en el celular, la etiqueta arriba, la carta al lado del nombre, y abajo el texto y los botones */
+.evp-mo.ult{grid-template-columns:96px minmax(0,1fr);grid-template-areas:"tag tag" "carta txt" "acc acc";column-gap:14px}
+.evp-mo.ult.sin-carta{grid-template-columns:minmax(0,1fr);grid-template-areas:"tag" "txt" "acc"}
+.evp-mo.ult .tag{grid-area:tag}
+.evp-mo.ult .evp-mo-carta{grid-area:carta;width:auto;align-self:center}
+.evp-mo.ult .evp-mo-txt{grid-area:txt;align-self:center}
+.evp-mo.ult .hero-acc{grid-area:acc}
 .evp-mo-n b{min-width:0}
 /* en el celular, al lado de la carta, el nombre no entra con el logo: el servidor ya está abajo, en la línea chica.
    Y se achica en vez de partirse («PICHULAM / C») */
@@ -892,6 +898,9 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-nm b{overflow-wrap:anywhere}
 .evp-h{font:700 12px/1 "Space Mono",monospace;letter-spacing:.04em;color:var(--tinta)}
 .evp-ev.prox .t-est{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+/* lo que ya se jugó va en «piel» (`--caja`), como «Lo que pasó» del Inicio (`.fecha.hecho`); lo que viene, en blanco.
+   Dlx, 02/10/2026: «I like this PIEL color… maybe we could include it for some stuff» */
+.evp-ev.hecho{background:var(--caja)}
 .evp-ev.hecho .t-est{color:var(--gris);border-color:var(--suave)}
 .evp-ev.cancelado{opacity:.7}
 .evp-ev.cancelado .t-est{border-style:dashed}
@@ -903,6 +912,13 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-camp{display:flex;align-items:center;gap:6px;margin:0;padding:0 12px 10px;font:600 14px/1.3 Archivo,sans-serif;color:var(--gris)}
 .evp-camp b{color:var(--tinta)}
 .evp-abierto{display:grid;gap:4px;border-top:1px solid var(--suave);padding-top:8px}
+/* en una tarjeta ancha, el podio en dos columnas (1–2 / 3–4) y el cuadro a todo el ancho (`lugar` de CuadroMini). Por
+   el ancho de LA TARJETA y no de la pantalla: con el zoom de la compu (1.1 a 1.35) la tarjeta mide ~810 en todas.
+   Dlx, 02/10/2026, con la captura: el podio de punta a punta y el cuadro en la mitad izquierda, «too much white» */
+.evp-ev{container-type:inline-size}
+@container (min-width: 560px){
+  .evp-abierto .podio2{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+}
 .evp-pq{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .evp-pc{width:26px;height:26px;font:800 11px/1 Archivo,sans-serif}
 .evp-cm{overflow-x:auto;scrollbar-width:thin;padding:4px 12px 10px}
@@ -922,6 +938,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-g button{display:grid;justify-items:center;gap:3px;padding:6px 0;min-height:42px;border:1px solid var(--suave);background:var(--fondo);color:var(--tinta);
   font:800 13px/1 Archivo,sans-serif;cursor:pointer}
 .evp-g button.con{border-color:var(--linea)}
+.evp-g button.pas{background:var(--caja)}
 .evp-g button.hoy{box-shadow:inset 0 0 0 2px #29B298}
 .evp-g button.sel{background:var(--inv);color:var(--inv-tinta)}
 .evp-g button em{display:flex;gap:2px;font-style:normal}
@@ -998,7 +1015,17 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-oc{width:22px;height:22px;font:800 10px/1 Archivo,sans-serif}
 @media (min-width: 900px){
   .app .evp-esc:before{top:-160px;bottom:auto;right:-120px}
-  .app .evp-cab{grid-template-columns:minmax(0,1fr) minmax(0,520px);align-items:end;gap:40px;padding:40px var(--gut) 34px}
+  /* el título arriba y los números abajo, a la altura de la tarjeta de al lado. Con `align-items:end` el título se
+     iba al fondo y arriba quedaban 262 px vacíos a 1333 de ancho (Dlx, 02/10/2026, con la captura: «a big BLANK
+     space»). La tarjeta va abajo: si es más baja que el título, queda a la par de los números */
+  .app .evp-cab{grid-template-columns:minmax(0,1fr) minmax(0,560px);align-items:stretch;gap:40px;padding:40px var(--gut) 34px}
+  .app .evp-cabtx{grid-template-rows:auto auto auto 1fr}
+  .app .evp-cabtx .evp-num{align-self:end}
+  .app .evp-mo{align-self:end}
+  /* y en la compu la carta del campeón va a la izquierda de todo: la tarjeta sale ancha y baja, en vez de alta */
+  .app .evp-mo.ult{grid-template-columns:120px minmax(0,1fr);grid-template-areas:"carta tag" "carta txt" "carta acc";column-gap:18px;align-content:start}
+  .app .evp-mo.ult .evp-mo-carta{align-self:start}
+  .app .evp-mo.ult.sin-carta{grid-template-columns:minmax(0,1fr);grid-template-areas:"tag" "txt" "acc"}
   .app .evp-dias-in{padding:10px calc(var(--gut) - 4px)}
   .app .evp-dias .evp-mes-b{display:none}
   .app .evp-t3{grid-template-columns:minmax(0,1fr) 360px;padding:0 var(--gut)}
@@ -1012,7 +1039,6 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .evp-num{display:flex;flex-wrap:wrap;gap:12px 28px;width:auto}
   .app .evp-num dd{font-size:28px}
   .app .evp-num dd.evp-sv{font-size:22px}
-  .app .evp-mo-carta{width:120px}
   .app .evp-mo.ult .evp-mo-n img{display:block}
   .app .evp-mo.ult .evp-mo-n b{font-size:24px}
   /* en la compu, los ocho en una fila (`.app .rail` los pasaba a cinco por fila, enormes) */

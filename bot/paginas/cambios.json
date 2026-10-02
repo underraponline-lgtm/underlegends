@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.94",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T17:00:00-04:00",
+   "titulo": "Eventos, sin huecos y con color",
+   "items": [
+    "🧱 **La cabecera de Eventos sin el hueco de arriba** en la compu: el título arriba, los números abajo y la tarjeta del último campeón más baja, con la carta a la izquierda.",
+    "🏆 **El evento abierto llena la tarjeta**: el podio en dos columnas y la llave a todo el ancho, con los nombres enteros.",
+    "🎨 **Lo que ya se jugó, en piel**: los eventos terminados y los días del mes que tuvieron eventos, como «Lo que pasó» del Inicio."
+   ]
+  },
+  {
    "version": "1.93",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T16:26:00-04:00",

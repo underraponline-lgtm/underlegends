@@ -454,8 +454,17 @@ export function enRondas(todas) {
   return todas.length > out.length ? todas : out;
 }
 
-export function CuadroMini({ liga, ll }) {
-  const M = useMedida();
+// `lugar` (opcional): el ancho que tiene, medido. Con él la llave LO LLENA —las casillas se estiran hasta 220 y entran
+// hasta cuatro rondas— en vez de quedarse con la medida de la pantalla: en Eventos, en la compu, la llave abierta usaba
+// la mitad de la tarjeta y la otra mitad quedaba en blanco (Dlx, 02/10/2026: «too much white»). Sin `lugar`, como siempre
+function medidaPara(lugar) {
+  const G = 14;
+  const CAMP = 96;
+  return { rondas: Math.max(2, Math.min(4, Math.floor((lugar - CAMP + G) / (104 + G)))), G, CAMP, lugar };
+}
+export function CuadroMini({ liga, ll, lugar }) {
+  const M0 = useMedida();
+  const M = lugar ? medidaPara(lugar) : M0;
   const base = (ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
   let todas = completar(base);
   if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas ll={ll} previa />;
@@ -488,9 +497,10 @@ export function CuadroMini({ liga, ll }) {
   const conFinal = desde + rondas.length === todas.length;
   const regular = rondas.length && rondas.every((r, i) => i === rondas.length - 1 || rondas[i + 1].b.length * 2 === r.b.length);
   if (!regular) return <CuadroRondas ll={ll} />;
-  const { W, G } = M;
+  const { G } = M;
   // el campeón sólo si se ve la Final: si no, el «campeón» sería el ganador de otra ronda
   const CAMP = conFinal ? M.CAMP : 0;
+  const W = M.lugar ? Math.max(104, Math.min(220, Math.floor((M.lugar - CAMP - rondas.length * G) / rondas.length))) : M.W;
   const R = mitad(rondas[0]);
   const n0 = rondas[0].b.length;
   const campeon = conFinal ? ganador(rondas[rondas.length - 1].b[0]) : '';
