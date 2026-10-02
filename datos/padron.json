@@ -2476,7 +2476,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "194176670318592000",
-  "av_sheet": "https://cdn.discordapp.com/avatars/194176670318592000/ea4a0c694b0119dcd57c994defa5642b.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/194176670318592000/7a970e5568fc6bb35dc7ceb544b203c3.png?size=256",
   "notas": "UN BUG DLX ARREGLALO"
  },
  {
@@ -2536,7 +2536,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "989640104765177956",
-  "av_sheet": "https://cdn.discordapp.com/avatars/989640104765177956/c5bbdec255a3fb586b991d51126651fc.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/989640104765177956/2df199417a6a5817a4198bfb74d30d01.png?size=256",
   "notas": ""
  },
  {
@@ -2546,7 +2546,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1071185986366742630",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1071185986366742630/18e18138a9428005c3d040092fad431e.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1071185986366742630/81a740a27e5ebf643d43f3948b34a5a8.png?size=256",
   "notas": ""
  },
  {
@@ -2776,7 +2776,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1400508144920170577",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1400508144920170577/25cf05b352dcf4b641820a94ec668d33.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1400508144920170577/8b93f38bb816fffbebf7cd6743725da8.png?size=256",
   "notas": ""
  },
  {
@@ -3406,7 +3406,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "781971857519804417",
-  "av_sheet": "https://cdn.discordapp.com/avatars/781971857519804417/11e0bd7b6cd2ab3af64958d0735b697b.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/781971857519804417/3dd1c87d8abcb3f77bae040c97816493.png?size=256",
   "notas": ""
  },
  {
@@ -5066,7 +5066,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "1458603256292053037",
-  "av_sheet": "https://cdn.discordapp.com/avatars/1458603256292053037/d256eba5bfd9e46534e3794c0b5dc143.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1458603256292053037/2abcd0fc852501d44819b64c9b9af01e.png?size=256",
   "notas": ""
  },
  {
@@ -5886,7 +5886,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "846870712950194196",
-  "av_sheet": "https://cdn.discordapp.com/avatars/846870712950194196/801e8faa13f223d655cef6e9bbc582ff.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/846870712950194196/2e0595a75ec4b7fb002b51012429978f.png?size=256",
   "notas": ""
  },
  {
@@ -6306,7 +6306,7 @@
   "sv": "",
   "verificado": "✅",
   "discord_id": "645308964141137952",
-  "av_sheet": "https://cdn.discordapp.com/avatars/645308964141137952/7d3646974227b0c40e029c2cd6e2dd7c.png?size=256",
+  "av_sheet": "https://cdn.discordapp.com/avatars/645308964141137952/ccb74df1cea062c113ca4ad688b81cbb.png?size=256",
   "notas": ""
  },
  {
@@ -8654,7 +8654,7 @@
   "raw": "Ramiro",
   "pais": "Argentina",
   "sv": "",
-  "verificado": "✅",
+  "verificado": "",
   "discord_id": "1230666285243957369",
   "av_sheet": "https://cdn.discordapp.com/embed/avatars/4.png",
   "notas": ""
@@ -9214,9 +9214,9 @@
   "raw": "tito calderon",
   "pais": "Argentina",
   "sv": "",
-  "verificado": "",
+  "verificado": "✅",
   "discord_id": "1296910893354979368",
-  "av_sheet": "",
+  "av_sheet": "https://cdn.discordapp.com/avatars/1296910893354979368/c44ba5e4057f7a001447e58baa4954f7.png?size=256",
   "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-10-01 7:25 PM ET"
  },
  {
@@ -9244,9 +9244,9 @@
   "raw": "Emily Family",
   "pais": "Paraguay",
   "sv": "",
-  "verificado": "",
+  "verificado": "✅",
   "discord_id": "839707244069126174",
-  "av_sheet": "",
+  "av_sheet": "https://cdn.discordapp.com/avatars/839707244069126174/1bbec195e40fe393dbcfac42480f0cc7.png?size=256",
   "notas": "alta automática · se anotó así en inscripciones · 2026-10-01 10:25 PM ET"
  },
  {
@@ -9268,5 +9268,15 @@
   "discord_id": "1525996330042921081",
   "av_sheet": "",
   "notas": "alta automática · se anotó así en inscripciones · 2026-10-01 10:55 PM ET"
+ },
+ {
+  "full": "Zaik 🇪🇸",
+  "raw": "Zaik",
+  "pais": "España",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1555067257376346122",
+  "av_sheet": "https://cdn.discordapp.com/embed/avatars/2.png",
+  "notas": ""
  }
 ]
