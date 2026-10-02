@@ -157,9 +157,13 @@ export async function claveCiclo(token) {
  * red) no dice nada: no se cancela un evento porque Discord no contestó.
  */
 export const CANCELADO = /\bcancelad[oa]s?\b|\bsuspendid[oa]s?\b|\bse\s+cancel[aó]\b/i;
-export function cancelado(estado, m, cuerpo) {
+export function cancelado(estado, m, cuerpo, avisado) {
   if (estado === 404) return 'borrado';
   if (estado !== 200 || !m || (cuerpo && cuerpo.cx)) return '';
+  // 🔴 Y EDITADO DESPUÉS DE AVISARLO: un anuncio anotado antes de que existiera `cx` no dice si la palabra ya estaba;
+  // sin una edición posterior, la palabra es del texto de siempre
+  const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : NaN;
+  if (!(ed > (avisado || 0))) return '';
   return CANCELADO.test(String(m.content || '')) ? 'editado' : '';
 }
 
@@ -2183,7 +2187,7 @@ export class Avisos {
    */
   async cancelaciones(ahora) {
     if (Math.floor(ahora / MIN) % 2) return false;
-    const filas = this.sql.exec("SELECT id, sv, cuerpo, estado, cursor FROM avisos WHERE estado IN (0, 1) " +
+    const filas = this.sql.exec("SELECT id, sv, cuerpo, estado, cursor, creado FROM avisos WHERE estado IN (0, 1) " +
       "AND creado > ? AND instr(id, ':') = 0", ahora - 2 * 24 * HORA).toArray();
     let pedidos = 0, hubo = false;
     for (const f of filas) {
@@ -2203,7 +2207,7 @@ export class Avisos {
         estado = r.status;
         if (estado === 200) m = await r.json();
       } catch (e) { estado = 0; }
-      const por = cancelado(estado, m, c);
+      const por = cancelado(estado, m, c, f.creado);
       if (!por) continue;
       hubo = true;
       this.state.storage.transactionSync(() => {

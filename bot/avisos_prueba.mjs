@@ -52,13 +52,20 @@ const ok = (cond, que) => {
 {
   console.log('0a · el evento cancelado');
   const ev = { tipo: 'evento', t: 'DESGRACIAS EN TOKYO VOL 21 2v2' };
-  ok(A.cancelado(404, null, ev) === 'borrado', 'el anuncio borrado (404) es un evento cancelado');
-  ok(A.cancelado(200, { content: '❌ EVENTO CANCELADO, perdón' }, ev) === 'editado',
-    'el editado diciendo «cancelado» también');
-  ok(A.cancelado(200, { content: 'SUSPENDIDO hasta nuevo aviso' }, ev) === 'editado', 'y «suspendido»');
-  ok(A.cancelado(200, { content: 'si no te presentás tu cupo queda cancelado' }, { ...ev, cx: 1 }) === '',
-    'pero no si el anuncio ya decía la palabra al avisarlo (una regla, no una cancelación)');
-  ok(A.cancelado(200, { content: 'TOKYO VOL 21 · 2v2 · cupos 16' }, ev) === '', 'el anuncio que sigue igual, no');
+  const avisado = Date.parse('2026-10-01T23:21:00Z');
+  const ed = '2026-10-02T00:15:00.000000+00:00';
+  ok(A.cancelado(404, null, ev, avisado) === 'borrado', 'el anuncio borrado (404) es un evento cancelado');
+  ok(A.cancelado(200, { content: '❌ EVENTO CANCELADO, perdón', edited_timestamp: ed }, ev, avisado) === 'editado',
+    'el editado después de avisarlo diciendo «cancelado» también');
+  ok(A.cancelado(200, { content: 'SUSPENDIDO hasta nuevo aviso', edited_timestamp: ed }, ev, avisado) === 'editado',
+    'y «suspendido»');
+  ok(A.cancelado(200, { content: 'si no te presentás tu cupo queda cancelado', edited_timestamp: ed },
+    { ...ev, cx: 1 }, avisado) === '',
+  'pero no si el anuncio ya decía la palabra al avisarlo (una regla, no una cancelación)');
+  ok(A.cancelado(200, { content: 'si no te presentás tu cupo queda cancelado', edited_timestamp: null }, ev, avisado) === '',
+    'ni si no se editó después de avisarlo (los anotados antes de `cx`)');
+  ok(A.cancelado(200, { content: 'TOKYO VOL 21 · 2v2 · cupos 16', edited_timestamp: ed }, ev, avisado) === '',
+    'el anuncio editado sin la palabra, no');
   ok(A.cancelado(403, null, ev) === '' && A.cancelado(500, null, ev) === '' && A.cancelado(0, null, ev) === '',
     'y un 403, un 5xx o sin red no dicen nada: no se cancela porque Discord no contestó');
 }
