@@ -13,7 +13,7 @@
   {
    "version": "1.86",
    "dia": "2026-10-02",
-   "cuando": "2026-10-02T12:30:00-04:00",
+   "cuando": "2026-10-02T12:10:00-04:00",
    "titulo": "Una llave terminada no tiene nada «por jugarse»",
    "items": [
     "🧩 **Las batallas sin ganador se ven con su gente**: si una batalla de una llave terminada espera que se confirme quién ganó, aparece en el cuadro con los que pelearon y la etiqueta «SIN GANADOR». Antes ese lugar quedaba vacío y decía «por jugarse», como si faltara jugarla.",
@@ -23,7 +23,7 @@
   {
    "version": "1.85",
    "dia": "2026-10-02",
-   "cuando": "2026-10-02T12:15:00-04:00",
+   "cuando": "2026-10-02T12:05:00-04:00",
    "titulo": "Lo que la llave no dice, lo dicen los veredictos",
    "items": [
     "⚖️ **El canal de veredictos completa la llave**: si una llave no dice quién ganó una batalla —por ejemplo, la final sin la línea del campeón—, el bot lo busca en el canal de veredictos de ese servidor. Tienen que estar los dos que pelearon, y a pocas horas de la llave. Un evento al que le faltaba el campeón no sumaba nada; ahora suma."
