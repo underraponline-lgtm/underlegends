@@ -263,6 +263,13 @@
 "temporada"
 ]
 },
+"paria": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "mco": {
 "rg": "",
 "c": [
@@ -391,13 +398,6 @@
 ]
 },
 "noxvell": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"paria": {
 "rg": "",
 "c": [
 "servidor",
@@ -611,7 +611,10 @@
 },
 "shuliot": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "nobu": {
 "rg": "",
@@ -768,10 +771,6 @@
 "servidor",
 "temporada"
 ]
-},
-"pariasinremedio-x": {
-"rg": "",
-"c": []
 },
 "indigena": {
 "rg": "",
@@ -1277,10 +1276,6 @@
 "temporada"
 ]
 },
-"pariasinremedio-ar": {
-"rg": "",
-"c": []
-},
 "rodas": {
 "rg": "",
 "c": [
@@ -1294,6 +1289,21 @@
 "servidor",
 "temporada"
 ]
+},
+"slasher": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"pariasinremedio-x": {
+"rg": "",
+"c": []
+},
+"pariasinremedio-ar": {
+"rg": "",
+"c": []
 },
 "noerian": {
 "rg": "",
@@ -2931,6 +2941,22 @@
 "t": "2026-10-02T00:05:30Z",
 "quien": [
 "ONZASS"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:25:20Z",
+"quien": [
+"SHULIOT"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:25:20Z",
+"quien": [
+"SHULIOT"
 ],
 "carta": "temporada"
 }

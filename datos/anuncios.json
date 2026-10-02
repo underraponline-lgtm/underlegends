@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-02T00:09:46+00:00",
+ "cuando": "2026-10-02T00:24:14+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -288,24 +288,6 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": ""
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 21 2v2",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1555358660576944234",
-   "cuando": "2026-10-01T23:20:01",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Lewis",
-   "cupos_texto": "12 / 16 / 24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "2v2",
-   "horario": "EN 1 HORA",
-   "fecha": "",
-   "premios": "Respeto"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 20 1v1",
@@ -663,6 +645,24 @@
    "cupo_total": null,
    "rango": "Bronce",
    "modalidad": "Pandillas",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
+   "premios": "Respeto"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 11",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1552401643620933753",
+   "cuando": "2026-09-23T19:29:54",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "Lewis",
+   "cupos_texto": "12 / 16",
+   "inscriptos": 12,
+   "cupo_total": 16,
+   "rango": "Bronce",
+   "modalidad": "1v1",
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto"
@@ -2121,6 +2121,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFS",
+   "canal": "「👑」INSCRIPCIONES",
+   "texto": "Titin🇨🇱",
+   "quien": "titincartes_51798",
+   "discord_id": "1507190475746967614",
+   "msg_id": "1555373287486259234",
+   "cuando": "2026-10-02T00:18:09"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
