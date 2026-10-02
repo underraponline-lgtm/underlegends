@@ -260,16 +260,19 @@ def armar(abiertas, eventos=None):
             if g in grupo_de and grupo_de[g] in por:
                 q = por[grupo_de[g]]
                 q['filas'].append(n)
+                q['origenes'].append(f.get('Origen', '').strip())
                 if det not in q['variantes']:
                     q['variantes'].append(det)
                 continue
             grupo_de[g] = k
         if k in por:
             por[k]['filas'].append(n)
+            por[k]['origenes'].append(f.get('Origen', '').strip())
             continue
         origen, match = f.get('Origen', '').strip(), f.get('Posible match', '').strip()
         link, match = _link_llave(origen, match)
-        p = {'id': k, 'tipo': tipo, 'detalle': det, 'origen': origen,
+        # 🔑 `origenes`: los eventos de TODAS sus filas, no sólo el de la primera. Ver `_nums()`.
+        p = {'id': k, 'tipo': tipo, 'detalle': det, 'origen': origen, 'origenes': [origen],
              'match': match, 'filas': [n], 'variantes': [det], 'link': link,
              'grupo': GRUPO.get(tipo, (4, tipo)),
              'donde': _donde(origen, det, eventos)}
@@ -302,6 +305,38 @@ def _num_evento(p):
         return m.group(1)
     m = re.match(r'#(\d+)', p.get('donde') or '')
     return m.group(1) if m else ''
+
+
+def _nums(p):
+    """Los números de TODOS los eventos de una pregunta, en orden y sin repetir.
+
+    🔴 UN NOMBRE QUE JUGÓ DOS EVENTOS SE BUSCABA SÓLO EN EL PRIMERO. La pregunta junta las filas del mismo nombre
+    (`armar()`), pero las pistas —la inscripción, el podio, la llamada— se miraban en el evento de la primera fila:
+    si el nombre volvía a jugar y esa noche se anotó o estaba en la llamada, la pista estaba y no se usaba.
+    """
+    out = []
+    for o in p.get('origenes') or [p.get('origen') or '']:
+        m = re.match(r'evento\s*#\s*(\d+)', o or '', re.I)
+        if m and m.group(1) not in out:
+            out.append(m.group(1))
+    return out or ([_num_evento(p)] if _num_evento(p) else [])
+
+
+def _clave_ev(ev):
+    """`'evento normalizado|sv|dd/mm'`: la clave de `podio_menciones.json` y de `identidad_llaves.json`."""
+    return '%s|%s|%s' % (norm(ev[0]), ev[1], ev[2]) if ev and len(ev) > 2 else ''
+
+
+def _identidad(ev=None):
+    """Lo que la llave de ese evento dice de quién es quién —`{menciones, crece}`, de
+    `llaves_a_entrada.identidad_de_grupo()`—; sin `ev`, todos los eventos."""
+    if 'identidad' not in _DATOS:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'identidad_llaves.json'), encoding='utf-8') as f:
+                _DATOS['identidad'] = (json.load(f) or {}).get('eventos') or {}
+        except (OSError, ValueError):
+            _DATOS['identidad'] = {}
+    return _DATOS['identidad'] if ev is None else (_DATOS['identidad'].get(_clave_ev(ev)) or {})
 
 
 def _limpio(ev):
@@ -525,7 +560,27 @@ def indice_inscritos(inscripciones):
 
 
 def _cuenta_de(p, eventos):
-    """`([discord_id…], fuente)` de un «¿quién es X?»: primero la inscripción, después el apodo.
+    """`([discord_id…], fuente)` de un «¿quién es X?», mirando TODOS sus eventos (`_nums()`).
+
+    ⚠️ SI DOS EVENTOS DAN DOS CUENTAS DISTINTAS, SALEN LAS DOS: no se elige.
+    """
+    nums = _nums(p)
+    if len(nums) <= 1:
+        return _cuenta_de_uno(p, eventos)
+    hallados = []
+    for n in nums:
+        ids, fuente = _cuenta_de_uno(dict(p, origen='evento #%s' % n), eventos, sin_apodo=True)
+        if ids:
+            hallados.append((ids, fuente))
+    if hallados:
+        todos = sorted({i for ids, _f in hallados for i in ids})
+        return todos, hallados[0][1]
+    return _cuenta_de_uno(p, eventos)
+
+
+def _cuenta_de_uno(p, eventos, sin_apodo=False):
+    """`([discord_id…], fuente)` de un «¿quién es X?» en el evento de `p`: primero la inscripción, después el podio,
+    lo que dice la llave, la llamada y al final el apodo (`sin_apodo`: hasta la llamada, que es lo del evento).
 
     ⚠️ LA INSCRIPCIÓN MANDA: la escribió esa persona en el servidor del
     evento. Si ahí hay más de una cuenta con ese nombre, no se adivina con el
@@ -543,6 +598,12 @@ def _cuenta_de(p, eventos):
         did = (_podio().get('%s|%s|%s' % (norm(ev[0]), ev[1], ev[2])) or {}).get(k)
         if did:
             return [str(did)], 'podio'
+        # 🔑 Y LO DEMÁS QUE LA LLAVE DICE (01/10/2026): `NOMBRE <@id>` en el MVP o en un podio de dos, y la mención que
+        # pasó de ronda con este nombre —SHULIOT, en MARRUECOS—. Lo escribió el organizador, como el podio. Ver
+        # `llaves_a_entrada.identidad_de_grupo()`.
+        did = (_identidad(ev).get('menciones') or {}).get(k)
+        if did:
+            return [str(did)], 'llave'
     # 🎙️ LA LLAMADA (Dlx, 29/09/2026, «1. A»): UNA sola persona que estaba en
     # la llamada de ese servidor mientras se jugaba esa llave, con EXACTAMENTE
     # ese nombre, y que ya está en la Lista. Va antes que el nombre suelto:
@@ -564,7 +625,42 @@ def _cuenta_de(p, eventos):
             cand = _parecidos_de_lista(k, _num_evento(p), eventos, parecidos)
             if len(cand) == 1:
                 return cand, 'llamada_parecido'
+    if sin_apodo:
+        return [], 'Discord'
     return sorted(_apodos().get(k) or set()) if len(k) >= 3 else [], 'Discord'
+
+
+def _crecio_de(p, eventos, padron, akas):
+    """El nombre en la Lista de quien la llave escribe así de una ronda a otra, o None.
+
+    🔑 «PARIA SIN REMEDIO 🇦🇷» pasó de octavos a cuartos en el lugar de «PARIA 🇦🇷», con el mismo compañero y la
+    misma bandera (VOL 18 2VS2): el lector lo ve (`escuchar._crecio()`) y lo deja en `identidad_llaves.json`. Si la
+    otra forma ya es alguien de la Lista, éste es su alias. Exacto: la forma de la llave, no un parecido.
+    """
+    k = norm(_sin_bandera(p['detalle']))
+    for n in _nums(p):
+        for antes, despues in _identidad(eventos.get(n)).get('crece') or ():
+            otra = despues if norm(_sin_bandera(antes)) == k else antes if norm(_sin_bandera(despues)) == k else None
+            x = _persona(otra, padron, akas) if otra else None
+            if x and norm(_sin_bandera(x.get('raw') or x.get('full'))) != k:
+                return x.get('raw') or x.get('full')
+    return None
+
+
+def _se_anoto_como(did, padron):
+    """El nombre en la Lista con el que esa cuenta se anotó SOLA, si es uno y esa fila no tiene otra cuenta; o None.
+
+    🔑 «PARIA SIN REMEDIO» es el apodo de UNA cuenta de FFA que no está en la Lista, y `por_discord()` no la daba de
+    alta porque Paria se llama parecido —podía ser él sin su cuenta cargada—. Era él: esa misma cuenta se anotó dos
+    veces como «Paria🇦🇷» en las inscripciones. La cuenta firmó las dos cosas.
+    """
+    nombres = {n for sv, por_n in _inscritos().items() for n, ids in por_n.items() if str(did) in ids}
+    if not nombres:
+        return None
+    filas = [r for r in padron if norm(_sin_bandera(r.get('raw') or r.get('full') or '')) in nombres
+             and str(r.get('discord_id') or '') in ('', str(did))]
+    reales = {r.get('raw') or r.get('full') for r in filas}
+    return next(iter(reales)) if len(reales) == 1 else None
 
 
 def _parecidos_de_lista(k, num, eventos, parecidos):
@@ -794,6 +890,7 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                 banderas_de.setdefault(next(iter(ids)), set()).update(
                     _iso(b) for b in _BANDERA.findall(v))
     pares, nuevos, hechas = [], [], []
+    padron_l = _datos('padron') or []
     for p in preguntas:
         if p['tipo'] != 'Nombre desconocido' or p['id'] in respuestas:
             continue
@@ -805,6 +902,12 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         # una pareja escrita sin «+», y resolverla dio de alta a «27 Piyi»
         # con la cuenta de quien los anotó (28/09/2026). Ver `_ENTRE_BANDERAS`.
         if len(_nombres_insc(det)) > 1:
+            continue
+        # 🔑 EL NOMBRE QUE CRECE EN LA LLAVE (01/10/2026): la otra forma ya es alguien de la Lista. Ver `_crecio_de()`
+        real_c = _crecio_de(p, eventos, padron_l, akas)
+        if real_c and not AK.son_distintos(det, real_c, akas):
+            pares.append([_sin_bandera(det), real_c, ''.join(_BANDERA.findall(det))])
+            hechas.append((p, 'alias de %s: la llave lo escribe así de una ronda a otra' % real_c))
             continue
         # 🔑 LA CUENTA: la que se anotó con ese nombre en el servidor del
         # evento, o si no, la única de la Liga con ese apodo. Ver `_cuenta_de()`
@@ -824,21 +927,31 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         # con Snake Rap entero en la cuenta (7.297 personas) un nombre común
         # alcanza para dar con otro: «ISAIAS» jugó un evento de FFA y la única
         # cuenta «Isaias» está sólo en Snake Rap (28/09/2026).
-        # ⚠️ el podio con mención tampoco: lo escribió el organizador del evento
-        if fuente not in ('inscripción', 'podio'):
+        # ⚠️ el podio con mención tampoco: lo escribió el organizador del evento.
+        # Ni lo demás que dice la llave (`llave`): `NOMBRE <@id>`, la mención que pasó de ronda
+        if fuente not in ('inscripción', 'podio', 'llave'):
             ev = eventos.get(_num_evento(p)) or ()
             if len(ev) < 2 or ev[1] not in donde:
                 continue
         porque = {'inscripción': 'se anotó así en inscripciones',
                   'podio': 'el podio de la llave lo menciona',
+                  'llave': 'la llave lo escribe con su mención',
                   'llamada': 'estaba en la llamada del evento con ese nombre',
                   'llamada_parecido': 'estaba en la llamada del evento con un nombre parecido'}.get(fuente, 'la misma cuenta de Discord')
         real = por_id.get(did)
+        # 🔑 Y SI LA CUENTA NO ESTÁ EN LA LISTA PERO SE ANOTÓ CON EL NOMBRE DE ALGUIEN QUE SÍ (y sin cuenta cargada): es
+        # esa persona. Antes que darla de alta: eso partiría a Paria en dos. Ver `_se_anoto_como()`.
+        real_i = None if real else _se_anoto_como(did, padron_l)
         if real:
             if AK.son_distintos(det, real, akas):
                 continue
             pares.append([_sin_bandera(det), real, ''.join(_BANDERA.findall(det))])
             hechas.append((p, 'alias de %s: %s' % (real, porque)))
+        elif real_i:
+            if AK.son_distintos(det, real_i, akas):
+                continue
+            pares.append([_sin_bandera(det), real_i, ''.join(_BANDERA.findall(det))])
+            hechas.append((p, 'alias de %s: %s, y esa cuenta se anotó como «%s»' % (real_i, porque, real_i)))
         elif fuente == 'llamada_parecido':
             # el parecido sólo hace alias de alguien de la Lista (ver `_cuenta_de()`): nunca da de alta
             continue
@@ -854,6 +967,14 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             cc = banderas_de.get(did) or set()
             nuevos.append((p, _sin_bandera(det).strip(),
                            next(iter(cc)) if len(cc) == 1 and cc <= liga else '', did, fuente))
+    # ⚠️ EL MISMO ALIAS POR DOS PREGUNTAS —el mismo nombre con dos banderas, «PARIA SIN REMEDIO 🇦🇷» y «🇧🇲»— va UNA
+    # vez a la hoja AKAs; las dos preguntas se cierran igual (`hechas`)
+    _vp, _pu = set(), []
+    for a, b, f in pares:
+        if (norm(a), norm(b)) not in _vp:
+            _vp.add((norm(a), norm(b)))
+            _pu.append([a, b, f])
+    pares = _pu
     if not (pares or nuevos):
         return set()
     print('\n   🔎 resueltos con Discord y las inscripciones: %d alias · %d nuevo(s) a la Lista'
@@ -868,6 +989,7 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
     entraron = LR.agregar_varios(
         [(n, cc, did, 'alta automática · %s · %s' % ({'inscripción': 'se anotó así en inscripciones',
                                                      'podio': 'el podio de la llave lo menciona',
+                                                     'llave': 'la llave lo escribe con su mención',
                                                      'llamada': 'estaba en la llamada del evento con ese nombre'}
                                                     .get(fu, 'su nombre en Discord'), _ahora_et()))
          for _p, n, cc, did, fu in nuevos], aplicar=True) if nuevos else {}
@@ -875,6 +997,7 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         if did in entraron:
             hechas.append((p, 'nuevo: entró a la Lista con %s (%s)' % (
                 {'inscripción': 'la cuenta con que se anotó', 'podio': 'la cuenta que menciona el podio',
+                 'llave': 'la cuenta que la llave menciona con ese nombre',
                  'llamada': 'la cuenta que estaba en la llamada con ese nombre'}
                 .get(fu, 'su Discord'), did)))
     if pares:
@@ -887,6 +1010,83 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                       'values': [['Resuelto', res, POR_DISCORD]]}
                      for p, res in hechas for n in p['filas']]})
     return {p['id'] for p, _r in hechas}
+
+
+#: las dos formas de «Alias posible» que escribe el backfill del repo de sync
+_ALIAS_TIENE = re.compile(r"AKA '(.+?)' \(fila (\d+)\) ya tiene ID (\d+), el log trae (\d+)")
+_ALIAS_ID = re.compile(r"ID (\d+) ya pertenece a fila (\d+) \((.+?)\); no se asignó a '(.+?)'")
+
+
+def _norm_lig(s):
+    """`norm()` con las ligaduras abiertas: «xervœ» es «xervoe»."""
+    s = str(s or '')
+    for a, b in (('œ', 'oe'), ('Œ', 'OE'), ('æ', 'ae'), ('Æ', 'AE'), ('ß', 'ss')):
+        s = s.replace(a, b)
+    return norm(_sin_bandera(s))
+
+
+def _nombres_en_resultados():
+    """Los nombres (normalizados, sin bandera) que hoy tienen alguna fila en `Resultados`; `None` si no se pudo leer."""
+    try:
+        from escribir import Hoja
+        return {norm(_sin_bandera(str((list(f) + [''] * 5)[4]))) for f in Hoja('Resultados').filas()} - {''}
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer Resultados: %s' % str(e)[:60])
+        return None
+
+
+def cierres_solos(preguntas, dry=True):
+    """`{id: motivo}` de lo que no hace falta preguntar, y lo cierra (en seco, sólo lo dice).
+
+    🔑 Dlx, 01/10/2026: *«no pongas cualquier cosa sencilla que puedas hacer tú mismo en Decidir»*. Dos cosas que
+    tienen respuesta segura y se le preguntaban igual:
+
+      · «¿es la misma persona?» (`Alias posible`, del backfill), cuando la respuesta se lee sola: el AKA es el
+        mismo nombre de la fila con una ligadura —«xervœ» y «Xervoe»—, o la otra cuenta ya es OTRA persona de la
+        Lista —la de «o.e.p» es la de MILICA—, o ya no está en ningún servidor de la Liga. Las dos respuestas
+        cierran igual (la Lista se queda con la cuenta que tiene): se cierra diciendo cuál y por qué. Los que
+        siguen abiertos son los de verdad: dos cuentas de la Liga para un mismo nombre.
+      · «¿quién es X?» cuando X ya no está en ningún resultado: el lector lo lee distinto (`SIX 🇦🇷 R` ahora es
+        `SIX 🇦🇷`) o ya es alias de alguien. ⚠️ Sólo con `Resultados` leído: si no se pudo, no se cierra nada.
+    """
+    por_id = _lista_por_id()
+    svs = _datos('servidores_de') or {}
+    _apodos()
+    hay_donde = bool(_DATOS.get('donde'))
+    out, nombres = {}, False
+    for p in preguntas:
+        det = p['detalle']
+        if p['tipo'] == 'Alias posible':
+            m = _ALIAS_ID.search(det)
+            if m and _norm_lig(m.group(3)) == _norm_lig(m.group(4)):
+                out[p['id']] = 'la misma persona: «%s» es «%s» escrito distinto' % (
+                    m.group(4), _sin_bandera(m.group(3)).strip())
+                continue
+            m = _ALIAS_TIENE.search(det)
+            if m:
+                quien = por_id.get(m.group(4))
+                if quien and _norm_lig(quien) != _norm_lig(m.group(1)):
+                    out[p['id']] = 'otra persona: la cuenta del log es la de «%s» en la Lista' % quien
+                elif not quien and hay_donde and not _servidores_de(m.group(4), svs):
+                    out[p['id']] = ('otra cuenta: la del log ya no está en ningún servidor de la Liga, y la Lista se '
+                                    'queda con la que tiene')
+        elif p['tipo'] == 'Nombre desconocido' and _nums(p):
+            if nombres is False:
+                nombres = _nombres_en_resultados()
+            if nombres and not any(norm(_sin_bandera(v)) in nombres for v in p.get('variantes') or [det]):
+                out[p['id']] = 'ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien'
+    if out:
+        print('\n   🧹 se cierran solas %d pregunta(s):' % len(out))
+        for p in preguntas:
+            if p['id'] in out:
+                print('      %s — %s' % (p['detalle'][:60], out[p['id']]))
+    if out and not dry:
+        from escribir import _pedir
+        _pedir('POST', '/values:batchUpdate', json={
+            'valueInputOption': 'RAW',
+            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n), 'values': [['Resuelto', out[p['id']], 'el ciclo']]}
+                     for p in preguntas if p['id'] in out for n in p['filas']]})
+    return out
 
 
 #: cómo se dice cada motivo del lector
@@ -1037,7 +1237,8 @@ def _parecidos_padron(nombre):
 
 
 def _sugerencias(match):
-    return [x.strip() for x in re.split(r',|;', match or '') if x.strip()][:3]
+    # ⚠️ SIN REPETIR: «¿Será PichulaMc o PichulaMc o PichulaMc?» (CARABOBO) y tres «Es Erian» seguidos en la lista
+    return list(dict.fromkeys(x.strip() for x in re.split(r',|;', match or '') if x.strip()))[:3]
 
 
 def _pregunta(p):
@@ -2106,10 +2307,18 @@ def correr(dry=True):
         print('   ⚠️ no pude resolver con Discord (%s)' % str(e)[:80])
         solas = set()
     preguntas = [p for p in preguntas if p['id'] not in solas]
+    # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`
+    try:
+        cerradas = cierres_solos([p for p in preguntas if p['id'] not in respuestas], dry=dry)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude cerrar lo seguro (%s)' % str(e)[:80])
+        cerradas = {}
+    if cerradas:
+        preguntas = [p for p in preguntas if p['id'] not in cerradas]
     # ⚡ lo que se contestó para el evento entero, a cada nombre sin respuesta
     respuestas = repartir(preguntas, respuestas)
     estados = aplicar(preguntas, respuestas, repetidas, dry=dry)
-    if solas and not dry:
+    if (solas or cerradas) and not dry:
         aplicar.hubo = True
     # lo que se acaba de cerrar ya no se pregunta. ⚠️ Y SI NO SE CERRÓ NADA
     # NO SE RELEE: dos lecturas menos en cada corrida, que es la mayoría.
@@ -2478,6 +2687,61 @@ def _self_check():
                'y si en la llamada hay además un parecido FUERA de la Lista, tampoco')
         finally:
             _LLAVES_T1[:] = viejas
+
+        # 🔑 01/10/2026 —«mejorar la detección de personas automáticamente»—: lo que la llave dice, todos los
+        # eventos de un nombre, el nombre que crece, quien se anotó con su nombre, y lo que se cierra solo
+        print('\n  lo que la llave dice de quién es quién, y lo que se cierra solo')
+        nd = 'Nombre desconocido'
+        ev5 = {'358': ('__ MARRUECOS EN VENTA V.1 __', 'FFA', '23/09'),
+               '359': ('__ MARRUECOS EN VENTA V.1 __', 'FFA', '26/09'),
+               '375': ('__ DESGRACIAS EN TOKYO VOL 18 2VS2 __', 'FFA', '30/09')}
+        _DATOS['identidad'] = {
+            'marruecosenventav1|FFA|26/09': {'menciones': {'shuliot': '77'}},
+            'desgraciasentokyovol182vs2|FFA|30/09': {'crece': [['Paria🇦🇷', 'PARIA SIN REMEDIO 🇦🇷']]}}
+        _DATOS['padron'] = [{'raw': 'Paria', 'discord_id': ''}, {'raw': 'MILICA 👑', 'discord_id': '6'},
+                            {'raw': 'Xervoe', 'discord_id': '1'}]
+        _DATOS.pop('lista_por_id', None)
+        _DATOS['inscritos'] = {'FFA': {'paria': {'55'}}}
+        _DATOS['podio'] = {}
+        _DATOS['apodos'], _DATOS['donde'] = {}, {'8': ['DRA', 'FFA']}
+        _DATOS['servidores_de'] = {'77': ['FFA'], '55': ['FFA']}
+        qs = armar([(101, {'Tipo': nd, 'Detalle': 'SHULIOT🇦🇷', 'Origen': 'evento #358'}),
+                    (102, {'Tipo': nd, 'Detalle': 'SHULIOT🇦🇷', 'Origen': 'evento #359'})], ev5)
+        ok(_nums(qs[0]) == ['358', '359'], 'un nombre de dos eventos se busca en los dos, no sólo en el primero')
+        ok(_cuenta_de(qs[0], ev5) == (['77'], 'llave'),
+           'la mención que pasó de ronda con ese nombre dice qué cuenta es (SHULIOT, del segundo evento)')
+        ok(por_discord(qs, {}, ev5, dry=True) == {qs[0]['id']}, '… y entra a la Lista con esa cuenta')
+        qs = armar([(103, {'Tipo': nd, 'Detalle': 'PARIA SIN REMEDIO 🇦🇷', 'Origen': 'evento #375'})], ev5)
+        ok(_crecio_de(qs[0], ev5, _DATOS['padron'], {}) == 'Paria'
+           and por_discord(qs, {}, ev5, dry=True) == {qs[0]['id']},
+           'el nombre que crece de una ronda a otra es alias de quien ya está en la Lista (Paria)')
+        ok(_se_anoto_como('55', _DATOS['padron']) == 'Paria'
+           and _se_anoto_como('55', [{'raw': 'Paria', 'discord_id': '99'}]) is None,
+           'la cuenta que se anotó sola como alguien de la Lista sin cuenta es esa persona; con otra cuenta, no')
+        _guarda = _nombres_en_resultados
+        try:
+            globals()['_nombres_en_resultados'] = lambda: {'six', 'papa'}
+            al = 'Alias posible'
+            qs = armar([(110, {'Tipo': al, 'Detalle': "ID 1 ya pertenece a fila 3 (Xervoe 🇨🇱); no se asignó a 'xervœ'"}),
+                        (111, {'Tipo': al, 'Detalle': "AKA 'o.e.p' (fila 622) ya tiene ID 5, el log trae 6"}),
+                        (112, {'Tipo': al, 'Detalle': "AKA 'Ññ' (fila 407) ya tiene ID 7, el log trae 8"}),
+                        (113, {'Tipo': nd, 'Detalle': 'SIX 🇦🇷 R', 'Origen': 'evento #375'}),
+                        (114, {'Tipo': nd, 'Detalle': 'papa', 'Origen': 'evento #375'})], ev5)
+            c = cierres_solos(qs, dry=True)
+
+            def de(pref):
+                return next(q['id'] for q in qs if q['detalle'].startswith(pref))
+            ok(de('ID 1 ya') in c and de("AKA 'o.e.p'") in c and de("AKA 'Ññ'") not in c,
+               '«¿es la misma persona?» se cierra sola cuando la respuesta se lee: la ligadura, o la otra cuenta ya es '
+               'otra persona de la Lista; dos cuentas de la Liga siguen preguntando')
+            ok(de('SIX') in c and de('papa') not in c,
+               'un nombre que ya no está en ningún resultado se cierra; uno que sigue, se pregunta')
+            globals()['_nombres_en_resultados'] = lambda: None
+            ok(not cierres_solos([q for q in qs if q['tipo'] == nd], dry=True),
+               'sin Resultados leído no se cierra ningún nombre')
+        finally:
+            globals()['_nombres_en_resultados'] = _guarda
+        ok(_sugerencias('PichulaMc, PichulaMc, PichulaMc') == ['PichulaMc'], 'las sugerencias no se repiten')
     finally:
         _DATOS.clear()
         _DATOS.update(antes)
