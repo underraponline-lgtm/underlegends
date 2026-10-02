@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.88",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T12:55:00-04:00",
+   "titulo": "La llave verdadera es la de los veredictos",
+   "items": [
+    "⚖️ **Cuando la llave del organizador no coincide con el canal de veredictos, manda el de veredictos**: ahí está cada batalla como se jugó, con quién peleó y quién ganó. El bot ahora lee también los canales de «votaciones» y «resultados» de cada servidor (no sólo los que se llaman «veredictos»), y guarda lo que se jugó aunque el canal se limpie después.",
+    "🔁 Con eso, quien perdió y volvió a entrar en la misma ronda cobra como revivido, quien no peleó no cobra, y quien sí peleó aunque la llave no lo dijera, cobra."
+   ]
+  },
+  {
    "version": "1.87",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T12:40:00-04:00",

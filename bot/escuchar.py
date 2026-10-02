@@ -1169,6 +1169,90 @@ def _miembros(lado):
     return ms if len(ms) > 1 else []
 
 
+def canonizador(conocidos):
+    """La canonización de `resolver()`: un nombre de la llave, como se anotó (`conocidos`). `None` sin conocidos.
+
+    Vive afuera para que la use también la llave de #veredictos (`llaves_a_entrada.hallazgo_de_veredicto()`,
+    02/10/2026): sus nombres llegan como los escribió el organizador en #votaciones —«Kurlw🇦🇷»— y sin esto no
+    pasaban por la inscripción —«kurl 🇦🇷», que es Jult— y entraban como alguien nuevo.
+    """
+    if not conocidos:
+        return None
+    canon = {}
+    mapa = {norm(c): c for c in conocidos if norm(c)}
+    personas = _personas()
+    distintos = _distintos()
+
+    def _c(n):
+        # 🔴 EL PARECIDO PUEDE CORREGIR UN TYPO, PERO NUNCA CONVERTIR A
+        # UNA PERSONA EN OTRA. Hasta el 24/09/2026 esto era
+        # `_parecido(n, conocidos, corte=0.66) or n`, y medido sobre
+        # las 38 llaves de FFA hacia cuatro cosas distintas mal:
+        #
+        #   persona -> OTRA persona   MASINO->Rumasi, OASIS->Sin limites,
+        #                             CRK->Rumasi, VANDU->Volk, MARK->Makma
+        #   equipo  -> uno solo       makma+colesito->colesito (13 casos)
+        #   uno     -> equipo         ZIGNOS->«Zignos + CJ» (5 casos)
+        #   ganador -> perdedor       nhp(sin limites)->Sin limites
+        #
+        # El peor: `masino` contra `rumasi` comparten `masi` y dan
+        # 2·4/12 = **0.667**, un pelo arriba del corte. Masino GANO
+        # DESGRACIAS EN TOKYO VOL.10 y se quedo sin fila: sus semis
+        # salian a nombre de Rumasi y la linea «CAMPEÓN: MASINO» ya
+        # no coincidia con nadie, asi que la final se tiraba entera
+        # —y con ella el campeon y el subcampeon—. Dlx lo vio desde
+        # afuera: *«si Makma esta top 1, no ha ganado mas de un
+        # duelo?»*.
+        #
+        # ⚠️ Y NO SUMABA NADA. Medido el mismo dia: sin esta
+        # canonizacion se resuelven **las mismas 241 batallas** y dos
+        # finales MAS (28 contra 26 de 36). El paso que tenia que
+        # arreglar nombres solo los cambiaba de dueno.
+        #
+        # Tres reglas, las tres baratas:
+        #  1. igual a una inscripcion -> esa (es la cuenta que firmo);
+        #  2. si el nombre ya ES alguien del padron, se queda: un
+        #     parecido no puede pisar una identidad que existe;
+        #  3. si no, parecido a 0.85 y con la misma forma —equipo
+        #     con equipo, uno con uno—. `kminan`/`Kaminan` da 0.92 y
+        #     pasa; `masino`/`rumasi` da 0.67 y no.
+        #
+        # ⚠️ LA HISTORIA `A(B+C)` NO ES EL NOMBRE: es a quien le gano
+        # A. Se compara sin ella, porque con ella adentro `nhp(sin
+        # limites)` se parecia mas al perdedor que al ganador.
+        if n in canon:
+            return canon[n]
+        nb = norm(HISTORIA.sub('', n))
+        r = n
+        # 🔴 LA REGLA 1 TAMBIÉN RESPETA LA FORMA. `norm()` borra el «+»,
+        # así que el lado «27 🇺🇸 + PIYI 🇲🇽» (VOL 16 2VS2, FFA,
+        # 28/09/2026) era igual a la inscripción «27 🇺🇸 Piyi 🇲🇽» —la
+        # pareja escrita sin «+»— y la canonización lo dejaba así: el
+        # equipo campeón pasaba a ser UNA persona con los 10.000 enteros.
+        if nb in mapa:
+            if bool(_equipo(n)) == bool(_equipo(mapa[nb])):
+                r = mapa[nb]
+        elif nb and nb not in personas:
+            cerca = difflib.get_close_matches(nb, list(mapa), n=1,
+                                              cutoff=0.85)
+            # ⚠️ Y NUNCA SOBRE UN PAR DECLARADO DISTINTO. La guía de
+            # Dlx (parte 5) lista nombres parecidos que son dos
+            # personas —`Blood`/`Bloody` da 0.91, `Luck`/`Lucky` y
+            # `Erik`/`Erika` 0.89—, todos por encima de este corte.
+            if cerca and frozenset((nb, cerca[0])) in distintos:
+                cerca = []
+            # ⚠️ Y UN EQUIPO, SÓLO CON UN EQUIPO DE LOS MISMOS: ver
+            # `_mismos_integrantes()` — el trío inscripto se comía al
+            # cuarto integrante (el MULTIVERSE del 28/09/2026).
+            if cerca and (bool(_equipo(n))
+                          == bool(_equipo(mapa[cerca[0]]))) and (
+                    not _equipo(n) or _mismos_integrantes(n, mapa[cerca[0]])):
+                r = mapa[cerca[0]]
+        canon[n] = r
+        return r
+    return _c
+
+
 def _explicado(x, bats):
     """¿Algún lado de esta ronda ES `x` por su propio nombre, igual o parecido?
 
@@ -1207,81 +1291,8 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
     # pasó con un nombre, y el nombre que creció de una ronda a otra. Ver
     # `Resueltas` y `llaves_a_entrada.identidad_de_grupo()`.
     cambios = []
-    _c = None
-    if conocidos:
-        canon = {}
-        mapa = {norm(c): c for c in conocidos if norm(c)}
-        personas = _personas()
-        distintos = _distintos()
-
-        def _c(n):
-            # 🔴 EL PARECIDO PUEDE CORREGIR UN TYPO, PERO NUNCA CONVERTIR A
-            # UNA PERSONA EN OTRA. Hasta el 24/09/2026 esto era
-            # `_parecido(n, conocidos, corte=0.66) or n`, y medido sobre
-            # las 38 llaves de FFA hacia cuatro cosas distintas mal:
-            #
-            #   persona -> OTRA persona   MASINO->Rumasi, OASIS->Sin limites,
-            #                             CRK->Rumasi, VANDU->Volk, MARK->Makma
-            #   equipo  -> uno solo       makma+colesito->colesito (13 casos)
-            #   uno     -> equipo         ZIGNOS->«Zignos + CJ» (5 casos)
-            #   ganador -> perdedor       nhp(sin limites)->Sin limites
-            #
-            # El peor: `masino` contra `rumasi` comparten `masi` y dan
-            # 2·4/12 = **0.667**, un pelo arriba del corte. Masino GANO
-            # DESGRACIAS EN TOKYO VOL.10 y se quedo sin fila: sus semis
-            # salian a nombre de Rumasi y la linea «CAMPEÓN: MASINO» ya
-            # no coincidia con nadie, asi que la final se tiraba entera
-            # —y con ella el campeon y el subcampeon—. Dlx lo vio desde
-            # afuera: *«si Makma esta top 1, no ha ganado mas de un
-            # duelo?»*.
-            #
-            # ⚠️ Y NO SUMABA NADA. Medido el mismo dia: sin esta
-            # canonizacion se resuelven **las mismas 241 batallas** y dos
-            # finales MAS (28 contra 26 de 36). El paso que tenia que
-            # arreglar nombres solo los cambiaba de dueno.
-            #
-            # Tres reglas, las tres baratas:
-            #  1. igual a una inscripcion -> esa (es la cuenta que firmo);
-            #  2. si el nombre ya ES alguien del padron, se queda: un
-            #     parecido no puede pisar una identidad que existe;
-            #  3. si no, parecido a 0.85 y con la misma forma —equipo
-            #     con equipo, uno con uno—. `kminan`/`Kaminan` da 0.92 y
-            #     pasa; `masino`/`rumasi` da 0.67 y no.
-            #
-            # ⚠️ LA HISTORIA `A(B+C)` NO ES EL NOMBRE: es a quien le gano
-            # A. Se compara sin ella, porque con ella adentro `nhp(sin
-            # limites)` se parecia mas al perdedor que al ganador.
-            if n in canon:
-                return canon[n]
-            nb = norm(HISTORIA.sub('', n))
-            r = n
-            # 🔴 LA REGLA 1 TAMBIÉN RESPETA LA FORMA. `norm()` borra el «+»,
-            # así que el lado «27 🇺🇸 + PIYI 🇲🇽» (VOL 16 2VS2, FFA,
-            # 28/09/2026) era igual a la inscripción «27 🇺🇸 Piyi 🇲🇽» —la
-            # pareja escrita sin «+»— y la canonización lo dejaba así: el
-            # equipo campeón pasaba a ser UNA persona con los 10.000 enteros.
-            if nb in mapa:
-                if bool(_equipo(n)) == bool(_equipo(mapa[nb])):
-                    r = mapa[nb]
-            elif nb and nb not in personas:
-                cerca = difflib.get_close_matches(nb, list(mapa), n=1,
-                                                  cutoff=0.85)
-                # ⚠️ Y NUNCA SOBRE UN PAR DECLARADO DISTINTO. La guía de
-                # Dlx (parte 5) lista nombres parecidos que son dos
-                # personas —`Blood`/`Bloody` da 0.91, `Luck`/`Lucky` y
-                # `Erik`/`Erika` 0.89—, todos por encima de este corte.
-                if cerca and frozenset((nb, cerca[0])) in distintos:
-                    cerca = []
-                # ⚠️ Y UN EQUIPO, SÓLO CON UN EQUIPO DE LOS MISMOS: ver
-                # `_mismos_integrantes()` — el trío inscripto se comía al
-                # cuarto integrante (el MULTIVERSE del 28/09/2026).
-                if cerca and (bool(_equipo(n))
-                              == bool(_equipo(mapa[cerca[0]]))) and (
-                        not _equipo(n) or _mismos_integrantes(n, mapa[cerca[0]])):
-                    r = mapa[cerca[0]]
-            canon[n] = r
-            return r
-
+    _c = canonizador(conocidos)
+    if _c is not None:
         rs = [(ronda, [[_c(n) for n in b] for b in bats])
               for ronda, bats in rs]
     mc = CAMPEON.search(texto or '')
@@ -2397,7 +2408,8 @@ def escuchar(s, forzar=None, por_canal=25):
     # ⚠️ las batallas de #veredictos viajan también en `info`: quien guarda esta lectura (`comparar_lector.py`) y la
     # repite sin pasar por `vidas()` tiene que tenerlas igual. Ver `ganador_por_veredicto()`
     return out, {'completo': completo, 'canales': n_ch, 'mensajes': n_msg,
-                 'nuevos': nuevos, 'vidas': n_vidas, 'ver_batallas': list(_VER_BATALLAS[0])}
+                 'nuevos': nuevos, 'vidas': n_vidas, 'ver_batallas': list(_VER_BATALLAS[0]),
+                 'ver_llaves': list(_VER_LLAVES[0])}
 
 
 # ── los 5 vidas de #veredictos ─────────────────────────────────────────
@@ -2413,7 +2425,14 @@ def escuchar(s, forzar=None, por_canal=25):
 # el contrato está en `bot/llaves_casos.json` (`veredictos`).
 
 #: el canal donde se juegan: el mismo patrón que el vigía (`avisos.js`)
-VEREDICTOS = re.compile(r'veredict', re.I)
+#: 🔴 Y NO SÓLO «VEREDICTOS» (02/10/2026): FFA juega en `✦🗳️︱votaciones` y FFS en `VOTACIONES` y `RESULTADOS`, y el bot no
+#: los miraba —la llave verdadera de la DOS GENERACIONES VOL 2 estaba ahí—. Dlx: *«cuando hay eventos en vivo en X
+#: servidor, tienes que estar atento a los canales de eventos también, respectivamente»*. ⚠️ Las «postulaciones» no: en
+#: Urban y FFS, `Resultados-Postulaciones` es quién entra al staff
+VEREDICTOS = re.compile(r'veredict|votaci|resultad', re.I)
+NO_VEREDICTOS = re.compile(r'postulaci', re.I)
+#: la versión del patrón: si cambia, la memoria de canales se vuelve a buscar sin esperar al barrido completo
+VEREDICTOS_V = 2
 STAFF = re.compile(r'staff|moderat|admin', re.I)
 #: minutos sin mensajes que parten dos tandas (`TANDA_MS` de la página)
 TANDA_MIN = 45
@@ -2589,6 +2608,128 @@ def batallas_veredicto(rows):
     return out
 
 
+def llaves_de_veredictos(rows):
+    """`[{id, sv, g, canal, pub, ed, texto, batallas}]`: cada evento jugado en un canal de veredictos, COMO SE JUGÓ.
+
+    🔑 Dlx, 02/10/2026: *«el orden verdadero de las llaves para ese evento estaba en el canal de veredictos»*. La DOS
+    GENERACIONES VOL 2 (FFA, 01/10) tenía la llave del organizador mal actualizada —ACH y DXG que no pelearon, un
+    «pasan 2» que no fue, un octavo sin nadie—, y en #votaciones estaba la noche real: el encabezado de cada ronda, cada
+    batalla con TODOS sus lados (`⌞A⌝ VS ⌞B⌝ VS ⌞C⌝`) y abajo el ganador.
+
+    `batallas` es `[ronda, [lados], ganador o None, razón, [los que pasan]]`, en el orden en que se jugaron:
+      · el ganador lo dice el renglón que nombra a UN SOLO lado de esa batalla (`Soneto 🇪🇨 x la mínima`); el que nombra
+        a dos (`Geoka X Richard`: la réplica) o a ninguno (`X`) no; si hay varios jueces, la mayoría, y un empate, nadie;
+      · sin veredicto, pasa quien aparece en una ronda posterior —y del que vuelve a aparecer en LA MISMA ronda, el otro:
+        el revivido perdió—;
+      · sin encabezado de ronda no es una llave: un 5 vidas sigue por `veredictos()`.
+    ⚠️ Una ronda que vuelve para atrás (una FINAL y después OCTAVOS) es otro evento en el mismo canal.
+    """
+    por_canal = {}
+    for m in sorted(rows or [], key=lambda m: (len(str(m['id'])), str(m['id']))):
+        por_canal.setdefault(m.get('canal'), []).append(m)
+    out = []
+
+    def cerrar(cur):
+        bats = cur['bats'] if cur else []
+        if not bats:
+            return
+        for i, b in enumerate(bats):
+            votos = collections.Counter(b['votos']).most_common()
+            b['gan'] = votos[0][0] if votos and (len(votos) == 1 or votos[0][1] > votos[1][1]) else None
+            b['razon'], b['pasan'] = ('veredicto' if b['gan'] else ''), []
+        for i, b in enumerate(bats):
+            if b['gan']:
+                continue
+            o = ORDEN.index(b['r'])
+            despues = {norm(x) for bb in bats if ORDEN.index(bb['r']) > o for x in bb['lados']}
+            pasan = [x for x in b['lados'] if norm(x) in despues]
+            if len(pasan) == 2 and len(b['lados']) == 2:
+                misma = {norm(x) for bb in bats[i + 1:] if bb['r'] == b['r'] for x in bb['lados']}
+                rev = [x for x in pasan if norm(x) in misma]
+                if len(rev) == 1:
+                    pasan = [x for x in pasan if x != rev[0]]
+            if len(pasan) == 1:
+                b['gan'], b['razon'] = pasan[0], 'ronda siguiente'
+            elif pasan:
+                b['pasan'], b['razon'] = pasan, 'pasan %d, no hay un ganador' % len(pasan)
+            else:
+                b['razon'] = ('última ronda y no dice campeón' if o == max(ORDEN.index(x['r']) for x in bats)
+                              else 'no aparece nadie después')
+        out.append({'id': cur['id'], 'sv': cur['sv'], 'g': cur['g'], 'canal': cur['canal'], 'pub': cur['pub'],
+                    'ed': cur['ed'], 'texto': '\n'.join(cur['lineas']),
+                    'batallas': [[b['r'], b['lados'], b['gan'], b['razon'], b['pasan']] for b in bats]})
+
+    for c, ms in por_canal.items():
+        cur, ult = None, 0
+        for m in ms:
+            pub = int(m.get('pub') or 0)
+            if cur and pub - ult > TANDA_MIN * 60000:
+                cerrar(cur)
+                cur = None
+            ult = pub
+            t = traducir(plano(m.get('texto') or ''))
+            for l in unir_continuadas(t).splitlines():
+                r = RONDA.search(l)
+                ns = nombres_de_linea(l)
+                if r and not ns:
+                    e = re.sub(r'\s+', ' ', r.group(1).upper()).strip()
+                    e = ALIAS.get(e, e)
+                    if e not in ORDEN:
+                        continue
+                    if cur and cur['bats'] and cur['r'] and ORDEN.index(e) < ORDEN.index(cur['r']):
+                        cerrar(cur)
+                        cur = None
+                    if not cur:
+                        cur = {'canal': c, 'sv': m.get('sv') or '', 'g': str(m.get('g') or ''), 'id': str(m['id']),
+                               'pub': pub, 'ed': int(m.get('ed') or pub), 'r': None, 'bats': [], 'lineas': []}
+                    cur['r'] = e
+                    cur['lineas'].append('`[ %s ]`' % e)
+                    continue
+                if not cur or not cur['r']:
+                    continue
+                if len(ns) >= 2 and SEP.search(l):
+                    cur['bats'].append({'r': cur['r'], 'lados': [_sin_marcas(x) for x in ns], 'votos': []})
+                    cur['lineas'].append(' 🆚 '.join('⌞%s⌝' % _sin_marcas(x) for x in ns))
+                    cur['ed'] = max(cur['ed'], int(m.get('ed') or pub))
+                    continue
+                if cur['bats']:
+                    k = norm(MARCAS.sub('', re.sub(r'^\s*#+\s*', '', l)))
+                    b = cur['bats'][-1]
+                    hits = [x for x in b['lados'] if norm(x) and (norm(x) == k or (len(norm(x)) > 2 and norm(x) in k))]
+                    if len(hits) == 1:
+                        b['votos'].append(hits[0])
+                        cur['ed'] = max(cur['ed'], int(m.get('ed') or pub))
+        cerrar(cur)
+    return out
+
+
+def veredicto_de(llave_v, nombres, guild, desde_ms, hasta_ms, quien=None):
+    """¿Esta llave de #veredictos (`llaves_de_veredictos()`) es el mismo evento? Mismo servidor, entre esas dos horas y
+    con la mayoría de la gente en común: el 60 % de los de la llave del organizador están en la de veredictos, y el
+    60 % de los de veredictos en la del organizador (por su nombre o, con `quien`, por ser la misma persona)."""
+    if str(llave_v.get('g') or '') != str(guild or ''):
+        return False
+    if not (desde_ms <= int(llave_v.get('pub') or 0) <= hasta_ms):
+        return False
+    a = {norm(HISTORIA.sub('', x)) for x in nombres if norm(HISTORIA.sub('', x))}
+    b = {norm(HISTORIA.sub('', x)) for bt in llave_v.get('batallas') or () for x in bt[1] if norm(HISTORIA.sub('', x))}
+    if not a or not b:
+        return False
+
+    def en(x, otros):
+        if x in otros:
+            return True
+        return bool(quien is not None and quien(x) and any(quien(x) & quien(y) for y in otros))
+    return (sum(1 for x in a if en(x, b)) >= 0.6 * len(a)) and (sum(1 for x in b if en(x, a)) >= 0.6 * len(b))
+
+
+def completa(llave_v):
+    """¿La llave de #veredictos llega al final con un ganador? Sólo una completa puede reemplazar a la del organizador."""
+    return any(bt[0] == 'FINAL' and bt[2] for bt in llave_v.get('batallas') or ())
+
+
+#: las llaves de #veredictos que vio esta corrida (`vidas()`), para `llaves_a_entrada`
+_VER_LLAVES = [[]]
 #: las batallas de #veredictos que vio esta corrida (`vidas()`), para `ganador_por_veredicto()`
 _VER_BATALLAS = [[]]
 #: cuántas horas puede haber entre la llave y su veredicto, para cada lado
@@ -2675,7 +2816,7 @@ def canales_veredictos(s, mem, guilds, completo):
     la misma cadencia que las llaves, y cuesta un pedido por servidor una
     vez por día. Sin memoria —la primera corrida— se buscan igual.
     """
-    if not completo and isinstance(mem.get('veredictos'), dict):
+    if not completo and isinstance(mem.get('veredictos'), dict) and mem.get('veredictos_v') == VEREDICTOS_V:
         return mem['veredictos']
     liga = _guilds_liga()
     out = {}
@@ -2688,13 +2829,14 @@ def canales_veredictos(s, mem, guilds, completo):
         for c in cs:
             n = unicodedata.normalize('NFKD', c.get('name') or '')
             if (c.get('type') in (0, 5) and VEREDICTOS.search(n) and str(c.get('parent_id') or '') not in fuera
-                    and not re.search('llave', n, re.I) and not STAFF.search(n)):
+                    and not re.search('llave', n, re.I) and not STAFF.search(n) and not NO_VEREDICTOS.search(n)):
                 out[str(c['id'])] = {'servidor': g.get('name') or '?', 'guild': str(g['id']),
                                      'canal': n}
     # ⚠️ UNA BÚSQUEDA QUE NO ENCONTRÓ NADA NO PISA A UNA QUE SÍ: si Discord
     # contestó mal, quedarse sin canales es dejar de cargar callado
     if out or not mem.get('veredictos'):
         mem['veredictos'] = out
+        mem['veredictos_v'] = VEREDICTOS_V
     return mem.get('veredictos') or {}
 
 
@@ -2716,6 +2858,15 @@ def _memoria_batallas():
     try:
         with io.open(VER_MEMORIA, encoding='utf-8') as f:
             return list(((json.load(f) or {}).get('batallas') or {}).values())
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def _memoria_llaves_v():
+    """Las llaves de #veredictos guardadas (`llaves` de `datos/veredictos.json`)."""
+    try:
+        with io.open(VER_MEMORIA, encoding='utf-8') as f:
+            return list(((json.load(f) or {}).get('llaves') or {}).values())
     except (OSError, ValueError, AttributeError):
         return []
 
@@ -2800,16 +2951,26 @@ def vidas(s, mem, guilds, completo):
         bats[b['id']] = b
     bats = {k: b for k, b in bats.items() if ahora_ms - int(b.get('pub') or 0) <= VER_BAT_DIAS * 86400000}
     _VER_BATALLAS[0] = [bats[k] for k in sorted(bats)]
+    # 🔑 Y CADA LLAVE TAL COMO SE JUGÓ (02/10/2026): ver `llaves_de_veredictos()`. Se guardan `VER_DIAS`: FFA vacía
+    # #votaciones después de cada evento, y sin la copia la llave verdadera se pierde con el evento siguiente. La que se
+    # vuelve a leer reemplaza a la guardada (puede haberse completado)
+    lls = {x['id']: x for x in _memoria_llaves_v()}
+    for x in llaves_de_veredictos(filas):
+        lls[x['id']] = x
+    lls = {k: x for k, x in lls.items() if ahora_ms - int(x.get('pub') or 0) <= VER_DIAS * 86400000}
+    _VER_LLAVES[0] = [lls[k] for k in sorted(lls)]
     try:
         os.makedirs(os.path.dirname(VER_MEMORIA), exist_ok=True)
         with io.open(VER_MEMORIA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump({'_leeme': 'Los eventos de vidas de #veredictos ya armados —quién peleó con '
                                  'quién y quién ganó—, para cargarlos aunque ya no estén entre los '
                                  'últimos mensajes del canal; y cada batalla con su ganador '
-                                 '(`batallas`), para la llave que no lo dice. Sin los mensajes: el '
-                                 'repo es público. Lo escribe bot/escuchar.py (vidas()).',
+                                 '(`batallas`), para la llave que no lo dice; y cada llave como se '
+                                 'jugó (`llaves`), que manda sobre la del organizador. Sin los '
+                                 'mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).',
                        'eventos': {k: evs[k] for k in sorted(evs)},
-                       'batallas': {k: bats[k] for k in sorted(bats)}},
+                       'batallas': {k: bats[k] for k in sorted(bats)},
+                       'llaves': {k: lls[k] for k in sorted(lls)}},
                       f, ensure_ascii=False, indent=1)
             f.write('\n')
     except OSError as e:
@@ -3011,6 +3172,7 @@ def _self_check():
     mal += _check_dialectos()
     mal += _check_cadencia()
     mal += _check_veredicto_ganador()
+    mal += _check_llave_veredictos()
     print('\n  la Parte 2 de la guía: cupo vacío, letras de fantasía')
     casos = [
         ('`X 🆚 [SUPLENTE]` no es una batalla',
@@ -3411,6 +3573,64 @@ class _Discord(object):
         return _Resp([{'id': 'm1', 'content': txt,
                        'timestamp': '2026-09-21T10:00:00+00:00',
                        'author': {'username': 'org'}}])
+
+
+def _check_llave_veredictos():
+    """Que #votaciones dé la llave como se jugó (DOS GENERACIONES VOL 2, FFA, 01/10/2026), recortada."""
+    print('\n  la llave como se jugó, de #veredictos / #votaciones')
+    t0 = 1790902998000                     # 02/10/2026 01:03 UTC
+
+    def fila(seg, texto, g='77'):
+        ms = t0 + seg * 1000
+        return {'id': str((ms - _EPOCA_DISCORD) << 22), 'canal': 'v', 'sv': 'FFA', 'g': g, 'autor': 'org',
+                'pub': ms, 'ed': ms, 'texto': texto}
+    vs = ' <:VSF:1514914403101708288> '
+    rows = [fila(0, '# [ OCTAVOS ]'),
+            fila(30, '⌞Yor 🇪🇸⌝' + vs + '⌞Soneto 🇪🇨⌝'), fila(40, 'X'), fila(50, 'Soneto 🇪🇨 x la minima'),
+            fila(60, '⌞Kurlw🇦🇷⌝' + vs + '⌞Abyssus 🇨🇦⌝' + vs + '⌞Six🇦🇷⌝'), fila(70, 'Six 🇦🇷'),
+            fila(80, '⌞Arez 🇪🇨⌝' + vs + '⌞Geoka 🇦🇷⌝' + vs + '⌞Richard🇪🇨⌝'), fila(90, 'Geoka 🇦🇷 X Richard 🇪🇨'),
+            fila(100, 'Geoka 🇦🇷 x la minima'),
+            fila(110, '⌞Bsk 🇦🇷⌝ ⌞Cinexfilo 🇻🇪⌝ POR DF'),
+            fila(120, '⌞Zignos⌝' + vs + '⌞Abyssus ⌝' + vs + '⌞Korey🇨🇱⌝' + vs + '⌞Eyou🇲🇽⌝'), fila(130, 'Abyssus 🇨🇦'),
+            fila(140, '# [ CUARTOS ]'), fila(150, '⌞Soneto 🇪🇨⌝' + vs + '⌞Six🇦🇷⌝'), fila(160, 'Six 🇦🇷'),
+            fila(170, '⌞Geoka 🇦🇷⌝' + vs + '⌞Abyssus 🇨🇦⌝'),
+            fila(200, '# [ FINAL ]'), fila(210, '⌞Six🇦🇷⌝' + vs + '⌞Abyssus 🇨🇦⌝'),
+            fila(220, 'Abyssus 🇨🇦 dejen de repetir rimas'),
+            # otro evento, en el mismo canal y sin pausa: vuelve a OCTAVOS
+            fila(300, '# [ OCTAVOS ]'), fila(310, '⌞Ana⌝' + vs + '⌞Beto⌝'), fila(320, 'Ana')]
+    ls = llaves_de_veredictos(rows)
+    L = ls[0] if ls else {'batallas': []}
+    B = {' · '.join(b[1]): b for b in L['batallas']}
+
+    def gana(lado):
+        b = next((v for k, v in B.items() if k.startswith(lado)), None)
+        return b[2] if b else '—'
+    mal = 0
+    for que, ok in [
+        ('dos eventos: el segundo vuelve a OCTAVOS', len(ls) == 2),
+        ('el ganador es el renglón que nombra a UNO: «Soneto x la mínima»; el «X» solo no vota',
+         gana('Yor') == 'Soneto 🇪🇨'),
+        ('en una de tres manda el veredicto: pasa Six, no «pasan 2»', gana('Kurlw') == 'Six🇦🇷'),
+        ('«Geoka X Richard» es la réplica, no un voto: gana el renglón de después', gana('Arez') == 'Geoka 🇦🇷'),
+        ('dos nombres sin «vs» («… POR DF») no son una batalla', not any('Bsk' in k for k in B)),
+        ('una de cuatro, con el que vuelve: gana Abyssus', gana('Zignos') == 'Abyssus'),
+        ('sin veredicto, pasa el que aparece después', gana('Geoka 🇦🇷 · Abyssus') == 'Abyssus 🇨🇦'),
+        ('la final con un comentario pegado', gana('Six🇦🇷 · Abyssus') == 'Abyssus 🇨🇦'),
+        ('completa: la final tiene ganador', completa(L) and not completa({'batallas': [b for b in L['batallas']
+                                                                                         if b[0] != 'FINAL']})),
+        ('es el mismo evento que la llave del organizador: mismo servidor, a horario, la gente en común',
+         veredicto_de(L, ['Yor', 'Soneto', 'Kurlw', 'Abyssus', 'Six', 'Arez', 'Geoka', 'Richard', 'Zignos', 'Korey',
+                          'Eyou', 'ACH'], '77', t0 - 3600000, t0 + 3600000)),
+        ('… pero no de otro servidor, ni a otra hora, ni con otra gente',
+         not veredicto_de(L, ['Yor', 'Soneto', 'Six'], '78', t0 - 3600000, t0 + 3600000)
+         and not veredicto_de(L, ['Yor', 'Soneto', 'Six'], '77', t0 + 7200000, t0 + 9000000)
+         and not veredicto_de(L, ['Ana', 'Beto', 'Caro', 'Dani'], '77', t0 - 3600000, t0 + 3600000)),
+        ('sin encabezado de ronda no es una llave: un 5 vidas sigue por `veredictos()`',
+         not llaves_de_veredictos([fila(0, '# 🇦🇷 DELUXE 🆚 FAZER 🇦🇷'), fila(10, 'FAZER')])),
+    ]:
+        print('   %s %s' % ('✅' if ok else '❌', que))
+        mal += 0 if ok else 1
+    return mal
 
 
 def _check_veredicto_ganador():

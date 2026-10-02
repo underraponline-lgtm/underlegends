@@ -457,6 +457,98 @@ def personas(sv='', menciones=None):
     return quien
 
 
+def _ms_de(iso):
+    """Un ISO (UTC si no dice zona) a milisegundos, o `None`."""
+    try:
+        t = datetime.datetime.fromisoformat(str(iso).replace('Z', '+00:00'))
+    except (TypeError, ValueError):
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=datetime.timezone.utc)
+    return int(t.timestamp() * 1000)
+
+
+def _iso_de(ms):
+    return datetime.datetime.fromtimestamp(int(ms) / 1000.0, datetime.timezone.utc).isoformat(timespec='seconds')
+
+
+def llave_de_veredictos_para(g, llaves_v=None):
+    """La llave de #veredictos que es ESTE evento y está completa, o `None`. Ver `hallazgo_de_veredicto()`.
+
+    Tiene que ser del mismo servidor, de entre 3 horas antes de la llave y 6 después de su último toque, con la mayoría
+    de la gente en común (`escuchar.veredicto_de()`), con su final decidida (`escuchar.completa()`), y tiene que
+    EMPEZAR donde empieza la llave del organizador: la misma primera ronda, con al menos 3 de cada 4 de sus batallas.
+    Una de veredictos que arrancó a mitad del evento dejaría afuera las primeras rondas. Si dos sirven, ninguna.
+    """
+    lls = llaves_v if llaves_v is not None else E._VER_LLAVES[0]
+    if not lls or not g.get('llaves'):
+        return None
+    guild = g['llaves'][0].get('guild')
+    sv = codigo_servidor(guild)[0]
+    ts = [x for h in g['llaves'] for x in (_ms_de(h.get('cuando')), _ms_de(h.get('editado'))) if x]
+    if not ts:
+        return None
+    q = personas(sv, {d: n for h in g['llaves'] for d, n in (h.get('menciones') or {}).items()})
+    cands = [V for V in lls if E.completa(V) and
+             E.veredicto_de(V, list(g.get('plantel') or ()), guild, min(ts) - 3 * 3600000, max(ts) + 6 * 3600000,
+                            quien=q)]
+    if len(cands) != 1:
+        return None
+    V = cands[0]
+    rs = [r for h in g['llaves'] for r in E.rondas_de(h.get('texto') or '')]
+    if rs:
+        r0 = E.ALIAS.get(rs[0][0], rs[0][0])
+        vr0 = [bt for bt in V['batallas'] if bt[0] == V['batallas'][0][0]]
+        if V['batallas'][0][0] != r0 or len(vr0) < 0.75 * len(rs[0][1]):
+            return None
+    return V
+
+
+def hallazgo_de_veredicto(V, h0, quien=None, conocidos=None):
+    """La llave de #veredictos como un hallazgo más, con sus batallas ya resueltas (`res`). Ver `filas_de()`.
+
+    Del organizador queda lo que la nombra —el servidor, el autor— y el nombre y la fecha del evento los pone el grupo.
+    El texto es el de las batallas como se jugaron, con sus rondas: lo leen el plantel, el walk-in y el revivido.
+
+    🔑 Y EL QUE PASA CON OTRO NOMBRE SE LLAMA COMO EN LA RONDA SIGUIENTE, como en `escuchar.resolver()`: en #votaciones
+    Oasis también jugó octavos como «Park-Ji Sung🇰🇷». Con `quien` (`personas()`), si el ganador no está en la ronda
+    siguiente con su nombre y UNA persona de esa ronda —que nadie de la suya explica por su nombre— es él, es ella.
+
+    🔑 Y CADA NOMBRE, COMO SE ANOTÓ (`conocidos`, la canonización del lector: `escuchar.canonizador()`): en #votaciones
+    dice «Kurlw🇦🇷» y la inscripción, «kurl 🇦🇷» —Jult—. Sin esto entraba como alguien nuevo."""
+    _c = E.canonizador(conocidos) if conocidos else None
+
+    def c(x):
+        return _c(x) if (_c is not None and x) else x
+    bats = [[r, [c(x) for x in lados], c(gan), razon, [c(x) for x in (pasan or [])]]
+            for r, lados, gan, razon, pasan in V['batallas']]
+    if quien is not None:
+        idx = {r: E.ORDEN.index(r) for r in {b[0] for b in bats} if r in E.ORDEN}
+        for b in bats:
+            if not b[2] or b[0] not in idx:
+                continue
+            sig = [x for bb in bats if idx.get(bb[0], -1) > idx[b[0]] for x in bb[1]]
+            if not sig or E.norm(b[2]) in {E.norm(x) for x in sig}:
+                continue
+            suya = {E.norm(x) for bb in bats if bb[0] == b[0] for x in bb[1]}
+            cands = {x for x in sig if E.norm(x) not in suya and quien(b[2]) and quien(b[2]) & quien(x)}
+            if len({E.norm(x) for x in cands}) == 1:
+                nuevo = sorted(cands)[0]
+                b[1] = [nuevo if x == b[2] else x for x in b[1]]
+                b[2] = nuevo
+    res = [E.Batalla((r, lados, gan, razon), pasan=pasan) if pasan else (r, lados, gan, razon)
+           for r, lados, gan, razon, pasan in bats]
+    # el texto, con los mismos nombres que las batallas: lo leen el plantel, el walk-in y el revivido
+    lineas, ult = [], None
+    for r, lados, _g, _r, _p in bats:
+        if r != ult:
+            lineas.append('`[ %s ]`' % r)
+            ult = r
+        lineas.append(' 🆚 '.join('⌞%s⌝' % x for x in lados))
+    return dict(h0, texto='\n'.join(lineas), res=res, canal_id=V['canal'], msg_id=V['id'],
+                cuando=_iso_de(V['pub']), editado=_iso_de(V['ed']), menciones={}, veredicto=True)
+
+
 def nombre_visible(lado, ids):
     """`[<@750…>🇪🇨]` -> `ricardflex 🇪🇨`: la mención, con su nombre.
 
@@ -1043,7 +1135,9 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     # 🔑 Y QUIÉN ES CADA NOMBRE, por su cuenta: el que cambia de nombre de una ronda a otra sigue
     # siendo él (02/10/2026, Oasis como «Park-Ji Sung🇰🇷»). Ver `personas()`.
     _q = personas(sv, hallazgo.get('menciones'))
-    res = E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids, quien=_q)
+    # 🔑 la llave como se jugó, de #veredictos, ya viene resuelta: ver `hallazgo_de_veredicto()`
+    res = hallazgo['res'] if hallazgo.get('res') is not None else \
+        E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids, quien=_q)
     # 🔑 lo que la llave enseñó de quién es quién: ver `identidad_de_grupo()`
     hallazgo['_cambios'] = list(getattr(res, 'cambios', ()) or ())
     for bat in res:
@@ -2410,6 +2504,26 @@ def _self_check():
             fpc0, dpc0, _s = filas_de(dict(h, texto=pc, cuando=_cu))
         finally:
             E._VER_BATALLAS[0] = _ver_antes
+        # 🔑 la llave como se jugó, de #votaciones, en lugar de la del organizador (DOS GENERACIONES VOL 2, recortada):
+        # el organizador puso a ACH y un «pasan 2»; en #votaciones ACH no estaba y en el de tres pasó Six solo
+        _org = ('# Dos Generaciones\n`[ OCTAVOS ]`\n⌞ACH⌝ 🆚 ⌞Yor⌝ 🆚 ⌞Soneto⌝\n⌞Kurlw⌝ 🆚 ⌞Abyssus⌝ 🆚 ⌞Six⌝\n'
+                '`[ FINAL ]`\n⌞Soneto⌝ 🆚 ⌞Six⌝\nCAMPEÓN: Six')
+        _t0 = 1790902998000
+        _hv0 = dict(h, texto=_org, cuando=_iso_de(_t0 - 600000), editado=_iso_de(_t0 + 3600000), menciones={})
+
+        def _fv(seg, tx):
+            ms = _t0 + seg * 1000
+            return {'id': str((ms - 1420070400000) << 22), 'canal': 'v', 'sv': 'FFA', 'g': str(h.get('guild')),
+                    'autor': 'org', 'pub': ms, 'ed': ms, 'texto': tx}
+        _rv = [_fv(0, '# [ OCTAVOS ]'), _fv(10, '⌞Yor⌝ 🆚 ⌞Soneto⌝'), _fv(20, 'Soneto'),
+               _fv(30, '⌞Kurlw⌝ 🆚 ⌞Abyssus⌝ 🆚 ⌞Six⌝'), _fv(40, 'Six'), _fv(50, '# [ FINAL ]'),
+               _fv(60, '⌞Soneto⌝ 🆚 ⌞Six⌝'), _fv(70, 'Six')]
+        _lv = E.llaves_de_veredictos(_rv)
+        _gv = {'llaves': [_hv0], 'plantel': plantel(_org, {})}
+        _V = llave_de_veredictos_para(_gv, _lv)
+        _fver = filas_de(hallazgo_de_veredicto(_V, _hv0), nombre='Dos Generaciones', fecha='01/10')[0] if _V else []
+        # la de veredictos que empieza en la FINAL (a mitad del evento) no reemplaza a nada
+        _V2 = llave_de_veredictos_para(_gv, E.llaves_de_veredictos(_rv[5:]))
         _PERS[0] = ({}, set())
         fpj0 = marcar_walkins(filas_de(dict(h, texto=pj))[0], [pj], quien=personas(_sv_h))
     finally:
@@ -2581,6 +2695,12 @@ def _self_check():
          and not any(str(d[1]).upper() == 'FINAL' for d in dpc)),
         ('… y sin el veredicto, como antes: sin campeón y la pregunta a ✅ Decidir (la prueba mide algo)',
          not tiene_campeon(fpc0) and any(str(d[1]).upper() == 'FINAL' for d in dpc0)),
+        ('la llave de #votaciones es ESTE evento y reemplaza a la del organizador',
+         bool(_V) and tiene_campeon(_fver)),
+        ('… y manda lo que se jugó: ACH no peleó, y en el de tres pasó Six solo (Abyssus cae ahí)',
+         not any('ACH' in (f['ladoA'], f['ladoB']) for f in _fver)
+         and any(f['ronda'] == 'octavos' and f['ganador'] == 'Six' and f['ladoB'] == 'Abyssus' for f in _fver)),
+        ('… pero la que empieza a mitad del evento no reemplaza a nadie', _V2 is None),
         ('filtros con nombres y sin batallas: se descarta',
          fase_sin_batallas('# COPA\nFILTROS\nAna\nBeto\nCaro\nDani\n'
                            'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
@@ -2725,9 +2845,10 @@ def main():
     # que este paso entre en un ciclo por hora. Ver `escuchar.conocidos()`.
     # Llamar a `barrer` directo anda igual y cuesta 48 s todas las veces.
     hallazgos, info = E.escuchar(s)
-    # las batallas de #veredictos de esta lectura, también si vino guardada (`comparar_lector.py`): ver
-    # `escuchar.ganador_por_veredicto()`
+    # las batallas y las llaves de #veredictos de esta lectura, también si vino guardada (`comparar_lector.py`): ver
+    # `escuchar.ganador_por_veredicto()` y `llave_de_veredictos_para()`
     E._VER_BATALLAS[0] = info.get('ver_batallas') or E._VER_BATALLAS[0] or []
+    E._VER_LLAVES[0] = info.get('ver_llaves') or E._VER_LLAVES[0] or []
     n_ch, n_msg = info['canales'], info['mensajes']
     # 🔑 QUIÉN YA PUBLICÓ UNA LLAVE, con la lista entera —la pre-temporada
     # también cuenta—, antes de filtrar. Ver `llave_de_broma()`.
@@ -2761,6 +2882,7 @@ def main():
     todas, dudas, sabidas = [], [], collections.Counter()
     en_curso, incompletos, retenidos, descartados = [], [], [], []
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
+    de_veredictos = []                                # las llaves que se cargaron como se jugaron, de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
     podio_ev = {}                       # 'evento|servidor|fecha' -> {nombre: id}
     ident_ev = {}                       # 'evento|servidor|fecha' -> lo de identidad_de_grupo()
@@ -2799,6 +2921,19 @@ def main():
             for _h in g['llaves']:
                 link_de[(nom, codigo_servidor(_h.get('guild'))[0], fec)] = _lk[-1]
             link_de[nom] = None if nom in link_de else _lk[-1]
+        # 🔑 LA LLAVE COMO SE JUGÓ, DE #VEREDICTOS, MANDA (02/10/2026). Dlx: *«el orden verdadero de las llaves para ese
+        # evento estaba en el canal de veredictos»*. La DOS GENERACIONES VOL 2 (FFA) tenía la llave del organizador mal
+        # actualizada —ACH y DXG que no pelearon, un «pasan 2» que no fue, un octavo sin nadie— y en #votaciones estaba
+        # la noche entera. Si una llave de veredictos es ESTE evento y está completa, se cargan sus batallas en lugar de
+        # las del organizador: ver `llave_de_veredictos_para()`. El nombre, la fecha y el link siguen siendo del grupo
+        _v = llave_de_veredictos_para(g)
+        if _v:
+            _sv_v = codigo_servidor(_v['g'])[0]
+            _hv = hallazgo_de_veredicto(_v, g['llaves'][0], quien=personas(
+                _sv_v, {d: n for h in g['llaves'] for d, n in (h.get('menciones') or {}).items()}),
+                conocidos=inscriptos_de(_sv_v))
+            g = dict(g, llaves=[_hv], plantel=plantel(_hv['texto']))
+            de_veredictos.append((nom, codigo_servidor(_v['g'])[0], fec, len(_v['batallas'])))
         del_grupo, d_grupo = [], []
         for h in g['llaves']:
             f, d, sab = filas_de(h, nombre=nom, fecha=fec,
@@ -3001,6 +3136,8 @@ def main():
     print('   %d fila(s) para `Entrada`' % len(todas))
     for ev, sv_i, fec_i, nb in vidas_cargados:
         print('   ❤️ %s (%s · %s): 5 vidas de #veredictos, %d batalla(s)' % (ev, sv_i, fec_i, nb))
+    for ev, sv_i, fec_i, nb in de_veredictos:
+        print('   ⚖️ %s (%s · %s): la llave como se jugó, de #veredictos (%d batallas)' % (ev, sv_i, fec_i, nb))
     for ev, nb in esperan:
         print('   ⏸️ %s: 5 vidas que espera %d batalla(s) en ✅ Decidir' % (ev, nb))
     if decididas:

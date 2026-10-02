@@ -378,6 +378,16 @@ const ok = (cond, que) => {
     'sin muro, o con una fecha rota, nada');
 }
 
+// ── los canales de veredictos: también «votaciones» y «resultados» (Dlx, 02/10/2026) ──
+{
+  console.log('\n  los canales de veredictos que mira el vigía');
+  const es = (n) => A.PATRON_VEREDICTOS.test(n.normalize('NFKD')) && !A.NO_VEREDICTOS.test(n.normalize('NFKD'));
+  ok(es('✦🗳️︱votaciones') && es('「🐂」𝐕𝐎𝐓𝐀𝐂𝐈𝐎𝐍𝐄𝐒') && es('［👨‍⚖️］veredictos') && es('「👑」𝐑𝐄𝐒𝐔𝐋𝐓𝐀𝐃𝐎𝐒'),
+    'las votaciones de FFA y FFS, los veredictos y los resultados (en letras matemáticas también)');
+  ok(!es('「📑」𝙍𝙚𝙨𝙪𝙡𝙩𝙖𝙙𝙤𝙨-𝙋𝙤𝙨𝙩𝙪𝙡𝙖𝙘𝙞𝙤𝙣𝙚𝙨') && !es('✦📝︱inscripciones'),
+    'las postulaciones no (quién entra al staff), ni las inscripciones');
+}
+
 // ── 🕵️ quién es cada nombre de una llave en vivo (Dlx, 02/10/2026: «múltiples vías para detectar quiénes participan») ──
 {
   console.log('\n  quién es cada nombre en vivo: la inscripción, la llamada y la mención');

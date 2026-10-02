@@ -85,7 +85,8 @@ export const PATRON_VIGIA = /evento|competenc/i;
 // que daba 403, ya se puede leer: se vuelve a buscar sin esperar las 6 h.
 // 6: también los canales de VEREDICTOS (28/09/2026); ver `veredictos()`.
 // 7: entra FFS, sin las categorías de sus ligas (`meta.fuera`, 28/09/2026).
-const CANALES_V = 8;
+// 9: y los de «votaciones» y «resultados» (02/10/2026): ver `PATRON_VEREDICTOS`.
+const CANALES_V = 9;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -93,7 +94,12 @@ const CANALES_V = 8;
 //: sin llave. Se descubren por nombre —los que dicen «llave» ya los lee
 //: `llaves()`— y se leen SÓLO mientras su servidor tiene un evento en juego:
 //: Urban Freestyle tiene ocho, y leerlos siempre sería gastar el minuto.
-export const PATRON_VEREDICTOS = /veredict/i;
+//: 🔴 Y NO SÓLO «VEREDICTOS» (02/10/2026): FFA juega en `✦🗳️︱votaciones`, y ahí estaba la llave verdadera de la DOS
+//: GENERACIONES VOL 2; FFS tiene `VOTACIONES` y `RESULTADOS`. Dlx: *«cuando hay eventos en vivo en X servidor, tienes que
+//: estar atento a los canales de eventos también, respectivamente»*. Las «postulaciones» no: es quién entra al staff.
+//: ⚠️ Es la misma regla que `escuchar.VEREDICTOS` y `NO_VEREDICTOS`: si cambia una, cambia la otra
+export const PATRON_VEREDICTOS = /veredict|votaci|resultad/i;
+export const NO_VEREDICTOS = /postulaci/i;
 //: cuántos canales de veredictos se leen como mucho por minuto
 export const VER_TOPE = 6;
 //: un servidor está «en vivo» desde 15 min antes del arranque hasta 5 h después
@@ -2102,7 +2108,7 @@ export class Avisos {
         // vuelve letras comunes, como en `anuncios.py`.
         const n = (c.name || '').normalize('NFKD');
         // 🔑 los de veredictos, aparte: ver `veredictos()`
-        if (PATRON_VEREDICTOS.test(n) && !/llave/i.test(n) && !STAFF.test(n)) {
+        if (PATRON_VEREDICTOS.test(n) && !NO_VEREDICTOS.test(n) && !/llave/i.test(n) && !STAFF.test(n)) {
           ver.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild });
         }
         // 🔑 los de inscripciones, aparte: ver `inscripciones()`
