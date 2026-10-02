@@ -13,7 +13,7 @@
   {
    "version": "1.76",
    "dia": "2026-10-01",
-   "cuando": "2026-10-01T23:55:00-04:00",
+   "cuando": "2026-10-01T23:35:00-04:00",
    "titulo": "Te avisamos cuando te toca",
    "items": [
     "🎤 **«¡Te toca!»**: si vinculaste la campana con tu Discord, te llega una notificación cuando tu batalla es la próxima («Sos el próximo») y cuando te toca. Si no entrás a la llamada, vuelve a sonar cada minuto, hasta tres veces; se corta sola cuando entrás, cuando tu batalla ya tiene ganador o si el organizador te reemplazó.",
