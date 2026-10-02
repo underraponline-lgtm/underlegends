@@ -3710,9 +3710,13 @@ function pintaPerfil(k) {
   var f = porK(k) || filaCuenta(k);
   var caja = $('#perfil');
   if (!f) {
+    // 🔑 EL DÍA DEL ARRANQUE ES EL CASO DE TODOS: la tabla arranca vacía y cada link a un perfil caía acá con un
+    // «No lo encontré» que parecía un error (medido con la página en cero, 02/10/2026). Lo que pasa es que todavía
+    // no jugó: su perfil aparece solo con su primer evento
     caja.innerHTML = '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
-      '<section class="blk entro"><h2><span>&#128269;</span> No lo encontré</h2>' +
-      '<p class="bajada">Ese rapero no está en la tabla de la temporada.</p></section>';
+      '<section class="blk entro"><h2><span>&#9203;</span> Todavía no jugó esta temporada</h2>' +
+      '<p class="bajada">Su perfil aparece solo en cuanto juegue su primer evento. Si el link vino de otro lado, ' +
+      'fijate que esté bien escrito.</p></section>';
     return;
   }
   // la clave de verdad, aunque se haya llegado por un link viejo (`porK()`);

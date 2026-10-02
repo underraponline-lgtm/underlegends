@@ -365,12 +365,18 @@ def armar():
     # pasado desde que se anunciaba. Ahora cuenta el arranque; y el que no
     # tiene hora, recién cuando deja de estar en «Lo que viene».
     _ini = lambda y: CU.momento(y) or str(y.get('cuando') or '')
+    # 🔑 Y SÓLO LO DE LA TEMPORADA, como el calendario (`_calendario()`): desde el arranque, lo de la fase de prueba
+    # no es «lo que pasó» —sus llaves se archivaron y el «último campeón» de Eventos salía sin nombre—. Medido
+    # con la página en cero (02/10/2026): el 12/10 a la madrugada mostraba los seis últimos de la prueba.
+    from comun.temporada import INICIO as _desde
     pas = []
     for x in sorted(ann, key=_ini, reverse=True):
         if x.get('msg_id') in _ya or not x.get('cuando'):
             continue
         if _ini(x) >= _ahora:
             continue                       # todavía no pasó: es de `prox`
+        if str(_ini(x))[:19] < _desde[:19]:
+            break                          # de antes de la temporada: ya no hay más (van de nuevo a viejo)
         pas.append({
             'nombre': _nom(x['nombre']),
             'sv': x.get('servidor') or '',

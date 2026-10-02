@@ -298,12 +298,16 @@ export function TuTemporada({ liga, dc }) {
     </section>
   );
 }
+// ¿hubo al menos una participación en las dos semanas de «Lo que se jugó»?
+const jugoAlgo = (a) => (a.dias || []).some(([, x]) => Object.values(x || {}).some((n) => n > 0));
 function Numeros({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
   const grandes = [['PERSONAS', c.personas, 'en ' + (c.servidores || 0) + ' servidores'], ['EN LA LISTA', c.lista, 'compitieron o se anotaron'],
     ['CON SU DISCORD', c.con_id, 'el bot sabe quiénes son'], ['VERIFICADAS', c.verificados, 'con las cuatro tarjetas']].filter((x) => x[1]);
-  const dias = a.dias || [];
+  // sin un solo evento en las dos semanas no se dibuja: una tira de ceros el día del arranque dice «no pasa nada»,
+  // y lo que pasa es que la temporada recién empieza (medido con la página en cero, 02/10/2026)
+  const dias = jugoAlgo(a) ? a.dias : [];
   const tope = Math.max(1, ...dias.map(([, x]) => Object.values(x).reduce((s, v) => s + v, 0)));
   return (
     <div className="num-g">
@@ -351,7 +355,7 @@ export function Panel({ liga }) {
 export function LaLiga({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
-  const hay = c.personas || c.lista || c.con_id || c.verificados || (a.dias || []).length || (liga.d.records || []).length;
+  const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length;
   if (!hay) return null;
   return <Sec id="numeros" titulo="La Liga en números" enlace="Mundo" href="#/mundo"><Numeros liga={liga} /></Sec>;
 }

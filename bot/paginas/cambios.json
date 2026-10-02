@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.78",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T08:25:00-04:00",
+   "titulo": "La página, lista para el arranque",
+   "items": [
+    "🧹 **La página, lista para el arranque**: «Lo que pasó» muestra sólo lo de la temporada, como el calendario, y la tira «Lo que se jugó» del Inicio no aparece hasta que haya un evento.",
+    "👤 **El perfil de quien todavía no jugó en la temporada** ya no dice «No lo encontré»: dice que aparece solo con su primer evento."
+   ]
+  },
+  {
    "version": "1.77",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T08:00:00-04:00",
