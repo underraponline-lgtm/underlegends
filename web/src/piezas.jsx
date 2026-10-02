@@ -113,7 +113,8 @@ export function Bandera({ cc, cls = 'r-flag' }) {
 // persona y, con un sí/no, heredaba la inicial aunque su foto anduviera (revisión del 01/10/2026)
 export function Cara({ liga, k, nombre, cls = 'cara' }) {
   const [mal, setMal] = useState(null);
-  const src = k ? liga.avUrl(k) : null;
+  // la de la tabla; si no está (corta en 200), la que viene aparte por nombre (`avNombre()`)
+  const src = (k && liga.avUrl(k)) || (liga.avNombre ? liga.avNombre(nombre) : null);
   if (src && mal !== src) return <span className={cls}><img alt="" src={src} onError={() => setMal(src)} /></span>;
   return <span className={cls + ' ini'}>{(limpio(nombre).slice(0, 1) || '?').toUpperCase()}</span>;
 }

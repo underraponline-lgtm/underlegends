@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.81",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T09:55:00-04:00",
+   "titulo": "Más caras en la página",
+   "items": [
+    "🧑 **Más caras en la página**: la de quien juega en Snake Rap, Urban u otro servidor y no está en DRA ni en FFA, y la de quien todavía no entra en la tabla. Siguen con la inicial quienes no pusieron foto en Discord y quienes el bot todavía no sabe quiénes son."
+   ]
+  },
+  {
    "version": "1.80",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T09:25:00-04:00",

@@ -272,7 +272,8 @@ export function gruposHistorias(liga) {
 // fila tras fila, era lo que se veía «sin avatar»)
 export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {
   const [mal, setMal] = useState(null);
-  const src = k ? liga.avUrl(k) : null;
+  // la de la tabla; si no está (corta en 200), la que viene aparte por nombre (`avNombre()`)
+  const src = (k && liga.avUrl(k)) || (liga.avNombre ? liga.avNombre(nombre) : null);
   if (src && mal !== src) return <span className={cls}><img alt="" src={src} onError={() => setMal(src)} /></span>;
   const ini = (limpio(nombre).slice(0, 1) || '?').toUpperCase();
   return (

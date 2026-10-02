@@ -144,7 +144,8 @@ def armar():
     _ver, _vieja = _versiones()
     # 🙈 quien ocultó su foto va con su inicial en toda la página (Dlx, 02/10/2026: «1. A»; ver `fotos.ocultas()`)
     _sin = set(_ocultas_ids())
-    _avs = {k: v for k, v in (_avatares() or {}).items() if str(k) not in _sin}
+    _avs = {k: v for k, v in (_avatares({str(p.get('discord_id')) for p in pool if p.get('discord_id')}) or {}).items()
+            if str(k) not in _sin}
     _de = _quien(gente)
     _ult = _ultimos(_de)
     tabla = [{
@@ -252,6 +253,13 @@ def armar():
         'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
                if _avs.get(str(p.get('discord_id') or '')) else ''),
     } for p in gente]
+    # 🧑 LAS CARAS DE QUIENES QUEDAN FUERA DE LA TABLA (corta en `TOPE`): las historias, «lo último» y las llaves los
+    # nombran igual, y sin esto salían con la inicial —medido el 02/10/2026: 19 de 219—. Nombre y cara, nada más (~45
+    # bytes cada uno): la página la busca por nombre, `avNombre()` de web/src/liga.js
+    _en_tabla = {id(p) for p in gente}
+    avs_fuera = [[p.get('raw'), '%s/%s' % (str(p.get('discord_id')), _avs[str(p.get('discord_id'))])]
+                 for p in pool if id(p) not in _en_tabla and p.get('raw')
+                 and _avs.get(str(p.get('discord_id') or ''))]
     # 🔑 CAZÓ · CAZADO · SOBREVIVIÓ, DE MOST WANTED. Las columnas ya estaban
     # en el ranking (Dlx, 25/09/2026) y leían del pool, que no las tiene: la
     # cuenta vive en `datos/mw.json`. Ver `_mw_suma()`.
@@ -463,6 +471,7 @@ def armar():
         # 🔑 cuántos tienen número (los miembros): el «#3 de N» del perfil
         'oficiales': sum(1 for p in pool if p.get('raw') and not p.get('fc')),
         'tabla': tabla,
+        'avs': avs_fuera,
         'proximos': prox,
         # 🔑 cuánto sigue «en vivo» un evento que empezó sin llave a la vista:
         # la página lo lee de acá y no lo escribe (ver `VENTANA_VIVO`)
@@ -673,7 +682,12 @@ def _ocultas_ids():
         return []
 
 
-def _avatares():
+#: cuántas caras se le piden a Discord de a una por corrida (ver `_avatares()`): las que faltan son pocas, y esto es
+#: un techo por si un día faltan muchas
+TOPE_USUARIOS = 60
+
+
+def _avatares(ids=()):
     """`{discord_id: hash}` de los miembros de DRA, para el ranking.
 
     🔴 EL AVATAR DE DISCORD Y NO LA FOTO DE R2. La foto congelada vive bajo
@@ -693,15 +707,39 @@ def _avatares():
     # con Discord ID, DRA da 33, FFA suma 14 y Snake Rap no suma ninguno —y
     # tarda 11 s en listar sus 7.300—. El avatar es el global de la cuenta,
     # así que alcanza con encontrar a la persona en uno.
-    out = {}
+    out, vistos = {}, set()
     for sv in ('DRA', 'FFA'):
         try:
             import fotos as FO
             for k, v in FO.avatares_del_servidor(s, FO.guild(sv)).items():
+                vistos.add(str(k))
                 if v and k not in out:
                     out[k] = v
         except (SystemExit, Exception) as e:             # noqa: BLE001
             print('   ⚠️ sin avatares de %s (%s)' % (sv, str(e)[:60]))
+    # 🧑 Y QUIEN JUGÓ Y NO ESTÁ EN DRA NI EN FFA, DE A UNO (`GET /users/{id}`, que el bot puede pedir de cualquier
+    # cuenta). Medido el 02/10/2026 sobre las 219 de la prueba: 8 tenían su cara sólo en Snake Rap o en Urban Freestyle
+    # y 2 no estaban en ningún servidor del bot, y salían con la inicial —Dlx: «en las historias o en lo último a veces
+    # veo personas sin… avatares»—. Listar Snake Rap entero son 8 páginas; esto son tantos pedidos como caras faltan.
+    # ⚠️ Quien está en DRA o FFA sin foto puesta ya se sabe: no se vuelve a preguntar (`vistos`)
+    faltan = sorted(str(i) for i in (ids or ()) if str(i).isdigit() and str(i) not in vistos)[:TOPE_USUARIOS]
+    traidas = 0
+    for did in faltan:
+        try:
+            import time as _t
+            for _ in range(3):
+                r = s.get('https://discord.com/api/v10/users/' + did, timeout=20)
+                if r.status_code == 429:
+                    _t.sleep(float((r.json() or {}).get('retry_after', 1)) + .3)
+                    continue
+                break
+            if r.status_code == 200 and (r.json() or {}).get('avatar'):
+                out[did] = r.json()['avatar']
+                traidas += 1
+        except Exception:                                # noqa: BLE001
+            continue
+    if faltan:
+        print('   🧑 caras fuera de DRA y FFA: %d de %d' % (traidas, len(faltan)))
     return out
 
 

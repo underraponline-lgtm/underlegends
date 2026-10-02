@@ -93,6 +93,9 @@ export class Liga {
       if (this.N[n]) this.dobles.add(n);
       this.T[r.k] = r; this.N[n] = r; this.E[limpio(r.n)] = r;
     });
+    // 🧑 las caras de quienes jugaron y quedan fuera de la tabla (`avs` del payload, ver `subir_web.py`): por nombre
+    this.A = {};
+    (D.avs || []).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });
     this.svs = {};
     (D.svs || []).forEach((s) => { this.svs[s.sv] = s; });
     this.rg = {};
@@ -124,6 +127,11 @@ export class Liga {
     const f = this.T[k];
     // a 256: las caras de las historias y del perfil se dibujan a ~100 px, el doble en una pantalla de celular
     return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=256' : null;
+  }
+  // la cara de alguien que jugó y no está en la tabla (corta en 200): la piden `Cara` y `CaraH` cuando no hay clave
+  avNombre(nombre) {
+    const av = nombre ? this.A[limpio(nombre).toLowerCase()] : null;
+    return av ? 'https://cdn.discordapp.com/avatars/' + av + '.webp?size=256' : null;
   }
   // el logo de HOY de cada servidor: el payload trae el ícono actual de Discord (`svs[].logo`, ver `subir_web.py`) y
   // el guardado sólo de respaldo. Dlx, 30/09/2026: «usa los LOGOS actuales de cada servidor». El Inicio usaba
