@@ -480,7 +480,10 @@ async function imagenPuesto(liga, cfg, f, n) {
   let ch = 600;
   try {
     if (!url) throw new Error('sin carta');
-    const im = await cargarImg(url);
+    // 🔴 CON SU PROPIA DIRECCIÓN. El podio ya cargó esta carta como imagen común, y R2 contesta ESE pedido sin
+    // permiso de lectura y sin `Vary: Origin`: el navegador reusaba lo guardado y el lienzo la rechazaba. En
+    // producción salía la cara en vez de la carta (02/10/2026); en la prueba local no se veía
+    const im = await cargarImg(url + (url.indexOf('?') < 0 ? '?' : '&') + 'lienzo=1');
     ch = Math.round(cw * im.naturalHeight / im.naturalWidth);
     if (ch > 900) { cw = Math.round(cw * 900 / ch); ch = 900; }
     g.drawImage(im, (W - cw) / 2, y0, cw, ch);
