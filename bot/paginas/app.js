@@ -919,6 +919,93 @@ function llaveDeEvento(e, ls) {
   cand.sort(function (a, b) { return comun(b) - comun(a); });
   return cand[0] || null;
 }
+/* 🔑 LA LLAVE EN VIVO, CON LO QUE DICE #VEREDICTOS (02/10/2026). Dlx: «el orden verdadero de las llaves para ese evento
+   estaba en el canal de veredictos» y «cuando hay eventos en vivo en X servidor, tienes que estar atento a los canales
+   de eventos también». La llave del organizador trae la forma entera —lo que falta jugar también— y #votaciones lo que
+   se jugó de verdad: cada batalla de veredictos se pone sobre la de la llave que más gente comparte en esa ronda (sus
+   lados y su ganador), y la que no está en la llave se agrega. Mismo servidor, a horario y con la mayoría de la gente
+   en común, como `escuchar.veredicto_de()`. Los puntos siguen saliendo del ciclo, que hace lo mismo con la llave
+   entera (`llaves_a_entrada.llave_de_veredictos_para()`). */
+function conVeredictos(L, lvs) {
+  var n = function (s) { return LlaveVivo.norm(String(s || '').replace(/\s*[(（][^()（）]*[)）]?\s*$/u, '')); };
+  var gente = function (lados) {
+    var out = [];
+    lados.forEach(function (x) { String(x).split(/\s*,\s*/).forEach(function (p) { if (n(p)) out.push(n(p)); }); });
+    return out;
+  };
+  var deL = {};
+  L.rondas.forEach(function (R) { R.b.forEach(function (b) { gente(b[0]).forEach(function (k) { deL[k] = 1; }); }); });
+  var desde = (L.pub || 0) - 3 * 3600000, hasta = (L.ed || L.pub || 0) + 6 * 3600000;
+  var V = (lvs || []).filter(function (v) {
+    if ((v.sv || '') !== (L.sv || '') || v.pub < desde || v.pub > hasta) return false;
+    var deV = {};
+    v.batallas.forEach(function (b) { gente(b[1]).forEach(function (k) { deV[k] = 1; }); });
+    var a = Object.keys(deL), c = Object.keys(deV);
+    return a.length && c.length && a.filter(function (k) { return deV[k]; }).length >= 0.6 * a.length &&
+      c.filter(function (k) { return deL[k]; }).length >= 0.6 * c.length;
+  });
+  if (V.length !== 1) return false;
+  var ETQ = { 'FILTROS': 'Filtros', 'CLASIFICATORIAS': 'Clasificatorias', 'PRELIMINARES': 'Preliminares',
+    'DIECISEISAVOS': 'Dieciseisavos', 'OCTAVOS': 'Octavos', 'CUARTOS': 'Cuartos', 'SEMIFINALES': 'Semifinales',
+    'TERCER LUGAR': 'Tercer puesto', 'FINAL': 'Final' };
+  // cada uno por su persona —«Park-Ji Sung» es Oasis— o por su nombre (ver `quienVivo()`)
+  var q = quienVivo(L.sv);
+  var personas = function (lados) {
+    var out = [];
+    lados.forEach(function (x) {
+      String(x).split(/\s*,\s*/).forEach(function (p) { if (n(p)) out.push((q(p)[0] ? 'k:' + q(p)[0] : 'n:' + n(p))); });
+    });
+    return out;
+  };
+  var orden = ['FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS', 'OCTAVOS', 'CUARTOS', 'SEMIFINALES',
+    'TERCER LUGAR', 'FINAL'];
+  var ultimaV = Math.max.apply(null, V[0].batallas.map(function (b) { return orden.indexOf(b[0]); }));
+  var porRonda = {};
+  V[0].batallas.forEach(function (bv) { (porRonda[bv[0]] = porRonda[bv[0]] || []).push(bv); });
+  Object.keys(porRonda).forEach(function (rv) {
+    var r = ETQ[rv] || rv;
+    var R = L.rondas.filter(function (x) { return x.r === r; })[0];
+    if (!R) { R = { r: r, b: [] }; L.rondas.push(R); }
+    // de a pares, primero los que más gente comparten: en una ronda cada uno pelea una vez (salvo el revivido), así
+    // que una persona en común ya dice que es la misma batalla
+    var pares = [];
+    porRonda[rv].forEach(function (bv, iv) {
+      var pv = personas(bv[1]);
+      R.b.forEach(function (b, il) {
+        var k = personas(b[0]).filter(function (x) { return pv.indexOf(x) >= 0; }).length;
+        if (k) pares.push([k, iv, il]);
+      });
+    });
+    pares.sort(function (a, b) { return b[0] - a[0] || a[1] - b[1] || a[2] - b[2]; });
+    var deV = {}, deL = {};
+    pares.forEach(function (p) { if (!(p[1] in deV) && !(p[2] in deL)) { deV[p[1]] = p[2]; deL[p[2]] = p[1]; } });
+    var nuevas = R.b.slice();
+    porRonda[rv].forEach(function (bv, iv) {
+      // la nota es la de `aLlave()`: «pasan N» si pasan varios, y nada si no
+      var nuevo = [bv[1].slice(), bv[2] || '', (bv[4] || []).length > 1 ? 'pasan ' + bv[4].length : '', []];
+      if (iv in deV) nuevas[deV[iv]] = nuevo; else nuevas.push(nuevo);
+    });
+    // si en veredictos ya se juega una ronda posterior, lo de la llave que no aparece en esta ronda no se jugó
+    if (orden.indexOf(rv) < ultimaV) nuevas = nuevas.filter(function (b, i) { return i >= R.b.length || i in deL; });
+    R.b = nuevas;
+  });
+  // una ronda que sólo estaba en veredictos va en su lugar, no al final
+  var pos = function (r) { var k = Object.keys(ETQ).filter(function (x) { return ETQ[x] === r; })[0]; return k ? orden.indexOf(k) : -1; };
+  L.rondas.sort(function (a, b) { return pos(a.r) - pos(b.r); });
+  L.rondas.forEach(function (R) { R.b.forEach(function (b) { b[3] = []; }); });
+  LlaveVivo.enlazar(L.rondas);
+  // y lo que `aLlave()` dice de la llave entera, otra vez: si terminó y qué ronda se está jugando
+  var F = L.rondas.filter(function (x) { return x.r === 'Final'; })[0];
+  L.terminada = !!(F && F.b.length === 1 && F.b[0][1]);
+  // como en `aLlave()`: la última ronda con una batalla sin ganador, y si no hay, la última
+  L.enJuego = L.rondas.length ? L.rondas[L.rondas.length - 1].r : L.enJuego;
+  for (var i = L.rondas.length - 1; i >= 0; i--) {
+    if (L.rondas[i].r !== 'Tercer puesto' && L.rondas[i].b.some(function (x) { return !x[1]; })) { L.enJuego = L.rondas[i].r; break; }
+  }
+  L.conVeredictos = true;
+  return true;
+}
+
 function pintaVivo() {
   var caja = $('#vivoLista'), sec = $('#secVivo');
   if (!caja || !sec || !window.LlaveVivo) return;
@@ -931,6 +1018,12 @@ function pintaVivo() {
     // en vivo = la tocaron en las últimas tres horas
     return L && L.rondas.length && ahora - (L.ed || L.pub || 0) < 3 * 3600000;
   });
+  // ⚖️ y lo que se jugó de verdad, de #veredictos / #votaciones: ver `conVeredictos()`
+  var lvs = [];
+  try { lvs = LlaveVivo.llavesDeVeredictos ? LlaveVivo.llavesDeVeredictos(VIVO.veredictos || []) : []; } catch (e) {
+    console.error('[llaves de veredictos]', e);
+  }
+  if (lvs.length) ls.forEach(function (L) { try { conVeredictos(L, lvs); } catch (e) { console.error('[con veredictos]', e); } });
   // 🔑 Y LOS 5 VIDAS DE LOS VEREDICTOS (ver `LlaveVivo.veredictos()`): sin
   // llave, con el nombre del anuncio que les corresponde
   var ver = [];

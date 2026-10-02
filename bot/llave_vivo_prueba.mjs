@@ -235,5 +235,14 @@ const conMedalla = LV.aLlave({ id: '1', texto: 'nave de funa:\n1 - [A] ❌\n2 - 
 ok('y la final sin «CAMPEÓN» toma el 🥇 del podio', conMedalla && conMedalla.terminada &&
   conMedalla.rondas[conMedalla.rondas.length - 1].b[0][1] === 'D', js(conMedalla && conMedalla.rondas));
 
+// 🔑 LA LLAVE COMO SE JUGÓ, DE #VEREDICTOS (Dlx, 02/10/2026: «el orden verdadero de las llaves… estaba en el canal
+// de veredictos»): la página arma LA MISMA llave que `escuchar.llaves_de_veredictos()`. Ver `python bot/llaves_casos.py
+// --llaves-v`.
+console.log('\n7 · la llave de #veredictos, contra Python (bot/llaves_casos.json)\n');
+for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')).llaves_v || []) {
+  const r = LV.llavesDeVeredictos(c.filas).map((L) => L.batallas);
+  ok(c.que, js(r) === js(c.llaves), `JS:     ${js(r).slice(0, 600)}\n      Python: ${js(c.llaves).slice(0, 600)}`);
+}
+
 console.log(mal ? `\n🔴 ${mal} mal\n` : '\n   todo ok\n');
 process.exit(mal ? 1 : 0);

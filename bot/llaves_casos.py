@@ -200,6 +200,33 @@ def armar_veredictos(que, archivo):
     print('%d caso(s) de veredictos en %s' % (len(ver), os.path.relpath(CASOS, BASE)))
 
 
+def llaves_v(filas):
+    """Lo que la página tiene que leer igual de una llave de #veredictos / #votaciones: sus batallas
+    `[ronda, [lados], ganador, razón, [pasan]]`, en el orden en que se jugaron (`escuchar.llaves_de_veredictos()`)."""
+    return [[[b[0], list(b[1]), b[2], b[3], list(b[4])] for b in L['batallas']]
+            for L in E.llaves_de_veredictos(filas)]
+
+
+def armar_llaves_v(que, archivo):
+    """Agrega (o rehace) un caso de llave de #veredictos desde un json de filas, con los autores y las menciones
+    tapados, como `armar_veredictos()`."""
+    with io.open(archivo, encoding='utf-8') as f:
+        filas = json.load(f)
+    alias = {}
+    for x in filas:
+        x['autor'] = 'j%d' % alias.setdefault(x.get('autor') or '', len(alias) + 1) \
+            if x.get('autor') else ''
+        x['texto'] = tapar(x.get('texto') or '')
+    with io.open(CASOS, encoding='utf-8') as f:
+        d = json.load(f)
+    lv = [c for c in d.get('llaves_v') or [] if c['que'] != que]
+    lv.append({'que': que, 'filas': filas, 'llaves': llaves_v(filas)})
+    d['llaves_v'] = lv
+    with io.open(CASOS, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+    print('%d caso(s) de llaves de veredictos en %s' % (len(lv), os.path.relpath(CASOS, BASE)))
+
+
 #: 🔑 LAS NAVES DE FUNA QUE PASÓ DLX (29/09/2026): la fase de eliminación y el
 #: podio con medallas, que la página tiene que leer igual que el ciclo. Son de
 #: la pre-temporada y los nombres son los de las capturas; el rol del aviso
@@ -260,6 +287,10 @@ def _self_check():
         ok = funa(c['texto']) == {'fase': c['fase'], 'medallas': c['medallas']}
         mal += not ok
         print('   %s nave de funa: %s' % ('✅' if ok else '🔴', c['que']))
+    for c in d.get('llaves_v') or []:
+        ok = llaves_v(c['filas']) == c['llaves']
+        mal += not ok
+        print('   %s llave de veredictos: %s' % ('✅' if ok else '🔴', c['que']))
     print('')
     return mal
 
@@ -269,6 +300,10 @@ if __name__ == '__main__':
         sys.exit(1 if _self_check() else 0)
     if '--armar' in sys.argv:
         armar(sys.argv[sys.argv.index('--armar') + 1])
+        sys.exit(0)
+    if '--llaves-v' in sys.argv:
+        i = sys.argv.index('--llaves-v')
+        armar_llaves_v(sys.argv[i + 1], sys.argv[i + 2])
         sys.exit(0)
     if '--veredictos' in sys.argv:
         i = sys.argv.index('--veredictos')

@@ -951,7 +951,89 @@
     };
   }
 
+  /* ── 🔑 LA LLAVE COMO SE JUGÓ, DE #VEREDICTOS (02/10/2026): `escuchar.llaves_de_veredictos()` línea por línea ──
+     Dlx: «el orden verdadero de las llaves para ese evento estaba en el canal de veredictos». En FFA es #votaciones:
+     el encabezado de cada ronda, cada batalla con TODOS sus lados y abajo el ganador —el renglón que nombra a uno solo;
+     la réplica «A X B» y el «X» no votan—. Sin encabezado de ronda no es una llave (un 5 vidas sigue por
+     `veredictos()`), y una ronda que vuelve para atrás es otro evento. El contrato con Python está en
+     `bot/llaves_casos.json` (`llaves_v`). */
+  function llavesDeVeredictos(rows) {
+    var porCanal = {}, canales = [], out = [];
+    (rows || []).slice().sort(function (a, b) {
+      var x = String(a.id), y = String(b.id);
+      return x.length - y.length || (x < y ? -1 : x > y ? 1 : 0);
+    }).forEach(function (m) {
+      if (!porCanal[m.canal]) { porCanal[m.canal] = []; canales.push(m.canal); }
+      porCanal[m.canal].push(m);
+    });
+    function cerrar(cur) {
+      if (!cur || !cur.bats.length) return;
+      var bats = cur.bats;
+      bats.forEach(function (b) {
+        var cuenta = {}, vistos = [];
+        b.votos.forEach(function (v) { if (!(v in cuenta)) { cuenta[v] = 0; vistos.push(v); } cuenta[v]++; });
+        var top = vistos.slice().sort(function (x, y) { return cuenta[y] - cuenta[x]; });
+        b.gan = top.length && (top.length === 1 || cuenta[top[0]] > cuenta[top[1]]) ? top[0] : null;
+        b.razon = b.gan ? 'veredicto' : '';
+        b.pasan = [];
+      });
+      var ultima = Math.max.apply(null, bats.map(function (x) { return ORDEN.indexOf(x.r); }));
+      bats.forEach(function (b, i) {
+        if (b.gan) return;
+        var o = ORDEN.indexOf(b.r), despues = {};
+        bats.forEach(function (bb) { if (ORDEN.indexOf(bb.r) > o) bb.lados.forEach(function (x) { despues[norm(x)] = 1; }); });
+        var pasan = b.lados.filter(function (x) { return despues[norm(x)]; });
+        if (pasan.length === 2 && b.lados.length === 2) {
+          var misma = {};
+          bats.slice(i + 1).forEach(function (bb) { if (bb.r === b.r) bb.lados.forEach(function (x) { misma[norm(x)] = 1; }); });
+          var rev = pasan.filter(function (x) { return misma[norm(x)]; });
+          if (rev.length === 1) pasan = pasan.filter(function (x) { return x !== rev[0]; });
+        }
+        if (pasan.length === 1) { b.gan = pasan[0]; b.razon = 'ronda siguiente'; } else if (pasan.length) {
+          b.pasan = pasan; b.razon = 'pasan ' + pasan.length + ', no hay un ganador';
+        } else b.razon = o === ultima ? 'última ronda y no dice campeón' : 'no aparece nadie después';
+      });
+      out.push({ id: cur.id, sv: cur.sv, g: cur.g, canal: cur.canal, pub: cur.pub, ed: cur.ed,
+        batallas: bats.map(function (b) { return [b.r, b.lados, b.gan, b.razon, b.pasan]; }) });
+    }
+    canales.forEach(function (c) {
+      var cur = null, ult = 0;
+      porCanal[c].forEach(function (m) {
+        var pub = +m.pub || 0;
+        if (cur && pub - ult > TANDA_MS) { cerrar(cur); cur = null; }
+        ult = pub;
+        lineas(unirContinuadas(traducir(plano(m.texto || '')))).forEach(function (l) {
+          var r = buscarRonda(l), ns = nombresDeLinea(l);
+          if (r && !ns.length) {
+            var e = r[0].toUpperCase().replace(/\s+/g, ' ').trim();
+            e = ALIAS[e] || e;
+            if (ORDEN.indexOf(e) < 0) return;
+            if (cur && cur.bats.length && cur.r && ORDEN.indexOf(e) < ORDEN.indexOf(cur.r)) { cerrar(cur); cur = null; }
+            if (!cur) cur = { canal: c, sv: m.sv || '', g: String(m.g || ''), id: String(m.id), pub: pub, ed: +m.ed || pub, r: null, bats: [] };
+            cur.r = e;
+            return;
+          }
+          if (!cur || !cur.r) return;
+          if (ns.length >= 2 && SEP.test(l)) {
+            cur.bats.push({ r: cur.r, lados: ns.map(sinMarcas), votos: [] });
+            cur.ed = Math.max(cur.ed, +m.ed || pub);
+            return;
+          }
+          if (cur.bats.length) {
+            var k = norm(String(l).replace(/^\s*#+\s*/, '').replace(MARCAS, ''));
+            var b = cur.bats[cur.bats.length - 1];
+            var hits = b.lados.filter(function (x) { var n = norm(x); return n && (n === k || (n.length > 2 && k.indexOf(n) >= 0)); });
+            if (hits.length === 1) { b.votos.push(hits[0]); cur.ed = Math.max(cur.ed, +m.ed || pub); }
+          }
+        });
+      });
+      cerrar(cur);
+    });
+    return out;
+  }
+
   var LlaveVivo = { plano: plano, traducir: traducir, norm: norm, nombresDeLinea: nombresDeLinea,
+    llavesDeVeredictos: llavesDeVeredictos,
     unirContinuadas: unirContinuadas, rondasDe: rondasDe, resolver: resolver, enlazar: enlazar,
     titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon,
     veredictos: veredictos, funaDe: funaDe, medallasDe: medallasDe };

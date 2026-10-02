@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.89",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T13:15:00-04:00",
+   "titulo": "En vivo, la llave como se está jugando",
+   "items": [
+    "📡 **La llave en vivo toma lo que dicen los veredictos**: mientras se juega, cada batalla muestra quién peleó de verdad y quién ganó según el canal de veredictos (o votaciones) de ese servidor. Si el organizador todavía no actualizó la llave, la página ya muestra lo que pasó."
+   ]
+  },
+  {
    "version": "1.88",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T12:55:00-04:00",
