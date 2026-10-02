@@ -2394,8 +2394,10 @@ def escuchar(s, forzar=None, por_canal=25):
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude leer los veredictos (%s)' % str(e)[:80])
     _guardar_conocidos(mem)
+    # ⚠️ las batallas de #veredictos viajan también en `info`: quien guarda esta lectura (`comparar_lector.py`) y la
+    # repite sin pasar por `vidas()` tiene que tenerlas igual. Ver `ganador_por_veredicto()`
     return out, {'completo': completo, 'canales': n_ch, 'mensajes': n_msg,
-                 'nuevos': nuevos, 'vidas': n_vidas}
+                 'nuevos': nuevos, 'vidas': n_vidas, 'ver_batallas': list(_VER_BATALLAS[0])}
 
 
 # ── los 5 vidas de #veredictos ─────────────────────────────────────────
@@ -2519,6 +2521,14 @@ def veredictos(rows):
     bandera a veces antes y a veces después («🇦🇷 DELUXE», «DELUXE 🇦🇷»), y
     eran dos personas con la mitad de las derrotas cada una.
     """
+    return [x for x in (_vidas_de_tanda(T) for T in _tandas(rows)) if x]
+
+
+def _tandas(rows):
+    """Las tandas de #veredictos: los mensajes de cada canal sin un hueco de
+    `TANDA_MIN`, con cada batalla (su título) y los votos que la siguen —uno
+    por autor, el renglón con un solo nombre—. La leen `veredictos()` (los 5
+    vidas) y `batallas_veredicto()` (el ganador de una batalla de llave)."""
     por_canal = {}
     for m in sorted(rows or [], key=lambda m: (len(str(m['id'])), str(m['id']))):
         por_canal.setdefault(m.get('canal'), []).append(m)
@@ -2550,7 +2560,75 @@ def veredictos(rows):
             eb = v == nb or (len(nb) > 2 and nb in v)
             if ea != eb:
                 cur['votos'][str(m['autor'])] = 'a' if ea else 'b'
-    return [x for x in (_vidas_de_tanda(T) for T in tandas) if x]
+    return tandas
+
+
+def batallas_veredicto(rows):
+    """`[{id, sv, g, pub, a, b, ganador, votos}]`: cada batalla de #veredictos con un ganador claro.
+
+    🔑 Dlx, 02/10/2026, la tercera de sus vías: *«detectar los veredictos en el
+    canal de veredictos»*. POESÍA CRUDA (Urban Freestyle, 01/10) no escribió la
+    línea del campeón: su final se iba a ✅ Decidir y, sin campeón, el evento
+    entero no sumaba nada. En #veredictos el organizador había escrito
+    `⌞PICHULAMC 🇦🇷⌝ vs. ⌞Riferian 🇵🇦⌝` y abajo `PICHULAMC X MÍNIMA 🥂`.
+
+    ⚠️ GANA LA MAYORÍA de los votos que siguen al título (`_tandas()`), y un
+    empate —o ningún voto— no es de nadie. La «RÉPLICA» no es un voto: no
+    nombra a ninguno de los dos.
+    """
+    out = []
+    for T in _tandas(rows):
+        for b in T['bs']:
+            va = sum(1 for v in b['votos'].values() if v == 'a')
+            vb = sum(1 for v in b['votos'].values() if v == 'b')
+            if va == vb:
+                continue
+            out.append({'id': b['id'], 'sv': T['sv'], 'g': str(T['g'] or ''), 'pub': _ms(b['id']),
+                        'a': b['a'], 'b': b['b'], 'ganador': b['a'] if va > vb else b['b'],
+                        'votos': '%d–%d' % (max(va, vb), min(va, vb))})
+    return out
+
+
+#: las batallas de #veredictos que vio esta corrida (`vidas()`), para `ganador_por_veredicto()`
+_VER_BATALLAS = [[]]
+#: cuántas horas puede haber entre la llave y su veredicto, para cada lado
+VER_VENTANA_H = 12
+
+
+def ganador_por_veredicto(lados, guild, cuando, quien=None, batallas=None):
+    """El lado que ganó según #veredictos, o `None`. Ver `batallas_veredicto()`.
+
+    Los DOS lados tienen que ser los dos de la batalla del veredicto —por su
+    nombre o, con `quien`, por ser la misma persona— y en el mismo servidor, a
+    menos de `VER_VENTANA_H` de la llave. Si dos veredictos de esa pareja dicen
+    cosas distintas (una revancha), no se elige.
+    """
+    if len(lados) != 2:
+        return None
+    t = None
+    try:
+        t = int(datetime.datetime.fromisoformat(str(cuando).replace('Z', '+00:00')).timestamp() * 1000)
+    except (TypeError, ValueError):
+        t = None
+
+    def mismo(x, y):
+        nx, ny = norm(HISTORIA.sub('', x)), norm(HISTORIA.sub('', y))
+        if nx and nx == ny:
+            return True
+        return bool(quien is not None and quien(HISTORIA.sub('', x)) & quien(HISTORIA.sub('', y)))
+
+    gan = set()
+    for v in (batallas if batallas is not None else _VER_BATALLAS[0]) or ():
+        if str(v.get('g') or '') != str(guild or ''):
+            continue
+        if t is None or abs(int(v.get('pub') or 0) - t) > VER_VENTANA_H * 3600000:
+            continue
+        a, b = v.get('a') or '', v.get('b') or ''
+        if mismo(lados[0], a) and mismo(lados[1], b):
+            gan.add(lados[0] if v.get('ganador') == a else lados[1])
+        elif mismo(lados[0], b) and mismo(lados[1], a):
+            gan.add(lados[1] if v.get('ganador') == a else lados[0])
+    return next(iter(gan)) if len(gan) == 1 else None
 
 
 def _ms(snowflake):
@@ -2629,6 +2707,19 @@ def _memoria_veredictos():
         return {}
 
 
+#: cuántos días se guardan las batallas de #veredictos (`batallas_veredicto()`)
+VER_BAT_DIAS = 7
+
+
+def _memoria_batallas():
+    """Las batallas de #veredictos guardadas (`batallas` de `datos/veredictos.json`)."""
+    try:
+        with io.open(VER_MEMORIA, encoding='utf-8') as f:
+            return list(((json.load(f) or {}).get('batallas') or {}).values())
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
 def _unir_vidas(guardados, frescos):
     """Los guardados con los recién leídos encima.
 
@@ -2699,16 +2790,26 @@ def vidas(s, mem, guilds, completo):
     """
     canales = canales_veredictos(s, mem, guilds, completo)
     ahora_ms = int(time.time() * 1000)
-    evs = _unir_vidas(_memoria_veredictos(), veredictos(leer_veredictos(s, canales, ahora_ms)))
+    filas = leer_veredictos(s, canales, ahora_ms)
+    evs = _unir_vidas(_memoria_veredictos(), veredictos(filas))
     evs = {k: e for k, e in evs.items() if ahora_ms - int(e.get('pub') or 0) <= VER_DIAS * 86400000}
+    # 🔑 Y CADA BATALLA CON SU GANADOR, para la llave que no lo dice (02/10/2026): ver `batallas_veredicto()`.
+    # Se guardan `VER_BAT_DIAS`: la llave se relee días después, el veredicto no
+    bats = {b['id']: b for b in _memoria_batallas()}
+    for b in batallas_veredicto(filas):
+        bats[b['id']] = b
+    bats = {k: b for k, b in bats.items() if ahora_ms - int(b.get('pub') or 0) <= VER_BAT_DIAS * 86400000}
+    _VER_BATALLAS[0] = [bats[k] for k in sorted(bats)]
     try:
         os.makedirs(os.path.dirname(VER_MEMORIA), exist_ok=True)
         with io.open(VER_MEMORIA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump({'_leeme': 'Los eventos de vidas de #veredictos ya armados —quién peleó con '
                                  'quién y quién ganó—, para cargarlos aunque ya no estén entre los '
-                                 'últimos mensajes del canal. Sin los mensajes: el repo es público. '
-                                 'Lo escribe bot/escuchar.py (vidas()).',
-                       'eventos': {k: evs[k] for k in sorted(evs)}},
+                                 'últimos mensajes del canal; y cada batalla con su ganador '
+                                 '(`batallas`), para la llave que no lo dice. Sin los mensajes: el '
+                                 'repo es público. Lo escribe bot/escuchar.py (vidas()).',
+                       'eventos': {k: evs[k] for k in sorted(evs)},
+                       'batallas': {k: bats[k] for k in sorted(bats)}},
                       f, ensure_ascii=False, indent=1)
             f.write('\n')
     except OSError as e:
@@ -2909,6 +3010,7 @@ def _self_check():
 
     mal += _check_dialectos()
     mal += _check_cadencia()
+    mal += _check_veredicto_ganador()
     print('\n  la Parte 2 de la guía: cupo vacío, letras de fantasía')
     casos = [
         ('`X 🆚 [SUPLENTE]` no es una batalla',
@@ -3309,6 +3411,48 @@ class _Discord(object):
         return _Resp([{'id': 'm1', 'content': txt,
                        'timestamp': '2026-09-21T10:00:00+00:00',
                        'author': {'username': 'org'}}])
+
+
+def _check_veredicto_ganador():
+    """Que #veredictos diga el ganador que la llave no dice (POESÍA CRUDA, URBF, 01/10/2026)."""
+    print('\n  el ganador que la llave no dice, de #veredictos')
+    t0 = 1790900887000                     # 02/10/2026 00:28 UTC, la final
+
+    def fila(seg, texto, autor='mtz', g='77'):
+        ms = t0 + seg * 1000
+        return {'id': str((ms - _EPOCA_DISCORD) << 22), 'canal': 'c', 'sv': 'URBF', 'g': g, 'autor': autor,
+                'pub': ms, 'ed': ms, 'texto': texto}
+    rows = [fila(-400, '# ⌞PICHULAMC 🇦🇷⌝ vs. ⌞Júpiter 🇲🇽 ⌝'), fila(-375, '# RÉPLICA'),
+            fila(-140, '# PICHULAMC X MÍNIMA 🇦🇷'),
+            fila(0, '# ⌞PICHULAMC 🇦🇷⌝ vs. ⌞Riferian 🇵🇦 ⌝'), fila(24, '# PICHULAMC X MÍNIMA 🥂'),
+            fila(60, '# ⌞Ana⌝ vs. ⌞Beto⌝'), fila(70, '# ANA', 'j1'), fila(80, '# BETO', 'j2')]
+    bs = batallas_veredicto(rows)
+    fin = [b for b in bs if 'Riferian' in b['b']]
+    cuando = _iso(t0 + 3600 * 1000)
+    mal = 0
+    for que, ok in [
+        ('la final: el título y el renglón del ganador, aunque diga «X MÍNIMA»',
+         len(fin) == 1 and fin[0]['ganador'].startswith('PICHULAMC') and fin[0]['votos'] == '1–0'),
+        ('la RÉPLICA no es un voto: la semi la gana el renglón de después',
+         any('Júpiter' in b['b'] and b['ganador'].startswith('PICHULAMC') for b in bs)),
+        ('un empate no es de nadie', not any(b['a'] == 'Ana' for b in bs)),
+        ('la llave sin campeón toma el ganador del veredicto, escrito como lo escribe la llave',
+         ganador_por_veredicto(['Pichulamc 🇦🇷', 'Riferian 🇵🇦'], '77', cuando, batallas=bs) == 'Pichulamc 🇦🇷'),
+        ('… y al revés también', ganador_por_veredicto(['Riferian', 'PICHULAMC'], '77', cuando, batallas=bs)
+         == 'PICHULAMC'),
+        ('… pero no de otro servidor', ganador_por_veredicto(['Pichulamc', 'Riferian'], '78', cuando,
+                                                             batallas=bs) is None),
+        ('… ni de dos días después', ganador_por_veredicto(['Pichulamc', 'Riferian'], '77',
+                                                           _iso(t0 + 48 * 3600000), batallas=bs) is None),
+        ('… ni con un solo lado en común', ganador_por_veredicto(['Pichulamc', 'Kochi'], '77', cuando,
+                                                                 batallas=bs) is None),
+        ('… y si dos veredictos de la pareja dicen otra cosa, no se elige',
+         ganador_por_veredicto(['Pichulamc', 'Riferian'], '77', cuando,
+                               batallas=bs + [dict(fin[0], id='x', ganador=fin[0]['b'])]) is None),
+    ]:
+        print('   %s %s' % ('✅' if ok else '❌', que))
+        mal += 0 if ok else 1
+    return mal
 
 
 def _check_cadencia():

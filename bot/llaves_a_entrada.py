@@ -1042,8 +1042,8 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
 
     # 🔑 Y QUIÉN ES CADA NOMBRE, por su cuenta: el que cambia de nombre de una ronda a otra sigue
     # siendo él (02/10/2026, Oasis como «Park-Ji Sung🇰🇷»). Ver `personas()`.
-    res = E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids,
-                     quien=personas(sv, hallazgo.get('menciones')))
+    _q = personas(sv, hallazgo.get('menciones'))
+    res = E.resolver(txt, conocidos=inscriptos_de(sv), ids=ids, quien=_q)
     # 🔑 lo que la llave enseñó de quién es quién: ver `identidad_de_grupo()`
     hallazgo['_cambios'] = list(getattr(res, 'cambios', ()) or ())
     for bat in res:
@@ -1092,6 +1092,16 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
             sabidas['batalla de %d donde pasan %d -> %d fila(s), sin duelo'
                     % (len(lados), len(pasan), len(caen))] += 1
             continue
+        # 🔑 SI LA LLAVE NO DICE QUIÉN GANÓ, LO PUEDE DECIR #VEREDICTOS (02/10/2026). Dlx: *«detectar los veredictos en
+        # el canal de veredictos»*. POESÍA CRUDA (URBF, 01/10) no escribió el campeón y su final se iba a ✅ Decidir
+        # —sin campeón, el evento entero no suma—; en #veredictos decía `PICHULAMC vs Riferian` y `PICHULAMC X MÍNIMA`.
+        # Los dos lados tienen que ser los del veredicto, en ese servidor y a pocas horas: ver
+        # `escuchar.ganador_por_veredicto()`. La fila lo dice en la nota.
+        por_veredicto = False
+        if ganador is None and len(lados) == 2 and 'pasan' not in razon and 'tercer puesto' not in razon:
+            g_v = E.ganador_por_veredicto(lados, hallazgo.get('guild'), hallazgo.get('cuando'), quien=_q)
+            if g_v:
+                ganador, por_veredicto = g_v, True
         if ganador is None:
             # un cruce de un solo lado que espera rival (`⌞X⌝ 🆚 ⌞⌝`, ver
             # `escuchar.nombres_de_linea()`): no hay a quién preguntar quién ganó
@@ -1156,7 +1166,8 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                       # Con la nota, `resultados._filas_uno()` la deja
                       # afuera de `1v1` y el motor igual paga 3ro y 4to.
                       'notas': ('podio: tercer puesto sin batalla en la llave'
-                                if razon.startswith('podio') else '')})
+                                if razon.startswith('podio') else
+                                'ganador según #veredictos' if por_veredicto else '')})
     # 🔑 LA NAVE DE FUNA (Dlx, 29/09/2026): la fase de eliminación no tiene
     # batallas, así que ninguna fila de arriba la trae. Ver `filas_funa()`.
     fu = E.funa_de(txt)
@@ -2386,6 +2397,19 @@ def _self_check():
               '`[ SEMIFINALES ]`\n⌞Oasis🇨🇱⌝ 🆚 ⌞Dani⌝\n')
         _ox = [b for b in E.resolver(px, quien=_qt) if b[0] == 'OCTAVOS' and 'Caro' in b[1]]
         _sol = personas(_sv_h)('Sol')
+        # 🔑 la final sin campeón y su veredicto (POESÍA CRUDA, URBF, 01/10/2026)
+        pc = ('# POESÍA CRUDA\n`[ SEMIFINALES ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞Júpiter 🇲🇽⌝\n⌞Riferian 🇵🇦⌝ 🆚 ⌞Kochi 🇨🇱⌝\n'
+              '`[ FINAL ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞Riferian 🇵🇦⌝\n')
+        _cu = '2026-10-02T00:30:00+00:00'
+        _ver_antes = E._VER_BATALLAS[0]
+        E._VER_BATALLAS[0] = [{'id': '1', 'sv': 'URBF', 'g': str(h.get('guild')), 'pub': 1790900887000,
+                               'a': 'PICHULAMC 🇦🇷', 'b': 'Riferian 🇵🇦', 'ganador': 'PICHULAMC 🇦🇷', 'votos': '1–0'}]
+        try:
+            fpc, dpc, _s = filas_de(dict(h, texto=pc, cuando=_cu))
+            E._VER_BATALLAS[0] = []
+            fpc0, dpc0, _s = filas_de(dict(h, texto=pc, cuando=_cu))
+        finally:
+            E._VER_BATALLAS[0] = _ver_antes
         _PERS[0] = ({}, set())
         fpj0 = marcar_walkins(filas_de(dict(h, texto=pj))[0], [pj], quien=personas(_sv_h))
     finally:
@@ -2551,6 +2575,12 @@ def _self_check():
          _ox and _ox[0][2] is None),
         ('… y un nombre de dos personas de la Lista no es de ninguna',
          _sol == frozenset()),
+        ('la final sin campeón la decide #veredictos: hay campeón y la fila lo dice (POESÍA CRUDA)',
+         tiene_campeon(fpc) and any(f['ronda'] == 'final' and E.norm(f['ganador']) == 'pichulamc'
+                                    and 'veredictos' in f['notas'] for f in fpc)
+         and not any(str(d[1]).upper() == 'FINAL' for d in dpc)),
+        ('… y sin el veredicto, como antes: sin campeón y la pregunta a ✅ Decidir (la prueba mide algo)',
+         not tiene_campeon(fpc0) and any(str(d[1]).upper() == 'FINAL' for d in dpc0)),
         ('filtros con nombres y sin batallas: se descarta',
          fase_sin_batallas('# COPA\nFILTROS\nAna\nBeto\nCaro\nDani\n'
                            'SEMIFINALES\nAna vs Beto\nCaro vs Dani\n'
@@ -2695,6 +2725,9 @@ def main():
     # que este paso entre en un ciclo por hora. Ver `escuchar.conocidos()`.
     # Llamar a `barrer` directo anda igual y cuesta 48 s todas las veces.
     hallazgos, info = E.escuchar(s)
+    # las batallas de #veredictos de esta lectura, también si vino guardada (`comparar_lector.py`): ver
+    # `escuchar.ganador_por_veredicto()`
+    E._VER_BATALLAS[0] = info.get('ver_batallas') or E._VER_BATALLAS[0] or []
     n_ch, n_msg = info['canales'], info['mensajes']
     # 🔑 QUIÉN YA PUBLICÓ UNA LLAVE, con la lista entera —la pre-temporada
     # también cuenta—, antes de filtrar. Ver `llave_de_broma()`.

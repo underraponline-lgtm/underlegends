@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.85",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T12:15:00-04:00",
+   "titulo": "Lo que la llave no dice, lo dicen los veredictos",
+   "items": [
+    "⚖️ **El canal de veredictos completa la llave**: si una llave no dice quién ganó una batalla —por ejemplo, la final sin la línea del campeón—, el bot lo busca en el canal de veredictos de ese servidor. Tienen que estar los dos que pelearon, y a pocas horas de la llave. Un evento al que le faltaba el campeón no sumaba nada; ahora suma."
+   ]
+  },
+  {
    "version": "1.84",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T11:50:00-04:00",
