@@ -38,8 +38,9 @@ PAG = os.path.join(BASE, 'bot', 'paginas')
 MARCA = 'inicio-nuevo'
 
 #: las vistas de la página de hoy que ya dibuja el Inicio nuevo: su ruta es suya, y la vieja se sigue dibujando
-#: escondida, de respaldo. `cambios` desde el 01/10/2026 (Dlx: «1. A»). La misma lista que `PROPIAS` de App.jsx
-PROPIAS = ('cambios',)
+#: escondida, de respaldo. `cambios` desde el 01/10/2026 (Dlx: «1. A»); `ranking` desde el 02/10/2026 (Dlx: «me
+#: encanta»), con `duelos`, el alias viejo que abre el de Duelos. La misma lista que `PROPIAS` de App.jsx
+PROPIAS = ('cambios', 'ranking', 'duelos')
 
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

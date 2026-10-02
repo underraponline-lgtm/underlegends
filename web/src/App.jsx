@@ -60,15 +60,10 @@ let cambiosAntes = (() => {
 })();
 
 // las vistas de la página de hoy que ya dibuja el Inicio nuevo: la vieja sigue escondida, de respaldo. La misma lista
-// que `PROPIAS` de web/montar.py (el script del principio de index.html)
-const PROPIAS = { cambios: 1 };
-// 🔍 EL RANKING NUEVO, EN PREVIEW (02/10/2026): sólo en el navegador que tiene `lg:prev-rk`. Para todos los demás,
-// `#/ranking` sigue siendo la tabla de app.js. Cuando Dlx diga que sí, `ranking` pasa a `PROPIAS` (acá y en
-// web/montar.py) y esto se va
-function prevRk() {
-  try { return !!localStorage.getItem('lg:prev-rk'); } catch (e) { return false; }
-}
-const esPropia = (p) => !!PROPIAS[p] || (p === 'ranking' && prevRk());
+// que `PROPIAS` de web/montar.py (el script del principio de index.html). `ranking` desde el 02/10/2026 (Dlx: «me
+// encanta»), con `duelos`, el alias viejo que abre el de Duelos
+const PROPIAS = { cambios: 1, ranking: 1, duelos: 1 };
+const esPropia = (p) => !!PROPIAS[p];
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -235,11 +230,13 @@ export default function App() {
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/ranking(\/|$|\?)/.test(hash || '') && prevRk();
+  const enRanking = /^#\/(ranking|duelos)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
   const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
+  // la del menú: `#/duelos` es el Ranking
+  const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina;
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
   const grupos = useMemo(() => {
     if (!liga) return [];
@@ -250,10 +247,11 @@ export default function App() {
   return (
     <div className={'app ' + tema} ref={raiz}>
       <div className="barra-ul" />
-      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={pagina} onMenu={() => setMenu(true)} /></Aislada>
+      <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
-        : pagina === 'ranking' && prevRk() ? <Aislada n="Ranking"><Ranking liga={liga} sub={partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Aislada>
+        // el Ranking (02/10/2026); `#/duelos` es el link viejo del de Duelos
+        : pagina === 'ranking' || pagina === 'duelos' ? <Aislada n="Ranking"><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada n="Verificar"><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
         : pagina === 'cuenta' ? <Aislada n="Cuenta"><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>
@@ -272,7 +270,7 @@ export default function App() {
         <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
-      <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={pagina} /></Aislada>
+      <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos} raiz={raiz} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>

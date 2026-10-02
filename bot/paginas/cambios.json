@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.90",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T14:35:00-04:00",
+   "titulo": "El Ranking nuevo",
+   "items": [
+    "🏆 **El Ranking, rehecho**: los 10 rankings en una tira que queda arriba mientras bajás, y el podio con las cartas de verdad de los tres primeros, cada una en su escalón. En Países van las banderas y en Crews los logos.",
+    "📍 **Tu lugar, siempre a la vista**: si entraste con Discord, abajo ves tu puesto y a cuánto estás del de arriba. «Encontrarme» te lleva hasta tu fila y la marca, aunque estés lejos.",
+    "🔎 **Filtros**: por servidor, por país y por la gente que seguís, además de buscar por nombre.",
+    "📱 **En el celular**, las columnas que entran sin deslizar; «Todas las columnas» abre el resto, con el puesto y el nombre fijos."
+   ]
+  },
+  {
    "version": "1.89",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T12:55:00-04:00",
