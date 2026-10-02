@@ -161,6 +161,9 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
    columna, y gana el menor. El .98 es lo que mide una letra de Archivo 900 a 125 %, medido sobre palabras de
    eventos: de .79 (EXHIBITION) a .95 (CAMPEONATO). Debajo de 20 px se deja partir, que es lo que ya hacía */
 .mo-txt{container-type:inline-size}
+/* la batalla de una llave terminada que espera respuesta: «SIN GANADOR», en gris (no es «AHORA») */
+.cm-m.singan{border-style:dashed}
+.cm-m.singan i{background:#2A2A2E;color:#F6F6F6}
 .mo-txt .ev-pal{display:block;font-size:max(20px,min(1em,calc(100cqi / (var(--pal) * .98))))}
 /* IR A arranca donde arranca la página, no pegada al borde de la pantalla */
 @media (min-width: 900px){.app .ir-in{padding-left:var(--gut);padding-right:var(--gut)}}

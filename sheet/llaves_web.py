@@ -399,7 +399,28 @@ def _juntar(bs):
     return out
 
 
-def armar(ev, links=()):
+#: las batallas que esperan en ✅ Decidir, de `datos/batallas_sin_ganador.json`
+SIN_GANADOR = os.path.join(BASE, 'datos', 'batallas_sin_ganador.json')
+#: cómo se dibuja una batalla que espera en ✅ Decidir
+NOTA_DECIDIR = 'sin ganador: espera en ✅ Decidir'
+
+
+def _sin_ganador(archivo=SIN_GANADOR):
+    """`[(evento, sv, fecha, ronda, [lados])]` de las batallas que esperan en ✅ Decidir. `[]` si no se puede leer."""
+    try:
+        with io.open(archivo, encoding='utf-8') as f:
+            ds = (json.load(f) or {}).get('batallas') or []
+    except (OSError, ValueError):
+        return []
+    out = []
+    for d in ds:
+        p = str(d).rsplit(' · ', 4)
+        if len(p) == 5:
+            out.append((p[0], p[1], p[2], p[3], [x.strip() for x in p[4].split('🆚') if x.strip()]))
+    return out
+
+
+def armar(ev, links=(), pendientes=None):
     """El registro de un evento ya procesado por el motor.
 
     Cada batalla es `[lados, ganador, nota]`.
@@ -439,6 +460,22 @@ def armar(ev, links=()):
         rondas[donde[etq]]['b'].append([[a, b], g, nota])
     for R in rondas:
         R['b'] = _juntar(R['b'])
+    # 🔑 Y LAS BATALLAS QUE ESPERAN EN ✅ DECIDIR, CON SU GENTE (02/10/2026). Una batalla sin ganador no da filas, así
+    # que la llave guardada no la traía y el cuadro dibujaba ese lugar «por jugarse» en un evento ya terminado: en la
+    # DOS GENERACIONES VOL 2, Korey, Eyou y Tayo —que estaban en la llave— no aparecían. Va con su nota, sin ganador.
+    for nom, sv, fec, crudo, lados in (pendientes if pendientes is not None else _sin_ganador()):
+        if (clave_nombre(nom) != clave_nombre(ev.get('nombre')) or sv != (ev.get('servidor') or '')
+                or fec != (ev.get('fecha') or '') or len(lados) < 2):
+            continue
+        canon = motor.ronda_de(crudo)
+        etq = ETIQUETA.get(motor.norm(crudo)) or crudo.capitalize() or '—'
+        if etq not in donde:
+            donde[etq] = len(rondas)
+            rondas.append({'r': etq, 'b': []})
+            orden[etq] = (ORDEN.index(canon) if canon in ORDEN else -1, len(orden) + 10000)
+        ya = {frozenset(b[0]) for b in rondas[donde[etq]]['b']}
+        if frozenset(lados) not in ya:
+            rondas[donde[etq]]['b'].append([list(lados), '', NOTA_DECIDIR])
     rondas.sort(key=lambda r: orden[r['r']])
     res = sorted(ev.get('resultados') or (),
                  key=lambda r: (-int(r.get('puntos') or 0), str(r.get('rapero'))))
@@ -821,6 +858,18 @@ def _self_check():
     ok(r['nombre'] == 'PRUEBA VOL.2', 'el nombre sin el subrayado de Discord')
     ok(r['tabla'][0][:2] == ['Ana', 'Campeón'], 'la tabla, de más puntos a menos')
     ok(r['dia'] == '2026-09-24', 'la fecha con año  (%s)' % r['dia'])
+    # 🔑 la batalla que espera en ✅ Decidir se dibuja con su gente (DOS GENERACIONES VOL 2: Korey, Eyou y Tayo)
+    pend = [('__ PRUEBA VOL.2 __', 'FFA', '24/09', 'octavos', ['Korey🇨🇱', 'Eyou', 'Tayo🇵🇪']),
+            ('OTRO EVENTO', 'FFA', '24/09', 'octavos', ['Zeta', 'Yago']),
+            ('__ PRUEBA VOL.2 __', 'URBF', '24/09', 'octavos', ['Wanda', 'Ximena'])]
+    rp = armar(ev, [], pendientes=pend)
+    octs = [x for x in rp['rondas'] if x['r'] == 'Octavos'][0]['b']
+    ok([b for b in octs if b[0] == ['Korey🇨🇱', 'Eyou', 'Tayo🇵🇪'] and b[1] == '' and b[2] == NOTA_DECIDIR],
+       'la batalla que espera en ✅ Decidir va en su ronda, con sus tres y sin ganador')
+    ok(not [b for b in octs if b[0][0] in ('Zeta', 'Wanda')],
+       'la de otro evento, o del mismo nombre en otro servidor, no')
+    ok(len(armar(ev, [], pendientes=pend + pend[:1])['rondas'][1]['b']) == len(octs),
+       'y la misma pregunta dos veces se dibuja una')
 
     tmp = tempfile.mkdtemp()
     arch = os.path.join(tmp, 'llaves.json')

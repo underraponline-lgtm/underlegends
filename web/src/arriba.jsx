@@ -494,9 +494,12 @@ export function CuadroMini({ liga, ll }) {
   const R = mitad(rondas[0]);
   const n0 = rondas[0].b.length;
   const campeon = conFinal ? ganador(rondas[rondas.length - 1].b[0]) : '';
+  // 🔴 UNA LLAVE QUE YA TERMINÓ NO TIENE NADA «POR JUGARSE» (Dlx, 02/10/2026, con una captura de la Dos Generaciones
+  // Vol 2): un lugar vacío es «—», y una batalla sin ganador —la que espera respuesta— dice «SIN GANADOR», no «AHORA»
+  const cerrada = !ll.vivo || !!ll.terminada;
   // «AHORA» y «SIGUE» sólo en cruces con los dos lados: un lugar vacío todavía no se juega
   const pend = [];
-  if (enOrden(todas)) rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
+  if (!cerrada && enOrden(todas)) rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
   const cajas = []; const lineas = []; const etiquetas = [];
   const alto = 2 * n0 * R + TOP;
   rondas.forEach((r, ci) => {
@@ -507,11 +510,12 @@ export function CuadroMini({ liga, ll }) {
     r.b.forEach((b, j) => {
       const y = TOP + R * (2 ** ci) * (2 * j + 1);
       const g = ganador(b);
-      const est = pend[0] === ci + ':' + j ? 'ahora' : (pend[1] === ci + ':' + j ? 'sigue' : '');
       // un lado solo: pasa directo si ya ganó, y si no, falta definir el otro
       const ls = lados(b);
+      const est = pend[0] === ci + ':' + j ? 'ahora' : (pend[1] === ci + ':' + j ? 'sigue'
+        : (cerrada && !g && ls.length >= 2 ? 'singan' : ''));
       const filas = ls.length >= 2 ? ls : [ls[0] || null, null];
-      const falta = !ls.length ? 'por jugarse' : (g ? 'pasa directo' : 'por definir');
+      const falta = !ls.length ? (cerrada ? '—' : 'por jugarse') : (g ? 'pasa directo' : 'por definir');
       cajas.push(
         <div key={ci + '-' + j} className={'cm-m ' + est + (ls.length ? '' : ' vacio')}
           style={{ left: x, top: y - F * filas.length / 2, width: W, height: F * filas.length, gridTemplateRows: 'repeat(' + filas.length + ',1fr)' }}>
@@ -521,7 +525,7 @@ export function CuadroMini({ liga, ll }) {
             const cls = (g ? (n === g ? 'g' : 'x') : (pasan.has(n) ? 'g' : '')) + (g && n === campeon ? ' camino' : '');
             return <span key={i} className={cls}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cm-av" /><em>{n}</em></span>;
           })}
-          {est ? <i>{est === 'ahora' ? 'AHORA' : 'SIGUE'}</i> : null}
+          {est ? <i>{est === 'ahora' ? 'AHORA' : est === 'sigue' ? 'SIGUE' : 'SIN GANADOR'}</i> : null}
         </div>,
       );
       const x1 = x + W; const x2 = x + W + G / 2;

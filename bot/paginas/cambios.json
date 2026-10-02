@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "1.86",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T12:30:00-04:00",
+   "titulo": "Una llave terminada no tiene nada «por jugarse»",
+   "items": [
+    "🧩 **Las batallas sin ganador se ven con su gente**: si una batalla de una llave terminada espera que se confirme quién ganó, aparece en el cuadro con los que pelearon y la etiqueta «SIN GANADOR». Antes ese lugar quedaba vacío y decía «por jugarse», como si faltara jugarla.",
+    "➖ En una llave terminada, un lugar sin batalla se marca con una raya."
+   ]
+  },
+  {
    "version": "1.85",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T12:15:00-04:00",
