@@ -540,35 +540,69 @@ def enlazar(rondas):
        sin haber «ganado» nada. La llave lista las batallas en su orden, así
        que su batalla es la vecina de la que ya engancha.
 
-    ⚠️ Una batalla no alimenta a dos, y una no recibe más ramas que lados.
-    Lo que no engancha queda sin rama —un walk-in, un revivido— y se dibuja
-    igual, en su columna. El tercer puesto no es parte del árbol.
+    ⚠️ Una batalla no alimenta a más batallas que los que pasan de ella, y
+    una no recibe más ramas que lados. Lo que no engancha queda sin rama —un
+    walk-in, un revivido— y se dibuja igual, en su columna. El tercer puesto
+    no es parte del árbol.
+
+    🔴 Y EL PASO 2 SUPONE QUE LA LLAVE VA EN ORDEN, y no siempre va. Dlx,
+    01/10/2026: *«a veces se hacen batallas de otras llaves antes que la
+    anterior»*. Dos Generaciones Vol 2 (FFA) armó sus cuartos con los
+    ganadores a medida que llegaban —el del grupo 2 contra el del 6— y «al
+    hueco de al lado» colgaba cada cruce de grupos que no eran los suyos. Se
+    usa sólo si lo que ya enganchó por nombre está en orden (`_en_orden()`).
+    Y del grupo donde pasan dos engancha cualquiera de los dos por nombre.
     """
     out = [{'r': R['r'], 'b': [b + [[]] for b in _juntar([x[:3] for x in R['b']])]}
            for R in rondas]
     arbol = [R for R in out if R['r'] != 'Tercer puesto']
     for k in range(1, len(arbol)):
         prev, cur = arbol[k - 1]['b'], arbol[k]['b']
-        usado = [False] * len(prev)
+        usos = [0] * len(prev)
         for b in cur:
             m = set()
             for lado in b[0]:
                 m |= _miembros(lado)
             for i, a in enumerate(prev):
-                if not usado[i] and len(b[3]) < len(b[0]) and _miembros(a[1]) & m:
+                if len(b[3]) >= len(b[0]) or usos[i] >= _pasan(a):
+                    continue
+                # el que ganó; y si pasan varios, cualquiera de los lados
+                pasaron = (_miembros(a[1]) if _pasan(a) < 2
+                           else set().union(*[_miembros(x) for x in a[0]]))
+                if pasaron & m:
                     b[3].append(i)
-                    usado[i] = True
-        for i in range(len(prev)):
-            if usado[i]:
-                continue
-            for b in cur:
-                if len(b[3]) < len(b[0]) and any(abs(j - i) == 1 for j in b[3]):
-                    b[3].append(i)
-                    usado[i] = True
-                    break
+                    usos[i] += 1
+        if _en_orden(cur):
+            for i in range(len(prev)):
+                if usos[i]:
+                    continue
+                for b in cur:
+                    if len(b[3]) < len(b[0]) and any(abs(j - i) == 1 for j in b[3]):
+                        b[3].append(i)
+                        usos[i] = 1
+                        break
         for b in cur:
             b[3].sort()
     return out
+
+
+def _pasan(a):
+    """Cuántos pasan de la batalla `a`: el `pasan 2` de su nota; si no lo dice, uno."""
+    m = re.search(r'pasan (\d+)', str(a[2] or ''))
+    return int(m.group(1)) if m else 1
+
+
+def _en_orden(cur):
+    """¿Lo que ya enganchó por nombre va en el orden de la llave? Cada batalla,
+    de batallas posteriores a las de la anterior. Ver `enlazar()`."""
+    ult = -1
+    for b in cur:
+        if not b[3]:
+            continue
+        if min(b[3]) <= ult:
+            return False
+        ult = max(b[3])
+    return True
 
 
 def _elegir(p, regs):
@@ -935,6 +969,15 @@ def _self_check():
     ok(ar[3]['b'][0][3] == [0, 1] and ar[2]['b'][0][3] == [],
        'la final viene de las dos semis; el tercer puesto no es parte del árbol')
     ok(len(rs[0]['b']) == 5, 'y no toca las rondas que le pasan')
+    # 🔴 fuera de orden (Dos Generaciones Vol 2, 01/10/2026): nada al hueco de al
+    # lado, y del grupo donde pasan dos enganchan los dos por nombre
+    fo = enlazar([{'r': 'Octavos', 'b': [
+        [['A1', 'A2'], 'A1', ''], [['B1', 'B2', 'B3'], 'B2', 'triple (3 bandas, pasan 2)'],
+        [['C1', 'C2'], 'C1', ''], [['D1', 'D2'], 'D1', ''], [['E1', 'E2'], '', ''], [['F1', 'F2'], 'F1', '']]},
+        {'r': 'Cuartos', 'b': [[['A1', 'Z'], '', ''], [['B2', 'F1'], '', ''], [['C1', 'B3'], '', '']]}])
+    ok([b[3] for b in fo[1]['b']] == [[0], [1, 5], [1, 2]],
+       'fuera de orden: nada al hueco de al lado, y el grupo donde pasan dos alimenta a los dos  %s'
+       % [b[3] for b in fo[1]['b']])
 
     # 🔑 `anunciado()`: el mismo criterio que `cruzar()`, desde la llave
     an = [{'nombre': 'COMPE DEL VACILE T2 #1', 'servidor': 'URBF', 'cuando': '2026-09-28T18:21:45'},

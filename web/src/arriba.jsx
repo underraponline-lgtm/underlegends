@@ -335,7 +335,8 @@ function CuadroRondas({ ll, previa }) {
         {rondas.map((r, ri) => (
           <div className="ronda" key={ri}><h4>{r.r}</h4>
             {/* sin ganador todavía nadie va apagado: tachado se lee como que perdió */}
-            {(r.b || []).map((b, bi) => { const g = ganador(b); return <div className={'m' + (g ? ' hecho' : '')} key={bi}>{lados(b).map((x, xi) => <span key={xi} className={g ? (x === g ? 'g' : 'x') : undefined}>{x}</span>)}</div>; })}
+            {/* un cruce de un solo lado espera a su rival (`⌞Geoka⌝ 🆚 ⌞⌝`): «por definir» en su lugar */}
+            {(r.b || []).map((b, bi) => { const g = ganador(b); const ls = lados(b); return <div className={'m' + (g ? ' hecho' : '')} key={bi}>{ls.map((x, xi) => <span key={xi} className={g ? (x === g ? 'g' : 'x') : undefined}>{x}</span>)}{ls.length === 1 && !g ? <span className="m-espera">por definir</span> : null}</div>; })}
           </div>
         ))}
       </div></div>
@@ -403,8 +404,9 @@ export function completar(todas) {
 
 // 🔴 UNA LLAVE NO SIEMPRE SE ARMA COMO UN ÁRBOL. Dlx, 01/10/2026: «a veces se hacen batallas de otras llaves antes que la
 // anterior». Dos Generaciones Vol 2 (FFA) armó sus Cuartos con los ganadores a medida que llegaban —el del grupo 2 contra
-// el del 6— y el árbol unía cada cruce con los grupos de al lado, que no eran los suyos. Si un cruce no está en el lugar
-// de los grupos de donde salen sus lados, el árbol mentiría: va por rondas, sin líneas
+// el del 6, y del grupo 2 pasaron dos— y el árbol unía cada cruce con los grupos de al lado, que no eran los suyos. Si un
+// cruce no está en el lugar de los grupos de donde salen sus lados, el árbol mentiría: el mismo cuadro, con cada cruce
+// en el orden en que lo escribieron (`enRondas()`) y sin líneas
 export function esArbol(todas) {
   for (let i = 1; i < todas.length; i += 1) {
     const previa = todas[i - 1].b;
@@ -427,11 +429,32 @@ export function enOrden(todas) {
   return true;
 }
 
+// la llave completa SIN reacomodar: cada ronda con sus cruces en el orden en que vienen y los lugares que faltan, vacíos,
+// al final. Es la de una llave que no se arma como árbol (`esArbol()`): reacomodarla por los ganadores le inventaba la forma.
+// ⚠️ Antes iba al cuadro por rondas, y se perdían las caras, los colores y el tope de alto (Dlx, 01/10: «se desactualizó»)
+export function enRondas(todas) {
+  const n0 = todas.length ? Math.max(todas[0].b.length, CRUCES[todas[0].r] || 0) : 0;
+  if (!n0 || (n0 & (n0 - 1))) return todas;
+  const out = [];
+  for (let n = n0, i = 0; n >= 1; n /= 2, i += 1) {
+    const r = todas[i];
+    const bs = r ? r.b : [];
+    if (bs.length > n) return todas;
+    out.push({ r: (r && r.r) || NOMBRE_RONDA[n] || 'Ronda ' + (i + 1), b: bs.concat(new Array(n - bs.length).fill([[], ''])) });
+  }
+  return todas.length > out.length ? todas : out;
+}
+
 export function CuadroMini({ liga, ll }) {
   const M = useMedida();
-  const todas = completar((ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r)));
+  const base = (ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
+  let todas = completar(base);
   if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas ll={ll} previa />;
-  if (!esArbol(todas)) return <CuadroRondas ll={ll} />;
+  const arbol = esArbol(todas);
+  if (!arbol) todas = enRondas(base);
+  // quién pasó de cada cruce: el ganador, o —si pasan varios, como en un grupo de tres donde siguen dos— los que aparecen
+  // en la ronda de al lado
+  const enLaSiguiente = (i) => new Set((todas[i + 1] ? todas[i + 1].b : []).flatMap((b) => lados(b)));
   // 🔑 QUÉ RONDAS SE VEN: con la llave completa, las últimas de una llave en vivo son lugares vacíos —en el celular
   // eran Semis y Final sin nadie—. Se ven desde la que SE ESTÁ JUGANDO, sin pasarse del final; terminada, las últimas.
   // Y la primera que se ve no puede tener más de 8 cruces: más alto no entra en el escenario
@@ -471,6 +494,7 @@ export function CuadroMini({ liga, ll }) {
     const x = ci * (W + G);
     etiquetas.push(<b key={'e' + ci} className="cm-r" style={{ left: x, width: W }}>{String(r.r).toUpperCase()}</b>);
     const F = filaDe(r);
+    const pasan = enLaSiguiente(desde + ci);
     r.b.forEach((b, j) => {
       const y = TOP + R * (2 ** ci) * (2 * j + 1);
       const g = ganador(b);
@@ -485,7 +509,7 @@ export function CuadroMini({ liga, ll }) {
           {filas.map((n, i) => {
             if (!n) return <span key={i} className="vac"><em>{falta}</em></span>;
             const f = liga.fila(n);
-            const cls = (g ? (n === g ? 'g' : 'x') : '') + (g && n === campeon ? ' camino' : '');
+            const cls = (g ? (n === g ? 'g' : 'x') : (pasan.has(n) ? 'g' : '')) + (g && n === campeon ? ' camino' : '');
             return <span key={i} className={cls}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cm-av" /><em>{n}</em></span>;
           })}
           {est ? <i>{est === 'ahora' ? 'AHORA' : 'SIGUE'}</i> : null}
@@ -494,7 +518,8 @@ export function CuadroMini({ liga, ll }) {
       const x1 = x + W; const x2 = x + W + G / 2;
       let yp; let x3;
       if (ci < rondas.length - 1) { yp = TOP + R * (2 ** (ci + 1)) * (2 * Math.floor(j / 2) + 1); x3 = x + W + G; } else { yp = y; x3 = x + W + G; }
-      lineas.push(<path key={ci + '-' + j} className={g && g === campeon ? 'camino' : ''} d={'M' + x1 + ' ' + y + 'H' + x2 + 'V' + yp + 'H' + x3} />);
+      // sin árbol, sin líneas: unirían cada cruce con grupos que no son los suyos
+      if (arbol) lineas.push(<path key={ci + '-' + j} className={g && g === campeon ? 'camino' : ''} d={'M' + x1 + ' ' + y + 'H' + x2 + 'V' + yp + 'H' + x3} />);
     });
   });
   const xc = rondas.length * (W + G);

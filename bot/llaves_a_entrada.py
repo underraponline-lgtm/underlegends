@@ -975,8 +975,10 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
                     % (len(lados), len(pasan), len(caen))] += 1
             continue
         if ganador is None:
-            if 'tercer puesto' in razon or 'pasan' in razon:
-                sabidas[razon] += 1
+            # un cruce de un solo lado que espera rival (`⌞X⌝ 🆚 ⌞⌝`, ver
+            # `escuchar.nombres_de_linea()`): no hay a quién preguntar quién ganó
+            if 'tercer puesto' in razon or 'pasan' in razon or len(lados) < 2:
+                sabidas[razon if len(lados) >= 2 else 'cruce de un solo lado, esperando rival'] += 1
             else:
                 # el quinto: los lados con su nombre, para preguntar quién ganó
                 dudas.append((ev, ronda, ' vs '.join(lados), razon,

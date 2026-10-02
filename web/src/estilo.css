@@ -316,7 +316,7 @@ h1,h2,h3,p{margin:0}
    invisibles (1,14:1). Van como las del cuadro chico (`.cm-m`) */
 .hero .m{background:#141417;border-color:#2A2A2E;color:#F6F6F6}
 .hero .m span{border-bottom-color:#2A2A2E}
-.hero .m span.x{color:#8A8A8D}
+.hero .m span.x{color:#8A8A8D;text-decoration:none}
 .m{border:2px solid var(--linea);display:grid;position:relative;background:var(--fondo)}
 .m span{padding:7px 8px;font:800 13px/1.15 Archivo,sans-serif;border-bottom:1px solid var(--suave)}
 .m span:last-of-type{border-bottom:0}
@@ -326,6 +326,7 @@ h1,h2,h3,p{margin:0}
 .m.on{border-color:var(--magenta)}
 .m.on b{background:var(--magenta);color:#fff}
 .m.vacia span{color:var(--gris);font-weight:600;font-size:12px}
+.m span.m-espera{color:var(--gris);font-weight:600;font-size:12px}
 .desliza{display:block;padding:0 12px 12px;font:700 11px/1.4 "Space Mono",monospace;color:var(--gris)}
 .t-acc{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:0 12px 12px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase}
 .t-acc a:not(.btn){text-decoration:underline;text-underline-offset:4px}

@@ -613,6 +613,13 @@ def nombres_de_linea(l):
             return [sin_refuerzos(_sin_marcas(x)) for x in lados]
         if len(lados) < n_lados:
             return []
+        # 🔑 UN LADO Y EL OTRO VACÍO A LA VISTA (`⌞Geoka 🇦🇷⌝ 🆚 ⌞⌝`): un cruce
+        # que espera rival. Dos Generaciones Vol 2 (FFA, 01/10/2026) puso así a
+        # dos ganadores de Octavos: sin esto no estaban en Cuartos y su grupo
+        # quedaba sin ganador. No es una fila —`filas_de()` pide dos lados— y
+        # sin ganador tampoco es una duda: no hay a quién preguntar
+        if len(lados) == 1 and VACIO_MARCO.search(l):
+            return [sin_refuerzos(_sin_marcas(lados[0]))]
     # ⚠️ SIN NOMBRE NO HAY LADO: el hueco `⌞ + ⌝` o `［ ］` de la plantilla daba
     # lados «+» o vacíos, una batalla que nadie ganó —y la página creía que
     # se jugaba la final mientras iban los cuartos—. 🔴 Pero una MENCIÓN sí es
@@ -2936,8 +2943,8 @@ def _self_check():
          and '3ER PUESTO: Bea 🇨🇱 + Dora 🇲🇽' in medal),
         ('una línea CAMPEÓN de verdad manda sobre la medalla, y un 🏆 de arriba no es el campeón',
          [g for r, _b, g, _z in resolver(premio) if r == 'FINAL'] == ['Ana 🇦🇷'] and '🏆 |Cami 🇻🇪' in premio),
-        ('`⌞Geoka⌝ 🆚 ⌞⌝` espera rival: no se pega con el de abajo (Dos Generaciones Vol 2)',
-         espera == [('CUARTOS', [['A 🇦🇷', 'B 🇨🇱']])]),
+        ('`⌞Geoka⌝ 🆚 ⌞⌝` espera rival: un cruce de un lado, sin pegarse con el de abajo (Dos Generaciones Vol 2)',
+         espera == [('CUARTOS', [['A 🇦🇷', 'B 🇨🇱'], ['Geoka 🇦🇷'], ['Cinexfilo 🇻🇪']])]),
         ('y sigue siendo idempotente', traducir(medal) == medal),
     ]
     for que, ok in casos:

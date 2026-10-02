@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.74",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T22:11:00-04:00",
+   "titulo": "La llave en vivo, otra vez con caras",
+   "items": [
+    "🖼️ **La llave que no va en orden vuelve al cuadro de siempre**: con caras, colores y su tope de alto. En la 1.73 pasaba al cuadro simple «por rondas». Ahora cada cruce sale en el orden en que lo escribió el servidor, y sin las líneas que lo unían a grupos que no eran los suyos.",
+    "⏳ **El cruce que espera rival se ve**: «Geoka · por definir». Antes desaparecía, y con él el ganador de su grupo.",
+    "✌️ **Si de un grupo pasan dos, se marcan los dos**, y en «Ver la llave» cada uno cuelga del cruce al que fue."
+   ]
+  },
+  {
    "version": "1.73",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T21:54:00-04:00",

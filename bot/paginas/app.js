@@ -2714,13 +2714,16 @@ function cuadro(L, quien, cara) {
   });
   var pos = {};
   var colocar = function (r, i, cur, lado) {
-    var hs = hijos(r, i), y;
-    if (!hs.length) {
+    // ⚠️ UNA VEZ: de un grupo donde pasan dos salen dos ramas (Dos Generaciones Vol 2, 01/10/2026). La segunda no lo
+    // vuelve a dibujar ni lo usa para ubicarse —quedaba a mitad de camino, encima de otra caja—: va su línea, nada más
+    if (pos[r + ':' + i]) return null;
+    var ys = hijos(r, i).map(function (j) { return colocar(r - 1, j, cur, lado); })
+      .filter(function (v) { return v != null; }), y;
+    if (!ys.length) {
       var h = alto(rs[r].b[i]);
       y = cur.y + h / 2;
       cur.y += h + SEP;
     } else {
-      var ys = hs.map(function (j) { return colocar(r - 1, j, cur, lado); });
       y = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
     }
     pos[r + ':' + i] = { r: r, i: i, y: y, lado: lado };

@@ -248,6 +248,8 @@
       lados = lados.filter(function (x) { return !VACIO[norm(x)]; });
       if (lados.length >= 2) return lados.map(function (x) { return sinRefuerzos(sinMarcas(x)); });
       if (lados.length < n) return [];
+      // un lado y el otro vacío a la vista (`⌞Geoka⌝ 🆚 ⌞⌝`): un cruce que espera rival (`escuchar.nombres_de_linea()`)
+      if (lados.length === 1 && /⌞\s*⌝|\[\s*\]/.test(l)) return [sinRefuerzos(sinMarcas(lados[0]))];
     }
     for (i = 0; i < DELIMS.length; i++) {
       // sin nombre no hay lado: el hueco `⌞ + ⌝` o `［ ］` de la plantilla. Una
@@ -485,32 +487,50 @@
   }
 
   /* `llaves_web.enlazar()`: de qué batallas vienen los lados de cada una */
+  /* ⚠️ «al hueco de al lado» supone que la llave va en orden, y no siempre va (Dos Generaciones Vol 2, 01/10/2026): sólo
+     si lo que enganchó por nombre está en orden (`_en_orden()`). Y del grupo donde pasan dos, cualquiera de los dos */
   function enlazar(rondas) {
     var arbol = rondas.filter(function (R) { return R.r !== 'Tercer puesto'; });
     var miem = function (s) { return String(s || '').split(/[+,]/).map(norm).filter(Boolean); };
+    var pasan = function (a) { var m = /pasan (\d+)/.exec(String(a[2] || '')); return m ? +m[1] : 1; };
+    var enOrden = function (cur) {
+      var ult = -1;
+      for (var j = 0; j < cur.length; j++) {
+        var l = cur[j][3];
+        if (!l.length) continue;
+        if (Math.min.apply(null, l) <= ult) return false;
+        ult = Math.max.apply(null, l);
+      }
+      return true;
+    };
     for (var k = 1; k < arbol.length; k++) {
-      var prev = arbol[k - 1].b, cur = arbol[k].b, usado = prev.map(function () { return false; });
+      var prev = arbol[k - 1].b, cur = arbol[k].b, usos = prev.map(function () { return 0; });
       cur.forEach(function (b) {
         var m = [];
         b[0].forEach(function (s) { m = m.concat(miem(s)); });
         prev.forEach(function (a, i) {
-          if (!usado[i] && b[3].length < b[0].length && miem(a[1]).some(function (x) { return m.indexOf(x) >= 0; })) {
+          if (b[3].length >= b[0].length || usos[i] >= pasan(a)) return;
+          // el que ganó; y si pasan varios, cualquiera de los lados
+          var pasaron = pasan(a) < 2 ? miem(a[1]) : [].concat.apply([], a[0].map(miem));
+          if (pasaron.some(function (x) { return m.indexOf(x) >= 0; })) {
             b[3].push(i);
-            usado[i] = true;
+            usos[i] += 1;
           }
         });
       });
-      prev.forEach(function (_a, i) {
-        if (usado[i]) return;
-        for (var j = 0; j < cur.length; j++) {
-          var b = cur[j];
-          if (b[3].length < b[0].length && b[3].some(function (x) { return Math.abs(x - i) === 1; })) {
-            b[3].push(i);
-            usado[i] = true;
-            break;
+      if (enOrden(cur)) {
+        prev.forEach(function (_a, i) {
+          if (usos[i]) return;
+          for (var j = 0; j < cur.length; j++) {
+            var b = cur[j];
+            if (b[3].length < b[0].length && b[3].some(function (x) { return Math.abs(x - i) === 1; })) {
+              b[3].push(i);
+              usos[i] = 1;
+              break;
+            }
           }
-        }
-      });
+        });
+      }
       cur.forEach(function (b) { b[3].sort(function (x, y) { return x - y; }); });
     }
     return rondas;
