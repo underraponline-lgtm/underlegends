@@ -3142,6 +3142,10 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gezelmp/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gezelmp/sv-urbf.webp"
  },
+ "gian": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gian/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gian/temporada.webp"
+ },
  "giovik": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/giovik/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/giovik/bloq-pais.webp",
@@ -5488,6 +5492,11 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malova/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malova/sv-urbf.webp"
  },
+ "malva": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malva/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malva/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/malva/temporada.webp"
+ },
  "mantecasixseven": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mantecasixseven/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mantecasixseven/bloq-pais.webp",
@@ -5902,6 +5911,11 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/temporada.webp"
+ },
+ "metro": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metro/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metro/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metro/temporada.webp"
  },
  "mhs": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mhs/bloq-competitivo.webp",
@@ -6868,6 +6882,11 @@
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/onfire/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/onfire/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/onfire/sv-urbf.webp"
+ },
+ "onzass": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/onzass/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/onzass/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/onzass/temporada.webp"
  },
  "oponente": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/oponente/bloq-competitivo.webp",
@@ -8258,6 +8277,11 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/temporada.webp"
  },
+ "slasher": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/slasher/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/slasher/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/slasher/temporada.webp"
+ },
  "sm0n": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sm0n/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sm0n/bloq-pais.webp",
@@ -8734,6 +8758,12 @@
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tiglar/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tiglar/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tiglar/sv-ffa.webp"
+ },
+ "titocalderon": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/temporada.webp"
  },
  "tk": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tk/bloq-competitivo.webp",

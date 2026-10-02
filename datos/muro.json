@@ -914,7 +914,10 @@
 },
 "gian": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "saz": {
 "rg": "",
@@ -1233,7 +1236,10 @@
 },
 "malva": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mantecasixseven": {
 "rg": "",
@@ -1245,7 +1251,10 @@
 },
 "metro": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mva": {
 "rg": "",
@@ -1263,7 +1272,10 @@
 },
 "onzass": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "pariasinremedio-ar": {
 "rg": "",
@@ -2855,6 +2867,70 @@
 "t": "2026-10-01T23:39:49Z",
 "quien": [
 "OEP"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"Gian"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"Gian"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"Malva"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"Malva"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"METRO"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"METRO"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"ONZASS"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T00:05:30Z",
+"quien": [
+"ONZASS"
 ],
 "carta": "temporada"
 }
