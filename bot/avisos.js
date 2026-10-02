@@ -3202,6 +3202,10 @@ export class Avisos {
         arranco: this.leer('disparo_arranco'),
         ultimo: this.leer('disparo_ultimo'),
       },
+      // 🔑 el último chequeo de eventos cancelados y el de la llamada minuto a minuto (01/10/2026): cuándo, cuántos
+      // pedidos y si falló, por qué. Ver `cancelaciones()` y `llamada()`
+      cancelados: this.leer('cancelados'),
+      llamada: this.leer('llamada'),
       vigia: {
         t: v.t ? new Date(v.t).toISOString() : null,
         hace_s: v.t ? Math.round((ahora - v.t) / 1000) : null,
