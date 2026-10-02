@@ -17,7 +17,7 @@
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, utc } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
@@ -226,7 +226,9 @@ const SUBS = {
     vacio: () => <>Todavía nadie cazó a un buscado. Los de esta semana están en el <a className="te-link" href="#/">Inicio</a>.</>,
   },
   // lo que todavía no existe: arriba una línea (`corto`) y abajo qué va a ser, sin repetirlo
-  misiones: { et: 'Misiones', corto: 'Llegan pronto.', pronto: <>Cada semana, misiones que cualquiera puede cumplir jugando —jugar dos eventos, llegar a una final, ganar duelos, probar otro servidor— y que suman a tu Temporada. Están en camino.</> },
+  misiones: { et: 'Misiones', corto: 'Llegan pronto.', pronto: <>Cada semana, misiones que cualquiera puede cumplir jugando —jugar dos eventos, llegar a una final, ganar duelos, probar otro servidor— y que suman a tu Temporada. Están en camino.</>,
+    // los mismos ejemplos del texto, a la vista: la página era un renglón y un hueco
+    ejemplos: [['eventos', 'Jugá dos eventos'], ['novedades', 'Llegá a una final'], ['ok', 'Ganá duelos'], ['mundo', 'Probá otro servidor']] },
   ligas: { et: 'Ligas', cuando: 'T2', corto: 'Llega con la Temporada 2.', pronto: <><b>El ranking de ligas</b> llega en la Temporada 2.</> },
 };
 export const RANKINGS = ['temporada', 'competitivo', 'duelos', 'podios', 'rachas', 'paises', 'crews', 'mw', 'misiones', 'ligas'];
@@ -564,6 +566,19 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
 
   // el podio: los tres primeros con número (la Temporada, por su puesto oficial)
   const top = base.filter((f) => numero(cfg, f)).slice(0, 3);
+  // las flechas de arriba: el ranking de al lado en la tira, salteando los que todavía no existen (Misiones, Ligas) o
+  // no tienen con qué (Most Wanted sin buscados); al final vuelve al principio
+  const vivos = RANKINGS.filter((id) => !SUBS[id].pronto && !(SUBS[id].hay && !SUBS[id].hay(liga)));
+  const ix = RANKINGS.indexOf(sub);
+  const vecino = (d) => {
+    for (let k = 1; k < RANKINGS.length; k += 1) {
+      const id = RANKINGS[(ix + d * k + 2 * RANKINGS.length) % RANKINGS.length];
+      if (vivos.includes(id)) return id;
+    }
+    return null;
+  };
+  const antes = vecino(-1);
+  const despues = vecino(1);
 
   // ── tu lugar ──
   let lugar = null;
@@ -703,6 +718,12 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
         </div>
       </nav>
       <div className="escena rk-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9 }}>
+        {/* las flechas, como las del escenario del Inicio (Dlx, 02/10/2026: «arrows… in the black space like we have in
+            INICIO»): al ranking de al lado, salteando los que todavía no existen. Sólo en la compu */}
+        {antes && despues && antes !== sub ? <>
+          <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + SUBS[antes].et} title={SUBS[antes].et}><Chevron /></a>
+          <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + SUBS[despues].et} title={SUBS[despues].et}><Chevron /></a>
+        </> : null}
         <section className="rk-cab" id="rk-cab">
           <div className="rk-tx">
             <span className="tag">RANKING · {liga.temp}</span>
@@ -716,7 +737,9 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
       </div>
       <section className="sec rk-sec" id="rk-tabla">
         {pronto ? (
-          <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p></div>
+          <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>
+            {cfg.ejemplos ? <ul className="rk-ej" aria-label="Por ejemplo">{cfg.ejemplos.map(([ic, t]) => <li key={t}><Ico n={ic} t={22} /><b>{t}</b><small>suma a tu Temporada</small></li>)}</ul> : null}
+          </div>
         ) : (
           <>
             {/* con el ranking vacío (el día que arranca la temporada) no hay qué buscar ni qué filtrar */}

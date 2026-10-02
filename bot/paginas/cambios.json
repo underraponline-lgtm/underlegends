@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.95",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T17:37:00-04:00",
+   "titulo": "Menos huecos en la compu, y flechas en el Ranking",
+   "items": [
+    "⬅️ **Flechas en el Ranking**, como en el Inicio: pasás al ranking de al lado sin volver arriba.",
+    "🧱 **Menos espacios vacíos en la compu**: las fechas del Inicio llenan la fila, el título del Ranking va arriba, Misiones muestra ejemplos y los buscados del perfil de cada servidor ocupan todo el ancho.",
+    "📅 **Eventos**: «cuándo suele jugar cada servidor» va al costado, y un día sin eventos te muestra lo último que se jugó.",
+    "🗂️ **En las páginas que todavía no se rehicieron**: tu tarjeta te acompaña mientras bajás por tu perfil, y Mundo, la Guía y el Pase ya no dejan lugares vacíos.",
+    "⬛ **Abajo de una página corta**, el negro del pie en vez de blanco."
+   ]
+  },
+  {
    "version": "1.94",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T17:00:00-04:00",

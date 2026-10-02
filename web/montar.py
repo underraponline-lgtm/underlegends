@@ -57,7 +57,7 @@ html.ini-nuevo main > section.vista{display:none}
 html.ini-nuevo .barra{position:fixed;top:0;right:0;height:0;margin:0;padding:0;border:0;background:none;z-index:80}
 html.ini-nuevo .barra > :not(.pop){visibility:hidden}
 html.ini-nuevo .barra .pop{top:64px;right:12px}
-html.ini-nuevo body{background:#FFFFFF}
+html.ini-nuevo body{background:#030304}
 html.ini-nuevo.ini-noche body{background:#030304}
 html.ini-nuevo{scroll-padding-top:0}'''
 

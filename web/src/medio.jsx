@@ -22,7 +22,10 @@ export function Fechas({ liga }) {
     t.push({ c: 'cancelado', dia: ini ? liga.dia(ini).split(' ')[0].toUpperCase() : 'HOY', hora: 'CANCELADO',
       sv: c.sv, ev: limpio(c.n), det: ini ? 'era a las ' + hora(ini) : 'el servidor lo canceló' });
   });
-  liga.llaves().slice(0, 3).forEach((ll) => {
+  // lo que pasó, hasta completar la fila de cinco de la compu (de diez si lo que viene ya pasa de cinco): con tres
+  // fijas, sin nada anunciado quedaban dos lugares vacíos al lado (Dlx, 02/10/2026: «un espacio tan grande vacío»)
+  const fila = t.length > 4 ? 10 : 5;
+  liga.llaves().slice(0, Math.max(t.length > 4 ? 0 : 1, fila - t.length)).forEach((ll) => {
     const g = liga.campeon(ll);
     t.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos', sv: ll.sv,
       ev: limpio(ll.nombre), det: (g.length > 1 ? 'Campeones: ' : 'Campeón: ') + g.join(' y '), llave: ll.n });

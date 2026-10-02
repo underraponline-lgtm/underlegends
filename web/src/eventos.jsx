@@ -639,7 +639,8 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       </div>
     );
   }
-  const tituloDia = dia === hoyK ? 'Hoy' : dia === diaMas(hoyK, -1) ? 'Ayer' : dia === diaMas(hoyK, 1) ? 'Mañana' : liga.fechaLarga(dia + 'T16:00:00Z');
+  const tituloDe = (k) => (k === hoyK ? 'Hoy' : k === diaMas(hoyK, -1) ? 'Ayer' : k === diaMas(hoyK, 1) ? 'Mañana' : liga.fechaLarga(k + 'T16:00:00Z'));
+  const tituloDia = tituloDe(dia);
   const nada = !vivos.length && !prox.length && !hechos.length && !cancelados.length;
   // lo último que hubo, para el día vacío
   const ultimoDia = conDias.filter((k) => k < dia).pop();
@@ -716,6 +717,13 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               {ultimoDia ? <button type="button" className="btn borde2 chico" onClick={() => elegir(ultimoDia, true)}>Ver el último día con eventos</button> : null}
             </div>
           ) : null}
+          {/* un día sin nada no es un callejón: abajo, lo último que se jugó (era media página en blanco en la compu) */}
+          {nada && ultimoDia ? (
+            <section className="grupo evp-ultdia"><h3 className="g-t">Lo último que se jugó · {tituloDe(ultimoDia)}</h3>
+              {(porDia[ultimoDia] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 3)
+                .map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} />)}
+            </section>
+          ) : null}
         </main>
         <aside className="evp-der">
           <section className="evp-bloque evp-mes-pc"><h2 className="evp-h2">El mes</h2>
@@ -724,6 +732,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           </section>
           <section className="evp-bloque" id="ev-campana"><h2 className="evp-h2"><Ico n="campana" t={20} />La campana</h2><Campana liga={liga} /></section>
           <section className="evp-bloque"><h2 className="evp-h2">En tu calendario</h2><Calendario /></section>
+          {/* en la compu, al costado: llena lo que queda abajo de la campana mientras el día sigue (en el teléfono va en
+              «Cómo se juega») */}
+          <section className="evp-bloque evp-cuando-pc"><h2 className="evp-h2">Cuándo suele jugar</h2><CuandoJuega liga={liga} cal={cal} color={color} /></section>
         </aside>
       </div>
       {liga.llaves().length ? (
