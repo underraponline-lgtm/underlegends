@@ -483,10 +483,10 @@
   },
   "Garxziiscity": {},
   "Geoka": {
-   "competitivo": "71a3c2eaa48b:945fdcc5bb5d",
-   "pais": "e7a5deb44db0:81ca9569ff4e",
-   "servidor": "a071c19acec7:aee1635d8702:0a3db8",
-   "temporada": "2d811c37c5a0:146101b6ee32"
+   "competitivo": "1000634289d2:945fdcc5bb5d",
+   "pais": "e218213a1eff:81ca9569ff4e",
+   "servidor": "6ddd0f17c4d2:aee1635d8702:0a3db8",
+   "temporada": "fa4c9c4df17c:146101b6ee32"
   },
   "Geremy": {
    "servidor": "6b5d6264b542:351cab14eb16:980594"
@@ -643,10 +643,10 @@
    "servidor": "2ab83a357225:351cab14eb16:43d041"
   },
   "Juanpa": {
-   "competitivo": "8693d6369e5e:945fdcc5bb5d",
+   "competitivo": "56bc5ca823e1:945fdcc5bb5d",
    "pais": "39b3dbe80688:b39e807c94a4",
    "servidor": "b613f5eaa627:351cab14eb16:b92a21",
-   "temporada": "2b2b41fad48d:146101b6ee32"
+   "temporada": "ac74c064d538:146101b6ee32"
   },
   "Juasmio": {
    "competitivo": "72b2f5a2da48:945fdcc5bb5d",
@@ -1691,5 +1691,5 @@
    "servidor": "994982e6deaa:351cab14eb16:0a3db8"
   }
  },
- "cuando": "2026-10-02T17:04:37+00:00"
+ "cuando": "2026-10-02T18:57:04+00:00"
 }
