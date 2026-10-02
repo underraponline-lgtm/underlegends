@@ -84,12 +84,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 28,
+     "FFA": 29,
      "URBF": 8,
      "SR": 4
     },
     "gente": {
-     "FFA": 97,
+     "FFA": 98,
      "URBF": 31,
      "SR": 18
     },
@@ -97,7 +97,7 @@
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 97,
+    "FFA": 98,
     "SR": 18,
     "URBF": 31
    }
