@@ -5809,7 +5809,7 @@
        "Cronox, RICKYFORT"
       ],
       "PichulaMc, Six",
-      ""
+      "Revivido: SIX 🇦🇷; Revivido: RICKYFORT 🇦🇷"
      ],
      [
       [
@@ -5912,11 +5912,6 @@
     3750
    ],
    [
-    "Six",
-    "Subcampeón",
-    3750
-   ],
-   [
     "Eze",
     "Semifinal",
     2625
@@ -5935,6 +5930,11 @@
     "Zignos",
     "Semifinal",
     2625
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    1875
    ],
    [
     "Elsoolar",
@@ -6032,14 +6032,14 @@
     625
    ],
    [
-    "RICKYFORT",
+    "yinn",
     "Octavos",
     625
    ],
    [
-    "yinn",
+    "RICKYFORT",
     "Octavos",
-    625
+    312
    ]
   ]
  },
@@ -6497,6 +6497,157 @@
     "tito calderon",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "378": {
+  "dia": "2026-09-30",
+  "escala": "8-15",
+  "fecha": "30/09",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1554721194614333482"
+  ],
+  "n": 378,
+  "nombre": "ONE PIECE - REGRESO A SABAODY RANGO C",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "NC",
+       "Kyss"
+      ],
+      "PichulaMc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Skratch",
+       "Dynoco",
+       "LAST"
+      ],
+      "Skratch",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Andres"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Vandu",
+       "Emily Family 🇵🇾",
+       "kur 🇦🇷"
+      ],
+      "PRAISERIZA",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Skratch"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Makmah"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "PichulaMc"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    7500
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Skratch",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Emily Family 🇵🇾",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kyss",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2000
+   ],
+   [
+    "kur 🇦🇷",
+    "Cuartos",
+    2000
    ]
   ]
  }

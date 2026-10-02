@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-02T01:55:45Z",
+ "cuando": "2026-10-02T02:25:59Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 136.1,
+ "dur_s": 151.5,
  "pasos": [
   {
    "n": "0b",
@@ -15,13 +15,13 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 23.3
+   "s": 25.4
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 23.4
+   "s": 33.5
   },
   {
    "n": "1a",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 18.4
+   "s": 20.8
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.4
+   "s": 1.8
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.9
+   "s": 6.8
   },
   {
    "n": "2b",
@@ -69,77 +69,71 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.6
+   "s": 1.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.7
+   "s": 2.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 18.2
+   "s": 20.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 14.3
+   "s": 17.9
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 10.9
+   "s": 10.8
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.6
+   "s": 6.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.4
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 5.5
+   "s": 1.5
   }
  ],
  "fallas": [],
  "decidir": 41,
  "ultimo_evento": {
-  "n": "377",
-  "nombre": "DESGRACIAS EN TOKYO VOL 20",
+  "n": "378",
+  "nombre": "ONE PIECE - REGRESO A SABAODY RANGO C",
   "sv": "FFA",
-  "dia": "2026-10-01"
+  "dia": "2026-09-30"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-02T01:53:56Z",
+  "cuando": "2026-10-02T02:23:57Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 213,
-  "un_evento": 118,
+  "jugadores": 217,
+  "un_evento": 122,
   "diez_o_mas": 6,
   "cohortes": [
    {
@@ -150,7 +144,7 @@
    },
    {
     "semana": "2026-09-28",
-    "nuevos": 50,
+    "nuevos": 54,
     "volvieron": 4,
     "completa": false
    }
@@ -158,14 +152,14 @@
  },
  "cuotas": {
   "kv": {
-   "write": 155,
-   "read": 6963
+   "write": 157,
+   "read": 8284
   },
   "worker": {
-   "pedidos": 4132,
+   "pedidos": 4236,
    "errores": 0,
-   "sub": 3758,
-   "p50_ms": 0.95,
+   "sub": 3845,
+   "p50_ms": 0.94,
    "p99_ms": 3.51
   },
   "r2": {
