@@ -243,14 +243,14 @@
 "temporada"
 ]
 },
-"eze": {
+"dxg": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"dxg": {
+"eze": {
 "rg": "",
 "c": [
 "servidor",
@@ -877,6 +877,13 @@
 ]
 },
 "leteletras": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"titocalderon": {
 "rg": "",
 "c": [
 "servidor",

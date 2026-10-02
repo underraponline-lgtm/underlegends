@@ -6701,6 +6701,15 @@
      ],
      [
       [
+       "Oasis",
+       "dxg",
+       "tito calderon"
+      ],
+      "Oasis",
+      "triple (3 bandas)"
+     ],
+     [
+      [
        "Sosa",
        "Dyzz",
        "Zignos"
@@ -6728,7 +6737,7 @@
        "Soneto"
       ],
       "Oasis",
-      "Walk-in 1: Oasis🇨🇱"
+      ""
      ],
      [
       [
@@ -6808,6 +6817,11 @@
   "sv": "FFA",
   "tabla": [
    [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
     "Snow",
     "Subcampeón",
     7500
@@ -6816,11 +6830,6 @@
     "Abyssus",
     "Tercero",
     6000
-   ],
-   [
-    "Oasis",
-    "Campeón",
-    5000
    ],
    [
     "Six",
@@ -6899,6 +6908,16 @@
    ],
    [
     "Zignos",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
+    "Octavos",
+    1250
+   ],
+   [
+    "tito calderon",
     "Octavos",
     1250
    ]
