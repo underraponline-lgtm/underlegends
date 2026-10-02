@@ -670,6 +670,8 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-qn small{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;
   font:700 10.5px/1.1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
 .rk-qn small:empty{display:none}
+.rk-qx{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-qx:empty{display:none}
 .rk-vos,.rk-sigo{flex:none;font-style:normal;font-size:9.5px;letter-spacing:.08em;padding:2px 4px}
 .rk-vos{background:#E41373;color:#FFFFFF}
 .rk-sigo{border:1px solid currentColor;color:var(--tinta)}
@@ -736,4 +738,80 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
   .app .rk-fil{grid-template-columns:minmax(240px,340px) minmax(0,1fr);align-items:center}
   .app .rk-t td{padding:10px 10px}
   .app .rk-lugar{bottom:16px;margin:0 var(--gut) 16px;border:2px solid #29B298;border-top-width:3px}
+}
+
+/* ── las cinco ideas del Ranking (Dlx, 02/10/2026: «1. me gusta … 5. listo») ── */
+.rk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+/* 1 · ▲▼ desde el lunes: el triángulo dibujado, el número en tinta (el verde agua no va como texto sobre blanco) */
+.rk-posc{display:inline-grid;justify-items:center;gap:3px}
+.rk-mv{display:inline-flex;align-items:center;gap:3px;font:700 10.5px/1 "Space Mono",monospace;color:var(--tinta);white-space:nowrap}
+.rk-mv i{width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;flex:none}
+.rk-mv.sube i{border-bottom:7px solid #29B298}
+.rk-mv.baja i{border-top:7px solid #E41373}
+.rk-mv.baja{color:var(--magenta-tx)}
+.rk-lugar .rk-mv{color:#F6F6F6;font-size:10.5px;letter-spacing:.04em}
+.rk-lugar .rk-mv.baja{color:#F07DB2}
+/* 3 · «NUEVO»: su primer evento es de esta semana */
+.rk-nuevo{flex:none;font-style:normal;font-size:9.5px;letter-spacing:.08em;padding:2px 4px;background:#29B298;color:#030304}
+.rk-chips button.rk-chip-nuevo:not(.on){border-color:#29B298;box-shadow:inset 0 0 0 1px #29B298}
+/* 2 · los que tenés cerca */
+.rk-cerca{margin:0 0 16px}
+.rk-cerca-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-bottom:10px;
+  font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.rk-zs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rk-z{display:grid;gap:5px;align-content:start;min-width:0;padding:10px 10px 11px;border:1.5px solid var(--suave);color:var(--tinta);background:var(--fondo)}
+a.rk-z:hover{border-color:var(--linea)}
+.rk-z.yo{border:2px solid var(--linea);background:var(--rk-yo)}
+.rk-z.vacio{border-style:dashed;color:var(--gris)}
+.rk-zt{display:flex;align-items:center;gap:8px;min-width:0}
+.rk-zt .rk-n{min-width:30px;height:26px;font-size:15px}
+.rk-zcara{width:34px;height:34px;font:800 14px/1 Archivo,sans-serif}
+.rk-zflag{width:40px;height:27px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
+.rk-zlogo{display:grid;place-items:center;width:34px;height:34px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif}
+.rk-z b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 14px/1.2 Archivo,sans-serif;font-stretch:105%}
+.rk-z small{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.02em;color:var(--gris);overflow-wrap:anywhere}
+.rk-z.yo small{color:var(--tinta)}
+.rk-hist{min-height:40px;padding:0 12px}
+/* 4 · la fila abierta */
+.rk-t tr.abierta td{background:var(--caja)}
+.rk-t tr.rk-det td{padding:0 0 14px;background:var(--caja);border-bottom:2px solid var(--linea);white-space:normal;text-align:left;cursor:default}
+.rk-t tr.rk-det:hover td{background:var(--caja)}
+.rk-det-in{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;padding:4px 12px 0}
+.rk-det-carta{width:96px}
+.rk-det-ci{display:block;width:100%;height:auto}
+.rk-det-l{display:grid;gap:10px;align-content:start;min-width:0}
+.rk-det-n{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0}
+.rk-det-n div{display:grid;gap:2px}
+.rk-det-n dt{font:700 10px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.rk-det-n dd{margin:0;font:900 17px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
+.rk-det-t{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.rk-det-c{margin:0;font:400 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.rk-det-e,.rk-det-g{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rk-det-e button{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--suave)}
+.rk-det-ev{display:grid;gap:2px;min-width:0}
+.rk-det-ev b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 Archivo,sans-serif}
+.rk-det-ev small,.rk-det-g small{font:700 10.5px/1.2 "Space Mono",monospace;color:var(--gris)}
+.rk-det-r{display:grid;justify-items:end;gap:2px;flex:none;font:800 12px/1 Archivo,sans-serif;font-stretch:110%}
+.rk-det-r small{font:700 10.5px/1 "Space Mono",monospace;color:var(--gris)}
+.rk-det-r.campeon{color:var(--magenta-tx)}
+.rk-det-g a{display:flex;align-items:center;gap:8px;padding:5px 0;color:var(--tinta)}
+.rk-det-g .rk-n{min-width:28px;height:24px;font-size:14px}
+.rk-det-cara{width:28px;height:28px;font:800 12px/1 Archivo,sans-serif}
+.rk-det-g b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 Archivo,sans-serif}
+.rk-det-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.rk-det-mas{font:700 10.5px/1.3 "Space Mono",monospace;color:var(--gris)}
+.rk-tw.todas .rk-det-in{position:sticky;left:0;max-width:calc(100vw - 32px)}
+@media (max-width: 420px){
+  .rk-zs{gap:6px}
+  .rk-z{padding:8px 7px 9px}
+  .rk-zt{gap:5px}
+  .rk-zcara,.rk-zlogo{width:28px;height:28px}
+  .rk-zflag{width:32px;height:21px}
+  .rk-det-carta{width:78px}
+}
+@media (min-width: 900px){
+  .app .rk-zs{grid-template-columns:repeat(3,minmax(0,280px))}
+  .app .rk-det-in{padding:6px 16px 0}
+  .app .rk-det-carta{width:120px}
+  .app .rk-det-e{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));column-gap:24px}
 }

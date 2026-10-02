@@ -111,6 +111,92 @@ def _json(*p):
         return None
 
 
+def _lunes(ahora=None):
+    """El lunes de esta semana en hora del este, `AAAA-MM-DD`: la semana de la Liga arranca el lunes a las 00:00 ET."""
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+    t = (ahora or dt.datetime.now(dt.timezone.utc)).astimezone(ZoneInfo('America/New_York'))
+    return (t.date() - dt.timedelta(days=t.weekday())).isoformat()
+
+
+def foto_semana(pool, escribir=False, ahora=None):
+    """El ranking de Temporada como estaba al empezar la semana: `{semana, pos: {nombre: puesto}, o: {nombre: lugar}}`.
+
+    🔑 Dlx, 02/10/2026: *«1. me gusta · 3. me gusta»* — las flechas de cuánto subió cada uno esta semana y el «NUEVO»
+    de quien debutó. Las saca `armar()` contra esta foto. La toma **la primera corrida de cada semana** (con
+    `escribir`, o sea con `--aplicar`) y `bot/ci/guardar.sh` la commitea: sin eso el runner limpio arrancaría cada vez
+    sin memoria y nadie subiría nunca (lo de `avisados.json`).
+
+    ⚠️ EL DÍA DEL ARRANQUE NO HAY CON QUÉ COMPARAR: el paso 0 del ciclo borra la fase de prueba antes de esto, así que
+    la foto de ese lunes sale vacía, y vacía no da flechas ni «NUEVO» —todos serían nuevos—. Y una foto de otra semana
+    no sirve (sin `escribir` se ignora): compararía contra un lunes que ya pasó.
+    """
+    import datetime as dt
+    f = _json('datos', 'ranking_semana.json') or {}
+    lunes = _lunes(ahora)
+    if f.get('semana') == lunes:
+        return f
+    if not escribir:
+        return {}
+    f = {'_leeme': 'El ranking de Temporada al empezar la semana (lunes 00:00 ET), para las flechas de cuánto subió '
+                   'cada uno y el «NUEVO» de quien debutó. La rehace la primera corrida de cada semana: '
+                   'bot/subir_web.foto_semana().',
+         'semana': lunes,
+         'hecha': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+         'pos': {p['raw']: p['pos'] for p in pool if p.get('raw') and p.get('pos') and not p.get('fc')},
+         'o': {p['raw']: p.get('o') or p.get('pos') for p in pool if p.get('raw')}}
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'ranking_semana.json'), 'w', encoding='utf-8', newline='\n') as h:
+            json.dump(f, h, ensure_ascii=False, indent=1, sort_keys=True)
+            h.write('\n')
+        print('   📸 la foto de la semana del %s: %d con puesto' % (lunes, len(f['pos'])))
+    except OSError as e:
+        print('   🔴 no pude guardar la foto de la semana: %s' % e)
+    return f
+
+
+def movimientos(tabla, gente, foto):
+    """`mv` en cada fila de la tabla: los puestos que ganó esta semana (negativo, los que perdió), contra la foto del
+    lunes. Sólo cuando no es cero, para no engordar el lobby; sin número ahora o el lunes, nada."""
+    fp = (foto or {}).get('pos') or {}
+    for f, p in zip(tabla, gente):
+        r = p.get('raw')
+        if f.get('pos') and fp.get(r) and fp[r] != f['pos']:
+            f['mv'] = fp[r] - f['pos']
+    return tabla
+
+
+def debutantes(tabla, perf, ahora=None):
+    """`nu` a quien jugó su PRIMER evento esta semana (desde el lunes 00:00 ET): el «NUEVO» del Ranking.
+
+    ⚠️ POR LA FECHA DEL PRIMER EVENTO, no por «no estaba en la foto del lunes». En la fase de prueba las llaves se
+    corrigen hacia atrás y entra gente a eventos de la semana pasada: medido el 02/10/2026, 79 «no estaban el lunes» y
+    entre ellos Oasis, que jugó el 26/09. Y la semana del arranque no se marca a nadie: ahí todos debutan.
+    """
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+    lunes = _lunes(ahora)
+    try:
+        from comun import temporada as TMP
+        ini = (TMP.FECHAS.get(TMP.ACTUAL) or ('',))[0]
+    except Exception:                                    # noqa: BLE001
+        ini = ''
+    if ini and _lunes(dt.datetime.fromisoformat(ini + 'T12:00:00+00:00')) == lunes:
+        return tabla
+    desde = (dt.datetime.fromisoformat(lunes + 'T00:00:00').replace(tzinfo=ZoneInfo('America/New_York'))
+             .astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'))
+    E, P = (perf or {}).get('e') or {}, (perf or {}).get('p') or {}
+    for f in tabla:
+        ts = []
+        for x in (P.get(f.get('k')) or {}).get('ev') or []:
+            ev = E.get(x[0]) or E.get(str(x[0])) or []
+            if len(ev) > 2 and ev[2]:
+                ts.append(ev[2])
+        if ts and min(ts) >= desde:
+            f['nu'] = 1
+    return tabla
+
+
 def armar():
     """El payload que la web necesita. Un dict, listo para `json.dumps`."""
     import cuando as CU
@@ -253,6 +339,8 @@ def armar():
         'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
                if _avs.get(str(p.get('discord_id') or '')) else ''),
     } for p in gente]
+    # ▲▼ cuánto subió cada uno esta semana y quién debutó: contra la foto del lunes (ver `foto_semana()`)
+    movimientos(tabla, gente, foto_semana(pool, escribir='--aplicar' in sys.argv))
     # 🧑 LAS CARAS DE QUIENES QUEDAN FUERA DE LA TABLA (corta en `TOPE`): las historias, «lo último» y las llaves los
     # nombran igual, y sin esto salían con la inicial —medido el 02/10/2026: 19 de 219—. Nombre y cara, nada más (~45
     # bytes cada uno): la página la busca por nombre, `avNombre()` de web/src/liga.js
@@ -464,6 +552,9 @@ def armar():
     # página decide qué mostrar según el día de quien mira. Ver `FECHAS`.
     from comun.temporada import ACTUAL, FECHAS
     _f = FECHAS.get(ACTUAL)
+    # los perfiles se arman antes: de ahí sale quién debutó esta semana (el «NUEVO» del Ranking, `debutantes()`)
+    _pf = _perfiles(gente, list(_comp.values()), regs)
+    debutantes(tabla, _pf)
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -544,7 +635,7 @@ def armar():
         'alias': _alias(tabla),
         # ⚠️ LOS PERFILES NO VIAJAN EN EL LOBBY: `main()` los saca de acá y
         # los sube aparte, a `CLAVE_PERFILES`. Ver `_perfiles()`.
-        '_perfiles': _perfiles(gente, list(_comp.values()), regs),
+        '_perfiles': _pf,
         # ⚠️ TAMPOCO TODAS LAS LLAVES: van a `CLAVE_LLAVES`, a pedido
         '_llaves': todas,
         'requisitos': _requisitos(),
@@ -2802,6 +2893,28 @@ def _self_check():
     todas = p.pop('_llaves', None)
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
+    # ▲▼ y «NUEVO» contra la foto del lunes (Dlx, 02/10/2026: «1. me gusta · 3. me gusta»)
+    _g = [{'raw': 'Ana'}, {'raw': 'Beto'}, {'raw': 'Caro'}, {'raw': 'Dani'}]
+    _t = [{'pos': 1}, {'pos': 2}, {'pos': None}, {'pos': 3}]
+    movimientos(_t, _g, {'pos': {'Ana': 2, 'Beto': 1, 'Dani': 3}, 'o': {'Ana': 2, 'Beto': 1, 'Caro': 4, 'Dani': 3}})
+    ok(_t[0].get('mv') == 1 and _t[1].get('mv') == -1 and 'mv' not in _t[2] and 'mv' not in _t[3],
+       'las flechas: subió 1, bajó 1; sin número o sin cambio, nada')
+    _dt0 = __import__('datetime')
+    _vie = _dt0.datetime(2026, 10, 2, 18, 0, tzinfo=_dt0.timezone.utc)
+    _pf = {'e': {'1': ['A', 'FFA', '2026-09-26T04:00:00Z'], '2': ['B', 'FFA', '2026-09-28T05:00:00Z'],
+                 '3': ['C', 'FFA', '2026-09-28T03:00:00Z']},
+           'p': {'ana': {'ev': [[1, 'Octavos', 1250], [2, 'Campeón', 10000]]}, 'beto': {'ev': [[2, 'Octavos', 1250]]},
+                 'caro': {'ev': [[3, 'Octavos', 1250]]}}}
+    _t4 = debutantes([{'k': 'ana'}, {'k': 'beto'}, {'k': 'caro'}, {'k': 'dani'}], _pf, ahora=_vie)
+    ok([bool(f.get('nu')) for f in _t4] == [False, True, False, False],
+       '«NUEVO» por el primer evento: del lunes 00:00 ET en adelante (el domingo 11 PM ET no)')
+    _arr = _dt0.datetime(2026, 10, 14, 18, 0, tzinfo=_dt0.timezone.utc)
+    _pf2 = {'e': {'9': ['X', 'FFA', '2026-10-13T01:00:00Z']}, 'p': {'ana': {'ev': [[9, 'Octavos', 1250]]}}}
+    ok(not debutantes([{'k': 'ana'}], _pf2, ahora=_arr)[0].get('nu'),
+       'y la semana del arranque, a nadie: todos debutan en la temporada')
+    ok(_lunes(__import__('datetime').datetime(2026, 10, 5, 3, 59, tzinfo=__import__('datetime').timezone.utc)) == '2026-09-28'
+       and _lunes(__import__('datetime').datetime(2026, 10, 5, 4, 1, tzinfo=__import__('datetime').timezone.utc)) == '2026-10-05',
+       'la semana cambia el lunes a las 00:00 ET, no en UTC')
     # 🔑 LOS AKAS DE LA LLAVE EN VIVO (PARK JI SUNG -> Oasis): cada alias lleva
     # a alguien de la tabla, y ninguno es el nombre de otra persona
     from comun import respaldo as _rsp

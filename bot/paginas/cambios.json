@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "1.91",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T15:35:00-04:00",
+   "titulo": "El Ranking: flechas, nuevos y tu puesto para historias",
+   "items": [
+    "📈 **Las flechas**: al lado de cada número, cuántos puestos subió o bajó desde el lunes.",
+    "🆕 **«NUEVO»** a quien jugó su primer evento esta semana, y un filtro para verlos a todos juntos.",
+    "👥 **Los que tenés cerca**: el de arriba, vos y el de abajo, con cuánto los separa. A quién pasás si ganás el próximo.",
+    "📂 **Tocá una fila y se abre ahí mismo**: sus números y sus últimos eventos, sin salir del ranking. El nombre sigue llevando a su perfil.",
+    "📸 **Tu puesto como imagen para historias**: tu carta parada en su escalón, lista para Instagram o WhatsApp.",
+    "🏆 En Temporada y Competitivo el podio ya no repite los puntos: la carta los dice."
+   ]
+  },
+  {
    "version": "1.90",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T14:35:00-04:00",

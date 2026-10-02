@@ -1,6 +1,10 @@
-// El Ranking nuevo (`#/ranking/<sub>`). Dlx, 02/10/2026: «quiero que sigas con el remake de la página de… ranking».
-// Mientras es PREVIEW se ve sólo en el navegador que tiene `lg:prev-rk` (ver `prevRk()` en App.jsx): para todos los
-// demás sigue la tabla de app.js, que además queda dibujada y escondida debajo, de respaldo, como el changelog.
+// El Ranking nuevo (`#/ranking/<sub>`). Dlx, 02/10/2026: «quiero que sigas con el remake de la página de… ranking»,
+// y al ver la preview, «me encanta» (1.90). La tabla de app.js sigue dibujada y escondida debajo, de respaldo, como
+// el changelog.
+//
+// 🔑 Y SUS CINCO IDEAS (Dlx, 02/10/2026: «1. me gusta … 5. listo»): las flechas de cuánto subió cada uno desde el
+// lunes (`mv`, del ciclo), «NUEVO» a quien debutó esta semana (`nu`), los que tenés cerca, la fila que se abre ahí
+// mismo y tu puesto como imagen para historias. La 6 —comparar— va con la página de Tarjetas.
 //
 // 🔑 LAS MISMAS REGLAS QUE `COL` Y `SUBS` DE app.js, porque mientras convivan tienen que decir lo mismo:
 //   · cada ranking declara sus filas, su orden y sus columnas, y TODAS las columnas se ordenan
@@ -11,7 +15,7 @@
 //
 // Lo que agrega el remake (estructura, no pintura): el podio con las cartas de verdad, «tu lugar» siempre a la vista
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 
@@ -35,6 +39,19 @@ function Num({ n, fc }) {
   return <span className={'rk-n' + (n <= 3 ? ' p' + n : '')}>{n}</span>;
 }
 
+// ── ▲▼ cuánto subió desde el lunes (`mv` del ciclo: la foto del lunes, `foto_semana()` de bot/subir_web.py). La
+// flecha es un triángulo dibujado, no un carácter; el número dice cuántos puestos ──────────────────────────────────
+function Mov({ mv, largo = false }) {
+  if (!mv) return null;
+  const n = Math.abs(mv);
+  const que = (mv > 0 ? 'subió ' : 'bajó ') + n + (n === 1 ? ' puesto' : ' puestos') + ' desde el lunes';
+  return (
+    <span className={'rk-mv ' + (mv > 0 ? 'sube' : 'baja')} title={que}>
+      <i aria-hidden="true" />{n}{largo ? ' esta semana' : null}<span className="rk-sr">{' (' + que + ')'}</span>
+    </span>
+  );
+}
+
 // ── quién: la cara, el nombre (el link a su perfil), la bandera y, abajo, su servidor y su crew ─────────────────────
 function Quien({ x, f }) {
   const { liga } = x;
@@ -42,6 +59,9 @@ function Quien({ x, f }) {
   const crew = limpio((t && t.crew) || f.crew || '');
   const mio = !!x.yoK && f.k === x.yoK;
   const sigo = !mio && x.sigo.has(f.k);
+  // «NUEVO»: su primer evento es de esta semana (`nu`, ver `debutantes()` de bot/subir_web.py). Va en todas las
+  // listas de gente: en Duelos la fila es otra, así que se mira la de la tabla
+  const nuevo = !!((t || f).nu);
   const nombre = limpio(f.n);
   return (
     <span className="rk-q">
@@ -51,7 +71,9 @@ function Quien({ x, f }) {
           {f.k ? <a href={'#/r/' + encodeURIComponent(f.k)}>{nombre}</a> : <b>{nombre}</b>}
           <Bandera cc={f.cc} cls="rk-flag" />
         </span>
-        <small>{[f.sv, crew].filter(Boolean).join(' · ')}{mio ? <em className="rk-vos">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}</small>
+        {/* las etiquetas van ANTES del servidor y la crew: al final se las comía el «…» de una crew larga en el celular */}
+        <small>{mio ? <em className="rk-vos">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}
+          {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[f.sv, crew].filter(Boolean).join(' · ')}</span></small>
       </span>
     </span>
   );
@@ -92,7 +114,8 @@ function Crew({ x, f }) {
 // `txt` ordena de la A a la Z; el resto, de mayor a menor (el `COL` de app.js)
 const COL = {
   // ⚠️ EL `#` ORDENA POR MÉRITO (`o`), no por `pos`: quien está fuera de concurso no tiene `pos` y se iría al fondo
-  pos: { t: '#', cls: 'c-pos', s: (f) => f.o || f.pos, v: (f) => <Num n={f.fc ? 0 : f.pos} fc={f.fc} /> },
+  pos: { t: '#', cls: 'c-pos', s: (f) => f.o || f.pos,
+    v: (f) => <span className="rk-posc"><Num n={f.fc ? 0 : f.pos} fc={f.fc} />{f.mv ? <Mov mv={f.mv} /> : null}</span> },
   i: { t: '#', cls: 'c-pos', s: (f) => f._o || f._i, v: (f) => <Num n={f._i} fc={f.fc} /> },
   n: { t: 'Rapero', cls: 'c-n', txt: 1, s: (f) => norm(limpio(f.n)), v: (f, x) => <Quien x={x} f={f} /> },
   ovr: { t: 'OVR', tit: 'El número de la temporada, de 40 a 99', s: (f) => f.ovr || 0, v: (f) => (f.ovr ? f.ovr : NADA) },
@@ -143,14 +166,17 @@ const SUBS = {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL (Dlx, 25/09/2026: racha, último evento, cazó, cazado, sobrevivió y misiones)
     cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis'], movil: ['pos', 'n', 'ovr', 'pts'],
-    baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada.</>,
-    valor: [(f) => f.ovr || 0, 'de OVR'], podio: 'temporada', dato: (f) => num(f.pts) + ' PTS',
+    baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes.</>,
+    // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
+    // lo dice»). El escalón lleva sólo el número
+    valor: [(f) => f.ovr || 0, 'de OVR'], podio: 'temporada',
   },
   competitivo: {
     et: 'Competitivo', filas: (L) => (L.d.tabla || []).filter((f) => f.rg), orden: 'sc',
     cols: ['i', 'n', 'rg', 'sc', 'ev', 'wr'], movil: ['i', 'n', 'rg', 'sc'],
     baj: <>Ordenado por <b>Score</b>, que mide la calidad y no la cantidad. De ahí sale el rango, el mismo en todas las cartas.</>,
-    valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo', dato: (f) => 'SCORE ' + coma(f.sc),
+    // sin `dato` tampoco: la carta Competitiva tiene el Score en grande
+    valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo',
     vacio: (L) => {
       const pide = req(L, 'competitivo') || 10;
       const c = (L.d.tabla || []).slice().sort((a, b) => (b.ev || 0) - (a.ev || 0))[0];
@@ -292,6 +318,251 @@ function useMovil() {
   return m;
 }
 
+// ── 2 · LOS QUE TENÉS CERCA: el de arriba, vos y el de abajo, con cuánto los separa. Dlx, 02/10/2026: «me gusta».
+// Es lo que hace volver a mirar: a quién pasás si ganás el próximo ─────────────────────────────────────────────────
+function distancia(cfg, a, b) {
+  if (!cfg.valor) return null;
+  const [val, u, dec] = cfg.valor;
+  const d = val(a) - val(b);
+  if (d <= 0) return null;
+  return (dec ? coma(d, dec) : num(d)) + ' ' + (Array.isArray(u) ? u[d === 1 ? 0 : 1] : u);
+}
+function Vecino({ x, cfg, f, rol, txt }) {
+  if (!f) return <div className={'rk-z vacio ' + rol}><b>{rol === 'arriba' ? 'Nadie arriba' : 'Nadie abajo'}</b><small>{txt}</small></div>;
+  const href = cfg.grupo === 'pais' ? '#/pais/' + f.cc : cfg.grupo === 'crew' ? '#/crew/' + encodeURIComponent(f.clave || f.crew)
+    : '#/r/' + encodeURIComponent(f.k);
+  const nombre = cfg.grupo === 'pais' ? nombrePais(f.cc) : cfg.grupo === 'crew' ? limpio(f.crew) : limpio(f.n);
+  const vis = cfg.grupo === 'pais' ? <Bandera cc={f.cc} cls="rk-zflag" /> : cfg.grupo === 'crew' ? <LogoCrew c={f} cls="rk-zlogo" />
+    : <Cara liga={x.liga} k={f.k} nombre={f.n} cls="cara rk-zcara" />;
+  return (
+    <a className={'rk-z ' + rol} href={href}>
+      <span className="rk-zt"><Num n={numero(cfg, f)} />{vis}</span>
+      <b>{rol === 'yo' && !cfg.grupo ? 'Vos' : nombre}</b>
+      <small>{txt}</small>
+    </a>
+  );
+}
+function Cerca({ x, cfg, base, i, sub }) {
+  const yo = base[i];
+  const arriba = base.slice(0, i).reverse().find((g) => numero(cfg, g));
+  const abajo = base.slice(i + 1).find((g) => numero(cfg, g));
+  const igual = (a, b) => numero(cfg, a) === numero(cfg, b);
+  const medallas = (f) => '1.º ×' + (f.oro || 0) + ' · 2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0);
+  let tA = 'Estás primero';
+  if (arriba) tA = igual(arriba, yo) ? 'Empatados' : cfg.valor ? (distancia(cfg, arriba, yo) ? 'Te lleva ' + distancia(cfg, arriba, yo) : 'Empatados') : medallas(arriba);
+  let tB = '';
+  if (abajo) tB = igual(abajo, yo) ? 'Empatados' : cfg.valor ? (distancia(cfg, yo, abajo) ? 'A ' + distancia(cfg, yo, abajo) + ' de vos' : 'Empatados') : medallas(abajo);
+  const yoTxt = sub === 'temporada' && yo.mv ? <Mov mv={yo.mv} largo /> : cfg.grupo === 'pais' ? 'Tu país' : cfg.grupo === 'crew' ? 'Tu crew' : !cfg.valor ? medallas(yo) : '';
+  return (
+    <section className="rk-cerca" aria-label="Los que tenés cerca">
+      <div className="rk-cerca-t">
+        <span>{cfg.grupo === 'pais' ? 'LOS PAÍSES QUE TIENE CERCA EL TUYO' : cfg.grupo === 'crew' ? 'LAS CREWS QUE TIENE CERCA LA TUYA' : 'LOS QUE TENÉS CERCA'}</span>
+        {!cfg.grupo ? <BotonHistoria liga={x.liga} cfg={cfg} f={yo} n={numero(cfg, yo)} sub={sub} /> : null}
+      </div>
+      <div className="rk-zs">
+        <Vecino x={x} cfg={cfg} f={arriba} rol="arriba" txt={tA} />
+        <Vecino x={x} cfg={cfg} f={yo} rol="yo" txt={yoTxt} />
+        <Vecino x={x} cfg={cfg} f={abajo} rol="abajo" txt={tB} />
+      </div>
+    </section>
+  );
+}
+
+// ── 4 · LA FILA QUE SE ABRE AHÍ MISMO: sus números, sus últimos eventos y de dónde salen sus puntos, sin salir del
+// ranking (Dlx, 02/10/2026: «me gusta»). El historial es el de `/api/perfiles`, el mismo que usa su perfil: se pide
+// una vez, con `perfiles()` de app.js, la primera vez que se abre una fila ──────────────────────────────────────────
+function Detalle({ x, cfg, f, perf }) {
+  const { liga } = x;
+  if (cfg.grupo) {
+    const gente = cfg.grupo === 'pais' ? ((liga.paisDe(f.cc) || {}).gente || [])
+      : (f.gente || []).map((n) => liga.fila(n)).filter(Boolean).sort((a, b) => (a.o || 999) - (b.o || 999));
+    const href = cfg.grupo === 'pais' ? '#/pais/' + f.cc : '#/crew/' + encodeURIComponent(f.clave || f.crew);
+    return (
+      <div className="rk-det-in">
+        <div className="rk-det-l">
+          <span className="rk-det-t">SU GENTE{gente.length ? ' · ' + gente.length : ''}</span>
+          {gente.length ? (
+            <ol className="rk-det-g">
+              {gente.slice(0, 6).map((g) => (
+                <li key={g.k}><a href={'#/r/' + encodeURIComponent(g.k)}><Num n={g.fc ? 0 : g.pos} fc={g.fc} />
+                  <Cara liga={liga} k={g.k} nombre={g.n} cls="cara rk-det-cara" /><b>{limpio(g.n)}</b><small>{num(g.pts)} pts</small></a></li>
+              ))}
+            </ol>
+          ) : <p className="rk-det-c">Nadie con puesto todavía.</p>}
+          <div className="rk-det-acc"><a className="btn negro chico" href={href}>Ver {cfg.grupo === 'pais' ? nombrePais(f.cc) : limpio(f.crew)}</a></div>
+        </div>
+      </div>
+    );
+  }
+  const t = liga.T[f.k] || f;
+  const P = perf && perf.p ? perf.p[f.k] : null;
+  const E = (perf && perf.e) || {};
+  const evs = perf ? ((P && P.ev) || []).map(([n, puesto, pts]) => ({ n, puesto, pts, e: E[n] || E[String(n)] || [] }))
+    .sort((a, b) => String(b.e[2] || '').localeCompare(String(a.e[2] || ''))) : null;
+  const cual = (t.c || []).includes('temporada') ? 'temporada' : (t.c || [])[0];
+  return (
+    <div className="rk-det-in">
+      {cual ? <div className="rk-det-carta"><Carta liga={liga} k={f.k} cual={cual} cls="rk-det-ci" /></div> : null}
+      <div className="rk-det-l">
+        <dl className="rk-det-n">
+          <div><dt>OVR</dt><dd>{t.ovr || '—'}</dd></div>
+          <div><dt>Puntos</dt><dd>{num(t.pts)}</dd></div>
+          <div><dt>Eventos</dt><dd>{t.ev || 0}</dd></div>
+          <div><dt>Podios</dt><dd>{t.pod || 0}</dd></div>
+          {t.wr ? <div><dt>Win%</dt><dd>{Math.round(pct(t.wr))}%</dd></div> : null}
+        </dl>
+        <span className="rk-det-t">SUS EVENTOS{evs && evs.length ? ' · ' + evs.length : ''}</span>
+        {evs === null ? <p className="rk-det-c">Cargando…</p> : !evs.length ? <p className="rk-det-c">Todavía no jugó en la temporada.</p> : (
+          <ol className="rk-det-e">
+            {evs.slice(0, 5).map((ev) => (
+              <li key={ev.n}>
+                <button type="button" className="sin-boton" onClick={() => accion.llave(ev.n)}>
+                  <span className="rk-det-ev"><b>{limpio(ev.e[0] || 'Evento ' + ev.n)}</b><small>{[ev.e[1], ev.e[4]].filter(Boolean).join(' · ')}</small></span>
+                  <span className={'rk-det-r' + (ev.puesto === 'Campeón' ? ' campeon' : '')}>{resultado(ev.puesto, true)}<small>+{num(ev.pts)} pts</small></span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
+        <div className="rk-det-acc">
+          <a className="btn negro chico" href={'#/r/' + encodeURIComponent(f.k)}>Ver su perfil</a>
+          {evs && evs.length > 5 ? <span className="rk-det-mas">y {evs.length - 5} eventos más en su perfil</span> : null}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── 5 · TU PUESTO COMO IMAGEN PARA HISTORIAS (Dlx, 02/10/2026: «listo»): 1080×1920, con tu carta de verdad parada en
+// su escalón, y el menú de compartir del celular (Instagram, WhatsApp…) o, en la compu, el archivo. Se arma en el
+// navegador: R2 deja leer las cartas desde la página (CORS), así que el lienzo no queda «manchado» ─────────────────
+function cargarImg(src) {
+  return new Promise((res, rej) => {
+    const im = new Image();
+    im.crossOrigin = 'anonymous';
+    im.onload = () => res(im);
+    im.onerror = () => rej(new Error('no cargó ' + src));
+    im.src = src;
+  });
+}
+async function imagenPuesto(liga, cfg, f, n) {
+  const W = 1080;
+  const H = 1920;
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const g = c.getContext('2d');
+  try { await Promise.all(['900 120px Archivo', '700 40px "Space Mono"'].map((x) => document.fonts.load(x))); } catch (e) { /* las del sistema */ }
+  const letra = (peso, px, mono) => {
+    g.font = peso + ' ' + px + 'px ' + (mono ? '"Space Mono", monospace' : 'Archivo, sans-serif');
+    if ('fontStretch' in g) g.fontStretch = mono ? 'normal' : 'expanded';
+    if ('letterSpacing' in g) g.letterSpacing = mono ? '4px' : '0px';
+  };
+  g.fillStyle = '#030304'; g.fillRect(0, 0, W, H);
+  // los círculos de la escena: el magenta arriba a la derecha y el verde agua abajo a la izquierda
+  g.globalAlpha = 0.9; g.fillStyle = '#E41373'; g.beginPath(); g.arc(W + 40, 300, 430, 0, 2 * Math.PI); g.fill();
+  g.globalAlpha = 0.28; g.fillStyle = '#29B298'; g.beginPath(); g.arc(-60, H - 300, 480, 0, 2 * Math.PI); g.fill();
+  g.globalAlpha = 1;
+  g.fillStyle = '#29B298'; g.fillRect(0, 0, W / 2, 16);
+  g.fillStyle = '#E41373'; g.fillRect(W / 2, 0, W / 2, 16);
+  g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+  letra(700, 34, true); g.fillStyle = '#A5A5A0';
+  g.fillText(('LIGA GLOBAL · ' + liga.temp + ' · RANKING').toUpperCase(), 72, 132);
+  let px = 116;
+  letra(900, px, false);
+  while (px > 60 && g.measureText(cfg.et.toUpperCase()).width > W - 144) { px -= 6; letra(900, px, false); }
+  g.fillStyle = '#F6F6F6'; g.fillText(cfg.et.toUpperCase(), 72, 132 + 24 + px * 0.9);
+  // la carta: la de esta categoría si la tiene (la Competitiva en el Competitivo), si no la de Temporada
+  const t = liga.T[f.k] || {};
+  const cual = cfg.podio === 'competitivo' && (t.c || []).includes('competitivo') ? 'competitivo' : 'temporada';
+  const url = liga.cartaUrl(f.k, cual);
+  const y0 = 330;
+  let cw = 600;
+  let ch = 600;
+  try {
+    if (!url) throw new Error('sin carta');
+    const im = await cargarImg(url);
+    ch = Math.round(cw * im.naturalHeight / im.naturalWidth);
+    if (ch > 900) { cw = Math.round(cw * 900 / ch); ch = 900; }
+    g.drawImage(im, (W - cw) / 2, y0, cw, ch);
+  } catch (e) {
+    // sin carta: su cara en un círculo grande (o la inicial)
+    const r = 260;
+    g.save(); g.beginPath(); g.arc(W / 2, y0 + 300, r, 0, 2 * Math.PI); g.closePath(); g.fillStyle = '#F6F6F6'; g.fill(); g.clip();
+    let cara = false;
+    try { const av = liga.avUrl(f.k); if (av) { g.drawImage(await cargarImg(av), W / 2 - r, y0 + 300 - r, 2 * r, 2 * r); cara = true; } } catch (e2) { /* la inicial */ }
+    g.restore();
+    if (!cara) { letra(900, 260, false); g.fillStyle = '#030304'; g.textAlign = 'center'; g.fillText((limpio(f.n)[0] || '?').toUpperCase(), W / 2, y0 + 390); }
+    letra(900, 64, false); g.fillStyle = '#F6F6F6'; g.textAlign = 'center'; g.fillText(limpio(f.n).toUpperCase(), W / 2, y0 + 680);
+    ch = 720;
+  }
+  // el escalón con el puesto: el 1 en verde agua, el 2 en magenta, el resto en blanco
+  const ye = y0 + ch + 28;
+  const col = n === 1 ? ['#29B298', '#030304'] : n === 2 ? ['#E41373', '#FFFFFF'] : ['#F6F6F6', '#030304'];
+  g.fillStyle = col[0]; g.fillRect((W - 600) / 2, ye, 600, 250);
+  letra(900, n > 99 ? 150 : 190, false); g.fillStyle = col[1]; g.textAlign = 'center';
+  g.fillText('#' + n, W / 2, ye + 195);
+  // cuánto subió esta semana (sólo la Temporada lo sabe)
+  if (cfg.podio === 'temporada' && t.mv) {
+    const sube = t.mv > 0;
+    const txt = (sube ? 'SUBIÓ ' : 'BAJÓ ') + Math.abs(t.mv) + (Math.abs(t.mv) === 1 ? ' PUESTO' : ' PUESTOS') + ' ESTA SEMANA';
+    letra(700, 36, true); g.textAlign = 'left';
+    const w = g.measureText(txt).width + 44;
+    const xm = (W - w) / 2;
+    const ym = ye + 250 + 78;
+    g.fillStyle = sube ? '#29B298' : '#E41373';
+    g.beginPath();
+    if (sube) { g.moveTo(xm, ym - 4); g.lineTo(xm + 28, ym - 4); g.lineTo(xm + 14, ym - 28); } else { g.moveTo(xm, ym - 28); g.lineTo(xm + 28, ym - 28); g.lineTo(xm + 14, ym - 4); }
+    g.closePath(); g.fill();
+    g.fillStyle = '#F6F6F6'; g.fillText(txt, xm + 44, ym);
+  }
+  // abajo: la marca y la dirección
+  // el logo, recortado en su círculo: el archivo es cuadrado y traía las esquinas de color
+  try {
+    const ul = await cargarImg('/ul.png');
+    g.save(); g.beginPath(); g.arc(W / 2, H - 216, 64, 0, 2 * Math.PI); g.closePath(); g.clip();
+    g.drawImage(ul, W / 2 - 64, H - 280, 128, 128);
+    g.restore();
+  } catch (e) { /* sin logo */ }
+  letra(700, 34, true); g.fillStyle = '#A5A5A0'; g.textAlign = 'center';
+  g.fillText('underlegends.pages.dev', W / 2, H - 96);
+  return new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('sin imagen'))), 'image/png'));
+}
+async function compartirImagen(blob, nombre, texto) {
+  const file = new File([blob], nombre, { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try { await navigator.share({ files: [file], text: texto }); return 'ok'; } catch (e) { if (e && e.name === 'AbortError') return 'cancelado'; }
+  }
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = u; a.download = nombre;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 5000);
+  return 'bajada';
+}
+function BotonHistoria({ liga, cfg, f, n }) {
+  const [est, setEst] = useState('');
+  const hacer = async () => {
+    if (est === 'armando') return;
+    setEst('armando');
+    let r = '';
+    try {
+      const blob = await imagenPuesto(liga, cfg, f, n);
+      r = await compartirImagen(blob, 'mi-puesto-' + (f.k || 'liga') + '.png', 'Estoy #' + n + ' en ' + cfg.et + ' de la Liga Global. ' + enlace('#/ranking'));
+    } catch (e) {
+      console.error('[ranking] la imagen para historias:', e);
+      r = 'error';
+    }
+    setEst(r === 'bajada' ? 'bajada' : r === 'error' ? 'error' : '');
+    if (r === 'bajada' || r === 'error') setTimeout(() => setEst(''), 3500);
+  };
+  const txt = est === 'armando' ? 'Armando la imagen…' : est === 'bajada' ? 'Imagen guardada' : est === 'error' ? 'No pude armarla' : 'Mi puesto para historias';
+  return (
+    <button type="button" className="btn verde chico rk-hist" onClick={hacer} aria-busy={est === 'armando'} aria-live="polite">
+      <Ico n="compartir" t={18} /><span>{txt}</span>
+    </button>
+  );
+}
+
 const VER = 50;
 
 export function Ranking({ liga, sub: subRuta, dc, raiz }) {
@@ -302,6 +573,9 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
   const [sv, setSv] = useState('');
   const [cc, setCc] = useState('');
   const [soloSigo, setSoloSigo] = useState(false);
+  const [soloNuevos, setSoloNuevos] = useState(false);
+  const [abierta, setAbierta] = useState(null);
+  const [perf, setPerf] = useState(() => (typeof window !== 'undefined' && window.PERF) || null);
   const [ver, setVer] = useState(VER);
   const [todas, setTodas] = useState(false);
   const [irA, setIrA] = useState(null);
@@ -326,7 +600,14 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
 
   // al cambiar de ranking: orden, búsqueda y «ver más» vuelven a cero (los filtros de servidor y país se quedan:
   // quien mira «sólo FFA» quiere seguir viendo FFA en Duelos)
-  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); }, [sub]);
+  useEffect(() => { setOrden(null); setVer(VER); setTodas(false); setAbierta(null); }, [sub]);
+  // el historial de cada uno (`/api/perfiles`), la primera vez que se abre una fila: lo pide app.js y lo guarda
+  useEffect(() => {
+    if (!abierta || perf || typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    window.perfiles().then((d) => { if (vivo && d) setPerf(d); });
+    return () => { vivo = false; };
+  }, [abierta, perf]);
 
   // los servidores y países que hay en ESTE ranking: un filtro que no filtra nada no se dibuja
   const svs = useMemo(() => [...new Set(base.map((f) => f.sv).filter(Boolean))].sort(), [base]);
@@ -338,12 +619,15 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
       if (sv && f.sv !== sv) return false;
       if (cc && f.cc !== cc) return false;
       if (soloSigo && !x.sigo.has(f.k)) return false;
+      if (soloNuevos && !(liga.T[f.k] || f).nu) return false;
     }
     if (qn && norm(cfg.nombre ? cfg.nombre(f) : limpio(f.n)).indexOf(qn) < 0) return false;
     return true;
   });
   const fs = orden ? ordenadas(fs0, orden.col, orden.desc) : fs0;
-  const filtrando = !!(qn || (filtros && (sv || cc || soloSigo)));
+  const filtrando = !!(qn || (filtros && (sv || cc || soloSigo || soloNuevos)));
+  // 3 · cuántos debutaron esta semana en ESTE ranking: con alguno, su chip
+  const nuevos = filtros ? base.filter((f) => (liga.T[f.k] || f).nu).length : 0;
   const vis = filtrando ? fs : fs.slice(0, ver);
   const cols = (movil && !todas ? cfg.movil : cfg.cols) || [];
   const act = orden ? orden.col : cols[0];
@@ -359,6 +643,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
   // ── tu lugar ──
   let lugar = null;
   let miFila = null;
+  let iYo = -1;
   if (!pronto && yo) {
     const esMio = cfg.grupo === 'pais' ? (f) => yo.cc && f.cc === yo.cc
       : cfg.grupo === 'crew' ? (f) => x.miCrew && limpio(f.crew).toLowerCase() === x.miCrew
@@ -370,6 +655,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
     if (i >= 0) {
       const f = base[i];
       miFila = clave(f);
+      iYo = i;
       const n = numero(cfg, f);
       let txt;
       if (!n) {
@@ -388,7 +674,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
           txt = d > 0 ? 'A ' + (dec ? coma(d, dec) : num(d)) + ' ' + unidad + ' del #' + numero(cfg, arriba) : 'Empatado con el #' + numero(cfg, arriba);
         } else txt = '1.º ×' + (f.oro || 0) + ' · 2.º ×' + (f.seg || 0) + ' · 3.º ×' + (f.ter || 0);
       }
-      lugar = { cara, quien, n, txt, ir: true, verificar: !n && f.fc };
+      lugar = { cara, quien, n, txt, ir: true, verificar: !n && f.fc, mov: sub === 'temporada' ? f.mv || 0 : 0 };
     } else if (sub === 'competitivo' && !yo.rg) {
       const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (yo.ev || 0));
       lugar = { cara, quien, n: 0, txt: falta ? 'Te faltan ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' para tu letra' : 'Tu letra llega con la próxima corrida' };
@@ -427,7 +713,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
     if (!miFila) return;
     if (!base.some((f) => clave(f) === miFila)) return;
     const visible = fs.findIndex((f) => clave(f) === miFila);
-    if (visible < 0) { setQ(''); setSv(''); setCc(''); setSoloSigo(false); }
+    if (visible < 0) { setQ(''); setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }
     const idx = (visible < 0 ? (orden ? ordenadas(base, orden.col, orden.desc) : base) : fs).findIndex((f) => clave(f) === miFila);
     setVer((v) => Math.max(v, idx + 10));
     setIrA(miFila + ':' + Date.now());
@@ -513,10 +799,12 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
               <label className="rk-buscar"><Ico n="buscar" t={18} />
                 <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={'Buscar ' + que[0]} aria-label={'Buscar ' + que[0]} enterKeyHint="search" />
               </label>
-              {filtros && (svs.length > 1 || ccs.length > 1 || x.sigo.size) ? (
+              {filtros && (svs.length > 1 || ccs.length > 1 || x.sigo.size || nuevos) ? (
                 <div className="rk-chips" role="group" aria-label="Filtrar">
-                  <button type="button" className={!sv && !cc && !soloSigo ? 'on' : ''} aria-pressed={!sv && !cc && !soloSigo}
-                    onClick={() => { setSv(''); setCc(''); setSoloSigo(false); }}>Todos</button>
+                  <button type="button" className={!sv && !cc && !soloSigo && !soloNuevos ? 'on' : ''} aria-pressed={!sv && !cc && !soloSigo && !soloNuevos}
+                    onClick={() => { setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }}>Todos</button>
+                  {nuevos ? <button type="button" className={'rk-chip-nuevo' + (soloNuevos ? ' on' : '')} aria-pressed={soloNuevos}
+                    onClick={() => setSoloNuevos(!soloNuevos)} title="Los que jugaron su primer evento esta semana">Nuevos · {nuevos}</button> : null}
                   {x.sigo.size ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién seguís</button> : null}
                   {svs.length > 1 ? svs.map((s) => (
                     <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}>
@@ -539,9 +827,10 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
               <div className="rk-invita"><span>¿Y vos? Entrá con Discord y te marcamos en cada ranking.</span>
                 <button type="button" className="btn verde chico" onClick={accion.cuenta}>Entrar</button></div>
             ) : null}
+            {iYo >= 0 && lugar && lugar.n ? <Cerca x={x} cfg={cfg} base={base} i={iYo} sub={sub} /> : null}
             {!base.length ? <p className="rk-vacio">{vacioTxt}</p>
               : !fs.length ? (
-                <p className="rk-vacio">Nadie con ese filtro. <button type="button" className="rk-lnk" onClick={() => { setQ(''); setSv(''); setCc(''); setSoloSigo(false); }}>Sacar los filtros</button></p>
+                <p className="rk-vacio">Nadie con ese filtro. <button type="button" className="rk-lnk" onClick={() => { setQ(''); setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }}>Sacar los filtros</button></p>
               ) : (
                 <div className={'rk-tw' + (todas && movil ? ' todas' : '')} ref={tabla}>
                   <table className="rk-t">
@@ -561,14 +850,20 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
                     <tbody>
                       {vis.map((f) => {
                         const k = clave(f);
-                        const cl = [k === miFila ? 'yo' : '', f.fc ? 'fc' : '', cfg.sinPuesto && cfg.sinPuesto(f) ? 'chica' : ''].filter(Boolean).join(' ');
-                        const href = cfg.grupo === 'pais' ? '#/pais/' + f.cc : cfg.grupo === 'crew' ? '#/crew/' + encodeURIComponent(f.clave || f.crew) : f.k ? '#/r/' + encodeURIComponent(f.k) : '';
+                        const ab = abierta === k;
+                        const cl = [k === miFila ? 'yo' : '', f.fc ? 'fc' : '', cfg.sinPuesto && cfg.sinPuesto(f) ? 'chica' : '', ab ? 'abierta' : ''].filter(Boolean).join(' ');
+                        const puede = cfg.grupo || f.k;
                         return (
-                          // toda la fila lleva a su perfil; el nombre es el link de verdad (teclado, abrir en otra pestaña)
-                          <tr key={k} data-c={k} className={cl || undefined}
-                            onClick={href ? (e) => { if (!e.target.closest('a, button')) location.hash = href; } : undefined}>
-                            {cols.map((id) => <td key={id} className={((COL[id].cls || '') + (id === act && id !== 'pos' && id !== 'i' ? ' on' : '')).trim() || undefined}>{COL[id].v(f, x)}</td>)}
-                          </tr>
+                          <Fragment key={k}>
+                            {/* 4 · tocar la fila la abre ahí mismo; el nombre sigue siendo el link a su perfil (teclado, otra pestaña) */}
+                            <tr data-c={k} className={cl || undefined} aria-expanded={puede ? ab : undefined}
+                              onClick={puede ? (e) => { if (!e.target.closest('a, button')) setAbierta(ab ? null : k); } : undefined}>
+                              {cols.map((id) => <td key={id} className={((COL[id].cls || '') + (id === act && id !== 'pos' && id !== 'i' ? ' on' : '')).trim() || undefined}>{COL[id].v(f, x)}</td>)}
+                            </tr>
+                            {ab ? (
+                              <tr className="rk-det"><td colSpan={cols.length}><Detalle x={x} cfg={cfg} f={f} perf={perf} /></td></tr>
+                            ) : null}
+                          </Fragment>
                         );
                       })}
                     </tbody>
@@ -598,7 +893,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
         <aside className={'rk-lugar' + (lugar.ir && yoVisible ? ' oculto' : '')} style={{ '--rk-tb': tb + 'px' }} aria-label="Tu lugar">
           {lugar.cara}
           <span className="rk-ln"><Num n={lugar.n} /></span>
-          <span className="rk-lt"><small>{lugar.quien}</small><b>{lugar.txt}</b></span>
+          <span className="rk-lt"><small>{lugar.quien}{lugar.mov ? <> · <Mov mv={lugar.mov} largo /></> : null}</small><b>{lugar.txt}</b></span>
           {lugar.verificar ? <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>
             : lugar.ir ? <button type="button" className="btn verde chico" onClick={encontrarme}>Encontrarme</button> : null}
         </aside>
