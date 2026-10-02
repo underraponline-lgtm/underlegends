@@ -1143,7 +1143,10 @@
 },
 "emilyfamily": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "jeixder": {
 "rg": "",
@@ -3040,6 +3043,22 @@
 "Six"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T03:08:33Z",
+"quien": [
+"Emily Family"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-02T03:08:33Z",
+"quien": [
+"Emily Family"
+],
+"carta": "temporada"
 }
 ]
 }
