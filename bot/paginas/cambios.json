@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "1.69",
+   "dia": "2026-10-01",
+   "cuando": "2026-10-01T20:08:00-04:00",
+   "titulo": "El bot lee mejor las llaves y reconoce a más gente",
+   "items": [
+    "🔴 **La llave en vivo con «CYPHER»**: POESÍA CRUDA (Urban Freestyle) abre con una fase de cypher en grupos de tres y no se veía en el Inicio. Ahora se ve desde la primera fase, y cada ronda se dibuja con todos sus cruces aunque todavía no estén cargados.",
+    "🏆 **Puntos que se perdían, devueltos**: el ayudante entre paréntesis en una final —«(EZE)»— dejaba sin ganador a la semifinal anterior, y un nombre que cambia de una ronda a otra —MATI que pasa como MATICERNA— dejaba sin ganador a su cruce. En la DESGRACIAS EN TOKYO VOL 18 2VS2, Molusco, Gian, Eze y Zignos recuperan su semifinal.",
+    "✍️ **La negrita también dice quién ganó**, cuando la llave la usa así y nada más lo dice. Y la «R» después de la bandera ya no queda pegada al nombre.",
+    "🤖 **Quién es quién, con lo que dice la llave**: el nombre al lado de una mención, el que cambia de una ronda a otra y quien se anotó con su nombre de siempre. De las preguntas de ✅ Decidir, 14 se resuelven o se cierran solas.",
+    "⏳ **La carta que se redibuja lo dice**: en «Los que mandan», mientras una tarjeta se actualiza, su número puede no coincidir con el orden. Ahora dice «se está redibujando». Y el evento dorado ya jugado se va de «Esta semana»."
+   ]
+  },
+  {
    "version": "1.68",
    "dia": "2026-10-01",
    "cuando": "2026-10-01T18:44:00-04:00",
