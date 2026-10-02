@@ -107,6 +107,14 @@ export class Liga {
     const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
     return this.d.r2 + '/' + k + '/' + cual + '.webp' + (v ? '?v=' + v : '');
   }
+  // ¿la imagen de esa carta es de antes de los números de ahora? Lo mide el ciclo (`_versiones()` de subir_web.py,
+  // `vj`); es el `vieja()` de app.js. Dlx, 01/10/2026: Makmah #3 en su carta y cuarto en Los que mandan — la carta se
+  // estaba redibujando y no lo decía
+  cartaVieja(k, cual) {
+    const f = this.T[k];
+    const i = (this.d.cartas || []).indexOf(cual);
+    return !!(f && i >= 0 && typeof f.vj === 'string' && f.vj.indexOf(String(i)) >= 0);
+  }
   avUrl(k) {
     const f = this.T[k];
     return f && f.av ? 'https://cdn.discordapp.com/avatars/' + f.av + '.webp?size=128' : null;
@@ -207,6 +215,12 @@ export class Liga {
     const cand = (this.d.calendario || []).filter((e) => e.sv === g.sv && utc(e.t) >= desde)
       .sort((a, b) => utc(a.t) - utc(b.t));
     return cand[0] || null;
+  }
+  // 🔑 EL DORADO QUE TODAVÍA NO TERMINÓ: hasta 5 h después de empezar. Dlx, 01/10/2026, con «DORADO ×3 · RAP
+  // EXHIBITION 2/8 · se jugó el martes» en la Tira: «si ya se jugó, que desaparezca». La insignia de su fecha sigue.
+  doradoVigente() {
+    const g = this.dorado();
+    return g && utc(g.t) + 5 * 3600000 > this.ahora ? g : null;
   }
   esDorado(nombre, sv) {
     const g = this.dorado();

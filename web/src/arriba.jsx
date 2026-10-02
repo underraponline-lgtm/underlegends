@@ -193,8 +193,8 @@ export function gruposHistorias(liga) {
     const slides = [];
     const m = (mm.sv || {})[sv];
     const lineas = [];
-    const g = liga.dorado();
-    if (g && g.sv === sv) lineas.push(<li key="d"><b>DORADO ×3</b>{limpio(g.n)}, {utc(g.t) < liga.ahora ? 'se jugó ' + liga.cuando(g.t) : liga.dia(g.t)}</li>);
+    const g = liga.doradoVigente();
+    if (g && g.sv === sv) lineas.push(<li key="d"><b>DORADO ×3</b>{limpio(g.n)}, {utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t)}</li>);
     const par = ((mm.guerra || {}).pares || []).find((p) => p.includes(sv));
     if (par) lineas.push(<li key="g"><b>GUERRA</b>contra {par[0] === sv ? par[1] : par[0]}: gana el que más puntos hace por persona</li>);
     const meta = (mm.metas || {})[sv];
@@ -776,7 +776,7 @@ export function Tira({ liga }) {
   const xs = m.sv || {};
   const svs = Object.keys(xs).sort((a, b) => (xs[b] - xs[a]) || (a < b ? -1 : 1));
   if (!svs.length) return null;
-  const g = liga.dorado();
+  const g = liga.doradoVigente();
   const nov = (liga.d.novedades || []).find((x) => /lunes de la liga/i.test(x.tit || ''));
   return (
     <section className="tira-s" id="semana" aria-label="Esta semana">
@@ -789,7 +789,7 @@ export function Tira({ liga }) {
           return <li key={sv} className={x > 1 ? 'sube' : (x < 1 ? 'baja' : '')}><a className="ts-sv" href={'#/sv/' + sv} aria-label={'Perfil de ' + sv}><span className="ts-id"><img alt="" src={liga.logo(sv)} /><b>{sv}</b></span><span className="ts-x">{mult(x)}</span></a></li>;
         })}
       </ul>
-      {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {g.sv} · {utc(g.t) < liga.ahora ? 'se jugó ' + liga.cuando(g.t) : liga.dia(g.t)}</span></p> : null}
+      {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {g.sv} · {utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t)}</span></p> : null}
     </section>
   );
 }

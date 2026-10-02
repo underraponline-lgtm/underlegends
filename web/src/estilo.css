@@ -76,7 +76,7 @@ h1,h2,h3,p{margin:0}
 .oscura{background:var(--oscura);color:var(--osc-tinta);margin-top:18px;padding-bottom:22px}
 .oscura .sec-t{border-top-color:var(--osc-tinta)}
 .mcs{grid-auto-columns:128px}
-.mc{display:grid;gap:8px}
+.mc{display:grid;gap:8px;align-content:start}
 .mc-carta{display:grid;place-items:start}
 .mc-pie b{display:block;font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .mc-pais{display:flex;align-items:center;gap:6px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;margin-bottom:4px}

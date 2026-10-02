@@ -94,10 +94,12 @@ export function Noticias({ liga, raiz }) {
 // ganados, los podios, la racha). Dlx, 01/10/2026: «las cosas de abajo son innecesarias porque la tarjeta ya tiene esa
 // info». El perfil sigue a un toque: la tarjeta abre su visor, que tiene «Ver su perfil»
 export function McPersona({ liga, f, dato, cual = 'temporada' }) {
+  // ⏳ mientras la carta se redibuja, su número puede no coincidir con el orden de acá: se dice
+  const vieja = liga.cartaVieja(f.k, cual);
   return (
     <article className="mc">
       <Carta liga={liga} k={f.k} cual={cual} cls="ci mc-ci" />
-      {dato ? <div className="mc-pie"><small>{dato}</small></div> : null}
+      {dato || vieja ? <div className="mc-pie"><small>{dato}{dato && vieja ? ' · ' : ''}{vieja ? '⏳ SE ESTÁ REDIBUJANDO' : ''}</small></div> : null}
     </article>
   );
 }

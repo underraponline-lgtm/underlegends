@@ -49,12 +49,12 @@ export function PerfilSv({ liga, sv }) {
   const notas = liga.muroLimpio().filter((it) => it.tipo !== 'anuncio' && liga.svDe(it) === sv)
     .map((it) => liga.itemMuro(it)).filter(Boolean).slice(0, 6);
   const buscados = ((liga.d.mw || {}).b || []).filter((b) => b.sv === sv);
-  const g = liga.dorado();
+  const g = liga.doradoVigente();
   const par = ((mm.guerra || {}).pares || []).find((p) => p.includes(sv));
   const meta = (mm.metas || {})[sv];
   const va = (mm.meta_va || {})[sv] || 0;
   const semana = [];
-  if (g && g.sv === sv) semana.push(['DORADO ×3', limpio(g.n) + ' · ' + (utc(g.t) < liga.ahora ? 'se jugó ' + liga.cuando(g.t) : liga.dia(g.t))]);
+  if (g && g.sv === sv) semana.push(['DORADO ×3', limpio(g.n) + ' · ' + (utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t))]);
   if (par) semana.push(['GUERRA', 'contra ' + (par[0] === sv ? par[1] : par[0]) + ': gana el que más puntos hace por persona']);
   if (meta) semana.push(['META', va + ' de ' + meta + ' personas' + (va >= meta ? ' · cumplida' : '')]);
   const fechas = [];
