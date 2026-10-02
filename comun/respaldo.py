@@ -84,6 +84,24 @@ def _uri(ruta):
     return _cache[ruta]
 
 
+#: 🙈 QUIÉN OCULTÓ SU FOTO (Dlx, 02/10/2026: «1. A»): la copia que deja `bot/fotos.py` (`ocultas()`) en el espejo,
+#: antes de dibujar. Se lee una vez por proceso: cada generador es un proceso nuevo
+_OCULTAS = os.path.join(BASE, 'comun', 'fotos', 'ocultas.json')
+_ocultas = None
+
+
+def oculta(nombre):
+    """¿Esa persona ocultó su foto? Va con su inicial en todas las cartas, como quien no tiene."""
+    global _ocultas
+    if _ocultas is None:
+        try:
+            with open(_OCULTAS, encoding='utf-8') as f:
+                _ocultas = {_norm(n) for n in (json.load(f) or {}).get('nombres') or []}
+        except (OSError, ValueError):
+            _ocultas = set()
+    return bool(nombre) and _norm(nombre) in _ocultas
+
+
 def foto(nombre):
     """La foto de esa persona si está en disco, en base64. Si no, None.
 
@@ -103,6 +121,9 @@ def foto(nombre):
     ⚠️ Y SI NO HAY ESPEJO, ESTO NO FALLA: sigue de largo a lo de antes. Un
     `--espejo` que no se corrió tiene que dar la carta de ayer, no un error.
     """
+    # 🙈 quien la ocultó no tiene foto para ninguna carta (ver `oculta()`)
+    if oculta(nombre):
+        return None
     n = _norm(nombre)
     tem = os.path.join(_TEMPORADA_FOTOS(), n + '.webp')
     if os.path.exists(tem):
@@ -165,6 +186,9 @@ def avatar(nombre, url=''):
     `av.startswith('http')` lo va a tirar en silencio — ya pasó en
     `normal_v3.py`, que ahora usa `_hay_foto()`.
     """
+    # 🙈 ni la del repo ni la URL del pool: quien ocultó su foto va con la inicial
+    if oculta(nombre):
+        return ''
     return foto(nombre) or (url if _url_suya(nombre, url) else '') or ''
 
 

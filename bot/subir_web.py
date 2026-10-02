@@ -142,7 +142,9 @@ def armar():
     from comun import respaldo as _resp
     _foto = _con_foto()
     _ver, _vieja = _versiones()
-    _avs = _avatares()
+    # 🙈 quien ocultó su foto va con su inicial en toda la página (Dlx, 02/10/2026: «1. A»; ver `fotos.ocultas()`)
+    _sin = set(_ocultas_ids())
+    _avs = {k: v for k, v in (_avatares() or {}).items() if str(k) not in _sin}
     _de = _quien(gente)
     _ult = _ultimos(_de)
     tabla = [{
@@ -652,6 +654,23 @@ def _discord():
         return s
     except (SystemExit, Exception):                      # noqa: BLE001
         return None
+
+
+def _ocultas_ids():
+    """Los Discord IDs de quienes ocultaron su foto (KV `fotos:ocultas`, ver `bot/fotos.py`); sin token, la copia."""
+    try:
+        import fotos as _FT
+        import requests as _rq
+        s = None
+        # ⚠️ `obligatorio=False`: sin token, `env()` corta el proceso entero (`sys.exit`), y eso no lo ataja un except
+        tok = _FT.env('CLOUDFLARE_API_TOKEN', obligatorio=False)
+        if tok:
+            s = _rq.Session()
+            s.headers['Authorization'] = 'Bearer ' + tok
+        return _FT.ocultas(s).get('ids') or []
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer quién ocultó su foto (%s)' % str(e)[:60])
+        return []
 
 
 def _avatares():

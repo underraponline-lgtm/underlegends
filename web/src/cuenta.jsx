@@ -28,7 +28,7 @@ function useCuentaEst() {
     return () => { W.removeEventListener('lg:cuentaest', f); W.removeEventListener('lg:cuenta', f); };
   }, []);
   return { FOTO: W.FOTO || null, REDES: W.REDES_MIAS || null, token: !!W.DC_TOKEN, MISV: W.MISV || null,
-    MISV_EST: W.MISV_EST || {}, ME_SIGUEN: W.ME_SIGUEN || null };
+    MISV_EST: W.MISV_EST || {}, ME_SIGUEN: W.ME_SIGUEN || null, MIFOTO: W.MIFOTO || null, MIFOTO_EST: W.MIFOTO_EST || {} };
 }
 
 // la zona y el formato de hora: los ajustes de app.js (`AJ`, `ZONAS`)
@@ -109,7 +109,7 @@ function grupos(liga, dc, tema, cual) {
       ['cuenta', 'yo', 'Mi cuenta', dc ? 'Discord · ' + limpio(dc.n) : 'Entrar con Discord'],
       ['perfil', 'perfil', 'Mi perfil', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
       ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
-      ['privacidad', 'candado', 'Privacidad', 'tus datos y este dispositivo'],
+      ['privacidad', 'candado', 'Privacidad', 'tu foto, tus datos y este dispositivo'],
     ]],
     ['AVISOS', [
       ['avisos', 'campana', 'Avisos de eventos', avisos ? 'activados en este dispositivo' : 'apagados'],
@@ -169,6 +169,8 @@ function Caja({ t, children, d }) {
 // `secRedes()`, `secMiServidor()`), con lo que hace cada botón allá ──
 function FotoCaja({ liga, dc }) {
   const est = useCuentaEst();
+  // si la ocultó, se avisa acá (ver abajo): por eso se pregunta también desde esta parte
+  useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc]);
   const F = est.FOTO;
   const yo = liga.yo;
   const T = (F && F.temporada) || liga.temp || 'temporada';
@@ -211,7 +213,14 @@ function FotoCaja({ liga, dc }) {
       </div>
     );
   }
-  return <Caja t="Tu foto de la tarjeta" d={!dc ? 'La de tu Discord. Entrá con Discord para cambiarla.' : !dc.clave ? 'Primero necesitás tu tarjeta.' : 'La de tu Discord. Va una por temporada.'}>{cuerpo}</Caja>;
+  // 🙈 si la ocultó, que lo sepa acá también: si no, cambiar la foto parece no hacer nada
+  const oculta = !!(est.MIFOTO && est.MIFOTO.oculta);
+  return (
+    <Caja t="Tu foto de la tarjeta" d={!dc ? 'La de tu Discord. Entrá con Discord para cambiarla.' : !dc.clave ? 'Primero necesitás tu tarjeta.' : 'La de tu Discord. Va una por temporada.'}>
+      {oculta ? <p className="cu-d">🙈 La tenés <b>oculta</b>: tus tarjetas van con tu inicial. Se cambia en <a href="#/cuenta/privacidad">Privacidad</a>.</p> : null}
+      {cuerpo}
+    </Caja>
+  );
 }
 
 const NOMBRE_RED = (t) => (W.RED_NOMBRE && W.RED_NOMBRE[t]) || t;
@@ -306,6 +315,38 @@ function ServidorCaja({ liga, dc }) {
   );
 }
 
+// 🙈 «OCULTAR MI FOTO» (Dlx, 29/09 y 02/10/2026: «1. A»). La página y tus tarjetas van con tu inicial: también las que
+// se ven en Discord, porque la página muestra las tarjetas y ocultarla sólo en los círculos no servía. Lo guarda el
+// vigía (`cuentaMiFoto()` de app.js) y lo aplica el ciclo en su próxima vuelta
+function OcultarFoto({ dc }) {
+  const est = useCuentaEst();
+  useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc]);
+  const d = 'Si la ocultás, la página y tus tarjetas —también las de Discord— te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
+  if (!dc) {
+    return (
+      <Caja t="Tu foto" d={d}>
+        <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>
+      </Caja>
+    );
+  }
+  const M = est.MIFOTO || {};
+  const e = est.MIFOTO_EST || {};
+  const nota = !est.MIFOTO ? 'Cargando…'
+    : e.error ? e.error
+    : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Probá en un rato.')
+    : e.va ? 'Guardando…'
+    : M.oculta ? (e.ok ? '✓ Oculta. ' : '') + 'Tus tarjetas se vuelven a dibujar con tu inicial en la próxima vuelta.'
+    : (e.ok ? '✓ Visible. ' : '') + 'Tu foto se ve en la página y en tus tarjetas.';
+  return (
+    <Caja t="Tu foto" d={d}>
+      <label className="cu-sw"><span><b>Ocultar mi foto</b><small role="status">{nota}</small></span>
+        <input type="checkbox" checked={!!M.oculta} disabled={!est.MIFOTO || !!M.error || !!e.va}
+          onChange={(ev) => { if (W.cuentaMiFoto) W.cuentaMiFoto(ev.target.checked); }} />
+        <i aria-hidden="true" /></label>
+    </Caja>
+  );
+}
+
 // quién te sigue: cuántos, y de ésos los que son raperos (los demás no tienen perfil)
 function TeSiguen({ liga }) {
   const est = useCuentaEst();
@@ -379,9 +420,9 @@ function Parte({ id, liga, dc, tema, onTema }) {
     );
   }
   if (id === 'privacidad') {
-    // ⚠️ «Ocultar mi foto» no va hasta que exista de verdad: un interruptor que no hace nada miente
     return (
       <>
+        <OcultarFoto dc={dc} />
         <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de vos." />
         <Caja t="Este dispositivo" d="Olvida quién sos, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
           <button type="button" className="btn borde2 chico" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</button>

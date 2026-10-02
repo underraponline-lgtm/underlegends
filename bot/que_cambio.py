@@ -424,6 +424,28 @@ def huellas():
             caras = {}
 
     from comun.claves import clave as _CL
+    # 🙈 Y QUIEN OCULTÓ SU FOTO VA CON LA INICIAL (Dlx, 02/10/2026: «1. A»). Su cara en el sello es «oculta», así la
+    # carta se vuelve a dibujar al ocultarla y al volver a mostrarla. La lista sale de KV (`fotos.ocultas()`), que
+    # además deja la copia que leen los generadores (`comun/respaldo.oculta()`): por eso se pide acá, antes de dibujar
+    try:
+        import fotos as _FTo
+        import requests as _rqo
+        # ⚠️ `obligatorio=False`: sin token, `env()` corta el proceso entero (`sys.exit`), y eso no lo ataja un except
+        _tko = _FTo.env('CLOUDFLARE_API_TOKEN', obligatorio=False)
+        _so = None
+        if _tko:
+            _so = _rqo.Session()
+            _so.headers['Authorization'] = 'Bearer ' + _tko
+        _ocultas = _FTo.ocultas(_so)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer quién ocultó su foto (%s): uso la copia' % str(e)[:50])
+        try:
+            import fotos as _FTo2
+            _ocultas = _FTo2.ocultas(None)
+        except Exception:                                # noqa: BLE001
+            _ocultas = {'ids': [], 'nombres': []}
+    for _n in _ocultas.get('nombres') or []:
+        caras[_CL(_n)] = 'oculta'
     # 🔴 LAS CAMISETAS, EN LA DE SERVIDOR: ver `camisetas()`
     camis = camisetas(list(est))
 

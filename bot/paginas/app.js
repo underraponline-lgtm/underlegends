@@ -5165,6 +5165,29 @@ function elegirMiServidor(sv) {
     repintarMiServidor();
   }).catch(function () { MISV_EST = { error: 'Sin conexión: probá de nuevo.' }; repintarMiServidor(); });
 }
+/* 🙈 «OCULTAR MI FOTO» (Dlx, 29/09/2026: «con ocultar mi foto en ajustes»; el 02/10: «1. A»). Como «tu servidor»:
+   lo guarda el vigía con tu Discord (`miFoto()` en bot/avisos.js) y el ciclo lo aplica en su próxima vuelta: la página
+   y tus tarjetas van con tu inicial. Lo dibuja Mi cuenta → Privacidad (web/src/cuenta.jsx) */
+var MIFOTO = null, MIFOTO_EST = {}, MIFOTO_PIDE = false;
+function pedirMiFoto() {
+  if (!DC || MIFOTO || MIFOTO_PIDE) return;
+  MIFOTO_PIDE = true;
+  pedirConCuenta('/api/avisos/mi-foto', {}, false).then(function (j) {
+    MIFOTO_PIDE = false;
+    MIFOTO = j && j.status === 200 ? j : { error: (j && j.error) || 'red' };
+    pintaPopCuenta();
+  }).catch(function () { MIFOTO_PIDE = false; MIFOTO = { error: 'red' }; pintaPopCuenta(); });
+}
+function cuentaMiFoto(ocultar) {
+  MIFOTO_EST = { va: true };
+  pintaPopCuenta();
+  conCuenta('/api/avisos/mi-foto', { ocultar: !!ocultar }, 's').then(function (j) {
+    if (!j) { MIFOTO_EST = {}; pintaPopCuenta(); return; }
+    if (j.status === 200) { MIFOTO = j; MIFOTO_EST = { ok: true }; }
+    else MIFOTO_EST = { error: errorCuenta(j.error) || 'No pude guardarlo. Probá de nuevo en un rato.' };
+    pintaPopCuenta();
+  }).catch(function () { MIFOTO_EST = { error: 'Sin conexión: probá de nuevo.' }; pintaPopCuenta(); });
+}
 function secMiServidor() {
   var svs = (D && D.svs) || [];
   if (!DC || !svs.length) return '';
@@ -5715,6 +5738,8 @@ function cuentaSalir() {
   if (DC) { guardarSigo([]); marcarSigoSrv(false); ME_SIGUEN = null; }
   MISV = null;
   MISV_EST = {};
+  MIFOTO = null;
+  MIFOTO_EST = {};
   YO = '';
   DC = null;
   guardarLS('lg:yo', null);
@@ -5732,6 +5757,8 @@ function cuentaOlvidarTodo() {
   ME_SIGUEN = null;
   MISV = null;
   MISV_EST = {};
+  MIFOTO = null;
+  MIFOTO_EST = {};
   AJ = {};
   YO = '';
   DC = null;

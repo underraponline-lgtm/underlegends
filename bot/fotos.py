@@ -210,6 +210,59 @@ def url_avatar(did, hash_):
 # ── R2 ────────────────────────────────────────────────────────────────────
 ETAGS = os.path.join(BASE, 'datos', 'fotos_etag.json')
 
+#: 🙈 QUIÉN OCULTÓ SU FOTO (Dlx, 02/10/2026: «1. A»). La lista la guarda el vigía (`miFoto()` en bot/avisos.js) y la
+#: copia a KV cuando cambia; el ciclo la lee una vez por corrida y la deja acá para los generadores, que corren
+#: aparte. ⚠️ EN EL ESPEJO, QUE ESTÁ GITIGNOREADO: quién ocultó su foto es un dato de esa persona y no va al repo.
+OCULTAS = os.path.join(BASE, 'comun', 'fotos', 'ocultas.json')
+
+
+def ocultas(s=None):
+    """`{'ids': [...], 'nombres': [...]}` de quienes ocultaron su foto: van con su inicial en la página y en sus
+    tarjetas.
+
+    Con `s` (una sesión de Cloudflare) se lee KV (`fotos:ocultas`) y se guarda la copia; sin `s`, la copia. Los
+    nombres salen del padrón —los del `raw` y los del `full`—: el sello (`que_cambio.huellas()`) y la foto de cada
+    carta (`comun/respaldo.py`) buscan por nombre, y el vigía sólo sabe el Discord ID.
+
+    ⚠️ SI KV NO CONTESTA, LA COPIA; y si no hay copia (un runner recién clonado), nadie. Es una caída de red: la
+    corrida siguiente lo corrige, y como la marca entra al sello, la carta se vuelve a dibujar sola.
+    """
+    vacio = {'ids': [], 'nombres': []}
+    ids = None
+    if s is not None:
+        try:
+            import subir_datos as SD
+            r = s.get('%s/values/%s' % (SD.API, 'fotos:ocultas'), timeout=30)
+            if r.status_code == 404:
+                ids = []
+            elif r.status_code == 200:
+                ids = sorted({str(x) for x in ((r.json() or {}).get('ids') or []) if str(x).isdigit()})
+        except Exception:                                # noqa: BLE001
+            ids = None
+    if ids is None:
+        try:
+            with io.open(OCULTAS, encoding='utf-8') as f:
+                d = json.load(f) or {}
+            return {'ids': list(d.get('ids') or []), 'nombres': list(d.get('nombres') or [])}
+        except (OSError, ValueError):
+            return vacio
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
+            padron = json.load(f) or []
+    except (OSError, ValueError):
+        padron = []
+    quienes = set(ids)
+    nombres = sorted({str(n) for p in padron if str(p.get('discord_id') or '') in quienes
+                      for n in (p.get('raw'), p.get('full')) if n})
+    out = {'ids': ids, 'nombres': nombres}
+    try:
+        os.makedirs(os.path.dirname(OCULTAS), exist_ok=True)
+        with io.open(OCULTAS, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(out, f, ensure_ascii=False)
+    except OSError:
+        pass
+    return out
+
 
 def etags(s=None):
     """{clave: etag} de las fotos de esta temporada en R2.
@@ -614,6 +667,10 @@ def main():
         # paso que corre en Actions antes de dibujar, y cuantos menos
         # secretos necesite ese paso, mejor.
         espejo(r2)
+        # 🙈 y quién ocultó su foto, al lado: es el paso que corre antes de dibujar en el trabajo que dibuja, y las
+        # cartas lo leen de esta copia (`comun/respaldo.oculta()`). Sin esto, un runner limpio la dibujaba con la cara
+        oc = ocultas(r2)
+        print('   🙈 %d con la foto oculta' % len(oc.get('ids') or []))
         if not (ver or bajar):
             print('')
             return

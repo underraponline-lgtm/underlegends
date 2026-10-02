@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.80",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T09:25:00-04:00",
+   "titulo": "Ocultar tu foto",
+   "items": [
+    "🙈 **Ocultar tu foto**: en Mi cuenta → Privacidad. Si la ocultás, la página y tus tarjetas —también las de Discord— te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo (cada media hora, salvo de 3 a 11 AM, hora del este)."
+   ]
+  },
+  {
    "version": "1.79",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T09:00:00-04:00",
