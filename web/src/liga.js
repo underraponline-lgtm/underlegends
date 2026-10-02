@@ -72,13 +72,25 @@ function diaSemana(d) {
   return new Date(Date.UTC(y, m - 1, dd)).getUTCDay();
 }
 function diaMes(d) { return Number(diaISO(d).split('-')[2]); }
-function horaNum(d) {
-  if (W.fmtFecha) {
-    const h = W.fmtFecha(d, { hour: 'numeric', hourCycle: 'h23' });
-    const n = parseInt(String(h).replace(/\D+/g, ''), 10);
+// los minutos desde la medianoche, en la zona de quien mira (la de Ajustes si eligió una: `zona()` de app.js)
+export function minutosDelDia(t) {
+  const d = utc(t);
+  try {
+    const o = { hour: 'numeric', minute: 'numeric', hourCycle: 'h23' };
+    const z = W.zona && W.zona();
+    if (z) o.timeZone = z;
+    const p = {};
+    new Intl.DateTimeFormat('en-US', o).formatToParts(d).forEach((x) => { p[x.type] = x.value; });
+    const n = (Number(p.hour) % 24) * 60 + Number(p.minute);
     if (!isNaN(n)) return n;
-  }
-  return d.getHours();
+  } catch (e) { /* la del dispositivo */ }
+  return d.getHours() * 60 + d.getMinutes();
+}
+// 🔴 ANTES PASABA POR `fmtFecha()`, que es `toLocaleDateString`: con sólo la hora pedida, el navegador le agrega la
+// fecha («1/10/2026, 20»), y sacarle lo que no es número daba 110202620. «Anoche» salía para todo lo de ayer —también
+// lo de las 5 PM— y nunca para lo de esta madrugada (02/10/2026)
+function horaNum(d) {
+  return Math.floor(minutosDelDia(d) / 60);
 }
 
 export class Liga {

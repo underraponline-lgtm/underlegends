@@ -18,6 +18,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -434,37 +435,10 @@ function Detalle({ x, cfg, f, perf }) {
 }
 
 // ── 5 · TU PUESTO COMO IMAGEN PARA HISTORIAS (Dlx, 02/10/2026: «listo»): 1080×1920, con tu carta de verdad parada en
-// su escalón, y el menú de compartir del celular (Instagram, WhatsApp…) o, en la compu, el archivo. Se arma en el
-// navegador: R2 deja leer las cartas desde la página (CORS), así que el lienzo no queda «manchado» ─────────────────
-function cargarImg(src) {
-  return new Promise((res, rej) => {
-    const im = new Image();
-    im.crossOrigin = 'anonymous';
-    im.onload = () => res(im);
-    im.onerror = () => rej(new Error('no cargó ' + src));
-    im.src = src;
-  });
-}
+// su escalón, y el menú de compartir del celular (Instagram, WhatsApp…) o, en la compu, el archivo. El marco, la carta
+// y el compartir viven en historia.js, que también usa el campeón de Eventos ─────────────────────────────────────────
 async function imagenPuesto(liga, cfg, f, n) {
-  const W = 1080;
-  const H = 1920;
-  const c = document.createElement('canvas');
-  c.width = W; c.height = H;
-  const g = c.getContext('2d');
-  try { await Promise.all(['900 120px Archivo', '700 40px "Space Mono"'].map((x) => document.fonts.load(x))); } catch (e) { /* las del sistema */ }
-  const letra = (peso, px, mono) => {
-    g.font = peso + ' ' + px + 'px ' + (mono ? '"Space Mono", monospace' : 'Archivo, sans-serif');
-    if ('fontStretch' in g) g.fontStretch = mono ? 'normal' : 'expanded';
-    if ('letterSpacing' in g) g.letterSpacing = mono ? '4px' : '0px';
-  };
-  g.fillStyle = '#030304'; g.fillRect(0, 0, W, H);
-  // los círculos de la escena: el magenta arriba a la derecha y el verde agua abajo a la izquierda
-  g.globalAlpha = 0.9; g.fillStyle = '#E41373'; g.beginPath(); g.arc(W + 40, 300, 430, 0, 2 * Math.PI); g.fill();
-  g.globalAlpha = 0.28; g.fillStyle = '#29B298'; g.beginPath(); g.arc(-60, H - 300, 480, 0, 2 * Math.PI); g.fill();
-  g.globalAlpha = 1;
-  g.fillStyle = '#29B298'; g.fillRect(0, 0, W / 2, 16);
-  g.fillStyle = '#E41373'; g.fillRect(W / 2, 0, W / 2, 16);
-  g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+  const { c, g, letra } = await lienzo();
   letra(700, 34, true); g.fillStyle = '#A5A5A0';
   g.fillText(('LIGA GLOBAL · ' + liga.temp + ' · RANKING').toUpperCase(), 72, 132);
   let px = 116;
@@ -474,30 +448,8 @@ async function imagenPuesto(liga, cfg, f, n) {
   // la carta: la de esta categoría si la tiene (la Competitiva en el Competitivo), si no la de Temporada
   const t = liga.T[f.k] || {};
   const cual = cfg.podio === 'competitivo' && (t.c || []).includes('competitivo') ? 'competitivo' : 'temporada';
-  const url = liga.cartaUrl(f.k, cual);
   const y0 = 330;
-  let cw = 600;
-  let ch = 600;
-  try {
-    if (!url) throw new Error('sin carta');
-    // 🔴 CON SU PROPIA DIRECCIÓN. El podio ya cargó esta carta como imagen común, y R2 contesta ESE pedido sin
-    // permiso de lectura y sin `Vary: Origin`: el navegador reusaba lo guardado y el lienzo la rechazaba. En
-    // producción salía la cara en vez de la carta (02/10/2026); en la prueba local no se veía
-    const im = await cargarImg(url + (url.indexOf('?') < 0 ? '?' : '&') + 'lienzo=1');
-    ch = Math.round(cw * im.naturalHeight / im.naturalWidth);
-    if (ch > 900) { cw = Math.round(cw * 900 / ch); ch = 900; }
-    g.drawImage(im, (W - cw) / 2, y0, cw, ch);
-  } catch (e) {
-    // sin carta: su cara en un círculo grande (o la inicial)
-    const r = 260;
-    g.save(); g.beginPath(); g.arc(W / 2, y0 + 300, r, 0, 2 * Math.PI); g.closePath(); g.fillStyle = '#F6F6F6'; g.fill(); g.clip();
-    let cara = false;
-    try { const av = liga.avUrl(f.k); if (av) { g.drawImage(await cargarImg(av), W / 2 - r, y0 + 300 - r, 2 * r, 2 * r); cara = true; } } catch (e2) { /* la inicial */ }
-    g.restore();
-    if (!cara) { letra(900, 260, false); g.fillStyle = '#030304'; g.textAlign = 'center'; g.fillText((limpio(f.n)[0] || '?').toUpperCase(), W / 2, y0 + 390); }
-    letra(900, 64, false); g.fillStyle = '#F6F6F6'; g.textAlign = 'center'; g.fillText(limpio(f.n).toUpperCase(), W / 2, y0 + 680);
-    ch = 720;
-  }
+  const ch = await carta(g, letra, liga, f.k, f.n, cual, W / 2, y0, 600, 900);
   // el escalón con el puesto: el 1 en verde agua, el 2 en magenta, el resto en blanco
   const ye = y0 + ch + 28;
   const col = n === 1 ? ['#29B298', '#030304'] : n === 2 ? ['#E41373', '#FFFFFF'] : ['#F6F6F6', '#030304'];
@@ -518,45 +470,15 @@ async function imagenPuesto(liga, cfg, f, n) {
     g.closePath(); g.fill();
     g.fillStyle = '#F6F6F6'; g.fillText(txt, xm + 44, ym);
   }
-  // abajo: la marca y la dirección
-  // el logo, recortado en su círculo: el archivo es cuadrado y traía las esquinas de color
-  try {
-    const ul = await cargarImg('/ul.png');
-    g.save(); g.beginPath(); g.arc(W / 2, H - 216, 64, 0, 2 * Math.PI); g.closePath(); g.clip();
-    g.drawImage(ul, W / 2 - 64, H - 280, 128, 128);
-    g.restore();
-  } catch (e) { /* sin logo */ }
-  letra(700, 34, true); g.fillStyle = '#A5A5A0'; g.textAlign = 'center';
-  g.fillText('underlegends.pages.dev', W / 2, H - 96);
-  return new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error('sin imagen'))), 'image/png'));
-}
-async function compartirImagen(blob, nombre, texto) {
-  const file = new File([blob], nombre, { type: 'image/png' });
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try { await navigator.share({ files: [file], text: texto }); return 'ok'; } catch (e) { if (e && e.name === 'AbortError') return 'cancelado'; }
-  }
-  const u = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = u; a.download = nombre;
-  document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(() => URL.revokeObjectURL(u), 5000);
-  return 'bajada';
+  await pie(g, letra);
+  return aPng(c);
 }
 function BotonHistoria({ liga, cfg, f, n }) {
   const [est, setEst] = useState('');
-  const hacer = async () => {
+  const hacer = () => {
     if (est === 'armando') return;
-    setEst('armando');
-    let r = '';
-    try {
-      const blob = await imagenPuesto(liga, cfg, f, n);
-      r = await compartirImagen(blob, 'mi-puesto-' + (f.k || 'liga') + '.png', 'Estoy #' + n + ' en ' + cfg.et + ' de la Liga Global. ' + enlace('#/ranking'));
-    } catch (e) {
-      console.error('[ranking] la imagen para historias:', e);
-      r = 'error';
-    }
-    setEst(r === 'bajada' ? 'bajada' : r === 'error' ? 'error' : '');
-    if (r === 'bajada' || r === 'error') setTimeout(() => setEst(''), 3500);
+    armarYCompartir(() => imagenPuesto(liga, cfg, f, n), 'mi-puesto-' + (f.k || 'liga') + '.png',
+      'Estoy #' + n + ' en ' + cfg.et + ' de la Liga Global. ' + enlace('#/ranking'), setEst, 'ranking');
   };
   const txt = est === 'armando' ? 'Armando la imagen…' : est === 'bajada' ? 'Imagen guardada' : est === 'error' ? 'No pude armarla' : 'Mi puesto para historias';
   return (

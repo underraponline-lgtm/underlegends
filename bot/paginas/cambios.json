@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "1.93",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T16:26:00-04:00",
+   "titulo": "Eventos nuevo, con el campeón para historias",
+   "items": [
+    "📅 **Eventos, rehecho**: día por día con la tira de arriba; lo que se juega ahora, lo próximo o el último campeón; cada evento terminado se abre con su podio y su cuadro; filtro por servidor; el mes, la campana y tu calendario en la misma página; los últimos campeones y cómo se juega.",
+    "📸 **El campeón para historias**: en cada evento terminado, «Para historias» arma una imagen con la carta del campeón (las dos, si ganó una pareja) y a quién le ganó la final.",
+    "🗓️ **Cuándo suele jugar cada servidor**: qué días y en qué franja, en tu hora. En un día sin nada, además, qué hubo los mismos días de las semanas anteriores.",
+    "🕗 **«Anoche» y «ayer», bien dichos**: lo de ayer a la tarde salía como «anoche»."
+   ]
+  },
+  {
    "version": "1.92",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T16:00:00-04:00",

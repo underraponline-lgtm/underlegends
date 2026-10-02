@@ -128,7 +128,7 @@ html.ini-nuevo{scroll-padding-top:0}
   });
   // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, lo que vuelve de Discord, o algo que no es una
   // vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
-  var V = {"crew":1,"eventos":1,"guia":1,"mundo":1,"pais":1,"pase":1,"publicaciones":1,"r":1,"tarjetas":1,"tienda":1,"avisos":1,"llave":1};
+  var V = {"crew":1,"guia":1,"mundo":1,"pais":1,"pase":1,"publicaciones":1,"r":1,"tarjetas":1,"tienda":1,"llave":1};
   var h = location.hash || '', ini = /^#(access_token|error)=/.test(h);
   if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || !V[p]; }
   var c = document.documentElement.classList;

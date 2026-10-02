@@ -855,6 +855,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-mo .evp-cm{width:100%}
 /* la tira de los días, pegada arriba */
 .evp-dias{position:sticky;top:0;z-index:20;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
+/* lo que se baja a mirar (la campana de `#/avisos`, el día elegido) no queda abajo de la tira de los días */
+#ev-campana,.evp-centro{scroll-margin-top:92px}
 .evp-dias-in{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 12px}
 .evp-dias-in::-webkit-scrollbar{display:none}
 .evp-dias button{flex:none;display:grid;justify-items:center;gap:3px;min-width:62px;padding:7px 8px 6px;border:1.5px solid #3A3A3E;background:transparent;
@@ -965,6 +967,34 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-orgs li{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);font:700 13px/1 Archivo,sans-serif}
 .evp-orgs a{display:inline-flex;align-items:center;gap:6px;color:var(--tinta)}
 .evp-orgs em{font:700 10.5px/1 "Space Mono",monospace;font-style:normal;color:var(--gris)}
+/* cuándo suele jugar cada servidor: un cuadrito por día de la semana (más lleno, más eventos ese día) y la franja abajo,
+   que en 12 horas —«5:00 p. m. a 1:00 a. m.»— no entra al costado en un teléfono */
+.evp-cuando{display:grid;gap:10px;justify-items:start;min-width:0}
+.evp-antes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.evp-antes li{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 10px;border:1.5px solid var(--linea);font:800 12px/1 Archivo,sans-serif;font-stretch:115%}
+.evp-antes img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.evp-antes b{font:700 11px/1 "Space Mono",monospace;color:var(--gris)}
+.evp-cj{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.evp-cj li{display:grid;grid-template-columns:76px repeat(7,24px);column-gap:5px;row-gap:5px;align-items:center}
+.evp-cj-cab{margin-bottom:-4px}
+.evp-cj-cab u{font:700 10px/1 "Space Mono",monospace;text-decoration:none;text-align:center;color:var(--gris)}
+.evp-cj-cab u.on{color:var(--tinta);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.evp-cj-sv{display:inline-flex;align-items:center;gap:6px;min-width:0;font:800 12px/1 Archivo,sans-serif;font-stretch:115%}
+.evp-cj-sv img{width:18px;height:18px;border-radius:50%;object-fit:cover;flex:none}
+.evp-cj i{display:block;height:24px}
+.evp-cj i.no{border:1.5px solid var(--suave)}
+.evp-cj i.on{outline:2px solid var(--tinta);outline-offset:1px}
+.evp-cj-h{grid-column:2 / -1;font:700 10.5px/1.2 "Space Mono",monospace;color:var(--gris);white-space:nowrap}
+/* adentro del día vacío, `.evp-nada p` (16 px) les ganaba a las dos */
+.evp-cuando .evp-tx{font:400 14.5px/1.45 Archivo,sans-serif}
+.evp-cuando .evp-nota{font:700 10.5px/1.45 "Space Mono",monospace}
+/* «Para historias» del campeón de arriba: en el teléfono, sólo el ícono al lado de «Ver la llave», así «Activar la
+   campana» sigue en la primera pantalla (con el texto, la empujaba abajo de la barra) */
+.evp-hist[aria-busy="true"]{opacity:.6}
+@media (max-width: 899px){
+  .evp-mo .evp-hist.ic{width:48px;padding:0}
+  .evp-mo .evp-hist.ic span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+}
 .evp-oc{width:22px;height:22px;font:800 10px/1 Archivo,sans-serif}
 @media (min-width: 900px){
   .app .evp-esc:before{top:-160px;bottom:auto;right:-120px}
@@ -987,6 +1017,6 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .evp-mo.ult .evp-mo-n b{font-size:24px}
   /* en la compu, los ocho en una fila (`.app .rail` los pasaba a cinco por fila, enormes) */
   .app .evp-camps{grid-auto-flow:row;grid-template-columns:repeat(8,minmax(0,1fr));overflow:visible}
-  .app .evp-como{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+  .app .evp-como{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
   .app .evp-como .evp-nota{grid-column:1 / -1}
 }

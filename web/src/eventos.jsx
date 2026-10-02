@@ -1,14 +1,16 @@
 // Eventos, rehecho (`#/eventos`). Dlx, 02/10/2026: «AHORA hay que remake la página de eventos». Es el TABLERO que
 // aprobó el 29/09 (*«sí, pero con una mezcla del actual, que podamos ver las llaves»*): los días arriba, lo que pasa
 // cada día en tres grupos —en vivo, lo que viene y lo que terminó, con su llave—, el mes, la campana y los últimos
-// campeones. Mientras es PREVIEW se ve sólo con `lg:prev-ev` (ver App.jsx); para todos sigue la vista de app.js.
+// campeones. Para todos desde la 1.93 (Dlx, 02/10/2026: «sí, publícalo»), con sus dos ideas: el campeón como imagen
+// para historias y cuándo suele jugar cada servidor. La vista de app.js queda escondida, de respaldo.
 //
 // ⚠️ TODO SALE DEL PAYLOAD (`calendario`, `proximos`, `llaves`, `actividad`, `orgs`) y de lo que app.js ya sabe en vivo
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DIAS, MESES, hora, limpio, num, recorte, resultado, utc } from './liga.js';
+import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, utc } from './liga.js';
 import { Cara, Carta, Compartir, Ico, accion, enlace } from './piezas.jsx';
 import { CuadroMini, gcal, llaveEnVivo } from './arriba.jsx';
+import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
 const ANDROID = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent || '');
 const TACTIL = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
@@ -133,10 +135,118 @@ function Calendario() {
 function Hora({ t }) {
   return isNaN(utc(t)) ? null : <span className="evp-h">{hora(t)}</span>;
 }
-function Acciones({ liga, e, L, fut }) {
+// ── el campeón como imagen para historias (Dlx, 02/10/2026: «me gusta»): el evento, la carta de verdad del campeón —las
+// dos, si ganó una pareja— y su escalón, con el mismo marco que «Mi puesto» del Ranking (historia.js) ────────────────
+function partir(g, texto, ancho) {
+  const out = [];
+  let l = '';
+  texto.split(/\s+/).filter(Boolean).forEach((p) => {
+    const x = l ? l + ' ' + p : p;
+    if (l && g.measureText(x).width > ancho) { out.push(l); l = p; } else l = x;
+  });
+  if (l) out.push(l);
+  return out;
+}
+// la imagen se mira días después: «ayer» mentiría, así que va la fecha («1 OCT»)
+function fechaFija(liga, t) {
+  const k = liga.diaClave(t);
+  if (!k) return '';
+  const [, m, d] = k.split('-').map(Number);
+  return d + ' ' + MESES[m - 1].slice(0, 3);
+}
+const slug = (s) => norm(limpio(s)).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'evento';
+async function imagenCampeon(liga, ll) {
+  const { c, g, letra } = await lienzo();
+  const tabla = ll.tabla || [];
+  let filas = tabla.filter((r) => r[1] === 'Campeón');
+  if (!filas.length && tabla.length) filas = [tabla[0]];
+  const varios = filas.length > 1;
+  letra(700, 34, true); g.fillStyle = '#A5A5A0';
+  g.fillText(('LIGA GLOBAL · ' + liga.temp + ' · ' + (varios ? 'CAMPEONES' : 'CAMPEÓN')).toUpperCase(), 72, 132);
+  // el evento, en hasta tres renglones: se achica hasta que entra
+  const titulo = limpio(ll.nombre).toUpperCase();
+  let px = 104;
+  let lineas = [];
+  for (;;) {
+    letra(900, px, false);
+    lineas = partir(g, titulo, W - 144);
+    if ((lineas.length <= 3 && lineas.every((l) => g.measureText(l).width <= W - 144)) || px <= 56) break;
+    px -= 6;
+  }
+  g.fillStyle = '#F6F6F6';
+  let y = 156;
+  lineas.forEach((l) => { y += Math.round(px * 0.95); g.fillText(l, 72, y); });
+  // el servidor, cuánta gente y el día
+  y += 76;
+  let x = 72;
+  try {
+    const lg = await cargarImg(liga.logo(ll.sv));
+    g.save(); g.beginPath(); g.arc(x + 26, y - 12, 26, 0, 2 * Math.PI); g.closePath(); g.clip();
+    g.drawImage(lg, x, y - 38, 52, 52);
+    g.restore();
+    x += 72;
+  } catch (e) { /* sin logo */ }
+  letra(700, 34, true); g.fillStyle = '#F6F6F6'; g.textAlign = 'left';
+  g.fillText([ll.sv, ll.participantes ? ll.participantes + ' raperos' : '', fechaFija(liga, liga.fechaLlave(ll))].filter(Boolean).join(' · ').toUpperCase(), x, y);
+  // la carta (o las dos de una pareja), con lo que queda arriba del escalón, la línea de la final y el logo
+  const yc = y + 56;
+  const tope = H - 280 - 48 - 70 - 210 - 28;
+  const dos = filas.slice(0, 2);
+  let ch = 0;
+  // de a una: cada carta sin foto recorta su círculo, y dos a la vez se pisaban el recorte
+  for (let i = 0; i < dos.length; i += 1) {
+    const r = dos[i];
+    const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]);
+    const cx = dos.length === 2 ? W / 2 + (i ? 225 : -225) : W / 2;
+    // eslint-disable-next-line no-await-in-loop
+    ch = Math.max(ch, await carta(g, letra, liga, f ? f.k : '', r[0], 'temporada', cx, yc, dos.length === 2 ? 420 : 540, tope - yc));
+  }
+  // el escalón del campeón, en verde agua, con su nombre
+  const ye = yc + ch + 28;
+  const ew = dos.length === 2 ? 870 : 600;
+  g.fillStyle = '#29B298'; g.fillRect((W - ew) / 2, ye, ew, 210);
+  letra(700, 34, true); g.fillStyle = '#030304'; g.textAlign = 'center';
+  g.fillText(varios ? 'CAMPEONES' : 'CAMPEÓN', W / 2, ye + 60);
+  const quien = filas.map((r) => limpio(r[0])).join(' y ').toUpperCase();
+  let pn = 100;
+  letra(900, pn, false);
+  while (pn > 40 && g.measureText(quien).width > ew - 60) { pn -= 4; letra(900, pn, false); }
+  g.fillText(quien, W / 2, ye + 135 + Math.round(pn * 0.36));
+  // a quién le ganó la final, cuando eso se puede decir sin dudas: un campeón y un subcampeón
+  const sub = tabla.filter((r) => r[1] === 'Subcampeón');
+  if (!varios && sub.length === 1) {
+    const txt = ('Le ganó la final a ' + limpio(sub[0][0])).toUpperCase();
+    let pf = 34;
+    letra(700, pf, true);
+    while (pf > 24 && g.measureText(txt).width > W - 144) { pf -= 2; letra(700, pf, true); }
+    g.fillStyle = '#F6F6F6';
+    g.fillText(txt, W / 2, ye + 210 + 70);
+  }
+  await pie(g, letra);
+  return aPng(c);
+}
+function BotonCampeon({ liga, ll, estilo = 'borde2 chico', ic = false }) {
+  const [est, setEst] = useState('');
+  const hacer = () => {
+    if (est === 'armando') return;
+    const g = liga.campeon(ll);
+    const dia = liga.diaClave(liga.fechaLlave(ll));
+    armarYCompartir(() => imagenCampeon(liga, ll), 'campeon-' + slug(ll.nombre) + '.png',
+      g.join(' y ') + (g.length > 1 ? ' ganaron ' : ' ganó ') + limpio(ll.nombre) + ' en la Liga Global. ' + enlace('#/eventos/' + dia), setEst, 'eventos');
+  };
+  const txt = est === 'armando' ? 'Armando la imagen…' : est === 'bajada' ? 'Imagen guardada' : est === 'error' ? 'No pude armarla' : 'Para historias';
+  return (
+    <button type="button" className={'btn ' + estilo + ' evp-hist' + (ic ? ' ic' : '')} onClick={hacer} aria-busy={est === 'armando'} aria-live="polite" title={ic ? txt : undefined}>
+      <Ico n="compartir" t={16} /><span>{txt}</span>
+    </button>
+  );
+}
+
+function Acciones({ liga, e, L, fut, ll }) {
   return (
     <div className="t-acc">
       {e.ll ? <button type="button" className="btn verde chico" onClick={() => accion.llave(e.ll)}>Ver la llave</button> : null}
+      {ll ? <BotonCampeon liga={liga} ll={ll} /> : null}
       {!e.ll && L ? <button type="button" className="btn verde chico" onClick={() => accion.llave('v:' + L.id)}>Ver la llave en vivo</button> : null}
       {fut ? <button type="button" className="btn verde chico" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={16} />Quiero aviso</button> : null}
       {fut ? <a href={gcal({ nombre: e.n, sv: e.sv, cuando: e.t, link: e.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a> : null}
@@ -185,7 +295,7 @@ function Evento({ liga, e, est, L, abierto }) {
       ) : null}
       {est === 'vivo' && L ? <div className="evp-cm"><CuadroMini liga={liga} ll={L} /></div> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
-      <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} />
+      <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} />
     </article>
   );
 }
@@ -246,8 +356,85 @@ function Campeones({ liga }) {
   );
 }
 
+// ── cuándo suele jugar cada servidor (Dlx, 02/10/2026: «me gusta»): de los eventos que ya pasaron, qué días de la
+// semana y en qué franja, en la hora de quien mira. Sólo los servidores con 3 o más: con menos, «suele» sería
+// inventarlo. Y la franja es la del medio (del 20 % al 80 % de los horarios), así un evento raro no la estira ──────────
+const SEMANA = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+const SEMANA_S = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+const SEMANA_P = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados', 'domingos'];
+const MADRUGADA = 5 * 60;   // lo de antes de las 5 AM es la noche anterior: 0:30 cuenta como 24:30 para la franja
+function dowDe(k) {
+  const [y, m, d] = k.split('-').map(Number);
+  return (new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay() + 6) % 7;   // 0 = lunes
+}
+function patrones(liga, cal) {
+  const ahora = liga.ahora.getTime();
+  const por = {};
+  const todos = [];
+  cal.forEach((c) => {
+    const t = utc(c.t);
+    if (!c.sv || c.fut || isNaN(t) || t.getTime() > ahora) return;
+    const k = liga.diaClave(t);
+    let m = minutosDelDia(t);
+    if (m < MADRUGADA) m += 1440;
+    const x = { t, k, sv: c.sv, dow: dowDe(k), m };
+    (por[c.sv] = por[c.sv] || []).push(x);
+    todos.push(x);
+  });
+  const svs = Object.keys(por).filter((s) => por[s].length >= 3).sort((a, b) => por[b].length - por[a].length).map((s) => {
+    const xs = por[s];
+    const dias = [0, 0, 0, 0, 0, 0, 0];
+    xs.forEach((x) => { dias[x.dow] += 1; });
+    const ms = xs.map((x) => x.m).sort((a, b) => a - b);
+    const desde = Math.floor(ms[Math.floor(0.2 * (ms.length - 1))] / 60) * 60;
+    const hasta = Math.max(desde + 60, Math.ceil(ms[Math.ceil(0.8 * (ms.length - 1))] / 60) * 60);
+    return { sv: s, n: xs.length, dias, desde, hasta, ref: xs[0] };
+  });
+  const primero = todos.reduce((a, x) => (!a || x.t < a ? x.t : a), null);
+  return { svs, todos, primero };
+}
+// una hora del día (en minutos; puede pasar de las 24) dicha como las demás de la página: se corre un instante real
+function horaDe(ref, min) { return hora(new Date(ref.t.getTime() + (min - ref.m) * 60000)); }
+function diasEnPalabras(dias) {
+  const ds = SEMANA_P.filter((_, i) => dias[i]);
+  return ds.length === 7 ? 'todos los días' : 'los ' + (ds.length > 1 ? ds.slice(0, -1).join(', ') + ' y ' + ds[ds.length - 1] : ds[0]);
+}
+function CuandoJuega({ liga, cal, dia, color, et }) {
+  const P = useMemo(() => patrones(liga, cal), [liga, cal]);
+  if (!P.svs.length) return null;
+  const desde = P.primero ? liga.fechaLarga(P.primero) : '';
+  const dow = dia ? dowDe(dia) : -1;
+  // para un día sin nada (hoy o adelante): lo que hubo los otros días como éste, con su hora
+  const antes = dia && dia >= liga.diaClave(liga.ahora) ? P.todos.filter((x) => x.dow === dow && x.k < dia).sort((a, b) => a.m - b.m) : null;
+  return (
+    <div className="evp-cuando">
+      {et ? <span className="evp-et">{et}</span> : null}
+      {antes ? (antes.length ? (
+        <>
+          <p className="evp-tx">Los {SEMANA_P[dow]} anteriores hubo:</p>
+          <ul className="evp-antes">{antes.slice(0, 8).map((x, i) => <li key={i}><img alt="" src={liga.logo(x.sv)} />{x.sv}<b>{hora(x.t)}</b></li>)}</ul>
+        </>
+      ) : <p className="evp-tx">Ningún {SEMANA_S[dow]} tuvo eventos todavía.</p>) : null}
+      <ul className="evp-cj">
+        <li className="evp-cj-cab" aria-hidden="true"><span />{SEMANA.map((d, i) => <u key={i} className={i === dow ? 'on' : ''}>{d}</u>)}</li>
+        {P.svs.map((s) => (
+          <li key={s.sv} aria-label={s.sv + ': ' + diasEnPalabras(s.dias) + ', de ' + horaDe(s.ref, s.desde) + ' a ' + horaDe(s.ref, s.hasta)}>
+            <span className="evp-cj-sv"><img alt="" src={liga.logo(s.sv)} />{s.sv}</span>
+            {s.dias.map((k, i) => (
+              <i key={i} className={(k ? 'si' : 'no') + (i === dow ? ' on' : '')} style={k ? { background: color(s.sv), opacity: k >= 3 ? 1 : k === 2 ? 0.72 : 0.42 } : null}
+                title={k ? k + (k === 1 ? ' evento un ' + SEMANA_S[i] : ' eventos los ' + SEMANA_P[i]) : 'ningún ' + SEMANA_S[i]} />
+            ))}
+            <b className="evp-cj-h">{horaDe(s.ref, s.desde)} a {horaDe(s.ref, s.hasta)}</b>
+          </li>
+        ))}
+      </ul>
+      <p className="evp-nota">Sobre los {P.todos.length} eventos {desde === 'hoy' || desde === 'ayer' ? 'desde ' + desde : 'desde el ' + desde}, en tu hora.</p>
+    </div>
+  );
+}
+
 // ── cómo se juega: los formatos y quién organiza, de las llaves que viajan en el lobby ───────────────────────────────
-function ComoSeJuega({ liga }) {
+function ComoSeJuega({ liga, cal, color }) {
   const ls = liga.llaves();
   const fmt = {};
   const org = {};
@@ -261,7 +448,8 @@ function ComoSeJuega({ liga }) {
   });
   const fs = Object.entries(fmt).sort((a, b) => b[1] - a[1]).slice(0, 5);
   const os = Object.entries(org).sort((a, b) => b[1][1] - a[1][1]).slice(0, 6);
-  if (!fs.length && !os.length) return null;
+  const hay = patrones(liga, cal).svs.length > 0;
+  if (!fs.length && !os.length && !hay) return null;
   const max = fs.length ? fs[0][1] : 1;
   return (
     <div className="evp-como">
@@ -284,6 +472,7 @@ function ComoSeJuega({ liga }) {
           </ul>
         </div>
       ) : null}
+      {hay ? <CuandoJuega liga={liga} cal={cal} color={color} et="CUÁNDO SUELE JUGAR CADA SERVIDOR" /> : null}
       <p className="evp-nota">Sobre las {ls.length} llaves más nuevas{ls.length ? ': ' + Math.round(gente / ls.length) + ' raperos por llave, en promedio' : ''}.</p>
     </div>
   );
@@ -426,6 +615,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         <p className="hero-p">Nada anunciado por ahora: los servidores anuncian cada evento unos 15 minutos antes. Con la campana te llega al minuto.</p>
         <div className="hero-acc">
           <button type="button" className="btn verde" onClick={() => accion.llave(ultima.n)}>Ver la llave</button>
+          {g.length ? <BotonCampeon liga={liga} ll={ultima} estilo="borde" ic /> : null}
           <button type="button" className="btn borde" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={18} />Activar la campana</button>
         </div>
       </div>
@@ -502,6 +692,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
             <div className="evp-nada">
               <p>{dia === hoyK ? 'Hoy todavía no se anunció ningún evento. Los servidores los anuncian unos 15 minutos antes: con la campana te llega al minuto.'
                 : dia > hoyK ? 'Para ese día todavía no hay nada anunciado.' : 'Ese día no hubo eventos.'}</p>
+              <CuandoJuega liga={liga} cal={filtrado} dia={dia} color={color} et="CUÁNDO SUELE JUGAR CADA SERVIDOR" />
               {ultimoDia ? <button type="button" className="btn borde2 chico" onClick={() => elegir(ultimoDia, true)}>Ver el último día con eventos</button> : null}
             </div>
           ) : null}
@@ -521,7 +712,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           <Campeones liga={liga} />
         </section>
       ) : null}
-      <section className="sec evp-como-sec"><div className="sec-t"><h2>Cómo se juega</h2><a href="#/guia">La guía <Ico n="flecha" t={16} /></a></div><ComoSeJuega liga={liga} /></section>
+      <section className="sec evp-como-sec"><div className="sec-t"><h2>Cómo se juega</h2><a href="#/guia">La guía <Ico n="flecha" t={16} /></a></div><ComoSeJuega liga={liga} cal={cal} color={color} /></section>
     </>
   );
 }
