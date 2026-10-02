@@ -745,7 +745,15 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     for q in revividos:
         ap = aportes.get(q) or []
         d = res.get(q)
-        if not d or len(ap) < 2:
+        if not d or not ap:
+            continue
+        # 🔑 EL QUE YA ENTRA REVIVIDO —la «R» suelta, `SIX 🇦🇷 R`— aparece UNA vez:
+        # la primera derrota fue antes de esta llave y no está acá. Cobra la
+        # mitad de su puesto final, y nada más. Dlx, 01/10/2026: «C» (es
+        # revivido y cobra la mitad). Antes no se tocaba y cobraba el puesto entero
+        if len(ap) < 2:
+            d['puntos'] = int(ap[0][1] * mods.get('revivido', 0.5))
+            d['notas'] += '(R) '
             continue
         ap = sorted(ap, key=lambda x: ORDEN_P.index(x[0])
                     if x[0] in ORDEN_P else -1)
@@ -1186,6 +1194,13 @@ def _self_check():
     ok('y queda con el puesto más alto',
        dr.get('Beto', {}).get('posicion') == ETIQUETA['campeon'],
        '%s' % dr.get('Beto', {}).get('posicion'))
+    # el que ya entra revivido (la «R» suelta, VOL 18 2VS2): aparece una vez y
+    # cobra la mitad de ese puesto (Dlx, 01/10/2026: «C»)
+    rr, _ = _pp(semis + [{'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Caro', 'ganador': 'Ana',
+                          'notas': 'Revivido: Caro'}])
+    ok('el que entra revivido y aparece una vez cobra la mitad de su puesto',
+       rr.get('Caro', {}).get('puntos') == 7500 // 2 and rr.get('Ana', {}).get('puntos') == 10000,
+       '%s · %s' % (rr.get('Caro', {}).get('puntos'), rr.get('Ana', {}).get('puntos')))
     ok('ninguno de los dos reparte de más (§13)',
        not any(a.startswith('SUMA:') for a in epk['avisos'] + edr['avisos']),
        '%s' % ([a for a in epk['avisos'] + edr['avisos']

@@ -1585,6 +1585,13 @@ def marcar_walkins(filas, textos=(), ids=None):
 
 #: la notacion de revivido de la guia (§3.7): `Mco (R)`, `1R`, `2R`
 REVIVIDO_MARCA = re.compile(r'([^\s⌞\[\]()]{2,}[^⌞\[\]()]*?)\s*(?:\(\s*R\s*\)|\b[123]\s*R\b)')
+#: 🔑 Y LA «R» SUELTA DESPUÉS DE LA BANDERA: `SIX 🇦🇷 R`, `GOCHO 🇨🇴 R` (VOL 18 2VS2).
+#: Dlx, 01/10/2026: es revivido y cobra como revivido («C»: la mitad de su
+#: puesto final, §3.7). El nombre ya llega sin la R (`escuchar.sin_refuerzos()`);
+#: acá se anota quién es. ⚠️ Sólo con bandera antes y el lado cerrándose
+#: después: «ROMEO R» sin bandera es un nombre
+REVIVIDO_R = re.compile(r'([^\s⌞⌝\[\]()+,&*]{2,}(?:[ \t]+[^\s⌞⌝\[\]()+,&*]+)*?)[ \t]*'
+                        + E._BANDERA + r'{2}[ \t]+R(?=[ \t*_]*(?:[\]⌝+,&]|🆚|$))', re.M)
 
 
 def marcar_revividos(filas, textos=()):
@@ -1634,9 +1641,9 @@ def marcar_revividos(filas, textos=()):
     # decide que la llave diga que es un draft.
     es_draft = any(E.DRAFT.search(t or '') for t in textos)
     drafteados = set()
-    # 1. la notacion, en el texto crudo
+    # 1. la notacion, en el texto crudo: `(R)`, `1R` y la «R» suelta después de la bandera
     for t in textos:
-        for m in REVIVIDO_MARCA.finditer(t or ''):
+        for m in list(REVIVIDO_MARCA.finditer(t or '')) + list(REVIVIDO_R.finditer(t or '')):
             k = E.norm(m.group(1))
             if k:
                 revividos.setdefault(k, m.group(1).strip())
@@ -2312,6 +2319,10 @@ def _self_check():
          'Drafteado: Beto' in ' '.join(f['notas'] for f in fd)),
         ('sin draft, el mismo caso es revivido',
          'Revivido: Beto' in ' '.join(f['notas'] for f in fr)),
+        ('la «R» suelta después de la bandera es revivido; sin bandera, no (Dlx: «C»)',
+         [m.group(1) for m in REVIVIDO_R.finditer(
+             '▪️   [PICHULITA 🇦🇷 + SIX 🇦🇷 R] 🆚 [GOCHO 🇨🇴 R + ANA 🇦🇷]\n⌞RICKY FORT 🇦🇷 R⌝ 🆚 ⌞ROMEO R⌝\n'
+             'CAMPEÓN: NADIE 🇦🇷 RODRIGO')] == ['SIX', 'GOCHO', 'RICKY FORT']),
         ('el invitado de honor no es walk-in (§9.2)',
          not any('Walk-in' in f['notas'] for f in fw)),
         ('filtros de 3 por un lugar: los que entran directo a octavos no son '
