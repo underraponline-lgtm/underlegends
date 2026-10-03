@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.11",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T18:30:00-04:00",
+   "titulo": "Los anotados",
+   "items": [
+    "🙋 **Quiénes se anotaron, antes de la llave**: en el Próximo del Inicio y en Eventos, «12 anotados» con sus caras; tocás y ves quiénes. Salen al minuto de anotarse y se van cuando aparece la llave.",
+    "🧹 **Sólo cuenta quien se anota**: un nombre con su bandera, o uno que la Liga ya conoce. La charla del canal, las preguntas y los avisos del organizador no.",
+    "🛠️ **Las tarjetas de los eventos que vienen, en Eventos**, salían con el nombre apretado en una columna angosta. Arreglado."
+   ]
+  },
+  {
    "version": "2.10",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T17:45:00-04:00",

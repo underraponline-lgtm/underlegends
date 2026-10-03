@@ -2,7 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, mult, norm, num, recorte, resultado, utc } from './liga.js';
-import { Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
+import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 export const MENU = [
@@ -884,6 +884,7 @@ function momentosTuyos(liga) {
         txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-seguis">TU PRÓXIMO EVENTO · {liga.dia(e.cuando).toUpperCase()}</span></div>
           <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
           <p className="hero-p">{cuantos}{falta ? (falta === 1 ? ': te falta 1 para tu letra' : ': te faltan ' + falta + ' para tu letra') : ''}{m > 1 ? '. ' + e.sv + ' va ' + mult(m) + ' esta semana' : ''}.</p>
+          <Anotados liga={liga} e={e} />
           <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
           <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
             <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a></div></>,
@@ -910,6 +911,7 @@ function momentos(liga, vivoL) {
         <span className="hero-meta">{e.sv} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         <p className="hero-p">{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
+        {L ? null : <Anotados liga={liga} e={e} />}
         <div className="hero-acc">
           {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
           {dd ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a> : null}
@@ -932,6 +934,7 @@ function momentos(liga, vivoL) {
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-prox">PRÓXIMO · {liga.dia(e.cuando).toUpperCase()}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         <p className="hero-p">{det}{e.premios ? '. Premio: ' + recorte(e.premios, 70) : ''}</p>
+        <Anotados liga={liga} e={e} />
         <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
         <div className="hero-acc">{ins ? <a className="btn verde" href={ins.url} target="_blank" rel="noopener noreferrer">{ins.txt} ↗</a> : null}
           <a className={'btn ' + (ins ? 'borde' : 'verde')} href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>

@@ -194,6 +194,34 @@ export function Rango({ liga, rg }) {
 
 export const nombrePais = (cc) => PAIS[cc] || String(cc || '').toUpperCase();
 
+// 🙋 LOS ANOTADOS DE UN EVENTO, ANTES DE LA LLAVE (03/10/2026, Dlx: «Me gusta tu A»): «12 anotados» con las caras y, al
+// tocar, quiénes. Va en la tarjeta del evento —el Próximo del Inicio y Eventos— hasta que aparece la llave, que lo
+// reemplaza. Sin anotados, no se dibuja (`liga.anotados()`)
+export function Anotados({ liga, e }) {
+  const [ver, setVer] = useState(false);
+  const l = liga.anotados(e);
+  if (!l.length) return null;
+  const cara = (x, i, cls) => <Cara key={i} liga={liga} k={x.f ? x.f.k : ''} nombre={x.f ? x.f.n : x.aka} cls={cls} />;
+  return (
+    <div className={'an' + (ver ? ' abierto' : '')}>
+      <button type="button" className="an-b" aria-expanded={ver} onClick={() => setVer(!ver)}>
+        <span className="an-caras" aria-hidden="true">{l.slice(0, 5).map((x, i) => cara(x, i, 'an-cara'))}</span>
+        <b>{l.length} {l.length === 1 ? 'anotado' : 'anotados'}</b>
+        <small>{ver ? 'cerrar' : 'ver quiénes'}</small>
+      </button>
+      {ver ? (
+        <ul className="an-l">
+          {l.map((x, i) => {
+            const cc = x.f ? x.f.cc : (PAIS[x.cc] ? x.cc : '');
+            const dentro = <>{cara(x, i, 'an-cara')}<span>{x.f ? limpio(x.f.n) : x.aka}</span>{cc ? <Bandera cc={cc} cls="an-flag" /> : null}</>;
+            return <li key={i}>{x.f ? <a href={'#/r/' + encodeURIComponent(x.f.k)}>{dentro}</a> : <span className="an-n">{dentro}</span>}</li>;
+          })}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
 // una sección con su título y el link de la derecha
 export function Sec({ id, titulo, enlace, href, onEnlace, extra = '', children, ...resto }) {
   return (

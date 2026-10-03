@@ -953,7 +953,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-nm{display:grid;gap:3px;min-width:0}
 .evp-nm b{overflow-wrap:anywhere}
 .evp-h{font:700 12px/1 "Space Mono",monospace;letter-spacing:.04em;color:var(--tinta)}
-.evp-ev.prox .t-est{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
+.evp-ev.es-prox .t-est{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
 /* lo que ya se jugó va en «piel» (`--caja`), como «Lo que pasó» del Inicio (`.fecha.hecho`); lo que viene, en blanco.
    Dlx, 02/10/2026: «I like this PIEL color… maybe we could include it for some stuff» */
 .evp-ev.hecho{background:var(--caja)}
@@ -1970,3 +1970,25 @@ a.rk-z:hover{border-color:var(--linea)}
 .vc-num dd{margin:0;font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 .vc-acc{display:flex;flex-wrap:wrap;gap:8px}
 .vc-acc .btn{flex:1 1 140px}
+
+/* ── 🙋 LOS ANOTADOS (`Anotados` de piezas.jsx, 03/10/2026, Dlx: «Me gusta tu A»): en la tarjeta del evento hasta que
+   aparece la llave. Con `currentColor`: va igual sobre el escenario oscuro del Inicio que en la tarjeta clara de Eventos ── */
+.an{--an-fondo:var(--fondo);display:grid;gap:10px;margin:2px 0 14px}
+.escena .an{--an-fondo:var(--escenario)}
+.evp-ev .an{margin:0 12px 12px}
+.an-b{display:inline-flex;align-items:center;gap:10px;justify-self:start;max-width:100%;min-height:44px;padding:4px 12px 4px 6px;
+  border:1.5px solid currentColor;background:none;color:inherit;text-align:left;cursor:pointer}
+.an-caras{display:flex;flex:none}
+.an-cara{width:30px;height:30px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;
+  font:900 12px/1 Archivo,sans-serif;box-shadow:0 0 0 2px var(--an-fondo)}
+.an-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.an-caras .an-cara+.an-cara{margin-left:-9px}
+.an-b b{font:800 14px/1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;white-space:nowrap}
+.an-b small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;opacity:.7;white-space:nowrap}
+.an-l{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px;max-height:260px;overflow:auto}
+.an-l a,.an-l .an-n{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:3px 10px 3px 4px;border:1.5px solid currentColor;
+  font:700 13px/1.1 Archivo,sans-serif}
+.an-l .an-n{border-style:dashed}
+.an-l .an-cara{width:26px;height:26px;box-shadow:none}
+.an-flag{width:18px;height:12px;flex:none;object-fit:cover}
+@media (hover: hover) and (pointer: fine){.an-l a:hover span{text-decoration:underline;text-underline-offset:3px}}

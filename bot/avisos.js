@@ -1753,6 +1753,73 @@ export function quienesDe(nombres, idx) {
   return out;
 }
 
+// ── 🙋 LOS ANOTADOS DE CADA EVENTO, ANTES DE LA LLAVE (03/10/2026, Dlx: «que se PREVEA las personas que se han
+// inscrito», y al plan: «Me gusta tu A»: «12 anotados» con las caras en la tarjeta del evento, sólo lo que parece una
+// inscripción) ──
+// 🔑 LA REGLA ES LA DEL CICLO (`es_inscripcion()` de bot/anuncios.py, medida sobre el canal de FFA): anotarse es decir
+// quién sos, con tu bandera o con un nombre que la Liga ya conoce, y una pregunta nunca es una inscripción. Acá se
+// saca lo que NO puede ser —una pregunta, un aviso del organizador, una frase— y se marca si trae bandera; lo del
+// nombre conocido lo decide la página, que es la que tiene el padrón (`Liga.anotados()`).
+export function pareceAnotado(texto) {
+  const t = String(texto || '').trim();
+  if (!t || t.indexOf('?') >= 0) return null;
+  if (/@everyone|@here|<@&\d+>/.test(t)) return null;
+  // «INSCRIPCIONES ABIERTAS», «cerramos inscripciones»: la marca del organizador, no alguien anotándose
+  if (/inscrip/i.test(t) && /abiert|cerrad|se abren|se cierran|abrimos|cerramos/i.test(t)) return null;
+  const m = /([\u{1F1E6}-\u{1F1FF}])([\u{1F1E6}-\u{1F1FF}])/u.exec(t);
+  let cc = m ? String.fromCharCode(m[1].codePointAt(0) - 0x1F1E6 + 97, m[2].codePointAt(0) - 0x1F1E6 + 97) : '';
+  // y la bandera de un emoji del servidor, con el país en el NOMBRE (`Kravitz<a:COSTARICA:…>`, `_bandera()` de Python)
+  if (!cc) {
+    for (const x of t.matchAll(/<a?:(\w+):\d+>/g)) {
+      const p = PAIS_EMOJI[x[1].normalize('NFKD').replace(/[^A-Za-z]/g, '').toUpperCase()];
+      if (p) { cc = p; break; }
+    }
+  }
+  const aka = t.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, ' ').replace(/<a?:\w+:\d+>/g, ' ').replace(/<@[&!]?\d+>/g, ' ')
+    .replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').replace(/[*_`~|#>]/g, ' ').replace(/\s+/g, ' ').trim();
+  // un nombre, no una frase (`parece_inscripcion()` de bot/inscripciones.py: hasta tres palabras)
+  if (!aka || aka.length > 28 || aka.split(' ').length > 3) return null;
+  return { aka, cc, b: !!cc };
+}
+const PAIS_EMOJI = { ARGENTINA: 'ar', CHILE: 'cl', COLOMBIA: 'co', MEXICO: 'mx', PERU: 'pe', VENEZUELA: 've', ESPANA: 'es',
+  ECUADOR: 'ec', URUGUAY: 'uy', PARAGUAY: 'py', BOLIVIA: 'bo', COSTARICA: 'cr', GUATEMALA: 'gt', HONDURAS: 'hn',
+  NICARAGUA: 'ni', PANAMA: 'pa', PUERTORICO: 'pr', DOMINICANA: 'do', REPUBLICADOMINICANA: 'do', ELSALVADOR: 'sv',
+  CUBA: 'cu', USA: 'us', ESTADOSUNIDOS: 'us' };
+
+/** El momento de un mensaje de Discord, de su id (los ids llevan la hora adentro). */
+export function msDeId(id) {
+  try { return Number(BigInt(String(id)) >> 22n) + 1420070400000; } catch (e) { return 0; }
+}
+
+/**
+ * `{id del anuncio: [{n, aka, cc, b, autor}]}`. Cada inscripción es del evento de ese servidor que ya estaba anunciado
+ * cuando se anotó y que arranca primero —uno que ya arrancó, hasta media hora después: alguien que entra justo—. Así se
+ * separan dos eventos del mismo servidor el mismo día; si no hay ninguno, no es de nadie. La misma persona dos veces
+ * (se volvió a anotar, o la anotó otro) va una vez, la primera.
+ */
+export function anotadosDe(eventos, inscritos) {
+  const out = {};
+  for (const x of inscritos || []) {
+    const p = pareceAnotado(x && x.texto);
+    if (!p) continue;
+    const e = (eventos || []).filter((y) => y.sv === x.sv && y.pub <= x.pub && x.pub <= y.ini + 30 * MIN)
+      .sort((a, b) => a.ini - b.ini)[0];
+    if (!e) continue;
+    const l = out[e.id] = out[e.id] || [];
+    const n = p.aka.normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+    if (!n || l.some((y) => y.n === n)) continue;
+    l.push({ n, aka: p.aka, cc: p.cc, b: p.b, autor: String((x && x.autor_id) || '') });
+  }
+  return out;
+}
+
+/** ¿Esa clave de la Liga es de ese nombre? `volk-co` es `volk`; `parkjisung` contiene `park`… desde 4 letras. */
+export function claveDeNombre(n, k) {
+  const kk = String(k || '').toLowerCase().replace(/-[a-z0-9]{1,3}$/, '').replace(/[^\p{L}\p{N}]/gu, '');
+  if (!n || !kk || n.length < 2) return false;
+  return n === kk || (n.length >= 4 && kk.length >= 4 && (kk.includes(n) || n.includes(kk)));
+}
+
 /**
  * `/avisos/*` del Worker. Lo llama el proxy de Pages (`/api/avisos/*`).
  *
@@ -2555,6 +2622,10 @@ export class Avisos {
       try { await this.quienes(ahora); } catch (e) {
         this.guardar('quien', { ...(this.leer('quien') || {}), error: String(e).slice(0, 160) });
       }
+      // 🙋 y quiénes se anotaron a cada evento, antes de la llave. Nunca frena al vigía: ver `anotados()`
+      try { await this.anotados(ahora); } catch (e) {
+        this.guardar('anotados', { ...(this.leer('anotados') || {}), error: String(e).slice(0, 160) });
+      }
     }
     // lo avisado se guarda dos días: alcanza para no repetir y no crece
     if (!previo.limpio || ahora - previo.limpio > HORA) {
@@ -2797,7 +2868,9 @@ export class Avisos {
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
       return c.tipo === 'evento' && c.sv !== SV_PRUEBA && c.t ? { id: r.id, sv: c.sv, n: c.t, ini: c.ini || null,
         mod: c.mod || '', cup: c.cup || '', pre: c.pre || '', url: c.url || '', cx: c.cx ? 1 : 0 } : null;
-    }).filter(Boolean) };
+    }).filter(Boolean),
+    // 🙋 y quiénes se anotaron a cada uno, por el id del anuncio (ver `anotados()`)
+    anotados: (this.leer('anotados') || {}).ev || {} };
   }
 
   /** De qué Discord ID es cada nombre (`turnos:nombres`, ver `bot/avisos_personales.py`), leído cada 10 minutos. */
@@ -2971,6 +3044,54 @@ export class Avisos {
     }
     this.sql.exec('DELETE FROM idk WHERE t < ?', ahora - 24 * HORA);
     this.guardar('quien', { t: ahora, svs: out, cuentas, pedidos });
+  }
+
+  /**
+   * 🙋 Quiénes se anotaron a cada evento anunciado, para la página (`anotados` de `/avisos/vivo`). Ver `anotadosDe()`.
+   * La cara: la de la cuenta que se anotó, si esa cuenta anotó UN solo nombre (quien anota a varios es del staff) y su
+   * perfil se llama como lo que escribió —«Una inscripción no siempre es del autor»—. Si no, la página lo busca por el
+   * nombre. Sin Discord IDs: viaja `[nombre, bandera, clave, con bandera]`.
+   */
+  async anotados(ahora) {
+    const evs = this.sql.exec("SELECT id, cuerpo FROM avisos WHERE estado != 2 AND instr(id, ':') = 0 AND creado > ?",
+      ahora - 2 * 24 * HORA).toArray().map((r) => {
+      let c = {};
+      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+      return c.tipo === 'evento' && c.ini != null && c.sv ? { id: r.id, sv: c.sv, ini: c.ini, pub: msDeId(r.id) } : null;
+    }).filter((e) => e && e.pub && e.ini - INSC_ANTES <= ahora && ahora <= e.ini + INSC_DESPUES);
+    if (!evs.length) {
+      if (Object.keys((this.leer('anotados') || {}).ev || {}).length) this.guardar('anotados', { t: ahora, ev: {} });
+      return;
+    }
+    const svs = new Set(evs.map((e) => e.sv));
+    const insc = this.sql.exec('SELECT autor_id, sv, pub, texto FROM inscritos WHERE pub > ? ORDER BY pub',
+      Math.min(...evs.map((e) => e.pub)) - MIN).toArray().filter((x) => svs.has(x.sv));
+    const por = anotadosDe(evs, insc);
+    const nombres = {};
+    for (const l of Object.values(por)) for (const y of l) if (/^\d+$/.test(y.autor)) (nombres[y.autor] = nombres[y.autor] || new Set()).add(y.n);
+    let pedidos = 0;
+    const ev = {};
+    for (const [id, l] of Object.entries(por)) {
+      ev[id] = [];
+      for (const y of l.slice(0, 48)) {
+        let k = '';
+        if (nombres[y.autor] && nombres[y.autor].size === 1) {
+          const fila = this.sql.exec('SELECT k, t FROM idk WHERE id = ?', y.autor).toArray()[0];
+          let kk = fila && ahora - fila.t < 6 * HORA ? fila.k : null;
+          if (kk === null && pedidos < 15) {
+            pedidos++;
+            try {
+              kk = (await this.env.KV.get('d:' + y.autor)) || (await this.env.KV.get('dn:' + y.autor)) || '';
+              this.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET k = excluded.k, ' +
+                't = excluded.t', y.autor, kk, ahora);
+            } catch (e) { kk = null; }
+          }
+          if (kk && claveDeNombre(y.n, kk)) k = kk;
+        }
+        ev[id].push([y.aka, y.cc, k, y.b ? 1 : 0]);
+      }
+    }
+    this.guardar('anotados', { t: ahora, ev, pedidos });
   }
 
   /**

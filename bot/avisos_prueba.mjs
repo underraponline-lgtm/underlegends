@@ -498,6 +498,35 @@ const ok = (cond, que) => {
 }
 
 
+// 🙋 LOS ANOTADOS (03/10/2026): qué cuenta como inscripción, de qué evento es, y de quién es la cara
+{
+  console.log('\n🙋 los anotados de cada evento');
+  const p = (t) => A.pareceAnotado(t);
+  ok(JSON.stringify(p('saiko 🇨🇱')) === '{"aka":"saiko","cc":"cl","b":true}' && p('Fokox🇦🇷').aka === 'Fokox',
+    'un nombre con su bandera: el nombre, el país y que la trae');
+  ok(p('Kravitz<a:COSTARICA:1340260308148555826>').cc === 'cr' && p('Kravitz<a:COSTARICA:1340260308148555826>').aka === 'Kravitz',
+    'la bandera de un emoji del servidor, por su nombre');
+  ok(p('te imaginas') && !p('te imaginas').b, 'dos palabras sin bandera pasan, pero sin bandera: lo decide el nombre conocido');
+  ok(!p('Empieza cuando ?') && !p('@everyone 1 CUPO MASS') && !p('INSCRIPCIONES ABIERTAS 🔥') && !p('cerramos inscripciones') &&
+    !p('CHECk estoy haciendo una prueba pero si hay inscritos') && !p('🇦🇷') && !p(''),
+    'una pregunta, un aviso, la marca de abiertas o cerradas, una frase, sólo la bandera: nada');
+  const t0 = Date.parse('2026-10-03T20:00:00Z');
+  const evs = [{ id: 'a', sv: 'FFA', pub: t0, ini: t0 + 30 * 60000 }, { id: 'b', sv: 'FFA', pub: t0 + 10 * 60000, ini: t0 + 4 * 3600000 },
+    { id: 'c', sv: 'SR', pub: t0, ini: t0 + 3600000 }];
+  const insc = [{ sv: 'FFA', pub: t0 + 5 * 60000, texto: 'Snow 🇨🇴', autor_id: '1' }, { sv: 'FFA', pub: t0 + 15 * 60000, texto: 'yinn 🇲🇽', autor_id: '2' },
+    { sv: 'FFA', pub: t0 + 2 * 3600000, texto: 'Oasis 🇨🇱', autor_id: '3' }, { sv: 'FFA', pub: t0 + 6 * 60000, texto: 'snow🇨🇴', autor_id: '9' },
+    { sv: 'SR', pub: t0 - 60000, texto: 'Antes 🇦🇷', autor_id: '4' }, { sv: 'URBF', pub: t0 + 60000, texto: 'Otro 🇦🇷', autor_id: '5' }];
+  const por = A.anotadosDe(evs, insc);
+  ok(JSON.stringify((por.a || []).map((x) => x.aka)) === '["Snow","yinn"]' && JSON.stringify((por.b || []).map((x) => x.aka)) === '["Oasis"]',
+    'cada uno al evento que arranca primero entre los ya anunciados; uno ya empezado hace más de media hora, no: ' + JSON.stringify(por));
+  ok(!por.c && Object.keys(por).length === 2, 'antes del anuncio, o de un servidor sin evento: de nadie; y la misma persona, una vez');
+  ok(A.claveDeNombre('volk', 'volk-co') && A.claveDeNombre('snow', 'snow') && A.claveDeNombre('parkji', 'parkjisung') &&
+    !A.claveDeNombre('denik', 'jesuslgamer31') && !A.claveDeNombre('sol', 'solx'),
+    'la cara de la cuenta sólo si su perfil se llama como lo que escribió (quien anota a otro no le presta la cara)');
+  ok(A.msDeId('1556032680762671145') === Date.parse('2026-10-03T19:58:20.783Z') && A.msDeId('no') === 0,
+    'la hora de un mensaje sale de su id (el anuncio de DESGRACIAS EN TOKYO VOL 21: 3:58 PM ET)');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

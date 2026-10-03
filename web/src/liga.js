@@ -245,6 +245,17 @@ export class Liga {
     const cs = (typeof window !== 'undefined' && window.VIVO && window.VIVO.cancelados) || [];
     return Array.isArray(cs) ? cs : [];
   }
+  // 🙋 QUIÉNES SE ANOTARON A UN EVENTO, antes de que haya llave (03/10/2026, Dlx: «Me gusta tu A»). Los junta el vigía
+  // de los canales de inscripción (`anotados` de `/api/avisos/vivo`, por el id del anuncio: `[nombre, bandera, clave,
+  // con bandera]`) y acá va la otra mitad de la regla del ciclo (`es_inscripcion()`): cuenta si trae su bandera o si
+  // la Liga ya conoce ese nombre. «yo», «ya oe», «vamos juntos» —la charla del canal— no
+  anotados(e) {
+    const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
+    const V = typeof window !== 'undefined' ? window.VIVO : null;
+    const l = (m && V && V.anotados && V.anotados[m[1]]) || [];
+    return l.map(([aka, cc, k, b]) => ({ aka: limpio(aka), cc, b: !!b, f: (k && this.T[k]) || this.fila(aka) || null }))
+      .filter((x) => x.aka && (x.b || x.f || this.A[x.aka.toLowerCase()]));
+  }
   esCancelado(e) {
     const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
     return !!m && this.cancelados().some((c) => String(c.id) === m[1]);

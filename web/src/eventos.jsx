@@ -8,7 +8,7 @@
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, utc } from './liga.js';
-import { Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
+import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, enJuegoDe, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
@@ -304,7 +304,9 @@ function Evento({ liga, e, est, L, abierto }) {
   // un «Ver la llave» que andaba (revisión del 03/10/2026)
   const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll ? 'TERMINÓ' : 'SIN LLAVE';
   return (
-    <article className={'t-ev evp-ev ' + est + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '')} style={{ '--c': (liga.svs[e.sv] || {}).color || '#29B298' }}>
+    // 🔴 `es-prox` Y NO `prox`: `.prox` es una clase global del Inicio (estilo.css, una grilla de 44px | 1fr | auto) y
+    // las tarjetas «por jugarse» salían con el nombre en una columna angosta (encontrado con los anotados, 03/10/2026)
+    <article className={'t-ev evp-ev ' + (est === 'prox' ? 'es-prox' : est) + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '')} style={{ '--c': (liga.svs[e.sv] || {}).color || '#29B298' }}>
       <header>
         <img alt="" src={liga.logo(e.sv)} />
         <div className="evp-nm">
@@ -325,6 +327,7 @@ function Evento({ liga, e, est, L, abierto }) {
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
       {est === 'vivo' && L ? <CuadroLleno liga={liga} ll={L} /> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
+      {est === 'prox' || (est === 'vivo' && !L) ? <Anotados liga={liga} e={e} /> : null}
       <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} est={est} />
     </article>
   );
