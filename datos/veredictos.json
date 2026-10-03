@@ -858,18 +858,20 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791058528620,
-   "ed": 1791060698372,
-   "texto": "`[ OCTAVOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞ABYSSUS 🇨🇦⌝ 🆚 ⌞BRAGEURITHER 🇦🇪⌝ 🆚 ⌞PICHULITA 🇦🇷⌝",
+   "ed": 1791062665601,
+   "texto": "`[ OCTAVOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞ABYSSUS 🇨🇦⌝ 🆚 ⌞ZIGNOS 🇩🇴⌝ 🆚 ⌞VELATZ 🇨🇱⌝ 🆚 ⌞PARIA 🇦🇷⌝ 🆚 ⌞TAM 🇻🇪⌝",
    "batallas": [
     [
      "FINAL",
      [
       "ABYSSUS 🇨🇦",
-      "BRAGEURITHER 🇦🇪",
-      "PICHULITA 🇦🇷"
+      "ZIGNOS 🇩🇴",
+      "VELATZ 🇨🇱",
+      "PARIA 🇦🇷",
+      "TAM 🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARIA 🇦🇷",
+     "veredicto",
      []
     ]
    ]
