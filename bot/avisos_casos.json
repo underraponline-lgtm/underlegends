@@ -1067,6 +1067,30 @@
     "horario": "22:00",
     "ini": null
    }
+  },
+  {
+   "sv": "INV",
+   "id": "inv29",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# 🌃 ╎MIDNIGHT MIAMI╎🌃 \n▬▬▬▬▬\n**`🗄️ORGANIZADOR🗄️`: DREXX🇳🇱**\n\n**`🎟️CUPOS🎟️`: 8/12/16**\n\n **<:escudo_dc:1>`FORMATO:` 1<:escudo_dc:1>1**\n\n**<:tiempode_arena:2>` HORARIO `<:tiempode_arena:2>: YAYAYA**\n\n@everyone",
+   "espera": {
+    "es": true,
+    "nombre": "MIDNIGHT MIAMI",
+    "horario": "YAYAYA",
+    "ini": "2026-09-24T20:00:00"
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv30",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "💎 <:DDF:3> ╎ historia del peru cup╎ <:DDF:3> 💎\n▬▬▬▬▬\n**`🗄️ORGANIZADOR🗄️`:ZJ:flag_pe:**\n\n **`🌘FORMATO🌘`: 1vs1**\n\n<:tiempode_arena:2>` HORARIO `<:tiempode_arena:2> : RIGHT NOW!\n@everyone",
+   "espera": {
+    "es": true,
+    "nombre": "historia del peru cup",
+    "horario": "RIGHT NOW!",
+    "ini": "2026-09-24T20:00:00"
+   }
   }
  ]
 }

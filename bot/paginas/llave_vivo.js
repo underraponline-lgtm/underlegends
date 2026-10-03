@@ -66,7 +66,8 @@
   var HISTORIA = /\s*[(（][^()（）]*[)）]?\s*$/;
   var BANDERA = '[\\u{1F1E6}-\\u{1F1FF}]';
   var MD = '(?:\\*\\*|__)?';
-  var VS_PROPIO = /<a?:(?!VSF?:)\w*?vs\w*:\d+>/gi;
+  // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
+  var VS_PROPIO = /<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>/gi;
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
   var TERCER_ENC = /\b3\s*(?:er|ro|º|°)?\s*(?:y\s*4\s*(?:to|º|°|o)?\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
@@ -81,6 +82,12 @@
   Object.keys(PAIS_DE_EMOJI).forEach(function (cc) {
     PAIS_DE_EMOJI[cc].forEach(function (n) { PAIS[n] = cc; });
   });
+  // `<a:Per:…>` también es un país, salvo las palabras: `escuchar.PALABRAS_PAIS`
+  var PALABRAS_PAIS = { PAN: 1, PAR: 1, ESA: 1, VEN: 1, COL: 1, BOL: 1, USA: 1, BRA: 1, CHI: 1, CUB: 1, DOM: 1 };
+  // `S E M I F I N A L`, sin lookbehind: el borde de atrás se captura. Ver `escuchar.ESPACIADA`
+  var ESPACIADA = /(^|[^\p{L}\p{N}_])((?:\p{L} ){3,}\p{L})(?![\p{L}\p{N}_])/gu;
+  // `[<:carts:…>]`, `[👑]`: un marco con sólo emojis es adorno. Ver `escuchar.ADORNO`
+  var ADORNO = /\[[ \t]*(?:<a?:\w+:\d+>[ \t]*)+\]|\[[ \t]*[^\x00-\x7F\p{L}\p{N}_\s\[\]⌞⌝]+[ \t]*\]/gu;
 
   function lineas(t) { return String(t || '').split(/\r\n|[\n\r\u000b\u000c\u001c\u001d\u001e\u0085\u2028\u2029]/); }
   function quitarBordes(s, cs) {
@@ -125,12 +132,22 @@
     var partes = nom.split(/[^A-Za-z]+/).filter(Boolean);
     var ks = [partes.join('')].concat(partes);
     for (var i = 0; i < ks.length; i++) {
-      var k = ks[i];
-      if (k && PAIS[k.toUpperCase()] && (k.length > 3 || k === k.toUpperCase())) {
-        return bandera(PAIS[k.toUpperCase()]);
+      var k = ks[i], K = k.toUpperCase();
+      if (k && PAIS[K] && (k.length > 3 || k === K || (/^[A-Z][a-z]+$/.test(k) && !PALABRAS_PAIS[K]))) {
+        return bandera(PAIS[K]);
       }
     }
+    // y el de dos letras, en mayúsculas y solo: `<a:CL:…>`
+    if (partes.length === 1 && /^[A-Z]{2}$/.test(partes[0]) && PAIS_DE_EMOJI[partes[0].toLowerCase()]) {
+      return bandera(partes[0].toLowerCase());
+    }
     return todo;
+  }
+
+  /* `escuchar._sin_espaciar()`: `[ G R A N - F I N A L]` -> `[ GRAN - FINAL]`, si así se lee una ronda */
+  function sinEspaciar(l) {
+    var j = l.replace(ESPACIADA, function (_m, a, x) { return a + x.replace(/ /g, ''); });
+    return j !== l && buscarRonda(j) && !buscarRonda(l) ? j : l;
   }
 
   function equipoDeBanderas(s) {
@@ -173,15 +190,22 @@
   /* `escuchar.traducir()`: los dialectos de los otros servidores */
   function traducir(texto) {
     if (!texto) return texto || '';
-    var t = texto.replace(VS_PROPIO, ' 🆚 ');
+    // el emoji entre dos `<>` de más (DIMENSIÓN DEL FREESTYLE)
+    var t = texto.replace(/<(<a?:\w+:\d+>)>/g, '$1');
+    t = t.replace(VS_PROPIO, ' 🆚 ');
     t = t.replace(/<a?:(\w+):\d+>/g, paisDelEmoji);
     t = t.replace(/:flag_([a-z]{2}):/g, function (_m, cc) { return bandera(cc); });
+    t = t.split('\n').map(sinEspaciar).join('\n');
     t = t.replace(PODIO_PROPIO, function (_m, n) {
       return ' ' + { '1': '1ER', '2': '2DO', '3': '3ER' }[n] + ' PUESTO: ';
     });
     t = t.replace(/[『「〈][ \t]*(\d(?:ER|DO) PUESTO:)[ \t]*[』」〉]/g, '$1');
     t = t.replace(new RegExp(MD + '[「〈][ \\t]*', 'g'), '⌞');
     t = t.replace(new RegExp('[ \\t]*[」〉]' + MD, 'g'), '⌝');
+    // `『x』` en par y sin comerse el negrito; el suelto es un tipeo; y el marco de puro emoji, adorno
+    t = t.replace(/『[ \t]*([^『』\n]*?)[ \t]*』/g, '⌞$1⌝');
+    t = t.replace(/[『』]/g, '');
+    t = t.replace(ADORNO, '');
     // y las llaves `{x}` de Urban Freestyle, sólo en par: ver `escuchar.traducir()`
     t = t.replace(/\{[ \t]*([^{}\n]*?)[ \t]*\}/g, '⌞$1⌝');
     t = t.replace(/([⌝\]])[ \t]*<a?:\w+:\d+>[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)/gu, '$1 🆚 ⌞$2⌝');
@@ -277,6 +301,8 @@
   var R_SUELTA = new RegExp('(' + BANDERA + ')\\s+R\\s*$', 'u');
   function sinRefuerzos(lado) {
     var s = String(lado || '').replace(REFUERZO_INI, '').replace(REFUERZO_FIN, '');
+    // y el `+` que sumaba al comodín: `YINN 🇲🇦 + (PICHULITAMC 🇦🇷)` (`escuchar.sin_refuerzos()`)
+    if (s !== String(lado || '')) s = s.replace(/^\s*[+&,]\s*|\s*[+&,]\s*$/g, '');
     s = s.split(/(\s*[+&]\s*)/).map(function (p, i) { return i % 2 ? p : p.replace(R_SUELTA, '$1'); })
       .join('').trim();
     return norm(s) || /<@!?\d+>/.test(s) ? s : String(lado || '');
@@ -398,7 +424,7 @@
   }
   /* `escuchar.SUBCAMPEON`: en una final de dos, saber quién perdió es saber quién ganó */
   function lineaSubcampeon(texto) {
-    var m = /(?:SUB[\s\-]*CAMPE[OÓ]N|\b(?:2\s*(?:DO|DO\.)|SEGUNDO)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/i.exec(texto);
+    var m = /(?:SUB[\s\-]*CAMPE[OÓ]N|\b(?:2\s*(?:DO|DO\.)|SEGUNDO)\s+(?:PUESTO|LUGAR))\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/i.exec(texto);
     return m ? m[1].trim() : '';
   }
 

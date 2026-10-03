@@ -57,8 +57,10 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _EN = re.compile(r'\ben\s+(\d{1,3})\s*(m|min|mins|minuto|minutos|'
                  r'h|hs|hr|hrs|hora|horas)?\b', re.I)
 _MEDIA = re.compile(r'\ben\s+media\s+hora\b', re.I)
-_AHORA = re.compile(r'\b(ahora|ya|empez(ando|amos)|arrancamos|'
-                    r'comenzamos|en\s+vivo)\b', re.I)
+#: 🔑 Y `YAYAYA`, `YAYAYAYAYAYAAAAAA` y `RIGHT NOW!`: así escribe «ya mismo»
+#: DIMENSIÓN DEL FREESTYLE (03/10/2026), en el campo HORARIO de cada anuncio
+_AHORA = re.compile(r'\b(ahora|(?:ya)+a*|empez(ando|amos)|arrancamos|'
+                    r'comenzamos|en\s+vivo|right\s+now)\b', re.I)
 
 _HORAS = ('h', 'hs', 'hr', 'hrs', 'hora', 'horas')
 

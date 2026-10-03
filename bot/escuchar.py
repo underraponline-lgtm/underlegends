@@ -266,7 +266,10 @@ def plano(texto):
 # ── los dialectos de los otros servidores ─────────────────────────────
 #: un emoji propio que en el nombre dice VS: `<:VS1:…>`, `<:VS6:…>`. El
 #: `<:VSF:…>` de FFA no: `SEP` ya lo lee, y su llave queda como vino.
-VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?vs\w*:\d+>', re.I)
+#: 🔑 Y `versus` ENTERO: DIMENSIÓN DEL FREESTYLE (03/10/2026) separa con
+#: `<:versus_:…>`, que no lleva «vs» adentro —v-e-r-s-u-s—. Sin esto sus
+#: llaves no tenían ninguna batalla.
+VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>', re.I)
 #: cualquier emoji propio del servidor
 PROPIO = r'<a?:\w+:\d+>'
 #: el negrito y el subrayado de Discord pegados a un marco
@@ -301,6 +304,31 @@ PAIS_DE_EMOJI = {
     'uy': ('URU', 'URY', 'URUGUAY'), 've': ('VEN', 'VENEZUELA'),
 }
 _PAIS = {n: cc for cc, ns in PAIS_DE_EMOJI.items() for n in ns}
+#: 🔑 EL CÓDIGO CON SÓLO LA PRIMERA EN MAYÚSCULA TAMBIÉN ES UN PAÍS: DIMENSIÓN
+#: DEL FREESTYLE (03/10/2026) escribe `CRIZJ<a:Per:…>`. ⚠️ Salvo los que son
+#: palabras: un `<:Pan:…>` es un pan antes que Panamá, y un `<:Bol:…>` un bol.
+PALABRAS_PAIS = {'PAN', 'PAR', 'ESA', 'VEN', 'COL', 'BOL', 'USA', 'BRA', 'CHI', 'CUB', 'DOM'}
+#: `S E M I F I N A L`: cuatro letras o más, cada una separada por UN espacio
+ESPACIADA = re.compile(r'(?<!\w)(?:[^\W\d_] ){3,}[^\W\d_](?!\w)')
+#: un `[x]` con sólo emojis adentro: `[<:carts:…>]`, `[👑]`, `[⚜️]`. Sin letras, números
+#: ni menciones no es nadie
+ADORNO = re.compile(r'\[[ \t]*(?:<a?:\w+:\d+>[ \t]*)+\]|\[[ \t]*[^\x00-\x7F\w\s\[\]⌞⌝]+[ \t]*\]')
+
+
+def _sin_espaciar(l):
+    """`[ G R A N - F I N A L]` -> `[ GRAN - FINAL]`, si así se lee una ronda.
+
+    🔑 DIMENSIÓN DEL FREESTYLE (03/10/2026) escribe los encabezados con las
+    letras separadas: `# [<:yinyang:…>] S E M I F I N A L [<:yinyang:…>]`.
+    Sin encabezado, la semi y la final se sumaban a los cuartos.
+
+    ⚠️ SÓLO SI JUNTAS DICEN UNA RONDA Y SEPARADAS NO: un renglón con nombres
+    queda como vino, aunque alguien se llame con letras sueltas.
+    """
+    if not ESPACIADA.search(l):
+        return l
+    j = ESPACIADA.sub(lambda m: m.group(0).replace(' ', ''), l)
+    return j if RONDA.search(j) and not RONDA.search(l) else l
 
 
 def _bandera(cc):
@@ -325,8 +353,14 @@ def _pais_del_emoji(m):
     nom = ''.join(c for c in nom if not unicodedata.combining(c))
     partes = [x for x in re.split(r'[^A-Za-z]+', nom) if x]
     for k in [''.join(partes)] + partes:
-        if k.upper() in _PAIS and (len(k) > 3 or k.isupper()):
-            return _bandera(_PAIS[k.upper()])
+        K = k.upper()
+        if K in _PAIS and (len(k) > 3 or k.isupper()
+                           or (re.fullmatch(r'[A-Z][a-z]+', k) and K not in PALABRAS_PAIS)):
+            return _bandera(_PAIS[K])
+    # 🔑 y el de DOS letras, en mayúsculas y solo: `NOXVELL<a:CL:…>` (DIMENSIÓN
+    # DEL FREESTYLE). Solo: `bn_ARG` es ARG, pero `GG_CL` no se adivina
+    if len(partes) == 1 and re.fullmatch(r'[A-Z]{2}', partes[0]) and partes[0].lower() in PAIS_DE_EMOJI:
+        return _bandera(partes[0].lower())
     return m.group(0)
 
 
@@ -412,6 +446,13 @@ def traducir(texto):
         el cuarto       `[ tkl ] <:ins:…> ( MCO )`, y MCO pasó a cuartos
         la bandera      `<a:Uruguay:…>` (SEVEN STREET, de FFA)  (FFA: 🇺🇾)
 
+    Y los de DIMENSIÓN DEL FREESTYLE (03/10/2026), que tampoco entraban:
+
+        el separador    `<:versus_:…>`, `<<:versus_:…>>`
+        el marco        `『PICHULAMC🇱🇰』`
+        la ronda        `S E M I F I N A L`, `[ G R A N - F I N A L]`
+        la bandera      `<a:Per:…>`, `<a:CL:…>`
+
     🔑 SE TRADUCE EL TEXTO Y NO SE TOCA EL LECTOR. Cada regla de abajo
     convierte una forma de Snake Rap en la forma de FFA que el lector ya
     sabe leer, así que todo lo que el lector aprendió con FFA —triples,
@@ -428,9 +469,12 @@ def traducir(texto):
     """
     if not texto:
         return texto or ''
-    t = VS_PROPIO.sub(' 🆚 ', texto)
+    # 🔑 el emoji entre dos `<>` de más: `『A』<<:versus_:…>> 『B』` (DIMENSIÓN DEL FREESTYLE)
+    t = re.sub(r'<(<a?:\w+:\d+>)>', r'\1', texto)
+    t = VS_PROPIO.sub(' 🆚 ', t)
     t = re.sub(r'<a?:(\w+):\d+>', _pais_del_emoji, t)
     t = re.sub(r':flag_([a-z]{2}):', lambda m: _bandera(m.group(1)), t)
+    t = '\n'.join(_sin_espaciar(l) for l in t.split('\n'))
     # el podio: el emoji dice el puesto, y el marco que lo rodea sobra
     t = PODIO_PROPIO.sub(
         lambda m: ' %s PUESTO: ' % {'1': '1ER', '2': '2DO', '3': '3ER'}[m.group(1)], t)
@@ -438,6 +482,19 @@ def traducir(texto):
     # los marcos, con el negrito que los envuelve
     t = re.sub(_MD + r'[「〈][ \t]*', '⌞', t)
     t = re.sub(r'[ \t]*[」〉]' + _MD, '⌝', t)
+    # 🔑 Y `『x』`, SÓLO EN PAR Y EN LA MISMA LÍNEA: DIMENSIÓN DEL FREESTYLE
+    # (03/10/2026) escribe `**『PICHULAMC🇱🇰』<:versus_:…> 『BETELGEUSE🇵🇰』**`.
+    # ⚠️ En par porque también hay uno suelto —`『SHADOW🇪🇨 』 『<:versus_:…>
+    # 『KASIVA 🇵🇪 』`—, y un `⌞` sin cerrar pegaría la línea de abajo (ver
+    # `unir_continuadas()`). ⚠️ Y SIN COMERSE EL NEGRITO de afuera: en DDF
+    # envuelve la línea entera, y `**『A』** 🆚 『B』` diría quién pasó
+    t = re.sub(r'『[ \t]*([^『』\n]*?)[ \t]*』', '⌞\\1⌝', t)
+    # ⚠️ y el que queda solo es un tipeo: `『19🇭🇳 <:versus_:…> 『TUCA🇦🇷』` daba «『19🇭🇳»
+    t = re.sub(r'[『』]', '', t)
+    # 🔑 el marco con un emoji y nada más es adorno: `CAMPEÓN [<:MEDALLAPRIMERLUGAR:…>] :
+    # KASIVADOLARES GRUMITOS HITLER🇻🇪` (DDF). El código del emoji se comía los 60
+    # caracteres de `CAMPEON` y el nombre llegaba cortado: «KASIVADOLAR», que no es nadie
+    t = ADORNO.sub('', t)
     # 🔑 Y LAS LLAVES `{x}`: Urban Freestyle escribe `**{MHS🇦🇷} VS
     # {Cinexfilo🇻🇪}**` (COMPE DEL VACILE #1, 28/09/2026). Sin esto la llave
     # se leía igual —`VS` separa— pero los nombres quedaban con las llaves
@@ -505,8 +562,9 @@ PODIO = re.compile(
     r'CAMPE[OÓ]N|\bPUESTO\b|\bLUGAR\b|M\.?\s*V\.?\s*P\b', re.I)
 #: el segundo puesto. Sirve para deducir al campeon cuando su linea no
 #: engancha con nadie: en una final de dos, el otro lado.
+# ⚠️ Y `SEGUNDO LUGAR`: así lo escribe DIMENSIÓN DEL FREESTYLE (03/10/2026)
 SUBCAMPEON = re.compile(
-    r'(?:SUB[\s\-]*CAMPE[OÓ]N|\b(?:2\s*(?:DO|DO\.)|SEGUNDO)\s+PUESTO)'
+    r'(?:SUB[\s\-]*CAMPE[OÓ]N|\b(?:2\s*(?:DO|DO\.)|SEGUNDO)\s+(?:PUESTO|LUGAR))'
     r'\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})', re.I)
 # los shortcodes de emoji de Discord: `:flag_ve:`, `:ownerroleicon:`
 CORTO = re.compile(r':[a-z0-9_+\-]{2,32}:')
@@ -1005,6 +1063,12 @@ def sin_refuerzos(lado):
     integrante sin la \u00abR\u00bb suelta. `[(EZE \ud83c\udde6\ud83c\uddf7) PICHULITA \ud83c\udde6\ud83c\uddf7 + SIX \ud83c\udde6\ud83c\uddf7 R]` ->
     `PICHULITA \ud83c\udde6\ud83c\uddf7 + SIX \ud83c\udde6\ud83c\uddf7`. Si no queda nada, el lado tal cual vino."""
     s = REFUERZO_FIN.sub('', REFUERZO_INI.sub('', lado or ''))
+    # 🔑 Y EL `+` QUE LO SUMABA: `YINN 🇲🇦 + (PICHULITAMC 🇦🇷)` en #votaciones de FFA
+    # (DESGRACIAS EN TOKYO VOL 21, 03/10/2026). Dlx: lo de entre paréntesis es el
+    # COMODÍN —«cualquier persona literal», elegida para rapear sólo esa ronda, haya
+    # jugado la llave o no— y no cobra nada: es un pokémon
+    if s != (lado or ''):
+        s = re.sub(r'^\s*[+&,]\s*|\s*[+&,]\s*$', '', s)
     partes = re.split(r'(\s*[+&]\s*)', s)
     s = ''.join(R_SUELTA.sub('', p) if i % 2 == 0 else p for i, p in enumerate(partes)).strip()
     return s if norm(s) or MENCION.search(s) else (lado or '')

@@ -112,6 +112,12 @@ INVENTADOS = [
     # de la Final Nacional Albiceleste salía como un evento llamado «ESTE EMOJI CONFIRMA…». Ver `_frase()`
     '# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚\n✅ - ESTE EMOJI CONFIRMA TU ASISTENCIA A LAS HORAS Y AL EVENTO\n❌ - ESTE EMOJI CONFIRMA QUE NO ESTARÁS EN LA HORA NI EN EL EVENTO\n⚔️ - ESTE EMOJI DICE QUE NO ESTARÁS EN LOS EMPAREJAMIENTOS PERO SI EN EL EVENTO\n(EN ESTE CASO SE TE DEJARÁ EN LAS ÚLTIMAS LLAVES)\n\n<@1>\n<@1>\n@everyone',
     '# HORARIOS PARA LA GRAN FINAL\nMODALIDAD: 1vs1\nHORA: 22:00',
+    # 🔑 DIMENSIÓN DEL FREESTYLE (03/10/2026): el campo entre emojis y comillas, el «vs» en emoji y «YAYAYA» = ya
+    '# 🌃 ╎MIDNIGHT MIAMI╎🌃 \n▬▬▬▬▬\n**`🗄️ORGANIZADOR🗄️`: DREXX🇳🇱**\n\n**`🎟️CUPOS🎟️`: 8/12/16**\n\n'
+    ' **<:escudo_dc:1>`FORMATO:` 1<:escudo_dc:1>1**\n\n'
+    '**<:tiempode_arena:2>` HORARIO `<:tiempode_arena:2>: YAYAYA**\n\n@everyone',
+    '💎 <:DDF:3> ╎ historia del peru cup╎ <:DDF:3> 💎\n▬▬▬▬▬\n**`🗄️ORGANIZADOR🗄️`:ZJ:flag_pe:**\n\n'
+    ' **`🌘FORMATO🌘`: 1vs1**\n\n<:tiempode_arena:2>` HORARIO `<:tiempode_arena:2> : RIGHT NOW!\n@everyone',
 ]
 
 

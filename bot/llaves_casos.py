@@ -117,6 +117,15 @@ INVENTADOS = [
      '▪️   [FULLY🇨🇱&SNOW🇨🇴] 📰 [MAKMA🇻🇪&PRRR🇦🇴]\n'),
     ('FFA: el podio con medallas al pie (`🏆 |X`) y la 🥉 sola de encabezado (ONE PIECE, 30/09)',
      '# ••• SEMIFINALES •••\n•••[Ana 🇦🇷] VS [Bea 🇨🇱]•••\n\n•••[Cami 🇻🇪] VS [Dora 🇲🇽]•••\n▬▬▬▬▬▬\n# ••• 🥉  •••\n•••[Bea 🇨🇱] VS [Dora 🇲🇽]•••\n▬▬▬▬▬▬\n# 🔱☄️   ••• FINAL ••• ☄️ 🔱\n•••[Ana 🇦🇷] VS [Cami 🇻🇪]•••\n▬▬▬▬▬▬\n\n# 🏆  |Cami 🇻🇪\n## 🥈 |Ana 🇦🇷 \n### 🥉 |Bea 🇨🇱 + Dora 🇲🇽'),
+    ('DIMENSIÓN DEL FREESTYLE: `<<:versus_:…>>`, el 『 suelto, `<a:Per:…>` y el podio con su medalla (03/10/2026)',
+     '╭━━━〔COPA DE PRUEBA〕━━━╮\n🪬 [CUARTOS] 🪬 \n『Ana 🇦🇷』<<:versus_:1>> 『 Bea 🇨🇱 』\n'
+     '『Cami 🇻🇪』 『<:versus_:1> 『Dora<a:Per:2>』\n🌃 [S E M I F I N A L] 🌃\n'
+     '**『 Ana 🇦🇷』<:versus_:1> 『Dora🇵🇪 』**\n🏯 [ G R A N - F I N A L] 🏯\n'
+     '『Ana🇦🇷』<:versus_:1> 『』\n『 🉐』P O D I O『 🉐』\nCAMPEÓN [<:MEDALLAPRIMERLUGAR:3>] : Ana 🇦🇷\n'),
+    ('FFA: la final «con comodín», el comodín entre paréntesis no es del lado (DESGRACIAS EN TOKYO VOL 21, 03/10)',
+     '**[•SEMI - FINAL•]**\n▪️   [YINN 🇲🇦] 🆚 [PICHULAMC 🇦🇷]\n▪️   [TROT 🇪🇦] 🆚 [MARCOS 🇪🇦]\n'
+     '▪️**[• FINAL•]**\n▪️ [(PICHULITA 🇦🇷) YINN 🇲🇦] 🆚 [TROT 🇪🇦 (ABYSSUS 🇨🇦)]\n'
+     'YINN 🇲🇦 + (PICHULITAMC 🇦🇷) 🆚 TROT 🇪🇦 (ABYSSUS 🇨🇦)\n'),
     ('FFA: el cruce que espera rival, `⌞Geoka⌝ VS ⌞⌝`, no se pega con el de abajo (Dos Generaciones Vol 2, 01/10)',
      '`[ CUARTOS ]`\n\n⌞Soneto 🇪🇨⌝  <:VSF:17>  ⌞Oasis🇨🇱⌝ \n⌞Six🇦🇷⌝  <:VSF:17>  ⌞Sosa🇨🇱⌝ \n⌞Geoka 🇦🇷⌝  <:VSF:17>  ⌞⌝\n⌞Cinexfilo 🇻🇪⌝  <:VSF:17>  ⌞⌝  \n\n`[ SEMIFINALES ]`\n\n⌞⌝ <:VSF:17> ⌞⌝\n⌞⌝ <:VSF:17> ⌞⌝\n'),
 ]

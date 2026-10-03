@@ -86,7 +86,11 @@ CAMPOS = {
 
 def _limpio(s):
     """El texto sin los emoji personalizados ni los adornos de Discord."""
-    s = re.sub(r'<a?:(\w+):\d+>', '', str(s or ''))
+    # 🔑 ENTRE DOS CIFRAS SUELTAS, EL EMOJI ES EL «VS»: `FORMATO: 1<:escudo_dc:…>1`
+    # (DIMENSIÓN DEL FREESTYLE, 03/10/2026) se leía «11». Sólo de 1 a 9 a cada
+    # lado: así se escribe una modalidad, y no una hora ni un cupo
+    s = re.sub(r'(?<![0-9])([1-9])[ \t]*<a?:\w+:\d+>[ \t]*([1-9])(?![0-9])', r'\1vs\2', str(s or ''))
+    s = re.sub(r'<a?:(\w+):\d+>', '', s)
     s = re.sub(r'<#\d+>|<@!?&?\d+>', '', s)
     return s
 

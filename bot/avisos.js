@@ -421,7 +421,9 @@ const OTROS_CAMPOS = re(B + '(ORGANIZADOR|CUPOS|RANGO|MODALIDAD|PREMIOS|' +
   'HORARIO|JURADO|DJ|HOST|INDICACIONES|LINK)' + S + '*:', 'i');
 
 export function limpio(s) {
+  // entre dos cifras sueltas el emoji es el «vs» (`1<:escudo_dc:…>1`, DDF): `anuncios._limpio()`
   return String(s == null ? '' : s)
+    .replace(/(^|[^\d])([1-9])[ \t]*<a?:\w+:\d+>[ \t]*([1-9])(?!\d)/g, '$1$2vs$3')
     .replace(/<a?:(\w+):\d+>/g, '')
     .replace(/<#\d+>|<@!?&?\d+>/g, '');
 }
@@ -707,8 +709,9 @@ export function parsearAnuncio(m) {
 const EN = re(B + 'en' + S + '+(\\d{1,3})' + S +
   '*(m|min|mins|minuto|minutos|h|hs|hr|hrs|hora|horas)?' + B, 'i');
 const MEDIA = re(B + 'en' + S + '+media' + S + '+hora' + B, 'i');
-const AHORA = re(B + '(ahora|ya|empez(ando|amos)|arrancamos|comenzamos|en' +
-  S + '+vivo)' + B, 'i');
+// y `YAYAYA` y `RIGHT NOW!` (DDF): `cuando._AHORA`
+const AHORA = re(B + '(ahora|(?:ya)+a*|empez(ando|amos)|arrancamos|comenzamos|en' +
+  S + '+vivo|right' + S + '+now)' + B, 'i');
 const HORAS = ['h', 'hs', 'hr', 'hrs', 'hora', 'horas'];
 const TOPE_MIN = 60 * 12;
 const MARCA = /<t:(\d{9,11})(?::[tTdDfFR])?>/;
