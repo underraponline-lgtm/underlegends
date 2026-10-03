@@ -2,7 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, mult, norm, num, recorte, resultado, utc } from './liga.js';
-import { Cara, Carta, Chevron, Compartir, Ico, Poster, accion, enlace, nombrePais } from './piezas.jsx';
+import { Cara, Carta, Chevron, Compartir, Ico, Poster, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 export const MENU = [
@@ -82,7 +82,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />
-        <a className="btn-ico" href="#/avisos" aria-label="Avisos de eventos"><Ico n="campana" t={20} /></a>
+        {prevNot() ? <Campanita liga={liga} /> : <a className="btn-ico" href="#/avisos" aria-label="Avisos de eventos"><Ico n="campana" t={20} /></a>}
         {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta»). Y en el celular, en
             el lugar de tu cuenta, que vuelve abajo como «Yo» (Dlx, 02/10/2026: «el engranaje en vez de la cuenta. En
             el celular. En la PC que esté arriba, por supuesto») */}
@@ -95,6 +95,128 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
         <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
       </div>
     </header>
+  );
+}
+
+// ── 🔔 la campana: el panel de notificaciones ───────────────────────────────────────────────────────
+// Dlx, 02/10/2026: «que en esa campanita, aparte de activar tus notificaciones, sea como un panel de notificaciones
+// recientes, quizás algo como Instagram», y a «¿también los eventos del día?», «A». Arriba lo de hoy en la Liga (para
+// todos); después lo tuyo, «Nuevas» y «Antes» (la bandeja de app.js: `BANDEJA`, `pedirBandeja()`); abajo, la campana
+// del teléfono. 🔍 PREVIEW: sólo con `lg:prev-not`; para los demás la campana sigue llevando a `#/avisos`
+function prevNot() {
+  try { return !!localStorage.getItem('lg:prev-not'); } catch (e) { return false; }
+}
+function useBandeja() {
+  const leer = () => Object.assign({ items: [], nuevas: 0, listo: false }, window.BANDEJA || {});
+  const [b, setB] = useState(leer);
+  useEffect(() => {
+    const f = () => setB(leer());
+    const pedir = () => { if (window.pedirBandeja && document.visibilityState === 'visible') window.pedirBandeja(false); };
+    window.addEventListener('lg:bandeja', f);
+    window.addEventListener('lg:cuenta', pedir);
+    pedir();
+    // lo nuevo, cada tres minutos con la pestaña a la vista
+    const t = setInterval(pedir, 180000);
+    return () => { window.removeEventListener('lg:bandeja', f); window.removeEventListener('lg:cuenta', pedir); clearInterval(t); };
+  }, []);
+  return b;
+}
+const ICONO_AVISO = { seguidor: '⭐', aplauso: '👏', seguido: '★', personal: '🔔' };
+// la dirección de un aviso (`https://underlegends.pages.dev/freestyle-rap/r/x`, `/cuenta/siguiendo`) como ruta `#/…`
+const rutaDe = (u) => {
+  const p = String(u || '').replace(/^https:\/\/underlegends\.pages\.dev/, '').replace(/^\/freestyle-rap(?=\/|$)/, '').replace(/^#/, '');
+  return '#' + (p || '/');
+};
+
+function Campanita({ liga }) {
+  const B = useBandeja();
+  const [abierta, setAbierta] = useState(false);
+  const caja = useRef(null);
+  useEffect(() => {
+    if (!abierta) return undefined;
+    // afuera del panel lo cierra (adentro del shadow root el evento llega con su camino entero)
+    const fuera = (e) => { if (caja.current && !e.composedPath().includes(caja.current)) setAbierta(false); };
+    const esc = (e) => { if (e.key === 'Escape') setAbierta(false); };
+    document.addEventListener('pointerdown', fuera);
+    document.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', fuera); document.removeEventListener('keydown', esc); };
+  }, [abierta]);
+  const abrir = () => {
+    const v = !abierta;
+    setAbierta(v);
+    // al abrirlo, lo nuevo queda visto (el panel todavía muestra cuáles eran)
+    if (v && window.pedirBandeja) window.pedirBandeja(true);
+  };
+  return (
+    <div className="nt" ref={caja}>
+      <button type="button" className={'btn-ico nt-b' + (abierta ? ' on' : '')} aria-expanded={abierta}
+        aria-label={'Notificaciones' + (B.nuevas ? ', ' + B.nuevas + (B.nuevas === 1 ? ' nueva' : ' nuevas') : '')} onClick={abrir}>
+        <Ico n="campana" t={20} />{B.nuevas ? <span className="nt-n">{B.nuevas > 9 ? '9+' : B.nuevas}</span> : null}
+      </button>
+      {abierta ? <PanelAvisos liga={liga} B={B} onCerrar={() => setAbierta(false)} /> : null}
+    </div>
+  );
+}
+
+function PanelAvisos({ liga, B, onCerrar }) {
+  const e = useCampana();
+  const C = window.Campana;
+  const hoy = liga.diaClave(liga.ahora);
+  // 📅 lo de hoy en la Liga, para todos: lo que se está jugando y lo que viene hoy
+  const vivos = liga.vivo();
+  const hoyEv = vivos.concat(liga.luego().filter((x) => liga.diaClave(x.cuando) === hoy && !vivos.includes(x))).slice(0, 4);
+  const items = B.items || [];
+  const nuevas = items.filter((x) => !x.visto);
+  const antes = items.filter((x) => x.visto);
+  const ir = (ruta) => { onCerrar(); location.hash = ruta; };
+  const fila = (x) => {
+    const f = x.cara ? liga.T[x.cara] : null;
+    return (
+      <li key={x.clave}>
+        <button type="button" className={'nt-i' + (x.visto ? '' : ' nueva')} onClick={() => ir(rutaDe(x.url))}>
+          {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" /> : <span className="nt-c nt-ico" aria-hidden="true">{ICONO_AVISO[x.tipo] || '🔔'}</span>}
+          <span className="nt-t"><b>{x.titulo}</b>{x.cuerpo ? <small>{x.cuerpo}</small> : null}</span>
+          <em>{liga.cuando(new Date(x.t))}</em>
+        </button>
+      </li>
+    );
+  };
+  // la campana del teléfono, al pie: lo que falta para que también llegue ahí
+  let pie = null;
+  if (e && C) {
+    if (e.activa && e.yo && e.yo.id) pie = <p className="nt-ok">✅ También te llega al teléfono. <a href="#/avisos" onClick={onCerrar}>Ajustes de avisos</a></p>;
+    else if (!e.soporta || e.negado) pie = <a className="pub-a" href="#/avisos" onClick={onCerrar}>Cómo hacer que te llegue al teléfono</a>;
+    else if (!e.activa) pie = <><p className="nt-tx">Que también te llegue al teléfono, al momento:</p><button type="button" className="btn verde chico" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button></>;
+    else pie = <><p className="nt-tx">Este teléfono recibe los eventos. Para que te lleguen también los tuyos:</p><button type="button" className="btn borde2 chico" onClick={() => C.vincular()}>Vincular con mi Discord</button></>;
+  }
+  return (
+    <div className="nt-p" role="dialog" aria-label="Notificaciones">
+      <div className="nt-h"><b>Notificaciones</b><button type="button" className="nt-x" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={20} /></button></div>
+      {hoyEv.length ? (
+        <>
+          <p className="nt-s">Hoy en la Liga</p>
+          <ul>{hoyEv.map((x, i) => (
+            <li key={'ev' + i}><button type="button" className="nt-i" onClick={() => ir('#/eventos')}>
+              <img className="nt-c" alt="" src={liga.logo(x.sv)} />
+              <span className="nt-t"><b>{limpio(x.nombre)}</b><small>{vivos.includes(x) ? 'se está jugando ahora' : liga.dia(x.cuando).replace(/^hoy /, 'hoy a las ')} · {x.sv}</small></span>
+              <em>{vivos.includes(x) ? 'EN VIVO' : ''}</em>
+            </button></li>
+          ))}</ul>
+        </>
+      ) : null}
+      {B.sinCuenta ? (
+        <div className="nt-vacio">
+          <p className="nt-tx">Entrá con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, tus rangos y tus cartas, y cuando gana alguien que seguís.</p>
+          <button type="button" className="btn verde chico" onClick={() => { onCerrar(); accion.entrar(); }}>Entrar con Discord</button>
+        </div>
+      ) : !B.listo ? <p className="nt-tx nt-vacio">Cargando…</p> : items.length ? (
+        <>
+          {nuevas.length ? <><p className="nt-s">Nuevas</p><ul>{nuevas.map(fila)}</ul></> : null}
+          {antes.length ? <><p className="nt-s">Antes</p><ul>{antes.map(fila)}</ul></> : null}
+        </>
+      ) : <p className="nt-tx nt-vacio">Todavía no te llegó nada. Cuando alguien te siga, te felicite o subas de rango, aparece acá.</p>}
+      {pie ? <div className="nt-pie">{pie}</div> : null}
+    </div>
   );
 }
 

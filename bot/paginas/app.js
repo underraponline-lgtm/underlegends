@@ -4566,6 +4566,38 @@ function felicitar(id) {
     })
     .catch(function () { delete APLAUSOS.va[id]; APLAUSOS.err[id] = { error: 'red' }; avisarAplausos(); });
 }
+/* ── 🔔 LA BANDEJA: el panel de la campana ──────────────────────────────
+   🔑 Dlx, 02/10/2026: «que en esa campanita, aparte de activar tus
+   notificaciones, sea como un panel de notificaciones recientes, quizás
+   algo como Instagram», y a «¿también los eventos del día?», «A». Lo tuyo
+   (quién te sigue, quién te felicita, tus rangos y tarjetas, cuando gana
+   alguien que seguís) lo guarda el objeto 30 días (`bandeja()` en
+   bot/avisos.js), aunque no tengas la campana en ningún dispositivo. Se pide
+   con la sesión y ⚠️ NUNCA manda a Discord: sin sesión, el panel invita a
+   entrar. La página nueva lee `BANDEJA` y se entera por `lg:bandeja`. */
+var BANDEJA = { items: [], nuevas: 0, listo: false, sinCuenta: false, t: 0 };
+function avisarBandeja() {
+  try { window.dispatchEvent(new Event('lg:bandeja')); } catch (e) { /* navegador viejo */ }
+}
+/* `visto`: se abrió el panel; lo nuevo queda visto (la respuesta todavía dice cuáles eran) */
+function pedirBandeja(visto) {
+  if (!DC) { BANDEJA.sinCuenta = true; BANDEJA.listo = true; avisarBandeja(); return; }
+  if (!visto && Date.now() - BANDEJA.t < 60000) return;
+  BANDEJA.t = Date.now();
+  pedirConCuenta('/api/avisos/bandeja', visto ? { visto: true } : {}, false)
+    .then(function (j) {
+      BANDEJA.listo = true;
+      if (j && j.ok) {
+        BANDEJA.items = j.items || [];
+        BANDEJA.nuevas = j.nuevas || 0;
+        BANDEJA.sinCuenta = false;
+      } else if (j && j.status === 401) {
+        BANDEJA.sinCuenta = true;
+      }
+      avisarBandeja();
+    })
+    .catch(function () { BANDEJA.listo = true; avisarBandeja(); });
+}
 /* lo que se le dice a quien no pudo felicitar (texto: la página nueva lo escapa sola) */
 function errorAplauso(E) {
   var e = E && E.error;

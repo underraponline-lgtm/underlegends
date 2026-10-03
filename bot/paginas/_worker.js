@@ -81,6 +81,8 @@ const AVISOS = {
   // bot/avisos.js: quién felicita lo dice Discord; qué publicación, el muro
   '/api/avisos/felicitar': 'POST',
   '/api/avisos/aplausos': 'GET',
+  // 🔔 el panel de la campana (02/10/2026): lo que se te avisó, con tu sesión. Ver `bandeja()` en bot/avisos.js
+  '/api/avisos/bandeja': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por

@@ -1078,6 +1078,8 @@ const RUTAS = {
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
+  // 🔔 el panel de la campana: lo que se te avisó, con tu sesión. Ver `bandeja()`
+  '/avisos/bandeja': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
 };
@@ -1858,6 +1860,22 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, pub: v }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🔔 LA BANDEJA: lo tuyo, con tu sesión (o un permiso recién traído). ⚠️ La página nunca manda a Discord por esto:
+  // sin sesión, el panel invita a entrar
+  if (ruta === '/avisos/bandeja') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/bandeja', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, visto: d.visto === true }), headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -2136,6 +2154,13 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS aplausos_quien ON aplausos (quien)');
+      // 🔔 LA BANDEJA (02/10/2026): lo que se le avisó a cada uno, para el panel de la campana (Dlx: «que sea como un
+      // panel de notificaciones recientes, quizás algo como Instagram»). Se anota aunque esa persona no tenga la
+      // campana en ningún dispositivo: el panel se ve igual. El mismo aviso (`clave`) se pisa y vuelve a «nueva»:
+      // «👏 12 te felicitaron» reemplaza a «👏 3». 30 días. Ver `aBandeja()` y `bandeja()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS bandeja (quien TEXT NOT NULL, clave TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        "tipo TEXT NOT NULL DEFAULT '', titulo TEXT NOT NULL, cuerpo TEXT NOT NULL DEFAULT '', url TEXT NOT NULL DEFAULT '', " +
+        "cara TEXT NOT NULL DEFAULT '', visto INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (quien, clave))");
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplaudidas (id TEXT PRIMARY KEY, tipo TEXT NOT NULL, ' +
         "quien TEXT NOT NULL DEFAULT '[]', ks TEXT NOT NULL DEFAULT '[]', motivo TEXT NOT NULL DEFAULT '', " +
         "t TEXT NOT NULL DEFAULT '', primero INTEGER NOT NULL, avisado INTEGER NOT NULL DEFAULT 0, " +
@@ -2180,6 +2205,7 @@ export class Avisos {
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
+      if (ruta === '/bandeja') return this.bandeja(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -2413,6 +2439,8 @@ export class Avisos {
       const viejo = ahora - APLAUSOS_DIAS * DIA_MS;
       this.sql.exec('DELETE FROM aplausos WHERE t < ? OR id IN (SELECT id FROM aplaudidas WHERE primero < ?)', viejo, viejo);
       this.sql.exec('DELETE FROM aplaudidas WHERE primero < ?', viejo);
+      // 🔔 y la bandeja de cada uno: 30 días
+      this.sql.exec('DELETE FROM bandeja WHERE t < ?', viejo);
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -3273,6 +3301,8 @@ export class Avisos {
     if (rp.rowsWritten) await this.colaReportes(Date.now());
     // 👏 y a quién felicitó: también va con su Discord ID
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
+    // 🔔 y su bandeja
+    this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
       sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0, aplausos: ap.rowsWritten || 0 });
   }
@@ -3503,6 +3533,8 @@ export class Avisos {
         const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
         if (pedidos + subs.length > TOPE_SEGUIDOS && pedidos) { quedan++; continue; }
         this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+        // 🔔 y a su bandeja, con la cara de quien ganó (ver `aBandeja()`)
+        this.aBandeja(f.quien, 'sg:' + c.pub, 'seguido', c.titulo, c.cuerpo, c.url, c.k, c.t || ahora);
         if (!subs.length) { sinVinculo++; continue; }
         pedidos += subs.length;
         const cuerpo = cuerpoPersonal({ id: 'sg' + c.pub, titulo: c.titulo, cuerpo: c.cuerpo, url: c.url });
@@ -3561,12 +3593,14 @@ export class Avisos {
       // un aviso que no tiene adónde ir no se guarda para después
       for (const f of fs) listo(a, f.quien);
       if (!did) { sinCuenta++; continue; }
-      if (!subs.length) { sinVinculo++; continue; }
       let nombre = '';
       if (fs.length === 1 && claveValida(fs[0].de)) {
         try { nombre = String((JSON.parse((await this.env.KV.get('p:' + fs[0].de)) || '{}') || {}).n || '').slice(0, 40); } catch (e) { nombre = ''; }
       }
       const { titulo, cuerpo } = avisoSeguidores(fs.length, nombre);
+      // 🔔 a su bandeja, tenga o no la campana; con la cara de quien te sigue si es uno de la Liga
+      this.aBandeja(did, 'ns:' + ahora, 'seguidor', titulo, cuerpo, HUB + '/cuenta/siguiendo', nombre ? fs[0].de : '', ahora);
+      if (!subs.length) { sinVinculo++; continue; }
       const id = 'ns' + huella(a);
       const c = cuerpoPersonal({ id, titulo, cuerpo, url: HUB + '/cuenta/siguiendo' });
       this.sql.exec('INSERT INTO seguidores_av (a, t) VALUES (?, ?) ON CONFLICT(a) DO UPDATE SET t = excluded.t', a, ahora);
@@ -3669,6 +3703,8 @@ export class Avisos {
       this.sql.exec('UPDATE aplaudidas SET avisado = ?, t_avisado = ? WHERE id = ?', f.n, ahora, f.id);
       if (!dids.length) { sinCuenta++; continue; }
       const { titulo, cuerpo } = avisoAplauso(f.n, f.motivo);
+      // 🔔 a la bandeja de cada uno, tenga o no la campana: el mismo aviso se pisa con el número nuevo
+      for (const did of dids) this.aBandeja(did, 'ap:' + f.id, 'aplauso', titulo, cuerpo, HUB + '/freestyle-rap/publicaciones', '', ahora);
       const c = cuerpoPersonal({ id: 'ap' + f.id, titulo, cuerpo, url: HUB + '/freestyle-rap/publicaciones' });
       let llego = 0, reintentar = false;
       for (const did of dids) {
@@ -3692,12 +3728,40 @@ export class Avisos {
     return enviados;
   }
 
+  // ── 🔔 la bandeja: el panel de la campana ────────────────────────────
+  /** Anota un aviso en la bandeja de esa persona. El mismo `clave` se pisa y vuelve a «nueva». */
+  aBandeja(quien, clave, tipo, titulo, cuerpo, url, cara, t) {
+    if (!/^[0-9]{5,25}$/.test(String(quien || '')) || !clave || !titulo) return;
+    this.sql.exec('INSERT INTO bandeja (quien, clave, t, tipo, titulo, cuerpo, url, cara, visto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0) ' +
+      'ON CONFLICT(quien, clave) DO UPDATE SET t = excluded.t, titulo = excluded.titulo, cuerpo = excluded.cuerpo, ' +
+      'url = excluded.url, cara = excluded.cara, visto = 0',
+    String(quien), String(clave).slice(0, 80), Number(t) || Date.now(), String(tipo || '').slice(0, 20),
+    String(titulo).slice(0, 120), String(cuerpo || '').slice(0, 240), String(url || '').slice(0, 200),
+    claveValida(cara) ? cara : '');
+  }
+
+  /**
+   * La bandeja de quien pide (`/avisos/bandeja`): lo de los últimos 30 días, lo más nuevo arriba, y cuántas sin ver.
+   * Con `visto`, después de leerla queda vista (se abrió el panel): la respuesta todavía dice cuáles eran nuevas.
+   */
+  bandeja(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
+    const items = this.sql.exec('SELECT clave, t, tipo, titulo, cuerpo, url, cara, visto FROM bandeja WHERE quien = ? ' +
+      'ORDER BY t DESC LIMIT 40', quien).toArray();
+    const nuevas = items.filter((x) => !x.visto).length;
+    if (d.visto === true && nuevas) this.sql.exec('UPDATE bandeja SET visto = 1 WHERE quien = ? AND visto = 0', quien);
+    return json({ ok: true, items, nuevas: d.visto === true ? 0 : nuevas, eran: nuevas });
+  }
+
   /** Para `estado()`, con try como `estadoSeguidos()`. */
   estadoAplausos() {
     try {
       const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT id) AS a FROM aplausos')
         .toArray()[0];
-      return { filas: r.n, felicitan: r.p, publicaciones: r.a, ultima: this.leer('aplausos') };
+      const b = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p FROM bandeja').toArray()[0];
+      return { filas: r.n, felicitan: r.p, publicaciones: r.a, ultima: this.leer('aplausos'),
+        bandeja: { filas: b.n, personas: b.p } };
     } catch (e) {
       return { error: String(e).slice(0, 80) };
     }
@@ -3882,9 +3946,18 @@ export class Avisos {
     if (!crudo) return 0;
     const cola = colaPersonal(crudo, ahora);
     let enviados = 0, sinVinculo = 0, pedidos = 0, quedan = 0;
+    // 🔔 lo que ya había salido antes de que existiera la bandeja entra UNA vez, ya visto: así el panel no nace vacío
+    const rellenar = !this.leer('bandeja_relleno');
     for (const a of cola) {
       const id = 'yo:' + a.id;
-      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) {
+        if (rellenar && /^[0-9]{5,25}$/.test(String(a.quien))) {
+          this.sql.exec('INSERT OR IGNORE INTO bandeja (quien, clave, t, tipo, titulo, cuerpo, url, visto) VALUES (?, ?, ?, ?, ?, ?, ?, 1)',
+            String(a.quien), id, Date.parse(a.t || '') || ahora, 'personal', String(a.titulo).slice(0, 120),
+            String(a.cuerpo || '').slice(0, 240), String(a.url || '').slice(0, 200));
+        }
+        continue;
+      }
       const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?',
         String(a.quien)).toArray();
       // 🔴 CON TOPE POR MINUTO: el vigía comparte con la lectura de los canales
@@ -3894,6 +3967,8 @@ export class Avisos {
       // ⚠️ SE ANOTA ANTES DE MANDAR —así dos minutos que se pisan no lo mandan
       // dos veces— y se desanota si falló por el otro lado (0, 429, 5xx).
       this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      // 🔔 y a su bandeja, tenga o no la campana (ver `aBandeja()`)
+      this.aBandeja(a.quien, id, 'personal', a.titulo, a.cuerpo, a.url, '', Date.parse(a.t || '') || ahora);
       if (!subs.length) { sinVinculo++; continue; }
       pedidos += subs.length;
       const cuerpo = cuerpoPersonal(a);
@@ -3911,6 +3986,7 @@ export class Avisos {
       if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
     }
     this.sql.exec('DELETE FROM hechos WHERE t < ?', ahora - 30 * 24 * HORA);
+    if (rellenar) this.guardar('bandeja_relleno', { t: ahora });
     // 🔴 LA COLA YA NO SE BORRA: si el ciclo la reescribía entre la lectura y el
     // borrado, lo nuevo se perdía (revisión del 25/09/2026). `hechos` evita
     // repetir, y lo de más de una semana no sale (`colaPersonal()`).

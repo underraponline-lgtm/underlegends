@@ -2555,6 +2555,25 @@ console.log('\n👏 FELICITAR\n');
   ok('el proxy deja pasar /felicitar con la sesión', fue && fue.u.endsWith('/avisos/felicitar') && fue.h['x-lg-ses'] === SES);
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/aplausos'), envP);
   ok('y /aplausos, con 30 s en el borde', fue && fue.u.endsWith('/avisos/aplausos') && fue.cf && fue.cf.cacheTtl === 30);
+  // 🔔 la bandeja: con la sesión, y el «visto» pasa tal cual (nunca otro quien)
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/bandeja', { method: 'POST', body: '{"visto":true}',
+    headers: { cookie: 'lg_ses=' + SES } }), envP);
+  ok('el proxy deja pasar /bandeja con la sesión', fue && fue.u.endsWith('/avisos/bandeja') && fue.h['x-lg-ses'] === SES);
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  alObjeto.length = 0;
+  const pedirB = async (cuerpo, ses) => {
+    const rr = await worker.fetch(new Request('https://x/avisos/bandeja', { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: rr.status, json: JSON.parse(await rr.text()) };
+  };
+  r = await pedirB({ visto: true, quien: '42424242424' }, SES);
+  const ab = alObjeto.filter(([u]) => u.endsWith('/bandeja'));
+  ok('la bandeja llega al objeto con el ID de la sesión (no el de la página) y el visto',
+     r.status === 200 && ab.length === 1 && ab[0][1].quien === VIEJO && ab[0][1].visto === true, JSON.stringify(ab));
+  alObjeto.length = 0;
+  r = await pedirB({});
+  ok('sin sesión: 401 «sin_sesion», y no llega al objeto', r.status === 401 && r.json.error === 'sin_sesion' &&
+     !alObjeto.some(([u]) => u.endsWith('/bandeja')));
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
   delete PUESTO['web:muro'];
