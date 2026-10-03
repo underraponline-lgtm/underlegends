@@ -17,7 +17,7 @@
   },
   "ARDEAN": {
    "servidor": "ba04917b079d:aee1635d8702:c024a8",
-   "temporada": "7956b18a9cb5:2a56fa3385e4"
+   "temporada": "cf6baacaa5fb:2a56fa3385e4"
   },
   "AREZ": {
    "servidor": "4d6be90fc231:aee1635d8702:90ce53",
@@ -130,7 +130,7 @@
   },
   "Baltrip": {
    "servidor": "ea88828612f7:aee1635d8702:da39a3",
-   "temporada": "addd30b2413c:2a56fa3385e4"
+   "temporada": "56f8752402be:2a56fa3385e4"
   },
   "Basik": {
    "servidor": "6688b3af8b25:aee1635d8702:43d041"
@@ -794,10 +794,10 @@
    "temporada": "47c64305ef68:2a56fa3385e4"
   },
   "LEWITO": {
-   "competitivo": "a12610df1b55:d221ea1ff4d2",
+   "competitivo": "6ebd49bc51d3:d221ea1ff4d2",
    "pais": "6524d2d41e39:81ca9569ff4e",
    "servidor": "ea09a357ea5e:aee1635d8702:b92a21",
-   "temporada": "38591358ac7d:2a56fa3385e4"
+   "temporada": "003115f6c16c:2a56fa3385e4"
   },
   "LGBD": {
    "servidor": "b099d957ae5d:aee1635d8702:b92a21"
@@ -832,7 +832,7 @@
   },
   "Leonart": {
    "servidor": "d6765b288116:aee1635d8702:90d6e7",
-   "temporada": "0856286f9cfb:2a56fa3385e4"
+   "temporada": "37e1c5b87134:2a56fa3385e4"
   },
   "Lhyon": {
    "servidor": "143876e8801f:aee1635d8702:da39a3",
@@ -851,10 +851,10 @@
    "servidor": "031e86013f21:aee1635d8702:980594"
   },
   "Lilñaño": {
-   "competitivo": "33fc3e52163f:d221ea1ff4d2",
+   "competitivo": "0f1de47fa1e9:d221ea1ff4d2",
    "pais": "71201ccd8660:0564ccd3895e",
    "servidor": "93b09fdb96ad:851c72da5ed7:d473d6",
-   "temporada": "498531127530:2a56fa3385e4"
+   "temporada": "8b5552524dd3:2a56fa3385e4"
   },
   "LitKunai": {
    "servidor": "fc95a94c904a:aee1635d8702:c589ca"
@@ -1692,7 +1692,7 @@
   },
   "leteletras": {
    "servidor": "60ba6bf18ffc:aee1635d8702:cd7216",
-   "temporada": "884054d6e053:2a56fa3385e4"
+   "temporada": "8efc2eab589d:2a56fa3385e4"
   },
   "maldita enfermedad": {
    "servidor": "79066976dece:aee1635d8702:cd7216",
@@ -1756,5 +1756,5 @@
    "servidor": "994982e6deaa:aee1635d8702:0a3db8"
   }
  },
- "cuando": "2026-10-03T23:28:08+00:00"
+ "cuando": "2026-10-03T23:56:57+00:00"
 }
