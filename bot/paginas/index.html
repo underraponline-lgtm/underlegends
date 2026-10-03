@@ -131,7 +131,7 @@ html.ini-nuevo{scroll-padding-top:0}
   var V = {"crew":1,"pais":1,"pase":1,"tienda":1};
   // 🔍 UNA VISTA VIEJA EN PREVIEW (03/10/2026, la llave): `?prev=ll` deja `lg:prev-ll` en este navegador —lo mismo
   // que App.jsx— y, con eso, esa vista es del Inicio nuevo. Va acá porque app.js lo tiene que saber antes de enrutar
-  var PREV = {};
+  var PREV = {"pase":"ti","tienda":"ti"};
   try {
     var mp = /[?&]prev=([a-z]{2,12})\b/.exec(location.search), mn = /[?&]noprev=([a-z]{2,12})\b/.exec(location.search);
     if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');

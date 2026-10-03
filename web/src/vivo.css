@@ -1992,3 +1992,63 @@ a.rk-z:hover{border-color:var(--linea)}
 .an-l .an-cara{width:26px;height:26px;box-shadow:none}
 .an-flag{width:18px;height:12px;flex:none;object-fit:cover}
 @media (hover: hover) and (pointer: fine){.an-l a:hover span{text-decoration:underline;text-underline-offset:3px}}
+
+/* ── 🛒 LA TIENDA Y EL PASE (`tienda.jsx`, la tanda 2 del plan): lo de app.js con el estilo nuevo. Tus Puntos a la
+   derecha del título (abajo en el celular), el precio por cabeza en tres pasos, las cabezas de la semana y, al tocar una,
+   cuánto ponerle ── */
+.ti-cab{align-items:start}
+.ti-bill{display:grid;gap:8px;align-content:start;min-width:0;padding:16px;border:2px solid var(--esc-tinta);background:#0E0E10;color:#F6F6F6}
+.ti-bill small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--esc-gris)}
+.ti-saldo{font:900 44px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums;color:#F6F6F6}
+.ti-bill p{margin:0;font:600 14px/1.45 Archivo,sans-serif;color:var(--esc-gris)}
+.ti-bill p b{color:#F6F6F6}
+.ti-bill .btn{justify-self:start}
+.ti-bill .ti-mal{color:#F0559A}
+.ti-mios ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ti-mios li{padding:5px 8px;border:1.5px solid var(--esc-linea);font:700 12.5px/1.2 Archivo,sans-serif;color:#F6F6F6}
+.ti-hasta{font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);white-space:nowrap}
+.ti-pasos{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px;max-width:72ch}
+.ti-pasos li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font:500 15px/1.45 Archivo,sans-serif}
+.ti-pasos li>b{display:grid;place-items:center;height:26px;background:var(--inv);color:var(--inv-tinta);font:700 12px/1 "Space Mono",monospace}
+.ti-nota{margin:0 0 6px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.ti-nota b{color:var(--tinta)}
+.ti-h{display:flex;align-items:baseline;gap:8px;margin:26px 0 10px;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.ti-h small{font:700 11px/1 "Space Mono",monospace;color:var(--gris)}
+.ti-lista{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-width:640px}
+.ti-c{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:6px 12px 6px 8px;border:2px solid var(--linea);
+  background:var(--fondo);color:var(--tinta);text-align:left;cursor:pointer}
+.ti-c.on{background:var(--inv);color:var(--inv-tinta)}
+.ti-cara{width:34px;height:34px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--suave);color:var(--tinta);
+  font:900 13px/1 Archivo,sans-serif}
+.ti-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.ti-c.on .ti-cara.ini{background:var(--inv-tinta);color:var(--inv)}
+.ti-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 15px/1.2 Archivo,sans-serif;font-stretch:106%}
+.ti-flag{width:20px;height:14px;flex:none;object-fit:cover}
+.ti-v{margin-left:auto;flex:none;font:700 16px/1 "Space Mono",monospace;font-variant-numeric:tabular-nums}
+.ti-v.sin{font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+.ti-panel{display:grid;gap:10px;padding:12px;border:2px solid var(--linea);border-top:0;background:var(--caja)}
+.ti-panel p{margin:0;font:600 14px/1.45 Archivo,sans-serif}
+.ti-pv{font:700 16px/1 "Space Mono",monospace;color:var(--magenta-tx)}
+.ti-montos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:440px}
+.ti-montos .btn{padding:0 6px}
+.ti-panel .ti-msg{font:700 12.5px/1.4 "Space Mono",monospace;color:var(--gris)}
+.ti-panel .ti-msg.mal{color:var(--magenta-tx)}
+.ti-panel .ti-nota{margin:0}
+.ti-perfil{justify-self:start;font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;
+  text-underline-offset:3px}
+.ti-busca{width:100%;max-width:640px;min-height:48px;margin:0 0 8px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);
+  color:var(--tinta);font:600 16px/1 Archivo,sans-serif}
+.ti-cazas{list-style:none;margin:0;padding:0;display:grid;max-width:72ch}
+.ti-cazas li{padding:9px 0;border-bottom:1px solid var(--suave);font:500 14.5px/1.45 Archivo,sans-serif}
+.ti-pronto{display:grid;justify-items:start;gap:10px;max-width:640px;margin-bottom:26px;padding:18px;border:2px dashed var(--linea)}
+.ti-pronto h2{margin:0;font:900 22px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.ti-pronto p{margin:0;max-width:60ch;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris)}
+/* el Pase es una sola pieza: llena la pantalla, o la barra de abajo quedaba en el medio con un hueco negro debajo */
+.pa-cab{min-height:calc(100vh - 330px);min-height:calc(100svh - 330px);align-content:center;padding-bottom:48px}
+@media (min-width: 900px){
+  .app .ti-bill{width:340px}
+  .app .ti-pasos{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}
+  .app .ti-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;align-items:start}
+  .app .ti-dos .ti-lista,.app .ti-dos .ti-busca{max-width:none}
+  .app .pa-cab{min-height:calc(100vh - 300px);min-height:calc(100svh - 300px);padding-bottom:56px}
+}
