@@ -221,8 +221,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const perfil = g.tipo === 'gente' ? '#/r/' + encodeURIComponent(g.k)
     : g.tipo === 'pais' ? '#/pais/' + g.cc
       : g.tipo === 'crew' ? '#/crew/' + encodeURIComponent(g.crew.clave || g.crew.crew)
-        : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : '#/eventos';
+        : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : g.tipo === 'liga' ? '#/ranking' : '#/eventos';
   const circulo = g.tipo === 'gente' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
+    : g.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
     : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
       : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
         : <span className="h-c"><img alt="" src={g.logo} /></span>;

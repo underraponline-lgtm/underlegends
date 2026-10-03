@@ -198,6 +198,9 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .hv-fl.der{right:10px;box-shadow:4px 4px 0 var(--magenta)}
 .hv-fl:active{transform:translate(2px,2px)}
 @media (min-width: 600px){.hv-fl{width:52px;height:52px;top:calc(50% - 26px)}.hv-fl.izq{left:calc(50% - 215px - 80px)}.hv-fl.der{right:calc(50% - 215px - 80px)}}
+/* en el celular las flechas quedan ENCIMA de la historia: lo que cuenta va entre las dos (las caras de «La Liga» se
+   tapaban en las puntas, 02/10/2026) */
+@media (max-width: 599px){.hv-cuerpo .st{max-width:calc(100vw - 128px)}}
 /* Misiones y Tus eventos ya no van con pestañas: sus tarjetas perdían el `.pz .tu{margin:0}` y quedaban corridas */
 .pz-2 .tu,.pz-2 .mis,.pz-2 .te{margin:0}
 /* la cabecera del celular con tu cuenta: tres botones de 40 y el nombre en dos renglones, no en cuatro */
@@ -1189,3 +1192,7 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .pub-t{font-size:16.5px}
   .app .pub-cartas{grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));overflow:visible}
 }
+/* ⚔️ el clásico en las historias (`historiasLiga` de arriba.jsx): las dos caras y el resultado en el medio */
+.st-vs{align-items:center;flex-wrap:nowrap;gap:14px}
+.st-vs .st-cara{width:96px;height:96px;font-size:34px}
+.st-vs-n{font:900 40px/1 Archivo,sans-serif;font-stretch:120%;color:#F6F6F6}
