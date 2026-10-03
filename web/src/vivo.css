@@ -1579,3 +1579,162 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .tj-cmp-g > .tj-lado:last-child{order:3}
   .app .tj-fila dd{font-size:24px}
 }
+
+/* ── 👤 EL PERFIL (`perfil.jsx`, 03/10/2026, Dlx: «1. A 2. A 3. A»): arriba quién es y su tarjeta; abajo, pestañas
+   (Resumen · Eventos · Duelos · Insignias), así ninguna vista se hace eterna en el celular ── */
+.pf-cab{align-items:start}
+.pf-tx{gap:14px}
+.pf-quien{display:flex;align-items:center;gap:14px;min-width:0}
+.pf-quien .hero-ev{margin:0;overflow-wrap:anywhere}
+.pf-cara{width:64px;height:64px;font:900 26px/1 Archivo,sans-serif;box-shadow:0 0 0 3px var(--esc-tinta)}
+.pf-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.pf-chips a,.pf-chips span{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 11px;border:1.5px solid var(--esc-linea);
+  color:var(--esc-tinta);font:700 12px/1 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase}
+.pf-chips img{width:20px;height:20px;border-radius:50%;object-fit:cover}
+.pf-flag{width:22px;height:15px;object-fit:cover;flex:none}
+@media (hover: hover) and (pointer: fine){.pf-chips a:hover{border-color:var(--esc-tinta)}}
+.pf-num{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 18px}
+.pf-num div{display:grid;gap:4px;align-content:start}
+.pf-num dt{font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--esc-gris)}
+.pf-num dd{margin:0;font:900 26px/1 Archivo,sans-serif;font-stretch:110%;color:var(--esc-tinta);font-variant-numeric:tabular-nums}
+.pf-num dd.ovr{color:#29B298}
+.pf-num .rg{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 6px;font:900 18px/1 Archivo,sans-serif;color:#030304}
+.pf-acc{margin-top:2px}
+.pf-nv{margin:0;font:700 11px/1.4 "Space Mono",monospace;letter-spacing:.03em;color:#F0559A}
+.pf-nv code{font:inherit;text-transform:none}
+.pf-segs{margin:0;font:600 14px/1 Archivo,sans-serif;color:var(--esc-gris)}
+.pf-segs b{color:var(--esc-tinta);font-weight:900}
+.pf-redes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pf-redes a{display:inline-flex;align-items:center;min-height:30px;padding:0 9px;border:1.5px solid var(--esc-linea);color:var(--esc-tinta);
+  font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.pf-redes a:hover{border-color:var(--esc-tinta)}}
+.pf-sigo .ico{margin-right:2px}
+/* el precio por su cabeza */
+.pf-pr{margin:0 0 12px;font:500 17px/1.4 Archivo,sans-serif}
+.pf-pr-v{font:900 20px/1 Archivo,sans-serif;color:#B7791F}
+.noche .pf-pr-v{color:#FFD24A}
+.pf-pr-m{display:flex;gap:8px;margin-bottom:10px;max-width:520px}
+.pf-pr-m .btn{flex:1 1 0;min-width:0;padding:0 6px}
+.pf-pr-e{margin:0;font:700 11.5px/1.45 "Space Mono",monospace;letter-spacing:.02em;color:var(--gris)}
+.pf-pr-e.mal{color:var(--magenta-tx)}
+.pf-carta{display:grid;gap:10px;justify-items:center;width:min(220px,62vw);justify-self:center}
+.pf-cartas{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.pf-cartas button{min-height:32px;padding:0 8px;border:1.5px solid var(--esc-linea);background:transparent;color:var(--esc-gris);cursor:pointer;
+  font:700 10px/1 "Space Mono",monospace;letter-spacing:.03em;text-transform:uppercase}
+.pf-cartas button.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
+.pf-carta-c{width:100%}
+@media (min-width: 900px){
+  .app .pf-cab{grid-template-columns:minmax(0,1fr) 250px;gap:48px}
+  .app .pf-num{grid-template-columns:repeat(5,minmax(0,auto));justify-content:start;gap:12px 34px}
+  .app .pf-num dd{font-size:30px}
+  .app .pf-carta{width:250px;justify-self:end}
+  .app .pf-cara{width:84px;height:84px;font-size:34px}
+}
+.pf-sec .sec-t a{display:inline-flex;align-items:center;gap:6px;font:700 12px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.pf-bajada{margin:-4px 0 14px;max-width:62ch;color:var(--gris);font-size:15px}
+.pf-lnk{padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+/* resumen: sus números */
+.pf-tiles{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pf-tiles div{display:grid;gap:6px;align-content:center;padding:14px;border:2px solid var(--linea)}
+.pf-tiles dd{margin:0;font:900 28px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pf-tiles dd small{font:700 14px/1 Archivo,sans-serif;color:var(--gris)}
+.pf-tiles dt{font:700 10.5px/1.2 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.pf-med{display:flex;flex-wrap:nowrap;gap:8px;font-size:19px;white-space:nowrap}
+@media (min-width: 900px){.app .pf-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+/* resumen: el radar */
+.pf-fz{display:grid;gap:18px;align-items:center}
+.pf-radar{display:block;width:100%;max-width:360px;justify-self:center;overflow:visible}
+.pf-r-red,.pf-r-eje{fill:none;stroke:var(--suave);stroke-width:1.2}
+.pf-r-liga{fill:none;stroke:var(--gris);stroke-width:1.5;stroke-dasharray:5 4}
+.pf-r-yo{fill:rgba(228,19,115,.2);stroke:#E41373;stroke-width:2.5;stroke-linejoin:round}
+.pf-r-et{font:700 12.5px "Space Mono",monospace;fill:var(--tinta)}
+.pf-fz-tx{display:grid;gap:14px}
+.pf-fz-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pf-fz-dos p{margin:0;display:grid;gap:5px;padding:12px;background:var(--caja)}
+.pf-fz-dos small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
+.pf-fz-dos b{font:800 16px/1.15 Archivo,sans-serif}
+.pf-dims{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.pf-dims li{display:grid;grid-template-columns:minmax(0,1fr) 40px;grid-template-areas:"t v" "b b";gap:6px 10px;align-items:end}
+.pf-dims span{grid-area:t;display:grid;gap:2px;min-width:0}
+.pf-dims span b{font:800 15px/1.2 Archivo,sans-serif}
+.pf-dims span small{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
+.pf-dims i{grid-area:b;position:relative;display:block;height:8px;background:var(--suave)}
+.pf-dims u{display:block;height:100%;background:#E41373;text-decoration:none}
+.pf-dims s{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--tinta)}
+.pf-dims em{grid-area:v;font:900 20px/1 Archivo,sans-serif;font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
+.pf-ley{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:700 11px/1 "Space Mono",monospace;color:var(--gris)}
+.pf-ley i{display:inline-block;width:22px;height:0;border-top:3px solid #E41373}
+.pf-ley i.liga{border-top:2px dashed var(--gris);margin-left:8px}
+@media (min-width: 900px){.app .pf-fz{grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:40px}}
+/* resumen: en cada ranking y lo que le falta */
+.pf-rk{list-style:none;margin:0;padding:0;display:grid}
+.pf-rk a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:8px 2px;border-bottom:1px solid var(--suave)}
+.pf-rk span{display:inline-flex;align-items:center;gap:8px;font:600 16px/1.2 Archivo,sans-serif}
+.pf-rk b{font:900 17px/1 Archivo,sans-serif;color:var(--tj-gana);font-variant-numeric:tabular-nums}
+@media (hover: hover) and (pointer: fine){.pf-rk a:hover span{text-decoration:underline;text-underline-offset:3px}}
+.pf-falta{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.pf-falta > li{display:grid;gap:8px;padding:12px 0;border-bottom:1px solid var(--suave)}
+.pf-falta h3{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0;font:800 16px/1.2 Archivo,sans-serif}
+.pf-falta h3 span{display:inline-flex;align-items:center;gap:5px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.pf-falta li.ok h3 span{color:var(--tj-gana)}
+.pf-falta p{margin:0;color:var(--gris);font-size:14px}
+/* en la compu, «En cada ranking» y «Lo que le falta» lado a lado: una sola, a lo ancho, dejaba media pantalla vacía */
+@media (min-width: 900px){.app .pf-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px;padding:0 var(--gut)}
+  .app .pf-dos > .sec{padding-left:0;padding-right:0}}
+/* eventos */
+.pf-ev{list-style:none;margin:0;padding:0;display:grid}
+.pf-ev li{display:grid;grid-template-columns:58px minmax(0,1fr) auto;grid-template-areas:"f t pts" "f p ll";gap:6px 12px;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--suave)}
+.pf-ev-f{grid-area:f;align-self:start;padding-top:3px;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
+.pf-ev-tx{grid-area:t;display:grid;gap:3px;min-width:0}
+.pf-ev-tx b{font:800 15px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.pf-ev-tx small{display:inline-flex;align-items:center;gap:6px;font:700 10.5px/1.2 "Space Mono",monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.pf-ev-tx small img{width:16px;height:16px;border-radius:50%}
+.pf-ev-p{grid-area:p;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.pf-ev-pts{grid-area:pts;justify-self:end;font:900 18px/1 Archivo,sans-serif;color:var(--tj-gana);font-variant-numeric:tabular-nums}
+.pf-ev-ll{grid-area:ll;justify-self:end;min-height:34px;padding:0 10px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);
+  cursor:pointer;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.pf-ev-ll:hover{background:var(--inv);color:var(--inv-tinta)}}
+@media (min-width: 900px){
+  .app .pf-ev li{grid-template-columns:80px minmax(0,1fr) 170px 90px auto;grid-template-areas:"f t p pts ll";gap:12px 20px}
+  .app .pf-ev-f{align-self:center;padding:0}
+}
+/* duelos: el cara a cara; el rival abierto ocupa la fila entera */
+.pf-cc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.pf-cc li{min-width:0;border:2px solid var(--suave)}
+.pf-cc li.on{grid-column:1/-1;border-color:var(--linea)}
+.pf-cc-b{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) auto;grid-template-areas:"c n r" "c n t";align-items:center;gap:2px 10px;
+  padding:10px 12px;border:0;background:var(--fondo);color:var(--tinta);cursor:pointer;text-align:left}
+.pf-cc-cara{grid-area:c;width:34px;height:34px;font:900 14px/1 Archivo,sans-serif}
+.pf-cc-b b{grid-area:n;font:800 15px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pf-cc-res{grid-area:r;justify-self:end;font:900 18px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pf-cc-res.gana{color:var(--tj-gana)}
+.pf-cc-res.pierde{color:var(--magenta-tx)}
+.pf-cc-b small{grid-area:t;justify-self:end;font:700 10px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+@media (hover: hover) and (pointer: fine){.pf-cc-b:hover{background:var(--caja)}}
+.pf-cc-ds{list-style:none;margin:0;padding:4px 12px 12px;display:grid;gap:8px;border-top:1px solid var(--suave)}
+.pf-cc-ds li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;border:0;padding-top:8px}
+.pf-cc-ds li.pf-cc-ver{display:block}
+.pf-gano,.pf-perdio{font:700 10px/1 "Space Mono",monospace;letter-spacing:.08em;padding:5px 7px}
+.pf-gano{background:#29B298;color:#030304}
+.pf-perdio{background:#E41373;color:#FFFFFF}
+.pf-cc-ds small{font:700 10.5px/1 "Space Mono",monospace;color:var(--gris)}
+@media (min-width: 600px){.pf-cc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width: 900px){.app .pf-cc{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* insignias: las que tiene, encendidas; las que no, apagadas con lo que piden */
+.pf-ins{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pf-ins li{display:grid;gap:5px;align-content:start;padding:12px;border:2px solid var(--suave);opacity:.6}
+.pf-ins li.si{opacity:1;border-color:var(--linea);background:var(--caja)}
+.pf-ins-ic{font-size:24px;line-height:1}
+.pf-ins b{font:800 15px/1.2 Archivo,sans-serif}
+.pf-ins small{font:500 12.5px/1.35 Archivo,sans-serif;color:var(--gris)}
+@media (min-width: 600px){.pf-ins{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width: 900px){.app .pf-ins{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.pf-caza{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width: 900px){.app .pf-caza{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.pf-czd{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.pf-czd li{display:grid;gap:3px;padding:10px 0;border-bottom:1px solid var(--suave)}
+.pf-czd b{font:800 15px/1.2 Archivo,sans-serif}
+.pf-czd small{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
+/* en el celular, la tarjeta del perfil sólo en Resumen: en Eventos, Duelos e Insignias eran 420 px de más arriba de la lista */
+@media (max-width: 899.98px){.pf-cab.sin-carta .pf-carta{display:none}}

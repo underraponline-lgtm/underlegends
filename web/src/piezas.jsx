@@ -99,6 +99,19 @@ export function useCampana() {
 
 export const enlace = (ruta) => location.origin + (window.urlLG ? window.urlLG(ruta) : '/' + ruta);
 
+// el historial de cada uno (`/api/perfiles`: sus eventos, sus duelos, lo que le falta, sus insignias), una vez: lo pide
+// y lo guarda app.js (`perfiles()`). Lo usan Tarjetas y el perfil
+export function usePerfiles() {
+  const [p, setP] = useState(null);
+  useEffect(() => {
+    if (typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    Promise.resolve(window.perfiles()).then((d) => { if (vivo && d) setP(d); }).catch(() => {});
+    return () => { vivo = false; };
+  }, []);
+  return p;
+}
+
 // ── adónde lleva un evento en Discord. Dlx, 03/10/2026: «en vez de que sea el link del mensaje del anuncio, que sea el
 // link de invitación al canal… el de inscripciones mejor… porque la gente no puede entrar de esa forma», y en la página
 // también («2. A»): antes de empezar, «Inscribite ya» —la invitación al canal de inscripciones de ese evento, `ins`, de

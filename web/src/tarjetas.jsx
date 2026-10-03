@@ -9,7 +9,7 @@
 // como «Lo que le falta» del perfil). Si una regla cambia allá, cambia acá.
 import { useEffect, useMemo, useState } from 'react';
 import { limpio, norm, num, utc } from './liga.js';
-import { Carta, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { Carta, Compartir, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -24,18 +24,6 @@ const FILAS = {
 // por qué alguien que cumple todavía no tiene la tarjeta: lo primero que le falta del portón (`nv` del payload)
 const NV = { id: 'tu Discord todavía no está vinculado a la Liga', pais: 'te falta el país', dra: 'tenés que ser Miembro de Discord Rap Español' };
 const movil = () => typeof matchMedia === 'function' && matchMedia('(max-width: 599.98px)').matches;
-
-// el historial de cada uno (`/api/perfiles`: lo que le falta y sus duelos), una vez: lo pide y lo guarda app.js
-function usePerfiles() {
-  const [p, setP] = useState(null);
-  useEffect(() => {
-    if (typeof window.perfiles !== 'function') return undefined;
-    let vivo = true;
-    Promise.resolve(window.perfiles()).then((d) => { if (vivo && d) setP(d); }).catch(() => {});
-    return () => { vivo = false; };
-  }, []);
-  return p;
-}
 
 // ── las de arriba: las tres primeras de ese tipo, en abanico (sólo en la compu: en el celular, la galería primero) ──
 function Abanico({ liga, t, top }) {
