@@ -11,6 +11,29 @@
  ],
  "cambios": [
   {
+   "version": "2.16",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T19:43:00-04:00",
+   "titulo": "La llave corta",
+   "items": [
+    "⚡ **La llave corta**: con Octavos o más, el escenario muestra la batalla que se acaba de jugar, la de ahora y la que sigue, y cuántas van. La llave entera, en «Ver la llave completa».",
+    "🖤 **En Eventos, la llave vuelve adentro de la tarjeta de arriba**, y abajo, en «Hoy», ya no se repite.",
+    "🟣 **«AHORA» también cuando de un grupo pasan dos**: ese cruce quedaba como pendiente y la llave no marcaba ninguno.",
+    "✅ **Un evento cuyo anuncio se borró y se volvió a publicar ya no dice «CANCELADO».**"
+   ]
+  },
+  {
+   "version": "2.15",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T19:17:00-04:00",
+   "titulo": "La llave, más clara",
+   "items": [
+    "👥 **En la llave, un equipo se ve como equipo**: las caras juntas y el nombre principal de cada uno; si no entran, el primero y cuántos más.",
+    "🔤 **Los nombres con la inicial en mayúscula**, una letra más limpia y una textura suave en cada casilla.",
+    "⭕ **Las historias de arriba**: SNK y URB, los círculos un poco más grandes y la fila centrada."
+   ]
+  },
+  {
    "version": "2.14",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T18:48:00-04:00",
