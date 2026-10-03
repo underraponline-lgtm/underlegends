@@ -378,6 +378,32 @@ const ok = (cond, que) => {
     'sin muro, o con una fecha rota, nada');
 }
 
+// ── 👏 felicitar: cuándo suena y qué dice (02/10/2026) ──
+{
+  console.log('\n  👏 felicitar');
+  const ahora = Date.parse('2026-10-14T15:00:00Z');
+  const M = 60 * 1000, H = 60 * M;
+  const f = (o) => Object.assign({ n: 1, avisado: 0, primero: ahora - 20 * M, t_avisado: 0, t: '2026-10-14T02:00:00Z' }, o);
+  ok(A.aplausoParaAvisar(f({}), ahora) && !A.aplausoParaAvisar(f({ primero: ahora - 5 * M }), ahora),
+    'el primero suena, pero espera 10 minutos para juntar a los que felicitan a la vez');
+  ok(!A.aplausoParaAvisar(f({ n: 2, avisado: 1, t_avisado: ahora - 2 * H }), ahora) &&
+    A.aplausoParaAvisar(f({ n: 3, avisado: 1, t_avisado: ahora - 2 * H }), ahora),
+    'después, sólo al llegar a un hito: 2 no, 3 sí');
+  ok(!A.aplausoParaAvisar(f({ n: 5, avisado: 3, t_avisado: ahora - 20 * M }), ahora),
+    'y nunca dos veces en una hora');
+  ok(!A.aplausoParaAvisar(f({ t: '2026-10-01T02:00:00Z' }), ahora) && !A.aplausoParaAvisar(f({ n: 0 }), ahora) &&
+    !A.aplausoParaAvisar(null, ahora), 'de lo de hace más de una semana, sin aplausos o sin fila, nada');
+  ok(A.hitoAplausos(0) === 0 && A.hitoAplausos(4) === 3 && A.hitoAplausos(12) === 10 && A.hitoAplausos(9999) === 500,
+    'los hitos: 1, 3, 5, 10, 25…');
+  const av = A.avisoAplauso(12, A.motivoAplauso({ tipo: 'campeon', ev: 'COPA' }));
+  ok(av.titulo === '👏 12 personas te felicitaron' && av.cuerpo.startsWith('Por ganar COPA.') &&
+    A.avisoAplauso(1, '').titulo === '👏 Alguien te felicitó', av.titulo + ' | ' + av.cuerpo);
+  ok(A.motivoAplauso({ tipo: 'rango', rg: 'B', primero: true }) === 'conseguir tu primera letra: B' &&
+    A.motivoAplauso({ tipo: 'rango', rg: 'A' }) === 'subir a rango A' &&
+    A.motivoAplauso({ tipo: 'caza', a: 'Bea', ev: 'COPA' }) === 'cazar a Bea en COPA' &&
+    A.motivoAplauso({ tipo: 'tarjeta' }) === '', 'el motivo de cada logro; lo que no es un logro, nada');
+}
+
 // ── los canales de veredictos: también «votaciones» y «resultados» (Dlx, 02/10/2026) ──
 {
   console.log('\n  los canales de veredictos que mira el vigía');

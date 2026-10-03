@@ -1100,3 +1100,89 @@ a.rk-z:hover{border-color:var(--linea)}
   .app #sv-buscados .mw-rail .poster{width:auto}
   .app .evp-como .evp-nota{grid-column:1 / -1}
 }
+
+/* ── Publicaciones (`publicaciones.jsx`, en preview con `lg:prev-pub`): el muro día por día. Reusa `.escena`, `.tag`,
+   `.hero-ev`, `.evp-h2` y las encuestas (`.en`), y agrega lo suyo con `pub-`. Lo que ya pasó va en piel; los anuncios
+   —lo que viene— en blanco, como en Eventos ── */
+.pub-esc:before{top:auto;bottom:-170px;right:-120px}
+.pub-cab{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
+.pub-cab .hero-ev{margin:0}
+.pub-cab .hero-p{max-width:54ch}
+.pub-fil{position:sticky;top:0;z-index:20;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:10px 16px;background:#030304;border-bottom:2px solid #2A2A2C}
+.pub-fil::-webkit-scrollbar{display:none}
+.pub-fil button{flex:none;min-height:36px;padding:0 12px;border:1.5px solid #3A3A3E;background:transparent;color:#F6F6F6;font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.pub-fil button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
+.pub-t2{display:grid}
+.pub-feed{display:grid;align-content:start;padding:4px 16px 26px;min-width:0}
+.pub-dia,.pub-fijas{display:grid;gap:10px;padding-top:16px}
+.pub-dh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:4px 0 2px;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.pub-dh small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
+.pub-enc{display:grid;gap:12px}
+.pub-enc-tabs{display:flex;gap:6px}
+.pub-enc-tabs button{min-height:36px;padding:0 12px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.pub-enc-tabs button.on{background:var(--inv);color:var(--inv-tinta)}
+.pub-enc-i:not(.on){display:none}
+.pub{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
+.pub.anuncio,.pub.liga{background:var(--fondo)}
+.pub.cartas{grid-template-columns:minmax(0,1fr)}
+.pub-v{display:grid;justify-items:center}
+.pub-carta{display:block;width:64px;height:auto}
+.pub-cara{width:56px;height:56px;font:800 20px/1 Archivo,sans-serif}
+.pub-logo{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--linea)}
+.pub-rg{display:grid;place-items:center;width:56px;height:56px;font:900 26px/1 Archivo,sans-serif;font-stretch:120%;color:#030304}
+.pub-c{display:grid;gap:6px;min-width:0}
+.pub-cat{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font:700 10.5px/1.2 "Space Mono",monospace;letter-spacing:.08em;color:var(--magenta-tx)}
+.pub-cat small{font:inherit;letter-spacing:.04em;color:var(--gris)}
+.pub-t{margin:0;font:500 15.5px/1.38 Archivo,sans-serif;color:var(--tinta);overflow-wrap:anywhere}
+.pub-t b{font-weight:800}
+.pub-t a{font-weight:800;color:inherit;text-decoration:underline;text-underline-offset:3px}
+.pub-d{font:700 11px/1.35 "Space Mono",monospace;color:var(--gris);overflow-wrap:anywhere}
+.pub-acc{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-top:4px}
+.pub-a{font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--tinta);text-decoration:underline;text-underline-offset:4px;background:none;border:0;padding:0;cursor:pointer}
+.pub-fel{display:inline-flex;align-items:center;gap:7px;min-height:38px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:800 13px/1 Archivo,sans-serif;font-stretch:110%;cursor:pointer}
+.pub-fel em{font:700 12px/1 "Space Mono",monospace;font-style:normal;padding-left:8px;border-left:1.5px solid var(--suave)}
+.pub-fel.on{background:#29B298;border-color:#29B298;color:#030304}
+.pub-fel.on em{border-color:rgba(3,3,4,.3)}
+.pub-fel.va{opacity:.6}
+.pub-fel.tuyo{border-style:dashed;cursor:default}
+.pub-fel:disabled{cursor:default}
+.pub-err{flex-basis:100%;font:700 11px/1.4 "Space Mono",monospace;color:var(--magenta-tx)}
+.pub-cartas{display:grid;grid-auto-flow:column;grid-auto-columns:62px;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.pub-cartas::-webkit-scrollbar{display:none}
+.pub-mini{padding:0;border:0;background:none;cursor:pointer}
+.pub-mini-c{display:block;width:100%;height:auto}
+.pub-mas{display:grid;place-items:center;font:900 16px/1 Archivo,sans-serif}
+.pub-tx{margin:0;font:400 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.pub-nada{padding:18px 0}
+.pub-mas-b{justify-self:start;margin-top:16px}
+.pub-der{display:grid;align-content:start;border-top:2px solid var(--linea)}
+.pub-bloque{padding:18px 16px 16px;border-bottom:2px solid var(--linea)}
+.pub-top{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.pub-top li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.pub-top-cara{width:36px;height:36px;font:800 14px/1 Archivo,sans-serif}
+.pub-top span{display:grid;gap:2px;min-width:0}
+.pub-top b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 14px/1.2 Archivo,sans-serif}
+.pub-top small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 10.5px/1.2 "Space Mono",monospace;color:var(--gris)}
+.pub-top em{font:700 12px/1 "Space Mono",monospace;font-style:normal}
+.pub-sigo{display:grid;gap:10px;justify-items:start}
+.pub-sigo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pub-sigo-c{width:40px;height:40px;font:800 15px/1 Archivo,sans-serif}
+@media (min-width: 900px){
+  .app .pub-esc:before{top:-160px;bottom:auto;right:-120px}
+  .app .pub-cab{padding:36px var(--gut) 30px}
+  .app .pub-fil{padding:10px var(--gut)}
+  .app .pub-t2{grid-template-columns:minmax(0,1fr) 340px;padding:0 var(--gut)}
+  .app .pub-feed{padding:6px 28px 30px 0;border-right:2px solid var(--linea)}
+  .app .pub-der{border-top:0}
+  /* el costado es corto: acompaña mientras se baja por el muro, así no queda una columna vacía */
+  .app .pub-der-in{position:sticky;top:60px}
+  .app .pub-bloque{padding:20px 0 18px 24px}
+  .app .pub-enc.dos{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  .app .pub-enc-tabs{display:none}
+  .app .pub-enc-i:not(.on){display:block}
+  .app .pub{grid-template-columns:84px minmax(0,1fr)}
+  .app .pub.cartas{grid-template-columns:minmax(0,1fr)}
+  .app .pub-carta{width:84px}
+  .app .pub-t{font-size:16.5px}
+  .app .pub-cartas{grid-auto-flow:row;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));overflow:visible}
+}

@@ -34,6 +34,7 @@ cien «desbloqueó» que no pasaron hoy.
 no se muestra (Dlx, 25/09/2026: lo jugado en la prueba *«se borra»*).
 """
 import datetime as dt
+import hashlib
 import io
 import json
 import os
@@ -224,6 +225,40 @@ def cambios(estado, tabla, ahora):
     return pubs, nuevo
 
 
+# ── la identidad de cada publicación: para 👏 Felicitar ──────────────────
+def id_de(x):
+    """12 letras hex, las mismas en cada corrida. Las usa 👏 Felicitar (`validarAplauso()` en `bot/avisos.js`).
+
+    ⚠️ SALE DE LO QUE HACE A ESA PUBLICACIÓN, NO DEL JSON ENTERO: la llave del
+    campeón, la cabeza de la caza, el cambio y cuándo se anotó. Un nombre
+    corregido o una caza con otro cazador sigue siendo la misma publicación,
+    y no pierde los aplausos que ya tenía.
+    """
+    tipo = x.get('tipo') or ''
+    if tipo == 'campeon' and x.get('ll'):
+        partes = [tipo, str(x['ll'])]
+    elif tipo in ('caza', 'precio'):
+        partes = [tipo, x.get('a') or '', x.get('t') or '']
+    elif tipo in ('anuncio', 'liga') and x.get('link'):
+        partes = [tipo, x['link']]
+    else:
+        partes = [tipo, x.get('t') or '', '|'.join(x.get('quien') or []), x.get('rg') or '', x.get('carta') or '',
+                  x.get('ev') or '', x.get('tit') or '']
+    return hashlib.sha1('\x1f'.join(partes).encode('utf-8')).hexdigest()[:12]
+
+
+def con_ids(items):
+    """Cada publicación con su `id`; la misma identidad dos veces es una sola (queda la primera: la más nueva)."""
+    out, vistos = [], set()
+    for x in items:
+        i = id_de(x)
+        if i in vistos:
+            continue
+        vistos.add(i)
+        out.append(dict(x, id=i))
+    return out
+
+
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
 DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios')
@@ -337,7 +372,7 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
         lista.append(x)
     lista.sort(key=lambda x: x['t'], reverse=True)
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
-            'items': con_claves(lista[:VIAJAN], p.get('tabla'))}
+            'items': con_claves(con_ids(lista)[:VIAJAN], p.get('tabla'))}
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
                'estado': estado, 'cambios': anotados}
@@ -421,6 +456,19 @@ def _self_check():
        'cada publicación de alguien lleva la clave de su perfil, alineada con los nombres')
     ok(por['premios'].get('ks') == {'figura': 'ana'} and 'ks' not in por['anuncio'] and 'ks' not in por['liga'],
        'los premios, por premio; los anuncios y las novedades no son de nadie')
+    # 👏 el id de cada publicación, para Felicitar
+    ids = [x.get('id') or '' for x in muro['items']]
+    ok(all(len(i) == 12 and all(c in '0123456789abcdef' for c in i) for i in ids) and len(set(ids)) == len(ids),
+       'cada publicación lleva su id (12 hex) y no se repite  %s' % ids[:3])
+    rid = lambda m, tipo: [x['id'] for x in m['items'] if x['tipo'] == tipo]
+    ok(rid(m2, 'rango') == rid(muro, 'rango') and rid(m2, 'tarjeta') == rid(muro, 'tarjeta'),
+       'y es el mismo en la corrida siguiente (los aplausos no se pierden)')
+    caza = [x for x in muro['items'] if x['tipo'] == 'caza'][0]
+    ok(id_de(dict(caza, quien=['Otro'], pts=1)) == caza['id'] and
+       id_de({'tipo': 'campeon', 'll': 7, 'quien': ['Ana'], 't': 'x'}) == id_de({'tipo': 'campeon', 'll': 7, 'quien': ['Bea']}),
+       'una caza con otro cazador, o un campeón con el nombre corregido, sigue siendo la misma publicación')
+    dos = con_ids([{'tipo': 'campeon', 'll': 7, 't': '2', 'quien': ['Ana']}, {'tipo': 'campeon', 'll': 7, 't': '1', 'quien': ['Ana ']}])
+    ok(len(dos) == 1 and dos[0]['t'] == '2', 'la misma publicación dos veces es una: queda la más nueva')
     t2 = [{'k': 'volk', 'n': 'Volk', 'cc': 'mx'}, {'k': 'volk-co', 'n': 'volk', 'cc': 'co'},
           {'k': 'lazaro', 'n': 'Lázaro', 'cc': 'cu'}]
     ok([k_de(n, t2) for n in ('Volk', 'volk', 'VOLK 🇨🇴', 'VOLK', 'lazaro 🇨🇺', 'Nadie')]

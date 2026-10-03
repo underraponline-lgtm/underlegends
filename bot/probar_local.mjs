@@ -2484,6 +2484,83 @@ console.log('\nSEGUIR RAPEROS\n');
   delete PUESTO['d:' + VIEJO];
 }
 
+console.log('\n👏 FELICITAR\n');
+
+{
+  // 🔑 Dlx, 02/10/2026: «algo más para que enganche a las personas o interactivo». Quién felicita lo dice Discord (o
+  // la sesión); qué publicación, el muro de KV —nunca la página—; tus perfiles, KV (`d:` y `dn:`).
+  const idDe = (ms, n = 7) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2019-04-01T00:00:00Z'));
+  const NUEVO = idDe(RELOJ - 3 * 86400000);
+  const SES = 'e'.repeat(43), SES_N = 'f'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/quien')) {
+      const q = b && b.ses === SES ? VIEJO : b && b.ses === SES_N ? NUEVO : '';
+      return q ? new Response(JSON.stringify({ quien: q }), { status: 200 }) : new Response('{"error":"no"}', { status: 404 });
+    }
+    return new Response('{"ok":true,"n":4}', { status: 200 });
+  } }) };
+  PUESTO['web:muro'] = JSON.stringify({ items: [
+    { id: 'aaaaaaaaaaaa', tipo: 'campeon', t: '2026-10-01T04:20:41Z', quien: ['Oasis', 'Bea'], ks: ['oasis', 'bea'], ev: 'TOKYO' },
+    { id: 'bbbbbbbbbbbb', tipo: 'tarjeta', t: '2026-10-01T04:20:41Z', quien: ['Ana'], ks: ['ana'], carta: 'pais' },
+    { id: 'cccccccccccc', tipo: 'rango', t: '2026-10-01T04:20:41Z', quien: ['Cid'], ks: ['cid'], rg: 'B' },
+  ] });
+  PUESTO['dn:' + VIEJO] = 'bea';
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedirF = async (cuerpo, ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/felicitar', { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedirF({ id: 'cccccccccccc', quien: '42424242424' }, SES);
+  const al = alObjeto.filter(([u]) => u.endsWith('/aplaudir'));
+  ok('felicitar llega al objeto con el ID de la sesión (no el de la página) y la publicación sacada del muro',
+     r.status === 200 && al.length === 1 && al[0][1].quien === VIEJO && al[0][1].pub.id === 'cccccccccccc' &&
+     al[0][1].pub.motivo === 'subir a rango B' && JSON.stringify(al[0][1].pub.ks) === '["cid"]', JSON.stringify(al));
+  alObjeto.length = 0;
+  r = await pedirF({ id: 'aaaaaaaaaaaa' }, SES);
+  ok('a uno mismo no (su perfil, aunque no esté verificado: dn:): 403 «vos»',
+     r.status === 403 && r.json.error === 'vos' && !alObjeto.some(([u]) => u.endsWith('/aplaudir')));
+  r = await pedirF({ id: 'bbbbbbbbbbbb' }, SES);
+  ok('una carta nueva no es un logro: 400', r.status === 400 && r.json.error === 'no_se_felicita');
+  r = await pedirF({ id: 'dddddddddddd' }, SES);
+  ok('lo que no está en el muro: 404', r.status === 404 && r.json.error === 'no_existe');
+  r = await pedirF({ id: 'cccccccccccc' }, SES_N);
+  ok('una cuenta de Discord de menos de 30 días no felicita, y se le dice desde cuándo',
+     r.status === 403 && r.json.error === 'nueva' && !!r.json.desde);
+  r = await pedirF({ id: '../x' }, SES);
+  ok('un id que no es de publicación: 400, sin preguntarle a nadie', r.status === 400 && r.json.error === 'faltan datos');
+  r = await pedirF({ id: 'cccccccccccc' });
+  ok('sin sesión ni permiso: 401 «sin_sesion»', r.status === 401 && r.json.error === 'sin_sesion' &&
+     !alObjeto.some(([u]) => u.endsWith('/aplaudir')));
+  alObjeto.length = 0;
+  r = await worker.fetch(new Request('https://x/avisos/aplausos'), env, ctx);
+  ok('/avisos/aplausos le pregunta al objeto (cuántos, nunca quién)',
+     r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/aplausos'));
+  r = await worker.fetch(new Request('https://x/avisos/aplaudir', { method: 'POST', body: '{"quien":"1","pub":{}}' }), env, ctx);
+  ok('la ruta de adentro (`/aplaudir`) no existe desde afuera', r.status === 404);
+  const { default: proxy } = await import('./paginas/_worker.js');
+  let fue = null;
+  globalThis.fetch = async (u, opc) => {
+    fue = { u: String(u), h: (opc && opc.headers) || {}, cf: opc && opc.cf };
+    return new Response('{"ok":true}', { status: 200 });
+  };
+  const envP = { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/felicitar', { method: 'POST',
+    body: '{"id":"cccccccccccc"}', headers: { cookie: 'lg_ses=' + SES } }), envP);
+  ok('el proxy deja pasar /felicitar con la sesión', fue && fue.u.endsWith('/avisos/felicitar') && fue.h['x-lg-ses'] === SES);
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/aplausos'), envP);
+  ok('y /aplausos, con 30 s en el borde', fue && fue.u.endsWith('/avisos/aplausos') && fue.cf && fue.cf.cacheTtl === 30);
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  delete PUESTO['web:muro'];
+  delete PUESTO['dn:' + VIEJO];
+}
+
 console.log('\n«TU SERVIDOR»\n');
 
 {

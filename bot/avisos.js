@@ -1076,6 +1076,8 @@ const RUTAS = {
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
   // 🙈 «ocultar mi foto»: en Mi cuenta → Privacidad. Ver `miFoto()`
   '/avisos/mi-foto': 'POST',
+  // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
+  '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
 };
@@ -1162,6 +1164,95 @@ export function paraSeguidores(items, ahora) {
     }
   }
   return out;
+}
+
+// ── 👏 felicitar ───────────────────────────────────────────────────────
+// 🔑 Dlx, 02/10/2026, a Publicaciones: «quizás algo más para que enganche a
+// las personas o interactivo», y con el plan, «Dale, me gusta como lo tienes
+// planeado». Un toque en un logro del muro —campeón, rango, Most Wanted—
+// cuenta UNO por persona, y a quien felicitan le llega un aviso de la página
+// con cuántos fueron: lo manda el vigía (`avisarAplausos()`), NUNCA por DM.
+//
+// ⚠️ AFUERA SE VE CUÁNTOS, NUNCA QUIÉN, y a quien felicitan tampoco se le dice.
+// ⚠️ LA PUBLICACIÓN LA DICE EL MURO, NO LA PÁGINA: el id sale de `bot/muro.py`
+// (`id_de()`) y se busca en `web:muro`; lo que no está ahí no se felicita.
+// ⚠️ DE QUIÉN ES CADA NOMBRE lo dice el índice de «te toca» (`turnos:nombres`),
+// y sólo se avisa si esa cuenta es la del perfil de la publicación (`d:`/`dn:`):
+// ante la duda no se avisa, porque «te felicitaron» a otro es peor que nada.
+
+//: lo que se puede felicitar. Una carta nueva le toca a todo el que juega una vez: no es un logro
+export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1 };
+//: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
+export const APLAUSOS_DIAS = 30;
+//: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos
+export const HITOS_APLAUSO = [1, 3, 5, 10, 25, 50, 100, 250, 500];
+//: el primer aviso espera un poco, para que los que felicitan juntos lleguen en uno
+export const APLAUSO_ESPERA = 10 * MIN;
+//: y entre un aviso y el siguiente de la misma publicación, por lo menos esto
+export const APLAUSO_ENTRE = HORA;
+//: de una publicación más vieja que esto ya no se avisa
+export const APLAUSO_AVISA_DIAS = 7;
+//: cuántos envíos por invocación del vigía: comparte los 50 subpedidos
+export const TOPE_APLAUSOS = 6;
+
+/** Por qué se felicita, para el aviso («Por ganar COPA»). */
+export function motivoAplauso(x) {
+  const ev = String((x && x.ev) || '').slice(0, 60);
+  const t = !x ? '' : x.tipo === 'campeon' ? `ganar ${ev || 'un evento'}`
+    : x.tipo === 'rango' ? (x.primero ? `conseguir tu primera letra: ${x.rg}` : `subir a rango ${x.rg}`)
+      : x.tipo === 'caza' ? `cazar a ${x.a}${ev ? ' en ' + ev : ''}`
+        : x.tipo === 'sobrevivio' ? 'sobrevivir al Most Wanted' : '';
+  return t.slice(0, 100);
+}
+
+/**
+ * ¿Vale este aplauso? `{id, tipo, quien, ks, motivo, t}` —lo que el objeto
+ * guarda de la publicación— si vale; `{error, estado}` si no. `items` es el
+ * muro de KV, `id` el Discord ID que dijo Discord y `mios` sus perfiles (`d:`
+ * y `dn:`). Pura, sin red: la prueba `bot/probar_local.mjs`.
+ */
+export function validarAplauso(items, d, id, mios, ahora) {
+  const x = (Array.isArray(items) ? items : []).find((it) => it && it.id === (d && d.id));
+  if (!x) return { error: 'no_existe', estado: 404 };
+  if (!APLAUDIBLES[x.tipo]) return { error: 'no_se_felicita', estado: 400 };
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
+    return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
+  }
+  const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
+  if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'vos', estado: 403 };
+  return { id: x.id, tipo: x.tipo, quien: (x.quien || []).slice(0, 8).map((n) => String(n).slice(0, 60)),
+    ks: ks.slice(0, 8), motivo: motivoAplauso(x), t: String(x.t || '').slice(0, 30) };
+}
+
+/** El hito más alto que ya alcanzó `n` (0 si ninguno). */
+export function hitoAplausos(n) {
+  let h = 0;
+  for (const x of HITOS_APLAUSO) if (n >= x) h = x;
+  return h;
+}
+
+/**
+ * ¿Le toca aviso a esta publicación? `f` es la fila del objeto: `n` aplausos,
+ * `avisado` (cuántos había en el último aviso), `primero` y `t_avisado` (ms) y
+ * `t` (cuándo pasó). Suena con el primero —esperando `APLAUSO_ESPERA` para
+ * juntar a los que felicitan a la vez— y al llegar a cada hito, nunca dos
+ * veces en `APLAUSO_ENTRE`. Pura: `bot/avisos_prueba.mjs`.
+ */
+export function aplausoParaAvisar(f, ahora) {
+  if (!f || !(f.n > 0) || hitoAplausos(f.n) <= hitoAplausos(f.avisado || 0)) return false;
+  const t = Date.parse(f.t || '');
+  if (!(ahora - t <= APLAUSO_AVISA_DIAS * DIA_MS)) return false;
+  if (!f.avisado) return ahora - (f.primero || 0) >= APLAUSO_ESPERA;
+  return ahora - (f.t_avisado || 0) >= APLAUSO_ENTRE;
+}
+
+/** Lo que dice el aviso: cuántos —nunca quiénes— y por qué. */
+export function avisoAplauso(n, motivo) {
+  return {
+    titulo: n === 1 ? '👏 Alguien te felicitó' : `👏 ${n} personas te felicitaron`,
+    cuerpo: (motivo ? `Por ${motivo}. ` : '') + 'Tocá para verlo en Publicaciones.',
+  };
 }
 
 // ── las encuestas de la página ─────────────────────────────────────────
@@ -1723,6 +1814,33 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 👏 FELICITAR: quién lo dice Discord (o la sesión); qué publicación, el muro que dejó el ciclo (`web:muro`), nunca
+  // la página. ⚠️ Necesita su rama: lo que cae abajo llega al objeto sin preguntar quién es
+  if (ruta === '/avisos/felicitar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9a-f]{12}$/.test(String(d.id || '')) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let items = [];
+    try { items = (JSON.parse((await env.KV.get('web:muro', { cacheTtl: 60 })) || '{}').items) || []; } catch (e) { items = []; }
+    // tus perfiles, verificado o no: a uno mismo no se lo felicita
+    const mios = [];
+    for (const p of ['d:', 'dn:']) {
+      try {
+        const k = await env.KV.get(p + q.id);
+        if (claveValida(k)) mios.push(k);
+      } catch (e) { /* sin KV, la publicación igual dice de quién es */ }
+    }
+    const v = validarAplauso(items, d, q.id, mios, Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/aplaudir', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, pub: v }), headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -1991,6 +2109,15 @@ export class Avisos {
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS cancelados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, ' +
         "cuerpo TEXT NOT NULL, t INTEGER NOT NULL, por TEXT NOT NULL DEFAULT '')");
+      // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
+      // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS aplausos_quien ON aplausos (quien)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS aplaudidas (id TEXT PRIMARY KEY, tipo TEXT NOT NULL, ' +
+        "quien TEXT NOT NULL DEFAULT '[]', ks TEXT NOT NULL DEFAULT '[]', motivo TEXT NOT NULL DEFAULT '', " +
+        "t TEXT NOT NULL DEFAULT '', primero INTEGER NOT NULL, avisado INTEGER NOT NULL DEFAULT 0, " +
+        't_avisado INTEGER NOT NULL DEFAULT 0)');
     });
   }
 
@@ -2015,6 +2142,7 @@ export class Avisos {
       if (ruta === '/precios') return json(this.precios(), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
+      if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
@@ -2029,6 +2157,7 @@ export class Avisos {
       if (ruta === '/votar') return this.votar(d);
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
+      if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -2258,6 +2387,10 @@ export class Avisos {
       this.sql.exec('DELETE FROM cancelados WHERE t < ?', ahora - 3 * 24 * HORA);
       this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
+      // 👏 los aplausos, con su publicación: para entonces ya salió del muro (21 días)
+      const viejo = ahora - APLAUSOS_DIAS * DIA_MS;
+      this.sql.exec('DELETE FROM aplausos WHERE t < ? OR id IN (SELECT id FROM aplaudidas WHERE primero < ?)', viejo, viejo);
+      this.sql.exec('DELETE FROM aplaudidas WHERE primero < ?', viejo);
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -2272,6 +2405,10 @@ export class Avisos {
     // 🔑 y lo que le pasó a quien seguís. Nunca frena al vigía: ver `seguidos()`
     try { await this.seguidos(ahora); } catch (e) {
       this.guardar('seguidos', { t: ahora, error: String(e).slice(0, 120) });
+    }
+    // 👏 y cuántos te felicitaron. Nunca frena al vigía: ver `avisarAplausos()`
+    try { await this.avisarAplausos(ahora); } catch (e) {
+      this.guardar('aplausos', { t: ahora, error: String(e).slice(0, 120) });
     }
     // 🔑 el precio por cabeza: lo que el ciclo resolvió (cazado o devuelto),
     // cada cinco minutos. Nunca frena al vigía: ver `resolverPrecios()`
@@ -2458,6 +2595,25 @@ export class Avisos {
     }) };
   }
 
+  /** De qué Discord ID es cada nombre (`turnos:nombres`, ver `bot/avisos_personales.py`), leído cada 10 minutos. */
+  async indiceNombres(ahora) {
+    if (!this.indiceTurnos || ahora - (this.indiceTurnosT || 0) > 10 * MIN) {
+      try { this.indiceTurnos = JSON.parse((await this.env.KV.get('turnos:nombres')) || '{}') || {}; } catch (e) { this.indiceTurnos = {}; }
+      this.indiceTurnosT = ahora;
+    }
+    return (this.indiceTurnos && this.indiceTurnos.n) || {};
+  }
+
+  /** El perfil de una cuenta (`d:`, y si no `dn:`), guardado 6 horas en `idk` como en `quienes()`; `''` si no tiene. */
+  async perfilDe(id, ahora) {
+    const fila = this.sql.exec('SELECT k, t FROM idk WHERE id = ?', id).toArray()[0];
+    if (fila && ahora - fila.t < 6 * HORA) return fila.k;
+    const k = (await this.env.KV.get('d:' + id)) || (await this.env.KV.get('dn:' + id)) || '';
+    this.sql.exec('INSERT INTO idk (id, k, t) VALUES (?, ?, ?) ON CONFLICT(id) DO UPDATE SET k = excluded.k, ' +
+      't = excluded.t', id, k, ahora);
+    return k;
+  }
+
   /**
    * 🎤 «TE TOCA»: ver `turnosDe()`. Cada minuto, con las llaves que se tocaron en las últimas 3 horas. Devuelve cuántos
    * avisos salieron. ⚠️ El lector se carga recién acá (`import()`): las pruebas de Node importan este archivo sin él.
@@ -2469,11 +2625,7 @@ export class Avisos {
     if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
     const LV = globalThis.LlaveVivo;
     if (!LV) return 0;
-    if (!this.indiceTurnos || ahora - (this.indiceTurnosT || 0) > 10 * MIN) {
-      try { this.indiceTurnos = JSON.parse((await this.env.KV.get('turnos:nombres')) || '{}') || {}; } catch (e) { this.indiceTurnos = {}; }
-      this.indiceTurnosT = ahora;
-    }
-    const idx = (this.indiceTurnos && this.indiceTurnos.n) || {};
+    const idx = await this.indiceNombres(ahora);
     const hecho = (id) => {
       const r = this.sql.exec('SELECT t FROM hechos WHERE id = ?', id).toArray()[0];
       return r ? r.t : null;
@@ -3076,8 +3228,10 @@ export class Avisos {
     // 🔑 Y SUS REPORTES, y la cola de KV sin ellos: van con su Discord ID
     const rp = this.sql.exec('DELETE FROM reportes WHERE quien = ?', String(d.quien));
     if (rp.rowsWritten) await this.colaReportes(Date.now());
+    // 👏 y a quién felicitó: también va con su Discord ID
+    const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
-      sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0 });
+      sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0, aplausos: ap.rowsWritten || 0 });
   }
 
   // ── un error en una llave ────────────────────────────────────────────
@@ -3329,6 +3483,104 @@ export class Avisos {
       const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT a) AS a FROM sigue')
         .toArray()[0];
       return { filas: r.n, siguen: r.p, seguidos: r.a, ultima: this.leer('seguidos') };
+    } catch (e) {
+      return { error: String(e).slice(0, 80) };
+    }
+  }
+
+  // ── 👏 felicitar ─────────────────────────────────────────────────────
+  /**
+   * Un aplauso. Sólo lo llama `rutaAvisos`, con el ID que dijo Discord y la
+   * publicación ya buscada en el muro (`validarAplauso()`). Uno por persona:
+   * el segundo toque no suma (`ya`). Devuelve cuántos lleva.
+   */
+  aplaudir(d) {
+    const quien = String(d.quien || ''), p = d.pub || {};
+    if (!/^[0-9]{5,25}$/.test(quien) || !/^[0-9a-f]{12}$/.test(String(p.id || '')) || !APLAUDIBLES[p.tipo]) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const ahora = Date.now();
+    // lo que dice el aviso y a quién va: se pisa, así un nombre corregido en el muro llega al próximo aviso
+    this.sql.exec('INSERT INTO aplaudidas (id, tipo, quien, ks, motivo, t, primero) VALUES (?, ?, ?, ?, ?, ?, ?) ' +
+      'ON CONFLICT(id) DO UPDATE SET quien = excluded.quien, ks = excluded.ks, motivo = excluded.motivo',
+    p.id, p.tipo, JSON.stringify(p.quien || []), JSON.stringify(p.ks || []), String(p.motivo || '').slice(0, 120),
+    String(p.t || '').slice(0, 30), ahora);
+    const r = this.sql.exec('INSERT OR IGNORE INTO aplausos (id, quien, t) VALUES (?, ?, ?)', p.id, quien, ahora);
+    const n = this.sql.exec('SELECT COUNT(*) AS n FROM aplausos WHERE id = ?', p.id).toArray()[0].n;
+    return json({ ok: true, id: p.id, n, ya: !r.rowsWritten, t: ahora });
+  }
+
+  /** Lo público, para `/avisos/aplausos`: cuántos lleva cada publicación. ⚠️ Nunca quién. */
+  aplausosCuenta() {
+    const n = {};
+    for (const r of this.sql.exec('SELECT id, COUNT(*) AS n FROM aplausos GROUP BY id').toArray()) n[r.id] = r.n;
+    return { t: Date.now(), n };
+  }
+
+  /**
+   * 👏 CUÁNTOS TE FELICITARON, AL CELULAR: a quien es la publicación, en los
+   * dispositivos que vinculó, con el mismo `tag` —el aviso nuevo reemplaza al
+   * anterior— y sólo con el primero y en cada hito (`aplausoParaAvisar()`).
+   * Cada cinco minutos, o al minuto si quedó algo. Nunca por DM.
+   *
+   * ⚠️ SE ANOTA ANTES DE MANDAR (dos minutos que se pisan no avisan dos veces),
+   * y se vuelve atrás si no llegó a ninguno por una falla de la red.
+   */
+  async avisarAplausos(ahora) {
+    const previo = this.leer('aplausos') || {};
+    if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
+    const filas = this.sql.exec('SELECT p.id, p.quien, p.ks, p.motivo, p.t, p.primero, p.avisado, p.t_avisado, ' +
+      '(SELECT COUNT(*) FROM aplausos a WHERE a.id = p.id) AS n FROM aplaudidas p').toArray();
+    const cands = filas.filter((f) => aplausoParaAvisar(f, ahora));
+    if (!cands.length) {
+      if (previo.quedan) this.guardar('aplausos', { ...previo, quedan: 0 });
+      return 0;
+    }
+    const idx = await this.indiceNombres(ahora);
+    let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0, sinCuenta = 0;
+    for (const f of cands) {
+      if (pedidos >= TOPE_APLAUSOS) { quedan++; continue; }
+      let quien = [], ks = [];
+      try { quien = JSON.parse(f.quien || '[]'); ks = JSON.parse(f.ks || '[]'); } catch (e) { quien = []; }
+      // de quién es: el nombre, por el índice de «te toca», y sólo si esa cuenta es la del perfil de la publicación
+      const dids = [];
+      for (let i = 0; i < quien.length; i++) {
+        const did = idx[claveTurno(quien[i])];
+        if (!did || !ks[i] || dids.indexOf(String(did)) >= 0) continue;
+        if (await this.perfilDe(String(did), ahora) === ks[i]) dids.push(String(did));
+      }
+      this.sql.exec('UPDATE aplaudidas SET avisado = ?, t_avisado = ? WHERE id = ?', f.n, ahora, f.id);
+      if (!dids.length) { sinCuenta++; continue; }
+      const { titulo, cuerpo } = avisoAplauso(f.n, f.motivo);
+      const c = cuerpoPersonal({ id: 'ap' + f.id, titulo, cuerpo, url: HUB + '/freestyle-rap/publicaciones' });
+      let llego = 0, reintentar = false;
+      for (const did of dids) {
+        const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', did).toArray();
+        if (!subs.length) { sinVinculo++; continue; }
+        pedidos += subs.length;
+        const estados = await Promise.all(subs.map((s) => empujar(s, c,
+          { ttl: 24 * 3600, topic: ('ap' + f.id).slice(0, 32) }, this.env, new Map())));
+        estados.forEach((e, i) => {
+          if (e >= 200 && e < 300) { enviados++; llego++; }
+          else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+          else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+        });
+      }
+      if (reintentar && !llego) {
+        this.sql.exec('UPDATE aplaudidas SET avisado = ?, t_avisado = ? WHERE id = ?', f.avisado, f.t_avisado, f.id);
+      }
+    }
+    this.guardar('aplausos', { t: ahora, candidatas: cands.length, enviados, sin_vinculo: sinVinculo,
+      sin_cuenta: sinCuenta, quedan });
+    return enviados;
+  }
+
+  /** Para `estado()`, con try como `estadoSeguidos()`. */
+  estadoAplausos() {
+    try {
+      const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT id) AS a FROM aplausos')
+        .toArray()[0];
+      return { filas: r.n, felicitan: r.p, publicaciones: r.a, ultima: this.leer('aplausos') };
     } catch (e) {
       return { error: String(e).slice(0, 80) };
     }
@@ -3702,6 +3954,8 @@ export class Avisos {
       personales: this.estadoPersonales(),
       // 🔑 seguir raperos: cuántas filas, cuántos siguen y cómo salió el último reparto
       seguidos: this.estadoSeguidos(),
+      // 👏 felicitar: cuántos aplausos, de cuántas personas, y cómo salió el último aviso
+      aplausos: this.estadoAplausos(),
       ultimas_24h: { avisos: dia.n, enviados: dia.e },
       ultimo: ult ? {
         t: new Date(ult.creado).toISOString(), sv: ult.sv, titulo: tit,

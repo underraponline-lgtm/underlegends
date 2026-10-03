@@ -10,7 +10,8 @@ const suma = (cu) => Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0)
 const votos = (n) => n + (n === 1 ? ' voto' : ' votos');
 const pct = (n, tot) => (tot ? Math.round(100 * n / tot) : 0) + '%';
 
-function X2({ liga, enc, E }) {
+// las dos, también en Publicaciones (votar ahí mismo: Dlx, 02/10/2026)
+export function X2({ liga, enc, E }) {
   const cu = enc.cuenta(E.id);
   const tot = suma(cu);
   const mio = enc.mio[E.id];
@@ -38,7 +39,7 @@ function X2({ liga, enc, E }) {
   );
 }
 
-function Elegido({ liga, enc, E }) {
+export function Elegido({ liga, enc, E }) {
   const [q, setQ] = useState('');
   const cu = enc.cuenta(E.id);
   const tot = suma(cu);

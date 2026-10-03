@@ -77,6 +77,10 @@ const AVISOS = {
   '/api/avisos/servidores': 'GET',
   // 🙈 «ocultar mi foto» (02/10/2026): en Mi cuenta → Privacidad. Ver `miFoto()` en bot/avisos.js
   '/api/avisos/mi-foto': 'POST',
+  // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno (02/10/2026). Ver `validarAplauso()` en
+  // bot/avisos.js: quién felicita lo dice Discord; qué publicación, el muro
+  '/api/avisos/felicitar': 'POST',
+  '/api/avisos/aplausos': 'GET',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
@@ -121,7 +125,7 @@ async function avisos(req, url) {
     // la clave pública no cambia: una hora en el borde
     init.cf = { cacheTtl: 3600, cacheEverything: true };
   } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') ||
-             url.pathname.endsWith('/precios')) {
+             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos')) {
     // ⚠️ 30 s EN EL BORDE: la página pregunta cada minuto y el vigía escribe
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto

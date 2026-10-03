@@ -2407,7 +2407,7 @@ export function panelBaja(id) {
       'Esto borra, ahora y para siempre:\n' +
       '- tu perfil y tus tarjetas (también las de cada servidor),\n' +
       '- tu foto de las tarjetas,\n' +
-      '- tus redes guardadas, tus votos en las encuestas y el vínculo de tus avisos.\n\n' +
+      '- tus redes guardadas, tus votos en las encuestas, a quién felicitaste y el vínculo de tus avisos.\n\n' +
       'Además queda anotado que **no te vuelva a sumar solo**. Tus resultados en ' +
       'eventos quedan en el historial de la Liga; si querés que cambiemos tu ' +
       'nombre ahí, pedíselo a un admin.\n' +

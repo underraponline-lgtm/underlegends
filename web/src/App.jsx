@@ -14,6 +14,7 @@ import { Cuenta, PaginaVerificar } from './cuenta.jsx';
 // pasaba de 120 a 133 KB comprimido (02/10/2026), y el Inicio es lo que abre todo el mundo, en el celular
 const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
 const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
+const Publicaciones = lazy(() => import('./publicaciones.jsx').then((m) => ({ default: m.Publicaciones })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
 
@@ -68,7 +69,12 @@ let cambiosAntes = (() => {
 // encanta»), con `duelos`, el alias viejo que abre el de Duelos; `eventos` desde la 1.93 (Dlx: «sí, publícalo»), con
 // `avisos`, el link de la campana, que baja hasta ella
 const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1 };
-const esPropia = (p) => !!PROPIAS[p];
+// 🔍 PUBLICACIONES NUEVA, EN PREVIEW (02/10/2026): sólo en el navegador que tiene `lg:prev-pub`. Para los demás sigue
+// la vista de app.js. Cuando Dlx diga que sí, pasa a `PROPIAS` (acá y en web/montar.py) y esto se va
+function prevPub() {
+  try { return !!localStorage.getItem('lg:prev-pub'); } catch (e) { return false; }
+}
+const esPropia = (p) => !!PROPIAS[p] || (p === 'publicaciones' && prevPub());
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -235,7 +241,7 @@ export default function App() {
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos)(\/|$|\?)/.test(hash || '') || (/^#\/publicaciones(\/|$|\?)/.test(hash || '') && prevPub());
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
@@ -255,6 +261,7 @@ export default function App() {
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
+        : pagina === 'publicaciones' && prevPub() ? <Aislada n="Publicaciones"><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'eventos' || pagina === 'avisos' ? <Aislada n="Eventos"><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>
         // el Ranking (02/10/2026); `#/duelos` es el link viejo del de Duelos
         : pagina === 'ranking' || pagina === 'duelos' ? <Aislada n="Ranking"><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>

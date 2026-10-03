@@ -4504,6 +4504,77 @@ function votar(id, op) {
     })
     .catch(function () { ENC_EST[id] = { error: 'red' }; pintaEncuestas(); });
 }
+/* ── 👏 FELICITAR, en Publicaciones ─────────────────────────────────────
+   🔑 Dlx, 02/10/2026: «algo más para que enganche a las personas o
+   interactivo», y con el plan, «Dale». Un toque en un logro del muro
+   (campeón, rango, Most Wanted) cuenta UNO por persona, y a quien felicitan
+   le llega un aviso de la página con cuántos fueron —nunca por DM—: lo manda
+   el vigía (`avisarAplausos()` en bot/avisos.js). Quién felicita lo dice
+   Discord (la sesión), como el voto; qué publicación, el `id` del muro.
+   ⚠️ AFUERA SE VE CUÁNTOS, NUNCA QUIÉN. Lo que felicitaste lo recuerda tu
+   navegador (`lg:aplausos`). La página nueva lee `APLAUSOS` y se entera por
+   `lg:aplausos` (web/src/publicaciones.jsx). */
+var APLAUSOS = { cu: {}, mios: leerLS('lg:aplausos', null) || {}, va: {}, err: {}, post: {} };
+var APL_T = 0;
+function avisarAplausos() {
+  try { window.dispatchEvent(new Event('lg:aplausos')); } catch (e) { /* navegador viejo */ }
+}
+function pedirAplausos() {
+  if (Date.now() - APL_T < 30000) return;
+  APL_T = Date.now();
+  fetch('/api/avisos/aplausos', { headers: { accept: 'application/json' } })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !d.n) return;
+      var cu = Object.assign({}, d.n);
+      // lo que acabás de felicitar puede ser más nuevo que la copia del borde (30 s)
+      Object.keys(APLAUSOS.post).forEach(function (id) {
+        var p = APLAUSOS.post[id];
+        if (Date.now() - p.t < 120000) cu[id] = Math.max(+cu[id] || 0, p.n);
+      });
+      APLAUSOS.cu = cu;
+      avisarAplausos();
+    })
+    .catch(function () { /* sin los números se ve igual */ });
+}
+function felicitar(id) {
+  id = String(id || '');
+  if (!/^[0-9a-f]{12}$/.test(id) || APLAUSOS.va[id] || APLAUSOS.mios[id]) return;
+  APLAUSOS.va[id] = 1;
+  delete APLAUSOS.err[id];
+  avisarAplausos();
+  conCuenta('/api/avisos/felicitar', { id: id }, 'p', 'lg:aplauso', { id: id })
+    .then(function (j) {
+      if (!j) return;                 // se fue a Discord: a la vuelta sale solo (`volverDeDiscord()`)
+      delete APLAUSOS.va[id];
+      if (j.ok) {
+        APLAUSOS.mios[id] = Date.now();
+        // ⚠️ con tope: el muro trae 80, y lo de hace un mes ya no está
+        var m = {};
+        Object.keys(APLAUSOS.mios).sort(function (a, b) { return APLAUSOS.mios[b] - APLAUSOS.mios[a]; })
+          .slice(0, 300).forEach(function (x) { m[x] = APLAUSOS.mios[x]; });
+        APLAUSOS.mios = m;
+        guardarLS('lg:aplausos', m);
+        if (typeof j.n === 'number') {
+          APLAUSOS.cu[id] = j.n;
+          APLAUSOS.post[id] = { n: j.n, t: Date.now() };
+        }
+      } else {
+        APLAUSOS.err[id] = j;
+      }
+      avisarAplausos();
+    })
+    .catch(function () { delete APLAUSOS.va[id]; APLAUSOS.err[id] = { error: 'red' }; avisarAplausos(); });
+}
+/* lo que se le dice a quien no pudo felicitar (texto: la página nueva lo escapa sola) */
+function errorAplauso(E) {
+  var e = E && E.error;
+  return errorCuenta(e) || (e === 'vos' ? 'Es tuyo: a vos te felicitan los demás.'
+    : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para felicitar: vas a poder desde el ' +
+      fmtFecha(E.desde, { day: 'numeric', month: 'long' }) + '.'
+    : e === 'no_existe' ? 'Esa publicación ya no está: se actualiza cada media hora.'
+    : 'No pude guardarlo. Probá de nuevo en un rato.');
+}
 function errorEnc(E) {
   var e = E.error;
   return errorCuenta(e) || (e === 'cerrada' ? 'La votación ya cerró.'
@@ -5380,9 +5451,10 @@ function urlLogin(modo) {
   // 'r' las redes (pide `connections`), 'v' vincular los avisos, 'f' la
   // foto, 'e' votar en una encuesta, 't' la tienda (poner un precio o ver la
   // billetera), 'd' verificarse (pide `guilds.join`: el bot te mete en DRA),
-  // o entrar
+  // 'p' felicitar en Publicaciones, o entrar
   var conRedes = modo === true || modo === 'r';
-  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' || modo === 'd' ? modo : 'i') +
+  var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' || modo === 'd' ||
+    modo === 'p' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
@@ -5591,7 +5663,7 @@ function volverDeDiscord() {
   // ventana encima del Inicio: ver `nuevaCuenta()`
   var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
   var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'v' ? 'avisos'
-    : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 't'
+    : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', urlDe(destino)); } catch (e) { location.hash = destino; }
   var st = '';
@@ -5612,7 +5684,9 @@ function volverDeDiscord() {
   var porTienda = st.charAt(0) === 't';
   // 🔑 VERIFICARSE: también en memoria, para «Revisar» y para elegir el país
   var porVerif = st.charAt(0) === 'd';
-  if (porRedes || porFoto || porVoto || porTienda || porVerif) DC_TOKEN = q.access_token;
+  // 👏 FELICITAR: igual que votar (ver `felicitar()`)
+  var porAplauso = st.charAt(0) === 'p';
+  if (porRedes || porFoto || porVoto || porTienda || porVerif || porAplauso) DC_TOKEN = q.access_token;
   // y se mira ya, sin esperar a `/api/cuenta`: el Worker le pregunta a Discord por su cuenta
   if (porVerif) {
     var vp = '';
@@ -5636,6 +5710,15 @@ function volverDeDiscord() {
       sessionStorage.removeItem('lg:voto');
     } catch (e) { pv = null; }
     if (pv && pv.enc && pv.op) votar(String(pv.enc), String(pv.op));
+  }
+  // 👏 y la felicitación que se tocó antes de entrar, igual
+  if (porAplauso) {
+    var pa = null;
+    try {
+      pa = JSON.parse(sessionStorage.getItem('lg:aplauso') || 'null');
+      sessionStorage.removeItem('lg:aplauso');
+    } catch (e) { pa = null; }
+    if (pa && pa.id) felicitar(String(pa.id));
   }
   fetch('/api/cuenta', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ token: q.access_token }) })
@@ -5663,6 +5746,11 @@ function volverDeDiscord() {
       if (porVoto) {
         $('#popCuenta').hidden = true;
         if (D) pintaEncuestas();
+      }
+      // y quien vino a felicitar, en Publicaciones (y ahora se sabe cuáles son suyas)
+      if (porAplauso) {
+        $('#popCuenta').hidden = true;
+        avisarAplausos();
       }
       // y quien vino a la tienda, también («sos vos» en su propio perfil)
       if (porTienda) {
