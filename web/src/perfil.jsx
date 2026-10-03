@@ -16,6 +16,9 @@ import { REDES } from './servidor.jsx';
 const TABS = [['', 'Resumen'], ['eventos', 'Eventos'], ['duelos', 'Duelos'], ['insignias', 'Insignias']];
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
+// quién está en «Comparar dos» de Tarjetas (la de Temporada, que es la que abre): con carta y con cara, como
+// `conTarjeta()` de app.js. Sin esto, «Comparar conmigo» con alguien sin cara ponía en su lugar al #1 de la lista
+const enComparar = (x) => !!x && (x.c || []).includes('temporada') && x.fo !== 0;
 const NV = { id: 'su Discord todavía no está vinculado a la Liga', pais: 'le falta el país', dra: 'tiene que ser Miembro de Discord Rap Español' };
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉' };
 const fecha = (iso) => {
@@ -134,8 +137,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           <div className="hero-acc pf-acc">
             {!esYo && typeof window.alternarSigo === 'function' ? <Seguir si={si} onSeguir={() => window.alternarSigo(k)} /> : null}
             {esYo && dc ? <button type="button" className="btn borde chico" onClick={accion.foto}>Cambiar mi foto</button> : null}
-            {!esYo && liga.yo && liga.yo.k !== k ? (
-              <a className="btn borde chico" href={'#/tarjetas?a=' + encodeURIComponent(liga.yo.k) + '&b=' + encodeURIComponent(k)}>Comparar conmigo</a>
+            {!esYo && liga.yo && liga.yo.k !== f.k && enComparar(liga.yo) && enComparar(f) ? (
+              <a className="btn borde chico" href={'#/tarjetas?a=' + encodeURIComponent(liga.yo.k) + '&b=' + encodeURIComponent(f.k)}>Comparar conmigo</a>
             ) : null}
             <Compartir cls="btn borde chico" url={enlace('#/r/' + encodeURIComponent(k))} texto={limpio(f.n) + ' en la Liga Global'} etiqueta="Compartir" />
           </div>
