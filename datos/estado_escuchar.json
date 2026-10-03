@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-03T22:52:55Z",
+ "cuando": "2026-10-03T22:55:23Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 143.5,
+ "dur_s": 125.3,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 25.9
+   "s": 22.6
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 33.5
+   "s": 24.8
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 19.6
+   "s": 19.1
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.5
+   "s": 5.6
   },
   {
    "n": "2b",
@@ -69,37 +69,37 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.3
+   "s": 0.1
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 0.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.4
+   "s": 2.2
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 19.3
+   "s": 18.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 16.9
+   "s": 12.7
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.3
+   "s": 8.8
   },
   {
    "n": "2e",
@@ -111,7 +111,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.3
+   "s": 4.8
   },
   {
    "n": "3",
@@ -121,7 +121,7 @@
   }
  ],
  "fallas": [],
- "decidir": 71,
+ "decidir": 70,
  "ultimo_evento": {
   "n": "388",
   "nombre": "JH DE LA CRUZ CUP",
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-03T22:51:01Z",
+  "cuando": "2026-10-03T22:53:44Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 255,
   "un_evento": 142,
@@ -156,11 +156,11 @@
    "read": 46434
   },
   "worker": {
-   "pedidos": 7257,
+   "pedidos": 7256,
    "errores": 0,
-   "sub": 6117,
+   "sub": 6123,
    "p50_ms": 0.74,
-   "p99_ms": 3.43
+   "p99_ms": 3.42
   },
   "r2": {
    "objetos": 9056,
