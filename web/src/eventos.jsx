@@ -12,12 +12,8 @@ import { Cara, Carta, Compartir, Ico, accion, enlace } from './piezas.jsx';
 import { CuadroMini, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
-// 🔍 LA IDEA 1, EN PREVIEW (Dlx, 02/10/2026: «si quieres puedes pasarme previa de lo que querías hacer»): cómo te fue en
-// cada evento que jugaste y un punto en los días que jugaste. Sólo con `lg:prev-yo`. Antes había dicho «no sobrecargar»:
-// por eso es una línea y un punto, nada más
-function prevYo() {
-  try { return !!localStorage.getItem('lg:prev-yo'); } catch (e) { return false; }
-}
+// 🔑 CÓMO TE FUE (Dlx, 02/10/2026, al ver la preview: «sí, hazla como sugeriste»): en cada evento que jugaste, una línea
+// «VOS», y un punto en los días que jugaste. Antes había dicho «no sobrecargar»: por eso es una línea y un punto, nada más
 // tu fila en una llave: por la clave cuando viene (dos «SOL» se separan así), si no por el nombre
 function miFila(liga, ll) {
   const yo = liga.yo;
@@ -310,7 +306,7 @@ function Evento({ liga, e, est, L, abierto }) {
   const det = [e.sv, formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
     ll ? ll.participantes + ' raperos' : '', x.org || inf.org ? 'organiza ' + (x.org || inf.org) : ''].filter(Boolean).join(' · ');
   const camp = ll ? liga.campeon(ll) : [];
-  const mia = est === 'hecho' && prevYo() ? miFila(liga, ll) : null;
+  const mia = est === 'hecho' ? miFila(liga, ll) : null;
   const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll ? 'TERMINÓ' : 'SIN LLAVE';
   return (
     <article className={'t-ev evp-ev ' + est + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '')} style={{ '--c': (liga.svs[e.sv] || {}).color || '#29B298' }}>
@@ -555,10 +551,10 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   }, [filtrado, liga]);
   // el día que se abre: el de la dirección; si no, hoy si tiene algo; si no, el último que tuvo
   const conDias = Object.keys(porDia).sort();
-  // los días que jugaste (preview `lg:prev-yo`): los de las llaves donde estás
+  // los días que jugaste: los de las llaves donde estás
   const misDias = useMemo(() => {
     const m = new Set();
-    if (!prevYo() || !liga.yo) return m;
+    if (!liga.yo) return m;
     cal.forEach((c) => { const ll = c.ll ? (liga.d.llaves || {})[c.ll] : null; if (ll && miFila(liga, ll)) m.add(liga.diaClave(c.t)); });
     return m;
   }, [cal, liga]);

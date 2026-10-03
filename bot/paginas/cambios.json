@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.98",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T20:22:00-04:00",
+   "titulo": "Eventos: cómo te fue",
+   "items": [
+    "📍 **En Eventos, tus días y tus resultados**: un punto en los días que jugaste, y en cada evento que jugaste, una línea con cómo te fue y cuánto sumaste."
+   ]
+  },
+  {
    "version": "1.97",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T20:16:00-04:00",

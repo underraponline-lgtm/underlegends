@@ -942,7 +942,7 @@ a.rk-z:hover{border-color:var(--linea)}
    Dlx, 02/10/2026: «I like this PIEL color… maybe we could include it for some stuff» */
 .evp-ev.hecho{background:var(--caja)}
 .evp-ev.hecho .t-est{color:var(--gris);border-color:var(--suave)}
-/* 🔍 (preview, `lg:prev-yo`) cómo te fue en ese evento, como «tu fila» del Ranking: el fondo y el VOS magenta */
+/* cómo te fue en ese evento, como «tu fila» del Ranking: el fondo y el VOS magenta */
 .evp-vos{display:flex;align-items:center;gap:8px;margin:0 12px 10px;padding:7px 10px;background:var(--rk-yo);
   font:700 11.5px/1.2 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase}
 .evp-vos b{font-weight:700}
