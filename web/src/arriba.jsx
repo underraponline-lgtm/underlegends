@@ -9,6 +9,12 @@ export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
   ['Tarjetas', '#/tarjetas'], ['Pase', '#/pase'], ['Tienda', '#/tienda'], ['Mundo', '#/mundo'], ['Guía', '#/guia'],
 ];
+// 🔍 Socios en preview (`lg:prev-soc`): el menú dice «Socios»; para los demás, «Mundo» hasta que se publique
+export function menu() {
+  let soc = false;
+  try { soc = !!localStorage.getItem('lg:prev-soc'); } catch (e) { soc = false; }
+  return soc ? MENU.map(([n, r]) => (r === '#/mundo' ? ['Socios', '#/socios'] : [n, r])) : MENU;
+}
 
 function Marca({ liga }) {
   return (
@@ -78,7 +84,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
     <header className="cab negra">
       <Marca liga={liga} />
       <nav className="menu" aria-label="Secciones">
-        {MENU.map(([n, r]) => <a key={n} href={r} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
+        {menu().map(([n, r]) => <a key={n} href={r} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />

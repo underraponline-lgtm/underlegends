@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace } from './piezas.jsx';
-import { Buscar, CaraDc, CaraH, MENU } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, menu } from './arriba.jsx';
 import { nuevaQue } from './cambios.jsx';
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -79,7 +79,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   return (
     <nav className="tabbar" aria-label="Secciones">
       <div className="tb-tira">
-        {MENU.map(([n, r]) => {
+        {menu().map(([n, r]) => {
           const k = r.replace(/^#\/?/, '') || 'inicio';
           // la de la página que se ve: el Inicio sin ruta, y las que dibuja el Inicio nuevo por su nombre (el Ranking)
           return <a key={k} href={r} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
@@ -112,7 +112,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
         <div className="x-caja-cab"><b>MENÚ</b><button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el menú" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
         {/* en el celular el buscador no entra arriba: vive acá */}
         {liga ? <div className="x-busca"><Buscar liga={liga} onIr={onCerrar} /></div> : null}
-        <nav className="x-lista" aria-label="Secciones">{MENU.slice(1).map(([n, r]) => <a key={n} href={r} onClick={onCerrar}>{n}<Ico n="flecha" t={20} /></a>)}</nav>
+        <nav className="x-lista" aria-label="Secciones">{menu().slice(1).map(([n, r]) => <a key={n} href={r} onClick={onCerrar}>{n}<Ico n="flecha" t={20} /></a>)}</nav>
         <div className="x-aj">
           <span className="x-aj-t">AJUSTES</span>
           <div className="x-fila"><span>Tema</span>

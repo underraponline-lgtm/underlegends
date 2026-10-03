@@ -15,6 +15,8 @@ import { Cuenta, PaginaVerificar } from './cuenta.jsx';
 const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
 const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eventos })));
 const Publicaciones = lazy(() => import('./publicaciones.jsx').then((m) => ({ default: m.Publicaciones })));
+const Socios = lazy(() => import('./socios.jsx').then((m) => ({ default: m.Socios })));
+const Guia = lazy(() => import('./guia.jsx').then((m) => ({ default: m.Guia })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
 
@@ -70,7 +72,12 @@ let cambiosAntes = (() => {
 // `avisos`, el link de la campana, que baja hasta ella; `publicaciones` desde la 1.99 (Dlx, 02/10: «me gusta pero que
 // lo de encuestas no sea lo primero que uno vea»)
 const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1 };
-const esPropia = (p) => !!PROPIAS[p];
+// 🔍 SOCIOS (lo que era Mundo) Y LA GUÍA NUEVA, EN PREVIEW (02/10/2026): sólo en el navegador con `lg:prev-soc` /
+// `lg:prev-gui`. Cuando Dlx diga que sí, `mundo` y `guia` pasan a `PROPIAS` (acá y en web/montar.py) y esto se va
+function prev(m) {
+  try { return !!localStorage.getItem('lg:prev-' + m); } catch (e) { return false; }
+}
+const esPropia = (p) => !!PROPIAS[p] || ((p === 'mundo' || p === 'socios') && prev('soc')) || (p === 'guia' && prev('gui'));
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -243,13 +250,14 @@ export default function App() {
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
   const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
   // la del menú: `#/duelos` es el Ranking
-  const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina;
+  const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos'
+    : pagina === 'mundo' && prev('soc') ? 'socios' : pagina;
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
   const grupos = useMemo(() => {
     if (!liga) return [];
@@ -277,6 +285,8 @@ export default function App() {
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
+        : (pagina === 'socios' || pagina === 'mundo') && prev('soc') ? <Aislada n="Socios"><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
+        : pagina === 'guia' && prev('gui') ? <Aislada n="Guia"><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'publicaciones' ? <Aislada n="Publicaciones"><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'eventos' || pagina === 'avisos' ? <Aislada n="Eventos"><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>
         // el Ranking (02/10/2026); `#/duelos` es el link viejo del de Duelos

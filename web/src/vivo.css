@@ -1231,3 +1231,104 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (max-width: 899.98px){
   .nt-p{position:fixed;inset:0;width:auto;max-height:none;z-index:60;border:0;box-shadow:none}
 }
+/* ── Socios (`socios.jsx`, preview con `lg:prev-soc`): lo que era Mundo. Cada servidor en piel con su color al costado;
+   «Sumá tu servidor», en negro: qué gana y qué hace el bot ── */
+.soc-hero,.gu-hero{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
+.soc-hero .hero-ev,.gu-hero .hero-ev{margin:0}
+.soc-tot{display:flex;flex-wrap:wrap;gap:8px 24px;margin:4px 0 6px}
+.soc-tot div{display:grid;gap:4px}
+.soc-tot dt{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0}
+.soc-tot dd{margin:0;font:900 30px/1 Archivo,sans-serif;font-stretch:120%;color:#F6F6F6}
+.soc-lista{display:grid;gap:14px;padding:18px 16px 8px}
+.soc{display:grid;gap:14px;padding:16px 16px 16px 22px;border:2px solid var(--linea);background:var(--caja);box-shadow:inset 6px 0 0 var(--c)}
+.soc-cab{display:flex;align-items:center;gap:14px;min-width:0}
+.soc-logo{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--c);object-fit:cover;background:#030304}
+.soc-cab h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
+.soc-cab small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
+.soc-num{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
+.soc-num div{display:grid;gap:5px;padding:8px;border:1.5px solid var(--suave);background:var(--fondo);min-width:0}
+.soc-num dt{font:700 9.5px/1.15 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
+.soc-num dd{margin:0;font:900 18px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
+.soc-num dd.sube{color:#1F8F79}
+.soc-medio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.soc-carta-c{display:block;width:72px;height:auto}
+.soc-datos{list-style:none;margin:0;padding:0;display:grid;gap:9px;font:600 14px/1.35 Archivo,sans-serif;min-width:0}
+.soc-datos b{display:block;font:700 10px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--magenta-tx);margin-bottom:4px}
+.soc-acc{display:flex;flex-wrap:wrap;gap:8px}
+.soc-pat{padding:18px 16px}
+.soc-pat ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
+.soc-pat img{height:56px;width:auto}
+.soc-sumar{display:grid;gap:18px;margin-top:20px;padding:26px 16px 32px;background:#030304;color:#F6F6F6}
+.soc-sumar-tit{display:grid;gap:10px;justify-items:start}
+.soc-sumar .hero-ev{margin:0}
+.soc-dos{display:grid;gap:14px}
+.soc-bloque{border:2px solid #3A3A3E;padding:16px}
+.soc-bloque h3{margin:0 0 10px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.soc-bloque ul{margin:0;padding:0 0 0 18px;display:grid;gap:9px;font:500 14.5px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.soc-bloque b,.soc-bloque a{color:#F6F6F6}
+.soc-bloque a{font-weight:800}
+.soc-como{display:grid;gap:12px;justify-items:start}
+/* ── la Guía (`guia.jsx`, preview con `lg:prev-gui`): «cómo empezar» en tres pasos y un índice; todo en piel ── */
+.gu-cuerpo{display:grid;padding:0 16px 34px}
+.gu-sec{display:grid;gap:12px;padding-top:26px}
+.gu-baj{margin:0;max-width:66ch;font:500 15px/1.5 Archivo,sans-serif;color:var(--gris)}
+.gu-pasos{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.gu-pasos li{display:grid;gap:8px;justify-items:start;align-content:start;padding:16px;border:2px solid var(--linea);background:var(--caja)}
+.gu-pasos li > b{display:grid;place-items:center;width:34px;height:34px;background:var(--verde);color:#030304;font:900 18px/1 Archivo,sans-serif}
+.gu-pasos h3{margin:0;font:900 19px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.gu-pasos p{margin:0;font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.gu-ok{font:700 12px/1 "Space Mono",monospace;color:#1F8F79}
+.gu-cartas{display:grid;gap:12px}
+.gu-carta{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
+.gu-carta.prox{opacity:.8}
+.gu-carta-c{display:block;width:84px;height:auto}
+.gu-sin{display:grid;place-items:center;height:118px;border:2px dashed var(--gris);font:900 22px/1 Archivo,sans-serif;color:var(--gris)}
+.gu-carta h3{margin:0 0 4px;font:900 18px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.gu-carta p{margin:0 0 8px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.gu-carta ul{margin:0;padding:0 0 0 18px;display:grid;gap:3px;font:700 13px/1.35 Archivo,sans-serif}
+.gu-tabla{overflow-x:auto;border:2px solid var(--linea);background:var(--caja)}
+.gu-tabla table{width:100%;border-collapse:collapse;font:600 14px/1.3 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.gu-tabla th{padding:10px;text-align:right;font:700 10.5px/1.2 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--linea)}
+.gu-tabla th small{display:block;font-weight:400;color:var(--gris)}
+.gu-tabla th:first-child,.gu-tabla td:first-child{text-align:left}
+.gu-tabla td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--suave)}
+.gu-tabla td small{display:block;font:500 11px/1.3 Archivo,sans-serif;color:var(--gris)}
+.gu-notas{margin:0;padding:0 0 0 18px;display:grid;gap:6px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.gu-notas b{color:var(--tinta)}
+.gu-rangos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.gu-rg{display:grid;gap:5px;justify-items:center;padding:14px 6px 12px;border:2px solid var(--linea);background:var(--caja);box-shadow:inset 0 6px 0 var(--c)}
+.gu-rg b{font:900 26px/1 Archivo,sans-serif;font-stretch:120%}
+.gu-rg small{font:700 10px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.gu-rg em{font:700 12px/1 "Space Mono",monospace;font-style:normal}
+.gu-dos{display:grid;gap:14px}
+.gu-pesos{display:grid;gap:9px;align-content:start;padding:16px;border:2px solid var(--linea);background:var(--caja)}
+.gu-pesos h3{margin:0 0 4px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.gu-pesos h3 small{display:block;font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.06em;text-transform:none;color:var(--gris)}
+.gu-p{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 46px;gap:10px;align-items:center;font:600 14px/1.25 Archivo,sans-serif}
+.gu-p small{display:block;font:500 11.5px/1.3 Archivo,sans-serif;color:var(--gris)}
+.gu-p i{height:10px;background:var(--fondo);border:1.5px solid var(--linea)}
+.gu-p u{display:block;height:100%;background:var(--verde)}
+.gu-p b{text-align:right;font:700 13px/1 "Space Mono",monospace}
+.gu-nota{margin:4px 0 0;font:500 13px/1.45 Archivo,sans-serif;color:var(--gris)}
+.gu-glos{margin:0;display:grid;gap:10px}
+.gu-glos div{padding:12px 14px;border:2px solid var(--linea);background:var(--caja)}
+.gu-glos dt{margin-bottom:4px;font:900 16px/1.2 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
+.gu-glos dd{margin:0;font:500 14.5px/1.5 Archivo,sans-serif}
+.gu-faq{display:grid;gap:8px}
+.gu-faq details{border:2px solid var(--linea);background:var(--caja)}
+.gu-faq summary{padding:12px 14px;cursor:pointer;font:800 15px/1.3 Archivo,sans-serif}
+.gu-faq p{margin:0;padding:0 14px 14px;font:500 14.5px/1.5 Archivo,sans-serif}
+.gu-faq a{color:inherit;font-weight:800}
+@media (min-width: 900px){
+  .app .soc-hero,.app .gu-hero{padding:36px var(--gut) 30px}
+  .app .soc-lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:26px var(--gut) 10px}
+  .app .soc-pat{padding:22px var(--gut)}
+  .app .soc-sumar{padding:34px var(--gut) 40px}
+  .app .soc-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .app .gu-cuerpo{padding:0 var(--gut) 40px}
+  .app .gu-pasos{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .app .gu-cartas{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .gu-rangos{grid-template-columns:repeat(8,minmax(0,1fr))}
+  .app .gu-dos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .gu-glos{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
