@@ -608,12 +608,9 @@ export function PaginaVerificar({ liga, dc }) {
   );
 }
 
-// 🔍 MI CUENTA Y AJUSTES EN TARJETAS, EN PREVIEW (Dlx, 02/10/2026: «haz una preview a lo que te referís»): sólo en el
-// navegador que tiene `lg:prev-cu`, y sólo en la compu. Con un menú más alto que la parte de al lado quedaba media
-// página vacía; en tarjetas, todas las partes a la vista y en dos columnas. En el celular sigue la lista
-function prevCu() {
-  try { return !!localStorage.getItem('lg:prev-cu'); } catch (e) { return false; }
-}
+// 🔑 MI CUENTA Y AJUSTES EN TARJETAS, EN LA COMPU (Dlx, 02/10/2026, al ver la preview: «hazlo como están las cosas de la
+// derecha, me gusta rellenar el espacio así»): con un menú más alto que la parte de al lado quedaba media página vacía;
+// en tarjetas, todas las partes a la vista y en dos columnas. En el celular sigue la lista y una parte por vez
 // las tarjetas: una por parte, y las tres de «La Liga» juntas (cada una es un link: separadas repetían el título)
 function tarjetasDe(gs) {
   const out = [];
@@ -640,7 +637,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
     return () => { if (m.removeEventListener) m.removeEventListener('change', f); };
   }, []);
   const abierta = actual || (ancha ? todas[0] : null);
-  const enTarjetas = ancha && !extra && prevCu();
+  const enTarjetas = ancha && !extra;
   const cartas = enTarjetas ? tarjetasDe(gs) : [];
   useEffect(() => {
     if (!enTarjetas || !parte) return;

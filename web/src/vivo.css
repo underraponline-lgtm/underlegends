@@ -490,7 +490,7 @@ button.btn{background:transparent;cursor:pointer}
   .app .cu-parte{padding:0}
   .app .cu-volver{display:none}
   .app .cu-pt{margin-top:0;font-size:38px}
-  /* 🔍 en tarjetas (preview, `lg:prev-cu`): dos columnas que se acomodan solas, como un tablero */
+  /* en tarjetas: dos columnas que se acomodan solas, como un tablero */
   .app .cu.tarjetas .cu-tarjetas{column-count:2;column-gap:24px}
   .app .cu-tj{break-inside:avoid;display:inline-block;width:100%;margin:0 0 24px;padding:18px 20px 20px;border:2px solid var(--linea);background:var(--fondo)}
   .app .cu-tjt{display:flex;align-items:center;gap:10px;margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
@@ -905,7 +905,7 @@ a.rk-z:hover{border-color:var(--linea)}
 #ev-campana,.evp-centro{scroll-margin-top:92px}
 .evp-dias-in{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 12px}
 .evp-dias-in::-webkit-scrollbar{display:none}
-.evp-dias button{flex:none;display:grid;justify-items:center;gap:3px;min-width:62px;padding:7px 8px 6px;border:1.5px solid #3A3A3E;background:transparent;
+.evp-dias button{position:relative;flex:none;display:grid;justify-items:center;gap:3px;min-width:62px;padding:7px 8px 6px;border:1.5px solid #3A3A3E;background:transparent;
   color:#F6F6F6;cursor:pointer}
 .evp-dias button span{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0}
 .evp-dias button b{font:900 20px/1 Archivo,sans-serif;font-stretch:115%}
@@ -942,6 +942,11 @@ a.rk-z:hover{border-color:var(--linea)}
    Dlx, 02/10/2026: «I like this PIEL color… maybe we could include it for some stuff» */
 .evp-ev.hecho{background:var(--caja)}
 .evp-ev.hecho .t-est{color:var(--gris);border-color:var(--suave)}
+/* 🔍 (preview, `lg:prev-yo`) cómo te fue en ese evento, como «tu fila» del Ranking: el fondo y el VOS magenta */
+.evp-vos{display:flex;align-items:center;gap:8px;margin:0 12px 10px;padding:7px 10px;background:var(--rk-yo);
+  font:700 11.5px/1.2 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase}
+.evp-vos b{font-weight:700}
+.evp-dyo{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#E41373}
 .evp-ev.cancelado{opacity:.7}
 .evp-ev.cancelado .t-est{border-style:dashed}
 .evp-ev.dorado{border-color:#E7B622;box-shadow:inset 0 0 0 1px #E7B622}

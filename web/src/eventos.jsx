@@ -12,6 +12,19 @@ import { Cara, Carta, Compartir, Ico, accion, enlace } from './piezas.jsx';
 import { CuadroMini, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
+// 🔍 LA IDEA 1, EN PREVIEW (Dlx, 02/10/2026: «si quieres puedes pasarme previa de lo que querías hacer»): cómo te fue en
+// cada evento que jugaste y un punto en los días que jugaste. Sólo con `lg:prev-yo`. Antes había dicho «no sobrecargar»:
+// por eso es una línea y un punto, nada más
+function prevYo() {
+  try { return !!localStorage.getItem('lg:prev-yo'); } catch (e) { return false; }
+}
+// tu fila en una llave: por la clave cuando viene (dos «SOL» se separan así), si no por el nombre
+function miFila(liga, ll) {
+  const yo = liga.yo;
+  if (!yo || !ll) return null;
+  return (ll.tabla || []).find((r) => (r[3] ? r[3] === yo.k : ((liga.fila(r[0]) || {}).k === yo.k))) || null;
+}
+
 const ANDROID = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent || '');
 const TACTIL = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 // Google no puede leer `localhost`: desde la compu de desarrollo el .ics apunta al dominio público
@@ -297,6 +310,7 @@ function Evento({ liga, e, est, L, abierto }) {
   const det = [e.sv, formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
     ll ? ll.participantes + ' raperos' : '', x.org || inf.org ? 'organiza ' + (x.org || inf.org) : ''].filter(Boolean).join(' · ');
   const camp = ll ? liga.campeon(ll) : [];
+  const mia = est === 'hecho' && prevYo() ? miFila(liga, ll) : null;
   const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll ? 'TERMINÓ' : 'SIN LLAVE';
   return (
     <article className={'t-ev evp-ev ' + est + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '')} style={{ '--c': (liga.svs[e.sv] || {}).color || '#29B298' }}>
@@ -315,6 +329,7 @@ function Evento({ liga, e, est, L, abierto }) {
           {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
         </div>
       ) : null}
+      {mia ? <p className="evp-vos"><em className="rk-vos">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
       {est === 'vivo' && L ? <CuadroLleno liga={liga} ll={L} /> : null}
@@ -540,6 +555,13 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   }, [filtrado, liga]);
   // el día que se abre: el de la dirección; si no, hoy si tiene algo; si no, el último que tuvo
   const conDias = Object.keys(porDia).sort();
+  // los días que jugaste (preview `lg:prev-yo`): los de las llaves donde estás
+  const misDias = useMemo(() => {
+    const m = new Set();
+    if (!prevYo() || !liga.yo) return m;
+    cal.forEach((c) => { const ll = c.ll ? (liga.d.llaves || {})[c.ll] : null; if (ll && miFila(liga, ll)) m.add(liga.diaClave(c.t)); });
+    return m;
+  }, [cal, liga]);
   const porDefecto = porDia[hoyK] ? hoyK : (conDias.filter((k) => k <= hoyK).pop() || hoyK);
   const [dia, setDia] = useState(() => (/^\d{4}-\d\d-\d\d$/.test(diaRuta || '') ? diaRuta : porDefecto));
   useEffect(() => { if (/^\d{4}-\d\d-\d\d$/.test(diaRuta || '')) setDia(diaRuta); }, [diaRuta]);
@@ -680,6 +702,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
             return (
               <button type="button" key={k} className={(k === dia ? 'on' : '') + (k === hoyK ? ' hoy' : '') + (n ? '' : ' sin')} aria-pressed={k === dia} onClick={() => elegir(k)}>
                 <span>{nombreDia(k, hoyK)}</span><b>{d}</b><i>{n ? n + (n === 1 ? ' evento' : ' eventos') : '—'}</i>
+                {misDias.has(k) ? <em className="evp-dyo" title="Jugaste" aria-label="jugaste" /> : null}
               </button>
             );
           })}

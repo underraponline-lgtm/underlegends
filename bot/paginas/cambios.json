@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "1.97",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T20:16:00-04:00",
+   "titulo": "Mi cuenta y Ajustes, en tarjetas",
+   "items": [
+    "🗂️ **En la compu, Mi cuenta y Ajustes muestran todo junto**: cada sección es una tarjeta, en dos columnas, sin espacios vacíos. En el celular sigue igual: la lista y entrás a cada una."
+   ]
+  },
+  {
    "version": "1.96",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T18:53:00-04:00",
