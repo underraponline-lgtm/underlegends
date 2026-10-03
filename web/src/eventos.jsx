@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
-import { CuadroMini, enJuegoDe, gcal, llaveEnVivo } from './arriba.jsx';
+import { CuadroMini, LlaveCorta, cortaDe, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
 // 🔑 CÓMO TE FUE (Dlx, 02/10/2026, al ver la preview: «sí, hazla como sugeriste»): en cada evento que jugaste, una línea
@@ -290,7 +290,8 @@ function Abierto({ liga, ll }) {
     </div>
   );
 }
-function Evento({ liga, e, est, L, abierto }) {
+// `arriba`: el evento en vivo cuya llave ya está en la tarjeta negra de arriba: acá no se repite
+function Evento({ liga, e, est, L, abierto, arriba }) {
   const ll = e.ll ? (liga.d.llaves || {})[e.ll] : null;
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
@@ -325,7 +326,7 @@ function Evento({ liga, e, est, L, abierto }) {
       {mia ? <p className="evp-vos"><em className="rk-vos">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
-      {est === 'vivo' && L ? <CuadroLleno liga={liga} ll={L} /> : null}
+      {est === 'vivo' && L && !arriba ? <CuadroLleno liga={liga} ll={L} /> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
       {est === 'prox' || (est === 'vivo' && !L) ? <Anotados liga={liga} e={e} /> : null}
       <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} est={est} />
@@ -597,8 +598,10 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const vivos = evs.filter((c) => !c.ll && esVivo(c));
   const prox = evs.filter((c) => !vivos.includes(c) && utc(c.t).getTime() > ahora).sort((a, b) => (a.t < b.t ? -1 : 1));
   const hechos = evs.filter((c) => !vivos.includes(c) && !prox.includes(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
-  const cancelados = liga.cancelados().filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil));
+  const cancelados = liga.cancelacionesVisibles().filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil));
   const enVivo = (c) => llaveEnVivo({ cuando: c.t, sv: c.sv, nombre: c.n }, vivoL);
+  // el que va en la tarjeta negra de arriba (`vivoS[0]`), con su llave
+  const esArriba = (c) => !!vivoS[0] && ((vivoS[0].link && vivoS[0].link === c.link) || (vivoS[0].sv === c.sv && limpio(vivoS[0].nombre) === limpio(c.n)));
 
   // ── la tira: de 6 días atrás a 2 adelante, y los días de la semana que pasó con algo ──
   const tiraDias = [];
@@ -617,30 +620,20 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   let momento = null;
   if (vivoAhora) {
     const L = llaveEnVivo(vivoAhora, vivoL);
-    // 🔴 SIN EL CUADRO: la llave entera va abajo, en «Hoy». Arriba hacía la tarjeta tres veces más alta que el título —un
-    // hueco gigante al lado— y repetía la misma llave dos veces (Dlx, 03/10/2026). Acá, lo que se juega en una línea
-    const J = L ? enJuegoDe(L) : null;
+    // 🔑 LA LLAVE VA ACÁ, ADENTRO DE LO NEGRO (Dlx, 03/10/2026: «prefiero que esté dentro del espacio negro como estaba
+    // antes»): con Octavos o más, la llave corta —la que se jugó, la de ahora y la que sigue—; con menos, el cuadro entero.
+    // ⚠️ Y en «Hoy» ya no se repite (`arriba` de Evento): la llave dos veces era el «se está repitiendo eso» del mismo día
+    const corta = cortaDe(L);
     const dv = aDiscord(liga, vivoAhora, true);
-    const vs = (x) => x.lados.map((n, i) => {
-      const f = liga.fila(n);
-      return <span key={i} className="evp-ah-l">{i ? <em>vs</em> : null}<Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cara evp-ah-c" />{n}</span>;
-    });
     momento = (
       <div className="evp-mo vivo">
         <span className="tag">EN VIVO AHORA</span>
         <div className="evp-mo-n"><img alt="" src={liga.logo(vivoAhora.sv)} /><b>{limpio(vivoAhora.nombre)}</b></div>
         <small className="evp-mo-s">{siglaDe(vivoAhora.sv)} · empezó {liga.dia(vivoAhora.cuando).replace(/^hoy /, '')}</small>
-        {J && J.ahora ? (
-          <div className="evp-ah">
-            <span className="evp-ah-t">AHORA · {String(J.ahora.r).toUpperCase()}</span>
-            <div className="evp-ah-vs">{vs(J.ahora)}</div>
-            {J.sigue ? <small className="evp-ah-s">Sigue: {J.sigue.lados.join(' vs ')}</small> : null}
-          </div>
-        ) : null}
-        {J ? (J.total ? <small className="evp-mo-s">{J.jugados} de {J.total} batallas jugadas</small> : null)
+        {L ? (corta ? <LlaveCorta liga={liga} m={corta} /> : <CuadroLleno liga={liga} ll={L} />)
           : <p className="hero-p">La llave aparece apenas la carguen. Mientras, se mira en Discord.</p>}
         <div className="hero-acc">
-          {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
+          {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>{corta ? 'Ver la llave completa' : 'Ver la llave'}</button> : null}
           {dv ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dv.url} target="_blank" rel="noopener noreferrer">{dv.txt} ↗</a> : null}
         </div>
       </div>
@@ -745,7 +738,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           ) : null}
           <h2 className="evp-dia">{tituloDia}<small>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : ''}</small></h2>
           {vivos.length ? (
-            <section className="grupo"><h3 className="g-t vivo">● En vivo</h3>{vivos.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="vivo" L={enVivo(c)} />)}</section>
+            <section className="grupo"><h3 className="g-t vivo">● En vivo</h3>{vivos.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="vivo" L={enVivo(c)} arriba={esArriba(c)} />)}</section>
           ) : null}
           {prox.length ? (
             <section className="grupo"><h3 className="g-t">{dia === hoyK ? 'Más tarde' : 'Por jugarse'}</h3>{prox.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" />)}</section>

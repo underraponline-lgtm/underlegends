@@ -665,12 +665,22 @@ export function esArbol(todas) {
 // atrás, no se sabe cuál se está jugando, y no se adivina
 export function enOrden(todas) {
   let pendiente = false;
-  for (const r of todas) {
-    for (const b of r.b) {
-      if (ganador(b)) { if (pendiente) return false; } else if (lados(b).length >= 2) pendiente = true;
+  for (let i = 0; i < todas.length; i += 1) {
+    for (const b of todas[i].b) {
+      if (jugado(todas, i, b)) { if (pendiente) return false; } else if (lados(b).length >= 2) pendiente = true;
     }
   }
   return true;
+}
+// 🔑 UN CRUCE SE JUGÓ SI TIENE GANADOR… O SI ALGUNO DE SUS LADOS YA ESTÁ EN LA RONDA SIGUIENTE (LA REDENCION, FFA,
+// 03/10/2026). En un grupo de tres pueden pasar dos —Park Ji Sung + Yinn y Blitz, los dos a Cuartos— y la llave no marca
+// un ganador: ese cruce quedaba «por jugarse» detrás de tres ya jugados, `enOrden()` daba que no, no había AHORA en
+// ningún lado y la llave corta no salía. `i` es la ronda de `b` dentro de `todas`
+export function jugado(todas, i, b) {
+  if (ganador(b)) return true;
+  const ls = new Set(lados(b));
+  const sig = todas[i + 1];
+  return !!sig && ls.size > 0 && sig.b.some((x) => lados(x).some((n) => ls.has(n)));
 }
 
 // la llave completa SIN reacomodar: cada ronda con sus cruces en el orden en que vienen y los lugares que faltan, vacíos,
@@ -744,7 +754,7 @@ export function CuadroMini({ liga, ll, lugar }) {
   const mitad = (r) => Math.max(31, (filaDe(r) * masLados(r) + 8) / 2);
   const altoDesde = (i) => 2 * todas[i].b.length * mitad(todas[i]) + TOP;
   const decidida = (r) => r.b.every((b) => !!ganador(b));
-  const enJuego = todas.findIndex((r) => r.b.some((b) => !ganador(b) && lados(b).length >= 2));
+  const enJuego = todas.findIndex((r, i) => r.b.some((b) => !jugado(todas, i, b) && lados(b).length >= 2));
   let desde = Math.max(0, todas.length - M.rondas);
   if (enJuego >= 0) desde = Math.min(enJuego, desde);
   while (desde < todas.length - 1 && todas[desde].b.length > 8) desde += 1;
@@ -767,7 +777,7 @@ export function CuadroMini({ liga, ll, lugar }) {
   const cerrada = !ll.vivo || !!ll.terminada;
   // «AHORA» y «SIGUE» sólo en cruces con los dos lados: un lugar vacío todavía no se juega
   const pend = [];
-  if (!cerrada && enOrden(todas)) rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!ganador(b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
+  if (!cerrada && enOrden(todas)) rondas.forEach((r, ci) => r.b.forEach((b, j) => { if (!jugado(todas, desde + ci, b) && lados(b).length >= 2) pend.push(ci + ':' + j); }));
   const cajas = []; const lineas = []; const etiquetas = [];
   const alto = 2 * n0 * R + TOP;
   rondas.forEach((r, ci) => {
@@ -781,7 +791,7 @@ export function CuadroMini({ liga, ll, lugar }) {
       // un lado solo: pasa directo si ya ganó, y si no, falta definir el otro
       const ls = lados(b);
       const est = pend[0] === ci + ':' + j ? 'ahora' : (pend[1] === ci + ':' + j ? 'sigue'
-        : (cerrada && !g && ls.length >= 2 ? 'singan' : ''));
+        : (cerrada && !jugado(todas, desde + ci, b) && ls.length >= 2 ? 'singan' : ''));
       const filas = ls.length >= 2 ? ls : [ls[0] || null, null];
       const falta = !ls.length ? (cerrada ? '—' : 'por jugarse') : (g ? 'pasa directo' : 'por definir');
       cajas.push(
@@ -825,22 +835,70 @@ export function CuadroMini({ liga, ll, lugar }) {
   );
 }
 
-// ── lo que se está jugando de una llave en vivo, sin el cuadro: la ronda, el cruce de «AHORA», el que «SIGUE» y cuántos
-// van. Para la tarjeta de arriba de Eventos (Dlx, 03/10/2026: «el espacio gigantesco que hay… se está repitiendo eso»: la
-// llave entera iba arriba y otra vez en «Hoy»). Las mismas reglas que el cuadro: «AHORA» sólo si se juega en orden ──
-export function enJuegoDe(ll) {
-  const base = ((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
-  const todas = completar(base);
-  const pend = [];
+// ── ⚡ LA LLAVE CORTA: la batalla que se acaba de jugar, la de AHORA y la que SIGUE ─────────────────────────────────
+// Dlx, 03/10/2026, con LA REDENCION en vivo (Octavos de 16, en grupos de tres): «hacer una previa de la anterior llave a
+// la actual, la actual y la siguiente, y dejar la opción de VER LAS LLAVES completas… si es que es octavos, para no hacer
+// el espacio tan grande en el celular ni en la pc… queremos que sea estético y bonito». Con Octavos el cuadro pasaba los
+// 500 px de alto; con Cuartos o menos entra entero y se queda. Va en el escenario del Inicio y en la tarjeta «En vivo
+// ahora» de Eventos, adentro de lo negro (Dlx: «prefiero que esté dentro del espacio negro como estaba antes»).
+// ⚠️ Las mismas reglas que el cuadro: «AHORA» sólo si se juega en orden (`enOrden()`) y sólo en un cruce con dos lados o
+// más. Si no se sabe cuál va —o ya se jugaron todas—, `null`, y va el cuadro
+export function momentosLlave(ll) {
+  const todas = completar(((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r)));
+  if (!enOrden(todas)) return null;
+  const seq = [];
   let jugados = 0;
-  let total = 0;
-  todas.forEach((r) => r.b.forEach((b) => {
-    total += 1;
-    if (ganador(b)) jugados += 1;
-    else if (lados(b).length >= 2) pend.push({ r: r.r, lados: lados(b) });
+  todas.forEach((r, ri) => r.b.forEach((b) => {
+    const hecho = jugado(todas, ri, b);
+    if (hecho) jugados += 1;
+    if (lados(b).length < 2) return;
+    // quién pasó: el ganador o, si pasaron varios, los que están en la ronda siguiente (`jugado()`)
+    const g = ganador(b);
+    const sig = new Set(todas[ri + 1] ? todas[ri + 1].b.flatMap((x) => lados(x)) : []);
+    seq.push({ r: r.r, lados: lados(b), hecho, pasan: g ? [g] : lados(b).filter((n) => sig.has(n)) });
   }));
-  const orden = enOrden(todas);
-  return { ahora: orden ? pend[0] || null : null, sigue: orden ? pend[1] || null : null, jugados, total };
+  const i = seq.findIndex((x) => !x.hecho);
+  if (i < 0) return null;
+  return {
+    antes: seq.slice(0, i).reverse().find((x) => x.hecho) || null,
+    ahora: seq[i],
+    sigue: seq.slice(i + 1).find((x) => !x.hecho) || null,
+    jugados,
+    total: todas.reduce((t, r) => t + r.b.length, 0),
+  };
+}
+// «si es que es octavos»: la primera ronda con 8 cruces o más, por su nombre o por los que trae
+export function llaveGrande(ll) {
+  const base = ((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
+  return !!base.length && Math.max(base[0].b.length, CRUCES[base[0].r] || 0) >= 8;
+}
+// la llave corta de una llave en vivo, o `null` si va el cuadro entero
+export const cortaDe = (ll) => (ll && llaveGrande(ll) ? momentosLlave(ll) : null);
+// las casillas son las del cuadro —la misma trama, el que pasó en blanco, «ahora» en magenta—, en una línea de tiempo.
+// `W` es el ancho con el que LadoCm decide si los nombres de un equipo entran: el de la casilla en un celular
+export function LlaveCorta({ liga, m }) {
+  const items = [['antes', 'Antes', m.antes], ['ahora', 'Ahora', m.ahora], ['sigue', 'Sigue', m.sigue]].filter((x) => x[2]);
+  return (
+    <div className="lc">
+      <ol className="lc-l">
+        {items.map(([c, et, x]) => (
+          <li key={c} className={'lc-b ' + c}>
+            <small className="lc-t"><b>{et}</b>{x.r}</small>
+            <div className="lc-m">
+              {x.lados.map((n, i) => (
+                <span key={i} className={x.hecho ? (x.pasan.includes(n) ? 'g' : 'x') : undefined}>
+                  <LadoCm liga={liga} n={n} W={c === 'ahora' ? 210 : 240} />
+                  {x.hecho && x.pasan.includes(n) ? <small className="lc-ok">PASA</small> : null}
+                </span>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div className="lc-n"><span>{m.jugados} de {m.total} batallas</span>
+        <i><b style={{ width: Math.round((100 * m.jugados) / Math.max(1, m.total)) + '%' }} /></i></div>
+    </div>
+  );
 }
 
 // ── el escenario: un carrusel de momentos. Siempre hay algo: la llave de anoche no falta nunca ─────
@@ -927,6 +985,8 @@ function momentos(liga, vivoL) {
   vivos.forEach((e, iv) => {
     const m = liga.multSv(e.sv);
     const L = llaveEnVivo(e, vivoL);
+    // con Octavos o más, la llave corta (ver `momentosLlave()`)
+    const corta = cortaDe(L);
     const n = limpio(e.nombre);
     const dd = aDiscord(liga, e, true);
     // 🔑 LO BÁSICO DEL ANUNCIO, TAMBIÉN EN VIVO (Dlx, 03/10/2026, con LA REDENCION: «es MULTIVERSE… debería decirlo
@@ -941,11 +1001,12 @@ function momentos(liga, vivoL) {
         <p className="hero-p">{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
         {L ? null : <Anotados liga={liga} e={e} />}
         <div className="hero-acc">
-          {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
+          {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>{corta ? 'Ver la llave completa' : 'Ver la llave'}</button> : null}
           {dd ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a> : null}
           <a className="btn borde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
         </div></>,
-      vis: L ? <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div> : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
+      vis: L ? (corta ? <LlaveCorta liga={liga} m={corta} /> : <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div>)
+        : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
     });
   });
   // el próximo de la Liga, si no es el mismo que ya va como «tu próximo»

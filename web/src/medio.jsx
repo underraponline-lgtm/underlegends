@@ -15,8 +15,9 @@ export function Fechas({ liga }) {
       sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: (aDiscord(liga, e, false) || {}).url });
   });
   // 🔴 lo que se canceló (el vigía vio que el anuncio se borró, ver `liga.cancelados()`): dice «CANCELADO» hasta seis
-  // horas después de la hora en que era, en vez de desaparecer como si nada (Dlx, 01/10/2026: «B»)
-  liga.cancelados().forEach((c) => {
+  // horas después de la hora en que era, en vez de desaparecer como si nada (Dlx, 01/10/2026: «B»). Uno borrado y vuelto
+  // a publicar no: ver `cancelacionesVisibles()`
+  liga.cancelacionesVisibles().forEach((c) => {
     const ini = c.ini ? new Date(c.ini) : null;
     if (ini && (liga.ahora - ini) > 6 * 3600000) return;
     t.push({ c: 'cancelado', dia: ini ? liga.dia(ini).split(' ')[0].toUpperCase() : 'HOY', hora: 'CANCELADO',

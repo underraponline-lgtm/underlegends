@@ -301,6 +301,28 @@ export class Liga {
     const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
     return !!m && this.cancelados().some((c) => String(c.id) === m[1]);
   }
+  // 🔴 UN ANUNCIO BORRADO Y VUELTO A PUBLICAR NO ES UN EVENTO CANCELADO (LA REDENCION, FFA, 03/10/2026: borrado a las
+  // 6:26 PM y publicado otra vez). El vigía anota el borrado, y Fechas y Eventos decían «CANCELADO» al lado del mismo
+  // evento en vivo. Se muestra como cancelado lo que no tiene OTRO anuncio, sin cancelar, del mismo servidor, con el mismo
+  // nombre y a menos de 12 h —la misma ventana con la que el vigía le pasa los anotados al anuncio nuevo—: un «1VS1» de
+  // otro día no salva a éste. ⚠️ `cancelados()` sigue entero: esconder el anuncio borrado (`esCancelado()`) vale igual
+  cancelacionesVisibles() {
+    const cs = this.cancelados();
+    const idDe = (u) => { const m = /\/(\d{15,22})\/?$/.exec(String(u || '')); return m ? m[1] : ''; };
+    const V = typeof window !== 'undefined' ? window.VIVO : null;
+    const otros = this.proximos().map((p) => [p.sv, p.nombre, idDe(p.link), utc(p.cuando).getTime()])
+      .concat((this.d.calendario || []).map((c) => [c.sv, c.n, idDe(c.link), utc(c.t).getTime()]))
+      .concat(((V && V.anuncios) || []).map((a) => [a.sv, a.n, String(a.id || ''), a.ini ? new Date(a.ini).getTime() : NaN]));
+    const nom = (s) => limpio(s).toLowerCase();
+    // sin la hora de alguno de los dos, que el otro se haya publicado DESPUÉS (los ids de Discord crecen con el tiempo)
+    const despues = (a, b) => (a.length !== b.length ? a.length > b.length : a > b);
+    return cs.filter((c) => {
+      const ini = c.ini ? new Date(c.ini).getTime() : NaN;
+      return !otros.some(([sv, n, id, t]) => sv === c.sv && nom(n) === nom(c.n) && id && id !== String(c.id)
+        && !cs.some((d) => String(d.id) === id)
+        && (Number.isFinite(t) && Number.isFinite(ini) ? Math.abs(t - ini) <= 12 * 3600000 : despues(id, String(c.id))));
+    });
+  }
   // 📣 «PRÓXIMOS» = LO DEL PAYLOAD + LO QUE EL VIGÍA YA VIO ANUNCIAR (03/10/2026, Dlx: «se ha anunciado el evento y no se
   // ve en inicio»). El payload trae un anuncio recién en la corrida siguiente del ciclo —hasta 30 min— y el vigía lo ve
   // al minuto: es el mismo que hace sonar la campana (`anuncios` en `vivo()` de bot/avisos.js, `window.VIVO` de app.js).

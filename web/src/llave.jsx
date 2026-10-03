@@ -12,7 +12,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, enlace } from './piezas.jsx';
-import { completar, enOrden, esArbol } from './arriba.jsx';
+import { completar, enOrden, esArbol, jugado } from './arriba.jsx';
 
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉', Cuarto: '🎖️' };
 const ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos', 'R32'];
@@ -663,18 +663,19 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
       prin[i + 1].b.forEach((b) => b[0].forEach((s) => miembros(s).forEach((m) => sig.add(m))));
       return (s) => miembros(s).some((m) => sig.has(m));
     });
-    // AHORA y SIGUE, sólo si se juega en orden (`enOrden()`): si no, no se sabe cuál se está jugando
+    // AHORA y SIGUE, sólo si se juega en orden (`enOrden()`): si no, no se sabe cuál se está jugando. Jugado es con
+    // ganador o con alguno de sus lados ya en la ronda siguiente (`jugado()`: en un grupo de tres pueden pasar dos)
     const pend = [];
-    if (!cerrada && enOrden(prin)) prin.forEach((R, i) => R.b.forEach((b, j) => { if (!b[1] && b[0].length >= 2) pend.push(i + ':' + j); }));
+    if (!cerrada && enOrden(prin)) prin.forEach((R, i) => R.b.forEach((b, j) => { if (!jugado(prin, i, b) && b[0].length >= 2) pend.push(i + ':' + j); }));
     const est = (i, j) => {
       const b = prin[i] && prin[i].b[j];
       if (!b) return '';
       if (pend[0] === i + ':' + j) return 'ahora';
       if (pend[1] === i + ':' + j) return 'sigue';
-      return cerrada && !b[1] && b[0].length >= 2 ? 'singan' : '';
+      return cerrada && !jugado(prin, i, b) && b[0].length >= 2 ? 'singan' : '';
     };
     // la ronda con la que abre el celular: la que se está jugando; terminada, la primera
-    const enJuego = prin.findIndex((R) => R.b.some((b) => !b[1] && b[0].length >= 2));
+    const enJuego = prin.findIndex((R, i) => R.b.some((b) => !jugado(prin, i, b) && b[0].length >= 2));
     const inicial = !cerrada && enJuego >= 0 ? enJuego : 0;
     // el nombre de cada uno, para la barra de quien se sigue (también los que no están en la tabla de la llave)
     prin.concat(ter ? [ter] : []).forEach((R) => R.b.forEach((b) => b[0].forEach((s) => partes(s).forEach((m) => {

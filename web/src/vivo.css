@@ -909,14 +909,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-mo.ult .evp-mo-n b{font-size:19px;overflow-wrap:normal;word-break:normal}
 .evp-mo-ci{display:block;width:100%;height:auto}
 .evp-mo .evp-cm{width:100%}
-/* lo que se juega ahora, sin el cuadro (que va abajo, en «Hoy»): la ronda, las caras y quién sigue */
-.evp-ah{display:grid;gap:8px;width:100%;padding:12px;border:1.5px solid #3A3A3E;background:rgba(246,246,246,.04)}
-.evp-ah-t{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#E41373}
-.evp-ah-vs{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font:800 17px/1.2 Archivo,sans-serif;font-stretch:110%}
-.evp-ah-l{display:inline-flex;align-items:center;gap:8px;min-width:0}
-.evp-ah-l em{font:700 11px/1 "Space Mono",monospace;font-style:normal;letter-spacing:.06em;color:#A5A5A0;text-transform:uppercase}
-.evp-ah .evp-ah-c{width:30px;height:30px;flex:none;border-radius:50%;overflow:hidden;background:#2A2A2C;color:#F6F6F6;font:800 13px/1 Archivo,sans-serif}
-.evp-ah-s{font:600 13px/1.35 Archivo,sans-serif;color:#A5A5A0}
 /* la tira de los días, pegada arriba */
 .evp-dias{position:sticky;top:0;z-index:20;display:flex;align-items:stretch;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
 /* lo que se baja a mirar (la campana de `#/avisos`, el día elegido) no queda abajo de la tira de los días */
