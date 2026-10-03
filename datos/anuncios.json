@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-03T04:54:09+00:00",
+ "cuando": "2026-10-03T05:23:58+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -17,7 +17,8 @@
    "modalidad": "",
    "horario": "",
    "fecha": "FINAL 12 DE JULIO",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1170880071221923911"
   },
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -35,7 +36,8 @@
    "modalidad": "",
    "horario": "19:30",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "¡5 VIDAS LEGENDS - Edición #5!",
@@ -53,7 +55,8 @@
    "modalidad": "",
    "horario": "16:00",
    "fecha": "Hoy, Lunes 20 Jul.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "¡TRAP SEASON vol.3!",
@@ -71,7 +74,8 @@
    "modalidad": "",
    "horario": "🇨🇷 17:00",
    "fecha": "Hoy, Domingo 5 Jul.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "EVENTO FINAL — RANKING INTERSERVER HERMANDAD",
@@ -89,7 +93,8 @@
    "modalidad": "",
    "horario": "<t:1782946800:F>",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "RAPEROS UNDERDOGS",
@@ -107,7 +112,8 @@
    "modalidad": "1V1",
    "horario": "CUANDO SE LLENEN LAS INSCRIPCIONES",
    "fecha": "AHORA",
-   "premios": "NADA COMPE CHILL"
+   "premios": "NADA COMPE CHILL",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "EUROPEOS FELICES #2",
@@ -125,7 +131,8 @@
    "modalidad": "1vs1",
    "horario": "10:20",
    "fecha": "Hoy, martes 30 Jun.",
-   "premios": "Pts"
+   "premios": "Pts",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "¡5 VIDAS LEGENDS - Edición #4!",
@@ -143,7 +150,8 @@
    "modalidad": "",
    "horario": "16:00",
    "fecha": "Hoy, Lunes 29 Jun.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "RANDOM",
@@ -161,7 +169,8 @@
    "modalidad": "",
    "horario": "Ahora",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "EUROPEOS FELICES",
@@ -179,7 +188,8 @@
    "modalidad": "1vs1",
    "horario": "8:50",
    "fecha": "Hoy, Viernes 26 Jun.",
-   "premios": "Pts"
+   "premios": "Pts",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "LA RAYA DEL TIGRE",
@@ -197,7 +207,8 @@
    "modalidad": "1vs1",
    "horario": "🇨🇷 16:20",
    "fecha": "Hoy, Jueves 25 Jun.",
-   "premios": "Pts"
+   "premios": "Pts",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "SATURN BATTLES — EDICIÓN 1",
@@ -215,7 +226,8 @@
    "modalidad": "1vs1",
    "horario": "al finalizar inscripciones",
    "fecha": "24 de Junio",
-   "premios": "Puntos para el ranking interserver interserver + rol del rey de saturno 🏅"
+   "premios": "Puntos para el ranking interserver interserver + rol del rey de saturno 🏅",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "777 SEVEN STREET 777",
@@ -233,7 +245,8 @@
    "modalidad": "",
    "horario": "🇨🇷 16:00",
    "fecha": "Hoy, Martes 23 Jun.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "¡TRAP SEASON vol.2!",
@@ -251,7 +264,8 @@
    "modalidad": "",
    "horario": "🇨🇷 21:00",
    "fecha": "Hoy, Lunes 22 Jun.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "PREVIA A TRAP SEASON",
@@ -269,7 +283,8 @@
    "modalidad": "1vs1",
    "horario": "Al llenar cupos.",
    "fecha": "Hoy Lunes 22 Jun.",
-   "premios": "Puntos para Ranking Interserver Hermandad"
+   "premios": "Puntos para Ranking Interserver Hermandad",
+   "categoria_id": "1511754900026032139"
   },
   {
    "nombre": "ELRAP",
@@ -288,6 +303,7 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": "",
+   "categoria_id": "1497457390637809837",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -308,6 +324,7 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -328,6 +345,7 @@
    "horario": "20-30 m",
    "fecha": "",
    "premios": "puntos",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -348,6 +366,7 @@
    "horario": "Ya",
    "fecha": "",
    "premios": "Aura + Rol de Campeón + Puntos del ascenso de la T1",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -368,6 +387,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -388,6 +408,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -408,6 +429,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -428,6 +450,7 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -448,6 +471,7 @@
    "horario": "⭐ EN 10 MINUTOS  ⭐",
    "fecha": "30 09",
    "premios": "### Competencia De Ascenso Rango C 🏴‍☠️",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -468,6 +492,7 @@
    "horario": "AHORA",
    "fecha": "",
    "premios": "UN BESO DE XCLUSIVO",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -488,6 +513,7 @@
    "horario": "AHORA",
    "fecha": "",
    "premios": "Literalmente nada",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -508,6 +534,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -528,6 +555,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -548,6 +576,7 @@
    "horario": "EN 1 HORA",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -568,6 +597,7 @@
    "horario": "",
    "fecha": "27 09",
    "premios": "Compe Rango ᴏʀᴏ ɪɪ Y Rol De Campeon",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -588,6 +618,7 @@
    "horario": "🇨🇷 20:30",
    "fecha": "Hoy, Sábado 26 Sept.",
    "premios": "",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -608,6 +639,7 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -628,6 +660,7 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -648,6 +681,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -668,6 +702,7 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -688,6 +723,7 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -708,6 +744,7 @@
    "horario": "en 10 min",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -728,6 +765,7 @@
    "horario": "CUANDO TODO ESTÉ LISTO",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-03T04:06:10"
   },
@@ -747,7 +785,8 @@
    "modalidad": "",
    "horario": "",
    "fecha": "1 1V1",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988251852820"
   },
   {
    "nombre": "POLO RALPH LAUREN FREE",
@@ -765,7 +804,8 @@
    "modalidad": "",
    "horario": "",
    "fecha": "1vs1 pandilla",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988251852820"
   },
   {
    "nombre": "¡VOLVIERON!",
@@ -783,7 +823,8 @@
    "modalidad": "",
    "horario": "<t:1781556600:F>",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988251852820"
   },
   {
    "nombre": "SNAKE CHAMPIONS LEAGUE (SCL)",
@@ -801,7 +842,8 @@
    "modalidad": "",
    "horario": "<t:1766347200:F>",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988251852820"
   },
   {
    "nombre": "RAP EXHIBITION 2/8",
@@ -819,7 +861,8 @@
    "modalidad": "1v1",
    "horario": "<t:1790713800:F>",
    "fecha": "",
-   "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de"
+   "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -837,7 +880,8 @@
    "modalidad": "",
    "horario": "Domingo 00:00 🇦🇷",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "SNAKE ARENA VOL. 2",
@@ -855,7 +899,8 @@
    "modalidad": "",
    "horario": "<t:1790542800:F>",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -873,7 +918,8 @@
    "modalidad": "PANDILLAS",
    "horario": "22:30 🇨🇱",
    "fecha": "7",
-   "premios": "PTS TABLA"
+   "premios": "PTS TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "RAP EXHIBITION 1/8",
@@ -891,7 +937,8 @@
    "modalidad": "1v1",
    "horario": "<t:1790109000:F>",
    "fecha": "",
-   "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de"
+   "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -909,7 +956,8 @@
    "modalidad": "",
    "horario": "<t:1789758000:F>",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL.5",
@@ -927,7 +975,8 @@
    "modalidad": "1️⃣6️⃣ | 𝐎𝐂𝐓𝐀𝐕𝐎𝐒 𝐃𝐄 𝐅𝐈𝐍𝐀𝐋: 4x4 3E Libre",
    "horario": "AHORA",
    "fecha": "",
-   "premios": "PUNTOS DE ASCENSO"
+   "premios": "PUNTOS DE ASCENSO",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -945,7 +994,8 @@
    "modalidad": "PANDILLAS",
    "horario": "20:30 🇨🇱",
    "fecha": "6",
-   "premios": "PTS TABLA"
+   "premios": "PTS TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "Las mareas de Poseidón",
@@ -963,7 +1013,8 @@
    "modalidad": "1🆚️1",
    "horario": "<t:1789412400:t>",
    "fecha": "14/09",
-   "premios": "Puntos de ascenso + Puntos de ranking GØÐZ"
+   "premios": "Puntos de ascenso + Puntos de ranking GØÐZ",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -981,7 +1032,8 @@
    "modalidad": "",
    "horario": "<t:1789329600:F>",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -999,7 +1051,8 @@
    "modalidad": "1V1",
    "horario": "EN 15",
    "fecha": "8",
-   "premios": "PTS PARA EL RANKING"
+   "premios": "PTS PARA EL RANKING",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1017,7 +1070,8 @@
    "modalidad": "MULTIVERSE (1-4)",
    "horario": "en 15",
    "fecha": "7",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
+   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1035,7 +1089,8 @@
    "modalidad": "1vs1",
    "horario": "EN 15",
    "fecha": "6",
-   "premios": "PTS PARA LA TABLA + PTS PARA EL RANKING"
+   "premios": "PTS PARA LA TABLA + PTS PARA EL RANKING",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FIRE RAP",
@@ -1053,7 +1108,8 @@
    "modalidad": "",
    "horario": "<t:1788470428:t>",
    "fecha": "<t:1788470340:d>",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1071,7 +1127,8 @@
    "modalidad": "PANDILLAS",
    "horario": "EN 10",
    "fecha": "5",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
+   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "MITSUBISHI",
@@ -1089,7 +1146,8 @@
    "modalidad": "2V2",
    "horario": "18:00 🇨🇱",
    "fecha": "1",
-   "premios": "PTS TABLA"
+   "premios": "PTS TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1107,7 +1165,8 @@
    "modalidad": "2V2",
    "horario": "en 10",
    "fecha": "4",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA+TROFEOS"
+   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA+TROFEOS",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -1125,7 +1184,8 @@
    "modalidad": "MULTIVERSE",
    "horario": "21:30 🇨🇱",
    "fecha": "5",
-   "premios": "PTS TABLA"
+   "premios": "PTS TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "SNAKE LEAGUE: NEW CHAPTER",
@@ -1143,7 +1203,8 @@
    "modalidad": "1vs1",
    "horario": "<t:1787943600:F>",
    "fecha": "",
-   "premios": "CUPO A LA LIGA SNAKE LEAGUE: NEW CHAPTER  + PUNTOS DE ASCENSO"
+   "premios": "CUPO A LA LIGA SNAKE LEAGUE: NEW CHAPTER  + PUNTOS DE ASCENSO",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1161,7 +1222,8 @@
    "modalidad": "ROYAL RUMBLE",
    "horario": "en 15",
    "fecha": "3",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
+   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1179,7 +1241,8 @@
    "modalidad": "MULTIVERSE(1-4)",
    "horario": "23 HS 🇦🇷",
    "fecha": "2",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA"
+   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -1197,7 +1260,8 @@
    "modalidad": "1v1",
    "horario": "en 30",
    "fecha": "1",
-   "premios": "pts para el ranking+pts para la tabla+aura"
+   "premios": "pts para el ranking+pts para la tabla+aura",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "GENESIS BATTLES",
@@ -1215,7 +1279,8 @@
    "modalidad": "1V1",
    "horario": "EN 15 MINUTOS",
    "fecha": "4",
-   "premios": "PTS TABLA"
+   "premios": "PTS TABLA",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "POESÍA CRUDA",
@@ -1233,7 +1298,8 @@
    "modalidad": "",
    "horario": "",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "COMPE CHILL DE FASO",
@@ -1251,7 +1317,8 @@
    "modalidad": "1v1",
    "horario": "cuando se llene/cuando me pinte",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "CCFF V.3",
@@ -1269,7 +1336,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "COMPE DEL VACILE T2 #1",
@@ -1287,7 +1355,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": "1 Campeonato + Puntos de ascenso"
+   "premios": "1 Campeonato + Puntos de ascenso",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1305,7 +1374,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "CCFF V.2",
@@ -1323,7 +1393,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "COMPE SOLO 4X4",
@@ -1341,7 +1412,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "CCFF V.1",
@@ -1359,7 +1431,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.15",
@@ -1377,7 +1450,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1395,7 +1469,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.14",
@@ -1413,7 +1488,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.13",
@@ -1431,7 +1507,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "WACHINTON",
@@ -1449,7 +1526,8 @@
    "modalidad": "PANDILLAS",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "STEVE JOSEO",
@@ -1467,7 +1545,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "ISLA DE SOCOTRA",
@@ -1485,7 +1564,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.12",
@@ -1503,7 +1583,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.11",
@@ -1521,7 +1602,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "Arima Kinen Triple Crown | Clasificatoria N°1",
@@ -1539,7 +1621,8 @@
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.10",
@@ -1557,7 +1640,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
@@ -1575,7 +1659,8 @@
    "modalidad": "1vs1",
    "horario": "Ya",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.9",
@@ -1593,7 +1678,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "FF Freestyle: Classic VOL.1",
@@ -1611,7 +1697,8 @@
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.8",
@@ -1629,7 +1716,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PNC V.7",
@@ -1647,7 +1735,8 @@
    "modalidad": "1vs1",
    "horario": "Cuando se llene",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511963280128868504"
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
@@ -1665,7 +1754,8 @@
    "modalidad": "",
    "horario": "4 PM MEX/USA",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
@@ -1683,7 +1773,8 @@
    "modalidad": "",
    "horario": "4 PM mex,5 PM Col",
    "fecha": "Viernes 11 de septiembre",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1701,7 +1792,8 @@
    "modalidad": "",
    "horario": "6 PM COLOMBIA",
    "fecha": "LUNES 10 de AGOSTO.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1719,7 +1811,8 @@
    "modalidad": "",
    "horario": "8:00 PM España.",
    "fecha": "Sábado 01 de AGOSTO.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1737,7 +1830,8 @@
    "modalidad": "",
    "horario": "8:30-9:00pm España.",
    "fecha": "Sábado 27 de Junio.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1755,7 +1849,8 @@
    "modalidad": "",
    "horario": "4:00pm Colombia.",
    "fecha": "Jueves 18 de Junio.",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1773,7 +1868,8 @@
    "modalidad": "",
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511961628500037662"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1791,7 +1887,8 @@
    "modalidad": "",
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511961628500037662"
   },
   {
    "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
@@ -1809,7 +1906,8 @@
    "modalidad": "CLASIFICATORIAS",
    "horario": "",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1511964043647123527"
   },
   {
    "nombre": "Dos barras",
@@ -1827,7 +1925,8 @@
    "modalidad": "DUPLAS",
    "horario": "Despues de inscripcion",
    "fecha": "",
-   "premios": "Compe rango C + 1 Campeonato + CUPO PARA LA NACIONAL DE PLAZAS ESTE 1"
+   "premios": "Compe rango C + 1 Campeonato + CUPO PARA LA NACIONAL DE PLAZAS ESTE 1",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "𒄆 Compe Basile 𒄆 #20",
@@ -1845,7 +1944,8 @@
    "modalidad": "1v1",
    "horario": "Ahora",
    "fecha": "",
-   "premios": "Compe rango C + 1 Campeonato"
+   "premios": "Compe rango C + 1 Campeonato",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "IGNIUS CHAMPION",
@@ -1863,7 +1963,8 @@
    "modalidad": "1vs1",
    "horario": "Despues de inscripcion",
    "fecha": "",
-   "premios": "Compe rango C + 1 Campeonato"
+   "premios": "Compe rango C + 1 Campeonato",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "FIRE FREESTYLE #2",
@@ -1881,7 +1982,8 @@
    "modalidad": "1vs1",
    "horario": "Despues de inscripcion",
    "fecha": "",
-   "premios": "Compe rango B + 1 Campeonato"
+   "premios": "Compe rango B + 1 Campeonato",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "FIRE FREESTYLE",
@@ -1899,7 +2001,8 @@
    "modalidad": "1vs1",
    "horario": "2 hora colombia",
    "fecha": "",
-   "premios": "Compe rango B + 1 Campeonato + Un cupo para la Nacional de plazas (primer y segundo puesto entran)"
+   "premios": "Compe rango B + 1 Campeonato + Un cupo para la Nacional de plazas (primer y segundo puesto entran)",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "𒄆 Compe Basile 𒄆 #20",
@@ -1917,7 +2020,8 @@
    "modalidad": "1v1",
    "horario": "1:30pm (hora colombia",
    "fecha": "",
-   "premios": "Compe rango B + 1 Campeonato + Un cupo para la Nacional de plazas (primer y segundo puesto entran)"
+   "premios": "Compe rango B + 1 Campeonato + Un cupo para la Nacional de plazas (primer y segundo puesto entran)",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "COMPE MAÑANERA",
@@ -1935,7 +2039,8 @@
    "modalidad": "1VS1",
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
-   "premios": "CAMPEONATO + PT EN TABLA DE ASCENSO"
+   "premios": "CAMPEONATO + PT EN TABLA DE ASCENSO",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "COMPE MAÑANERA",
@@ -1953,7 +2058,8 @@
    "modalidad": "1VS1",
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
-   "premios": "CAMPEONATO"
+   "premios": "CAMPEONATO",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "TICKET DE ORO",
@@ -1971,7 +2077,8 @@
    "modalidad": "1VS1",
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
-   "premios": "CUPO PARA REEMPLAZAR A UN PARTICIPANTE DE FFS SURAMERICA"
+   "premios": "CUPO PARA REEMPLAZAR A UN PARTICIPANTE DE FFS SURAMERICA",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "TICKET DE ORO",
@@ -1989,7 +2096,8 @@
    "modalidad": "1VS1",
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
-   "premios": "CUPO PARA REEMPLAZAR A UN PARTICIPANTE DE FFS CARIBE"
+   "premios": "CUPO PARA REEMPLAZAR A UN PARTICIPANTE DE FFS CARIBE",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "BOOTRAX NO TE METAS A TUS PROPIAS COMPE BLD NO VES Q NO ME SUMAN PUNTO",
@@ -2007,7 +2115,8 @@
    "modalidad": "1VS1",
    "horario": "HOY",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "BOORAP FUSION",
@@ -2025,7 +2134,8 @@
    "modalidad": "",
    "horario": "CUANDO TERMINE INSCRIP",
    "fecha": "ahora",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "EN CASA DEL HERRERO CUCHILLO DE PALO",
@@ -2043,7 +2153,8 @@
    "modalidad": "",
    "horario": "A las 10:00 AM hora 🇦🇷",
    "fecha": "Martes 3 de marzo",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "BOOTRAX NO TE METAS A TUS PROPIAS COMPE BLD",
@@ -2061,7 +2172,8 @@
    "modalidad": "1VS1",
    "horario": "HOY",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "PRESENT SIMPLE",
@@ -2079,7 +2191,8 @@
    "modalidad": "1VS1",
    "horario": "EN 1 HORA Y 10",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "EL RAP SALVA VIDAS",
@@ -2097,7 +2210,8 @@
    "modalidad": "1VS1",
    "horario": "CUANDO SE TERMINEN LOS CUPOS",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   },
   {
    "nombre": "EL RAP SALVA VIDAS",
@@ -2115,7 +2229,8 @@
    "modalidad": "1VS1",
    "horario": "CUANDO SE TERMINEN LOS CUPOS",
    "fecha": "",
-   "premios": ""
+   "premios": "",
+   "categoria_id": "1373343272482902127"
   }
  ],
  "inscripciones": [

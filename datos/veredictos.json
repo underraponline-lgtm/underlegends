@@ -422,6 +422,16 @@
    "b": "NHP",
    "ganador": "NHP",
    "votos": "1–0"
+  },
+  "1555807532889669645": {
+   "id": "1555807532889669645",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791003821347,
+   "a": "NUMBER",
+   "b": "KURLW",
+   "ganador": "NUMBER",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -682,8 +692,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791000899431,
-   "ed": 1791003036452,
-   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝\n⌞# MONET⌝ 🆚 ⌞KURLW⌝\n⌞# MOSQUITRAP⌝ 🆚 ⌞NHP⌝\n⌞# MD⌝ 🆚 ⌞LORD⌝ 🆚 ⌞ERIAN⌝\n⌞# ZA⌝ 🆚 ⌞CRK⌝ 🆚 ⌞CINEXFILO⌝ 🆚 ⌞RUVI⌝",
+   "ed": 1791004964474,
+   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝\n⌞# MONET⌝ 🆚 ⌞KURLW⌝\n⌞# MOSQUITRAP⌝ 🆚 ⌞NHP⌝\n⌞# MD⌝ 🆚 ⌞LORD⌝ 🆚 ⌞ERIAN⌝\n⌞# ZA⌝ 🆚 ⌞CRK⌝ 🆚 ⌞CINEXFILO⌝ 🆚 ⌞RUVI⌝\n⌞# G8⌝ 🆚 ⌞PARTIM⌝ 🆚 ⌞COLESITO⌝\n⌞# COLESITO⌝ 🆚 ⌞G8⌝\n`[ CUARTOS ]`\n⌞# NUMBER⌝ 🆚 ⌞KURLW⌝\n⌞# G8⌝ 🆚 ⌞ZA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -747,6 +757,47 @@
      ],
      "# ZA",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# G8",
+      "PARTIM",
+      "COLESITO"
+     ],
+     "COLESITO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# COLESITO",
+      "G8"
+     ],
+     "G8",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "# NUMBER",
+      "KURLW"
+     ],
+     "# NUMBER",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "# G8",
+      "ZA"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
