@@ -432,6 +432,26 @@
    "b": "KURLW",
    "ganador": "NUMBER",
    "votos": "1–0"
+  },
+  "1555816634839465995": {
+   "id": "1555816634839465995",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791005991421,
+   "a": "HASSAN",
+   "b": "SONETO",
+   "ganador": "HASSAN",
+   "votos": "1–0"
+  },
+  "1555819030722383883": {
+   "id": "1555819030722383883",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791006562644,
+   "a": "HASSAN",
+   "b": "G8",
+   "ganador": "HASSAN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -692,8 +712,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791000899431,
-   "ed": 1791004964474,
-   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝\n⌞# MONET⌝ 🆚 ⌞KURLW⌝\n⌞# MOSQUITRAP⌝ 🆚 ⌞NHP⌝\n⌞# MD⌝ 🆚 ⌞LORD⌝ 🆚 ⌞ERIAN⌝\n⌞# ZA⌝ 🆚 ⌞CRK⌝ 🆚 ⌞CINEXFILO⌝ 🆚 ⌞RUVI⌝\n⌞# G8⌝ 🆚 ⌞PARTIM⌝ 🆚 ⌞COLESITO⌝\n⌞# COLESITO⌝ 🆚 ⌞G8⌝\n`[ CUARTOS ]`\n⌞# NUMBER⌝ 🆚 ⌞KURLW⌝\n⌞# G8⌝ 🆚 ⌞ZA⌝",
+   "ed": 1791006608707,
+   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝\n⌞# MONET⌝ 🆚 ⌞KURLW⌝\n⌞# MOSQUITRAP⌝ 🆚 ⌞NHP⌝\n⌞# MD⌝ 🆚 ⌞LORD⌝ 🆚 ⌞ERIAN⌝\n⌞# ZA⌝ 🆚 ⌞CRK⌝ 🆚 ⌞CINEXFILO⌝ 🆚 ⌞RUVI⌝\n⌞# G8⌝ 🆚 ⌞PARTIM⌝ 🆚 ⌞COLESITO⌝\n⌞# COLESITO⌝ 🆚 ⌞G8⌝\n`[ CUARTOS ]`\n⌞# NUMBER⌝ 🆚 ⌞KURLW⌝\n⌞# G8⌝ 🆚 ⌞ZA⌝\n⌞# NUMBER⌝ 🆚 ⌞G8⌝\n⌞# HASSAN⌝ 🆚 ⌞SONETO⌝\n⌞# HASSAN⌝ 🆚 ⌞G8⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -798,6 +818,36 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "# NUMBER",
+      "G8"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "# HASSAN",
+      "SONETO"
+     ],
+     "# HASSAN",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "# HASSAN",
+      "G8"
+     ],
+     "# HASSAN",
+     "veredicto",
      []
     ]
    ]

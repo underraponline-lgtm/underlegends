@@ -7083,5 +7083,270 @@
     0
    ]
   ]
+ },
+ "381": {
+  "dia": "2026-10-03",
+  "escala": "16+",
+  "fecha": "03/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1555793243403329687"
+  ],
+  "n": 381,
+  "nombre": "PRITTY FREE",
+  "participantes": 23,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Number",
+       "Zaik 🇪🇸",
+       "Scot"
+      ],
+      "Number",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Andres",
+       "Mosquitrap 🦟🇦🇷"
+      ],
+      "Andres",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "Eclipsito🇨🇱"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "MD",
+       "Lord Viruzz"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Soneto",
+       "Emi",
+       "Richard",
+       "Chimuelitomc🇦🇷"
+      ],
+      "Soneto",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "za🇺🇸",
+       "Cinexfilo",
+       "Ruvi",
+       "Crk"
+      ],
+      "za🇺🇸",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "G8🇨🇴",
+       "Partim",
+       "Colesito"
+      ],
+      "G8🇨🇴",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Number",
+       "Jult"
+      ],
+      "Number",
+      ""
+     ],
+     [
+      [
+       "g8🇨🇴",
+       "za🇺🇸"
+      ],
+      "g8🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Soneto",
+       "Erian"
+      ],
+      "Soneto",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "Andres"
+      ],
+      "Hassan",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "g8🇨🇴",
+       "Number"
+      ],
+      "g8🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "Soneto"
+      ],
+      "Hassan",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hassan",
+       "g8🇨🇴"
+      ],
+      "Hassan",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Hassan",
+    "Campeón",
+    10000
+   ],
+   [
+    "g8🇨🇴",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Number",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Soneto",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jult",
+    "Cuartos",
+    2500
+   ],
+   [
+    "za🇺🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Chimuelitomc🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eclipsito🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Emi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "MD",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mosquitrap 🦟🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Partim",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Scot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
