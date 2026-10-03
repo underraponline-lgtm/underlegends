@@ -153,9 +153,10 @@ export default function App() {
   const [tema, setTema] = useState(leerTema);
   const [menu, setMenu] = useState(false);
   const [historia, setHistoria] = useState(null);
-  // las historias vistas quedan vistas aunque recargues (Dlx, 30/09: «me gustan todas», la C): {id: firma}. Si llega
-  // algo más nuevo, la firma cambia y el círculo vuelve a verde
-  const [vistos, setVistos] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:historias')) || {}; } catch (e) { return {}; } });
+  // las historias vistas quedan vistas aunque recargues (Dlx, 30/09: «me gustan todas», la C). 🔴 HISTORIA POR
+  // HISTORIA desde el 02/10/2026 (`lg:historias2`: {id de la historia: cuándo}): antes era una marca por círculo
+  // (`lg:historias`), y con algo nuevo volvías a ver todo. `null` hasta pasar lo viejo a lo nuevo (ver abajo)
+  const [vistos, setVistos] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:historias2')) || null; } catch (e) { return null; } });
   const [yo, setYo] = useState(quienMira);
   const [hash, setHash] = useState(rutaHash);
   const [sigoV, setSigoV] = useState(0);
@@ -222,11 +223,16 @@ export default function App() {
   const elegirTema = useCallback((t) => { setTema(t); try { localStorage.setItem('lg:tema', t); } catch (e) { /* igual */ } }, []);
   useEffect(() => { document.documentElement.classList.toggle('ini-noche', tema === 'noche'); }, [tema]);
   const cerrarHistoria = useCallback(() => setHistoria(null), []);
-  const visto = useCallback((id, firma) => setVistos((v) => {
-    if (v[id] === firma) return v;
-    const n = Object.assign({}, v, { [id]: firma });
-    try { localStorage.setItem('lg:historias', JSON.stringify(n)); } catch (e) { /* sin guardar */ }
+  // ⚠️ CON TOPE: cada historia nueva es una clave; quedan las 600 más recientes (el muro trae 80)
+  const guardarVistos = (n) => {
+    const ks = Object.keys(n);
+    if (ks.length > 600) ks.sort((a, b) => n[a] - n[b]).slice(0, ks.length - 600).forEach((k) => delete n[k]);
+    try { localStorage.setItem('lg:historias2', JSON.stringify(n)); } catch (e) { /* sin guardar */ }
     return n;
+  };
+  const visto = useCallback((id) => setVistos((v) => {
+    if (!id || (v && v[id])) return v;
+    return guardarVistos(Object.assign({}, v || {}, { [id]: Date.now() }));
   }), []);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -249,6 +255,20 @@ export default function App() {
     if (!liga) return [];
     try { return gruposHistorias(liga); } catch (e) { console.error('[inicio] las historias:', e); return []; }
   }, [liga]);
+  // lo que ya habías visto con la marca vieja (una por círculo) pasa una vez a la nueva, así nadie vuelve a ver todo
+  useEffect(() => {
+    if (vistos !== null || !grupos.length) return;
+    let viejo = {};
+    try { viejo = JSON.parse(localStorage.getItem('lg:historias')) || {}; } catch (e) { viejo = {}; }
+    const n = {};
+    const t0 = Date.now();
+    grupos.forEach((g) => {
+      const v = String(viejo[g.id] || '');
+      if (v) g.slides.forEach((s) => { if (v === g.firma || (/^\d/.test(v) && s.t && s.t <= v)) n[s.id] = t0; });
+    });
+    setVistos(guardarVistos(n));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vistos, grupos]);
 
   if (!liga) return <div className={'app ' + tema}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
@@ -265,7 +285,7 @@ export default function App() {
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada n="Verificar"><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
         : pagina === 'cuenta' ? <Aislada n="Cuenta"><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>
         : pagina === 'ajustes' ? <Aislada n="Ajustes"><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada> : <>
-        <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos} onAbrir={setHistoria} /></Aislada>
+        <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
         <Aislada n="Instalar"><Instalar /></Aislada>
@@ -281,7 +301,7 @@ export default function App() {
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
-      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos} raiz={raiz} /></Aislada> : null}
+      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos || {}} raiz={raiz} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>
     </div>
   );

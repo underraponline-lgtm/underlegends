@@ -1101,9 +1101,8 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .evp-como .evp-nota{grid-column:1 / -1}
 }
 
-/* ── Publicaciones (`publicaciones.jsx`, en preview con `lg:prev-pub`): el muro día por día. Reusa `.escena`, `.tag`,
-   `.hero-ev`, `.evp-h2` y las encuestas (`.en`), y agrega lo suyo con `pub-`. Lo que ya pasó va en piel; los anuncios
-   —lo que viene— en blanco, como en Eventos ── */
+/* ── Publicaciones (`publicaciones.jsx`, para todos desde la 1.99): el muro día por día. Reusa `.escena`, `.tag`,
+   `.hero-ev`, `.evp-h2` y las encuestas (`.en`), y agrega lo suyo con `pub-`. Todo en piel (Dlx, 02/10) ── */
 .pub-esc:before{top:auto;bottom:-170px;right:-120px}
 .pub-cab{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
 .pub-cab .hero-ev{margin:0}
@@ -1123,7 +1122,9 @@ a.rk-z:hover{border-color:var(--linea)}
 .pub-enc-tabs button.on{background:var(--inv);color:var(--inv-tinta)}
 .pub-enc-i:not(.on){display:none}
 .pub{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
-.pub.anuncio,.pub.liga{background:var(--fondo)}
+/* 🔑 TODAS EN PIEL, también los anuncios y lo de la Liga (Dlx, 02/10/2026: «¿puedes hacer que todos los paneles tengan
+   ese color PIEL en vez del blanco?»), y las encuestas de este muro; las opciones siguen en blanco: son botones */
+.pub-encs .en{background:var(--caja)}
 .pub.cartas{grid-template-columns:minmax(0,1fr)}
 .pub-v{display:grid;justify-items:center}
 .pub-carta{display:block;width:64px;height:auto}

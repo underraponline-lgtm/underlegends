@@ -234,6 +234,13 @@ def armar():
             if str(k) not in _sin}
     _de = _quien(gente)
     _ult = _ultimos(_de)
+    # 🔴 LA CREW DE CADA FILA, DE `comun/crews.py` Y NO DEL POOL: el pool la trae de la Lista, que no sabe de las bajas.
+    # Dlx, 02/10/2026: «SNOW no es de Follombia, ya te lo dije antes» —se la había sacado el 28/09 en
+    # `datos/crews.json` (`_bajas`), y el perfil y las cartas ya lo leían de ahí; la tabla seguía con la Lista
+    try:
+        from comun.crews import DE_CADA_UNO as _crew_de, norm as _crew_norm
+    except Exception:                                    # noqa: BLE001
+        _crew_de, _crew_norm = {}, (lambda s: s)
     tabla = [{
         'n': p.get('raw'),
         # 🔑 FUERA DE CONCURSO (Dlx, 27/09/2026): sin número, en su lugar
@@ -279,7 +286,7 @@ def armar():
         'seg': p.get('seg') or 0,
         'ter': p.get('ter') or 0,
         'sem': p.get('sem') or 0,
-        'crew': p.get('crew') or '',
+        'crew': _crew_de.get(_crew_norm(p.get('raw') or '')) or '',
         # 🔑 QUE CARTAS TIENE ESTA PERSONA EN R2. La página las muestra de
         # verdad —es lo que el proyecto fabrica— y para eso necesita saber
         # **cuáles existen**, no adivinarlas: construir las cuatro URLs y

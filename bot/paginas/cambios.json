@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.00",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T22:20:00-04:00",
+   "titulo": "Las historias, sin repetir",
+   "items": [
+    "📖 **Las historias ya no se repiten**: cada una queda vista por separado, abren en la más nueva y saltean las que ya viste. Al terminar un círculo pasa al siguiente que tenga algo nuevo.",
+    "🎨 **Publicaciones, todo en piel**: también los anuncios, lo de la Liga y las encuestas.",
+    "👥 **La crew de cada uno en el Ranking** sale de la lista de crews de la Liga: había quien seguía figurando en una crew que ya dejó."
+   ]
+  },
+  {
    "version": "1.99",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T22:00:00-04:00",
