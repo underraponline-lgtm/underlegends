@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "1.99",
+   "dia": "2026-10-02",
+   "cuando": "2026-10-02T22:00:00-04:00",
+   "titulo": "Publicaciones nueva, y 👏 Felicitar",
+   "items": [
+    "📰 **Publicaciones, rehecha**: lo que pasa en la Liga día por día, con la carta, la letra o el logo de cada cosa, y las cartas nuevas de un mismo día juntas. Las encuestas de la semana se votan ahí mismo; si ya votaste en las dos, quedan al final.",
+    "👏 **Felicitá a quien gana**: un toque con tu Discord en un campeón, un rango o el Most Wanted. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega al celular.",
+    "⭐ **Te avisamos cuando alguien empieza a seguirte**, con su nombre si es de la Liga. Llega con los avisos activados y vinculados con tu Discord; nunca por DM."
+   ]
+  },
+  {
    "version": "1.98",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T20:22:00-04:00",

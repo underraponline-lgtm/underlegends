@@ -1114,7 +1114,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .pub-fil button.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
 .pub-t2{display:grid}
 .pub-feed{display:grid;align-content:start;padding:4px 16px 26px;min-width:0}
-.pub-dia,.pub-fijas{display:grid;gap:10px;padding-top:16px}
+.pub-dia,.pub-encs{display:grid;gap:10px;padding-top:16px}
 .pub-dh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin:4px 0 2px;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .pub-dh small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
 .pub-enc{display:grid;gap:12px}

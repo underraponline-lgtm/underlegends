@@ -1101,6 +1101,23 @@ export const SIGUE_TOPE = 200;
 export const SIGUE_HORAS = 24;
 //: cuántos envíos por invocación del vigía: comparte los 50 subpedidos
 export const TOPE_SEGUIDOS = 8;
+// ⭐ «ALGUIEN TE SIGUE» (Dlx, 02/10/2026: «que le lleguen las notificaciones, además de cuando te sigan…»): a quien
+// siguen le llega un aviso de la página, nunca por DM. Ver `avisarSeguidores()`.
+//: espera esto antes de avisar: junta a los que siguen a la vez, y un seguir-y-dejar no suena
+export const SEGUIDOR_ESPERA = 10 * MIN;
+//: y a la misma persona, como mucho un aviso por hora (lo que llega en el medio sale junto en el siguiente)
+export const SEGUIDOR_ENTRE = HORA;
+//: cuántos envíos por invocación del vigía
+export const TOPE_NUEVOS_SEGUIDORES = 6;
+
+/**
+ * Lo que dice el aviso de «alguien te sigue». El nombre, sólo si es uno solo y es de la Liga: es lo mismo que esa
+ * persona ve en Mi cuenta (quién te sigue, si es rapero); si no, cuántos.
+ */
+export function avisoSeguidores(n, nombre) {
+  const t = n === 1 ? (nombre ? `⭐ ${nombre} empezó a seguirte` : '⭐ Alguien nuevo te sigue') : `⭐ ${n} personas nuevas te siguen`;
+  return { titulo: t.slice(0, 120), cuerpo: 'Tocá para ver quién te sigue.' };
+}
 //: lo que dice cada tarjeta en un aviso, como `NOMBRE` de `bot/avisos_personales.py`
 const CARTA_AVISO = { temporada: 'de Temporada', competitivo: 'Competitiva', pais: 'de País', servidor: 'de Servidor' };
 
@@ -2086,6 +2103,11 @@ export class Avisos {
         "t INTEGER NOT NULL, de TEXT NOT NULL DEFAULT '', creada INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, a))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
+      // ⭐ «ALGUIEN TE SIGUE» (02/10/2026): qué seguimiento ya se avisó, y cuándo fue el último aviso de cada perfil.
+      // ⚠️ LO QUE YA EXISTÍA NACE AVISADO (DEFAULT 1): si no, la primera vuelta le diría a cada uno «N personas nuevas
+      // te siguen» por lo de siempre. `seguir()` anota 0. Ver `avisarSeguidores()`
+      try { this.sql.exec('ALTER TABLE sigue ADD COLUMN avisado INTEGER NOT NULL DEFAULT 1'); } catch (e) { /* ya estaba */ }
+      this.sql.exec('CREATE TABLE IF NOT EXISTS seguidores_av (a TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🔑 «TU SERVIDOR» (28/09/2026): el que cada uno elige en Mi cuenta, uno
       // por temporada. `fijo` dice si se eligió con el límite rigiendo: como
       // la foto, se cambia libre hasta el fin de `FOTO_LIBRE` (comun/temporada.py). Ver `miServidor()`.
@@ -2406,6 +2428,10 @@ export class Avisos {
     try { await this.seguidos(ahora); } catch (e) {
       this.guardar('seguidos', { t: ahora, error: String(e).slice(0, 120) });
     }
+    // ⭐ y quién empezó a seguirte. Nunca frena al vigía: ver `avisarSeguidores()`
+    try { await this.avisarSeguidores(ahora); } catch (e) {
+      this.guardar('seguidores_nuevos', { t: ahora, error: String(e).slice(0, 120) });
+    }
     // 👏 y cuántos te felicitaron. Nunca frena al vigía: ver `avisarAplausos()`
     try { await this.avisarAplausos(ahora); } catch (e) {
       this.guardar('aplausos', { t: ahora, error: String(e).slice(0, 120) });
@@ -2602,6 +2628,23 @@ export class Avisos {
       this.indiceTurnosT = ahora;
     }
     return (this.indiceTurnos && this.indiceTurnos.n) || {};
+  }
+
+  /**
+   * La cuenta de Discord de un perfil, o `''`. Primero lo que el objeto ya sabe de esa persona —sigue a alguien o
+   * eligió servidor, y ahí quedó su perfil (`de`)—; si no, su nombre (`nombre`, o el de `p:<perfil>` de KV) por el
+   * índice de «te toca», y sólo si esa cuenta es la de ese perfil: ante la duda, nadie.
+   */
+  async cuentaDe(a, ahora, idx, nombre) {
+    const r = this.sql.exec('SELECT quien FROM sigue WHERE de = ? LIMIT 1', a).toArray()[0] ||
+      this.sql.exec('SELECT quien FROM servidor WHERE de = ? LIMIT 1', a).toArray()[0];
+    if (r && /^[0-9]{5,25}$/.test(String(r.quien || ''))) return String(r.quien);
+    let n = nombre || '';
+    if (!n) {
+      try { n = String((JSON.parse((await this.env.KV.get('p:' + a)) || '{}') || {}).n || ''); } catch (e) { n = ''; }
+    }
+    const did = n ? (idx || {})[claveTurno(n)] : '';
+    return did && await this.perfilDe(String(did), ahora) === a ? String(did) : '';
   }
 
   /** El perfil de una cuenta (`d:`, y si no `dn:`), guardado 6 horas en `idk` como en `quienes()`; `''` si no tiene. */
@@ -3391,7 +3434,8 @@ export class Avisos {
         // a uno mismo no se lo sigue
         if (a === de || this.sql.exec('SELECT 1 AS x FROM sigue WHERE quien = ? AND a = ?', quien, a).toArray()[0]) continue;
         if (lugar <= 0) { tope = true; break; }
-        this.sql.exec('INSERT INTO sigue (quien, a, t, de, creada) VALUES (?, ?, ?, ?, ?)',
+        // `avisado` 0: a quien seguís le llega «alguien te sigue» (ver `avisarSeguidores()`)
+        this.sql.exec('INSERT INTO sigue (quien, a, t, de, creada, avisado) VALUES (?, ?, ?, ?, ?, 0)',
           quien, a, ahora, de, creadaEn(quien));
         lugar--;
       }
@@ -3477,12 +3521,85 @@ export class Avisos {
     return enviados;
   }
 
+  /**
+   * ⭐ ALGUIEN TE SIGUE, AL CELULAR: a quien siguen, en los dispositivos que vinculó, con su nombre si es uno solo y es
+   * de la Liga (`avisoSeguidores()`). Cada cinco minutos —o al minuto si quedó algo—, después de `SEGUIDOR_ESPERA` y
+   * como mucho uno por hora por persona: lo que llega en el medio sale junto. Nunca por DM.
+   *
+   * ⚠️ UNA VEZ POR PAR (`hechos`, 30 días): seguir, dejar y volver a seguir no suena de nuevo. Y las cuentas de menos
+   * de 30 días siguen pero no cuentan (`cuantos()`): tampoco suenan.
+   */
+  async avisarSeguidores(ahora) {
+    const previo = this.leer('seguidores_nuevos') || {};
+    if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
+    const filas = this.sql.exec('SELECT a, quien, de, creada FROM sigue WHERE avisado = 0 AND t <= ?',
+      ahora - SEGUIDOR_ESPERA).toArray();
+    if (!filas.length) {
+      if (previo.quedan) this.guardar('seguidores_nuevos', { ...previo, quedan: 0 });
+      return 0;
+    }
+    const listo = (a, quien) => {
+      this.sql.exec('UPDATE sigue SET avisado = 1 WHERE quien = ? AND a = ?', quien, a);
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', 'ns:' + a + ':' + quien, ahora);
+    };
+    const porA = new Map();
+    for (const f of filas) {
+      const ya = this.sql.exec('SELECT 1 AS x FROM hechos WHERE id = ?', 'ns:' + f.a + ':' + f.quien).toArray()[0];
+      if (ya || !(f.creada > 0 && f.creada < ahora - EDAD_MIN_DIAS * DIA_MS)) { listo(f.a, f.quien); continue; }
+      if (!porA.has(f.a)) porA.set(f.a, []);
+      porA.get(f.a).push(f);
+    }
+    const idx = porA.size ? await this.indiceNombres(ahora) : {};
+    let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0, sinCuenta = 0;
+    for (const [a, fs] of porA) {
+      const ult = this.sql.exec('SELECT t FROM seguidores_av WHERE a = ?', a).toArray()[0];
+      if (ult && ahora - ult.t < SEGUIDOR_ENTRE) continue;      // espera su hora: siguen anotados
+      if (pedidos >= TOPE_NUEVOS_SEGUIDORES) { quedan++; continue; }
+      const did = await this.cuentaDe(a, ahora, idx);
+      const subs = did ? this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', did).toArray() : [];
+      // ⚠️ se anota antes de mandar (dos minutos que se pisan no avisan dos veces); sin cuenta o sin dispositivo, también:
+      // un aviso que no tiene adónde ir no se guarda para después
+      for (const f of fs) listo(a, f.quien);
+      if (!did) { sinCuenta++; continue; }
+      if (!subs.length) { sinVinculo++; continue; }
+      let nombre = '';
+      if (fs.length === 1 && claveValida(fs[0].de)) {
+        try { nombre = String((JSON.parse((await this.env.KV.get('p:' + fs[0].de)) || '{}') || {}).n || '').slice(0, 40); } catch (e) { nombre = ''; }
+      }
+      const { titulo, cuerpo } = avisoSeguidores(fs.length, nombre);
+      const id = 'ns' + huella(a);
+      const c = cuerpoPersonal({ id, titulo, cuerpo, url: HUB + '/cuenta/siguiendo' });
+      this.sql.exec('INSERT INTO seguidores_av (a, t) VALUES (?, ?) ON CONFLICT(a) DO UPDATE SET t = excluded.t', a, ahora);
+      pedidos += subs.length;
+      const estados = await Promise.all(subs.map((s) => empujar(s, c, { ttl: 24 * 3600, topic: id.slice(0, 32) },
+        this.env, new Map())));
+      let llego = 0, reintentar = false;
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) { enviados++; llego++; }
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+      });
+      // si no llegó a ninguno por una falla de la red, vuelve a la fila para la próxima vuelta
+      if (reintentar && !llego) {
+        for (const f of fs) {
+          this.sql.exec('UPDATE sigue SET avisado = 0 WHERE quien = ? AND a = ?', f.quien, a);
+          this.sql.exec('DELETE FROM hechos WHERE id = ?', 'ns:' + a + ':' + f.quien);
+        }
+        this.sql.exec('DELETE FROM seguidores_av WHERE a = ?', a);
+      }
+    }
+    this.guardar('seguidores_nuevos', { t: ahora, nuevos: filas.length, enviados, sin_vinculo: sinVinculo,
+      sin_cuenta: sinCuenta, quedan });
+    return enviados;
+  }
+
   /** Para `estado()`, con try como `estadoPersonales()`. */
   estadoSeguidos() {
     try {
       const r = this.sql.exec('SELECT COUNT(*) AS n, COUNT(DISTINCT quien) AS p, COUNT(DISTINCT a) AS a FROM sigue')
         .toArray()[0];
-      return { filas: r.n, siguen: r.p, seguidos: r.a, ultima: this.leer('seguidos') };
+      return { filas: r.n, siguen: r.p, seguidos: r.a, ultima: this.leer('seguidos'),
+        nuevos: this.leer('seguidores_nuevos') };
     } catch (e) {
       return { error: String(e).slice(0, 80) };
     }
@@ -3542,12 +3659,12 @@ export class Avisos {
       if (pedidos >= TOPE_APLAUSOS) { quedan++; continue; }
       let quien = [], ks = [];
       try { quien = JSON.parse(f.quien || '[]'); ks = JSON.parse(f.ks || '[]'); } catch (e) { quien = []; }
-      // de quién es: el nombre, por el índice de «te toca», y sólo si esa cuenta es la del perfil de la publicación
+      // de quién es: la cuenta del perfil de la publicación (`cuentaDe()`), con el nombre que trae el muro
       const dids = [];
       for (let i = 0; i < quien.length; i++) {
-        const did = idx[claveTurno(quien[i])];
-        if (!did || !ks[i] || dids.indexOf(String(did)) >= 0) continue;
-        if (await this.perfilDe(String(did), ahora) === ks[i]) dids.push(String(did));
+        if (!claveValida(ks[i])) continue;
+        const did = await this.cuentaDe(ks[i], ahora, idx, quien[i]);
+        if (did && dids.indexOf(did) < 0) dids.push(did);
       }
       this.sql.exec('UPDATE aplaudidas SET avisado = ?, t_avisado = ? WHERE id = ?', f.n, ahora, f.id);
       if (!dids.length) { sinCuenta++; continue; }

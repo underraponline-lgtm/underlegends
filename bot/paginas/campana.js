@@ -259,7 +259,7 @@
     pinta();
   }
   window.addEventListener('lg:vinculado', function () {
-    MSG = '✅ Listo: te llegan tus avisos (rango, tarjetas y cuando te toca pelear) y los de la gente que seguís en este dispositivo.';
+    MSG = '✅ Listo: te llegan tus avisos (rango, tarjetas, cuando te toca pelear, cuando te felicitan y cuando alguien te sigue) y los de la gente que seguís en este dispositivo.';
     pinta();
   });
   window.addEventListener('lg:vinculado-no', function () {

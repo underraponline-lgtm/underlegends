@@ -2,12 +2,12 @@
 // más para que enganche a las personas o interactivo», y con el plan: «Dale, me gusta como lo tienes planeado». Es el
 // muro de siempre (bot/muro.py: lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores), ahora
 // día por día y con lo de verdad de cada cosa —la carta, la letra, el logo—; las encuestas de la semana para votar ahí
-// mismo; y 👏 Felicitar en los logros, que le llega al teléfono a quien felicitan. Mientras es PREVIEW se ve sólo con
-// `lg:prev-pub` (App.jsx).
+// mismo; y 👏 Felicitar en los logros, que le llega al teléfono a quien felicitan. Para todos desde la 1.99 (`PROPIAS`
+// de App.jsx y web/montar.py): la vista de app.js sigue escondida, de respaldo.
 //
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { limpio, num } from './liga.js';
 import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
@@ -198,8 +198,10 @@ function MasFelicitado({ liga, pubs, A }) {
   );
 }
 
-// las encuestas de la semana, fijas arriba del muro: se vota ahí mismo (en la columna de al lado se hacían más altas que
-// la pantalla, y abajo quedaba el hueco de Eventos)
+// las encuestas de la semana, en el muro: se vota ahí mismo (en la columna de al lado se hacían más altas que la
+// pantalla). ⚠️ NO SON LO PRIMERO QUE SE VE (Dlx, 02/10: «que lo de encuestas no sea lo primero que uno vea… si uno ya
+// votó en ambas que no aparezca encuestas en lo primero sino en lo último»): van después del primer día, y al final del
+// muro si ya votaste en todas las abiertas —la regla del panel del Inicio (`Encuestas` de encuestas.jsx)—
 function Encuestas({ liga, enc }) {
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
@@ -208,7 +210,7 @@ function Encuestas({ liga, enc }) {
   if ((!x2 && !el) || !enc) return null;
   const ver = x2 && el ? cual : (x2 ? 'x2' : 'el');
   return (
-    <section className="pub-fijas" aria-label="Encuestas">
+    <section className="pub-encs" aria-label="Encuestas">
       <h2 className="pub-dh">Encuestas<small>votá antes de que cierren</small></h2>
       {x2 && el ? (
         <div className="pub-enc-tabs" role="tablist">
@@ -233,7 +235,7 @@ function Avisame() {
   return (
     <section className="pub-bloque">
       <h2 className="evp-h2">🔔 Que te llegue</h2>
-      <p className="pub-tx">Cuando te felicitan, cuando gana alguien que seguís y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
+      <p className="pub-tx">Cuando te felicitan, cuando alguien te sigue, cuando la Liga publica algo de quien seguís y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
       {!puede ? <a className="pub-a" href="#/avisos">Cómo activarlos</a>
         : !e.activa ? <button type="button" className="btn verde chico pub-avb" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button>
           : <button type="button" className="btn borde2 chico pub-avb" onClick={() => C.vincular()}>Vincular con mi Discord</button>}
@@ -255,6 +257,12 @@ export function Publicaciones({ liga, enc }) {
   const A = useAplausos();
   const [fil, setFil] = useState('');
   const [ver, setVer] = useState(40);
+  // ¿ya votaste en todas las abiertas? Se decide al abrir la página, como en el Inicio: si cambiara al votar, lo que
+  // estás mirando se te iría de abajo del dedo
+  const [votaste] = useState(() => {
+    const ab = [liga.encuesta('x2'), liga.encuesta('elegido')].filter(Boolean);
+    return ab.length > 0 && ab.every((E) => !!(enc && enc.mio && enc.mio[E.id]));
+  });
   const sigo = liga.sigue || [];
   const todos = liga.muro || [];
   const pubs = useMemo(() => todos.filter((it) => {
@@ -284,6 +292,7 @@ export function Publicaciones({ liga, enc }) {
     return f.charAt(0).toUpperCase() + f.slice(1);
   };
   const semana = (liga.muro || []).filter((it) => (liga.ahora - new Date(it.t)) < 7 * 86400000);
+  const encs = fil !== 'anuncios' ? <Encuestas liga={liga} enc={enc} /> : null;
   return (
     <>
       <div className="escena pub-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
@@ -300,18 +309,24 @@ export function Publicaciones({ liga, enc }) {
       </nav>
       <div className="pub-t2">
         <main className="pub-feed">
-          {fil !== 'anuncios' ? <Encuestas liga={liga} enc={enc} /> : null}
-          {dias.length ? dias.map((d) => (
-            <section key={d.k} className="pub-dia" aria-label={tituloDia(d.k)}>
-              <h2 className="pub-dh">{tituloDia(d.k)}</h2>
-              {d.xs.map((it, i) => (it.tipo === 'tarjetas' ? <Cartas key={'c' + i} liga={liga} xs={it.xs} />
-                : <Pub key={it.id || it.tipo + it.t + i} liga={liga} it={it} A={A} />))}
-            </section>
+          {dias.length ? dias.map((d, n) => (
+            <Fragment key={d.k}>
+              <section className="pub-dia" aria-label={tituloDia(d.k)}>
+                <h2 className="pub-dh">{tituloDia(d.k)}</h2>
+                {d.xs.map((it, i) => (it.tipo === 'tarjetas' ? <Cartas key={'c' + i} liga={liga} xs={it.xs} />
+                  : <Pub key={it.id || it.tipo + it.t + i} liga={liga} it={it} A={A} />))}
+              </section>
+              {n === 0 && !votaste ? encs : null}
+            </Fragment>
           )) : (
-            <p className="pub-tx pub-nada">{fil === 'sigo' ? 'Nada todavía de la gente que seguís: cuando ganen, suban de rango o saquen carta, aparece acá.'
-              : 'Todavía no pasó nada. Cuando se juegue el primer evento, aparece acá solo.'}</p>
+            <>
+              <p className="pub-tx pub-nada">{fil === 'sigo' ? 'Nada todavía de la gente que seguís: cuando ganen, suban de rango o saquen carta, aparece acá.'
+                : 'Todavía no pasó nada. Cuando se juegue el primer evento, aparece acá solo.'}</p>
+              {!votaste ? encs : null}
+            </>
           )}
           {pubs.length > ver ? <button type="button" className="btn borde2 chico pub-mas-b" onClick={() => setVer(ver + 40)}>Ver más</button> : null}
+          {votaste ? encs : null}
         </main>
         <aside className="pub-der">
           <div className="pub-der-in">

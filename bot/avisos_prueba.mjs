@@ -398,6 +398,9 @@ const ok = (cond, que) => {
   const av = A.avisoAplauso(12, A.motivoAplauso({ tipo: 'campeon', ev: 'COPA' }));
   ok(av.titulo === '👏 12 personas te felicitaron' && av.cuerpo.startsWith('Por ganar COPA.') &&
     A.avisoAplauso(1, '').titulo === '👏 Alguien te felicitó', av.titulo + ' | ' + av.cuerpo);
+  ok(A.avisoSeguidores(1, 'Konan').titulo === '⭐ Konan empezó a seguirte' && A.avisoSeguidores(1, '').titulo === '⭐ Alguien nuevo te sigue' &&
+    A.avisoSeguidores(3, 'Konan').titulo === '⭐ 3 personas nuevas te siguen',
+    'alguien te sigue: con su nombre si es uno y es de la Liga; si no, cuántos');
   ok(A.motivoAplauso({ tipo: 'rango', rg: 'B', primero: true }) === 'conseguir tu primera letra: B' &&
     A.motivoAplauso({ tipo: 'rango', rg: 'A' }) === 'subir a rango A' &&
     A.motivoAplauso({ tipo: 'caza', a: 'Bea', ev: 'COPA' }) === 'cazar a Bea en COPA' &&

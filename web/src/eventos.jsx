@@ -85,7 +85,7 @@ function Campana({ liga }) {
           <button type="button" className="evp-lnk" onClick={() => C.desactivar()}>Desactivar</button>
         </div>
         <div className="evp-yo">
-          <p className="evp-tx"><b>Tus avisos</b>: cuando te toca pelear en una llave en vivo, cuando subís de rango o desbloqueás una tarjeta, y cuando alguien que seguís gana.</p>
+          <p className="evp-tx"><b>Tus avisos</b>: cuando te toca pelear en una llave en vivo, cuando subís de rango o desbloqueás una tarjeta, cuando te felicitan, cuando alguien te sigue y cuando alguien que seguís gana.</p>
           {e.yo && e.yo.id ? (
             <p className="evp-ok">Vinculado con tu Discord{e.yo.n ? ' (' + e.yo.n + ')' : ''}. <button type="button" className="evp-lnk" onClick={() => C.desvincular()}>Desvincular</button></p>
           ) : <button type="button" className="btn borde2 chico" onClick={() => C.vincular()}>Vincular con mi Discord</button>}
