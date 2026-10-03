@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-03T00:25:46Z",
+ "cuando": "2026-10-03T00:55:34Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 141.6,
+ "dur_s": 137.7,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 23.1
+   "s": 22.7
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 28.2
+   "s": 24.5
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 19.0
+   "s": 18.2
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.8
+   "s": 2.1
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.2
+   "s": 6.7
   },
   {
    "n": "2b",
@@ -81,25 +81,25 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.1
+   "s": 2.0
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 19.3
+   "s": 18.6
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 17.5
+   "s": 17.7
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 8.9
+   "s": 8.5
   },
   {
    "n": "2e",
@@ -111,7 +111,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.4
+   "s": 6.0
   },
   {
    "n": "3",
@@ -123,7 +123,7 @@
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.0
+   "s": 5.2
   }
  ],
  "fallas": [],
@@ -136,7 +136,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-03T00:23:53Z",
+  "cuando": "2026-10-03T00:53:44Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 223,
   "un_evento": 125,
@@ -158,15 +158,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 3,
-   "read": 168
+   "write": 8,
+   "read": 1590
   },
   "worker": {
-   "pedidos": 7465,
+   "pedidos": 7602,
    "errores": 0,
-   "sub": 5838,
-   "p50_ms": 0.76,
-   "p99_ms": 3.09
+   "sub": 5939,
+   "p50_ms": 0.75,
+   "p99_ms": 3.06
   },
   "r2": {
    "objetos": 9031,
