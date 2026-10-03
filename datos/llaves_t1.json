@@ -7799,7 +7799,7 @@
      [
       [
        "sexo🇵🇪",
-       "NAW🇺🇾"
+       "NAW"
       ],
       "sexo🇵🇪",
       ""
@@ -7895,7 +7895,7 @@
     2000
    ],
    [
-    "NAW🇺🇾",
+    "NAW",
     "Cuartos",
     2000
    ],
@@ -8285,6 +8285,133 @@
     "LRS LA MARIHUANA🇵🇰",
     "Semifinal",
     1750
+   ]
+  ]
+ },
+ "388": {
+  "dia": "2026-09-29",
+  "escala": "8-15",
+  "fecha": "29/09",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1554628215757078674"
+  ],
+  "n": 388,
+  "nombre": "JH DE LA CRUZ CUP",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUS🇵🇪",
+       "Number"
+      ],
+      "NXUS🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "El Wachin"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Krtman",
+       "Xplicit"
+      ],
+      "Krtman",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Noxvell"
+      ],
+      "Drexx",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Krtman",
+       "NXUZ🇵🇪"
+      ],
+      "Krtman",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Miniboy"
+      ],
+      "Drexx",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Krtman",
+       "Drexx"
+      ],
+      "Krtman",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Krtman",
+    "Campeón",
+    7500
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "El Wachin",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Noxvell",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xplicit",
+    "Cuartos",
+    2000
    ]
   ]
  }

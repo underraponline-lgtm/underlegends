@@ -80,18 +80,25 @@
      "FASOO",
      8,
      1
+    ],
+    [
+     "MINIBOY 🇨🇱",
+     8,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 40,
      "URBF": 8,
-     "SR": 4
+     "SR": 4,
+     "DDF": 3
     },
     "gente": {
      "FFA": 121,
      "URBF": 31,
-     "SR": 18
+     "SR": 18,
+     "DDF": 19
     },
     "gana": "FFA"
    },
