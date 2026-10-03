@@ -2289,6 +2289,7 @@
  "eclipsito": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eclipsito/servidor.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eclipsito/sv-ffa.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eclipsito/sv-sr.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eclipsito/temporada.webp"
  },
  "edu": {
@@ -6229,6 +6230,7 @@
  "mosquitrap": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mosquitrap/servidor.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mosquitrap/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mosquitrap/sv-ffs.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mosquitrap/temporada.webp"
  },
  "motera": {
