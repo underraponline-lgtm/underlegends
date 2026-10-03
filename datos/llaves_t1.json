@@ -7348,5 +7348,126 @@
     1250
    ]
   ]
+ },
+ "382": {
+  "dia": "2026-10-02",
+  "escala": "8-15",
+  "fecha": "02/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1555697632104681643"
+  ],
+  "n": 382,
+  "nombre": "KISS OF SHINIGAMI",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Alonso",
+       "Cronox"
+      ],
+      "Verc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "Teo🇨🇴",
+       "Lvel 🇻🇪"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "# Zaik 🇪🇸",
+       "tormen 🇳🇮",
+       "vandu🇨🇦"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Trot🇪🇸",
+       "Bootrax",
+       "Pichulamc"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow",
+       "Colesito"
+      ],
+      "Snow",
+      "Walk-in 1: colesito"
+     ],
+     [
+      [
+       "Verc",
+       "Provenza"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow",
+       "yinn"
+      ],
+      "Snow",
+      "Walk-in 2: yinn"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Snow",
+    "Campeón",
+    7500
+   ],
+   [
+    "Alonso",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teo🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    1250
+   ]
+  ]
  }
 }
