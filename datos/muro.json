@@ -1192,7 +1192,8 @@
 "lvel": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "rayo": {
@@ -3229,6 +3230,14 @@
 "yinn"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T16:09:55Z",
+"quien": [
+"Lvel"
+],
+"carta": "temporada"
 }
 ]
 }
