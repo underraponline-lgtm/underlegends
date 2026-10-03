@@ -545,6 +545,22 @@ export function campoLinea(nl) {
   return null;
 }
 
+// 🔴 «# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚» (URBF, 02/10/2026) no es un horario: es el título de un mensaje
+// para confirmar asistencia. Sin dos puntos, tres palabras o más y ningún número ni marca de hora, es una frase. Lo
+// mismo que `_frase()` de bot/anuncios.py
+function frase(raw, c) {
+  if (!c || c[0] !== 'horario') return false;
+  const resto = toks(normLinea(raw)).slice(c[2]);
+  return resto.length >= 3 && resto[0] !== ':' && !/[0-9]/.test(resto.join('')) &&
+    !String(raw == null ? '' : raw).includes('<t:');
+}
+
+/** El campo de una línea cruda, salvo que sea una frase: `campo_de()` de Python. */
+export function campoDe(raw) {
+  const c = campoLinea(normLinea(raw));
+  return frase(raw, c) ? null : c;
+}
+
 function dosPuntos(s) {
   let dentro = 0;
   for (let i = 0; i < s.length; i++) {
@@ -568,7 +584,7 @@ function valorLinea(raw, k, siguientes) {
   }
   for (const s of siguientes.slice(0, 3)) {
     if (stripPy(s)) {
-      if (campoLinea(normLinea(s))) return '';
+      if (campoDe(s)) return '';
       return valor(limpio(s));
     }
   }
@@ -581,7 +597,7 @@ export function camposLineas(texto) {
   const out = {};
   const pri = {};
   for (let i = 0; i < lineas.length; i++) {
-    const c = campoLinea(normLinea(lineas[i]));
+    const c = campoDe(lineas[i]);
     if (!c) continue;
     const [tipo, p, k] = c;
     if (tipo in out && (tipo !== 'horario' || pri[tipo] <= p)) continue;
@@ -644,7 +660,7 @@ function titulo(l) {
 
 export function nombreDe(texto) {
   for (const l of limpio(texto).split(LINEAS)) {
-    if (campoLinea(normLinea(l))) continue;
+    if (campoDe(l)) continue;
     if (ES_CAMPO.test(sinMd(l))) continue;
     const t = titulo(l);
     if (t) return t;

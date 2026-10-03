@@ -7,10 +7,25 @@
 // porque *«algunos piensan que es bot para raidear»*. Lo que ayuda es la prueba social (los que ya están, con su gente)
 // y decir qué hace y qué no. ⚠️ Lo que dice tiene que ser verdad: en los servidores socios el bot sólo lee los anuncios
 // y las llaves, y creó la invitación de la Liga (medido el 02/10). Si eso cambia, se cambia acá.
+//
+// 🔑 Y SE SUMA HABLÁNDOLE A DLX. Dlx, 03/10/2026: «quitá esa línea [la del código en GitHub] y decí que si querés que
+// tu servidor sea parte escribas a @itsdlx en Discord, y explicá más features que hacemos». Cada una de `QUE_GANA` es
+// algo que ya anda: si alguna se apaga, se saca de acá.
 import { limpio, mult, num } from './liga.js';
-import { Carta, Compartir, enlace } from './piezas.jsx';
+import { Carta, Compartir, Ico, enlace } from './piezas.jsx';
 
-const REPO = 'https://github.com/underraponline-lgtm/underlegends';
+// el perfil de Dlx en Discord (itsdlx): abre su perfil para escribirle
+const DLX = 'https://discord.com/users/739338101603696681';
+const QUE_GANA = [
+  ['ranking', 'La tabla de toda la Liga', 'Cada evento suyo cuenta para los mismos rankings que los demás servidores: Temporada, Competitivo, Duelos, Podios y Rachas.'],
+  ['tarjetas', 'La carta de Servidor', 'Su gente tiene su carta con el escudo y el color del servidor desde su primer evento.'],
+  ['eventos', 'La llave, en vivo', 'El cuadro se arma solo mientras se juega, y a quien tiene la campana le avisa cuando le toca pelear.'],
+  ['campana', 'Avisos al minuto', 'Cuando anuncia un evento le llega al celular a quien activó la campana, y queda en el calendario de la Liga.'],
+  ['aviso', 'Most Wanted', 'Buscados con recompensa: el primero que le gana a uno en un evento de la Liga lo caza y cobra.'],
+  ['novedades', 'Multiplicador cada lunes', 'Cada semana sale con su multiplicador, de ×0,5 a ×5, y la gente vota qué servidor se lleva un ×2.'],
+  ['socios', 'Guerra de servidores', 'Cada semana se enfrenta con otro: gana el que más puntos hace por persona y la semana siguiente lleva ×1,5.'],
+  ['publicaciones', 'Su página y sus anuncios', 'Una página propia con su gente y sus eventos, y sus anuncios y campeones salen en Publicaciones y en las historias.'],
+];
 
 function Socio({ liga, s }) {
   const mm = liga.d.mult || {};
@@ -66,7 +81,6 @@ export function Socios({ liga }) {
   const svs = Object.values(liga.svs).sort((a, b) => (b.pts || 0) - (a.pts || 0));
   const enDiscord = svs.reduce((t, s) => t + (s.miembros || 0), 0);
   const raperos = (liga.d.tabla || []).length;
-  const dra = liga.svs.DRA;
   // 🔑 los patrocinadores, cuando haya: sin dato no hay pieza (Dlx: «3. A»)
   const pat = Array.isArray(liga.d.patrocinadores) ? liga.d.patrocinadores : [];
   // baja hasta «Sumá tu servidor» (adentro del shadow root del Inicio nuevo)
@@ -112,31 +126,26 @@ export function Socios({ liga }) {
         <div className="soc-sumar-tit">
           <span className="tag">PARA SERVIDORES</span>
           <h2 className="hero-ev">Sumá tu servidor</h2>
-          <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => s.sv).join(', ')}.</p>
+          <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => s.sv).join(', ')}. Esto es lo que la Liga hace por cada uno.</p>
         </div>
+        <ul className="soc-feats">
+          {QUE_GANA.map(([ic, t, tx]) => <li key={t}><Ico n={ic} t={24} /><b>{t}</b><span>{tx}</span></li>)}
+        </ul>
         <div className="soc-dos">
-          <div className="soc-bloque">
-            <h3>Qué gana tu servidor</h3>
-            <ul>
-              <li><b>Sus eventos suman a la tabla de toda la Liga</b>, con su llave en la página y su campeón en las historias.</li>
-              <li><b>Su gente tiene su carta de Servidor</b>, con el escudo y el color del servidor.</li>
-              <li><b>Su página</b>, el multiplicador de cada lunes y la guerra de servidores.</li>
-              <li><b>Sus eventos avisan al minuto</b> a quien active la campana.</li>
-            </ul>
-          </div>
           <div className="soc-bloque">
             <h3>Qué hace el bot en tu servidor</h3>
             <ul>
               <li><b>Lee los anuncios y las llaves</b>, para cargar cada evento solo.</li>
               <li><b>Crea una invitación de la Liga</b>, para que la gente llegue a tu servidor.</li>
               <li><b>No toca los mensajes de nadie</b> y no le manda mensajes privados a nadie de tu servidor.</li>
-              <li><b>Todo su código está a la vista</b>: <a href={REPO} target="_blank" rel="noopener noreferrer">en GitHub ↗</a></li>
             </ul>
           </div>
-        </div>
-        <div className="soc-como">
-          <p className="hero-p">Las postulaciones de servidores se anuncian en Discord Rap Español, en el canal de la Liga Global.</p>
-          {dra && dra.invita ? <a className="btn verde" href={dra.invita} target="_blank" rel="noopener noreferrer">Entrar a Discord Rap Español ↗</a> : null}
+          <div className="soc-bloque soc-cta">
+            <h3>¿Querés que tu servidor sea parte?</h3>
+            <p>Escribile a <b>@itsdlx</b> en Discord.</p>
+            {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
+            <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer">Escribirle a <span className="soc-at">@itsdlx</span> ↗</a>
+          </div>
         </div>
       </section>
     </>

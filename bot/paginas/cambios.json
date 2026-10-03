@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.03",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T00:33:00-04:00",
+   "titulo": "Eventos sin hueco, y Socios con todo",
+   "items": [
+    "📅 **Eventos, sin el hueco de arriba**: lo que se está jugando va en una tarjeta corta —la ronda, quién pelea, quién sigue y cuántas batallas van—, y la llave entera queda una sola vez, en el día.",
+    "🗓️ **El mes, a un toque en el celular**: «Mes» queda fijo al costado de los días y, al tocarlo, baja hasta el calendario.",
+    "🤝 **Socios cuenta todo lo que la Liga hace por cada servidor**, y para sumar el tuyo, escribile a **@itsdlx** en Discord.",
+    "📱 **La barra de abajo, sin la raya** al lado de «Yo».",
+    "🛠️ **Un mensaje de horarios ya no se lee como un evento nuevo**: el de la Final Nacional Albiceleste salía como «ESTE EMOJI CONFIRMA TU ASISTENCIA…»."
+   ]
+  },
+  {
    "version": "2.02",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T00:13:00-04:00",

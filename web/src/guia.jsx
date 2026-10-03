@@ -60,7 +60,7 @@ const PREGUNTAS = [
   ['¿Por qué mi Competitiva está bloqueada?', <>El Competitivo pide diez eventos en la temporada. Hasta entonces la tarjeta sale bloqueada, con cuántos te faltan.</>],
   ['¿Cómo cambio mi foto?', <>Con <code>/foto</code> en Discord, una vez por temporada.</>],
   ['¿Cómo me entero de los eventos?', <>Activá los <a href="#/avisos">avisos</a> (o escribí <code>/notify</code> en Discord): te llegan al teléfono o a la compu cuando un servidor anuncia uno. También podés sumar el calendario de la Liga a tu Google Calendar desde <a href="#/eventos">Eventos</a>.</>],
-  ['¿Mi servidor se puede sumar a la Liga?', <>Las postulaciones de servidores se anuncian en Discord Rap Español, en el canal de la Liga Global. Qué gana y qué hace el bot, en <a href="#/socios">Socios</a>.</>],
+  ['¿Mi servidor se puede sumar a la Liga?', <>Sí: escribile a <b>@itsdlx</b> en Discord. Qué gana tu servidor y qué hace el bot, en <a href="#/socios">Socios</a>.</>],
   ['¿Cómo borro mis datos?', <>Escribí <code>/borrar-mis-datos</code> en Discord: te muestra qué se borra y, si confirmás, lo borra al instante. Todo sobre tus datos está en la <a href="privacidad.html">política de privacidad</a>.</>],
 ];
 const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };

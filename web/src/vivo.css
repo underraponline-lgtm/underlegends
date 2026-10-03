@@ -53,7 +53,9 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .tb-tira::-webkit-scrollbar{display:none}
 .tabbar .tb-tira a{flex:0 0 auto;min-width:68px;padding-inline:10px;scroll-snap-align:start}
 .tabbar .tb-tira a span{white-space:nowrap}
-.tabbar .tb-yo{flex:0 0 auto;min-width:64px;border-left:2px solid var(--linea)}
+/* sin la raya negra que la separaba de la tira (Dlx, 03/10/2026: «eliminá la línea negra que hay en los íconos de abajo
+   y la cuenta») */
+.tabbar .tb-yo{flex:0 0 auto;min-width:64px}
 /* «Yo», con tu cara (02/10/2026): del tamaño de los íconos de al lado, y con borde si la pestaña está marcada */
 .tabbar .tb-cara{width:24px;height:24px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
   background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif}
@@ -902,11 +904,19 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-mo.ult .evp-mo-n b{font-size:19px;overflow-wrap:normal;word-break:normal}
 .evp-mo-ci{display:block;width:100%;height:auto}
 .evp-mo .evp-cm{width:100%}
+/* lo que se juega ahora, sin el cuadro (que va abajo, en «Hoy»): la ronda, las caras y quién sigue */
+.evp-ah{display:grid;gap:8px;width:100%;padding:12px;border:1.5px solid #3A3A3E;background:rgba(246,246,246,.04)}
+.evp-ah-t{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#E41373}
+.evp-ah-vs{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;font:800 17px/1.2 Archivo,sans-serif;font-stretch:110%}
+.evp-ah-l{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.evp-ah-l em{font:700 11px/1 "Space Mono",monospace;font-style:normal;letter-spacing:.06em;color:#A5A5A0;text-transform:uppercase}
+.evp-ah .evp-ah-c{width:30px;height:30px;flex:none;border-radius:50%;overflow:hidden;background:#2A2A2C;color:#F6F6F6;font:800 13px/1 Archivo,sans-serif}
+.evp-ah-s{font:600 13px/1.35 Archivo,sans-serif;color:#A5A5A0}
 /* la tira de los días, pegada arriba */
-.evp-dias{position:sticky;top:0;z-index:20;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
+.evp-dias{position:sticky;top:0;z-index:20;display:flex;align-items:stretch;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
 /* lo que se baja a mirar (la campana de `#/avisos`, el día elegido) no queda abajo de la tira de los días */
 #ev-campana,.evp-centro{scroll-margin-top:92px}
-.evp-dias-in{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 12px}
+.evp-dias-in{display:flex;flex:1;min-width:0;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 12px}
 .evp-dias-in::-webkit-scrollbar{display:none}
 .evp-dias button{position:relative;flex:none;display:grid;justify-items:center;gap:3px;min-width:62px;padding:7px 8px 6px;border:1.5px solid #3A3A3E;background:transparent;
   color:#F6F6F6;cursor:pointer}
@@ -918,8 +928,11 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-dias button.on{background:#F6F6F6;border-color:#F6F6F6;color:#030304}
 .evp-dias button.on span,.evp-dias button.on i{color:#030304}
 .evp-dias button.on b{color:#030304}
-.evp-dias .evp-mes-b{align-content:center;gap:5px}
-.evp-dias .evp-mes-b.on{background:#29B298;border-color:#29B298}
+/* el mes, fijo a la derecha de la tira (no se desliza con ella) y en verde, para que se encuentre */
+.evp-dias .evp-mes-b{flex:none;align-self:center;align-content:center;gap:5px;margin:0 12px 0 0;border-color:#29B298;color:#29B298}
+.evp-dias .evp-mes-b span{color:#29B298}
+.evp-dias .evp-mes-b.on{background:#29B298;border-color:#29B298;color:#030304}
+.evp-dias .evp-mes-b.on span{color:#030304}
 /* el tablero */
 .evp-t3{display:grid;gap:0}
 .evp-centro{min-width:0;padding:6px 0 18px}
@@ -1275,7 +1288,17 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-bloque ul{margin:0;padding:0 0 0 18px;display:grid;gap:9px;font:500 14.5px/1.45 Archivo,sans-serif;color:#D8D8D4}
 .soc-bloque b,.soc-bloque a{color:#F6F6F6}
 .soc-bloque a{font-weight:800}
-.soc-como{display:grid;gap:12px;justify-items:start}
+/* lo que la Liga hace por cada servidor (Dlx, 03/10/2026: «explicá más features que hacemos»): en el celular el ícono al
+   costado; en la compu, cuatro por fila con el ícono arriba */
+.soc-feats{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.soc-feats li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;padding:14px;border:2px solid #3A3A3E}
+.soc-feats .ico{grid-row:span 2;color:#29B298}
+.soc-feats b{font:900 15px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#F6F6F6}
+.soc-feats span{font:500 14px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.soc-cta{display:grid;gap:10px;align-content:start;justify-items:start;border-color:#29B298}
+.soc-cta h3{margin:0}
+.soc-cta p{margin:0;font:500 16px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.soc-at{text-transform:none}
 /* ── la Guía (`guia.jsx`, desde la 2.02): «cómo empezar» en tres pasos y un índice; todo en piel ── */
 .gu-cuerpo{display:grid;padding:0 16px 34px}
 .gu-sec{display:grid;gap:12px;padding-top:26px}
@@ -1335,6 +1358,9 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .soc-pat{padding:22px var(--gut)}
   .app .soc-sumar{padding:34px var(--gut) 40px}
   .app .soc-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .app .soc-feats{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .app .soc-feats li{grid-template-columns:minmax(0,1fr);align-content:start;gap:8px;padding:16px}
+  .app .soc-feats .ico{grid-row:auto}
   .app .gu-cuerpo{padding:0 var(--gut) 40px}
   .app .gu-pasos{grid-template-columns:repeat(3,minmax(0,1fr))}
   .app .gu-cartas{grid-template-columns:repeat(2,minmax(0,1fr))}

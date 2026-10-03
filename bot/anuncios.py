@@ -221,6 +221,38 @@ def campo_linea(nl):
     return None
 
 
+def _frase(raw, c):
+    """¿La línea es una ORACIÓN que empieza con el nombre de un campo de hora?
+
+    🔴 «# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚» (URBF, 02/10/2026)
+    no es un horario: es el título de un mensaje para confirmar asistencia
+    con reacciones. Contaba como el campo HORARIO —valor «PARA LA FINAL
+    NACIONAL ALBICELESTE»—, así que el título salía de la línea de abajo
+    («✅ - ESTE EMOJI CONFIRMA TU ASISTENCIA…») y el mensaje pasaba por un
+    evento que «se está jugando ahora». Dlx lo vio en el Inicio.
+
+    ⚠️ La señal no es un umbral nuevo: sin dos puntos, tres palabras o más,
+    y NINGÚN número ni marca de hora de Discord. Un horario de verdad trae
+    una hora —«HORA 22:00», «EMPIEZA EN 10 MINUTOS», `<t:…>`— o los dos
+    puntos —«HORARIO: ya arrancamos»—. Los números se miran después de
+    normalizar, así «𝟐𝟎:𝟑𝟎» cuenta.
+    """
+    if not c or c[0] != 'horario':
+        return False
+    resto = norm_linea(raw).replace(':', ' : ').split()[c[2]:]
+    return (len(resto) >= 3 and resto[0] != ':'
+            and not re.search(r'[0-9]', ''.join(resto))
+            and '<t:' not in str(raw or ''))
+
+
+def campo_de(raw):
+    """El campo de una línea cruda: `campo_linea()` sobre `norm_linea()`,
+    salvo que sea una frase (ver `_frase()`). Lo mismo que `campoDe()` de
+    `bot/avisos.js`."""
+    c = campo_linea(norm_linea(raw))
+    return None if _frase(raw, c) else c
+
+
 def _dos_puntos(s):
     """Dónde están los dos puntos del campo: el primero fuera de `<…>`."""
     dentro = 0
@@ -250,7 +282,7 @@ def _valor_linea(raw, k, siguientes):
             return resto
     for s in siguientes[:3]:
         if s.strip():
-            if campo_linea(norm_linea(s)):
+            if campo_de(s):
                 return ''
             return _valor(_limpio(s))
     return ''
@@ -265,7 +297,7 @@ def campos_lineas(texto):
     lineas = str(texto or '').splitlines()
     out, pri = {}, {}
     for i, raw in enumerate(lineas):
-        c = campo_linea(norm_linea(raw))
+        c = campo_de(raw)
         if not c:
             continue
         tipo, p, k = c
@@ -382,7 +414,7 @@ def nombre_de(texto):
     for l in _limpio(texto).splitlines():
         # una línea que ya es un campo no es el título (con el lector ancho:
         # `〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕:` también es un campo)
-        if campo_linea(norm_linea(l)):
+        if campo_de(l):
             continue
         if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', _sin_md(l)):
             continue
@@ -1089,6 +1121,16 @@ def _self_check():
         and campo_linea(norm_linea('## TORNEO SNAKE')) is None
     mal += not ok
     print('   %s un campo es un campo en letras decoradas; una oración, no' % ('✅' if ok else '🔴'))
+    # 🔴 «HORARIOS PARA LA FINAL…» (URBF, 02/10/2026) es una frase; con una hora o los dos puntos, es el campo
+    ok = campo_de('# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚') is None \
+        and campo_de('HORARIOS')[0] == 'horario' \
+        and campo_de('EMPIEZA HOY A LAS <t:1790109000:t>')[0] == 'horario' \
+        and campo_de('● HORA: EN 20 MINUTOS')[0] == 'horario' \
+        and campo_de('COMIENZA EN 10 MINUTOS VAYAN ENTRANDO')[0] == 'horario' \
+        and parsear({'content': '# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚\n'
+                     '✅ - ESTE EMOJI CONFIRMA TU ASISTENCIA A LAS HORAS Y AL EVENTO\n@everyone'}, 'X', 'x') is None
+    mal += not ok
+    print('   %s «HORARIOS PARA LA FINAL…» sin hora es un título, no un horario' % ('✅' if ok else '🔴'))
 
     # ⚠️ Y LO QUE NO ES «12 de 16» NO SE FUERZA.
     casos = [('12/16/24/32/36', (None, None)), ('♾️', (None, None)),

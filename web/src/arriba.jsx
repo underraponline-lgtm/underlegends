@@ -790,6 +790,24 @@ export function CuadroMini({ liga, ll, lugar }) {
   );
 }
 
+// ── lo que se está jugando de una llave en vivo, sin el cuadro: la ronda, el cruce de «AHORA», el que «SIGUE» y cuántos
+// van. Para la tarjeta de arriba de Eventos (Dlx, 03/10/2026: «el espacio gigantesco que hay… se está repitiendo eso»: la
+// llave entera iba arriba y otra vez en «Hoy»). Las mismas reglas que el cuadro: «AHORA» sólo si se juega en orden ──
+export function enJuegoDe(ll) {
+  const base = ((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
+  const todas = completar(base);
+  const pend = [];
+  let jugados = 0;
+  let total = 0;
+  todas.forEach((r) => r.b.forEach((b) => {
+    total += 1;
+    if (ganador(b)) jugados += 1;
+    else if (lados(b).length >= 2) pend.push({ r: r.r, lados: lados(b) });
+  }));
+  const orden = enOrden(todas);
+  return { ahora: orden ? pend[0] || null : null, sigue: orden ? pend[1] || null : null, jugados, total };
+}
+
 // ── el escenario: un carrusel de momentos. Siempre hay algo: la llave de anoche no falta nunca ─────
 export function gcal(e) {
   const t = utc(e.cuando);

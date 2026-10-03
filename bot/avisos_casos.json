@@ -536,7 +536,7 @@
    "espera": {
     "es": true,
     "nombre": "RAPEROS UNDERDOGS",
-    "horario": "",
+    "horario": "CUANDO SE LLENEN LAS INSCRIPCIONES",
     "ini": null
    }
   },
@@ -1041,6 +1041,30 @@
     "es": false,
     "nombre": "",
     "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv27",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚\n✅ - ESTE EMOJI CONFIRMA TU ASISTENCIA A LAS HORAS Y AL EVENTO\n❌ - ESTE EMOJI CONFIRMA QUE NO ESTARÁS EN LA HORA NI EN EL EVENTO\n⚔️ - ESTE EMOJI DICE QUE NO ESTARÁS EN LOS EMPAREJAMIENTOS PERO SI EN EL EVENTO\n(EN ESTE CASO SE TE DEJARÁ EN LAS ÚLTIMAS LLAVES)\n\n<@1>\n<@1>\n@everyone",
+   "espera": {
+    "es": false,
+    "nombre": "",
+    "horario": "",
+    "ini": null
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv28",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "# HORARIOS PARA LA GRAN FINAL\nMODALIDAD: 1vs1\nHORA: 22:00",
+   "espera": {
+    "es": true,
+    "nombre": "HORARIOS PARA LA GRAN FINAL",
+    "horario": "22:00",
     "ini": null
    }
   }

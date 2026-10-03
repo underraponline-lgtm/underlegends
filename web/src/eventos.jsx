@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, utc } from './liga.js';
 import { Cara, Carta, Compartir, Ico, accion, enlace, useCampana } from './piezas.jsx';
-import { CuadroMini, gcal, llaveEnVivo } from './arriba.jsx';
+import { CuadroMini, enJuegoDe, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
 // 🔑 CÓMO TE FUE (Dlx, 02/10/2026, al ver la preview: «sí, hazla como sugeriste»): en cada evento que jugaste, una línea
@@ -603,12 +603,27 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   let momento = null;
   if (vivoAhora) {
     const L = llaveEnVivo(vivoAhora, vivoL);
+    // 🔴 SIN EL CUADRO: la llave entera va abajo, en «Hoy». Arriba hacía la tarjeta tres veces más alta que el título —un
+    // hueco gigante al lado— y repetía la misma llave dos veces (Dlx, 03/10/2026). Acá, lo que se juega en una línea
+    const J = L ? enJuegoDe(L) : null;
+    const vs = (x) => x.lados.map((n, i) => {
+      const f = liga.fila(n);
+      return <span key={i} className="evp-ah-l">{i ? <em>vs</em> : null}<Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cara evp-ah-c" />{n}</span>;
+    });
     momento = (
       <div className="evp-mo vivo">
         <span className="tag">EN VIVO AHORA</span>
         <div className="evp-mo-n"><img alt="" src={liga.logo(vivoAhora.sv)} /><b>{limpio(vivoAhora.nombre)}</b></div>
         <small className="evp-mo-s">{vivoAhora.sv} · empezó {liga.dia(vivoAhora.cuando).replace(/^hoy /, '')}</small>
-        {L ? <CuadroLleno liga={liga} ll={L} /> : <p className="hero-p">La llave aparece apenas la carguen. Mientras, se mira en Discord.</p>}
+        {J && J.ahora ? (
+          <div className="evp-ah">
+            <span className="evp-ah-t">AHORA · {String(J.ahora.r).toUpperCase()}</span>
+            <div className="evp-ah-vs">{vs(J.ahora)}</div>
+            {J.sigue ? <small className="evp-ah-s">Sigue: {J.sigue.lados.join(' vs ')}</small> : null}
+          </div>
+        ) : null}
+        {J ? (J.total ? <small className="evp-mo-s">{J.jugados} de {J.total} batallas jugadas</small> : null)
+          : <p className="hero-p">La llave aparece apenas la carguen. Mientras, se mira en Discord.</p>}
         <div className="hero-acc">
           {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
           {vivoAhora.link ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={vivoAhora.link} target="_blank" rel="noopener noreferrer">Mirar en Discord ↗</a> : null}
@@ -691,9 +706,13 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               </button>
             );
           })}
-          <button type="button" className={'evp-mes-b' + (verMes ? ' on' : '')} aria-expanded={verMes} onClick={() => setVerMes(!verMes)}>
-            <span>Mes</span><Ico n="eventos" t={18} /></button>
         </div>
+        {/* el mes, FUERA de la tira y siempre a la vista: al final de la tira quedaba detrás de nueve días y había que
+            deslizar hasta el fondo para encontrarlo (Dlx, 03/10/2026: «hacer el acceso al calendario vista por mes más
+            sencillo en celular»). Al abrirlo, baja hasta él */}
+        <button type="button" className={'evp-mes-b' + (verMes ? ' on' : '')} aria-expanded={verMes}
+          onClick={() => { const v = !verMes; setVerMes(v); if (v) setTimeout(() => { if (grupos.current) grupos.current.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30); }}>
+          <span>Mes</span><Ico n="eventos" t={18} /></button>
       </nav>
       <div className="evp-t3">
         <main className="evp-centro" ref={grupos}>
