@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-03T20:24:17+00:00",
+ "cuando": "2026-10-03T20:54:02+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -739,26 +739,6 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "Respeto",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "CARABOBO NUNCA SE RINDE VOL.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1552504938272260137",
-   "cuando": "2026-09-24T02:20:21",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@Geronimo",
-   "autor_h": "9dbbad01fab207c3",
-   "cupos_texto": "8 duplas",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "ʙʀᴏɴᴄᴇ ɪɪɪ 🥉",
-   "modalidad": "2v2",
-   "horario": "en 10 min",
-   "fecha": "",
-   "premios": "PUNTOS DE ASCENSO Y ROL DE CHAMP",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -2303,6 +2283,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Abyssus 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1556045725253501020",
+   "cuando": "2026-10-03T20:50:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Crk🇲🇽",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "msg_id": "1556042172942254222",
+   "cuando": "2026-10-03T20:36:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "DEWACHOMEFUI 🇨🇲",
+   "quien": "hijo.de.la.selva",
+   "discord_id": "716016310202400848",
+   "msg_id": "1556039573866422353",
+   "cuando": "2026-10-03T20:25:44"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "snow",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1556039376327409845",
+   "cuando": "2026-10-03T20:24:57"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
