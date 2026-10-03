@@ -4759,6 +4759,10 @@ function nombreCabeza(n) { var f = porK(kDe(n)); return f ? f.n : n; }
    prueba con la sesión y, si no hay, queda el botón (al abrir la Tienda) */
 function pedirBilletera(entrar) {
   if (!D || !D.tienda) return;
+  // ⚠️ quien nunca entró con Discord (`DC` vacío) no tiene sesión: preguntar igual era un 401 seguro en cada visita a la
+  // Tienda, con su error en la consola (recorrido del 03/10/2026). Queda el botón, como con el 401. ⚠️ Con el permiso
+  // recién traído (`DC_TOKEN`) sí: al volver de Discord por la Tienda esto corre ANTES de que `/api/cuenta` llene `DC`
+  if (!entrar && !DC && !DC_TOKEN) { BILL = null; pintaPrecios(); return; }
   conCuenta('/api/avisos/billetera', {}, entrar ? 't' : '', null, null)
     .then(function (j) {
       if (!j) return;

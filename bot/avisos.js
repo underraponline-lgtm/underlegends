@@ -433,14 +433,15 @@ function valor(v) {
   s = stripPy(s.replace(re('(?:\\*\\*|__|`|~~)+' + S + '*$'), ''));
   if (OTROS_CAMPOS.test(s)) return '';
   if (!re(W).test(s)) return '';
-  return s;
+  // «:infinity:» adentro de un código, como `_valor()` de Python (03/10/2026)
+  return s.replace(/:infinity:/g, '∞');
 }
 
 export function campo(texto, nombre) {
   const t = limpio(texto);
   const n = '(?:' + nombre + ')';
   let m = re('`' + S + '*' + n + S + '*:' + S + '*([^`\\n]*)`', 'i').exec(t);
-  if (m && stripPy(m[1])) return stripPy(m[1]);
+  if (m && stripPy(m[1])) return stripPy(m[1]).replace(/:infinity:/g, '∞');
   m = re('`' + S + '*' + n + S + '*:?' + S + '*`__?' + S + '*([^\\n]*)', 'i').exec(t);
   if (m && stripPy(m[1])) return valor(m[1]);
   m = re(B + n + '[*_~ \\t]*:[*_~ \\t]*([^\\n]+)', 'i').exec(t);

@@ -3109,10 +3109,16 @@ def _self_check():
        not any(str(o).isdigit() and len(str(o)) >= 15 for e in _en for o in e.get('op') or []),
        'y ningún Discord ID viaja en el payload')
     ok(json.dumps(p, ensure_ascii=False) and True, 'el payload es JSON')
-    tam = len(json.dumps(p, ensure_ascii=False).encode('utf-8'))
+    crudo = json.dumps(p, ensure_ascii=False).encode('utf-8')
+    tam = len(crudo)
     # ⚠️ KV admite 25 MB por valor; el problema no es ese sino que el
     # payload viaja entero en CADA visita.
-    ok(tam < 120000, 'y pesa poco: %.1f KB' % (tam / 1024.0))
+    # 🔑 Y LO QUE VIAJA ES LO COMPRIMIDO (03/10/2026): Cloudflare lo manda en brotli, ~30 KB de los 150 de JSON. Este
+    # chequeo medía el JSON sin comprimir contra 120 KB y estaba en rojo desde que la tabla pasó a 200 filas, sin que
+    # cambiara nada para quien abre la página. Se mide con gzip (algo peor que brotli: el tope queda del lado seguro)
+    import gzip
+    comp = len(gzip.compress(crudo, 9))
+    ok(comp < 45000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
 

@@ -266,6 +266,15 @@ export default function App() {
   const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
   // la del menú: `#/duelos` es el Ranking, y `#/mundo` es Socios
   const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina === 'mundo' ? 'socios' : pagina;
+  // 🔑 EL TÍTULO DE LA PESTAÑA de lo que dibuja esta app y app.js no conoce: app.js lo pone con el <h1> de su vista
+  // vieja, así que /mundo decía «El mundo» abriendo Socios, y Socios, Sumate, cada servidor, Mi cuenta y Ajustes
+  // quedaban con el genérico (recorrido del 03/10/2026). Corre después de `ir()` de app.js, así que gana
+  const nombreSv = sv && liga && liga.svs[sv] ? liga.svs[sv].nombre || sv : sv;
+  useEffect(() => {
+    const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' && prevSum() ? 'Sumate'
+      : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : '';
+    if (t) document.title = t + ' · Liga Global de Freestyle';
+  }, [pagina, sv, nombreSv]);
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
   const grupos = useMemo(() => {
     if (!liga) return [];

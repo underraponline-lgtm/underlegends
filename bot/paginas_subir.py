@@ -123,6 +123,33 @@ def dueno_distinto():
     return ''
 
 
+def mas_nueva_en_origin():
+    """El motivo para NO desplegar, o `''`: que GitHub ya tenga una versión más nueva de la página que esta copia.
+
+    🔴 EL CICLO PISABA UNA PÁGINA MÁS NUEVA CON UNA VIEJA (03/10/2026): arma su copia al arrancar (12:52 AM), yo subí la
+    2.04 y la desplegué (12:55), y al terminar el ciclo desplegó la de su copia —la de antes— porque su sello
+    (`datos/web_sello.json`) no sabía nada de mi despliegue. La página volvió a la 2.03 media hora, sin fallar.
+
+    ⚠️ Se pregunta por los commits de `origin/main` que tocan `bot/paginas/` y esta copia no tiene. Sin git o sin red no se
+    frena nada: es una protección, no una condición para desplegar.
+    """
+    import subprocess
+
+    def git(*a):
+        return subprocess.run(['git'] + list(a), cwd=BASE, capture_output=True, text=True, timeout=60)
+    try:
+        if git('fetch', '-q', 'origin', 'main').returncode != 0:
+            return ''
+        r = git('log', '--oneline', 'HEAD..origin/main', '--', 'bot/paginas')
+        if r.returncode == 0 and r.stdout.strip():
+            n = len(r.stdout.strip().splitlines())
+            return ('origin/main tiene %d commit(s) más nuevo(s) en bot/paginas/ que esta copia: no piso la página '
+                    'publicada con una más vieja (la sube quien tiene la nueva, o la próxima corrida)' % n)
+    except (OSError, subprocess.SubprocessError):
+        return ''
+    return ''
+
+
 def main():
     import requests
     aplicar = '--aplicar' in sys.argv
@@ -145,6 +172,10 @@ def main():
                                             sum(len(d) for _r, d in fs) / 1024))
     if not aplicar:
         print('\n   (nada subido — corré con --aplicar)\n')
+        return 0
+    viejo = mas_nueva_en_origin()
+    if viejo:
+        print('   ⏭️ %s\n' % viejo)
         return 0
 
     base = '%s/accounts/%s/pages/projects/%s' % (API, cid, PROYECTO)

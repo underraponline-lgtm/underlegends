@@ -339,7 +339,7 @@ def campo(texto, nombre):
     # 1 · adentro:  __`CAMPO: valor`__
     m = re.search(r'`\s*%s\s*:\s*([^`\n]*)`' % nombre, t, re.I)
     if m and m.group(1).strip():
-        return m.group(1).strip()
+        return m.group(1).strip().replace(':infinity:', '∞')
     # 2 · afuera:   __`CAMPO:`__ valor
     m = re.search(r'`\s*%s\s*:?\s*`__?\s*([^\n]*)' % nombre, t, re.I)
     if m and m.group(1).strip():
@@ -400,7 +400,9 @@ def _valor(s):
         return ''
     if not re.search(r'[\w]', s, re.UNICODE):
         return ''
-    return s
+    # «CUPOS: :infinity:» adentro de un código no lo convierte Discord, y salía así en la página y en el aviso del
+    # celular (03/10/2026). Después de mirar si hay letras: «∞» solo no las tiene. Igual en `valor()` de avisos.js
+    return s.replace(':infinity:', '∞')
 
 
 def nombre_de(texto):
