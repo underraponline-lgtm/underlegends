@@ -1,7 +1,8 @@
 // El perfil de cada rapero (`#/r/<clave>` y `#/r/<clave>/<pestaña>`). Dlx, 03/10/2026, al plan: «1. A» (pestañas:
 // Resumen · Eventos · Duelos · Insignias, cada una con su link) · «2. A» (en Resumen: sus números, sus fortalezas —el
 // radar que pidió el 27/09—, en cada ranking, lo que le falta y el precio por su cabeza) · «3. A» (el cara a cara y sus
-// duelos, juntos: al tocar un rival, sus duelos con él). En preview con `?prev=per` (`lg:prev-per`) hasta su OK.
+// duelos, juntos: al tocar un rival, sus duelos con él). Para todos desde la 2.09 (Dlx: «1. A»), con «Comparar conmigo»
+// («2. A»). El de app.js sigue escondido, de respaldo.
 //
 // ⚠️ LOS DATOS SON LOS DE LA PÁGINA DE HOY: la fila de la tabla (`liga.T[k]`) y `/api/perfiles` (`p[k]`: `ev` sus
 // eventos, `du` sus duelos, `dm` las cinco dimensiones, `rd` la racha de duelos, `rk` su puesto en cada ranking, `req`
@@ -133,6 +134,9 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           <div className="hero-acc pf-acc">
             {!esYo && typeof window.alternarSigo === 'function' ? <Seguir si={si} onSeguir={() => window.alternarSigo(k)} /> : null}
             {esYo && dc ? <button type="button" className="btn borde chico" onClick={accion.foto}>Cambiar mi foto</button> : null}
+            {!esYo && liga.yo && liga.yo.k !== k ? (
+              <a className="btn borde chico" href={'#/tarjetas?a=' + encodeURIComponent(liga.yo.k) + '&b=' + encodeURIComponent(k)}>Comparar conmigo</a>
+            ) : null}
             <Compartir cls="btn borde chico" url={enlace('#/r/' + encodeURIComponent(k))} texto={limpio(f.n) + ' en la Liga Global'} etiqueta="Compartir" />
           </div>
           {f.nv ? <p className="pf-nv">Sin verificar: {NV[f.nv] || 'le falta verificarse'}.{esYo ? <> Escribí <code>/verificar</code> en Discord.</> : null}</p> : null}

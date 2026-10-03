@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.09",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T15:30:00-04:00",
+   "titulo": "El perfil, nuevo",
+   "items": [
+    "👤 **El perfil de cada rapero, rehecho**: arriba quién es —su cara, su país, su servidor, su crew, sus redes y sus seguidores— con sus números y su tarjeta, y abajo en pestañas: **Resumen**, **Eventos**, **Duelos** e **Insignias**. Cada pestaña tiene su link.",
+    "📊 **Resumen**: el radar de sus cinco dimensiones contra el promedio de la Liga, su fuerte y lo que tiene que trabajar, su puesto en cada ranking, lo que le falta para cada tarjeta y el precio por su cabeza.",
+    "⚔️ **Duelos**: el cara a cara con cada rival; al tocar uno, sus duelos con él.",
+    "🆚 **Comparar conmigo**: en el perfil de otro, si entraste con Discord, un botón te lleva a «Comparar dos» de Tarjetas con los dos ya puestos."
+   ]
+  },
+  {
    "version": "2.08",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T12:55:00-04:00",

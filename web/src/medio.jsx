@@ -229,7 +229,7 @@ function FueraDe200({ dc, cls, tit }) {
   return (
     <section className={cls}>
       {cls === 'te' ? <div className="mis-cab"><span>{tit}</span></div> : <div className="tu-t">{tit}</div>}
-      <p className="pronto-p">Jugaste {dc.ev} {dc.ev === 1 ? 'evento' : 'eventos'} en la temporada: estás más abajo de los 200 que muestra la tabla de la página. En tu perfil está todo.</p>
+      <p className="pronto-p">Jugaste {dc.ev} {dc.ev === 1 ? 'evento' : 'eventos'} en la temporada: estás más abajo de los 200 que muestra la tabla de la página. En tu perfil están tus tarjetas; tus eventos y tus duelos aparecen cuando entrás entre los 200.</p>
       <div className="te-acc"><a className="btn negro" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil</a></div>
     </section>
   );

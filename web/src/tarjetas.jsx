@@ -288,8 +288,8 @@ function Elegir({ lista, f, onElegir, et, id }) {
   );
 }
 
-function Comparar({ liga, t, lista, perf }) {
-  const [par, setPar] = useState([null, null]);
+function Comparar({ liga, t, lista, perf, inicial }) {
+  const [par, setPar] = useState(inicial || [null, null]);
   if (lista.length < 2) return null;
   const A = lista.find((f) => f.k === par[0]) || lista[0];
   const B = lista.find((f) => f.k === par[1] && f.k !== A.k) || lista.find((f) => f.k !== A.k);
@@ -338,7 +338,16 @@ function Comparar({ liga, t, lista, perf }) {
   );
 }
 
-export function Tarjetas({ liga, dc, tipo }) {
+// 🔑 «Comparar conmigo» (Dlx, 03/10/2026: «2. A»): el perfil de otro trae `?a=<vos>&b=<él>`, y «Comparar dos» arranca
+// con los dos puestos y la página baja hasta ahí
+export function Tarjetas({ liga, dc, tipo, q = '' }) {
+  const pq = new URLSearchParams(q);
+  const inicial = pq.get('a') && pq.get('b') ? [pq.get('a'), pq.get('b')] : null;
+  useEffect(() => {
+    if (!inicial) return undefined;
+    const r = setTimeout(() => accion.ir('tj-cmp'), 400);
+    return () => clearTimeout(r);
+  }, [q]); // eslint-disable-line react-hooks/exhaustive-deps
   const t = ORDEN.includes(tipo) ? tipo : 'temporada';
   const perf = usePerfiles();
   // quién aparece: alguna carta y su foto (`conTarjeta()` de app.js), en el orden de la tabla
@@ -377,7 +386,7 @@ export function Tarjetas({ liga, dc, tipo }) {
         </div>
       )}
       <Galeria liga={liga} t={t} lista={lista} />
-      <Comparar key={t} liga={liga} t={t} lista={lista} perf={perf} />
+      <Comparar key={t + '|' + q} liga={liga} t={t} lista={lista} perf={perf} inicial={inicial} />
     </>
   );
 }
