@@ -253,8 +253,22 @@ export class Liga {
     const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
     const V = typeof window !== 'undefined' ? window.VIVO : null;
     const l = (m && V && V.anotados && V.anotados[m[1]]) || [];
-    return l.map(([aka, cc, k, b]) => ({ aka: limpio(aka), cc, b: !!b, f: (k && this.T[k]) || this.fila(aka) || null }))
+    return l.map(([aka, cc, k, b]) => ({ aka: limpio(aka), cc, b: !!b,
+      f: (k && this.T[k]) || this.fila(aka) || this.filaEnOtroOrden(aka) || null }))
       .filter((x) => x.aka && (x.b || x.f || this.A[x.aka.toLowerCase()]));
+  }
+  // «ji sung park» es «Park Ji Sung» (LA REDENCION, FFA, 03/10/2026: «yinn+ji sung park»): un nombre de dos o tres
+  // palabras, en otro orden. Seis pruebas como mucho, contra la tabla y los alias, como `fila()`
+  filaEnOtroOrden(nombre) {
+    const w = limpio(nombre).split(/\s+/).filter(Boolean);
+    if (w.length < 2 || w.length > 3) return null;
+    const ps = w.length === 2 ? [[w[1], w[0]]]
+      : [[w[0], w[2], w[1]], [w[1], w[0], w[2]], [w[1], w[2], w[0]], [w[2], w[0], w[1]], [w[2], w[1], w[0]]];
+    for (const p of ps) {
+      const f = this.fila(p.join(' '));
+      if (f) return f;
+    }
+    return null;
   }
   esCancelado(e) {
     const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
@@ -272,8 +286,11 @@ export class Liga {
     const idDe = (u) => { const m = /\/(\d{15,22})\/?$/.exec(String(u || '')); return m ? m[1] : ''; };
     const ya = new Set();
     base.concat(this.d.calendario || []).forEach((x) => { const id = idDe(x.link); if (id) ya.add(id); });
+    // 🔴 y un anuncio BORRADO no tapa al que lo reemplaza (LA REDENCION, FFA, 03/10/2026: borrado a las 6:26 y vuelto a
+    // publicar). El payload traía el borrado, que se esconde por cancelado, y el nuevo se descartaba por llamarse igual:
+    // el evento en vivo desaparecía del Inicio
     const extra = ((V && V.anuncios) || []).filter((a) => a && a.ini && a.n && !ya.has(String(a.id)) &&
-      !base.some((p) => p.sv === a.sv && limpio(p.nombre).toLowerCase() === limpio(a.n).toLowerCase()))
+      !base.some((p) => p.sv === a.sv && limpio(p.nombre).toLowerCase() === limpio(a.n).toLowerCase() && !this.esCancelado(p)))
       .map((a) => ({ nombre: a.n, sv: a.sv, cuando: new Date(a.ini).toISOString(), cupos: a.cup || '', link: a.url || '',
         modalidad: a.mod || '', premios: a.pre || '', vigia: 1 }));
     this.proxV = V;

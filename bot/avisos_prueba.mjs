@@ -523,6 +523,23 @@ const ok = (cond, que) => {
   ok(A.claveDeNombre('volk', 'volk-co') && A.claveDeNombre('snow', 'snow') && A.claveDeNombre('parkji', 'parkjisung') &&
     !A.claveDeNombre('denik', 'jesuslgamer31') && !A.claveDeNombre('sol', 'solx'),
     'la cara de la cuenta sólo si su perfil se llama como lo que escribió (quien anota a otro no le presta la cara)');
+  // 🔑 LA REDENCION (FFA, MULTIVERSE, 03/10/2026): los equipos, el compañero por definir y «primera»
+  const ps = (t) => JSON.stringify((A.personasDeInscripcion(t) || []).map((x) => x.aka + (x.cc ? ':' + x.cc : '')));
+  ok(ps('Trot 🇪🇸+?') === '["Trot:es"]' && ps('Dyzz🇨🇱 +??') === '["Dyzz:cl"]',
+    'el compañero por definir («+?») no es nadie, y no tira la inscripción');
+  ok(ps('Crk🇲🇽  primera') === '["Crk:mx"]' && ps('nc🇮🇶primera') === '["nc:iq"]', '«primera» es llegar primero, no el nombre');
+  ok(ps('Eclipse🇨🇱 +alter🇨🇱') === '["Eclipse:cl","alter:cl"]' && ps('Zignos 🇩🇴 - Abyssus 🇨🇦') === '["Zignos:do","Abyssus:ca"]' &&
+    ps('yinn+ji sung park') === '["yinn","ji sung park"]' && ps('luisito y @mathias') === '["luisito","@mathias"]',
+    'un equipo es una persona por lado: «+», « - », « y »');
+  ok(ps('PichulaMc PolloSport Erian 🇦🇷 🇦🇷 🇵🇦') === '["PichulaMc:ar","PolloSport:ar","Erian:pa"]' &&
+    ps('HASSAN🇦🇷 ABYSSUS🇵🇦') === '["HASSAN:ar","ABYSSUS:pa"]',
+    'los nombres y después las banderas, en orden; y cada uno con la suya sin separador');
+  ok(ps('dxg🇲🇽🇨🇴') === '["dxg:mx"]' && ps('Park-Ji Sung 🇰🇷') === '["Park-Ji Sung:kr"]' && !A.personasDeInscripcion('¿puedo anotarme?'),
+    'dos banderas pegadas son de uno, el guion sin espacios es parte del nombre, y una pregunta sigue sin ser nadie');
+  const eq = A.anotadosDe([{ id: 'r', sv: 'FFA', pub: t0, ini: t0 + 30 * 60000 }],
+    [{ sv: 'FFA', pub: t0 + 60000, texto: 'Zignos 🇩🇴 - Abyssus 🇨🇦', autor_id: '7' }, { sv: 'FFA', pub: t0 + 120000, texto: 'Abyssus 🇨🇦', autor_id: '8' }]);
+  ok(JSON.stringify((eq.r || []).map((x) => x.aka)) === '["Zignos","Abyssus"]' && eq.r[0].msg === eq.r[1].msg,
+    'el equipo entra como dos, del mismo mensaje; y quien ya estaba en un equipo no se repite');
   ok(A.msDeId('1556032680762671145') === Date.parse('2026-10-03T19:58:20.783Z') && A.msDeId('no') === 0,
     'la hora de un mensaje sale de su id (el anuncio de DESGRACIAS EN TOKYO VOL 21: 3:58 PM ET)');
 }

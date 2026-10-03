@@ -1763,6 +1763,51 @@ export function quienesDe(nombres, idx) {
 // quién sos, con tu bandera o con un nombre que la Liga ya conoce, y una pregunta nunca es una inscripción. Acá se
 // saca lo que NO puede ser —una pregunta, un aviso del organizador, una frase— y se marca si trae bandera; lo del
 // nombre conocido lo decide la página, que es la que tiene el padrón (`Liga.anotados()`).
+/**
+ * Las PERSONAS de una inscripción, `[{aka, cc, b}]`, o `null` si no parece una. Cada una pasa por `pareceAnotado()`.
+ *
+ * 🔑 LA REDENCION (FFA, MULTIVERSE, 03/10/2026) trajo lo que la primera versión no sabía leer —Dlx: «me gusta el
+ * sistema de inscripciones… pero hay algunas fallas»—:
+ *   «Trot 🇪🇸+?», «Dyzz🇨🇱 +??»           el compañero por definir no es nadie, y NO tira la inscripción: el «?»
+ *                                          la descartaba entera, y Trot no aparecía
+ *   «Crk🇲🇽  primera», «nc🇮🇶primera»       «primera» es llegar primero, no el nombre
+ *   «Eclipse🇨🇱 +alter🇨🇱», «Zignos 🇩🇴 - Abyssus 🇨🇦», «yinn+ji sung park»
+ *                                          un equipo: una persona por lado (`+`, `&`, `,`, ` y `, ` - ` con espacios:
+ *                                          «Park-Ji Sung» es uno)
+ *   «PichulaMc PolloSport Erian 🇦🇷 🇦🇷 🇵🇦»   los nombres primero y las banderas después, en el mismo orden
+ *   «HASSAN🇦🇷 ABYSSUS🇵🇦»                  cada uno con su bandera, sin separador
+ * ⚠️ Dos banderas pegadas son de UNA persona (`dxg🇲🇽🇨🇴`), como en `escuchar._equipo_de_banderas()`.
+ */
+export function personasDeInscripcion(texto) {
+  let t = String(texto || '').trim();
+  if (!t || /@everyone|@here|<@&\d+>/.test(t)) return null;
+  if (/inscrip/i.test(t) && /abiert|cerrad|se abren|se cierran|abrimos|cerramos/i.test(t)) return null;
+  t = t.replace(/\s*[+&]\s*[?¿]+/g, ' ');
+  if (/[?¿]/.test(t)) return null;
+  t = t.replace(/(^|[^\p{L}\p{N}])(?:primer[oa]?|1r[oa]|first)(?![\p{L}\p{N}])/giu, '$1 ').trim();
+  const RI = '\\p{Regional_Indicator}';
+  const partes = [];
+  for (const p0 of t.split(/\s*[+&,]\s*|\s+-\s+|\s+y\s+/iu)) {
+    const p = p0.trim();
+    if (!p) continue;
+    const banderas = p.match(new RegExp(RI + RI, 'gu')) || [];
+    const sueltas = banderas.length >= 2 && !new RegExp(RI + RI + RI + RI, 'u').test(p);
+    // nombres primero, banderas después y tantas como nombres
+    const m = sueltas && new RegExp('^([^' + '\\p{Regional_Indicator}' + ']+?)\\s*((?:' + RI + RI + '\\s*)+)$', 'u').exec(p);
+    const nombres = m ? m[1].trim().split(/\s+/) : [];
+    if (m && nombres.length === banderas.length) {
+      nombres.forEach((n, i) => partes.push(n + ' ' + banderas[i]));
+    } else if (sueltas) {
+      // cada uno con su bandera: se corta después de cada bandera que sigue un nombre
+      for (const q of p.split(new RegExp('(?<=' + RI + RI + ')\\s*(?=[\\p{L}\\p{N}])', 'u'))) partes.push(q);
+    } else {
+      partes.push(p);
+    }
+  }
+  const out = partes.slice(0, 8).map(pareceAnotado).filter(Boolean);
+  return out.length ? out : null;
+}
+
 export function pareceAnotado(texto) {
   const t = String(texto || '').trim();
   if (!t || t.indexOf('?') >= 0) return null;
@@ -1803,15 +1848,19 @@ export function msDeId(id) {
 export function anotadosDe(eventos, inscritos) {
   const out = {};
   for (const x of inscritos || []) {
-    const p = pareceAnotado(x && x.texto);
-    if (!p) continue;
+    // 🔑 una inscripción puede traer a varios: un equipo del MULTIVERSE (ver `personasDeInscripcion()`)
+    const ps = personasDeInscripcion(x && x.texto);
+    if (!ps) continue;
     const e = (eventos || []).filter((y) => y.sv === x.sv && y.pub <= x.pub && x.pub <= y.ini + 30 * MIN)
       .sort((a, b) => a.ini - b.ini)[0];
     if (!e) continue;
     const l = out[e.id] = out[e.id] || [];
-    const n = p.aka.normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
-    if (!n || l.some((y) => y.n === n)) continue;
-    l.push({ n, aka: p.aka, cc: p.cc, b: p.b, autor: String((x && x.autor_id) || '') });
+    for (const p of ps) {
+      const n = p.aka.normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+      if (!n || l.some((y) => y.n === n)) continue;
+      // `msg`: de qué mensaje salió, para la cara de la cuenta (`anotados()` del objeto)
+      l.push({ n, aka: p.aka, cc: p.cc, b: p.b, autor: String((x && x.autor_id) || ''), msg: String((x && x.pub) || '') });
+    }
   }
   return out;
 }
@@ -3056,11 +3105,24 @@ export class Avisos {
    * nombre. Sin Discord IDs: viaja `[nombre, bandera, clave, con bandera]`.
    */
   async anotados(ahora) {
+    // 🔴 EL ANUNCIO BORRADO Y VUELTO A PUBLICAR ES EL MISMO EVENTO (LA REDENCION, FFA, 03/10/2026: el de las 6:19 se
+    // borró a las 6:26 y salió otro igual). Las inscripciones eran del primero, y al primero se lo da por cancelado: la
+    // página mostraba el nuevo sin un solo anotado. El cancelado no es un evento, y su hora de publicación pasa al que lo
+    // reemplaza —mismo servidor, mismo nombre, hasta 12 horas después—, así lo que se anotó antes vale para el nuevo
+    const tit = (t) => String(t || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+    const cxs = this.sql.exec('SELECT id, sv, cuerpo FROM cancelados WHERE t > ?', ahora - 2 * 24 * HORA).toArray().map((r) => {
+      let c = {};
+      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+      return { id: r.id, sv: r.sv, t: tit(c.t), pub: msDeId(r.id) };
+    });
     const evs = this.sql.exec("SELECT id, cuerpo FROM avisos WHERE estado != 2 AND instr(id, ':') = 0 AND creado > ?",
       ahora - 2 * 24 * HORA).toArray().map((r) => {
       let c = {};
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
-      return c.tipo === 'evento' && c.ini != null && c.sv ? { id: r.id, sv: c.sv, ini: c.ini, pub: msDeId(r.id) } : null;
+      if (!(c.tipo === 'evento' && c.ini != null && c.sv) || cxs.some((x) => x.id === r.id)) return null;
+      const pub = msDeId(r.id);
+      const antes = cxs.filter((x) => x.sv === c.sv && x.t && x.t === tit(c.t) && x.pub < pub && pub - x.pub < 12 * HORA);
+      return { id: r.id, sv: c.sv, ini: c.ini, pub: Math.min(pub, ...antes.map((x) => x.pub)) };
     }).filter((e) => e && e.pub && e.ini - INSC_ANTES <= ahora && ahora <= e.ini + INSC_DESPUES);
     if (!evs.length) {
       if (Object.keys((this.leer('anotados') || {}).ev || {}).length) this.guardar('anotados', { t: ahora, ev: {} });
@@ -3070,8 +3132,11 @@ export class Avisos {
     const insc = this.sql.exec('SELECT autor_id, sv, pub, texto FROM inscritos WHERE pub > ? ORDER BY pub',
       Math.min(...evs.map((e) => e.pub)) - MIN).toArray().filter((x) => svs.has(x.sv));
     const por = anotadosDe(evs, insc);
+    // ⚠️ LA CARA DE LA CUENTA, SÓLO A QUIEN SE ANOTÓ UNA VEZ: quien anota a otros en varios mensajes no le presta la
+    // cara a nadie. Por MENSAJE y no por nombre desde los equipos (03/10/2026): «yinn+ji sung park» es un mensaje, y
+    // la cara va sólo al nombre que coincide con la cuenta (`claveDeNombre()`)
     const nombres = {};
-    for (const l of Object.values(por)) for (const y of l) if (/^\d+$/.test(y.autor)) (nombres[y.autor] = nombres[y.autor] || new Set()).add(y.n);
+    for (const l of Object.values(por)) for (const y of l) if (/^\d+$/.test(y.autor)) (nombres[y.autor] = nombres[y.autor] || new Set()).add(y.msg);
     let pedidos = 0;
     const ev = {};
     for (const [id, l] of Object.entries(por)) {

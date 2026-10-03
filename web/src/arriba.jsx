@@ -905,11 +905,15 @@ function momentos(liga, vivoL) {
     const L = llaveEnVivo(e, vivoL);
     const n = limpio(e.nombre);
     const dd = aDiscord(liga, e, true);
+    // 🔑 LO BÁSICO DEL ANUNCIO, TAMBIÉN EN VIVO (Dlx, 03/10/2026, con LA REDENCION: «es MULTIVERSE… debería decirlo
+    // ahí… no todo pero lo básico»): la modalidad, los cupos y el premio, como en el Próximo
+    const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
     out.push({
       tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: vivos.length > 1 ? 'En vivo · ' + e.sv : 'En vivo', sv: e.sv,
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag">EN VIVO AHORA</span>
         <span className="hero-meta">{e.sv} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
+        {det || e.premios ? <p className="hero-p">{det}{e.premios ? (det ? '. ' : '') + 'Premio: ' + recorte(e.premios, 70) : ''}</p> : null}
         <p className="hero-p">{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
         {L ? null : <Anotados liga={liga} e={e} />}
         <div className="hero-acc">
