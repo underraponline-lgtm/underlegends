@@ -492,6 +492,56 @@
    "b": "ERIKDANIEL🇦🇷 + SIX🇦🇷",
    "ganador": "ERIKDANIEL🇦🇷 + SIX🇦🇷",
    "votos": "1–0"
+  },
+  "1556084050895048845": {
+   "id": "1556084050895048845",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791069748377,
+   "a": "Faso 🇦🇷",
+   "b": "Benjixo 🇺🇾",
+   "ganador": "Benjixo 🇺🇾",
+   "votos": "2–0"
+  },
+  "1556084910916374539": {
+   "id": "1556084910916374539",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791069953422,
+   "a": "HASSAN🇦🇷",
+   "b": "LRS🇦🇷",
+   "ganador": "HASSAN🇦🇷",
+   "votos": "1–0"
+  },
+  "1556086423491313675": {
+   "id": "1556086423491313675",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791070314048,
+   "a": "Catarsis 🇦🇷",
+   "b": "Velatz 🇨🇱",
+   "ganador": "Catarsis 🇦🇷",
+   "votos": "2–0"
+  },
+  "1556088272411824181": {
+   "id": "1556088272411824181",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791070754865,
+   "a": "Hassan 🇦🇷",
+   "b": "PichulaMC 🇦🇷",
+   "ganador": "PichulaMC 🇦🇷",
+   "votos": "2–0"
+  },
+  "1556090397514666087": {
+   "id": "1556090397514666087",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791071261529,
+   "a": "Catarsis 🇦🇷",
+   "b": "Benjixo 🇺🇾",
+   "ganador": "Catarsis 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -919,8 +969,8 @@
    "g": "1467763447117778989",
    "canal": "1540224373309444257",
    "pub": 1791068804740,
-   "ed": 1791069748377,
-   "texto": "`[ CUARTOS ]`\n⌞Jahno 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n`[ CUARTOS ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞Erian 🇵🇦⌝\n⌞Faso 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝",
+   "ed": 1791071602861,
+   "texto": "`[ CUARTOS ]`\n⌞Jahno 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n`[ CUARTOS ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞Erian 🇵🇦⌝\n⌞Faso 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞Velatz 🇨🇱⌝\n`[ SEMIFINALES ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -948,8 +998,38 @@
       "Faso 🇦🇷",
       "Benjixo 🇺🇾"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "Benjixo 🇺🇾",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Catarsis 🇦🇷",
+      "Velatz 🇨🇱"
+     ],
+     "Catarsis 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Hassan 🇦🇷",
+      "PichulaMC 🇦🇷"
+     ],
+     "PichulaMC 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Catarsis 🇦🇷",
+      "Benjixo 🇺🇾"
+     ],
+     "Catarsis 🇦🇷",
+     "veredicto",
      []
     ]
    ]
