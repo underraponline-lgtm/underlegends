@@ -63,8 +63,11 @@ function Ejemplo({ i, onCerrar, onIr }) {
           <button type="button" className="btn-ico" aria-label="Cerrar" onClick={onCerrar}><Ico n="cerrar" t={20} /></button>
         </header>
         <figure className="ej-fig">
-          <img alt={'Ejemplo: ' + q.t} src={'/ejemplos/ej-' + q.ej + '.webp'} />
-          <figcaption>EJEMPLO DE LA LIGA DE HOY</figcaption>
+          {/* tocarla la abre en grande: en el celular la llave entera no se lee en 360 px */}
+          <a href={'/ejemplos/ej-' + q.ej + '.webp'} target="_blank" rel="noopener noreferrer" aria-label="Ver la imagen en grande">
+            <img alt={'Ejemplo: ' + q.t} src={'/ejemplos/ej-' + q.ej + '.webp'} />
+          </a>
+          <figcaption>EJEMPLO DE LA LIGA DE HOY · TOCALA PARA VERLA EN GRANDE</figcaption>
         </figure>
         <p className="ej-tx">{q.mas}</p>
         <footer className="ej-pie">

@@ -75,6 +75,14 @@ let cambiosAntes = (() => {
 // desde la 2.02 (Dlx, 03/10/2026: «1. A 2. A»)
 const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1 };
 const esPropia = (p) => !!PROPIAS[p];
+// 🔍 UNA PREVIEW SE PRENDE CON UN LINK: `?prev=sum` deja `lg:prev-sum` en este navegador (y `?noprev=sum` la apaga),
+// para que Dlx la pruebe sin tocar la consola. No es un secreto: las previews sólo esconden lo que falta aprobar
+try {
+  const mp = /[?&]prev=([a-z]{2,12})/.exec(location.search);
+  const mn = /[?&]noprev=([a-z]{2,12})/.exec(location.search);
+  if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');
+  if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
+} catch (e) { /* sin almacenamiento, sin preview */ }
 // 🔍 /sumate, en preview (03/10/2026): sólo con `lg:prev-sum`. Sin eso, la dirección muestra el Inicio
 function prevSum() {
   try { return !!localStorage.getItem('lg:prev-sum'); } catch (e) { return false; }
