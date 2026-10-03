@@ -8,7 +8,7 @@
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, utc } from './liga.js';
-import { Cara, Carta, Compartir, Ico, accion, enlace } from './piezas.jsx';
+import { Cara, Carta, Compartir, Ico, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
@@ -37,18 +37,7 @@ function formato(m) {
   return x ? (x[1] + 'VS' + x[2] + (x[3] ? ' ' + x[3] : '')).replace(/\breplica\b/i, 'réplica') : t;
 }
 
-// ── la campana, con el estado de campana.js (`window.Campana`): los mismos pasos de siempre, con el estilo nuevo ──
-function useCampana() {
-  const leer = () => (window.Campana ? window.Campana.estado() : null);
-  const [e, setE] = useState(leer);
-  useEffect(() => {
-    const f = () => setE(leer());
-    window.addEventListener('lg:campana', f);
-    const t = setTimeout(f, 600);
-    return () => { window.removeEventListener('lg:campana', f); clearTimeout(t); };
-  }, []);
-  return e;
-}
+// ── la campana, con el estado de campana.js (`useCampana()` de piezas.jsx): los mismos pasos de siempre, con el estilo nuevo ──
 function Campana({ liga }) {
   const e = useCampana();
   const C = window.Campana;

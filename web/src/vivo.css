@@ -1146,6 +1146,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .pub-fel.va{opacity:.6}
 .pub-fel.tuyo{border-style:dashed;cursor:default}
 .pub-fel:disabled{cursor:default}
+.pub-avb,.pub-bloque > .pub-a{margin-top:12px}
+.pub-bloque > .pub-a{display:inline-block}
 .pub-err{flex-basis:100%;font:700 11px/1.4 "Space Mono",monospace;color:var(--magenta-tx)}
 .pub-cartas{display:grid;grid-auto-flow:column;grid-auto-columns:62px;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .pub-cartas::-webkit-scrollbar{display:none}

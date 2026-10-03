@@ -9,7 +9,7 @@
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { useEffect, useMemo, useState } from 'react';
 import { limpio, num } from './liga.js';
-import { Cara, Carta, Ico, accion } from './piezas.jsx';
+import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
 const ANUNCIOS = { anuncio: 1, liga: 1 };
@@ -143,12 +143,28 @@ function Cartas({ liga, xs }) {
   const us = xs.filter((it) => { const k = (it.ks || [])[0]; if (!k || vistos.has(k)) return false; vistos.add(k); return true; });
   const n = us.length;
   const nombres = us.slice(0, 3).map((it) => limpio((it.quien || [])[0] || '')).join(', ');
+  if (!n) return null;
+  // una sola: como cualquier publicación, la carta al costado (en una fila de cartas quedaba sola y el resto vacío)
+  if (n === 1) {
+    const k = us[0].ks[0];
+    return (
+      <article className="pub tarjeta">
+        <div className="pub-v"><button type="button" className="pub-mini" onClick={() => accion.carta(k)} aria-label={'La carta de ' + nombres}>
+          <Carta liga={liga} k={k} cual={us[0].carta} cls="pub-carta" abre={false} /></button></div>
+        <div className="pub-c">
+          <span className="pub-cat">CARTA NUEVA<small>{liga.cuando(us[0].t)}</small></span>
+          <p className="pub-t"><b>{nombres}</b> ya tiene su carta {CARTA[us[0].carta] || ''}</p>
+          <div className="pub-acc"><button type="button" className="pub-a" onClick={() => accion.carta(k)}>Ver la carta</button>
+            {liga.T[k] ? <a className="pub-a" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a> : null}</div>
+        </div>
+      </article>
+    );
+  }
   return (
     <article className="pub cartas">
       <div className="pub-c">
-        <span className="pub-cat">{n === 1 ? 'CARTA NUEVA' : 'CARTAS NUEVAS'}<small>{liga.cuando(xs[0].t)}</small></span>
-        <p className="pub-t">{n === 1 ? <><b>{nombres}</b> ya tiene su carta {CARTA[us[0].carta] || ''}</>
-          : <><b>{nombres}</b>{n > 3 ? ' y ' + (n - 3) + ' más' : ''} ya tienen su carta</>}</p>
+        <span className="pub-cat">CARTAS NUEVAS<small>{liga.cuando(xs[0].t)}</small></span>
+        <p className="pub-t"><b>{nombres}</b>{n > 3 ? ' y ' + (n - 3) + ' más' : ''} ya tienen su carta</p>
         <div className="pub-cartas">
           {us.slice(0, 12).map((it) => {
             const k = (it.ks || [])[0];
@@ -204,6 +220,24 @@ function Encuestas({ liga, enc }) {
         {x2 ? <div className={'pub-enc-i' + (ver === 'x2' ? ' on' : '')}><X2 liga={liga} enc={enc} E={x2} /></div> : null}
         {el ? <div className={'pub-enc-i' + (ver === 'el' ? ' on' : '')}><Elegido liga={liga} enc={enc} E={el} /></div> : null}
       </div>
+    </section>
+  );
+}
+// 🔔 que te llegue cuando te felicitan: la campana activa y vinculada con tu Discord. Sin eso, Felicitar no le llega a
+// nadie al teléfono. Se va sola cuando está todo
+function Avisame() {
+  const e = useCampana();
+  const C = window.Campana;
+  if (!e || !C || (e.activa && e.yo && e.yo.id)) return null;
+  const puede = e.soporta && !e.negado;
+  return (
+    <section className="pub-bloque">
+      <h2 className="evp-h2">🔔 Que te llegue</h2>
+      <p className="pub-tx">Cuando te felicitan, cuando gana alguien que seguís y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
+      {!puede ? <a className="pub-a" href="#/avisos">Cómo activarlos</a>
+        : !e.activa ? <button type="button" className="btn verde chico pub-avb" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button>
+          : <button type="button" className="btn borde2 chico pub-avb" onClick={() => C.vincular()}>Vincular con mi Discord</button>}
+      {e.msg ? <p className="evp-msg" role="status">{e.msg}</p> : null}
     </section>
   );
 }
@@ -282,6 +316,7 @@ export function Publicaciones({ liga, enc }) {
         <aside className="pub-der">
           <div className="pub-der-in">
             <section className="pub-bloque"><h2 className="evp-h2">👏 Lo más felicitado</h2><MasFelicitado liga={liga} pubs={semana} A={A} /></section>
+            <Avisame />
             {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">★ A quién seguís</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
           </div>
         </aside>

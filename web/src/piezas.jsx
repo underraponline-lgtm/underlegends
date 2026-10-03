@@ -82,6 +82,19 @@ export const accion = {
 
 // la dirección de algo de la página, para compartirla (sirve también en las direcciones de prueba de Pages):
 // «#/r/hassan» -> «https://…/freestyle-rap/r/hassan», con `urlLG()` del script del principio (web/montar.py)
+// el estado de la campana de campana.js (`window.Campana`), que avisa con `lg:campana`: lo usan Eventos y Publicaciones
+export function useCampana() {
+  const leer = () => (window.Campana ? window.Campana.estado() : null);
+  const [e, setE] = useState(leer);
+  useEffect(() => {
+    const f = () => setE(leer());
+    window.addEventListener('lg:campana', f);
+    const t = setTimeout(f, 600);
+    return () => { window.removeEventListener('lg:campana', f); clearTimeout(t); };
+  }, []);
+  return e;
+}
+
 export const enlace = (ruta) => location.origin + (window.urlLG ? window.urlLG(ruta) : '/' + ruta);
 
 // ── compartir: el menú de compartir del teléfono (WhatsApp, Discord…) o, en la computadora, el link copiado.
