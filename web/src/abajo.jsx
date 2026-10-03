@@ -60,7 +60,7 @@ export function Pie({ liga }) {
   return (
     <footer className="pie negra">
       <div className="pie-marca"><img alt="" src="/ul.png" /><span>UNDER LEGENDS<small>LIGA GLOBAL · {liga.tempLarga}</small></span></div>
-      <nav><a href="#/guia">Guía</a><a href="#/publicaciones">Publicaciones</a><a href="#/tienda">Tienda</a><a href="#/mundo">Mundo</a>
+      <nav><a href="#/guia">Guía</a><a href="#/publicaciones">Publicaciones</a><a href="#/tienda">Tienda</a>{menu().filter(([, r]) => r === '#/mundo' || r === '#/socios').map(([n, r]) => <a key={r} href={r}>{n}</a>)}
         <a href="#/cambios">Cambios</a><a href="/privacidad.html">Privacidad</a><a href="/terminos.html">Términos</a></nav>
       <small>Los datos se actualizan solos cada media hora.</small>
     </footer>

@@ -1240,7 +1240,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-tot dt{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0}
 .soc-tot dd{margin:0;font:900 30px/1 Archivo,sans-serif;font-stretch:120%;color:#F6F6F6}
 .soc-lista{display:grid;gap:14px;padding:18px 16px 8px}
-.soc{display:grid;gap:14px;padding:16px 16px 16px 22px;border:2px solid var(--linea);background:var(--caja);box-shadow:inset 6px 0 0 var(--c)}
+.soc{display:flex;flex-direction:column;gap:14px;padding:16px 16px 16px 22px;border:2px solid var(--linea);background:var(--caja);box-shadow:inset 6px 0 0 var(--c)}
 .soc-cab{display:flex;align-items:center;gap:14px;min-width:0}
 .soc-logo{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--c);object-fit:cover;background:#030304}
 .soc-cab h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
@@ -1254,7 +1254,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-carta-c{display:block;width:72px;height:auto}
 .soc-datos{list-style:none;margin:0;padding:0;display:grid;gap:9px;font:600 14px/1.35 Archivo,sans-serif;min-width:0}
 .soc-datos b{display:block;font:700 10px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--magenta-tx);margin-bottom:4px}
-.soc-acc{display:flex;flex-wrap:wrap;gap:8px}
+.soc-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.soc-num .soc-sin{grid-column:span 2}
+.soc-sin dd{font-size:15px;line-height:1.2}
+/* el lugar que sobra con un número impar de servidores: invita al que falta */
+.soc-mas{align-items:flex-start;justify-content:center;border-style:dashed;box-shadow:none;padding-left:16px}
+.soc-mas h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.soc-mas p{margin:0;font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris);max-width:40ch}
+.soc-mas-c{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;border:3px dashed var(--gris);
+  font:900 30px/1 Archivo,sans-serif;color:var(--gris)}
 .soc-pat{padding:18px 16px}
 .soc-pat ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
 .soc-pat img{height:56px;width:auto}

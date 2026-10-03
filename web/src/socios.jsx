@@ -30,8 +30,11 @@ function Socio({ liga, s }) {
         </div>
       </header>
       <dl className="soc-num">
-        <div><dt>RAPEROS</dt><dd>{num(s.n || 0)}</dd></div>
-        <div><dt>PUNTOS</dt><dd>{num(s.pts || 0)}</dd></div>
+        {/* «0 de 0» no es un número: quien todavía no jugó la temporada lo dice en palabras (la regla del proyecto) */}
+        {s.n || s.pts ? <>
+          <div><dt>RAPEROS</dt><dd>{num(s.n || 0)}</dd></div>
+          <div><dt>PUNTOS</dt><dd>{num(s.pts || 0)}</dd></div>
+        </> : <div className="soc-sin"><dt>LA {liga.temp}</dt><dd>Todavía sin eventos</dd></div>}
         <div><dt>EN SU DISCORD</dt><dd>{s.miembros ? num(s.miembros) : '—'}</dd></div>
         <div><dt>ESTA SEMANA</dt><dd className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</dd></div>
       </dl>
@@ -62,6 +65,12 @@ export function Socios({ liga }) {
   const dra = liga.svs.DRA;
   // 🔑 los patrocinadores, cuando haya: sin dato no hay pieza (Dlx: «3. A»)
   const pat = Array.isArray(liga.d.patrocinadores) ? liga.d.patrocinadores : [];
+  // baja hasta «Sumá tu servidor» (adentro del shadow root del Inicio nuevo)
+  const sumar = () => {
+    const h = document.getElementById('inicio-nuevo');
+    const s = h && h.shadowRoot ? h.shadowRoot.querySelector('.soc-sumar') : null;
+    if (s) window.scrollTo({ top: s.getBoundingClientRect().top + window.scrollY - 10, behavior: 'smooth' });
+  };
   return (
     <>
       <div className="escena soc-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.85 }}>
@@ -79,6 +88,15 @@ export function Socios({ liga }) {
       </div>
       <section className="soc-lista" aria-label="Los servidores de la Liga">
         {svs.map((s) => <Socio key={s.sv} liga={liga} s={s} />)}
+        {/* con un número impar de servidores, el lugar que sobra en la compu invita al que falta (sin huecos grandes) */}
+        {svs.length % 2 ? (
+          <article className="soc soc-mas">
+            <span className="soc-mas-c" aria-hidden="true">+</span>
+            <h2>Tu servidor, acá</h2>
+            <p>Sus eventos suman a la misma tabla que estos {svs.length}, y su gente tiene su carta.</p>
+            <a className="btn verde chico" href="#/socios" onClick={(e) => { e.preventDefault(); sumar(); }}>Cómo se suma</a>
+          </article>
+        ) : null}
       </section>
       {pat.length ? (
         <section className="soc-pat" aria-label="Patrocinadores">
