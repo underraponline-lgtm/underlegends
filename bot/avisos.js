@@ -2785,7 +2785,19 @@ export class Avisos {
       let c = {};
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
       return { id: r.id, sv: r.sv, n: c.t || '', ini: c.ini || null, t: r.t, por: r.por };
-    }) };
+    }),
+    // 📣 Y LOS EVENTOS QUE EL VIGÍA YA VIO ANUNCIAR (03/10/2026, Dlx: «se ha anunciado el evento y no se ve en
+    // inicio»). El payload los trae recién en la corrida siguiente del ciclo —hasta 30 min, y la mayoría de los
+    // eventos se anuncian con 15 min o menos—: DESGRACIAS EN TOKYO VOL 21 se avisó al teléfono a las 3:59 PM y el
+    // Inicio no lo tenía. La página los suma a «próximos» mientras el payload no los traiga (`Liga.proximos()`).
+    // Sólo los de verdad: ni los descartados (estado 2), ni el recordatorio (`:antes`), ni pruebas ni cancelaciones
+    anuncios: this.sql.exec("SELECT id, cuerpo FROM avisos WHERE creado > ? AND estado != 2 AND instr(id, ':') = 0 " +
+      'ORDER BY creado DESC LIMIT 12', ahora - 24 * HORA).toArray().map((r) => {
+      let c = {};
+      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+      return c.tipo === 'evento' && c.sv !== SV_PRUEBA && c.t ? { id: r.id, sv: c.sv, n: c.t, ini: c.ini || null,
+        mod: c.mod || '', cup: c.cup || '', pre: c.pre || '', url: c.url || '', cx: c.cx ? 1 : 0 } : null;
+    }).filter(Boolean) };
   }
 
   /** De qué Discord ID es cada nombre (`turnos:nombres`, ver `bot/avisos_personales.py`), leído cada 10 minutos. */

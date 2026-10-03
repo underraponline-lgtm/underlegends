@@ -294,7 +294,7 @@ function slidesDe(liga, items) {
       out.push(Slide('SE BUSCA · CAZADO', <><div className="st-caza"><Cara liga={liga} k={a ? a.k : ''} nombre={it.a} cls="st-cara" /><span className="sello">CAZADO</span></div>
         <h3 className="st-h">{q[0]} cazó a {it.a}</h3><small className="st-s">{it.cat} · cobra {num(it.pts)}</small></>, c, 'Ver Se busca', { ancla: 'sebusca' }));
     } else if (it.tipo === 'anuncio') {
-      const e = (liga.d.proximos || []).find((x) => limpio(x.nombre) === limpio(it.ev));
+      const e = liga.proximos().find((x) => limpio(x.nombre) === limpio(it.ev));
       let cu = '';
       if (e) {
         cu = liga.vivo().includes(e) ? 'en vivo desde las ' + liga.dia(e.cuando).replace(/^hoy /, '') : liga.dia(e.cuando);

@@ -249,6 +249,26 @@ export class Liga {
     const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
     return !!m && this.cancelados().some((c) => String(c.id) === m[1]);
   }
+  // 📣 «PRÓXIMOS» = LO DEL PAYLOAD + LO QUE EL VIGÍA YA VIO ANUNCIAR (03/10/2026, Dlx: «se ha anunciado el evento y no se
+  // ve en inicio»). El payload trae un anuncio recién en la corrida siguiente del ciclo —hasta 30 min— y el vigía lo ve
+  // al minuto: es el mismo que hace sonar la campana (`anuncios` en `vivo()` de bot/avisos.js, `window.VIVO` de app.js).
+  // Con el formato del payload y `vigia: 1`; cuando el ciclo lo trae, se queda el del payload (el mismo mensaje).
+  // ⚠️ Se arma una vez por cada `window.VIVO`: el Inicio compara eventos por identidad (`liga.vivo().includes(e)`)
+  proximos() {
+    const V = typeof window !== 'undefined' ? window.VIVO : null;
+    if (this.proxCache && this.proxV === V) return this.proxCache;
+    const base = this.d.proximos || [];
+    const idDe = (u) => { const m = /\/(\d{15,22})\/?$/.exec(String(u || '')); return m ? m[1] : ''; };
+    const ya = new Set();
+    base.concat(this.d.calendario || []).forEach((x) => { const id = idDe(x.link); if (id) ya.add(id); });
+    const extra = ((V && V.anuncios) || []).filter((a) => a && a.ini && a.n && !ya.has(String(a.id)) &&
+      !base.some((p) => p.sv === a.sv && limpio(p.nombre).toLowerCase() === limpio(a.n).toLowerCase()))
+      .map((a) => ({ nombre: a.n, sv: a.sv, cuando: new Date(a.ini).toISOString(), cupos: a.cup || '', link: a.url || '',
+        modalidad: a.mod || '', premios: a.pre || '', vigia: 1 }));
+    this.proxV = V;
+    this.proxCache = extra.length ? base.concat(extra) : base;
+    return this.proxCache;
+  }
   vivo() {
     const m = this.d.vivo_min || 90;
     const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => !L.terminada) : [];
@@ -257,7 +277,7 @@ export class Liga {
       try { return !!window.llaveDeEvento(e, ls); } catch (err) { return false; }
     };
     const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
-    const out = (this.d.proximos || []).filter((e) => {
+    const out = this.proximos().filter((e) => {
       const s = desde(e);
       return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e)));
     });
@@ -268,7 +288,8 @@ export class Liga {
     });
     return out;
   }
-  luego() { return (this.d.proximos || []).filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)); }
+  // en orden de hora: lo que suma el vigía va al final de la lista y puede ser lo primero que se juega
+  luego() { return this.proximos().filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)).sort((a, b) => utc(a.cuando) - utc(b.cuando)); }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }
   campeon(ll) {
     const t = ll.tabla || [];

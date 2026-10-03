@@ -530,12 +530,12 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   // el calendario, con lo que trae el anuncio de cada uno que todavía no se jugó (cupos, premio, quién organiza)
   const cal = useMemo(() => {
     const px = {};
-    (liga.d.proximos || []).forEach((p) => { if (p.link) px[p.link] = p; });
+    liga.proximos().forEach((p) => { if (p.link) px[p.link] = p; });
     // ⚠️ sin lo que el vigía ya vio cancelado (como el Inicio): se ofrecía para inscribirse (revisión del 03/10/2026)
     const out = (liga.d.calendario || []).filter((c) => !liga.esCancelado(c))
       .map((c) => Object.assign({}, c, { px: (c.link && px[c.link]) || null }));
     // lo anunciado que el calendario todavía no trae (recién anunciado)
-    (liga.d.proximos || []).forEach((p) => {
+    liga.proximos().forEach((p) => {
       if (!liga.esCancelado(p) && !out.some((c) => c.link && c.link === p.link)) out.push({ n: p.nombre, sv: p.sv, t: p.cuando, link: p.link, mod: p.modalidad, fut: 1, px: p });
     });
     return out;
