@@ -402,6 +402,26 @@
    "b": "HASSAN",
    "ganador": "HASSAN",
    "votos": "1–0"
+  },
+  "1555798716982632519": {
+   "id": "1555798716982632519",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791001719471,
+   "a": "MONET",
+   "b": "KURLW",
+   "ganador": "KURLW",
+   "votos": "1–0"
+  },
+  "1555799835058118749": {
+   "id": "1555799835058118749",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791001986041,
+   "a": "MOSQUITRAP",
+   "b": "NHP",
+   "ganador": "NHP",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -662,8 +682,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791000899431,
-   "ed": 1791001291156,
-   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝",
+   "ed": 1791003036452,
+   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝\n⌞# MONET⌝ 🆚 ⌞KURLW⌝\n⌞# MOSQUITRAP⌝ 🆚 ⌞NHP⌝\n⌞# MD⌝ 🆚 ⌞LORD⌝ 🆚 ⌞ERIAN⌝\n⌞# ZA⌝ 🆚 ⌞CRK⌝ 🆚 ⌞CINEXFILO⌝ 🆚 ⌞RUVI⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -682,8 +702,51 @@
       "SCOT",
       "ZAIK"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "# NUMBER",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# MONET",
+      "KURLW"
+     ],
+     "KURLW",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# MOSQUITRAP",
+      "NHP"
+     ],
+     "NHP",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# MD",
+      "LORD",
+      "ERIAN"
+     ],
+     "ERIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# ZA",
+      "CRK",
+      "CINEXFILO",
+      "RUVI"
+     ],
+     "# ZA",
+     "veredicto",
      []
     ]
    ]
