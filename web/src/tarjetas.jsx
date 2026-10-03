@@ -1,14 +1,16 @@
 // Tarjetas (`#/tarjetas` y `#/tarjetas/<carta>`): todas las tarjetas, las tuyas y «Comparar dos». Dlx, 03/10/2026:
 // «hay que reworkear la página de las tarjetas», y al plan: «1. A» (la galería arriba, con el buscador) · «2. A» («Las
 // tuyas» arriba si entraste: tus cuatro y, en las bloqueadas, qué te falta) · «3. A» (una pestaña por tipo de tarjeta).
-// En preview con `?prev=tar` (`lg:prev-tar`) hasta su OK; mientras, la de app.js sigue para todos.
+// Para todos desde la 2.08 (Dlx: «1. A»), con sus dos ideas: «2. A» (tu tarjeta para historias) y «3. A» (los filtros
+// de la galería: Nuevas, A quién seguís y por servidor). La de app.js sigue escondida, de respaldo.
 //
 // ⚠️ LOS DATOS SON LOS DE LA PÁGINA DE HOY, no otros: quién aparece (`conTarjeta()` de app.js: alguna carta y foto), el
 // orden (el de la tabla), las filas de «Comparar dos» (`CMP_FILAS` de app.js) y lo que falta (`req` de /api/perfiles,
 // como «Lo que le falta» del perfil). Si una regla cambia allá, cambia acá.
 import { useEffect, useMemo, useState } from 'react';
-import { limpio, norm, num } from './liga.js';
-import { Carta, Compartir, Ico, accion, enlace } from './piezas.jsx';
+import { limpio, norm, num, utc } from './liga.js';
+import { Carta, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
@@ -44,6 +46,57 @@ function Abanico({ liga, t, top }) {
         <li key={f.k} className={['izq', 'centro', 'der'][i]}><Carta liga={liga} k={f.k} cual={t} cls="tj-c" /></li>
       ))}
     </ol>
+  );
+}
+
+// ── tu tarjeta para historias (Dlx, 03/10/2026: «2. A»): la imagen vertical de esa carta con el marco de la Liga, como
+// «Mi puesto para historias» del Ranking y el campeón de Eventos (el marco, la carta y el compartir viven en historia.js) ──
+function datoDe(liga, f, c) {
+  if (c === 'temporada') return (f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO') + (f.ovr ? ' · OVR ' + f.ovr : '');
+  if (c === 'competitivo') return [f.rg ? 'RANGO ' + f.rg : '', f.sc ? 'SCORE ' + String(f.sc).replace('.', ',') : ''].filter(Boolean).join(' · ');
+  if (c === 'servidor') return f.sv ? String((liga.svs[f.sv] || {}).nombre || f.sv).toUpperCase() : '';
+  if (c === 'pais') return f.cc ? nombrePais(f.cc).toUpperCase() : '';
+  return '';
+}
+async function imagenTarjeta(liga, k, c) {
+  const f = liga.T[k] || {};
+  const { c: lz, g, letra } = await lienzo();
+  letra(700, 34, true); g.fillStyle = '#A5A5A0';
+  g.fillText(('LIGA GLOBAL · ' + liga.temp + ' · MI TARJETA').toUpperCase(), 72, 132);
+  const tit = NOMBRE[c].toUpperCase();
+  let px = 116;
+  letra(900, px, false);
+  while (px > 60 && g.measureText(tit).width > W - 144) { px -= 6; letra(900, px, false); }
+  g.fillStyle = '#F6F6F6'; g.fillText(tit, 72, 132 + 24 + px * 0.9);
+  const y0 = 330;
+  const ch = await carta(g, letra, liga, k, f.n || k, c, W / 2, y0, 700, 1120);
+  // debajo, en verde agua, lo que dice esa carta: el puesto, el rango, el servidor o el país
+  const dato = datoDe(liga, f, c);
+  if (dato) {
+    const ye = y0 + ch + 36;
+    let pd = 40;
+    letra(700, pd, true);
+    while (pd > 24 && g.measureText(dato).width > 760 - 60) { pd -= 2; letra(700, pd, true); }
+    g.fillStyle = '#29B298'; g.fillRect((W - 760) / 2, ye, 760, 104);
+    g.fillStyle = '#030304'; g.textAlign = 'center';
+    g.fillText(dato, W / 2, ye + 52 + Math.round(pd * 0.36));
+  }
+  await pie(g, letra);
+  return aPng(lz);
+}
+function BotonHistoria({ liga, k, c }) {
+  const [est, setEst] = useState('');
+  const hacer = () => {
+    if (est === 'armando') return;
+    armarYCompartir(() => imagenTarjeta(liga, k, c), 'mi-tarjeta-' + c + '-' + k + '.png',
+      'Mi tarjeta de ' + NOMBRE[c] + ' de la Liga Global. ' + enlace('#/r/' + encodeURIComponent(k)), setEst, 'tarjetas');
+  };
+  const txt = est === 'armando' ? 'Armando…' : est === 'bajada' ? 'Imagen guardada' : est === 'error' ? 'No pude armarla' : 'Para historias';
+  return (
+    <button type="button" className="tj-hist" onClick={hacer} aria-busy={est === 'armando'} aria-live="polite"
+      aria-label={est ? undefined : 'Tu tarjeta de ' + NOMBRE[c] + ' para historias'}>
+      <Ico n="compartir" t={14} /><span>{txt}</span>
+    </button>
   );
 }
 
@@ -97,6 +150,7 @@ function Tuya({ liga, k, c, tiene, bloq, cs, nv, jugo }) {
                 : <small>Bloqueada</small>}
         {!tiene && !listo && !espera && cs.length ? <Falta cs={cs} /> : null}
         {espera ? <a className="tj-lnk" href="#/cuenta/verificar">Verificarme</a> : null}
+        {tiene && fila ? <BotonHistoria liga={liga} k={k} c={c} /> : null}
       </div>
     </li>
   );
@@ -144,25 +198,56 @@ function LasTuyas({ liga, dc, perf }) {
   );
 }
 
-// ── la galería: todas las de ese tipo, con el buscador ──
+// ── la galería: todas las de ese tipo, con el buscador y los filtros (Dlx, 03/10/2026: «3. A»): las Nuevas —las de
+// este tipo que salieron esta semana, del muro—, A quién seguís y por servidor, como los del Ranking. Un filtro que no
+// filtra nada no se dibuja ──
 function Galeria({ liga, t, lista }) {
   const [q, setQ] = useState('');
   const [ver, setVer] = useState(false);
+  const [sv, setSv] = useState('');
+  const [soloNuevas, setSoloNuevas] = useState(false);
+  const [soloSigo, setSoloSigo] = useState(false);
   useEffect(() => { setVer(false); }, [t]);
+  const nuevas = useMemo(() => {
+    const d = liga.desdeLunes();
+    return new Set(liga.muro.filter((it) => it.tipo === 'tarjeta' && it.carta === t && utc(it.t) >= d).flatMap((it) => it.ks || []));
+  }, [liga, t]);
+  const sigo = useMemo(() => new Set(liga.sigue || []), [liga]);
+  const svs = useMemo(() => [...new Set(lista.map((f) => f.sv).filter(Boolean))].sort(), [lista]);
+  const nNuevas = lista.filter((f) => nuevas.has(f.k)).length;
+  const nSigo = lista.filter((f) => sigo.has(f.k)).length;
   const qn = norm(q).trim();
-  const fs = qn ? lista.filter((f) => norm(limpio(f.n)).includes(qn)) : lista;
+  const filtra = !!(sv || soloNuevas || soloSigo);
+  const fs = lista.filter((f) => (!qn || norm(limpio(f.n)).includes(qn)) && (!sv || f.sv === sv)
+    && (!soloNuevas || nuevas.has(f.k)) && (!soloSigo || sigo.has(f.k)));
   const tope = movil() ? 12 : 24;
-  const vis = ver || qn ? fs : fs.slice(0, tope);
+  const vis = ver || qn || filtra ? fs : fs.slice(0, tope);
+  const sacar = () => { setQ(''); setSv(''); setSoloNuevas(false); setSoloSigo(false); };
   return (
     <section className="sec tj-gal" id="tj-gal">
       <div className="sec-t"><h2>Todas las tarjetas</h2><span className="tj-n">{num(lista.length)} de {NOMBRE[t]}</span></div>
       {lista.length ? (
-        <label className="rk-buscar tj-buscar"><Ico n="buscar" t={18} />
-          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar rapero" aria-label="Buscar rapero" enterKeyHint="search" />
-        </label>
+        <div className="rk-fil tj-fil">
+          <label className="rk-buscar"><Ico n="buscar" t={18} />
+            <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar rapero" aria-label="Buscar rapero" enterKeyHint="search" />
+          </label>
+          {nNuevas || nSigo || svs.length > 1 ? (
+            <div className="rk-chips" role="group" aria-label="Filtrar">
+              <button type="button" className={!filtra ? 'on' : ''} aria-pressed={!filtra} onClick={() => { setSv(''); setSoloNuevas(false); setSoloSigo(false); }}>Todas</button>
+              {nNuevas ? <button type="button" className={'rk-chip-nuevo' + (soloNuevas ? ' on' : '')} aria-pressed={soloNuevas}
+                onClick={() => setSoloNuevas(!soloNuevas)} title="Las que salieron esta semana">Nuevas · {nNuevas}</button> : null}
+              {nSigo ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién seguís</button> : null}
+              {svs.length > 1 ? svs.map((s) => (
+                <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}>
+                  <img alt="" src={liga.logo(s)} />{s}
+                </button>
+              )) : null}
+            </div>
+          ) : null}
+        </div>
       ) : null}
       {!lista.length ? <p className="rk-vacio">Todavía nadie tiene la de {NOMBRE[t]}. La primera aparece acá apenas alguien la desbloquee.</p>
-        : !fs.length ? <p className="rk-vacio">Nadie con ese nombre. <button type="button" className="rk-lnk" onClick={() => setQ('')}>Borrar la búsqueda</button></p>
+        : !fs.length ? <p className="rk-vacio">Nadie con {qn ? 'ese nombre' : 'ese filtro'}. <button type="button" className="rk-lnk" onClick={sacar}>{qn && !filtra ? 'Borrar la búsqueda' : 'Sacar los filtros'}</button></p>
           : (
             <ul className={'tj-grilla tj-' + t}>
               {vis.map((f) => (

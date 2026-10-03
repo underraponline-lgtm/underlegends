@@ -73,9 +73,9 @@ let cambiosAntes = (() => {
 // encanta»), con `duelos`, el alias viejo que abre el de Duelos; `eventos` desde la 1.93 (Dlx: «sí, publícalo»), con
 // `avisos`, el link de la campana, que baja hasta ella; `publicaciones` desde la 1.99 (Dlx, 02/10: «me gusta pero que
 // lo de encuestas no sea lo primero que uno vea»); `socios` (lo que era Mundo, y `mundo` lo sigue abriendo) y `guia`
-// desde la 2.02 (Dlx, 03/10/2026: «1. A 2. A»)
-const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1 };
-const esPropia = (p) => !!PROPIAS[p] || (p === 'tarjetas' && prevTar());
+// desde la 2.02 (Dlx, 03/10/2026: «1. A 2. A»); `tarjetas` desde la 2.08 (Dlx, 03/10/2026: «1. A 2. A 3. A»)
+const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1, tarjetas: 1 };
+const esPropia = (p) => !!PROPIAS[p];
 // 🔍 UNA PREVIEW SE PRENDE CON UN LINK: `?prev=sum` deja `lg:prev-sum` en este navegador (y `?noprev=sum` la apaga),
 // para que Dlx la pruebe sin tocar la consola. No es un secreto: las previews sólo esconden lo que falta aprobar
 try {
@@ -87,11 +87,6 @@ try {
 // 🔍 /sumate, en preview (03/10/2026): sólo con `lg:prev-sum`. Sin eso, la dirección muestra el Inicio
 function prevSum() {
   try { return !!localStorage.getItem('lg:prev-sum'); } catch (e) { return false; }
-}
-// 🔍 Tarjetas nueva, en preview (03/10/2026, Dlx: «1. A 2. A 3. A»): sólo con `lg:prev-tar` (`?prev=tar`). Sin eso,
-// la de app.js. Cuando diga que sí, `tarjetas` pasa a `PROPIAS` (acá y en web/montar.py) y esto se va
-function prevTar() {
-  try { return !!localStorage.getItem('lg:prev-tar'); } catch (e) { return false; }
 }
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
@@ -284,7 +279,7 @@ export default function App() {
   // ⚠️ también cuando llegan los datos (`liga`), y un instante después: app.js vuelve a poner el suyo al pintarlos
   useEffect(() => {
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' && prevSum() ? 'Sumate'
-      : pagina === 'tarjetas' && prevTar() ? 'Tarjetas'
+      : pagina === 'tarjetas' ? 'Tarjetas'
       : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : '';
     if (!t) return undefined;
     const poner = () => { document.title = t + ' · Liga Global de Freestyle'; };
@@ -320,7 +315,7 @@ export default function App() {
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
-        : pagina === 'tarjetas' && prevTar() ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} /></Suspense></Aislada>
+        : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} /></Suspense></Aislada>
         : pagina === 'sumate' && prevSum() ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'publicaciones' ? <Aislada key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>

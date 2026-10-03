@@ -1537,7 +1537,13 @@ a.rk-z:hover{border-color:var(--linea)}
 .tj-tu-acc{margin-top:18px}
 @media (min-width: 900px){.app .tj-tuyas-l{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}}
 /* la galería: los de un tipo, sin cajas alrededor (la carta ya es la caja) */
-.tj-buscar{margin-bottom:16px}
+.tj-fil{margin-bottom:18px}
+/* «Para historias» debajo de cada tarjeta tuya: chico, porque son cuatro */
+.tj-hist{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;margin-top:2px;
+  border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);cursor:pointer;
+  font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase}
+.tj-hist[aria-busy="true"]{opacity:.7;cursor:progress}
+@media (hover: hover) and (pointer: fine){.tj-hist:hover{background:var(--inv);color:var(--inv-tinta)}}
 .tj-grilla{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}
 .tj-grilla li{display:grid;gap:8px;align-content:start;min-width:0}
 .tj-grilla .sin-boton .tj-c,.tj-tu .sin-boton .tj-c{transition:transform .2s cubic-bezier(.2,.8,.2,1)}

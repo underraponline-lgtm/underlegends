@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.08",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T12:55:00-04:00",
+   "titulo": "Tarjetas, nueva",
+   "items": [
+    "🃏 **Tarjetas, rehecha**: una pestaña por tipo —Temporada, Competitiva, Servidor y País— con qué mide cada una y qué pide, la galería apenas abrís (con buscador) y «Comparar dos» con el cara a cara si se cruzaron.",
+    "🙋 **Las tuyas**: si entraste con Discord, tus cuatro tarjetas arriba. En las que todavía no tenés, la bloqueada con cuánto te falta, requisito por requisito.",
+    "📸 **Tu tarjeta para historias**: debajo de cada tarjeta tuya, la imagen vertical lista para Instagram o WhatsApp.",
+    "🔎 **Filtros en la galería**: las nuevas de esta semana, a quién seguís y por servidor."
+   ]
+  },
+  {
    "version": "2.07",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T11:15:00-04:00",
