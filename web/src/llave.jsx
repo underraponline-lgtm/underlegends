@@ -23,8 +23,9 @@ const BANDERAS = /[\u{1F1E6}-\u{1F1FF}]/gu;
 const texto = (z) => (typeof z === 'string' ? z : (z || []).join(', '));
 const normB = (b) => [(b[0] || []).map(texto), texto(b[1]), String(b[2] || ''), Array.isArray(b[3]) ? b[3] : []];
 // los integrantes de un lado («a, b, c» es un equipo)
-const partes = (s) => String(s || '').split(/,\s*/).filter(Boolean);
-const miembros = (x) => String(x || '').split(',').map((s) => s.replace(BANDERAS, '').trim().toLowerCase()).filter(Boolean);
+// los integrantes de un lado: la llave procesada escribe «A, B» y la en vivo «A + B» (LA REDENCION, 03/10/2026)
+const partes = (s) => String(s || '').split(/\s*[,+&]\s*/).filter(Boolean);
+const miembros = (x) => String(x || '').split(/[,+&]/).map((s) => s.replace(BANDERAS, '').trim().toLowerCase()).filter(Boolean);
 const comparten = (a, b) => { const mb = miembros(b); return miembros(a).some((x) => mb.includes(x)); };
 const gana = (b, s) => !!b[1] && (b[1] === s || comparten(b[1], s));
 

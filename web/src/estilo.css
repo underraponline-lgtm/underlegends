@@ -584,21 +584,29 @@ h1,h2,h3,p{margin:0}
 .cm-r{position:absolute;top:0;font:700 10px/1 "Space Mono",monospace;letter-spacing:.14em;color:#A5A5A0;padding-bottom:5px;
   border-bottom:2px solid #2A2A2E}
 .cm-m{position:absolute;height:52px;display:grid;grid-template-rows:1fr 1fr;background:#141417;border:2px solid #2A2A2E}
-.cm-m span{display:flex;align-items:center;gap:6px;min-width:0;padding:0 6px;font:800 12px/1 Archivo,sans-serif;font-stretch:106%;
+/* 🔴 `>span` Y NO ` span`: con el descendiente, la regla del renglón caía también en las caras —que son
+   `<span class="cm-av">`— y les metía 6 px de relleno por lado: la foto quedaba de 6 px de ancho, una rayita.
+   Medido el 03/10/2026 con LA REDENCION en vivo, al juntar las caras de un equipo */
+.cm-m>span{display:flex;align-items:center;gap:6px;min-width:0;padding:0 6px;font:800 12px/1 Archivo,sans-serif;font-stretch:106%;
   color:#DEDED9}
-.cm-m span em{flex:1;min-width:0;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cm-m span+span{border-top:1px solid #2A2A2E}
-.cm-m span.x{color:#8A8A8D}
+.cm-m>span em{flex:1;min-width:0;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-m>span+span{border-top:1px solid #2A2A2E}
+.cm-m>span.x{color:#8A8A8D}
 /* los cruces que todavía no se juegan (`completar()`): el lugar, sin nadie */
 .cm-m.vacio{background:transparent;border-style:dashed}
-.cm-m span.vac{color:#8A8A8D;font-weight:700;font-size:11px}
-.cm-m span.x .cm-av{opacity:.5;filter:grayscale(1)}
-.cm-m span.g{background:#F6F6F6;color:#030304}
-.cm-m span.camino{background:var(--verde);color:#030304}
+.cm-m>span.vac{color:#8A8A8D;font-weight:700;font-size:11px}
+.cm-m>span.x .cm-av{opacity:.5;filter:grayscale(1)}
+.cm-m>span.g{background:#F6F6F6;color:#030304}
+.cm-m>span.camino{background:var(--verde);color:#030304}
 .cm-av{width:18px;height:18px;flex:none;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#2A2A2E;color:#F6F6F6;
   font:900 9px/1 Archivo,sans-serif}
 .cm-av img{width:100%;height:100%;object-fit:cover;display:block}
-.cm-m span.g .cm-av.ini,.cm-m span.camino .cm-av.ini{background:#030304}
+/* un equipo: las caras juntas, encimadas (Dlx, 03/10/2026: «no aparece que es el equipo de Oasis») */
+.cm-eq{display:inline-flex;flex:none;position:relative}
+.cm-eq .cm-av{box-shadow:0 0 0 1.5px #141417}
+.cm-eq .cm-av+.cm-av{margin-left:-7px}
+.cm-mas{position:absolute;right:-5px;bottom:-4px;font:900 8px/1 Archivo,sans-serif;padding:1px 2px;border-radius:2px;background:#F6F6F6;color:#030304;box-shadow:0 0 0 1px #141417}
+.cm-m>span.g .cm-av.ini,.cm-m>span.camino .cm-av.ini{background:#030304}
 .cm-m i{position:absolute;right:-2px;top:-10px;font:700 9px/1 "Space Mono",monospace;font-style:normal;background:#F6F6F6;color:#030304;padding:2px 4px}
 .cm-m.ahora{border-color:var(--magenta);box-shadow:0 0 0 2px var(--magenta)}
 .cm-m.ahora i{background:var(--magenta);color:#fff}

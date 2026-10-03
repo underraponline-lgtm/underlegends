@@ -697,6 +697,29 @@ function medidaPara(lugar) {
   const CAMP = 96;
   return { rondas: Math.max(2, Math.min(4, Math.floor((lugar - CAMP + G) / (104 + G)))), G, CAMP, lugar };
 }
+// 🔑 UN LADO PUEDE SER UN EQUIPO, Y CADA UNO SE LEE POR SU AKA PRINCIPAL (Dlx, 03/10/2026, con LA REDENCION en vivo:
+// «aquí no aparece que es el equipo de Oasis.. solo Park Ji Sung.. que debería aparecer el AKA principal»). Se parte
+// por `+`, `&` y `,` —la llave en vivo escribe «A + B» y la procesada «A, B»— y cada integrante va con su cara y su
+// nombre de la tabla: «Park Ji Sung» es un alias de Oasis. La lógica de quién pasó sigue con el texto de la llave
+export const integrantes = (n) => String(n || '').split(/\s*[+&,]\s*/).map((x) => x.trim()).filter(Boolean);
+function LadoCm({ liga, n, W }) {
+  const ms = integrantes(n);
+  const fs = ms.map((m) => liga.fila(m));
+  const ns = ms.map((m, i) => (fs[i] ? limpio(fs[i].n) : m));
+  const nom = ns.join(' + ');
+  const caras = ms.slice(0, 3).map((m, i) => <Cara key={i} liga={liga} k={fs[i] ? fs[i].k : ''} nombre={fs[i] ? fs[i].n : m} cls="cm-av" />);
+  if (ms.length < 2) return <>{caras}<em title={nom}>{nom || n}</em></>;
+  // ⚠️ SI LOS NOMBRES NO ENTRAN, EL PRIMERO Y CUÁNTOS MÁS: «Abyssus +1», con las caras de todos al lado y el nombre
+  // entero al pasar el mouse. Medido con LA REDENCION en una casilla de 128 px: «Six + ERIKDANIEL» pedía 115 y había 65.
+  // La cuenta es la del ancho de la casilla, a ~7 px por letra (12 px, Archivo 800)
+  // ⚠️ El «+1» va SOBRE las caras y no en el renglón: en el renglón le comía 20 px al nombre («Abyss… +1»)
+  const lugar = (W || 116) - 22 - (18 + 11 * (Math.min(3, ms.length) - 1));
+  const entra = nom.length * 6.5 <= lugar;
+  return (
+    <><span className="cm-eq" title={nom}>{caras}{entra ? null : <b className="cm-mas">+{ms.length - 1}</b>}</span>
+      <em title={nom}>{entra ? nom : ns[0]}</em></>
+  );
+}
 export function CuadroMini({ liga, ll, lugar }) {
   const M0 = useMedida();
   const M = lugar ? medidaPara(lugar) : M0;
@@ -768,7 +791,7 @@ export function CuadroMini({ liga, ll, lugar }) {
             if (!n) return <span key={i} className="vac"><em>{falta}</em></span>;
             const f = liga.fila(n);
             const cls = (g ? (n === g ? 'g' : 'x') : (pasan.has(n) ? 'g' : '')) + (g && n === campeon ? ' camino' : '');
-            return <span key={i} className={cls}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cm-av" /><em>{n}</em></span>;
+            return <span key={i} className={cls}><LadoCm liga={liga} n={n} W={W} /></span>;
           })}
           {est ? <i>{est === 'ahora' ? 'AHORA' : est === 'sigue' ? 'SIGUE' : 'SIN GANADOR'}</i> : null}
         </div>,
