@@ -20,6 +20,11 @@ import { webcrypto } from 'node:crypto';
 // Worker, cambia acá solo. Es la única constante del Worker que estas pruebas
 // leen directo — el resto entra por la puerta, como lo haría Discord.
 import { VERIFICA } from './worker.js';
+// el número de la app de Discord: `discordDe()` sólo acepta permisos suyos (revisión del 03/10/2026)
+import { APP_ID } from './avisos.js';
+// lo que contesta Discord con un permiso: `/oauth2/@me` trae de qué app es y quién es; lo demás, el usuario solo
+const comoDiscord = (url, u, app = APP_ID) => new Response(JSON.stringify(String(url).endsWith('/oauth2/@me')
+  ? { application: { id: app }, user: u } : u), { status: 200 });
 if (!globalThis.crypto) globalThis.crypto = webcrypto;
 
 const { default: worker } = await import('./worker.js');
@@ -1506,8 +1511,13 @@ console.log('\nMI CUENTA CON DISCORD\n');
   r = await cuenta('permisoFalso1234567890');
   ok('uno que Discord no reconoce, también', r.status === 401 && r.json.error === 'discord');
   PUESTO['d:555000111222333444'] = 'konan';
-  globalThis.fetch = async () => new Response(JSON.stringify(
-    { id: '555000111222333444', username: 'konan_', global_name: 'Konan', avatar: 'abc' }), { status: 200 });
+  // 🔴 un permiso de OTRA app no entra (revisión del 03/10/2026): Discord lo da por bueno en /users/@me
+  globalThis.fetch = async (url) => comoDiscord(url, { id: '555000111222333444', username: 'konan_' }, '999999999999999999');
+  r = await cuenta('permisoAjeno1234567890');
+  ok('un permiso bueno de OTRA app de Discord no entra (sería entrar como esa persona)', r.status === 401 && r.json.error === 'discord',
+     JSON.stringify(r.json));
+  globalThis.fetch = async (url) => comoDiscord(url,
+    { id: '555000111222333444', username: 'konan_', global_name: 'Konan', avatar: 'abc' });
   r = await cuenta('permisoBueno1234567890');
   ok('uno bueno de alguien de la Liga devuelve su rapero', r.status === 200 &&
      r.json.rapero === 'Konan' && r.json.av === '555000111222333444/abc', JSON.stringify(r.json));
@@ -1516,8 +1526,7 @@ console.log('\nMI CUENTA CON DISCORD\n');
   ok('y su clave y sus cartas, para mostrarlas aunque no esté en el ranking',
      r.json.clave === 'konan' && Array.isArray(r.json.cs) && Array.isArray(r.json.bl),
      JSON.stringify({ clave: r.json.clave, cs: r.json.cs, bl: r.json.bl }));
-  globalThis.fetch = async () => new Response(JSON.stringify(
-    { id: '999000111222333444', username: 'nadie' }), { status: 200 });
+  globalThis.fetch = async (url) => comoDiscord(url, { id: '999000111222333444', username: 'nadie' });
   r = await cuenta('permisoBueno1234567890');
   ok('y de alguien que no está, entra igual y sin rapero', r.status === 200 && r.json.rapero === '' &&
      r.json.n === 'nadie');
@@ -1585,7 +1594,7 @@ console.log('\nMIS REDES EN MI PERFIL\n');
   const antes = globalThis.fetch;
   const discord = (sinPermiso, id = '555000111222333555') => async (url) => (String(url).endsWith('/connections')
     ? (sinPermiso ? new Response('{}', { status: 403 }) : new Response(JSON.stringify(conex), { status: 200 }))
-    : new Response(JSON.stringify({ id, username: 'konan_' }), { status: 200 }));
+    : comoDiscord(url, { id, username: 'konan_' }));
   let r = await redes({ token: 'x' });
   ok('un permiso con forma rara se rechaza', r.status === 400);
   globalThis.fetch = discord(true);
@@ -1656,7 +1665,7 @@ console.log('\nLA FOTO DESDE LA PÁGINA\n');
   const discord = (avatar) => async (url) => (String(url).includes('cdn.discordapp.com')
     ? new Response('imagen', { status: 200 })
     : String(url).includes('/guilds/') ? new Response(JSON.stringify({ roles: [] }), { status: 200 })
-    : new Response(JSON.stringify({ id: '555000111222333666', username: 'k', avatar }), { status: 200 }));
+    : comoDiscord(url, { id: '555000111222333666', username: 'k', avatar }));
   let r = await foto({ token: 'x' });
   ok('un permiso con forma rara se rechaza', r.status === 400);
   globalThis.fetch = discord('abc');
@@ -1834,11 +1843,14 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
   globalThis.fetch = async (url, opc = {}) => {
     const u = String(url), m = String(opc.method || 'GET').toUpperCase(), hs = opc.headers || {};
     LLAMADAS.push({ u, m, hs, body: opc.body ? JSON.parse(opc.body) : null });
-    if (u.endsWith('/users/@me')) {
+    if (u.endsWith('/users/@me') || u.endsWith('/oauth2/@me')) {
       if (usuariosDa !== 200) return new Response('{"message":"x"}', { status: usuariosDa });
-      const yo = USUARIOS[String(hs.Authorization || '').replace(/^Bearer /, '')];
-      return yo ? new Response(JSON.stringify(yo), { status: 200 })
-        : new Response('{"message":"401: Unauthorized"}', { status: 401 });
+      const tok = String(hs.Authorization || '').replace(/^Bearer /, '');
+      const yo = USUARIOS[tok];
+      if (!yo) return new Response('{"message":"401: Unauthorized"}', { status: 401 });
+      // el permiso de OTRA app (`otra:` adelante): Discord lo da por bueno, y `discordDe()` lo tiene que rechazar
+      const app = tok.startsWith('otra') ? '999999999999999999' : APP_ID;
+      return new Response(JSON.stringify(u.endsWith('/oauth2/@me') ? { application: { id: app }, user: yo } : yo), { status: 200 });
     }
     const mr = u.match(/\/guilds\/(\d+)\/members\/(\d+)(?:\/roles\/(\w+))?$/);
     if (!mr) return new Response('{}', { status: 404 });
@@ -2240,8 +2252,8 @@ console.log('\nLAS ENCUESTAS\n');
     return new Response('{"ok":true,"cuenta":{"SR":1},"t":1}', { status: 200 });
   } }) };
   PUESTO.encuestas = JSON.stringify(defs);
-  globalThis.fetch = async (u) => (String(u).endsWith('/users/@me')
-    ? new Response(JSON.stringify({ id: VIEJO, username: 'x' }), { status: 200 })
+  globalThis.fetch = async (u) => (/\/(users|oauth2)\/@me$/.test(String(u))
+    ? new Response(JSON.stringify(String(u).endsWith('/oauth2/@me') ? { application: { id: APP_ID }, user: { id: VIEJO, username: 'x' } } : { id: VIEJO, username: 'x' }), { status: 200 })
     : new Response('{}', { status: 404 }));
   const votarR = async (cuerpo) => {
     const r = await worker.fetch(new Request('https://x/avisos/votar', { method: 'POST',
@@ -2293,8 +2305,8 @@ console.log('\nLA SESIÓN: ENTRAR CON DISCORD UNA VEZ\n');
   PUESTO.encuestas = JSON.stringify({ lista: [{ id: 'x2:1', tipo: 'x2', hasta: new Date(RELOJ + 3600000).toISOString(),
     op: ['SR', 'FFA'] }], sv: {}, yo: {} });
   let discordDa = 200;
-  globalThis.fetch = async (u) => (String(u).endsWith('/users/@me')
-    ? new Response(discordDa === 200 ? JSON.stringify({ id: VIEJO, username: 'x' }) : '{"message":"x"}',
+  globalThis.fetch = async (u) => (/\/(users|oauth2)\/@me$/.test(String(u))
+    ? new Response(discordDa === 200 ? JSON.stringify(String(u).endsWith('/oauth2/@me') ? { application: { id: APP_ID }, user: { id: VIEJO, username: 'x' } } : { id: VIEJO, username: 'x' }) : '{"message":"x"}',
       { status: discordDa })
     : new Response('{}', { status: 404 }));
   const votarS = async (cuerpo, ses) => {
@@ -2389,8 +2401,8 @@ console.log('\nEL PRECIO POR CABEZA\n');
     return new Response('{"ok":true,"saldo":3500}', { status: 200 });
   } }) };
   PUESTO.precios = JSON.stringify(cfg);
-  globalThis.fetch = async (u) => (String(u).endsWith('/users/@me')
-    ? new Response(JSON.stringify({ id: VIEJO, username: 'x' }), { status: 200 })
+  globalThis.fetch = async (u) => (/\/(users|oauth2)\/@me$/.test(String(u))
+    ? new Response(JSON.stringify(String(u).endsWith('/oauth2/@me') ? { application: { id: APP_ID }, user: { id: VIEJO, username: 'x' } } : { id: VIEJO, username: 'x' }), { status: 200 })
     : new Response('{}', { status: 404 }));
   const pedirP = async (ruta, cuerpo) => {
     const r = await worker.fetch(new Request('https://x/avisos/' + ruta, { method: 'POST',

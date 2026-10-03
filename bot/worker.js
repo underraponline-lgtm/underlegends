@@ -1521,12 +1521,13 @@ async function cuentaRedes(req, env) {
   const auth = { headers: { Authorization: 'Bearer ' + t } };
   let u = null, cs = null;
   try {
-    const [ru, rc] = await Promise.all([
-      fetch('https://discord.com/api/v10/users/@me', auth),
+    // quién es, por `discordDe()`: el permiso tiene que ser de esta app (revisión del 03/10/2026)
+    const [q, rc] = await Promise.all([
+      discordDe(t),
       fetch('https://discord.com/api/v10/users/@me/connections', auth)]);
-    if (ru.ok) u = await ru.json();
+    u = q.u || null;
     // sin el permiso de conexiones Discord contesta 401/403: se dice cuál falta
-    if (ru.ok && (rc.status === 401 || rc.status === 403)) {
+    if (u && (rc.status === 401 || rc.status === 403)) {
       return new Response('{"error":"permiso"}', { status: 403, headers: h });
     }
     if (rc.ok) cs = await rc.json();
@@ -1594,12 +1595,9 @@ async function cuentaFoto(req, env) {
   try { d = await req.json(); } catch (e) { d = null; }
   const t = String((d && d.token) || '');
   if (!/^[A-Za-z0-9._-]{10,300}$/.test(t)) return res({ error: 'token' }, 400);
+  // quién es, por `discordDe()`: el permiso tiene que ser de esta app (revisión del 03/10/2026)
   let u = null;
-  try {
-    const r = await fetch('https://discord.com/api/v10/users/@me', {
-      headers: { Authorization: 'Bearer ' + t } });
-    if (r.ok) u = await r.json();
-  } catch (e) { u = null; }
+  try { u = (await discordDe(t)).u || null; } catch (e) { u = null; }
   if (!u || !u.id) return res({ error: 'discord' }, 401);
   const quien = await env.KV.get('d:' + u.id);
   if (!quien) return res({ error: 'sin_perfil' }, 409);

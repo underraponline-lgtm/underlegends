@@ -55,6 +55,8 @@ const ok = (cond, que) => {
   const avisado = Date.parse('2026-10-01T23:21:00Z');
   const ed = '2026-10-02T00:15:00.000000+00:00';
   ok(A.cancelado(404, null, ev, avisado) === 'borrado', 'el anuncio borrado (404) es un evento cancelado');
+  ok(A.cancelado(404, { code: 10008 }, ev, avisado) === 'borrado' && A.cancelado(404, { code: 10003 }, ev, avisado) === '',
+    'el mensaje borrado (10008) sí; el canal borrado entero (10003) no cancela sus eventos');
   ok(A.cancelado(200, { content: '❌ EVENTO CANCELADO, perdón', edited_timestamp: ed }, ev, avisado) === 'editado',
     'el editado después de avisarlo diciendo «cancelado» también');
   ok(A.cancelado(200, { content: 'SUSPENDIDO hasta nuevo aviso', edited_timestamp: ed }, ev, avisado) === 'editado',
@@ -171,7 +173,12 @@ const ok = (cond, que) => {
   globalThis.fetch = async () => new Response('{}', { status: 401 });
   r = await pedir({ endpoint: 'https://push/1', token: 'permisoFalso1234567890' });
   ok(r.status === 401 && !llamadas.length, 'uno que Discord no reconoce, también');
-  globalThis.fetch = async () => new Response(JSON.stringify({ id: '554330098812059679' }), { status: 200 });
+  // Discord contesta `/oauth2/@me` con de qué app es el permiso y quién es (revisión del 03/10/2026)
+  const como = (app) => async () => new Response(JSON.stringify({ application: { id: app }, user: { id: '554330098812059679' } }), { status: 200 });
+  globalThis.fetch = como('999999999999999999');
+  r = await pedir({ endpoint: 'https://push/1', token: 'permisoAjeno1234567890' });
+  ok(r.status === 401 && !llamadas.length, 'un permiso bueno de OTRA app no vincula (serían los avisos de otra persona)');
+  globalThis.fetch = como(A.APP_ID);
   r = await pedir({ endpoint: 'https://push/1', token: 'permisoBueno1234567890', quien: '1' });
   const cuerpo = JSON.parse(llamadas[0] ? llamadas[0][1] : '{}');
   ok(r.status === 200 && cuerpo.quien === '554330098812059679' && cuerpo.endpoint === 'https://push/1',
@@ -325,6 +332,9 @@ const ok = (cond, que) => {
   const t = A.mensajePostulacion(v, '123456789012', 'hassan');
   ok(t.includes('<@123456789012>') && t.includes('Rap Zone') && t.includes('<https://discord.gg/abc>') && t.includes('> @everyone vengan'),
     'el DM dice quién (mención, que no suena: allowed_mentions vacío), qué, el link sin vista previa y el mensaje citado');
+  const tm = A.mensajePostulacion(A.validarPostulacion({ tipo: 'otro', nombre: '[Hacé clic](https://malo.example)', mensaje: '**hola**' }), '1');
+  ok(tm.includes('\\[Hacé clic\\]\\(https://malo.example\\)') && tm.includes('> \\*\\*hola\\*\\*'),
+    'lo que escribió otro va sin Markdown: un link disfrazado en el nombre se ve como texto', tm);
 }
 
 // ── 4 · el ida y vuelta: lo que se cifra se puede abrir ─────────────

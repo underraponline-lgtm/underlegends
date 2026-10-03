@@ -52,6 +52,8 @@ function Postulacion({ dc }) {
       setEst('');
       setMsg(j.error === 'sin_sesion' ? 'Tu sesión venció: entrá con Discord de nuevo.'
         : j.error === 'ya' ? 'Ya mandaste una en las últimas 24 horas: Dlx la tiene.'
+          : j.error === 'nueva' ? 'Tu cuenta de Discord es muy nueva para mandarla desde acá: escribile a @itsdlx en Discord.'
+            : j.error === 'muchas' ? 'Hoy llegaron muchas: escribile a @itsdlx en Discord.'
           : j.error === 'faltan' ? (j.que || 'Falta el nombre.')
             : 'No pude mandarla. Escribile a @itsdlx en Discord.');
     } catch (err) {

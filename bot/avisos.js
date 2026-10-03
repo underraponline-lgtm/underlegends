@@ -165,7 +165,10 @@ export async function claveCiclo(token) {
  */
 export const CANCELADO = /\bcancelad[oa]s?\b|\bsuspendid[oa]s?\b|\bse\s+cancel[aó]\b/i;
 export function cancelado(estado, m, cuerpo, avisado) {
-  if (estado === 404) return 'borrado';
+  // 🔴 SÓLO EL MENSAJE QUE NO EXISTE (código 10008). Discord también contesta 404 cuando se borró el CANAL entero
+  // (10003): un servidor que rehace su canal de eventos cancelaba todos sus eventos anotados (revisión del 03/10/2026).
+  // Sin cuerpo (`m` nulo), el 404 se sigue leyendo como borrado, que es lo que dice casi siempre
+  if (estado === 404) return !m || m.code == null || m.code === 10008 ? 'borrado' : '';
   if (estado !== 200 || !m || (cuerpo && cuerpo.cx)) return '';
   // 🔴 Y EDITADO DESPUÉS DE AVISARLO: un anuncio anotado antes de que existiera `cx` no dice si la palabra ya estaba;
   // sin una edición posterior, la palabra es del texto de siempre
@@ -1308,8 +1311,10 @@ export function validarPostulacion(d) {
 }
 /** El DM a Dlx con una postulación. Sin menciones que suenen (`allowed_mentions` vacío en el envío). */
 export function mensajePostulacion(p, quien, nombreDc) {
-  const cita = (t) => t.split('\n').map((l) => '> ' + l).join('\n');
-  const l = [`🤝 **Postulación desde /sumate** · ${TIPOS_POSTULACION[p.tipo] || p.tipo}`, `**Nombre:** ${p.nombre}`];
+  // ⚠️ lo que escribió otro va sin Markdown: un «[link](…)» en el nombre se vería como otro link (revisión del 03/10/2026)
+  const sinMd = (t) => String(t || '').replace(/([\\`*_~|[\]()<>#])/g, '\\$1');
+  const cita = (t) => sinMd(t).split('\n').map((l) => '> ' + l).join('\n');
+  const l = [`🤝 **Postulación desde /sumate** · ${TIPOS_POSTULACION[p.tipo] || p.tipo}`, `**Nombre:** ${sinMd(p.nombre)}`];
   if (p.link) l.push(`**Link:** <${p.link}>`);
   const nums = [p.miembros != null ? `**Son:** ${p.miembros.toLocaleString('es-AR')}` : '',
     p.eventos != null ? `**Eventos por semana:** ${p.eventos}` : ''].filter(Boolean);
@@ -1492,13 +1497,21 @@ export function validarPrecio(cfg, d, id, ahora) {
  * leía como «permiso malo», la página lo mandaba a autorizar de nuevo, volvía,
  * Discord volvía a frenar… Ahora la página sabe cuál de las dos es.
  */
+// 🔴 EL PERMISO TIENE QUE SER DE ESTA APP (revisión del 03/10/2026). La identidad salía de `/users/@me` con el token
+// que manda la página, y Discord contesta eso con el token de CUALQUIER app que tenga «identify»: una página ajena
+// donde alguien entró con su Discord podía mandarnos ese token y entrar acá como esa persona —su sesión de 30 días,
+// sus Puntos de Tienda, su voto, sus avisos—. `/oauth2/@me` dice de qué app es el permiso, y trae al usuario.
+// ⚠️ Es el mismo número que `DC_APP` de bot/paginas/app.js (el `client_id` del login): público, no un secreto
+export const APP_ID = '1550026808404217926';
 export async function discordDe(t) {
   if (!/^[A-Za-z0-9._-]{10,300}$/.test(String(t || ''))) return { error: 'token' };
   try {
-    const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
+    const r = await fetch(`${DC}/oauth2/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
     if (r.status === 401 || r.status === 403) return { error: 'token' };
     if (!r.ok) return { error: 'ocupado', estado: r.status };
-    const u = await r.json();
+    const a = await r.json();
+    if (!a || !a.application || String(a.application.id || '') !== APP_ID) return { error: 'token' };
+    const u = a.user;
     return u && /^[0-9]{5,25}$/.test(String(u.id || '')) ? { id: String(u.id), u } : { error: 'token' };
   } catch (e) {
     return { error: 'ocupado' };
@@ -1774,12 +1787,10 @@ export async function rutaAvisos(req, env, ruta) {
     if (!d || typeof d.endpoint !== 'string' || !/^[A-Za-z0-9._-]{10,300}$/.test(t)) {
       return json({ error: 'faltan datos' }, 400);
     }
-    let u = null;
-    try {
-      const r = await fetch(`${DC}/users/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
-      if (r.ok) u = await r.json();
-    } catch (e) { u = null; }
-    if (!u || !u.id) return json({ error: 'discord' }, 401);
+    // por `discordDe()`: el permiso tiene que ser de esta app (ver su comentario)
+    const q = await discordDe(t);
+    const u = q.u || null;
+    if (!u || !u.id) return json({ error: q.error === 'ocupado' ? 'discord_ocupado' : 'discord' }, q.error === 'ocupado' ? 503 : 401);
     return elObjeto(env).fetch('https://avisos/vincular', {
       method: 'POST', body: JSON.stringify({ endpoint: d.endpoint, quien: String(u.id) }),
       headers: { 'content-type': 'application/json' },
@@ -1975,6 +1986,10 @@ export async function rutaAvisos(req, env, ruta) {
     if (v.error) return json(v, 400);
     const q = await quienPide(req, env, d || {});
     if (!q.id) return json({ error: q.error }, q.estado);
+    // ⚠️ es el único camino de un desconocido al DM de Dlx: con la misma antigüedad que votar o felicitar, o una
+    // cuenta recién hecha por persona y por día era un DM más (revisión del 03/10/2026)
+    const creada = creadaEn(q.id);
+    if (!creada || Date.now() - creada < EDAD_MIN_DIAS * DIA_MS) return json({ error: 'nueva' }, 403);
     return elObjeto(env).fetch('https://avisos/sumate', {
       method: 'POST', body: JSON.stringify({ quien: q.id, p: v }), headers: { 'content-type': 'application/json' },
     });
@@ -2268,6 +2283,9 @@ export class Avisos {
         "quien TEXT NOT NULL DEFAULT '[]', ks TEXT NOT NULL DEFAULT '[]', motivo TEXT NOT NULL DEFAULT '', " +
         "t TEXT NOT NULL DEFAULT '', primero INTEGER NOT NULL, avisado INTEGER NOT NULL DEFAULT 0, " +
         't_avisado INTEGER NOT NULL DEFAULT 0)');
+      // 🔢 cuántas veces cambió cada uno algo por día (ver `cuentaCambio()`): el tope de lo que escribe en KV
+      this.sql.exec('CREATE TABLE IF NOT EXISTS cambios_dia (quien TEXT NOT NULL, que TEXT NOT NULL, dia TEXT NOT NULL, ' +
+        'n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (quien, que, dia))');
       // 🤝 las postulaciones de /sumate: 90 días (ver `postular()`)
       this.sql.exec('CREATE TABLE IF NOT EXISTS postulaciones (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
         "t INTEGER NOT NULL, datos TEXT NOT NULL, enviada INTEGER NOT NULL DEFAULT 0, error TEXT NOT NULL DEFAULT '')");
@@ -2552,6 +2570,12 @@ export class Avisos {
       this.sql.exec('DELETE FROM bandeja WHERE t < ?', viejo);
       // 🤝 y las postulaciones de /sumate: 90 días
       this.sql.exec('DELETE FROM postulaciones WHERE t < ?', ahora - 90 * DIA_MS);
+      // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
+      // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
+      // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
+      this.sql.exec('DELETE FROM subs WHERE enviados = 0 AND fallos >= 5 AND prueba = 0');
+      // 🔢 y los contadores de cambios de días que ya pasaron
+      this.sql.exec('DELETE FROM cambios_dia WHERE dia < ?', new Date(ahora - DIA_MS).toISOString().slice(0, 10));
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -2566,6 +2590,10 @@ export class Avisos {
     // 🔑 y lo que le pasó a quien seguís. Nunca frena al vigía: ver `seguidos()`
     try { await this.seguidos(ahora); } catch (e) {
       this.guardar('seguidos', { t: ahora, error: String(e).slice(0, 120) });
+    }
+    // 🙈 y la lista de fotos ocultas, si quedó pendiente (ver `espejarOcultas()`)
+    if (this.leer('ocultas_pend')) {
+      try { await this.espejarOcultas(); } catch (e) { /* la próxima vuelta */ }
     }
     // ⭐ y quién empezó a seguirte. Nunca frena al vigía: ver `avisarSeguidores()`
     try { await this.avisarSeguidores(ahora); } catch (e) {
@@ -2777,7 +2805,9 @@ export class Avisos {
   async cuentaDe(a, ahora, idx, nombre) {
     const r = this.sql.exec('SELECT quien FROM sigue WHERE de = ? LIMIT 1', a).toArray()[0] ||
       this.sql.exec('SELECT quien FROM servidor WHERE de = ? LIMIT 1', a).toArray()[0];
-    if (r && /^[0-9]{5,25}$/.test(String(r.quien || ''))) return String(r.quien);
+    // ⚠️ con la misma prueba que el camino por nombre: una clave que cambió de dueño (`_choques()`, un perfil que se
+    // fusionó) mandaba «te felicitaron» y «te siguen» al dueño de antes (revisión del 03/10/2026)
+    if (r && /^[0-9]{5,25}$/.test(String(r.quien || '')) && await this.perfilDe(String(r.quien), ahora) === a) return String(r.quien);
     let n = nombre || '';
     if (!n) {
       try { n = String((JSON.parse((await this.env.KV.get('p:' + a)) || '{}') || {}).n || ''); } catch (e) { n = ''; }
@@ -2845,10 +2875,15 @@ export class Avisos {
       const estados = await Promise.all(subs.map((s) => empujar(s, cuerpo,
         { ttl: c.tipo === 'ahora' ? 3 * 60 : 10 * 60, topic: 'turno' + String(c.L.id).slice(-20) },
         this.env, new Map())));
+      let llego = 0, red = false;
       estados.forEach((e, i) => {
-        if (e >= 200 && e < 300) enviados++;
+        if (e >= 200 && e < 300) { enviados++; llego++; }
         else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        else if (e === 0 || e === 429 || e >= 500) red = true;
       });
+      // 🔴 si no llegó a ninguno por la red o por quedarse sin pedidos en este minuto (`empujar()` da 0), la marca se
+      // saca y vuelve a intentarse en la próxima vuelta: «Sos el próximo» va una sola vez, y se perdía (revisión del 03/10)
+      if (!llego && red) this.sql.exec('DELETE FROM hechos WHERE id = ?', c.clave);
     }
     if (llaves) {
       this.guardar('turnos', { t: ahora, llaves, llamados: cands.length, enviados, en_llamada: enLlamada,
@@ -3013,6 +3048,8 @@ export class Avisos {
         });
         estado = r.status;
         if (estado === 200) m = await r.json();
+        // el 404 trae su código: 10008 es el mensaje borrado; 10003, el canal (ver `cancelado()`)
+        else if (estado === 404) { try { m = { code: (await r.json()).code }; } catch (e) { m = null; } }
       } catch (e) { estado = 0; }
       const por = cancelado(estado, m, c, f.creado);
       if (!por) continue;
@@ -3401,8 +3438,14 @@ export class Avisos {
     const quien = String((d && d.quien) || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !d.p) return json({ error: 'faltan' }, 400);
     const ahora = Date.now();
-    if (this.sql.exec('SELECT 1 FROM postulaciones WHERE quien = ? AND t > ?', quien, ahora - 24 * HORA).toArray().length) {
+    // 🔴 SÓLO CUENTAN LAS QUE LLEGARON (revisión del 03/10/2026): si el DM fallaba, la que no llegó trababa el reintento
+    // 24 horas y la página decía «Dlx la tiene»
+    if (this.sql.exec('SELECT 1 FROM postulaciones WHERE quien = ? AND t > ? AND enviada = 1', quien, ahora - 24 * HORA).toArray().length) {
       return json({ error: 'ya' }, 429);
+    }
+    // y un tope para todos: veinte DMs por día a Dlx como mucho (un día así es raro; lo demás, por @itsdlx)
+    if (this.sql.exec('SELECT COUNT(*) AS n FROM postulaciones WHERE t > ? AND enviada = 1', ahora - 24 * HORA).toArray()[0].n >= 20) {
+      return json({ error: 'muchas' }, 429);
     }
     const id = this.sql.exec('INSERT INTO postulaciones (quien, t, datos) VALUES (?, ?, ?) RETURNING id',
       quien, ahora, JSON.stringify(d.p)).toArray()[0].id;
@@ -3458,8 +3501,15 @@ export class Avisos {
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
-    // 🤝 y sus postulaciones de /sumate
+    // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
     this.sql.exec('DELETE FROM postulaciones WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM cambios_dia WHERE quien = ?', String(d.quien));
+    // 🔴 Y LO QUE QUEDABA CON SU ID EN LAS TABLAS DE TRABAJO (revisión del 03/10/2026): de qué perfil es (`idk`), sus
+    // inscripciones leídas de Discord (`inscritos`) y las marcas de «ya avisado» que llevan su ID —quién siguió a
+    // quién, sus turnos— (`hechos`, 30 días). Los IDs son números de 17 a 20 cifras: el LIKE no agarra otro
+    this.sql.exec('DELETE FROM idk WHERE id = ?', String(d.quien));
+    this.sql.exec('DELETE FROM inscritos WHERE autor_id = ?', String(d.quien));
+    this.sql.exec('DELETE FROM hechos WHERE id LIKE ? OR id LIKE ?', '%:' + String(d.quien), '%:' + String(d.quien) + ':%');
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
       sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0, aplausos: ap.rowsWritten || 0 });
   }
@@ -3556,19 +3606,40 @@ export class Avisos {
     if (typeof d.ocultar === 'boolean') {
       const antes = !!this.sql.exec('SELECT 1 FROM foto_oculta WHERE quien = ?', quien).toArray()[0];
       if (d.ocultar !== antes) {
+        // 🔴 CON TOPE (revisión del 03/10/2026): cada cambio escribía la lista en KV, y quien prendía y apagaba mil
+        // veces se gastaba las mil escrituras del día de TODA la cuenta —el ciclo, el payload— como el 24/09
+        if (!this.cuentaCambio(quien, 'foto', 10)) return json({ error: 'espera' }, 429);
         if (d.ocultar) this.sql.exec('INSERT OR REPLACE INTO foto_oculta (quien, t) VALUES (?, ?)', quien, Date.now());
         else this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', quien);
-        await this.espejarOcultas();
+        await this.espejarOcultas(false);
       }
     }
     const oculta = !!this.sql.exec('SELECT 1 FROM foto_oculta WHERE quien = ?', quien).toArray()[0];
     return json({ ok: true, oculta });
   }
 
-  /** La lista para el ciclo, en KV. Si KV falla, la próxima vez que alguien cambie se vuelve a escribir entera. */
-  async espejarOcultas() {
+  /** La lista para el ciclo, en KV. ⚠️ Como mucho cada 15 minutos (`ya` falso): si se escribió hace menos, queda
+   *  pendiente y la escribe el vigía. El ciclo la lee cada media hora, así que 15 minutos no atrasan a nadie. */
+  async espejarOcultas(ya = true) {
+    const ahora = Date.now();
+    if (!ya && ahora - (this.leer('ocultas_t') || 0) < 15 * MIN) { this.guardar('ocultas_pend', 1); return; }
+    if (this.leer('ocultas_pend') && ahora - (this.leer('ocultas_t') || 0) < 15 * MIN) return;
     const ids = this.sql.exec('SELECT quien FROM foto_oculta ORDER BY quien').toArray().map((r) => r.quien);
-    try { await this.env.KV.put('fotos:ocultas', JSON.stringify({ v: 1, ids })); } catch (e) { /* se reintenta al próximo cambio */ }
+    try {
+      await this.env.KV.put('fotos:ocultas', JSON.stringify({ v: 1, ids }));
+      this.guardar('ocultas_t', ahora);
+      this.guardar('ocultas_pend', 0);
+    } catch (e) { this.guardar('ocultas_pend', 1); }
+  }
+
+  /** ¿Puede cambiar `que` otra vez hoy? Cuenta el cambio si puede: `tope` por persona y por día (UTC). */
+  cuentaCambio(quien, que, tope) {
+    const dia = new Date().toISOString().slice(0, 10);
+    const f = this.sql.exec('SELECT n FROM cambios_dia WHERE quien = ? AND que = ? AND dia = ?', quien, que, dia).toArray()[0];
+    if (f && f.n >= tope) return false;
+    this.sql.exec('INSERT INTO cambios_dia (quien, que, dia, n) VALUES (?, ?, ?, 1) ' +
+      'ON CONFLICT(quien, que, dia) DO UPDATE SET n = n + 1', quien, que, dia);
+    return true;
   }
 
   /** Lo público: el servidor que eligió cada perfil (sólo raperos) y cuántos eligieron cada uno. */
@@ -3721,7 +3792,7 @@ export class Avisos {
   async avisarSeguidores(ahora) {
     const previo = this.leer('seguidores_nuevos') || {};
     if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
-    const filas = this.sql.exec('SELECT a, quien, de, creada FROM sigue WHERE avisado = 0 AND t <= ?',
+    const filas = this.sql.exec('SELECT a, quien, de, creada, t FROM sigue WHERE avisado = 0 AND t <= ?',
       ahora - SEGUIDOR_ESPERA).toArray();
     if (!filas.length) {
       if (previo.quedan) this.guardar('seguidores_nuevos', { ...previo, quedan: 0 });
@@ -3755,8 +3826,10 @@ export class Avisos {
         try { nombre = String((JSON.parse((await this.env.KV.get('p:' + fs[0].de)) || '{}') || {}).n || '').slice(0, 40); } catch (e) { nombre = ''; }
       }
       const { titulo, cuerpo } = avisoSeguidores(fs.length, nombre);
-      // 🔔 a su bandeja, tenga o no la campana; con la cara de quien te sigue si es uno de la Liga
-      this.aBandeja(did, 'ns:' + ahora, 'seguidor', titulo, cuerpo, HUB + '/cuenta/siguiendo', nombre ? fs[0].de : '', ahora);
+      // 🔔 a su bandeja, tenga o no la campana; con la cara de quien te sigue si es uno de la Liga. ⚠️ La clave es la de
+      // ESTE grupo de seguidores, no la hora: con `'ns:' + ahora` cada reintento dejaba otra fila igual (revisión del 03/10)
+      const claveB = 'ns:' + huella(a + ':' + fs.map((f) => f.quien).sort().join(','));
+      this.aBandeja(did, claveB, 'seguidor', titulo, cuerpo, HUB + '/cuenta/siguiendo', nombre ? fs[0].de : '', ahora);
       if (!subs.length) { sinVinculo++; continue; }
       const id = 'ns' + huella(a);
       const c = cuerpoPersonal({ id, titulo, cuerpo, url: HUB + '/cuenta/siguiendo' });
@@ -3770,8 +3843,9 @@ export class Avisos {
         else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
         else if (e === 0 || e === 429 || e >= 500) reintentar = true;
       });
-      // si no llegó a ninguno por una falla de la red, vuelve a la fila para la próxima vuelta
-      if (reintentar && !llego) {
+      // si no llegó a ninguno por una falla de la red, vuelve a la fila para la próxima vuelta. ⚠️ Durante un día y no
+      // más: un dispositivo que falla siempre (un DNS que no resuelve) reintentaba cada cinco minutos para siempre
+      if (reintentar && !llego && fs.every((f) => ahora - (f.t || 0) < 24 * HORA)) {
         for (const f of fs) {
           this.sql.exec('UPDATE sigue SET avisado = 0 WHERE quien = ? AND a = ?', f.quien, a);
           this.sql.exec('DELETE FROM hechos WHERE id = ?', 'ns:' + a + ':' + f.quien);
