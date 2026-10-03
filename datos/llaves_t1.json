@@ -7541,7 +7541,7 @@
       [
        "Marcos",
        "Efimero",
-       "ZiarKI 🇪🇸"
+       "ZiarKI"
       ],
       "Marcos",
       "triple (3 bandas)"
@@ -7756,7 +7756,7 @@
     1250
    ],
    [
-    "ZiarKI 🇪🇸",
+    "ZiarKI",
     "Octavos",
     1250
    ],
@@ -7764,6 +7764,527 @@
     "gibraltar 🇦🇨",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "384": {
+  "dia": "2026-09-27",
+  "escala": "8-15",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1553950419439329363"
+  ],
+  "n": 384,
+  "nombre": "KASIVA BATTLES",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "19🇨🇴",
+       "Cronox"
+      ],
+      "19🇨🇴",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "Player"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "sexo🇵🇪",
+       "NAW🇺🇾"
+      ],
+      "sexo🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "MCO",
+       "EIDP",
+       "CrisZJ"
+      ],
+      "Tuca",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "Sexo🇵🇪"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "19🇭🇳"
+      ],
+      "Tuca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "BTRX"
+      ],
+      "Tuca",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Tuca",
+    "Campeón",
+    7500
+   ],
+   [
+    "BTRX",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "19🇭🇳",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sexo🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NAW🇺🇾",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "385": {
+  "dia": "2026-09-28",
+  "escala": "8-15",
+  "fecha": "28/09",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1554217199634223215"
+  ],
+  "n": 385,
+  "nombre": "KASIVA BATTLES II",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "KASIVA 🇵🇪",
+       "Shadow"
+      ],
+      "KASIVA 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "19🇭🇳",
+       "TEITO🇨🇴"
+      ],
+      "Miniboy",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Walker",
+       "Number"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "CrisZJ"
+      ],
+      "BTRX",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "KASIVA🇵🇪"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "BTRX"
+      ],
+      "Miniboy",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Miniboy"
+      ],
+      "Walker",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "BTRX",
+    "Semifinal",
+    3500
+   ],
+   [
+    "KASIVA🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "19🇭🇳",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TEITO🇨🇴",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "386": {
+  "dia": "2026-09-29",
+  "escala": "8-15",
+  "fecha": "29/09",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1554589039603228813"
+  ],
+  "n": 386,
+  "nombre": "MINI CUP GOD 109",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Carlos",
+       "CRIZJ🇵🇪"
+      ],
+      "Carlos",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "TEITO🇨🇴"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Noxvell",
+       "Dominick"
+      ],
+      "Noxvell",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Number"
+      ],
+      "Drexx",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlos",
+       "Sin Limites"
+      ],
+      "Carlos",
+      ""
+     ],
+     [
+      [
+       "Noxvell",
+       "Drexx"
+      ],
+      "Noxvell",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlos",
+       "Noxvell"
+      ],
+      "Carlos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlos",
+    "Campeón",
+    7500
+   ],
+   [
+    "Noxvell",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Drexx",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CRIZJ🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TEITO🇨🇴",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "387": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1555391204387065950"
+  ],
+  "n": 387,
+  "nombre": "MIDNIGHT MIAMI",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Betelguese"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Xplicit"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Carlos",
+       "Number"
+      ],
+      "Carlos",
+      ""
+     ],
+     [
+      [
+       "MINIBOY🇨🇱",
+       "NEXUZ🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "PichulaMc"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Carlos",
+       "LRS LA MARIHUANA🇵🇰"
+      ],
+      "Carlos",
+      "Walk-in 1: LRS LA MARIHUANA🇵🇰"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlos",
+       "CrisZJ"
+      ],
+      "Carlos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlos",
+    "Campeón",
+    7500
+   ],
+   [
+    "CrisZJ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Betelguese",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xplicit",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS LA MARIHUANA🇵🇰",
+    "Semifinal",
+    1750
    ]
   ]
  }

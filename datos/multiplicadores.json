@@ -53,8 +53,8 @@
    "organizadores": [
     [
      "Lewis",
-     105,
-     5
+     129,
+     6
     ],
     [
      "nachonc_",
@@ -84,12 +84,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 35,
+     "FFA": 40,
      "URBF": 8,
      "SR": 4
     },
     "gente": {
-     "FFA": 112,
+     "FFA": 121,
      "URBF": 31,
      "SR": 18
     },
@@ -97,7 +97,7 @@
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 112,
+    "FFA": 121,
     "SR": 18,
     "URBF": 31
    }
