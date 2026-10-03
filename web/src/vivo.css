@@ -1492,3 +1492,84 @@ a.rk-z:hover{border-color:var(--linea)}
    Y la mancha de abajo de cada encabezado deja de ser verde siempre: `--mo-c2` (ver Eventos, Socios y el Changelog) ── */
 .tabbar a.on{box-shadow:inset 0 -4px 0 #E41373}
 .tabbar a.on .tb-cara{box-shadow:0 0 0 2px #E41373}
+
+/* ── 🃏 TARJETAS (`tarjetas.jsx`, 03/10/2026, Dlx: «1. A 2. A 3. A»): todas las de un tipo, las tuyas y «Comparar dos».
+   El tamaño de cada carta está medido en R2: el lugar se reserva antes de que llegue la imagen, así la grilla no salta ── */
+.tj-temporada{--ar:900/1314}
+.tj-competitivo{--ar:957/1479}
+.tj-servidor{--ar:1200/1839}
+.tj-pais{--ar:924/1230}
+.tj-c{display:block;width:100%;height:auto;aspect-ratio:var(--ar,900/1314);object-fit:contain}
+.tj-c.sincarta{border:2px solid var(--linea);background:var(--caja)}
+.tj-cab .hero-p code,.tj-sin code{font:700 .9em/1 "Space Mono",monospace;padding:2px 5px;background:rgba(127,127,127,.18)}
+.tj-pide{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:700 12px/1.45 "Space Mono",monospace;letter-spacing:.04em;color:var(--esc-tinta)}
+.tj-pide b{color:#F0559A;letter-spacing:.12em}
+.tj-abanico{display:none}
+@media (min-width: 900px){
+  .app .tj-abanico{display:flex;align-items:flex-end;list-style:none;margin:0;padding:0 18px 6px}
+  .app .tj-abanico li{flex:none;width:168px;position:relative;filter:drop-shadow(0 14px 22px rgba(0,0,0,.6));transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+  .app .tj-abanico li.izq{transform:rotate(-7deg) translate(30px,14px);z-index:1}
+  .app .tj-abanico li.centro{width:196px;z-index:2}
+  .app .tj-abanico li.der{transform:rotate(7deg) translate(-30px,14px);z-index:1}
+  .app .tj-abanico li:hover{z-index:3}
+}
+.tj-invita-w{padding-bottom:0}
+.tj-invita-w .rk-invita{margin:0}
+.tj-n{font:700 12px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.tj-lnk{font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;justify-self:start}
+.tj-sin p{max-width:62ch;margin:0 0 14px;font-size:15px;line-height:1.5}
+.app{--tj-gana:#167A66}
+.noche{--tj-gana:#29B298}
+/* las tuyas: las cuatro en un mismo molde (2:3), así los nombres de abajo quedan a la misma altura */
+.tj-tuyas-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}
+.tj-tu{display:grid;gap:8px;align-content:start;min-width:0}
+.tj-tu .tj-c{aspect-ratio:2/3;object-position:center bottom}
+.tj-hueco{display:grid;place-items:center;border:2px dashed var(--linea);background:var(--caja);color:var(--gris)}
+.tj-tu-pie{display:grid;gap:5px;min-width:0}
+.tj-tu-pie b{font:900 15px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.tj-tu-pie small{display:flex;align-items:center;gap:5px;font:700 11px/1.35 "Space Mono",monospace;letter-spacing:.03em;color:var(--gris)}
+.tj-tu-pie small.ok{color:var(--tj-gana)}
+.tj-falta{list-style:none;margin:2px 0 0;padding:0;display:grid;gap:7px}
+.tj-falta li{display:grid;gap:4px;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.02em}
+.tj-falta i{display:block;height:6px;background:var(--suave)}
+.tj-falta u{display:block;height:100%;background:#E41373;text-decoration:none}
+.tj-falta li.ok u{background:#29B298}
+.tj-tu-acc{margin-top:18px}
+@media (min-width: 900px){.app .tj-tuyas-l{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}}
+/* la galería: los de un tipo, sin cajas alrededor (la carta ya es la caja) */
+.tj-buscar{margin-bottom:16px}
+.tj-grilla{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}
+.tj-grilla li{display:grid;gap:8px;align-content:start;min-width:0}
+.tj-grilla .sin-boton .tj-c,.tj-tu .sin-boton .tj-c{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+@media (hover: hover) and (pointer: fine){.tj-grilla .sin-boton:hover .tj-c,.tj-tu .sin-boton:hover .tj-c{transform:translateY(-4px)}}
+.tj-pie{display:grid;gap:3px;min-width:0}
+.tj-pie b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tj-pie small{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.tj-pie small.tj-dib{display:flex;align-items:center;gap:4px;color:var(--magenta-tx)}
+.tj-mas{margin:22px 0 4px}
+@media (min-width: 600px){.tj-grilla{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width: 900px){.app .tj-grilla{grid-template-columns:repeat(5,minmax(0,1fr));gap:28px 18px}}
+@media (min-width: 1240px){.app .tj-grilla{grid-template-columns:repeat(6,minmax(0,1fr))}}
+/* comparar dos: en el celular las dos cartas lado a lado y las filas abajo; en la compu, las filas en el medio */
+.tj-cmp-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px;align-items:start}
+/* ⚠️ la columna en `minmax(0,1fr)` y el campo en `width:100%`: el ancho propio de un <input> (~170 px) estiraba la
+   columna implícita a 227 px dentro de una de 173, y la segunda carta se salía de la pantalla (medido en 390 px) */
+.tj-lado{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;min-width:0;order:1}
+.tj-elegir{min-height:42px;min-width:0}
+.tj-elegir input{width:100%;padding:9px 0;font-size:15px}
+.tj-elegir.mal{border-color:#E41373}
+.tj-filas{grid-column:1/-1;order:2;margin:0;display:grid;border-top:2px solid var(--linea)}
+.tj-fila{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--suave)}
+.tj-fila dt{display:grid;gap:3px;justify-items:center;font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);text-align:center}
+.tj-fila dt small{font-size:10px;letter-spacing:.04em;text-transform:none}
+.tj-fila dd{margin:0;font:900 20px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.tj-fila dd:first-child{text-align:right}
+.tj-fila dd:last-child{text-align:left}
+.tj-fila dd.gana{color:var(--tj-gana)}
+.tj-fila.tj-cara{background:var(--caja)}
+@media (min-width: 900px){
+  .app .tj-cmp-g{grid-template-columns:minmax(0,250px) minmax(0,1fr) minmax(0,250px);gap:32px;align-items:center}
+  .app .tj-filas{grid-column:auto;border-top:2px solid var(--linea)}
+  .app .tj-cmp-g > .tj-lado:last-child{order:3}
+  .app .tj-fila dd{font-size:24px}
+}
