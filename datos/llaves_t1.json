@@ -7469,5 +7469,302 @@
     1250
    ]
   ]
+ },
+ "383": {
+  "dia": "2026-10-03",
+  "escala": "16+",
+  "fecha": "03/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556037132160729170"
+  ],
+  "n": 383,
+  "nombre": "DESGRACIAS EN TOKYO VOL 21 1v1",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Kyss",
+       "Santi"
+      ],
+      "Oasis",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "yinn",
+       "DEWACHOMEFUI 🇨🇲",
+       "gibraltar 🇦🇨"
+      ],
+      "yinn",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Miniboy",
+       "Lvel 🇻🇪",
+       "Richard"
+      ],
+      "Miniboy",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "PichulaMc",
+       "BRAGEURITHER🇦🇪",
+       "Abyssus"
+      ],
+      "PichulaMc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Trot",
+       "Emi",
+       "Crk"
+      ],
+      "Trot",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NC",
+       "Pedrinho Matador 🇧🇷",
+       "Alonso"
+      ],
+      "NC",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Marcos",
+       "Efimero",
+       "ZiarKI 🇪🇸"
+      ],
+      "Marcos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Velatz",
+       "Paria",
+       "Tam"
+      ],
+      "Velatz",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Oasis"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "PichulaMc",
+       "Miniboy"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "NC"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Velatz"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "PichulaMc"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Marcos"
+      ],
+      "Trot",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "PichulaMc"
+      ],
+      "Marcos",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Trot"
+      ],
+      "yinn",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "yinn",
+    "Campeón",
+    10000
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    6000
+   ],
+   [
+    "PichulaMc",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Abyssus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Alonso",
+    "Octavos",
+    1250
+   ],
+   [
+    "BRAGEURITHER🇦🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "DEWACHOMEFUI 🇨🇲",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Emi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kyss",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pedrinho Matador 🇧🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Santi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "ZiarKI 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "gibraltar 🇦🇨",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

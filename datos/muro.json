@@ -11,7 +11,7 @@
 ]
 },
 "oasis": {
-"rg": "A",
+"rg": "S",
 "c": [
 "servidor",
 "temporada"
@@ -64,17 +64,10 @@
 "temporada"
 ]
 },
-"six": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "abyssus": {
-"rg": "",
+"rg": "C",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -82,6 +75,14 @@
 "velatz": {
 "rg": "D",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"six": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -97,6 +98,14 @@
 "colesito": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"yinn": {
+"rg": "C",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -152,10 +161,9 @@
 "temporada"
 ]
 },
-"yinn": {
-"rg": "D",
+"trot": {
+"rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -174,14 +182,14 @@
 "temporada"
 ]
 },
-"masino": {
-"rg": "",
+"nc": {
+"rg": "E",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"nc": {
+"masino": {
 "rg": "",
 "c": [
 "servidor",
@@ -203,13 +211,6 @@
 ]
 },
 "presagio": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"trot": {
 "rg": "",
 "c": [
 "servidor",
@@ -297,6 +298,14 @@
 "temporada"
 ]
 },
+"richard": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "",
 "c": [
@@ -330,13 +339,6 @@
 ]
 },
 "og": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"richard": {
 "rg": "",
 "c": [
 "servidor",
@@ -442,6 +444,20 @@
 "temporada"
 ]
 },
+"marcos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"miniboy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "dynoco": {
 "rg": "",
 "c": [
@@ -530,13 +546,6 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "dominick": {
 "rg": "",
 "c": [
@@ -558,6 +567,13 @@
 "temporada"
 ]
 },
+"tam": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "maticerna": {
 "rg": "",
 "c": [
@@ -568,6 +584,13 @@
 "sol-pe": {
 "rg": "",
 "c": []
+},
+"alonso": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "fleivaman": {
 "rg": "",
@@ -615,13 +638,6 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "andres": {
 "rg": "",
 "c": [
@@ -654,13 +670,6 @@
 "temporada"
 ]
 },
-"alonso": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "gus": {
 "rg": "",
 "c": [
@@ -669,6 +678,20 @@
 ]
 },
 "mcnadie": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"kyss": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"crk": {
 "rg": "",
 "c": [
 "servidor",
@@ -738,21 +761,7 @@
 "temporada"
 ]
 },
-"kyss": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "tormen": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"crk": {
 "rg": "",
 "c": [
 "servidor",
@@ -852,6 +861,13 @@
 "temporada"
 ]
 },
+"lvel": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "arez": {
 "rg": "",
 "c": [
@@ -871,6 +887,20 @@
 ]
 },
 "leteletras": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"santi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"emi": {
 "rg": "",
 "c": [
 "servidor",
@@ -1120,13 +1150,6 @@
 "rg": "",
 "c": []
 },
-"santi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "shadow": {
 "rg": "",
 "c": [
@@ -1183,13 +1206,6 @@
 ]
 },
 "luffy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"lvel": {
 "rg": "",
 "c": [
 "servidor",
@@ -1260,6 +1276,10 @@
 "temporada"
 ]
 },
+"brageurither": {
+"rg": "",
+"c": []
+},
 "cardozo": {
 "rg": "",
 "c": []
@@ -1270,6 +1290,10 @@
 "servidor",
 "temporada"
 ]
+},
+"dewachomefui": {
+"rg": "",
+"c": []
 },
 "dyzz": {
 "rg": "",
@@ -1288,13 +1312,6 @@
 "elsolar": {
 "rg": "",
 "c": []
-},
-"emi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "falon": {
 "rg": "",
@@ -3238,6 +3255,67 @@
 "Lvel"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"Oasis"
+],
+"rg": "S",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"Abyssus"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"Abyssus"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"yinn"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"NC"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"Richard"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:25:43Z",
+"quien": [
+"Richard"
+],
+"carta": "competitivo"
 }
 ]
 }

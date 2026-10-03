@@ -452,6 +452,16 @@
    "b": "G8",
    "ganador": "HASSAN",
    "votos": "1–0"
+  },
+  "1556066808681865387": {
+   "id": "1556066808681865387",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791065637513,
+   "a": "TROT 🇪🇸",
+   "b": "YINN 🇲🇦",
+   "ganador": "YINN 🇲🇦",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -858,14 +868,14 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791058528620,
-   "ed": 1791064123705,
-   "texto": "`[ OCTAVOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞PICHULITA 🇦🇷⌝ 🆚 ⌞YINN 🇲🇦⌝",
+   "ed": 1791065020602,
+   "texto": "`[ OCTAVOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞YINN 🇲🇦⌝ 🆚 ⌞TROT 🇪🇦⌝",
    "batallas": [
     [
      "FINAL",
      [
-      "PICHULITA 🇦🇷",
-      "YINN 🇲🇦"
+      "YINN 🇲🇦",
+      "TROT 🇪🇦"
      ],
      null,
      "última ronda y no dice campeón",
