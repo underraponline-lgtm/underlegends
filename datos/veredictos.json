@@ -461,6 +461,36 @@
    "a": "TROT 🇪🇸",
    "b": "YINN 🇲🇦",
    "ganador": "YINN 🇲🇦",
+   "votos": "2–0"
+  },
+  "1556080092994609204": {
+   "id": "1556080092994609204",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791068804740,
+   "a": "Jahno 🇦🇷",
+   "b": "PichulaMC 🇦🇷",
+   "ganador": "PichulaMC 🇦🇷",
+   "votos": "2–0"
+  },
+  "1556082377716137985": {
+   "id": "1556082377716137985",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791069349460,
+   "a": "Hassan 🇦🇷",
+   "b": "Erian 🇵🇦",
+   "ganador": "Hassan 🇦🇷",
+   "votos": "1–0"
+  },
+  "1556083953256108043": {
+   "id": "1556083953256108043",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791069725098,
+   "a": "MINIBOY🇨🇱",
+   "b": "ERIKDANIEL🇦🇷 + SIX🇦🇷",
+   "ganador": "ERIKDANIEL🇦🇷 + SIX🇦🇷",
    "votos": "1–0"
   }
  },
@@ -876,6 +906,47 @@
      [
       "YINN 🇲🇦",
       "TROT 🇪🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1556080092994609204": {
+   "id": "1556080092994609204",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540224373309444257",
+   "pub": 1791068804740,
+   "ed": 1791069748377,
+   "texto": "`[ CUARTOS ]`\n⌞Jahno 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n`[ CUARTOS ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞Erian 🇵🇦⌝\n⌞Faso 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Jahno 🇦🇷",
+      "PichulaMC 🇦🇷"
+     ],
+     "PichulaMC 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Hassan 🇦🇷",
+      "Erian 🇵🇦"
+     ],
+     "Hassan 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Faso 🇦🇷",
+      "Benjixo 🇺🇾"
      ],
      null,
      "última ronda y no dice campeón",
