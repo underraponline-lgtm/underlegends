@@ -175,11 +175,12 @@ export const SERVIDORES = [
   { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/JrmE78qdMd' },
   { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
   { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
-  // 🔤 `sigla`: la que se lee, cuando no es el código (Dlx, 03/10/2026: SNK y URB). Ver `datos/servidores.json`
-  { sv: 'SR', sigla: 'SNK', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp' },
+  // 🔤 `sigla`: la que se lee, cuando no es el código (Dlx, 03/10/2026: SNK y URB). Ver `datos/servidores.json`.
+  // ⚠️ AL FINAL del objeto: `bot/desplegar.py` lee `sv`, `nombre` y `guild` en ese orden y los compara con el json
+  { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp', sigla: 'SNK' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
-  { sv: 'URBF', sigla: 'URB', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb' },
+  { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb', sigla: 'URB' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax' },
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
   // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
