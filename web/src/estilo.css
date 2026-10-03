@@ -583,21 +583,26 @@ h1,h2,h3,p{margin:0}
 .cm-l path.camino{stroke:var(--verde);stroke-width:3}
 .cm-r{position:absolute;top:0;font:700 10px/1 "Space Mono",monospace;letter-spacing:.14em;color:#A5A5A0;padding-bottom:5px;
   border-bottom:2px solid #2A2A2E}
-.cm-m{position:absolute;height:52px;display:grid;grid-template-rows:1fr 1fr;background:#141417;border:2px solid #2A2A2E}
+/* 🧵 LA TEXTURA DE LA LLAVE (Dlx, 03/10/2026: «¿quizás poner textura a eso?»): una trama de puntos finos, la de la
+   tela de una camiseta, que no compite con el nombre; y el lugar que todavía no se juega, con las rayas al sesgo
+   que la página ya usa para «todavía no» (`.rg.sinletra`, la tarjeta bloqueada) */
+.cm-m{position:absolute;height:52px;display:grid;grid-template-rows:1fr 1fr;border:2px solid #2A2A2E;
+  background:#141417 radial-gradient(rgba(255,255,255,.055) .7px,transparent 1px) 0 0/4px 4px}
 /* 🔴 `>span` Y NO ` span`: con el descendiente, la regla del renglón caía también en las caras —que son
    `<span class="cm-av">`— y les metía 6 px de relleno por lado: la foto quedaba de 6 px de ancho, una rayita.
    Medido el 03/10/2026 con LA REDENCION en vivo, al juntar las caras de un equipo */
-.cm-m>span{display:flex;align-items:center;gap:6px;min-width:0;padding:0 6px;font:800 12px/1 Archivo,sans-serif;font-stretch:106%;
-  color:#DEDED9}
+/* 🔤 la letra: 700 y sin ensanchar —800 al 106 % se leía apretada en la casilla— con la inicial en mayúscula (`capital()`) */
+.cm-m>span{display:flex;align-items:center;gap:6px;min-width:0;padding:0 6px;font:700 12.5px/1 Archivo,sans-serif;
+  letter-spacing:.01em;color:#DEDED9}
 .cm-m>span em{flex:1;min-width:0;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cm-m>span+span{border-top:1px solid #2A2A2E}
 .cm-m>span.x{color:#8A8A8D}
 /* los cruces que todavía no se juegan (`completar()`): el lugar, sin nadie */
-.cm-m.vacio{background:transparent;border-style:dashed}
+.cm-m.vacio{background:repeating-linear-gradient(135deg,transparent 0 6px,rgba(128,128,128,.10) 6px 7px);border-style:dashed}
 .cm-m>span.vac{color:#8A8A8D;font-weight:700;font-size:11px}
 .cm-m>span.x .cm-av{opacity:.5;filter:grayscale(1)}
-.cm-m>span.g{background:#F6F6F6;color:#030304}
-.cm-m>span.camino{background:var(--verde);color:#030304}
+.cm-m>span.g{background:#F6F6F6 radial-gradient(rgba(3,3,4,.07) .7px,transparent 1px) 0 0/4px 4px;color:#030304}
+.cm-m>span.camino{background:var(--verde) radial-gradient(rgba(3,3,4,.08) .7px,transparent 1px) 0 0/4px 4px;color:#030304}
 .cm-av{width:18px;height:18px;flex:none;border-radius:50%;display:grid;place-items:center;overflow:hidden;background:#2A2A2E;color:#F6F6F6;
   font:900 9px/1 Archivo,sans-serif}
 .cm-av img{width:100%;height:100%;object-fit:cover;display:block}

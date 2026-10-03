@@ -10,7 +10,7 @@
 // (`L.sin`); el Clásico, el 🎯 del Most Wanted, los puntos por puesto y «¿Algo está mal?». En la compu, el cuadro
 // entero con sus ramas (en espejo si entra), como antes.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { PAIS, limpio, norm, num } from './liga.js';
+import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, enlace } from './piezas.jsx';
 import { completar, enOrden, esArbol } from './arriba.jsx';
 
@@ -79,9 +79,9 @@ function useCompu() {
 
 // ── un nombre: su cara, su nombre y su bandera. Tocarlo marca su camino ──
 function Nombre({ x, f }) {
-  if (f) return <><span className="lk-n">{limpio(f.n)}</span><Bandera cc={f.cc} cls="lk-flag" /></>;
+  if (f) return <><span className="lk-n">{capital(limpio(f.n))}</span><Bandera cc={f.cc} cls="lk-flag" /></>;
   const { txt, ccs } = sinBanderas(x);
-  return <><span className="lk-n">{txt || x}</span>{ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}</>;
+  return <><span className="lk-n">{capital(txt || x)}</span>{ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}</>;
 }
 function Persona({ ctx, x, conCara = true, perdio = false }) {
   const f = ctx.fila(x);

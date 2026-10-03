@@ -17,6 +17,18 @@ const FUERA = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{3
 export function limpio(s) {
   return String(s || '').replace(FUERA, '').replace(/\s+/g, ' ').replace(/^[ ·-]+|[ ·-]+$/g, '');
 }
+// 🔤 EL NOMBRE CON LA INICIAL EN MAYÚSCULA (Dlx, 03/10/2026, con la llave de LA REDENCION: «que todo esté en
+// minúsculas exceptuando por la inicial»). La llave trae cada nombre como lo escribió el organizador —«MAYEUTYK»,
+// «yinn», «BLITZ (R)»— y en una columna se lee como un grito al lado de un susurro.
+// ⚠️ SÓLO LO QUE VIENE TODO EN MAYÚSCULAS O TODO EN MINÚSCULAS: «PichulaMc» o «PolloSport» se escriben así a propósito.
+// Y lo de una o dos letras va en mayúsculas: «OG», «NC», la «R» del revivido
+export function capital(s) {
+  const t = String(s || '');
+  const letras = t.replace(/[^\p{L}]/gu, '');
+  if (!letras || (letras !== letras.toUpperCase() && letras !== letras.toLowerCase())) return t;
+  return t.replace(/[\p{L}\p{N}]+/gu, (w) => (w.length <= 2 ? w.toUpperCase()
+    : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()));
+}
 export function recorte(s, n = 120) {
   s = limpio(s).replace(/\*/g, '');
   if (s.length <= n && !/\s\S{1,2}$/.test(s)) return s;

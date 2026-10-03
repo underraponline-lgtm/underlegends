@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
+import { MESES, capital, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
@@ -705,7 +705,7 @@ export const integrantes = (n) => String(n || '').split(/\s*[+&,]\s*/).map((x) =
 function LadoCm({ liga, n, W }) {
   const ms = integrantes(n);
   const fs = ms.map((m) => liga.fila(m));
-  const ns = ms.map((m, i) => (fs[i] ? limpio(fs[i].n) : m));
+  const ns = ms.map((m, i) => capital(fs[i] ? limpio(fs[i].n) : m));
   const nom = ns.join(' + ');
   const caras = ms.slice(0, 3).map((m, i) => <Cara key={i} liga={liga} k={fs[i] ? fs[i].k : ''} nombre={fs[i] ? fs[i].n : m} cls="cm-av" />);
   if (ms.length < 2) return <>{caras}<em title={nom}>{nom || n}</em></>;
