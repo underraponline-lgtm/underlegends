@@ -16,7 +16,7 @@
 // Lo que agrega el remake (estructura, no pintura): el podio con las cartas de verdad, «tu lugar» siempre a la vista
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, limpio, norm, num, resultado, utc } from './liga.js';
+import { MESES, limpio, norm, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 
@@ -74,7 +74,7 @@ function Quien({ x, f }) {
         </span>
         {/* las etiquetas van ANTES del servidor y la crew: al final se las comía el «…» de una crew larga en el celular */}
         <small>{mio ? <em className="rk-vos">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}
-          {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[f.sv, crew].filter(Boolean).join(' · ')}</span></small>
+          {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[siglaDe(f.sv), crew].filter(Boolean).join(' · ')}</span></small>
       </span>
     </span>
   );
@@ -756,7 +756,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
                   {x.sigo.size ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién seguís</button> : null}
                   {svs.length > 1 ? svs.map((s) => (
                     <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}>
-                      <img alt="" src={liga.logo(s)} />{s}
+                      <img alt="" src={liga.logo(s)} />{siglaDe(s)}
                     </button>
                   )) : null}
                   {ccs.length > 1 ? (

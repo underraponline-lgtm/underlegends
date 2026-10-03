@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.14",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T18:48:00-04:00",
+   "titulo": "Los anotados por equipo, y SNK y URB",
+   "items": [
+    "🙋 **Los anotados entienden los equipos**: «A + B», «A - B» y los tríos van uno por uno, cada uno con su bandera; y el que se anota con un compañero por definir («+?») ahora aparece.",
+    "🔴 **Un evento en vivo ya no desaparece** si el servidor borra el anuncio y lo vuelve a publicar, y sus anotados siguen ahí.",
+    "📣 **En vivo, lo básico del evento**: la modalidad, los cupos y el premio.",
+    "🔤 **Snake Rap se lee SNK y Urban Freestyle URB**, en toda la página y en el bot."
+   ]
+  },
+  {
    "version": "2.13",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T18:32:00-04:00",

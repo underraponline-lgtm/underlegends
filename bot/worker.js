@@ -175,10 +175,11 @@ export const SERVIDORES = [
   { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/JrmE78qdMd' },
   { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
   { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
-  { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp' },
+  // 🔤 `sigla`: la que se lee, cuando no es el código (Dlx, 03/10/2026: SNK y URB). Ver `datos/servidores.json`
+  { sv: 'SR', sigla: 'SNK', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
-  { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb' },
+  { sv: 'URBF', sigla: 'URB', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax' },
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
   // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
@@ -553,10 +554,10 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
           const suyo = (g && g.n) || quien;
           const botAhi = !m || !m.bot_en || m.bot_en.indexOf(s.sv) >= 0;
           const base = tiene ? s.nombre
-            : botAhi ? `${suyo} no está en ${s.sv}`
-                     : `el bot todavía no está en ${s.sv}: no puedo saberlo`;
+            : botAhi ? `${suyo} no está en ${s.sigla || s.sv}`
+                     : `el bot todavía no está en ${s.sigla || s.sv}: no puedo saberlo`;
           return {
-            label: tiene ? s.sv : `${s.sv} · 🔒 BLOQUEADA`,
+            label: tiene ? (s.sigla || s.sv) : `${s.sigla || s.sv} · 🔒 BLOQUEADA`,
             value: s.sv,
             // «Estás acá» se conserva aunque esté bloqueada: son dos datos
             // distintos —dónde estás vos y de quién es la carta— y los dos

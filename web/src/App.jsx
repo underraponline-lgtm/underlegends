@@ -283,6 +283,8 @@ export default function App() {
   let sv = null;
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
+  // 🔤 `/sv/SNK` es Snake Rap: la sigla que se lee abre el mismo perfil que el código (`Liga.codigo()`)
+  if (sv && liga) sv = liga.codigo(sv);
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
   const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|sumate|tarjetas)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);

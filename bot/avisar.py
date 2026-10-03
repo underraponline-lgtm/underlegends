@@ -33,6 +33,9 @@ import os
 import sys
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if os.path.join(BASE, 'bot') not in sys.path:
+    sys.path.insert(0, os.path.join(BASE, 'bot'))
+from siglas import sigla  # noqa: E402  la sigla que se lee (SNK, URB)
 
 #: «LIGA GLOBAL» en DRA — donde el bot de sync ya publica sus informes.
 #: Inventariado en `ACCESOS.md`; hasta hoy no lo usaba ningun codigo.
@@ -185,7 +188,7 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
     lineas = [
         '**%s**' % (ev.get('nombre') or 'sin nombre'),
         '· servidor **%s**  ·  fecha %s  ·  %s participante(s)  ·  escala %s'
-        % (sv, ev.get('fecha') or '?', ev.get('participantes') or '?',
+        % (sigla(sv), ev.get('fecha') or '?', ev.get('participantes') or '?',
            ev.get('escala') or '?'),
         '',
         '· %d fila(s) en `Resultados`  ·  %d en `1v1`' % (n_res, n_duelos),

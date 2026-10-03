@@ -2176,6 +2176,8 @@ def _servidores(gente):
         x = svs.get(sv) or {}
         a['color'] = col.get(sv, '#7E8B89')
         a['nombre'] = x.get('nombre') or sv
+        # 🔤 la sigla que se LEE (SNK, URB: Dlx, 03/10/2026); el código sigue siendo la clave
+        a['sigla'] = x.get('sigla') or sv
         a['invita'] = x.get('invitacion') or ''
         # 🔑 LA ETIQUETA Y LAS REDES. Dlx, 25/09/2026: «generar tags para los
         # servidores… FFA COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO».

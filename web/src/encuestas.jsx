@@ -2,7 +2,7 @@
 // «¿qué tal si arriba de misiones ponemos encuestas?». Antes vivían en la Tira de «Esta semana» y abajo de Se busca,
 // donde ocupaban lugar y se veían raras. Los votos los guarda y los cuenta app.js (`votar`, `ENC_*`): acá se muestran.
 import { useState } from 'react';
-import { limpio, norm } from './liga.js';
+import { limpio, norm, siglaDe } from './liga.js';
 import { Cara, Pest, Sec, accion } from './piezas.jsx';
 import { TuTemporada, TusEventos } from './medio.jsx';
 
@@ -29,7 +29,7 @@ export function X2({ liga, enc, E }) {
           return (
             <button type="button" key={sv} className={'en-op' + (mio === sv ? ' mia' : '') + (est.va === sv ? ' va' : '')} onClick={() => accion.votar(E.id, sv)}>
               <i className="en-bar" style={{ width: pct(n, tot) }} />
-              <img alt="" src={liga.logo(sv)} /><b>{sv}</b><span className="en-n">{mio === sv ? '✓ ' : ''}{n}</span>
+              <img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><span className="en-n">{mio === sv ? '✓ ' : ''}{n}</span>
             </button>
           );
         })}

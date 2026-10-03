@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, limpio, mult, norm, num, recorte, resultado, utc } from './liga.js';
+import { MESES, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
@@ -33,7 +33,8 @@ export function Buscar({ liga, onIr }) {
     const nota = (...xs) => Math.min(...xs.map((x) => { const n = norm(x).trim(); return n === t ? 0 : (n.startsWith(t) ? 1 : (n.includes(t) ? 2 : 9)); }));
     const todo = [];
     (liga.d.tabla || []).forEach((f) => todo.push({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k, x: nota(f.n) }));
-    Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || s.sv), sub: s.sv, href: '#/sv/' + s.sv, logo: liga.logo(s.sv), x: nota(s.sv, s.nombre || '') }));
+    Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || siglaDe(s.sv)), sub: siglaDe(s.sv), href: '#/sv/' + siglaDe(s.sv), logo: liga.logo(s.sv),
+      x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
     (liga.d.crews || []).forEach((c) => todo.push({ tipo: 'crew', id: 'c' + (c.clave || c.crew), n: limpio(c.crew), href: '#/crew/' + encodeURIComponent(c.clave || c.crew), crew: c, x: nota(c.crew) }));
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
@@ -210,7 +211,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
           <ul>{hoyEv.map((x, i) => (
             <li key={'ev' + i}><button type="button" className="nt-i" onClick={() => ir('#/eventos')}>
               <img className="nt-c" alt="" src={liga.logo(x.sv)} />
-              <span className="nt-t"><b>{limpio(x.nombre)}</b><small>{vivos.includes(x) ? 'se está jugando ahora' : liga.dia(x.cuando).replace(/^hoy /, 'hoy a las ')} · {x.sv}</small></span>
+              <span className="nt-t"><b>{limpio(x.nombre)}</b><small>{vivos.includes(x) ? 'se está jugando ahora' : liga.dia(x.cuando).replace(/^hoy /, 'hoy a las ')} · {siglaDe(x.sv)}</small></span>
               <em>{vivos.includes(x) ? 'EN VIVO' : ''}</em>
             </button></li>
           ))}</ul>
@@ -286,7 +287,7 @@ function slidesDe(liga, items) {
       const k = ks[0] || '';
       const f = liga.T[k];
       const vis = f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /> : <Cara liga={liga} k={k} nombre={q[0]} cls="st-cara" />;
-      out.push(Slide('CAMPEÓN · ' + it.sv, <><h3 className="st-h">{limpio(it.ev)}</h3>{vis}<b className="st-nom">{q.join(' y ')}</b>
+      out.push(Slide('CAMPEÓN · ' + siglaDe(it.sv), <><h3 className="st-h">{limpio(it.ev)}</h3>{vis}<b className="st-nom">{q.join(' y ')}</b>
         <small className="st-s">{it.part || 0} raperos</small>
         <ol className="st-podio">{(ll.tabla || []).slice(0, 3).map((z, i) => <li key={i}><b>{i + 1}</b>{limpio(z[0])}</li>)}</ol></>, c, 'Ver la llave', { llave: it.ll }));
     } else if (it.tipo === 'caza') {
@@ -824,7 +825,7 @@ export function gcal(e) {
   const t = utc(e.cuando);
   const f = (d) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   const fin = new Date(t.getTime() + 2 * 3600000);
-  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(limpio(e.nombre) + ' · ' + e.sv) +
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(limpio(e.nombre) + ' · ' + siglaDe(e.sv)) +
     '&dates=' + f(t) + '/' + f(fin) + '&details=' + encodeURIComponent(e.link || 'https://underlegends.pages.dev/freestyle-rap/eventos');
 }
 
@@ -860,7 +861,7 @@ function momentosTuyos(liga) {
       tipo: 'tuevento', et: 'Tu evento', sv: ll.sv,
       txt: <><div className="hero-t"><span className="tag tg-seguis">TU ÚLTIMO EVENTO · {liga.cuando(liga.fechaLlave(ll)).toUpperCase()}</span></div>
         <Tit c="hero-ev">{resultado(res)}</Tit>
-        <p className="hero-p">{limpio(ll.nombre)} · {ll.sv} · {ll.participantes} raperos · +{num(pts)} pts para tu Temporada.</p>
+        <p className="hero-p">{limpio(ll.nombre)} · {siglaDe(ll.sv)} · {ll.participantes} raperos · +{num(pts)} pts para tu Temporada.</p>
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave</button>
           {carta ? <Compartir cls="btn borde" url={carta} texto="Mi carta de la Liga Global" etiqueta="Compartir mi carta" /> : null}</div></>,
       vis: <div className="mo-carta-w"><Carta liga={liga} k={yo.k} cual="temporada" cls="mo-carta" /></div>,
@@ -883,7 +884,7 @@ function momentosTuyos(liga) {
         tipo: 'tuprox', et: 'Tu próximo', sv: e.sv, ev: e,
         txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-seguis">TU PRÓXIMO EVENTO · {liga.dia(e.cuando).toUpperCase()}</span></div>
           <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
-          <p className="hero-p">{cuantos}{falta ? (falta === 1 ? ': te falta 1 para tu letra' : ': te faltan ' + falta + ' para tu letra') : ''}{m > 1 ? '. ' + e.sv + ' va ' + mult(m) + ' esta semana' : ''}.</p>
+          <p className="hero-p">{cuantos}{falta ? (falta === 1 ? ': te falta 1 para tu letra' : ': te faltan ' + falta + ' para tu letra') : ''}{m > 1 ? '. ' + siglaDe(e.sv) + ' va ' + mult(m) + ' esta semana' : ''}.</p>
           <Anotados liga={liga} e={e} />
           <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
           <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
@@ -911,7 +912,7 @@ function momentos(liga, vivoL) {
     out.push({
       tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: vivos.length > 1 ? 'En vivo · ' + e.sv : 'En vivo', sv: e.sv,
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag">EN VIVO AHORA</span>
-        <span className="hero-meta">{e.sv} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
+        <span className="hero-meta">{siglaDe(e.sv)} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         {det || e.premios ? <p className="hero-p">{det}{e.premios ? (det ? '. ' : '') + 'Premio: ' + recorte(e.premios, 70) : ''}</p> : null}
         <p className="hero-p">{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
@@ -928,7 +929,7 @@ function momentos(liga, vivoL) {
   const tuyo = out.find((m) => m.tipo === 'tuprox');
   liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600 && !(tuyo && tuyo.ev === x)).slice(0, 1).forEach((e) => {
     const dor = liga.esDorado(e.nombre, e.sv);
-    const det = [e.sv, e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : '', e.org ? 'organiza ' + e.org : ''].filter(Boolean).join(' · ');
+    const det = [siglaDe(e.sv), e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : '', e.org ? 'organiza ' + e.org : ''].filter(Boolean).join(' · ');
     const n = limpio(e.nombre);
     // «Inscribite ya» primero, si el evento tiene su canal de inscripciones (Dlx, 03/10/2026: «2. A»)
     const dd = aDiscord(liga, e, false);
@@ -953,7 +954,7 @@ function momentos(liga, vivoL) {
     out.push({
       tipo: 'llave', et: cu.charAt(0).toUpperCase() + cu.slice(1), sv: ll.sv,
       txt: <><div className="hero-t"><span className="tag tg-llave">{cu.toUpperCase()} · LA LLAVE</span></div><Tit c={largo(limpio(ll.nombre))}>{juntos(limpio(ll.nombre))}</Tit>
-        <p className="hero-p">{ll.sv} · {ll.participantes} raperos. {gana.length > 1 ? 'Campeones:' : 'Campeón:'} {gana.join(' y ')}.</p>
+        <p className="hero-p">{siglaDe(ll.sv)} · {ll.participantes} raperos. {gana.length > 1 ? 'Campeones:' : 'Campeón:'} {gana.join(' y ')}.</p>
         <div className="hero-acc"><button type="button" className="btn verde" onClick={() => accion.llave(ll.n)}>Ver la llave entera</button>
           <Compartir cls="btn borde" url={enlace('#/llave/' + ll.n)} texto={'La llave de ' + limpio(ll.nombre) + ' en la Liga Global'} /></div></>,
       vis: <div className="cm-wrap"><CuadroMini liga={liga} ll={ll} /></div>,
@@ -1146,10 +1147,10 @@ export function Tira({ liga }) {
       <ul className="ts-l">
         {svs.map((sv) => {
           const x = xs[sv];
-          return <li key={sv} className={x > 1 ? 'sube' : (x < 1 ? 'baja' : '')}><a className="ts-sv" href={'#/sv/' + sv} aria-label={'Perfil de ' + sv}><span className="ts-id"><img alt="" src={liga.logo(sv)} /><b>{sv}</b></span><span className="ts-x">{mult(x)}</span></a></li>;
+          return <li key={sv} className={x > 1 ? 'sube' : (x < 1 ? 'baja' : '')}><a className="ts-sv" href={'#/sv/' + siglaDe(sv)} aria-label={'Perfil de ' + siglaDe(sv)}><span className="ts-id"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span><span className="ts-x">{mult(x)}</span></a></li>;
         })}
       </ul>
-      {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {g.sv} · {utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t)}</span></p> : null}
+      {g ? <p className="ts-dor"><b>DORADO ×3</b><span>{limpio(g.n)} · {siglaDe(g.sv)} · {utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t)}</span></p> : null}
     </section>
   );
 }

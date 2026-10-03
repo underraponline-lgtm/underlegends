@@ -2,7 +2,7 @@
 // «me gustan todas» (la E). Vive en #/sv/<SIGLA> y lo dibuja el Inicio nuevo: app.js no conoce esa ruta y la deja
 // en el Inicio, y el Inicio mira la dirección (ver App.jsx). Todo sale del payload: `svs` (el color acordado, el
 // logo de hoy, la invitación, las redes), la tabla, las llaves, los próximos, el muro, Se busca y la semana.
-import { limpio, mult, num, utc } from './liga.js';
+import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 
@@ -57,7 +57,7 @@ export function PerfilSv({ liga, sv }) {
   const va = (mm.meta_va || {})[sv] || 0;
   const semana = [];
   if (g && g.sv === sv) semana.push(['DORADO ×3', limpio(g.n) + ' · ' + (utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t))]);
-  if (par) semana.push(['GUERRA', 'contra ' + (par[0] === sv ? par[1] : par[0]) + ': gana el que más puntos hace por persona']);
+  if (par) semana.push(['GUERRA', 'contra ' + siglaDe(par[0] === sv ? par[1] : par[0]) + ': gana el que más puntos hace por persona']);
   if (meta) semana.push(['META', va + ' de ' + meta + ' personas' + (va >= meta ? ' · cumplida' : '')]);
   const fechas = [];
   // al Discord con la invitación, no con el link al mensaje (Dlx, 03/10/2026: «2. A»): ver `aDiscord()`
@@ -78,11 +78,11 @@ export function PerfilSv({ liga, sv }) {
           <img className="svp-logo" alt="" src={liga.logo(sv, true)} />
           <div className="svp-tx">
             {s.tag ? <span className="tag">{String(s.tag).toUpperCase()}</span> : null}
-            <h1 className="hero-ev largo">{s.nombre || sv}</h1>
-            <p className="hero-p">{sv}{s.miembros ? ' · ' + num(s.miembros) + ' miembros en su Discord' : ''}</p>
+            <h1 className="hero-ev largo">{s.nombre || siglaDe(sv)}</h1>
+            <p className="hero-p">{siglaDe(sv)}{s.miembros ? ' · ' + num(s.miembros) + ' miembros en su Discord' : ''}</p>
             <div className="hero-acc">
               {s.invita ? <a className="btn verde" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar al servidor ↗</a> : null}
-              <Compartir cls="btn borde" url={enlace('#/sv/' + sv)} texto={(s.nombre || sv) + ' en la Liga Global'} />
+              <Compartir cls="btn borde" url={enlace('#/sv/' + siglaDe(sv))} texto={(s.nombre || siglaDe(sv)) + ' en la Liga Global'} />
             </div>
             {(s.redes || []).length ? (
               <nav className="svp-redes" aria-label="Sus redes">
@@ -104,7 +104,7 @@ export function PerfilSv({ liga, sv }) {
         ) : null}
       </div>
       {gente.length ? (
-        <Sec id="sv-gente" titulo={'Los que mandan en ' + sv} enlace="Todos los raperos" href="#/ranking" extra="negra">
+        <Sec id="sv-gente" titulo={'Los que mandan en ' + siglaDe(sv)} enlace="Todos los raperos" href="#/ranking" extra="negra">
           <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
         </Sec>
       ) : null}
@@ -122,19 +122,19 @@ export function PerfilSv({ liga, sv }) {
         </Sec>
       ) : null}
       {notas.length ? (
-        <Sec id="sv-ultimo" titulo={'Lo último de ' + sv} enlace="Publicaciones" href="#/publicaciones">
+        <Sec id="sv-ultimo" titulo={'Lo último de ' + siglaDe(sv)} enlace="Publicaciones" href="#/publicaciones">
           <ul className="notas">{notas.map((n, i) => <Nota key={i} liga={liga} x={n} />)}</ul>
         </Sec>
       ) : null}
       {buscados.length ? (
-        <Sec id="sv-buscados" titulo={'Se busca en ' + sv} enlace="Most Wanted" href="#/ranking/mw" extra="negra">
+        <Sec id="sv-buscados" titulo={'Se busca en ' + siglaDe(sv)} enlace="Most Wanted" href="#/ranking/mw" extra="negra">
           <div className="mw-rail">{buscados.map((b) => <Poster key={b.k} liga={liga} b={b} />)}</div>
         </Sec>
       ) : null}
       <Sec id="sv-mas" titulo="Los otros servidores">
         <nav className="svp-otros">
           {Object.values(liga.svs).filter((o) => o.sv !== sv).sort((a, b) => (b.pts || 0) - (a.pts || 0)).map((o) => (
-            <a key={o.sv} href={'#/sv/' + o.sv} style={{ '--c': o.color }}><img alt="" src={liga.logo(o.sv)} /><b>{o.sv}</b></a>
+            <a key={o.sv} href={'#/sv/' + siglaDe(o.sv)} style={{ '--c': o.color }}><img alt="" src={liga.logo(o.sv)} /><b>{siglaDe(o.sv)}</b></a>
           ))}
         </nav>
       </Sec>

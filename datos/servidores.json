@@ -248,7 +248,8 @@
      "categoria_id": "863207988739309600",
      "creada": "2026-10-03"
     }
-   ]
+   ],
+   "sigla": "SNK"
   },
   "FTN": {
    "nombre": "Fontana",
@@ -298,7 +299,8 @@
      "categoria_id": "1511967903329812651",
      "creada": "2026-10-03"
     }
-   ]
+   ],
+   "sigla": "URB"
   },
   "EFA": {
    "nombre": "EFA",
@@ -469,5 +471,6 @@
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",
  "_invitacion_liga_leeme": "invitacion_liga: la invitación permanente que creó el bot en cada servidor (Dlx, 29/09/2026: «crea una invitación permanente para cada servidor, y de esta manera podemos reconocer cuántas personas se unieron por ti la Liga Global»). Es la de `invitacion`; la de antes quedó en `invitacion_antes`. Cuántos entraron: datos/invitaciones.json (bot/invitaciones.py --contar).",
- "_invitaciones_inscripcion_leeme": "invitaciones_inscripcion: las invitaciones permanentes que creó el bot a cada canal de inscripciones (o, sin ninguno, al de eventos donde se anota), para el botón «Inscribite ya» (Dlx, 03/10/2026: «1. a»). El botón elige la de la misma categoría que el anuncio: ver invitacionPara() de bot/avisos.js."
+ "_invitaciones_inscripcion_leeme": "invitaciones_inscripcion: las invitaciones permanentes que creó el bot a cada canal de inscripciones (o, sin ninguno, al de eventos donde se anota), para el botón «Inscribite ya» (Dlx, 03/10/2026: «1. a»). El botón elige la de la misma categoría que el anuncio: ver invitacionPara() de bot/avisos.js.",
+ "_sigla_leeme": "sigla: la que se LEE en la página, el bot y los avisos, cuando no es el código. Dlx, 03/10/2026: «cambia el esto de SNAKE RAP de SR a SNK queda mejor y de URBF a URB». El código —la clave de servidores, los colores, los logos, las cartas, el Sheet y los links que ya circulan— sigue siendo SR y URBF: cambiarlo sería migrar todo eso para cambiar tres letras que se leen."
 }

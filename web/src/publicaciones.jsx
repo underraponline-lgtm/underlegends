@@ -8,7 +8,7 @@
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { limpio, num } from './liga.js';
+import { limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
@@ -72,7 +72,7 @@ function Pub({ liga, it, A }) {
   let acc = null;
   const f0 = ks[0] ? liga.T[ks[0]] : null;
   if (it.tipo === 'campeon') {
-    cat = 'CAMPEÓN · ' + it.sv;
+    cat = 'CAMPEÓN · ' + siglaDe(it.sv);
     vis = f0 && (f0.c || []).includes('temporada') ? <Carta liga={liga} k={f0.k} cual="temporada" cls="pub-carta" abre={false} />
       : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>{nombres}{q.length > 1 ? ' se quedan con ' : ' se queda con '}<b>{limpio(it.ev)}</b></>;
@@ -109,7 +109,7 @@ function Pub({ liga, it, A }) {
     txt = <>La gente eligió a {nombres} como El Elegido del Most Wanted</>;
     det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
   } else if (it.tipo === 'anuncio') {
-    cat = 'EVENTO · ' + it.sv;
+    cat = 'EVENTO · ' + siglaDe(it.sv);
     vis = <img className="pub-logo" alt="" src={liga.logo(it.sv)} />;
     txt = <b>{limpio(it.ev)}</b>;
     det = [it.mod, it.org ? 'organiza ' + it.org : '', it.pre ? '🏅 ' + it.pre : ''].filter(Boolean).join(' · ');

@@ -1,6 +1,6 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
-import { DIAS, hora, limpio, num, resultado, utc } from './liga.js';
+import { DIAS, hora, limpio, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
@@ -265,7 +265,7 @@ export function TusEventos({ liga, dc }) {
           {mios.map(([ll, res, pts]) => (
             <li key={ll.n}><button type="button" className="sin-boton te-b" onClick={() => accion.llave(ll.n)}>
               <img alt="" src={liga.logo(ll.sv)} />
-              <div><b>{limpio(ll.nombre)}</b><small>{ll.sv} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos</small></div>
+              <div><b>{limpio(ll.nombre)}</b><small>{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos</small></div>
               <span className={'te-vos' + (res === 'Campeón' ? ' campeon' : '')}>{resultado(res, true)}<small>+{num(pts)} pts</small></span>
             </button></li>
           ))}

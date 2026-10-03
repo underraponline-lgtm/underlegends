@@ -8,7 +8,7 @@
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { useEffect, useState } from 'react';
-import { PAIS, hora, limpio } from './liga.js';
+import { PAIS, hora, limpio, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { nuevaQue } from './cambios.jsx';
@@ -302,7 +302,7 @@ function ServidorCaja({ liga, dc }) {
         return (
           <button type="button" key={o.sv} className={'cu-sv' + (on ? ' on' : '') + (e.pide === o.sv ? ' pide' : '')} style={{ '--c': o.color }}
             aria-pressed={on} disabled={off} onClick={() => { if (W.cuentaServidor) W.cuentaServidor(o.sv); }}>
-            <img alt="" src={liga.logo(o.sv)} /><b>{o.sv}</b></button>
+            <img alt="" src={liga.logo(o.sv)} /><b>{siglaDe(o.sv)}</b></button>
         );
       })}</div>
       {/* pasada la ventana libre, elegir es para toda la temporada: se confirma */}
@@ -435,7 +435,7 @@ function Parte({ id, liga, dc, tema, onTema }) {
     const activos = !!leer('campana:activada', false);
     const de = Object.values(liga.svs).filter((o) => !svs.length || svs.includes(o.sv));
     return (
-      <Caja t="En este dispositivo" d={activos ? 'Activados: te avisa al minuto de que ' + (svs.length ? de.map((o) => o.sv).join(', ') : 'cualquier servidor') + ' anuncia un evento.'
+      <Caja t="En este dispositivo" d={activos ? 'Activados: te avisa al minuto de que ' + (svs.length ? de.map((o) => siglaDe(o.sv)).join(', ') : 'cualquier servidor') + ' anuncia un evento.'
         : 'Apagados. Activalos y te avisa al minuto de que un servidor anuncia un evento.'}>
         <a className="btn verde chico" href="#/avisos">{activos ? 'Cambiar los avisos' : 'Activar los avisos'}</a>
       </Caja>

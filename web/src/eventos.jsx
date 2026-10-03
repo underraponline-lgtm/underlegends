@@ -7,7 +7,7 @@
 // ⚠️ TODO SALE DEL PAYLOAD (`calendario`, `proximos`, `llaves`, `actividad`, `orgs`) y de lo que app.js ya sabe en vivo
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, utc } from './liga.js';
+import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, enJuegoDe, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
@@ -185,7 +185,7 @@ async function imagenCampeon(liga, ll) {
     x += 72;
   } catch (e) { /* sin logo */ }
   letra(700, 34, true); g.fillStyle = '#F6F6F6'; g.textAlign = 'left';
-  g.fillText([ll.sv, ll.participantes ? ll.participantes + ' raperos' : '', fechaFija(liga, liga.fechaLlave(ll))].filter(Boolean).join(' · ').toUpperCase(), x, y);
+  g.fillText([siglaDe(ll.sv), ll.participantes ? ll.participantes + ' raperos' : '', fechaFija(liga, liga.fechaLlave(ll))].filter(Boolean).join(' · ').toUpperCase(), x, y);
   // la carta (o las dos de una pareja), con lo que queda arriba del escalón, la línea de la final y el logo
   const yc = y + 56;
   const tope = H - 280 - 48 - 70 - 210 - 28;
@@ -296,7 +296,7 @@ function Evento({ liga, e, est, L, abierto }) {
   const x = e.px || {};
   const dor = liga.esDorado(e.n, e.sv);
   const m = liga.multSv(e.sv);
-  const det = [e.sv, formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
+  const det = [siglaDe(e.sv), formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
     ll ? ll.participantes + ' raperos' : '', x.org || inf.org ? 'organiza ' + (x.org || inf.org) : ''].filter(Boolean).join(' · ');
   const camp = ll ? liga.campeon(ll) : [];
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
@@ -318,7 +318,7 @@ function Evento({ liga, e, est, L, abierto }) {
       </header>
       {dor || m > 1 || x.premios ? (
         <div className="evp-xtra">
-          {dor ? <span className="evp-dor">EVENTO DORADO · VALE ×3</span> : m > 1 ? <span className="evp-mult">{e.sv} VA ×{String(m).replace('.', ',')} ESTA SEMANA</span> : null}
+          {dor ? <span className="evp-dor">EVENTO DORADO · VALE ×3</span> : m > 1 ? <span className="evp-mult">{siglaDe(e.sv)} VA ×{String(m).replace('.', ',')} ESTA SEMANA</span> : null}
           {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
         </div>
       ) : null}
@@ -629,7 +629,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       <div className="evp-mo vivo">
         <span className="tag">EN VIVO AHORA</span>
         <div className="evp-mo-n"><img alt="" src={liga.logo(vivoAhora.sv)} /><b>{limpio(vivoAhora.nombre)}</b></div>
-        <small className="evp-mo-s">{vivoAhora.sv} · empezó {liga.dia(vivoAhora.cuando).replace(/^hoy /, '')}</small>
+        <small className="evp-mo-s">{siglaDe(vivoAhora.sv)} · empezó {liga.dia(vivoAhora.cuando).replace(/^hoy /, '')}</small>
         {J && J.ahora ? (
           <div className="evp-ah">
             <span className="evp-ah-t">AHORA · {String(J.ahora.r).toUpperCase()}</span>
@@ -651,7 +651,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       <div className="evp-mo">
         <span className="tag">LO PRÓXIMO · {liga.dia(proximo.t).toUpperCase()}</span>
         <div className="evp-mo-n"><img alt="" src={liga.logo(proximo.sv)} /><b>{limpio(proximo.n)}</b></div>
-        <small className="evp-mo-s">{[proximo.sv, formato(proximo.mod || (proximo.px || {}).modalidad)].filter(Boolean).join(' · ')}</small>
+        <small className="evp-mo-s">{[siglaDe(proximo.sv), formato(proximo.mod || (proximo.px || {}).modalidad)].filter(Boolean).join(' · ')}</small>
         <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(proximo.t)}</b></div>
         <div className="hero-acc">
           {pi ? <a className="btn verde" href={pi.url} target="_blank" rel="noopener noreferrer">{pi.txt} ↗</a> : null}
@@ -673,7 +673,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         {f ? <div className="evp-mo-carta"><Carta liga={liga} k={f.k} cual="temporada" cls="evp-mo-ci" /></div> : null}
         <div className="evp-mo-txt">
           <div className="evp-mo-n"><img alt="" src={liga.logo(ultima.sv)} /><b>{g.join(' y ')}</b></div>
-          <small className="evp-mo-s">{limpio(ultima.nombre)} · {ultima.sv} · {ultima.participantes} raperos</small>
+          <small className="evp-mo-s">{limpio(ultima.nombre)} · {siglaDe(ultima.sv)} · {ultima.participantes} raperos</small>
         </div>
         <div className="hero-acc">
           <button type="button" className="btn verde" onClick={() => accion.llave(ultima.n)}>Ver la llave</button>

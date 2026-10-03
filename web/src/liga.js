@@ -55,6 +55,11 @@ export function utc(s) {
 
 // ── las horas: en la zona y el formato que la persona eligió en Ajustes (las funciones de app.js) ──
 const W = typeof window !== 'undefined' ? window : {};
+// 🔤 LA SIGLA QUE SE LEE (Dlx, 03/10/2026: «cambia… SNAKE RAP de SR a SNK queda mejor y de URBF a URB»). El código
+// sigue siendo la clave de todo —colores, logos, cartas, el Sheet, los links que ya circulan—: sólo cambia lo que se
+// lee. Sale del payload (`svs[].sigla`, de `datos/servidores.json`) y la llena cada `Liga` nueva
+let SIGLAS = {};
+export function siglaDe(sv) { return SIGLAS[sv] || sv || ''; }
 // como `normNombre()` de app.js: la clave de `alias` en el payload (`respaldo._norm`)
 const normNombre = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 export function hora(t) {
@@ -115,6 +120,8 @@ export class Liga {
     (D.avs || []).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });
     this.svs = {};
     (D.svs || []).forEach((s) => { this.svs[s.sv] = s; });
+    SIGLAS = {};
+    (D.svs || []).forEach((s) => { if (s.sigla && s.sigla !== s.sv) SIGLAS[s.sv] = s.sigla; });
     this.rg = {};
     (D.rangos || []).forEach((r) => { this.rg[r.r] = r.color; });
     this.yo = yo && this.T[yo] ? this.T[yo] : null;
@@ -157,6 +164,14 @@ export class Liga {
   // calidad». El ícono llegaba pedido a 128 px y el escenario lo dibuja a ~330: se veía borroso. Se pide a 512 en todos
   // lados —una sola imagen por servidor, que el navegador reusa— y a 1024 donde se dibuja grande (`grande`). El CDN de
   // Discord devuelve lo que se subió, nunca más: pedir de más no agranda nada, sólo deja de achicar
+  sigla(sv) { return siglaDe(sv); }
+  // y al revés, para la dirección: `/sv/SNK` y `/sv/SR` abren lo mismo
+  codigo(x) {
+    const X = String(x || '').toUpperCase();
+    if (this.svs[X]) return X;
+    const s = Object.values(this.svs).find((o) => String(o.sigla || '').toUpperCase() === X);
+    return s ? s.sv : X;
+  }
   logo(sv, grande = false) {
     if (!sv) return '';
     const s = this.svs && this.svs[sv];
@@ -423,7 +438,7 @@ export class Liga {
       return ['RANGO', (it.primero ? q[0] + ' consigue su primera letra: ' : q[0] + ' pasa a rango ') + it.rg, vis, c, { perfil: ks[0] }];
     }
     if (it.tipo === 'campeon') {
-      return ['CAMPEÓN · ' + it.sv, q.join(' y ') + (q.length > 1 ? ' se quedan con ' : ' se queda con ') + limpio(it.ev),
+      return ['CAMPEÓN · ' + siglaDe(it.sv), q.join(' y ') + (q.length > 1 ? ' se quedan con ' : ' se queda con ') + limpio(it.ev),
         ['cara', ks[0] || '', q[0]], c, { llave: it.ll }];
     }
     if (it.tipo === 'caza') {
@@ -431,7 +446,7 @@ export class Liga {
         ['cara', ks[0] || '', q[0]], c, { ancla: 'sebusca' }];
     }
     if (it.tipo === 'anuncio') {
-      return ['EVENTO · ' + it.sv, it.sv + ' anunció ' + limpio(it.ev), ['sv', it.sv], c, { ruta: '#/eventos' }];
+      return ['EVENTO · ' + siglaDe(it.sv), siglaDe(it.sv) + ' anunció ' + limpio(it.ev), ['sv', it.sv], c, { ruta: '#/eventos' }];
     }
     if (it.tipo === 'liga') return ['LA LIGA', limpio(it.tit), ['ul'], c, { link: it.link }];
     return null;

@@ -4,7 +4,7 @@
 // con su versión, el aviso de «se está redibujando», sus números, Descargar y Ver su perfil. Se cierra con ✕, tocando
 // afuera o con Escape, y mientras está abierta la página de atrás no se mueve
 import { useEffect, useRef, useState } from 'react';
-import { limpio, num } from './liga.js';
+import { limpio, num, siglaDe } from './liga.js';
 import { Bandera, nombrePais } from './piezas.jsx';
 
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
@@ -79,7 +79,7 @@ export function VisorCarta({ liga, dc, k, onCerrar }) {
             <h2>{nombre}</h2>
             <p className="vc-sub">
               {f.cc ? <a href={'#/pais/' + f.cc} onClick={onCerrar}><Bandera cc={f.cc} cls="vc-flag" />{nombrePais(f.cc)}</a> : null}
-              {f.sv ? <a href={'#/sv/' + f.sv} onClick={onCerrar}>{(sv && sv.nombre) || f.sv}</a> : null}
+              {f.sv ? <a href={'#/sv/' + siglaDe(f.sv)} onClick={onCerrar}>{(sv && sv.nombre) || siglaDe(f.sv)}</a> : null}
               {crew ? <a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)} onClick={onCerrar}>{limpio(crew.crew)}</a> : null}
             </p>
           </div>

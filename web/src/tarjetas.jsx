@@ -8,7 +8,7 @@
 // orden (el de la tabla), las filas de «Comparar dos» (`CMP_FILAS` de app.js) y lo que falta (`req` de /api/perfiles,
 // como «Lo que le falta» del perfil). Si una regla cambia allá, cambia acá.
 import { useEffect, useMemo, useState } from 'react';
-import { limpio, norm, num, utc } from './liga.js';
+import { limpio, norm, num, siglaDe, utc } from './liga.js';
 import { Carta, Compartir, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 
@@ -227,7 +227,7 @@ function Galeria({ liga, t, lista }) {
               {nSigo ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién seguís</button> : null}
               {svs.length > 1 ? svs.map((s) => (
                 <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}>
-                  <img alt="" src={liga.logo(s)} />{s}
+                  <img alt="" src={liga.logo(s)} />{siglaDe(s)}
                 </button>
               )) : null}
             </div>
@@ -243,7 +243,7 @@ function Galeria({ liga, t, lista }) {
                   <Carta liga={liga} k={f.k} cual={t} cls="tj-c" />
                   <div className="tj-pie">
                     <b>{limpio(f.n)}</b>
-                    <small>{f.pos ? '#' + f.pos : 'fuera de concurso'}{f.sv ? ' · ' + f.sv : ''}</small>
+                    <small>{f.pos ? '#' + f.pos : 'fuera de concurso'}{f.sv ? ' · ' + siglaDe(f.sv) : ''}</small>
                     {liga.cartaVieja(f.k, t) ? <small className="tj-dib"><Ico n="reloj" t={13} />se está redibujando</small> : null}
                   </div>
                 </li>

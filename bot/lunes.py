@@ -36,6 +36,7 @@ BASE = os.path.dirname(SCR)
 for _p in (SCR, BASE, os.path.join(BASE, 'sheet')):
     if _p not in sys.path:
         sys.path.insert(0, _p)
+from siglas import sigla  # noqa: E402  la sigla que se lee (SNK, URB)
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except AttributeError:
@@ -104,24 +105,24 @@ def armar(d=None, ahora=None, mw=None):
     ls = []
     pr = s.get('premios') or {}
     ls.append('**⚡ Multiplicadores** — ' + ' · '.join(
-        '%s %s%s' % (sv, _x(x), ' (%s)' % ' + '.join(pr[sv]) if pr.get(sv) else '')
+        '%s %s%s' % (sigla(sv), _x(x), ' (%s)' % ' + '.join(pr[sv]) if pr.get(sv) else '')
         for sv, x in sorted(s['sv'].items(), key=lambda kv: -kv[1])))
     if s.get('votado'):
         v = s['votado']
         ls.append('**🗳️ Lo votó la gente** — %s sale con ×2 como mínimo (%d de %d votos)'
-                  % (v['sv'], v['votos'], v['de']))
+                  % (sigla(v['sv']), v['votos'], v['de']))
     if s.get('dorado'):
         dd = s['dorado']
         if dd.get('n'):
             ls.append('**🌟 Evento dorado** — fue **%s** (%s): valió ×3' % (dd.get('nombre') or '#%s' % dd['n'],
-                                                                           dd['sv']))
+                                                                           sigla(dd['sv'])))
         else:
             dia = MU._de_iso(dd['desde']).astimezone(et)
             ls.append('**🌟 Evento dorado** — el primer evento de **%s** desde el %s %d vale ×3'
-                      % (dd['sv'], nombre_dia[dia.weekday()], dia.day))
+                      % (sigla(dd['sv']), nombre_dia[dia.weekday()], dia.day))
     if s.get('guerra'):
         ls.append('**⚔️ Guerra de servidores** — %s · gana el que más puntos hace por persona y lleva ×1,5 '
-                  'la semana que viene' % ' · '.join('%s vs %s' % tuple(p) for p in s['guerra']['pares']))
+                  'la semana que viene' % ' · '.join('%s vs %s' % tuple(sigla(x) for x in p) for p in s['guerra']['pares']))
     if s.get('copa'):
         c = s['copa']
         ls.append('**🏆 Copa de la Liga** — ' + ('fue **%s**, de %s' % (c.get('nombre') or '#%s' % c['n'], c['org'])
@@ -130,7 +131,7 @@ def armar(d=None, ahora=None, mw=None):
     if s.get('metas'):
         va = s.get('meta_va') or {}
         ls.append('**🎯 Meta de comunidad** — ' + ' · '.join(
-            '%s %d/%d%s' % (sv, va.get(sv, 0), m, ' ✅' if va.get(sv, 0) >= m else '')
+            '%s %d/%d%s' % (sigla(sv), va.get(sv, 0), m, ' ✅' if va.get(sv, 0) >= m else '')
             for sv, m in sorted(s['metas'].items(), key=lambda kv: -kv[1]))
             + ' · si la juntan, +10 % para todos los que jugaron')
     try:
@@ -246,10 +247,11 @@ def _self_check():
     t, ls = armar(d, en(10, 13, 12), mw={'actual': {'buscados': [{'n': 'Zeta', 'cn': 'El Rey', 'valor': 12000}]}})
     todo = '\n'.join(ls)
     ok(t == '🗓️ Lunes de la Liga · semana del 12/10', 'el título, con la semana  %s' % t)
-    ok('SR ×5 (guerra) · FFA ×1,5 · URBF ×0,5' in todo, 'los multiplicadores, del más alto al más bajo, con el premio')
-    ok('el primer evento de **SR** desde el jueves 15 vale ×3' in todo and 'FFA vs SR' in todo
+    # 🔤 Snake Rap se lee SNK y Urban Freestyle URB (Dlx, 03/10/2026): ver `bot/siglas.py`
+    ok('SNK ×5 (guerra) · FFA ×1,5 · URB ×0,5' in todo, 'los multiplicadores, del más alto al más bajo, con el premio')
+    ok('el primer evento de **SNK** desde el jueves 15 vale ×3' in todo and 'FFA vs SNK' in todo
        and 'organice **nachonc_**' in todo, 'el dorado con su día, la guerra y la Copa')
-    ok('FFA 41/40 ✅ · SR 3/20' in todo and 'Zeta (El Rey, 12.000)' in todo,
+    ok('FFA 41/40 ✅ · SNK 3/20' in todo and 'Zeta (El Rey, 12.000)' in todo,
        'la meta con su marca y el Most Wanted del día')
     ok('figura **Ana** (12.000 pts)' in todo and 'Hasta el lunes 19 a las 11 AM' in todo,
        'los premios de la semana pasada y hasta cuándo')
@@ -259,7 +261,7 @@ def _self_check():
     # 🔑 las encuestas: lo que votó la gente, y la invitación a votar
     _t, ls3 = armar({'semanas': [dict(d['semanas'][1], votado={'sv': 'SR', 'votos': 12, 'de': 30})]},
                     en(10, 13, 12), mw={})
-    ok('SR sale con ×2 como mínimo (12 de 30 votos)' in '\n'.join(ls3) and 'Votá en la página' in todo,
+    ok('SNK sale con ×2 como mínimo (12 de 30 votos)' in '\n'.join(ls3) and 'Votá en la página' in todo,
        'el ×2 que votó la gente, y la invitación a votar')
     # publicar: una vez por semana, y se edita sólo si cambió
     import tempfile

@@ -11,7 +11,7 @@
 // 🔑 Y SE SUMA HABLÁNDOLE A DLX. Dlx, 03/10/2026: «quitá esa línea [la del código en GitHub] y decí que si querés que
 // tu servidor sea parte escribas a @itsdlx en Discord, y explicá más features que hacemos». Cada una de `QUE_GANA` es
 // algo que ya anda: si alguna se apaga, se saca de acá.
-import { limpio, mult, num } from './liga.js';
+import { limpio, mult, num, siglaDe } from './liga.js';
 import { Carta, Compartir, enlace } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { BotHace, DLX, QueGana, prevSum } from './sumar.jsx';
@@ -33,7 +33,7 @@ function Socio({ liga, s }) {
         <img className="soc-logo" alt="" src={liga.logo(s.sv, true)} />
         <div>
           <h2>{s.nombre || s.sv}</h2>
-          <small>{s.sv}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}</small>
+          <small>{siglaDe(s.sv)}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}</small>
         </div>
       </header>
       {/* «0 de 0» no es un número: quien todavía no jugó la temporada no muestra ceros, lo dice en palabras */}
@@ -50,7 +50,7 @@ function Socio({ liga, s }) {
       ) : null}
       <div className="soc-medio">
         {mejor && (mejor.c || []).includes('servidor') ? (
-          <a className="soc-carta" href={'#/r/' + encodeURIComponent(mejor.k)} aria-label={'El mejor de ' + s.sv + ': ' + limpio(mejor.n)}>
+          <a className="soc-carta" href={'#/r/' + encodeURIComponent(mejor.k)} aria-label={'El mejor de ' + siglaDe(s.sv) + ': ' + limpio(mejor.n)}>
             <Carta liga={liga} k={mejor.k} cual="servidor" cls="soc-carta-c" abre={false} />
           </a>
         ) : null}
@@ -66,7 +66,7 @@ function Socio({ liga, s }) {
         </nav>
       ) : null}
       <div className="soc-acc">
-        <a className="btn negro chico" href={'#/sv/' + s.sv}>Ver su página</a>
+        <a className="btn negro chico" href={'#/sv/' + siglaDe(s.sv)}>Ver su página</a>
         {s.invita ? <a className="btn borde2 chico" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar ↗</a> : null}
       </div>
     </article>

@@ -9,7 +9,7 @@
 // lo que le falta, `ins` sus insignias, `mw` su cacería; `e` los eventos y `dmp` el promedio de la Liga). Las acciones
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { limpio, num } from './liga.js';
+import { limpio, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Rango, SinCarta, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 
@@ -118,7 +118,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           {segs ? <p className="pf-segs"><b>{num(segs)}</b> {segs === 1 ? 'seguidor' : 'seguidores'}</p> : null}
           <ul className="pf-chips">
             {f.cc ? <li><a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a></li> : null}
-            {f.sv ? <li><a href={'#/sv/' + f.sv}><img alt="" src={liga.logo(f.sv)} />{(sv && sv.nombre) || f.sv}</a></li> : null}
+            {f.sv ? <li><a href={'#/sv/' + siglaDe(f.sv)}><img alt="" src={liga.logo(f.sv)} />{(sv && sv.nombre) || siglaDe(f.sv)}</a></li> : null}
             {crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
           </ul>

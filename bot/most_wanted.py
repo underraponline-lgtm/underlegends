@@ -49,6 +49,7 @@ BASE = os.path.dirname(SCR)
 for _p in (SCR, BASE, os.path.join(BASE, 'sheet')):
     if _p not in sys.path:
         sys.path.insert(0, _p)
+from siglas import sigla  # noqa: E402  la sigla que se lee (SNK, URB)
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except AttributeError:
@@ -626,7 +627,7 @@ def elegir(pool, evs, R, inicio, excluir=(), snap=None, tipo=None, semilla='', v
             svs.setdefault(sv, []).append(s)
     for sv, gente in sorted(svs.items(), key=lambda kv: -len(kv[1])):
         if len(gente) >= 3:
-            primero('dueno:' + sv, [(s['p']['raw'], 'el mejor de %s' % sv) for s in gente])
+            primero('dueno:' + sv, [(s['p']['raw'], 'el mejor de %s' % sigla(sv)) for s in gente])
     # el `#` que se lee es el oficial (`pos`), no el orden por mérito
     primero('oscuro', [(s['p']['raw'], '#%s y podio %s' % (s['p'].get('pos'), ayer))
                        for s in sorted(st.values(), key=lambda s: min([_fase(f) for f in s['fases_v']] or [99]))
