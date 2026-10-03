@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.05",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T03:28:00-04:00",
+   "titulo": "Más seguro, y una pasada de arreglos",
+   "items": [
+    "🔒 **Entrar con Discord, más seguro**: la página verifica que el permiso de Discord sea de la Liga y no de otra app.",
+    "📅 **Eventos**: los cancelados salen como cancelados (y ya no ofrecen inscribirse), lo que sigue en vivo pasada la medianoche sale en vivo, y los eventos jugados dicen «Terminó» aunque su llave sea vieja.",
+    "✨ **El «DORADO ×3» vuelve a verse** en la semana de su servidor.",
+    "👤 **Si jugaste y estás más abajo de los 200 de la tabla**, la página ya no dice «todavía no jugaste»: te lleva a tu perfil.",
+    "🧭 **Detalles**: «Entrar con Discord» entra directo, el buscador se cierra al tocar afuera, cada pestaña tiene su título, «cupos ∞» en vez de «:infinity:», y si una parte de la página falla, el resto sigue andando."
+   ]
+  },
+  {
    "version": "2.04",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T00:53:00-04:00",
