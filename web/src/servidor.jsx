@@ -15,6 +15,8 @@ function ir(d) {
   else if (d.llave) accion.llave(d.llave);
   else if (d.ruta) location.hash = d.ruta;
   else if (d.link) window.open(d.link, '_blank', 'noopener');
+  // la caza del Most Wanted (`{ancla:'sebusca'}`): su ranking (revisión del 03/10/2026)
+  else if (d.ancla) location.hash = d.ancla === 'sebusca' ? '#/ranking/mw' : '#/';
 }
 
 function Nota({ liga, x }) {

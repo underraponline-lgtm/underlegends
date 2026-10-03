@@ -76,7 +76,8 @@ function Socio({ liga, s }) {
 export function Socios({ liga }) {
   const svs = Object.values(liga.svs).sort((a, b) => (b.pts || 0) - (a.pts || 0));
   const enDiscord = svs.reduce((t, s) => t + (s.miembros || 0), 0);
-  const raperos = (liga.d.tabla || []).length;
+  // ⚠️ la gente del pool (`gente`), no las filas de la tabla, que viajan hasta 200 (revisión del 03/10/2026)
+  const raperos = liga.d.gente || (liga.d.tabla || []).length;
   // 🔑 los patrocinadores, cuando haya: sin dato no hay pieza (Dlx: «3. A»)
   const pat = Array.isArray(liga.d.patrocinadores) ? liga.d.patrocinadores : [];
   // baja hasta «Sumá tu servidor» (adentro del shadow root del Inicio nuevo)

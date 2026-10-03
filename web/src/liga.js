@@ -46,6 +46,9 @@ export function utc(s) {
   // del Inicio salía corrida por el huso de quien mira. POESÍA CRUDA empezó a las 6:29 PM ET y decía «empezó 14:29»
   // (Dlx, 01/10/2026, en sus capturas)
   if (s instanceof Date) return s;
+  // ⚠️ y un número son milisegundos: `cancelados[].ini` (del vigía) era una «Invalid Date» y el grupo «Cancelados»
+  // de Eventos no salía nunca (revisión del 03/10/2026)
+  if (typeof s === 'number') return new Date(s);
   const t = String(s);
   return new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(t) ? t : t + 'Z');
 }
@@ -289,7 +292,9 @@ export class Liga {
   // EXHIBITION 2/8 · se jugó el martes» en la Tira: «si ya se jugó, que desaparezca». La insignia de su fecha sigue.
   doradoVigente() {
     const g = this.dorado();
-    return g && utc(g.t) + 5 * 3600000 > this.ahora ? g : null;
+    // 🔴 `utc(g.t) + 5 * 3600000` pegaba un número a un texto de fecha y la comparación daba siempre falso: el «DORADO
+    // ×3» no salía nunca en la Tira ni en la semana de su servidor (revisión del 03/10/2026)
+    return g && utc(g.t).getTime() + 5 * 3600000 > this.ahora.getTime() ? g : null;
   }
   esDorado(nombre, sv) {
     const g = this.dorado();

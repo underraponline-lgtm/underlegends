@@ -97,7 +97,8 @@ export function Encuestas({ liga, enc, dc }) {
   const tuyos = <div className="pz-2"><TusEventos liga={liga} dc={dc} /><TuTemporada liga={liga} dc={dc} /></div>;
   const enlace = yo ? 'Tu perfil' : (dc ? 'Mi cuenta' : 'Entrar');
   const href = yo ? '#/r/' + encodeURIComponent(yo.k) : undefined;
-  const onEnlace = yo ? undefined : accion.cuenta;
+  // «Entrar» entra con Discord; «Mi cuenta», a la cuenta (revisión del 03/10/2026)
+  const onEnlace = yo ? undefined : (dc ? accion.cuenta : accion.entrar);
   if (!x2 && !el) return <Sec id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace}>{tuyos}</Sec>;
   const items = [
     { c: 'encuestas', et: 'Encuestas', t: 'Encuestas', cuerpo: (

@@ -4583,7 +4583,13 @@ function avisarBandeja() {
 }
 /* `visto`: se abrió el panel; lo nuevo queda visto (la respuesta todavía dice cuáles eran) */
 function pedirBandeja(visto) {
-  if (!DC) { BANDEJA.sinCuenta = true; BANDEJA.listo = true; avisarBandeja(); return; }
+  // ⚠️ sin cuenta, también sin lo de la anterior: al salir, el «3 nuevas» de esa cuenta quedaba en la campana
+  // (revisión del 03/10/2026)
+  if (!DC) {
+    BANDEJA.sinCuenta = true; BANDEJA.listo = true; BANDEJA.items = []; BANDEJA.nuevas = 0; BANDEJA.t = 0;
+    avisarBandeja();
+    return;
+  }
   if (!visto && Date.now() - BANDEJA.t < 60000) return;
   BANDEJA.t = Date.now();
   pedirConCuenta('/api/avisos/bandeja', visto ? { visto: true } : {}, false)

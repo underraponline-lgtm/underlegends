@@ -1542,10 +1542,14 @@ console.log('\nEL PROXY DE PAGES DEJA PASAR TODO LO QUE LA PÁGINA PIDE\n');
 // captura: «No pude leer tus redes». Esto saca de app.js y campana.js cada
 // `/api/…` que la página pide y prueba que el proxy lo mande al Worker.
 {
-  const { readFileSync } = await import('node:fs');
-  const src = ['paginas/app.js', 'paginas/campana.js']
+  const { readFileSync, readdirSync } = await import('node:fs');
+  // ⚠️ Y LA PÁGINA NUEVA (revisión del 03/10/2026): el Inicio de React (`paginas/inicio/*.js`, lo construido) y el
+  // service worker también piden `/api/…` —la postulación de /sumate, el muro—, y esto sólo leía app.js y campana.js.
+  // Con las dos comillas: el build escribe "…"
+  const nuevos = readdirSync(new URL('paginas/inicio/', import.meta.url)).filter((f) => f.endsWith('.js')).map((f) => 'paginas/inicio/' + f);
+  const src = ['paginas/app.js', 'paginas/campana.js', 'paginas/sw.js', ...nuevos]
     .map((f) => readFileSync(new URL(f, import.meta.url), 'utf8')).join('\n');
-  const rutas = new Set((src.match(/'\/api\/[a-z0-9/._-]*[a-z0-9]'/gi) || []).map((x) => x.slice(1, -1)));
+  const rutas = new Set((src.match(/['"]\/api\/[a-z0-9/._-]*[a-z0-9]['"]/gi) || []).map((x) => x.slice(1, -1)));
   // campana.js las arma como '/api/avisos/' + ruta: `pedir('alta', …)`
   for (const m of src.matchAll(/pedir\('([a-z]+)'/g)) rutas.add('/api/avisos/' + m[1]);
   const { default: proxy } = await import('./paginas/_worker.js');

@@ -300,7 +300,9 @@ function Evento({ liga, e, est, L, abierto }) {
     ll ? ll.participantes + ' raperos' : '', x.org || inf.org ? 'organiza ' + (x.org || inf.org) : ''].filter(Boolean).join(' · ');
   const camp = ll ? liga.campeon(ll) : [];
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
-  const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll ? 'TERMINÓ' : 'SIN LLAVE';
+  // ⚠️ por `e.ll` y no por la llave del payload, que trae las 12 más nuevas: 21 de 33 decían «SIN LLAVE» al lado de
+  // un «Ver la llave» que andaba (revisión del 03/10/2026)
+  const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll ? 'TERMINÓ' : 'SIN LLAVE';
   return (
     <article className={'t-ev evp-ev ' + est + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '')} style={{ '--c': (liga.svs[e.sv] || {}).color || '#29B298' }}>
       <header>
@@ -529,10 +531,12 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const cal = useMemo(() => {
     const px = {};
     (liga.d.proximos || []).forEach((p) => { if (p.link) px[p.link] = p; });
-    const out = (liga.d.calendario || []).map((c) => Object.assign({}, c, { px: (c.link && px[c.link]) || null }));
+    // ⚠️ sin lo que el vigía ya vio cancelado (como el Inicio): se ofrecía para inscribirse (revisión del 03/10/2026)
+    const out = (liga.d.calendario || []).filter((c) => !liga.esCancelado(c))
+      .map((c) => Object.assign({}, c, { px: (c.link && px[c.link]) || null }));
     // lo anunciado que el calendario todavía no trae (recién anunciado)
     (liga.d.proximos || []).forEach((p) => {
-      if (!out.some((c) => c.link && c.link === p.link)) out.push({ n: p.nombre, sv: p.sv, t: p.cuando, link: p.link, mod: p.modalidad, fut: 1, px: p });
+      if (!liga.esCancelado(p) && !out.some((c) => c.link && c.link === p.link)) out.push({ n: p.nombre, sv: p.sv, t: p.cuando, link: p.link, mod: p.modalidad, fut: 1, px: p });
     });
     return out;
   }, [liga]);
@@ -584,7 +588,10 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const ahora = liga.ahora.getTime();
   const esVivo = (c) => vivoS.some((e) => (e.link && e.link === c.link) || (e.sv === c.sv && limpio(e.nombre) === limpio(c.n)));
   const evs = porDia[dia] || [];
-  const vivos = dia === hoyK ? evs.filter((c) => !c.ll && esVivo(c)) : [];
+  // ⚠️ por la hora y no por el día: uno que empezó a las 23:30 y sigue a las 00:20 salía en «Terminados · SIN LLAVE»
+  // de ayer mientras la tarjeta de arriba decía EN VIVO (revisión del 03/10/2026). `esVivo` ya mira lo que el vigía
+  // ve en juego ahora
+  const vivos = evs.filter((c) => !c.ll && esVivo(c));
   const prox = evs.filter((c) => !vivos.includes(c) && utc(c.t).getTime() > ahora).sort((a, b) => (a.t < b.t ? -1 : 1));
   const hechos = evs.filter((c) => !vivos.includes(c) && !prox.includes(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
   const cancelados = liga.cancelados().filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil));

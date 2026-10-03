@@ -124,7 +124,7 @@ export function Compartir({ url, texto, titulo = 'Liga Global', cls = 'btn borde
     try { await navigator.clipboard.writeText((texto ? texto + ' ' : '') + url); avisar('Link copiado'); } catch (e) { avisar('No pude copiarlo'); }
   };
   return (
-    <button type="button" className={cls + ' compartir'} onClick={dar} aria-live="polite">
+    <button type="button" className={cls + ' compartir'} onClick={dar} aria-live="polite" aria-label={etiqueta ? undefined : 'Compartir'}>
       <Ico n="compartir" t={18} /><span>{dijo || etiqueta}</span>
     </button>
   );

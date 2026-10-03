@@ -107,6 +107,7 @@ function Postulacion({ dc }) {
         <textarea rows={4} maxLength={1000} value={d.mensaje} onChange={cambiar('mensaje')} /></label>
       <p className="su-nota">Le llega a Dlx por Discord, con tu usuario <b>{dc.n || ''}</b>. Guardamos lo que escribiste 90 días.</p>
       {msg ? <p className="su-err" role="alert">{msg}</p> : null}
+      {msg && /sesión venció/.test(msg) ? <button type="button" className="btn borde2" onClick={accion.entrar}>Entrar con Discord</button> : null}
       <button type="submit" className="btn verde" disabled={est === 'mandando'}>{est === 'mandando' ? 'Mandando…' : 'Mandar la postulación'}</button>
     </form>
   );
@@ -115,7 +116,8 @@ function Postulacion({ dc }) {
 export function Sumate({ liga, dc }) {
   const svs = Object.values(liga.svs).sort((a, b) => (b.pts || 0) - (a.pts || 0));
   const enDiscord = svs.reduce((t, s) => t + (s.miembros || 0), 0);
-  const raperos = (liga.d.tabla || []).length;
+  // ⚠️ la gente del pool, no las 200 filas que viajan (ver Socios)
+  const raperos = liga.d.gente || (liga.d.tabla || []).length;
   const bajar = (sel) => {
     const h = document.getElementById('inicio-nuevo');
     const s = h && h.shadowRoot ? h.shadowRoot.querySelector(sel) : null;

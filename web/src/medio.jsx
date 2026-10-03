@@ -195,7 +195,7 @@ export function LosQueMandan({ liga, dc }) {
   // sin haber entrado (ni con Discord ni eligiendo quién sos), la invitación a verse
   const invita = !yo && !dc ? (
     <div className="mc-yo invita"><span className="mc-yo-t">¿Y vos? Entrá con Discord y ves tu puesto en cada categoría.</span>
-      <button type="button" className="btn verde chico" onClick={accion.cuenta}>Entrar</button></div>
+      <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button></div>
   ) : null;
   const items = cats.filter((c) => c[2].length).map(([c, et, h, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <><div className="rail mcs2">{h}</div>{yoFila || invita}</> }));
   return <Pest id="raperos" titulo="Los que mandan" enlace="Todos los raperos" href="#/ranking" items={items} extra="negra" />;
@@ -223,8 +223,21 @@ function Pase({ liga }) {
 }
 // Dlx, 30/09/2026: «tus últimos eventos son raros porque dice que son los últimos eventos». Decía «Tus eventos» en
 // la pestaña y mostraba los de la Liga, que ya están en Fechas. Ahora son los tuyos, o cómo verlos.
+// 🔴 QUIEN JUGÓ Y NO ESTÁ EN LAS 200 FILAS QUE VIAJAN (revisión del 03/10/2026): `liga.yo` sale de la tabla, que llega
+// cortada en 200, y a los de más abajo se les decía «todavía no jugaste». `lg:dc` trae sus eventos y su clave
+function FueraDe200({ dc, cls, tit }) {
+  return (
+    <section className={cls}>
+      {cls === 'te' ? <div className="mis-cab"><span>{tit}</span></div> : <div className="tu-t">{tit}</div>}
+      <p className="pronto-p">Jugaste {dc.ev} {dc.ev === 1 ? 'evento' : 'eventos'} en la temporada: estás más abajo de los 200 que muestra la tabla de la página. En tu perfil está todo.</p>
+      <div className="te-acc"><a className="btn negro" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil</a></div>
+    </section>
+  );
+}
+
 export function TusEventos({ liga, dc }) {
   const f = liga.yo;
+  if (!f && dc && dc.ev > 0 && dc.clave) return <FueraDe200 dc={dc} cls="te" tit="CÓMO TE FUE" />;
   if (!f && dc) {
     return (
       <section className="te">
@@ -239,7 +252,7 @@ export function TusEventos({ liga, dc }) {
       <section className="te">
         <div className="mis-cab"><span>CÓMO TE FUE</span></div>
         <p className="pronto-p">Entrá con Discord y acá aparecen los eventos que jugaste esta temporada, con tu puesto y los puntos que sumaste.</p>
-        <div className="te-acc"><button type="button" className="btn negro" onClick={accion.cuenta}>Entrar con Discord</button></div>
+        <div className="te-acc"><button type="button" className="btn negro" onClick={accion.entrar}>Entrar con Discord</button></div>
       </section>
     );
   }
@@ -265,6 +278,7 @@ export function TusEventos({ liga, dc }) {
 }
 export function TuTemporada({ liga, dc }) {
   const f = liga.yo;
+  if (!f && dc && dc.ev > 0 && dc.clave) return <FueraDe200 dc={dc} cls="tu" tit="TU TEMPORADA" />;
   if (!f && dc) {
     return (
       <section className="tu">
@@ -279,7 +293,7 @@ export function TuTemporada({ liga, dc }) {
       <section className="tu">
         <div className="tu-t">TU TEMPORADA</div>
         <p className="pronto-p">Entrá con Discord y acá vas a ver tu puesto, tu OVR, cuánto te falta para tu letra y si te buscan.</p>
-        <button type="button" className="btn negro" onClick={accion.cuenta}>Entrar con Discord</button>
+        <button type="button" className="btn negro" onClick={accion.entrar}>Entrar con Discord</button>
       </section>
     );
   }

@@ -39,6 +39,16 @@ export function Buscar({ liga, onIr }) {
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
   }, [q, liga]);
   const ir = () => { setQ(''); if (onIr) onIr(); };
+  // ⚠️ se cierra al tocar afuera y al cambiar de página: quedaba abierto encima de la siguiente (revisión del 03/10/2026)
+  const caja = useRef(null);
+  useEffect(() => {
+    if (!q) return undefined;
+    const fuera = (e) => { const p = e.composedPath ? e.composedPath() : []; if (caja.current && !p.includes(caja.current)) setQ(''); };
+    const cambio = () => setQ('');
+    document.addEventListener('pointerdown', fuera, true);
+    window.addEventListener('lg:dir', cambio);
+    return () => { document.removeEventListener('pointerdown', fuera, true); window.removeEventListener('lg:dir', cambio); };
+  }, [q]);
   const icono = (r) => {
     if (r.tipo === 'rapero') return <Cara liga={liga} k={r.k} nombre={r.n} cls="cara" />;
     if (r.tipo === 'servidor') return <span className="cara"><img alt="" src={r.logo} /></span>;
@@ -46,7 +56,7 @@ export function Buscar({ liga, onIr }) {
     return <CrewCirculo c={r.crew} cls="cara" />;
   };
   return (
-    <div className="buscar-w">
+    <div className="buscar-w" ref={caja}>
       <label className="buscar">
         <Ico n="buscar" t={18} />
         <input type="search" placeholder="Buscar en la Liga" aria-label="Buscar raperos, servidores, países y crews" value={q} onChange={(e) => setQ(e.target.value)}

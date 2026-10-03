@@ -91,6 +91,19 @@ export function Tabbar({ liga, dc, pagina = '' }) {
 }
 
 export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
+  // ⚠️ el foco entra al abrirlo y vuelve al ☰ al cerrarlo: con el teclado se quedaba atrás, en la página tapada
+  // (revisión del 03/10/2026). Aparte del efecto del Escape: `onCerrar` cambia en cada vuelta de App
+  const cerrarB = useRef(null);
+  useEffect(() => {
+    if (!abierto) return undefined;
+    const t = setTimeout(() => { if (cerrarB.current) cerrarB.current.focus(); }, 0);
+    return () => {
+      clearTimeout(t);
+      const h = document.getElementById('inicio-nuevo');
+      const b = h && h.shadowRoot ? h.shadowRoot.querySelector('.hamb') : null;
+      if (b) b.focus();
+    };
+  }, [abierto]);
   useEffect(() => {
     if (!abierto) return undefined;
     const k = (e) => { if (e.key === 'Escape') onCerrar(); };
@@ -109,7 +122,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
   return (
     <div className="x-menu" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="x-caja" role="dialog" aria-modal="true" aria-label="Menú">
-        <div className="x-caja-cab"><b>MENÚ</b><button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el menú" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
+        <div className="x-caja-cab"><b>MENÚ</b><button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el menú" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         {/* en el celular el buscador no entra arriba: vive acá */}
         {liga ? <div className="x-busca"><Buscar liga={liga} onIr={onCerrar} /></div> : null}
         <nav className="x-lista" aria-label="Secciones">{MENU.slice(1).map(([n, r]) => <a key={n} href={r} onClick={onCerrar}>{n}<Ico n="flecha" t={20} /></a>)}</nav>

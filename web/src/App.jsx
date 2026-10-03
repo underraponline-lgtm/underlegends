@@ -118,7 +118,12 @@ class Aislada extends Component {
   constructor(p) { super(p); this.state = { roto: false }; }
   static getDerivedStateFromError() { return { roto: true }; }
   componentDidCatch(e) { console.error('[inicio:' + this.props.n + ']', e); }
-  render() { return this.state.roto ? null : this.props.children; }
+  render() {
+    if (!this.state.roto) return this.props.children;
+    // ⚠️ una PÁGINA rota no queda en blanco: dice qué pasó y deja recargar (un pedazo chico, en cambio, se apaga)
+    return this.props.pagina ? <section className="sec"><p className="pronto-p">No pude cargar esta parte de la página.{' '}
+      <button type="button" className="btn borde2 chico" onClick={() => location.reload()}>Recargar</button></p></section> : null;
+  }
 }
 
 // si el Inicio entero no puede dibujarse, se vuelve al de la página de hoy, que sigue en el DOM
@@ -270,11 +275,16 @@ export default function App() {
   // vieja, así que /mundo decía «El mundo» abriendo Socios, y Socios, Sumate, cada servidor, Mi cuenta y Ajustes
   // quedaban con el genérico (recorrido del 03/10/2026). Corre después de `ir()` de app.js, así que gana
   const nombreSv = sv && liga && liga.svs[sv] ? liga.svs[sv].nombre || sv : sv;
+  // ⚠️ también cuando llegan los datos (`liga`), y un instante después: app.js vuelve a poner el suyo al pintarlos
   useEffect(() => {
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' && prevSum() ? 'Sumate'
       : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : '';
-    if (t) document.title = t + ' · Liga Global de Freestyle';
-  }, [pagina, sv, nombreSv]);
+    if (!t) return undefined;
+    const poner = () => { document.title = t + ' · Liga Global de Freestyle'; };
+    poner();
+    const r = setTimeout(poner, 0);
+    return () => clearTimeout(r);
+  }, [pagina, sv, nombreSv, liga]);
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
   const grupos = useMemo(() => {
     if (!liga) return [];
@@ -300,19 +310,19 @@ export default function App() {
     <div className={'app ' + tema} ref={raiz}>
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
-      {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
-        : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
-        : pagina === 'socios' || pagina === 'mundo' ? <Aislada n="Socios"><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
-        : pagina === 'sumate' && prevSum() ? <Aislada n="Sumate"><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'guia' ? <Aislada n="Guia"><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'publicaciones' ? <Aislada n="Publicaciones"><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
-        : pagina === 'eventos' || pagina === 'avisos' ? <Aislada n="Eventos"><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>
+      {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><PerfilSv liga={liga} sv={sv} /></Aislada>
+        : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
+        : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
+        : pagina === 'sumate' && prevSum() ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'publicaciones' ? <Aislada key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
+        : pagina === 'eventos' || pagina === 'avisos' ? <Aislada key="Eventos" n="Eventos" pagina><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>
         // el Ranking (02/10/2026); `#/duelos` es el link viejo del de Duelos
-        : pagina === 'ranking' || pagina === 'duelos' ? <Aislada n="Ranking"><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
+        : pagina === 'ranking' || pagina === 'duelos' ? <Aislada key="Ranking" n="Ranking" pagina><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
-        : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada n="Verificar"><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
-        : pagina === 'cuenta' ? <Aislada n="Cuenta"><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>
-        : pagina === 'ajustes' ? <Aislada n="Ajustes"><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada> : <>
+        : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
+        : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>
+        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada> : <>
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
