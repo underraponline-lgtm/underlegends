@@ -85,10 +85,14 @@ def vistas(html, appjs):
 PREFIJO = '/freestyle-rap'
 #: `sumate` (03/10/2026, Dlx: «3. A»): cómo sumarse a Under Legends —servidores, comunidades, marcas— es de la marca
 EN_RAIZ = ('cuenta', 'cambios', 'ajustes', 'sumate')
+#: 🔍 LAS VISTAS VIEJAS EN PREVIEW: con `lg:prev-<x>` (el link `?prev=<x>`) esa vista es del Inicio nuevo en ese
+#: navegador. Desde el 03/10/2026, la llave (`ll`, Dlx: «1. A 2. A 3. A»). Cuando se publica, pasa a `PROPIAS`
+PREVIEWS = {'llave': 'll'}
 
 
 def script(nombres):
     mapa = ','.join('"%s":1' % n for n in nombres)
+    prev = ','.join('"%s":"%s"' % (v, x) for v, x in sorted(PREVIEWS.items()) if v in nombres)
     raiz = ','.join('"%s":1' % n for n in EN_RAIZ)
     return ('''(function () {
   // 🔑 LAS RUTAS DE VERDAD: /freestyle-rap/ranking en vez de #/ranking (ver web/montar.py). Todo el código de la
@@ -162,9 +166,23 @@ def script(nombres):
   // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, lo que vuelve de Discord, o algo que no es una
   // vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
   var V = {%s};
+  // 🔍 UNA VISTA VIEJA EN PREVIEW (03/10/2026, la llave): `?prev=ll` deja `lg:prev-ll` en este navegador —lo mismo
+  // que App.jsx— y, con eso, esa vista es del Inicio nuevo. Va acá porque app.js lo tiene que saber antes de enrutar
+  var PREV = {%s};
+  try {
+    var mp = /[?&]prev=([a-z]{2,12})\\b/.exec(location.search), mn = /[?&]noprev=([a-z]{2,12})\\b/.exec(location.search);
+    if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');
+    if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
+  } catch (e) { /* sin almacenamiento, sin preview */ }
+  function nueva(p) {
+    if (!V[p]) return true;
+    try { return !!(PREV[p] && localStorage.getItem('lg:prev-' + PREV[p])); } catch (e) { return false; }
+  }
+  // ¿esa vista la dibuja el Inicio nuevo? app.js lo pregunta antes de abrir lo suyo encima (la llave)
+  window.__esNueva = nueva;
   var h = location.hash || '', ini = /^#(access_token|error)=/.test(h);
-  if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || !V[p]; }
-  var c = document.documentElement.classList;''' % (PREFIJO, raiz, mapa)) + '''
+  if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || nueva(p); }
+  var c = document.documentElement.classList;''' % (PREFIJO, raiz, mapa, prev)) + '''
   if (ini) c.add('ini-nuevo');
   try { if (localStorage.getItem('lg:tema') === 'noche') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
   // la última versión del changelog que se vio, ANTES de que app.js la dé por vista (lo lee el Inicio nuevo)

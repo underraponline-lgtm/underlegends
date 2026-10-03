@@ -1738,3 +1738,235 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-czd small{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--gris)}
 /* en el celular, la tarjeta del perfil sólo en Resumen: en Eventos, Duelos e Insignias eran 420 px de más arriba de la lista */
 @media (max-width: 899.98px){.pf-cab.sin-carta .pf-carta{display:none}}
+
+/* ── 🏆 LA LLAVE (`llave.jsx`, 03/10/2026, Dlx: «2. A»): una página. Arriba el podio; abajo, en el celular, una ronda
+   por pantalla deslizando —como las apps de fútbol— y en la compu el cuadro entero con sus ramas. Tocar un nombre
+   marca su camino: lo demás se apaga y abajo queda quién es y cómo le fue ── */
+.lk-esc{padding:0}
+.lk-cab{display:grid;gap:14px;padding:14px 16px 18px}
+.lk-volver{justify-self:start;display:inline-flex;align-items:center;min-height:36px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--esc-gris)}
+.lk-cab-in{display:flex;align-items:center;gap:14px;min-width:0}
+.lk-logo{width:56px;height:56px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--esc-tinta);background:#030304}
+.lk-cab-tx{min-width:0;display:grid;gap:10px;justify-items:start}
+.lk-tit{margin:0;overflow-wrap:anywhere}
+.lk-datos{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.lk-datos li{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:1.5px solid var(--esc-linea);
+  font:700 12px/1.2 Archivo,sans-serif;color:var(--esc-tinta)}
+.lk-datos li small{font:700 10.5px/1.2 "Space Mono",monospace;color:var(--esc-gris)}
+.lk-datos a{text-decoration:underline;text-underline-offset:3px}
+.lk-datos .lk-mult{border-color:var(--magenta)}
+.lk-vivo{margin:0;font:700 11px/1.5 "Space Mono",monospace;letter-spacing:.04em;color:var(--esc-gris)}
+
+.lk-podio{list-style:none;margin:0;padding:0 16px 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lk-pd{display:grid;justify-items:center;align-content:start;gap:8px;min-width:0;padding:14px 10px 12px;border:2px solid var(--esc-linea);
+  background:#0E0E10;text-align:center}
+.lk-pd.p1{grid-column:1 / -1;border-color:var(--verde)}
+/* sin tercero, el subcampeón a lo ancho: a la mitad quedaba un hueco al lado */
+.lk-podio.n2 .lk-pd{grid-column:1 / -1}
+.lk-pd-caras{display:flex;justify-content:center}
+.lk-pd-cara{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;
+  font:900 20px/1 Archivo,sans-serif;border:2px solid #0E0E10}
+.lk-pd-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.lk-pd-cara+.lk-pd-cara{margin-left:-14px}
+.lk-pd.p1 .lk-pd-cara{width:84px;height:84px;font-size:30px;border-color:var(--verde)}
+.lk-pd-ns{display:flex;flex-wrap:wrap;justify-content:center;gap:0 10px;min-width:0;max-width:100%}
+.lk-pd .lk-p{color:#F6F6F6}
+.lk-pd .lk-p .lk-n{font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.lk-pd.p1 .lk-p .lk-n{font-size:22px}
+.lk-pd small{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris)}
+.lk-mwtx{display:grid;gap:6px;padding:0 16px 18px;font:600 14px/1.45 Archivo,sans-serif;color:var(--esc-tinta)}
+.lk-mwtx p{margin:0}
+
+.lk-sub{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.lk-ayuda{margin:-4px 0 12px;font:700 11.5px/1.4 "Space Mono",monospace;letter-spacing:.03em;color:var(--gris)}
+.lk-h{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.lk-h small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.04em;text-transform:none;color:var(--gris)}
+
+/* las pestañas de las rondas (el punto magenta: ahí jugó quien seguís) */
+.lk-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 6px;padding:6px 16px 4px}
+.lk-tabs::-webkit-scrollbar{display:none}
+.lk-tabs button{position:relative;flex:none;display:grid;gap:5px;justify-items:start;min-height:48px;padding:8px 12px;border:2px solid var(--linea);
+  background:var(--fondo);color:var(--tinta);text-align:left;cursor:pointer}
+.lk-tabs b{font:900 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.lk-tabs small{font:700 10px/1 "Space Mono",monospace;color:var(--gris)}
+.lk-tabs button.on{background:var(--inv);color:var(--inv-tinta)}
+.lk-tabs button.on small{color:inherit;opacity:.75}
+.lk-tabs button.mio:after{content:"";position:absolute;top:-6px;right:-6px;width:12px;height:12px;border-radius:50%;background:var(--magenta);
+  border:2px solid var(--fondo)}
+
+/* el celular: una ronda por pantalla, con la siguiente asomando a la derecha */
+.lk-pista{position:relative;display:flex;align-items:flex-start;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+  scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px;transition:height .25s cubic-bezier(.16,1,.3,1)}
+.lk-pista::-webkit-scrollbar{display:none}
+.lk-col{flex:0 0 calc(100% - 40px);min-width:0;scroll-snap-align:start;display:grid;gap:20px;padding:14px 0 6px}
+.lk-ter{margin:4px 0 -8px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+.lk-guia{margin:8px 0 0;font:700 11px/1 "Space Mono",monospace;letter-spacing:.05em;color:var(--gris);text-align:center}
+@media (prefers-reduced-motion: reduce){.lk-pista{transition:none;scroll-behavior:auto}}
+
+/* una batalla */
+.lk-b{position:relative;display:grid;align-content:stretch;min-width:0;background:var(--fondo);border:2px solid var(--linea)}
+.lk-b.vacio{border-style:dashed;border-color:var(--gris)}
+.lk-b.singan{border-style:dashed}
+.lk-b.fin{border-color:var(--verde)}
+.lk-b.ahora{border-color:var(--magenta);box-shadow:0 0 0 2px var(--magenta)}
+.lk-l{display:flex;align-items:center;gap:8px;min-width:0;min-height:44px;padding:4px 8px}
+.lk-l+.lk-l{border-top:1px solid var(--suave)}
+.lk-l.g{background:var(--inv);color:var(--inv-tinta)}
+.lk-l.copa{background:var(--verde);color:#030304}
+.lk-l.x{color:var(--gris)}
+.lk-l.x .lk-cara{filter:grayscale(1);opacity:.6}
+.lk-l.vac{color:var(--gris);font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em}
+.lk-l.vac em{font-style:normal}
+.lk-ns{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:0 8px}
+.lk-l.eq .lk-ns{flex-direction:column;flex-wrap:nowrap}
+.lk-p{display:inline-flex;align-items:center;gap:7px;min-width:0;max-width:100%;min-height:34px;padding:0;border:0;background:none;color:inherit;
+  font:800 13.5px/1.2 Archivo,sans-serif;font-stretch:106%;text-align:left;cursor:pointer}
+.lk-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-flag{width:18px;height:12px;flex:none;object-fit:cover}
+.lk-cara{width:24px;height:24px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--suave);color:var(--tinta);
+  font:900 11px/1 Archivo,sans-serif}
+.lk-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.lk-l.g .lk-cara.ini{background:var(--inv-tinta);color:var(--inv)}
+.lk-l.copa .lk-cara.ini{background:#030304;color:#F6F6F6}
+.lk-caras{display:flex;flex:none}
+.lk-caras .lk-cara+.lk-cara{margin-left:-8px}
+.lk-ok{flex:none;font:900 14px/1 Archivo,sans-serif}
+.lk-mw{flex:none;font-style:normal;font-size:13px}
+.lk-eqn{display:inline-flex;align-items:center;gap:6px;min-height:34px;font:800 13px/1.2 Archivo,sans-serif}
+.lk-eqn small{padding:2px 4px;border:1px solid currentColor;font:700 9.5px/1 "Space Mono",monospace;text-transform:uppercase;color:var(--gris)}
+.lk-et{position:absolute;left:6px;top:-11px;z-index:2;display:flex;gap:4px;max-width:calc(100% - 12px);overflow:hidden}
+.lk-et span{padding:3px 5px;background:var(--tinta);color:var(--fondo);font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.06em;
+  text-transform:uppercase;white-space:nowrap}
+.lk-et .ahora,.lk-et .cl{background:var(--magenta);color:#fff}
+.lk-et .sig,.lk-et .num{background:var(--suave);color:var(--tinta)}
+.lk-et .copa{background:var(--verde);color:#030304}
+
+/* quien se sigue: lo demás se apaga */
+.siguiendo .lk-b:not(.sigue){opacity:.35}
+.lk-b.sigue{box-shadow:0 0 0 3px var(--magenta)}
+.lk-p.on .lk-n{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+@media (hover: hover) and (pointer: fine){.lk-p:hover .lk-n{text-decoration:underline;text-underline-offset:3px}}
+
+/* la compu: el cuadro entero */
+.lk-arbol-caja{overflow-x:auto;margin:0 -16px;padding:4px 16px 12px}
+.lk-arbol{position:relative}
+.lk-arbol svg{position:absolute;left:0;top:0;overflow:visible}
+.lk-arbol path{fill:none;stroke:var(--suave);stroke-width:2}
+.lk-arbol path.oro{stroke:var(--verde);stroke-width:3}
+.lk-arbol path.sigue{stroke:var(--magenta);stroke-width:3}
+.lk-arbol.siguiendo path:not(.sigue){opacity:.35}
+.lk-arbol .lk-l{min-height:0;padding:2px 8px}
+.lk-arbol .lk-p,.lk-arbol .lk-eqn{min-height:0}
+.lk-arbol .lk-l.eq .lk-p{min-height:22px}
+.lk-arbol .lk-cara{width:22px;height:22px}
+.lk-rl{position:absolute;top:0;display:grid;gap:4px;padding-bottom:6px;border-bottom:2px solid var(--linea)}
+.lk-rl b{font:900 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.lk-rl small{font:700 10px/1 "Space Mono",monospace;color:var(--gris)}
+.lk-rl.sub{border-bottom:0;font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
+
+/* 5 vidas y la nave de funa */
+.lk-vd-t{list-style:none;margin:0 0 20px;padding:0;border-top:2px solid var(--linea)}
+.lk-vd-t li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:2px 10px;padding:6px 0;border-bottom:1px solid var(--suave)}
+.lk-vd-t li small{grid-column:2 / -1;font:700 10px/1.2 "Space Mono",monospace;color:var(--gris)}
+.lk-vd.siguiendo .lk-vd-t li:not(.sigue){opacity:.4}
+.lk-vd-l{font:900 14px/1 Archivo,sans-serif}
+.lk-vd-n{min-width:0}
+.lk-vd-cs{display:flex;gap:2px;color:var(--magenta-tx)}
+.lk-vd-cs i{font-style:normal;font-size:15px}
+.lk-vd-cs i.x{color:var(--gris)}
+.lk-vd-bs{display:grid;gap:20px;padding-top:12px}
+.lk-vd-m{flex:none;font:700 10px/1.2 "Space Mono",monospace;color:var(--magenta-tx)}
+.lk-vd-m.ult{color:var(--gris)}
+.lk-vd-sin{margin:0;padding:8px;font:700 11px/1.3 "Space Mono",monospace;color:var(--gris)}
+.lk-funa{margin-bottom:18px}
+.lk-funa ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.lk-funa li{display:inline-flex;align-items:center;gap:6px;padding:2px 10px 2px 6px;border:1.5px solid var(--linea)}
+.lk-funa li.cae{opacity:.55}
+.lk-cae{font-style:normal;font-size:12px}
+
+/* la barra de quien se sigue, justo encima de la de abajo del celular (como «tu lugar» del Ranking) */
+.lk-barra{position:sticky;bottom:var(--lk-tb,0px);z-index:31;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:10px;
+  margin:16px -16px 0;padding:10px 16px;background:#030304;color:#F6F6F6;border-top:3px solid var(--magenta)}
+.lk-bcara{width:38px;height:38px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#F6F6F6;color:#030304;font:900 15px/1 Archivo,sans-serif}
+.lk-bcara img{width:100%;height:100%;object-fit:cover;display:block}
+.lk-bt{display:grid;gap:4px;min-width:0}
+.lk-bt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-bt small{font:700 10.5px/1.2 "Space Mono",monospace;letter-spacing:.04em;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-barra .btn{min-height:40px;padding:0 12px}
+.lk-bx{width:40px;height:40px;border:2px solid #F6F6F6;background:none;color:#F6F6F6;font:400 24px/1 Archivo,sans-serif;cursor:pointer}
+
+/* los puntos, por puesto (cerrados: lo que se vino a ver es la llave) */
+.lk-pts summary{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-top:2px solid var(--linea);list-style:none;cursor:pointer;
+  font:900 18px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.lk-pts summary::-webkit-details-marker{display:none}
+.lk-pts summary:after{content:"+";margin-left:auto;font:900 22px/1 Archivo,sans-serif}
+.lk-pts[open] summary:after{content:"–"}
+.lk-pts summary small{font:700 11px/1 "Space Mono",monospace;color:var(--gris)}
+.lk-pgs{display:grid;gap:16px;padding:4px 0 10px}
+.lk-pg h4{display:flex;align-items:baseline;gap:8px;margin:0 0 4px;font:800 13px/1 Archivo,sans-serif;text-transform:uppercase}
+.lk-pg h4 small{font:700 10px/1 "Space Mono",monospace;color:var(--gris)}
+.lk-pg ul{list-style:none;margin:0;padding:0}
+.lk-pg li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:38px;border-bottom:1px solid var(--suave)}
+.lk-pg li a,.lk-pg li span{display:inline-flex;align-items:center;gap:6px;min-width:0;font:700 13.5px/1.2 Archivo,sans-serif}
+.lk-pg li b{font:700 13px/1 "Space Mono",monospace;font-variant-numeric:tabular-nums}
+
+/* las acciones y «¿Algo está mal?» */
+.lk-acc{padding-bottom:30px}
+.lk-acc-b{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding-top:14px;border-top:2px solid var(--linea)}
+.lk-rep{display:grid;gap:10px;max-width:560px}
+.lk-rep-t{margin:0;font:700 14px/1.4 Archivo,sans-serif}
+.lk-rep-q{display:flex;flex-wrap:wrap;gap:6px}
+.lk-rep-q button{min-height:40px;padding:0 12px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 13px/1 Archivo,sans-serif;cursor:pointer}
+.lk-rep-q button.on{background:var(--inv);color:var(--inv-tinta)}
+.lk-rep textarea{width:100%;padding:10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:500 15px/1.4 Archivo,sans-serif;resize:vertical}
+.lk-rep-pie{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.lk-rep-pie span{font:700 12px/1.3 "Space Mono",monospace;color:var(--magenta-tx)}
+.lk-rep-nota{margin:0;font:600 12px/1.4 Archivo,sans-serif;color:var(--gris)}
+.lk-rep-ok{margin:0;font:800 15px/1.4 Archivo,sans-serif}
+
+@media (min-width: 900px){
+  .app .lk-cab{padding:22px var(--gut) 24px}
+  .app .lk-podio{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1fr);align-items:end;padding:0 var(--gut) 34px}
+  .app .lk-pd.p1{grid-column:2;grid-row:1;padding:20px 14px 16px}
+  .app .lk-pd.p2{grid-column:1;grid-row:1}
+  .app .lk-pd.p3{grid-column:3;grid-row:1}
+  .app .lk-podio.n2{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+  .app .lk-podio.n2 .lk-pd.p1{grid-column:1}
+  .app .lk-podio.n2 .lk-pd.p2{grid-column:2}
+  .app .lk-podio.n1{grid-template-columns:minmax(0,560px)}
+  .app .lk-podio.n1 .lk-pd.p1{grid-column:1}
+  .app .lk-mwtx{padding:0 var(--gut) 24px}
+  .app .lk-arbol-caja{margin:0;padding:4px 0 12px}
+  .app .lk-barra{margin:16px 0 0}
+  .app .lk-vd-bs{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+  .app .lk-pgs{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+}
+
+/* ── 🃏 LA VENTANA DE UNA TARJETA (`visor.jsx`, con la llave): la de app.js era de la página vieja ── */
+.vc{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.82);overscroll-behavior:contain}
+.vc-caja{display:grid;gap:12px;width:min(440px,100%);max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);overflow:auto;padding:14px 14px 16px;
+  background:var(--fondo);color:var(--tinta);border:2px solid var(--linea)}
+.vc-cab{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.vc-q{display:grid;gap:6px;min-width:0}
+.vc-pos{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--magenta-tx)}
+.vc-q h2{margin:0;font:900 24px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase;overflow-wrap:anywhere}
+.vc-sub{display:flex;flex-wrap:wrap;gap:4px 14px;margin:0;font:700 12.5px/1.3 Archivo,sans-serif}
+.vc-sub a{display:inline-flex;align-items:center;gap:6px;min-height:30px;text-decoration:underline;text-underline-offset:3px}
+.vc-flag{width:20px;height:14px;object-fit:cover}
+.vc-x{flex:none;width:44px;height:44px;border:2px solid var(--linea);background:none;color:var(--tinta);font:400 26px/1 Archivo,sans-serif;cursor:pointer}
+.vc-pest{display:flex;flex-wrap:wrap;gap:6px}
+.vc-pest button{min-height:38px;padding:0 10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
+  font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.vc-pest button.on{background:var(--inv);color:var(--inv-tinta)}
+.vc-img{display:grid;justify-items:center}
+.vc-img .tj-c{width:auto;max-width:100%;height:min(56vh,520px)}
+.vc-sin{width:100%;margin:0;padding:30px 10px;border:2px dashed var(--gris);font:700 13px/1.4 "Space Mono",monospace;color:var(--gris);text-align:center}
+.vc-aviso{margin:0;padding:8px 10px;border-left:3px solid var(--magenta);background:var(--caja);font:600 12.5px/1.4 Archivo,sans-serif}
+.vc-num{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border:2px solid var(--linea)}
+.vc-num div{display:grid;justify-items:center;gap:4px;padding:8px 4px}
+.vc-num div+div{border-left:1px solid var(--suave)}
+.vc-num dt{font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.vc-num dd{margin:0;font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.vc-acc{display:flex;flex-wrap:wrap;gap:8px}
+.vc-acc .btn{flex:1 1 140px}

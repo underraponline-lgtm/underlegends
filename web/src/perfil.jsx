@@ -444,6 +444,16 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     const r = setTimeout(poner, 0);
     return () => clearTimeout(r);
   }, [f]);
+  // al cambiar de pestaña, al principio de lo de abajo (si ya estabas más abajo): si no, la lista nueva arrancaba por la mitad.
+  // ⚠️ ANTES del `return` de «no está»: un hook después de un return condicional cambia la cuenta de hooks si la persona
+  // aparece o desaparece de la tabla con la página abierta, y React tira la página entera
+  const abajo = useRef(null);
+  useEffect(() => {
+    const el = abajo.current;
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 64;
+    if (window.scrollY > y) window.scrollTo(0, y);
+  }, [t]);
   if (!f) {
     return (
       <section className="sec pf-sec">
@@ -453,14 +463,6 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     );
   }
   const base = '#/r/' + encodeURIComponent(k);
-  // al cambiar de pestaña, al principio de lo de abajo (si ya estabas más abajo): si no, la lista nueva arrancaba por la mitad
-  const abajo = useRef(null);
-  useEffect(() => {
-    const el = abajo.current;
-    if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 64;
-    if (window.scrollY > y) window.scrollTo(0, y);
-  }, [t]);
   const nIns = ((p && p.ins) || []).length;
   return (
     <>

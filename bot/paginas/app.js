@@ -330,7 +330,10 @@ function ir() {
   if (r === 'tarjetas' && D) pintaCaraCmp();
   // 🔑 `#/llave/<número>` ABRE ESA LLAVE, encima del calendario. Dlx, 27/09/2026,
   // «me gusta todo»: el link de cada llave es para pegarlo en Discord.
-  if (partes[0] === 'llave' && partes[1] && !abrirLlave(dec(partes[1])) &&
+  // 🔍 Y SI LA LLAVE ES DEL INICIO NUEVO (la página nueva, o su preview `?prev=ll`), no se abre la de acá encima:
+  // `__esNueva()` es del script del principio (web/montar.py). Si el Inicio nuevo no se montó, la de siempre
+  if (partes[0] === 'llave' && partes[1] && !(window.__esNueva && window.__esNueva('llave') && !window.__inicioSinDatos) &&
+      !abrirLlave(dec(partes[1])) &&
       String(partes[1]).indexOf('v:') !== 0) {
     llaveVieja(dec(partes[1]));
   }
