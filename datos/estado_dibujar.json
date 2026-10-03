@@ -1,65 +1,65 @@
 {
  "v": 1,
- "cuando": "2026-10-03T18:57:47Z",
+ "cuando": "2026-10-03T22:41:54Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 57.8,
+ "dur_s": 915.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.0
+   "s": 5.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.5
+   "s": 1.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.7
+   "s": 21.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 8.5
+   "s": 853.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.2
+   "s": 7.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 19.7
+   "s": 24.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "382",
-  "nombre": "KISS OF SHINIGAMI",
+  "n": "383",
+  "nombre": "DESGRACIAS EN TOKYO VOL 21 1v1",
   "sv": "FFA",
-  "dia": "2026-10-02"
+  "dia": "2026-10-03"
  },
  "cuotas": {
   "kv": {
-   "write": 406,
-   "read": 33756
+   "write": 459,
+   "read": 46434
   },
   "worker": {
-   "pedidos": 8192,
+   "pedidos": 7436,
    "errores": 0,
-   "sub": 6633,
-   "p50_ms": 0.71,
-   "p99_ms": 3.08
+   "sub": 6237,
+   "p50_ms": 0.73,
+   "p99_ms": 3.39
   },
   "r2": {
    "objetos": 9060,
