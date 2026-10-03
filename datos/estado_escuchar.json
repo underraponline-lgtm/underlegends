@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-03T05:56:03Z",
+ "cuando": "2026-10-03T06:25:37Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 181.8,
+ "dur_s": 150.9,
  "pasos": [
   {
    "n": "0b",
@@ -15,61 +15,61 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 22.7
+   "s": 26.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 78.0
+   "s": 33.7
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.4
+   "s": 0.5
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.1
+   "s": 0.2
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 20.1
+   "s": 20.6
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 0.9
+   "s": 1.6
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.5
+   "s": 6.2
   },
   {
    "n": "2b",
    "que": "Most Wanted",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.4
+   "s": 0.6
   },
   {
    "n": "2b4",
@@ -81,37 +81,37 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 1.9
+   "s": 2.4
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 19.0
+   "s": 20.0
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 13.9
+   "s": 19.5
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 10.1
+   "s": 8.7
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.1
+   "s": 0.2
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 4.9
+   "s": 5.8
   },
   {
    "n": "3",
@@ -121,7 +121,7 @@
   }
  ],
  "fallas": [],
- "decidir": 49,
+ "decidir": 46,
  "ultimo_evento": {
   "n": "381",
   "nombre": "PRITTY FREE",
@@ -130,7 +130,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-03T05:53:28Z",
+  "cuando": "2026-10-03T06:23:37Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 232,
   "un_evento": 132,
@@ -152,15 +152,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 70,
-   "read": 17229
+   "write": 172,
+   "read": 18998
   },
   "worker": {
-   "pedidos": 8383,
+   "pedidos": 8402,
    "errores": 0,
-   "sub": 6549,
+   "sub": 6568,
    "p50_ms": 0.73,
-   "p99_ms": 2.96
+   "p99_ms": 2.95
   },
   "r2": {
    "objetos": 9037,

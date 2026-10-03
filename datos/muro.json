@@ -1234,6 +1234,12 @@
 "temporada"
 ]
 },
+"alexi": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "blitz": {
 "rg": "",
 "c": [
@@ -1251,10 +1257,6 @@
 "servidor",
 "temporada"
 ]
-},
-"chimuelitomc": {
-"rg": "",
-"c": []
 },
 "dyzz": {
 "rg": "",
@@ -1288,6 +1290,10 @@
 "servidor",
 "temporada"
 ]
+},
+"chimuelitomc": {
+"rg": "",
+"c": []
 },
 "g8": {
 "rg": "",
