@@ -348,15 +348,29 @@ export class Liga {
   }
   vivo() {
     const m = this.d.vivo_min || 90;
-    const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => !L.terminada) : [];
+    const todas = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}) : [];
+    const ls = todas.filter((L) => !L.terminada);
     const sigue = (e) => {
       if (!ls.length || !window.llaveDeEvento) return false;
       try { return !!window.llaveDeEvento(e, ls); } catch (err) { return false; }
     };
+    // 🔴 SIN LLAVE PORQUE LA BORRARON NO ES «EN VIVO» (LA REDENCION, FFA, 03/10/2026: se canceló a último momento —
+    // Dlx: «pinchó»— y el organizador borró la llave pero dejó el anuncio; la página siguió diciendo EN VIVO hasta 90
+    // min después de la hora). El vigía anota las llaves borradas (`borradas` de `/api/avisos/vivo`, `VIVO_B` de
+    // app.js): si la de este evento se borró hace 5 min o más y no hay otra, deja de estar en vivo. Los 5 min son para
+    // el que la borra y la vuelve a publicar corregida
+    const bs = typeof window !== 'undefined' && Array.isArray(window.VIVO_B) ? window.VIVO_B : [];
+    const sinLlave = (e) => {
+      if (!bs.length || !window.llaveDeEvento) return false;
+      try {
+        const b = window.llaveDeEvento(e, bs);
+        return !!b && this.ahora - b.borrada >= 5 * 60000 && !window.llaveDeEvento(e, todas);
+      } catch (err) { return false; }
+    };
     const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
     const out = this.proximos().filter((e) => {
       const s = desde(e);
-      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e)));
+      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !sinLlave(e);
     });
     (this.d.calendario || []).forEach((c) => {
       const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };

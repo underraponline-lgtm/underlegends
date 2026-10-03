@@ -843,7 +843,7 @@ function pintaPasados() {
    está en los links de una llave oficial, que trae los puntos.
    ⚠️ CADA MINUTO SÓLO SI HAY ALGO EN VIVO O UN EVENTO CERCA, y nunca con la
    pestaña escondida. Si no, cada cinco: así se entera cuando arranca una. */
-var VIVO = { llaves: [] }, VIVO_L = {}, VIVO_TIMER = null, VIVO_PEDIDO = 0;
+var VIVO = { llaves: [] }, VIVO_L = {}, VIVO_B = [], VIVO_TIMER = null, VIVO_PEDIDO = 0;
 function llavesHechas() {
   var s = {};
   Object.keys(D.llaves || {}).forEach(function (n) {
@@ -1015,6 +1015,15 @@ function pintaVivo() {
   var ya = llavesHechas(), ahora = Date.now();
   var bloques = LlaveVivo.unirPartidas((VIVO.llaves || []).filter(function (m) { return !ya[m.id]; }));
   VIVO_L = {};
+  // 🔴 LAS LLAVES QUE EL ORGANIZADOR BORRÓ (`borradas` del vigía; LA REDENCION, FFA, 03/10/2026: «pinchó» y se borró
+  // la llave, no el anuncio). El título, la hora y cuándo se borró, para que `Liga.vivo()` del Inicio nuevo deje de
+  // mostrar «en vivo» a un evento que se quedó sin llave. Sólo las que tienen título: una de prueba sin nombre no tumba
+  // a nadie
+  VIVO_B = (VIVO.borradas || []).map(function (m) {
+    var n = '';
+    try { n = LlaveVivo.titulo(m.texto || ''); } catch (e) { n = ''; }
+    return n ? { id: m.id, sv: m.sv || '', nombre: n, pub: m.pub, ed: m.ed, borrada: m.t } : null;
+  }).filter(Boolean);
   var ls = bloques.map(function (b) {
     try { return LlaveVivo.aLlave(b, quienVivo(b.sv)); } catch (e) { console.error('[llave en vivo]', e); return null; }
   }).filter(function (L) {

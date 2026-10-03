@@ -2304,6 +2304,14 @@ export class Avisos {
           texto TEXT NOT NULL,
           visto INTEGER NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS vivo_borradas (
+          id TEXT PRIMARY KEY,
+          sv TEXT NOT NULL DEFAULT '',
+          pub INTEGER NOT NULL,
+          ed INTEGER NOT NULL,
+          texto TEXT NOT NULL,
+          t INTEGER NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS veredictos (
           id TEXT PRIMARY KEY,
           canal TEXT NOT NULL,
@@ -2763,6 +2771,11 @@ export class Avisos {
       const guardadas = this.sql.exec('SELECT id FROM vivo WHERE canal = ?', c.id).toArray()
         .map((r) => r.id);
       for (const id of borradasDelCanal(guardadas, msgs, VIVO_LEE)) {
+        // 🔴 Y SE ANOTA (03/10/2026, LA REDENCION de FFA): «pinchó» —se canceló a último momento— y el organizador borró
+        // la llave pero no el anuncio, así que la página siguió diciendo EN VIVO hasta 90 min después de la hora. El
+        // principio del texto alcanza: la página saca de ahí el título y lo cruza con el anuncio (`Liga.vivo()`)
+        this.sql.exec('INSERT OR REPLACE INTO vivo_borradas (id, sv, pub, ed, texto, t) ' +
+          'SELECT id, sv, pub, ed, substr(texto, 1, 600), ? FROM vivo WHERE id = ?', ahora, id);
         this.sql.exec('DELETE FROM vivo WHERE id = ?', id);
         borradas++;
       }
@@ -2784,6 +2797,7 @@ export class Avisos {
       }
     }
     this.sql.exec('DELETE FROM vivo WHERE ed < ?', ahora - 12 * HORA);
+    this.sql.exec('DELETE FROM vivo_borradas WHERE t < ?', ahora - 12 * HORA);
     this.guardar('vivo', { t: ahora, canales: leer.length, cambiaron: nuevas, borradas });
   }
 
@@ -2897,6 +2911,10 @@ export class Avisos {
     if ((this.leer('vigia') || {}).dormido) return { t: v.t || 0, dormido: true, llaves: [], veredictos: [] };
     return { t: v.t || 0, llaves: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto ' +
       'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray(),
+    // 🔴 y las llaves que el organizador borró, con cuándo: un evento cuya llave se borró y no tiene otra deja de estar
+    // «en vivo» (`Liga.vivo()`; LA REDENCION, 03/10/2026). Sólo el principio, que es donde está el título
+    borradas: this.sql.exec('SELECT id, sv, pub, ed, texto, t FROM vivo_borradas WHERE t > ? ORDER BY t DESC LIMIT 12',
+      ahora - VIVO_HORAS * HORA).toArray(),
     // 🔑 los veredictos, para que la página arme las batallas de un 5 vidas
     veredictos: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM veredictos ' +
       'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray(),
