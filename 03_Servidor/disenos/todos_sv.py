@@ -55,6 +55,10 @@ from comun import emblema, divisor as DIV, brillo as BRI, nombre as NOM
 from comun import rangos as RG, pie as PIE, iconos as ICO
 from comun import marco as MK, titulos as TIT
 from los_nueve import defs
+# 🌌 LA LÍNEA —el marco y la curva— de un servidor que la lleva de OTRO color que su base. Sólo DDF
+# (Dlx, 03/10/2026: «debería aún tener el color morado en la línea… no todo celeste, porque el color
+# principal del logo es morado»). Ver `los_nueve.LINEA`
+from los_nueve import LINEA
 from paneles import borde
 import avatares
 
@@ -1058,8 +1062,8 @@ def carta(i, sufijo):
     return f"""<div class="wrap">
   <svg class="d" width="0" height="0"><defs>
     <clipPath id="{sufijo}" clipPathUnits="userSpaceOnUse"><path d="{SIL}"/></clipPath>
-    {MK.defs_svg(A, B, sufijo)}
-    {defs_divisor(A, B, sufijo, pts)}
+    {MK.defs_svg(LINEA.get(sv, A), B, sufijo)}
+    {defs_divisor(LINEA.get(sv, A), B, sufijo, pts)}
   </defs></svg>
   <div class="cu" style="clip-path:url(#{sufijo})">
     <div class="f" style="background:{FONDO}"></div>

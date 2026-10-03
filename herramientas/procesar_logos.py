@@ -45,6 +45,10 @@ MODOS = {
     'ftn' : ('FTN.png',     'alfa'),
     'efa' : ('EFA.jpg',     'fondo'),
     'frz' : ('FRZ_orig.png','fondo'),
+    # 🟣 FFS (28/09) y 🌌 DDF (03/10/2026): sin silueta, `servidor_completo.py` los marcaba
+    # incompletos. Las dos son insignias redondas sobre un fondo plano
+    'ffs' : ('FFS.png',     'fondo'),
+    'ddf' : ('DDF.png',     'fondo'),
 }
 
 

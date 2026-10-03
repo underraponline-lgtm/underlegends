@@ -80,7 +80,10 @@ def _guilds():
          ('URBF', '1467763447117778989'),
          # 🟣 FFS, DESDE EL 28/09/2026: de la Liga (Dlx: «A · sí»). Igual que
          # los demás: sólo se CAPTURA el ID.
-         ('FFS', '1367688812892913774')]
+         ('FFS', '1367688812892913774'),
+         # 🌌 DDF, DESDE EL 03/10/2026: de la Liga (Dlx: «Haz todo lo necesario para
+         # que esta sea una buena inclusión»). Igual: sólo se CAPTURA el ID.
+         ('DDF', '1469009547971526659')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:

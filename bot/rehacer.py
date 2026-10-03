@@ -25,7 +25,7 @@ SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
 sys.path.insert(0, BASE)
 
-SERVIDORES = ('DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'SR', 'TFC', 'TWR', 'URBF')
+SERVIDORES = ('DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'SR', 'TFC', 'TWR', 'URBF')
 
 
 def cambiaron():

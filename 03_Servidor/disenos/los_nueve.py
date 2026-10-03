@@ -114,6 +114,43 @@ def t(c, f):
     return '#%02X%02X%02X' % (r, g, b)
 
 
+#: DDF: (base, acento). Ver su fondo en `defs()`
+DDF_COLORES = ('#005E80', '#5FA8FF')
+#: 🌌 LA LÍNEA DE OTRO COLOR QUE LA BASE: el marco y la curva salen de este propio y no de la base.
+#: DDF: su logo es MORADO y el morado de la carta era el de FFA (ΔE 2,6). Dlx, 03/10/2026: «debería
+#: aún tener el color morado en la línea pero otro tono, más fuerte o menos, no todo celeste». Con
+#: #720BD9 la línea da #B16BF8: a ΔE 20 del marco de FFA, 13 del de FFS y 12 del magenta de FFA
+LINEA = {'DDF': '#720BD9'}
+
+
+def ddf_fondo(A, B):
+    """La galaxia de DDF: estrellas sin grilla, la nebulosa y el planeta al pie.
+
+    ⚠️ LAS ESTRELLAS SON CINCO MOSAICOS DE TAMAÑOS QUE NO SE DIVIDEN ENTRE SÍ
+    (97×89, 71×67, 43×53, 37×31, 173×151): así no se arma una grilla a la vista, que
+    es justo lo que hace la trama de FFA. Sin imagen: es CSS y pesa nada.
+    """
+    def est(x, y, r, c, tw, th):
+        return (f'radial-gradient(circle at {x}px {y}px,{c} 0 {r}px,transparent {r + .7:.1f}px) '
+                f'0 0/{tw}px {th}px')
+    h = B.lstrip('#')
+    rb = ','.join(str(int(h[i:i + 2], 16)) for i in (0, 2, 4))
+    return ','.join([
+        est(23, 31, .9, 'rgba(255,255,255,.95)', 97, 89),
+        est(61, 13, .7, 'rgba(235,225,255,.70)', 71, 67),
+        est(11, 42, .5, 'rgba(255,255,255,.42)', 43, 53),
+        est(29, 7, .45, 'rgba(255,255,255,.30)', 37, 31),
+        est(120, 70, 1.3, f'rgba({rb},.95)', 173, 151),
+        # el planeta: oscuro adentro y con el borde encendido, saliendo al pie
+        f'radial-gradient(ellipse 165% 46% at 50% 112%,#06030E 0 60%,rgba({rb},.90) 60.5%,'
+        f'rgba({rb},.42) 61.6%,rgba({rb},.16) 63.4%,rgba({rb},.05) 66%,transparent 70%)',
+        # la nebulosa, en la mitad de abajo: arriba va la foto
+        f'radial-gradient(ellipse 72% 34% at 80% 66%,rgba(156,21,214,.50),transparent 72%)',
+        f'radial-gradient(ellipse 62% 30% at 16% 80%,rgba(72,96,255,.30),transparent 74%)',
+        f'linear-gradient(170deg,{t(A, .22)} 0%,{A} 42%,#07040F 100%)',
+    ])
+
+
 # ══ LA DEFINICION CANONICA DE CADA FONDO ══
 # sv: (acento, color base, fondo css, capa extra css, remate css, descripcion)
 def defs():
@@ -256,6 +293,22 @@ def defs():
         'background-position:center;mix-blend-mode:soft-light;opacity:.34',
         '', 'galón de ascenso periwinkle + tela de camiseta')
 
+    # DDF · Dimensión del Freestyle, la undécima. Dlx, 03/10/2026: «Haz todo lo
+    # necesario para que esta sea una buena inclusión», etiqueta ESPECTÁCULO.
+    #
+    # ⚠️ SU LOGO ES UNA GALAXIA VIOLETA, Y EL VIOLETA YA ESTÁ TOMADO. La primera
+    # versión fue violeta y Dlx lo vio en seguida: «el morado ese es el mismo que
+    # FFA». Medido donde se ve —el marco, `marco.claro(base)`— quedaba a ΔE 2,6
+    # de FFA. Va con el AZUL ELÉCTRICO del borde del planeta de su logo (el
+    # claro #00ADEC queda a 18 o más de los otros diez marcos); el violeta se
+    # queda en la nebulosa. Y el gesto —un cielo de estrellas finas, la nebulosa
+    # y el borde del planeta, que pasa detrás del tag y no toca el UL (Dlx)— lo
+    # separa del resto: FFA es una trama de puntos
+    # en grilla y un filo de neón; acá las estrellas no tienen grilla (cinco
+    # mosaicos de tamaños que no se dividen entre sí) y no hay filo.
+    A, B = DDF_COLORES
+    d['DDF'] = (B, A, ddf_fondo(A, B), '', '', 'galaxia: estrellas, nebulosa y el borde de un planeta al pie')
+
     # RZ · Rap Zone. Servidor ASOCIADO, no de la Hermandad.
     #
     # Su fuego NO esta simulado: sale extraido de su propio logo con
@@ -287,7 +340,7 @@ def defs():
 
 
 D = defs()
-ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'RZ']
+ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'RZ']
 
 
 ESTRELLAS = json.load(open(os.path.join(BASE, 'datos', 'estrellas.json'),

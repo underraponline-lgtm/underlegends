@@ -55,6 +55,9 @@ LOGO = {
     # 🟣 FFS (28/09/2026): su ícono es su logo —una ilustración, ocho figuras en
     # un círculo—; la carta de Servidor lo lleva a sangre (`escudos_cuad`)
     'FFS': '1367688812892913774/6bbef45a086586a7a47d0d4e99a7f9a8',
+    # 🌌 DDF (03/10/2026): su ícono es su logo, una insignia redonda con una galaxia;
+    # la carta de Servidor lo lleva a sangre (`escudos_cuad`) y calza en el círculo
+    'DDF': '1469009547971526659/c46485c6e4d491133d421d82907fb644',
 }
 
 # los que hay que buscar como silueta si no estan en LOGO. URBF sigue acá

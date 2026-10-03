@@ -359,6 +359,45 @@
      "creada": "2026-10-03"
     }
    ]
+  },
+  "DDF": {
+   "nombre": "Dimensión del Freestyle",
+   "guild_id": "1469009547971526659",
+   "en_el_sheet": false,
+   "nota": "03/10/2026: el bot entró (Dlx: «Dimensión Del Freestyle agregó nuestro bot… Haz todo lo necesario para que esta sea una buena inclusión»). Sigla DDF y etiqueta ESPECTÁCULO (Dlx: «1. D 2. a»). Cuentan sus COMPETENCIAS y la DDF CUP; sus ligas —LIGA AK47 y FMS TITANS— todavía no: «que no cuenten aún pero podría contar para el ranking ligas» (ver categorias_fuera). Su lector: escriben las llaves con 『』, el emoji <:versus_:…> y las rondas con letras separadas (ver escuchar.traducir()).",
+   "confirmado": true,
+   "tag": "ESPECTÁCULO",
+   "categorias_fuera": {
+    "_por_que": "Sus ligas (jornadas, tabla, veredictos de liga) no son eventos: Dlx, 03/10/2026, «que no cuenten aún pero podría contar para el ranking ligas». Sin esto, su #Anuncios, #Inscripciones y #Veredictos de liga se leerían como eventos y 5 vidas.",
+    "ids": [
+     "1555765834620735519",
+     "1550946824997834853"
+    ],
+    "_ids": "las dos categorías de liga: ⚔️「LIGA AK47」⚔️ y 🐊「FMS TITANS」🐊"
+   },
+   "invitacion": "https://discord.gg/9jxbKT9Hfv",
+   "invitacion_liga": {
+    "codigo": "9jxbKT9Hfv",
+    "canal": "『👋』𝘉𝘪𝘦𝘯𝘷𝘦𝘯𝘪𝘥𝘢",
+    "canal_id": "1470454607086882828",
+    "creada": "2026-10-03"
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "WcrS4V92Cu",
+     "canal": "『📑』𝘐𝘯𝘴𝘤𝘳𝘪𝘱𝘤𝘪𝘰𝘯𝘦𝘴",
+     "canal_id": "1497728664186650634",
+     "categoria_id": "1469944166137073857",
+     "creada": "2026-10-03"
+    },
+    {
+     "codigo": "bAWcZJdVPK",
+     "canal": "『📑』𝘐𝘯𝘴𝘤𝘳𝘪𝘱𝘤𝘪𝘰𝘯𝘦𝘴-2",
+     "canal_id": "1504658880683184268",
+     "categoria_id": "1469944166137073857",
+     "creada": "2026-10-03"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [
@@ -425,7 +464,7 @@
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
- "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026).",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»).",
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal. FFS: su canal 「📱」redes (29/09/2026), que enlaza publicaciones de @freestylefutureseries en Instagram y videos de @FreestyleFutureSeries en YouTube.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",

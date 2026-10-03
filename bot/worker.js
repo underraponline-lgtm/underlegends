@@ -184,6 +184,9 @@ export const SERVIDORES = [
   // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
   // vacío el bot no manda nada, que es lo que dice `datos/servidores.json`.
   { sv: 'FFS', nombre: 'FFS League', guild: '1367688812892913774', invita: 'https://discord.gg/whrjpJUfuz' },
+  // 🌌 DDF (03/10/2026): de la Liga (Dlx: «Haz todo lo necesario para que esta sea una buena inclusión»), con la
+  // invitación permanente que creó el bot (`bot/invitaciones.py`)
+  { sv: 'DDF', nombre: 'Dimensión del Freestyle', guild: '1469009547971526659', invita: 'https://discord.gg/9jxbKT9Hfv' },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());
