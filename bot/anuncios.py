@@ -494,6 +494,19 @@ def cupos(s):
     return None, None
 
 
+def huella_cuenta(cuenta):
+    """La huella de una cuenta de Discord (16 hex), o `''` sin cuenta.
+
+    🔑 PARA SABER QUE EL ANUNCIO Y LA LLAVE LOS PUBLICÓ LA MISMA PERSONA sin
+    guardar la cuenta: `datos/anuncios.json` va al repo público. Es la misma
+    huella que `llaves_a_entrada.huella_autor()` y que `datos/autores_llaves.json`
+    —si cambia acá, cambia allá—. Ver `llaves_a_entrada.anuncio_de_llave()`.
+    """
+    import hashlib
+    x = str(cuenta or '').strip()
+    return hashlib.sha1(('lg-autor:' + x).encode('utf-8')).hexdigest()[:16] if x else ''
+
+
 def parsear(m, servidor, canal, guild=''):
     """Un mensaje -> un anuncio, o `None` si no parece uno."""
     txt = m.get('content') or ''
@@ -568,6 +581,10 @@ def parsear(m, servidor, canal, guild=''):
         # se puede armar nada.
         'canal_id': m.get('channel_id') or '', 'guild_id': guild or '',
         'organizador': org,
+        # 🔑 QUIÉN LO PUBLICÓ, como huella: una llave sin título se reconoce
+        # por la hora y, si hay dos anuncios a esa hora, por quién publicó
+        # los dos (Dlx, 03/10/2026). Ver `llaves_a_entrada.anuncio_de_llave()`
+        'autor_h': huella_cuenta((m.get('author') or {}).get('id')),
         'cupos_texto': puestos.get('cupos') or '',
         'inscriptos': a, 'cupo_total': b,
         'rango': puestos.get('rango') or '',
@@ -1098,6 +1115,16 @@ def _self_check():
         print('   %s %-28s %s · %s'
               % ('✅' if ok else '🔴', et,
                  (x or {}).get('nombre', '—'), (x or {}).get('organizador', '—')))
+
+    # 🔑 QUIÉN LO PUBLICÓ, COMO HUELLA: la misma que la del autor de una llave
+    # (`llaves_a_entrada.huella_autor()`), y nunca la cuenta
+    import hashlib
+    c = parsear({'content': REAL_A, 'id': '3', 'timestamp': '2026-09-23T01:30:00',
+                 'author': {'id': '123456789012345678', 'username': 'x'}}, 'FFA', 'eventos')
+    ok = (c and c['autor_h'] == hashlib.sha1(b'lg-autor:123456789012345678').hexdigest()[:16]
+          and '123456789012345678' not in json.dumps(c) and a['autor_h'] == '')
+    mal += not ok
+    print('   %s quién publicó el anuncio, como huella (y vacía sin cuenta)' % ('✅' if ok else '🔴'))
 
     ok = a and a['inscriptos'] == 12 and a['cupo_total'] == 16
     mal += not ok

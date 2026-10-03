@@ -211,18 +211,19 @@ def _formas_chocan(p, r):
     return bool(a and b and a != b)
 
 
-def anunciado(nombre, sv, dia, anuncios):
-    """¿Algún anuncio de ese servidor respalda la llave `nombre` del día `dia`?
+def anuncio_de(nombre, sv, dia, anuncios):
+    """El anuncio de ese servidor que respalda la llave `nombre` del día `dia`, o `None`.
 
     El mismo criterio que `cruzar()`, mirado desde la llave: mismo servidor,
     la llave entre un día antes y dos después del anuncio, y el nombre igual
     —o parecido y sin números que choquen—. `dia` es un `date`; `anuncios`,
     los de `datos/anuncios.json` (con `servidor`) o los del payload (con
-    `sv`). Lo usa la regla de las llaves de broma de `bot/llaves_a_entrada.py`.
+    `sv`). Lo usan la regla de las llaves de broma de `bot/llaves_a_entrada.py`
+    y la de las llaves sin título, que no toman un anuncio que ya tiene la suya.
     """
     b = clave_nombre(nombre)
     if not b or not dia:
-        return False
+        return None
     for p in anuncios or ():
         if (p.get('servidor') or p.get('sv') or '') != sv:
             continue
@@ -232,8 +233,13 @@ def anunciado(nombre, sv, dia, anuncios):
         a = clave_nombre(p.get('nombre'))
         if a and (a == b or (not _chocan(p.get('nombre'), nombre)
                              and difflib.SequenceMatcher(None, a, b).ratio() >= PARECIDO)):
-            return True
-    return False
+            return p
+    return None
+
+
+def anunciado(nombre, sv, dia, anuncios):
+    """¿Algún anuncio de ese servidor respalda la llave `nombre` del día `dia`? Ver `anuncio_de()`."""
+    return anuncio_de(nombre, sv, dia, anuncios) is not None
 
 
 def fecha_iso(fecha):

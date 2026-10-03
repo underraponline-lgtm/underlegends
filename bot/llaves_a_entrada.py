@@ -1424,11 +1424,14 @@ AUTORES = os.path.join(BASE, 'datos', 'autores_llaves.json')
 
 def huella_autor(h):
     """La huella de quien publicó la llave `h`: su cuenta, o su usuario si
-    es un hallazgo viejo sin cuenta. `''` si no trae ninguno."""
-    import hashlib
+    es un hallazgo viejo sin cuenta. `''` si no trae ninguno.
+
+    ⚠️ LA MISMA QUE LA DE QUIEN PUBLICÓ UN ANUNCIO (`anuncios.huella_cuenta()`):
+    así se sabe que la llave y el anuncio los publicó la misma persona."""
+    import anuncios as AN
     x = str(h.get('autor_id') or '').strip() or (
         'u:' + str(h.get('autor') or '').strip().lower() if h.get('autor') else '')
-    return hashlib.sha1(('lg-autor:' + x).encode('utf-8')).hexdigest()[:16] if x else ''
+    return AN.huella_cuenta(x)
 
 
 def autores_conocidos(hallazgos, links=None, guardadas=None):
@@ -1619,18 +1622,35 @@ def identidad_de_grupo(g):
     return out
 
 
-def llave_de_broma(g, conocidos, anuncios, nom, sv, fec):
+def llave_de_broma(g, conocidos, anuncios, nom, sv, fec, inferido=None, por_hora=''):
     """El motivo para retener una llave como de broma, o `None`.
 
     De broma = publicada desde `BROMA_DESDE`, por alguien que no está en
     `conocidos` (ningún mensaje del grupo), y sin un anuncio de su servidor
     que la respalde (`llaves_web.anunciado()`).
+
+    🔑 SI EL NOMBRE LO PUSO EL ANUNCIO —una llave sin título, `inferido`: ver
+    `anuncio_de_llave()`—, LA HORA SOLA NO LA RESPALDA: cualquiera puede
+    publicar una llave en blanco justo después de un anuncio de verdad, y se
+    llevaría su nombre. La respalda si ese anuncio lo publicó la misma cuenta.
     """
     hs = g.get('llaves') or []
     if not hs or all(str(h.get('cuando') or '') < BROMA_DESDE for h in hs):
         return None
     if any(huella_autor(h) in conocidos for h in hs):
         return None
+    quien = ', '.join(sorted({str(h.get('autor') or '?') for h in hs}))
+    if inferido is not None:
+        if inferido.get('autor_h') and inferido['autor_h'] in {huella_autor(h) for h in hs}:
+            return None
+        return ('la publicó %s, que nunca había publicado una llave, y no trae título: por la hora es «%s», '
+                'pero %s. Puede ser de broma. Si es de verdad, «Sí cuenta»'
+                % (quien, (inferido.get('nombre') or '').strip(),
+                   'ese anuncio lo publicó otra cuenta' if inferido.get('autor_h')
+                   else 'no sé quién publicó ese anuncio'))
+    if nom == '(sin titulo)':
+        return ('la publicó %s, que nunca había publicado una llave, y no trae título (%s): puede ser '
+                'de broma. Si es de verdad, «Sí cuenta»' % (quien, por_hora or 'ningún anuncio de %s' % sv))
     import llaves_web as LW
     try:
         dia = datetime.date.fromisoformat(LW.fecha_iso(fec))
@@ -1638,10 +1658,9 @@ def llave_de_broma(g, conocidos, anuncios, nom, sv, fec):
         dia = None
     if dia and LW.anunciado(nom, sv, dia, anuncios):
         return None
-    quien = sorted({str(h.get('autor') or '?') for h in hs})
     return ('la publicó %s, que nunca había publicado una llave, y ningún anuncio de %s '
             'la respalda: puede ser de broma. Si es de verdad, «Sí cuenta»'
-            % (', '.join(quien), sv))
+            % (quien, sv))
 
 
 def _cuantos_nombres(l):
@@ -1970,6 +1989,88 @@ def _anuncios():
     return _ANUNCIOS[0]
 
 
+#: «este anuncio es de esta llave»: el evento arranca entre cinco horas antes y
+#: una después de la llave. La misma ventana de `nombre_vidas()` y de la página
+#: (`llaveDeEvento()`).
+ANTES_MS, DESPUES_MS = 3600000, 5 * 3600000
+#: el nombre que le dio su anuncio a cada llave sin título, por mensaje: ver
+#: `anuncio_de_llave()`. Se guarda porque el anuncio se va del canal y la llave
+#: no: sin esto volvería a «(sin titulo)» —otro evento, otro número—.
+NOMBRES = os.path.join(BASE, 'datos', 'nombres_llaves.json')
+
+
+def _hora_et(ms):
+    """`ms` -> «5:33 PM», en hora del este."""
+    t = datetime.datetime.fromtimestamp(ms / 1000.0, datetime.timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        t = t.astimezone(ZoneInfo('America/New_York'))
+    except Exception:                                    # noqa: BLE001
+        t = t.astimezone(datetime.timezone(datetime.timedelta(hours=-4)))
+    return t.strftime('%I:%M %p').lstrip('0')
+
+
+def anuncio_de_llave(g, anuncios=None, tomados=()):
+    """El anuncio de una llave SIN título: `(anuncio, cómo)`, o `(None, por qué)`.
+
+    🔑 Dlx, 03/10/2026, con la KISS OF SHINIGAMI de FFA, que no se cargó: *«no
+    en todos los servidores ponen nombres… ¿cómo detectás que esta llave es para
+    este evento? ¿Por el tiempo que ambos fueron anunciados o por la persona que
+    anunció esos 2?»*. Por las dos, en ese orden:
+
+    1. LA HORA: los anuncios de su servidor cuyo evento arranca entre cinco
+       horas antes y una después de la primera llave del grupo (su horario,
+       `cuando.momento()`; sin horario, cuándo se publicó), menos los que ya
+       tienen su llave (`tomados`).
+    2. LA PERSONA: si quedan dos o más, el que publicó la misma cuenta que la
+       llave (`autor_h` de `bot/anuncios.py`, contra `huella_autor()`).
+    3. Si todavía son dos o más, ninguno: un nombre adivinado es un evento
+       mal identificado que nadie ve.
+
+    ⚠️ LA HORA NOMBRA PERO NO RESPALDA a quien nunca publicó una llave: eso lo
+    decide `llave_de_broma()`, que pide además la misma cuenta.
+    """
+    import cuando as CU
+    hs = g.get('llaves') or []
+    ts = [x for x in (_ms_de(h.get('cuando')) for h in hs if h.get('cuando')) if x is not None]
+    if not ts:
+        return None, 'sin hora'
+    t0 = min(ts)
+    sv = codigo_servidor(hs[0].get('guild'))[0]
+    cands = []
+    for a in (anuncios if anuncios is not None else _anuncios()):
+        if a.get('servidor') != sv or not (a.get('nombre') or '').strip():
+            continue
+        if str(a.get('msg_id') or '') in tomados:
+            continue
+        ti = _ms_de(CU.momento(a) or a.get('cuando'))
+        if ti is None or not ti - ANTES_MS <= t0 <= ti + DESPUES_MS:
+            continue
+        cands.append((abs(t0 - ti), a))
+    if not cands:
+        return None, 'ningún anuncio de %s a esa hora' % sv
+    def _de(a):
+        p = _ms_de(a.get('cuando'))
+        return '«%s», anunciado a las %s' % (a['nombre'].strip(), _hora_et(p)) if p else '«%s»' % a['nombre'].strip()
+    if len(cands) == 1:
+        return cands[0][1], '%s: el único de %s a esa hora' % (_de(cands[0][1]), sv)
+    mias = {huella_autor(h) for h in hs} - {''}
+    propios = [c for c in cands if c[1].get('autor_h') and c[1]['autor_h'] in mias]
+    if len(propios) == 1:
+        return propios[0][1], '%s: de %d anuncios a esa hora, el de la misma cuenta' % (_de(propios[0][1]), len(cands))
+    return None, '%d anuncios de %s a esa hora (%s)' % (
+        len(cands), sv, ', '.join(_de(c[1]) for c in sorted(cands, key=lambda c: c[0])))
+
+
+def _nombres_guardados(ruta=None):
+    """`{msg_id de una llave: {'nombre', 'anuncio', 'sv', 'autor_h'}}`: ver `NOMBRES`."""
+    try:
+        with io.open(ruta or NOMBRES, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('llaves') or {}
+    except (OSError, ValueError):
+        return {}
+
+
 def nombre_vidas(h, anuncios=None):
     """El nombre de un evento de vidas de #veredictos: el del anuncio de su
     servidor que arrancó cerca —de una hora antes a cinco después de la
@@ -1996,7 +2097,7 @@ def nombre_vidas(h, anuncios=None):
                 tzinfo=datetime.timezone.utc).timestamp() * 1000
         except ValueError:
             continue
-        if ti - 3600000 <= t0 <= ti + 5 * 3600000 and (mejor is None or abs(t0 - ti) < mejor[0]):
+        if ti - ANTES_MS <= t0 <= ti + DESPUES_MS and (mejor is None or abs(t0 - ti) < mejor[0]):
             mejor = (abs(t0 - ti), a['nombre'].strip())
     if mejor:
         return mejor[1]
@@ -2569,6 +2670,17 @@ def _self_check():
            {'autor_id': 'B2', 'autor': 'organiza', 'cuando': '2026-09-25T02:00:00+00:00', 'msg_id': '22'},
            {'autor_id': 'C3', 'autor': 'troll', 'cuando': '2026-09-30T02:00:00+00:00', 'msg_id': '33'}]
     _con = {huella_autor(_hb[0]), huella_autor(_hb[1])}
+    # la llave sin título y su anuncio: la KISS OF SHINIGAMI de FFA, 02/10/2026 (anuncio 5:33 PM, llave 5:46 PM)
+    _ffa = '1468472442925092958'
+    _gk = {'llaves': [{'autor_id': 'G4', 'autor': 'gocho444.', 'guild': _ffa, 'msg_id': '44',
+                       'cuando': '2026-10-02T21:46:00+00:00'}]}
+    _ak = {'nombre': 'KISS OF SHINIGAMI', 'servidor': 'FFA', 'msg_id': 'K1', 'cuando': '2026-10-02T21:33:06',
+           'horario': '20-30 m', 'autor_h': huella_autor({'autor_id': 'G4'})}
+    _ak2 = {'nombre': 'OTRA COMPE', 'servidor': 'FFA', 'msg_id': 'K2', 'cuando': '2026-10-02T21:40:00',
+            'horario': '', 'autor_h': huella_autor({'autor_id': 'Z9'})}
+    _aviejo = {'nombre': 'LA DE LA MAÑANA', 'servidor': 'FFA', 'msg_id': 'K3', 'cuando': '2026-10-02T12:00:00',
+               'horario': ''}
+    _aotro = dict(_ak, servidor='SR', msg_id='K4')
     # la clave con que ✅ Decidir busca un nombre: sin bandera y sin signos
     _nn = lambda x: ''.join(c for c in __import__('unicodedata').normalize(   # noqa: E731
         'NFKD', re.sub('[\U0001F1E6-\U0001F1FF]', '', x)) if c.isalnum()).lower()
@@ -2693,6 +2805,22 @@ def _self_check():
          llave_de_broma({'llaves': [dict(_hb[2], autor_id='B2')]}, _con, [], 'X', 'URBF', '29/09') is None
          and llave_de_broma({'llaves': [dict(_hb[2], cuando='2026-09-27T02:00:00+00:00')]}, _con, [],
                             'X', 'URBF', '27/09') is None),
+        # 🔑 la llave sin título toma el nombre de su anuncio: la hora y, si hay dos, quién publicó (Dlx, 03/10/2026)
+        ('una llave sin título es del anuncio de su servidor que arranca a esa hora (KISS OF SHINIGAMI, FFA)',
+         (anuncio_de_llave(_gk, [_aviejo, _aotro, _ak])[0] or {}).get('msg_id') == 'K1'),
+        ('con dos anuncios a esa hora, el que publicó la misma cuenta; si no hay cómo separarlos, ninguno',
+         (anuncio_de_llave(_gk, [_ak2, _ak])[0] or {}).get('msg_id') == 'K1'
+         and anuncio_de_llave(_gk, [_ak2, dict(_ak, autor_h='')])[0] is None
+         and '2 anuncios' in anuncio_de_llave(_gk, [_ak2, dict(_ak, autor_h='')])[1]),
+        ('un anuncio que ya tiene su llave no se lo lleva otra, y sin ninguno a esa hora, ninguno',
+         anuncio_de_llave(_gk, [_ak], tomados={'K1'})[0] is None
+         and anuncio_de_llave(_gk, [_aviejo, _aotro])[0] is None),
+        ('la hora sola no respalda a quien nunca publicó una llave: la misma cuenta que el anuncio, sí',
+         'otra cuenta' in (llave_de_broma(_gk, _con, [], 'KISS OF SHINIGAMI', 'FFA', '02/10',
+                                          inferido=dict(_ak, autor_h='otra')) or '')
+         and llave_de_broma(_gk, _con, [], 'KISS OF SHINIGAMI', 'FFA', '02/10', inferido=_ak) is None
+         and 'no trae título' in (llave_de_broma(_gk, _con, [], '(sin titulo)', 'FFA', '02/10',
+                                                 por_hora='ningún anuncio de FFA a esa hora') or '')),
         # 🔑 el podio con mención (Dlx, 28/09/2026: «A · sí, como las inscripciones»)
         ('el podio con una mención por puesto dice quién es cada uno (RAP EXHIBITION 1/8)',
          menciones_podio('• 1ER PUESTO: <@639> \n• 2DO PUESTO: <@535> \n• 3ER PUESTO: <@716>')
@@ -2922,6 +3050,24 @@ def main():
     print('   %d llave(s) -> %d evento(s) distintos\n'
           % (len(hallazgos), len(grupos)))
 
+    # 🔑 LAS LLAVES SIN TÍTULO TOMAN EL NOMBRE DE SU ANUNCIO (Dlx, 03/10/2026): ver `anuncio_de_llave()`. Antes, los
+    # anuncios que ya tienen su llave —por el nombre, o porque una corrida anterior se lo dio a otra—: dos llaves no
+    # se llevan el mismo.
+    import llaves_web as LW
+    guardados, nombres_nuevos, sin_titulo = _nombres_guardados(), {}, []
+    tomados = {str(x.get('anuncio') or '') for x in guardados.values()}
+    for g in grupos:
+        if not g['llaves'] or nombre_de(g) == '(sin titulo)':
+            continue
+        try:
+            _d = datetime.date.fromisoformat(LW.fecha_iso(fecha_de(g)))
+        except ValueError:
+            continue
+        _a = LW.anuncio_de(nombre_de(g), codigo_servidor(g['llaves'][0].get('guild'))[0], _d, anuncios_l)
+        if _a:
+            tomados.add(str(_a.get('msg_id') or ''))
+    _por_id = {str(a.get('msg_id') or ''): a for a in anuncios_l}
+
     todas, dudas, sabidas = [], [], collections.Counter()
     en_curso, incompletos, retenidos, descartados = [], [], [], []
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
@@ -2948,6 +3094,38 @@ def main():
         # veces, que es el unico error de esta cadena que no se arregla
         # volviendo a correr.
         nom, fec = nombre_de(g), fecha_de(g)
+        # 🔑 SIN TÍTULO, EL NOMBRE DE SU ANUNCIO: por la hora y, si hay dos, por quién publicó los dos. Primero el que
+        # ya se le dio (`NOMBRES`), que manda aunque después aparezca un título: el nombre es un tercio de la identidad
+        # del evento, y cambiarlo lo carga otra vez con otro número. ⚠️ No a un pedazo suelto (`_chico`): una final sola
+        # no dice de qué evento es, y se llevaría el nombre de otro.
+        inferido, por_hora = None, ''
+        _ya = next((guardados[str(h.get('msg_id'))] for h in g['llaves']
+                    if str(h.get('msg_id') or '') in guardados), None)
+        if _ya:
+            inferido = dict(_ya)
+            # la huella de quien publicó el anuncio, si la de entonces faltaba y el anuncio sigue
+            if not inferido.get('autor_h') and (_por_id.get(inferido.get('anuncio') or '') or {}).get('autor_h'):
+                inferido['autor_h'] = _por_id[inferido['anuncio']]['autor_h']
+            # y para cada mensaje del grupo: si la llave se reposteó y el mensaje viejo se borra, el nombre sigue
+            for h in g['llaves']:
+                if h.get('msg_id') and guardados.get(str(h['msg_id'])) != inferido:
+                    nombres_nuevos[str(h['msg_id'])] = inferido
+            nom, por_hora = inferido['nombre'], 'el que ya tenía'
+        elif nom == '(sin titulo)' and g['llaves'] and not g['llaves'][0].get('_chico') \
+                and not any(h.get('vidas') for h in g['llaves']):
+            inferido, por_hora = anuncio_de_llave(g, anuncios_l, tomados)
+            if inferido:
+                nom = inferido['nombre'].strip()
+                tomados.add(str(inferido.get('msg_id') or ''))
+                _r = {'nombre': nom, 'anuncio': str(inferido.get('msg_id') or ''),
+                      'sv': codigo_servidor(g['llaves'][0].get('guild'))[0],
+                      'autor_h': inferido.get('autor_h') or ''}
+                for h in g['llaves']:
+                    if h.get('msg_id'):
+                        nombres_nuevos[str(h['msg_id'])] = _r
+        if inferido is not None or nom == '(sin titulo)':
+            sin_titulo.append((nom, codigo_servidor((g['llaves'] or [{}])[0].get('guild'))[0], fec, por_hora,
+                               inferido is not None))
         # 🔑 EL LINK DE LA LLAVE MÁS NUEVA DEL GRUPO, para que la pregunta
         # de ✅ Decidir sobre este evento lleve al mensaje: «(sin titulo)»
         # sin link obligaba a buscar la llave a mano en tres servidores.
@@ -3099,7 +3277,8 @@ def main():
                 break
         # 🔑 Y LA LLAVE DE BROMA: autor nuevo y sin anuncio (Dlx, 28/09, «A»)
         if ligas and not motivo and dec != 'cuenta':
-            motivo = llave_de_broma(g, conocidos, anuncios_l, nom, ligas[0], fec)
+            motivo = llave_de_broma(g, conocidos, anuncios_l, nom, ligas[0], fec,
+                                    inferido=inferido, por_hora=por_hora)
         if ligas and motivo and dec != 'cuenta':
             retenidos.append((nom, ligas[0], fec, motivo))
             continue
@@ -3215,6 +3394,10 @@ def main():
         for ev, sv_i, fec_i, mot in retenidos:
             print('     %-32s %s · %s\n        %s' % (ev[:32], sv_i, fec_i,
                                                    mot))
+    if sin_titulo:
+        print('\n   -- llaves sin título: el nombre sale de su anuncio (hora, y si hay dos, quién publicó) --')
+        for ev, sv_i, fec_i, por, ok in sin_titulo:
+            print('     %-32s %s · %s  %s %s' % (ev[:32], sv_i, fec_i, '←' if ok else '✗', por))
 
     if equipos_inf:
         print('\n   -- equipos con un solo nombre: quiénes cobran --')
@@ -3226,6 +3409,22 @@ def main():
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
+
+    # el nombre que su anuncio le dio a cada llave sin título, sumado a lo de antes: el anuncio se va del canal y la
+    # llave no (ver `NOMBRES`)
+    if nombres_nuevos:
+        try:
+            with io.open(NOMBRES, 'w', encoding='utf-8', newline='\n') as _f:
+                json.dump({'_leeme': 'El nombre que le dio su anuncio a cada llave SIN título, por id del mensaje de '
+                                     'la llave: la hora y, si hay dos anuncios, quién publicó los dos (autor_h, la '
+                                     'huella, nunca la cuenta). Se guarda porque el anuncio se va del canal y la llave '
+                                     'no: sin esto volvería a «(sin titulo)», otro evento con otro número. Lo escribe '
+                                     'anuncio_de_llave() de bot/llaves_a_entrada.py. Dlx, 03/10/2026.',
+                           'llaves': dict(guardados, **nombres_nuevos)}, _f, ensure_ascii=False, indent=1,
+                          sort_keys=True)
+                _f.write('\n')
+        except OSError as e:
+            print('   ⚠️ no pude guardar los nombres de las llaves sin título (%s)' % str(e)[:60])
 
     # y los equipos con un solo nombre, para que `Pendientes` no pregunte
     # quién es «TEAM VENECIA» como si fuera una persona

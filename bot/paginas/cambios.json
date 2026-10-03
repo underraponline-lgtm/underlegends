@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.07",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T11:15:00-04:00",
+   "titulo": "Las llaves sin nombre también cuentan",
+   "items": [
+    "🏆 **Una llave sin título ya no se pierde**: no todos los servidores le ponen el nombre del evento. Ahora toma el de su anuncio: el de ese servidor que arranca a esa hora y, si hay dos, el que publicó la misma persona que la llave. Si ni así se sabe cuál es, no se adivina: se pregunta."
+   ]
+  },
+  {
    "version": "2.06",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T11:00:00-04:00",
