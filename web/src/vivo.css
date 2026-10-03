@@ -1245,7 +1245,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-logo{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--c);object-fit:cover;background:#030304}
 .soc-cab h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
 .soc-cab small{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
-.soc-num{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}
+.soc-num{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
 .soc-num div{display:grid;gap:5px;padding:8px;border:1.5px solid var(--suave);background:var(--fondo);min-width:0}
 .soc-num dt{font:700 9.5px/1.15 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
 .soc-num dd{margin:0;font:900 18px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
@@ -1255,8 +1255,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-datos{list-style:none;margin:0;padding:0;display:grid;gap:9px;font:600 14px/1.35 Archivo,sans-serif;min-width:0}
 .soc-datos b{display:block;font:700 10px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--magenta-tx);margin-bottom:4px}
 .soc-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
-.soc-num .soc-sin{grid-column:span 2}
-.soc-sin dd{font-size:15px;line-height:1.2}
+.soc-espera{margin:0;padding:12px 14px;border:1.5px dashed var(--gris);font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.soc-espera b{display:block;margin-bottom:4px;font:700 10px/1.2 "Space Mono",monospace;letter-spacing:.1em;color:var(--magenta-tx)}
 /* el lugar que sobra con un número impar de servidores: invita al que falta */
 .soc-mas{align-items:flex-start;justify-content:center;border-style:dashed;box-shadow:none;padding-left:16px}
 .soc-mas h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
@@ -1330,6 +1330,8 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (min-width: 900px){
   .app .soc-hero,.app .gu-hero{padding:36px var(--gut) 30px}
   .app .soc-lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:26px var(--gut) 10px}
+  .app .soc-num{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .app .soc-num.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
   .app .soc-pat{padding:22px var(--gut)}
   .app .soc-sumar{padding:34px var(--gut) 40px}
   .app .soc-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}

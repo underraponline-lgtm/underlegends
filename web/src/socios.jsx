@@ -20,6 +20,7 @@ function Socio({ liga, s }) {
   const camp = ll ? liga.campeon(ll) : [];
   // su mejor de la temporada, con la carta de Servidor: es lo que gana un servidor al sumarse (CLAUDE.md)
   const mejor = liga.oficiales().find((f) => f.sv === s.sv);
+  const jugo = !!(s.n || s.pts);
   return (
     <article className="soc" style={{ '--c': s.color || '#29B298' }}>
       <header className="soc-cab">
@@ -29,15 +30,18 @@ function Socio({ liga, s }) {
           <small>{s.sv}{s.tag ? ' · ' + String(s.tag).toUpperCase() : ''}</small>
         </div>
       </header>
-      <dl className="soc-num">
-        {/* «0 de 0» no es un número: quien todavía no jugó la temporada lo dice en palabras (la regla del proyecto) */}
-        {s.n || s.pts ? <>
+      {/* «0 de 0» no es un número: quien todavía no jugó la temporada no muestra ceros, lo dice en palabras */}
+      <dl className={'soc-num' + (jugo ? '' : ' dos')}>
+        {jugo ? <>
           <div><dt>RAPEROS</dt><dd>{num(s.n || 0)}</dd></div>
           <div><dt>PUNTOS</dt><dd>{num(s.pts || 0)}</dd></div>
-        </> : <div className="soc-sin"><dt>LA {liga.temp}</dt><dd>Todavía sin eventos</dd></div>}
+        </> : null}
         <div><dt>EN SU DISCORD</dt><dd>{s.miembros ? num(s.miembros) : '—'}</dd></div>
         <div><dt>ESTA SEMANA</dt><dd className={x > 1 ? 'sube' : ''}>{x ? mult(x) : '×1'}</dd></div>
       </dl>
+      {!jugo ? (
+        <p className="soc-espera"><b>TODAVÍA SIN EVENTOS EN LA {liga.temp}</b>Cuando organice el primero, acá aparece su mejor rapero y su último campeón.</p>
+      ) : null}
       <div className="soc-medio">
         {mejor && (mejor.c || []).includes('servidor') ? (
           <a className="soc-carta" href={'#/r/' + encodeURIComponent(mejor.k)} aria-label={'El mejor de ' + s.sv + ': ' + limpio(mejor.n)}>
