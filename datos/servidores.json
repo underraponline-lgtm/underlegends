@@ -133,7 +133,16 @@
     "canal": "✦👋︱bienvenidos",
     "canal_id": "1468475400559656960",
     "creada": "2026-09-29"
-   }
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "vMyMTHvNsE",
+     "canal": "✦📝︱inscripciones",
+     "canal_id": "1507450564844323037",
+     "categoria_id": "1468478330826260500",
+     "creada": "2026-10-03"
+    }
+   ]
   },
   "TWR": {
    "nombre": "The Warren Rap",
@@ -230,7 +239,16 @@
     "canal": "［📈］ascenso",
     "canal_id": "863208038859800606",
     "creada": "2026-09-29"
-   }
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "BzWByk7JgS",
+     "canal": "［📝］inscripciones",
+     "canal_id": "902968501239693372",
+     "categoria_id": "863207988739309600",
+     "creada": "2026-10-03"
+    }
+   ]
   },
   "FTN": {
    "nombre": "Fontana",
@@ -264,7 +282,23 @@
     "canal": "‧《👋🏻》𝘽𝙞𝙚𝙣𝙫𝙚𝙣𝙞𝙙𝙖𝙨-𝘿𝙚𝙨𝙥𝙚𝙙𝙞𝙙𝙖𝙨",
     "canal_id": "1511961765032759316",
     "creada": "2026-09-29"
-   }
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "grX8fh9BDF",
+     "canal": "《📑》𝙄𝙣𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤𝙣𝙚𝙨",
+     "canal_id": "1511963543057203300",
+     "categoria_id": "1511963280128868504",
+     "creada": "2026-10-03"
+    },
+    {
+     "codigo": "KMbWSJ2F38",
+     "canal": "‣《🗞️》𝙄𝙣𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤𝙣𝙚𝙨",
+     "canal_id": "1511968640218562580",
+     "categoria_id": "1511967903329812651",
+     "creada": "2026-10-03"
+    }
+   ]
   },
   "EFA": {
    "nombre": "EFA",
@@ -308,7 +342,23 @@
      "https://www.youtube.com/@FreestyleFutureSeries"
     ]
    ],
-   "youtube_id": "UC6hd1EYdjZi18NjjXbnr0iw"
+   "youtube_id": "UC6hd1EYdjZi18NjjXbnr0iw",
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "Nfgeyfyaan",
+     "canal": "「👑」𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒",
+     "canal_id": "1518672710182506616",
+     "categoria_id": "1373343272482902127",
+     "creada": "2026-10-03"
+    },
+    {
+     "codigo": "J6bT3hErn8",
+     "canal": "「🐂」𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒",
+     "canal_id": "1475519486671978696",
+     "categoria_id": "1373340537486053527",
+     "creada": "2026-10-03"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [
@@ -379,5 +429,6 @@
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal. FFS: su canal 「📱」redes (29/09/2026), que enlaza publicaciones de @freestylefutureseries en Instagram y videos de @FreestyleFutureSeries en YouTube.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",
- "_invitacion_liga_leeme": "invitacion_liga: la invitación permanente que creó el bot en cada servidor (Dlx, 29/09/2026: «crea una invitación permanente para cada servidor, y de esta manera podemos reconocer cuántas personas se unieron por ti la Liga Global»). Es la de `invitacion`; la de antes quedó en `invitacion_antes`. Cuántos entraron: datos/invitaciones.json (bot/invitaciones.py --contar)."
+ "_invitacion_liga_leeme": "invitacion_liga: la invitación permanente que creó el bot en cada servidor (Dlx, 29/09/2026: «crea una invitación permanente para cada servidor, y de esta manera podemos reconocer cuántas personas se unieron por ti la Liga Global»). Es la de `invitacion`; la de antes quedó en `invitacion_antes`. Cuántos entraron: datos/invitaciones.json (bot/invitaciones.py --contar).",
+ "_invitaciones_inscripcion_leeme": "invitaciones_inscripcion: las invitaciones permanentes que creó el bot a cada canal de inscripciones (o, sin ninguno, al de eventos donde se anota), para el botón «Inscribite ya» (Dlx, 03/10/2026: «1. a»). El botón elige la de la misma categoría que el anuncio: ver invitacionPara() de bot/avisos.js."
 }

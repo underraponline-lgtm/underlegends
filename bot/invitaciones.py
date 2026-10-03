@@ -32,6 +32,7 @@ import datetime as dt
 import io
 import json
 import os
+import re
 import sys
 import unicodedata
 import urllib.parse
@@ -165,6 +166,93 @@ def crear(aplicar=False):
     return hechas
 
 
+# ── «INSCRIBITE YA»: una invitación más por servidor, al canal donde se anota ─────────────────────────────────────
+#
+# 🔑 Dlx, 03/10/2026, sobre el botón del aviso de `eventos-hoy`: *«que sea el link de invitación al canal… el de
+# inscripciones mejor… porque la gente no puede entrar de esa forma»* (un link a un mensaje sólo abre si ya estás en
+# el servidor), y a «el bot tiene que crear una invitación permanente a ese canal en cada servidor»: *«1. a»*.
+#
+# ⚠️ UNA POR CANAL DE INSCRIPCIONES, NO UNA POR SERVIDOR: Urban tiene uno para sus torneos y otro para la Red Bull
+# Cabrana, y FFS uno para FFS Bull y otro para las Plazas. El botón elige la de la misma categoría que el anuncio
+# (`invitacionPara()` de `bot/avisos.js`). Sin ningún canal de inscripciones —DRA se anota con el botón de la tarjeta
+# del anuncio—, el canal de eventos donde anuncia.
+#
+# ⚠️ CREAR SIGUE SIENDO A MANO (`--inscripciones --crear --aplicar`), como la de bienvenida: queda en el servidor de
+# otro. Viajan al vigía en `meta` (`bot/subir_datos.py`) y a la página en el payload (`bot/subir_web.py`).
+MOTIVO_INSC = 'Liga Global: invitación permanente al canal de inscripciones, para el botón «Inscribite ya»'
+EVENTOS_INSC = re.compile(r'evento|torneo|competenc', re.I)
+
+
+def canales_inscripcion(chs, gid, base, fuera=(), anunciados=()):
+    """Los canales a los que lleva «Inscribite ya»: los de inscripciones que ve @everyone, fuera de las categorías de
+    staff y de las que el servidor declara afuera; sin ninguno, los de eventos donde el servidor anunció algo."""
+    import anuncios as A
+    staff = {str(c.get('id')) for c in chs if c.get('type') == 4 and
+             A.STAFF.search(unicodedata.normalize('NFKD', c.get('name') or ''))}
+    no = staff | {str(i) for i in fuera}
+
+    def sirve(c):
+        n = unicodedata.normalize('NFKD', c.get('name') or '')
+        return (c.get('type') in (0, 5) and not A.STAFF.search(n) and str(c.get('parent_id') or '') not in no
+                and la_ve_todos(c, gid, base))
+    insc = [c for c in chs if sirve(c) and A.PATRON_INSC.search(unicodedata.normalize('NFKD', c.get('name') or ''))]
+    if insc:
+        return sorted(insc, key=lambda c: c.get('position') or 0)
+    # ⚠️ sólo los de eventos y competencias, no los de novedades ni anuncios (lo mismo que escucha el vigía): DRA tiene un
+    # anuncio en «novedades», y ahí no se anota nadie. Y su canal de competencias no lo ve @everyone, así que DRA queda
+    # sin ninguna: el botón usa la invitación del servidor («Entrar al servidor»)
+    an = {str(i) for i in anunciados}
+    return [c for c in chs if sirve(c) and str(c.get('id')) in an and
+            EVENTOS_INSC.search(unicodedata.normalize('NFKD', c.get('name') or ''))]
+
+
+def crear_inscripcion(aplicar=False):
+    s = _sesion()
+    d = _json(SERVIDORES, {})
+    anuncios = _json(os.path.join(BASE, 'datos', 'anuncios.json'), {})
+    anuncios = anuncios if isinstance(anuncios, list) else (anuncios.get('anuncios') or [])
+    hoy = dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%d')
+    hechas = 0
+    for sv, x in servidores_del_bot():
+        gid = x['guild_id']
+        roles = {r['id']: r for r in s.get('%s/guilds/%s/roles' % (API, gid), timeout=30).json()}
+        chs = s.get('%s/guilds/%s/channels' % (API, gid), timeout=30).json()
+        ya = {str(i.get('canal_id')): i for i in (x.get('invitaciones_inscripcion') or [])}
+        cs = canales_inscripcion(chs, gid, (roles.get(gid) or {}).get('permissions'),
+                                 (x.get('categorias_fuera') or {}).get('ids') or (),
+                                 [a.get('canal_id') for a in anuncios if a.get('servidor') == sv])
+        if not cs:
+            print('   %-5s 🔴 ni un canal de inscripciones ni uno de eventos con anuncios' % sv)
+            continue
+        for c in cs:
+            if str(c['id']) in ya:
+                print('   %-5s #%s ya tiene la suya: %s' % (sv, c.get('name'), ya[str(c['id'])]['codigo']))
+                continue
+            print('   %-5s -> #%s' % (sv, c.get('name')))
+            if not aplicar:
+                continue
+            r = s.post('%s/channels/%s/invites' % (API, c['id']), timeout=30,
+                       headers={'X-Audit-Log-Reason': urllib.parse.quote(MOTIVO_INSC)},
+                       json={'max_age': 0, 'max_uses': 0, 'temporary': False, 'unique': True})
+            if not r.ok:
+                print('         🔴 Discord dijo %d: %s' % (r.status_code, r.text[:120]))
+                continue
+            cod = r.json().get('code')
+            d['servidores'][sv].setdefault('invitaciones_inscripcion', []).append(
+                {'codigo': cod, 'canal': c.get('name'), 'canal_id': str(c['id']),
+                 'categoria_id': str(c.get('parent_id') or ''), 'creada': hoy})
+            hechas += 1
+            print('         ✅ https://discord.gg/%s' % cod)
+    if hechas:
+        d['_invitaciones_inscripcion_leeme'] = (
+            'invitaciones_inscripcion: las invitaciones permanentes que creó el bot a cada canal de inscripciones '
+            '(o, sin ninguno, al de eventos donde se anota), para el botón «Inscribite ya» (Dlx, 03/10/2026: «1. a»). '
+            'El botón elige la de la misma categoría que el anuncio: ver invitacionPara() de bot/avisos.js.')
+        _guardar(SERVIDORES, d)
+        print('\n   ✅ %d invitación(es) nueva(s) en datos/servidores.json' % hechas)
+    return hechas
+
+
 def contar(aplicar=False):
     """`{sv: {codigo, usos}}`, y lo guarda si cambió. `usos` None = sin permiso."""
     s = _sesion()
@@ -235,6 +323,17 @@ def _self_check():
            for _sv, x in servidores_del_bot()) or not any(
            x.get('invitacion_liga') for _sv, x in servidores_del_bot()),
        ', '.join(sv for sv, x in servidores_del_bot() if not x.get('invitacion_liga')) or '')
+    # «Inscribite ya»: los canales de inscripciones que ve @everyone; sin ninguno, el de eventos con anuncios
+    ci = [{'id': '20', 'type': 4, 'name': '𝐒𝐓𝐀𝐅𝐅'}, {'id': '21', 'type': 0, 'name': '《📑》𝙄𝙣𝙨𝙘𝙧𝙞𝙥𝙘𝙞𝙤𝙣𝙚𝙨', 'parent_id': '30'},
+          {'id': '22', 'type': 0, 'name': 'inscripciones-staff', 'parent_id': '30'},
+          {'id': '23', 'type': 0, 'name': 'inscripciones', 'parent_id': '20'},
+          {'id': '24', 'type': 0, 'name': '〢⭐〉competenciasMIx', 'parent_id': '31'}]
+    ok('«Inscribite ya»: el de inscripciones en letra de fantasía, no los de staff',
+       [c['id'] for c in canales_inscripcion(ci, '1', VER)] == ['21'])
+    ok('ni uno de una categoría que el servidor declara afuera',
+       canales_inscripcion(ci, '1', VER, fuera=['30'], anunciados=['24'])[0]['id'] == '24')
+    ok('sin canal de inscripciones, el de eventos donde anunció (DRA)',
+       [c['id'] for c in canales_inscripcion(ci[:1] + ci[3:], '1', VER, anunciados=['24'])] == ['24'])
     print('\n   %s\n' % ('todo ok' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
@@ -246,6 +345,11 @@ def main():
     if '--contar' in sys.argv:
         print('\n══ ¿CUÁNTOS ENTRARON POR LA LIGA? ══\n')
         contar(aplicar)
+        return 0
+    if '--inscripciones' in sys.argv:
+        print('\n══ «INSCRIBITE YA»: LAS INVITACIONES A LOS CANALES DE INSCRIPCIONES%s ══\n'
+              % ('' if aplicar and '--crear' in sys.argv else ' (en seco)'))
+        crear_inscripcion(aplicar and '--crear' in sys.argv)
         return 0
     print('\n══ LAS INVITACIONES DE LA LIGA%s ══\n' % ('' if aplicar and '--crear' in sys.argv
                                                      else ' (en seco)'))
