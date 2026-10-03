@@ -58,9 +58,6 @@
    "servidor": "a12dbef22e8d:aee1635d8702:c589ca",
    "temporada": "c0d3995eee8a:146101b6ee32"
   },
-  "Aguzz": {
-   "servidor": "0a55555cd98d:aee1635d8702:980594"
-  },
   "Aktybo": {
    "competitivo": "868e95ea6427:945fdcc5bb5d",
    "pais": "a509b7aa7c83:81ca9569ff4e",
@@ -476,6 +473,9 @@
    "pais": "b726fedc2e26:81ca9569ff4e",
    "servidor": "1968192c57e4:aee1635d8702:980594",
    "temporada": "5c03cd18c69e:146101b6ee32"
+  },
+  "ForceGP": {
+   "servidor": "b8de77a4f7d2:aee1635d8702:ed275a"
   },
   "Frost": {
    "servidor": "3638ad3b6dfb:aee1635d8702:055f77"
@@ -1717,5 +1717,5 @@
    "servidor": "994982e6deaa:aee1635d8702:0a3db8"
   }
  },
- "cuando": "2026-10-03T16:09:26+00:00"
+ "cuando": "2026-10-03T18:57:27+00:00"
 }
