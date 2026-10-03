@@ -171,11 +171,15 @@ function PanelAvisos({ liga, B, onCerrar }) {
   const ir = (ruta) => { onCerrar(); location.hash = ruta; };
   const fila = (x) => {
     const f = x.cara ? liga.T[x.cara] : null;
+    // el emoji del principio del aviso va en el círculo cuando no hay cara: no se repite al lado
+    const emoji = /^(\p{Extended_Pictographic}️?)\s*/u.exec(String(x.titulo || ''));
+    const tit = !f && emoji ? x.titulo.slice(emoji[0].length) : x.titulo;
     return (
       <li key={x.clave}>
         <button type="button" className={'nt-i' + (x.visto ? '' : ' nueva')} onClick={() => ir(rutaDe(x.url))}>
-          {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" /> : <span className="nt-c nt-ico" aria-hidden="true">{ICONO_AVISO[x.tipo] || '🔔'}</span>}
-          <span className="nt-t"><b>{x.titulo}</b>{x.cuerpo ? <small>{x.cuerpo}</small> : null}</span>
+          {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="nt-c" />
+            : <span className="nt-c nt-ico" aria-hidden="true">{emoji ? emoji[1] : ICONO_AVISO[x.tipo] || '🔔'}</span>}
+          <span className="nt-t"><b>{tit}</b>{x.cuerpo ? <small>{x.cuerpo}</small> : null}</span>
           <em>{liga.cuando(new Date(x.t))}</em>
         </button>
       </li>
