@@ -1237,7 +1237,8 @@
 "alexi": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "blitz": {
@@ -1267,7 +1268,10 @@
 },
 "eclipsito": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "elsolar": {
 "rg": "",
@@ -3171,6 +3175,30 @@
 "t": "2026-10-02T16:38:08Z",
 "quien": [
 "Kochi"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T06:36:47Z",
+"quien": [
+"Alexi"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T06:36:47Z",
+"quien": [
+"Eclipsito"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T06:36:47Z",
+"quien": [
+"Eclipsito"
 ],
 "carta": "temporada"
 }
