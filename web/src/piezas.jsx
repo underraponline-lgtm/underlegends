@@ -57,8 +57,6 @@ export function Chevron() {
 // ⚠️ CON setTimeout: app.js cierra sus ventanas con cualquier clic que llegue al documento, y el clic de acá llega
 // (retargeteado al host del shadow root). Abriendo después, ese mismo clic no la cierra.
 const luego = (f) => setTimeout(f, 0);
-// 🔍 la llave y la ventana de la tarjeta nuevas, en preview (`?prev=ll`, ver App.jsx)
-const prevLl = () => { try { return !!localStorage.getItem('lg:prev-ll'); } catch (e) { return false; } };
 export const accion = {
   // Mi cuenta (desde el 02/10/2026 es una página: el botón de app.js lleva a `#/cuenta`, y abre su ventana sólo si
   // el Inicio nuevo no se montó)
@@ -69,15 +67,10 @@ export const accion = {
   redes: () => { if (window.urlLogin) location.href = window.urlLogin(true); },
   salir: () => luego(() => { if (window.cuentaSalir) window.cuentaSalir(); }),
   ajustes: () => luego(() => { const b = document.getElementById('bAjustes2'); if (b) b.click(); }),
-  carta: (k) => {
-    if (prevLl()) { window.dispatchEvent(new CustomEvent('lg:carta', { detail: k })); return; }
-    luego(() => { if (window.abrir) window.abrir(k); });
-  },
-  // la llave nueva es una página: se va a su dirección, y el «atrás» vuelve
-  llave: (n) => (prevLl() ? (location.hash = '#/llave/' + encodeURIComponent(n)) : luego(() => {
-    if (window.abrirLlave && window.abrirLlave(n) !== false) return;
-    if (window.llaveVieja) window.llaveVieja(n); else location.hash = '#/llave/' + n;
-  })),
+  // la tarjeta, en la ventana nueva (`visor.jsx`, 2.10): la abre App.jsx con `lg:carta`
+  carta: (k) => { window.dispatchEvent(new CustomEvent('lg:carta', { detail: k })); },
+  // la llave nueva es una página (2.10): se va a su dirección, y el «atrás» vuelve
+  llave: (n) => { location.hash = '#/llave/' + encodeURIComponent(n); },
   perfil: (k) => { location.hash = '#/r/' + encodeURIComponent(k); },
   votar: (id, op) => { if (window.votar) window.votar(id, op); },
   // bajar hasta una sección del Inicio: viven en el shadow root, así que `#id` en la dirección no llega

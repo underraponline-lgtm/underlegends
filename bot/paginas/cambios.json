@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.10",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T17:45:00-04:00",
+   "titulo": "La llave, nueva",
+   "items": [
+    "🏆 **La llave, rehecha**: arriba el evento y el podio; en el celular, una ronda por pantalla —deslizás y aparece la siguiente, con los puntos de cada ronda en sus pestañas—; en la compu, el cuadro entero con el camino del campeón.",
+    "👆 **Tocás un nombre y se marca su camino**: el resto se apaga, las pestañas marcan dónde jugó y abajo queda cómo le fue, con su perfil.",
+    "🔗 **Cada llave tiene su página**: se comparte con su link, y el «atrás» del celular te devuelve a donde estabas.",
+    "🃏 **La ventana de una tarjeta, nueva**: sus pestañas, sus números, Descargar y Ver su perfil.",
+    "⏱️ **Un evento recién anunciado sale en el Inicio al minuto**, no media hora después."
+   ]
+  },
+  {
    "version": "2.09",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T15:30:00-04:00",

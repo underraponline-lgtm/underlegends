@@ -43,8 +43,9 @@ MARCA = 'inicio-nuevo'
 #: con `avisos`, el link de la campana; `publicaciones` desde la 1.99 (Dlx: «me gusta pero que lo de encuestas no sea
 #: lo primero que uno vea»); `socios` (lo que era Mundo; `mundo` lo sigue abriendo) y `guia` desde la 2.02 (Dlx,
 #: 03/10/2026: «1. A 2. A»); `tarjetas` desde la 2.08 (Dlx, 03/10/2026: «1. A 2. A 3. A»); `r`, el perfil, desde la
-#: 2.09 (Dlx, 03/10/2026: «1. A 2. A»). La misma lista que `PROPIAS` de App.jsx
-PROPIAS = ('cambios', 'ranking', 'duelos', 'eventos', 'avisos', 'publicaciones', 'socios', 'mundo', 'guia', 'tarjetas', 'r')
+#: 2.09 (Dlx, 03/10/2026: «1. A 2. A»); `llave` desde la 2.10 (Dlx: «1. A»). La misma lista que `PROPIAS` de App.jsx
+PROPIAS = ('cambios', 'ranking', 'duelos', 'eventos', 'avisos', 'publicaciones', 'socios', 'mundo', 'guia', 'tarjetas', 'r',
+           'llave')
 
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -86,8 +87,8 @@ PREFIJO = '/freestyle-rap'
 #: `sumate` (03/10/2026, Dlx: «3. A»): cómo sumarse a Under Legends —servidores, comunidades, marcas— es de la marca
 EN_RAIZ = ('cuenta', 'cambios', 'ajustes', 'sumate')
 #: 🔍 LAS VISTAS VIEJAS EN PREVIEW: con `lg:prev-<x>` (el link `?prev=<x>`) esa vista es del Inicio nuevo en ese
-#: navegador. Desde el 03/10/2026, la llave (`ll`, Dlx: «1. A 2. A 3. A»). Cuando se publica, pasa a `PROPIAS`
-PREVIEWS = {'llave': 'll'}
+#: navegador. La primera fue la llave (`ll`, 03/10/2026), publicada en la 2.10. Cuando se publica, pasa a `PROPIAS`
+PREVIEWS = {}
 
 
 def script(nombres):

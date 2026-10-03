@@ -81,13 +81,9 @@ let cambiosAntes = (() => {
 // lo de encuestas no sea lo primero que uno vea»); `socios` (lo que era Mundo, y `mundo` lo sigue abriendo) y `guia`
 // desde la 2.02 (Dlx, 03/10/2026: «1. A 2. A»); `tarjetas` desde la 2.08 (Dlx, 03/10/2026: «1. A 2. A 3. A»); `r`, el
 // perfil de cada rapero, desde la 2.09 (Dlx, 03/10/2026: «1. A 2. A»)
-const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1, tarjetas: 1, r: 1 };
-// 🔍 la llave nueva y la ventana de la tarjeta, en preview (03/10/2026, Dlx: «1. A 2. A 3. A»): con `lg:prev-ll`
-// (`?prev=ll`). El script del principio (web/montar.py, `PREVIEWS`) lo sabe antes que app.js, que así no abre la suya
-function prevLl() {
-  try { return !!localStorage.getItem('lg:prev-ll'); } catch (e) { return false; }
-}
-const esPropia = (p) => !!PROPIAS[p] || (p === 'llave' && prevLl());
+// `llave` desde la 2.10 (Dlx, 03/10/2026: «1. A»): la llave nueva es una página
+const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1, tarjetas: 1, r: 1, llave: 1 };
+const esPropia = (p) => !!PROPIAS[p];
 // 🔍 UNA PREVIEW SE PRENDE CON UN LINK: `?prev=sum` deja `lg:prev-sum` en este navegador (y `?noprev=sum` la apaga),
 // para que Dlx la pruebe sin tocar la consola. No es un secreto: las previews sólo esconden lo que falta aprobar
 try {
@@ -335,7 +331,7 @@ export default function App() {
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
-        : pagina === 'llave' && partes[1] && esPropia('llave') ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} /></Suspense></Aislada>
+        : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'sumate' && prevSum() ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
