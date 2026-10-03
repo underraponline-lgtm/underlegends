@@ -182,13 +182,6 @@
 "temporada"
 ]
 },
-"miniboy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "zeta": {
 "rg": "",
 "c": [
@@ -224,6 +217,20 @@
 "temporada"
 ]
 },
+"noxvell": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"miniboy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "prosu": {
 "rg": "",
 "c": [
@@ -232,27 +239,6 @@
 ]
 },
 "presagio": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"noxvell": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"drexx": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"krtman": {
 "rg": "",
 "c": [
 "servidor",
@@ -304,7 +290,8 @@
 "criszj": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "btrx": {
@@ -324,13 +311,6 @@
 "teito": {
 "rg": "",
 "c": []
-},
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "geoka": {
 "rg": "",
@@ -358,6 +338,13 @@
 "c": []
 },
 "mco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -493,6 +480,13 @@
 ]
 },
 "kochi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"drexx": {
 "rg": "",
 "c": [
 "servidor",
@@ -793,10 +787,6 @@
 "temporada"
 ]
 },
-"xplicit": {
-"rg": "",
-"c": []
-},
 "krish": {
 "rg": "",
 "c": [
@@ -925,10 +915,6 @@
 "temporada"
 ]
 },
-"nxuz": {
-"rg": "",
-"c": []
-},
 "partim": {
 "rg": "",
 "c": [
@@ -1038,11 +1024,10 @@
 },
 "eidp": {
 "rg": "",
-"c": []
-},
-"elwachin": {
-"rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "naw": {
 "rg": "",
@@ -1051,10 +1036,18 @@
 "player": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "rayito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"xplicit": {
 "rg": "",
 "c": [
 "servidor",
@@ -3382,6 +3375,54 @@
 "Richard"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:58:18Z",
+"quien": [
+"CrisZJ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:58:18Z",
+"quien": [
+"EIDP"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:58:18Z",
+"quien": [
+"EIDP"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:58:18Z",
+"quien": [
+"Player"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:58:18Z",
+"quien": [
+"Xplicit"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-03T22:58:18Z",
+"quien": [
+"Xplicit"
+],
+"carta": "temporada"
 }
 ]
 }
