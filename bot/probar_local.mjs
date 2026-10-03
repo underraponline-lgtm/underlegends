@@ -2574,6 +2574,30 @@ console.log('\n👏 FELICITAR\n');
   r = await pedirB({});
   ok('sin sesión: 401 «sin_sesion», y no llega al objeto', r.status === 401 && r.json.error === 'sin_sesion' &&
      !alObjeto.some(([u]) => u.endsWith('/bandeja')));
+  // 🤝 la postulación de /sumate (03/10/2026): validada afuera, con el ID de la sesión, y sin sesión no pasa
+  const pedirS = async (cuerpo, ses) => {
+    const rr = await worker.fetch(new Request('https://x/avisos/sumate', { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: rr.status, json: JSON.parse(await rr.text()) };
+  };
+  alObjeto.length = 0;
+  r = await pedirS({ tipo: 'servidor', nombre: 'Rap Zone', link: 'https://discord.gg/abc', eventos: '2', quien: '42424242424' }, SES);
+  const ps = alObjeto.filter(([u]) => u.endsWith('/sumate'));
+  ok('la postulación llega al objeto con el ID de la sesión (no el de la página), ya validada',
+     r.status === 200 && ps.length === 1 && ps[0][1].quien === VIEJO && ps[0][1].p.nombre === 'Rap Zone' && ps[0][1].p.eventos === 2,
+     JSON.stringify(ps));
+  alObjeto.length = 0;
+  r = await pedirS({ tipo: 'servidor', nombre: 'x' }, SES);
+  ok('sin nombre: 400 con qué falta, y no llega al objeto', r.status === 400 && r.json.error === 'faltan' && !alObjeto.length);
+  r = await pedirS({ tipo: 'servidor', nombre: 'Rap Zone' });
+  ok('sin sesión: 401, y no llega al objeto', r.status === 401 && !alObjeto.length);
+  globalThis.fetch = async (u, opc) => {
+    fue = { u: String(u), h: (opc && opc.headers) || {} };
+    return new Response('{"ok":true}', { status: 200 });
+  };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/sumate', { method: 'POST', body: '{"tipo":"otro","nombre":"X Y"}',
+    headers: { cookie: 'lg_ses=' + SES } }), envP);
+  ok('el proxy deja pasar /sumate con la sesión', fue && fue.u.endsWith('/avisos/sumate') && fue.h['x-lg-ses'] === SES);
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
   delete PUESTO['web:muro'];

@@ -310,6 +310,23 @@ const ok = (cond, que) => {
   ok(m.components[0].components[0].label === 'Ir al anuncio', 'y sin ninguna, el anuncio, como antes');
 }
 
+// ── 3c · la postulación de /sumate (03/10/2026): qué se acepta y cómo le llega a Dlx ──
+{
+  console.log('3c · la postulación de /sumate');
+  const v = A.validarPostulacion({ tipo: 'servidor', nombre: '  Rap\u0000 Zone  ', link: 'https://discord.gg/abc', miembros: '1.500',
+    eventos: '99', mensaje: 'hola\r\n\r\n\r\n@everyone vengan' });
+  ok(v.tipo === 'servidor' && v.nombre === 'Rap Zone' && v.miembros === 1500 && v.eventos === 50,
+    'limpia el nombre y topea los números (50 eventos por semana como mucho)', JSON.stringify(v));
+  ok(v.mensaje === 'hola\n\n@everyone vengan', 'el mensaje conserva los párrafos, sin pilas de líneas vacías');
+  ok(A.validarPostulacion({ tipo: 'hacker', nombre: 'X Y' }).error === 'faltan', 'un tipo que no existe, no');
+  ok(A.validarPostulacion({ tipo: 'marca', nombre: 'X' }).error === 'faltan', 'sin nombre, no');
+  ok(A.validarPostulacion({ tipo: 'marca', nombre: 'Marca', link: 'javascript:alert(1)' }).error === 'faltan', 'un link que no es https, no');
+  ok(A.validarPostulacion({ tipo: 'marca', nombre: 'Marca', eventos: 3 }).eventos === null, 'los eventos por semana, sólo de un servidor');
+  const t = A.mensajePostulacion(v, '123456789012', 'hassan');
+  ok(t.includes('<@123456789012>') && t.includes('Rap Zone') && t.includes('<https://discord.gg/abc>') && t.includes('> @everyone vengan'),
+    'el DM dice quién (mención, que no suena: allowed_mentions vacío), qué, el link sin vista previa y el mensaje citado');
+}
+
 // ── 4 · el ida y vuelta: lo que se cifra se puede abrir ─────────────
 {
   console.log('4 · ida y vuelta');

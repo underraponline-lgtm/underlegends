@@ -63,7 +63,7 @@ html.ini-nuevo{scroll-padding-top:0}
   //   rutaLG()  la ruta pedida, sin «/» adelante: «ranking/temporada». Un `#/…` (un link viejo) gana
   //   urlLG(r)  «#/ranking» -> «/freestyle-rap/ranking»; «#/cuenta» -> «/cuenta» (lo de toda la marca, en la raíz)
   //   lg:dir    el evento de «cambió la dirección»: uno por cambio (ver `avisar()`)
-  var PRE = '/freestyle-rap', RAIZ = {"cuenta":1,"cambios":1,"ajustes":1};
+  var PRE = '/freestyle-rap', RAIZ = {"cuenta":1,"cambios":1,"ajustes":1,"sumate":1};
   function rutaLG() {
     var h = location.hash || '';
     if (/^#\//.test(h)) return h.replace(/^#\/?/, '');

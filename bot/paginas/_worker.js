@@ -83,6 +83,8 @@ const AVISOS = {
   '/api/avisos/aplausos': 'GET',
   // 🔔 el panel de la campana (02/10/2026): lo que se te avisó, con tu sesión. Ver `bandeja()` en bot/avisos.js
   '/api/avisos/bandeja': 'POST',
+  // 🤝 la postulación de /sumate (03/10/2026): con tu sesión, al DM de Dlx. Ver `postular()` en bot/avisos.js
+  '/api/avisos/sumate': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por

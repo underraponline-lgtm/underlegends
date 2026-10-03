@@ -1123,6 +1123,8 @@ const RUTAS = {
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
   // 🔔 el panel de la campana: lo que se te avisó, con tu sesión. Ver `bandeja()`
   '/avisos/bandeja': 'POST',
+  // 🤝 la postulación de /sumate, con tu sesión, al DM de Dlx. Ver `validarPostulacion()` y `postular()`
+  '/avisos/sumate': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
 };
@@ -1273,6 +1275,49 @@ export function motivoAplauso(x) {
  * muro de KV, `id` el Discord ID que dijo Discord y `mios` sus perfiles (`d:`
  * y `dn:`). Pura, sin red: la prueba `bot/probar_local.mjs`.
  */
+// ═════════════════════════════════════════════════════════════════════
+// LA POSTULACIÓN DE /sumate
+// ═════════════════════════════════════════════════════════════════════
+//
+// 🔑 Dlx, 03/10/2026, a «¿qué le pedís a un servidor?»: «hacer 1 evento a la semana como mínimo… y entre otras cosas
+// que se discutirá conmigo… o incluso para hacerlo sencillo podríamos crear un ticket donde te envía el formulario a ti
+// y me lo envías a mí por Discord». Un formulario en /sumate que le llega a Dlx por DM —el único DM que hace el bot es a
+// él: `herramientas/sin_dm.py`—, con la sesión de Discord de quien la manda: así sabe quién escribió y le contesta.
+//
+// ⚠️ UNA POR PERSONA CADA 24 HORAS, y se guarda 90 días (`postulaciones`; `/borrar-mis-datos` la borra).
+export const TIPOS_POSTULACION = { servidor: 'Servidor de freestyle', comunidad: 'Comunidad o creador',
+  marca: 'Marca o patrocinador', otro: 'Otra cosa' };
+const texto1 = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+export function validarPostulacion(d) {
+  if (!d || typeof d !== 'object') return { error: 'faltan', que: 'Faltan los datos.' };
+  const tipo = TIPOS_POSTULACION[d.tipo] ? d.tipo : '';
+  if (!tipo) return { error: 'faltan', que: 'Elegí qué sos.' };
+  const nombre = texto1(d.nombre, 80);
+  if (nombre.length < 2) return { error: 'faltan', que: 'Falta el nombre.' };
+  let link = texto1(d.link, 200);
+  if (link && !/^https?:\/\/[^\s<>]+$/i.test(link)) return { error: 'faltan', que: 'El link tiene que empezar con https://' };
+  const n = (v, max) => {
+    const x = parseInt(String(v == null ? '' : v).replace(/[^\d]/g, ''), 10);
+    return Number.isFinite(x) && x >= 0 ? Math.min(x, max) : null;
+  };
+  // el mensaje conserva sus saltos de línea (hasta 1000 caracteres), sin el resto de los caracteres de control
+  const mensaje = String(d.mensaje == null ? '' : d.mensaje).replace(/\r\n?/g, '\n')
+    .replace(/[\u0000-\u0009\u000b-\u001f\u007f]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, 1000);
+  return { tipo, nombre, link, miembros: n(d.miembros, 10000000), eventos: tipo === 'servidor' ? n(d.eventos, 50) : null, mensaje };
+}
+/** El DM a Dlx con una postulación. Sin menciones que suenen (`allowed_mentions` vacío en el envío). */
+export function mensajePostulacion(p, quien, nombreDc) {
+  const cita = (t) => t.split('\n').map((l) => '> ' + l).join('\n');
+  const l = [`🤝 **Postulación desde /sumate** · ${TIPOS_POSTULACION[p.tipo] || p.tipo}`, `**Nombre:** ${p.nombre}`];
+  if (p.link) l.push(`**Link:** <${p.link}>`);
+  const nums = [p.miembros != null ? `**Son:** ${p.miembros.toLocaleString('es-AR')}` : '',
+    p.eventos != null ? `**Eventos por semana:** ${p.eventos}` : ''].filter(Boolean);
+  if (nums.length) l.push(nums.join(' · '));
+  l.push(`**Quién:** <@${quien}>${nombreDc ? ' · su perfil: ' + nombreDc : ''}`);
+  if (p.mensaje) l.push(cita(p.mensaje));
+  return l.join('\n').slice(0, 1900);
+}
+
 export function validarAplauso(items, d, id, mios, ahora) {
   const x = (Array.isArray(items) ? items : []).find((it) => it && it.id === (d && d.id));
   if (!x) return { error: 'no_existe', estado: 404 };
@@ -1919,6 +1964,20 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, visto: d.visto === true }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🤝 LA POSTULACIÓN DE /sumate: validada acá, con quién la manda (su sesión), y al objeto, que se la manda a Dlx
+  if (ruta === '/avisos/sumate') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const v = validarPostulacion(d);
+    if (v.error) return json(v, 400);
+    const q = await quienPide(req, env, d || {});
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/sumate', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, p: v }), headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -2208,6 +2267,9 @@ export class Avisos {
         "quien TEXT NOT NULL DEFAULT '[]', ks TEXT NOT NULL DEFAULT '[]', motivo TEXT NOT NULL DEFAULT '', " +
         "t TEXT NOT NULL DEFAULT '', primero INTEGER NOT NULL, avisado INTEGER NOT NULL DEFAULT 0, " +
         't_avisado INTEGER NOT NULL DEFAULT 0)');
+      // 🤝 las postulaciones de /sumate: 90 días (ver `postular()`)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS postulaciones (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
+        "t INTEGER NOT NULL, datos TEXT NOT NULL, enviada INTEGER NOT NULL DEFAULT 0, error TEXT NOT NULL DEFAULT '')");
     });
   }
 
@@ -2249,6 +2311,7 @@ export class Avisos {
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/bandeja') return this.bandeja(d);
+      if (ruta === '/sumate') return await this.postular(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -2394,6 +2457,8 @@ export class Avisos {
     }
     this.yo = canales.yo || '';
     this.dueno = (d && d.dueno) || '';
+    // guardado, para lo que llega por una ruta y no por el vigía (la postulación de /sumate): ver `postular()`
+    if (this.dueno && this.leer('dueno') !== this.dueno) this.guardar('dueno', this.dueno);
     let leidos = 0, nuevos = 0, pausa = 0;
     const errores = [];
     // ⚠️ LOS CANALES SE PIDEN A LA VEZ, NO UNO DETRAS DEL OTRO. La primera
@@ -2484,6 +2549,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM aplaudidas WHERE primero < ?', viejo);
       // 🔔 y la bandeja de cada uno: 30 días
       this.sql.exec('DELETE FROM bandeja WHERE t < ?', viejo);
+      // 🤝 y las postulaciones de /sumate: 90 días
+      this.sql.exec('DELETE FROM postulaciones WHERE t < ?', ahora - 90 * DIA_MS);
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -3328,6 +3395,44 @@ export class Avisos {
   }
 
   /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
+  /** 🤝 La postulación de /sumate: una por persona cada 24 horas, guardada 90 días y al DM de Dlx. Ver `validarPostulacion()`. */
+  async postular(d) {
+    const quien = String((d && d.quien) || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !d.p) return json({ error: 'faltan' }, 400);
+    const ahora = Date.now();
+    if (this.sql.exec('SELECT 1 FROM postulaciones WHERE quien = ? AND t > ?', quien, ahora - 24 * HORA).toArray().length) {
+      return json({ error: 'ya' }, 429);
+    }
+    const id = this.sql.exec('INSERT INTO postulaciones (quien, t, datos) VALUES (?, ?, ?) RETURNING id',
+      quien, ahora, JSON.stringify(d.p)).toArray()[0].id;
+    // el nombre de Discord de quien la manda, si ya entró alguna vez (lo guarda `idk`): para que Dlx lo reconozca
+    let nombreDc = '';
+    try { nombreDc = ((this.sql.exec('SELECT k FROM idk WHERE id = ?', quien).toArray()[0] || {}).k) || ''; } catch (e) { nombreDc = ''; }
+    this.dueno = this.dueno || this.leer('dueno') || '';
+    let error = '';
+    if (!this.dueno || !this.env.DISCORD_TOKEN) error = 'sin dueño';
+    else {
+      const h = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' };
+      try {
+        const r = await fetch(`${DC}/users/@me/channels`, { method: 'POST', headers: h,
+          body: JSON.stringify({ recipient_id: this.dueno }) });
+        if (r.status !== 200) error = 'canal ' + r.status;
+        else {
+          const ch = await r.json();
+          const r2 = await fetch(`${DC}/channels/${ch.id}/messages`, { method: 'POST', headers: h,
+            body: JSON.stringify({ content: mensajePostulacion(d.p, quien, nombreDc), allowed_mentions: { parse: [] } }) });
+          if (r2.status !== 200) error = 'mensaje ' + r2.status;
+        }
+      } catch (e) { error = String(e).slice(0, 120); }
+    }
+    this.sql.exec('UPDATE postulaciones SET enviada = ?, error = ? WHERE id = ?', error ? 0 : 1, error, id);
+    if (error) {
+      this.guardar('ultimo_error', { t: ahora, ruta: 'sumate', error });
+      return json({ error: 'no_llego' }, 502);
+    }
+    return json({ ok: true });
+  }
+
   async olvidar(d) {
     if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
     const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
@@ -3352,6 +3457,8 @@ export class Avisos {
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
+    // 🤝 y sus postulaciones de /sumate
+    this.sql.exec('DELETE FROM postulaciones WHERE quien = ?', String(d.quien));
     return json({ ok: true, soltados: r.rowsWritten || 0, votos: v.rowsWritten || 0, tienda: b.rowsWritten || 0,
       sigue: s.rowsWritten || 0, reportes: rp.rowsWritten || 0, aplausos: ap.rowsWritten || 0 });
   }

@@ -82,7 +82,8 @@ def vistas(html, appjs):
 #: solo lugar: `rutaLG()` lee y `urlLG()` escribe. Pages sirve index.html en cualquier dirección que no sea un
 #: archivo, y `<base href="/">` hace que la página pida sus archivos a la raíz desde `/freestyle-rap/r/hassan`.
 PREFIJO = '/freestyle-rap'
-EN_RAIZ = ('cuenta', 'cambios', 'ajustes')
+#: `sumate` (03/10/2026, Dlx: «3. A»): cómo sumarse a Under Legends —servidores, comunidades, marcas— es de la marca
+EN_RAIZ = ('cuenta', 'cambios', 'ajustes', 'sumate')
 
 
 def script(nombres):

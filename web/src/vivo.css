@@ -1373,3 +1373,88 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .gu-dos{grid-template-columns:repeat(2,minmax(0,1fr))}
   .app .gu-glos{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* ── «Lo que hacemos» con su ejemplo (`sumar.jsx`, preview con `lg:prev-sum`). Dlx, 03/10/2026: «que cuando se
+   clickee en una de estas cajas te muestre como una imagen de lo que se refiere como ejemplo». La caja entera es el
+   botón; abre una ventana con la captura de la Liga de hoy, lo que es en detalle y adónde verlo ── */
+.soc-feats.con-ej li{padding:0}
+.soc-feat-b{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;width:100%;height:100%;padding:14px;
+  border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.soc-feat-b .ico{grid-row:span 3;color:#29B298}
+.soc-feat-b b{font:900 15px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#F6F6F6}
+.soc-feat-b span{font:500 14px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.soc-feat-b em{font:700 10.5px/1 "Space Mono",monospace;font-style:normal;letter-spacing:.08em;color:#29B298;margin-top:4px}
+.soc-feats.con-ej li:hover{border-color:#29B298}
+.soc-feat-b:focus-visible{outline:3px solid #29B298;outline-offset:-3px}
+.soc-mas-l{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#29B298}
+.ej-fondo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.82)}
+.ej{display:grid;gap:12px;width:min(880px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:16px;border:2px solid #F6F6F6;
+  background:#0B0B0D;color:#F6F6F6;outline:0}
+.ej-cab{display:flex;align-items:center;gap:10px}
+.ej-cab .ico{color:#29B298;flex:none}
+.ej-cab b{flex:1;min-width:0;font:900 18px/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.ej-n{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:#A5A5A0}
+.ej-cab .btn-ico{flex:none;color:#F6F6F6;border-color:#3A3A3E}
+.ej-fig{margin:0;display:grid;gap:6px}
+.ej-fig img{display:block;width:100%;height:auto;max-height:62vh;object-fit:contain;border:1.5px solid #3A3A3E;background:#030304}
+.ej-fig figcaption{font:700 10px/1 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0}
+.ej-tx{margin:0;font:500 15.5px/1.55 Archivo,sans-serif;color:#D8D8D4;max-width:70ch}
+.ej-pie{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ej-pie .btn{color:#F6F6F6}
+.ej-pie .btn.negro{background:#F6F6F6;color:#030304}
+@media (max-width: 599.98px){
+  .ej-fondo{padding:0;place-items:stretch}
+  .ej{width:100%;max-height:100vh;height:100%;border:0;align-content:start}
+}
+/* ── /sumate (`sumate.jsx`, preview con `lg:prev-sum`): para quién es, lo que hacemos, cómo se suma, preguntas y la
+   postulación, que le llega a Dlx por Discord ── */
+.su-hero{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
+.su-hero .hero-ev{margin:0}
+.su-acc{display:flex;flex-wrap:wrap;gap:8px}
+.su-ya{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:4px;color:#F6F6F6}
+.su-ya span{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0;margin-right:4px}
+.su-ya img{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #F6F6F6;background:#030304}
+.su-q{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.su-q li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:16px;border:2px solid var(--linea);background:var(--caja)}
+.su-q .ico{grid-row:span 2;color:#E41373}
+.su-q b{font:900 16px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.su-q span{font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.su-pasos{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:none}
+.su-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;padding:14px;border:2px solid var(--linea);background:var(--caja)}
+.su-pasos li > b{grid-row:span 2;display:grid;place-items:center;width:34px;height:34px;background:var(--inv);color:var(--inv-tinta);
+  font:900 17px/1 Archivo,sans-serif}
+.su-pasos h3{margin:0;font:900 16px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.su-pasos p{margin:0;font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.su-bot{margin-top:14px}
+.su-bot .soc-bloque{border-color:var(--linea);background:var(--caja)}
+.su-bot .soc-bloque ul{color:var(--tinta)}
+.su-bot .soc-bloque b{color:var(--tinta)}
+.su-post .hero-p{margin:0 0 14px;color:#A5A5A0}
+.su-form{display:grid;gap:12px;max-width:640px}
+.su-tipos{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;border:0}
+.su-tipos legend{margin-bottom:8px;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0;text-transform:uppercase}
+.su-tipos label{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border:1.5px solid #3A3A3E;cursor:pointer;
+  font:700 11px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:#F6F6F6}
+.su-tipos label.on{background:#F6F6F6;color:#030304;border-color:#F6F6F6}
+.su-tipos input{position:absolute;opacity:0;pointer-events:none}
+.su-campo{display:grid;gap:6px}
+.su-campo > span{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0;text-transform:uppercase}
+.su-campo small{text-transform:none;letter-spacing:0;font-family:Archivo,sans-serif;font-weight:500}
+.su-campo input,.su-campo textarea{width:100%;padding:10px 12px;border:1.5px solid #3A3A3E;background:#141417;color:#F6F6F6;
+  font:500 15px/1.4 Archivo,sans-serif;border-radius:0}
+.su-campo input:focus,.su-campo textarea:focus{outline:2px solid #29B298;outline-offset:0;border-color:#29B298}
+.su-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.su-nota{margin:0;font:500 13px/1.45 Archivo,sans-serif;color:#A5A5A0}
+.su-nota b{color:#F6F6F6}
+.su-err{margin:0;padding:10px 12px;border:1.5px solid #E41373;color:#F6F6F6;font:600 14px/1.4 Archivo,sans-serif}
+.su-ok,.su-entrar{display:grid;gap:10px;max-width:640px;padding:16px;border:2px solid #29B298}
+.su-ok b{font:900 18px/1.2 Archivo,sans-serif;text-transform:uppercase;color:#29B298}
+.su-ok p,.su-entrar p{margin:0;font:500 15px/1.5 Archivo,sans-serif;color:#D8D8D4}
+.su-ok p b{font:inherit;text-transform:none;color:#F6F6F6;font-weight:800}
+@media (min-width: 900px){
+  .app .su-hero{padding:36px var(--gut) 30px}
+  .app .su-q{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .app .su-pasos{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .app .soc-feats.con-ej .soc-feat-b{grid-template-columns:minmax(0,1fr);align-content:start;gap:8px;padding:16px}
+  .app .soc-feats.con-ej .soc-feat-b .ico{grid-row:auto}
+}

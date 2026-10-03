@@ -17,6 +17,7 @@ const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eve
 const Publicaciones = lazy(() => import('./publicaciones.jsx').then((m) => ({ default: m.Publicaciones })));
 const Socios = lazy(() => import('./socios.jsx').then((m) => ({ default: m.Socios })));
 const Guia = lazy(() => import('./guia.jsx').then((m) => ({ default: m.Guia })));
+const Sumate = lazy(() => import('./sumate.jsx').then((m) => ({ default: m.Sumate })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
 
@@ -74,6 +75,10 @@ let cambiosAntes = (() => {
 // desde la 2.02 (Dlx, 03/10/2026: «1. A 2. A»)
 const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1 };
 const esPropia = (p) => !!PROPIAS[p];
+// 🔍 /sumate, en preview (03/10/2026): sólo con `lg:prev-sum`. Sin eso, la dirección muestra el Inicio
+function prevSum() {
+  try { return !!localStorage.getItem('lg:prev-sum'); } catch (e) { return false; }
+}
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -246,7 +251,7 @@ export default function App() {
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
   if (mSv) { try { sv = decodeURIComponent(mSv[1]).toUpperCase(); } catch (e) { sv = mSv[1].toUpperCase(); } }
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|sumate)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
@@ -281,6 +286,7 @@ export default function App() {
       {sv ? <Aislada n="PerfilSv"><PerfilSv liga={liga} sv={sv} /></Aislada>
         : pagina === 'cambios' ? <Aislada n="Cambios"><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada n="Socios"><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
+        : pagina === 'sumate' && prevSum() ? <Aislada n="Sumate"><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada n="Guia"><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'publicaciones' ? <Aislada n="Publicaciones"><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'eventos' || pagina === 'avisos' ? <Aislada n="Eventos"><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>

@@ -12,23 +12,11 @@
 // tu servidor sea parte escribas a @itsdlx en Discord, y explicá más features que hacemos». Cada una de `QUE_GANA` es
 // algo que ya anda: si alguna se apaga, se saca de acá.
 import { limpio, mult, num } from './liga.js';
-import { Carta, Compartir, Ico, enlace } from './piezas.jsx';
+import { Carta, Compartir, enlace } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
+import { BotHace, DLX, QueGana, prevSum } from './sumar.jsx';
 
-// el perfil de Dlx en Discord (itsdlx): abre su perfil para escribirle
-const DLX = 'https://discord.com/users/739338101603696681';
-const QUE_GANA = [
-  ['ranking', 'La tabla de toda la Liga', 'Cada evento suyo cuenta para los mismos rankings que los demás servidores: Temporada, Competitivo, Duelos, Podios y Rachas.'],
-  ['tarjetas', 'La carta de Servidor', 'Su gente tiene su carta con el escudo y el color del servidor desde su primer evento.'],
-  ['eventos', 'La llave, en vivo', 'El cuadro se arma solo mientras se juega, y a quien tiene la campana le avisa cuando le toca pelear.'],
-  ['campana', 'Avisos al minuto', 'Cuando anuncia un evento le llega al celular a quien activó la campana, y queda en el calendario de la Liga.'],
-  ['aviso', 'Most Wanted', 'Buscados con recompensa: el primero que le gana a uno en un evento de la Liga lo caza y cobra.'],
-  ['novedades', 'Multiplicador cada lunes', 'Cada semana sale con su multiplicador, de ×0,5 a ×5, y la gente vota qué servidor se lleva un ×2.'],
-  ['socios', 'Guerra de servidores', 'Cada semana se enfrenta con otro: gana el que más puntos hace por persona y la semana siguiente lleva ×1,5.'],
-  // Dlx, 03/10/2026: «mencioná que compartimos las redes sociales, o sea los posts, en nuestras redes y la Liga Global también»
-  ['compartir', 'Sus posts, en nuestras redes', 'Compartimos sus posts en las redes de Under Legends y en la Liga Global, y sus anuncios y campeones salen en Publicaciones y en las historias.'],
-  ['perfil', 'Su página en la Liga', 'Con su gente, sus eventos, su semana y sus redes, y su invitación para que la gente llegue a su servidor.'],
-];
+// lo que hace la Liga por cada servidor, el bot y Dlx: en `sumar.jsx`, el mismo para Socios y para /sumate
 
 function Socio({ liga, s }) {
   const mm = liga.d.mult || {};
@@ -136,9 +124,8 @@ export function Socios({ liga }) {
           <h2 className="hero-ev">Sumá tu servidor</h2>
           <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => s.sv).join(', ')}. Esto es lo que la Liga hace por cada uno.</p>
         </div>
-        <ul className="soc-feats">
-          {QUE_GANA.map(([ic, t, tx]) => <li key={t}><Ico n={ic} t={24} /><b>{t}</b><span>{tx}</span></li>)}
-        </ul>
+        {/* 🔍 con `lg:prev-sum`, cada caja se toca y muestra su ejemplo (Dlx, 03/10/2026) */}
+        <QueGana ejemplos={prevSum()} />
         {(liga.d.redes || []).length ? (
           <nav className="soc-ul" aria-label="Las redes de Under Legends">
             <span>LAS REDES DE UNDER LEGENDS</span>
@@ -146,19 +133,14 @@ export function Socios({ liga }) {
           </nav>
         ) : null}
         <div className="soc-dos">
-          <div className="soc-bloque">
-            <h3>Qué hace el bot en tu servidor</h3>
-            <ul>
-              <li><b>Lee los anuncios y las llaves</b>, para cargar cada evento solo.</li>
-              <li><b>Crea una invitación de la Liga</b>, para que la gente llegue a tu servidor.</li>
-              <li><b>No toca los mensajes de nadie</b> y no le manda mensajes privados a nadie de tu servidor.</li>
-            </ul>
-          </div>
+          <BotHace />
           <div className="soc-bloque soc-cta">
             <h3>¿Querés que tu servidor sea parte?</h3>
             <p>Escribile a <b>@itsdlx</b> en Discord.</p>
             {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
             <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer"><span>Escribirle a <span className="soc-at">@itsdlx</span> ↗</span></a>
+            {/* 🔍 la página aparte, con todo en detalle y la postulación (Dlx, 03/10/2026: «3. A», en la raíz) */}
+            {prevSum() ? <a className="soc-mas-l" href="#/sumate">Todo en detalle, y la postulación →</a> : null}
           </div>
         </div>
       </section>
