@@ -223,7 +223,7 @@ h1,h2,h3,p{margin:0}
 .t-der .sec{padding:18px 20px 4px}
 .historias{display:flex;gap:12px;overflow:hidden;padding:14px 16px;border-bottom:2px solid var(--linea)}
 .h{display:grid;justify-items:center;gap:5px;flex:none}
-.h-c{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;padding:3px;background:var(--fondo);box-shadow:0 0 0 3px var(--verde);font:900 16px/1 Archivo,sans-serif;font-stretch:120%;overflow:hidden}
+.h-c{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;padding:3px;background:var(--fondo);box-shadow:0 0 0 3px var(--verde);font:900 16px/1 Archivo,sans-serif;font-stretch:120%;overflow:hidden}
 .h-c img{width:100%;height:100%;border-radius:50%}
 .h.vivo .h-c{box-shadow:0 0 0 3px var(--magenta)}
 .h small{font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em}
@@ -297,7 +297,7 @@ h1,h2,h3,p{margin:0}
 .h em{font:700 10.5px/1 "Space Mono",monospace;font-style:normal;color:var(--gris);margin-top:-2px}
 @media (min-width: 900px){.app .historias{padding:14px var(--gut);gap:18px}}
 @media (max-width: 899.98px){.app .historias{gap:10px}}
-@media (max-width: 899.98px){.app .historias .h-c{width:50px;height:50px;font-size:14px}}
+@media (max-width: 899.98px){.app .historias .h-c{width:56px;height:56px;font-size:14px}}
 @media (max-width: 899.98px){.app .historias small{font-size:10.5px}}
 @media (min-width: 900px){.app .menu{gap:18px;font-size:13px}}
 @media (min-width: 900px){.app .buscar{min-width:160px}}
