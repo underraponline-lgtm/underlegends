@@ -631,7 +631,7 @@ def _sesion():
 
 
 def canales(s):
-    """`[(id, nombre, servidor, tipo, guild)]` de los canales que sirven.
+    """`[(id, nombre, servidor, tipo, guild, categoría)]` de los canales que sirven.
 
     ⚠️ SE BUSCAN POR NOMBRE Y NO SE PIDEN. Es la misma decisión que
     `datos/canales_llaves.json`: una lista de IDs escrita a mano
@@ -691,9 +691,9 @@ def canales(s):
             # canal y mensaje— y acá es el único lugar donde se sabe cuál
             # es. Ver `parsear()`. `escuchar._canales()` ya lo devolvía.
             if PATRON_INSC.search(n):
-                out.append((c['id'], n, cod, 'inscripciones', g))
+                out.append((c['id'], n, cod, 'inscripciones', g, str(c.get('parent_id') or '')))
             elif PATRON.search(n):
-                out.append((c['id'], n, cod, 'eventos', g))
+                out.append((c['id'], n, cod, 'eventos', g, str(c.get('parent_id') or '')))
     canales.sin_acceso = sin_acceso
     return out
 
@@ -745,7 +745,7 @@ def leer(s, por_canal=None):
     estados = {}
     #: los servidores cuyo canal de eventos no se pudo leer: ver `main()`
     leer.fallaron = set()
-    for cid, nombre, cod, tipo, gid in canales(s):
+    for cid, nombre, cod, tipo, gid, cat in canales(s):
         lim = por_canal or POR_CANAL.get(tipo, 25)
         # 🔴 DISCORD DA 100 POR PEDIDO Y ANTES SE PEDIA UNO SOLO, asi que
         # `inscripciones: 100` no era una eleccion: era el techo de la API
@@ -820,6 +820,9 @@ def leer(s, por_canal=None):
             if tipo == 'eventos':
                 a = parsear(m, cod, nombre, gid)
                 if a:
+                    # 🔑 la categoría del canal, para «Inscribite ya»: la invitación al canal de inscripciones
+                    # de la misma categoría (Dlx, 03/10/2026). Ver `subir_web._inscribir()`
+                    a['categoria_id'] = cat
                     anuncios.append(a)
             else:
                 # ⚠️ EN INSCRIPCIONES LA GENTE SE ANOTA POSTEANDO SU

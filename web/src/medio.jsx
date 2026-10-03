@@ -1,18 +1,18 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, limpio, num, resultado, utc } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, accion, enlace, nombrePais } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
 export function Fechas({ liga }) {
   const t = [];
   liga.vivo().forEach((e) => t.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO · empezó ' + liga.dia(e.cuando).replace(/^hoy /, ''), sv: e.sv, ev: limpio(e.nombre),
-    det: e.modalidad || 'se mira en Discord', link: e.link }));
+    det: e.modalidad || 'se mira en Discord', link: (aDiscord(liga, e, true) || {}).url }));
   liga.luego().forEach((e) => {
     const dor = liga.esDorado(e.nombre, e.sv);
     const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
     t.push({ c: dor ? 'dorado' : '', dia: liga.dia(e.cuando).split(' ')[0].toUpperCase(), hora: hora(e.cuando) + ' · tu hora',
-      sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: e.link });
+      sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: (aDiscord(liga, e, false) || {}).url });
   });
   // 🔴 lo que se canceló (el vigía vio que el anuncio se borró, ver `liga.cancelados()`): dice «CANCELADO» hasta seis
   // horas después de la hora en que era, en vez de desaparecer como si nada (Dlx, 01/10/2026: «B»)

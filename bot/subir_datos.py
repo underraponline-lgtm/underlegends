@@ -740,6 +740,15 @@ def armar():
         'fuera': {k: [str(i) for i in ((v.get('categorias_fuera') or {}).get('ids') or [])]
                   for k, v in ((_json_servidores().get('servidores') or {}).items())
                   if v.get('confirmado') and (v.get('categorias_fuera') or {}).get('ids')},
+        # 🔑 «INSCRIBITE YA» (Dlx, 03/10/2026: «1. a»): las invitaciones a los canales de inscripciones, con su
+        # categoría, y la del servidor para quien no tiene ninguna. Las crea `bot/invitaciones.py --inscripciones`;
+        # el vigía elige la del evento con `invitacionPara()` de `bot/avisos.js`. ~1 KB.
+        'inscribir': {k: [[str(i.get('canal_id')), str(i.get('categoria_id') or ''), i.get('codigo')]
+                          for i in (v.get('invitaciones_inscripcion') or []) if i.get('codigo')]
+                      for k, v in ((_json_servidores().get('servidores') or {}).items())
+                      if v.get('confirmado') and v.get('invitaciones_inscripcion')},
+        'invita': {k: v.get('invitacion') for k, v in ((_json_servidores().get('servidores') or {}).items())
+                   if v.get('confirmado') and v.get('invitacion')},
         # 🔑 LOS CANALES DE LLAVES DE LA LIGA, para las llaves en vivo del vigía
         # (27/09/2026). Salen de `datos/canales_llaves.json`, que arma el lector
         # del ciclo buscando llaves por contenido: el vigía no busca, lee ésos.

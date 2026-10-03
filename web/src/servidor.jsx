@@ -3,10 +3,10 @@
 // en el Inicio, y el Inicio mira la dirección (ver App.jsx). Todo sale del payload: `svs` (el color acordado, el
 // logo de hoy, la invitación, las redes), la tabla, las llaves, los próximos, el muro, Se busca y la semana.
 import { limpio, mult, num, utc } from './liga.js';
-import { Cara, Carta, Compartir, Poster, Sec, accion, enlace } from './piezas.jsx';
+import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 
-const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
+export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
 
 function ir(d) {
   if (!d) return;
@@ -58,9 +58,10 @@ export function PerfilSv({ liga, sv }) {
   if (par) semana.push(['GUERRA', 'contra ' + (par[0] === sv ? par[1] : par[0]) + ': gana el que más puntos hace por persona']);
   if (meta) semana.push(['META', va + ' de ' + meta + ' personas' + (va >= meta ? ' · cumplida' : '')]);
   const fechas = [];
-  vivo.forEach((e) => fechas.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO', ev: limpio(e.nombre), det: e.modalidad || '', link: e.link }));
+  // al Discord con la invitación, no con el link al mensaje (Dlx, 03/10/2026: «2. A»): ver `aDiscord()`
+  vivo.forEach((e) => fechas.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO', ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, true) || {}).url }));
   prox.forEach((e) => fechas.push({ c: liga.esDorado(e.nombre, e.sv) ? 'dorado' : '', dia: liga.dia(e.cuando).split(' ')[0].toUpperCase(),
-    hora: liga.dia(e.cuando), ev: limpio(e.nombre), det: e.modalidad || '', link: e.link }));
+    hora: liga.dia(e.cuando), ev: limpio(e.nombre), det: e.modalidad || '', link: (aDiscord(liga, e, false) || {}).url }));
   llaves.forEach((ll) => {
     const c = liga.campeon(ll);
     fechas.push({ c: 'hecho', dia: liga.cuando(liga.fechaLlave(ll)).toUpperCase(), hora: 'TERMINÓ · ' + ll.participantes + ' raperos',

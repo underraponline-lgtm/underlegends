@@ -8,7 +8,7 @@
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, utc } from './liga.js';
-import { Cara, Carta, Compartir, Ico, accion, enlace, useCampana } from './piezas.jsx';
+import { Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, enJuegoDe, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
@@ -240,7 +240,10 @@ function BotonCampeon({ liga, ll, estilo = 'borde2 chico', ic = false }) {
   );
 }
 
-function Acciones({ liga, e, L, fut, ll }) {
+function Acciones({ liga, e, L, fut, ll, est }) {
+  // a Discord con la invitación, no con el link al mensaje: «Inscribite ya» antes de empezar, «Entrar al servidor» en
+  // vivo (Dlx, 03/10/2026: «2. A»; ver `aDiscord()`). Lo que ya pasó sigue llevando al anuncio
+  const dd = fut || est === 'vivo' ? aDiscord(liga, { sv: e.sv, ins: (e.px || {}).ins, link: e.link }, !fut) : null;
   return (
     <div className="t-acc">
       {e.ll ? <button type="button" className="btn verde chico" onClick={() => accion.llave(e.ll)}>Ver la llave</button> : null}
@@ -248,7 +251,8 @@ function Acciones({ liga, e, L, fut, ll }) {
       {!e.ll && L ? <button type="button" className="btn verde chico" onClick={() => accion.llave('v:' + L.id)}>Ver la llave en vivo</button> : null}
       {fut ? <button type="button" className="btn verde chico" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={16} />Quiero aviso</button> : null}
       {fut ? <a href={gcal({ nombre: e.n, sv: e.sv, cuando: e.t, link: e.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a> : null}
-      {e.link ? <a href={e.link} target="_blank" rel="noopener noreferrer">Discord ↗</a> : null}
+      {dd ? <a href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a>
+        : e.link ? <a href={e.link} target="_blank" rel="noopener noreferrer">Discord ↗</a> : null}
     </div>
   );
 }
@@ -319,7 +323,7 @@ function Evento({ liga, e, est, L, abierto }) {
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
       {est === 'vivo' && L ? <CuadroLleno liga={liga} ll={L} /> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
-      <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} />
+      <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} est={est} />
     </article>
   );
 }
@@ -606,6 +610,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     // 🔴 SIN EL CUADRO: la llave entera va abajo, en «Hoy». Arriba hacía la tarjeta tres veces más alta que el título —un
     // hueco gigante al lado— y repetía la misma llave dos veces (Dlx, 03/10/2026). Acá, lo que se juega en una línea
     const J = L ? enJuegoDe(L) : null;
+    const dv = aDiscord(liga, vivoAhora, true);
     const vs = (x) => x.lados.map((n, i) => {
       const f = liga.fila(n);
       return <span key={i} className="evp-ah-l">{i ? <em>vs</em> : null}<Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="cara evp-ah-c" />{n}</span>;
@@ -626,11 +631,12 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           : <p className="hero-p">La llave aparece apenas la carguen. Mientras, se mira en Discord.</p>}
         <div className="hero-acc">
           {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
-          {vivoAhora.link ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={vivoAhora.link} target="_blank" rel="noopener noreferrer">Mirar en Discord ↗</a> : null}
+          {dv ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dv.url} target="_blank" rel="noopener noreferrer">{dv.txt} ↗</a> : null}
         </div>
       </div>
     );
   } else if (proximo) {
+    const pi = (proximo.px || {}).ins ? aDiscord(liga, { sv: proximo.sv, ins: proximo.px.ins }, false) : null;
     momento = (
       <div className="evp-mo">
         <span className="tag">LO PRÓXIMO · {liga.dia(proximo.t).toUpperCase()}</span>
@@ -638,8 +644,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         <small className="evp-mo-s">{[proximo.sv, formato(proximo.mod || (proximo.px || {}).modalidad)].filter(Boolean).join(' · ')}</small>
         <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(proximo.t)}</b></div>
         <div className="hero-acc">
-          <button type="button" className="btn verde" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={18} />Quiero aviso</button>
-          <a className="btn borde" href={gcal({ nombre: proximo.n, sv: proximo.sv, cuando: proximo.t, link: proximo.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a>
+          {pi ? <a className="btn verde" href={pi.url} target="_blank" rel="noopener noreferrer">{pi.txt} ↗</a> : null}
+          <button type="button" className={'btn ' + (pi ? 'borde' : 'verde')} onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={18} />Quiero aviso</button>
+          {pi ? null : <a className="btn borde" href={gcal({ nombre: proximo.n, sv: proximo.sv, cuando: proximo.t, link: proximo.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a>}
         </div>
       </div>
     );

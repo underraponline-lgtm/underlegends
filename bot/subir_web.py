@@ -377,6 +377,20 @@ def armar():
                        % (x['guild_id'], x['canal_id'], x['msg_id'])
                        if x.get('guild_id') and x.get('canal_id') and x.get('msg_id')
                        else '')
+    # 🔑 «INSCRIBITE YA» (Dlx, 03/10/2026: «que sea el link de invitación al canal… el de inscripciones mejor… porque
+    # la gente no puede entrar de esa forma», y en la página también: «2. A»). La invitación al canal donde se anota
+    # ESE evento: la del mismo canal del anuncio, la del canal de inscripciones de su misma categoría, o la primera del
+    # servidor. Vacío sin ninguna (DRA): la página usa la del servidor. La misma regla que `invitacionPara()` del vigía
+    _svs_ins = ((_json('datos', 'servidores.json') or {}).get('servidores') or {})
+
+    def _inscribir(x):
+        ops = [i for i in ((_svs_ins.get(x.get('servidor') or '') or {}).get('invitaciones_inscripcion') or [])
+               if i.get('codigo')]
+        cid, cat = str(x.get('canal_id') or ''), str(x.get('categoria_id') or '')
+        o = (next((i for i in ops if str(i.get('canal_id')) == cid), None)
+             or next((i for i in ops if cat and str(i.get('categoria_id') or '') == cat), None)
+             or (ops[0] if ops else None))
+        return 'https://discord.gg/' + o['codigo'] if o else ''
     _dt_ = __import__('datetime')
     _t = _dt_.datetime.now(_dt_.timezone.utc).replace(tzinfo=None)
     _ahora = _t.strftime('%Y-%m-%dT%H:%M:%S')
@@ -441,10 +455,12 @@ def armar():
         'org': _org(x.get('organizador')),
         # 📣 anunciado con tiempo (ver `_con_tiempo()`)
         'ct': 1 if _con_tiempo(x.get('cuando'), x.get('publicado')) else 0,
+        # ✍️ «Inscribite ya»: ver `_inscribir()`
+        'ins': _inscribir(x),
     } for x in CU.proximos(ann_v, cuantos=5, margen_min=VENTANA_VIVO)]
     prox += [{'nombre': _nom(x['nombre']), 'sv': x.get('servidor') or '',
               'cuando': x['cuando'], 'sin_hora': 1,
-              'cupos': x.get('cupos_texto') or '', 'link': _link(x),
+              'cupos': x.get('cupos_texto') or '', 'link': _link(x), 'ins': _inscribir(x),
               'modalidad': x.get('modalidad') or '',
               'premios': (x.get('premios') or '')[:60]}
              for x in sin_hora][:max(0, 5 - len(prox))]

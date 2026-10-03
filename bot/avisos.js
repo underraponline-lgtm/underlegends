@@ -86,7 +86,8 @@ export const PATRON_VIGIA = /evento|competenc/i;
 // 6: también los canales de VEREDICTOS (28/09/2026); ver `veredictos()`.
 // 7: entra FFS, sin las categorías de sus ligas (`meta.fuera`, 28/09/2026).
 // 9: y los de «votaciones» y «resultados» (02/10/2026): ver `PATRON_VEREDICTOS`.
-const CANALES_V = 9;
+// 10: cada canal con su categoría (`p`), para «Inscribite ya» (03/10/2026). Ver `invitacionPara()`
+const CANALES_V = 10;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -1003,11 +1004,19 @@ export function mensajeRed(c) {
   const extra = [c.mod && `🎤 ${c.mod}`, c.cup && `🎟️ cupos: ${c.cup}`,
     c.pre && `🏅 ${c.pre}`].filter(Boolean);
   if (extra.length) lineas.push(extra.join(' · '));
+  // 🔑 «INSCRIBITE YA», NO EL LINK AL MENSAJE (Dlx, 03/10/2026: «que sea el link de invitación al canal… el de
+  // inscripciones mejor… porque la gente no puede entrar de esa forma»): un link a un mensaje sólo abre si ya estás en
+  // ese servidor, y quien mira `eventos-hoy` casi nunca lo está. `c.ins` lo pone `publicar()` (ver `invitacionPara()`);
+  // sin invitación al canal de inscripciones, la del servidor; sin ninguna, el anuncio, como antes
+  const ins = c.ins && c.ins.url ? c.ins : null;
+  const boton = ins && ins.tipo === 'inscribir' ? { type: 2, style: 5, label: 'Inscribite ya', emoji: { name: '✍️' }, url: ins.url }
+    : ins ? { type: 2, style: 5, label: 'Entrar al servidor', url: ins.url }
+      : { type: 2, style: 5, label: 'Ir al anuncio', url: c.url };
   return {
     allowed_mentions: { parse: [] },
     embeds: [{
       title: ('🏆 ' + (c.t || 'Nuevo evento')).slice(0, 256),
-      url: c.url,
+      url: boton.url,
       description: lineas.join('\n').slice(0, 4000),
       color: 0x29B298,
       footer: { text: 'Liga Global · se publica solo, al minuto de anunciarse',
@@ -1016,11 +1025,29 @@ export function mensajeRed(c) {
     components: [{
       type: 1,
       components: [
-        { type: 2, style: 5, label: 'Ir al anuncio', url: c.url },
+        boton,
         { type: 2, style: 5, label: 'Avisos en tu teléfono', emoji: { name: '🔔' }, url: HUB_AVISOS },
       ],
     }],
   };
+}
+
+/**
+ * Adónde lleva «Inscribite ya»: la invitación permanente al canal donde se anota ESE evento. Primero la del mismo canal
+ * del anuncio (DRA se anota con el botón de la tarjeta, ahí mismo); si no, la del canal de inscripciones de la misma
+ * categoría —Urban tiene uno para sus torneos y otro para la Red Bull Cabrana—; si no, la primera del servidor. Sin
+ * ninguna, la invitación del servidor (`tipo: 'servidor'`). Las crea `bot/invitaciones.py --inscripciones` y viajan en
+ * `meta` (`inscribir`: `{sv: [[canal, categoría, código]]}`; `invita`: `{sv: url}`).
+ */
+export function invitacionPara(c, canales, meta) {
+  const cid = (/\/channels\/\d+\/(\d+)/.exec(String((c && c.url) || '')) || [])[1] || '';
+  const ch = ((canales && canales.lista) || []).find((x) => String(x.id) === cid) || null;
+  const p = ch ? String(ch.p || '') : '';
+  const ops = ((meta && meta.inscribir) || {})[c && c.sv] || [];
+  const o = ops.find((x) => String(x[0]) === cid) || ops.find((x) => p && String(x[1]) === p) || ops[0];
+  if (o && o[2]) return { url: 'https://discord.gg/' + o[2], tipo: 'inscribir' };
+  const inv = ((meta && meta.invita) || {})[c && c.sv];
+  return inv ? { url: inv, tipo: 'servidor' } : null;
 }
 
 // 🔴 LOS AVISOS POR MENSAJE DIRECTO SE SACARON (25/09/2026). `/notify`
@@ -2305,10 +2332,10 @@ export class Avisos {
           ver.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild });
         }
         // 🔑 los de inscripciones, aparte: ver `inscripciones()`
-        if (PATRON_INSC.test(n) && !STAFF.test(n)) insc.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild });
+        if (PATRON_INSC.test(n) && !STAFF.test(n)) insc.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild, p: String(c.parent_id || '') });
         // los de staff también dicen «evento», y el bot los lee
         if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON_VIGIA.test(n)) continue;
-        lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild });
+        lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild, p: String(c.parent_id || '') });
       }
     }
     const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, inscripciones: insc,
@@ -3112,6 +3139,7 @@ export class Avisos {
   async publicar(ahora) {
     const pend = this.sql.exec('SELECT id, cuerpo FROM posts WHERE hecho = 0 AND ' +
       'intentos < 3 AND creado > ? ORDER BY creado LIMIT 5', ahora - 30 * MIN).toArray();
+    let meta = null;
     for (const p of pend) {
       let c = null;
       try { c = JSON.parse(p.cuerpo); } catch (e) { c = null; }
@@ -3119,6 +3147,11 @@ export class Avisos {
         this.sql.exec('UPDATE posts SET hecho = 2 WHERE id = ?', p.id);
         continue;
       }
+      // «Inscribite ya»: ver `invitacionPara()`. La meta, una vez por vuelta y sólo si hay algo que publicar
+      if (meta === null) {
+        try { meta = JSON.parse((await this.env.KV.get('meta')) || '{}'); } catch (e) { meta = {}; }
+      }
+      c.ins = invitacionPara(c, this.leer('canales'), meta);
       let estado = 0, msg = '';
       try {
         const r = await fetch(`${DC}/channels/${CANAL_RED}/messages`, {

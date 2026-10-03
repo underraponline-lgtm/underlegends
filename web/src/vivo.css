@@ -1299,6 +1299,11 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-cta h3{margin:0}
 .soc-cta p{margin:0;font:500 16px/1.45 Archivo,sans-serif;color:#D8D8D4}
 .soc-at{text-transform:none}
+/* las redes: de cada servidor en su tarjeta (en piel) y las de Under Legends en «Sumá tu servidor» (en negro) */
+.soc-redes,.soc-ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.soc-redes a,.soc-ul a{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;padding:7px 9px;border:1.5px solid var(--linea)}
+.soc-ul span{margin-right:6px;font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:#A5A5A0}
+.soc-ul a{border-color:#3A3A3E;color:#F6F6F6}
 /* ── la Guía (`guia.jsx`, desde la 2.02): «cómo empezar» en tres pasos y un índice; todo en piel ── */
 .gu-cuerpo{display:grid;padding:0 16px 34px}
 .gu-sec{display:grid;gap:12px;padding-top:26px}
@@ -1358,7 +1363,7 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .soc-pat{padding:22px var(--gut)}
   .app .soc-sumar{padding:34px var(--gut) 40px}
   .app .soc-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-  .app .soc-feats{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .app .soc-feats{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
   .app .soc-feats li{grid-template-columns:minmax(0,1fr);align-content:start;gap:8px;padding:16px}
   .app .soc-feats .ico{grid-row:auto}
   .app .gu-cuerpo{padding:0 var(--gut) 40px}

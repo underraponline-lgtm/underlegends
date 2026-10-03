@@ -285,6 +285,29 @@ const ok = (cond, que) => {
   ok(e.description.includes('<t:1790298000:R>'), 'la hora va como marca de Discord (cada uno en su zona)');
   ok(m.components[0].components.every((b) => b.style === 5 && b.url),
     'los dos botones son links: al anuncio y a la campana');
+  // «Inscribite ya» (Dlx, 03/10/2026: «1. a»): la invitación al canal donde se anota ESE evento
+  const meta = { inscribir: { URBF: [['111', 'torneos', 'AAA'], ['222', 'cabrana', 'BBB']], DRA: [['500', 'comp', 'CCC']] },
+    invita: { SR: 'https://discord.gg/SRSR' } };
+  const canales = { lista: [{ id: '300', p: 'cabrana', sv: 'URBF' }, { id: '301', p: 'otra', sv: 'URBF' }, { id: '500', p: 'comp', sv: 'DRA' }] };
+  const url = (sv, cid) => ({ sv, url: 'https://discord.com/channels/9/' + cid + '/7' });
+  ok(A.invitacionPara(url('URBF', '300'), canales, meta).url === 'https://discord.gg/BBB',
+    'la del canal de inscripciones de la misma categoría que el anuncio (Urban: la Cabrana con la suya)');
+  ok(A.invitacionPara(url('URBF', '301'), canales, meta).url === 'https://discord.gg/AAA',
+    'sin una de su categoría, la primera del servidor');
+  ok(A.invitacionPara(url('DRA', '500'), canales, meta).url === 'https://discord.gg/CCC',
+    'la del mismo canal del anuncio, donde DRA se anota con el botón de la tarjeta');
+  const sr = A.invitacionPara(url('SR', '900'), canales, meta);
+  ok(sr.tipo === 'servidor' && sr.url === 'https://discord.gg/SRSR', 'sin ninguna de inscripciones, la del servidor');
+  ok(A.invitacionPara(url('FFS', '1'), canales, meta) === null && A.invitacionPara(url('FFS', '1'), null, null) === null,
+    'y sin nada, nada');
+  const mi = A.mensajeRed({ t: 'X', sv: 'URBF', url: 'https://discord.com/channels/9/300/7',
+    ins: { url: 'https://discord.gg/BBB', tipo: 'inscribir' } });
+  const b0 = mi.components[0].components[0];
+  ok(b0.label === 'Inscribite ya' && b0.url === 'https://discord.gg/BBB' && mi.embeds[0].url === b0.url,
+    '«Inscribite ya» en el botón y en el título, no el link al mensaje');
+  const ms = A.mensajeRed({ t: 'X', sv: 'SR', url: 'https://discord.com/channels/9/1/7', ins: sr });
+  ok(ms.components[0].components[0].label === 'Entrar al servidor', 'con la del servidor, «Entrar al servidor»');
+  ok(m.components[0].components[0].label === 'Ir al anuncio', 'y sin ninguna, el anuncio, como antes');
 }
 
 // ── 4 · el ida y vuelta: lo que se cifra se puede abrir ─────────────

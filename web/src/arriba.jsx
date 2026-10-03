@@ -2,7 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, mult, norm, num, recorte, resultado, utc } from './liga.js';
-import { Cara, Carta, Chevron, Compartir, Ico, Poster, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
+import { Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 export const MENU = [
@@ -397,11 +397,12 @@ export function gruposHistorias(liga) {
   const grupos = [];
   liga.vivo().forEach((e) => {
     const m = liga.multSv(e.sv);
+    const dd = aDiscord(liga, e, true);
     grupos.push({
       id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + e.sv, logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
       slides: [Slide('EN VIVO AHORA · ' + e.sv, <><img className="st-logo grande" alt="" src={liga.logo(e.sv, true)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
         <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}. La llave aparece acá apenas la carguen.</small></>,
-      'ahora', 'Mirar en Discord', { link: e.link }, 'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando)],
+      'ahora', dd ? dd.txt : 'Mirar en Discord', { link: dd ? dd.url : e.link }, 'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando)],
     });
   });
   const mm = liga.d.mult || {};
@@ -892,6 +893,7 @@ function momentos(liga, vivoL) {
     const m = liga.multSv(e.sv);
     const L = llaveEnVivo(e, vivoL);
     const n = limpio(e.nombre);
+    const dd = aDiscord(liga, e, true);
     out.push({
       tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: vivos.length > 1 ? 'En vivo · ' + e.sv : 'En vivo', sv: e.sv,
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag">EN VIVO AHORA</span>
@@ -900,7 +902,7 @@ function momentos(liga, vivoL) {
         <p className="hero-p">{L ? 'La llave, cruce por cruce, mientras se juega.' : 'La llave aparece acá apenas la carguen, cruce por cruce. Mientras, se mira en Discord.'}</p>
         <div className="hero-acc">
           {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button> : null}
-          {e.link ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={e.link} target="_blank" rel="noopener noreferrer">Mirar en Discord ↗</a> : null}
+          {dd ? <a className={'btn ' + (L ? 'borde' : 'verde')} href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a> : null}
           <a className="btn borde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
         </div></>,
       vis: L ? <div className="cm-wrap"><CuadroMini liga={liga} ll={L} /></div> : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
@@ -912,14 +914,18 @@ function momentos(liga, vivoL) {
     const dor = liga.esDorado(e.nombre, e.sv);
     const det = [e.sv, e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : '', e.org ? 'organiza ' + e.org : ''].filter(Boolean).join(' · ');
     const n = limpio(e.nombre);
+    // «Inscribite ya» primero, si el evento tiene su canal de inscripciones (Dlx, 03/10/2026: «2. A»)
+    const dd = aDiscord(liga, e, false);
+    const ins = dd && e.ins ? dd : null;
     out.push({
       tipo: 'prox', et: 'Próximo', sv: e.sv,
       txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-prox">PRÓXIMO · {liga.dia(e.cuando).toUpperCase()}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         <p className="hero-p">{det}{e.premios ? '. Premio: ' + recorte(e.premios, 70) : ''}</p>
         <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
-        <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
-          <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a></div></>,
+        <div className="hero-acc">{ins ? <a className="btn verde" href={ins.url} target="_blank" rel="noopener noreferrer">{ins.txt} ↗</a> : null}
+          <a className={'btn ' + (ins ? 'borde' : 'verde')} href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
+          {ins ? null : <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a>}</div></>,
       vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
     });
   });

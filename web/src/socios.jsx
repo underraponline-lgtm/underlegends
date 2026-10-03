@@ -13,6 +13,7 @@
 // algo que ya anda: si alguna se apaga, se saca de acá.
 import { limpio, mult, num } from './liga.js';
 import { Carta, Compartir, Ico, enlace } from './piezas.jsx';
+import { REDES } from './servidor.jsx';
 
 // el perfil de Dlx en Discord (itsdlx): abre su perfil para escribirle
 const DLX = 'https://discord.com/users/739338101603696681';
@@ -24,7 +25,9 @@ const QUE_GANA = [
   ['aviso', 'Most Wanted', 'Buscados con recompensa: el primero que le gana a uno en un evento de la Liga lo caza y cobra.'],
   ['novedades', 'Multiplicador cada lunes', 'Cada semana sale con su multiplicador, de ×0,5 a ×5, y la gente vota qué servidor se lleva un ×2.'],
   ['socios', 'Guerra de servidores', 'Cada semana se enfrenta con otro: gana el que más puntos hace por persona y la semana siguiente lleva ×1,5.'],
-  ['publicaciones', 'Su página y sus anuncios', 'Una página propia con su gente y sus eventos, y sus anuncios y campeones salen en Publicaciones y en las historias.'],
+  // Dlx, 03/10/2026: «mencioná que compartimos las redes sociales, o sea los posts, en nuestras redes y la Liga Global también»
+  ['compartir', 'Sus posts, en nuestras redes', 'Compartimos sus posts en las redes de Under Legends y en la Liga Global, y sus anuncios y campeones salen en Publicaciones y en las historias.'],
+  ['perfil', 'Su página en la Liga', 'Con su gente, sus eventos, su semana y sus redes, y su invitación para que la gente llegue a su servidor.'],
 ];
 
 function Socio({ liga, s }) {
@@ -69,6 +72,11 @@ function Socio({ liga, s }) {
             : ll ? <li><b>EL ÚLTIMO</b>{limpio(ll.nombre)}{camp.length ? ' · ganó ' + camp.join(' y ') : ''}</li> : null}
         </ul>
       </div>
+      {(s.redes || []).length ? (
+        <nav className="soc-redes" aria-label={'Las redes de ' + (s.nombre || s.sv)}>
+          {s.redes.map(([r, u]) => <a key={r} href={u} target="_blank" rel="noopener noreferrer">{REDES[r] || r} ↗</a>)}
+        </nav>
+      ) : null}
       <div className="soc-acc">
         <a className="btn negro chico" href={'#/sv/' + s.sv}>Ver su página</a>
         {s.invita ? <a className="btn borde2 chico" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar ↗</a> : null}
@@ -131,6 +139,12 @@ export function Socios({ liga }) {
         <ul className="soc-feats">
           {QUE_GANA.map(([ic, t, tx]) => <li key={t}><Ico n={ic} t={24} /><b>{t}</b><span>{tx}</span></li>)}
         </ul>
+        {(liga.d.redes || []).length ? (
+          <nav className="soc-ul" aria-label="Las redes de Under Legends">
+            <span>LAS REDES DE UNDER LEGENDS</span>
+            {liga.d.redes.map(([r, u]) => <a key={r} href={u} target="_blank" rel="noopener noreferrer">{REDES[r] || r} ↗</a>)}
+          </nav>
+        ) : null}
         <div className="soc-dos">
           <div className="soc-bloque">
             <h3>Qué hace el bot en tu servidor</h3>
@@ -144,7 +158,7 @@ export function Socios({ liga }) {
             <h3>¿Querés que tu servidor sea parte?</h3>
             <p>Escribile a <b>@itsdlx</b> en Discord.</p>
             {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
-            <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer">Escribirle a <span className="soc-at">@itsdlx</span> ↗</a>
+            <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer"><span>Escribirle a <span className="soc-at">@itsdlx</span> ↗</span></a>
           </div>
         </div>
       </section>

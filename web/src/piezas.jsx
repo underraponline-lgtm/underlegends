@@ -99,6 +99,18 @@ export function useCampana() {
 
 export const enlace = (ruta) => location.origin + (window.urlLG ? window.urlLG(ruta) : '/' + ruta);
 
+// ── adónde lleva un evento en Discord. Dlx, 03/10/2026: «en vez de que sea el link del mensaje del anuncio, que sea el
+// link de invitación al canal… el de inscripciones mejor… porque la gente no puede entrar de esa forma», y en la página
+// también («2. A»): antes de empezar, «Inscribite ya» —la invitación al canal de inscripciones de ese evento, `ins`, de
+// bot/subir_web.py—; en vivo, o sin ella, «Entrar al servidor». El link al mensaje, sólo sin ninguna invitación ──
+export function aDiscord(liga, e, vivo) {
+  if (!e) return null;
+  const inv = (((liga && liga.svs) || {})[e.sv] || {}).invita;
+  if (!vivo && e.ins) return { url: e.ins, txt: 'Inscribite ya' };
+  if (inv) return { url: inv, txt: 'Entrar al servidor' };
+  return e.link ? { url: e.link, txt: vivo ? 'Mirar en Discord' : 'Ver en Discord' } : null;
+}
+
 // ── compartir: el menú de compartir del teléfono (WhatsApp, Discord…) o, en la computadora, el link copiado.
 // Dlx, 30/09/2026: «me gustan todas» (la D: compartir tu carta o una llave). Cada carta que circula trae gente.
 export function Compartir({ url, texto, titulo = 'Liga Global', cls = 'btn borde', etiqueta = 'Compartir' }) {

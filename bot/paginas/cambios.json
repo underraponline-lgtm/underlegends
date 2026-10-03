@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.04",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T00:53:00-04:00",
+   "titulo": "Inscribite ya",
+   "items": [
+    "✍️ **«Inscribite ya»**: el aviso de cada evento en Discord y los botones de la página te llevan con una invitación al canal de inscripciones de ese evento. El link al mensaje sólo abría si ya estabas en ese servidor. En vivo, «Entrar al servidor».",
+    "🤝 **Socios, con las redes de cada servidor** en su tarjeta, y lo que se suma: compartimos sus posts en las redes de Under Legends y en la Liga Global."
+   ]
+  },
+  {
    "version": "2.03",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T00:33:00-04:00",
