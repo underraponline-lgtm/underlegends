@@ -2399,3 +2399,9 @@ tbody tr.fc td.c-n{opacity:.82}
 .l-rep .rep-est{font-size:.8rem;color:var(--tx2)}
 .l-rep .rep-nota{margin:0;font-size:.75rem;color:var(--tx2)}
 .l-rep .rep-ok{font-size:.9rem;color:var(--tl)}
+
+/* 📱 en el celular, dos botones por fila (Dlx, 03/10/2026: «si 2 botones pueden estar en la misma línea… Hazlo»): lo mismo
+   que en la página nueva (`web/src/vivo.css`) */
+@media (max-width: 599.98px){
+  .pedi-bt > *{flex:1 1 calc(50% - 5px);min-width:0;white-space:normal;text-align:center;font-size:12px;padding-left:8px;padding-right:8px}
+}

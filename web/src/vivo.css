@@ -224,7 +224,7 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .escena:before{content:"";position:absolute;right:-60px;top:-40px;width:260px;height:260px;border-radius:50%;background:var(--mo-c,var(--magenta));
   opacity:var(--mo-o,.5);transition:background-color .6s,opacity .6s}
 .escena:after{content:"";position:absolute;left:-90px;bottom:-110px;width:280px;height:280px;border-radius:50%;
-  background:var(--mo-logo,none) center/cover no-repeat,var(--verde);opacity:.28}
+  background:var(--mo-logo,none) center/cover no-repeat,var(--mo-c2,var(--verde));opacity:.28}
 @media (min-width: 900px){.app .escena:before{width:520px;height:520px;right:-120px;top:-160px}.app .escena:after{width:440px;height:440px;left:-150px;bottom:-190px}}
 .escena .tira-s{background:transparent;border-top:0}
 @media (prefers-reduced-motion: reduce){.escena:before{transition:none}}
@@ -929,9 +929,9 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-dias button.on span,.evp-dias button.on i{color:#030304}
 .evp-dias button.on b{color:#030304}
 /* el mes, fijo a la derecha de la tira (no se desliza con ella) y en verde, para que se encuentre */
-.evp-dias .evp-mes-b{flex:none;align-self:center;align-content:center;gap:5px;margin:0 12px 0 0;border-color:#29B298;color:#29B298}
-.evp-dias .evp-mes-b span{color:#29B298}
-.evp-dias .evp-mes-b.on{background:#29B298;border-color:#29B298;color:#030304}
+.evp-dias .evp-mes-b{flex:none;align-self:center;align-content:center;gap:5px;margin:0 12px 0 0;border-color:#E41373;color:#F0559A}
+.evp-dias .evp-mes-b span{color:#F0559A}
+.evp-dias .evp-mes-b.on{background:#E41373;border-color:#E41373;color:#FFFFFF}
 .evp-dias .evp-mes-b.on span{color:#030304}
 /* el tablero */
 .evp-t3{display:grid;gap:0}
@@ -1039,7 +1039,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-et{display:block;margin-bottom:8px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
 .evp-bar{display:grid;grid-template-columns:110px minmax(0,1fr) 30px;gap:10px;align-items:center;padding:4px 0;font:700 13px/1.2 Archivo,sans-serif}
 .evp-bar i{height:12px;background:var(--caja)}
-.evp-bar u{display:block;height:100%;background:#29B298;text-decoration:none}
+.evp-bar u{display:block;height:100%;background:#E41373;text-decoration:none}
 .evp-bar b{text-align:right;font-variant-numeric:tabular-nums}
 .evp-orgs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .evp-orgs li{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);font:700 13px/1 Archivo,sans-serif}
@@ -1292,7 +1292,7 @@ a.rk-z:hover{border-color:var(--linea)}
    costado; en la compu, cuatro por fila con el ícono arriba */
 .soc-feats{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .soc-feats li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;padding:14px;border:2px solid #3A3A3E}
-.soc-feats .ico{grid-row:span 2;color:#29B298}
+.soc-feats .ico{grid-row:span 2;color:#F0559A}
 .soc-feats b{font:900 15px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#F6F6F6}
 .soc-feats span{font:500 14px/1.45 Archivo,sans-serif;color:#D8D8D4}
 .soc-cta{display:grid;gap:10px;align-content:start;justify-items:start;border-color:#29B298}
@@ -1380,7 +1380,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-feats.con-ej li{padding:0}
 .soc-feat-b{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;width:100%;height:100%;padding:14px;
   border:0;background:transparent;color:inherit;text-align:left;cursor:pointer;font:inherit}
-.soc-feat-b .ico{grid-row:span 3;color:#29B298}
+.soc-feat-b .ico{grid-row:span 3;color:#F0559A}
 .soc-feat-b b{font:900 15px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#F6F6F6}
 .soc-feat-b span{font:500 14px/1.45 Archivo,sans-serif;color:#D8D8D4}
 .soc-feat-b em{font:700 10.5px/1 "Space Mono",monospace;font-style:normal;letter-spacing:.08em;color:#29B298;margin-top:4px}
@@ -1458,3 +1458,37 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .soc-feats.con-ej .soc-feat-b{grid-template-columns:minmax(0,1fr);align-content:start;gap:8px;padding:16px}
   .app .soc-feats.con-ej .soc-feat-b .ico{grid-row:auto}
 }
+
+/* ── 📱 EL CELULAR: DOS BOTONES POR FILA (Dlx, 03/10/2026: «si 2 botones pueden estar en la misma línea en vez de
+   estar separados. Hazlo»). Medido en 390 px: nueve filas de botones se partían en dos o tres líneas porque cada botón
+   pedía su ancho entero (letra de 14 px, 18 px de relleno, sin partir el texto). Acá cada uno toma media fila, con la
+   letra un poco más chica y el texto que puede bajar a dos líneas; el que es sólo un ícono, su cuadrado; y Compartir,
+   en una fila de botones, queda en su ícono (el nombre sigue para el lector de pantalla).
+   ⚠️ La fila va a lo ancho (`width:100%`): varias viven en columnas que encogen a su contenido, y con la letra más chica
+   el par quedaba a 80 px del borde. ── */
+@media (max-width: 599.98px){
+  :is(.hero-acc,.t-acc,.evp-acc,.rk-pie-acc,.su-acc,.soc-acc,.cu-btns){gap:8px;width:100%}
+  :is(.hero-acc,.t-acc,.evp-acc,.rk-pie-acc,.su-acc,.soc-acc,.cu-btns) > .btn:not(:only-child){flex:1 1 calc(50% - 4px);min-width:0;
+    padding:0 10px;font-size:12.5px;letter-spacing:0;white-space:normal;line-height:1.15;text-align:center}
+  /* Compartir al lado de otro botón: el ícono solo, en su cuadrado de 48. Mientras dice «Link copiado» (cuando el
+     teléfono no tiene el menú de compartir) vuelve a mostrar el texto, o el aviso no se vería */
+  :is(.hero-acc,.t-acc,.su-acc,.soc-acc) > .btn.compartir:not(:only-child):not(.dijo){flex:0 0 48px;padding:0}
+  :is(.hero-acc,.t-acc,.su-acc,.soc-acc) > .btn.compartir:not(:only-child):not(.dijo) span{position:absolute;width:1px;height:1px;
+    overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  :is(.hero-acc,.t-acc,.su-acc,.soc-acc) > .btn.evp-hist.ic{flex:0 0 48px;padding:0}
+  /* con un botón de ícono en la fila, cada botón de texto va con el ícono o a lo ancho: tres en una línea partían
+     «Activar la campana» en tres renglones (Eventos, 322 px) */
+  :is(.hero-acc,.t-acc,.su-acc,.soc-acc):has(> .btn.compartir:not(:only-child):not(.dijo), > .btn.evp-hist.ic)
+    > .btn:not(.compartir):not(.evp-hist.ic){flex-basis:calc(100% - 56px)}
+  /* las redes de Under Legends: el título arriba y las seis de a tres, en vez de una suelta en el último renglón */
+  .soc-ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .soc-ul span{grid-column:1/-1;margin:0 0 2px}
+  .soc-ul a{text-align:center}
+}
+
+/* ── 🌸 MAGENTA DE LA MARCA DONDE TODO ERA VERDE (Dlx, 03/10/2026: «podrías agregar algo rosadito, pero de la marca en
+   general, porque veo mucho celeste»). Los botones principales siguen verdes; el magenta va en lo que acompaña: la
+   pestaña activa de la barra de abajo, el botón del mes, los íconos de «lo que hacemos» y las barras de los formatos.
+   Y la mancha de abajo de cada encabezado deja de ser verde siempre: `--mo-c2` (ver Eventos, Socios y el Changelog) ── */
+.tabbar a.on{box-shadow:inset 0 -4px 0 #E41373}
+.tabbar a.on .tb-cara{box-shadow:0 0 0 2px #E41373}

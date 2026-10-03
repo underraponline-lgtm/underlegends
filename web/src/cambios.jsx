@@ -118,7 +118,7 @@ export function Cambios({ liga, ver, antes }) {
   const primera = lista && lista[lista.length - 1];
   return (
     <>
-      <div className="escena cb-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.9, '--mo-logo': 'url("/ul.png")' }}>
+      <div className="escena cb-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.9, '--mo-logo': 'url("/ul.png")', '--mo-c2': '#E41373' }}>
         <section className="cb-cab" id="cb-cab">
           <span className="tag">CHANGELOG</span>
           <h1 className="hero-ev largo">Lo nuevo de la página</h1>

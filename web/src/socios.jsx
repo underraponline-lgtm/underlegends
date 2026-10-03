@@ -88,7 +88,7 @@ export function Socios({ liga }) {
   };
   return (
     <>
-      <div className="escena soc-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.85 }}>
+      <div className="escena soc-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.85, '--mo-c2': '#E41373' }}>
         <section className="soc-hero">
           <span className="tag">SOCIOS · {liga.temp}</span>
           <h1 className="hero-ev largo">Socios</h1>

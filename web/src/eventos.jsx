@@ -688,7 +688,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
 
   return (
     <>
-      <div className="escena evp-esc" style={{ '--mo-c': '#29B298', '--mo-o': 0.85 }}>
+      <div className="escena evp-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
         <section className="evp-cab">
           <div className="evp-cabtx">
             <span className="tag">EVENTOS · {liga.temp}</span>
