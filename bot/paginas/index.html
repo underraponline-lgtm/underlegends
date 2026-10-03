@@ -128,7 +128,7 @@ html.ini-nuevo{scroll-padding-top:0}
   });
   // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, lo que vuelve de Discord, o algo que no es una
   // vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
-  var V = {"crew":1,"guia":1,"mundo":1,"pais":1,"pase":1,"r":1,"tarjetas":1,"tienda":1,"llave":1};
+  var V = {"crew":1,"pais":1,"pase":1,"r":1,"tarjetas":1,"tienda":1,"llave":1};
   var h = location.hash || '', ini = /^#(access_token|error)=/.test(h);
   if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || !V[p]; }
   var c = document.documentElement.classList;
@@ -192,7 +192,9 @@ html.ini-nuevo{scroll-padding-top:0}
            el botón de `/card`. -->
       <a href="#/eventos"><i>&#128197;</i><span>Eventos</span></a>
       <a href="#/tarjetas"><i>&#127183;</i><span>Tarjetas</span></a>
-      <a href="#/mundo"><i>&#127758;</i><span>Mundo</span></a>
+      <!-- «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»). Lo dibuja el Inicio nuevo
+           (`socios.jsx`); `#/mundo` sigue abriéndolo. -->
+      <a href="#/socios"><i>&#129309;</i><span>Socios</span></a>
       <a href="#/guia"><i>&#127895;</i><span>Guía</span></a>
     </nav>
     <!-- 🔑 AJUSTES, donde dice «Temporada T1 · datos hace…». Dlx,

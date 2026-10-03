@@ -1,7 +1,7 @@
 // Socios: lo que era Mundo (`#/socios`, y `#/mundo` sigue abriéndolo). Dlx, 02/10/2026: «reworkeemos lo que es MUNDO,
 // llámalo SOCIOS o patrocinadores», y al plan: «1. A» (Socios, con los patrocinadores adentro) · «2. A» (las crews y
 // los países se van al Ranking, que ya tiene esas pestañas) · «3. A» (los patrocinadores no se muestran mientras no haya
-// ninguno). 🔍 PREVIEW: sólo con `lg:prev-soc` (App.jsx).
+// ninguno). Para todos desde la 2.02 (Dlx, 03/10/2026: «1. A»).
 //
 // ⚠️ «SUMÁ TU SERVIDOR» ES PARA LA CONFIANZA, NO PARA LOS PERMISOS. Dlx, 02/10: a los servidores les cuesta sumar el bot
 // porque *«algunos piensan que es bot para raidear»*. Lo que ayuda es la prueba social (los que ya están, con su gente)

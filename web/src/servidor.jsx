@@ -36,7 +36,7 @@ export function PerfilSv({ liga, sv }) {
   if (!s) {
     return (
       <Sec id="sv-no" titulo="Servidor">
-        <p className="pronto-p">No hay ningún servidor con esa sigla en la Liga. <a className="te-link" href="#/mundo">Ver los servidores</a></p>
+        <p className="pronto-p">No hay ningún servidor con esa sigla en la Liga. <a className="te-link" href="#/socios">Ver los servidores</a></p>
       </Sec>
     );
   }

@@ -363,5 +363,5 @@ export function LaLiga({ liga }) {
   const a = liga.d.actividad || {};
   const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length;
   if (!hay) return null;
-  return <Sec id="numeros" titulo="La Liga en números" enlace="Mundo" href="#/mundo"><Numeros liga={liga} /></Sec>;
+  return <Sec id="numeros" titulo="La Liga en números" enlace="Socios" href="#/socios"><Numeros liga={liga} /></Sec>;
 }

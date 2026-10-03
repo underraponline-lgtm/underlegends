@@ -7,14 +7,9 @@ import { Miniatura, abrirVideo } from './video.jsx';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
-  ['Tarjetas', '#/tarjetas'], ['Pase', '#/pase'], ['Tienda', '#/tienda'], ['Mundo', '#/mundo'], ['Guía', '#/guia'],
+  ['Tarjetas', '#/tarjetas'], ['Pase', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
-// 🔍 Socios en preview (`lg:prev-soc`): el menú dice «Socios»; para los demás, «Mundo» hasta que se publique
-export function menu() {
-  let soc = false;
-  try { soc = !!localStorage.getItem('lg:prev-soc'); } catch (e) { soc = false; }
-  return soc ? MENU.map(([n, r]) => (r === '#/mundo' ? ['Socios', '#/socios'] : [n, r])) : MENU;
-}
+// «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx)
 
 function Marca({ liga }) {
   return (
@@ -84,11 +79,11 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
     <header className="cab negra">
       <Marca liga={liga} />
       <nav className="menu" aria-label="Secciones">
-        {menu().map(([n, r]) => <a key={n} href={r} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
+        {MENU.map(([n, r]) => <a key={n} href={r} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />
-        {prevNot() ? <Campanita liga={liga} /> : <a className="btn-ico" href="#/avisos" aria-label="Avisos de eventos"><Ico n="campana" t={20} /></a>}
+        <Campanita liga={liga} />
         {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta»). Y en el celular, en
             el lugar de tu cuenta, que vuelve abajo como «Yo» (Dlx, 02/10/2026: «el engranaje en vez de la cuenta. En
             el celular. En la PC que esté arriba, por supuesto») */}
@@ -108,10 +103,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
 // Dlx, 02/10/2026: «que en esa campanita, aparte de activar tus notificaciones, sea como un panel de notificaciones
 // recientes, quizás algo como Instagram», y a «¿también los eventos del día?», «A». Arriba lo de hoy en la Liga (para
 // todos); después lo tuyo, «Nuevas» y «Antes» (la bandeja de app.js: `BANDEJA`, `pedirBandeja()`); abajo, la campana
-// del teléfono. 🔍 PREVIEW: sólo con `lg:prev-not`; para los demás la campana sigue llevando a `#/avisos`
-function prevNot() {
-  try { return !!localStorage.getItem('lg:prev-not'); } catch (e) { return false; }
-}
+// del teléfono. Para todos desde la 2.02 (Dlx, 03/10/2026: «3. a»); `#/avisos` sigue abriendo la campana de Eventos
 function useBandeja() {
   const leer = () => Object.assign({ items: [], nuevas: 0, listo: false }, window.BANDEJA || {});
   const [b, setB] = useState(leer);

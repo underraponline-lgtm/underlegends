@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.02",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T00:13:00-04:00",
+   "titulo": "Socios, la Guía y la campana",
+   "items": [
+    "🤝 **Socios, lo que era Mundo**: los servidores de la Liga, cada uno con su gente en la temporada, sus puntos, su multiplicador de la semana y su mejor rapero con su carta. Abajo, cómo se suma un servidor y qué hace el bot ahí. Las crews y los países están en el Ranking.",
+    "📖 **La Guía, rehecha**: arranca con cómo empezar en tres pasos y tiene un índice arriba; las tarjetas con cartas de verdad, los puntos, los ocho rangos y las palabras de la Liga, por tema.",
+    "🔔 **La campana es un panel de notificaciones**: lo que se juega hoy en la Liga y, entrando con Discord, lo tuyo —quién te sigue, quién te felicitó, lo de la gente que seguís—, aunque no tengas activados los avisos del celular."
+   ]
+  },
+  {
    "version": "2.01",
    "dia": "2026-10-02",
    "cuando": "2026-10-02T22:45:00-04:00",

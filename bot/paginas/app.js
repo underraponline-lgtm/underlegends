@@ -3633,12 +3633,14 @@ function cabezaPagina(img, pre, tit, sub, cifras) {
       return '<div><dt>' + c[0] + '</dt><dd>' + c[1] + '</dd></div>';
     }).join('') + '</dl></header>';
 }
+// «‹ Crews» y «‹ Países» vuelven al Ranking: Mundo pasó a ser Socios y las crews y los países se fueron ahí (Dlx,
+// 03/10/2026: «2. A»)
 function pintaCrew(clave) {
   var caja = $('#crewPag');
   var cs = D.crews || [];
   var c = cs.filter(function (x) { return (x.clave || x.crew) === clave; })[0];
   if (!c) {
-    caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a><section class="blk entro">' +
+    caja.innerHTML = '<a class="volver" href="#/ranking/crews">&#8249; Crews</a><section class="blk entro">' +
       '<h2><span>&#128269;</span> No la encontré</h2><p class="bajada">Esa crew no tiene gente en la ' +
       'temporada.</p></section>';
     return;
@@ -3652,7 +3654,7 @@ function pintaCrew(clave) {
   gente.forEach(function (f) { if (f.cc && ccs.indexOf(f.cc) < 0) ccs.push(f.cc); });
   var logo = c.logo ? '<img class="cw-logo grande" src="' + esc(c.logo) + '" alt="" width="116" height="116">'
     : '<span class="cw-logo cw-ini grande">' + esc(inicial(c.crew)) + '</span>';
-  caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a>' +
+  caja.innerHTML = '<a class="volver" href="#/ranking/crews">&#8249; Crews</a>' +
     cabezaPagina(logo, pos ? '#' + pos + ' de las crews' : 'Sin puesto: hacen falta tres raperos',
       esc(c.crew), ccs.map(function (cc) { return bandera(cc); }).join(' '),
       [['Raperos', esc(c.n)], ['Puntos', num(c.pts)],
@@ -3671,7 +3673,7 @@ function pintaPais(cc) {
   var gente = (D.tabla || []).filter(function (f) { return String(f.cc).toLowerCase() === cc; })
     .sort(function (a, b) { return (a.o || a.pos || 999) - (b.o || b.pos || 999); });
   if (!P && !gente.length) {
-    caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a><section class="blk entro">' +
+    caja.innerHTML = '<a class="volver" href="#/ranking/paises">&#8249; Países</a><section class="blk entro">' +
       '<h2><span>&#128269;</span> No lo encontré</h2><p class="bajada">Ese país no tiene raperos en ' +
       'la temporada.</p></section>';
     return;
@@ -3683,7 +3685,7 @@ function pintaPais(cc) {
     return (c.gente || []).some(function (n) { var f = porK(kDe(n)); return f && String(f.cc).toLowerCase() === cc; });
   });
   var img = PAIS[cc] ? '<img class="pais-bandera" src="banderas/' + esc(cc) + '.png" alt="" width="120" height="80">' : '';
-  caja.innerHTML = '<a class="volver" href="#/mundo">&#8249; Mundo</a>' +
+  caja.innerHTML = '<a class="volver" href="#/ranking/paises">&#8249; Países</a>' +
     cabezaPagina(img, pos ? '#' + pos + ' de los países' : '', esc(nombrePais(cc)),
       crews.length ? crews.map(function (c) {
         return '<a class="chip-crew" href="#/crew/' + encodeURIComponent(c.clave || c.crew) + '">' +

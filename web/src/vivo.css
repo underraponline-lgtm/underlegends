@@ -1196,7 +1196,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .st-vs{align-items:center;flex-wrap:nowrap;gap:14px}
 .st-vs .st-cara{width:96px;height:96px;font-size:34px}
 .st-vs-n{font:900 40px/1 Archivo,sans-serif;font-stretch:120%;color:#F6F6F6}
-/* ── 🔔 la campana: el panel de notificaciones (`Campanita` de arriba.jsx; preview con `lg:prev-not`). En la compu
+/* ── 🔔 la campana: el panel de notificaciones (`Campanita` de arriba.jsx; para todos desde la 2.02). En la compu
    cuelga de la campana; en el celular ocupa la pantalla, como Instagram. Es una superficie negra, como la cabecera de
    la que cuelga: sus colores son los de `.sec.negra` (estilo.css) ── */
 .nt{position:relative}
@@ -1231,7 +1231,7 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (max-width: 899.98px){
   .nt-p{position:fixed;inset:0;width:auto;max-height:none;z-index:60;border:0;box-shadow:none}
 }
-/* ── Socios (`socios.jsx`, preview con `lg:prev-soc`): lo que era Mundo. Cada servidor en piel con su color al costado;
+/* ── Socios (`socios.jsx`, desde la 2.02): lo que era Mundo. Cada servidor en piel con su color al costado;
    «Sumá tu servidor», en negro: qué gana y qué hace el bot ── */
 .soc-hero,.gu-hero{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
 .soc-hero .hero-ev,.gu-hero .hero-ev{margin:0}
@@ -1276,7 +1276,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-bloque b,.soc-bloque a{color:#F6F6F6}
 .soc-bloque a{font-weight:800}
 .soc-como{display:grid;gap:12px;justify-items:start}
-/* ── la Guía (`guia.jsx`, preview con `lg:prev-gui`): «cómo empezar» en tres pasos y un índice; todo en piel ── */
+/* ── la Guía (`guia.jsx`, desde la 2.02): «cómo empezar» en tres pasos y un índice; todo en piel ── */
 .gu-cuerpo{display:grid;padding:0 16px 34px}
 .gu-sec{display:grid;gap:12px;padding-top:26px}
 .gu-baj{margin:0;max-width:66ch;font:500 15px/1.5 Archivo,sans-serif;color:var(--gris)}

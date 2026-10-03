@@ -666,8 +666,9 @@ Nueve vistas con menú lateral en escritorio y barra de abajo en teléfono
 Inicio, Ranking, Tarjetas, **Pase** (próximamente), **Tienda** (los Puntos de
 Tienda y el precio por cabeza), **Eventos** (el calendario y la campana;
 `#/avisos` es un alias que baja hasta ella), **Publicaciones** (el muro
-de la Liga y los anuncios de todos los servidores, `bot/muro.py`), Mundo y
-Guía. Vive en **`bot/paginas/`**, sin framework y sin
+de la Liga y los anuncios de todos los servidores, `bot/muro.py`), **Socios**
+(lo que era Mundo, desde la 2.02: `#/mundo` lo sigue abriendo; las crews y los
+países se fueron al Ranking) y Guía. Vive en **`bot/paginas/`**, sin framework y sin
 build: los archivos que están ahí son los que se sirven.
 
 🔑 **LA LIGA VIVE EN `/freestyle-rap`, DESDE EL 01/10/2026** (Dlx: *«/freestyle-rap,

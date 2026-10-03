@@ -41,8 +41,9 @@ MARCA = 'inicio-nuevo'
 #: escondida, de respaldo. `cambios` desde el 01/10/2026 (Dlx: «1. A»); `ranking` desde el 02/10/2026 (Dlx: «me
 #: encanta»), con `duelos`, el alias viejo que abre el de Duelos; `eventos` desde la 1.93 (Dlx: «sí, publícalo»),
 #: con `avisos`, el link de la campana; `publicaciones` desde la 1.99 (Dlx: «me gusta pero que lo de encuestas no sea
-#: lo primero que uno vea»). La misma lista que `PROPIAS` de App.jsx
-PROPIAS = ('cambios', 'ranking', 'duelos', 'eventos', 'avisos', 'publicaciones')
+#: lo primero que uno vea»); `socios` (lo que era Mundo; `mundo` lo sigue abriendo) y `guia` desde la 2.02 (Dlx,
+#: 03/10/2026: «1. A 2. A»). La misma lista que `PROPIAS` de App.jsx
+PROPIAS = ('cambios', 'ranking', 'duelos', 'eventos', 'avisos', 'publicaciones', 'socios', 'mundo', 'guia')
 
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')

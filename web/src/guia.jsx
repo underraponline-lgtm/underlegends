@@ -1,6 +1,6 @@
 // La Guía, rehecha (`#/guia`). Dlx, 02/10/2026: «reworkeemos GUÍA», y al plan —arranca con «cómo empezar» en tres pasos y
 // sigue con un índice: las tarjetas, los puntos, los rangos, el Most Wanted, la semana, las palabras y las preguntas—:
-// «4. A». 🔍 PREVIEW: sólo con `lg:prev-gui` (App.jsx).
+// «4. A». Para todos desde la 2.02 (Dlx, 03/10/2026: «2. A»).
 //
 // ⚠️ LOS NÚMEROS SALEN DE DONDE SE CALCULAN, como en la de app.js: los requisitos de `comun/requisitos.py`, los rangos de
 // `comun/rangos.py`, los puntos de `Config` y los pesos de `sheet/ovr.py` y `sheet/competitivo.py` (`_guia()` de
