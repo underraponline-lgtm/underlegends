@@ -465,7 +465,7 @@ def main():
             'full': r[cc('Rapero')].strip(), 'raw': nom,
             # el padron primero; si no lo tiene, lo de siempre
             'cc': _p.get('cc') or bandera(r[cc('Rapero')]),
-            'sv': r[cc('Sv')].strip(),
+            'sv': _RK.cod(r[cc('Sv')].strip()),
             # 🔴 TRES CAMPOS QUE ANTES NO ESTABAN EN EL POOL. `crew` vivia
             # solo en comun/crews.py y las cartas la sacaban de ahi; los
             # otros dos son el corte de identidad de la T1 —discord_id +

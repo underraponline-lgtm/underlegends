@@ -64,6 +64,8 @@ from planillas import OFICIAL as SHEET                  # noqa: E402
 # para quien jugó ahí una vez: Hassan (7 eventos en FFA, 1 en SR) salía de
 # Snake Rap, con su escudo en la carta. Y `srv` no contaba FFA nunca.
 from rankings import SERVIDORES                         # noqa: E402
+# 🔤 las vitrinas dicen SNK y URB desde el 03/10/2026: se leen de vuelta al código (ver `rankings.cod`)
+from rankings import cod                                # noqa: E402
 # 🔴 EL PISO DEL POOL SALE DEL REQUISITO MAS FLOJO, Y ERA 8 A MANO.
 #
 # El comentario que estaba acá decía *«el corte que desbloquea WR, rango
@@ -356,7 +358,7 @@ def main():
                 continue
             k = norm(r[ic])
             if r[isv].strip():
-                SV_MANUAL[k] = r[isv].strip()
+                SV_MANUAL[k] = cod(r[isv].strip())
             SCORE[k] = num(r[isc])
         print('del Competitivo: %d servidores elegidos, %d scores'
               % (len(SV_MANUAL), len(SCORE)))
@@ -397,6 +399,8 @@ def main():
     # nombres de columna hace que mover la cabecera —o agregarle FFA y
     # EFA— no toque una sola linea de codigo.
     fi, H = _cabecera(v, 'Rapero', 'Puntos')
+    # 🔤 la columna SNK es la de SR: la cabecera se lee al código
+    H = [cod(h) for h in H]
     filas = [r for r in v[fi + 1:] if r and r[0].strip()]
     col = lambda n: H.index(n)
     # 🔴 SÓLO LOS SERVIDORES QUE LA VITRINA TIENE: un servidor nuevo (FFS,
@@ -464,7 +468,7 @@ def main():
                 bloqueados.append({'raw': _n,
                                    'cc': (_pb.get('cc')
                                           or bandera(r[col('Rapero')])),
-                                   'sv': r[col('Sv')].strip(),
+                                   'sv': cod(r[col('Sv')].strip()),
                                    'crew': _pb.get('crew', ''),
                                    'discord_id': _pb.get('discord_id', ''),
                                    # ⚠️ NO VA UNA CLAVE `actividad`:
@@ -487,7 +491,7 @@ def main():
         sv = (SV_MANUAL.get(norm(r[col('Rapero')]))
               or (max(svs_h, key=lambda s: num(r[col(s)]))
                   if any(num(r[col(s)]) > 0 for s in svs_h) else '')
-              or r[col('Sv')].strip())
+              or cod(r[col('Sv')].strip()))
         _p = PAD.get(norm(r[col('Rapero')]), {})
         pool.append({
             # el `#` de la vitrina: ver el orden, abajo. No sale al json.

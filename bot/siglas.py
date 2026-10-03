@@ -25,8 +25,7 @@ _BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _S = None
 
 
-def sigla(sv):
-    """La sigla que se lee de `sv`; el código mismo si no tiene otra."""
+def _tabla():
     global _S
     if _S is None:
         try:
@@ -35,11 +34,30 @@ def sigla(sv):
                       if isinstance(v, dict) and v.get('sigla')}
         except (OSError, ValueError):
             _S = {}
-    return _S.get(sv) or sv
+    return _S
+
+
+def sigla(sv):
+    """La sigla que se lee de `sv`; el código mismo si no tiene otra."""
+    return _tabla().get(sv) or sv
+
+
+def codigo(x):
+    """Al revés: el código de una sigla que se lee (`SNK` -> `SR`); lo demás, como vino.
+
+    🔤 Es lo que usa quien LEE lo que se escribió con la sigla: las vitrinas del
+    Sheet dicen SNK y URB desde el 03/10/2026 (Dlx: «sí cámbialas para evitar
+    confusiones»), y los pools las vuelven a leer como SR y URBF.
+    """
+    for k, v in _tabla().items():
+        if v == x:
+            return k
+    return x
 
 
 if __name__ == '__main__':
     import sys
-    ok = sigla('SR') == 'SNK' and sigla('URBF') == 'URB' and sigla('FFA') == 'FFA' and sigla('') == ''
+    ok = (sigla('SR') == 'SNK' and sigla('URBF') == 'URB' and sigla('FFA') == 'FFA' and sigla('') == ''
+          and codigo('SNK') == 'SR' and codigo('URB') == 'URBF' and codigo('SR') == 'SR' and codigo('Rapero') == 'Rapero')
     print('✅ SR se lee SNK, URBF se lee URB, el resto como su código' if ok else '❌ las siglas no son las de servidores.json')
     sys.exit(0 if ok else 1)

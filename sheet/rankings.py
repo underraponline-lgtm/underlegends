@@ -75,7 +75,18 @@ from planillas import OFICIAL  # noqa: E402
 # ⚠️ el estilo de las cinco vitrinas vive en un solo lugar: `sheet/estilo.py`
 import estilo  # noqa: E402
 import ovr as _OVR  # noqa: E402
+# 🔤 LAS SIGLAS QUE SE LEEN, EN LAS VITRINAS (Dlx, 03/10/2026: «sí cámbialas para evitar confusiones»): la columna
+# de Snake Rap dice SNK y la de Urban Freestyle URB, y `Sv` también. Adentro —`Resultados`, las cuentas, los
+# pools— todo sigue con el código (SR, URBF). Se traduce en el borde y en ningún otro lado: al ESCRIBIR, `ver()`;
+# al LEER lo que una vitrina dice, `cod()` (lo usan también `construir_pool_temporada` y `_competitivo`)
+sys.path.insert(0, os.path.join(BASE, 'bot'))
+from siglas import sigla as ver, codigo as cod  # noqa: E402
 HOJA = 'Ranking Temporada'
+# 🔴 HASTA DÓNDE SE LEE UNA VITRINA: hasta la AZ, y no hasta la AA. Las lecturas pedían `A:AA` —27 columnas— y la
+# Temporada tiene 29 desde que se sumaron FRZ y DRA: esas dos no se leían, así que el ciclo NUNCA las escribía (se
+# quedaban con los números del 22/09) y `construir_pool_temporada`, que sí las lee todas, sacaba el servidor de
+# cada uno con DRA viejo. Y FFS y DDF no llegaban a la cabecera. Medido el 03/10/2026, al cambiar SR por SNK
+HASTA = 'AZ'
 FILA_CAB = 16
 
 # Las columnas por servidor de la vitrina. ⚠️ SON CONTEOS DE EVENTOS, no
@@ -834,7 +845,7 @@ def sin_dueno(cab, ag, viejo=None):
     for v in (ag or {}).values():
         traidas.update(k for k in v if not str(k).startswith('_'))
     cand = [c for c in cab
-            if c and c not in traidas and c not in ARRASTRE
+            if c and cod(c) not in traidas and c not in ARRASTRE
             and c not in APARTE and c not in CALCULADAS]
     if viejo is None:
         # sin la hoja de hoy no se puede saber si hay algo que perder, y
@@ -915,7 +926,7 @@ def fila_cabecera(hoja, refresco=False):
     if not refresco and hoja in _CACHE_FILA:
         return _CACHE_FILA[hoja]
     marcas = MARCAS.get(hoja) or ('Rapero',)
-    v = _leer(OFICIAL, '%s!A1:AA40' % hoja)
+    v = _leer(OFICIAL, '%s!A1:%s40' % (hoja, HASTA))
     for i, f in enumerate(v, 1):
         h = [str(c).strip() for c in f]
         if all(m in h for m in marcas):
@@ -937,7 +948,7 @@ def cabecera_oficial(hoja=None, fila=None):
     hoja = hoja or HOJA
     # ⚠️ SE BUSCA, no se asume la 16. Ver `fila_cabecera()`.
     fila = fila_cabecera(hoja) if fila is None else fila
-    v = _leer(OFICIAL, '%s!A%d:AA%d' % (hoja, fila, fila))
+    v = _leer(OFICIAL, '%s!A%d:%s%d' % (hoja, fila, HASTA, fila))
     return [str(c).strip() for c in (v[0] if v else [])]
 
 
@@ -1168,7 +1179,7 @@ def tabla_nueva():
     # ⚠️ LO LEÍDO SE GUARDA: `main()` lo compara con lo calculado para no
     # reescribir una vitrina que ya dice lo mismo (`ya_dice()`), sin volver
     # a leerla
-    tabla_nueva.leidas = _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1))
+    tabla_nueva.leidas = _leer(OFICIAL, '%s!A%d:%s' % (HOJA, fila_cabecera(HOJA) + 1, HASTA))
     for f in tabla_nueva.leidas:
         f = list(f) + [''] * len(cab)
         nom = str(f[icol.get('Rapero', 1)]).strip()
@@ -1224,10 +1235,11 @@ def tabla_nueva():
             enganchadas.add(_clave_fila(quien))
         fila = [''] * len(cab)
         for c, i in icol.items():
+            cc = cod(c)
             if c in ARRASTRE:
                 fila[i] = prev[i] if i < len(prev) else ''
-            elif c in v:
-                fila[i] = v[c]
+            elif cc in v:
+                fila[i] = ver(v[cc]) if cc == 'Sv' else v[cc]
         # 🔴 EL RANGO SE CALCULA, NO SE ARRASTRA — y estuvo VACIO para
         # las 21 personas hasta el 23/09/2026.
         #
@@ -1399,7 +1411,7 @@ CAB_TEMPORADA = [
     '#', 'Rapero', 'Sv', 'Rango', 'Puntos', 'Ev', 'Win%', '🔥',
     '🥇', '🥈', '🥉', '🎖️', '4️⃣', '8️⃣', '➕',
     '🎯', '💀', '🛡️', 'Último Resultado', '✅',
-] + list(SERVIDORES)
+] + [ver(s) for s in SERVIDORES]
 
 CAB_PODIOS = ['#', 'Rapero', '🥇', '🥈', '🥉', 'Pts Podio', '✅',
               'Vs Ranking Temporada', 'Vs Ranking Competitivo']
@@ -1490,7 +1502,7 @@ def tabla_competitivo(res, orden_temp, sv_de, piso=None, oficial=False):
         # sale del Score competitivo. Siempre»*— así que esconderlo
         # justo en su propia hoja obliga a cruzarla con otra.
         filas.append((v['score'], [
-            0, quien, sv_de.get(quien, ''), de_score(v['score']),
+            0, quien, ver(sv_de.get(quien, '')), de_score(v['score']),
             v['ev'], v['score'], v['conf'],
             v['E'], v['C'], v['Dm'], v['T'], v['V'],
             _texto_pos(orden_temp.get(quien)),
@@ -1608,7 +1620,7 @@ def tabla_duelos(ag, rangos, oficial=False):
             continue
         g = int(v.get('_dg') or 0)
         filas.append((g, j and 1.0 * g / j, [
-            0, quien, v.get('Sv', ''), j, g, int(v.get('_dp') or 0),
+            0, quien, ver(v.get('Sv', '')), j, g, int(v.get('_dp') or 0),
             # ⚠️ EN DUELOS, LA RACHA DE DUELOS: hasta que Dlx diga si esta
             # vitrina también pasa a la de eventos, se queda con lo suyo
             v.get('Win%', ''), v.get('_racha_duelos', ''), rangos.get(quien, ''),
@@ -2099,7 +2111,7 @@ def rehacer_estructura(dry=True):
     cab_vieja = cabecera_oficial()
     # 🔴 LA COMPROBACIÓN, ANTES DE TOCAR NADA: ninguna columna que no se
     # calcule puede tener datos. Si los tiene, esto no corre.
-    v = _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1))
+    v = _leer(OFICIAL, '%s!A%d:%s' % (HOJA, fila_cabecera(HOJA) + 1, HASTA))
     icol = {c: i for i, c in enumerate(cab_vieja)}
     con_datos = []
     for c in ARRASTRE:
@@ -2116,7 +2128,8 @@ def rehacer_estructura(dry=True):
         return {'freno': 'hay columnas con datos que no se recalculan: %s'
                          % ', '.join(con_datos)}
 
-    faltan = [c for c in cab_vieja if c and c not in CAB_TEMPORADA]
+    # ⚠️ `ver(c)`: la cabecera vieja dice SR donde la nueva dice SNK, y es la misma columna
+    faltan = [c for c in cab_vieja if c and ver(c) not in CAB_TEMPORADA]
     if faltan:
         return {'freno': 'la cabecera nueva perdería %s' % ', '.join(faltan)}
 
@@ -3059,7 +3072,7 @@ def main():
             return 1
         ag = agregar_temporada(res, uno)   # como la vitrina: multiplicada y con el MW
         cab = cabecera_oficial()
-        viv = _leer(OFICIAL, '%s!A%d:AA' % (HOJA, fila_cabecera(HOJA) + 1))
+        viv = _leer(OFICIAL, '%s!A%d:%s' % (HOJA, fila_cabecera(HOJA) + 1, HASTA))
         icol = {c: i for i, c in enumerate(cab)}
         iguales = distintos = 0
         for f in viv:
