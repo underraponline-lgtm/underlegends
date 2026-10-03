@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.12",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T19:30:00-04:00",
+   "titulo": "La Tienda y el Pase, nuevos",
+   "items": [
+    "🛒 **La Tienda, rehecha**: tus Puntos de Tienda arriba, el precio por cabeza en tres pasos, las cabezas de la semana —tocás una y elegís cuánto ponerle— y lo último que se cobró.",
+    "🔎 **Buscar a quién ponerle precio**, con su cara y cuánto vale ya.",
+    "🎟️ **El Pase de rapero**, con el estilo nuevo: todavía es un adelanto, y cuando salga se anuncia en la Liga."
+   ]
+  },
+  {
    "version": "2.11",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T18:30:00-04:00",
