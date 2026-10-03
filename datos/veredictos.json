@@ -392,6 +392,16 @@
    "b": "Snow 🇨🇴",
    "ganador": "Oasis🇨🇱",
    "votos": "1–0"
+  },
+  "1555795316404396043": {
+   "id": "1555795316404396043",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791000908710,
+   "a": "ECLIPCITO",
+   "b": "HASSAN",
+   "ganador": "HASSAN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -642,6 +652,38 @@
      ],
      "Oasis🇨🇱",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1555795277485711422": {
+   "id": "1555795277485711422",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791000899431,
+   "ed": 1791001291156,
+   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "# ECLIPCITO",
+      "HASSAN"
+     ],
+     "HASSAN",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "# NUMBER",
+      "SCOT",
+      "ZAIK"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
