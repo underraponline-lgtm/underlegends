@@ -79,8 +79,8 @@ const esPropia = (p) => !!PROPIAS[p] || (p === 'tarjetas' && prevTar());
 // 🔍 UNA PREVIEW SE PRENDE CON UN LINK: `?prev=sum` deja `lg:prev-sum` en este navegador (y `?noprev=sum` la apaga),
 // para que Dlx la pruebe sin tocar la consola. No es un secreto: las previews sólo esconden lo que falta aprobar
 try {
-  const mp = /[?&]prev=([a-z]{2,12})/.exec(location.search);
-  const mn = /[?&]noprev=([a-z]{2,12})/.exec(location.search);
+  const mp = /[?&]prev=([a-z]{2,12})\b/.exec(location.search);
+  const mn = /[?&]noprev=([a-z]{2,12})\b/.exec(location.search);
   if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');
   if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
 } catch (e) { /* sin almacenamiento, sin preview */ }
