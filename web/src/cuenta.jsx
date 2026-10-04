@@ -8,7 +8,7 @@
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { useEffect, useState } from 'react';
-import { PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
+import { DUENO, PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 
@@ -623,6 +623,8 @@ function tarjetasDe(gs) {
 
 export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
   const gs = grupos(liga, dc, tema, cual);
+  // 🔒 el acceso al Dashboard, a la vista sólo para el dueño. Es un atajo: la puerta de verdad está en el servidor
+  const dueno = cual === 'cuenta' && !!dc && String(dc.id) === DUENO;
   const todas = gs.flatMap((g) => g[1]);
   // verificarse no está en la lista: se llega desde la tarjeta de arriba (y desde el botón del bot)
   const extra = cual === 'cuenta' && parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : null;
@@ -659,7 +661,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
   if (enTarjetas) {
     return (
       <div className="cu tarjetas">
-        <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1></div>
+        <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1>{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
         {cual === 'cuenta' ? <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div> : null}
         <div className="cu-tarjetas">
           {cartas.map((c) => (
@@ -675,7 +677,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
   }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
-      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : (cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta')}</h1></div>
+      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : (cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta')}</h1>{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
       <div className="cu-g2">
         <aside className="cu-lado">
           {cual === 'cuenta' ? <Quien liga={liga} dc={dc} /> : null}

@@ -644,8 +644,6 @@ def armar():
         'actividad': _actividad(regs),
         # 🔑 CUÁNTA GENTE TIENE LA LIGA. Ver `_comunidad()`.
         'comunidad': _comunidad(),
-        # 📊 Y CUÁNTA USA EL BOT Y LA PÁGINA (Dlx, 04/10/2026). Ver `_uso()`.
-        'uso': _uso(),
         # 🔑 LAS NOVEDADES SON LO DE LA LIGA EN DRA, y el feed las REDES.
         # Dlx, 25/09/2026: «lo último de la liga que sea como novedades,
         # información», y las redes en grande aparte, arriba del top 5.
@@ -1628,21 +1626,6 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                     **({'mod': i['mod']} if i.get('mod') else {}),
                     **({'ct': 1} if i.get('ct') else {})})
     return out
-
-
-def _uso():
-    """📊 Cuánta gente usó el bot y la página: sólo números, del vigía (`usoResumen()` de bot/avisos.js).
-
-    Dlx, 04/10/2026: *«en stats mostrá cuántas personas usaron o interactuaron con el bot… para ver cuántos están
-    enganchados con el bot y la página web»*. Sin red o sin el dato, None: la página no dibuja la fila.
-    """
-    try:
-        import requests
-        r = requests.get(VIGIA + '/avisos/estado', timeout=20)
-        u = (r.json() or {}).get('uso') if r.ok else None
-    except Exception:                                    # noqa: BLE001
-        return None
-    return u if isinstance(u, dict) and isinstance(u.get('semana'), dict) else None
 
 
 #: 🔴 lo que se canceló con el anuncio en pie: ver `_cancelados()`

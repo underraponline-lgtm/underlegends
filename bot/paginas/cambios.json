@@ -14,13 +14,12 @@
    "version": "2.25",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T11:40:00-04:00",
-   "titulo": "Cuánta gente usa la Liga, y un /card más claro",
+   "titulo": "Un /card más claro",
    "items": [
-    "📊 **«La Liga en números» cuenta cuánta gente usa el bot y la página** esta semana: cuántos usaron el bot, cuántos entraron con su cuenta y cuántas visitas por día. Sólo números, nunca quién.",
     "🃏 **/card dice lo que importa**: las tarjetas son de quienes juegan. Si todavía no jugaste, te lo dice y te lleva a los próximos eventos.",
     "🙋 **Elegirte a vos mismo en /card ya no te contesta como si fueras otro.**",
     "🚪 **El menú de la tarjeta de Servidor muestra sólo los servidores de la Liga.**",
-    "📄 **La privacidad cuenta cómo se cuenta**: tu ID con el día, una vez por día, 35 días; las visitas sin cuenta, sin guardar nada tuyo."
+    "📄 **La privacidad cuenta cómo contamos cuánta gente usa el bot y la página**: tu ID con el día, una vez por día, 35 días, y las visitas sin cuenta sin guardar nada tuyo. El número lo ve sólo el dueño de la Liga."
    ]
   },
   {

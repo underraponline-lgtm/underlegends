@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso } from './avisos.js';
+import { anotarUso, DUENO } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 export { Avisos };
@@ -2329,7 +2329,7 @@ async function guardarFoto(env, i, quien, id, hash) {
 // /owner y solo yo»*. `/settings` ya es lo de cada servidor; dos comandos
 // parecidos con alcances distintos es exactamente cómo alguien termina
 // tocando algo global creyendo que toca lo suyo.
-const DUENO = '739338101603696681';
+// 🔒 `DUENO` viene de avisos.js: el mismo para `/owner` y para el Dashboard
 
 // ⚠️ `default_member_permissions` NO ES EL CANDADO: ES LA CORTINA. Esconde el
 // comando de la lista a quien no es admin y nada más — en un mensaje directo

@@ -5516,8 +5516,9 @@ function urlLogin(modo) {
   // billetera), 'd' verificarse (pide `guilds.join`: el bot te mete en DRA),
   // 'p' felicitar en Publicaciones, o entrar
   var conRedes = modo === true || modo === 'r';
+  // 'o' el Dashboard del dueño (04/10/2026): vuelve a /dashboard
   var st = (conRedes ? 'r' : modo === 'v' || modo === 'f' || modo === 'e' || modo === 't' || modo === 'd' ||
-    modo === 'p' ? modo : 'i') +
+    modo === 'p' || modo === 'o' ? modo : 'i') +
     Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('lg:estado', st); } catch (e) { /* sin sesión: igual anda */ }
   return 'https://discord.com/oauth2/authorize?client_id=' + DC_APP + '&response_type=token' +
@@ -5727,7 +5728,7 @@ function volverDeDiscord() {
   // 🔑 Y QUIEN VINO A ENTRAR, A CAMBIAR SU FOTO O A ELEGIR SUS REDES VUELVE A MI CUENTA (02/10/2026), no a una
   // ventana encima del Inicio: ver `nuevaCuenta()`
   var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
-  var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'v' ? 'avisos'
+  var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'o' ? 'dashboard' : modo0 === 'v' ? 'avisos'
     : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
   try { history.replaceState(null, '', urlDe(destino)); } catch (e) { location.hash = destino; }

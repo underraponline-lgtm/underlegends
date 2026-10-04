@@ -2108,3 +2108,19 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .ti-dos .ti-lista,.app .ti-dos .ti-busca{max-width:none}
   .app .pa-cab{min-height:calc(100vh - 300px);min-height:calc(100svh - 300px);padding-bottom:56px}
 }
+
+/* 🔒 el Dashboard del dueño (dashboard.jsx, 04/10/2026) */
+.db .act{margin-top:18px}
+.db-dias{display:grid;gap:10px}
+.db-serie{display:grid;grid-template-columns:110px 1fr 70px;align-items:end;gap:10px}
+.db-t{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.db-serie em{font-style:normal;font-size:12px;text-align:right;opacity:.75}
+.db-barras{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;height:56px;align-items:end}
+.db-barras i{height:100%;display:flex;align-items:flex-end;background:rgba(127,127,127,.12)}
+.db-barras u{display:block;width:100%;min-height:2px}
+.db-fechas{display:flex;justify-content:space-between;font-size:11px;opacity:.6;padding-left:120px;padding-right:80px}
+.db-sis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 16px;margin:0}
+.db-sis div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(127,127,127,.2);padding:6px 0}
+.db-sis dt{opacity:.75}
+.db-sis dd{margin:0;font-weight:700;text-align:right}
+@media (max-width:560px){.db-serie{grid-template-columns:80px 1fr 56px}.db-fechas{padding-left:90px;padding-right:62px}}

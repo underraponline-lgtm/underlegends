@@ -102,11 +102,13 @@ def _hash(datos, ruta):
 
 
 def dueno_distinto():
-    """El texto del problema si el dueño de `mapa.js` no es el de `worker.js`; `''` si coinciden.
+    """El texto del problema si el dueño de `mapa.js` o de la página no es el de `avisos.js`; `''` si coinciden.
 
     🗺️ El mapa en vivo (`paginas/mapa.html`, Dlx 29/09/2026) sólo se muestra
-    si la página dice que entró Dlx, y su ID vive en `bot/worker.js`
-    (`DUENO`). La página no puede leer ese archivo, así que lleva una copia:
+    si la página dice que entró Dlx, y su ID vive en `bot/avisos.js`
+    (`DUENO`; estaba en worker.js hasta el 04/10/2026, cuando nació el
+    Dashboard del dueño, que lo usa el objeto). La página nueva lleva otra
+    copia en `web/src/liga.js`, para el atajo de Mi cuenta. La página no puede leer ese archivo, así que lleva una copia:
     acá se compara antes de subir, para que un cambio de un lado no deje el
     mapa mostrándose a otro —o a nadie— sin avisar.
     """
@@ -115,14 +117,14 @@ def dueno_distinto():
         with io.open(ruta, encoding='utf-8') as f:
             m = re.search(r"(?:var|const) DUENO = '(\d+)'", f.read())
         return m.group(1) if m else None
-    w = uno(os.path.join(SCR, 'worker.js'))
-    p = os.path.join(SITIO, 'mapa.js')
-    if not os.path.exists(p):
-        return ''
-    m = uno(p)
-    if not w or not m or w != m:
-        return ('🔴 el DUENO de paginas/mapa.js (%s) no es el de bot/worker.js (%s): '
-                'no subo la página' % (m, w))
+    w = uno(os.path.join(SCR, 'avisos.js'))
+    for p in (os.path.join(SITIO, 'mapa.js'), os.path.join(BASE, 'web', 'src', 'liga.js')):
+        if not os.path.exists(p):
+            continue
+        m = uno(p)
+        if not w or not m or w != m:
+            return ('🔴 el DUENO de %s (%s) no es el de bot/avisos.js (%s): '
+                    'no subo la página' % (os.path.relpath(p, BASE), m, w))
     return ''
 
 

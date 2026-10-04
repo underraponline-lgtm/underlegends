@@ -1168,6 +1168,8 @@ const RUTAS = {
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
   '/avisos/visita': 'POST',
+  // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
+  '/avisos/dueno': 'POST',
   // 🙈 «ocultar mi foto»: en Mi cuenta → Privacidad. Ver `miFoto()`
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
@@ -1550,6 +1552,9 @@ export function validarPrecio(cfg, d, id, ahora) {
 // sus Puntos de Tienda, su voto, sus avisos—. `/oauth2/@me` dice de qué app es el permiso, y trae al usuario.
 // ⚠️ Es el mismo número que `DC_APP` de bot/paginas/app.js (el `client_id` del login): público, no un secreto
 export const APP_ID = '1550026808404217926';
+// 🔒 EL DUEÑO DE LA LIGA: su Discord ID. Abre el Dashboard (`/avisos/dueno`) y los comandos `/owner`. Es público —es
+// un ID— y vive acá para que el Worker y el objeto lean el mismo
+export const DUENO = '739338101603696681';
 // 🛡️ LOS PERMISOS INVENTADOS NO LLEGAN A DISCORD (04/10/2026, la lista de seguridad de Dlx). Cada permiso falso era un
 // 401 de Discord, y Discord bloquea un rato la IP que junta muchos (10.000 en 10 minutos): con el vigía, los apodos y
 // verificar saliendo por las mismas IPs de Cloudflare, un script con permisos al azar podía dejar mudo al bot. Dos
@@ -1954,6 +1959,25 @@ export async function rutaAvisos(req, env, ruta) {
       : json({ error: 'los avisos todavía no tienen clave' }, 503);
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
+  // 🔒 EL DASHBOARD DEL DUEÑO (Dlx, 04/10/2026: «una página nueva creada sólo para el owner… la única manera de iniciar
+  // sesión ahí es con mi cuenta»). Quién es lo dice Discord o la sesión —nunca la página—, y si no es Dlx no se
+  // contesta nada: ni qué habría. El 403 queda en los registros
+  if (ruta === '/avisos/dueno') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] el Dashboard lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: '{}', headers: { 'content-type': 'application/json' } });
+  }
   // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
   if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
     headers: { 'content-type': 'application/json' } });
@@ -2550,6 +2574,7 @@ export class Avisos {
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/uso') return this.usoAnotar(d);
       if (ruta === '/visita') return this.visita();
+      if (ruta === '/dueno') return json(this.dueno());
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
@@ -4728,6 +4753,29 @@ export class Avisos {
     };
   }
 
+  /** 🔒 Lo del Dashboard del dueño: el uso (la semana y día por día) y cómo anda todo. Sólo lo pide `/avisos/dueno`,
+   *  que ya comprobó que es Dlx. Números, nunca quién */
+  dueno() {
+    const ahora = Date.now();
+    const dias = [];
+    for (let i = 13; i >= 0; i--) {
+      const dia = diaET(ahora - i * DIA_MS);
+      const c = (por) => this.sql.exec('SELECT COUNT(*) AS n FROM uso WHERE dia = ? AND por = ?', dia, por).toArray()[0].n;
+      const v = this.sql.exec('SELECT n FROM visitas WHERE dia = ?', dia).toArray()[0];
+      dias.push({ dia, bot: c('bot'), web: c('web'), visitas: v ? v.n : 0 });
+    }
+    const e = this.estado();
+    return {
+      uso: this.usoResumen(),
+      dias,
+      sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
+      sistema: {
+        ok: e.ok, vigia: (this.leer('vigia') || {}).t || null, suscripciones: e.suscripciones, ultimas_24h: e.ultimas_24h,
+        ultimo: e.ultimo, disparador: e.disparador, ultimo_error: e.ultimo_error,
+      },
+    };
+  }
+
   estado() {
     const ahora = Date.now();
     const v = this.leer('vigia') || {};
@@ -4784,8 +4832,6 @@ export class Avisos {
         detalle: fallo.detalle || [] } : null,
       ok: !!v.t && ahora - v.t < 5 * MIN && !(v.errores || []).length,
       cron: CRON_VIGIA,
-      // 📊 cuánta gente usó el bot y la página: sólo números, nunca quién (ver `usoResumen()`)
-      uso: this.usoResumen(),
       // 🔑 EL DISPARADOR DEL CICLO: cuándo arrancó y cómo le fue al último
       // intento. Lo lee `bot/alertar.py`. Ver `marcarDisparo()`.
       disparador: {

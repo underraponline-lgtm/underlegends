@@ -25,6 +25,8 @@ const Pase = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Pase })
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
+// 🔒 el Dashboard del dueño (04/10/2026): perezoso, y la puerta la pone el servidor (ver dashboard.jsx)
+const Dashboard = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.Dashboard })));
 const PaginaVerificar = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.PaginaVerificar })));
 const Cambios = lazy(() => import('./cambios.jsx').then((m) => ({ default: m.Cambios })));
 const PerfilSv = lazy(() => import('./servidor.jsx').then((m) => ({ default: m.PerfilSv })));
@@ -327,7 +329,7 @@ export default function App() {
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())
-      : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : '';
+      : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : pagina === 'dashboard' ? 'Dashboard' : '';
     if (!t) return undefined;
     const poner = () => { document.title = t + ' · Liga Global de Freestyle'; };
     poner();
@@ -392,6 +394,7 @@ export default function App() {
         : pagina === 'ranking' || pagina === 'duelos' ? <Aislada key="Ranking" n="Ranking" pagina><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada>
         : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada> : <>
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>

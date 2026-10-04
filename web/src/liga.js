@@ -2,6 +2,10 @@
 // Es la traducción de la clase `Liga` de docs/remake/reales.py, el prototipo que se miró con Dlx: si una regla cambia
 // allá, cambia acá.
 
+// 🔒 el Discord ID del dueño de la Liga (público: es un ID). Sólo muestra el atajo al Dashboard; quién entra lo decide
+// el servidor (`DUENO` de bot/avisos.js, el mismo número)
+export const DUENO = '739338101603696681';
+
 export const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 export const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre',
   'octubre', 'noviembre', 'diciembre'];

@@ -2749,5 +2749,42 @@ console.log('\n«TU SERVIDOR»\n');
   delete PUESTO['d:' + VIEJO];
 }
 
+
+console.log('\n«EL DASHBOARD DEL DUEÑO»\n');
+{
+  // 🔒 Dlx, 04/10/2026: «la única manera de iniciar sesión ahí es con mi cuenta». La puerta es el servidor
+  const { DUENO } = await import('./avisos.js');
+  const SES_D = 'g'.repeat(43), SES_O = 'h'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/quien')) {
+      return b && b.ses === SES_D ? new Response(JSON.stringify({ quien: DUENO }), { status: 200 })
+        : b && b.ses === SES_O ? new Response(JSON.stringify({ quien: '562063579545600007' }), { status: 200 })
+          : new Response('{"error":"no"}', { status: 404 });
+    }
+    return new Response('{"uso":{"semana":{}},"dias":[],"sistema":{}}', { status: 200 });
+  } }) };
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedirD = async (ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/dueno', { method: 'POST', body: '{}',
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedirD(SES_D);
+  ok('el dueño entra: llega al objeto y vuelve lo del Dashboard', r.status === 200 && !!r.json.uso &&
+     alObjeto.some(([u]) => u.endsWith('/dueno')));
+  alObjeto.length = 0;
+  r = await pedirD(SES_O);
+  ok('otra cuenta: 403 y no llega al objeto', r.status === 403 && r.json.error === 'no' && !alObjeto.some(([u]) => u.endsWith('/dueno')));
+  r = await pedirD();
+  ok('sin sesión: 401 y no llega al objeto', r.status === 401 && !alObjeto.some(([u]) => u.endsWith('/dueno')));
+  // (que el estado público no trae el uso se prueba sobre el objeto de verdad: acá el objeto es de mentira)
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

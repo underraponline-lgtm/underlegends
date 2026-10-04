@@ -337,28 +337,6 @@ export function TuTemporada({ liga, dc }) {
 }
 // ¿hubo al menos una participación en las dos semanas de «Lo que se jugó»?
 const jugoAlgo = (a) => (a.dias || []).some(([, x]) => Object.values(x || {}).some((n) => n > 0));
-// ── 📊 el bot y la página, esta semana (Dlx, 04/10/2026: «para ver cuántos están enganchados con el bot y la página
-// web»). Personas distintas en 7 días; las visitas, navegadores por día. Sin nada contado todavía no se dibuja, y la
-// comparación con la semana anterior aparece recién cuando hay una semana anterior ──
-const usoHay = (u) => !!(u && u.semana && (u.semana.personas || u.semana.visitas_dia));
-function Uso({ u }) {
-  const s = u.semana, a = u.anterior || {};
-  const antes = (x, y) => ((a.dias || 0) >= 7 && y != null ? (x >= y ? '+' : '') + num(x - y) + ' contra la anterior' : null);
-  const cajas = [
-    ['USARON EL BOT', s.bot, antes(s.bot, a.bot) || 'personas distintas'],
-    ['CON SU CUENTA', s.web, antes(s.web, a.web) || 'entraron a la página con Discord'],
-    ['EN TOTAL', s.personas, antes(s.personas, a.personas) || 'en el bot o en la página'],
-    ['VISITAS POR DÍA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) || 'navegadores, en promedio'],
-  ];
-  const desde = u.desde && (s.dias || 0) < 7 ? 'Se cuenta desde el ' + Number(u.desde.slice(8, 10)) + '/' + Number(u.desde.slice(5, 7)) : '';
-  return (
-    <section className="act">
-      <div className="mis-cab"><span>EL BOT Y LA PÁGINA · 7 DÍAS</span>{desde ? <em>{desde}</em> : null}</div>
-      <div className="act-4">{cajas.map(([t, v, d]) => <div key={t}><span>{t}</span><b>{num(v || 0)}</b><small>{d}</small></div>)}</div>
-    </section>
-  );
-}
-
 function Numeros({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
@@ -399,7 +377,6 @@ function Numeros({ liga }) {
           </section>
         ) : null}
       </div>
-      {usoHay(liga.d.uso) ? <Uso u={liga.d.uso} /> : null}
       {(liga.d.records || []).length ? (
         <section className="rec">
           <div className="mis-cab"><span>LOS RÉCORDS DE LA {liga.temp}</span></div>
@@ -425,7 +402,7 @@ export function Panel({ liga }) {
 export function LaLiga({ liga }) {
   const c = liga.d.comunidad || {};
   const a = liga.d.actividad || {};
-  const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length || usoHay(liga.d.uso);
+  const hay = c.personas || c.lista || c.con_id || c.verificados || jugoAlgo(a) || (liga.d.records || []).length;
   if (!hay) return null;
   return <Sec id="numeros" titulo="La Liga en números" enlace="Socios" href="#/socios"><Numeros liga={liga} /></Sec>;
 }

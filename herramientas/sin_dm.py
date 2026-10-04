@@ -17,7 +17,7 @@ que arranca— sale **sólo** como notificación de la página (Web Push, ver
 ⚠️ HOY SON DOS, Y LOS DOS SON A DLX:
 
 - `bot/alertar.py` `dm()`: las alertas del ciclo, a `dueno()`, que lee la
-  constante `DUENO` de `bot/worker.js`.
+  constante `DUENO` (de `bot/avisos.js` desde el 04/10/2026; antes vivía en worker.js).
 - `bot/avisos.js` `avisarDueno()`: el resultado de SU «probando», a
   `this.dueno`, que es la misma `DUENO` pasada por el cron del vigía.
 
