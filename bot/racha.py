@@ -19,11 +19,12 @@ LAS REGLAS (los números, acá arriba)
 - **El nivel** sube con la experiencia (Dlx: *«A y B»*): `XP_EVENTO` por cada evento jugado y `XP_DIA` por cada
   día que contó. Para llegar al nivel N hacen falta `PASO · N · (N − 1)` puntos: 20 el 2, 60 el 3, 200 el 5,
   900 el 10. Las misiones van a sumar acá cuando existan.
-- **Arrancan en cero con la temporada**: lo de la prueba no cuenta (`desde`, el arranque de
-  `comun/temporada.py`). El nivel NO se reinicia en las temporadas siguientes: mide qué tan antiguo sos.
+- **Arrancan en cero con la T1**: lo de la prueba no cuenta (`origen()`, el arranque de la T1 en
+  `comun/temporada.py`). Ni la racha ni el nivel se reinician en las temporadas siguientes: el nivel mide qué tan
+  antiguo sos. Por eso los eventos viajan con su temporada (`temp`) y el objeto guarda los de cada una.
 
 DÓNDE VIVE CADA COSA
-- Los días, la racha, el premio y el nivel: el Durable Object de `bot/avisos.js` (tablas `activo` y `jugado`).
+- Los días, la racha, el premio y el nivel: el Durable Object de `bot/avisos.js` (tablas `activo` y `jugo_temp`).
   El cálculo es `rachaDeDias()` y `nivelDeXp()`, y los números le llegan de acá (`config()`).
 - Quién jugó qué días: lo arma `jugo()` en cada corrida y viaja con lo del precio por cabeza
   (`precios:resolucion`, `precios.para_objeto()`): ENTERO cada vez, así una llave corregida corrige los días.
@@ -52,10 +53,24 @@ PASO = 10
 ET = ZoneInfo('America/New_York')
 
 
-def config(desde=None):
-    """Lo que lee el objeto: los números y desde cuándo cuenta (ms, 0 en la prueba)."""
+def origen(ahora=None):
+    """Desde cuándo cuentan la racha y el nivel: el arranque de la T1, la primera de verdad; `None` en la prueba.
+
+    ⚠️ ES EL DE LA T1 Y NO EL DE LA TEMPORADA EN CURSO: con el de la T2 los niveles volverían a cero, y miden qué tan
+    antiguo sos. Lo único que se descarta es la prueba.
+    """
+    from comun.temporada import arranque
+    a = arranque('t1')
+    a = dt.datetime.fromisoformat(a) if a else None
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    return a if a and a <= ahora else None
+
+
+def config(desde=None, temp='prueba'):
+    """Lo que lee el objeto: los números, desde cuándo cuentan (ms, 0 en la prueba) y de qué temporada son los
+    eventos que viajan (`temp`: el objeto los guarda por temporada y el nivel los suma todos)."""
     return {'cada': CADA, 'premio': PREMIO, 'xp_ev': XP_EVENTO, 'xp_dia': XP_DIA, 'paso': PASO,
-            'desde': int(desde.timestamp() * 1000) if desde else 0}
+            'desde': int(desde.timestamp() * 1000) if desde else 0, 'temp': temp or 'prueba'}
 
 
 def _gente(ev):
@@ -132,8 +147,12 @@ def _self_check():
     ok(j2['111'][1] == 2 and '2026-09-20' not in j2['111'][2], 'lo de antes del arranque no cuenta')
     ok([xp_para(n) for n in (1, 2, 3, 5, 10)] == [0, 20, 60, 200, 900], 'la escalera de los niveles')
     ok((nivel(0), nivel(19), nivel(20), nivel(899), nivel(900)) == (1, 1, 2, 9, 10), 'el nivel de cada experiencia')
-    c = config(dt.datetime(2026, 10, 12, 4, 0, tzinfo=utc))
-    ok(c['desde'] == 1791777600000 and c['cada'] == CADA and config()['desde'] == 0, 'la configuración que viaja')
+    c = config(dt.datetime(2026, 10, 12, 4, 0, tzinfo=utc), 't1')
+    ok(c['desde'] == 1791777600000 and c['cada'] == CADA and c['temp'] == 't1' and config()['desde'] == 0
+       and config()['temp'] == 'prueba', 'la configuración que viaja')
+    ok(origen(dt.datetime(2026, 10, 1, tzinfo=utc)) is None
+       and origen(dt.datetime(2027, 2, 1, tzinfo=utc)) == dt.datetime(2026, 10, 12, 4, 0, tzinfo=utc),
+       'el origen es el arranque de la T1, también en la T2: el nivel no vuelve a cero')
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas
 

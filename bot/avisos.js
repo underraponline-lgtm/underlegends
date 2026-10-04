@@ -2610,10 +2610,14 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
       // cuenta o un evento jugado; el día, nunca la hora) y, de los que jugaron, su perfil y cuántos eventos
-      // (`jugado`, que manda el ciclo entero). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
+      // (`jugo_temp`, por temporada, que manda el ciclo). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
       this.sql.exec('CREATE TABLE IF NOT EXISTS activo (quien TEXT NOT NULL, dia TEXT NOT NULL, ' +
         'PRIMARY KEY (quien, dia)) WITHOUT ROWID');
-      this.sql.exec('CREATE TABLE IF NOT EXISTS jugado (quien TEXT PRIMARY KEY, k TEXT NOT NULL, eventos INTEGER NOT NULL)');
+      // ⚠️ POR TEMPORADA (`jugo_temp`), no una fila por persona: el ciclo manda los eventos de la temporada en curso,
+      // y el nivel no se reinicia. `jugado` fue la primera versión (una hora de vida, el 04/10): se borra
+      this.sql.exec('DROP TABLE IF EXISTS jugado');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS jugo_temp (quien TEXT NOT NULL, temp TEXT NOT NULL, k TEXT NOT NULL, ' +
+        'eventos INTEGER NOT NULL, PRIMARY KEY (quien, temp)) WITHOUT ROWID');
       // 🔑 SEGUIR RAPEROS (28/09/2026): quién (Discord ID) sigue a qué perfil
       // (la clave de `#/r/`), desde cuándo, cuál es su propio perfil (`de`,
       // para no avisarle de sí mismo) y cuándo se creó su cuenta de Discord
@@ -4077,7 +4081,7 @@ export class Avisos {
     this.sql.exec('DELETE FROM servidor WHERE quien = ?', String(d.quien));
     // 🔥 y los días de su racha y lo que jugó: también van con su Discord ID
     this.sql.exec('DELETE FROM activo WHERE quien = ?', String(d.quien));
-    this.sql.exec('DELETE FROM jugado WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM jugo_temp WHERE quien = ?', String(d.quien));
     // 🙈 y si había ocultado su foto: también es un dato suyo (y la lista del ciclo se rehace sin él)
     if (this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', String(d.quien)).rowsWritten) await this.espejarOcultas();
     // 🔑 Y SUS REPORTES, y la cola de KV sin ellos: van con su Discord ID
@@ -4761,15 +4765,16 @@ export class Avisos {
         cambios++;
       }
     }
-    // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). `jugado` llega ENTERO y se reemplaza; los
-    // días se suman, y uno que ya contó no se borra
+    // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). Lo de la temporada en curso llega ENTERO y se
+    // reemplaza (sólo esa temporada); los días se suman, y uno que ya contó no se borra
     if (r.rcfg && typeof r.rcfg === 'object') this.guardar('racha_cfg', r.rcfg);
     if (r.jugo && typeof r.jugo === 'object') {
-      this.sql.exec('DELETE FROM jugado');
+      const temp = String((r.rcfg && r.rcfg.temp) || 'prueba').slice(0, 20);
+      this.sql.exec('DELETE FROM jugo_temp WHERE temp = ?', temp);
       for (const [quien, x] of Object.entries(r.jugo)) {
         if (!/^[0-9]{5,25}$/.test(quien) || !Array.isArray(x)) continue;
         const ev = Number.isInteger(x[1]) && x[1] > 0 ? x[1] : 0;
-        this.sql.exec('INSERT OR REPLACE INTO jugado (quien, k, eventos) VALUES (?, ?, ?)', quien,
+        this.sql.exec('INSERT OR REPLACE INTO jugo_temp (quien, temp, k, eventos) VALUES (?, ?, ?, ?)', quien, temp,
           String(x[0] || '').slice(0, 60), ev);
         for (const dia of Array.isArray(x[2]) ? x[2].slice(0, 400) : []) {
           if (/^\d{4}-\d{2}-\d{2}$/.test(String(dia))) {
@@ -4959,8 +4964,10 @@ export class Avisos {
     const dias = this.sql.exec('SELECT dia FROM activo WHERE quien = ? AND dia >= ? ORDER BY dia', quien, desde)
       .toArray().map((x) => x.dia);
     const r = rachaDeDias(dias, diaET());
-    const j = this.sql.exec('SELECT eventos FROM jugado WHERE quien = ?', quien).toArray()[0];
-    const eventos = j ? j.eventos : 0;
+    // los eventos de todas las temporadas; los de la prueba, sólo mientras dura la prueba (`desde` en 0)
+    const j = this.sql.exec("SELECT COALESCE(SUM(eventos), 0) AS n FROM jugo_temp WHERE quien = ? AND (temp != 'prueba' OR ? = 0)",
+      quien, Number(c.desde) || 0).toArray()[0];
+    const eventos = j ? j.n : 0;
     return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia, c.paso),
       cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia };
   }
@@ -4984,7 +4991,9 @@ export class Avisos {
   /** 🔥 Para la página: `{k: [nivel, racha]}` de los que jugaron. La clave es la del perfil: nunca el Discord ID */
   niveles() {
     const out = {};
-    for (const { quien, k } of this.sql.exec('SELECT quien, k FROM jugado').toArray()) {
+    // la clave de su perfil: la de la temporada más nueva en que jugó
+    for (const { quien, k } of this.sql.exec('SELECT quien, k FROM jugo_temp j1 WHERE temp = ' +
+      '(SELECT MAX(temp) FROM jugo_temp j2 WHERE j2.quien = j1.quien)').toArray()) {
       if (!k) continue;
       const x = this.rachaDe(quien);
       out[k] = [x.nivel.n, x.racha.actual];

@@ -332,7 +332,10 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         import racha as RA
         import divisiones as DV
         dids = discords(pool)
-        _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, a), RA.config(a), DV.tienda(DV.leer(), dids)),
+        import multiplicadores as MU
+        o = RA.origen(ahora)
+        _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, o), RA.config(o, MU.temporada_actual(ahora)),
+                           DV.tienda(DV.leer(), dids)),
                CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados y las subidas de división')
     return out
 
