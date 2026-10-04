@@ -1278,6 +1278,39 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
     return filas, dudas, sabidas
 
 
+def _otros_por_servidor():
+    """`{sv: {nombre normalizado: persona}}` de `datos/akas_a_mano.json` (`por_servidor`). `{}` si no hay."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
+            ps = (json.load(f) or {}).get('por_servidor') or {}
+    except (OSError, ValueError):
+        return {}
+    return {sv: {E.norm(a): r for a, r in (m or {}).items() if E.norm(a)} for sv, m in ps.items()}
+
+
+def otro_en_servidor(filas, sv, mapa=None):
+    """Las filas de un evento de `sv` con los nombres que EN ESE SERVIDOR son otra persona que la de la Lista.
+
+    🔑 Dlx, 03/10/2026 («8. A» y «9. A»): en DDF, «CARLOS🇪🇨» es Carlosss —@carlosss.mc23, ecuatoriano, dueño de DDF—
+    y no el Carlos 🇲🇽 de la Lista, que ni está en ese servidor; «NUMBER🇻🇪» es Number VE y no Number 🇺🇾. El lector
+    los juntaba porque el nombre coincide: el Carlos mexicano se llevaba 20.000 puntos de dos campeonatos ajenos.
+    Lo decide Dlx y vive en `akas_a_mano.json` (`por_servidor`); se compara el nombre sin bandera, también adentro de
+    un equipo. Como el ciclo reprocesa la temporada entera, los eventos viejos se corrigen en la corrida siguiente.
+    """
+    m = (_otros_por_servidor() if mapa is None else mapa).get(sv) or {}
+    if not m:
+        return filas
+
+    def cambia(x):
+        partes = re.split(r'(\s*[,+&]\s*)', str(x or ''))
+        return ''.join(p if i % 2 else m.get(E.norm(p), p) for i, p in enumerate(partes))
+    for f in filas:
+        for k in ('ladoA', 'ladoB', 'ganador'):
+            if f.get(k):
+                f[k] = cambia(f[k])
+    return filas
+
+
 def marcar_cobra(filas, decidir=None):
     """La ronda que alguien GANÓ y después no siguió, si Dlx dijo que la cobra: `cobra: <nombre>` en esa batalla.
 
@@ -2729,7 +2762,15 @@ def _self_check():
     _fnf, _dnf, _ = filas_de({'texto': _nf, 'guild': '1468472442925092958', 'servidor': 'FFA',
                               'fecha': '02/05'}, nombre='NAVE', fecha='02/05')
     _fase = [f for f in _fnf if f['ronda'] == 'fase de eliminación']
+    # 🔑 el nombre que en ESE servidor es otra persona (Carlosss y Number VE en DDF, 03/10/2026)
+    _fo = [{'ladoA': 'CARLOS🇪🇨', 'ladoB': 'NUMBER🇻🇪, Xplicit', 'ganador': 'CARLOS🇪🇨', 'notas': ''}]
+    _mo = {'DDF': {'carlos': 'Carlosss', 'number': 'Number VE'}}
+    _fo_ddf = otro_en_servidor([dict(f) for f in _fo], 'DDF', mapa=_mo)
+    _fo_ffa = otro_en_servidor([dict(f) for f in _fo], 'FFA', mapa=_mo)
     casos = [
+        ('en DDF, CARLOS es Carlosss y NUMBER es Number VE (también dentro de un equipo); en FFA, nadie cambia',
+         (_fo_ddf[0]['ladoA'], _fo_ddf[0]['ladoB'], _fo_ddf[0]['ganador']) == ('Carlosss', 'Number VE, Xplicit', 'Carlosss')
+         and _fo_ffa[0]['ladoA'] == 'CARLOS🇪🇨'),
         ('ganó su octavo y no siguió: con la decisión de Dlx, su batalla dice «cobra: Geoka» y nada más cambia',
          _fc_si[0]['notas'] == 'triple (3 bandas); cobra: Geoka 🇦🇷' and _fc_si[1]['notas'] == ''
          and not any('cobra' in f['notas'] for f in _fc_no)),
@@ -3189,6 +3230,8 @@ def main():
             equipos_inf += _inf
             # quien ganó su ronda y no siguió, si Dlx dijo que la cobra (Geoka, 02/10/2026)
             limpias = marcar_cobra(limpias)
+            # y el nombre que en ESE servidor es otra persona (Carlosss y Number VE en DDF): ver `otro_en_servidor()`
+            limpias = otro_en_servidor(limpias, codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0])
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
