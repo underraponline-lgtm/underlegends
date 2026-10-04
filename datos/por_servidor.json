@@ -58,12 +58,12 @@
   },
   "ARDEAN": {
    "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
+    "duelos": "2/5",
+    "ev": 2,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 0,
-    "pts": 2500,
+    "pts": 4375,
     "racha": "0/0"
    }
   },
@@ -1748,11 +1748,11 @@
   "LRS": {
    "FFA": {
     "duelos": "1/2",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 55,
+    "ovr": 56,
     "pod": 0,
-    "pts": 5168,
+    "pts": 6168,
     "racha": "0/0"
    }
   },
@@ -2101,13 +2101,13 @@
   },
   "Majiztral": {
    "FFA": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 48,
-    "pod": 0,
-    "pts": 3094,
-    "racha": "0/0"
+    "duelos": "3/3",
+    "ev": 3,
+    "oro": 1,
+    "ovr": 63,
+    "pod": 1,
+    "pts": 6844,
+    "racha": "1/1"
    },
    "URBF": {
     "duelos": "2/4",
@@ -3231,6 +3231,17 @@
     "racha": "0/0"
    }
   },
+  "Spray Lirical 🇨🇴": {
+   "FFA": {
+    "duelos": "0/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0"
+   }
+  },
   "Steven🇨🇴": {
    "URBF": {
     "duelos": "1/2",
@@ -3430,13 +3441,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "5/12",
-    "ev": 14,
+    "duelos": "5/13",
+    "ev": 15,
     "oro": 0,
-    "ovr": 71,
+    "ovr": 72,
     "pod": 3,
-    "pts": 32438,
-    "racha": "1/2"
+    "pts": 34188,
+    "racha": "0/2"
    },
    "SR": {
     "duelos": "",
@@ -3536,13 +3547,13 @@
   },
   "Xubaru": {
    "FFA": {
-    "duelos": "1/2",
-    "ev": 2,
+    "duelos": "3/5",
+    "ev": 3,
     "oro": 0,
-    "ovr": 57,
-    "pod": 1,
-    "pts": 7000,
-    "racha": "0/1"
+    "ovr": 61,
+    "pod": 2,
+    "pts": 9500,
+    "racha": "1/1"
    }
   },
   "Yeyox": {

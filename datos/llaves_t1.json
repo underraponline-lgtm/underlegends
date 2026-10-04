@@ -9467,5 +9467,123 @@
     1250
    ]
   ]
+ },
+ "394": {
+  "dia": "2026-10-04",
+  "escala": "8-15",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556387537801453679"
+  ],
+  "n": 394,
+  "nombre": "COPA SOOLAR",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "ARDEAN"
+      ],
+      "Majiztral",
+      "Revivido: Ardean 🇵🇪"
+     ],
+     [
+      [
+       "Velatz",
+       "Spray Lirical 🇨🇴",
+       "LRS"
+      ],
+      "Velatz",
+      "triple (3 bandas); Revivido: Spray Lirical 🇨🇴"
+     ],
+     [
+      [
+       "ARDEAN",
+       "Spray Lirical 🇨🇴"
+      ],
+      "ARDEAN",
+      ""
+     ],
+     [
+      [
+       "Xubaru",
+       "Spray Lirical 🇨🇴"
+      ],
+      "Xubaru",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Velatz"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Xubaru",
+       "ARDEAN"
+      ],
+      "Xubaru",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Xubaru"
+      ],
+      "Majiztral",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Majiztral",
+    "Campeón",
+    7500
+   ],
+   [
+    "Xubaru",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "ARDEAN",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Spray Lirical 🇨🇴",
+    "Cuartos",
+    3000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

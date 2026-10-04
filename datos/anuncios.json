@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-04T20:24:25+00:00",
+ "cuando": "2026-10-04T20:54:16+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3053,6 +3053,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1556406381404491860",
+   "cuando": "2026-10-04T20:43:17"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "DJ LA CABRA🇨🇱",
+   "quien": "djdv0018",
+   "discord_id": "1437545879920836699",
+   "msg_id": "1556404784163201235",
+   "cuando": "2026-10-04T20:36:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Zafkabeff🇻🇪",
+   "quien": "zafkabeff_31127",
+   "discord_id": "1541223297507926178",
+   "msg_id": "1556403652325806162",
+   "cuando": "2026-10-04T20:32:27"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
