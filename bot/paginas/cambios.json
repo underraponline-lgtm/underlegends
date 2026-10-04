@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.19",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T22:43:00-04:00",
+   "titulo": "Lo cancelado dice CANCELADO",
+   "items": [
+    "🚫 **Un evento que se canceló dice «CANCELADO»**, también cuando el anuncio quedó en pie y lo que se borró fue la llave (LA REDENCION). Antes decía «SIN LLAVE».",
+    "🔤 **Las siglas, iguales en todos lados**: los filtros y la leyenda de Eventos dicen SNK y URB, como el resto de la página.",
+    "🧾 **Cada uno con sus puntos en DDF**: Carlosss y Number VE ya no se confunden con Carlos y Number.",
+    "🤝 **«Sumá tu servidor» abierta para todos**, con lo que gana un servidor al sumarse."
+   ]
+  },
+  {
    "version": "2.18",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T21:57:00-04:00",

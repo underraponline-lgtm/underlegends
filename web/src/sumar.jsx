@@ -32,9 +32,7 @@ export const QUE_GANA = [
     ej: 'pagina', mas: 'Tu servidor tiene su página en la Liga: su gente, sus próximos eventos y sus llaves, su semana, sus redes y su invitación, para que quien lo descubre en la Liga llegue a tu Discord.', ir: '#/socios' },
 ];
 
-export function prevSum() {
-  try { return !!localStorage.getItem('lg:prev-sum'); } catch (e) { return false; }
-}
+// ✅ /sumate y las cajas con su ejemplo, publicadas (Dlx, 03/10/2026: «2. A 3. A 4. A»)
 
 // el ejemplo de una caja: la imagen, lo que es en detalle y adónde verlo. Con ← → se pasa a la de al lado
 function Ejemplo({ i, onCerrar, onIr }) {

@@ -1,0 +1,13 @@
+{
+ "_leeme": [
+  "Los eventos que se cancelaron con el anuncio en pie: les borraron la llave y no hubo otra, o lo dijo Dlx. El calendario de la página los muestra «CANCELADO» en vez de «SIN LLAVE». Lo escribe bot/subir_web._cancelados(); la clave es el id del mensaje del anuncio. Uno con su llave procesada nunca sale cancelado, y el automático (`auto`) se borra solo."
+ ],
+ "eventos": {
+  "1556069852311986196": {
+   "n": "LA REDENCION",
+   "por": "Dlx, 03/10/2026: «pinchó… se canceló a último minuto» y «la redención debería decir cancelado también»",
+   "sv": "FFA",
+   "t": "2026-10-03T22:26:03Z"
+  }
+ }
+}

@@ -359,18 +359,10 @@ export class Liga {
     // min después de la hora). El vigía anota las llaves borradas (`borradas` de `/api/avisos/vivo`, `VIVO_B` de
     // app.js): si la de este evento se borró hace 5 min o más y no hay otra, deja de estar en vivo. Los 5 min son para
     // el que la borra y la vuelve a publicar corregida
-    const bs = typeof window !== 'undefined' && Array.isArray(window.VIVO_B) ? window.VIVO_B : [];
-    const sinLlave = (e) => {
-      if (!bs.length || !window.llaveDeEvento) return false;
-      try {
-        const b = window.llaveDeEvento(e, bs);
-        return !!b && this.ahora - b.borrada >= 5 * 60000 && !window.llaveDeEvento(e, todas);
-      } catch (err) { return false; }
-    };
     const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
     const out = this.proximos().filter((e) => {
       const s = desde(e);
-      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !sinLlave(e);
+      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e);
     });
     (this.d.calendario || []).forEach((c) => {
       const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };
@@ -399,6 +391,20 @@ export class Liga {
       return { L, e: de(L), camp: R && R.b && R.b.length === 1 ? limpio(String(R.b[0][1] || '').split(/\s*,\s*/).join(' y ')) : '' };
     });
   }
+  // 🔴 SE BORRÓ SU LLAVE Y NO HUBO OTRA: EL EVENTO SE CANCELÓ (LA REDENCION, FFA, 03/10/2026, Dlx: «pinchó» y «la
+  // redención debería decir cancelado también»; decía «SIN LLAVE»). El vigía lo ve al minuto (`VIVO_B`, las últimas
+  // 6 h) y el ciclo lo guarda (`can` del calendario, de `datos/cancelados.json`, ver `_cancelados()` de
+  // bot/subir_web.py). Los 5 min son para el que la borra y la vuelve a publicar corregida
+  llaveBorrada(e) {
+    const bs = typeof window !== 'undefined' && Array.isArray(window.VIVO_B) ? window.VIVO_B : [];
+    if (!bs.length || !window.llaveDeEvento) return false;
+    try {
+      const b = window.llaveDeEvento(e, bs);
+      return !!b && this.ahora - b.borrada >= 5 * 60000 && !window.llaveDeEvento(e, Object.values(window.VIVO_L || {}));
+    } catch (err) { return false; }
+  }
+  // ⚠️ una del calendario con su llave procesada nunca: lo que se jugó, se jugó
+  canceladoCal(c) { return !!c && !c.ll && (!!c.can || this.llaveBorrada({ cuando: c.t, sv: c.sv, nombre: c.n })); }
   // en orden de hora: lo que suma el vigía va al final de la lista y puede ser lo primero que se juega
   luego() { return this.proximos().filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)).sort((a, b) => utc(a.cuando) - utc(b.cuando)); }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }

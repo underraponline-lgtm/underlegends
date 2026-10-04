@@ -14,7 +14,7 @@
 import { limpio, mult, num, siglaDe } from './liga.js';
 import { Carta, Compartir, enlace } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
-import { BotHace, DLX, QueGana, prevSum } from './sumar.jsx';
+import { BotHace, DLX, QueGana } from './sumar.jsx';
 
 // lo que hace la Liga por cada servidor, el bot y Dlx: en `sumar.jsx`, el mismo para Socios y para /sumate
 
@@ -126,7 +126,7 @@ export function Socios({ liga }) {
           <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => s.sv).join(', ')}. Esto es lo que la Liga hace por cada uno.</p>
         </div>
         {/* 🔍 con `lg:prev-sum`, cada caja se toca y muestra su ejemplo (Dlx, 03/10/2026) */}
-        <QueGana ejemplos={prevSum()} />
+        <QueGana ejemplos />
         {(liga.d.redes || []).length ? (
           <nav className="soc-ul" aria-label="Las redes de Under Legends">
             <span>LAS REDES DE UNDER LEGENDS</span>
@@ -141,7 +141,7 @@ export function Socios({ liga }) {
             {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
             <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer"><span>Escribirle a <span className="soc-at">@itsdlx</span> ↗</span></a>
             {/* 🔍 la página aparte, con todo en detalle y la postulación (Dlx, 03/10/2026: «3. A», en la raíz) */}
-            {prevSum() ? <a className="soc-mas-l" href="#/sumate">Todo en detalle, y la postulación →</a> : null}
+            <a className="soc-mas-l" href="#/sumate">Todo en detalle, y la postulación →</a>
           </div>
         </div>
       </section>

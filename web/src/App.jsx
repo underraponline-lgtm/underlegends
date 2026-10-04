@@ -95,10 +95,7 @@ try {
   if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');
   if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
 } catch (e) { /* sin almacenamiento, sin preview */ }
-// 🔍 /sumate, en preview (03/10/2026): sólo con `lg:prev-sum`. Sin eso, la dirección muestra el Inicio
-function prevSum() {
-  try { return !!localStorage.getItem('lg:prev-sum'); } catch (e) { return false; }
-}
+// ✅ /sumate, publicada (Dlx, 03/10/2026: «2. A»): ya no hace falta `lg:prev-sum`
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -299,7 +296,7 @@ export default function App() {
   const nombreSv = sv && liga && liga.svs[sv] ? liga.svs[sv].nombre || sv : sv;
   // ⚠️ también cuando llegan los datos (`liga`), y un instante después: app.js vuelve a poner el suyo al pintarlos
   useEffect(() => {
-    const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' && prevSum() ? 'Sumate'
+    const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' ? 'Sumate'
       : pagina === 'tarjetas' ? 'Tarjetas'
       : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : '';
     if (!t) return undefined;
@@ -341,7 +338,7 @@ export default function App() {
         : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
-        : pagina === 'sumate' && prevSum() ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'sumate' ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'publicaciones' ? <Aislada key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'eventos' || pagina === 'avisos' ? <Aislada key="Eventos" n="Eventos" pagina><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>

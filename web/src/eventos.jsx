@@ -75,7 +75,7 @@ function Campana({ liga }) {
               <button type="button" className={e.todos ? 'on' : ''} aria-pressed={e.todos} onClick={() => C.elegir('')}>Todos</button>
               {e.svs.map((s) => (
                 <button type="button" key={s.sv} className={on(s.sv) ? 'on' : ''} aria-pressed={on(s.sv)} title={s.n} onClick={() => C.elegir(s.sv)}>
-                  <img alt="" src={liga.logo(s.sv)} />{s.sv}</button>
+                  <img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</button>
               ))}
             </div>
           </>
@@ -448,14 +448,14 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
       {antes ? (antes.length ? (
         <>
           <p className="evp-tx">Los {SEMANA_P[dow]} anteriores hubo:</p>
-          <ul className="evp-antes">{antes.slice(0, 8).map((x, i) => <li key={i}><img alt="" src={liga.logo(x.sv)} />{x.sv}<b>{hora(x.t)}</b></li>)}</ul>
+          <ul className="evp-antes">{antes.slice(0, 8).map((x, i) => <li key={i}><img alt="" src={liga.logo(x.sv)} />{siglaDe(x.sv)}<b>{hora(x.t)}</b></li>)}</ul>
         </>
       ) : <p className="evp-tx">Ningún {SEMANA_S[dow]} tuvo eventos todavía.</p>) : null}
       <ul className="evp-cj">
         <li className="evp-cj-cab" aria-hidden="true"><span />{SEMANA.map((d, i) => <u key={i} className={i === dow ? 'on' : ''}>{d}</u>)}</li>
         {P.svs.map((s) => (
           <li key={s.sv} aria-label={s.sv + ': ' + diasEnPalabras(s.dias) + ', de ' + horaDe(s.ref, s.desde) + ' a ' + horaDe(s.ref, s.hasta)}>
-            <span className="evp-cj-sv"><img alt="" src={liga.logo(s.sv)} />{s.sv}</span>
+            <span className="evp-cj-sv"><img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</span>
             {s.dias.map((k, i) => (
               <i key={i} className={(k ? 'si' : 'no') + (i === dow ? ' on' : '')} style={k ? { background: color(s.sv), opacity: k >= 3 ? 1 : k === 2 ? 0.72 : 0.42 } : null}
                 title={k ? k + (k === 1 ? ' evento un ' + SEMANA_S[i] : ' eventos los ' + SEMANA_P[i]) : 'ningún ' + SEMANA_S[i]} />
@@ -478,7 +478,9 @@ function ComoSeJuega({ liga, cal, color }) {
   ls.forEach((ll) => {
     const inf = ll.info || {};
     const k = formato(inf.mod);                        // sin formato no hay barra: el «11» dibujaba una sin nombre
-    if (k) fmt[k] = (fmt[k] || 0) + 1;
+    // ✅ «1VS1» y «1VS1 sin réplica», una sola barra (Dlx, 03/10/2026: «5. A»): acá cuenta el formato, no el detalle
+    const kb = (/^\d+VS\d+\b/.exec(k) || [k])[0];
+    if (kb) fmt[kb] = (fmt[kb] || 0) + 1;
     if (inf.org) { const kk = (liga.d.orgs || {})[inf.org] || 'n:' + inf.org.toLowerCase(); org[kk] = org[kk] || [inf.org, 0]; org[kk][1] += 1; }
     gente += ll.participantes || 0;
   });
@@ -599,8 +601,14 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   // ve en juego ahora
   const vivos = evs.filter((c) => !c.ll && esVivo(c));
   const prox = evs.filter((c) => !vivos.includes(c) && utc(c.t).getTime() > ahora).sort((a, b) => (a.t < b.t ? -1 : 1));
-  const hechos = evs.filter((c) => !vivos.includes(c) && !prox.includes(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
-  const cancelados = liga.cancelacionesVisibles().filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil));
+  // 🔴 y lo que se canceló con el anuncio en pie —le borraron la llave y no hubo otra— va con los cancelados, no con
+  // «Terminados · SIN LLAVE» (LA REDENCION, 03/10/2026, Dlx: «debería decir cancelado también»). Ver `canceladoCal()`
+  const pasados = evs.filter((c) => !vivos.includes(c) && !prox.includes(c));
+  const hechos = pasados.filter((c) => !liga.canceladoCal(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
+  const nomSv = (sv, n) => sv + '|' + limpio(n).toLowerCase();
+  const delCal = pasados.filter((c) => liga.canceladoCal(c)).map((c) => ({ id: c.link || c.n, n: c.n, sv: c.sv, ini: c.t }));
+  const cancelados = delCal.concat(liga.cancelacionesVisibles()
+    .filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil) && !delCal.some((d) => nomSv(d.sv, d.n) === nomSv(c.sv, c.n))));
   const enVivo = (c) => llaveEnVivo({ cuando: c.t, sv: c.sv, nombre: c.n }, vivoL);
   // 🔑 lo que terminó y el ciclo todavía no procesó: su llave y su campeón (ver `liga.recienTerminadas()`)
   const term = liga.recienTerminadas();
@@ -703,7 +711,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               <div><dt>En la temporada</dt><dd>{num(liga.d.eventos || 0)}</dd></div>
               <div><dt>Esta semana</dt><dd>{num(A.ev || 0)}</dd></div>
               <div><dt>Raperos esta semana</dt><dd>{num(A.gente || 0)}</dd></div>
-              {masActivo ? <div><dt>El más activo</dt><dd className="evp-sv"><img alt="" src={liga.logo(masActivo)} />{masActivo}</dd></div> : null}
+              {masActivo ? <div><dt>El más activo</dt><dd className="evp-sv"><img alt="" src={liga.logo(masActivo)} />{siglaDe(masActivo)}</dd></div> : null}
             </dl> : null}
           </div>
           {momento}
@@ -737,7 +745,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               <button type="button" className={!svFil ? 'on' : ''} aria-pressed={!svFil} onClick={() => setSvFil('')}>Todos</button>
               {svsCal.map((s) => (
                 <button type="button" key={s} className={svFil === s ? 'on' : ''} aria-pressed={svFil === s} onClick={() => setSvFil(svFil === s ? '' : s)}>
-                  <img alt="" src={liga.logo(s)} />{s}</button>
+                  <img alt="" src={liga.logo(s)} />{siglaDe(s)}</button>
               ))}
             </div>
           ) : null}
@@ -775,7 +783,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         <aside className="evp-der">
           <section className="evp-bloque evp-mes-pc"><h2 className="evp-h2">El mes</h2>
             <Mes liga={liga} porDia={porDia} dia={dia} onDia={(k) => elegir(k, false)} ym={ym} setYm={setYm} color={color} />
-            <div className="evp-ley">{svsCal.map((s) => <span key={s}><i style={{ background: color(s) }} />{s}</span>)}</div>
+            <div className="evp-ley">{svsCal.map((s) => <span key={s}><i style={{ background: color(s) }} />{siglaDe(s)}</span>)}</div>
           </section>
           <section className="evp-bloque" id="ev-campana"><h2 className="evp-h2"><Ico n="campana" t={20} />La campana</h2><Campana liga={liga} /></section>
           <section className="evp-bloque"><h2 className="evp-h2">En tu calendario</h2><Calendario /></section>

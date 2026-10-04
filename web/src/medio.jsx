@@ -23,6 +23,15 @@ export function Fechas({ liga }) {
     t.push({ c: 'cancelado', dia: ini ? liga.dia(ini).split(' ')[0].toUpperCase() : 'HOY', hora: 'CANCELADO',
       sv: c.sv, ev: limpio(c.n), det: ini ? 'era a las ' + hora(ini) : 'el servidor lo canceló' });
   });
+  // y lo que se canceló con el anuncio en pie: le borraron la llave y no hubo otra (LA REDENCION, 03/10/2026, ver
+  // `liga.canceladoCal()`). Las mismas seis horas
+  (liga.d.calendario || []).forEach((c) => {
+    const ini = utc(c.t);
+    if (liga.ahora - ini < 0 || liga.ahora - ini > 6 * 3600000 || !liga.canceladoCal(c)) return;
+    if (t.some((x) => x.c === 'cancelado' && x.sv === c.sv && x.ev.toLowerCase() === limpio(c.n).toLowerCase())) return;
+    t.push({ c: 'cancelado', dia: liga.dia(ini).split(' ')[0].toUpperCase(), hora: 'CANCELADO', sv: c.sv, ev: limpio(c.n),
+      det: 'era a las ' + hora(ini) });
+  });
   // 🔑 lo que terminó recién y el ciclo todavía no procesó (la NAVE DE EXTERMINACIÓN, 03/10/2026): con su campeón y su
   // llave, hasta que llegue la procesada. Ver `liga.recienTerminadas()`
   liga.recienTerminadas().forEach(({ L, e, camp }) => {
@@ -349,7 +358,7 @@ function Numeros({ liga }) {
                 const dd = utc(d + 'T12:00:00Z');
                 return (
                   <i key={d}><span className="act-b">{Object.entries(x).sort().map(([sv, n]) => (
-                    <u key={sv} style={{ height: (100 * n / tope).toFixed(1) + '%', background: (liga.svs[sv] || {}).color || '#A5A5A0' }} title={sv + ' ' + n} />
+                    <u key={sv} style={{ height: (100 * n / tope).toFixed(1) + '%', background: (liga.svs[sv] || {}).color || '#A5A5A0' }} title={siglaDe(sv) + ' ' + n} />
                   ))}</span><em>{DIAS[dd.getUTCDay()].slice(0, 1).toUpperCase()}</em></i>
                 );
               })}

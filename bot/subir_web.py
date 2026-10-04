@@ -549,6 +549,11 @@ def armar():
                   for n, r in llaves.items()}
         _info = {}
         calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora, _info)
+        # 🔴 y lo que se canceló con el anuncio en pie (LA REDENCION, 03/10/2026): ver `_cancelados()`
+        try:
+            _cancelados(calendario, _LW, escribir='--aplicar' in sys.argv)
+        except Exception as e:                           # noqa: BLE001
+            print('   🔴 los cancelados: %s' % str(e)[:80])
         for _n, _f in _info.items():
             if _n in llaves:
                 llaves[_n] = dict(llaves[_n], info=_f)
@@ -1150,8 +1155,11 @@ def _ics(cal):
         ini = t.strftime('%Y%m%dT%H%M%SZ')
         fin = (t + dt.timedelta(minutes=90)).strftime('%Y%m%dT%H%M%SZ')
         uid = 'ev-%s-%s-%s@underlegends.pages.dev' % (c.get('sv') or 'x', ini, __import__('hashlib').md5((c.get('n') or '').encode('utf-8')).hexdigest()[:6])
-        ls += ['BEGIN:VEVENT', 'UID:' + uid, 'DTSTAMP:' + ini, 'DTSTART:' + ini, 'DTEND:' + fin,
-               fold('SUMMARY:' + _ics_texto('%s · %s' % (c.get('n') or 'Evento', c.get('sv') or ''))),
+        # el cancelado se queda, avisando (`_cancelados()`): borrarlo lo haría desaparecer del calendario sin decir por qué
+        ls += ['BEGIN:VEVENT', 'UID:' + uid, 'DTSTAMP:' + ini, 'DTSTART:' + ini, 'DTEND:' + fin] + \
+              (['STATUS:CANCELLED'] if c.get('can') else []) + [
+               fold('SUMMARY:' + _ics_texto('%s%s · %s' % ('CANCELADO · ' if c.get('can') else '',
+                                                           c.get('n') or 'Evento', c.get('sv') or ''))),
                fold('DESCRIPTION:' + _ics_texto('Evento de la Liga Global de Freestyle. ' +
                                                 (c.get('link') or ''))),
                fold('URL:' + (c.get('link') or 'https://underlegends.pages.dev/freestyle-rap/eventos')),
@@ -1618,6 +1626,122 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                     **({'mod': i['mod']} if i.get('mod') else {}),
                     **({'ct': 1} if i.get('ct') else {})})
     return out
+
+
+#: 🔴 lo que se canceló con el anuncio en pie: ver `_cancelados()`
+CANCELADOS = ('datos', 'cancelados.json')
+#: el vigía (`bot/avisos.js`), público y sin clave: el mismo de `bot/en_llamada.py`
+VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev'
+#: las palabras que no juntan un evento con su llave: `RELLENO_LL` de bot/paginas/app.js
+_RELLENO_LL = {'vol', 'volumen', 'edicion', 'fecha', 'the', 'los', 'las', 'del', 'con', 'por', 'una', 'uno',
+               '1v1', '2v2', '3v3', '4v4', '1vs1', '2vs2', '3vs3', '4vs4'}
+
+
+def _palabras_ll(s):
+    import unicodedata
+    # ⚠️ NFKD ANTES de las minúsculas, como la página: `𝓟𝓞𝓔𝓢Í𝓐` sale de NFKD en mayúsculas
+    s = unicodedata.normalize('NFKD', str(s or '')).lower()
+    return [w for w in re.sub(r'[^a-z0-9 ]', ' ', s).split() if len(w) > 2]
+
+
+def _llave_de_evento(e, ls, LW):
+    """`llaveDeEvento()` de bot/paginas/app.js: la llave (`{sv, nombre, pub}`) del evento del calendario `e`, o None.
+
+    Mismo servidor, publicada entre 1 h antes y 5 h después de la hora, alguna palabra en común que no sea de relleno
+    y sin números que se contradigan (`llaves_web._chocan()`: «VOL 11» no es «VOL 12»)."""
+    import datetime as dt
+    try:
+        t = dt.datetime.fromisoformat(str(e.get('t') or '').rstrip('Z')).replace(tzinfo=dt.timezone.utc).timestamp() * 1000
+    except ValueError:
+        return None
+    pe = _palabras_ll(e.get('n'))
+    comun = lambda L: len([w for w in _palabras_ll(L.get('nombre')) if w not in _RELLENO_LL and w in pe])
+    cand = [L for L in ls
+            if (not e.get('sv') or not L.get('sv') or e['sv'] == L['sv'])
+            and t - 3600000 <= (L.get('pub') or L.get('ed') or 0) <= t + 5 * 3600000
+            and not LW._chocan(e.get('n'), L.get('nombre'))
+            and (comun(L) > 0 or not _palabras_ll(L.get('nombre')) or L.get('nombre') == 'La llave')]
+    cand.sort(key=comun, reverse=True)
+    return cand[0] if cand else None
+
+
+def _clave_cancelado(c):
+    """El id del anuncio (lo último del link), o `servidor|nombre|hora` si no tiene."""
+    m = re.search(r'/(\d{15,22})/?$', str(c.get('link') or ''))
+    return m.group(1) if m else '%s|%s|%s' % (c.get('sv') or '', c.get('n') or '', c.get('t') or '')
+
+
+def _cancelados(cal, LW, escribir=False, vigia=None, ahora_ms=None, guardados=None):
+    """`can: 1` en los eventos del calendario que se cancelaron con el anuncio en pie.
+
+    🔴 LA REDENCION (FFA, 03/10/2026): se canceló a último momento —Dlx: *«pinchó»*— y el organizador borró la llave
+    pero dejó el anuncio. El calendario decía «SIN LLAVE», y Dlx: *«la redención debería decir cancelado también»*.
+    El vigía anota cada llave borrada (`borradas` de `/avisos/vivo`) y la página lo dice al minuto (`canceladoCal()`
+    de web/src/liga.js), pero el vigía se olvida a las 6 h y el calendario es de toda la temporada: acá se GUARDA,
+    en `datos/cancelados.json` (`bot/ci/guardar.sh` lo commitea, o el runner limpio arrancaría sin memoria).
+
+    Cancelado = su llave se borró hace 15 min o más, no hay otra en vivo para ese evento y no se procesó ninguna.
+    Los 15 min son para el que la borra y la vuelve a publicar corregida.
+
+    ⚠️ LO QUE SE JUGÓ, SE JUGÓ: un evento con su llave procesada (`ll`) nunca sale cancelado —tampoco el que anotó
+    Dlx— y el automático se borra del archivo. ⚠️ Sin vigía (sin red) no se agrega nada: queda lo guardado.
+    Devuelve cuántos quedaron marcados.
+    """
+    import time
+    f = guardados if guardados is not None else (_json(*CANCELADOS) or {})
+    ev = dict(f.get('eventos') or {})
+    antes = json.dumps(ev, sort_keys=True)
+    ahora_ms = ahora_ms or time.time() * 1000
+    if vigia is None and _SIN_RED[0]:
+        vigia = {}
+    if vigia is None:
+        try:
+            import requests
+            r = requests.get(VIGIA + '/avisos/vivo', timeout=15)
+            vigia = r.json() if r.status_code == 200 else {}
+        except Exception:                                # noqa: BLE001
+            vigia = {}
+    import llaves_a_entrada as LE
+    nombrar = lambda xs: [dict(sv=x.get('sv') or '', pub=x.get('pub'), ed=x.get('ed'), id=x.get('id'),
+                               t=x.get('t'), nombre=LE.titulo(x.get('texto') or ''))
+                          for x in xs or () if isinstance(x, dict)]
+    # sólo las que tienen título, como la página (`VIVO_B` de app.js): una de prueba sin nombre no cancela a nadie
+    borradas = [b for b in nombrar((vigia or {}).get('borradas'))
+                if b['nombre'] and isinstance(b['t'], (int, float)) and ahora_ms - b['t'] >= 15 * 60000]
+    vivas = nombrar((vigia or {}).get('llaves'))
+    for c in cal:
+        if c.get('ll') or c.get('jugado') or c.get('fut'):
+            continue
+        b = _llave_de_evento(c, borradas, LW) if borradas else None
+        if b and not _llave_de_evento(c, vivas, LW):
+            ev.setdefault(_clave_cancelado(c), {'n': c.get('n') or '', 'sv': c.get('sv') or '', 't': c.get('t') or '',
+                                                'por': 'su llave se borró y no hubo otra', 'llave': str(b.get('id') or ''),
+                                                'auto': 1})
+    n = 0
+    for c in cal:
+        k = _clave_cancelado(c)
+        if k not in ev:
+            continue
+        if c.get('ll') or c.get('jugado'):
+            if ev[k].get('auto'):
+                del ev[k]
+            continue
+        c['can'] = 1
+        n += 1
+    if escribir and json.dumps(ev, sort_keys=True) != antes:
+        f = {'_leeme': f.get('_leeme') or [
+                 'Los eventos que se cancelaron con el anuncio en pie: les borraron la llave y no hubo otra, o lo dijo '
+                 'Dlx. El calendario de la página los muestra «CANCELADO» en vez de «SIN LLAVE». Lo escribe '
+                 'bot/subir_web._cancelados(); la clave es el id del mensaje del anuncio. Uno con su llave procesada '
+                 'nunca sale cancelado, y el automático (`auto`) se borra solo.'],
+             'eventos': ev}
+        try:
+            with io.open(os.path.join(BASE, *CANCELADOS), 'w', encoding='utf-8', newline='\n') as h:
+                json.dump(f, h, ensure_ascii=False, indent=1, sort_keys=True)
+                h.write('\n')
+        except OSError as e:
+            print('   🔴 no pude guardar los cancelados: %s' % e)
+    return n
 
 
 _CHOQUES = {}
@@ -2948,6 +3072,26 @@ def _self_check():
     _t4 = debutantes([{'k': 'ana'}, {'k': 'beto'}, {'k': 'caro'}, {'k': 'dani'}], _pf, ahora=_vie)
     ok([bool(f.get('nu')) for f in _t4] == [False, True, False, False],
        '«NUEVO» por el primer evento: del lunes 00:00 ET en adelante (el domingo 11 PM ET no)')
+    # 🔴 cancelado con el anuncio en pie: le borraron la llave y no hubo otra (LA REDENCION, 03/10/2026)
+    import llaves_web as _LWc
+    _ms = lambda s: _dt0.datetime.fromisoformat(s).replace(tzinfo=_dt0.timezone.utc).timestamp() * 1000
+    _ev = lambda i, n, sv, t, ll=0: {'t': t + 'Z', 'n': n, 'sv': sv, 'll': ll, 'jugado': 1 if ll else 0, 'fut': 0,
+                                     'link': 'https://discord.com/channels/1/2/15560000000000000%02d' % i}
+    _cc = [_ev(1, 'LA REDENCION', 'FFA', '2026-10-03T22:26:03'), _ev(2, 'TOKYO VOL 11', 'FFA', '2026-10-03T20:00:00'),
+           _ev(3, 'COPA X', 'DDF', '2026-10-03T23:00:00', ll=7), _ev(4, 'NOCHE DE BARRAS', 'URBF', '2026-10-03T21:00:00'),
+           _ev(5, 'LA REVANCHA', 'SR', '2026-10-03T21:00:00')]
+    _b = lambda i, sv, pub, t, txt: {'id': str(i), 'sv': sv, 'pub': _ms(pub), 'ed': _ms(pub), 't': _ms(t), 'texto': txt}
+    _vg = {'borradas': [_b(1, 'FFA', '2026-10-03T22:35:00', '2026-10-03T22:50:00', 'LA REDENCION 1VS1\nOCTAVOS\nA vs B'),
+                        _b(2, 'FFA', '2026-10-03T20:10:00', '2026-10-03T20:30:00', 'TOKYO VOL 12\nOCTAVOS\nA vs B'),
+                        _b(3, 'DDF', '2026-10-03T23:05:00', '2026-10-03T23:30:00', 'COPA X\nOCTAVOS\nA vs B'),
+                        _b(4, 'URBF', '2026-10-03T21:05:00', '2026-10-03T21:20:00', 'NOCHE DE BARRAS\nOCTAVOS\nA vs B'),
+                        _b(5, 'SR', '2026-10-03T21:05:00', '2026-10-04T00:55:00', 'LA REVANCHA\nOCTAVOS\nA vs B')],
+           'llaves': [_b(9, 'URBF', '2026-10-03T21:25:00', '2026-10-03T21:25:00', 'NOCHE DE BARRAS\nOCTAVOS\nA vs B')]}
+    _gd = {'eventos': {'15560000000000000099': {'n': 'VIEJO', 'sv': 'FFA', 't': '', 'auto': 1}}}
+    _nc = _cancelados(_cc, _LWc, vigia=_vg, ahora_ms=_ms('2026-10-04T01:00:00'), guardados=_gd)
+    ok([bool(c.get('can')) for c in _cc] == [True, False, False, False, False] and _nc == 1,
+       'cancelado: la llave borrada sin otra sí; otra edición, la procesada, la vuelta a publicar y la de hace '
+       '5 min no')
     _arr = _dt0.datetime(2026, 10, 14, 18, 0, tzinfo=_dt0.timezone.utc)
     _pf2 = {'e': {'9': ['X', 'FFA', '2026-10-13T01:00:00Z']}, 'p': {'ana': {'ev': [[9, 'Octavos', 1250]]}}}
     ok(not debutantes([{'k': 'ana'}], _pf2, ahora=_arr)[0].get('nu'),

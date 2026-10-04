@@ -330,7 +330,7 @@ function historiasLiga(liga, mm) {
   const hoyEv = liga.luego().filter((e) => liga.diaClave(e.cuando) === hoy);
   if (hoyEv.length) {
     out.push(Slide('HOY SE JUEGA', <><h3 className="st-h">{hoyEv.length === 1 ? 'Un evento hoy' : hoyEv.length + ' eventos hoy'}</h3>
-      <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{liga.dia(e.cuando).replace(/^hoy /, '')} · {e.sv}</b>{limpio(e.nombre)}</li>)}</ul></>,
+      <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{liga.dia(e.cuando).replace(/^hoy /, '')} · {siglaDe(e.sv)}</b>{limpio(e.nombre)}</li>)}</ul></>,
     'hoy', 'Ver Eventos', { ruta: '#/eventos' }, 'hoy:' + hoy + ':' + hoyEv.length));
   }
   // 🎯 los buscados del Most Wanted que siguen sueltos
