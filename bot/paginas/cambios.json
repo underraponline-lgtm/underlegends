@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.18",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T21:57:00-04:00",
+   "titulo": "Cada servidor, con lo suyo",
+   "items": [
+    "🃏 **La carta de Servidor dice lo de ESE servidor**: el OVR, los títulos, los podios, la racha, los duelos y los eventos que hiciste ahí. Cada camiseta con lo suyo; donde no jugaste, «—».",
+    "🕐 **Lo que terminó recién se ve**: en Fechas y en Eventos sale «TERMINÓ», con su campeón y su llave, aunque los puntos todavía no hayan llegado.",
+    "📊 **La Liga en números, con más detalle**: los raperos de esta semana y de las dos semanas, los nuevos y los que volvieron.",
+    "🎨 **La llave, sobre la piel**: el escenario negro arriba y el cuadro en un tono claro, ni todo blanco ni todo negro."
+   ]
+  },
+  {
    "version": "2.17",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T21:34:00-04:00",
