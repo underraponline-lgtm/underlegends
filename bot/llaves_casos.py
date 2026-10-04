@@ -49,6 +49,11 @@ import escuchar as E  # noqa: E402
 #: 🔑 FORMAS QUE LAS LLAVES REALES TODAVÍA NO TRAEN, recortadas del
 #: self-check de `escuchar.py`: cada una es algo que el lector ya sabe leer.
 INVENTADOS = [
+    # 🏛️ LA ACADEMIA (04/10/2026): dos de sus llaves reales, con las menciones tapadas
+    ("LA ACADEMIA: cada batalla es un encabezado `##` con la bandera adelante (FAT BATTLES PALOOZA T.3, 01/10/2026)",
+     "# 🏆 SORTEO DE OCTAVOS 🏆\n\n## 🇵🇪 SOSA 🆚 YOR 🇪🇸\n\n## 🇨🇱 KOCHI 🆚 GOSU 🇨🇺\n## 🇨🇴 MTZ 🆚 NEXUZ 🇵🇪\n\n## 🇲🇽 LEONAR-T 🆚 LIL ÑAÑO 🇻🇪\n\n## 🇨🇴 SEKKA 🆚 JAYDEN 🇵🇪\n\n## 🇪🇨 CARLOS 🆚 MASINO 🇨🇱\n\n## 🇻🇪 NUMBER 🆚 DYZZ 🇨🇱\n\n## 🇺🇾 DREXX  🆚 MAIL O 🇵🇪\n\n# 🏆 CUARTOS DE FINAL 🏆 \n\n## YOR 🇪🇦 🆚 KOCHI 🇨🇱 \n\n## MTZ 🇲🇽 🆚 LEONAR-T 🇲🇽 \n\n## SEKKA 🇦🇷 🆚 CARLOS 🇪🇨 \n\n## NUMBER 🇻🇪 🆚 DREXX 🇵🇪\n\n# 🏆 SEMIFINAL 🏆 \n\n## KOCHI 🇨🇱 🆚 MTZ 🇲🇽 \n\n## SEKKA 🇦🇷 🆚 NUMBER 🇻🇪\n\n# 🏆 FINAL 🏆 \n\n## KOCHI 🇨🇱 🆚 SEKKA 🇦🇷\n\n## CAMPEÓN 🥇: KOCHI 🇨🇱 ( <@1> )\n\n## SUBCAMPEÓN 🥈: SEKKA 🇦🇷 ( <@2> )\n\n## MVP 🎖️: NUMBER 🇻🇪 ( <@3> )"),
+    ("LA ACADEMIA: las rondas en letras de cuadradito y el VS propio entre 〘〙 (RED BULL CREW CHILE, 26/09/2026)",
+     "🇨🇱👑**RED BULL CREW CHILE 2026** 👑🇨🇱\n┗━━━━━━━━━┓:SNKwht:┏━━━━━━━━━┛ \n\n🄾🄲🅃🄰🅅🄾🅂\n➢〘 PANCHOK 🇨🇱〘:VSr:] KOCHI 🇨🇱〙\n➢〘VELATZ 🇨🇱〘:VSr:〙AGUSTÍN51K 🇨🇱〙\n➢〘DIDYER 🇨🇱〘:VSr:〙XERVOE 🇨🇱〙\n➢〘TYPHLOSION 🇨🇱〘:VSr:〙XZ 🇨🇱〙\n➢〘 MINIBOY 🇨🇱〘:VSr:] BASTYRETRO🇨🇱 〙\n➢〘JOACO 🇨🇱〘:VSr:〙SAIKO 🇨🇱〙\n➢〘DYZZ 🇨🇱〘:VSr:〙NAIRDA 🇨🇱〙\n➢〘CRONOX 🇨🇱〘:VSr:〙ECLIPSE 🇨🇱〙\n◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈\n\n🄲🅄🄰🅁🅃🄾🅂\n➢〘PANCHOK 🇨🇱〘:VSr:〙AGUSTÍN51K 🇨🇱〙\n➢〘XERVOE 🇨🇱〘:VSr:〙TYPHLOSION 🇨🇱〙\n➢〘BASTYRETRO 🇨🇱〘:VSr:〙SAIKO 🇨🇱〙\n➢〘DYZZ 🇨🇱〘:VSr:〙CRONOX 🇨🇱〙\n◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈ \n\n🅂🄴🄼🄸🄵🄸🄽🄰🄻\n➢〘PANCHOK 🇨🇱〘:VSr:]XERVOE 🇨🇱〙\n➢〘SAIKO 🇨🇱〘:VSr:〙CRONOX 🇨🇱〙\n\n◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈◈ \n\n🄵🄸🄽🄰🄻\n➢〘PANCHOK 🇨🇱〘:VSr:〙SAIKO 🇨🇱〙  \n\n┋ :1erPuesto: <@1> \n┋ :2oPuesto: <@2>"),
     ('MULTIVERSE: solo o en equipo de cualquier tamaño, 8v1, 2v2 y 1v3 (Dlx, 28/09/2026)',
      '# ▪️ [•CUARTOS DE FINAL•]\n'
      '▪️   [ALFA 🇦🇷 + BRAVO 🇨🇱 + CHARLIE 🇨🇴 + DELTA 🇻🇪 + ECO 🇵🇪 + FOX 🇲🇽 + GOLF 🇪🇸'

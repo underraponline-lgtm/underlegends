@@ -37,7 +37,7 @@ window.MAPA_DATOS = {
       donde: 'Discord · un canal por servidor', cada: 'cuando un servidor anuncia',
       que: 'Cada servidor avisa sus eventos a su manera: «EN 30 MINUTOS», la hora de su país, un póster. 18 de cada 26 eventos se anuncian con 15 minutos o menos, por eso la campana no puede esperar al ciclo.',
       arch: ['bot/anuncios.py', 'bot/cuando.py', 'bot/avisos.js'],
-      partes: [['DRA', 'DRA', 'Discord Rap En Español, el servidor principal.'], ['FFA', 'FFA', 'Freestyle For All.'], ['SR', 'Snake Rap', ''], ['URBF', 'Urban Freestyle', ''], ['FFS', 'FFS League', ''], ['DDF', 'Dimensión del Freestyle', '']] },
+      partes: [['DRA', 'DRA', 'Discord Rap En Español, el servidor principal.'], ['FFA', 'FFA', 'Freestyle For All.'], ['SR', 'Snake Rap', ''], ['URBF', 'Urban Freestyle', ''], ['FFS', 'FFS League', ''], ['DDF', 'Dimensión del Freestyle', ''], ['ACAD', 'Academia de Rap', '']] },
     { id: 'llaves', c: 1, y: 309, k: 'fuente', t: 'Llaves', s: 'las batallas del evento',
       donde: 'Discord · los canales de llaves', cada: 'mientras se juega',
       que: 'Las batallas de cada evento, con quién ganó. La llave y el anuncio no comparten ninguna clave: se juntan por servidor, fecha y nombre. Si el anuncio trae otro número —pasó con TOKYO VOL 16 y 17—, la llave que ningún anuncio reclamó se asigna por horario.',

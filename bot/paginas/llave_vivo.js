@@ -69,6 +69,9 @@
   // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
   var VS_PROPIO = /<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>/gi;
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
+  /* 🏛️ el VS y el podio escritos como texto (`:VSr:`, `:1erPuesto:`): `escuchar.VS_TEXTO` y `PODIO_TEXTO` */
+  var VS_TEXTO = /(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)\w*:(?!\d)/gi;
+  var PODIO_TEXTO = /(?<![<\w]):([123])[a-zº°]*_?puesto\w*:(?!\d)/gi;
   var TERCER_ENC = /\b3\s*(?:er|ro|º|°)?\s*(?:y\s*4\s*(?:to|º|°|o)?\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
     cl: ['CHI', 'CHL', 'CHILE'], co: ['COL', 'COLOMBIA'], cr: ['CRC', 'CRI', 'COSTARICA'], cu: ['CUB', 'CUBA'],
@@ -102,12 +105,14 @@
     }).join('');
   }
 
-  /* `escuchar.plano()`: las letras de fantasía, en letras comunes */
+  /* `escuchar.plano()`: las letras de fantasía, en letras comunes. 🏛️ Y las de cuadradito y circulito (la
+     ACADEMIA, 04/10/2026: `🄾🄲🅃🄰🅅🄾🅂`) */
   function plano(t) {
     if (!t) return t || '';
     return Array.from(t).map(function (ch) {
       var c = ch.codePointAt(0);
-      return (c >= 0x1D400 && c <= 0x1D7FF) || (c >= 0xFF01 && c <= 0xFF5E) ? ch.normalize('NFKD') : ch;
+      return (c >= 0x1D400 && c <= 0x1D7FF) || (c >= 0xFF01 && c <= 0xFF5E) ||
+        (c >= 0x1F130 && c <= 0x1F149) || (c >= 0x24B6 && c <= 0x24E9) ? ch.normalize('NFKD') : ch;
     }).join('');
   }
 
@@ -121,9 +126,13 @@
     return s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g, '');
   }
 
-  /* `escuchar._sin_marcas()` */
+  /* `escuchar._sin_marcas()`. 🏛️ Sin el «##» de adelante y con la bandera al final: «## 🇵🇪 SOSA» es
+     «SOSA 🇵🇪» (la ACADEMIA, 04/10/2026) */
   function sinMarcas(x) {
-    x = String(x).replace(MARCAS, '').replace(/[ \t]*<a?:\w+:\d+>/g, '');
+    x = quitarBordes(String(x).replace(MARCAS, '').replace(/[ \t]*<a?:\w+:\d+>/g, ''), [' ', '*', '`']);
+    x = x.replace(/^#{1,3}[ \t]+/, '');
+    var m = /^((?:[\u{1F1E6}-\u{1F1FF}]{2}[ \t]*)+)(\S[\s\S]*)$/u.exec(x);
+    if (m) x = m[2].replace(/\s+$/, '') + ' ' + m[1].replace(/\s/g, '');
     return quitarBordes(x, [' ', '*', '`']);
   }
 
@@ -193,10 +202,15 @@
     // el emoji entre dos `<>` de más (DIMENSIÓN DEL FREESTYLE)
     var t = texto.replace(/<(<a?:\w+:\d+>)>/g, '$1');
     t = t.replace(VS_PROPIO, ' 🆚 ');
+    // 🏛️ la RED BULL CREW de la ACADEMIA: el VS como texto, sin los marcos 〘〙 mal anidados ni la viñeta ➢
+    t = t.replace(VS_TEXTO, ' 🆚 ').replace(/[〘〙]/g, ' ').replace(/^[ \t]*[➢➤]+[ \t]*/gm, '');
     t = t.replace(/<a?:(\w+):\d+>/g, paisDelEmoji);
     t = t.replace(/:flag_([a-z]{2}):/g, function (_m, cc) { return bandera(cc); });
     t = t.split('\n').map(sinEspaciar).join('\n');
     t = t.replace(PODIO_PROPIO, function (_m, n) {
+      return ' ' + { '1': '1ER', '2': '2DO', '3': '3ER' }[n] + ' PUESTO: ';
+    });
+    t = t.replace(PODIO_TEXTO, function (_m, n) {
       return ' ' + { '1': '1ER', '2': '2DO', '3': '3ER' }[n] + ' PUESTO: ';
     });
     t = t.replace(/[『「〈][ \t]*(\d(?:ER|DO) PUESTO:)[ \t]*[』」〉]/g, '$1');
@@ -937,10 +951,16 @@
     }
     return null;
   }
-  /* el voto de un juez: un renglón con un solo nombre (`**FAZER 🇦🇷**`, `# ***DELUXE***`) */
+  /* el voto de un juez: un renglón con un solo nombre (`**FAZER 🇦🇷**`, `# ***DELUXE***`). 🏛️ Una mano sola
+     es `<izq>` o `<der>`: 🫲 / 👈 el de la izquierda del título, 🫱 / 👉 el de la derecha (la ACADEMIA,
+     04/10/2026). Ver `escuchar.MANO_IZQ` */
   function votoDe(t) {
     var ls = lineas(t).map(function (x) { return x.trim(); }).filter(Boolean);
-    return ls.length === 1 ? norm(ls[0].replace(/^#+\s*/, '').replace(MARCAS, '')) : '';
+    if (ls.length !== 1) return '';
+    var mano = ls[0].replace(/^#+\s*/, '').replace(/[\u{1F3FB}-\u{1F3FF}\uFE0F]/gu, '').trim();
+    if (mano === '\u{1FAF2}' || mano === '\u{1F448}') return '<izq>';
+    if (mano === '\u{1FAF1}' || mano === '\u{1F449}') return '<der>';
+    return norm(ls[0].replace(/^#+\s*/, '').replace(MARCAS, ''));
   }
   function veredictos(rows) {
     var porCanal = {}, tandas = [];
@@ -967,6 +987,7 @@
         }
         var cur = tanda.bs[tanda.bs.length - 1], v = votoDe(t);
         if (!cur || !v || !m.autor) return;
+        if (v === '<izq>' || v === '<der>') { cur.votos[m.autor] = v === '<izq>' ? 'a' : 'b'; return; }
         var na = norm(cur.a), nb = norm(cur.b);
         var ea = v === na || (na.length > 2 && v.indexOf(na) >= 0);
         var eb = v === nb || (nb.length > 2 && v.indexOf(nb) >= 0);

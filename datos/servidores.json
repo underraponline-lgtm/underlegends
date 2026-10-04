@@ -402,6 +402,31 @@
      "creada": "2026-10-03"
     }
    ]
+  },
+  "ACAD": {
+   "nombre": "Academia de Rap",
+   "guild_id": "765045834647339038",
+   "en_el_sheet": false,
+   "nota": "04/10/2026: el bot entró (Dlx: «El bot entró a la ACADEMIA… quiero que prepares todo para implementarlos en la liga como se debe. Tag ponle ACADEMIA. Colores amarillo y negro para la tarjeta»). En Discord se llama «#LaCrew ‖ 🎤ACADEMIA DE RAP🎤» (1.852 miembros). Código ACAD y sigla ACA (como URB). Sus eventos salen en 🥇┇torneos, 📢-anuncios-📢 y 📢┇anuncios・; se anotan en 📝┇inscripciones-1; las llaves van en 🔑┇llaves y los votos en ✅┇votaciones, con manos: 🫲 gana el de la izquierda, 🫱 el de la derecha y ❌ es réplica. «organizar-eventos» es del staff (el bot no lo ve). Su logo: el círculo amarillo con las columnas, del archivo que pasó Dlx (el ícono de Discord es el logo entero con letras, ilegible a 30 px).",
+   "confirmado": true,
+   "tag": "ACADEMIA",
+   "sigla": "ACA",
+   "invitacion": "https://discord.gg/tyYC4XejPA",
+   "invitacion_liga": {
+    "codigo": "tyYC4XejPA",
+    "canal": "👋🏻bienvenida👋🏻",
+    "canal_id": "868226032677834822",
+    "creada": "2026-10-04"
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "hDttYp6uzK",
+     "canal": "📝┇inscripciones-1",
+     "canal_id": "1522470167617998948",
+     "categoria_id": "1309234419525222477",
+     "creada": "2026-10-04"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [
@@ -468,7 +493,7 @@
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
- "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»).",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»). Y la Academia de Rap, «ACADEMIA» (Dlx, 04/10/2026: «Tag ponle ACADEMIA»).",
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal. FFS: su canal 「📱」redes (29/09/2026), que enlaza publicaciones de @freestylefutureseries en Instagram y videos de @FreestyleFutureSeries en YouTube.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",

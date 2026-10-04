@@ -101,7 +101,7 @@ FILA_CAB = 16
 # ⚠️ Y NO ERA SÓLO LA VITRINA: `sheet/construir_pool_temporada.py` tiene
 # la misma lista, así que el hueco llegaba hasta la carta. La de País
 # reventaba buscando `sv_.png`.
-SERVIDORES = ('FFA', 'EFA', 'TWR', 'TFC', 'SR', 'FTN', 'URBF', 'FRZ', 'DRA', 'FFS', 'DDF')
+SERVIDORES = ('FFA', 'EFA', 'TWR', 'TFC', 'SR', 'FTN', 'URBF', 'FRZ', 'DRA', 'FFS', 'DDF', 'ACAD')
 
 # columna de la vitrina -> de donde sale. `None` = no se puede hoy.
 DE_DONDE = {

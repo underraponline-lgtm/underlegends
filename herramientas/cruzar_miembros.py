@@ -83,7 +83,10 @@ def _guilds():
          ('FFS', '1367688812892913774'),
          # 🌌 DDF, DESDE EL 03/10/2026: de la Liga (Dlx: «Haz todo lo necesario para
          # que esta sea una buena inclusión»). Igual: sólo se CAPTURA el ID.
-         ('DDF', '1469009547971526659')]
+         ('DDF', '1469009547971526659'),
+         # 🏛️ LA ACADEMIA, DESDE EL 04/10/2026: de la Liga (Dlx: «prepara todo para implementarlos
+         # en la liga como se debe»). Igual: sólo se CAPTURA el ID.
+         ('ACAD', '765045834647339038')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:

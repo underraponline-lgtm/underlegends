@@ -123,6 +123,71 @@ DDF_COLORES = ('#005E80', '#5FA8FF')
 LINEA = {'DDF': '#720BD9'}
 
 
+#: 🏛️ LA ACADEMIA: (amarillo de su logo, dorado claro de acento). Ver su fondo en `acad_fondo()`
+ACAD_COLORES = ('#EACB0C', '#FFE066')
+
+
+def acad_templo():
+    """La base del templo de la ACADEMIA, en SVG: dos columnas estriadas y la escalinata.
+
+    ⚠️ EN SVG Y NO CON DEGRADÉS, porque con degradés no se leía: la primera vuelta (04/10/2026) eran bandas
+    de CSS y salían tres rayas al pie —lo mismo que las tres líneas de DRA— y unas barras sueltas arriba.
+    Un fuste con estrías, su basa y escalones con cara y contrahuella se leen como templo aun chicos.
+    Las coordenadas son las de la carta (300 × 467).
+    """
+    oro = '#F2D33C'
+
+    def columna(x):
+        # el fuste (24 de ancho), sus estrías, la luz dorada del lado de adentro y la basa
+        adentro = 'url(#luzI)' if x < 150 else 'url(#luzD)'
+        estrias = ''.join(f'<rect x="{x + k:.1f}" y="296" width="1.6" height="92" fill="#0B0A05" opacity=".75"/>'
+                          for k in (4.5, 9.5, 14.5, 19.5))
+        return (f'<rect x="{x}" y="296" width="24" height="92" fill="url(#fuste)"/>{estrias}'
+                f'<rect x="{x}" y="296" width="24" height="92" fill="{adentro}"/>'
+                f'<rect x="{x - 3}" y="384" width="30" height="5" fill="url(#piedra)"/>'
+                f'<rect x="{x - 3}" y="384" width="30" height="1.2" fill="{oro}" opacity=".85"/>')
+
+    def escalon(x, y, w, h):
+        return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="url(#piedra)"/>'
+                f'<rect x="{x}" y="{y}" width="{w}" height="1.4" fill="{oro}"/>')
+
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 467" width="300" height="467"><defs>'
+           '<linearGradient id="fuste" x1="0" x2="1"><stop offset="0" stop-color="#1A170C"/>'
+           '<stop offset=".5" stop-color="#2E2914"/><stop offset="1" stop-color="#14120A"/></linearGradient>'
+           f'<linearGradient id="luzI" x1="0" x2="1"><stop offset=".55" stop-color="{oro}" stop-opacity="0"/>'
+           f'<stop offset="1" stop-color="{oro}" stop-opacity=".55"/></linearGradient>'
+           f'<linearGradient id="luzD" x1="0" x2="1"><stop offset="0" stop-color="{oro}" stop-opacity=".55"/>'
+           f'<stop offset=".45" stop-color="{oro}" stop-opacity="0"/></linearGradient>'
+           '<linearGradient id="piedra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A4227"/>'
+           '<stop offset=".35" stop-color="#2A2514"/><stop offset="1" stop-color="#0E0C06"/></linearGradient></defs>'
+           + columna(9) + columna(267)
+           + escalon(46, 389, 208, 9) + escalon(26, 398, 248, 10) + escalon(8, 408, 284, 11)
+           + '</svg>')
+    return 'data:image/svg+xml;base64,' + base64.b64encode(svg.encode('utf-8')).decode()
+
+
+def acad_fondo(A):
+    """El templo de la ACADEMIA, de noche, sobre mármol negro.
+
+    🏛️ Dlx, 04/10/2026: *«colores amarillo y negro para la tarjeta»* y *«hazla con un diseño único como lo
+    que hiciste con DDF»*. Su logo es un templo griego —el frontón y cuatro columnas— en un círculo amarillo.
+
+    🔑 EL TECHO EN PUNTA DE LA CARTA YA ES EL FRONTÓN y el escudo, su remate. Arriba manda el amarillo —el
+    brillo y el lavado salen del color propio, y la foto tapa el medio—, así que el templo vive en el PANEL DE
+    ABAJO, que se ve entero: una columna estriada en cada borde, con la luz dorada del lado de adentro, paradas
+    sobre la escalinata. El TAG queda sobre el escalón de arriba y la escalinata no toca el UL (lo que Dlx le
+    pidió al planeta de DDF). Ver `acad_templo()`.
+
+    ⚠️ El mármol —las vetas doradas— va en la capa extra, encima de todo esto.
+    """
+    return ','.join([
+        f'url({acad_templo()}) 0 0/300px 467px no-repeat',
+        # la luz que baja de la lámpara del frontón, apenas
+        'radial-gradient(ellipse 70% 26% at 50% 16%,rgba(234,203,12,.16),transparent 72%)',
+        'linear-gradient(172deg,#24211A 0%,#121109 46%,#060605 100%)',
+    ])
+
+
 def ddf_fondo(A, B):
     """La galaxia de DDF: estrellas sin grilla, la nebulosa y el planeta al pie.
 
@@ -309,6 +374,22 @@ def defs():
     A, B = DDF_COLORES
     d['DDF'] = (B, A, ddf_fondo(A, B), '', '', 'galaxia: estrellas, nebulosa y el borde de un planeta al pie')
 
+    # ACAD · la Academia de Rap, la duodécima. Dlx, 04/10/2026: «Tag ponle ACADEMIA. Colores amarillo y negro
+    # para la tarjeta» y «hazla con un diseño único como lo que hiciste con DDF».
+    #
+    # 🏛️ UN TEMPLO DE NOCHE SOBRE MÁRMOL NEGRO, como su logo (el frontón y las columnas en un círculo amarillo).
+    # El amarillo es su COLOR PROPIO —el marco, la línea, los aros y las pastillas salen de ahí— y el negro lo
+    # pone el fondo, como en Snake Rap. El mármol, con vetas finas teñidas de dorado (`texturas/marmol.png`, de
+    # `marmol.py`): ninguna de las otras once es de piedra.
+    #
+    # ⚠️ SU AMARILLO NO ES EL MIEL DE URBAN: medido como los demás, la marca queda a ΔE 23,9 de URBF y el marco
+    # (#F8E675) a 33 del suyo. Y el gesto los separa igual: URBF es un corte blanco y rayones.
+    A, B = ACAD_COLORES
+    d['ACAD'] = (B, A, acad_fondo(A),
+                 f'background:url({tx("marmol")}) center/cover,#D9B20A;background-blend-mode:multiply;'
+                 'mix-blend-mode:screen;opacity:.34',
+                 '', 'templo de noche: frontón, columnas y escalinata, sobre mármol negro con vetas doradas')
+
     # RZ · Rap Zone. Servidor ASOCIADO, no de la Hermandad.
     #
     # Su fuego NO esta simulado: sale extraido de su propio logo con
@@ -340,7 +421,7 @@ def defs():
 
 
 D = defs()
-ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'RZ']
+ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'ACAD', 'RZ']
 
 
 ESTRELLAS = json.load(open(os.path.join(BASE, 'datos', 'estrellas.json'),

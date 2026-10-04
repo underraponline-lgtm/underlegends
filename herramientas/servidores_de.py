@@ -56,7 +56,8 @@ API = 'https://discord.com/api/v10'
 # compite en la Liga.
 GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
           ('SR', '492346406976356374'), ('URBF', '1467763447117778989'),
-          ('FFS', '1367688812892913774'), ('DDF', '1469009547971526659'))
+          ('FFS', '1367688812892913774'), ('DDF', '1469009547971526659'),
+          ('ACAD', '765045834647339038'))
 # 🔴 SNAKE RAP ENTRÓ EL 24/09/2026 Y ES DE CARTA, NO DE IDENTIDAD. Es un
 # servidor de la Liga —está en `datos/servidores.json`, sus eventos cuentan
 # y su camiseta es una de las nueve—, así que va acá y no en
@@ -70,7 +71,7 @@ GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'),
 # 🟠 URBAN FREESTYLE, DESDE EL 25/09/2026: de carta como Snake Rap, y por
 # el mismo motivo sólo se guardan los del padrón. Último en la lista: es el
 # más nuevo, y el orden es la prioridad de los mensajes directos.
-SOLO_PADRON = {'SR', 'URBF', 'FFS', 'DDF'}
+SOLO_PADRON = {'SR', 'URBF', 'FFS', 'DDF', 'ACAD'}
 SALIDA = os.path.join(BASE, 'datos', 'servidores_de.json')
 #: 🔑 LOS NOMBRES DE CADA CUENTA —apodo del servidor, nombre visible y
 #: usuario—, para las Pistas de ✅ Decidir: «¿Quién es KULRW?» se contesta

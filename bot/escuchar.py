@@ -251,15 +251,20 @@ def plano(texto):
     completo. Sin esto una llave escrita así no tiene separadores ni
     encabezados: no se detecta, y no falla nada.
 
-    ⚠️ SÓLO ESOS DOS BLOQUES. NFKD sobre todo el texto también desarmaría
+    ⚠️ SÓLO ESOS BLOQUES. NFKD sobre todo el texto también desarmaría
     tildes y banderas, que el resto del lector sabe leer tal como vienen.
     Es la misma trampa que los roles `𝐑𝐚𝐧𝐠𝐨 𝐒𝐒𝐒` de Discord (ver CLAUDE.md).
+
+    🏛️ Y LAS LETRAS EN CUADRADITOS Y EN CIRCULITOS (la ACADEMIA, 04/10/2026): la RED
+    BULL CREW CHILE escribe sus rondas `🄾🄲🅃🄰🅅🄾🅂` (U+1F130…U+1F149) y sin esto la
+    llave no tenía ni una ronda. Los «negativos» (`🅰`, `🅾`) no: son emojis.
     """
     if not texto:
         return texto or ''
     return ''.join(
         unicodedata.normalize('NFKD', c)
-        if 0x1D400 <= ord(c) <= 0x1D7FF or 0xFF01 <= ord(c) <= 0xFF5E else c
+        if 0x1D400 <= ord(c) <= 0x1D7FF or 0xFF01 <= ord(c) <= 0xFF5E
+        or 0x1F130 <= ord(c) <= 0x1F149 or 0x24B6 <= ord(c) <= 0x24E9 else c
         for c in texto)
 
 
@@ -270,6 +275,11 @@ def plano(texto):
 #: `<:versus_:…>`, que no lleva «vs» adentro —v-e-r-s-u-s—. Sin esto sus
 #: llaves no tenían ninguna batalla.
 VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>', re.I)
+#: 🏛️ EL MISMO EMOJI, ESCRITO COMO TEXTO: `:VSr:`. Es como le llega al bot un emoji de un servidor donde no
+#: está —la RED BULL CREW de la ACADEMIA, 04/10/2026—. `:vs:` y `:vsf:` no: ya los lee `SEP`
+VS_TEXTO = re.compile(r'(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)\w*:(?!\d)', re.I)
+#: y el podio igual: `:1erPuesto: <@…>`
+PODIO_TEXTO = re.compile(r'(?<![<\w]):([123])[a-z\u00ba\u00b0]*_?puesto\w*:(?!\d)', re.I)
 #: cualquier emoji propio del servidor
 PROPIO = r'<a?:\w+:\d+>'
 #: el negrito y el subrayado de Discord pegados a un marco
@@ -472,11 +482,18 @@ def traducir(texto):
     # 🔑 el emoji entre dos `<>` de más: `『A』<<:versus_:…>> 『B』` (DIMENSIÓN DEL FREESTYLE)
     t = re.sub(r'<(<a?:\w+:\d+>)>', r'\1', texto)
     t = VS_PROPIO.sub(' 🆚 ', t)
+    # 🏛️ LA RED BULL CREW DE LA ACADEMIA (04/10/2026): `➢〘 PANCHOK 🇨🇱〘:VSr:] KOCHI 🇨🇱〙`. El VS llega como
+    # texto, los marcos 〘〙 vienen mal anidados —se sacan: el VS ya separa los lados— y la viñeta ➢ no es nadie
+    t = VS_TEXTO.sub(' 🆚 ', t)
+    t = re.sub(r'[〘〙]', ' ', t)
+    t = re.sub(r'(?m)^[ \t]*[➢➤]+[ \t]*', '', t)
     t = re.sub(r'<a?:(\w+):\d+>', _pais_del_emoji, t)
     t = re.sub(r':flag_([a-z]{2}):', lambda m: _bandera(m.group(1)), t)
     t = '\n'.join(_sin_espaciar(l) for l in t.split('\n'))
     # el podio: el emoji dice el puesto, y el marco que lo rodea sobra
     t = PODIO_PROPIO.sub(
+        lambda m: ' %s PUESTO: ' % {'1': '1ER', '2': '2DO', '3': '3ER'}[m.group(1)], t)
+    t = PODIO_TEXTO.sub(
         lambda m: ' %s PUESTO: ' % {'1': '1ER', '2': '2DO', '3': '3ER'}[m.group(1)], t)
     t = re.sub(r'[『「〈][ \t]*(\d(?:ER|DO) PUESTO:)[ \t]*[』」〉]', r'\1', t)
     # los marcos, con el negrito que los envuelve
@@ -585,7 +602,14 @@ def _sin_marcas(x):
     # contiene `<a:x:123>`, y `norm()` ya lo borraba para comparar.
     # ⚠️ Con el espacio de ANTES y nada más: juntar todos los espacios dobles
     # cambiaba filas de FFA que ya estaban cargadas (TOKYO VOL.13).
-    x = re.sub(r'[ \t]*<a?:\w+:\d+>', '', MARCAS.sub('', x))
+    x = re.sub(r'[ \t]*<a?:\w+:\d+>', '', MARCAS.sub('', x)).strip(' *`')
+    # 🏛️ «## 🇵🇪 SOSA 🆚 YOR 🇪🇸»: la ACADEMIA (04/10/2026) escribe cada batalla como un encabezado
+    # de Discord y la bandera ADELANTE del primero. El «##» llegaba al nombre —«## 🇵🇪 SOSA» era otra
+    # persona que «SOSA 🇵🇪»— y la bandera adelante se mostraba así. Va al final, como en el resto
+    x = re.sub(r'^#{1,3}[ \t]+', '', x)
+    m = re.match('^((?:%s{2}[ \t]*)+)(\\S.*)$' % _BANDERA, x)
+    if m:
+        x = m.group(2).rstrip() + ' ' + re.sub(r'\s', '', m.group(1))
     return x.strip(' *`')
 
 
@@ -2581,11 +2605,24 @@ def _titulo_batalla(t):
     return None
 
 
+#: 🫲 / 🫱: el voto con la MANO de la ACADEMIA (04/10/2026). La mano señala al que gana: 🫲 al de la
+#: izquierda del título, 🫱 al de la derecha —y lo mismo 👈 y 👉—. ❌ es la réplica: no es un voto
+MANO_IZQ, MANO_DER = '\U0001FAF2\U0001F448', '\U0001FAF1\U0001F449'
+#: el tono de piel y el selector de variante que acompañan a la mano
+_TONO = re.compile('[\U0001F3FB-\U0001F3FF\uFE0F]')
+
+
 def _voto_de(t):
     """El voto de un juez: un renglón con un solo nombre (`**FAZER 🇦🇷**`,
-    `# ***DELUXE***`), normalizado. `''` si no es eso."""
+    `# ***DELUXE***`), normalizado. `''` si no es eso. Una mano sola es
+    `'<izq>'` o `'<der>'`: ver `MANO_IZQ`."""
     ls = [x.strip() for x in _lineas(t) if x.strip()]
-    return norm(MARCAS.sub('', re.sub(r'^#+\s*', '', ls[0]))) if len(ls) == 1 else ''
+    if len(ls) != 1:
+        return ''
+    mano = _TONO.sub('', re.sub(r'^#+\s*', '', ls[0])).strip()
+    if len(mano) == 1 and mano in MANO_IZQ + MANO_DER:
+        return '<izq>' if mano in MANO_IZQ else '<der>'
+    return norm(MARCAS.sub('', re.sub(r'^#+\s*', '', ls[0])))
 
 
 def _clave_par(a, b):
@@ -2691,6 +2728,9 @@ def _tandas(rows):
             cur = tanda['bs'][-1] if tanda['bs'] else None
             v = _voto_de(t)
             if not cur or not v or not m.get('autor'):
+                continue
+            if v in ('<izq>', '<der>'):
+                cur['votos'][str(m['autor'])] = 'a' if v == '<izq>' else 'b'
                 continue
             na, nb = norm(cur['a']), norm(cur['b'])
             ea = v == na or (len(na) > 2 and na in v)
@@ -3787,6 +3827,14 @@ def _check_veredicto_ganador():
         ('… y si dos veredictos de la pareja dicen otra cosa, no se elige',
          ganador_por_veredicto(['Pichulamc', 'Riferian'], '77', cuando,
                                batallas=bs + [dict(fin[0], id='x', ganador=fin[0]['b'])]) is None),
+        # 🏛️ la ACADEMIA (04/10/2026) vota con la mano: 🫲 el de la izquierda, 🫱 el de la derecha, ❌ réplica
+        ('🫲 es el de la izquierda del título, con tono de piel o sin',
+         [b['ganador'] for b in batallas_veredicto([fila(200, '# KOCHI 🇨🇱 🆚 SEKKA 🇦🇷'),
+                                                    fila(210, '🫲🏻', '3d')])] == ['KOCHI 🇨🇱']),
+        ('🫱 es el de la derecha, y la ❌ de antes (la réplica) no cuenta',
+         [b['ganador'] for b in batallas_veredicto([fila(300, '# YOR 🇪🇦 🆚 KOCHI 🇨🇱'), fila(305, '❌', '3d'),
+                                                    fila(310, '🫱', '3d')])] == ['KOCHI 🇨🇱']),
+        ('una mano con un nombre al lado no es un voto con la mano', _voto_de('🫱 SEKKA') == 'sekka'),
     ]:
         print('   %s %s' % ('✅' if ok else '❌', que))
         mal += 0 if ok else 1

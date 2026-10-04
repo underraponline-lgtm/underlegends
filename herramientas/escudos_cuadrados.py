@@ -82,13 +82,15 @@ AJUSTE = {'FRZ': 0.68, 'URBF': 0.86, 'FFA': 0.90, 'SR': 0.90, 'DRA': 0.88}
 # RZ entra por lo mismo: su icono es el lobo y las letras SOBRE fuego azul,
 # y ese fuego es el logo tanto como el lobo. Separarlo por color deja las
 # letras blancas solas, que podrian ser de cualquiera.
-A_SANGRE = {'TWR', 'RZ', 'FFS', 'DDF'}
+A_SANGRE = {'TWR', 'RZ', 'FFS', 'DDF', 'ACAD'}
 # 🟣 FFS (28/09/2026) va a sangre por lo mismo que RZ y más: su logo es una
 # ilustración —ocho figuras en un círculo— y no hay «tinta» que separar. Y el
 # archivo es de 256 px: es lo que subieron a Discord.
 # 🌌 DDF (03/10/2026) también: su logo es una insignia REDONDA con una galaxia
 # adentro, y lo oscuro de la galaxia es el logo. Separado por color quedaban
 # sólo las letras y el aro, flotando; entero, calza justo en el círculo.
+# 🏛️ La ACADEMIA (04/10/2026) igual: su logo es un círculo amarillo con las columnas en negro, y el
+# amarillo ES el logo. Separado por color quedaban las columnas solas.
 
 
 def alfa_por_color(a, fondo):

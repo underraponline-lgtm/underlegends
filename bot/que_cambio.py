@@ -84,10 +84,10 @@ COMO_R2 = {'Temporada': 'temporada', 'Competitiva': 'competitivo',
            'Servidor': 'servidor', 'Pais': 'pais'}
 TODAS = sorted(COMO_R2.values())
 
-#: las camisetas de la Servidor —diez desde FFS, 28/09/2026; once desde DDF, 03/10—. Una sola lista:
+#: las camisetas de la Servidor —diez desde FFS, 28/09/2026; once desde DDF, 03/10; doce desde la ACADEMIA, 04/10—. Una sola lista:
 #: `bot/pipeline.py` la importa de acá, porque el sello y el dibujo tienen que
 #: ver las mismas.
-SERVIDORES = ('DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'SR', 'TFC', 'TWR', 'URBF')
+SERVIDORES = ('ACAD', 'DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'SR', 'TFC', 'TWR', 'URBF')
 
 
 def camisetas(quienes):

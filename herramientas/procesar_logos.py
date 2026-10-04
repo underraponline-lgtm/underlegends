@@ -49,6 +49,8 @@ MODOS = {
     # incompletos. Las dos son insignias redondas sobre un fondo plano
     'ffs' : ('FFS.png',     'fondo'),
     'ddf' : ('DDF.png',     'fondo'),
+    # 🏛️ la ACADEMIA (04/10/2026): el círculo amarillo con las columnas, sobre negro
+    'acad': ('ACAD.png',    'fondo'),
 }
 
 

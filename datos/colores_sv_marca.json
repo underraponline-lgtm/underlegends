@@ -13,7 +13,8 @@
   "URBF": "#F2B33D",
   "FFS": "#8E9BFF",
   "RZ": "#3A96F2",
-  "DDF": "#00ADEC"
+  "DDF": "#00ADEC",
+  "ACAD": "#EACB0C"
  },
  "de_donde_sale": {
   "TFC": "del logo · rojo vino",
@@ -27,7 +28,8 @@
   "URBF": "miel, ELEGIDO por Dlx y no sacado del logo. 27/09/2026: «lo de Urban Freestyle usa otro naranja» y, entre ámbar #FFA928, naranja rojizo #FF5A2E y miel #F2B33D, «prueba miel». El del logo nuevo era #EA7206 y quedaba a ΔE 3 del de Snake Rap (#E0670B): el mismo color a simple vista. Miel queda a ΔE 23,6 de Snake Rap (y a 9 del dorado de «Líder»). El fondo de su carta de Servidor NO sale de acá: vive en 03_Servidor/disenos/los_nueve.py y no cambió.",
   "FFS": "periwinkle claro, ELEGIDO por Dlx (28/09/2026, «A · periwinkle claro #8E9BFF»). Del tono del logo, aclarado: el logo es casi todo lavanda #6C6CE4 y quedaba a ΔE 3,8 de DRA (#5964E0), el mismo color a simple vista; así queda a 17,9 de DRA y a más de 35 del resto. El fondo de su carta de Servidor vive en 03_Servidor/disenos/los_nueve.py.",
   "RZ": "del logo · el punto más caliente de su fuego azul",
-  "DDF": "azul eléctrico, el del borde del planeta de su logo, ELEGIDO con Dlx (03/10/2026: «Me gusta el B pero… el morado ese es el mismo que FFA»). Su logo es una galaxia violeta y el violeta ya está tomado: medido el marco de la carta (`comun.marco.claro()`), el violeta de DDF quedaba a ΔE 2,6 del de FFA. #00ADEC es el claro de la base #005E80 y queda a 18 o más de los otros diez marcos, y a 20 o más de los colores de marca, del magenta de FFA y de los dos de Under Legends. El violeta queda en la nebulosa de su camiseta (03_Servidor/disenos/los_nueve.py)."
+  "DDF": "azul eléctrico, el del borde del planeta de su logo, ELEGIDO con Dlx (03/10/2026: «Me gusta el B pero… el morado ese es el mismo que FFA»). Su logo es una galaxia violeta y el violeta ya está tomado: medido el marco de la carta (`comun.marco.claro()`), el violeta de DDF quedaba a ΔE 2,6 del de FFA. #00ADEC es el claro de la base #005E80 y queda a 18 o más de los otros diez marcos, y a 20 o más de los colores de marca, del magenta de FFA y de los dos de Under Legends. El violeta queda en la nebulosa de su camiseta (03_Servidor/disenos/los_nueve.py).",
+  "ACAD": "del logo: la mediana del amarillo del círculo con las columnas (#EACB0C), del archivo que pasó Dlx el 04/10/2026 («colores amarillo y negro para la tarjeta»). Ver la distancia a los otros en el commit que la sumó."
  },
  "_pendiente_sr": "Se acordo que Snake Rap va en VERDE, pero no hay ningun logo verde: los dos archivos que hay son dorado (Logo_Ciclo_8, el actual) y naranja (SR.png, el viejo). Tres salidas: (a) que Dlx pase la version verde, (b) usar el verde de marca #33BF5A y teñir la silueta blanca, que ya existe en comun/logos_sv/, (c) aceptar el dorado, que es el color real del logo actual. Hasta que se decida queda el dorado.",
  "marca_original_svColors": {

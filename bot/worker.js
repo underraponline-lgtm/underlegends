@@ -192,6 +192,9 @@ export const SERVIDORES = [
   // 🌌 DDF (03/10/2026): de la Liga (Dlx: «Haz todo lo necesario para que esta sea una buena inclusión»), con la
   // invitación permanente que creó el bot (`bot/invitaciones.py`)
   { sv: 'DDF', nombre: 'Dimensión del Freestyle', guild: '1469009547971526659', invita: 'https://discord.gg/9jxbKT9Hfv' },
+  // 🏛️ LA ACADEMIA (04/10/2026): de la Liga (Dlx: «prepara todo para implementarlos en la liga como se debe»),
+  // con la invitación permanente que crea el bot (`bot/invitaciones.py`)
+  { sv: 'ACAD', nombre: 'Academia de Rap', guild: '765045834647339038', invita: 'https://discord.gg/tyYC4XejPA', sigla: 'ACA' },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());
