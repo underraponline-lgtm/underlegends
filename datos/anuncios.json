@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-04T21:58:26+00:00",
+ "cuando": "2026-10-04T22:24:31+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3006,53 +3006,54 @@
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-04T17:08:02"
-  },
-  {
-   "nombre": "Y TENEMOS EL HONOR DE ANUNCIARLES A TODO EL EQUIPO DE TRABAJO QUE SE V",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1551245259898359891",
-   "cuando": "2026-09-20T14:54:50",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
-  },
-  {
-   "nombre": "MAÑANA! ES MAÑANA!",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1550872980580466699",
-   "cuando": "2026-09-19T14:15:32",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "DE INSCRIPCIONES",
-   "fecha": "",
-   "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "saiko 🇨🇱",
+   "quien": "ladiesandgentlemeen",
+   "discord_id": "942540846685909002",
+   "msg_id": "1556431419704868927",
+   "cuando": "2026-10-04T22:22:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "ReyexXMC 🇻🇪",
+   "quien": "alejandro_090954",
+   "discord_id": "1532265502703878265",
+   "msg_id": "1556429698492530829",
+   "cuando": "2026-10-04T22:15:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "JEIXDER🇵🇪",
+   "quien": "jeixder",
+   "discord_id": "1236088830604476526",
+   "msg_id": "1556429241409871964",
+   "cuando": "2026-10-04T22:14:08"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jeixder",
+   "quien": "jeixder",
+   "discord_id": "1236088830604476526",
+   "msg_id": "1556428959506497547",
+   "cuando": "2026-10-04T22:13:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sosa🇦🇷",
+   "quien": "sosa.1417",
+   "discord_id": "1338912904614903849",
+   "msg_id": "1556426414763540502",
+   "cuando": "2026-10-04T22:02:54"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
