@@ -382,7 +382,7 @@ function Campeones({ liga }) {
           <button type="button" key={ll.n} className="evp-cp" onClick={() => accion.llave(ll.n)}>
             {f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={f.k} cual="temporada" cls="evp-cp-ci" abre={false} />
               : <span className="evp-cp-sin"><Cara liga={liga} k={f ? f.k : ''} nombre={g[0] || '?'} cls="cara evp-cp-cara" /></span>}
-            <small><img alt="" src={liga.logo(ll.sv)} />{ll.sv} · {liga.cuando(liga.fechaLlave(ll))}</small>
+            <small><img alt="" src={liga.logo(ll.sv)} />{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))}</small>
             <b>{g.join(' y ')}</b>
             <span>{limpio(ll.nombre)}</span>
           </button>

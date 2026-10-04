@@ -152,18 +152,22 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // 🔴 LO VISTO SE CUENTA HISTORIA POR HISTORIA, Y SE SALTEA. Dlx, 02/10/2026: «aún sigo viendo las historias que ya
   // he visto… no skipea las que ya vi y no me muestra lo más reciente PRIMERO». Antes se guardaba UNA marca por
   // círculo (la hora de lo último visto): con algo nuevo, el círculo entero volvía a verde y abría donde caía. Ahora
-  // cada historia tiene su `id` (ver `gruposHistorias`), las de cada círculo van de la más nueva a la más vieja, y al
-  // abrir se pasan SÓLO las que no viste; si ya viste todas, todas. Al terminar, el siguiente círculo con algo sin ver.
+  // cada historia tiene su `id` (ver `gruposHistorias`) y al abrir se arranca en la primera que no viste; si ya viste
+  // todas, desde la primera. Al terminar, el siguiente círculo con algo sin ver.
+  // 🔁 Y DESDE EL 04/10/2026, COMO INSTAGRAM (Dlx: «el orden… está invertido, fijate cómo lo hace Instagram»): el
+  // círculo trae TODAS sus historias, de la más vieja a la más nueva, con las barritas de las ya vistas llenas, y abre
+  // en la primera que no viste. Lo visto no se vuelve a pasar solo, pero se puede volver con «anterior»
   const pend = (g) => g.slides.filter((s) => !vistos[s.id]).map((s) => s.id);
-  const lista = (g) => { if (!g) return []; const p = pend(g); return p.length ? p : g.slides.map((s) => s.id); };
+  const lista = (g) => (g ? g.slides.map((s) => s.id) : []);
+  const inicio = (g) => { if (!g) return 0; const k = g.slides.findIndex((s) => !vistos[s.id]); return k < 0 ? 0 : k; };
   // la lista de cada círculo se fija al abrirlo: marcar como vista la que estás mirando no la saca de abajo del dedo
   const [abre, setAbre] = useState(() => ({ gid: (grupos[abierto] || {}).id, ids: lista(grupos[abierto]) }));
-  const [si, setSi] = useState(0);
+  const [si, setSi] = useState(() => inicio(grupos[abierto]));
   const [avance, setAvance] = useState(0);
   const pausa = useRef(false);
   const cerrarB = useRef(null);
   const DUR = 5000;
-  const a = (i) => { setAbre({ gid: grupos[i].id, ids: lista(grupos[i]) }); setSi(0); setAvance(0); };
+  const a = (i) => { setAbre({ gid: grupos[i].id, ids: lista(grupos[i]) }); setSi(inicio(grupos[i])); setAvance(0); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { if (grupos[abierto]) a(abierto); }, [abierto]);
   const gid = abre.gid;

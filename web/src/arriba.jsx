@@ -301,7 +301,7 @@ function slidesDe(liga, items) {
         cu = liga.vivo().includes(e) ? 'en vivo desde las ' + liga.dia(e.cuando).replace(/^hoy /, '') : liga.dia(e.cuando);
         if (e.modalidad) cu += ' · ' + e.modalidad;
       }
-      out.push(Slide('ANUNCIÓ · ' + it.sv, <><img className="st-logo" alt="" src={liga.logo(it.sv)} /><h3 className="st-h">{limpio(it.ev)}</h3>
+      out.push(Slide('ANUNCIÓ · ' + siglaDe(it.sv), <><img className="st-logo" alt="" src={liga.logo(it.sv)} /><h3 className="st-h">{limpio(it.ev)}</h3>
         {liga.esDorado(it.ev, it.sv) ? <span className="st-dor">EVENTO DORADO ×3</span> : null}<small className="st-s">{cu || c}</small></>,
         c, 'Quiero aviso', { ruta: '#/avisos' }));
     }
@@ -312,8 +312,20 @@ function slidesDe(liga, items) {
   return out;
 }
 
-// lo más nuevo primero (Dlx, 02/10/2026: «no me muestra lo más reciente PRIMERO»); lo que no tiene hora, al final
-const masNuevo = (a, b) => String(b.t || '').localeCompare(String(a.t || ''));
+// 🔁 DE LA MÁS VIEJA A LA MÁS NUEVA, COMO INSTAGRAM (Dlx, 04/10/2026: «el orden… está invertido, fijate cómo lo hace
+// Instagram»). El 02/10 había pedido «lo más reciente PRIMERO» porque el visor le volvía a pasar lo ya visto: eso lo
+// resuelve abrir en la primera que no viste (ver `Visor`), no dar vuelta el orden. Lo que no tiene hora, al final
+const masViejo = (a, b) => (!a.t - !b.t) || String(a.t || '').localeCompare(String(b.t || ''));
+
+/** La fila de círculos como Instagram: lo en vivo primero, después lo que tiene algo sin ver y al final lo ya visto
+ * (gris), cada parte en su orden de siempre. `vistos` es una foto de cuando el visor estaba cerrado (ver App.jsx): así
+ * los círculos no se corren mientras mirás. */
+export function ordenHistorias(grupos, vistos) {
+  const todoVisto = (g) => g.slides.every((s) => vistos[s.id]);
+  const vivo = grupos.filter((g) => g.tipo === 'vivo');
+  const resto = grupos.filter((g) => g.tipo !== 'vivo');
+  return vivo.concat(resto.filter((g) => !todoVisto(g)), resto.filter(todoVisto));
+}
 
 // las caras de una lista de filas de la tabla, con lo que dice debajo de cada una
 const Gente = ({ liga, fs, txt }) => (
@@ -411,7 +423,7 @@ export function gruposHistorias(liga) {
     const dd = aDiscord(liga, e, true);
     grupos.push({
       id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + siglaDe(e.sv), logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
-      slides: [Slide('EN VIVO AHORA · ' + e.sv, <><img className="st-logo grande" alt="" src={liga.logo(e.sv, true)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
+      slides: [Slide('EN VIVO AHORA · ' + siglaDe(e.sv), <><img className="st-logo grande" alt="" src={liga.logo(e.sv, true)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
         <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}. La llave aparece acá apenas la carguen.</small></>,
       'ahora', dd ? dd.txt : 'Mirar en Discord', { link: dd ? dd.url : e.link }, 'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando)],
     });
@@ -440,20 +452,20 @@ export function gruposHistorias(liga) {
     }
     if (m || lineas.length) {
       // la de la semana es una historia más: se ve una vez por semana, con la hora del lunes en que empezó
-      slides.push(Slide('ESTA SEMANA · ' + sv, <><img className="st-logo" alt="" src={liga.logo(sv)} />
+      slides.push(Slide('ESTA SEMANA · ' + siglaDe(sv), <><img className="st-logo" alt="" src={liga.logo(sv)} />
         {m ? <b className={'st-mult ' + (m > 1 ? 'sube' : 'baja')}>{mult(m)}</b> : null}<ul className="st-l">{lineas}</ul></>, 'lunes', 'Lunes de la Liga', { ancla: 'semana' },
       'sem:' + sv + ':' + (mm.ini || ''), String(mm.ini || '')));
     }
     const propios = muro.filter((it) => liga.svDe(it) === sv);
-    // 🔴 LO MÁS NUEVO PRIMERO, y lo visto se saltea historia por historia (ver `Visor`). Dlx, 02/10/2026: «aún sigo
-    // viendo las historias que ya he visto… no skipea las que ya vi y no me muestra lo más reciente PRIMERO»
+    // las seis más nuevas; en el círculo, de la más vieja a la más nueva (`masViejo`), y el visor abre en la primera que
+    // no viste (Dlx, 02/10/2026: «no skipea las que ya vi»; 04/10/2026: «fijate cómo lo hace Instagram»)
     slidesDe(liga, propios).slice(0, 6).forEach((x) => slides.push(x));
     if (!propios.length) {
       slides.push(Slide(String(s.nombre || sv).toUpperCase(), <><img className="st-logo grande" alt="" src={liga.logo(sv, true)} /><h3 className="st-h">Todavía sin eventos en la {liga.temp}</h3>
         <small className="st-s">{String(s.tag || '').charAt(0) + String(s.tag || '').slice(1).toLowerCase()}</small></>, '', s.invita ? 'Entrar al servidor' : '', { link: s.invita },
       'vacio:' + sv));
     }
-    slides.sort(masNuevo);
+    slides.sort(masViejo);
     grupos.push({ id: 'sv-' + sv.toLowerCase(), tipo: 'sv', nombre: s.nombre, logo: liga.logo(sv), nom: siglaDe(sv), nuevo: propios.length > 0, firma: firma(propios, 'sem:' + (mm.ini || '')), slides });
   });
   // ── después, lo tuyo: tu país, tu crew y la gente que seguís. Dlx, 30/09/2026: «no hay necesidad de seguir a
@@ -472,7 +484,7 @@ export function gruposHistorias(liga) {
       {top.length ? <ul className="st-gente">{top.map((f) => <li key={f.k}><Cara liga={liga} k={f.k} nombre={f.n} cls="st-mini" /><span>#{f.pos} {limpio(f.n)}</span></li>)}</ul> : null}</>,
     'esta temporada', 'Ver ' + nom, { ruta: '#/pais/' + pa.cc }, 'pais:' + pa.cc + ':' + (mm.ini || ''), String(mm.ini || ''))];
     slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
-    slides.sort(masNuevo);
+    slides.sort(masViejo);
     grupos.push({ id: 'pais-' + pa.cc, tipo: 'pais', nombre: nom, cc: pa.cc, nom, nuevo: propios.length > 0, firma: firma(propios, 'pais'), slides });
   }
   const c = yo ? liga.crewDe(yo) : null;
@@ -486,7 +498,7 @@ export function gruposHistorias(liga) {
     String(mm.ini || ''))];
     const propios = muro.filter((it) => (it.ks || []).some((k) => ks.has(k)));
     slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
-    slides.sort(masNuevo);
+    slides.sort(masViejo);
     grupos.push({ id: 'crew-' + claveCrew(c.crew), tipo: 'crew', nombre: limpio(c.crew), crew: c, nom: limpio(c.crew), nuevo: propios.length > 0, firma: firma(propios, 'crew'), slides });
   }
   const ETIQUETA = { tarjeta: 'carta nueva', campeon: 'campeón', caza: 'cazó' };
@@ -528,11 +540,15 @@ export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {
 export function Historias({ liga, grupos, vistos, onAbrir }) {
   const partes = [];
   let antes = null;
+  let antesVisto = false;
   grupos.forEach((g, i) => {
-    if (antes && g.tipo !== antes) partes.push(<span key={'s' + i} className="h-sep" aria-hidden="true" />);
+    // gris cuando ya viste TODAS sus historias (se cuenta historia por historia: ver `Visor`). Los vistos van al final
+    // (`ordenHistorias`): una raya antes de ellos y ninguna entre ellos, que ahí ya se mezclan los tipos
+    const todo = g.slides.every((s) => vistos[s.id]);
+    if (antes && (todo !== antesVisto || (!todo && g.tipo !== antes))) partes.push(<span key={'s' + i} className="h-sep" aria-hidden="true" />);
     antes = g.tipo;
-    // gris cuando ya viste TODAS sus historias (se cuenta historia por historia: ver `Visor`)
-    const visto = g.slides.every((s) => vistos[s.id]) ? ' visto' : '';
+    antesVisto = todo;
+    const visto = todo ? ' visto' : '';
     const abrir = () => onAbrir(i);
     if (g.tipo === 'vivo') {
       partes.push(<button type="button" key={g.id} className={'h en-vivo' + visto} onClick={abrir}><span className="h-w"><span className="h-c"><img alt="" src={g.logo} /></span>

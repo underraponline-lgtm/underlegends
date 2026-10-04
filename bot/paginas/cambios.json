@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.20",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T00:10:00-04:00",
+   "titulo": "Las historias, como Instagram",
+   "items": [
+    "📱 **Las historias van de la más vieja a la más nueva**, con todas las barritas arriba: abren en la primera que no viste y las ya vistas quedan llenas.",
+    "⏭️ **Los círculos que ya viste pasan al final** de la fila, en gris.",
+    "🎤 **Sin foto, una silueta de rapero** en las cartas: para quien no se puso foto, la ocultó o tiene una lisa.",
+    "🔤 **SNK y URB también en las historias** y en las llaves de Eventos."
+   ]
+  },
+  {
    "version": "2.19",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T22:43:00-04:00",

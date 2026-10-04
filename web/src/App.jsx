@@ -3,7 +3,7 @@
 // pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Liga, aQuienSigo, quienMira } from './liga.js';
-import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias } from './arriba.jsx';
+import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
@@ -306,10 +306,15 @@ export default function App() {
     return () => clearTimeout(r);
   }, [pagina, sv, nombreSv, liga]);
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
-  const grupos = useMemo(() => {
+  const gruposBase = useMemo(() => {
     if (!liga) return [];
     try { return gruposHistorias(liga); } catch (e) { console.error('[inicio] las historias:', e); return []; }
   }, [liga]);
+  // 🔁 lo ya visto al final de la fila, como Instagram (Dlx, 04/10/2026): con la foto de lo visto de cuando el visor
+  // estaba CERRADO, para que los círculos no se corran mientras mirás (el visor sigue al suyo por su ID igual)
+  const [vistosFila, setVistosFila] = useState(vistos);
+  useEffect(() => { if (historia === null) setVistosFila(vistos); }, [historia, vistos]);
+  const grupos = useMemo(() => ordenHistorias(gruposBase, vistosFila || {}), [gruposBase, vistosFila]);
   // lo que ya habías visto con la marca vieja (una por círculo) pasa una vez a la nueva, así nadie vuelve a ver todo
   useEffect(() => {
     if (vistos !== null || !grupos.length) return;
