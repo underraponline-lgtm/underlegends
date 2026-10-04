@@ -132,6 +132,23 @@ ZONA_BANDERA = {
     'VE': 'America/Caracas',
 }
 _BANDERA = re.compile('([\U0001F1E6-\U0001F1FF])([\U0001F1E6-\U0001F1FF])')
+#: 🔑 EL PAÍS ESCRITO, CUANDO NO HAY BANDERA (04/10/2026): Urban anunció su Red Bull con «4 PM COLOMBIA» y la
+#: página lo mostró sin hora, y la ACADEMIA escribe «ARRANCA 7PM CHILE». Sin tildes y en mayúsculas, como queda
+#: después de `_sin_tildes()`. El mismo mapa que `PAIS_NOMBRE` de bot/avisos.js.
+PAIS_NOMBRE = {
+    'ARGENTINA': 'AR', 'ARG': 'AR', 'BOLIVIA': 'BO', 'BRASIL': 'BR', 'CHILE': 'CL', 'COLOMBIA': 'CO',
+    'COSTA RICA': 'CR', 'CUBA': 'CU', 'REPUBLICA DOMINICANA': 'DO', 'ECUADOR': 'EC', 'ESPANA': 'ES',
+    'GUATEMALA': 'GT', 'HONDURAS': 'HN', 'MEXICO': 'MX', 'NICARAGUA': 'NI', 'PANAMA': 'PA', 'PERU': 'PE',
+    'PUERTO RICO': 'PR', 'PARAGUAY': 'PY', 'EL SALVADOR': 'SV', 'URUGUAY': 'UY', 'VENEZUELA': 'VE',
+}
+
+
+def _pais_escrito(texto):
+    """El código del primer país escrito con todas las letras («4 PM COLOMBIA» -> `CO`), o `None`."""
+    t = _sin_tildes(texto)
+    hallados = [(m.start(), cc) for nombre, cc in PAIS_NOMBRE.items()
+                for m in [re.search(r'\b%s\b' % nombre, t)] if m]
+    return min(hallados)[1] if hallados else None
 #: «22:30», «22.30», «22h30» / «23 HS», «23hs», y «8 pm» o «8:30 PM»
 _HHMM = re.compile(r'(?<![\d/])(\d{1,2})[:.h](\d{2})(?!\d)\s*(?:([ap])\.?\s*m\b\.?)?', re.I)
 _HH = re.compile(r'(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)', re.I)
@@ -185,10 +202,13 @@ def hora_bandera(horario, publicado, fecha=''):
     t = str(horario or '')
     b = _BANDERA.search(t)
     hm = _hora_de(t)
-    if not b or not hm:
+    if not hm:
         return None
-    zona = ZONA_BANDERA.get(chr(ord(b.group(1)) - 0x1F1E6 + 65) +
-                            chr(ord(b.group(2)) - 0x1F1E6 + 65))
+    # la bandera gana; sin bandera, el país escrito («4 PM COLOMBIA»)
+    cc = (chr(ord(b.group(1)) - 0x1F1E6 + 65) + chr(ord(b.group(2)) - 0x1F1E6 + 65)) if b else _pais_escrito(t)
+    if not cc:
+        return None
+    zona = ZONA_BANDERA.get(cc)
     pub = _leer_iso(publicado)
     if not zona or pub is None:
         return None

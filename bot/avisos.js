@@ -747,6 +747,24 @@ export const ZONA_BANDERA = {
   PY: 'America/Asuncion', SV: 'America/El_Salvador', UY: 'America/Montevideo',
   VE: 'America/Caracas',
 };
+// 🔑 EL PAÍS ESCRITO, CUANDO NO HAY BANDERA (04/10/2026): «4 PM COLOMBIA» (el Red Bull de Urban salió sin hora en la
+// página) y «ARRANCA 7PM CHILE» (la ACADEMIA). Sin tildes y en mayúsculas. El mismo mapa que `cuando.PAIS_NOMBRE`
+export const PAIS_NOMBRE = {
+  ARGENTINA: 'AR', ARG: 'AR', BOLIVIA: 'BO', BRASIL: 'BR', CHILE: 'CL', COLOMBIA: 'CO',
+  'COSTA RICA': 'CR', CUBA: 'CU', 'REPUBLICA DOMINICANA': 'DO', ECUADOR: 'EC', ESPANA: 'ES',
+  GUATEMALA: 'GT', HONDURAS: 'HN', MEXICO: 'MX', NICARAGUA: 'NI', PANAMA: 'PA', PERU: 'PE',
+  'PUERTO RICO': 'PR', PARAGUAY: 'PY', 'EL SALVADOR': 'SV', URUGUAY: 'UY', VENEZUELA: 'VE',
+};
+/** El código del primer país escrito con todas las letras («4 PM COLOMBIA» -> `CO`), o `null` */
+export function paisEscrito(texto) {
+  const t = sinTildes(texto);
+  let mejor = null;
+  for (const [nombre, cc] of Object.entries(PAIS_NOMBRE)) {
+    const m = new RegExp('\\b' + nombre + '\\b').exec(t);
+    if (m && (!mejor || m.index < mejor[0])) mejor = [m.index, cc];
+  }
+  return mejor ? mejor[1] : null;
+}
 const BANDERA_RE = /([\u{1F1E6}-\u{1F1FF}])([\u{1F1E6}-\u{1F1FF}])/u;
 const HHMM_RE = /(?<![\d/])(\d{1,2})[:.h](\d{2})(?!\d)\s*(?:([ap])\.?\s*m\b\.?)?/i;
 const HH_RE = /(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)/i;
@@ -821,8 +839,11 @@ export function horaBandera(horario, publicado, fecha) {
   const t = String(horario || '');
   const b = BANDERA_RE.exec(t);
   const hm = horaDe(t);
-  if (!b || !hm) return null;
-  const cc = String.fromCharCode(b[1].codePointAt(0) - 0x1F1E6 + 65, b[2].codePointAt(0) - 0x1F1E6 + 65);
+  if (!hm) return null;
+  // la bandera gana; sin bandera, el país escrito («4 PM COLOMBIA»)
+  const cc = b ? String.fromCharCode(b[1].codePointAt(0) - 0x1F1E6 + 65, b[2].codePointAt(0) - 0x1F1E6 + 65)
+    : paisEscrito(t);
+  if (!cc) return null;
   const zona = ZONA_BANDERA[cc];
   const pub = Date.parse(String(publicado || '').slice(0, 19) + 'Z');
   if (!zona || Number.isNaN(pub)) return null;
@@ -2660,7 +2681,7 @@ export class Avisos {
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/uso') return this.usoAnotar(d);
       if (ruta === '/visita') return this.visita();
-      if (ruta === '/dueno') return json(this.dueno());
+      if (ruta === '/dueno') return json(this.panelDueno());
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
@@ -4877,8 +4898,11 @@ export class Avisos {
   }
 
   /** 🔒 Lo del Dashboard del dueño: el uso (la semana y día por día) y cómo anda todo. Sólo lo pide `/avisos/dueno`,
-   *  que ya comprobó que es Dlx. Números, nunca quién */
-  dueno() {
+   *  que ya comprobó que es Dlx. Números, nunca quién.
+   *  🔴 SE LLAMABA `dueno()` Y EL VIGÍA LO PISABA: `vigilar()` guarda en `this.dueno` el Discord ID de Dlx, así
+   *  que desde la primera vuelta del vigía en esa instancia —cada minuto— el Dashboard daba «this.dueno is not a
+   *  function». Lo mostró el estado del vigía el 04/10/2026; lo vigila `avisos_prueba.mjs` (ningún método pisado) */
+  panelDueno() {
     const ahora = Date.now();
     const dias = [];
     for (let i = 13; i >= 0; i--) {

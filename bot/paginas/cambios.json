@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.29",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T16:09:00-04:00",
+   "titulo": "La hora con el país escrito",
+   "items": [
+    "🕓 **Los eventos anunciados con el país escrito, como «4 PM COLOMBIA» o «7 PM CHILE», ya tienen hora**: antes sólo se entendía con la bandera, y salían sin cuenta atrás."
+   ]
+  },
+  {
    "version": "2.28",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T15:44:00-04:00",

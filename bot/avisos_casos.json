@@ -789,12 +789,36 @@
     "es": true,
     "nombre": "A LAS NUEVE",
     "horario": "21:00 hora argentina",
-    "ini": null
+    "ini": "2026-09-25T00:00:00"
    }
   },
   {
    "sv": "INV",
    "id": "inv6",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "REGIONAL TRICOLOR\nMODALIDAD: 1vs1\nHORARIO: 4 PM COLOMBIA",
+   "espera": {
+    "es": true,
+    "nombre": "REGIONAL TRICOLOR",
+    "horario": "4 PM COLOMBIA",
+    "ini": "2026-09-24T21:00:00"
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv7",
+   "timestamp": "2026-09-24T20:00:00.000000+00:00",
+   "content": "NOCHE EN CHILE\nMODALIDAD: libre\nHORARIO: ARRANCA 7PM CHILE",
+   "espera": {
+    "es": true,
+    "nombre": "NOCHE EN CHILE",
+    "horario": "ARRANCA 7PM CHILE",
+    "ini": "2026-09-24T22:00:00"
+   }
+  },
+  {
+   "sv": "INV",
+   "id": "inv8",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "SOLO UN CAMPO\nMODALIDAD: libre",
    "espera": {
@@ -806,7 +830,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv7",
+   "id": "inv9",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "▬▬▬▬▬▬▬\n# __MUY__ **NOMBRADO**\n__`ORGANIZADOR:`__ @alguien_\n__`PREMIOS:`__ **rol**\n__`HORARIO: EN 300`__",
    "espera": {
@@ -818,7 +842,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv8",
+   "id": "inv10",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "ÑORGANIZADOR: x\nTITULO LARGO XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\nCUPOS: 8\nRANGO: todos",
    "espera": {
@@ -830,7 +854,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv9",
+   "id": "inv11",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "🔥🔥\nMODALIDAD: 4x4\nPREMIOS: nada",
    "espera": {
@@ -842,7 +866,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv10",
+   "id": "inv12",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# Evento con espacio raro\nMODALIDAD: libre \nHORARIO:　EN 10 MIN",
    "espera": {
@@ -854,7 +878,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv11",
+   "id": "inv13",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "NOCHE DE FREE\nhorario: en vivo\nmodalidad: libre",
    "espera": {
@@ -866,7 +890,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv12",
+   "id": "inv14",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "## Torneo 🏆: Plaza Underground ##\n\n## Organizador 💼: <@1>  ##\n\n## Modalidad 🆚️: 1 vs 1##\n\n## Cupos 👥️: 8 ##\n\n## Fecha 📅: Hoy ##\n\n@everyone",
    "espera": {
@@ -878,7 +902,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv13",
+   "id": "inv15",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "( NITRO KINGS )\n｡.｡:+* ﾟ ゜ﾟ +:｡.｡:+ ﾟ\n〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: <@1>\n\n〔𝐑𝐀𝐍𝐆𝐎〕: 3\n\n〔𝐌𝐎𝐃𝐀𝐋𝐈𝐃𝐀𝐃〕: TORNEO\n\n  〔𝐈𝐍𝐈𝐂𝐈𝐎 𝐃𝐄𝐋 𝐄𝐕𝐄𝐍𝐓𝐎〕: EN 15 MINUTOS\n@everyone",
    "espera": {
@@ -890,7 +914,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv14",
+   "id": "inv16",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "❪ 🗽 ❫『**__GENESIS BATTLES__**』❪ 🗽 ❫ \nFecha 6\n▰▰▰▰▰\n\n 》<:tg2:1>   ↝**__CUPOS__**: ♾️\n\n 》🥋   ↝**__MODALIDAD__**: PANDILLAS\n》🧑‍⚖️   ↝**__ORGANIZADO POR__**: <@1> \n\n 》<:calendario:1>   ↝**__HORA INSCRIPCIONES__**: 20:00 🇨🇱\n\n**__INICIO__**: 20:30 🇨🇱\n## FECHA 6",
    "espera": {
@@ -902,7 +926,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv15",
+   "id": "inv17",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# <:CorazonLleno:1> ¡5 VIDAS LEGENDS - Edición #5! <:CorazonLleno:1> \n▬▬▬▬▬\n\nCinco participantes.\n\n**<a:calendario:1> FECHA:** Hoy, Lunes 20 Jul.\n\n**<a:reloj_gif_UL:1> HORARIO:**\n<a:Mexico:1> 16:00\n<a:Argentina:1> 19:00\n\n<a:ping_UL:1> @everyone",
    "espera": {
@@ -914,7 +938,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv16",
+   "id": "inv18",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# 🌌 BELLAS ARTES VOL8🌌\n\n🗓️ **Detalles de la Batalla**\n\n● FECHA:  HOY PE MANO\n\n● HORA: EN 20 MINUTOS\n\n- **PREMIO** ROL CAMPEÓN, PUNTOS RANKING\n\n● FORMATO: ⚔️  1VS1\n\n- **RANGO** PLATA III🥈\n\n- **ORGANIZADOR** \n<@1> <@1> ",
    "espera": {
@@ -926,7 +950,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv17",
+   "id": "inv19",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# <:1E_Dragon1_UL:1> RAMDOM <:1E_Dragon1_UL:1> \n\nEsta competencia será al azar\n\nHORARIOS\n🇦🇷🇺🇾 | 20:30hs\n🇲🇽| 17:30 hs\n\nLas inscripciones estarán abiertas en 5 horas <#1> \n@everyone",
    "espera": {
@@ -938,7 +962,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv18",
+   "id": "inv20",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n<:reloj_snk:1> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 - <:reloj_snk:1>\n\n*<t:1788470428:t>*",
    "espera": {
@@ -950,7 +974,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv19",
+   "id": "inv21",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "▬▬▬▬▬\n## <:REGLAS:1> **FIRE RAP** <:REGLAS:1>\n▬▬▬▬▬\n\n📆 - 𝐅𝐄𝐂𝐇𝐀 - 📆\n\n*<t:1788470340:d>*\n\n<:organizador:1> - 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 - <:organizador:1>\n\n*Velatz 🇨🇱 <@1> *\n\n<:tg:1> - 𝐂𝐔𝐏𝐎𝐒 - <:tg:1>\n\n*12/16*",
    "espera": {
@@ -962,7 +986,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv20",
+   "id": "inv22",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "** • ╎<:FireP:1> _\"𝐋𝐀 𝐒𝐔𝐏𝐄𝐑𝐕𝐈𝐕𝐄𝐍𝐂𝐈𝐀 𝐃𝐄𝐋 𝐌𝐀𝐒 𝐅𝐔𝐄𝐑𝐓𝐄 #4\"_ ╎ • **\n💻  __`ORGANIZADOR:`__ yo\n🎫 __`CUPOS:`__ 16\n⌚ __`HORARIO:`__ aora",
    "espera": {
@@ -974,7 +998,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv21",
+   "id": "inv23",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# ***[👑] POLO RALPH LAUREN PRECICLO [👑]***\n\n⚙️*〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: @nachonc_ \n\n🎟️*〔𝐂𝐔𝐏𝐎𝐒〕:*16\n\n 🎤 *〔𝐈𝐍𝐈𝐂𝐈𝐎 𝐃𝐄𝐋 𝐄𝐕𝐄𝐍𝐓𝐎〕:*apenas se llenen",
    "espera": {
@@ -986,7 +1010,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv22",
+   "id": "inv24",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "▬▬▬▬▬\n⚜️  SUPLENTES ⚜️\n- <a:MEXICO:1> `MTZ` <a:MEXICO:1>\n▬▬▬▬▬\n⌚ __`𝐇𝐎𝐑𝐀𝐑𝐈𝐎:`__ ⭐ 5:30PM HORA MEXICO CENTRAL ⭐\n💻  __`ORGANIZADOR:`__ <@1>\n👨‍⚖️ __`JURADO:`__ <@1>\n@everyone",
    "espera": {
@@ -998,7 +1022,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv23",
+   "id": "inv25",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "@everyone \n\nEN 5 MINUTOS ARRANCAMOS VAYAN UNIENDOSE\n\nhttps://discord.gg/x",
    "espera": {
@@ -1010,7 +1034,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv24",
+   "id": "inv26",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "Probando…",
    "espera": {
@@ -1022,7 +1046,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv25",
+   "id": "inv27",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "🎉 <@1> ¡FELICIDADES! Eres el flamante **Campeón de RAPEROS DOGS** 🏆",
    "espera": {
@@ -1034,7 +1058,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv26",
+   "id": "inv28",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "@everyone QUEDA POSTERGADA LA FECHA PARA MAÑANA",
    "espera": {
@@ -1046,7 +1070,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv27",
+   "id": "inv29",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# HORARIOS PARA LA FINAL NACIONAL ALBICELESTE 🕚\n✅ - ESTE EMOJI CONFIRMA TU ASISTENCIA A LAS HORAS Y AL EVENTO\n❌ - ESTE EMOJI CONFIRMA QUE NO ESTARÁS EN LA HORA NI EN EL EVENTO\n⚔️ - ESTE EMOJI DICE QUE NO ESTARÁS EN LOS EMPAREJAMIENTOS PERO SI EN EL EVENTO\n(EN ESTE CASO SE TE DEJARÁ EN LAS ÚLTIMAS LLAVES)\n\n<@1>\n<@1>\n@everyone",
    "espera": {
@@ -1058,7 +1082,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv28",
+   "id": "inv30",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# HORARIOS PARA LA GRAN FINAL\nMODALIDAD: 1vs1\nHORA: 22:00",
    "espera": {
@@ -1070,7 +1094,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv29",
+   "id": "inv31",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "# 🌃 ╎MIDNIGHT MIAMI╎🌃 \n▬▬▬▬▬\n**`🗄️ORGANIZADOR🗄️`: DREXX🇳🇱**\n\n**`🎟️CUPOS🎟️`: 8/12/16**\n\n **<:escudo_dc:1>`FORMATO:` 1<:escudo_dc:1>1**\n\n**<:tiempode_arena:2>` HORARIO `<:tiempode_arena:2>: YAYAYA**\n\n@everyone",
    "espera": {
@@ -1082,7 +1106,7 @@
   },
   {
    "sv": "INV",
-   "id": "inv30",
+   "id": "inv32",
    "timestamp": "2026-09-24T20:00:00.000000+00:00",
    "content": "💎 <:DDF:3> ╎ historia del peru cup╎ <:DDF:3> 💎\n▬▬▬▬▬\n**`🗄️ORGANIZADOR🗄️`:ZJ:flag_pe:**\n\n **`🌘FORMATO🌘`: 1vs1**\n\n<:tiempode_arena:2>` HORARIO `<:tiempode_arena:2> : RIGHT NOW!\n@everyone",
    "espera": {

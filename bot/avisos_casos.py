@@ -57,6 +57,9 @@ INVENTADOS = [
     'EL EVENTO\nMODALIDAD: libre\nHORARIO: en 15 ya arrancamos',
     'EL EVENTO II\nMODALIDAD: libre\nHORARIO: ya arrancamos',
     'A LAS NUEVE\nMODALIDAD: libre\nHORARIO: 21:00 hora argentina',
+    # 🔑 el país escrito, sin bandera (04/10/2026): el Red Bull de Urban y la ACADEMIA
+    'REGIONAL TRICOLOR\nMODALIDAD: 1vs1\nHORARIO: 4 PM COLOMBIA',
+    'NOCHE EN CHILE\nMODALIDAD: libre\nHORARIO: ARRANCA 7PM CHILE',
     'SOLO UN CAMPO\nMODALIDAD: libre',
     '▬▬▬▬▬▬▬\n# __MUY__ **NOMBRADO**\n__`ORGANIZADOR:`__ @alguien_\n'
     '__`PREMIOS:`__ **rol**\n__`HORARIO: EN 300`__',

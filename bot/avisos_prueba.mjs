@@ -547,6 +547,22 @@ const ok = (cond, que) => {
     'la hora de un mensaje sale de su id (el anuncio de DESGRACIAS EN TOKYO VOL 21: 3:58 PM ET)');
 }
 
+// 🔴 NINGÚN MÉTODO DEL OBJETO PISADO POR UN DATO SUYO. El Dashboard llamaba `this.dueno()` y el vigía guarda en
+// `this.dueno` el Discord ID de Dlx: desde la primera vuelta del vigía, «this.dueno is not a function» (04/10/2026).
+// Ninguna prueba lo veía, porque ninguna corre el vigía antes de pedir el Dashboard. Se mira el texto de la clase:
+// los nombres de sus métodos contra los `this.x =` que la clase escribe.
+{
+  const fuente = readFileSync(join(aqui, 'avisos.js'), 'utf8');
+  const ini = fuente.indexOf('export class Avisos');
+  const clase = ini >= 0 ? fuente.slice(ini) : '';
+  const metodos = new Set([...clase.matchAll(/^ {2}(?:async\s+)?([A-Za-z_]\w*)\s*\([^)]*\)\s*\{/gm)].map((m) => m[1]));
+  const datos = new Set([...clase.matchAll(/this\.([A-Za-z_]\w*)\s*=(?!=)/g)].map((m) => m[1]));
+  const pisados = [...metodos].filter((m) => datos.has(m) && m !== 'constructor');
+  ok(ini >= 0 && metodos.size > 50 && !pisados.length,
+    'ningún método del objeto se pisa con un dato (' + metodos.size + ' métodos' +
+    (pisados.length ? ', pisados: ' + pisados.join(', ') : '') + ')');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);
