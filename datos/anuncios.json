@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-04T17:54:05+00:00",
+ "cuando": "2026-10-04T18:24:33+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1343,7 +1343,9 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "COMPE CHILL DE FASO",
@@ -1363,7 +1365,9 @@
    "horario": "cuando se llene/cuando me pinte",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "CCFF V.3",
@@ -1383,7 +1387,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "COMPE DEL VACILE T2 #1",
@@ -1403,7 +1409,9 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "1 Campeonato + Puntos de ascenso",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1423,7 +1431,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "CCFF V.2",
@@ -1443,7 +1453,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "COMPE SOLO 4X4",
@@ -1463,7 +1475,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "CCFF V.1",
@@ -1483,7 +1497,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.15",
@@ -1503,7 +1519,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1523,7 +1541,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.14",
@@ -1543,7 +1563,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.13",
@@ -1563,7 +1585,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "WACHINTON",
@@ -1583,7 +1607,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "STEVE JOSEO",
@@ -1603,7 +1629,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "ISLA DE SOCOTRA",
@@ -1623,7 +1651,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.12",
@@ -1643,7 +1673,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.11",
@@ -1663,7 +1695,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "Arima Kinen Triple Crown | Clasificatoria N°1",
@@ -1683,7 +1717,9 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.10",
@@ -1703,7 +1739,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
@@ -1723,7 +1761,9 @@
    "horario": "Ya",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.9",
@@ -1743,7 +1783,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "FF Freestyle: Classic VOL.1",
@@ -1763,7 +1805,9 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.8",
@@ -1783,7 +1827,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PNC V.7",
@@ -1803,7 +1849,9 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1823,7 +1871,9 @@
    "horario": "4 PM COLOMBIA",
    "fecha": "LUNES 5 de OCTUBRE.",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
@@ -1843,7 +1893,9 @@
    "horario": "4 PM MEX/USA",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
@@ -1863,7 +1915,9 @@
    "horario": "4 PM mex,5 PM Col",
    "fecha": "Viernes 11 de septiembre",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1883,7 +1937,9 @@
    "horario": "6 PM COLOMBIA",
    "fecha": "LUNES 10 de AGOSTO.",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1903,7 +1959,9 @@
    "horario": "8:00 PM España.",
    "fecha": "Sábado 01 de AGOSTO.",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -1923,7 +1981,9 @@
    "horario": "8:30-9:00pm España.",
    "fecha": "Sábado 27 de Junio.",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -1943,7 +2003,9 @@
    "horario": "4:00pm Colombia.",
    "fecha": "Jueves 18 de Junio.",
    "premios": "",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1963,7 +2025,9 @@
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
    "premios": "",
-   "categoria_id": "1511961628500037662"
+   "categoria_id": "1511961628500037662",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -1983,7 +2047,9 @@
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
    "premios": "",
-   "categoria_id": "1511961628500037662"
+   "categoria_id": "1511961628500037662",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
@@ -2003,7 +2069,9 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1511964043647123527"
+   "categoria_id": "1511964043647123527",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:57:31"
   },
   {
    "nombre": "Dos barras",
@@ -2764,9 +2832,514 @@
    "fecha": "",
    "premios": "🥇CUPO A LA LIGA🥇",
    "categoria_id": "1469944166137073857"
+  },
+  {
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
+   "servidor": "ACAD",
+   "canal": "📢┇anuncios・",
+   "msg_id": "1553423145233289297",
+   "cuando": "2026-09-26T15:08:59",
+   "canal_id": "922299202904653844",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "e45a56d4d9bc3622",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇪🇸🇯🇪 23:00 PM",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1555343837893763083",
+   "cuando": "2026-10-01T22:21:07",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "e45a56d4d9bc3622",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇺🇾 : 22:00 PM",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1553855318268715092",
+   "cuando": "2026-09-27T19:46:17",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "e45a56d4d9bc3622",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇪🇸🇯🇪 23:00 PM",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "ES UN PLACER ANUNCIARLES EL EQUIPO QUE NOS AYUDARÁ EN ESTA NACIONAL",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1553456305807556709",
+   "cuando": "2026-09-26T17:20:45",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "COMPE CHILL",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1551643910953246751",
+   "cuando": "2026-09-21T17:18:56",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "8f502dc57bad1da2",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "APENAS SE LLENEN LOS CUPOS",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "Y TENEMOS EL HONOR DE ANUNCIARLES A TODO EL EQUIPO DE TRABAJO QUE SE V",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1551245259898359891",
+   "cuando": "2026-09-20T14:54:50",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "MAÑANA! ES MAÑANA!",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1550872980580466699",
+   "cuando": "2026-09-19T14:15:32",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "DE INSCRIPCIONES",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Elpapadelotro50%🇦🇷",
+   "quien": "choclo_21",
+   "discord_id": "1517265253694570556",
+   "msg_id": "1556370530217631756",
+   "cuando": "2026-10-04T18:20:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "EL PAPÁ DEL 50% DE LA LISTA 🇵🇾",
+   "quien": "valen_cba",
+   "discord_id": "757786010997358594",
+   "msg_id": "1556370523934433322",
+   "cuando": "2026-10-04T18:20:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1556369806125441085",
+   "cuando": "2026-10-04T18:17:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1556369749275975731",
+   "cuando": "2026-10-04T18:17:44"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Btrece🇺🇾",
+   "quien": "btrece_",
+   "discord_id": "1490902626970239088",
+   "msg_id": "1556369215156527115",
+   "cuando": "2026-10-04T18:15:36"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Forza🇻🇪",
+   "quien": "forzaaaa.z",
+   "discord_id": "1359593021707915568",
+   "msg_id": "1556367691336384563",
+   "cuando": "2026-10-04T18:09:33"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kourier 🇲🇽",
+   "quien": "simplee3",
+   "discord_id": "330866571297685505",
+   "msg_id": "1556366649555165257",
+   "cuando": "2026-10-04T18:05:25"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Lrs🇨🇴",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1556366605485609102",
+   "cuando": "2026-10-04T18:05:14"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1556365568800718990",
+   "cuando": "2026-10-04T18:01:07"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "vandu",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1556365440807346400",
+   "cuando": "2026-10-04T18:00:36"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Estación central 🇻🇪",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1556365178495443070",
+   "cuando": "2026-10-04T17:59:34"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1556365015706116177",
+   "cuando": "2026-10-04T17:58:55"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Mochi 🇪🇨",
+   "quien": "diego89780",
+   "discord_id": "1147639724132012114",
+   "msg_id": "1556364926187081749",
+   "cuando": "2026-10-04T17:58:34"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Pepitofreestyle4518 🇪🇨",
+   "quien": "christopher_hongo",
+   "discord_id": "1403518820022222929",
+   "msg_id": "1556364853302526084",
+   "cuando": "2026-10-04T17:58:16"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1556364749061627937",
+   "cuando": "2026-10-04T17:57:52"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1556364698964987988",
+   "cuando": "2026-10-04T17:57:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Shishui 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1556358469274173451",
+   "cuando": "2026-10-04T17:32:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "sekka",
+   "quien": "zekhon",
+   "discord_id": "931555298479587360",
+   "msg_id": "1556358436503945257",
+   "cuando": "2026-10-04T17:32:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Player 🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1556357777675387072",
+   "cuando": "2026-10-04T17:30:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Damian🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1556357514789003265",
+   "cuando": "2026-10-04T17:29:07"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "G-MC 🇬🇹",
+   "quien": "pijiwizard",
+   "discord_id": "983588342945947648",
+   "msg_id": "1556356975632187505",
+   "cuando": "2026-10-04T17:26:58"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "vandu",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1556356626615902309",
+   "cuando": "2026-10-04T17:25:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leyenda.X5 🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1556356234213330989",
+   "cuando": "2026-10-04T17:24:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1556355881862570208",
+   "cuando": "2026-10-04T17:22:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Abyssus 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1556355826359472139",
+   "cuando": "2026-10-04T17:22:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1556354384915464216",
+   "cuando": "2026-10-04T17:16:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Zanti SkT 🇦🇷🇮🇹",
+   "quien": "zanti_666",
+   "discord_id": "984952092529688627",
+   "msg_id": "1556354066907529292",
+   "cuando": "2026-10-04T17:15:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1556353963467477024",
+   "cuando": "2026-10-04T17:15:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1556353058932392069",
+   "cuando": "2026-10-04T17:11:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Teito 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1556352580865630331",
+   "cuando": "2026-10-04T17:09:30"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1556352385943736472",
+   "cuando": "2026-10-04T17:08:44"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Infecte🇩🇴🇨🇴",
+   "quien": "mxrio_xtz",
+   "discord_id": "1174409397397631030",
+   "msg_id": "1556352380788801619",
+   "cuando": "2026-10-04T17:08:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Last🇬🇶",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1556352330868203631",
+   "cuando": "2026-10-04T17:08:31"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1556352291940995113",
+   "cuando": "2026-10-04T17:08:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Warriorvid 🇨🇴",
+   "quien": "warriorvid",
+   "discord_id": "713870561586970634",
+   "msg_id": "1556352290108219464",
+   "cuando": "2026-10-04T17:08:21"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mail o🇵🇪",
+   "quien": "mailo_04.",
+   "discord_id": "1416183706133069895",
+   "msg_id": "1556352269824295063",
+   "cuando": "2026-10-04T17:08:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "onzass 🇻🇪",
+   "quien": "onzas.s",
+   "discord_id": "345317656288559125",
+   "msg_id": "1556352252053299311",
+   "cuando": "2026-10-04T17:08:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "DG4 🇻🇪",
+   "quien": "rkz10dg",
+   "discord_id": "1244820483166437453",
+   "msg_id": "1556352228519051345",
+   "cuando": "2026-10-04T17:08:06"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1556352225247232172",
+   "cuando": "2026-10-04T17:08:06"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
@@ -3101,6 +3674,24 @@
    "cuando": "2026-10-03T22:20:10"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1556067606946128025",
+   "cuando": "2026-10-03T22:17:07"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Pichulamc",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1556062265487269950",
+   "cuando": "2026-10-03T21:55:54"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "Teo 🇨🇴",
@@ -3108,6 +3699,24 @@
    "discord_id": "1503540314948898937",
    "msg_id": "1556059463964692621",
    "cuando": "2026-10-03T21:44:46"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Abyssus 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1556055540793082028",
+   "cuando": "2026-10-03T21:29:11"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Efimero🇨🇱",
+   "quien": "efimero001",
+   "discord_id": "742442337028014090",
+   "msg_id": "1556052371832967250",
+   "cuando": "2026-10-03T21:16:35"
   },
   {
    "servidor": "FFA",
@@ -3128,6 +3737,15 @@
    "cuando": "2026-10-03T21:09:02"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1556049786048618577",
+   "cuando": "2026-10-03T21:06:19"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "ZiarKI 🇪🇸",
@@ -3135,6 +3753,15 @@
    "discord_id": "1251535986454953986",
    "msg_id": "1556049703056187544",
    "cuando": "2026-10-03T21:05:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sago 🇧🇴",
+   "quien": "corvopoe.",
+   "discord_id": "1329680316842905626",
+   "msg_id": "1556049571535392819",
+   "cuando": "2026-10-03T21:05:27"
   },
   {
    "servidor": "FFA",
@@ -3155,6 +3782,33 @@
    "cuando": "2026-10-03T21:01:36"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1556048186357973013",
+   "cuando": "2026-10-03T20:59:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "flama🇦🇷",
+   "quien": "faustoo1406",
+   "discord_id": "949795011262840832",
+   "msg_id": "1556047939342827583",
+   "cuando": "2026-10-03T20:58:58"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Corvo 🇧🇴",
+   "quien": "corvopoe.",
+   "discord_id": "1329680316842905626",
+   "msg_id": "1556047364442034229",
+   "cuando": "2026-10-03T20:56:41"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "Abyssus 🇨🇦",
@@ -3164,6 +3818,60 @@
    "cuando": "2026-10-03T20:50:10"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Velatz",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1556045252295524485",
+   "cuando": "2026-10-03T20:48:18"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Damian🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1556045184297336945",
+   "cuando": "2026-10-03T20:48:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Uzi🇨🇱",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1556044891203567618",
+   "cuando": "2026-10-03T20:46:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Fol🇦🇷",
+   "quien": "feli9to",
+   "discord_id": "670085421257981973",
+   "msg_id": "1556044204474499237",
+   "cuando": "2026-10-03T20:44:08"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1556043343644065954",
+   "cuando": "2026-10-03T20:40:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1556043179441266764",
+   "cuando": "2026-10-03T20:40:03"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "Crk🇲🇽",
@@ -3171,6 +3879,24 @@
    "discord_id": "559068959845122048",
    "msg_id": "1556042172942254222",
    "cuando": "2026-10-03T20:36:03"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1556041997712621589",
+   "cuando": "2026-10-03T20:35:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Redstonita 🇸🇻",
+   "quien": "fedrynne8659",
+   "discord_id": "988887881215000626",
+   "msg_id": "1556040326685139016",
+   "cuando": "2026-10-03T20:28:43"
   },
   {
    "servidor": "FFA",
@@ -3189,6 +3915,42 @@
    "discord_id": "1097714486795849748",
    "msg_id": "1556039376327409845",
    "cuando": "2026-10-03T20:24:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Blaxx🇨🇱",
+   "quien": "notengosalchat",
+   "discord_id": "917880206520377445",
+   "msg_id": "1556038052432838717",
+   "cuando": "2026-10-03T20:19:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1556037735737983026",
+   "cuando": "2026-10-03T20:18:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1556037666011873363",
+   "cuando": "2026-10-03T20:18:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1556037159884947468",
+   "cuando": "2026-10-03T20:16:08"
   },
   {
    "servidor": "FFA",
@@ -3765,6 +4527,141 @@
    "discord_id": "1503540314948898937",
    "msg_id": "1555694259255124043",
    "cuando": "2026-10-02T21:33:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1555401535331110976",
+   "cuando": "2026-10-02T02:10:23"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lil ñño 🇪🇨🇺🇸",
+   "quien": "bidi8812",
+   "discord_id": "698611862031433779",
+   "msg_id": "1555400328885706814",
+   "cuando": "2026-10-02T02:05:36"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MTZ 🇲🇽",
+   "quien": "diego__mtz",
+   "discord_id": "794733304729436212",
+   "msg_id": "1555399837237645343",
+   "cuando": "2026-10-02T02:03:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "onzass",
+   "quien": "onzas.s",
+   "discord_id": "345317656288559125",
+   "msg_id": "1555398026149896275",
+   "cuando": "2026-10-02T01:56:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Gosu 🇵🇷",
+   "quien": "lilgosuz",
+   "discord_id": "328677463624515605",
+   "msg_id": "1555397546149416966",
+   "cuando": "2026-10-02T01:54:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1555397509130748015",
+   "cuando": "2026-10-02T01:54:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1555397240124608564",
+   "cuando": "2026-10-02T01:53:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇮🇱",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1555397179039027241",
+   "cuando": "2026-10-02T01:53:05"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "nxuz🇵🇪",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1555397161095536693",
+   "cuando": "2026-10-02T01:53:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "masino🇨🇱",
+   "quien": "martinv444",
+   "discord_id": "1237192883535216715",
+   "msg_id": "1555397152510054522",
+   "cuando": "2026-10-02T01:52:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mail O🇵🇪",
+   "quien": "mailo_04.",
+   "discord_id": "1416183706133069895",
+   "msg_id": "1555396985127960597",
+   "cuando": "2026-10-02T01:52:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Zafkabeff",
+   "quien": "zafkabeff_31127",
+   "discord_id": "1541223297507926178",
+   "msg_id": "1555396853665759284",
+   "cuando": "2026-10-02T01:51:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jayden🇵🇪",
+   "quien": "eniko_pe",
+   "discord_id": "1025498796265836667",
+   "msg_id": "1555396834392936499",
+   "cuando": "2026-10-02T01:51:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1555396823508717599",
+   "cuando": "2026-10-02T01:51:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yor 🇪🇸",
+   "quien": "yor1312",
+   "discord_id": "855875724774735922",
+   "msg_id": "1555396819310088266",
+   "cuando": "2026-10-02T01:51:39"
   },
   {
    "servidor": "FFA",
@@ -6728,6 +7625,15 @@
    "cuando": "2026-09-28T02:29:52"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Abyssus 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1553886581507494060",
+   "cuando": "2026-09-27T21:50:30"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "colesito",
@@ -6744,6 +7650,15 @@
    "discord_id": "768561204707983361",
    "msg_id": "1553884709870772315",
    "cuando": "2026-09-27T21:43:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Miniboy 🇨🇱",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1553882866180554905",
+   "cuando": "2026-09-27T21:35:45"
   },
   {
    "servidor": "FFA",
@@ -6816,6 +7731,168 @@
    "discord_id": "1048744067313451050",
    "msg_id": "1553876426141343747",
    "cuando": "2026-09-27T21:10:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1553876334978273281",
+   "cuando": "2026-09-27T21:09:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Gabox 🇧🇴",
+   "quien": "akamasterboy",
+   "discord_id": "720624879506030622",
+   "msg_id": "1553874172852174960",
+   "cuando": "2026-09-27T21:01:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "SILENCE LA CONSTANCIA 🇵🇪",
+   "quien": "s1l3nc3_bv",
+   "discord_id": "1276644368693858356",
+   "msg_id": "1553872989848739931",
+   "cuando": "2026-09-27T20:56:30"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1553872742695047199",
+   "cuando": "2026-09-27T20:55:31"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "nxuz 🇵🇪",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1553872401882812527",
+   "cuando": "2026-09-27T20:54:10"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Drexx la resurrección del Perú🇵🇪",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1553872189852360857",
+   "cuando": "2026-09-27T20:53:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "andy🇨🇦",
+   "quien": "andy._.2321",
+   "discord_id": "853130894663745549",
+   "msg_id": "1553872046935642315",
+   "cuando": "2026-09-27T20:52:45"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "flama🇦🇷",
+   "quien": "faustoo1406",
+   "discord_id": "949795011262840832",
+   "msg_id": "1553871687223738482",
+   "cuando": "2026-09-27T20:51:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1553871665539059735",
+   "cuando": "2026-09-27T20:51:14"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sami🇨🇴",
+   "quien": "soysamilitsoyyo",
+   "discord_id": "449113651274579969",
+   "msg_id": "1553871634807652403",
+   "cuando": "2026-09-27T20:51:07"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Caliz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1553871584429867179",
+   "cuando": "2026-09-27T20:50:55"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1553871367689080873",
+   "cuando": "2026-09-27T20:50:03"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "saito 🇨🇴",
+   "quien": "saito6947",
+   "discord_id": "610254274676523021",
+   "msg_id": "1553871347220877313",
+   "cuando": "2026-09-27T20:49:58"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dcet 🇻🇪",
+   "quien": "dnet.free",
+   "discord_id": "1426313940605993021",
+   "msg_id": "1553871347048784013",
+   "cuando": "2026-09-27T20:49:58"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1553871320154898515",
+   "cuando": "2026-09-27T20:49:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jupiter",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1553871273560510557",
+   "cuando": "2026-09-27T20:49:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Erian 🇩🇴",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1553871266996555809",
+   "cuando": "2026-09-27T20:49:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "black dmon 🇪🇨",
+   "quien": "bidi8812",
+   "discord_id": "698611862031433779",
+   "msg_id": "1553630806319304727",
+   "cuando": "2026-09-27T04:54:09"
   },
   {
    "servidor": "FFA",
@@ -7221,6 +8298,24 @@
    "discord_id": "681588123699904563",
    "msg_id": "1553590909562523679",
    "cuando": "2026-09-27T02:15:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Abyssus 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1553516668062404711",
+   "cuando": "2026-09-26T21:20:36"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "TG",
+   "quien": "m_zeta",
+   "discord_id": "459142393938182144",
+   "msg_id": "1553508621885640810",
+   "cuando": "2026-09-26T20:48:38"
   },
   {
    "servidor": "FFA",
@@ -7817,6 +8912,105 @@
    "cuando": "2026-09-25T17:25:04"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1552883007415918596",
+   "cuando": "2026-09-25T03:22:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "TMB🇧🇴",
+   "quien": "akamasterboy",
+   "discord_id": "720624879506030622",
+   "msg_id": "1552882174795976829",
+   "cuando": "2026-09-25T03:19:21"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Chip🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1552882134572859473",
+   "cuando": "2026-09-25T03:19:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1552881346135859271",
+   "cuando": "2026-09-25T03:16:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇵🇪",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1552880834913116223",
+   "cuando": "2026-09-25T03:14:02"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Emilio Alva 🇧🇱",
+   "quien": "emilioalvauwu",
+   "discord_id": "705827090708168714",
+   "msg_id": "1552880813207584889",
+   "cuando": "2026-09-25T03:13:56"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1552880793901334612",
+   "cuando": "2026-09-25T03:13:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1552880785797812285",
+   "cuando": "2026-09-25T03:13:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1552880756672700498",
+   "cuando": "2026-09-25T03:13:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Nairda🇨🇱",
+   "quien": "adriansfqxk",
+   "discord_id": "1143015177210576967",
+   "msg_id": "1552784828183744614",
+   "cuando": "2026-09-24T20:52:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1552752655691161753",
+   "cuando": "2026-09-24T18:44:41"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝︱inscripciones",
    "texto": "Molusco",
@@ -8087,6 +9281,1221 @@
    "cuando": "2026-09-24T00:41:35"
   },
   {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "colesito🇨🇴",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1552098807729098923",
+   "cuando": "2026-09-22T23:26:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Bloody 🇨🇴",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1552097410422153278",
+   "cuando": "2026-09-22T23:20:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1552091120870359151",
+   "cuando": "2026-09-22T22:55:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1552083625829208187",
+   "cuando": "2026-09-22T22:26:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Camila 🇻🇪",
+   "quien": "camila022672",
+   "discord_id": "1432188610542567549",
+   "msg_id": "1552082040831217665",
+   "cuando": "2026-09-22T22:19:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "## TERRY 🇨🇱",
+   "quien": "nerok_.",
+   "discord_id": "1189444926094721024",
+   "msg_id": "1552080517409804429",
+   "cuando": "2026-09-22T22:13:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1552080241911140447",
+   "cuando": "2026-09-22T22:12:45"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "XD🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1552080018178310299",
+   "cuando": "2026-09-22T22:11:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1552079294812135455",
+   "cuando": "2026-09-22T22:09:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leyenda.X5 🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1552079226176405615",
+   "cuando": "2026-09-22T22:08:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El J 🇨🇱",
+   "quien": "tantayo8718",
+   "discord_id": "861726949466308628",
+   "msg_id": "1552078749111947366",
+   "cuando": "2026-09-22T22:06:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1552078714907525193",
+   "cuando": "2026-09-22T22:06:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1552078690249089096",
+   "cuando": "2026-09-22T22:06:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot 🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1552078686101045361",
+   "cuando": "2026-09-22T22:06:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1552078679352283227",
+   "cuando": "2026-09-22T22:06:33"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Infecte🇨🇴🇩🇴",
+   "quien": "mxrio_xtz",
+   "discord_id": "1174409397397631030",
+   "msg_id": "1552078672482017351",
+   "cuando": "2026-09-22T22:06:31"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Erian 🇩🇴",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1552078672297459745",
+   "cuando": "2026-09-22T22:06:31"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Teito 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1552078646791897169",
+   "cuando": "2026-09-22T22:06:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1551645914542768159",
+   "cuando": "2026-09-21T17:26:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Marki🇺🇾",
+   "quien": "takia10.2hxttc",
+   "discord_id": "1543456871518707793",
+   "msg_id": "1551644740926046269",
+   "cuando": "2026-09-21T17:22:14"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "SHADOW 🇨🇴 última",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1551644481823055963",
+   "cuando": "2026-09-21T17:21:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1551644399816024226",
+   "cuando": "2026-09-21T17:20:53"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "TEITO 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1551644389686775853",
+   "cuando": "2026-09-21T17:20:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1551644348054110382",
+   "cuando": "2026-09-21T17:20:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1551644320057008198",
+   "cuando": "2026-09-21T17:20:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Belikko🇻🇪",
+   "quien": "davisssj10",
+   "discord_id": "989702187523407903",
+   "msg_id": "1551644209365389423",
+   "cuando": "2026-09-21T17:20:07"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1551644153417437210",
+   "cuando": "2026-09-21T17:19:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1551362687621922827",
+   "cuando": "2026-09-20T22:41:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "FOKOX🇲🇽",
+   "quien": "esometilin",
+   "discord_id": "881358841319682079",
+   "msg_id": "1551350321152790539",
+   "cuando": "2026-09-20T21:52:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mitosis🇨🇻",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1551347166256173207",
+   "cuando": "2026-09-20T21:39:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "masino🇨🇱",
+   "quien": "martinv444",
+   "discord_id": "1237192883535216715",
+   "msg_id": "1551347158995701883",
+   "cuando": "2026-09-20T21:39:45"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Btrece🇺🇾",
+   "quien": "btrece_",
+   "discord_id": "1490902626970239088",
+   "msg_id": "1551347150347173990",
+   "cuando": "2026-09-20T21:39:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Filozico 🇲🇽",
+   "quien": "danix9827",
+   "discord_id": "1498441174728577025",
+   "msg_id": "1551344572439728151",
+   "cuando": "2026-09-20T21:29:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1551343665543258173",
+   "cuando": "2026-09-20T21:25:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1551338347215986732",
+   "cuando": "2026-09-20T21:04:44"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "ANDY",
+   "quien": "andy._.2321",
+   "discord_id": "853130894663745549",
+   "msg_id": "1551335813327880345",
+   "cuando": "2026-09-20T20:54:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1551335585128386581",
+   "cuando": "2026-09-20T20:53:45"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "VR🇨🇴",
+   "quien": "1mrvargas",
+   "discord_id": "1456416455405863038",
+   "msg_id": "1551335259684216833",
+   "cuando": "2026-09-20T20:52:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1551335252658491504",
+   "cuando": "2026-09-20T20:52:26"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1551335130558374000",
+   "cuando": "2026-09-20T20:51:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Drexx 🇳🇱",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1551334851653664999",
+   "cuando": "2026-09-20T20:50:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Josema🇵🇪",
+   "quien": "joshema0712",
+   "discord_id": "1342989767184486401",
+   "msg_id": "1551334809475878913",
+   "cuando": "2026-09-20T20:50:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1551334775053230101",
+   "cuando": "2026-09-20T20:50:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1551334746615849012",
+   "cuando": "2026-09-20T20:50:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1551334720665555116",
+   "cuando": "2026-09-20T20:50:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1551334716618186836",
+   "cuando": "2026-09-20T20:50:18"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "KG🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1551334678525513770",
+   "cuando": "2026-09-20T20:50:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jupiter 🇲🇽",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1551334671126626388",
+   "cuando": "2026-09-20T20:50:08"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1551075434270167092",
+   "cuando": "2026-09-20T03:40:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "sekka",
+   "quien": "zekhon",
+   "discord_id": "931555298479587360",
+   "msg_id": "1551074959085019289",
+   "cuando": "2026-09-20T03:38:07"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dj demandado en el fucking beat 🇵🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1551058958691602483",
+   "cuando": "2026-09-20T02:34:33"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Last",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1551058017783390240",
+   "cuando": "2026-09-20T02:30:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1551057946585075735",
+   "cuando": "2026-09-20T02:30:31"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MC Glock🇲🇽",
+   "quien": "mc_glock_",
+   "discord_id": "1520281483309224017",
+   "msg_id": "1551056663371583599",
+   "cuando": "2026-09-20T02:25:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Senticide 🇨🇱",
+   "quien": "senticide2",
+   "discord_id": "1519298201251741720",
+   "msg_id": "1551056527333261433",
+   "cuando": "2026-09-20T02:24:53"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yio🇲🇽",
+   "quien": "yiomc",
+   "discord_id": "1033600988373848166",
+   "msg_id": "1551056521503309915",
+   "cuando": "2026-09-20T02:24:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "ERA DE KG MIERDAS🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1551056501466992742",
+   "cuando": "2026-09-20T02:24:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1551056475722350713",
+   "cuando": "2026-09-20T02:24:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MAYANMC🇲🇽",
+   "quien": "imnotmaya_yt.",
+   "discord_id": "1487886377923121243",
+   "msg_id": "1550886976960336013",
+   "cuando": "2026-09-19T15:11:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Partim 🇺🇲",
+   "quien": "essencesteez",
+   "discord_id": "917207293496557578",
+   "msg_id": "1550260905210679417",
+   "cuando": "2026-09-17T21:43:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1550256087003828246",
+   "cuando": "2026-09-17T21:24:13"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Pipe🇨🇱",
+   "quien": "x.pipe.x2.09590",
+   "discord_id": "732777259244453938",
+   "msg_id": "1550254427527577633",
+   "cuando": "2026-09-17T21:17:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Si no entra uno me llaman \nMatito 🇧🇴",
+   "quien": "mato0801",
+   "discord_id": "702969188121313352",
+   "msg_id": "1550253965902483549",
+   "cuando": "2026-09-17T21:15:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1550253806770462851",
+   "cuando": "2026-09-17T21:15:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "vandu 🇨🇦 primera",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1550253725690634281",
+   "cuando": "2026-09-17T21:14:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El trolito sayayin🇵🇾",
+   "quien": "ander.fc",
+   "discord_id": "765105309941235743",
+   "msg_id": "1550253720271462423",
+   "cuando": "2026-09-17T21:14:49"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Tuto🇨🇱",
+   "quien": "yotutito",
+   "discord_id": "1370728971280453742",
+   "msg_id": "1550253718761377836",
+   "cuando": "2026-09-17T21:14:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1550253515090169929",
+   "cuando": "2026-09-17T21:14:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Drexx",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1550253122109046879",
+   "cuando": "2026-09-17T21:12:26"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1550252483022946305",
+   "cuando": "2026-09-17T21:09:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1550252151459156041",
+   "cuando": "2026-09-17T21:08:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇸🇦🇪🇸🇫🇷🇵🇪🇩🇪🇧🇴🇦🇷🇮🇱🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1550251976661401682",
+   "cuando": "2026-09-17T21:07:53"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1549969290541670411",
+   "cuando": "2026-09-17T02:24:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1549967712514474147",
+   "cuando": "2026-09-17T02:18:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Pichulamc dios de todos estos moños 🇱🇰",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1549967492716175472",
+   "cuando": "2026-09-17T02:17:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1549965829821440011",
+   "cuando": "2026-09-17T02:10:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mrd🇬🇲",
+   "quien": "brujuladescalibrada",
+   "discord_id": "1535382535876509787",
+   "msg_id": "1549965818979164201",
+   "cuando": "2026-09-17T02:10:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "btucchi 🇻🇪",
+   "quien": "btucchi",
+   "discord_id": "1546923216235270175",
+   "msg_id": "1549965669557338122",
+   "cuando": "2026-09-17T02:10:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Drexx",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1549965542037651559",
+   "cuando": "2026-09-17T02:09:42"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇫🇷",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1549965541697912944",
+   "cuando": "2026-09-17T02:09:42"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Erian",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1549965541668560947",
+   "cuando": "2026-09-17T02:09:42"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jupiter",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1549965510442090597",
+   "cuando": "2026-09-17T02:09:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇵🇪",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1549965306934460449",
+   "cuando": "2026-09-17T02:08:46"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "SHADOW 🇨🇴 última",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1549965277087928433",
+   "cuando": "2026-09-17T02:08:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Axinu🇨🇴",
+   "quien": "axinu",
+   "discord_id": "513409344512065580",
+   "msg_id": "1549919420934135981",
+   "cuando": "2026-09-16T23:06:26"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Camila 🇻🇪",
+   "quien": "camila022672",
+   "discord_id": "1432188610542567549",
+   "msg_id": "1549916330596106312",
+   "cuando": "2026-09-16T22:54:09"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1549915838348263505",
+   "cuando": "2026-09-16T22:52:11"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1549913455987925144",
+   "cuando": "2026-09-16T22:42:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yo mc🇨🇻",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1549912768176590920",
+   "cuando": "2026-09-16T22:39:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Noa 🇲🇽",
+   "quien": "noanrln_03178",
+   "discord_id": "1465864148654100605",
+   "msg_id": "1549912270765555843",
+   "cuando": "2026-09-16T22:38:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1549911809404702843",
+   "cuando": "2026-09-16T22:36:11"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "BETELGEUSE",
+   "quien": "brujuladescalibrada",
+   "discord_id": "1535382535876509787",
+   "msg_id": "1549911770464919573",
+   "cuando": "2026-09-16T22:36:02"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mexico 🇲🇽",
+   "quien": "mk0909._",
+   "discord_id": "952846816028807178",
+   "msg_id": "1549910627202633760",
+   "cuando": "2026-09-16T22:31:29"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1549909189273321634",
+   "cuando": "2026-09-16T22:25:46"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "iguana 🇵🇪",
+   "quien": "iguanajoshua",
+   "discord_id": "818314359218241567",
+   "msg_id": "1549905145922584678",
+   "cuando": "2026-09-16T22:09:42"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "LDS 🇻🇪",
+   "quien": "ldsmc0511",
+   "discord_id": "511290800282402817",
+   "msg_id": "1549903022232969217",
+   "cuando": "2026-09-16T22:01:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1549903012695252993",
+   "cuando": "2026-09-16T22:01:14"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇩🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1549901643104129156",
+   "cuando": "2026-09-16T21:55:47"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1549901245936967693",
+   "cuando": "2026-09-16T21:54:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "L 🇨🇴",
+   "quien": "l.rap",
+   "discord_id": "1317231402697363507",
+   "msg_id": "1549901227414917151",
+   "cuando": "2026-09-16T21:54:08"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Damián 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1549900741961850891",
+   "cuando": "2026-09-16T21:52:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1549900733682417786",
+   "cuando": "2026-09-16T21:52:10"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1549900452135575613",
+   "cuando": "2026-09-16T21:51:03"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "XD 🇲🇽",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1549900365649158227",
+   "cuando": "2026-09-16T21:50:42"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Erian 🇦🇫",
+   "quien": "_5thofnovember",
+   "discord_id": "681588123699904563",
+   "msg_id": "1549900207565709424",
+   "cuando": "2026-09-16T21:50:05"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Teito 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1549900184249573400",
+   "cuando": "2026-09-16T21:49:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Monet 🇲🇽",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1549448692497514579",
+   "cuando": "2026-09-15T15:55:55"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇸🇦",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1549442502661251175",
+   "cuando": "2026-09-15T15:31:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1549441257057558649",
+   "cuando": "2026-09-15T15:26:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1549440225179074573",
+   "cuando": "2026-09-15T15:22:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1549439173197308105",
+   "cuando": "2026-09-15T15:18:06"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "belikko🇵🇪  siiiii llega es mi pana",
+   "quien": "pakelopakelo",
+   "discord_id": "1355393300672020570",
+   "msg_id": "1549438747857395783",
+   "cuando": "2026-09-15T15:16:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1549438507599003820",
+   "cuando": "2026-09-15T15:15:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Chuwin 🇪🇸",
+   "quien": "chuwin_",
+   "discord_id": "618818177073414144",
+   "msg_id": "1549438477563592767",
+   "cuando": "2026-09-15T15:15:20"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1549438473541255219",
+   "cuando": "2026-09-15T15:15:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1549438472279031839",
+   "cuando": "2026-09-15T15:15:18"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Iguana 🇵🇪",
+   "quien": "iguanajoshua",
+   "discord_id": "818314359218241567",
+   "msg_id": "1549438461440958695",
+   "cuando": "2026-09-15T15:15:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "senticide🇨🇱",
+   "quien": "pakelopakelo",
+   "discord_id": "1355393300672020570",
+   "msg_id": "1549438451848323186",
+   "cuando": "2026-09-15T15:15:14"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "# 🇱🇸 |INSCRIPCIONES ABIERTAS| 🇱🇸 \n@everyone",
+   "quien": "csgo47.",
+   "discord_id": "1493317254581063680",
+   "msg_id": "1549438405186683016",
+   "cuando": "2026-09-15T15:15:02"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1549199894013808754",
+   "cuando": "2026-09-14T23:27:17"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz 🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1549163143677223056",
+   "cuando": "2026-09-14T21:01:15"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1549163086995263542",
+   "cuando": "2026-09-14T21:01:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mco",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1549163069106688071",
+   "cuando": "2026-09-14T21:00:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "vandu",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1549161947604197470",
+   "cuando": "2026-09-14T20:56:30"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Damián Z🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1549160514095947828",
+   "cuando": "2026-09-14T20:50:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1549159283634217001",
+   "cuando": "2026-09-14T20:45:55"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1549158943534616627",
+   "cuando": "2026-09-14T20:44:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1549158888530518140",
+   "cuando": "2026-09-14T20:44:21"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dios 🇲🇽",
+   "quien": "dan666._",
+   "discord_id": "1204164715350196284",
+   "msg_id": "1549158883459858435",
+   "cuando": "2026-09-14T20:44:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yo 🇧🇹",
+   "quien": "kulthrafild",
+   "discord_id": "1318011300994875516",
+   "msg_id": "1549158562419179551",
+   "cuando": "2026-09-14T20:43:03"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Chuwin 🇪🇸",
+   "quien": "chuwin_",
+   "discord_id": "618818177073414144",
+   "msg_id": "1549158559739150347",
+   "cuando": "2026-09-14T20:43:02"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MAYANMC🇨🇺",
+   "quien": "imnotmaya_yt.",
+   "discord_id": "1487886377923121243",
+   "msg_id": "1549158503749517455",
+   "cuando": "2026-09-14T20:42:49"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "gus",
+   "quien": "agusdema",
+   "discord_id": "989640104765177956",
+   "msg_id": "1549158481599135747",
+   "cuando": "2026-09-14T20:42:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yo🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1549158480114614303",
+   "cuando": "2026-09-14T20:42:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "# 🇱🇸 |INSCRIPCIONES ABIERTAS| 🇱🇸 \n@everyone",
+   "quien": "csgo47.",
+   "discord_id": "1493317254581063680",
+   "msg_id": "1549158430525366403",
+   "cuando": "2026-09-14T20:42:31"
+  },
+  {
    "servidor": "URBF",
    "canal": "‣《🗞️》Inscripciones",
    "texto": "Tara 🇨🇴\nJoven promesa",
@@ -8094,6 +10503,1005 @@
    "discord_id": "750791180102533140",
    "msg_id": "1549093328073789525",
    "cuando": "2026-09-14T16:23:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1548794958842953800",
+   "cuando": "2026-09-13T20:38:13"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sexo 🇲🇽",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1548790853252939798",
+   "cuando": "2026-09-13T20:21:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Poeta 🇲🇽",
+   "quien": "simplee3",
+   "discord_id": "330866571297685505",
+   "msg_id": "1548787456017567839",
+   "cuando": "2026-09-13T20:08:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kourier 🇲🇽",
+   "quien": "simplee3",
+   "discord_id": "330866571297685505",
+   "msg_id": "1548786959860760587",
+   "cuando": "2026-09-13T20:06:26"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Number 🇮🇱",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1548780430743052392",
+   "cuando": "2026-09-13T19:40:29"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jupiter",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1548780398287265822",
+   "cuando": "2026-09-13T19:40:21"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1548779297442111645",
+   "cuando": "2026-09-13T19:35:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Vlade 🇨🇴",
+   "quien": "vladeink",
+   "discord_id": "1382511700519030824",
+   "msg_id": "1548779236800864478",
+   "cuando": "2026-09-13T19:35:44"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Hombre Eyau🇨🇱",
+   "quien": "senticide2",
+   "discord_id": "1519298201251741720",
+   "msg_id": "1548778631667388449",
+   "cuando": "2026-09-13T19:33:20"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Drexx 🇳🇱",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1548778615578165330",
+   "cuando": "2026-09-13T19:33:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ardean 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1548778587736375307",
+   "cuando": "2026-09-13T19:33:10"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Joba 🇨🇱",
+   "quien": "jobains",
+   "discord_id": "1095893775383023708",
+   "msg_id": "1548778573169692726",
+   "cuando": "2026-09-13T19:33:06"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Damián 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1548778561656193117",
+   "cuando": "2026-09-13T19:33:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "OG🇻🇪",
+   "quien": "the0g.",
+   "discord_id": "425356695309516810",
+   "msg_id": "1548778037133443083",
+   "cuando": "2026-09-13T19:30:58"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1548777743624437823",
+   "cuando": "2026-09-13T19:29:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "VR🇨🇴",
+   "quien": "1mrvargas",
+   "discord_id": "1456416455405863038",
+   "msg_id": "1548777713794551841",
+   "cuando": "2026-09-13T19:29:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1548777697906270299",
+   "cuando": "2026-09-13T19:29:38"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1548777681406005291",
+   "cuando": "2026-09-13T19:29:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El indigena del parque 🇺🇾",
+   "quien": "fabrythenoob7n76687",
+   "discord_id": "595648807920861205",
+   "msg_id": "1548777676183969865",
+   "cuando": "2026-09-13T19:29:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Frenético 🇨🇺",
+   "quien": "zeretdshomski",
+   "discord_id": "718538903472046130",
+   "msg_id": "1548777674347122842",
+   "cuando": "2026-09-13T19:29:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "flama🇦🇷",
+   "quien": "faustoo1406",
+   "discord_id": "949795011262840832",
+   "msg_id": "1548777653694238791",
+   "cuando": "2026-09-13T19:29:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1548777628939591832",
+   "cuando": "2026-09-13T19:29:21"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1548777627433836607",
+   "cuando": "2026-09-13T19:29:21"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "BastyRetro🇨🇱",
+   "quien": "bastyretro",
+   "discord_id": "596924970429448202",
+   "msg_id": "1548510875382579251",
+   "cuando": "2026-09-13T01:49:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MC ERROR 🇨🇴 + MC AREPA🇻🇪 + KEIDER🇧🇷",
+   "quien": "mateo077106",
+   "discord_id": "1340452570807930880",
+   "msg_id": "1548459006870429777",
+   "cuando": "2026-09-12T22:23:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mcarepa🇻🇪",
+   "quien": "abraham_e29_03496",
+   "discord_id": "1489469731168845894",
+   "msg_id": "1548458742243270677",
+   "cuando": "2026-09-12T22:22:13"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "KEIDER🇧🇷",
+   "quien": "mc.luisito",
+   "discord_id": "1437913232407920770",
+   "msg_id": "1548458399333744721",
+   "cuando": "2026-09-12T22:20:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1548457336304181299",
+   "cuando": "2026-09-12T22:16:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "VR🇨🇴",
+   "quien": "1mrvargas",
+   "discord_id": "1456416455405863038",
+   "msg_id": "1548456375259107360",
+   "cuando": "2026-09-12T22:12:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "ESTOY SOLO DESDE QUE ME DEJO MI NOVIA🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1548455734633824407",
+   "cuando": "2026-09-12T22:10:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1548454548559892521",
+   "cuando": "2026-09-12T22:05:33"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "ARDEAN 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1548454522794541140",
+   "cuando": "2026-09-12T22:05:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Last🇺🇾",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1548454434927808543",
+   "cuando": "2026-09-12T22:05:06"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1548454423527817337",
+   "cuando": "2026-09-12T22:05:03"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "🇲🇸",
+   "quien": "elreyes_mc",
+   "discord_id": "1497026847504990218",
+   "msg_id": "1548453907578224642",
+   "cuando": "2026-09-12T22:03:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lvel 🇻🇪",
+   "quien": "lvel_free",
+   "discord_id": "1526612644642160721",
+   "msg_id": "1548453455969132666",
+   "cuando": "2026-09-12T22:01:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Snx🇻🇪+Dominic🇲🇽+⚡ JL🇻🇪⚡",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1548452476053622890",
+   "cuando": "2026-09-12T21:57:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mc error 🇨🇴",
+   "quien": "mateo077106",
+   "discord_id": "1340452570807930880",
+   "msg_id": "1548451939040362527",
+   "cuando": "2026-09-12T21:55:11"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴 <:3_KYS:1262380343139241994>",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1548451778444525619",
+   "cuando": "2026-09-12T21:54:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "elreyes_mc<a:Chile:1495915902036607046>+ CJ🇲🇴",
+   "quien": "elreyes_mc",
+   "discord_id": "1497026847504990218",
+   "msg_id": "1548451728054296732",
+   "cuando": "2026-09-12T21:54:20"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-t conquista irán aka pexx🇳🇱",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1548451627348922490",
+   "cuando": "2026-09-12T21:53:56"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "kude🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1548451564622975017",
+   "cuando": "2026-09-12T21:53:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1548451552363028531",
+   "cuando": "2026-09-12T21:53:38"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴 +",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1548450824609472553",
+   "cuando": "2026-09-12T21:50:45"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Crk🇲🇽",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "msg_id": "1548093388102828063",
+   "cuando": "2026-09-11T22:10:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Snx🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1548086258654249022",
+   "cuando": "2026-09-11T21:42:06"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1548086102051651585",
+   "cuando": "2026-09-11T21:41:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1548085906605342771",
+   "cuando": "2026-09-11T21:40:42"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mco 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1548084994633629808",
+   "cuando": "2026-09-11T21:37:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Caliz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1548082125113262225",
+   "cuando": "2026-09-11T21:25:40"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1548081847802798123",
+   "cuando": "2026-09-11T21:24:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Damián 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1548079655905661030",
+   "cuando": "2026-09-11T21:15:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jupiter",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1548079234109407393",
+   "cuando": "2026-09-11T21:14:11"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ezias🇵🇾",
+   "quien": "ezias_ak",
+   "discord_id": "1335430983343804497",
+   "msg_id": "1548079037468123236",
+   "cuando": "2026-09-11T21:13:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El indígena del parque 🇺🇾",
+   "quien": "fabrythenoob7n76687",
+   "discord_id": "595648807920861205",
+   "msg_id": "1548078955972661300",
+   "cuando": "2026-09-11T21:13:05"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "LDS 🇻🇪",
+   "quien": "ldsmc0511",
+   "discord_id": "511290800282402817",
+   "msg_id": "1548077905081401355",
+   "cuando": "2026-09-11T21:08:54"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1548076544843325592",
+   "cuando": "2026-09-11T21:03:30"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "velatz",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1548076411015663687",
+   "cuando": "2026-09-11T21:02:58"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dcet 🇻🇪",
+   "quien": "dnet.free",
+   "discord_id": "1426313940605993021",
+   "msg_id": "1548076125672964158",
+   "cuando": "2026-09-11T21:01:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Vandu 🇨🇦 primera",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1548076124968321067",
+   "cuando": "2026-09-11T21:01:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Btrece🇺🇾",
+   "quien": "btrece_",
+   "discord_id": "1490902626970239088",
+   "msg_id": "1548075984891412501",
+   "cuando": "2026-09-11T21:01:16"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Nene🇨🇱",
+   "quien": "nenejroficial",
+   "discord_id": "1462907811792031754",
+   "msg_id": "1548075627054366721",
+   "cuando": "2026-09-11T20:59:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz aura sigma🇨🇱🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1548075624038404198",
+   "cuando": "2026-09-11T20:59:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "BETELGEUSE🇮🇹",
+   "quien": "brujuladescalibrada",
+   "discord_id": "1535382535876509787",
+   "msg_id": "1548075561656651900",
+   "cuando": "2026-09-11T20:59:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1548075526630019083",
+   "cuando": "2026-09-11T20:59:27"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yo🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1548075504857391185",
+   "cuando": "2026-09-11T20:59:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "AM",
+   "quien": "jirafa02",
+   "discord_id": "752763980077858829",
+   "msg_id": "1548075492660355093",
+   "cuando": "2026-09-11T20:59:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ezias🇵🇾🇬🇪🇪🇨🇫🇷🇧🇷🇨🇱🥈✒️🧢🐍",
+   "quien": "ezias_ak",
+   "discord_id": "1335430983343804497",
+   "msg_id": "1548061118742794301",
+   "cuando": "2026-09-11T20:02:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1547900202680057897",
+   "cuando": "2026-09-11T09:22:46"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Jr 🇵🇪 (me pidió en lo inscriba)",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1547805187991937075",
+   "cuando": "2026-09-11T03:05:13"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1547804897997492275",
+   "cuando": "2026-09-11T03:04:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MC Glock🇲🇽",
+   "quien": "mc_glock_",
+   "discord_id": "1520281483309224017",
+   "msg_id": "1547804830146240605",
+   "cuando": "2026-09-11T03:03:48"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Senticide🇨🇱",
+   "quien": "pakelopakelo",
+   "discord_id": "1355393300672020570",
+   "msg_id": "1547804782805254228",
+   "cuando": "2026-09-11T03:03:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "masino🇨🇱",
+   "quien": "martinv444",
+   "discord_id": "1237192883535216715",
+   "msg_id": "1547804773846220812",
+   "cuando": "2026-09-11T03:03:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1547804772793454615",
+   "cuando": "2026-09-11T03:03:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Aczino 🇧🇴",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1547804757811531837",
+   "cuando": "2026-09-11T03:03:31"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Monet 🇲🇽",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1547804745802981497",
+   "cuando": "2026-09-11T03:03:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1547780061460168869",
+   "cuando": "2026-09-11T01:25:23"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Que🇻🇪",
+   "quien": "camila022672",
+   "discord_id": "1432188610542567549",
+   "msg_id": "1547779735441117218",
+   "cuando": "2026-09-11T01:24:05"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Black dmon 🇪🇨🇺🇸 (ultima)",
+   "quien": "bidi8812",
+   "discord_id": "698611862031433779",
+   "msg_id": "1547779151153340528",
+   "cuando": "2026-09-11T01:21:45"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MOON🇲🇽",
+   "quien": "rinitoshi_s",
+   "discord_id": "953223572120289310",
+   "msg_id": "1547779141640785941",
+   "cuando": "2026-09-11T01:21:43"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Hombre eyau🇨🇱",
+   "quien": "senticide2",
+   "discord_id": "1519298201251741720",
+   "msg_id": "1547779118580498504",
+   "cuando": "2026-09-11T01:21:38"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dev 🇦🇷",
+   "quien": ".gatitodev",
+   "discord_id": "1028631611685740684",
+   "msg_id": "1547779117032673352",
+   "cuando": "2026-09-11T01:21:37"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "El Wachin 🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1547779110665982035",
+   "cuando": "2026-09-11T01:21:36"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1547779107851341846",
+   "cuando": "2026-09-11T01:21:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "flama🇦🇷",
+   "quien": "faustoo1406",
+   "discord_id": "949795011262840832",
+   "msg_id": "1547779103787188265",
+   "cuando": "2026-09-11T01:21:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lyax🇲🇽",
+   "quien": "_lyki",
+   "discord_id": "798343534772092949",
+   "msg_id": "1547779102813982821",
+   "cuando": "2026-09-11T01:21:34"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1547779098607231089",
+   "cuando": "2026-09-11T01:21:33"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Tuca 🇦🇷",
+   "quien": "tuquitta",
+   "discord_id": "458702447913861130",
+   "msg_id": "1547779077950410857",
+   "cuando": "2026-09-11T01:21:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "AFR 🇨🇱",
+   "quien": "afr777_.",
+   "discord_id": "1378395662592512151",
+   "msg_id": "1547779070429757482",
+   "cuando": "2026-09-11T01:21:26"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1547779064826298369",
+   "cuando": "2026-09-11T01:21:25"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Walker",
+   "quien": "walker2706",
+   "discord_id": "1247306019839938754",
+   "msg_id": "1547778986627829841",
+   "cuando": "2026-09-11T01:21:06"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1547730893295325235",
+   "cuando": "2026-09-10T22:10:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Que🇻🇪",
+   "quien": "camila022672",
+   "discord_id": "1432188610542567549",
+   "msg_id": "1547729960809013278",
+   "cuando": "2026-09-10T22:06:18"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1547717707892527135",
+   "cuando": "2026-09-10T21:17:36"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1547716140107833507",
+   "cuando": "2026-09-10T21:11:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Surxf🇨🇱",
+   "quien": "surxf189278",
+   "discord_id": "1106029696388444251",
+   "msg_id": "1547714915140247694",
+   "cuando": "2026-09-10T21:06:30"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1547714513632100482",
+   "cuando": "2026-09-10T21:04:55"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1547713141394243615",
+   "cuando": "2026-09-10T20:59:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Iguana 🇵🇪",
+   "quien": "iguanajoshua",
+   "discord_id": "818314359218241567",
+   "msg_id": "1547712775134912603",
+   "cuando": "2026-09-10T20:58:00"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Joba 🇨🇱",
+   "quien": "jobains",
+   "discord_id": "1095893775383023708",
+   "msg_id": "1547712762732609597",
+   "cuando": "2026-09-10T20:57:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Chuwin",
+   "quien": "chuwin_",
+   "discord_id": "618818177073414144",
+   "msg_id": "1547712489897066636",
+   "cuando": "2026-09-10T20:56:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Kochi",
+   "quien": "ricardocortes0758",
+   "discord_id": "1357885526404894870",
+   "msg_id": "1547712487053328495",
+   "cuando": "2026-09-10T20:56:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Xd🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1547712481730895964",
+   "cuando": "2026-09-10T20:56:50"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Infecte🇨🇴🇩🇴",
+   "quien": "mxrio_xtz",
+   "discord_id": "1174409397397631030",
+   "msg_id": "1547712465326973000",
+   "cuando": "2026-09-10T20:56:46"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Yo🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1547712443499814942",
+   "cuando": "2026-09-10T20:56:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ardean 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1547712435920830505",
+   "cuando": "2026-09-10T20:56:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Pichulamc",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1547712433769160934",
+   "cuando": "2026-09-10T20:56:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "tommy hilfiger🇾🇹",
+   "quien": "crakero_crew_36247",
+   "discord_id": "1374555884868337738",
+   "msg_id": "1547712432754004020",
+   "cuando": "2026-09-10T20:56:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1547712428312105041",
+   "cuando": "2026-09-10T20:56:38"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Crk🇲🇽",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "msg_id": "1547378283283353642",
+   "cuando": "2026-09-09T22:48:51"
   },
   {
    "servidor": "URBF",
