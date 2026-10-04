@@ -76,7 +76,10 @@ const REDESCUBRIR = 6 * HORA;
 //: (`anuncio|novedad|torneo` también) y escuchaba 14 canales. Los de
 //: anuncios y novedades los sigue leyendo el ciclo para el ranking y el
 //: hub; el vigía, que sólo manda avisos, no los necesita.
-export const PATRON_VIGIA = /evento|competenc/i;
+//: 🏛️ Y «torneo»: el canal de eventos de la ACADEMIA (04/10/2026) se llama «🥇┇torneos», en su categoría
+//: «COMPES / EVENTOS». Medido en los siete servidores de la Liga: es el único canal con «torneo», así que
+//: no suma ningún canal de anuncios o novedades de los otros —la regla de Dlx sigue igual—
+export const PATRON_VIGIA = /evento|competenc|torneo/i;
 //: si cambia qué canales se escuchan, la lista guardada se rehace ya y no
 //: a las seis horas
 // 3: los nombres se normalizan (NFKD) antes de compararlos; ver `vigilar()`
@@ -87,7 +90,8 @@ export const PATRON_VIGIA = /evento|competenc/i;
 // 7: entra FFS, sin las categorías de sus ligas (`meta.fuera`, 28/09/2026).
 // 9: y los de «votaciones» y «resultados» (02/10/2026): ver `PATRON_VEREDICTOS`.
 // 10: cada canal con su categoría (`p`), para «Inscribite ya» (03/10/2026). Ver `invitacionPara()`
-const CANALES_V = 10;
+// 11: «torneo» en `PATRON_VIGIA`, y «organiz» en `STAFF` (la ACADEMIA, 04/10/2026)
+const CANALES_V = 11;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…

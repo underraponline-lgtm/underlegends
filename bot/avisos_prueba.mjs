@@ -282,6 +282,9 @@ const ok = (cond, que) => {
   const no = ['✦📢︱anuncios', '•「🌐」novedades', '✦⚡︱novedades', '［📢］anuncios'];
   ok(si.every((n) => A.PATRON_VIGIA.test(n)), 'escucha los de eventos y competencias');
   ok(no.every((n) => !A.PATRON_VIGIA.test(n)), 'y no los de anuncios ni novedades (Dlx, 25/09)');
+  // 🏛️ la ACADEMIA (04/10/2026): su canal de eventos se llama «torneos», y «organizar-eventos» es del staff
+  ok(A.PATRON_VIGIA.test('🥇┇torneos') && !A.PATRON_VIGIA.test('📢┇anuncios・') && A.STAFF.test('organizar-eventos'),
+     'el «torneos» de la ACADEMIA sí; su «anuncios» no, y «organizar-eventos» es del staff');
   const m = A.mensajeRed({ t: 'ELRAP FECHA 7', sv: 'FFA', svn: 'Freestyle For All',
     ini: Date.UTC(2026, 8, 25, 1, 0), mod: '1vs1', cup: '16', pre: '',
     url: 'https://discord.com/channels/1/2/3' });
