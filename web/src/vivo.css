@@ -428,6 +428,16 @@ button.btn{background:transparent;cursor:pointer}
 .cu-datos{font:600 14px/1.4 Archivo,sans-serif}
 .cu-datos code{font:600 13px "Space Mono",monospace;background:var(--caja);padding:1px 4px}
 .cu-ver{grid-column:1/-1;justify-self:start;margin-top:12px}
+/* 🔥 la racha diaria y el nivel (04/10/2026): debajo de quién sos, a lo ancho. Ver `RachaNivel` en cuenta.jsx */
+.cu-rn{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--linea)}
+.cu-rn-c{display:grid;gap:6px;align-content:start;min-width:0}
+.cu-rn-c > b{font:900 16px/1.1 Archivo,sans-serif}
+.cu-rn-c small{font:600 13px/1.4 Archivo,sans-serif;color:var(--gris)}
+.cu-rn-c small b{font:inherit;color:var(--tinta)}
+.cu-rn-barra{display:block;height:8px;background:var(--caja);border:1px solid var(--linea)}
+.cu-rn-barra i{display:block;height:100%;background:#29B298}
+/* 🔥 y al lado de tu cuenta, arriba */
+.yo-racha{font:800 13px/1 Archivo,sans-serif;white-space:nowrap}
 .cu-quien.anon{grid-template-columns:auto minmax(0,1fr);align-items:center;row-gap:14px;padding:16px 14px}
 .cu-quien.anon .cu-av{margin:0;width:56px;height:56px;border:2px solid var(--linea)}
 .cu-quien.anon .cu-q{grid-column:auto;margin:0}

@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
+import { useRacha } from './racha.js';
 
 import { PasosInstalar } from './instalar.jsx';
 
@@ -129,6 +130,30 @@ function grupos(liga, dc, tema, cual) {
   return cual === 'ajustes' ? g.slice(1) : g.slice(0, 1);
 }
 
+// ── 🔥 tu racha diaria y tu nivel, debajo de quién sos (Dlx, 04/10/2026). La cuenta es del servidor ──────────────
+function RachaNivel({ dc }) {
+  const R = useRacha(!!dc);
+  if (!R) return null;
+  const { racha: r, nivel: n, falta, premio } = R;
+  const tramo = Math.max(1, n.sig - n.base);
+  const pct = Math.max(0, Math.min(100, Math.round(100 * (n.xp - n.base) / tramo)));
+  const dias = (x) => x + (x === 1 ? ' día' : ' días');
+  return (
+    <div className="cu-rn">
+      <div className="cu-rn-c">
+        <b>🔥 {r.actual ? dias(r.actual) + ' seguidos' : 'Sin racha todavía'}</b>
+        <small>{r.actual ? (r.hoy ? 'Hoy ya contó. ' : 'Entrá o jugá hoy para no cortarla. ') : 'Cuenta cada día que usás el bot, entrás con tu cuenta o jugás un evento. '}
+          Faltan {dias(falta)} para <b>+{premio} Puntos de Tienda</b>.{r.maxima > r.actual ? ' Tu mejor racha: ' + dias(r.maxima) + '.' : ''}</small>
+      </div>
+      <div className="cu-rn-c">
+        <b>Nivel {n.n}</b>
+        <span className="cu-rn-barra" role="progressbar" aria-label={'Nivel ' + n.n} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}><i style={{ width: pct + '%' }} /></span>
+        <small>{n.xp - n.base} de {tramo} para el nivel {n.n + 1}. Sube +{R.xp_ev} por evento jugado y +{R.xp_dia} por cada día que cuenta.</small>
+      </div>
+    </div>
+  );
+}
+
 // ── la tarjeta de arriba: quién sos, como el «Tú» de Discord ──────────────────────────────────────
 function Quien({ liga, dc }) {
   const yo = liga.yo;
@@ -156,6 +181,7 @@ function Quien({ liga, dc }) {
       {yo ? <a className="btn borde2 chico cu-ver" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a>
         : dc && dc.clave ? <a className="btn borde2 chico cu-ver" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil</a>
         : <a className="btn verde chico cu-ver" href="#/cuenta/verificar">Verificarme</a>}
+      <RachaNivel dc={dc} />
     </div>
   );
 }

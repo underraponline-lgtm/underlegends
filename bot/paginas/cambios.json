@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.30",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T16:20:00-04:00",
+   "titulo": "La racha diaria y los niveles",
+   "items": [
+    "🔥 **La racha diaria**: cada día que usás el bot, entrás a la página con tu cuenta o jugás un evento suma un día. **Cada 7 días seguidos, +500 Puntos de Tienda.** La ves arriba, al lado de tu cuenta, y en Mi cuenta.",
+    "⭐ **Los niveles**: suben con cada evento que jugás (+10) y cada día que cuenta (+2), y miden qué tan antiguo sos en la Liga. Se ven en Mi cuenta y en el perfil de cada uno.",
+    "🗓️ **Las dos arrancan en cero con la Temporada 1**: lo de la prueba no cuenta."
+   ]
+  },
+  {
    "version": "2.29",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T16:09:00-04:00",

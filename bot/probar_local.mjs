@@ -2786,6 +2786,43 @@ console.log('\n«EL DASHBOARD DEL DUEÑO»\n');
   env.AVISOS = antesA;
 }
 
+console.log('\n«LA RACHA DIARIA Y LOS NIVELES»\n');
+{
+  // 🔥 Dlx, 04/10/2026. Tu racha va con tu sesión y pedirla cuenta el día (pasa por `quienPide()`, que anota el uso);
+  // la de cada perfil es pública y va por clave, nunca por Discord ID
+  const SES = 'k'.repeat(43), YO = '562063579545600007';
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/uso')) return new Response('{"ok":true}');
+    if (u.endsWith('/sesion/quien')) {
+      return b && b.ses === SES ? new Response(JSON.stringify({ quien: YO }), { status: 200 }) : new Response('{"error":"no"}', { status: 404 });
+    }
+    if (u.endsWith('/niveles')) return new Response('{"t":1,"n":{"ana":[3,5]}}', { status: 200 });
+    return new Response(JSON.stringify({ racha: { actual: 5 }, nivel: { n: 3 } }), { status: 200 });
+  } }) };
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedir = async (ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/racha', { method: 'POST', body: '{}',
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedir(SES);
+  const aRacha = alObjeto.find(([u]) => u.endsWith('/racha'));
+  ok('con sesión: llega al objeto con SU Discord ID, y el día se anota antes',
+     r.status === 200 && r.json.racha.actual === 5 && aRacha && aRacha[1].quien === YO &&
+     alObjeto.findIndex(([u]) => u.endsWith('/uso')) < alObjeto.findIndex(([u]) => u.endsWith('/racha')));
+  alObjeto.length = 0;
+  r = await pedir();
+  ok('sin sesión: 401 y no llega al objeto', r.status === 401 && !alObjeto.some(([u]) => u.endsWith('/racha')));
+  const g = await worker.fetch(new Request('https://x/avisos/niveles'), env, ctx);
+  ok('los niveles de los perfiles: públicos, por clave', g.status === 200 && JSON.parse(await g.text()).n.ana[0] === 3);
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+}
+
 console.log('\n«LOS AJUSTES DEL DASHBOARD»\n');
 {
   // ⚙️ Dlx, 04/10/2026: «todo y muchas más cosas». La misma puerta que el Dashboard, y el valor se valida ANTES de

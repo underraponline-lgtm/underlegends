@@ -102,7 +102,7 @@ jobs:
           fallas=""
           for f in bot/anuncios.py bot/autoverificar.py bot/avisar.py bot/avisos_casos.py bot/avisos_personales.py bot/cuando.py bot/encuestas.py bot/escuchar.py bot/insignias.py \
                    bot/fuera.py bot/inscripciones.py bot/lunes.py bot/muro.py bot/llaves_a_entrada.py bot/llaves_casos.py bot/madrugada.py bot/most_wanted.py bot/multiplicadores.py bot/olvidar.py bot/precios.py \
-                   bot/que_cambio.py bot/reportes.py bot/invitaciones.py bot/en_llamada.py bot/siglas.py\
+                   bot/que_cambio.py bot/reportes.py bot/invitaciones.py bot/en_llamada.py bot/siglas.py bot/racha.py \
                    bot/verificados.py sheet/archivar_temporada.py \
                    sheet/competitivo.py sheet/construir_pool_competitivo.py \
                    sheet/decidir.py sheet/estilo.py sheet/llaves_web.py sheet/lobby.py sheet/motor.py \

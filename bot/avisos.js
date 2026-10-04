@@ -800,6 +800,35 @@ export async function anotarUso(env, quien, por) {
   } catch (e) { USADOS.delete(k); }
 }
 
+// ── 🔥 LA RACHA DIARIA Y LOS NIVELES (Dlx, 04/10/2026: «¿un daily streak? al conectarse en cualquier parte de la
+// Liga Global» y «¿quizás hasta niveles? para ver qué tan antiguo eres») ──────────────────────────────────────────────
+// Un día cuenta si usaste el bot, hiciste algo en la página con tu cuenta o jugaste un evento. Las reglas y los
+// números viven en `bot/racha.py` y llegan con lo del precio por cabeza (`racha_cfg`); estos son los de arranque.
+export const RACHA_CFG = { cada: 7, premio: 500, xp_ev: 10, xp_dia: 2, paso: 10, desde: 0 };
+const diaNum = (s) => Math.round(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DIA_MS);
+/**
+ * `{actual, maxima, total, inicio, hoy}` de los días `AAAA-MM-DD` de alguien, en orden y sin repetir.
+ * La racha sigue viva todo el día de hoy si ayer contó; `inicio` es el primer día de la de ahora.
+ */
+export function rachaDeDias(dias, hoy) {
+  let maxima = 0, run = 0, prev = null, inicio = '';
+  for (const d of dias) {
+    const n = diaNum(d);
+    if (prev !== null && n === prev + 1) run++; else { run = 1; inicio = d; }
+    if (run > maxima) maxima = run;
+    prev = n;
+  }
+  const h = diaNum(hoy);
+  const viva = prev !== null && (prev === h || prev === h - 1);
+  return { actual: viva ? run : 0, maxima, total: dias.length, inicio: viva ? inicio : '', hoy: prev === h };
+}
+/** El nivel con esa experiencia: `{n, xp, base, sig}`. Para el nivel N hacen falta `paso · N · (N − 1)` (`racha.nivel()`) */
+export function nivelDeXp(xp, paso = RACHA_CFG.paso) {
+  let n = 1;
+  while (paso * (n + 1) * n <= xp) n++;
+  return { n, xp, base: paso * n * (n - 1), sig: paso * (n + 1) * n };
+}
+
 const sinTildes = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
 function diaDe(texto) {
   const t = sinTildes(texto);
@@ -1203,6 +1232,8 @@ const RUTAS = {
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
   // 🔔 el panel de la campana: lo que se te avisó, con tu sesión. Ver `bandeja()`
   '/avisos/bandeja': 'POST',
+  // 🔥 tu racha diaria y tu nivel, con tu sesión; y el nivel y la racha de cada perfil. Ver `rachaDe()` y `niveles()`
+  '/avisos/racha': 'POST', '/avisos/niveles': 'GET',
   // 🤝 la postulación de /sumate, con tu sesión, al DM de Dlx. Ver `validarPostulacion()` y `postular()`
   '/avisos/sumate': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
@@ -2286,6 +2317,21 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, visto: d.visto === true }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🔥 TU RACHA Y TU NIVEL, con tu sesión. Pedirla ya cuenta el día: pasa por `quienPide()`, que lo anota
+  if (ruta === '/avisos/racha') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/racha', {
+      method: 'POST', body: JSON.stringify({ quien: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🤝 LA POSTULACIÓN DE /sumate: validada acá, con quién la manda (su sesión), y al objeto, que se la manda a Dlx
   if (ruta === '/avisos/sumate') {
     const crudo = await req.text();
@@ -2562,6 +2608,12 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS uso (dia TEXT NOT NULL, quien TEXT NOT NULL, por TEXT NOT NULL, ' +
         'PRIMARY KEY (dia, quien, por)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
+      // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
+      // cuenta o un evento jugado; el día, nunca la hora) y, de los que jugaron, su perfil y cuántos eventos
+      // (`jugado`, que manda el ciclo entero). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS activo (quien TEXT NOT NULL, dia TEXT NOT NULL, ' +
+        'PRIMARY KEY (quien, dia)) WITHOUT ROWID');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS jugado (quien TEXT PRIMARY KEY, k TEXT NOT NULL, eventos INTEGER NOT NULL)');
       // 🔑 SEGUIR RAPEROS (28/09/2026): quién (Discord ID) sigue a qué perfil
       // (la clave de `#/r/`), desde cuándo, cuál es su propio perfil (`de`,
       // para no avisarle de sí mismo) y cuándo se creó su cuenta de Discord
@@ -2659,6 +2711,7 @@ export class Avisos {
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
+      if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
@@ -2680,6 +2733,10 @@ export class Avisos {
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/uso') return this.usoAnotar(d);
+      if (ruta === '/racha') {
+        if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
+        return json(this.rachaDe(String(d.quien)));
+      }
       if (ruta === '/visita') return this.visita();
       if (ruta === '/dueno') return json(this.panelDueno());
       if (ruta === '/precio') return this.precio(d);
@@ -4018,6 +4075,9 @@ export class Avisos {
     // 🔑 Y A QUIÉN SEGUÍA, Y QUÉ SERVIDOR ELIGIÓ: también van con su Discord ID
     const s = this.sql.exec('DELETE FROM sigue WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM servidor WHERE quien = ?', String(d.quien));
+    // 🔥 y los días de su racha y lo que jugó: también van con su Discord ID
+    this.sql.exec('DELETE FROM activo WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM jugado WHERE quien = ?', String(d.quien));
     // 🙈 y si había ocultado su foto: también es un dato suyo (y la lista del ciclo se rehace sin él)
     if (this.sql.exec('DELETE FROM foto_oculta WHERE quien = ?', String(d.quien)).rowsWritten) await this.espejarOcultas();
     // 🔑 Y SUS REPORTES, y la cola de KV sin ellos: van con su Discord ID
@@ -4690,6 +4750,25 @@ export class Avisos {
         cambios++;
       }
     }
+    // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). `jugado` llega ENTERO y se reemplaza; los
+    // días se suman, y uno que ya contó no se borra
+    if (r.rcfg && typeof r.rcfg === 'object') this.guardar('racha_cfg', r.rcfg);
+    if (r.jugo && typeof r.jugo === 'object') {
+      this.sql.exec('DELETE FROM jugado');
+      for (const [quien, x] of Object.entries(r.jugo)) {
+        if (!/^[0-9]{5,25}$/.test(quien) || !Array.isArray(x)) continue;
+        const ev = Number.isInteger(x[1]) && x[1] > 0 ? x[1] : 0;
+        this.sql.exec('INSERT OR REPLACE INTO jugado (quien, k, eventos) VALUES (?, ?, ?)', quien,
+          String(x[0] || '').slice(0, 60), ev);
+        for (const dia of Array.isArray(x[2]) ? x[2].slice(0, 400) : []) {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(String(dia))) {
+            this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, String(dia));
+          }
+        }
+        this.premiarRacha(quien);
+        cambios++;
+      }
+    }
     this.guardar('precios_v', r.v);
     this.guardar('precios_ultimo', { t: ahora, cambios });
     return cambios;
@@ -4842,7 +4921,64 @@ export class Avisos {
     }
     // el día lo pone el objeto: uno que llega de otra zona o de otro reloj no inventa días
     this.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', diaET(), String(d.quien), d.por);
+    // 🔥 y el día cuenta para su racha
+    this.diaActivo(String(d.quien), diaET());
     return json({ ok: true });
+  }
+
+  /** 🔥 Un día que contó para alguien. Si es nuevo, mira si su racha llegó a un premio */
+  diaActivo(quien, dia) {
+    if (this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, dia).rowsWritten) {
+      this.premiarRacha(quien);
+    }
+  }
+
+  /** 🔥 Los números de la racha y los niveles: los de `bot/racha.py` si ya llegaron, y si no los de arranque */
+  rachaCfg() {
+    return Object.assign({}, RACHA_CFG, this.leer('racha_cfg') || {});
+  }
+
+  /**
+   * 🔥 La racha y el nivel de alguien. Cuentan los días desde el arranque de la temporada (`desde`): lo de la
+   * prueba no. `falta` es cuántos días más para el próximo premio.
+   */
+  rachaDe(quien) {
+    const c = this.rachaCfg();
+    const desde = c.desde ? diaET(c.desde) : '';
+    const dias = this.sql.exec('SELECT dia FROM activo WHERE quien = ? AND dia >= ? ORDER BY dia', quien, desde)
+      .toArray().map((x) => x.dia);
+    const r = rachaDeDias(dias, diaET());
+    const j = this.sql.exec('SELECT eventos FROM jugado WHERE quien = ?', quien).toArray()[0];
+    const eventos = j ? j.eventos : 0;
+    return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia, c.paso),
+      cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia };
+  }
+
+  /**
+   * 🔥 Cada `cada` días seguidos, `premio` Puntos de Tienda (Dlx: «A»). Uno por escalón de la racha de ahora
+   * (`racha:<quien>:<inicio>:<días>`), así que pedirlo dos veces no paga dos: una racha que se corta y vuelve
+   * a arrancar tiene otro inicio y vuelve a pagar desde el primero.
+   */
+  premiarRacha(quien) {
+    const c = this.rachaCfg();
+    const { racha } = this.rachaDe(quien);
+    if (!racha.inicio || !(c.cada > 0) || !(c.premio > 0)) return;
+    const ahora = Date.now();
+    for (let k = c.cada; k <= racha.actual; k += c.cada) {
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+        'racha:' + quien + ':' + racha.inicio + ':' + k, quien, c.premio, ahora);
+    }
+  }
+
+  /** 🔥 Para la página: `{k: [nivel, racha]}` de los que jugaron. La clave es la del perfil: nunca el Discord ID */
+  niveles() {
+    const out = {};
+    for (const { quien, k } of this.sql.exec('SELECT quien, k FROM jugado').toArray()) {
+      if (!k) continue;
+      const x = this.rachaDe(quien);
+      out[k] = [x.nivel.n, x.racha.actual];
+    }
+    return { t: Date.now(), n: out };
   }
 
   /** Una visita sin cuenta: el navegador avisa una vez por día. ⚠️ Con tope: es un número que cualquiera puede

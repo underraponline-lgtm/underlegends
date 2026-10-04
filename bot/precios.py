@@ -239,13 +239,17 @@ def tienda_mw(mw, dids):
     return out
 
 
-def para_objeto(res, dids, mw=None):
-    """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}}`.
+def para_objeto(res, dids, mw=None, jugo=None, rcfg=None):
+    """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}, jugo, rcfg}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
     va todavía: le llega cuando se sepa. `mw` es lo que el Most Wanted paga
     en Tienda (`tienda_mw()`). `v` es la huella, para que el objeto no lo
     vuelva a aplicar si no cambió.
+
+    🔥 `jugo` y `rcfg` son de la racha diaria y los niveles (`bot/racha.py`):
+    quién jugó qué días y los números. Viajan por acá porque es el camino que
+    el ciclo ya tiene hacia el objeto, y la racha también paga Tienda.
     """
     r = {}
     for x in res:
@@ -256,8 +260,13 @@ def para_objeto(res, dids, mw=None):
         elif x['e'] == 'devuelto':
             r[str(x['id'])] = {'e': 'devuelto', 'por': []}
     m = tienda_mw(mw, dids) if mw is not None else {}
-    v = hashlib.sha1(json.dumps([r, m], sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
-    return {'v': v, 'r': r, 'mw': m}
+    v = hashlib.sha1(json.dumps([r, m, jugo, rcfg], sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
+    out = {'v': v, 'r': r, 'mw': m}
+    if jugo is not None:
+        out['jugo'] = jugo
+    if rcfg is not None:
+        out['rcfg'] = rcfg
+    return out
 
 
 def _de_iso(s):
@@ -312,8 +321,12 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         with io.open(SALIDA, 'w', encoding='utf-8') as f:
             json.dump(out, f, ensure_ascii=False, indent=1)
         _subir(config(ahora, pool), CLAVE_KV, 'lo que valida el Worker')
-        # 🔑 y lo que el Most Wanted paga en Tienda (Dlx: «b»), por el mismo camino
-        _subir(para_objeto(res, discords(pool), MW.leer()), CLAVE_RES, 'lo cazado, lo devuelto y el MW')
+        # 🔑 y lo que el Most Wanted paga en Tienda (Dlx: «b»), por el mismo camino. 🔥 Y quién jugó qué
+        # días, para la racha diaria y los niveles (`bot/racha.py`)
+        import racha as RA
+        dids = discords(pool)
+        _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, a), RA.config(a)), CLAVE_RES,
+               'lo cazado, lo devuelto, el MW y los días jugados')
     return out
 
 

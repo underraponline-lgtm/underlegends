@@ -547,6 +547,25 @@ const ok = (cond, que) => {
     'la hora de un mensaje sale de su id (el anuncio de DESGRACIAS EN TOKYO VOL 21: 3:58 PM ET)');
 }
 
+// 🔥 LA RACHA DIARIA Y LOS NIVELES: la cuenta del objeto, con los mismos números que `bot/racha.py --auto`
+{
+  console.log('\n🔥 la racha diaria y los niveles');
+  const r = A.rachaDeDias;
+  const x = r(['2026-10-01', '2026-10-02', '2026-10-03'], '2026-10-04');
+  ok(x.actual === 3 && x.inicio === '2026-10-01' && !x.hoy && x.maxima === 3 && x.total === 3,
+    'ayer contó: la racha sigue viva todo el día de hoy');
+  ok(r(['2026-10-01', '2026-10-02'], '2026-10-04').actual === 0 && r([], '2026-10-04').actual === 0,
+    'con un día sin nada se corta, y sin días no hay racha');
+  const y = r(['2026-09-20', '2026-09-21', '2026-09-22', '2026-09-23', '2026-10-03', '2026-10-04'], '2026-10-04');
+  ok(y.actual === 2 && y.maxima === 4 && y.hoy && y.inicio === '2026-10-03', 'la de ahora y la mejor son distintas');
+  ok(r(['2026-10-31', '2026-11-01', '2026-11-02'], '2026-11-02').actual === 3 && r(['2026-12-31', '2027-01-01'], '2027-01-01').actual === 2,
+    'el cambio de mes, de año y de horario no la cortan');
+  const nv = (xp) => A.nivelDeXp(xp, 10).n;
+  ok([0, 19, 20, 899, 900].map(nv).join() === '1,1,2,9,10', 'el nivel de cada experiencia, como `racha.nivel()`');
+  const n5 = A.nivelDeXp(250, 10);
+  ok(n5.n === 5 && n5.base === 200 && n5.sig === 300, 'el nivel trae dónde empieza y dónde termina');
+}
+
 // 🔴 NINGÚN MÉTODO DEL OBJETO PISADO POR UN DATO SUYO. El Dashboard llamaba `this.dueno()` y el vigía guarda en
 // `this.dueno` el Discord ID de Dlx: desde la primera vuelta del vigía, «this.dueno is not a function» (04/10/2026).
 // Ninguna prueba lo veía, porque ninguna corre el vigía antes de pedir el Dashboard. Se mira el texto de la clase:

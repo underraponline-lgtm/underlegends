@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, capital, diaISO, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
+import { useRacha } from './racha.js';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
@@ -86,6 +87,9 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   const yo = liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
   const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
+  // 🔥 tu racha diaria, al lado de tu cuenta (sólo si entraste con Discord: pedirla cuenta el día)
+  const R = useRacha(!!dc);
+  const fuego = R && R.racha.actual ? R.racha.actual : 0;
   return (
     <header className="cab negra">
       <Marca liga={liga} />
@@ -100,7 +104,8 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
             el celular. En la PC que esté arriba, por supuesto») */}
         <a className="btn-ico ajustes-b" href="#/ajustes" aria-label="Ajustes"><Ico n="engranaje" t={20} /></a>
         {cara ? (
-          <a className="yo-chip" href="#/cuenta" aria-label="Mi cuenta">{cara}<span>{nombre}</span></a>
+          <a className="yo-chip" href="#/cuenta" aria-label={'Mi cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
+            {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true">🔥{fuego}</span> : null}</a>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>
         )}
