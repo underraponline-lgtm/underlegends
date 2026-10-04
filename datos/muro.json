@@ -167,7 +167,8 @@
 "zekha": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "zignos": {
@@ -1077,13 +1078,6 @@
 "temporada"
 ]
 },
-"eclipsito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "partim": {
 "rg": "",
 "c": [
@@ -1260,7 +1254,10 @@
 },
 "caliz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "crackandkrank": {
 "rg": "",
@@ -1272,13 +1269,15 @@
 "damian": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "dcet": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "didyer": {
@@ -1291,6 +1290,10 @@
 "servidor",
 "temporada"
 ]
+},
+"eclipse": {
+"rg": "",
+"c": []
 },
 "elingetimp": {
 "rg": "",
@@ -1316,7 +1319,8 @@
 "flama": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "fleivacheck": {
@@ -1330,11 +1334,9 @@
 "rg": "",
 "c": []
 },
-"gosuz": {
+"gosu": {
 "rg": "",
-"c": [
-"servidor"
-]
+"c": []
 },
 "izaya": {
 "rg": "",
@@ -1346,16 +1348,9 @@
 "jayden": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
-},
-"eclipse": {
-"rg": "",
-"c": []
-},
-"gosu": {
-"rg": "",
-"c": []
 },
 "teito-co2": {
 "rg": "",
@@ -1575,6 +1570,13 @@
 "dewachomefui": {
 "rg": "",
 "c": []
+},
+"eclipsito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "elsolar": {
 "rg": "",
@@ -3825,6 +3827,62 @@
 "t": "2026-10-04T18:46:32Z",
 "quien": [
 "ISAIAS"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Zekha"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Calíz"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Calíz"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Damian"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Dcet"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Flama"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:07:21Z",
+"quien": [
+"Jayden"
 ],
 "carta": "temporada"
 }
