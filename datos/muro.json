@@ -193,7 +193,8 @@
 "catarsis": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "zeta": {
@@ -517,7 +518,8 @@
 "benjixo": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "kochi": {
@@ -942,7 +944,8 @@
 "faso": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "indigena": {
@@ -3496,6 +3499,30 @@
 "Erian"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T00:41:44Z",
+"quien": [
+"Catarsis"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T00:41:44Z",
+"quien": [
+"Benjixo"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T00:41:44Z",
+"quien": [
+"Faso"
+],
+"carta": "temporada"
 }
 ]
 }
