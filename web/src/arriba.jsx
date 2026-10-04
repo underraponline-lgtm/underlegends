@@ -2,7 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, capital, diaISO, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
-import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
+import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 export const MENU = [
@@ -90,7 +90,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
     <header className="cab negra">
       <Marca liga={liga} />
       <nav className="menu" aria-label="Secciones">
-        {MENU.map(([n, r]) => <a key={n} href={r} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
+        {MENU.map(([n, r]) => <a key={n} href={r} onClick={subirSiEsta(r)} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />

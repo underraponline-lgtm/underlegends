@@ -110,6 +110,10 @@ const CUENTA = {
 // —HttpOnly: el JS de la página no la ve— viaja al Worker como `x-lg-ses`,
 // y el `Set-Cookie` del Worker vuelve tal cual. Ver `sesionNueva()` en
 // bot/avisos.js. Sólo en los POST: lo que se lee (GET) es público y se cachea.
+// 🛡️ lo que va en toda respuesta de la API (04/10/2026): que el navegador no adivine otro tipo que el que dice. Las
+// cabeceras de la página (los archivos) están en `_headers`
+const SEGURO = { 'x-content-type-options': 'nosniff' };
+
 function sesion(req) {
   const m = /(?:^|;\s*)lg_ses=([A-Za-z0-9_-]{30,100})/.exec(req.headers.get('cookie') || '');
   return m ? m[1] : '';
@@ -146,7 +150,7 @@ async function avisos(req, url) {
   return new Response(r.body, {
     status: r.status,
     headers: {
-      'content-type': 'application/json; charset=utf-8',
+      'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': metodo === 'GET' ? 'public, max-age=20' : 'no-store',
     },
   });
@@ -155,6 +159,16 @@ async function avisos(req, url) {
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+
+    // 🛡️ UN POST TIENE QUE VENIR DE ESTA PÁGINA (04/10/2026, la lista de seguridad de Dlx: «CSRF»). La cookie de la
+    // sesión es SameSite=Strict, pero un formulario de otra página podía mandar a `/api/cuenta` el permiso de OTRA
+    // persona —la de quien arma la trampa— y dejarle a la víctima esa sesión: votaba, seguía y gastaba Puntos como el
+    // otro sin saberlo. Los navegadores mandan `Origin` en todo POST; si viene y no es éste, no pasa. Sin `Origin`
+    // (el ciclo, un navegador viejo) pasa como antes
+    if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
+      const o = req.headers.get('origin');
+      if (o !== null && o !== url.origin) return new Response('no', { status: 403, headers: SEGURO });
+    }
 
     if (AVISOS[url.pathname]) return avisos(req, url);
 
@@ -169,6 +183,7 @@ export default {
       });
       const h = new Headers();
       h.set('content-type', 'application/json; charset=utf-8');
+      h.set('x-content-type-options', 'nosniff');
       // ⚠️ 60 s DE CACHE Y `stale-while-revalidate`: el ciclo escribe una
       // vez por hora, pero la cuenta atrás corre en el navegador, así que
       // una copia de hace un minuto no atrasa el contador ni un segundo.
@@ -199,7 +214,7 @@ export default {
       });
       return new Response(r.body, {
         status: r.status,
-        headers: { 'content-type': 'text/calendar; charset=utf-8',
+        headers: { 'content-type': 'text/calendar; charset=utf-8', ...SEGURO,
           'cache-control': 'public, max-age=900' },
       });
     }
@@ -212,7 +227,7 @@ export default {
       const hs = { 'content-type': 'application/json' };
       if (sesion(req)) hs['x-lg-ses'] = sesion(req);
       const r = await fetch(ORIGEN + CUENTA[url.pathname], { method: 'POST', body: cuerpo, headers: hs });
-      const vuelta = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+      const vuelta = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...SEGURO };
       // la sesión: el Worker la abre (entrar) o la cierra (salir) con su cookie
       if (r.headers.get('set-cookie')) vuelta['set-cookie'] = r.headers.get('set-cookie');
       return new Response(r.body, { status: r.status, headers: vuelta });
@@ -228,6 +243,7 @@ export default {
       });
       const h = new Headers();
       h.set('content-type', 'application/json; charset=utf-8');
+      h.set('x-content-type-options', 'nosniff');
       h.set('cache-control', 'public, max-age=60, stale-while-revalidate=120');
       return new Response(r.body, { status: r.status, headers: h });
     }

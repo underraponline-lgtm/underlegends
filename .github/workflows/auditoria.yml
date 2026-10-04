@@ -97,6 +97,8 @@ jobs:
           fi
           printf '%s' "$CREDS_JSON" > creds.json
           printf '%s' "$ENV_FILE"   > .env
+          # 🛡️ cada valor de adentro, tapado en el log (ver bot/ci/enmascarar.sh: la sal de las fotos salió el 29/09)
+          bash bot/ci/enmascarar.sh .env creds.json
 
       - name: auditar
         run: python bot/verificar.py

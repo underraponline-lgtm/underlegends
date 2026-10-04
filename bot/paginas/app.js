@@ -4293,7 +4293,8 @@ RED_ICONO.bluesky = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 11
 var RED_NOMBRE = { instagram: 'Instagram', youtube: 'YouTube', x: 'X', tiktok: 'TikTok',
   twitch: 'Twitch', kick: 'Kick', spotify: 'Spotify', reddit: 'Reddit', bluesky: 'Bluesky' };
 function redes(rs, cl) {
-  return (rs || []).map(function (r) {
+  // 🛡️ sólo `https:` (04/10/2026): `esc()` no frena un `javascript:` en un href
+  return (rs || []).filter(function (r) { return /^https:\/\//i.test(String(r && r[1] || '')); }).map(function (r) {
     return '<a class="red ' + (cl || '') + '" href="' + esc(r[1]) + '" target="_blank" ' +
       'rel="noopener noreferrer" title="' + esc(RED_NOMBRE[r[0]] || r[0]) + '" aria-label="' +
       esc(RED_NOMBRE[r[0]] || r[0]) + '">' + (RED_ICONO[r[0]] || esc(r[0])) + '</a>';
@@ -5704,7 +5705,9 @@ function secRedes() {
 // justo lo que usa el enrutado de la página. Se lee, se limpia y recién
 // después se enruta.
 function volverDeDiscord() {
-  var h = location.hash || '';
+  // 🛡️ el permiso ya no está en la dirección: el script del principio lo saca apenas carga y lo deja acá (04/10/2026)
+  var h = window.__vueltaDC || location.hash || '';
+  window.__vueltaDC = '';
   if (h.indexOf('access_token=') < 0 && h.indexOf('error=') < 0) return;
   var q = {};
   h.replace(/^#/, '').split('&').forEach(function (x) {

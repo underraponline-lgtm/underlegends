@@ -9,7 +9,7 @@
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { useEffect, useState } from 'react';
 import { PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
+import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 
 import { PasosInstalar } from './instalar.jsx';
@@ -425,7 +425,7 @@ function Parte({ id, liga, dc, tema, onTema }) {
         <OcultarFoto dc={dc} />
         <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de vos." />
         <Caja t="Este dispositivo" d="Olvida quién sos, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
-          <button type="button" className="btn borde2 chico" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</button>
+          <DosToques className="btn borde2 chico" confirmar="¿Seguro? Tocá de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>
         </Caja>
       </>
     );

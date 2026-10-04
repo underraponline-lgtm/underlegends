@@ -488,6 +488,13 @@ button.btn{background:transparent;cursor:pointer}
    previa de la foto y cada red con su casilla */
 .cu-sv:disabled{opacity:.45;cursor:default}
 .cu-sv.pide{box-shadow:inset 0 0 0 3px var(--verde)}
+/* ♿ «saltar al contenido» (App.jsx): escondido arriba hasta que el teclado llega */
+.saltar{position:absolute;left:12px;top:-64px;z-index:300;padding:10px 14px;background:#030304;color:#fff;font-weight:800;
+  text-decoration:none;border:2px solid var(--verde)}
+.saltar:focus{top:12px}
+#contenido:focus{outline:none}
+/* 🛡️ el segundo toque de `DosToques` (piezas.jsx): el mismo verde que pide confirmar un servidor */
+.btn.pide{box-shadow:inset 0 0 0 2px var(--verde)}
 .cu-foto-v{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--linea)}
 .cu-red{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer}
 .cu-red input{width:18px;height:18px;accent-color:var(--verde);flex:none}

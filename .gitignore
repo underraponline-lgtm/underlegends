@@ -2,6 +2,12 @@
 # Credenciales de la service account que lee el Sheet Oficial.
 # NUNCA subir: da acceso de lectura al Sheet completo.
 creds.json
+# 🛡️ y lo que todavía no existe pero sería secreto (04/10/2026, la lista de seguridad de Dlx): las variables locales
+# de wrangler, cualquier `.env.algo` y las claves sueltas
+.dev.vars
+.env.*
+*.pem
+*.key
 
 
 # ── SALIDAS GENERADAS ───────────────────────────────────────────────────

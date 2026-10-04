@@ -116,12 +116,46 @@ export function usePerfiles() {
 // link de invitación al canal… el de inscripciones mejor… porque la gente no puede entrar de esa forma», y en la página
 // también («2. A»): antes de empezar, «Inscribite ya» —la invitación al canal de inscripciones de ese evento, `ins`, de
 // bot/subir_web.py—; en vivo, o sin ella, «Entrar al servidor». El link al mensaje, sólo sin ninguna invitación ──
+// 🛡️ SÓLO `https:` (04/10/2026, la lista de seguridad de Dlx): React escapa el texto pero no frena un `javascript:` en
+// un `href`. Hoy los links los arma el servidor con `https://` fijo; esto es por si un día no
+export const https = (u) => (/^https:\/\//i.test(String(u || '')) ? String(u) : '');
+
+// ── tocar la pestaña de la página en la que ya estás sube al principio (04/10/2026, de la lista de Dlx: «^ top button»).
+// Sin botón nuevo, como Instagram: al fondo de las 200 filas del Ranking, un toque en «Ranking» y arriba. Si estás más
+// adentro (un ranking puntual, un perfil), el link lleva a la página como siempre
+export function subirSiEsta(r) {
+  return (e) => {
+    const u = window.urlLG ? window.urlLG(r) : r;
+    if (u !== location.pathname + location.search || location.hash) return;
+    e.preventDefault();
+    const calma = document.documentElement.classList.contains('calma') ||
+      (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    window.scrollTo({ top: 0, behavior: calma ? 'auto' : 'smooth' });
+  };
+}
+
+// 🛡️ LO QUE GASTA O BORRA, CON UN SEGUNDO TOQUE (04/10/2026, la lista de seguridad de Dlx: «confirmation modals»).
+// Sin ventana encima —la página ya tiene bastante—: el mismo botón dice `confirmar` durante 4 segundos, y recién el
+// segundo toque hace. Es lo que ya hacen la foto y el servidor de la temporada
+export function DosToques({ children, confirmar, onClick, className, disabled }) {
+  const [pide, setPide] = useState(false);
+  useEffect(() => {
+    if (!pide) return undefined;
+    const t = setTimeout(() => setPide(false), 4000);
+    return () => clearTimeout(t);
+  }, [pide]);
+  return (
+    <button type="button" className={(className || '') + (pide ? ' pide' : '')} disabled={disabled} aria-live="polite"
+      onClick={() => { if (!pide) { setPide(true); return; } setPide(false); onClick(); }}>{pide ? confirmar : children}</button>
+  );
+}
+
 export function aDiscord(liga, e, vivo) {
   if (!e) return null;
-  const inv = (((liga && liga.svs) || {})[e.sv] || {}).invita;
-  if (!vivo && e.ins) return { url: e.ins, txt: 'Inscribite ya' };
+  const inv = https((((liga && liga.svs) || {})[e.sv] || {}).invita);
+  if (!vivo && https(e.ins)) return { url: https(e.ins), txt: 'Inscribite ya' };
   if (inv) return { url: inv, txt: 'Entrar al servidor' };
-  return e.link ? { url: e.link, txt: vivo ? 'Mirar en Discord' : 'Ver en Discord' } : null;
+  return https(e.link) ? { url: https(e.link), txt: vivo ? 'Mirar en Discord' : 'Ver en Discord' } : null;
 }
 
 // ── compartir: el menú de compartir del teléfono (WhatsApp, Discord…) o, en la computadora, el link copiado.

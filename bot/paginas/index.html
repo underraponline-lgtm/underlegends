@@ -34,10 +34,9 @@
      INICIO, y en iPhone eso no es un lujo: Safari sólo entrega avisos a
      una página instalada. Ver `campana.js`. -->
 <link rel="manifest" href="manifest.json">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<!-- 🛡️ SIN GOOGLE FONTS (04/10/2026, la lista de seguridad de Dlx): las fuentes salen de /inicio/inicio.css
+     (web/src/fuentes.css), también para las pantallas viejas. La IP de cada visita dejó de ir a Google -->
 <link rel="stylesheet" href="estilo.css">
 <!-- 🛠️ EL INICIO NUEVO (el remake; Dlx, 29/09/2026: «1. B. 2. B»). Lo pone web/montar.py: no se edita a mano.
      La app vive en web/ y se construye a inicio/; se ve sólo en el Inicio y el resto sigue siendo esta página. -->
@@ -87,6 +86,15 @@ html.ini-nuevo{scroll-padding-top:0}
     var u = urlLG(rutaLG()) + (/^#\//.test(h) ? '' : h);
     if (u === location.pathname + location.search + h) return;
     try { history.replaceState(history.state, '', u); } catch (e) { /* queda como vino: rutaLG() la lee igual */ }
+  }
+  // 🛡️ EL PERMISO DE DISCORD SALE DE LA DIRECCIÓN YA (04/10/2026, la lista de seguridad de Dlx). Vuelve en el `#` y
+  // quedaba en la barra —y en el historial— hasta que app.js bajaba los datos; si `/api/lobby` fallaba, no salía
+  // nunca, y con ese permiso se vota y se gastan Puntos durante 7 días. Queda en memoria para `volverDeDiscord()`,
+  // que decide adónde volver como siempre
+  var hv = location.hash || '';
+  if (/^#(access_token|error)=/.test(hv)) {
+    window.__vueltaDC = hv;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* queda en la barra */ }
   }
   limpiar();
   // 🔑 UN AVISO POR CAMBIO DE DIRECCIÓN: `lg:dir`, que escuchan app.js, la campana y el Inicio. 🔴 No alcanza con

@@ -3,6 +3,9 @@
 
     python bot/paginas_subir.py            qué subiría, sin tocar nada
     python bot/paginas_subir.py --aplicar  lo sube y lo publica
+    python bot/paginas_subir.py --aplicar --rama prueba
+                                           lo sube SIN tocar la de todos: queda en
+                                           prueba.underlegends.pages.dev para mirarlo
 
 🔴 POR QUE EXISTE: EL SITIO NO SE PODIA DESPLEGAR DESDE ACA.
 
@@ -153,6 +156,7 @@ def mas_nueva_en_origin():
 def main():
     import requests
     aplicar = '--aplicar' in sys.argv
+    rama = sys.argv[sys.argv.index('--rama') + 1] if '--rama' in sys.argv[:-1] else ''
     e = env()
     tok = e.get('CLOUDFLARE_API_TOKEN')
     if not tok:
@@ -203,13 +207,21 @@ def main():
     #
     # ⚠️ Va como su propio campo del multipart, al lado de `manifest`. Es lo
     # que hace wrangler por debajo.
-    worker = None
+    # 🛡️ Y LO MISMO `_headers` Y `_routes.json` (04/10/2026, la lista de seguridad de Dlx). Subidos como archivos se
+    # servirían como cualquiera —con las cabeceras adentro, a la vista y sin efecto—; como campos, Pages los aplica:
+    # las cabeceras de seguridad en cada archivo, y `_routes.json` hace que sólo la API pase por `_worker.js`.
+    especiales = {'_worker.js': 'application/javascript', '_headers': 'text/plain',
+                  '_routes.json': 'application/json', '_redirects': 'text/plain'}
+    aparte = {}
     resto = []
     for ruta, datos in fs:
-        if ruta == '_worker.js':
-            worker = datos
+        if ruta in especiales:
+            # ⚠️ con los fines de línea de Unix: un checkout en Windows los vuelve CRLF, y un retorno de carro
+            # pegado al final de una cabecera la rompe
+            aparte[ruta] = datos if ruta == '_worker.js' else datos.replace(b'\r\n', b'\n')
         else:
             resto.append((ruta, datos))
+    worker = aparte.get('_worker.js')
     if worker is None:
         print('   ⚠️ no hay `_worker.js`: el sitio queda sin `/api/lobby`')
 
@@ -238,8 +250,11 @@ def main():
     # el endpoint de deployments es `multipart/form-data` y mandarlo como
     # `json=` devuelve un 400 que no dice cuál es el problema.
     campos = {'manifest': (None, json.dumps(manifiesto))}
-    if worker is not None:
-        campos['_worker.js'] = ('_worker.js', worker, 'application/javascript')
+    for nombre, datos in sorted(aparte.items()):
+        campos[nombre] = (nombre, datos, especiales[nombre])
+    # 🔍 `--rama X`: un despliegue de prueba, en `X.underlegends.pages.dev`, que no toca el de todos
+    if rama:
+        campos['branch'] = (None, rama)
     r = requests.post(base + '/deployments', headers=h, files=campos,
                       timeout=180)
     j = {}

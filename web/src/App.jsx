@@ -350,8 +350,17 @@ export default function App() {
   if (!liga) return <div className={'app ' + tema}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
     <div className={'app ' + tema} ref={raiz}>
+      {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta
+          el menú de arriba. Lleva el foco, no sólo la vista: si no, el próximo Tab volvía al menú */}
+      <a className="saltar" href="#contenido" onClick={(e) => {
+        const r = raiz.current && raiz.current.getRootNode();
+        const el = r && r.getElementById && r.getElementById('contenido');
+        if (!el) return;
+        e.preventDefault(); el.focus(); el.scrollIntoView({ block: 'start' });
+      }}>Saltar al contenido</a>
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
+      <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>

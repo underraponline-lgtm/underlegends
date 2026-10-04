@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "2.24",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T10:18:00-04:00",
+   "titulo": "Una pasada de seguridad",
+   "items": [
+    "🛡️ **La página se defiende mejor**: nadie puede meterla adentro de otra para engañar clics, sólo carga cosas de los lugares que usa (Discord, YouTube, nuestras tarjetas) y una acción de tu cuenta sólo vale si sale de esta página.",
+    "🔐 **Al volver de entrar con Discord, tu permiso sale de la dirección al instante**: ya no queda en la barra ni en el historial.",
+    "🔤 **Las letras salen de la propia página**: ya no se le piden a Google, así que tu visita no pasa por ahí.",
+    "✋ **Lo que gasta Puntos de Tienda y «Olvidar este dispositivo» piden un segundo toque**: el botón dice «tocá de nuevo» unos segundos.",
+    "⬆️ **Tocá de nuevo la pestaña en la que estás y volvés arriba**, como en Instagram.",
+    "♿ **«Saltar al contenido»** para quien usa la página con teclado."
+   ]
+  },
+  {
    "version": "2.23",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T09:33:00-04:00",

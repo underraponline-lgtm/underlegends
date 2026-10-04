@@ -300,7 +300,9 @@ button{font:inherit;color:inherit}
     </div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<!-- 🛡️ CON SU FIRMA (04/10/2026, la lista de seguridad de Dlx): si alguien cambiara este archivo en el CDN, el
+     navegador no lo corre. Sin firma, un d3 adulterado corría en esta página con la sesión de Dlx -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js" integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="mapa_datos.js"></script>
 <script src="mapa.js"></script>
 <!--/MAPA:CUERPO-->

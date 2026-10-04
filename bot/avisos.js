@@ -375,6 +375,8 @@ const LLAVE_QUIETA = 40 * 60 * 1000;
 //: por invocación: 20 envíos + 20 reintentos entran con margen.
 const LOTE = 20;
 const TOPE_SUBS = 20000;
+//: cuántos dispositivos nuevos por hora, entre todos (ver `alta()`): hoy se anotan un puñado por día
+const ALTAS_HORA = 60;
 //: 🔑 EL SERVIDOR DE PRUEBA. No existe en la Liga, la página no lo ofrece,
 //: y un aviso de este servidor le llega SOLO a quien lo eligió a mano —ni
 //: siquiera a quien pidió «todos»—. Lo usa `herramientas/probar_avisos.py`
@@ -1518,14 +1520,34 @@ export function validarPrecio(cfg, d, id, ahora) {
 // sus Puntos de Tienda, su voto, sus avisos—. `/oauth2/@me` dice de qué app es el permiso, y trae al usuario.
 // ⚠️ Es el mismo número que `DC_APP` de bot/paginas/app.js (el `client_id` del login): público, no un secreto
 export const APP_ID = '1550026808404217926';
+// 🛡️ LOS PERMISOS INVENTADOS NO LLEGAN A DISCORD (04/10/2026, la lista de seguridad de Dlx). Cada permiso falso era un
+// 401 de Discord, y Discord bloquea un rato la IP que junta muchos (10.000 en 10 minutos): con el vigía, los apodos y
+// verificar saliendo por las mismas IPs de Cloudflare, un script con permisos al azar podía dejar mudo al bot. Dos
+// frenos, en la memoria de cada instancia (no gastan KV): un permiso que ya falló no se vuelve a preguntar en 10
+// minutos, y si en un minuto fallan más de `FALSOS_MIN`, los permisos que no se conocen esperan ese minuto con
+// «Discord ocupado» —la página no manda a nadie a autorizar de nuevo—. Uno bueno recién traído pasa igual.
+const FALSOS = new Map();
+const FALSOS_MIN = 30;
+let falsosMin = { t: 0, n: 0 };
+function falso(t) {
+  const ahora = Date.now();
+  if (FALSOS.size > 5000) FALSOS.clear();
+  FALSOS.set(t, ahora + 10 * 60000);
+  if (ahora - falsosMin.t > 60000) falsosMin = { t: ahora, n: 0 };
+  if (++falsosMin.n === FALSOS_MIN + 1) console.warn('[seguridad] más de ' + FALSOS_MIN + ' permisos de Discord falsos en un minuto: frenado');
+  return { error: 'token' };
+}
 export async function discordDe(t) {
   if (!/^[A-Za-z0-9._-]{10,300}$/.test(String(t || ''))) return { error: 'token' };
+  const ahora = Date.now();
+  if ((FALSOS.get(t) || 0) > ahora) return { error: 'token' };
+  if (falsosMin.n > FALSOS_MIN && ahora - falsosMin.t < 60000) return { error: 'ocupado' };
   try {
     const r = await fetch(`${DC}/oauth2/@me`, { headers: { Authorization: 'Bearer ' + t, 'User-Agent': UA } });
-    if (r.status === 401 || r.status === 403) return { error: 'token' };
+    if (r.status === 401 || r.status === 403) return falso(t);
     if (!r.ok) return { error: 'ocupado', estado: r.status };
     const a = await r.json();
-    if (!a || !a.application || String(a.application.id || '') !== APP_ID) return { error: 'token' };
+    if (!a || !a.application || String(a.application.id || '') !== APP_ID) return falso(t);
     const u = a.user;
     return u && /^[0-9]{5,25}$/.test(String(u.id || '')) ? { id: String(u.id), u } : { error: 'token' };
   } catch (e) {
@@ -2472,7 +2494,7 @@ export class Avisos {
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
-      if (ruta === '/alta') return this.alta(d);
+      if (ruta === '/alta') return await this.alta(d);
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);
       if (ruta === '/simular') return this.simular();
@@ -3681,10 +3703,15 @@ export class Avisos {
   }
 
   // ── la gente ─────────────────────────────────────────────────────────
-  alta(d) {
+  async alta(d) {
     const sub = d.sub || {};
     const mal = suscripcionValida(sub);
     if (mal) return json({ error: mal }, 400);
+    // 🛡️ LA CLAVE TIENE QUE SER UN PUNTO DE LA CURVA (04/10/2026, la lista de seguridad). Con 65 bytes al azar pasaba
+    // `suscripcionValida()`, el cifrado fallaba en cada aviso (−1, que no borra) y la fila quedaba para siempre
+    try {
+      await crypto.subtle.importKey('raw', b64u.dec(sub.keys.p256dh), { name: 'ECDH', namedCurve: 'P-256' }, false, []);
+    } catch (e) { return json({ error: 'p256dh inválida' }, 400); }
     const svs = Array.isArray(d.svs)
       ? d.svs.map((x) => String(x).toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6))
         .filter(Boolean).slice(0, 12)
@@ -3711,6 +3738,16 @@ export class Avisos {
     if (!hay) {
       const n = this.sql.exec('SELECT COUNT(*) AS n FROM subs').toArray()[0].n;
       if (n >= TOPE_SUBS) return json({ error: 'lleno' }, 503);
+      // 🛡️ Y NO MÁS DE `ALTAS_HORA` DISPOSITIVOS NUEVOS POR HORA, entre todos (04/10/2026, la lista de seguridad).
+      // `alta` no pide cuenta —la credencial es el dispositivo— y un script llenaba el tope de 20.000: la campana
+      // quedaba «llena» para todos y cada anuncio eran miles de envíos. El objeto es uno solo, así que la cuenta en
+      // memoria vale para todos; hoy se anotan un puñado por día
+      this.altas = (this.altas || []).filter((t) => ahora - t < 3600000);
+      if (this.altas.length >= ALTAS_HORA) {
+        console.warn('[seguridad] más de ' + ALTAS_HORA + ' dispositivos nuevos en una hora: frenado');
+        return json({ error: 'muchas altas' }, 429);
+      }
+      this.altas.push(ahora);
     }
     this.sql.exec('INSERT INTO subs (endpoint, p256dh, auth, svs, alta, visto) ' +
       'VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(endpoint) DO UPDATE SET ' +
@@ -4347,6 +4384,10 @@ export class Avisos {
       this.sql.exec('DELETE FROM sesiones WHERE vence < ?', ahora);
       this.sql.exec('INSERT INTO sesiones (h, quien, t, vence) VALUES (?, ?, ?, ?)', await hash(ses),
         String(d.quien), ahora, vence);
+      // 🛡️ COMO MUCHO DIEZ POR PERSONA (04/10/2026, la lista de seguridad): `/cuenta` en un bucle con un permiso bueno
+      // llenaba la tabla. Diez son diez dispositivos; entrar en el undécimo cierra la más vieja
+      this.sql.exec('DELETE FROM sesiones WHERE quien = ? AND h NOT IN ' +
+        '(SELECT h FROM sesiones WHERE quien = ? ORDER BY t DESC LIMIT 10)', String(d.quien), String(d.quien));
       return json({ ses, vence });
     }
     if (!/^[A-Za-z0-9_-]{30,100}$/.test(String(d.ses || ''))) return json({ error: 'faltan datos' }, 400);
@@ -4564,11 +4605,20 @@ export class Avisos {
       .toArray()[0];
     if (!s) return json({ error: 'esa suscripción no está anotada' }, 404);
     const ahora = Date.now();
-    if (ahora - s.prueba < 30 * 1000) return json({ error: 'esperá unos segundos' }, 429);
-    this.sql.exec('UPDATE subs SET prueba = ? WHERE id = ?', ahora, s.id);
+    // 🛡️ `prueba` SE ANOTA SÓLO SI LLEGÓ (04/10/2026, la lista de seguridad). Era la marca de «éste es de verdad» que
+    // salva a un dispositivo de la poda de los que nunca recibieron nada (`fallos >= 5`), y se ponía antes de mandar:
+    // uno inventado tocaba «Probar» y quedaba para siempre. Los 30 segundos entre pruebas, ahora en la memoria del objeto
+    this.probados = this.probados || new Map();
+    if (ahora - Math.max(s.prueba || 0, this.probados.get(s.id) || 0) < 30 * 1000) {
+      return json({ error: 'esperá unos segundos' }, 429);
+    }
+    if (this.probados.size > 2000) this.probados.clear();
+    this.probados.set(s.id, ahora);
     const estado = await empujar(s, JSON.stringify({ v: 1, tipo: 'prueba', t: 'Avisos activados' }),
       { ttl: 300, urgencia: 'high' }, this.env, new Map());
-    if (MUERTA(estado)) this.sql.exec('DELETE FROM subs WHERE id = ?', s.id);
+    if (estado >= 200 && estado < 300) this.sql.exec('UPDATE subs SET prueba = ? WHERE id = ?', ahora, s.id);
+    else if (MUERTA(estado)) this.sql.exec('DELETE FROM subs WHERE id = ?', s.id);
+    else this.sql.exec('UPDATE subs SET fallos = fallos + 1 WHERE id = ?', s.id);
     return json({ ok: estado >= 200 && estado < 300, estado });
   }
 

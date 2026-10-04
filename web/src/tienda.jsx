@@ -7,7 +7,7 @@
 // `D.tienda` (bot/precios.py): ninguno se escribe acá. Afuera se ve cuánto vale cada cabeza, nunca quién puso.
 import { useEffect, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
-import { Bandera, Cara } from './piezas.jsx';
+import { Bandera, Cara, DosToques } from './piezas.jsx';
 
 const sinEtiquetas = (h) => String(h || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
 function usePrecios() {
@@ -102,8 +102,8 @@ function Panel({ liga, n, dc }) {
         <>
           <div className="ti-montos">
             {[1, 2, 5, 10].map((x) => T.min * x).map((m) => (
-              <button key={m} type="button" className="btn borde2 chico" disabled={m > queda || (saldo != null && m > saldo) || !!est.va}
-                onClick={() => window.ponerPrecio(n, m)}>+{num(m)}</button>
+              <DosToques key={m} className="btn borde2 chico" disabled={m > queda || (saldo != null && m > saldo) || !!est.va}
+                confirmar={'¿' + num(m) + '? Tocá de nuevo'} onClick={() => window.ponerPrecio(n, m)}>+{num(m)}</DosToques>
             ))}
           </div>
           <p className={'ti-msg' + (est.error ? ' mal' : '')} aria-live="polite">{msg}</p>

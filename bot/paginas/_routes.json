@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py",
+  "include": ["/api/*", "/calendario.ics", "/lobby", "/lobby/"],
+  "exclude": []
+}

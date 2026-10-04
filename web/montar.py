@@ -128,6 +128,15 @@ def script(nombres):
     if (u === location.pathname + location.search + h) return;
     try { history.replaceState(history.state, '', u); } catch (e) { /* queda como vino: rutaLG() la lee igual */ }
   }
+  // 🛡️ EL PERMISO DE DISCORD SALE DE LA DIRECCIÓN YA (04/10/2026, la lista de seguridad de Dlx). Vuelve en el `#` y
+  // quedaba en la barra —y en el historial— hasta que app.js bajaba los datos; si `/api/lobby` fallaba, no salía
+  // nunca, y con ese permiso se vota y se gastan Puntos durante 7 días. Queda en memoria para `volverDeDiscord()`,
+  // que decide adónde volver como siempre
+  var hv = location.hash || '';
+  if (/^#(access_token|error)=/.test(hv)) {
+    window.__vueltaDC = hv;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* queda en la barra */ }
+  }
   limpiar();
   // 🔑 UN AVISO POR CAMBIO DE DIRECCIÓN: `lg:dir`, que escuchan app.js, la campana y el Inicio. 🔴 No alcanza con
   // escuchar `popstate` y `hashchange`: un `location.hash = …` dispara LOS DOS (Chrome, primero popstate), y app.js

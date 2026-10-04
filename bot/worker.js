@@ -1129,6 +1129,8 @@ function frenado(id, tipo) {
   const clave = tipo + ':' + id;
   const previos = (VISTOS.get(clave) || []).filter(t => ahora - t < ventana);
   if (previos.length >= cuantas) {
+    // 🛡️ queda en los registros del Worker (`observability` en bot/desplegar.py): sin esto el abuso no dejaba rastro
+    console.warn('[seguridad] freno: ' + tipo);
     return Math.max(1, Math.ceil((ventana - (ahora - previos[0])) / 1000));
   }
   previos.push(ahora);
@@ -3677,6 +3679,7 @@ export default {
     if (!await firmaValida(req, crudo, env.DISCORD_PUBLIC_KEY)) {
       // 401 es obligatorio: Discord PRUEBA que rechaces una firma inválida
       // antes de aceptar la URL. Con 200 la rechaza aunque el PONG esté bien.
+      console.warn('[seguridad] firma de Discord inválida');
       return new Response('firma invalida', { status: 401 });
     }
 

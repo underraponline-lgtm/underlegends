@@ -1,0 +1,24 @@
+# 🛡️ LAS CABECERAS DE SEGURIDAD DE LA PÁGINA (04/10/2026, la lista de seguridad de Dlx: «security headers», «HSTS»).
+# Cloudflare Pages las pone en cada archivo que sirve. ⚠️ No llegan a lo que contesta `_worker.js` —la API—: esas
+# llevan las suyas en el código (`SEGURO`). Y este archivo no se publica como uno más: `bot/paginas_subir.py` lo
+# manda aparte, como `_worker.js` y `_routes.json`.
+#
+#   X-Frame-Options / frame-ancestors   nadie puede meter la página adentro de otra (para engañar clics)
+#   nosniff                             el navegador no adivina tipos: un .json no se corre como script
+#   Referrer-Policy                     a otros sitios sólo les llega el dominio, nunca la ruta
+#   Permissions-Policy                  cámara, micrófono, ubicación y pagos, apagados: la página no los usa
+#   COOP                                otra pestaña abierta desde acá no puede tocar esta
+#   HSTS                                siempre https (`.dev` ya lo exige entero; esto lo deja escrito)
+#   CSP                                 de dónde puede venir cada cosa. Lo de afuera, uno por uno: las caras de Discord
+#                                       y de YouTube, el R2 de las tarjetas, el video de YouTube sin cookies, y lo que usa
+#                                       el mapa de Dlx (d3 firmado, GitHub, sus fuentes). ⚠️ `'unsafe-inline'` en
+#                                       scripts y estilos, por ahora: el script del principio de index.html y los
+#                                       `style=` de app.js. Sacarlo es la tanda que viene de app.js
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://cdn.discordapp.com https://media.discordapp.net https://i.ytimg.com https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev; connect-src 'self' https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev https://cdn.jsdelivr.net https://api.github.com https://raw.githubusercontent.com; media-src 'self' https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev; frame-src https://www.youtube-nocookie.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'

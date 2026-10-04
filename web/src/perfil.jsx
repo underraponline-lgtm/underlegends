@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { diaISO, limpio, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, Ico, Rango, SinCarta, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, Ico, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 
 const TABS = [['', 'Resumen'], ['eventos', 'Eventos'], ['duelos', 'Duelos'], ['insignias', 'Insignias']];
@@ -85,8 +85,8 @@ function Precio({ liga, f, esYo, dc }) {
         <>
           <div className="pf-pr-m">
             {[1, 2, 5, 10].map((x) => T.min * x).map((m) => (
-              <button key={m} type="button" className="btn borde2 chico" disabled={m > queda || (saldo != null && m > saldo) || !!est.va}
-                onClick={() => window.ponerPrecio(f.n, m)}>+{num(m)}</button>
+              <DosToques key={m} className="btn borde2 chico" disabled={m > queda || (saldo != null && m > saldo) || !!est.va}
+                confirmar={'¿' + num(m) + '? Tocá de nuevo'} onClick={() => window.ponerPrecio(f.n, m)}>+{num(m)}</DosToques>
             ))}
           </div>
           <p className={'pf-pr-e' + (est.error ? ' mal' : '')} aria-live="polite">{msg}</p>
@@ -127,7 +127,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           </ul>
           {redes.length ? (
             <ul className="pf-redes" aria-label="Sus redes">
-              {redes.map((r) => <li key={r[1]}><a href={r[1]} target="_blank" rel="noopener noreferrer">{REDES[r[0]] || r[0]} ↗</a></li>)}
+              {redes.filter((r) => https(r[1])).map((r) => <li key={r[1]}><a href={https(r[1])} target="_blank" rel="noopener noreferrer">{REDES[r[0]] || r[0]} ↗</a></li>)}
             </ul>
           ) : null}
           <dl className="pf-num">

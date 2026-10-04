@@ -153,6 +153,11 @@ def main():
     meta = {
         'main_module': 'worker.js',
         'compatibility_date': COMPAT,
+        # 🛡️ LOS REGISTROS DEL WORKER (04/10/2026, la lista de seguridad de Dlx: «log security events»). Sin esto un
+        # 401, un 429 o una firma inválida no dejaban rastro en ningún lado, y el abuso se notaba recién con el bot
+        # caído. Cloudflare los guarda unos días (el plan gratis alcanza de sobra para ~7.000 pedidos por día); los
+        # `console.warn('[seguridad] …')` de worker.js y avisos.js dicen el motivo, nunca un permiso ni una sesión
+        'observability': {'enabled': True, 'head_sampling_rate': 1},
         'bindings': [
             {'type': 'plain_text', 'name': 'DISCORD_PUBLIC_KEY', 'text': clave},
             # ⚠️ SIN ESTE BINDING, `env.KV` es undefined y el Worker revienta
