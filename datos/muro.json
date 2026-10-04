@@ -796,7 +796,10 @@
 },
 "agustin51k": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "ardean": {
 "rg": "",
@@ -832,7 +835,10 @@
 },
 "typhlosion": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "fleivaman": {
 "rg": "",
@@ -1078,6 +1084,13 @@
 "temporada"
 ]
 },
+"eclipsito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "partim": {
 "rg": "",
 "c": [
@@ -1282,7 +1295,10 @@
 },
 "didyer": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "dios": {
 "rg": "",
@@ -1290,10 +1306,6 @@
 "servidor",
 "temporada"
 ]
-},
-"eclipse": {
-"rg": "",
-"c": []
 },
 "elingetimp": {
 "rg": "",
@@ -1334,9 +1346,12 @@
 "rg": "",
 "c": []
 },
-"gosu": {
+"gosuz": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "izaya": {
 "rg": "",
@@ -1351,6 +1366,14 @@
 "servidor",
 "temporada"
 ]
+},
+"eclipse": {
+"rg": "",
+"c": []
+},
+"gosu": {
+"rg": "",
+"c": []
 },
 "teito-co2": {
 "rg": "",
@@ -1570,13 +1593,6 @@
 "dewachomefui": {
 "rg": "",
 "c": []
-},
-"eclipsito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "elsolar": {
 "rg": "",
@@ -3883,6 +3899,54 @@
 "t": "2026-10-04T19:07:21Z",
 "quien": [
 "Jayden"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:17:31Z",
+"quien": [
+"AGUSTÍN51K"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:17:31Z",
+"quien": [
+"AGUSTÍN51K"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:17:31Z",
+"quien": [
+"TYPHLOSION"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:17:31Z",
+"quien": [
+"TYPHLOSION"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:17:31Z",
+"quien": [
+"DIDYER"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T19:17:31Z",
+"quien": [
+"DIDYER"
 ],
 "carta": "temporada"
 }
