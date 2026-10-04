@@ -19,6 +19,7 @@ import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
+import { Divisiones } from './divisiones.jsx';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -230,8 +231,15 @@ const SUBS = {
     // los mismos ejemplos del texto, a la vista: la página era un renglón y un hueco
     ejemplos: [['eventos', 'Jugá dos eventos'], ['novedades', 'Llegá a una final'], ['ok', 'Ganá duelos'], ['mundo', 'Probá otro servidor']] },
   ligas: { et: 'Ligas', cuando: 'T2', corto: 'Llega con la Temporada 2.', pronto: <><b>El ranking de ligas</b> llega en la Temporada 2.</> },
+  // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
+  divisiones: {
+    // ⚠️ `orden` tiene que estar aunque no haya tabla: `armar()` busca su columna en `COL` y sin él revienta
+    et: 'Divisiones', propia: Divisiones, filas: () => [], orden: () => 0, hay: (L) => !!L.d.div,
+    siNo: <><b>Divisiones</b>: una tabla por semana, de a 30. Jugás un evento y entrás en Sexta; los cinco primeros de cada grupo suben y ganan Puntos de Tienda, y los cinco últimos bajan.</>,
+    baj: <>Una tabla por semana, de a 30: jugás un evento y entrás. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
+  },
 };
-export const RANKINGS = ['temporada', 'competitivo', 'duelos', 'podios', 'rachas', 'paises', 'crews', 'mw', 'misiones', 'ligas'];
+export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'paises', 'crews', 'mw', 'misiones', 'ligas'];
 
 function req(L, id) {
   const q = (L.d.requisitos || []).find((x) => x.id === id);
@@ -740,7 +748,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>
             {cfg.ejemplos ? <ul className="rk-ej" aria-label="Por ejemplo">{cfg.ejemplos.map(([ic, t]) => <li key={t}><Ico n={ic} t={22} /><b>{t}</b><small>suma a tu Temporada</small></li>)}</ul> : null}
           </div>
-        ) : (
+        ) : cfg.propia ? <cfg.propia liga={liga} /> : (
           <>
             {/* con el ranking vacío (el día que arranca la temporada) no hay qué buscar ni qué filtrar */}
             {base.length ? <div className="rk-fil">

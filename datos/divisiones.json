@@ -1,0 +1,26 @@
+{
+ "_leeme": "Las divisiones de la semana: las arma bot/divisiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo.",
+ "divs": [
+  [],
+  [],
+  [],
+  [],
+  [],
+  []
+ ],
+ "fin": "2026-10-05T15:00:00Z",
+ "nivel": {},
+ "nombres": [
+  "Primera",
+  "Segunda",
+  "Tercera",
+  "Cuarta",
+  "Quinta",
+  "Sexta"
+ ],
+ "premio": 500,
+ "sem": "2026-09-28",
+ "subidas": [],
+ "ult": null,
+ "zona": 5
+}

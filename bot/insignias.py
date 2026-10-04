@@ -57,6 +57,9 @@ CATALOGO = (
     ('cazador', '🎯', 'Cazador', 'Cazó a un buscado del Most Wanted'),
     ('regicida', '💀', 'Regicida', 'Cazó a El Rey del Most Wanted'),
     ('sobreviviente', '🛡️', 'Sobreviviente', 'Sobrevivió siendo buscado'),
+    # 🏟️ las divisiones (04/10/2026, Dlx: «2. C»): subir da Puntos de Tienda y estas. Ver `bot/divisiones.py`
+    ('ascenso', '⬆️', 'Ascenso', 'Subió de división al cerrar una semana'),
+    ('primera', '🏟️', 'Primera División', 'Llegó a la Primera División'),
 )
 IDS = [c[0] for c in CATALOGO]
 
@@ -68,13 +71,16 @@ def _n(x):
         return 0.0
 
 
-def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=None, revelaciones=None):
+def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=None, revelaciones=None,
+           subieron=None, primera=None):
     """`{raw: {ids}}`: lo que cada uno cumple HOY con los datos de la temporada.
 
     `mw` es `{raw: {'caz', 'czd', 'sob'}}` (`most_wanted.suma()`), `reyes` el
     conjunto de quienes cazaron a El Rey, y `duelos_g` y `clasicos_g`
-    `{raw: cuántos ganó}`. Todo por el nombre del pool (`raw`).
+    `{raw: cuántos ganó}`. `subieron` y `primera`, de las divisiones: quién
+    subió alguna vez y quién llegó a Primera. Todo por el nombre del pool (`raw`).
     """
+    subieron, primera = subieron or set(), primera or set()
     mw, reyes = mw or {}, reyes or set()
     figuras, revelaciones = figuras or set(), revelaciones or set()
     duelos_g, clasicos_g = duelos_g or {}, clasicos_g or {}
@@ -93,6 +99,7 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=No
             'duelista': duelos_g.get(raw, 0) >= 10, 'clasico': clasicos_g.get(raw, 0) >= 1,
             'cazador': m.get('caz', 0) >= 1, 'regicida': raw in reyes, 'sobreviviente': m.get('sob', 0) >= 1,
             'figura': raw in figuras, 'revelacion': raw in revelaciones,
+            'ascenso': raw in subieron, 'primera': raw in primera,
         }
         ya = {k for k, v in reglas.items() if v}
         if ya:
@@ -170,7 +177,16 @@ def _datos():
             r = raw_de((ps.get(clave) or [''])[0])
             if r:
                 dest.add(r)
-    return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones
+    # 🏟️ las divisiones: quién subió alguna vez y quién llegó a Primera (`bot/divisiones.py`)
+    import divisiones as DV
+    subieron, primera = set(), set()
+    for _sem, q, div in DV.leer().get('subidas') or []:
+        r = raw_de(q)
+        if r:
+            subieron.add(r)
+            if div == 0:
+                primera.add(r)
+    return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera
 
 
 def correr(ahora=None, aplicar=False):

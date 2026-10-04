@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.31",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T16:33:00-04:00",
+   "titulo": "Las divisiones de la semana",
+   "items": [
+    "🏟️ **Divisiones**: una tabla por semana, en grupos de 30. Jugás un evento y entrás; cuentan los puntos de Temporada que hacés esa semana. Están en el Ranking.",
+    "⬆️ **Los cinco primeros de cada grupo suben de división y ganan 500 Puntos de Tienda; los cinco últimos bajan.** Son seis, de Sexta a Primera, y la semana cierra el lunes a las 11 AM (hora del este).",
+    "🏅 **Dos insignias nuevas**: «Ascenso», la primera vez que subís, y «Primera División»."
+   ]
+  },
+  {
    "version": "2.30",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T16:20:00-04:00",

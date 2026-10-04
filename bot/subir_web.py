@@ -638,6 +638,8 @@ def armar():
         # `bot/insignias.py` y `multiplicadores.clasicos()`.
         'insignias': [list(c) for c in _IN().CATALOGO],
         'rivales': _rivales(gente),
+        # 🏟️ LAS DIVISIONES DE LA SEMANA (04/10/2026): las tablas de ahora y cómo cerró la anterior. Ver `_div()`
+        'div': _div(),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -2465,6 +2467,16 @@ def _crews():
 def _IN():
     import insignias as _I
     return _I
+
+
+def _div():
+    """🏟️ Las divisiones de la semana (`bot/divisiones.py`), o `None` si nadie jugó todavía. Nunca frena el lobby."""
+    try:
+        import divisiones as _D
+        return _D.para_web(_D.leer())
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las divisiones no entran al lobby: %s' % str(e)[:120])
+        return None
 
 
 _INS = {}

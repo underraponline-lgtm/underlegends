@@ -438,6 +438,29 @@ button.btn{background:transparent;cursor:pointer}
 .cu-rn-barra i{display:block;height:100%;background:#29B298}
 /* 🔥 y al lado de tu cuenta, arriba */
 .yo-racha{font:800 13px/1 Archivo,sans-serif;white-space:nowrap}
+/* 🏟️ las divisiones de la semana (04/10/2026). Ver divisiones.jsx: verde sube, rojo baja */
+.dv{display:grid;gap:14px}
+.dv-cab,.dv-ult{margin:0;font:600 14px/1.5 Archivo,sans-serif;max-width:70ch}
+.dv-ult{color:var(--gris)}
+.dv-g{display:grid;gap:8px}
+.dv-gt{margin:6px 0 0;display:flex;align-items:baseline;gap:10px;font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.dv-gt small{font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;color:var(--gris);text-transform:none}
+.dv-tabla{list-style:none;margin:0;padding:0;border:2px solid var(--linea)}
+.dv-tabla li{display:grid;grid-template-columns:28px 32px minmax(0,1fr) auto auto auto;align-items:center;gap:10px;padding:7px 10px;
+  border-top:1px solid var(--linea);border-left:4px solid transparent}
+.dv-tabla li:first-child{border-top:0}
+.dv-tabla li.sube{border-left-color:#29B298}
+.dv-tabla li.baja{border-left-color:#E5484D}
+.dv-tabla li.yo{background:var(--caja)}
+.dv-i{font:800 14px/1 Archivo,sans-serif;text-align:right;font-variant-numeric:tabular-nums}
+.dv-cara{width:32px;height:32px}
+.dv-n{font:800 15px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit}
+.dv-z{font:700 10px/1 "Space Mono",monospace;font-style:normal;letter-spacing:.06em;padding:3px 5px;border:1.5px solid currentColor}
+.dv-tabla li.sube .dv-z{color:#29B298}
+.dv-tabla li.baja .dv-z{color:#E5484D}
+.dv-ev{font:600 12px/1 Archivo,sans-serif;color:var(--gris);white-space:nowrap}
+.dv-p{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
+@media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}.dv-cara{width:28px;height:28px}}
 .cu-quien.anon{grid-template-columns:auto minmax(0,1fr);align-items:center;row-gap:14px;padding:16px 14px}
 .cu-quien.anon .cu-av{margin:0;width:56px;height:56px;border:2px solid var(--linea)}
 .cu-quien.anon .cu-q{grid-column:auto;margin:0}

@@ -3013,6 +3013,14 @@ def main():
 
         # 🗺️ quién vuelve a jugar, con las mismas filas: no se lee nada más
         escribir_retencion(getattr(agregar, 'filas', None) or [])
+        # 🏟️ y las divisiones de la semana (`bot/divisiones.py`), también con las mismas filas. Nunca frenan la vitrina
+        try:
+            import divisiones as _DV
+            _d = _DV.correr(getattr(agregar, 'filas', None) or [], aplicar=True)
+            print('   🏟️ las divisiones de la semana del %s: %d jugando' % (
+                _d['sem'], sum(len(g) for gs in _d['divs'] for g in gs)))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ las divisiones no se calcularon: %s' % str(e)[:160])
 
         # 🔴 TRES PUERTAS ANTES DE TOCAR UNA HOJA PÚBLICA, y cada una
         # tapa una forma distinta de romperla sin que nada falle.
