@@ -74,10 +74,13 @@
   "   en la Lista). En la NAVE DE EXTERMINACIÓN #1 de FFA lo escribieron",
   "   «SOULSi 🇯🇵»: la bandera era broma y el nombre no coincidía con nada.",
   "",
-  "⚠️ NXUZ, NXUS y NEXUZ->Nexus, y CRIZJ->CrisZJ: Dlx, 03/10/2026 («10. así",
-  "   como dijiste»). NXUZ es la cuenta @elinzano1009 —«nxuz con zeta, no con",
-  "   ese»—, que ya estaba en la Lista como Nexus; DDF lo escribe de las tres",
-  "   formas. CRIZJ es CrisZJ escrito distinto en las mismas llaves de DDF.",
+  "⚠️ NXUZ (antes «Nexus» en la Lista): Dlx, 03/10/2026 («10. así como dijiste»)",
+  "   y 04/10/2026 («2. VA»). Es la cuenta @elinzano1009 —«nxuz con zeta, no con",
+  "   ese»—, de Perú (roles en SNK, URB y LIVONIA; 🇵🇪 en todas sus llaves), y la",
+  "   Lista decía «Nexus 🇨🇱»: se renombró a NXUZ y pasó a Perú. «Nexus», «Nexuz»",
+  "   (NEXUZ) y «NXUS» son alias suyos. ⚠️ Hay OTRAS dos cuentas «Nexus» —nexxus0344",
+  "   (Perú en DRA) y nexus103_ (México en SNK)— que no jugaron la T1: si una juega,",
+  "   el alias «Nexus» se la daría a NXUZ, y hay que separarla. CRIZJ es CrisZJ.",
   "",
   "🔑 `por_servidor`: un nombre que EN ESE SERVIDOR es otra persona que la de la",
   "   Lista. Dlx, 03/10/2026 («8. A» y «9. A»): en DDF «CARLOS🇪🇨» es Carlosss",
@@ -100,20 +103,20 @@
  },
  "pares": [
   [
-   "CRIZJ",
-   "CrisZJ"
+   "Nexus",
+   "NXUZ"
   ],
   [
-   "NEXUZ",
-   "Nexus"
+   "Nexuz",
+   "NXUZ"
   ],
   [
    "NXUS",
-   "Nexus"
+   "NXUZ"
   ],
   [
-   "NXUZ",
-   "Nexus"
+   "CRIZJ",
+   "CrisZJ"
   ],
   [
    "SOULSi",

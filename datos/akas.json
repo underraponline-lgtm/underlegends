@@ -60,7 +60,7 @@
   "reckless": "Kourier",
   "nicopiscu": "Piscu",
   "ra": "Johao",
-  "nexuz": "Nexus",
+  "nexuz": "NXUZ",
   "bleist": "Val",
   "nix": "Val",
   "latarantula": "Val",
@@ -215,9 +215,9 @@
   "chimuelitomc": "Alexi",
   "catarsis": "Catarsis",
   "jahno": "melomaniaco",
+  "nexus": "NXUZ",
+  "nxus": "NXUZ",
   "crizj": "CrisZJ",
-  "nxus": "Nexus",
-  "nxuz": "Nexus",
   "soulsi": "Soulb",
   "makma": "Makmah",
   "fokox": "Focox",
@@ -1094,20 +1094,20 @@
    "melomaniaco"
   ],
   [
-   "CRIZJ",
-   "CrisZJ"
+   "Nexus",
+   "NXUZ"
   ],
   [
-   "NEXUZ",
-   "Nexus"
+   "Nexuz",
+   "NXUZ"
   ],
   [
    "NXUS",
-   "Nexus"
+   "NXUZ"
   ],
   [
-   "NXUZ",
-   "Nexus"
+   "CRIZJ",
+   "CrisZJ"
   ],
   [
    "SOULSi",

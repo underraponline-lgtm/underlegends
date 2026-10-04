@@ -6,6 +6,7 @@
     python sheet/lista_raperos.py --agregar NOMBRE CC ID ["nota"] [--aplicar]
     python sheet/lista_raperos.py --id NOMBRE ID [--aplicar]
     python sheet/lista_raperos.py --renombrar VIEJO NUEVO ["por qué"] [--aplicar]
+    python sheet/lista_raperos.py --pais NOMBRE CC ["por qué"] [--aplicar]
     python sheet/lista_raperos.py --sacar-no-confundir A B [--aplicar]
 
 Sin `--aplicar` no escribe nada: dice qué haría.
@@ -298,6 +299,45 @@ def renombrar(viejo, nuevo, motivo='', aplicar=False):
     return True
 
 
+def poner_pais(nombre, cc, motivo='', aplicar=False):
+    """Le cambia el país a una fila: `País` (el código), `Bandera` (el nombre, como lo escribe la Lista) y la
+    bandera pegada al `Rapero`.
+
+    🔑 NACE DE NXUZ, 04/10/2026. La Lista decía «Nexus 🇨🇱 · Chile» y su cuenta (elinzano1009) tiene rol de Perú
+    en SNK, URB y LIVONIA, y en DDF lo escriben 🇵🇪 siempre; ninguna de las tres cuentas «Nexus» tiene Chile. Dlx:
+    *«VA»*. `autoverificar.py` no lo arreglaba porque sólo escribe el país de quien no tiene (`❓` o vacío), a
+    propósito: un país escrito a mano gana. Éste es el «a mano».
+
+    ⚠️ EL PAÍS VIEJO QUEDA EN LAS NOTAS, como en `renombrar()`.
+    """
+    v = leer()
+    i, col = mapa(v)
+    fs = filas_de(v, nombre)
+    if len(fs) != 1:
+        print('   ⚠️ «%s» está %d veces en la Lista: no sé a cuál cambiarle el país' % (nombre, len(fs)))
+        return False
+    cc = (cc or '').lower()
+    pais = _pais_de(v, cc) or _nombre_pais(cc)
+    if not _bandera(cc) or not pais:
+        print('   ⚠️ «%s» no es un código de país que la Lista conozca' % cc)
+        return False
+    n, f = fs[0]
+    nombre_vis = PAD.limpio(_celda(f, col['Rapero']))
+    antes = '%s %s' % (_celda(f, col.get('Bandera')) or '—', _celda(f, col.get('País')) or '')
+    nota = ('%s · antes %s (%s)' % (_celda(f, col.get('Notas')), antes.strip(), motivo or _ahora_et())).lstrip(' ·')
+    cambios = [('Rapero', ('%s %s' % (nombre_vis, _bandera(cc))).strip()), ('Bandera', pais), ('País', cc),
+               ('Notas', nota)]
+    for c, x in cambios:
+        print('   fila %d  %-7s %s  ->  %s' % (n, c, _celda(f, col.get(c)) or '—', x))
+    if not aplicar:
+        return True
+    respaldar(v, 'pais')
+    for c, x in cambios:
+        _E().poner(_rango(HOJA, '%s%d' % (chr(ord('A') + col[c]), n)), [[x]])
+    print('   ✅ país cambiado')
+    return True
+
+
 # ── fusionar dobles ────────────────────────────────────────────────────
 def dobles():
     """[(alias, real)] como los cuenta `construir_akas.py` en cada corrida."""
@@ -450,6 +490,8 @@ def main():
         poner_id(args[1], args[2], aplicar)
     elif args[0] == '--renombrar' and len(args) >= 3:
         renombrar(args[1], args[2], args[3] if len(args) > 3 else '', aplicar)
+    elif args[0] == '--pais' and len(args) >= 3:
+        poner_pais(args[1], args[2], args[3] if len(args) > 3 else '', aplicar)
     elif args[0] == '--sacar-no-confundir' and len(args) == 3:
         sacar_no_confundir(args[1], args[2], aplicar)
     else:
