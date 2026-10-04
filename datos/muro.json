@@ -480,10 +480,6 @@
 "rg": "",
 "c": []
 },
-"19": {
-"rg": "",
-"c": []
-},
 "marto": {
 "rg": "",
 "c": [
@@ -796,6 +792,13 @@
 ]
 },
 "pomberito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"19": {
 "rg": "",
 "c": [
 "servidor",
@@ -3532,6 +3535,22 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T02:39:29Z",
+"quien": [
+"19"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T02:39:29Z",
+"quien": [
+"19"
+],
+"carta": "temporada"
 }
 ]
 }
