@@ -379,17 +379,6 @@
     "racha": "1/1"
    }
   },
-  "CFM": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 793,
-    "racha": "0/0"
-   }
-  },
   "CJ": {
    "FFA": {
     "duelos": "",
@@ -2534,6 +2523,17 @@
     "ovr": 45,
     "pod": 0,
     "pts": 1000,
+    "racha": "0/0"
+   }
+  },
+  "ReyexXMC": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 793,
     "racha": "0/0"
    }
   },
