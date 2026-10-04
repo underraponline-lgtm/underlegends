@@ -1125,10 +1125,10 @@
    "servidor": "62285a56b056:d46f41875d27:055f77"
   },
   "NXUZ": {
-   "competitivo": "72af9c1ea4de:26bd2ba1cc2b",
-   "pais": "b2d95c4892d8:8020a07a406a",
-   "servidor": "ea3c13e64855:d46f41875d27:d0970d",
-   "temporada": "cfc2d409f70b:2ba13d9d8562"
+   "competitivo": "ca160d07c0fe:26bd2ba1cc2b",
+   "pais": "0bb2437b909b:8020a07a406a",
+   "servidor": "3f7d59f8ae40:d46f41875d27:d0970d",
+   "temporada": "3a653ebde468:2ba13d9d8562"
   },
   "Nahu": {
    "servidor": "6d9f1d48896e:d46f41875d27:15af16"
@@ -1186,7 +1186,7 @@
    "temporada": "ebd0ed14f19c:2ba13d9d8562"
   },
   "Number VE": {
-   "servidor": "f5f6576ad120:d46f41875d27:dc95cb",
+   "servidor": "f5f6576ad120:d46f41875d27:fb0f2c",
    "temporada": "04f0938241fb:2ba13d9d8562"
   },
   "OEP": {
@@ -1808,5 +1808,5 @@
    "servidor": "994982e6deaa:d46f41875d27:d473d6"
   }
  },
- "cuando": "2026-10-04T04:58:58+00:00"
+ "cuando": "2026-10-04T05:02:19+00:00"
 }
