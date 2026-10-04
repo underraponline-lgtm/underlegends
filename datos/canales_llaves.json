@@ -1,5 +1,10 @@
 {
  "canales": {
+  "1309234583023124531": {
+   "canal": "🔑┇llaves",
+   "guild": "765045834647339038",
+   "servidor": "#LaCrew ||🎤ACADEMIA DE RAP 🎤"
+  },
   "1375981223012335677": {
    "canal": "「👑」𝐋𝐋𝐀𝐕𝐄𝐒",
    "guild": "1367688812892913774",
@@ -98,7 +103,7 @@
   "765045834647339038": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
   "841017460341604382": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
  },
- "ultimo_completo": "2026-10-04T17:24:53+00:00",
+ "ultimo_completo": "2026-10-04T18:43:56+00:00",
  "veredictos": {
   "1117081392006832148": {
    "canal": "〔🔢〕resultados",
@@ -109,6 +114,11 @@
    "canal": "〔🙅〕veredicto",
    "guild": "492346406976356374",
    "servidor": "ＳＮＡＫＥ 🐍 ＲＡＰ"
+  },
+  "1309238412976590908": {
+   "canal": "✅┇votaciones",
+   "guild": "765045834647339038",
+   "servidor": "#LaCrew ||🎤ACADEMIA DE RAP 🎤"
   },
   "1457791562648916141": {
    "canal": "「🐂」VOTACIONES",

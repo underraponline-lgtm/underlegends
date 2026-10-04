@@ -1,6 +1,18 @@
 {
  "_leeme": "El nombre que le dio su anuncio a cada llave SIN título, por id del mensaje de la llave: la hora y, si hay dos anuncios, quién publicó los dos (autor_h, la huella, nunca la cuenta). Se guarda porque el anuncio se va del canal y la llave no: sin esto volvería a «(sin titulo)», otro evento con otro número. Lo escribe anuncio_de_llave() de bot/llaves_a_entrada.py. Dlx, 03/10/2026.",
  "llaves": {
+  "1553873849056100453": {
+   "anuncio": "1553855318268715092",
+   "autor_h": "e45a56d4d9bc3622",
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
+   "sv": "ACAD"
+  },
+  "1555399254313541763": {
+   "anuncio": "1555343837893763083",
+   "autor_h": "e45a56d4d9bc3622",
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
+   "sv": "ACAD"
+  },
   "1555697632104681643": {
    "anuncio": "1555694141101309974",
    "autor_h": "8910173aff35c0bf",

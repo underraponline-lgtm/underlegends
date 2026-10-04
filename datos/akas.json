@@ -216,6 +216,8 @@
   "catarsis": "Catarsis",
   "jahno": "melomaniaco",
   "cfm": "ReyexXMC",
+  "eclipse": "Eclipsito",
+  "gosu": "Gosu Z",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1099,6 +1101,14 @@
   [
    "CFM",
    "ReyexXMC"
+  ],
+  [
+   "Eclipse",
+   "Eclipsito"
+  ],
+  [
+   "Gosu",
+   "Gosu Z"
   ],
   [
    "Nexus",
