@@ -1135,6 +1135,86 @@ def agregar_temporada(filas_res, filas_uno, instantes=None):
     return ag
 
 
+#: lo de cada uno EN CADA SERVIDOR, para su carta de Servidor (ver `por_servidor()`)
+POR_SERVIDOR = os.path.join(BASE, 'datos', 'por_servidor.json')
+
+
+def por_servidor(filas_res, filas_uno, ag=None, instantes=None):
+    """`{rapero: {sv: {ovr, ev, oro, pod, racha, duelos, pts}}}`: lo de cada uno en cada servidor.
+
+    🔴 Dlx, 03/10/2026, con la carta de Servidor de Catarsis en URBF toda en «—» y un jugador quejándose: *«la info
+    de cada servidor en sus tarjetas tiene que ser diferente para cada tarjeta de servidor… para cada usuario»*. La
+    carta usaba los números de la temporada entera —`03_Servidor/generar.py` los llamaba «prestados»— y la de otro
+    servidor era la misma con otra camiseta: todas decían lo mismo.
+
+    Es `agregar()` sobre las filas de ESE servidor, con los mismos multiplicadores que la Temporada: los eventos, los
+    títulos, los podios (las tres medallas, como `pod`), la racha (eventos seguidos llegando arriba, en ese servidor)
+    y los duelos de sus llaves. El OVR, con la fórmula de la Temporada contra los topes de la temporada entera
+    (`ovr.con_topes()`): comparable entre servidores. Lo de toda la Liga —el Most Wanted, los bonos de la semana, el
+    precio por cabeza— no es de ningún servidor y no entra.
+
+    `ag`: la Temporada ya calculada (`agregar_temporada()`), de donde salen los topes; sin ella, se calcula.
+    ⚠️ Deja `agregar.filas` como estaba: lo leen los multiplicadores.
+    """
+    _b = os.path.join(BASE, 'bot')
+    if _b not in sys.path:
+        sys.path.insert(0, _b)
+    import multiplicadores as _MU
+    antes = getattr(agregar, 'filas', None)
+    if ag is None:
+        ag = agregar_temporada(filas_res, filas_uno, instantes)
+    agregar(filas_res, filas_uno, instantes)
+    factor = _MU.factor_de(filas=agregar.filas)
+    tope = _OVR.topes([_comp_ovr(v) for v in ag.values()])
+
+    def _n(x):
+        try:
+            return int(float(str(x).strip() or 0))
+        except ValueError:
+            return 0
+    res_sv, sv_de = defaultdict(list), {}
+    for f in filas_res:
+        f2 = list(f) + [''] * 11
+        sv = str(f2[2]).strip()
+        if sv in SERVIDORES:
+            res_sv[sv].append(f)
+            sv_de.setdefault(_n(f2[0]), sv)
+    uno_sv = defaultdict(list)
+    for f in filas_uno:
+        sv = sv_de.get(_n((list(f) + [''])[0]))
+        if sv:
+            uno_sv[sv].append(f)
+    out = defaultdict(dict)
+    for sv, filas in res_sv.items():
+        a = agregar(filas, uno_sv.get(sv, []), instantes, factor=factor)
+        quienes = sorted(a)
+        ovrs = _OVR.con_topes([_comp_ovr(a[q]) for q in quienes], tope)
+        for q, o in zip(quienes, ovrs):
+            v = a[q]
+            out[q][sv] = {'ovr': o, 'ev': v.get('Ev', 0), 'oro': v.get('🥇', 0),
+                          'pod': v.get('🥇', 0) + v.get('🥈', 0) + v.get('🥉', 0),
+                          'racha': v.get('🔥', '0/0'), 'duelos': v.get('_duelos', ''),
+                          'pts': v.get('Puntos', 0)}
+    agregar.filas = antes
+    return {q: dict(v) for q, v in out.items()}
+
+
+def escribir_por_servidor(ps):
+    """`datos/por_servidor.json`, si cambió. Lo lee la carta de Servidor y su huella (`bot/que_cambio.py`)."""
+    nuevo = {'_leeme': 'Lo de cada uno en cada servidor (sheet/rankings.por_servidor). Lo escribe el ciclo '
+                       '(paso 1c, `rankings.py --otras --aplicar`); lo leen 03_Servidor/generar.py y que_cambio.',
+             'gente': ps}
+    try:
+        with io.open(POR_SERVIDOR, encoding='utf-8') as f:
+            if json.load(f) == nuevo:
+                return False
+    except (OSError, ValueError):
+        pass
+    with io.open(POR_SERVIDOR, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(nuevo, f, ensure_ascii=False, indent=1, sort_keys=True)
+    return True
+
+
 def _comp_ovr(v):
     """Las cinco componentes del OVR de esa persona, desde `agregar()`.
 
@@ -2196,6 +2276,14 @@ def escribir_todas(dry=True):
     res, uno = Hoja('Resultados').filas(), Hoja('1v1').filas()
     # los mismos Puntos que la Temporada: con multiplicadores y MW
     ag = agregar_temporada(res, uno)
+    # 🔑 Y LO DE CADA UNO EN CADA SERVIDOR, para su carta de Servidor (Dlx, 03/10/2026). Ver `por_servidor()`. No frena
+    # las vitrinas: si falla, la carta sigue con lo que había
+    if not dry:
+        try:
+            if escribir_por_servidor(por_servidor(res, uno, ag=ag)):
+                print('   ✓ datos/por_servidor.json: lo de cada uno en cada servidor')
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude calcular lo de cada servidor (%s)' % str(e)[:80])
     pais_de, _rango_pool = identidad()
     # 🔴 UN SOLO ORIGEN PARA EL RANGO, Y EL POOL DEJA DE SER RESPALDO.
     #
@@ -2688,6 +2776,26 @@ def _self_check():
     mal += not ok
     print('   %s el multiplicador de la semana: sólo si se lo pide (el Competitivo ve %s, la '
           'Temporada %s)' % ('✅' if ok else '🔴', crudo['Ana']['Puntos'], doble['Ana']['Puntos']))
+    # 🔑 lo de cada servidor, separado (la carta de Servidor, 03/10/2026): Ana campeona en SR y subcampeona en FFA,
+    # con un duelo ganado en SR; Beto sólo en FFA. Cada servidor con lo suyo, y el OVR contra los topes de la temporada
+    resp = [[1, '27/09', 'SR', '4-7', 'Ana', 'ar', 'Campeón', 3000, '', 0, ''],
+            [1, '27/09', 'SR', '4-7', 'Beto', 'ar', 'Subcampeón', 2000, '', 0, ''],
+            [2, '28/09', 'FFA', '4-7', 'Ana', 'ar', 'Subcampeón', 2000, '', 0, ''],
+            [2, '28/09', 'FFA', '4-7', 'Beto', 'ar', 'Campeón', 3000, '', 0, '']]
+    unop = [[1, '27/09', 'SR', 'Final', 'Ana', 'Beto', 'Ana', '', '']]
+    agp_ = agregar(resp, unop, instantes={})
+    _fl = agregar.filas
+    try:
+        ps = por_servidor(resp, unop, ag=agp_, instantes={})
+    except Exception as e:                               # noqa: BLE001
+        ps = {'error': str(e)}
+    a_sr, a_ffa = (ps.get('Ana') or {}).get('SR') or {}, (ps.get('Ana') or {}).get('FFA') or {}
+    ok = (a_sr.get('ev') == 1 and a_sr.get('oro') == 1 and a_sr.get('pod') == 1 and a_sr.get('duelos') == '1/1'
+          and a_ffa.get('oro') == 0 and a_ffa.get('pod') == 1 and not a_ffa.get('duelos')
+          and 'SR' in (ps.get('Beto') or {}) and 40 <= a_sr.get('ovr', 0) <= 99
+          and agregar.filas is _fl)
+    mal += not ok
+    print('   %s lo de cada servidor, separado: Ana en SR %s, en FFA %s' % ('✅' if ok else '🔴', a_sr, a_ffa))
     # y que de verdad no las produzca `agregar()`, que es el porqué
     traidas = set()
     for v in ag.values():

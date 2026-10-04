@@ -69,14 +69,33 @@ def calcular(componentes):
     qs = [tuple(num(v) for v in c) for c in componentes]
     if not qs:
         return []
-    # ⚠️ `or 1` EN CADA TOPE: con nadie que haya ganado un podio, el tope
-    # de esa componente es 0 y la division revienta. Un cero ahi significa
-    # «esta dimension todavia no existe», no «error».
-    tope = [max(x) or 1 for x in zip(*qs)]
+    return con_topes(qs, topes(qs))
+
+
+def topes(componentes):
+    """El máximo de cada componente en el pool: contra eso se mide cada uno.
+
+    ⚠️ `or 1` EN CADA TOPE: con nadie que haya ganado un podio, el tope
+    de esa componente es 0 y la division revienta. Un cero ahi significa
+    «esta dimension todavia no existe», no «error».
+    """
+    qs = [tuple(num(v) for v in c) for c in componentes]
+    return [max(x) or 1 for x in zip(*qs)] if qs else [1] * len(PESOS)
+
+
+def con_topes(componentes, tope):
+    """El OVR de cada uno contra topes DADOS. `calcular()` usa los del propio pool.
+
+    🔑 EL OVR DE UN SERVIDOR (03/10/2026, Dlx: «la info de cada servidor en sus tarjetas tiene que ser diferente»):
+    lo que hiciste EN ESE SERVIDOR, contra los topes de la temporada entera —la (b) de `03_Servidor/disenos/ESTADO.md`,
+    la única que cumple la regla del número de cada carta—. Así un 80 de un servidor chico y uno de uno grande dicen
+    lo mismo, y nadie saca 100 por ser el único de su servidor.
+    """
     out = []
-    for q in qs:
-        n = [math.sqrt(q[0] / tope[0]), math.sqrt(q[1] / tope[1]),
-             q[2] / tope[2], math.sqrt(q[3] / tope[3]), q[4] / tope[4]]
+    for c in componentes:
+        q = tuple(num(v) for v in c)
+        r = [min(1.0, q[i] / (tope[i] or 1)) for i in range(len(PESOS))]
+        n = [math.sqrt(r[0]), math.sqrt(r[1]), r[2], math.sqrt(r[3]), r[4]]
         out.append(round(40 + sum(w * x for w, x in zip(PESOS, n)) * 59))
     return out
 

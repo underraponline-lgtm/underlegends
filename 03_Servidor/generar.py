@@ -21,8 +21,17 @@ son canónicas (`comun/siluetas`, `divisor`, `emblema`, `brillo`, `marco`,
 todo: **falta el marco** y hay dos ideas abiertas (un TAG propio y un rango
 del servidor). Esto dibuja la carta *vigente*, no la terminada.
 
-DE DÓNDE SALE CADA NÚMERO
--------------------------
+✅ **DESDE EL 03/10/2026, LA COLUMNA ES DE ESE SERVIDOR.** Dlx, con la carta de Catarsis
+en URBF toda en «—»: *«la info de cada servidor en sus tarjetas tiene que ser diferente
+para cada tarjeta de servidor… para cada usuario»*. El OVR, los títulos, los podios, la
+racha, los duelos y los eventos salen de `datos/por_servidor.json`, que el ciclo arma
+con `sheet/rankings.por_servidor()` —lo que cada uno hizo EN ESE servidor, con las
+reglas de la Temporada—, y el OVR con la (b) de `disenos/ESTADO.md`: contra los topes
+de la temporada entera. Ver `del_servidor()`. Lo que sigue describe cómo era, y vale
+sólo si falta ese archivo.
+
+DE DÓNDE SALÍA CADA NÚMERO
+--------------------------
 Nueve de los catorce campos son reales. Los otros cuatro **no existen en
 ningún pool** y van con el valor GLOBAL como relleno, avisando en cada corrida.
 
@@ -129,6 +138,40 @@ def _en_que_servidores():
             for x in PAD.cargar()}
 
 
+def _por_servidor():
+    """`{rapero: {sv: {ovr, ev, oro, pod, racha, duelos}}}` de `datos/por_servidor.json`, o `{}` si no está."""
+    try:
+        return (_j('por_servidor.json') or {}).get('gente') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+#: lo de cada uno en cada servidor (lo arma el ciclo: `sheet/rankings.por_servidor()`)
+PS = _por_servidor()
+
+
+def del_servidor(p, sv, ps=None):
+    """`p` con los números de la columna de ESE servidor: el OVR, títulos, podios, racha, duelos y eventos.
+
+    🔴 Dlx, 03/10/2026, con la carta de Catarsis en URBF toda en «—»: *«la info de cada servidor en sus tarjetas
+    tiene que ser diferente para cada tarjeta de servidor… para cada usuario»*. Eran los de la temporada entera —los
+    «prestados» de arriba— y la de otro servidor era la misma con otra camiseta. Ahora salen de `datos/por_servidor.json`:
+    lo que hizo EN ESE servidor. Donde no jugó, `—` (cero eventos), que es la regla de Dlx: *«un - está mejor»*.
+    ⚠️ Sin el archivo (una copia vieja del repo), queda como estaba: los de la temporada.
+    """
+    ps = PS if ps is None else ps
+    if not ps:
+        return p
+    x = (ps.get(p['nombre']) or {}).get(sv)
+    q = dict(p)
+    if x:
+        q.update(ovr=x.get('ovr', 0), titulos=x.get('oro', 0), podios=x.get('pod', 0), eventos=x.get('ev', 0),
+                 racha=x.get('racha') or '0/0', duelos=x.get('duelos') or '0/0')
+    else:
+        q.update(ovr=0, titulos=0, podios=0, eventos=0, racha='0/0', duelos='0/0')
+    return q
+
+
 def cargar():
     comp = _j('competitivo_pool.json')
     _svs = _en_que_servidores()
@@ -163,7 +206,8 @@ def cargar():
             'svs': _svs.get(_slug(c['raw'])) or ([c['sv']] if c['sv'] else []),
         })
     out += _los_de_cero({p['nombre'] for p in out})
-    return out
+    # 🔑 la propia, con lo de SU servidor (ver `del_servidor()`)
+    return [del_servidor(p, p['sv']) for p in out]
 
 
 def _los_de_cero(ya):
@@ -401,7 +445,8 @@ def _slug(n):
 # mismo, ni mejor ni peor: el dia que el builder las guarde, se arreglan las
 # dos de una.
 def con_camiseta(p, sv):
-    q = dict(p)
+    # 🔑 y desde el 03/10/2026, con lo que hizo EN ESE servidor (`del_servidor()`): ya no son los cuatro prestados
+    q = del_servidor(dict(p), sv)
     q['sv'] = sv
     q['pos_sv'], q['tot_sv'] = 0, 0
     return q
@@ -477,10 +522,12 @@ def main():
         for p, f in zip(elegidos, hechos):
             print('   %-14s %-5s  %s' % (p['nombre'], p['sv'],
                                          os.path.relpath(f, BASE)))
-    print('\n⚠️ cuatro numeros de la columna NO son de ese servidor, porque no')
-    print('   existen en ningun pool: %s.' % ', '.join(PRESTADOS))
-    print('   Van los globales para poder MIRAR la carta. Ver el docstring y')
-    print('   03_Servidor/disenos/ESTADO.md.')
+    if PS:
+        print('\n   los números de la columna son de ESE servidor (datos/por_servidor.json)')
+    else:
+        print('\n⚠️ falta datos/por_servidor.json: %s van con los de la temporada entera.'
+              % ', '.join(PRESTADOS))
+        print('   Lo arma el ciclo (sheet/rankings.py --otras --aplicar).')
     sin = [p['nombre'] for p in elegidos if not p['foto']]
     if sin:
         print('   sin foto en disco: %s' % ', '.join(sin))

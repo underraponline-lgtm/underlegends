@@ -489,6 +489,10 @@ def huellas():
     # Como la crew, sólo a quien tiene puesto: el 28/09 no lo tenía nadie
     # (tres personas con letra, ninguna letra con tres).
     en_rango = _puestos_en_rango(_j('datos', 'competitivo_pool.json') or [])
+    # 🔴 Y LO DE CADA SERVIDOR, en la de Servidor (03/10/2026): la carta de cada servidor dibuja lo que hiciste EN ESE
+    # servidor (`rankings.por_servidor()`, `datos/por_servidor.json`), que no es un campo de tu fila. Sin esto, jugar
+    # en otro servidor no redibujaba esa camiseta. Sólo a quien tiene algo: los demás conservan su huella
+    psv = (_j('datos', 'por_servidor.json') or {}).get('gente') or {}
     out = {}
     for quien, dos in est.items():
         h = {}
@@ -511,6 +515,9 @@ def huellas():
             # y el puesto en la letra, en País y Servidor
             if carta in ('pais', 'servidor') and en_rango.get(quien):
                 crudo.append('rg=%r' % (en_rango[quien],))
+            # y lo de cada servidor, en la de Servidor: ver arriba
+            if carta == 'servidor' and psv.get(quien):
+                crudo.append('psv=%r' % (sorted((k, tuple(sorted(v.items()))) for k, v in psv[quien].items()),))
             h[carta] = '%s:%s' % (
                 hashlib.sha1('\n'.join(crudo).encode('utf-8')).hexdigest()[:12],
                 cod.get(carta, '?'))
