@@ -85,8 +85,19 @@
   "   que ni está en DDF); «NUMBER🇻🇪» es Number VE (@numbyng) y no Number 🇺🇾.",
   "   Lo aplica `llaves_a_entrada.otro_en_servidor()` a las filas de cada",
   "   evento de ese servidor; como el ciclo reprocesa la temporada entera, los",
-  "   eventos viejos se corrigen solos en la corrida siguiente."
+  "   eventos viejos se corrigen solos en la corrida siguiente.",
+  "",
+  "🔑 `cuentas`: las OTRAS cuentas de Discord de alguien, que también abren sus",
+  "   cartas con /card. Dlx, 03/10/2026 («11. A» y «A»): Monet se anota desde",
+  "   @monet_x. (1501320596485701642) y en la Lista está @monet_oficial. Van en",
+  "   `dn:` (`subir_datos.cuentas_extra()`): sólo las cartas; lo de la cuenta",
+  "   sigue siendo de la de la Lista."
  ],
+ "cuentas": {
+  "Monet": [
+   "1501320596485701642"
+  ]
+ },
  "pares": [
   [
    "CRIZJ",

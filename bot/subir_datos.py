@@ -201,6 +201,33 @@ def versus_de(k, c, t, nac):
 MIOS = ('p:', 'd:', 'dn:')
 
 
+def cuentas_extra(gente, par_d, par_dn, cuentas=None):
+    """Las `dn:<id>` de las cuentas EXTRA de cada uno (`cuentas` de `datos/akas_a_mano.json`): `[{key, value}]`.
+
+    Sólo de quien está en `gente` (tiene carta) y sólo con un ID que no sea ya de nadie: una cuenta extra no le
+    quita la llave a otro. Ver el comentario de `armar()`."""
+    if cuentas is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
+                cuentas = (json.load(f) or {}).get('cuentas') or {}
+        except (OSError, ValueError):
+            cuentas = {}
+    clave_de = {}
+    for k, x in gente:
+        clave_de.setdefault(str(x.get('raw') or '').lower(), k)
+    out = []
+    for nombre, ids in cuentas.items():
+        k = clave_de.get(str(nombre).lower())
+        if not k:
+            continue
+        for did in ids or ():
+            did = str(did).strip()
+            if did.isdigit() and did not in par_d and did not in par_dn:
+                par_dn[did] = {'key': 'dn:' + did, 'value': k}
+                out.append(par_dn[did])
+    return out
+
+
 def limpiar_huerfanas(s, pares):
     """Borra de KV las `p:`/`d:` que esta corrida ya no escribe.
 
@@ -674,6 +701,15 @@ def armar():
             par_d[did] = {'key': 'd:' + did, 'value': k}
             pares.append(par_d[did])
             con_id += 1
+
+    # 🔑 LA OTRA CUENTA DE ALGUIEN ABRE SUS CARTAS. Dlx, 03/10/2026 («11. A» y
+    # «A»): Monet se anota desde @monet_x. y en la Lista está @monet_oficial;
+    # `/card` desde la segunda le decía que no estaba. Las cuentas extra viven
+    # en `cuentas` de `datos/akas_a_mano.json` y van en `dn:`, que lee sólo
+    # `claveCarta()` del Worker: abren las cartas, nada más. Lo de la cuenta
+    # —/foto, Mis redes, seguir, los avisos— sigue siendo de la de la Lista.
+    # ⚠️ Un ID que ya es de alguien (en `d:` o en `dn:`) no se pisa.
+    pares += cuentas_extra(gente, par_d, par_dn)
 
     # 🔴 ¿ARRANCÓ LA TEMPORADA? Dlx, 22/09/2026: *«cuando el plazo está
     # abierto no hay necesidad de que el usuario necesite el rol especial
