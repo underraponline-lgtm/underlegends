@@ -704,7 +704,7 @@
   "av": "",
   "pos_pais": "1/3",
   "arc_pais": 0,
-  "pos_sv": "1/8",
+  "pos_sv": "1/9",
   "arc_sv": 100
  },
  {
@@ -1003,8 +1003,8 @@
   "av": "",
   "pos_pais": "4/12",
   "arc_pais": 75,
-  "pos_sv": "2/8",
-  "arc_sv": 88
+  "pos_sv": "2/9",
+  "arc_sv": 89
  },
  {
   "full": "Presagio",
@@ -1077,8 +1077,8 @@
   "av": "",
   "pos_pais": "7/21",
   "arc_pais": 71,
-  "pos_sv": "3/8",
-  "arc_sv": 75
+  "pos_sv": "3/9",
+  "arc_sv": 78
  },
  {
   "full": "Catarsis",
@@ -1410,8 +1410,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
+  "pos_sv": "4/9",
+  "arc_sv": 67
  },
  {
   "full": "Paria",
@@ -1634,8 +1634,8 @@
   "av": "",
   "pos_pais": "1/9",
   "arc_pais": 100,
-  "pos_sv": "4/8",
-  "arc_sv": 62
+  "pos_sv": "5/9",
+  "arc_sv": 56
  },
  {
   "full": "Xubaru",
@@ -3639,8 +3639,8 @@
   "av": "",
   "pos_pais": "5/9",
   "arc_pais": 56,
-  "pos_sv": "5/8",
-  "arc_sv": 50
+  "pos_sv": "6/9",
+  "arc_sv": 44
  },
  {
   "full": "papa",
@@ -4678,8 +4678,8 @@
   "av": "",
   "pos_pais": "5/10",
   "arc_pais": 60,
-  "pos_sv": "6/8",
-  "arc_sv": 38
+  "pos_sv": "7/9",
+  "arc_sv": 33
  },
  {
   "full": "Guess",
@@ -5233,8 +5233,8 @@
   "av": "",
   "pos_pais": "9/12",
   "arc_pais": 33,
-  "pos_sv": "7/8",
-  "arc_sv": 25
+  "pos_sv": "8/9",
+  "arc_sv": 22
  },
  {
   "full": "MAXIMILIANO CALVO",
@@ -5936,8 +5936,8 @@
   "av": "",
   "pos_pais": "7/10",
   "arc_pais": 40,
-  "pos_sv": "8/8",
-  "arc_sv": 12
+  "pos_sv": "9/9",
+  "arc_sv": 11
  },
  {
   "full": "NAW",
