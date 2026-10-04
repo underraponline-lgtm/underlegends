@@ -203,14 +203,19 @@ def pais(nombres):
     # entera, contando como emitible a quien no tiene pais. Mismo motivo
     # que la union de `main()`: los dos pools dejaron de tener la misma
     # gente el 16/09/2026.
-    filas = {}
-    for _f in ('temporada_pool.json', 'competitivo_pool.json'):
-        for x in _j('datos', _f):
-            filas.setdefault(x.get('raw'), {}).update(x)
-    sin = sum(1 for n in nombres if not (filas.get(n) or {}).get('cc'))
+    #
+    # 🔴 Y SE CUENTAN PERSONAS, NO NOMBRES: la misma gente que recorre `04_Pais/generar.gente()` —el competitivo
+    # entero y los de temporada que no están ahí—. Juntando por nombre, dos personas que se llaman igual —«g8» 🇨🇴 y
+    # otro «g8» sin país, dos «SOL»— quedaban en una sola fila, la última pisaba el país de la otra, y el informe
+    # decía «País 249 de 247» (04/10/2026): el generador dibujaba bien y el techo estaba mal contado.
+    comp = _j('datos', 'competitivo_pool.json')
+    temp = {x.get('raw'): x for x in _j('datos', 'temporada_pool.json')}
+    en_comp = {x.get('raw') for x in comp}
+    gente = list(comp) + [x for n, x in temp.items() if n not in en_comp]
+    sin = sum(1 for x in gente if not x.get('cc'))
     cod, log = _corre([os.path.join('04_Pais', 'generar.py'), '--todas',
                        '--salida', '_puedo_generar.png'])
-    return (cod, _cuantas('04_Pais/salida/pais.html'), len(nombres) - sin,
+    return (cod, _cuantas('04_Pais/salida/pais.html'), len(gente) - sin,
             'el pool menos %d sin país' % sin, log)
 
 
