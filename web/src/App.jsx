@@ -2,7 +2,8 @@
 // sigue siendo app.js. Lo que sabe hacer la página de hoy —la cuenta, los visores de cartas y llaves, votar— se le
 // pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Liga, aQuienSigo, quienMira } from './liga.js';
+import { Liga, aQuienSigo, limpio, quienMira } from './liga.js';
+import { nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
@@ -24,6 +25,8 @@ const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave }
 const VisorCarta = lazy(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Tienda })));
 const Pase = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Pase })));
+const PaginaCrew = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaCrew })));
+const PaginaPais = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaPais })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
 
@@ -85,7 +88,7 @@ let cambiosAntes = (() => {
 // perfil de cada rapero, desde la 2.09 (Dlx, 03/10/2026: «1. A 2. A»)
 // `llave` desde la 2.10 (Dlx, 03/10/2026: «1. A»): la llave nueva es una página; `tienda` y `pase` desde la 2.12 («A.»)
 const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1, tarjetas: 1, r: 1, llave: 1,
-  tienda: 1, pase: 1 };
+  tienda: 1, pase: 1, crew: 1, pais: 1 };
 const esPropia = (p) => !!PROPIAS[p];
 // 🔍 UNA PREVIEW SE PRENDE CON UN LINK: `?prev=sum` deja `lg:prev-sum` en este navegador (y `?noprev=sum` la apaga),
 // para que Dlx la pruebe sin tocar la consola. No es un secreto: las previews sólo esconden lo que falta aprobar
@@ -296,15 +299,20 @@ export default function App() {
   const nombreSv = sv && liga && liga.svs[sv] ? liga.svs[sv].nombre || sv : sv;
   // ⚠️ también cuando llegan los datos (`liga`), y un instante después: app.js vuelve a poner el suyo al pintarlos
   useEffect(() => {
+    const crewT = pagina === 'crew' && liga ? (liga.d.crews || []).find((c) => (c.clave || c.crew) === decodeURIComponent(partes.slice(1).join('/'))) : null;
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' ? 'Sumate'
       : pagina === 'tarjetas' ? 'Tarjetas'
+      : crewT ? limpio(crewT.crew)
+      : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
+        ? nombrePais(String(partes[1]).toLowerCase())
       : pagina === 'cuenta' ? 'Mi cuenta' : pagina === 'ajustes' ? 'Ajustes' : '';
     if (!t) return undefined;
     const poner = () => { document.title = t + ' · Liga Global de Freestyle'; };
     poner();
     const r = setTimeout(poner, 0);
     return () => clearTimeout(r);
-  }, [pagina, sv, nombreSv, liga]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pagina, sv, nombreSv, liga, hash]);
   // ⚠️ fuera de las secciones aisladas: si armar las historias fallaba, se caía el Inicio entero al de respaldo
   const gruposBase = useMemo(() => {
     if (!liga) return [];
@@ -341,6 +349,8 @@ export default function App() {
         : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} /></Suspense></Aislada>
+        : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={decodeURIComponent(partes.slice(1).join('/'))} /></Suspense></Aislada>
+        : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'sumate' ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>

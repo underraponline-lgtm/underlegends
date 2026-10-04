@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.21",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T00:22:00-04:00",
+   "titulo": "La página de cada crew y de cada país, nuevas",
+   "items": [
+    "🤝 **Cada crew y cada país tienen su página nueva**: su puesto, sus números, las cartas de los que mandan, toda su gente y los demás para saltar de uno a otro.",
+    "🏳️ **El país muestra sus crews**, y la crew las banderas de su gente."
+   ]
+  },
+  {
    "version": "2.20",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T00:10:00-04:00",

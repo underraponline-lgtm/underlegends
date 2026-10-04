@@ -43,10 +43,10 @@ MARCA = 'inicio-nuevo'
 #: con `avisos`, el link de la campana; `publicaciones` desde la 1.99 (Dlx: «me gusta pero que lo de encuestas no sea
 #: lo primero que uno vea»); `socios` (lo que era Mundo; `mundo` lo sigue abriendo) y `guia` desde la 2.02 (Dlx,
 #: 03/10/2026: «1. A 2. A»); `tarjetas` desde la 2.08 (Dlx, 03/10/2026: «1. A 2. A 3. A»); `r`, el perfil, desde la
-#: 2.09 (Dlx, 03/10/2026: «1. A 2. A»); `llave` desde la 2.10 (Dlx: «1. A»); `tienda` y `pase` desde la 2.12 (Dlx: «A.»).
+#: 2.09 (Dlx, 03/10/2026: «1. A 2. A»); `llave` desde la 2.10 (Dlx: «1. A»); `tienda` y `pase` desde la 2.12 (Dlx: «A.»); `crew` y `pais` desde la 2.21 (Dlx, 04/10/2026: «si falta reworkear algo, reworkealo»).
 #: La misma lista que `PROPIAS` de App.jsx
 PROPIAS = ('cambios', 'ranking', 'duelos', 'eventos', 'avisos', 'publicaciones', 'socios', 'mundo', 'guia', 'tarjetas', 'r',
-           'llave', 'tienda', 'pase')
+           'llave', 'tienda', 'pase', 'crew', 'pais')
 
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
