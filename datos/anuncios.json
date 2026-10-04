@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-04T19:54:15+00:00",
+ "cuando": "2026-10-04T20:24:25+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2414,6 +2414,28 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "JH DE LA CRUZ CUP",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1556400031571906595",
+   "cuando": "2026-10-04T20:18:04",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "Dominick🇵🇪",
+   "autor_h": "eea228719690cf75",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1vs1",
+   "horario": "YAYAYA",
+   "fecha": "",
+   "premios": "RESPETO - TITULO DE CAMPEÓN",
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
+  },
+  {
    "nombre": "MIDNIGHT MIAMI",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -2431,7 +2453,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN - CUPO A LA LIGA APOCALIPSIS X",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "historia del peru cup",
@@ -2451,7 +2475,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2471,7 +2497,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "MINI CUP GOD 109",
@@ -2491,7 +2519,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "HEMOS VUELTO",
@@ -2511,7 +2541,9 @@
    "horario": "RIGHT NOW!",
    "fecha": "",
    "premios": "UN MESSI CON UNA FLOR AMARILLA",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "19 CUP VOL 2 EDICION FIFA",
@@ -2531,7 +2563,9 @@
    "horario": "RIGHT NOW!",
    "fecha": "",
    "premios": "SORPRESA + 1000 BOLOS POR CULO MOVIL (SI ERES DE TOCORON)",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "MINI CUP GOD 108",
@@ -2551,7 +2585,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "19 CUP EDICION SANGRE",
@@ -2571,7 +2607,9 @@
    "horario": "RIGHT NOW",
    "fecha": "",
    "premios": "1000 BOLIVARES POR CULO MOVIL",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2591,7 +2629,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "COMPE CELEBRATORIA",
@@ -2611,7 +2651,9 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "COMPE LIBRE PARA TODOS",
@@ -2631,7 +2673,9 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2651,7 +2695,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "MINI CUP GOD 107",
@@ -2671,7 +2717,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "ESTACIÓN MITOLÓGICA",
@@ -2691,7 +2739,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN - CUPO A LA LIGA APOCALIPSIS X",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "Clasificatoria a Fight rumble X tfc",
@@ -2711,7 +2761,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "MINI CUP GOD 106",
@@ -2731,7 +2783,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "CLASIFICACION DE LIGA ELITE",
@@ -2751,7 +2805,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇CUPO A LA LIGA🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "ULTIMO BAILE DEL VENECO",
@@ -2771,7 +2827,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "PUNTO DE DIMENSION",
@@ -2791,7 +2849,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "EN BUSCA DE LA ELITE",
@@ -2811,7 +2871,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "CLASIFICACION DE LIGA ELITE",
@@ -2831,7 +2893,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇CUPO A LA LIGA🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -2989,6 +3053,159 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "RT 🇲🇽",
+   "quien": "rt1603",
+   "discord_id": "995447111334232094",
+   "msg_id": "1556401608932462603",
+   "cuando": "2026-10-04T20:24:20"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Tokio🇬🇩",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1556401433413423207",
+   "cuando": "2026-10-04T20:23:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1556401136519483453",
+   "cuando": "2026-10-04T20:22:27"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1556400963278082131",
+   "cuando": "2026-10-04T20:21:46"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "ARDEAN 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1556400349214937180",
+   "cuando": "2026-10-04T20:19:19"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1556400181291917335",
+   "cuando": "2026-10-04T20:18:39"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Player🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1556400176883699793",
+   "cuando": "2026-10-04T20:18:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1556400175470354464",
+   "cuando": "2026-10-04T20:18:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Ezias🇵🇾",
+   "quien": "ezias_ak",
+   "discord_id": "1335430983343804497",
+   "msg_id": "1556400173964464229",
+   "cuando": "2026-10-04T20:18:37"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Assuan 🇴",
+   "quien": ".assuan._08335",
+   "discord_id": "1266557884058046507",
+   "msg_id": "1556400169363185665",
+   "cuando": "2026-10-04T20:18:36"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "CrisZJ🇵🇪",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1556400160093774075",
+   "cuando": "2026-10-04T20:18:34"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "nxuz 🇵🇪",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1556400144344293519",
+   "cuando": "2026-10-04T20:18:30"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Majiztral 🇨🇴 (penúltima plis)",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1556400138916986911",
+   "cuando": "2026-10-04T20:18:29"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "kochi🇨🇱",
+   "quien": "ricardocortes0758",
+   "discord_id": "1357885526404894870",
+   "msg_id": "1556398175399452764",
+   "cuando": "2026-10-04T20:10:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Shishui 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1556396763701710909",
+   "cuando": "2026-10-04T20:05:04"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Galileo 🇻🇪",
+   "quien": "valker_gaming",
+   "discord_id": "858824126978195478",
+   "msg_id": "1556395636981764187",
+   "cuando": "2026-10-04T20:00:36"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Corvo 🇧🇴",
+   "quien": "corvopoe.",
+   "discord_id": "1329680316842905626",
+   "msg_id": "1556395529540206743",
+   "cuando": "2026-10-04T20:00:10"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
