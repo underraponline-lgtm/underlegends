@@ -347,7 +347,10 @@
 },
 "riferian": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mtz": {
 "rg": "",
@@ -730,7 +733,10 @@
 },
 "sexo": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "andres": {
 "rg": "",
@@ -3640,6 +3646,38 @@
 "Colesito"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T16:39:36Z",
+"quien": [
+"Riferian"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T16:39:36Z",
+"quien": [
+"Riferian"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T16:39:36Z",
+"quien": [
+"Sexo"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T16:39:36Z",
+"quien": [
+"Sexo"
+],
+"carta": "temporada"
 }
 ]
 }
