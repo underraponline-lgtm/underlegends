@@ -99,16 +99,18 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 44,
+     "FFA": 42,
      "URBF": 8,
      "SR": 4,
-     "DDF": 6
+     "DDF": 5,
+     "ACAD": 1
     },
     "gente": {
      "FFA": 126,
      "URBF": 37,
      "SR": 18,
-     "DDF": 21
+     "DDF": 21,
+     "ACAD": 16
     },
     "gana": "FFA"
    },

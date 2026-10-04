@@ -1077,6 +1077,13 @@
 "temporada"
 ]
 },
+"eclipsito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "partim": {
 "rg": "",
 "c": [
@@ -1285,10 +1292,6 @@
 "temporada"
 ]
 },
-"eclipse": {
-"rg": "",
-"c": []
-},
 "elingetimp": {
 "rg": "",
 "c": [
@@ -1327,9 +1330,11 @@
 "rg": "",
 "c": []
 },
-"gosu": {
+"gosuz": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "izaya": {
 "rg": "",
@@ -1343,6 +1348,14 @@
 "c": [
 "servidor"
 ]
+},
+"eclipse": {
+"rg": "",
+"c": []
+},
+"gosu": {
+"rg": "",
+"c": []
 },
 "teito-co2": {
 "rg": "",
@@ -1562,13 +1575,6 @@
 "dewachomefui": {
 "rg": "",
 "c": []
-},
-"eclipsito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "elsolar": {
 "rg": "",
