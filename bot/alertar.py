@@ -56,10 +56,22 @@ def _et(t=None):
 
 
 def dueno():
-    """El Discord ID de Dlx, del Worker —su único lugar—, no copiado acá."""
-    with io.open(os.path.join(SCR, 'worker.js'), encoding='utf-8') as f:
-        m = re.search(r"const DUENO = '(\d+)'", f.read())
-    return m.group(1) if m else ''
+    """El Discord ID de Dlx, del Worker —su único lugar—, no copiado acá.
+
+    🔴 SE MUDÓ Y ESTO NO SE ENTERÓ: el 04/10/2026 (`e965d90`, el Dashboard) `DUENO` pasó de `worker.js` a `avisos.js`
+    —`export const DUENO`—, esta función seguía buscándolo en `worker.js`, devolvía `''` y Discord contestaba 400 al
+    abrir el DM: ninguna alerta del ciclo le llegó a Dlx desde ese mediodía. Ahora lo busca en los dos, y el
+    self-check (`--auto`, en CI) se pone rojo si no lo encuentra.
+    """
+    for archivo in ('avisos.js', 'worker.js'):
+        try:
+            with io.open(os.path.join(SCR, archivo), encoding='utf-8') as f:
+                m = re.search(r"(?:export\s+)?const DUENO = '(\d+)'", f.read())
+        except OSError:
+            continue
+        if m:
+            return m.group(1)
+    return ''
 
 
 def canal_logs():
@@ -333,9 +345,21 @@ def esperando(ahora=None):
     return viejas
 
 
+def _self_check():
+    """Lo que tiene que valer siempre, sin red: que se sepa a quién mandarle el DM."""
+    d = dueno()
+    ok = d.isdigit() and 15 <= len(d) <= 22
+    print('  %s el Discord ID de Dlx sale del Worker (%s)' % ('✅' if ok else '❌', d or 'vacío'))
+    print('\n  %s' % ('todo ok' if ok else '1 falló'))
+    return ok
+
+
 def main():
     a = sys.argv[1:]
     val = lambda k: a[a.index(k) + 1] if k in a and a.index(k) + 1 < len(a) else ''
+    if '--auto' in a:
+        print('\n══ LAS ALERTAS ══')
+        sys.exit(0 if _self_check() else 1)
     if '--probar' in a:
         ok = dm('✅ Prueba: las alertas del ciclo te llegan por acá, y sólo a vos. '
                 'Lo normal va al canal de Logs. (%s)' % _et())
