@@ -10,6 +10,15 @@
 "temporada"
 ]
 },
+"pichulamc": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "oasis": {
 "rg": "S",
 "c": [
@@ -28,15 +37,6 @@
 "praiseriza": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"pichulamc": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -742,6 +742,13 @@
 "temporada"
 ]
 },
+"melomaniaco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "korey": {
 "rg": "",
 "c": [
@@ -792,10 +799,6 @@
 ]
 },
 "19": {
-"rg": "",
-"c": []
-},
-"jahno": {
 "rg": "",
 "c": []
 },
@@ -1296,6 +1299,10 @@
 "rg": "",
 "c": []
 },
+"jahno": {
+"rg": "",
+"c": []
+},
 "za": {
 "rg": "",
 "c": []
@@ -1349,13 +1356,6 @@
 "garxziiscity": {
 "rg": "",
 "c": []
-},
-"melomaniaco": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "rubik": {
 "rg": "",

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-04T00:24:20+00:00",
+ "cuando": "2026-10-04T00:54:20+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2747,6 +2747,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "SAEVA 🇧🇦",
+   "quien": "mediadecadasinvida",
+   "discord_id": "1489270713041944589",
+   "msg_id": "1556103071161913477",
+   "cuando": "2026-10-04T00:38:03"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
