@@ -632,6 +632,56 @@
    "b": "MCO🇦🇷 ##",
    "ganador": "MCO🇦🇷 ##",
    "votos": "3–0"
+  },
+  "1556447426070581269": {
+   "id": "1556447426070581269",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791156383770,
+   "a": "ABYSUSS🇨🇦",
+   "b": "ECLIPSE🇨🇱 ##",
+   "ganador": "ABYSUSS🇨🇦",
+   "votos": "2–1"
+  },
+  "1556447984051556465": {
+   "id": "1556447984051556465",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791156516803,
+   "a": "DREXX🇵🇪",
+   "b": "PANCHOK🇨🇱 ##",
+   "ganador": "PANCHOK🇨🇱 ##",
+   "votos": "2–1"
+  },
+  "1556449366234103830": {
+   "id": "1556449366234103830",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791156846341,
+   "a": "CORVO🇧🇴",
+   "b": "MINIBOY🇨🇱 ##",
+   "ganador": "CORVO🇧🇴",
+   "votos": "3–0"
+  },
+  "1556450549229027349": {
+   "id": "1556450549229027349",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791157128389,
+   "a": "ZIGNOS🇩🇴",
+   "b": "MAWS🇻🇪",
+   "ganador": "ZIGNOS🇩🇴",
+   "votos": "2–1"
+  },
+  "1556452430944800960": {
+   "id": "1556452430944800960",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791157577025,
+   "a": "SOL🇵🇪 ##",
+   "b": "SGB🇨🇴",
+   "ganador": "SGB🇨🇴",
+   "votos": "2–1"
   }
  },
  "llaves": {
@@ -1151,6 +1201,37 @@
      ],
      "YINN 🇲🇦",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1556450549229027349": {
+   "id": "1556450549229027349",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1791157128389,
+   "ed": 1791157832388,
+   "texto": "`[ FINAL ]`\n⌞ZIGNOS🇩🇴⌝ 🆚 ⌞MAWS🇻🇪 ##⌝\n`[ FINAL ]`\n⌞SOL🇵🇪⌝ 🆚 ⌞SGB🇨🇴 ##⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "ZIGNOS🇩🇴",
+      "MAWS🇻🇪 ##"
+     ],
+     "ZIGNOS🇩🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SOL🇵🇪",
+      "SGB🇨🇴 ##"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
