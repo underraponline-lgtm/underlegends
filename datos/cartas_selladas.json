@@ -140,7 +140,7 @@
    "servidor": "6688b3af8b25:d46f41875d27:43d041"
   },
   "BastyRetro": {
-   "servidor": "f74004681428:d46f41875d27:d473d6"
+   "servidor": "f74004681428:d46f41875d27:d0970d"
   },
   "Bau": {
    "servidor": "18e8c60f9592:d46f41875d27:d0970d"
@@ -1186,10 +1186,10 @@
    "temporada": "ebd0ed14f19c:2ba13d9d8562"
   },
   "Number VE": {
-   "competitivo": "64a57b22e45a:26bd2ba1cc2b",
-   "pais": "bafde7628efc:8020a07a406a",
-   "servidor": "3cedf885b3cb:d46f41875d27:fb0f2c",
-   "temporada": "702cb98eb552:2ba13d9d8562"
+   "competitivo": "621c2b6413c6:26bd2ba1cc2b",
+   "pais": "33e798a3b007:8020a07a406a",
+   "servidor": "32eb84aa4778:d46f41875d27:fb0f2c",
+   "temporada": "382af97d6c93:2ba13d9d8562"
   },
   "OEP": {
    "servidor": "435efa9356bc:d46f41875d27:ad2577",
@@ -1810,5 +1810,5 @@
    "servidor": "994982e6deaa:d46f41875d27:d473d6"
   }
  },
- "cuando": "2026-10-04T05:32:57+00:00"
+ "cuando": "2026-10-04T05:57:50+00:00"
 }
