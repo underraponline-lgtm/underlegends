@@ -70,7 +70,11 @@ PLACA = (16, 16, 22)
 # mucho mas grande que un crest con anillo de texto. URBF y TWR son marcas de
 # trazo grueso y pasa parecido. Con nueve logos, una tabla es mas honesta que
 # seguir inventando formulas.
-AJUSTE = {'FRZ': 0.68, 'URBF': 0.86, 'FFA': 0.90, 'SR': 0.90, 'DRA': 0.88}
+AJUSTE = {'FRZ': 0.68, 'URBF': 0.93, 'FFA': 0.90, 'SR': 0.90, 'DRA': 0.88}
+# 🟠 URBF 0.86 -> 0.93 el 04/10/2026, junto con su fondo propio oscuro
+# (`comun/emblema.py`): con la corona y los chorreados a la vista, el logo
+# entero puede llenar el circulo. Medido: la tinta llegaba al 87% del radio
+# y queda en el 94%, sin que nada lo corte.
 
 # TWR va con SU BALDOSA ENTERA, no con la tinta suelta. Se probo separarle
 # las letras por saturacion y sale, pero el resultado no es su marca: su

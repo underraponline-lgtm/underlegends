@@ -14,7 +14,7 @@ Tres se rehicieron sobre el final y esta es la version buena:
   FRZ   dos cortes con filos encendidos, SIN esmerilado
   FFA   halftone de puntos magenta sobre casi negro
 """
-import asyncio, base64, json, os, re, sys
+import asyncio, base64, json, math, os, re, sys
 from playwright.async_api import async_playwright
 
 # 🔴 SE CALCULA, NO SE CLAVA. Aca habia una ruta absoluta a la
@@ -28,7 +28,7 @@ BASE = os.path.dirname(os.path.dirname(SCR))
 TEX = os.path.join(SCR, 'texturas')
 sys.path.insert(0, BASE)
 from comun.siluetas import PICO
-from comun import emblema
+from comun import emblema, divisor as DIV
 
 # La silueta NO se define aca: sale de comun/siluetas.py. Antes esta hoja
 # tenia su propio polygon del escudo biselado, y cuando la carta paso al
@@ -216,6 +216,78 @@ def ddf_fondo(A, B):
     ])
 
 
+def _linea(x):
+    """La línea que separa la foto del panel, en el marco de la carta de verdad (300 × 487).
+
+    Es la cuenta de `todos_sv.camino()` —el perfil de `comun/divisor.py` sobre la silueta— hecha acá,
+    porque `todos_sv` importa este archivo. Medido contra `camino()`: 0,12 px de diferencia, como mucho.
+    """
+    base, sube = DIV.Y_EXTREMOS * PICO.h, DIV.RECORRIDO * PICO.w * 1.3
+    return base - DIV.altura(x / 300) * sube + emblema.MARGEN
+
+
+#: 🎨 los chorreados de URBAN: (x, ancho, largo), puestos a mano. Ver `urbf_pared()`
+URBF_CHORROS = ((9, 9.5, 128), (24, 5, 64), (38, 10.5, 96), (55, 4.5, 30), (70, 7.5, 22), (88, 5, 13),
+                (118, 6, 8), (171, 5, 10), (206, 6, 16), (226, 8, 20), (243, 4.5, 26), (259, 10, 104),
+                (276, 5.5, 46), (291, 9, 136))
+
+
+def urbf_pared():
+    """La pared de URBAN: la línea de la carta chorrea pintura naranja sobre concreto oscuro.
+
+    🎨 Dlx, 04/10/2026, mirando la vista previa: *«me gusta la nueva»*. Sale de su logo, la «UK» con corona,
+    que tiene los chorreados naranjas. Arriba manda la foto, así que el gesto vive en el PANEL: el borde de
+    la pintura sigue la línea y de ahí cuelgan catorce chorreados, cada uno con su brillo y su gota.
+
+    ⚠️ ESTÁN PUESTOS A MANO, NO AL AZAR. Al azar salían parejos —un PEINE: fue la primera vuelta— y cada
+    corrida daba otra carta. En el medio son cortos para que se lea el nombre; en las puntas, largos.
+    Entre x=62 y 240 ninguno baja de y=350, así que no tocan los círculos aunque sean cuatro, ni el TAG
+    ni el UL (lo que Dlx le pidió al planeta de DDF).
+
+    ⚠️ VA EN EL MARCO DE LA CARTA DE VERDAD (300 × 487), no en el de 467 de las hojas de este archivo:
+    ahí se calcula la línea (`_linea()`), y ahí se midió que el borde le cae justo debajo.
+    """
+    def chorro(x, w, largo):
+        # el cuello que sale del borde, el tallo y la gota de abajo, un poco más ancha
+        r, y0 = w / 2, _linea(x) + 5
+        rb = r * 1.22
+        yb = y0 + largo - rb
+        d = (f'M{x - r - 3.5:.1f},{y0 - 1:.1f} Q{x - r:.1f},{y0 - 1:.1f} {x - r:.1f},{y0 + 4:.1f} '
+             f'L{x - r:.1f},{yb:.1f} A{rb:.1f},{rb:.1f} 0 1 0 {x + r:.1f},{yb:.1f} '
+             f'L{x + r:.1f},{y0 + 4:.1f} Q{x + r:.1f},{y0 - 1:.1f} {x + r + 3.5:.1f},{y0 - 1:.1f} Z')
+        out = (f'<path d="{d}" fill="#000" opacity=".45" transform="translate(1.2 1.8)" filter="url(#som)"/>'
+               f'<path d="{d}" fill="url(#pin)"/>')
+        if largo > 9:
+            # el brillo: una raya clara a la izquierda del tallo y un punto en la gota
+            out += (f'<path d="M{x - r * .42:.1f},{y0 + 3:.1f} L{x - r * .42:.1f},{yb - 1:.1f}" '
+                    f'stroke="#FFE6BF" stroke-width="{max(.8, w * .16):.1f}" stroke-linecap="round" opacity=".75"/>'
+                    f'<circle cx="{x - rb * .38:.1f}" cy="{yb + rb * .05:.1f}" r="{max(.7, rb * .22):.1f}" '
+                    'fill="#FFF1D9" opacity=".8"/>')
+        return out
+
+    linea = ' L'.join(f'{x},{_linea(x):.1f}' for x in range(0, 301, 5))
+    # el borde mojado ondula un poco: no es una regla
+    arriba = ' L'.join(f'{x},{_linea(x) - 2:.1f}' for x in range(0, 301, 5))
+    abajo = ' L'.join(f'{x},{_linea(x) + 5.5 + 1.6 * math.sin(x / 9) + 1.1 * math.sin(x / 3.7):.1f}'
+                      for x in range(300, -1, -5))
+    borde = f'M{arriba} L{abajo} Z'
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 487" width="300" height="487"><defs>'
+           '<linearGradient id="pin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFA432"/>'
+           '<stop offset=".55" stop-color="#F07E0C"/><stop offset="1" stop-color="#C95603"/></linearGradient>'
+           '<linearGradient id="mur" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F1915"/>'
+           '<stop offset="1" stop-color="#0C0A08"/></linearGradient>'
+           '<filter id="som" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.1"/>'
+           '</filter></defs>'
+           f'<path d="M{linea} L300,487 L0,487 Z" fill="url(#mur)"/>'
+           f'<path d="{borde}" fill="#000" opacity=".45" transform="translate(0 1.6)" filter="url(#som)"/>'
+           f'<path d="{borde}" fill="url(#pin)"/>'
+           + ''.join(chorro(*c) for c in URBF_CHORROS)
+           # dos gotas que se soltaron
+           + '<circle cx="24" cy="412" r="1.9" fill="#E9740A"/><circle cx="276" cy="398" r="1.6" fill="#E9740A"/>'
+           + '</svg>')
+    return 'data:image/svg+xml;base64,' + base64.b64encode(svg.encode('utf-8')).decode()
+
+
 # ══ LA DEFINICION CANONICA DE CADA FONDO ══
 # sv: (acento, color base, fondo css, capa extra css, remate css, descripcion)
 def defs():
@@ -290,17 +362,22 @@ def defs():
     # logo nuevo —la «UK» con corona— es naranja, y #EA7206 es el tono mas
     # vivo del archivo (`comun/logos_color/urbf.png`). Era #7B44BF.
     #
+    # 🎨 Y DESDE EL 04/10/2026 ES UNA PARED, no un corte. Dlx: «solo
+    # reworkea el de URB» y, mirando la vista previa, «me gusta la nueva».
+    # El panel es concreto oscuro y la línea divisoria chorrea pintura
+    # naranja, como los chorreados de la «UK» de su logo: ver `urbf_pared()`.
+    # La textura pasó de los rayones al concreto, que es la pared.
+    #
     # ⚠️ SNAKE RAP TAMBIEN ES NARANJA (#C2540A) y los separa el dibujo, no el
-    # tono: el suyo es un corte diagonal ancho sobre negro; este, un corte
-    # blanco fino y rayones sobre el degrade.
+    # tono: el suyo es un corte diagonal ancho sobre negro; este, la pintura
+    # que chorrea sobre la pared.
     A, B = '#EA7206', '#FFFFFF'
     d['URBF'] = (B, A,
-        f'linear-gradient(200deg,transparent 0 52%,{B} 52% 55%,'
-        f'{t(A,-.62)} 55% 100%),'
-        f'linear-gradient(166deg,{t(A,.46)} 0%,{A} 40%,{t(A,-.72)} 100%)',
-        f'background-image:url({tx("rayones")});background-size:180%;'
-        'background-position:center;mix-blend-mode:overlay;opacity:.20',
-        '', 'corte blanco duro + rayones')
+        f'url({urbf_pared()}) 0 0/300px 487px no-repeat,'
+        f'linear-gradient(166deg,{t(A,.46)} 0%,{A} 42%,{t(A,-.50)} 100%)',
+        f'background-image:url({tx("concreto")});background-size:cover;'
+        'background-position:center;mix-blend-mode:overlay;opacity:.40',
+        '', 'la pared: la línea chorrea pintura naranja sobre concreto oscuro')
 
     A, B = '#3D5BFF', '#FFFFFF'
     d['DRA'] = (B, A,
@@ -383,7 +460,7 @@ def defs():
     # `marmol.py`): ninguna de las otras once es de piedra.
     #
     # ⚠️ SU AMARILLO NO ES EL MIEL DE URBAN: medido como los demás, la marca queda a ΔE 23,9 de URBF y el marco
-    # (#F8E675) a 33 del suyo. Y el gesto los separa igual: URBF es un corte blanco y rayones.
+    # (#F8E675) a 33 del suyo. Y el gesto los separa igual: URBF es una pared con pintura que chorrea.
     A, B = ACAD_COLORES
     d['ACAD'] = (B, A, acad_fondo(A),
                  f'background:url({tx("marmol")}) center/cover,#D9B20A;background-blend-mode:multiply;'

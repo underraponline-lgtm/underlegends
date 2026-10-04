@@ -39,7 +39,7 @@ se trabaja de a uno:
 | **TWR** | franjas diagonales **a 215° (espejadas)** + fantasma de su silueta | ✅ **aprobado** |
 | **FTN** | **banda dorada al sesgo, ancha y baja** sobre azul marino | ✅ **aprobado** |
 | **FRZ** | **dos cortes al sesgo con los filos encendidos**, sobre degradé oscuro parejo, **sin textura** | ✅ **aprobado** |
-| **URBF** | **corte blanco duro + rayones**. Era el único de los nueve sin textura ni gesto duro | ✅ **aprobado** |
+| **URBF** | **la pared**: la línea chorrea pintura naranja sobre concreto oscuro, como los chorreados de su logo (`urbf_pared()`, 04/10/2026). Antes, corte blanco duro + rayones | ✅ **aprobado** (*«me gusta la nueva»*) |
 | **DRA** | **textura de óxido + tres líneas al pie** | ✅ **aprobado** |
 | **EFA** | **cuero fino sobre el cobre de su logo** (`#A95225`) + vivo al borde | ✅ **aprobado** |
 

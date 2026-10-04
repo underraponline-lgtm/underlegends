@@ -1457,11 +1457,14 @@ archivo cada uno mete **el color de su archivo** al lado del de la carta
 (TFC y FTN traían su negro, y su tinta quedaba chica adentro de ese negro:
 el cuadro se llenaba, el logo no).
 
-**Dos excepciones, las dos por el mismo motivo**: cuando el fondo es parte de
+**Tres excepciones, las tres por el mismo motivo**: cuando el fondo es parte de
 la marca, sacarlo no limpia, **borra**. **SR** lleva fondo propio, porque su
 cobra encendida existe contra el negro. **TWR** va a sangre con su baldosa
 entera: se le pueden separar las letras por saturación, pero las letras solas
-no se leen como TWR.
+no se leen como TWR. **URBF** lleva fondo propio oscuro desde el 04/10/2026:
+la corona, los chorreados y el subrayado de su «UK» son naranjas y sobre el
+naranja de su carta se perdían — Dlx: *«¿puedes usar no solo el icono pero
+todo el logo para el círculo de arriba?»*.
 
 ⚠️ **Las manchitas mueven el centro.** El archivo de DRA trae una marca de
 agua en la esquina, y como el centrado es por caja de tinta, esa manchita

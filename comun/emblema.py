@@ -76,7 +76,7 @@ Con el fondo puesto por la carta, DRA tiene azul —el suyo, el de su carta—,
 ninguno trae un color ajeno, y la tinta puede llenar porque ya no compite
 con un margen horneado.
 
-Quedan DOS EXCEPCIONES, y las dos por el mismo motivo: cuando el fondo es
+Quedan TRES EXCEPCIONES, y las tres por el mismo motivo: cuando el fondo es
 parte de la marca, sacarlo no limpia, borra.
 
   SR    su icono siempre fue una cobra encendida SOBRE NEGRO, y el naranja
@@ -86,6 +86,12 @@ parte de la marca, sacarlo no limpia, borra.
         separar las letras por saturacion —sale, baja de 100% a 64% de
         densidad— pero las letras solas no se leen como TWR. Va a sangre,
         con su baldosa entera, y por eso ignora el fondo de aca.
+  URBF  la corona, los chorreados y el subrayado de su «UK» son NARANJAS, y
+        sobre el naranja de su carta se perdian: quedaban las letras
+        blancas solas, que se leen como un icono y no como su logo. Dlx,
+        04/10/2026: «¿puedes usar no solo el icono pero todo el logo para
+        el circulo de arriba?». Lleva fondo propio, oscuro como la pared de
+        su carta (`los_nueve.urbf_pared()`), y el logo mas grande.
 
 Los escudos los genera herramientas/escudos_cuadrados.py.
 """
@@ -158,6 +164,7 @@ ESTRELLA = ('M12 2 L14.9 8.9 L22.4 9.5 L16.7 14.4 L18.4 21.7 L12 17.8 '
 # Servidores cuyo fondo es parte de la marca. Ver el porque arriba.
 FONDO_PROPIO = {
     'SR': 'linear-gradient(158deg,#1B1310 0%,#0C0704 55%,#050201 100%)',
+    'URBF': 'radial-gradient(circle at 50% 38%,#2E2620 0%,#15110E 58%,#070605 100%)',
 }
 A_SANGRE = {'TWR'}      # traen su baldosa entera: el fondo de aca no se ve
 
