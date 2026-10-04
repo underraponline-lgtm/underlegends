@@ -34,7 +34,7 @@ export function X2({ liga, enc, E }) {
           );
         })}
       </div>
-      <p className="en-e" aria-live="polite">{enc.pie(E, (v) => v)}</p>
+      <p className="en-e" aria-live="polite">{enc.pie(E, siglaDe)}</p>
     </article>
   );
 }

@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "2.22",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T00:55:00-04:00",
+   "titulo": "Una pasada de errores",
+   "items": [
+    "🔔 **Un anuncio borrado y vuelto a publicar ya no avisa «cancelado»**, y un «cancelado» de verdad le llega sólo a quien había recibido el aviso del evento.",
+    "⏹️ **Lo que ya terminó deja de decir «EN VIVO»**, aunque no hayan pasado los 90 minutos.",
+    "🏆 **«La última llave» y «el último campeón» son los más nuevos por fecha**, no por número.",
+    "🃏 **La historia de una carta nueva abre y comparte esa carta**, no la de Temporada.",
+    "🔤 **SNK y URB en las historias, Socios, Publicaciones, los perfiles y el ranking.**",
+    "🛡️ **Más privacidad en lo que se ve en vivo**: de una llave borrada sólo queda el título, y quien publica cada llave no aparece con su ID de Discord."
+   ]
+  },
+  {
    "version": "2.21",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T00:22:00-04:00",

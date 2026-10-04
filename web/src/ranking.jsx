@@ -420,7 +420,7 @@ function Detalle({ x, cfg, f, perf }) {
             {evs.slice(0, 5).map((ev) => (
               <li key={ev.n}>
                 <button type="button" className="sin-boton" onClick={() => accion.llave(ev.n)}>
-                  <span className="rk-det-ev"><b>{limpio(ev.e[0] || 'Evento ' + ev.n)}</b><small>{[ev.e[1], ev.e[4]].filter(Boolean).join(' · ')}</small></span>
+                  <span className="rk-det-ev"><b>{limpio(ev.e[0] || 'Evento ' + ev.n)}</b><small>{[ev.e[1] ? siglaDe(ev.e[1]) : '', ev.e[4]].filter(Boolean).join(' · ')}</small></span>
                   <span className={'rk-det-r' + (ev.puesto === 'Campeón' ? ' campeon' : '')}>{resultado(ev.puesto, true)}<small>+{num(ev.pts)} pts</small></span>
                 </button>
               </li>

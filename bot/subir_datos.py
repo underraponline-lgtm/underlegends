@@ -198,33 +198,45 @@ def versus_de(k, c, t, nac):
 # ⚠️ `pnick:` EMPIEZA CON `p` Y NO ES NUESTRO. Por eso se compara el
 # prefijo con los dos puntos y no la primera letra: `k.startswith('p')`
 # habría borrado la configuración de apodos.
-MIOS = ('p:', 'd:', 'dn:')
+MIOS = ('p:', 'd:', 'dn:', 'dx:')
 
 
-def cuentas_extra(gente, par_d, par_dn, cuentas=None):
-    """Las `dn:<id>` de las cuentas EXTRA de cada uno (`cuentas` de `datos/akas_a_mano.json`): `[{key, value}]`.
+def cuentas_extra(gente, par_d, par_dn, cuentas=None, bajas=None):
+    """Las `dx:<id>` de las cuentas EXTRA de cada uno (`cuentas` de `datos/akas_a_mano.json`): `[{key, value}]`.
 
     Sólo de quien está en `gente` (tiene carta) y sólo con un ID que no sea ya de nadie: una cuenta extra no le
-    quita la llave a otro. Ver el comentario de `armar()`."""
+    quita la llave a otro. Ver el comentario de `armar()`.
+
+    🔴 `dx:` Y NO `dn:` (revisión del 04/10/2026). En `dn:` el Worker no distinguía la cuenta extra de la de la Lista:
+    `/borrar-mis-datos` desde la segunda cuenta de Monet le borraba el perfil, las cartas y la foto a la primera, y
+    `/card` le guardaba como foto de la carta el avatar de la segunda. Con su propia clave, la extra abre las cartas
+    (`claveCarta()`) y nada más; si pide borrar, se borra sólo ella. Y respeta las bajas (`olvido:`): quien pidió salir
+    desde esa cuenta no vuelve en la corrida siguiente."""
     if cuentas is None:
         try:
             with io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
                 cuentas = (json.load(f) or {}).get('cuentas') or {}
         except (OSError, ValueError):
             cuentas = {}
+    if bajas is None:
+        try:
+            import verificados as _VER
+            bajas = set(_VER._olvidados())
+        except Exception:                                # noqa: BLE001
+            bajas = set()
     clave_de = {}
     for k, x in gente:
         clave_de.setdefault(str(x.get('raw') or '').lower(), k)
-    out = []
+    out, vistos = [], set()
     for nombre, ids in cuentas.items():
         k = clave_de.get(str(nombre).lower())
         if not k:
             continue
         for did in ids or ():
             did = str(did).strip()
-            if did.isdigit() and did not in par_d and did not in par_dn:
-                par_dn[did] = {'key': 'dn:' + did, 'value': k}
-                out.append(par_dn[did])
+            if did.isdigit() and did not in par_d and did not in par_dn and did not in bajas and did not in vistos:
+                vistos.add(did)
+                out.append({'key': 'dx:' + did, 'value': k})
     return out
 
 
@@ -705,7 +717,7 @@ def armar():
     # 🔑 LA OTRA CUENTA DE ALGUIEN ABRE SUS CARTAS. Dlx, 03/10/2026 («11. A» y
     # «A»): Monet se anota desde @monet_x. y en la Lista está @monet_oficial;
     # `/card` desde la segunda le decía que no estaba. Las cuentas extra viven
-    # en `cuentas` de `datos/akas_a_mano.json` y van en `dn:`, que lee sólo
+    # en `cuentas` de `datos/akas_a_mano.json` y van en `dx:`, que lee sólo
     # `claveCarta()` del Worker: abren las cartas, nada más. Lo de la cuenta
     # —/foto, Mis redes, seguir, los avisos— sigue siendo de la de la Lista.
     # ⚠️ Un ID que ya es de alguien (en `d:` o en `dn:`) no se pisa.

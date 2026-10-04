@@ -59,8 +59,12 @@ function hace(t) {
 let TODAS = null;
 function pedirTodas() {
   if (!TODAS) {
+    // ⚠️ lo que falla NO se guarda (revisión del 04/10/2026): un pedido que no llegó quedaba como respuesta para toda la
+    // visita, y cada llave vieja que se abría después decía «link mal copiado». La próxima vez se pide de nuevo
     TODAS = fetch('/api/llaves', { headers: { accept: 'application/json' } })
-      .then((r) => (r.ok ? r.json() : {})).then((t) => (t && t.llaves) || t || {}).catch(() => null);
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((t) => (t && t.llaves) || t || {})
+      .catch(() => { TODAS = null; return null; });
   }
   return TODAS;
 }
@@ -536,7 +540,7 @@ function Reporte({ n }) {
       <div className="lk-rep-q" role="group" aria-label="Qué está mal">
         {REP_QUE.map(([id, et]) => <button key={id} type="button" aria-pressed={que === id} className={que === id ? 'on' : ''} onClick={() => setQue(id)}>{et}</button>)}
       </div>
-      <textarea maxLength={300} rows={3} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={'Qué batalla y qué pasó' + (que === 'otro' ? '' : ' (si querés)')} />
+      <textarea aria-label="Qué está mal en la llave" maxLength={300} rows={3} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={'Qué batalla y qué pasó' + (que === 'otro' ? '' : ' (si querés)')} />
       <div className="lk-rep-pie">
         <button type="button" className="btn verde chico" disabled={!que || va} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
         <span aria-live="polite">{est}</span>

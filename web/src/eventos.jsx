@@ -370,7 +370,7 @@ function Mes({ liga, porDia, dia, onDia, ym, setYm, color }) {
 
 // ── los últimos campeones: la carta de verdad del campeón (o su cara) y su llave ──────────────────────────────────
 function Campeones({ liga }) {
-  const ls = liga.llaves().slice(0, 8);
+  const ls = liga.llavesPorFecha().slice(0, 8);
   if (!ls.length) return null;
   return (
     <div className="rail evp-camps">
@@ -454,7 +454,7 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
       <ul className="evp-cj">
         <li className="evp-cj-cab" aria-hidden="true"><span />{SEMANA.map((d, i) => <u key={i} className={i === dow ? 'on' : ''}>{d}</u>)}</li>
         {P.svs.map((s) => (
-          <li key={s.sv} aria-label={s.sv + ': ' + diasEnPalabras(s.dias) + ', de ' + horaDe(s.ref, s.desde) + ' a ' + horaDe(s.ref, s.hasta)}>
+          <li key={s.sv} aria-label={siglaDe(s.sv) + ': ' + diasEnPalabras(s.dias) + ', de ' + horaDe(s.ref, s.desde) + ' a ' + horaDe(s.ref, s.hasta)}>
             <span className="evp-cj-sv"><img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</span>
             {s.dias.map((k, i) => (
               <i key={i} className={(k ? 'si' : 'no') + (i === dow ? ' on' : '')} style={k ? { background: color(s.sv), opacity: k >= 3 ? 1 : k === 2 ? 0.72 : 0.42 } : null}
@@ -624,7 +624,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   // ── el momento de arriba: lo que se juega ahora, lo próximo, o el último campeón ──
   const proximo = cal.filter((c) => utc(c.t).getTime() > ahora && !esVivo(c)).sort((a, b) => (a.t < b.t ? -1 : 1))[0];
   const vivoAhora = vivoS[0];
-  const ultima = liga.llaves()[0];
+  const ultima = liga.llavesPorFecha()[0];
   const A = liga.d.actividad || {};
   const jugadosPorSv = {};
   cal.forEach((c) => { if (c.ll) jugadosPorSv[c.sv] = (jugadosPorSv[c.sv] || 0) + 1; });

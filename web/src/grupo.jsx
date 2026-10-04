@@ -107,7 +107,9 @@ export function PaginaPais({ liga, cc: cc0 }) {
   if (!P && !gente.length) return <NoEsta que="Ese país" href="#/ranking/paises" volver="Ver los países" />;
   const nom = nombrePais(cc);
   const pts = P ? P.pts : gente.reduce((a, f) => a + (f.pts || 0), 0);
-  const n = gente.length || (P ? P.n : 0);
+  // ⚠️ los raperos del país, de `paises` como el puntaje: la tabla viaja cortada en 200 y contar sus filas daba menos
+  // gente y más «por rapero» que el Ranking de países (revisión del 04/10/2026)
+  const n = P ? P.n : gente.length;
   const crews = (liga.d.crews || []).filter((c) => (c.gente || []).some((x) => { const f = liga.fila(x); return f && String(f.cc).toLowerCase() === cc; }));
   return (
     <>

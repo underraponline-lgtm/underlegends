@@ -1703,7 +1703,7 @@ def _cancelados(cal, LW, escribir=False, vigia=None, ahora_ms=None, guardados=No
             vigia = {}
     import llaves_a_entrada as LE
     nombrar = lambda xs: [dict(sv=x.get('sv') or '', pub=x.get('pub'), ed=x.get('ed'), id=x.get('id'),
-                               t=x.get('t'), nombre=LE.titulo(x.get('texto') or ''))
+                               t=x.get('t'), nombre=x.get('titulo') or LE.titulo(x.get('texto') or ''))
                           for x in xs or () if isinstance(x, dict)]
     # sólo las que tienen título, como la página (`VIVO_B` de app.js): una de prueba sin nombre no cancela a nadie
     borradas = [b for b in nombrar((vigia or {}).get('borradas'))
@@ -3250,7 +3250,9 @@ def _self_check():
     ok(len(_ks) == len(set(_ks)), 'cada rapero de la tabla tiene su clave (%d repetidas)'
        % (len(_ks) - len(set(_ks))))
     _vk = sorted(x['k'] for x in p['tabla'] if x['n'].lower() == 'volk')
-    ok(len(_vk) in (0, 2) and (not _vk or len(set(_vk)) == 2),
+    # ⚠️ lo que importa es que no compartan clave: la tabla viaja cortada en 200 y uno de los dos puede quedar afuera
+    # (pasó el 04/10/2026: sólo `volk-mx`, y con su sufijo, o sea separado)
+    ok(len(_vk) <= 1 or len(set(_vk)) == len(_vk),
        'Volk y volk son dos: %s' % _vk)
     ok(_banderas('volk 🇨🇴') == ['co'] and _banderas('Snow') == [], 'las banderas de un nombre')
     _g = p.get('guia') or {}

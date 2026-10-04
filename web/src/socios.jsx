@@ -123,7 +123,7 @@ export function Socios({ liga }) {
         <div className="soc-sumar-tit">
           <span className="tag">PARA SERVIDORES</span>
           <h2 className="hero-ev">Sumá tu servidor</h2>
-          <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => s.sv).join(', ')}. Esto es lo que la Liga hace por cada uno.</p>
+          <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => siglaDe(s.sv)).join(', ')}. Esto es lo que la Liga hace por cada uno.</p>
         </div>
         {/* 🔍 con `lg:prev-sum`, cada caja se toca y muestra su ejemplo (Dlx, 03/10/2026) */}
         <QueGana ejemplos />

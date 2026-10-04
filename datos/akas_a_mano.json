@@ -93,7 +93,7 @@
   "🔑 `cuentas`: las OTRAS cuentas de Discord de alguien, que también abren sus",
   "   cartas con /card. Dlx, 03/10/2026 («11. A» y «A»): Monet se anota desde",
   "   @monet_x. (1501320596485701642) y en la Lista está @monet_oficial. Van en",
-  "   `dn:` (`subir_datos.cuentas_extra()`): sólo las cartas; lo de la cuenta",
+  "   `dx:` (`subir_datos.cuentas_extra()`): sólo las cartas; lo de la cuenta",
   "   sigue siendo de la de la Lista."
  ],
  "cuentas": {

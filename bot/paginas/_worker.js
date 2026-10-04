@@ -129,7 +129,10 @@ async function avisos(req, url) {
     // la clave pública no cambia: una hora en el borde
     init.cf = { cacheTtl: 3600, cacheEverything: true };
   } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') ||
-             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos')) {
+             url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') ||
+             url.pathname.endsWith('/estado')) {
+    // ⚡ `/estado` también (revisión del 04/10/2026): la campana lo pide en cada visita, es público —cuántos,
+    // cuándo, nunca quién— y cada pedido eran once lecturas de tablas enteras en el objeto que vigila
     // ⚠️ 30 s EN EL BORDE: la página pregunta cada minuto y el vigía escribe
     // cada minuto; con esto, mucha gente mirando son pocos pedidos al Worker.
     // Los votos, igual: quien vota recibe su cuenta en la respuesta del voto

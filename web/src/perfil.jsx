@@ -9,7 +9,7 @@
 // lo que le falta, `ins` sus insignias, `mw` su cacería; `e` los eventos y `dmp` el promedio de la Liga). Las acciones
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { limpio, num, siglaDe } from './liga.js';
+import { diaISO, limpio, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Rango, SinCarta, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 
@@ -21,9 +21,12 @@ const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: '
 const enComparar = (x) => !!x && (x.c || []).includes('temporada') && x.fo !== 0;
 const NV = { id: 'su Discord todavía no está vinculado a la Liga', pais: 'le falta el país', dra: 'tiene que ser Miembro de Discord Rap Español' };
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉' };
+// en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026)
 const fecha = (iso) => {
   const d = new Date(iso);
-  return isNaN(d) ? '' : d.getDate() + ' ' + ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEPT', 'OCT', 'NOV', 'DIC'][d.getMonth()];
+  if (isNaN(d)) return '';
+  const [, m, dd] = diaISO(d).split('-');
+  return Number(dd) + ' ' + ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEPT', 'OCT', 'NOV', 'DIC'][Number(m) - 1];
 };
 
 // ── seguir: el de app.js (`alternarSigo()`: este navegador y, si entraste con Discord, tu cuenta). A quién seguís
@@ -306,7 +309,7 @@ function Eventos({ liga, p, e }) {
               <span className="pf-ev-f">{x[2] ? fecha(x[2]) : x[4] || ''}</span>
               <div className="pf-ev-tx">
                 <b>{limpio(x[0] || 'Evento ' + n)}</b>
-                <small>{x[1] ? <img alt="" src={liga.logo(x[1])} /> : null}{x[1] || ''}{x[3] ? ' · ' + x[3] + ' raperos' : ''}</small>
+                <small>{x[1] ? <img alt="" src={liga.logo(x[1])} /> : null}{x[1] ? siglaDe(x[1]) : ''}{x[3] ? ' · ' + x[3] + ' raperos' : ''}</small>
               </div>
               <span className="pf-ev-p">{MEDALLA[puesto] ? MEDALLA[puesto] + ' ' : ''}{puesto}</span>
               <b className="pf-ev-pts">{num(pts)}</b>

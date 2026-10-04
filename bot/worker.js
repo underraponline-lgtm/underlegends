@@ -360,7 +360,8 @@ async function quienEs(i, env) {
 // sólo quien no está verificado.
 async function claveCarta(env, id) {
   if (!id) return null;
-  return (await env.KV.get('d:' + id)) || (await env.KV.get('dn:' + id));
+  // 🔑 y la cuenta EXTRA de alguien (`dx:`, `subir_datos.cuentas_extra()`, 04/10/2026): abre sus cartas y nada más
+  return (await env.KV.get('d:' + id)) || (await env.KV.get('dn:' + id)) || (await env.KV.get('dx:' + id));
 }
 const quienEsCarta = (i, env) => claveCarta(env, idDe(i));
 
@@ -401,13 +402,14 @@ function anotar(env, ctx, id, nick, user, glob, guild, por) {
   if (!id || !ctx || !ctx.waitUntil) return;
   ctx.waitUntil((async () => {
     try {
-      const [ya, yaN, cola, baja] = await Promise.all([
-        env.KV.get('d:' + id), env.KV.get('dn:' + id), env.KV.get('reg:' + id),
+      const [ya, yaN, yaX, cola, baja] = await Promise.all([
+        env.KV.get('d:' + id), env.KV.get('dn:' + id), env.KV.get('dx:' + id), env.KV.get('reg:' + id),
         env.KV.get('olvido:' + id),
       ]);
-      // ya cargado: verificado (`d:`) o en la Lista sin verificar (`dn:`, las
-      // LIBRES del 29/09/2026). Anotarlo sería trabajo para nadie.
-      if (ya || yaN) return;
+      // ya cargado: verificado (`d:`), en la Lista sin verificar (`dn:`, las
+      // LIBRES del 29/09/2026) o la cuenta extra de alguien (`dx:`). Anotarlo
+      // sería trabajo para nadie.
+      if (ya || yaN || yaX) return;
       // 🔴 QUIEN BORRÓ SUS DATOS NO SE VUELVE A ANOTAR con un `/card` suelto:
       // `/borrar-mis-datos` promete que no lo sumamos solo. Vuelve si se lo
       // pide a un admin (`bot/olvidar.py --volver`).
@@ -1115,7 +1117,10 @@ const FRENO = { comando: [4, 30000], click: [10, 10000],
   // cuenta: sin freno, alguien con su permiso de Discord podía agotarlas
   // guardando y quitando redes en un bucle, y el ciclo se quedaba sin poder
   // escribir el lobby (revisión del 25/09/2026). Seis por minuto por persona.
-  cuenta: [6, 60000] };
+  cuenta: [6, 60000],
+  // 🔴 Y LO QUE TAMBIÉN ESCRIBE KV (revisión del 04/10/2026): el panel de ajustes guardaba en cada click, y anotar a
+  // un tercero desde `/card quien:` o `/versus` era una escritura por persona nombrada. Por persona y por isolate
+  ajuste: [5, 60000], otro: [3, 3600000] };
 
 function frenado(id, tipo) {
   if (!id) return 0;
@@ -2152,6 +2157,14 @@ async function fotoAR2(env, quien, id, hash, arranco) {
  */
 async function avisoFoto(env, i, quien, g) {
   if (!env.CARTAS || !quien) return;
+  // 🔴 sólo la cuenta de la Lista (`d:` o `dn:`): desde la cuenta EXTRA de alguien (`dx:`) esto guardaba el avatar de
+  // ESA cuenta como la foto de la carta (revisión del 04/10/2026)
+  const yo = idDe(i);
+  try {
+    if (!yo || !((await env.KV.get('d:' + yo)) || (await env.KV.get('dn:' + yo)))) return;
+  } catch (e) {
+    return;
+  }
   try {
     if (await env.CARTAS.head(claveFoto(env, quien))) return;
   } catch (e) {
@@ -2445,33 +2458,40 @@ export async function borrarMisDatos(env, id) {
   // sin verificar tiene sus cartas bajo `dn:<id>`, y esto leía sólo `d:`: no
   // encontraba su clave y no borraba nada en el momento, aunque el mensaje
   // decía que sí. Lo encontró la auditoría legal del 01/10.
+  // 🔴 LA BAJA PRIMERO (revisión del 04/10/2026): se escribía al final, y si algo fallaba en el medio —R2 no contesta,
+  // se pasan los 3 s de Discord— la corrida siguiente volvía a sumar a la persona que había pedido salir
+  await env.KV.put('olvido:' + id, JSON.stringify({ t: Date.now() }));
   const [cd, cdn] = await Promise.all([env.KV.get('d:' + id), env.KV.get('dn:' + id)]);
+  // ⚠️ SÓLO LA CUENTA DE LA LISTA (`d:` o `dn:`). La cuenta EXTRA de alguien (`dx:`, la segunda de Monet) borra su
+  // llave y nada más: el perfil, las cartas y la foto son de la otra cuenta, que no pidió nada
   const clave = cd || cdn;
   hecho.clave = clave || '';
-  const kv = ['d:' + id, 'dn:' + id];
+  const kv = ['d:' + id, 'dn:' + id, 'dx:' + id];
   if (clave) kv.push('p:' + clave, 'redes:' + clave, claveUso(env, clave));
   for (const k of kv) {
     try { await env.KV.delete(k); hecho.kv++; } catch (e) { /* se sigue con lo demás */ }
   }
   if (clave && env.CARTAS) {
-    const borrar = [];
-    for (const pref of [clave + '/', 'fotos/']) {
+    try {
+      const borrar = [];
       let cursor;
       do {
-        const l = await env.CARTAS.list({ prefix: pref, cursor, limit: 1000 });
-        for (const o of l.objects) {
-          if (pref !== 'fotos/' || o.key.endsWith('/' + clave + '.webp')) borrar.push(o.key);
-        }
+        const l = await env.CARTAS.list({ prefix: clave + '/', cursor, limit: 1000 });
+        for (const o of l.objects) borrar.push(o.key);
         cursor = l.truncated ? l.cursor : undefined;
       } while (cursor);
-    }
-    for (let j = 0; j < borrar.length; j += 1000) {
-      await env.CARTAS.delete(borrar.slice(j, j + 1000));
-    }
-    hecho.r2 = borrar.length;
+      // la foto, una por temporada: las carpetas de `fotos/` (pocas) y su archivo, sin listar todas las fotos
+      const ts = await env.CARTAS.list({ prefix: 'fotos/', delimiter: '/' });
+      for (const t of ts.delimitedPrefixes || []) {
+        if (await env.CARTAS.head(t + clave + '.webp')) borrar.push(t + clave + '.webp');
+      }
+      for (let j = 0; j < borrar.length; j += 1000) {
+        await env.CARTAS.delete(borrar.slice(j, j + 1000));
+      }
+      hecho.r2 = borrar.length;
+    } catch (e) { hecho.r2 = 0; }
   }
   hecho.avisos = await olvidarAvisos(env, id);
-  await env.KV.put('olvido:' + id, JSON.stringify({ t: Date.now() }));
   return hecho;
 }
 
@@ -2774,7 +2794,7 @@ const COMANDOS = {
         // La persona elegida no está cargada, pero SU ID lo tenemos acá mismo
         // (es el valor del selector) — se anota para no perderlo.
         const d = datosDe(i, porUsuario.value);
-        anotar(env, ctx, porUsuario.value, d.nick, d.user, d.glob, i.guild_id, 'otro');
+        if (!frenado(idDe(i), 'otro')) anotar(env, ctx, porUsuario.value, d.nick, d.user, d.glob, i.guild_id, 'otro');
         return aviso(`${comoDije} todavía no está en la Liga — lo anoté para ` +
                      'que un admin lo cargue.\n' +
                      'Si sabés su nombre de competencia: `/card nombre:<su nombre>`.');
@@ -2927,7 +2947,7 @@ const COMANDOS = {
       // momento en que el bot la tiene delante. Hoy son 25 de 469 sin ID.
       if (rival.id) {
         const d = datosDe(i, rival.id);
-        anotar(env, ctx, rival.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
+        if (!frenado(idDe(i), 'otro')) anotar(env, ctx, rival.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
       return aviso(`${rival.como} todavía no está en la Liga — lo anoté para ` +
                    'que un admin lo cargue.');
@@ -3697,7 +3717,10 @@ export default {
         if (!puedeAjustar(i)) {
           return aviso('Ya no tenés permiso para tocar los ajustes del servidor.');
         }
+        const esperarA = frenado(idDe(i), 'ajuste');
+        if (esperarA) return espera(esperarA);
         const cfg = await ajustes(env, i.guild_id);
+        const antesCfg = JSON.stringify(cfg);
         const vals = (i.data && i.data.values) || [];
         if (quien === 'nick') cfg.nick = !cfg.nick;
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
@@ -3706,7 +3729,8 @@ export default {
         // ⚠️ Mismo motivo que en `/numeral`: sin `try`, un día sin cupo
         // de KV es «la aplicación no respondió» y el admin no sabe si quedó.
         try {
-          await env.KV.put(claveCfg(i.guild_id), JSON.stringify(cfg));
+          // sin cambios, sin escritura: elegir otra vez los mismos canales no gasta cupo
+          if (JSON.stringify(cfg) !== antesCfg) await env.KV.put(claveCfg(i.guild_id), JSON.stringify(cfg));
         } catch (e) {
           return aviso('No pude guardar el ajuste (`' + String(e).slice(0, 60) +
                        '`): quedó como estaba. Probá de nuevo en un rato.');

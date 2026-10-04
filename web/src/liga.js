@@ -91,7 +91,7 @@ export function hora(t) {
   if (W.fmtHora) return W.fmtHora(d);
   return d.toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit' });
 }
-function diaISO(d) {
+export function diaISO(d) {
   if (W.diaDe) return W.diaDe(d);
   const p = (x) => String(x).padStart(2, '0');
   return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
@@ -372,9 +372,23 @@ export class Liga {
     // app.js): si la de este evento se borró hace 5 min o más y no hay otra, deja de estar en vivo. Los 5 min son para
     // el que la borra y la vuelve a publicar corregida
     const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
+    // 🔴 Y LO QUE YA TERMINÓ NO ES «EN VIVO» aunque estemos dentro de los 90 minutos (revisión del 04/10/2026): un 1v1
+    // de ocho que arranca 20:00 y termina 20:50 salía a la vez «● EN VIVO» y «TERMINÓ · Campeón» en Fechas, y «se juega
+    // ahora» en el escenario, hasta las 21:30. Terminó = su llave en vivo tiene campeón y no hay otra sin terminar, o el
+    // ciclo ya procesó su llave (`ll` del calendario)
+    const termino = (e) => {
+      if (todas.length && window.llaveDeEvento) {
+        try {
+          const L = window.llaveDeEvento(e, todas);
+          if (L && L.terminada && !window.llaveDeEvento(e, ls)) return true;
+        } catch (err) { /* sigue */ }
+      }
+      return (this.d.calendario || []).some((c) => c.ll && ((e.link && c.link === e.link)
+        || (c.sv === e.sv && limpio(c.n) === limpio(e.nombre) && Math.abs(utc(c.t) - utc(e.cuando)) < 6 * 3600000)));
+    };
     const out = this.proximos().filter((e) => {
       const s = desde(e);
-      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e);
+      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e) && !termino(e);
     });
     (this.d.calendario || []).forEach((c) => {
       const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };
@@ -412,14 +426,33 @@ export class Liga {
     if (!bs.length || !window.llaveDeEvento) return false;
     try {
       const b = window.llaveDeEvento(e, bs);
-      return !!b && this.ahora - b.borrada >= 5 * 60000 && !window.llaveDeEvento(e, Object.values(window.VIVO_L || {}));
+      return !!b && this.ahora - b.borrada >= 5 * 60000 && !window.llaveDeEvento(e, Object.values(window.VIVO_L || {}))
+        && !window.llaveDeEvento(e, this.llavesDelVigia());
     } catch (err) { return false; }
+  }
+  // ⚠️ Y CONTRA TODAS LAS LLAVES QUE VIO EL VIGÍA (6 h), no sólo las en vivo de `VIVO_L` (3 h): una llave borrada y
+  // vuelta a publicar al empezar, jugada hasta las 21:10 y sin procesar a las 00:10, pasaba a «CANCELADO» (revisión del
+  // 04/10/2026). Con su título, una vez por cada `window.VIVO`
+  llavesDelVigia() {
+    const V = typeof window !== 'undefined' ? window.VIVO : null;
+    if (this.vigiaV === V && this.vigiaL) return this.vigiaL;
+    const LV = typeof window !== 'undefined' ? window.LlaveVivo : null;
+    this.vigiaV = V;
+    this.vigiaL = ((V && V.llaves) || []).map((m) => {
+      let n = '';
+      try { n = LV ? LV.titulo(m.texto || '') : ''; } catch (err) { n = ''; }
+      return n ? { sv: m.sv || '', nombre: n, pub: m.pub, ed: m.ed } : null;
+    }).filter(Boolean);
+    return this.vigiaL;
   }
   // ⚠️ una del calendario con su llave procesada nunca: lo que se jugó, se jugó
   canceladoCal(c) { return !!c && !c.ll && (!!c.can || this.llaveBorrada({ cuando: c.t, sv: c.sv, nombre: c.n })); }
   // en orden de hora: lo que suma el vigía va al final de la lista y puede ser lo primero que se juega
   luego() { return this.proximos().filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)).sort((a, b) => utc(a.cuando) - utc(b.cuando)); }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }
+  // 🔑 por FECHA, la más nueva primero: el número es el orden en que el ciclo las cargó, y se procesan desordenadas (lo
+  // que ya hacía Fechas). «La última llave» y «el último campeón» salían de otro día (revisión del 04/10/2026)
+  llavesPorFecha() { return this.llaves().slice().sort((a, b) => utc(this.fechaLlave(b)) - utc(this.fechaLlave(a))); }
   campeon(ll) {
     const t = ll.tabla || [];
     const g = t.filter((x) => x[1] === 'Campeón').map((x) => limpio(x[0]));

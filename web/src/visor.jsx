@@ -38,13 +38,14 @@ function bajar(url, nombre, fin) {
   }).catch(() => { window.open(url, '_blank', 'noopener'); }).then(fin, fin);
 }
 
-export function VisorCarta({ liga, dc, k, onCerrar }) {
+export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const f = filaDe(liga, dc, k);
   const cs = f ? ORDEN.filter((c) => (f.c || []).includes(c)) : [];
   const bl = f && f.cuenta ? ORDEN.filter((c) => (f.bl || []).includes(c) && !cs.includes(c)) : [];
   const pest = cs.map((c) => [c, NOMBRE[c]]).concat(bl.map((c) => ['bloq-' + c, NOMBRE[c] + ' 🔒']));
-  const [cual, setCual] = useState(pest[0] ? pest[0][0] : '');
-  useEffect(() => { setCual(pest[0] ? pest[0][0] : ''); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
+  const primera = inicial && pest.some((p) => p[0] === inicial) ? inicial : (pest[0] ? pest[0][0] : '');
+  const [cual, setCual] = useState(primera);
+  useEffect(() => { setCual(primera); }, [k, inicial]); // eslint-disable-line react-hooks/exhaustive-deps
   const [yendo, setYendo] = useState(false);
   const cerrarB = useRef(null);
   // Escape cierra, la página de atrás no se mueve, y el foco vuelve a donde estaba

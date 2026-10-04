@@ -68,7 +68,8 @@ export const accion = {
   salir: () => luego(() => { if (window.cuentaSalir) window.cuentaSalir(); }),
   ajustes: () => luego(() => { const b = document.getElementById('bAjustes2'); if (b) b.click(); }),
   // la tarjeta, en la ventana nueva (`visor.jsx`, 2.10): la abre App.jsx con `lg:carta`
-  carta: (k) => { window.dispatchEvent(new CustomEvent('lg:carta', { detail: k })); },
+  // con `cual`, abre en esa carta (la historia de una carta nueva de País abría la de Temporada, revisión del 04/10/2026)
+  carta: (k, cual) => { window.dispatchEvent(new CustomEvent('lg:carta', { detail: cual ? k + '|' + cual : k })); },
   // la llave nueva es una página (2.10): se va a su dirección, y el «atrás» vuelve
   llave: (n) => { location.hash = '#/llave/' + encodeURIComponent(n); },
   perfil: (k) => { location.hash = '#/r/' + encodeURIComponent(k); },

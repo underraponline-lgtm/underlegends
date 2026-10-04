@@ -2147,9 +2147,20 @@ console.log('\n/borrar-mis-datos\n');
     'fotos/t1/otro.webp', 'otro/temporada.webp', 'borrame-co/temporada.webp']);
   const soltados = [];
   const envAntes = { CARTAS: env.CARTAS, AVISOS: env.AVISOS };
+  // como R2: con `delimiter`, las «carpetas» van en `delimitedPrefixes` (la foto se busca por temporada, 04/10/2026)
   env.CARTAS = {
-    list: async ({ prefix }) => ({ objects: [...r2].filter((k) => k.startsWith(prefix)).map((key) => ({ key })),
-      truncated: false }),
+    list: async ({ prefix, delimiter }) => {
+      const ks = [...r2].filter((k) => k.startsWith(prefix));
+      if (!delimiter) return { objects: ks.map((key) => ({ key })), truncated: false };
+      const pre = new Set();
+      const objects = [];
+      ks.forEach((k) => {
+        const i = k.slice(prefix.length).indexOf(delimiter);
+        if (i >= 0) pre.add(k.slice(0, prefix.length + i + 1)); else objects.push({ key: k });
+      });
+      return { objects, delimitedPrefixes: [...pre], truncated: false };
+    },
+    head: async (k) => (r2.has(k) ? { key: k } : null),
     delete: async (ks) => { for (const k of [].concat(ks)) r2.delete(k); },
   };
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
@@ -2197,10 +2208,23 @@ console.log('\n/borrar-mis-datos\n');
   ok('a quien está en la Lista sin verificar también le borra todo, en el momento',
      !('dn:' + IDN in PUESTO) && !('p:librebaja' in PUESTO) && ![...r2].some((k) => k.startsWith('librebaja/')),
      Object.keys(PUESTO).filter((k) => k.includes('librebaja') || k.includes(IDN)).join(',') + ' · ' + [...r2].join(','));
+  // 🔴 la cuenta EXTRA de alguien (`dx:`, la segunda de Monet) borra su llave y nada más (revisión del 04/10/2026)
+  const IDX = '700820';
+  PUESTO['dx:' + IDX] = 'dueno';
+  PUESTO['p:dueno'] = '{"n":"Dueño","nv":1}';
+  r2.add('dueno/temporada.webp');
+  r2.add('fotos/t1/dueno.webp');
+  r = await boton(IDX, 'baja:si::' + IDX);
+  ok('la cuenta extra borra sólo su llave: el perfil, las cartas y la foto de la otra cuenta quedan',
+     !('dx:' + IDX in PUESTO) && 'p:dueno' in PUESTO && r2.has('dueno/temporada.webp') && r2.has('fotos/t1/dueno.webp') &&
+     !!PUESTO['olvido:' + IDX],
+     Object.keys(PUESTO).filter((k) => k.includes('dueno') || k.includes(IDX)).join(',') + ' · ' + [...r2].join(','));
+  delete PUESTO['p:dueno'];
   env.CARTAS = envAntes.CARTAS;
   env.AVISOS = envAntes.AVISOS;
   delete PUESTO['olvido:' + ID];
   delete PUESTO['olvido:' + IDN];
+  delete PUESTO['olvido:' + IDX];
 }
 
 console.log('\nLAS ENCUESTAS\n');

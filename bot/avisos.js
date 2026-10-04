@@ -164,6 +164,18 @@ export async function claveCiclo(token) {
  * red) no dice nada: no se cancela un evento porque Discord no contestó.
  */
 export const CANCELADO = /\bcancelad[oa]s?\b|\bsuspendid[oa]s?\b|\bse\s+cancel[aó]\b/i;
+/** Un código corto y estable de un texto (dos FNV-1a de 32 bits): para comparar sin mostrar lo que es (ver `vivo()`). */
+export function codigoDe(s) {
+  let a = 0x811c9dc5, b = 0x5bd1e995;
+  const t = String(s);
+  for (let i = 0; i < t.length; i++) {
+    const c = t.charCodeAt(i);
+    a = Math.imul(a ^ c, 0x01000193);
+    b = Math.imul(b ^ c, 0x5bd1e995) ^ (b >>> 15);
+  }
+  return (a >>> 0).toString(16).padStart(8, '0') + (b >>> 0).toString(16).padStart(8, '0');
+}
+
 export function cancelado(estado, m, cuerpo, avisado) {
   // 🔴 SÓLO EL MENSAJE QUE NO EXISTE (código 10008). Discord también contesta 404 cuando se borró el CANAL entero
   // (10003): un servidor que rehace su canal de eventos cancelaba todos sus eventos anotados (revisión del 03/10/2026).
@@ -1657,8 +1669,11 @@ export function pareceLlave(texto) {
   if (/CAMPEON|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO/i.test(s.replace(/[\u0300-\u036f]/g, ''))) return true;
   // \ud83d\udd11 LA NAVE DE FUNA, desde la fase: una lista con \u274c y sin \ud83c\udd9a todav\u00eda (Dlx,
   // 29/09/2026). La p\u00e1gina la lee con `funaDe()` de `llave_vivo.js`.
-  if (/fase\s+de\s+eliminaci|nave\s+de\s+funa|aniquilaci|c[iy]pher/i.test(s) &&
-      (s.match(/[\u231d\]\u300d\u300f\u274c]/g) || []).length >= 4) return true;
+  // y la de EXTERMINACI\u00d3N (03/10/2026), que marca a cada uno con \u00abELIMINADO #N\u00bb en vez de \u274c: sin eso, una lista de la
+  // fase sin los adornos de esa llave no se guardaba (revisi\u00f3n del 04/10/2026)
+  if (/fase\s+de\s+eliminaci|nave\s+de\s+funa|exterminaci|aniquilaci|c[iy]pher/i.test(s) &&
+      (s.match(/[\u231d\]\u300d\u300f\u274c]/g) || []).length +
+      (s.match(/\bELIM\w{0,4}NAD[OA]S?\b/gi) || []).length >= 4) return true;
   return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
     (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉/gi) || []).length >= 2;
 }
@@ -2293,6 +2308,12 @@ export class Avisos {
           id TEXT NOT NULL,
           t INTEGER NOT NULL
         );
+        CREATE TABLE IF NOT EXISTS repetidos (
+          id TEXT PRIMARY KEY,
+          de TEXT NOT NULL,
+          canal TEXT NOT NULL,
+          t INTEGER NOT NULL
+        );
         CREATE TABLE IF NOT EXISTS vivo (
           id TEXT PRIMARY KEY,
           canal TEXT NOT NULL,
@@ -2341,6 +2362,9 @@ export class Avisos {
       // —si lo vinculó entrando con Discord— y qué aviso personal ya salió.
       // `ADD COLUMN` falla si ya está: es la migración de una sola vez.
       try { this.sql.exec("ALTER TABLE subs ADD COLUMN quien TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      // ⚡ se busca por `quien` cada minuto (los avisos de cada uno, «te toca», la bandeja): sin índice era recorrer
+      // todas las suscripciones cada vez (revisión del 04/10/2026)
+      this.sql.exec('CREATE INDEX IF NOT EXISTS subs_quien ON subs (quien)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS hechos (id TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🔑 LAS ENCUESTAS (27/09/2026): un voto por Discord ID y por encuesta,
       // que se cambia hasta que cierra. Ver `validarVoto()` y `votar()`.
@@ -2435,7 +2459,11 @@ export class Avisos {
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.estado(), 200, 20);
-      if (ruta === '/vivo') return json(this.vivo(), 200, 20);
+      if (ruta === '/vivo') {
+        // el título de las borradas sale del lector de la página (ver `vivo()`)
+        if (!globalThis.LlaveVivo) { try { await import('./llave_vivo.js'); } catch (e) { /* sin título */ } }
+        return json(this.vivo(), 200, 20);
+      }
       if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
       if (ruta === '/precios') return json(this.precios(), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
@@ -2692,6 +2720,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM avisos WHERE creado < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM cancelados WHERE t < ?', ahora - 3 * 24 * HORA);
       this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
+      this.sql.exec('DELETE FROM repetidos WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
       // 👏 los aplausos, con su publicación: para entonces ya salió del muro (21 días)
       const viejo = ahora - APLAUSOS_DIAS * DIA_MS;
@@ -2909,15 +2938,24 @@ export class Avisos {
     // 🌙 dormido no se lee nada: lo de antes de las 3 ya no se actualiza, y
     // mostrarlo «en vivo, se actualiza cada minuto» sería mentir
     if ((this.leer('vigia') || {}).dormido) return { t: v.t || 0, dormido: true, llaves: [], veredictos: [] };
-    return { t: v.t || 0, llaves: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto ' +
-      'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray(),
+    // 🔒 QUIÉN PUBLICÓ CADA LLAVE Y CADA VOTO SALE COMO UN CÓDIGO DEL DÍA, NO COMO SU DISCORD ID (revisión del
+    // 04/10/2026). Esto es público y se guarda en el borde: la página sólo lo compara —junta los mensajes de un mismo
+    // autor, cuenta un voto por persona— y para eso alcanza un código que no dice de quién es
+    let sal = this.leer('sal_vivo');
+    const hoy = Math.floor(ahora / (24 * HORA));
+    if (!sal || sal.d !== hoy) { sal = { d: hoy, v: crypto.randomUUID() }; this.guardar('sal_vivo', sal); }
+    const anon = (filas) => filas.map((r) => Object.assign({}, r, { autor: r.autor ? codigoDe(sal.v + r.autor) : '' }));
+    const titulo = (t) => { try { return globalThis.LlaveVivo ? globalThis.LlaveVivo.titulo(t || '') : ''; } catch (e) { return ''; } };
+    return { t: v.t || 0, llaves: anon(this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto ' +
+      'FROM vivo WHERE ed > ? ORDER BY ed DESC LIMIT 12', ahora - VIVO_HORAS * HORA).toArray()),
     // 🔴 y las llaves que el organizador borró, con cuándo: un evento cuya llave se borró y no tiene otra deja de estar
     // «en vivo» (`Liga.vivo()`; LA REDENCION, 03/10/2026). Sólo el principio, que es donde está el título
+    // 🔒 sólo el título: el texto de una llave borrada es lo que el organizador sacó, y no se vuelve a publicar
     borradas: this.sql.exec('SELECT id, sv, pub, ed, texto, t FROM vivo_borradas WHERE t > ? ORDER BY t DESC LIMIT 12',
-      ahora - VIVO_HORAS * HORA).toArray(),
+      ahora - VIVO_HORAS * HORA).toArray().map((r) => ({ id: r.id, sv: r.sv, pub: r.pub, ed: r.ed, t: r.t, titulo: titulo(r.texto) })),
     // 🔑 los veredictos, para que la página arme las batallas de un 5 vidas
-    veredictos: this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM veredictos ' +
-      'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray(),
+    veredictos: anon(this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM veredictos ' +
+      'WHERE pub > ? ORDER BY pub DESC LIMIT 400', ahora - VIVO_HORAS * HORA).toArray()),
     // 🕵️ y quién es cada nombre de esas llaves, por la inscripción, la llamada o la mención: ver `quienes()`
     quien: (this.leer('quien') || {}).svs || {},
     // 🔑 y lo que se canceló en el último día, para que la página lo diga (ver `cancelaciones()`)
@@ -3256,6 +3294,9 @@ export class Avisos {
       try { c = JSON.parse(f.cuerpo); } catch (e) { c = null; }
       if (!c || c.tipo !== 'evento' || !c.url) continue;
       if (c.ini != null && ahora > c.ini + 30 * MIN) continue;
+      // ⚠️ y el que no tiene hora, mientras dura su aviso y media hora más: sin esto, la limpieza normal de un canal
+      // hasta dos días después «cancelaba» un evento ya jugado (revisión del 04/10/2026)
+      if (c.ini == null && ahora > (f.creado || 0) + EDAD_SIN_HORA + 30 * MIN) continue;
       if (this.sql.exec('SELECT 1 FROM cancelados WHERE id = ?', f.id).toArray().length) continue;
       const p = /\/channels\/\d+\/(\d+)\/(\d+)/.exec(c.url);
       if (!p || pedidos >= CANCELA_TOPE) continue;
@@ -3272,6 +3313,35 @@ export class Avisos {
       } catch (e) { estado = 0; }
       const por = cancelado(estado, m, c, f.creado);
       if (!por) continue;
+      // 🔴 BORRADO Y VUELTO A PUBLICAR NO ES CANCELADO (LA REDENCION, FFA, 03/10/2026, 6:26 PM: le llegó «cancelado» a
+      // todos y el evento seguía). Si en el mismo canal hay una copia del anuncio (`repetidos`, ver `anotar()`) y sigue
+      // ahí, el aviso pasa a mirar ese mensaje —si después se borra ése, ahí sí se cancela— y no se manda nada
+      if (por === 'borrado') {
+        const rep = this.sql.exec('SELECT id FROM repetidos WHERE de = ? AND canal = ? ORDER BY t DESC LIMIT 1',
+          f.id, p[1]).toArray()[0];
+        if (rep) {
+          let vive = false;
+          try {
+            const r2 = await fetch(`${DC}/channels/${p[1]}/messages/${rep.id}`, {
+              headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+            });
+            vive = r2.status === 200;
+          } catch (e) { vive = false; }
+          if (vive) {
+            const mover = (cuerpo) => {
+              try { const x = JSON.parse(cuerpo); x.url = String(x.url || '').replace(/\/\d+$/, '/' + rep.id); return JSON.stringify(x); } catch (e) { return cuerpo; }
+            };
+            const antes = this.sql.exec('SELECT cuerpo FROM avisos WHERE id = ?', f.id + ':antes').toArray()[0];
+            this.state.storage.transactionSync(() => {
+              this.sql.exec('UPDATE avisos SET cuerpo = ? WHERE id = ?', mover(f.cuerpo), f.id);
+              if (antes) this.sql.exec('UPDATE avisos SET cuerpo = ? WHERE id = ?', mover(antes.cuerpo), f.id + ':antes');
+              this.sql.exec('UPDATE claves SET id = ? WHERE id = ?', rep.id, f.id);
+              this.sql.exec('DELETE FROM repetidos WHERE id = ?', rep.id);
+            });
+            continue;
+          }
+        }
+      }
       hubo = true;
       this.state.storage.transactionSync(() => {
         this.sql.exec('INSERT OR IGNORE INTO cancelados (id, sv, cuerpo, t, por) VALUES (?, ?, ?, ?, ?)',
@@ -3280,7 +3350,10 @@ export class Avisos {
         this.sql.exec('UPDATE avisos SET estado = 2 WHERE (id = ? OR id = ?) AND estado = 0', f.id, f.id + ':antes');
         // y si a alguien ya le llegó el del evento, el de cancelado (el mismo `tag` lo reemplaza en el teléfono)
         if (f.estado === 1 || f.cursor) {
-          const cx = { v: 1, tipo: 'cancelado', id: c.id, t: c.t, sv: c.sv, svn: c.svn, ini: c.ini, url: HUB_EVENTOS, por };
+          // `hs`: hasta qué suscripción le llegó el aviso. Sin eso, el «cancelado» le llegaba también a quien activó la
+          // campana después y nunca supo del evento (revisión del 04/10/2026; ver `lote()`)
+          const cx = { v: 1, tipo: 'cancelado', id: c.id, t: c.t, sv: c.sv, svn: c.svn, ini: c.ini, url: HUB_EVENTOS, por,
+            hs: f.cursor || 0 };
           this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) VALUES (?, ?, ?, ?, ?, ?)',
             'cx:' + f.id, f.sv, JSON.stringify(cx), ahora, ahora + 2 * HORA, ahora);
         }
@@ -3359,8 +3432,15 @@ export class Avisos {
     // «EN 15» publicado con un minuto de diferencia da un minuto distinto—.
     const clave = a.nombre.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '') + '|' +
       (ini != null ? Math.round(ini / (10 * MIN)) : '');
-    if (this.sql.exec('SELECT 1 FROM claves WHERE clave = ? AND t > ?', clave,
-      ahora - EDAD_MAX).toArray().length) {
+    const prev = this.sql.exec('SELECT id FROM claves WHERE clave = ? AND t > ?', clave,
+      ahora - EDAD_MAX).toArray()[0];
+    if (prev) {
+      // 🔴 Y SE ANOTA DE QUIÉN ES COPIA (revisión del 04/10/2026): un anuncio borrado y vuelto a publicar igual —LA
+      // REDENCION, FFA, 03/10/2026, 6:26 PM— cae acá por repetido, y sin saber que existía, `cancelaciones()` leía el
+      // borrado como un evento cancelado y le mandaba «cancelado» a todos. Ver `cancelaciones()`
+      if (prev.id !== m.id) {
+        this.sql.exec('INSERT OR REPLACE INTO repetidos (id, de, canal, t) VALUES (?, ?, ?, ?)', m.id, prev.id, c.id, ahora);
+      }
       return descartar();
     }
     this.sql.exec('INSERT OR REPLACE INTO claves (clave, id, t) VALUES (?, ?, ?)',
@@ -3542,10 +3622,15 @@ export class Avisos {
       this.sql.exec('UPDATE avisos SET estado = 2 WHERE id = ?', av.id);
       return;
     }
+    // el «cancelado» sólo a quien le llegó el aviso del evento (`hs`, ver `cancelaciones()`)
+    let tope = Number.MAX_SAFE_INTEGER;
+    if (String(av.id).startsWith('cx:')) {
+      try { const cc = JSON.parse(av.cuerpo); if (cc.hs != null) tope = Number(cc.hs) || 0; } catch (e) { /* sin tope */ }
+    }
     const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs ' +
       // «todos» ('') recibe todo MENOS el servidor de prueba
-      "WHERE id > ? AND ((svs = '' AND ? != ?) OR instr(svs, ?) > 0) ORDER BY id LIMIT ?",
-    av.cursor, av.sv, SV_PRUEBA, '|' + av.sv + '|', LOTE).toArray();
+      "WHERE id > ? AND id <= ? AND ((svs = '' AND ? != ?) OR instr(svs, ?) > 0) ORDER BY id LIMIT ?",
+    av.cursor, tope, av.sv, SV_PRUEBA, '|' + av.sv + '|', LOTE).toArray();
     if (!subs.length) {
       this.sql.exec('UPDATE avisos SET estado = 1 WHERE id = ?', av.id);
       this.guardar('ultimo_aviso', { t: ahora, id: av.id, sv: av.sv,
@@ -3659,11 +3744,15 @@ export class Avisos {
     const ahora = Date.now();
     // 🔴 SÓLO CUENTAN LAS QUE LLEGARON (revisión del 03/10/2026): si el DM fallaba, la que no llegó trababa el reintento
     // 24 horas y la página decía «Dlx la tiene»
-    if (this.sql.exec('SELECT 1 FROM postulaciones WHERE quien = ? AND t > ? AND enviada = 1', quien, ahora - 24 * HORA).toArray().length) {
+    // ⚠️ Y LAS QUE ESTÁN SALIENDO: el objeto atiende otros pedidos mientras espera a Discord, así que N pedidos juntos
+    // pasaban los dos topes y le llegaban N DMs a Dlx (revisión del 04/10/2026). Una en curso (sin error todavía, de
+    // hace menos de dos minutos) cuenta como mandada
+    const cuenta = "(enviada = 1 OR (enviada = 0 AND error = '' AND t > " + (ahora - 2 * MIN) + '))';
+    if (this.sql.exec('SELECT 1 FROM postulaciones WHERE quien = ? AND t > ? AND ' + cuenta, quien, ahora - 24 * HORA).toArray().length) {
       return json({ error: 'ya' }, 429);
     }
     // y un tope para todos: veinte DMs por día a Dlx como mucho (un día así es raro; lo demás, por @itsdlx)
-    if (this.sql.exec('SELECT COUNT(*) AS n FROM postulaciones WHERE t > ? AND enviada = 1', ahora - 24 * HORA).toArray()[0].n >= 20) {
+    if (this.sql.exec('SELECT COUNT(*) AS n FROM postulaciones WHERE t > ? AND ' + cuenta, ahora - 24 * HORA).toArray()[0].n >= 20) {
       return json({ error: 'muchas' }, 429);
     }
     const id = this.sql.exec('INSERT INTO postulaciones (quien, t, datos) VALUES (?, ?, ?) RETURNING id',

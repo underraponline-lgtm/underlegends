@@ -101,7 +101,7 @@ function Pub({ liga, it, A }) {
     cat = 'PREMIOS DE LA SEMANA';
     vis = <img className="pub-logo" alt="" src="/ul.png" />;
     const p = [it.figura ? 'figura: ' + limpio(it.figura[0]) : '', it.revelacion ? 'revelación: ' + limpio(it.revelacion[0]) : '',
-      it.cazador ? 'cazador: ' + limpio(it.cazador[0]) : '', it.servidor ? 'servidor: ' + it.servidor[0] : ''].filter(Boolean);
+      it.cazador ? 'cazador: ' + limpio(it.cazador[0]) : '', it.servidor ? 'servidor: ' + siglaDe(it.servidor[0]) : ''].filter(Boolean);
     txt = <b>{p.join(' · ')}</b>;
   } else if (it.tipo === 'elegido') {
     cat = 'EL ELEGIDO';

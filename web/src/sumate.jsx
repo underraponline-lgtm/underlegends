@@ -8,7 +8,7 @@
 // ⚠️ LO QUE DICE TIENE QUE SER VERDAD HOY. Lo único que se pide es lo que dijo Dlx (un evento por semana); lo demás «se
 // habla con Dlx». Nada de precios ni de plazos que nadie decidió.
 import { useState } from 'react';
-import { num } from './liga.js';
+import { num, siglaDe } from './liga.js';
 import { Compartir, Ico, accion, enlace } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { BotHace, DLX, QueGana } from './sumar.jsx';
@@ -143,7 +143,7 @@ export function Sumate({ liga, dc }) {
           </div>
           {/* los que ya están: la prueba de que esto anda */}
           <a className="su-ya" href="#/socios" aria-label="Los servidores que ya están">
-            <span>YA ESTÁN</span>{svs.map((s) => <img key={s.sv} alt={s.sv} title={s.nombre || s.sv} src={liga.logo(s.sv)} />)}<Ico n="flecha" t={16} />
+            <span>YA ESTÁN</span>{svs.map((s) => <img key={s.sv} alt={siglaDe(s.sv)} title={s.nombre || siglaDe(s.sv)} src={liga.logo(s.sv)} />)}<Ico n="flecha" t={16} />
           </a>
         </section>
       </div>

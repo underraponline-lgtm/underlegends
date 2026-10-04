@@ -1021,7 +1021,8 @@ function pintaVivo() {
   // a nadie
   VIVO_B = (VIVO.borradas || []).map(function (m) {
     var n = '';
-    try { n = LlaveVivo.titulo(m.texto || ''); } catch (e) { n = ''; }
+    // el vigía ya manda el título y no el texto (04/10/2026); el texto, por si responde uno de antes
+    try { n = m.titulo || LlaveVivo.titulo(m.texto || ''); } catch (e) { n = ''; }
     return n ? { id: m.id, sv: m.sv || '', nombre: n, pub: m.pub, ed: m.ed, borrada: m.t } : null;
   }).filter(Boolean);
   var ls = bloques.map(function (b) {

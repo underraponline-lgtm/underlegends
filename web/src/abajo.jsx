@@ -222,7 +222,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const ir = useMemo(() => (d) => {
     if (!d) return;
     onCerrar();
-    if (d.carta) accion.carta(d.carta);
+    if (d.carta) accion.carta(d.carta, d.cual);
     else if (d.perfil) accion.perfil(d.perfil);
     else if (d.llave) accion.llave(d.llave);
     else if (d.ruta) location.hash = d.ruta;
@@ -233,7 +233,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const s = g.slides.find((x) => x.id === idAct) || g.slides[0];
   // lo que se comparte de una historia: la carta (la imagen), la llave o el perfil al que lleva
   const d = s.ir || {};
-  const compartir = d.carta ? liga.cartaUrl(d.carta, 'temporada') || enlace('#/r/' + encodeURIComponent(d.carta))
+  const compartir = d.carta ? liga.cartaUrl(d.carta, d.cual || 'temporada') || enlace('#/r/' + encodeURIComponent(d.carta))
     : d.llave ? enlace('#/llave/' + d.llave) : d.perfil ? enlace('#/r/' + encodeURIComponent(d.perfil)) : null;
   const perfil = g.tipo === 'gente' ? '#/r/' + encodeURIComponent(g.k)
     : g.tipo === 'pais' ? '#/pais/' + g.cc

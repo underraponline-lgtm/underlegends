@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, capital, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
+import { MESES, capital, diaISO, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
@@ -275,7 +275,7 @@ function slidesDe(liga, items) {
     } else if (it.tipo === 'tarjeta') {
       const nombre = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' }[it.carta];
       out.push(Slide('CARTA NUEVA', <><Carta liga={liga} k={ks[0]} cual={it.carta} cls="st-carta" abre={false} /><h3 className="st-h">{q[0]} ya tiene su carta {nombre}</h3></>,
-        c, 'Ver su carta', { carta: ks[0] }));
+        c, 'Ver su carta', { carta: ks[0], cual: it.carta }));
     } else if (it.tipo === 'rango') {
       const f = ks.length ? liga.T[ks[0]] : null;
       const vis = f && (f.c || []).includes('competitivo') ? <Carta liga={liga} k={ks[0]} cual="competitivo" cls="st-carta" abre={false} />
@@ -394,7 +394,7 @@ function historiasLiga(liga, mm) {
   // 🥇 los premios de la semana que cerró (del muro)
   const pr = (liga.muro || []).find((it) => it.tipo === 'premios' && liga.ahora - utc(it.t) < 7 * 86400000);
   if (pr) {
-    const fila = (rol, et) => (pr[rol] ? <li key={rol}><b>{et}</b>{limpio(String(pr[rol][0]))}{rol !== 'servidor' && pr[rol][1] ? ' · ' + num(pr[rol][1]) : ''}</li> : null);
+    const fila = (rol, et) => (pr[rol] ? <li key={rol}><b>{et}</b>{rol === 'servidor' ? siglaDe(String(pr[rol][0])) : limpio(String(pr[rol][0]))}{rol !== 'servidor' && pr[rol][1] ? ' · ' + num(pr[rol][1]) : ''}</li> : null);
     out.push(Slide('PREMIOS DE LA SEMANA', <><h3 className="st-h">Los premios de la semana</h3>
       <ul className="st-l">{fila('figura', 'FIGURA')}{fila('revelacion', 'REVELACIÓN')}{fila('cazador', 'CAZADOR')}{fila('servidor', 'SERVIDOR')}</ul></>,
     liga.cuando(pr.t), 'Ver Publicaciones', { ruta: '#/publicaciones' }, 'm:' + (pr.id || 'premios' + pr.t)));
@@ -444,7 +444,7 @@ export function gruposHistorias(liga) {
     const g = liga.doradoVigente();
     if (g && g.sv === sv) lineas.push(<li key="d"><b>DORADO ×3</b>{limpio(g.n)}, {utc(g.t) <= liga.ahora ? 'se juega ahora' : liga.dia(g.t)}</li>);
     const par = ((mm.guerra || {}).pares || []).find((p) => p.includes(sv));
-    if (par) lineas.push(<li key="g"><b>GUERRA</b>contra {par[0] === sv ? par[1] : par[0]}: gana el que más puntos hace por persona</li>);
+    if (par) lineas.push(<li key="g"><b>GUERRA</b>contra {siglaDe(par[0] === sv ? par[1] : par[0])}: gana el que más puntos hace por persona</li>);
     const meta = (mm.metas || {})[sv];
     if (meta) {
       const va = (mm.meta_va || {})[sv] || 0;
@@ -860,7 +860,12 @@ export function CuadroMini({ liga, ll, lugar }) {
 // ⚠️ Las mismas reglas que el cuadro: «AHORA» sólo si se juega en orden (`enOrden()`) y sólo en un cruce con dos lados o
 // más. Si no se sabe cuál va —o ya se jugaron todas—, `null`, y va el cuadro
 export function momentosLlave(ll) {
-  const todas = completar(((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r)));
+  // ⚠️ con la misma vuelta que el cuadro (`CuadroMini`) y la página de la llave: si reacomodar por los ganadores no da un
+  // árbol, se usa el orden en que lo escribieron. Sin esto, «Ahora» y «Sigue» salían en otro orden que el del organizador
+  // y, con el primer ganador, la vista corta desaparecía (revisión del 04/10/2026)
+  const base = ((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
+  let todas = completar(base);
+  if (!esArbol(todas)) todas = enRondas(base);
   if (!enOrden(todas)) return null;
   const seq = [];
   let jugados = 0;
@@ -1047,7 +1052,7 @@ function momentos(liga, vivoL) {
       vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
     });
   });
-  const ll = liga.llaves()[0];
+  const ll = liga.llavesPorFecha()[0];
   if (ll) {
     const gana = liga.campeon(ll);
     const cu = liga.cuando(liga.fechaLlave(ll));
@@ -1066,7 +1071,8 @@ function momentos(liga, vivoL) {
     out.push({
       tipo: 'video', et: 'Video', color: '#E41373',
       txt: <><div className="hero-t"><span className="tag tg-video">ÚLTIMO VIDEO · {limpio(video.canal || '').toUpperCase()}</span></div><Tit c={largo(limpio(video.tit))}>{limpio(video.tit)}</Tit>
-        <p className="hero-p">Subido el {d.getDate()} de {MESES[d.getMonth()]}.</p>
+        {/* en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026) */}
+        <p className="hero-p">Subido el {Number(diaISO(d).split('-')[2])} de {MESES[Number(diaISO(d).split('-')[1]) - 1]}.</p>
         <div className="hero-acc">{video.vid ? <button type="button" className="btn verde" onClick={() => abrirVideo({ vid: video.vid, tit: limpio(video.tit), link: video.link })}>▶ Mirar acá</button> : null}
           <a className={'btn ' + (video.vid ? 'borde' : 'verde')} href={video.link} target="_blank" rel="noopener noreferrer">En YouTube ↗</a></div></>,
       // 🔑 se mira acá, en la ventana de `video.jsx`; la miniatura es la grande (era la de 320×180, estirada)
