@@ -253,6 +253,12 @@
 "prueba"
 ]
 },
+"Benjixo": {
+"debut": [
+"2026-10-04T00:25:44Z",
+"prueba"
+]
+},
 "Benshi": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -334,6 +340,20 @@
 ],
 "racha": [
 "2026-10-03T22:38:07Z",
+"prueba"
+]
+},
+"Catarsis": {
+"campeon": [
+"2026-10-04T00:25:44Z",
+"prueba"
+],
+"debut": [
+"2026-10-04T00:25:44Z",
+"prueba"
+],
+"podio": [
+"2026-10-04T00:25:44Z",
 "prueba"
 ]
 },
@@ -587,6 +607,14 @@
 "podio": [
 "2026-09-27T17:50:55Z",
 "prueba"
+],
+"ev10": [
+"2026-10-04T00:25:44Z",
+"prueba"
+],
+"trotamundos": [
+"2026-10-04T00:25:44Z",
+"prueba"
 ]
 },
 "Erian el papá de colesito": {
@@ -624,6 +652,12 @@
 ],
 "podio": [
 "2026-09-27T17:50:55Z",
+"prueba"
+]
+},
+"Faso": {
+"debut": [
+"2026-10-04T00:25:44Z",
 "prueba"
 ]
 },
@@ -748,6 +782,10 @@
 ],
 "sobreviviente": [
 "2026-10-03T15:26:10Z",
+"prueba"
+],
+"trotamundos": [
+"2026-10-04T00:25:44Z",
 "prueba"
 ]
 },
@@ -1590,6 +1628,10 @@
 ],
 "trotamundos": [
 "2026-10-03T23:24:53Z",
+"prueba"
+],
+"duelista": [
+"2026-10-04T00:25:44Z",
 "prueba"
 ]
 },

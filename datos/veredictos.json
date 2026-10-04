@@ -541,6 +541,16 @@
    "a": "Catarsis 🇦🇷",
    "b": "Benjixo 🇺🇾",
    "ganador": "Catarsis 🇦🇷",
+   "votos": "2–0"
+  },
+  "1556092213644234874": {
+   "id": "1556092213644234874",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791071694528,
+   "a": "Catarsis 🇦🇷",
+   "b": "PichulaMC 🇦🇷",
+   "ganador": "Catarsis 🇦🇷",
    "votos": "1–0"
   }
  },
@@ -969,8 +979,8 @@
    "g": "1467763447117778989",
    "canal": "1540224373309444257",
    "pub": 1791068804740,
-   "ed": 1791071602861,
-   "texto": "`[ CUARTOS ]`\n⌞Jahno 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n`[ CUARTOS ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞Erian 🇵🇦⌝\n⌞Faso 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞Velatz 🇨🇱⌝\n`[ SEMIFINALES ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝",
+   "ed": 1791072484622,
+   "texto": "`[ CUARTOS ]`\n⌞Jahno 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n`[ CUARTOS ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞Erian 🇵🇦⌝\n⌞Faso 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞Velatz 🇨🇱⌝\n`[ SEMIFINALES ]`\n⌞Hassan 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞Benjixo 🇺🇾⌝\n`[ FINAL ]`\n⌞Catarsis 🇦🇷⌝ 🆚 ⌞PichulaMC 🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -1027,6 +1037,16 @@
      [
       "Catarsis 🇦🇷",
       "Benjixo 🇺🇾"
+     ],
+     "Catarsis 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Catarsis 🇦🇷",
+      "PichulaMC 🇦🇷"
      ],
      "Catarsis 🇦🇷",
      "veredicto",

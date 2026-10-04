@@ -87,7 +87,19 @@
    "monto": 1000,
    "t": "2026-10-03T20:08:13Z",
    "fin": "2026-10-05T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PichulaMc",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 389,
+    "nombre": "RED BULL NACIONAL ALBICELESTE",
+    "sv": "URBF",
+    "t": "2026-10-03T23:06:44Z"
+   }
   },
   {
    "id": 9,
@@ -100,6 +112,7 @@
  ],
  "suma": {
   "Abyssus": 1000,
-  "Lambroggini": 1000
+  "Lambroggini": 1000,
+  "PichulaMc": 1000
  }
 }

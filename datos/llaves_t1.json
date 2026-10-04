@@ -8414,5 +8414,132 @@
     2000
    ]
   ]
+ },
+ "389": {
+  "dia": "2026-10-03",
+  "escala": "8-15",
+  "fecha": "03/10",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1540224373309444257/1556080092994609204"
+  ],
+  "n": 389,
+  "nombre": "RED BULL NACIONAL ALBICELESTE",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Jahno 🇦🇷"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Hassan",
+       "Erian"
+      ],
+      "Hassan",
+      ""
+     ],
+     [
+      [
+       "Benjixo",
+       "Faso"
+      ],
+      "Benjixo",
+      ""
+     ],
+     [
+      [
+       "Catarsis 🇦🇷",
+       "Velatz"
+      ],
+      "Catarsis 🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Hassan"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Catarsis 🇦🇷",
+       "Benjixo"
+      ],
+      "Catarsis 🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Catarsis 🇦🇷",
+       "PichulaMc"
+      ],
+      "Catarsis 🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Catarsis 🇦🇷",
+    "Campeón",
+    7500
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Benjixo",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Hassan",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Faso",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jahno 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
