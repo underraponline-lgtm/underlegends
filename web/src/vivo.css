@@ -1744,6 +1744,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-logo{width:56px;height:56px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--esc-tinta);background:#030304}
 .lk-cab-tx{min-width:0;display:grid;gap:10px;justify-items:start}
 .lk-tit{margin:0;overflow-wrap:anywhere}
+@media (max-width: 899.98px){.app .lk-tit.pal-larga{font-size:24px}}
 .lk-datos{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .lk-datos li{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:1.5px solid var(--esc-linea);
   font:700 12px/1.2 Archivo,sans-serif;color:var(--esc-tinta)}
@@ -1905,9 +1906,25 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-pg li a,.lk-pg li span{display:inline-flex;align-items:center;gap:6px;min-width:0;font:700 13.5px/1.2 Archivo,sans-serif}
 .lk-pg li b{font:700 13px/1 "Space Mono",monospace;font-variant-numeric:tabular-nums}
 
-/* las acciones y «¿Algo está mal?» */
-.lk-acc{padding-bottom:30px}
-.lk-acc-b{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding-top:14px;border-top:2px solid var(--linea)}
+/* las acciones y «¿Algo está mal?»: ARRIBA, en el escenario (Dlx, 03/10/2026: «arriba de todo, no debajo»). El escenario
+   de la llave lleva los colores de `.sec.negra`, así el botón de «¿Algo está mal?» y su formulario, y los puntos, se
+   leen sobre el negro */
+.lk-esc{--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
+  --inv:#F6F6F6;--inv-tinta:#030304}
+.lk-acc-b{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px}
+.lk-acc-b .lk-rep{flex-basis:100%;margin-top:4px}
+.lk-pts-top{padding:0 16px 20px}
+/* 🖤 la llave, en negro y pegada al escenario: sin la franja blanca de `.sec.negra` (margin-top) entre los dos */
+.lk-sec.negra{margin-top:0;padding-bottom:34px}
+.lk-sec.negra .sec-t{border-top-color:#2A2A2E}
+.lk-sec.negra .lk-arbol path{stroke:#4A4A50}
+.lk-sec.negra .lk-b{border-color:#3A3A3E}
+.lk-sec.negra .lk-b.ahora{border-color:var(--magenta)}
+.lk-sec.negra .lk-b.fin{border-color:var(--verde)}
+.lk-sec.negra .lk-funa li{border-color:#3A3A3E}
+.lk-sec.negra .lk-rl{border-bottom-color:#3A3A3E}
+.lk-sec.negra .lk-tabs button{border-color:#3A3A3E}
+.lk-sec.negra .lk-tabs button.on{border-color:var(--inv)}
 .lk-rep{display:grid;gap:10px;max-width:560px}
 .lk-rep-t{margin:0;font:700 14px/1.4 Archivo,sans-serif}
 .lk-rep-q{display:flex;flex-wrap:wrap;gap:6px}
@@ -1931,6 +1948,7 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .lk-podio.n1{grid-template-columns:minmax(0,560px)}
   .app .lk-podio.n1 .lk-pd.p1{grid-column:1}
   .app .lk-mwtx{padding:0 var(--gut) 24px}
+  .app .lk-pts-top{padding:0 var(--gut) 26px}
   .app .lk-arbol-caja{margin:0;padding:4px 0 12px}
   .app .lk-barra{margin:16px 0 0}
   .app .lk-vd-bs{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}

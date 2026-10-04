@@ -882,10 +882,20 @@ def _negritas(texto):
 
 # ── la NAVE DE FUNA (CYPHER, aniquilación) ─────────────────────────────
 #: el encabezado de la fase: `[ FASE DE ELIMINACIÓN ]`, `nave de funa:`, `[ CYPHER ]`
-FUNA = re.compile(r'FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|\bC[IY]PHER\b',
+#: 🔑 y la NAVE DE EXTERMINACIÓN (FFA, 03/10/2026, Dlx: «no detectó las llaves de nave de exterminación, la ronda
+#: de exterminación»): el mismo formato con otro nombre. Sin esto la llave quedaba con las semis y la final —4 raperos
+#: de 17— y los otros 13 no existían
+FUNA = re.compile(r'FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|EXTERMINACI[OÓ]N|\bC[IY]PHER\b',
                   re.I)
 #: quién cayó en la fase: ❌ ✖ ✗ ✘ ❎ 🚫
 CAYO = re.compile('[❌✖✗✘❎\U0001F6AB]')
+#: …o la palabra: «ELIMINADO #3», «eliminado #1» y «ELIMNINADO #6», con la letra de más (la de EXTERMINACIÓN). El
+#: número dice en qué orden cayeron; hoy se lee como la ❌: cayó
+ELIMINADO = re.compile(r'\bELIM\w{0,4}NAD[OA]S?\b(?:\s*#?\s*\d+)?', re.I)
+#: el adorno que sigue en el mismo renglón: `▪️Molusco 🚱 ELIMINADO #5        ●❯────｢💥｣────❮●`
+COLA = re.compile(r'\s*(?:[─━═]{3,}|●❯|❮●).*$')
+#: «Shisui (VELATZ)»: un nombre y, entre paréntesis, otro (ver `funa_de()`)
+_PAREN = re.compile(r'^(.+?)\s*\(\s*([^()]+?)\s*\)(.*)$')
 #: un nombre suelto en su marco: `『NC🇦🇷』`, `⌞ Dnk🇦🇷 ⌝`, `[Tam]`, `「X」`
 _UNO = re.compile(r'[『「⌞\[]\s*([^』」⌝\]]+?)\s*[』」⌝\]]')
 #: las medallas del podio, cuando el renglón no dice CAMPEÓN ni PUESTO: `🥇 tam`
@@ -895,8 +905,9 @@ MEDALLA = {'\U0001F947': 1, '\U0001F948': 2, '\U0001F949': 3}
 def uno_de_renglon(l):
     """`(nombre, cayó)` de un renglón de la fase de una nave de funa, o None."""
     s = re.sub(r'^[>\s]+', '', plano(l or '').strip())      # la cita de Discord
-    cayo = bool(CAYO.search(s))
-    s = CAYO.sub('', s)
+    s = COLA.sub('', s)
+    cayo = bool(CAYO.search(s) or ELIMINADO.search(s))
+    s = ELIMINADO.sub('', CAYO.sub('', s))
     s = re.sub(r'<@&\d+>|@everyone|@here|▋', '', s)          # el rol del aviso
     s = re.sub(r'^\s*(?:\d{1,3}\s*[-.)–—]\s*|[▪️•·*\-–—]+\s*)', '', s)
     m = _UNO.search(s)
@@ -934,20 +945,37 @@ def funa_de(texto):
         if not FUNA.search(l) or nombres_de_linea(l):
             continue
         out = []
-        for l2 in ls[i + 1:]:
+        fin = len(ls)
+        for j in range(i + 1, len(ls)):
+            l2 = ls[j]
             if not l2.strip():
                 continue
             if FUNA.search(l2) and not nombres_de_linea(l2):
                 continue                         # otro encabezado de la fase
             if nombres_de_linea(l2) or RONDA.search(l2) or PODIO.search(l2) \
                     or any(x in l2 for x in MEDALLA):
+                fin = j
                 break
             u = uno_de_renglon(l2)
             if u:
                 out.append(u)
         if len(out) >= 4:
-            return out
+            # 🔑 «Shisui (VELATZ)» (NAVE DE EXTERMINACIÓN, FFA, 03/10/2026): el de los paréntesis es quien sigue en la
+            # llave —VELATZ juega la semi— y el de afuera no aparece más. Entonces es él. Si no, queda como vino
+            despues = {norm(n) for l3 in ls[fin:] for n in nombres_de_linea(l3)}
+            return [(_quien_sigue(n, despues), c) for n, c in out]
     return None
+
+
+def _quien_sigue(n, despues):
+    """`Shisui (VELATZ)` -> `VELATZ` si VELATZ está en las rondas que siguen y Shisui no; si no, `n`."""
+    m = _PAREN.match(n)
+    if not m:
+        return n
+    afuera, adentro = m.group(1).strip(), m.group(2).strip()
+    if norm(adentro) and norm(adentro) in despues and norm(afuera) not in despues:
+        return adentro
+    return n
 
 
 def medallas_de(texto):

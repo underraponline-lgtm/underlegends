@@ -770,8 +770,15 @@
      `escuchar.funa_de()` y `escuchar.medallas_de()`: la fase de eliminación es
      una lista, un nombre por renglón, con ❌ en los que cayeron (Dlx,
      29/09/2026). Lo que sigue —final, podio— se lee como cualquier llave. */
-  var FUNA = /FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|\bC[IY]PHER\b/i;
+  // 🔑 y la NAVE DE EXTERMINACIÓN (FFA, 03/10/2026): el mismo formato con otro nombre (`escuchar.FUNA`)
+  var FUNA = /FASE\s+DE\s+ELIMINACI[OÓ]N|NAVE\s+DE\s+FUNA|ANIQUILACI[OÓ]N|EXTERMINACI[OÓ]N|\bC[IY]PHER\b/i;
   var CAYO = /[❌✖✗✘❎\u{1F6AB}]/gu;
+  // «ELIMINADO #3», «eliminado #1», «ELIMNINADO #6»: cayó, como la ❌ (`escuchar.ELIMINADO`)
+  var ELIMINADO = /(^|[^\p{L}\p{N}_])ELIM[\p{L}\p{N}_]{0,4}NAD[OA]S?(?![\p{L}\p{N}_])(?:\s*#?\s*\d+)?/giu;
+  // el adorno que sigue en el mismo renglón (`escuchar.COLA`)
+  var COLA = /\s*(?:[─━═]{3,}|●❯|❮●).*$/u;
+  // «Shisui (VELATZ)» (`escuchar._PAREN`)
+  var PAREN = /^(.+?)\s*\(\s*([^()]+?)\s*\)(.*)$/u;
   var UNO = /[『「⌞\[]\s*([^』」⌝\]]+?)\s*[』」⌝\]]/u;
   var MEDALLA = { '\u{1F947}': 1, '\u{1F948}': 2, '\u{1F949}': 3 };
   var PUNTAS = ' .·▪️*_`:-–—️';
@@ -782,10 +789,12 @@
     return a.join('');
   }
   function unoDeRenglon(l) {
-    var s = plano(String(l || '')).trim().replace(/^[>\s]+/, '');
+    var s = plano(String(l || '')).trim().replace(/^[>\s]+/, '').replace(COLA, '');
     CAYO.lastIndex = 0;
-    var cayo = CAYO.test(s);
-    s = s.replace(CAYO, '').replace(/<@&\d+>|@everyone|@here|▋/g, '');
+    ELIMINADO.lastIndex = 0;
+    var cayo = CAYO.test(s) || ELIMINADO.test(s);
+    ELIMINADO.lastIndex = 0;
+    s = s.replace(CAYO, '').replace(ELIMINADO, '$1').replace(/<@&\d+>|@everyone|@here|▋/g, '');
     s = s.replace(/^\s*(?:\d{1,3}\s*[-.)–—]\s*|[▪️•·*\-–—]+\s*)/u, '');
     var m = UNO.exec(s);
     var t = recortar(sinMarcas(m ? m[1] : s));
@@ -799,18 +808,30 @@
     for (var i = 0; i < ls.length; i++) {
       if (!FUNA.test(ls[i]) || nombresDeLinea(ls[i]).length) continue;
       var out = [];
+      var fin = ls.length;
       for (var j = i + 1; j < ls.length; j++) {
         var l = ls[j];
         if (!l.trim()) continue;
         if (FUNA.test(l) && !nombresDeLinea(l).length) continue;
         if (nombresDeLinea(l).length || buscarRonda(l) || PODIO.test(l) ||
-            Object.keys(MEDALLA).some(function (x) { return l.indexOf(x) >= 0; })) break;
+            Object.keys(MEDALLA).some(function (x) { return l.indexOf(x) >= 0; })) { fin = j; break; }
         var u = unoDeRenglon(l);
         if (u) out.push(u);
       }
-      if (out.length >= 4) return out;
+      if (out.length >= 4) {
+        // 🔑 «Shisui (VELATZ)»: el de los paréntesis, si es quien sigue en la llave (`escuchar._quien_sigue()`)
+        var despues = {};
+        ls.slice(fin).forEach(function (l3) { nombresDeLinea(l3).forEach(function (n) { despues[norm(n)] = 1; }); });
+        return out.map(function (x) { return [quienSigue(x[0], despues), x[1]]; });
+      }
     }
     return null;
+  }
+  function quienSigue(n, despues) {
+    var m = PAREN.exec(n);
+    if (!m) return n;
+    var afuera = m[1].trim(), adentro = m[2].trim();
+    return norm(adentro) && despues[norm(adentro)] && !despues[norm(afuera)] ? adentro : n;
   }
   function medallasDe(texto) {
     var out = {};

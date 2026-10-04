@@ -746,7 +746,8 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
             {L.sv && liga.logo(L.sv) ? <img className="lk-logo" src={liga.logo(L.sv)} alt="" width="56" height="56" /> : null}
             <div className="lk-cab-tx">
               <span className="tag">{L.vivo ? (L.terminada ? 'TERMINÓ · ' : '● EN VIVO · ') : (cuando ? cuando.toUpperCase() + ' · ' : '')}{(sv.nombre || L.sv || '').toUpperCase()}</span>
-              <h1 className="hero-ev largo lk-tit">{limpio(L.nombre) || 'La llave'}</h1>
+              {/* una palabra muy larga («EXTERMINACION») se partía en el celular («EXTERMINAC / ION»): más chica */}
+              <h1 className={'hero-ev largo lk-tit' + (Math.max(0, ...String(limpio(L.nombre) || '').split(/\s+/).map((w) => w.length)) >= 11 ? ' pal-larga' : '')}>{limpio(L.nombre) || 'La llave'}</h1>
             </div>
           </div>
           <ul className="lk-datos">
@@ -761,6 +762,13 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
             <p className="lk-vivo">{L.terminada ? 'Terminó: los puntos llegan cuando el ciclo la procese' : (L.enJuego || 'En juego') + ' en juego'}
               {' · se actualiza sola cada minuto · último cambio ' + hace(L.ed || L.pub || Date.now())}</p>
           ) : null}
+          {/* 🔝 ARRIBA DE TODO (Dlx, 03/10/2026: «estas cosas dentro de la llave deberían estar arriba de todo, no
+              debajo»): ir a Discord, compartir y avisar si algo está mal. Estaban al pie, después del cuadro entero */}
+          <div className="lk-acc-b">
+            {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
+            {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + limpio(L.nombre)} etiqueta="Compartir" />}
+            <Reporte n={n} />
+          </div>
         </section>
         {podio.length ? (
           <ol className={'lk-podio n' + podio.length} aria-label="El podio">
@@ -779,22 +787,9 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
             {base.aca.length ? <p>🎯 {base.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + base.aca.length + ' buscados'}: {base.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b>{limpio(y.n)}</b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</p> : null}
           </div>
         ) : null}
-      </div>
-
-      <section className="sec lk-sec">
-        <div className="sec-t"><h2>{N ? N + ' vidas' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
-        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
-        <Funa ctx={ctx} L={L} />
-        {N ? <Vidas ctx={ctx} L={L} N={N} />
-          : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
-            : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
-              : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
-        <Barra ctx={ctx} tb={tb} />
-      </section>
-
-      {orden.length ? (
-        <section className="sec lk-sec">
-          <details className="lk-pts">
+        {/* 🔝 los puntos, también arriba: cerrados, son un renglón; lo que se vino a ver es la llave */}
+        {orden.length ? (
+          <details className="lk-pts lk-pts-top">
             <summary><span>Los puntos de esta llave</span><small>{(L.tabla || []).length}</small></summary>
             <div className="lk-pgs">
               {orden.map((g) => (
@@ -810,15 +805,20 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
               ))}
             </div>
           </details>
-        </section>
-      ) : null}
+        ) : null}
+      </div>
 
-      <section className="sec lk-sec lk-acc">
-        <div className="lk-acc-b">
-          {(L.links || []).map((u, i, t) => <a key={u} className="btn borde2 chico" href={u} target="_blank" rel="noopener noreferrer">{t.length > 1 ? 'Llave ' + (i + 1) : 'La llave en Discord'} ↗</a>)}
-          {L.vivo ? null : <Compartir cls="btn borde2 chico" url={enlace('#/llave/' + encodeURIComponent(n))} texto={'La llave de ' + limpio(L.nombre)} etiqueta="Compartir" />}
-        </div>
-        <Reporte n={n} />
+      {/* 🖤 LA LLAVE, EN LO NEGRO (Dlx, 03/10/2026: «es muy blanco eso de las llaves página»): el cuadro sigue al escenario
+          como en el Inicio, donde la llave ya vive en negro. Las piezas usan las variables, así que `negra` las da vuelta */}
+      <section className="sec lk-sec negra">
+        <div className="sec-t"><h2>{N ? N + ' vidas' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
+        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
+        <Funa ctx={ctx} L={L} />
+        {N ? <Vidas ctx={ctx} L={L} N={N} />
+          : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
+            : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
+              : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
+        <Barra ctx={ctx} tb={tb} />
       </section>
     </>
   );

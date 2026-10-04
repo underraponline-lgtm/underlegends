@@ -258,6 +258,18 @@ FUNA = [
      '> ⌞ Pwopwo🇦🇷 ⌝❌\n> ⌞ Heat🇵🇷 ⌝\n> ⌞ Sombra🇵🇷 ⌝\n> ⌞ Xubaru🇻🇪 ⌝ ❌\n> ⌞ Dryk🇵🇪 ⌝❌\n'
      '> ⌞ Blue🇵🇦 ⌝ ❌\n> ⌞ Bonais🇻🇪 ⌝ ❌\n> ⌞ Arkane🇵🇷 ⌝\n> ⌞ Valentin🇦🇷 ⌝ ❌\n'
      '> ⌞ Rodas🇵🇷 ⌝ ❌\n> ⌞ Nz🇲🇽 ⌝ ❌\n\n[ FINAL ]\n\n⌞ Heat🇵🇷 ⌝ 🆚 ⌞ Arkane🇵🇷 ⌝\n\n<@&1> ▋'),
+    # 🔑 la de verdad (FFA, 03/10/2026): Dlx, «no detectó las llaves de nave de exterminación»
+    ('NAVE DE EXTERMINACIÓN #1: «ELIMINADO #N», el adorno pegado al último y «Shisui (VELATZ)»',
+     '↱🚀  | NAVE DE EXTERMINACION #1|   🚀  ↲\n\n●❯────────｢🉐 ｣────────❮●\n\n[•NAVE DE EXTERMINACION•]\n\n'
+     '▪️MetriOdin🇪🇦 eliminado #1\n▪️Trot 🇪🇸 😂  ELIMINADO #2\n▪️Crk🇲🇽 🇨  ELIMINADO #2 \n▪️yinn🇲🇽 ♿ \n'
+     '▪️luisito 🇦🇷 🏆  ELIMINADO #3\n▪️ Pichulamc🇦🇷 ✌️ ELIMINADO #2\n▪️Lrs🇦🇷 🙊 ELIMINADO #4\n'
+     '▪️Six <:JUEZ:1514522595972878467>  ELIMNINADO #6\n▪️ Monet 🇲🇽 🉐  ELIMINADO #3\n▪️ snow🇨🇴 🎤\n'
+     '▪️ Abyssus🇨🇦 ❤️ \n▪️ SOULSi 🇯🇵 🥵 ELIMINADO #4\n▪️CFM🇦🇷  ❌ ELIMINADO #3\n▪️Deuxs 🇨🇱 🥹 ELIMINADO #4\n'
+     '▪️ Shisui (VELATZ) 🐏 \n▪️ MaYeuTyK 🇺🇾 <:734162traditionalartist:1514522640247689318> ELIMINADO #4\n'
+     '▪️Molusco 🚱 ELIMINADO #5                                        ●❯────────｢💥 ｣────────❮●\n\n'
+     '▪️[•SEMI - FINAL•]\n\n▪️VELATZ 🇨🇱 🆚 SNOW 🇨🇴\n▪️YINN 🇲🇦 🆚  ABYSSUS🇨🇦\n\n\n●❯────────｢ 🉐  ｣────────❮●\n\n\n'
+     '▪️[• FINAL•]\n\n▪️ VELATZ 🇨🇱 🆚 YINN 🇲🇦\n●❯────────｢🏆 ｣────────❮●\n\n\n🥇 **𝄆 CAMPEÓN: \n\n🥈 𝄆 SUB-CAMPEÓN: \n\n'
+     '🥉  𝄆 TERCER LUGAR: SNOW 🇨🇴'),
 ]
 
 
