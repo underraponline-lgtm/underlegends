@@ -37,17 +37,94 @@ export function SeBusca({ liga }) {
   );
 }
 
-// ── el Merchandising: donde estaba la Tienda (Dlx, 30/09/2026). Todavía no salió nada, y se dice así ───────────
-export function Merch() {
+// ── el Merchandising: donde estaba la Tienda (Dlx, 30/09/2026), y con EJEMPLOS desde el 04/10/2026 (Dlx: «en
+// mercancía creá ejemplos de lo que sería nuestra mercancía… con nosotros y nuestros socios… no venderemos nada
+// todavía, pero sería un ejemplo»). Todo dice que es un ejemplo y que no está a la venta: no hay precio ni botón.
+// Los dibujos son planos, en SVG, como pide el remake (sin degradés ni sombras); el logo de cada socio sale del lobby.
+const oscuro = (hex) => {
+  const h = String(hex || '#000').replace('#', '');
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) || 0);
+  return 0.299 * r + 0.587 * g + 0.114 * b < 140;
+};
+
+function Prenda({ tipo, color, logo, texto }) {
+  const borde = oscuro(color) ? 'rgba(255,255,255,.28)' : 'rgba(0,0,0,.28)';
+  const tinta = oscuro(color) ? '#FFFFFF' : '#141414';
+  if (tipo === 'gorra') {
+    return (
+      <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+        <path d="M48 124 Q48 62 100 58 Q152 62 152 124 Z" fill={color} stroke={borde} strokeWidth="2" />
+        <path d="M44 124 L156 124 Q182 127 188 138 L62 138 Q46 136 44 124 Z" fill={color} stroke={borde} strokeWidth="2" />
+        <circle cx="100" cy="60" r="4" fill={borde} />
+        <image href={logo} x="78" y="76" width="44" height="44" preserveAspectRatio="xMidYMid meet" />
+      </svg>
+    );
+  }
+  if (tipo === 'buzo') {
+    return (
+      <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+        <path d="M66 40 L84 26 Q100 22 116 26 L134 40 L170 64 L162 152 L146 152 L142 94 L142 184 L58 184 L58 94 L54 152 L38 152 L30 64 Z"
+          fill={color} stroke={borde} strokeWidth="2" strokeLinejoin="round" />
+        <path d="M84 26 Q100 4 116 26 Q100 42 84 26 Z" fill={color} stroke={borde} strokeWidth="2" />
+        <path d="M74 146 L126 146 L132 172 L68 172 Z" fill="none" stroke={borde} strokeWidth="2" />
+        <image href={logo} x="80" y="66" width="40" height="40" preserveAspectRatio="xMidYMid meet" />
+        {texto ? <text x="100" y="126" textAnchor="middle" fill={tinta} style={{ font: '900 11px Archivo, sans-serif', letterSpacing: '.08em' }}>{texto}</text> : null}
+      </svg>
+    );
+  }
+  return (
+    <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+      <path d="M70 28 L88 20 Q100 32 112 20 L130 28 L168 52 L152 82 L138 74 L138 184 L62 184 L62 74 L48 82 L32 52 Z"
+        fill={color} stroke={borde} strokeWidth="2" strokeLinejoin="round" />
+      <path d="M88 20 Q100 32 112 20" fill="none" stroke={borde} strokeWidth="2" />
+      <image href={logo} x="76" y="58" width="48" height="48" preserveAspectRatio="xMidYMid meet" />
+      {texto ? <text x="100" y="128" textAnchor="middle" fill={tinta} style={{ font: '900 10px Archivo, sans-serif', letterSpacing: '.08em' }}>{texto}</text> : null}
+    </svg>
+  );
+}
+
+function Stickers({ logos }) {
+  const pos = [[62, 62], [138, 62], [100, 100], [62, 138], [138, 138]];
+  return (
+    <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+      <defs>{pos.map(([x, y], i) => <clipPath key={i} id={'mq-st-' + i}><circle cx={x} cy={y} r="26" /></clipPath>)}</defs>
+      <rect x="22" y="22" width="156" height="156" rx="4" fill="#F6F6F6" stroke="rgba(0,0,0,.28)" strokeWidth="2" />
+      {pos.map(([x, y], i) => (logos[i] ? (
+        <g key={i}>
+          <circle cx={x} cy={y} r="29" fill="#FFFFFF" stroke="rgba(0,0,0,.18)" strokeWidth="1.5" />
+          <image href={logos[i]} x={x - 26} y={y - 26} width="52" height="52" clipPath={'url(#mq-st-' + i + ')'} preserveAspectRatio="xMidYMid slice" />
+        </g>
+      ) : null))}
+    </svg>
+  );
+}
+
+export function Merch({ liga }) {
+  // los socios: los servidores de la Liga que vienen en el lobby, con su color y su logo
+  const svs = liga ? Object.values(liga.svs || {}).filter((s) => s.color && s.sv) : [];
+  const socios = svs.filter((s) => s.logo).slice(0, 4);
+  const items = [
+    ['remera', 'Remera Under Legends', 'Negra, con el logo al pecho', <Prenda tipo="remera" color="#141414" logo="/ul.png" />],
+    ['buzo', 'Buzo Liga Global', 'Magenta, con el logo y «LIGA GLOBAL»', <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" />],
+    ['gorra', 'Gorra UL', 'Blanca, con el logo bordado', <Prenda tipo="gorra" color="#F2F2F2" logo="/ul.png" />],
+    ...socios.map((s) => ['sv-' + s.sv, 'Remera ' + (s.sigla || s.sv), s.nombre + ', socio de la Liga',
+      <Prenda tipo="remera" color={s.color} logo={liga.logo(s.sv)} texto={String(s.sigla || s.sv).toUpperCase()} />]),
+    ...(svs.length ? [['stickers', 'Stickers de la Liga', 'Los logos de los socios',
+      <Stickers logos={['/ul.png', ...svs.filter((s) => s.logo).map((s) => liga.logo(s.sv))]} />]] : []),
+  ];
   return (
     <Sec id="merch" titulo="Merchandising">
-      <div className="merch">
-        <img className="merch-logo" alt="" src="/ul.png" />
-        <div className="merch-tx">
-          <span className="tag-pronto">PRÓXIMAMENTE</span>
-          <h3>El merchandising de Under Legends</h3>
-          <p>Todavía no salió nada. Cuando salga, lo ves acá primero.</p>
-        </div>
+      {/* el texto en UN span: la nota es flex, y cada pedazo suelto quedaba como un ítem con su hueco («nada : cuando») */}
+      <p className="mq-nota"><span className="tag-pronto">EJEMPLOS</span><span>Así podría ser la ropa de Under Legends y de sus socios. <b>Todavía no se vende nada</b>: cuando salga, la ves acá primero.</span></p>
+      <div className="mq-rail">
+        {items.map(([k, n, d, dibujo]) => (
+          <article className="mq" key={k}>
+            <div className="mq-img">{dibujo}</div>
+            <b>{n}</b>
+            <small>{d}</small>
+            <span className="mq-ej">EJEMPLO · NO ESTÁ A LA VENTA</span>
+          </article>
+        ))}
       </div>
     </Sec>
   );

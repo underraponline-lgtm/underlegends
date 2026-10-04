@@ -432,7 +432,7 @@ export default function App() {
         <Aislada n="Panel"><Panel liga={liga} /></Aislada>
         <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} /></Aislada>
         <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
-        <Aislada n="Merch"><Merch /></Aislada>
+        <Aislada n="Merch"><Merch liga={liga} /></Aislada>
         <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>

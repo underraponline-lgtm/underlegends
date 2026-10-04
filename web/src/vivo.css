@@ -136,6 +136,17 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .merch-tx{display:grid;gap:8px;justify-items:start}
 .merch-tx h3{font:900 20px/1.05 Archivo,sans-serif;font-stretch:118%;text-transform:uppercase}
 .merch-tx p{font:400 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+/* 👕 el merchandising de EJEMPLO (04/10/2026): una tira de prendas dibujadas, cada una con «no está a la venta» */
+.mq-nota{margin:0 0 12px;font:400 14px/1.5 Archivo,sans-serif;color:var(--gris);display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.mq-nota b{color:var(--tinta)}
+.mq-rail{display:grid;grid-auto-flow:column;grid-auto-columns:168px;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;padding-bottom:6px}
+.mq{scroll-snap-align:start;display:grid;align-content:start;gap:4px;border:2px solid var(--linea);background:var(--caja);padding:10px}
+.mq-img{aspect-ratio:1;display:grid;place-items:center;background:var(--fondo);border:1px solid var(--linea)}
+.mq-img svg{width:100%;height:100%;display:block}
+.mq b{font:900 14px/1.15 Archivo,sans-serif;text-transform:uppercase;margin-top:4px}
+.mq small{font:600 12px/1.35 Archivo,sans-serif;color:var(--gris)}
+.mq-ej{font:700 9px/1.2 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris);margin-top:2px}
+@media (min-width: 900px){.mq-rail{grid-auto-columns:196px}}
 
 /* tocar en el celular: sin el recuadro azul del navegador y sin la espera del doble toque */
 .mo-fl,.pz-b,.mw-b,.mo-tabs button,.pz-tabs button,.en-op,.h,.fecha,.destacada,.nota-b,.te-b,.btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
