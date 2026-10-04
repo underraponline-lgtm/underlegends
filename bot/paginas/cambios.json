@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.17",
+   "dia": "2026-10-03",
+   "cuando": "2026-10-03T21:34:00-04:00",
+   "titulo": "La nave de exterminación y la llave en negro",
+   "items": [
+    "🚀 **La NAVE DE EXTERMINACIÓN se lee como una nave**: la fase entera, con quién cayó y **en qué ronda**, ronda por ronda, y al final los que pasan a la llave.",
+    "🖤 **La página de la llave, nueva**: «La llave en Discord», «Compartir», «¿Algo está mal?» y los puntos van arriba, y el cuadro en negro, como en el Inicio.",
+    "🔴 **Un evento cuya llave se borró deja de estar «en vivo»** a los 5 minutos, si no publican otra.",
+    "⭕ **La tira de historias** vuelve a arrancar a la izquierda."
+   ]
+  },
+  {
    "version": "2.16",
    "dia": "2026-10-03",
    "cuando": "2026-10-03T19:43:00-04:00",
