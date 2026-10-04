@@ -94,7 +94,10 @@
   "   cartas con /card. Dlx, 03/10/2026 («11. A» y «A»): Monet se anota desde",
   "   @monet_x. (1501320596485701642) y en la Lista está @monet_oficial. Van en",
   "   `dx:` (`subir_datos.cuentas_extra()`): sólo las cartas; lo de la cuenta",
-  "   sigue siendo de la de la Lista."
+  "   sigue siendo de la de la Lista.",
+  "",
+  "Dlx, 04/10/2026 («2. A»): «Pichula» es PichulaMc y «za» es Provenza. No es por el nombre: la cuenta de Discord",
+  "que buscó el bot para cada uno ES la que ya tienen en la Lista (Pichulamc en DDF; «provenzaaznevorp», Provenza al revés)."
  ],
  "cuentas": {
   "Monet": [
@@ -189,6 +192,14 @@
   [
    "EYOU",
    "LOLOELGAUCHO"
+  ],
+  [
+   "Pichula",
+   "PichulaMc"
+  ],
+  [
+   "za",
+   "Provenza"
   ]
  ],
  "no_confundir": [
