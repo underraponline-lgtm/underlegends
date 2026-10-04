@@ -23,6 +23,13 @@ export function Fechas({ liga }) {
     t.push({ c: 'cancelado', dia: ini ? liga.dia(ini).split(' ')[0].toUpperCase() : 'HOY', hora: 'CANCELADO',
       sv: c.sv, ev: limpio(c.n), det: ini ? 'era a las ' + hora(ini) : 'el servidor lo canceló' });
   });
+  // 🔑 lo que terminó recién y el ciclo todavía no procesó (la NAVE DE EXTERMINACIÓN, 03/10/2026): con su campeón y su
+  // llave, hasta que llegue la procesada. Ver `liga.recienTerminadas()`
+  liga.recienTerminadas().forEach(({ L, e, camp }) => {
+    t.push({ c: 'hecho', dia: liga.cuando(new Date(L.ed || L.pub)).toUpperCase(),
+      hora: 'TERMINÓ' + (L.participantes ? ' · ' + L.participantes + ' raperos' : ''), sv: L.sv || (e && e.sv) || '',
+      ev: limpio((e && e.nombre) || L.nombre), det: camp ? 'Campeón: ' + camp : 'los puntos llegan en un rato', llave: 'v:' + L.id });
+  });
   // lo que pasó, hasta completar la fila de cinco de la compu (de diez si lo que viene ya pasa de cinco): con tres
   // fijas, sin nada anunciado quedaban dos lugares vacíos al lado (Dlx, 02/10/2026: «un espacio tan grande vacío»)
   const fila = t.length > 4 ? 10 : 5;

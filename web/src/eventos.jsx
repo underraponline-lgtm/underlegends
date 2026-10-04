@@ -248,7 +248,7 @@ function Acciones({ liga, e, L, fut, ll, est }) {
     <div className="t-acc">
       {e.ll ? <button type="button" className="btn verde chico" onClick={() => accion.llave(e.ll)}>Ver la llave</button> : null}
       {ll ? <BotonCampeon liga={liga} ll={ll} /> : null}
-      {!e.ll && L ? <button type="button" className="btn verde chico" onClick={() => accion.llave('v:' + L.id)}>Ver la llave en vivo</button> : null}
+      {!e.ll && L ? <button type="button" className="btn verde chico" onClick={() => accion.llave('v:' + L.id)}>{L.terminada ? 'Ver la llave' : 'Ver la llave en vivo'}</button> : null}
       {fut ? <button type="button" className="btn verde chico" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={16} />Quiero aviso</button> : null}
       {fut ? <a href={gcal({ nombre: e.n, sv: e.sv, cuando: e.t, link: e.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a> : null}
       {dd ? <a href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt} ↗</a>
@@ -291,7 +291,8 @@ function Abierto({ liga, ll }) {
   );
 }
 // `arriba`: el evento en vivo cuya llave ya está en la tarjeta negra de arriba: acá no se repite
-function Evento({ liga, e, est, L, abierto, arriba }) {
+// `campVivo`: el campeón de una llave que terminó y el ciclo todavía no procesó (`liga.recienTerminadas()`)
+function Evento({ liga, e, est, L, abierto, arriba, campVivo }) {
   const ll = e.ll ? (liga.d.llaves || {})[e.ll] : null;
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
@@ -303,7 +304,7 @@ function Evento({ liga, e, est, L, abierto, arriba }) {
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
   // ⚠️ por `e.ll` y no por la llave del payload, que trae las 12 más nuevas: 21 de 33 decían «SIN LLAVE» al lado de
   // un «Ver la llave» que andaba (revisión del 03/10/2026)
-  const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll ? 'TERMINÓ' : 'SIN LLAVE';
+  const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll || (L && L.terminada) ? 'TERMINÓ' : 'SIN LLAVE';
   return (
     // 🔴 `es-prox` Y NO `prox`: `.prox` es una clase global del Inicio (estilo.css, una grilla de 44px | 1fr | auto) y
     // las tarjetas «por jugarse» salían con el nombre en una columna angosta (encontrado con los anotados, 03/10/2026)
@@ -325,6 +326,7 @@ function Evento({ liga, e, est, L, abierto, arriba }) {
       ) : null}
       {mia ? <p className="evp-vos"><em className="rk-vos">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
+      {!camp.length && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
       {est === 'vivo' && L && !arriba ? <CuadroLleno liga={liga} ll={L} /> : null}
       {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
@@ -600,6 +602,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const hechos = evs.filter((c) => !vivos.includes(c) && !prox.includes(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
   const cancelados = liga.cancelacionesVisibles().filter((c) => c.ini && liga.diaClave(c.ini) === dia && (!svFil || c.sv === svFil));
   const enVivo = (c) => llaveEnVivo({ cuando: c.t, sv: c.sv, nombre: c.n }, vivoL);
+  // 🔑 lo que terminó y el ciclo todavía no procesó: su llave y su campeón (ver `liga.recienTerminadas()`)
+  const term = liga.recienTerminadas();
+  const termDe = (c) => (c.ll ? null : term.find((x) => x.e && ((x.e.link && x.e.link === c.link) || (x.e.sv === c.sv && limpio(x.e.nombre) === limpio(c.n)))) || null);
   // el que va en la tarjeta negra de arriba (`vivoS[0]`), con su llave
   const esArriba = (c) => !!vivoS[0] && ((vivoS[0].link && vivoS[0].link === c.link) || (vivoS[0].sv === c.sv && limpio(vivoS[0].nombre) === limpio(c.n)));
 
@@ -745,7 +750,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           ) : null}
           {hechos.length ? (
             <section className="grupo"><h3 className="g-t">Terminados</h3>
-              {hechos.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} />)}</section>
+              {hechos.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} L={termDe(c) ? termDe(c).L : undefined} campVivo={termDe(c) ? termDe(c).camp : ''} />)}</section>
           ) : null}
           {cancelados.length ? (
             <section className="grupo"><h3 className="g-t">Cancelados</h3>

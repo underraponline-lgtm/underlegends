@@ -379,6 +379,26 @@ export class Liga {
     });
     return out;
   }
+  // 🔑 LO QUE TERMINÓ Y EL CICLO TODAVÍA NO PROCESÓ (Dlx, 03/10/2026, 9:45 PM: «el evento no aparece aquí… el de la
+  // nave»). La NAVE DE EXTERMINACIÓN terminó a las 9:30 y el ciclo procesa a las :22 y :52 —o más tarde, si duda—: en
+  // el medio no estaba en vivo, no venía y no tenía llave procesada, así que no salía en ningún lado. Son las llaves en
+  // vivo ya terminadas (`VIVO_L` de app.js: las procesadas ya no están, ver `llavesHechas()`), de las últimas 8 h, con
+  // su evento anunciado si lo hay y el campeón de la final. `[{ L, e, camp }]`
+  recienTerminadas() {
+    const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => L && L.terminada && !L.veredictos) : [];
+    if (!ls.length) return [];
+    const evs = this.proximos().concat((this.d.calendario || []).map((c) => ({ nombre: c.n, sv: c.sv, cuando: c.t, link: c.link })));
+    const de = (L) => evs.find((x) => { try { return !!(window.llaveDeEvento && window.llaveDeEvento(x, [L])); } catch (err) { return false; } }) || null;
+    // ⚠️ y la que ya tiene su llave procesada, no: `llavesHechas()` la saca por el link del mensaje, y si el ciclo la
+    // leyó de otro lado (otro mensaje, #veredictos) el link no coincide. La RED BULL NACIONAL salía dos veces en Fechas
+    const hechas = this.llaves().filter((ll) => this.ahora - utc(this.fechaLlave(ll)) < 24 * 3600000)
+      .map((ll) => ({ nombre: ll.nombre, sv: ll.sv, cuando: this.fechaLlave(ll) }));
+    const procesada = (L) => hechas.some((x) => { try { return !!(window.llaveDeEvento && window.llaveDeEvento(x, [L])); } catch (err) { return false; } });
+    return ls.filter((L) => this.ahora - (L.ed || L.pub || 0) < 8 * 3600000 && !procesada(L)).map((L) => {
+      const R = (L.rondas || [])[(L.rondas || []).length - 1];
+      return { L, e: de(L), camp: R && R.b && R.b.length === 1 ? limpio(String(R.b[0][1] || '').split(/\s*,\s*/).join(' y ')) : '' };
+    });
+  }
   // en orden de hora: lo que suma el vigía va al final de la lista y puede ser lo primero que se juega
   luego() { return this.proximos().filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)).sort((a, b) => utc(a.cuando) - utc(b.cuando)); }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }
