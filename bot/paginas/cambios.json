@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.26",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T13:31:00-04:00",
+   "titulo": "Avisos de la Liga, arriba de todo",
+   "items": [
+    "📣 **Los avisos importantes de la Liga aparecen arriba de la página**: un cambio de horario, un mantenimiento. Lo cerrás con la ✕ y no vuelve, salvo que haya uno nuevo.",
+    "🔔 **Si la campana está en pausa, la página de Eventos lo dice**, así no parece que se rompió.",
+    "⚙️ **Si el multiplicador de la semana cambia a mitad de semana, vale desde ese momento**: lo que ya jugaste se queda con el de antes."
+   ]
+  },
+  {
    "version": "2.25",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T11:40:00-04:00",

@@ -497,6 +497,8 @@
         pedido: v ? textoPedido(v) : '', yo: leer('campana:yo', null), msg: MSG,
         vigia: EST && EST.vigia && EST.vigia.t ? { t: EST.vigia.t, ok: !!EST.ok, dispositivos: EST.suscripciones || 0 } : null,
         ultimo: EST && EST.ultimo && EST.ultimo.titulo ? { titulo: EST.ultimo.titulo, sv: EST.ultimo.sv, t: EST.ultimo.t } : null,
+        // 🔔 en pausa desde el Dashboard de Dlx (04/10/2026)
+        pausada: !!(EST && EST.pausada),
       };
     },
     activar: function () { return correr(activar); },

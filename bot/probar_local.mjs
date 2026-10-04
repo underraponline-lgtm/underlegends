@@ -2786,5 +2786,53 @@ console.log('\n«EL DASHBOARD DEL DUEÑO»\n');
   env.AVISOS = antesA;
 }
 
+console.log('\n«LOS AJUSTES DEL DASHBOARD»\n');
+{
+  // ⚙️ Dlx, 04/10/2026: «todo y muchas más cosas». La misma puerta que el Dashboard, y el valor se valida ANTES de
+  // llegar al objeto. Lo que el objeto hace con cada ajuste se prueba sobre el de verdad (SQLite)
+  const { DUENO, claveCiclo } = await import('./avisos.js');
+  const SES_D = 'g'.repeat(43), SES_O = 'h'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS, antesT = env.DISCORD_TOKEN;
+  env.DISCORD_TOKEN = 'token-de-prueba';
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/quien')) {
+      return b && b.ses === SES_D ? new Response(JSON.stringify({ quien: DUENO }), { status: 200 })
+        : b && b.ses === SES_O ? new Response(JSON.stringify({ quien: '562063579545600007' }), { status: 200 })
+          : new Response('{"error":"no"}', { status: 404 });
+    }
+    return new Response('{"ok":true,"ajustes":{}}', { status: 200 });
+  } }) };
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedirA = async (ses, cuerpo) => {
+    const r = await worker.fetch(new Request('https://x/avisos/dueno/ajuste', { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  const alAjuste = () => alObjeto.filter(([u]) => u.endsWith('/ajuste')).map(([, b]) => b);
+  let r = await pedirA(SES_D, { cual: 'campana_pausada', valor: true });
+  ok('el dueño pausa la campana: llega al objeto ya validado', r.status === 200 &&
+     JSON.stringify(alAjuste()) === '[{"cual":"campana_pausada","valor":true}]');
+  alObjeto.length = 0;
+  r = await pedirA(SES_D, { cual: 'multiplicadores', valor: { semana: '2026-10-12', sv: { FFA: 9 } } });
+  const r2 = await pedirA(SES_D, { cual: 'cualquiera', valor: 1 });
+  ok('un factor fuera de rango o un ajuste que no existe: 400, y no llega al objeto',
+     r.status === 400 && r2.status === 400 && !alAjuste().length);
+  r = await pedirA(SES_O, { cual: 'campana_pausada', valor: true });
+  ok('otra cuenta: 403 y no llega al objeto', r.status === 403 && !alAjuste().length);
+  r = await pedirA(null, { cual: 'campana_pausada', valor: true });
+  ok('sin sesión: 401', r.status === 401 && !alAjuste().length);
+  const pedirC = async (k) => (await worker.fetch(new Request('https://x/avisos/ajustes', { headers: k ? { 'x-lg-ciclo': k } : {} }), env, ctx)).status;
+  const sinClave = await pedirC(''), malClave = await pedirC('x'.repeat(64));
+  ok('los ajustes para el ciclo: sin su clave «no existe» y no llega al objeto',
+     sinClave === 404 && malClave === 404 && !alObjeto.some(([u]) => u.endsWith('/ajustes')));
+  ok('con la clave del ciclo, sí', await pedirC(await claveCiclo(env.DISCORD_TOKEN)) === 200 && alObjeto.some(([u]) => u.endsWith('/ajustes')));
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  if (antesT === undefined) delete env.DISCORD_TOKEN; else env.DISCORD_TOKEN = antesT;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

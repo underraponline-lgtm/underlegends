@@ -97,6 +97,8 @@ function Campana({ liga }) {
     <div className="evp-campana">
       {cuerpo}
       {e.msg ? <p className="evp-msg" role="status">{e.msg}</p> : null}
+      {/* 🔔 en pausa desde el Dashboard: si no se dice, la campana parece rota */}
+      {e.pausada ? <p className="evp-msg" role="status">⏸ La campana está en pausa por un rato. Los avisos vuelven solos.</p> : null}
       <p className="evp-nota">Desde Discord: escribí <b>/notify</b> en cualquier servidor de la Liga y el bot te trae acá con ese servidor ya elegido.</p>
       {e.vigia ? (
         <p className="evp-vig">{e.vigia.ok ? '● ' : '⚠ '}Revisa los canales de eventos cada minuto · última vez {liga.cuando(e.vigia.t)}

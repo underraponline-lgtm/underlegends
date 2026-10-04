@@ -1170,6 +1170,8 @@ const RUTAS = {
   '/avisos/visita': 'POST',
   // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
   '/avisos/dueno': 'POST',
+  // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
+  '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
   // 🙈 «ocultar mi foto»: en Mi cuenta → Privacidad. Ver `miFoto()`
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
@@ -1555,6 +1557,49 @@ export const APP_ID = '1550026808404217926';
 // 🔒 EL DUEÑO DE LA LIGA: su Discord ID. Abre el Dashboard (`/avisos/dueno`) y los comandos `/owner`. Es público —es
 // un ID— y vive acá para que el Worker y el objeto lean el mismo
 export const DUENO = '739338101603696681';
+// ⚙️ LOS AJUSTES DEL DASHBOARD (Dlx, 04/10/2026: «todo y muchas más cosas»): lo que sólo cambia el dueño. Viven en el
+// objeto (`ajustes()`), los escribe `/avisos/dueno/ajuste` (sólo Dlx) y los leen el vigía, el ciclo (`/avisos/ajustes`,
+// con su clave) y la página (sólo el aviso, adentro de `/avisos/vivo`)
+//   campana_pausada   bool: no sale ningún aviso (los de eventos de ese rato se descartan; los personales esperan)
+//   multiplicadores   {semana, sv: {SV: factor}}: los de la semana a mano, encima del sorteo (los aplica el ciclo)
+//   aviso_web         {texto, hasta}: un aviso arriba de la página, para todos, hasta esa hora. Viaja con `/vivo`,
+//                     que la página ya pide al abrir y cada pocos minutos: no suma ningún pedido
+//   en_vivo           {SV: bool}: el bot en el chat de cada servidor durante un evento (llega con esa función)
+export const FACTORES = [0.5, 1, 1.5, 2, 3, 5];
+export function ajusteValido(cual, valor) {
+  if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
+  if (cual === 'multiplicadores') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || !/^\d{4}-\d{2}-\d{2}$/.test(String(valor.semana || ''))) return undefined;
+    const sv = {};
+    for (const [k, f] of Object.entries(valor.sv || {})) {
+      // los de `FACTORES` y también el que ya tenía la semana (×2,25 con la guerra): de ×0,5 a ×5, hasta 3 decimales
+      const x = Number(f);
+      if (!/^[A-Z]{2,5}$/.test(k) || !(x >= 0.5 && x <= 5) || Math.abs(Math.round(x * 1000) - x * 1000) > 1e-6) return undefined;
+      sv[k] = Math.round(x * 1000) / 1000;
+    }
+    if (Object.keys(sv).length > 20) return undefined;
+    // `t`: desde cuándo vale (el ciclo lo aplica desde ahí, no a la semana entera: ver `a_mano()` de multiplicadores.py)
+    return Object.keys(sv).length ? { semana: valor.semana, sv, t: new Date().toISOString() } : null;
+  }
+  if (cual === 'aviso_web') {
+    if (valor === null) return null;
+    const texto = String((valor && valor.texto) || '').trim().slice(0, 240);
+    const hasta = Date.parse((valor && valor.hasta) || '');
+    if (!texto || !hasta || hasta < Date.now()) return undefined;
+    return { texto, hasta: new Date(Math.min(hasta, Date.now() + 30 * DIA_MS)).toISOString() };
+  }
+  if (cual === 'en_vivo') {
+    if (!valor || typeof valor !== 'object') return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,5}$/.test(k) || typeof v !== 'boolean') return undefined;
+      out[k] = v;
+    }
+    return out;
+  }
+  return undefined;
+}
 // 🛡️ LOS PERMISOS INVENTADOS NO LLEGAN A DISCORD (04/10/2026, la lista de seguridad de Dlx). Cada permiso falso era un
 // 401 de Discord, y Discord bloquea un rato la IP que junta muchos (10.000 en 10 minutos): con el vigía, los apodos y
 // verificar saliendo por las mismas IPs de Cloudflare, un script con permisos al azar podía dejar mudo al bot. Dos
@@ -1962,6 +2007,33 @@ export async function rutaAvisos(req, env, ruta) {
   // 🔒 EL DASHBOARD DEL DUEÑO (Dlx, 04/10/2026: «una página nueva creada sólo para el owner… la única manera de iniciar
   // sesión ahí es con mi cuenta»). Quién es lo dice Discord o la sesión —nunca la página—, y si no es Dlx no se
   // contesta nada: ni qué habría. El 403 queda en los registros
+  // ⚙️ UN AJUSTE DEL DASHBOARD: la misma puerta que el Dashboard, y el valor se valida antes de llegar al objeto
+  if (ruta === '/avisos/dueno/ajuste') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] un ajuste del Dashboard lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    const v = ajusteValido(String(d.cual || ''), d.valor);
+    if (v === undefined) return json({ error: 'valor' }, 400);
+    return elObjeto(env).fetch('https://avisos/ajuste', {
+      method: 'POST', body: JSON.stringify({ cual: d.cual, valor: v }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // ⚙️ LOS AJUSTES, PARA EL CICLO (el multiplicador a mano): con la clave del ciclo, como `/avisos/inscritos`
+  if (ruta === '/avisos/ajustes') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/ajustes');
+  }
   if (ruta === '/avisos/dueno') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
@@ -2542,10 +2614,20 @@ export class Avisos {
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.estado(), 200, 20);
+      if (ruta === '/ajustes') return json(this.ajustes());
+      if (ruta === '/ajuste') {
+        const d = await req.json().catch(() => null);
+        if (!d) return json({ error: 'no es JSON' }, 400);
+        return json(this.ajuste(d));
+      }
       if (ruta === '/vivo') {
         // el título de las borradas sale del lector de la página (ver `vivo()`)
         if (!globalThis.LlaveVivo) { try { await import('./llave_vivo.js'); } catch (e) { /* sin título */ } }
-        return json(this.vivo(), 200, 20);
+        // 📣 y el aviso de la página (el Dashboard): con lo en vivo, que la página ya pide, así no suma pedidos
+        const r = this.vivo();
+        const a = this.avisoWeb();
+        if (a) r.aviso = a;
+        return json(r, 200, 20);
       }
       if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
       if (ruta === '/precios') return json(this.precios(), 200, 20);
@@ -3113,6 +3195,7 @@ export class Avisos {
    * avisos salieron. ⚠️ El lector se carga recién acá (`import()`): las pruebas de Node importan este archivo sin él.
    */
   async turnos(ahora) {
+    if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
     const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
       ahora - 3 * HORA).toArray();
     if (!filas.length) return 0;
@@ -3705,6 +3788,12 @@ export class Avisos {
   }
 
   async lote(av, ahora) {
+    // 🔔 CON LA CAMPANA PAUSADA (el Dashboard), el aviso se descarta: dejarlo pendiente haría que la alarma lo vuelva a
+    // tomar al instante, para siempre. Uno de un evento que empieza en un rato ya no sirve después
+    if (this.pausada()) {
+      this.sql.exec('UPDATE avisos SET estado = 2 WHERE id = ?', av.id);
+      return;
+    }
     // 🔴 VENCIDO NO SE MANDA. Si el Worker estuvo caído y el evento ya
     // empezó, el aviso se descarta en vez de llegar tarde.
     if (ahora > av.hasta) {
@@ -4158,6 +4247,7 @@ export class Avisos {
    * a dos del mismo equipo campeón le llega uno.
    */
   async seguidos(ahora) {
+    if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
     if (!this.sql.exec('SELECT 1 AS x FROM sigue LIMIT 1').toArray()[0]) return 0;
     const previo = this.leer('seguidos') || {};
     if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
@@ -4202,6 +4292,7 @@ export class Avisos {
    * de 30 días siguen pero no cuentan (`cuantos()`): tampoco suenan.
    */
   async avisarSeguidores(ahora) {
+    if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
     const previo = this.leer('seguidores_nuevos') || {};
     if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
     const filas = this.sql.exec('SELECT a, quien, de, creada, t FROM sigue WHERE avisado = 0 AND t <= ?',
@@ -4321,6 +4412,7 @@ export class Avisos {
    * y se vuelve atrás si no llegó a ninguno por una falla de la red.
    */
   async avisarAplausos(ahora) {
+    if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
     const previo = this.leer('aplausos') || {};
     if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
     const filas = this.sql.exec('SELECT p.id, p.quien, p.ks, p.motivo, p.t, p.primero, p.avisado, p.t_avisado, ' +
@@ -4589,6 +4681,7 @@ export class Avisos {
    * a los dispositivos que esa persona vinculó. El resto se descarta.
    */
   async personales(ahora) {
+    if (this.pausada()) return 0;  // 🔔 la campana pausada desde el Dashboard: esperan
     const crudo = await this.env.KV.get(COLA_PERSONAL);
     if (!crudo) return 0;
     const cola = colaPersonal(crudo, ahora);
@@ -4753,6 +4846,32 @@ export class Avisos {
     };
   }
 
+  /** ⚙️ Los ajustes del dueño, como están (ver `ajusteValido()`) */
+  ajustes() {
+    return this.leer('ajustes_dueno') || {};
+  }
+
+  /** ⚙️ Uno, ya validado por la ruta. `null` lo saca */
+  ajuste(d) {
+    const a = this.ajustes();
+    if (d.valor === null || d.valor === undefined) delete a[d.cual];
+    else a[d.cual] = d.valor;
+    a._t = Date.now();
+    this.guardar('ajustes_dueno', a);
+    return { ok: true, ajustes: a };
+  }
+
+  /** 📣 El aviso de la página, si sigue vigente: `{texto, hasta}` o `null` */
+  avisoWeb() {
+    const a = this.ajustes().aviso_web;
+    return a && Date.parse(a.hasta) > Date.now() ? { texto: a.texto, hasta: a.hasta } : null;
+  }
+
+  /** 🔔 ¿La campana está pausada? (el ajuste del Dashboard) */
+  pausada() {
+    return !!this.ajustes().campana_pausada;
+  }
+
   /** 🔒 Lo del Dashboard del dueño: el uso (la semana y día por día) y cómo anda todo. Sólo lo pide `/avisos/dueno`,
    *  que ya comprobó que es Dlx. Números, nunca quién */
   dueno() {
@@ -4767,6 +4886,20 @@ export class Avisos {
     const e = this.estado();
     return {
       uso: this.usoResumen(),
+      ajustes: this.ajustes(),
+      // 🤝 y lo que te llega por DM, junto: las postulaciones de /sumate y los errores reportados en las llaves (los 10
+      // últimos de cada uno), con la clave de la página de quien lo mandó si se la conoce
+      postulaciones: this.sql.exec('SELECT p.t, p.datos, p.enviada, p.error, i.k FROM postulaciones p ' +
+        'LEFT JOIN idk i ON i.id = p.quien ORDER BY p.t DESC LIMIT 10').toArray().map((f) => {
+        let p = {};
+        try { p = JSON.parse(f.datos) || {}; } catch (e) { p = {}; }
+        return { t: f.t, tipo: p.tipo || '', nombre: p.nombre || '', link: p.link || '', miembros: p.miembros,
+          eventos: p.eventos, mensaje: String(p.mensaje || '').slice(0, 400), llego: f.enviada === 1, error: f.error || '',
+          de: f.k || '' };
+      }),
+      reportes: this.sql.exec('SELECT r.t, r.llave, r.que, r.texto, r.batalla, i.k FROM reportes r ' +
+        'LEFT JOIN idk i ON i.id = r.quien ORDER BY r.t DESC LIMIT 10').toArray()
+        .map((f) => ({ t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla, de: f.k || '' })),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {
@@ -4831,6 +4964,8 @@ export class Avisos {
       ultimo_fallo: fallo ? { t: new Date(fallo.t).toISOString(), estados: fallo.estados,
         detalle: fallo.detalle || [] } : null,
       ok: !!v.t && ahora - v.t < 5 * MIN && !(v.errores || []).length,
+      // 🔔 en pausa desde el Dashboard: la página lo dice, o la gente creería que se rompió
+      pausada: this.pausada(),
       cron: CRON_VIGIA,
       // 🔑 EL DISPARADOR DEL CICLO: cuándo arrancó y cómo le fue al último
       // intento. Lo lee `bot/alertar.py`. Ver `marcarDisparo()`.

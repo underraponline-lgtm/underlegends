@@ -2,7 +2,7 @@
 // sigue siendo app.js. Lo que sabe hacer la página de hoy —la cuenta, los visores de cartas y llaves, votar— se le
 // pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Liga, aQuienSigo, limpio, quienMira } from './liga.js';
+import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
@@ -27,6 +27,27 @@ const Pase = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Pase })
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
 // 🔒 el Dashboard del dueño (04/10/2026): perezoso, y la puerta la pone el servidor (ver dashboard.jsx)
 const Dashboard = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.Dashboard })));
+// 🏠 y en el Inicio, sólo para Dlx (el mismo archivo: se baja una vez)
+const PanelDueno = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.PanelDueno })));
+
+// 📣 EL AVISO DE LA PÁGINA (el Dashboard de Dlx, 04/10/2026): viaja con `/api/avisos/vivo`, que app.js ya pide al
+// abrir y cada pocos minutos (`window.VIVO.aviso`). Cada uno lo puede cerrar; uno nuevo vuelve a aparecer
+function avisoDe() {
+  const a = window.VIVO && window.VIVO.aviso;
+  return a && a.texto && Date.parse(a.hasta) > Date.now() ? a : null;
+}
+function AvisoWeb({ aviso }) {
+  const id = aviso ? aviso.texto + '|' + aviso.hasta : '';
+  const [cerrado, setCerrado] = useState(() => { try { return localStorage.getItem('lg:aviso-cerrado') || ''; } catch (e) { return ''; } });
+  if (!aviso || cerrado === id) return null;
+  const cerrar = () => { setCerrado(id); try { localStorage.setItem('lg:aviso-cerrado', id); } catch (e) { /* igual se cierra */ } };
+  return (
+    <div className="aviso-web" role="status">
+      <p>{aviso.texto}</p>
+      <button type="button" aria-label="Cerrar el aviso" onClick={cerrar}>✕</button>
+    </div>
+  );
+}
 const PaginaVerificar = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.PaginaVerificar })));
 const Cambios = lazy(() => import('./cambios.jsx').then((m) => ({ default: m.Cambios })));
 const PerfilSv = lazy(() => import('./servidor.jsx').then((m) => ({ default: m.PerfilSv })));
@@ -188,6 +209,7 @@ export default function App() {
   const [D, setD] = useState(() => window.D || null);
   const [muro, setMuro] = useState(null);
   const [vivoL, setVivoL] = useState(() => window.VIVO_L || null);
+  const [aviso, setAviso] = useState(avisoDe);
   const [enc, setEnc] = useState(estadoEnc);
   const [ahora, setAhora] = useState(() => new Date());
   const [tema, setTema] = useState(leerTema);
@@ -213,7 +235,7 @@ export default function App() {
   useEffect(() => {
     const datos = () => { setD(window.D || null); setAhora(new Date()); setYo(quienMira()); setEnc(estadoEnc()); marcarRuta(); };
     const votos = () => setEnc(estadoEnc());
-    const vivo = () => setVivoL(Object.assign({}, window.VIVO_L || {}));
+    const vivo = () => { setVivoL(Object.assign({}, window.VIVO_L || {})); setAviso(avisoDe()); };
     const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(rutaHash()); };
     const cuenta = () => setYo(quienMira());
     const sigo = () => setSigoV((v) => v + 1);
@@ -375,6 +397,7 @@ export default function App() {
       }}>Saltar al contenido</a>
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
+      <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
@@ -394,9 +417,11 @@ export default function App() {
         : pagina === 'ranking' || pagina === 'duelos' ? <Aislada key="Ranking" n="Ranking" pagina><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
         : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada>
         : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada> : <>
+        {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
+        {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>

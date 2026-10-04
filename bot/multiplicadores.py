@@ -753,7 +753,10 @@ def factor_de(d=None, filas=None, rivales=None):
         else:
             d = {}
     filas = filas or []
-    semanas = [(_de_iso(s['inicio']), _de_iso(s['fin']), s.get('sv') or {})
+    # ⚙️ CON LOS TRAMOS A MANO (el Dashboard): la semana arranca con su sorteo y cada tramo vale desde su `desde`.
+    # Ver `a_mano()`
+    semanas = [(_de_iso(s['inicio']), _de_iso(s['fin']), s.get('sv_sorteo') or s.get('sv') or {},
+                [(_de_iso(t['desde']), t.get('sv') or {}) for t in s.get('tramos') or []])
                for s in d.get('semanas') or []]
     # 🔑 LA META DE COMUNIDAD: la de cada servidor, contra su gente distinta de
     # esa semana en las filas (la misma identidad que el Semillero)
@@ -779,8 +782,11 @@ def factor_de(d=None, filas=None, rivales=None):
     def factor(sv, instante, n=None, quien=None):
         x = 1
         if instante and sv:
-            for i, (ini, fin, m) in enumerate(semanas):
+            for i, (ini, fin, m, tramos) in enumerate(semanas):
                 if ini <= instante < fin:
+                    for desde, mt in tramos:
+                        if desde <= instante:
+                            m = mt
                     x = m.get(sv, 1)
                     if (i, sv) in metas_ok:
                         x *= META_BONO
@@ -835,8 +841,71 @@ def votado(pid, svs, votos=None):
     return {'sv': g[0], 'votos': g[1], 'de': g[2]} if g else None
 
 
+def ajustes_dueno():
+    """Los ajustes del Dashboard de Dlx (`/avisos/ajustes`, con la clave del ciclo), o `None` si no se pudieron leer.
+
+    ⚠️ SIN ELLOS NO SE TOCA NADA: ni se pone ni se saca el multiplicador a mano. Un Worker que no contesta no es
+    «Dlx lo sacó».
+    """
+    import requests
+    import fotos as F
+    from alertar import WORKER
+    tok = F.env('DISCORD_TOKEN', obligatorio=False)
+    if not tok:
+        print('   ⚠️ sin DISCORD_TOKEN: no leo los ajustes del Dashboard')
+        return None
+    try:
+        k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+        r = requests.get(WORKER + '/avisos/ajustes', headers={'x-lg-ciclo': k}, timeout=20)
+        if r.status_code == 200:
+            return r.json() or {}
+        print('   ⚠️ los ajustes del Dashboard: el Worker contestó %s' % r.status_code)
+    except (OSError, ValueError) as e:
+        print('   ⚠️ los ajustes del Dashboard: %s' % str(e)[:80])
+    return None
+
+
+def a_mano(cur, aj, ahora):
+    """El multiplicador a mano del Dashboard, sobre la semana `cur`. Devuelve si cambió algo.
+
+    ⚙️ Dlx, 04/10/2026 (*«todo y muchas más cosas»*, a «elegir a mano el multiplicador de la semana»).
+
+    🔑 VALE DESDE QUE SE ELIGE, NO PARA LA SEMANA ENTERA. Cada cambio es un tramo (`tramos`, con su `desde`) y
+    `factor_de()` busca el de cada evento: lo que ya se jugó queda con el factor con que se jugó. Si no, pasar FFA
+    de ×1,5 a ×3 un jueves le movería los puntos a todos desde el lunes y redibujaría sus tarjetas.
+    El sorteo queda en `sv_sorteo`, y sacar el manual vuelve a él desde ese momento.
+    ⚠️ Sólo la semana que dice el ajuste: el de la semana pasada no se arrastra a la nueva.
+    """
+    if aj is None or cur is None:
+        return False
+    man = aj.get('multiplicadores') or {}
+    base = cur.get('sv_sorteo') or cur.get('sv') or {}
+    tramos = cur.get('tramos') or []
+    piso = max([_de_iso(cur['inicio'])] + [_de_iso(t['desde']) for t in tramos])
+    if man.get('semana') == cur.get('id'):
+        nuevo = dict(base)
+        nuevo.update({k: v for k, v in (man.get('sv') or {}).items() if k in base})
+        if cur.get('manual') and nuevo == cur.get('sv'):
+            return False
+        try:
+            desde = max(piso, min(ahora, _de_iso(man.get('t') or _iso(ahora))))
+        except ValueError:
+            desde = max(piso, ahora)
+        cur.setdefault('sv_sorteo', dict(base))
+        cur['tramos'] = tramos + [{'desde': _iso(desde), 'sv': nuevo}]
+        cur['sv'] = nuevo
+        cur['manual'] = True
+        return True
+    if cur.get('manual'):
+        cur['tramos'] = tramos + [{'desde': _iso(max(piso, ahora)), 'sv': dict(base)}]
+        cur['sv'] = dict(base)
+        cur.pop('manual', None)
+        return True
+    return False
+
+
 def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=None, rivales=None,
-           votos=None):
+           votos=None, ajustes=None):
     """Sortea la semana si hace falta, anota el dorado y la Copa, y cierra la guerra
     y el organizador de la semana. Devuelve el archivo."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
@@ -946,6 +1015,11 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
         semanas.append(rec)
     # el organizador de la semana en curso, en vivo: la página muestra cómo va
     cur = next((s for s in semanas if s.get('id') == pid), None)
+    # ⚙️ EL MULTIPLICADOR A MANO (el Dashboard): sólo en una corrida de verdad, como los duelos
+    if ajustes is None and eventos is None:
+        ajustes = ajustes_dueno()
+    if a_mano(cur, ajustes, ahora):
+        print('   ⚙️ el multiplicador a mano: %s' % ', '.join('%s ×%g' % kv for kv in sorted(cur['sv'].items())))
     if cur and _de_iso(cur['inicio']) >= _desde('semana'):
         cur['organizadores'] = ranking_org(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs, org_de)[:10]
         if semillero_ok:
@@ -1209,6 +1283,25 @@ def _self_check():
         f3 = factor_de({'semanas': []}, [], rivales=rv)
     ok(f3('FFA', en(10, 15, 20), 3, 'Ana') == CLASICO_X and f3('FFA', en(10, 15, 20), 3, 'Bea') == 1,
        'el que gana el Clásico suma +10 % en ese evento; el que pierde, nada')
+    # ⚙️ el multiplicador a mano: desde que se elige, sólo esa semana, y sacarlo vuelve al sorteo
+    sem = {'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
+           'sv': {'FFA': 1.5, 'SR': 1}}
+    aj = {'multiplicadores': {'semana': '2026-10-12', 'sv': {'FFA': 3, 'XX': 5}, 't': _iso(en(10, 15, 20))}}
+    ok(a_mano(sem, aj, en(10, 15, 20, 22)) and sem['sv'] == {'FFA': 3, 'SR': 1} and sem['manual']
+       and sem['sv_sorteo'] == {'FFA': 1.5, 'SR': 1} and sem['tramos'][0]['desde'] == _iso(en(10, 15, 20)),
+       'a mano: FFA ×3 desde el jueves a las 8 PM, sin servidores que no juegan esa semana')
+    ok(not a_mano(sem, aj, en(10, 15, 20, 52)), 'la corrida siguiente no lo vuelve a anotar')
+    f4 = factor_de({'semanas': [sem]}, [], rivales=[])
+    ok(f4('FFA', en(10, 13, 20)) == 1.5 and f4('FFA', en(10, 16, 20)) == 3 and f4('SR', en(10, 16, 20)) == 1,
+       'lo que se jugó antes queda con su ×1,5; lo de después, ×3')
+    ok(not a_mano(dict(sem), None, en(10, 16, 9)), 'sin poder leer los ajustes no se toca nada')
+    ok(a_mano(sem, {}, en(10, 17, 9)) and sem['sv'] == {'FFA': 1.5, 'SR': 1} and 'manual' not in sem
+       and factor_de({'semanas': [sem]}, [], rivales=[])('FFA', en(10, 18, 20)) == 1.5
+       and factor_de({'semanas': [sem]}, [], rivales=[])('FFA', en(10, 16, 20)) == 3,
+       'sacarlo vuelve al sorteo desde ese momento, y lo del medio queda con ×3')
+    otra = {'id': '2026-10-19', 'inicio': _iso(en(10, 19, 11)), 'fin': _iso(en(10, 26, 11)), 'sv': {'FFA': 1}}
+    ok(not a_mano(otra, aj, en(10, 20, 9)) and otra['sv'] == {'FFA': 1},
+       'el ajuste de la semana pasada no se arrastra a la nueva')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

@@ -89,6 +89,8 @@ const AVISOS = {
   '/api/avisos/visita': 'POST',
   // 🔒 el Dashboard del dueño: el Worker comprueba que es Dlx (ver `/avisos/dueno` en bot/avisos.js)
   '/api/avisos/dueno': 'POST',
+  // ⚙️ un ajuste del Dashboard (sólo Dlx)
+  '/api/avisos/dueno/ajuste': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
