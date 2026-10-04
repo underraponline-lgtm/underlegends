@@ -1262,7 +1262,8 @@
 "sonicdoradito": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "gian": {
@@ -3965,6 +3966,14 @@
 "t": "2026-10-04T19:17:31Z",
 "quien": [
 "DIDYER"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T21:45:33Z",
+"quien": [
+"SONIC_DORADITO"
 ],
 "carta": "temporada"
 }
