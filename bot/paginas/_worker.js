@@ -85,6 +85,8 @@ const AVISOS = {
   '/api/avisos/bandeja': 'POST',
   // 🤝 la postulación de /sumate (03/10/2026): con tu sesión, al DM de Dlx. Ver `postular()` en bot/avisos.js
   '/api/avisos/sumate': 'POST',
+  // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
+  '/api/avisos/visita': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por

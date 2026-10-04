@@ -64,6 +64,11 @@
           <li><strong>Mientras hay un evento en vivo</strong>, el bot anota cada minuto quién está en la llamada de ese
           evento (el ID de Discord, los nombres que se ven en el servidor y en qué minutos estuvo), para ayudar a cargar
           los resultados. Se guarda 3 días y no se publica.</li>
+          <li><strong>Para contar cuánta gente usa la Liga</strong>: si usás el bot (un comando, un botón, un menú) o
+          hacés algo en la página con tu cuenta, anotamos tu ID de Discord con el día, una vez por día. Sirve sólo para
+          saber cuántas personas distintas los usan: se publica el número, nunca quién, y se borra a los 35 días. Las
+          visitas sin cuenta se cuentan sin guardar nada tuyo: tu navegador recuerda que ya avisó hoy y acá sólo sube
+          un número.</li>
           <li><strong>Lo que la Liga publica</strong>: tu nombre de rapero, país, crew, resultados, puntos, rankings y
           tarjetas. Es público a propósito: es la Liga. Se ve en esta página y en Discord.</li>
           <li><strong>En la página, sólo si lo elegís</strong>: al entrar con Discord, tu ID, nombre y foto (el permiso
@@ -108,10 +113,10 @@
           Liga, con tu nombre de rapero, tu país, en qué servidores de la Liga estás y tu ID de Discord.</li>
           <li><strong>En tu navegador</strong>: una cookie de sesión (<code>lg_ses</code>, 30 días), sólo si entrás con
           Discord, para no tener que autorizar en cada acción; y en su almacenamiento local, tus ajustes, quién sos, a
-          quién seguís si no entraste, tus avisos de ese dispositivo y lo que ya viste (historias, novedades). No hay
-          cookies de publicidad ni de estadísticas.</li>
-          <li>Para mostrar fotos y logos, la página los pide al CDN de Discord, y algunas páginas piden sus fuentes a
-          Google Fonts: esos servicios ven tu dirección IP, como con cualquier imagen de internet.</li>
+          quién seguís si no entraste, tus avisos de ese dispositivo, lo que ya viste (historias, novedades) y si ya
+          contamos tu visita de hoy. No hay cookies de publicidad ni de estadísticas.</li>
+          <li>Para mostrar fotos y logos, la página los pide al CDN de Discord: ese servicio ve tu dirección IP, como con
+          cualquier imagen de internet. Las letras salen de la propia página.</li>
           <li>Las miniaturas de los videos vienen de YouTube. Y si tocás play en un video, su reproductor
           (youtube-nocookie.com) se abre en la página: desde ese momento YouTube ve tu dirección IP y lo que mirás, como
           en su sitio. Hasta que tocás play, no carga nada de YouTube más que la miniatura.</li>
@@ -130,6 +135,8 @@
           <li>Tus redes guardadas se borran si las quitás, y dejan de mostrarse si pasan 120 días sin revisarlas.</li>
           <li>Los votos de las encuestas, las felicitaciones y lo del panel de la campana se borran a los 30 días.</li>
           <li>Las postulaciones de /sumate se borran a los 90 días.</li>
+          <li>Lo que anotamos para contar cuánta gente usa el bot y la página (tu ID de Discord y el día) se borra a los
+          35 días.</li>
           <li>Tu billetera y tus precios se guardan mientras dure la temporada.</li>
         </ul>
       </section>
@@ -194,6 +201,11 @@
           <li><strong>While an event is live</strong>, the bot notes every minute who is in that event's voice call
           (the Discord ID, the names shown in the server and which minutes they were there), to help enter the results.
           It is kept for 3 days and never published.</li>
+          <li><strong>To count how many people use the league</strong>: if you use the bot (a command, a button, a
+          menu) or do something on the website with your account, we note your Discord ID with the day, once a day. It
+          is only used to know how many different people use them: we publish the number, never who, and it is deleted
+          after 35 days. Visits without an account are counted without storing anything about you: your browser
+          remembers it already told us today, and here only a number goes up.</li>
           <li><strong>What the league publishes</strong>: your rapper name, country, crew, results, points, rankings and
           cards. This is public on purpose — it is the league — and is shown on this website and in Discord.</li>
           <li><strong>On the website, only if you choose to</strong>: when you log in with Discord, your ID, name and
@@ -239,10 +251,10 @@
           country, which league servers you are in and your Discord ID.</li>
           <li><strong>In your browser</strong>: a session cookie (<code>lg_ses</code>, 30 days), only if you log in with
           Discord, so you don't have to authorize every action; and in its local storage, your settings, who you are,
-          who you follow if you didn't log in, your alerts on that device and what you've already seen (stories,
-          updates). There are no advertising or analytics cookies.</li>
-          <li>To show photos and logos, the website requests them from Discord's CDN, and some pages request their
-          fonts from Google Fonts: those services see your IP address, as with any image on the internet.</li>
+          who you follow if you didn't log in, your alerts on that device, what you've already seen (stories,
+          updates) and whether today's visit was already counted. There are no advertising or analytics cookies.</li>
+          <li>To show photos and logos, the website requests them from Discord's CDN: that service sees your IP address,
+          as with any image on the internet. Fonts are served by the website itself.</li>
           <li>Video thumbnails come from YouTube. If you press play on a video, its player (youtube-nocookie.com) opens
           on the page: from then on YouTube sees your IP address and what you watch, as on its own site. Until you press
           play, nothing but the thumbnail loads from YouTube.</li>
@@ -261,6 +273,8 @@
           <li>Saved socials are deleted when you remove them, and stop being shown after 120 days without review.</li>
           <li>Poll votes, congratulations and the bell's panel are deleted after 30 days.</li>
           <li>Applications sent on /sumate are deleted after 90 days.</li>
+          <li>What we note to count how many people use the bot and the website (your Discord ID and the day) is deleted
+          after 35 days.</li>
           <li>Your wallet and your bounties are kept for the season.</li>
         </ul>
       </section>

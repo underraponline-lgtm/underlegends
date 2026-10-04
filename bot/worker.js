@@ -37,6 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
+import { anotarUso } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 export { Avisos };
@@ -174,14 +175,16 @@ export const SERVIDORES = [
   { sv: 'DRA', nombre: 'Discord Rap Español', guild: '841017460341604382', invita: 'https://discord.gg/5jUM3WXDXe' },
   { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/JrmE78qdMd' },
   { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
-  { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa' },
+  // 🚪 `fuera`: registrado pero no de la Liga, así que no sale en el menú de la Servidor (Dlx, 04/10/2026). Ver
+  // `en_la_liga` en `datos/servidores.json`, que es el que manda
+  { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa', fuera: true },
   // 🔤 `sigla`: la que se lee, cuando no es el código (Dlx, 03/10/2026: SNK y URB). Ver `datos/servidores.json`.
   // ⚠️ AL FINAL del objeto: `bot/desplegar.py` lee `sv`, `nombre` y `guild` en ese orden y los compara con el json
   { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp', sigla: 'SNK' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
   { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
   { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb', sigla: 'URB' },
-  { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax' },
+  { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax', fuera: true },
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
   // todavía —no tiene URL propia y el bot no puede listar las suyas—: con `invita`
   // vacío el bot no manda nada, que es lo que dice `datos/servidores.json`.
@@ -552,7 +555,8 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         //
         // Decirle «no tiene carta» a las dos era describir el síntoma que ve
         // el bot en vez de la causa que le importa a la persona.
-        options: SERVIDORES.map(s => {
+        // 🚪 sin los que no son de la Liga (`fuera`: TFC y EFA, Dlx 04/10/2026)
+        options: SERVIDORES.filter(s => !s.fuera).map(s => {
           const tiene = hayCarta(g, s.sv, m);
           const suyo = (g && g.n) || quien;
           const botAhi = !m || !m.bot_en || m.bot_en.indexOf(s.sv) >= 0;
@@ -954,10 +958,21 @@ export const VERIFICA = {
 
 // 🔑 QUIEN SE ANOTA A SÍ MISMO ENTRA SOLO (25/09/2026, #11 de Dlx), si
 // Discord sabe su país. Si no —o si su nombre se parece al de alguien que ya
-// está— lo decide un admin, que es lo que este texto prometía siempre.
-const YA_TE_ANOTE = 'Ya te anoté ✍️ — si Discord sabe tu país (bandera en ' +
-  'tu apodo o un rol de país), entrás a la Liga solo en menos de una hora; ' +
-  'si no, te carga un admin.';
+// está— lo decide un admin.
+//
+// 🔴 PERO «TE ANOTÉ» NO ES «YA TENÉS TARJETA» (Dlx, 04/10/2026, con la captura de
+// Adriagner: «el hecho de que el bot reconozca unas personas no significa que esas
+// personas tengan su tarjeta automáticamente»). Las tarjetas son de quien JUEGA:
+// anotarlo deja su ID y su país listos para el día que juegue, nada más. El texto de
+// antes decía «entrás a la Liga solo en menos de una hora», y se leía como «en una
+// hora tenés tu carta».
+const YA_TE_ANOTE = 'Todavía no tenés tarjeta 🃏 — las tarjetas son de quienes ' +
+  '**juegan** en la Liga, y todavía no te vi en ningún evento.\n\n' +
+  '✍️ Ya te anoté: si Discord sabe tu país (bandera en tu apodo o un rol de país), ' +
+  'quedás en la Lista en menos de una hora; si no, te lo pido en la página.';
+// 📅 adónde ir a jugar: la página de Eventos, con los que vienen y cómo anotarse
+const URL_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
+const botonEventos = () => ({ type: 2, style: 5, label: 'Ver los próximos eventos', url: URL_EVENTOS });
 
 // 🔑 QUÉ PIDE CADA CARTA, en una línea (las LIBRES, Dlx 29/09/2026): la
 // Temporada y la Servidor salen al jugar estando en la Lista; la Competitiva
@@ -1660,7 +1675,7 @@ async function cuentaFoto(req, env) {
 // «avisos de TWR» sin un canal de TWR escuchado sería prometer avisos que no
 // van a salir. Si el objeto no contesta, se ofrecen todos: la página valida.
 export function panelNotify(aqui, escuchados, elegidos) {
-  const lista = (escuchados && escuchados.length ? escuchados : SERVIDORES.map((x) => x.sv))
+  const lista = (escuchados && escuchados.length ? escuchados : SERVIDORES.filter((x) => !x.fuera).map((x) => x.sv))
     .map((sv) => SERVIDORES.find((x) => x.sv === sv) || { sv, nombre: sv });
   const nombre = (sv) => (lista.find((x) => x.sv === sv) || SERVIDORES.find((x) => x.sv === sv) ||
     { nombre: sv }).nombre;
@@ -2789,7 +2804,10 @@ const COMANDOS = {
     // tenga su ID cargado en el Operativo: hoy 101 de 138. Por eso el nombre
     // sigue estando — no es redundancia, es el único camino para los otros 37.
     let quien, comoDije;
-    if (porUsuario) {
+    // 🔴 ELEGIRSE A UNO MISMO EN `quien:` ES «YO». Adriagner lo hizo (04/10/2026) y el bot le contestó como a
+    // otro —«@Adriagner todavía no está en la Liga… si sabés SU nombre»—, en tercera persona y anotándolo como
+    // «otro». Es el mismo pedido que `/card` solo
+    if (porUsuario && String(porUsuario.value) !== String(idDe(i))) {
       quien = await claveCarta(env, porUsuario.value);
       comoDije = `<@${porUsuario.value}>`;
       if (!quien) {
@@ -2797,9 +2815,10 @@ const COMANDOS = {
         // (es el valor del selector) — se anota para no perderlo.
         const d = datosDe(i, porUsuario.value);
         if (!frenado(idDe(i), 'otro')) anotar(env, ctx, porUsuario.value, d.nick, d.user, d.glob, i.guild_id, 'otro');
-        return aviso(`${comoDije} todavía no está en la Liga — lo anoté para ` +
-                     'que un admin lo cargue.\n' +
-                     'Si sabés su nombre de competencia: `/card nombre:<su nombre>`.');
+        // 🔴 sin «un admin lo carga»: lo que le falta es jugar (ver `YA_TE_ANOTE`)
+        return aviso(`${comoDije} todavía no tiene tarjeta: las tarjetas son de quienes ` +
+                     '**juegan** en la Liga, y todavía no lo vi en ningún evento.\n' +
+                     'Si jugó con otro nombre: `/card nombre:<ese nombre>`.');
       }
     } else if (porNombre) {
       quien = norm(porNombre.value);
@@ -2852,8 +2871,8 @@ const COMANDOS = {
         const d = datosDe(i, yo);
         anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
         return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + v.texto +
-                     '\n\nSi ya competís y esto te parece un error, probá ' +
-                     '`/card nombre:<tu nombre>`.', v.botones);
+                     '\n\nSi ya jugaste con otro nombre: `/card nombre:<ese nombre>`.',
+                     [botonEventos()].concat(v.botones));
       }
     }
     const [crudo, meta] = await Promise.all([
@@ -2951,8 +2970,8 @@ const COMANDOS = {
         const d = datosDe(i, rival.id);
         if (!frenado(idDe(i), 'otro')) anotar(env, ctx, rival.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
-      return aviso(`${rival.como} todavía no está en la Liga — lo anoté para ` +
-                   'que un admin lo cargue.');
+      return aviso(`${rival.como} todavía no tiene tarjeta: las tarjetas son de quienes ` +
+                   '**juegan** en la Liga.');
     }
     // ⚠️ `contra` ES OPCIONAL Y POR DEFECTO SOS VOS. Que se pueda enfrentar a
     // dos terceros no es un lujo: la mitad de los usos son de un organizador
@@ -2963,13 +2982,13 @@ const COMANDOS = {
         const d = datosDe(i, idDe(i));
         anotar(env, ctx, idDe(i), d.nick, d.user, d.glob, i.guild_id, 'yo');
         const vf = comoVerificarse(aquiEs(i.guild_id));
-        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + vf.texto, vf.botones);
+        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + vf.texto, [botonEventos()].concat(vf.botones));
       }
       if (mio.id) {
         const d = datosDe(i, mio.id);
         anotar(env, ctx, mio.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
-      return aviso(`${mio.como} todavía no está en la Liga — lo anoté.`);
+      return aviso(`${mio.como} todavía no tiene tarjeta: las tarjetas son de quienes **juegan** en la Liga.`);
     }
     // ⚠️ UNO CONTRA SÍ MISMO NO ES UN EMPATE, ES UN ERROR DE TIPEO. Dibujarlo
     // sale «bien» —dos veces la misma carta— y por eso conviene cortarlo: el
@@ -3689,6 +3708,11 @@ export default {
       return new Response(JSON.stringify({ type: RESPONDE.PONG }),
         { headers: { 'content-type': 'application/json' } });
     }
+
+    // 📊 cada persona que usa el bot cuenta, una vez por día (ver `anotarUso()` en avisos.js, Dlx 04/10/2026). Con
+    // waitUntil: Discord da 3 segundos para contestar y esto no los espera
+    const usa = idDe(i);
+    if (usa && ctx && ctx.waitUntil) ctx.waitUntil(anotarUso(env, usa, 'bot'));
 
     if (i.type === RECIBE.COMANDO) {
       // ⚠️ EL FRENO VA DESPUÉS DE LA FIRMA Y ANTES DE KV. Después, porque una

@@ -750,6 +750,34 @@ const HH_RE = /(?<![\d/:])(\d{1,2})\s*(?:(hs|hrs|h)\b|([ap])\.?\s*m\b\.?)/i;
 const DIAS_JS = ['DOMINGO', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO'];
 const DIA_MS = 24 * HORA;
 
+// ── 📊 CUÁNTA GENTE USA EL BOT Y LA PÁGINA (Dlx, 04/10/2026: «en stats mostrá cuántas personas usaron o
+// interactuaron con el bot… para ver cuántos están enganchados con el bot y la página web») ──────────────────────
+// Personas distintas por día: quién usó el bot (comandos, botones, menús) y quién hizo algo en la página con su
+// cuenta. Es su ID de Discord y el día, nada más, y se borra a los `USO_DIAS`. Las visitas sin cuenta se cuentan sin
+// guardar nada de nadie: el navegador avisa una vez por día (`lg:visita`) y acá sólo sube un número.
+export const USO_DIAS = 35;
+/** El día en hora del este, `AAAA-MM-DD`: el de quien mira la Liga, no el de UTC */
+export function diaET(t = Date.now()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .format(new Date(t));
+}
+// ⚡ una vez por persona, por día y por instancia: el resto de los toques del día no vuelven a preguntarle al objeto
+const USADOS = new Set();
+let usadosDia = '';
+export async function anotarUso(env, quien, por) {
+  if (!env || !env.AVISOS || !/^[0-9]{5,25}$/.test(String(quien || '')) || (por !== 'bot' && por !== 'web')) return;
+  const dia = diaET();
+  if (dia !== usadosDia) { USADOS.clear(); usadosDia = dia; }
+  const k = quien + ':' + por;
+  if (USADOS.has(k)) return;
+  USADOS.add(k);
+  try {
+    await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/uso', {
+      method: 'POST', body: JSON.stringify({ quien: String(quien), por, dia }), headers: { 'content-type': 'application/json' },
+    });
+  } catch (e) { USADOS.delete(k); }
+}
+
 const sinTildes = (s) => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
 function diaDe(texto) {
   const t = sinTildes(texto);
@@ -1138,6 +1166,8 @@ const RUTAS = {
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
   // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
+  // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
+  '/avisos/visita': 'POST',
   // 🙈 «ocultar mi foto»: en Mi cuenta → Privacidad. Ver `miFoto()`
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
@@ -1620,7 +1650,7 @@ export async function sesionFin(env, req) {
 async function quienPide(req, env, d) {
   const t = String((d && d.token) || '');
   const q = t ? await discordDe(t) : { id: await sesionDe(env, req) };
-  if (q.id) return { id: q.id };
+  if (q.id) { await anotarUso(env, q.id, 'web'); return { id: q.id }; }
   if (q.error === 'ocupado') return { error: 'discord_ocupado', estado: 503 };
   return { error: t ? 'discord' : 'sin_sesion', estado: 401 };
 }
@@ -1924,6 +1954,9 @@ export async function rutaAvisos(req, env, ruta) {
       : json({ error: 'los avisos todavía no tienen clave' }, 503);
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
+  // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
+  if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
+    headers: { 'content-type': 'application/json' } });
   // 🔑 LO QUE SE ANOTÓ, PARA EL CICLO: trae Discord IDs, así que sin la clave
   // del ciclo contesta que no existe (ver `claveCiclo()`)
   if (ruta === '/avisos/inscritos') {
@@ -2404,6 +2437,10 @@ export class Avisos {
       // hash del número, no el número. Ver `sesionNueva()` y `sesion()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS sesiones (h TEXT PRIMARY KEY, quien TEXT NOT NULL, ' +
         't INTEGER NOT NULL, vence INTEGER NOT NULL)');
+      // 📊 quién usó el bot o la página cada día, y las visitas sin cuenta (04/10/2026). Ver `anotarUso()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS uso (dia TEXT NOT NULL, quien TEXT NOT NULL, por TEXT NOT NULL, ' +
+        'PRIMARY KEY (dia, quien, por)) WITHOUT ROWID');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
       // 🔑 SEGUIR RAPEROS (28/09/2026): quién (Discord ID) sigue a qué perfil
       // (la clave de `#/r/`), desde cuándo, cuál es su propio perfil (`de`,
       // para no avisarle de sí mismo) y cuándo se creó su cuenta de Discord
@@ -2511,6 +2548,8 @@ export class Avisos {
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
+      if (ruta === '/uso') return this.usoAnotar(d);
+      if (ruta === '/visita') return this.visita();
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
@@ -2752,6 +2791,9 @@ export class Avisos {
       this.sql.exec('DELETE FROM bandeja WHERE t < ?', viejo);
       // 🤝 y las postulaciones de /sumate: 90 días
       this.sql.exec('DELETE FROM postulaciones WHERE t < ?', ahora - 90 * DIA_MS);
+      // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
+      this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
+      this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
       // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
       // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
@@ -4650,6 +4692,42 @@ export class Avisos {
   // ── lo que se puede preguntar desde afuera ───────────────────────────
   //
   // ⚠️ SIN UN SOLO ENDPOINT. Cuántos, cuándo y qué; nunca a quién.
+  // ── 📊 el uso ────────────────────────────────────────────────────────
+  usoAnotar(d) {
+    if (!/^[0-9]{5,25}$/.test(String(d.quien || '')) || (d.por !== 'bot' && d.por !== 'web')) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    // el día lo pone el objeto: uno que llega de otra zona o de otro reloj no inventa días
+    this.sql.exec('INSERT OR IGNORE INTO uso (dia, quien, por) VALUES (?, ?, ?)', diaET(), String(d.quien), d.por);
+    return json({ ok: true });
+  }
+
+  /** Una visita sin cuenta: el navegador avisa una vez por día. ⚠️ Con tope: es un número que cualquiera puede
+   *  empujar, y un script no tiene que poder llevarlo a cualquier lado */
+  visita() {
+    this.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, 1) ON CONFLICT(dia) DO UPDATE SET n = n + 1 WHERE n < 20000',
+      diaET());
+    return json({ ok: true });
+  }
+
+  /** Cuántas personas distintas en los últimos 7 días (y los 7 anteriores, para comparar), y las visitas por día */
+  usoResumen() {
+    const desde = (n) => diaET(Date.now() - n * DIA_MS);
+    const contar = (a, b, por) => this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM uso WHERE dia > ? AND dia <= ?' +
+      (por ? ' AND por = ?' : ''), ...[desde(a), desde(b)].concat(por ? [por] : [])).toArray()[0].n;
+    const vis = (a, b) => this.sql.exec('SELECT COALESCE(SUM(n), 0) AS n, COUNT(*) AS d FROM visitas WHERE dia > ? AND dia <= ?',
+      desde(a), desde(b)).toArray()[0];
+    const v7 = vis(7, 0), v14 = vis(14, 7);
+    return {
+      semana: { bot: contar(7, 0, 'bot'), web: contar(7, 0, 'web'), personas: contar(7, 0, ''),
+        visitas_dia: v7.d ? Math.round(v7.n / v7.d) : 0, dias: v7.d },
+      anterior: { bot: contar(14, 7, 'bot'), web: contar(14, 7, 'web'), personas: contar(14, 7, ''),
+        visitas_dia: v14.d ? Math.round(v14.n / v14.d) : 0, dias: v14.d },
+      // desde cuándo se cuenta: el primer día con algo anotado
+      desde: (this.sql.exec('SELECT MIN(dia) AS d FROM uso').toArray()[0] || {}).d || null,
+    };
+  }
+
   estado() {
     const ahora = Date.now();
     const v = this.leer('vigia') || {};
@@ -4706,6 +4784,8 @@ export class Avisos {
         detalle: fallo.detalle || [] } : null,
       ok: !!v.t && ahora - v.t < 5 * MIN && !(v.errores || []).length,
       cron: CRON_VIGIA,
+      // 📊 cuánta gente usó el bot y la página: sólo números, nunca quién (ver `usoResumen()`)
+      uso: this.usoResumen(),
       // 🔑 EL DISPARADOR DEL CICLO: cuándo arrancó y cómo le fue al último
       // intento. Lo lee `bot/alertar.py`. Ver `marcarDisparo()`.
       disparador: {

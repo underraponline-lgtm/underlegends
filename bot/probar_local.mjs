@@ -303,10 +303,13 @@ console.log('\nLA CARTA\n');
   ok('ahora SÍ aparece el menú', select(c) !== null);
   ok('el menú va en su propia fila', filas(c).length === 2,
      'un select no comparte Action Row con botones');
-  // ⚠️ CUÁNTOS, DE LA TABLA Y NO ESCRITO: eran nueve hasta FFS (28/09/2026)
-  ok('lista todos los servidores de la tabla',
-     select(c)?.options?.length === (await import('./worker.js')).SERVIDORES.length,
-     `${select(c)?.options?.length}`);
+  // ⚠️ CUÁNTOS, DE LA TABLA Y NO ESCRITO: eran nueve hasta FFS (28/09/2026). 🚪 Menos los que no son de la Liga
+  // (`fuera`: TFC y EFA, Dlx 04/10/2026), que no salen
+  const deLaLiga = (await import('./worker.js')).SERVIDORES.filter((s) => !s.fuera);
+  ok('lista todos los servidores de la Liga',
+     select(c)?.options?.length === deLaLiga.length, `${select(c)?.options?.length} de ${deLaLiga.length}`);
+  ok('y no los que no son de la Liga (TFC, EFA)',
+     !(select(c)?.options || []).some((o) => o.value === 'TFC' || o.value === 'EFA'));
   // ⚠️ EL «BLOQUEADA» VOLVIÓ, PERO SIGNIFICA OTRA COSA. El del 16/09 era un
   // requisito de eventos y se saco porque mentia. El de ahora (Dlx, 19/09)
   // dice simplemente que ESA PERSONA no tiene carta de ese servidor — que es
@@ -525,9 +528,12 @@ console.log('\nLOS DATOS\n');
   // redirija, y que te entres a DRA automáticamente»). Antes eran dos —la
   // invitación y el canal de DRA—, y la página hace los dos pasos.
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
-  ok('y le da UN botón: verificarse en la página', bs.length === 1 &&
-     (bs[0]?.url || '') === 'https://underlegends.pages.dev/cuenta/verificar',
+  // 📅 y desde el 04/10/2026 también «Ver los próximos eventos»: la tarjeta sale al jugar (Dlx, con lo de Adriagner)
+  ok('y le da DOS botones: los próximos eventos y verificarse en la página', bs.length === 2 &&
+     /\/freestyle-rap\/eventos$/.test(bs[0]?.url || '') &&
+     (bs[1]?.url || '') === 'https://underlegends.pages.dev/cuenta/verificar',
      bs.map(b => b.label + ' ' + b.url).join(' · '));
+  ok('y dice que la tarjeta es de quien juega', /\*\*juegan\*\*/.test(c) && /Todavía no tenés tarjeta/.test(c), c.slice(0, 90));
   ok('que dice que si no está en DRA, la página lo mete', /te mete/.test(c), c.slice(-120));
 }
 {
@@ -539,8 +545,8 @@ console.log('\nLOS DATOS\n');
   ok('parado en DRA también va a la página, sin «te mete»',
      c.includes('Verificate en la página') && !/te mete/.test(c), c.slice(-90));
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
-  ok('y le queda UN solo botón, el de verificarse', bs.length === 1 &&
-     /\.dev\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
+  ok('y le quedan los próximos eventos y verificarse', bs.length === 2 &&
+     /\.dev\/cuenta\/verificar$/.test(bs[1]?.url || ''), bs.map(b => b.label).join(' · '));
   ok('y NO le manda la invitación a donde ya está',
      !c.includes('discord.gg/') && !bs.some(b => (b.url || '').includes('discord.gg/')),
      'la interacción vino de DRA: ya está adentro');
@@ -631,10 +637,16 @@ console.log('\nTRES MANERAS DE PEDIR\n');
   const r = await pedir({ type: 2, guild_id: '1', member: { user: { id: '777222' } },
     data: { name: 'card', options: [{ name: 'quien', type: 6, value: '555000' }] } });
   const c = r.json?.data?.content || '';
-  ok('si el bot no lo conoce, lo anotó y ofrece el nombre',
-     /anot/i.test(c) && c.includes('nombre:'), c.slice(0, 60));
+  ok('si el bot no lo conoce, dice que la tarjeta es de quien juega y ofrece el nombre',
+     /todavía no tiene tarjeta/.test(c) && c.includes('nombre:') && !/admin/.test(c), c.slice(0, 60));
   ok('y no le manda a ÉL la invitación, que es de otro',
      !c.includes('discord.gg/'), c.slice(0, 60));
+  // 🔴 elegirse a uno mismo en `quien:` es «yo» (Adriagner, 04/10/2026): segunda persona, no «su nombre»
+  const r2 = await pedir({ type: 2, guild_id: '1', member: { user: { id: '777333' } },
+    data: { name: 'card', options: [{ name: 'quien', type: 6, value: '777333' }] } });
+  const c2 = r2.json?.data?.content || '';
+  ok('elegirse a uno mismo en «quien» contesta como a uno mismo', /Todavía no tenés tarjeta/.test(c2) && !/su nombre/.test(c2),
+     c2.slice(0, 60));
 }
 {
   // 2. por nombre — para esos 37 que no salen en el selector
@@ -1445,7 +1457,7 @@ console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
     KV: { ...env.KV, put: async (k) => { kvPuestas.push(k); } },
     AVISOS: {
       idFromName: () => 'liga',
-      get: () => ({ fetch: async (url, opc) => {
+      get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
         marcas.push(JSON.parse(opc.body).cual);
         return new Response('{"ok":true}', { status: 200 });
       } }),
@@ -2163,7 +2175,7 @@ console.log('\n/borrar-mis-datos\n');
     head: async (k) => (r2.has(k) ? { key: k } : null),
     delete: async (ks) => { for (const k of [].concat(ks)) r2.delete(k); },
   };
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     soltados.push([String(url), JSON.parse(opc.body).quien]);
     return new Response('{"ok":true,"soltados":2}', { status: 200 });
   } }) };
@@ -2275,7 +2287,7 @@ console.log('\nLAS ENCUESTAS\n');
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
     return new Response('{"ok":true,"cuenta":{"SR":1},"t":1}', { status: 200 });
   } }) };
@@ -2322,7 +2334,7 @@ console.log('\nLA SESIÓN: ENTRAR CON DISCORD UNA VEZ\n');
   const SES = 'a'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/nueva')) return new Response(JSON.stringify({ ses: SES, vence: RELOJ + 1 }), { status: 200 });
@@ -2424,7 +2436,7 @@ console.log('\nEL PRECIO POR CABEZA\n');
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
     return new Response('{"ok":true,"saldo":3500}', { status: 200 });
   } }) };
@@ -2469,7 +2481,7 @@ console.log('\nSEGUIR RAPEROS\n');
   const SES = 'c'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
@@ -2535,7 +2547,7 @@ console.log('\n👏 FELICITAR\n');
   const SES = 'e'.repeat(43), SES_N = 'f'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {
@@ -2657,7 +2669,7 @@ console.log('\n«TU SERVIDOR»\n');
   env.TEMPORADA = 't1';
   env.FOTO_LIBRE_HASTA = '2026-10-09T04:00:00Z';
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),

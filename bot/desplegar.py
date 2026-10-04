@@ -391,8 +391,13 @@ def ver_servidores():
     if not enel:
         sys.exit('no encontré la tabla de servidores en worker.js. '
                  'Si cambió de forma, hay que actualizar ver_servidores().')
+    # 🚪 y los que no son de la Liga (`fuera: true` en el Worker, `en_la_liga: false` en el json): si no coinciden, el
+    # menú de la Servidor muestra uno que no va o esconde uno que sí (04/10/2026)
+    fuera = set(_re.findall(r"\{\s*sv:\s*'([^']+)'[^}]*\bfuera:\s*true", js))
     malos = []
     for sv, v in tabla.items():
+        if (v.get('en_la_liga') is False) != (sv in fuera):
+            malos.append('%s: en_la_liga del json %r · fuera del worker %r' % (sv, v.get('en_la_liga'), sv in fuera))
         nom, gid = v.get('nombre', ''), str(v.get('guild_id') or '')
         if sv not in enel:
             malos.append('%s no está en worker.js' % sv)

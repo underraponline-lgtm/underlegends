@@ -256,6 +256,19 @@ export default function App() {
     };
   }, []);
 
+  // 📊 UNA VISITA POR DÍA Y POR NAVEGADOR (Dlx, 04/10/2026: «cuántos están enganchados con el bot y la página»). El
+  // navegador recuerda que ya avisó hoy (en hora del este, como todo); el vigía sólo suma un número. Sin almacenamiento
+  // no se cuenta: si no, cada recarga sería una visita
+  useEffect(() => {
+    try {
+      const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
+      if (localStorage.getItem('lg:visita') === hoy) return;
+      localStorage.setItem('lg:visita', hoy);
+      fetch('/api/avisos/visita', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}', keepalive: true })
+        .catch(() => {});
+    } catch (e) { /* sin almacenamiento, no se cuenta */ }
+  }, []);
+
   // el muro (Lo último y las historias): lo pide el Inicio, cada 5 minutos con la pestaña a la vista
   useEffect(() => {
     let vivo = true;
