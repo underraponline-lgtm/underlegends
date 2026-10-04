@@ -418,7 +418,10 @@
 },
 "adriagner": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "cronox": {
 "rg": "",
@@ -3985,6 +3988,22 @@
 ],
 "rg": "D",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T22:03:09Z",
+"quien": [
+"Adriagner"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T22:03:09Z",
+"quien": [
+"Adriagner"
+],
+"carta": "temporada"
 }
 ]
 }
