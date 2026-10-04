@@ -200,7 +200,7 @@
 ]
 },
 "miniboy": {
-"rg": "",
+"rg": "D",
 "c": [
 "servidor",
 "temporada"
@@ -262,6 +262,13 @@
 "temporada"
 ]
 },
+"nxuz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "nc": {
 "rg": "E",
 "c": [
@@ -291,13 +298,6 @@
 ]
 },
 "noxvell": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"nxuz": {
 "rg": "",
 "c": [
 "servidor",
@@ -1222,10 +1222,6 @@
 "temporada"
 ]
 },
-"uzi": {
-"rg": "",
-"c": []
-},
 "lrslamarihuana": {
 "rg": "",
 "c": []
@@ -1361,16 +1357,20 @@
 "rg": "",
 "c": []
 },
-"spraylirical": {
-"rg": "",
-"c": []
-},
 "gosuz": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"uzi": {
+"rg": "",
+"c": []
+},
+"spraylirical": {
+"rg": "",
+"c": []
 },
 "izaya": {
 "rg": "",
@@ -3976,6 +3976,15 @@
 "SONIC_DORADITO"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-04T21:56:31Z",
+"quien": [
+"Miniboy"
+],
+"rg": "D",
+"primero": true
 }
 ]
 }

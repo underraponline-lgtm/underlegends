@@ -102,14 +102,14 @@
      "FFA": 43,
      "URBF": 8,
      "SR": 4,
-     "DDF": 5,
+     "DDF": 6,
      "ACAD": 1
     },
     "gente": {
      "FFA": 128,
      "URBF": 37,
      "SR": 18,
-     "DDF": 21,
+     "DDF": 25,
      "ACAD": 16
     },
     "gana": "FFA"

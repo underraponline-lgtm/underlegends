@@ -120,7 +120,7 @@
     "racha": "1/1"
    }
   },
-  "Adriagner🇳🇮": {
+  "Adriagner": {
    "DDF": {
     "duelos": "2/2",
     "ev": 1,
@@ -2252,12 +2252,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "2/4",
-    "ev": 2,
+    "duelos": "2/5",
+    "ev": 3,
     "oro": 0,
     "ovr": 58,
     "pod": 1,
-    "pts": 8500,
+    "pts": 10500,
     "racha": "0/1"
    },
    "FFA": {
@@ -3432,17 +3432,6 @@
     "ovr": 46,
     "pod": 0,
     "pts": 2750,
-    "racha": "0/0"
-   }
-  },
-  "Uzi🇨🇱": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 2000,
     "racha": "0/0"
    }
   },
