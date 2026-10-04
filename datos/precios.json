@@ -15,7 +15,19 @@
    "monto": 1000,
    "t": "2026-10-01T20:52:27Z",
    "fin": "2026-10-05T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "NXUZ",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 395,
+    "nombre": "JH DE LA CRUZ CUP",
+    "sv": "DDF",
+    "t": "2026-10-04T20:25:08Z"
+   }
   },
   {
    "id": 3,
@@ -119,6 +131,7 @@
   }
  ],
  "suma": {
+  "NXUZ": 1000,
   "Abyssus": 1000,
   "Lambroggini": 1000,
   "PichulaMc": 1000

@@ -120,6 +120,17 @@
     "racha": "1/1"
    }
   },
+  "Adriagner🇳🇮": {
+   "DDF": {
+    "duelos": "2/2",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 59,
+    "pod": 1,
+    "pts": 3750,
+    "racha": "1/1"
+   }
+  },
   "Agre": {
    "FFA": {
     "duelos": "0/1",
@@ -878,6 +889,15 @@
     "ovr": 45,
     "pod": 0,
     "pts": 1250,
+    "racha": "0/0"
+   },
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 1750,
     "racha": "0/0"
    },
    "FFA": {
@@ -1746,6 +1766,15 @@
    }
   },
   "LRS": {
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 51,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0"
+   },
    "FFA": {
     "duelos": "1/2",
     "ev": 5,
@@ -2100,6 +2129,15 @@
    }
   },
   "Majiztral": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
+   },
    "FFA": {
     "duelos": "3/3",
     "ev": 3,
@@ -2329,13 +2367,13 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "1/2",
-    "ev": 1,
+    "duelos": "3/5",
+    "ev": 2,
     "oro": 0,
-    "ovr": 52,
-    "pod": 0,
-    "pts": 5250,
-    "racha": "0/0"
+    "ovr": 59,
+    "pod": 1,
+    "pts": 10250,
+    "racha": "1/1"
    }
   },
   "Nairda": {
@@ -2950,6 +2988,17 @@
     "racha": "1/1"
    }
   },
+  "SONIC_DORADITO": {
+   "FFA": {
+    "duelos": "0/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 1500,
+    "racha": "0/0"
+   }
+  },
   "SUDAKA🇦🇷": {
    "FFA": {
     "duelos": "",
@@ -3231,17 +3280,6 @@
     "racha": "0/0"
    }
   },
-  "Spray Lirical 🇨🇴": {
-   "FFA": {
-    "duelos": "0/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 1500,
-    "racha": "0/0"
-   }
-  },
   "Steven🇨🇴": {
    "URBF": {
     "duelos": "1/2",
@@ -3394,6 +3432,17 @@
     "ovr": 46,
     "pod": 0,
     "pts": 2750,
+    "racha": "0/0"
+   }
+  },
+  "Uzi🇨🇱": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 2000,
     "racha": "0/0"
    }
   },

@@ -9492,7 +9492,7 @@
      [
       [
        "Velatz",
-       "Spray Lirical 🇨🇴",
+       "SONIC_DORADITO",
        "LRS"
       ],
       "Velatz",
@@ -9501,7 +9501,7 @@
      [
       [
        "ARDEAN",
-       "Spray Lirical 🇨🇴"
+       "SONIC_DORADITO"
       ],
       "ARDEAN",
       ""
@@ -9509,7 +9509,7 @@
      [
       [
        "Xubaru",
-       "Spray Lirical 🇨🇴"
+       "SONIC_DORADITO"
       ],
       "Xubaru",
       ""
@@ -9575,7 +9575,7 @@
     3500
    ],
    [
-    "Spray Lirical 🇨🇴",
+    "SONIC_DORADITO",
     "Cuartos",
     3000
    ],
@@ -9583,6 +9583,123 @@
     "LRS",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "395": {
+  "dia": "2026-10-04",
+  "escala": "8-15",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1556401810334285875"
+  ],
+  "n": 395,
+  "nombre": "JH DE LA CRUZ CUP",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "LRS",
+       "Uzi🇨🇱"
+      ],
+      "LRS",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Majiztral"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "CrisZJ🇵🇪",
+       "Assuan 🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Player🇻🇪",
+       "Ezias🇵🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner🇳🇮",
+       "LRS"
+      ],
+      "Adriagner🇳🇮",
+      "Walk-in 1: Adriagner🇳🇮"
+     ],
+     [
+      [
+       "NXUZ",
+       "Eclipsito"
+      ],
+      "NXUZ",
+      "Walk-in 1: Eclipse🇨🇱"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner🇳🇮",
+       "NXUZ"
+      ],
+      "Adriagner🇳🇮",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "NXUZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Adriagner🇳🇮",
+    "Campeón",
+    3750
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Uzi🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Eclipsito",
+    "Semifinal",
+    1750
    ]
   ]
  }

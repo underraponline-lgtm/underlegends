@@ -219,6 +219,7 @@
   "eclipse": "Eclipsito",
   "gosu": "Gosu Z",
   "spraylirical": "SONIC_DORADITO",
+  "uzi": "Miniboy",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1114,6 +1115,10 @@
   [
    "Spray Lirical",
    "SONIC_DORADITO"
+  ],
+  [
+   "Uzi",
+   "Miniboy"
   ],
   [
    "Nexus",
