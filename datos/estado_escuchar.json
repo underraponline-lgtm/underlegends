@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-04T17:29:16Z",
+ "cuando": "2026-10-04T17:55:59Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 354.6,
+ "dur_s": 163.6,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.4
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 117.1
+   "s": 26.3
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": false,
-   "s": 27.0
+   "s": 24.0
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 114.5
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 18.0
+   "s": 22.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 0.2
+   "s": 1.7
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.8
+   "s": 5.5
   },
   {
    "n": "2b",
@@ -87,19 +87,19 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 25.3
+   "s": 25.2
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 14.8
+   "s": 28.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 10.8
+   "s": 9.1
   },
   {
    "n": "2e",
@@ -111,19 +111,19 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.7
+   "s": 5.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.4
+   "s": 1.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.3
+   "s": 9.5
   }
  ],
  "fallas": [
@@ -141,7 +141,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-04T17:25:23Z",
+  "cuando": "2026-10-04T17:53:46Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 259,
   "un_evento": 140,
@@ -163,15 +163,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 867,
-   "read": 33684
+   "write": 869,
+   "read": 35103
   },
   "worker": {
-   "pedidos": 7377,
+   "pedidos": 7395,
    "errores": 0,
-   "sub": 6086,
-   "p50_ms": 0.82,
-   "p99_ms": 3.82
+   "sub": 6107,
+   "p50_ms": 0.83,
+   "p99_ms": 3.92
   },
   "r2": {
    "objetos": 8071,

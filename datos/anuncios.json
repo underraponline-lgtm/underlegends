@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-04T17:25:44+00:00",
+ "cuando": "2026-10-04T17:54:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1804,6 +1804,26 @@
    "fecha": "",
    "premios": "",
    "categoria_id": "1511963280128868504"
+  },
+  {
+   "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
+   "servidor": "URBF",
+   "canal": "⋆🐔│💙Eventos⋅Redbull❤️",
+   "msg_id": "1556362206407295036",
+   "cuando": "2026-10-04T17:47:45",
+   "canal_id": "1511968314992365729",
+   "guild_id": "1467763447117778989",
+   "organizador": "",
+   "autor_h": "0ed040919881f966",
+   "cupos_texto": "8 y/o 16, 12 desde filtros.",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "4 PM COLOMBIA",
+   "fecha": "LUNES 5 de OCTUBRE.",
+   "premios": "",
+   "categoria_id": "1511967903329812651"
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
