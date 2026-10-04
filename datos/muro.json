@@ -720,12 +720,9 @@
 "rg": "",
 "c": []
 },
-"nexus": {
+"nxuz": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "sexo": {
 "rg": "",
@@ -1314,9 +1311,12 @@
 "temporada"
 ]
 },
-"nxuz": {
+"nexus": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "crizj": {
 "rg": "",
