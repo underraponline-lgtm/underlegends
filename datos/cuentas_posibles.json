@@ -1,0 +1,240 @@
+{
+ "_leeme": [
+  "LAS CUENTAS DE DISCORD DE LOS NOMBRES DUDOSOS, para la pista de ✅ Decidir (`_posibles()` de sheet/decidir.py).",
+  "Dlx, 04/10/2026 («4. Ok»): los que juegan, no están en la Lista y tienen dos cuentas con su nombre (o una cuenta",
+  "para dos personas, como Volk y volk) se contestan en ✅ Decidir, con las cuentas al lado. Salieron de",
+  "`herramientas/buscar_ids.py` ese día: no es una respuesta, es dónde mirar. Cuando un nombre se resuelve, su",
+  "línea sobra y no estorba."
+ ],
+ "nombres": {
+  "SOL": [
+   {
+    "id": "753104364347850772",
+    "nombre": "Sol",
+    "usuario": "sol_0624",
+    "sv": [
+     "DRA",
+     "FFA",
+     "SNK"
+    ]
+   }
+  ],
+  "ENEK": [
+   {
+    "id": "758720343115563028",
+    "nombre": "Ene-K",
+    "usuario": "enek8462",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "1515075689756360705",
+    "nombre": "Enek",
+    "usuario": "nio06722",
+    "sv": [
+     "FFA"
+    ]
+   }
+  ],
+  "Volk": [
+   {
+    "id": "691801856099221594",
+    "nombre": "volk5993",
+    "usuario": "volk5993",
+    "sv": [
+     "DRA"
+    ]
+   }
+  ],
+  "L": [
+   {
+    "id": "1312148410706563143",
+    "nombre": "L",
+    "usuario": "zkamee",
+    "sv": [
+     "FFA"
+    ]
+   },
+   {
+    "id": "1317231402697363507",
+    "nombre": "L 🇨🇴",
+    "usuario": "l.rap",
+    "sv": [
+     "FFA",
+     "DDF"
+    ]
+   }
+  ],
+  "PARADOJA": [
+   {
+    "id": "202606529126334464",
+    "nombre": "Black",
+    "usuario": "sol_61",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "778724258452340777",
+    "nombre": "Paradoja",
+    "usuario": "rlmi22",
+    "sv": [
+     "SNK"
+    ]
+   }
+  ],
+  "volk": [
+   {
+    "id": "691801856099221594",
+    "nombre": "volk5993",
+    "usuario": "volk5993",
+    "sv": [
+     "DRA"
+    ]
+   }
+  ],
+  "Steven": [
+   {
+    "id": "1000243697574748160",
+    "nombre": "Tokyo_gz",
+    "usuario": "stevenbb12",
+    "sv": [
+     "DRA",
+     "FFA"
+    ]
+   },
+   {
+    "id": "729049552245751810",
+    "nombre": "STEVEN 01",
+    "usuario": "steven014544",
+    "sv": [
+     "SNK"
+    ]
+   }
+  ],
+  "27": [
+   {
+    "id": "1110745738771697755",
+    "nombre": "2756353017766",
+    "usuario": "2756353017",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "1319216982125449246",
+    "nombre": "270373",
+    "usuario": "leo.leites",
+    "sv": [
+     "SNK"
+    ]
+   },
+   {
+    "id": "1274468795003441167",
+    "nombre": "l¡¡ghtz",
+    "usuario": "2708350978",
+    "sv": [
+     "FFS"
+    ]
+   }
+  ],
+  "papa": [
+   {
+    "id": "1138131637343879270",
+    "nombre": "papafrita29",
+    "usuario": "papafrita2",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "959595510195433603",
+    "nombre": "mechu",
+    "usuario": "papanatas9416",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "1533234196473188413",
+    "nombre": "Papardo_tord",
+    "usuario": "papardomc",
+    "sv": [
+     "FFA"
+    ]
+   }
+  ],
+  "GS": [
+   {
+    "id": "872119656293474345",
+    "nombre": "gspo",
+    "usuario": "stagen_",
+    "sv": [
+     "FFA"
+    ]
+   },
+   {
+    "id": "749486953849683979",
+    "nombre": "GS AXEL",
+    "usuario": "gsaxel0451",
+    "sv": [
+     "SNK"
+    ]
+   },
+   {
+    "id": "612443261465919489",
+    "nombre": "𝓩𝓬𝓪𝓻𝔂",
+    "usuario": "gsebass",
+    "sv": [
+     "SNK"
+    ]
+   }
+  ],
+  "KC": [
+   {
+    "id": "313875804041773066",
+    "nombre": "🐉 | Kevo",
+    "usuario": "kcdark.",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "758431803500658688",
+    "nombre": "Dominic",
+    "usuario": "kchapenes",
+    "sv": [
+     "DRA"
+    ]
+   },
+   {
+    "id": "1427145550192705707",
+    "nombre": "KC de Ibagué Colombia",
+    "usuario": "maukc2.0",
+    "sv": [
+     "FFA"
+    ]
+   }
+  ],
+  "KIRITO": [
+   {
+    "id": "1397202618136133753",
+    "nombre": "Rayo MC",
+    "usuario": "kirito0994897",
+    "sv": [
+     "DRA",
+     "FFA"
+    ]
+   },
+   {
+    "id": "1131319147343659049",
+    "nombre": "kirito.mc",
+    "usuario": "kiritortazssj",
+    "sv": [
+     "FFA"
+    ]
+   }
+  ]
+ }
+}

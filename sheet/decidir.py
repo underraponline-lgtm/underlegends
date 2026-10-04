@@ -723,6 +723,34 @@ def _en_discord(nombre):
     return pista, en_lista
 
 
+def _cuentas_posibles(nombre):
+    """`[{id, nombre, usuario, sv}]` de `datos/cuentas_posibles.json` para ese nombre (sin bandera)."""
+    if 'posibles' not in _DATOS:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'cuentas_posibles.json'), encoding='utf-8') as f:
+                _DATOS['posibles'] = (json.load(f) or {}).get('nombres') or {}
+        except (OSError, ValueError):
+            _DATOS['posibles'] = {}
+    # sin mayúsculas: la llave escribe «kc» y la búsqueda se hizo como «KC»
+    k = norm(_sin_bandera(nombre))
+    return next((v for n, v in _DATOS['posibles'].items() if norm(n) == k), [])
+
+
+#: 🔎 la respuesta que elige una de esas cuentas: «Es la cuenta @usuario»
+CUENTA_RE = re.compile(r'^Es la cuenta @(\S+)$')
+
+
+def _posibles(nombre):
+    """🔎 LAS CUENTAS QUE SE BUSCARON PARA ESE NOMBRE, con usuario y servidores: «En Discord hay 2 cuentas» no dice
+    cuáles, y con un nombre de una o dos letras (L, KC, GS, 27) `_en_discord()` no dice nada. Dlx, 04/10/2026 («4. Ok»):
+    los dudosos se contestan acá «con las cuentas al lado». Salen de `datos/cuentas_posibles.json`."""
+    cs = _cuentas_posibles(nombre)
+    if not cs:
+        return ''
+    return 'Cuentas con ese nombre: ' + ' · '.join(
+        '«%s» @%s (%s)' % (c.get('nombre') or '?', c.get('usuario') or '?', ', '.join(c.get('sv') or [])) for c in cs)
+
+
 def _lista_por_id():
     """`{discord_id: nombre en la Lista}`, del padrón."""
     if 'lista_por_id' not in _DATOS:
@@ -1104,6 +1132,7 @@ def _pistas(p):
         if sug:
             out.append('¿Será %s?' % ' o '.join(sug))
         out.append(_en_discord(p['detalle'])[0])
+        out.append(_posibles(p['detalle']))
         out.append(_en_llamada(p['detalle'], _num_evento(p))[0])
         out.append(_termino(p['detalle'], _num_evento(p)))
         out += _peleas(p['detalle'], _num_evento(p))
@@ -1262,9 +1291,11 @@ def _pregunta(p):
         # 🎙️ y quien estaba en la llamada con ese nombre, si está en la Lista
         ll = [x for x in _en_llamada(det, _num_evento(p))[1]
               if norm(x) not in {norm(s) for s in dc + sug}]
+        # 🔎 y las cuentas que se buscaron para ese nombre (Dlx, 04/10/2026, «4. Ok»): elegir una lo carga con ella
+        cuentas = ['Es la cuenta @%s' % c['usuario'] for c in _cuentas_posibles(det) if c.get('usuario')]
         return ('¿Quién es «%s»?%s' % (det, tambien),
                 ', '.join(sug) if sug else '—',
-                ['Es %s' % s for s in dc + ll + sug] + [NUEVO, TROLL])
+                ['Es %s' % s for s in dc + ll + sug] + cuentas + [NUEVO, TROLL])
     if t == 'alta':
         quien = _sin_decoracion(_reparar(det.split(' = ')[0].strip()))
         did = det.split(' = ')[-1].strip() if ' = ' in det else ''
@@ -1363,6 +1394,14 @@ def interpretar(p, respuesta):
         return ('error', '«%s» no aplica a esta pregunta' % r)
     if r == NUEVO:
         return ('cerrar', 'nuevo: queda con este nombre')
+    # 🔎 «Es la cuenta @usuario»: una de las cuentas buscadas para ese nombre. ⚠️ ANTES que el alias: «Es la cuenta…»
+    # empieza con «Es »
+    m = CUENTA_RE.match(r)
+    if m:
+        if p['tipo'] != 'Nombre desconocido':
+            return ('error', '«%s» no aplica a esta pregunta' % r)
+        c = next((c for c in _cuentas_posibles(p['detalle']) if c.get('usuario') == m.group(1)), None)
+        return ('cuenta', c) if c else ('error', '@%s no es una de las cuentas de «%s»' % (m.group(1), p['detalle']))
     # ⚠️ ANTES QUE EL ALIAS: «Ganó X» no es «es X»
     if p['tipo'] == 'Batalla sin ganador':
         if r == NO_SE_JUGO:
@@ -1726,6 +1765,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                                encoding='utf-8'))
     akas = AK.cargar() or {}
     estados, cierres, pares, eventos, ids = {}, [], [], {}, []
+    # 🔎 las altas con la cuenta que eligió Dlx (`Es la cuenta @usuario`)
+    altas = []
     batallas = {}
     trolls = []
     fuera = no_rankear()
@@ -1757,6 +1798,14 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             cierres += [(n, ('no cuenta: sale del ranking en la corrida siguiente'
                              if p['tipo'] == 'Vidas cargado' and dato == 'no cuenta'
                              else 'evento: %s' % dato)) for n in p['filas']]
+        elif que == 'cuenta':
+            ya = next((x for x in padron if str(x.get('discord_id') or '') == str(dato['id'])), None)
+            if ya:
+                real = ya.get('raw') or ya.get('full')
+                pares.append([_sin_bandera(p['detalle']), real, ''.join(_BANDERA.findall(p['detalle']))])
+                cierres += [(n, 'alias de %s: es su cuenta (@%s)' % (real, dato['usuario'])) for n in p['filas']]
+            else:
+                altas.append((p, _sin_bandera(p['detalle']).strip(), dato))
         elif que == 'troll':
             trolls.append(dato)
             cierres += [(n, 'troll: no cuenta') for n in p['filas']]
@@ -1794,7 +1843,9 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         print('      evento: %s -> %s' % (ev, dec))
     for det, g in batallas.items():
         print('      batalla: %s -> %s' % (det, g or 'no se jugó'))
-    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas)
+    for _p, n, c in altas:
+        print('      alta: %s con la cuenta @%s' % (n, c['usuario']))
+    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas or altas)
     # ⚠️ LAS NOTAS DE LO QUE SE CIERRA NO SE PIERDEN: van a
     # `datos/decisiones.json` con la pregunta, para quien tenga que actuar.
     cerradas = {n for n, _d in cierres}
@@ -1803,6 +1854,20 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     if dry:
         return estados
 
+    if altas:
+        # la bandera de la llave, si es una (como `por_discord()`); si no, sin país: lo completa autoverificar
+        import lista_raperos as LR
+        filas_a = []
+        for p, n, c in altas:
+            cc = {_iso(b) for b in _BANDERA.findall(p['detalle'])}
+            filas_a.append((n, next(iter(cc)) if len(cc) == 1 else '', str(c['id']),
+                            'Dlx en ✅ Decidir: es la cuenta @%s' % c['usuario']))
+        entraron = LR.agregar_varios(filas_a, aplicar=True)
+        for p, n, c in altas:
+            if str(c['id']) in (entraron or {}):
+                cierres += [(f, 'alta con la cuenta @%s' % c['usuario']) for f in p['filas']]
+            else:
+                estados[p['id']] = '⚠️ no pude cargarlo: mirá la Lista'
     if ids:
         errores = _poner_ids([(real, did) for real, did, _p in ids])
         for real, did, p in ids:
@@ -2472,7 +2537,7 @@ def _self_check():
     # 🔑 el nombre desconocido que es el apodo de alguien de la Lista
     _DATOS.clear()
     _DATOS.update({'apodos': {'kulrw': {'500'}, 'sol': {'7', '8'}},
-                   'padron': [{'raw': 'Jult', 'discord_id': '500'}]})
+                   'padron': [{'raw': 'Jult', 'discord_id': '500'}], 'posibles': {}})
     _ku = {'tipo': 'Nombre desconocido', 'detalle': 'KULRW🇦🇷', 'match': '', 'variantes': ['KULRW🇦🇷'],
            'origen': 'evento #360', 'donde': ''}
     _so = dict(_ku, detalle='SOL🇵🇪', variantes=['SOL🇵🇪'])
@@ -2482,6 +2547,13 @@ def _self_check():
     ok(_en_discord('SOL🇵🇪')[0] == 'En Discord hay 2 cuentas con ese nombre, ninguna en la Lista'
        and _pregunta(_so)[2][0] == NUEVO and _en_discord('L🇨🇴') == ('', []),
        'dos cuentas sin Lista se dicen, y un nombre de una letra no busca nada')
+    # 🔎 las cuentas buscadas (04/10/2026): la pista las nombra, la pregunta ofrece elegir una y elegirla es «cuenta»
+    _DATOS['posibles'] = {'SOL': [{'id': '7', 'nombre': 'Sol', 'usuario': 'sol_x', 'sv': ['FFA']}]}
+    ok('Es la cuenta @sol_x' in _pregunta(_so)[2] and _posibles('SOL🇵🇪') == 'Cuentas con ese nombre: «Sol» @sol_x (FFA)'
+       and interpretar(_so, 'Es la cuenta @sol_x') == ('cuenta', _DATOS['posibles']['SOL'][0])
+       and interpretar(_so, 'Es la cuenta @otro')[0] == 'error',
+       'las cuentas buscadas: la pista, la opción y elegir una carga con esa cuenta')
+    _DATOS['posibles'] = {}
     _DATOS.clear()
     _vi = {'tipo': 'Vidas cargado', 'detalle': 'SNAKE ARENA VOL. 2 · SR · 27/09', 'sug': '—',
            'origen': 'veredictos de Discord',
