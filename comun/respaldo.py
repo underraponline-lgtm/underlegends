@@ -91,7 +91,7 @@ _ocultas = None
 
 
 def oculta(nombre):
-    """¿Esa persona ocultó su foto? Va con su inicial en todas las cartas, como quien no tiene."""
+    """¿Esa persona ocultó su foto? Va con la silueta de rapero en todas las cartas, como quien no tiene (comun/sin_foto.py)."""
     global _ocultas
     if _ocultas is None:
         try:
@@ -126,17 +126,48 @@ def foto(nombre):
         return None
     n = _norm(nombre)
     tem = os.path.join(_TEMPORADA_FOTOS(), n + '.webp')
+    # ⚠️ una foto PLANA es «no tiene nada» (ver `plana()`), y no se busca otra más vieja: la de la temporada es la
+    # que la persona tiene puesta hoy, y una cara de julio en su lugar sería otra persona eligiendo por ella
     if os.path.exists(tem):
-        return _uri(tem)
+        return None if plana(tem) else _uri(tem)
     if n in SUELTAS and os.path.exists(SUELTAS[n]):
-        return _uri(SUELTAS[n])
+        return None if plana(SUELTAS[n]) else _uri(SUELTAS[n])
     if not os.path.isdir(FOTOS):
         return None
     for f in sorted(os.listdir(FOTOS)):
         raiz, ext = os.path.splitext(f)
         if ext.lower() in ('.png', '.jpg', '.jpeg', '.webp') and _norm(raiz) == n:
-            return _uri(os.path.join(FOTOS, f))
+            ruta = os.path.join(FOTOS, f)
+            return None if plana(ruta) else _uri(ruta)
     return None
+
+
+#: el desvío de gris debajo del cual una foto es un color liso: ver `plana()`
+PLANA = 5.0
+_planas = {}
+
+
+def plana(ruta):
+    """¿La foto es un color liso —negro, blanco, gris, verde— y no una imagen?
+
+    🔑 Dlx, 03/10/2026, con la Temporada de Oasis: *«para aquellas personas sin fotos, ya sea que lo eligieron esa
+    opción o que no tienen nada, usar una silueta de un rapero»*. La carta de Oasis salía vacía TENIENDO foto: su avatar
+    de Discord es un papel blanco liso, y una foto blanca sobre la carta clara es una carta sin cara. «No tiene nada»
+    incluye esto, y la carta lleva la silueta (comun/sin_foto.py).
+
+    ⚠️ EL CORTE ES 5, MEDIDO SOBRE LAS 427 DEL ESPEJO (03/10/2026): el desvío del gris a 64×64. Por debajo hay ocho y
+    las ocho son lisas —tres negras, dos blancas (Oasis y su otra cuenta), una gris, una casi negra y una verde fluo—;
+    la siguiente es J.R con 6,0, casi negra pero CON su nombre escrito, y ésa se respeta: es una imagen que eligió.
+    Después vienen fotos oscuras de verdad (Nemi, 9,9). Sin PIL no se filtra nada: mejor la foto lisa que ninguna.
+    """
+    if ruta not in _planas:
+        try:
+            from PIL import Image, ImageStat
+            with Image.open(ruta) as im:
+                _planas[ruta] = ImageStat.Stat(im.convert('L').resize((64, 64))).stddev[0] < PLANA
+        except Exception:                                # noqa: BLE001
+            _planas[ruta] = False
+    return _planas[ruta]
 
 
 def hay_foto(av):
@@ -186,7 +217,7 @@ def avatar(nombre, url=''):
     `av.startswith('http')` lo va a tirar en silencio — ya pasó en
     `normal_v3.py`, que ahora usa `_hay_foto()`.
     """
-    # 🙈 ni la del repo ni la URL del pool: quien ocultó su foto va con la inicial
+    # 🙈 ni la del repo ni la URL del pool: quien ocultó su foto va con la silueta (comun/sin_foto.py)
     if oculta(nombre):
         return ''
     return foto(nombre) or (url if _url_suya(nombre, url) else '') or ''

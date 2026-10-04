@@ -215,8 +215,9 @@ def html(nom, cc='', ev=0, foto=None, silueta=None, carta='temporada',
     # tuviera la suya, el mismo nombre saldría de dos tamaños distintos según
     # si llegaste a los 8 eventos o no.
     rem = NOM.rem(nom)
-    foto_html = ('<img src="%s">' % foto if foto
-                 else '<b class="ini">%s</b>' % nom[0].upper())
+    # 🎤 sin foto —no se puso o la ocultó— va la silueta, apagada como iría su foto (Dlx, 03/10/2026; comun/sin_foto.py)
+    from comun import sin_foto as SF
+    foto_html = '<img src="%s">' % foto if foto else SF.img('sil')
     return (
         '<div class="bloq">'
         '<div class="bg"></div><div class="tex"></div>'
@@ -269,6 +270,8 @@ def css(silueta=None, margen=None):
    una inicial que ya nace tenue— y cada una lleva lo suyo. */
 .bloq .foto img{width:100%%;height:100%%;object-fit:cover;object-position:50%% 22%%;
   filter:grayscale(1) contrast(.9);opacity:.34}
+/* 🎤 la silueta de quien no tiene foto (comun/sin_foto.py): apoyada abajo, apagada como una foto */
+.bloq .foto img.sil{object-fit:contain;object-position:50%% 100%%}
 .bloq .ini{font-size:7rem;font-weight:900;color:rgba(255,255,255,.085);
   line-height:1}
 .bloq .velo{position:absolute;inset:0;

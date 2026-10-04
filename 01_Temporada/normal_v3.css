@@ -71,6 +71,8 @@
           mask-image: linear-gradient(180deg,#000 0%,#000 72%,rgba(0,0,0,0.45) 88%,transparent 100%);
 }
 .c-photo img{ width:100%; height:100%; object-fit:cover; object-position:center 22%; }
+/* 🎤 la silueta de quien no tiene foto (comun/sin_foto.py): apoyada abajo, como un busto */
+.c-photo img.c-sil{ object-fit:contain; object-position:center bottom; }
 .c-initials{
   width:100%; height:100%;
   display:flex; align-items:center; justify-content:flex-end;

@@ -1350,6 +1350,16 @@ def panel_svg(i, LW, acc, remate, acorta=0):
             f'stroke="{acc}" stroke-width="2"/></g></svg>')
 
 
+def _sin_foto():
+    """🎤 Quien no tiene foto —no se puso o la ocultó— lleva la silueta de rapero, no la inicial (Dlx, 03/10/2026).
+
+    ⚠️ Con `vacia` en la caja, a propósito: el plato oscuro es para integrar una FOTO contra la bandera, y detrás de
+    una silueta negra sólo apagaría la bandera, que es lo único que esta carta tiene para decir de dónde sos.
+    Ver comun/sin_foto.py."""
+    from comun import sin_foto as SF
+    return SF.img('sil')
+
+
 def marco_svg(modo, i, acc, acento_pais, acorta=0, remate='punta'):
     """El marco como STROKE RECORTADO, no como border de una caja.
 
@@ -1711,7 +1721,7 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
         _et, av = avatares.para(avatares.cuantas() - 1
                                 if len(GENTE) > 2 and i == len(GENTE) - 1 else i)
     foto = (f'<div class="foto"><img src="{av}"></div>' if av else
-            f'<div class="foto vacia"><b>{nom[0]}</b></div>')
+            f'<div class="foto vacia">{_sin_foto()}</div>')
 
     # ⚠️ FUERA LOS PUNTOS. Dlx: "eso de los pts que no este puntos". Y hay
     # un motivo ademas del gusto: los puntos de temporada son EXACTAMENTE de
@@ -1885,7 +1895,7 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
   <div class="panel" style="width:{LW}px;{_bg_panel}"></div>
 
   <div class="foto{"" if av else " vacia"}" style="left:{LW}px">{
-      f'<img src="{av}">' if av else f'<b>{nom[0]}</b>'}</div>
+      f'<img src="{av}">' if av else _sin_foto()}</div>
   <div class="ovr" style="width:{LW - 5}px;font-size:{2.45 * LW / 78:.2f}rem">{ovr}{pst}</div>
   <div class="lane {iconos} {num}{' etiq' if etiq else ''} n{len(cas)}"
        style="width:{LW - 5}px;--acc:{acc}">{col}</div>
@@ -2224,6 +2234,8 @@ body{{margin:0;background:#0B0B12;padding:26px;font-family:Archivo,'LigaEmoji',s
   mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 99%,transparent 100%),linear-gradient(180deg,transparent 0,#000 3%,#000 88%,transparent 100%);
   -webkit-mask-composite:source-in;mask-composite:intersect}}
 .foto img{{position:relative;z-index:1}}
+/* 🎤 la silueta de quien no tiene foto (comun/sin_foto.py): apoyada abajo, como un busto */
+.foto img.sil{{object-fit:contain;object-position:50% 100%}}
 .foto.vacia b{{font-size:6.6rem;font-weight:900;color:rgba(255,255,255,.16);
   line-height:1;text-shadow:0 0 22px rgba(0,0,0,.55),0 3px 10px rgba(0,0,0,.5)}}
 

@@ -231,9 +231,9 @@ def card(c):
     g, bright = GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
     tg = tag(c)
     av  = c['av'].replace('?size=128', '?size=512')
-    ini = c['raw'][0].upper()
-    foto = ('<img src="%s" onerror="this.parentNode.innerHTML=\'<div class=&quot;c-initials&quot;>%s</div>\'">'
-            % (av, ini)) if _hay_foto(av) else '<div class="c-initials">%s</div>' % ini
+    # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
+    from comun import sin_foto as SF
+    foto = ('<img src="%s" onerror="%s">' % (av, SF.onerror('c-sil'))) if _hay_foto(av) else SF.img('c-sil')
     pts = puntos_k(c['pts'])
     # SET B — las seis se leen por tema, de a pares por fila:
     #   volumen (PTS EVT) · logro (POD SEM) · most wanted (CAZ MW)

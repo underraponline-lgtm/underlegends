@@ -217,8 +217,8 @@ OCULTAS = os.path.join(BASE, 'comun', 'fotos', 'ocultas.json')
 
 
 def ocultas(s=None):
-    """`{'ids': [...], 'nombres': [...]}` de quienes ocultaron su foto: van con su inicial en la página y en sus
-    tarjetas.
+    """`{'ids': [...], 'nombres': [...]}` de quienes ocultaron su foto: van con su inicial en la página y con la
+    silueta de rapero en sus tarjetas (comun/sin_foto.py, Dlx, 03/10/2026).
 
     Con `s` (una sesión de Cloudflare) se lee KV (`fotos:ocultas`) y se guarda la copia; sin `s`, la copia. Los
     nombres salen del padrón —los del `raw` y los del `full`—: el sello (`que_cambio.huellas()`) y la foto de cada

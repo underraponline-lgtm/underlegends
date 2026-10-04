@@ -829,10 +829,18 @@ def carta(i, sufijo):
     # la carta queda oscurecida del lado vacio y la columna sin fondo.
     m = (f'linear-gradient({90 if IZQ else 270}deg,#000 0%,#000 {a}%,'
          f'rgba(0,0,0,.5) {b}%,transparent {c}%)')
+    # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, en el lugar de la foto y con su misma máscara (Dlx,
+    # 03/10/2026: «una silueta de un rapero en negro»; ver comun/sin_foto.py). La inicial de abajo queda para
+    # el caso de que ese módulo no esté
+    try:
+        from comun import sin_foto as _SF
+        sil = '' if av else _SF.URI
+    except ImportError:
+        sil = ''
     foto = (f'<div class="foto" style="-webkit-mask-image:{M_FOTO};'
-            f'mask-image:{M_FOTO}"><img src="{av}" style="width:{lado:.0f}px;'
+            f'mask-image:{M_FOTO}"><img{" class=sil" if sil else ""} src="{av or sil}" style="width:{lado:.0f}px;'
             f'left:{(W-lado)/2:.1f}px;top:{MARGEN-(lado-ALTO_FOTO)*.44:.1f}px">'
-            f'</div>') if av else (
+            f'</div>') if (av or sil) else (
         # 🔴 SIN FOTO NO SE DEJA EL HUECO: VA LA INICIAL. Esto era
         # `if av else ''`, o sea que a quien no tiene foto la carta le
         # dibujaba **nada** — un rectangulo vacio donde va la cara, que

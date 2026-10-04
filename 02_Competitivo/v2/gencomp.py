@@ -344,7 +344,6 @@ def BLOQUE_TR(c):
 def card(c,i):
     rg = rango_metal(c['score'])       # el rango del competitivo, con SSS/SS
     acc, met, base = ACC[rg]
-    ini = c['raw'][0].upper()
     # 🔴 LA FOTO SE PIDE POR NOMBRE, NO SE LEE DEL POOL. Medido el
     # 20/09/2026: de los 82 del pool que YA tienen su foto guardada en
     # `comun/fotos/<temporada>/`, esta carta mostraba **14**. Los otros 68 la
@@ -363,8 +362,9 @@ def card(c,i):
     # Temporada, la Servidor y la de Pais.
     from comun.respaldo import avatar as _avatar, hay_foto as _hay_foto
     av = _avatar(c['raw'], (c.get('av') or '').replace('?size=128', '?size=512'))
-    foto = ('<img src="%s" onerror="this.parentNode.innerHTML=\'<b>%s</b>\'">' % (av,ini)) \
-           if _hay_foto(av) else '<b>%s</b>' % ini
+    # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
+    from comun import sin_foto as _SF
+    foto = ('<img src="%s" onerror="%s">' % (av, _SF.onerror('sil'))) if _hay_foto(av) else _SF.img('sil')
     stops = ''.join('<stop offset="%s" stop-color="%s"/>' % (o,c_)
                     for o,c_ in zip(['0','0.20','0.42','0.60','0.80','1'], met))
     vals = [c['E'],c['C'],c['Dm'],c['T'],c['V'],c['ev']]
