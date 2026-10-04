@@ -149,6 +149,8 @@ export class Respaldo extends Component {
     console.error('[inicio]', e);
     window.__inicioSinDatos = true;
     document.documentElement.classList.remove('ini-nuevo');
+    // lo viejo vuelve a la vista y hay que dibujarlo: mientras mandaba esto, app.js no lo dibujó (`mandaLoNuevo()`)
+    if (window.__pintarViejo) window.__pintarViejo();
   }
   render() { return this.state.roto ? null : this.props.children; }
 }
@@ -239,7 +241,7 @@ export default function App() {
     const plazo = setInterval(() => {
       if (window.D) { clearInterval(plazo); return; }
       if (fallaronLosDatos() || Date.now() - t0 > 15000) {
-        clearInterval(plazo); window.__inicioSinDatos = true; marcarRuta();
+        clearInterval(plazo); window.__inicioSinDatos = true; marcarRuta(); if (window.__pintarViejo) window.__pintarViejo();
       }
     }, 400);
     const reloj = setInterval(() => setAhora(new Date()), 60000);

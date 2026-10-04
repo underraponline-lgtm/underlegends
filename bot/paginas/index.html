@@ -159,7 +159,8 @@ html.ini-nuevo{scroll-padding-top:0}
   // si la app no llegó a montarse (red lenta, un navegador viejo), vuelve el Inicio de hoy
   setTimeout(function () {
     var el = document.getElementById('inicio-nuevo');
-    if (!el || !el.shadowRoot) { window.__inicioSinDatos = true; c.remove('ini-nuevo'); }
+    // y lo viejo se dibuja recién ahora: mientras mandaba la página nueva, app.js no lo dibujó (`mandaLoNuevo()`)
+    if (!el || !el.shadowRoot) { window.__inicioSinDatos = true; c.remove('ini-nuevo'); if (window.__pintarViejo) window.__pintarViejo(); }
   }, 8000);
 })();
 </script>

@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.23",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T09:33:00-04:00",
+   "titulo": "La página, más liviana",
+   "items": [
+    "⚡ **La página gasta mucho menos al cargar y cada 5 minutos**: dejó de dibujar, escondidas, las pantallas de la versión anterior. En una compu, de 72 a 2 milisegundos por carga; en el celular se nota más.",
+    "📰 **Publicaciones pide las novedades una sola vez**, no dos.",
+    "🛟 **Si la página nueva no carga, vuelve la anterior completa**, como siempre."
+   ]
+  },
+  {
    "version": "2.22",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T00:55:00-04:00",

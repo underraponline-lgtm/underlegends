@@ -315,19 +315,22 @@ function ir() {
   // ⚠️ CON TRY: un `%` suelto en el link tiraba URIError y la vista quedaba
   // vacía, igual que en `volverDeDiscord()`
   var dec = function (x) { try { return decodeURIComponent(x); } catch (e) { return x; } };
-  if (r === 'r') pintaPerfil(dec(partes.slice(1).join('/')));
-  if (r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
-  if (r === 'pais') pintaPais(partes[1] || '');
+  // ⚠️ LAS PANTALLAS VIEJAS, SÓLO SI SE VEN (ver `mandaLoNuevo()`). Lo que la página nueva usa corre igual: el
+  // changelog dado por visto (`pintaCambios()`) y la billetera. Publicaciones pedía el muro dos veces: la nueva lo pide sola
+  var viejo = !mandaLoNuevo();
+  if (viejo && r === 'r') pintaPerfil(dec(partes.slice(1).join('/')));
+  if (viejo && r === 'crew') pintaCrew(dec(partes.slice(1).join('/')));
+  if (viejo && r === 'pais') pintaPais(partes[1] || '');
   if (r === 'cambios') cargarCambios(pintaCambios);
-  if (r === 'publicaciones') {
+  if (viejo && r === 'publicaciones') {
     if (MURO === null) pedirMuro();
     pintaMuro();
   }
   if (r === 'tienda' && D) {
-    try { pintaTienda(); } catch (e) { console.error('[pintaTienda]', e); }
+    if (viejo) { try { pintaTienda(); } catch (e) { console.error('[pintaTienda]', e); } }
     if (!BILL) pedirBilletera(false);
   }
-  if (r === 'tarjetas' && D) pintaCaraCmp();
+  if (viejo && r === 'tarjetas' && D) pintaCaraCmp();
   // 🔑 `#/llave/<número>` ABRE ESA LLAVE, encima del calendario. Dlx, 27/09/2026,
   // «me gusta todo»: el link de cada llave es para pegarlo en Discord.
   // 🔍 Y SI LA LLAVE ES DEL INICIO NUEVO (la página nueva, o su preview `?prev=ll`), no se abre la de acá encima:
@@ -340,7 +343,7 @@ function ir() {
   if (r !== 'eventos' || partes[0] !== 'llave') apaga('#evAviso');
   // 🔑 `#/ranking/<sub>` ABRE ESE RANKING: es lo que usan los «Ver todo» del
   // Inicio, y deja mandar el link de un ranking puntual.
-  if (r === 'ranking') {
+  if (viejo && r === 'ranking') {
     var sb = pedida === 'duelos' ? 'duelos' : partes[1];
     if (sb && SUBS[sb] && sb !== SUB) elegirSub(sb);
   }
@@ -406,6 +409,8 @@ function redibujarPorHora() {
   });
 }
 function pintaRelojes() {
+  // los relojes son de las pantallas viejas: con la página nueva no hay ninguno dibujado (ver `mandaLoNuevo()`)
+  if (mandaLoNuevo()) return;
   var ahora = Date.now();
   $$('.reloj').forEach(function (el) {
     var t = Date.parse(el.dataset.t + 'Z');
@@ -5963,9 +5968,7 @@ function cerrarPops() { $$('.pop').forEach(function (p) { p.hidden = true; }); }
    (`web/src/cuenta.jsx`). Lo que hace cada cosa por dentro sigue acá —la foto, las redes, «tu servidor», salir— y
    la página nueva llama a estas funciones; se entera de cada cambio porque envuelve `pintaPopCuenta()`, que corre
    después de cada uno. ⚠️ LA VENTANA QUEDA DE RESPALDO: se abre sólo si la página nueva no se monta. */
-function nuevaCuenta() {
-  return !!document.getElementById('inicio-nuevo') && !window.__inicioSinDatos;
-}
+function nuevaCuenta() { return mandaLoNuevo(); }
 function cuentaFotoNo() { FOTO = null; pintaPopCuenta(); }
 function cuentaFotoSi() {
   return pedirFoto(true).then(function (R) {
@@ -6188,6 +6191,8 @@ if (MQ_CAMBIOS) {
 // principio; y el Inicio seguía diciendo «domingo 23:00» con el panel ya en
 // «lunes 6:00» para el mismo evento (auditoría del 27/09/2026).
 function repintarHoras() {
+  // ⚠️ la página nueva lo llama al cambiar la zona (web/src/cuenta.jsx), pero lo que redibuja es lo viejo, escondido
+  if (mandaLoNuevo()) return;
   [pintaHero, pintaCalendario, pintaEvCab, pintaPaneles, pintaUltCampeones].forEach(function (f) {
     try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
   });
@@ -6760,6 +6765,22 @@ function cuandoSe(iso) {
 
 /* lo que se dibuja con los datos: al abrir la página y cada vez que llegan
    nuevos (ver `refrescarDatos()`) */
+/* 🔑 SI MANDA LA PÁGINA NUEVA, LO VIEJO NO SE DIBUJA (04/10/2026, la primera tanda de sacar este archivo; Dlx: «A»).
+   Con cada carga de datos —y cada 5 minutos— esto redibujaba unas 25 pantallas escondidas que nadie ve: la tabla de
+   200 filas, la galería, el calendario, el perfil abierto. Desde que todas las vistas son de la página nueva
+   (`PROPIAS` de web/montar.py), lo viejo sólo se ve si ella se cae.
+   ⚠️ SE SIGUE CORRIENDO LO QUE ELLA ESCUCHA: la cuenta, las votaciones y los precios (`envolver()` de
+   web/src/App.jsx) y el modo calma. Lo demás que escribían los pintores viejos lo mide `node web/efectos_app.cjs`:
+   ninguno escribe algo que ella lea, salvo `PERF` (los perfiles), que ella misma pide con `perfiles()`.
+   ⚠️ Y SI SE CAE, `__pintarViejo()` DIBUJA TODO: lo llaman los tres respaldos (el script del principio de
+   index.html, y `Respaldo` y el plazo de los datos en App.jsx). Sin eso volvía una página vacía. */
+function mandaLoNuevo() {
+  return !!document.getElementById('inicio-nuevo') && !window.__inicioSinDatos;
+}
+window.__pintarViejo = function () {
+  if (D) { try { pintaDatos(); } catch (e) { console.error('[pintaDatos]', e); } }
+  try { ir(); } catch (e) { console.error('[ir]', e); }
+};
 function pintaDatos() {
   // 🔴 CADA SECCIÓN, AISLADA. Una que falla —un dato que llega con otra
   // forma, o el HTML viejo en caché con este JS nuevo— queda sin dibujar y
@@ -6767,14 +6788,17 @@ function pintaDatos() {
   // cortaba todos los que venían después, y los escuchas no se colgaban:
   // una sección rota apagaba la página entera. El error queda en la
   // consola con el nombre de la sección.
-  [trama, pintaMult, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
-    pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
-    pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
-    pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaEncuestas, pintaPrecios, pintaPaneles,
-    aplicarCalma]
+  var nuevo = mandaLoNuevo();
+  (nuevo ? [pintaCuenta, pintaEncuestas, pintaPrecios, aplicarCalma]
+    : [trama, pintaMult, pintaHero, pintaPasados, pintaPodio, pintaChips, pintaTabla, pintaGaleria,
+      pintaComparar, pintaServidores, pintaPaises, pintaRangos, pintaComo, pintaGuia,
+      pintaTops, pintaMapa, pintaActividad, pintaComunidad, pintaFeed, pintaNovedades, pintaCalendario, pintaEvCab,
+      pintaUltCampeones, pintaFormatos, pintaCuenta, pintaMW, pintaEncuestas, pintaPrecios, pintaPaneles,
+      aplicarCalma])
     .forEach(function (f) {
       try { f(); } catch (e) { console.error('[' + f.name + ']', e); }
     });
+  if (nuevo) return;
   // 🔴 LA FECHA QUE SE MUESTRA ES LA DE LOS DATOS, NO LA DE LA COPIA.
   // `sello` es cuándo se escribió el payload y se puede mover sin que
   // los datos se muevan —correr `subir_web.py` a mano lo pone en
