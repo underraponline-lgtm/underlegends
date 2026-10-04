@@ -713,7 +713,7 @@
     "racha": "0/0"
    }
   },
-  "ELPIBEOSIRIS 🇦🇷": {
+  "ELPIBEOSIRIS": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -1141,14 +1141,25 @@
     "racha": "0/0"
    }
   },
+  "ISAIAS": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "ISAIAS 🇪🇸": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 2,
+    "ev": 1,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 45,
     "pod": 0,
-    "pts": 1875,
+    "pts": 1250,
     "racha": "0/0"
    }
   },
@@ -2548,7 +2559,7 @@
     "racha": "0/0"
    }
   },
-  "Riferian 🇵🇦": {
+  "Riferian": {
    "URBF": {
     "duelos": "2/3",
     "ev": 1,
@@ -2722,7 +2733,7 @@
     "racha": "0/0"
    }
   },
-  "Sexo🇵🇪": {
+  "Sexo": {
    "DDF": {
     "duelos": "1/2",
     "ev": 1,
@@ -2950,7 +2961,7 @@
     "racha": "0/0"
    }
   },
-  "Teito🇨🇴": {
+  "Teito": {
    "DDF": {
     "duelos": "0/1",
     "ev": 2,
@@ -2961,12 +2972,12 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "0/1",
-    "ev": 5,
+    "duelos": "",
+    "ev": 3,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 48,
     "pod": 0,
-    "pts": 4687,
+    "pts": 2344,
     "racha": "0/0"
    },
    "URBF": {
@@ -2979,7 +2990,18 @@
     "racha": "0/0"
    }
   },
-  "Teo🇨🇴": {
+  "Teito🇨🇴": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0"
+   }
+  },
+  "Teo": {
    "FFA": {
     "duelos": "",
     "ev": 1,

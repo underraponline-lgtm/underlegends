@@ -235,7 +235,9 @@
   "adachi": "Nobu",
   "sabado": "Guess",
   "rizas": "PRAISERIZA",
-  "eyou": "LOLOELGAUCHO"
+  "eyou": "LOLOELGAUCHO",
+  "pichula": "PichulaMc",
+  "za": "Provenza"
  },
  "pares": [
   [
@@ -1181,6 +1183,14 @@
   [
    "EYOU",
    "LOLOELGAUCHO"
+  ],
+  [
+   "Pichula",
+   "PichulaMc"
+  ],
+  [
+   "za",
+   "Provenza"
   ]
  ],
  "no_confundir": [
