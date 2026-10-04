@@ -1,91 +1,115 @@
 /* ── PRIVACIDAD Y TÉRMINOS ─────────────────────────────────────────────
    🔑 Dlx, 27/09/2026: «esa zona de privacidad y términos se ve algo rara…
-   hacer mejor esos sitios». Eran texto suelto sobre negro, sin la marca de
-   la Liga y con los dos idiomas uno abajo del otro. Ahora comparten la piel
-   del hub —los mismos colores, las mismas letras, el mismo bisel— y un solo
-   CSS para las dos, así no se separan.
+   hacer mejor esos sitios». Y 04/10/2026, con el remake terminado: «si falta
+   reworkear algo, reworkealo» — eran lo último con la piel vieja (biseles,
+   luces de fondo, desenfoque). Ahora tienen la del remake (web/src/estilo.css):
+   blanco o negro según el tema que la persona eligió en la página
+   (`lg:tema`), bordes de 2 px, Archivo y Space Mono autoalojadas (las de
+   /inicio/f/, sin Google Fonts) y sin degradés, desenfoque ni radios de más
+   de 4 px. Un solo CSS para las dos, así no se separan.
 
    ⚠️ LAS DIRECCIONES NO CAMBIAN: /privacidad y /terminos son las que están
    cargadas en el portal de Discord (docs/revision_discord.md). */
+@font-face{font-family:Archivo;font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;
+  src:url(/inicio/f/archivo-latin-wdth-normal.woff2) format("woff2-variations");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Archivo;font-style:normal;font-display:swap;font-weight:100 900;font-stretch:62% 125%;
+  src:url(/inicio/f/archivo-latin-ext-wdth-normal.woff2) format("woff2-variations");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Space Mono";font-style:normal;font-display:swap;font-weight:400;
+  src:url(/inicio/f/space-mono-latin-400-normal.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Space Mono";font-style:normal;font-display:swap;font-weight:700;
+  src:url(/inicio/f/space-mono-latin-700-normal.woff2) format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* los tokens de la página (`.clara` y `.noche` de estilo.css): clara de entrada, como la página */
 :root{
-  --ng:#030304; --pan:#0A0A0D; --pan2:#101216;
-  --tl:#29B298; --mg:#E41373;
-  --tx:#EDEDF2; --tx2:#A8B4B1; --tx3:#77837F;
-  --bd:#1A2523;
-  --bisel:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));
+  --fondo:#FFFFFF; --tinta:#030304; --linea:#030304; --suave:#E2E2DE; --gris:#6E6E6A; --caja:#F3F3F0;
+  --magenta:#E41373; --magenta-tx:#D0106A; --verde:#29B298;
+  color-scheme:light;
+}
+html.noche{
+  --fondo:#030304; --tinta:#F6F6F6; --linea:#F6F6F6; --suave:#232326; --gris:#A5A5A0; --caja:#101012;
+  --magenta-tx:#E41373;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:84px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--ng);color:var(--tx);min-height:100vh;
+body{margin:0;background:var(--fondo);color:var(--tinta);min-height:100vh;
   font:400 16px/1.65 Archivo,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
-/* la luz de fondo del hub, sin la trama: acá se lee */
-body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(60vw 40vh at 85% -10%,rgba(228,19,115,.16),transparent 70%),
-             radial-gradient(50vw 40vh at 0% 10%,rgba(41,178,152,.12),transparent 70%)}
-a{color:var(--tl);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:2px solid var(--tl);outline-offset:2px}
-code{font:500 .88em ui-monospace,Consolas,monospace;background:var(--pan2);padding:2px 6px;
-  border-radius:3px;color:var(--tx);white-space:nowrap}
+/* la raya de la marca arriba de todo, como en la página: teal y magenta */
+body::before{content:'';display:block;height:6px;
+  background:linear-gradient(90deg,var(--verde) 0 50%,var(--magenta) 50% 100%)}
+a{color:var(--magenta-tx);text-underline-offset:3px;text-decoration-thickness:1.5px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+code{font:700 .86em "Space Mono",ui-monospace,Consolas,monospace;background:var(--caja);padding:2px 6px;
+  border:1.5px solid var(--suave);color:var(--tinta);white-space:nowrap}
 
 /* la barra de arriba */
 .barra{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:12px 16px;background:rgba(3,3,4,.86);backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--bd)}
-.marca{display:flex;align-items:center;gap:10px;color:var(--tx);text-decoration:none}
-.marca img{width:36px;height:36px;border-radius:8px}
-.marca span{display:flex;flex-direction:column;font:900 1.02rem/1.05 Archivo,sans-serif}
-.marca small{font:700 .68rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--tx3)}
-.volver{font:700 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;
-  text-decoration:none;color:var(--tx);border:1px solid var(--bd);padding:10px 14px;
-  clip-path:var(--bisel);background:var(--pan)}
-.volver:hover{border-color:var(--tl);color:var(--tl)}
+  gap:12px;padding:12px 16px;background:var(--fondo);border-bottom:2px solid var(--linea)}
+.marca{display:flex;align-items:center;gap:10px;color:var(--tinta);text-decoration:none}
+.marca img{width:40px;height:40px;border-radius:50%}
+.marca span{display:flex;flex-direction:column;gap:3px;font:900 1rem/1 Archivo,sans-serif;font-stretch:120%;
+  text-transform:uppercase}
+.marca small{font:700 .66rem/1.1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--magenta-tx)}
+.volver{font:700 .76rem/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;
+  text-decoration:none;color:var(--tinta);border:2px solid var(--linea);padding:10px 12px;background:var(--fondo)}
+.volver:hover{background:var(--tinta);color:var(--fondo)}
+/* en el celular la marca y el botón iban en cuatro renglones: una línea cada uno, sin la bajada de la marca */
+.marca span,.volver{white-space:nowrap}
+@media (max-width:480px){.marca small{display:none}.volver{padding:10px 10px}.volver .largo{display:none}}
 
 .hoja{max-width:1120px;margin:0 auto;padding:36px 16px 72px}
-.cab{display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
-.etq{margin:0;font:700 .8rem/1.2 'Barlow Condensed',sans-serif;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--tx3)}
-.etq b{color:var(--tl);font-weight:700}
-h1{margin:0;font:900 clamp(2.1rem,6vw,3.2rem)/1.02 Archivo,sans-serif;letter-spacing:-.015em;text-wrap:balance}
-h1 em{font-style:normal;color:var(--tl)}
-.idiomas{display:inline-flex;gap:0;border:1px solid var(--bd);align-self:flex-start;clip-path:var(--bisel)}
-.idiomas button{font:700 .82rem/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;
-  text-transform:uppercase;background:transparent;color:var(--tx2);border:0;padding:10px 16px;cursor:pointer}
-.idiomas button[aria-pressed="true"]{background:var(--tl);color:var(--ng)}
+.cab{display:flex;flex-direction:column;gap:14px;margin-bottom:30px}
+.etq{margin:0;font:700 .76rem/1.3 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.etq b{color:var(--fondo);background:var(--magenta);padding:3px 7px;margin-right:4px;font-weight:700}
+h1{margin:0;font:900 clamp(2.2rem,7vw,3.6rem)/.98 Archivo,sans-serif;font-stretch:120%;letter-spacing:-.01em;
+  text-transform:uppercase;text-wrap:balance}
+h1 em{font-style:normal;color:var(--magenta-tx)}
+.idiomas{display:inline-flex;align-self:flex-start;border:2px solid var(--linea)}
+.idiomas button{font:700 .76rem/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;
+  background:transparent;color:var(--tinta);border:0;padding:11px 16px;cursor:pointer;min-height:44px}
+.idiomas button + button{border-left:2px solid var(--linea)}
+.idiomas button[aria-pressed="true"]{background:var(--tinta);color:var(--fondo)}
 
 /* el cuerpo: el texto y, en la compu, el índice a la derecha */
 .cuerpo{display:grid;gap:28px;align-items:start}
-@media (min-width:960px){.cuerpo{grid-template-columns:minmax(0,1fr) 260px;gap:48px}}
-.texto{max-width:72ch;display:flex;flex-direction:column;gap:18px}
-.importa{background:linear-gradient(180deg,rgba(41,178,152,.12),rgba(41,178,152,.04));
-  border:1px solid rgba(41,178,152,.35);padding:18px 20px;clip-path:var(--bisel)}
-.importa h2{margin:0 0 8px;font:800 1.05rem/1.2 Archivo,sans-serif;color:var(--tl)}
+@media (min-width:960px){.cuerpo{grid-template-columns:minmax(0,1fr) 260px;gap:56px}}
+.texto{max-width:72ch;display:flex;flex-direction:column;gap:26px}
+.importa{background:var(--caja);border:2px solid var(--linea);border-left:10px solid var(--magenta);padding:18px 20px}
+.importa h2{margin:0 0 10px;font:900 1.15rem/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .importa ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
-.sec{background:var(--pan);border:1px solid var(--bd);padding:20px 22px;clip-path:var(--bisel)}
-.sec h2{margin:0 0 10px;font:800 1.2rem/1.25 Archivo,sans-serif;text-wrap:balance;
-  display:flex;align-items:baseline;gap:10px}
-.sec h2 .n{font:700 .85rem/1 'Barlow Condensed',sans-serif;letter-spacing:.1em;color:var(--mg)}
+/* cada sección, como las de la página: una raya de 2 px arriba y el título en Archivo */
+.sec{border-top:2px solid var(--linea);padding-top:14px}
+.sec h2{margin:0 0 12px;font:900 1.35rem/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;
+  text-wrap:balance;display:flex;align-items:baseline;gap:12px}
+.sec h2 .n{font:700 .8rem/1 "Space Mono",monospace;letter-spacing:.06em;color:var(--magenta-tx)}
 .sec p{margin:0 0 10px}
 .sec p:last-child{margin-bottom:0}
 .sec ul{margin:6px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
-.sec li::marker{color:var(--tl)}
+.sec li::marker{color:var(--magenta)}
 strong{font-weight:800}
-.suave{color:var(--tx2)}
+.suave{color:var(--gris)}
 
-.indice{position:sticky;top:84px;display:none;border-left:2px solid var(--bd);padding-left:16px}
+.indice{position:sticky;top:96px;display:none;border:2px solid var(--linea);padding:16px 18px}
 @media (min-width:960px){.indice{display:block}}
-.indice p{margin:0 0 10px}
-.indice ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.indice a{color:var(--tx2);text-decoration:none;font-size:.94rem}
-.indice a:hover{color:var(--tl)}
-.indice .otra{margin-top:18px;padding-top:14px;border-top:1px solid var(--bd);font-size:.94rem}
+.indice p{margin:0 0 12px}
+.indice ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;counter-reset:i}
+.indice li{counter-increment:i;display:flex;gap:10px;align-items:baseline}
+.indice li::before{content:counter(i,decimal-leading-zero);font:700 .72rem/1 "Space Mono",monospace;color:var(--magenta-tx)}
+.indice a{color:var(--tinta);text-decoration:none;font-size:.94rem}
+.indice a:hover{text-decoration:underline}
+.indice .otra{margin-top:18px;padding-top:14px;border-top:2px solid var(--linea);font-size:.94rem}
+.indice .otra a{font-weight:800}
 
 /* un idioma por vez; sin JavaScript se ven los dos */
 body[data-idioma="es"] [data-lang="en"],
 body[data-idioma="en"] [data-lang="es"]{display:none}
 
-.pie{border-top:1px solid var(--bd);margin-top:8px;padding:22px 16px 40px;color:var(--tx3);
-  font-size:.9rem;text-align:center}
-.pie a{color:var(--tx2)}
+.pie{border-top:2px solid var(--linea);margin-top:8px;padding:22px 16px 40px;color:var(--gris);
+  font:700 .76rem/1.6 "Space Mono",monospace;letter-spacing:.04em;text-transform:uppercase;text-align:center}
+.pie a{color:var(--tinta)}

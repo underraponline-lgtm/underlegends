@@ -8,10 +8,10 @@
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { useEffect, useState } from 'react';
-import { PAIS, hora, limpio, siglaDe } from './liga.js';
+import { PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
-import { nuevaQue } from './cambios.jsx';
+
 import { PasosInstalar } from './instalar.jsx';
 
 const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };

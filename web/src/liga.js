@@ -74,6 +74,18 @@ let SIGLAS = {};
 export function siglaDe(sv) { return SIGLAS[sv] || sv || ''; }
 // como `normNombre()` de app.js: la clave de `alias` en el payload (`respaldo._norm`)
 const normNombre = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+// «1.10» es más nueva que «1.9»: se comparan los números, no el texto (la regla de `nuevaQue()` de app.js)
+export function nuevaQue(a, b) {
+  const pa = String(a || '').split('.').map(Number);
+  const pb = String(b || '').split('.').map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const x = pa[i] || 0;
+    const y = pb[i] || 0;
+    if (isNaN(x) || isNaN(y)) return String(a) > String(b);
+    if (x !== y) return x > y;
+  }
+  return false;
+}
 export function hora(t) {
   const d = utc(t);
   if (W.fmtHora) return W.fmtHora(d);

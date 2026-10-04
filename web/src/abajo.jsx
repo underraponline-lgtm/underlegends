@@ -3,10 +3,10 @@
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { limpio, num } from './liga.js';
+import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU } from './arriba.jsx';
-import { nuevaQue } from './cambios.jsx';
+
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
 

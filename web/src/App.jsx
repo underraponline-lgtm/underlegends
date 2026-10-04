@@ -8,9 +8,6 @@ import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenH
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
-import { PerfilSv } from './servidor.jsx';
-import { Cambios } from './cambios.jsx';
-import { Cuenta, PaginaVerificar } from './cuenta.jsx';
 // 🔑 EL RANKING Y EVENTOS, EN SU PROPIO ARCHIVO: se bajan recién al abrirlos. Con los dos adentro, el JS del Inicio
 // pasaba de 120 a 133 KB comprimido (02/10/2026), y el Inicio es lo que abre todo el mundo, en el celular
 const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
@@ -25,6 +22,12 @@ const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave }
 const VisorCarta = lazy(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Tienda })));
 const Pase = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Pase })));
+// ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
+// 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
+const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
+const PaginaVerificar = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.PaginaVerificar })));
+const Cambios = lazy(() => import('./cambios.jsx').then((m) => ({ default: m.Cambios })));
+const PerfilSv = lazy(() => import('./servidor.jsx').then((m) => ({ default: m.PerfilSv })));
 const PaginaCrew = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaCrew })));
 const PaginaPais = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaPais })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
@@ -343,8 +346,8 @@ export default function App() {
     <div className={'app ' + tema} ref={raiz}>
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
-      {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><PerfilSv liga={liga} sv={sv} /></Aislada>
-        : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Aislada>
+      {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>
+        : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
         : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
@@ -360,9 +363,9 @@ export default function App() {
         // el Ranking (02/10/2026); `#/duelos` es el link viejo del de Duelos
         : pagina === 'ranking' || pagina === 'duelos' ? <Aislada key="Ranking" n="Ranking" pagina><Suspense fallback={<Cargando />}><Ranking liga={liga} sub={pagina === 'duelos' ? 'duelos' : partes[1] || 'temporada'} dc={yo.dc} raiz={raiz} /></Suspense></Aislada>
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
-        : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><PaginaVerificar liga={liga} dc={yo.dc} /></Aislada>
-        : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada>
-        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Aislada> : <>
+        : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada>
+        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada> : <>
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>

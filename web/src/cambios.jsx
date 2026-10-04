@@ -4,21 +4,11 @@
 // Hoy eran las 60 versiones abiertas de una: 31.000 px en el celular. Ahora van por día, con la última abierta y las
 // demás plegadas; lo que no habías visto, marcado y abierto. Cada versión tiene su link (`#/cambios/1.59`).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { hora } from './liga.js';
+import { hora, nuevaQue } from './liga.js';
 import { Chevron, Compartir, Sec, enlace } from './piezas.jsx';
 
-// «1.10» es más nueva que «1.9»: se comparan los números, no el texto (la regla de `nuevaQue()` de app.js)
-export function nuevaQue(a, b) {
-  const pa = String(a || '').split('.').map(Number);
-  const pb = String(b || '').split('.').map(Number);
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const x = pa[i] || 0;
-    const y = pb[i] || 0;
-    if (isNaN(x) || isNaN(y)) return String(a) > String(b);
-    if (x !== y) return x > y;
-  }
-  return false;
-}
+// `nuevaQue()` vive en liga.js: la usan la barra de abajo y Mi cuenta, y traerla de acá metía el changelog entero en el
+// paquete principal (la pasada del 04/10/2026, para que esta página se cargue sólo al abrirla)
 
 // **negrita** y `código`, como `mdCorto()` de app.js, pero en nodos y no en HTML
 function md(t) {
