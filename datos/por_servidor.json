@@ -401,17 +401,6 @@
     "racha": "0/1"
    }
   },
-  "CRIZJ🇵🇪": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
-   }
-  },
   "Camila": {
    "FFA": {
     "duelos": "0/1",
@@ -433,15 +422,6 @@
    }
   },
   "Carlos": {
-   "DDF": {
-    "duelos": "6/6",
-    "ev": 2,
-    "oro": 2,
-    "ovr": 67,
-    "pod": 2,
-    "pts": 18750,
-    "racha": "2/2"
-   },
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -450,6 +430,17 @@
     "pod": 0,
     "pts": 1250,
     "racha": "1/1"
+   }
+  },
+  "Carlosss": {
+   "DDF": {
+    "duelos": "6/6",
+    "ev": 2,
+    "oro": 2,
+    "ovr": 67,
+    "pod": 2,
+    "pts": 18750,
+    "racha": "2/2"
    }
   },
   "Catarsis": {
@@ -549,12 +540,12 @@
   },
   "CrisZJ": {
    "DDF": {
-    "duelos": "2/4",
-    "ev": 3,
+    "duelos": "2/5",
+    "ev": 4,
     "oro": 0,
-    "ovr": 59,
+    "ovr": 60,
     "pod": 1,
-    "pts": 10000,
+    "pts": 12000,
     "racha": "1/1"
    }
   },
@@ -2080,28 +2071,6 @@
     "racha": "0/0"
    }
   },
-  "NXUS🇵🇪": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 49,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "NXUZ🇵🇪": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 0,
-    "pts": 3500,
-    "racha": "0/0"
-   }
-  },
   "Neo": {
    "FFA": {
     "duelos": "",
@@ -2111,6 +2080,17 @@
     "pod": 2,
     "pts": 8333,
     "racha": "2/2"
+   }
+  },
+  "Nexus": {
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 51,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0"
    }
   },
   "Nhp": {
@@ -2176,15 +2156,6 @@
    }
   },
   "Number": {
-   "DDF": {
-    "duelos": "0/4",
-    "ev": 4,
-    "oro": 0,
-    "ovr": 52,
-    "pod": 0,
-    "pts": 8000,
-    "racha": "0/0"
-   },
    "FFA": {
     "duelos": "3/5",
     "ev": 2,
@@ -2201,6 +2172,17 @@
     "ovr": 44,
     "pod": 0,
     "pts": 625,
+    "racha": "0/0"
+   }
+  },
+  "Number VE": {
+   "DDF": {
+    "duelos": "0/4",
+    "ev": 4,
+    "oro": 0,
+    "ovr": 52,
+    "pod": 0,
+    "pts": 9000,
     "racha": "0/0"
    }
   },

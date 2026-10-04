@@ -126,11 +126,10 @@
 "temporada"
 ]
 },
-"carlos": {
+"carlosss": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
+"servidor"
 ]
 },
 "juanpa": {
@@ -281,6 +280,13 @@
 "temporada"
 ]
 },
+"criszj": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "fazer": {
 "rg": "",
 "c": [
@@ -320,13 +326,6 @@
 "temporada"
 ]
 },
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "geoka": {
 "rg": "",
 "c": [
@@ -353,13 +352,6 @@
 "c": []
 },
 "mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"criszj": {
 "rg": "",
 "c": [
 "servidor",
@@ -426,6 +418,13 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"number": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -549,6 +548,10 @@
 "servidor",
 "temporada"
 ]
+},
+"numberve": {
+"rg": "",
+"c": []
 },
 "mhs": {
 "rg": "",
@@ -712,6 +715,12 @@
 "kasiva": {
 "rg": "",
 "c": []
+},
+"nexus": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "sexo": {
 "rg": "",
@@ -975,10 +984,6 @@
 "temporada"
 ]
 },
-"nxuz": {
-"rg": "",
-"c": []
-},
 "partim": {
 "rg": "",
 "c": [
@@ -1082,10 +1087,6 @@
 "temporada"
 ]
 },
-"crizj": {
-"rg": "",
-"c": []
-},
 "eidp": {
 "rg": "",
 "c": [
@@ -1157,6 +1158,13 @@
 "abl": {
 "rg": "",
 "c": []
+},
+"carlos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "crackandkrank": {
 "rg": "",
@@ -1300,6 +1308,14 @@
 "servidor",
 "temporada"
 ]
+},
+"nxuz": {
+"rg": "",
+"c": []
+},
+"crizj": {
+"rg": "",
+"c": []
 },
 "volk-co": {
 "rg": "",
