@@ -832,9 +832,10 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
         ) : null}
       </div>
 
-      {/* 🖤 LA LLAVE, EN LO NEGRO (Dlx, 03/10/2026: «es muy blanco eso de las llaves página»): el cuadro sigue al escenario
-          como en el Inicio, donde la llave ya vive en negro. Las piezas usan las variables, así que `negra` las da vuelta */}
-      <section className="sec lk-sec negra">
+      {/* 🎨 LA LLAVE, SOBRE LA PIEL (Dlx, 03/10/2026). En blanco: «es muy blanco eso de las llaves página»; en negro:
+          «ahora está muy negro… todo». El escenario negro arriba y el cuadro sobre la piel (`--caja`, el color de lo ya
+          jugado, que a Dlx le gusta), con las casillas en blanco encima */}
+      <section className="sec lk-sec piel">
         <div className="sec-t"><h2>{N ? N + ' vidas' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
         {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
         <Funa ctx={ctx} L={L} />

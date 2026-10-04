@@ -1925,17 +1925,13 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-acc-b{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px}
 .lk-acc-b .lk-rep{flex-basis:100%;margin-top:4px}
 .lk-pts-top{padding:0 16px 20px}
-/* 🖤 la llave, en negro y pegada al escenario: sin la franja blanca de `.sec.negra` (margin-top) entre los dos */
-.lk-sec.negra{margin-top:0;padding-bottom:34px}
-.lk-sec.negra .sec-t{border-top-color:#2A2A2E}
-.lk-sec.negra .lk-arbol path{stroke:#4A4A50}
-.lk-sec.negra .lk-b{border-color:#3A3A3E}
-.lk-sec.negra .lk-b.ahora{border-color:var(--magenta)}
-.lk-sec.negra .lk-b.fin{border-color:var(--verde)}
-.lk-sec.negra .lk-funa li{border-color:#3A3A3E}
-.lk-sec.negra .lk-rl{border-bottom-color:#3A3A3E}
-.lk-sec.negra .lk-tabs button{border-color:#3A3A3E}
-.lk-sec.negra .lk-tabs button.on{border-color:var(--inv)}
+/* 🎨 la llave sobre la piel, pegada al escenario: negro arriba, piel con las casillas en blanco abajo. Ni toda blanca
+   («es muy blanco») ni toda negra («ahora está muy negro… todo»): Dlx, 03/10/2026 */
+.lk-sec.piel{padding-bottom:34px;background:var(--caja)}
+.lk-sec.piel .lk-funa li{background:var(--fondo)}
+.lk-sec.piel .lk-funa .lk-fr{background:none}
+/* y pegada al pie: su margen dejaba una franja blanca de 26 px entre la piel y el negro */
+.lk-sec.piel+.pie{margin-top:0}
 .lk-rep{display:grid;gap:10px;max-width:560px}
 .lk-rep-t{margin:0;font:700 14px/1.4 Archivo,sans-serif}
 .lk-rep-q{display:flex;flex-wrap:wrap;gap:6px}
