@@ -8541,5 +8541,223 @@
     2000
    ]
   ]
+ },
+ "390": {
+  "dia": "2026-10-03",
+  "escala": "16+",
+  "fecha": "03/10",
+  "funa": [
+   [
+    "Velatz",
+    false
+   ],
+   [
+    "Snow",
+    false
+   ],
+   [
+    "yinn",
+    false
+   ],
+   [
+    "Abyssus",
+    false
+   ],
+   [
+    "MetriOdin",
+    true,
+    1
+   ],
+   [
+    "Trot",
+    true,
+    2
+   ],
+   [
+    "Crk",
+    true,
+    2
+   ],
+   [
+    "luisito 🇦🇷 🏆",
+    true,
+    3
+   ],
+   [
+    "PichulaMc",
+    true,
+    2
+   ],
+   [
+    "LRS",
+    true,
+    4
+   ],
+   [
+    "Six",
+    true,
+    6
+   ],
+   [
+    "Monet",
+    true,
+    3
+   ],
+   [
+    "Soulb",
+    true,
+    4
+   ],
+   [
+    "CFM🇦🇷",
+    true,
+    3
+   ],
+   [
+    "Deuxs",
+    true,
+    4
+   ],
+   [
+    "MaYeuTyK 🇺🇾",
+    true,
+    4
+   ],
+   [
+    "Molusco",
+    true,
+    5
+   ]
+  ],
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556097331441565807"
+  ],
+  "n": 390,
+  "nombre": "NAVE DE EXTERMINACION 1",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "Snow"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "yinn",
+       "Abyssus"
+      ],
+      "yinn",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Velatz"
+      ],
+      "yinn",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "yinn",
+    "Campeón",
+    10000
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Abyssus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    5250
+   ],
+   [
+    "CFM🇦🇷",
+    "R32",
+    1586
+   ],
+   [
+    "Crk",
+    "R32",
+    1586
+   ],
+   [
+    "Deuxs",
+    "R32",
+    1586
+   ],
+   [
+    "LRS",
+    "R32",
+    1586
+   ],
+   [
+    "MaYeuTyK 🇺🇾",
+    "R32",
+    1586
+   ],
+   [
+    "MetriOdin",
+    "R32",
+    1586
+   ],
+   [
+    "Molusco",
+    "R32",
+    1586
+   ],
+   [
+    "Monet",
+    "R32",
+    1586
+   ],
+   [
+    "PichulaMc",
+    "R32",
+    1586
+   ],
+   [
+    "Six",
+    "R32",
+    1586
+   ],
+   [
+    "Soulb",
+    "R32",
+    1586
+   ],
+   [
+    "Trot",
+    "R32",
+    1586
+   ],
+   [
+    "luisito 🇦🇷 🏆",
+    "R32",
+    1586
+   ]
+  ]
  }
 }

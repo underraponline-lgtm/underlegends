@@ -1,27 +1,27 @@
 {
  "v": 1,
- "cuando": "2026-10-04T01:25:59Z",
+ "cuando": "2026-10-04T01:56:29Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 159.8,
+ "dur_s": 192.1,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 35.7
+   "s": 35.8
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 31.3
+   "s": 34.3
   },
   {
    "n": "1a",
@@ -33,140 +33,134 @@
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 18.7
+   "s": 20.2
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.7
+   "s": 2.5
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.6
+   "s": 7.5
   },
   {
    "n": "2b",
    "que": "Most Wanted",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 4.3
+   "s": 2.4
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 20.9
+   "s": 34.9
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 13.8
+   "s": 26.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.0
+   "s": 18.8
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.6
+   "s": 5.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.6
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 5.5
+   "s": 1.4
   }
  ],
  "fallas": [],
- "decidir": 72,
+ "decidir": 75,
  "ultimo_evento": {
-  "n": "389",
-  "nombre": "RED BULL NACIONAL ALBICELESTE",
-  "sv": "URBF",
+  "n": "390",
+  "nombre": "NAVE DE EXTERMINACION 1",
+  "sv": "FFA",
   "dia": "2026-10-03"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-04T01:24:00Z",
+  "cuando": "2026-10-04T01:53:57Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 257,
-  "un_evento": 143,
+  "jugadores": 261,
+  "un_evento": 144,
   "diez_o_mas": 12,
   "cohortes": [
    {
     "semana": "2026-09-21",
     "nuevos": 169,
-    "volvieron": 97,
+    "volvieron": 99,
     "completa": false
    },
    {
     "semana": "2026-09-28",
-    "nuevos": 88,
-    "volvieron": 11,
+    "nuevos": 92,
+    "volvieron": 12,
     "completa": false
    }
   ]
  },
  "cuotas": {
   "kv": {
-   "write": 185,
-   "read": 3828
+   "write": 196,
+   "read": 5329
   },
   "worker": {
-   "pedidos": 6966,
+   "pedidos": 6868,
    "errores": 0,
-   "sub": 5832,
-   "p50_ms": 0.79,
-   "p99_ms": 3.5
+   "sub": 5763,
+   "p50_ms": 0.8,
+   "p99_ms": 3.49
   },
   "r2": {
    "objetos": 9056,

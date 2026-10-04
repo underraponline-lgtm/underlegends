@@ -552,6 +552,16 @@
    "b": "PichulaMC 🇦🇷",
    "ganador": "Catarsis 🇦🇷",
    "votos": "1–0"
+  },
+  "1556110290137915553": {
+   "id": "1556110290137915553",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791076004300,
+   "a": "VELATZ 🇨🇱",
+   "b": "YINN 🇲🇦",
+   "ganador": "YINN 🇲🇦",
+   "votos": "2–1"
   }
  },
  "llaves": {
@@ -1060,7 +1070,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791075430365,
-   "ed": 1791076223449,
+   "ed": 1791077223188,
    "texto": "`[ SEMIFINALES ]`\n⌞VELATZ 🇨🇱⌝ 🆚 ⌞YINN 🇲🇦⌝",
    "batallas": [
     [
@@ -1069,8 +1079,8 @@
       "VELATZ 🇨🇱",
       "YINN 🇲🇦"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "YINN 🇲🇦",
+     "veredicto",
      []
     ]
    ]

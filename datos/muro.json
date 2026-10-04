@@ -57,15 +57,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "velatz": {
-"rg": "D",
+"rg": "C",
 "c": [
 "servidor",
 "temporada"
@@ -79,10 +72,17 @@
 "temporada"
 ]
 },
-"bloody": {
-"rg": "D",
+"yinn": {
+"rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"panchok": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -95,17 +95,17 @@
 "temporada"
 ]
 },
-"colesito": {
-"rg": "",
+"bloody": {
+"rg": "D",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"yinn": {
-"rg": "C",
+"colesito": {
+"rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -380,6 +380,13 @@
 "temporada"
 ]
 },
+"molusco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "",
 "c": [
@@ -395,13 +402,6 @@
 ]
 },
 "jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"molusco": {
 "rg": "",
 "c": [
 "servidor",
@@ -462,6 +462,13 @@
 "temporada"
 ]
 },
+"lrs": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "neo": {
 "rg": "",
 "c": [
@@ -474,13 +481,6 @@
 "c": []
 },
 "marto": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"lrs": {
 "rg": "",
 "c": [
 "servidor",
@@ -688,6 +688,13 @@
 "temporada"
 ]
 },
+"crk": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "agus": {
 "rg": "",
 "c": [
@@ -771,13 +778,6 @@
 ]
 },
 "kyss": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"crk": {
 "rg": "",
 "c": [
 "servidor",
@@ -930,6 +930,20 @@
 "rg": "",
 "c": []
 },
+"metriodin": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"deuxs": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "iguana": {
 "rg": "",
 "c": [
@@ -1008,6 +1022,13 @@
 "temporada"
 ]
 },
+"soulb": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "emi": {
 "rg": "",
 "c": [
@@ -1051,13 +1072,6 @@
 "rg": "",
 "c": []
 },
-"metriodin": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "lambroggini": {
 "rg": "",
 "c": [
@@ -1098,13 +1112,6 @@
 ]
 },
 "rayito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"deuxs": {
 "rg": "",
 "c": [
 "servidor",
@@ -1566,13 +1573,6 @@
 ]
 },
 "soft": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"soulb": {
 "rg": "",
 "c": [
 "servidor",
@@ -3523,6 +3523,15 @@
 "Faso"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-04T01:55:57Z",
+"quien": [
+"Velatz"
+],
+"rg": "C",
+"primero": false
 }
 ]
 }

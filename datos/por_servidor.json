@@ -102,13 +102,13 @@
   },
   "Abyssus": {
    "FFA": {
-    "duelos": "3/8",
-    "ev": 9,
+    "duelos": "3/9",
+    "ev": 10,
     "oro": 1,
-    "ovr": 64,
+    "ovr": 65,
     "pod": 2,
-    "pts": 14438,
-    "racha": "0/2"
+    "pts": 17063,
+    "racha": "1/2"
    },
    "SR": {
     "duelos": "",
@@ -390,6 +390,17 @@
     "racha": "1/1"
    }
   },
+  "CFM🇦🇷": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 793,
+    "racha": "0/0"
+   }
+  },
   "CJ": {
    "FFA": {
     "duelos": "",
@@ -561,11 +572,11 @@
   "Crk": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 0,
-    "pts": 3438,
+    "pts": 4231,
     "racha": "0/0"
    }
   },
@@ -625,11 +636,11 @@
   "Deuxs": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 0,
-    "pts": 1875,
+    "pts": 3065,
     "racha": "0/0"
    }
   },
@@ -1575,11 +1586,11 @@
   "LRS": {
    "FFA": {
     "duelos": "1/2",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 55,
     "pod": 0,
-    "pts": 4375,
+    "pts": 5168,
     "racha": "0/0"
    }
   },
@@ -1868,6 +1879,17 @@
     "racha": "0/1"
    }
   },
+  "MaYeuTyK 🇺🇾": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 793,
+    "racha": "0/0"
+   }
+  },
   "Majiztral": {
    "FFA": {
     "duelos": "",
@@ -1955,11 +1977,11 @@
   "MetriOdin": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 0,
-    "pts": 2500,
+    "pts": 3293,
     "racha": "0/0"
    }
   },
@@ -1986,12 +2008,23 @@
   "Molusco": {
    "FFA": {
     "duelos": "2/3",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 57,
+    "ovr": 58,
     "pod": 0,
-    "pts": 9844,
-    "racha": "2/2"
+    "pts": 10637,
+    "racha": "0/2"
+   }
+  },
+  "Monet": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 793,
+    "racha": "0/0"
    }
   },
   "Mosquitrap 🦟": {
@@ -2366,12 +2399,12 @@
    },
    "FFA": {
     "duelos": "5/13",
-    "ev": 14,
+    "ev": 15,
     "oro": 1,
     "ovr": 73,
     "pod": 4,
-    "pts": 35583,
-    "racha": "1/1"
+    "pts": 36376,
+    "racha": "0/1"
    },
    "URBF": {
     "duelos": "5/6",
@@ -2781,12 +2814,12 @@
   "Six": {
    "FFA": {
     "duelos": "1/2",
-    "ev": 5,
+    "ev": 6,
     "oro": 1,
     "ovr": 62,
     "pod": 2,
-    "pts": 8979,
-    "racha": "2/2"
+    "pts": 9772,
+    "racha": "0/2"
    },
    "SR": {
     "duelos": "4/5",
@@ -2822,13 +2855,13 @@
   },
   "Snow": {
    "FFA": {
-    "duelos": "8/11",
-    "ev": 13,
+    "duelos": "8/12",
+    "ev": 14,
     "oro": 3,
     "ovr": 77,
     "pod": 5,
-    "pts": 38134,
-    "racha": "2/5"
+    "pts": 40759,
+    "racha": "3/5"
    }
   },
   "Soft": {
@@ -2894,11 +2927,11 @@
   "Soulb": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 47,
     "pod": 0,
-    "pts": 625,
+    "pts": 1815,
     "racha": "0/0"
    }
   },
@@ -2989,12 +3022,12 @@
   "Trot": {
    "FFA": {
     "duelos": "4/6",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
-    "ovr": 65,
+    "ovr": 66,
     "pod": 1,
-    "pts": 14666,
-    "racha": "1/1"
+    "pts": 15459,
+    "racha": "0/1"
    },
    "SR": {
     "duelos": "",
@@ -3081,13 +3114,13 @@
   },
   "Velatz": {
    "FFA": {
-    "duelos": "4/10",
-    "ev": 13,
+    "duelos": "5/12",
+    "ev": 14,
     "oro": 0,
-    "ovr": 69,
-    "pod": 2,
-    "pts": 28688,
-    "racha": "0/2"
+    "ovr": 72,
+    "pod": 3,
+    "pts": 32438,
+    "racha": "1/2"
    },
    "SR": {
     "duelos": "",
@@ -3348,6 +3381,17 @@
     "racha": "0/0"
    }
   },
+  "luisito 🇦🇷 🏆": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 793,
+    "racha": "0/0"
+   }
+  },
   "maldita enfermedad": {
    "SR": {
     "duelos": "",
@@ -3469,13 +3513,13 @@
   },
   "yinn": {
    "FFA": {
-    "duelos": "6/10",
-    "ev": 11,
-    "oro": 1,
-    "ovr": 70,
-    "pod": 3,
-    "pts": 21343,
-    "racha": "2/4"
+    "duelos": "8/12",
+    "ev": 12,
+    "oro": 2,
+    "ovr": 73,
+    "pod": 4,
+    "pts": 26343,
+    "racha": "3/4"
    }
   },
   "za🇺🇸": {
