@@ -2575,7 +2575,7 @@ VEREDICTOS = re.compile(r'veredict|votaci|resultad', re.I)
 NO_VEREDICTOS = re.compile(r'postulaci', re.I)
 #: la versión del patrón: si cambia, la memoria de canales se vuelve a buscar sin esperar al barrido completo
 VEREDICTOS_V = 2
-STAFF = re.compile(r'staff|moderat|admin', re.I)
+STAFF = re.compile(r'staff|moderat|admin|organiz', re.I)  # 🏛️ y «organiz»: el canal «organizar-eventos» de la ACADEMIA (04/10/2026) es del staff y dice «eventos»
 #: minutos sin mensajes que parten dos tandas (`TANDA_MS` de la página)
 TANDA_MIN = 45
 #: las vidas de cada uno: el formato que Dlx describió

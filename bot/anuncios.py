@@ -67,7 +67,7 @@ PATRON = re.compile(r'evento|anuncio|novedad|torneo|competenc', re.I)
 #: y el de inscripciones, que es otra cosa: ahí la gente se anota
 PATRON_INSC = re.compile(r'inscrip|registro|anotad|convocat', re.I)
 #: los de staff, que también matchean y no son para el hub. Ver `canales()`.
-STAFF = re.compile(r'staff|moderat|admin', re.I)
+STAFF = re.compile(r'staff|moderat|admin|organiz', re.I)  # 🏛️ y «organiz»: el canal «organizar-eventos» de la ACADEMIA (04/10/2026) es del staff y dice «eventos»
 
 #: los campos de la plantilla. La clave es como queda en el JSON.
 CAMPOS = {

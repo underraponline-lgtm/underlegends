@@ -409,7 +409,7 @@ const largo = (s) => Array.from(s).length;
 
 export const PATRON = /evento|anuncio|novedad|torneo|competenc/i;
 export const PATRON_INSC = /inscrip|registro|anotad|convocat/i;
-export const STAFF = /staff|moderat|admin/i;
+export const STAFF = /staff|moderat|admin|organiz/i;  // 🏛️ «organizar-eventos» de la ACADEMIA (04/10/2026): del staff
 
 /**
  * Los ids de las CATEGORÍAS de staff de un servidor: `STAFF` sobre su nombre,
