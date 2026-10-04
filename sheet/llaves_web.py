@@ -454,7 +454,13 @@ def armar(ev, links=(), pendientes=None):
         # «batallas» contra nadie. Ver `llaves_a_entrada.filas_funa()`.
         if canon == motor.FUNA_R:
             if d.get('b'):
-                fase.append([d['b'], 'en pie' not in str(d.get('notas') or '')])
+                nota = str(d.get('notas') or '')
+                fase.append([d['b'], 'en pie' not in nota])
+                # y en qué ronda cayó, si la llave lo dijo (`llaves_a_entrada.filas_funa()`): la página lo muestra
+                # ronda por ronda (Dlx, 03/10/2026: «¿podrías dar más detalles?»)
+                m = re.search(r'en la ronda (\d+)', nota)
+                if m:
+                    fase[-1].append(int(m.group(1)))
             continue
         etq = ETIQUETA.get(motor.norm(crudo)) or crudo.capitalize() or '—'
         if etq not in donde:

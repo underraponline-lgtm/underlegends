@@ -804,6 +804,24 @@
     return [t, cayo];
   }
   function funaDe(texto) {
+    var fu = funaInterna(texto);
+    return fu ? fu.map(function (x) { return [x[0], x[1]]; }) : null;
+  }
+  // en qué ronda cayó cada uno («ELIMINADO #3»), en el orden de `funaDe()`, o null (`escuchar.funa_rondas()`).
+  // Dlx, 03/10/2026: «¿podrías dar más detalles?… en este caso sí». Sólo se muestra: los puntos no cambian
+  function funaRondas(texto) {
+    var fu = funaInterna(texto);
+    var rs = fu ? fu.map(function (x) { return x[2]; }) : [];
+    return rs.some(function (r) { return r; }) ? rs : null;
+  }
+  function rondaDe(l) {
+    ELIMINADO.lastIndex = 0;
+    var m = ELIMINADO.exec(plano(String(l || '')).replace(COLA, ''));
+    ELIMINADO.lastIndex = 0;
+    var d = m ? /\d+/.exec(m[0]) : null;
+    return d ? parseInt(d[0], 10) : null;
+  }
+  function funaInterna(texto) {
     var ls = lineas(plano(texto || ''));
     for (var i = 0; i < ls.length; i++) {
       if (!FUNA.test(ls[i]) || nombresDeLinea(ls[i]).length) continue;
@@ -816,13 +834,13 @@
         if (nombresDeLinea(l).length || buscarRonda(l) || PODIO.test(l) ||
             Object.keys(MEDALLA).some(function (x) { return l.indexOf(x) >= 0; })) { fin = j; break; }
         var u = unoDeRenglon(l);
-        if (u) out.push(u);
+        if (u) out.push([u[0], u[1], u[1] ? rondaDe(l) : null]);
       }
       if (out.length >= 4) {
         // 🔑 «Shisui (VELATZ)»: el de los paréntesis, si es quien sigue en la llave (`escuchar._quien_sigue()`)
         var despues = {};
         ls.slice(fin).forEach(function (l3) { nombresDeLinea(l3).forEach(function (n) { despues[norm(n)] = 1; }); });
-        return out.map(function (x) { return [quienSigue(x[0], despues), x[1]]; });
+        return out.map(function (x) { return [quienSigue(x[0], despues), x[1], x[2]]; });
       }
     }
     return null;
@@ -852,6 +870,8 @@
     var rs = b.rs || rondasDe(texto);
     // 🔑 una nave de funa se ve desde la fase, antes de que haya una batalla
     var fu = funaDe(texto);
+    // y en qué ronda cayó cada uno, si la llave lo dice: la página lo muestra ronda por ronda
+    var fr = fu ? funaRondas(texto) : null;
     if (rs.length < 1 && !fu) return null;
     var coma = function (s) { return String(s || '').split(/\s*[+&]\s*/).filter(Boolean).join(', '); };
     var rondas = resolver(rs, texto, quien).map(function (R) {
@@ -876,7 +896,7 @@
       participantes: Math.max(plantel(rs) + repetidosEnLaPrimera(rs) + faltanEnEquipos(rs), fu ? fu.length : 0),
       rondas: enlazar(rondas), tabla: [],
       sin: equiposConNombre(rs)[0],
-      funa: fu || undefined,
+      funa: fu ? fu.map(function (x, i) { return fr && fr[i] ? [x[0], x[1], fr[i]] : x; }) : undefined,
       links: b.g && b.canal ? ['https://discord.com/channels/' + b.g + '/' + b.canal + '/' + b.id] : [],
       pub: b.pub, ed: b.ed, terminada: !!fin,
       // la ronda que se está jugando: la última que tiene batallas sin ganador
@@ -1083,6 +1103,6 @@
     llavesDeVeredictos: llavesDeVeredictos,
     unirContinuadas: unirContinuadas, rondasDe: rondasDe, resolver: resolver, enlazar: enlazar,
     titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon,
-    veredictos: veredictos, funaDe: funaDe, medallasDe: medallasDe };
+    veredictos: veredictos, funaDe: funaDe, funaRondas: funaRondas, medallasDe: medallasDe };
   raiz.LlaveVivo = LlaveVivo;
 })(typeof window !== 'undefined' ? window : globalThis);

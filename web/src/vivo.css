@@ -1879,6 +1879,17 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-funa li{display:inline-flex;align-items:center;gap:6px;padding:2px 10px 2px 6px;border:1.5px solid var(--linea)}
 .lk-funa li.cae{opacity:.55}
 .lk-cae{font-style:normal;font-size:12px}
+/* la fase ronda por ronda (`Funa` con «ELIMINADO #N»): la ronda a la izquierda y los que cayeron en ella; al final, en
+   verde, los que pasan a la llave */
+.lk-funa.con-rondas ol{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--suave)}
+/* ⚠️ `.lk-funa li` es el chip de cada nombre: la fila de la ronda también es un `li`, así que va con más peso */
+.lk-funa .lk-fr{display:grid;grid-template-columns:118px minmax(0,1fr);align-items:center;gap:6px 14px;padding:10px 0;
+  border:0;border-bottom:1px solid var(--suave)}
+.lk-fr-n{display:grid;gap:4px;font:900 13px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.lk-fr-n small{font:700 10px/1 "Space Mono",monospace;letter-spacing:.06em;text-transform:none;color:var(--gris)}
+.lk-fr.siguen .lk-fr-n{color:var(--verde)}
+.lk-sec .lk-funa .lk-fr.siguen ul li{border-color:var(--verde)}
+@media (max-width: 599.98px){.lk-funa .lk-fr{grid-template-columns:minmax(0,1fr)}.lk-fr-n{display:flex;align-items:baseline;gap:10px}}
 
 /* la barra de quien se sigue, justo encima de la de abajo del celular (como «tu lugar» del Ranking) */
 .lk-barra{position:sticky;bottom:var(--lk-tb,0px);z-index:31;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:10px;

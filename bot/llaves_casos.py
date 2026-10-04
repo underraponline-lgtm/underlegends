@@ -277,7 +277,9 @@ def funa(texto):
     """Lo que la página tiene que leer igual de una nave de funa."""
     fu = E.funa_de(texto)
     return {'fase': [[n, c] for n, c in fu] if fu else None,
-            'medallas': {str(k): v for k, v in sorted(E.medallas_de(texto).items())}}
+            'medallas': {str(k): v for k, v in sorted(E.medallas_de(texto).items())},
+            # en qué ronda cayó cada uno, si la llave lo dice («ELIMINADO #3»)
+            'rondas': E.funa_rondas(texto)}
 
 
 def armar_funa():
@@ -305,7 +307,7 @@ def _self_check():
         mal += not ok
         print('   %s veredictos: %s' % ('✅' if ok else '🔴', c['que']))
     for c in d.get('funa') or []:
-        ok = funa(c['texto']) == {'fase': c['fase'], 'medallas': c['medallas']}
+        ok = funa(c['texto']) == {'fase': c['fase'], 'medallas': c['medallas'], 'rondas': c.get('rondas')}
         mal += not ok
         print('   %s nave de funa: %s' % ('✅' if ok else '🔴', c['que']))
     for c in d.get('llaves_v') or []:

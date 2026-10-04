@@ -220,8 +220,9 @@ for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')
 // medallas, igual que `escuchar.funa_de()` y `escuchar.medallas_de()`.
 console.log('\n6 · la nave de funa, contra Python (bot/llaves_casos.json)\n');
 for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')).funa || []) {
-  const r = { fase: LV.funaDe(c.texto), medallas: LV.medallasDe(c.texto) };
-  const e = { fase: c.fase, medallas: c.medallas };
+  // y en qué ronda cayó cada uno («ELIMINADO #3»), igual que `escuchar.funa_rondas()`
+  const r = { fase: LV.funaDe(c.texto), medallas: LV.medallasDe(c.texto), rondas: LV.funaRondas(c.texto) };
+  const e = { fase: c.fase, medallas: c.medallas, rondas: c.rondas === undefined ? null : c.rondas };
   ok(c.que, js(r) === js(e), `JS:     ${js(r).slice(0, 400)}\n      Python: ${js(e).slice(0, 400)}`);
   const L = LV.aLlave({ id: '1', texto: c.texto });
   ok('  y la llave la trae: la fase entera y el plantel de todos',

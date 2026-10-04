@@ -940,6 +940,31 @@ def funa_de(texto):
     que siguen: un evento que se LLAMA «Cypher algo» y trae su llave con
     batallas no es esto.
     """
+    fu = _funa(texto)
+    return [(n, c) for n, c, _r in fu] if fu else None
+
+
+def funa_rondas(texto):
+    """En qué ronda cayó cada uno de la fase, en el orden de `funa_de()`: `[1, 2, None, …]`, o None si no lo dice.
+
+    🔑 Dlx, 03/10/2026, con la NAVE DE EXTERMINACIÓN: *«¿podrías dar más detalles? no siempre va a haber muchos
+    detalles, pero en este caso sí»*. «ELIMINADO #3» dice en qué ronda de la fase cayó: la página la muestra ronda
+    por ronda. ⚠️ Sólo se MUESTRA: los puntos de la fase siguen siendo un empate (`motor`) hasta que Dlx diga otra cosa.
+    """
+    fu = _funa(texto)
+    rs = [r for _n, _c, r in fu] if fu else []
+    return rs if any(rs) else None
+
+
+def _ronda_de(l):
+    """El número de «ELIMINADO #3» de un renglón (3), o None."""
+    m = ELIMINADO.search(COLA.sub('', plano(l or '')))
+    d = re.search(r'\d+', m.group(0)) if m else None
+    return int(d.group(0)) if d else None
+
+
+def _funa(texto):
+    """`[(nombre, cayó, ronda)]` de la fase, o None. Ver `funa_de()`."""
     ls = plano(texto or '').splitlines()
     for i, l in enumerate(ls):
         if not FUNA.search(l) or nombres_de_linea(l):
@@ -958,12 +983,13 @@ def funa_de(texto):
                 break
             u = uno_de_renglon(l2)
             if u:
-                out.append(u)
+                out.append((u[0], u[1], _ronda_de(l2) if u[1] else None))
         if len(out) >= 4:
             # 🔑 «Shisui (VELATZ)» (NAVE DE EXTERMINACIÓN, FFA, 03/10/2026): el de los paréntesis es quien sigue en la
-            # llave —VELATZ juega la semi— y el de afuera no aparece más. Entonces es él. Si no, queda como vino
+            # llave —VELATZ juega la semi— y el de afuera no aparece más. Entonces es él. Si no, queda como vino.
+            # Lo confirmó la inscripción: «Shisui 🇯🇵» la escribió la cuenta de Velatz
             despues = {norm(n) for l3 in ls[fin:] for n in nombres_de_linea(l3)}
-            return [(_quien_sigue(n, despues), c) for n, c in out]
+            return [(_quien_sigue(n, despues), c, r) for n, c, r in out]
     return None
 
 

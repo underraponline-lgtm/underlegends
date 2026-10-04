@@ -448,6 +448,30 @@ function Funa({ ctx, L }) {
   const fs = (L && L.funa) || [];
   if (!fs.length) return null;
   const quedan = fs.filter((x) => !x[1]).length;
+  // 🔑 RONDA POR RONDA, SI LA LLAVE LO DICE (Dlx, 03/10/2026, con la NAVE DE EXTERMINACIÓN: «¿podrías dar más detalles?
+  // no siempre va a haber muchos detalles, pero en este caso sí»). «ELIMINADO #3» es en qué ronda cayó: cada ronda con
+  // los suyos, y al final los que siguen. Sin números, la lista de siempre
+  const rs = [...new Set(fs.filter((x) => x[1] && x[2]).map((x) => x[2]))].sort((a, b) => a - b);
+  if (rs.length) {
+    const sinNum = fs.filter((x) => x[1] && !x[2]);
+    const siguen = fs.filter((x) => !x[1]);
+    const fila = (et, xs, cls) => (
+      <li key={et} className={'lk-fr ' + (cls || '')}>
+        <b className="lk-fr-n">{et}<small>{cls === 'siguen' ? xs.length + (xs.length === 1 ? ' sigue' : ' siguen') : xs.length + (xs.length === 1 ? ' cayó' : ' cayeron')}</small></b>
+        <ul>{xs.map((x, i) => <li key={i} className={x[1] ? 'cae' : ''}><Persona ctx={ctx} x={x[0]} perdio={!!x[1]} /></li>)}</ul>
+      </li>
+    );
+    return (
+      <div className="lk-funa con-rondas">
+        <h3 className="lk-h">Fase de eliminación<small>{fs.length} raperos · {rs.length} rondas · {quedan === 1 ? 'queda 1' : 'quedan ' + quedan}</small></h3>
+        <ol>
+          {rs.map((r) => fila('Ronda ' + r, fs.filter((x) => x[1] && x[2] === r)))}
+          {sinNum.length ? fila('Sin ronda', sinNum) : null}
+          {siguen.length ? fila('A la llave', siguen, 'siguen') : null}
+        </ol>
+      </div>
+    );
+  }
   return (
     <div className="lk-funa">
       <h3 className="lk-h">Fase de eliminación<small>{fs.length} raperos · {quedan === fs.length ? 'se juega' : 'quedan ' + quedan}</small></h3>

@@ -2591,7 +2591,8 @@
      false
     ]
    ],
-   "medallas": {}
+   "medallas": {},
+   "rondas": null
   },
   {
    "que": "Revo 2/5: «1 - [x] ❌», final de dos y el podio con medallas",
@@ -2666,7 +2667,8 @@
     "1": "tam",
     "2": "guess",
     "3": "multi"
-   }
+   },
+   "rondas": null
   },
   {
    "que": "Revo 15/5: la cita de Discord, «⌞ x ⌝❌» y sin podio todavía",
@@ -2721,7 +2723,8 @@
      true
     ]
    ],
-   "medallas": {}
+   "medallas": {},
+   "rondas": null
   },
   {
    "que": "NAVE DE EXTERMINACIÓN #1: «ELIMINADO #N», el adorno pegado al último y «Shisui (VELATZ)»",
@@ -2796,7 +2799,26 @@
      true
     ]
    ],
-   "medallas": {}
+   "medallas": {},
+   "rondas": [
+    1,
+    2,
+    2,
+    null,
+    3,
+    2,
+    4,
+    6,
+    3,
+    null,
+    null,
+    4,
+    3,
+    4,
+    null,
+    4,
+    5
+   ]
   }
  ],
  "llaves_v": [

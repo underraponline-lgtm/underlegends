@@ -756,12 +756,16 @@ def filas_funa(filas, fu, texto, base):
         arriba.add(k(tercero))
     caen = [n for n, c in fu if c] if marcas else [n for n, _c in fu if k(n) not in arriba]
     pasan = len(fu) - len(caen)
+    # 🔑 y en qué ronda cayó, si la llave lo dice («ELIMINADO #3», NAVE DE EXTERMINACIÓN, 03/10/2026): va en la nota
+    # para que la página lo muestre ronda por ronda (`llaves_web`). Los puntos no cambian: la fase sigue empatada
+    rnd = {k(n): r for (n, _c), r in zip(fu, E.funa_rondas(texto) or ()) if r}
     for n in [x for x in sueltos if k(x) not in arriba] + caen:
         if k(n) in arriba:
             continue
         filas.append(dict(base, ronda='fase de eliminación', ladoA='', ladoB=n, ganador='',
                           notas='nave de funa: %s (%d en la fase, pasan %d)'
-                          % ('quedó en pie' if n in sueltos else 'cayó', len(fu), pasan)))
+                          % ('quedó en pie' if n in sueltos else
+                             'cayó en la ronda %d' % rnd[k(n)] if k(n) in rnd else 'cayó', len(fu), pasan)))
     return filas, resuelta
 
 
