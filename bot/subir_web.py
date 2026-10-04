@@ -1343,6 +1343,9 @@ def _actividad(regs, dias=14):
     import datetime as dt
     hoy = _hoy_este()
     por, sem, ant, part, gente = {}, 0, 0, 0, set()
+    # 🔑 Y MÁS DETALLE (Dlx, 03/10/2026: «cuántos nuevos hay, cuántas personas rapearon estas 2 semanas, etc.»): quién
+    # jugó la semana anterior, en las dos semanas, y el día del primer evento de cada uno en la temporada
+    gente_ant, g14, primero = set(), set(), {}
     from comun import respaldo as _resp
     for r in (regs or {}).values():
         try:
@@ -1350,18 +1353,30 @@ def _actividad(regs, dias=14):
         except ValueError:
             continue
         hace = (hoy - dia).days
+        ks = {_resp._norm(t[0]) for t in r.get('tabla') or [] if t and t[0]}
+        for k in ks:
+            if k not in primero or dia < primero[k]:
+                primero[k] = dia
         if 0 <= hace < dias:
             x = por.setdefault(dia.isoformat(), {})
             x[r.get('sv') or '?'] = x.get(r.get('sv') or '?', 0) + 1
+            g14 |= ks
         if 0 <= hace < 7:
             sem += 1
             part += int(r.get('participantes') or 0)
-            gente |= {_resp._norm(t[0]) for t in r.get('tabla') or [] if t and t[0]}
+            gente |= ks
         elif 7 <= hace < 14:
             ant += 1
+            gente_ant |= ks
     lista = [(hoy - dt.timedelta(days=i)).isoformat() for i in range(dias - 1, -1, -1)]
     return {'dias': [[d, por.get(d, {})] for d in lista], 'ev': sem, 'ant': ant,
-            'part': part, 'gente': len(gente)}
+            'part': part, 'gente': len(gente),
+            # los que rapearon en las dos semanas; los nuevos (su primer evento de la temporada) de esta semana y de la
+            # anterior; y de los de la semana anterior, cuántos volvieron esta
+            'gente14': len(g14), 'gente_ant': len(gente_ant),
+            'nuevos': sum(1 for d in primero.values() if 0 <= (hoy - d).days < 7),
+            'nuevos_ant': sum(1 for d in primero.values() if 7 <= (hoy - d).days < 14),
+            'vuelven': len(gente & gente_ant)}
 
 
 def _duelos_de(regs, LW):

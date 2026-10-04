@@ -354,7 +354,17 @@ function Numeros({ liga }) {
                 );
               })}
             </div>
-            <p className="act-n"><b>{num(a.part || 0)}</b> participaciones · <b>{num(a.gente || 0)}</b> raperos distintos en 7 días</p>
+            {/* 🔑 MÁS DETALLE (Dlx, 03/10/2026: «cuántos nuevos hay, cuántas personas rapearon estas 2 semanas, etc.»):
+                la semana, las dos semanas, los nuevos y los que volvieron. Sin el dato nuevo (un payload viejo), la línea
+                de siempre */}
+            {a.gente14 != null ? (
+              <div className="act-4">
+                <div><span>ESTA SEMANA</span><b>{num(a.gente || 0)}</b><small>raperos · {num(a.part || 0)} participaciones</small></div>
+                <div><span>DOS SEMANAS</span><b>{num(a.gente14 || 0)}</b><small>raperos distintos</small></div>
+                <div><span>NUEVOS</span><b>{num(a.nuevos || 0)}</b><small>{a.nuevos_ant ? 'su primer evento · ' + num(a.nuevos_ant) + ' la anterior' : 'su primer evento, esta semana'}</small></div>
+                <div><span>VOLVIERON</span><b>{num(a.vuelven || 0)}</b><small>{a.gente_ant ? 'de los ' + num(a.gente_ant) + ' de la semana anterior' : 'jugaron las dos semanas'}</small></div>
+              </div>
+            ) : <p className="act-n"><b>{num(a.part || 0)}</b> participaciones · <b>{num(a.gente || 0)}</b> raperos distintos en 7 días</p>}
           </section>
         ) : null}
       </div>
