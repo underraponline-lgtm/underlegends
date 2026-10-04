@@ -129,7 +129,8 @@
 "carlosss": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "juanpa": {
@@ -551,7 +552,10 @@
 },
 "numberve": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mhs": {
 "rg": "",
@@ -719,7 +723,8 @@
 "nexus": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "sexo": {
@@ -3565,6 +3570,38 @@
 "t": "2026-10-04T02:39:29Z",
 "quien": [
 "19"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T03:08:41Z",
+"quien": [
+"Carlosss"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T03:08:41Z",
+"quien": [
+"Number VE"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T03:08:41Z",
+"quien": [
+"Number VE"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-04T03:08:41Z",
+"quien": [
+"Nexus"
 ],
 "carta": "temporada"
 }
