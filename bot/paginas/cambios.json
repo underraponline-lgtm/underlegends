@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.27",
+   "dia": "2026-10-04",
+   "cuando": "2026-10-04T14:18:00-04:00",
+   "titulo": "La Academia de Rap entra a la Liga",
+   "items": [
+    "🏛️ **La Academia de Rap es de la Liga**: sus torneos suman desde ya, con la etiqueta **ACADEMIA**. En los menús y las tablas se lee **ACA**.",
+    "🃏 **Su tarjeta de Servidor es un templo de noche**, amarillo y negro: dos columnas y una escalinata sobre mármol negro con vetas doradas.",
+    "📖 **El bot entiende cómo escriben sus llaves**: la RED BULL CREW, las FAT BATTLES y las votaciones con la mano (🫲 gana el de la izquierda, 🫱 el de la derecha)."
+   ]
+  },
+  {
    "version": "2.26",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T13:31:00-04:00",
