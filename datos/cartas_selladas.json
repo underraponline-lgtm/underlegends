@@ -11,7 +11,7 @@
   "27": {},
   "7": {
    "servidor": "3d5ba91eb96f:d46f41875d27:90ce53",
-   "temporada": "cf29002cc11c:743dadbbd4f6"
+   "temporada": "bea47d6c520c:f5299dbdfa04"
   },
   "7po": {
    "servidor": "51ec46f16088:d46f41875d27:43d041"
@@ -1452,6 +1452,9 @@
    "temporada": "e6890e83fa68:743dadbbd4f6"
   },
   "SOL": {},
+  "SONIC_DORADITO": {
+   "servidor": "f59c5f7bc972:9d97339447c1:980594"
+  },
   "SPD": {
    "servidor": "6813826a3f56:d46f41875d27:055f77"
   },
@@ -1920,5 +1923,5 @@
    "servidor": "994982e6deaa:d46f41875d27:d473d6"
   }
  },
- "cuando": "2026-10-04T19:16:56+00:00"
+ "cuando": "2026-10-04T19:57:12+00:00"
 }
