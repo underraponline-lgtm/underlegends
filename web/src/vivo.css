@@ -472,6 +472,26 @@ button.btn{background:transparent;cursor:pointer}
 .dv-ev{font:600 12px/1 Archivo,sans-serif;color:var(--gris);white-space:nowrap}
 .dv-p{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
 @media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}.dv-cara{width:28px;height:28px}}
+/* 🎯 las misiones de la semana (`misiones.jsx`): tres tarjetas, una por nivel, y dos tablas */
+.mi{display:grid;gap:14px}
+.mi-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.mi-m{display:grid;align-content:start;gap:6px;padding:12px 12px 14px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
+.mi-facil{border-top-color:#29B298}
+.mi-media{border-top-color:#E8A93B}
+.mi-dificil{border-top-color:#E41373}
+.mi-m.ok{background:var(--caja)}
+.mi-niv{font:700 11px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.mi-t{font:900 17px/1.2 Archivo,sans-serif;text-wrap:balance}
+.mi-p{font:900 24px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.mi-yo{font:800 13px/1.2 Archivo,sans-serif}
+.mi-m.ok .mi-yo{color:#29B298}
+.mi-c{font:600 12px/1.2 Archivo,sans-serif;color:var(--gris)}
+.dv-tabla.mi-tabla li{grid-template-columns:32px minmax(0,1fr) auto auto}
+.dv-tabla.mi-tabla.con-i li{grid-template-columns:28px 32px minmax(0,1fr) auto}
+.mi-marcas{display:inline-flex;gap:4px}
+.mi-marcas i{width:11px;height:11px;border:1.5px solid var(--linea)}
+.mi-marcas i.si{background:#29B298;border-color:#29B298}
+
 .cu-quien.anon{grid-template-columns:auto minmax(0,1fr);align-items:center;row-gap:14px;padding:16px 14px}
 .cu-quien.anon .cu-av{margin:0;width:56px;height:56px;border:2px solid var(--linea)}
 .cu-quien.anon .cu-q{grid-column:auto;margin:0}

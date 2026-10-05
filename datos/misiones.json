@@ -1,0 +1,7 @@
+{
+ "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
+ "bono": 1000,
+ "sem": "",
+ "semanas": {},
+ "suma": {}
+}

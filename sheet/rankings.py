@@ -1103,6 +1103,32 @@ def sumar_precios(ag, suma=None):
     return tocadas
 
 
+def sumar_misiones(ag, suma=None):
+    """🎯 Las misiones de la semana en la Temporada: lo que cada uno sumó cumpliéndolas, a `Puntos`.
+
+    Dlx, 04/10/2026 (*«3. A»*): *«cada una suma puntos de Temporada, y completar las tres da un bono»*. Quién cumplió
+    qué lo resuelve `bot/misiones.py`. ⚠️ NUNCA AL COMPETITIVO, y una corrida atrás, como el precio por cabeza: lee el
+    `datos/misiones.json` de la anterior. Sin archivo, `None` y no suma nada. Devuelve a cuántos les sumó."""
+    if suma is None:
+        try:
+            _b = os.path.join(BASE, 'bot')
+            if _b not in sys.path:
+                sys.path.insert(0, _b)
+            import misiones as _MI
+            suma = (_MI.leer() or {}).get('suma') or {}
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude leer las misiones (%s): la vitrina no las suma' % str(e)[:80])
+            return None
+    por = {_como_pool(n): pts for n, pts in (suma or {}).items() if pts}
+    tocadas = 0
+    for quien, v in ag.items():
+        pts = por.get(_como_pool(quien)) or 0
+        if pts:
+            v['Puntos'] = v.get('Puntos', 0) + pts
+            tocadas += 1
+    return tocadas
+
+
 def agregar_temporada(filas_res, filas_uno, instantes=None):
     """La Temporada: `agregar()` con los multiplicadores de la semana y el Most Wanted.
 
@@ -1132,6 +1158,8 @@ def agregar_temporada(filas_res, filas_uno, instantes=None):
     sumar_mw(ag)
     # 🔑 Y EL PRECIO POR CABEZA: lo cobrado cazando (Dlx: «ambos»)
     sumar_precios(ag)
+    # 🎯 Y LAS MISIONES DE LA SEMANA (Dlx, 04/10: «3. A»)
+    sumar_misiones(ag)
     return ag
 
 
@@ -3021,6 +3049,14 @@ def main():
                 _d['sem'], sum(len(g) for gs in _d['divs'] for g in gs)))
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ las divisiones no se calcularon: %s' % str(e)[:160])
+        # 🎯 y las misiones de la semana (`bot/misiones.py`). Nunca frenan la vitrina
+        try:
+            import misiones as _MI
+            _m = _MI.correr(aplicar=True)
+            _s = (_m.get('semanas') or {}).get(_m.get('sem') or '') or {}
+            print('   🎯 las misiones de la semana del %s: %d cumplieron alguna' % (_m.get('sem'), len(_s.get('pts') or {})))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ las misiones no se calcularon: %s' % str(e)[:160])
 
         # 🔴 TRES PUERTAS ANTES DE TOCAR UNA HOJA PÚBLICA, y cada una
         # tapa una forma distinta de romperla sin que nada falle.

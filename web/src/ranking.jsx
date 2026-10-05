@@ -20,6 +20,7 @@ import { MESES, limpio, norm, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
+import { Misiones } from './misiones.jsx';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -139,7 +140,7 @@ const COL = {
   caz: { t: 'Cazó', tit: 'Most Wanted: a cuántos cazó', s: (f) => f.caz || 0, v: (f, x) => (x.mw ? f.caz || 0 : NADA) },
   czd: { t: 'Cazado', tit: 'Most Wanted: cuántas veces lo cazaron', s: (f) => f.czd || 0, v: (f, x) => (x.mw ? f.czd || 0 : NADA) },
   sob: { t: 'Sobrevivió', tit: 'Most Wanted: cuántas veces sobrevivió', s: (f) => f.sob || 0, v: (f, x) => (x.mw ? f.sob || 0 : NADA) },
-  mis: { t: 'Misiones', tit: 'Las misiones de la temporada: próximamente', s: () => 0, v: () => NADA },
+  mis: { t: 'Misiones', tit: 'Lo sumado con las misiones de la semana en la temporada', s: (f) => f.mis || 0, v: (f) => (f.mis ? num(f.mis) : NADA) },
   mwp: { t: 'Cobró', tit: 'Puntos cobrados en Most Wanted', s: (f) => f.pts || 0, v: (f) => (f.pts ? num(f.pts) : NADA) },
   mwc: { t: 'Cazó', s: (f) => f.caz || 0, v: (f) => f.caz || NADA },
   mwz: { t: 'Cazado', s: (f) => f.czd || 0, v: (f) => f.czd || NADA },
@@ -227,9 +228,12 @@ const SUBS = {
     vacio: () => <>Todavía nadie cazó a un buscado. Los de esta semana están en el <a className="te-link" href="#/">Inicio</a>.</>,
   },
   // lo que todavía no existe: arriba una línea (`corto`) y abajo qué va a ser, sin repetirlo
-  misiones: { et: 'Misiones', corto: 'Llegan pronto.', pronto: <>Cada semana, misiones que cualquiera puede cumplir jugando —jugar dos eventos, llegar a una final, ganar duelos, probar otro servidor— y que suman a tu Temporada. Están en camino.</>,
-    // los mismos ejemplos del texto, a la vista: la página era un renglón y un hueco
-    ejemplos: [['eventos', 'Jugá dos eventos'], ['novedades', 'Llegá a una final'], ['ok', 'Ganá duelos'], ['mundo', 'Probá otro servidor']] },
+  // 🎯 las misiones de la semana (05/10/2026): su propia vista (`Misiones`), como las divisiones
+  misiones: {
+    et: 'Misiones', propia: Misiones, filas: () => [], orden: () => 0, hay: (L) => !!L.d.mis,
+    siNo: <><b>Misiones</b>: tres por semana, las mismas para todos, que se cumplen jugando y suman a tu Temporada. Las primeras arrancan el lunes a las 11 AM.</>,
+    baj: <>Tres por semana, las mismas para todos: se cumplen <b>jugando</b> y cada una suma a tu <b>Temporada</b>. Las tres juntas dan un bono.</>,
+  },
   ligas: { et: 'Ligas', cuando: 'T2', corto: 'Llega con la Temporada 2.', pronto: <><b>El ranking de ligas</b> llega en la Temporada 2.</> },
   // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
   divisiones: {
@@ -840,7 +844,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
             ) : null}
             {fcs ? (
               <p className="rk-nota">En el <b>#</b>, <b>—</b> es <b>fuera de concurso</b>: todavía no es miembro de la Liga (tiene que estar en Discord Rap Español y verificarse). Sus puntos cuentan igual; el número es de los miembros.
-                {sub === 'temporada' ? (mwOn ? ' Misiones arranca pronto: hasta entonces su columna va en —.' : ' Most Wanted y Misiones arrancan pronto: hasta entonces sus columnas van en —.') : ''}</p>
+                {sub === 'temporada' ? (mwOn && liga.d.mis ? '' : mwOn ? ' Misiones arranca el lunes: hasta entonces su columna va en —.' : liga.d.mis ? ' Most Wanted arranca pronto: hasta entonces su columna va en —.' : ' Most Wanted y Misiones arrancan pronto: hasta entonces sus columnas van en —.') : ''}</p>
             ) : null}
           </>
         )}

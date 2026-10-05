@@ -283,6 +283,8 @@ def armar():
         # que sí tienen plata en el pool. No fallaba —un cero es un
         # número válido— y por eso la tabla se veía bien y mentía.
         'oro': p.get('oro') or 0,
+        # 🎯 lo que sumó con las misiones de la semana en la temporada (`bot/misiones.py`)
+        'mis': _mis_de(p.get('raw')),
         'seg': p.get('seg') or 0,
         'ter': p.get('ter') or 0,
         'sem': p.get('sem') or 0,
@@ -640,6 +642,8 @@ def armar():
         'rivales': _rivales(gente),
         # 🏟️ LAS DIVISIONES DE LA SEMANA (04/10/2026): las tablas de ahora y cómo cerró la anterior. Ver `_div()`
         'div': _div(),
+        # 🎯 LAS MISIONES DE LA SEMANA (05/10/2026): las tres, el progreso y lo sumado. Ver `_mis()`
+        'mis': _mis(),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -2467,6 +2471,36 @@ def _crews():
 def _IN():
     import insignias as _I
     return _I
+
+
+def _mis():
+    """🎯 Las misiones de la semana (`bot/misiones.py`), o `None` si todavía no hay. Nunca frena el lobby."""
+    try:
+        import misiones as _M
+        return _M.para_web(_M.leer())
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las misiones no entran al lobby: %s' % str(e)[:120])
+        return None
+
+
+_MIS = {}
+
+
+def _mis_de(raw):
+    """Lo que esa persona sumó con las misiones en la temporada, o 0 (la columna «Misiones» del ranking)."""
+    if '_' not in _MIS:
+        try:
+            import misiones as _M
+            _MIS['_'] = {_norm_mis(k): v for k, v in ((_M.leer() or {}).get('suma') or {}).items()}
+        except Exception:                                # noqa: BLE001
+            _MIS['_'] = {}
+    return _MIS['_'].get(_norm_mis(raw)) or 0
+
+
+def _norm_mis(s):
+    import unicodedata
+    s = unicodedata.normalize('NFKD', str(s or '').lower())
+    return ''.join(c for c in s if c.isalnum())
 
 
 def _div():

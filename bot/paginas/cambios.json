@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.38",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T03:00:00-04:00",
+   "titulo": "Las Misiones de la semana",
+   "items": [
+    "🎯 **Misiones**: cada lunes a las 11 AM salen tres, las mismas para todos —una fácil, una media y una difícil—, que se cumplen jugando. Cada una suma puntos a tu **Temporada**, y las tres juntas dan un bono. Están en el Ranking, en la pestaña «Misiones», y las primeras salen hoy."
+   ]
+  },
+  {
    "version": "2.37",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T02:19:00-04:00",
