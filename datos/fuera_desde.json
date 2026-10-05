@@ -2,7 +2,7 @@
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {},
  "pasaban": 366,
- "cuando": "2026-10-05T22:56:18Z",
+ "cuando": "2026-10-05T23:27:19Z",
  "borradas": [
   [
    "indigena",

@@ -34,7 +34,37 @@
      0,
      16
     ],
+    "ALESS 🇻🇪": [
+     1,
+     0,
+     16
+    ],
+    "ANTORCHA 🇨🇱": [
+     1,
+     0,
+     4
+    ],
+    "ARDEAN": [
+     1,
+     0,
+     16
+    ],
+    "Abyssus": [
+     1,
+     0,
+     4
+    ],
     "Agus": [
+     1,
+     0,
+     16
+    ],
+    "Ariaxer": [
+     1,
+     0,
+     16
+    ],
+    "BTRX": [
      1,
      0,
      16
@@ -54,7 +84,22 @@
      0,
      16
     ],
+    "Dyzz": [
+     1,
+     0,
+     16
+    ],
     "Efimero": [
+     1,
+     0,
+     8
+    ],
+    "ISAIAS": [
+     1,
+     0,
+     16
+    ],
+    "Iguana": [
      1,
      0,
      8
@@ -62,7 +107,7 @@
     "JJ": [
      1,
      0,
-     16
+     8
     ],
     "Keider": [
      1,
@@ -74,6 +119,11 @@
      0,
      8
     ],
+    "Makmah": [
+     1,
+     0,
+     16
+    ],
     "Malva": [
      1,
      0,
@@ -83,6 +133,21 @@
      1,
      0,
      8
+    ],
+    "Neo": [
+     1,
+     0,
+     8
+    ],
+    "Nhp": [
+     1,
+     0,
+     4
+    ],
+    "Nonne 🇵🇪": [
+     1,
+     0,
+     16
     ],
     "OG": [
      1,
@@ -97,7 +162,12 @@
     "Oasis": [
      1,
      0,
-     16
+     4
+    ],
+    "PRAISERIZA": [
+     1,
+     0,
+     1
     ],
     "Panchok": [
      1,
@@ -112,14 +182,39 @@
     "Polosport": [
      1,
      0,
-     16
+     1
     ],
     "Provenza": [
      1,
      0,
      16
     ],
+    "Reyes": [
+     1,
+     0,
+     8
+    ],
+    "Rosmel 🇻🇪": [
+     1,
+     0,
+     8
+    ],
     "Sami": [
+     1,
+     0,
+     8
+    ],
+    "Saz": [
+     1,
+     0,
+     8
+    ],
+    "Shisui": [
+     1,
+     0,
+     2
+    ],
+    "Six": [
      1,
      0,
      8
@@ -127,7 +222,7 @@
     "Snow": [
      1,
      0,
-     16
+     2
     ],
     "Soulb": [
      1,
@@ -138,6 +233,16 @@
      1,
      2,
      2
+    ],
+    "Zaik": [
+     1,
+     0,
+     16
+    ],
+    "Zignos": [
+     1,
+     0,
+     8
     ],
     "melomaniaco": [
      1,
@@ -152,27 +257,48 @@
    },
    "pts": {
     "1200": 300,
+    "ALESS 🇻🇪": 300,
+    "ANTORCHA 🇨🇱": 300,
+    "ARDEAN": 300,
+    "Abyssus": 300,
     "Agus": 300,
+    "Ariaxer": 300,
+    "BTRX": 300,
     "Benjixo": 300,
     "Colesito": 300,
     "Crk": 300,
+    "Dyzz": 300,
     "Efimero": 300,
+    "ISAIAS": 300,
+    "Iguana": 300,
     "JJ": 300,
     "Keider": 300,
     "Majiztral": 300,
+    "Makmah": 300,
     "Malva": 300,
     "NC": 300,
+    "Neo": 300,
+    "Nhp": 300,
+    "Nonne 🇵🇪": 300,
     "OG": 300,
     "ONZASS": 300,
     "Oasis": 300,
+    "PRAISERIZA": 1300,
     "Panchok": 2900,
     "Player": 300,
-    "Polosport": 300,
+    "Polosport": 1300,
     "Provenza": 300,
+    "Reyes": 300,
+    "Rosmel 🇻🇪": 300,
     "Sami": 300,
-    "Snow": 300,
+    "Saz": 300,
+    "Shisui": 1300,
+    "Six": 300,
+    "Snow": 1300,
     "Soulb": 300,
     "Vandu": 1300,
+    "Zaik": 300,
+    "Zignos": 300,
     "melomaniaco": 300,
     "yinn": 300
    }
@@ -180,27 +306,48 @@
  },
  "suma": {
   "1200": 300,
+  "ALESS 🇻🇪": 300,
+  "ANTORCHA 🇨🇱": 300,
+  "ARDEAN": 300,
+  "Abyssus": 300,
   "Agus": 300,
+  "Ariaxer": 300,
+  "BTRX": 300,
   "Benjixo": 300,
   "Colesito": 300,
   "Crk": 300,
+  "Dyzz": 300,
   "Efimero": 300,
+  "ISAIAS": 300,
+  "Iguana": 300,
   "JJ": 300,
   "Keider": 300,
   "Majiztral": 300,
+  "Makmah": 300,
   "Malva": 300,
   "NC": 300,
+  "Neo": 300,
+  "Nhp": 300,
+  "Nonne 🇵🇪": 300,
   "OG": 300,
   "ONZASS": 300,
   "Oasis": 300,
+  "PRAISERIZA": 1300,
   "Panchok": 2900,
   "Player": 300,
-  "Polosport": 300,
+  "Polosport": 1300,
   "Provenza": 300,
+  "Reyes": 300,
+  "Rosmel 🇻🇪": 300,
   "Sami": 300,
-  "Snow": 300,
+  "Saz": 300,
+  "Shisui": 1300,
+  "Six": 300,
+  "Snow": 1300,
   "Soulb": 300,
   "Vandu": 1300,
+  "Zaik": 300,
+  "Zignos": 300,
   "melomaniaco": 300,
   "yinn": 300
  },

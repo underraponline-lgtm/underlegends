@@ -65,6 +65,18 @@
 "prueba"
 ]
 },
+"ALESS": {
+"debut": [
+"2026-10-05T23:25:55Z",
+"prueba"
+]
+},
+"ANTORCHA": {
+"debut": [
+"2026-10-05T23:25:55Z",
+"prueba"
+]
+},
 "ANTORCHA OLÍMPICA": {
 "campeon": [
 "2026-09-27T17:50:55Z",
@@ -2083,6 +2095,12 @@
 "prueba"
 ]
 },
+"Nonne": {
+"debut": [
+"2026-10-05T23:25:55Z",
+"prueba"
+]
+},
 "Noone": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -2433,6 +2451,10 @@
 "podio": [
 "2026-09-29T15:27:05Z",
 "prueba"
+],
+"campeon": [
+"2026-10-05T23:25:55Z",
+"prueba"
 ]
 },
 "Pomberito": {
@@ -2631,6 +2653,12 @@
 "prueba"
 ]
 },
+"Rosmel": {
+"debut": [
+"2026-10-05T23:25:55Z",
+"prueba"
+]
+},
 "Rubik": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -2782,6 +2810,16 @@
 ],
 "ascenso": [
 "2026-10-05T21:55:01Z",
+"prueba"
+]
+},
+"Shisui": {
+"debut": [
+"2026-10-05T23:25:55Z",
+"prueba"
+],
+"podio": [
+"2026-10-05T23:25:55Z",
 "prueba"
 ]
 },

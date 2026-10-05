@@ -11708,5 +11708,304 @@
     1666
    ]
   ]
+ },
+ "405": {
+  "dia": "2026-10-05",
+  "escala": "16+",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556774086049533993"
+  ],
+  "n": 405,
+  "nombre": "DESGRACIAS EN TOKYO VOL 24",
+  "participantes": 32,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Reyes, Rosmel 🇻🇪",
+       "LOS LOCOS ESOS DE AHI 🇦🇷"
+      ],
+      "Reyes, Rosmel 🇻🇪",
+      "Sin integrantes: LOS LOCOS ESOS DE AHI 🇦🇷"
+     ],
+     [
+      [
+       "Snow, Shisui",
+       "BTRX, ISAIAS"
+      ],
+      "Snow, Shisui",
+      ""
+     ],
+     [
+      [
+       "Saz, JJ",
+       "ARDEAN, Nonne 🇵🇪"
+      ],
+      "Saz, JJ",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA, Polosport",
+       "ONZASS, 1200"
+      ],
+      "PRAISERIZA, Polosport",
+      ""
+     ],
+     [
+      [
+       "Neo, Iguana",
+       "Makmah, Vandu"
+      ],
+      "Neo, Iguana",
+      ""
+     ],
+     [
+      [
+       "Nhp, ANTORCHA 🇨🇱",
+       "Zaik 🇪🇸, Dyzz"
+      ],
+      "Nhp, ANTORCHA 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Zignos, Six",
+       "Ariaxer, ALESS 🇻🇪"
+      ],
+      "Zignos, Six",
+      ""
+     ],
+     [
+      [
+       "ABYSUSS🇮🇱 & PARK-JI SUNG🇮🇱",
+       "LOS DUEÑOS DE TU BURRA 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow, Shisui",
+       "Reyes, Rosmel 🇻🇪"
+      ],
+      "Snow, Shisui",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA, Polosport",
+       "Saz, JJ"
+      ],
+      "PRAISERIZA, Polosport",
+      ""
+     ],
+     [
+      [
+       "Oasis, Abyssus",
+       "Neo, Iguana"
+      ],
+      "Oasis, Abyssus",
+      ""
+     ],
+     [
+      [
+       "Nhp, ANTORCHA 🇨🇱",
+       "Zignos, Six"
+      ],
+      "Nhp, ANTORCHA 🇨🇱",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA, Polosport",
+       "Oasis, Abyssus"
+      ],
+      "PRAISERIZA, Polosport",
+      ""
+     ],
+     [
+      [
+       "Snow, Shisui",
+       "Nhp, ANTORCHA 🇨🇱"
+      ],
+      "Snow, Shisui",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA, Polosport",
+       "Shisui, Snow"
+      ],
+      "PRAISERIZA, Polosport",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sin": [
+   "LOS LOCOS ESOS DE AHI 🇦🇷"
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    5000
+   ],
+   [
+    "Polosport",
+    "Campeón",
+    5000
+   ],
+   [
+    "Shisui",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "ANTORCHA 🇨🇱",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Abyssus",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Nhp",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Iguana",
+    "Cuartos",
+    1250
+   ],
+   [
+    "JJ",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Neo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Reyes",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Rosmel 🇻🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Saz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Six",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "1200",
+    "Octavos",
+    625
+   ],
+   [
+    "ALESS 🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "ARDEAN",
+    "Octavos",
+    625
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    625
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    625
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    625
+   ],
+   [
+    "ISAIAS",
+    "Octavos",
+    625
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    625
+   ],
+   [
+    "Nonne 🇵🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    625
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    625
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }
