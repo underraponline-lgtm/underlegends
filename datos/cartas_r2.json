@@ -2691,7 +2691,9 @@
  },
  "fisics": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fisics/servidor.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fisics/sv-ddf.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fisics/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fisics/sv-ffs.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fisics/temporada.webp"
  },
  "flama": {
