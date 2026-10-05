@@ -1333,18 +1333,18 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791168497182,
-   "ed": 1791168777456,
-   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞BLITZ⌝ 🆚 ⌞ZA⌝",
+   "ed": 1791169868653,
+   "texto": "`[ CUARTOS ]`\n⌞NC🇦🇷⌝ 🆚 ⌞BLITZ🇲🇽⌝ 🆚 ⌞ZA🇺🇸⌝\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ CUARTOS ]`",
    "batallas": [
     [
      "CUARTOS",
      [
-      "NC",
-      "BLITZ",
-      "ZA"
+      "NC🇦🇷",
+      "BLITZ🇲🇽",
+      "ZA🇺🇸"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ZA🇺🇸",
+     "veredicto",
      []
     ]
    ]
