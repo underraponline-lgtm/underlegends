@@ -1,5 +1,8 @@
 {
  "cartas": {
+  ".SosaATR": {
+   "servidor": "a260549f72b3:9d97339447c1:980594"
+  },
   "1200": {
    "servidor": "2ad21b87c710:9d97339447c1:098793",
    "temporada": "6d18a17f5303:f5299dbdfa04"
@@ -748,8 +751,8 @@
    "servidor": "8011e2cd0e96:9d97339447c1:15af16"
   },
   "Ivaynex": {
-   "servidor": "4422fd503fe9:9d97339447c1:90ce53",
-   "temporada": "2e6cf14a77ca:f5299dbdfa04"
+   "servidor": "b9e956f25ef0:9d97339447c1:c024a8",
+   "temporada": "1b14991c4d8a:f5299dbdfa04"
   },
   "Ixed": {
    "servidor": "eee949a2735a:9d97339447c1:055f77"
@@ -2073,5 +2076,5 @@
    "servidor": "994982e6deaa:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-05T07:31:59+00:00"
+ "cuando": "2026-10-05T15:30:29+00:00"
 }
