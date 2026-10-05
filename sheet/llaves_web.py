@@ -127,7 +127,9 @@ def _numeros(nombre):
     """
     # ⚠️ NFKD, COMO `clave_nombre()`: la llave de SEVEN STREET escribe «⁷⁷⁷»
     # en superíndice y el anuncio «777». Sin normalizar, eran dos números
-    s = _MODALIDAD.sub(' ', unicodedata.normalize('NFKD', str(nombre or '')))
+    # ⚠️ con `_nfkd()` y no NFKD a secas: «1🆚1» es una modalidad y el 🆚 no se descompone solo, así que sus dígitos
+    # se sumaban a la edición acá y no en la página (`numerosEv()` de llave_vivo.js). Revisión del 05/10/2026
+    s = _MODALIDAD.sub(' ', _nfkd(nombre))
     return ''.join(m.group(1) for m in _TEMPORADA.finditer(s)), _digitos(_TEMPORADA.sub(' ', s))
 
 
@@ -204,9 +206,25 @@ def forma_llave(r):
     return 'equipos' if eq * 2 > len(lados) else ('solos' if not eq else '')
 
 
+def forma_del_anuncio(p):
+    """La forma de un anuncio entero: la de su modalidad, salvo que su NOMBRE
+    diga otra — entonces no se sabe.
+
+    🔴 FFA anunció «DESGRACIAS EN TOKYO VOL 24 2v2» con la modalidad «1v1»
+    (05/10/2026): copió el anuncio de la VOL 23 y cambió sólo el título. Su
+    llave era de equipos, y con la modalidad sola el «1v1» no se la llevaba:
+    el evento se jugaba en vivo sin llave. Un anuncio que se contradice no
+    dice nada. ⚠️ El nombre sólo ANULA la modalidad, nunca descarta solo: un
+    anuncio sin modalidad sigue sin forma, como antes.
+    """
+    m = forma_anuncio(p.get('mod') or p.get('modalidad'))
+    n = forma_anuncio(p.get('nombre'))
+    return '' if (m and n and m != n) else m
+
+
 def _formas_chocan(p, r):
     """¿Un 1vs1 contra una llave de equipos, o al revés?"""
-    a = forma_anuncio(p.get('mod') or p.get('modalidad'))
+    a = forma_del_anuncio(p)
     b = forma_llave(r)
     return bool(a and b and a != b)
 
@@ -981,7 +999,7 @@ def _self_check():
     q = [dict(a17)]
     cruzar(q, tk, todos=[dict(a16), dict(a17)])
     ok(q[0].get('llave') == 371, 'y en «Lo que pasó» con sólo el VOL 17 a la vista, igual')
-    q = [dict(a17, mod='2VS2')]
+    q = [dict(a17, mod='2VS2', nombre='DESGRACIAS EN TOKYO VOL 17 2VS2')]
     cruzar(q, {'371': tk['371']})
     ok(q[0].get('llave') is None, 'un anuncio de equipos no se lleva la llave huérfana de un 1vs1')
     q = [dict(a17)]
@@ -1009,6 +1027,13 @@ def _self_check():
                                     'MULTIVERSE (1-4)', '1️⃣6️⃣ | OCTAVOS: 4x4 3E Libre', '')]
        == ['solos', 'solos', 'solos', 'equipos', 'equipos', 'equipos', '', '', '', ''],
        'la forma del anuncio: «4x4» no es de equipos, Pandillas y MULTIVERSE no se saben')
+    # 🔴 el anuncio que se contradice (FFA, VOL 24, 05/10/2026): «2v2» en el nombre y «1v1» en la modalidad
+    lleq = {'rondas': [{'r': 'Octavos', 'b': [[['A, B', 'C, D'], '', ''], [['E, F', 'G, H'], '', '']]}]}
+    ok(not _formas_chocan({'nombre': 'DESGRACIAS EN TOKYO VOL 24 2v2', 'mod': '1v1'}, lleq)
+       and _formas_chocan({'nombre': 'DESGRACIAS EN TOKYO VOL 16', 'mod': '1VS1'}, lleq)
+       and _formas_chocan({'nombre': 'DESGRACIAS EN TOKYO VOL 16 1VS1', 'mod': '1VS1'}, lleq)
+       and forma_del_anuncio({'nombre': 'COPA 2v2', 'mod': ''}) == '',
+       'un anuncio que se contradice no tiene forma; el nombre sólo anula, nunca descarta solo')
 
     # 🌳 el árbol: por nombre aunque venga fuera de orden (#354), lo suelto
     # al hueco de al lado (el segundo que pasa de 3 bandas, #353), las filas

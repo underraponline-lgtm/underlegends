@@ -33,7 +33,7 @@ const SEMANA = [
   ['Clásico', 'Cuando dos se cruzan en un duelo en su tercer evento (o más), es un Clásico: la llave lo marca con cómo venían, y el que gana suma +10 % en ese evento. Cuentan los eventos, no las batallas. Las rivalidades no se borran con la temporada.'],
   ['Misiones', 'Tres por semana, las mismas para todos, que se renuevan el lunes a las 11 AM (hora del este): se cumplen jugando y cada una suma puntos a tu Temporada; las tres juntas, un bono. Están en el Ranking.'],
   ['Divisiones', 'Una tabla por semana con los puntos de Temporada de esa semana, en grupos de 30, de Sexta a Primera: los primeros de cada grupo suben de división y ganan Puntos de Tienda, y los últimos bajan.'],
-  ['Pase de rapero', 'Para los miembros de Discord Rap Español: 30 niveles por temporada. Cada Tarea de la semana que cumplís es un nivel —entrar 3 días seguidos, jugar un evento en DRA, completar tus misiones, felicitar a 3 personas y mirar una llave en vivo— y cada nivel paga Puntos de Tienda; algunos dan una insignia, un título o tu nombre en dorado.'],
+  ['Pase de rapero', 'Para los miembros de Discord Rap Español: 30 niveles por temporada. Cada Tarea de la semana que cumplís es un nivel —entrar 3 días seguidos, jugar un evento en DRA, completar tus misiones, felicitar a 3 personas y mirar una llave en vivo— y cada nivel paga Puntos de Tienda; el primero da tu tarjeta de Temporada, y otros una insignia, un título o tu nombre en dorado.'],
   ['Premios de la semana', 'Al cerrar cada semana: la figura (más puntos), la revelación (la figura de los que debutaron), el cazador del Most Wanted y el servidor que más gente movió. La figura y la revelación dan insignia.'],
   ['Insignias', 'Lo que te ganaste, para siempre: debut, podio, campeón, racha, duelos, Most Wanted… Están en tu perfil, con las que te faltan.'],
   ['Con tiempo', 'Los eventos anunciados con 12 horas o más de anticipación llevan 📣 en «Lo que viene» y en el calendario.'],
@@ -52,12 +52,12 @@ const PALABRAS = [
   ['Temporada', 'La T1 es la primera. El Competitivo se mide dentro de cada temporada y vuelve a cero en la siguiente.'],
   ['Tu servidor', 'El que representás en la Liga: lo elegís en Mi cuenta, entrando con Discord, y sale en tu perfil. Al arrancar la temporada se cambia libre; después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde jugás.'],
   ['Crew', 'Tu equipo. Suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.'],
-  ['Verificado', 'Tener el rol de Miembro en Discord Rap Español, con tu cuenta y tu país. Es lo que habilita la Competitiva y la de País; la Temporada y la Servidor salen al jugar estando en la Lista.'],
+  ['Verificado', 'Tener el rol de Miembro en Discord Rap Español, con tu cuenta y tu país. Sin verificarte no hay tarjetas: verificarte desbloquea tu Servidor, y con tu primera Tarea del Pase, tu Temporada.'],
   ['Bloqueada', 'La tarjeta que todavía no te ganaste: dice cuánto te falta.'],
   ['Felicitar', 'En Publicaciones, un toque en un logro —un campeón, un rango, el Most Wanted—, uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
 ];
 const PREGUNTAS = [
-  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. La Temporada y la Servidor salen solas cuando jugás estando en la Lista; para la Competitiva y la de País hace falta verificarte, y <code>/verificar</code> te dice qué te falta.</>],
+  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verificate —entrando con Discord en <a href="#/cuenta">Mi cuenta</a>— y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
   ['¿Cómo aparezco en el ranking?', <>Jugando un evento en un servidor de la Liga. Con una participación ya entrás al ranking de Temporada.</>],
   ['¿Cada cuánto se actualiza?', <>Sola, cada media hora. De 3 a 11 de la mañana (hora del este de EE. UU.) corre dos veces.</>],
   ['¿Por qué mi Competitiva está bloqueada?', <>El Competitivo pide diez eventos en la temporada. Hasta entonces la tarjeta sale bloqueada, con cuántos te faltan.</>],
@@ -119,7 +119,7 @@ export function Guia({ liga, dc }) {
           <ol className="gu-pasos">
             <li>
               <b>1</b><h3>Entrá con Discord</h3>
-              <p>Con tu cuenta de Discord: tu foto, tus avisos, votar, seguir y felicitar.</p>
+              <p>Con tu cuenta de Discord: te verificás, y además tu foto, tus avisos, votar, seguir y felicitar.</p>
               {dc ? <span className="gu-ok">✓ Ya entraste</span> : <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>}
             </li>
             <li>
@@ -129,7 +129,7 @@ export function Guia({ liga, dc }) {
             </li>
             <li>
               <b>3</b><h3>Tu tarjeta</h3>
-              <p>La de Temporada y la de Servidor salen solas al jugar. En Discord la pedís con <code>/card</code>.</p>
+              <p>Verificado, sale tu Servidor; con tu primera Tarea del Pase, tu Temporada. En Discord la pedís con <code>/card</code>.</p>
               <a className="btn borde2 chico" href={yo ? '#/r/' + encodeURIComponent(yo.k) : '#/tarjetas'}>{yo ? 'Ver mi perfil' : 'Ver las tarjetas'}</a>
             </li>
           </ol>

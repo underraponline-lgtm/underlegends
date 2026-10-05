@@ -464,17 +464,26 @@ Vive en **`comun/requisitos.py`**, con su self-check — **y esa es la fuente**.
 Correr `python comun/requisitos.py` imprime la tabla de arriba con los números
 del pool de hoy.
 
-🔑 **Y EL PORTÓN YA NO ES DE TODAS, desde el 29/09/2026.** Dlx: *«Dale»*. La
-**Temporada** y la **Servidor** son de todos los que jugaron y están en la
-Lista, verificados o no; la Competitiva, la de País y las que vengan piden
-el portón (`verificados.LIBRES` y `puede()`). Quien no lo pasa entra a KV
-con `nv` y su ID en **`dn:<id>`, no en `d:`**: `d:` abre todo lo de la
-cuenta —/foto, Mis redes, seguir, avisos— y eso sigue siendo de los
-verificados (Dlx, *«A»*, el mismo 29/09). `dn:` lo leen **sólo las cartas** (`claveCarta()` de
-`bot/worker.js`), y la Competitiva y la de País le salen con candado.
+🔑 **LAS TARJETAS SE CONSIGUEN EN DOS PASOS, desde el 05/10/2026 (2.41).**
+Dlx: *«C»*, *«1. dale, pero a mí no»*, *«4. nivel 1»*, *«B»*. **Sin
+verificarse, ninguna**: la **Servidor** sale al verificarse y la
+**Temporada** con el **nivel 1 del Pase de rapero** (quien no jugó la tiene
+con «—»); la Competitiva y la de País, verificado y con su requisito. Quien
+ya las tenía **las conserva hasta la T1** (`datos/conservan.json`) y Dlx
+(`verificados.DUENO`) queda fuera de todas las reglas. **Todo sale de
+`verificados.puede()`**, carta por carta. Quien conserva sin estar
+verificado entra a KV con `nv` y su ID en **`dn:<id>`, no en `d:`**: `d:`
+abre lo de la cuenta —/foto, Mis redes, seguir, avisos— y eso es de los
+verificados. `dn:` lo leen **sólo las cartas** (`claveCarta()`).
 
-⚠️ **Y el borrado de la semana va por carta** (`bot/fuera.py`): a quien
-sigue en la Lista nunca se le borran la Temporada ni la Servidor.
+⚠️ **Esto reemplaza a «las LIBRES» del 29/09** (la Temporada y la Servidor
+para todos los que jugaron, verificados o no), y la regla vieja quedó
+escrita en diez lugares —la Guía, Mi cuenta, /card, /verificar, /foto, la
+página de tarjetas y el perfil— hasta que se buscó a propósito. **Si se
+cambia quién tiene qué carta, se busca el texto viejo en todo el repo.**
+
+⚠️ **Y el borrado de la semana va por carta** (`bot/fuera.py`): sobra lo
+que `puede()` le niega a cada uno.
 
 ⚠️ **La columna «pasan, de los 138» se sacó a propósito.** Eran números de la
 pre-temporada, y desde el reset del 22/09/2026 el pool está en **0**: cualquier

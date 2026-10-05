@@ -183,6 +183,21 @@ const ok = (cond, que) => {
   q = A.planChat(muchas, hechoLl, 0, T, true, 'todo');
   ok(q.filter((x) => x.tipo === 'saltar').length === 12 - A.CHAT_JUNTAS && q[q.length - 1].m.length === A.CHAT_JUNTAS
     && /✅ 11$/.test(q[q.length - 1].texto), 'cada batalla: si se juntaron de más, van las últimas ' + A.CHAT_JUNTAS);
+  // 🛑 un mensaje que no salió frena el canal sólo si no se arregla solo (revisión del 05/10/2026)
+  ok(A.pausaChat(403) === 30 * 60000 && A.pausaChat(404) === 30 * 60000 && A.pausaChat(429, 30) === 30000
+    && A.pausaChat(429, 0.4) === 5000 && A.pausaChat(500) === 0 && A.pausaChat(0) === 0,
+  'sin permiso o sin canal, media hora; un 429, lo que pide Discord; un 500 o la red, al minuto siguiente');
+  // 🔴 LOS GRUPOS DE «PASAN N» (revisión del 05/10/2026): las octavas de a tres de FFA salían «pasaron » sin nadie
+  const GRUPO = '# COPA\n`[ OCTAVOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n⌞Dora 🇲🇽⌝ 🆚 ⌞Eli 🇦🇷⌝ 🆚 ⌞Fer 🇨🇱⌝\n'
+    + '`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Dora 🇲🇽⌝\n⌞Bea 🇨🇱⌝ 🆚 ⌞Fer 🇨🇱⌝\n';
+  const g1 = A.momentosChat(llaveDe(GRUPO), 'COPA', []);
+  const rg = g1.find((x) => x.m === 'rondas');
+  ok(rg && /\*\*Octavos\*\*: pasaron Ana 🇦🇷, Bea 🇨🇱, Dora 🇲🇽, Fer 🇨🇱/.test(rg.texto),
+    'normal: en los grupos donde pasan dos, nombra a los dos', rg && rg.texto);
+  const g2 = A.momentosChat(llaveDe(GRUPO), 'COPA', [], 'todo').filter((x) => x.cab);
+  ok(g2.length === 4 && /✅ \*\*Ana 🇦🇷\*\* pasa · Octavos · de un grupo con Bea 🇨🇱, Cami 🇻🇪/.test(g2[0].texto)
+    && new Set(g2.map((x) => x.m)).size === 4,
+  'cada batalla: uno por cada uno que pasa, y un grupo dice «de un grupo con» (no «contra»: pueden pasar dos)', g2.map((x) => x.texto).join(' | '));
   ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo' && A.ajusteValido('en_vivo_nivel', { FFA: 'todo' }).FFA === 'todo'
     && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard sólo acepta los tres');
   ok(JSON.stringify(A.favoritosDe(llaveDe(CUARTOS), [{ n: 'Ana', ovr: 80 }, { n: 'Dora', ovr: 90 },
@@ -716,6 +731,9 @@ const ok = (cond, que) => {
     const md = o.medidasVer();
     ok(md.kv['cfg:*'] > 0 && !Object.keys(md.kv).some((k) => /111/.test(k)),
       'lo medido cuenta las lecturas de KV por clave, sin el id de nadie (' + JSON.stringify(md.kv) + ')');
+    ok(A.claveMedida('redes:konan') === 'redes:*' && A.claveMedida('pnick:123:456') === 'pnick:*'
+      && A.claveMedida('web:lobby') === 'web:lobby' && A.claveMedida('meta') === 'meta' && A.claveMedida('cualquier-cosa') === 'otra',
+    'una clave de alguien, aunque sea nueva, sale sólo por su prefijo (revisión del 05/10: `redes:` y `pnick:` se colaban)');
     o.medidasGuardar(Date.now(), true);
     ok((o.leer('medidas') || {}).kv && o.medidasVer().kv['cfg:*'] === md.kv['cfg:*'],
       'guardar lo medido no lo cuenta dos veces');
@@ -784,6 +802,8 @@ const ok = (cond, que) => {
     ok(r.cuenta && o.paseDe(ANA).nivel === 4 && rb.cuenta && o.paseDe(BEA).nivel === 1
       && o.paseVivo({ quien: CAMI, llave: '9' }).cuenta === false,
     'con una llave en vivo, mirarla cuenta (Ana 4, Bea 1); a Cami, que no es miembro, no');
+    ok(o.paseVivo({ quien: BEA, llave: '77' }).cuenta === false && o.paseVivo({ quien: BEA, llave: 'ver:77' }).cuenta === false
+      && o.paseDe(BEA).nivel === 1, 'una llave que no está en vivo no cuenta, aunque se esté jugando otra (revisión del 05/10)');
     ciclo('v2', {});
     p = o.paseDe(ANA);
     ok(p.nivel === 4 && p.semana.tareas.find((t) => t.id === 'dra').hecha && tienda(ANA).length === 4,
@@ -798,6 +818,21 @@ const ok = (cond, que) => {
     const ps = o.pases().n;
     ok(ps.ana && ps.ana[0] === 4 && Object.keys(ps).length === 1,
       'para los perfiles, por clave: Ana nivel 4 (Bea no tiene perfil: no sale)');
+    // 🔥 UNA RACHA QUE SE UNE CON UN DÍA QUE LLEGÓ TARDE NO COBRA DE MÁS (revisión del 05/10/2026): 7 días cobrados, un
+    // hueco, 7 días cobrados; aparece el día del hueco y son 15 seguidos, que valen dos escalones: no se paga un tercero
+    const DANI = '444444444444444444';
+    const hace = (i) => A.diaET(Date.now() - i * 86400000);
+    for (const i of [14, 13, 12, 11, 10, 9, 8, 6, 5, 4, 3, 2, 1, 0]) sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(i));
+    sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 500, 1)", 'racha:' + DANI + ':' + hace(14) + ':7', DANI);
+    o.premiarRacha(DANI);
+    const antes = tienda(DANI).length;
+    sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(7));
+    o.premiarRacha(DANI);
+    ok(antes === 2 && tienda(DANI).length === 2 && o.rachaDe(DANI).racha.actual === 15,
+      'dos rachas de 7 que se unen en una de 15: dos premios, no tres', JSON.stringify(tienda(DANI)));
+    for (let i = 1; i <= 6; i++) sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(14 + i));
+    o.premiarRacha(DANI);
+    ok(tienda(DANI).length === 3, 'y si sigue hasta 21, el tercero sí');
   }
 }
 

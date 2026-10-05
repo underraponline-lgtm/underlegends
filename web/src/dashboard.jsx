@@ -6,8 +6,10 @@
 // entrar; con otra cuenta, «esta página es del dueño» y nada más. Los ajustes pasan por la misma puerta
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
 import { useEffect, useState } from 'react';
-import { limpio, mult, num, siglaDe } from './liga.js';
+import { hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques } from './piezas.jsx';
+// 🔒 su CSS viene con este pedazo y no con el paquete de todos (ver dashboard.css)
+import ESTILO from './dashboard.css?inline';
 
 const W = typeof window !== 'undefined' ? window : {};
 const entrar = () => { if (W.urlLogin) W.location.href = W.urlLogin('o'); };
@@ -89,6 +91,173 @@ function Sistema({ s, sesiones }) {
     ['Último error', s.ultimo_error ? s.ultimo_error.error + ' · ' + hace(s.ultimo_error.t) : 'ninguno'],
   ];
   return <dl className="db-sis">{filas.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>;
+}
+
+// ── ▶️ las corridas del ciclo, y correrlo ahora (05/10/2026) ───────────────────────────────────────────────────────
+// Esa tarde una corrida estuvo 15 minutos «en cola» en GitHub sin que nada lo dijera, y GitHub la canceló. Las cuatro
+// últimas las trae la puerta (`corridasCiclo()` en bot/avisos.js, con el token del Worker); correrlo es el mismo
+// `workflow_dispatch` que larga el cron cada media hora, como mucho una vez cada 10 minutos (`cicloAMano()`).
+const ESTADO_CORRIDA = { queued: '⏳ en cola', waiting: '⏳ esperando', pending: '⏳ en cola', requested: '⏳ pedida', in_progress: '▶️ corriendo' };
+const FIN_CORRIDA = { success: '✅ terminó bien', failure: '⚠️ falló', cancelled: '⛔ cancelada', timed_out: '⚠️ se pasó de tiempo', skipped: 'salteada' };
+function Corridas({ corridas, s, github }) {
+  const [msg, setMsg] = useState('');
+  const [ocup, setOcup] = useState(false);
+  const correr = async () => {
+    setOcup(true); setMsg('');
+    try {
+      const r = await fetch('/api/avisos/dueno/ciclo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) setMsg('✅ Pedido: GitHub lo larga en uno o dos minutos.');
+      else if (j.error === 'espera') setMsg('⏳ Ya se corrió hace poco: probá en ' + (j.minutos || 10) + ' min.');
+      else setMsg('⚠️ No se pudo: ' + (r.status === 401 ? 'la sesión venció, entrá de nuevo' : j.error || r.status) + '.');
+    } catch (e) { setMsg('⚠️ No se pudo: sin red.'); }
+    setOcup(false);
+  };
+  const m = s.ciclo_mano || {};
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>Las corridas del ciclo</h3>{m.t ? <span className="db-est">a mano: {hace(m.t)}</span> : null}</div>
+      {github ? (
+        <p className="db-vig"><b>⚠️ A GitHub Actions le pasa algo ahora</b><small>{github.incidente || 'Anda lento'}{github.desde ? ' · desde ' + hora(github.desde) : ''}. Las corridas pueden quedar en cola o cancelarse solas; vuelven cuando GitHub se arregla. La página en vivo, la campana y el bot no dependen de esto.</small></p>
+      ) : null}
+      {(corridas || []).length ? (
+        <ul className="db-corr">{corridas.map((c) => {
+          const t = c.empezo || c.creada;
+          const que = c.estado === 'completed' ? (FIN_CORRIDA[c.fin] || c.fin || 'terminó') : (ESTADO_CORRIDA[c.estado] || c.estado);
+          const dura = c.estado === 'completed' && c.empezo && c.toco ? Math.max(1, Math.round((Date.parse(c.toco) - Date.parse(c.empezo)) / 60000)) : 0;
+          return (
+            <li key={c.creada} className={c.fin && c.fin !== 'success' && c.fin !== 'skipped' ? 'ojo' : ''}>
+              <b>{que}</b>
+              <span>{t ? hora(new Date(t)) : ''}{dura ? ' · ' + dura + ' min' : c.estado !== 'completed' && t ? ' · ' + hace(t) : ''}</span>
+              {c.url ? <a href={c.url} target="_blank" rel="noopener noreferrer">ver ↗</a> : null}
+            </li>
+          );
+        })}</ul>
+      ) : <p className="db-tx">No pude preguntarle a GitHub ahora.</p>}
+      <div className="cu-btns">
+        <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para correrlo" onClick={correr}>▶️ Correr el ciclo ahora</DosToques>
+      </div>
+      <p className="db-tx">Es la misma corrida que sale sola cada media hora: lee Discord, procesa lo que terminó y actualiza la página. Como mucho una vez cada 10 minutos.</p>
+      {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
+// ── 💸 lo que gasta Cloudflare hoy (05/10/2026: «¿cuántas escrituras tiene el KV ahora?») ──────────────────────────
+// Lo mide el ciclo en cada corrida (`bot/cuotas.py`: KV, el objeto, el Worker y R2) y lo deja en `datos/estado_*.json`,
+// que el mapa en vivo ya lee de GitHub: no cuesta nada nuevo. ⚠️ El día de Cloudflare es UTC: se renueva a las 8 PM ET
+// (7 PM en invierno), y lo medido antes de esa hora es del día anterior.
+const RAW = 'https://raw.githubusercontent.com/underraponline-lgtm/underlegends/main/datos/';
+const TOPES = [
+  ['kv', 'write', 'KV · escrituras', 1000],
+  ['kv', 'read', 'KV · lecturas', 100000],
+  ['objeto', 'leidas', 'El objeto · filas leídas', 5000000],
+  ['objeto', 'escritas', 'El objeto · filas escritas', 100000],
+  ['objeto', 'pedidos', 'El objeto · pedidos', 100000],
+];
+const corta = (n) => (n >= 1e6 ? String(Math.round(n / 1e5) / 10).replace('.', ',') + ' M' : num(n));
+function useCuotas(activo) {
+  const [q, setQ] = useState(null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    let vivo = true;
+    Promise.all(['estado_dibujar.json', 'estado_escuchar.json'].map((f) =>
+      fetch(RAW + f, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
+      .then((xs) => {
+        const c = xs.filter((x) => x && x.cuotas).sort((a, b) => String(b.cuando).localeCompare(String(a.cuando)))[0];
+        if (vivo) setQ(c ? Object.assign({ cuando: c.cuando }, c.cuotas) : false);
+      });
+    return () => { vivo = false; };
+  }, [activo]);
+  return q;
+}
+// lo que está cerca del techo, para el panel del Inicio
+const cuotasEnRojo = (q) => (q ? TOPES.filter(([g, k, , tope]) => ((q[g] || {})[k] || 0) >= 0.9 * tope) : []);
+function Cuotas({ q }) {
+  if (q === null) return <p className="pronto-p">Midiendo…</p>;
+  if (!q) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
+  const ahora = new Date();
+  const renueva = new Date(Date.UTC(ahora.getUTCFullYear(), ahora.getUTCMonth(), ahora.getUTCDate() + 1));
+  const deAyer = String(q.cuando || '').slice(0, 10) !== ahora.toISOString().slice(0, 10);
+  const w = q.worker || {}, r2 = q.r2 || {};
+  return (
+    <div className="db-aj">
+      <div className={'db-q' + (deAyer ? ' viejo' : '')}>{TOPES.map(([g, k, t, tope]) => {
+        const v = (q[g] || {})[k];
+        if (v == null) return null;
+        const p = Math.min(100, (100 * v) / tope);
+        return (
+          <div key={t} className={'db-q-f' + (p >= 90 ? ' lleno' : p >= 70 ? ' ojo' : '')}>
+            <span>{t}</span>
+            <i><u style={{ width: p.toFixed(1) + '%' }} /></i>
+            <b>{p >= 90 ? '⚠️ ' : ''}{corta(v)} <small>de {corta(tope)}</small></b>
+          </div>
+        );
+      })}</div>
+      <dl className="db-sis">
+        {w.pedidos != null ? <div><dt>El Worker · 24 h</dt><dd>{num(w.pedidos)} pedidos · CPU p99 {String(w.p99_ms).replace('.', ',')} ms de 10</dd></div> : null}
+        {r2.objetos != null ? <div><dt>R2 · las tarjetas y las fotos</dt><dd>{num(r2.objetos)} archivos · {String(r2.gb).replace('.', ',')} GB de 10</dd></div> : null}
+      </dl>
+      <p className="db-tx">{deAyer ? 'Esto es de antes de las ' + hora(new Date(Date.UTC(ahora.getUTCFullYear(), ahora.getUTCMonth(), ahora.getUTCDate()))) + ', cuando se renovó: la próxima corrida lo mide de nuevo. ' : ''}Lo midió el ciclo {hace(q.cuando)}. Se renueva todos los días a las {hora(renueva)}; si KV se llena, la página y /card se quedan quietos hasta esa hora.</p>
+    </div>
+  );
+}
+
+// ── 🔴 lo que está en vivo ahora (05/10/2026: «estas llaves en vivo no se detectan») ───────────────────────────────
+// De cada llave que se está tocando: a qué anuncio se juntó y cómo —por el nombre, o por la serie cuando el número no
+// coincide (`LlaveVivo.deEvento()`)—, en qué ronda va y qué dijo el bot en el chat (`vivoDueno()` en bot/avisos.js).
+function EnVivo({ vivo, liga, aj, chat }) {
+  const dash = aj.en_vivo || {}, dashNivel = aj.en_vivo_nivel || {};
+  const c = chat || {}, admin = c.admin || {}, niveles = c.niveles || {};
+  const elBot = (sv) => {
+    if (dash[sv] === false || (!admin[sv] && dash[sv] !== true)) return 'apagado en ' + siglaDe(sv);
+    const n = niveles[dashNivel[sv]] ? dashNivel[sv] : niveles[(c.nivel || {})[sv]] ? c.nivel[sv] : 'normal';
+    return 'prendido · ' + ((niveles[n] || [n])[0]).toLowerCase();
+  };
+  return (
+    <ul className="db-vv">{vivo.map((v) => (
+      <li key={v.link || v.titulo + v.ed}>
+        <div className="db-l1">
+          <img alt="" src={liga.logo(v.sv)} width="20" height="20" />
+          <b>{limpio(v.anuncio || v.titulo || 'La llave')}</b>
+          <span className="db-chip">{v.terminada ? 'terminó' : v.ronda || 'en juego'}</span>
+          {!v.anuncio ? <span className="db-chip ojo">sin anuncio</span> : v.como === 'huerfana' ? <span className="db-chip ojo">por la serie</span> : null}
+        </div>
+        <small>
+          {v.como === 'huerfana' ? 'La llave dice «' + limpio(v.titulo) + '»: el número no coincide, se juntó por la serie. ' : ''}
+          {!v.anuncio ? 'No la pude juntar con ningún anuncio de las últimas 24 h: en la página sale con el título de la llave. ' : ''}
+          {v.gente ? v.gente + ' en la llave · ' : ''}tocada {hace(v.ed)}
+        </small>
+        <small>El bot: {elBot(v.sv)} · {v.chat && v.chat.mensajes ? v.chat.mensajes + ' mensaje(s), el último ' + hace(v.chat.t) : 'todavía no dijo nada'}</small>
+        {v.link ? <a className="db-link" href={v.link} target="_blank" rel="noopener noreferrer">Abrir la llave en Discord ↗</a> : null}
+      </li>
+    ))}</ul>
+  );
+}
+
+// ── 🎟️ el Pase de rapero, en números (`paseResumen()` en bot/avisos.js: nunca quién) ───────────────────────────────
+function PaseNumeros({ p, liga }) {
+  const dist = Object.entries(p.dist || {}).map(([n, k]) => [Number(n), k]).sort((a, b) => a[0] - b[0]);
+  const tope = Math.max(1, ...dist.map((x) => x[1]));
+  const hechas = (p.tareas || []).reduce((s, x) => s + x[1], 0);
+  const cajas = [
+    ['MIEMBROS DE DRA', p.miembros, 'los que pueden jugarlo'],
+    ['CON NIVEL', p.con_nivel, 'cumplieron al menos una Tarea'],
+    ['TAREAS ESTA SEMANA', hechas, p.hasta ? 'hasta ' + liga.dia(p.hasta) : 'entre todos'],
+    ['EL NIVEL MÁS ALTO', dist.length ? dist[dist.length - 1][0] : 0, 'de ' + p.niveles],
+  ];
+  return (
+    <>
+      <div className="act-4">{cajas.map(([t, v, d]) => <div key={t}><span>{t}</span><b>{num(v || 0)}</b><small>{d}</small></div>)}</div>
+      {dist.length ? (
+        <div className="db-aj"><div className="db-q">{dist.map(([n, k]) => (
+          <div key={n} className="db-q-f"><span>Nivel {n}</span><i><u style={{ width: ((100 * k) / tope).toFixed(1) + '%' }} /></i><b>{num(k)} <small>{k === 1 ? 'persona' : 'personas'}</small></b></div>
+        ))}</div>
+        {(p.tareas || []).length ? <ul className="db-corr">{p.tareas.map(([t, k]) => <li key={t}><b>{limpio(t)}</b><span>{num(k)} {k === 1 ? 'vez' : 'veces'} esta semana</span></li>)}</ul> : null}
+        </div>
+      ) : <p className="pronto-p">Todavía nadie cumplió una Tarea.</p>}
+    </>
+  );
 }
 
 // ── 🔔 la campana: pausarla (no sale ningún aviso) y reanudarla ──────────────────────────────────────────────────────
@@ -217,7 +386,7 @@ function AjVivo({ liga, aj, hacer, ocup, chat }) {
       <div className="db-aj-c"><h3>El bot en vivo</h3><span className={'db-est' + (svs.some(prendido) ? ' ok' : '')}>{svs.filter(prendido).length} prendido(s)</span></div>
       <p className="db-tx">Durante un evento cuenta en el chat cómo va, y cuánto habla se elige: <b>lo justo</b> (el arranque y el campeón), <b>normal</b> (además quién pasa cada ronda y la final, como mucho un mensaje cada 10 minutos) o <b>cada batalla</b> (quién gana cada una apenas se sabe, como mucho uno cada 2 minutos). No menciona a nadie. Lo prende el admin de cada servidor con /settings; desde acá lo prendés en el chat general, lo apagás o le cambiás cuánto habla aunque su admin haya elegido otra cosa.</p>
       {svs.length ? (
-        <div className="db-mult">{svs.map((sv) => (
+        <div className="db-mult db-mult-vivo">{svs.map((sv) => (
           <label key={sv} className="db-sv db-sv-vivo" title={estado(sv)}>
             <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
             <select value={dash[sv] === true ? 'si' : dash[sv] === false ? 'no' : ''} disabled={ocup}
@@ -305,8 +474,11 @@ export function Dashboard({ dc, liga }) {
     let vivo = true;
     pedirDueno().then((x) => { if (vivo) setSt(x); });
     return () => { vivo = false; };
-  }, [dc]);
+  // ⚠️ por el id y no por el objeto: `dc` es uno nuevo en cada evento de la página (`quienMira()`), y el Dashboard
+  // se volvía a pedir —con GitHub y lo en vivo— cada vez (revisión del 05/10/2026)
+  }, [dc && dc.id]);
   useEffect(() => { W.scrollTo && W.scrollTo(0, 0); }, []);
+  const cuotas = useCuotas(!!st.d);
   const onAj = (aj) => setSt((s) => (s.d ? { d: Object.assign({}, s.d, { ajustes: aj }) } : s));
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
@@ -320,6 +492,12 @@ export function Dashboard({ dc, liga }) {
     const u = d.uso || {};
     cuerpo = (
       <>
+        {(d.vivo || []).length ? (
+          <section className="act">
+            <div className="mis-cab"><span>EN VIVO AHORA</span><em>se actualiza al abrir el Dashboard</em></div>
+            <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />
+          </section>
+        ) : null}
         <section className="act">
           <div className="mis-cab"><span>CONFIGURACIÓN · SÓLO VOS</span></div>
           <Ajustes liga={liga} aj={d.ajustes || {}} onAj={onAj} chat={d.chat} />
@@ -334,12 +512,23 @@ export function Dashboard({ dc, liga }) {
             <Dias dias={d.dias} />
           </section>
         ) : null}
+        {d.pase ? (
+          <section className="act">
+            <div className="mis-cab"><span>EL PASE DE RAPERO</span>{d.pase.semana ? <em>la semana del {corto(d.pase.semana)}</em> : null}</div>
+            <PaseNumeros p={d.pase} liga={liga} />
+          </section>
+        ) : null}
         <section className="act">
           <div className="mis-cab"><span>LO QUE TE LLEGÓ</span></div>
           <Llego d={d} />
         </section>
         <section className="act">
+          <div className="mis-cab"><span>LO QUE GASTA CLOUDFLARE HOY</span><em>el plan gratis</em></div>
+          <Cuotas q={cuotas} />
+        </section>
+        <section className="act">
           <div className="mis-cab"><span>CÓMO ANDA TODO</span></div>
+          <Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} />
           <Sistema s={d.sistema || {}} sesiones={d.sesiones} />
           <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
@@ -350,6 +539,7 @@ export function Dashboard({ dc, liga }) {
   }
   return (
     <section className="sec db">
+      <style>{ESTILO}</style>
       <div className="sec-t"><h1>Dashboard</h1></div>
       {cuerpo}
     </section>
@@ -366,6 +556,7 @@ export function PanelDueno({ liga }) {
     pedirDueno().then((x) => { if (vivo) setSt(x); });
     return () => { vivo = false; };
   }, []);
+  const q = useCuotas(!!(st && st.d));
   if (!st || st.no) return null;
   const d = st.d;
   const s = (d && d.uso && d.uso.semana) || {};
@@ -374,9 +565,12 @@ export function PanelDueno({ liga }) {
   const marcas = d ? [aj.campana_pausada ? '⏸ La campana está en pausa' : '',
     avisoVigente(aj) ? '📣 Hay un aviso publicado' : '',
     aj.multiplicadores && aj.multiplicadores.semana === m.id ? '✍ El multiplicador va a mano' : '',
-    d.sistema && d.sistema.ok === false ? '⚠️ El vigía no contesta' : ''].filter(Boolean) : [];
+    d.sistema && d.sistema.ok === false ? '⚠️ El vigía no contesta' : '',
+    ...cuotasEnRojo(q).map(([, , t]) => '⚠️ ' + t + ' casi llenas hoy'),
+    (d.vivo || []).length ? '🔴 ' + d.vivo.length + ' llave(s) en vivo' : ''].filter(Boolean) : [];
   return (
     <section className="db-ini" aria-label="Tu Dashboard">
+      <style>{ESTILO}</style>
       <div className="db-ini-c">
         <b>TU DASHBOARD</b>
         <a className="btn borde2 chico" href="#/dashboard">Abrir</a>

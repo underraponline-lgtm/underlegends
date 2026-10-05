@@ -573,7 +573,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     if (!dc || !seJuega) return undefined;
     const t = setTimeout(() => vioVivo(String(n).slice(2)), 20000);
     return () => clearTimeout(t);
-  }, [dc, seJuega, n]);
+  }, [dc && dc.id, seJuega, n]);
   const [sigo, setSigo] = useState('');
   useEffect(() => { window.scrollTo(0, 0); setSigo(''); }, [n]);
   useEffect(() => {

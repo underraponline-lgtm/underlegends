@@ -2184,130 +2184,15 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .ti-dos .ti-lista,.app .ti-dos .ti-busca{max-width:none}
 }
 
-/* ── 🎟️ EL PASE DE RAPERO (`pase.jsx`, 05/10/2026): tu nivel a la derecha del título (abajo en el celular), las Tareas
-   de la semana y los niveles. Las Tareas usan la pieza de las misiones del Inicio (`.mis`); el dorado es el del color
-   de nombre que da el nivel 20 (`bot/pase.py`) ── */
-.pa-caja{display:grid;gap:10px;align-content:start;min-width:0;padding:16px;border:2px solid var(--esc-tinta);background:#0E0E10;color:#F6F6F6}
-.pa-caja>small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--esc-gris)}
-.pa-caja p{margin:0;font:600 14px/1.45 Archivo,sans-serif;color:var(--esc-gris)}
-.pa-caja p b{color:#F6F6F6}
-.pa-caja .pa-mal{color:#F0559A}
-.pa-caja .pa-ok{color:#F5C542}
-.pa-n{display:flex;align-items:baseline;gap:8px;font:900 56px/.9 Archivo,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums}
-.pa-n span{font:700 12px/1 "Space Mono",monospace;letter-spacing:.06em;color:var(--esc-gris)}
-.pa-barra{display:grid;grid-template-columns:repeat(30,minmax(0,1fr));gap:2px}
-.pa-barra i{display:block;height:12px;background:#2A2A2C}
-.pa-barra i.si{background:#E41373}
-.pa-datos{list-style:none;margin:0;padding:0;display:grid;gap:7px}
-.pa-datos li{display:flex;justify-content:space-between;gap:12px;padding-bottom:7px;border-bottom:1px solid #2A2A2C;
-  font:500 13.5px/1.3 Archivo,sans-serif;color:var(--esc-gris)}
-.pa-datos li:last-child{border-bottom:0;padding-bottom:0}
-.pa-datos b{color:#F6F6F6;font-weight:800;text-align:right}
-.pa-acc{display:flex;flex-wrap:wrap;gap:8px}
-.pa-tareas .pa-d{font:500 13px/1.35 Archivo,sans-serif;letter-spacing:0}
-.pa-nota{margin-top:10px}
-.pa-pista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.pa-pista li{display:grid;gap:5px;align-content:start;min-width:0;min-height:62px;padding:8px 7px;border:2px solid var(--linea);background:var(--fondo)}
-.pa-pista b{font:900 19px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums}
-.pa-pista small{font:700 9.5px/1.25 "Space Mono",monospace;color:var(--gris);overflow-wrap:anywhere}
-/* ⚠️ `pa-ya`, `pa-esp` y `pa-prox`, no `si`/`sig`: `.sig` es una clase global del prototipo (estilo.css) */
-.pa-pista .pa-que{color:var(--tinta);font-size:10px}
-.pa-pista li.pa-esp{border-color:#F5C542}
-.pa-pista li.pa-ya{background:var(--inv);border-color:var(--inv);color:var(--inv-tinta)}
-.pa-pista li.pa-ya small{color:var(--inv-tinta);opacity:.75}
-.pa-pista li.pa-ya .pa-que{opacity:1}
-.pa-pista li.pa-ya.pa-esp{box-shadow:inset 0 -4px 0 #F5C542}
-.pa-pista li.pa-prox{border-style:dashed;border-color:var(--magenta)}
+/* 🎟️ el Pase de rapero (pase.jsx): vive en pase.css, que carga su propio pedazo (05/10/2026) */
 /* las Misiones y el Pase del Inicio (medio.jsx), vivos desde el 05/10/2026: el pie de las misiones y el texto del Pase */
 .mis-pie{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-top:2px solid var(--linea)}
 .mis-pie small{font:700 11px/1.3 "Space Mono",monospace;color:var(--gris)}
 .mis-pie small b{color:var(--tinta)}
 .tu.pase .pase-p{margin:0}
 .tu.pase .btn{justify-self:start}
-@media (min-width: 900px){
-  .app .pa-caja{width:340px}
-  .app .pa-dos{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:start}
-  .app .pa-pista{grid-template-columns:repeat(6,minmax(0,1fr))}
-}
 
-/* 🔒 el Dashboard del dueño (dashboard.jsx, 04/10/2026) */
-.db .act{margin-top:18px}
-.db-dias{display:grid;gap:10px}
-.db-serie{display:grid;grid-template-columns:110px 1fr 70px;align-items:end;gap:10px}
-.db-t{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
-.db-serie em{font-style:normal;font-size:12px;text-align:right;opacity:.75}
-.db-barras{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;height:56px;align-items:end}
-.db-barras i{height:100%;display:flex;align-items:flex-end;background:rgba(127,127,127,.12)}
-.db-barras u{display:block;width:100%;min-height:2px}
-.db-fechas{display:flex;justify-content:space-between;font-size:11px;opacity:.6;padding-left:120px;padding-right:80px}
-.db-sis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 16px;margin:0}
-.db-sis div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid rgba(127,127,127,.2);padding:6px 0}
-.db-sis dt{opacity:.75}
-.db-sis dd{margin:0;font-weight:700;text-align:right}
-@media (max-width:560px){.db-serie{grid-template-columns:80px 1fr 56px}.db-fechas{padding-left:90px;padding-right:62px}}
-/* ⚙️ los ajustes del Dashboard (04/10/2026) */
-.db-ajs{display:grid;grid-template-columns:1fr;gap:0;border-top:2px solid var(--linea)}
-@media (min-width:700px){.db-ajs{grid-template-columns:1fr 1fr}}
-.db-aj{display:grid;gap:10px;align-content:start;padding:14px;border-bottom:1px solid var(--suave)}
-@media (min-width:700px){.db-aj:nth-child(odd){border-right:1px solid var(--suave)}}
-.db-aj-c{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.db-aj h3{margin:0;font:900 17px/1.15 Archivo,sans-serif;text-transform:uppercase}
-.db-est{font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
-.db-est.ok{color:var(--verde)}
-.db-est.ojo{color:var(--magenta-tx)}
-.db-tx{margin:0;font-size:13.5px;line-height:1.45;color:var(--gris);max-width:62ch}
-.db-mult{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
-.db-sv{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);background:var(--caja)}
-.db-sv span{display:inline-flex;align-items:center;gap:6px}
-.db-sv img{width:22px;height:22px;object-fit:contain}
-.db-sv b{font:800 13px/1 Archivo,sans-serif}
-/* 🎤 el bot en vivo: si habla y cuánto, uno debajo del otro (05/10/2026) */
-.db-sv.db-sv-vivo{flex-wrap:wrap}
-.db-sv.db-sv-vivo select{flex:1 1 100%;min-width:0}
-.db-aj select,.db-aj textarea{font:600 14px/1.3 Archivo,sans-serif;color:var(--tinta);background:var(--fondo);border:1.5px solid var(--linea);border-radius:0;padding:6px 8px}
-.db-aj select:focus-visible,.db-aj textarea:focus-visible{outline:2px solid var(--verde);outline-offset:1px}
-.db-aj textarea{width:100%;resize:vertical;min-height:58px}
-.db-form{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
-.db-form .cu-btns{grid-column:1 / -1}
-.db-campo{display:grid;gap:5px}
-.db-campo > span{font:700 10.5px/1.3 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris);text-transform:uppercase;display:flex;justify-content:space-between;gap:8px}
-.db-campo small{letter-spacing:0}
-@media (max-width:520px){.db-form{grid-template-columns:1fr}}
-.db-vig{display:grid;gap:6px;padding:10px 12px;border-left:4px solid var(--magenta);background:var(--caja)}
-.db-vig p{margin:0;font-weight:700}
-.db-vig small{color:var(--gris)}
-.db-vig .btn{justify-self:start}
-.db-msg{margin:0;padding:10px 14px;font-weight:700;border-top:1px solid var(--suave)}
-.db-llego{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));border-top:2px solid var(--linea)}
-.db-llego > div{padding:14px;display:grid;gap:10px;align-content:start}
-.db-llego h3{margin:0;font:900 15px/1.2 Archivo,sans-serif;text-transform:uppercase}
-.db-llego h3 small{font:700 11px/1 "Space Mono",monospace;color:var(--gris);text-transform:none;margin-left:6px}
-.db-llego ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.db-llego li{display:grid;gap:4px;padding-bottom:10px;border-bottom:1px solid var(--suave)}
-.db-llego li small{color:var(--gris)}
-.db-llego li p{margin:0;font-size:13.5px;white-space:pre-line;overflow-wrap:anywhere}
-.db-llego a{color:inherit}
-.db-link{font-size:13px;overflow-wrap:anywhere}
-.db-l1{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.db-chip{display:inline-block;padding:1px 6px;font:700 10.5px/1.5 "Space Mono",monospace;text-transform:uppercase;border:1.5px solid var(--suave)}
-.db-chip.ojo{border-color:var(--magenta);color:var(--magenta-tx)}
-.db .db-sis{padding:10px 14px 0}
-.db .db-dias{padding:14px}
-.db-atajos{list-style:none;margin:0;padding:10px 14px 14px;display:flex;flex-wrap:wrap;gap:8px 18px}
-.db-atajos a{color:inherit;font-weight:700}
-/* 🏠 el Dashboard en el Inicio, sólo para Dlx */
-.db-ini{margin:12px var(--gut) 0;border:2px solid var(--linea);display:grid}
-.db-ini-c{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 12px;background:var(--inv);color:var(--inv-tinta)}
-.db-ini-c b{font:700 12px/1 "Space Mono",monospace;letter-spacing:.12em}
-.db-ini-c .btn{color:var(--inv-tinta);border-color:var(--inv-tinta)}
-.db-ini-n{display:grid;grid-template-columns:repeat(4,1fr);margin:0}
-.db-ini-n div{padding:10px 12px;border-right:1px solid var(--suave)}
-.db-ini-n div:last-child{border-right:0}
-.db-ini-n dt{font:700 10px/1.3 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
-.db-ini-n dd{margin:2px 0 0;font:900 22px/1.1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.db-ini-m{margin:0;padding:8px 12px;border-top:1px solid var(--suave);font-size:13px;font-weight:700}
-@media (max-width:560px){.db-ini{margin:10px 16px 0}.db-ini-n{grid-template-columns:1fr 1fr}.db-ini-n div:nth-child(2){border-right:0}
-  .db-ini-n div:nth-child(-n+2){border-bottom:1px solid var(--suave)}}
+/* 🔒 el Dashboard del dueño: vive en dashboard.css, que carga su propio pedazo (05/10/2026) */
 /* 📣 el aviso de la página */
 .aviso-web{display:flex;align-items:flex-start;gap:12px;padding:10px var(--gut);background:var(--inv);color:var(--inv-tinta);border-left:6px solid var(--magenta)}
 .aviso-web p{margin:0;flex:1;font-weight:700;line-height:1.4;overflow-wrap:anywhere}

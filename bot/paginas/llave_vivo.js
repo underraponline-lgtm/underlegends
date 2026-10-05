@@ -1144,6 +1144,22 @@
   var TEMPORADA_EV = /(^|[^a-z0-9])(?:temporada|season|temp|t)\s*[.#:-]?\s*(\d+)/gi;
   var FORMA_EV = /(^|[^a-z0-9])(\d+)\s*(?:vs|v)\s*(\d+)(?![a-z0-9])/i;
   var HUERFANA_ANTES = 15 * 60000, HUERFANA_MS = 24 * 3600000, SERIE_MIN = 0.9;
+  // 🔑 MEMORIA PARA LAS FUNCIONES DE NOMBRES (05/10/2026): son puras —un texto entra, lo mismo sale— y la asignación
+  // las pide cientos de veces por dibujo. Medido con 70 anuncios y 10 llaves: 3.6 ms por asignación y 60 ms por
+  // dibujo de la página, que en un teléfono son varias veces más. ⚠️ Lo que devuelven se comparte: nadie lo modifica
+  function memo(f) {
+    var m = new Map();
+    return function (s) {
+      var k = typeof s === 'string' ? s : String(s || '');
+      var v = m.get(k);
+      if (v === undefined && !m.has(k)) {
+        if (m.size > 3000) m.clear();
+        v = f(k);
+        m.set(k, v);
+      }
+      return v;
+    };
+  }
   function sinVariantes(s) { return String(s || '').normalize('NFKD').replace(/🆚/g, 'vs').replace(/[︎️]/g, ''); }
   // `[temporada, edición]` de un nombre, en dígitos: `_numeros()` de sheet/llaves_web.py. Sin la modalidad («1v1»,
   // «2VS2», «1🆚1») ni la temporada del organizador («T2») mezcladas en la edición
@@ -1162,11 +1178,16 @@
     return String(s || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
       .filter(function (w) { return w.length > 2; });
   }
-  function instanteEv(x) { return typeof x === 'number' ? x : Date.parse(String(x || '').replace(/Z$/, '') + 'Z'); }
+  var instanteTexto = memo(function (s) { return Date.parse(s.replace(/Z$/, '') + 'Z'); });
+  function instanteEv(x) { return typeof x === 'number' ? x : instanteTexto(String(x || '')); }
   // cuándo se PUBLICÓ el anuncio: del id de su mensaje (los ids de Discord llevan la hora); si no, el arranque
+  var publicadoLink = memo(function (l) {
+    var m = /\/(\d{15,22})\/?$/.exec(l);
+    return m ? Math.floor(Number(m[1]) / 4194304) + 1420070400000 : NaN;
+  });
   function publicadoEv(e) {
-    var m = /\/(\d{15,22})\/?$/.exec(String(e.link || e.url || ''));
-    return m ? Math.floor(Number(m[1]) / 4194304) + 1420070400000 : instanteEv(e.cuando);
+    var p = publicadoLink(e.link || e.url || '');
+    return isNaN(p) ? instanteEv(e.cuando) : p;
   }
   // la serie del organizador: `_serie()` de sheet/llaves_web.py
   function serieEv(s) {
@@ -1200,6 +1221,17 @@
     if (!m) return '';
     return +m[2] === 1 && +m[3] === 1 ? 'solos' : +m[2] === +m[3] ? 'equipos' : '';
   }
+  numerosEv = memo(numerosEv);
+  palabrasEv = memo(palabrasEv);
+  serieEv = memo(serieEv);
+  formaAnuncioEv = memo(formaAnuncioEv);
+  // la de un anuncio entero: la de su modalidad, salvo que su NOMBRE diga otra —entonces no se sabe—. 🔴 FFA anunció
+  // «DESGRACIAS EN TOKYO VOL 24 2v2» con la modalidad «1v1» (copió la VOL 23) y su llave de equipos se jugaba en vivo
+  // sin dueño (05/10/2026). `forma_del_anuncio()` de sheet/llaves_web.py: el nombre sólo anula, nunca descarta solo
+  function formaDelAnuncioEv(e) {
+    var m = formaAnuncioEv(e.mod || e.modalidad), n = formaAnuncioEv(e.nombre);
+    return m && n && m !== n ? '' : m;
+  }
   // `forma_llave()`: un lado de equipo trae los nombres con coma («27, Piyi»)
   function formaLlaveEv(L) {
     var lados = [];
@@ -1210,19 +1242,43 @@
     var eq = lados.filter(function (x) { return x.indexOf(',') >= 0; }).length;
     return eq * 2 > lados.length ? 'equipos' : eq ? '' : 'solos';
   }
-  function porNombre(e, ls) {
-    var t = instanteEv(e.cuando), pe = palabrasEv(e.nombre);
+  // y la de cada llave, una vez por asignación (`asignar()` la prende): adentro de una asignación las llaves no cambian
+  var formaLlaveSin = formaLlaveEv, FORMAS = null;
+  formaLlaveEv = function (L) {
+    if (!FORMAS || !L || typeof L !== 'object') return formaLlaveSin(L);
+    var f = FORMAS.get(L);
+    if (f === undefined) { f = formaLlaveSin(L); FORMAS.set(L, f); }
+    return f;
+  };
+  // la misma llave: el mismo objeto, o el mismo id (la página y el Inicio nuevo pueden tener copias)
+  function mismaLlave(x, y) { return x === y || !!(x && y && x.id && x.id === y.id); }
+  // la llave por nombre de `e` entre `ls`: `porNombre()` y, con `todo`, `{L, n, cerca}` para el que asigna (ver `asignar()`)
+  function mejorPorNombre(e, ls) {
+    var t = instanteEv(e.cuando);
+    // ⚠️ un anuncio sin hora (`ini` vacío) se mide desde que se publicó: con NaN no se juntaba nunca (revisión del 05/10)
+    if (isNaN(t)) t = publicadoEv(e);
+    var pe = palabrasEv(e.nombre), fe = formaDelAnuncioEv(e);
     var comun = function (L) {
       return palabrasEv(L.nombre).filter(function (w) { return !RELLENO[w] && pe.indexOf(w) >= 0; }).length;
     };
-    var cand = (ls || []).filter(function (L) {
-      var p = L.pub || L.ed || 0;
-      return (!e.sv || !L.sv || e.sv === L.sv) && p >= t - 3600000 && p <= t + 5 * 3600000 &&
-        !chocanEv(e.nombre, L.nombre) &&
-        (comun(L) > 0 || !palabrasEv(L.nombre).length || L.nombre === 'La llave');
+    var cand = [];
+    (ls || []).forEach(function (L) {
+      var p = L.pub || L.ed || 0, fl = '', n = 0;
+      // 🔑 y la misma FORMA, como `_elegir()` del ciclo: un 1v1 no se lleva una llave de equipos (la VOL 16 de FFA tuvo
+      // un 2VS2 y un 1VS1 la misma noche, con el mismo título)
+      if ((!e.sv || !L.sv || e.sv === L.sv) && p >= t - 3600000 && p <= t + 5 * 3600000 &&
+          !chocanEv(e.nombre, L.nombre) && !(fe && (fl = formaLlaveEv(L)) && fe !== fl) &&
+          ((n = comun(L)) > 0 || !palabrasEv(L.nombre).length || L.nombre === 'La llave')) {
+        cand.push({ L: L, n: n, cerca: Math.abs(p - t) });
+      }
     });
-    cand.sort(function (a, b) { return comun(b) - comun(a); });
+    // la que más comparte y, entre las que comparten lo mismo, la más cerca en el tiempo (`_elegir()`)
+    cand.sort(function (a, b) { return b.n - a.n || a.cerca - b.cerca; });
     return cand[0] || null;
+  }
+  function porNombre(e, ls) {
+    var m = mejorPorNombre(e, ls);
+    return m ? m.L : null;
   }
   function mismoAnuncio(a, b) {
     if (a === b) return true;
@@ -1231,7 +1287,9 @@
   }
   // `ls`: entre cuáles se busca; `anuncios`: todos los que se conocen (para el siguiente de la serie y para saber qué
   // llave ya es de otro); `todas`: todas las llaves en vivo, para que con dos candidatas no elija
-  function huerfana(e, ls, anuncios, todas) {
+  // `libres`: las que ya se sabe que nadie se llevó por nombre (lo pasa `asignar()`); sin eso, se descarta la que algún
+  // otro anuncio PODRÍA llevarse
+  function huerfana(e, ls, anuncios, todas, libres) {
     var se = serieEv(e.nombre), pub = publicadoEv(e);
     if (!se || isNaN(pub)) return null;
     var pool = [];
@@ -1240,7 +1298,7 @@
     });
     // si alguna llave en vivo ya es suya por nombre, la huérfana no es de este anuncio
     if (porNombre(e, pool)) return null;
-    var fe = formaAnuncioEv(e.mod || e.modalidad);
+    var fe = formaDelAnuncioEv(e);
     var cand = pool.filter(function (L) {
       var p = L.pub || L.ed || 0, fl = formaLlaveEv(L);
       return !L.veredictos && (L.sv || '') === (e.sv || '') && p >= pub - HUERFANA_ANTES &&
@@ -1254,20 +1312,90 @@
       if (qp > pub && qp < hasta && mismaSerieEv(serieEv(q.nombre), se)) hasta = qp;
     });
     cand = cand.filter(function (L) {
-      return (L.pub || L.ed || 0) < hasta && !otros.some(function (q) { return porNombre(q, [L]); });
+      return (L.pub || L.ed || 0) < hasta && (libres || !otros.some(function (q) { return porNombre(q, [L]); }));
     });
     if (cand.length !== 1) return null;
     return (ls || []).filter(function (L) { return L === cand[0] || (L.id && L.id === cand[0].id); })[0] || null;
   }
-  /* la llave en vivo del anuncio `e` entre `ls`, o null. `ctx = {anuncios, todas}` prende la segunda pasada */
+  /* 🔑 LA ASIGNACIÓN ENTERA, COMO LA DEL CICLO (revisión del 05/10/2026). Preguntando anuncio por anuncio no alcanzaba:
+     con la VOL 22 a la 1 PM y la VOL 23 a las 5 PM —las dos de FFA— y la llave de la 23 titulada «VOL 22», la VOL 22
+     podía llevarse por nombre la llave de la 23, y la 23 se quedaba sin ninguna. `cruzar()` de sheet/llaves_web.py lo
+     hace en dos pasadas sobre TODOS los anuncios a la vez: primero cada uno elige por nombre —la que más comparte y la
+     más cerca en el tiempo—; después, los que quedaron sin llave toman una huérfana, sólo entre las que nadie se llevó.
+     Devuelve `{porAnuncio: [[anuncio, llave]], deLlave: {id de la llave: anuncio}}`. */
+  function asignar(anuncios, llaves) {
+    var antes = FORMAS;
+    FORMAS = new Map();
+    try {
+      var ans = (anuncios || []).slice().sort(function (a, b) { return publicadoEv(a) - publicadoEv(b); });
+      var asig = [], tomadas = [], conLlave = [];
+      // ⚠️ tomada por objeto o por id, no por `L.id` a secas: las llaves del vigía que arma el Inicio nuevo no traen id,
+      // y con `tomadas[undefined]` la primera que se llevaba un anuncio sacaba de la huérfana a todas las demás
+      var tomada = function (L) { return tomadas.some(function (x) { return mismaLlave(x, L); }); };
+      // 1 · por nombre: cada anuncio, su mejor
+      ans.forEach(function (a) {
+        var m = mejorPorNombre(a, llaves);
+        if (m) { asig.push([a, m.L]); tomadas.push(m.L); conLlave.push(a); }
+      });
+      // 2 · la huérfana, sólo entre las que nadie se llevó, y de a una (la que se lleva un anuncio ya no es de otro)
+      ans.forEach(function (a) {
+        if (conLlave.indexOf(a) >= 0) return;
+        var libres = (llaves || []).filter(function (L) { return L && !tomada(L); });
+        if (!libres.length) return;
+        var L = huerfana(a, libres, anuncios, libres, true);
+        if (L) { asig.push([a, L]); tomadas.push(L); }
+      });
+      var deLlave = {};
+      asig.forEach(function (x) { if (x[1] && x[1].id && !deLlave[x[1].id]) deLlave[x[1].id] = x[0]; });
+      return { porAnuncio: asig, deLlave: deLlave };
+    } finally {
+      FORMAS = antes;
+    }
+  }
+
+  /* la llave en vivo del anuncio `e` entre `ls`, o null. Con `ctx = {anuncios, todas}` es la de `asignar()` sobre
+     todos los anuncios que se conocen y todas las llaves en vivo (más las de `ls`), y sólo si es una de `ls`; sin
+     `ctx`, por nombre (como antes) */
+  // 🔑 LA ASIGNACIÓN DE TODOS CONTRA TODAS SIRVE PARA CADA ANUNCIO DE LA PÁGINA (05/10/2026): se calcula UNA vez por
+  // contexto —la página arma uno por payload y por vuelta del vigía— y por lo que se le sume: un anuncio que no estaba
+  // o llaves que no son de `todas`. Sin esto, 20 preguntas eran 20 asignaciones enteras (60 ms por dibujo, medido).
+  // ⚠️ El contexto no se modifica después de usarlo: para otro estado, otro objeto
+  var ASIGNADOS = typeof WeakMap !== 'undefined' ? new WeakMap() : null;
+  function claveLlave(L) { return L.id ? 'i' + L.id : 'n' + [L.sv || '', L.nombre || '', L.pub || '', L.ed || ''].join('|'); }
+  function claveAnuncio(e) {
+    return [e.link || e.url || '', e.sv || '', e.nombre || '', instanteEv(e.cuando), e.mod || e.modalidad || ''].join('|');
+  }
   function deEvento(e, ls, ctx) {
-    return porNombre(e, ls) || (ctx ? huerfana(e, ls, ctx.anuncios, ctx.todas) : null);
+    if (!ctx) return porNombre(e, ls);
+    var todas = (ctx.todas || []).filter(Boolean), extra = [];
+    (ls || []).forEach(function (L) {
+      if (L && !todas.some(function (x) { return mismaLlave(x, L); }) &&
+          !extra.some(function (x) { return mismaLlave(x, L); })) extra.push(L);
+    });
+    var ans = ctx.anuncios || [], mio = null;
+    for (var i = 0; i < ans.length && !mio; i++) if (mismoAnuncio(ans[i], e)) mio = ans[i];
+    var k = (mio ? '' : claveAnuncio(e)) + '#' + extra.map(claveLlave).join(',');
+    var cache = ASIGNADOS ? ASIGNADOS.get(ctx) : null;
+    if (ASIGNADOS && !cache) { cache = new Map(); ASIGNADOS.set(ctx, cache); }
+    var ent = cache ? cache.get(k) : null;
+    if (!ent) {
+      ent = { e: mio ? null : e, r: asignar(mio ? ans : ans.concat([e]), todas.concat(extra)) };
+      if (cache) { if (cache.size > 200) cache.clear(); cache.set(k, ent); }
+    }
+    var yo = mio || ent.e;
+    for (var j = 0; j < ent.r.porAnuncio.length; j++) {
+      if (ent.r.porAnuncio[j][0] !== yo) continue;
+      var L = ent.r.porAnuncio[j][1];
+      return (ls || []).filter(function (x) { return mismaLlave(x, L); })[0] || null;
+    }
+    return null;
   }
 
   var LlaveVivo = { plano: plano, traducir: traducir, norm: norm, nombresDeLinea: nombresDeLinea,
     llavesDeVeredictos: llavesDeVeredictos,
-    deEvento: deEvento, porNombre: porNombre, huerfana: huerfana, chocan: chocanEv, numeros: numerosEv,
-    serie: serieEv, formaAnuncio: formaAnuncioEv, formaLlave: formaLlaveEv, parecido: parecidoEv,
+    deEvento: deEvento, asignar: asignar, porNombre: porNombre, huerfana: huerfana, chocan: chocanEv, numeros: numerosEv,
+    serie: serieEv, formaAnuncio: formaAnuncioEv, formaDelAnuncio: formaDelAnuncioEv, formaLlave: formaLlaveEv,
+    parecido: parecidoEv,
     unirContinuadas: unirContinuadas, rondasDe: rondasDe, resolver: resolver, enlazar: enlazar,
     titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon,
     veredictos: veredictos, funaDe: funaDe, funaRondas: funaRondas, medallasDe: medallasDe };

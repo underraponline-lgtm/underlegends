@@ -5,7 +5,7 @@
 // ⚠️ LA ZONA ES LA MISMA CUENTA QUE `divisiones.zona()`: cinco, o un tercio si el grupo es chico. Si se cambia allá,
 // se cambia acá.
 import { useEffect, useState } from 'react';
-import { MESES, hora, limpio, num } from './liga.js';
+import { MESES, limpio, num } from './liga.js';
 import { Cara } from './piezas.jsx';
 
 const zonaDe = (n, z) => Math.min(z, Math.floor(n / 3));
@@ -25,7 +25,7 @@ function SemanaNueva({ liga, D, esYo }) {
   const ultYo = ult && yo ? (ult.sube.some(esYo) ? 'subiste' : ult.baja.some(esYo) ? 'bajaste' : '') : '';
   return (
     <div className="dvp">
-      <p className="dvp-cab"><b>Semana nueva</b> · todavía nadie jugó · cierra el lunes a las {hora(D.fin)}</p>
+      <p className="dvp-cab"><b>Semana nueva</b> · todavía nadie jugó · cierra {liga.dia(D.fin)}</p>
       <p className="dvp-yo">{mio != null ? 'Estás en ' + nombres[D.v[mio]] + ' División: jugá un evento y entrás en la tabla de esta semana.'
         : 'Jugás un evento y entrás en Sexta; los primeros de cada grupo suben.'}</p>
       {ult ? <p className="dvp-yo">{ultYo ? (ultYo === 'subiste' ? '⬆️ La semana pasada subiste de división. ' : '⬇️ La semana pasada bajaste de división. ') : ''}
@@ -79,7 +79,7 @@ export function DivisionPrevia({ liga }) {
         : 'Vas ' + (pos + 1) + 'º de ' + g.length + '.';
   return (
     <div className="dvp">
-      <p className="dvp-cab"><b>{nombres[di]} División</b>{(divs[di] || []).length > 1 ? ' · grupo ' + (gi + 1) : ''} · {g.length} jugando · cierra el lunes a las {hora(D.fin)}</p>
+      <p className="dvp-cab"><b>{nombres[di]} División</b>{(divs[di] || []).length > 1 ? ' · grupo ' + (gi + 1) : ''} · {g.length} jugando · cierra {liga.dia(D.fin)}</p>
       <p className="dvp-yo">{estado} Los {z} primeros de cada grupo suben y ganan <b>{num(D.p)} Puntos de Tienda</b>.</p>
       <ol className="dv-tabla dvp-tabla">
         {filas.map(([f, i]) => {
@@ -118,7 +118,7 @@ export function Divisiones({ liga }) {
   const ultima = nombres.length - 1;
   return (
     <div className="dv">
-      <p className="dv-cab">Semana del {fechaCorta(D.sem)} · cierra el lunes a las {hora(D.fin)}.
+      <p className="dv-cab">Semana del {fechaCorta(D.sem)} · cierra {liga.dia(D.fin)}.
         {' '}Los {D.z} primeros de cada grupo suben y ganan <b>{num(D.p)} Puntos de Tienda</b>; los {D.z} últimos bajan.
         {' '}En un grupo chico, un tercio.</p>
       {ult ? <p className="dv-ult">{ultYo === 'sube' ? '⬆️ La semana pasada subiste de división. ' : ultYo === 'baja' ? '⬇️ La semana pasada bajaste de división. ' : ''}
@@ -146,7 +146,9 @@ export function Divisiones({ liga }) {
                     <span className="dv-i">{i + 1}</span>
                     {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
                     {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-                    {sube ? <i className="dv-z">SUBE</i> : baja ? <i className="dv-z">BAJA</i> : null}
+                    {/* ⚠️ sin etiqueta va un hueco y no `null`: cada fila es su propia grilla de seis columnas, y sin él
+                        los puntos y los eventos de esa fila quedaban corridos (revisión del 05/10/2026) */}
+                    {sube ? <i className="dv-z">SUBE</i> : baja ? <i className="dv-z">BAJA</i> : <span />}
                     <span className="dv-ev">{ev} {ev === 1 ? 'evento' : 'eventos'}</span>
                     <b className="dv-p">{num(pts)}</b>
                   </li>

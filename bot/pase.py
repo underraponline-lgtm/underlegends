@@ -232,9 +232,23 @@ def traer_niveles():
 
 
 def guardar_niveles(d):
-    """A `datos/pase_niveles.json`, sólo si cambió (lo commitea el ciclo). Devuelve si escribió."""
+    """A `datos/pase_niveles.json`, sólo si cambió (lo commitea el ciclo). Devuelve si escribió.
+
+    🔴 CON DOS FRENOS (revisión del 05/10/2026), porque de este archivo sale quién tiene la Temporada: si el objeto
+    perdiera lo suyo y contestara vacío, guardarlo le sacaba la tarjeta a todos —y `bot/fuera.py` arrancaba el reloj
+    para borrarlas—. Sin temporada (el objeto no tiene el Pase cargado) no se guarda; y en la MISMA temporada los niveles
+    sólo crecen (`pase_hecho` no se borra salvo con /borrar-mis-datos), así que perder la mitad de la gente no es gente
+    que bajó: es el objeto. El cambio de temporada sí vacía: es la T1 arrancando de cero."""
     previo = leer_niveles()
+    if not d.get('temp'):
+        print('   ⚠️ el objeto no tiene el Pase cargado: no toco los niveles guardados')
+        return False
     if previo is not None and previo.get('temp') == d['temp'] and previo.get('niveles') == d['niveles']:
+        return False
+    if (previo is not None and previo.get('temp') == d['temp'] and len(previo.get('niveles') or {}) >= 6
+            and len(d['niveles']) < len(previo['niveles']) / 2):
+        print('   🔴 el objeto dice %d con nivel y había %d en la misma temporada: eso no es gente bajando, es el objeto. '
+              'No toco los niveles guardados' % (len(d['niveles']), len(previo['niveles'])))
         return False
     out = {'_leeme': 'Quién tiene nivel en el Pase de rapero de la temporada (Discord ID: nivel). Lo trae bot/pase.py '
                      'del objeto en cada corrida; lo lee verificados.puede(): la Temporada es el premio del nivel 1.',
@@ -265,6 +279,22 @@ def _self_check():
         print('   %s %s' % ('✅' if c else '🔴', q))
     ps = premios()
     ok(len(ps) == NIVELES and [p[0] for p in ps] == list(range(1, NIVELES + 1)), 'treinta niveles, uno por Tarea')
+    # 🔴 los frenos de los niveles (revisión del 05/10/2026): sobre una copia, nunca sobre el archivo de verdad
+    global NIVELES_ARCHIVO
+    import tempfile
+    _real = NIVELES_ARCHIVO
+    NIVELES_ARCHIVO = os.path.join(tempfile.mkdtemp(), 'niveles.json')
+    try:
+        diez = {str(10000 + i): 1 for i in range(10)}
+        ok(guardar_niveles({'temp': 'prueba', 'niveles': diez}) and leer_niveles()['niveles'] == diez, 'se guardan')
+        ok(not guardar_niveles({'temp': '', 'niveles': {}}) and leer_niveles()['niveles'] == diez,
+           'el objeto sin el Pase cargado no borra los niveles')
+        ok(not guardar_niveles({'temp': 'prueba', 'niveles': {'10000': 1}}) and leer_niveles()['niveles'] == diez,
+           'en la misma temporada, perder la mitad de la gente es el objeto: no se guarda')
+        ok(guardar_niveles({'temp': 't1', 'niveles': {}}) and leer_niveles() == {'temp': 't1', 'niveles': {}},
+           'la temporada nueva sí arranca de cero')
+    finally:
+        NIVELES_ARCHIVO = _real
     ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
     ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color'} and ps[0][2] == 'tarjeta',
        'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos y color')

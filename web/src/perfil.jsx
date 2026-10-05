@@ -270,6 +270,8 @@ function EnCadaRanking({ liga, f, p }) {
 }
 
 function LoQueFalta({ f, p }) {
+  const pa = usePaseDe(f.k);
+  const nivel = (pa && pa.nivel) || 0;
   const req = (p && p.req) || {};
   const cs = ['temporada', 'competitivo', 'pais'].filter((c) => req[c] || (f.c || []).includes(c));
   if (!cs.length) return null;
@@ -280,15 +282,17 @@ function LoQueFalta({ f, p }) {
         {cs.map((c) => {
           const tiene = (f.c || []).includes(c);
           const q = req[c] || [];
-          const cumple = q.every((x) => x[0] >= x[1]);
-          // 🔴 CUMPLIR NO ES TENERLA: sin verificarse no hay tarjeta (salvo la de Temporada, que no lo pide)
-          const listo = tiene || (cumple && (!f.nv || c === 'temporada'));
+          // 🔑 LAS REGLAS DEL 05/10/2026 (2.41): la Temporada sale con el nivel 1 del Pase, no con su requisito de antes,
+          // y sin verificarse no hay ninguna (lo de `Tuya` en tarjetas.jsx). Decía «salvo la de Temporada, que no lo pide»
+          const cumple = c === 'temporada' ? nivel >= 1 : q.every((x) => x[0] >= x[1]);
+          const listo = tiene || (cumple && !f.nv);
           const espera = !listo && cumple;
           return (
             <li key={c} className={listo ? 'ok' : ''}>
               <h3>{NOMBRE[c]}<span>{listo ? <><Ico n="ok" t={14} />Desbloqueada</> : espera ? 'Falta verificarse' : 'Bloqueada'}</span></h3>
               {espera ? <p>Cumple lo que pide; {NV[f.nv] || 'le falta verificarse'}.</p> : null}
-              {!listo && !espera ? (
+              {!listo && !espera && c === 'temporada' ? <p>Sale con su primera Tarea del Pase de rapero.</p> : null}
+              {!listo && !espera && c !== 'temporada' ? (
                 <ul className="tj-falta">
                   {q.map((x) => {
                     const pct = Math.max(0, Math.min(100, Math.round((100 * x[0]) / (x[1] || 1))));

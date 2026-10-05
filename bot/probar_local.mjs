@@ -1263,7 +1263,10 @@ const txt = (r) => r.json?.data?.content || '';
   const r = await pedir(ayuda('card'));
   const t = txt(r);
   ok('la ayuda de /card saca los requisitos de `meta`',
-     /1 participación/i.test(t) && /10 eventos/i.test(t), 'no están escritos en el Worker');
+     /10 eventos/i.test(t), 'no están escritos en el Worker');
+  // 🔑 la Temporada y la Servidor, con la regla de la 2.41 (05/10/2026): el meta todavía dice «1 participación»
+  ok('y la Temporada pide verificarse y el nivel 1 del Pase, no la regla del 29/09',
+     /Tarea del Pase/i.test(t) && /verificarte/i.test(t) && !/1 participación/i.test(t) && !/salen al jugar/i.test(t), t.slice(0, 300));
   ok('y si cambian en el Sheet, cambia sola', !/2 eventos/i.test(t),
      'el 19/09 la Temporada dejó de pedir 2 eventos: un texto a mano seguiría diciéndolo');
 }

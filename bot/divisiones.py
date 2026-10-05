@@ -201,7 +201,9 @@ def tienda(d, dids):
         if not did or not PREMIO:
             continue
         try:
-            ini = dt.datetime.fromisoformat(sem).replace(hour=12, tzinfo=dt.timezone.utc)
+            # ⚠️ 17 UTC Y NO 12 (revisión del 05/10/2026): la semana cambia el lunes a las 11 AM ET, que son las 15 UTC
+            # en verano y las 16 en invierno; las 12 caían en la semana ANTERIOR y el pago quedaba fechado una antes
+            ini = dt.datetime.fromisoformat(sem).replace(hour=17, tzinfo=dt.timezone.utc)
         except ValueError:
             continue
         fin = MU.periodo(ini)[2]

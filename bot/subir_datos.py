@@ -240,7 +240,17 @@ def cuentas_extra(gente, par_d, par_dn, cuentas=None, bajas=None):
     return out
 
 
-def limpiar_huerfanas(s, pares):
+def protegidas(claves, esperando):
+    """Las de `claves` que no se borran porque su reemplazo todavía no se escribió.
+
+    🔑 Una cuenta que pasa de `dn:<id>` a `d:<id>` —se verificó— tiene la nueva esperando (gente nueva espera a la hora
+    tranquila, `puede_esperar()`): borrar la vieja antes la dejaba sin /card hasta esa hora. Se cuida todo lo de ese
+    Discord ID (`d:`, `dn:`, `dx:`) mientras alguna de sus claves espere."""
+    ids = {k.split(':', 1)[1] for k in esperando if k.split(':', 1)[0] in ('d', 'dn', 'dx') and ':' in k}
+    return {k for k in claves if ':' in k and k.split(':', 1)[0] in ('d', 'dn', 'dx') and k.split(':', 1)[1] in ids}
+
+
+def limpiar_huerfanas(s, pares, esperando=()):
     """Borra de KV las `p:`/`d:` que esta corrida ya no escribe.
 
     🔴 SIN ESTO EL PORTON NO FILTRA NADA. `subir_datos` sólo escribía, y
@@ -274,8 +284,9 @@ def limpiar_huerfanas(s, pares):
         cursor = (r.get('result_info') or {}).get('cursor') or ''
         if not cursor:
             break
+    cuidar = protegidas(claves, esperando)
     sobran = [k for k in claves
-              if k.startswith(MIOS) and k not in quedan]
+              if k.startswith(MIOS) and k not in quedan and k not in cuidar]
     if not sobran:
         print('  ✅ no sobra ninguna clave vieja en KV')
         return 0
@@ -1319,6 +1330,7 @@ def main():
     # «no se cuales son todas», que es la verdad.
     solo_meta = '--solo-meta' in sys.argv
     todas_las_claves = None
+    esperando = []
     if solo_meta:
         pares = [p for p in pares if p['key'] == 'meta']
         print('ESCRIBIENDO SOLO `meta`\n')
@@ -1342,11 +1354,16 @@ def main():
         if not pares:
             print('  nada que escribir: KV ya dice lo mismo.\n')
             return
+        cambiaron = [p['key'] for p in pares]
         pares, diferidas = presupuesto(s, pares)
-        if diferidas:
-            # ⚠️ sin limpiar huérfanas: borrar también gasta escrituras, y
-            # lo que no entró hoy entra en las corridas siguientes
-            todas_las_claves = None
+        # 🔴 LAS HUÉRFANAS SE LIMPIAN IGUAL, aunque algo espere (revisión del 05/10/2026). Antes, con una sola clave
+        # diferida no se limpiaba nada —«borrar también gasta escrituras»—, y desde que lo que puede esperar espera a la
+        # hora tranquila eso era casi todas las corridas: quien perdía el Miembro de DRA seguía con /card medio día, y en
+        # la T1 las claves de los que conservaban sus cartas hasta ese día iban a seguir sirviéndolas. Borrar NO gasta
+        # escrituras: KV cuenta los borrados aparte (1.000 por día cada uno). Lo único que se cuida es la cuenta de
+        # quien tiene su clave nueva esperando (`protegidas()`)
+        escritas = {p['key'] for p in pares}
+        esperando = [k for k in cambiaron if k not in escritas]
 
     # La API acepta hasta 10.000 por tanda; se manda de a 1.000 para que un
     # error diga en qué tanda pasó.
@@ -1362,7 +1379,7 @@ def main():
     if todas_las_claves is None:
         print('  (no limpio huérfanas: esta corrida no vio todas las claves)')
     else:
-        limpiar_huerfanas(s, todas_las_claves)
+        limpiar_huerfanas(s, todas_las_claves, esperando)
 
     # ⚠️ Se comprueba LEYENDO, no confiando en el 200 de la escritura.
     #
@@ -1425,6 +1442,10 @@ def _self_check():
     ok(len(a) == 3 and a[0]['key'] == 'meta' and all(p['key'].startswith('p:j') for p in a[1:]),
        'con el cupo casi gastado: primero `meta` y los que jugaron, y nada de lo que espera')
     _ESPERAN.clear()
+    # 🔴 las huérfanas se limpian aunque algo espere, menos la cuenta de quien tiene su clave nueva esperando
+    cl = ['p:ana', 'dn:111', 'dx:111', 'd:222', 'dn:333', 'p:viejo']
+    ok(protegidas(cl, ['d:111', 'p:bea']) == {'dn:111', 'dx:111'} and protegidas(cl, []) == set(),
+       'se verificó y su `d:` espera: su `dn:` no se borra todavía; lo demás de la limpieza, sí')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

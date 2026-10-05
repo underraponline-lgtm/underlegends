@@ -23,11 +23,10 @@ padron y 7 con ID pero sin el rol. Los 23 necesitan **una accion
 humana** —registrarse o verificarse—, no un arreglo. Lo que esta
 herramienta evita es buscarlo a mano cada vez.
 
-🔑 Y DESDE EL 29/09/2026 «SIN VERIFICAR» NO ES «SIN CARTA». Dlx aprobó que
-la Temporada y la Servidor sean de todos los que juegan estando en la
-Lista (las LIBRES de `bot/verificados.py`). A quien no pasa el portón le
-faltan sólo la Competitiva y la de País, y si sus dos libres no están
-dibujadas o KV no lo indexa, eso SÍ es un fallo nuestro.
+🔑 Y DESDE EL 05/10/2026 LO DECIDE `verificados.puede()`, CARTA POR CARTA (2.41: sin verificarse, ninguna; la
+Servidor al verificarse; la Temporada con el nivel 1 del Pase; quien ya las tenía las conserva hasta la T1). Hasta la
+revisión de ese día esto aplicaba todavía la regla del 29/09 —«las LIBRES»—: a los que no se verificaron los contaba
+como «no se toca» y a los verificados sin el nivel 1 les daba la Temporada por buena.
 
 🔴 LA CLAVE DE KV ES `p:<nombre normalizado>`, NO EL DISCORD ID. Buscar
 por ID devuelve 404 para todo el mundo y parece que el bot no tiene a
@@ -82,31 +81,33 @@ def estado(nombres=None, con_kv=True):
             continue
         did = str(p.get('discord_id') or '')
         pasa = VER.pasa(p, ids)
-        # 🔑 LAS LIBRES: sin el portón igual le tocan la Temporada y la Servidor
-        libres = not pasa and VER.puede(p, ids, 'temporada')
-        if not pasa and not libres:
+        # 🔑 CARTA POR CARTA, con `puede()`: las que le tocan hoy
+        cartas = [c for c in ('temporada', 'servidor', 'competitivo', 'pais') if VER.puede(p, ids, c)]
+        try:
+            import construir_padron as _PAD
+            fuera = (did and did in VER._olvidados()) or _PAD.norm(n) in VER._intocables()
+        except Exception:                                # noqa: BLE001
+            fuera = False
+        if fuera:
             out.append((n, 'no se toca',
                         'está en la Lista, pero es de los que no se tocan '
                         '(`no_verificar`, trolls) o pidió salir'))
+        elif not cartas:
+            out.append((n, 'sin Discord ID' if not did else 'sin verificar',
+                        ('no tiene Discord ID en el padrón' if not did else 'ID %s, sin el rol en DRA' % did)
+                        + ': sin verificarse no tiene tarjetas (se verifica en la página, entrando con Discord)'))
         elif not inv.get(k):
             out.append((n, 'sin dibujar',
-                        ('pasa el portón' if pasa else 'le tocan la Temporada y la '
-                         'Servidor') + ' y no hay PNG en R2 — esto SÍ es un '
-                        'fallo del ciclo'))
+                        'le tocan %s y no hay nada en R2 — esto SÍ es un fallo del ciclo' % ', '.join(cartas)))
         elif en_kv is not None and k not in en_kv:
             out.append((n, 'sin indexar',
                         'tiene cartas en R2 y KV no la indexa — esto SÍ es '
                         'un fallo'))
-        elif pasa:
-            out.append((n, 'ok', ', '.join(sorted(inv.get(k) or {}))[:60]))
-        elif not did:
-            out.append((n, 'sin Discord ID',
-                        'tiene la Temporada y la Servidor (`/card nombre:`); para '
-                        'las otras dos se registra y se verifica'))
+        elif not pasa:
+            out.append((n, 'conserva', 'sin verificar, conserva %s hasta la T1' % ', '.join(cartas)))
         else:
-            out.append((n, 'sin verificar',
-                        'ID %s: tiene la Temporada y la Servidor; para las otras '
-                        'dos le falta el rol en DRA' % did))
+            out.append((n, 'ok', ', '.join(sorted(inv.get(k) or {}))[:60]
+                        + ('' if 'temporada' in cartas else ' · sin la Temporada: le falta el nivel 1 del Pase')))
     return out
 
 
@@ -158,13 +159,13 @@ def _self_check():
     r = dict((n, e) for n, e, _d in estado(con_kv=False))
     ok(bool(r), 'contesta por los que compiten (%d)' % len(r))
     razones = set(r.values())
-    ok(razones <= {'ok', 'sin padrón', 'no se toca', 'sin Discord ID', 'sin verificar',
+    ok(razones <= {'ok', 'sin padrón', 'no se toca', 'sin Discord ID', 'sin verificar', 'conserva',
                    'sin dibujar', 'sin indexar'},
        'todas las razones son conocidas  %s' % sorted(razones))
     # 🔴 UN NOMBRE INVENTADO NO PUEDE SALIR «ok»
     r2 = estado(['__NO_EXISTE__'], con_kv=False)
     ok(r2 and r2[0][1] == 'sin padrón', 'un nombre inventado cae en `sin padrón`')
-    ok(not (set(NUESTRO) & {'sin Discord ID', 'sin verificar', 'no se toca'}),
+    ok(not (set(NUESTRO) & {'sin Discord ID', 'sin verificar', 'no se toca', 'conserva'}),
        'registrarse y verificarse NO cuentan como fallo nuestro')
     # 🔑 DESDE EL 05/10/2026 (Dlx: «sin verificarse, ninguna tarjeta»): quien no pasa el portón y no conserva las
     # suyas hasta la T1 no tiene ninguna (ver `verificados.puede()`)

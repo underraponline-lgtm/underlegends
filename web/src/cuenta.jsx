@@ -196,7 +196,7 @@ function Caja({ t, children, d }) {
 function FotoCaja({ liga, dc }) {
   const est = useCuentaEst();
   // si la ocultó, se avisa acá (ver abajo): por eso se pregunta también desde esta parte
-  useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc]);
+  useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc && dc.id]);
   const F = est.FOTO;
   const yo = liga.yo;
   const T = (F && F.temporada) || liga.temp || 'temporada';
@@ -306,7 +306,7 @@ function RedesCaja({ dc }) {
 
 function ServidorCaja({ liga, dc }) {
   const est = useCuentaEst();
-  useEffect(() => { if (dc && W.pedirMiServidor) W.pedirMiServidor(); }, [dc]);
+  useEffect(() => { if (dc && W.pedirMiServidor) W.pedirMiServidor(); }, [dc && dc.id]);
   const svs = Object.values(liga.svs || {});
   if (!dc || !svs.length) return null;
   const M = est.MISV || {};
@@ -346,7 +346,7 @@ function ServidorCaja({ liga, dc }) {
 // vigía (`cuentaMiFoto()` de app.js) y lo aplica el ciclo en su próxima vuelta
 function OcultarFoto({ dc }) {
   const est = useCuentaEst();
-  useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc]);
+  useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc && dc.id]);
   const d = 'Si la ocultás, la página y tus tarjetas —también las de Discord— te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
   if (!dc) {
     return (
@@ -413,7 +413,7 @@ function Parte({ id, liga, dc, tema, onTema }) {
           </Caja>
         ) : null}
         {dc && !yo && !dc.rapero ? (
-          <Caja t="Tu tarjeta" d="Para tener tus tarjetas hay que jugar en la Liga y estar verificado en DRA. Te verificás acá, en un toque.">
+          <Caja t="Tu tarjeta" d="Son dos pasos: verificate en DRA —acá, en un toque— y se abre tu Servidor; con tu primera Tarea del Pase de rapero, tu Temporada.">
             <div className="cu-btns"><a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>
               <a className="btn borde2 chico" href="#/guia">Cómo conseguir tu tarjeta</a></div>
           </Caja>
@@ -568,7 +568,7 @@ function Verificar({ liga, dc }) {
   }
   if (!v || (v.cargando && !v.enDra)) {
     return (
-      <Caja t="Qué es estar verificado" d="Estar en Discord Rap Español, con tu país y el rol de Miembro. Con eso se abren tu tarjeta Competitiva y la de País —cada una con su requisito— y tu perfil, con tu foto y tus redes. La Temporada y la Servidor salen con sólo jugar.">
+      <Caja t="Qué es estar verificado" d="Estar en Discord Rap Español, con tu país y el rol de Miembro. Sin eso no hay tarjetas: verificado se abre tu Servidor, con tu primera Tarea del Pase tu Temporada, y la Competitiva y la de País con su requisito. Y tu perfil, con tu foto y tus redes.">
         <button type="button" className="btn verde" disabled={!!(v && v.cargando)} onClick={() => (W.DC_TOKEN ? revisar() : irADiscord())}>
           {v && v.cargando ? 'Mirando Discord Rap Español…' : 'Verificarme con Discord'}</button>
         <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por vos, que es lo que deja al bot meterte en Discord Rap Español si todavía no estás. Se usa una vez y no se guarda.</small>

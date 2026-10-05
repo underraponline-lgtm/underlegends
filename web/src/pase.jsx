@@ -8,6 +8,8 @@
 import { num } from './liga.js';
 import { accion } from './piezas.jsx';
 import { premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
+// 🎟️ su CSS viene con este pedazo y no con el paquete de todos (ver pase.css)
+import ESTILO from './pase.css?inline';
 
 function Caja({ liga, dc, P, cfg }) {
   const dra = (liga.svs && liga.svs.DRA) || {};
@@ -127,12 +129,13 @@ export function Pase({ liga, dc }) {
   const ult = (cfg.premios || [])[(cfg.niveles || 30) - 1];
   return (
     <>
+      <style>{ESTILO}</style>
       <div className="escena pa-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#F5C542' }}>
         <section className="rk-cab ti-cab pa-hero">
           <div className="rk-tx">
             <span className="tag">PASE DE RAPERO · {liga.temp}{prueba ? ' · SEMANA DE PRUEBA' : ''}</span>
             <h1 className="hero-ev">Pase de rapero</h1>
-            <p className="hero-p">{cfg.niveles || 30} niveles por temporada, para los miembros de Discord Rap Español. Cada Tarea que cumplís es un nivel, y cada nivel paga Puntos de Tienda; algunos dan una insignia, un título o tu nombre en dorado.</p>
+            <p className="hero-p">{cfg.niveles || 30} niveles por temporada, para los miembros de Discord Rap Español. Cada Tarea que cumplís es un nivel, y cada nivel paga Puntos de Tienda; el primero te da tu tarjeta de Temporada, y otros una insignia, un título o tu nombre en dorado.</p>
             <p className="rk-meta">{prueba ? 'Esta semana es de prueba: el lunes 12 de octubre arranca la T1 y el Pase vuelve a cero.'
               : 'Con la temporada nueva, el Pase vuelve a cero.'}{ult && ult[2] === 'insignia' ? ' La insignia del último nivel queda para siempre.' : ''}</p>
           </div>

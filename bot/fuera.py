@@ -93,26 +93,34 @@ def sobran(cartas, puede):
     return sorted(c for c in cartas if not puede(carta_de(c)))
 
 
-def estado(claves, pasa, hoy, previo):
-    """`(desde, vencidas)`: el reloj de cada uno y a quién ya le toca.
+def estado(sobran_por, hoy, previo):
+    """`(desde, vencidas)`: el reloj de CADA CARTA que le sobra a alguien, y a cuáles ya les toca.
 
-    `claves` son las carpetas de R2 con tarjetas, `pasa(clave)` el portón y
-    `previo` el `{clave: 'AAAA-MM-DD'}` de la corrida anterior. Quien pasa
-    sale del reloj; quien no pasa conserva su fecha o arranca hoy.
+    `sobran_por` es `{clave: [cartas que le sobran hoy]}` y `previo` lo de la corrida anterior, `{clave: {carta:
+    'AAAA-MM-DD'}}` —o, del formato de antes, `{clave: 'AAAA-MM-DD'}`, que vale para todas las suyas—. La que deja de
+    sobrar sale del reloj; la que sobra por primera vez arranca hoy. `vencidas` es `[(clave, carta)]`.
+
+    🔴 POR CARTA Y NO POR PERSONA (revisión del 05/10/2026): con un reloj por persona, al vencer se borraba todo lo
+    que le sobrara ESE día, también lo que había empezado a sobrar tres días antes —quien conserva sus cartas hasta la
+    T1 y tenía la Competitiva corriendo desde el 8 perdía la Temporada y la Servidor el 15, no el 19—.
     """
-    desde = {}
-    for k in claves:
-        if pasa(k):
+    desde, vencidas = {}, []
+    for k, cartas in sobran_por.items():
+        if not cartas:
             continue
-        d = previo.get(k)
-        try:
-            datetime.date.fromisoformat(d)
-        except (TypeError, ValueError):
-            d = hoy.isoformat()
-        desde[k] = d
-    vencidas = sorted(k for k, d in desde.items()
-                      if (hoy - datetime.date.fromisoformat(d)).days >= DIAS)
-    return desde, vencidas
+        ant = previo.get(k)
+        fila = {}
+        for c in cartas:
+            d = ant.get(c) if isinstance(ant, dict) else ant
+            try:
+                datetime.date.fromisoformat(d)
+            except (TypeError, ValueError):
+                d = hoy.isoformat()
+            fila[c] = d
+            if (hoy - datetime.date.fromisoformat(d)).days >= DIAS:
+                vencidas.append((k, c))
+        desde[k] = fila
+    return desde, sorted(vencidas)
 
 
 def leer():
@@ -150,10 +158,9 @@ def main():
         return 0
     idx = PAD.por_nombre()
     pasa = lambda k: VERIF.pasa(idx.get(k, {}), verif)          # noqa: E731
-    # 🔑 POR CARTA, con `puede()`: lo que le sobra a cada uno. El reloj corre mientras le sobre algo.
+    # 🔑 POR CARTA, con `puede()`: lo que le sobra a cada uno, y cada carta con su reloj (ver `estado()`)
     sobran_de = lambda k: sobran(inv.get(k) or {},              # noqa: E731
                                  lambda c: VERIF.puede(idx.get(k, {}), verif, c))
-    en_regla = lambda k: not sobran_de(k)                       # noqa: E731
     # ⚠️ EL FRENO SIGUE MIRANDO EL PORTÓN: si pasan la mitad que ayer, no se fue
     # media Liga, se cayó Discord.
     pasan = sum(1 for k in inv if pasa(k))
@@ -164,7 +171,7 @@ def main():
               % (pasan, ant['pasaban']))
         return 0
     hoy = hoy_et()
-    desde, vencidas = estado(inv, en_regla, hoy, ant.get('desde') or {})
+    desde, vencidas = estado({k: sobran_de(k) for k in inv}, hoy, ant.get('desde') or {})
     nuevos = sorted(set(desde) - set(ant.get('desde') or {}))
     volvieron = sorted(set(ant.get('desde') or {}) - set(desde))
     print('   con tarjetas en R2: %d · pasan el portón: %d · con el reloj andando: %d'
@@ -174,17 +181,19 @@ def main():
     if volvieron:
         print('   %d volvieron a pasar (o ya no tienen tarjetas): salen del reloj' % len(volvieron))
     if desde and not vencidas:
-        prox = min(datetime.date.fromisoformat(d) for d in desde.values()) + datetime.timedelta(DIAS)
+        prox = min(datetime.date.fromisoformat(d) for f in desde.values() for d in f.values()) + datetime.timedelta(DIAS)
         print('   el primer vencimiento es el %s' % prox.strftime('%d/%m/%Y'))
     borradas = list(ant.get('borradas') or [])
     if vencidas:
-        lote = vencidas[:TOPE]
-        print('   %d cumplieron %d días: %s%s'
-              % (len(vencidas), DIAS, ', '.join(lote[:8]), '…' if len(lote) > 8 else ''))
+        quitar = {}
+        for k, c in vencidas:
+            quitar.setdefault(k, []).append(c)
+        lote = sorted(quitar)[:TOPE]
+        print('   %d tarjeta(s) de %d persona(s) cumplieron %d días: %s%s'
+              % (len(vencidas), len(quitar), DIAS, ', '.join(lote[:8]), '…' if len(lote) > 8 else ''))
         if aplicar:
             import olvidar as OLV
             s = OLV.sesion()
-            quitar = {k: sobran_de(k) for k in lote}
             claves = [c for k in lote
                       for c in claves_r2({x: u for x, u in (inv.get(k) or {}).items() if x in quitar[k]})]
             idos, quedan = OLV.borrar_r2(s, claves)
@@ -197,9 +206,11 @@ def main():
                 # Lista le quedan la Temporada y la Servidor.
                 for x in quitar[k]:
                     (inv.get(k) or {}).pop(x, None)
+                    (desde.get(k) or {}).pop(x, None)
                 if not inv.get(k):
                     inv.pop(k, None)
-                desde.pop(k, None)
+                if not desde.get(k):
+                    desde.pop(k, None)
                 borradas.append([k, hoy.isoformat()])
             # el inventario sin ellos: si no, la corrida siguiente los vuelve
             # a encontrar y los intenta borrar otra vez
@@ -208,9 +219,9 @@ def main():
             print('   %d persona(s): se les borraron las que ya no pueden tener' % len(listas))
     if aplicar:
         with io.open(ARCHIVO, 'w', encoding='utf-8', newline='\n') as f:
-            json.dump({'_leeme': 'El reloj de bot/fuera.py: desde qué día cada carpeta de R2 '
-                                 'no pasa el portón. A los %d días seguidos se borran sus '
-                                 'tarjetas (Dlx, 27/09/2026). No se edita a mano.' % DIAS,
+            json.dump({'_leeme': 'El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de '
+                                 'R2 (`verificados.puede()`). A los %d días seguidos se borra esa tarjeta '
+                                 '(Dlx, 27/09/2026). No se edita a mano.' % DIAS,
                        'desde': dict(sorted(desde.items())), 'pasaban': pasan,
                        'cuando': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
                        'borradas': borradas[-200:]},
@@ -224,18 +235,22 @@ def main():
 def _self_check():
     mal = 0
     hoy = datetime.date(2026, 10, 4)
+    # `previo` mezcla el formato de antes (una fecha por persona) con el de ahora (una por carta)
     previo = {'ida': '2026-09-27', 'reciente': '2026-10-01', 'volvio': '2026-09-20',
-              'rara': 'no-es-fecha'}
-    pasan = {'volvio', 'siempre'}
-    desde, venc = estado(['ida', 'reciente', 'volvio', 'rara', 'nueva', 'siempre'],
-                         lambda k: k in pasan, hoy, previo)
+              'rara': 'no-es-fecha', 'mixta': {'competitivo': '2026-09-27', 'temporada': '2026-10-01'}}
+    sobran_por = {'ida': ['competitivo'], 'reciente': ['pais'], 'volvio': [], 'rara': ['pais'],
+                  'nueva': ['temporada'], 'mixta': ['competitivo', 'temporada', 'servidor']}
+    desde, venc = estado(sobran_por, hoy, previo)
     casos = [
-        ('a los 7 días seguidos se borra', venc == ['ida']),
-        ('con 3 días, todavía no', 'reciente' in desde and 'reciente' not in venc),
+        ('a los 7 días seguidos se borra', ('ida', 'competitivo') in venc),
+        ('con 3 días, todavía no', 'reciente' in desde and not any(k == 'reciente' for k, _c in venc)),
         ('quien volvió a pasar sale del reloj', 'volvio' not in desde),
-        ('quien no pasa por primera vez arranca hoy', desde.get('nueva') == '2026-10-04'),
-        ('una fecha ilegible arranca de nuevo, no se borra', desde.get('rara') == '2026-10-04'),
-        ('quien pasa nunca entra', 'siempre' not in desde),
+        ('quien no pasa por primera vez arranca hoy', desde.get('nueva') == {'temporada': '2026-10-04'}),
+        ('una fecha ilegible arranca de nuevo, no se borra', desde.get('rara') == {'pais': '2026-10-04'}),
+        ('🔴 cada carta con su reloj: vence la que lleva 7 días, no las que empezaron a sobrar después',
+         ('mixta', 'competitivo') in venc and ('mixta', 'temporada') not in venc and ('mixta', 'servidor') not in venc
+         and desde['mixta']['servidor'] == '2026-10-04'),
+        ('sólo vencen las que tienen que vencer', venc == [('ida', 'competitivo'), ('mixta', 'competitivo')]),
         ('conserva la Temporada y la Servidor: le sobran la Competitiva, la de País y sus Bloqueadas',
          sobran(['temporada', 'servidor', 'sv-ffa', 'competitivo', 'pais', 'bloq-competitivo',
                  'bloq-pais', 'bloq-temporada'], lambda c: c in ('temporada', 'servidor'))

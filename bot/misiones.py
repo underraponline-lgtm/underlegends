@@ -110,7 +110,9 @@ def valor(i, ev, du, svs_antes, top):
     if q == 'duelos':
         return du
     if q == 'multi':
-        return int(any(e[1] in top for e in ev))
+        # `top` es el conjunto de la semana o, desde el 05/10/2026, una función del instante (ver `calcular()`)
+        en = top if callable(top) else (lambda _t: top)
+        return int(any(e[1] in en(e[2]) for e in ev))
     if q == 'nuevo':
         return int(any(e[1] and e[1] not in svs_antes for e in ev))
     if q == 'llego':
@@ -184,12 +186,33 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
             semanas.setdefault(sid, (ini, fin))
     if sem_hoy >= DESDE:
         semanas.setdefault(sem_hoy, (ini_hoy, fin_hoy))
+    # 🔴 EL SERVIDOR DEL MULTIPLICADOR MÁS ALTO EN EL MOMENTO DE CADA EVENTO (revisión del 05/10/2026), no el de la
+    # semana entera: con un cambio a mano desde el Dashboard a mitad de semana (`tramos`), los eventos de antes se
+    # volvían a medir contra el nuevo y alguien ganaba o perdía la misión —y sus puntos— para atrás. Es lo mismo que
+    # hace `multiplicadores.factor_de()` con los puntos: el sorteo, y cada tramo desde su `desde`
+    def _top(sv):
+        if not sv:
+            return set()
+        m = max(sv.values())
+        return {k for k, v in sv.items() if v == m}
     tops = {}
     for s in (mult or {}).get('semanas') or []:
-        sv = s.get('sv') or {}
-        if sv:
-            m = max(sv.values())
-            tops[str(s.get('id') or '')] = {k for k, v in sv.items() if v == m}
+        base = s.get('sv_sorteo') or s.get('sv') or {}
+        tramos = []
+        for t in s.get('tramos') or []:
+            try:
+                tramos.append((MU._de_iso(t['desde']), t.get('sv') or {}))
+            except (KeyError, TypeError, ValueError):
+                continue
+        tramos.sort(key=lambda x: x[0])
+
+        def en(t, base=base, tramos=tramos):
+            sv = base
+            for desde, sv2 in tramos:
+                if t is not None and desde <= t:
+                    sv = sv2
+            return _top(sv)
+        tops[str(s.get('id') or '')] = en
     out_sem, suma, anterior = {}, {}, None
     for sid in sorted(semanas):
         ini, fin = semanas[sid]
@@ -241,7 +264,10 @@ def correr(res=None, uno=None, ahora=None, aplicar=False):
     out = {'_leeme': 'Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. '
                      'Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la '
                      'Temporada; `semanas`, qué tocó cada semana y quién cumplió.',
-           'sem': c['sem'], 'bono': BONO, 'semanas': c['semanas'], 'suma': c['suma']}
+           'sem': c['sem'], 'bono': BONO, 'semanas': c['semanas'], 'suma': c['suma'],
+           # 🔴 de qué temporada es (revisión del 05/10/2026): `rankings.sumar_misiones()` suma lo de la corrida
+           # anterior, y el día que arranca la T1 eso era lo de la prueba —hasta 2.900 por persona— sumado a la T1
+           'temp': MU.temporada_actual(ahora)}
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)

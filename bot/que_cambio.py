@@ -233,7 +233,11 @@ def estado():
                 out[nom] = {'fuera': 1, 't': {}, 'cartas': [c for c in ('servidor', 'temporada') if _V.puede(p, verif, c)],
                             'c': {'raw': nom,
                                   'cc': _SD._cc_de(p.get('pais')),
-                                  'sv': (svs[0] if svs else ''),
+                                  # ⚠️ el MISMO servidor que dibuja la Temporada «sin jugar»: el primero que no es DRA
+                                  # (`_sin_jugar()` de 01_Temporada/exportar_png.py). Con `svs[0]` —casi siempre
+                                  # DRA— cambiar de servidor no cambiaba el sello y la carta se quedaba con el escudo
+                                  # viejo (revisión del 05/10/2026)
+                                  'sv': next((x for x in svs if x != 'DRA'), svs[0] if svs else ''),
                                   'svs': ','.join(sorted(svs))}}
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude sumar los de fuera del pool (%s)' % str(e)[:60])
@@ -625,6 +629,43 @@ def emitibles(quien, est=None):
     return out
 
 
+def inventario():
+    """`datos/cartas_r2.json`: qué hay en R2 de cada uno (lo arma `subir_cartas.py`). Una función para el self-check."""
+    return _j('datos', 'cartas_r2.json') or {}
+
+
+def faltan_en_r2(quien, est, inv, emi=None):
+    """Las cartas de `quien` que se le pueden emitir, que hoy SE VERÍAN y que no están en R2 (`inv`).
+
+    🔴 EL SELLO DICE «YA SE DIBUJÓ», NO «ESTÁ ARRIBA» (revisión del 05/10/2026). Una carta que se borra de R2 —el reloj
+    de `bot/fuera.py`, la limpieza de las que nadie podía abrir— y después vuelve a corresponder sin que cambie un solo
+    dato de su hash, no se redibujaba nunca: la de País se destraba cuando le asignan el país a un RIVAL (`dna_t`,
+    `din_t` no están en su hash), y la persona quedaba sin carta y sin Bloqueada. Lo que se ve es lo mismo que pregunta
+    `subir_datos.armar()` para `cs`: la Temporada, con `puede()` (que ya es `emitibles()`); la Competitiva y la de País,
+    con su requisito. ⚠️ La Servidor no: alguien en servidores donde no hay camiseta que dibujar la pediría en cada
+    corrida sin que salga nada."""
+    from comun.claves import clave as _CL
+    from comun.requisitos import falta as _FALTA
+    emi = emitibles(quien, est) if emi is None else emi
+    tiene = (inv or {}).get(_CL(quien)) or {}
+    ent = (est or {}).get(quien) or {}
+    out = set()
+    for c in ('temporada', 'competitivo', 'pais'):
+        if c not in emi or c in tiene:
+            continue
+        if c == 'temporada':
+            out.add(c)
+            continue
+        fila = dict(ent.get('t') or {})
+        fila.update(ent.get('c') or {})
+        try:
+            if _FALTA(c, fila) is None:
+                out.add(c)
+        except Exception:                                # noqa: BLE001
+            pass
+    return out
+
+
 def solo_dibujo(antes, hoy):
     """¿Cambió el código y NO los datos? `antes` y `hoy`, dos huellas.
 
@@ -673,12 +714,16 @@ def cambios(motivos=None, ahora=None):
     esperan = {}
     viejas, nuevas = set(antes), set(hoy)
     out = {}
+    inv = inventario()
     for quien in sorted(nuevas & viejas):
         d = {c for c in TODAS if antes[quien].get(c) != hoy[quien].get(c)}
         # ⚠️ SOLO LAS QUE SE LE PUEDEN EMITIR. Ver `emitibles()`: pedir
         # una que no se puede es un fallo permanente que se reintenta
         # todos los dias sin avanzar.
-        d &= emitibles(quien, est)
+        emi = emitibles(quien, est)
+        d &= emi
+        # 🔴 y las que hoy se VERÍAN y no están en R2, aunque el sello diga que ya se dibujaron (ver `faltan_en_r2()`)
+        d |= faltan_en_r2(quien, est, inv, emi)
         # 🌙 y las que cambiaron sólo de dibujo, de madrugada
         if not ya:
             for c in sorted(d):
@@ -792,7 +837,7 @@ def _self_check():
     print('  que_cambio.py — el sello por carta, sin red')
     print('')
     g = globals()
-    orig = {k: g[k] for k in ('huellas', 'estado', 'emitibles', 'SELLO')}
+    orig = {k: g[k] for k in ('huellas', 'estado', 'emitibles', 'SELLO', 'inventario')}
     ya = os.environ.pop('REDIBUJAR_YA', None)
     try:
         g['SELLO'] = os.path.join(tempfile.mkdtemp(), 'sello.json')
@@ -803,6 +848,8 @@ def _self_check():
         g['huellas'] = lambda: {q: dict(v) for q, v in hoy.items()}
         g['estado'] = lambda: {'K': {'c': {'cc': 'ar'}, 't': {}}}
         g['emitibles'] = lambda quien, est=None: set(TODAS)
+        # K tiene las cuatro arriba (ver `faltan_en_r2()`: eso se prueba aparte, más abajo)
+        g['inventario'] = lambda: {'k': {c: 'u' for c in TODAS}, 'p': {c: 'u' for c in TODAS}}
         with io.open(SELLO, 'w', encoding='utf-8') as f:
             json.dump({'cartas': antes}, f)
         dia = datetime(2026, 9, 25, 18, 0, tzinfo=timezone.utc)      # 2 PM ET
@@ -855,6 +902,15 @@ def _self_check():
             s3 = json.load(f)['cartas']
         ok('pais' not in s3['P'] and s3['P']['servidor'] == 'd1:c1',
            'y sale del sello: la fila no la arrastra')
+        # 🔴 lo que hoy se vería y no está en R2 se dibuja aunque el sello diga que sí (revisión del 05/10/2026)
+        g['emitibles'] = lambda quien, est=None: set(TODAS)
+        est_r = {'K': {'c': {'cc': 'ar', 'ev': 12}, 't': {'ev': 12}}, 'B': {'c': {'cc': 'ar', 'ev': 2}, 't': {'ev': 2}}}
+        inv_r = {'k': {'servidor': 'u', 'temporada': 'u'}, 'b': {'servidor': 'u'}}
+        fk, fb = faltan_en_r2('K', est_r, inv_r), faltan_en_r2('B', est_r, inv_r)
+        ok('competitivo' in fk and 'servidor' not in fk and 'temporada' not in fk,
+           'con 12 eventos y sin su Competitiva en R2: se dibuja (%s)' % sorted(fk))
+        ok('competitivo' not in fb and 'temporada' in fb,
+           'con 2 eventos su Competitiva no se vería: no; su Temporada emitible y faltante, sí (%s)' % sorted(fb))
     finally:
         g.update(orig)
         if ya is not None:

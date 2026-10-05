@@ -568,8 +568,8 @@ function pintaCampeones() {
   var sinCarta = function (f, tit) {
     return '<div class="hero-carta vacante"><span class="corona">' + esc(tit) + '</span>' +
       '<div class="hc-vacio"><p class="hc-cerca" data-k="' + esc(f.k) + '">' + quienEs(f, 34) + '</p>' +
-      // 🔑 SIN VERIFICAR YA NO ES SIN TARJETA (las LIBRES, 29/09/2026): la
-      // Temporada es de todos los que juegan estando en la Lista.
+      // 🔑 desde el 05/10/2026 (2.41) sin verificarse no hay tarjeta: la Servidor
+      // sale al verificarse y la Temporada con el nivel 1 del Pase.
       '<p>Su tarjeta todavía no está.</p></div></div>';
   };
   if (uno) {
@@ -901,9 +901,17 @@ function anunciosLL() {
   ANUNCIOS_LL = { d: D, v: VIVO, l: out };
   return out;
 }
+// ⚠️ UN CONTEXTO POR PAYLOAD, POR VUELTA DEL VIGÍA Y POR LLAVES EN VIVO, y el mismo objeto mientras no cambien:
+// `deEvento()` guarda la asignación entera por contexto (05/10/2026). Uno nuevo en cada pregunta la recalculaba entera
+// cada vez —60 ms por dibujo con 20 eventos, medido—
+var CTX_LL = { a: null, v: null, k: '', c: null };
 function llaveDeEvento(e, ls) {
   if (!window.LlaveVivo || !LlaveVivo.deEvento) return null;
-  return LlaveVivo.deEvento(e, ls, { anuncios: anunciosLL(), todas: Object.keys(VIVO_L).map(function (k) { return VIVO_L[k]; }) });
+  var a = anunciosLL(), ids = Object.keys(VIVO_L), k = ids.join(',');
+  if (!CTX_LL.c || CTX_LL.a !== a || CTX_LL.v !== VIVO_L || CTX_LL.k !== k) {
+    CTX_LL = { a: a, v: VIVO_L, k: k, c: { anuncios: a, todas: ids.map(function (i) { return VIVO_L[i]; }) } };
+  }
+  return LlaveVivo.deEvento(e, ls, CTX_LL.c);
 }
 /* 🔑 LA LLAVE EN VIVO, CON LO QUE DICE #VEREDICTOS (02/10/2026). Dlx: «el orden verdadero de las llaves para ese evento
    estaba en el canal de veredictos» y «cuando hay eventos en vivo en X servidor, tienes que estar atento a los canales
@@ -3865,7 +3873,7 @@ function pintaPerfil(k) {
             // 🔑 la foto, desde tu propia tarjeta (Dlx, 25/09/2026)
             (DC && DC.clave === k ? '<button class="bajar" type="button" data-foto><i aria-hidden="true">' +
               '&#128247;</i><span>Cambiar mi foto</span></button>' : '') + '</div>'
-          // 🔑 las LIBRES: sin verificar igual tiene la Temporada y la Servidor
+          // 🔑 lo que tiene emitido: desde la 2.41 (05/10/2026), sólo con el portón o lo que conserva hasta la T1
           : '<p class="sin-carta">Todavía no tiene ninguna tarjeta emitida.</p>') +
       '</section>' +
       '<div class="col">' +
@@ -4210,9 +4218,9 @@ function pintaPedi() {
       '<p class="bajada">La pide cada uno y es un minuto: escribí <code>/verificar</code> en ' +
       'Discord. El bot te dice qué te falta y, si está todo, te carga solo: en menos de una hora ' +
       'tenés tu tarjeta.</p>' +
-      '<p class="bajada">Tu <b>Temporada</b> y tu <b>Servidor</b> salen solas cuando jugás estando en ' +
-      'la Lista. Para las cuatro hace falta estar en <b>Discord Rap Español</b> con el rol ' +
-      '<b>Miembro</b> y tu <b>país</b> (la bandera en el apodo o el rol de tu país).</p>' +
+      '<p class="bajada">Son dos pasos: verificate —estar en <b>Discord Rap Español</b> con el rol ' +
+      '<b>Miembro</b> y tu <b>país</b>— y se desbloquea tu <b>Servidor</b>; cumplí tu primera Tarea del ' +
+      '<b>Pase de rapero</b> y se desbloquea tu <b>Temporada</b>.</p>' +
       '<div class="pedi-bt">' +
       (dra.invita ? '<a class="btn" href="' + esc(dra.invita) + '" target="_blank" ' +
         'rel="noopener noreferrer">Entrar a Discord Rap Español &#8599;</a>' : '') +
@@ -5706,6 +5714,8 @@ function volverDeDiscord() {
   // 🔑 Y QUIEN VINO A ENTRAR, A CAMBIAR SU FOTO O A ELEGIR SUS REDES VUELVE A MI CUENTA (02/10/2026), no a una
   // ventana encima del Inicio: ver `nuevaCuenta()`
   var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
+  // 🔒 y quien vino a su Dashboard vuelve al Dashboard, sin la ventana vieja de Mi cuenta encima (revisión del 05/10/2026)
+  var sinVentana = aCuenta || modo0 === 'o';
   var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'o' ? 'dashboard' : modo0 === 'v' ? 'avisos'
     : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
@@ -5781,7 +5791,7 @@ function volverDeDiscord() {
       pintaPaneles();
       pintaPopCuenta();
       // con Mi cuenta nueva no hay ventana: ya se volvió a `#/cuenta` (ver `aCuenta`)
-      if (!aCuenta) $('#popCuenta').hidden = false;
+      if (!sinVentana) $('#popCuenta').hidden = false;
       if (porAvisos) {
         vincularAvisos(q.access_token);
         $('#popCuenta').hidden = true;
@@ -5810,14 +5820,14 @@ function volverDeDiscord() {
         pedirFoto(false).then(function (R) {
           FOTO = R;
           pintaPopCuenta();
-          if (!aCuenta) $('#popCuenta').hidden = false;
+          if (!sinVentana) $('#popCuenta').hidden = false;
         }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       }
       if (porRedes) {
         pedirRedes(null).then(function (R) {
           REDES_MIAS = R;
           pintaPopCuenta();
-          if (!aCuenta) $('#popCuenta').hidden = false;
+          if (!sinVentana) $('#popCuenta').hidden = false;
         }).catch(function () { REDES_MIAS = { error: 'red' }; pintaPopCuenta(); });
       }
     })

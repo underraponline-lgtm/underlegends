@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, claveMedida } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 export { Avisos };
@@ -1906,8 +1906,13 @@ function requisitos(m) {
       : [`${q.n} ${String(q.que).toLowerCase()}`];
     return `· **${et}** — ${cs.join(' + ')}`;
   };
-  return [linea('temporada', 'Temporada'), linea('competitivo', 'Competitiva'),
-          linea('pais', 'País'), linea('servidor', 'Servidor')].join('\n');
+  // 🔑 LA SERVIDOR Y LA TEMPORADA NO SALEN DEL META DESDE EL 05/10/2026 (2.41, Dlx: «C», «4. nivel 1»): las abre el
+  // portón —verificarse— y la Temporada además el nivel 1 del Pase. El meta seguía diciendo «1 participación» y «sin
+  // requisito», que era la regla del 29/09. Es lo mismo que dice `QUE_PIDE`
+  return ['· **Servidor** — verificarte en la página, entrando con Discord',
+          '· **Temporada** — verificarte y tu primera Tarea del Pase de rapero (el nivel 1)',
+          linea('competitivo', 'Competitiva') + ' · y verificarte',
+          linea('pais', 'País') + ' · y verificarte'].join('\n');
 }
 
 const AYUDA = {
@@ -1925,9 +1930,7 @@ const AYUDA = {
     'tarjeta que dice **cuánto te falta**. El botón sólo desaparece cuando la ' +
     'tarjeta no se puede emitir — por ejemplo País sin país cargado.',
     '',
-    '⚠️ La **Temporada** y la **Servidor** salen al jugar estando en la ' +
-    'Lista. La **Competitiva** y la de **País** piden además **estar en DRA y ' +
-    'verificarte ahí**.',
+    '⚠️ Sin verificarte no hay tarjetas: `/verificar` te dice qué te falta.',
   ].join('\n'),
 
   versus: () => [
@@ -2038,8 +2041,9 @@ const AYUDA = {
     '## `/verificar` — qué te falta para verificarte',
     'Mira en este momento, en Discord Rap Español, las tres cosas que hacen ' +
     'falta: estar en el servidor, el rol **Miembro** y un **país**. Te dice ' +
-    'cuál falta y cómo arreglarlo. Verificado tenés las cuatro tarjetas; sin ' +
-    'verificar, la Temporada y la Servidor.',
+    'cuál falta y cómo arreglarlo. Verificado se abre tu **Servidor**; con tu ' +
+    'primera Tarea del Pase, tu **Temporada**; y la Competitiva y la de País, ' +
+    'con su requisito. Sin verificar, ninguna.',
     '',
     'El rol de Miembro lo da el bot solo, en su vuelta de cada media hora: no ' +
     'hace falta pedírselo a nadie.',
@@ -2583,9 +2587,8 @@ const COMANDOS = {
       // cuenta sigue siendo de los verificados. «No estás en la Liga» le
       // mentiría.
       if (id && await env.KV.get('dn:' + id)) {
-        return aviso('La foto se cambia estando **verificado en DRA**. Tus ' +
-                     'tarjetas de Temporada y Servidor ya están; `/verificar` ' +
-                     'te dice qué te falta para lo demás.');
+        return aviso('La foto se cambia estando **verificado en DRA**: ' +
+                     '`/verificar` te dice qué te falta.');
       }
       return aviso('Todavía no estás en la Liga, así que no hay carta donde ' +
                    'poner la foto.\nProbá `/card` y te anoto.');
@@ -3522,9 +3525,8 @@ function kvMedido(env, ctx, ruta) {
   if (!env || !env.KV) return env;
   const kv = env.KV;
   const r = String(ruta || '').replace(/^\/avisos\//, '/a/').slice(0, 30);
-  const clave = (k) => { const m = /^(p|d|dn|dx|cfg|voz|nick|reg|foto|olvido|uso|t1|prueba):/.exec(String(k)); return m ? m[1] + ':*' : String(k).slice(0, 30); };
   const medido = {
-    get: (k, o) => { const c = r + ' ' + clave(k); MED_KV.n[c] = (MED_KV.n[c] || 0) + 1; return kv.get(k, o); },
+    get: (k, o) => { const c = r + ' ' + claveMedida(k); MED_KV.n[c] = (MED_KV.n[c] || 0) + 1; return kv.get(k, o); },
     put: (...a) => kv.put(...a), delete: (...a) => kv.delete(...a), list: (...a) => kv.list(...a),
     getWithMetadata: (...a) => kv.getWithMetadata(...a),
   };

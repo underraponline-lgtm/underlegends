@@ -248,9 +248,20 @@ def nivel_pase(did):
     """El nivel de alguien en el Pase de la temporada (`datos/pase_niveles.json`, lo trae `bot/pase.py`), o 0."""
     global niveles_cache
     if niveles_cache is None:
+        niveles_cache = {}
         try:
             with io.open(os.path.join(BASE, 'datos', 'pase_niveles.json'), encoding='utf-8') as f:
-                niveles_cache = (json.load(f) or {}).get('niveles') or {}
+                d = json.load(f) or {}
+            # 🔴 SÓLO LOS DEL PASE DE ESTA TEMPORADA (revisión del 05/10/2026): el día que arranca la T1, hasta que el
+            # ciclo traiga los nuevos, el archivo todavía dice los de la prueba, y esos no ganan la Temporada de la T1
+            temp = str(d.get('temp') or '')
+            try:
+                import multiplicadores as _MU
+                esperada = str(_MU.temporada_actual() or '')
+            except Exception:                            # noqa: BLE001
+                esperada = temp
+            if temp and temp.lower() == esperada.lower():
+                niveles_cache = d.get('niveles') or {}
         except (OSError, ValueError):
             niveles_cache = {}
     return int(niveles_cache.get(str(did or ''), 0) or 0)

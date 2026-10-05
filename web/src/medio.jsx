@@ -350,7 +350,7 @@ export function TuTemporada({ liga, dc }) {
     return (
       <section className="tu">
         <div className="tu-t">TU TEMPORADA</div>
-        <p className="pronto-p">Todavía no jugaste en la {liga.temp}. Con tu primer evento aparecen tu puesto, tu OVR y tu carta.</p>
+        <p className="pronto-p">Todavía no jugaste en la {liga.temp}. Con tu primer evento aparecen tu puesto y tu OVR; tu carta de Temporada sale con tu primera Tarea del Pase.</p>
         <button type="button" className="btn negro" onClick={accion.cuenta}>Mi cuenta</button>
       </section>
     );

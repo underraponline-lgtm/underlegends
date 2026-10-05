@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { limpio, norm, num, siglaDe, utc } from './liga.js';
 import { Carta, Compartir, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
+import { usePaseDe } from './pase.js';
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
@@ -105,13 +106,16 @@ function Falta({ cs }) {
   );
 }
 
-function Tuya({ liga, k, c, tiene, bloq, cs, nv, jugo }) {
+function Tuya({ liga, k, c, tiene, bloq, cs, nv, nivel }) {
   const fila = liga.T[k];
-  const cumple = c === 'servidor' ? jugo : cs.length ? cs.every((q) => q[0] >= q[1]) : false;
-  // 🔴 CUMPLIR NO ES TENERLA: la Competitiva y la de País piden estar verificado (las de Temporada y Servidor, no)
-  const libre = c === 'temporada' || c === 'servidor';
-  const listo = tiene || (cumple && (!nv || libre));
-  const espera = !listo && cumple;
+  // 🔑 LAS REGLAS DEL 05/10/2026 (2.41; Dlx: «C», «1. dale», «4. nivel 1»): sin verificarse, ninguna; la Servidor sale
+  // al verificarse; la Temporada, con el nivel 1 del Pase (tu primera Tarea); la Competitiva y la de País, verificado y
+  // con su requisito. Quien ya las tenía las conserva hasta la T1: eso es `tiene`. Hasta ese día esto decía la regla del
+  // 29/09 —«la Temporada y la Servidor salen al jugar»— y le prometía cartas a quien no se verificó
+  const verif = !nv;
+  const cumple = c === 'servidor' ? true : c === 'temporada' ? nivel >= 1 : cs.length ? cs.every((q) => q[0] >= q[1]) : false;
+  const listo = tiene || (verif && cumple);
+  const espera = !listo && !verif;
   let img;
   if (tiene && fila) img = <Carta liga={liga} k={k} cual={c} cls="tj-c" />;
   else if (tiene) {
@@ -133,11 +137,12 @@ function Tuya({ liga, k, c, tiene, bloq, cs, nv, jugo }) {
         <b>{NOMBRE[c]}</b>
         {tiene ? <small className="ok"><Ico n="ok" t={14} />La tenés</small>
           : listo ? <small><Ico n="reloj" t={14} />Se está dibujando</small>
-            : espera ? <small>Cumplís lo que pide: {NV[nv] || 'te falta verificarte'}.</small>
-              : c === 'servidor' ? <small>Sale con tu primer evento.</small>
+            : espera ? <small>Primero verificate: {NV[nv] || 'te falta verificarte'}.</small>
+              : c === 'temporada' ? <small>Sale con tu primera Tarea del Pase.</small>
                 : <small>Bloqueada</small>}
-        {!tiene && !listo && !espera && cs.length ? <Falta cs={cs} /> : null}
+        {!tiene && !listo && (c === 'competitivo' || c === 'pais') && cs.length ? <Falta cs={cs} /> : null}
         {espera ? <a className="tj-lnk" href="#/cuenta/verificar">Verificarme</a> : null}
+        {!tiene && !listo && !espera && c === 'temporada' ? <a className="tj-lnk" href="#/pase">Ver el Pase</a> : null}
         {tiene && fila ? <BotonHistoria liga={liga} k={k} c={c} /> : null}
       </div>
     </li>
@@ -152,7 +157,9 @@ function LasTuyas({ liga, dc, perf }) {
   const p = (perf && perf.p && perf.p[k]) || null;
   const req = (p && p.req) || {};
   const nv = (f && f.nv) || (dc && dc.nv) || '';
-  const jugo = !!((f && f.ev) || (dc && dc.ev) || (p && p.ev && p.ev.length));
+  // el nivel del Pase de esta persona: la Temporada sale con el 1 (ver `Tuya`)
+  const pase = usePaseDe(k);
+  const nivel = (pase && pase.nivel) || 0;
   const dra = ((liga.svs || {}).DRA || {}).invita;
   if (!k) {
     // entró con Discord, pero su cuenta no es (todavía) de nadie de la Lista
@@ -160,9 +167,9 @@ function LasTuyas({ liga, dc, perf }) {
       <section className="sec tj-tuyas">
         <div className="sec-t"><h2>Las tuyas</h2></div>
         <div className="tj-sin">
-          <p><b>Todavía no tenés tarjetas.</b> Tu Temporada y tu Servidor salen solas cuando jugás un evento de la Liga. Para
-            las cuatro hace falta estar en Discord Rap Español con el rol Miembro y tu país (la bandera en el apodo o el
-            rol de tu país). Escribí <code>/verificar</code> en Discord y el bot te dice qué te falta.</p>
+          <p><b>Todavía no tenés tarjetas.</b> Son dos pasos: verificate —estar en Discord Rap Español con el rol
+            Miembro y tu país— y se desbloquea tu Servidor; cumplí tu primera Tarea del Pase de rapero y se desbloquea tu
+            Temporada. Escribí <code>/verificar</code> en Discord y el bot te dice qué te falta.</p>
           <div className="hero-acc">
             {dra ? <a className="btn verde chico" href={dra} target="_blank" rel="noopener noreferrer">Entrar a Discord Rap Español ↗</a> : null}
             <a className="btn borde2 chico" href="#/guia">Cómo funciona</a>
@@ -178,7 +185,7 @@ function LasTuyas({ liga, dc, perf }) {
       <div className="sec-t"><h2>Las tuyas</h2><a href={'#/r/' + encodeURIComponent(k)}>Tu perfil <Ico n="flecha" t={16} /></a></div>
       <ul className="tj-tuyas-l">
         {ORDEN.map((c) => (
-          <Tuya key={c} liga={liga} k={k} c={c} tiene={tiene.includes(c)} bloq={bl.includes(c)} cs={req[c] || []} nv={nv} jugo={jugo} />
+          <Tuya key={c} liga={liga} k={k} c={c} tiene={tiene.includes(c)} bloq={bl.includes(c)} cs={req[c] || []} nv={nv} nivel={nivel} />
         ))}
       </ul>
       {url ? <div className="hero-acc tj-tu-acc"><Compartir cls="btn borde2 chico" url={url} texto="Mi carta de la Liga Global" etiqueta="Compartir mi carta" /></div> : null}

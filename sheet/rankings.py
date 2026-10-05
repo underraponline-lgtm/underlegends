@@ -1103,6 +1103,25 @@ def sumar_precios(ag, suma=None):
     return tocadas
 
 
+def _semanales(filas):
+    """🏟️ Las divisiones de la semana (`bot/divisiones.py`) y 🎯 las misiones (`bot/misiones.py`). Nunca frenan la
+    vitrina. Corre también con `Resultados` vacía: es el día que arranca una temporada (ver `--escribir`)."""
+    try:
+        import divisiones as _DV
+        _d = _DV.correr(filas, aplicar=True)
+        print('   🏟️ las divisiones de la semana del %s: %d jugando' % (
+            _d['sem'], sum(len(g) for gs in _d['divs'] for g in gs)))
+    except Exception as e:                           # noqa: BLE001
+        print('   ⚠️ las divisiones no se calcularon: %s' % str(e)[:160])
+    try:
+        import misiones as _MI
+        _m = _MI.correr(aplicar=True)
+        _s = (_m.get('semanas') or {}).get(_m.get('sem') or '') or {}
+        print('   🎯 las misiones de la semana del %s: %d cumplieron alguna' % (_m.get('sem'), len(_s.get('pts') or {})))
+    except Exception as e:                           # noqa: BLE001
+        print('   ⚠️ las misiones no se calcularon: %s' % str(e)[:160])
+
+
 def sumar_misiones(ag, suma=None):
     """🎯 Las misiones de la semana en la Temporada: lo que cada uno sumó cumpliéndolas, a `Puntos`.
 
@@ -1115,7 +1134,14 @@ def sumar_misiones(ag, suma=None):
             if _b not in sys.path:
                 sys.path.insert(0, _b)
             import misiones as _MI
-            suma = (_MI.leer() or {}).get('suma') or {}
+            import multiplicadores as _MU
+            d = _MI.leer() or {}
+            # 🔴 SÓLO LAS DE ESTA TEMPORADA (revisión del 05/10/2026): el primer evento de la T1 sumaba lo de la prueba
+            # —el archivo es el de la corrida anterior—. Uno sin temporada es de antes de la marca: de la prueba
+            if str(d.get('temp') or 'prueba').lower() != str(_MU.temporada_actual() or '').lower():
+                print('   🎯 las misiones guardadas son de otra temporada: esta vez no suman')
+                return 0
+            suma = d.get('suma') or {}
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ no pude leer las misiones (%s): la vitrina no las suma' % str(e)[:80])
             return None
@@ -3023,6 +3049,10 @@ def main():
             if not vivas:
                 print('\n   ✅ `Resultados` y la vitrina están vacías: nada que '
                       'escribir\n      (la temporada todavía no tiene eventos).\n')
+                # 🔴 PERO LAS MISIONES Y LAS DIVISIONES SÍ (revisión del 05/10/2026): es el estado del día que arranca
+                # una temporada, y sin esto quedaban las de la prueba —con su cierre ya pasado— hasta el primer evento
+                if '--aplicar' in sys.argv:
+                    _semanales([])
                 return 0
             print('\n   🔴 No escribo: `Resultados` está vacía y la vitrina tiene '
                   '%d fila(s).\n      Si arrancó la temporada, la vacía '
@@ -3041,22 +3071,8 @@ def main():
 
         # 🗺️ quién vuelve a jugar, con las mismas filas: no se lee nada más
         escribir_retencion(getattr(agregar, 'filas', None) or [])
-        # 🏟️ y las divisiones de la semana (`bot/divisiones.py`), también con las mismas filas. Nunca frenan la vitrina
-        try:
-            import divisiones as _DV
-            _d = _DV.correr(getattr(agregar, 'filas', None) or [], aplicar=True)
-            print('   🏟️ las divisiones de la semana del %s: %d jugando' % (
-                _d['sem'], sum(len(g) for gs in _d['divs'] for g in gs)))
-        except Exception as e:                           # noqa: BLE001
-            print('   ⚠️ las divisiones no se calcularon: %s' % str(e)[:160])
-        # 🎯 y las misiones de la semana (`bot/misiones.py`). Nunca frenan la vitrina
-        try:
-            import misiones as _MI
-            _m = _MI.correr(aplicar=True)
-            _s = (_m.get('semanas') or {}).get(_m.get('sem') or '') or {}
-            print('   🎯 las misiones de la semana del %s: %d cumplieron alguna' % (_m.get('sem'), len(_s.get('pts') or {})))
-        except Exception as e:                           # noqa: BLE001
-            print('   ⚠️ las misiones no se calcularon: %s' % str(e)[:160])
+        # 🏟️ las divisiones y 🎯 las misiones de la semana, también con las mismas filas
+        _semanales(getattr(agregar, 'filas', None) or [])
 
         # 🔴 TRES PUERTAS ANTES DE TOCAR UNA HOJA PÚBLICA, y cada una
         # tapa una forma distinta de romperla sin que nada falle.

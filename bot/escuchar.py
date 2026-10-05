@@ -2475,21 +2475,88 @@ def con_fase_previa(llave, fases):
         en_fase = {norm(n) for g in grupos for n in g}
         if len(primera & en_fase) < FASE_PREVIA_CUBRE * len(primera):
             continue
-        vistos, lineas = set(), []
-        for g in grupos:
-            # ⚠️ la misma persona anotada en dos grupos (pasa en VALHALLA) va una vez: en el primero
-            g2 = []
-            for n in g:
-                k = re.sub(r'\s+', '', n.lower())
-                if k not in vistos:
-                    vistos.add(k)
-                    g2.append(n)
-            if len(g2) >= 2:
-                lineas.append(' VS '.join(g2))
-        if not lineas:
-            continue
-        return ('# %s\nFILTROS\n%s\n\n%s' % (titulo or 'FILTROS', '\n'.join(lineas), llave.get('texto') or '')), mid
+        t = texto_con_fase(llave, titulo, grupos)
+        if t:
+            return t, mid
     return None, None
+
+
+def texto_con_fase(llave, titulo, grupos):
+    """El texto de `llave` con la fase `(título, grupos)` adelante, o `None` si la fase no tiene grupos de dos o más."""
+    vistos, lineas = set(), []
+    for g in grupos:
+        # ⚠️ la misma persona anotada en dos grupos (pasa en VALHALLA) va una vez: en el primero
+        g2 = []
+        for n in g:
+            k = re.sub(r'\s+', '', n.lower())
+            if k not in vistos:
+                vistos.add(k)
+                g2.append(n)
+        if len(g2) >= 2:
+            lineas.append(' VS '.join(g2))
+    if not lineas:
+        return None
+    return '# %s\nFILTROS\n%s\n\n%s' % (titulo or 'FILTROS', '\n'.join(lineas), llave.get('texto') or '')
+
+
+# 🔴 UNA LLAVE QUE YA TUVO SU FASE LA TIENE SIEMPRE (revisión del 05/10/2026). La fase da el TÍTULO, y el título es un
+# tercio de la identidad del evento (`llaves_a_entrada.nombre_de()`): la fase sólo se juntaba mientras su mensaje
+# estuviera entre los últimos 25 del canal, así que en un canal movido llegaba la corrida en que la fase —más vieja
+# que la llave— ya no se leía y la llave sí: el evento cambiaba de nombre y se cargaba OTRA VEZ, con otro número, y
+# los de la llave contaban dos veces. Lo mismo si el organizador editaba la llave y bajaba del 75 % en común.
+# Por eso la primera vez que se juntan se guarda acá —la fase entera: título y grupos— y desde ahí se usa lo guardado
+# cuando la fase no está, y la de ahora cuando está (por si la corrigieron). Lo commitea el ciclo (`bot/ci/guardar.sh`).
+FASES_LLAVES = os.path.join(BASE, 'datos', 'fases_llaves.json')
+FASES_DIAS = 30
+
+
+def fases_guardadas(ruta=None):
+    """`{msg_id de la llave: {'canal', 'fase', 'titulo', 'grupos', 't'}}`, o `{}`."""
+    try:
+        with io.open(ruta or FASES_LLAVES, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('llaves') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def guardar_fases(fases, ruta=None):
+    """Lo de `fases_guardadas()`, sin lo de más de `FASES_DIAS` días; sólo si cambió."""
+    import datetime as _dtm
+    corte = (_dtm.datetime.now(_dtm.timezone.utc) - _dtm.timedelta(days=FASES_DIAS)).isoformat()
+    fases = {k: v for k, v in fases.items() if str(v.get('t') or '') >= corte}
+    if fases == fases_guardadas(ruta):
+        return False
+    with io.open(ruta or FASES_LLAVES, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump({'_leeme': 'La fase previa de cada llave que la tuvo (bot/escuchar.py, `fases_guardadas()`): la '
+                             'primera vez que se juntan queda acá, para que el evento no cambie de nombre cuando la '
+                             'fase ya no se lee. No se edita a mano.',
+                   'llaves': dict(sorted(fases.items()))}, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+    return True
+
+
+def fase_de_llave(h, fases, guardadas):
+    """`(texto, id de la fase)` de la llave `h` con su fase, o `(None, None)`; anota en `guardadas` la que encontró.
+
+    Primero la que ya tuvo (la de esta corrida si está, si no la guardada), y si no tuvo nunca, la búsqueda de siempre
+    (`con_fase_previa()`)."""
+    import datetime as _dtm
+    ya = guardadas.get(str(h.get('msg_id') or ''))
+    if ya:
+        viva = next((fp for _c, mid, fp in fases if str(mid) == str(ya.get('fase'))), None)
+        titulo, grupos = viva if viva else (ya.get('titulo') or '', ya.get('grupos') or [])
+        t = texto_con_fase(h, titulo, grupos)
+        if t:
+            if viva and (viva[0] != ya.get('titulo') or viva[1] != ya.get('grupos')):
+                guardadas[str(h['msg_id'])] = dict(ya, titulo=viva[0], grupos=viva[1])
+            return t, ya.get('fase')
+    texto2, mid = con_fase_previa(h, fases)
+    if texto2 and h.get('msg_id'):
+        fp = next((fp for _c, m2, fp in fases if m2 == mid), None)
+        if fp:
+            guardadas[str(h['msg_id'])] = {'canal': str(h.get('canal_id') or ''), 'fase': str(mid), 'titulo': fp[0],
+                                           'grupos': fp[1], 't': _dtm.datetime.now(_dtm.timezone.utc).isoformat()}
+    return texto2, mid
 
 
 def barrer(s, por_canal=25, solo=None, guilds=None):
@@ -2518,6 +2585,8 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
     canales, no menos mensajes de cada canal.
     """
     out, n_ch, n_msg = [], 0, 0
+    guardadas = fases_guardadas()
+    antes = json.dumps(guardadas, sort_keys=True)
     for cid, canal, servidor, guild in _canales(s, solo, guilds):
         n_ch += 1
         rr = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
@@ -2561,13 +2630,19 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
                             'texto': texto,
                             'partes': m.get('_partes', 1),
                             'menciones': menciones_de(m)})
-        # 🏰 la fase previa que quedó en otro mensaje, adelante de su llave (ver `con_fase_previa()`)
-        if fases:
-            for h in out[desde:]:
-                texto2, mid = con_fase_previa(h, fases)
+        # 🏰 la fase previa que quedó en otro mensaje, adelante de su llave: la que ya tuvo, o la de esta corrida
+        # (ver `fase_de_llave()` y `con_fase_previa()`)
+        for h in out[desde:]:
+            if fases or str(h.get('msg_id') or '') in guardadas:
+                texto2, mid = fase_de_llave(h, fases, guardadas)
                 if texto2:
                     h['texto'], h['fase_previa'] = texto2, mid
         time.sleep(0.05)
+    if json.dumps(guardadas, sort_keys=True) != antes:
+        try:
+            guardar_fases(guardadas)
+        except OSError as e:
+            print('   ⚠️ no pude guardar las fases de las llaves: %s' % str(e)[:80])
     return out, n_ch, n_msg
 
 
@@ -3275,6 +3350,24 @@ def _self_check():
         ('no si la fase es de más de 8 horas antes', lejos is None),
         ('ni si la llave es de otra gente', otra is None),
         ('una llave nunca es una fase previa', fase_previa(lla['texto']) is None),
+    ]:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+    # 🔴 y la que ya tuvo su fase la tiene siempre (revisión del 05/10/2026): sin la fase en la ventana, el mismo texto
+    g = {}
+    lla2 = dict(lla, msg_id='77', canal_id='5')
+    p1, m1 = fase_de_llave(lla2, [('2026-10-04T21:13:00+00:00', '9', fp)], g) if fp else (None, None)
+    p2, m2 = fase_de_llave(lla2, [], g)
+    p3, m3 = fase_de_llave(dict(lla2, texto=lla2['texto'].replace('[BEA] VS [FLOR]', '[BEA] VS [ZOE]')
+                                .replace('[ANA] VS [EVA]', '[QUI] VS [RO]')), [], g)
+    import tempfile
+    tmp = os.path.join(tempfile.mkdtemp(), 'fases.json')
+    escrito = guardar_fases(g, tmp)
+    for que, ok in [
+        ('la primera vez se guarda la fase de la llave', bool(p1) and m1 == '9' and g.get('77', {}).get('titulo') == 'COPA X'),
+        ('sin la fase en la ventana, la llave sale igual: el mismo título y los mismos grupos', p2 == p1 and m2 == '9'),
+        ('y aunque la llave se edite y baje del 75 % en común, sigue con su fase', bool(p3) and p3.startswith('# COPA X')),
+        ('se guarda y se vuelve a leer igual', escrito and fases_guardadas(tmp) == g and not guardar_fases(g, tmp)),
     ]:
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))

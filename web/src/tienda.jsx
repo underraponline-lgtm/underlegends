@@ -124,7 +124,7 @@ export function Tienda({ liga, dc }) {
   // no los había pedido (y quedaba «Buscando los tuyos…»)
   useEffect(() => {
     if (dc && !window.BILL && typeof window.pedirBilletera === 'function') window.pedirBilletera(false);
-  }, [dc]);
+  }, [dc && dc.id]);
   if (!T || typeof window.ponerPrecio !== 'function') {
     return (
       <section className="sec ti-sec">

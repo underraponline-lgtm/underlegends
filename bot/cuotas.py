@@ -37,6 +37,8 @@ LIM = {
     'r2_gb': 10, 'r2_escrituras_mes': 1_000_000, 'r2_lecturas_mes': 10_000_000,
     'kv_escrituras_dia': 1_000, 'kv_lecturas_dia': 100_000,
     'worker_peticiones_dia': 100_000, 'worker_cpu_ms': 10,
+    # el Durable Object (SQLite): por día, como KV
+    'do_filas_leidas_dia': 5_000_000, 'do_filas_escritas_dia': 100_000, 'do_pedidos_dia': 100_000,
 }
 
 
@@ -67,6 +69,29 @@ def kv_hoy(s):
         return {f['dimensions']['actionType']: f['sum']['requests']
                 for f in gk.json()['data']['viewer']['accounts'][0]
                 ['kvOperationsAdaptiveGroups']}
+    except Exception:                                    # noqa: BLE001
+        return {}
+
+
+def objeto_hoy(s):
+    """`{'leidas', 'escritas', 'pedidos'}` del Durable Object hoy (UTC), o `{}` si no se sabe.
+
+    🔑 05/10/2026: las filas que lee el objeto pasaron de 97.000 a 1,9 millones por día en una semana, y el techo
+    del plan son 5 millones. Es la cuota que primero se cruza si se suman servidores (ver `docs/` y NOVEDADES), y
+    hasta hoy sólo se miraba a mano. La deja el ciclo en `datos/estado_*.json` y la ve el Dashboard.
+    """
+    hoy = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d')
+    q = ('{ viewer { accounts(filter:{accountTag:"%s"}) {'
+         ' f: durableObjectsPeriodicGroups(limit:20, filter:{date_geq:"%s"}) { sum { rowsRead rowsWritten } }'
+         ' p: durableObjectsInvocationsAdaptiveGroups(limit:20, filter:{date_geq:"%s"}) { sum { requests } }'
+         ' } } }' % (CUENTA, hoy, hoy))
+    try:
+        r = requests.post('https://api.cloudflare.com/client/v4/graphql',
+                          headers=dict(s.headers), json={'query': q}, timeout=40).json()
+        a = r['data']['viewer']['accounts'][0]
+        return {'leidas': sum(x['sum']['rowsRead'] for x in a['f']),
+                'escritas': sum(x['sum']['rowsWritten'] for x in a['f']),
+                'pedidos': sum(x['sum']['requests'] for x in a['p'])}
     except Exception:                                    # noqa: BLE001
         return {}
 

@@ -355,25 +355,34 @@ export function momentosChat(L, nombre, fav, nivel = 'normal') {
   const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
   const fb = F ? batallasDe(F)[0] : null;
   if (nivel === 'todo') {
-    // cada batalla jugada, menos la final: la cuenta el campeón
+    // 🔑 UN MOMENTO POR CADA UNO QUE PASA, no por batalla (revisión del 05/10/2026): en un grupo donde pasan dos, el
+    // organizador escribe a uno en la ronda siguiente y al rato al otro. Con un momento por batalla salía «A pasa ·
+    // contra B y C» y, cuando aparecía B, ya estaba dicho. Así sale «A pasa» y después «B pasa», y ninguno miente.
+    // Menos la final: la cuenta el campeón
     rondas.forEach((R, k) => {
       if (R === F) return;
       for (const b of batallasDe(R)) {
         if (!jugadaChat(b)) continue;
-        const ganan = pasaronChat(rondas, k, b);
-        if (!ganan.length) continue;
-        const pierden = (b[0] || []).filter((x) => x && !ganan.includes(x));
-        out.push({ m: 'b:' + R.r + ':' + (b[0] || []).map(claveTurno).sort().join('|'), cab: '⚔️ **' + tit + '**',
-          texto: '✅ ' + ganan.map((x) => '**' + escMd(x) + '**').join(' y ') + (ganan.length > 1 ? ' pasan' : ' pasa')
-            + ' · ' + R.r + (pierden.length ? ' · contra ' + pierden.map(escMd).join(' y ') : '') });
+        const lados = (b[0] || []).filter(Boolean);
+        const clave = lados.map(claveTurno).sort().join('|');
+        for (const g of pasaronChat(rondas, k, b)) {
+          const otros = lados.filter((x) => x !== g);
+          // un mano a mano dice contra quién; un grupo, con quiénes (de ahí puede pasar más de uno)
+          const resto = !otros.length ? '' : lados.length === 2 ? ' · contra ' + escMd(otros[0])
+            : ' · de un grupo con ' + otros.map(escMd).join(', ');
+          out.push({ m: 'b:' + R.r + ':' + clave + ':' + claveTurno(g), cab: '⚔️ **' + tit + '**',
+            texto: '✅ **' + escMd(g) + '** pasa · ' + R.r + resto });
+        }
       }
     });
   } else if (nivel !== 'poco') {
+    // ⚠️ quién pasó, con los grupos de «pasan N» también: su `b[1]` está vacío y la ronda salía «pasaron » sin nadie
+    // (las octavas de a tres de FFA, revisión del 05/10/2026). Es `pasaronChat()`, la misma de «cada batalla»
     const cerradas = rondas.filter((R) => !/^final$|tercer/i.test(String(R.r || '')) && batallasDe(R).length
       && batallasDe(R).every(jugadaChat));
     if (cerradas.length) {
       out.push({ m: 'rondas', texto: '⏱️ **' + tit + '**\n' + cerradas.map((R) => '**' + R.r + '**: pasaron '
-        + batallasDe(R).map((b) => escMd(b[1] || '')).filter(Boolean).join(', ')).join('\n') });
+        + batallasDe(R).flatMap((b) => pasaronChat(rondas, rondas.indexOf(R), b)).map(escMd).join(', ')).join('\n') });
     }
   }
   if (fb && !fb[1] && nivel !== 'poco') {
@@ -422,6 +431,18 @@ export function planChat(ms, hechos, ultimo, ahora, fresca, nivel = 'normal') {
     else if (fresca && ahora - (ultimo || 0) >= CHAT_ENTRE) plan.push({ tipo: 'mandar', m: x.m, texto: x.texto });
   }
   return plan;
+}
+
+/**
+ * 🛑 CUÁNTO ESPERA UN CANAL DESPUÉS DE UN MENSAJE QUE NO SALIÓ, en ms (revisión del 05/10/2026). Antes cualquier falla
+ * lo frenaba media hora: un 500 suelto justo en «🏆 Campeón» y, para cuando volvía, la llave ya no estaba fresca y el
+ * campeón no se decía nunca. Media hora sólo si no se arregla solo —sin permiso (403) o el canal no existe (404)—; un
+ * 429 espera lo que Discord pide (`retry_after`, en segundos); un 5xx o la red se reintentan al minuto siguiente.
+ */
+export function pausaChat(estado, retryAfter) {
+  if (estado === 403 || estado === 404) return 30 * MIN;
+  if (estado === 429) return Math.min(10 * MIN, Math.max(5000, Math.round((Number(retryAfter) || 0) * 1000)));
+  return 0;
 }
 
 /** Los favoritos de una llave: los tres de más OVR entre los que juegan (`tabla` es la del lobby), con el nombre como
@@ -1398,6 +1419,8 @@ const RUTAS = {
   '/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
   '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
+  // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx): ver `cicloAMano()`
+  '/avisos/dueno/ciclo': 'POST',
   // 🙈 «ocultar mi foto»: en Mi cuenta → Privacidad. Ver `miFoto()`
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
@@ -2010,6 +2033,20 @@ const elObjeto = (env) => env.AVISOS.get(env.AVISOS.idFromName('liga'));
 export const VIVO_HORAS = 6;
 /** cuántos mensajes se le piden a cada canal de llaves por lectura */
 export const VIVO_LEE = 4;
+// 🔔 el estado de un aviso que no salió —la campana estaba pausada, o el evento ya había empezado— pero que ES un
+// evento: no lo toma la alarma (sólo el 0) y no lo filtra nadie que pregunte `estado != 2` (ver `lote()`)
+export const NO_SALIO = 4;
+
+// 📏 CÓMO SE ANOTA UNA CLAVE DE KV EN `medidas`, que es público (`/avisos/estado`): las globales con su nombre y las
+// de alguien —una persona o un servidor— sólo por su prefijo. Al revés que antes, que era una lista de prefijos
+// personales: una clave nueva se colaba con el dueño adentro —`redes:<perfil>`, `pnick:<guild>:<id>`— (revisión del
+// 05/10/2026). La usan el objeto y el Worker (`kvMedido()`)
+const KV_GLOBALES = /^(meta|web:[a-z]+|turnos:nombres|precios|precios:resolucion|encuestas)$/;
+export function claveMedida(k) {
+  const s = String(k || '');
+  const i = s.indexOf(':');
+  return KV_GLOBALES.test(s) ? s : i < 0 ? 'otra' : s.slice(0, Math.min(i, 20)) + ':*';
+}
 
 /**
  * 🔴 LAS LLAVES QUE SE BORRARON EN DISCORD, SE BORRAN ACÁ. El vigía guarda
@@ -2326,6 +2363,26 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/ajuste', {
       method: 'POST', body: JSON.stringify({ cual: d.cual, valor: v }), headers: { 'content-type': 'application/json' },
     });
+  }
+  // ▶️ CORRER EL CICLO AHORA: la misma puerta que el Dashboard (ver `cicloAMano()` del objeto)
+  if (ruta === '/avisos/dueno/ciclo') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] correr el ciclo lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    const r = await elObjeto(env).fetch('https://avisos/ciclo-mano', { method: 'POST', body: '{}',
+      headers: { 'content-type': 'application/json' } });
+    const v = await r.json().catch(() => ({}));
+    return json(v, v.error ? (v.error === 'espera' ? 429 : 502) : 200);
   }
   // ⚙️ LOS AJUSTES, PARA EL CICLO (el multiplicador a mano): con la clave del ciclo, como `/avisos/inscritos`
   if (ruta === '/avisos/ajustes') {
@@ -2801,8 +2858,7 @@ export class Avisos {
     };
     if (env && env.KV) {
       const kv = env.KV;
-      const clave = (k) => { const m = /^(p|d|dn|cfg|voz|nick|reg|foto|olvido|uso):/.exec(String(k)); return m ? m[1] + ':*' : String(k).slice(0, 40); };
-      const medido = { get: (k, o) => { this.medir('kv', clave(k), 1); return kv.get(k, o); },
+      const medido = { get: (k, o) => { this.medir('kv', claveMedida(k), 1); return kv.get(k, o); },
         put: (...a) => kv.put(...a), delete: (...a) => kv.delete(...a), list: (...a) => kv.list(...a),
         getWithMetadata: (...a) => kv.getWithMetadata(...a) };
       this.env = new Proxy(env, { get: (t, p) => (p === 'KV' ? medido : t[p]) });
@@ -3002,7 +3058,12 @@ export class Avisos {
       // Los otros son las consultas «de las últimas horas» que el vigía y la página hacen cada minuto
       for (const [nombre, tabla, col] of [['inscritos_pub', 'inscritos', 'pub'], ['hechos_t', 'hechos', 't'],
         ['avisos_creado', 'avisos', 'creado'], ['veredictos_pub', 'veredictos', 'pub'], ['posts_creado', 'posts', 'creado'],
-        ['bandeja_t', 'bandeja', 't'], ['vivo_ed', 'vivo', 'ed'], ['cancelados_t', 'cancelados', 't']]) {
+        ['bandeja_t', 'bandeja', 't'], ['vivo_ed', 'vivo', 'ed'], ['cancelados_t', 'cancelados', 't'],
+        // 📏 y los de la revisión del 05/10/2026: los niveles del Pase de la temporada (`pases()`, `paseNiveles()`: cada
+        // perfil los pedía recorriendo la tabla entera), la billetera de cada uno (`tienda` por `quien`) y el que más
+        // leía después de los primeros índices, las inscripciones de un servidor desde una hora (`inscripciones()`)
+        ['pase_hecho_temp', 'pase_hecho', 'temp, quien'], ['tienda_quien', 'tienda', 'quien'],
+        ['inscritos_sv_pub', 'inscritos', 'sv, pub']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
     });
@@ -3109,7 +3170,12 @@ export class Avisos {
         return json(this.paseDe(String(d.quien)));
       }
       if (ruta === '/pase-vivo') return json(this.paseVivo(d));
-      if (ruta === '/pase-ciclo') return json(this.paseCiclo(d));
+      // ⚠️ lo que no se pudo tomar es un 400, no un 200 con `error`: el ciclo decía «✅ igual que antes» sobre un Pase
+      // rechazado (revisión del 05/10/2026)
+      if (ruta === '/pase-ciclo') {
+        const v = this.paseCiclo(d);
+        return json(v, v.error ? 400 : 200);
+      }
       // 📏 las lecturas de KV que contó el Worker (`kvMedido()` en worker.js): sólo el Worker llega acá, no está en RUTAS
       if (ruta === '/medir') {
         for (const [k, n] of Object.entries((d && d.kv) || {})) {
@@ -3128,8 +3194,12 @@ export class Avisos {
             if (NIVELES_CHAT[c.vivo_nivel]) p.chat.nivel[g.sv] = c.vivo_nivel;
           } catch (e) { /* sin KV, como si no */ }
         }
+        // 🔴 lo que está en vivo y ▶️ las últimas corridas del ciclo: ver `vivoDueno()` y `corridasCiclo()`
+        [p.vivo, p.corridas, p.github] = await Promise.all([this.vivoDueno(Date.now()).catch(() => []),
+          this.corridasCiclo(), this.githubActions()]);
         return json(p);
       }
+      if (ruta === '/ciclo-mano') return json(await this.cicloAMano(Date.now()));
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
@@ -3515,28 +3585,42 @@ export class Avisos {
     for (const b of bloques) {
       try { const L = LV.aLlave(b); if (L) llaves.set(b.id, L); } catch (e) { /* una llave que no se lee no frena */ }
     }
-    let anuncios = null;
+    // 🔑 LA MISMA ASIGNACIÓN QUE LA PÁGINA Y EL CICLO (`LlaveVivo.asignar()`), sobre los anuncios de 36 horas, y EL
+    // NOMBRE QUE YA SE LE DIO se queda (revisión del 05/10/2026): un evento anunciado la noche anterior salía de la
+    // ventana a mitad de la llave, y el mensaje de las rondas se editaba a «… VOL 22», el título copiado
+    let asig = null, cambio = false;
+    const nombres = this.leer('nombres_vivo') || {};
     const nombreDe = (L) => {
-      if (anuncios === null) {
-        anuncios = this.anunciosVistos(ahora).map((a) => ({ nombre: a.n, sv: a.sv, cuando: a.ini, link: a.url, mod: a.mod }));
+      if (asig === null) {
+        const anuncios = this.anunciosVistos(ahora, 36, 40).map((a) => ({ nombre: a.n, sv: a.sv, cuando: a.ini, link: a.url, mod: a.mod }));
+        try { asig = LV.asignar(anuncios, [...llaves.values()]).deLlave; } catch (err) { asig = {}; }
       }
-      const ctx = { anuncios, todas: [...llaves.values()] };
-      const e = anuncios.find((a) => { try { return LV.deEvento(a, [L], ctx) === L; } catch (err) { return false; } });
-      return e ? e.nombre : L.nombre;
+      const a = asig[L.id];
+      if (a && a.nombre) {
+        if (!nombres[L.id] || nombres[L.id].n !== a.nombre) { nombres[L.id] = { n: a.nombre, t: ahora }; cambio = true; }
+        return a.nombre;
+      }
+      return (nombres[L.id] && nombres[L.id].n) || L.nombre;
     };
     for (const b of bloques) {
       if (pedidos >= CHAT_TOPE) break;
       if (!b.g || dash[b.sv] === false) continue;
       if (!cfgs.has(b.g)) {
-        let c = {};
-        try { c = JSON.parse((await this.env.KV.get('cfg:' + b.g, { cacheTtl: 60 })) || '{}') || {}; } catch (e) { c = {}; }
+        // ⏱️ los ajustes de /settings, guardados 5 minutos en la memoria del objeto: eran una lectura de KV por minuto y
+        // por servidor durante las tres horas de cada llave (revisión del 05/10/2026). Un cambio del admin tarda eso
+        const m = (this.cfgChat = this.cfgChat || new Map()).get(b.g);
+        let c = m && ahora - m.t < 5 * MIN ? m.c : null;
+        if (!c) {
+          try { c = JSON.parse((await this.env.KV.get('cfg:' + b.g, { cacheTtl: 60 })) || '{}') || {}; } catch (e) { c = {}; }
+          this.cfgChat.set(b.g, { c, t: ahora });
+        }
         cfgs.set(b.g, c);
       }
       const canal = String(cfgs.get(b.g).vivo || '')
         || (dash[b.sv] === true ? String((generales.find((x) => x.g === b.g) || {}).id || '') : '');
       if (!/^\d{5,25}$/.test(canal)) continue;
-      // un canal donde Discord no lo deja escribir se vuelve a probar a la media hora, no cada minuto
-      if (ahora - (this.leer('chat_fallo:' + canal) || 0) < 30 * MIN) continue;
+      // un canal donde Discord no lo deja escribir se vuelve a probar a la media hora, no cada minuto (ver `pausaChat()`)
+      if (ahora < (this.leer('chat_pausa:' + canal) || 0)) continue;
       const L = llaves.get(b.id);
       if (!L) continue;
       const nivel = nivelChat(dashNivel[b.sv], cfgs.get(b.g).vivo_nivel);
@@ -3591,7 +3675,12 @@ export class Avisos {
           break;
         }
         errores.push(b.sv + ' ' + (r ? r.status : 'red'));
-        if (p.tipo === 'mandar') this.guardar('chat_fallo:' + canal, ahora);
+        if (p.tipo === 'mandar') {
+          let ra = 0;
+          if (r && r.status === 429) { try { ra = Number((await r.json()).retry_after) || 0; } catch (e) { ra = 0; } }
+          const espera = pausaChat(r ? r.status : 0, ra);
+          if (espera) this.guardar('chat_pausa:' + canal, ahora + espera);
+        }
         // un mensaje que ya no está (lo borraron): no se vuelve a editar
         else if (r && r.status === 404) {
           this.sql.exec("UPDATE chat_vivo SET msg = '' WHERE llave = ? AND canal = ? AND m = ?", L.id, canal, p.m);
@@ -3599,6 +3688,10 @@ export class Avisos {
       }
     }
     if (pedidos) this.guardar('chat_vivo', { t: ahora, mandados, editados, errores: errores.slice(0, 5) });
+    if (cambio) {
+      for (const [k, v] of Object.entries(nombres)) if (ahora - (v.t || 0) > 12 * HORA) delete nombres[k];
+      this.guardar('nombres_vivo', nombres);
+    }
     return pedidos;
   }
 
@@ -3705,9 +3798,9 @@ export class Avisos {
 
   /** Los eventos que el vigía vio anunciar en el último día (ver `anuncios` en `vivo()`): para la página y para saber
    *  de qué anuncio es cada llave en vivo (`chatVivo()`). */
-  anunciosVistos(ahora) {
+  anunciosVistos(ahora, horas = 24, tope = 12) {
     return this.sql.exec("SELECT id, cuerpo FROM avisos WHERE creado > ? AND estado != 2 AND instr(id, ':') = 0 " +
-      'ORDER BY creado DESC LIMIT 12', ahora - 24 * HORA).toArray().map((r) => {
+      'ORDER BY creado DESC LIMIT ?', ahora - horas * HORA, tope).toArray().map((r) => {
       let c = {};
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
       return c.tipo === 'evento' && c.sv !== SV_PRUEBA && c.t ? { id: r.id, sv: c.sv, n: c.t, ini: c.ini || null,
@@ -4035,14 +4128,7 @@ export class Avisos {
     if (!vivos.size) return;
     const prev = this.leer('llamada') || {};
     if (ahora - (prev.mirado || 0) < 10 * MIN) return;
-    const gh = (ruta, opc) => fetch(`https://api.github.com/repos/${this.env.GH_REPO}${ruta}`, {
-      ...(opc || {}),
-      headers: {
-        // ⚠️ GitHub rechaza sin User-Agent (ver el disparador del ciclo, en worker.js)
-        'User-Agent': 'liga-global-bot', 'Accept': 'application/vnd.github+json',
-        'Authorization': `Bearer ${this.env.GH_TOKEN}`, 'Content-Type': 'application/json',
-      },
-    });
+    const gh = (ruta, opc) => this.gh(ruta, opc);
     let anda = false;
     for (const st of ['in_progress', 'queued']) {
       const r = await gh(`/actions/workflows/llamada.yml/runs?status=${st}&per_page=1`);
@@ -4065,8 +4151,8 @@ export class Avisos {
    */
   async cancelaciones(ahora) {
     if (Math.floor(ahora / MIN) % 2) return false;
-    const filas = this.sql.exec("SELECT id, sv, cuerpo, estado, cursor, creado FROM avisos WHERE estado IN (0, 1) " +
-      "AND creado > ? AND instr(id, ':') = 0", ahora - 2 * 24 * HORA).toArray();
+    const filas = this.sql.exec("SELECT id, sv, cuerpo, estado, cursor, creado FROM avisos WHERE estado IN (0, 1, ?) " +
+      "AND creado > ? AND instr(id, ':') = 0", NO_SALIO, ahora - 2 * 24 * HORA).toArray();
     let pedidos = 0, hubo = false;
     for (const f of filas) {
       let c = null;
@@ -4126,7 +4212,8 @@ export class Avisos {
         this.sql.exec('INSERT OR IGNORE INTO cancelados (id, sv, cuerpo, t, por) VALUES (?, ?, ?, ?, ?)',
           f.id, f.sv, f.cuerpo, ahora, por);
         // lo que todavía no salió, no sale: el aviso del evento y su recordatorio
-        this.sql.exec('UPDATE avisos SET estado = 2 WHERE (id = ? OR id = ?) AND estado = 0', f.id, f.id + ':antes');
+        this.sql.exec('UPDATE avisos SET estado = 2 WHERE (id = ? OR id = ?) AND estado IN (0, ?)', f.id, f.id + ':antes',
+          NO_SALIO);
         // y si a alguien ya le llegó el del evento, el de cancelado (el mismo `tag` lo reemplaza en el teléfono)
         if (f.estado === 1 || f.cursor) {
           // `hs`: hasta qué suscripción le llegó el aviso. Sin eso, el «cancelado» le llegaba también a quien activó la
@@ -4395,16 +4482,19 @@ export class Avisos {
   }
 
   async lote(av, ahora) {
-    // 🔔 CON LA CAMPANA PAUSADA (el Dashboard), el aviso se descarta: dejarlo pendiente haría que la alarma lo vuelva a
-    // tomar al instante, para siempre. Uno de un evento que empieza en un rato ya no sirve después
+    // 🔔 CON LA CAMPANA PAUSADA (el Dashboard), el aviso no sale: dejarlo pendiente haría que la alarma lo vuelva a
+    // tomar al instante, para siempre. Uno de un evento que empieza en un rato ya no sirve después.
+    // 🔴 Y QUEDA EN `NO_SALIO`, NO EN 2 (revisión del 05/10/2026). El 2 es «no es un evento» —un descarte, uno
+    // cancelado— y lo filtran la página, los veredictos, las inscripciones, la llamada y las cancelaciones: con el 2,
+    // pausar la campana sacaba ese evento del seguimiento en vivo para siempre, también después de reanudarla
     if (this.pausada()) {
-      this.sql.exec('UPDATE avisos SET estado = 2 WHERE id = ?', av.id);
+      this.sql.exec('UPDATE avisos SET estado = ? WHERE id = ?', NO_SALIO, av.id);
       return;
     }
     // 🔴 VENCIDO NO SE MANDA. Si el Worker estuvo caído y el evento ya
-    // empezó, el aviso se descarta en vez de llegar tarde.
+    // empezó, el aviso no sale en vez de llegar tarde (y el evento sigue siendo un evento: `NO_SALIO`).
     if (ahora > av.hasta) {
-      this.sql.exec('UPDATE avisos SET estado = 2 WHERE id = ?', av.id);
+      this.sql.exec('UPDATE avisos SET estado = ? WHERE id = ?', NO_SALIO, av.id);
       return;
     }
     // el «cancelado» sólo a quien le llegó el aviso del evento (`hs`, ver `cancelaciones()`)
@@ -4613,6 +4703,8 @@ export class Avisos {
     // 🎟️ y su Pase: las Tareas que cumplió y las llaves en vivo que miró
     this.sql.exec('DELETE FROM pase_hecho WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_vivo WHERE quien = ?', String(d.quien));
+    // 📊 y los días que usó el bot o la página (el Dashboard): guardaban su Discord ID 35 días (revisión del 05/10/2026)
+    this.sql.exec('DELETE FROM uso WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
     // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
@@ -5512,9 +5604,17 @@ export class Avisos {
     const { racha } = this.rachaDe(quien);
     if (!racha.inicio || !(c.cada > 0) || !(c.premio > 0)) return;
     const ahora = Date.now();
-    for (let k = c.cada; k <= racha.actual; k += c.cada) {
-      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-        'racha:' + quien + ':' + racha.inicio + ':' + k, quien, c.premio, ahora);
+    // 🔴 NUNCA MÁS ESCALONES QUE LOS QUE VALE LA RACHA DE AHORA (revisión del 05/10/2026). Un día que llega tarde —una
+    // llave corregida que lo marca jugado— puede unir dos rachas ya cobradas: días 1–7 (cobrado) y 9–15 (cobrado) se
+    // vuelven 1–15, y con la clave por inicio se cobraba también «1:14», tres premios por dos escalones. Se cuentan los
+    // ya cobrados de cualquier racha que empezó adentro de ésta, y se paga sólo lo que falta
+    const pref = 'racha:' + quien + ':';
+    const cobrados = this.sql.exec('SELECT COUNT(*) AS n FROM tienda WHERE quien = ? AND id LIKE ? AND substr(id, ?, 10) >= ?',
+      quien, pref + '%', pref.length + 1, racha.inicio).toArray()[0].n;
+    let faltan = Math.floor(racha.actual / c.cada) - cobrados;
+    for (let k = c.cada; k <= racha.actual && faltan > 0; k += c.cada) {
+      faltan -= this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+        pref + racha.inicio + ':' + k, quien, c.premio, ahora).rowsWritten || 0;
     }
   }
 
@@ -5725,8 +5825,12 @@ export class Avisos {
     const P = this.paseDatos();
     if (!P.cfg || !P.miembros.has(quien)) return { ok: true, cuenta: false };
     const desde = Date.now() - VIVO_HORAS * HORA;
-    const hay = this.sql.exec('SELECT 1 FROM vivo WHERE ed > ? LIMIT 1', desde).toArray().length ||
-      this.sql.exec('SELECT 1 FROM veredictos WHERE pub > ? LIMIT 1', desde).toArray().length;
+    // 🔴 ESA llave, no cualquiera (revisión del 05/10/2026): con «algo en vivo» alcanzaba mandar cualquier id mientras
+    // se jugaba cualquier evento y la Tarea se cumplía sin mirar nada. La de la página es la de `vivo` (su primer
+    // mensaje) o `ver:<id>`, la de un 5 vidas de #veredictos (`LlaveVivo.veredictos()`)
+    const hay = llave.startsWith('ver:')
+      ? this.sql.exec('SELECT 1 FROM veredictos WHERE id = ? AND pub > ? LIMIT 1', llave.slice(4), desde).toArray().length
+      : this.sql.exec('SELECT 1 FROM vivo WHERE id = ? AND ed > ? LIMIT 1', llave, desde).toArray().length;
     if (!hay) return { ok: true, cuenta: false };
     this.sql.exec('INSERT OR IGNORE INTO pase_vivo (quien, llave, t) VALUES (?, ?, ?)', quien, llave, Date.now());
     return { ok: true, cuenta: true, nuevas: this.paseRevisar(quien) };
@@ -5860,8 +5964,132 @@ export class Avisos {
       sistema: {
         ok: e.ok, vigia: (this.leer('vigia') || {}).t || null, suscripciones: e.suscripciones, ultimas_24h: e.ultimas_24h,
         ultimo: e.ultimo, disparador: e.disparador, ultimo_error: e.ultimo_error,
+        // ▶️ la última vez que Dlx corrió el ciclo a mano (ver `cicloAMano()`)
+        ciclo_mano: this.leer('ciclo_mano'),
       },
+      pase: this.paseResumen(),
     };
+  }
+
+  /** Un pedido a la API de GitHub sobre el repo del ciclo, con el token del Worker. ⚠️ GitHub rechaza sin User-Agent,
+   *  con un 403 que no dice que el problema es el encabezado (ver el disparador del ciclo, en worker.js). */
+  gh(ruta, opc) {
+    return fetch(`https://api.github.com/repos/${this.env.GH_REPO}${ruta}`, {
+      // ⏱️ con tope: el Dashboard lo espera, y con GitHub caído un pedido sin tope colgaba el panel entero
+      signal: AbortSignal.timeout(8000),
+      ...(opc || {}),
+      headers: {
+        'User-Agent': 'liga-global-bot', 'Accept': 'application/vnd.github+json',
+        'Authorization': `Bearer ${this.env.GH_TOKEN}`, 'Content-Type': 'application/json',
+      },
+    });
+  }
+
+  /**
+   * ▶️ LAS ÚLTIMAS CORRIDAS DEL CICLO, para el Dashboard (05/10/2026): en cola, corriendo o cómo terminó. Ese día una
+   * corrida estuvo 20 minutos «en cola» en GitHub sin que nada lo dijera. Un pedido por vez que Dlx abre el Dashboard.
+   */
+  async corridasCiclo() {
+    if (!this.env.GH_TOKEN || !this.env.GH_REPO) return [];
+    try {
+      const r = await this.gh('/actions/workflows/ciclo.yml/runs?per_page=4');
+      if (r.status !== 200) return [];
+      return ((await r.json()).workflow_runs || []).map((w) => ({ estado: w.status || '', fin: w.conclusion || '',
+        creada: w.created_at || '', empezo: w.run_started_at || '', toco: w.updated_at || '', url: w.html_url || '' }));
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /**
+   * ⚠️ SI A GITHUB ACTIONS LE PASA ALGO, el Dashboard lo dice (05/10/2026: dos corridas seguidas se cancelaron a los
+   * 15 minutos sin arrancar, con un incidente abierto en githubstatus.com). `null` si anda bien o no se sabe.
+   */
+  async githubActions() {
+    try {
+      const r = await fetch('https://www.githubstatus.com/api/v2/summary.json', { headers: { 'User-Agent': UA },
+        signal: AbortSignal.timeout(4000) });
+      if (r.status !== 200) return null;
+      const d = await r.json();
+      const c = (d.components || []).find((x) => x.name === 'Actions');
+      if (!c || c.status === 'operational') return null;
+      const inc = (d.incidents || []).find((i) => /actions/i.test(String(i.name || ''))) || null;
+      return { estado: c.status, incidente: inc ? String(inc.name || '').slice(0, 120) : '', desde: inc ? inc.created_at : null };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /**
+   * ▶️ CORRER EL CICLO AHORA, desde el Dashboard (05/10/2026, Dlx: «añade otras opciones al dashboard que tú veas»). Es
+   * el mismo `workflow_dispatch` que larga el cron del Worker cada media hora. 🛑 Una vez cada 10 minutos: dos corridas
+   * seguidas se encolan (GitHub las pone una detrás de otra) y la segunda no cambia nada.
+   */
+  async cicloAMano(ahora) {
+    const ult = this.leer('ciclo_mano') || {};
+    const falta = 10 * MIN - (ahora - (ult.t || 0));
+    if (ult.ok && falta > 0) return { error: 'espera', minutos: Math.ceil(falta / MIN) };
+    if (!this.env.GH_TOKEN || !this.env.GH_REPO) return { error: 'sin el token de GitHub en el Worker' };
+    let estado = 0;
+    try {
+      const r = await this.gh('/actions/workflows/ciclo.yml/dispatches', { method: 'POST', body: JSON.stringify({ ref: 'main' }) });
+      estado = r.status;
+    } catch (e) { estado = 0; }
+    const v = { t: ahora, ok: estado === 204, estado };
+    this.guardar('ciclo_mano', v);
+    return v.ok ? v : { error: 'GitHub contestó ' + (estado || 'nada'), estado };
+  }
+
+  /**
+   * 🎟️ EL PASE, EN NÚMEROS, para el Dashboard: cuántos miembros pueden jugarlo, cuántos ya tienen nivel y en cuál está
+   * cada uno, y qué Tareas se hicieron esta semana. Sólo números: nunca quién.
+   */
+  paseResumen() {
+    const P = this.paseDatos();
+    if (!P.cfg) return null;
+    const ahora = Date.now();
+    const niveles = this.paseNiveles().niveles;
+    const dist = {};
+    for (const n of Object.values(niveles)) dist[n] = (dist[n] || 0) + 1;
+    const sem = P.sem.find((s) => s[1] <= ahora && ahora < s[2]) || null;
+    const nombre = Object.fromEntries((P.cfg.tareas || []).map((t) => [t[0], t[1]]));
+    const tareas = sem ? this.sql.exec('SELECT tarea, COUNT(*) AS n FROM pase_hecho WHERE temp = ? AND sem = ? ' +
+      'GROUP BY tarea ORDER BY n DESC', P.cfg.temp, sem[0]).toArray().map((f) => [nombre[f.tarea] || f.tarea, f.n]) : [];
+    return { temp: P.cfg.temp, niveles: P.cfg.niveles, miembros: P.miembros.size, con_nivel: Object.keys(niveles).length,
+      dist, semana: sem ? sem[0] : '', hasta: sem ? sem[2] : null, tareas };
+  }
+
+  /**
+   * 🔴 LO QUE ESTÁ EN VIVO, MIRADO DESDE EL DASHBOARD (05/10/2026). La llave de la DESGRACIAS EN TOKYO VOL 23 decía
+   * «VOL 22» y no aparecía en la página: esto dice, de cada llave que se está tocando, a qué anuncio se juntó y cómo
+   * (por nombre, o huérfana: ver `LlaveVivo.deEvento()`), en qué ronda va y qué dijo el bot en el chat.
+   */
+  async vivoDueno(ahora) {
+    const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
+      ahora - 3 * HORA).toArray();
+    if (!filas.length) return [];
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const LV = globalThis.LlaveVivo;
+    if (!LV) return [];
+    const ls = [];
+    for (const b of LV.unirPartidas(filas)) {
+      try { const L = LV.aLlave(b); if (L) ls.push(L); } catch (e) { /* una que no se lee no tapa a las demás */ }
+    }
+    const anuncios = this.anunciosVistos(ahora, 36, 40).map((a) => ({ nombre: a.n, sv: a.sv, cuando: a.ini, link: a.url, mod: a.mod }));
+    let asig = {};
+    try { asig = LV.asignar(anuncios, ls).deLlave; } catch (err) { asig = {}; }
+    const nombres = this.leer('nombres_vivo') || {};
+    return ls.map((L) => {
+      // el de la asignación (por nombre, o huérfana si el nombre no le daba), y si no, el que el bot ya le había dado
+      let e = asig[L.id] || null, como = '';
+      try { if (e) como = LV.porNombre(e, [L]) === L ? 'nombre' : 'huerfana'; } catch (err) { como = ''; }
+      if (!e && nombres[L.id]) { e = { nombre: nombres[L.id].n }; como = 'guardado'; }
+      const chat = this.sql.exec("SELECT COUNT(DISTINCT msg) AS n, MAX(t) AS t FROM chat_vivo WHERE llave = ? AND msg != ''",
+        L.id).toArray()[0] || {};
+      return { sv: L.sv || '', titulo: L.nombre || '', anuncio: e ? e.nombre : '', como, ronda: L.enJuego || '',
+        terminada: !!L.terminada, gente: L.participantes || 0, ed: L.ed || L.pub || 0, link: (L.links || [])[0] || '',
+        chat: { mensajes: chat.n || 0, t: chat.t || null } };
+    });
   }
 
   estado() {

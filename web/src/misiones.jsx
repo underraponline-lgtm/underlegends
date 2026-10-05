@@ -2,7 +2,7 @@
 // mismas para todos, que se renuevan el lunes a las 11 AM ET con los multiplicadores; cada una suma puntos a la
 // Temporada y las tres juntas dan un bono. La cuenta la hace el ciclo (`bot/misiones.py`) y viaja en el lobby
 // (`mis`): acá sólo se muestra. Las TAREAS son otra cosa: son del Pase.
-import { MESES, hora, limpio, num } from './liga.js';
+import { MESES, limpio, num, quienMira } from './liga.js';
 import { Cara } from './piezas.jsx';
 
 const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil' };
@@ -20,16 +20,18 @@ export function Misiones({ liga }) {
   const prog = M.prog || {};
   const lista = M.lista || [];
   const mio = Object.keys(prog).find(esYo);
+  const dc = quienMira().dc;
   const cumplieron = (i) => Object.values(prog).filter((v) => (v[i] || 0) >= lista[i].m).length;
   const semana = Object.entries(M.pts || {}).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
   const total = Object.entries(M.total || {}).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, 10);
   return (
     <div className="mi">
-      <p className="dv-cab">Semana del {fechaCorta(M.sem)} · se renuevan el lunes a las {hora(M.fin)}.
+      <p className="dv-cab">Semana del {fechaCorta(M.sem)} · se renuevan {liga.dia(M.fin)}.
         {' '}Las mismas tres para todos, y se cumplen jugando: cada una suma a tu <b>Temporada</b>, y las tres juntas, <b>+{num(M.bono)}</b> más.</p>
       <ol className="mi-lista">
         {lista.map((x, i) => {
-          const v = mio ? (prog[mio] || [])[i] || 0 : null;
+          // 🔑 quien juega la temporada y todavía no hizo nada esta semana lleva 0, no «nada» (revisión del 05/10/2026)
+          const v = mio ? (prog[mio] || [])[i] || 0 : yo ? 0 : null;
           const ok = v != null && v >= x.m;
           return (
             <li key={x.id} className={'mi-m mi-' + x.n + (ok ? ' ok' : '')}>
@@ -42,7 +44,8 @@ export function Misiones({ liga }) {
           );
         })}
       </ol>
-      {!yo ? <p className="dv-cab">Entrá con Discord y acá ves cuánto llevás de cada una.</p> : null}
+      {!yo ? <p className="dv-cab">{dc ? 'Con tu primer evento de la ' + liga.temp + ' acá ves cuánto llevás de cada una.'
+        : 'Entrá con Discord y acá ves cuánto llevás de cada una.'}</p> : null}
       <section className="dv-g" aria-label="Los que sumaron esta semana">
         <h3 className="dv-gt">Esta semana<small>{semana.length ? semana.length + ' sumaron' : 'todavía nadie'}</small></h3>
         {semana.length ? (

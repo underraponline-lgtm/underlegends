@@ -1,0 +1,115 @@
+{
+ "_leeme": "La fase previa de cada llave que la tuvo (bot/escuchar.py, `fases_guardadas()`): la primera vez que se juntan queda acá, para que el evento no cambie de nombre cuando la fase ya no se lee. No se edita a mano.",
+ "llaves": {
+  "1556442068170309683": {
+   "canal": "1309234583023124531",
+   "fase": "1556413923450683475",
+   "titulo": "VALHALLA VOL1",
+   "grupos": [
+    [
+     "KYRON 🇻🇪",
+     "ZANET 🇻🇪",
+     "PANCHOK 🇨🇱",
+     "FLAMA 🇦🇷",
+     "TEITO 🇨🇴",
+     "ZAFKABEFF 🇻🇪",
+     "RUBIK 🇦🇷",
+     "REDSTONITA 🇳🇮",
+     "ARIAXER🇦🇷"
+    ],
+    [
+     "MAUZZ 🇻🇪",
+     "MAIL O 🇵🇪",
+     "LEONAR-T 🇲🇽",
+     "VANDU 🇨🇴",
+     "MOLUSCO 🇦🇷",
+     "EMILIO ALVA 🇲🇽",
+     "VELATZ 🇨🇱",
+     "TROT 🇪🇸",
+     "SDK 🇵🇾",
+     "NOA 🇲🇽"
+    ],
+    [
+     "NUMBER 🇻🇪",
+     "BLOODY 🇨🇴",
+     "ECLIPSE 🇨🇱",
+     "SOL🇵🇪",
+     "MAWS🇻🇪",
+     "MINIBOY 🇨🇱",
+     "LVEL 🇻🇪",
+     "UDDIZIM 🇧🇷",
+     "MAJIZTRAL 🇨🇴",
+     "CORVO 🇧🇴",
+     "DANCOLL 🇻🇪",
+     "YIO 🇲🇽"
+    ],
+    [
+     "VANDU 🇨🇴",
+     "WARRIORVID 🇨🇴",
+     "JEIXDER 🇦🇷",
+     "CARLOS 🇪🇨",
+     "BTRECE 🇺🇾",
+     "SAZ 🇨🇴",
+     "KOURIER 🇲🇽",
+     "CHOCLITO 🇦🇷",
+     "SAIKO 🇨🇱",
+     "LEYENDA.X5 🇦🇷"
+    ],
+    [
+     "LV 🇦🇷",
+     "NXUZ 🇵🇪",
+     "XERVOE 🇨🇱",
+     "SOMBRA 🇵🇷",
+     "MATHIAS 🇻🇪",
+     "MINIBOY 🇨🇱",
+     "TIAGOMS 🇦🇷",
+     "KRISH 🇵🇪",
+     "DAMIAN 🇵🇪",
+     "DREXX 🇵🇪",
+     "JEIXDER🇵🇪"
+    ],
+    [
+     "ABYSSUS 🇨🇦",
+     "LUISITO 🇦🇷",
+     "MCO 🇦🇷",
+     "RAYDEN 🇲🇽",
+     "SGB 🇨🇴",
+     "DAMIAN🇵🇪",
+     "REYES 🇻🇪",
+     "ZANTI SKT 🇦🇷",
+     "ZAIK 🇪🇸",
+     "MAYEUTYK 🇺🇾",
+     "MCGALILEO 🇻🇪",
+     "CÁLIZ 🇲🇽"
+    ],
+    [
+     "EZZIAS 🇵🇾",
+     "JERE 🇵🇷",
+     "ONZAS 🇻🇪",
+     "PLAYER 🇻🇪",
+     "NOONE 🇵🇪",
+     "CORVO🇧🇴",
+     "NUMBER 🇻🇪",
+     "NOX 🇭🇳",
+     "HEAT 🇵🇷",
+     "DAMIAN 🇵🇪",
+     "ARDEAN 🇵🇪",
+     "SEKKA 🇦🇷"
+    ],
+    [
+     "NAKAMURA 🇦🇴",
+     "LAST 🇬🇶",
+     "KOCHI 🇨🇱",
+     "TYPHLOSION 🇨🇱",
+     "LORD 🇨🇴",
+     "ZIGNOS 🇩🇴",
+     "HEAT🇨🇺",
+     "ZWO 🇦🇷",
+     "G-MC 🇬🇹",
+     "ACRY 🇵🇦"
+    ]
+   ],
+   "t": "2026-10-05T20:56:23.722858+00:00"
+  }
+ }
+}

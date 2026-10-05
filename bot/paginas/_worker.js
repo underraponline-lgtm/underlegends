@@ -100,6 +100,8 @@ const AVISOS = {
   '/api/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx)
   '/api/avisos/dueno/ajuste': 'POST',
+  // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx)
+  '/api/avisos/dueno/ciclo': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
@@ -134,9 +136,28 @@ function sesion(req) {
   return m ? m[1] : '';
 }
 
+// 📊 LA VISITA, UNA VEZ CADA 6 HORAS POR IP (revisión del 05/10/2026). Es lo único que cualquiera escribe sin entrar:
+// sin tope, un script empujaba el contador y gastaba filas del objeto (techo: 100.000 escritas por día). Acá y no en el
+// Worker porque el Worker ve la IP de este proxy, no la de quien visita. En la memoria de cada instancia: no es un
+// candado, es un freno —la página ya avisa una vez por día y por navegador—
+const VISITAS = new Map();
+function visitaRepetida(req) {
+  const ip = req.headers.get('cf-connecting-ip') || '';
+  if (!ip) return false;
+  const ahora = Date.now();
+  if (VISITAS.size > 20000) VISITAS.clear();
+  if (ahora - (VISITAS.get(ip) || 0) < 6 * 3600000) return true;
+  VISITAS.set(ip, ahora);
+  return false;
+}
+
 async function avisos(req, url) {
   const metodo = AVISOS[url.pathname];
   if (req.method !== metodo) return new Response('no', { status: 405 });
+  if (url.pathname === '/api/avisos/visita' && visitaRepetida(req)) {
+    return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
+      'cache-control': 'no-store' } });
+  }
   const init = { method: metodo, headers: { accept: 'application/json' } };
   if (metodo === 'POST') {
     const cuerpo = await req.text();
@@ -160,6 +181,12 @@ async function avisos(req, url) {
     // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
     // de atraso no le cambia nada a nadie
     init.cf = { cacheTtl: 60, cacheEverything: true };
+  } else if (url.pathname.endsWith('/pases') || url.pathname.endsWith('/niveles')) {
+    // 🎟️ el nivel del Pase y el de la racha de cada perfil (revisión del 05/10/2026): los pide CADA Inicio y CADA
+    // perfil, y en el objeto son tablas enteras —el Pase, una persona por persona—. Con la Liga creciendo eran
+    // millones de filas leídas por día (techo: 5 millones). Cinco minutos en el borde: un nivel nuevo se ve un rato
+    // después, y el de cada uno, en su Pase, al instante (eso va con su sesión, no por acá)
+    init.cf = { cacheTtl: 300, cacheEverything: true };
   }
   const r = await fetch(ORIGEN + url.pathname.slice('/api'.length), init);
   return new Response(r.body, {

@@ -139,8 +139,10 @@ def fuera():
     desde = d.get('desde') if isinstance(d.get('desde'), dict) else d
     por_dia = {}
     for _k, v in (desde or {}).items():
+        # una fecha por carta desde el 05/10/2026: vale la primera que vence
+        fechas = list(v.values()) if isinstance(v, dict) else [v]
         try:
-            f = dt.date.fromisoformat(str(v)[:10]) + dt.timedelta(days=F.DIAS)
+            f = min(dt.date.fromisoformat(str(x)[:10]) for x in fechas) + dt.timedelta(days=F.DIAS)
         except ValueError:
             continue
         por_dia[f] = por_dia.get(f, 0) + 1

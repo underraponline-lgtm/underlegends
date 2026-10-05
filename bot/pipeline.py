@@ -354,11 +354,15 @@ def _estado_final(codigo, destino=None, cuotas=True):
             q = {}
             try:
                 from subir_cartas import sesion
-                from cuotas import kv_hoy, worker_24h, r2_total
+                from cuotas import kv_hoy, worker_24h, r2_total, objeto_hoy
                 s = sesion()
                 kv = kv_hoy(s)
                 if kv:
                     q['kv'] = {'write': kv.get('write', 0), 'read': kv.get('read', 0)}
+                # el objeto: filas leídas y escritas, y pedidos (lo mira el Dashboard)
+                ob = objeto_hoy(s)
+                if ob:
+                    q['objeto'] = ob
                 w = worker_24h(s)
                 if w:
                     q['worker'] = w

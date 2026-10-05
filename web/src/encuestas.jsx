@@ -1,11 +1,13 @@
 // Las encuestas del Inicio: el ×2 de la semana que viene y El Elegido, juntas arriba de Misiones. Dlx, 30/09/2026:
 // «¿qué tal si arriba de misiones ponemos encuestas?». Antes vivían en la Tira de «Esta semana» y abajo de Se busca,
 // donde ocupaban lugar y se veían raras. Los votos los guarda y los cuenta app.js (`votar`, `ENC_*`): acá se muestran.
-import { useState } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import { limpio, norm, siglaDe } from './liga.js';
 import { Cara, Pest, Sec, accion } from './piezas.jsx';
 import { TuTemporada, TusEventos } from './medio.jsx';
-import { DivisionPrevia } from './divisiones.jsx';
+// 🏟️ perezosa (revisión del 05/10/2026): con el import directo, las divisiones viajaban en el paquete de todos —el que
+// se bajaba para abrir el Inicio pasaba los 130 KB comprimidos— y se ven sólo al tocar su pestaña
+const DivisionPrevia = lazy(() => import('./divisiones.jsx').then((m) => ({ default: m.DivisionPrevia })));
 
 const suma = (cu) => Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0);
 const votos = (n) => n + (n === 1 ? ' voto' : ' votos');
@@ -102,7 +104,7 @@ export function Encuestas({ liga, enc, dc }) {
   const onEnlace = yo ? undefined : (dc ? accion.cuenta : accion.entrar);
   // 🏟️ y las divisiones de la semana, como previa (Dlx, 05/10/2026: «que divisiones tenga su espacio en INICIO
   // también… el primer panel donde está tu temporada y encuestas»). Va segunda: la primera la decide lo de arriba
-  const div = liga.d.div ? { c: 'divisiones', et: 'Divisiones', t: 'Divisiones', cuerpo: <DivisionPrevia liga={liga} /> } : null;
+  const div = liga.d.div ? { c: 'divisiones', et: 'Divisiones', t: 'Divisiones', cuerpo: <Suspense fallback={null}><DivisionPrevia liga={liga} /></Suspense> } : null;
   if (!x2 && !el) {
     if (!div) return <Sec id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace}>{tuyos}</Sec>;
     return <Pest id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace} extra="panel" titulos
