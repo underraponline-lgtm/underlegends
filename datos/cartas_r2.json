@@ -410,6 +410,7 @@
  },
  "andres": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andres/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andres/sv-ffa.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andres/temporada.webp"
  },
  "androide": {
@@ -2862,6 +2863,16 @@
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/forcegp/sv-ffs.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/forcegp/sv-urbf.webp"
  },
+ "freestyle4allmyniggaz": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/pais.webp",
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/temporada.webp"
+ },
  "frost": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/frost/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/frost/bloq-pais.webp",
@@ -2952,6 +2963,12 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/g8/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/g8/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/g8/temporada.webp"
+ },
+ "garxzii": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/temporada.webp"
  },
  "garxziiscity": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxziiscity/bloq-competitivo.webp",
