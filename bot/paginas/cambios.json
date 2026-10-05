@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.44",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T18:35:00-04:00",
+   "titulo": "La ACADEMIA cuenta como tu servidor",
+   "items": [
+    "🏛️ **Los eventos de la ACADEMIA (LCW) ya cuentan para tu servidor**: si jugaste más ahí, tu tarjeta de Temporada lleva su escudo, y el Ranking de Temporada tiene su columna."
+   ]
+  },
+  {
    "version": "2.43",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T18:00:00-04:00",
