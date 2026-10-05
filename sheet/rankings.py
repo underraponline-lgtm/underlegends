@@ -952,6 +952,47 @@ def cabecera_oficial(hoja=None, fila=None):
     return [str(c).strip() for c in (v[0] if v else [])]
 
 
+def columnas_que_faltan(cab, nueva=None):
+    """Las columnas de `CAB_TEMPORADA` que le faltan AL FINAL a la cabecera `cab` de la hoja, o `[]`.
+
+    🔴 LA CABECERA DE LA HOJA NO CRECÍA SOLA (05/10/2026). `tabla_nueva()` y la escritura arman la tabla con la
+    cabecera que TIENE la hoja —es lo que deja agregarle una columna a mano—, y la única que la alargaba era
+    `rehacer_estructura()`, que se corre a mano y vacía la hoja. LCW (la ACADEMIA) entró a `SERVIDORES` el 04/10 y nadie
+    la corrió: sus eventos no se escribían en ninguna columna, y `construir_pool_temporada.py`, que busca los servidores
+    por la cabecera, les dio otro servidor —el escudo de su Temporada— a seis personas que jugaron más ahí (Kochi: 4 en
+    ACAD y 1 en URB, salía de URB). La columna `Sv` de la vitrina sí decía LCW.
+
+    ⚠️ SÓLO SI LA DE LA HOJA ES EL PRINCIPIO DE LA NUEVA: se comparan por su código (`SR` y `SNK` son la misma
+    columna) y sin el selector de variante de los emoji. Una hoja con otra forma no se toca: eso es
+    `rehacer_estructura()`, a mano.
+    """
+    nueva = CAB_TEMPORADA if nueva is None else nueva
+    n = lambda c: ver(cod(str(c).strip())).replace(chr(0xFE0F), '')
+    vieja = [n(c) for c in cab]
+    if not vieja or len(vieja) >= len(nueva) or vieja != [n(c) for c in nueva[:len(vieja)]]:
+        return []
+    return list(nueva[len(vieja):])
+
+
+def alargar_cabecera(faltan, cab, hoja=None, sid=None):
+    """Escribe `faltan` a continuación de la cabecera `cab` de la hoja, y le suma a la grilla las columnas que le
+    falten. Ver `columnas_que_faltan()`: sólo agrega al final, nunca mueve ni borra."""
+    if not faltan:
+        return
+    sid = sid or OFICIAL
+    hoja = hoja or HOJA
+    fila = fila_cabecera(hoja)
+    total = len(cab) + len(faltan)
+    props = _hoja_id(sid, hoja)
+    if props and props['gridProperties']['columnCount'] < total:
+        _api('POST', sid, ':batchUpdate', json={'requests': [{'appendDimension': {
+            'sheetId': props['sheetId'], 'dimension': 'COLUMNS',
+            'length': total - props['gridProperties']['columnCount']}}]})
+    _api('PUT', sid, '/values/%s?valueInputOption=RAW'
+         % _q('%s!%s%d:%s%d' % (hoja, _col(len(cab) + 1), fila, _col(total), fila)),
+         json={'values': [list(faltan)]})
+
+
 def rangos_de(res):
     """`{rapero: 'SSS'|…|'E'}` desde el Score. `{}` si no se puede.
 
@@ -1308,6 +1349,9 @@ def tabla_nueva():
     rg = rangos_de(res)
 
     cab = cabecera_oficial()
+    # 🔴 con las columnas del código que la hoja todavía no tiene, al final (ver `columnas_que_faltan()`): una columna
+    # que no está en la cabecera no se calcula, y los eventos de ese servidor se perdían
+    cab = cab + columnas_que_faltan(cab)
     icol = {c: i for i, c in enumerate(cab)}
     viejo = {}
     # ⚠️ LO LEÍDO SE GUARDA: `main()` lo compara con lo calculado para no
@@ -2948,6 +2992,23 @@ def _self_check():
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
 
+    # 🔴 LA CABECERA DE LA HOJA CRECE SOLA AL FINAL (ver `columnas_que_faltan()`, 05/10/2026)
+    print('\n  la cabecera de la hoja, contra la del código')
+    vieja = list(CAB_TEMPORADA[:-1])
+    casos = [
+        ('le falta la última (LCW el 04/10): se agrega', columnas_que_faltan(vieja), [CAB_TEMPORADA[-1]]),
+        ('completa: nada', columnas_que_faltan(list(CAB_TEMPORADA)), []),
+        ('con SR donde ahora dice SNK es la misma columna: falta igual la última',
+         columnas_que_faltan([('SR' if c == 'SNK' else c) for c in vieja]), [CAB_TEMPORADA[-1]]),
+        ('con otra forma (una columna distinta en el medio): no se toca',
+         columnas_que_faltan(['#', 'Rapero', 'Otra'] + vieja[3:]), []),
+        ('vacía: no se inventa', columnas_que_faltan([]), []),
+    ]
+    for que, dio, esp in casos:
+        ok = dio == esp
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
     # 🔑 QUIÉN VUELVE A JUGAR (`retencion()`): otro DÍA, dentro de los 14
     print('\n  quién vuelve a jugar un segundo evento')
     utc = _dt.timezone.utc
@@ -3059,7 +3120,12 @@ def main():
                   '`sheet/resetear.py --prueba`.\n' % len(vivas))
             return 1
         cab = cabecera_oficial()
+        # 🔴 lo que le falta al final, como en `tabla_nueva()`; se escribe recién antes de la tabla, si se escribe
+        faltan = columnas_que_faltan(cab)
+        cab = cab + faltan
         print('   %d fila(s) · %d columnas' % (len(filas), len(cab)))
+        if faltan:
+            print('   ➕ la cabecera de la hoja no tiene %s: se agrega al final' % ', '.join(faltan))
         print('\n   las tres primeras:')
         for f in filas[:3]:
             print('      ' + ' | '.join('%-9s' % str(c)[:9] for c in f[:10]))
@@ -3151,6 +3217,9 @@ def main():
             print('\n   ✓ la vitrina ya dice esto: no la reescribo\n')
             return 0
         print('\n   escribiendo…')
+        if faltan:
+            alargar_cabecera(faltan, cab[:len(cab) - len(faltan)])
+            print('   ➕ cabecera: %s' % ', '.join(faltan))
         r = escribir_vitrina(filas, cab)
         # ⚠️ LA PORTADA TAMBIEN SE VISTE. Es la hoja que más se mira y
         # era justo la que quedaba sin rediseño, porque no se rehace.
