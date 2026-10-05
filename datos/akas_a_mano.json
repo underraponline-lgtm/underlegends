@@ -97,7 +97,13 @@
   "   sigue siendo de la de la Lista.",
   "",
   "Dlx, 04/10/2026 («2. A»): «Pichula» es PichulaMc y «za» es Provenza. No es por el nombre: la cuenta de Discord",
-  "que buscó el bot para cada uno ES la que ya tienen en la Lista (Pichulamc en DDF; «provenzaaznevorp», Provenza al revés)."
+  "que buscó el bot para cada uno ES la que ya tienen en la Lista (Pichulamc en DDF; «provenzaaznevorp», Provenza al revés).",
+  "",
+  "⚠️ SOL->SOL🇵🇪 lo dijo Dlx el 05/10/2026: «Sol y Sol pe son la misma». «SOL»,",
+  "   sin bandera, jugó la RAP EXHIBITION 1/8 de Snake Rap (#363, 22/09) y",
+  "   «SOL🇵🇪» la FFA WORLD CUP (#366, 27/09) y un evento de ACAD. Ninguno está",
+  "   en la Lista ni tiene Discord ID: como KENNY, eran dos filas con la misma",
+  "   clave. El nombre real lleva la bandera para que conserve su país (Perú)."
  ],
  "cuentas": {
   "Monet": [
@@ -200,6 +206,10 @@
   [
    "za",
    "Provenza"
+  ],
+  [
+   "SOL",
+   "SOL🇵🇪"
   ]
  ],
  "no_confundir": [
