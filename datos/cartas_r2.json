@@ -3164,6 +3164,13 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gezelmp/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gezelmp/sv-urbf.webp"
  },
+ "ghost": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ghost/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ghost/bloq-pais.webp",
+  "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ghost/bloq-temporada.webp",
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ghost/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ghost/sv-dra.webp"
+ },
  "gian": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gian/servidor.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gian/temporada.webp"

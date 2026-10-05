@@ -640,6 +640,9 @@
   "Gezel.Mp": {
    "servidor": "f230b32c72bd:9d97339447c1:055f77"
   },
+  "Ghost": {
+   "servidor": "c9de9afbb85c:9d97339447c1:055f77"
+  },
   "Gian": {
    "servidor": "4cfaa7810a85:9d97339447c1:da39a3",
    "temporada": "cd7fa3bb282e:f5299dbdfa04"
@@ -2080,5 +2083,5 @@
    "servidor": "994982e6deaa:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-05T16:27:51+00:00"
+ "cuando": "2026-10-05T16:57:01+00:00"
 }
