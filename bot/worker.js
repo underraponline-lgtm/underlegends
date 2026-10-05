@@ -174,15 +174,15 @@ const bloqueada = (g, id) => !!(g && g.bl && g.bl.indexOf(id) >= 0
 export const SERVIDORES = [
   { sv: 'DRA', nombre: 'Discord Rap Español', guild: '841017460341604382', invita: 'https://discord.gg/5jUM3WXDXe' },
   { sv: 'FFA', nombre: 'Freestyle For All', guild: '1468472442925092958', invita: 'https://discord.gg/JrmE78qdMd' },
-  { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj' },
+  { sv: 'TWR', nombre: 'The Warren Rap', guild: '1115145044127666196', invita: 'https://discord.gg/fytxhaTCVj', fuera: true },
   // 🚪 `fuera`: registrado pero no de la Liga, así que no sale en el menú de la Servidor (Dlx, 04/10/2026). Ver
   // `en_la_liga` en `datos/servidores.json`, que es el que manda
   { sv: 'TFC', nombre: 'The Freestyle Corpo', guild: '1043611686524944404', invita: 'https://discord.gg/grUBFhsFFa', fuera: true },
   // 🔤 `sigla`: la que se lee, cuando no es el código (Dlx, 03/10/2026: SNK y URB). Ver `datos/servidores.json`.
   // ⚠️ AL FINAL del objeto: `bot/desplegar.py` lee `sv`, `nombre` y `guild` en ese orden y los compara con el json
   { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp', sigla: 'SNK' },
-  { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9' },
-  { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc' },
+  { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9', fuera: true },
+  { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc', fuera: true },
   { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb', sigla: 'URB' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax', fuera: true },
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
@@ -558,8 +558,11 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         //
         // Decirle «no tiene carta» a las dos era describir el síntoma que ve
         // el bot en vez de la causa que le importa a la persona.
-        // 🚪 sin los que no son de la Liga (`fuera`: TFC y EFA, Dlx 04/10/2026)
-        options: SERVIDORES.filter(s => !s.fuera).map(s => {
+        // 🚪 sin los que no son de la Liga (`fuera`: TFC y EFA, Dlx 04/10/2026) ni aquellos donde el bot no está y
+        // salían siempre bloqueados (TWR, FTN y FRZ, Dlx 05/10/2026: «a»)
+        // ⚠️ SALVO EL QUE SE ESTÁ MOSTRANDO: quien tiene su carta de la pre-temporada en TWR la ve al abrir /card, y
+        // sin su opción el menú no marcaba ninguna ni dejaba volver a ella
+        options: SERVIDORES.filter(s => !s.fuera || s.sv === svAhora).map(s => {
           const tiene = hayCarta(g, s.sv, m);
           const suyo = (g && g.n) || quien;
           const botAhi = !m || !m.bot_en || m.bot_en.indexOf(s.sv) >= 0;

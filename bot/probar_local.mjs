@@ -305,11 +305,15 @@ console.log('\nLA CARTA\n');
      'un select no comparte Action Row con botones');
   // ⚠️ CUÁNTOS, DE LA TABLA Y NO ESCRITO: eran nueve hasta FFS (28/09/2026). 🚪 Menos los que no son de la Liga
   // (`fuera`: TFC y EFA, Dlx 04/10/2026), que no salen
+  // (y desde el 05/10/2026 TWR, FTN y FRZ: el bot no está ahí). ⚠️ SALVO EL QUE SE ESTÁ MOSTRANDO: Konan tiene su
+  // carta de la pre-temporada en TWR, y esa opción se queda para que el menú la marque y se pueda volver
   const deLaLiga = (await import('./worker.js')).SERVIDORES.filter((s) => !s.fuera);
-  ok('lista todos los servidores de la Liga',
-     select(c)?.options?.length === deLaLiga.length, `${select(c)?.options?.length} de ${deLaLiga.length}`);
-  ok('y no los que no son de la Liga (TFC, EFA)',
-     !(select(c)?.options || []).some((o) => o.value === 'TFC' || o.value === 'EFA'));
+  const opts = select(c)?.options || [];
+  ok('lista todos los servidores de la Liga, más el que se está mostrando',
+     opts.length === deLaLiga.length + 1 && opts.some((o) => o.value === 'TWR' && o.default),
+     `${opts.length} de ${deLaLiga.length} + TWR`);
+  ok('y no los que no son de la Liga (TFC, EFA, FTN, FRZ)',
+     !opts.some((o) => ['TFC', 'EFA', 'FTN', 'FRZ'].includes(o.value)));
   // ⚠️ EL «BLOQUEADA» VOLVIÓ, PERO SIGNIFICA OTRA COSA. El del 16/09 era un
   // requisito de eventos y se saco porque mentia. El de ahora (Dlx, 19/09)
   // dice simplemente que ESA PERSONA no tiene carta de ese servidor — que es

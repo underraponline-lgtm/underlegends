@@ -148,7 +148,8 @@
    "nombre": "The Warren Rap",
    "guild_id": "1115145044127666196",
    "invitacion": "https://discord.gg/fytxhaTCVj",
-   "en_el_sheet": true
+   "en_el_sheet": true,
+   "en_la_liga": false
   },
   "TFC": {
    "nombre": "The Freestyle Corpo",
@@ -256,13 +257,15 @@
    "nombre": "Fontana",
    "guild_id": "1331924080835694655",
    "invitacion": "https://discord.gg/U5q5C8XnD9",
-   "en_el_sheet": true
+   "en_el_sheet": true,
+   "en_la_liga": false
   },
   "FRZ": {
    "nombre": "Freestyle Zone",
    "guild_id": "838593179187544064",
    "invitacion": "https://discord.gg/D3JZKM96zc",
-   "en_el_sheet": true
+   "en_el_sheet": true,
+   "en_la_liga": false
   },
   "URBF": {
    "nombre": "Urban Freestyle",
@@ -504,6 +507,8 @@
   "`en_la_liga: false` (Dlx, 04/10/2026: «sacá de la lista de opciones en tarjeta de servidor a TFC, EFA»):",
   "el servidor sigue registrado —su guild y su invitación sirven para reconocer gente— pero no es de la Liga,",
   "así que no sale en el menú de la carta de Servidor de /card. TFC: «no están en la liga global» (25/09);",
-  "EFA nunca estuvo en el Sheet. bot/desplegar.py frena si worker.js (`fuera: true`) no dice lo mismo."
+  "EFA nunca estuvo en el Sheet. bot/desplegar.py frena si worker.js (`fuera: true`) no dice lo mismo.",
+  "TWR, FTN y FRZ también desde el 05/10/2026 (Dlx, a «¿los saco del menú, como TFC y EFA?»: «a»): el bot no está",
+  "en esos servidores, así que en el menú salían siempre «🔒 BLOQUEADA». Siguen registrados y su historia queda."
  ]
 }
