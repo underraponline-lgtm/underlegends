@@ -2,6 +2,30 @@
 "_leeme": "Todos los duelos de la Liga: [evento, instante, a, b, ganador, temporada]. De acá salen los Clásicos de bot/multiplicadores.py; NO se borra con la temporada (los de la temporada de ahora se rehacen desde las llaves).",
 "duelos": [
 [
+399,
+"2026-10-03T21:05:11Z",
+"Zetryko",
+"Panchok",
+"Zetryko",
+"prueba"
+],
+[
+399,
+"2026-10-03T21:05:11Z",
+"Abyssus",
+"Emilio Alva 🇧🇱",
+"Abyssus",
+"prueba"
+],
+[
+399,
+"2026-10-03T21:05:11Z",
+"Abyssus",
+"Zetryko",
+"Abyssus",
+"prueba"
+],
+[
 363,
 "2026-09-22T20:30:55Z",
 "Six",
@@ -2594,7 +2618,7 @@
 "prueba"
 ],
 [
-399,
+401,
 "2026-10-03T21:05:11Z",
 "Zetryko",
 "Panchok",
@@ -2602,15 +2626,15 @@
 "prueba"
 ],
 [
-399,
+401,
 "2026-10-03T21:05:11Z",
 "Abyssus",
-"Emilio Alva 🇧🇱",
+"Emilio Alva",
 "Abyssus",
 "prueba"
 ],
 [
-399,
+401,
 "2026-10-03T21:05:11Z",
 "Abyssus",
 "Zetryko",
@@ -2812,9 +2836,9 @@
 [
 400,
 "2026-10-04T23:05:06Z",
-"SGB 🇨🇴",
-"Noa 🇲🇽",
-"SGB 🇨🇴",
+"SGB",
+"Noa",
+"SGB",
 "prueba"
 ],
 [
@@ -2860,9 +2884,9 @@
 [
 400,
 "2026-10-04T23:05:06Z",
-"SGB 🇨🇴",
+"SGB",
 "SOL🇵🇪",
-"SGB 🇨🇴",
+"SGB",
 "prueba"
 ],
 [
@@ -2884,9 +2908,9 @@
 [
 400,
 "2026-10-04T23:05:06Z",
-"SGB 🇨🇴",
+"SGB",
 "Zignos",
-"SGB 🇨🇴",
+"SGB",
 "prueba"
 ],
 [
@@ -2901,7 +2925,7 @@
 400,
 "2026-10-04T23:05:06Z",
 "Abyssus",
-"SGB 🇨🇴",
+"SGB",
 "Abyssus",
 "prueba"
 ],

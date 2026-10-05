@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-05T06:54:57+00:00",
+ "cuando": "2026-10-05T06:58:41+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5304,6 +5304,15 @@
    "discord_id": "768561204707983361",
    "msg_id": "1556045725253501020",
    "cuando": "2026-10-03T20:50:10"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Warriorvid",
+   "quien": "warriorvid",
+   "discord_id": "713870561586970634",
+   "msg_id": "1556045318699745301",
+   "cuando": "2026-10-03T20:48:33"
   },
   {
    "servidor": "ACAD",
@@ -11874,6 +11883,15 @@
    "discord_id": "1048744067313451050",
    "msg_id": "1549163069106688071",
    "cuando": "2026-09-14T21:00:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "G-MC",
+   "quien": "pijiwizard",
+   "discord_id": "983588342945947648",
+   "msg_id": "1549162046296293427",
+   "cuando": "2026-09-14T20:56:53"
   },
   {
    "servidor": "ACAD",

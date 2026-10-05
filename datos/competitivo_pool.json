@@ -97,8 +97,8 @@
   "duel_real": true,
   "dna_v": 0,
   "dna_t": 0,
-  "din_v": 6,
-  "din_t": 12,
+  "din_v": 7,
+  "din_t": 13,
   "pos": 2,
   "total": 12,
   "rango": "B",
@@ -292,7 +292,7 @@
   "av": "",
   "pos_pais": "1/13",
   "arc_pais": 100,
-  "pos_sv": "1/17",
+  "pos_sv": "1/18",
   "arc_sv": 100,
   "pos_crew": ""
  },
@@ -706,7 +706,7 @@
   "av": "",
   "pos_pais": "2/13",
   "arc_pais": 92,
-  "pos_sv": "2/17",
+  "pos_sv": "2/18",
   "arc_sv": 94
  },
  {
@@ -891,8 +891,8 @@
   "av": "",
   "pos_pais": "5/31",
   "arc_pais": 87,
-  "pos_sv": "3/17",
-  "arc_sv": 88
+  "pos_sv": "3/18",
+  "arc_sv": 89
  },
  {
   "full": "Provenza",
@@ -1930,8 +1930,8 @@
   "av": "",
   "pos_pais": "1/11",
   "arc_pais": 100,
-  "pos_sv": "4/17",
-  "arc_sv": 82
+  "pos_sv": "4/18",
+  "arc_sv": 83
  },
  {
   "full": "Geoka",
@@ -2041,8 +2041,8 @@
   "av": "",
   "pos_pais": "5/13",
   "arc_pais": 69,
-  "pos_sv": "5/17",
-  "arc_sv": 76
+  "pos_sv": "5/18",
+  "arc_sv": 78
  },
  {
   "full": "Polosport",
@@ -2412,8 +2412,8 @@
   "av": "",
   "pos_pais": "3/11",
   "arc_pais": 82,
-  "pos_sv": "6/17",
-  "arc_sv": 71
+  "pos_sv": "6/18",
+  "arc_sv": 72
  },
  {
   "full": "g8🇨🇴",
@@ -3190,8 +3190,8 @@
   "av": "",
   "pos_pais": "7/13",
   "arc_pais": 54,
-  "pos_sv": "7/17",
-  "arc_sv": 65
+  "pos_sv": "7/18",
+  "arc_sv": 67
  },
  {
   "full": "Sexo",
@@ -3748,8 +3748,8 @@
   "av": "",
   "pos_pais": "8/13",
   "arc_pais": 46,
-  "pos_sv": "8/17",
-  "arc_sv": 59
+  "pos_sv": "8/18",
+  "arc_sv": 61
  },
  {
   "full": "Dominick",
@@ -4237,7 +4237,7 @@
  {
   "full": "Emilio Alva",
   "raw": "Emilio Alva",
-  "cc": "",
+  "cc": "mx",
   "sv": "ACAD",
   "crew": "",
   "discord_id": "705827090708168714",
@@ -4259,7 +4259,7 @@
   "dna_v": 0,
   "dna_t": 0,
   "din_v": 0,
-  "din_t": 0,
+  "din_t": 1,
   "pos": 117,
   "total": 12,
   "rango": "",
@@ -6455,8 +6455,8 @@
   "av": "",
   "pos_pais": "11/13",
   "arc_pais": 23,
-  "pos_sv": "9/17",
-  "arc_sv": 53
+  "pos_sv": "9/18",
+  "arc_sv": 56
  },
  {
   "full": "MATICERNA",
@@ -6871,7 +6871,7 @@
   "cc": "",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1249944507802456165",
   "verificado": false,
   "ev": 1,
   "score": 3.1,
@@ -9125,8 +9125,8 @@
   "av": "",
   "pos_pais": "11/11",
   "arc_pais": 9,
-  "pos_sv": "10/17",
-  "arc_sv": 47
+  "pos_sv": "10/18",
+  "arc_sv": 50
  },
  {
   "full": "Sami",
@@ -9200,8 +9200,8 @@
   "av": "",
   "pos_pais": "9/12",
   "arc_pais": 33,
-  "pos_sv": "11/17",
-  "arc_sv": 41
+  "pos_sv": "11/18",
+  "arc_sv": 44
  },
  {
   "full": "Clitax",
@@ -9940,8 +9940,8 @@
   "av": "",
   "pos_pais": "1/3",
   "arc_pais": 0,
-  "pos_sv": "12/17",
-  "arc_sv": 35
+  "pos_sv": "12/18",
+  "arc_sv": 39
  },
  {
   "full": "Jayden",
@@ -9977,8 +9977,8 @@
   "av": "",
   "pos_pais": "11/11",
   "arc_pais": 9,
-  "pos_sv": "13/17",
-  "arc_sv": 29
+  "pos_sv": "13/18",
+  "arc_sv": 33
  },
  {
   "full": "Mosquitrap 🦟",
@@ -11348,8 +11348,8 @@
   "av": "",
   "pos_pais": "11/12",
   "arc_pais": 17,
-  "pos_sv": "14/17",
-  "arc_sv": 24
+  "pos_sv": "14/18",
+  "arc_sv": 28
  },
  {
   "full": "Redstonita",
@@ -11644,8 +11644,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "15/17",
-  "arc_sv": 18,
+  "pos_sv": "15/18",
+  "arc_sv": 22,
   "pos_crew": ""
  },
  {
@@ -11793,8 +11793,8 @@
   "av": "",
   "pos_pais": "3/3",
   "arc_pais": 0,
-  "pos_sv": "16/17",
-  "arc_sv": 12,
+  "pos_sv": "16/18",
+  "arc_sv": 17,
   "pos_crew": ""
  },
  {
@@ -12017,13 +12017,13 @@
   "av": "",
   "pos_pais": "12/12",
   "arc_pais": 8,
-  "pos_sv": "17/17",
-  "arc_sv": 6
+  "pos_sv": "17/18",
+  "arc_sv": 11
  },
  {
   "full": "Ezias🥈✒️🧢🐍",
   "raw": "Ezias🥈✒️🧢🐍",
-  "cc": "",
+  "cc": "py",
   "sv": "ACAD",
   "crew": "",
   "discord_id": "1335430983343804497",
@@ -12054,8 +12054,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
+  "pos_sv": "18/18",
+  "arc_sv": 6
  },
  {
   "full": "Jere",

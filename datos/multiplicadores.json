@@ -58,8 +58,8 @@
     ],
     [
      "nachonc_",
-     33,
-     2
+     48,
+     3
     ],
     [
      "Rubik",
@@ -104,14 +104,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 50,
+     "FFA": 55,
      "URBF": 8,
      "DDF": 6,
      "SR": 4,
      "ACAD": 27
     },
     "gente": {
-     "FFA": 140,
+     "FFA": 147,
      "URBF": 37,
      "SR": 18,
      "DDF": 25,
@@ -121,7 +121,7 @@
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 140,
+    "FFA": 147,
     "SR": 18,
     "URBF": 37
    }
