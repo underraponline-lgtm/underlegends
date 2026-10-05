@@ -822,6 +822,36 @@
    "b": "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱",
    "ganador": "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱",
    "votos": "1–0"
+  },
+  "1556787431636865025": {
+   "id": "1556787431636865025",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791237447414,
+   "a": "ANTORCHA 🇨🇱",
+   "b": "QUEEN 🇦🇷",
+   "ganador": "ANTORCHA 🇨🇱",
+   "votos": "1–0"
+  },
+  "1556788844509003818": {
+   "id": "1556788844509003818",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791237784269,
+   "a": "ZIGNOS 🇩🇴",
+   "b": "ARIAXER 🇦🇷",
+   "ganador": "ZIGNOS 🇩🇴",
+   "votos": "1–0"
+  },
+  "1556791290623172669": {
+   "id": "1556791290623172669",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791238367468,
+   "a": "JJ 🇨🇴",
+   "b": "RIZAS 🇻🇪",
+   "ganador": "RIZAS 🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1604,8 +1634,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791234403035,
-   "ed": 1791237075459,
-   "texto": "`[ OCTAVOS ]`\n⌞LOS LOCOS DE AHI 🇦🇷⌝ 🆚 ⌞REYES 🇻🇪 + ROSMEL 🇻🇪⌝\n⌞CFM 🇻🇪⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞ISAIAS 🇪🇸 + JJ 🇨🇴⌝ 🆚 ⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝\n⌞JJ 🇨🇴 + SAZ 🇨🇴⌝ 🆚 ⌞ARDEAN 🇵🇪 + NONNE 🇵🇪⌝\n⌞ONZASS 🇻🇪 + 1200 🇰🇷⌝ 🆚 ⌞PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷⌝\n⌞IGUANA 🇵🇪 + NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + VANDU 🇨🇦⌝\n⌞NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞LOS DUEÑOS DE TU BURRA 🇦🇷⌝ 🆚 ⌞ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱⌝\n⌞ZAIK 🇪🇸 + QUEEN 🇦🇷⌝ 🆚 ⌞NHP 🇨🇱 + ANTORCHA 🇨🇱⌝",
+   "ed": 1791238681989,
+   "texto": "`[ OCTAVOS ]`\n⌞LOS LOCOS DE AHI 🇦🇷⌝ 🆚 ⌞REYES 🇻🇪 + ROSMEL 🇻🇪⌝\n⌞CFM 🇻🇪⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞ISAIAS 🇪🇸 + JJ 🇨🇴⌝ 🆚 ⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝\n⌞JJ 🇨🇴 + SAZ 🇨🇴⌝ 🆚 ⌞ARDEAN 🇵🇪 + NONNE 🇵🇪⌝\n⌞ONZASS 🇻🇪 + 1200 🇰🇷⌝ 🆚 ⌞PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷⌝\n⌞IGUANA 🇵🇪 + NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + VANDU 🇨🇦⌝\n⌞NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞LOS DUEÑOS DE TU BURRA 🇦🇷⌝ 🆚 ⌞ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱⌝\n⌞ZAIK 🇪🇸 + QUEEN 🇦🇷⌝ 🆚 ⌞NHP 🇨🇱 + ANTORCHA 🇨🇱⌝\n⌞ANTORCHA 🇨🇱⌝ 🆚 ⌞QUEEN 🇦🇷⌝\n⌞ARIAXER 🇦🇷 + ALESS 🇻🇪⌝ 🆚 ⌞SIX 🇦🇷 + ZIGNOS 🇩🇴⌝\n⌞ZIGNOS 🇩🇴⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n`[ CUARTOS ]`\n⌞PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷⌝ 🆚 ⌞JJ 🇨🇴 + SAZ 🇨🇴⌝\n⌞JJ 🇨🇴⌝ 🆚 ⌞RIZAS 🇻🇪⌝\n⌞PARK JI SUNG 🇮🇱 + ABYSSUS 🇮🇱⌝ 🆚 ⌞IGUANA 🇵🇪 + NEO 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -1614,7 +1644,7 @@
       "REYES 🇻🇪 + ROSMEL 🇻🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -1663,8 +1693,8 @@
       "IGUANA 🇵🇪 + NEO 🇦🇷",
       "MAKMA 🇻🇪 + VANDU 🇨🇦"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "IGUANA 🇵🇪 + NEO 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -1692,6 +1722,66 @@
      [
       "ZAIK 🇪🇸 + QUEEN 🇦🇷",
       "NHP 🇨🇱 + ANTORCHA 🇨🇱"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ANTORCHA 🇨🇱",
+      "QUEEN 🇦🇷"
+     ],
+     "ANTORCHA 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ARIAXER 🇦🇷 + ALESS 🇻🇪",
+      "SIX 🇦🇷 + ZIGNOS 🇩🇴"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ZIGNOS 🇩🇴",
+      "ARIAXER 🇦🇷"
+     ],
+     "ZIGNOS 🇩🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷",
+      "JJ 🇨🇴 + SAZ 🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "JJ 🇨🇴",
+      "RIZAS 🇻🇪"
+     ],
+     "RIZAS 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PARK JI SUNG 🇮🇱 + ABYSSUS 🇮🇱",
+      "IGUANA 🇵🇪 + NEO 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
