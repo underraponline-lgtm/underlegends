@@ -210,11 +210,17 @@ def tienda(d, dids):
 
 
 def para_web(d):
-    """Lo que viaja en el lobby: la semana, cuándo cierra, las tablas de ahora y cómo cerró la anterior."""
-    if not d or not any(d.get('divs') or []):
+    """Lo que viaja en el lobby: la semana, cuándo cierra, las tablas de ahora, cómo cerró la anterior y en qué
+    división está cada uno (`v`).
+
+    🔴 UNA SEMANA RECIÉN EMPEZADA NO ES «NO HAY DIVISIONES». Devolvía `None` si nadie había jugado todavía, así que
+    cada lunes a las 11 AM las divisiones desaparecían de la página —la pestaña del Ranking y la previa del Inicio—
+    hasta que se procesara el primer evento (05/10/2026, la primera semana nueva). Ahora viajan igual, vacías, con cómo
+    cerró la anterior y la división de cada uno; `None` sólo si nunca hubo nada."""
+    if not d or not (any(d.get('divs') or []) or d.get('ult') or d.get('nivel')):
         return None
     return {'sem': d.get('sem'), 'fin': d.get('fin'), 'n': d.get('nombres') or list(NOMBRES), 'z': d.get('zona', ZONA),
-            'p': d.get('premio', PREMIO), 'd': d.get('divs'), 'u': d.get('ult')}
+            'p': d.get('premio', PREMIO), 'd': d.get('divs'), 'u': d.get('ult'), 'v': d.get('nivel') or {}}
 
 
 # ── self-check ───────────────────────────────────────────────────────────

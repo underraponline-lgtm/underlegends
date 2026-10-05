@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { limpio, norm, siglaDe } from './liga.js';
 import { Cara, Pest, Sec, accion } from './piezas.jsx';
 import { TuTemporada, TusEventos } from './medio.jsx';
+import { DivisionPrevia } from './divisiones.jsx';
 
 const suma = (cu) => Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0);
 const votos = (n) => n + (n === 1 ? ' voto' : ' votos');
@@ -99,7 +100,14 @@ export function Encuestas({ liga, enc, dc }) {
   const href = yo ? '#/r/' + encodeURIComponent(yo.k) : undefined;
   // «Entrar» entra con Discord; «Mi cuenta», a la cuenta (revisión del 03/10/2026)
   const onEnlace = yo ? undefined : (dc ? accion.cuenta : accion.entrar);
-  if (!x2 && !el) return <Sec id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace}>{tuyos}</Sec>;
+  // 🏟️ y las divisiones de la semana, como previa (Dlx, 05/10/2026: «que divisiones tenga su espacio en INICIO
+  // también… el primer panel donde está tu temporada y encuestas»). Va segunda: la primera la decide lo de arriba
+  const div = liga.d.div ? { c: 'divisiones', et: 'Divisiones', t: 'Divisiones', cuerpo: <DivisionPrevia liga={liga} /> } : null;
+  if (!x2 && !el) {
+    if (!div) return <Sec id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace}>{tuyos}</Sec>;
+    return <Pest id="encuestas" titulo="Tus eventos" enlace={enlace} href={href} onEnlace={onEnlace} extra="panel" titulos
+      items={[{ c: 'tuseventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: tuyos }, div]} />;
+  }
   const items = [
     { c: 'encuestas', et: 'Encuestas', t: 'Encuestas', cuerpo: (
       <div className={'en-g' + (x2 && el ? ' dos' : '')}>
@@ -110,5 +118,6 @@ export function Encuestas({ liga, enc, dc }) {
     { c: 'tuseventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: tuyos },
   ];
   if (votaste) items.reverse();
+  if (div) items.splice(1, 0, div);
   return <Pest id="encuestas" titulo={items[0].t} enlace={enlace} href={href} onEnlace={onEnlace} items={items} extra="panel" titulos />;
 }

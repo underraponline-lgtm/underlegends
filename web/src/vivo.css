@@ -472,6 +472,18 @@ button.btn{background:transparent;cursor:pointer}
 .dv-ev{font:600 12px/1 Archivo,sans-serif;color:var(--gris);white-space:nowrap}
 .dv-p{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
 @media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}.dv-cara{width:28px;height:28px}}
+/* 🏟️ la previa de las divisiones en el Inicio (`DivisionPrevia`): tu grupo, la zona de subida y vos */
+.dvp{display:grid;gap:10px}
+.dvp-cab,.dvp-yo{margin:0;font:600 14px/1.45 Archivo,sans-serif;max-width:70ch}
+.dvp-cab b{font-weight:900;text-transform:uppercase}
+.dvp-yo{color:var(--gris)}
+.dv-tabla.dvp-tabla li{grid-template-columns:28px 32px minmax(0,1fr) auto auto}
+.dv-tabla.dvp-tabla li.corte{border-top:2px dashed var(--linea)}
+.dvp-lnk{justify-self:start}
+.dvp-sub{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.dvp-sub li{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);border-left:4px solid #29B298}
+.dvp-sub .dv-z{color:#29B298}
+.dvp-sub li.dvp-mas{display:flex;justify-content:center;border-left-color:var(--suave);font:700 12px/1 "Space Mono",monospace;color:var(--gris)}
 /* 🎯 las misiones de la semana (`misiones.jsx`): tres tarjetas, una por nivel, y dos tablas */
 .mi{display:grid;gap:14px}
 .mi-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}

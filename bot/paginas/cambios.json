@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.39",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T11:50:00-04:00",
+   "titulo": "Las divisiones, en el Inicio",
+   "items": [
+    "🏟️ **Las divisiones tienen su lugar en el Inicio**: en el primer panel, al lado de las encuestas y tus eventos, ves tu grupo de la semana y si estás para subir. Y al empezar cada semana ya no desaparecen: dicen en qué división estás y quiénes subieron la semana pasada."
+   ]
+  },
+  {
    "version": "2.38",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T03:00:00-04:00",
