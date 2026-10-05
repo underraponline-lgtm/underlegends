@@ -11258,5 +11258,302 @@
     2500
    ]
   ]
+ },
+ "403": {
+  "dia": "2026-10-05",
+  "escala": "16+",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556736745129639998"
+  ],
+  "n": 403,
+  "nombre": "DESGRACIAS EN TOKYO VOL 22 1v1",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Polosport",
+       "1200"
+      ],
+      "Majiztral",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Benjixo",
+       "Keider",
+       "OG"
+      ],
+      "Benjixo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Panchok",
+       "Malva",
+       "Colesito"
+      ],
+      "Panchok",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Sami",
+       "Agus",
+       "Crk"
+      ],
+      "Sami",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NC",
+       "Player",
+       "melomaniaco"
+      ],
+      "NC",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "ONZASS",
+       "Soulb",
+       "yinn"
+      ],
+      "ONZASS",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Efimero",
+       "Oasis",
+       "Snow"
+      ],
+      "Efimero",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Vandu",
+       "JJ",
+       "Provenza"
+      ],
+      "Vandu",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Benjixo",
+       "Majiztral"
+      ],
+      "Benjixo",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Sami"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "ONZASS",
+       "NC"
+      ],
+      "ONZASS",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Efimero"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Benjixo"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "ONZASS"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "ONZASS",
+       "Benjixo"
+      ],
+      "ONZASS",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Vandu"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "ONZASS",
+    "Tercero",
+    6000
+   ],
+   [
+    "Benjixo",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Efimero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sami",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "JJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Malva",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Oasis",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Polosport",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "melomaniaco",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

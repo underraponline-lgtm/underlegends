@@ -1,5 +1,9 @@
 {
  "_leeme": "Quién tiene nivel en el Pase de rapero de la temporada (Discord ID: nivel). Lo trae bot/pase.py del objeto en cada corrida; lo lee verificados.puede(): la Temporada es el premio del nivel 1.",
  "temp": "prueba",
- "niveles": {}
+ "niveles": {
+  "1400508144920170577": 1,
+  "739338101603696681": 1,
+  "879849220352393266": 1
+ }
 }

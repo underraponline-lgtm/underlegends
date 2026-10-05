@@ -762,6 +762,26 @@
    "b": "HASSAN",
    "ganador": "GEKTO",
    "votos": "1–0"
+  },
+  "1556776266814718063": {
+   "id": "1556776266814718063",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791234785513,
+   "a": "CFM 🇻🇪",
+   "b": "NC 🇦🇷",
+   "ganador": "CFM 🇻🇪",
+   "votos": "1–0"
+  },
+  "1556777466893180943": {
+   "id": "1556777466893180943",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791235071634,
+   "a": "ISAIAS 🇪🇸 + JJ 🇨🇴",
+   "b": "SNOW 🇨🇴 + SHISUI 🇯🇵",
+   "ganador": "SNOW 🇨🇴 + SHISUI 🇯🇵",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1533,6 +1553,47 @@
       "HASSAN"
      ],
      "GEKTO",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1556774662585712744": {
+   "id": "1556774662585712744",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791234403035,
+   "ed": 1791235316286,
+   "texto": "`[ OCTAVOS ]`\n⌞LOS LOCOS DE AHI 🇦🇷⌝ 🆚 ⌞REYES 🇻🇪 + ROSMEL 🇻🇪⌝\n⌞CFM 🇻🇪⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞ISAIAS 🇪🇸 + JJ 🇨🇴⌝ 🆚 ⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "LOS LOCOS DE AHI 🇦🇷",
+      "REYES 🇻🇪 + ROSMEL 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CFM 🇻🇪",
+      "NC 🇦🇷"
+     ],
+     "CFM 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ISAIAS 🇪🇸 + JJ 🇨🇴",
+      "SNOW 🇨🇴 + SHISUI 🇯🇵"
+     ],
+     "SNOW 🇨🇴 + SHISUI 🇯🇵",
      "veredicto",
      []
     ]

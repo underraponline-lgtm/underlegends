@@ -11,16 +11,15 @@
 ]
 },
 "oasis": {
-"rg": "S",
+"rg": "A",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"pichulamc": {
-"rg": "B",
+"panchok": {
+"rg": "",
 "c": [
-"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -30,6 +29,15 @@
 "rg": "B",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"pichulamc": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -58,14 +66,6 @@
 ]
 },
 "liberia": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"panchok": {
 "rg": "",
 "c": [
 "pais",
@@ -121,8 +121,23 @@
 "temporada"
 ]
 },
+"vandu": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"provenza": {
+"rg": "D",
 "c": [
 "servidor",
 "temporada"
@@ -150,8 +165,8 @@
 "temporada"
 ]
 },
-"provenza": {
-"rg": "D",
+"majiztral": {
+"rg": "",
 "c": [
 "servidor",
 "temporada"
@@ -208,8 +223,8 @@
 "temporada"
 ]
 },
-"majiztral": {
-"rg": "",
+"nc": {
+"rg": "E",
 "c": [
 "servidor",
 "temporada"
@@ -224,13 +239,6 @@
 },
 "tuca": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"nc": {
-"rg": "E",
 "c": [
 "servidor",
 "temporada"
@@ -292,6 +300,13 @@
 "temporada"
 ]
 },
+"onzass": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "mtz": {
 "rg": "",
 "c": [
@@ -300,6 +315,13 @@
 ]
 },
 "prosu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"polosport": {
 "rg": "",
 "c": [
 "servidor",
@@ -366,6 +388,13 @@
 "temporada"
 ]
 },
+"benjixo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "teito": {
 "rg": "",
 "c": [
@@ -422,7 +451,7 @@
 "temporada"
 ]
 },
-"polosport": {
+"og": {
 "rg": "",
 "c": [
 "servidor",
@@ -506,13 +535,6 @@
 "temporada"
 ]
 },
-"og": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "richard": {
 "rg": "E",
 "c": [
@@ -546,14 +568,6 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "riolu": {
 "rg": "",
 "c": [
@@ -576,6 +590,13 @@
 ]
 },
 "xervoe": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"crk": {
 "rg": "",
 "c": [
 "servidor",
@@ -660,7 +681,7 @@
 "temporada"
 ]
 },
-"benjixo": {
+"agus": {
 "rg": "",
 "c": [
 "servidor",
@@ -695,6 +716,13 @@
 "temporada"
 ]
 },
+"melomaniaco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "numberve": {
 "rg": "",
 "c": [
@@ -710,13 +738,6 @@
 ]
 },
 "humildad": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"crk": {
 "rg": "",
 "c": [
 "servidor",
@@ -770,6 +791,13 @@
 ]
 },
 "vr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"efimero": {
 "rg": "",
 "c": [
 "servidor",
@@ -833,13 +861,6 @@
 ]
 },
 "lhyon": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"agus": {
 "rg": "",
 "c": [
 "servidor",
@@ -918,14 +939,21 @@
 "temporada"
 ]
 },
-"fleivaman": {
+"sami": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"melomaniaco": {
+"player": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"fleivaman": {
 "rg": "",
 "c": [
 "servidor",
@@ -993,6 +1021,20 @@
 ]
 },
 "pomberito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"malva": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"soulb": {
 "rg": "",
 "c": [
 "servidor",
@@ -1102,6 +1144,13 @@
 "temporada"
 ]
 },
+"1200": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "shadow": {
 "rg": "",
 "c": [
@@ -1133,13 +1182,6 @@
 "bna": {
 "rg": "",
 "c": []
-},
-"efimero": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "tormen": {
 "rg": "",
@@ -1187,6 +1229,16 @@
 "temporada"
 ]
 },
+"jj": {
+"rg": "",
+"c": []
+},
+"keider": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "metriodin": {
 "rg": "",
 "c": [
@@ -1202,13 +1254,6 @@
 ]
 },
 "garxzii": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"player": {
 "rg": "",
 "c": [
 "servidor",
@@ -1258,13 +1303,6 @@
 ]
 },
 "gocho": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"soulb": {
 "rg": "",
 "c": [
 "servidor",
@@ -1708,13 +1746,6 @@
 "temporada"
 ]
 },
-"1200": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "brageurither": {
 "rg": "",
 "c": []
@@ -1768,13 +1799,6 @@
 "temporada"
 ]
 },
-"malva": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "mantecasixseven": {
 "rg": "",
 "c": []
@@ -1821,13 +1845,6 @@
 "c": []
 },
 "oep": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"onzass": {
 "rg": "",
 "c": [
 "servidor",

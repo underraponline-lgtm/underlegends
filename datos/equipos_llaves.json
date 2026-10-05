@@ -2,6 +2,22 @@
  "_leeme": "Los equipos que una llave nombra con UN nombre (TEAM VENECIA): quiénes cobran, y por qué. Lo escribe marcar_equipos() de bot/llaves_a_entrada.py en cada corrida; lo lee Pendientes para no preguntar por ellos como si fueran personas. Dlx, 29/09/2026.",
  "equipos": [
   {
+   "evento": "__ DESGRACIAS EN TOKYO VOL 24 __",
+   "sv": "FFA",
+   "fecha": "05/10",
+   "equipo": "LOS LOCOS ESOS DE AHI 🇦🇷",
+   "integrantes": [],
+   "por": "ni la llave ni una inscripción dicen quiénes son"
+  },
+  {
+   "evento": "__ DESGRACIAS EN TOKYO VOL 24 __",
+   "sv": "FFA",
+   "fecha": "05/10",
+   "equipo": "LOS DUEÑOS DE TU BURRA 🇦🇷",
+   "integrantes": [],
+   "por": "ni la llave ni una inscripción dicen quiénes son"
+  },
+  {
    "evento": "__ DESGRACIAS EN TOKYO VOL 16 2VS2 __",
    "sv": "FFA",
    "fecha": "28/09",
