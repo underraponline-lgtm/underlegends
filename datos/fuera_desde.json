@@ -1,8 +1,8 @@
 {
- "_leeme": "El reloj de bot/fuera.py: desde qué día cada carpeta de R2 no pasa el portón. A los 7 días seguidos se borran sus tarjetas (Dlx, 27/09/2026). No se edita a mano.",
+ "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {},
  "pasaban": 366,
- "cuando": "2026-10-05T21:27:36Z",
+ "cuando": "2026-10-05T21:56:06Z",
  "borradas": [
   [
    "indigena",

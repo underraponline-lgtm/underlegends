@@ -8,12 +8,12 @@
    [
     [
      "Panchok",
-     30000,
+     50000,
      1
     ],
     [
      "Oasis",
-     3750,
+     6250,
      1
     ]
    ]
@@ -22,32 +22,32 @@
    [
     [
      "Benjixo",
-     20250,
+     22500,
      1
     ],
     [
      "Colesito",
-     3750,
+     6250,
      1
     ],
     [
      "Crk",
-     3750,
+     6250,
      1
     ],
     [
      "Provenza",
-     3750,
+     6250,
      1
     ],
     [
      "Snow",
-     3750,
+     6250,
      1
     ],
     [
      "melomaniaco",
-     3750,
+     6250,
      1
     ]
    ]
@@ -56,82 +56,82 @@
    [
     [
      "Vandu",
-     22500,
+     37500,
      1
     ],
     [
      "ONZASS",
-     18000,
+     30000,
      1
     ],
     [
      "Efimero",
-     7500,
+     12500,
      1
     ],
     [
      "Majiztral",
-     7500,
+     12500,
      1
     ],
     [
      "NC",
-     7500,
+     12500,
      1
     ],
     [
      "Sami",
-     7500,
-     1
-    ],
-    [
-     "Malva",
-     5625,
+     12500,
      1
     ],
     [
      "1200",
-     3750,
+     6250,
      1
     ],
     [
      "Agus",
-     3750,
+     6250,
      1
     ],
     [
      "JJ",
-     3750,
+     6250,
      1
     ],
     [
      "Keider",
-     3750,
+     6250,
+     1
+    ],
+    [
+     "Malva",
+     6250,
      1
     ],
     [
      "OG",
-     3750,
+     6250,
      1
     ],
     [
      "Player",
-     3750,
+     6250,
      1
     ],
     [
      "Polosport",
-     3750,
+     6250,
      1
     ],
     [
      "Soulb",
-     3750,
+     6250,
      1
     ],
     [
      "yinn",
-     3750,
+     6250,
      1
     ]
    ]
@@ -167,7 +167,7 @@
   "Baltrip": 5,
   "BastyRetro": 5,
   "Benjixo": 4,
-  "Benju": 4,
+  "Benju": 5,
   "Benshi": 5,
   "Betelguese": 5,
   "Bloody": 4,
@@ -180,7 +180,7 @@
   "Carlosss": 4,
   "Catarsis": 4,
   "Char": 5,
-  "Choclo🇻🇪": 5,
+  "Choclo🇻🇪": 4,
   "Chop": 5,
   "Cinexfilo": 4,
   "Clitax": 5,
@@ -337,7 +337,7 @@
   "Nairda": 5,
   "Neo": 5,
   "Nhp": 5,
-  "Noa": 4,
+  "Noa": 5,
   "Nobu": 5,
   "Noone": 5,
   "Nox": 5,
@@ -399,7 +399,7 @@
   "Selek": 5,
   "Sexo": 5,
   "Shadow": 5,
-  "Shishui🇯🇵": 5,
+  "Shishui🇯🇵": 4,
   "Sin Limites": 5,
   "Six": 4,
   "Skratch": 5,
@@ -722,12 +722,12 @@
   ],
   [
    "2026-09-28",
-   "Noxvell",
+   "Drexx",
    4
   ],
   [
    "2026-09-28",
-   "Drexx",
+   "Noxvell",
    4
   ],
   [
@@ -797,12 +797,12 @@
   ],
   [
    "2026-09-28",
-   "Eclipsito",
+   "Alexi",
    4
   ],
   [
    "2026-09-28",
-   "Alexi",
+   "Eclipsito",
    4
   ],
   [
@@ -847,12 +847,12 @@
   ],
   [
    "2026-09-28",
-   "Gwynyth",
+   "Choclo🇻🇪",
    4
   ],
   [
    "2026-09-28",
-   "Noa",
+   "Gwynyth",
    4
   ],
   [
@@ -867,7 +867,7 @@
   ],
   [
    "2026-09-28",
-   "Benju",
+   "Shishui🇯🇵",
    4
   ]
  ],
@@ -887,9 +887,9 @@
    "Ariaxer",
    "Badterne",
    "Benjixo",
-   "Benju",
    "Carlosss",
    "Catarsis",
+   "Choclo🇻🇪",
    "Cinexfilo",
    "Crk",
    "Drexx",
@@ -908,7 +908,6 @@
    "MCO",
    "Motera",
    "NXUZ",
-   "Noa",
    "Noxvell",
    "Number",
    "Oasis",
@@ -920,6 +919,7 @@
    "Riolu",
    "SGB",
    "SOL🇵🇪",
+   "Shishui🇯🇵",
    "Sosa",
    "Tokio",
    "melomaniaco",

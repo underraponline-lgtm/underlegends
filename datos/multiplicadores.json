@@ -217,19 +217,29 @@
    },
    "copa": {
     "org": "Lewis",
-    "clave": "lewis"
+    "clave": "lewis",
+    "n": 403,
+    "nombre": "DESGRACIAS EN TOKYO VOL 22 1v1"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "Lewis",
+     24,
+     1
+    ]
+   ],
    "semillero": {
     "nuevos": {},
-    "gente": {},
+    "gente": {
+     "FFA": 24
+    },
     "gana": null
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 0,
     "DRA": 0,
-    "FFA": 0,
+    "FFA": 24,
     "FFS": 0,
     "SR": 0,
     "URBF": 0

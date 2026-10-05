@@ -782,6 +782,46 @@
    "b": "SNOW 🇨🇴 + SHISUI 🇯🇵",
    "ganador": "SNOW 🇨🇴 + SHISUI 🇯🇵",
    "votos": "1–0"
+  },
+  "1556779074943324181": {
+   "id": "1556779074943324181",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791235455023,
+   "a": "JJ 🇨🇴 + SAZ 🇨🇴",
+   "b": "ARDEAN 🇵🇪 + NONNE 🇵🇪",
+   "ganador": "JJ 🇨🇴 + SAZ 🇨🇴",
+   "votos": "1–0"
+  },
+  "1556780725263536179": {
+   "id": "1556780725263536179",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791235848490,
+   "a": "ONZASS 🇻🇪 + 1200 🇰🇷",
+   "b": "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷",
+   "ganador": "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷",
+   "votos": "1–0"
+  },
+  "1556782978166689855": {
+   "id": "1556782978166689855",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791236385624,
+   "a": "NEO 🇦🇷",
+   "b": "MAKMA 🇻🇪",
+   "ganador": "NEO 🇦🇷",
+   "votos": "1–0"
+  },
+  "1556783891715719169": {
+   "id": "1556783891715719169",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791236603431,
+   "a": "LOS DUEÑOS DE TU BURRA 🇦🇷",
+   "b": "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱",
+   "ganador": "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1564,8 +1604,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791234403035,
-   "ed": 1791235316286,
-   "texto": "`[ OCTAVOS ]`\n⌞LOS LOCOS DE AHI 🇦🇷⌝ 🆚 ⌞REYES 🇻🇪 + ROSMEL 🇻🇪⌝\n⌞CFM 🇻🇪⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞ISAIAS 🇪🇸 + JJ 🇨🇴⌝ 🆚 ⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝",
+   "ed": 1791237075459,
+   "texto": "`[ OCTAVOS ]`\n⌞LOS LOCOS DE AHI 🇦🇷⌝ 🆚 ⌞REYES 🇻🇪 + ROSMEL 🇻🇪⌝\n⌞CFM 🇻🇪⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞ISAIAS 🇪🇸 + JJ 🇨🇴⌝ 🆚 ⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝\n⌞JJ 🇨🇴 + SAZ 🇨🇴⌝ 🆚 ⌞ARDEAN 🇵🇪 + NONNE 🇵🇪⌝\n⌞ONZASS 🇻🇪 + 1200 🇰🇷⌝ 🆚 ⌞PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷⌝\n⌞IGUANA 🇵🇪 + NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + VANDU 🇨🇦⌝\n⌞NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞LOS DUEÑOS DE TU BURRA 🇦🇷⌝ 🆚 ⌞ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱⌝\n⌞ZAIK 🇪🇸 + QUEEN 🇦🇷⌝ 🆚 ⌞NHP 🇨🇱 + ANTORCHA 🇨🇱⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -1595,6 +1635,66 @@
      ],
      "SNOW 🇨🇴 + SHISUI 🇯🇵",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "JJ 🇨🇴 + SAZ 🇨🇴",
+      "ARDEAN 🇵🇪 + NONNE 🇵🇪"
+     ],
+     "JJ 🇨🇴 + SAZ 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ONZASS 🇻🇪 + 1200 🇰🇷",
+      "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷"
+     ],
+     "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "IGUANA 🇵🇪 + NEO 🇦🇷",
+      "MAKMA 🇻🇪 + VANDU 🇨🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NEO 🇦🇷",
+      "MAKMA 🇻🇪"
+     ],
+     "NEO 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LOS DUEÑOS DE TU BURRA 🇦🇷",
+      "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱"
+     ],
+     "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ZAIK 🇪🇸 + QUEEN 🇦🇷",
+      "NHP 🇨🇱 + ANTORCHA 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
