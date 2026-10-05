@@ -1033,7 +1033,55 @@ TOPE_DIA = 850
 SIN_DATO = 300
 
 
-def presupuesto(s, pares, usadas=None):
+#: 🔑 LO QUE PUEDE ESPERAR (Dlx, 05/10/2026: «después de cada evento se actualice la tarjeta de los afectados
+#: únicamente… los que no fueron afectados se hace en cualquier otro momento, si es que no participan en un evento
+#: próximo» y «sólo los que jugaron; los nuevos que se verifican no tienen que ser al instante»). Los números de `vs`
+#: que dependen de los demás —tu puesto en el servidor y en el país, tu percentil, el OVR (que se mide contra el
+#: primero) y tu «#N»— se mueven cuando juega otro: medido el 05/10, 143 de las 207 claves pendientes cambiaban sólo
+#: por eso. Esas, la gente nueva y los índices por Discord ID van en la hora tranquila (`TRANQUILA`), con lo que sobre.
+RELATIVOS = (('vs', 's', 'pos'), ('vs', 's', 'arc'), ('vs', 't', 'ovr'), ('vs', 'p', 'pos'), ('vs', 'p', 'arc'),
+             ('vs', 'p', 'ovr'), ('vs', 'c', 'n'))
+#: de qué hora a qué hora (ET) se escribe lo que esperó: después de los eventos de la noche y antes de los de la tarde
+TRANQUILA = (11, 17)
+#: lo que se le deja a los que jueguen a la tarde, del cupo del día, cuando se escribe lo que esperó
+RESERVA_TARDE = 150
+#: las claves que `solo_las_que_cambiaron()` marcó como «puede esperar» en esta corrida
+_ESPERAN = set()
+
+
+def _sin_relativos(o):
+    """Una copia de `o` sin los números que dependen de los demás (`RELATIVOS`)."""
+    o = json.loads(json.dumps(o))
+    for ruta in RELATIVOS:
+        x = o
+        for k in ruta[:-1]:
+            x = x.get(k) if isinstance(x, dict) else None
+        if isinstance(x, dict):
+            x.pop(ruta[-1], None)
+    return o
+
+
+def puede_esperar(key, arriba, nuevo):
+    """¿Este cambio puede esperar a la hora tranquila? No: `meta` y lo de quien jugó (cualquier cambio que no sea sólo
+    de `RELATIVOS`). Sí: lo que cambió sólo porque jugó otro, la gente nueva (`arriba` vacío) y los índices por
+    Discord ID (`d:`, `dn:`, `dx:`), que no cambian lo que se ve de nadie que jugó."""
+    if key == 'meta':
+        return False
+    if arriba is None or not key.startswith('p:'):
+        return True
+    try:
+        return _sin_relativos(json.loads(arriba)) == _sin_relativos(json.loads(nuevo))
+    except (ValueError, TypeError):
+        return False
+
+
+def _hora_et():
+    import datetime as _dt
+    from zoneinfo import ZoneInfo
+    return _dt.datetime.now(ZoneInfo('America/New_York')).hour
+
+
+def presupuesto(s, pares, usadas=None, hora=None):
     """`(las que se escriben ahora, cuántas quedan para después)`.
 
     🔴 EL 24/09/2026 LA CUOTA SE AGOTÓ Y EL HUB SE QUEDÓ CONGELADO. 1.117
@@ -1048,6 +1096,12 @@ def presupuesto(s, pares, usadas=None):
 
     ⚠️ `meta` VA PRIMERO: es el sello con el que Discord sirve las cartas
     nuevas, y sin él lo demás no se ve.
+
+    🔑 Y DESDE EL 05/10/2026, LO QUE PUEDE ESPERAR ESPERA (`puede_esperar()`,
+    que marca `solo_las_que_cambiaron()` en `_ESPERAN`): sólo se escribe en la
+    hora tranquila (`TRANQUILA`, ET) y con lo que sobre después de guardarle
+    `RESERVA_TARDE` a los que jueguen a la tarde. Lo de quien jugó va siempre
+    primero. `hora` es para el self-check.
     """
     if usadas is None:
         try:
@@ -1057,17 +1111,27 @@ def presupuesto(s, pares, usadas=None):
             usadas = None
     libre = (TOPE_DIA - usadas) if usadas is not None else SIN_DATO
     libre = max(libre, 1)          # `meta` entra siempre
-    if len(pares) <= libre:
+    hora = _hora_et() if hora is None else hora
+    ya = [p for p in pares if p['key'] not in _ESPERAN]
+    esperan = [p for p in pares if p['key'] in _ESPERAN]
+    ya.sort(key=lambda p: p['key'] != 'meta')
+    ahora = ya[:libre]
+    tranquila = TRANQUILA[0] <= hora < TRANQUILA[1]
+    lugar = max(0, libre - len(ahora) - RESERVA_TARDE) if tranquila else 0
+    ahora += esperan[:lugar]
+    despues = len(pares) - len(ahora)
+    usadas_txt = '%d usadas' % usadas if usadas is not None else 'no sé cuántas'
+    if esperan:
+        print('  🕐 %d cambio(s) pueden esperar (sólo se movió un puesto por lo que jugó otro, o es gente nueva): '
+              '%s' % (len(esperan), ('escribo %d en la hora tranquila' % min(lugar, len(esperan))) if tranquila
+                      else 'van en la hora tranquila (%d a %d ET)' % TRANQUILA))
+    if not despues:
         if usadas is not None:
-            print('  presupuesto de KV: %d usadas hoy, %d libres para este '
-                  'script' % (usadas, TOPE_DIA - usadas))
-        return pares, 0
-    orden = sorted(pares, key=lambda p: p['key'] != 'meta')
-    ahora, despues = orden[:libre], orden[libre:]
-    print('  ⚠️ presupuesto de KV: %s hoy; escribo %d y dejo %d para las '
-          'corridas siguientes' % ('%d usadas' % usadas if usadas is not None
-                                   else 'no sé cuántas', len(ahora), len(despues)))
-    return ahora, len(despues)
+            print('  presupuesto de KV: %s hoy, %d libres para este script' % (usadas_txt, TOPE_DIA - usadas))
+        return ahora, 0
+    print('  ⚠️ presupuesto de KV: %s hoy; escribo %d y dejo %d para las corridas siguientes'
+          % (usadas_txt, len(ahora), despues))
+    return ahora, despues
 
 
 def _ultima_sellada():
@@ -1178,6 +1242,7 @@ def solo_las_que_cambiaron(s, pares):
         return {x: y for x, y in o.items() if x != 'sello'}
 
     distintas = []
+    _ESPERAN.clear()
     for par, arriba in ((p, arriba_de.get(p['key'])) for p in pares):
             # ⚠️ Se comparan los OBJETOS, no las cadenas: json.dumps puede
             # cambiar el orden de las claves entre versiones de Python y
@@ -1189,6 +1254,9 @@ def solo_las_que_cambiaron(s, pares):
                 igual = arriba == par['value']      # `d:<id>` guarda texto pelado
             if not igual:
                 distintas.append(par)
+                # 🕐 ¿puede esperar a la hora tranquila? Ver `puede_esperar()` y `presupuesto()`
+                if puede_esperar(par['key'], arriba, par['value']):
+                    _ESPERAN.add(par['key'])
     return distintas
 
 
@@ -1309,9 +1377,54 @@ def main():
         print('  %-10s %s' % (k, str(vals.get(k, '— no está'))[:140]))
 
 
+def _self_check():
+    """Lo que puede esperar y el reparto del cupo (05/10/2026). Sin red ni KV: `presupuesto()` recibe `usadas` y
+    `hora`, y `_ESPERAN` se arma a mano como lo arma `solo_las_que_cambiaron()`."""
+    print('\n══ SUBIR DATOS: LO QUE PUEDE ESPERAR ══\n')
+    mal = 0
+
+    def ok(c, q):
+        nonlocal mal
+        mal += not c
+        print('   %s %s' % ('✅' if c else '🔴', q))
+    viejo = {'n': 'Ana', 'ev': 3, 'vs': {'t': {'ovr': 70, 'pts': 900, 'ev': 3}, 's': {'pos': '4/20', 'arc': 80},
+                                          'p': {'pos': '2/9', 'arc': 70, 'ovr': 71}, 'c': {'sc': 40, 'n': 12}}}
+    corrido = json.loads(json.dumps(viejo))
+    corrido['vs']['t']['ovr'] = 68
+    corrido['vs']['s']['pos'] = '5/20'
+    corrido['vs']['c']['n'] = 13
+    jugo = json.loads(json.dumps(corrido))
+    jugo['ev'] = 4
+    jugo['vs']['t']['pts'] = 1500
+    J = lambda o: json.dumps(o)  # noqa: E731
+    ok(puede_esperar('p:ana', J(viejo), J(corrido)), 'sólo se le movieron el puesto y el OVR porque jugó otro: espera')
+    ok(not puede_esperar('p:ana', J(viejo), J(jugo)), 'jugó (más eventos y puntos): va al instante')
+    ok(puede_esperar('p:nuevo', None, J(viejo)) and puede_esperar('d:123', 'ana', 'ana2'),
+       'la gente nueva y los índices por Discord ID esperan')
+    ok(not puede_esperar('meta', '{}', '{"sello": 1}'), '`meta` nunca espera')
+    pares = [{'key': 'meta', 'value': '{}'}] + [{'key': 'p:j%d' % i, 'value': '{}'} for i in range(5)] \
+        + [{'key': 'p:e%d' % i, 'value': '{}'} for i in range(700)]
+    _ESPERAN.clear()
+    _ESPERAN.update('p:e%d' % i for i in range(700))
+    a, d = presupuesto(None, pares, usadas=100, hora=22)
+    ok(len(a) == 6 and d == 700, 'a la noche (10 PM): sólo `meta` y los que jugaron; los 700 esperan')
+    a, d = presupuesto(None, pares, usadas=100, hora=13)
+    ok(len(a) == 6 + (TOPE_DIA - 100 - 6 - RESERVA_TARDE) and d == 700 - (TOPE_DIA - 100 - 6 - RESERVA_TARDE)
+       and a[0]['key'] == 'meta',
+       'en la hora tranquila (1 PM): los que esperaban, con lo que sobra después de la reserva de la tarde')
+    a, d = presupuesto(None, pares, usadas=TOPE_DIA - 3, hora=13)
+    ok(len(a) == 3 and a[0]['key'] == 'meta' and all(p['key'].startswith('p:j') for p in a[1:]),
+       'con el cupo casi gastado: primero `meta` y los que jugaron, y nada de lo que espera')
+    _ESPERAN.clear()
+    print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
+    return 1 if mal else 0
+
+
 if __name__ == '__main__':
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except Exception:
         pass
+    if '--auto' in sys.argv:
+        sys.exit(_self_check())
     main()
