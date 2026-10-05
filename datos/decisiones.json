@@ -26,10 +26,10 @@
    "nota": "a «¿cómo cuenta VALHALLA VOL1?»: «1. B» — cuenta, y los de los filtros suman como participación. Los filtros (8 enfrentamientos) y la llave («COMPE DE 10 DOLARES», de otra cuenta) son dos mensajes: los junta escuchar.con_fase_previa()."
   },
   "GRUPO A · ACAD · 03/10": {
-   "decision": "cuenta",
-   "cuando": "2026-10-05 2:16 AM ET",
+   "decision": "no cuenta",
+   "cuando": "2026-10-05 2:35 AM ET",
    "por": "Dlx (chat)",
-   "nota": "el torneo de grupos de Leonar-T: la final ZETRYKO vs ABYSSUS no decía quién ganó. Dlx: «2. Abyssus»."
+   "nota": "NO es que no cuente: se renombró a «COPA DE GRUPOS LCW» (ver datos/nombres_llaves.json) y con el nombre viejo saldría dos veces. Dlx: «ponele un nombre random»."
   },
   "COMPE DE UDDI · ACAD · 22/09": {
    "decision": "cuenta",
@@ -43,6 +43,12 @@
     "ganador": "ERIAN 🇵🇦"
    },
    "nota": "la final decía sólo «ERIAN». Dlx: «3. Sí» (ganó Erian). El otro finalista sale de las votaciones de la ACADEMIA (✅┇votaciones, 22/09): COLESITO le ganó a ZETRYKO 2 a 1 en la segunda réplica (🫱 de ander.fc y 👉 de ivandevil)."
+  },
+  "COPA DE GRUPOS LCW · ACAD · 03/10": {
+   "decision": "cuenta",
+   "cuando": "2026-10-05 2:35 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "el torneo de grupos de Leonar-T (antes «GRUPO A»): la final ZETRYKO vs ABYSSUS no decía quién ganó. Dlx: «2. Abyssus»."
   }
  },
  "no_rankear": {
@@ -118,6 +124,13 @@
    "cuando": "2026-10-05 2:16 AM ET",
    "por": "las votaciones de la ACADEMIA",
    "nota": "✅┇votaciones: réplica, y en la segunda réplica 🫱 de ander.fc y 👉 de ivandevil (COLESITO) contra «ZETRYKO» de uddi_mc"
+  },
+  "copadegruposlcw|ACAD|03/10|final|abyssus|zetryko": {
+   "ganador": "Abyssus 🇨🇦",
+   "batalla": "COPA DE GRUPOS LCW · ACAD · 03/10 · final · ZETRYKO 🇨🇱 🆚 Abyssus 🇨🇦",
+   "cuando": "2026-10-05 2:35 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "«2. Abyssus»"
   }
  },
  "anuncios_fuera": {
