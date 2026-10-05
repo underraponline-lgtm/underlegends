@@ -773,6 +773,10 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/benjixo/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/benjixo/temporada.webp"
  },
+ "benju": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/benju/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/benju/temporada.webp"
+ },
  "benshi": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/benshi/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/benshi/sv-dra.webp",
@@ -2392,6 +2396,11 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emi/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emi/temporada.webp"
  },
+ "emilioalva": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilioalva/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilioalva/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilioalva/temporada.webp"
+ },
  "emilyfamily": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/bloq-pais.webp",
@@ -2565,6 +2574,12 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/temporada.webp"
+ },
+ "ezias": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/temporada.webp"
  },
  "fakinjose": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fakinjose/bloq-competitivo.webp",
@@ -2853,6 +2868,10 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fokox/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fokox/temporada.webp"
  },
+ "fol": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fol/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fol/temporada.webp"
+ },
  "forcegp": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/forcegp/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/forcegp/bloq-pais.webp",
@@ -2965,6 +2984,16 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/g8/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/g8/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/g8/temporada.webp"
+ },
+ "galileo": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/pais.webp",
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/temporada.webp"
  },
  "garxzii": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/bloq-competitivo.webp",
@@ -3156,6 +3185,11 @@
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/glad/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/glad/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/glad/sv-urbf.webp"
+ },
+ "gmc": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gmc/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gmc/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gmc/temporada.webp"
  },
  "gocho": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/bloq-competitivo.webp",
@@ -5574,15 +5608,19 @@
  "mauzzitoemeces": {
   "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/bloq-temporada.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-acad.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-dra.webp",
   "sv-efa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-efa.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-ffs.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-frz.webp",
   "sv-ftn": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-ftn.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-sr.webp",
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-twr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mauzzitoemeces/temporada.webp"
  },
  "mayeutyk": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mayeutyk/servidor.webp",
@@ -6179,6 +6217,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/bloq-pais.webp",
   "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/bloq-temporada.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-dra.webp",
@@ -6189,7 +6228,8 @@
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-sr.webp",
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-twr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/temporada.webp"
  },
  "nahu": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nahu/bloq-competitivo.webp",
@@ -6477,6 +6517,10 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nn/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nn/sv-urbf.webp"
  },
+ "noa": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noa/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noa/temporada.webp"
+ },
  "nobu": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/bloq-pais.webp",
@@ -6541,6 +6585,10 @@
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nova/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nova/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nova/sv-urbf.webp"
+ },
+ "nox": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nox/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nox/temporada.webp"
  },
  "noxvell": {
   "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noxvell/bloq-temporada.webp",
@@ -7172,6 +7220,11 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raxo/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/raxo/sv-urbf.webp"
  },
+ "rayden": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rayden/servidor.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rayden/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rayden/temporada.webp"
+ },
  "rayito": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rayito/servidor.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rayito/sv-sr.webp",
@@ -7223,6 +7276,10 @@
   "sv-tfc": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rebeldia/sv-tfc.webp",
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rebeldia/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rebeldia/sv-urbf.webp"
+ },
+ "redstonita": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/redstonita/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/redstonita/temporada.webp"
  },
  "refran": {
   "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/bloq-temporada.webp",
@@ -7766,6 +7823,10 @@
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sexo/servidor.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sexo/sv-sr.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sexo/temporada.webp"
+ },
+ "sgb": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sgb/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sgb/temporada.webp"
  },
  "shadow": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/bloq-competitivo.webp",
@@ -8557,6 +8618,10 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tøkiø/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tøkiø/sv-urbf.webp"
  },
+ "uddizim": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/uddizim/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/uddizim/temporada.webp"
+ },
  "uloficia": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/uloficia/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/uloficia/bloq-pais.webp",
@@ -8899,6 +8964,10 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/warap/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/warap/temporada.webp"
  },
+ "warriorvid": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/warriorvid/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/warriorvid/temporada.webp"
+ },
  "willy": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/willy/servidor.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/willy/sv-sr.webp",
@@ -9068,6 +9137,10 @@
   "sv-twr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/sv-twr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/temporada.webp"
+ },
+ "yio": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yio/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yio/temporada.webp"
  },
  "yor": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/bloq-competitivo.webp",

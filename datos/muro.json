@@ -334,10 +334,6 @@
 "temporada"
 ]
 },
-"tambaggio": {
-"rg": "",
-"c": []
-},
 "lordviruzz": {
 "rg": "",
 "c": [
@@ -453,12 +449,16 @@
 "zetryko": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "sgb": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "andy": {
 "rg": "",
@@ -942,6 +942,10 @@
 "temporada"
 ]
 },
+"tambaggio": {
+"rg": "",
+"c": []
+},
 "korey": {
 "rg": "",
 "c": [
@@ -1093,7 +1097,10 @@
 },
 "emilioalva": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "shadow": {
 "rg": "",
@@ -1157,7 +1164,10 @@
 },
 "benju": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "shishui": {
 "rg": "",
@@ -4232,6 +4242,46 @@
 "Vandu"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T06:58:17Z",
+"quien": [
+"Zetryko"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T07:20:52Z",
+"quien": [
+"SGB"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T07:20:52Z",
+"quien": [
+"SGB"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T07:20:52Z",
+"quien": [
+"Emilio Alva"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T07:20:52Z",
+"quien": [
+"Emilio Alva"
+],
+"carta": "temporada"
 }
 ]
 }
