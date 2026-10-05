@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.37",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T02:19:00-04:00",
+   "titulo": "Los filtros también cuentan",
+   "items": [
+    "🏰 **Si los filtros de un torneo se publican aparte de la llave, ahora cuentan igual**: quien jugó los filtros suma su participación. Entraron VALHALLA VOL1 de la ACADEMIA, con sus filtros, y dos torneos de la ACADEMIA que no decían quién ganó la final."
+   ]
+  },
+  {
    "version": "2.36",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T02:10:00-04:00",

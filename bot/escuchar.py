@@ -3257,6 +3257,27 @@ def _self_check():
                           '[FINAL]\n[A] 🆚 [C]', True),
     ]
     mal = 0
+    # 🏰 LA FASE PREVIA EN OTRO MENSAJE (VALHALLA VOL1, 05/10/2026): ver `con_fase_previa()`
+    print('\n  la fase previa en otro mensaje')
+    fase = ('🏰 COPA X 🏰\n\nFILTROS\n\n### ⚔️ ENFRENTAMIENTO 1\n* ANA 🇦🇷\n* BEA 🇨🇱\n* CAMI 🇻🇪\n* DORA 🇲🇽\n'
+            '### ⚔️ ENFRENTAMIENTO 2\n* EVA 🇨🇴\n* FLOR 🇵🇪\n* GABI 🇺🇾\n* ANA 🇦🇷\n')
+    lla = {'cuando': '2026-10-04T23:05:00+00:00',
+           'texto': '# OTRO NOMBRE\nCUARTOS\n[ANA] VS [EVA]\n[BEA] VS [FLOR]\nFINAL\n[ANA] VS [BEA]\n'}
+    fp = fase_previa(fase)
+    t2, mid = con_fase_previa(lla, [('2026-10-04T21:13:00+00:00', '9', fp)]) if fp else (None, None)
+    lejos, _m = con_fase_previa(lla, [('2026-10-04T10:00:00+00:00', '9', fp)]) if fp else (None, None)
+    otra, _m2 = con_fase_previa(dict(lla, texto='# Z\nCUARTOS\n[QUI] VS [RO]\n[SA] VS [TE]\nFINAL\n[QUI] VS [SA]\n'),
+                                [('2026-10-04T21:13:00+00:00', '9', fp)]) if fp else (None, None)
+    for que, ok in [
+        ('una fase por grupos sin llave se reconoce, con su título', bool(fp) and fp[0] == 'COPA X' and len(fp[1]) == 2),
+        ('se junta con la llave que viene después: su título manda y cada uno va una vez',
+         bool(t2) and mid == '9' and t2.startswith('# COPA X\nFILTROS\n') and t2.count('ANA') == 3),
+        ('no si la fase es de más de 8 horas antes', lejos is None),
+        ('ni si la llave es de otra gente', otra is None),
+        ('una llave nunca es una fase previa', fase_previa(lla['texto']) is None),
+    ]:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     print('\n  la firma')
     for que, txt, esperado in casos:
         ok = es_llave(txt) == esperado
