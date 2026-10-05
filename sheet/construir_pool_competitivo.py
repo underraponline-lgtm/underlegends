@@ -58,11 +58,12 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from planillas import OFICIAL as SHEET  # noqa: E402
 
 # El rango sale del Score. Siempre. Los mismos umbrales en las tres cartas.
-UMBRAL = [('SSS', 82), ('SS', 73), ('S', 62), ('A', 48),
-          ('B', 37), ('C', 26), ('D', 18)]
-# Solo A, B, C y D llevan signo. SSS, SS, S y E van sin.
-LIMITES = [('SSS', 82, 101), ('SS', 73, 82), ('S', 62, 73), ('A', 48, 62),
-           ('B', 37, 48), ('C', 26, 37), ('D', 18, 26), ('E', 0, 18)]
+# 🔑 En la escala de 40 a 99 desde A7 (05/10/2026): ver `comun/rangos.py`.
+UMBRAL = [('SSS', 88), ('SS', 83), ('S', 77), ('A', 68),
+          ('B', 62), ('C', 55), ('D', 51)]
+# Solo A, B, C y D llevan signo. SSS, SS, S y E van sin. Los tramos salen
+# de UMBRAL —hasta A7 eran otra copia escrita a mano—: E va del 0 al último corte.
+LIMITES = [(r, u, b) for (r, u), b in zip(UMBRAL + [('E', 0)], [101] + [u for _r, u in UMBRAL])]
 CON_SIGNO = {'A', 'B', 'C', 'D'}
 
 # ⚠️ SALE DE datos/crews.json, NO DE UN DICT ACA. Habia uno escrito a mano con
@@ -159,6 +160,18 @@ from comun.claves import clave as norm      # noqa: E402,F401
 # carta y la página leían dos pools con dos reglas). Una copia no discrepa:
 # concuerda en el error hasta el día que una de las dos se arregla.
 from construir_pool_temporada import bandera  # noqa: E402
+
+
+def _bruto(r, cc):
+    """La suma de las cinco dimensiones por la confianza, de 0 a 100."""
+    from competitivo import PESOS
+    col = {'E': '⚡ Eficiencia', 'C': '🎯 Consistencia', 'Dm': '👑 Dominancia',
+           'T': '🔥 Racha', 'V': '🌍 Diversidad'}
+    try:
+        return round(sum(p * int(num(r[cc(col[k])])) for k, p in PESOS)
+                     * num(r[cc('Confianza')]), 1)
+    except (KeyError, ValueError, TypeError):
+        return None
 
 
 def subrango(score):
@@ -474,6 +487,11 @@ def main():
             'discord_id': _p.get('discord_id', ''),
             'verificado': bool(_p.get('verificado')),
             'ev': int(num(r[cc('Ev')])), 'score': score,
+            # 🔑 Y LA SUMA DE ANTES DE A7, de 0 a 100: la piden las cuentas en
+            # proporción (el OVR Nacional). Sale de las mismas columnas y con
+            # el mismo redondeo que el Score de antes, así que da lo mismo
+            # que daba; desandar el 40–99 corría por uno a 10 de 258.
+            'bruto': _bruto(r, cc),
             'conf': num(r[cc('Confianza')]),
             'E': int(num(r[cc('⚡ Eficiencia')])), 'C': int(num(r[cc('🎯 Consistencia')])),
             'Dm': int(num(r[cc('👑 Dominancia')])), 'T': int(num(r[cc('🔥 Racha')])),

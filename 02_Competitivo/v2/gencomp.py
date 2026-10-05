@@ -145,9 +145,10 @@ ESTILO_DE = {}   # vacio: hoy nadie tiene estilo asignado. Se llena cuando
 
 # UMBRALES con SSS y SS. Antes el rango S abarcaba 35 puntos (65-100) y el
 # B solo 11, asi que Konan 91 y Tuca 66 compartian color. Ahora:
-#   SSS 82+ · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18 · E resto
-UMBRAL = [('SSS', 82), ('SS', 73), ('S', 62), ('A', 48),
-          ('B', 37), ('C', 26), ('D', 18)]
+#   SSS 88+ · SS 83 · S 77 · A 68 · B 62 · C 55 · D 51 · E resto
+# 🔑 En la escala de 40 a 99 desde A7 (05/10/2026): ver `comun/rangos.py`.
+UMBRAL = [('SSS', 88), ('SS', 83), ('S', 77), ('A', 68),
+          ('B', 62), ('C', 55), ('D', 51)]
 
 
 def rango_metal(score):
@@ -164,8 +165,8 @@ def rango_metal(score):
 # distinciones finas de por si, abajo porque E es "el resto".
 # El signo cambia la PASTILLA, no el color: el material sigue saliendo del
 # rango base, asi que un A- y un A+ comparten carta de rubi.
-LIMITES = [('SSS', 82, 101), ('SS', 73, 82), ('S', 62, 73), ('A', 48, 62),
-           ('B', 37, 48), ('C', 26, 37), ('D', 18, 26), ('E', 0, 18)]
+# ⚠️ Los tramos salen de UMBRAL: hasta A7 eran otra copia escrita a mano.
+LIMITES = [(r, u, b) for (r, u), b in zip(UMBRAL + [('E', 0)], [101] + [u for _r, u in UMBRAL])]
 CON_SIGNO = {'A', 'B', 'C', 'D'}
 
 

@@ -37,7 +37,7 @@ const SEMANA = [
 ];
 const PALABRAS = [
   ['OVR', 'El número de tu temporada, de 40 a 99. Ordena el ranking y es el que lleva tu tarjeta de Temporada.'],
-  ['Score', 'El número del Competitivo, de 0 a 100. Mide la calidad y no la cantidad: de él sale tu rango.'],
+  ['Score', 'El número del Competitivo, de 40 a 99 como el OVR. Mide la calidad y no la cantidad: de él sale tu rango.'],
   ['Rango', 'La letra, de E a SSS. Es una sola por persona y es la misma en todas tus tarjetas.'],
   ['Racha', 'Eventos seguidos llegando arriba de la llave: la final si es de menos de 16, la semifinal de 16 a 31, cuartos de 32 a 63 y octavos de 64 o más. En Duelos, duelos ganados seguidos.'],
   ['Duelo', 'Una batalla uno contra uno. Los triples, los de cuatro y los de equipos no cuentan: ahí no hay un solo rival.'],
@@ -183,9 +183,9 @@ export function Guia({ liga, dc }) {
                   <p className="gu-nota">Cada parte se compara con la mejor de la temporada.</p></div>
               ) : null}
               {(G.score || []).length ? (
-                <div className="gu-pesos"><h3>El Score <small>de 0 a 100 · da el rango</small></h3>
+                <div className="gu-pesos"><h3>El Score <small>de 40 a 99 · da el rango</small></h3>
                   {G.score.map((x) => <div key={x[1]} className="gu-p"><span>{x[0]} {x[1]}<small>{x[2]}</small></span><i><u style={{ width: Math.round(100 * x[3] / maxSc) + '%' }} /></i><b>{x[3]} %</b></div>)}
-                  {(G.conf || []).length ? <p className="gu-nota">Y se multiplica por la <b>confianza</b>, que premia jugar más: {G.conf.map((c, i) => c[1] + ' % ' + (i === G.conf.length - 1 ? 'desde ' : 'con ') + c[0] + (c[0] === 1 ? ' evento' : ' eventos')).join(', ')}.</p> : null}
+                  {(G.conf || []).length ? <p className="gu-nota">Y se multiplica por la <b>confianza</b>, que premia jugar más: {G.conf.map((c, i) => c[1] + ' % ' + (i === G.conf.length - 1 ? 'desde ' : 'con ') + c[0] + (c[0] === 1 ? ' evento' : ' eventos')).join(', ')}. La suma va de 0 a 100 y se lleva a 40–99, como el OVR.</p> : null}
                 </div>
               ) : null}
             </div>

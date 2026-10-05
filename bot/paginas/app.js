@@ -1995,7 +1995,7 @@ var COL = {
   // quedaría abajo de «A» y «SSS» abajo de «S». Sin rango, al final.
   rg: { t: 'Rango', si: function () { return (D.tabla || []).some(function (f) { return f.rg; }); },
     s: function (f) { return f.rg ? f.sc || 0 : ''; }, v: pastillaRg },
-  sc: { t: 'Score', tit: 'El número del Competitivo, de 0 a 100', s: function (f) { return f.sc || 0; },
+  sc: { t: 'Score', tit: 'El número del Competitivo, de 40 a 99', s: function (f) { return f.sc || 0; },
     v: function (f) { return f.sc ? '<b class="sc">' + esc(String(f.sc).replace('.', ',')) + '</b>' : nada; } },
   // ⚠️ SE VE SÓLO SI HAY MÁS DE UN SERVIDOR EN LA TABLA: hoy la T1 entera es
   // de FFA y la columna decía «FFA» ochenta y cinco veces, comiéndose el
@@ -5194,7 +5194,7 @@ function pintaGuia() {
     ((G.ovr || []).length ? '<h3 class="gh">El OVR <small>de 40 a 99 · ordena la temporada</small></h3>' +
       G.ovr.map(function (x) { return barra(esc(x[0]), x[1], mx(G.ovr, 1)); }).join('') +
       '<p class="nota">Cada parte se compara con la mejor de la temporada.</p>' : '') +
-    ((G.score || []).length ? '<h3 class="gh">El Score <small>de 0 a 100 · da el rango</small></h3>' +
+    ((G.score || []).length ? '<h3 class="gh">El Score <small>de 40 a 99 · da el rango</small></h3>' +
       G.score.map(function (x) { return barra(esc(x[0]) + ' ' + esc(x[1]), x[3], mx(G.score, 3), esc(x[2])); }).join('') +
       ((G.conf || []).length ? '<p class="nota">Y se multiplica por la <b>confianza</b>, que premia ' +
         'jugar más: ' + G.conf.map(function (c, i) {

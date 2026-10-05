@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.33",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T01:30:00-04:00",
+   "titulo": "El Score, de 40 a 99",
+   "items": [
+    "📈 **El Score del Competitivo va de 40 a 99**, como el OVR. Es la misma cuenta llevada a otra escala: los cortes de cada rango se movieron con ella (SSS desde 88, SS 83, S 77, A 68, B 62, C 55, D 51) y nadie cambió de letra.",
+    "🃏 **`/card` ya no ofrece la tarjeta de Servidor de FRZ, TWR ni FTN**, que no están en la Liga."
+   ]
+  },
+  {
    "version": "2.32",
    "dia": "2026-10-04",
    "cuando": "2026-10-04T16:38:00-04:00",
