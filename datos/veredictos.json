@@ -722,6 +722,36 @@
    "b": "Park-Ji Sung",
    "ganador": "Park-Ji Sung",
    "votos": "1–0"
+  },
+  "1556545112538882131": {
+   "id": "1556545112538882131",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791179674039,
+   "a": "ALEXIS",
+   "b": "BENJU",
+   "ganador": "BENJU",
+   "votos": "1–0"
+  },
+  "1556546698338107413": {
+   "id": "1556546698338107413",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791180052123,
+   "a": "NHP SKRATCH",
+   "b": "TAM BAGGIO",
+   "ganador": "TAM BAGGIO",
+   "votos": "1–0"
+  },
+  "1556551155029381131": {
+   "id": "1556551155029381131",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791181114681,
+   "a": "GEKTO",
+   "b": "BENJU",
+   "ganador": "GEKTO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1375,8 +1405,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791177886428,
-   "ed": 1791179379392,
-   "texto": "`[ OCTAVOS ]`\n⌞PROVENZA⌝ 🆚 ⌞ALEXIS⌝ 🆚 ⌞CRK⌝ 🆚 ⌞FOKOX⌝\n⌞BENJU⌝ 🆚 ⌞HASSAN⌝ 🆚 ⌞ONI⌝ 🆚 ⌞MKS⌝\n⌞TAM⌝ 🆚 ⌞IVAYNEX⌝ 🆚 ⌞BAGGIO(FULLYLO4DED)⌝\n⌞SKRATCH⌝ 🆚 ⌞NHP⌝ 🆚 ⌞GARXZI⌝\n⌞HASSAN BENJU⌝ 🆚 ⌞ZA ALEXIS⌝\n⌞za⌝ 🆚 ⌞benju⌝ 🆚 ⌞alexis⌝ 🆚 ⌞hassan⌝",
+   "ed": 1791181301867,
+   "texto": "`[ OCTAVOS ]`\n⌞PROVENZA⌝ 🆚 ⌞ALEXIS⌝ 🆚 ⌞CRK⌝ 🆚 ⌞FOKOX⌝\n⌞BENJU⌝ 🆚 ⌞HASSAN⌝ 🆚 ⌞ONI⌝ 🆚 ⌞MKS⌝\n⌞TAM⌝ 🆚 ⌞IVAYNEX⌝ 🆚 ⌞BAGGIO(FULLYLO4DED)⌝\n⌞SKRATCH⌝ 🆚 ⌞NHP⌝ 🆚 ⌞GARXZI⌝\n⌞HASSAN BENJU⌝ 🆚 ⌞ZA ALEXIS⌝\n⌞za⌝ 🆚 ⌞benju⌝ 🆚 ⌞alexis⌝ 🆚 ⌞hassan⌝\n⌞ALEXIS⌝ 🆚 ⌞BENJU⌝\n⌞NHP SKRATCH⌝ 🆚 ⌞TAM BAGGIO⌝\n⌞PROVENZA⌝ 🆚 ⌞GEKTO⌝\n⌞GEKTO⌝ 🆚 ⌞BENJU⌝\n⌞GEKTO⌝ 🆚 ⌞HASSAN⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -1441,6 +1471,56 @@
       "benju",
       "alexis",
       "hassan"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ALEXIS",
+      "BENJU"
+     ],
+     "BENJU",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NHP SKRATCH",
+      "TAM BAGGIO"
+     ],
+     "TAM BAGGIO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PROVENZA",
+      "GEKTO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "GEKTO",
+      "BENJU"
+     ],
+     "GEKTO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "GEKTO",
+      "HASSAN"
      ],
      null,
      "última ronda y no dice campeón",
