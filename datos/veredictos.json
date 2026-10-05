@@ -1326,6 +1326,28 @@
      []
     ]
    ]
+  },
+  "1556498233402986576": {
+   "id": "1556498233402986576",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791168497182,
+   "ed": 1791168777456,
+   "texto": "`[ CUARTOS ]`\n⌞NC⌝ 🆚 ⌞BLITZ⌝ 🆚 ⌞ZA⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "NC",
+      "BLITZ",
+      "ZA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }
