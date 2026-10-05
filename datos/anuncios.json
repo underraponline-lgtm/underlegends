@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-05T16:54:15+00:00",
+ "cuando": "2026-10-05T17:24:20+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2961,9 +2961,7 @@
    "horario": "🇪🇸🇯🇪 23:00 PM",
    "fecha": "",
    "premios": "",
-   "categoria_id": "868218509975498805",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "868218509975498805"
   },
   {
    "nombre": "VALHALLA VOL1",
@@ -2984,9 +2982,7 @@
    "fecha": "DOMINGO 4 DE OCTUBRE",
    "premios": "$10 DÓLARES DE PREMIO",
    "de_imagen": true,
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -3006,9 +3002,7 @@
    "horario": "🇦🇷🇺🇾 : 22:00 PM",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -3028,9 +3022,7 @@
    "horario": "🇪🇸🇯🇪 23:00 PM",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "ES UN PLACER ANUNCIARLES EL EQUIPO QUE NOS AYUDARÁ EN ESTA NACIONAL",
@@ -3050,9 +3042,7 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "COMPE CHILL",
@@ -3072,9 +3062,7 @@
    "horario": "APENAS SE LLENEN LOS CUPOS",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "Y TENEMOS EL HONOR DE ANUNCIARLES A TODO EL EQUIPO DE TRABAJO QUE SE V",
@@ -3094,9 +3082,7 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-04T17:08:02"
+   "categoria_id": "1309234419525222477"
   }
  ],
  "inscripciones": [
