@@ -682,6 +682,36 @@
    "b": "SGB🇨🇴",
    "ganador": "SGB🇨🇴",
    "votos": "2–1"
+  },
+  "1556454587471241257": {
+   "id": "1556454587471241257",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791158091181,
+   "a": "CORVO🇧🇴",
+   "b": "PANCHOK🇨🇱 ##",
+   "ganador": "PANCHOK🇨🇱 ##",
+   "votos": "2–0"
+  },
+  "1556455443629473963": {
+   "id": "1556455443629473963",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791158295305,
+   "a": "MCO🇦🇷 ##",
+   "b": "ABYSSUS🇨🇦 ##",
+   "ganador": "ABYSSUS🇨🇦 ##",
+   "votos": "1–0"
+  },
+  "1556458960515633225": {
+   "id": "1556458960515633225",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791159133796,
+   "a": "PANCHOK🇨🇱 ##",
+   "b": "ABYSSUS🇨🇦 ##",
+   "ganador": "ABYSSUS🇨🇦 ##",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1211,8 +1241,8 @@
    "g": "765045834647339038",
    "canal": "1309238412976590908",
    "pub": 1791157128389,
-   "ed": 1791157832388,
-   "texto": "`[ FINAL ]`\n⌞ZIGNOS🇩🇴⌝ 🆚 ⌞MAWS🇻🇪 ##⌝\n`[ FINAL ]`\n⌞SOL🇵🇪⌝ 🆚 ⌞SGB🇨🇴 ##⌝",
+   "ed": 1791158618666,
+   "texto": "`[ FINAL ]`\n⌞ZIGNOS🇩🇴⌝ 🆚 ⌞MAWS🇻🇪 ##⌝\n`[ FINAL ]`\n⌞SOL🇵🇪⌝ 🆚 ⌞SGB🇨🇴 ##⌝\n`[ FINAL ]`\n⌞CORVO🇧🇴⌝ 🆚 ⌞PANCHOK🇨🇱 ##⌝\n`[ FINAL ]`\n⌞MCO🇦🇷⌝ 🆚 ⌞ABYSSUS🇨🇦 ##⌝",
    "batallas": [
     [
      "FINAL",
@@ -1229,6 +1259,67 @@
      [
       "SOL🇵🇪",
       "SGB🇨🇴 ##"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CORVO🇧🇴",
+      "PANCHOK🇨🇱 ##"
+     ],
+     "PANCHOK🇨🇱 ##",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MCO🇦🇷",
+      "ABYSSUS🇨🇦 ##"
+     ],
+     "ABYSSUS🇨🇦 ##",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1556457626496270450": {
+   "id": "1556457626496270450",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1791158815741,
+   "ed": 1791159403617,
+   "texto": "`[ SEMIFINALES ]`\n⌞ZIGNOS🇩🇴⌝ 🆚 ⌞SGB🇨🇴 ##⌝\n`[ SEMIFINALES ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞ABYSSUS🇨🇦##⌝\n`[ FINAL ]`\n⌞SGB🇨🇴⌝ 🆚 ⌞ABYSSUS🇨🇦##⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "ZIGNOS🇩🇴",
+      "SGB🇨🇴 ##"
+     ],
+     "SGB🇨🇴 ##",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PANCHOK🇨🇱",
+      "ABYSSUS🇨🇦##"
+     ],
+     "ABYSSUS🇨🇦##",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SGB🇨🇴",
+      "ABYSSUS🇨🇦##"
      ],
      null,
      "última ronda y no dice campeón",
