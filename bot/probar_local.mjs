@@ -527,17 +527,20 @@ console.log('\nLOS DATOS\n');
   // ⚠️ SE PIDE EL CAMINO, NO LA FRASE. Lo que no puede faltar es cómo
   // verificarse. Afirmar el texto entero haría fallar la prueba por una coma.
   const c = r.json?.data?.content || '';
-  ok('un ID desconocido avisa en vez de reventar', c.includes('DRA'), c.slice(0, 48));
+  ok('un ID desconocido avisa en vez de reventar', c.includes('Verificate en la página'), c.slice(0, 48));
   // 🔑 DESDE EL 01/10/2026 ES UN BOTÓN, A LA PÁGINA (Dlx: «que esto te
   // redirija, y que te entres a DRA automáticamente»). Antes eran dos —la
   // invitación y el canal de DRA—, y la página hace los dos pasos.
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
-  // 📅 y desde el 04/10/2026 también «Ver los próximos eventos»: la tarjeta sale al jugar (Dlx, con lo de Adriagner)
-  ok('y le da DOS botones: los próximos eventos y verificarse en la página', bs.length === 2 &&
-     /\/freestyle-rap\/eventos$/.test(bs[0]?.url || '') &&
-     (bs[1]?.url || '') === 'https://underlegends.pages.dev/cuenta/verificar',
+  // 📅 y desde el 04/10/2026 también «Ver los próximos eventos»; y desde el 05/10/2026 el Pase, porque la Temporada
+  // es la recompensa de su nivel 1 (Dlx: «C»). Primero verificarse: sin eso, ninguna tarjeta
+  ok('y le da TRES botones: verificarse en la página, el Pase y los próximos eventos', bs.length === 3 &&
+     (bs[0]?.url || '') === 'https://underlegends.pages.dev/cuenta/verificar' &&
+     /\/freestyle-rap\/pase$/.test(bs[1]?.url || '') && /\/freestyle-rap\/eventos$/.test(bs[2]?.url || ''),
      bs.map(b => b.label + ' ' + b.url).join(' · '));
-  ok('y dice que la tarjeta es de quien juega', /\*\*juegan\*\*/.test(c) && /Todavía no tenés tarjeta/.test(c), c.slice(0, 90));
+  ok('y dice los dos pasos: verificarse (la Servidor) y la primera Tarea del Pase (la Temporada)',
+     /Todavía no tenés tarjeta/.test(c) && /Verificate en la página/.test(c) && /\*\*Servidor\*\*/.test(c) &&
+     /Tarea del Pase/.test(c) && /\*\*Temporada\*\*/.test(c), c.slice(0, 90));
   ok('que dice que si no está en DRA, la página lo mete', /te mete/.test(c), c.slice(-120));
 }
 {
@@ -549,8 +552,8 @@ console.log('\nLOS DATOS\n');
   ok('parado en DRA también va a la página, sin «te mete»',
      c.includes('Verificate en la página') && !/te mete/.test(c), c.slice(-90));
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
-  ok('y le quedan los próximos eventos y verificarse', bs.length === 2 &&
-     /\.dev\/cuenta\/verificar$/.test(bs[1]?.url || ''), bs.map(b => b.label).join(' · '));
+  ok('y le quedan verificarse, el Pase y los próximos eventos', bs.length === 3 &&
+     /\.dev\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
   ok('y NO le manda la invitación a donde ya está',
      !c.includes('discord.gg/') && !bs.some(b => (b.url || '').includes('discord.gg/')),
      'la interacción vino de DRA: ya está adentro');
@@ -989,8 +992,8 @@ console.log('\nSE ANOTA A QUIEN EL BOT NO CONOCE\n');
   const txt = r.json?.data?.content || '';
   ok('al que ya está cargado NO se le promete un admin',
      !/un admin te va a cargar/i.test(txt), txt.slice(0, 52));
-  ok('se le dice que lo que falta es verificarse',
-     /verificarte en dra/i.test(txt), txt.slice(0, 52));
+  ok('se le dice que lo que falta es verificarse (y la primera Tarea del Pase)',
+     /Para verificarte/.test(txt) && /Tarea del Pase/.test(txt), txt.slice(0, 52));
   // ⚠️ Y NO SE LO ENCOLA: una cola con trabajo que no existe se deja de mirar.
   ok('y no entra a la cola `reg:`', Object.keys(PUESTO).length === antes,
      'la cola no creció');
@@ -1474,7 +1477,7 @@ console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
     KV: { ...env.KV, put: async (k) => { kvPuestas.push(k); } },
     AVISOS: {
       idFromName: () => 'liga',
-      get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+      get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
         marcas.push(JSON.parse(opc.body).cual);
         return new Response('{"ok":true}', { status: 200 });
       } }),
@@ -2192,7 +2195,7 @@ console.log('\n/borrar-mis-datos\n');
     head: async (k) => (r2.has(k) ? { key: k } : null),
     delete: async (ks) => { for (const k of [].concat(ks)) r2.delete(k); },
   };
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     soltados.push([String(url), JSON.parse(opc.body).quien]);
     return new Response('{"ok":true,"soltados":2}', { status: 200 });
   } }) };
@@ -2304,7 +2307,7 @@ console.log('\nLAS ENCUESTAS\n');
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
     return new Response('{"ok":true,"cuenta":{"SR":1},"t":1}', { status: 200 });
   } }) };
@@ -2351,7 +2354,7 @@ console.log('\nLA SESIÓN: ENTRAR CON DISCORD UNA VEZ\n');
   const SES = 'a'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/nueva')) return new Response(JSON.stringify({ ses: SES, vence: RELOJ + 1 }), { status: 200 });
@@ -2453,7 +2456,7 @@ console.log('\nEL PRECIO POR CABEZA\n');
   // la ruta entera: Discord, KV y el objeto
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     alObjeto.push([String(url), opc && opc.body ? JSON.parse(opc.body) : null]);
     return new Response('{"ok":true,"saldo":3500}', { status: 200 });
   } }) };
@@ -2498,7 +2501,7 @@ console.log('\nSEGUIR RAPEROS\n');
   const SES = 'c'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
@@ -2564,7 +2567,7 @@ console.log('\n👏 FELICITAR\n');
   const SES = 'e'.repeat(43), SES_N = 'f'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {
@@ -2686,7 +2689,7 @@ console.log('\n«TU SERVIDOR»\n');
   env.TEMPORADA = 't1';
   env.FOTO_LIBRE_HASTA = '2026-10-09T04:00:00Z';
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }),
@@ -2774,7 +2777,7 @@ console.log('\n«EL DASHBOARD DEL DUEÑO»\n');
   const SES_D = 'g'.repeat(43), SES_O = 'h'.repeat(43);
   const antesF = globalThis.fetch, antesA = env.AVISOS;
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {
@@ -2849,7 +2852,7 @@ console.log('\n«LOS AJUSTES DEL DASHBOARD»\n');
   const antesF = globalThis.fetch, antesA = env.AVISOS, antesT = env.DISCORD_TOKEN;
   env.DISCORD_TOKEN = 'token-de-prueba';
   const alObjeto = [];
-  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (String(url).endsWith('/uso')) return new Response('{"ok":true}');
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
     const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
     alObjeto.push([u, b]);
     if (u.endsWith('/sesion/quien')) {

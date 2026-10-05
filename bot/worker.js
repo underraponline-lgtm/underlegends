@@ -972,21 +972,25 @@ export const VERIFICA = {
 // anotarlo deja su ID y su país listos para el día que juegue, nada más. El texto de
 // antes decía «entrás a la Liga solo en menos de una hora», y se leía como «en una
 // hora tenés tu carta».
-const YA_TE_ANOTE = 'Todavía no tenés tarjeta 🃏 — las tarjetas son de quienes ' +
-  '**juegan** en la Liga, y todavía no te vi en ningún evento.\n\n' +
+const YA_TE_ANOTE = 'Todavía no tenés tarjeta 🃏 — se consiguen en dos pasos, y los dos son tuyos.\n\n' +
   '✍️ Ya te anoté: si Discord sabe tu país (bandera en tu apodo o un rol de país), ' +
   'quedás en la Lista en menos de una hora; si no, te lo pido en la página.';
 // 📅 adónde ir a jugar: la página de Eventos, con los que vienen y cómo anotarse
 const URL_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
 const botonEventos = () => ({ type: 2, style: 5, label: 'Ver los próximos eventos', url: URL_EVENTOS });
 
-// 🔑 QUÉ PIDE CADA CARTA, en una línea (las LIBRES, Dlx 29/09/2026): la
-// Temporada y la Servidor salen al jugar estando en la Lista; la Competitiva
-// y la de País piden además el portón. Lo usan `/card` y `/versus`.
-const QUE_PIDE = 'Estando en la Lista, tu **Temporada** y tu **Servidor** ' +
-  'salen solas cuando juegues. La **Competitiva** y la de **País** piden ' +
-  'además **estar en DRA** y **verificarte** ahí; si ya estás en DRA, eso ' +
-  'también sale solo.';
+// 🔑 QUÉ PIDE CADA CARTA (Dlx, 05/10/2026: «si alguien nuevo usa el comando, que le diga que tiene que verificarse
+// en la página… y así desbloquea la tarjeta de servidor para cada sv que él se encuentre», «C», «nivel 1»). Sin
+// verificarse, ninguna; la Temporada es la recompensa del nivel 1 del Pase. Lo usan `/card` y `/versus`; la regla
+// vive en `bot/verificados.puede()`
+const QUE_PIDE = '1️⃣ **Verificate en la página**: se desbloquea tu **Servidor**, ' +
+  'la de cada servidor donde estás.\n' +
+  '2️⃣ **Cumplí tu primera Tarea del Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, ' +
+  'sale con «—» y se llena con tu primer evento.\n' +
+  'La **Competitiva** pide 10 eventos y la de **País**, 3 duelos nacionales y 3 internacionales.';
+// 🎟️ el Pase, donde están las Tareas de la semana
+const URL_PASE = 'https://underlegends.pages.dev/freestyle-rap/pase';
+const botonPase = () => ({ type: 2, style: 5, label: 'Ver el Pase', url: URL_PASE });
 
 // «Verificate…» -> «verificate…», para seguir una frase
 const minuscula = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
@@ -2839,8 +2843,8 @@ const COMANDOS = {
         const d = datosDe(i, porUsuario.value);
         if (!frenado(idDe(i), 'otro')) anotar(env, ctx, porUsuario.value, d.nick, d.user, d.glob, i.guild_id, 'otro');
         // 🔴 sin «un admin lo carga»: lo que le falta es jugar (ver `YA_TE_ANOTE`)
-        return aviso(`${comoDije} todavía no tiene tarjeta: las tarjetas son de quienes ` +
-                     '**juegan** en la Liga, y todavía no lo vi en ningún evento.\n' +
+        return aviso(`${comoDije} todavía no tiene tarjeta: se consiguen verificándose en la página y con la ` +
+                     'primera Tarea del **Pase de rapero**.\n' +
                      'Si jugó con otro nombre: `/card nombre:<ese nombre>`.');
       }
     } else if (porNombre) {
@@ -2882,20 +2886,18 @@ const COMANDOS = {
           // 🔑 DESDE LAS LIBRES (29/09/2026) NO TODO ES VERIFICARSE: quien
           // está en la Lista y todavía no jugó tiene la Temporada y la
           // Servidor en cuanto juegue. Verificarse es para las otras dos.
+          // 🔑 Y DESDE EL 05/10/2026, SIN VERIFICARSE NINGUNA: los dos pasos de `QUE_PIDE`
           return aviso('Ya estás cargado en la Liga ✅ — no hace falta que ' +
-                       'nadie te agregue.\n\nTu **Temporada** y tu ' +
-                       '**Servidor** salen solas cuando juegues tu primer ' +
-                       'evento. Para la **Competitiva** y la de **País** ' +
-                       'falta **verificarte en DRA**:\n• si ya estás en DRA ' +
+                       'nadie te agregue.\n\n' + QUE_PIDE + '\n\nPara verificarte:\n• si ya estás en DRA ' +
                        'y Discord sabe tu país (bandera en tu apodo o un rol ' +
                        'de país), el bot te verifica solo en la próxima ' +
-                       'vuelta (~30 min);\n• si no, ' + minuscula(v.texto), v.botones);
+                       'vuelta (~30 min);\n• si no, ' + minuscula(v.texto), v.botones.concat([botonPase()]));
         }
         const d = datosDe(i, yo);
         anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
-        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + v.texto +
+        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n\n' + v.texto +
                      '\n\nSi ya jugaste con otro nombre: `/card nombre:<ese nombre>`.',
-                     [botonEventos()].concat(v.botones));
+                     v.botones.concat([botonPase(), botonEventos()]));
       }
     }
     const [crudo, meta] = await Promise.all([
@@ -2993,8 +2995,8 @@ const COMANDOS = {
         const d = datosDe(i, rival.id);
         if (!frenado(idDe(i), 'otro')) anotar(env, ctx, rival.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
-      return aviso(`${rival.como} todavía no tiene tarjeta: las tarjetas son de quienes ` +
-                   '**juegan** en la Liga.');
+      return aviso(`${rival.como} todavía no tiene tarjeta: se consiguen verificándose en la página y con la ` +
+                   'primera Tarea del **Pase de rapero**.');
     }
     // ⚠️ `contra` ES OPCIONAL Y POR DEFECTO SOS VOS. Que se pueda enfrentar a
     // dos terceros no es un lujo: la mitad de los usos son de un organizador
@@ -3005,13 +3007,14 @@ const COMANDOS = {
         const d = datosDe(i, idDe(i));
         anotar(env, ctx, idDe(i), d.nick, d.user, d.glob, i.guild_id, 'yo');
         const vf = comoVerificarse(aquiEs(i.guild_id));
-        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n' + vf.texto, [botonEventos()].concat(vf.botones));
+        return aviso(YA_TE_ANOTE + '\n\n' + QUE_PIDE + '\n\n' + vf.texto, vf.botones.concat([botonPase(), botonEventos()]));
       }
       if (mio.id) {
         const d = datosDe(i, mio.id);
         anotar(env, ctx, mio.id, d.nick, d.user, d.glob, i.guild_id, 'otro');
       }
-      return aviso(`${mio.como} todavía no tiene tarjeta: las tarjetas son de quienes **juegan** en la Liga.`);
+      return aviso(`${mio.como} todavía no tiene tarjeta: se consiguen verificándose en la página y con la primera ` +
+                   'Tarea del **Pase de rapero**.');
     }
     // ⚠️ UNO CONTRA SÍ MISMO NO ES UN EMPATE, ES UN ERROR DE TIPEO. Dibujarlo
     // sale «bien» —dos veces la misma carta— y por eso conviene cortarlo: el
@@ -3500,8 +3503,8 @@ pinta();setInterval(pinta,1000);
 // contra un techo gratis de 100.000, y el objeto lee sólo unas 200 por hora: el resto sale de acá. Cada lectura se
 // cuenta bajo su ruta y su clave (las de cada persona, juntas: nunca de quién) y cada isolate le pasa lo suyo al objeto
 // cada 5 minutos, que lo suma a `medidas` (`/avisos/estado`). Medir antes de arreglar.
-// ⚠️ con `performance.now()` y no `Date.now()`: las pruebas adelantan el reloj del calendario y no éste
-const MED_KV = { n: {}, t: performance.now() };
+// ⚠️ `t` arranca en 0: en un Worker la hora del arranque del isolate es 0, y la primera vuelta con algo contado manda
+const MED_KV = { n: {}, t: 0 };
 function kvMedido(env, ctx, ruta) {
   if (!env || !env.KV) return env;
   const kv = env.KV;
@@ -3512,10 +3515,10 @@ function kvMedido(env, ctx, ruta) {
     put: (...a) => kv.put(...a), delete: (...a) => kv.delete(...a), list: (...a) => kv.list(...a),
     getWithMetadata: (...a) => kv.getWithMetadata(...a),
   };
-  if (ctx && ctx.waitUntil && env.AVISOS && performance.now() - MED_KV.t > 5 * 60000 && Object.keys(MED_KV.n).length) {
+  if (ctx && ctx.waitUntil && env.AVISOS && Date.now() - MED_KV.t > 5 * 60000 && Object.keys(MED_KV.n).length) {
     const n = MED_KV.n;
     MED_KV.n = {};
-    MED_KV.t = performance.now();
+    MED_KV.t = Date.now();
     ctx.waitUntil(env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/medir', {
       method: 'POST', body: JSON.stringify({ kv: n }), headers: { 'content-type': 'application/json' },
     }).catch(() => {}));

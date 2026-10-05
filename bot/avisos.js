@@ -1354,6 +1354,8 @@ const RUTAS = {
   // 🎟️ el Pase de rapero: el tuyo y «miré una llave en vivo», con tu sesión; el nivel de cada perfil; y lo del ciclo,
   // con su clave. Ver `paseDe()`, `paseVivo()`, `pases()` y `paseCiclo()`
   '/avisos/pase': 'POST', '/avisos/pase-vivo': 'POST', '/avisos/pases': 'GET', '/avisos/pase-ciclo': 'POST',
+  // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
+  '/avisos/pase-niveles': 'GET',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -2538,6 +2540,12 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎟️ QUIÉN TIENE NIVEL EN EL PASE, PARA EL CICLO: trae Discord IDs, así que sin su clave «no existe»
+  if (ruta === '/avisos/pase-niveles') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/pase-niveles');
+  }
   // 🎟️ LO DEL PASE QUE SABE EL CICLO (`bot/pase.py`): con su clave, y tal cual al objeto, que lo valida. Trae la lista
   // de miembros: por eso no entra por el reenvío de abajo (4 KB) ni por KV (1.000 escrituras por día)
   if (ruta === '/avisos/pase-ciclo') {
@@ -2999,6 +3007,7 @@ export class Avisos {
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
+      if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
@@ -5466,7 +5475,7 @@ export class Avisos {
       tareas: (Array.isArray(c.tareas) ? c.tareas : []).filter((t) => Array.isArray(t) && PASE_TAREAS.includes(t[0]))
         .map((t) => [t[0], String(t[1] || '').slice(0, 80), String(t[2] || '').slice(0, 200)]),
       premios: (Array.isArray(c.premios) ? c.premios : []).filter((p) => Array.isArray(p) && Number.isInteger(p[0]))
-        .map((p) => [p[0], entero(p[1], 0, 100000, 0), ['insignia', 'titulo', 'color'].includes(p[2]) ? p[2] : '',
+        .map((p) => [p[0], entero(p[1], 0, 100000, 0), ['tarjeta', 'insignia', 'titulo', 'color'].includes(p[2]) ? p[2] : '',
           String(p[3] || '').slice(0, 40)]),
     };
     this.guardar('pase', { cfg, sem, miembros: d.miembros.map(String).filter(id), hechas });
@@ -5546,7 +5555,8 @@ export class Avisos {
     if (nivel > antes) {
       const p = (P.cfg.premios || [])[nivel - 1];
       const extra = p && p[2] === 'titulo' ? ' Ganaste el título «' + p[3] + '».' : p && p[2] === 'insignia'
-        ? ' Ganaste la insignia ' + p[3] + '.' : p && p[2] === 'color' ? ' Tu nombre ya va en dorado.' : '';
+        ? ' Ganaste la insignia ' + p[3] + '.' : p && p[2] === 'color' ? ' Tu nombre ya va en dorado.'
+          : p && p[2] === 'tarjeta' ? ' Desbloqueaste tu tarjeta de ' + p[3] + ': sale en la próxima vuelta del ciclo.' : '';
       this.aBandeja(quien, 'pase:' + P.cfg.temp, 'pase', '🎟️ Nivel ' + nivel + ' del Pase de rapero',
         (p && p[1] ? '+' + p[1] + ' Puntos de Tienda.' : '') + extra, HUB + '/freestyle-rap/pase', '', ahora);
     }
@@ -5618,6 +5628,20 @@ export class Avisos {
     if (!hay) return { ok: true, cuenta: false };
     this.sql.exec('INSERT OR IGNORE INTO pase_vivo (quien, llave, t) VALUES (?, ?, ?)', quien, llave, Date.now());
     return { ok: true, cuenta: true, nuevas: this.paseRevisar(quien) };
+  }
+
+  /**
+   * 🎟️ Para el ciclo (`/avisos/pase-niveles`, con su clave): `{discord_id: nivel}` de los que tienen nivel 1 o más
+   * en el Pase de la temporada. La Temporada es la recompensa del nivel 1 (Dlx, 05/10/2026: «C», «nivel 1»): con esto
+   * el ciclo sabe a quién dibujársela. Trae Discord IDs: nunca es público
+   */
+  paseNiveles() {
+    const P = this.paseDatos();
+    if (!P.cfg) return { t: Date.now(), temp: '', niveles: {} };
+    const out = {};
+    for (const { quien, n } of this.sql.exec('SELECT quien, COUNT(*) AS n FROM pase_hecho WHERE temp = ? GROUP BY quien',
+      P.cfg.temp).toArray()) out[quien] = Math.min(P.cfg.niveles, n);
+    return { t: Date.now(), temp: P.cfg.temp, niveles: out };
   }
 
   /**
