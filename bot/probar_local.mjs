@@ -2927,5 +2927,58 @@ console.log('\n«LOS ANUNCIOS QUE SON UNA IMAGEN»\n');
   if (antesT === undefined) delete env.DISCORD_TOKEN; else env.DISCORD_TOKEN = antesT;
 }
 
+console.log('\n«EL PASE DE RAPERO»\n');
+{
+  // 🎟️ 05/10/2026: el tuyo y «miré una llave en vivo» van con tu sesión, y el `quien` lo pone ella; lo del ciclo, con su
+  // clave. Ninguno puede entrar por el reenvío del final de `rutaAvisos()`, que pasa el cuerpo tal cual
+  const { claveCiclo } = await import('./avisos.js');
+  const SES = 'p'.repeat(43), YO = '562063579545600009', OTRO = '562063579545600010';
+  const antesF = globalThis.fetch, antesA = env.AVISOS, antesT = env.DISCORD_TOKEN;
+  env.DISCORD_TOKEN = 'token-de-prueba';
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/uso')) return new Response('{"ok":true}');
+    if (u.endsWith('/sesion/quien')) {
+      return b && b.ses === SES ? new Response(JSON.stringify({ quien: YO }), { status: 200 }) : new Response('{"error":"no"}', { status: 404 });
+    }
+    if (u.endsWith('/pases')) return new Response('{"t":1,"n":{"ana":[7,"",""]}}', { status: 200 });
+    return new Response('{"ok":true,"nivel":3}', { status: 200 });
+  } }) };
+  globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
+  const pedir = async (ruta, cuerpo, h = {}) => {
+    const r = await worker.fetch(new Request('https://x/avisos/' + ruta, { method: 'POST', body: JSON.stringify(cuerpo), headers: h }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await pedir('pase', { quien: OTRO }, { 'x-lg-ses': SES });
+  const aPase = alObjeto.find(([u]) => u.endsWith('/pase'));
+  ok('tu Pase, con sesión: al objeto va TU Discord ID, aunque el cuerpo diga otro',
+     r.status === 200 && aPase && aPase[1].quien === YO);
+  alObjeto.length = 0;
+  r = await pedir('pase', { quien: OTRO });
+  ok('sin sesión: 401 y no llega al objeto', r.status === 401 && !alObjeto.some(([u]) => u.endsWith('/pase')));
+  r = await pedir('pase-vivo', { llave: '1424242424242424242' }, { 'x-lg-ses': SES });
+  const aVivo = alObjeto.find(([u]) => u.endsWith('/pase-vivo'));
+  ok('«miré una llave en vivo», con sesión: con tu ID y la llave', r.status === 200 && aVivo && aVivo[1].quien === YO
+     && aVivo[1].llave === '1424242424242424242');
+  alObjeto.length = 0;
+  r = await pedir('pase-vivo', { llave: '<script>' }, { 'x-lg-ses': SES });
+  ok('una llave que no es un id: 400', r.status === 400 && !alObjeto.some(([u]) => u.endsWith('/pase-vivo')));
+  const CICLO = { v: 'abc', cfg: { temp: 'prueba' }, sem: [], miembros: [YO], hechas: {} };
+  r = await pedir('pase-ciclo', CICLO);
+  const r2 = await pedir('pase-ciclo', CICLO, { 'x-lg-ciclo': 'x'.repeat(64) });
+  ok('lo del ciclo sin su clave: «no existe», y no llega al objeto',
+     r.status === 404 && r2.status === 404 && !alObjeto.some(([u]) => u.endsWith('/pase-ciclo')));
+  r = await pedir('pase-ciclo', CICLO, { 'x-lg-ciclo': await claveCiclo(env.DISCORD_TOKEN) });
+  const aCiclo = alObjeto.find(([u]) => u.endsWith('/pase-ciclo'));
+  ok('con la clave del ciclo: llega tal cual', r.status === 200 && aCiclo && aCiclo[1].v === 'abc' && aCiclo[1].miembros[0] === YO);
+  const g = await worker.fetch(new Request('https://x/avisos/pases'), env, ctx);
+  ok('el Pase de los perfiles: público, por clave', g.status === 200 && JSON.parse(await g.text()).n.ana[0] === 7);
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  if (antesT === undefined) delete env.DISCORD_TOKEN; else env.DISCORD_TOKEN = antesT;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

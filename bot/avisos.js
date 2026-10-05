@@ -914,6 +914,8 @@ export async function anotarUso(env, quien, por) {
 // Un día cuenta si usaste el bot, hiciste algo en la página con tu cuenta o jugaste un evento. Las reglas y los
 // números viven en `bot/racha.py` y llegan con lo del precio por cabeza (`racha_cfg`); estos son los de arranque.
 export const RACHA_CFG = { cada: 7, premio: 500, xp_ev: 10, xp_dia: 2, paso: 10, desde: 0 };
+// 🎟️ las cinco Tareas del Pase, en el orden en que se muestran. Los textos y los números, en `bot/pase.py`
+export const PASE_TAREAS = ['dias', 'dra', 'misiones', 'felicitar', 'vivo'];
 const diaNum = (s) => Math.round(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DIA_MS);
 /**
  * `{actual, maxima, total, inicio, hoy}` de los días `AAAA-MM-DD` de alguien, en orden y sin repetir.
@@ -1349,6 +1351,9 @@ const RUTAS = {
   '/avisos/inscritos': 'GET',
   // 🖼️ el texto de un anuncio que es una imagen, para el ciclo: con `claveCiclo()`. Ver `textoDeImagen()`
   '/avisos/ocr': 'POST',
+  // 🎟️ el Pase de rapero: el tuyo y «miré una llave en vivo», con tu sesión; el nivel de cada perfil; y lo del ciclo,
+  // con su clave. Ver `paseDe()`, `paseVivo()`, `pases()` y `paseCiclo()`
+  '/avisos/pase': 'POST', '/avisos/pase-vivo': 'POST', '/avisos/pases': 'GET', '/avisos/pase-ciclo': 'POST',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -2515,6 +2520,35 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, p: v }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎟️ EL PASE: el tuyo (pedirlo ya revisa tus Tareas) y «miré una llave en vivo», con tu sesión. ⚠️ Nunca por el
+  // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
+  if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const llave = String(d.llave || '');
+    if (ruta === '/avisos/pase-vivo' && !/^[A-Za-z0-9:_-]{1,60}$/.test(llave)) return json({ error: 'falta la llave' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🎟️ LO DEL PASE QUE SABE EL CICLO (`bot/pase.py`): con su clave, y tal cual al objeto, que lo valida. Trae la lista
+  // de miembros: por eso no entra por el reenvío de abajo (4 KB) ni por KV (1.000 escrituras por día)
+  if (ruta === '/avisos/pase-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 600000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/pase-ciclo', {
+      method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
   const sub = ruta.slice('/avisos'.length);
   if (metodo === 'GET') return elObjeto(env).fetch('https://avisos' + sub);
   const cuerpo = await req.text();
@@ -2845,6 +2879,13 @@ export class Avisos {
       // 🤝 las postulaciones de /sumate: 90 días (ver `postular()`)
       this.sql.exec('CREATE TABLE IF NOT EXISTS postulaciones (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
         "t INTEGER NOT NULL, datos TEXT NOT NULL, enviada INTEGER NOT NULL DEFAULT 0, error TEXT NOT NULL DEFAULT '')");
+      // 🎟️ EL PASE DE RAPERO (05/10/2026): cada Tarea cumplida, por temporada y semana (`pase_hecho`: una cumplida no
+      // se pierde, ni con una llave corregida ni cuando el aplauso se borra a los 21 días), y qué llave en vivo miró
+      // cada uno (`pase_vivo`, 14 días). Ver `paseRevisar()` y `bot/pase.py`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pase_hecho (quien TEXT NOT NULL, temp TEXT NOT NULL, sem TEXT NOT NULL, ' +
+        'tarea TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, sem, tarea))');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pase_vivo (quien TEXT NOT NULL, llave TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        'PRIMARY KEY (quien, llave))');
     });
   }
 
@@ -2885,6 +2926,7 @@ export class Avisos {
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
+      if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
@@ -2910,6 +2952,12 @@ export class Avisos {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
         return json(this.rachaDe(String(d.quien)));
       }
+      if (ruta === '/pase') {
+        if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
+        return json(this.paseDe(String(d.quien)));
+      }
+      if (ruta === '/pase-vivo') return json(this.paseVivo(d));
+      if (ruta === '/pase-ciclo') return json(this.paseCiclo(d));
       if (ruta === '/visita') return this.visita();
       if (ruta === '/dueno') {
         const p = this.panelDueno();
@@ -3163,6 +3211,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM repetidos WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
+      // 🎟️ las llaves en vivo que miró cada uno: a esa altura la Tarea ya quedó anotada (`pase_hecho`)
+      this.sql.exec('DELETE FROM pase_vivo WHERE t < ?', ahora - 14 * 24 * HORA);
       // 👏 los aplausos, con su publicación: para entonces ya salió del muro (21 días)
       const viejo = ahora - APLAUSOS_DIAS * DIA_MS;
       this.sql.exec('DELETE FROM aplausos WHERE t < ? OR id IN (SELECT id FROM aplaudidas WHERE primero < ?)', viejo, viejo);
@@ -4368,6 +4418,9 @@ export class Avisos {
     if (rp.rowsWritten) await this.colaReportes(Date.now());
     // 👏 y a quién felicitó: también va con su Discord ID
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
+    // 🎟️ y su Pase: las Tareas que cumplió y las llaves en vivo que miró
+    this.sql.exec('DELETE FROM pase_hecho WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM pase_vivo WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
     // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
@@ -4759,6 +4812,8 @@ export class Avisos {
     p.id, p.tipo, JSON.stringify(p.quien || []), JSON.stringify(p.ks || []), String(p.motivo || '').slice(0, 120),
     String(p.t || '').slice(0, 30), ahora);
     const r = this.sql.exec('INSERT OR IGNORE INTO aplausos (id, quien, t) VALUES (?, ?, ?)', p.id, quien, ahora);
+    // 🎟️ y la Tarea del Pase de felicitar
+    if (r.rowsWritten) this.paseRevisar(quien);
     const n = this.sql.exec('SELECT COUNT(*) AS n FROM aplausos WHERE id = ?', p.id).toArray()[0].n;
     return json({ ok: true, id: p.id, n, ya: !r.rowsWritten, t: ahora });
   }
@@ -5061,6 +5116,8 @@ export class Avisos {
           }
         }
         this.premiarRacha(quien);
+        // 🎟️ jugar también cuenta días para la Tarea del Pase
+        this.paseRevisar(quien);
         cambios++;
       }
     }
@@ -5225,6 +5282,8 @@ export class Avisos {
   diaActivo(quien, dia) {
     if (this.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', quien, dia).rowsWritten) {
       this.premiarRacha(quien);
+      // 🎟️ y la Tarea del Pase de entrar días seguidos
+      this.paseRevisar(quien);
     }
   }
 
@@ -5278,6 +5337,228 @@ export class Avisos {
       out[k] = [x.nivel.n, x.racha.actual];
     }
     return { t: Date.now(), n: out };
+  }
+
+  // ── 🎟️ EL PASE DE RAPERO (05/10/2026) ─────────────────────────────────────────────────────────────────────────────
+  // Dlx: «sólo para DRA», «con TAREAS», «como Brawl Stars»; a la propuesta, «3. A». 30 niveles por temporada, uno por
+  // Tarea cumplida; cada nivel paga Puntos de Tienda y algunos dan una insignia, un título o un color para tu nombre.
+  // Las reglas y los números viven en `bot/pase.py` y llegan por `/pase-ciclo`, con lo que sabe el ciclo: quiénes son
+  // miembros de DRA y quién jugó en DRA o completó sus misiones cada semana. Lo demás lo ve pasar el objeto: los días
+  // de la racha (`activo`), los aplausos (`aplausos`) y las llaves en vivo que miró cada uno (`pase_vivo`).
+
+  /** Lo del ciclo, leído una vez por versión: `{v, cfg, sem, miembros, hechas}`. Sin nada del ciclo, `cfg` es `null` */
+  paseDatos() {
+    const v = this.leer('pase_v') || '';
+    if (this._pase && this._pase.v === v) return this._pase;
+    const d = (v && this.leer('pase')) || {};
+    this._pase = { v, cfg: d.cfg && typeof d.cfg === 'object' ? d.cfg : null, sem: Array.isArray(d.sem) ? d.sem : [],
+      miembros: new Set(Array.isArray(d.miembros) ? d.miembros : []), hechas: d.hechas && typeof d.hechas === 'object' ? d.hechas : {} };
+    return this._pase;
+  }
+
+  /**
+   * Lo que manda el ciclo (`bot/pase.py`), validado y guardado sólo si cambió (`v`). Después revisa a los que jugaron
+   * en DRA o completaron sus misiones: así suben de nivel aunque no abran la página.
+   */
+  paseCiclo(d) {
+    if (!d || typeof d !== 'object' || typeof d.v !== 'string' || !d.cfg || typeof d.cfg !== 'object' ||
+      !Array.isArray(d.sem) || !Array.isArray(d.miembros) || !d.hechas || typeof d.hechas !== 'object') {
+      return { error: 'faltan datos' };
+    }
+    if (d.v === this.leer('pase_v')) return { ok: true, cambio: false };
+    const fecha = (s) => /^\d{4}-\d{2}-\d{2}$/.test(String(s));
+    const id = (s) => /^[0-9]{5,25}$/.test(String(s));
+    const sem = d.sem.filter((s) => Array.isArray(s) && fecha(s[0]) && Number.isFinite(s[1]) && Number.isFinite(s[2]) &&
+      s[1] < s[2]).slice(-60).map((s) => [String(s[0]), s[1], s[2]]);
+    const hechas = {};
+    for (const [q, x] of Object.entries(d.hechas)) {
+      if (!id(q) || !x || typeof x !== 'object') continue;
+      const y = {};
+      for (const [s, v] of Object.entries(x)) if (fecha(s) && Array.isArray(v)) y[s] = [v[0] ? 1 : 0, v[1] ? 1 : 0];
+      hechas[q] = y;
+    }
+    const c = d.cfg;
+    const entero = (x, a, b, def) => (Number.isInteger(x) && x >= a && x <= b ? x : def);
+    const cfg = {
+      temp: String(c.temp || 'prueba').replace(/[^a-z0-9]/gi, '').slice(0, 20) || 'prueba',
+      niveles: entero(c.niveles, 1, 100, 30), dias: entero(c.dias, 1, 7, 3), felicitar: entero(c.felicitar, 1, 50, 3),
+      tareas: (Array.isArray(c.tareas) ? c.tareas : []).filter((t) => Array.isArray(t) && PASE_TAREAS.includes(t[0]))
+        .map((t) => [t[0], String(t[1] || '').slice(0, 80), String(t[2] || '').slice(0, 200)]),
+      premios: (Array.isArray(c.premios) ? c.premios : []).filter((p) => Array.isArray(p) && Number.isInteger(p[0]))
+        .map((p) => [p[0], entero(p[1], 0, 100000, 0), ['insignia', 'titulo', 'color'].includes(p[2]) ? p[2] : '',
+          String(p[3] || '').slice(0, 40)]),
+    };
+    this.guardar('pase', { cfg, sem, miembros: d.miembros.map(String).filter(id), hechas });
+    this.guardar('pase_v', d.v);
+    this._pase = null;
+    let niveles = 0;
+    for (const q of Object.keys(hechas)) niveles += this.paseRevisar(q);
+    return { ok: true, cambio: true, niveles };
+  }
+
+  /**
+   * Las cinco Tareas de alguien en una semana `[id, inicio, fin]`: `[{id, lleva, meta, hecha}]`. Una que ya se anotó
+   * (`pase_hecho`) queda cumplida aunque su dato ya no esté: el aplauso se borra a los 21 días y una llave se corrige.
+   */
+  paseSemana(quien, s, P) {
+    const cfg = P.cfg;
+    const [sid, ini, fin] = s;
+    // los días de la racha de esa semana: un día es de la semana que contiene su mediodía (cambian a las 11 AM ET)
+    const mediodia = (dia) => Date.UTC(+dia.slice(0, 4), +dia.slice(5, 7) - 1, +dia.slice(8, 10), 16, 30);
+    const dias = this.sql.exec('SELECT dia FROM activo WHERE quien = ? AND dia >= ? AND dia <= ? ORDER BY dia', quien,
+      diaET(ini - DIA_MS), diaET(fin + DIA_MS)).toArray().map((x) => x.dia).filter((dia) => {
+      const t = mediodia(dia);
+      return t >= ini && t < fin;
+    });
+    let run = 0, mejor = 0, prev = null;
+    for (const dia of dias) {
+      const n = diaNum(dia);
+      run = prev !== null && n === prev + 1 ? run + 1 : 1;
+      prev = n;
+      if (run > mejor) mejor = run;
+    }
+    const h = (P.hechas[quien] || {})[sid] || [0, 0];
+    const fel = this.sql.exec('SELECT COUNT(*) AS n FROM aplausos WHERE quien = ? AND t >= ? AND t < ?', quien, ini, fin)
+      .toArray()[0].n;
+    const vio = this.sql.exec('SELECT COUNT(*) AS n FROM pase_vivo WHERE quien = ? AND t >= ? AND t < ?', quien, ini, fin)
+      .toArray()[0].n;
+    const ya = new Set(this.sql.exec('SELECT tarea FROM pase_hecho WHERE quien = ? AND temp = ? AND sem = ?', quien,
+      cfg.temp, sid).toArray().map((x) => x.tarea));
+    const cuenta = { dias: [mejor, cfg.dias], dra: [h[0], 1], misiones: [h[1], 1], felicitar: [fel, cfg.felicitar],
+      vivo: [vio ? 1 : 0, 1] };
+    return PASE_TAREAS.map((t) => {
+      const [lleva, meta] = cuenta[t];
+      const hecha = ya.has(t) || lleva >= meta;
+      return { id: t, lleva: hecha ? meta : Math.min(lleva, meta), meta, hecha };
+    });
+  }
+
+  /** Cuántas Tareas cumplió alguien en el Pase de esta temporada: su nivel, con tope */
+  paseNivel(quien, cfg) {
+    const r = this.sql.exec('SELECT COUNT(*) AS n FROM pase_hecho WHERE quien = ? AND temp = ?', quien, cfg.temp).toArray()[0];
+    return Math.min(cfg.niveles, r ? r.n : 0);
+  }
+
+  /**
+   * Anota las Tareas cumplidas de un miembro, semana por semana, y paga los niveles nuevos. Devuelve cuántas Tareas
+   * nuevas. ⚠️ Sólo de los miembros de DRA: el Pase es de ellos (Dlx). Lo llaman el día que cuenta (`diaActivo()`),
+   * el aplauso, la llave en vivo, lo que manda el ciclo y pedir tu Pase.
+   */
+  paseRevisar(quien) {
+    const P = this.paseDatos();
+    if (!P.cfg || !P.miembros.has(quien)) return 0;
+    const ahora = Date.now();
+    const antes = this.paseNivel(quien, P.cfg);
+    let nuevas = 0;
+    for (const s of P.sem) {
+      if (s[1] > ahora) continue;
+      for (const x of this.paseSemana(quien, s, P)) {
+        if (x.hecha) {
+          nuevas += this.sql.exec('INSERT OR IGNORE INTO pase_hecho (quien, temp, sem, tarea, t) VALUES (?, ?, ?, ?, ?)',
+            quien, P.cfg.temp, s[0], x.id, ahora).rowsWritten || 0;
+        }
+      }
+    }
+    if (!nuevas) return 0;
+    const nivel = this.premiarPase(quien);
+    // 🔔 y a su campana: uno solo por temporada, que se pisa («Nivel 7» reemplaza a «Nivel 6»). Sin push: es la bandeja
+    if (nivel > antes) {
+      const p = (P.cfg.premios || [])[nivel - 1];
+      const extra = p && p[2] === 'titulo' ? ' Ganaste el título «' + p[3] + '».' : p && p[2] === 'insignia'
+        ? ' Ganaste la insignia ' + p[3] + '.' : p && p[2] === 'color' ? ' Tu nombre ya va en dorado.' : '';
+      this.aBandeja(quien, 'pase:' + P.cfg.temp, 'pase', '🎟️ Nivel ' + nivel + ' del Pase de rapero',
+        (p && p[1] ? '+' + p[1] + ' Puntos de Tienda.' : '') + extra, HUB + '/freestyle-rap/pase', '', ahora);
+    }
+    return nuevas;
+  }
+
+  /** Paga cada nivel alcanzado una sola vez (`pase:<temporada>:<quien>:<nivel>`). Devuelve el nivel */
+  premiarPase(quien) {
+    const P = this.paseDatos();
+    if (!P.cfg) return 0;
+    const nivel = this.paseNivel(quien, P.cfg);
+    const ahora = Date.now();
+    for (let n = 1; n <= nivel; n++) {
+      const p = (P.cfg.premios || [])[n - 1];
+      if (!p || !(p[1] > 0)) continue;
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+        'pase:' + P.cfg.temp + ':' + quien + ':' + n, quien, p[1], ahora);
+    }
+    return nivel;
+  }
+
+  /** Lo que ganó alguien hasta su nivel: el último título, el color y las insignias (`[[nivel, valor], …]`) */
+  pasePremios(cfg, nivel) {
+    const hasta = (cfg.premios || []).filter((p) => p[0] <= nivel);
+    const ult = (tipo) => (hasta.filter((p) => p[2] === tipo).pop() || [])[3] || '';
+    return { titulo: ult('titulo'), color: ult('color'), insignias: hasta.filter((p) => p[2] === 'insignia').map((p) => [p[0], p[3]]) };
+  }
+
+  /**
+   * 🎟️ El Pase de alguien, para su página (`/avisos/pase`, con su sesión). Pedirlo ya revisa sus Tareas. A quien no es
+   * miembro de DRA le muestra igual qué es y qué pide, sin progreso.
+   */
+  paseDe(quien) {
+    const P = this.paseDatos();
+    if (!P.cfg) return { listo: false };
+    const cfg = P.cfg;
+    const miembro = P.miembros.has(quien);
+    if (miembro) this.paseRevisar(quien);
+    const ahora = Date.now();
+    const s = P.sem.filter((x) => x[1] <= ahora).slice(-1)[0] || null;
+    const nivel = miembro ? this.paseNivel(quien, cfg) : 0;
+    const textos = {};
+    for (const t of cfg.tareas || []) textos[t[0]] = t;
+    const metas = { dias: cfg.dias, felicitar: cfg.felicitar };
+    const tareas = !s ? [] : (miembro ? this.paseSemana(quien, s, P)
+      : PASE_TAREAS.map((t) => ({ id: t, lleva: 0, meta: metas[t] || 1, hecha: false })))
+      .map((x) => Object.assign(x, { t: (textos[x.id] || [])[1] || x.id, d: (textos[x.id] || [])[2] || '' }));
+    const cobrado = miembro ? this.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ? AND id LIKE ?",
+      quien, 'pase:' + cfg.temp + ':%').toArray()[0].n : 0;
+    // la insignia del último nivel queda para siempre: las temporadas que completó
+    const completos = this.sql.exec('SELECT temp, COUNT(*) AS n FROM pase_hecho WHERE quien = ? GROUP BY temp', quien)
+      .toArray().filter((r) => r.n >= cfg.niveles).map((r) => r.temp);
+    return Object.assign({ listo: true, miembro, temp: cfg.temp, niveles: cfg.niveles, nivel, cobrado, completos,
+      semana: s ? { id: s[0], fin: s[2], tareas } : null, premios: cfg.premios || [] }, this.pasePremios(cfg, nivel));
+  }
+
+  /**
+   * 🎟️ «Miré una llave en vivo» (`/avisos/pase-vivo`, con su sesión): la página lo manda después de un rato en la llave.
+   * Cuenta si de verdad hay algo en vivo: una llave o un 5 vidas de las últimas horas. Sólo de los miembros.
+   */
+  paseVivo(d) {
+    const quien = String(d.quien || ''), llave = String(d.llave || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !/^[A-Za-z0-9:_-]{1,60}$/.test(llave)) return { error: 'faltan datos' };
+    const P = this.paseDatos();
+    if (!P.cfg || !P.miembros.has(quien)) return { ok: true, cuenta: false };
+    const desde = Date.now() - VIVO_HORAS * HORA;
+    const hay = this.sql.exec('SELECT 1 FROM vivo WHERE ed > ? LIMIT 1', desde).toArray().length ||
+      this.sql.exec('SELECT 1 FROM veredictos WHERE pub > ? LIMIT 1', desde).toArray().length;
+    if (!hay) return { ok: true, cuenta: false };
+    this.sql.exec('INSERT OR IGNORE INTO pase_vivo (quien, llave, t) VALUES (?, ?, ?)', quien, llave, Date.now());
+    return { ok: true, cuenta: true, nuevas: this.paseRevisar(quien) };
+  }
+
+  /**
+   * 🎟️ Para la página: `{clave: [nivel, título, color]}` de los perfiles con nivel, por clave y nunca por cuenta; y
+   * lo público del Pase (`cfg`: las Tareas y los premios), para quien no entró
+   */
+  pases() {
+    const P = this.paseDatos();
+    const out = {};
+    if (!P.cfg) return { t: Date.now(), n: out };
+    const cfg = { temp: P.cfg.temp, niveles: P.cfg.niveles, tareas: P.cfg.tareas || [], premios: P.cfg.premios || [] };
+    const filas = this.sql.exec('SELECT quien, COUNT(*) AS n FROM pase_hecho WHERE temp = ? GROUP BY quien', P.cfg.temp).toArray();
+    for (const { quien, n } of filas) {
+      // la clave de su perfil: la de la temporada más nueva en que jugó, y si no, la de su cuenta (`idk`)
+      const j = this.sql.exec('SELECT k FROM jugo_temp WHERE quien = ? ORDER BY temp DESC LIMIT 1', quien).toArray()[0];
+      const k = (j && j.k) || ((this.sql.exec('SELECT k FROM idk WHERE id = ?', quien).toArray()[0] || {}).k) || '';
+      if (!k) continue;
+      const nivel = Math.min(P.cfg.niveles, n);
+      const pr = this.pasePremios(P.cfg, nivel);
+      out[k] = [nivel, pr.titulo, pr.color];
+    }
+    return { t: Date.now(), n: out, cfg };
   }
 
   /** Una visita sin cuenta: el navegador avisa una vez por día. ⚠️ Con tope: es un número que cualquiera puede

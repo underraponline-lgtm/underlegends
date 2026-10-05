@@ -21,7 +21,7 @@ const Perfil = lazy(() => import('./perfil.jsx').then((m) => ({ default: m.Perfi
 const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
 const VisorCarta = lazy(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Tienda })));
-const Pase = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Pase })));
+const Pase = lazy(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
@@ -402,9 +402,9 @@ export default function App() {
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
-        : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} /></Suspense></Aislada>
+        : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'tienda' ? <Aislada key="Tienda" n="Tienda" pagina><Suspense fallback={<Cargando />}><Tienda liga={liga} dc={yo.dc} /></Suspense></Aislada>
-        : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} /></Suspense></Aislada>
+        : pagina === 'pase' ? <Aislada key="Pase" n="Pase" pagina><Suspense fallback={<Cargando />}><Pase liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
         : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
@@ -429,7 +429,7 @@ export default function App() {
         <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
-        <Aislada n="Panel"><Panel liga={liga} /></Aislada>
+        <Aislada n="Panel"><Panel liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} /></Aislada>
         <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
         <Aislada n="Merch"><Merch liga={liga} /></Aislada>

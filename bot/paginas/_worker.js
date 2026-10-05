@@ -87,6 +87,11 @@ const AVISOS = {
   // `niveles()` en bot/avisos.js
   '/api/avisos/racha': 'POST',
   '/api/avisos/niveles': 'GET',
+  // 🎟️ el Pase de rapero (05/10/2026): el tuyo y «miré una llave en vivo» con tu sesión, y el de cada perfil. Ver
+  // `paseDe()`, `paseVivo()` y `pases()` en bot/avisos.js. ⚠️ `pase-ciclo` NO va acá: es sólo del ciclo, con su clave
+  '/api/avisos/pase': 'POST',
+  '/api/avisos/pase-vivo': 'POST',
+  '/api/avisos/pases': 'GET',
   // 🤝 la postulación de /sumate (03/10/2026): con tu sesión, al DM de Dlx. Ver `postular()` en bot/avisos.js
   '/api/avisos/sumate': 'POST',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js

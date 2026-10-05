@@ -1119,6 +1119,14 @@ def _lo_barato(correr):
         paso('2b4', 'el precio por cabeza')
         if not corre(['bot/precios.py', '--aplicar'], callado=False):
             print('      ⚠️ el precio por cabeza falló: queda lo de la corrida anterior')
+        # ── 2b4b · el Pase de rapero: lo que sabe el ciclo, al objeto ─────
+        # 🔑 Dlx, 05/10/2026: «si sigue con todo eso» (el Pase: sólo DRA, con
+        # Tareas). Quiénes son miembros y quién jugó en DRA o completó sus
+        # misiones cada semana, directo al objeto (no por KV: ver `bot/pase.py`).
+        # Nunca frena el ciclo.
+        paso('2b4b', 'el Pase de rapero')
+        if not corre(['bot/pase.py', '--aplicar'], callado=False):
+            print('      ⚠️ el Pase no llegó al objeto: queda lo de la corrida anterior')
         # ── 2b5 · cuántos entraron a cada servidor por la Liga ────────────
         # 🔑 Dlx, 29/09/2026: «crea una invitación permanente para cada
         # servidor, y de esta manera podemos reconocer cuántas personas se

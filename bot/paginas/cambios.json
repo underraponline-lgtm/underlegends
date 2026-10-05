@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.40",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T12:45:00-04:00",
+   "titulo": "El Pase de rapero",
+   "items": [
+    "🎟️ **Llegó el Pase de rapero**, para los miembros de Discord Rap Español: 30 niveles por temporada. Cada semana hay cinco Tareas —entrá 3 días seguidos, jugá un evento en DRA, completá tus misiones, felicitá a 3 personas y mirá una llave en vivo— y cada una que cumplís es un nivel. Se cumplen solas: el Pase se entera de lo que hacés.",
+    "🎁 **Cada nivel paga Puntos de Tienda**, y algunos dan más: dos insignias del Pase, dos títulos para tu perfil y tu nombre en dorado. La insignia del último nivel es tuya para siempre. Esta semana es de prueba: con la T1, el lunes 12, el Pase vuelve a cero.",
+    "🎯 **En el Inicio, las Misiones y el Pase ya no dicen «próximamente»**: ves las tres misiones de la semana con cuánto llevás, y tu nivel del Pase. Y la Guía explica las Misiones, las Divisiones y el Pase."
+   ]
+  },
+  {
    "version": "2.39",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T11:50:00-04:00",

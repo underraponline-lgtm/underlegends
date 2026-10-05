@@ -13,6 +13,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, enlace } from './piezas.jsx';
 import { completar, enOrden, esArbol, jugado } from './arriba.jsx';
+import { vioVivo } from './pase.js';
 
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉', Cuarto: '🎖️' };
 const ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos', 'R32'];
@@ -551,7 +552,7 @@ function Reporte({ n }) {
 }
 
 // ── la página ──
-export function Llave({ liga, vivoL, n: n0, raiz }) {
+export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   let n = n0;
   try { n = decodeURIComponent(n0); } catch (e) { /* tal cual */ }
   const enVivo = String(n).indexOf('v:') === 0;
@@ -565,6 +566,14 @@ export function Llave({ liga, vivoL, n: n0, raiz }) {
     return () => { vivo = false; };
   }, [n, deLobby, enVivo]);
   const L = deLobby || vieja || null;
+  // 🎟️ «MIRÁ UNA LLAVE EN VIVO», la Tarea del Pase (05/10/2026): con tu cuenta y después de 20 segundos con la llave
+  // abierta —tocarla y volver no es mirarla—. Si no sos miembro de DRA, el servidor no la cuenta
+  const seJuega = enVivo && !!L && !!L.vivo && !L.terminada;
+  useEffect(() => {
+    if (!dc || !seJuega) return undefined;
+    const t = setTimeout(() => vioVivo(String(n).slice(2)), 20000);
+    return () => clearTimeout(t);
+  }, [dc, seJuega, n]);
   const [sigo, setSigo] = useState('');
   useEffect(() => { window.scrollTo(0, 0); setSigo(''); }, [n]);
   useEffect(() => {

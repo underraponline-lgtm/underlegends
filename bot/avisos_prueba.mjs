@@ -689,6 +689,84 @@ const ok = (cond, que) => {
   }
 }
 
+// 🎟️ EL PASE DE RAPERO SOBRE EL OBJETO DE VERDAD (05/10/2026): una Tarea es un nivel, cada nivel paga una vez, una
+// cumplida no se pierde y sólo cuentan los miembros de DRA. Con `node:sqlite`, como el bot en vivo
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite (Node ' + process.version + '): el Pase no se prueba sobre el objeto');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows, rowsWritten: 0 }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: Number(r.changes) };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const ahora = Date.now(), DIA = 24 * 3600000;
+    const hoy = new Date(ahora);
+    const ini = Date.UTC(hoy.getUTCFullYear(), hoy.getUTCMonth(), hoy.getUTCDate() - 3, 15, 0);
+    const fin = ini + 7 * DIA;
+    const SEM = A.diaET(ini);
+    const ANA = '111111111111111111', BEA = '222222222222222222', CAMI = '333333333333333333';
+    const PREMIOS = Array.from({ length: 30 }, (_, i) => [i + 1, i + 1 === 30 ? 1000 : (i + 1) % 5 ? 200 : 500,
+      { 5: 'insignia', 10: 'titulo', 15: 'insignia', 20: 'color', 25: 'titulo', 30: 'insignia' }[i + 1] || '',
+      { 5: 'Pase Bronce', 10: 'De la casa', 15: 'Pase Plata', 20: '#F5C542', 25: 'Pilar de DRA', 30: 'Pase Oro' }[i + 1] || '']);
+    const ciclo = (v, hechas) => o.paseCiclo({ v, cfg: { temp: 'prueba', niveles: 30, dias: 3, felicitar: 3,
+      tareas: A.PASE_TAREAS.map((t) => [t, 'Tarea ' + t, '']), premios: PREMIOS }, sem: [[SEM, ini, fin]],
+    miembros: [ANA, BEA], hechas });
+    const tienda = (q) => sql.exec('SELECT id, monto FROM tienda WHERE quien = ? ORDER BY id', q).toArray();
+    let r = ciclo('v1', { [ANA]: { [SEM]: [1, 0] }, [CAMI]: { [SEM]: [1, 1] } });
+    let p = o.paseDe(ANA);
+    ok(r.cambio && r.niveles === 1 && p.miembro && p.nivel === 1 && p.semana.tareas.find((t) => t.id === 'dra').hecha
+      && tienda(ANA).length === 1 && tienda(ANA)[0].id === 'pase:prueba:' + ANA + ':1' && tienda(ANA)[0].monto === 200,
+    'el Pase: Ana jugó en DRA, sube al nivel 1 y cobra sus 200 una vez');
+    ok(ciclo('v1', {}).cambio === false && o.paseDe(CAMI).miembro === false && o.paseDe(CAMI).nivel === 0
+      && !tienda(CAMI).length && o.paseDe(CAMI).semana.tareas.length === 5,
+    'lo mismo del ciclo no se vuelve a guardar; Cami no es miembro de DRA: ve las Tareas, sin nivel ni Tienda');
+    for (const d of [ini, ini + DIA, ini + 2 * DIA]) sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', ANA, A.diaET(d + 3 * 3600000));
+    o.paseRevisar(ANA);
+    for (const id of ['a1b2c3d4e5f6', 'a1b2c3d4e5f7']) o.aplaudir({ quien: ANA, pub: { id, tipo: 'campeon' } });
+    p = o.paseDe(ANA);
+    const fel = p.semana.tareas.find((t) => t.id === 'felicitar');
+    ok(p.nivel === 2 && p.semana.tareas.find((t) => t.id === 'dias').hecha && !fel.hecha && fel.lleva === 2 && fel.meta === 3,
+      'tres días seguidos es otra Tarea (nivel 2); dos aplausos de tres, todavía no');
+    o.aplaudir({ quien: ANA, pub: { id: 'a1b2c3d4e5f8', tipo: 'campeon' } });
+    ok(o.paseDe(ANA).nivel === 3 && o.leer('pase_v') === 'v1', 'el tercer aplauso la cumple: nivel 3');
+    r = o.paseVivo({ quien: ANA, llave: '9' });
+    ok(r.cuenta === false && o.paseDe(ANA).nivel === 3, 'sin nada en vivo, mirar no cuenta');
+    sql.exec("INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto) VALUES ('9', '2', 'DRA', '1', 'x', ?, ?, 'llave', ?)",
+      ahora - 60000, ahora, ahora);
+    r = o.paseVivo({ quien: ANA, llave: '9' });
+    const rb = o.paseVivo({ quien: BEA, llave: '9' });
+    ok(r.cuenta && o.paseDe(ANA).nivel === 4 && rb.cuenta && o.paseDe(BEA).nivel === 1
+      && o.paseVivo({ quien: CAMI, llave: '9' }).cuenta === false,
+    'con una llave en vivo, mirarla cuenta (Ana 4, Bea 1); a Cami, que no es miembro, no');
+    ciclo('v2', {});
+    p = o.paseDe(ANA);
+    ok(p.nivel === 4 && p.semana.tareas.find((t) => t.id === 'dra').hecha && tienda(ANA).length === 4,
+      'el ciclo corrige la llave y Ana ya no jugó en DRA: la Tarea cumplida no se pierde, y nada se cobra dos veces');
+    const b = sql.exec("SELECT titulo, url FROM bandeja WHERE quien = ? AND clave = 'pase:prueba'", ANA).toArray();
+    ok(b.length === 1 && /Nivel 4/.test(b[0].titulo) && /\/freestyle-rap\/pase$/.test(b[0].url),
+      'a la campana, uno solo que se pisa: «Nivel 4 del Pase»');
+    const pr = o.pasePremios(o.paseDatos().cfg, 21);
+    ok(pr.titulo === 'De la casa' && pr.color === '#F5C542' && pr.insignias.length === 2 && pr.insignias[1][1] === 'Pase Plata',
+      'en el nivel 21: el título del 10, el color del 20 y dos insignias');
+    sql.exec("INSERT INTO jugo_temp (quien, temp, k, eventos) VALUES (?, 'prueba', 'ana', 3)", ANA);
+    const ps = o.pases().n;
+    ok(ps.ana && ps.ana[0] === 4 && Object.keys(ps).length === 1,
+      'para los perfiles, por clave: Ana nivel 4 (Bea no tiene perfil: no sale)');
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

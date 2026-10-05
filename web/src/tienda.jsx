@@ -1,6 +1,6 @@
-// 🛒 LA TIENDA Y EL PASE, NUEVOS (03/10/2026, la tanda 2 del plan: «1. A»). Lo mismo que tenían en app.js, con el estilo
+// 🛒 LA TIENDA, NUEVA (03/10/2026, la tanda 2 del plan: «1. A»). Lo mismo que tenían en app.js, con el estilo
 // de las páginas nuevas: la Tienda con tus Puntos de Tienda y el precio por cabeza (la tienda en sí todavía no vende
-// nada: dice que abre pronto), y el Pase, que sigue siendo el cartel «Próximamente» —su diseño lo habla Dlx después—.
+// nada: dice que abre pronto). El Pase vivió acá como cartel «Próximamente» hasta el 05/10/2026: hoy es `pase.jsx`.
 // ⚠️ LA PLATA LA SIGUE MANEJANDO APP.JS: la billetera (`BILL`, `pedirBilletera()`), lo que vale cada cabeza
 // (`valorCabezas()`), poner un precio (`ponerPrecio()`, con su vuelta de Discord) y sus errores (`errorPrecio()`). Cada vez
 // que algo de eso cambia, `pintaPrecios()` avisa `lg:precios` (App.jsx) y esto se redibuja. Los números son de
@@ -204,25 +204,6 @@ export function Tienda({ liga, dc }) {
         </div>
       </section>
     </>
-  );
-}
-
-// ── el Pase: el cartel, como hoy (Dlx: su diseño se habla después) ──
-export function Pase({ liga }) {
-  return (
-    <div className="escena ti-esc pa-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
-      <section className="rk-cab pa-cab">
-        <div className="rk-tx">
-          <span className="tag">PRÓXIMAMENTE · {liga.temp}</span>
-          <h1 className="hero-ev">Pase de rapero</h1>
-          <p className="hero-p">Algo nuevo viene para la temporada. Todavía no tiene fecha: cuando salga se anuncia en la Liga, y si activás los avisos te llega al teléfono.</p>
-          <div className="hero-acc">
-            <a className="btn verde" href="#/avisos">Activar los avisos</a>
-            <a className="btn borde" href="#/ranking">Mientras tanto, los rankings</a>
-          </div>
-        </div>
-      </section>
-    </div>
   );
 }
 

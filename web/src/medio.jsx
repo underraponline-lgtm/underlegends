@@ -2,6 +2,7 @@
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, limpio, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
+import { premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
 export function Fechas({ liga }) {
@@ -219,22 +220,71 @@ export function LosQueMandan({ liga, dc }) {
 }
 
 // ── el panel de abajo: Misiones + el Pase · Tus eventos + Tu temporada · La Liga en números ──────────
-// Las Misiones y el Pase todavía no existen: van como «Próximamente», sin números de ejemplo (Dlx, «3. sí»).
-function Misiones() {
+// Hasta el 05/10/2026 las dos iban como «Próximamente», sin números de ejemplo (Dlx, «3. sí»). Ahora existen: las
+// Misiones viajan en el lobby (`mis`, bot/misiones.py) y el Pase lo pide cada uno con su sesión (pase.js).
+function Misiones({ liga }) {
+  const M = liga.d.mis;
+  const lista = (M && M.lista) || [];
+  if (!lista.length) return null;
+  const yo = liga.yo;
+  const esYo = (raw) => !!yo && liga.esDe(raw, yo.k);
+  const mio = Object.keys(M.prog || {}).find(esYo);
   return (
     <section className="mis">
-      <div className="mis-cab"><span>MISIONES DE LA SEMANA · SUMAN A TU TEMPORADA</span><em>PRÓXIMAMENTE</em></div>
-      <p className="pronto-p">Cada semana, misiones que cualquiera puede cumplir jugando —jugar dos eventos, llegar a una final, ganar duelos,
-        probar otro servidor— y que suman puntos a tu Temporada. Están en camino.</p>
+      <div className="mis-cab"><span>MISIONES DE LA SEMANA · SUMAN A TU TEMPORADA</span><em>HASTA {liga.dia(M.fin).toUpperCase()}</em></div>
+      <ol>
+        {lista.map((x, i) => {
+          const v = Math.min(mio ? (M.prog[mio] || [])[i] || 0 : 0, x.m);
+          const ok = !!mio && v >= x.m;
+          return (
+            <li key={x.id} className={ok ? 'hecha' : ''}>
+              <span className="mis-ok" aria-hidden="true">{ok ? '✓' : ''}</span>
+              <div className="mis-txt">
+                <b>{x.t}</b>
+                {yo ? <><span className="mb"><i style={{ width: Math.round(100 * v / x.m) + '%' }} /></span><small>{v} de {x.m}</small></> : null}
+              </div>
+              <span className="mis-pts">+{num(x.p)}<small>PTS</small></span>
+            </li>
+          );
+        })}
+      </ol>
+      <div className="mis-pie"><small>Las tres juntas: <b>+{num(M.bono)}</b> más.</small><a className="btn borde2 chico" href="#/ranking/misiones">Ver las misiones</a></div>
     </section>
   );
 }
-function Pase({ liga }) {
+// 🎟️ el Pase: tu nivel si sos miembro de DRA; si no, qué es y cómo se sube
+function Pase({ liga, dc }) {
+  const P = usePase(!!dc);
+  const pub = usePases();
+  if (dc && P && P.listo && P.miembro) {
+    const tareas = (P.semana && P.semana.tareas) || [];
+    const hechas = tareas.filter((t) => t.hecha).length;
+    const sig = proximoEspecial(P.premios, P.nivel);
+    return (
+      <section className="tu pase">
+        <div className="tu-t">PASE DE RAPERO · {liga.temp}</div>
+        <div className="tu-fila">
+          <div className="tu-pos"><b>NIVEL {P.nivel}</b><small>de {P.niveles}</small></div>
+          {P.nivel < P.niveles ? <span className="pase-sig" title="El próximo nivel">{P.nivel + 1}</span> : null}
+        </div>
+        <span className="mb pase-b"><i style={{ width: Math.round(100 * P.nivel / P.niveles) + '%' }} /></span>
+        <ul className="pase-l">
+          {tareas.length ? <li><span>Tareas de esta semana</span><b>{hechas} de {tareas.length}</b></li> : null}
+          {sig ? <li><span>En el nivel {sig[0]}</span><b>{premioTexto(sig)}</b></li> : null}
+        </ul>
+        <a className="btn negro" href="#/pase">Ver el Pase</a>
+      </section>
+    );
+  }
+  const cfg = (pub && pub.cfg) || {};
   return (
     <section className="tu pase">
-      <div className="tu-t">PASE DE TEMPORADA · {liga.temp}<span className="tag-pronto">PRÓXIMAMENTE</span></div>
-      <p className="pronto-p">Niveles y recompensas que se ganan con tareas. Es para los miembros de Discord Rap Español.</p>
-      <a className="btn negro" href="#/pase">Qué es el Pase</a>
+      <div className="tu-t">PASE DE RAPERO · {liga.temp}</div>
+      <p className="pronto-p pase-p">{cfg.niveles || 30} niveles por temporada: cada Tarea que cumplís es uno, y cada nivel paga Puntos de Tienda.</p>
+      {(cfg.tareas || []).length ? <ul className="pase-l">{cfg.tareas.map((t) => <li key={t[0]}><span>{t[1]}</span><b>+1</b></li>)}</ul> : null}
+      {dc ? <a className="btn negro" href="#/pase">Ver el Pase</a>
+        : <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>}
+      <small className="pase-nota">Para los miembros de Discord Rap Español.</small>
     </section>
   );
 }
@@ -390,10 +440,10 @@ function Numeros({ liga }) {
 }
 // Misiones, solas: Dlx, 30/09/2026, «dejar abajo solo las misiones». Tus eventos subió al lugar de las encuestas y
 // La Liga en números bajó, debajo del Merchandising.
-export function Panel({ liga }) {
+export function Panel({ liga, dc }) {
   return (
-    <Sec id="panel" titulo="Misiones">
-      <div className="pz-2"><Misiones /><Pase liga={liga} /></div>
+    <Sec id="panel" titulo="Misiones" enlace="El Pase" href="#/pase">
+      <div className="pz-2"><Misiones liga={liga} /><Pase liga={liga} dc={dc} /></div>
     </Sec>
   );
 }

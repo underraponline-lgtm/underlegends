@@ -13,6 +13,7 @@ import { diaISO, limpio, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, DosToques, Ico, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
+import { usePaseDe } from './pase.js';
 
 const TABS = [['', 'Resumen'], ['eventos', 'Eventos'], ['duelos', 'Duelos'], ['insignias', 'Insignias']];
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -113,6 +114,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   // 🔥 su nivel y su racha diaria (04/10/2026): por la clave del perfil, nunca por cuenta. Sin Discord no hay
   const nvs = useNiveles();
   const nv = nvs && nvs[k];
+  // 🎟️ y su Pase de rapero (05/10/2026): el nivel, el título y el color de su nombre, por la clave del perfil
+  const pa = usePaseDe(k);
   return (
     <div className="escena pf-esc" style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298' }}>
       <section className={'rk-cab pf-cab' + (resumen ? '' : ' sin-carta')}>
@@ -120,7 +123,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           <span className="tag">{f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
           <div className="pf-quien">
             <Cara liga={liga} k={k} nombre={f.n} cls="cara pf-cara" />
-            <h1 className="hero-ev largo">{limpio(f.n)}</h1>
+            <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>
           </div>
           {segs ? <p className="pf-segs"><b>{num(segs)}</b> {segs === 1 ? 'seguidor' : 'seguidores'}</p> : null}
           <ul className="pf-chips">
@@ -130,6 +133,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
             {nv ? <li><span className="pf-nivel" title="Sube jugando eventos y entrando cada día">Nivel {nv[0]}</span></li> : null}
             {nv && nv[1] >= 2 ? <li><span title={nv[1] + ' días seguidos en la Liga'}>🔥 {nv[1]} días</span></li> : null}
+            {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada">🎟️ Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
           </ul>
           {redes.length ? (
             <ul className="pf-redes" aria-label="Sus redes">
