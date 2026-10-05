@@ -712,6 +712,16 @@
    "b": "ABYSSUS🇨🇦 ##",
    "ganador": "ABYSSUS🇨🇦 ##",
    "votos": "1–0"
+  },
+  "1556515104491835444": {
+   "id": "1556515104491835444",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791172519563,
+   "a": "Blitz",
+   "b": "Park-Ji Sung",
+   "ganador": "Park-Ji Sung",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1333,8 +1343,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791168497182,
-   "ed": 1791172262354,
-   "texto": "`[ CUARTOS ]`\n⌞NC🇦🇷⌝ 🆚 ⌞BLITZ🇲🇽⌝ 🆚 ⌞ZA🇺🇸⌝\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ SEMIFINALES ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "ed": 1791172652748,
+   "texto": "`[ CUARTOS ]`\n⌞NC🇦🇷⌝ 🆚 ⌞BLITZ🇲🇽⌝ 🆚 ⌞ZA🇺🇸⌝\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ SEMIFINALES ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞Blitz⌝ 🆚 ⌞Park-Ji Sung⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -1344,6 +1354,16 @@
       "ZA🇺🇸"
      ],
      "BLITZ🇲🇽",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Blitz",
+      "Park-Ji Sung"
+     ],
+     "Park-Ji Sung",
      "veredicto",
      []
     ]

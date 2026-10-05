@@ -9941,5 +9941,158 @@
     1250
    ]
   ]
+ },
+ "397": {
+  "dia": "2026-10-04",
+  "escala": "8-15",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556494273606848638"
+  ],
+  "n": 397,
+  "nombre": "DESGRACIAS EN TOKYO VOL 22",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "BLITZ"
+      ],
+      "NC",
+      "triple (3 bandas, pasan 2); Revivido: Blitz"
+     ],
+     [
+      [
+       "Drexx",
+       "Garxzii 🇲🇽🇦🇲"
+      ],
+      "Drexx",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Oasis",
+       "Choclo🇻🇪"
+      ],
+      "Oasis",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "CFM",
+       "Sosa",
+       "Dyzz"
+      ],
+      "CFM",
+      "triple (4 bandas, pasan 2); Revivido: C F M 🇻🇪"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Drexx, Alexis🇲🇽",
+       "Provenza, NC"
+      ],
+      "Drexx, Alexis🇲🇽",
+      ""
+     ],
+     [
+      [
+       "Oasis, Shishui🇯🇵",
+       "CFM, Freestyle4AllmyNiggaz 🇵🇪🌏🌏"
+      ],
+      "Oasis, Shishui🇯🇵",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Shishui🇯🇵, CFM",
+       "Drexx, Alexis🇦🇷, BLITZ"
+      ],
+      "Oasis, Shishui🇯🇵, CFM",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "CFM",
+    "Campeón",
+    3000
+   ],
+   [
+    "BLITZ",
+    "Subcampeón",
+    2833
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Shishui🇯🇵",
+    "Campeón",
+    2500
+   ],
+   [
+    "Choclo🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Garxzii 🇲🇽🇦🇲",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Freestyle4AllmyNiggaz 🇵🇪🌏🌏",
+    "Semifinal",
+    1750
+   ],
+   [
+    "NC",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Alexis🇦🇷",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
+    1666
+   ]
+  ]
  }
 }
