@@ -3496,6 +3496,33 @@ pinta();setInterval(pinta,1000);
 }
 
 // ── La puerta ─────────────────────────────────────────────────────────────
+// 📏 LAS LECTURAS DE KV DEL WORKER, POR RUTA (05/10/2026). KV pasó de 32.000 lecturas por día a 63.000 en una semana,
+// contra un techo gratis de 100.000, y el objeto lee sólo unas 200 por hora: el resto sale de acá. Cada lectura se
+// cuenta bajo su ruta y su clave (las de cada persona, juntas: nunca de quién) y cada isolate le pasa lo suyo al objeto
+// cada 5 minutos, que lo suma a `medidas` (`/avisos/estado`). Medir antes de arreglar.
+// ⚠️ con `performance.now()` y no `Date.now()`: las pruebas adelantan el reloj del calendario y no éste
+const MED_KV = { n: {}, t: performance.now() };
+function kvMedido(env, ctx, ruta) {
+  if (!env || !env.KV) return env;
+  const kv = env.KV;
+  const r = String(ruta || '').replace(/^\/avisos\//, '/a/').slice(0, 30);
+  const clave = (k) => { const m = /^(p|d|dn|dx|cfg|voz|nick|reg|foto|olvido|uso|t1|prueba):/.exec(String(k)); return m ? m[1] + ':*' : String(k).slice(0, 30); };
+  const medido = {
+    get: (k, o) => { const c = r + ' ' + clave(k); MED_KV.n[c] = (MED_KV.n[c] || 0) + 1; return kv.get(k, o); },
+    put: (...a) => kv.put(...a), delete: (...a) => kv.delete(...a), list: (...a) => kv.list(...a),
+    getWithMetadata: (...a) => kv.getWithMetadata(...a),
+  };
+  if (ctx && ctx.waitUntil && env.AVISOS && performance.now() - MED_KV.t > 5 * 60000 && Object.keys(MED_KV.n).length) {
+    const n = MED_KV.n;
+    MED_KV.n = {};
+    MED_KV.t = performance.now();
+    ctx.waitUntil(env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/medir', {
+      method: 'POST', body: JSON.stringify({ kv: n }), headers: { 'content-type': 'application/json' },
+    }).catch(() => {}));
+  }
+  return new Proxy(env, { get: (t, p) => (p === 'KV' ? medido : t[p]) });
+}
+
 export default {
   // ══════════════════════════════════════════════════════════════════
   // 🔴 EL CRON DE GITHUB DISPARA 1 DE CADA 9 VECES, Y NO ES ARREGLABLE
@@ -3530,7 +3557,9 @@ export default {
   // preguntar «¿disparó en la última hora?», que es la pregunta que
   // importa. Es la regla de este repo — *lo que no se pregunta no se
   // entera de que dejó de andar*.
-  async scheduled(evento, env, ctx) {
+  async scheduled(evento, env0, ctx) {
+    // 📏 las lecturas de KV del cron, contadas como las de las rutas (ver `kvMedido()`)
+    const env = kvMedido(env0, ctx, 'cron ' + ((evento && evento.cron) || ''));
     // 🔑 EL CRON DE CADA MINUTO ES OTRO: el vigía de los avisos de eventos.
     //
     // ⚠️ SE VA ANTES DE TOCAR KV, y no es un detalle. Las dos marcas de
@@ -3621,11 +3650,13 @@ export default {
     })();
   },
 
-  async fetch(req, env, ctx) {
+  async fetch(req, env0, ctx) {
     // 🔑 LOS AVISOS, ANTES QUE NADA, Y POR RUTA EXACTA. El `POST /` de abajo
     // son las interacciones de Discord y verifican firma; `/avisos/*` es
     // una lista cerrada de cinco rutas que nunca llega hasta ahí.
     const camino = new URL(req.url).pathname;
+    // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
+    const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
     // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
     if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);

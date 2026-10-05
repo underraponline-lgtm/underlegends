@@ -2696,7 +2696,38 @@ export class Avisos {
   constructor(state, env) {
     this.state = state;
     this.env = env;
-    this.sql = state.storage.sql;
+    // 📏 CUÁNTO LEE CADA CONSULTA (05/10/2026). Las filas que lee el objeto pasaron de 97.000 por día a 1,9 millones en
+    // una semana, contra un techo gratis de 5 millones (y las lecturas de KV, de 32.000 a 63.000 de 100.000). Antes de
+    // arreglar se mide: cada consulta suma sus filas leídas bajo su propio texto —así dos pedidos que se cruzan no se
+    // confunden—, cada lectura de KV bajo su clave (las de cada persona, juntas) y cada pedido bajo su ruta. Sólo
+    // números, nunca de quién. Se guarda cada 10 minutos (`medidasGuardar()`) y se ve en `/avisos/estado`
+    this.med = { filas: {}, kv: {}, pedidos: {} };
+    const real = state.storage.sql;
+    const filas = (cur, q) => {
+      let n = 0;
+      try { n = Number(cur.rowsRead) || 0; } catch (e) { n = 0; }
+      if (n) this.medir('filas', String(q).replace(/\s+/g, ' ').trim().slice(0, 90), n);
+    };
+    this.sql = {
+      exec: (q, ...ps) => {
+        const cur = real.exec(q, ...ps);
+        // lo que no devuelve filas ya se ejecutó entero; lo que sí, se cuenta al leerlo
+        if (!/^\s*(SELECT|WITH)\b/i.test(String(q))) { filas(cur, q); return cur; }
+        return new Proxy(cur, { get: (t, p) => {
+          if (p === 'toArray') return () => { const r = t.toArray(); filas(t, q); return r; };
+          const v = Reflect.get(t, p, t);
+          return typeof v === 'function' ? v.bind(t) : v;
+        } });
+      },
+    };
+    if (env && env.KV) {
+      const kv = env.KV;
+      const clave = (k) => { const m = /^(p|d|dn|cfg|voz|nick|reg|foto|olvido|uso):/.exec(String(k)); return m ? m[1] + ':*' : String(k).slice(0, 40); };
+      const medido = { get: (k, o) => { this.medir('kv', clave(k), 1); return kv.get(k, o); },
+        put: (...a) => kv.put(...a), delete: (...a) => kv.delete(...a), list: (...a) => kv.list(...a),
+        getWithMetadata: (...a) => kv.getWithMetadata(...a) };
+      this.env = new Proxy(env, { get: (t, p) => (p === 'KV' ? medido : t[p]) });
+    }
     state.blockConcurrencyWhile(async () => {
       this.sql.exec(`
         CREATE TABLE IF NOT EXISTS subs (
@@ -2886,7 +2917,47 @@ export class Avisos {
         'tarea TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, sem, tarea))');
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_vivo (quien TEXT NOT NULL, llave TEXT NOT NULL, t INTEGER NOT NULL, ' +
         'PRIMARY KEY (quien, llave))');
+      // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
+      // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
+      // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
+      // Los otros son las consultas «de las últimas horas» que el vigía y la página hacen cada minuto
+      for (const [nombre, tabla, col] of [['inscritos_pub', 'inscritos', 'pub'], ['hechos_t', 'hechos', 't'],
+        ['avisos_creado', 'avisos', 'creado'], ['veredictos_pub', 'veredictos', 'pub'], ['posts_creado', 'posts', 'creado'],
+        ['bandeja_t', 'bandeja', 't'], ['vivo_ed', 'vivo', 'ed'], ['cancelados_t', 'cancelados', 't']]) {
+        this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
+      }
     });
+  }
+
+  /** 📏 Suma `n` a `que` (`filas`, `kv` o `pedidos`) bajo `k`. Ver el constructor */
+  medir(que, k, n) {
+    const o = this.med[que];
+    if (o && n) o[k] = (o[k] || 0) + n;
+  }
+
+  /**
+   * 📏 Lo medido, a `estado` cada 10 minutos (una fila): se suma a lo guardado y se guardan los que más pesan. Con
+   * `forzar`, ya. Lo llama el vigía al terminar cada vuelta.
+   */
+  medidasGuardar(ahora, forzar) {
+    if (!forzar && this.medT && ahora - this.medT < 10 * MIN) return;
+    this.medT = ahora;
+    const g = this.medidasVer();
+    this.med = { filas: {}, kv: {}, pedidos: {} };
+    this.guardar('medidas', g);
+  }
+
+  /** 📏 Lo guardado más lo que todavía no se guardó: `{desde, t, filas, kv, pedidos}`, cada uno de mayor a menor */
+  medidasVer() {
+    const ahora = Date.now();
+    const g = this.leer('medidas') || {};
+    const out = { desde: g.desde || ahora, t: ahora };
+    for (const c of ['filas', 'kv', 'pedidos']) {
+      const suma = Object.assign({}, g[c] || {});
+      for (const [k, n] of Object.entries(this.med[c] || {})) suma[k] = (suma[k] || 0) + n;
+      out[c] = Object.fromEntries(Object.entries(suma).sort((a, b) => b[1] - a[1]).slice(0, c === 'filas' ? 80 : 60));
+    }
+    return out;
   }
 
   leer(k) {
@@ -2902,6 +2973,7 @@ export class Avisos {
 
   async fetch(req) {
     const ruta = new URL(req.url).pathname;
+    this.medir('pedidos', ruta, 1);
     try {
       if (ruta === '/vigilar') return json(await this.vigilar(await req.json()));
       if (ruta === '/estado') return json(this.estado(), 200, 20);
@@ -2958,6 +3030,13 @@ export class Avisos {
       }
       if (ruta === '/pase-vivo') return json(this.paseVivo(d));
       if (ruta === '/pase-ciclo') return json(this.paseCiclo(d));
+      // 📏 las lecturas de KV que contó el Worker (`kvMedido()` en worker.js): sólo el Worker llega acá, no está en RUTAS
+      if (ruta === '/medir') {
+        for (const [k, n] of Object.entries((d && d.kv) || {})) {
+          if (Number.isInteger(n) && n > 0) this.medir('kv', 'w ' + String(k).slice(0, 70), n);
+        }
+        return json({ ok: true });
+      }
       if (ruta === '/visita') return this.visita();
       if (ruta === '/dueno') {
         const p = this.panelDueno();
@@ -3266,6 +3345,8 @@ export class Avisos {
         this.guardar('precios_error', { t: ahora, error: String(e).slice(0, 120) });
       }
     }
+    // 📏 y lo medido, cada 10 minutos (ver el constructor)
+    try { this.medidasGuardar(ahora); } catch (e) { /* medir nunca frena al vigía */ }
     return { ok: !errores.length, leidos, nuevos, errores };
   }
 
@@ -5725,6 +5806,8 @@ export class Avisos {
       // pedidos y si falló, por qué. Ver `cancelaciones()` y `llamada()`
       cancelados: this.leer('cancelados'),
       llamada: this.leer('llamada'),
+      // 📏 cuánto lee cada consulta, cada clave de KV y cada ruta (05/10/2026): sólo números. Ver el constructor
+      medidas: this.medidasVer(),
       // 🎤 y el último minuto de «te toca»: cuántas llaves en vivo, a cuántos había que llamar, cuántos avisos
       // salieron, cuántos ya estaban en la llamada y cuántos no tienen la campana vinculada. Ver `turnos()`
       turnos: this.leer('turnos'),

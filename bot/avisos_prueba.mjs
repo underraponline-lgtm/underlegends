@@ -685,6 +685,13 @@ const ok = (cond, que) => {
     sql.exec('DELETE FROM chat_vivo');
     await o.chatVivo(T + 60 * 60000);
     ok(pedidos.length === 4, 'sin canal del admin ni el Dashboard, no escribe');
+    // 📏 y lo medido (05/10/2026): las lecturas de KV de cada persona van juntas, y nunca dicen de quién
+    const md = o.medidasVer();
+    ok(md.kv['cfg:*'] > 0 && !Object.keys(md.kv).some((k) => /111/.test(k)),
+      'lo medido cuenta las lecturas de KV por clave, sin el id de nadie (' + JSON.stringify(md.kv) + ')');
+    o.medidasGuardar(Date.now(), true);
+    ok((o.leer('medidas') || {}).kv && o.medidasVer().kv['cfg:*'] === md.kv['cfg:*'],
+      'guardar lo medido no lo cuenta dos veces');
     globalThis.fetch = antesF;
   }
 }
