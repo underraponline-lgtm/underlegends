@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-05T15:57:54+00:00",
+ "cuando": "2026-10-05T16:24:39+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -320,28 +320,6 @@
    "fecha": "3 2V2",
    "premios": "",
    "categoria_id": "1497457390637809837",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-05T02:34:18"
-  },
-  {
-   "nombre": "lapalera del edi",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1556557525598470155",
-   "cuando": "2026-10-05T06:43:53",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "∞",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "Respeto",
-   "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-05T02:34:18"
   },
@@ -759,6 +737,50 @@
    "horario": "EN 1 HORA",
    "fecha": "",
    "premios": "Respeto",
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-05T02:34:18"
+  },
+  {
+   "nombre": "FFA WORLD CUP EL ESTADIO DEL FREESTYLE 2026",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1553870162376003595",
+   "cuando": "2026-09-27T20:45:16",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "autor_h": "6a6481d106eda6d3",
+   "cupos_texto": "16/16",
+   "inscriptos": 16,
+   "cupo_total": 16,
+   "rango": "Competencia De Ascenso Rango ᴏʀᴏ ɪɪ (1500pts)",
+   "modalidad": "1 VS 1",
+   "horario": "",
+   "fecha": "27 09",
+   "premios": "Compe Rango ᴏʀᴏ ɪɪ Y Rol De Campeon",
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-05T02:34:18"
+  },
+  {
+   "nombre": "777 ¡Vuelve SEVEN STREET! 777",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1553579341462372406",
+   "cuando": "2026-09-27T01:29:39",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "autor_h": "ab84ec002bc2ec18",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇨🇷 20:30",
+   "fecha": "Hoy, Sábado 26 Sept.",
+   "premios": "",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-05T02:34:18"
@@ -3078,6 +3100,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "CFM 🇻🇪",
+   "quien": "mnkflops",
+   "discord_id": "1429694193571201027",
+   "msg_id": "1556698947299311767",
+   "cuando": "2026-10-05T16:05:51"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
