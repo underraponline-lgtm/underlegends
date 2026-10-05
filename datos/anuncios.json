@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-05T05:24:50+00:00",
+ "cuando": "2026-10-05T05:54:26+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2414,6 +2414,29 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "MUERTE SUBITA",
+   "servidor": "DDF",
+   "canal": "『📢』Anuncios",
+   "msg_id": "1556061426861351064",
+   "cuando": "2026-10-03T21:52:34",
+   "canal_id": "1469943663332425738",
+   "guild_id": "1469009547971526659",
+   "organizador": "",
+   "autor_h": "c47c3e2e9fa31d37",
+   "cupos_texto": "ILIMTADOS HASTA ACABAR FILTROS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "7PM",
+   "fecha": "03 10",
+   "premios": "$15P",
+   "de_imagen": true,
+   "categoria_id": "1469943266022785115",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-04T20:18:49"
+  },
+  {
    "nombre": "JH DE LA CRUZ CUP",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -2916,6 +2939,29 @@
    "fecha": "",
    "premios": "",
    "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-04T17:08:02"
+  },
+  {
+   "nombre": "VALHALLA VOL1",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1556352011316756530",
+   "cuando": "2026-10-04T17:07:15",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "7PM CHILE",
+   "fecha": "DOMINGO 4 DE OCTUBRE",
+   "premios": "$10 DÓLARES DE PREMIO",
+   "de_imagen": true,
+   "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-04T17:08:02"
   },

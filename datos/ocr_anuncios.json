@@ -1,4 +1,17 @@
 {
  "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Se borra a los 30 días. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.",
- "msgs": {}
+ "msgs": {
+  "1556061426861351064": {
+   "texto": "MUERTE SUBITA\n\n \n \n\nTORNEO DE FREESTYLE\n\n \n\nFECHA 03/10\nCUPOS ILIMTADOS HASTA ACABAR FILTROS\n\nVS \n\nJUECES\nLEITAN-KANJI-IZAYA\n\nTORNEO ONLINE POR DISCORD SERVIDOR:\n\nPREMIOS \n$15P\n$7P\nHORA 7PM",
+   "t": "2026-10-05T05:54:19"
+  },
+  "1556352011316756530": {
+   "texto": "VALHALLA \nVOL1\n\n7PM CHILE\nDOMINGO 4 DE OCTUBRE\n$10 DÓLARES DE PREMIO\n\nSOLO EN DISCORD: LA CREW",
+   "t": "2026-10-05T05:54:22"
+  },
+  "1556450642695032886": {
+   "texto": "PANCHOK\nWELCOME\nWEL\nPAN\nWE\nDA\nFREESTYLE\nMASTER\nHONGO\n2026\nREEMPLAZO\nANDES",
+   "t": "2026-10-05T05:54:12"
+  }
+ }
 }

@@ -1368,6 +1368,85 @@
      []
     ]
    ]
+  },
+  "1556537614755037235": {
+   "id": "1556537614755037235",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791177886428,
+   "ed": 1791179379392,
+   "texto": "`[ OCTAVOS ]`\n⌞PROVENZA⌝ 🆚 ⌞ALEXIS⌝ 🆚 ⌞CRK⌝ 🆚 ⌞FOKOX⌝\n⌞BENJU⌝ 🆚 ⌞HASSAN⌝ 🆚 ⌞ONI⌝ 🆚 ⌞MKS⌝\n⌞TAM⌝ 🆚 ⌞IVAYNEX⌝ 🆚 ⌞BAGGIO(FULLYLO4DED)⌝\n⌞SKRATCH⌝ 🆚 ⌞NHP⌝ 🆚 ⌞GARXZI⌝\n⌞HASSAN BENJU⌝ 🆚 ⌞ZA ALEXIS⌝\n⌞za⌝ 🆚 ⌞benju⌝ 🆚 ⌞alexis⌝ 🆚 ⌞hassan⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "PROVENZA",
+      "ALEXIS",
+      "CRK",
+      "FOKOX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BENJU",
+      "HASSAN",
+      "ONI",
+      "MKS"
+     ],
+     "HASSAN",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "TAM",
+      "IVAYNEX",
+      "BAGGIO(FULLYLO4DED)"
+     ],
+     "TAM",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SKRATCH",
+      "NHP",
+      "GARXZI"
+     ],
+     "NHP",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "HASSAN BENJU",
+      "ZA ALEXIS"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "za",
+      "benju",
+      "alexis",
+      "hassan"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }
