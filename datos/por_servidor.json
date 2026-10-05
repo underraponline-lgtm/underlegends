@@ -56,7 +56,7 @@
     "racha": "0/0"
    }
   },
-  "ALESS 🇻🇪": {
+  "ALESS": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -67,7 +67,7 @@
     "racha": "0/0"
    }
   },
-  "ANTORCHA 🇨🇱": {
+  "ANTORCHA": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -2994,17 +2994,6 @@
     "racha": "0/0"
    }
   },
-  "Nonne 🇵🇪": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0"
-   }
-  },
   "Noone": {
    "ACAD": {
     "duelos": "0/1",
@@ -3017,11 +3006,11 @@
    },
    "FFA": {
     "duelos": "1/2",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 56,
     "pod": 0,
-    "pts": 6500,
+    "pts": 8375,
     "racha": "0/0"
    }
   },

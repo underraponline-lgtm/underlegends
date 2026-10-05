@@ -224,22 +224,24 @@
    "organizadores": [
     [
      "Lewis",
-     24,
-     1
+     52,
+     2
     ]
    ],
    "semillero": {
-    "nuevos": {},
-    "gente": {
-     "FFA": 24
+    "nuevos": {
+     "FFA": 3
     },
-    "gana": null
+    "gente": {
+     "FFA": 45
+    },
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 0,
     "DRA": 0,
-    "FFA": 24,
+    "FFA": 45,
     "FFS": 0,
     "SR": 0,
     "URBF": 0

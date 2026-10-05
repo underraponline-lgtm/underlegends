@@ -34,12 +34,12 @@
      0,
      16
     ],
-    "ALESS 🇻🇪": [
+    "ALESS": [
      1,
      0,
      16
     ],
-    "ANTORCHA 🇨🇱": [
+    "ANTORCHA": [
      1,
      0,
      4
@@ -144,7 +144,7 @@
      0,
      4
     ],
-    "Nonne 🇵🇪": [
+    "Noone": [
      1,
      0,
      16
@@ -257,8 +257,8 @@
    },
    "pts": {
     "1200": 300,
-    "ALESS 🇻🇪": 300,
-    "ANTORCHA 🇨🇱": 300,
+    "ALESS": 300,
+    "ANTORCHA": 300,
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 300,
@@ -279,7 +279,7 @@
     "NC": 300,
     "Neo": 300,
     "Nhp": 300,
-    "Nonne 🇵🇪": 300,
+    "Noone": 300,
     "OG": 300,
     "ONZASS": 300,
     "Oasis": 300,
@@ -306,8 +306,8 @@
  },
  "suma": {
   "1200": 300,
-  "ALESS 🇻🇪": 300,
-  "ANTORCHA 🇨🇱": 300,
+  "ALESS": 300,
+  "ANTORCHA": 300,
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 300,
@@ -328,7 +328,7 @@
   "NC": 300,
   "Neo": 300,
   "Nhp": 300,
-  "Nonne 🇵🇪": 300,
+  "Noone": 300,
   "OG": 300,
   "ONZASS": 300,
   "Oasis": 300,

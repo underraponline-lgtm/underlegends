@@ -1,27 +1,27 @@
 {
  "v": 1,
- "cuando": "2026-10-05T23:27:28Z",
+ "cuando": "2026-10-05T23:57:14Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 234.6,
+ "dur_s": 229.5,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 42.6
+   "s": 33.3
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 61.9
+   "s": 88.2
   },
   {
    "n": "1a",
@@ -33,13 +33,13 @@
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 26.6
+   "s": 26.3
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.8
+   "s": 5.6
   },
   {
    "n": "2b",
@@ -69,13 +69,13 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.4
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.1
+   "s": 1.5
   },
   {
    "n": "2b4b",
@@ -87,47 +87,47 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.0
+   "s": 3.2
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 42.1
+   "s": 25.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 23.6
+   "s": 24.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 13.2
+   "s": 8.9
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.5
+   "s": 6.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.0
+   "s": 1.8
   }
  ],
  "fallas": [],
- "decidir": 91,
+ "decidir": 88,
  "ultimo_evento": {
   "n": "405",
   "nombre": "DESGRACIAS EN TOKYO VOL 24",
@@ -136,10 +136,10 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-05T23:24:21Z",
+  "cuando": "2026-10-05T23:54:03Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 340,
-  "un_evento": 171,
+  "jugadores": 339,
+  "un_evento": 170,
   "diez_o_mas": 17,
   "cohortes": [
    {
@@ -156,7 +156,7 @@
    },
    {
     "semana": "2026-10-05",
-    "nuevos": 13,
+    "nuevos": 12,
     "volvieron": 0,
     "completa": false
    }
@@ -164,18 +164,18 @@
  },
  "cuotas": {
   "kv": {
-   "write": 1055,
-   "read": 64954
+   "write": 1067,
+   "read": 66983
   },
   "objeto": {
-   "leidas": 1887457,
-   "escritas": 19041,
-   "pedidos": 4624
+   "leidas": 1927288,
+   "escritas": 19506,
+   "pedidos": 4752
   },
   "worker": {
-   "pedidos": 4838,
+   "pedidos": 4878,
    "errores": 0,
-   "sub": 4707,
+   "sub": 4761,
    "p50_ms": 1.02,
    "p99_ms": 5.58
   },
