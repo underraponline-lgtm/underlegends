@@ -163,13 +163,13 @@
    "temporada": "prueba",
    "sorteado": "2026-10-05T15:23:25Z",
    "sv": {
-    "FFA": 5,
+    "FFA": 3,
     "DRA": 0.5,
     "ACAD": 1.5,
-    "SR": 1,
-    "URBF": 1.5,
+    "SR": 1.5,
+    "URBF": 2,
     "DDF": 1.5,
-    "FFS": 1.5
+    "FFS": 1
    },
    "dorado": {
     "sv": "URBF",
@@ -233,7 +233,31 @@
     "FFS": 0,
     "SR": 0,
     "URBF": 0
-   }
+   },
+   "sv_sorteo": {
+    "FFA": 5,
+    "DRA": 0.5,
+    "ACAD": 1.5,
+    "SR": 1,
+    "URBF": 1.5,
+    "DDF": 1.5,
+    "FFS": 1.5
+   },
+   "tramos": [
+    {
+     "desde": "2026-10-05T18:00:10Z",
+     "sv": {
+      "FFA": 3,
+      "DRA": 0.5,
+      "ACAD": 1.5,
+      "SR": 1.5,
+      "URBF": 2,
+      "DDF": 1.5,
+      "FFS": 1
+     }
+    }
+   ],
+   "manual": true
   }
  ]
 }
