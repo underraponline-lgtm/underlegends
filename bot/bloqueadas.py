@@ -81,7 +81,12 @@ SALIDA = os.path.join(BASE, 'bot', 'salida', 'bloqueadas')
 # ⚠️ SERVIDOR SIGUE AFUERA Y NO ES UN OLVIDO. No pide nada, así que
 # nadie puede estar bloqueado de ella: `comun/bloqueada.py` levanta
 # `ValueError` si se le pide una, a propósito.
-CARTAS = ('temporada', 'competitivo', 'pais')
+#
+# 🎟️ Y LA TEMPORADA SALIÓ DE LA LISTA EL 05/10/2026 (Dlx: «C»): es la recompensa del nivel 1 del Pase, y a quien
+# no la tiene /card le dice cómo se consigue —verificarse y su primera Tarea— en vez de una carta gris. Las Bloqueadas
+# quedan para lo que muestra un progreso: los eventos de la Competitiva y los duelos de la de País. Y sólo para los
+# que ya juegan (`plan()`): a quien nunca jugó no hay progreso que mostrarle.
+CARTAS = ('competitivo', 'pais')
 
 # ⚠️ 24 Y NO 8, MEDIDO EL 22/09/2026 con el código de verdad y verificando
 # cada PNG —esquinas transparentes y tinta, los dos errores que este formato
@@ -267,6 +272,10 @@ def plan():
     for k in sorted(inv):
         tiene = inv[k]
         p = pools.get(k) or {}
+        # 🎟️ SÓLO PARA LOS QUE YA JUEGAN (Dlx, 05/10/2026): la Bloqueada muestra un progreso, y quien nunca jugó no
+        # tiene ninguno. A esa persona /card le dice cómo se consigue cada carta
+        if not p:
+            continue
         per = idx.get(k) or {}
         nom = p.get('raw') or per.get('raw') or k
         cc = p.get('cc') or mapa_cc.get((per.get('pais') or '').strip()) or ''
@@ -441,8 +450,18 @@ def mudos(todo=None):
     import construir_padron as PAD
     idx = PAD.por_nombre()
     verif = _verificados()
+    # 🎟️ sólo los que juegan llevan Bloqueada (ver `plan()`): a los demás, que les falte el botón es lo esperado
+    jugaron = set()
+    for f in ('competitivo_pool.json', 'temporada_pool.json'):
+        try:
+            with io.open(os.path.join(BASE, 'datos', f), encoding='utf-8') as fh:
+                jugaron |= {PAD.norm(x['raw']) for x in json.load(fh)}
+        except (OSError, ValueError):
+            pass
     out = []
     for k, tiene in sorted(inv.items()):
+        if k not in jugaron:
+            continue
         for c in CARTAS:
             if not REQ.condiciones(c):
                 continue

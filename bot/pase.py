@@ -66,6 +66,8 @@ TIENDA_NIVEL = 200
 COLOR = '#F5C542'
 #: los niveles que dan algo más: `nivel: (Puntos de Tienda, tipo, valor)`. El 30 es la insignia de la temporada
 ESPECIALES = {
+    # 🎟️ la Temporada es la recompensa del nivel 1 (Dlx, 05/10/2026: «C», «nivel 1»): la desbloquea `verificados.puede()`
+    1: (TIENDA_NIVEL, 'tarjeta', 'Temporada'),
     5: (500, 'insignia', 'Pase Bronce'),
     10: (500, 'titulo', 'De la casa'),
     15: (500, 'insignia', 'Pase Plata'),
@@ -204,6 +206,55 @@ def mandar(d):
     return True
 
 
+NIVELES_ARCHIVO = os.path.join(BASE, 'datos', 'pase_niveles.json')
+
+
+def traer_niveles():
+    """`{temp, niveles: {discord_id: nivel}}` del objeto (`/avisos/pase-niveles`, con la clave del ciclo), o `None`.
+
+    🔑 LA TEMPORADA ES LA RECOMPENSA DEL NIVEL 1 (Dlx, 05/10/2026: «C», «nivel 1»): con esto el portón
+    (`verificados.puede()`) sabe a quién dibujársela."""
+    import requests
+    import fotos as F
+    tok = F.env('DISCORD_TOKEN', obligatorio=False)
+    if not tok:
+        return None
+    k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+    try:
+        r = requests.get(WORKER + '/avisos/pase-niveles', headers={'x-lg-ciclo': k}, timeout=20)
+        d = r.json() if r.ok else None
+    except (OSError, ValueError):
+        return None
+    if not isinstance(d, dict) or not isinstance(d.get('niveles'), dict):
+        return None
+    return {'temp': str(d.get('temp') or ''), 'niveles': {str(q): int(n) for q, n in d['niveles'].items()
+                                                         if str(q).isdigit() and isinstance(n, int)}}
+
+
+def guardar_niveles(d):
+    """A `datos/pase_niveles.json`, sólo si cambió (lo commitea el ciclo). Devuelve si escribió."""
+    previo = leer_niveles()
+    if previo is not None and previo.get('temp') == d['temp'] and previo.get('niveles') == d['niveles']:
+        return False
+    out = {'_leeme': 'Quién tiene nivel en el Pase de rapero de la temporada (Discord ID: nivel). Lo trae bot/pase.py '
+                     'del objeto en cada corrida; lo lee verificados.puede(): la Temporada es el premio del nivel 1.',
+           'temp': d['temp'], 'niveles': dict(sorted(d['niveles'].items()))}
+    with io.open(NIVELES_ARCHIVO, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+    return True
+
+
+def leer_niveles(ruta=None):
+    """`{temp, niveles}` de `datos/pase_niveles.json`, o `None` si no está."""
+    try:
+        with io.open(ruta or NIVELES_ARCHIVO, encoding='utf-8') as f:
+            d = json.load(f) or {}
+        return {'temp': d.get('temp') or '', 'niveles': d.get('niveles') or {}}
+    except (OSError, ValueError):
+        return None
+
+
 def _self_check():
     print('\n══ EL PASE DE RAPERO ══\n')
     mal = 0
@@ -215,7 +266,8 @@ def _self_check():
     ps = premios()
     ok(len(ps) == NIVELES and [p[0] for p in ps] == list(range(1, NIVELES + 1)), 'treinta niveles, uno por Tarea')
     ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
-    ok({p[2] for p in ps if p[2]} == {'insignia', 'titulo', 'color'}, 'los premios de perfil: insignias, títulos y color')
+    ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color'} and ps[0][2] == 'tarjeta',
+       'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos y color')
     ok([t[0] for t in TAREAS] == ['dias', 'dra', 'misiones', 'felicitar', 'vivo'], 'las cinco Tareas de la propuesta')
     U = dt.timezone.utc
     a = dt.datetime(2026, 10, 12, 4, 0, tzinfo=U)
@@ -258,6 +310,12 @@ def main():
           % (d['cfg']['temp'], len(d['sem']), len(d['miembros']), len(d['hechas'])))
     if '--aplicar' in sys.argv:
         mandar(d)
+        # 🎟️ y quién tiene nivel, para el portón de la Temporada (el premio del nivel 1)
+        n = traer_niveles()
+        if n is None:
+            print('   ⚠️ no pude traer los niveles del Pase: queda lo de la corrida anterior')
+        else:
+            print('   🎟️ %d con nivel 1 o más%s' % (len(n['niveles']), ' (guardado)' if guardar_niveles(n) else ''))
 
 
 if __name__ == '__main__':

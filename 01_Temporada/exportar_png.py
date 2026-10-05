@@ -52,6 +52,29 @@ def _pool():
     return {d['raw']: d for d in json.load(open(p, encoding='utf-8'))}
 
 
+def _sin_jugar(quien):
+    """La fila de quien no está en el pool, para su Temporada «sin jugar»: nombre, país y escudo del padrón. `None` si
+    no está en el padrón. El escudo: el primer servidor de la Liga donde está que no sea DRA (DRA es el hub), y si
+    sólo está en DRA, DRA."""
+    import sys as _s
+    raiz = os.path.dirname(BASE)
+    for d in (raiz, os.path.join(raiz, 'bot'), os.path.join(raiz, 'sheet')):
+        if d not in _s.path:
+            _s.path.insert(0, d)
+    import construir_padron as PAD
+    import subir_datos as SD
+    p = PAD.por_nombre().get(PAD.norm(quien))
+    if not p:
+        return None
+    try:
+        donde = json.load(open(os.path.join(raiz, 'datos', 'servidores_de.json'), encoding='utf-8'))
+    except (OSError, ValueError):
+        donde = {}
+    svs = donde.get(str(p.get('discord_id') or '')) or []
+    sv = next((x for x in svs if x != 'DRA'), svs[0] if svs else 'DRA')
+    return {'raw': p.get('raw') or quien, 'cc': SD._cc_de(p.get('pais')) or '', 'sv': sv, 'av': '', 'sinjugar': True}
+
+
 def armar_html(quien, pool):
     """El HTML de una carta. Separado del navegador a propósito.
 
@@ -61,8 +84,14 @@ def armar_html(quien, pool):
     hacían así; estos dos eran los que faltaban.
     """
     if quien not in pool:
-        return None
-    c = dict(pool[quien])
+        # 🎟️ LA TEMPORADA «SIN JUGAR» (Dlx, 05/10/2026: la Temporada es la recompensa del nivel 1 del Pase, y quien
+        # llega sin haber jugado la recibe con «—», «3. A»). Quién la merece lo decide el portón (`verificados.puede()`,
+        # que pregunta el ciclo en `que_cambio.emitibles()`); acá sólo se dibuja con lo que dice el padrón
+        c = _sin_jugar(quien)
+        if c is None:
+            return None
+    else:
+        c = dict(pool[quien])
 
     # ⚠️ LA COPIA DEL REPO PRIMERO, NO COMO RESCATE. La regla vive en
     # `comun/respaldo.avatar()` y ahi esta el porque: preguntar por el repo

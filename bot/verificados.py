@@ -215,11 +215,58 @@ def _intocables():
     return intocables_cache
 
 
-def puede(persona, verificados, carta):
-    """¿Esta persona puede tener ESA carta?
+#: 🔑 LA CUENTA DE DLX (la misma `DUENO` de `bot/avisos.js`): fuera de las reglas de quién tiene carta. Dlx,
+#: 05/10/2026, a «sin verificarse, ninguna tarjeta»: *«dale. pero a mí no porque así pruebo las cosas»*
+DUENO = '739338101603696681'
+#: `datos/conservan.json` y `datos/pase_niveles.json`, leídos una vez. `None` = todavía no se leyó
+conservan_cache = None
+niveles_cache = None
 
-    Las LIBRES piden estar en la Lista (`persona` es una fila del padrón); las
-    demás, pasar el portón.
+
+def _conservan():
+    """`{carta: set(claves)}` de quien conserva su carta con la regla de antes, o `{}` si ya pasó su fecha.
+
+    Dlx, 05/10/2026: «B» —quien ya tiene su Temporada (y su Servidor) la conserva; lo nuevo va con la regla nueva—.
+    Es una foto de ese día (`datos/conservan.json`) y vale hasta el arranque de la T1, cuando todas vuelven a cero.
+    """
+    global conservan_cache
+    if conservan_cache is None:
+        conservan_cache = {}
+        try:
+            import datetime as _dt
+            with io.open(os.path.join(BASE, 'datos', 'conservan.json'), encoding='utf-8') as f:
+                d = json.load(f) or {}
+            hasta = d.get('hasta') or ''
+            if hasta and _dt.datetime.now(_dt.timezone.utc) < _dt.datetime.fromisoformat(hasta):
+                conservan_cache = {c: set(d.get(c) or ()) for c in ('temporada', 'servidor')}
+        except (OSError, ValueError):
+            conservan_cache = {}
+    return conservan_cache
+
+
+def nivel_pase(did):
+    """El nivel de alguien en el Pase de la temporada (`datos/pase_niveles.json`, lo trae `bot/pase.py`), o 0."""
+    global niveles_cache
+    if niveles_cache is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'pase_niveles.json'), encoding='utf-8') as f:
+                niveles_cache = (json.load(f) or {}).get('niveles') or {}
+        except (OSError, ValueError):
+            niveles_cache = {}
+    return int(niveles_cache.get(str(did or ''), 0) or 0)
+
+
+def puede(persona, verificados, carta):
+    """¿Esta persona puede tener ESA carta? (`persona` es una fila del padrón)
+
+    🔑 DESDE EL 05/10/2026 (Dlx: «C», «1. dale», «3. A», «4. nivel 1», «B»):
+    - **sin verificarse, ninguna**: la Servidor pide el portón (verificarse en la página te mete en DRA), y la
+      Temporada, el portón y **el nivel 1 del Pase** —es su recompensa— (`nivel_pase()`). Quien llega sin haber
+      jugado la recibe con «—» y se llena con su primer evento.
+    - **quien ya las tenía las conserva** hasta la T1 (`_conservan()`).
+    - **Dlx, fuera de todas** (`DUENO`): así prueba las cosas.
+    - La Competitiva y la de País, como siempre: el portón (y sus requisitos, en `comun/requisitos.py`).
+    Esto reemplaza a «las LIBRES» del 29/09/2026 (Temporada y Servidor para todos los que jugaron, verificados o no).
 
     ⚠️ `pasa()` NO CAMBIA Y POR ESO ESTO ES OTRA FUNCIÓN. «Verificado en DRA»
     lo siguen preguntando el número oficial del ranking, las crews, la cuenta
@@ -231,17 +278,21 @@ def puede(persona, verificados, carta):
     did = str(persona.get('discord_id') or '')
     if did and did in _olvidados():
         return False
-    if carta in LIBRES:
-        nombre = (persona.get('raw') or persona.get('full') or '').strip()
-        if not nombre:
-            return False
+    nombre = (persona.get('raw') or persona.get('full') or '').strip()
+    if did and did == DUENO and nombre:
+        return True
+    if carta in LIBRES and nombre:
         try:
             import construir_padron as _PAD
-            if _PAD.norm(nombre) in _intocables():
+            k = _PAD.norm(nombre)
+            if k in _intocables():
                 return False
+            if k in _conservan().get(carta, ()):
+                return True
         except ImportError:
             pass
-        return True
+    if carta == 'temporada':
+        return pasa(persona, verificados) and nivel_pase(did) >= 1
     return pasa(persona, verificados)
 
 
@@ -394,23 +445,38 @@ def _self_check():
           % ('✅' if ok else '🔴', 'el que pidió salir, con las tres',
              'no' if not despues else '🔴 TIENE CARTA IGUAL'))
 
-    # 🔑 LAS LIBRES (Dlx, 29/09/2026): la Temporada y la Servidor piden estar
-    # en la Lista; las demás, el portón entero. Y el olvido, para todas.
+    # 🔑 DESDE EL 05/10/2026 (Dlx: «C», «B», «a mí no»): sin verificarse ninguna, salvo quien las conserva hasta la
+    # T1; la Temporada pide además el nivel 1 del Pase; Dlx, fuera de todas. Y el olvido, para todas. Con las cachés
+    # armadas acá y no con los archivos de verdad, que cambian todos los días
     print('')
-    oasis = {'raw': 'Oasis', 'discord_id': '979', 'pais': 'Chile'}   # en la Lista, sin el rol de DRA
+    global conservan_cache, niveles_cache
+    guardo_cv, guardo_nv = conservan_cache, niveles_cache
+    conservan_cache = {'temporada': {'oasis'}, 'servidor': {'oasis'}}
+    niveles_cache = {'111': 1}
+    oasis = {'raw': 'Oasis', 'discord_id': '979', 'pais': 'Chile'}   # en la Lista, sin el rol de DRA: conserva
+    nuevo = {'raw': 'Nuevo', 'discord_id': '980', 'pais': 'Chile'}   # sin el rol y sin nada que conservar
+    h = {'raw': 'H', 'discord_id': '111', 'pais': 'Argentina'}       # verificado, nivel 1 en el Pase
+    m = {'raw': 'M', 'discord_id': '222', 'pais': 'Argentina'}       # verificado, sin nivel
+    dlx = {'raw': 'DLX', 'discord_id': DUENO, 'pais': ''}            # sin rol ni país: igual tiene las cuatro
     libres = [
-        ('en la Lista sin verificar: Temporada', oasis, 'temporada', True),
-        ('en la Lista sin verificar: Servidor', oasis, 'servidor', True),
-        ('en la Lista sin verificar: Competitiva', oasis, 'competitivo', False),
-        ('en la Lista sin verificar: País', oasis, 'pais', False),
-        ('sin ID ni país, pero en la Lista: Temporada', {'raw': 'Kip'}, 'temporada', True),
+        ('sin verificar, las conserva: Temporada', oasis, 'temporada', True),
+        ('sin verificar, las conserva: Servidor', oasis, 'servidor', True),
+        ('sin verificar, las conserva: Competitiva', oasis, 'competitivo', False),
+        ('sin verificar y nuevo: Temporada', nuevo, 'temporada', False),
+        ('sin verificar y nuevo: Servidor', nuevo, 'servidor', False),
+        ('sin ID ni país, pero en la Lista: Temporada', {'raw': 'Kip'}, 'temporada', False),
         ('fuera de la Lista: Temporada', {}, 'temporada', False),
-        ('verificado: Competitiva', {'raw': 'H', 'discord_id': '111', 'pais': 'Argentina'}, 'competitivo', True),
+        ('verificado con nivel 1: Temporada', h, 'temporada', True),
+        ('verificado sin nivel: Temporada', m, 'temporada', False),
+        ('verificado sin nivel: Servidor', m, 'servidor', True),
+        ('verificado: Competitiva', h, 'competitivo', True),
+        ('Dlx, sin rol ni país: Competitiva', dlx, 'competitivo', True),
     ]
     for que, p, carta, esp in libres:
         ok = puede(p, ver, carta) == esp
         mal += not ok
         print('   %s %-44s -> %s' % ('✅' if ok else '🔴', que, 'la tiene' if puede(p, ver, carta) else 'no'))
+    conservan_cache, niveles_cache = guardo_cv, guardo_nv
     guardo_c = olvidados_cache
     olvidados_cache = {'979': {'quien': 'x'}}
     ok = not puede(oasis, ver, 'temporada')

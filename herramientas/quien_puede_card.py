@@ -166,12 +166,13 @@ def _self_check():
     ok(r2 and r2[0][1] == 'sin padrón', 'un nombre inventado cae en `sin padrón`')
     ok(not (set(NUESTRO) & {'sin Discord ID', 'sin verificar', 'no se toca'}),
        'registrarse y verificarse NO cuentan como fallo nuestro')
-    # 🔑 LAS LIBRES: quien no pasa el portón y está en la Lista tiene sus dos
-    # libres, así que «sin verificar» sólo sale si ESTÁN dibujadas
+    # 🔑 DESDE EL 05/10/2026 (Dlx: «sin verificarse, ninguna tarjeta»): quien no pasa el portón y no conserva las
+    # suyas hasta la T1 no tiene ninguna (ver `verificados.puede()`)
     import verificados as VER
     per = {'raw': 'Prueba', 'discord_id': '1', 'pais': 'Chile'}
-    ok(VER.puede(per, set(), 'temporada') and not VER.puede(per, set(), 'competitivo'),
-       'sin el rol: la Temporada sí, la Competitiva no')
+    ok(not VER.puede(per, set(), 'temporada') and not VER.puede(per, set(), 'servidor')
+       and not VER.puede(per, set(), 'competitivo'),
+       'sin el rol y sin nada que conservar: ninguna')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

@@ -289,6 +289,8 @@ h1{font-size:1.15rem;font-weight:800}
    la altura total de la columna no cambia. */
 .c-sep{ margin:6px 0 5px; }
 .c-logo{ margin-top:13px; }
+/* FFA con sus colores (normal_v3.logo_de): entero adentro del círculo, sobre oscuro como en la Servidor */
+.c-logo.a-color{ object-fit:contain; padding:2px; background:#121016; }
 
 /* ── la temporada, como marca y no como pastilla (variante A) ─────────
    PRE y el logo dicen lo mismo: de donde viene la carta. El TAG es lo

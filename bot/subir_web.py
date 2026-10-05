@@ -2914,13 +2914,9 @@ def _requisitos():
         'servidor': 'Lo tuyo dentro del servidor donde más jugaste.',
         'pais': 'Tu OVR Nacional y tu puesto dentro de tu país.',
     }
-    # 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): las que no son libres piden
-    # además el portón. Sale de `verificados.LIBRES`, no se escribe acá.
-    try:
-        import verificados as _VER
-        libres = set(_VER.LIBRES)
-    except Exception:                                    # noqa: BLE001
-        libres = None
+    # 🔑 DESDE EL 05/10/2026 TODAS PIDEN ESTAR VERIFICADO (Dlx: «sin verificarse, ninguna tarjeta»; verificarse en
+    # la página te mete en DRA), y la Temporada, en vez de jugar, el nivel 1 del Pase de rapero: es su recompensa
+    # (Dlx: «C», «nivel 1»). Lo decide `verificados.puede()`; esto sólo lo dice
     out = []
     for k in ('temporada', 'competitivo', 'servidor', 'pais'):
         cs = REQUISITOS.get(k) or []
@@ -2928,8 +2924,9 @@ def _requisitos():
                   for i, (m, _c, _q) in enumerate(cs) if m]
         pide = [('%d %s' % (m, p)) for (m, _c, _q), p
                 in zip([c for c in cs if c[0]], partes)]
-        if libres is not None and k not in libres:
-            pide.append('estar verificado en DRA')
+        if k == 'temporada':
+            pide = ['el nivel 1 del Pase de rapero: tu primera Tarea']
+        pide.append('estar verificado en DRA')
         out.append({
             'id': k, 'titulo': titulo[k], 'mide': mide[k],
             'pide': pide or ['nada'],

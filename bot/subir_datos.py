@@ -451,10 +451,13 @@ def armar():
     # con `nv` y sólo esas dos; a la Competitiva y la de País el bot le
     # contesta «verificate». Los de `no_verificar` y los trolls no entran
     # (`verificados.puede()`).
+    # 🔑 Y DESDE EL 05/10/2026 (Dlx: «sin verificarse, ninguna tarjeta», «B»): sin el portón entra sólo quien
+    # CONSERVA las suyas hasta la T1 (`verificados._conservan()`), y con esas nomás. Lo pregunta `puede()`
     jugaron = {PAD.norm(r) for r in temp}
     libres = {PAD.norm(p['raw']) for p in _padron
               if verif is not None and p.get('raw') and PAD.norm(p['raw']) in jugaron
-              and not VERIF.pasa(p, verif) and VERIF.puede(p, verif, 'temporada')}
+              and not VERIF.pasa(p, verif)
+              and any(VERIF.puede(p, verif, c) for c in VERIF.LIBRES)}
     # 🔴 LOS QUE YA ESTAN CARGADOS Y NO PASAN. Ver el comentario de
     # `cargados` en `meta`, mas abajo: sin esto el Worker les promete una
     # carga que ya esta hecha. Se arma acá, donde el porton ya se
@@ -586,11 +589,14 @@ def armar():
             # ⚠️ Y AL SALIR DE `cs` ENTRA EN `bl`: `bloqueada()` del Worker
             # es «está en bl y NO en cs», así que la persona no pierde el
             # botón, le lleva a la Bloqueada que dice cuánto le falta.
+            # 🎟️ LA TEMPORADA NO PIDE DATOS DESDE EL 05/10/2026: es la recompensa del nivel 1 del Pase, y quien
+            # llega sin haber jugado la tiene con «—» (Dlx: «C», «3. A»). La decide el portón, no el requisito
             'cs': [c for c in ORDEN_CARTAS
                    if (c in inventario.get(k, {})
                        or (c == 'servidor' and any(x.startswith('sv-')
                                                    for x in inventario.get(k, {}))))
-                   and REQ_FALTA(c, req_fila) is None],
+                   and ((verif is None or VERIF.puede(p, verif, c)) if c == 'temporada'
+                        else REQ_FALTA(c, req_fila) is None)],
             # 🔴 QUE CARTAS DE SERVIDOR TIENE **ESTA** PERSONA, no cuáles hay
             # para todos. Antes esto vivía en `meta.svs`, que es la
             # INTERSECCIÓN: un servidor entraba sólo si lo tenían las 138. Con
@@ -618,13 +624,16 @@ def armar():
         nv = k in libres
         if nv:
             valor['nv'] = 1
-            valor['cs'] = [c for c in valor['cs'] if c in VERIF.LIBRES]
+            valor['cs'] = [c for c in valor['cs'] if c in VERIF.LIBRES and VERIF.puede(p, verif, c)]
         # 🔴 LAS BLOQUEADAS QUE TIENE SUBIDAS. Sin esto el Worker no puede
         # distinguir «no existe» de «todavía no», y las dos hacen desaparecer
         # el botón: a Lil Drako le salía UNO solo. Con `bl` el botón va y
         # lleva a una carta que dice cuánto le falta.
-        bl = sorted(c[5:] for c in inventario.get(k, {}) if c.startswith('bloq-')
-                    and (not nv or c[5:] in VERIF.LIBRES))
+        # 🎟️ SIN LA BLOQUEADA DE LA TEMPORADA desde el 05/10/2026: a quien no la tiene, /card le dice cómo se
+        # consigue (verificarse y el nivel 1 del Pase) en vez de una carta gris (Dlx: «C»)
+        # y sólo a los que ya juegan: muestran un progreso, y quien nunca jugó no tiene ninguno (`bot/bloqueadas.py`)
+        bl = sorted(c[5:] for c in inventario.get(k, {}) if c.startswith('bloq-') and c != 'bloq-temporada'
+                    and k in jugaron and (not nv or c[5:] in VERIF.LIBRES))
         if bl:
             valor['bl'] = bl
         # ⚠️ `svs` SOLO SI SE SABE. Una lista vacía y «no lo averigüé» son

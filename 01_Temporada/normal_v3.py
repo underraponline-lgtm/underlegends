@@ -61,6 +61,9 @@ UMBRAL = [('SSS',82),('SS',73),('S',62),('A',48),('B',37),('C',26),('D',18)]
 # umbrales, no con los del Score.
 #   SSS 88+ · SS 82 · S 74 · A 67 · B 61 · C 56 · D 52 · E resto
 UMBRAL_COLOR = [('SSS',88),('SS',82),('S',74),('A',67),('B',61),('C',56),('D',52)]
+# 🎟️ La de quien todavía no jugó (ver `card()`): neutra, de ningún rango —el bloqueado tampoco es E: está antes—.
+# Grafito frío, sin el azul de la D ni el marrón de la E
+GRAD_SIN_JUGAR = ("linear-gradient(168deg,#EDEDEB 0%,#8C8C88 34%,#4A4A47 68%,#1C1C1B 100%)", False)
 
 def rango(score):
     """La LETRA. Sale del Score competitivo, siempre."""
@@ -122,6 +125,40 @@ from comun.escudos import LOGO, escudo
 # sin internet, que en Chromium aislado sale sin bandera y sin avisar, y que
 # se usa una imagen de 80 px de ancho donde el repo tiene una de 1280.
 from comun.banderas import src as bandera
+
+
+# 🟣 FFA, CON SUS COLORES (Dlx, 05/10/2026: «¿puedes hacer que el logo de FFA en la temporada se haga visible con sus
+# colores? porque aparece blanco»). La silueta blanca era a propósito —su ícono de Discord es un póster y a 38 px es
+# ruido—, pero su escudo a color de la carta Servidor (`comun/escudos_cuad/`, sólo la tinta, sin fondo) sí se lee:
+# los micrófonos violetas y las letras rosas. Sólo en esta carta; la Competitiva y la de País siguen con la silueta
+A_COLOR = ('FFA',)
+_logos_color = {}
+
+
+def _logo_color(sv):
+    """El escudo a color de `sv`, achicado a 160 px (en la carta mide 38) y en base64; `''` si no está."""
+    if sv not in _logos_color:
+        uri = ''
+        try:
+            import base64, io as _io
+            from PIL import Image
+            ruta = _osruta.path.join(_osruta.path.dirname(RAIZ), 'comun', 'escudos_cuad', 'sv_%s.png' % sv.lower())
+            im = Image.open(ruta).convert('RGBA')
+            im.thumbnail((160, 160))
+            b = _io.BytesIO()
+            im.save(b, 'PNG', optimize=True)
+            uri = 'data:image/png;base64,' + base64.b64encode(b.getvalue()).decode()
+        except (OSError, ImportError):
+            uri = ''
+        _logos_color[sv] = uri
+    return _logos_color[sv]
+
+
+def logo_de(sv):
+    """`(src, clase)` del escudo de la carta: a color para `A_COLOR`, y si no el de siempre (`escudo()`)."""
+    if sv in A_COLOR and _logo_color(sv):
+        return _logo_color(sv), 'c-logo a-color'
+    return escudo(sv), 'c-logo'
 
 
 def chip_bandera(cc):
@@ -227,9 +264,14 @@ def card(c):
     # rompe nada: sale del OVR (la linea de abajo). Es la regla de
     # `CLAUDE.md` —*«el color sale del OVR y la letra del Score»*— que
     # justamente por estar separadas deja quitar una sin tocar la otra.
-    rg = letra_rango(c)
-    g, bright = GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
-    tg = tag(c)
+    # 🎟️ SIN JUGAR (Dlx, 05/10/2026: la Temporada es la recompensa del nivel 1 del Pase, y quien llega sin haber jugado
+    # la recibe con «—» — «3. A»—, y se llena con su primer evento). Sin OVR no hay color de rango ni número que mostrar:
+    # la carta va neutra y todo lo que mide la temporada dice «—». Es la regla de siempre: sin dato no hay pieza.
+    if c.get('sinjugar'):
+        c = dict(c, ovr=0, pts=0, ev=0, pod=0, sem=0, caz=0, sob=0, czd=0, oro=0, racha=0, srv=0, pos=0)
+    rg = '—' if c.get('sinjugar') else letra_rango(c)
+    g, bright = GRAD_SIN_JUGAR if c.get('sinjugar') else GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
+    tg = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c)
     av  = c['av'].replace('?size=128', '?size=512')
     # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
     from comun import sin_foto as SF
@@ -245,9 +287,13 @@ def card(c):
     # Sheet: en casillas separadas, 133 de 138 cartas mostrarian dos ceros.
     # El formato 'a/b' es el que ya usa la columna 🔥, que guarda 'actual/maxima'.
     mw  = '%d/%d' % (c.get('sob',0), c.get('sob',0) + c.get('czd',0))
+    if c.get('sinjugar'):
+        pts = mw = '—'
     st  = [(pts,'PTS'),                 (str(c['ev']),'EVT'),
            (str(c['pod']),'POD'),       (str(c.get('sem',0)),'SEM'),
            (str(c.get('caz',0)),'CAZ'), (mw,'MW')]
+    if c.get('sinjugar'):
+        st = [('—', l) for _v, l in st]
     filas = ''.join('<div class="c-stat" style="grid-column:%d"><span class="c-val">%s</span>'
                     '<span class="c-lbl">%s</span></div>' % (1 if i%2==0 else 3, v, l)
                     for i,(v,l) in enumerate(st))
@@ -264,11 +310,11 @@ def card(c):
       <img class="c-ul" src="%s">
     </div>
     <div class="c-left">
-      <div class="c-ovr">%d</div>
+      <div class="c-ovr">%s</div>
       <div class="c-rank">%s</div>
       <div class="c-sep"></div>
       %s
-      <img class="c-logo" src="%s">
+      <img class="%s" src="%s">
     </div>
     <div class="c-name">%s</div>
     <div class="c-rule"></div>
@@ -278,8 +324,8 @@ def card(c):
   <div class="tag">Rango %s · %s</div>
   </div>
 """ % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, tg[1], tg[0], UL,
-       c['ovr'], rg,
-       chip_bandera(c['cc']), escudo(c['sv']), c['raw'].upper(), filas, rg, c['sv'])
+       '—' if c.get('sinjugar') else c['ovr'], rg,
+       chip_bandera(c['cc']), logo_de(c['sv'])[1], logo_de(c['sv'])[0], c['raw'].upper(), filas, rg, c['sv'])
 
 
 

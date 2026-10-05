@@ -160,11 +160,9 @@ def estado():
         t = {k: v for k, v in (temp.get(x['raw']) or {}).items() if k != 'av'}
         out[x['raw']] = {'c': c, 't': t}
 
-    # 🔑 LAS LIBRES (Dlx, 29/09/2026, «Dale»): quien jugó y está en la Lista
-    # tiene la Temporada y la Servidor aunque no pase el portón; quien no está
-    # en la Lista —o es de los que no se tocan—, ninguna. Se marca acá y lo
-    # lee `emitibles()`: 1 = sólo las libres, 0 = nada. Quien pasa el portón
-    # no lleva marca y sigue con las cuatro.
+    # 🔑 QUÉ CARTAS PUEDE TENER CADA UNO, carta por carta (`verificados.puede()`): se marca acá (`cartas`) y lo
+    # lee `emitibles()`. Desde el 05/10/2026 (Dlx: «C», «B»): sin verificarse ninguna, la Temporada pide además el
+    # nivel 1 del Pase, y quien ya las tenía las conserva hasta la T1. Reemplaza a «las LIBRES» del 29/09/2026.
     #
     # ⚠️ SIN `datos/verificados.json` NO SE MARCA A NADIE, la regla de
     # `verificados.cargar()`: sin saber quién pasa, no se filtra.
@@ -180,10 +178,11 @@ def estado():
             idx = _PAD.por_nombre()
             for nom, ent in out.items():
                 p = idx.get(_PAD.norm(nom)) or {}
-                if not _V.pasa(p, verif):
-                    ent['libres'] = 1 if _V.puede(p, verif, 'temporada') else 0
+                # 🔑 DESDE EL 05/10/2026, CARTA POR CARTA (`verificados.puede()`): sin verificarse ninguna, la
+                # Temporada con el nivel 1 del Pase, y quien ya las tenía las conserva hasta la T1 (Dlx: «C», «B»)
+                ent['cartas'] = [c for c in TODAS if _V.puede(p, verif, c)]
     except Exception as e:                               # noqa: BLE001
-        print('   ⚠️ no pude marcar quién tiene sólo las libres (%s)' % str(e)[:60])
+        print('   ⚠️ no pude marcar qué cartas puede tener cada uno (%s)' % str(e)[:60])
 
     # 🔴 Y LOS QUE PASAN EL PORTON PERO NO ESTAN EN NINGUN POOL. Sin esto
     # el ciclo **no los ve existir**: `cambios()` compara contra este
@@ -229,7 +228,9 @@ def estado():
                 if not nom or nom in out or not _V.pasa(p, verif):
                     continue
                 svs = donde.get(str(p.get('discord_id') or '')) or []
-                out[nom] = {'fuera': 1, 't': {},
+                # 🎟️ y la Temporada «sin jugar» de quien llegó al nivel 1 del Pase sin haber jugado (Dlx, 05/10/2026:
+                # «3. A»): la dibuja `01_Temporada/exportar_png.py` con «—» en los números
+                out[nom] = {'fuera': 1, 't': {}, 'cartas': [c for c in ('servidor', 'temporada') if _V.puede(p, verif, c)],
                             'c': {'raw': nom,
                                   'cc': _SD._cc_de(p.get('pais')),
                                   'sv': (svs[0] if svs else ''),
@@ -612,19 +613,15 @@ def emitibles(quien, est=None):
     # puede producirlas**. Es la misma razón por la que se descarta
     # `pais` de quien no tiene país: «sin dato no hay pieza».
     if ent.get('fuera'):
-        return {'servidor'}
-
-    # 🔑 LAS LIBRES: sin el portón, la Temporada y la Servidor si está en la
-    # Lista, y nada si no. Ver la marca en `estado()`.
-    if ent.get('libres') == 0:
-        return set()
+        return {'servidor'} | ({'temporada'} if 'temporada' in (ent.get('cartas') or ()) else set())
 
     fila = ent.get('c') or {}
     out = set(TODAS)
     if fila and not str(fila.get('cc') or '').strip():
         out.discard('pais')
-    if ent.get('libres') == 1:
-        out &= {'temporada', 'servidor'}
+    # 🔑 CARTA POR CARTA, lo que dijo el portón en `estado()` (sin marca: no se sabe quién pasa, no se filtra)
+    if ent.get('cartas') is not None:
+        out &= set(ent['cartas'])
     return out
 
 

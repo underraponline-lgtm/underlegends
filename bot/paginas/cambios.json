@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.41",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T15:30:00-04:00",
+   "titulo": "Tus tarjetas, en dos pasos",
+   "items": [
+    "🃏 **Las tarjetas se consiguen en dos pasos**: verificate en la página y se desbloquea tu **Servidor**, la de cada servidor donde estás; cumplí tu primera Tarea del **Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, sale con «—» y se llena con tu primer evento. `/card` te lo explica, con el botón del Pase.",
+    "✅ **Si ya tenés tus tarjetas, no cambia nada**: las conservás hasta que arranque la T1, el lunes 12.",
+    "🟣 **El logo de FFA va con sus colores** en la tarjeta de Temporada."
+   ]
+  },
+  {
    "version": "2.40",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T12:45:00-04:00",

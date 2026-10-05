@@ -109,7 +109,7 @@ function Pista({ P, cfg }) {
       {ps.map((p) => (
         <li key={p[0]} className={[p[0] <= n ? 'pa-ya' : '', p[2] ? 'pa-esp' : '', miembro && p[0] === n + 1 ? 'pa-prox' : ''].join(' ').trim() || undefined}>
           <b>{p[0]}</b>
-          {p[2] ? <small className="pa-que">{p[2] === 'color' ? 'Nombre dorado' : p[3]}</small> : null}
+          {p[2] ? <small className="pa-que">{p[2] === 'color' ? 'Nombre dorado' : p[2] === 'tarjeta' ? 'Tu ' + p[3] : p[3]}</small> : null}
           <small>+{num(p[1])}</small>
         </li>
       ))}

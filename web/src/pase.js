@@ -84,7 +84,7 @@ export function vioVivo(id) {
     .catch(() => { vistas.delete(k); });
 }
 
-const TIPO = { insignia: 'Insignia', titulo: 'Título', color: 'Color de nombre' };
+const TIPO = { tarjeta: 'Tu tarjeta de', insignia: 'Insignia', titulo: 'Título', color: 'Color de nombre' };
 
 /** Lo que da un nivel, en palabras cortas: «+200» o «+500 · Insignia Pase Bronce» */
 export function premioTexto(p, largo) {
