@@ -72,6 +72,11 @@
      1
     ],
     [
+     "Elsoolar y tokio",
+     16,
+     1
+    ],
+    [
      "Player",
      15,
      1
@@ -99,14 +104,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 43,
+     "FFA": 47,
      "URBF": 8,
      "DDF": 6,
      "SR": 4,
      "ACAD": 1
     },
     "gente": {
-     "FFA": 128,
+     "FFA": 135,
      "URBF": 37,
      "SR": 18,
      "DDF": 25,
@@ -116,7 +121,7 @@
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 128,
+    "FFA": 135,
     "SR": 18,
     "URBF": 37
    }

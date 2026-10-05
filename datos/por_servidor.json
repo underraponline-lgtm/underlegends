@@ -185,22 +185,11 @@
   "Alexi": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 625,
-    "racha": "0/0"
-   }
-  },
-  "Alexiz": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 625,
+    "pts": 1563,
     "racha": "0/0"
    }
   },
@@ -1296,7 +1285,7 @@
     "racha": "0/0"
    }
   },
-  "Gwynyth 🇦🇷": {
+  "Gwynyth": {
    "FFA": {
     "duelos": "1/2",
     "ev": 1,

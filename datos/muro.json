@@ -1265,6 +1265,13 @@
 "temporada"
 ]
 },
+"alexi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "emi": {
 "rg": "",
 "c": [
@@ -1602,13 +1609,6 @@
 ]
 },
 "1200": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"alexi": {
 "rg": "",
 "c": [
 "servidor",
