@@ -1238,7 +1238,49 @@ const RUTAS = {
   '/avisos/sumate': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
+  // 🖼️ el texto de un anuncio que es una imagen, para el ciclo: con `claveCiclo()`. Ver `textoDeImagen()`
+  '/avisos/ocr': 'POST',
 };
+
+// ── los anuncios que son una imagen ────────────────────────────────────
+// 🖼️ Dlx, 05/10/2026: *«¿no puedes hacer una forma para detectar lo que dicen las imágenes?»*. La ACADEMIA anuncia
+// con un afiche y nada más («@everyone» y la imagen): VALHALLA VOL1 —7 PM Chile, domingo 4 de octubre, 10 dólares—
+// no llegó ni al calendario. La imagen la lee la IA de Cloudflare (el binding `AI`, sin token nuevo: lo pone
+// `bot/desplegar.py`) y el texto vuelve al ciclo, que lo pasa por el mismo lector que a cualquier anuncio
+// (`bot/anuncios.py`).
+//
+// ⚠️ SÓLO CON LA CLAVE DEL CICLO, y la imagen la manda el ciclo: él la baja de Discord achicada (640 px de ancho en
+// JPEG, el proxy de Discord lo hace) y la sube en el cuerpo. 🔴 EL WORKER NO PUEDE BAJARLA: el proxy de Discord le
+// contesta 403 a Cloudflare (medido el 05/10/2026). Y los 2,8 MB del original costarían CPU que el Worker no tiene.
+export const OCR_MAX = 700000;
+/** El tipo de una imagen por sus primeros bytes (JPEG, PNG o WebP), o `''`: el `content-type` lo pone quien manda. */
+export function tipoImagen(b) {
+  if (b.length > 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return 'image/jpeg';
+  if (b.length > 8 && b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) return 'image/png';
+  if (b.length > 12 && String.fromCharCode(b[0], b[1], b[2], b[3]) === 'RIFF'
+      && String.fromCharCode(b[8], b[9], b[10], b[11]) === 'WEBP') return 'image/webp';
+  return '';
+}
+export const OCR_MODELO = '@cf/meta/llama-4-scout-17b-16e-instruct';
+export const OCR_PEDIDO = 'Copiá TODO el texto que se lee en esta imagen, renglón por renglón y tal cual está escrito '
+  + '(mayúsculas, números, horas, fechas, signos). No describas la imagen ni agregues nada tuyo. '
+  + 'Si no hay texto, contestá NADA.';
+
+export async function textoDeImagen(env, buf) {
+  const tipo = tipoImagen(buf);
+  if (!tipo) throw new Error('no es una imagen');
+  let bin = '';
+  for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+  const sal = await env.AI.run(OCR_MODELO, {
+    messages: [{ role: 'user', content: [
+      { type: 'text', text: OCR_PEDIDO },
+      { type: 'image_url', image_url: { url: 'data:' + tipo + ';base64,' + btoa(bin) } },
+    ] }],
+    max_tokens: 600, temperature: 0,
+  });
+  const t = String((sal && (sal.response != null ? sal.response : (sal.result || {}).response)) || '').trim();
+  return { texto: /^nada\.?$/i.test(t) ? '' : t.slice(0, 3000), modelo: OCR_MODELO };
+}
 
 // ── seguir raperos ─────────────────────────────────────────────────────
 // 🔑 Dlx, 28/09/2026, a «¿guardar de verdad a quién seguís?»: *«sí, hay que
@@ -2058,6 +2100,20 @@ export async function rutaAvisos(req, env, ruta) {
   if (ruta === '/avisos/clave') {
     return env.VAPID_PUBLICA ? json({ clave: env.VAPID_PUBLICA }, 200, 3600)
       : json({ error: 'los avisos todavía no tienen clave' }, 503);
+  }
+  // 🖼️ el texto de un afiche, para el ciclo (ver `textoDeImagen()`). No pasa por el objeto: no guarda nada
+  if (ruta === '/avisos/ocr') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (!env.AI) return json({ error: 'la IA todavía no está enchufada' }, 503);
+    const buf = new Uint8Array(await req.arrayBuffer());
+    if (buf.length > OCR_MAX) return json({ error: 'demasiado grande: mandala achicada' }, 413);
+    if (!tipoImagen(buf)) return json({ error: 'no es una imagen' }, 400);
+    try {
+      return json(await textoDeImagen(env, buf));
+    } catch (e) {
+      return json({ error: String((e && e.message) || e).slice(0, 200) }, 502);
+    }
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
   // 🔒 EL DASHBOARD DEL DUEÑO (Dlx, 04/10/2026: «una página nueva creada sólo para el owner… la única manera de iniciar

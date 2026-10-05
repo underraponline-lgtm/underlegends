@@ -2875,5 +2875,44 @@ console.log('\n«LOS AJUSTES DEL DASHBOARD»\n');
   if (antesT === undefined) delete env.DISCORD_TOKEN; else env.DISCORD_TOKEN = antesT;
 }
 
+console.log('\n«LOS ANUNCIOS QUE SON UNA IMAGEN»\n');
+{
+  // 🖼️ Dlx, 05/10/2026: «¿no puedes hacer una forma para detectar lo que dicen las imágenes?». Sólo para el ciclo y
+  // sólo imágenes de Discord; la IA de verdad se prueba arriba, acá se prueba la puerta
+  const { claveCiclo } = await import('./avisos.js');
+  const antesF = globalThis.fetch, antesT = env.DISCORD_TOKEN, antesAI = env.AI;
+  env.DISCORD_TOKEN = 'token-de-prueba';
+  const vistos = [];
+  env.AI = { run: async (modelo, d) => { vistos.push([modelo, d]); return { response: 'VALHALLA VOL1\n7PM CHILE\nDOMINGO 4 DE OCTUBRE' }; } };
+  globalThis.fetch = async () => new Response('no', { status: 404 });
+  const IMG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3, 4]);
+  const pedirO = async (k, cuerpo) => {
+    const r = await worker.fetch(new Request('https://x/avisos/ocr', { method: 'POST', body: cuerpo,
+      headers: k ? { 'x-lg-ciclo': k, 'content-type': 'image/jpeg' } : { 'content-type': 'image/jpeg' } }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  const k = await claveCiclo(env.DISCORD_TOKEN);
+  let r = await pedirO('', IMG);
+  const r2 = await pedirO('x'.repeat(64), IMG);
+  ok('sin la clave del ciclo «no existe», y la IA no se toca', r.status === 404 && r2.status === 404 && !vistos.length);
+  r = await pedirO(k, new TextEncoder().encode('<html>no soy una imagen</html>'));
+  const r3 = await pedirO(k, new Uint8Array(800000).fill(0xff));
+  ok('con la clave, lo que no es una imagen: 400; una de más de 700 KB: 413, y la IA no se toca',
+     r.status === 400 && r3.status === 413 && !vistos.length);
+  r = await pedirO(k, IMG);
+  ok('con la clave y un afiche: el texto, renglón por renglón',
+     r.status === 200 && r.json.texto.startsWith('VALHALLA VOL1') && vistos.length === 1
+     && /^data:image\/jpeg;base64,/.test(vistos[0][1].messages[0].content[1].image_url.url));
+  env.AI = { run: async () => ({ response: 'NADA' }) };
+  r = await pedirO(k, IMG);
+  ok('«NADA» es sin texto', r.status === 200 && r.json.texto === '');
+  delete env.AI;
+  r = await pedirO(k, IMG);
+  ok('sin el binding de la IA: 503, no un error adentro', r.status === 503);
+  globalThis.fetch = antesF;
+  if (antesAI === undefined) delete env.AI; else env.AI = antesAI;
+  if (antesT === undefined) delete env.DISCORD_TOKEN; else env.DISCORD_TOKEN = antesT;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

@@ -644,6 +644,153 @@ def del_vigia():
     return out
 
 
+# ── los anuncios que son una imagen ──────────────────────────────────
+# 🖼️ Dlx, 05/10/2026: *«¿no puedes hacer una forma para detectar lo que dicen
+# las imágenes?»*. La ACADEMIA anuncia con un afiche y nada más —«@everyone» y
+# la imagen—, así que VALHALLA VOL1 (7 PM Chile, domingo 4) no llegó ni al
+# calendario. El ciclo baja el afiche achicado, lo manda al Worker
+# (`/avisos/ocr`, con su clave) y la IA de Cloudflare devuelve el texto, que
+# pasa por `parsear()` como cualquier anuncio.
+#
+# ⚠️ SÓLO LO QUE PARECE UN AFICHE: un mensaje de eventos con imagen, poco
+# texto propio y de los últimos días, que el lector de texto no entendió. Un
+# fichaje con su texto ya se lee; lo viejo ya pasó.
+# ⚠️ UNA VEZ POR IMAGEN: lo leído se guarda en `datos/ocr_anuncios.json`
+# (también si no tenía texto), que va al repo con el ciclo (`guardar.sh`).
+OCR = os.path.join(BASE, 'datos', 'ocr_anuncios.json')
+OCR_HORAS = 72
+OCR_TEXTO_MAX = 160
+OCR_TOPE = 8
+OCR_DIAS = 30
+OCR_ANCHO = 640
+
+
+def _sin_menciones(txt):
+    return re.sub(r'<[@#][!&]?\d+>|@everyone|@here', ' ', str(txt or '')).strip()
+
+
+def imagen_de(m):
+    """El primer adjunto que es una imagen, o `None`."""
+    for a in (m.get('attachments') or []):
+        if str(a.get('content_type') or '').startswith('image/') and a.get('width'):
+            return a
+    return None
+
+
+def pide_ocr(m, ahora=None):
+    """¿Este mensaje es un afiche que vale la pena leer? Ver el bloque de arriba."""
+    import datetime as dt
+    if not imagen_de(m) or len(_sin_menciones(m.get('content'))) > OCR_TEXTO_MAX:
+        return False
+    try:
+        t = dt.datetime.fromisoformat(str(m.get('timestamp') or '').replace('Z', '+00:00'))
+    except ValueError:
+        return False
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    return (ahora - t).total_seconds() <= OCR_HORAS * 3600
+
+
+_HORA_AFICHE = re.compile(r'\b\d{1,2}(?:[:.]\d{2})?\s*(?:A\.?\s?M|P\.?\s?M|HS|HRS)\b|\b\d{1,2}:\d{2}\b', re.I)
+_FECHA_AFICHE = re.compile(r'\b(?:LUNES|MARTES|MI[EÉ]RCOLES|JUEVES|VIERNES|S[AÁ]BADO|DOMINGO|HOY|MA[NÑ]ANA)\b'
+                           r'|\b\d{1,2}\s+DE\s+(?:ENERO|FEBRERO|MARZO|ABRIL|MAYO|JUNIO|JULIO|AGOSTO|SEPTIEMBRE|'
+                           r'SETIEMBRE|OCTUBRE|NOVIEMBRE|DICIEMBRE)\b|\b\d{1,2}/\d{1,2}\b', re.I)
+
+
+def rotular_afiche(texto):
+    """El texto de un afiche con los rótulos de una plantilla, para `parsear()`.
+
+    Un afiche no escribe «HORARIO:» —pone «7PM CHILE» en grande—, así que el
+    lector de plantillas no ve ningún campo. Se le ponen: el renglón con una
+    hora es el HORARIO, el que tiene un día es la FECHA, el que dice PREMIO es
+    el premio; y el primer renglón es el nombre, con el segundo si es corto
+    («VALHALLA» y «VOL1»: un nombre; «MUERTE SUBITA» y «TORNEO DE
+    FREESTYLE»: el nombre y su bajada).
+
+    ⚠️ Lo que ya es un campo («CUPOS: 16») queda como está."""
+    ls = [l.strip() for l in str(texto or '').splitlines() if l.strip()]
+    titulo, resto, visto = [], [], False
+    for l in ls:
+        if campo_de(l):
+            visto = True
+            resto.append(l)
+        elif _HORA_AFICHE.search(l):
+            visto = True
+            resto.append('HORARIO: ' + l)
+        elif _FECHA_AFICHE.search(l):
+            visto = True
+            resto.append('FECHA: ' + l)
+        elif re.search(r'\bPREMIO', l, re.I):
+            visto = True
+            resto.append('PREMIO: ' + l)
+        elif not visto and (not titulo or (len(titulo) == 1 and len(l) <= 6)):
+            titulo.append(l)
+        else:
+            resto.append(l)
+    return '\n'.join((['# ' + ' '.join(titulo)] if titulo else []) + resto)
+
+
+def _ocr_memoria():
+    try:
+        with io.open(OCR, encoding='utf-8') as f:
+            d = json.load(f)
+        return d if isinstance(d.get('msgs'), dict) else {'msgs': {}}
+    except (OSError, ValueError, AttributeError):
+        return {'msgs': {}}
+
+
+def _ocr_guardar(mem):
+    import datetime as dt
+    corte = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=OCR_DIAS)).strftime('%Y-%m-%dT%H:%M:%S')
+    msgs = {k: v for k, v in mem['msgs'].items() if str(v.get('t') or '') >= corte}
+    out = {'_leeme': 'El texto de los anuncios que son una imagen, leído por la IA de Cloudflare '
+                     '(/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola '
+                     'vez. Se borra a los %d días. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.' % OCR_DIAS,
+           'msgs': dict(sorted(msgs.items()))}
+    with io.open(OCR, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(out, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+
+
+def texto_de_imagen(m, mem, cuenta):
+    """El texto del afiche de `m` (de la memoria o del Worker), o `''`.
+
+    `cuenta` es `[n]`: cuántos se pidieron en esta corrida, para el tope."""
+    import datetime as dt
+    import hashlib
+    import requests
+    import fotos as F
+    mid = str(m.get('id') or '')
+    if mid in mem['msgs']:
+        return mem['msgs'][mid].get('texto') or ''
+    if cuenta[0] >= OCR_TOPE:
+        return ''
+    a = imagen_de(m)
+    url = a.get('proxy_url') or a.get('url') or ''
+    alto = max(1, round(int(a.get('height') or 1) * OCR_ANCHO / max(1, int(a.get('width') or 1))))
+    url += ('&' if '?' in url else '?') + 'width=%d&height=%d&format=jpeg' % (OCR_ANCHO, alto)
+    cuenta[0] += 1
+    try:
+        img = requests.get(url, timeout=30)
+        if img.status_code != 200 or not img.content:
+            print('   ⚠️ el afiche de %s no bajó (%s)' % (mid, img.status_code))
+            return ''
+        k = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
+        r = requests.post(WORKER + '/avisos/ocr', data=img.content, timeout=90,
+                          headers={'x-lg-ciclo': k, 'content-type': 'image/jpeg'})
+        if r.status_code != 200:
+            print('   ⚠️ el Worker no leyó el afiche de %s (%s %s)' % (mid, r.status_code, r.text[:80]))
+            return ''
+        texto = str((r.json() or {}).get('texto') or '').strip()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el afiche de %s no se pudo leer (%s)' % (mid, str(e)[:70]))
+        return ''
+    # ⚠️ se guarda también vacío: un afiche sin texto no se vuelve a pedir
+    mem['msgs'][mid] = {'texto': texto[:3000],
+                        't': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S')}
+    mem['cambio'] = True
+    return texto
+
+
 # ── Discord ──────────────────────────────────────────────────────────
 def _sesion():
     import requests
@@ -768,6 +915,9 @@ def leer(s, por_canal=None):
     estados = {}
     #: los servidores cuyo canal de eventos no se pudo leer: ver `main()`
     leer.fallaron = set()
+    # 🖼️ los afiches ya leídos, y cuántos se piden en esta corrida (ver `texto_de_imagen()`)
+    leer.ocr = _ocr_memoria()
+    cuenta_ocr = [0]
     for cid, nombre, cod, tipo, gid, cat in canales(s):
         lim = por_canal or POR_CANAL.get(tipo, 25)
         # 🔴 DISCORD DA 100 POR PEDIDO Y ANTES SE PEDIA UNO SOLO, asi que
@@ -842,6 +992,16 @@ def leer(s, por_canal=None):
                                 'texto': (m.get('content') or '')[:80]}
             if tipo == 'eventos':
                 a = parsear(m, cod, nombre, gid)
+                # 🖼️ UN AFICHE: el mismo lector, sobre su texto (ver `texto_de_imagen()`)
+                if not a and pide_ocr(m):
+                    t_img = texto_de_imagen(m, leer.ocr, cuenta_ocr)
+                    if t_img:
+                        # ⚠️ EL AFICHE PRIMERO: su título es el nombre del evento; lo que se
+                        # escribe al lado («vengan a inscribirse…») es la invitación
+                        a = parsear(dict(m, content=rotular_afiche(t_img) + '\n' + (m.get('content') or '')),
+                                    cod, nombre, gid)
+                        if a:
+                            a['de_imagen'] = True
                 if a:
                     # 🔑 la categoría del canal, para «Inscribite ya»: la invitación al canal de inscripciones
                     # de la misma categoría (Dlx, 03/10/2026). Ver `subir_web._inscribir()`
@@ -1239,6 +1399,35 @@ def _self_check():
     print('   %s una marca de hace tres meses no cuenta como estado de hoy'
           % ('✅' if ok else '🔴'))
 
+    # 🖼️ EL AFICHE DE VALHALLA VOL1 (ACADEMIA, 04/10/2026), con el texto que
+    # devolvió la IA de verdad: «@everyone» y la imagen, nada más.
+    import cuando as _C
+    leido = ('VALHALLA \nVOL1\n\n7PM CHILE\nDOMINGO 4 DE OCTUBRE\n$10 DÓLARES DE PREMIO\n\n'
+             'SOLO EN DISCORD: LA CREW')
+    afiche = {'id': '1556352011316756530', 'channel_id': '1309243940448243856',
+              'timestamp': '2026-10-04T17:07:00+00:00', 'content': '@everyone', 'author': {'id': '1'},
+              'attachments': [{'content_type': 'image/png', 'width': 1024, 'height': 1451,
+                               'proxy_url': 'https://media.discordapp.net/attachments/1/2/a.png?ex=1'}]}
+    ok = parsear(afiche, 'ACAD', 'torneos') is None
+    a = parsear(dict(afiche, content='@everyone\n' + rotular_afiche(leido)), 'ACAD', 'torneos')
+    ok = ok and bool(a) and a['nombre'] == 'VALHALLA VOL1' and a['fecha'] == 'DOMINGO 4 DE OCTUBRE' \
+        and _C.momento(a) == '2026-10-04T22:00:00'
+    mal += not ok
+    print('   %s un afiche: sin su texto no es nada; leído, VALHALLA VOL1 el 4/10 a las 7 PM de Chile%s'
+          % ('✅' if ok else '🔴', '' if ok else '  %s' % (a and {k: a[k] for k in ('nombre', 'horario', 'fecha')})))
+    dom = _dt.datetime(2026, 10, 4, 18, 0, tzinfo=_dt.timezone.utc)
+    ok = (pide_ocr(afiche, dom)
+          and not pide_ocr(dict(afiche, attachments=[]), dom)
+          and not pide_ocr(dict(afiche, content='x' * 200), dom)
+          and not pide_ocr(afiche, dom + _dt.timedelta(days=4)))
+    mal += not ok
+    print('   %s se lee sólo lo que parece un afiche: con imagen, poco texto y de estos días'
+          % ('✅' if ok else '🔴'))
+    ok = parsear(dict(afiche, content='@everyone\n' + rotular_afiche('GANADOR DE LA COMPE\nfelicidades')),
+                 'ACAD', 'torneos') is None
+    mal += not ok
+    print('   %s un afiche sin hora ni fecha no es un anuncio' % ('✅' if ok else '🔴'))
+
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
@@ -1282,9 +1471,16 @@ def main():
         for i in inscr[:8]:
             print('      %-18s %-18s %s' % (i['texto'][:18], i['quien'][:18],
                                             i['servidor']))
+    de_img = [a for a in anuncios if a.get('de_imagen')]
+    if de_img:
+        print('\n   🖼️ leídos de un afiche: %s' % ' · '.join('%s (%s)' % (a['nombre'][:30], a['servidor'])
+                                                       for a in de_img))
     if '--aplicar' in sys.argv:
         guardar(anuncios, inscr)
         print('\n   -> %s' % os.path.relpath(SALIDA, BASE))
+        if (getattr(leer, 'ocr', None) or {}).get('cambio'):
+            _ocr_guardar(leer.ocr)
+            print('   -> %s' % os.path.relpath(OCR, BASE))
     else:
         print('\n   (no guardé nada — corré con --aplicar)')
     print('')

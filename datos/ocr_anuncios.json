@@ -1,0 +1,4 @@
+{
+ "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Se borra a los 30 días. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.",
+ "msgs": {}
+}

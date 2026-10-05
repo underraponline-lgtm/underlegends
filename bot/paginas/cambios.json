@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.34",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T01:45:00-04:00",
+   "titulo": "Los afiches también cuentan",
+   "items": [
+    "🖼️ **El bot lee los anuncios que son una imagen.** Si un servidor anuncia su torneo sólo con el afiche, el bot lee el nombre, el día, la hora y el premio de la imagen, y el evento aparece en el calendario como cualquier otro."
+   ]
+  },
+  {
    "version": "2.33",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T01:30:00-04:00",

@@ -184,6 +184,9 @@ def main():
             # 🔑 HASTA CUÁNDO LA FOTO ES LIBRE (Dlx, 25/09/2026: «cambios
             # ilimitados hasta el 9»), del mismo lugar que la temporada.
             {'type': 'plain_text', 'name': 'FOTO_LIBRE_HASTA', 'text': FOTO_LIBRE_HASTA},
+            # 🖼️ LA IA DE CLOUDFLARE, PARA LEER LOS ANUNCIOS QUE SON UNA IMAGEN (05/10/2026: `textoDeImagen()` en
+            # avisos.js). Es un binding y no un token: no hay secreto nuevo. Entra en el plan gratis por día.
+            {'type': 'ai', 'name': 'AI'},
         ],
     }
 
