@@ -18,6 +18,31 @@
    "cuando": "2026-09-28 10:43 AM ET",
    "por": "Dlx (chat)",
    "nota": "cargado a mano el 28/09 con #veredictos; Dlx al resultado: «sí dale». Desde el 28/09 el ciclo lo carga solo (5 vidas, «A y b»)."
+  },
+  "VALHALLA VOL1 · ACAD · 04/10": {
+   "decision": "cuenta",
+   "cuando": "2026-10-05 2:16 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "a «¿cómo cuenta VALHALLA VOL1?»: «1. B» — cuenta, y los de los filtros suman como participación. Los filtros (8 enfrentamientos) y la llave («COMPE DE 10 DOLARES», de otra cuenta) son dos mensajes: los junta escuchar.con_fase_previa()."
+  },
+  "GRUPO A · ACAD · 03/10": {
+   "decision": "cuenta",
+   "cuando": "2026-10-05 2:16 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "el torneo de grupos de Leonar-T: la final ZETRYKO vs ABYSSUS no decía quién ganó. Dlx: «2. Abyssus»."
+  },
+  "COMPE DE UDDI · ACAD · 22/09": {
+   "decision": "cuenta",
+   "cuando": "2026-10-05 2:16 AM ET",
+   "por": "Dlx (chat)",
+   "final": {
+    "lados": [
+     "ERIAN 🇵🇦",
+     "COLESITO 🇨🇴"
+    ],
+    "ganador": "ERIAN 🇵🇦"
+   },
+   "nota": "la final decía sólo «ERIAN». Dlx: «3. Sí» (ganó Erian). El otro finalista sale de las votaciones de la ACADEMIA (✅┇votaciones, 22/09): COLESITO le ganó a ZETRYKO 2 a 1 en la segunda réplica (🫱 de ander.fc y 👉 de ivandevil)."
   }
  },
  "no_rankear": {
@@ -72,6 +97,27 @@
    "batalla": "__ DESGRACIAS EN TOKYO VOL.13 __ · FFA · 25/09 · semifinales · MAKMA 🇻🇪 + SNOW 🇨🇴 🆚 NEO 🇦🇷 + ENEK 🇪🇸",
    "cuando": "2026-09-29 12:55 PM ET",
    "por": "Dlx (✅ Decidir)"
+  },
+  "grupoa|ACAD|03/10|final|abyssus|zetryko": {
+   "ganador": "Abyssus 🇨🇦",
+   "batalla": "GRUPO A · ACAD · 03/10 · final · ZETRYKO 🇨🇱 🆚 Abyssus 🇨🇦",
+   "cuando": "2026-10-05 2:16 AM ET",
+   "por": "Dlx (chat)",
+   "nota": "«2. Abyssus»"
+  },
+  "compedeuddi|ACAD|22/09|semifinales|bloody|erian": {
+   "ganador": "erian",
+   "batalla": "COMPE DE UDDI · ACAD · 22/09 · semifinales · Bloody 🇨🇴 🆚 erian",
+   "cuando": "2026-10-05 2:16 AM ET",
+   "por": "las votaciones de la ACADEMIA",
+   "nota": "✅┇votaciones: 🫲 (izquierda) en «ERIAN VS BLOODY»; y ERIAN es el que aparece en la final"
+  },
+  "compedeuddi|ACAD|22/09|semifinales|colesito|zetryko": {
+   "ganador": "colesito",
+   "batalla": "COMPE DE UDDI · ACAD · 22/09 · semifinales · ZETRYKO 🇨🇱 🆚 colesito",
+   "cuando": "2026-10-05 2:16 AM ET",
+   "por": "las votaciones de la ACADEMIA",
+   "nota": "✅┇votaciones: réplica, y en la segunda réplica 🫱 de ander.fc y 👉 de ivandevil (COLESITO) contra «ZETRYKO» de uddi_mc"
   }
  },
  "anuncios_fuera": {

@@ -1471,6 +1471,11 @@ def decision_evento(ev, sv, fecha):
     publica tarde no se conocen: el nombre se compara sin adornos y `*`
     vale cualquier día.
     """
+    return (_decision_de_evento(ev, sv, fecha) or {}).get('decision')
+
+
+def _decision_de_evento(ev, sv, fecha):
+    """La decisión entera de `ev · sv · fecha` (ver `decision_evento()`), o `None`."""
     eventos = _decisiones().get('eventos') or {}
     d = eventos.get('%s · %s · %s' % (ev, sv, fecha))
     if d is None:
@@ -1481,7 +1486,19 @@ def decision_evento(ev, sv, fecha):
                     and partes[1] == sv and partes[2] in (fecha, '*')):
                 d = v
                 break
-    return (d or {}).get('decision')
+    return d
+
+
+def final_decidida(ev, sv, fecha):
+    """`{'lados': [a, b], 'ganador': a}` si Dlx dijo cuál fue la final que la llave no escribió, o `None`.
+
+    🔑 COMPE DE UDDI (la ACADEMIA, 22/09/2026) puso en la final sólo «ERIAN» y nunca la batalla; quién llegó del otro
+    lado lo dicen sus votaciones (COLESITO, 2 a 1 en la segunda réplica) y quién ganó, Dlx (*«3. Sí»*). Lo lee
+    `llaves_a_entrada` cuando la llave no tiene campeón."""
+    f = (_decision_de_evento(ev, sv, fecha) or {}).get('final') or {}
+    lados = [str(x).strip() for x in (f.get('lados') or []) if str(x).strip()]
+    gana = str(f.get('ganador') or '').strip()
+    return {'lados': lados, 'ganador': gana} if len(lados) == 2 and gana in lados else None
 
 
 def integrantes_equipo(ev, sv, fecha, equipo):

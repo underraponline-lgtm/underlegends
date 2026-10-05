@@ -2408,6 +2408,90 @@ def menciones_de(m):
     return out
 
 
+# 🏰 LA FASE PREVIA EN OTRO MENSAJE (05/10/2026). VALHALLA VOL1 (la ACADEMIA, domingo 4) publicó sus FILTROS a las
+# 5:13 PM —ocho «ENFRENTAMIENTO» con 9 a 12 personas cada uno, sin marcar quién pasó— y la llave a las 7:05 PM, en otro
+# mensaje, con otro autor y otro título («COMPE DE 10 DOLARES»). El lector sólo veía la llave: 16 personas de unas 80.
+# Dlx, a «¿cómo cuenta?»: *«1. B»* —los de los filtros suman como participación—. Quién pasó lo dice la llave (los que
+# aparecen en su primera ronda), igual que en una batalla de N bandas.
+#
+# ⚠️ SE JUNTAN SÓLO SI ES LA MISMA COMPETENCIA, y no por el título: mismo canal, la fase ANTES de la llave y a menos de
+# `FASE_PREVIA_H` horas, y al menos el `FASE_PREVIA_CUBRE` de los de la primera ronda de la llave está en la fase.
+FASE_PREVIA_H = 8
+FASE_PREVIA_CUBRE = 0.75
+FASE_PREVIA = re.compile(r'\b(?:FILTROS?|CLASIFICATORIAS?|PRELIMINARES|ELIMINATORIAS?)\b', re.I)
+FASE_GRUPO = re.compile(r'\b(?:ENFRENTAMIENTO|GRUPO|NAVE|TANDA|BLOQUE)\b', re.I)
+
+
+def fase_previa(texto):
+    """`(título, [[nombre, …], …])` si el mensaje es una fase por grupos sin llave, o `None`. Ver arriba."""
+    if es_llave(texto) or not FASE_PREVIA.search(texto or ''):
+        return None
+    titulo, grupos, vista = '', [], False
+    for l in str(texto).splitlines():
+        s = l.strip()
+        if not s:
+            continue
+        if FASE_PREVIA.search(s) and not FASE_GRUPO.search(s):
+            vista = True
+            continue
+        if not vista and not grupos:
+            if not titulo:
+                titulo = re.sub(r'[^\w\s.\-#&/]', ' ', _sin_marcas(s), flags=re.UNICODE)
+                titulo = ' '.join(titulo.replace('#', ' ').split())
+            continue
+        if FASE_GRUPO.search(s):
+            grupos.append([])
+            continue
+        if not grupos:
+            continue
+        u = uno_de_renglon(s)
+        if u and norm(u[0]):
+            grupos[-1].append(u[0])
+    grupos = [g for g in grupos if len(g) >= 3]
+    return (titulo, grupos) if len(grupos) >= 2 else None
+
+
+def con_fase_previa(llave, fases):
+    """El texto de `llave` con la fase previa adelante, si una de `fases` es de la misma competencia (ver arriba), y el
+    id de ese mensaje: `(texto, id)`; o `(None, None)`. `fases` es `[(cuando, id, (título, grupos))]` del mismo canal."""
+    import datetime as _dtm
+
+    def _t(x):
+        try:
+            return _dtm.datetime.fromisoformat(str(x).replace('Z', '+00:00'))
+        except ValueError:
+            return None
+    t_ll = _t(llave.get('cuando'))
+    rs = rondas_de(llave.get('texto') or '')
+    if not t_ll or not rs or FASE_PREVIA.search(rs[0][0]):
+        return None, None
+    primera = {norm(n) for bat in rs[0][1] for n in bat if norm(n)}
+    if not primera:
+        return None, None
+    for cuando, mid, (titulo, grupos) in fases:
+        t_f = _t(cuando)
+        if not t_f or not (0 <= (t_ll - t_f).total_seconds() <= FASE_PREVIA_H * 3600):
+            continue
+        en_fase = {norm(n) for g in grupos for n in g}
+        if len(primera & en_fase) < FASE_PREVIA_CUBRE * len(primera):
+            continue
+        vistos, lineas = set(), []
+        for g in grupos:
+            # ⚠️ la misma persona anotada en dos grupos (pasa en VALHALLA) va una vez: en el primero
+            g2 = []
+            for n in g:
+                k = re.sub(r'\s+', '', n.lower())
+                if k not in vistos:
+                    vistos.add(k)
+                    g2.append(n)
+            if len(g2) >= 2:
+                lineas.append(' VS '.join(g2))
+        if not lineas:
+            continue
+        return ('# %s\nFILTROS\n%s\n\n%s' % (titulo or 'FILTROS', '\n'.join(lineas), llave.get('texto') or '')), mid
+    return None, None
+
+
 def barrer(s, por_canal=25, solo=None, guilds=None):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
@@ -2442,10 +2526,15 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
             continue              # sin permiso de leer: se salta, no falla
         ms = rr.json()
         n_msg += len(ms)
+        # 🏰 las fases previas de este canal, para la llave que venga después (ver `con_fase_previa()`)
+        fases, desde = [], len(out)
         for m in unir_partidas(ms):
             # ⚠️ TRADUCIDO ANTES DE PREGUNTAR: ver `traducir()`. Todo lo
             # que viene detrás lee `texto`, así que se traduce una vez acá.
             texto = traducir(plano(m.get('content') or ''))
+            fp = None if es_llave(texto) else fase_previa(texto)
+            if fp:
+                fases.append((m.get('timestamp') or '', m.get('id'), fp))
             if es_llave(texto):
                 out.append({'servidor': servidor, 'guild': guild,
                             'canal': canal, 'canal_id': cid,
@@ -2472,6 +2561,12 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
                             'texto': texto,
                             'partes': m.get('_partes', 1),
                             'menciones': menciones_de(m)})
+        # 🏰 la fase previa que quedó en otro mensaje, adelante de su llave (ver `con_fase_previa()`)
+        if fases:
+            for h in out[desde:]:
+                texto2, mid = con_fase_previa(h, fases)
+                if texto2:
+                    h['texto'], h['fase_previa'] = texto2, mid
         time.sleep(0.05)
     return out, n_ch, n_msg
 

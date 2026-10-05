@@ -3329,19 +3329,15 @@ def main():
         if ligas and motivo and dec != 'cuenta':
             retenidos.append((nom, ligas[0], fec, motivo))
             continue
-        if ligas and not tiene_campeon(limpias):
-            hq = horas_quieta(g)
-            if hq is not None and hq < QUIETA_H:
-                en_curso.append((nom, hq))
-            else:
-                incompletos.append((nom, ligas[0], fec,
-                                    ['%s: %s' % (d[1].lower(), d[2])
-                                     for d in d_grupo]))
-            continue
         # 🔑 LA BATALLA QUE DECIDIÓ DLX EN ✅ DECIDIR entra como una batalla
         # más: el que perdió cobra su ronda y, de a dos, es un duelo. La que
         # sigue sin decidir se pregunta sola, UNA POR BATALLA (ver
         # `decidir.detalle_batalla()`), con el link de la llave.
+        # 🔴 Y VA ANTES DE PREGUNTAR POR EL CAMPEÓN (05/10/2026): la final que
+        # decidió Dlx ES el campeón. Iba después, así que una llave cuya final
+        # no lo decía quedaba «incompleta» aunque Dlx hubiera dicho quién ganó
+        # (el torneo de grupos de la ACADEMIA del 03/10: *«2. Abyssus»*).
+        n_leidas = len(limpias)   # antes de sumar lo decidido: ver `repes`
         base, quedan = (limpias[0] if limpias else {}), []
         for d in d_grupo:
             if len(d) < 5 or not ligas:
@@ -3362,8 +3358,28 @@ def main():
                     'notas': ('triple (%d bandas); ' % len(d[4]) if len(d[4]) > 2 else '')
                     + 'ganador: ✅ Decidir'})
         d_grupo = quedan
+        # 🔑 LA FINAL QUE LA LLAVE NO ESCRIBIÓ, si Dlx dijo cuál fue (`final` en la decisión del evento): COMPE DE
+        # UDDI (22/09) puso en la final sólo «ERIAN» —el ganador— y nunca la batalla (Dlx: *«3. Sí»*, ganó Erian).
+        fd = DEC.final_decidida(nom, ligas[0], fec) if ligas else None
+        if fd and not tiene_campeon(limpias):
+            for otro in [x for x in fd['lados'] if x != fd['ganador']]:
+                limpias.append({
+                    'evento': base.get('evento') or nom, 'servidor': base.get('servidor') or ligas[0],
+                    'fecha': base.get('fecha') or fec,
+                    'participantes': base.get('participantes') or len(g['plantel']),
+                    'ronda': 'final', 'ladoA': fd['ganador'], 'ladoB': otro, 'ganador': fd['ganador'],
+                    'notas': 'final: ✅ Decidir'})
+        if ligas and not tiene_campeon(limpias):
+            hq = horas_quieta(g)
+            if hq is not None and hq < QUIETA_H:
+                en_curso.append((nom, hq))
+            else:
+                incompletos.append((nom, ligas[0], fec,
+                                    ['%s: %s' % (d[1].lower(), d[2])
+                                     for d in d_grupo]))
+            continue
         dudas += d_grupo
-        repes += len(del_grupo) - len(limpias)
+        repes += len(del_grupo) - n_leidas
         todas += limpias
         # quien publicó una llave que se carga ya no es nuevo
         if limpias:
