@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-05T21:48:56Z",
+ "cuando": "2026-10-05T22:20:14Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1234.6,
+ "dur_s": 1413.0,
  "pasos": [
   {
    "n": "2f",
@@ -15,51 +15,56 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.9
+   "s": 2.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 66.0
+   "s": 23.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 7 · 40 persona(s)",
+   "que": "tanda 1 de 10 · 40 persona(s)",
    "ok": true,
-   "s": 1122.6
+   "s": 1344.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 11.0
+   "s": 5.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 25.1
+   "s": 30.9
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "403",
-  "nombre": "DESGRACIAS EN TOKYO VOL 22 1v1",
+  "n": "404",
+  "nombre": "DESGRACIAS EN TOKYO VOL 22 pandillas",
   "sv": "FFA",
-  "dia": "2026-10-05"
+  "dia": "2026-10-04"
  },
  "cuotas": {
   "kv": {
-   "write": 1015,
-   "read": 54849
+   "write": 1029,
+   "read": 58473
+  },
+  "objeto": {
+   "leidas": 1782521,
+   "escritas": 15803,
+   "pedidos": 4307
   },
   "worker": {
-   "pedidos": 4723,
+   "pedidos": 4710,
    "errores": 0,
-   "sub": 4560,
-   "p50_ms": 1.01,
-   "p99_ms": 5.4
+   "sub": 4568,
+   "p50_ms": 1.02,
+   "p99_ms": 5.52
   },
   "r2": {
    "objetos": 8304,

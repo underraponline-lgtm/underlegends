@@ -1567,6 +1567,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-dra.webp",
@@ -2366,6 +2367,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/sv-ddf.webp",
@@ -2704,6 +2706,7 @@
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noone/sv-acad.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noone/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noone/sv-sr.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noone/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/noone/temporada.webp"
  },
  "nova": {
@@ -3429,8 +3432,12 @@
  },
  "sosaatr": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-ffs.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-sr.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosaatr/sv-urbf.webp"
  },
  "soulb": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/bloq-competitivo.webp",
