@@ -1,7 +1,36 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-09-28",
- "semanas": {},
+ "sem": "2026-10-05",
+ "semanas": {
+  "2026-10-05": {
+   "fin": "2026-10-12T04:00:00Z",
+   "lista": [
+    [
+     "multi",
+     "Jugá un evento del servidor con el multiplicador más alto",
+     "facil",
+     1,
+     300
+    ],
+    [
+     "duelos3",
+     "Ganá 3 duelos",
+     "media",
+     3,
+     600
+    ],
+    [
+     "final",
+     "Llegá a una final",
+     "dificil",
+     2,
+     1000
+    ]
+   ],
+   "prog": {},
+   "pts": {}
+  }
+ },
  "suma": {}
 }

@@ -8032,7 +8032,7 @@
  {
   "full": "Hype Tower",
   "raw": "Hype Tower",
-  "pais": "",
+  "pais": "España",
   "sv": "",
   "verificado": "",
   "discord_id": "833078353208410192",
@@ -9782,11 +9782,21 @@
  {
   "full": "Ivaynex",
   "raw": "Ivaynex",
-  "pais": "",
+  "pais": "Argentina",
   "sv": "",
   "verificado": "",
   "discord_id": "1249944507802456165",
   "av_sheet": "",
   "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-10-05 2:56 AM ET"
+ },
+ {
+  "full": ".SosaATR 🇺🇾",
+  "raw": ".SosaATR",
+  "pais": "Uruguay",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1471153954254622774",
+  "av_sheet": "",
+  "notas": "alta automática · /card en DRA · 05/10/2026 11:26 AM ET"
  }
 ]

@@ -42,6 +42,16 @@
       "SR",
       "URBF"
      ]
+    ],
+    "ppp": {
+     "FFA": 4874.8,
+     "DRA": 0,
+     "SR": 2805.6,
+     "URBF": 3834.5
+    },
+    "gana": [
+     "FFA",
+     "URBF"
     ]
    },
    "metas": {
@@ -117,13 +127,112 @@
      "DDF": 25,
      "ACAD": 90
     },
-    "gana": "FFA"
+    "gana": "FFA",
+    "final": true
    },
    "meta_va": {
     "DRA": 0,
     "FFA": 147,
     "SR": 18,
     "URBF": 37
+   },
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Liberia",
+     65125
+    ],
+    "revelacion": [
+     "PRAISERIZA",
+     23375
+    ],
+    "cazador": [
+     "PRAISERIZA",
+     15000
+    ],
+    "servidor": [
+     "FFA",
+     147
+    ]
+   }
+  },
+  {
+   "id": "2026-10-05",
+   "inicio": "2026-10-05T15:00:00Z",
+   "fin": "2026-10-12T04:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-10-05T15:23:25Z",
+   "sv": {
+    "FFA": 5,
+    "DRA": 0.5,
+    "ACAD": 1.5,
+    "SR": 1,
+    "URBF": 1.5,
+    "DDF": 1.5,
+    "FFS": 1.5
+   },
+   "dorado": {
+    "sv": "URBF",
+    "desde": "2026-10-09T04:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "URBF",
+      "FFA"
+     ],
+     [
+      "SR",
+      "DDF"
+     ],
+     [
+      "ACAD",
+      "DRA"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 72,
+    "DDF": 20,
+    "DRA": 8,
+    "FFA": 153,
+    "FFS": 8,
+    "SR": 43,
+    "URBF": 41
+   },
+   "votado": {
+    "sv": "FFA",
+    "votos": 2,
+    "de": 4
+   },
+   "premios": {
+    "FFA": [
+     "votado",
+     "guerra",
+     "semillero"
+    ],
+    "URBF": [
+     "guerra"
+    ]
+   },
+   "copa": {
+    "org": "Lewis",
+    "clave": "lewis"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "DDF": 0,
+    "DRA": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "SR": 0,
+    "URBF": 0
    }
   }
  ]
