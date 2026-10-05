@@ -1559,6 +1559,10 @@
    "servidor": "20465418d70a:9d97339447c1:68c13e",
    "temporada": "bf62d74a3656:f5299dbdfa04"
   },
+  "SDK": {
+   "servidor": "3ed83138916a:9d97339447c1:da39a3",
+   "temporada": "2376b897812b:f5299dbdfa04"
+  },
   "SGB": {
    "servidor": "3fd187796082:9d97339447c1:a5e01f",
    "temporada": "8d932fe0375b:f5299dbdfa04"
@@ -2076,5 +2080,5 @@
    "servidor": "994982e6deaa:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-05T15:30:29+00:00"
+ "cuando": "2026-10-05T15:57:35+00:00"
 }

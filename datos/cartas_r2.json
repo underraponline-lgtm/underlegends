@@ -7790,6 +7790,10 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/scot/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/scot/temporada.webp"
  },
+ "sdk": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sdk/servidor.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sdk/temporada.webp"
+ },
  "sedelti": {
   "bloq-temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sedelti/bloq-temporada.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sedelti/sv-dra.webp",
