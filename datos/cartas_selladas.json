@@ -24,10 +24,10 @@
    "temporada": "137b56bb8289:f5299dbdfa04"
   },
   "ARDEAN": {
-   "competitivo": "90547bea040d:66620bff5eb9",
-   "pais": "a65918229143:dd0366c7fb5d",
-   "servidor": "de1971de4615:9d97339447c1:baabdf",
-   "temporada": "2f0e0b113e1d:f5299dbdfa04"
+   "competitivo": "fdebdf480e87:66620bff5eb9",
+   "pais": "553e184af459:dd0366c7fb5d",
+   "servidor": "551fd91b3e94:9d97339447c1:baabdf",
+   "temporada": "b64a06a7e187:f5299dbdfa04"
   },
   "AREZ": {
    "servidor": "b0fa3d44dc25:d46f41875d27:90ce53",
@@ -53,10 +53,10 @@
    "temporada": "638c9255dd23:f5299dbdfa04"
   },
   "Adriagner": {
-   "competitivo": "b1e3b2f47ce1:66620bff5eb9",
-   "pais": "192d5f5d588b:dd0366c7fb5d",
-   "servidor": "d60e858062ec:9d97339447c1:80c07f",
-   "temporada": "4ac398a85f5e:f5299dbdfa04"
+   "competitivo": "364e59683cd9:66620bff5eb9",
+   "pais": "546e91812cc5:dd0366c7fb5d",
+   "servidor": "82d3e0e85305:9d97339447c1:80c07f",
+   "temporada": "c625689949a2:f5299dbdfa04"
   },
   "Adrianex": {
    "servidor": "f4b54713425d:d46f41875d27:78ad9f"
@@ -314,7 +314,7 @@
    "servidor": "bac76bacaf5e:d46f41875d27:055f77"
   },
   "DJ CALAMBRE (Mister)": {
-   "servidor": "204043ec9c96:c8c30dbeccad:980594"
+   "servidor": "a09610390929:9d97339447c1:baabdf"
   },
   "DKT": {
    "servidor": "0e8f51b25221:d46f41875d27:055f77"
@@ -631,7 +631,7 @@
    "servidor": "5e85d15ed979:d46f41875d27:055f77"
   },
   "Hades": {
-   "servidor": "272faf64d929:c8c30dbeccad:055f77"
+   "servidor": "85d132cd55af:9d97339447c1:b49e39"
   },
   "Hardcore": {
    "servidor": "8b62883dba78:d46f41875d27:d473d6"
@@ -1418,10 +1418,10 @@
    "temporada": "ae94c878c0bc:f5299dbdfa04"
   },
   "Riferian": {
-   "competitivo": "51c35005b8a0:66620bff5eb9",
-   "pais": "4d327c88f27b:dd0366c7fb5d",
-   "servidor": "e1dffefae924:9d97339447c1:3e2e7c",
-   "temporada": "6b405e45eb8b:f5299dbdfa04"
+   "competitivo": "b185d28a1a54:66620bff5eb9",
+   "pais": "117a69bb9de7:dd0366c7fb5d",
+   "servidor": "8d426dff6c4e:9d97339447c1:3e2e7c",
+   "temporada": "3a84b0bed94c:f5299dbdfa04"
   },
   "Riolu": {
    "competitivo": "424a70c67b18:66620bff5eb9",
@@ -1461,10 +1461,10 @@
   },
   "SOL": {},
   "SONIC_DORADITO": {
-   "competitivo": "84393246744d:66620bff5eb9",
-   "pais": "b083913054ea:dd0366c7fb5d",
-   "servidor": "abd579c8c74b:9d97339447c1:80c07f",
-   "temporada": "e6b17a04abe5:f5299dbdfa04"
+   "competitivo": "55f5408c7626:66620bff5eb9",
+   "pais": "d476db3bc3b7:dd0366c7fb5d",
+   "servidor": "9485144b5928:9d97339447c1:80c07f",
+   "temporada": "d3d0d699762e:f5299dbdfa04"
   },
   "SPD": {
    "servidor": "6813826a3f56:d46f41875d27:055f77"
@@ -1615,10 +1615,10 @@
    "temporada": "8f4225c4b558:f5299dbdfa04"
   },
   "Teito": {
-   "competitivo": "5781bc013c33:66620bff5eb9",
-   "pais": "571e143db0d5:dd0366c7fb5d",
-   "servidor": "e9a585454ed3:9d97339447c1:baabdf",
-   "temporada": "7bc30cfea03e:f5299dbdfa04"
+   "competitivo": "210b00861541:66620bff5eb9",
+   "pais": "2c0787a1751e:dd0366c7fb5d",
+   "servidor": "5f94981efeb5:9d97339447c1:baabdf",
+   "temporada": "99968cc504c4:f5299dbdfa04"
   },
   "Telmex": {
    "servidor": "890a9806e88c:d46f41875d27:980594"
@@ -1627,10 +1627,10 @@
    "servidor": "6dcf4bceae2f:d46f41875d27:b92a21"
   },
   "Teo": {
-   "competitivo": "6f0dde39a737:66620bff5eb9",
-   "pais": "b1fad7ac139e:dd0366c7fb5d",
-   "servidor": "6ba19090cc3a:9d97339447c1:055f77",
-   "temporada": "fe3bec55a328:f5299dbdfa04"
+   "competitivo": "a200cb502dd2:66620bff5eb9",
+   "pais": "288fdbb7517d:dd0366c7fb5d",
+   "servidor": "d790b5e814de:9d97339447c1:055f77",
+   "temporada": "706d63caf112:f5299dbdfa04"
   },
   "Thiflow": {
    "servidor": "d938c5de45d2:d46f41875d27:a301f0"
@@ -1898,7 +1898,7 @@
    "servidor": "66556bb5ca55:d46f41875d27:15af16"
   },
   "stormed": {
-   "servidor": "593e5c00d8c1:d46f41875d27:055f77"
+   "servidor": "0938a4051dac:9d97339447c1:b49e39"
   },
   "tito calderon": {
    "competitivo": "3b815b6624dc:66620bff5eb9",
@@ -1934,5 +1934,5 @@
    "servidor": "994982e6deaa:d46f41875d27:d473d6"
   }
  },
- "cuando": "2026-10-04T22:09:47+00:00"
+ "cuando": "2026-10-05T00:54:17+00:00"
 }
