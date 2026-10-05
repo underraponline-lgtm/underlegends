@@ -192,6 +192,13 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "tuca": {
 "rg": "",
 "c": [
@@ -262,15 +269,15 @@
 "temporada"
 ]
 },
-"nxuz": {
-"rg": "",
+"nc": {
+"rg": "E",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"nc": {
-"rg": "E",
+"nxuz": {
+"rg": "",
 "c": [
 "servidor",
 "temporada"
@@ -339,6 +346,13 @@
 "temporada"
 ]
 },
+"molusco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "criszj": {
 "rg": "",
 "c": [
@@ -347,13 +361,6 @@
 ]
 },
 "fazer": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"btrx": {
 "rg": "",
 "c": [
 "servidor",
@@ -389,6 +396,13 @@
 ]
 },
 "geoka": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"lrs": {
 "rg": "",
 "c": [
 "servidor",
@@ -451,20 +465,6 @@
 "temporada"
 ]
 },
-"lrs": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"molusco": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "jupiter": {
 "rg": "",
 "c": [
@@ -494,11 +494,24 @@
 "temporada"
 ]
 },
+"ariaxer": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "g8-co": {
 "rg": "",
 "c": []
 },
 "vandu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"riolu": {
 "rg": "",
 "c": [
 "servidor",
@@ -520,6 +533,13 @@
 ]
 },
 "noone": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"sosa": {
 "rg": "",
 "c": [
 "servidor",
@@ -572,13 +592,6 @@
 "temporada"
 ]
 },
-"sosa": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "dominick": {
 "rg": "",
 "c": [
@@ -587,13 +600,6 @@
 ]
 },
 "elsoolar": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"riolu": {
 "rg": "",
 "c": [
 "servidor",
@@ -727,6 +733,13 @@
 "rg": "",
 "c": []
 },
+"reyexxmc": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "aby": {
 "rg": "",
 "c": [
@@ -763,6 +776,13 @@
 ]
 },
 "scot": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mcnadie": {
 "rg": "",
 "c": [
 "servidor",
@@ -807,6 +827,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tokio": {
+"rg": "",
+"c": []
 },
 "agustin51k": {
 "rg": "",
@@ -886,19 +910,16 @@
 "temporada"
 ]
 },
-"mcnadie": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "kyss": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"gwynyth": {
+"rg": "",
+"c": []
 },
 "pomberito": {
 "rg": "",

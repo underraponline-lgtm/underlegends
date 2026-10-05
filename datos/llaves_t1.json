@@ -9702,5 +9702,244 @@
     1750
    ]
   ]
+ },
+ "396": {
+  "dia": "2026-10-04",
+  "escala": "16+",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556449729053851759"
+  ],
+  "n": 396,
+  "nombre": "COPA SOOLAR 2",
+  "participantes": 23,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Ariaxer",
+       "Riolu",
+       "Sosa"
+      ],
+      "Ariaxer",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Tokio",
+       "Alexiz",
+       "Btrece"
+      ],
+      "Tokio",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Gwynyth 🇦🇷",
+       "NC"
+      ],
+      "Gwynyth 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "Provenza"
+      ],
+      "LRS",
+      "Revivido: ZA"
+     ],
+     [
+      [
+       "Molusco",
+       "Provenza"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "Ola🇲🇽"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "CFM",
+       "MCNadie"
+      ],
+      "CFM",
+      ""
+     ],
+     [
+      [
+       "Eclipse🇨🇱",
+       "Tuca 🇦🇷",
+       "onzass"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ariaxer",
+       "Fisics"
+      ],
+      "Ariaxer",
+      "Walk-in 1: Fisics"
+     ],
+     [
+      [
+       "Tokio",
+       "Gwynyth 🇦🇷"
+      ],
+      "Tokio",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "LRS"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "CFM"
+      ],
+      "BTRX",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ariaxer",
+       "Tokio"
+      ],
+      "Ariaxer",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "Molusco"
+      ],
+      "BTRX",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "Ariaxer"
+      ],
+      "BTRX",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "BTRX",
+    "Campeón",
+    10000
+   ],
+   [
+    "Ariaxer",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Tokio",
+    "Semifinal",
+    5250
+   ],
+   [
+    "CFM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gwynyth 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1875
+   ],
+   [
+    "Alexiz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Btrece",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fisics",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MCNadie",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ola🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Riolu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

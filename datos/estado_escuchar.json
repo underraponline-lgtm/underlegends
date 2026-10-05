@@ -1,165 +1,165 @@
 {
  "v": 1,
- "cuando": "2026-10-05T00:55:54Z",
+ "cuando": "2026-10-05T01:27:07Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 151.9,
+ "dur_s": 227.5,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 33.6
+   "s": 30.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 27.2
+   "s": 85.8
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 20.7
+   "s": 26.9
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.2
+   "s": 1.8
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.6
+   "s": 5.8
   },
   {
    "n": "2b",
    "que": "Most Wanted",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.6
+   "s": 1.4
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.1
+   "s": 3.0
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 22.8
+   "s": 25.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 13.8
+   "s": 23.5
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.4
+   "s": 13.5
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.7
+   "s": 5.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.6
+   "s": 1.2
   }
  ],
  "fallas": [],
- "decidir": 71,
+ "decidir": 76,
  "ultimo_evento": {
-  "n": "395",
-  "nombre": "JH DE LA CRUZ CUP",
-  "sv": "DDF",
+  "n": "396",
+  "nombre": "COPA SOOLAR 2",
+  "sv": "FFA",
   "dia": "2026-10-04"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-05T00:54:01Z",
+  "cuando": "2026-10-05T01:23:55Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 281,
-  "un_evento": 152,
+  "jugadores": 288,
+  "un_evento": 157,
   "diez_o_mas": 13,
   "cohortes": [
    {
     "semana": "2026-09-21",
     "nuevos": 190,
-    "volvieron": 109,
+    "volvieron": 110,
     "completa": false
    },
    {
     "semana": "2026-09-28",
-    "nuevos": 91,
-    "volvieron": 14,
+    "nuevos": 98,
+    "volvieron": 15,
     "completa": false
    }
   ]
  },
  "cuotas": {
   "kv": {
-   "write": 285,
-   "read": 1685
+   "write": 308,
+   "read": 5376
   },
   "worker": {
-   "pedidos": 6266,
+   "pedidos": 6179,
    "errores": 0,
-   "sub": 5529,
-   "p50_ms": 0.88,
+   "sub": 5464,
+   "p50_ms": 0.89,
    "p99_ms": 4.73
   },
   "r2": {

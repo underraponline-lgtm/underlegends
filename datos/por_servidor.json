@@ -193,6 +193,17 @@
     "racha": "0/0"
    }
   },
+  "Alexiz": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "Alonso": {
    "FFA": {
     "duelos": "",
@@ -232,6 +243,17 @@
     "ovr": 59,
     "pod": 1,
     "pts": 7500,
+    "racha": "1/1"
+   }
+  },
+  "Ariaxer": {
+   "FFA": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 56,
+    "pod": 1,
+    "pts": 3750,
     "racha": "1/1"
    }
   },
@@ -299,13 +321,13 @@
     "racha": "0/1"
    },
    "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 312,
-    "racha": "0/0"
+    "duelos": "4/4",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 61,
+    "pod": 1,
+    "pts": 5312,
+    "racha": "1/1"
    }
   },
   "Badterne": {
@@ -410,6 +432,17 @@
     "pod": 1,
     "pts": 11000,
     "racha": "1/1"
+   }
+  },
+  "Btrece": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
    }
   },
   "CJ": {
@@ -1102,6 +1135,17 @@
     "racha": "0/0"
    }
   },
+  "Fisics": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "Flama": {
    "ACAD": {
     "duelos": "0/1",
@@ -1249,6 +1293,17 @@
     "ovr": 50,
     "pod": 0,
     "pts": 4687,
+    "racha": "0/0"
+   }
+  },
+  "Gwynyth 🇦🇷": {
+   "FFA": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 50,
+    "pod": 0,
+    "pts": 1250,
     "racha": "0/0"
    }
   },
@@ -1776,12 +1831,12 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "1/2",
-    "ev": 5,
+    "duelos": "2/4",
+    "ev": 6,
     "oro": 0,
-    "ovr": 56,
+    "ovr": 57,
     "pod": 0,
-    "pts": 6168,
+    "pts": 7418,
     "racha": "0/0"
    }
   },
@@ -1986,13 +2041,13 @@
   },
   "MCNadie": {
    "FFA": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "0/1",
+    "ev": 2,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 1,
-    "pts": 3750,
-    "racha": "1/1"
+    "pts": 4375,
+    "racha": "0/1"
    }
   },
   "MCO": {
@@ -2272,13 +2327,13 @@
   },
   "Molusco": {
    "FFA": {
-    "duelos": "2/3",
-    "ev": 3,
+    "duelos": "4/6",
+    "ev": 4,
     "oro": 0,
-    "ovr": 58,
+    "ovr": 59,
     "pod": 0,
-    "pts": 10637,
-    "racha": "0/2"
+    "pts": 13262,
+    "racha": "1/2"
    }
   },
   "Monet": {
@@ -2338,12 +2393,12 @@
   },
   "NC": {
    "FFA": {
-    "duelos": "1/4",
-    "ev": 8,
+    "duelos": "1/5",
+    "ev": 9,
     "oro": 0,
     "ovr": 60,
     "pod": 1,
-    "pts": 11530,
+    "pts": 12155,
     "racha": "0/1"
    },
    "SR": {
@@ -2553,6 +2608,17 @@
     "pod": 9,
     "pts": 51250,
     "racha": "0/6"
+   }
+  },
+  "Ola🇲🇽": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
    }
   },
   "PARADOJA": {
@@ -2785,12 +2851,12 @@
   },
   "Provenza": {
    "FFA": {
-    "duelos": "4/8",
-    "ev": 8,
+    "duelos": "4/10",
+    "ev": 9,
     "oro": 1,
     "ovr": 65,
     "pod": 1,
-    "pts": 20781,
+    "pts": 21719,
     "racha": "0/1"
    }
   },
@@ -2851,12 +2917,12 @@
   },
   "ReyexXMC": {
    "FFA": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "1/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 52,
     "pod": 0,
-    "pts": 793,
+    "pts": 2668,
     "racha": "0/0"
    }
   },
@@ -2894,12 +2960,12 @@
   "Riolu": {
    "FFA": {
     "duelos": "1/2",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 53,
     "pod": 0,
-    "pts": 3375,
-    "racha": "1/1"
+    "pts": 4000,
+    "racha": "0/1"
    },
    "SR": {
     "duelos": "0/1",
@@ -3243,11 +3309,11 @@
    },
    "FFA": {
     "duelos": "0/1",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 0,
-    "pts": 3000,
+    "pts": 3625,
     "racha": "0/0"
    },
    "SR": {
@@ -3373,6 +3439,17 @@
     "pod": 0,
     "pts": 1000,
     "racha": "0/0"
+   }
+  },
+  "Tokio": {
+   "FFA": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 51,
+    "pod": 0,
+    "pts": 2625,
+    "racha": "1/1"
    }
   },
   "Trot": {
