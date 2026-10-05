@@ -831,6 +831,14 @@ los junta por servidor, fecha y nombre, y **los números del nombre tienen que
 coincidir** —«TOKYO VOL 11» y «VOL 12» se parecen un 95 %—. Si no está
 seguro, no cuelga el botón.
 
+⚠️ **Y la misma FORMA**: un 1v1 no se lleva una llave de equipos. La forma
+sale de la modalidad del anuncio, **salvo que su nombre diga otra: entonces
+no se sabe** (`forma_del_anuncio()`, 05/10/2026: FFA anunció «VOL 24 2v2»
+con la modalidad «1v1» copiada de la anterior, y su llave de equipos se
+jugaba sin dueño). La página, el bot en vivo y el ciclo asignan con las
+mismas dos pasadas: `LlaveVivo.asignar()` es `cruzar()` en JS. **Si se
+toca una regla del cruce, se toca en los dos.**
+
 🏆 **Y SE DIBUJA COMO CUADRO, desde el 25/09/2026** (`cuadro()` en
 `app.js`): cada batalla trae de qué batallas vienen sus lados —`b[3]`, lo
 arma `llaves_web.enlazar()` por los nombres de los ganadores— y la página

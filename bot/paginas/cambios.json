@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.43",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T18:00:00-04:00",
+   "titulo": "Arreglos de todo lo nuevo",
+   "items": [
+    "🏆 **La llave en vivo aparece aunque el anuncio se contradiga**: si el título dice «2v2» y la modalidad «1v1» (pasa cuando se copia el anuncio anterior), la llave de equipos ya no se pierde.",
+    "⚡ **La página junta cada evento con su llave en vivo mucho más rápido**, también en el celular.",
+    "🃏 **Los dos pasos de las tarjetas, dichos igual en todos lados**: la Guía, Mi cuenta, tu perfil, Tarjetas, `/card` y `/verificar`. Verificate y sale tu **Servidor**; cumplí tu primera Tarea del Pase y sale tu **Temporada**.",
+    "🎤 **El bot en vivo**, en «cada batalla», dice también quién pasa de cada grupo, y mantiene el nombre del evento hasta el final.",
+    "🗓️ **Misiones y Divisiones dicen el día en que cierran en tu zona horaria**, y si ya jugaste la temporada, una misión que todavía no empezaste dice «0»."
+   ]
+  },
+  {
    "version": "2.42",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T15:45:00-04:00",

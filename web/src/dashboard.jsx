@@ -225,7 +225,8 @@ function EnVivo({ vivo, liga, aj, chat }) {
         </div>
         <small>
           {v.como === 'huerfana' ? 'La llave dice «' + limpio(v.titulo) + '»: el número no coincide, se juntó por la serie. ' : ''}
-          {!v.anuncio ? 'No la pude juntar con ningún anuncio de las últimas 24 h: en la página sale con el título de la llave. ' : ''}
+          {!v.anuncio ? 'No la pude juntar con ningún anuncio de las últimas 36 h: en la página sale con el título de la llave. ' : ''}
+          {v.como === 'guardado' ? 'Su anuncio ya quedó atrás: es el nombre que el bot le dio cuando lo tenía. ' : ''}
           {v.gente ? v.gente + ' en la llave · ' : ''}tocada {hace(v.ed)}
         </small>
         <small>El bot: {elBot(v.sv)} · {v.chat && v.chat.mensajes ? v.chat.mensajes + ' mensaje(s), el último ' + hace(v.chat.t) : 'todavía no dijo nada'}</small>
