@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-05T02:57:33Z",
+ "cuando": "2026-10-05T04:53:25Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 69.5,
+ "dur_s": 1591.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.9
+   "s": 5.0
   },
   {
    "n": "3",
@@ -21,50 +21,50 @@
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 28.8
+   "s": 21.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 2 persona(s)",
+   "que": "tanda 1 de 12 · 40 persona(s)",
    "ok": true,
-   "s": 7.5
+   "s": 1535.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 2.2
+   "s": 4.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 22.7
+   "s": 22.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "396",
-  "nombre": "COPA SOOLAR 2",
+  "n": "397",
+  "nombre": "DESGRACIAS EN TOKYO VOL 22",
   "sv": "FFA",
   "dia": "2026-10-04"
  },
  "cuotas": {
   "kv": {
-   "write": 461,
-   "read": 11156
+   "write": 495,
+   "read": 17039
   },
   "worker": {
-   "pedidos": 5838,
+   "pedidos": 5307,
    "errores": 0,
-   "sub": 5200,
-   "p50_ms": 0.9,
-   "p99_ms": 4.86
+   "sub": 4831,
+   "p50_ms": 0.94,
+   "p99_ms": 5.03
   },
   "r2": {
-   "objetos": 7912,
-   "gb": 0.858,
-   "ts": 1791128303
+   "objetos": 8169,
+   "gb": 0.896,
+   "ts": 1791176012
   }
  }
 }
