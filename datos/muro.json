@@ -497,7 +497,8 @@
 "ariaxer": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "g8-co": {
@@ -830,7 +831,10 @@
 },
 "tokio": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "agustin51k": {
 "rg": "",
@@ -4023,6 +4027,30 @@
 "t": "2026-10-04T22:03:09Z",
 "quien": [
 "Adriagner"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T01:42:11Z",
+"quien": [
+"Ariaxer"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T01:42:11Z",
+"quien": [
+"Tokio"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T01:42:11Z",
+"quien": [
+"Tokio"
 ],
 "carta": "temporada"
 }
