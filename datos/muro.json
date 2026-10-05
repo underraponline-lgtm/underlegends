@@ -568,6 +568,10 @@
 "temporada"
 ]
 },
+"sol": {
+"rg": "",
+"c": []
+},
 "jimmy": {
 "rg": "",
 "c": [
@@ -630,10 +634,6 @@
 "servidor",
 "temporada"
 ]
-},
-"sol-pe": {
-"rg": "",
-"c": []
 },
 "ardean": {
 "rg": "",
@@ -1362,6 +1362,10 @@
 "servidor",
 "temporada"
 ]
+},
+"sol-pe": {
+"rg": "",
+"c": []
 },
 "santi": {
 "rg": "",

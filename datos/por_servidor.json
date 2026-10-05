@@ -3642,7 +3642,25 @@
     "racha": "0/0"
    }
   },
-  "SOL": {
+  "SOL🇵🇪": {
+   "ACAD": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 51,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "1/1"
+   },
+   "FFA": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 52,
+    "pod": 0,
+    "pts": 5625,
+    "racha": "1/1"
+   },
    "SR": {
     "duelos": "",
     "ev": 1,
@@ -3651,26 +3669,6 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
-   }
-  },
-  "SOL🇵🇪": {
-   "ACAD": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 51,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "1/1"
-   },
-   "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 51,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "1/1"
    }
   },
   "SONIC_DORADITO": {
