@@ -25,7 +25,7 @@ C = []
 
 # Se sumaron SS y SSS: antes el rango S abarcaba 35 puntos (65-100) y el B
 # solo 11, asi que Konan 91 y Tuca 66 compartian color.
-#   SSS 88+ · SS 83 · S 77 · A 68 · B 62 · C 55 · D 51 · E resto   (Score de 40 a 99, A7)
+#   SSS 82+ · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18 · E resto
 GRAD = {
  # SSS negro · SS naranja · S rosado · A rojo · B azul · C verde · D gris · E marron
  #
@@ -45,7 +45,7 @@ GRAD = {
 # EL RANGO SALE DEL SCORE COMPETITIVO. Siempre, en las tres cartas.
 # La unica forma de subir de rango es en el competitivo: ser primero de la
 # temporada no te hace primero del competitivo. Son cosas distintas.
-#   SSS 88+ · SS 83 · S 77 · A 68 · B 62 · C 55 · D 51 · E resto   (Score de 40 a 99, A7)
+#   SSS 82+ · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18 · E resto
 # Son los MISMOS umbrales que usa la Competitiva, a proposito: el rango es
 # uno solo por persona y tiene que dar igual en todas sus cartas.
 #
@@ -53,7 +53,7 @@ GRAD = {
 # distintas. El color dice QUIEN SOS (tu nivel competitivo), el numero dice
 # QUE HICISTE en la temporada. Bloody es #1 de temporada con OVR 92 y carta
 # de rango A, y esta bien que asi sea.
-UMBRAL = [('SSS',88),('SS',83),('S',77),('A',68),('B',62),('C',55),('D',51)]
+UMBRAL = [('SSS',82),('SS',73),('S',62),('A',48),('B',37),('C',26),('D',18)]
 
 # El COLOR y el NUMERO son otra cosa: los dos hablan de la TEMPORADA, que no
 # es lo mismo que el competitivo (la temporada tiene eventos bonus, cacerias,

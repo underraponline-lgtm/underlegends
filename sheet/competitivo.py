@@ -13,8 +13,7 @@ rango**, y el rango es lo que aparece en las cuatro tarjetas.
 
 LA FORMULA, VERIFICADA CONTRA 138 FILAS REALES
 -----------------------------------------------
-    bruto = (0.25·E + 0.24·C + 0.21·Dm + 0.10·T + 0.20·V) × Confianza
-    Score = 40 + 0.59 × bruto          (de 40 a 99, como el OVR: A7)
+    Score = (0.25·E + 0.24·C + 0.21·Dm + 0.10·T + 0.20·V) × Confianza
 
     (los pesos del rework, G1, desde el 25/09/2026; hasta ese día fueron
     0.30 · 0.24 · 0.21 · 0.15 · 0.10, y con ésos se calculó la pre)
@@ -78,7 +77,6 @@ try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except AttributeError:
     pass
-from comun import rangos as _R                           # noqa: E402
 
 #: peso de cada dimension. ES LA FUENTE: la hoja Config, la Guía de la web
 #: y la simulación los leen de acá.
@@ -365,11 +363,7 @@ def normalizar(cr, anclas=None):
             bruto = (100.0 * v[k] / tops[k]) if tops[k] else 0
             d[k] = int(round(min(bruto, 100.0)))
         d['conf'] = round(confianza(v['ev']), 2)
-        # 🔑 A7 (05/10/2026): la suma va de 0 a 100 y el Score de 40 a 99,
-        # como el OVR. `bruto` queda para lo que se mide en proporción.
-        suma = sum(p * d[k] for k, p in PESOS) * d['conf']
-        d['bruto'] = round(suma, 1)
-        d['score'] = _R.a_escala(d['bruto'])
+        d['score'] = round(sum(p * d[k] for k, p in PESOS) * d['conf'], 1)
         out[quien] = d
     return out
 

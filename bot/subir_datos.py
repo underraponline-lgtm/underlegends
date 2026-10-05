@@ -55,7 +55,7 @@ API = ('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/namespaces/%
 sys.path.insert(0, BASE)
 from comun.requisitos import REQUISITOS  # noqa: E402
 from comun.requisitos import falta as REQ_FALTA  # noqa: E402
-from comun.rangos import UMBRAL, bruto_de  # noqa: E402
+from comun.rangos import UMBRAL  # noqa: E402
 sys.path.insert(0, SCR)
 import verificados as VERIF  # noqa: E402
 
@@ -91,9 +91,7 @@ def desfase_rangos(gente):
             sc = float(x.get('score'))
         except (TypeError, ValueError):
             continue
-        # ⚠️ los seis viejos son de la escala de 0 a 100: desde A7 (05/10/2026)
-        # el Score va de 40 a 99, así que se comparan contra la suma de antes
-        if _letra(sc, UMBRAL) != _letra(bruto_de(sc), UMBRAL_VIEJO):
+        if _letra(sc, UMBRAL) != _letra(sc, UMBRAL_VIEJO):
             n += 1
     return n
 

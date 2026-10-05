@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.36",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T02:10:00-04:00",
+   "titulo": "El Score vuelve a ir de 0 a 100",
+   "items": [
+    "↩️ **El Score del Competitivo vuelve a ir de 0 a 100**, con los cortes de siempre (SSS desde 82, SS 73, S 62, A 48, B 37, C 26, D 18). Cada tarjeta tiene su número: el OVR es el de la Temporada. Mientras duró el cambio nadie cambió de rango."
+   ]
+  },
+  {
    "version": "2.35",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T02:20:00-04:00",

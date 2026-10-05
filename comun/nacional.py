@@ -53,27 +53,6 @@ BASE = os.path.dirname(SCR)
 PISO, ALTO = 40, 59
 
 
-def _bruto(x):
-    """🔑 EL SCORE ANTES DE A7 (de 0 a 100). Desde el 05/10/2026 el Score va
-    de 40 a 99, y esta fórmula es de COCIENTES: con el piso en 40, 20 contra
-    90 pasaría de 0,22 a 0,55 y todos se amontonarían arriba. Con la suma
-    de antes el OVR Nacional da exactamente lo mismo que antes de A7.
-
-    ⚠️ PRIMERO LA DEL POOL (`bruto`, de las mismas columnas que el Score de
-    antes): desandar la recta desde un Score con un decimal corre el OVR
-    por uno a 10 de 258. `x` es la fila del pool o un Score suelto."""
-    if isinstance(x, dict):
-        if x.get('bruto') is not None:
-            return float(x['bruto'])
-        x = x.get('score')
-    try:
-        from comun.rangos import bruto_de
-    except ImportError:
-        sys.path.insert(0, BASE)
-        from comun.rangos import bruto_de
-    return bruto_de(x)
-
-
 def ovr_nacional(score, score_pais, mejor_score, mejor_pais):
     """El OVR Nacional de una persona, redondeado. `None` si no se puede.
 
@@ -127,7 +106,7 @@ def seleccion(mundial=None, comp=None):
         por = {}
         for c in comp:
             if c.get('cc') and c.get('score') is not None:
-                por.setdefault(c['cc'], []).append(_bruto(c))
+                por.setdefault(c['cc'], []).append(float(c['score']))
         return {cc: round(sum(sorted(v, reverse=True)[:TOP_SELECCION]) / TOP_SELECCION, 1)
                 for cc, v in por.items()}
     return {k: v.get('score_seleccion')
@@ -144,12 +123,12 @@ def tabla(comp, mundial):
     sel = seleccion(mundial, comp)
     if not comp or not sel:
         return {}
-    mejor_score = max(_bruto(x) for x in comp)
+    mejor_score = max(x['score'] for x in comp)
     mejor_pais = max(v for v in sel.values() if v)
     out = {}
     for c in comp:
         sp = sel.get(c.get('cc'))
-        out[c['raw']] = (ovr_nacional(_bruto(c), sp, mejor_score, mejor_pais)
+        out[c['raw']] = (ovr_nacional(c['score'], sp, mejor_score, mejor_pais)
                          if sp else None)
     return out
 

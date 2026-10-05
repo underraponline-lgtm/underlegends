@@ -11,7 +11,7 @@ Quedan dos puntos del rework del 23/09/2026 que **no son implementación**:
 
     G1  los pesos      ⚡0.25 · 🎯0.24 · 👑0.21 · 🔥0.10 · 🌍0.20   (hoy: aplicado el 25/09/2026)
                        ⚡0.30 · 🎯0.24 · 👑0.21 · 🔥0.15 · 🌍0.10   (los de antes)
-    A7  el Score a 40–99, como el OVR de Temporada   (aplicado el 05/10/2026)
+    A7  el Score a 40–99, como el OVR de Temporada
 
 El propio rework dice de los pesos *«simular sobre los 138 ANTES de
 fijar»*. Esto es esa simulación.
@@ -87,10 +87,8 @@ def score_con(fila, pesos):
 
 
 def rango_de(s):
-    """La letra de una SUMA de 0 a 100 —lo que da `score_con()`—: desde A7
-    (05/10/2026) los umbrales están en la escala de 40 a 99."""
-    from comun.rangos import de_score, a_escala
-    return de_score(a_escala(s))
+    from comun.rangos import UMBRAL
+    return next((r for r, u in UMBRAL if s >= u), 'E')
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -215,18 +213,7 @@ def _primero(orden):
 # ═══════════════════════════════════════════════════════════════════
 
 def escala(filas):
-    """A7 ya está aplicado (05/10/2026): dice cómo quedó."""
-    from comun.rangos import UMBRAL, PISO, TECHO
-    print('\n══ A7 · EL SCORE A 40–99 — APLICADO EL 05/10/2026 ══\n')
-    print('   Score = %g + %g × la suma de 0 a 100  (comun/rangos.a_escala)'
-          % (PISO, (TECHO - PISO) / 100.0))
-    print('   umbrales: %s · E resto\n' % ' · '.join('%s %d' % x for x in UMBRAL))
-    return 0
-
-
-def _escala_antes_de_aplicarla(filas):
-    """Qué pasaba con los umbrales si el Score arrancaba en 40. Es la
-    simulación con la que se decidió; queda como registro."""
+    """Qué pasa con los umbrales si el Score arranca en 40."""
     from comun.rangos import UMBRAL, ORDEN
     print('\n══ A7 · EL SCORE A 40–99 ══\n')
     piso, techo = 40.0, 99.0
@@ -320,12 +307,12 @@ def _self_check():
     except ImportError:
         ok(False, 'no pude importar competitivo.py')
 
-    # ⚠️ EL PUNTO DE A7, comprobado en vez de afirmado: desde que se aplicó
-    # (05/10/2026) ningún umbral puede quedar en el piso o debajo.
-    from comun.rangos import UMBRAL, PISO
-    bajo = [r for r, u in UMBRAL if u <= PISO]
-    ok(not bajo, 'A7 aplicado: ningún umbral en el piso de %g%s'
-       % (PISO, ('  🔴 ' + ' '.join(bajo)) if bajo else ''))
+    # ⚠️ EL PUNTO DE A7, comprobado en vez de afirmado.
+    from comun.rangos import UMBRAL
+    bajo = [r for r, u in UMBRAL if u < 40 and r != 'E']
+    ok(len(bajo) >= 3,
+       'A7 dejaría %d umbral(es) por debajo de 40: %s'
+       % (len(bajo), ' '.join(bajo)))
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0

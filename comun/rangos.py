@@ -81,41 +81,13 @@ ORDEN = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E']
 MATERIAL = {'SSS': 'amatista', 'SS': 'diamante', 'S': 'oro', 'A': 'rubi',
             'B': 'esmeralda', 'C': 'zafiro', 'D': 'plata', 'E': 'bronce'}
 
-# ── la escala del Score: de 40 a 99, como el OVR (A7) ────────────────────
-# 🔑 A7 DEL REWORK, APLICADO EL 05/10/2026. Dlx: «ahora lo hacemos». El
-# Score se lee como el OVR de Temporada: arranca en 40 y llega a 99. La suma
-# de las cinco dimensiones por la confianza sigue yendo de 0 a 100 —es
-# `bruto` en `sheet/competitivo.py`— y pasa a 40–99 por UNA recta, acá.
-#
-# ⚠️ LO QUE SE MIDE EN PROPORCIÓN USA EL BRUTO: con el piso en 40, el
-# cociente entre dos Scores ya no dice lo mismo (20 contra 90 era 0,22 y
-# pasaría a 0,55). Es el OVR Nacional (`comun/nacional.py`), que así da
-# exactamente lo mismo que antes de A7.
-PISO, TECHO = 40.0, 99.0
-
-
-def a_escala(bruto):
-    """El Score de 40 a 99, desde la suma de 0 a 100. Con un decimal."""
-    b = max(0.0, min(float(bruto or 0), 100.0))
-    return round(PISO + (TECHO - PISO) * b / 100.0, 1)
-
-
-def bruto_de(score):
-    """La suma de 0 a 100 detrás de un Score de 40 a 99 (la inversa)."""
-    return max(0.0, (float(score or 0) - PISO) * 100.0 / (TECHO - PISO))
-
-
-# ── umbrales, en la escala de 40 a 99 ────────────────────────────────────
-# Los de antes —SSS 82 · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18, sobre
-# 0–100— llevados por la misma recta y redondeados: el reparto es el mismo.
-# Medido el 05/10/2026 sobre los 14 que tienen letra: ninguno cambia. El
-# redondeo sí mueve a quien cae a menos de un punto de un corte.
-UMBRAL = [('SSS', 88), ('SS', 83), ('S', 77), ('A', 68),
-          ('B', 62), ('C', 55), ('D', 51)]
+# ── umbrales, de CLAUDE.md y gencomp.py:106 ──────────────────────────────
+UMBRAL = [('SSS', 82), ('SS', 73), ('S', 62), ('A', 48),
+          ('B', 37), ('C', 26), ('D', 18)]
 
 
 def de_score(s):
-    """El rango que le toca a ese Score (de 40 a 99). E es el resto."""
+    """El rango que le toca a ese Score. E es el resto."""
     for r, t in UMBRAL:
         if s >= t:
             return r
@@ -545,11 +517,11 @@ def verificar(ruta=None):
 #     01_Temporada/normal_v3.py              para la letra de la Temporada
 #     02_Competitivo/v2/gencomp.py           para la pastilla de la Competitiva
 #
-# ⚠️ Y JUSTO ESE ERA EL NUMERO QUE LA T1 IBA A CAMBIAR, y cambió el
-# 05/10/2026: A7 llevó el Score a 40-99 y con eso los umbrales de antes
-# —82/73/62/48/37/26/18— dejaban de servir (nadie baja de 40, así que B, C,
-# D y E se vaciaban). Quien recalibre toca UNO de los cuatro archivos y las
-# tres cartas dicen rangos distintos de la misma persona, EN SILENCIO.
+# ⚠️ Y JUSTO ESE ES EL NUMERO QUE LA T1 VA A CAMBIAR. El rework lleva el Score
+# a 40-99 (cambio 7) y con eso los umbrales de hoy —82/73/62/48/37/26/18—
+# dejan de servir: nadie bajaria de 40, asi que B, C, D y E se vacian. Quien
+# recalibre va a tocar UNO de los cuatro archivos y las tres cartas van a
+# decir rangos distintos de la misma persona, EN SILENCIO.
 #
 # Esto lo hace ruidoso.
 _COPIAS_UMBRAL = (
@@ -586,25 +558,6 @@ def verificar_umbrales(raiz=None):
             % (' '.join(' %s%d' % x for x in UMBRAL),
                '\n'.join('  %-38s %s' % (r, q) for r, q in mal)))
     return len(_COPIAS_UMBRAL)
-
-
-def verificar_escala():
-    """Que la recta de A7 vaya de 40 a 99, que vuelva sobre sí misma y que
-    ningún umbral quede debajo del piso. Revienta si falla."""
-    casos = [('la suma 0 es el piso', a_escala(0), PISO),
-             ('la suma 100 es el techo', a_escala(100), TECHO),
-             ('lo que se pasa de 100 se topea', a_escala(140), TECHO),
-             ('lo que falta no es negativo', a_escala(None), PISO),
-             ('la vuelta: 47,8 -> 68,2 -> 47,8', round(bruto_de(a_escala(47.8)), 1), 47.8)]
-    mal = [(q, r, e) for q, r, e in casos if abs(r - e) > 1e-9]
-    bajo = [r for r, u in UMBRAL if u <= PISO]
-    if bajo:
-        mal.append(('umbrales en el piso o debajo', bajo, []))
-    if [u for _r, u in UMBRAL] != sorted((u for _r, u in UMBRAL), reverse=True):
-        mal.append(('los umbrales no bajan en orden', UMBRAL, []))
-    if mal:
-        raise RuntimeError('la escala de A7 falla: %s' % mal)
-    return len(casos) + 2
 
 
 def verificar_letra_de():
@@ -647,9 +600,7 @@ if __name__ == '__main__':
     n = verificar()
     m = verificar_umbrales()
     ld = verificar_letra_de()
-    es = verificar_escala()
     print('LOS OCHO RANGOS')
-    print('  la escala de A7: %d casos, el Score va de %g a %g' % (es, PISO, TECHO))
     print('  letra_de(): %d casos, la letra sale del pool con su puerta' % ld)
     print('  paleta verificada contra gencomp.py: %d rangos, todos iguales' % n)
     print('  umbrales verificados contra sus %d copias: todos iguales\n' % m)

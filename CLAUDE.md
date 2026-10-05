@@ -136,18 +136,8 @@ Competitivo acumulara, las dos dirían lo mismo.
 
 ### El rango sale del Score competitivo. Siempre.
 
-Umbrales, iguales en las tres cartas, **en la escala de 40 a 99**:
-`SSS 88 · SS 83 · S 77 · A 68 · B 62 · C 55 · D 51 · E resto`
-
-🔑 **A7, DESDE EL 05/10/2026** (Dlx: *«ahora lo hacemos»*): el Score se lee
-como el OVR, de 40 a 99. La suma de las cinco dimensiones por la confianza
-sigue yendo de 0 a 100 (`bruto`) y pasa a 40–99 por una recta
-(`comun/rangos.a_escala()`); los umbrales de antes —`SSS 82 · SS 73 · S 62 ·
-A 48 · B 37 · C 26 · D 18`, sobre 0–100— son los de arriba llevados por la
-misma recta. De los 14 con letra no cambió ninguno. ⚠️ **Lo que se mide en
-proporción usa el bruto**: el OVR Nacional (`comun/nacional.py`) da
-exactamente lo mismo que antes; con el piso en 40, un cociente entre dos
-Scores ya no dice lo mismo.
+Umbrales, iguales en las tres cartas:
+`SSS 82 · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18 · E resto`
 
 El rango es **uno solo por persona** y tiene que dar igual en todas sus cartas.
 Subir de rango solo se logra en el competitivo: ser #1 de temporada **no** te
@@ -170,7 +160,7 @@ Medido contra el Sheet en vivo el **16/09/2026**. Su columna `Rango` tiene
 | | tramos | umbrales |
 |---|---|---|
 | **el Sheet** (y su Guía v3.0) | 6 | `S 65 · A 47 · B 36 · C 23 · D 17 · E` |
-| **`comun/rangos.py`** (las cartas) | 8 | `SSS 82 · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18 · E` (sobre 0–100; desde A7, `88 · 83 · 77 · 68 · 62 · 55 · 51` sobre 40–99) |
+| **`comun/rangos.py`** (las cartas) | 8 | `SSS 82 · SS 73 · S 62 · A 48 · B 37 · C 26 · D 18 · E` |
 
 **Resultado: 26 de las 138 —el 19 %— llevan una letra distinta en el Sheet que
 en su carta.** Y no es ruido, son dos causas sumadas:

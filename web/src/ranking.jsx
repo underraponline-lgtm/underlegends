@@ -124,7 +124,7 @@ const COL = {
   // ⚠️ EL RANGO SE ORDENA POR SCORE, que es de donde sale: por letra, «SSS» quedaría abajo de «S»
   rg: { t: 'Rango', s: (f) => (f.rg ? f.sc || 0 : ''),
     v: (f, x) => (f.rg ? <span className="rg rk-rg" style={{ background: x.liga.colorRg(f.rg) }}>{f.rg}</span> : NADA) },
-  sc: { t: 'Score', tit: 'El número del Competitivo, de 40 a 99', s: (f) => f.sc || 0, v: (f) => (f.sc ? coma(f.sc) : NADA) },
+  sc: { t: 'Score', tit: 'El número del Competitivo, de 0 a 100', s: (f) => f.sc || 0, v: (f) => (f.sc ? coma(f.sc) : NADA) },
   pts: { t: 'Puntos', tc: 'Pts', s: (f) => f.pts || 0, v: (f) => num(f.pts) },
   ev: { t: 'Eventos', tc: 'Ev', tit: 'Eventos jugados en la temporada', s: (f) => f.ev || 0, v: (f) => f.ev || 0 },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },

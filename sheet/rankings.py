@@ -2826,12 +2826,11 @@ def _self_check():
     print('   %s la escritura no se niega por el Rango' % ('✅' if ok else '🔴'))
     # y que de verdad salga del Score, con los umbrales de comun/rangos
     from comun.rangos import de_score
-    # (en la escala de 40 a 99 desde A7, 05/10/2026)
-    ok = (de_score(93.7) == 'SSS' and de_score(65.0) == 'B'
-          and de_score(40) == 'E')
+    ok = (de_score(91.1) == 'SSS' and de_score(47.8) == 'B'
+          and de_score(0) == 'E')
     mal += not ok
-    print('   %s los umbrales son los de comun/rangos.py (93.7→SSS, '
-          '65→B, 40→E)' % ('✅' if ok else '🔴'))
+    print('   %s los umbrales son los de comun/rangos.py (91.1→SSS, '
+          '47.8→B, 0→E)' % ('✅' if ok else '🔴'))
 
     # 🔴 DEBAJO DE LOS 10 EVENTOS NO HAY LETRA. Dlx, 23/09/2026: «el
     # ranking competitivo no aparece nadie hasta q tenga 10 eventos».
