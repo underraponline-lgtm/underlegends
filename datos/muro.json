@@ -923,7 +923,10 @@
 },
 "gwynyth": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "pomberito": {
 "rg": "",
@@ -4051,6 +4054,22 @@
 "t": "2026-10-05T01:42:11Z",
 "quien": [
 "Tokio"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T02:01:03Z",
+"quien": [
+"Gwynyth"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-05T02:01:03Z",
+"quien": [
+"Gwynyth"
 ],
 "carta": "temporada"
 }
