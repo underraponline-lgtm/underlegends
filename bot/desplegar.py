@@ -541,7 +541,7 @@ def ver_igual(sesion, cid):
         a = ' '.join((arriba.get(mod) or '').split())
         b = ' '.join(local.split())
         if a == b:
-            print('  repo  ✅ lo que está arriba es `bot/%s`' % mod)
+            print('  repo  ✅ lo que está arriba es `bot/%s`' % RUTA_MODULO.get(mod, mod).replace(os.sep, '/'))
         elif mod not in arriba:
             print('  repo  🔴 ARRIBA NO ESTA `%s`. Corré `python bot/desplegar.py`.'
                   % mod)

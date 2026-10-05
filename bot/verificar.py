@@ -87,7 +87,9 @@ def main():
     arriba = DSP._partes(r.content.decode('utf-8', 'replace'))
     distintos = []
     for mod in DSP.MODULOS:
-        local = io.open(os.path.join(SCR, mod), encoding='utf-8').read()
+        # ⚠️ de donde lo saca `desplegar.py` (`RUTA_MODULO`): `llave_vivo.js` vive en `bot/paginas/`. Con la ruta
+        # escrita a mano, la auditoría del 05/10/2026 reventó con FileNotFoundError al día siguiente de sumarlo
+        local = io.open(os.path.join(SCR, DSP.RUTA_MODULO.get(mod, mod)), encoding='utf-8').read()
         if ' '.join((arriba.get(mod) or '').split()) != ' '.join(local.split()):
             distintos.append(mod)
     ok('lo desplegado es lo del repo', not distintos,
