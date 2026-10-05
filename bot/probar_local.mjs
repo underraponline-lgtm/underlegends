@@ -1446,6 +1446,19 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   const r = await pedir(clickCfg(G.DRA, ADMIN, 'cfg:avisos', ['666777']));
   ok('el canal de avisos de rango se guarda', /666777/.test(texto(r)));
 }
+{
+  // 🎤 el bot en vivo (05/10/2026): apagado hasta que el admin elige el canal, y vaciarlo lo apaga
+  const r0 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:nick', []));
+  ok('el bot en vivo arranca apagado', /El bot en vivo\*\* · \*\*apagado\*\*/.test(texto(r0))
+     && JSON.stringify(r0.json).includes('cfg:vivo'));
+  await pedir(clickCfg(G.FFA, ADMIN, 'cfg:nick', []));
+  const r = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:vivo', ['777888']));
+  const cfgVivo = JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}');
+  ok('el admin elige el canal del bot en vivo y se guarda', /El bot en vivo\*\* · <#777888>/.test(texto(r)) && cfgVivo.vivo === '777888');
+  const r2 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:vivo', []));
+  ok('y vaciándolo se apaga', /El bot en vivo\*\* · \*\*apagado\*\*/.test(texto(r2))
+     && JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}').vivo === '');
+}
 
 console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
 

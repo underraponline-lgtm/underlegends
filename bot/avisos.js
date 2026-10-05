@@ -91,7 +91,8 @@ export const PATRON_VIGIA = /evento|competenc|torneo/i;
 // 9: y los de «votaciones» y «resultados» (02/10/2026): ver `PATRON_VEREDICTOS`.
 // 10: cada canal con su categoría (`p`), para «Inscribite ya» (03/10/2026). Ver `invitacionPara()`
 // 11: «torneo» en `PATRON_VIGIA`, y «organiz» en `STAFF` (la ACADEMIA, 04/10/2026)
-const CANALES_V = 11;
+// 12: el chat general de cada servidor, para el bot en vivo (05/10/2026). Ver `chatGeneralDe()`
+const CANALES_V = 12;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -293,6 +294,114 @@ export function aLlamar(L, t, idx, hecho, ahora) {
     }
   }
   return out;
+}
+
+// ── el bot en vivo, en el chat de cada servidor ────────────────────────
+// 🎤 Dlx, 04/10/2026: *«quién ganará, datos extras… para que se enganche la gente»*, prendido por servidor; y el 05/10,
+// a «¿en qué canal escribe?»: *«2. A»* (el chat general). Habla en CUATRO MOMENTOS de cada llave —cuando sale, al
+// cerrar cada ronda (un solo mensaje que se va editando), la final y el campeón— y cuando algo cambia, edita.
+// 🛑 LOS FRENOS, los de la propuesta que aprobó: nunca menciona a nadie (`allowed_mentions` vacío); como mucho UN
+// mensaje nuevo cada 10 minutos por servidor; sólo donde el admin eligió el canal con `/settings` —o Dlx lo prendió
+// desde el Dashboard—, y si lo apagan, para en el momento. Y lo que quedó atrás no se dice tarde: si ya hay final, la
+// ronda que no llegó a salir se saltea; y de una llave quieta hace más de media hora no se dice nada nuevo.
+export const CHAT_ENTRE = 10 * MIN;
+export const CHAT_FRESCA = 30 * MIN;
+//: pedidos a Discord por minuto para esto: comparte los 50 subpedidos del vigía
+export const CHAT_TOPE = 2;
+const WEB_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
+/** Un nombre tal cual, sin que Discord lo lea como formato (`__X__`, `*`, `~`). */
+export const escMd = (s) => String(s || '').replace(/([\\*_~|`>])/g, '\\$1');
+const batallasDe = (R) => ((R && R.b) || []).filter((b) => (b[0] || []).filter(Boolean).length >= 2);
+const jugadaChat = (b) => !!b[1] || /^pasan \d/.test(String(b[2] || ''));
+
+/**
+ * Lo que el bot diría HOY de la llave `L` (`LlaveVivo.aLlave()`), en orden: `[{m, texto}]`, con `m` = llave, rondas,
+ * final o campeon. `nombre` es el del evento y `fav` los favoritos, `[[nombre, ovr], …]` ya ordenados.
+ */
+export function momentosChat(L, nombre, fav) {
+  const out = [];
+  const rondas = (L && L.rondas) || [];
+  if (!rondas.some((R) => batallasDe(R).length)) return out;
+  const tit = escMd(String(nombre || (L && L.nombre) || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
+  const n = (L && L.participantes) || 0;
+  out.push({ m: 'llave', texto: '🎤 Arrancó **' + tit + '**' + (n ? ' · ' + n + ' en la llave' : '')
+    + ((fav || []).length ? ' · los favoritos: ' + fav.slice(0, 3).map(([q, o]) => escMd(q) + ' (OVR ' + o + ')').join(', ') : '')
+    + '\nSeguila en vivo: <' + WEB_EVENTOS + '>' });
+  const cerradas = rondas.filter((R) => !/^final$|tercer/i.test(String(R.r || '')) && batallasDe(R).length
+    && batallasDe(R).every(jugadaChat));
+  if (cerradas.length) {
+    out.push({ m: 'rondas', texto: '⏱️ **' + tit + '**\n' + cerradas.map((R) => '**' + R.r + '**: pasaron '
+      + batallasDe(R).map((b) => escMd(b[1] || '')).filter(Boolean).join(', ')).join('\n') });
+  }
+  const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
+  const fb = F ? batallasDe(F)[0] : null;
+  if (fb && !fb[1]) out.push({ m: 'final', texto: '🔥 La final de **' + tit + '**: ' + fb[0].filter(Boolean).map(escMd).join(' contra ') });
+  if (fb && fb[1]) out.push({ m: 'campeon', texto: '🏆 Campeón de **' + tit + '**: **' + escMd(fb[1]) + '**' });
+  return out;
+}
+
+/**
+ * Qué hacer con los momentos `ms` de una llave en un canal: `[{tipo, m, texto, msg}]`, con `tipo` = mandar, editar o
+ * saltar. `hechos` es `{m: {msg, texto}}` (lo ya mandado; `msg` vacío = salteado), `ultimo` el último mensaje NUEVO del
+ * bot en ese canal y `fresca` si la llave se movió hace poco. Sólo se manda el ÚLTIMO momento: los anteriores que no
+ * salieron se saltean.
+ */
+export function planChat(ms, hechos, ultimo, ahora, fresca) {
+  const plan = [];
+  const meta = ms[ms.length - 1];
+  for (const x of ms) {
+    const h = (hechos || {})[x.m];
+    if (h) {
+      // ⚠️ SÓLO SE EDITA EL DE LAS RONDAS, que es el que crece. «Arrancó» lleva los favoritos, que se leen una vez al
+      // mandarlo (el lobby pesa): recalcularlo sin ellos los borraba al minuto siguiente (lo encontró la prueba)
+      if (x.m === 'rondas' && h.msg && h.texto !== x.texto) plan.push({ tipo: 'editar', m: x.m, texto: x.texto, msg: h.msg });
+      continue;
+    }
+    if (x !== meta) plan.push({ tipo: 'saltar', m: x.m });
+    else if (fresca && ahora - (ultimo || 0) >= CHAT_ENTRE) plan.push({ tipo: 'mandar', m: x.m, texto: x.texto });
+  }
+  return plan;
+}
+
+/** Los favoritos de una llave: los tres de más OVR entre los que juegan (`tabla` es la del lobby), con el nombre como
+ *  lo escribe la llave. Un nombre que en la tabla es de dos personas no cuenta: no se adivina quién es. */
+export function favoritosDe(L, tabla) {
+  const ovr = new Map();
+  const dobles = new Set();
+  for (const f of tabla || []) {
+    const k = f && f.n ? claveTurno(f.n) : '';
+    if (!k) continue;
+    if (ovr.has(k)) dobles.add(k);
+    if (f.ovr) ovr.set(k, f.ovr);
+  }
+  const vistos = new Map();
+  for (const R of (L && L.rondas) || []) {
+    for (const b of R.b || []) {
+      for (const lado of b[0] || []) {
+        for (const q of String(lado || '').split(/\s*[,+&]\s*/)) {
+          const k = claveTurno(q);
+          if (k && ovr.has(k) && !dobles.has(k) && !vistos.has(k)) {
+            vistos.set(k, [q.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim(), ovr.get(k)]);
+          }
+        }
+      }
+    }
+  }
+  return [...vistos.values()].sort((a, b) => b[1] - a[1]).slice(0, 3);
+}
+
+/** El chat general de un servidor entre sus canales (`GET /guilds/{g}/channels`), o `''`: «general» antes que «chat»
+ *  y que «charla», sólo de texto y nunca del staff. */
+export function chatGeneralDe(cs, fuera) {
+  let mejor = '', puntos = 0;
+  for (const c of cs || []) {
+    if (c.type !== 0 || (fuera && fuera.has(String(c.parent_id || '')))) continue;
+    const n = String(c.name || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    if (STAFF.test(n) || /\bbots?\b|comando|clip|meme|media|beat/.test(n)) continue;
+    const p = /\bgeneral\b/.test(n) ? 3 : /\bchat\b/.test(n) ? 2 : /\bcharla\b/.test(n) ? 1 : 0;
+    if (p > puntos) { mejor = String(c.id); puntos = p; }
+  }
+  return mejor;
 }
 
 /** El aviso: «¡Te toca!» (y «¡Te están llamando!» las veces siguientes) o «Sos el próximo», con la batalla y adónde
@@ -2644,6 +2753,10 @@ export class Avisos {
       // todas las suscripciones cada vez (revisión del 04/10/2026)
       this.sql.exec('CREATE INDEX IF NOT EXISTS subs_quien ON subs (quien)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS hechos (id TEXT PRIMARY KEY, t INTEGER NOT NULL)');
+      // 🎤 EL BOT EN VIVO EN LOS CHATS (05/10/2026): qué dijo de cada llave en cada canal (`msg` vacío = salteado).
+      // Ver `chatVivo()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS chat_vivo (llave TEXT NOT NULL, canal TEXT NOT NULL, m TEXT NOT NULL, ' +
+        "msg TEXT NOT NULL DEFAULT '', texto TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, PRIMARY KEY (llave, canal, m))");
       // 🔑 LAS ENCUESTAS (27/09/2026): un voto por Discord ID y por encuesta,
       // que se cambia hasta que cierra. Ver `validarVoto()` y `votar()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS votos (enc TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -2798,7 +2911,17 @@ export class Avisos {
         return json(this.rachaDe(String(d.quien)));
       }
       if (ruta === '/visita') return this.visita();
-      if (ruta === '/dueno') return json(this.panelDueno());
+      if (ruta === '/dueno') {
+        const p = this.panelDueno();
+        // 🎤 y en qué servidores lo prendió su admin (`cfg:<guild>` en KV, `/settings`): una lectura por servidor
+        for (const g of p.chat.generales) {
+          try {
+            const c = JSON.parse((await this.env.KV.get('cfg:' + g.g, { cacheTtl: 60 })) || '{}') || {};
+            if (c.vivo) p.chat.admin[g.sv] = String(c.vivo);
+          } catch (e) { /* sin KV, como si no */ }
+        }
+        return json(p);
+      }
       if (ruta === '/precio') return this.precio(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
@@ -2825,6 +2948,7 @@ export class Avisos {
     const lista = [];
     const ver = [];
     const insc = [];
+    const generales = [];
     let sinAcceso = 0;
     // 🔴 SÓLO LOS SERVIDORES DE LA LIGA. Dlx, 25/09/2026, después de una
     // alerta por un canal de TFC: «Olvida TFC, ya te dije que no está». La
@@ -2865,6 +2989,9 @@ export class Avisos {
       // sonaba en la campana de todos. Ver `categoriasStaff()`.
       const fuera = categoriasStaff(cs);
       for (const id of fueraSv[s.sv] || []) fuera.add(String(id));
+      // 🎤 el chat general, para el bot en vivo cuando lo prende el Dashboard (ver `chatVivo()`)
+      const gen = chatGeneralDe(cs, fuera);
+      if (gen) generales.push({ sv: s.sv, g: s.guild, id: gen });
       for (const c of cs) {
         if (c.type !== 0 && c.type !== 5) continue;
         if (fuera.has(String(c.parent_id || ''))) continue;
@@ -2885,7 +3012,7 @@ export class Avisos {
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild, p: String(c.parent_id || '') });
       }
     }
-    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, inscripciones: insc,
+    const canales = { t: ahora, v: CANALES_V, yo, lista, veredictos: ver, inscripciones: insc, generales,
       sin_acceso: sinAcceso, firma };
     // ⚠️ UNA BUSQUEDA QUE NO ENCONTRO NADA NO PISA A UNA QUE SÍ. Si Discord
     // contestó mal a todo, quedarse sin canales es dejar de avisar callado.
@@ -3016,6 +3143,10 @@ export class Avisos {
       try { await this.turnos(ahora); } catch (e) {
         this.guardar('turnos', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 🎤 y el bot en vivo, en el chat de cada servidor. Nunca frena al vigía: ver `chatVivo()`
+      try { await this.chatVivo(ahora); } catch (e) {
+        this.guardar('chat_vivo', { t: ahora, error: String(e).slice(0, 160) });
+      }
       // 🕵️ y quién es cada nombre de las llaves en vivo. Nunca frena al vigía: ver `quienes()`
       try { await this.quienes(ahora); } catch (e) {
         this.guardar('quien', { ...(this.leer('quien') || {}), error: String(e).slice(0, 160) });
@@ -3049,6 +3180,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM subs WHERE enviados = 0 AND fallos >= 5 AND prueba = 0');
       // 🔢 y los contadores de cambios de días que ya pasaron
       this.sql.exec('DELETE FROM cambios_dia WHERE dia < ?', new Date(ahora - DIA_MS).toISOString().slice(0, 10));
+      // 🎤 y lo que dijo el bot en vivo: dos días (de una llave sólo se habla mientras se mueve)
+      this.sql.exec('DELETE FROM chat_vivo WHERE t < ?', ahora - 2 * DIA_MS);
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -3141,6 +3274,96 @@ export class Avisos {
     this.sql.exec('DELETE FROM vivo WHERE ed < ?', ahora - 12 * HORA);
     this.sql.exec('DELETE FROM vivo_borradas WHERE t < ?', ahora - 12 * HORA);
     this.guardar('vivo', { t: ahora, canales: leer.length, cambiaron: nuevas, borradas });
+  }
+
+  /**
+   * 🎤 EL BOT EN VIVO, en el chat de cada servidor: ver `momentosChat()` y sus frenos. Habla donde el admin eligió el
+   * canal con `/settings` (`cfg:<guild>` en KV, `vivo`), o en el chat general si Dlx lo prendió desde el Dashboard
+   * (`en_vivo[SV] = true`); `en_vivo[SV] = false` lo apaga aunque el admin lo haya prendido. Devuelve los pedidos.
+   */
+  async chatVivo(ahora) {
+    const aj = this.ajustes();
+    const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
+    const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
+      ahora - 3 * HORA).toArray();
+    if (!filas.length) return 0;
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const LV = globalThis.LlaveVivo;
+    if (!LV) return 0;
+    const generales = (this.leer('canales') || {}).generales || [];
+    const cfgs = new Map();
+    let pedidos = 0, mandados = 0, editados = 0, lobby = null;
+    const errores = [];
+    for (const b of LV.unirPartidas(filas)) {
+      if (pedidos >= CHAT_TOPE) break;
+      if (!b.g || dash[b.sv] === false) continue;
+      if (!cfgs.has(b.g)) {
+        let c = {};
+        try { c = JSON.parse((await this.env.KV.get('cfg:' + b.g, { cacheTtl: 60 })) || '{}') || {}; } catch (e) { c = {}; }
+        cfgs.set(b.g, c);
+      }
+      const canal = String(cfgs.get(b.g).vivo || '')
+        || (dash[b.sv] === true ? String((generales.find((x) => x.g === b.g) || {}).id || '') : '');
+      if (!/^\d{5,25}$/.test(canal)) continue;
+      // un canal donde Discord no lo deja escribir se vuelve a probar a la media hora, no cada minuto
+      if (ahora - (this.leer('chat_fallo:' + canal) || 0) < 30 * MIN) continue;
+      let L = null;
+      try { L = LV.aLlave(b); } catch (e) { L = null; }
+      if (!L) continue;
+      const hechos = {};
+      for (const r of this.sql.exec('SELECT m, msg, texto FROM chat_vivo WHERE llave = ? AND canal = ?', L.id, canal)
+        .toArray()) hechos[r.m] = r;
+      const ult = (this.sql.exec("SELECT MAX(t) AS t FROM chat_vivo WHERE canal = ? AND msg != ''", canal)
+        .toArray()[0] || {}).t || 0;
+      const fresca = ahora - (L.ed || 0) <= CHAT_FRESCA;
+      let ms = momentosChat(L, L.nombre, []);
+      // los favoritos sólo si lo que sale ahora es «Arrancó»: el lobby pesa, no se lee cada minuto
+      if (!hechos.llave && ms.length && ms[ms.length - 1].m === 'llave' && fresca && ahora - ult >= CHAT_ENTRE) {
+        if (lobby === null) {
+          try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
+        }
+        ms = momentosChat(L, L.nombre, favoritosDe(L, lobby.tabla || []));
+      }
+      for (const p of planChat(ms, hechos, ult, ahora, fresca)) {
+        if (p.tipo === 'saltar') {
+          this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+            L.id, canal, p.m, '', '', ahora);
+          continue;
+        }
+        if (pedidos >= CHAT_TOPE) break;
+        pedidos++;
+        let r = null;
+        try {
+          r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
+            method: p.tipo === 'editar' ? 'PATCH' : 'POST',
+            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+            // 🛑 nunca menciona a nadie, y sin la vista previa del link
+            body: JSON.stringify({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 }),
+          });
+        } catch (e) { r = null; }
+        if (r && r.ok) {
+          if (p.tipo === 'editar') {
+            this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE llave = ? AND canal = ? AND m = ?', p.texto, L.id, canal, p.m);
+            editados++;
+            continue;
+          }
+          let id = '';
+          try { id = String((await r.json()).id || ''); } catch (e) { id = ''; }
+          this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+            L.id, canal, p.m, id, p.texto, ahora);
+          mandados++;
+          break;
+        }
+        errores.push(b.sv + ' ' + (r ? r.status : 'red'));
+        if (p.tipo === 'mandar') this.guardar('chat_fallo:' + canal, ahora);
+        // un mensaje que ya no está (lo borraron): no se vuelve a editar
+        else if (r && r.status === 404) {
+          this.sql.exec("UPDATE chat_vivo SET msg = '' WHERE llave = ? AND canal = ? AND m = ?", L.id, canal, p.m);
+        }
+      }
+    }
+    if (pedidos) this.guardar('chat_vivo', { t: ahora, mandados, editados, errores: errores.slice(0, 5) });
+    return pedidos;
   }
 
   /** Los veredictos de los servidores con un evento en juego. Ver `PATRON_VEREDICTOS`. */
@@ -5127,6 +5350,10 @@ export class Avisos {
     return {
       uso: this.usoResumen(),
       ajustes: this.ajustes(),
+      // 🎤 el bot en vivo: el chat general de cada servidor, lo que pasó la última vez, y (lo llena la ruta) dónde lo
+      // prendió cada admin
+      chat: { generales: ((this.leer('canales') || {}).generales || []).map((x) => ({ sv: x.sv, g: x.g })),
+        ultimo: this.leer('chat_vivo'), admin: {} },
       // 🤝 y lo que te llega por DM, junto: las postulaciones de /sumate y los errores reportados en las llaves (los 10
       // últimos de cada uno), con la clave de la página de quien lo mandó si se la conoce
       postulaciones: this.sql.exec('SELECT p.t, p.datos, p.enviada, p.error, i.k FROM postulaciones p ' +

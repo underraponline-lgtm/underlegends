@@ -1738,7 +1738,9 @@ const claveCfg = (gid) => `cfg:${gid}`;
 // servidor que nunca abrió `/settings` tiene que comportarse como se comportaba
 // antes de que `/settings` existiera. Si el default fuera apagado, sumar esta
 // pantalla le cambiaría el apodo a gente de servidores que no pidieron nada.
-const CFG_BASE = { nick: true, canales: [], avisos: '' };
+// 🎤 `vivo`: el canal donde el bot cuenta en vivo los eventos de la Liga (05/10/2026). Vacío = apagado: nunca escribe
+// en un servidor que no lo pidió (ver `chatVivo()` en avisos.js)
+const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '' };
 
 async function ajustes(env, gid) {
   if (!gid) return { ...CFG_BASE };
@@ -1778,6 +1780,7 @@ function panelAjustes(sv, cfg) {
     ? cfg.canales.map(c => `<#${c}>`).join(' ')
     : '**todos**';
   const avisos = cfg.avisos ? `<#${cfg.avisos}>` : '**ninguno**';
+  const vivo = cfg.vivo ? `<#${cfg.vivo}>` : '**apagado**';
   const texto = [
     `## ⚙️ Ajustes de la Liga en **${sv}**`,
     '',
@@ -1791,6 +1794,10 @@ function panelAjustes(sv, cfg) {
     '',
     `**Avisos de cambio de rango** · ${avisos}`,
     '> Dónde anunciar cuando alguien sube o baja de rango.',
+    '',
+    `**El bot en vivo** · ${vivo}`,
+    '> Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va: cuando sale la llave, ' +
+    'quién pasa cada ronda, la final y el campeón. Sin mencionar a nadie y como mucho un mensaje cada 10 minutos.',
   ].join('\n');
 
   return {
@@ -1817,6 +1824,13 @@ function panelAjustes(sv, cfg) {
         type: 8,
         custom_id: 'cfg:avisos',
         placeholder: 'Canal para avisar cambios de rango (vacío = ninguno)',
+        min_values: 0, max_values: 1,
+        channel_types: [0],
+      }] },
+      { type: COMP.FILA, components: [{
+        type: 8,
+        custom_id: 'cfg:vivo',
+        placeholder: 'Canal del bot en vivo (vacío = apagado)',
         min_values: 0, max_values: 1,
         channel_types: [0],
       }] },
@@ -1983,6 +1997,9 @@ const AYUDA = {
     'conserva lo suyo.',
     '· **Canales donde se puede usar `/card`** — vacío es en cualquiera.',
     '· **Avisos de cambio de rango** — a qué canal anunciarlos.',
+    '· **El bot en vivo** — en qué canal cuenta los eventos de la Liga en este ' +
+    'servidor mientras se juegan (la llave, cada ronda, la final y el campeón). ' +
+    'Vacío es apagado; no menciona a nadie.',
   ].join('\n'),
 
   notify: () => [
@@ -3758,6 +3775,7 @@ export default {
         if (quien === 'nick') cfg.nick = !cfg.nick;
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
         else if (quien === 'avisos') cfg.avisos = vals[0] || '';
+        else if (quien === 'vivo') cfg.vivo = vals[0] || '';
         else return aviso('No sé qué ajuste es ése.');
         // ⚠️ Mismo motivo que en `/numeral`: sin `try`, un día sin cupo
         // de KV es «la aplicación no respondió» y el admin no sabe si quedó.

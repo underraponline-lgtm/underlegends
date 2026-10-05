@@ -130,6 +130,40 @@ const ok = (cond, que) => {
   ok(c.tipo === 'turno' && /¡Te toca!/.test(c.t) && /Cami 🇻🇪 vs Dora 🇲🇽/.test(c.b) && /llamada/.test(c.b) &&
     /reemplaza/.test(c.b), 'el aviso dice que te toca, contra quién, que entres a la llamada y que si no te reemplazan');
   ok(/¡Te están llamando!/.test(A.cuerpoTurno(L, tl.ahora, 'ahora', 2).t), 'el segundo toque dice que te están llamando');
+  // 🎤 EL BOT EN VIVO EN LOS CHATS (05/10/2026): los cuatro momentos, con una llave de verdad
+  const llaveDe = (txt) => LV.aLlave(LV.unirPartidas([{ id: '9', canal: '2', sv: 'FFA', g: '1', autor: 'x', pub: 1, ed: 1,
+    texto: txt }])[0]);
+  const CUARTOS = '# COPA __SOOLAR__\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+  const m0 = A.momentosChat(llaveDe(CUARTOS), '', [['Ana', 89], ['Dora', 82]]);
+  ok(m0.length === 1 && m0[0].m === 'llave' && m0[0].texto.includes('Arrancó **COPA \\_\\_SOOLAR**')
+    && /Ana \(OVR 89\), Dora \(OVR 82\)/.test(m0[0].texto) && /underlegends\.pages\.dev/.test(m0[0].texto),
+  'en vivo, al salir la llave: el nombre (sin que Discord lo lea como formato), los favoritos y el link');
+  const SEMIS = CUARTOS.replace('⌞Ana 🇦🇷⌝ 🆚', '⌞Ana 🇦🇷⌝ ✅ 🆚').replace('⌞Dora 🇲🇽⌝', '⌞Dora 🇲🇽⌝ ✅')
+    + '`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+  const m1 = A.momentosChat(llaveDe(SEMIS), 'COPA SOOLAR', []);
+  ok(m1.map((x) => x.m).join() === 'llave,rondas,final' && /\*\*Cuartos\*\*: pasaron Ana 🇦🇷, Dora 🇲🇽/.test(m1[1].texto)
+    && /La final de \*\*COPA SOOLAR\*\*: Ana 🇦🇷 contra Dora 🇲🇽/.test(m1[2].texto),
+  'con los cuartos cerrados y la final armada: quién pasó y la final');
+  const m2 = A.momentosChat(llaveDe(SEMIS + '\nCAMPEÓN: Dora 🇲🇽\n'), 'COPA SOOLAR', []);
+  ok(m2[m2.length - 1].m === 'campeon' && /Campeón de \*\*COPA SOOLAR\*\*: \*\*Dora 🇲🇽\*\*/.test(m2[m2.length - 1].texto)
+    && !m2.some((x) => x.m === 'final'), 'con campeón: el campeón, y la final ya no');
+  // los frenos: sólo el último momento, un mensaje nuevo cada 10 minutos, y lo que cambia se edita
+  const T = 1790000000000;
+  let p = A.planChat(m1, {}, 0, T, true);
+  ok(p.map((x) => x.tipo + ':' + x.m).join() === 'saltar:llave,saltar:rondas,mandar:final',
+    'si ya hay final, lo que no salió se saltea: no se dice tarde');
+  p = A.planChat(m1, { llave: { msg: '5', texto: m1[0].texto } }, T - 5 * 60000, T, true);
+  ok(p.map((x) => x.tipo + ':' + x.m).join() === 'saltar:rondas', 'a los 5 minutos del último mensaje, no sale otro');
+  p = A.planChat(m1, { llave: { msg: '5', texto: 'otro' }, rondas: { msg: '6', texto: 'antes' } }, T - 11 * 60000, T, true);
+  ok(p.map((x) => x.tipo + ':' + x.m).join() === 'editar:rondas,mandar:final' && p[0].msg === '6',
+    'a los 10 minutos sí; y las rondas se editan en su mensaje («Arrancó» no: sus favoritos se leen una vez)');
+  ok(!A.planChat(m1, {}, 0, T, false).some((x) => x.tipo === 'mandar'), 'de una llave quieta no se dice nada nuevo');
+  ok(JSON.stringify(A.favoritosDe(llaveDe(CUARTOS), [{ n: 'Ana', ovr: 80 }, { n: 'Dora', ovr: 90 },
+    { n: 'Cami', ovr: 70 }, { n: 'cami', ovr: 75 }])) === '[["Dora",90],["Ana",80]]',
+  'los favoritos: los de más OVR de la llave; un nombre de dos personas no cuenta');
+  ok(A.chatGeneralDe([{ id: '1', type: 0, name: '💬┇charla' }, { id: '2', type: 0, name: 'chat-general' },
+    { id: '3', type: 2, name: 'general' }, { id: '4', type: 0, name: 'general-staff' }]) === '2',
+  'el chat general: «general» de texto, nunca el del staff ni el de voz');
   const mc = A.mensajeRedCancelado({ t: 'VOL 21 2v2', sv: 'FFA', svn: 'Freestyle For All', ini: 1790000000000,
     url: 'https://discord.com/channels/1/2/3' }, 'borrado');
   ok(/^❌ CANCELADO/.test(mc.embeds[0].title) && mc.allowed_mentions.parse.length === 0 &&
@@ -580,6 +614,79 @@ const ok = (cond, que) => {
   ok(ini >= 0 && metodos.size > 50 && !pisados.length,
     'ningún método del objeto se pisa con un dato (' + metodos.size + ' métodos' +
     (pisados.length ? ', pisados: ' + pisados.join(', ') : '') + ')');
+}
+
+// 🎤 EL BOT EN VIVO SOBRE EL OBJETO DE VERDAD (05/10/2026): SQLite de Node y Discord falso. ⚠️ `node:sqlite` es de Node
+// 22.5 en adelante: con uno más viejo (CI usa el 20) se dice y se sigue; las funciones puras ya se probaron arriba
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite (Node ' + process.version + '): el bot en vivo no se prueba sobre el objeto');
+  } else {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const CANAL = '555000000000000001', GENERAL = '444000000000000001';
+    const kv = new Map([['cfg:111', JSON.stringify({ vivo: CANAL })],
+      ['web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', ovr: 88 }, { n: 'Dora', ovr: 91 }] })]]);
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    const T = Date.parse('2026-10-05T23:00:00Z');
+    const CU = '# COPA SOOLAR\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+    const FI = CU.replace('⌞Ana 🇦🇷⌝ 🆚', '⌞Ana 🇦🇷⌝ ✅ 🆚').replace('⌞Dora 🇲🇽⌝', '⌞Dora 🇲🇽⌝ ✅') + '`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+    const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('9', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
+      'texto = excluded.texto', T - 60000, ed, texto, ed);
+    llave(CU, T);
+    await o.chatVivo(T);
+    await o.chatVivo(T + 60000);
+    ok(pedidos.length === 1 && pedidos[0].m === 'POST' && pedidos[0].u.endsWith('/channels/' + CANAL + '/messages')
+      && /Dora \(OVR 91\), Ana \(OVR 88\)/.test(pedidos[0].b.content) && JSON.stringify(pedidos[0].b.allowed_mentions) === '{"parse":[]}',
+    'en vivo, sobre el objeto: sale la llave, una vez, en el canal del admin y sin mencionar a nadie');
+    llave(FI, T + 5 * 60000);
+    await o.chatVivo(T + 5 * 60000);
+    const a5 = pedidos.length;
+    await o.chatVivo(T + 11 * 60000);
+    llave(FI + '\nCAMPEÓN: Dora 🇲🇽\n', T + 12 * 60000);
+    await o.chatVivo(T + 12 * 60000);
+    const a12 = pedidos.length;
+    await o.chatVivo(T + 22 * 60000);
+    ok(a5 === 1 && a12 === 2 && pedidos.length === 3 && /La final/.test(pedidos[1].b.content)
+      && /Campeón de \*\*COPA SOOLAR\*\*: \*\*Dora 🇲🇽\*\*/.test(pedidos[2].b.content),
+    'la final y el campeón, cada uno a los 10 minutos del anterior: tres mensajes en total');
+    o.guardar('ajustes_dueno', { en_vivo: { FFA: false } });
+    sql.exec('DELETE FROM chat_vivo');
+    await o.chatVivo(T + 40 * 60000);
+    const apagado = pedidos.length === 3;
+    o.guardar('ajustes_dueno', { en_vivo: { FFA: true } });
+    kv.set('cfg:111', '{}');
+    o.guardar('canales', { generales: [{ sv: 'FFA', g: '111', id: GENERAL }] });
+    llave(FI + '\nCAMPEÓN: Dora 🇲🇽\n', T + 41 * 60000);
+    await o.chatVivo(T + 41 * 60000);
+    ok(apagado && pedidos.length === 4 && pedidos[3].u.endsWith('/channels/' + GENERAL + '/messages'),
+      'apagado desde el Dashboard no escribe aunque el admin lo prendió; prendido desde ahí, va al chat general');
+    o.guardar('ajustes_dueno', {});
+    sql.exec('DELETE FROM chat_vivo');
+    await o.chatVivo(T + 60 * 60000);
+    ok(pedidos.length === 4, 'sin canal del admin ni el Dashboard, no escribe');
+    globalThis.fetch = antesF;
+  }
 }
 
 if (fallas) {

@@ -184,7 +184,46 @@ function AjAviso({ liga, aj, hacer, ocup }) {
   );
 }
 
-function Ajustes({ liga, aj, onAj }) {
+// ── 🎤 el bot en vivo: en qué servidores habla (ver `chatVivo()` en bot/avisos.js) ───────────────────────────────────
+// Lo prende el admin de cada servidor con /settings (elige el canal); desde acá Dlx lo prende en el chat general o lo
+// apaga aunque el admin lo haya prendido. «Lo decide su admin» es no tocarlo.
+function AjVivo({ liga, aj, hacer, ocup, chat }) {
+  const c = chat || {};
+  const dash = aj.en_vivo || {};
+  const admin = c.admin || {};
+  const svs = [...new Set([...(c.generales || []).map((x) => x.sv), ...Object.keys(admin), ...Object.keys(dash)])].sort();
+  const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
+  const estado = (sv) => (dash[sv] === false ? 'Apagado por vos' : admin[sv] ? 'Lo prendió su admin'
+    : dash[sv] === true ? 'Prendido por vos, en el chat general' : 'Apagado: su admin no eligió canal');
+  const cambiar = (sv, v) => {
+    const n = Object.assign({}, dash);
+    if (v === '') delete n[sv]; else n[sv] = v === 'si';
+    return hacer('en_vivo', n, 'Guardado: vale desde el próximo minuto.');
+  };
+  const u = c.ultimo || {};
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>El bot en vivo</h3><span className={'db-est' + (svs.some(prendido) ? ' ok' : '')}>{svs.filter(prendido).length} prendido(s)</span></div>
+      <p className="db-tx">Durante un evento cuenta en el chat cómo va: cuando sale la llave, quién pasa cada ronda, la final y el campeón. No menciona a nadie y manda como mucho un mensaje cada 10 minutos. Lo prende el admin de cada servidor con /settings; desde acá lo prendés en el chat general o lo apagás aunque su admin lo haya prendido.</p>
+      {svs.length ? (
+        <div className="db-mult">{svs.map((sv) => (
+          <label key={sv} className="db-sv db-sv-vivo" title={estado(sv)}>
+            <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
+            <select value={dash[sv] === true ? 'si' : dash[sv] === false ? 'no' : ''} disabled={ocup}
+              aria-label={'El bot en vivo en ' + siglaDe(sv)} onChange={(e) => cambiar(sv, e.target.value)}>
+              <option value="">{admin[sv] ? 'Su admin: prendido' : 'Su admin: apagado'}</option>
+              <option value="si">Prendido</option>
+              <option value="no">Apagado</option>
+            </select>
+          </label>
+        ))}</div>
+      ) : <p className="db-tx">Todavía no sé el chat general de ningún servidor: el vigía lo busca en su próxima vuelta.</p>}
+      {u.t ? <p className="db-tx">Última vez {hace(u.t)}: {num(u.mandados || 0)} mensaje(s), {num(u.editados || 0)} edición(es){(u.errores || []).length ? ' · ⚠️ Discord dijo que no: ' + u.errores.join(', ') : ''}{u.error ? ' · ⚠️ ' + u.error : ''}</p> : null}
+    </div>
+  );
+}
+
+function Ajustes({ liga, aj, onAj, chat }) {
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
   // devuelve si salió, así el formulario sabe si vaciarse
@@ -201,10 +240,7 @@ function Ajustes({ liga, aj, onAj }) {
         <AjCampana aj={aj} hacer={hacer} ocup={ocup} />
         <AjMult liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
-        <div className="db-aj">
-          <div className="db-aj-c"><h3>El bot en vivo</h3><span className="db-est">Próximamente</span></div>
-          <p className="db-tx">Prender o apagar el bot en el chat de cada servidor durante los eventos. Llega con esa función: arranca apagado en todos y lo prende el admin de cada servidor; desde acá vas a poder apagarlo en cualquiera.</p>
-        </div>
+        <AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
       </div>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
     </>
@@ -270,7 +306,7 @@ export function Dashboard({ dc, liga }) {
       <>
         <section className="act">
           <div className="mis-cab"><span>CONFIGURACIÓN · SÓLO VOS</span></div>
-          <Ajustes liga={liga} aj={d.ajustes || {}} onAj={onAj} />
+          <Ajustes liga={liga} aj={d.ajustes || {}} onAj={onAj} chat={d.chat} />
         </section>
         <section className="act">
           <div className="mis-cab"><span>EL BOT Y LA PÁGINA · 7 DÍAS</span>{u.desde ? <em>se cuenta desde el {corto(u.desde)}</em> : null}</div>

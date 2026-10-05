@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.35",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T02:20:00-04:00",
+   "titulo": "El bot cuenta los eventos en vivo",
+   "items": [
+    "🎤 **El bot puede contar en el chat cómo va un evento**: cuando sale la llave (con los favoritos), quién pasa cada ronda, la final y el campeón. No menciona a nadie y manda como mucho un mensaje cada 10 minutos. **Está apagado en todos los servidores**: lo prende el admin de cada uno con `/settings`, eligiendo el canal."
+   ]
+  },
+  {
    "version": "2.34",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T01:45:00-04:00",
