@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-05T17:27:08Z",
+ "cuando": "2026-10-05T17:56:31Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 225.3,
+ "dur_s": 184.2,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 30.8
+   "s": 30.2
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 27.5
+   "s": 33.3
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 56.2
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 23.1
+   "s": 23.3
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.0
+   "s": 5.8
   },
   {
    "n": "2b",
@@ -75,37 +75,37 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.7
+   "s": 1.0
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 1.8
+   "s": 2.7
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 27.9
+   "s": 24.7
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 18.0
+   "s": 23.3
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.7
+   "s": 8.8
   },
   {
    "n": "2e",
@@ -117,7 +117,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.9
+   "s": 9.2
   },
   {
    "n": "3",
@@ -129,7 +129,7 @@
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 12.7
+   "s": 16.3
   }
  ],
  "fallas": [],
@@ -142,7 +142,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-05T17:23:58Z",
+  "cuando": "2026-10-05T17:54:01Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 334,
   "un_evento": 174,
@@ -170,15 +170,15 @@
  },
  "cuotas": {
   "kv": {
-   "write": 966,
-   "read": 42655
+   "write": 969,
+   "read": 44215
   },
   "worker": {
-   "pedidos": 5030,
+   "pedidos": 5078,
    "errores": 0,
-   "sub": 4789,
+   "sub": 4833,
    "p50_ms": 0.95,
-   "p99_ms": 5.47
+   "p99_ms": 5.49
   },
   "r2": {
    "objetos": 8191,
