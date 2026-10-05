@@ -2261,6 +2261,9 @@ a.rk-z:hover{border-color:var(--linea)}
 .db-sv span{display:inline-flex;align-items:center;gap:6px}
 .db-sv img{width:22px;height:22px;object-fit:contain}
 .db-sv b{font:800 13px/1 Archivo,sans-serif}
+/* 🎤 el bot en vivo: si habla y cuánto, uno debajo del otro (05/10/2026) */
+.db-sv.db-sv-vivo{flex-wrap:wrap}
+.db-sv.db-sv-vivo select{flex:1 1 100%;min-width:0}
 .db-aj select,.db-aj textarea{font:600 14px/1.3 Archivo,sans-serif;color:var(--tinta);background:var(--fondo);border:1.5px solid var(--linea);border-radius:0;padding:6px 8px}
 .db-aj select:focus-visible,.db-aj textarea:focus-visible{outline:2px solid var(--verde);outline-offset:1px}
 .db-aj textarea{width:100%;resize:vertical;min-height:58px}

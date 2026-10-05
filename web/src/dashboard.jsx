@@ -187,9 +187,15 @@ function AjAviso({ liga, aj, hacer, ocup }) {
 // ── 🎤 el bot en vivo: en qué servidores habla (ver `chatVivo()` en bot/avisos.js) ───────────────────────────────────
 // Lo prende el admin de cada servidor con /settings (elige el canal); desde acá Dlx lo prende en el chat general o lo
 // apaga aunque el admin lo haya prendido. «Lo decide su admin» es no tocarlo.
+// 🔊 Y CUÁNTO HABLA (05/10/2026): lo justo, normal o cada batalla (`NIVELES_CHAT` de avisos.js, que llega en `chat`).
+// También lo elige el admin con /settings; lo de acá gana.
+const NIVELES_VIVO = { poco: ['Lo justo'], normal: ['Normal'], todo: ['Cada batalla'] };
 function AjVivo({ liga, aj, hacer, ocup, chat }) {
   const c = chat || {};
   const dash = aj.en_vivo || {};
+  const dashNivel = aj.en_vivo_nivel || {};
+  const niveles = c.niveles || NIVELES_VIVO;
+  const nivelAdmin = (sv) => (c.nivel || {})[sv] || 'normal';
   const admin = c.admin || {};
   const svs = [...new Set([...(c.generales || []).map((x) => x.sv), ...Object.keys(admin), ...Object.keys(dash)])].sort();
   const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
@@ -200,11 +206,16 @@ function AjVivo({ liga, aj, hacer, ocup, chat }) {
     if (v === '') delete n[sv]; else n[sv] = v === 'si';
     return hacer('en_vivo', n, 'Guardado: vale desde el próximo minuto.');
   };
+  const cambiarNivel = (sv, v) => {
+    const n = Object.assign({}, dashNivel);
+    if (v === '') delete n[sv]; else n[sv] = v;
+    return hacer('en_vivo_nivel', n, 'Guardado: vale desde el próximo minuto.');
+  };
   const u = c.ultimo || {};
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>El bot en vivo</h3><span className={'db-est' + (svs.some(prendido) ? ' ok' : '')}>{svs.filter(prendido).length} prendido(s)</span></div>
-      <p className="db-tx">Durante un evento cuenta en el chat cómo va: cuando sale la llave, quién pasa cada ronda, la final y el campeón. No menciona a nadie y manda como mucho un mensaje cada 10 minutos. Lo prende el admin de cada servidor con /settings; desde acá lo prendés en el chat general o lo apagás aunque su admin lo haya prendido.</p>
+      <p className="db-tx">Durante un evento cuenta en el chat cómo va, y cuánto habla se elige: <b>lo justo</b> (el arranque y el campeón), <b>normal</b> (además quién pasa cada ronda y la final, como mucho un mensaje cada 10 minutos) o <b>cada batalla</b> (quién gana cada una apenas se sabe, como mucho uno cada 2 minutos). No menciona a nadie. Lo prende el admin de cada servidor con /settings; desde acá lo prendés en el chat general, lo apagás o le cambiás cuánto habla aunque su admin haya elegido otra cosa.</p>
       {svs.length ? (
         <div className="db-mult">{svs.map((sv) => (
           <label key={sv} className="db-sv db-sv-vivo" title={estado(sv)}>
@@ -214,6 +225,11 @@ function AjVivo({ liga, aj, hacer, ocup, chat }) {
               <option value="">{admin[sv] ? 'Su admin: prendido' : 'Su admin: apagado'}</option>
               <option value="si">Prendido</option>
               <option value="no">Apagado</option>
+            </select>
+            <select value={niveles[dashNivel[sv]] ? dashNivel[sv] : ''} disabled={ocup || !prendido(sv)}
+              aria-label={'Cuánto habla el bot en vivo en ' + siglaDe(sv)} onChange={(e) => cambiarNivel(sv, e.target.value)}>
+              <option value="">{'Su admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
+              {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}
             </select>
           </label>
         ))}</div>

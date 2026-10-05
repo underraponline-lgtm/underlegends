@@ -245,5 +245,45 @@ for (const c of JSON.parse(readFileSync(join(aqui, 'llaves_casos.json'), 'utf8')
   ok(c.que, js(r) === js(c.llaves), `JS:     ${js(r).slice(0, 600)}\n      Python: ${js(c.llaves).slice(0, 600)}`);
 }
 
+// 🔑 ¿DE QUÉ ANUNCIO ES ESTA LLAVE? (`LlaveVivo.deEvento()`, 05/10/2026). FFA anunció «DESGRACIAS EN TOKYO VOL 23 1v1»
+// y su llave dice «VOL 22 1v1»: por nombre no se juntan —a propósito— y la HUÉRFANA sí, con las reglas de
+// `_huerfanas()` de sheet/llaves_web.py. El texto y los anuncios son los de esa tarde.
+console.log('\n8 · la llave huérfana: el título copiado de la edición anterior\n');
+{
+  const ms = (iso) => Date.parse(iso + 'Z');
+  const llave = LV.aLlave(LV.unirPartidas([{ id: '1556736745129639998', canal: '9', sv: 'FFA', g: '1', autor: 'x',
+    pub: ms('2026-10-05T18:36:00'), ed: ms('2026-10-05T18:57:00'),
+    texto: '**__ ↱🉐 | DESGRACIAS EN TOKYO VOL 22 1v1|  🉐 ↲__**\n\n**[•OCTAVOS DE FINAL•]**\n\n' +
+      '▪️   [NC 🇦🇷] 🆚 [1200 🇰🇷] 🆚 [MAJIZTRAL 🇨🇴]\n▪️   [KEIDER 🇧🇷] 🆚 [BENJIXO 🇱🇸] 🆚 [OG 🇻🇪]\n' +
+      '▪️   [] 🆚 [] 🆚 []\n\n▪️ **[•CUARTOS DE FINAL•]**\n\n▪️   [] 🆚 []\n\n▪️**[• FINAL•]**\n\n▪️ [] 🆚 []\n' }])[0]);
+  const link = (id) => 'https://discord.com/channels/1/2/' + id;
+  const v23 = { nombre: 'DESGRACIAS EN TOKYO VOL 23 1v1', sv: 'FFA', cuando: '2026-10-05T18:29:40',
+    link: link('1556727593766617089'), mod: '1v1' };
+  const anuncios = [v23,
+    { nombre: 'DESGRACIAS EN TOKYO VOL 22', sv: 'FFA', cuando: '2026-10-05T02:57:00', link: link('1556492935757828148'), mod: 'pandilla' },
+    { nombre: 'lapalera del edi', sv: 'FFA', cuando: '2026-10-05T06:58:00', link: link('1556557525598470155'), mod: '1v1' }];
+  const ctx = { anuncios, todas: [llave] };
+  ok('la llave se lee: dos batallas de a tres', llave && llave.rondas[0].b.length === 2 && llave.rondas[0].b[0][0].length === 3,
+    js(llave && llave.rondas));
+  ok('por nombre no: «VOL 22» contra «VOL 23» son dos ediciones', !LV.porNombre(v23, [llave]));
+  ok('con la huérfana sí: es la única de esa serie, publicada después del anuncio', LV.deEvento(v23, [llave], ctx) === llave);
+  ok('y ningún otro anuncio se la lleva', anuncios.slice(1).every((a) => !LV.deEvento(a, [llave], ctx)));
+  const v22hoy = { nombre: 'DESGRACIAS EN TOKYO VOL 22 1v1', sv: 'FFA', cuando: '2026-10-05T18:20:00', link: '', mod: '1v1' };
+  const ctx2 = { anuncios: anuncios.concat([v22hoy]), todas: [llave] };
+  ok('si el «VOL 22» también se anunció a horario, la llave es de ése',
+    LV.deEvento(v22hoy, [llave], ctx2) === llave && !LV.deEvento(v23, [llave], ctx2));
+  const otra = Object.assign({}, llave, { id: '2', pub: llave.pub + 60000 });
+  ok('con dos candidatas no elige', !LV.deEvento(v23, [llave], { anuncios, todas: [llave, otra] }));
+  const equipos = Object.assign({}, llave, { rondas: [{ r: 'Octavos', b: [[['A, B', 'C, D'], '', '', []], [['E, F', 'G, H'], '', '', []]] }] });
+  ok('un 1v1 no se lleva una llave de equipos', !LV.deEvento(v23, [equipos], { anuncios, todas: [equipos] }));
+  const v24 = { nombre: 'DESGRACIAS EN TOKYO VOL 24 1v1', sv: 'FFA', cuando: '2026-10-05T18:31:00', link: '', mod: '1v1' };
+  ok('publicada después del SIGUIENTE anuncio de la serie, no', !LV.deEvento(v23, [llave], { anuncios: anuncios.concat([v24]), todas: [llave] }));
+  ok('sin contexto, sólo por nombre (como antes)', !LV.deEvento(v23, [llave]));
+  ok('el parecido de la serie es el de difflib', Math.abs(LV.parecido('desgraciasentokyovol', 'desgraciasentokiovol') - 0.95) < 1e-9);
+  ok('la serie: sin números, sin modalidad y sin la temporada del organizador',
+    LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1') === 'desgraciasentokyovol' && LV.serie('COMPE DEL VACILE T2 #1') === 'compedelvacile',
+    js([LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1'), LV.serie('COMPE DEL VACILE T2 #1')]));
+}
+
 console.log(mal ? `\n🔴 ${mal} mal\n` : '\n   todo ok\n');
 process.exit(mal ? 1 : 0);

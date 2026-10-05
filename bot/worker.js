@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 export { Avisos };
@@ -1743,8 +1743,9 @@ const claveCfg = (gid) => `cfg:${gid}`;
 // antes de que `/settings` existiera. Si el default fuera apagado, sumar esta
 // pantalla le cambiaría el apodo a gente de servidores que no pidieron nada.
 // 🎤 `vivo`: el canal donde el bot cuenta en vivo los eventos de la Liga (05/10/2026). Vacío = apagado: nunca escribe
-// en un servidor que no lo pidió (ver `chatVivo()` en avisos.js)
-const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '' };
+// en un servidor que no lo pidió (ver `chatVivo()` en avisos.js). 🔊 `vivo_nivel`: cuánto habla ahí
+// (`NIVELES_CHAT`, 05/10/2026); sin elegir, «normal», lo de siempre
+const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal' };
 
 async function ajustes(env, gid) {
   if (!gid) return { ...CFG_BASE };
@@ -1785,6 +1786,7 @@ function panelAjustes(sv, cfg) {
     : '**todos**';
   const avisos = cfg.avisos ? `<#${cfg.avisos}>` : '**ninguno**';
   const vivo = cfg.vivo ? `<#${cfg.vivo}>` : '**apagado**';
+  const nivel = NIVELES_CHAT[cfg.vivo_nivel] ? cfg.vivo_nivel : 'normal';
   const texto = [
     `## ⚙️ Ajustes de la Liga en **${sv}**`,
     '',
@@ -1799,9 +1801,11 @@ function panelAjustes(sv, cfg) {
     `**Avisos de cambio de rango** · ${avisos}`,
     '> Dónde anunciar cuando alguien sube o baja de rango.',
     '',
-    `**El bot en vivo** · ${vivo}`,
-    '> Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va: cuando sale la llave, ' +
-    'quién pasa cada ronda, la final y el campeón. Sin mencionar a nadie y como mucho un mensaje cada 10 minutos.',
+    `**El bot en vivo** · ${vivo}` + (cfg.vivo ? ` · habla: **${NIVELES_CHAT[nivel][0].toLowerCase()}**` : ''),
+    '> Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. Cuánto habla lo elegís abajo: ' +
+    '**lo justo** (el arranque y el campeón), **normal** (además quién pasa cada ronda y la final; como mucho un ' +
+    'mensaje cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 ' +
+    'minutos). Nunca menciona a nadie.',
   ].join('\n');
 
   return {
@@ -1837,6 +1841,15 @@ function panelAjustes(sv, cfg) {
         placeholder: 'Canal del bot en vivo (vacío = apagado)',
         min_values: 0, max_values: 1,
         channel_types: [0],
+      }] },
+      // 🔊 cuánto habla: la quinta fila, la última que Discord deja poner en un mensaje
+      { type: COMP.FILA, components: [{
+        type: COMP.SELECT,
+        custom_id: 'cfg:nivel',
+        placeholder: 'Cuánto habla el bot en vivo',
+        min_values: 1, max_values: 1,
+        options: Object.entries(NIVELES_CHAT).map(([v, [label, description]]) =>
+          ({ label, value: v, description, default: v === nivel })),
       }] },
     ],
   };
@@ -3810,6 +3823,7 @@ export default {
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
         else if (quien === 'avisos') cfg.avisos = vals[0] || '';
         else if (quien === 'vivo') cfg.vivo = vals[0] || '';
+        else if (quien === 'nivel' && NIVELES_CHAT[vals[0]]) cfg.vivo_nivel = vals[0];
         else return aviso('No sé qué ajuste es ése.');
         // ⚠️ Mismo motivo que en `/numeral`: sin `try`, un día sin cupo
         // de KV es «la aplicación no respondió» y el admin no sabe si quedó.

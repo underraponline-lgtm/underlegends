@@ -306,6 +306,21 @@ export function aLlamar(L, t, idx, hecho, ahora) {
 // ronda que no llegó a salir se saltea; y de una llave quieta hace más de media hora no se dice nada nuevo.
 export const CHAT_ENTRE = 10 * MIN;
 export const CHAT_FRESCA = 30 * MIN;
+// 🔊 CUÁNTO HABLA (05/10/2026, Dlx: «quisiera que sea por cada llave o que haya un nivel de intensidad de que el bot
+// hable por cada evento en vivo»). Lo elige el admin con /settings (`vivo_nivel` en `cfg:<guild>`) y Dlx desde el
+// Dashboard (`en_vivo_nivel`, que gana). Sin elegir, «normal»: lo de siempre. En «cada batalla» dice quién pasó en cada
+// una apenas la llave lo muestra —si se juntan varias, en el mismo mensaje— y el freno baja a uno cada 2 minutos: sigue
+// sin mencionar a nadie, y lo que cambia se dice en un mensaje NUEVO solo si pasaron esos 2 minutos.
+export const NIVELES_CHAT = {
+  poco: ['Lo justo', 'Cuando arranca y el campeón'],
+  normal: ['Normal', 'El arranque, quién pasa cada ronda, la final y el campeón'],
+  todo: ['Cada batalla', 'Además, quién gana cada batalla apenas se sabe'],
+};
+export const CHAT_ENTRE_TODO = 2 * MIN;
+//: en «cada batalla», lo que se juntó sin decir se dice hasta este tanto; lo de antes ya es viejo
+export const CHAT_JUNTAS = 8;
+/** El nivel que vale: el de Dlx, si eligió; si no, el del admin; si no, «normal». */
+export const nivelChat = (dash, admin) => (NIVELES_CHAT[dash] ? dash : NIVELES_CHAT[admin] ? admin : 'normal');
 //: pedidos a Discord por minuto para esto: comparte los 50 subpedidos del vigía
 export const CHAT_TOPE = 2;
 const WEB_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
@@ -314,11 +329,21 @@ export const escMd = (s) => String(s || '').replace(/([\\*_~|`>])/g, '\\$1');
 const batallasDe = (R) => ((R && R.b) || []).filter((b) => (b[0] || []).filter(Boolean).length >= 2);
 const jugadaChat = (b) => !!b[1] || /^pasan \d/.test(String(b[2] || ''));
 
+/** Quién pasó en la batalla `b` de la ronda `k`: el ganador, o los del grupo que aparecen en la ronda siguiente. */
+function pasaronChat(rondas, k, b) {
+  if (b[1]) return [b[1]];
+  const sig = new Set();
+  for (const x of batallasDe(rondas[k + 1])) for (const lado of x[0] || []) sig.add(claveTurno(lado));
+  return (b[0] || []).filter((lado) => lado && sig.has(claveTurno(lado)));
+}
+
 /**
  * Lo que el bot diría HOY de la llave `L` (`LlaveVivo.aLlave()`), en orden: `[{m, texto}]`, con `m` = llave, rondas,
- * final o campeon. `nombre` es el del evento y `fav` los favoritos, `[[nombre, ovr], …]` ya ordenados.
+ * final, campeon o —en «cada batalla»— `b:<ronda>:<quiénes>`, una por batalla jugada (con `cab`, el título para cuando
+ * van juntas). `nombre` es el del evento, `fav` los favoritos, `[[nombre, ovr], …]` ya ordenados, y `nivel` uno de
+ * `NIVELES_CHAT`.
  */
-export function momentosChat(L, nombre, fav) {
+export function momentosChat(L, nombre, fav, nivel = 'normal') {
   const out = [];
   const rondas = (L && L.rondas) || [];
   if (!rondas.some((R) => batallasDe(R).length)) return out;
@@ -327,26 +352,62 @@ export function momentosChat(L, nombre, fav) {
   out.push({ m: 'llave', texto: '🎤 Arrancó **' + tit + '**' + (n ? ' · ' + n + ' en la llave' : '')
     + ((fav || []).length ? ' · los favoritos: ' + fav.slice(0, 3).map(([q, o]) => escMd(q) + ' (OVR ' + o + ')').join(', ') : '')
     + '\nSeguila en vivo: <' + WEB_EVENTOS + '>' });
-  const cerradas = rondas.filter((R) => !/^final$|tercer/i.test(String(R.r || '')) && batallasDe(R).length
-    && batallasDe(R).every(jugadaChat));
-  if (cerradas.length) {
-    out.push({ m: 'rondas', texto: '⏱️ **' + tit + '**\n' + cerradas.map((R) => '**' + R.r + '**: pasaron '
-      + batallasDe(R).map((b) => escMd(b[1] || '')).filter(Boolean).join(', ')).join('\n') });
-  }
   const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
   const fb = F ? batallasDe(F)[0] : null;
-  if (fb && !fb[1]) out.push({ m: 'final', texto: '🔥 La final de **' + tit + '**: ' + fb[0].filter(Boolean).map(escMd).join(' contra ') });
+  if (nivel === 'todo') {
+    // cada batalla jugada, menos la final: la cuenta el campeón
+    rondas.forEach((R, k) => {
+      if (R === F) return;
+      for (const b of batallasDe(R)) {
+        if (!jugadaChat(b)) continue;
+        const ganan = pasaronChat(rondas, k, b);
+        if (!ganan.length) continue;
+        const pierden = (b[0] || []).filter((x) => x && !ganan.includes(x));
+        out.push({ m: 'b:' + R.r + ':' + (b[0] || []).map(claveTurno).sort().join('|'), cab: '⚔️ **' + tit + '**',
+          texto: '✅ ' + ganan.map((x) => '**' + escMd(x) + '**').join(' y ') + (ganan.length > 1 ? ' pasan' : ' pasa')
+            + ' · ' + R.r + (pierden.length ? ' · contra ' + pierden.map(escMd).join(' y ') : '') });
+      }
+    });
+  } else if (nivel !== 'poco') {
+    const cerradas = rondas.filter((R) => !/^final$|tercer/i.test(String(R.r || '')) && batallasDe(R).length
+      && batallasDe(R).every(jugadaChat));
+    if (cerradas.length) {
+      out.push({ m: 'rondas', texto: '⏱️ **' + tit + '**\n' + cerradas.map((R) => '**' + R.r + '**: pasaron '
+        + batallasDe(R).map((b) => escMd(b[1] || '')).filter(Boolean).join(', ')).join('\n') });
+    }
+  }
+  if (fb && !fb[1] && nivel !== 'poco') {
+    out.push({ m: 'final', texto: '🔥 La final de **' + tit + '**: ' + fb[0].filter(Boolean).map(escMd).join(' contra ') });
+  }
   if (fb && fb[1]) out.push({ m: 'campeon', texto: '🏆 Campeón de **' + tit + '**: **' + escMd(fb[1]) + '**' });
   return out;
+}
+
+/**
+ * «Cada batalla»: TODO lo que no salió va junto en un mensaje nuevo —el arranque, las batallas, la final, el campeón—,
+ * si la llave se movió hace poco y pasaron `CHAT_ENTRE_TODO` del último. Lo que se juntó de más (`CHAT_JUNTAS`) ya es
+ * viejo y se saltea, salvo el campeón y la final, que van siempre. `m` del mandar es la lista de momentos que lleva.
+ */
+function planChatTodo(ms, hechos, ultimo, ahora, fresca) {
+  const pend = ms.filter((x) => !(hechos || {})[x.m]);
+  if (!pend.length || !fresca || ahora - (ultimo || 0) < CHAT_ENTRE_TODO) return [];
+  const bats = pend.filter((x) => x.cab);
+  const viejas = new Set(bats.slice(0, Math.max(0, bats.length - CHAT_JUNTAS)));
+  const plan = [...viejas].map((x) => ({ tipo: 'saltar', m: x.m }));
+  const van = pend.filter((x) => !viejas.has(x));
+  const cab = !van.some((x) => x.m === 'llave') && van.find((x) => x.cab);
+  plan.push({ tipo: 'mandar', m: van.map((x) => x.m), texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') });
+  return plan;
 }
 
 /**
  * Qué hacer con los momentos `ms` de una llave en un canal: `[{tipo, m, texto, msg}]`, con `tipo` = mandar, editar o
  * saltar. `hechos` es `{m: {msg, texto}}` (lo ya mandado; `msg` vacío = salteado), `ultimo` el último mensaje NUEVO del
  * bot en ese canal y `fresca` si la llave se movió hace poco. Sólo se manda el ÚLTIMO momento: los anteriores que no
- * salieron se saltean.
+ * salieron se saltean. En «cada batalla» (`nivel` = todo), ver `planChatTodo()`.
  */
-export function planChat(ms, hechos, ultimo, ahora, fresca) {
+export function planChat(ms, hechos, ultimo, ahora, fresca, nivel = 'normal') {
+  if (nivel === 'todo') return planChatTodo(ms, hechos, ultimo, ahora, fresca);
   const plan = [];
   const meta = ms[ms.length - 1];
   for (const x of ms) {
@@ -1779,6 +1840,7 @@ export const DUENO = '739338101603696681';
 //   aviso_web         {texto, hasta}: un aviso arriba de la página, para todos, hasta esa hora. Viaja con `/vivo`,
 //                     que la página ya pide al abrir y cada pocos minutos: no suma ningún pedido
 //   en_vivo           {SV: bool}: el bot en el chat de cada servidor durante un evento (llega con esa función)
+//   en_vivo_nivel     {SV: poco|normal|todo}: cuánto habla ahí (`NIVELES_CHAT`); gana sobre el que eligió su admin
 export const FACTORES = [0.5, 1, 1.5, 2, 3, 5];
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
@@ -1808,6 +1870,15 @@ export function ajusteValido(cual, valor) {
     const out = {};
     for (const [k, v] of Object.entries(valor)) {
       if (!/^[A-Z]{2,5}$/.test(k) || typeof v !== 'boolean') return undefined;
+      out[k] = v;
+    }
+    return out;
+  }
+  if (cual === 'en_vivo_nivel') {
+    if (!valor || typeof valor !== 'object') return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,5}$/.test(k) || !Object.prototype.hasOwnProperty.call(NIVELES_CHAT, v)) return undefined;
       out[k] = v;
     }
     return out;
@@ -3054,6 +3125,7 @@ export class Avisos {
           try {
             const c = JSON.parse((await this.env.KV.get('cfg:' + g.g, { cacheTtl: 60 })) || '{}') || {};
             if (c.vivo) p.chat.admin[g.sv] = String(c.vivo);
+            if (NIVELES_CHAT[c.vivo_nivel]) p.chat.nivel[g.sv] = c.vivo_nivel;
           } catch (e) { /* sin KV, como si no */ }
         }
         return json(p);
@@ -3424,6 +3496,7 @@ export class Avisos {
   async chatVivo(ahora) {
     const aj = this.ajustes();
     const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
+    const dashNivel = (aj.en_vivo_nivel && typeof aj.en_vivo_nivel === 'object') ? aj.en_vivo_nivel : {};
     const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
       ahora - 3 * HORA).toArray();
     if (!filas.length) return 0;
@@ -3434,7 +3507,24 @@ export class Avisos {
     const cfgs = new Map();
     let pedidos = 0, mandados = 0, editados = 0, lobby = null;
     const errores = [];
-    for (const b of LV.unirPartidas(filas)) {
+    // 🔑 el nombre del evento es el del ANUNCIO, no el título de la llave: la de la DESGRACIAS EN TOKYO VOL 23
+    // (05/10/2026) decía «VOL 22» —el organizador copió la anterior— y el bot anunció «Arrancó … VOL 22». Lo junta
+    // `LlaveVivo.deEvento()`, lo mismo que la página
+    const bloques = LV.unirPartidas(filas);
+    const llaves = new Map();
+    for (const b of bloques) {
+      try { const L = LV.aLlave(b); if (L) llaves.set(b.id, L); } catch (e) { /* una llave que no se lee no frena */ }
+    }
+    let anuncios = null;
+    const nombreDe = (L) => {
+      if (anuncios === null) {
+        anuncios = this.anunciosVistos(ahora).map((a) => ({ nombre: a.n, sv: a.sv, cuando: a.ini, link: a.url, mod: a.mod }));
+      }
+      const ctx = { anuncios, todas: [...llaves.values()] };
+      const e = anuncios.find((a) => { try { return LV.deEvento(a, [L], ctx) === L; } catch (err) { return false; } });
+      return e ? e.nombre : L.nombre;
+    };
+    for (const b of bloques) {
       if (pedidos >= CHAT_TOPE) break;
       if (!b.g || dash[b.sv] === false) continue;
       if (!cfgs.has(b.g)) {
@@ -3447,24 +3537,27 @@ export class Avisos {
       if (!/^\d{5,25}$/.test(canal)) continue;
       // un canal donde Discord no lo deja escribir se vuelve a probar a la media hora, no cada minuto
       if (ahora - (this.leer('chat_fallo:' + canal) || 0) < 30 * MIN) continue;
-      let L = null;
-      try { L = LV.aLlave(b); } catch (e) { L = null; }
+      const L = llaves.get(b.id);
       if (!L) continue;
+      const nivel = nivelChat(dashNivel[b.sv], cfgs.get(b.g).vivo_nivel);
+      const entre = nivel === 'todo' ? CHAT_ENTRE_TODO : CHAT_ENTRE;
       const hechos = {};
       for (const r of this.sql.exec('SELECT m, msg, texto FROM chat_vivo WHERE llave = ? AND canal = ?', L.id, canal)
         .toArray()) hechos[r.m] = r;
       const ult = (this.sql.exec("SELECT MAX(t) AS t FROM chat_vivo WHERE canal = ? AND msg != ''", canal)
         .toArray()[0] || {}).t || 0;
       const fresca = ahora - (L.ed || 0) <= CHAT_FRESCA;
-      let ms = momentosChat(L, L.nombre, []);
-      // los favoritos sólo si lo que sale ahora es «Arrancó»: el lobby pesa, no se lee cada minuto
-      if (!hechos.llave && ms.length && ms[ms.length - 1].m === 'llave' && fresca && ahora - ult >= CHAT_ENTRE) {
+      const nombre = nombreDe(L);
+      let ms = momentosChat(L, nombre, [], nivel);
+      // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
+      if (!hechos.llave && ms.length && (nivel === 'todo' || ms[ms.length - 1].m === 'llave') && fresca
+          && ahora - ult >= entre) {
         if (lobby === null) {
           try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
         }
-        ms = momentosChat(L, L.nombre, favoritosDe(L, lobby.tabla || []));
+        ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel);
       }
-      for (const p of planChat(ms, hechos, ult, ahora, fresca)) {
+      for (const p of planChat(ms, hechos, ult, ahora, fresca, nivel)) {
         if (p.tipo === 'saltar') {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
             L.id, canal, p.m, '', '', ahora);
@@ -3489,8 +3582,11 @@ export class Avisos {
           }
           let id = '';
           try { id = String((await r.json()).id || ''); } catch (e) { id = ''; }
-          this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
-            L.id, canal, p.m, id, p.texto, ahora);
+          // en «cada batalla» un mensaje lleva varios momentos: cada uno queda anotado con ese mensaje
+          for (const m of [].concat(p.m)) {
+            this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+              L.id, canal, m, id, p.texto, ahora);
+          }
           mandados++;
           break;
         }
@@ -3607,6 +3703,18 @@ export class Avisos {
       'texto FROM inscritos ORDER BY pub DESC LIMIT 2000').toArray() };
   }
 
+  /** Los eventos que el vigía vio anunciar en el último día (ver `anuncios` en `vivo()`): para la página y para saber
+   *  de qué anuncio es cada llave en vivo (`chatVivo()`). */
+  anunciosVistos(ahora) {
+    return this.sql.exec("SELECT id, cuerpo FROM avisos WHERE creado > ? AND estado != 2 AND instr(id, ':') = 0 " +
+      'ORDER BY creado DESC LIMIT 12', ahora - 24 * HORA).toArray().map((r) => {
+      let c = {};
+      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
+      return c.tipo === 'evento' && c.sv !== SV_PRUEBA && c.t ? { id: r.id, sv: c.sv, n: c.t, ini: c.ini || null,
+        mod: c.mod || '', cup: c.cup || '', pre: c.pre || '', url: c.url || '', cx: c.cx ? 1 : 0 } : null;
+    }).filter(Boolean);
+  }
+
   /** Para `/avisos/vivo`: el texto de las llaves de las últimas horas. */
   vivo() {
     const ahora = Date.now();
@@ -3646,13 +3754,7 @@ export class Avisos {
     // eventos se anuncian con 15 min o menos—: DESGRACIAS EN TOKYO VOL 21 se avisó al teléfono a las 3:59 PM y el
     // Inicio no lo tenía. La página los suma a «próximos» mientras el payload no los traiga (`Liga.proximos()`).
     // Sólo los de verdad: ni los descartados (estado 2), ni el recordatorio (`:antes`), ni pruebas ni cancelaciones
-    anuncios: this.sql.exec("SELECT id, cuerpo FROM avisos WHERE creado > ? AND estado != 2 AND instr(id, ':') = 0 " +
-      'ORDER BY creado DESC LIMIT 12', ahora - 24 * HORA).toArray().map((r) => {
-      let c = {};
-      try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
-      return c.tipo === 'evento' && c.sv !== SV_PRUEBA && c.t ? { id: r.id, sv: c.sv, n: c.t, ini: c.ini || null,
-        mod: c.mod || '', cup: c.cup || '', pre: c.pre || '', url: c.url || '', cx: c.cx ? 1 : 0 } : null;
-    }).filter(Boolean),
+    anuncios: this.anunciosVistos(ahora),
     // 🙋 y quiénes se anotaron a cada uno, por el id del anuncio (ver `anotados()`)
     anotados: (this.leer('anotados') || {}).ev || {} };
   }
@@ -5739,7 +5841,7 @@ export class Avisos {
       // 🎤 el bot en vivo: el chat general de cada servidor, lo que pasó la última vez, y (lo llena la ruta) dónde lo
       // prendió cada admin
       chat: { generales: ((this.leer('canales') || {}).generales || []).map((x) => ({ sv: x.sv, g: x.g })),
-        ultimo: this.leer('chat_vivo'), admin: {} },
+        ultimo: this.leer('chat_vivo'), admin: {}, nivel: {}, niveles: NIVELES_CHAT },
       // 🤝 y lo que te llega por DM, junto: las postulaciones de /sumate y los errores reportados en las llaves (los 10
       // últimos de cada uno), con la clave de la página de quien lo mandó si se la conoce
       postulaciones: this.sql.exec('SELECT p.t, p.datos, p.enviada, p.error, i.k FROM postulaciones p ' +

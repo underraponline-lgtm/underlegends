@@ -158,6 +158,33 @@ const ok = (cond, que) => {
   ok(p.map((x) => x.tipo + ':' + x.m).join() === 'editar:rondas,mandar:final' && p[0].msg === '6',
     'a los 10 minutos sí; y las rondas se editan en su mensaje («Arrancó» no: sus favoritos se leen una vez)');
   ok(!A.planChat(m1, {}, 0, T, false).some((x) => x.tipo === 'mandar'), 'de una llave quieta no se dice nada nuevo');
+  // 🔊 CUÁNTO HABLA (05/10/2026, Dlx: «por cada llave o un nivel de intensidad»): lo justo, normal o cada batalla
+  ok(A.nivelChat('', '') === 'normal' && A.nivelChat('', 'todo') === 'todo' && A.nivelChat('poco', 'todo') === 'poco'
+    && A.nivelChat('cualquiera', 'poco') === 'poco', 'el nivel: el de Dlx gana, si no el del admin, si no «normal»');
+  const p0 = A.momentosChat(llaveDe(SEMIS), 'COPA SOOLAR', [], 'poco');
+  ok(p0.map((x) => x.m).join() === 'llave', 'lo justo: con la final armada todavía no dice nada más que el arranque');
+  ok(A.momentosChat(llaveDe(SEMIS + '\nCAMPEÓN: Dora 🇲🇽\n'), 'COPA SOOLAR', [], 'poco').map((x) => x.m).join() === 'llave,campeon',
+    'lo justo: el arranque y el campeón');
+  const t1 = A.momentosChat(llaveDe(SEMIS), 'COPA SOOLAR', [], 'todo');
+  ok(t1.map((x) => x.m.replace(/:.*/, '')).join() === 'llave,b,b,final'
+    && /✅ \*\*Ana 🇦🇷\*\* pasa · Cuartos · contra Bea 🇨🇱/.test(t1[1].texto)
+    && /✅ \*\*Dora 🇲🇽\*\* pasa · Cuartos · contra Cami 🇻🇪/.test(t1[2].texto),
+  'cada batalla: quién pasó en cada una, con la ronda y contra quién');
+  let q = A.planChat(t1, {}, 0, T, true, 'todo');
+  ok(q.length === 1 && q[0].tipo === 'mandar' && q[0].m.length === 4 && /^🎤 Arrancó/.test(q[0].texto)
+    && /La final/.test(q[0].texto), 'cada batalla: lo que no salió va JUNTO en un mensaje, no se saltea');
+  const hechoLl = { llave: { msg: '5', texto: t1[0].texto } };
+  ok(!A.planChat(t1, hechoLl, T - 60000, T, true, 'todo').length, 'cada batalla: al minuto del último, todavía no');
+  q = A.planChat(t1, hechoLl, T - A.CHAT_ENTRE_TODO, T, true, 'todo');
+  ok(q.length === 1 && q[0].m.length === 3 && /^⚔️ \*\*COPA SOOLAR\*\*\n✅/.test(q[0].texto),
+    'cada batalla: a los 2 minutos sí, con el nombre del evento arriba');
+  ok(!A.planChat(t1, hechoLl, 0, T, false, 'todo').length, 'cada batalla: de una llave quieta tampoco');
+  const muchas = [t1[0]].concat(Array.from({ length: 12 }, (x, i) => ({ m: 'b:Filtros:' + i, cab: '⚔️ **X**', texto: '✅ ' + i })));
+  q = A.planChat(muchas, hechoLl, 0, T, true, 'todo');
+  ok(q.filter((x) => x.tipo === 'saltar').length === 12 - A.CHAT_JUNTAS && q[q.length - 1].m.length === A.CHAT_JUNTAS
+    && /✅ 11$/.test(q[q.length - 1].texto), 'cada batalla: si se juntaron de más, van las últimas ' + A.CHAT_JUNTAS);
+  ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo' && A.ajusteValido('en_vivo_nivel', { FFA: 'todo' }).FFA === 'todo'
+    && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard sólo acepta los tres');
   ok(JSON.stringify(A.favoritosDe(llaveDe(CUARTOS), [{ n: 'Ana', ovr: 80 }, { n: 'Dora', ovr: 90 },
     { n: 'Cami', ovr: 70 }, { n: 'cami', ovr: 75 }])) === '[["Dora",90],["Ana",80]]',
   'los favoritos: los de más OVR de la llave; un nombre de dos personas no cuenta');

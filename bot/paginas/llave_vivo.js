@@ -1120,8 +1120,154 @@
     return out;
   }
 
+  /* ── ¿DE QUÉ ANUNCIO ES ESTA LLAVE? ──────────────────────────────────────
+     La página (`llaveDeEvento()` de app.js) y el bot en vivo (`chatVivo()` de bot/avisos.js) preguntan lo mismo, así
+     que vive acá, donde los dos lo cargan. Es `cruzar()` de sheet/llaves_web.py, en dos pasadas:
+
+     1 · POR NOMBRE (`porNombre`): el mismo servidor, publicada desde una hora antes hasta cinco después del arranque,
+         alguna palabra en común que no sea de relleno —o la llave sin título— y SIN NÚMEROS QUE CHOQUEN: «VOL 11» y
+         «VOL 12» son dos eventos. 🔴 «VOL» no dice nada (01/10/2026): «DESGRACIAS EN TOKYO VOL 20 1v1» se llevaba la
+         llave de «Dos Generaciones Un Destino Vol 2», las dos de FFA, el mismo día.
+     2 · 🔑 LA HUÉRFANA (`huerfana`, 05/10/2026; Dlx: «estas llaves en vivo no se detectan»): FFA anunció «DESGRACIAS
+         EN TOKYO VOL 23 1v1» y su llave dice «VOL 22 1v1» —copió el título de la anterior—. El ciclo ya lo resolvía
+         desde el 29/09 (la VOL 17 con la llave de la 16, `_huerfanas()`) y la página en vivo no. Las mismas reglas:
+         la misma SERIE (el nombre sin números ni modalidad), una llave que NINGÚN OTRO ANUNCIO se lleva por nombre,
+         publicada desde 15 minutos antes del anuncio hasta el SIGUIENTE ANUNCIO DE ESA SERIE (o 24 h), la misma
+         FORMA (un 1v1 no se lleva una de equipos) y UNA SOLA candidata entre todas las que hay en vivo: con dos, no
+         elige. Un botón que abre la llave de otro evento es peor que no tener botón.
+
+     Un anuncio es `{nombre, sv, cuando, link, mod}`: `cuando` el arranque (ISO en UTC, con o sin Z, o ms) y `link` el
+     del mensaje, que dice cuándo se publicó. */
+  var RELLENO = { vol: 1, volumen: 1, edicion: 1, fecha: 1, the: 1, los: 1, las: 1, del: 1, con: 1, por: 1,
+    una: 1, uno: 1, '1v1': 1, '2v2': 1, '3v3': 1, '4v4': 1, '1vs1': 1, '2vs2': 1, '3vs3': 1, '4vs4': 1 };
+  var MODALIDAD_EV = /(^|[^a-z0-9])\d+\s*(?:vs|v|x)\s*\d+(?![a-z0-9])/gi;
+  var TEMPORADA_EV = /(^|[^a-z0-9])(?:temporada|season|temp|t)\s*[.#:-]?\s*(\d+)/gi;
+  var FORMA_EV = /(^|[^a-z0-9])(\d+)\s*(?:vs|v)\s*(\d+)(?![a-z0-9])/i;
+  var HUERFANA_ANTES = 15 * 60000, HUERFANA_MS = 24 * 3600000, SERIE_MIN = 0.9;
+  function sinVariantes(s) { return String(s || '').normalize('NFKD').replace(/🆚/g, 'vs').replace(/[︎️]/g, ''); }
+  // `[temporada, edición]` de un nombre, en dígitos: `_numeros()` de sheet/llaves_web.py. Sin la modalidad («1v1»,
+  // «2VS2», «1🆚1») ni la temporada del organizador («T2») mezcladas en la edición
+  function numerosEv(s) {
+    var t = '';
+    s = sinVariantes(s).replace(MODALIDAD_EV, '$1 ').replace(TEMPORADA_EV, function (m, a, d) { t += d; return a + ' '; });
+    return [t, s.replace(/\D/g, '')];
+  }
+  // ¿se contradicen? Dos ediciones distintas sí («VOL 20» y «Vol 2»); un número contra ninguno, no
+  function chocanEv(x, y) {
+    var a = numerosEv(x), b = numerosEv(y);
+    return !!((a[1] && b[1] && a[1] !== b[1]) || (a[0] && b[0] && a[0] !== b[0]));
+  }
+  // ⚠️ NFKD ANTES de pasar a minúsculas: `𝓟𝓞𝓔𝓢Í𝓐 𝓒𝓡𝓤𝓓𝓐` (URBF, 01/10/2026) sale de NFKD en MAYÚSCULAS
+  function palabrasEv(s) {
+    return String(s || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
+      .filter(function (w) { return w.length > 2; });
+  }
+  function instanteEv(x) { return typeof x === 'number' ? x : Date.parse(String(x || '').replace(/Z$/, '') + 'Z'); }
+  // cuándo se PUBLICÓ el anuncio: del id de su mensaje (los ids de Discord llevan la hora); si no, el arranque
+  function publicadoEv(e) {
+    var m = /\/(\d{15,22})\/?$/.exec(String(e.link || e.url || ''));
+    return m ? Math.floor(Number(m[1]) / 4194304) + 1420070400000 : instanteEv(e.cuando);
+  }
+  // la serie del organizador: `_serie()` de sheet/llaves_web.py
+  function serieEv(s) {
+    s = sinVariantes(s).replace(MODALIDAD_EV, '$1 ').replace(TEMPORADA_EV, '$1 ');
+    return s.toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}]/gu, '')
+      .replace(/\d/g, '');
+  }
+  // `difflib.SequenceMatcher(None, a, b).ratio()`, para nombres cortos
+  function parecidoEv(a, b) {
+    if (!a.length && !b.length) return 1;
+    var mm = function (a0, a1, b0, b1) {
+      var k = 0, ia = a0, jb = b0;
+      for (var i = a0; i < a1; i++) {
+        for (var j = b0; j < b1; j++) {
+          var n = 0;
+          while (i + n < a1 && j + n < b1 && a[i + n] === b[j + n]) n++;
+          if (n > k) { k = n; ia = i; jb = j; }
+        }
+      }
+      return k ? k + mm(a0, ia, b0, jb) + mm(ia + k, a1, jb + k, b1) : 0;
+    };
+    return 2 * mm(0, a.length, 0, b.length) / (a.length + b.length);
+  }
+  function mismaSerieEv(a, b) { return !!(a && b && (a === b || parecidoEv(a, b) >= SERIE_MIN)); }
+  // `forma_anuncio()`: «solos», «equipos» o '' (no se sabe). Un MULTIVERSE o «pandillas» no se sabe
+  function formaAnuncioEv(mod) {
+    var s = sinVariantes(mod), t = s.toLowerCase();
+    if (/multiverse|pandilla/.test(t)) return '';
+    if (/dupla|equipo/.test(t)) return 'equipos';
+    var m = FORMA_EV.exec(s);
+    if (!m) return '';
+    return +m[2] === 1 && +m[3] === 1 ? 'solos' : +m[2] === +m[3] ? 'equipos' : '';
+  }
+  // `forma_llave()`: un lado de equipo trae los nombres con coma («27, Piyi»)
+  function formaLlaveEv(L) {
+    var lados = [];
+    ((L && L.rondas) || []).forEach(function (R) {
+      (R.b || []).forEach(function (b) { (b[0] || []).forEach(function (x) { if (x) lados.push(String(x)); }); });
+    });
+    if (!lados.length) return '';
+    var eq = lados.filter(function (x) { return x.indexOf(',') >= 0; }).length;
+    return eq * 2 > lados.length ? 'equipos' : eq ? '' : 'solos';
+  }
+  function porNombre(e, ls) {
+    var t = instanteEv(e.cuando), pe = palabrasEv(e.nombre);
+    var comun = function (L) {
+      return palabrasEv(L.nombre).filter(function (w) { return !RELLENO[w] && pe.indexOf(w) >= 0; }).length;
+    };
+    var cand = (ls || []).filter(function (L) {
+      var p = L.pub || L.ed || 0;
+      return (!e.sv || !L.sv || e.sv === L.sv) && p >= t - 3600000 && p <= t + 5 * 3600000 &&
+        !chocanEv(e.nombre, L.nombre) &&
+        (comun(L) > 0 || !palabrasEv(L.nombre).length || L.nombre === 'La llave');
+    });
+    cand.sort(function (a, b) { return comun(b) - comun(a); });
+    return cand[0] || null;
+  }
+  function mismoAnuncio(a, b) {
+    if (a === b) return true;
+    if (a.link && b.link) return a.link === b.link;
+    return (a.sv || '') === (b.sv || '') && a.nombre === b.nombre && instanteEv(a.cuando) === instanteEv(b.cuando);
+  }
+  // `ls`: entre cuáles se busca; `anuncios`: todos los que se conocen (para el siguiente de la serie y para saber qué
+  // llave ya es de otro); `todas`: todas las llaves en vivo, para que con dos candidatas no elija
+  function huerfana(e, ls, anuncios, todas) {
+    var se = serieEv(e.nombre), pub = publicadoEv(e);
+    if (!se || isNaN(pub)) return null;
+    var pool = [];
+    (ls || []).concat(todas || []).forEach(function (L) {
+      if (L && !pool.some(function (x) { return x === L || (x.id && x.id === L.id); })) pool.push(L);
+    });
+    // si alguna llave en vivo ya es suya por nombre, la huérfana no es de este anuncio
+    if (porNombre(e, pool)) return null;
+    var fe = formaAnuncioEv(e.mod || e.modalidad);
+    var cand = pool.filter(function (L) {
+      var p = L.pub || L.ed || 0, fl = formaLlaveEv(L);
+      return !L.veredictos && (L.sv || '') === (e.sv || '') && p >= pub - HUERFANA_ANTES &&
+        mismaSerieEv(serieEv(L.nombre), se) && !(fe && fl && fe !== fl);
+    });
+    if (!cand.length) return null;
+    var otros = (anuncios || []).filter(function (q) { return (q.sv || '') === (e.sv || '') && !mismoAnuncio(q, e); });
+    var hasta = pub + HUERFANA_MS;
+    otros.forEach(function (q) {
+      var qp = publicadoEv(q);
+      if (qp > pub && qp < hasta && mismaSerieEv(serieEv(q.nombre), se)) hasta = qp;
+    });
+    cand = cand.filter(function (L) {
+      return (L.pub || L.ed || 0) < hasta && !otros.some(function (q) { return porNombre(q, [L]); });
+    });
+    if (cand.length !== 1) return null;
+    return (ls || []).filter(function (L) { return L === cand[0] || (L.id && L.id === cand[0].id); })[0] || null;
+  }
+  /* la llave en vivo del anuncio `e` entre `ls`, o null. `ctx = {anuncios, todas}` prende la segunda pasada */
+  function deEvento(e, ls, ctx) {
+    return porNombre(e, ls) || (ctx ? huerfana(e, ls, ctx.anuncios, ctx.todas) : null);
+  }
+
   var LlaveVivo = { plano: plano, traducir: traducir, norm: norm, nombresDeLinea: nombresDeLinea,
     llavesDeVeredictos: llavesDeVeredictos,
+    deEvento: deEvento, porNombre: porNombre, huerfana: huerfana, chocan: chocanEv, numeros: numerosEv,
+    serie: serieEv, formaAnuncio: formaAnuncioEv, formaLlave: formaLlaveEv, parecido: parecidoEv,
     unirContinuadas: unirContinuadas, rondasDe: rondasDe, resolver: resolver, enlazar: enlazar,
     titulo: titulo, unirPartidas: unirPartidas, aLlave: aLlave, lineaCampeon: lineaCampeon,
     veredictos: veredictos, funaDe: funaDe, funaRondas: funaRondas, medallasDe: medallasDe };

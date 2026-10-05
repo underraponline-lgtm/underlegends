@@ -880,52 +880,30 @@ function programarVivo() {
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState === 'visible' && D && Date.now() - VIVO_PEDIDO > 55000) pedirVivo();
 });
-/* ¿Cuál de las llaves en vivo es la de este anuncio? El mismo servidor, publicada
-   desde una hora antes hasta cinco después de la hora del anuncio y, si hay más
-   de una, la que comparte palabras con el nombre. ⚠️ Con un solo candidato
-   también tiene que compartir alguna, salvo que la llave no tenga título: dos
-   eventos del mismo servidor en la misma noche no se confunden. */
-// las palabras que están en el nombre de cualquier evento: no alcanzan para decir que una llave es de ése
-var RELLENO_LL = { vol: 1, volumen: 1, edicion: 1, fecha: 1, the: 1, los: 1, las: 1, del: 1, con: 1, por: 1,
-  una: 1, uno: 1, '1v1': 1, '2v2': 1, '3v3': 1, '4v4': 1, '1vs1': 1, '2vs2': 1, '3vs3': 1, '4vs4': 1 };
-// `[temporada, edición]` de un nombre, en dígitos: lo mismo que `_numeros()` de sheet/llaves_web.py. Sin la
-// modalidad («1v1», «2VS2», «1🆚1») ni la temporada del organizador («T2») mezcladas en la edición
-function numerosLL(s) {
-  var t = '';
-  s = String(s || '').normalize('NFKD').replace(/🆚/g, 'vs').replace(/[︎️]/g, '')
-    .replace(/(^|[^a-z0-9])\d+\s*(?:vs|v|x)\s*\d+(?![a-z0-9])/gi, '$1 ')
-    .replace(/(^|[^a-z0-9])(?:temporada|season|temp|t)\s*[.#:-]?\s*(\d+)/gi, function (m, a, d) { t += d; return a + ' '; });
-  return [t, s.replace(/\D/g, '')];
-}
-// ¿se contradicen? Dos ediciones distintas sí («VOL 20» y «Vol 2»); un número contra ninguno, no
-function chocanLL(x, y) {
-  var a = numerosLL(x), b = numerosLL(y);
-  return !!((a[1] && b[1] && a[1] !== b[1]) || (a[0] && b[0] && a[0] !== b[0]));
+/* ¿Cuál de las llaves en vivo es la de este anuncio? Lo contesta `LlaveVivo.deEvento()` (llave_vivo.js), que es lo
+   mismo que pregunta el bot en vivo: el mismo servidor, a horario, alguna palabra en común y sin números que choquen —y
+   si no, la llave HUÉRFANA, con el título copiado de la edición anterior («VOL 22» en la llave de la VOL 23, FFA,
+   05/10/2026)—. Para esa segunda pasada hacen falta todos los anuncios que se conocen y todas las llaves en vivo. */
+var ANUNCIOS_LL = { d: null, v: null, l: [] };
+function anunciosLL() {
+  // se arma una vez por payload y por vuelta del vigía: la página llama a esto en cada dibujo
+  if (ANUNCIOS_LL.d === D && ANUNCIOS_LL.v === VIVO) return ANUNCIOS_LL.l;
+  var out = [], visto = {};
+  var sumar = function (n, sv, cuando, link, mod) {
+    var k = link || (sv + '|' + n + '|' + cuando);
+    if (!n || visto[k]) return;
+    visto[k] = 1;
+    out.push({ nombre: n, sv: sv || '', cuando: cuando, link: link || '', mod: mod || '' });
+  };
+  ((D && D.proximos) || []).forEach(function (x) { sumar(x.nombre, x.sv, x.cuando, x.link, x.modalidad); });
+  ((D && D.calendario) || []).forEach(function (x) { sumar(x.n, x.sv, x.t, x.link, x.mod); });
+  ((VIVO && VIVO.anuncios) || []).forEach(function (a) { sumar(a.n, a.sv, a.ini, a.url, a.mod); });
+  ANUNCIOS_LL = { d: D, v: VIVO, l: out };
+  return out;
 }
 function llaveDeEvento(e, ls) {
-  var t = Date.parse(String(e.cuando || '').replace(/Z$/, '') + 'Z');
-  // ⚠️ NFKD ANTES de pasar a minúsculas: `𝓟𝓞𝓔𝓢Í𝓐 𝓒𝓡𝓤𝓓𝓐` (URBF, 01/10/2026) sale de NFKD en MAYÚSCULAS, y al revés
-  // el filtro de abajo se comía el título entero
-  var pal = function (s) {
-    return String(s || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
-      .filter(function (w) { return w.length > 2; });
-  };
-  var pe = pal(e.nombre);
-  // 🔴 «VOL» NO DICE NADA, Y LOS NÚMEROS SÍ (01/10/2026, Dlx: «ahora hay 3 en vivos, CHEQUEA»): «DESGRACIAS EN TOKYO
-  // VOL 20 1v1» se llevaba la llave en vivo de «Dos Generaciones Un Destino Vol 2» —las dos de FFA, el mismo día—
-  // por la palabra «vol», y salía en vivo tres horas después de empezar. Ahora una palabra de relleno no junta, y
-  // dos ediciones distintas no se juntan nunca: la regla de `_chocan()` de sheet/llaves_web.py
-  var comun = function (L) {
-    return pal(L.nombre).filter(function (w) { return !RELLENO_LL[w] && pe.indexOf(w) >= 0; }).length;
-  };
-  var cand = (ls || []).filter(function (L) {
-    var p = L.pub || L.ed || 0;
-    return (!e.sv || !L.sv || e.sv === L.sv) && p >= t - 3600000 && p <= t + 5 * 3600000 &&
-      !chocanLL(e.nombre, L.nombre) &&
-      (comun(L) > 0 || !pal(L.nombre).length || L.nombre === 'La llave');
-  });
-  cand.sort(function (a, b) { return comun(b) - comun(a); });
-  return cand[0] || null;
+  if (!window.LlaveVivo || !LlaveVivo.deEvento) return null;
+  return LlaveVivo.deEvento(e, ls, { anuncios: anunciosLL(), todas: Object.keys(VIVO_L).map(function (k) { return VIVO_L[k]; }) });
 }
 /* 🔑 LA LLAVE EN VIVO, CON LO QUE DICE #VEREDICTOS (02/10/2026). Dlx: «el orden verdadero de las llaves para ese evento
    estaba en el canal de veredictos» y «cuando hay eventos en vivo en X servidor, tienes que estar atento a los canales

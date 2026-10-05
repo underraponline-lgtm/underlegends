@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.42",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T15:45:00-04:00",
+   "titulo": "La llave en vivo, aunque tenga el número de la anterior",
+   "items": [
+    "🏆 **La llave en vivo aparece aunque el organizador haya copiado el título de la edición anterior** («VOL 22» en la llave de la VOL 23): si es la única de esa serie y salió después del anuncio, es la suya.",
+    "🎤 **El bot en vivo tiene niveles**: lo justo (el arranque y el campeón), normal (además cada ronda y la final) o cada batalla (quién gana cada una apenas se sabe). Lo elige el admin de cada servidor con `/settings`.",
+    "✏️ **El bot dice el nombre del evento como se anunció**, no el título de la llave."
+   ]
+  },
+  {
    "version": "2.41",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T15:30:00-04:00",
