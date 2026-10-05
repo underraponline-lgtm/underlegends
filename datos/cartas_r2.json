@@ -33,6 +33,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/abyssus/sv-ddf.webp",
@@ -53,6 +54,8 @@
  "acry": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/acry/sv-ddf.webp",
@@ -65,6 +68,8 @@
  "adriagner": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/sv-dra.webp",
@@ -101,6 +106,8 @@
  "agus": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/agus/sv-ffa.webp",
@@ -120,6 +127,7 @@
  "aktybo": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aktybo/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aktybo/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aktybo/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aktybo/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aktybo/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/aktybo/sv-sr.webp",
@@ -137,6 +145,8 @@
  "alexi": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/alexi/sv-dra.webp",
@@ -188,6 +198,7 @@
  "andy": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/sv-dra.webp",
@@ -199,6 +210,8 @@
  "ardean": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/sv-ddf.webp",
@@ -215,6 +228,8 @@
  "ariaxer": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ariaxer/sv-dra.webp",
@@ -281,6 +296,8 @@
  "bastyretro": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/sv-ddf.webp",
@@ -364,6 +381,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bloody/sv-ddf.webp",
@@ -403,6 +421,8 @@
  "btrece": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/btrece/sv-ddf.webp",
@@ -471,6 +491,8 @@
  "carlosss": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/carlosss/sv-ddf.webp",
@@ -483,6 +505,7 @@
  "catarsis": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/catarsis/sv-dra.webp",
@@ -536,6 +559,8 @@
  "cinexfilo": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/cinexfilo/sv-dra.webp",
@@ -598,6 +623,8 @@
  "criszj": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/criszj/sv-dra.webp",
@@ -606,6 +633,8 @@
  "crk": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-dra.webp",
@@ -690,6 +719,8 @@
  "dcet": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dcet/sv-ddf.webp",
@@ -711,6 +742,7 @@
  "deluxe": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/sv-acad.webp",
@@ -732,6 +764,8 @@
  "deuxs": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deuxs/sv-ffa.webp",
@@ -758,6 +792,7 @@
  "dios": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-ddf.webp",
@@ -835,6 +870,8 @@
  "dxg": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dxg/sv-ddf.webp",
@@ -851,6 +888,8 @@
  "dynoco": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dynoco/sv-ddf.webp",
@@ -943,6 +982,8 @@
  "elsoolar": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/elsoolar/sv-ffa.webp",
@@ -990,6 +1031,8 @@
  "emilyfamily": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/sv-dra.webp",
@@ -1010,6 +1053,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/erian/sv-ddf.webp",
@@ -1053,6 +1097,8 @@
  "eze": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/eze/sv-ddf.webp",
@@ -1064,6 +1110,7 @@
  "ezias": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-ddf.webp",
@@ -1094,6 +1141,8 @@
  "filozico": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-ddf.webp",
@@ -1105,6 +1154,8 @@
  "fin": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/fin/sv-dra.webp",
@@ -1164,6 +1215,8 @@
  "focox": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/focox/sv-dra.webp",
@@ -1187,6 +1240,8 @@
  "freestyle4allmyniggaz": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/freestyle4allmyniggaz/sv-ffa.webp",
@@ -1207,6 +1262,8 @@
  "galileo": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/galileo/sv-dra.webp",
@@ -1217,6 +1274,8 @@
  "garxzii": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/garxzii/sv-dra.webp",
@@ -1228,6 +1287,8 @@
  "geoka": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/geoka/sv-dra.webp",
@@ -1276,6 +1337,8 @@
  "gocho": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gocho/sv-ffa.webp",
@@ -1290,6 +1353,7 @@
  "gosuz": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gosuz/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gosuz/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gosuz/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gosuz/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gosuz/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gosuz/sv-dra.webp",
@@ -1300,6 +1364,8 @@
  "gp": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gp/sv-ddf.webp",
@@ -1312,6 +1378,7 @@
  "guess": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/guess/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/guess/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/guess/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/guess/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/guess/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/guess/sv-ffa.webp",
@@ -1322,6 +1389,8 @@
  "gus": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/gus/sv-dra.webp",
@@ -1393,6 +1462,8 @@
  "humildad": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/humildad/sv-dra.webp",
@@ -1405,6 +1476,7 @@
  "ifx": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ifx/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ifx/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ifx/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ifx/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ifx/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ifx/sv-sr.webp",
@@ -1413,6 +1485,8 @@
  "iguana": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-dra.webp",
@@ -1492,6 +1566,7 @@
  "jayden": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jayden/sv-dra.webp",
@@ -1514,6 +1589,8 @@
  "jeixder": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jeixder/sv-ddf.webp",
@@ -1567,6 +1644,8 @@
  "johao": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/sv-dra.webp",
@@ -1604,6 +1683,7 @@
  "juanpa": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juanpa/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juanpa/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juanpa/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juanpa/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juanpa/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juanpa/sv-ddf.webp",
@@ -1617,6 +1697,7 @@
  "juasmio": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juasmio/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juasmio/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juasmio/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juasmio/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juasmio/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/juasmio/sv-acad.webp",
@@ -1631,6 +1712,8 @@
  "jult": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jult/sv-ffa.webp",
@@ -1644,6 +1727,8 @@
  "jupiter": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jupiter/sv-ddf.webp",
@@ -1675,6 +1760,10 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kb/sv-dra.webp"
  },
  "keider": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/keider/sv-ddf.webp",
@@ -1691,6 +1780,8 @@
  "kenny": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/sv-dra.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kenny/temporada.webp"
@@ -1713,6 +1804,7 @@
  "kochi": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kochi/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kochi/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kochi/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kochi/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kochi/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kochi/sv-ddf.webp",
@@ -1749,6 +1841,7 @@
  "kourier": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-ddf.webp",
@@ -1761,6 +1854,8 @@
  "kravitz": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/sv-dra.webp",
@@ -1772,6 +1867,8 @@
  "krish": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krish/sv-dra.webp",
@@ -1783,6 +1880,8 @@
  "krtman": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/krtman/sv-dra.webp",
@@ -1816,6 +1915,8 @@
  "kuni": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/sv-ddf.webp",
@@ -1842,6 +1943,8 @@
  "kyss": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-dra.webp",
@@ -1868,6 +1971,8 @@
  "last": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/last/sv-ddf.webp",
@@ -1913,6 +2018,7 @@
  "lewito": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lewito/sv-dra.webp",
@@ -1942,6 +2048,7 @@
  "liberia": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/liberia/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/liberia/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/liberia/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/liberia/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/liberia/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/liberia/sv-acad.webp",
@@ -1966,6 +2073,8 @@
  "lilnano": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lilnano/sv-ddf.webp",
@@ -2000,6 +2109,8 @@
  "lordviruzz": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lordviruzz/sv-ddf.webp",
@@ -2012,6 +2123,8 @@
  "lrs": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lrs/sv-ddf.webp",
@@ -2029,6 +2142,8 @@
  "luffy": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/luffy/sv-ffa.webp",
@@ -2071,6 +2186,7 @@
  "lvel": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lvel/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lvel/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lvel/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lvel/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lvel/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lvel/sv-dra.webp",
@@ -2092,6 +2208,8 @@
  "majiztral": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/majiztral/sv-ddf.webp",
@@ -2114,6 +2232,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/makmah/sv-ffa.webp",
@@ -2141,6 +2260,8 @@
  "marcos": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/marcos/sv-ddf.webp",
@@ -2160,6 +2281,8 @@
  "masino": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/masino/sv-ddf.webp",
@@ -2232,6 +2355,8 @@
  "mcnadie": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcnadie/sv-sr.webp",
@@ -2240,6 +2365,7 @@
  "mco": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mco/sv-ddf.webp",
@@ -2269,6 +2395,8 @@
  "melomaniaco": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/melomaniaco/sv-ffa.webp",
@@ -2292,6 +2420,8 @@
  "metriodin": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/metriodin/sv-dra.webp",
@@ -2368,6 +2498,8 @@
  "molusco": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/molusco/sv-dra.webp",
@@ -2402,6 +2534,7 @@
  "motera": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/sv-dra.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/sv-ffs.webp",
@@ -2439,6 +2572,8 @@
  "mzk": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mzk/sv-ffa.webp",
@@ -2549,6 +2684,8 @@
  "nobu": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nobu/sv-dra.webp",
@@ -2592,6 +2729,8 @@
  "number": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/number/sv-dra.webp",
@@ -2603,6 +2742,8 @@
  "numberve": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/numberve/sv-ddf.webp",
@@ -2617,6 +2758,7 @@
  "nxuz": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nxuz/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nxuz/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nxuz/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nxuz/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nxuz/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nxuz/sv-ddf.webp",
@@ -2641,6 +2783,8 @@
  "og": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/og/sv-ddf.webp",
@@ -2693,6 +2837,7 @@
  "panchok": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/panchok/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/panchok/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/panchok/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/panchok/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/panchok/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/panchok/sv-acad.webp",
@@ -2713,6 +2858,8 @@
  "partim": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/partim/sv-ddf.webp",
@@ -2747,6 +2894,8 @@
  "player": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/sv-dra.webp",
@@ -2764,6 +2913,8 @@
  "polosport": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/polosport/sv-ffa.webp",
@@ -2786,6 +2937,8 @@
  "presagio": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/presagio/sv-dra.webp",
@@ -2802,6 +2955,8 @@
  "prosu": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/sv-ddf.webp",
@@ -2828,6 +2983,8 @@
  "queen": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/queen/sv-ffa.webp",
@@ -2912,6 +3069,7 @@
  "reyexxmc": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reyexxmc/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reyexxmc/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reyexxmc/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reyexxmc/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reyexxmc/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/reyexxmc/sv-dra.webp",
@@ -2922,6 +3080,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/richard/sv-ddf.webp",
@@ -2943,6 +3102,8 @@
  "riferian": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riferian/sv-dra.webp",
@@ -2955,6 +3116,8 @@
  "riolu": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/riolu/sv-ffa.webp",
@@ -2970,6 +3133,7 @@
  "rodas": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rodas/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rodas/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rodas/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rodas/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rodas/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rodas/sv-ffa.webp",
@@ -2988,6 +3152,8 @@
  "rubik": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/rubik/sv-ffa.webp",
@@ -3012,6 +3178,7 @@
  "saiko": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/sv-dra.webp",
@@ -3071,6 +3238,8 @@
  "selek": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/selek/sv-ffa.webp",
@@ -3098,6 +3267,8 @@
  "shadow": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/shadow/sv-dra.webp",
@@ -3124,6 +3295,8 @@
  "sinlimites": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sinlimites/sv-ddf.webp",
@@ -3136,6 +3309,7 @@
  "six": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/six/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/six/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/six/competitivo.webp",
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/six/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/six/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/six/sv-dra.webp",
@@ -3161,6 +3335,8 @@
  "skratch": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/skratch/sv-ffa.webp",
@@ -3186,6 +3362,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/snow/sv-ddf.webp",
@@ -3209,6 +3386,7 @@
  "sombra": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sombra/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sombra/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sombra/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sombra/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sombra/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sombra/sv-dra.webp",
@@ -3219,6 +3397,8 @@
  "soneto": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soneto/sv-ffa.webp",
@@ -3235,6 +3415,8 @@
  "sosa": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sosa/sv-ddf.webp",
@@ -3253,6 +3435,8 @@
  "soulb": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/soulb/sv-dra.webp",
@@ -3302,6 +3486,8 @@
  "teito": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teito/sv-ddf.webp",
@@ -3328,6 +3514,8 @@
  "teo": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/sv-dra.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/teo/temporada.webp"
@@ -3370,6 +3558,8 @@
  "titocalderon": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-ffa.webp",
@@ -3388,6 +3578,8 @@
  "tormen": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tormen/sv-dra.webp",
@@ -3404,6 +3596,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trot/sv-dra.webp",
@@ -3425,6 +3618,8 @@
  "tusicario": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tusicario/sv-ffa.webp",
@@ -3475,6 +3670,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vandu/sv-ddf.webp",
@@ -3524,6 +3720,7 @@
  "vlade": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vlade/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vlade/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vlade/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vlade/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vlade/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vlade/sv-ddf.webp",
@@ -3536,6 +3733,8 @@
  "vr": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vr/sv-sr.webp",
@@ -3548,6 +3747,8 @@
  "walker": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/walker/sv-ddf.webp",
@@ -3584,6 +3785,8 @@
  "xervoe": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xervoe/sv-ddf.webp",
@@ -3603,6 +3806,8 @@
  "xplicit": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xplicit/sv-dra.webp",
@@ -3611,6 +3816,8 @@
  "xubaru": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/xubaru/sv-dra.webp",
@@ -3631,6 +3838,7 @@
  "yeyox": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yeyox/sv-sr.webp",
@@ -3641,6 +3849,7 @@
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/bloq-pais.webp",
   "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yinn/sv-dra.webp",
@@ -3659,6 +3868,8 @@
  "yor": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/yor/sv-dra.webp",
@@ -3681,6 +3892,8 @@
  "zafka": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zafka/sv-ddf.webp",
@@ -3714,6 +3927,7 @@
  "zekha": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zekha/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zekha/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zekha/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zekha/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zekha/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zekha/sv-dra.webp",
@@ -3728,6 +3942,8 @@
  "zeta": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/sv-dra.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zeta/sv-sr.webp",
@@ -3736,6 +3952,7 @@
  "zetryko": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zetryko/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zetryko/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zetryko/competitivo.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zetryko/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zetryko/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zetryko/sv-ddf.webp",
@@ -3758,6 +3975,8 @@
  "zignos": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/zignos/sv-ddf.webp",
