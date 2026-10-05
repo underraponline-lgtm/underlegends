@@ -573,6 +573,7 @@
 },
 "1347663033949880360": {
 "cs": [
+"competitivo",
 "servidor",
 "temporada"
 ],
@@ -814,7 +815,8 @@
 },
 "1438222811171914014": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1518,6 +1520,7 @@
 },
 "613552853302378527": {
 "cs": [
+"competitivo",
 "servidor",
 "temporada"
 ],
@@ -1608,7 +1611,8 @@
 },
 "661752165081284630": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1944,7 +1948,8 @@
 },
 "778332138930962432": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1969,6 +1974,7 @@
 },
 "790016013680771102": {
 "cs": [
+"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -2139,10 +2145,6 @@
 ],
 "rg": ""
 },
-"858824126978195478": {
-"cs": [],
-"rg": ""
-},
 "866657242866909216": {
 "cs": [
 "servidor"
@@ -2306,7 +2308,8 @@
 },
 "983935442913206303": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
