@@ -33,7 +33,7 @@
   "av": "",
   "pos_pais": "1/31",
   "arc_pais": 100,
-  "pos_sv": "1/85",
+  "pos_sv": "1/86",
   "arc_sv": 100
  },
  {
@@ -107,7 +107,7 @@
   "av": "",
   "pos_pais": "1/20",
   "arc_pais": 100,
-  "pos_sv": "2/85",
+  "pos_sv": "2/86",
   "arc_sv": 99
  },
  {
@@ -181,7 +181,7 @@
   "av": "",
   "pos_pais": "2/31",
   "arc_pais": 97,
-  "pos_sv": "3/85",
+  "pos_sv": "3/86",
   "arc_sv": 98
  },
  {
@@ -218,8 +218,8 @@
   "av": "",
   "pos_pais": "3/31",
   "arc_pais": 94,
-  "pos_sv": "4/85",
-  "arc_sv": 96
+  "pos_sv": "4/86",
+  "arc_sv": 97
  },
  {
   "full": "Six",
@@ -255,7 +255,7 @@
   "av": "",
   "pos_pais": "4/31",
   "arc_pais": 90,
-  "pos_sv": "5/85",
+  "pos_sv": "5/86",
   "arc_sv": 95,
   "pos_crew": ""
  },
@@ -293,7 +293,7 @@
   "av": "",
   "pos_pais": "1/10",
   "arc_pais": 100,
-  "pos_sv": "6/85",
+  "pos_sv": "6/86",
   "arc_sv": 94
  },
  {
@@ -330,7 +330,7 @@
   "av": "",
   "pos_pais": "1/10",
   "arc_pais": 100,
-  "pos_sv": "7/85",
+  "pos_sv": "7/86",
   "arc_sv": 93,
   "pos_crew": ""
  },
@@ -368,7 +368,7 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "8/85",
+  "pos_sv": "8/86",
   "arc_sv": 92,
   "pos_crew": ""
  },
@@ -406,7 +406,7 @@
   "av": "",
   "pos_pais": "1/12",
   "arc_pais": 100,
-  "pos_sv": "9/85",
+  "pos_sv": "9/86",
   "arc_sv": 91,
   "pos_crew": ""
  },
@@ -444,8 +444,8 @@
   "av": "",
   "pos_pais": "2/20",
   "arc_pais": 95,
-  "pos_sv": "10/85",
-  "arc_sv": 89
+  "pos_sv": "10/86",
+  "arc_sv": 90
  },
  {
   "full": "Abyssus",
@@ -481,7 +481,7 @@
   "av": "",
   "pos_pais": "1/3",
   "arc_pais": 0,
-  "pos_sv": "11/85",
+  "pos_sv": "11/86",
   "arc_sv": 88
  },
  {
@@ -630,7 +630,7 @@
   "av": "",
   "pos_pais": "3/20",
   "arc_pais": 90,
-  "pos_sv": "12/85",
+  "pos_sv": "12/86",
   "arc_sv": 87
  },
  {
@@ -667,7 +667,7 @@
   "av": "",
   "pos_pais": "4/20",
   "arc_pais": 85,
-  "pos_sv": "13/85",
+  "pos_sv": "13/86",
   "arc_sv": 86
  },
  {
@@ -815,7 +815,7 @@
   "av": "",
   "pos_pais": "3/12",
   "arc_pais": 83,
-  "pos_sv": "14/85",
+  "pos_sv": "14/86",
   "arc_sv": 85
  },
  {
@@ -852,7 +852,7 @@
   "av": "",
   "pos_pais": "5/20",
   "arc_pais": 80,
-  "pos_sv": "15/85",
+  "pos_sv": "15/86",
   "arc_sv": 84,
   "pos_crew": "1/6"
  },
@@ -890,8 +890,8 @@
   "av": "",
   "pos_pais": "6/20",
   "arc_pais": 75,
-  "pos_sv": "16/85",
-  "arc_sv": 82,
+  "pos_sv": "16/86",
+  "arc_sv": 83,
   "pos_crew": "2/6"
  },
  {
@@ -928,7 +928,7 @@
   "av": "",
   "pos_pais": "2/3",
   "arc_pais": 0,
-  "pos_sv": "17/85",
+  "pos_sv": "17/86",
   "arc_sv": 81,
   "pos_crew": "3/6"
  },
@@ -1077,7 +1077,7 @@
   "av": "",
   "pos_pais": "6/31",
   "arc_pais": 84,
-  "pos_sv": "18/85",
+  "pos_sv": "18/86",
   "arc_sv": 80
  },
  {
@@ -1410,7 +1410,7 @@
   "av": "",
   "pos_pais": "7/31",
   "arc_pais": 81,
-  "pos_sv": "19/85",
+  "pos_sv": "19/86",
   "arc_sv": 79
  },
  {
@@ -1447,7 +1447,7 @@
   "av": "",
   "pos_pais": "1/4",
   "arc_pais": 0,
-  "pos_sv": "20/85",
+  "pos_sv": "20/86",
   "arc_sv": 78
  },
  {
@@ -1743,7 +1743,7 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "1/9",
+  "pos_pais": "1/10",
   "arc_pais": 100,
   "pos_sv": "5/9",
   "arc_sv": 56
@@ -1782,8 +1782,8 @@
   "av": "",
   "pos_pais": "2/10",
   "arc_pais": 90,
-  "pos_sv": "21/85",
-  "arc_sv": 76
+  "pos_sv": "21/86",
+  "arc_sv": 77
  },
  {
   "full": "NC",
@@ -1856,8 +1856,8 @@
   "av": "",
   "pos_pais": "8/31",
   "arc_pais": 77,
-  "pos_sv": "22/85",
-  "arc_sv": 75
+  "pos_sv": "22/86",
+  "arc_sv": 76
  },
  {
   "full": "Lord Viruzz",
@@ -1893,7 +1893,7 @@
   "av": "",
   "pos_pais": "9/20",
   "arc_pais": 60,
-  "pos_sv": "23/85",
+  "pos_sv": "23/86",
   "arc_sv": 74
  },
  {
@@ -1930,7 +1930,7 @@
   "av": "",
   "pos_pais": "9/31",
   "arc_pais": 74,
-  "pos_sv": "24/85",
+  "pos_sv": "24/86",
   "arc_sv": 73
  },
  {
@@ -1967,7 +1967,7 @@
   "av": "",
   "pos_pais": "10/31",
   "arc_pais": 71,
-  "pos_sv": "25/85",
+  "pos_sv": "25/86",
   "arc_sv": 72
  },
  {
@@ -2004,7 +2004,7 @@
   "av": "",
   "pos_pais": "3/10",
   "arc_pais": 80,
-  "pos_sv": "26/85",
+  "pos_sv": "26/86",
   "arc_sv": 71
  },
  {
@@ -2078,8 +2078,8 @@
   "av": "",
   "pos_pais": "2/7",
   "arc_pais": 86,
-  "pos_sv": "27/85",
-  "arc_sv": 69
+  "pos_sv": "27/86",
+  "arc_sv": 70
  },
  {
   "full": "Sin Limites",
@@ -2113,10 +2113,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "2/9",
-  "arc_pais": 89,
-  "pos_sv": "28/85",
-  "arc_sv": 68
+  "pos_pais": "2/10",
+  "arc_pais": 90,
+  "pos_sv": "28/86",
+  "arc_sv": 69
  },
  {
   "full": "Sosa",
@@ -2152,7 +2152,7 @@
   "av": "",
   "pos_pais": "12/31",
   "arc_pais": 65,
-  "pos_sv": "29/85",
+  "pos_sv": "29/86",
   "arc_sv": 67
  },
  {
@@ -2189,7 +2189,7 @@
   "av": "",
   "pos_pais": "2/4",
   "arc_pais": 0,
-  "pos_sv": "30/85",
+  "pos_sv": "30/86",
   "arc_sv": 66
  },
  {
@@ -2335,8 +2335,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "3/9",
-  "arc_pais": 78,
+  "pos_pais": "3/10",
+  "arc_pais": 80,
   "pos_sv": "4/10",
   "arc_sv": 70
  },
@@ -2411,7 +2411,7 @@
   "av": "",
   "pos_pais": "3/7",
   "arc_pais": 71,
-  "pos_sv": "31/85",
+  "pos_sv": "31/86",
   "arc_sv": 65
  },
  {
@@ -2448,7 +2448,7 @@
   "av": "",
   "pos_pais": "13/31",
   "arc_pais": 61,
-  "pos_sv": "32/85",
+  "pos_sv": "32/86",
   "arc_sv": 64
  },
  {
@@ -2671,8 +2671,8 @@
   "av": "",
   "pos_pais": "14/31",
   "arc_pais": 58,
-  "pos_sv": "33/85",
-  "arc_sv": 62
+  "pos_sv": "33/86",
+  "arc_sv": 63
  },
  {
   "full": "LRS",
@@ -2708,8 +2708,8 @@
   "av": "",
   "pos_pais": "15/31",
   "arc_pais": 55,
-  "pos_sv": "34/85",
-  "arc_sv": 61
+  "pos_sv": "34/86",
+  "arc_sv": 62
  },
  {
   "full": "Jupiter",
@@ -2745,7 +2745,7 @@
   "av": "",
   "pos_pais": "2/10",
   "arc_pais": 90,
-  "pos_sv": "35/85",
+  "pos_sv": "35/86",
   "arc_sv": 60
  },
  {
@@ -2931,7 +2931,7 @@
   "av": "",
   "pos_pais": "3/10",
   "arc_pais": 80,
-  "pos_sv": "36/85",
+  "pos_sv": "36/86",
   "arc_sv": 59
  },
  {
@@ -3005,7 +3005,7 @@
   "av": "",
   "pos_pais": "3/3",
   "arc_pais": 0,
-  "pos_sv": "37/85",
+  "pos_sv": "37/86",
   "arc_sv": 58
  },
  {
@@ -3116,8 +3116,8 @@
   "av": "",
   "pos_pais": "7/12",
   "arc_pais": 50,
-  "pos_sv": "38/85",
-  "arc_sv": 56
+  "pos_sv": "38/86",
+  "arc_sv": 57
  },
  {
   "full": "Benjixo",
@@ -3190,8 +3190,8 @@
   "av": "",
   "pos_pais": "2/3",
   "arc_pais": 0,
-  "pos_sv": "39/85",
-  "arc_sv": 55
+  "pos_sv": "39/86",
+  "arc_sv": 56
  },
  {
   "full": "Teito",
@@ -3227,8 +3227,8 @@
   "av": "",
   "pos_pais": "11/20",
   "arc_pais": 50,
-  "pos_sv": "40/85",
-  "arc_sv": 54
+  "pos_sv": "40/86",
+  "arc_sv": 55
  },
  {
   "full": "Saito",
@@ -3564,7 +3564,7 @@
   "av": "",
   "pos_pais": "4/7",
   "arc_pais": 57,
-  "pos_sv": "41/85",
+  "pos_sv": "41/86",
   "arc_sv": 53
  },
  {
@@ -3601,7 +3601,7 @@
   "av": "",
   "pos_pais": "17/31",
   "arc_pais": 48,
-  "pos_sv": "42/85",
+  "pos_sv": "42/86",
   "arc_sv": 52,
   "pos_crew": ""
  },
@@ -3637,9 +3637,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "4/9",
-  "arc_pais": 67,
-  "pos_sv": "43/85",
+  "pos_pais": "4/10",
+  "arc_pais": 70,
+  "pos_sv": "43/86",
   "arc_sv": 51
  },
  {
@@ -3748,8 +3748,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "5/9",
-  "arc_pais": 56,
+  "pos_pais": "5/10",
+  "arc_pais": 60,
   "pos_sv": "6/9",
   "arc_sv": 44
  },
@@ -3828,12 +3828,12 @@
   "arc_sv": 0
  },
  {
-  "full": "Freestyle4AllmyNiggaz 🇵🇪🌏🌏",
+  "full": "Freestyle4AllmyNiggaz 🌏🌏",
   "raw": "Freestyle4AllmyNiggaz 🌏🌏",
   "cc": "pe",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1438277281637339321",
   "verificado": false,
   "ev": 1,
   "score": 9.6,
@@ -3859,47 +3859,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "",
-  "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
- },
- {
-  "full": "Alexis🇦🇷",
-  "raw": "Alexis",
-  "cc": "ar",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "",
-  "verificado": false,
-  "ev": 1,
-  "score": 9.5,
-  "conf": 0.3,
-  "E": 28,
-  "C": 100,
-  "Dm": 0,
-  "T": 8,
-  "V": 0,
-  "wr": "",
-  "rch_act": 1,
-  "rch_max": 1,
-  "duel_v": 0,
-  "duel_t": 0,
-  "duel_real": false,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 0,
-  "din_t": 0,
-  "pos": 106,
-  "total": 9,
-  "rango": "",
-  "subrango": "",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "",
-  "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
+  "pos_pais": "6/10",
+  "arc_pais": 50,
+  "pos_sv": "44/86",
+  "arc_sv": 50
  },
  {
   "full": "MCNadie",
@@ -3927,7 +3890,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 107,
+  "pos": 106,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -3935,7 +3898,7 @@
   "av": "",
   "pos_pais": "18/31",
   "arc_pais": 45,
-  "pos_sv": "44/85",
+  "pos_sv": "45/86",
   "arc_sv": 49
  },
  {
@@ -3964,7 +3927,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 108,
+  "pos": 107,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4001,7 +3964,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 1,
-  "pos": 109,
+  "pos": 108,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4038,7 +4001,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 1,
-  "pos": 110,
+  "pos": 109,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4075,7 +4038,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 111,
+  "pos": 110,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4112,7 +4075,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 112,
+  "pos": 111,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4149,7 +4112,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 113,
+  "pos": 112,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4157,7 +4120,7 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "45/85",
+  "pos_sv": "46/86",
   "arc_sv": 48
  },
  {
@@ -4186,7 +4149,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 5,
-  "pos": 114,
+  "pos": 113,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4223,7 +4186,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 115,
+  "pos": 114,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4260,7 +4223,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 116,
+  "pos": 115,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -4270,6 +4233,43 @@
   "arc_pais": 0,
   "pos_sv": "",
   "arc_sv": 0
+ },
+ {
+  "full": "Alexi",
+  "raw": "Alexi",
+  "cc": "ar",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1440141957266673745",
+  "verificado": true,
+  "ev": 3,
+  "score": 7.0,
+  "conf": 0.44,
+  "E": 23,
+  "C": 39,
+  "Dm": 0,
+  "T": 8,
+  "V": 0,
+  "wr": "",
+  "rch_act": 1,
+  "rch_max": 1,
+  "duel_v": 0,
+  "duel_t": 0,
+  "duel_real": false,
+  "dna_v": 0,
+  "dna_t": 0,
+  "din_v": 0,
+  "din_t": 0,
+  "pos": 116,
+  "total": 9,
+  "rango": "",
+  "subrango": "",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "19/31",
+  "arc_pais": 42,
+  "pos_sv": "47/86",
+  "arc_sv": 47
  },
  {
   "full": "Jult",
@@ -4303,10 +4303,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "19/31",
-  "arc_pais": 42,
-  "pos_sv": "46/85",
-  "arc_sv": 47
+  "pos_pais": "20/31",
+  "arc_pais": 39,
+  "pos_sv": "48/86",
+  "arc_sv": 45
  },
  {
   "full": "Dyzz",
@@ -4454,8 +4454,8 @@
   "av": "",
   "pos_pais": "14/20",
   "arc_pais": 35,
-  "pos_sv": "47/85",
-  "arc_sv": 46
+  "pos_sv": "49/86",
+  "arc_sv": 44
  },
  {
   "full": "MHS",
@@ -4528,8 +4528,8 @@
   "av": "",
   "pos_pais": "3/3",
   "arc_pais": 0,
-  "pos_sv": "48/85",
-  "arc_sv": 45
+  "pos_sv": "50/86",
+  "arc_sv": 43
  },
  {
   "full": "Vandu",
@@ -4565,8 +4565,8 @@
   "av": "",
   "pos_pais": "15/20",
   "arc_pais": 30,
-  "pos_sv": "49/85",
-  "arc_sv": 44,
+  "pos_sv": "51/86",
+  "arc_sv": 42,
   "pos_crew": "4/6"
  },
  {
@@ -4603,8 +4603,8 @@
   "av": "",
   "pos_pais": "8/12",
   "arc_pais": 42,
-  "pos_sv": "50/85",
-  "arc_sv": 42
+  "pos_sv": "52/86",
+  "arc_sv": 41
  },
  {
   "full": "melomaniaco",
@@ -4638,10 +4638,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "20/31",
-  "arc_pais": 39,
-  "pos_sv": "51/85",
-  "arc_sv": 41
+  "pos_pais": "21/31",
+  "arc_pais": 35,
+  "pos_sv": "53/86",
+  "arc_sv": 40
  },
  {
   "full": "Alonso",
@@ -4751,8 +4751,8 @@
   "av": "",
   "pos_pais": "5/7",
   "arc_pais": 43,
-  "pos_sv": "52/85",
-  "arc_sv": 40
+  "pos_sv": "54/86",
+  "arc_sv": 38
  },
  {
   "full": "Korey",
@@ -4862,8 +4862,8 @@
   "av": "",
   "pos_pais": "16/20",
   "arc_pais": 25,
-  "pos_sv": "53/85",
-  "arc_sv": 39
+  "pos_sv": "55/86",
+  "arc_sv": 37
  },
  {
   "full": "Kyss",
@@ -4899,8 +4899,8 @@
   "av": "",
   "pos_pais": "4/10",
   "arc_pais": 70,
-  "pos_sv": "54/85",
-  "arc_sv": 38,
+  "pos_sv": "56/86",
+  "arc_sv": 36,
   "pos_crew": ""
  },
  {
@@ -4972,8 +4972,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "21/31",
-  "arc_pais": 35,
+  "pos_pais": "22/31",
+  "arc_pais": 32,
   "pos_sv": "7/13",
   "arc_sv": 54
  },
@@ -5085,8 +5085,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "55/85",
-  "arc_sv": 36
+  "pos_sv": "57/86",
+  "arc_sv": 35
  },
  {
   "full": "Nobu",
@@ -5122,8 +5122,8 @@
   "av": "",
   "pos_pais": "6/10",
   "arc_pais": 50,
-  "pos_sv": "56/85",
-  "arc_sv": 35
+  "pos_sv": "58/86",
+  "arc_sv": 34
  },
  {
   "full": "GS🇦🇷",
@@ -5205,7 +5205,7 @@
   "cc": "cl",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1468995046161256706",
   "verificado": false,
   "ev": 2,
   "score": 3.5,
@@ -5305,10 +5305,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "22/31",
-  "arc_pais": 32,
-  "pos_sv": "57/85",
-  "arc_sv": 34
+  "pos_pais": "23/31",
+  "arc_pais": 29,
+  "pos_sv": "59/86",
+  "arc_sv": 33
  },
  {
   "full": "Crk",
@@ -5344,8 +5344,8 @@
   "av": "",
   "pos_pais": "5/10",
   "arc_pais": 60,
-  "pos_sv": "58/85",
-  "arc_sv": 33
+  "pos_sv": "60/86",
+  "arc_sv": 31
  },
  {
   "full": "BLANKO 🇺🇸",
@@ -5566,8 +5566,8 @@
   "av": "",
   "pos_pais": "6/7",
   "arc_pais": 29,
-  "pos_sv": "59/85",
-  "arc_sv": 32
+  "pos_sv": "61/86",
+  "arc_sv": 30
  },
  {
   "full": "SHULIOT",
@@ -6010,8 +6010,8 @@
   "av": "",
   "pos_pais": "7/10",
   "arc_pais": 40,
-  "pos_sv": "60/85",
-  "arc_sv": 31
+  "pos_sv": "62/86",
+  "arc_sv": 29
  },
  {
   "full": "Gus",
@@ -6047,8 +6047,8 @@
   "av": "",
   "pos_pais": "2/4",
   "arc_pais": 0,
-  "pos_sv": "61/85",
-  "arc_sv": 29
+  "pos_sv": "63/86",
+  "arc_sv": 28
  },
  {
   "full": "Krish",
@@ -6084,8 +6084,8 @@
   "av": "",
   "pos_pais": "7/7",
   "arc_pais": 14,
-  "pos_sv": "62/85",
-  "arc_sv": 28
+  "pos_sv": "64/86",
+  "arc_sv": 27
  },
  {
   "full": "Chop",
@@ -6343,8 +6343,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "63/85",
-  "arc_sv": 27
+  "pos_sv": "65/86",
+  "arc_sv": 26
  },
  {
   "full": "Rayo",
@@ -6416,10 +6416,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "6/9",
-  "arc_pais": 44,
-  "pos_sv": "64/85",
-  "arc_sv": 26
+  "pos_pais": "7/10",
+  "arc_pais": 40,
+  "pos_sv": "66/86",
+  "arc_sv": 24
  },
  {
   "full": "Indígena",
@@ -6490,10 +6490,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "7/9",
-  "arc_pais": 33,
-  "pos_sv": "65/85",
-  "arc_sv": 25
+  "pos_pais": "8/10",
+  "arc_pais": 30,
+  "pos_sv": "67/86",
+  "arc_sv": 23
  },
  {
   "full": "Teo",
@@ -6529,8 +6529,8 @@
   "av": "",
   "pos_pais": "17/20",
   "arc_pais": 20,
-  "pos_sv": "66/85",
-  "arc_sv": 24
+  "pos_sv": "68/86",
+  "arc_sv": 22
  },
  {
   "full": "Lvel",
@@ -6566,8 +6566,8 @@
   "av": "",
   "pos_pais": "3/4",
   "arc_pais": 0,
-  "pos_sv": "67/85",
-  "arc_sv": 22
+  "pos_sv": "69/86",
+  "arc_sv": 21
  },
  {
   "full": "Faso",
@@ -6607,12 +6607,12 @@
   "arc_sv": 0
  },
  {
-  "full": "Garxzii 🇲🇽🇦🇲",
+  "full": "Garxzii",
   "raw": "Garxzii",
-  "cc": "mx",
+  "cc": "",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1217564137383526470",
   "verificado": false,
   "ev": 1,
   "score": 2.5,
@@ -6714,8 +6714,8 @@
   "av": "",
   "pos_pais": "8/10",
   "arc_pais": 30,
-  "pos_sv": "68/85",
-  "arc_sv": 21,
+  "pos_sv": "70/86",
+  "arc_sv": 20,
   "pos_crew": ""
  },
  {
@@ -6752,8 +6752,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "69/85",
-  "arc_sv": 20
+  "pos_sv": "71/86",
+  "arc_sv": 19
  },
  {
   "full": "Iguana",
@@ -6787,10 +6787,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "8/9",
-  "arc_pais": 22,
-  "pos_sv": "70/85",
-  "arc_sv": 19
+  "pos_pais": "9/10",
+  "arc_pais": 20,
+  "pos_sv": "72/86",
+  "arc_sv": 17
  },
  {
   "full": "LAST",
@@ -6826,8 +6826,8 @@
   "av": "",
   "pos_pais": "3/4",
   "arc_pais": 0,
-  "pos_sv": "71/85",
-  "arc_sv": 18
+  "pos_sv": "73/86",
+  "arc_sv": 16
  },
  {
   "full": "Deuxs",
@@ -6863,8 +6863,8 @@
   "av": "",
   "pos_pais": "11/12",
   "arc_pais": 17,
-  "pos_sv": "72/85",
-  "arc_sv": 16
+  "pos_sv": "74/86",
+  "arc_sv": 15
  },
  {
   "full": "Soulb",
@@ -6900,8 +6900,8 @@
   "av": "",
   "pos_pais": "12/12",
   "arc_pais": 8,
-  "pos_sv": "73/85",
-  "arc_sv": 15
+  "pos_sv": "75/86",
+  "arc_sv": 14
  },
  {
   "full": "AREZ",
@@ -7011,8 +7011,8 @@
   "av": "",
   "pos_pais": "18/20",
   "arc_pais": 15,
-  "pos_sv": "74/85",
-  "arc_sv": 14,
+  "pos_sv": "76/86",
+  "arc_sv": 13,
   "pos_crew": "5/6"
  },
  {
@@ -7047,10 +7047,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "23/31",
-  "arc_pais": 29,
-  "pos_sv": "75/85",
-  "arc_sv": 13
+  "pos_pais": "24/31",
+  "arc_pais": 26,
+  "pos_sv": "77/86",
+  "arc_sv": 12
  },
  {
   "full": "Emi",
@@ -7090,43 +7090,6 @@
   "arc_sv": 0
  },
  {
-  "full": "Alexi",
-  "raw": "Alexi",
-  "cc": "ar",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1440141957266673745",
-  "verificado": true,
-  "ev": 2,
-  "score": 1.9,
-  "conf": 0.37,
-  "E": 21,
-  "C": 0,
-  "Dm": 0,
-  "T": 0,
-  "V": 0,
-  "wr": "",
-  "rch_act": 0,
-  "rch_max": 0,
-  "duel_v": 0,
-  "duel_t": 0,
-  "duel_real": false,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 0,
-  "din_t": 0,
-  "pos": 192,
-  "total": 9,
-  "rango": "",
-  "subrango": "",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "24/31",
-  "arc_pais": 26,
-  "pos_sv": "76/85",
-  "arc_sv": 12
- },
- {
   "full": "luisito 🏆",
   "raw": "luisito 🏆",
   "cc": "ar",
@@ -7152,7 +7115,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 193,
+  "pos": 192,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7189,7 +7152,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 194,
+  "pos": 193,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7226,7 +7189,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 195,
+  "pos": 194,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7263,7 +7226,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 196,
+  "pos": 195,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7271,8 +7234,8 @@
   "av": "",
   "pos_pais": "19/20",
   "arc_pais": 10,
-  "pos_sv": "77/85",
-  "arc_sv": 11,
+  "pos_sv": "78/86",
+  "arc_sv": 10,
   "pos_crew": ""
  },
  {
@@ -7301,7 +7264,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 197,
+  "pos": 196,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7338,7 +7301,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 198,
+  "pos": 197,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7346,7 +7309,7 @@
   "av": "",
   "pos_pais": "8/10",
   "arc_pais": 30,
-  "pos_sv": "78/85",
+  "pos_sv": "79/86",
   "arc_sv": 9
  },
  {
@@ -7375,7 +7338,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 199,
+  "pos": 198,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7412,7 +7375,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 200,
+  "pos": 199,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7449,7 +7412,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 201,
+  "pos": 200,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7486,7 +7449,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 202,
+  "pos": 201,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7523,7 +7486,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 203,
+  "pos": 202,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7560,7 +7523,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 204,
+  "pos": 203,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7598,7 +7561,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 205,
+  "pos": 204,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7635,7 +7598,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 206,
+  "pos": 205,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7672,7 +7635,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 207,
+  "pos": 206,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7709,7 +7672,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 208,
+  "pos": 207,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7746,7 +7709,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 209,
+  "pos": 208,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7783,7 +7746,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 210,
+  "pos": 209,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7820,7 +7783,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 211,
+  "pos": 210,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7857,7 +7820,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 212,
+  "pos": 211,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7894,7 +7857,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 213,
+  "pos": 212,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7931,7 +7894,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 214,
+  "pos": 213,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -7968,7 +7931,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 215,
+  "pos": 214,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8005,7 +7968,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 216,
+  "pos": 215,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8043,7 +8006,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 217,
+  "pos": 216,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8080,7 +8043,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 218,
+  "pos": 217,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8117,7 +8080,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 219,
+  "pos": 218,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8154,7 +8117,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 220,
+  "pos": 219,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8162,7 +8125,7 @@
   "av": "",
   "pos_pais": "26/31",
   "arc_pais": 19,
-  "pos_sv": "79/85",
+  "pos_sv": "80/86",
   "arc_sv": 8
  },
  {
@@ -8191,7 +8154,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 221,
+  "pos": 220,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8228,7 +8191,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
-  "pos": 222,
+  "pos": 221,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8265,7 +8228,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
-  "pos": 223,
+  "pos": 222,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8302,7 +8265,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 224,
+  "pos": 223,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8339,7 +8302,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
-  "pos": 225,
+  "pos": 224,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8376,7 +8339,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 226,
+  "pos": 225,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8384,7 +8347,7 @@
   "av": "",
   "pos_pais": "9/10",
   "arc_pais": 20,
-  "pos_sv": "80/85",
+  "pos_sv": "81/86",
   "arc_sv": 7
  },
  {
@@ -8413,7 +8376,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 227,
+  "pos": 226,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8450,7 +8413,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 228,
+  "pos": 227,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8487,7 +8450,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
-  "pos": 229,
+  "pos": 228,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8524,7 +8487,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 230,
+  "pos": 229,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8562,7 +8525,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 231,
+  "pos": 230,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8599,7 +8562,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 232,
+  "pos": 231,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8636,7 +8599,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 233,
+  "pos": 232,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8673,7 +8636,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 234,
+  "pos": 233,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8710,7 +8673,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 235,
+  "pos": 234,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8747,7 +8710,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 236,
+  "pos": 235,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8784,7 +8747,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 237,
+  "pos": 236,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8821,7 +8784,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 238,
+  "pos": 237,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8858,7 +8821,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 239,
+  "pos": 238,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8895,7 +8858,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 240,
+  "pos": 239,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8932,7 +8895,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 241,
+  "pos": 240,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -8969,7 +8932,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 242,
+  "pos": 241,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9006,7 +8969,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 243,
+  "pos": 242,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9043,7 +9006,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 244,
+  "pos": 243,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9080,7 +9043,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 245,
+  "pos": 244,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9088,7 +9051,7 @@
   "av": "",
   "pos_pais": "28/31",
   "arc_pais": 13,
-  "pos_sv": "81/85",
+  "pos_sv": "82/86",
   "arc_sv": 6
  },
  {
@@ -9117,7 +9080,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 246,
+  "pos": 245,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9154,7 +9117,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 247,
+  "pos": 246,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9191,7 +9154,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 248,
+  "pos": 247,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9228,7 +9191,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 249,
+  "pos": 248,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9265,7 +9228,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 250,
+  "pos": 249,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9302,7 +9265,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 251,
+  "pos": 250,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9339,7 +9302,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 252,
+  "pos": 251,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9376,7 +9339,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 253,
+  "pos": 252,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9413,14 +9376,14 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 254,
+  "pos": 253,
   "total": 9,
   "rango": "",
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "9/9",
-  "arc_pais": 11,
+  "pos_pais": "10/10",
+  "arc_pais": 10,
   "pos_sv": "10/10",
   "arc_sv": 10
  },
@@ -9450,7 +9413,7 @@
   "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
-  "pos": 255,
+  "pos": 254,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9487,7 +9450,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 256,
+  "pos": 255,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9524,7 +9487,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 257,
+  "pos": 256,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9561,7 +9524,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 258,
+  "pos": 257,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9598,7 +9561,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 259,
+  "pos": 258,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9635,7 +9598,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 260,
+  "pos": 259,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9672,7 +9635,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 261,
+  "pos": 260,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9709,7 +9672,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 262,
+  "pos": 261,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9746,7 +9709,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 263,
+  "pos": 262,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9783,7 +9746,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 264,
+  "pos": 263,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9820,7 +9783,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 265,
+  "pos": 264,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9857,7 +9820,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 266,
+  "pos": 265,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9894,7 +9857,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 267,
+  "pos": 266,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9902,7 +9865,7 @@
   "av": "",
   "pos_pais": "4/4",
   "arc_pais": 0,
-  "pos_sv": "82/85",
+  "pos_sv": "83/86",
   "arc_sv": 5
  },
  {
@@ -9931,7 +9894,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 268,
+  "pos": 267,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -9968,7 +9931,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 1,
-  "pos": 269,
+  "pos": 268,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10005,7 +9968,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 270,
+  "pos": 269,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10042,7 +10005,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 271,
+  "pos": 270,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10079,7 +10042,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 272,
+  "pos": 271,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10116,7 +10079,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 273,
+  "pos": 272,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10153,7 +10116,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 274,
+  "pos": 273,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10161,8 +10124,8 @@
   "av": "",
   "pos_pais": "29/31",
   "arc_pais": 10,
-  "pos_sv": "83/85",
-  "arc_sv": 4,
+  "pos_sv": "84/86",
+  "arc_sv": 3,
   "pos_crew": ""
  },
  {
@@ -10191,7 +10154,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 275,
+  "pos": 274,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10228,7 +10191,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 276,
+  "pos": 275,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10236,7 +10199,7 @@
   "av": "",
   "pos_pais": "30/31",
   "arc_pais": 6,
-  "pos_sv": "84/85",
+  "pos_sv": "85/86",
   "arc_sv": 2
  },
  {
@@ -10265,7 +10228,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 277,
+  "pos": 276,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10302,7 +10265,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 278,
+  "pos": 277,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10339,7 +10302,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 279,
+  "pos": 278,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10377,7 +10340,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 280,
+  "pos": 279,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10414,7 +10377,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 281,
+  "pos": 280,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10451,7 +10414,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 282,
+  "pos": 281,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10488,7 +10451,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 283,
+  "pos": 282,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10525,7 +10488,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 284,
+  "pos": 283,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10562,7 +10525,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 285,
+  "pos": 284,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10599,7 +10562,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 286,
+  "pos": 285,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10636,7 +10599,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 287,
+  "pos": 286,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10673,7 +10636,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 288,
+  "pos": 287,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10681,7 +10644,7 @@
   "av": "",
   "pos_pais": "31/31",
   "arc_pais": 3,
-  "pos_sv": "85/85",
+  "pos_sv": "86/86",
   "arc_sv": 1
  },
  {
@@ -10710,7 +10673,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 289,
+  "pos": 288,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10747,7 +10710,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 290,
+  "pos": 289,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10784,7 +10747,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 291,
+  "pos": 290,
   "total": 9,
   "rango": "",
   "subrango": "",
@@ -10821,7 +10784,7 @@
   "dna_t": 0,
   "din_v": 0,
   "din_t": 0,
-  "pos": 292,
+  "pos": 291,
   "total": 9,
   "rango": "",
   "subrango": "",

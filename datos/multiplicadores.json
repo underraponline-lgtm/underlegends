@@ -82,6 +82,11 @@
      1
     ],
     [
+     "Lewis/Kravitz/TöKīØ",
+     13,
+     1
+    ],
+    [
      "Luffy",
      12,
      1
@@ -95,23 +100,18 @@
      "FASOO",
      8,
      1
-    ],
-    [
-     "MINIBOY 🇨🇱",
-     8,
-     1
     ]
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 47,
+     "FFA": 51,
      "URBF": 8,
      "DDF": 6,
      "SR": 4,
      "ACAD": 1
     },
     "gente": {
-     "FFA": 135,
+     "FFA": 140,
      "URBF": 37,
      "SR": 18,
      "DDF": 25,
@@ -121,7 +121,7 @@
    },
    "meta_va": {
     "DRA": 0,
-    "FFA": 135,
+    "FFA": 140,
     "SR": 18,
     "URBF": 37
    }
