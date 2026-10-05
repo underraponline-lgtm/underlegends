@@ -3565,7 +3565,7 @@
       [
        "Provenza, yinn",
        "Miniboy, Krish",
-       "INFECTE🇨🇴, LAST"
+       "Infecte, LAST"
       ],
       "Provenza, yinn",
       "triple (3 bandas)"
@@ -3718,7 +3718,7 @@
     1250
    ],
    [
-    "INFECTE🇨🇴",
+    "Infecte",
     "R32",
     312
    ],
@@ -10135,7 +10135,7 @@
      [
       [
        "Sosa",
-       "Infecte🇨🇴🇩🇴"
+       "Infecte"
       ],
       "Sosa",
       "triple (3 bandas, pasan 2)"
@@ -10268,7 +10268,7 @@
     0
    ],
    [
-    "Infecte🇨🇴🇩🇴",
+    "Infecte",
     "R32",
     0
    ],
@@ -10276,151 +10276,6 @@
     "Leyenda",
     "R32",
     0
-   ]
-  ]
- },
- "399": {
-  "dia": "2026-10-03",
-  "escala": "8-15",
-  "fecha": "03/10",
-  "links": [
-   "https://discord.com/channels/765045834647339038/1309234583023124531/1556049501117087825"
-  ],
-  "n": 399,
-  "nombre": "GRUPO A",
-  "participantes": 13,
-  "rondas": [
-   {
-    "b": [
-     [
-      [
-       "Zetryko",
-       "ARDEAN",
-       "Efimero"
-      ],
-      "Zetryko",
-      "triple (3 bandas)"
-     ],
-     [
-      [
-       "Panchok",
-       "Miniboy"
-      ],
-      "Panchok",
-      "triple (3 bandas, pasan 2)"
-     ],
-     [
-      [
-       "EMILIO 🇲🇽",
-       "Velatz",
-       "Flama"
-      ],
-      "EMILIO 🇲🇽",
-      "triple (3 bandas)"
-     ],
-     [
-      [
-       "Abyssus",
-       "Fol🇦🇷",
-       "Kude"
-      ],
-      "Abyssus",
-      "triple (3 bandas)"
-     ]
-    ],
-    "r": "Cuartos"
-   },
-   {
-    "b": [
-     [
-      [
-       "Zetryko",
-       "Panchok"
-      ],
-      "Zetryko",
-      ""
-     ],
-     [
-      [
-       "Abyssus",
-       "Emilio Alva 🇧🇱"
-      ],
-      "Abyssus",
-      ""
-     ]
-    ],
-    "r": "Semifinales"
-   },
-   {
-    "b": [
-     [
-      [
-       "Abyssus",
-       "Zetryko"
-      ],
-      "Abyssus",
-      "ganador: ✅ Decidir"
-     ]
-    ],
-    "r": "Final"
-   }
-  ],
-  "sv": "ACAD",
-  "tabla": [
-   [
-    "Abyssus",
-    "Campeón",
-    7500
-   ],
-   [
-    "Zetryko",
-    "Subcampeón",
-    5000
-   ],
-   [
-    "Emilio Alva 🇧🇱",
-    "Semifinal",
-    3500
-   ],
-   [
-    "Panchok",
-    "Semifinal",
-    3500
-   ],
-   [
-    "ARDEAN",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Efimero",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Flama",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Fol🇦🇷",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Kude",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Miniboy",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Velatz",
-    "Cuartos",
-    2000
    ]
   ]
  },
@@ -10446,7 +10301,7 @@
        "Teito",
        "Zafka",
        "Rubik",
-       "Redstonita 🇸🇻",
+       "Redstonita",
        "Ariaxer"
       ],
       "Panchok",
@@ -10454,18 +10309,18 @@
      ],
      [
       [
-       "Noa 🇲🇽",
-       "MAUZZ 🇻🇪",
+       "Noa",
+       "MauzzitoEmeces",
        "Mail O",
        "Leonart",
        "Vandu",
        "Molusco",
-       "Emilio Alva 🇧🇱",
+       "Emilio Alva",
        "Velatz",
        "Trot",
        "SDK 🇵🇾"
       ],
-      "Noa 🇲🇽",
+      "Noa",
       "triple (10 bandas)"
      ],
      [
@@ -10474,17 +10329,17 @@
        "Number",
        "Bloody",
        "Lvel 🇻🇪",
-       "UDDIZIM 🇧🇷",
+       "UDDIZIM",
        "Majiztral",
        "DANCOLL 🇻🇪",
-       "Yio🇲🇽"
+       "Yio"
       ],
       "Eclipsito",
       "triple (12 bandas, pasan 5)"
      ],
      [
       [
-       "Warriorvid 🇨🇴",
+       "Warriorvid",
        "JEIXDER",
        "Carlos",
        "Btrece",
@@ -10517,12 +10372,12 @@
       [
        "Abyssus",
        "luisito 🏆",
-       "Rayden🇲🇽",
+       "Rayden",
        "Reyes",
        "Zanti SkT 🇦🇷🇮🇹",
        "Zaik 🇪🇸",
        "MaYeuTyK",
-       "Galileo 🇻🇪",
+       "Galileo",
        "Calíz"
       ],
       "Abyssus",
@@ -10531,11 +10386,11 @@
      [
       [
        "Noone",
-       "Ezias🇵🇾🇬🇪🇪🇨🇫🇷🇧🇷🇨🇱🥈✒️🧢🐍",
+       "Ezias🥈✒️🧢🐍",
        "Jere",
        "ONZASS",
        "Player",
-       "Nox🇭🇳",
+       "Nox",
        "ARDEAN"
       ],
       "Noone",
@@ -10549,7 +10404,7 @@
        "Kochi",
        "TYPHLOSION",
        "ZWO 🇦🇷",
-       "G-MC 🇬🇹",
+       "G-MC",
        "Acry"
       ],
       "Lord Viruzz",
@@ -10586,10 +10441,10 @@
      ],
      [
       [
-       "SGB 🇨🇴",
-       "Noa 🇲🇽"
+       "SGB",
+       "Noa"
       ],
-      "SGB 🇨🇴",
+      "SGB",
       ""
      ],
      [
@@ -10639,10 +10494,10 @@
      ],
      [
       [
-       "SGB 🇨🇴",
+       "SGB",
        "SOL🇵🇪"
       ],
-      "SGB 🇨🇴",
+      "SGB",
       ""
      ],
      [
@@ -10668,10 +10523,10 @@
     "b": [
      [
       [
-       "SGB 🇨🇴",
+       "SGB",
        "Zignos"
       ],
-      "SGB 🇨🇴",
+      "SGB",
       ""
      ],
      [
@@ -10690,7 +10545,7 @@
      [
       [
        "Abyssus",
-       "SGB 🇨🇴"
+       "SGB"
       ],
       "Abyssus",
       ""
@@ -10707,7 +10562,7 @@
     10000
    ],
    [
-    "SGB 🇨🇴",
+    "SGB",
     "Subcampeón",
     7500
    ],
@@ -10767,7 +10622,7 @@
     1250
    ],
    [
-    "Noa 🇲🇽",
+    "Noa",
     "Octavos",
     1250
    ],
@@ -10837,12 +10692,12 @@
     625
    ],
    [
-    "Emilio Alva 🇧🇱",
+    "Emilio Alva",
     "R32",
     625
    ],
    [
-    "Ezias🇵🇾🇬🇪🇪🇨🇫🇷🇧🇷🇨🇱🥈✒️🧢🐍",
+    "Ezias🥈✒️🧢🐍",
     "R32",
     625
    ],
@@ -10852,12 +10707,12 @@
     625
    ],
    [
-    "G-MC 🇬🇹",
+    "G-MC",
     "R32",
     625
    ],
    [
-    "Galileo 🇻🇪",
+    "Galileo",
     "R32",
     625
    ],
@@ -10912,11 +10767,6 @@
     625
    ],
    [
-    "MAUZZ 🇻🇪",
-    "R32",
-    625
-   ],
-   [
     "MaYeuTyK",
     "R32",
     625
@@ -10928,6 +10778,11 @@
    ],
    [
     "Majiztral",
+    "R32",
+    625
+   ],
+   [
+    "MauzzitoEmeces",
     "R32",
     625
    ],
@@ -10947,7 +10802,7 @@
     625
    ],
    [
-    "Nox🇭🇳",
+    "Nox",
     "R32",
     625
    ],
@@ -10967,12 +10822,12 @@
     625
    ],
    [
-    "Rayden🇲🇽",
+    "Rayden",
     "R32",
     625
    ],
    [
-    "Redstonita 🇸🇻",
+    "Redstonita",
     "R32",
     625
    ],
@@ -11027,7 +10882,7 @@
     625
    ],
    [
-    "UDDIZIM 🇧🇷",
+    "UDDIZIM",
     "R32",
     625
    ],
@@ -11042,7 +10897,7 @@
     625
    ],
    [
-    "Warriorvid 🇨🇴",
+    "Warriorvid",
     "R32",
     625
    ],
@@ -11052,7 +10907,7 @@
     625
    ],
    [
-    "Yio🇲🇽",
+    "Yio",
     "R32",
     625
    ],
@@ -11090,6 +10945,317 @@
     "mathias 🇻🇪",
     "R32",
     625
+   ]
+  ]
+ },
+ "401": {
+  "dia": "2026-10-03",
+  "escala": "8-15",
+  "fecha": "03/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1556049501117087825"
+  ],
+  "n": 401,
+  "nombre": "COPA DE GRUPOS LCW",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Zetryko",
+       "ARDEAN",
+       "Efimero"
+      ],
+      "Zetryko",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Panchok",
+       "Miniboy"
+      ],
+      "Panchok",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "EMILIO",
+       "Velatz",
+       "Flama"
+      ],
+      "EMILIO",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Abyssus",
+       "Fol",
+       "Kude"
+      ],
+      "Abyssus",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zetryko",
+       "Panchok"
+      ],
+      "Zetryko",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Emilio Alva"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Zetryko"
+      ],
+      "Abyssus",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    7500
+   ],
+   [
+    "Zetryko",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Emilio Alva",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Panchok",
+    "Semifinal",
+    3500
+   ],
+   [
+    "ARDEAN",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Efimero",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Flama",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fol",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kude",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "402": {
+  "dia": "2026-10-05",
+  "escala": "16+",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556536286074900573"
+  ],
+  "n": 402,
+  "nombre": "PRITTY FREE",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "Focox",
+       "Crk"
+      ],
+      "Provenza",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Hassan",
+       "benjadsantis🇦🇷",
+       "MZK",
+       "Oni 🇦🇷"
+      ],
+      "Hassan",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Baggio 🇮🇹",
+       "Tam",
+       "Ivaynex"
+      ],
+      "Baggio 🇮🇹",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Skratch",
+       "Garxzii"
+      ],
+      "Skratch",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hassan, Benju",
+       "Alexi, Provenza"
+      ],
+      "Hassan, Benju",
+      ""
+     ],
+     [
+      [
+       "tam🇧🇫baggio🇮🇹",
+       "Nhp, Skratch"
+      ],
+      "tam🇧🇫baggio🇮🇹",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "tam🇧🇫baggio🇮🇹",
+       "Hassan, Benju"
+      ],
+      "tam🇧🇫baggio🇮🇹",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "tam🇧🇫baggio🇮🇹",
+    "Campeón",
+    10000
+   ],
+   [
+    "Benju",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Hassan",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Alexi",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Nhp",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Skratch",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Focox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Garxzii",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ivaynex",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MZK",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oni 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2500
+   ],
+   [
+    "benjadsantis🇦🇷",
+    "Cuartos",
+    2500
    ]
   ]
  }
