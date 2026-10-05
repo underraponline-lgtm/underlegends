@@ -333,7 +333,8 @@
    "servidor": "0e8f51b25221:9d97339447c1:055f77"
   },
   "DLX": {
-   "servidor": "86bdaa599a3e:9d97339447c1:3ce074"
+   "servidor": "86bdaa599a3e:9d97339447c1:3ce074",
+   "temporada": "a6954ce8b1d5:c2dd98b0f962"
   },
   "DNK": {
    "servidor": "b48bf82380b7:9d97339447c1:612882"
@@ -666,10 +667,10 @@
    "temporada": "58ef4e323219:f5299dbdfa04"
   },
   "Guess": {
-   "competitivo": "0a9b27b4901a:66620bff5eb9",
+   "competitivo": "8db6ecd5ca85:66620bff5eb9",
    "pais": "5582a9b3831e:dd0366c7fb5d",
    "servidor": "8e24320b0860:9d97339447c1:c589ca",
-   "temporada": "a37c91c474f5:f5299dbdfa04"
+   "temporada": "c6e91fc406be:c2dd98b0f962"
   },
   "Gus": {
    "competitivo": "835a20cfcf34:66620bff5eb9",
@@ -952,10 +953,10 @@
   },
   "L": {},
   "LAST": {
-   "competitivo": "148365ac4b67:66620bff5eb9",
+   "competitivo": "0ee4d673d5fb:66620bff5eb9",
    "pais": "3d8b21d4a1a5:dd0366c7fb5d",
    "servidor": "660d73d7e446:9d97339447c1:88f477",
-   "temporada": "6dd0a3a2a873:f5299dbdfa04"
+   "temporada": "a76a93c1d439:c2dd98b0f962"
   },
   "LEWITO": {
    "competitivo": "e8b6dbffa2af:66620bff5eb9",
@@ -2083,5 +2084,5 @@
    "servidor": "994982e6deaa:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-05T16:57:01+00:00"
+ "cuando": "2026-10-05T18:58:46+00:00"
 }
