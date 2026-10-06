@@ -892,6 +892,16 @@
    "b": "POLLOSPORT 🇦🇷",
    "ganador": "POLLOSPORT 🇦🇷",
    "votos": "1–0"
+  },
+  "1556839121438244867": {
+   "id": "1556839121438244867",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791249771223,
+   "a": "AGUSTÍN🇨🇱🇵🇪",
+   "b": "KASAAXT🇩🇴",
+   "ganador": "AGUSTÍN🇨🇱🇵🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1905,8 +1915,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791246518928,
-   "ed": 1791247896631,
-   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝",
+   "ed": 1791249410294,
+   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -1934,8 +1944,8 @@
       "BOOTRAX",
       "NUMBER"
      ],
-     null,
-     "no aparece nadie después",
+     "BOOTRAX",
+     "ronda siguiente",
      []
     ],
     [
@@ -1954,6 +1964,26 @@
      [
       "CRIZJ",
       "DREXX"
+     ],
+     "CRIZJ",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "BOOTRAX",
+      "ANDRES"
+     ],
+     "ANDRES",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ANDRES",
+      "CRIZJ"
      ],
      null,
      "última ronda y no dice campeón",
