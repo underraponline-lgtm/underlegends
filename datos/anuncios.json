@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T22:54:35+00:00",
+ "cuando": "2026-10-06T23:24:36+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2743,6 +2743,26 @@
    "categoria_id": "868218509975498805"
   },
   {
+   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1557168093413900400",
+   "cuando": "2026-10-06T23:10:04",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "ILIMITADOS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "DE INSCRIPCIONES",
+   "fecha": "VIERNES 9 DE OCTUBRE",
+   "premios": "",
+   "categoria_id": "1309234419525222477"
+  },
+  {
    "nombre": "VALHALLA VOL1",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
@@ -2845,6 +2865,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "‣《🗞️》Inscripciones",
+   "texto": "Guty 🇨🇴",
+   "quien": "gutierrez__9",
+   "discord_id": "766366997117141022",
+   "msg_id": "1557169275548995625",
+   "cuando": "2026-10-06T23:14:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Kushina 🇲🇽",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1557167141504155740",
+   "cuando": "2026-10-06T23:06:17"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

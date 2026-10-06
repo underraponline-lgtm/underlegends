@@ -1032,6 +1032,16 @@
    "b": "PARKJISUNG🇰🇷",
    "ganador": "PARKJISUNG🇰🇷",
    "votos": "1–0"
+  },
+  "1557168846966620191": {
+   "id": "1557168846966620191",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791328383915,
+   "a": "SOUL B 🇨🇱 + ECLIPSE 🇨🇱",
+   "b": "BNA 🇦🇷 + PAIN 🇨🇴",
+   "ganador": "BNA 🇦🇷 + PAIN 🇨🇴",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2393,6 +2403,37 @@
      ],
      "YOUNG VLAD 🇨🇴",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1557168673456652351": {
+   "id": "1557168673456652351",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791328342547,
+   "ed": 1791328737366,
+   "texto": "`[ CUARTOS ]`\n⌞SOUL B 🇨🇱 + ECLIPSE 🇨🇱⌝ 🆚 ⌞BNA 🇦🇷 + PAIN 🇨🇴⌝\n⌞SHISUI 🇨🇱 + PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + UZI 🇨🇱⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "SOUL B 🇨🇱 + ECLIPSE 🇨🇱",
+      "BNA 🇦🇷 + PAIN 🇨🇴"
+     ],
+     "BNA 🇦🇷 + PAIN 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SHISUI 🇨🇱 + PICHULITA MC 🇦🇷",
+      "MAKMA 🇻🇪 + UZI 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

@@ -88,17 +88,17 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "E",
+"velatz": {
+"rg": "C",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
+"vandu": {
+"rg": "E",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -312,13 +312,6 @@
 "temporada"
 ]
 },
-"zeta": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "catarsis": {
 "rg": "",
 "c": [
@@ -340,6 +333,13 @@
 "temporada"
 ]
 },
+"zeta": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "nxuz": {
 "rg": "",
 "c": [
@@ -348,13 +348,6 @@
 ]
 },
 "masino": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"mtz": {
 "rg": "",
 "c": [
 "servidor",
@@ -390,6 +383,13 @@
 ]
 },
 "cinexfilo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mtz": {
 "rg": "",
 "c": [
 "servidor",
@@ -471,13 +471,6 @@
 "temporada"
 ]
 },
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "andy": {
 "rg": "",
 "c": [
@@ -504,6 +497,13 @@
 "c": []
 },
 "nhp": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -602,13 +602,6 @@
 "temporada"
 ]
 },
-"efimero": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "sosa": {
 "rg": "",
 "c": [
@@ -625,13 +618,6 @@
 ]
 },
 "neo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"tam": {
 "rg": "",
 "c": [
 "servidor",
@@ -670,14 +656,14 @@
 "rg": "",
 "c": []
 },
-"numberve": {
+"efimero": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"tusicario": {
+"numberve": {
 "rg": "",
 "c": [
 "servidor",
@@ -699,6 +685,13 @@
 ]
 },
 "deuxs": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"tam": {
 "rg": "",
 "c": [
 "servidor",
@@ -740,6 +733,13 @@
 "joshu": {
 "rg": "",
 "c": []
+},
+"tusicario": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "korey": {
 "rg": "",
@@ -906,13 +906,6 @@
 "temporada"
 ]
 },
-"lvel": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "jult": {
 "rg": "",
 "c": [
@@ -992,6 +985,13 @@
 ]
 },
 "soulb": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"lvel": {
 "rg": "",
 "c": [
 "servidor",
@@ -1236,13 +1236,6 @@
 "temporada"
 ]
 },
-"skratch": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "isaias": {
 "rg": "",
 "c": [
@@ -1337,6 +1330,13 @@
 ]
 },
 "indigena": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"skratch": {
 "rg": "",
 "c": [
 "servidor",
