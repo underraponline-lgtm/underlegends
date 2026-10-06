@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T21:24:40+00:00",
+ "cuando": "2026-10-06T21:54:43+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2343,27 +2343,6 @@
    "categoria_id": "1373343272482902127"
   },
   {
-   "nombre": "MUERTE SUBITA",
-   "servidor": "DDF",
-   "canal": "『📢』Anuncios",
-   "msg_id": "1556061426861351064",
-   "cuando": "2026-10-03T21:52:34",
-   "canal_id": "1469943663332425738",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "autor_h": "c47c3e2e9fa31d37",
-   "cupos_texto": "ILIMTADOS HASTA ACABAR FILTROS",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "7PM",
-   "fecha": "03 10",
-   "premios": "$15P",
-   "de_imagen": true,
-   "categoria_id": "1469943266022785115"
-  },
-  {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -2889,6 +2868,24 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "O.E.P 🇨🇴",
+   "quien": "puto_si_me_mencionas.",
+   "discord_id": "817432890807156756",
+   "msg_id": "1557146164137037925",
+   "cuando": "2026-10-06T21:42:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "riolu",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1557143733965946994",
+   "cuando": "2026-10-06T21:33:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "Sweet 🇨🇳",
    "quien": "essencesteez",
    "discord_id": "917207293496557578",
@@ -3006,19 +3003,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "KyeHambreSangree🇵🇪",
-   "quien": "afaintsignal",
-   "discord_id": "1438277281637339321",
-   "msg_id": "1557123787261218917",
+   "texto": "Krish 🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1557123784798904424",
    "cuando": "2026-10-06T20:14:00"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Krish 🇪🇸",
-   "quien": "krishsss11111",
-   "discord_id": "1513620494199558295",
-   "msg_id": "1557123784798904424",
+   "texto": "KyeHambreSangree🇵🇪",
+   "quien": "afaintsignal",
+   "discord_id": "1438277281637339321",
+   "msg_id": "1557123787261218917",
    "cuando": "2026-10-06T20:14:00"
   },
   {
