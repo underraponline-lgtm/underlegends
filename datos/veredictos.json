@@ -912,6 +912,36 @@
    "b": "Ardean 🇵🇪",
    "ganador": "Tokio",
    "votos": "1–0"
+  },
+  "1556869320330707056": {
+   "id": "1556869320330707056",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791256971200,
+   "a": "PICHULA",
+   "b": "TAM",
+   "ganador": "PICHULA",
+   "votos": "1–0"
+  },
+  "1556873703705280544": {
+   "id": "1556873703705280544",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791258016278,
+   "a": "ZA",
+   "b": "MOLUSCO",
+   "ganador": "MOLUSCO",
+   "votos": "1–0"
+  },
+  "1556874319936749579": {
+   "id": "1556874319936749579",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791258163199,
+   "a": "RODA",
+   "b": "RIZAS",
+   "ganador": "RIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2073,6 +2103,27 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1556874260939800577": {
+   "id": "1556874260939800577",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791258149133,
+   "ed": 1791258286980,
+   "texto": "`[ CUARTOS ]`\n⌞RODA⌝ 🆚 ⌞RIZAS⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "RODA",
+      "RIZAS"
+     ],
+     "RIZAS",
+     "veredicto",
      []
     ]
    ]
