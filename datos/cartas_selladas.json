@@ -3,7 +3,8 @@
   ".SosaATR": {
    "competitivo": "baad01ead0ab:66620bff5eb9",
    "pais": "691b919f321b:dd0366c7fb5d",
-   "servidor": "4617c64e733e:9d97339447c1:3e2e7c"
+   "servidor": "4617c64e733e:9d97339447c1:3e2e7c",
+   "temporada": "c7ea29594096:c2dd98b0f962"
   },
   "1200": {
    "servidor": "85cc15b7e996:9d97339447c1:098793",
@@ -2092,5 +2093,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-06T23:29:53+00:00"
+ "cuando": "2026-10-06T23:59:00+00:00"
 }
