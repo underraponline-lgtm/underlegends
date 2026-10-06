@@ -1042,6 +1042,46 @@
    "b": "BNA 🇦🇷 + PAIN 🇨🇴",
    "ganador": "BNA 🇦🇷 + PAIN 🇨🇴",
    "votos": "1–0"
+  },
+  "1557171837585326101": {
+   "id": "1557171837585326101",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791329096934,
+   "a": "PICHULITA MC 🇦🇷",
+   "b": "MAKMA 🇻🇪",
+   "ganador": "PICHULITA MC 🇦🇷",
+   "votos": "1–0"
+  },
+  "1557172883493486635": {
+   "id": "1557172883493486635",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791329346298,
+   "a": "PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪",
+   "b": "BENJIXO 🇦🇷 + ALTER 🇨🇱",
+   "ganador": "PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪",
+   "votos": "1–0"
+  },
+  "1557174400346882149": {
+   "id": "1557174400346882149",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791329707944,
+   "a": "ZIGNOS + ERIAN 🇵🇦",
+   "b": "YOUNG VLAD 🇨🇴 + RIOLU 🇪🇸",
+   "ganador": "ZIGNOS + ERIAN 🇵🇦",
+   "votos": "1–0"
+  },
+  "1557178082841075784": {
+   "id": "1557178082841075784",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791330585919,
+   "a": "PARK JI SUNG 🇨🇱",
+   "b": "ECLIPSE 🇨🇱 + BNA 🇦🇷",
+   "ganador": "PARK JI SUNG 🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2413,8 +2453,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791328342547,
-   "ed": 1791328737366,
-   "texto": "`[ CUARTOS ]`\n⌞SOUL B 🇨🇱 + ECLIPSE 🇨🇱⌝ 🆚 ⌞BNA 🇦🇷 + PAIN 🇨🇴⌝\n⌞SHISUI 🇨🇱 + PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + UZI 🇨🇱⌝",
+   "ed": 1791330720159,
+   "texto": "`[ CUARTOS ]`\n⌞SOUL B 🇨🇱 + ECLIPSE 🇨🇱⌝ 🆚 ⌞BNA 🇦🇷 + PAIN 🇨🇴⌝\n⌞SHISUI 🇨🇱 + PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + UZI 🇨🇱⌝\n⌞PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪⌝ 🆚 ⌞BENJIXO 🇦🇷 + ALTER 🇨🇱⌝\n⌞ZIGNOS + ERIAN 🇵🇦⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + RIOLU 🇪🇸⌝\n`[ SEMIFINALES ]`\n⌞BNA 🇦🇷 + ECLIPSE 🇨🇱 + PAIN 🇨🇴⌝ 🆚 ⌞PARK JI SUNG 🇨🇱 + BENJIXO 🇦🇷 + SIX 🇦🇷⌝\n⌞PARK JI SUNG 🇨🇱⌝ 🆚 ⌞ECLIPSE 🇨🇱 + BNA 🇦🇷⌝\n⌞PAIN 🇨🇴⌝ 🆚 ⌞BENJIXO 🇦🇷 + SIX 🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -2431,6 +2471,66 @@
      [
       "SHISUI 🇨🇱 + PICHULITA MC 🇦🇷",
       "MAKMA 🇻🇪 + UZI 🇨🇱"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PICHULITA MC 🇦🇷",
+      "MAKMA 🇻🇪"
+     ],
+     "PICHULITA MC 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪",
+      "BENJIXO 🇦🇷 + ALTER 🇨🇱"
+     ],
+     "PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ZIGNOS + ERIAN 🇵🇦",
+      "YOUNG VLAD 🇨🇴 + RIOLU 🇪🇸"
+     ],
+     "ZIGNOS + ERIAN 🇵🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "BNA 🇦🇷 + ECLIPSE 🇨🇱 + PAIN 🇨🇴",
+      "PARK JI SUNG 🇨🇱 + BENJIXO 🇦🇷 + SIX 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PARK JI SUNG 🇨🇱",
+      "ECLIPSE 🇨🇱 + BNA 🇦🇷"
+     ],
+     "PARK JI SUNG 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PAIN 🇨🇴",
+      "BENJIXO 🇦🇷 + SIX 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
