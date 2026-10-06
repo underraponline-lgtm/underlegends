@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-06T02:53:14Z",
+ "cuando": "2026-10-06T03:24:29Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 225.9,
+ "dur_s": 1497.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 6.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.5
+   "s": 2.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.9
+   "s": 24.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 155.0
+   "s": 1363.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.8
+   "s": 13.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 39.7
+   "s": 86.7
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "406",
-  "nombre": "MINI CUP GOD 110",
+  "n": "408",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
   "sv": "DDF",
   "dia": "2026-10-05"
  },
  "cuotas": {
   "kv": {
-   "write": 512,
-   "read": 11808
+   "write": 533,
+   "read": 13871
   },
   "objeto": {
-   "leidas": 261673,
-   "escritas": 4962,
-   "pedidos": 778
+   "leidas": 325256,
+   "escritas": 6233,
+   "pedidos": 1004
   },
   "worker": {
-   "pedidos": 5175,
+   "pedidos": 5302,
    "errores": 1,
-   "sub": 5126,
-   "p50_ms": 1.05,
-   "p99_ms": 5.92
+   "sub": 5255,
+   "p50_ms": 1.04,
+   "p99_ms": 5.89
   },
   "r2": {
    "objetos": 8304,
