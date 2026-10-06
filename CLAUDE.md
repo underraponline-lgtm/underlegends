@@ -839,6 +839,15 @@ jugaba sin dueño). La página, el bot en vivo y el ciclo asignan con las
 mismas dos pasadas: `LlaveVivo.asignar()` es `cruzar()` en JS. **Si se
 toca una regla del cruce, se toca en los dos.**
 
+🔴 **Y UNA LLAVE ES DE UN SOLO EVENTO** (05/10/2026). Cada anuncio elegía
+la suya por separado, y «COPA SOOLAR 3» se llevó la #394 de «COPA SOOLAR»
+del día anterior —«3» contra ningún número no choca—: el calendario la dio
+por jugada mientras se jugaba y el Inicio la sacó de «en vivo». Ahora la
+llave es del anuncio que más se le parece y, a igual parecido, del más
+cercano; los que arrancan a la misma hora (±2 h, `MISMO_EVENTO_H`) son el
+mismo evento anunciado otra vez y la comparten. Y una llave publicada más
+de 12 h antes del arranque (`ANTES_MAX_H`) no es de ese evento.
+
 🏆 **Y SE DIBUJA COMO CUADRO, desde el 25/09/2026** (`cuadro()` en
 `app.js`): cada batalla trae de qué batallas vienen sus lados —`b[3]`, lo
 arma `llaves_web.enlazar()` por los nombres de los ganadores— y la página

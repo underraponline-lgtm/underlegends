@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.45",
+   "dia": "2026-10-05",
+   "cuando": "2026-10-05T22:15:00-04:00",
+   "titulo": "Todos los eventos en vivo, en el Inicio",
+   "items": [
+    "🔴 **El Inicio cuenta todos los eventos en vivo**: una edición nueva con el mismo nombre que otra ya jugada («COPA SOOLAR 3» después de «COPA SOOLAR») ya no se da por terminada mientras se juega."
+   ]
+  },
+  {
    "version": "2.44",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T18:35:00-04:00",
