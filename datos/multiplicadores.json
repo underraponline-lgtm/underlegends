@@ -236,17 +236,17 @@
    "semillero": {
     "nuevos": {
      "FFA": 5,
-     "DDF": 2
+     "DDF": 6
     },
     "gente": {
      "FFA": 57,
-     "DDF": 13
+     "DDF": 19
     },
-    "gana": "FFA"
+    "gana": "DDF"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 13,
+    "DDF": 19,
     "DRA": 0,
     "FFA": 57,
     "FFS": 0,
