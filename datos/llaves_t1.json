@@ -12884,5 +12884,227 @@
     2000
    ]
   ]
+ },
+ "411": {
+  "dia": "2026-10-06",
+  "escala": "16+",
+  "fecha": "06/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557088423972704299"
+  ],
+  "n": 411,
+  "nombre": "DEM UZBEKISTAN FECHA 1",
+  "participantes": 22,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Zaza",
+       "yinn"
+      ],
+      "Zaza",
+      ""
+     ],
+     [
+      [
+       "Ezias🥈✒️🧢🐍",
+       "Player"
+      ],
+      "Ezias🥈✒️🧢🐍",
+      ""
+     ],
+     [
+      [
+       "Pain🇯🇵",
+       "OG"
+      ],
+      "Pain🇯🇵",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Krish"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "JOSHU 🇨🇺",
+       "Drexx"
+      ],
+      "JOSHU 🇨🇺",
+      ""
+     ],
+     [
+      [
+       "RT 🇲🇽",
+       "Jupiter"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Sin límites 🇵🇪",
+       "Yo mc 🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Trot🇪🇸",
+       "Majiztral 🇨🇴",
+       "Richard 🇪🇨"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zaza",
+       "Ezias🥈✒️🧢🐍"
+      ],
+      "Zaza",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Pain🇯🇵"
+      ],
+      "Panchok",
+      "Walk-in 1: Panchok 🇨🇱"
+     ],
+     [
+      [
+       "JOSHU 🇨🇺",
+       "Vandu"
+      ],
+      "JOSHU 🇨🇺",
+      ""
+     ],
+     [
+      [
+       "saz🇨🇴",
+       "za"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Zaza"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "JOSHU 🇨🇺",
+       "Provenza"
+      ],
+      "JOSHU 🇨🇺",
+      "Walk-in 2: PROVENZAL"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok, JOSHU",
+       "Provenza, Snow"
+      ],
+      "Panchok, JOSHU",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Zaza",
+    "Semifinal",
+    5250
+   ],
+   [
+    "JOSHU",
+    "Campeón",
+    5000
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Pain🇯🇵",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Panchok",
+    "Campeón",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    2250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

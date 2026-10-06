@@ -1012,6 +1012,16 @@
    "b": "OG",
    "ganador": "PAIN",
    "votos": "1–0"
+  },
+  "1557114491014086849": {
+   "id": "1557114491014086849",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791315424446,
+   "a": "ZA 🇺🇾",
+   "b": "PANCHOK 🇨🇱",
+   "ganador": "PANCHOK 🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2297,6 +2307,27 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1557114416225452045": {
+   "id": "1557114416225452045",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791315406615,
+   "ed": 1791316129681,
+   "texto": "`[ FINAL ]`\n⌞ZA 🇺🇾⌝ 🆚 ⌞PANCHOK 🇨🇱⌝\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "ZA 🇺🇾",
+      "PANCHOK 🇨🇱"
+     ],
+     "PANCHOK 🇨🇱",
+     "veredicto",
      []
     ]
    ]
