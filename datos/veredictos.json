@@ -1915,8 +1915,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791246518928,
-   "ed": 1791249410294,
-   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝",
+   "ed": 1791251479232,
+   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝\n⌞CARLOS⌝ 🆚 ⌞TEITO⌝\n⌞ARDEAN⌝ 🆚 ⌞CRISZJ⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -1934,9 +1934,12 @@
       "DREXX",
       "ARDEAN"
      ],
-     "DREXX",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "DREXX",
+      "ARDEAN"
+     ]
     ],
     [
      "CUARTOS",
@@ -1984,6 +1987,26 @@
      [
       "ANDRES",
       "CRIZJ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CARLOS",
+      "TEITO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ARDEAN",
+      "CRISZJ"
      ],
      null,
      "última ronda y no dice campeón",

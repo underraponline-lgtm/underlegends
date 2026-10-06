@@ -12007,5 +12007,127 @@
     625
    ]
   ]
+ },
+ "406": {
+  "dia": "2026-10-05",
+  "escala": "8-15",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1556823937986470011"
+  ],
+  "n": 406,
+  "nombre": "MINI CUP GOD 110",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "MARTINEZ🇺🇾"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "ARDEAN"
+      ],
+      "Drexx",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "Number VE"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Adriagner🇳🇮",
+       "FISICS🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Drexx"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Andres",
+       "BTRX"
+      ],
+      "Andres",
+      "Walk-in 1: ANDRES🇨🇱"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Andres"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "CrisZJ",
+    "Campeón",
+    7500
+   ],
+   [
+    "BTRX",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Drexx",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Andres",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "ARDEAN",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MARTINEZ🇺🇾",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

@@ -47,7 +47,7 @@
     "ARDEAN": [
      1,
      0,
-     16
+     8
     ],
     "Abyssus": [
      1,
@@ -59,6 +59,11 @@
      0,
      16
     ],
+    "Andres": [
+     0,
+     1,
+     2
+    ],
     "Ariaxer": [
      1,
      0,
@@ -66,8 +71,8 @@
     ],
     "BTRX": [
      1,
-     0,
-     16
+     1,
+     4
     ],
     "Benjixo": [
      1,
@@ -79,10 +84,20 @@
      0,
      16
     ],
+    "CrisZJ": [
+     0,
+     3,
+     1
+    ],
     "Crk": [
      1,
      0,
      16
+    ],
+    "Drexx": [
+     0,
+     1,
+     4
     ],
     "Dyzz": [
      1,
@@ -113,6 +128,11 @@
      1,
      0,
      16
+    ],
+    "MARTINEZ🇺🇾": [
+     0,
+     0,
+     8
     ],
     "Majiztral": [
      1,
@@ -148,6 +168,11 @@
      1,
      0,
      16
+    ],
+    "Number VE": [
+     0,
+     0,
+     8
     ],
     "OG": [
      1,
@@ -262,10 +287,12 @@
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 300,
+    "Andres": 1000,
     "Ariaxer": 300,
     "BTRX": 300,
     "Benjixo": 300,
     "Colesito": 300,
+    "CrisZJ": 1600,
     "Crk": 300,
     "Dyzz": 300,
     "Efimero": 300,
@@ -311,10 +338,12 @@
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 300,
+  "Andres": 1000,
   "Ariaxer": 300,
   "BTRX": 300,
   "Benjixo": 300,
   "Colesito": 300,
+  "CrisZJ": 1600,
   "Crk": 300,
   "Dyzz": 300,
   "Efimero": 300,
