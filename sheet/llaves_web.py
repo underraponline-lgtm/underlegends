@@ -80,6 +80,13 @@ PARECIDO = 0.8
 #: la llave se publica el mismo día del anuncio o hasta dos después
 #: (un evento de las 11 PM termina pasada la medianoche)
 DIAS = (-1, 2)
+#: 🔴 …PERO NO UN DÍA ANTES DE QUE ARRANQUE (05/10/2026). `DIAS` cuenta días del calendario, y «COPA SOOLAR 3» (el
+#: domingo a las 9 PM) se llevó la llave de «COPA SOOLAR», publicada el sábado: un número contra ninguno no choca. Con
+#: el instante de los dos, una llave de más de estas horas ANTES del arranque es de otro evento
+ANTES_MAX_H = 12
+#: dos anuncios que arrancan con esta diferencia o menos son EL MISMO evento anunciado otra vez —«FAT BATTLES FECHA 4
+#: (DOMINGO - MAÑANA)» y «(DOMINGO - HOY)», ACAD—: comparten la llave. Ver `cruzar()`
+MISMO_EVENTO_H = 2
 
 #: 🔑 LA LLAVE HUÉRFANA: el anuncio que la primera pasada dejó sin llave
 #: porque los números chocan («VOL 17» contra «VOL 16», el mismo evento).
@@ -679,6 +686,13 @@ def _elegir(p, regs):
     y el nombre igual —o parecido y con los mismos números—. Con un empate
     no se elige.
     """
+    e = _elegir_con(p, regs)
+    return e[0] if e else None
+
+
+def _elegir_con(p, regs):
+    """`(n, puntaje, cerca)` de `_elegir()`, o `None`: con qué la eligió, para que `cruzar()` sepa a qué anuncio le
+    queda una llave que eligieron dos."""
     dia = _dia_este(p.get('cuando'))
     _ini = _instante_iso(p.get('cuando'))
     ini = int(_ini.timestamp() * 1000) if _ini else None
@@ -722,6 +736,9 @@ def _elegir(p, regs):
             # el anuncio se quedaba sin botón. Con el instante de la
             # llave, gana la que se publicó más cerca del arranque.
             ms = _primero(r.get('links'))
+            # 🔴 y no publicada un día antes de que arranque: ver `ANTES_MAX_H`
+            if ms is not None and ini and ms < ini - ANTES_MAX_H * 3600000:
+                continue
             cerca = (-(abs(ms - ini) // 60000) if ms is not None and ini
                      else -abs(dd) * 1440)
             cands.append((puntaje, cerca, str(n)))
@@ -730,7 +747,7 @@ def _elegir(p, regs):
     cands.sort(reverse=True)
     if len(cands) > 1 and cands[0][:2] == cands[1][:2]:
         return None
-    return cands[0][2]
+    return cands[0][2], cands[0][0], cands[0][1]
 
 
 def _pub_ms(p):
@@ -795,6 +812,14 @@ def _huerfanas(faltan, ctx, regs, tomadas):
     return out
 
 
+def _mismo_evento(a, b):
+    """¿`a` y `b` anuncian el mismo evento? El mismo servidor y el arranque a `MISMO_EVENTO_H` o menos."""
+    if (a.get('sv') or '') != (b.get('sv') or ''):
+        return False
+    ta, tb = _instante_iso(a.get('cuando')), _instante_iso(b.get('cuando'))
+    return bool(ta and tb and abs((ta - tb).total_seconds()) <= MISMO_EVENTO_H * 3600)
+
+
 def cruzar(pasados, regs, todos=None):
     """Cuelga `llave: n` de cada anuncio de «Lo que pasó» que tenga su
     llave, y devuelve `{n: registro}` con las que colgó.
@@ -806,22 +831,35 @@ def cruzar(pasados, regs, todos=None):
     """
     out = {}
     regs = regs or {}
-    for p in pasados:
-        p.pop('llave', None)
-        n = _elegir(p, regs)
-        if n is not None:
-            p['llave'] = int(n)
-            out[n] = regs[n]
+    ya = {p.get('link') for p in pasados if p.get('link')}
+    otros = [q for q in (todos or ()) if not (q.get('link') and q.get('link') in ya)]
+    # 🔴 UNA LLAVE ES DE UN SOLO EVENTO (05/10/2026). Cada anuncio elegía la suya por separado, y «COPA SOOLAR» y
+    # «COPA SOOLAR 3» se llevaron las dos la #394: el calendario dio por jugada la 3 mientras se jugaba, y el Inicio la
+    # sacó de «en vivo». Ahora la llave queda para el anuncio que más se le parece y, a igual parecido, el más cerca en
+    # el tiempo —y para los que arrancan a la misma hora que ése (`MISMO_EVENTO_H`): el mismo evento anunciado otra
+    # vez—. Dos eventos distintos empatados exacto: ninguno, como `_elegir()`. Los demás siguen a la huérfana sin ella.
+    mios = {id(p) for p in pasados}
+    por_llave = {}
+    for p in list(pasados) + otros:
+        if id(p) in mios:
+            p.pop('llave', None)
+        e = _elegir_con(p, regs)
+        if e is not None:
+            por_llave.setdefault(e[0], []).append(((e[1], e[2]), p))
+    for n, cs in por_llave.items():
+        cs.sort(key=lambda x: x[0], reverse=True)
+        gana = cs[0][1]
+        if any(k == cs[0][0] and not _mismo_evento(q, gana) for k, q in cs[1:]):
+            continue
+        for _k, q in cs:
+            if id(q) in mios and (q is gana or _mismo_evento(q, gana)):
+                q['llave'] = int(n)
+                out[n] = regs[n]
     faltan = [p for p in pasados if not p.get('llave')]
     if not faltan:
         return out
-    ya = {p.get('link') for p in pasados if p.get('link')}
-    otros = [q for q in (todos or ()) if not (q.get('link') and q.get('link') in ya)]
-    tomadas = {str(p['llave']) for p in pasados if p.get('llave')}
-    for q in otros:
-        n = _elegir(q, regs)
-        if n is not None:
-            tomadas.add(str(n))
+    # las de un empate también quedan tomadas: no son huérfanas de un tercero
+    tomadas = set(por_llave)
     for p, n in _huerfanas(faltan, list(pasados) + otros, regs, tomadas):
         p['llave'] = int(n)
         out[n] = regs[n]
@@ -959,11 +997,13 @@ def _self_check():
     # 🔑 la temporada del organizador (Dlx, 28/09/2026, con captura del calendario)
     ub = {'368': {'nombre': 'COMPE DEL VACILE 1', 'sv': 'URBF', 'dia': '2026-09-28'},
           '380': {'nombre': 'COMPE DEL VACILE 2', 'sv': 'URBF', 'dia': '2026-09-28'}}
-    q = [{'nombre': 'COMPE DEL VACILE T2 #1', 'sv': 'URBF', 'cuando': '2026-09-28T18:21:45'},
-         {'nombre': 'COMPE DEL VACILE T3 #1', 'sv': 'URBF', 'cuando': '2026-09-28T18:21:45'}]
+    # ⚠️ cada anuncio por su lado: juntos compiten por la misma llave (una llave es de UN anuncio, ver `cruzar()`)
+    q = [{'nombre': 'COMPE DEL VACILE T2 #1', 'sv': 'URBF', 'cuando': '2026-09-28T18:21:45'}]
+    q3 = [{'nombre': 'COMPE DEL VACILE T3 #1', 'sv': 'URBF', 'cuando': '2026-09-28T18:21:45'}]
     cruzar(q, ub)
+    cruzar(q3, ub)
     ok(q[0].get('llave') == 368, '«T2 #1» engancha con la llave «1»: el 2 es la temporada, no la edición')
-    ok(q[1].get('llave') == 368 and not cruzar([{'nombre': 'COMPE T2 #1', 'sv': 'URBF',
+    ok(q3[0].get('llave') == 368 and not cruzar([{'nombre': 'COMPE T2 #1', 'sv': 'URBF',
                                                  'cuando': '2026-09-28T18:21:45'}],
                                                {'9': {'nombre': 'COMPE T3 1', 'sv': 'URBF', 'dia': '2026-09-28'}}),
        'y la temporada sólo choca si la dicen los dos (T2 contra T3, no)')
@@ -981,6 +1021,33 @@ def _self_check():
         return 'https://discord.com/channels/1/2/%d' % ((int(t.timestamp() * 1000) - 1420070400000) << 22)
 
     eq = lambda *xs: {'r': 'Cuartos', 'b': [[list(x), x[0], ''] for x in xs]}  # noqa: E731
+
+    # 🔴 UNA LLAVE ES DE UN SOLO ANUNCIO, y no la de un día antes (05/10/2026): «COPA SOOLAR 3» (el domingo 9:11 PM ET)
+    # se llevaba la #394 de «COPA SOOLAR» (el sábado) —un número contra ninguno no choca— y el Inicio la daba por jugada
+    cs = {'394': {'nombre': 'COPA SOOLAR', 'sv': 'FFA', 'dia': '2026-10-04', 'links': [lk('2026-10-04T19:45:00')]}}
+    c1 = {'nombre': 'COPA SOOLAR', 'sv': 'FFA', 'cuando': '2026-10-04T19:39:40', 'link': lk('2026-10-04T19:09:40')}
+    c3 = {'nombre': 'COPA SOOLAR 3', 'sv': 'FFA', 'cuando': '2026-10-06T01:11:14', 'link': lk('2026-10-06T00:41:14')}
+    q = [dict(c1), dict(c3)]
+    cruzar(q, cs)
+    ok([x.get('llave') for x in q] == [394, None],
+       'la llave es del que se llama igual; la 3 no se lleva la de la 1  %s' % [x.get('llave') for x in q])
+    q = [dict(c3)]
+    cruzar(q, cs, todos=[dict(c1)])
+    ok(q[0].get('llave') is None, 'tampoco cuando la 1 no está a la vista (en «Lo que pasó»)')
+    q = [dict(c3)]
+    cruzar(q, cs)
+    ok(q[0].get('llave') is None, 'y aunque la 1 no exista: una llave de 29 h antes del arranque es de otro evento')
+    fb = {'392': {'nombre': 'FAT BATTLES FECHA 4 (DOMINGO - HOY)', 'sv': 'ACAD', 'dia': '2026-09-27',
+                  'links': [lk('2026-09-27T22:10:00')]}}
+    q = [{'nombre': 'FAT BATTLES FECHA 4 (DOMINGO - MAÑANA)', 'sv': 'ACAD', 'cuando': '2026-09-27T22:00:00'},
+         {'nombre': 'FAT BATTLES FECHA 4 (DOMINGO - HOY)', 'sv': 'ACAD', 'cuando': '2026-09-27T22:00:00'}]
+    cruzar(q, fb)
+    ok([x.get('llave') for x in q] == [392, 392], 'el mismo evento anunciado dos veces: los dos anuncios la llevan')
+    dia = {'7': {'nombre': 'FLEIVA FREE', 'sv': 'SR', 'dia': '2026-09-25', 'links': [lk('2026-09-26T00:05:00')]}}
+    q = [{'nombre': 'FLEIVA FREE', 'sv': 'SR', 'cuando': '2026-09-24T23:55:00'},
+         {'nombre': 'FLEIVA FREE', 'sv': 'SR', 'cuando': '2026-09-25T23:55:00'}]
+    cruzar(q, dia)
+    ok([x.get('llave') for x in q] == [None, 7], 'el mismo nombre otro día: la llave es del más cercano, no de los dos')
     tk = {'370': {'nombre': 'DESGRACIAS EN TOKYO VOL 16 2VS2', 'sv': 'FFA', 'dia': '2026-09-28',
                   'links': [lk('2026-09-29T01:53:58')],
                   'rondas': [eq(('27, Piyi', 'Soulb, Char'), ('Paria, Oasis', 'Vandu, Makmah'))]},

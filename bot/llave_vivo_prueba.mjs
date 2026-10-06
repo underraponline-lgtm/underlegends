@@ -313,6 +313,22 @@ console.log('\n8 · la llave huérfana: el título copiado de la edición anteri
       LV.formaDelAnuncio({ nombre: 'COPA 2v2', mod: '' }) === '' &&
       !LV.deEvento(Object.assign({}, a24, { nombre: 'DESGRACIAS EN TOKYO VOL 24 1v1' }), [L24], { anuncios: [], todas: [L24] }));
   }
+  // 🔴 UNA LLAVE ES DE UN SOLO EVENTO (05/10/2026): «COPA SOOLAR» a las 3:39 PM y «COPA SOOLAR 2» a las 7:41 PM, las
+  // dos de FFA; la llave en vivo de la 2 no puede ser también de la 1 (un número contra ninguno no choca)
+  {
+    const cs1 = { nombre: 'COPA SOOLAR', sv: 'FFA', cuando: '2026-10-04T19:39:40', link: link('1556386595580682261'), mod: '1v1' };
+    const cs2 = { nombre: 'COPA SOOLAR 2', sv: 'FFA', cuando: '2026-10-04T23:41:34', link: link('1556447470379208749'), mod: '1v1' };
+    const L2 = { id: '7002', sv: 'FFA', nombre: 'COPA SOOLAR 2', pub: ms('2026-10-04T23:50:00'), ed: ms('2026-10-05T00:30:00'),
+      rondas: [{ r: 'Octavos', b: [[['A', 'B'], '', '', []], [['C', 'D'], '', '', []]] }] };
+    const r = LV.asignar([cs1, cs2], [L2]);
+    ok('la llave en vivo de la 2 es sólo de la 2', r.porAnuncio.length === 1 && r.porAnuncio[0][0] === cs2,
+      js(r.porAnuncio.map((x) => x[0].nombre)));
+    ok('y la página no se la da a la 1', !LV.deEvento(cs1, [L2], { anuncios: [cs1, cs2], todas: [L2] })
+      && LV.deEvento(cs2, [L2], { anuncios: [cs1, cs2], todas: [L2] }) === L2);
+    const rep2 = Object.assign({}, cs2, { nombre: 'COPA SOOLAR 2 (HOY)', link: link('1556447470379208800') });
+    const r2 = LV.asignar([cs2, rep2], [L2]);
+    ok('el mismo evento anunciado dos veces: los dos anuncios la llevan', r2.porAnuncio.length === 2, js(r2.porAnuncio.length));
+  }
   ok('la serie: sin números, sin modalidad y sin la temporada del organizador',
     LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1') === 'desgraciasentokyovol' && LV.serie('COMPE DEL VACILE T2 #1') === 'compedelvacile',
     js([LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1'), LV.serie('COMPE DEL VACILE T2 #1')]));

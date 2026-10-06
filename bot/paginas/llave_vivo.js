@@ -1252,6 +1252,12 @@
   };
   // la misma llave: el mismo objeto, o el mismo id (la página y el Inicio nuevo pueden tener copias)
   function mismaLlave(x, y) { return x === y || !!(x && y && x.id && x.id === y.id); }
+  // el mismo evento anunciado otra vez: el mismo servidor y el arranque a 2 h o menos (`_mismo_evento()` del ciclo)
+  var MISMO_EVENTO_MS = 2 * 3600000;
+  function mismoEventoEv(a, b) {
+    var ta = instanteEv(a.cuando), tb = instanteEv(b.cuando);
+    return (a.sv || '') === (b.sv || '') && !isNaN(ta) && !isNaN(tb) && Math.abs(ta - tb) <= MISMO_EVENTO_MS;
+  }
   // la llave por nombre de `e` entre `ls`: `porNombre()` y, con `todo`, `{L, n, cerca}` para el que asigna (ver `asignar()`)
   function mejorPorNombre(e, ls) {
     var t = instanteEv(e.cuando);
@@ -1332,10 +1338,27 @@
       // ⚠️ tomada por objeto o por id, no por `L.id` a secas: las llaves del vigía que arma el Inicio nuevo no traen id,
       // y con `tomadas[undefined]` la primera que se llevaba un anuncio sacaba de la huérfana a todas las demás
       var tomada = function (L) { return tomadas.some(function (x) { return mismaLlave(x, L); }); };
-      // 1 · por nombre: cada anuncio, su mejor
+      // 1 · por nombre: cada anuncio, su mejor. 🔴 Y UNA LLAVE ES DE UN SOLO EVENTO (05/10/2026), como `cruzar()` del
+      // ciclo: la del anuncio que más se le parece y, a igual parecido, el más cerca en el tiempo —y la de los que
+      // arrancan a la misma hora que ése: el mismo evento anunciado otra vez—. «COPA SOOLAR» y «COPA SOOLAR 2» el mismo
+      // día se llevaban las dos la llave de la 2: un número contra ninguno no choca
+      var porLlave = [];
       ans.forEach(function (a) {
         var m = mejorPorNombre(a, llaves);
-        if (m) { asig.push([a, m.L]); tomadas.push(m.L); conLlave.push(a); }
+        if (!m) return;
+        var g = porLlave.filter(function (x) { return mismaLlave(x.L, m.L); })[0];
+        if (!g) { g = { L: m.L, cs: [] }; porLlave.push(g); }
+        g.cs.push({ a: a, n: m.n, cerca: m.cerca });
+      });
+      porLlave.forEach(function (g) {
+        g.cs.sort(function (x, y) { return y.n - x.n || x.cerca - y.cerca; });
+        var gana = g.cs[0];
+        tomadas.push(g.L);
+        // dos eventos distintos empatados exacto: ninguno se la lleva (como `_elegir()`)
+        if (g.cs.slice(1).some(function (c) { return c.n === gana.n && c.cerca === gana.cerca && !mismoEventoEv(c.a, gana.a); })) return;
+        g.cs.forEach(function (c) {
+          if (c === gana || mismoEventoEv(c.a, gana.a)) { asig.push([c.a, g.L]); conLlave.push(c.a); }
+        });
       });
       // 2 · la huérfana, sólo entre las que nadie se llevó, y de a una (la que se lleva un anuncio ya no es de otro)
       ans.forEach(function (a) {
