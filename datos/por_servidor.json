@@ -559,7 +559,7 @@
     "racha": "0/0"
    }
   },
-  "CHOCLITO 🇦🇷": {
+  "CHOCLITO": {
    "ACAD": {
     "duelos": "",
     "ev": 1,
@@ -756,7 +756,7 @@
     "racha": "1/1"
    }
   },
-  "Corvo 🇧🇴": {
+  "Corvo": {
    "ACAD": {
     "duelos": "1/2",
     "ev": 1,
@@ -2246,7 +2246,7 @@
     "racha": "0/0"
    }
   },
-  "LV 🇦🇷": {
+  "LV": {
    "ACAD": {
     "duelos": "",
     "ev": 1,
@@ -2452,17 +2452,6 @@
     "racha": "0/0"
    }
   },
-  "MARTINEZ🇺🇾": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 3000,
-    "racha": "0/0"
-   }
-  },
   "MATICERNA": {
    "FFA": {
     "duelos": "1/2",
@@ -2648,6 +2637,15 @@
     "ovr": 45,
     "pod": 0,
     "pts": 938,
+    "racha": "0/0"
+   },
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 3000,
     "racha": "0/0"
    },
    "FFA": {
@@ -4189,7 +4187,7 @@
     "racha": "0/0"
    }
   },
-  "Tiagoms🇦🇷": {
+  "Tiagoms": {
    "ACAD": {
     "duelos": "",
     "ev": 1,

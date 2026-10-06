@@ -4,8 +4,6 @@
 "hassan": {
 "rg": "S",
 "c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -542,6 +540,13 @@
 "temporada"
 ]
 },
+"andres": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "sosa": {
 "rg": "",
 "c": [
@@ -578,13 +583,6 @@
 ]
 },
 "leonart": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"andres": {
 "rg": "",
 "c": [
 "servidor",
@@ -1089,6 +1087,13 @@
 ]
 },
 "flama": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mayeutyk": {
 "rg": "",
 "c": [
 "servidor",

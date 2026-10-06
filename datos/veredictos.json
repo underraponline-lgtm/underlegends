@@ -902,6 +902,16 @@
    "b": "KASAAXT🇩🇴",
    "ganador": "AGUSTÍN🇨🇱🇵🇪",
    "votos": "1–0"
+  },
+  "1556852245121994844": {
+   "id": "1556852245121994844",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791252900153,
+   "a": "Tokio",
+   "b": "Ardean 🇵🇪",
+   "ganador": "Tokio",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -1915,8 +1925,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791246518928,
-   "ed": 1791251479232,
-   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝\n⌞CARLOS⌝ 🆚 ⌞TEITO⌝\n⌞ARDEAN⌝ 🆚 ⌞CRISZJ⌝",
+   "ed": 1791253329966,
+   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝\n⌞CARLOS⌝ 🆚 ⌞TEITO⌝\n⌞ARDEAN⌝ 🆚 ⌞CRISZJ⌝\n⌞KRTMAN⌝ 🆚 ⌞PIPEPEQUEÑO⌝\n⌞NUMBER⌝ 🆚 ⌞XCLUSIVA⌝\n⌞XCLUSIVO⌝ 🆚 ⌞CHUTY⌝\n⌞V-zir⌝ 🆚 ⌞Carloss⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -1947,9 +1957,12 @@
       "BOOTRAX",
       "NUMBER"
      ],
-     "BOOTRAX",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "BOOTRAX",
+      "NUMBER"
+     ]
     ],
     [
      "CUARTOS",
@@ -2007,6 +2020,46 @@
      [
       "ARDEAN",
       "CRISZJ"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "KRTMAN",
+      "PIPEPEQUEÑO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NUMBER",
+      "XCLUSIVA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "XCLUSIVO",
+      "CHUTY"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "V-zir",
+      "Carloss"
      ],
      null,
      "última ronda y no dice campeón",

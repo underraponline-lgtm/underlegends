@@ -233,13 +233,14 @@
      "FFA": 3
     },
     "gente": {
-     "FFA": 45
+     "FFA": 45,
+     "DDF": 7
     },
     "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 0,
+    "DDF": 7,
     "DRA": 0,
     "FFA": 45,
     "FFS": 0,
