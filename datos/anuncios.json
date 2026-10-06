@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T16:54:24+00:00",
+ "cuando": "2026-10-06T17:24:35+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2928,6 +2928,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1557075673821094069",
+   "cuando": "2026-10-06T17:02:49"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
