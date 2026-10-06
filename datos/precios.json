@@ -159,7 +159,23 @@
    "monto": 500,
    "t": "2026-10-05T19:28:29Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Pain",
+     250
+    ],
+    [
+     "Shisui",
+     250
+    ]
+   ],
+   "ev": {
+    "n": 412,
+    "nombre": "PRITTY FREE CLASIFICATORIA 3",
+    "sv": "FFA",
+    "t": "2026-10-06T02:55:12Z"
+   }
   }
  ],
  "suma": {
@@ -168,6 +184,8 @@
   "Abyssus": 1000,
   "Lambroggini": 1000,
   "PichulaMc": 1000,
-  "SGB": 500
+  "SGB": 500,
+  "Pain": 250,
+  "Shisui": 250
  }
 }

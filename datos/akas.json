@@ -255,7 +255,8 @@
   "pichula": "PichulaMc",
   "za": "Provenza",
   "sol": "SOL🇵🇪",
-  "tokio": "TøKīØ🦠🧠 🇺🇸"
+  "tokio": "TøKīØ🦠🧠 🇺🇸",
+  "pain": "Snow"
  },
  "pares": [
   [
@@ -1281,6 +1282,10 @@
   [
    "Tokio",
    "TøKīØ🦠🧠 🇺🇸"
+  ],
+  [
+   "Pain",
+   "Snow"
   ]
  ],
  "no_confundir": [

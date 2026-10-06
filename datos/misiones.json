@@ -29,6 +29,11 @@
     ]
    ],
    "prog": {
+    ".SosaATR": [
+     1,
+     0,
+     16
+    ],
     "1200": [
      1,
      0,
@@ -64,7 +69,17 @@
      1,
      2
     ],
+    "Andy": [
+     1,
+     0,
+     16
+    ],
     "Ariaxer": [
+     1,
+     0,
+     16
+    ],
+    "Assuan": [
      1,
      0,
      16
@@ -96,8 +111,8 @@
     ],
     "Colesito": [
      1,
-     0,
-     16
+     1,
+     4
     ],
     "CrisZJ": [
      0,
@@ -105,6 +120,11 @@
      1
     ],
     "Crk": [
+     1,
+     0,
+     16
+    ],
+    "DSM-5 🇲🇽": [
      1,
      0,
      16
@@ -194,6 +214,21 @@
      0,
      8
     ],
+    "Liam🇺🇾": [
+     1,
+     0,
+     8
+    ],
+    "Lord Viruzz": [
+     1,
+     0,
+     16
+    ],
+    "Lvel": [
+     1,
+     0,
+     16
+    ],
     "MCO": [
      1,
      1,
@@ -222,7 +257,7 @@
     "Molusco": [
      1,
      1,
-     8
+     4
     ],
     "N1k": [
      1,
@@ -230,6 +265,11 @@
      16
     ],
     "NC": [
+     1,
+     0,
+     8
+    ],
+    "NYCO🇦🇷": [
      1,
      0,
      8
@@ -256,8 +296,8 @@
     ],
     "OG": [
      1,
-     0,
-     16
+     1,
+     4
     ],
     "ONZASS": [
      1,
@@ -266,23 +306,28 @@
     ],
     "Oasis": [
      1,
-     0,
-     4
+     3,
+     1
     ],
     "PRAISERIZA": [
      1,
-     0,
+     2,
      1
     ],
     "Pain 🇯🇵": [
      1,
-     1,
-     8
+     3,
+     2
     ],
     "Panchok": [
      1,
      5,
      1
+    ],
+    "PichulaMc": [
+     1,
+     0,
+     4
     ],
     "Pipas🇵🇪": [
      0,
@@ -305,7 +350,7 @@
      4
     ],
     "RT 🇲🇽": [
-     0,
+     1,
      2,
      2
     ],
@@ -319,10 +364,20 @@
      0,
      16
     ],
+    "Rodas": [
+     1,
+     0,
+     8
+    ],
     "Rosmel 🇻🇪": [
      1,
      0,
      8
+    ],
+    "SHUSUI🇯🇵": [
+     1,
+     0,
+     16
     ],
     "Sami": [
      1,
@@ -360,6 +415,11 @@
      16
     ],
     "Soulb": [
+     1,
+     0,
+     16
+    ],
+    "Tam": [
      1,
      0,
      16
@@ -414,6 +474,11 @@
      0,
      8
     ],
+    "dxg": [
+     1,
+     0,
+     16
+    ],
     "julia 🇧🇴": [
      0,
      1,
@@ -431,6 +496,7 @@
     ]
    },
    "pts": {
+    ".SosaATR": 300,
     "1200": 300,
     "ALESS": 300,
     "ANTORCHA": 300,
@@ -438,7 +504,9 @@
     "Abyssus": 300,
     "Agus": 300,
     "Andres": 1000,
+    "Andy": 300,
     "Ariaxer": 300,
+    "Assuan": 300,
     "BTRX": 300,
     "Benjixo": 300,
     "Carlosss": 1600,
@@ -446,6 +514,7 @@
     "Colesito": 300,
     "CrisZJ": 1600,
     "Crk": 300,
+    "DSM-5 🇲🇽": 300,
     "Delux": 300,
     "Deuxs": 300,
     "Drexx": 300,
@@ -460,6 +529,9 @@
     "Keider": 300,
     "Korey": 300,
     "Krish": 300,
+    "Liam🇺🇾": 300,
+    "Lord Viruzz": 300,
+    "Lvel": 300,
     "MCO": 300,
     "Majiztral": 300,
     "Makmah": 300,
@@ -467,22 +539,26 @@
     "Molusco": 300,
     "N1k": 300,
     "NC": 300,
+    "NYCO🇦🇷": 300,
     "Neo": 300,
     "Nhp": 300,
     "Noone": 300,
     "OG": 300,
     "ONZASS": 300,
-    "Oasis": 300,
+    "Oasis": 2900,
     "PRAISERIZA": 1300,
-    "Pain 🇯🇵": 300,
+    "Pain 🇯🇵": 2900,
     "Panchok": 2900,
+    "PichulaMc": 300,
     "Player": 300,
     "Polosport": 1300,
     "Provenza": 300,
-    "RT 🇲🇽": 1000,
+    "RT 🇲🇽": 1300,
     "Reyes": 300,
     "Risa": 300,
+    "Rodas": 300,
     "Rosmel 🇻🇪": 300,
+    "SHUSUI🇯🇵": 300,
     "Sami": 300,
     "Saz": 300,
     "Shisui": 2900,
@@ -491,6 +567,7 @@
     "Snow": 1300,
     "Soneto": 300,
     "Soulb": 300,
+    "Tam": 300,
     "Tusicario": 300,
     "TøKīØ🦠🧠": 2900,
     "Vandu": 2900,
@@ -498,12 +575,14 @@
     "Zaik": 300,
     "Zaza": 300,
     "Zignos": 300,
+    "dxg": 300,
     "melomaniaco": 300,
     "yinn": 300
    }
   }
  },
  "suma": {
+  ".SosaATR": 300,
   "1200": 300,
   "ALESS": 300,
   "ANTORCHA": 300,
@@ -511,7 +590,9 @@
   "Abyssus": 300,
   "Agus": 300,
   "Andres": 1000,
+  "Andy": 300,
   "Ariaxer": 300,
+  "Assuan": 300,
   "BTRX": 300,
   "Benjixo": 300,
   "Carlosss": 1600,
@@ -519,6 +600,7 @@
   "Colesito": 300,
   "CrisZJ": 1600,
   "Crk": 300,
+  "DSM-5 🇲🇽": 300,
   "Delux": 300,
   "Deuxs": 300,
   "Drexx": 300,
@@ -533,6 +615,9 @@
   "Keider": 300,
   "Korey": 300,
   "Krish": 300,
+  "Liam🇺🇾": 300,
+  "Lord Viruzz": 300,
+  "Lvel": 300,
   "MCO": 300,
   "Majiztral": 300,
   "Makmah": 300,
@@ -540,22 +625,26 @@
   "Molusco": 300,
   "N1k": 300,
   "NC": 300,
+  "NYCO🇦🇷": 300,
   "Neo": 300,
   "Nhp": 300,
   "Noone": 300,
   "OG": 300,
   "ONZASS": 300,
-  "Oasis": 300,
+  "Oasis": 2900,
   "PRAISERIZA": 1300,
-  "Pain 🇯🇵": 300,
+  "Pain 🇯🇵": 2900,
   "Panchok": 2900,
+  "PichulaMc": 300,
   "Player": 300,
   "Polosport": 1300,
   "Provenza": 300,
-  "RT 🇲🇽": 1000,
+  "RT 🇲🇽": 1300,
   "Reyes": 300,
   "Risa": 300,
+  "Rodas": 300,
   "Rosmel 🇻🇪": 300,
+  "SHUSUI🇯🇵": 300,
   "Sami": 300,
   "Saz": 300,
   "Shisui": 2900,
@@ -564,6 +653,7 @@
   "Snow": 1300,
   "Soneto": 300,
   "Soulb": 300,
+  "Tam": 300,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 2900,
   "Vandu": 2900,
@@ -571,6 +661,7 @@
   "Zaik": 300,
   "Zaza": 300,
   "Zignos": 300,
+  "dxg": 300,
   "melomaniaco": 300,
   "yinn": 300
  },

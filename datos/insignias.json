@@ -1,6 +1,12 @@
 {
 "_leeme": "Las insignias de cada uno: {id: [cuándo, temporada]}. Las anota bot/insignias.py (paso 2d0) y NO se borran con la temporada.",
 "insignias": {
+".SosaATR": {
+"debut": [
+"2026-10-06T22:27:12Z",
+"prueba"
+]
+},
 "1200": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -742,6 +748,12 @@
 "DIDYER": {
 "debut": [
 "2026-10-04T18:45:44Z",
+"prueba"
+]
+},
+"DSM-5": {
+"debut": [
+"2026-10-06T22:27:12Z",
 "prueba"
 ]
 },
@@ -2173,6 +2185,12 @@
 "prueba"
 ]
 },
+"NYCO": {
+"debut": [
+"2026-10-06T22:27:12Z",
+"prueba"
+]
+},
 "Nairda": {
 "debut": [
 "2026-10-04T18:45:44Z",
@@ -2286,6 +2304,10 @@
 "OG": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+],
+"podio": [
+"2026-10-06T22:27:12Z",
 "prueba"
 ]
 },
@@ -2871,6 +2893,12 @@
 "prueba"
 ]
 },
+"SHUSUI": {
+"debut": [
+"2026-10-06T22:27:12Z",
+"prueba"
+]
+},
 "SMAFF": {
 "debut": [
 "2026-09-27T17:50:55Z",
@@ -3034,6 +3062,10 @@
 ],
 "ascenso": [
 "2026-10-04T20:56:40Z",
+"prueba"
+],
+"ev10": [
+"2026-10-06T22:27:12Z",
 "prueba"
 ]
 },

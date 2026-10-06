@@ -11108,61 +11108,6 @@
     "b": [
      [
       [
-       "Shisui, Pain 🇯🇵",
-       "Lord Viruzz"
-      ],
-      "Shisui, Pain 🇯🇵",
-      "triple (3 bandas, pasan 2)"
-     ],
-     [
-      [
-       "PichulaMc",
-       "Assuan",
-       "Tam"
-      ],
-      "PichulaMc",
-      "triple (4 bandas, pasan 2)"
-     ],
-     [
-      [
-       "Rodas",
-       "Tusicario",
-       "Korey"
-      ],
-      "Rodas",
-      "triple (4 bandas, pasan 2)"
-     ],
-     [
-      [
-       "Molusco",
-       "Andy, Provenza"
-      ],
-      "Molusco",
-      "triple (3 bandas, pasan 2)"
-     ]
-    ],
-    "r": "Octavos"
-   },
-   {
-    "b": [
-     [
-      [
-       "PRAISERIZA",
-       "Rodas"
-      ],
-      "PRAISERIZA",
-      ""
-     ],
-     [
-      [
-       "Shisui, Pain 🇯🇵",
-       "Liam🇺🇾"
-      ],
-      "Shisui, Pain 🇯🇵",
-      ""
-     ],
-     [
-      [
        "Provenza",
        "Focox",
        "Crk"
@@ -11196,36 +11141,12 @@
       ],
       "Skratch",
       "triple (3 bandas, pasan 2)"
-     ],
-     [
-      [
-       "Zignos",
-       "six"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
    },
    {
     "b": [
-     [
-      [
-       "PRAISERIZA",
-       "PichulaMc"
-      ],
-      "PRAISERIZA",
-      ""
-     ],
-     [
-      [
-       "Shisui, Pain 🇯🇵",
-       "Molusco"
-      ],
-      "Shisui, Pain 🇯🇵",
-      ""
-     ],
      [
       [
        "Hassan, Benju",
@@ -11249,14 +11170,6 @@
     "b": [
      [
       [
-       "PRAISERIZA",
-       "Shisui, Pain 🇯🇵"
-      ],
-      "PRAISERIZA",
-      ""
-     ],
-     [
-      [
        "tam🇧🇫baggio🇮🇹",
        "Hassan, Benju"
       ],
@@ -11270,27 +11183,17 @@
   "sv": "FFA",
   "tabla": [
    [
-    "PRAISERIZA",
+    "tam🇧🇫baggio🇮🇹",
     "Campeón",
     10000
    ],
    [
-    "Molusco",
-    "Semifinal",
-    5250
-   ],
-   [
-    "PichulaMc",
-    "Semifinal",
-    5250
-   ],
-   [
-    "Pain 🇯🇵",
+    "Benju",
     "Subcampeón",
     3750
    ],
    [
-    "Shisui",
+    "Hassan",
     "Subcampeón",
     3750
    ],
@@ -11335,22 +11238,12 @@
     2500
    ],
    [
-    "Liam🇺🇾",
-    "Cuartos",
-    2500
-   ],
-   [
     "MZK",
     "Cuartos",
     2500
    ],
    [
     "Oni 🇦🇷",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Rodas",
     "Cuartos",
     2500
    ],
@@ -11363,31 +11256,6 @@
     "benjadsantis🇦🇷",
     "Cuartos",
     2500
-   ],
-   [
-    "Assuan",
-    "Octavos",
-    1250
-   ],
-   [
-    "Korey",
-    "Octavos",
-    1250
-   ],
-   [
-    "Lord Viruzz",
-    "Octavos",
-    1250
-   ],
-   [
-    "Tusicario",
-    "Octavos",
-    1250
-   ],
-   [
-    "Andy",
-    "Octavos",
-    625
    ]
   ]
  },
@@ -13097,6 +12965,491 @@
    ],
    [
     "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "412": {
+  "dia": "2026-10-05",
+  "escala": "16+",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556862363834253344"
+  ],
+  "n": 412,
+  "nombre": "PRITTY FREE CLASIFICATORIA 3",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Shisui, Pain 🇯🇵",
+       "Lord Viruzz"
+      ],
+      "Shisui, Pain 🇯🇵",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Assuan",
+       "Tam"
+      ],
+      "PichulaMc",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Rodas",
+       "Tusicario",
+       "Korey"
+      ],
+      "Rodas",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Molusco",
+       "Andy, Provenza"
+      ],
+      "Molusco",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Rodas"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Shisui, Pain 🇯🇵",
+       "Liam🇺🇾"
+      ],
+      "Shisui, Pain 🇯🇵",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "six"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "PichulaMc"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Shisui, Pain 🇯🇵",
+       "Molusco"
+      ],
+      "Shisui, Pain 🇯🇵",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Shisui, Pain 🇯🇵"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Molusco",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Pain 🇯🇵",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Shisui",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Liam🇺🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Korey",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tusicario",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andy",
+    "Octavos",
+    625
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    625
+   ]
+  ]
+ },
+ "413": {
+  "dia": "2026-10-06",
+  "escala": "16+",
+  "fecha": "06/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557122983867326526"
+  ],
+  "n": 413,
+  "nombre": "DESGRACIAS EN TOKYO VOL 25 1v1",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "JJ",
+       "Lvel 🇻🇪",
+       "RT 🇲🇽"
+      ],
+      "JJ",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "yinn",
+       "Vandu"
+      ],
+      "Oasis",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Efimero",
+       "Makmah",
+       "Drexx"
+      ],
+      "Efimero",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Benjixo",
+       "ONZASS",
+       "Ezias🥈✒️🧢🐍"
+      ],
+      "Benjixo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Pain🇯🇵",
+       "SHUSUI🇯🇵",
+       "Krish"
+      ],
+      "Pain🇯🇵",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NYCO🇦🇷",
+       "PichulaMc",
+       ".SosaATR"
+      ],
+      "NYCO🇦🇷",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "DSM-5 🇲🇽",
+       "Six"
+      ],
+      "Colesito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "OG",
+       "Nhp",
+       "dxg"
+      ],
+      "OG",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Pain🇯🇵",
+       "JJ"
+      ],
+      "Pain🇯🇵",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "NYCO🇦🇷"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Efimero"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Benjixo"
+      ],
+      "OG",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Pain🇯🇵",
+       "OG"
+      ],
+      "Pain🇯🇵",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Colesito"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Colesito"
+      ],
+      "OG",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Pain🇯🇵"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Pain🇯🇵",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "OG",
+    "Tercero",
+    6000
+   ],
+   [
+    "Colesito",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Benjixo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Efimero",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JJ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NYCO🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    ".SosaATR",
+    "Octavos",
+    1250
+   ],
+   [
+    "DSM-5 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nhp",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "RT 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "SHUSUI🇯🇵",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
     "Octavos",
     1250
    ],
