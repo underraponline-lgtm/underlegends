@@ -2,7 +2,7 @@
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
 import { DIAS, hora, limpio, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
-import { premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
+import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
 export function Fechas({ liga }) {
@@ -252,24 +252,27 @@ function Misiones({ liga }) {
     </section>
   );
 }
-// 🎟️ el Pase: tu nivel si sos miembro de DRA; si no, qué es y cómo se sube
+// 🎟️ el Pase: tu nivel y tu XP si sos miembro de DRA; si no, qué es y cómo se sube (con XP desde el 06/10/2026)
 function Pase({ liga, dc }) {
   const P = usePase(!!dc);
   const pub = usePases();
   if (dc && P && P.listo && P.miembro) {
-    const tareas = (P.semana && P.semana.tareas) || [];
-    const hechas = tareas.filter((t) => t.hecha).length;
+    const cuenta = (b) => (b ? b.tareas.filter((t) => t.hecha).length + ' de ' + b.tareas.length : '');
     const sig = proximoEspecial(P.premios, P.nivel);
+    const a = avance(P);
     return (
       <section className="tu pase">
         <div className="tu-t">PASE DE RAPERO · {liga.temp}</div>
         <div className="tu-fila">
-          <div className="tu-pos"><b>NIVEL {P.nivel}</b><small>de {P.niveles}</small></div>
+          <div className="tu-pos"><b>NIVEL {P.nivel}</b><small>de {P.niveles} · {num(P.xp)} XP</small></div>
           {P.nivel < P.niveles ? <span className="pase-sig" title="El próximo nivel">{P.nivel + 1}</span> : null}
         </div>
-        <span className="mb pase-b"><i style={{ width: Math.round(100 * P.nivel / P.niveles) + '%' }} /></span>
+        {/* lo que llevás del nivel que estás haciendo; con el Pase completo, llena */}
+        <span className="mb pase-b"><i style={{ width: (a ? Math.round((100 * a.lleva) / a.de) : 100) + '%' }} /></span>
         <ul className="pase-l">
-          {tareas.length ? <li><span>Tareas de esta semana</span><b>{hechas} de {tareas.length}</b></li> : null}
+          {a ? <li><span>Para el nivel {P.nivel + 1}</span><b>{num(a.falta)} XP</b></li> : null}
+          {P.hoy ? <li><span>Tareas de hoy</span><b>{cuenta(P.hoy)}</b></li> : null}
+          {P.semana ? <li><span>Tareas de esta semana</span><b>{cuenta(P.semana)}</b></li> : null}
           {sig ? <li><span>En el nivel {sig[0]}</span><b>{premioTexto(sig)}</b></li> : null}
         </ul>
         <a className="btn negro" href="#/pase">Ver el Pase</a>
@@ -280,8 +283,8 @@ function Pase({ liga, dc }) {
   return (
     <section className="tu pase">
       <div className="tu-t">PASE DE RAPERO · {liga.temp}</div>
-      <p className="pronto-p pase-p">{cfg.niveles || 30} niveles por temporada: cada Tarea que cumplís es uno, y cada nivel paga Puntos de Tienda.</p>
-      {(cfg.tareas || []).length ? <ul className="pase-l">{cfg.tareas.map((t) => <li key={t[0]}><span>{t[1]}</span><b>+1</b></li>)}</ul> : null}
+      <p className="pronto-p pase-p">{cfg.niveles || 30} niveles por temporada: las Tareas dan XP, la XP sube de nivel y cada nivel paga Puntos de Tienda.</p>
+      {(cfg.semanales || []).length ? <ul className="pase-l">{cfg.semanales.map((t) => <li key={t[0]}><span>{t[1]}</span><b>+{num(t[5])} XP</b></li>)}</ul> : null}
       {dc ? <a className="btn negro" href="#/pase">Ver el Pase</a>
         : <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>}
       <small className="pase-nota">Para los miembros de Discord Rap Español.</small>

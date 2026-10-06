@@ -14,7 +14,7 @@ import { Elegido, X2 } from './encuestas.jsx';
 
 const ANUNCIOS = { anuncio: 1, liga: 1 };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
-const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1 };
+const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1 };
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
 
 // los perfiles de una publicación, siempre en lista: en los premios `ks` es `{figura: clave, …}` (bot/muro.py)
@@ -92,6 +92,13 @@ function Pub({ liga, it, A }) {
     cat = 'MOST WANTED · SOBREVIVIÓ';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>{nombres} sobrevivió al Most Wanted ({it.cat}) y se lleva <b>{num(it.pts)}</b></>;
+  } else if (it.tipo === 'pase') {
+    // 🎟️ llegar a un nivel del Pase que se publica, o completarlo (Dlx, 06/10/2026: «5. c»)
+    cat = it.completo ? 'PASE DE RAPERO · COMPLETO' : 'PASE DE RAPERO';
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = it.completo ? <>{nombres} completó el <b>Pase de rapero</b> y entra al Salón del Pase</>
+      : <>{nombres} llegó al nivel <b>{it.nivel}</b> del Pase de rapero{it.premio ? <>: <b>«{it.premio}»</b></> : null}</>;
+    acc = <a className="pub-a" href="#/pase">Ver el Pase</a>;
   } else if (it.tipo === 'precio') {
     cat = 'PRECIO POR SU CABEZA';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
@@ -188,7 +195,8 @@ function MasFelicitado({ liga, pubs, A }) {
       {top.map((it) => {
         const k = ksDe(it)[0];
         const quien = (it.quien || []).map(limpio).join(' y ');
-        const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg : 'Most Wanted';
+        const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg
+          : it.tipo === 'pase' ? 'Pase de rapero' : 'Most Wanted';
         return (
           <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pub-top-cara" />
             <span><b>{quien}</b><small>{que}</small></span><em>👏 {num(cu(it))}</em></li>

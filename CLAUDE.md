@@ -476,6 +476,19 @@ verificado entra a KV con `nv` y su ID en **`dn:<id>`, no en `d:`**: `d:`
 abre lo de la cuenta —/foto, Mis redes, seguir, avisos— y eso es de los
 verificados. `dn:` lo leen **sólo las cartas** (`claveCarta()`).
 
+🎟️ **Y EL PASE TIENE XP DESDE EL 06/10/2026 (2.46).** Dlx: *«que se base en
+Brawl Stars más o menos»*, y al borrador, *«1, sí»*. Las Tareas dan XP —dos
+diarias, cinco semanales y ocho de temporada— y **el nivel sale de la XP**
+(`bot/pase.py`, `umbrales()`): **el 1 pide 300**, o sea dos diarias o una
+semanal, y con él llega la Temporada. **Las Tareas no son las Misiones**
+(Dlx: *«hay TAREAS y misiones que son diferentes»*): no repiten jugar, ganar
+duelos ni llegar lejos, y de DRA queda una sola, jugar ahí. Llegar al 10 y al
+30 sale en Publicaciones (`hitos` en `datos/pase_niveles.json` →
+`bot/muro.py`) y el 30 entra al **Salón del Pase**. ⚠️ Lo que el Pase cuenta
+de la página (felicitar, mirar una llave en vivo) va a **`pase_log`** y dura
+toda la temporada: los aplausos se borran a los 30 días y las Tareas de
+temporada piden la cuenta entera.
+
 ⚠️ **Esto reemplaza a «las LIBRES» del 29/09** (la Temporada y la Servidor
 para todos los que jugaron, verificados o no), y la regla vieja quedó
 escrita en diez lugares —la Guía, Mi cuenta, /card, /verificar, /foto, la

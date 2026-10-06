@@ -1,6 +1,6 @@
-// 🎟️ EL PASE DE RAPERO (05/10/2026: Dlx, «sólo para DRA», «con TAREAS», «como Brawl Stars»; a la propuesta, «3. A»). La
-// cuenta la hace el servidor (`paseDe()`, `paseVivo()` y `pases()` en bot/avisos.js; las reglas y los números, en
-// bot/pase.py): acá sólo se pide y se muestra.
+// 🎟️ EL PASE DE RAPERO (05/10/2026: Dlx, «sólo para DRA», «con TAREAS», «como Brawl Stars»; a la propuesta, «3. A»; con
+// XP desde el 06/10). La cuenta la hace el servidor (`paseDe()`, `paseVivo()` y `pases()` en bot/avisos.js; las reglas y
+// los números, en bot/pase.py): acá sólo se pide y se muestra.
 //
 // ⚠️ PEDIR TU PASE YA REVISA TUS TAREAS: va con tu sesión y el objeto anota lo que cumpliste. Por eso la página del
 // Pase lo vuelve a pedir al abrirse, y el resto usa lo que ya llegó.
@@ -46,8 +46,9 @@ export function usePase(activo, fresco) {
 
 let pases = null, pasesT = 0, pasesP = null;
 /**
- * Lo público del Pase, cinco minutos en memoria: `{n: {clave: [nivel, título, color]}, cfg: {temp, niveles, tareas,
- * premios}}`. Por clave de perfil, nunca por cuenta
+ * Lo público del Pase, cinco minutos en memoria: `{n: {clave: [nivel, título, color]}, cfg: {temp, niveles, umbrales,
+ * cola, diarias, por_dia, semanales, temporada, premios}, salon: {temporada: [[clave, ms], …]}}`. Por clave de perfil,
+ * nunca por cuenta
  */
 export function usePases() {
   const [n, setN] = useState(pases);
@@ -92,6 +93,17 @@ export function premioTexto(p, largo) {
   const extra = p[2] === 'color' ? 'tu nombre en dorado' : p[2] ? TIPO[p[2]] + ' ' + (p[2] === 'titulo' ? '«' + p[3] + '»' : p[3]) : '';
   if (!largo) return extra || '+' + num(p[1]);
   return '+' + num(p[1]) + ' Puntos de Tienda' + (extra ? ' y ' + (p[2] === 'color' ? extra : extra.charAt(0).toLowerCase() + extra.slice(1)) : '');
+}
+
+/**
+ * Cuánto llevás del nivel que estás haciendo: `{lleva, de, falta}` en XP, o `null` si ya completaste el Pase (o no
+ * llegó la cuenta)
+ */
+export function avance(P) {
+  if (!P || P.hasta == null || !(P.hasta > (P.desde || 0))) return null;
+  const de = P.hasta - (P.desde || 0);
+  const lleva = Math.max(0, Math.min(de, (P.xp || 0) - (P.desde || 0)));
+  return { lleva, de, falta: de - lleva };
 }
 
 /** La próxima recompensa con algo más que Tienda, desde el nivel `n` */

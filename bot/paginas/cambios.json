@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.46",
+   "dia": "2026-10-06",
+   "cuando": "2026-10-06T01:40:00-04:00",
+   "titulo": "El Pase de rapero, ahora con XP",
+   "items": [
+    "🎟️ **Las Tareas dan XP y la XP sube de nivel**, como en Brawl Stars: dos por día, cinco por semana y ocho de temporada que se cumplen en cualquier orden.",
+    "📈 **Tu XP, a la vista**: cuánto llevás del nivel y cuánto te falta para el próximo, en el Pase y en el Inicio.",
+    "🏛️ **El Salón del Pase**: quien llega al 30 entra, en el orden en que llegó, y la insignia Pase Oro queda para siempre.",
+    "👏 **Llegar al nivel 10 y completar el Pase sale en Publicaciones**, para que te feliciten.",
+    "🪙 **Después del 30 sigue sumando**: cada 1.000 XP, 300 Puntos de Tienda."
+   ]
+  },
+  {
    "version": "2.45",
    "dia": "2026-10-05",
    "cuando": "2026-10-05T22:15:00-04:00",

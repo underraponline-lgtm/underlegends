@@ -243,9 +243,9 @@ function PaseNumeros({ p, liga }) {
   const hechas = (p.tareas || []).reduce((s, x) => s + x[1], 0);
   const cajas = [
     ['MIEMBROS DE DRA', p.miembros, 'los que pueden jugarlo'],
-    ['CON NIVEL', p.con_nivel, 'cumplieron al menos una Tarea'],
+    ['CON NIVEL', p.con_nivel, 'llegaron al nivel 1 o más'],
     ['TAREAS ESTA SEMANA', hechas, p.hasta ? 'hasta ' + liga.dia(p.hasta) : 'entre todos'],
-    ['EL NIVEL MÁS ALTO', dist.length ? dist[dist.length - 1][0] : 0, 'de ' + p.niveles],
+    ['EL NIVEL MÁS ALTO', dist.length ? dist[dist.length - 1][0] : 0, 'de ' + p.niveles + (p.salon ? ' · ' + p.salon + ' en el Salón' : '')],
   ];
   return (
     <>
@@ -254,7 +254,11 @@ function PaseNumeros({ p, liga }) {
         <div className="db-aj"><div className="db-q">{dist.map(([n, k]) => (
           <div key={n} className="db-q-f"><span>Nivel {n}</span><i><u style={{ width: ((100 * k) / tope).toFixed(1) + '%' }} /></i><b>{num(k)} <small>{k === 1 ? 'persona' : 'personas'}</small></b></div>
         ))}</div>
-        {(p.tareas || []).length ? <ul className="db-corr">{p.tareas.map(([t, k]) => <li key={t}><b>{limpio(t)}</b><span>{num(k)} {k === 1 ? 'vez' : 'veces'} esta semana</span></li>)}</ul> : null}
+        {/* las Tareas de hoy, de la semana y de la temporada (con XP desde el 06/10/2026) */}
+        {[['hoy', p.hoy], ['esta semana', p.tareas], ['en la temporada', p.temporada]].some(([, xs]) => (xs || []).length) ? (
+          <ul className="db-corr">{[['hoy', p.hoy], ['esta semana', p.tareas], ['en la temporada', p.temporada]].flatMap(([cu, xs]) =>
+            (xs || []).map(([t, k]) => <li key={cu + t}><b>{limpio(t)}</b><span>{num(k)} {k === 1 ? 'vez' : 'veces'} {cu}</span></li>))}</ul>
+        ) : null}
         </div>
       ) : <p className="pronto-p">Todavía nadie cumplió una Tarea.</p>}
     </>

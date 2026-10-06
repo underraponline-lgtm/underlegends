@@ -36,8 +36,27 @@
 .pa-pista li.pa-ya .pa-que{opacity:1}
 .pa-pista li.pa-ya.pa-esp{box-shadow:inset 0 -4px 0 #F5C542}
 .pa-pista li.pa-prox{border-style:dashed;border-color:var(--magenta)}
+/* ── 🎟️ CON XP (06/10/2026): lo que llevás del nivel, las tres listas de Tareas (hoy, la semana y la temporada), la XP
+   de cada nivel en la pista y el Salón del Pase. La barra de la XP es dorada: el dorado es el del Pase ── */
+.pa-xp{display:grid;gap:6px}
+.pa-xp .mb{height:10px;border-color:#2A2A2C}
+.pa-xp .mb i{background:#F5C542}
+.pa-xp small{font:700 11px/1.4 "Space Mono",monospace;color:var(--esc-gris)}
+.pa-xp small b{color:#F6F6F6}
+.pa-col{display:grid;gap:14px;align-content:start;min-width:0}
+.pa-dos{display:grid;gap:14px}
+.pa-tareas .mis-pts small{display:block;margin-top:3px;font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
+.pa-pista .pa-u{font-size:9px;opacity:.7}
+.pa-salon{list-style:none;margin:0;padding:0;display:grid;gap:0 28px}
+.pa-salon li{display:grid;grid-template-columns:34px 36px minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--suave)}
+.pa-sp{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums}
+.pa-sc{width:36px;height:36px;font:800 14px/1 Archivo,sans-serif}
+.pa-salon a{font:800 15px/1.2 Archivo,sans-serif;color:var(--tinta);text-decoration:none;overflow-wrap:anywhere}
+.pa-salon small{font:700 10.5px/1 "Space Mono",monospace;color:var(--gris);white-space:nowrap}
 @media (min-width: 900px){
   .app .pa-caja{width:340px}
-  .app .pa-dos{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:48px;align-items:start}
-  .app .pa-pista{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .app .pa-dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
+  /* a todo el ancho, de a diez: tres filas, como una pista */
+  .app .pa-pista{grid-template-columns:repeat(10,minmax(0,1fr))}
+  .app .pa-salon{grid-template-columns:repeat(2,minmax(0,1fr))}
 }

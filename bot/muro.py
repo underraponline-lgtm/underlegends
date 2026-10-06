@@ -20,6 +20,8 @@ LO QUE ENTRA
 - 🃏 quien desbloquea una tarjeta;
 - 🎯 las cazas del Most Wanted, 🛡️ quien sobrevive y 🗳️ El Elegido;
 - 💰 los precios por cabeza cobrados;
+- 🎟️ quien llega a un nivel del Pase de rapero que se publica, y quien lo
+  completa (Dlx, 06/10/2026: «5. c»), de `datos/pase_niveles.json`;
 - 🥇 los premios de la semana;
 - 📢 los anuncios de eventos de todos los servidores (`datos/anuncios.json`),
   y 📰 las novedades de la Liga en DRA.
@@ -145,6 +147,33 @@ def precios_cobrados(pr):
     return out
 
 
+def pase(niv, tabla):
+    """🎟️ quien llegó a un nivel del Pase que se publica (`pase.PUBLICAR`), con
+    su hora, de los hitos que trae `bot/pase.py` del objeto.
+
+    ⚠️ SÓLO QUIEN TIENE PERFIL: el hito trae la clave (no el nombre: el objeto
+    no los tiene) y el nombre sale de la tabla. Sin perfil no hay publicación
+    —«sin dato no hay pieza»—: no se inventa cómo se llama.
+    """
+    import pase as PA
+    nombres = {f['k']: f['n'] for f in tabla or [] if f.get('k') and f.get('n')}
+    out = []
+    for h in (niv or {}).get('hitos') or []:
+        if not isinstance(h, list) or len(h) < 4 or not isinstance(h[1], int) or not isinstance(h[2], int):
+            continue
+        k = str(h[3] or '')
+        if k not in nombres:
+            continue
+        t = dt.datetime.fromtimestamp(h[2] / 1000, dt.timezone.utc)
+        tipo, valor = PA.ESPECIALES.get(h[1], ('', ''))
+        x = {'tipo': 'pase', 't': _iso(t), 'quien': [nombres[k]], 'ks': [k], 'nivel': h[1],
+             'temp': str(niv.get('temp') or ''), 'completo': h[1] >= PA.NIVELES}
+        if tipo in ('titulo', 'insignia') and not x['completo']:
+            x['premio'] = valor
+        out.append(x)
+    return out
+
+
 def premios(mult):
     """🥇 los premios de cada semana que cerró."""
     out = []
@@ -241,6 +270,9 @@ def id_de(x):
         partes = [tipo, x.get('a') or '', x.get('t') or '']
     elif tipo in ('anuncio', 'liga') and x.get('link'):
         partes = [tipo, x['link']]
+    elif tipo == 'pase':
+        # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
+        partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
     else:
         partes = [tipo, x.get('t') or '', '|'.join(x.get('quien') or []), x.get('rg') or '', x.get('carta') or '',
                   x.get('ev') or '', x.get('tit') or '']
@@ -261,7 +293,7 @@ def con_ids(items):
 
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
-DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios')
+DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase')
 #: los premios de la semana que son de una persona (el de servidor no)
 PREMIOS = ('figura', 'revelacion', 'cazador')
 
@@ -314,7 +346,8 @@ def con_claves(items, tabla):
     """
     out = []
     for x in items:
-        if x.get('tipo') not in DE_ALGUIEN:
+        # ⚠️ la que ya trae su clave (las del Pase: salen de la clave, no del nombre) no se vuelve a buscar
+        if x.get('tipo') not in DE_ALGUIEN or x.get('ks'):
             out.append(x)
             continue
         y = dict(x)
@@ -342,14 +375,14 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
         regs = LW.leer()
         fuentes = {'llaves': regs, 'instantes': LW.instantes(regs), 'mw': _j('datos', 'mw.json'),
                    'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
-                   'anuncios': _j('datos', 'anuncios.json')}
+                   'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json')}
     pubs, estado = cambios(guardado.get('estado'), p.get('tabla'), ahora)
     anotados = (guardado.get('cambios') or []) + pubs
     anotados = anotados[-GUARDA:]
     todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
-            + novedades(p.get('novedades')))
+            + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades')))
     # desde cuándo: lo de los últimos días, y nunca lo de antes del arranque
     desde = ahora - dt.timedelta(days=DIAS)
     try:
@@ -430,14 +463,22 @@ def _self_check():
                                 {'e': 'activo', 'cabeza': 'Cid', 'monto': 500}]},
         'mult': {'semanas': [{'fin': '2026-10-12T15:00:00Z', 'premios_semana': {'figura': ['Ana', 12000]}}]},
         'anuncios': {'anuncios': [{'nombre': 'SNAKE ARENA', 'servidor': 'SR', 'cuando': '2026-10-14T12:00:00',
-                                   'guild_id': '1', 'canal_id': '2', 'msg_id': '3', 'organizador': 'Nacho'}]}}
+                                   'guild_id': '1', 'canal_id': '2', 'msg_id': '3', 'organizador': 'Nacho'}]},
+        'pase': {'temp': 't1', 'hitos': [['111', 10, ms(13, 20), 'ana'], ['222', 30, ms(13, 21), 'nadie'],
+                                         ['333', 10, ms(13, 22), '']]}}
     muro, guardar = armar({'tabla': tabla, 'novedades': [{'t': '2026-10-14T13:00:00Z', 'tit': 'Hola',
                                                           'tx': 'la Liga', 'link': 'x'}]},
                           guardado={'estado': antes, 'cambios': []}, ahora=ahora, fuentes=fuentes)
     ts = [x['tipo'] for x in muro['items']]
-    ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga'},
-       'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio y novedades  %s'
+    ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga', 'pase'},
+       'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio, novedades y el Pase  %s'
        % sorted(set(ts)))
+    pa = [x for x in muro['items'] if x['tipo'] == 'pase']
+    ok(len(pa) == 1 and pa[0]['quien'] == ['Ana'] and pa[0]['ks'] == ['ana'] and pa[0]['nivel'] == 10
+       and pa[0]['premio'] == 'De la casa' and pa[0]['completo'] is False and pa[0]['t'] == '2026-10-13T20:00:00Z',
+       '🎟️ el Pase: Ana llegó al 10 («De la casa»); quien no tiene perfil (o no está en la tabla) no sale  %s' % pa)
+    ok(id_de(dict(pa[0], quien=['Ana 🇦🇷'], t='otra')) == pa[0]['id'],
+       'y su id sale de su perfil, la temporada y el nivel: un nombre corregido no le borra los aplausos')
     ok([x['t'] for x in muro['items']] == sorted((x['t'] for x in muro['items']), reverse=True),
        'lo más nuevo arriba')
     ok(not [x for x in muro['items'] if x.get('ev') == 'VIEJO'], 'lo de hace más de %d días no entra' % DIAS)
