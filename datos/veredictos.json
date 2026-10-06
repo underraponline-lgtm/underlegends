@@ -1925,8 +1925,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791246518928,
-   "ed": 1791253329966,
-   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝\n⌞CARLOS⌝ 🆚 ⌞TEITO⌝\n⌞ARDEAN⌝ 🆚 ⌞CRISZJ⌝\n⌞KRTMAN⌝ 🆚 ⌞PIPEPEQUEÑO⌝\n⌞NUMBER⌝ 🆚 ⌞XCLUSIVA⌝\n⌞XCLUSIVO⌝ 🆚 ⌞CHUTY⌝\n⌞V-zir⌝ 🆚 ⌞Carloss⌝",
+   "ed": 1791254090059,
+   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝\n⌞CARLOS⌝ 🆚 ⌞TEITO⌝\n⌞ARDEAN⌝ 🆚 ⌞CRISZJ⌝\n⌞KRTMAN⌝ 🆚 ⌞PIPEPEQUEÑO⌝\n⌞NUMBER⌝ 🆚 ⌞XCLUSIVA⌝\n⌞XCLUSIVO⌝ 🆚 ⌞CHUTY⌝\n⌞V-zir⌝ 🆚 ⌞Carloss⌝\n⌞XCLUSIVO⌝ 🆚 ⌞CARLOS⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -2060,6 +2060,16 @@
      [
       "V-zir",
       "Carloss"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "XCLUSIVO",
+      "CARLOS"
      ],
      null,
      "última ronda y no dice campeón",

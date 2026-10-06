@@ -12129,5 +12129,374 @@
     2000
    ]
   ]
+ },
+ "407": {
+  "dia": "2026-10-05",
+  "escala": "16+",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556832950295732225"
+  ],
+  "n": 407,
+  "nombre": "COPA SOOLAR 3",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Zaik 🇪🇸"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Shisui",
+       "Soneto"
+      ],
+      "Shisui",
+      ""
+     ],
+     [
+      [
+       "Delux",
+       "Ckl"
+      ],
+      "Delux",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Mailen"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Provenza"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "ARDEAN",
+       "Tusicario"
+      ],
+      "ARDEAN",
+      ""
+     ],
+     [
+      [
+       "Deuxs",
+       "N1k"
+      ],
+      "Deuxs",
+      ""
+     ],
+     [
+      [
+       "Tokio",
+       "Korey",
+       "Risa"
+      ],
+      "Tokio",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Shisui",
+       "Molusco"
+      ],
+      "Shisui",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Delux"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "ARDEAN",
+       "MCO"
+      ],
+      "ARDEAN",
+      ""
+     ],
+     [
+      [
+       "Tokio",
+       "Deuxs"
+      ],
+      "Tokio",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Shisui",
+       "Sin Limites"
+      ],
+      "Shisui",
+      ""
+     ],
+     [
+      [
+       "Tokio",
+       "ARDEAN"
+      ],
+      "Tokio",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tokio",
+       "Shisui"
+      ],
+      "Tokio",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Tokio",
+    "Campeón",
+    10000
+   ],
+   [
+    "Shisui",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "ARDEAN",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Deuxs",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ckl",
+    "Octavos",
+    1250
+   ],
+   [
+    "Korey",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mailen",
+    "Octavos",
+    1250
+   ],
+   [
+    "N1k",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Risa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tusicario",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "408": {
+  "dia": "2026-10-05",
+  "escala": "8-15",
+  "fecha": "05/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1556842320190505091"
+  ],
+  "n": 408,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "V-zir🏳️‍⚧️",
+       "ARDEAN"
+      ],
+      "V-zir🏳️‍⚧️",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Number VE"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "Pipas🇵🇪",
+       "Krtman"
+      ],
+      "Pipas🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Teito"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "V-zir 🇻🇪"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "XCLUSIVA🇻🇪",
+       "Pipas🇵🇪"
+      ],
+      "XCLUSIVA🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Xclusivo"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "Xclusivo",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Pipas🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "V-zir 🇻🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "ARDEAN",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Krtman",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
