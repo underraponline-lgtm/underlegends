@@ -2099,6 +2099,33 @@ def anuncio_de_llave(g, anuncios=None, tomados=()):
         len(cands), sv, ', '.join(_de(c[1]) for c in sorted(cands, key=lambda c: c[0])))
 
 
+def nombre_propio(g, nom, anuncio=None):
+    """El nombre de una llave cuyo anuncio se llama igual que el de OTRO evento del mismo día y servidor: el del
+    anuncio más lo que su primer renglón dice además —«CLASIFICATORIA 3 PRITTY FREE» con el anuncio «PRITTY FREE» da
+    «PRITTY FREE CLASIFICATORIA 3»—; si ningún renglón lo nombra, el del anuncio con su hora: «PRITTY FREE 10:41 PM».
+
+    ⚠️ EL RENGLÓN TIENE QUE NOMBRAR AL ANUNCIO, y puede decir «CLASIFICATORIA»: `titulo()` saltea los renglones con
+    el nombre de una ronda (un `[ OCTAVOS ]` no es un título), y por eso esta llave no tenía título. Acá la ronda
+    no estorba, porque lo que se busca es lo que el título agrega al nombre que ya se sabe."""
+    pals = [E.norm(w) for w in nom.split() if E.norm(w)]
+    for h in sorted(g.get('llaves') or [], key=lambda x: str(x.get('cuando') or '')):
+        for l in (h.get('texto') or '').splitlines()[:6]:
+            limpio = re.sub(r'<a?:\w+:\d+>|<@[&!]?\d+>', ' ', l)
+            limpio = re.sub(r'[^\w\sÁÉÍÓÚÑáéíóúñ.\-]', ' ', limpio).replace('_', ' ')
+            limpio = re.sub(r'\s+', ' ', limpio).strip()
+            if not re.search(r'[^\W\d_]', limpio) or E.nombres_de_linea(l):
+                continue
+            palabras = limpio.split()
+            claves = [E.norm(w) for w in palabras]
+            if not pals or not all(p in claves for p in pals):
+                continue
+            resto = [w for w, k in zip(palabras, claves) if k not in pals]
+            if resto:
+                return ('%s %s' % (nom.strip(), ' '.join(resto)))[:60]
+    ms = _ms_de((anuncio or {}).get('cuando')) if anuncio else None
+    return ('%s %s' % (nom.strip(), _hora_et(ms)))[:60] if ms is not None else '%s (2)' % nom.strip()
+
+
 def _nombres_guardados(ruta=None):
     """`{msg_id de una llave: {'nombre', 'anuncio', 'sv', 'autor_h'}}`: ver `NOMBRES`."""
     try:
@@ -2850,6 +2877,14 @@ def _self_check():
          llave_de_broma({'llaves': [dict(_hb[2], autor_id='B2')]}, _con, [], 'X', 'URBF', '29/09') is None
          and llave_de_broma({'llaves': [dict(_hb[2], cuando='2026-09-27T02:00:00+00:00')]}, _con, [],
                             'X', 'URBF', '27/09') is None),
+        # 🔴 dos anuncios «PRITTY FREE» el mismo día (05/10/2026): la segunda llave lleva lo que agrega su título
+        ('una llave cuyo anuncio se llama como el de otro evento del día lleva lo que agrega su título',
+         nombre_propio({'llaves': [{'texto': '**__ ↱🉐 | CLASIFICATORIA 3 PRITTY FREE |  🉐 ↲__**\n\n'
+                                              '**[•OCTAVOS DE FINAL•]**\n▪️ [Ana] 🆚 [Bea]'}]}, 'PRITTY FREE')
+         == 'PRITTY FREE CLASIFICATORIA 3'),
+        ('y si ningún renglón nombra al anuncio, la hora del anuncio',
+         nombre_propio({'llaves': [{'texto': '`[ OCTAVOS ]`\n⌞Ana⌝ 🆚 ⌞Bea⌝'}]}, 'PRITTY FREE',
+                       {'cuando': '2026-10-06T02:41:51'}) == 'PRITTY FREE 10:41 PM'),
         # 🔑 la llave sin título toma el nombre de su anuncio: la hora y, si hay dos, quién publicó (Dlx, 03/10/2026)
         ('una llave sin título es del anuncio de su servidor que arranca a esa hora (KISS OF SHINIGAMI, FFA)',
          (anuncio_de_llave(_gk, [_aviejo, _aotro, _ak])[0] or {}).get('msg_id') == 'K1'),
@@ -3101,6 +3136,13 @@ def main():
     import llaves_web as LW
     guardados, nombres_nuevos, sin_titulo = _nombres_guardados(), {}, []
     tomados = {str(x.get('anuncio') or '') for x in guardados.values()}
+    # 🔴 Y DE QUÉ ANUNCIO ES CADA NOMBRE YA GUARDADO: `(nombre, servidor, fecha) -> anuncio`. Ver «dos anuncios con el
+    # mismo nombre el mismo día», abajo
+    de_anuncio = {}
+    for g in grupos:
+        _y = next((guardados[str(h.get('msg_id'))] for h in g['llaves'] if str(h.get('msg_id') or '') in guardados), None)
+        if _y and _y.get('anuncio'):
+            de_anuncio.setdefault((_y.get('nombre') or '', _y.get('sv') or '', fecha_de(g)), str(_y['anuncio']))
     for g in grupos:
         if not g['llaves'] or nombre_de(g) == '(sin titulo)':
             continue
@@ -3162,9 +3204,19 @@ def main():
             if inferido:
                 nom = inferido['nombre'].strip()
                 tomados.add(str(inferido.get('msg_id') or ''))
-                _r = {'nombre': nom, 'anuncio': str(inferido.get('msg_id') or ''),
-                      'sv': codigo_servidor(g['llaves'][0].get('guild'))[0],
-                      'autor_h': inferido.get('autor_h') or ''}
+                _sv_i, _aid = codigo_servidor(g['llaves'][0].get('guild'))[0], str(inferido.get('msg_id') or '')
+                # 🔴 DOS ANUNCIOS CON EL MISMO NOMBRE EL MISMO DÍA SON DOS EVENTOS (06/10/2026). FFA hizo dos «PRITTY
+                # FREE» el 05/10 —la Clasificatoria 2 a la 1 AM y la 3 a las 10:55 PM—, cada llave tomó el nombre de
+                # su anuncio y, con la misma (nombre, servidor, fecha), quedaron en UN evento: el #402, con dos
+                # finales, y la Clasificatoria 3 sin página (Snow: «la página no puso esa compe»). Dos llaves del
+                # MISMO anuncio sí son uno —una llave en dos mensajes—; de dos anuncios, no: la segunda lleva lo que
+                # agrega su título, o la hora (`nombre_propio()`). Un nombre ya guardado no se toca: es su identidad
+                _otro = de_anuncio.get((nom, _sv_i, fec))
+                if _otro and _aid and _otro != _aid:
+                    _antes, nom = nom, nombre_propio(g, nom, inferido)
+                    por_hora += ' · «%s» ya era de otro anuncio ese día: queda «%s»' % (_antes, nom)
+                de_anuncio.setdefault((nom, _sv_i, fec), _aid)
+                _r = {'nombre': nom, 'anuncio': _aid, 'sv': _sv_i, 'autor_h': inferido.get('autor_h') or ''}
                 for h in g['llaves']:
                     if h.get('msg_id'):
                         nombres_nuevos[str(h['msg_id'])] = _r

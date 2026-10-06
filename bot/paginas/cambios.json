@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.47",
+   "dia": "2026-10-06",
+   "cuando": "2026-10-06T18:10:00-04:00",
+   "titulo": "Dos eventos con el mismo nombre, dos eventos",
+   "items": [
+    "🔴 **Dos eventos del mismo servidor que se anuncian con el mismo nombre el mismo día ya no se juntan en uno**: la PRITTY FREE Clasificatoria 3 del 05/10 tiene su propia página, aparte de la de la mañana."
+   ]
+  },
+  {
    "version": "2.46",
    "dia": "2026-10-06",
    "cuando": "2026-10-06T01:40:00-04:00",
