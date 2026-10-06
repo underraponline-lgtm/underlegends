@@ -428,7 +428,7 @@
   },
   "EIDP": {
    "servidor": "8f2c00b77518:9d97339447c1:eed871",
-   "temporada": "69c869143d12:c2dd98b0f962"
+   "temporada": "c14b4e7a561b:c2dd98b0f962"
   },
   "ELPIBEOSIRIS": {
    "servidor": "7d49c92b00f8:9d97339447c1:90ce53",
@@ -1265,7 +1265,7 @@
   },
   "NAW": {
    "servidor": "82bd89b2ff5e:9d97339447c1:8d4f88",
-   "temporada": "8b8429f5318c:c2dd98b0f962"
+   "temporada": "d9f2bc014bac:c2dd98b0f962"
   },
   "NC": {
    "servidor": "0696e3f3caa7:9d97339447c1:8d4f88",
@@ -1593,10 +1593,10 @@
   },
   "SUDAKA": {},
   "Saiko": {
-   "competitivo": "9bf4f56ac30c:66620bff5eb9",
+   "competitivo": "aeb3780075e2:66620bff5eb9",
    "pais": "568f6e1bcfed:dd0366c7fb5d",
    "servidor": "a3017c46449b:9d97339447c1:a1c2cd",
-   "temporada": "1c6e257d7385:c2dd98b0f962"
+   "temporada": "6e9c53b61349:c2dd98b0f962"
   },
   "Saito": {
    "servidor": "66c0253236fc:9d97339447c1:9bda2d",
@@ -1635,7 +1635,7 @@
   },
   "Sexo": {
    "servidor": "3b81237359ab:9d97339447c1:cd7216",
-   "temporada": "83a97be14064:c2dd98b0f962"
+   "temporada": "bb0cf9353af1:c2dd98b0f962"
   },
   "Shadow": {
    "competitivo": "936f9d846d00:66620bff5eb9",
@@ -2039,7 +2039,7 @@
   },
   "rayito": {
    "servidor": "ce0d591a9d34:9d97339447c1:cd7216",
-   "temporada": "24b8091dbfff:c2dd98b0f962"
+   "temporada": "1ee18eb46bbb:c2dd98b0f962"
   },
   "sergare": {
    "servidor": "00611da75402:9d97339447c1:055f77"
@@ -2084,5 +2084,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-06T04:45:25+00:00"
+ "cuando": "2026-10-06T05:00:25+00:00"
 }
