@@ -1,48 +1,47 @@
 {
  "v": 1,
- "cuando": "2026-10-06T18:13:17Z",
+ "cuando": "2026-10-06T18:28:01Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 885.4,
+ "dur_s": 68.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.9
+   "s": 7.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.9
+   "s": 2.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 18.6
+   "s": 17.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 7 · 40 persona(s)",
-   "ok": true,
-   "s": 813.8
+   "que": "tanda 1 de 1 · 6 persona(s)",
+   "ok": false,
+   "s": 39.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.6
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 38.5
+   "s": 0.5
   }
  ],
- "fallas": [],
+ "fallas": [
+  {
+   "paso": "5",
+   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/01_Temporada/salida/temporada_Nhp.png"
+  }
+ ],
  "ultimo_evento": {
   "n": "410",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
@@ -51,20 +50,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 738,
-   "read": 40829
+   "write": 758,
+   "read": 41949
   },
   "objeto": {
-   "leidas": 796787,
-   "escritas": 12995,
-   "pedidos": 2691
+   "leidas": 814527,
+   "escritas": 13163,
+   "pedidos": 2743
   },
   "worker": {
-   "pedidos": 4372,
+   "pedidos": 4388,
    "errores": 1,
-   "sub": 4499,
+   "sub": 4515,
    "p50_ms": 1.14,
-   "p99_ms": 6.03
+   "p99_ms": 6.01
   },
   "r2": {
    "objetos": 3517,
