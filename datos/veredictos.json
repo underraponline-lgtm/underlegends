@@ -1898,6 +1898,68 @@
      []
     ]
    ]
+  },
+  "1556825480324325427": {
+   "id": "1556825480324325427",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1791246518928,
+   "ed": 1791247896631,
+   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "MARTINEZ",
+      "CRIZJ"
+     ],
+     "CRIZJ",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DREXX",
+      "ARDEAN"
+     ],
+     "DREXX",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BOOTRAX",
+      "NUMBER"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ANDRES",
+      "SNAKE",
+      "SIN LIMITES"
+     ],
+     "ANDRES",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CRIZJ",
+      "DREXX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }
