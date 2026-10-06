@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T02:55:37+00:00",
+ "cuando": "2026-10-06T03:25:42+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2975,29 +2975,27 @@
    "fecha": "",
    "premios": "",
    "categoria_id": "1309234419525222477"
-  },
-  {
-   "nombre": "Y TENEMOS EL HONOR DE ANUNCIARLES A TODO EL EQUIPO DE TRABAJO QUE SE V",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1551245259898359891",
-   "cuando": "2026-09-20T14:54:50",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "categoria_id": "1309234419525222477"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tiembla la tierra 🇧🇦",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1556868774920069193",
+   "cuando": "2026-10-06T03:20:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1556864470482030743",
+   "cuando": "2026-10-06T03:03:34"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -3069,6 +3067,15 @@
    "discord_id": "1323444294534828104",
    "msg_id": "1556859259684257934",
    "cuando": "2026-10-06T02:42:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "DXG🇲🇽 + CHOP <:honduras:1533707223388131508>",
+   "quien": "dxg_4018",
+   "discord_id": "1223701976655859805",
+   "msg_id": "1556859219679125550",
+   "cuando": "2026-10-06T02:42:43"
   },
   {
    "servidor": "FFA",

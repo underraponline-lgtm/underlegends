@@ -134,6 +134,13 @@
 "temporada"
 ]
 },
+"tokio": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "shisui": {
 "rg": "",
 "c": []
@@ -152,13 +159,6 @@
 "temporada"
 ]
 },
-"tokio": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "provenza": {
 "rg": "D",
 "c": [
@@ -166,14 +166,14 @@
 "temporada"
 ]
 },
-"majiztral": {
+"polosport": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"polosport": {
+"majiztral": {
 "rg": "",
 "c": [
 "servidor",
@@ -281,17 +281,17 @@
 "temporada"
 ]
 },
-"catarsis": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "mco": {
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"catarsis": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -455,6 +455,13 @@
 "temporada"
 ]
 },
+"xclusivo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "lrs": {
 "rg": "",
 "c": [
@@ -533,13 +540,6 @@
 ]
 },
 "cronox": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"xclusivo": {
 "rg": "",
 "c": [
 "servidor",
@@ -775,14 +775,14 @@
 "temporada"
 ]
 },
-"elsoolar": {
+"korey": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"korey": {
+"elsoolar": {
 "rg": "",
 "c": [
 "servidor",
@@ -1314,15 +1314,7 @@
 "temporada"
 ]
 },
-"rosmel": {
-"rg": "",
-"c": []
-},
 "ckl": {
-"rg": "",
-"c": []
-},
-"mailen": {
 "rg": "",
 "c": []
 },
@@ -1331,6 +1323,10 @@
 "c": []
 },
 "risa": {
+"rg": "",
+"c": []
+},
+"rosmel": {
 "rg": "",
 "c": []
 },
@@ -1347,6 +1343,10 @@
 "servidor",
 "temporada"
 ]
+},
+"mailen": {
+"rg": "",
+"c": []
 },
 "jeixder": {
 "rg": "",

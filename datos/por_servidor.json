@@ -2689,17 +2689,6 @@
     "racha": "0/0"
    }
   },
-  "Mailen": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0"
-   }
-  },
   "Majiztral": {
    "ACAD": {
     "duelos": "",
@@ -3448,13 +3437,13 @@
   },
   "Polosport": {
    "FFA": {
-    "duelos": "",
-    "ev": 4,
+    "duelos": "0/1",
+    "ev": 5,
     "oro": 1,
-    "ovr": 58,
+    "ovr": 59,
     "pod": 1,
-    "pts": 22805,
-    "racha": "1/1"
+    "pts": 26555,
+    "racha": "0/1"
    },
    "SR": {
     "duelos": "2/3",
@@ -4521,23 +4510,12 @@
     "racha": "0/0"
    }
   },
-  "XCLUSIVA🇻🇪": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 49,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
   "Xclusivo": {
    "DDF": {
-    "duelos": "1/2",
+    "duelos": "2/3",
     "ev": 1,
     "oro": 0,
-    "ovr": 56,
+    "ovr": 57,
     "pod": 1,
     "pts": 7500,
     "racha": "1/1"

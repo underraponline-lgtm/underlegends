@@ -226,23 +226,29 @@
      "Lewis",
      52,
      2
+    ],
+    [
+     "Elsoolar y tokio",
+     17,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 3
+     "FFA": 5,
+     "DDF": 2
     },
     "gente": {
-     "FFA": 45,
-     "DDF": 7
+     "FFA": 57,
+     "DDF": 13
     },
     "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 7,
+    "DDF": 13,
     "DRA": 0,
-    "FFA": 45,
+    "FFA": 57,
     "FFS": 0,
     "SR": 0,
     "URBF": 0
