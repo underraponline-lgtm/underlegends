@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T16:24:48+00:00",
+ "cuando": "2026-10-06T16:54:24+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2363,7 +2363,29 @@
    "de_imagen": true,
    "categoria_id": "1469943266022785115",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
+  },
+  {
+   "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1557067516210319391",
+   "cuando": "2026-10-06T16:30:24",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "",
+   "autor_h": "0f624d80ff313923",
+   "cupos_texto": "8 16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "CUARTOS:",
+   "horario": "EN 5 MINS",
+   "fecha": "EN 5 MINS",
+   "premios": "",
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
@@ -2385,7 +2407,7 @@
    "premios": "",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "MINI CUP GOD 110",
@@ -2407,7 +2429,7 @@
    "premios": "🥇RECONOCIMIENTO🥇",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2429,7 +2451,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "MIDNIGHT MIAMI",
@@ -2451,7 +2473,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN - CUPO A LA LIGA APOCALIPSIS X",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "historia del peru cup",
@@ -2473,7 +2495,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2495,7 +2517,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "MINI CUP GOD 109",
@@ -2517,7 +2539,7 @@
    "premios": "🥇RECONOCIMIENTO🥇",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "HEMOS VUELTO",
@@ -2539,7 +2561,7 @@
    "premios": "UN MESSI CON UNA FLOR AMARILLA",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "19 CUP VOL 2 EDICION FIFA",
@@ -2561,7 +2583,7 @@
    "premios": "SORPRESA + 1000 BOLOS POR CULO MOVIL (SI ERES DE TOCORON)",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "MINI CUP GOD 108",
@@ -2583,7 +2605,7 @@
    "premios": "🥇RECONOCIMIENTO🥇",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "19 CUP EDICION SANGRE",
@@ -2605,7 +2627,7 @@
    "premios": "1000 BOLIVARES POR CULO MOVIL",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2627,7 +2649,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "COMPE CELEBRATORIA",
@@ -2649,7 +2671,7 @@
    "premios": "",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "COMPE LIBRE PARA TODOS",
@@ -2671,7 +2693,7 @@
    "premios": "",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2693,7 +2715,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "MINI CUP GOD 107",
@@ -2715,7 +2737,7 @@
    "premios": "🥇RECONOCIMIENTO🥇",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "ESTACIÓN MITOLÓGICA",
@@ -2737,7 +2759,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN - CUPO A LA LIGA APOCALIPSIS X",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "Clasificatoria a Fight rumble X tfc",
@@ -2759,7 +2781,7 @@
    "premios": "RESPETO - TITULO DE CAMPEÓN",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "MINI CUP GOD 106",
@@ -2781,29 +2803,7 @@
    "premios": "🥇RECONOCIMIENTO🥇",
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
-  },
-  {
-   "nombre": "CLASIFICACION DE LIGA ELITE",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1548878544682090497",
-   "cuando": "2026-09-14T02:10:21",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "MINIBOY 🇨🇱",
-   "autor_h": "94e00e4c825499db",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "EN EVENTOS",
-   "horario": "YAYAYAYAYAYAAAAAA",
-   "fecha": "",
-   "premios": "🥇CUPO A LA LIGA🥇",
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-06T01:33:14"
+   "inscripciones_cuando": "2026-10-06T16:30:39"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -2928,6 +2928,105 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "RT 🇲🇽",
+   "quien": "rt1603",
+   "discord_id": "995447111334232094",
+   "msg_id": "1557070654006763583",
+   "cuando": "2026-10-06T16:42:52"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Prodem 🇨🇴",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1557069271601782899",
+   "cuando": "2026-10-06T16:37:23"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Onichanwack123🇧🇷",
+   "quien": "vibesfly7",
+   "discord_id": "552121423804628995",
+   "msg_id": "1557068544934678651",
+   "cuando": "2026-10-06T16:34:30"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Drexx",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1557068102439665729",
+   "cuando": "2026-10-06T16:32:44"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Roda🇦🇷",
+   "quien": "rodaaa_mc",
+   "discord_id": "1492592375812587551",
+   "msg_id": "1557067664851996725",
+   "cuando": "2026-10-06T16:31:00"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1557067642840416280",
+   "cuando": "2026-10-06T16:30:54"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1557067632862175347",
+   "cuando": "2026-10-06T16:30:52"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1557067631247233099",
+   "cuando": "2026-10-06T16:30:52"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Elbesaabuelas 🇦🇷",
+   "quien": "xnoah_12341",
+   "discord_id": "1544902851975843900",
+   "msg_id": "1557067631041712149",
+   "cuando": "2026-10-06T16:30:52"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1557067614663217265",
+   "cuando": "2026-10-06T16:30:48"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1557067605356052651",
+   "cuando": "2026-10-06T16:30:46"
+  },
   {
    "servidor": "FFS",
    "canal": "「👑」INSCRIPCIONES",
