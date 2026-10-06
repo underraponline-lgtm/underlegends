@@ -116,7 +116,7 @@
   },
   "Andres": {
    "servidor": "b4b4688576eb:9d97339447c1:bb6568",
-   "temporada": "569368bd57cd:c2dd98b0f962"
+   "temporada": "dbba2e6a8b27:c2dd98b0f962"
   },
   "Andy": {
    "competitivo": "657c0a64a61c:66620bff5eb9",
@@ -304,7 +304,7 @@
   },
   "Cronox": {
    "servidor": "2af2bf0fe358:9d97339447c1:90ce53",
-   "temporada": "e22a3286e5cb:c2dd98b0f962"
+   "temporada": "9cc69408b344:c2dd98b0f962"
   },
   "Cruz": {
    "servidor": "8a80c6b7775d:9d97339447c1:15af16"
@@ -1308,7 +1308,7 @@
   },
   "Nhp": {
    "servidor": "0aa923263354:9d97339447c1:da39a3",
-   "temporada": "98b19f55b0e9:c2dd98b0f962"
+   "temporada": "6ec0b2f6aa88:c2dd98b0f962"
   },
   "Nico": {
    "servidor": "dcd1da455594:9d97339447c1:055f77"
@@ -1381,8 +1381,8 @@
    "temporada": "d5b2f6e8272b:c2dd98b0f962"
   },
   "Oasis": {
-   "servidor": "446099b5ced1:9d97339447c1:90ce53",
-   "temporada": "73696cff55a5:c2dd98b0f962"
+   "servidor": "31a3ec063309:9d97339447c1:90ce53",
+   "temporada": "d465f93bcc67:c2dd98b0f962"
   },
   "Olaf": {
    "servidor": "8bb1506a5b1f:9d97339447c1:055f77"
@@ -1414,7 +1414,7 @@
   },
   "Paria": {
    "servidor": "18f57abbe89a:9d97339447c1:90d6e7",
-   "temporada": "64be3491772d:c2dd98b0f962"
+   "temporada": "f437de857314:c2dd98b0f962"
   },
   "Partim": {
    "competitivo": "e3a0972460d5:66620bff5eb9",
@@ -1570,7 +1570,7 @@
   },
   "SGB": {
    "servidor": "3fd187796082:9d97339447c1:a5e01f",
-   "temporada": "3f55ca3f13da:c2dd98b0f962"
+   "temporada": "711cada595a8:c2dd98b0f962"
   },
   "SHULIOT": {
    "servidor": "dc9763ce4074:9d97339447c1:d5fffe",
@@ -2086,5 +2086,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-06T18:12:33+00:00"
+ "cuando": "2026-10-06T18:58:13+00:00"
 }
