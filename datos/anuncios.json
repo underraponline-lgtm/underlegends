@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T22:26:35+00:00",
+ "cuando": "2026-10-06T22:54:35+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -759,26 +759,6 @@
    "horario": "AHORA",
    "fecha": "",
    "premios": "UN BESO DE XCLUSIVO",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "MONTE CHINGOLO REPRESENT V.2",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1554654013566230691",
-   "cuando": "2026-09-30T00:40:00",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "ERIAN",
-   "autor_h": "78a9632c77e88d80",
-   "cupos_texto": "DUPLAS",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "CHILL",
-   "modalidad": "DUPLAS",
-   "horario": "AHORA",
-   "fecha": "",
-   "premios": "Literalmente nada",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -2865,6 +2845,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1557161064989462669",
+   "cuando": "2026-10-06T22:42:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yo mc 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1557159258796064891",
+   "cuando": "2026-10-06T22:34:57"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Jayden 🇵🇪",
+   "quien": "eniko_pe",
+   "discord_id": "1025498796265836667",
+   "msg_id": "1557159049697431647",
+   "cuando": "2026-10-06T22:34:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Nc🇵🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1557157440443654186",
+   "cuando": "2026-10-06T22:27:44"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

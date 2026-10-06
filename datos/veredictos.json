@@ -2341,6 +2341,61 @@
      []
     ]
    ]
+  },
+  "1557158578924818486": {
+   "id": "1557158578924818486",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791325935823,
+   "ed": 1791327174284,
+   "texto": "`[ OCTAVOS ]`\n⌞ECLIPSE 🇨🇱⌝ 🆚 ⌞VALDOZA 🇨🇱⌝ 🆚 ⌞SOUL B 🇨🇱⌝\n⌞UZI 🇨🇱⌝ 🆚 ⌞NC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞ALTER 🇨🇱⌝ 🆚 ⌞DXG 🇲🇽⌝ 🆚 ⌞BENJIXO 🇦🇷⌝\n⌞CRONOX 🇨🇱⌝ 🆚 ⌞YOUNG VLAD 🇨🇴⌝ 🆚 ⌞RIOLU 🇪🇸⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "ECLIPSE 🇨🇱",
+      "VALDOZA 🇨🇱",
+      "SOUL B 🇨🇱"
+     ],
+     "SOUL B 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "UZI 🇨🇱",
+      "NC 🇦🇷",
+      "MAKMA 🇻🇪"
+     ],
+     "MAKMA 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ALTER 🇨🇱",
+      "DXG 🇲🇽",
+      "BENJIXO 🇦🇷"
+     ],
+     "BENJIXO 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CRONOX 🇨🇱",
+      "YOUNG VLAD 🇨🇴",
+      "RIOLU 🇪🇸"
+     ],
+     "YOUNG VLAD 🇨🇴",
+     "veredicto",
+     []
+    ]
+   ]
   }
  }
 }
