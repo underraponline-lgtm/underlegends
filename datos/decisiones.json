@@ -48,7 +48,7 @@
    "decision": "cuenta",
    "cuando": "2026-10-05 2:35 AM ET",
    "por": "Dlx (chat)",
-   "nota": "el torneo de grupos de Leonar-T (antes «GRUPO A»): la final ZETRYKO vs ABYSSUS no decía quién ganó. Dlx: «2. Abyssus»."
+   "nota": "el torneo de grupos de Leonar-T (antes «GRUPO A»): la final ZETRYKO vs ABYSSUS no decía quién ganó. Dlx: «2. Abyssus» (05/10), y el 06/10 lo corrigió: «la había ganado zetryko no abyssus»."
   }
  },
  "no_rankear": {
@@ -105,11 +105,11 @@
    "por": "Dlx (✅ Decidir)"
   },
   "grupoa|ACAD|03/10|final|abyssus|zetryko": {
-   "ganador": "Abyssus 🇨🇦",
+   "ganador": "ZETRYKO 🇨🇱",
    "batalla": "GRUPO A · ACAD · 03/10 · final · ZETRYKO 🇨🇱 🆚 Abyssus 🇨🇦",
-   "cuando": "2026-10-05 2:16 AM ET",
+   "cuando": "2026-10-06 1:43 AM ET",
    "por": "Dlx (chat)",
-   "nota": "«2. Abyssus»"
+   "nota": "«la había ganado zetryko no abyssus» (06/10): corrige el «2. Abyssus» del 05/10"
   },
   "compedeuddi|ACAD|22/09|semifinales|bloody|erian": {
    "ganador": "erian",
@@ -126,11 +126,11 @@
    "nota": "✅┇votaciones: réplica, y en la segunda réplica 🫱 de ander.fc y 👉 de ivandevil (COLESITO) contra «ZETRYKO» de uddi_mc"
   },
   "copadegruposlcw|ACAD|03/10|final|abyssus|zetryko": {
-   "ganador": "Abyssus 🇨🇦",
+   "ganador": "ZETRYKO 🇨🇱",
    "batalla": "COPA DE GRUPOS LCW · ACAD · 03/10 · final · ZETRYKO 🇨🇱 🆚 Abyssus 🇨🇦",
-   "cuando": "2026-10-05 2:35 AM ET",
+   "cuando": "2026-10-06 1:43 AM ET",
    "por": "Dlx (chat)",
-   "nota": "«2. Abyssus»"
+   "nota": "«la había ganado zetryko no abyssus» (06/10): corrige el «2. Abyssus» del 05/10"
   }
  },
  "anuncios_fuera": {
