@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-06T02:29:53Z",
+ "cuando": "2026-10-06T02:34:55Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 384.7,
+ "dur_s": 268.4,
  "pasos": [
   {
    "n": "0b",
@@ -15,13 +15,13 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 131.2
+   "s": 63.2
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 58.6
+   "s": 61.3
   },
   {
    "n": "1a",
@@ -33,25 +33,25 @@
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.1
+   "s": 8.7
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 23.1
+   "s": 25.4
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.2
+   "s": 2.4
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 36.9
+   "s": 6.4
   },
   {
    "n": "2b",
@@ -75,7 +75,7 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.8
+   "s": 1.5
   },
   {
    "n": "2b4b",
@@ -87,47 +87,47 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.8
+   "s": 2.6
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 67.5
+   "s": 27.1
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 31.0
+   "s": 30.1
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 16.6
+   "s": 27.8
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.1
+   "s": 0.2
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.2
+   "s": 5.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 1.9
+   "s": 2.6
   }
  ],
  "fallas": [],
- "decidir": 84,
+ "decidir": 72,
  "ultimo_evento": {
   "n": "406",
   "nombre": "MINI CUP GOD 110",
@@ -136,21 +136,21 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-06T02:25:58Z",
+  "cuando": "2026-10-06T02:31:34Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 339,
-  "un_evento": 170,
+  "jugadores": 337,
+  "un_evento": 167,
   "diez_o_mas": 17,
   "cohortes": [
    {
     "semana": "2026-09-21",
     "nuevos": 191,
-    "volvieron": 127,
+    "volvieron": 128,
     "completa": false
    },
    {
     "semana": "2026-09-28",
-    "nuevos": 136,
+    "nuevos": 134,
     "volvieron": 32,
     "completa": false
    },
@@ -164,19 +164,19 @@
  },
  "cuotas": {
   "kv": {
-   "write": 484,
-   "read": 9069
+   "write": 492,
+   "read": 9855
   },
   "objeto": {
-   "leidas": 221054,
-   "escritas": 3763,
-   "pedidos": 658
+   "leidas": 229691,
+   "escritas": 3815,
+   "pedidos": 695
   },
   "worker": {
-   "pedidos": 5104,
+   "pedidos": 5131,
    "errores": 1,
-   "sub": 5060,
-   "p50_ms": 1.04,
+   "sub": 5087,
+   "p50_ms": 1.05,
    "p99_ms": 5.92
   },
   "r2": {

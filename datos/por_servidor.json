@@ -568,6 +568,15 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   },
+   "FFA": {
+    "duelos": "",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 0,
+    "pts": 2750,
+    "racha": "0/0"
    }
   },
   "CJ": {
@@ -671,17 +680,6 @@
     "ovr": 44,
     "pod": 0,
     "pts": 688,
-    "racha": "0/0"
-   }
-  },
-  "Choclo🇻🇪": {
-   "FFA": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 0,
-    "pts": 2750,
     "racha": "0/0"
    }
   },
@@ -1996,6 +1994,17 @@
     "racha": "0/0"
    }
   },
+  "King": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
+   }
+  },
   "Kochi": {
    "ACAD": {
     "duelos": "6/8",
@@ -2291,20 +2300,9 @@
   "Leyenda": {
    "ACAD": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "Leyenda.X5 🇦🇷": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
@@ -2778,6 +2776,17 @@
     "pod": 1,
     "pts": 15250,
     "racha": "2/2"
+   }
+  },
+  "Mathhias": {
+   "ACAD": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 625,
+    "racha": "0/0"
    }
   },
   "MauzzitoEmeces": {
@@ -4574,7 +4583,7 @@
     "racha": "0/0"
    }
   },
-  "Zanti SkT 🇦🇷🇮🇹": {
+  "Zanti": {
    "ACAD": {
     "duelos": "",
     "ev": 1,
@@ -4768,28 +4777,6 @@
   },
   "maldita enfermedad": {
    "SR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 625,
-    "racha": "0/0"
-   }
-  },
-  "manteca sixseven🇦🇸": {
-   "SR": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 625,
-    "racha": "0/0"
-   }
-  },
-  "mathias 🇻🇪": {
-   "ACAD": {
     "duelos": "",
     "ev": 1,
     "oro": 0,

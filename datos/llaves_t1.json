@@ -2942,7 +2942,7 @@
       [
        "Vlade",
        "leteletras",
-       "manteca sixseven🇦🇸",
+       "King",
        "Soft"
       ],
       "",
@@ -3138,6 +3138,11 @@
     625
    ],
    [
+    "King",
+    "R32",
+    625
+   ],
+   [
     "Kyss",
     "R32",
     625
@@ -3194,11 +3199,6 @@
    ],
    [
     "maldita enfermedad",
-    "R32",
-    625
-   ],
-   [
-    "manteca sixseven🇦🇸",
     "R32",
     625
    ],
@@ -10347,7 +10347,7 @@
        "Kourier",
        "CHOCLITO",
        "Saiko",
-       "Leyenda.X5 🇦🇷"
+       "Leyenda"
       ],
       "",
       "triple (9 bandas, pasan 0)"
@@ -10359,7 +10359,7 @@
        "NXUZ",
        "Xervoe",
        "Sombra",
-       "mathias 🇻🇪",
+       "Mathhias",
        "Tiagoms",
        "Krish",
        "Damian",
@@ -10374,7 +10374,7 @@
        "luisito 🏆",
        "Rayden",
        "Reyes",
-       "Zanti SkT 🇦🇷🇮🇹",
+       "Zanti",
        "Zaik 🇪🇸",
        "MaYeuTyK",
        "Galileo",
@@ -10757,7 +10757,7 @@
     625
    ],
    [
-    "Leyenda.X5 🇦🇷",
+    "Leyenda",
     "R32",
     625
    ],
@@ -10778,6 +10778,11 @@
    ],
    [
     "Majiztral",
+    "R32",
+    625
+   ],
+   [
+    "Mathhias",
     "R32",
     625
    ],
@@ -10932,17 +10937,12 @@
     625
    ],
    [
-    "Zanti SkT 🇦🇷🇮🇹",
+    "Zanti",
     "R32",
     625
    ],
    [
     "luisito 🏆",
-    "R32",
-    625
-   ],
-   [
-    "mathias 🇻🇪",
     "R32",
     625
    ]
@@ -11588,7 +11588,7 @@
      [
       [
        "Oasis",
-       "Choclo🇻🇪"
+       "CHOCLITO"
       ],
       "Oasis",
       "triple (3 bandas, pasan 2)"
@@ -11663,7 +11663,7 @@
     2500
    ],
    [
-    "Choclo🇻🇪",
+    "CHOCLITO",
     "Cuartos",
     2000
    ],
