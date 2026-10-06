@@ -131,12 +131,12 @@
   },
   "Abyssus": {
    "ACAD": {
-    "duelos": "4/4",
+    "duelos": "3/4",
     "ev": 2,
-    "oro": 2,
-    "ovr": 66,
+    "oro": 1,
+    "ovr": 63,
     "pod": 2,
-    "pts": 17500,
+    "pts": 15000,
     "racha": "2/2"
    },
    "FFA": {
@@ -4744,12 +4744,12 @@
   },
   "Zetryko": {
    "ACAD": {
-    "duelos": "2/4",
+    "duelos": "3/4",
     "ev": 2,
-    "oro": 0,
-    "ovr": 57,
+    "oro": 1,
+    "ovr": 60,
     "pod": 1,
-    "pts": 8500,
+    "pts": 11000,
     "racha": "2/2"
    }
   },

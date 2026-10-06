@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-06T05:24:44+00:00",
+ "cuando": "2026-10-06T05:54:25+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -320,26 +320,6 @@
    "fecha": "3 2V2",
    "premios": "",
    "categoria_id": "1497457390637809837"
-  },
-  {
-   "nombre": "NOCTURNA X LA DESPEDIDA DE MESSI 1v1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1556891515882704989",
-   "cuando": "2026-10-06T04:51:03",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Lewis",
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "12 / 16 / 24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 30 MINUTOS",
-   "fecha": "",
-   "premios": "Respeto",
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "PRITTY FREE",
@@ -2948,6 +2928,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFS",
+   "canal": "「👑」INSCRIPCIONES",
+   "texto": "N1k🇵🇪",
+   "quien": "n1khznnn10",
+   "discord_id": "1505432009491615864",
+   "msg_id": "1556906695593299992",
+   "cuando": "2026-10-06T05:51:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Aldre 🇦🇷",
+   "quien": "aldrebxjd",
+   "discord_id": "515712116381188097",
+   "msg_id": "1556900013928611841",
+   "cuando": "2026-10-06T05:24:49"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

@@ -373,6 +373,13 @@
 "temporada"
 ]
 },
+"zetryko": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "presagio": {
 "rg": "",
 "c": [
@@ -543,13 +550,6 @@
 ]
 },
 "paria": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"zetryko": {
 "rg": "",
 "c": [
 "servidor",
