@@ -477,7 +477,7 @@
   },
   "Elinge_TIMP": {
    "servidor": "1072fe288454:9d97339447c1:13af9f",
-   "temporada": "966038896409:c2dd98b0f962"
+   "temporada": "136a320cc128:c2dd98b0f962"
   },
   "Elsoolar": {
    "competitivo": "cf5e26de5784:66620bff5eb9",
@@ -961,10 +961,10 @@
    "temporada": "d09578e5c7bc:c2dd98b0f962"
   },
   "LEWITO": {
-   "competitivo": "47fee705de07:66620bff5eb9",
+   "competitivo": "61c4334e430c:66620bff5eb9",
    "pais": "1a9fd4261810:dd0366c7fb5d",
    "servidor": "82861f823b3e:9d97339447c1:d0970d",
-   "temporada": "230ba792c570:c2dd98b0f962"
+   "temporada": "db7ba725729b:c2dd98b0f962"
   },
   "LGBD": {
    "servidor": "d1bce8faed5c:9d97339447c1:3e2e7c"
@@ -1575,7 +1575,7 @@
   },
   "SHULIOT": {
    "servidor": "dc9763ce4074:9d97339447c1:d5fffe",
-   "temporada": "958291a9b144:c2dd98b0f962"
+   "temporada": "4addb6be4668:c2dd98b0f962"
   },
   "SK8": {
    "servidor": "1f55d42e1301:9d97339447c1:15af16"
@@ -2086,5 +2086,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-06T00:27:56+00:00"
+ "cuando": "2026-10-06T01:28:27+00:00"
 }
