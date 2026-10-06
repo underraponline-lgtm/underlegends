@@ -31,8 +31,8 @@
      1
     ],
     [
-     "Shisui",
-     39375,
+     "Carlosss",
+     22500,
      2
     ],
     [
@@ -51,11 +51,6 @@
      1
     ],
     [
-     "Carlosss",
-     11250,
-     1
-    ],
-    [
      "Provenza",
      10000,
      2
@@ -71,11 +66,6 @@
      1
     ],
     [
-     "BTRX",
-     7125,
-     2
-    ],
-    [
      "Colesito",
      6250,
      1
@@ -87,6 +77,11 @@
     ],
     [
      "melomaniaco",
+     6250,
+     1
+    ],
+    [
+     "yinn",
      6250,
      1
     ],
@@ -130,6 +125,11 @@
      2
     ],
     [
+     "Shisui",
+     39375,
+     2
+    ],
+    [
      "ONZASS",
      31875,
      2
@@ -145,12 +145,12 @@
      4
     ],
     [
-     "Efimero",
-     12500,
-     1
+     "Majiztral",
+     17750,
+     2
     ],
     [
-     "Majiztral",
+     "Efimero",
      12500,
      1
     ],
@@ -185,6 +185,11 @@
      1
     ],
     [
+     "BTRX",
+     7125,
+     2
+    ],
+    [
      "Agus",
      6250,
      1
@@ -211,11 +216,6 @@
     ],
     [
      "Soulb",
-     6250,
-     1
-    ],
-    [
-     "yinn",
      6250,
      1
     ],
@@ -250,11 +250,6 @@
      1
     ],
     [
-     "Andres",
-     3750,
-     1
-    ],
-    [
      "ALESS",
      1875,
      1
@@ -278,13 +273,18 @@
    [
     [
      "Sin Limites",
-     15750,
-     1
+     18750,
+     2
     ],
     [
      "CrisZJ",
      11250,
      1
+    ],
+    [
+     "Xclusivo",
+     10500,
+     2
     ],
     [
      "Delux",
@@ -297,7 +297,7 @@
      1
     ],
     [
-     "Xclusivo",
+     "RT 🇲🇽",
      7500,
      1
     ],
@@ -314,6 +314,16 @@
     [
      "V-zir 🇻🇪",
      5250,
+     1
+    ],
+    [
+     "Julix🇧🇴",
+     5250,
+     1
+    ],
+    [
+     "Andres",
+     3750,
      1
     ],
     [
@@ -355,6 +365,16 @@
      "Teito",
      3000,
      1
+    ],
+    [
+     "Bludi🇨🇴",
+     3000,
+     1
+    ],
+    [
+     "Elbesaabuelas 🇦🇷",
+     3000,
+     1
     ]
    ]
   ]
@@ -371,7 +391,7 @@
   "Aby": 5,
   "Abyssus": 3,
   "Acry": 5,
-  "Adriagner": 4,
+  "Adriagner": 5,
   "Agre": 5,
   "Agus": 5,
   "Aktybo": 5,
@@ -385,7 +405,7 @@
   "BLITZ": 5,
   "BNA": 5,
   "BRAGEURITHER🇦🇪": 5,
-  "BTRX": 4,
+  "BTRX": 5,
   "Badterne": 4,
   "Baltrip": 5,
   "BastyRetro": 5,
@@ -429,7 +449,7 @@
   "ELSOLAR 🇨🇴": 5,
   "EMMY": 5,
   "ENEK 🇪🇸": 5,
-  "Eclipsito": 5,
+  "Eclipsito": 4,
   "Efimero": 5,
   "El Hombre Eyau": 5,
   "El Wachin": 5,
@@ -459,7 +479,7 @@
   "Galileo": 5,
   "Garxzii": 4,
   "Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷": 5,
-  "Geoka": 4,
+  "Geoka": 5,
   "Gian": 5,
   "Gocho": 5,
   "Gosu Z": 5,
@@ -524,7 +544,7 @@
   "Luffy": 5,
   "Luzzano": 5,
   "Lvel": 5,
-  "MATICERNA": 5,
+  "MATICERNA": 4,
   "MAU KC 🇨🇴": 5,
   "MAWS🇻🇪": 5,
   "MAXIMILIANO CALVO": 5,
@@ -560,7 +580,7 @@
   "Nairda": 5,
   "Neo": 5,
   "Nhp": 5,
-  "Noa": 5,
+  "Noa": 4,
   "Nobu": 5,
   "Noone": 5,
   "Nox": 5,
@@ -623,7 +643,7 @@
   "Sexo": 5,
   "Shadow": 5,
   "Shishui🇯🇵": 4,
-  "Shisui": 4,
+  "Shisui": 5,
   "Sin Limites": 5,
   "Six": 4,
   "Skratch": 5,
@@ -693,7 +713,7 @@
   "tormen": 5,
   "volk 🇨🇴": 5,
   "xz": 5,
-  "yinn": 5
+  "yinn": 4
  },
  "nombres": [
   "Primera",
@@ -733,6 +753,11 @@
   ],
   [
    "2026-09-21",
+   "Snow",
+   4
+  ],
+  [
+   "2026-09-21",
    "Colesito",
    4
   ],
@@ -748,22 +773,17 @@
   ],
   [
    "2026-09-21",
-   "Snow",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Geoka",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Masino",
+   "yinn",
    4
   ],
   [
    "2026-09-21",
    "Eze",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Masino",
    4
   ],
   [
@@ -863,12 +883,12 @@
   ],
   [
    "2026-09-21",
-   "JIMMY",
+   "MATICERNA",
    4
   ],
   [
    "2026-09-21",
-   "BTRX",
+   "JIMMY",
    4
   ],
   [
@@ -998,11 +1018,6 @@
   ],
   [
    "2026-09-28",
-   "Catarsis",
-   4
-  ],
-  [
-   "2026-09-28",
    "Number",
    4
   ],
@@ -1019,6 +1034,16 @@
   [
    "2026-09-28",
    "Alexi",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Eclipsito",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Catarsis",
    4
   ],
   [
@@ -1043,11 +1068,6 @@
   ],
   [
    "2026-09-28",
-   "Adriagner",
-   4
-  ],
-  [
-   "2026-09-28",
    "SGB",
    4
   ],
@@ -1063,12 +1083,12 @@
   ],
   [
    "2026-09-28",
-   "Freestyle4AllmyNiggaz 🌏🌏",
+   "Gwynyth",
    4
   ],
   [
    "2026-09-28",
-   "Gwynyth",
+   "Noa",
    4
   ],
   [
@@ -1083,12 +1103,12 @@
   ],
   [
    "2026-09-28",
-   "Pain 🇯🇵",
+   "Freestyle4AllmyNiggaz 🌏🌏",
    4
   ],
   [
    "2026-09-28",
-   "Shisui",
+   "Pain 🇯🇵",
    4
   ]
  ],
@@ -1103,7 +1123,6 @@
   "sem": "2026-09-28",
   "sube": [
    "Abyssus",
-   "Adriagner",
    "Alexi",
    "Ariaxer",
    "Badterne",
@@ -1113,6 +1132,7 @@
    "Cinexfilo",
    "Crk",
    "Drexx",
+   "Eclipsito",
    "Faso",
    "Freestyle4AllmyNiggaz 🌏🌏",
    "Garxzii",
@@ -1128,6 +1148,7 @@
    "MCO",
    "Motera",
    "NXUZ",
+   "Noa",
    "Noxvell",
    "Number",
    "Oasis",
@@ -1141,7 +1162,6 @@
    "SGB",
    "SOL🇵🇪",
    "Shishui🇯🇵",
-   "Shisui",
    "Sosa",
    "TøKīØ🦠🧠",
    "Zetryko",

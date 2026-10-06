@@ -46,9 +46,9 @@
     "base": 7250,
     "o": 18,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 8750
    },
    {
     "n": "Deuxs",

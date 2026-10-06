@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-06T17:26:41Z",
+ "cuando": "2026-10-06T17:58:06Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 193.9,
+ "dur_s": 277.7,
  "pasos": [
   {
    "n": "0b",
@@ -15,13 +15,13 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 34.3
+   "s": 36.9
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 34.1
+   "s": 61.0
   },
   {
    "n": "1a",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 23.1
+   "s": 26.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.8
+   "s": 3.2
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.1
+   "s": 7.7
   },
   {
    "n": "2b",
@@ -69,43 +69,43 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.4
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 1.3
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.1
+   "s": 2.4
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 29.0
+   "s": 78.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 28.2
+   "s": 32.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.3
+   "s": 12.1
   },
   {
    "n": "2e",
@@ -117,36 +117,30 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.3
+   "s": 9.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.5
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 8.5
+   "s": 2.6
   }
  ],
  "fallas": [],
- "decidir": 75,
+ "decidir": 80,
  "ultimo_evento": {
-  "n": "408",
-  "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
+  "n": "410",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
   "sv": "DDF",
-  "dia": "2026-10-05"
+  "dia": "2026-10-06"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-06T17:24:07Z",
+  "cuando": "2026-10-06T17:54:10Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 344,
-  "un_evento": 169,
-  "diez_o_mas": 18,
+  "jugadores": 348,
+  "un_evento": 172,
+  "diez_o_mas": 19,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -162,7 +156,7 @@
    },
    {
     "semana": "2026-10-05",
-    "nuevos": 19,
+    "nuevos": 23,
     "volvieron": 0,
     "completa": false
    }
@@ -170,20 +164,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 722,
-   "read": 38399
+   "write": 729,
+   "read": 39971
   },
   "objeto": {
-   "leidas": 750758,
-   "escritas": 12265,
-   "pedidos": 2549
+   "leidas": 777227,
+   "escritas": 12761,
+   "pedidos": 2635
   },
   "worker": {
-   "pedidos": 4479,
+   "pedidos": 4396,
    "errores": 1,
-   "sub": 4589,
-   "p50_ms": 1.15,
-   "p99_ms": 5.77
+   "sub": 4522,
+   "p50_ms": 1.14,
+   "p99_ms": 6.04
   },
   "r2": {
    "objetos": 3504,
