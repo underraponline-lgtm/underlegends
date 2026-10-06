@@ -414,7 +414,7 @@
   },
   "Drexx": {
    "servidor": "26fd0436d440:9d97339447c1:342af9",
-   "temporada": "96f2065f16a4:c2dd98b0f962"
+   "temporada": "d737b292b2ea:c2dd98b0f962"
   },
   "Dyminuto": {
    "servidor": "fd4581683589:9d97339447c1:15af16"
@@ -529,7 +529,7 @@
    "competitivo": "84bf1afd7ee2:66620bff5eb9",
    "pais": "a6f93a0ddc2f:dd0366c7fb5d",
    "servidor": "5f143f6bc763:9d97339447c1:baabdf",
-   "temporada": "be86f34d18da:c2dd98b0f962"
+   "temporada": "f7d9ca8caa40:c2dd98b0f962"
   },
   "FALON": {},
   "Faso": {
@@ -918,7 +918,7 @@
    "competitivo": "c7376c4bf79c:66620bff5eb9",
    "pais": "378289109d0c:dd0366c7fb5d",
    "servidor": "76da2ff82f66:9d97339447c1:19bb57",
-   "temporada": "2920c732442c:c2dd98b0f962"
+   "temporada": "39b272be31b4:c2dd98b0f962"
   },
   "Krtman": {
    "competitivo": "e857ce8f7bfc:66620bff5eb9",
@@ -1824,7 +1824,7 @@
    "competitivo": "0ad305eac62d:66620bff5eb9",
    "pais": "6008e34bad1c:dd0366c7fb5d",
    "servidor": "3555277489d0:9d97339447c1:3ce074",
-   "temporada": "4c1d80ecafd7:c2dd98b0f962"
+   "temporada": "8e1e9bde73e5:c2dd98b0f962"
   },
   "Vanet": {
    "servidor": "6c8ac408bbf5:9d97339447c1:055f77"
@@ -2086,5 +2086,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-06T20:19:12+00:00"
+ "cuando": "2026-10-06T20:30:33+00:00"
 }
