@@ -339,6 +339,9 @@
    "servidor": "0c3d015b082d:9d97339447c1:90d6e7",
    "temporada": "e918e7e3208f:c2dd98b0f962"
   },
+  "Dan": {
+   "servidor": "c1974374b3bc:9d97339447c1:980594"
+  },
   "Danixz": {
    "servidor": "994b927ba7b7:9d97339447c1:43d041"
   },
@@ -1789,10 +1792,10 @@
    "temporada": "63ed0bc1655a:c2dd98b0f962"
   },
   "TøKīØ🦠🧠": {
-   "competitivo": "96eaef54d355:66620bff5eb9",
+   "competitivo": "74de20b47228:66620bff5eb9",
    "pais": "46a9f75d3996:dd0366c7fb5d",
-   "servidor": "a48e6c9cefd4:9d97339447c1:531696",
-   "temporada": "753abccc77ea:c2dd98b0f962"
+   "servidor": "2dfb7d2f6316:9d97339447c1:531696",
+   "temporada": "b601e3e366ae:c2dd98b0f962"
   },
   "UDDIZIM": {
    "servidor": "52f8d539def0:9d97339447c1:a5e01f",
@@ -1960,10 +1963,10 @@
    "servidor": "95727acb7156:9d97339447c1:055f77"
   },
   "Zignos": {
-   "competitivo": "e6a136d18dd5:66620bff5eb9",
+   "competitivo": "2467701eab04:66620bff5eb9",
    "pais": "017f2484d1c8:dd0366c7fb5d",
    "servidor": "da54cc8562c2:9d97339447c1:3ce074",
-   "temporada": "9cf362e90c7d:c2dd98b0f962"
+   "temporada": "2c8fbb3db113:c2dd98b0f962"
   },
   "Zkalefa": {
    "servidor": "f7db99f48cc8:9d97339447c1:15af16"
@@ -2083,5 +2086,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-06T07:15:56+00:00"
+ "cuando": "2026-10-06T15:29:52+00:00"
 }
