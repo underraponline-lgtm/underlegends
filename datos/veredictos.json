@@ -942,6 +942,46 @@
    "b": "RIZAS",
    "ganador": "RIZAS",
    "votos": "1–0"
+  },
+  "1556879557976399913": {
+   "id": "1556879557976399913",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791259412045,
+   "a": "VELATZ SNOW",
+   "b": "LIAM",
+   "ganador": "VELATZ SNOW",
+   "votos": "1–0"
+  },
+  "1556880160714788926": {
+   "id": "1556880160714788926",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791259555749,
+   "a": "PICHULA",
+   "b": "RIZAS",
+   "ganador": "RIZAS",
+   "votos": "1–0"
+  },
+  "1556882044028456961": {
+   "id": "1556882044028456961",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791260004766,
+   "a": "VELATZ SNOW",
+   "b": "MOLUSCO",
+   "ganador": "VELATZ SNOW",
+   "votos": "1–0"
+  },
+  "1556883266550763541": {
+   "id": "1556883266550763541",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791260296238,
+   "a": "VELATZ SNOW",
+   "b": "RIZAS",
+   "ganador": "RIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2113,13 +2153,53 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791258149133,
-   "ed": 1791258286980,
-   "texto": "`[ CUARTOS ]`\n⌞RODA⌝ 🆚 ⌞RIZAS⌝",
+   "ed": 1791260308662,
+   "texto": "`[ CUARTOS ]`\n⌞RODA⌝ 🆚 ⌞RIZAS⌝\n⌞VELATZ SNOW⌝ 🆚 ⌞LIAM⌝\n`[ SEMIFINALES ]`\n⌞PICHULA⌝ 🆚 ⌞RIZAS⌝\n⌞VELATZ SNOW⌝ 🆚 ⌞MOLUSCO⌝\n⌞VELATZ SNOW⌝ 🆚 ⌞RIZAS⌝",
    "batallas": [
     [
      "CUARTOS",
      [
       "RODA",
+      "RIZAS"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VELATZ SNOW",
+      "LIAM"
+     ],
+     "VELATZ SNOW",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PICHULA",
+      "RIZAS"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "VELATZ SNOW",
+      "MOLUSCO"
+     ],
+     "VELATZ SNOW",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "VELATZ SNOW",
       "RIZAS"
      ],
      "RIZAS",

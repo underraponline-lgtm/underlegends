@@ -31,6 +31,11 @@
      1
     ],
     [
+     "Shisui",
+     39375,
+     2
+    ],
+    [
      "Benjixo",
      22500,
      1
@@ -119,11 +124,6 @@
   ],
   [
    [
-    [
-     "Shisui",
-     45000,
-     2
-    ],
     [
      "Vandu",
      39375,
@@ -250,6 +250,11 @@
      1
     ],
     [
+     "Andres",
+     3750,
+     1
+    ],
+    [
      "ALESS",
      1875,
      1
@@ -309,11 +314,6 @@
     [
      "V-zir 🇻🇪",
      5250,
-     1
-    ],
-    [
-     "Andres",
-     3750,
      1
     ],
     [
@@ -378,8 +378,9 @@
   "Alexi": 4,
   "Alonso": 5,
   "Andres": 5,
-  "Andy": 4,
+  "Andy": 5,
   "Ariaxer": 4,
+  "Assuan": 5,
   "BLANKO 🇺🇸": 5,
   "BLITZ": 5,
   "BNA": 5,
@@ -389,7 +390,6 @@
   "Baltrip": 5,
   "BastyRetro": 5,
   "Benjixo": 4,
-  "Benju": 5,
   "Benshi": 5,
   "Betelguese": 5,
   "Bloody": 4,
@@ -452,20 +452,20 @@
   "Fleivacheck": 5,
   "Focox": 5,
   "Fol": 5,
-  "Freestyle4AllmyNiggaz 🌏🌏": 5,
+  "Freestyle4AllmyNiggaz 🌏🌏": 4,
   "G-MC": 5,
   "GP": 5,
   "GS🇦🇷": 5,
   "Galileo": 5,
   "Garxzii": 4,
   "Garxziiscity 🇦🇿🇲🇽 🇻🇪🇦🇷": 5,
-  "Geoka": 5,
+  "Geoka": 4,
   "Gian": 5,
   "Gocho": 5,
   "Gosu Z": 5,
   "Guess": 5,
   "Gus": 5,
-  "Gwynyth": 5,
+  "Gwynyth": 4,
   "Hassan": 3,
   "Heat": 5,
   "Humildad": 5,
@@ -516,6 +516,7 @@
   "Leonart": 5,
   "Leyenda": 5,
   "Lhyon": 5,
+  "Liam🇺🇾": 5,
   "Liberia": 4,
   "Lilñaño": 5,
   "Lizeninn": 5,
@@ -577,6 +578,7 @@
   "PLA PLA": 5,
   "PRAISERIZA": 4,
   "PUBLIC ENEMY": 5,
+  "Pain 🇯🇵": 4,
   "Panchok": 3,
   "Paria": 5,
   "Partim": 5,
@@ -608,7 +610,7 @@
   "SGB": 4,
   "SHULIOT": 5,
   "SMAFF": 5,
-  "SOL🇵🇪": 5,
+  "SOL🇵🇪": 4,
   "SONIC_DORADITO": 5,
   "SUDAKA🇦🇷": 5,
   "Saiko": 5,
@@ -621,6 +623,7 @@
   "Sexo": 5,
   "Shadow": 5,
   "Shishui🇯🇵": 4,
+  "Shisui": 4,
   "Sin Limites": 5,
   "Six": 4,
   "Skratch": 5,
@@ -685,7 +688,6 @@
   "melztube": 5,
   "papa": 5,
   "rayito": 5,
-  "tam🇧🇫baggio🇮🇹": 4,
   "tito calderon": 5,
   "tkl": 5,
   "tormen": 5,
@@ -871,12 +873,12 @@
   ],
   [
    "2026-09-28",
-   "Hassan",
+   "PichulaMc",
    3
   ],
   [
    "2026-09-28",
-   "PichulaMc",
+   "Hassan",
    3
   ],
   [
@@ -946,12 +948,12 @@
   ],
   [
    "2026-09-28",
-   "MCO",
+   "Lord Viruzz",
    4
   ],
   [
    "2026-09-28",
-   "Lord Viruzz",
+   "MCO",
    4
   ],
   [
@@ -1051,7 +1053,22 @@
   ],
   [
    "2026-09-28",
-   "tam🇧🇫baggio🇮🇹",
+   "Tokio",
+   4
+  ],
+  [
+   "2026-09-28",
+   "SOL🇵🇪",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Freestyle4AllmyNiggaz 🌏🌏",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Gwynyth",
    4
   ],
   [
@@ -1066,15 +1083,20 @@
   ],
   [
    "2026-09-28",
-   "Tokio",
+   "Pain 🇯🇵",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Shisui",
    4
   ]
  ],
  "ult": {
   "baja": [
+   "Andy",
    "Cronox",
    "Eze",
-   "Geoka",
    "Masino",
    "Tuca"
   ],
@@ -1093,7 +1115,9 @@
    "Drexx",
    "Eclipsito",
    "Faso",
+   "Freestyle4AllmyNiggaz 🌏🌏",
    "Garxzii",
+   "Gwynyth",
    "Hassan",
    "Juanpa",
    "Juasmio",
@@ -1109,17 +1133,19 @@
    "Number",
    "Oasis",
    "PRAISERIZA",
+   "Pain 🇯🇵",
    "Panchok",
    "PichulaMc",
    "ReyexXMC",
    "Riferian",
    "Riolu",
    "SGB",
+   "SOL🇵🇪",
    "Shishui🇯🇵",
+   "Shisui",
    "Sosa",
    "Tokio",
-   "melomaniaco",
-   "tam🇧🇫baggio🇮🇹"
+   "melomaniaco"
   ]
  },
  "zona": 5

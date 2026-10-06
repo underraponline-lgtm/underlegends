@@ -259,7 +259,7 @@
     "ovr": 54,
     "pod": 2,
     "pts": 4995,
-    "racha": "0/2"
+    "racha": "3/3"
    }
   },
   "Alonso": {
@@ -311,6 +311,15 @@
     "pod": 1,
     "pts": 7500,
     "racha": "1/1"
+   },
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 344,
+    "racha": "0/0"
    }
   },
   "Ariaxer": {
@@ -331,6 +340,17 @@
     "pod": 1,
     "pts": 8063,
     "racha": "0/1"
+   }
+  },
+  "Assuan": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 688,
+    "racha": "0/0"
    }
   },
   "BLANKO 🇺🇸": {
@@ -457,17 +477,6 @@
     "pod": 0,
     "pts": 7700,
     "racha": "0/0"
-   }
-  },
-  "Benju": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 2062,
-    "racha": "1/1"
    }
   },
   "Benshi": {
@@ -1601,12 +1610,12 @@
   "Hassan": {
    "FFA": {
     "duelos": "16/18",
-    "ev": 11,
+    "ev": 10,
     "oro": 6,
-    "ovr": 80,
-    "pod": 9,
-    "pts": 54203,
-    "racha": "5/5"
+    "ovr": 79,
+    "pod": 8,
+    "pts": 52141,
+    "racha": "4/5"
    },
    "SR": {
     "duelos": "3/4",
@@ -2050,11 +2059,11 @@
   "Korey": {
    "FFA": {
     "duelos": "",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 0,
-    "pts": 6204,
+    "pts": 6892,
     "racha": "0/0"
    },
    "URBF": {
@@ -2341,6 +2350,17 @@
     "racha": "0/0"
    }
   },
+  "Liam🇺🇾": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 1375,
+    "racha": "0/0"
+   }
+  },
   "Liberia": {
    "FFA": {
     "duelos": "5/7",
@@ -2413,11 +2433,11 @@
    },
    "FFA": {
     "duelos": "2/4",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 55,
+    "ovr": 56,
     "pod": 0,
-    "pts": 7121,
+    "pts": 7809,
     "racha": "0/1"
    },
    "URBF": {
@@ -2874,11 +2894,11 @@
    },
    "FFA": {
     "duelos": "5/8",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 61,
+    "ovr": 62,
     "pod": 0,
-    "pts": 21301,
+    "pts": 24189,
     "racha": "0/2"
    }
   },
@@ -3029,7 +3049,7 @@
     "ovr": 57,
     "pod": 0,
     "pts": 14569,
-    "racha": "1/1"
+    "racha": "3/3"
    }
   },
   "Noa": {
@@ -3264,13 +3284,13 @@
   },
   "PRAISERIZA": {
    "FFA": {
-    "duelos": "10/11",
-    "ev": 6,
-    "oro": 5,
-    "ovr": 74,
-    "pod": 6,
-    "pts": 38375,
-    "racha": "6/6"
+    "duelos": "12/13",
+    "ev": 7,
+    "oro": 6,
+    "ovr": 77,
+    "pod": 7,
+    "pts": 43875,
+    "racha": "7/7"
    }
   },
   "PUBLIC ENEMY": {
@@ -3282,6 +3302,17 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   }
+  },
+  "Pain 🇯🇵": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 48,
+    "pod": 1,
+    "pts": 2062,
+    "racha": "1/1"
    }
   },
   "Panchok": {
@@ -3366,13 +3397,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "5/13",
-    "ev": 16,
+    "duelos": "5/14",
+    "ev": 17,
     "oro": 1,
-    "ovr": 72,
+    "ovr": 73,
     "pod": 4,
-    "pts": 38118,
-    "racha": "0/1"
+    "pts": 41006,
+    "racha": "1/1"
    },
    "URBF": {
     "duelos": "5/6",
@@ -3679,6 +3710,15 @@
    }
   },
   "Rodas": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 1375,
+    "racha": "0/0"
+   },
    "SR": {
     "duelos": "",
     "ev": 1,
@@ -3966,12 +4006,12 @@
   "Shisui": {
    "FFA": {
     "duelos": "3/4",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 68,
-    "pod": 2,
-    "pts": 45000,
-    "racha": "2/2"
+    "ovr": 70,
+    "pod": 3,
+    "pts": 41437,
+    "racha": "3/3"
    }
   },
   "Sin Limites": {
@@ -4031,7 +4071,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 4091,
-    "racha": "0/0"
+    "racha": "1/1"
    }
   },
   "Slasher": {
@@ -4325,11 +4365,11 @@
   "Tusicario": {
    "FFA": {
     "duelos": "0/2",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 0,
-    "pts": 7454,
+    "pts": 8142,
     "racha": "0/0"
    },
    "URBF": {
@@ -4923,17 +4963,6 @@
     "pod": 0,
     "pts": 2000,
     "racha": "0/0"
-   }
-  },
-  "tam🇧🇫baggio🇮🇹": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 50,
-    "pod": 1,
-    "pts": 5500,
-    "racha": "1/1"
    }
   },
   "tito calderon": {

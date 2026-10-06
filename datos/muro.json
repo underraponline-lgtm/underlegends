@@ -8,6 +8,13 @@
 "temporada"
 ]
 },
+"praiseriza": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "oasis": {
 "rg": "S",
 "c": [
@@ -27,13 +34,6 @@
 "rg": "B",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"praiseriza": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -127,6 +127,10 @@
 "temporada"
 ]
 },
+"shisui": {
+"rg": "",
+"c": []
+},
 "carlosss": {
 "rg": "",
 "c": [
@@ -140,10 +144,6 @@
 "servidor",
 "temporada"
 ]
-},
-"shisui": {
-"rg": "",
-"c": []
 },
 "zignos": {
 "rg": "",
@@ -289,6 +289,13 @@
 "temporada"
 ]
 },
+"molusco": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "catarsis": {
 "rg": "",
 "c": [
@@ -304,13 +311,6 @@
 ]
 },
 "badterne": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"molusco": {
 "rg": "",
 "c": [
 "servidor",
@@ -429,10 +429,6 @@
 "temporada"
 ]
 },
-"tambaggio": {
-"rg": "",
-"c": []
-},
 "soneto": {
 "rg": "",
 "c": [
@@ -483,6 +479,13 @@
 "temporada"
 ]
 },
+"andy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "reyexxmc": {
 "rg": "",
 "c": [
@@ -519,13 +522,6 @@
 ]
 },
 "sgb": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"andy": {
 "rg": "",
 "c": [
 "servidor",
@@ -734,6 +730,20 @@
 "temporada"
 ]
 },
+"tusicario": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"korey": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "delux": {
 "rg": "",
 "c": [
@@ -762,20 +772,6 @@
 ]
 },
 "dominick": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"tusicario": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"korey": {
 "rg": "",
 "c": [
 "servidor",
@@ -1257,12 +1253,9 @@
 "temporada"
 ]
 },
-"benju": {
+"pain": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "aktybo": {
 "rg": "",
@@ -1344,16 +1337,27 @@
 "temporada"
 ]
 },
-"mailen": {
-"rg": "",
-"c": []
-},
 "jeixder": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"tambaggio": {
+"rg": "",
+"c": []
+},
+"benju": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mailen": {
+"rg": "",
+"c": []
 },
 "lilnano": {
 "rg": "",

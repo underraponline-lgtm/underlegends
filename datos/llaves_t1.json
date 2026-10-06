@@ -11108,6 +11108,61 @@
     "b": [
      [
       [
+       "Shisui, Pain 🇯🇵",
+       "Lord Viruzz"
+      ],
+      "Shisui, Pain 🇯🇵",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Assuan",
+       "Tam"
+      ],
+      "PichulaMc",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Rodas",
+       "Tusicario",
+       "Korey"
+      ],
+      "Rodas",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Molusco",
+       "Andy, Provenza"
+      ],
+      "Molusco",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Rodas"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Shisui, Pain 🇯🇵",
+       "Liam🇺🇾"
+      ],
+      "Shisui, Pain 🇯🇵",
+      ""
+     ],
+     [
+      [
        "Provenza",
        "Focox",
        "Crk"
@@ -11141,12 +11196,36 @@
       ],
       "Skratch",
       "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Zignos",
+       "six"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
    },
    {
     "b": [
+     [
+      [
+       "PRAISERIZA",
+       "PichulaMc"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Shisui, Pain 🇯🇵",
+       "Molusco"
+      ],
+      "Shisui, Pain 🇯🇵",
+      ""
+     ],
      [
       [
        "Hassan, Benju",
@@ -11170,6 +11249,14 @@
     "b": [
      [
       [
+       "PRAISERIZA",
+       "Shisui, Pain 🇯🇵"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
        "tam🇧🇫baggio🇮🇹",
        "Hassan, Benju"
       ],
@@ -11183,17 +11270,27 @@
   "sv": "FFA",
   "tabla": [
    [
-    "tam🇧🇫baggio🇮🇹",
+    "PRAISERIZA",
     "Campeón",
     10000
    ],
    [
-    "Benju",
+    "Molusco",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Pain 🇯🇵",
     "Subcampeón",
     3750
    ],
    [
-    "Hassan",
+    "Shisui",
     "Subcampeón",
     3750
    ],
@@ -11238,12 +11335,22 @@
     2500
    ],
    [
+    "Liam🇺🇾",
+    "Cuartos",
+    2500
+   ],
+   [
     "MZK",
     "Cuartos",
     2500
    ],
    [
     "Oni 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Rodas",
     "Cuartos",
     2500
    ],
@@ -11256,6 +11363,31 @@
     "benjadsantis🇦🇷",
     "Cuartos",
     2500
+   ],
+   [
+    "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Korey",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tusicario",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andy",
+    "Octavos",
+    625
    ]
   ]
  },
