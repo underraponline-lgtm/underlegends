@@ -335,9 +335,8 @@
 ]
 },
 "lordviruzz": {
-"rg": "D",
+"rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -4641,23 +4640,6 @@
 "t": "2026-10-07T04:27:16Z",
 "quien": [
 "Sosa"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "rango",
-"t": "2026-10-07T04:57:22Z",
-"quien": [
-"Lord Viruzz"
-],
-"rg": "D",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T04:57:22Z",
-"quien": [
-"Lord Viruzz"
 ],
 "carta": "competitivo"
 }
