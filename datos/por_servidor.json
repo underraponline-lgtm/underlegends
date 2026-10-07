@@ -244,13 +244,13 @@
   },
   "Agus": {
    "FFA": {
-    "duelos": "",
-    "ev": 2,
+    "duelos": "1/2",
+    "ev": 3,
     "oro": 0,
-    "ovr": 51,
-    "pod": 1,
-    "pts": 8750,
-    "racha": "0/1"
+    "ovr": 61,
+    "pod": 2,
+    "pts": 23750,
+    "racha": "1/1"
    },
    "SR": {
     "duelos": "",
@@ -1311,10 +1311,10 @@
   },
   "EmiZor": {
    "FFA": {
-    "duelos": "",
-    "ev": 2,
+    "duelos": "0/1",
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
     "pts": 1719,
     "racha": "0/0"
@@ -2266,8 +2266,8 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "0/1",
-    "ev": 3,
+    "duelos": "0/2",
+    "ev": 4,
     "oro": 0,
     "ovr": 49,
     "pod": 0,
@@ -2538,13 +2538,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "5/7",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 59,
-    "pod": 2,
-    "pts": 11625,
-    "racha": "2/2"
+    "duelos": "8/10",
+    "ev": 3,
+    "oro": 1,
+    "ovr": 66,
+    "pod": 3,
+    "pts": 34125,
+    "racha": "3/3"
    },
    "SR": {
     "duelos": "4/4",
@@ -2669,12 +2669,12 @@
   },
   "MATICERNA": {
    "FFA": {
-    "duelos": "1/3",
-    "ev": 2,
+    "duelos": "2/5",
+    "ev": 3,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 54,
     "pod": 0,
-    "pts": 8250,
+    "pts": 14250,
     "racha": "0/1"
    }
   },
@@ -2795,10 +2795,10 @@
   },
   "MHS": {
    "FFA": {
-    "duelos": "0/1",
-    "ev": 2,
+    "duelos": "0/2",
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
     "pts": 1656,
     "racha": "0/0"
@@ -2904,8 +2904,8 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "3/5",
-    "ev": 5,
+    "duelos": "3/6",
+    "ev": 6,
     "oro": 1,
     "ovr": 62,
     "pod": 1,
@@ -2924,13 +2924,13 @@
   },
   "Makmah": {
    "FFA": {
-    "duelos": "9/19",
-    "ev": 19,
+    "duelos": "10/21",
+    "ev": 20,
     "oro": 1,
-    "ovr": 74,
+    "ovr": 75,
     "pod": 6,
-    "pts": 58551,
-    "racha": "1/3"
+    "pts": 69051,
+    "racha": "2/3"
    },
    "SR": {
     "duelos": "",
@@ -3791,8 +3791,8 @@
     "racha": "0/1"
    },
    "FFA": {
-    "duelos": "",
-    "ev": 2,
+    "duelos": "0/1",
+    "ev": 3,
     "oro": 0,
     "ovr": 49,
     "pod": 0,
@@ -4295,10 +4295,10 @@
   },
   "Soneto": {
    "FFA": {
-    "duelos": "3/9",
+    "duelos": "4/10",
     "ev": 8,
     "oro": 0,
-    "ovr": 57,
+    "ovr": 58,
     "pod": 0,
     "pts": 17659,
     "racha": "0/1"
@@ -4528,10 +4528,10 @@
     "racha": "1/1"
    },
    "FFA": {
-    "duelos": "",
+    "duelos": "1/1",
     "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 55,
     "pod": 0,
     "pts": 1479,
     "racha": "0/0"
@@ -4634,13 +4634,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "3/6",
-    "ev": 13,
+    "duelos": "5/9",
+    "ev": 14,
     "oro": 0,
-    "ovr": 69,
+    "ovr": 71,
     "pod": 1,
-    "pts": 60977,
-    "racha": "0/1"
+    "pts": 71477,
+    "racha": "1/1"
    }
   },
   "Velatz": {
@@ -5139,6 +5139,17 @@
     "ovr": 44,
     "pod": 0,
     "pts": 625,
+    "racha": "0/0"
+   }
+  },
+  "malvinitas": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    }
   },

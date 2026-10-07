@@ -14439,5 +14439,186 @@
     2000
    ]
   ]
+ },
+ "422": {
+  "dia": "2026-10-07",
+  "escala": "8-15",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557458267540819990"
+  ],
+  "n": 422,
+  "nombre": "WETTSIDDEE 2",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MATICERNA",
+       "malvinitas"
+      ],
+      "MATICERNA",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "RT"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "MHS"
+      ],
+      "Tuca",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "EmiZor"
+      ],
+      "Liberia",
+      "ganador según #veredictos"
+     ],
+     [
+      [
+       "Soneto",
+       "Krish"
+      ],
+      "Soneto",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Majiztral"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vandu",
+       "MATICERNA"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Tuca 🇦🇷",
+       "malasia + soneto",
+       "makma + agus",
+       "Nc"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Vandu"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Makmah"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Agus"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MATICERNA",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    0
+   ],
+   [
+    "Krish",
+    "Octavos",
+    0
+   ],
+   [
+    "MHS",
+    "Octavos",
+    0
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    0
+   ],
+   [
+    "RT",
+    "Octavos",
+    0
+   ],
+   [
+    "malvinitas",
+    "Octavos",
+    0
+   ]
+  ]
  }
 }

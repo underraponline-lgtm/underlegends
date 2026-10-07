@@ -64,6 +64,14 @@
 "temporada"
 ]
 },
+"liberia": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "makmah": {
 "rg": "C",
 "c": [
@@ -80,10 +88,10 @@
 "temporada"
 ]
 },
-"liberia": {
-"rg": "",
+"vandu": {
+"rg": "E",
 "c": [
-"pais",
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -128,14 +136,6 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "zignos": {
 "rg": "B",
 "c": [
@@ -174,8 +174,9 @@
 ]
 },
 "majiztral": {
-"rg": "",
+"rg": "C",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -325,6 +326,13 @@
 "temporada"
 ]
 },
+"agus": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "joshu": {
 "rg": "",
 "c": []
@@ -422,6 +430,13 @@
 "temporada"
 ]
 },
+"soneto": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "cinexfilo": {
 "rg": "",
 "c": [
@@ -465,13 +480,6 @@
 ]
 },
 "walker": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"soneto": {
 "rg": "",
 "c": [
 "servidor",
@@ -647,6 +655,13 @@
 "temporada"
 ]
 },
+"maticerna": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "neo": {
 "rg": "",
 "c": [
@@ -798,14 +813,14 @@
 "temporada"
 ]
 },
-"scot": {
+"krish": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"agus": {
+"scot": {
 "rg": "",
 "c": [
 "servidor",
@@ -859,13 +874,6 @@
 "temporada"
 ]
 },
-"krish": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "dominick": {
 "rg": "",
 "c": [
@@ -874,13 +882,6 @@
 ]
 },
 "elsoolar": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"maticerna": {
 "rg": "",
 "c": [
 "servidor",
@@ -4709,6 +4710,23 @@
 "Cronox"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-10-07T19:57:42Z",
+"quien": [
+"Majiztral"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T19:57:42Z",
+"quien": [
+"Majiztral"
+],
+"carta": "competitivo"
 }
 ]
 }

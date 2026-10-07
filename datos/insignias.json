@@ -1863,6 +1863,10 @@
 "figura": [
 "2026-10-05T15:27:42Z",
 "prueba"
+],
+"tricampeon": [
+"2026-10-07T19:55:38Z",
+"prueba"
 ]
 },
 "Lilñaño": {
@@ -2075,6 +2079,10 @@
 "trotamundos": [
 "2026-10-04T21:25:29Z",
 "prueba"
+],
+"ev10": [
+"2026-10-07T19:55:38Z",
+"prueba"
 ]
 },
 "Makmah": {
@@ -2104,6 +2112,10 @@
 ],
 "ascenso": [
 "2026-10-04T20:56:40Z",
+"prueba"
+],
+"duelista": [
+"2026-10-07T19:55:38Z",
 "prueba"
 ]
 },
@@ -3890,6 +3902,12 @@
 "maldita enfermedad": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+]
+},
+"malvinitas": {
+"debut": [
+"2026-10-07T19:55:38Z",
 "prueba"
 ]
 },

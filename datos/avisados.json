@@ -290,5 +290,192 @@
  "421": {
   "firma": "MAÑANA DE LLUVIA VOL 1|07/10|7|8|1|0",
   "msg": "1557420767723921451"
+ },
+ "422": {
+  "antes": {
+   "Agus": [
+    75,
+    115,
+    false
+   ],
+   "EmiZor": [
+    124,
+    253,
+    false
+   ],
+   "Krish": [
+    80,
+    123,
+    false
+   ],
+   "Liberia": [
+    9,
+    11,
+    false
+   ],
+   "MATICERNA": [
+    190,
+    126,
+    true
+   ],
+   "MHS": [
+    198,
+    137,
+    true
+   ],
+   "Majiztral": [
+    18,
+    23,
+    false
+   ],
+   "Makmah": [
+    7,
+    9,
+    false
+   ],
+   "RT": [
+    36,
+    52,
+    false
+   ],
+   "Vandu": [
+    14,
+    17,
+    false
+   ]
+  },
+  "duelos": [
+   [
+    "MATICERNA",
+    "malvinitas",
+    "MATICERNA"
+   ],
+   [
+    "Vandu",
+    "RT",
+    "Vandu"
+   ],
+   [
+    "Tuca",
+    "MHS",
+    "Tuca"
+   ],
+   [
+    "Liberia",
+    "EmiZor",
+    "Liberia"
+   ],
+   [
+    "Soneto",
+    "Krish",
+    "Soneto"
+   ],
+   [
+    "Makmah",
+    "Majiztral",
+    "Makmah"
+   ],
+   [
+    "Vandu",
+    "MATICERNA",
+    "Vandu"
+   ],
+   [
+    "Liberia",
+    "Vandu",
+    "Liberia"
+   ],
+   [
+    "Agus",
+    "Makmah",
+    "Agus"
+   ],
+   [
+    "Liberia",
+    "Agus",
+    "Liberia"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 3,
+   "EmiZor": 2,
+   "Krish": 5,
+   "Liberia": 5,
+   "MATICERNA": 2,
+   "MHS": 4,
+   "Majiztral": 9,
+   "Makmah": 21,
+   "RT": 4,
+   "Vandu": 14
+  },
+  "fecha": "07/10",
+  "firma": "4e8823ed5eb152a9",
+  "msg": "1557481124282892360",
+  "nombre": "WETTSIDDEE 2",
+  "num": 422,
+  "participantes": 15,
+  "sello": {
+   "Liberia": "d0c9e1dc717d:c2dd98b0f962"
+  },
+  "sv": "FFA",
+  "t": "2026-10-07T19:53:56Z",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MATICERNA",
+    "Cuartos",
+    2000
+   ],
+   [
+    "malvinitas",
+    "Octavos",
+    0
+   ],
+   [
+    "RT",
+    "Octavos",
+    0
+   ],
+   [
+    "MHS",
+    "Octavos",
+    0
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    0
+   ],
+   [
+    "Krish",
+    "Octavos",
+    0
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    0
+   ]
+  ],
+  "v": 2
  }
 }
