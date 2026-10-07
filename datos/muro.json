@@ -1047,7 +1047,8 @@
 "prodigy": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "selek": {
@@ -4686,6 +4687,14 @@
 "Lord Viruzz"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T06:58:07Z",
+"quien": [
+"Prodigy"
+],
+"carta": "temporada"
 }
 ]
 }
