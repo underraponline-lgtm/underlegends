@@ -1090,12 +1090,18 @@ def _sin_relativos(o):
 
 
 def puede_esperar(key, arriba, nuevo):
-    """¿Este cambio puede esperar a la hora tranquila? No: `meta` y lo de quien jugó (cualquier cambio que no sea sólo
-    de `RELATIVOS`). Sí: lo que cambió sólo porque jugó otro, la gente nueva (`arriba` vacío) y los índices por
-    Discord ID (`d:`, `dn:`, `dx:`), que no cambian lo que se ve de nadie que jugó."""
-    if key == 'meta':
+    """¿Este cambio puede esperar a la hora tranquila? No: `meta`, lo de quien jugó (cualquier cambio que no sea sólo
+    de `RELATIVOS`) y los índices por Discord ID (`d:`, `dn:`, `dx:`). Sí: lo que cambió sólo porque jugó otro y la
+    gente nueva (`arriba` vacío) — las dos, sólo de `p:`, que va a KV únicamente si el objeto no la tomó.
+
+    🔴 LOS ÍNDICES ESPERABAN, Y QUIEN SE VERIFICABA A LA NOCHE NO TENÍA /card HASTA LAS 11 AM (06/10/2026). Velatz
+    recibió Miembro de DRA en la corrida de las 8:52 PM y su `d:` quedó «para la hora tranquila» con otros 22: /card y
+    la página lo seguían tratando como no verificado (`dn:`, cuidado por `protegidas()`). Esperaban para cuidar el cupo
+    cuando las `p:` de todos estaban en KV; desde que viven en el objeto, en KV quedan los índices y `meta`, unas
+    decenas de cambios por día, y el que espera es justo el que hace que /card encuentre a alguien."""
+    if key == 'meta' or not key.startswith('p:'):
         return False
-    if arriba is None or not key.startswith('p:'):
+    if arriba is None:
         return True
     try:
         return _sin_relativos(json.loads(arriba)) == _sin_relativos(json.loads(nuevo))
@@ -1511,8 +1517,10 @@ def _self_check():
     J = lambda o: json.dumps(o)  # noqa: E731
     ok(puede_esperar('p:ana', J(viejo), J(corrido)), 'sólo se le movieron el puesto y el OVR porque jugó otro: espera')
     ok(not puede_esperar('p:ana', J(viejo), J(jugo)), 'jugó (más eventos y puntos): va al instante')
-    ok(puede_esperar('p:nuevo', None, J(viejo)) and puede_esperar('d:123', 'ana', 'ana2'),
-       'la gente nueva y los índices por Discord ID esperan')
+    ok(puede_esperar('p:nuevo', None, J(viejo)), 'la gente nueva espera (su `p:`, si el objeto no la tomó)')
+    ok(not puede_esperar('d:123', None, 'ana') and not puede_esperar('d:123', 'ana', 'ana2')
+       and not puede_esperar('dn:123', None, 'ana'),
+       'los índices por Discord ID no esperan: el `d:` de quien se acaba de verificar es su /card')
     ok(not puede_esperar('meta', '{}', '{"sello": 1}'), '`meta` nunca espera')
     pares = [{'key': 'meta', 'value': '{}'}] + [{'key': 'p:j%d' % i, 'value': '{}'} for i in range(5)] \
         + [{'key': 'p:e%d' % i, 'value': '{}'} for i in range(700)]

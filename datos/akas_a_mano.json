@@ -114,7 +114,12 @@
   "   nombre artístico»). Y no es sólo su palabra: la cuenta de Velatz en la Lista (1426686911908675628,",
   "   @funhorlavild) se anotó como «Velatz» hasta el 03/10 y como «Shishui 🇯🇵» y «Shisui 🇯🇵» desde el",
   "   04/10, y el organizador de la PRITTY FREE etiquetó esa misma cuenta como «shisui». «SHUSUI🇯🇵» es",
-  "   la VOL 25 (#413) del día en que se anotó como «Shisui 🇯🇵». Ningún evento tiene a los dos."
+  "   la VOL 25 (#413) del día en que se anotó como «Shisui 🇯🇵». Ningún evento tiene a los dos.",
+  "   Y buscando el mismo error en toda la Liga (Dlx: «revisa que otros usuarios no tengan ese error», 06/10),",
+  "   tres más con la misma prueba —su propia cuenta de la Lista se anotó SOLA con el otro nombre, ninguna otra",
+  "   cuenta lo usó y nunca jugaron el mismo evento—: «Kude» es Mr.Kude (@mr.kude, 6 inscripciones como «Kude 🇦🇷»",
+  "   en ACAD), «NAKAMURA» es Hassan (la cuenta de PRRR, con su misma bandera 🇦🇴, en VALHALLA) y «Nhp» es",
+  "   Andres (@andresnhp, que se anota como «andres 🇨🇱» y como «nhp 🇨🇱»)."
  ],
  "cuentas": {
   "Monet": [
@@ -241,6 +246,18 @@
   [
    "SHUSUI",
    "Velatz"
+  ],
+  [
+   "Kude",
+   "Mr.Kude"
+  ],
+  [
+   "NAKAMURA",
+   "Hassan"
+  ],
+  [
+   "Nhp",
+   "Andres"
   ]
  ],
  "no_confundir": [
