@@ -1040,6 +1040,184 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
     return {p['id'] for p, _r in hechas}
 
 
+# ── 👥 una cuenta, dos nombres ──────────────────────────────────────────
+
+#: la pregunta de `una_cuenta_dos_nombres()` (tipo `Alias posible`): el detalle se vuelve a leer con esto
+_DOS_RE = re.compile(r'^DOS NOMBRES: «(.+?)» → «(.+?)» · cuenta (\d+)')
+DOS_ORIGEN = 'el ciclo · una cuenta, dos nombres'
+#: cuántas pruebas firmadas por Discord (inscripciones de su cuenta, menciones del organizador) para hacerlo solo
+DOS_PRUEBAS = 2
+#: cuánto hace sola una corrida de cada cosa: lo que pasa de esto se pregunta
+TOPE_DOS = 10
+
+
+#: un nombre de equipo: «Crack and Krank», «Ana y Bea», «Ana & Bea». Nunca se une ni se engancha solo
+_EQUIPO_RE = re.compile(r'(?i)\s(?:and|y|&|\+|x|vs\.?)\s')
+
+
+def _se_parecen(a, b):
+    """¿Un nombre contiene al otro, o se parecen mucho? «Emi» y «EmiZor» sí; «Steven» y «Player» no."""
+    a, b = norm(_sin_bandera(a)), norm(_sin_bandera(b))
+    return bool(a and b and (a in b or b in a or difflib.SequenceMatcher(None, a, b).ratio() >= 0.6))
+
+
+def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
+                son_distintos=lambda a, b: False, fuera=(), cc_de=None, en_la_liga=lambda did: True):
+    """👥 UNA CUENTA, DOS NOMBRES: `{'unir': […], 'enganchar': […], 'preguntar': […]}`. Pura.
+
+    🔑 Dlx, 06/10/2026, después de Velatz y Shisui (*«revisa que otros usuarios no tengan ese error»*), a «¿querés
+    que el ciclo lo haga solo?»: *«sí»*. El bot ya sabía de quién es cada inscripción, pero a una cuenta que se anota
+    con dos nombres distintos la daba por alguien que anota a otros (`indice_inscritos()`) y no unía ninguno, y una
+    fila de la Lista sin cuenta («Shisui», «Kude») juntaba puntos sin que nadie preguntara. Velatz figuraba #12 y
+    era #3.
+
+    Las pruebas son las que firma Discord: la cuenta que escribió una inscripción de UN nombre —sin nota entre
+    paréntesis: «Jr (me pidió que lo inscriba)» es para otro— y la que el organizador etiquetó con ese nombre.
+
+    - **unir** (`[alias, real]` a la hoja AKAs): la cuenta tiene su fila en la Lista y juega con otro nombre que
+      suma aparte, con `DOS_PRUEBAS` o más; ninguna otra cuenta usó ese nombre, nunca jugaron el mismo evento, no
+      están marcados distintos, y además la cuenta juega con su nombre o ése es el único otro que usa: la que no
+      juega y anota a varios es la de un organizador.
+    - **enganchar** (su cuenta a esa fila, o una fila nueva): la cuenta no está en la Lista y ése es el único nombre
+      con puntos que usa, con `DOS_PRUEBAS` o más. Como RT, SOL y Alonso (Dlx, 06/10: «1. A»).
+    - **preguntar** («¿es la misma persona?» en ✅ Decidir): lo que sería unir con menos pruebas o con la cuenta de
+      un organizador. Con UNA sola prueba, sólo si los nombres se parecen («Emi» y «EmiZor»): una inscripción suelta
+      con otro nombre es casi siempre alguien anotando a un amigo, como Player a Steven.
+
+    ⚠️ UN NOMBRE DE EQUIPO SE PREGUNTA SIEMPRE (`_EQUIPO_RE`). Medido en seco antes de prenderlo: la cuenta de Pcyka
+    se anota como «CyK» y en el ranking hay un «Crack and Krank» con puntos —un dúo que la llave no separó—. Unirlo
+    le daba a una persona los puntos de dos.
+    ⚠️ Y LA CUENTA QUE SE ENGANCHA TIENE QUE ESTAR EN LA LIGA (`en_la_liga`), como en `por_discord()`.
+    """
+    cc_de = cc_de or {}
+    fila_de = collections.defaultdict(set)        # cuenta -> nombres reales de su fila
+    cuenta_de, como_figura, sin_cuenta = {}, {}, set()
+    for r in lista or ():
+        k = real_de(r.get('raw') or r.get('full') or '')
+        if not k:
+            continue
+        como_figura.setdefault(k, r.get('raw') or r.get('full'))
+        did = str(r.get('discord_id') or '').strip()
+        if did:
+            fila_de[did].add(k)
+            cuenta_de.setdefault(k, did)
+        else:
+            sin_cuenta.add(k)
+    sin_cuenta -= set(cuenta_de)
+    pruebas = collections.defaultdict(lambda: collections.defaultdict(set))   # cuenta -> nombre -> {prueba}
+    banderas = collections.defaultdict(set)                                   # (cuenta, nombre) -> {iso}
+    usado = collections.defaultdict(set)                                      # nombre -> {cuentas}
+    for i, x in enumerate(inscripciones or ()):
+        did, t = str(x.get('discord_id') or ''), str(x.get('texto') or '')
+        if not did.isdigit() or '(' in t:
+            continue
+        ns = _nombres_insc(t)
+        if len(ns) != 1:
+            continue
+        k = real_de(ns[0])
+        if len(k) < 2:
+            continue
+        pruebas[did][k].add(('insc', i))
+        usado[k].add(did)
+        banderas[(did, k)].update(_iso(b) for b in _BANDERA.findall(t))
+    for ev, n, did in menciones or ():
+        k, did = real_de(n), str(did or '')
+        if len(k) >= 2 and did.isdigit():
+            pruebas[did][k].add(('menc', ev))
+            usado[k].add(did)
+    out = {'unir': [], 'enganchar': [], 'preguntar': []}
+    for did in sorted(pruebas):
+        por = pruebas[did]
+        propios = fila_de.get(did, set())
+        otros = {k for k in por if k in con_puntos and k not in propios and k not in fuera}
+        for k in sorted(otros):
+            if cuenta_de.get(k) not in (None, did) or usado[k] - {did}:
+                continue                    # es la fila de otra cuenta, o lo usó otra: no se sabe de quién es
+            n = len(por[k])
+            if propios:
+                real = sorted(propios)[0]
+                a, b = con_puntos[k], como_figura.get(real, real)
+                if son_distintos(a, b) or (juegan.get(k, set()) & juegan.get(real, set())):
+                    continue                # marcados distintos, o jugaron el mismo evento: son dos
+                juega = real in con_puntos or bool(juegan.get(real))
+                x = {'alias': a, 'real': b, 'did': did, 'pruebas': n}
+                if n >= DOS_PRUEBAS and (juega or otros == {k}) and not _EQUIPO_RE.search(a):
+                    out['unir'].append(x)
+                elif n >= DOS_PRUEBAS or _se_parecen(a, b):
+                    out['preguntar'].append(x)
+            elif n >= DOS_PRUEBAS and otros == {k} and not _EQUIPO_RE.search(con_puntos[k]) and en_la_liga(did):
+                cc = banderas.get((did, k)) or set()
+                out['enganchar'].append({'nombre': como_figura.get(k) or con_puntos[k], 'did': did, 'pruebas': n,
+                                         'fila': k in sin_cuenta,
+                                         'cc': next(iter(cc)) if len(cc) == 1 else (cc_de.get(k) or '')})
+    return out
+
+
+def una_cuenta_dos_nombres(dry=True):
+    """👥 `dos_nombres()` con los datos de la corrida, y lo hace: los alias, las cuentas y las preguntas."""
+    import construir_akas as AK
+    akas = AK.cargar() or {}
+    alias = {norm(_sin_bandera(a)): norm(_sin_bandera(b)) for a, b in (akas.get('alias') or {}).items()}
+
+    def real_de(n):
+        k, vistos = norm(_sin_bandera(n)), set()
+        while k in alias and k not in vistos:
+            vistos.add(k)
+            k = alias[k]
+        return k
+
+    con_puntos, cc_de = {}, {}
+    for r in _datos('temporada_pool') or []:
+        if (r.get('pts') or 0) > 0 and r.get('raw'):
+            con_puntos.setdefault(real_de(r['raw']), r['raw'])
+            cc_de.setdefault(real_de(r['raw']), r.get('cc') or '')
+    juegan = {}
+    ll = _datos('llaves_t1') or {}
+    for x in (ll.values() if isinstance(ll, dict) else ll):
+        if isinstance(x, dict):
+            for f in x.get('tabla') or ():
+                juegan.setdefault(real_de(f[0]), set()).add(x.get('n'))
+    ident = (_datos('identidad_llaves') or {}).get('eventos') or {}
+    menciones = [(ev, n, d) for ev, v in ident.items() for n, d in ((v or {}).get('menciones') or {}).items()]
+    svs = _datos('servidores_de') or {}
+    r = dos_nombres((_datos('anuncios') or {}).get('inscripciones') or [], menciones, _datos('padron') or [],
+                    con_puntos, juegan, real_de, son_distintos=lambda a, b: AK.son_distintos(a, b, akas),
+                    fuera=no_rankear(), cc_de=cc_de, en_la_liga=lambda did: bool(_servidores_de(did, svs)))
+    # lo que pasa del tope no se hace solo: se pregunta
+    unir, eng = r['unir'][:TOPE_DOS], r['enganchar'][:TOPE_DOS]
+    preg = r['preguntar'] + r['unir'][TOPE_DOS:]
+    if not (unir or eng or preg):
+        return r
+    print('\n   👥 una cuenta, dos nombres: %d se unen · %d con su cuenta · %d a ✅ Decidir'
+          % (len(unir), len(eng), len(preg)))
+    for x in unir:
+        print('      unir: %s -> %s (%d prueba(s))' % (x['alias'], x['real'], x['pruebas']))
+    for x in eng:
+        print('      cuenta: %s <- %s (%d prueba(s)%s)' % (x['nombre'], x['did'], x['pruebas'],
+                                                        '' if x['fila'] else ', fila nueva'))
+    for x in preg:
+        print('      pregunta: ¿%s es %s? (%d prueba(s))' % (x['alias'], x['real'], x['pruebas']))
+    if dry:
+        return r
+    if unir:
+        _agregar_akas([[x['alias'], x['real'], ''] for x in unir], [])
+    con_fila = [(x['nombre'], x['did']) for x in eng if x['fila']]
+    if con_fila:
+        for did, err in (_poner_ids(con_fila) or {}).items():
+            print('      ⚠️ %s: %s' % (did, err))
+    nuevas = [(x['nombre'], x['cc'], x['did'], 'alta automática · una cuenta, dos nombres · %d prueba(s) · %s'
+               % (x['pruebas'], _ahora_et())) for x in eng if not x['fila']]
+    if nuevas:
+        import lista_raperos as LR
+        LR.agregar_varios(nuevas, aplicar=True)
+    if preg:
+        import pendientes as PE
+        PE.anotar_varios([('Alias posible', DOS_ORIGEN,
+                           'DOS NOMBRES: «%s» → «%s» · cuenta %s' % (x['alias'], x['real'], x['did']),
+                           '%d prueba(s)' % x['pruebas']) for x in preg])
+    return r
+
+
 #: las dos formas de «Alias posible» que escribe el backfill del repo de sync
 _ALIAS_TIENE = re.compile(r"AKA '(.+?)' \(fila (\d+)\) ya tiene ID (\d+), el log trae (\d+)")
 _ALIAS_ID = re.compile(r"ID (\d+) ya pertenece a fila (\d+) \((.+?)\); no se asignó a '(.+?)'")
@@ -1147,10 +1325,13 @@ def _pistas(p):
     elif t == 'Alias posible':
         m = re.search(r"ya tiene ID (\d+), el log trae (\d+)", p['detalle'])
         m2 = re.search(r"^ID (\d+) ya pertenece", p['detalle'])
+        m3 = _DOS_RE.match(p['detalle'])
         if m:
             out += ['La que tiene: ' + _cuenta(m.group(1)), 'La otra: ' + _cuenta(m.group(2))]
         elif m2:
             out.append('Esa cuenta: ' + _cuenta(m2.group(1)))
+        elif m3:
+            out.append('Esa cuenta: ' + _cuenta(m3.group(3)))
     elif t == 'Vidas cargado':
         # cómo quedó: las batallas, el campeón y el orden en que cayeron
         out += [x.strip() for x in (p['match'] or '').split(' | ') if x.strip()]
@@ -1223,6 +1404,13 @@ def _conflicto_en_palabras(det):
     # ⚠️ «SÓLO QUEDA ANOTADO» VA DICHO: contestar no mueve ningún Discord
     # ID —`_poner_ids()` nunca pisa uno—, y sin la frase «es la misma
     # persona» parecía que la Lista pasaba a la cuenta nueva.
+    # 👥 la de `una_cuenta_dos_nombres()`: ésta SÍ hace algo, y lo dice
+    m = _DOS_RE.match(det)
+    if m:
+        a, b, did = m.groups()
+        return ('¿«%s» es %s? La cuenta de %s en la Lista se anotó como «%s», y en el ranking suman aparte. Si es '
+                'la misma persona, los puntos de «%s» pasan a %s.\nLa cuenta: https://discord.com/users/%s'
+                % (a, b, b, a, a, b, did))
     m = re.search(r"AKA '(.+?)' \(fila \d+\) ya tiene ID (\d+), el log trae (\d+)", det)
     if m:
         return ('«%s» ya tiene una cuenta de Discord en la Lista, y el sync '
@@ -1384,6 +1572,11 @@ def interpretar(p, respuesta):
     # cierra —queda como decisión del evento, y la pregunta no vuelve—
     if p['tipo'] == 'Vidas cargado' and r in ('Está bien así', 'Sí cuenta'):
         return ('evento', 'cuenta')
+    # 👥 UNA CUENTA, DOS NOMBRES (`una_cuenta_dos_nombres()`): «es la misma» los une, y «otra» los marca distintos
+    # para que no se vuelva a preguntar
+    if p['tipo'] == 'Alias posible' and r in (MISMA, OTRA) and _DOS_RE.match(p['detalle']):
+        a, b, _did = _DOS_RE.match(p['detalle']).groups()
+        return ('unir' if r == MISMA else 'distintos', (a, b))
     if r in CIERRAN:
         return ('cerrar', r)
     # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
@@ -1782,6 +1975,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                                encoding='utf-8'))
     akas = AK.cargar() or {}
     estados, cierres, pares, eventos, ids = {}, [], [], {}, []
+    # 👥 los que Dlx dijo que son otra persona (`interpretar()`): a la tabla de distintos de AKAs
+    distintos = []
     # 🔎 las altas con la cuenta que eligió Dlx (`Es la cuenta @usuario`)
     altas = []
     batallas = {}
@@ -1830,6 +2025,12 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             batallas[p['detalle']] = dato
             cierres += [(n, ('ganó %s: entra en la corrida siguiente' % dato) if dato
                          else 'no se jugó: queda afuera') for n in p['filas']]
+        elif que == 'unir':
+            pares.append([dato[0], dato[1], ''])
+            cierres += [(n, 'alias de %s: es la misma persona' % dato[1]) for n in p['filas']]
+        elif que == 'distintos':
+            distintos.append([dato[0], dato[1], 'Dlx en ✅ Decidir (%s): es otra persona' % _ahora_et()])
+            cierres += [(n, 'otra persona: quedan separados') for n in p['filas']]
         elif que == 'alias':
             x = _persona(dato, padron, akas)
             if x is None:
@@ -1862,7 +2063,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         print('      batalla: %s -> %s' % (det, g or 'no se jugó'))
     for _p, n, c in altas:
         print('      alta: %s con la cuenta @%s' % (n, c['usuario']))
-    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas or altas)
+    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas or altas or distintos)
     # ⚠️ LAS NOTAS DE LO QUE SE CIERRA NO SE PIERDEN: van a
     # `datos/decisiones.json` con la pregunta, para quien tenga que actuar.
     cerradas = {n for n, _d in cierres}
@@ -1893,8 +2094,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             else:
                 cierres += [(n, 'Discord %s puesto en %s' % (did, real))
                             for n in p['filas']]
-    if pares:
-        _agregar_akas(pares, [])
+    if pares or distintos:
+        _agregar_akas(pares, distintos)
     if eventos:
         d = _decisiones()
         d.setdefault('_leeme', [
@@ -2417,6 +2618,12 @@ def correr(dry=True):
         print('   ⚠️ no pude resolver con Discord (%s)' % str(e)[:80])
         solas = set()
     preguntas = [p for p in preguntas if p['id'] not in solas]
+    # 👥 Y LA CUENTA QUE JUEGA CON DOS NOMBRES: ver `una_cuenta_dos_nombres()`. Lo que pregunta aparece la próxima vez
+    try:
+        una_cuenta_dos_nombres(dry=dry)
+    except Exception as e:                               # noqa: BLE001
+        # ⚠️ NO FRENA ✅ DECIDIR, como `por_discord()`
+        print('   ⚠️ no pude revisar las cuentas con dos nombres (%s)' % str(e)[:80])
     # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`
     try:
         cerradas = cierres_solos([p for p in preguntas if p['id'] not in respuestas], dry=dry)
@@ -2862,6 +3069,61 @@ def _self_check():
     finally:
         _DATOS.clear()
         _DATOS.update(antes)
+    # 👥 una cuenta, dos nombres (Velatz y Shisui, 06/10/2026)
+    _rd = lambda n: {'shishui': 'shisui'}.get(norm(_sin_bandera(n)), norm(_sin_bandera(n)))  # noqa: E731
+    _ls = [{'raw': 'Velatz', 'discord_id': '1'}, {'raw': 'Mr.Kude', 'discord_id': '2'},
+           {'raw': 'Player', 'discord_id': '3'}, {'raw': 'Org', 'discord_id': '4'},
+           {'raw': 'Cris', 'discord_id': '5'}, {'raw': 'Alonso', 'discord_id': ''},
+           {'raw': 'EmiZor', 'discord_id': '9'}]
+    _cp = {k: k.title() for k in ('velatz', 'shisui', 'kude', 'player', 'steven', 'ana', 'bea', 'cris', 'pipas',
+                                    'rt', 'alonso', 'zeta', 'emi', 'sol')}
+    _i = lambda d, t: {'discord_id': d, 'texto': t}  # noqa: E731
+    _ins = [_i('1', 'Shisui 🇯🇵'), _i('1', 'Shishui 🇯🇵'), _i('1', 'Velatz 🇨🇱'),
+            _i('2', 'Kude 🇦🇷'), _i('2', 'Kude 🇦🇷'), _i('2', 'Jr 🇵🇪 (me pidió que lo inscriba)'),
+            _i('3', 'Steven 🇨🇴'), _i('3', 'Player 🇻🇪'),
+            _i('4', 'Ana'), _i('4', 'Ana'), _i('4', 'Bea'), _i('4', 'Bea'),
+            _i('5', 'Pipas'), _i('5', 'Pipas'),
+            _i('6', 'RT 🇲🇽'), _i('6', 'RT 🇲🇽'), _i('6', 'RT 🇲🇽'),
+            _i('7', 'Alonso 🇨🇱'), _i('7', 'Alonso 🇨🇱'),
+            _i('8', 'Zeta'), _i('8', 'Zeta'), _i('10', 'Zeta'),
+            _i('9', 'Emi 🇲🇽')]
+    _jg = {'cris': {1}, 'pipas': {1}, 'velatz': {2}, 'shisui': {3}, 'player': {4}}
+    d2 = dos_nombres(_ins, [('e1', 'sol', '11'), ('e2', 'sol', '11')], _ls, _cp, _jg, _rd)
+    _u = {(x['alias'], x['real']) for x in d2['unir']}
+    _e = {x['nombre']: x for x in d2['enganchar']}
+    _p = {(x['alias'], x['real']) for x in d2['preguntar']}
+    ok(('Shisui', 'Velatz') in _u,
+       'Velatz: su cuenta se anotó como Shisui (y Shishui), y juega con su nombre: se unen solos')
+    ok(('Kude', 'Mr.Kude') in _u,
+       'Mr.Kude no juega con su nombre, pero Kude es el único otro: se unen («(me pidió…)» es para otro)')
+    ok(all(a != 'Steven' for a, _b in _u | _p), 'Player anotó a Steven una vez y no se parecen: nada')
+    ok(('Ana', 'Org') in _p and ('Bea', 'Org') in _p and all(b != 'Org' for _a, b in _u),
+       'una cuenta que no juega y anota a dos con puntos es de un organizador: se pregunta, no se une')
+    ok(all(a != 'Pipas' for a, _b in _u | _p), 'jugaron el mismo evento: son dos')
+    ok('Rt' in _e and not _e['Rt']['fila'] and _e['Rt']['cc'] == 'mx',
+       'RT: la cuenta no está en la Lista y se anotó así tres veces: fila nueva, con su bandera')
+    ok('Alonso' in _e and _e['Alonso']['fila'], 'Alonso: su fila no tiene cuenta: se le pone')
+    ok('Sol' in _e, 'SOL: dos menciones del organizador también son dos pruebas')
+    ok(all(a != 'Zeta' for a, _b in _u | _p) and 'Zeta' not in _e, 'un nombre que usaron dos cuentas no es de ninguna')
+    ok(('Emi', 'EmiZor') in _p, 'Emi y EmiZor: una sola prueba, pero se parecen: se pregunta')
+    _d3 = dos_nombres(_ins, [], _ls, _cp, _jg, _rd, son_distintos=lambda a, b: {a, b} == {'Shisui', 'Velatz'})
+    ok(all((x['alias'], x['real']) != ('Shisui', 'Velatz') for x in _d3['unir'] + _d3['preguntar']),
+       'marcados distintos en AKAs: ni se unen ni se pregunta')
+    _cp2 = dict(_cp, **{'crackandkrank': 'Crack and Krank'})
+    _rd2 = lambda n: 'crackandkrank' if norm(n) == 'cyk' else _rd(n)  # noqa: E731
+    _d4 = dos_nombres(_ins + [_i('12', 'CyK'), _i('12', 'CyK')], [], _ls + [{'raw': 'Pcyka', 'discord_id': '12'}],
+                      _cp2, _jg, _rd2)
+    ok(all(x['alias'] != 'Crack and Krank' for x in _d4['unir'])
+       and any(x['alias'] == 'Crack and Krank' for x in _d4['preguntar']),
+       'un nombre de equipo («Crack and Krank») no se une solo: se pregunta')
+    _d5 = dos_nombres(_ins, [], _ls, _cp, _jg, _rd, en_la_liga=lambda did: did != '6')
+    ok('Rt' not in {x['nombre'] for x in _d5['enganchar']}, 'una cuenta que no está en la Liga no se engancha')
+    _q = {'tipo': 'Alias posible', 'detalle': 'DOS NOMBRES: «Shisui» → «Velatz» · cuenta 1'}
+    ok(interpretar(_q, MISMA) == ('unir', ('Shisui', 'Velatz'))
+       and interpretar(_q, OTRA) == ('distintos', ('Shisui', 'Velatz')),
+       '«¿es la misma persona?»: «es la misma» los une y «otra» los marca distintos')
+    ok('los puntos de «Shisui» pasan a Velatz' in _conflicto_en_palabras(_q['detalle']),
+       'y la pregunta dice qué pasa si contestás que sí')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.49",
+   "dia": "2026-10-06",
+   "cuando": "2026-10-06T23:15:00-04:00",
+   "titulo": "Tus dos nombres, una sola persona",
+   "items": [
+    "👥 **Si te anotás con otro nombre desde tu cuenta, el ranking te lo junta solo**: tus puntos, eventos y podios quedan en tu nombre de la Lista. Si no está claro, lo decide el staff."
+   ]
+  },
+  {
    "version": "2.48",
    "dia": "2026-10-06",
    "cuando": "2026-10-06T21:15:00-04:00",
