@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-07T04:54:55+00:00",
+ "cuando": "2026-10-07T05:28:54+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2953,6 +2953,15 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "setesfifi",
+   "quien": "setesfifi",
+   "discord_id": "692210529837514813",
+   "msg_id": "1557241735527141407",
+   "cuando": "2026-10-07T04:02:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "Pichulamc",
    "quien": "dariel.ivo",
    "discord_id": "578697503130779649",
@@ -3075,6 +3084,15 @@
    "discord_id": "1097714486795849748",
    "msg_id": "1557211592276451493",
    "cuando": "2026-10-07T02:02:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "setesfifi",
+   "quien": "setesfifi",
+   "discord_id": "692210529837514813",
+   "msg_id": "1557211481894948896",
+   "cuando": "2026-10-07T02:02:28"
   },
   {
    "servidor": "FFA",
