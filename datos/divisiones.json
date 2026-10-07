@@ -12,6 +12,11 @@
      3
     ],
     [
+     "Liberia",
+     50775,
+     3
+    ],
+    [
      "PichulaMc",
      39250,
      4
@@ -20,11 +25,6 @@
      "Erian",
      28875,
      4
-    ],
-    [
-     "Abyssus",
-     7875,
-     1
     ]
    ]
   ],
@@ -42,18 +42,13 @@
     ],
     [
      "Oasis",
-     71375,
+     72950,
      5
     ],
     [
      "Velatz",
      56250,
      5
-    ],
-    [
-     "Liberia",
-     50775,
-     3
     ],
     [
      "Provenza",
@@ -136,9 +131,19 @@
      2
     ],
     [
+     "Abyssus",
+     7875,
+     1
+    ],
+    [
      "BTRX",
      7650,
      2
+    ],
+    [
+     "MCO",
+     7500,
+     1
     ],
     [
      "Crk",
@@ -163,11 +168,6 @@
     [
      "Krtman",
      4950,
-     1
-    ],
-    [
-     "MTZ",
-     3750,
      1
     ],
     [
@@ -437,11 +437,6 @@
      1
     ],
     [
-     "MCO",
-     7500,
-     1
-    ],
-    [
      "Liam",
      7500,
      1
@@ -488,6 +483,11 @@
     ],
     [
      "Richard",
+     3750,
+     1
+    ],
+    [
+     "Lvel",
      3750,
      1
     ],
@@ -594,7 +594,7 @@
      1
     ],
     [
-     "Lvel",
+     "MTZ",
      3750,
      1
     ],
@@ -639,12 +639,12 @@
      1
     ],
     [
-     "MC Bot 🇻🇪",
+     "Henry",
      3750,
      1
     ],
     [
-     "Ruvick 🇨🇴",
+     "Ruvick",
      3750,
      1
     ],
@@ -706,7 +706,7 @@
   "ARDEAN": 5,
   "AREZ": 5,
   "Aby": 5,
-  "Abyssus": 3,
+  "Abyssus": 4,
   "Acry": 5,
   "Adriagner": 4,
   "Agre": 5,
@@ -731,7 +731,7 @@
   "Betelguese": 5,
   "Bloody": 4,
   "Btrece": 5,
-  "CHOCLITO": 4,
+  "CHOCLITO": 5,
   "CJ": 5,
   "Calíz": 5,
   "Camila": 5,
@@ -780,7 +780,7 @@
   "Eze": 5,
   "Ezias🥈✒️🧢🐍": 5,
   "FALON 🇨🇱": 5,
-  "Faso": 5,
+  "Faso": 4,
   "Fazer": 4,
   "Filozico": 5,
   "Fin": 5,
@@ -852,7 +852,7 @@
   "Leonart": 5,
   "Leyenda": 5,
   "Lhyon": 5,
-  "Liberia": 4,
+  "Liberia": 3,
   "Lilñaño": 5,
   "Lizeninn": 5,
   "Lord Viruzz": 4,
@@ -860,16 +860,16 @@
   "Luzzano": 5,
   "Lvel": 5,
   "MATICERNA": 4,
-  "MAU KC 🇨🇴": 5,
+  "MAU KC 🇨🇴": 4,
   "MAWS🇻🇪": 5,
   "MAXIMILIANO CALVO": 5,
   "MCNadie": 5,
-  "MCO": 5,
+  "MCO": 4,
   "MD": 5,
   "METORITO 🇲🇽": 5,
   "METRO": 5,
   "MHS": 5,
-  "MTZ": 4,
+  "MTZ": 5,
   "MZK": 5,
   "MaYeuTyK": 5,
   "Mail O": 5,
@@ -1000,7 +1000,7 @@
   "Zanet": 5,
   "Zanti": 5,
   "Zekha": 4,
-  "Zeta": 4,
+  "Zeta": 5,
   "Zetryko": 4,
   "ZiarKI": 5,
   "Zignos": 4,
@@ -1064,17 +1064,17 @@
   ],
   [
    "2026-09-21",
-   "Snow",
-   4
-  ],
-  [
-   "2026-09-21",
    "Erian",
    4
   ],
   [
    "2026-09-21",
    "Colesito",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Snow",
    4
   ],
   [
@@ -1089,27 +1089,27 @@
   ],
   [
    "2026-09-21",
-   "Eze",
-   4
-  ],
-  [
-   "2026-09-21",
    "Masino",
    4
   ],
   [
    "2026-09-21",
-   "Miniboy",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Richard",
+   "Eze",
    4
   ],
   [
    "2026-09-21",
    "Saito",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Liberia",
+   4
+  ],
+  [
+   "2026-09-21",
+   "MAU KC 🇨🇴",
    4
   ],
   [
@@ -1194,13 +1194,18 @@
   ],
   [
    "2026-09-21",
-   "MATICERNA",
+   "BTRX",
    4
   ],
   [
    "2026-09-21",
-   "BTRX",
+   "MATICERNA",
    4
+  ],
+  [
+   "2026-09-28",
+   "Liberia",
+   3
   ],
   [
    "2026-09-28",
@@ -1224,16 +1229,6 @@
   ],
   [
    "2026-09-28",
-   "Abyssus",
-   3
-  ],
-  [
-   "2026-09-28",
-   "Liberia",
-   4
-  ],
-  [
-   "2026-09-28",
    "Motera",
    4
   ],
@@ -1250,6 +1245,11 @@
   [
    "2026-09-28",
    "Juasmio",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Miniboy",
    4
   ],
   [
@@ -1279,6 +1279,11 @@
   ],
   [
    "2026-09-28",
+   "MCO",
+   4
+  ],
+  [
+   "2026-09-28",
    "Lord Viruzz",
    4
   ],
@@ -1295,11 +1300,6 @@
   [
    "2026-09-28",
    "Krtman",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Zeta",
    4
   ],
   [
@@ -1364,17 +1364,17 @@
   ],
   [
    "2026-09-28",
+   "Faso",
+   4
+  ],
+  [
+   "2026-09-28",
    "melomaniaco",
    4
   ],
   [
    "2026-09-28",
    "Adriagner",
-   4
-  ],
-  [
-   "2026-09-28",
-   "CHOCLITO",
    4
   ],
   [
@@ -1407,19 +1407,17 @@
   "baja": [
    "Cronox",
    "Eze",
+   "MTZ",
    "Masino",
-   "Richard",
    "Tuca"
   ],
   "sem": "2026-09-28",
   "sube": [
-   "Abyssus",
    "Adriagner",
    "Alexi",
    "Ariaxer",
    "Badterne",
    "Benjixo",
-   "CHOCLITO",
    "Carlosss",
    "Catarsis",
    "Cinexfilo",
@@ -1427,6 +1425,7 @@
    "Drexx",
    "Dyzz",
    "Erian",
+   "Faso",
    "Garxzii",
    "Hassan",
    "Juanpa",
@@ -1436,6 +1435,8 @@
    "LRS",
    "Liberia",
    "Lord Viruzz",
+   "MCO",
+   "Miniboy",
    "Motera",
    "NXUZ",
    "Noxvell",
@@ -1449,7 +1450,6 @@
    "SOL",
    "Sosa",
    "TøKīØ🦠🧠",
-   "Zeta",
    "Zetryko",
    "melomaniaco",
    "tam🇧🇫baggio🇮🇹"
