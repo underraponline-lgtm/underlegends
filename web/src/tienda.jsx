@@ -187,7 +187,7 @@ export function Tienda({ liga, dc }) {
             <h3 className="ti-h">Lo último que se cobró</h3>
             <ul className="ti-cazas">
               {cazas.map((x, i) => (
-                <li key={i}>💰 <b>{x.por.map((y) => limpio((liga.fila(y[0]) || {}).n || y[0])).join(' y ')}</b> le ganó a <b>{limpio((liga.fila(x.cabeza) || {}).n || x.cabeza)}</b> en {limpio(x.ev)} y cobró <b>{num(x.monto)}</b>.</li>
+                <li key={i}>💰 <b>{x.por.map((y) => limpio((liga.fila(y[0]) || {}).n || y[0])).join(' y ')}</b>{x.por.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b>{limpio((liga.fila(x.cabeza) || {}).n || x.cabeza)}</b> en {limpio(x.ev)}{x.por.length > 1 ? ' y cobraron ' : ' y cobró '}<b>{num(x.monto)}</b>.</li>
               ))}
             </ul>
           </>

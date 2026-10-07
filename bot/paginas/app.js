@@ -5018,7 +5018,8 @@ function pintaTienda() {
   p.querySelector('.pr-cazas').innerHTML = cz.length ? '<h3 class="mw-h">Lo último que se cobró</h3>' +
     cz.map(function (x) {
       return '<p>&#128176; <b>' + esc(x.por.map(function (y) { return nombreCabeza(y[0]); }).join(' y ')) +
-        '</b> le ganó a <b>' + esc(nombreCabeza(x.cabeza)) + '</b> en ' + esc(x.ev) + ' y cobró <span class="pt-i">' +
+        '</b> ' + (x.por.length > 1 ? 'le ganaron a' : 'le ganó a') + ' <b>' + esc(nombreCabeza(x.cabeza)) + '</b> en ' + esc(x.ev) +
+        (x.por.length > 1 ? ' y cobraron' : ' y cobró') + ' <span class="pt-i">' +
         num(x.monto) + '</span>.</p>';
     }).join('') : '';
   p.hidden = false;

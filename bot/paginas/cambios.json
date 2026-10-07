@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.48",
+   "dia": "2026-10-06",
+   "cuando": "2026-10-06T21:15:00-04:00",
+   "titulo": "Cada evento, una vez en el calendario",
+   "items": [
+    "📅 **Un anuncio y su llave se juntan aunque la llave diga más que el anuncio** («PRITTY FREE» y «PRITTY FREE Clasificatoria 3»): en Eventos, la de la noche del 05/10 sale una sola vez, jugada y con su formato y su rango."
+   ]
+  },
+  {
    "version": "2.47",
    "dia": "2026-10-06",
    "cuando": "2026-10-06T18:10:00-04:00",
