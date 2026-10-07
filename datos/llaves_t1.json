@@ -12873,7 +12873,7 @@
        "Saz"
       ],
       "Provenza",
-      "ganador: ✅ Decidir"
+      "Walk-in 1: PROVENZAL; Walk-in 1: saz🇨🇴"
      ]
     ],
     "r": "Cuartos"
@@ -12894,7 +12894,7 @@
        "Provenza"
       ],
       "JOSHU",
-      "Walk-in 2: PROVENZAL"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -12926,6 +12926,11 @@
     5000
    ],
    [
+    "Provenza",
+    "Semifinal",
+    4500
+   ],
+   [
     "Snow",
     "Subcampeón",
     3750
@@ -12941,19 +12946,9 @@
     2500
    ],
    [
-    "Saz",
-    "Cuartos",
-    2500
-   ],
-   [
     "Vandu",
     "Cuartos",
     2500
-   ],
-   [
-    "Provenza",
-    "Semifinal",
-    2250
    ],
    [
     "Cronox",
@@ -12998,6 +12993,11 @@
    [
     "Richard",
     "Octavos",
+    1250
+   ],
+   [
+    "Saz",
+    "Cuartos",
     1250
    ],
    [
@@ -13248,7 +13248,7 @@
      [
       [
        "Benjixo",
-       "onzas 🇻🇪",
+       "ONZASS",
        "Ezias🥈✒️🧢🐍"
       ],
       "Benjixo",
@@ -13461,6 +13461,11 @@
     1250
    ],
    [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
     "PichulaMc",
     "Octavos",
     1250
@@ -13487,11 +13492,6 @@
    ],
    [
     "dxg",
-    "Octavos",
-    1250
-   ],
-   [
-    "onzas 🇻🇪",
     "Octavos",
     1250
    ],
@@ -14661,11 +14661,6 @@
     2000
    ],
    [
-    "NC",
-    "Cuartos",
-    2000
-   ],
-   [
     "Soneto",
     "Cuartos",
     2000
@@ -14674,6 +14669,11 @@
     "Tuca",
     "Cuartos",
     2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1000
    ],
    [
     "EmiZor",

@@ -88,17 +88,17 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "E",
+"provenza": {
+"rg": "C",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"provenza": {
-"rg": "C",
+"vandu": {
+"rg": "E",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -255,6 +255,13 @@
 "temporada"
 ]
 },
+"onzass": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "jupiter": {
 "rg": "",
 "c": [
@@ -304,13 +311,6 @@
 "temporada"
 ]
 },
-"onzass": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "og": {
 "rg": "",
 "c": [
@@ -326,14 +326,14 @@
 "temporada"
 ]
 },
-"agus": {
+"tuca": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"tuca": {
+"agus": {
 "rg": "",
 "c": [
 "servidor",
@@ -861,13 +861,6 @@
 "temporada"
 ]
 },
-"saz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "player": {
 "rg": "",
 "c": [
@@ -947,6 +940,13 @@
 ]
 },
 "typhlosion": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"saz": {
 "rg": "",
 "c": [
 "servidor",

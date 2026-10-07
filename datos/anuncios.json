@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-07T20:24:33+00:00",
+ "cuando": "2026-10-07T20:35:25+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2871,6 +2871,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ardean 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1557490666584412233",
+   "cuando": "2026-10-07T20:31:51"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
