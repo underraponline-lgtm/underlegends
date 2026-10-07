@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.57",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T18:29:00-04:00",
+   "titulo": "Rankings más limpios y la campana al día",
+   "items": [
+    "🔔 **La campana avisa si un evento se pausa o se atrasa**: si te llegó el aviso de un evento y el organizador avisa que sigue otro día o que empieza más tarde, te llega «⏸ En pausa» o «⏰ Se atrasó», con la hora nueva cuando la dice.",
+    "🧹 **Dos eventos estaban contados dos veces y ya no**: una llave publicada en dos mensajes y otra cargada con dos nombres. Los puntos y los duelos de quienes jugaron quedan como fueron."
+   ]
+  },
+  {
    "version": "2.56",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T17:54:00-04:00",
