@@ -61,6 +61,18 @@
    "cuando": "2026-10-07 1:40 PM ET",
    "por": "Claude (arreglo, a pedido de Dlx)",
    "nota": "NO ES UN EVENTO: es la MAÑANA DE LLUVIA VOL 1 (#419) votada en #votaciones, que un título mal escrito hizo leer como 5 vidas (#420, y con el nombre de su anuncio otra vez, #421). Dlx: «no fue 5 vidas sino un evento regular». El #421 se sacó por número: un «no cuenta» por su nombre sacaría también el #419."
+  },
+  "MARRUECOS EN VENTA V.1 · FFA · 23/09": {
+   "decision": "no cuenta",
+   "cuando": "2026-10-07 6:30 PM ET",
+   "por": "Claude (arreglo, a pedido de Dlx)",
+   "nota": "CONTADO DOS VECES (07/10/2026, lo destapó Molusco al revisar el winrate): era DESGRACIAS CON TöKĪØ V.1 (#352) con otro nombre, el mismo mensaje y las mismas 13 filas (#358). La MARRUECOS EN VENTA V.1 de verdad es la #359, del 26/09. Se sacó por número del Sheet; `ya_cargada()` de llaves_a_entrada frena que vuelva."
+  },
+  "(sin titulo) · FFA · 27/09": {
+   "decision": "no cuenta",
+   "cuando": "2026-10-07 6:30 PM ET",
+   "por": "Claude (arreglo, a pedido de Dlx)",
+   "nota": "CONTADO DOS VECES (07/10/2026, lo destapó Molusco al revisar el winrate): era la segunda mitad del FFA WORLD CUP (#366), cargada sola el 06/10 (#409). Se sacó por número del Sheet; `ya_cargada()` de llaves_a_entrada frena que vuelva."
   }
  },
  "no_rankear": {
