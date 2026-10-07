@@ -205,6 +205,15 @@ const SUBS = {
     baj: <>Eventos seguidos llegando arriba de la llave: la <b>final</b> si es de menos de 16, la <b>semifinal</b> de 16 a 31 y <b>cuartos</b> de 32 a 63.</>,
     valor: [(f) => (f.rch || [0])[0], 'de racha'], dato: (f) => (f.rch || [0])[0] + ' SEGUIDOS',
   },
+  // 🎤 QUIÉN PARTICIPÓ MÁS (Dlx, 07/10/2026: «en Ranking agrega la sección de eventos… las personas que participaron
+  // más»). Los eventos jugados en la temporada, en todos los servidores; a igual cantidad, el de más puntos
+  eventos: {
+    et: 'Eventos', filas: (L) => (L.d.tabla || []).filter((f) => (f.ev || 0) > 0),
+    orden: (a, b) => ((b.ev || 0) - (a.ev || 0)) || ((b.pts || 0) - (a.pts || 0)),
+    cols: ['i', 'n', 'ev', 'ult', 'pts'], movil: ['i', 'n', 'ev', 'ult'],
+    baj: <>Quién <b>participó más</b>: los eventos jugados en la temporada, en todos los servidores. A igual cantidad, el que tiene más puntos.</>,
+    valor: [(f) => f.ev || 0, ['evento', 'eventos']], dato: (f) => f.ev + (f.ev === 1 ? ' EVENTO' : ' EVENTOS'),
+  },
   paises: {
     et: 'Países', grupo: 'pais', filas: (L) => L.d.paises || [], sinChips: 1, nombre: (f) => nombrePais(f.cc), orden: 'pts',
     cols: ['i', 'pais', 'np', 'pts', 'prom'], movil: ['i', 'pais', 'np', 'pts'], que: ['país', 'países'],
@@ -243,7 +252,7 @@ const SUBS = {
     baj: <>Una tabla por semana, de a 30: jugás un evento y entrás. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
   },
 };
-export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'paises', 'crews', 'mw', 'misiones', 'ligas'];
+export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'mw', 'misiones', 'ligas'];
 
 function req(L, id) {
   const q = (L.d.requisitos || []).find((x) => x.id === id);

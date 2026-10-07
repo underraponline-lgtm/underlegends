@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.55",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T16:05:00-04:00",
+   "titulo": "Quién participó más",
+   "items": [
+    "🎤 **Nuevo ranking: Eventos.** Quién jugó más eventos en la temporada, en todos los servidores, con su último resultado.",
+    "🏆 **Las llaves con un renglón mal cerrado se leen bien**: un «⌞» sin cerrar ya no junta varios cruces en uno."
+   ]
+  },
+  {
    "version": "2.54",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T15:45:00-04:00",
