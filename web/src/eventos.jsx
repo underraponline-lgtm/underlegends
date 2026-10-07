@@ -306,7 +306,10 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo }) {
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
   // ⚠️ por `e.ll` y no por la llave del payload, que trae las 12 más nuevas: 21 de 33 decían «SIN LLAVE» al lado de
   // un «Ver la llave» que andaba (revisión del 03/10/2026)
-  const etq = est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll || (L && L.terminada) ? 'TERMINÓ' : 'SIN LLAVE';
+  // 📢 lo que el organizador avisó después —en pausa, atrasado, cancelado— (ver `liga.estado()`): lo jugado no
+  const st = ll || e.ll ? null : liga.estado({ link: e.link, t: e.t, sv: e.sv, n: e.n });
+  const etq = st && st.tipo === 'pausado' ? '⏸ EN PAUSA' : st && st.tipo === 'atrasado' && est !== 'hecho' ? '⏰ SE ATRASÓ'
+    : est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll || (L && L.terminada) ? 'TERMINÓ' : 'SIN LLAVE';
   return (
     // 🔴 `es-prox` Y NO `prox`: `.prox` es una clase global del Inicio (estilo.css, una grilla de 44px | 1fr | auto) y
     // las tarjetas «por jugarse» salían con el nombre en una columna angosta (encontrado con los anotados, 03/10/2026)
@@ -326,6 +329,7 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo }) {
           {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
         </div>
       ) : null}
+      {st ? <p className="evp-aviso"><b>{liga.estadoTexto(st, { cuando: e.t, t: e.t, sv: e.sv, n: e.n, link: e.link })}</b>{st.texto ? <span>«{recorte(st.texto.replace(/<a?:\w+:\d+>/g, '').replace(/\s+/g, ' ').trim(), 140)}»</span> : null}</p> : null}
       {mia ? <p className="evp-vos"><em className="rk-vos">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {!camp.length && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}
@@ -606,7 +610,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   // 🔴 y lo que se canceló con el anuncio en pie —le borraron la llave y no hubo otra— va con los cancelados, no con
   // «Terminados · SIN LLAVE» (LA REDENCION, 03/10/2026, Dlx: «debería decir cancelado también»). Ver `canceladoCal()`
   const pasados = evs.filter((c) => !vivos.includes(c) && !prox.includes(c));
-  const hechos = pasados.filter((c) => !liga.canceladoCal(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
+  // ⏸ y lo que el organizador pausó («seguimos mañana») va en su grupo, no en «Terminados · SIN LLAVE»
+  const pausa = pasados.filter((c) => !c.ll && liga.enPausa({ link: c.link, t: c.t, sv: c.sv, n: c.n }));
+  const hechos = pasados.filter((c) => !liga.canceladoCal(c) && !pausa.includes(c)).sort((a, b) => (a.t < b.t ? 1 : -1));
   const nomSv = (sv, n) => sv + '|' + limpio(n).toLowerCase();
   const delCal = pasados.filter((c) => liga.canceladoCal(c)).map((c) => ({ id: c.link || c.n, n: c.n, sv: c.sv, ini: c.t }));
   const cancelados = delCal.concat(liga.cancelacionesVisibles()
@@ -754,6 +760,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           <h2 className="evp-dia">{tituloDia}<small>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : ''}</small></h2>
           {vivos.length ? (
             <section className="grupo"><h3 className="g-t vivo">● En vivo</h3>{vivos.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="vivo" L={enVivo(c)} arriba={esArriba(c)} />)}</section>
+          ) : null}
+          {pausa.length ? (
+            <section className="grupo"><h3 className="g-t">⏸ En pausa</h3>{pausa.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="pausa" L={enVivo(c)} />)}</section>
           ) : null}
           {prox.length ? (
             <section className="grupo"><h3 className="g-t">{dia === hoyK ? 'Más tarde' : 'Por jugarse'}</h3>{prox.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" />)}</section>

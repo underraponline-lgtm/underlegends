@@ -315,7 +315,54 @@ export class Liga {
   }
   esCancelado(e) {
     const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
-    return !!m && this.cancelados().some((c) => String(c.id) === m[1]);
+    return !!m && (this.cancelados().some((c) => String(c.id) === m[1]) || (this.estado(e) || {}).tipo === 'cancelado');
+  }
+  // 📢 LO QUE EL ORGANIZADOR AVISÓ DESPUÉS DEL ANUNCIO (07/10/2026, Dlx: «asegurate de q el bot pueda entender cuando
+  // pasa estas situaciones… el evento se canceló o se va a atrasar»). GALLOS DEL UNDER AMATEUR I (Snake Rap) se cortó en
+  // cuartos —«se me fue la luz, podemos reanudar con la compe mañana»— y seguía «EN VIVO». El vigía lee esos mensajes
+  // (`estados` de `/api/avisos/vivo`, con el id de su anuncio: ver `anotarEstado()` de bot/avisos.js) y el más nuevo
+  // manda. ⚠️ La pausa y el atraso se terminan solos cuando su llave vuelve a moverse: al otro día la llave avanza
+  estado(e) {
+    const m = /\/(\d{15,22})\/?$/.exec(String((e && e.link) || ''));
+    const V = typeof window !== 'undefined' ? window.VIVO : null;
+    const st = m && V && Array.isArray(V.estados) ? V.estados.find((x) => String(x.evento) === m[1]) : null;
+    if (!st || st.tipo === 'cancelado') return st || null;
+    const ev = { cuando: e.cuando || e.t, sv: e.sv, nombre: e.nombre || e.n, link: e.link };
+    try {
+      const todas = Object.values(window.VIVO_L || {});
+      const L = todas.length && window.llaveDeEvento ? window.llaveDeEvento(ev, todas) : null;
+      if (L && (L.ed || L.pub || 0) > st.pub + 2 * 60000) return null;
+    } catch (err) { /* sigue */ }
+    // y la pausa no es para siempre: a los dos días, sin que la llave se mueva, ya no dice nada
+    return this.ahora - st.pub > 48 * 3600000 ? null : st;
+  }
+  enPausa(e) { return (this.estado(e) || {}).tipo === 'pausado'; }
+  // la hora que vale: la nueva si el organizador la dijo (`nueva`) o lo que se corre (`mas`) sobre la anunciada
+  cuandoDe(e) {
+    const st = this.estado(e);
+    const base = e.cuando || e.t;
+    if (!st || st.tipo !== 'atrasado') return base;
+    if (st.nueva) return new Date(st.nueva).toISOString();
+    return st.mas ? new Date(utc(base).getTime() + st.mas).toISOString() : base;
+  }
+  // lo que dice la tarjeta: «sigue mañana», «se atrasó · ahora 21:30», «se atrasó»
+  estadoTexto(st, e) {
+    if (!st) return '';
+    if (st.tipo === 'cancelado') return 'el organizador avisó que se cancela';
+    if (st.tipo === 'pausado') return st.nueva ? 'sigue ' + this.dia(new Date(st.nueva)) : 'sigue otro día · lo avisó el organizador';
+    const n = this.cuandoDe(e);
+    return n !== (e.cuando || e.t) ? 'se atrasó · ahora ' + hora(n) : 'se atrasó · todavía sin hora nueva';
+  }
+  // los que están en pausa ahora, para Fechas: `[{ e, st }]`
+  pausados() {
+    const evs = this.proximos().concat((this.d.calendario || []).filter((c) => !c.ll)
+      .map((c) => ({ nombre: c.n, sv: c.sv, cuando: c.t, link: c.link })));
+    const vistos = new Set();
+    return evs.map((e) => ({ e, st: this.estado(e) })).filter(({ e, st }) => {
+      if (!st || st.tipo !== 'pausado' || vistos.has(e.link)) return false;
+      vistos.add(e.link);
+      return true;
+    });
   }
   // 🔴 UN ANUNCIO BORRADO Y VUELTO A PUBLICAR NO ES UN EVENTO CANCELADO (LA REDENCION, FFA, 03/10/2026: borrado a las
   // 6:26 PM y publicado otra vez). El vigía anota el borrado, y Fechas y Eventos decían «CANCELADO» al lado del mismo
@@ -375,7 +422,8 @@ export class Liga {
     // min después de la hora). El vigía anota las llaves borradas (`borradas` de `/api/avisos/vivo`, `VIVO_B` de
     // app.js): si la de este evento se borró hace 5 min o más y no hay otra, deja de estar en vivo. Los 5 min son para
     // el que la borra y la vuelve a publicar corregida
-    const desde = (e) => (this.ahora - utc(e.cuando)) / 1000;
+    // ⏰ con la hora nueva si el organizador avisó que se atrasa (`cuandoDe()`): hasta entonces no está en vivo
+    const desde = (e) => (this.ahora - utc(this.cuandoDe(e))) / 1000;
     // 🔴 Y LO QUE YA TERMINÓ NO ES «EN VIVO» aunque estemos dentro de los 90 minutos (revisión del 04/10/2026): un 1v1
     // de ocho que arranca 20:00 y termina 20:50 salía a la vez «● EN VIVO» y «TERMINÓ · Campeón» en Fechas, y «se juega
     // ahora» en el escenario, hasta las 21:30. Terminó = su llave en vivo tiene campeón y no hay otra sin terminar, o el
@@ -392,12 +440,13 @@ export class Liga {
     };
     const out = this.proximos().filter((e) => {
       const s = desde(e);
-      return !this.esCancelado(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e) && !termino(e);
+      // ⏸ y lo que está en pausa —«seguimos mañana»— tampoco: va aparte (`pausados()`)
+      return !this.esCancelado(e) && !this.enPausa(e) && s >= 0 && (s <= m * 60 || (s <= 8 * 3600 && sigue(e))) && !this.llaveBorrada(e) && !termino(e);
     });
     (this.d.calendario || []).forEach((c) => {
       const e = { nombre: c.n, sv: c.sv, cuando: c.t, link: c.link };
       const s = desde(e);
-      if (s > m * 60 && s <= 8 * 3600 && !this.esCancelado(e) && !out.some((x) => x.sv === e.sv && limpio(x.nombre) === limpio(e.nombre)) && sigue(e)) out.push(e);
+      if (s > m * 60 && s <= 8 * 3600 && !this.esCancelado(e) && !this.enPausa(e) && !out.some((x) => x.sv === e.sv && limpio(x.nombre) === limpio(e.nombre)) && sigue(e)) out.push(e);
     });
     return out;
   }
@@ -450,9 +499,16 @@ export class Liga {
     return this.vigiaL;
   }
   // ⚠️ una del calendario con su llave procesada nunca: lo que se jugó, se jugó
-  canceladoCal(c) { return !!c && !c.ll && (!!c.can || this.llaveBorrada({ cuando: c.t, sv: c.sv, nombre: c.n })); }
+  canceladoCal(c) {
+    return !!c && !c.ll && (!!c.can || this.llaveBorrada({ cuando: c.t, sv: c.sv, nombre: c.n })
+      || (this.estado({ link: c.link, t: c.t, sv: c.sv, n: c.n }) || {}).tipo === 'cancelado');
+  }
   // en orden de hora: lo que suma el vigía va al final de la lista y puede ser lo primero que se juega
-  luego() { return this.proximos().filter((e) => utc(e.cuando) > this.ahora && !this.esCancelado(e)).sort((a, b) => utc(a.cuando) - utc(b.cuando)); }
+  // ⏰ y con la hora nueva del que se atrasó; lo que está en pausa, no (`pausados()`)
+  luego() {
+    return this.proximos().filter((e) => utc(this.cuandoDe(e)) > this.ahora && !this.esCancelado(e) && !this.enPausa(e))
+      .sort((a, b) => utc(this.cuandoDe(a)) - utc(this.cuandoDe(b)));
+  }
   llaves() { return Object.values(this.d.llaves || {}).sort((a, b) => Number(b.n) - Number(a.n)); }
   // 🔑 por FECHA, la más nueva primero: el número es el orden en que el ciclo las cargó, y se procesan desordenadas (lo
   // que ya hacía Fechas). «La última llave» y «el último campeón» salían de otro día (revisión del 04/10/2026)

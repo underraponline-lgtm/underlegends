@@ -975,6 +975,36 @@ const ok = (cond, que, det) => {
   }
 }
 
+// ── 📢 lo que el organizador avisa después: cancelado, en pausa o atrasado (07/10/2026) ───────────────────────────
+{
+  console.log('\n📢 lo que el organizador avisa después del anuncio\n');
+  const pub = Date.parse('2026-10-07T21:32:00Z');
+  const E = (t) => A.estadoDeMensaje(t, pub);
+  const tipo = (t) => (E(t) || {}).tipo || null;
+  ok(tipo('<@&1> una disculpa se me fue la luz, podemos reanudar con la compe mañana siguiendo la llave <@2> y <@3> '
+    + 'estarían clasificados a Semis y mañana batallarian los que falten') === 'pausado',
+  'Snake Rap, 07/10: «se me fue la luz, podemos reanudar con la compe mañana» es EN PAUSA');
+  ok(tipo('mañana seguimos con las semis') === 'pausado' && tipo('La compe se pospone, perdón') === 'pausado'
+    && tipo('queda aplazada para el sábado') === 'pausado', '«mañana seguimos», «se pospone», «aplazada»: en pausa');
+  ok(tipo('COMPE CANCELADA por falta de jueces') === 'cancelado' && tipo('se cancela la compe de hoy') === 'cancelado'
+    && tipo('perdón gente, hoy no se va a hacer') === 'cancelado' && tipo('el torneo queda suspendido') === 'cancelado',
+  '«cancelada», «se cancela», «no se va a hacer», «suspendido»: cancelado');
+  const a1 = E('se atrasa 30 minutos la compe');
+  const a2 = E('empezamos más tarde, en 20 min arrancamos');
+  const a3 = E('nuevo horario <t:1791420000:t>');
+  ok(a1 && a1.tipo === 'atrasado' && a1.mas === 30 * 60000 && !a1.nueva, '«se atrasa 30 minutos»: atrasado, 30 min más', JSON.stringify(a1));
+  ok(a2 && a2.tipo === 'atrasado' && a2.nueva === pub + 20 * 60000, '«en 20 min»: la hora nueva, desde el mensaje', JSON.stringify(a2));
+  ok(a3 && a3.tipo === 'atrasado' && a3.nueva === 1791420000000, 'el sello `<t:…>` es la hora nueva', JSON.stringify(a3));
+  ok(tipo('se pasa para mañana <t:1791500000:t>') === 'pausado', 'una hora nueva de otro día es en pausa');
+  ok([
+    'si no se llenan los cupos se cancela', 'tu cupo queda cancelado si no te presentás', 'no se cancela, seguimos en 5',
+    'vamo empezando 5 mins', 'gracias a todos, mañana hay otra compe', 'empezamos en 10 minutos',
+    '@everyone llaves listas, vayan a la llamada',
+  ].every((t) => tipo(t) === null), 'lo condicional, lo negado, la regla del cupo y la charla de siempre: nada',
+  ['si no se llenan los cupos se cancela', 'tu cupo queda cancelado si no te presentás', 'no se cancela, seguimos en 5',
+    'vamo empezando 5 mins', 'gracias a todos, mañana hay otra compe', 'empezamos en 10 minutos'].map((t) => t + ' → ' + tipo(t)).join(' | '));
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

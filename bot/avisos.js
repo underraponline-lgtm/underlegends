@@ -169,6 +169,54 @@ export async function claveCiclo(token) {
  * red) no dice nada: no se cancela un evento porque Discord no contestó.
  */
 export const CANCELADO = /\bcancelad[oa]s?\b|\bsuspendid[oa]s?\b|\bse\s+cancel[aó]\b/i;
+
+//: sin alguna de estas, `estadoDeMensaje()` no tiene nada que leer: el vigía relee cada minuto los mismos mensajes
+export const PISTA_ESTADO = /cancel|suspend|anulad|pospon|pospuest|aplaz|reprogram|posterg|pausa|atras|retras|demor|tarde|horario|reanud|retom|contin|seguimos|sigue|ma[ñn]ana|otro d[ií]a|no se|<t:\d/i;
+/**
+ * 📢 LO QUE EL ORGANIZADOR AVISA DESPUÉS DEL ANUNCIO, EN UN MENSAJE APARTE (Dlx, 07/10/2026: *«asegurate de q el bot
+ * pueda entender cuando pasa estas situaciones… lit el evento se canceló o se va a atrasar»*). GALLOS DEL UNDER AMATEUR
+ * I (Snake Rap) se cortó en cuartos —*«una disculpa se me fue la luz, podemos reanudar con la compe mañana siguiendo la
+ * llave»*— y la página lo seguía dando EN VIVO: `cancelado()` sólo mira el anuncio mismo, borrado o editado.
+ *
+ *   cancelado   «se cancela», «cancelada», «suspendido», «no se hace / no se va a jugar», «queda anulado»
+ *   pausado     sigue OTRO día: «reanudamos / seguimos / continuamos … mañana», «se pospone», «aplazado», «reprogramado»
+ *   atrasado    el MISMO día, más tarde: «se atrasa», «retraso», «empezamos más tarde», «nuevo horario»
+ *
+ * `{ tipo, nueva, mas }` o `null`. `nueva` es la hora nueva sólo si la dice de una forma que no depende de la zona de
+ * nadie —`<t:…>` o «en N minutos / horas», contado desde `pub`—; `mas`, cuánto se corre («se atrasa 30 min»), contado
+ * desde la hora del evento. ⚠️ No son un aviso: lo condicional («si no se llenan los cupos se cancela»), lo negado («no
+ * se cancela») y la regla de siempre («tu cupo queda cancelado si no te presentás»).
+ */
+export function estadoDeMensaje(texto, pub) {
+  const crudo = String(texto || '');
+  const s = crudo.replace(/<(?:@[!&]?|#)\d+>|<a?:\w+:\d+>|https?:\/\/\S+/g, ' ')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ');
+  const pubMs = Number(pub) || 0;
+  if (/\bsi\s+(?:no\b|nadie|hay\s+poc|faltan?)[^.!?\n]{0,60}\b(?:cancel|suspend|pospon|aplaz|atras|retras)/.test(s)) return null;
+  if (/\bno\s+(?:se\s+|esta\s+|va\s+a\s+ser\s+)?(?:cancel|suspend|pospon|aplaz|atras|retras)/.test(s)) return null;
+  // la hora nueva: el sello de Discord, o «en N minutos / horas» desde el mensaje
+  const sello = /<t:(\d{9,11})(?::[a-zA-Z])?>/.exec(crudo);
+  const enN = /\ben\s+(\d{1,3})\s*(min|minutos?|mins?|m|horas?|hs?|h)\b/.exec(s) || (/\ben\s+media\s+hora\b/.test(s) ? [0, '30', 'min'] : null);
+  const desdeAhora = enN && pubMs ? pubMs + Number(enN[1]) * (/^h/.test(enN[2]) ? 3600000 : 60000) : 0;
+  const nueva = sello ? Number(sello[1]) * 1000 : desdeAhora;
+  const corre = /\b(?:atras\w*|retras\w*|demor\w*|corre\w*|pospon\w*|pausa\w*)\s+(?:de\s+|unos?\s+|por\s+)?(\d{1,3})\s*(min|minutos?|mins?|m|horas?|hs?|h)\b/.exec(s);
+  const mas = corre ? Number(corre[1]) * (/^h/.test(corre[2]) ? 3600000 : 60000) : 0;
+  const otroDia = /\b(?:manana|pasado\s+manana|otro\s+dia|la\s+proxima\s+semana|el\s+(?:lunes|martes|miercoles|jueves|viernes|sabado|domingo))\b/;
+  const sigueOtro = new RegExp('\\b(?:reanud\\w*|retom\\w*|continu\\w*|seguimos|seguir\\w*|sigue\\w*|termin\\w*|batallar\\w*|jugamos|se\\s+juega\\w*|se\\s+hace\\w*|terminamos)\\b[^.!?\\n]{0,80}' + otroDia.source
+    + '|' + otroDia.source + '[^.!?\\n]{0,40}\\b(?:reanud\\w*|retom\\w*|continu\\w*|seguimos|sigue\\w*|termin\\w*|batallar\\w*|jugamos|se\\s+juega\\w*)\\b');
+  const posterga = /\b(?:se\s+pospone|pospuest[oa]s?|posponemos|pospondr\w*|aplaz\w*|reprogram\w*|posterg\w*|en\s+pausa|pausad[oa]s?|pausamos)\b/;
+  const atrasa = /\b(?:se\s+atras\w*|atrasad[oa]s?|atrasamos|retras\w*|demor\w*|se\s+corre\s+(?:la\s+hora|el\s+horario|la\s+compe)|(?:empez|arranc|comenz|inici)\w*\s+(?:un\s+poco\s+)?mas\s+tarde|nuevo\s+horario|nueva\s+hora|cambio\s+de\s+(?:hora|horario))\b/;
+  const cancela = /\b(?:se\s+cancel\w*|cancelad[oa]s?|cancelamos|cancelo|suspendid[oa]s?|se\s+suspende\w*|suspendemos|no\s+se\s+(?:va\s+a\s+)?(?:hace|hara|hacer|realiza\w*|juega|jugara|jugar)\b|queda\s+anulad[oa]|anulad[oa])/;
+  // ⚠️ «tu cupo queda cancelado», «inscripción cancelada»: la regla de siempre, no el evento
+  const cupo = /\b(?:cupo|cupos|inscripcion\w*|participacion|lugar)\b[^.!?\n]{0,30}\b(?:cancelad|anulad)/;
+  const tardeOtroDia = nueva && pubMs && nueva - pubMs > 18 * 3600000;
+  if (sigueOtro.test(s) || (posterga.test(s) && !mas && !desdeAhora) || tardeOtroDia) {
+    return { tipo: 'pausado', nueva: tardeOtroDia ? nueva : 0, mas: 0 };
+  }
+  if (atrasa.test(s) || (posterga.test(s) && (mas || desdeAhora))) return { tipo: 'atrasado', nueva, mas };
+  if (cancela.test(s) && !cupo.test(s)) return { tipo: 'cancelado', nueva: 0, mas: 0 };
+  return null;
+}
 /** Un código corto y estable de un texto (dos FNV-1a de 32 bits): para comparar sin mostrar lo que es (ver `vivo()`). */
 export function codigoDe(s) {
   let a = 0x811c9dc5, b = 0x5bd1e995;
@@ -506,7 +554,8 @@ export function mensajeRedCancelado(c, por) {
   const seg = c.ini ? Math.floor(c.ini / 1000) : 0;
   const lineas = [`**${c.svn || c.sv}** · ${c.sv}`];
   if (seg) lineas.push(`~~Era <t:${seg}:t>~~`);
-  lineas.push(por === 'editado' ? 'El servidor lo marcó como cancelado.' : 'El servidor borró el anuncio: el evento no se hace.');
+  lineas.push(por === 'editado' ? 'El servidor lo marcó como cancelado.'
+    : por === 'mensaje' ? 'El organizador avisó que se cancela.' : 'El servidor borró el anuncio: el evento no se hace.');
   return {
     allowed_mentions: { parse: [] },
     embeds: [{
@@ -519,7 +568,7 @@ export function mensajeRedCancelado(c, por) {
     components: [{
       type: 1,
       components: [
-        ...(por === 'editado' && c.url ? [{ type: 2, style: 5, label: 'Ir al anuncio', url: c.url }] : []),
+        ...((por === 'editado' || por === 'mensaje') && c.url ? [{ type: 2, style: 5, label: 'Ir al anuncio', url: c.url }] : []),
         { type: 2, style: 5, label: 'Avisos en tu teléfono', emoji: { name: '🔔' }, url: HUB_AVISOS },
       ],
     }],
@@ -3098,6 +3147,11 @@ export class Avisos {
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS cancelados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, ' +
         "cuerpo TEXT NOT NULL, t INTEGER NOT NULL, por TEXT NOT NULL DEFAULT '')");
+      // 📢 LO QUE EL ORGANIZADOR AVISÓ DESPUÉS (07/10/2026): cancelado, en pausa o atrasado, y de qué anuncio. Ver
+      // `estadoDeMensaje()` y `anotarEstado()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS estados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, tipo TEXT NOT NULL, ' +
+        "nueva INTEGER NOT NULL DEFAULT 0, mas INTEGER NOT NULL DEFAULT 0, texto TEXT NOT NULL DEFAULT '', " +
+        "pub INTEGER NOT NULL, evento TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
       // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -3540,6 +3594,7 @@ export class Avisos {
     if (!previo.limpio || ahora - previo.limpio > HORA) {
       this.sql.exec('DELETE FROM avisos WHERE creado < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM cancelados WHERE t < ?', ahora - 3 * 24 * HORA);
+      this.sql.exec('DELETE FROM estados WHERE pub < ?', ahora - 3 * 24 * HORA);
       this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM repetidos WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
@@ -3643,7 +3698,11 @@ export class Avisos {
         const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
         if (Number.isNaN(pub) || ahora - Math.max(pub, ed || 0) > VIVO_HORAS * HORA) continue;
         const texto = conNombres(m).slice(0, 6000);
-        if (!pareceLlave(texto)) continue;
+        if (!pareceLlave(texto)) {
+          // 📢 el «se me fue la luz, seguimos mañana» también se escribe en el canal de llaves. Nunca frena
+          try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ }
+          continue;
+        }
         const fila = this.sql.exec('SELECT ed, texto FROM vivo WHERE id = ?', m.id).toArray()[0];
         if (fila && fila.texto === texto) continue;
         // 🕵️ y de quién es cada mención: el texto ya la trae como `@apodo` (ver `quienes()`)
@@ -3900,6 +3959,32 @@ export class Avisos {
 
   /** Los eventos que el vigía vio anunciar en el último día (ver `anuncios` en `vivo()`): para la página y para saber
    *  de qué anuncio es cada llave en vivo (`chatVivo()`). */
+  /**
+   * 📢 Un mensaje que no es un anuncio ni una llave y dice que el evento se canceló, se pausa o se atrasa
+   * (`estadoDeMensaje()`), anotado con su evento: el que el mensaje nombra o, si no nombra a ninguno, el último que ese
+   * servidor anunció ANTES del mensaje (36 h). El mismo texto no se vuelve a escribir: el canal de llaves se relee cada
+   * minuto. Lo usan la página (`estados` de `vivo()`), `cancelaciones()` y el ciclo (`llaves_a_entrada.estados_vigia()`).
+   */
+  anotarEstado(m, c, ahora) {
+    if (!m || !c || !c.sv || (this.yo && m.author && m.author.id === this.yo)) return false;
+    const pub = Date.parse(String(m.timestamp || '').slice(0, 19) + 'Z');
+    if (Number.isNaN(pub) || ahora - pub > 36 * HORA || !PISTA_ESTADO.test(String(m.content || ''))) return false;
+    const e = estadoDeMensaje(m.content || '', pub);
+    if (!e) return false;
+    const texto = conNombres(m).slice(0, 300);
+    const ya = this.sql.exec('SELECT texto FROM estados WHERE id = ?', m.id).toArray()[0];
+    if (ya && ya.texto === texto) return false;
+    const msDe = (id) => { try { return Number((BigInt(id) >> 22n) + 1420070400000n); } catch (err) { return 0; } };
+    const plano = (x) => String(x || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const evs = this.anunciosVistos(ahora, 36, 40).filter((a) => a.sv === c.sv && /^\d+$/.test(a.id) && msDe(a.id) <= pub + MIN);
+    const tp = ' ' + plano(m.content) + ' ';
+    const ev = evs.find((a) => plano(a.n).length >= 4 && tp.includes(' ' + plano(a.n) + ' '))
+      || evs.sort((x, y) => msDe(y.id) - msDe(x.id))[0] || null;
+    this.sql.exec('INSERT OR REPLACE INTO estados (id, sv, tipo, nueva, mas, texto, pub, evento, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      m.id, c.sv, e.tipo, e.nueva || 0, e.mas || 0, texto, pub, ev ? ev.id : '', ahora);
+    return true;
+  }
+
   anunciosVistos(ahora, horas = 24, tope = 12) {
     return this.sql.exec("SELECT id, cuerpo FROM avisos WHERE creado > ? AND estado != 2 AND instr(id, ':') = 0 " +
       'ORDER BY creado DESC LIMIT ?', ahora - horas * HORA, tope).toArray().map((r) => {
@@ -3944,6 +4029,10 @@ export class Avisos {
       try { c = JSON.parse(r.cuerpo) || {}; } catch (e) { c = {}; }
       return { id: r.id, sv: r.sv, n: c.t || '', ini: c.ini || null, t: r.t, por: r.por };
     }),
+    // 📢 y lo que el organizador avisó después —cancelado, en pausa, atrasado—, con su anuncio (`evento`). Ver
+    // `anotarEstado()`. El más nuevo primero
+    estados: this.sql.exec('SELECT id, sv, tipo, nueva, mas, texto, pub, evento FROM estados WHERE pub > ? ' +
+      'ORDER BY pub DESC LIMIT 20', ahora - 36 * HORA).toArray(),
     // 📣 Y LOS EVENTOS QUE EL VIGÍA YA VIO ANUNCIAR (03/10/2026, Dlx: «se ha anunciado el evento y no se ve en
     // inicio»). El payload los trae recién en la corrida siguiente del ciclo —hasta 30 min, y la mayoría de los
     // eventos se anuncian con 15 min o menos—: DESGRACIAS EN TOKYO VOL 21 se avisó al teléfono a las 3:59 PM y el
@@ -4266,19 +4355,25 @@ export class Avisos {
       if (c.ini == null && ahora > (f.creado || 0) + EDAD_SIN_HORA + 30 * MIN) continue;
       if (this.sql.exec('SELECT 1 FROM cancelados WHERE id = ?', f.id).toArray().length) continue;
       const p = /\/channels\/\d+\/(\d+)\/(\d+)/.exec(c.url);
-      if (!p || pedidos >= CANCELA_TOPE) continue;
-      pedidos++;
-      let estado = 0, m = null;
-      try {
-        const r = await fetch(`${DC}/channels/${p[1]}/messages/${p[2]}`, {
-          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
-        });
-        estado = r.status;
-        if (estado === 200) m = await r.json();
-        // el 404 trae su código: 10008 es el mensaje borrado; 10003, el canal (ver `cancelado()`)
-        else if (estado === 404) { try { m = { code: (await r.json()).code }; } catch (e) { m = null; } }
-      } catch (e) { estado = 0; }
-      const por = cancelado(estado, m, c, f.creado);
+      if (!p) continue;
+      // 📢 o el organizador lo dijo en un mensaje aparte (`anotarEstado()`): sin preguntarle nada a Discord
+      let por = this.sql.exec("SELECT 1 FROM estados WHERE evento = ? AND tipo = 'cancelado'", f.id).toArray().length
+        ? 'mensaje' : '';
+      if (!por) {
+        if (pedidos >= CANCELA_TOPE) continue;
+        pedidos++;
+        let estado = 0, m = null;
+        try {
+          const r = await fetch(`${DC}/channels/${p[1]}/messages/${p[2]}`, {
+            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+          });
+          estado = r.status;
+          if (estado === 200) m = await r.json();
+          // el 404 trae su código: 10008 es el mensaje borrado; 10003, el canal (ver `cancelado()`)
+          else if (estado === 404) { try { m = { code: (await r.json()).code }; } catch (e) { m = null; } }
+        } catch (e) { estado = 0; }
+        por = cancelado(estado, m, c, f.creado);
+      }
       if (!por) continue;
       // 🔴 BORRADO Y VUELTO A PUBLICAR NO ES CANCELADO (LA REDENCION, FFA, 03/10/2026, 6:26 PM: le llegó «cancelado» a
       // todos y el evento seguía). Si en el mismo canal hay una copia del anuncio (`repetidos`, ver `anotar()`) y sigue
@@ -4357,6 +4452,9 @@ export class Avisos {
     // 🔴 SALVO QUE SE HAYA EDITADO DESPUÉS DE DESCARTARLO. Ver `releer()`.
     const fila = this.sql.exec('SELECT estado, hasta, cuerpo FROM avisos WHERE id = ?',
       m.id).toArray()[0];
+    // 📢 lo ya descartado también: el «seguimos mañana» puede ser de antes de que el vigía supiera leerlo (`anotarEstado()`
+    // no escribe dos veces lo mismo, y `PISTA_ESTADO` corta el resto sin leerlo)
+    if (fila && fila.estado === 2) { try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ } }
     if (!releer(fila, m)) return false;
     if (fila) this.sql.exec('DELETE FROM avisos WHERE id = ?', m.id);
     // lo que publicó el propio bot —la re-publicación de `eventos-hoy`— no
@@ -4387,7 +4485,11 @@ export class Avisos {
         return this.prueba(c, m, ahora);
       }
     }
-    if (!a) return descartar();
+    if (!a) {
+      // 📢 y lo que el organizador avisa después del anuncio: cancelado, en pausa o atrasado. Nunca frena
+      try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ }
+      return descartar();
+    }
     const ini = momentoMs(a.horario, m.timestamp, a.fecha);
     // 🔴 LA REGLA: tarde es peor que nunca
     if (ini != null ? ini < ahora - GRACIA : ahora - publicado > EDAD_SIN_HORA) {

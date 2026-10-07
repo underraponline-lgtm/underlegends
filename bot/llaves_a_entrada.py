@@ -2368,6 +2368,46 @@ QUIETA_H = 12
 VIDAS_CERRADO_H = 0.75
 
 
+#: 📢 la llave que el organizador PAUSÓ —«se me fue la luz, podemos reanudar con la compe mañana» (GALLOS DEL UNDER
+#: AMATEUR I, Snake Rap, 07/10/2026)— queda quieta toda la noche sin estar abandonada: espera esto antes de ir a
+#: Pendientes. Las mismas 36 h que el vigía guarda esos avisos (`estados` de `/avisos/vivo`)
+PAUSADA_H = 36
+VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev'
+_ESTADOS = [None]
+
+
+def estados_vigia():
+    """Lo que el vigía vio que los organizadores avisaron DESPUÉS del anuncio —cancelado, en pausa, atrasado—:
+    `estados` de `/avisos/vivo` (ver `anotarEstado()` de bot/avisos.js). Sin red, nada: vale la regla de siempre."""
+    if _ESTADOS[0] is None:
+        try:
+            import requests
+            _ESTADOS[0] = requests.get(VIGIA + '/avisos/vivo', timeout=15).json().get('estados') or []
+        except Exception:                                # noqa: BLE001
+            _ESTADOS[0] = []
+    return _ESTADOS[0]
+
+
+def pausada(grupo, sv, estados=None):
+    """¿El organizador avisó que esta llave sigue otro día? Un aviso «en pausa» de ESE servidor, publicado desde una
+    hora antes de la llave hasta 24 h después de lo último que se hizo con ella."""
+    ts = []
+    for h in grupo['llaves']:
+        for k in ('cuando', 'editado'):
+            t = str(h.get(k) or '').strip()
+            try:
+                t = datetime.datetime.fromisoformat(t.replace('Z', '+00:00')) if t else None
+            except ValueError:
+                t = None
+            if t is not None:
+                ts.append((t if t.tzinfo else t.replace(tzinfo=datetime.timezone.utc)).timestamp() * 1000)
+    if not ts:
+        return False
+    ini, fin = min(ts) - 3600 * 1000, max(ts) + 24 * 3600 * 1000
+    return any(e.get('sv') == sv and e.get('tipo') == 'pausado' and ini <= int(e.get('pub') or 0) <= fin
+               for e in (estados_vigia() if estados is None else estados))
+
+
 def tiene_campeon(filas):
     """`True` si alguna fila es la FINAL con ganador: se sabe quién ganó."""
     return any(str(f.get('ronda') or '').strip().lower() == 'final'
@@ -2840,6 +2880,13 @@ def _self_check():
                                  'notas': 'cobra: Sin límites 🇵🇪; cobra: Yo mc 🇨🇱; nadie siguió: ✅ Decidir'}],
                                'FFA', mapa={'FFA': {'yomc': 'Cronox'}})
     casos = [
+        ('una llave EN PAUSA —«seguimos mañana», avisado después de publicarla— espera; la de otro servidor o de antes, no',
+         pausada({'llaves': [{'cuando': '2026-10-07T20:45:15+00:00', 'editado': '2026-10-07T21:16:34+00:00'}]}, 'SR',
+                 [{'sv': 'SR', 'tipo': 'pausado', 'pub': 1791415920000}])
+         and not pausada({'llaves': [{'cuando': '2026-10-07T20:45:15+00:00'}]}, 'FFA',
+                         [{'sv': 'SR', 'tipo': 'pausado', 'pub': 1791415920000}])
+         and not pausada({'llaves': [{'cuando': '2026-10-07T20:45:15+00:00'}]}, 'SR',
+                         [{'sv': 'SR', 'tipo': 'pausado', 'pub': 1791300000000}])),
         ('«LLAVES» no es un título, ni la «I» de adorno entre barras ni los guiones: Gallos del Under Amateur I (Snake '
          'Rap, 07/10/2026)',
          titulo('# ▌│█║▌║▌║ 🔑  LLAVES 🔑  ║▌║▌║█│▌\n\n> ]|I{•------» (Gallos del Under Amateur I «------•}I|[ \n\n'
@@ -3513,7 +3560,9 @@ def main():
                     'notas': 'final: ✅ Decidir'})
         if ligas and not tiene_campeon(limpias):
             hq = horas_quieta(g)
-            if hq is not None and hq < QUIETA_H:
+            # 📢 o en pausa, si el organizador avisó que sigue otro día (`pausada()`; sólo se le pregunta al vigía
+            # cuando ya pasó la espera de siempre)
+            if hq is not None and (hq < QUIETA_H or (hq < PAUSADA_H and pausada(g, ligas[0]))):
                 en_curso.append((nom, hq))
             else:
                 incompletos.append((nom, ligas[0], fec,

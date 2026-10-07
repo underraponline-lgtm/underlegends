@@ -61,7 +61,8 @@ function armar(d) {
     return {
       titulo: '❌ Cancelado: ' + (d.t || 'el evento'),
       cuerpo: [d.svn || d.sv, d.ini ? 'era a las ' + hora(d.ini) : ''].filter(Boolean).join(' · ') +
-        (d.por === 'editado' ? '\nEl servidor lo marcó como cancelado.' : '\nEl servidor borró el anuncio.'),
+        (d.por === 'editado' ? '\nEl servidor lo marcó como cancelado.'
+          : d.por === 'mensaje' ? '\nEl organizador avisó que se cancela.' : '\nEl servidor borró el anuncio.'),
       url: d.url || '/', tag: 'ev' + (d.id || ''),
     };
   }

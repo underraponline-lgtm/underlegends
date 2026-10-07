@@ -9,10 +9,17 @@ export function Fechas({ liga }) {
   const t = [];
   liga.vivo().forEach((e) => t.push({ c: 'vivo', dia: 'HOY', hora: '● EN VIVO · empezó ' + liga.dia(e.cuando).replace(/^hoy /, ''), sv: e.sv, ev: limpio(e.nombre),
     det: e.modalidad || 'se mira en Discord', link: (aDiscord(liga, e, true) || {}).url }));
+  // ⏸ lo que el organizador pausó —«seguimos mañana»—: ni en vivo ni terminado (ver `liga.estado()`)
+  liga.pausados().forEach(({ e, st }) => t.push({ c: 'pausado', dia: 'HOY', hora: '⏸ EN PAUSA', sv: e.sv, ev: limpio(e.nombre),
+    det: liga.estadoTexto(st, e), link: (aDiscord(liga, e, true) || {}).url }));
   liga.luego().forEach((e) => {
     const dor = liga.esDorado(e.nombre, e.sv);
     const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
-    t.push({ c: dor ? 'dorado' : '', dia: liga.dia(e.cuando).split(' ')[0].toUpperCase(), hora: hora(e.cuando) + ' · tu hora',
+    // ⏰ el que se atrasó, con su hora nueva y dicho
+    const cu = liga.cuandoDe(e);
+    const atr = (liga.estado(e) || {}).tipo === 'atrasado';
+    t.push({ c: dor ? 'dorado' : atr ? 'pausado' : '', dia: liga.dia(cu).split(' ')[0].toUpperCase(),
+      hora: (atr ? '⏰ ' : '') + hora(cu) + (atr ? ' · se atrasó' : ' · tu hora'),
       sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: (aDiscord(liga, e, false) || {}).url });
   });
   // 🔴 lo que se canceló (el vigía vio que el anuncio se borró, ver `liga.cancelados()`): dice «CANCELADO» hasta seis
