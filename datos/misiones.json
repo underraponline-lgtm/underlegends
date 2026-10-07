@@ -71,7 +71,7 @@
     ],
     "Aldre": [
      1,
-     2,
+     3,
      4
     ],
     "Andres": [
@@ -246,7 +246,7 @@
     ],
     "Jupiter": [
      1,
-     4,
+     6,
      2
     ],
     "Keider": [
@@ -451,7 +451,7 @@
     ],
     "Provenza": [
      1,
-     6,
+     9,
      1
     ],
     "RT": [
@@ -461,7 +461,7 @@
     ],
     "Rayo": [
      1,
-     3,
+     5,
      4
     ],
     "Reyes": [
@@ -669,7 +669,7 @@
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 300,
-    "Aldre": 300,
+    "Aldre": 900,
     "Andres": 1300,
     "Andy": 300,
     "Ariaxer": 300,
@@ -785,7 +785,7 @@
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 300,
-  "Aldre": 300,
+  "Aldre": 900,
   "Andres": 1300,
   "Andy": 300,
   "Ariaxer": 300,

@@ -224,8 +224,8 @@
    "organizadores": [
     [
      "Lewis",
-     100,
-     4
+     108,
+     5
     ],
     [
      "Elsoolar y tokio",
@@ -245,11 +245,11 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 17,
+     "FFA": 19,
      "DDF": 8
     },
     "gente": {
-     "FFA": 103,
+     "FFA": 109,
      "DDF": 24
     },
     "gana": "DDF"
@@ -258,7 +258,7 @@
     "ACAD": 0,
     "DDF": 24,
     "DRA": 0,
-    "FFA": 103,
+    "FFA": 109,
     "FFS": 0,
     "SR": 0,
     "URBF": 0

@@ -135,6 +135,21 @@
 "temporada"
 ]
 },
+"jupiter": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "B",
 "c": [
@@ -173,21 +188,6 @@
 ]
 },
 "majiztral": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"trot": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -386,6 +386,13 @@
 "servidor"
 ]
 },
+"rayo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zeta": {
 "rg": "",
 "c": [
@@ -415,6 +422,13 @@
 ]
 },
 "presagio": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"scot": {
 "rg": "",
 "c": [
 "servidor",
@@ -498,13 +512,6 @@
 "temporada"
 ]
 },
-"rayo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "xclusivo": {
 "rg": "",
 "c": [
@@ -547,6 +554,10 @@
 "servidor",
 "temporada"
 ]
+},
+"prometheusbib": {
+"rg": "",
+"c": []
 },
 "tambaggio": {
 "rg": "",
@@ -602,13 +613,6 @@
 "temporada"
 ]
 },
-"scot": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "zaza": {
 "rg": "",
 "c": []
@@ -625,6 +629,13 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"aldre": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
 ]
 },
 "betelguese": {
@@ -657,12 +668,6 @@
 "c": [
 "servidor",
 "temporada"
-]
-},
-"aldre": {
-"rg": "",
-"c": [
-"servidor"
 ]
 },
 "neo": {
@@ -705,10 +710,6 @@
 "servidor",
 "temporada"
 ]
-},
-"prometheusbib": {
-"rg": "",
-"c": []
 },
 "richard": {
 "rg": "E",
@@ -4714,6 +4715,23 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-07T15:57:19Z",
+"quien": [
+"Trot"
+],
+"rg": "D",
+"primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T15:57:19Z",
+"quien": [
+"Aldre"
+],
+"carta": "pais"
 }
 ]
 }

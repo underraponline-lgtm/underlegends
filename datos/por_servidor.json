@@ -275,12 +275,12 @@
   },
   "Aldre": {
    "FFA": {
-    "duelos": "2/5",
-    "ev": 2,
+    "duelos": "3/8",
+    "ev": 3,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 55,
     "pod": 0,
-    "pts": 14625,
+    "pts": 18375,
     "racha": "0/0"
    }
   },
@@ -2069,13 +2069,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "5/8",
-    "ev": 3,
+    "duelos": "7/11",
+    "ev": 4,
     "oro": 0,
-    "ovr": 62,
-    "pod": 2,
-    "pts": 25186,
-    "racha": "2/2"
+    "ovr": 65,
+    "pod": 3,
+    "pts": 32872,
+    "racha": "3/3"
    },
    "SR": {
     "duelos": "",
@@ -3481,13 +3481,13 @@
   },
   "PROMETHEUS BIB 🇨🇴": {
    "FFA": {
-    "duelos": "0/2",
-    "ev": 2,
+    "duelos": "0/3",
+    "ev": 3,
     "oro": 0,
-    "ovr": 53,
-    "pod": 1,
-    "pts": 17529,
-    "racha": "1/1"
+    "ovr": 56,
+    "pod": 2,
+    "pts": 25215,
+    "racha": "2/2"
    }
   },
   "PUBLIC ENEMY": {
@@ -3727,13 +3727,13 @@
   },
   "Provenza": {
    "FFA": {
-    "duelos": "10/18",
-    "ev": 18,
-    "oro": 3,
-    "ovr": 75,
-    "pod": 3,
-    "pts": 81498,
-    "racha": "3/3"
+    "duelos": "13/21",
+    "ev": 19,
+    "oro": 4,
+    "ovr": 78,
+    "pod": 4,
+    "pts": 96498,
+    "racha": "4/4"
    }
   },
   "QUEEN": {
@@ -3813,12 +3813,12 @@
   },
   "Rayo": {
    "FFA": {
-    "duelos": "3/6",
-    "ev": 3,
+    "duelos": "5/10",
+    "ev": 4,
     "oro": 0,
-    "ovr": 58,
+    "ovr": 60,
     "pod": 1,
-    "pts": 16850,
+    "pts": 20600,
     "racha": "0/0"
    }
   },
@@ -4158,13 +4158,13 @@
   },
   "Scot": {
    "FFA": {
-    "duelos": "0/2",
-    "ev": 7,
+    "duelos": "0/3",
+    "ev": 8,
     "oro": 0,
-    "ovr": 56,
-    "pod": 1,
-    "pts": 19224,
-    "racha": "1/1"
+    "ovr": 59,
+    "pod": 2,
+    "pts": 26910,
+    "racha": "2/2"
    }
   },
   "Selek": {
@@ -4519,13 +4519,13 @@
     "racha": "0/1"
    },
    "FFA": {
-    "duelos": "4/8",
-    "ev": 10,
+    "duelos": "4/9",
+    "ev": 11,
     "oro": 0,
-    "ovr": 65,
-    "pod": 2,
-    "pts": 29620,
-    "racha": "1/1"
+    "ovr": 67,
+    "pod": 3,
+    "pts": 37306,
+    "racha": "2/2"
    },
    "SR": {
     "duelos": "",
