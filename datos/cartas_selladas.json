@@ -1,10 +1,10 @@
 {
  "cartas": {
   ".SosaATR": {
-   "competitivo": "269013ce17b0:66620bff5eb9",
-   "pais": "4590de82fca0:dd0366c7fb5d",
-   "servidor": "f6aa02da7b1f:9d97339447c1:3e2e7c",
-   "temporada": "7883979ee84f:c2dd98b0f962"
+   "competitivo": "45ecd627498d:66620bff5eb9",
+   "pais": "7d31535e846c:dd0366c7fb5d",
+   "servidor": "fdc11a51e224:9d97339447c1:3e2e7c",
+   "temporada": "00eaa39ea49b:c2dd98b0f962"
   },
   "1200": {
    "servidor": "85cc15b7e996:9d97339447c1:098793",
@@ -650,7 +650,7 @@
    "servidor": "f230b32c72bd:9d97339447c1:055f77"
   },
   "Ghost": {
-   "servidor": "c9de9afbb85c:9d97339447c1:055f77"
+   "servidor": "755777d4301c:9d97339447c1:055f77"
   },
   "Gian": {
    "servidor": "4cfaa7810a85:9d97339447c1:da39a3",
@@ -1591,7 +1591,7 @@
    "temporada": "dee31f37d9d1:c2dd98b0f962"
   },
   "SNE": {
-   "servidor": "c3f61bf54922:9d97339447c1:d45cf3"
+   "servidor": "38a7a76c11dd:9d97339447c1:d45cf3"
   },
   "SOL": {},
   "SONIC_DORADITO": {
@@ -2095,5 +2095,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-07T01:24:11+00:00"
+ "cuando": "2026-10-07T01:57:46+00:00"
 }
