@@ -5193,25 +5193,14 @@
     "racha": "0/0"
    }
   },
-  "setes": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 0,
-    "pts": 6000,
-    "racha": "0/0"
-   }
-  },
   "setesfifi": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 49,
     "pod": 0,
-    "pts": 3750,
+    "pts": 12750,
     "racha": "0/0"
    }
   },
