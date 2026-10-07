@@ -10399,7 +10399,7 @@
      [
       [
        "Lord Viruzz",
-       "NAKAMURA🇦🇴",
+       "Hassan",
        "LAST",
        "Kochi",
        "TYPHLOSION",
@@ -10717,6 +10717,11 @@
     625
    ],
    [
+    "Hassan",
+    "R32",
+    625
+   ],
+   [
     "Jere",
     "R32",
     625
@@ -10793,11 +10798,6 @@
    ],
    [
     "Molusco",
-    "R32",
-    625
-   ],
-   [
-    "NAKAMURA🇦🇴",
     "R32",
     625
    ],
@@ -11617,10 +11617,10 @@
      ],
      [
       [
-       "Oasis, Shishui🇯🇵",
+       "Oasis, Velatz",
        "CFM, Freestyle4AllmyNiggaz 🌏🌏"
       ],
-      "Oasis, Shishui🇯🇵",
+      "Oasis, Velatz",
       ""
      ]
     ],
@@ -11630,10 +11630,10 @@
     "b": [
      [
       [
-       "Oasis, Shishui🇯🇵, CFM",
+       "Oasis, Velatz, CFM",
        "Drexx, Alexi, BLITZ"
       ],
-      "Oasis, Shishui🇯🇵, CFM",
+      "Oasis, Velatz, CFM",
       ""
      ]
     ],
@@ -11658,7 +11658,7 @@
     2500
    ],
    [
-    "Shishui🇯🇵",
+    "Velatz",
     "Campeón",
     2500
    ],
@@ -13210,7 +13210,7 @@
      [
       [
        "Snow",
-       "SHUSUI🇯🇵",
+       "Velatz",
        "Krish"
       ],
       "Snow",
@@ -13429,17 +13429,17 @@
     1250
    ],
    [
-    "SHUSUI🇯🇵",
-    "Octavos",
-    1250
-   ],
-   [
     "Six",
     "Octavos",
     1250
    ],
    [
     "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
     "Octavos",
     1250
    ],
@@ -13729,6 +13729,162 @@
     "dxg",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "415": {
+  "dia": "2026-10-06",
+  "escala": "8-15",
+  "fecha": "06/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1557204711390715986",
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1557213906928271485"
+  ],
+  "n": 415,
+  "nombre": "NOCHE DE BOOMBAP",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "XNOAH🇦🇷"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "RT 🇲🇽"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Miniboy",
+       "Dm🇵🇪"
+      ],
+      "Carlosss",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Liberia",
+       "Number VE",
+       "Shadow"
+      ],
+      "Liberia",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "CrisZJ"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Liberia"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Carlos",
+       "Sebita🇱🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "ERIAN🇱🇰",
+       "CrisZJ🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Carlosss"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dm🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "RT 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "XNOAH🇦🇷",
+    "Cuartos",
+    2000
    ]
   ]
  }

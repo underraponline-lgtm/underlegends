@@ -45,10 +45,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 18,
-    "estado": "suelto",
-    "ev": 1,
+    "estado": "cazado",
+    "ev": 2,
     "fase": "Campeón",
-    "valor": 8750
+    "valor": 8750,
+    "caza": {
+     "n": 415,
+     "evento": "NOCHE DE BOOMBAP",
+     "sv": "DDF",
+     "t": "2026-10-07T01:35:34Z",
+     "por": [
+      {
+       "n": "Erian",
+       "cobra": 8750
+      }
+     ]
+    }
    },
    {
     "n": "Deuxs",
