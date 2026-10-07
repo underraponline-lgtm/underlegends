@@ -121,12 +121,16 @@ def rango_de_cada_uno():
     with io.open(os.path.join(BASE, 'datos', 'competitivo_pool.json'),
                  encoding='utf-8') as f:
         for x in json.load(f):
-            sc = x.get('score')
-            if sc is None:
+            # 🔴 LA LETRA DEL COMPETITIVO, CON SU PUERTA DE 10 EVENTOS (07/10/2026). Esto hacía `de_score(score)` y le
+            # daba letra a cualquiera con Score —Masino, con 1 evento, «Rango A»—, que es justo lo que la vitrina dejó de
+            # hacer el 23/09 (Dlx: «no aparece nadie hasta que tenga 10 eventos»). `rango` del pool ya trae la puerta:
+            # vacío debajo de 10. El signo (A+, A−) no tiene rol propio: se le saca
+            letra = re.sub(r'[^A-Z]', '', str(x.get('rango') or '').upper())
+            if letra not in TRAMOS:
                 continue
             did = (idx.get(PAD.norm(x['raw'])) or {}).get('discord_id')
             if did:
-                out[did] = (de_score(float(sc)), x['raw'])
+                out[did] = (letra, x['raw'])
     return out
 
 
@@ -349,7 +353,9 @@ def main():
 
         if not aplicar:
             continue
-        resp = os.path.join(BASE, 'docs', 'roles_%s_%s.json'
+        # ⚠️ A `.cache/` (ignorado), no a `docs/`: el respaldo trae Discord IDs y `docs/` es público
+        os.makedirs(os.path.join(BASE, '.cache'), exist_ok=True)
+        resp = os.path.join(BASE, '.cache', 'roles_%s_%s.json'
                             % (nom, time.strftime('%Y%m%d_%H%M')))
         json.dump(plan, io.open(resp, 'w', encoding='utf-8', newline='\n'),
                   ensure_ascii=False, indent=1)
