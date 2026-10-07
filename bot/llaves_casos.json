@@ -1431,6 +1431,181 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "SNAKE RAP: `(< A >) ⚔️ (< B >)` y el cupo vacío `(< >)` (GALLOS DEL UNDER AMATEUR I, 07/10/2026)",
+   "texto": "# ▌│█║▌║▌║ 🔑  LLAVES 🔑  ║▌║▌║█│▌\n\n> ]|I{•------» (Gallos del Under Amateur I «------•}I|[ \n\n\n## 4️⃣ Cuartos 4️⃣ \n\n--------------------- \n** (< Alexiz 🇦🇷 >) ⚔️ (< Cronox 🇨🇱 >)**    \n** (< Rayo 🇸 >) ⚔️ (< Majiztral >)**\n--------------------- \n** (< Geronimo🇻🇪 🇸 >) ⚔️ (< erian 🇧🇱 >)**    \n** (< Chop🇭🇳 >) ⚔️ (< Molt 🇨🇼 >)**\n--------------------- \n\n## 🧨 Semifinal 🧨 \n\n---------------------\n** (<  Cronox 🇨🇱 >) ⚔️ (< >)**    \n** (< >) ⚔️ (< >)**\n--------------------- \n\n## 🥉 Tercer y Cuarto Puesto 🥉 \n\n---------------------\n** (< >) ⚔️ (< >)**\n--------------------- \n\n## 🏆 GRAN FINAL 🏆 \n\n🔥-------------🔥 \n** (< >) ⚔️ (< >)**\n🔥-------------🔥",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Alexiz 🇦🇷",
+       "Cronox 🇨🇱"
+      ],
+      [
+       "Rayo 🇸",
+       "Majiztral"
+      ],
+      [
+       "Geronimo🇻🇪 🇸",
+       "erian 🇧🇱"
+      ],
+      [
+       "Chop🇭🇳",
+       "Molt 🇨🇼"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "Cronox 🇨🇱"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "los parecidos que todavía no se vieron: 【】 con 🗡️, «x» y «versus» (Dlx, 07/10/2026)",
+   "texto": "【 CUARTOS 】\n【A 🇦🇷】 🗡️ 【B 🇨🇱】\n【C】 x 【D】\n【 FINAL 】\n【A 🇦🇷】 versus 【C】",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "A 🇦🇷",
+       "B 🇨🇱"
+      ],
+      [
+       "C",
+       "D"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "A 🇦🇷",
+       "C"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… 〔〕 con ✖️ y ⚡, con negrito",
+   "texto": "**〔OCTAVOS〕**\n**〔Ana〕** ✖️ **〔Beto〕**\n〔Caro〕 ⚡ 〔Dani〕\nSEMIFINAL\n〔Ana〕 ✖ 〔Caro〕",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "Ana",
+       "Beto"
+      ],
+      [
+       "Caro",
+       "Dani"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "Ana",
+       "Caro"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… ［］ 🥊, 《》 v/s, ⟨⟩ contra, ⟦⟧ 🤜🤛 y 〖〗 💥",
+   "texto": "# CUARTOS\n［Ana］ 🥊 ［Beto］\n《Caro》 v/s 《Dani》\n⟨Eva⟩ contra ⟨Fer⟩\n⟦Gus⟧ 🤜🤛 ⟦Hugo⟧\n# FINAL\n〖Ana〗 💥 〖Caro〗",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Ana",
+       "Beto"
+      ],
+      [
+       "Caro",
+       "Dani"
+      ],
+      [
+       "Eva",
+       "Fer"
+      ],
+      [
+       "Gus",
+       "Hugo"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Ana",
+       "Caro"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… los corchetes de siempre con ⚔️ y ×",
+   "texto": "[OCTAVOS]\n[A] ⚔️ [B]\n[C] × [D]\n[FINAL]\n[A] vs [C]",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "A",
+       "B"
+      ],
+      [
+       "C",
+       "D"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "A",
+       "C"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y lo que NO es un vs: el `X1` de FFA después del último lado",
+   "texto": "**[•OCTAVOS DE FINAL•]**\n▪️   [SEBITA] 🆚 [MALVA] 🆚 [CRONOX] X1\n▪️   [VANDU] 🆚 [RUVIK]",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "SEBITA",
+       "MALVA",
+       "CRONOX"
+      ],
+      [
+       "VANDU",
+       "RUVIK"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

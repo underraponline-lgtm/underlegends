@@ -284,6 +284,17 @@ PODIO_TEXTO = re.compile(r'(?<![<\w]):([123])[a-z\u00ba\u00b0]*_?puesto\w*:(?!\d
 PROPIO = r'<a?:\w+:\d+>'
 #: el negrito y el subrayado de Discord pegados a un marco
 _MD = r'(?:\*\*|__)?'
+#: 🐍 LOS MARCOS Y LOS «VS» QUE TODAVÍA NO SE VIERON, PERO SON LA MISMA IDEA (Dlx, 07/10/2026, después de que Snake Rap
+#: escribiera `(< A >) ⚔️ (< B >)` y la llave no entrara: *«agrega también soporte para formatos similares q no han
+#: sido agregados todavía»*). Un marco pasa a `⌞x⌝` sólo EN PAR, en la misma línea y con alguna letra o número
+#: adentro; un «vs» cuenta sólo ENTRE DOS MARCOS, así que un adorno suelto no parte nada.
+#: ⚠️ Afuera a propósito: `«»` (títulos: `«------•`), `｢｣` (FFA decora con `｢ <emoji> ｣`), ❌ (la nave de funa
+#: marca así al eliminado) y 🔥 (adorno de línea: `🔥-------------🔥`). Atado a `llave_vivo.js` por `llaves_casos`
+MARCOS_MAS = ('【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘')
+VS_ENTRE = (r'(?:(?:[\N{CROSSED SWORDS}\N{DAGGER KNIFE}\N{HEAVY MULTIPLICATION X}\N{MULTIPLICATION X}\N{BALLOT X}'
+            r'\N{MULTIPLICATION SIGN}\N{HIGH VOLTAGE SIGN}\N{COLLISION SYMBOL}\N{BOXING GLOVE}\N{RIGHT-FACING FIST}'
+            r'\N{LEFT-FACING FIST}\N{HOCHO}]\N{VARIATION SELECTOR-16}?)+'
+            r'|(?<!\w)(?:versus|vrs|v/s|v\.s\.?|contra|x)(?!\w))')
 #: el podio con emoji propio: `<:1erPuesto:…>`, `<:2oPuesto:…>`, `<:3erPuesto:…>`
 PODIO_PROPIO = re.compile(r'<a?:([123])[a-z\u00ba\u00b0]*_?puesto\w*:\d+>', re.I)
 #: `3er PUESTO`, `3er Y 4º PUESTO`: un ENCABEZADO, si lo que sigue es una batalla
@@ -519,6 +530,18 @@ def traducir(texto):
     # ⚠️ SÓLO EN PAR Y EN LA MISMA LÍNEA: una llave vieja de Snake Rap
     # (TOKYO VOL.5) trae una `}` suelta en el título.
     t = re.sub(r'\{[ \t]*([^{}\n]*?)[ \t]*\}', '⌞\\1⌝', t)
+    # 🐍 Y `(< x >)` CON ⚔️ EN EL MEDIO: el organizador nuevo de Snake Rap (GALLOS DEL UNDER AMATEUR I, 07/10/2026)
+    # escribe `** (< Alexiz 🇦🇷 >) ⚔️ (< Cronox 🇨🇱 >)**` y el cupo vacío `(< >)`, y la llave no entraba: ni el bot ni
+    # la página la veían en vivo. ⚠️ Sólo en par y en la misma línea, y nunca una mención (`(<@id>)`); los emojis
+    # propios ya se tradujeron arriba. ⚠️ Y la espada separa sólo ENTRE dos marcos: `### ⚔️ ENFRENTAMIENTO 1` es un
+    # encabezado
+    t = re.sub(r'\([ \t]*<(?![@#:])[ \t]*([^<>()\n]*?)[ \t]*>[ \t]*\)', '⌞\\1⌝', t)
+    # 🔑 Y LOS PARECIDOS QUE TODAVÍA NO APARECIERON (Dlx, 07/10/2026: *«agrega también soporte para formatos similares
+    # q no han sido agregados todavía»*): ver `MARCOS_MAS` y `VS_ENTRE`
+    for a, c in MARCOS_MAS:
+        t = re.sub(r'%s[ \t]*([^%s%s\n]*?[^\W_][^%s%s\n]*?)[ \t]*%s' % (a, a, c, a, c, c), '⌞\\1⌝', t)
+    t = re.sub(r'(?<=[⌝\]])[ \t]*' + _MD + r'[ \t]*' + VS_ENTRE + r'[ \t]*(?=' + _MD + r'[ \t]*[⌞\[])', ' 🆚 ', t,
+               flags=re.I)
     # el cuarto entre paréntesis, DESPUÉS de un separador: es un lado.
     # ⚠️ Sólo con un emoji delante: `(BLOODY) [Cj] [Zignos]` es un refuerzo
     # que no peleó (guía §4.2), y ése no lleva separador.

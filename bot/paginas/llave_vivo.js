@@ -66,6 +66,11 @@
   var HISTORIA = /\s*[(（][^()（）]*[)）]?\s*$/;
   var BANDERA = '[\\u{1F1E6}-\\u{1F1FF}]';
   var MD = '(?:\\*\\*|__)?';
+  /* 🐍 los marcos y los «vs» que todavía no se vieron (Dlx, 07/10/2026): `escuchar.MARCOS_MAS` y `VS_ENTRE`. Sin `«»`,
+     `｢｣`, ❌ ni 🔥, a propósito */
+  var MARCOS_MAS = ['【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘'];
+  var VS_ENTRE = '(?:(?:[\\u{2694}\\u{1F5E1}\\u{2716}\\u{2715}\\u{2717}\\u{D7}\\u{26A1}\\u{1F4A5}\\u{1F94A}\\u{1F91C}' +
+    '\\u{1F91B}\\u{1F52A}]\\u{FE0F}?)+|(?<![\\p{L}\\p{N}_])(?:versus|vrs|v\\/s|v\\.s\\.?|contra|x)(?![\\p{L}\\p{N}_]))';
   // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
   var VS_PROPIO = /<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>/gi;
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
@@ -222,6 +227,16 @@
     t = t.replace(ADORNO, '');
     // y las llaves `{x}` de Urban Freestyle, sólo en par: ver `escuchar.traducir()`
     t = t.replace(/\{[ \t]*([^{}\n]*?)[ \t]*\}/g, '⌞$1⌝');
+    // 🐍 y `(< x >)` con ⚔️ en el medio (Snake Rap, 07/10/2026), nunca una mención; la espada sólo entre dos marcos
+    t = t.replace(/\([ \t]*<(?![@#:])[ \t]*([^<>()\n]*?)[ \t]*>[ \t]*\)/g, '⌞$1⌝');
+    // y los parecidos que todavía no aparecieron: ver `MARCOS_MAS` y `VS_ENTRE`
+    MARCOS_MAS.forEach(function (p) {
+      var a = p[0], c = p[1];
+      t = t.replace(new RegExp(a + '[ \\t]*([^' + a + c + '\\n]*?[\\p{L}\\p{N}][^' + a + c + '\\n]*?)[ \\t]*' + c,
+        'gu'), '⌞$1⌝');
+    });
+    t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*' + VS_ENTRE + '[ \\t]*(?=' + MD + '[ \\t]*[⌞\\[])',
+      'giu'), '$1 🆚 ');
     t = t.replace(/([⌝\]])[ \t]*<a?:\w+:\d+>[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)/gu, '$1 🆚 ⌞$2⌝');
     t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*(?!<a?:[vV][sS][fF]?:)<a?:\\w+:\\d+>[ \\t]*(?=' +
       MD + '[⌞\\[])', 'gu'), '$1 🆚 ');

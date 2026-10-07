@@ -2158,8 +2158,11 @@ export function pareceLlave(texto) {
   if (/fase\s+de\s+eliminaci|nave\s+de\s+funa|exterminaci|aniquilaci|c[iy]pher/i.test(s) &&
       (s.match(/[\u231d\]\u300d\u300f\u274c]/g) || []).length +
       (s.match(/\bELIM\w{0,4}NAD[OA]S?\b/gi) || []).length >= 4) return true;
+  // 🐍 y los marcos y «vs» de `escuchar.MARCOS_MAS` / `VS_ENTRE` (07/10/2026): Snake Rap escribió `(< A >) ⚔️ (< B >)`
+  // y la llave no se guardaba —ninguna marca de las de antes—, así que ni el bot ni la página la vieron en vivo.
+  // ⚠️ `s` va en NFKD: `［］` ya llega como `[]`
   return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
-    (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉/gi) || []).length >= 2;
+    (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉|>\s*\)|[】〕》⟩⟧〗⦘]|[\u{2694}\u{1F5E1}\u{2716}\u{2715}\u{2717}\u{26A1}\u{1F4A5}\u{1F94A}\u{1F91C}\u{1F52A}]|\b(?:versus|vrs|contra)\b/giu) || []).length >= 2;
 }
 
 /** El texto con cada `<@id>` como `@Nombre`: Discord manda quién es cada mención. */

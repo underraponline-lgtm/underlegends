@@ -133,6 +133,18 @@ INVENTADOS = [
      'YINN 🇲🇦 + (PICHULITAMC 🇦🇷) 🆚 TROT 🇪🇦 (ABYSSUS 🇨🇦)\n'),
     ('FFA: el cruce que espera rival, `⌞Geoka⌝ VS ⌞⌝`, no se pega con el de abajo (Dos Generaciones Vol 2, 01/10)',
      '`[ CUARTOS ]`\n\n⌞Soneto 🇪🇨⌝  <:VSF:17>  ⌞Oasis🇨🇱⌝ \n⌞Six🇦🇷⌝  <:VSF:17>  ⌞Sosa🇨🇱⌝ \n⌞Geoka 🇦🇷⌝  <:VSF:17>  ⌞⌝\n⌞Cinexfilo 🇻🇪⌝  <:VSF:17>  ⌞⌝  \n\n`[ SEMIFINALES ]`\n\n⌞⌝ <:VSF:17> ⌞⌝\n⌞⌝ <:VSF:17> ⌞⌝\n'),
+    ("SNAKE RAP: `(< A >) ⚔️ (< B >)` y el cupo vacío `(< >)` (GALLOS DEL UNDER AMATEUR I, 07/10/2026)",
+     "# ▌│█║▌║▌║ 🔑  LLAVES 🔑  ║▌║▌║█│▌\n\n> ]|I{•------» (Gallos del Under Amateur I «------•}I|[ \n\n\n## 4️⃣ Cuartos 4️⃣ \n\n--------------------- \n** (< Alexiz 🇦🇷 >) ⚔️ (< Cronox 🇨🇱 >)**    \n** (< Rayo 🇸 >) ⚔️ (< Majiztral >)**\n--------------------- \n** (< Geronimo🇻🇪 🇸 >) ⚔️ (< erian 🇧🇱 >)**    \n** (< Chop🇭🇳 >) ⚔️ (< Molt 🇨🇼 >)**\n--------------------- \n\n## 🧨 Semifinal 🧨 \n\n---------------------\n** (<  Cronox 🇨🇱 >) ⚔️ (< >)**    \n** (< >) ⚔️ (< >)**\n--------------------- \n\n## 🥉 Tercer y Cuarto Puesto 🥉 \n\n---------------------\n** (< >) ⚔️ (< >)**\n--------------------- \n\n## 🏆 GRAN FINAL 🏆 \n\n🔥-------------🔥 \n** (< >) ⚔️ (< >)**\n🔥-------------🔥"),
+    ("los parecidos que todavía no se vieron: 【】 con 🗡️, «x» y «versus» (Dlx, 07/10/2026)",
+     "【 CUARTOS 】\n【A 🇦🇷】 🗡️ 【B 🇨🇱】\n【C】 x 【D】\n【 FINAL 】\n【A 🇦🇷】 versus 【C】"),
+    ("… 〔〕 con ✖️ y ⚡, con negrito",
+     "**〔OCTAVOS〕**\n**〔Ana〕** ✖️ **〔Beto〕**\n〔Caro〕 ⚡ 〔Dani〕\nSEMIFINAL\n〔Ana〕 ✖ 〔Caro〕"),
+    ("… ［］ 🥊, 《》 v/s, ⟨⟩ contra, ⟦⟧ 🤜🤛 y 〖〗 💥",
+     "# CUARTOS\n［Ana］ 🥊 ［Beto］\n《Caro》 v/s 《Dani》\n⟨Eva⟩ contra ⟨Fer⟩\n⟦Gus⟧ 🤜🤛 ⟦Hugo⟧\n# FINAL\n〖Ana〗 💥 〖Caro〗"),
+    ("… los corchetes de siempre con ⚔️ y ×",
+     "[OCTAVOS]\n[A] ⚔️ [B]\n[C] × [D]\n[FINAL]\n[A] vs [C]"),
+    ("… y lo que NO es un vs: el `X1` de FFA después del último lado",
+     "**[•OCTAVOS DE FINAL•]**\n▪️   [SEBITA] 🆚 [MALVA] 🆚 [CRONOX] X1\n▪️   [VANDU] 🆚 [RUVIK]"),
 ]
 
 
