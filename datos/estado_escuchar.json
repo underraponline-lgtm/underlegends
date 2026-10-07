@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-07T18:42:22Z",
+ "cuando": "2026-10-07T18:56:38Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 240.3,
+ "dur_s": 199.5,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 37.6
+   "s": 33.8
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 51.6
+   "s": 41.1
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.4
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 25.0
+   "s": 24.9
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.4
+   "s": 6.9
   },
   {
    "n": "2b",
@@ -75,31 +75,31 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.7
+   "s": 0.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.0
+   "s": 2.7
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 53.8
+   "s": 28.7
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 34.7
+   "s": 34.8
   },
   {
    "n": "2c2",
@@ -111,7 +111,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 10.3
+   "s": 9.9
   },
   {
    "n": "2e",
@@ -123,13 +123,13 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.3
+   "s": 7.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.4
+   "s": 2.6
   }
  ],
  "fallas": [],
@@ -142,7 +142,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-07T18:39:04Z",
+  "cuando": "2026-10-07T18:53:58Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 362,
   "un_evento": 179,
@@ -170,20 +170,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 326,
-   "read": 35960
+   "write": 347,
+   "read": 37382
   },
   "objeto": {
-   "leidas": 1116694,
-   "escritas": 17173,
-   "pedidos": 4521
+   "leidas": 1140363,
+   "escritas": 17482,
+   "pedidos": 4688
   },
   "worker": {
-   "pedidos": 5772,
+   "pedidos": 5890,
    "errores": 0,
-   "sub": 5570,
+   "sub": 5706,
    "p50_ms": 1.02,
-   "p99_ms": 5.46
+   "p99_ms": 5.43
   },
   "r2": {
    "objetos": 3595,
