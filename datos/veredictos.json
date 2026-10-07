@@ -1202,6 +1202,26 @@
    "b": "TAM",
    "ganador": "SIX",
    "votos": "1–0"
+  },
+  "1557239571060891719": {
+   "id": "1557239571060891719",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791345245853,
+   "a": "GIAN",
+   "b": "SNOW",
+   "ganador": "GIAN",
+   "votos": "1–0"
+  },
+  "1557243901855662081": {
+   "id": "1557243901855662081",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791346278395,
+   "a": "pichulamc",
+   "b": "PRODIGY",
+   "ganador": "pichulamc",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2754,8 +2774,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791338928016,
-   "ed": 1791345060242,
-   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝\n⌞ERIK CHEKIALO⌝ 🆚 ⌞PARIA⌝\n`[ FINAL ]`\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝",
+   "ed": 1791346964120,
+   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝\n⌞ERIK CHEKIALO⌝ 🆚 ⌞PARIA⌝\n`[ FINAL ]`\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝\n⌞GIAN⌝ 🆚 ⌞SNOW⌝\n⌞pichulamc⌝ 🆚 ⌞prodigy⌝\n⌞lord⌝ 🆚 ⌞desio⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -2888,6 +2908,36 @@
      ],
      "SIX",
      "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GIAN",
+      "SNOW"
+     ],
+     "GIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "pichulamc",
+      "prodigy"
+     ],
+     "pichulamc",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "lord",
+      "desio"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

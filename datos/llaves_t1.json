@@ -13887,5 +13887,258 @@
     2000
    ]
   ]
+ },
+ "416": {
+  "dia": "2026-10-06",
+  "escala": "16+",
+  "fecha": "06/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557211004130295879"
+  ],
+  "n": 416,
+  "nombre": "PRITTY FREE",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Snow",
+       "Juasmio, Sami, Prosu, Kyss",
+       "Lord Viruzz, Leonart",
+       "PRAISERIZA"
+      ],
+      "Snow",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Paria",
+       "Ariaxer",
+       "setesfifi",
+       "Soneto"
+      ],
+      "Paria",
+      "triple (5 bandas, pasan 2)"
+     ],
+     [
+      [
+       "chekialo 🇧🇯, Erik",
+       "El violaginas, cronox el estilo pupilo 🇧🇦"
+      ],
+      "chekialo 🇧🇯, Erik",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Prodigy",
+       "Musicdum 🇵🇪"
+      ],
+      "Prodigy",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Paria",
+       "Cronox"
+      ],
+      "Paria",
+      ""
+     ],
+     [
+      [
+       "chekialo 🇧🇯, Erik",
+       "Prodigy"
+      ],
+      "chekialo 🇧🇯, Erik",
+      ""
+     ],
+     [
+      [
+       "Erian, wei shenlong, Zignos",
+       "Selek"
+      ],
+      "Erian, wei shenlong, Zignos",
+      ""
+     ],
+     [
+      [
+       "Snow, Tam",
+       "Sosa"
+      ],
+      "Snow, Tam",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "chekialo 🇧🇯, Erik",
+       "Paria"
+      ],
+      "chekialo 🇧🇯, Erik",
+      ""
+     ],
+     [
+      [
+       "Snow, Tam",
+       "Erian, wei shenlong, Zignos"
+      ],
+      "Snow, Tam",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "chekialo 🇧🇯, Erik",
+       "Snow, Tam"
+      ],
+      "chekialo 🇧🇯, Erik",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Paria",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Erik",
+    "Campeón",
+    5000
+   ],
+   [
+    "chekialo 🇧🇯",
+    "Campeón",
+    5000
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Prodigy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Selek",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    1750
+   ],
+   [
+    "wei shenlong",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Musicdum 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "PRAISERIZA",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    1250
+   ],
+   [
+    "setesfifi",
+    "Octavos",
+    1250
+   ],
+   [
+    "El violaginas",
+    "Octavos",
+    625
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    625
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    625
+   ],
+   [
+    "cronox el estilo pupilo 🇧🇦",
+    "Octavos",
+    625
+   ],
+   [
+    "Juasmio",
+    "Octavos",
+    312
+   ],
+   [
+    "Kyss",
+    "Octavos",
+    312
+   ],
+   [
+    "Prosu",
+    "Octavos",
+    312
+   ],
+   [
+    "Sami",
+    "Octavos",
+    312
+   ]
+  ]
  }
 }
