@@ -1183,6 +1183,11 @@
     return !!((a[1] && b[1] && a[1] !== b[1]) || (a[0] && b[0] && a[0] !== b[0]));
   }
   // ⚠️ NFKD ANTES de pasar a minúsculas: `𝓟𝓞𝓔𝓢Í𝓐 𝓒𝓡𝓤𝓓𝓐` (URBF, 01/10/2026) sale de NFKD en MAYÚSCULAS
+  // el nombre como lo compara el ciclo (`llaves_web.clave_nombre()`): minúsculas, sin tildes, sólo letras y números
+  var PARECIDO_EV = 0.8;
+  var claveNombreEv = memo(function (s) {
+    return s.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  });
   function palabrasEv(s) {
     return String(s || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').split(/\s+/)
       .filter(function (w) { return w.length > 2; });
@@ -1272,9 +1277,17 @@
     var t = instanteEv(e.cuando);
     // ⚠️ un anuncio sin hora (`ini` vacío) se mide desde que se publicó: con NaN no se juntaba nunca (revisión del 05/10)
     if (isNaN(t)) t = publicadoEv(e);
-    var pe = palabrasEv(e.nombre), fe = formaDelAnuncioEv(e);
+    var pe = palabrasEv(e.nombre), fe = formaDelAnuncioEv(e), ke = claveNombreEv(e.nombre);
+    // 🔴 Y SI NO COMPARTEN NINGUNA PALABRA, EL NOMBRE ENTERO (07/10/2026). FFA anunció «WETTTSIIIDEE #2» y su llave dice
+    // «[ WETTSIDDEE #2 ]»: ni una palabra igual, así que en vivo la llave no aparecía («La llave aparece acá apenas la
+    // carguen») mientras el ciclo, que mide el nombre entero (`_elegir_con()`, 0,83), la juntaba bien. Con el mismo
+    // umbral que el ciclo (`PARECIDO_EV`, 0,8) y por debajo de cualquier palabra igual (0,5): un nombre escrito distinto
+    // no le gana a uno escrito igual. Dos números distintos ya los descarta `chocanEv()`
     var comun = function (L) {
-      return palabrasEv(L.nombre).filter(function (w) { return !RELLENO[w] && pe.indexOf(w) >= 0; }).length;
+      var n = palabrasEv(L.nombre).filter(function (w) { return !RELLENO[w] && pe.indexOf(w) >= 0; }).length;
+      if (n) return n;
+      var kl = claveNombreEv(L.nombre);
+      return ke.length >= 5 && kl.length >= 5 && parecidoEv(ke, kl) >= PARECIDO_EV ? 0.5 : 0;
     };
     var cand = [];
     (ls || []).forEach(function (L) {

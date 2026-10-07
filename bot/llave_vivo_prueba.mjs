@@ -335,6 +335,21 @@ console.log('\n8 · la llave huérfana: el título copiado de la edición anteri
     const r2 = LV.asignar([cs2, rep2], [L2]);
     ok('el mismo evento anunciado dos veces: los dos anuncios la llevan', r2.porAnuncio.length === 2, js(r2.porAnuncio.length));
   }
+  // 🔴 EL MISMO NOMBRE ESCRITO DISTINTO (07/10/2026): FFA anunció «WETTTSIIIDEE #2» (2:13 PM) y su llave dice
+  // «[ WETTSIDDEE #2 ]» (2:23 PM). Ni una palabra igual: en vivo no aparecía, y el ciclo (nombre entero, 0,83) sí la juntaba
+  {
+    const w1 = { nombre: 'WETTTSIIIDEE', sv: 'FFA', cuando: '2026-10-07T03:57:44', link: link('1557240488736718869'), mod: '1V1' };
+    const w2 = { nombre: 'WETTTSIIIDEE #2', sv: 'FFA', cuando: '2026-10-07T18:13:08', link: link('1557455756029206689'), mod: '1V1' };
+    const Lw = { id: '7003', sv: 'FFA', nombre: 'WETTSIDDEE 2', pub: ms('2026-10-07T18:23:07'), ed: ms('2026-10-07T19:20:00'),
+      rondas: [{ r: 'Octavos', b: [[['A', 'B'], '', '', []], [['C', 'D'], '', '', []]] }] };
+    const r = LV.asignar([w1, w2], [Lw]);
+    ok('«WETTTSIIIDEE #2» se lleva «WETTSIDDEE #2»: el nombre entero se parece como en el ciclo (0,8)',
+      r.porAnuncio.length === 1 && r.porAnuncio[0][0] === w2, js(r.porAnuncio.map((x) => x[0].nombre)));
+    const Lotro = Object.assign({}, Lw, { id: '7004', nombre: 'NOCHE DE BOOMBAP' });
+    ok('y un nombre que no se parece sigue sin llevársela', !LV.asignar([w2], [Lotro]).porAnuncio.length);
+    const L3 = Object.assign({}, Lw, { id: '7005', nombre: 'WETTSIDDEE 3' });
+    ok('ni con otro número (#2 contra #3)', !LV.asignar([w2], [L3]).porAnuncio.length);
+  }
   ok('la serie: sin números, sin modalidad y sin la temporada del organizador',
     LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1') === 'desgraciasentokyovol' && LV.serie('COMPE DEL VACILE T2 #1') === 'compedelvacile',
     js([LV.serie('DESGRACIAS EN TOKYO VOL 23 1v1'), LV.serie('COMPE DEL VACILE T2 #1')]));
