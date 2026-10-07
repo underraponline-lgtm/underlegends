@@ -191,6 +191,11 @@ def sacar_descartados(hproc, ya, aplicar):
     import decidir as DEC
     fuera = [(n, nom, sv, fe) for (nom, sv, fe), n in sorted(ya.items(), key=lambda x: x[1])
              if DEC.decision_evento(nom, sv, fe) == 'no cuenta']
+    # 👯 Y LO QUE DLX DIJO QUE ES OTRO EVENTO CONTADO DOS VECES, POR NÚMERO (`decidir.duplicados_corrida()`): por nombre
+    # se llevaría también al bueno si se llaman casi igual (#419 y #421, 07/10/2026)
+    por_num = DEC.numeros_a_sacar()
+    fuera += [(n, nom, sv, fe) for (nom, sv, fe), n in sorted(ya.items(), key=lambda x: x[1])
+              if n in por_num and all(n != f[0] for f in fuera)]
     for n, nom, sv, fe in fuera:
         print('   🗑️ #%d  %s · %s · %s: Dlx dijo que no cuenta%s'
               % (n, nom, sv, fe, '' if aplicar else ' (se sacaría)'))

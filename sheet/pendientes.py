@@ -79,7 +79,7 @@ ULTIMA = chr(ord('A') + ANCHO - 1)          # 'H'
 TIPOS = ('Nombre desconocido', 'Alias posible', 'Evento dudoso',
          'Bracket incompleto', 'MW pendiente', 'Llave sin resolver',
          'Batalla sin ganador', 'Vidas cargado', 'alta', 'conflicto', 'ambiguo',
-         'Reporte')
+         'Reporte', 'Evento duplicado')
 
 
 def _es_equipo_con_nombre(detalle):

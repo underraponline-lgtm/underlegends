@@ -2428,47 +2428,95 @@ def ya_cargada(nom, sv, fec, filas, cargadas=None):
     medianoche)—, con los nombres como los cuenta el ranking (`rankings.canon()`: FULLY es Oasis). ⚠️ Desde `YA_MIN`
     batallas: dos cruces iguales pueden ser casualidad, y la gente de FFA se cruza seguido.
     """
-    if cargadas is None:
-        if _CARGADAS[0] is None:
-            try:
-                d = json.load(io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8'))
-            except (OSError, ValueError):
-                d = {}
-            _CARGADAS[0] = [x for x in (d.values() if isinstance(d, dict) else d) if isinstance(x, dict)]
-        cargadas = _CARGADAS[0]
+    cargadas = _cargadas() if cargadas is None else cargadas
+    k = _clave_rapero()
+    mias = {frozenset((k(f.get('ladoA')), k(f.get('ladoB')))) for f in filas
+            if k(f.get('ladoA')) and k(f.get('ladoB')) and k(f.get('ladoA')) != k(f.get('ladoB'))}
+    d0 = _dia_de(fec)
+    if len(mias) < YA_MIN or d0 is None:
+        return None
+    for ll in cargadas:
+        d1 = _dia_de(ll.get('fecha'))
+        if ll.get('sv') != sv or d1 is None or abs((d1 - d0).days) > 1 or E.norm(ll.get('nombre')) == E.norm(nom):
+            continue
+        if len(mias & _pares_de(ll, k)) >= YA_PARTE * len(mias):
+            return ll.get('n')
+    return None
+
+
+def _cargadas():
+    """Los eventos ya cargados (`datos/llaves_t1.json`), leídos una vez."""
+    if _CARGADAS[0] is None:
+        try:
+            d = json.load(io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8'))
+        except (OSError, ValueError):
+            d = {}
+        _CARGADAS[0] = [x for x in (d.values() if isinstance(d, dict) else d) if isinstance(x, dict)]
+    return _CARGADAS[0]
+
+
+def _clave_rapero():
+    """Un nombre de llave -> como lo cuenta el ranking (`rankings.canon()`: FULLY es Oasis), normalizado."""
     try:
         import rankings as RK
         canon = RK.canon
     except Exception:                                    # noqa: BLE001
         def canon(x):
             return x
+    return lambda x: E.norm(canon(str(x or '')))
 
-    def k(x):
-        return E.norm(canon(str(x or '')))
 
-    def dia(f):
-        m = re.match(r'\s*(\d{1,2})/(\d{1,2})', str(f or ''))
-        try:
-            return datetime.date(2000, int(m.group(2)), int(m.group(1))) if m else None
-        except ValueError:
-            return None
-    mias = {frozenset((k(f.get('ladoA')), k(f.get('ladoB')))) for f in filas
-            if k(f.get('ladoA')) and k(f.get('ladoB')) and k(f.get('ladoA')) != k(f.get('ladoB'))}
-    d0 = dia(fec)
-    if len(mias) < YA_MIN or d0 is None:
+def _dia_de(f):
+    """«27/09» -> una fecha comparable (año fijo y bisiesto: sólo importa la distancia entre días), o None."""
+    m = re.match(r'\s*(\d{1,2})/(\d{1,2})', str(f or ''))
+    try:
+        return datetime.date(2000, int(m.group(2)), int(m.group(1))) if m else None
+    except ValueError:
         return None
+
+
+def _pares_de(ll, k):
+    """Las batallas de un evento cargado como pares de nombres (una de tres son tres pares)."""
+    out = set()
+    for r in ll.get('rondas') or []:
+        for b in r.get('b') or []:
+            lados = [k(x) for x in (b[0] if b else []) if k(x)]
+            out |= {frozenset((a, c)) for i, a in enumerate(lados) for c in lados[i + 1:] if a != c}
+    return out
+
+
+def duplicados_cargados(cargadas=None):
+    """`[(dup, orig, comunes, total)]`: los eventos YA CARGADOS que son otro cargado contado dos veces.
+
+    🔑 Dlx, 07/10/2026 (las mejoras, «dale, haz todo»): los dos de hoy —#358 y #409— llevaban dos semanas y un día en
+    el ranking y los encontró un jugador que se quejaba de otra cosa. `ya_cargada()` frena el que llega; esto busca el
+    que ya entró, por la misma regla —casi todas las batallas del más chico en el otro, del mismo servidor, el mismo
+    día o el siguiente—, y A DIFERENCIA de `ya_cargada()` también con el mismo nombre: dos números son dos eventos.
+    `dup` es el de número más alto, el que entró después. Pura: la pregunta la hace ✅ Decidir
+    (`decidir.duplicados_corrida()`), y nunca se saca nada solo.
+    """
+    cargadas = _cargadas() if cargadas is None else cargadas
+    k = _clave_rapero()
+    evs = []
     for ll in cargadas:
-        d1 = dia(ll.get('fecha'))
-        if ll.get('sv') != sv or d1 is None or abs((d1 - d0).days) > 1 or E.norm(ll.get('nombre')) == E.norm(nom):
+        try:
+            n = int(ll.get('n'))
+        except (TypeError, ValueError):
             continue
-        suyas = set()
-        for r in ll.get('rondas') or []:
-            for b in r.get('b') or []:
-                lados = [k(x) for x in (b[0] if b else []) if k(x)]
-                suyas |= {frozenset((a, c)) for i, a in enumerate(lados) for c in lados[i + 1:] if a != c}
-        if len(mias & suyas) >= YA_PARTE * len(mias):
-            return ll.get('n')
-    return None
+        d = _dia_de(ll.get('fecha'))
+        pares = _pares_de(ll, k)
+        if d is not None and len(pares) >= YA_MIN:
+            evs.append((n, ll.get('sv'), d, pares))
+    out = []
+    for i, (na, sa, da, pa) in enumerate(evs):
+        for nb, sb, db, pb in evs[i + 1:]:
+            if sa != sb or abs((da - db).days) > 1:
+                continue
+            chico = min(len(pa), len(pb))
+            comunes = len(pa & pb)
+            if comunes >= YA_PARTE * chico:
+                out.append((max(na, nb), min(na, nb), comunes, chico))
+    return sorted(out)
 
 
 def tiene_campeon(filas):

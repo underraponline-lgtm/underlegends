@@ -85,6 +85,8 @@ GRUPO = {
     # ❤️ el 5 vidas que el ciclo cargó solo desde #veredictos (Dlx, 28/09/2026:
     # «A y b»): se confirma o se saca. Va primero: ya suma puntos.
     'Vidas cargado': (0, '❤️ Vidas'),
+    # 👯 el mismo evento cargado dos veces con dos números (Dlx, 07/10/2026): ya suma doble. Ver `duplicados_corrida()`
+    'Evento duplicado': (0, '🏆 Evento'),
     'Batalla sin ganador': (0, '⚔️ Batalla'),
     'Bracket incompleto': (0, '🏆 Evento'),
     'Evento dudoso': (0, '🏆 Evento'),
@@ -1275,6 +1277,11 @@ def una_cuenta_dos_nombres(dry=True, preguntas=()):
 #: la pregunta de `dos_cuentas()` (tipo `Alias posible`): alias → real, la cuenta del alias y la del real
 _DOS_C_RE = re.compile(r'^DOS CUENTAS: «(.+?)» → «(.+?)» · cuentas (\d+) y (\d+)')
 DOS_C_ORIGEN = 'el ciclo · dos cuentas, una persona'
+#: la pregunta de `duplicados_corrida()`: el que entró después, su nombre, servidor y fecha, el original y su nombre
+_DUP_RE = re.compile(r'^DUPLICADO: #(\d+) «(.*?)» · (\S+) · (\S+) = #(\d+) «(.*?)» · (\d+) de (\d+)')
+DUP_ORIGEN = 'el ciclo · el mismo evento, dos veces'
+SACAR_DUP = 'Sí, es el mismo: sacar el #'
+NO_DUP = 'No, son eventos distintos'
 
 
 def dos_cuentas(lista, con_puntos, juegan, real_de, son_distintos=lambda a, b: False, preguntados=()):
@@ -1336,6 +1343,60 @@ def dos_cuentas_corrida(dry=True, preguntas=()):
                                                                         x['did_real']),
                            'el mismo país, nombres parecidos y nunca jugaron el mismo evento') for x in r])
     return r
+
+
+def numeros_a_sacar():
+    """Los números de evento que Dlx dijo que son OTRO evento contado dos veces (`sacar` de decisiones.json).
+    `procesar_entrada.sacar_descartados()` los saca de las tres hojas y del hub."""
+    out = set()
+    for k in (_decisiones().get('sacar') or {}):
+        try:
+            out.add(int(k))
+        except ValueError:
+            pass
+    return out
+
+
+def duplicados_corrida(dry=True, preguntas=()):
+    """👯 EL MISMO EVENTO CARGADO DOS VECES, a ✅ Decidir. Nunca saca nada solo.
+
+    🔑 Dlx, 07/10/2026 (las mejoras, «dale, haz todo»): el #358 y el #409 llevaban dos semanas y un día sumando
+    doble, y los encontró un jugador que se quejaba de otra cosa. `llaves_a_entrada.duplicados_cargados()` los busca
+    en cada corrida —las mismas batallas, del mismo servidor, el mismo día o el siguiente— y acá se preguntan.
+    Ni lo ya preguntado, ni lo que Dlx dijo que son distintos, ni lo que ya se va a sacar.
+    """
+    if os.path.join(BASE, 'bot') not in sys.path:
+        sys.path.append(os.path.join(BASE, 'bot'))
+    import llaves_a_entrada as LAE
+    d = _decisiones()
+    ya = {(int(m.group(1)), int(m.group(5))) for m in (_DUP_RE.match(p.get('detalle') or '') for p in preguntas or ()
+                                                       if p.get('tipo') == 'Evento duplicado') if m}
+    ya |= {tuple(x) for x in d.get('no_duplicados') or []}
+    sacar = numeros_a_sacar()
+    por_n = {}
+    for x in LAE._cargadas():
+        try:
+            por_n[int(x.get('n'))] = x
+        except (TypeError, ValueError):
+            pass
+    nuevos = [(dup, orig, c, t) for dup, orig, c, t in LAE.duplicados_cargados()
+              if (dup, orig) not in ya and dup not in sacar and orig not in sacar]
+    if not nuevos:
+        return nuevos
+    print('\n   👯 el mismo evento dos veces: %d a ✅ Decidir' % len(nuevos))
+    filas = []
+    for dup, orig, c, t in nuevos:
+        a, b = por_n.get(dup) or {}, por_n.get(orig) or {}
+        print('      pregunta: ¿el #%d «%s» es el #%d «%s»? (%d de %d batallas)'
+              % (dup, a.get('nombre', ''), orig, b.get('nombre', ''), c, t))
+        filas.append(('Evento duplicado', DUP_ORIGEN,
+                      'DUPLICADO: #%d «%s» · %s · %s = #%d «%s» · %d de %d batallas'
+                      % (dup, a.get('nombre', ''), a.get('sv', ''), a.get('fecha', ''), orig, b.get('nombre', ''), c, t),
+                      'las mismas batallas, del mismo servidor y el mismo día: suma dos veces'))
+    if not dry:
+        import pendientes as PE
+        PE.anotar_varios(filas)
+    return nuevos
 
 
 def _agregar_cuenta(real, did):
@@ -1695,6 +1756,11 @@ def _pregunta(p):
                 match or '—',
                 ['%s %s' % ('Ganó' if dos else 'Pasó', l) for l in lados]
                 + [NADIE_SIGUIO, NO_SE_JUGO, 'Dejar para después'])
+    if t == 'Evento duplicado' and _DUP_RE.match(det):
+        dup, nd, sv, fe, orig, no, com, tot = _DUP_RE.match(det).groups()
+        return ('El #%s «%s» (%s · %s) tiene las mismas batallas que el #%s «%s»: %s de %s. Los dos suman puntos y '
+                'duelos. ¿Es el mismo evento contado dos veces?' % (dup, nd, sv, fe, orig, no, com, tot),
+                '—', [SACAR_DUP + dup, NO_DUP, 'Dejar para después'])
     if t == 'Vidas cargado':
         ev = det.split(' · ')[0].strip()
         return ('«%s» es un 5 vidas que el ciclo cargó solo desde #veredictos: '
@@ -1756,6 +1822,14 @@ def interpretar(p, respuesta):
     if p['tipo'] == 'Alias posible' and r in (MISMA, OTRA) and _DOS_C_RE.match(p['detalle']):
         a, b, da, _db = _DOS_C_RE.match(p['detalle']).groups()
         return ('dos_cuentas', (a, b, da)) if r == MISMA else ('distintos', (a, b))
+    # 👯 EL MISMO EVENTO DOS VECES (`duplicados_corrida()`): «sí» saca el de número más alto —por número, no por
+    # nombre: el #421 se llamaba casi igual que el #419—; «no» los marca distintos y no se vuelve a preguntar
+    if p['tipo'] == 'Evento duplicado' and _DUP_RE.match(p['detalle']):
+        dup, nd, sv, fe, orig = _DUP_RE.match(p['detalle']).groups()[:5]
+        if r.startswith(SACAR_DUP):
+            return ('sacar_num', (int(dup), int(orig), nd, sv, fe))
+        if r == NO_DUP:
+            return ('no_duplicado', (int(dup), int(orig)))
     if r in CIERRAN:
         return ('cerrar', r)
     # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
@@ -2162,6 +2236,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     altas = []
     batallas = {}
     trolls = []
+    # 👯 los números que Dlx dijo que son otro evento contado dos veces, y los pares que no
+    sacar, no_dup = {}, []
     fuera = no_rankear()
     for p in preguntas:
         r = respuestas.get(p['id'])
@@ -2220,6 +2296,14 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                 except Exception as e:                   # noqa: BLE001
                     print('   ⚠️ %s -> %s: no pude mover la cuenta (%s)' % (dato[0], dato[1], str(e)[:60]))
             cierres += [(n, 'otra cuenta de %s: es la misma persona' % dato[1]) for n in p['filas']]
+        elif que == 'sacar_num':
+            dup, orig, nd, sv, fe = dato
+            sacar[str(dup)] = {'es': orig, 'nombre': nd, 'sv': sv, 'fecha': fe}
+            cierres += [(n, 'el #%d es el #%d otra vez: sale del ranking en la corrida siguiente' % (dup, orig))
+                        for n in p['filas']]
+        elif que == 'no_duplicado':
+            no_dup.append(list(dato))
+            cierres += [(n, 'son eventos distintos: no se vuelve a preguntar') for n in p['filas']]
         elif que == 'distintos':
             distintos.append([dato[0], dato[1], 'Dlx en ✅ Decidir (%s): es otra persona' % _ahora_et()])
             cierres += [(n, 'otra persona: quedan separados') for n in p['filas']]
@@ -2299,6 +2383,17 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         for ev, dec in eventos.items():
             d.setdefault('eventos', {})[ev] = {'decision': dec, 'cuando': ahora,
                                                'por': POR}
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    if sacar or no_dup:
+        d = _decisiones()
+        ahora = _ahora_et()
+        for n, v in sacar.items():
+            d.setdefault('sacar', {})[n] = dict(v, cuando=ahora, por=POR)
+        for par in no_dup:
+            if par not in d.setdefault('no_duplicados', []):
+                d['no_duplicados'].append(par)
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
@@ -2821,6 +2916,11 @@ def correr(dry=True):
         dos_cuentas_corrida(dry=dry, preguntas=preguntas)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude revisar las personas con dos cuentas (%s)' % str(e)[:80])
+    # 👯 Y EL MISMO EVENTO CARGADO DOS VECES: ver `duplicados_corrida()`. Sólo pregunta
+    try:
+        duplicados_corrida(dry=dry, preguntas=preguntas)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude revisar los eventos repetidos (%s)' % str(e)[:80])
     # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`
     try:
         cerradas = cierres_solos([p for p in preguntas if p['id'] not in respuestas], dry=dry)
@@ -3370,6 +3470,14 @@ def _self_check():
        '«es la misma» la hace la otra cuenta de Erian; «otra», distintos')
     ok('otra cuenta de Erian' in _conflicto_en_palabras(_q2['detalle']) and '6815' in _conflicto_en_palabras(_q2['detalle']),
        'y la pregunta lleva las dos cuentas')
+    # 👯 el mismo evento dos veces (`duplicados_corrida()`): «sí» saca el número más alto, POR NÚMERO; «no», nunca más
+    _qd = {'tipo': 'Evento duplicado', 'detalle': 'DUPLICADO: #409 «(sin titulo)» · FFA · 27/09 = #366 «FFA WORLD CUP '
+                                                  'EL ESTADIO DEL FREESTYLE 2026» · 7 de 7 batallas', 'match': '', 'sug': '—'}
+    _pd = _pregunta(_qd)
+    ok('#409' in _pd[0] and '#366' in _pd[0] and _pd[2][0] == SACAR_DUP + '409'
+       and interpretar(_qd, SACAR_DUP + '409') == ('sacar_num', (409, 366, '(sin titulo)', 'FFA', '27/09'))
+       and interpretar(_qd, NO_DUP) == ('no_duplicado', (409, 366)),
+       'el mismo evento dos veces: «sí» saca el #409 por número, «no» los deja y no se vuelve a preguntar')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
