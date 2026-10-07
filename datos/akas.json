@@ -256,7 +256,13 @@
   "za": "Provenza",
   "sol": "SOL🇵🇪",
   "tokio": "TøKīØ🦠🧠 🇺🇸",
-  "pain": "Snow"
+  "pain": "Snow",
+  "shisui": "Velatz",
+  "shishui": "Velatz",
+  "shusui": "Velatz",
+  "kude": "Mr.Kude",
+  "nakamura": "Hassan",
+  "nhp": "Andres"
  },
  "pares": [
   [
@@ -1286,6 +1292,30 @@
   [
    "Pain",
    "Snow"
+  ],
+  [
+   "Shisui",
+   "Velatz"
+  ],
+  [
+   "Shishui",
+   "Velatz"
+  ],
+  [
+   "SHUSUI",
+   "Velatz"
+  ],
+  [
+   "Kude",
+   "Mr.Kude"
+  ],
+  [
+   "NAKAMURA",
+   "Hassan"
+  ],
+  [
+   "Nhp",
+   "Andres"
   ]
  ],
  "no_confundir": [
