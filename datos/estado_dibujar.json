@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-10-07T01:58:23Z",
+ "cuando": "2026-10-07T02:49:23Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 100.0,
+ "dur_s": 1174.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.3
+   "s": 5.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.5
+   "s": 1.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 25.5
+   "s": 20.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 3 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 28.5
+   "s": 1107.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.3
+   "s": 5.0
   },
   {
    "n": "6",
@@ -44,26 +44,26 @@
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "414",
-  "nombre": "DESGRACIAS EN TOKYO VOL 26 PANDILLAS",
-  "sv": "FFA",
+  "n": "415",
+  "nombre": "NOCHE DE BOOMBAP",
+  "sv": "DDF",
   "dia": "2026-10-06"
  },
  "cuotas": {
   "kv": {
-   "write": 95,
-   "read": 7920
+   "write": 125,
+   "read": 10487
   },
   "objeto": {
-   "leidas": 208476,
-   "escritas": 3067,
-   "pedidos": 564
+   "leidas": 311888,
+   "escritas": 4741,
+   "pedidos": 798
   },
   "worker": {
-   "pedidos": 4131,
-   "errores": 1,
-   "sub": 3772,
-   "p50_ms": 1.04,
+   "pedidos": 4147,
+   "errores": 0,
+   "sub": 3785,
+   "p50_ms": 1.03,
    "p99_ms": 5.64
   },
   "r2": {
