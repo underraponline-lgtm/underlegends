@@ -14135,5 +14135,169 @@
     312
    ]
   ]
+ },
+ "418": {
+  "dia": "2026-10-07",
+  "escala": "8-15",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557241619433128028"
+  ],
+  "n": 418,
+  "nombre": "WETTSIDDEE",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Lord Viruzz",
+       "Desio"
+      ],
+      "Lord Viruzz",
+      ""
+     ],
+     [
+      [
+       "NC",
+       "Molusco"
+      ],
+      "NC",
+      ""
+     ],
+     [
+      [
+       "Pomberito",
+       "Badterne"
+      ],
+      "Pomberito",
+      ""
+     ],
+     [
+      [
+       "kminant🇦🇷",
+       "Zignos"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Lord Viruzz"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Jult",
+       "Sosa, Prodigy",
+       "setes"
+      ],
+      "Jult",
+      "triple (4 bandas, pasan 2); Walk-in 1: kurl 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Jult"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Pomberito",
+       "Tenor"
+      ],
+      "Pomberito",
+      "Walk-in 2: tenor"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Pomberito",
+       "PichulaMc"
+      ],
+      "Pomberito",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Pomberito",
+    "Campeón",
+    7500
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "setes",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jult",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Prodigy",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Tenor",
+    "Semifinal",
+    875
+   ],
+   [
+    "Badterne",
+    "Octavos",
+    0
+   ],
+   [
+    "Desio",
+    "Octavos",
+    0
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    0
+   ]
+  ]
  }
 }

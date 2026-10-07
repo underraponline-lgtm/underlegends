@@ -46,19 +46,19 @@
 "temporada"
 ]
 },
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "pichulamc": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -197,6 +197,14 @@
 "molusco": {
 "rg": "",
 "c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"nc": {
+"rg": "E",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -231,13 +239,6 @@
 },
 "onzass": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"nc": {
-"rg": "E",
 "c": [
 "servidor",
 "temporada"
@@ -309,6 +310,13 @@
 "temporada"
 ]
 },
+"pomberito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "joshu": {
 "rg": "",
 "c": []
@@ -316,6 +324,15 @@
 "tuca": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"lordviruzz": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -391,13 +408,6 @@
 ]
 },
 "presagio": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"lordviruzz": {
 "rg": "",
 "c": [
 "servidor",
@@ -516,6 +526,14 @@
 "temporada"
 ]
 },
+"sosa": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "tambaggio": {
 "rg": "",
 "c": []
@@ -566,14 +584,6 @@
 "reyexxmc": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"sosa": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -779,6 +789,13 @@
 "temporada"
 ]
 },
+"jult": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "agus": {
 "rg": "",
 "c": [
@@ -930,13 +947,6 @@
 "temporada"
 ]
 },
-"jult": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "camila": {
 "rg": "",
 "c": [
@@ -1028,6 +1038,12 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"prodigy": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "selek": {
@@ -1136,13 +1152,6 @@
 "temporada"
 ]
 },
-"pomberito": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "rodas": {
 "rg": "",
 "c": [
@@ -1244,17 +1253,15 @@
 "rg": "",
 "c": []
 },
-"prodigy": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "keider": {
 "rg": "",
 "c": [
 "servidor"
 ]
+},
+"setes": {
+"rg": "",
+"c": []
 },
 "nobu": {
 "rg": "",
@@ -4642,6 +4649,39 @@
 "Sosa"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T05:59:04Z",
+"quien": [
+"Molusco"
+],
+"carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-10-07T05:59:04Z",
+"quien": [
+"Lord Viruzz"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T05:59:04Z",
+"quien": [
+"Lord Viruzz"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T05:59:04Z",
+"quien": [
+"Lord Viruzz"
+],
+"carta": "pais"
 }
 ]
 }

@@ -1272,6 +1272,26 @@
    "b": "lord",
    "ganador": "pichulamc",
    "votos": "1–0"
+  },
+  "1557261191104176139": {
+   "id": "1557261191104176139",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791350400473,
+   "a": "TENOR",
+   "b": "POMBERITO",
+   "ganador": "POMBERITO",
+   "votos": "1–0"
+  },
+  "1557263210623668235": {
+   "id": "1557263210623668235",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791350881964,
+   "a": "pichulamc",
+   "b": "kul 🇦🇷",
+   "ganador": "pichulamc",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2824,8 +2844,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791338928016,
-   "ed": 1791350400473,
-   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝\n⌞ERIK CHEKIALO⌝ 🆚 ⌞PARIA⌝\n`[ FINAL ]`\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝\n⌞GIAN⌝ 🆚 ⌞SNOW⌝\n⌞pichulamc⌝ 🆚 ⌞prodigy⌝\n⌞lord⌝ 🆚 ⌞desio⌝\n⌞NC 🇦🇷⌝ 🆚 ⌞MOLUSCO 🇦🇷⌝\n⌞kminante 🇦🇷⌝ 🆚 ⌞kul 🇦🇷⌝\n⌞BADTERNE⌝ 🆚 ⌞POMBERITO⌝\n⌞setes⌝ 🆚 ⌞sosa⌝\n⌞PRODIGY⌝ 🆚 ⌞KRAVITZ⌝ 🆚 ⌞SETES⌝\n⌞KULRW🇦🇷 🇦🇷⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞pichula mc 🇦🇷⌝ 🆚 ⌞lord 🇨🇴⌝\n⌞SOSA 🇺🇾⌝ 🆚 ⌞POMBERITO 🇦🇷⌝\n⌞TENOR⌝ 🆚 ⌞SETESCABRA 🇵🇷⌝\n⌞TENOR 🇻🇪⌝ 🆚 ⌞POMBERITO 🇦🇷⌝",
+   "ed": 1791351872600,
+   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝\n⌞ERIK CHEKIALO⌝ 🆚 ⌞PARIA⌝\n`[ FINAL ]`\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝\n⌞GIAN⌝ 🆚 ⌞SNOW⌝\n⌞pichulamc⌝ 🆚 ⌞prodigy⌝\n⌞lord⌝ 🆚 ⌞desio⌝\n⌞NC 🇦🇷⌝ 🆚 ⌞MOLUSCO 🇦🇷⌝\n⌞kminante 🇦🇷⌝ 🆚 ⌞kul 🇦🇷⌝\n⌞BADTERNE⌝ 🆚 ⌞POMBERITO⌝\n⌞setes⌝ 🆚 ⌞sosa⌝\n⌞PRODIGY⌝ 🆚 ⌞KRAVITZ⌝ 🆚 ⌞SETES⌝\n⌞KULRW🇦🇷 🇦🇷⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞pichula mc 🇦🇷⌝ 🆚 ⌞lord 🇨🇴⌝\n⌞SOSA 🇺🇾⌝ 🆚 ⌞POMBERITO 🇦🇷⌝\n⌞TENOR⌝ 🆚 ⌞SETESCABRA 🇵🇷⌝\n⌞TENOR 🇻🇪⌝ 🆚 ⌞POMBERITO 🇦🇷⌝\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞KUL 🇦🇷⌝\n⌞PICHULA MC 🇦🇷⌝ 🆚 ⌞POMBERITO 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3087,8 +3107,28 @@
       "TENOR 🇻🇪",
       "POMBERITO 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "POMBERITO 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PICHULAMC 🇦🇷",
+      "KUL 🇦🇷"
+     ],
+     "PICHULAMC 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PICHULA MC 🇦🇷",
+      "POMBERITO 🇦🇷"
+     ],
+     "POMBERITO 🇦🇷",
+     "veredicto",
      []
     ]
    ]
