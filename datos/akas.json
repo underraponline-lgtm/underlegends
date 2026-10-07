@@ -268,7 +268,9 @@
   "kude": "Mr.Kude",
   "nakamura": "Hassan",
   "nhp": "Andres",
-  "dsm5": "MTZ"
+  "dsm5": "MTZ",
+  "riferian": "Erian",
+  "riferianumacryu": "Erian"
  },
  "pares": [
   [
@@ -1346,6 +1348,14 @@
   [
    "DSM-5",
    "MTZ"
+  ],
+  [
+   "Riferian",
+   "Erian"
+  ],
+  [
+   "Riferian (uma cryu)",
+   "Erian"
   ]
  ],
  "no_confundir": [

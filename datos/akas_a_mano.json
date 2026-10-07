@@ -122,11 +122,19 @@
   "   Andres (@andresnhp, que se anota como «andres 🇨🇱» y como «nhp 🇨🇱»).",
   "   Y dos que tenían menos prueba, por Dlx («2. únelos», 06/10/2026): «Emi» es EmiZor (su cuenta se anotó 3 veces",
   "   como «emi 🇲🇽», aunque también anotó a Zardia y a Melgar) y «DSM-5» es MTZ (su cuenta lo anotó una vez, en la",
-  "   VOL 25 1v1 del 06/10)."
+  "   VOL 25 1v1 del 06/10).",
+  "   «Riferian» es Erian (07/10/2026), y la cuenta @_5thofnovember (681588123699904563) es SU OTRA CUENTA",
+  "   (Dlx: «riferian es erian», «sí, esa es su otra cuenta»). En Urban su apodo es «Riferian (uma cryu)» y así",
+  "   la anotaron en la POESÍA CRUDA (#380) y la mencionaron en MARRUECOS EN VENTA (#359); Erian (Panamá, como",
+  "   «Riferian 🇵🇦») no jugó ninguno de los dos. El 04/10 la pregunta de quién era no tenía la opción «es otra",
+  "   cuenta de alguien de la Lista» y quedó como persona nueva. Va en `cuentas`: abre las cartas de Erian."
  ],
  "cuentas": {
   "Monet": [
    "1501320596485701642"
+  ],
+  "Erian": [
+   "681588123699904563"
   ]
  },
  "pares": [
@@ -269,6 +277,14 @@
   [
    "DSM-5",
    "MTZ"
+  ],
+  [
+   "Riferian",
+   "Erian"
+  ],
+  [
+   "Riferian (uma cryu)",
+   "Erian"
   ]
  ],
  "no_confundir": [
