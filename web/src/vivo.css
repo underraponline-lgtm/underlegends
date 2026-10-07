@@ -1867,6 +1867,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-datos a{text-decoration:underline;text-underline-offset:3px}
 .lk-datos .lk-mult{border-color:var(--magenta)}
 .lk-vivo{margin:0;font:700 11px/1.5 "Space Mono",monospace;letter-spacing:.04em;color:var(--esc-gris)}
+/* 🎟️ si mirar la llave contó para el Pase (07/10/2026): dorado, el color del Pase */
+.lk-pase{margin:8px 0 0;padding:8px 10px;border-left:3px solid #F5C542;background:rgba(245,197,66,.08);font:600 13px/1.45 Archivo,sans-serif;color:var(--esc-tinta)}
+.lk-pase a{color:#F5C542}
+.lk-pase.si{border-left-color:#29B298;background:rgba(41,178,152,.1)}
 
 .lk-podio{list-style:none;margin:0;padding:0 16px 20px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .lk-pd{display:grid;justify-items:center;align-content:start;gap:8px;min-width:0;padding:14px 10px 12px;border:2px solid var(--esc-linea);

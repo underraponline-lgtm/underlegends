@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.51",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T14:15:00-04:00",
+   "titulo": "Un evento, una vez",
+   "items": [
+    "🔁 **La MAÑANA DE LLUVIA VOL 1 de FFA contaba tres veces**: su votación se leyó como un 5 vidas aparte. Ahora cuenta una, con sus puntos, sus duelos y sus insignias como corresponde.",
+    "🎟️ **La llave te dice si contó para el Pase**: «✓ Contó» cuando la miraste mientras se jugaba, y si ya terminó y tenés la Tarea pendiente, te avisa que cuenta con una que se esté jugando."
+   ]
+  },
+  {
    "version": "2.50",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T13:20:00-04:00",

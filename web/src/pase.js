@@ -75,14 +75,25 @@ const vistas = new Set();
  * «Miré una llave en vivo», una vez por llave y por visita. Lo llama la llave después de un rato abierta: tocarla y
  * volver no es mirarla. Si sumó una Tarea, se vuelve a pedir tu Pase.
  */
+// 🎟️ devuelve lo que contestó el servidor (`{cuenta, nuevas}`) para que la llave diga si contó (Dlx, 07/10/2026: «ya lo
+// hice pero no recibo nada»): sin eso, mirar una llave terminada y una que se juega se veían igual
 export function vioVivo(id) {
   const k = String(id || '');
-  if (!/^[A-Za-z0-9:_-]{1,60}$/.test(k) || vistas.has(k)) return;
+  if (!/^[A-Za-z0-9:_-]{1,60}$/.test(k) || vistas.has(k)) return Promise.resolve(null);
   vistas.add(k);
-  fetch('/api/avisos/pase-vivo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ llave: k }) })
+  return fetch('/api/avisos/pase-vivo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ llave: k }) })
     .then((r) => (r.ok ? r.json() : null))
-    .then((d) => { if (d && d.nuevas) pedirPase(); })
-    .catch(() => { vistas.delete(k); });
+    .then((d) => { if (d && d.nuevas) pedirPase(); return d; })
+    .catch(() => { vistas.delete(k); return null; });
+}
+
+/** La Tarea de mirar una llave en vivo que todavía no cumpliste (de hoy o de la semana), o `null`. Sólo con tu Pase ya
+ * traído: no lo pide */
+export function vivoPendiente() {
+  const P = W.PASE;
+  if (!P || !P.miembro) return null;
+  const xs = [].concat((P.hoy && P.hoy.tareas) || [], (P.semana && P.semana.tareas) || []);
+  return xs.find((t) => /^vivo/.test(String(t.id || '')) && !t.hecha) || null;
 }
 
 const TIPO = { tarjeta: 'Tu tarjeta de', insignia: 'Insignia', titulo: 'Título', color: 'Color de nombre' };

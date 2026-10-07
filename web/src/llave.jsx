@@ -13,7 +13,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, enlace } from './piezas.jsx';
 import { completar, enOrden, esArbol, jugado } from './arriba.jsx';
-import { vioVivo } from './pase.js';
+import { vioVivo, vivoPendiente } from './pase.js';
 
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉', Cuarto: '🎖️' };
 const ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos', 'R32'];
@@ -569,11 +569,16 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   // 🎟️ «MIRÁ UNA LLAVE EN VIVO», la Tarea del Pase (05/10/2026): con tu cuenta y después de 20 segundos con la llave
   // abierta —tocarla y volver no es mirarla—. Si no sos miembro de DRA, el servidor no la cuenta
   const seJuega = enVivo && !!L && !!L.vivo && !L.terminada;
+  // ✅ Y DICE SI CONTÓ (Dlx, 07/10/2026: «ya lo hice pero no recibo nada»): una llave terminada y una que se juega se
+  // veían igual, y la Tarea no decía nada en ninguno de los dos casos
+  const [contoPase, setContoPase] = useState(false);
   useEffect(() => {
+    setContoPase(false);
     if (!dc || !seJuega) return undefined;
-    const t = setTimeout(() => vioVivo(String(n).slice(2)), 20000);
+    const t = setTimeout(() => vioVivo(String(n).slice(2)).then((r) => { if (r && r.cuenta) setContoPase(true); }), 20000);
     return () => clearTimeout(t);
   }, [dc && dc.id, seJuega, n]);
+  const tareaVivo = dc && !seJuega ? vivoPendiente() : null;
   const [sigo, setSigo] = useState('');
   useEffect(() => { window.scrollTo(0, 0); setSigo(''); }, [n]);
   useEffect(() => {
@@ -799,6 +804,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             <p className="lk-vivo">{L.terminada ? 'Terminó: los puntos llegan cuando el ciclo la procese' : (L.enJuego || 'En juego') + ' en juego'}
               {' · se actualiza sola cada minuto · último cambio ' + hace(L.ed || L.pub || Date.now())}</p>
           ) : null}
+          {contoPase ? <p className="lk-pase si" role="status">✓ Contó para tu Pase: miraste esta llave en vivo</p> : null}
+          {tareaVivo ? <p className="lk-pase">🎟️ Tu Tarea «{tareaVivo.t}» cuenta con una llave que se esté jugando, y ésta ya terminó. Las que se juegan están en <a href="#/">En vivo, en el Inicio</a>.</p> : null}
           {/* 🔝 ARRIBA DE TODO (Dlx, 03/10/2026: «estas cosas dentro de la llave deberían estar arriba de todo, no
               debajo»): ir a Discord, compartir y avisar si algo está mal. Estaban al pie, después del cuadro entero */}
           <div className="lk-acc-b">
