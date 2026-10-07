@@ -127,7 +127,10 @@
   "   (Dlx: «riferian es erian», «sí, esa es su otra cuenta»). En Urban su apodo es «Riferian (uma cryu)» y así",
   "   la anotaron en la POESÍA CRUDA (#380) y la mencionaron en MARRUECOS EN VENTA (#359); Erian (Panamá, como",
   "   «Riferian 🇵🇦») no jugó ninguno de los dos. El 04/10 la pregunta de quién era no tenía la opción «es otra",
-  "   cuenta de alguien de la Lista» y quedó como persona nueva. Va en `cuentas`: abre las cartas de Erian."
+  "   cuenta de alguien de la Lista» y quedó como persona nueva. Va en `cuentas`: abre las cartas de Erian.",
+  "   «Malasia» y «Malasia Fighter» son Liberia (Dlx, 07/10/2026: «Malasia y Liberia son la misma persona»). Su",
+  "   cuenta de la Lista (1357796427191029932) es @malasiafighter y se anota como «Sebita🇱🇷» (ya era alias); el",
+  "   07/10 jugó en FFA como «MALASIA 🇦🇷», y en la Lista había una fila «Malasia Fighter ❓» sin cuenta."
  ],
  "cuentas": {
   "Monet": [
@@ -285,6 +288,14 @@
   [
    "Riferian (uma cryu)",
    "Erian"
+  ],
+  [
+   "Malasia",
+   "Liberia"
+  ],
+  [
+   "Malasia Fighter",
+   "Liberia"
   ]
  ],
  "no_confundir": [

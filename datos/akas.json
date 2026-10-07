@@ -270,7 +270,9 @@
   "nhp": "Andres",
   "dsm5": "MTZ",
   "riferian": "Erian",
-  "riferianumacryu": "Erian"
+  "riferianumacryu": "Erian",
+  "malasia": "Liberia",
+  "malasiafighter": "Liberia"
  },
  "pares": [
   [
@@ -1356,6 +1358,14 @@
   [
    "Riferian (uma cryu)",
    "Erian"
+  ],
+  [
+   "Malasia",
+   "Liberia"
+  ],
+  [
+   "Malasia Fighter",
+   "Liberia"
   ]
  ],
  "no_confundir": [
