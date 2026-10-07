@@ -487,7 +487,6 @@
 "cronox": {
 "rg": "",
 "c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -709,12 +708,6 @@
 "temporada"
 ]
 },
-"aldre": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "saito": {
 "rg": "",
 "c": [
@@ -822,6 +815,12 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"aldre": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "delux": {
@@ -1272,15 +1271,15 @@
 "rg": "",
 "c": []
 },
-"prometheusbib": {
-"rg": "",
-"c": []
-},
 "keider": {
 "rg": "",
 "c": [
 "servidor"
 ]
+},
+"prometheusbib": {
+"rg": "",
+"c": []
 },
 "nobu": {
 "rg": "",
@@ -4715,31 +4714,6 @@
 ],
 "rg": "C",
 "primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-07T15:57:19Z",
-"quien": [
-"Trot"
-],
-"rg": "D",
-"primero": false
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T15:57:19Z",
-"quien": [
-"Aldre"
-],
-"carta": "pais"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T18:22:53Z",
-"quien": [
-"Cronox"
-],
-"carta": "pais"
 }
 ]
 }
