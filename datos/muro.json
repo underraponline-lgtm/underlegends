@@ -4714,23 +4714,6 @@
 ],
 "rg": "C",
 "primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-07T15:57:19Z",
-"quien": [
-"Trot"
-],
-"rg": "D",
-"primero": false
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-07T15:57:19Z",
-"quien": [
-"Aldre"
-],
-"carta": "pais"
 }
 ]
 }
