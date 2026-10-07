@@ -32,6 +32,14 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "hassan": {
 "rg": "S",
 "c": [
@@ -50,14 +58,6 @@
 },
 "velatz": {
 "rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
 "c": [
 "competitivo",
 "servidor",
@@ -290,6 +290,14 @@
 "temporada"
 ]
 },
+"deluxe": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "pomberito": {
 "rg": "",
 "c": [
@@ -328,14 +336,6 @@
 "rt": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"deluxe": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -1008,6 +1008,13 @@
 "temporada"
 ]
 },
+"mcnadie": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "yor": {
 "rg": "",
 "c": [
@@ -1157,13 +1164,6 @@
 "enek": {
 "rg": "",
 "c": []
-},
-"mcnadie": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "last": {
 "rg": "",
