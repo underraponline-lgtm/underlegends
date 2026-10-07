@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-07T23:24:21+00:00",
+ "cuando": "2026-10-07T23:54:22+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2851,6 +2851,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1557537568348831825",
+   "cuando": "2026-10-07T23:38:13"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",

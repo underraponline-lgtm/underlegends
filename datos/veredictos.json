@@ -1473,6 +1473,16 @@
    "ganador": "Majiztral 🇨🇴",
    "votos": "1–0"
   },
+  "1557530881416101960": {
+   "id": "1557530881416101960",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791414699654,
+   "a": "BOOTRAX 🇵🇪",
+   "b": "JEIXDER🇵🇪",
+   "ganador": "JEIXDER🇵🇪",
+   "votos": "1–0"
+  },
   "1557532816718430320": {
    "id": "1557532816718430320",
    "sv": "[FFA] Freestyle For All 👾",
@@ -3380,8 +3390,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791413994519,
-   "ed": 1791415215833,
-   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝",
+   "ed": 1791417157568,
+   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝\n⌞LEWITO⌝ 🆚 ⌞PICHULA⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞PRESAGIO DELUX NEMI⌝ 🆚 ⌞SNOW⌝\n⌞DELUX⌝ 🆚 ⌞SNOW⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3390,8 +3400,8 @@
       "CRONOX XCLUSIVO",
       "ERIZO"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SNOW",
+     "ronda siguiente",
      []
     ],
     [
@@ -3402,6 +3412,37 @@
      ],
      "PRODIGY",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LEWITO",
+      "PICHULA",
+      "COLESITO"
+     ],
+     "PICHULA",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PRESAGIO DELUX NEMI",
+      "SNOW"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DELUX",
+      "SNOW"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
