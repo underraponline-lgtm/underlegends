@@ -89,7 +89,7 @@
   "Aldre": {
    "competitivo": "ba72d3b76435:66620bff5eb9",
    "pais": "d2bb640ecfdf:dd0366c7fb5d",
-   "servidor": "cedd53e43d4a:9d97339447c1:980594"
+   "servidor": "b3df7cad5077:9d97339447c1:980594"
   },
   "Ale": {
    "servidor": "b2f52f8f6382:9d97339447c1:055f77"
@@ -856,8 +856,8 @@
   "Jupiter": {
    "competitivo": "7bcc4dba3a77:66620bff5eb9",
    "pais": "73a34cf49a3b:dd0366c7fb5d",
-   "servidor": "a54db6c90ea9:9d97339447c1:3ce074",
-   "temporada": "9c305551c643:c2dd98b0f962"
+   "servidor": "f0097dc91850:9d97339447c1:3ce074",
+   "temporada": "97e433c7ce28:c2dd98b0f962"
   },
   "KB": {
    "servidor": "125c04ec3323:9d97339447c1:055f77"
@@ -1480,8 +1480,8 @@
    "temporada": "1be46ec077cc:c2dd98b0f962"
   },
   "Provenza": {
-   "servidor": "d9e7fa27a56a:9d97339447c1:90ce53",
-   "temporada": "6900a7d21e14:c2dd98b0f962"
+   "servidor": "7a17309a2027:9d97339447c1:90ce53",
+   "temporada": "62e669963265:c2dd98b0f962"
   },
   "Pwpwo": {
    "servidor": "c61e3e877a42:9d97339447c1:948362"
@@ -1523,8 +1523,8 @@
    "temporada": "b369808a3185:c2dd98b0f962"
   },
   "Rayo": {
-   "servidor": "a7ee3ab806db:9d97339447c1:90d6e7",
-   "temporada": "82b861a28987:c2dd98b0f962"
+   "servidor": "b7712564f606:9d97339447c1:90d6e7",
+   "temporada": "be4cbbbef877:c2dd98b0f962"
   },
   "Rbk": {
    "servidor": "4623212b82d9:9d97339447c1:9d9b02"
@@ -2115,5 +2115,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-07T16:05:17+00:00"
+ "cuando": "2026-10-07T16:28:51+00:00"
 }
