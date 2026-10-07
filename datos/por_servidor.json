@@ -273,6 +273,17 @@
     "racha": "0/0"
    }
   },
+  "Aldre": {
+   "FFA": {
+    "duelos": "2/5",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 54,
+    "pod": 0,
+    "pts": 14625,
+    "racha": "0/0"
+   }
+  },
   "Alexi": {
    "FFA": {
     "duelos": "",
@@ -2058,13 +2069,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
+    "duelos": "5/8",
+    "ev": 3,
     "oro": 0,
-    "ovr": 50,
-    "pod": 0,
-    "pts": 2500,
-    "racha": "0/0"
+    "ovr": 62,
+    "pod": 2,
+    "pts": 25186,
+    "racha": "2/2"
    },
    "SR": {
     "duelos": "",
@@ -2893,12 +2904,12 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "3/4",
-    "ev": 4,
+    "duelos": "3/5",
+    "ev": 5,
     "oro": 1,
     "ovr": 62,
     "pod": 1,
-    "pts": 19766,
+    "pts": 25766,
     "racha": "0/1"
    },
    "URBF": {
@@ -3468,6 +3479,17 @@
     "racha": "0/7"
    }
   },
+  "PROMETHEUS BIB 🇨🇴": {
+   "FFA": {
+    "duelos": "0/2",
+    "ev": 2,
+    "oro": 0,
+    "ovr": 53,
+    "pod": 1,
+    "pts": 17529,
+    "racha": "1/1"
+   }
+  },
   "PUBLIC ENEMY": {
    "SR": {
     "duelos": "",
@@ -3705,13 +3727,13 @@
   },
   "Provenza": {
    "FFA": {
-    "duelos": "4/12",
-    "ev": 16,
-    "oro": 1,
-    "ovr": 66,
-    "pod": 1,
-    "pts": 43998,
-    "racha": "1/1"
+    "duelos": "10/18",
+    "ev": 18,
+    "oro": 3,
+    "ovr": 75,
+    "pod": 3,
+    "pts": 81498,
+    "racha": "3/3"
    }
   },
   "QUEEN": {
@@ -3791,12 +3813,12 @@
   },
   "Rayo": {
    "FFA": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "3/6",
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 1100,
+    "ovr": 58,
+    "pod": 1,
+    "pts": 16850,
     "racha": "0/0"
    }
   },
@@ -4136,13 +4158,13 @@
   },
   "Scot": {
    "FFA": {
-    "duelos": "",
-    "ev": 5,
+    "duelos": "0/2",
+    "ev": 7,
     "oro": 0,
-    "ovr": 49,
-    "pod": 0,
-    "pts": 5538,
-    "racha": "0/1"
+    "ovr": 56,
+    "pod": 1,
+    "pts": 19224,
+    "racha": "1/1"
    }
   },
   "Selek": {
@@ -4497,13 +4519,13 @@
     "racha": "0/1"
    },
    "FFA": {
-    "duelos": "4/6",
-    "ev": 8,
+    "duelos": "4/8",
+    "ev": 10,
     "oro": 0,
-    "ovr": 62,
-    "pod": 1,
-    "pts": 15934,
-    "racha": "0/1"
+    "ovr": 65,
+    "pod": 2,
+    "pts": 29620,
+    "racha": "1/1"
    },
    "SR": {
     "duelos": "",

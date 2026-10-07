@@ -63,6 +63,13 @@
 "temporada"
 ]
 },
+"provenza": {
+"rg": "C",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "makmah": {
 "rg": "C",
 "c": [
@@ -165,14 +172,22 @@
 "temporada"
 ]
 },
-"provenza": {
-"rg": "D",
+"majiztral": {
+"rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"majiztral": {
+"trot": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -268,14 +283,6 @@
 "zekha": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"trot": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -491,6 +498,13 @@
 "temporada"
 ]
 },
+"rayo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "xclusivo": {
 "rg": "",
 "c": [
@@ -588,6 +602,13 @@
 "temporada"
 ]
 },
+"scot": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zaza": {
 "rg": "",
 "c": []
@@ -638,6 +659,12 @@
 "temporada"
 ]
 },
+"aldre": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "neo": {
 "rg": "",
 "c": [
@@ -649,13 +676,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "noone": {
@@ -685,6 +705,10 @@
 "servidor",
 "temporada"
 ]
+},
+"prometheusbib": {
+"rg": "",
+"c": []
 },
 "richard": {
 "rg": "E",
@@ -1112,13 +1136,6 @@
 ]
 },
 "focox": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"scot": {
 "rg": "",
 "c": [
 "servidor",
@@ -1909,13 +1926,6 @@
 ]
 },
 "luffy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"rayo": {
 "rg": "",
 "c": [
 "servidor",
@@ -4695,6 +4705,15 @@
 "Prodigy"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-07T15:32:47Z",
+"quien": [
+"Provenza"
+],
+"rg": "C",
+"primero": false
 }
 ]
 }

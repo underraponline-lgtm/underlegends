@@ -230,6 +230,92 @@
     ]
    ],
    "terminada": false
+  },
+  "1557361208036823051": {
+   "id": "1557361208036823051",
+   "canal": "1487206164864438513",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791374246368,
+   "ed": 1791376796277,
+   "n": 7,
+   "vidas": 5,
+   "ronda": "5 vidas",
+   "batallas": [
+    [
+     [
+      "JUPITER 🇲🇽",
+      "RAYO 🇵🇪"
+     ],
+     "JUPITER 🇲🇽",
+     "votos 1–0",
+     "1557361277943291927"
+    ],
+    [
+     [
+      "SCOT 🇦🇷",
+      "ZA 🇮🇨"
+     ],
+     "ZA 🇮🇨",
+     "votos 1–0",
+     "1557361719515422752"
+    ],
+    [
+     [
+      "TROT 🇪🇸",
+      "ALDRE 🇦🇷"
+     ],
+     "ALDRE 🇦🇷",
+     "votos 1–0",
+     "1557363395064238141"
+    ],
+    [
+     [
+      "PROMETHEUS BIB 🇨🇴",
+      "RAYO 🇵🇪"
+     ],
+     "RAYO 🇵🇪",
+     "votos 1–0",
+     "1557365218386911354"
+    ],
+    [
+     [
+      "JUPITER 🇲🇽",
+      "RAYO 🇵🇪"
+     ],
+     "JUPITER 🇲🇽",
+     "votos 1–0",
+     "1557365507005620225"
+    ],
+    [
+     [
+      "ZA 🇮🇨",
+      "ALDRE 🇦🇷"
+     ],
+     "ZA 🇮🇨",
+     "votos 1–0",
+     "1557366965712982027"
+    ],
+    [
+     [
+      "RAYO 🇵🇪",
+      "ALDRE 🇦🇷"
+     ],
+     "RAYO 🇵🇪",
+     "votos 1–0",
+     "1557368845294116870"
+    ],
+    [
+     [
+      "ZA 🇮🇨",
+      "JUPITER 🇲🇽"
+     ],
+     "ZA 🇮🇨",
+     "votos 1–0",
+     "1557369271846182913"
+    ]
+   ],
+   "terminada": false
   }
  },
  "batallas": {
@@ -1291,6 +1377,86 @@
    "a": "pichulamc",
    "b": "kul 🇦🇷",
    "ganador": "pichulamc",
+   "votos": "1–0"
+  },
+  "1557361277943291927": {
+   "id": "1557361277943291927",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791374263035,
+   "a": "JUPITER 🇲🇽",
+   "b": "RAYO 🇵🇪",
+   "ganador": "JUPITER 🇲🇽",
+   "votos": "1–0"
+  },
+  "1557361719515422752": {
+   "id": "1557361719515422752",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791374368314,
+   "a": "SCOT 🇦🇷",
+   "b": "ZA 🇮🇨",
+   "ganador": "ZA 🇮🇨",
+   "votos": "1–0"
+  },
+  "1557363395064238141": {
+   "id": "1557363395064238141",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791374767796,
+   "a": "TROT 🇪🇸",
+   "b": "ALDRE 🇦🇷",
+   "ganador": "ALDRE 🇦🇷",
+   "votos": "1–0"
+  },
+  "1557365218386911354": {
+   "id": "1557365218386911354",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791375202510,
+   "a": "PROMETHEUS BIB 🇨🇴",
+   "b": "RAYO 🇵🇪",
+   "ganador": "RAYO 🇵🇪",
+   "votos": "1–0"
+  },
+  "1557365507005620225": {
+   "id": "1557365507005620225",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791375271322,
+   "a": "JUPITER 🇲🇽",
+   "b": "RAYO 🇵🇪",
+   "ganador": "JUPITER 🇲🇽",
+   "votos": "1–0"
+  },
+  "1557366965712982027": {
+   "id": "1557366965712982027",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791375619105,
+   "a": "ZA 🇮🇨",
+   "b": "ALDRE 🇦🇷",
+   "ganador": "ZA 🇮🇨",
+   "votos": "1–0"
+  },
+  "1557368845294116870": {
+   "id": "1557368845294116870",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791376067232,
+   "a": "RAYO 🇵🇪",
+   "b": "ALDRE 🇦🇷",
+   "ganador": "RAYO 🇵🇪",
+   "votos": "1–0"
+  },
+  "1557369271846182913": {
+   "id": "1557369271846182913",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791376168930,
+   "a": "ZA 🇮🇨",
+   "b": "JUPITER 🇲🇽",
+   "ganador": "ZA 🇮🇨",
    "votos": "1–0"
   }
  },
@@ -3128,6 +3294,57 @@
       "POMBERITO 🇦🇷"
      ],
      "POMBERITO 🇦🇷",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1557365434666324079": {
+   "id": "1557365434666324079",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791375254075,
+   "ed": 1791376796277,
+   "texto": "`[ SEMIFINALES ]`\n⌞JUPITER 🇲🇽⌝ 🆚 ⌞RAYO 🇵🇪⌝\n⌞ZA 🇮🇨⌝ 🆚 ⌞ALDRE 🇦🇷⌝\n⌞RAYO 🇵🇪⌝ 🆚 ⌞ALDRE 🇦🇷⌝\n`[ FINAL ]`\n⌞ZA 🇮🇨⌝ 🆚 ⌞JUPITER 🇲🇽⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "JUPITER 🇲🇽",
+      "RAYO 🇵🇪"
+     ],
+     "JUPITER 🇲🇽",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ZA 🇮🇨",
+      "ALDRE 🇦🇷"
+     ],
+     "ZA 🇮🇨",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "RAYO 🇵🇪",
+      "ALDRE 🇦🇷"
+     ],
+     "RAYO 🇵🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ZA 🇮🇨",
+      "JUPITER 🇲🇽"
+     ],
+     "ZA 🇮🇨",
      "veredicto",
      []
     ]
