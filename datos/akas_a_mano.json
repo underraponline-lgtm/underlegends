@@ -130,7 +130,10 @@
   "   cuenta de alguien de la Lista» y quedó como persona nueva. Va en `cuentas`: abre las cartas de Erian.",
   "   «Malasia» y «Malasia Fighter» son Liberia (Dlx, 07/10/2026: «Malasia y Liberia son la misma persona»). Su",
   "   cuenta de la Lista (1357796427191029932) es @malasiafighter y se anota como «Sebita🇱🇷» (ya era alias); el",
-  "   07/10 jugó en FFA como «MALASIA 🇦🇷», y en la Lista había una fila «Malasia Fighter ❓» sin cuenta."
+  "   07/10 jugó en FFA como «MALASIA 🇦🇷», y en la Lista había una fila «Malasia Fighter ❓» sin cuenta.",
+  "   «Yo mc» en FFA es Cronox (07/10/2026): su cuenta (@cronoxzito, la de la Lista) se anota como «Yo mc 🇨🇱»,",
+  "   «Yo 🇨🇱» y «Yo + tenor» —«yo» es él—, y el organizador copió «YO MC» a la llave (DEM UZBEKISTAN FECHA 1).",
+  "   Va por servidor y no global: en la ACADEMIA otra cuenta escribió «Yo mc🇨🇻» hablando de sí misma."
  ],
  "cuentas": {
   "Monet": [
@@ -359,6 +362,9 @@
   "DDF": {
    "Carlos": "Carlosss",
    "Number": "Number VE"
+  },
+  "FFA": {
+   "Yo mc": "Cronox"
   }
  }
 }

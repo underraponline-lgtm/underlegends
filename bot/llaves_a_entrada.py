@@ -2217,7 +2217,8 @@ def filas_vidas(h, ev, sv, fecha):
                                % nota.replace('votos ', '')) if nota else
                               'ningún juez votó con texto', [a, b]))
                 continue
-            if not dec:
+            # en un 5 vidas no hay ronda que cobrar: «nadie siguió» es como «no se jugó»
+            if not dec or dec == DEC.NADIE:
                 sabidas['%s: batalla que no se jugó (✅ Decidir)' % V['ronda']] += 1
                 continue
             gana, nota = dec, 'ganador: ✅ Decidir'
@@ -3410,6 +3411,18 @@ def main():
                 quedan.append(tuple(d) + (det, _lk[-1] if _lk else ''))
                 continue
             decididas += 1
+            # 🔑 SE JUGÓ Y NADIE SIGUIÓ (`decidir.NADIE`, 07/10/2026): una fila por cada uno contra el primero, sin
+            # ganador —no hay duelo— y con `cobra:` para todos, así cada uno cobra la ronda (`motor`, el bucle COBRA)
+            if gano == DEC.NADIE:
+                lados = list(d[4])
+                for otro in lados[1:]:
+                    limpias.append({
+                        'evento': base.get('evento') or nom, 'servidor': base.get('servidor') or ligas[0],
+                        'fecha': base.get('fecha') or fec,
+                        'participantes': base.get('participantes') or len(g['plantel']),
+                        'ronda': d[1].lower(), 'ladoA': lados[0], 'ladoB': otro, 'ganador': '',
+                        'notas': '; '.join('cobra: %s' % x for x in lados) + '; nadie siguió: ✅ Decidir'})
+                continue
             for otro in [x for x in d[4] if x != gano] if gano else []:
                 limpias.append({
                     'evento': base.get('evento') or nom, 'servidor': base.get('servidor') or ligas[0],
@@ -3419,6 +3432,10 @@ def main():
                     'notas': ('triple (%d bandas); ' % len(d[4]) if len(d[4]) > 2 else '')
                     + 'ganador: ✅ Decidir'})
         d_grupo = quedan
+        # y las filas que sumó ✅ Decidir, con los nombres que en ESE servidor son otra persona (`otro_en_servidor()` ya
+        # corrió sobre las leídas; aplicarlo otra vez no cambia lo que ya estaba): «Yo mc» en FFA es Cronox (07/10/2026)
+        if decididas and ligas:
+            limpias = otro_en_servidor(limpias, ligas[0])
         # 🔑 LA FINAL QUE LA LLAVE NO ESCRIBIÓ, si Dlx dijo cuál fue (`final` en la decisión del evento): COMPE DE
         # UDDI (22/09) puso en la final sólo «ERIAN» —el ganador— y nunca la batalla (Dlx: *«3. Sí»*, ganó Erian).
         fd = DEC.final_decidida(nom, ligas[0], fec) if ligas else None

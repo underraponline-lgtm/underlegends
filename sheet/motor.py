@@ -748,7 +748,9 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                 continue
             sumar(x, tab.get(puesto, 0), puesto)
             if q in res:
-                res[q]['notas'] += 'Ganó y no siguió '
+                # «nadie siguió» (`decidir.NADIE`, 07/10/2026): no se sabe quién ganó, así que no dice «ganó»
+                res[q]['notas'] += ('Nadie siguió ' if 'nadie siguió' in str(b.get('notas') or '').lower()
+                                    else 'Ganó y no siguió ')
 
     # 🔴 EL REVIVIDO: 50 % DE SU PUESTO FINAL + LA PRIMERA DERROTA ENTERA.
     # Guía de formatos de Dlx (23/09/2026, §3.7): «TORNEO DE PLAZAS — RBK

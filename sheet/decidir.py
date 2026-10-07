@@ -103,6 +103,12 @@ GRUPO = {
 NUEVO = 'Es alguien nuevo'
 #: la batalla que no se peleó (un walkover sin nadie que pase, una anulada)
 NO_SE_JUGO = 'No se jugó'
+#: 🔑 LA BATALLA SE JUGÓ PERO NADIE SIGUIÓ (Dlx, 07/10/2026, la DEM UZBEKISTAN FECHA 1: *«Saz reemplazó a alguien, no
+#: sé si RT o Jupiter ganó»*). En cuartos entraron Saz y Za de reemplazo, así que de tres octavos no pasó nadie y no se
+#: sabe quién ganó. «No se jugó» los dejaba SIN el evento —jugaron—; esto los carga cobrando la ronda, como el que ganó y
+#: no siguió (`cobra:`, Geoka, 02/10), y sin duelo: no se sabe quién ganó. Se guarda como ganador `NADIE`
+NADIE_SIGUIO = 'Nadie siguió (cobran la ronda)'
+NADIE = '(nadie siguió)'
 #: entre los lados de una batalla, en el detalle de `Pendientes`
 SEP_LADOS = ' 🆚 '
 #: un nombre de broma que no es nadie: no entra a ningún ranking. Ver
@@ -1688,7 +1694,7 @@ def _pregunta(p):
                                           SEP_LADOS.join(lados)),
                 match or '—',
                 ['%s %s' % ('Ganó' if dos else 'Pasó', l) for l in lados]
-                + [NO_SE_JUGO, 'Dejar para después'])
+                + [NADIE_SIGUIO, NO_SE_JUGO, 'Dejar para después'])
     if t == 'Vidas cargado':
         ev = det.split(' · ')[0].strip()
         return ('«%s» es un 5 vidas que el ciclo cargó solo desde #veredictos: '
@@ -1772,6 +1778,8 @@ def interpretar(p, respuesta):
     if p['tipo'] == 'Batalla sin ganador':
         if r == NO_SE_JUGO:
             return ('batalla', '')
+        if r == NADIE_SIGUIO or norm(r) in (norm('nadie siguió'), norm('nadie pasó')):
+            return ('batalla', NADIE)
         m = re.match(r'(?:gan[oó]|pas[oó])\s+(.+)$', r, re.I)
         quien = norm(_sin_bandera(m.group(1) if m else r))
         x = partes_batalla(p['detalle'])
@@ -2196,7 +2204,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             cierres += [(n, 'troll: no cuenta') for n in p['filas']]
         elif que == 'batalla':
             batallas[p['detalle']] = dato
-            cierres += [(n, ('ganó %s: entra en la corrida siguiente' % dato) if dato
+            cierres += [(n, 'nadie siguió: cobran la ronda, sin duelo' if dato == NADIE
+                         else ('ganó %s: entra en la corrida siguiente' % dato) if dato
                          else 'no se jugó: queda afuera') for n in p['filas']]
         elif que == 'unir':
             pares.append([dato[0], dato[1], ''])
@@ -3020,6 +3029,9 @@ def _self_check():
        'con o sin bandera, con o sin tilde')
     ok(interpretar(b, NO_SE_JUGO) == ('batalla', '') and interpretar(b, 'Ganó Zzz')[0] == 'error',
        '«No se jugó» cierra sin ganador, y un nombre que no peleó es un error')
+    ok(interpretar(b, NADIE_SIGUIO) == ('batalla', NADIE) and interpretar(b, 'nadie siguio') == ('batalla', NADIE)
+       and NADIE_SIGUIO in b['opciones'],
+       '«Nadie siguió»: se jugó, nadie pasó y cobran la ronda (DEM UZBEKISTAN, 07/10)')
     ok(clave_batalla(det) == clave_batalla(det.replace('Richard 🇪🇨', 'RICHARD')),
        'la clave no depende de banderas ni mayúsculas')
     ok(partes_batalla(det)[4] == ['Richard 🇪🇨', 'Number 🇺🇾'], 'el detalle se lee de vuelta')
