@@ -12,6 +12,7 @@
 "oasis": {
 "rg": "S",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -46,19 +47,19 @@
 "temporada"
 ]
 },
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "pichulamc": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -429,6 +430,13 @@
 ]
 },
 "dxg": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"riferian": {
 "rg": "",
 "c": [
 "servidor",
@@ -1343,13 +1351,6 @@
 ]
 },
 "guess": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"riferian": {
 "rg": "",
 "c": [
 "servidor",
@@ -4718,7 +4719,15 @@
 },
 {
 "tipo": "tarjeta",
-"t": "2026-10-07T18:41:58Z",
+"t": "2026-10-07T18:44:15Z",
+"quien": [
+"Oasis"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T18:44:15Z",
 "quien": [
 "Cronox"
 ],
