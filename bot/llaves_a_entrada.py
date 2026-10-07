@@ -1308,6 +1308,11 @@ def otro_en_servidor(filas, sv, mapa=None):
         for k in ('ladoA', 'ladoB', 'ganador'):
             if f.get(k):
                 f[k] = cambia(f[k])
+        # y el `cobra: X` de la nota: el motor lo busca en la Lista sin saber del servidor, así que «cobra: Yo mc»
+        # le pagaba al «Yo mc» de la ACADEMIA y no a Cronox (DEM UZBEKISTAN, FFA, 07/10/2026)
+        if 'cobra' in str(f.get('notas') or '').lower():
+            f['notas'] = re.sub(r'(cobra\s*:\s*)([^;|]+)', lambda q: q.group(1) + cambia(q.group(2)),
+                                f['notas'], flags=re.I)
     return filas
 
 
@@ -2795,10 +2800,16 @@ def _self_check():
     _mo = {'DDF': {'carlos': 'Carlosss', 'number': 'Number VE'}}
     _fo_ddf = otro_en_servidor([dict(f) for f in _fo], 'DDF', mapa=_mo)
     _fo_ffa = otro_en_servidor([dict(f) for f in _fo], 'FFA', mapa=_mo)
+    _fo_cob = otro_en_servidor([{'ladoA': 'Sin límites 🇵🇪', 'ladoB': 'Yo mc 🇨🇱', 'ganador': '',
+                                 'notas': 'cobra: Sin límites 🇵🇪; cobra: Yo mc 🇨🇱; nadie siguió: ✅ Decidir'}],
+                               'FFA', mapa={'FFA': {'yomc': 'Cronox'}})
     casos = [
         ('en DDF, CARLOS es Carlosss y NUMBER es Number VE (también dentro de un equipo); en FFA, nadie cambia',
          (_fo_ddf[0]['ladoA'], _fo_ddf[0]['ladoB'], _fo_ddf[0]['ganador']) == ('Carlosss', 'Number VE, Xplicit', 'Carlosss')
          and _fo_ffa[0]['ladoA'] == 'CARLOS🇪🇨'),
+        ('y el «cobra: X» de la nota también: en FFA «Yo mc» es Cronox, y quien no cambia queda igual',
+         _fo_cob[0]['ladoB'] == 'Cronox'
+         and _fo_cob[0]['notas'] == 'cobra: Sin límites 🇵🇪; cobra: Cronox; nadie siguió: ✅ Decidir'),
         ('ganó su octavo y no siguió: con la decisión de Dlx, su batalla dice «cobra: Geoka» y nada más cambia',
          _fc_si[0]['notas'] == 'triple (3 bandas); cobra: Geoka 🇦🇷' and _fc_si[1]['notas'] == ''
          and not any('cobra' in f['notas'] for f in _fc_no)),
