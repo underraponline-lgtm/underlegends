@@ -820,17 +820,48 @@ def _mismo_evento(a, b):
     return bool(ta and tb and abs((ta - tb).total_seconds()) <= MISMO_EVENTO_H * 3600)
 
 
-def cruzar(pasados, regs, todos=None):
+def _id_mensaje(link):
+    """El id del mensaje al final de un link de Discord, o `''`."""
+    m = re.search(r'/(\d{15,22})/?$', str(link or ''))
+    return m.group(1) if m else ''
+
+
+def anuncio_de_llave():
+    """`{id del mensaje de la llave: id del mensaje de su anuncio}` de `datos/nombres_llaves.json` (campo `anuncio`)."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'nombres_llaves.json'), encoding='utf-8') as f:
+            d = (json.load(f) or {}).get('llaves') or {}
+    except (OSError, ValueError):
+        return {}
+    return {str(k): str(v['anuncio']) for k, v in d.items() if isinstance(v, dict) and v.get('anuncio')}
+
+
+def cruzar(pasados, regs, todos=None, de_anuncio=None):
     """Cuelga `llave: n` de cada anuncio de «Lo que pasó» que tenga su
     llave, y devuelve `{n: registro}` con las que colgó.
 
-    Dos pasadas: por nombre (`_elegir()`) y, para el que quedó sin llave, la
-    huérfana (`_huerfanas()`). `todos` son los demás anuncios —con la misma
-    forma que `pasados`—, para saber qué llaves ya son de otro: «Lo que
-    pasó» muestra seis, y la llave de un séptimo no es huérfana.
+    Tres pasadas: la llave que su anuncio nombró (`de_anuncio`, abajo), por
+    nombre (`_elegir()`) y, para el que quedó sin llave, la huérfana
+    (`_huerfanas()`). `todos` son los demás anuncios —con la misma forma que
+    `pasados`—, para saber qué llaves ya son de otro: «Lo que pasó» muestra
+    seis, y la llave de un séptimo no es huérfana.
     """
     out = {}
     regs = regs or {}
+    # 🔑 LA LLAVE QUE SU ANUNCIO NOMBRÓ ES DE ÉSE (07/10/2026). Cuando una llave no trae nombre, el lector la nombra con
+    # su anuncio y guarda el id de ese anuncio en `datos/nombres_llaves.json`. Si el nombre después cambia —«PRITTY FREE
+    # CLASIFICATORIA 3», para no juntarla con la de la mañana—, por nombre ya no se cruza y el calendario la mostraba
+    # dos veces. Con el id no hay parecido que medir: va primero, y esa llave no la elige nadie más.
+    # ⚠️ Y NO SE RESUELVE CAMBIÁNDOLE EL NOMBRE: el evento se identifica por nombre, servidor y fecha, y el 07/10 a las
+    # 12:52 AM «PRITTY FREE 3» entró como OTRO evento (#417) con el #412 cargado: el mismo evento dos veces
+    de_anuncio = anuncio_de_llave() if de_anuncio is None else de_anuncio
+    fija = {}
+    for n, r in regs.items():
+        am = de_anuncio.get(_id_mensaje((r.get('links') or [''])[0]))
+        if am:
+            fija[am] = n
+    fijas = set(fija.values())
+    libres = {n: r for n, r in regs.items() if n not in fijas} if fijas else regs
     ya = {p.get('link') for p in pasados if p.get('link')}
     otros = [q for q in (todos or ()) if not (q.get('link') and q.get('link') in ya)]
     # 🔴 UNA LLAVE ES DE UN SOLO EVENTO (05/10/2026). Cada anuncio elegía la suya por separado, y «COPA SOOLAR» y
@@ -843,7 +874,13 @@ def cruzar(pasados, regs, todos=None):
     for p in list(pasados) + otros:
         if id(p) in mios:
             p.pop('llave', None)
-        e = _elegir_con(p, regs)
+        n_fijo = fija.get(_id_mensaje(p.get('link')))
+        if n_fijo is not None:
+            if id(p) in mios:
+                p['llave'] = int(n_fijo)
+                out[n_fijo] = regs[n_fijo]
+            continue
+        e = _elegir_con(p, libres)
         if e is not None:
             por_llave.setdefault(e[0], []).append(((e[1], e[2]), p))
     for n, cs in por_llave.items():
@@ -858,8 +895,8 @@ def cruzar(pasados, regs, todos=None):
     faltan = [p for p in pasados if not p.get('llave')]
     if not faltan:
         return out
-    # las de un empate también quedan tomadas: no son huérfanas de un tercero
-    tomadas = set(por_llave)
+    # las de un empate también quedan tomadas: no son huérfanas de un tercero. Y las que su anuncio nombró, también
+    tomadas = set(por_llave) | fijas
     for p, n in _huerfanas(faltan, list(pasados) + otros, regs, tomadas):
         p['llave'] = int(n)
         out[n] = regs[n]
@@ -1076,6 +1113,22 @@ def _self_check():
     q = [dict(a17)]
     cruzar(q, dos)
     ok(q[0].get('llave') is None, 'con dos huérfanas posibles no elige')
+    # 🔑 la llave que su anuncio nombró (FFA, 05/10/2026): el anuncio dice «PRITTY FREE», la llave se llama «PRITTY FREE
+    # CLASIFICATORIA 3» y `datos/nombres_llaves.json` guarda de qué anuncio es. La «PRITTY FREE» de la mañana, la suya
+    pf = {'402': {'nombre': 'PRITTY FREE', 'sv': 'FFA', 'dia': '2026-10-05',
+                  'links': ['https://discord.com/channels/1/2/1556536286074900573']},
+          '412': {'nombre': 'PRITTY FREE CLASIFICATORIA 3', 'sv': 'FFA', 'dia': '2026-10-05',
+                  'links': ['https://discord.com/channels/1/2/1556862363834253344']}}
+    q = [{'nombre': 'PRITTY FREE', 'sv': 'FFA', 'cuando': '2026-10-05T05:17:40',
+          'link': 'https://discord.com/channels/1/3/1556532055393697843'},
+         {'nombre': 'PRITTY FREE', 'sv': 'FFA', 'cuando': '2026-10-06T02:56:51',
+          'link': 'https://discord.com/channels/1/3/1556859003634589760'}]
+    cruzar(q, pf, de_anuncio={'1556862363834253344': '1556859003634589760'})
+    ok([x.get('llave') for x in q] == [402, 412],
+       'la llave que su anuncio nombró es de ése, aunque el nombre ya no se parezca  %s' % [x.get('llave') for x in q])
+    q = [dict(x) for x in q]
+    cruzar(q, pf, de_anuncio={})
+    ok(q[1].get('llave') is None, 'sin ese dato, por nombre no se cruzan (por eso hace falta)')
     # el anuncio siguiente de la serie cierra la ventana: la llave con el
     # número mal escrito es del que se anunció justo antes de publicarla
     a20 = {'nombre': 'TOKYO VOL 20', 'sv': 'FFA', 'cuando': '2026-10-01T00:00:00', 'mod': '1v1'}

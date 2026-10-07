@@ -49,6 +49,12 @@
    "cuando": "2026-10-05 2:35 AM ET",
    "por": "Dlx (chat)",
    "nota": "el torneo de grupos de Leonar-T (antes «GRUPO A»): la final ZETRYKO vs ABYSSUS no decía quién ganó. Dlx: «2. Abyssus» (05/10), y el 06/10 lo corrigió: «la había ganado zetryko no abyssus»."
+  },
+  "PRITTY FREE 3 · FFA · 05/10": {
+   "decision": "no cuenta",
+   "cuando": "2026-10-07 12:59 AM ET",
+   "por": "Claude (arreglo, revisión del 07/10)",
+   "nota": "NO ES UN EVENTO: es la PRITTY FREE CLASIFICATORIA 3 (#412) cargada otra vez como #417 porque a su llave se le cambió el nombre (datos/nombres_llaves.json) y el lector la tomó por otra. El nombre volvió; esto saca el #417, que contaba ese evento dos veces."
   }
  },
  "no_rankear": {

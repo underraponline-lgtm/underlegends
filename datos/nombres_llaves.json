@@ -36,8 +36,8 @@
   "1556862363834253344": {
    "anuncio": "1556859003634589760",
    "autor_h": "d83234c3da26ac85",
-   "nombre": "PRITTY FREE 3",
-   "nota": "la llave dice «CLASIFICATORIA 3 PRITTY FREE» (05/10, 10:55 PM) y su anuncio es el «PRITTY FREE» de las 10:41 PM; con el nombre del anuncio quedaba en el mismo evento que la Clasificatoria 2 de la 1 AM (#402). Snow, 06/10: «la página no puso esa compe». Se llamó «PRITTY FREE CLASIFICATORIA 3» hasta la revisión de esa noche: así el calendario no la cruzaba con su anuncio. «PRITTY FREE 3» se cruza por nombre con las reglas de siempre y sigue siendo otro evento que la de la mañana.",
+   "nombre": "PRITTY FREE CLASIFICATORIA 3",
+   "nota": "la llave dice «CLASIFICATORIA 3 PRITTY FREE» (05/10, 10:55 PM) y su anuncio es el «PRITTY FREE» de las 10:41 PM; con el nombre del anuncio quedaba en el mismo evento que la Clasificatoria 2 de la 1 AM (#402). Snow, 06/10: «la página no puso esa compe». ⚠️ NO SE LE CAMBIA EL NOMBRE: el evento se identifica por nombre, servidor y fecha, y el 07/10 a las 12:52 AM pasó a llamarse «PRITTY FREE 3» y entró como OTRO evento (#417) con el #412 todavía cargado: el mismo evento dos veces. El calendario la cruza con su anuncio por el campo `anuncio` de acá (`llaves_web.cruzar()`).",
    "por": "Dlx (chat)",
    "sv": "FFA"
   },
