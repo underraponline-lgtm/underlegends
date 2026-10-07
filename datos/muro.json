@@ -120,6 +120,7 @@
 "velatz": {
 "rg": "C",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -723,14 +724,14 @@
 "temporada"
 ]
 },
-"eclipsito": {
+"korey": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"korey": {
+"eclipsito": {
 "rg": "",
 "c": [
 "servidor",
@@ -970,16 +971,16 @@
 "temporada"
 ]
 },
-"bna": {
-"rg": "",
-"c": []
-},
 "1200": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"bna": {
+"rg": "",
+"c": []
 },
 "alonso": {
 "rg": "",
@@ -995,10 +996,6 @@
 "temporada"
 ]
 },
-"youngvlad": {
-"rg": "",
-"c": []
-},
 "lvel": {
 "rg": "",
 "c": [
@@ -1012,6 +1009,10 @@
 "servidor",
 "temporada"
 ]
+},
+"youngvlad": {
+"rg": "",
+"c": []
 },
 "iguana": {
 "rg": "",
@@ -4544,6 +4545,14 @@
 ],
 "rg": "A",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T01:22:33Z",
+"quien": [
+"Velatz"
+],
+"carta": "competitivo"
 }
 ]
 }
