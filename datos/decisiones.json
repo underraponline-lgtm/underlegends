@@ -55,6 +55,12 @@
    "cuando": "2026-10-07 12:59 AM ET",
    "por": "Claude (arreglo, revisión del 07/10)",
    "nota": "NO ES UN EVENTO: es la PRITTY FREE CLASIFICATORIA 3 (#412) cargada otra vez como #417 porque a su llave se le cambió el nombre (datos/nombres_llaves.json) y el lector la tomó por otra. El nombre volvió; esto saca el #417, que contaba ese evento dos veces."
+  },
+  "5 VIDAS 07:57 · FFA · 07/10": {
+   "decision": "no cuenta",
+   "cuando": "2026-10-07 1:40 PM ET",
+   "por": "Claude (arreglo, a pedido de Dlx)",
+   "nota": "NO ES UN EVENTO: es la MAÑANA DE LLUVIA VOL 1 (#419) votada en #votaciones, que un título mal escrito hizo leer como 5 vidas (#420, y con el nombre de su anuncio otra vez, #421). Dlx: «no fue 5 vidas sino un evento regular». El #421 se sacó por número: un «no cuenta» por su nombre sacaría también el #419."
   }
  },
  "no_rankear": {
