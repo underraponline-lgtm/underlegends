@@ -356,7 +356,8 @@
 "rt": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "mtz": {
@@ -4745,6 +4746,14 @@
 "Soneto"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T21:08:01Z",
+"quien": [
+"RT"
+],
+"carta": "temporada"
 }
 ]
 }

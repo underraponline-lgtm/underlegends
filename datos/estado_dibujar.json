@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-07T18:44:18Z",
+ "cuando": "2026-10-07T21:08:02Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 963.6,
+ "dur_s": 1343.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.0
+   "s": 11.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.3
+   "s": 2.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.5
+   "s": 68.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 4 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 885.5
+   "s": 1206.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.0
+   "s": 10.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 41.3
+   "s": 42.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "419",
-  "nombre": "MAÑANA DE LLUVIA VOL 1",
+  "n": "422",
+  "nombre": "WETTSIDDEE 2",
   "sv": "FFA",
   "dia": "2026-10-07"
  },
  "cuotas": {
   "kv": {
-   "write": 326,
-   "read": 35960
+   "write": 401,
+   "read": 41488
   },
   "objeto": {
-   "leidas": 1116694,
-   "escritas": 17173,
-   "pedidos": 4521
+   "leidas": 1424942,
+   "escritas": 23171,
+   "pedidos": 6220
   },
   "worker": {
-   "pedidos": 5792,
+   "pedidos": 6967,
    "errores": 0,
-   "sub": 5591,
-   "p50_ms": 1.02,
-   "p99_ms": 5.46
+   "sub": 6860,
+   "p50_ms": 1.0,
+   "p99_ms": 5.7
   },
   "r2": {
    "objetos": 3609,

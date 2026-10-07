@@ -1026,6 +1026,7 @@
 },
 "1492228152691396720": {
 "cs": [
+"competitivo",
 "servidor",
 "temporada"
 ],
@@ -1912,6 +1913,7 @@
 },
 "745324578347286528": {
 "cs": [
+"competitivo",
 "servidor",
 "temporada"
 ],
@@ -2401,7 +2403,8 @@
 },
 "995447111334232094": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 }
