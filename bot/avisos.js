@@ -602,6 +602,27 @@ export function veredictosALeer(lista, vivos, calientes, minuto, tope = VER_TOPE
 //: *«si, este es el canal 1500690475089399858»* — `〢🔥〉eventos-hoy` de
 //: DRA, «eventos de toda la comunidad». Ver `publicar()`.
 export const CANAL_RED = '1500690475089399858';
+//: 🧩 el canal de Logs —«LIGA GLOBAL» en DRA—, el mismo que `avisar.CANAL` de Python: lo de rutina que tiene que ver
+//: Dlx. `alertar.py --auto` comprueba que los dos digan lo mismo
+export const CANAL_LOGS = '1504110449535483924';
+
+/**
+ * 🧩 ¿ESTO QUISO SER UNA LLAVE? (Dlx, 07/10/2026, las mejoras: «dale, haz todo»). La de Snake Rap de esa tarde —`(< A >)
+ * ⚔️ (< B >)`— estuvo 45 minutos sin que el bot ni la página la vieran, y nada avisó: un formato que el lector no conoce
+ * no falla, se saltea. Dos rondas distintas nombradas y cuatro renglones con dos nombres o más (sin contar los de las
+ * rondas). ⚠️ La plantilla vacía (`(< >) ⚔️ (< >)`) y la charla del canal («arrancan los cuartos, la final a las 9») no.
+ */
+export function intentoDeLlave(texto) {
+  const s = String(texto || '').normalize('NFKD').replace(/[̀-ͯ]/g, '');
+  const RONDA = /\b(filtros?|clasificatoria|octavos|cuartos|semi\s*-?\s*finale?s?|semis|gran\s*-?\s*final|final)\b/gi;
+  const rondas = new Set((s.match(RONDA) || []).map((x) => x.toLowerCase().replace(/[^a-z]/g, '').replace(/^gran/, '')
+    .replace(/^semis?finale?s?$|^semis$/, 'semi').replace(/^filtros$/, 'filtro')));
+  if (rondas.size < 2) return false;
+  const esRonda = new RegExp(RONDA.source, 'i');
+  const conNombres = s.split('\n').filter((l) => !esRonda.test(l)
+    && (l.replace(/<a?:\w+:\d+>|<[@#][!&]?\d+>/g, ' ').match(/\p{L}{2,}/gu) || []).length >= 2);
+  return conNombres.length >= 4;
+}
 const HUB_AVISOS = 'https://underlegends.pages.dev/freestyle-rap/avisos';
 //: a dónde lleva el aviso de un evento cancelado: el calendario, en la pestaña de la página si hay una (`sw.js`)
 const HUB_EVENTOS = '/freestyle-rap/eventos';
@@ -3152,6 +3173,8 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS estados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, tipo TEXT NOT NULL, ' +
         "nueva INTEGER NOT NULL DEFAULT 0, mas INTEGER NOT NULL DEFAULT 0, texto TEXT NOT NULL DEFAULT '', " +
         "pub INTEGER NOT NULL, evento TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 🧩 las llaves que no se supieron leer y ya se avisaron (07/10/2026): ver `llaveRara()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS llaves_raras (id TEXT PRIMARY KEY, sv TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
       // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -3595,6 +3618,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM avisos WHERE creado < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM cancelados WHERE t < ?', ahora - 3 * 24 * HORA);
       this.sql.exec('DELETE FROM estados WHERE pub < ?', ahora - 3 * 24 * HORA);
+      this.sql.exec('DELETE FROM llaves_raras WHERE t < ?', ahora - 3 * 24 * HORA);
       this.sql.exec('DELETE FROM claves WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM repetidos WHERE t < ?', ahora - 2 * 24 * HORA);
       this.sql.exec('DELETE FROM posts WHERE creado < ?', ahora - 7 * 24 * HORA);
@@ -3698,6 +3722,8 @@ export class Avisos {
         const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
         if (Number.isNaN(pub) || ahora - Math.max(pub, ed || 0) > VIVO_HORAS * HORA) continue;
         const texto = conNombres(m).slice(0, 6000);
+        // 🧩 y la llave que no se sabe leer, avisada una vez (`llaveRara()`). Nunca frena
+        try { await this.llaveRara(m, c, texto, ahora); } catch (e) { /* sigue */ }
         if (!pareceLlave(texto)) {
           // 📢 el «se me fue la luz, seguimos mañana» también se escribe en el canal de llaves. Nunca frena
           try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ }
@@ -3982,6 +4008,60 @@ export class Avisos {
       || evs.sort((x, y) => msDe(y.id) - msDe(x.id))[0] || null;
     this.sql.exec('INSERT OR REPLACE INTO estados (id, sv, tipo, nueva, mas, texto, pub, evento, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
       m.id, c.sv, e.tipo, e.nueva || 0, e.mas || 0, texto, pub, ev ? ev.id : '', ahora);
+    // 🔔 Y A QUIEN LE LLEGÓ EL AVISO DE ESE EVENTO, que se pausó o se atrasó (Dlx, 07/10/2026, las mejoras: «dale, haz
+    // todo»). Como el «cancelado» de `cancelaciones()`: sólo a quien ya le había llegado (`hs`), con el mismo `tag` —en
+    // el teléfono reemplaza al del evento— y una vez por evento y por tipo. El cancelado ya va por `cancelaciones()`
+    if (ev && (e.tipo === 'pausado' || e.tipo === 'atrasado')) {
+      const f = this.sql.exec('SELECT sv, cuerpo, estado, cursor FROM avisos WHERE id = ?', ev.id).toArray()[0];
+      let cu = null;
+      try { cu = f ? JSON.parse(f.cuerpo) : null; } catch (err) { cu = null; }
+      if (f && cu && (f.estado === 1 || f.cursor)) {
+        const nueva = e.nueva || (e.mas && cu.ini ? cu.ini + e.mas : 0);
+        const x = { v: 1, tipo: 'estado', est: e.tipo, id: cu.id, t: cu.t, sv: cu.sv, svn: cu.svn, ini: cu.ini, nueva,
+          url: HUB_EVENTOS, hs: f.cursor || 0 };
+        this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) VALUES (?, ?, ?, ?, ?, ?)',
+          'es:' + ev.id + ':' + e.tipo, f.sv, JSON.stringify(x), ahora, ahora + 2 * HORA, ahora);
+      }
+    }
+    return true;
+  }
+
+  /**
+   * 🧩 Una llave que el lector no sabe leer (`intentoDeLlave()` y menos de dos batallas con `LlaveVivo`), avisada UNA
+   * vez al canal de Logs con su link. Cada versión de un mensaje se mira una sola vez —el canal se relee cada minuto— y
+   * nunca frena al vigía.
+   */
+  async llaveRara(m, c, texto, ahora) {
+    if (!m || !c || (this.yo && m.author && m.author.id === this.yo)) return false;
+    const vistos = (this.rarasVistas = this.rarasVistas || new Map());
+    const firma = String(m.edited_timestamp || m.timestamp || '') + ':' + texto.length;
+    if (vistos.get(m.id) === firma) return false;
+    if (vistos.size > 500) vistos.clear();
+    vistos.set(m.id, firma);
+    if (!intentoDeLlave(texto)) return false;
+    if (this.sql.exec('SELECT 1 FROM llaves_raras WHERE id = ?', m.id).toArray().length) return false;
+    if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
+    const LV = globalThis.LlaveVivo;
+    let bats = 0;
+    try { bats = LV.rondasDe(LV.traducir(LV.plano(texto))).reduce((n, R) => n + ((R && R[1]) || []).length, 0); } catch (e) { bats = 0; }
+    if (bats >= 2) return false;
+    this.sql.exec('INSERT OR IGNORE INTO llaves_raras (id, sv, t) VALUES (?, ?, ?)', m.id, c.sv || '', ahora);
+    const link = `https://discord.com/channels/${c.g || '@me'}/${c.id}/${m.id}`;
+    try {
+      const r = await fetch(`${DC}/channels/${CANAL_LOGS}/messages`, {
+        method: 'POST',
+        headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+        body: JSON.stringify({
+          content: `🧩 **No pude leer una llave de ${c.svn || c.sv || 'un servidor'}**: tiene rondas y nombres, pero no le ` +
+            'saco ninguna batalla. Si es una llave de verdad, el bot no la ve en vivo ni la va a cargar: pasale el ' +
+            `formato a Claude.\n<${link}>`,
+          allowed_mentions: { parse: [] },
+        }),
+      });
+      if (r.status !== 200) this.guardar('ultimo_error', { t: ahora, ruta: 'llave-rara', error: 'mensaje ' + r.status });
+    } catch (e) {
+      this.guardar('ultimo_error', { t: ahora, ruta: 'llave-rara', error: String(e).slice(0, 120) });
+    }
     return true;
   }
 
@@ -4701,9 +4781,10 @@ export class Avisos {
       this.sql.exec('UPDATE avisos SET estado = ? WHERE id = ?', NO_SALIO, av.id);
       return;
     }
-    // el «cancelado» sólo a quien le llegó el aviso del evento (`hs`, ver `cancelaciones()`)
+    // el «cancelado» —y el «en pausa» o «se atrasó» (`es:`, ver `anotarEstado()`)— sólo a quien le llegó el aviso del
+    // evento (`hs`, ver `cancelaciones()`)
     let tope = Number.MAX_SAFE_INTEGER;
-    if (String(av.id).startsWith('cx:')) {
+    if (/^(cx|es):/.test(String(av.id))) {
       try { const cc = JSON.parse(av.cuerpo); if (cc.hs != null) tope = Number(cc.hs) || 0; } catch (e) { /* sin tope */ }
     }
     const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs ' +

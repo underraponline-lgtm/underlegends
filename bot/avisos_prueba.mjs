@@ -1005,6 +1005,24 @@ const ok = (cond, que, det) => {
     'vamo empezando 5 mins', 'gracias a todos, mañana hay otra compe', 'empezamos en 10 minutos'].map((t) => t + ' → ' + tipo(t)).join(' | '));
 }
 
+// ── 🧩 la llave que el lector no sabe leer (07/10/2026) ──────────────────────────────────────────────────────────
+{
+  console.log('\n🧩 la llave que no se sabe leer\n');
+  await import('./paginas/llave_vivo.js');
+  const LV = globalThis.LlaveVivo;
+  const bats = (t) => LV.rondasDe(LV.traducir(LV.plano(t))).reduce((n, R) => n + R[1].length, 0);
+  const rara = 'CUARTOS\nAna ~~ Beto\nCaro ~~ Dani\nEva ~~ Fer\nGus ~~ Hugo\nSEMIS\nAna ~~ Caro\nFINAL\nAna ~~ Eva';
+  ok(A.intentoDeLlave(rara) && bats(rara) < 2, 'un formato que nadie usó todavía: quiso ser una llave y no se lee → aviso',
+    `intento ${A.intentoDeLlave(rara)} · batallas ${bats(rara)}`);
+  const buena = '# CUARTOS\n[Ana] 🆚 [Beto]\n[Caro] 🆚 [Dani]\n[Eva] 🆚 [Fer]\n[Gus] 🆚 [Hugo]\n# FINAL\n[Ana] 🆚 [Eva]';
+  ok(A.intentoDeLlave(buena) && bats(buena) >= 2, 'la que se lee no avisa (tiene batallas)');
+  ok(!A.intentoDeLlave('@everyone arrancan los cuartos, la final a las 9, vayan a la llamada'),
+    'la charla del canal no es un intento de llave');
+  ok(!A.intentoDeLlave('## 4️⃣ Cuartos 4️⃣\n** (< >) ⚔️ (< >)**\n** (< >) ⚔️ (< >)**\n## 🧨 Semifinal 🧨\n** (< >) ⚔️ (< >)**'),
+    'la plantilla vacía tampoco: no tiene nombres');
+  ok(A.CANAL_LOGS === '1504110449535483924', 'el canal de Logs es el de siempre (`avisar.CANAL`)');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

@@ -66,6 +66,17 @@ function armar(d) {
       url: d.url || '/', tag: 'ev' + (d.id || ''),
     };
   }
+  // ⏸ EN PAUSA / ⏰ SE ATRASÓ (07/10/2026): el organizador lo avisó después del anuncio. Con el mismo `tag` que su
+  // aviso, como el cancelado: lo reemplaza en el teléfono
+  if (d.tipo === 'estado') {
+    const pausa = d.est === 'pausado';
+    return {
+      titulo: (pausa ? '⏸ En pausa: ' : '⏰ Se atrasó: ') + (d.t || 'el evento'),
+      cuerpo: [d.svn || d.sv, d.nueva ? (pausa ? 'sigue ' : 'ahora a las ') + hora(d.nueva) : ''].filter(Boolean).join(' · ') +
+        (pausa ? '\nEl organizador avisó que sigue otro día.' : d.nueva ? '' : '\nEl organizador avisó que empieza más tarde.'),
+      url: d.url || '/', tag: 'ev' + (d.id || ''),
+    };
+  }
   // 🎤 TE TOCA (01/10/2026): «Sos el próximo» y después «¡Te toca!», con el mismo `tag` —el segundo reemplaza al
   // primero y vuelve a sonar— y la llave en Discord, que es donde está la llamada
   if (d.tipo === 'turno') {

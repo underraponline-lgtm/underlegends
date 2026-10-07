@@ -350,8 +350,16 @@ def _self_check():
     d = dueno()
     ok = d.isdigit() and 15 <= len(d) <= 22
     print('  %s el Discord ID de Dlx sale del Worker (%s)' % ('✅' if ok else '❌', d or 'vacío'))
-    print('\n  %s' % ('todo ok' if ok else '1 falló'))
-    return ok
+    # 🧩 y el canal de Logs del vigía (`CANAL_LOGS` de avisos.js, las llaves que no se leen) es el de acá
+    try:
+        with io.open(os.path.join(SCR, 'avisos.js'), encoding='utf-8') as f:
+            m = re.search(r"export const CANAL_LOGS = '(\d+)'", f.read())
+    except OSError:
+        m = None
+    ok2 = bool(m) and m.group(1) == canal_logs()
+    print('  %s el vigía avisa en el mismo canal de Logs (%s)' % ('✅' if ok2 else '❌', m.group(1) if m else 'no está'))
+    print('\n  %s' % ('todo ok' if ok and ok2 else 'algo falló'))
+    return ok and ok2
 
 
 def en_cola_canceladas(horas=3, s=None):
