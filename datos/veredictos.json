@@ -2694,8 +2694,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791338928016,
-   "ed": 1791338978046,
-   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝",
+   "ed": 1791341487392,
+   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -2704,6 +2704,51 @@
       "LORD LEONAR T",
       "PRAISERIZAS",
       "SNOW"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PARIA",
+      "SOSA",
+      "SETESFIFI",
+      "ARIAXER",
+      "SONETO"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIX ERIK",
+      "CRONOX SOUL B",
+      "JAWA"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MUSICDUM",
+      "PRODIGY",
+      "WEI ZIGNOS ERIAN"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CRONOX",
+      "PARIA SIN REMEDIO"
      ],
      null,
      "última ronda y no dice campeón",

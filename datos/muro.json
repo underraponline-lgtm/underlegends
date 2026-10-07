@@ -30,18 +30,18 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "velatz": {
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"panchok": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -55,16 +55,16 @@
 "temporada"
 ]
 },
-"makmah": {
-"rg": "C",
+"erian": {
+"rg": "B",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
 ]
 },
-"erian": {
-"rg": "B",
+"makmah": {
+"rg": "C",
 "c": [
 "competitivo",
 "servidor",

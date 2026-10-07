@@ -236,22 +236,27 @@
      "nachonc_",
      14,
      1
+    ],
+    [
+     "SER O NO SER 🇬🇵",
+     10,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 13,
-     "DDF": 6
+     "DDF": 8
     },
     "gente": {
      "FFA": 85,
-     "DDF": 19
+     "DDF": 25
     },
     "gana": "DDF"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 19,
+    "DDF": 25,
     "DRA": 0,
     "FFA": 85,
     "FFS": 0,
