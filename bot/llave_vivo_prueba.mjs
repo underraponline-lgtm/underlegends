@@ -335,6 +335,18 @@ console.log('\n8 · la llave huérfana: el título copiado de la edición anteri
     const r2 = LV.asignar([cs2, rep2], [L2]);
     ok('el mismo evento anunciado dos veces: los dos anuncios la llevan', r2.porAnuncio.length === 2, js(r2.porAnuncio.length));
   }
+  // 🔴 UN `⌞` SIN CERRAR EN UN CRUCE ENTERO (WETTSIDDEE #2, 07/10/2026): `⌞tuca  vs.   ⌞malasia⌝` se comía los dos
+  // cuartos de abajo y salía UN cruce de cuatro
+  {
+    const rs = LV.rondasDe('`[ Cuartos ]`\n⌞mati cerna⌝   vs.   ⌞vandu ⌝\n⌞tuca  vs.   ⌞malasia⌝\n⌞soneto⌝   vs.   ⌞makma⌝\n⌞agus⌝   vs.   ⌞ nc⌝ **X1**');
+    const lados = rs.length ? rs[0][1].map((b) => (b[0] || b).join ? (b[0] || b).join(' | ') : String(b)) : [];
+    ok('un `⌞` sin cerrar en un cruce entero no se come los de abajo: cuatro cruces de dos', rs.length === 1 &&
+      rs[0][1].length === 4, js(rs));
+    ok('y un equipo partido en dos renglones se sigue juntando',
+      LV.unirContinuadas('⌞Hassan 🇪🇬 +\nAna + Bea⌝ vs ⌞C + D + E⌝') === '⌞Hassan 🇪🇬 + Ana + Bea⌝ vs ⌞C + D + E⌝',
+      LV.unirContinuadas('⌞Hassan 🇪🇬 +\nAna + Bea⌝ vs ⌞C + D + E⌝'));
+    void lados;
+  }
   // 🔴 EL MISMO NOMBRE ESCRITO DISTINTO (07/10/2026): FFA anunció «WETTTSIIIDEE #2» (2:13 PM) y su llave dice
   // «[ WETTSIDDEE #2 ]» (2:23 PM). Ni una palabra igual: en vivo no aparecía, y el ciclo (nombre entero, 0,83) sí la juntaba
   {

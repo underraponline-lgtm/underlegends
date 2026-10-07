@@ -777,6 +777,13 @@ def unir_continuadas(texto):
             return True
         return False
 
+    def _completa(s):
+        """¿Ya es un cruce entero? Un «vs» con alguien de cada lado, y sin un `+` colgando al final."""
+        partes = SEP.split(s, maxsplit=1)
+        if len(partes) < 2 or s.rstrip().endswith('+'):
+            return False
+        return all(re.search(r'[^\W_]', re.sub(r'[⌞⌝\[\]]', '', p)) for p in partes)
+
     salida, buf = [], None
     for l in (texto or '').splitlines():
         if buf is not None:
@@ -789,6 +796,18 @@ def unir_continuadas(texto):
                 salida.append(buf)
                 salida.append(l)
                 buf = None
+                continue
+            # 🔴 Y TAMPOCO SE PEGA UN CRUCE A OTRO CRUCE (07/10/2026). La WETTSIDDEE #2 de FFA escribió
+            # `⌞tuca  vs.   ⌞malasia⌝` —le falta el `⌝` de tuca— y los dos cuartos de abajo se le pegaban: salía UN
+            # cruce de cuatro («tuca · malasia + soneto · makma + agus · nc»). Si lo de arriba ya tiene alguien de cada
+            # lado del «vs» y esta línea es un cruce entero, el `⌞` abierto era un tipeo, no un equipo que sigue
+            if _completa(buf) and SEP.search(l) and len(nombres_de_linea(l)) >= 2:
+                salida.append(buf)
+                buf = None
+                if _sigue(l):
+                    buf = l
+                else:
+                    salida.append(l)
                 continue
             buf = buf.rstrip() + ' ' + l.strip()
             if not _sigue(buf):
@@ -3645,6 +3664,13 @@ def _self_check():
         ('`⌞Geoka⌝ 🆚 ⌞⌝` espera rival: un cruce de un lado, sin pegarse con el de abajo (Dos Generaciones Vol 2)',
          espera == [('CUARTOS', [['A 🇦🇷', 'B 🇨🇱'], ['Geoka 🇦🇷'], ['Cinexfilo 🇻🇪']])]),
         ('y sigue siendo idempotente', traducir(medal) == medal),
+        # 🔴 WETTSIDDEE #2 (FFA, 07/10/2026): un `⌞` sin cerrar en un cruce ENTERO no se come los de abajo
+        ('`⌞tuca  vs.   ⌞malasia⌝` (sin el ⌝ de tuca) es un cruce, y los dos de abajo siguen siendo los suyos',
+         rondas_de('`[ Cuartos ]`\n⌞mati cerna⌝   vs.   ⌞vandu ⌝\n⌞tuca  vs.   ⌞malasia⌝\n⌞soneto⌝   vs.   ⌞makma⌝\n'
+                   '⌞agus⌝   vs.   ⌞ nc⌝ **X1**')
+         == [('CUARTOS', [['mati cerna', 'vandu'], ['tuca', 'malasia'], ['soneto', 'makma'], ['agus', 'nc']])]),
+        ('y un equipo partido en dos renglones se sigue juntando (`⌞Hassan +` con los otros abajo)',
+         unir_continuadas('⌞Hassan 🇪🇬 +\nAna + Bea⌝ vs ⌞C + D + E⌝') == '⌞Hassan 🇪🇬 + Ana + Bea⌝ vs ⌞C + D + E⌝'),
     ]
     for que, ok in casos:
         mal += not ok

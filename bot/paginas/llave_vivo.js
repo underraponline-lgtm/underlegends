@@ -331,12 +331,28 @@
       if (SEP.test(s) && nombresDeLinea(s).length < 2 && !/⌞\s*⌝|\[\s*\]/.test(s)) return true;
       return /\+$/.test(s.replace(/\s+$/, ''));
     };
+    // ¿ya es un cruce entero? un «vs» con alguien de cada lado y sin un `+` colgando (`escuchar._completa()`)
+    var completa = function (s) {
+      var m = SEP.exec(s);
+      if (!m || /\+$/.test(s.replace(/\s+$/, ''))) return false;
+      var a = s.slice(0, m.index), b = s.slice(m.index + m[0].length);
+      var hay = function (p) { return /[\p{L}\p{N}]/u.test(p.replace(/[⌞⌝[\]]/g, '')); };
+      return hay(a) && hay(b);
+    };
     var salida = [], buf = null;
     lineas(texto).forEach(function (l) {
       if (buf !== null) {
         if (!l.trim() || (buscarRonda(l) && !nombresDeLinea(l).length)) {
           salida.push(buf, l);
           buf = null;
+          return;
+        }
+        // 🔴 y un cruce no se pega a otro cruce (07/10/2026): `⌞tuca  vs.   ⌞malasia⌝` (sin el `⌝` de tuca) se comía
+        // los dos cuartos de abajo en la WETTSIDDEE #2. La misma regla que `escuchar.unir_continuadas()`
+        if (completa(buf) && SEP.test(l) && nombresDeLinea(l).length >= 2) {
+          salida.push(buf);
+          buf = null;
+          if (sigue(l)) buf = l; else salida.push(l);
           return;
         }
         buf = buf.replace(/\s+$/, '') + ' ' + l.trim();
