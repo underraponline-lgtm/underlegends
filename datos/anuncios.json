@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-07T20:35:25+00:00",
+ "cuando": "2026-10-07T20:54:19+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -889,6 +889,26 @@
    "categoria_id": "863207988251852820"
   },
   {
+   "nombre": "Gallos del Under Amateur I",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1557492991340453891",
+   "cuando": "2026-10-07T20:41:05",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "@Soy_Rubick",
+   "autor_h": "52adbe7e22e5f4fd",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Chill",
+   "modalidad": "1v1",
+   "horario": "Cuando se llenen cupos",
+   "fecha": "Despues de que se llenen inscripciones",
+   "premios": "",
+   "categoria_id": "863207988739309600"
+  },
+  {
    "nombre": "RAP EXHIBITION 2/8",
    "servidor": "SR",
    "canal": "[🏆]eventos",
@@ -1326,26 +1346,6 @@
    "horario": "en 30",
    "fecha": "1",
    "premios": "pts para el ranking+pts para la tabla+aura",
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "GENESIS BATTLES",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1537226926442291312",
-   "cuando": "2026-08-12T22:30:59",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "",
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "1V1",
-   "horario": "EN 15 MINUTOS",
-   "fecha": "4",
-   "premios": "PTS TABLA",
    "categoria_id": "863207988739309600"
   },
   {
@@ -2871,6 +2871,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Rayo 🇵🇪",
+   "quien": "rayyoo_",
+   "discord_id": "921617312728109167",
+   "msg_id": "1557495817420673075",
+   "cuando": "2026-10-07T20:52:19"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1557494248520286309",
+   "cuando": "2026-10-07T20:46:05"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "gero🇨🇱",
+   "quien": "elneekoperoelog",
+   "discord_id": "825179002091995136",
+   "msg_id": "1557493850950475877",
+   "cuando": "2026-10-07T20:44:30"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Diego 🇺🇸",
+   "quien": "mc_alcon_43016",
+   "discord_id": "1289414741030207564",
+   "msg_id": "1557493729240289440",
+   "cuando": "2026-10-07T20:44:01"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Snail 🇧🇷",
+   "quien": "snailhoho",
+   "discord_id": "1499507608548282554",
+   "msg_id": "1557493647774060666",
+   "cuando": "2026-10-07T20:43:42"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "vandu",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1557493564706132161",
+   "cuando": "2026-10-07T20:43:22"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1557493532887883860",
+   "cuando": "2026-10-07T20:43:15"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "erian 🇧🇱",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1557493410007482389",
+   "cuando": "2026-10-07T20:42:45"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Chop🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1557493350494638235",
+   "cuando": "2026-10-07T20:42:31"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Molt 🇨🇼",
+   "quien": "akvmolt",
+   "discord_id": "1355612971144839439",
+   "msg_id": "1557493337311678586",
+   "cuando": "2026-10-07T20:42:28"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Cronox 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1557493130851254284",
+   "cuando": "2026-10-07T20:41:39"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Alexiz 🇦🇷",
+   "quien": "alexxii02",
+   "discord_id": "1440141957266673745",
+   "msg_id": "1557493060483551303",
+   "cuando": "2026-10-07T20:41:22"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
