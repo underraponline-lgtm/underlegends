@@ -304,6 +304,9 @@ jobs:
       # el sello (`datos/cartas_selladas.json`) se commitea: es lo que
       # sobrevive entre corridas
       contents: write
+      # ⏭ y leer las corridas de atrás: cuántas se cancelaron esperando
+      # (`alertar.en_cola_canceladas()`, 07/10/2026)
+      actions: read
     steps:
       # 🔴 EL CHECKOUT VA ACA Y NO EN LA COMPOSITE ACTION: una action local
       # se lee del disco del runner, asi que el repo tiene que estar
@@ -333,6 +336,8 @@ jobs:
       - name: alertas
         # lo mismo que en `escuchar`, sin `--salud` (ya la miró aquel)
         if: always() && inputs.simulacro != true
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: >
           python bot/alertar.py --ciclo dibujar --estado "${{ job.status }}"
           --run "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"

@@ -354,6 +354,43 @@ def _self_check():
     return ok
 
 
+def en_cola_canceladas(horas=3, s=None):
+    """Cuántas corridas del ciclo se cancelaron ESPERANDO su `dibujar` en las últimas `horas`, sin empezar a dibujar.
+
+    🔴 EL 07/10/2026 SE CANCELARON TRES Y NADIE SE ENTERÓ. `dibujar` va de a uno (`concurrency`): mientras uno corre, el
+    siguiente espera y uno más nuevo lo reemplaza. Es lo normal y no pierde nada —el nuevo dibuja lo mismo—, salvo cuando
+    el que corre se traba: la corrida de las 2:37 PM ET estuvo dos horas bajando Chromium y las de las 2:52, 3:22 y 3:52
+    se fueron sin un aviso. Lee la API de GitHub con el token del trabajo (`GH_TOKEN`); sin él, 0.
+    """
+    tok, repo = os.environ.get('GH_TOKEN') or os.environ.get('GITHUB_TOKEN'), os.environ.get('GITHUB_REPOSITORY')
+    if not s and not (tok and repo):
+        return 0
+    import requests
+    if not s:
+        s = requests.Session()
+        s.headers['Authorization'] = 'Bearer ' + tok
+    api = 'https://api.github.com/repos/%s/actions/workflows/ciclo.yml/runs?per_page=15' % repo
+    desde = _ahora() - datetime.timedelta(hours=horas)
+    n = 0
+    for r in s.get(api, timeout=20).json().get('workflow_runs') or []:
+        if r.get('conclusion') != 'cancelled':
+            continue
+        try:
+            t = datetime.datetime.fromisoformat(str(r.get('created_at')).replace('Z', '+00:00'))
+        except ValueError:
+            continue
+        if t < desde:
+            continue
+        jobs = s.get(r['jobs_url'], timeout=20).json().get('jobs') or []
+        d = next((j for j in jobs if j.get('name') == 'dibujar'), None)
+        # cancelado sin haber corrido un solo paso de verdad: estaba en la cola
+        if d and d.get('conclusion') == 'cancelled' and not any(
+                st.get('name') == 'el ciclo' and st.get('status') in ('completed', 'in_progress')
+                for st in d.get('steps') or []):
+            n += 1
+    return n
+
+
 def main():
     a = sys.argv[1:]
     val = lambda k: a[a.index(k) + 1] if k in a and a.index(k) + 1 < len(a) else ''
@@ -390,6 +427,18 @@ def main():
                         que, _et(), ('\n' + run) if run else ''))
         elif estado == 'success':
             resuelto('ciclo:' + job, '%s volvió a andar (%s).' % (que, _et()))
+        # ⏭ y las que se cancelaron esperando detrás de ésta (ver `en_cola_canceladas()`). Con dos o más es que ésta
+        # tardó de más: una sola es el reemplazo de siempre
+        if job == 'dibujar':
+            try:
+                n = en_cola_canceladas()
+            except Exception as e:                       # noqa: BLE001
+                n = 0
+                print('   ⚠️ no pude mirar la cola: %s' % str(e)[:100])
+            if n >= 2:
+                alertar('ciclo:cola', '%d corridas del ciclo se cancelaron esperando su turno de dibujar (%s): la '
+                        'anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.%s'
+                        % (n, _et(), ('\n' + run) if run else ''))
     if '--salud' in a:
         salud()
 

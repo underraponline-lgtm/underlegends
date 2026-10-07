@@ -107,6 +107,9 @@ from que_cambio import SERVIDORES, camisetas              # noqa: E402,F401
 # s/persona a 20 nombres y 1,34 a 60) y la perdida por corte sigue siendo
 # chica.
 POR_TANDA = 40
+#: ⏱️ cuánto puede tardar UN paso (`corre()`) antes de darlo por trabado. Medido el 07/10/2026: el más largo es una
+#: tanda de 40 personas, ~3 min; el redibujo entero va en tandas, así que ninguna llamada sola se acerca
+TOPE_PASO = 25 * 60
 
 # 🔴 CUANTO CUESTA UNA PASADA, MEDIDO **EN ACTIONS** Y NO EN LA MAQUINA
 # DE AL LADO. Y esa distincion costo una corrida de dos horas.
@@ -208,9 +211,18 @@ def corre(args, callado=True, mostrar=(), eco=False):
     `_ULTIMA_SALIDA[0]` para que el paso lea un número de ahí (el mapa en
     vivo cuenta así las preguntas de ✅ Decidir).
     """
-    r = subprocess.run([sys.executable] + args, cwd=BASE,
-                       capture_output=callado or eco, text=True,
-                       encoding='utf-8', errors='replace')
+    # ⏱️ CON TOPE (07/10/2026). La corrida de las 2:37 PM ET se quedó dos horas bajando Chromium, sin un error, y como
+    # `dibujar` va de a uno, las tres de atrás se cancelaron en la cola. Ningún paso tarda hoy más de 10 min —una tanda
+    # de 40 personas son ~3—: uno trabado cuesta `TOPE_PASO`, se cuenta como falla y el ciclo sigue con el próximo
+    try:
+        r = subprocess.run([sys.executable] + args, cwd=BASE,
+                           capture_output=callado or eco, text=True,
+                           encoding='utf-8', errors='replace', timeout=TOPE_PASO)
+    except subprocess.TimeoutExpired:
+        print('      🔴 se trabó: %s pasó los %d min y se cortó; el ciclo sigue'
+              % (' '.join(args[:2]), TOPE_PASO // 60))
+        _marcar_falla(args)
+        return False
     if eco:
         sys.stdout.write(r.stdout or '')
         sys.stdout.write(r.stderr or '')
