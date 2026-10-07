@@ -238,6 +238,7 @@
   "cronoxelestilopupilo": "Cronox",
   "setes": "setesfifi",
   "malvinitas": "Malva",
+  "onzas": "ONZASS",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1223,6 +1224,10 @@
   [
    "malvinitas",
    "Malva"
+  ],
+  [
+   "onzas",
+   "ONZASS"
   ],
   [
    "Nexus",

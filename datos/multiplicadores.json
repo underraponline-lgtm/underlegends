@@ -228,13 +228,13 @@
      5
     ],
     [
-     "Elsoolar y tokio",
-     17,
-     1
+     "CRONOX",
+     22,
+     2
     ],
     [
-     "CRONOX",
-     11,
+     "Elsoolar y tokio",
+     17,
      1
     ],
     [
@@ -249,7 +249,7 @@
      "DDF": 8
     },
     "gente": {
-     "FFA": 109,
+     "FFA": 113,
      "DDF": 24
     },
     "gana": "DDF"
@@ -258,7 +258,7 @@
     "ACAD": 0,
     "DDF": 24,
     "DRA": 0,
-    "FFA": 109,
+    "FFA": 113,
     "FFS": 0,
     "SR": 0,
     "URBF": 0

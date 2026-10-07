@@ -151,6 +151,14 @@
 "temporada"
 ]
 },
+"majiztral": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "bloody": {
 "rg": "C",
 "c": [
@@ -173,10 +181,9 @@
 "temporada"
 ]
 },
-"majiztral": {
-"rg": "C",
+"nc": {
+"rg": "E",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -184,6 +191,14 @@
 "criszj": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"trot": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -204,13 +219,6 @@
 "temporada"
 ]
 },
-"nc": {
-"rg": "E",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "miniboy": {
 "rg": "D",
 "c": [
@@ -221,14 +229,6 @@
 "polosport": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"trot": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -247,7 +247,15 @@
 "temporada"
 ]
 },
-"onzass": {
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -275,6 +283,13 @@
 "temporada"
 ]
 },
+"pomberito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zekha": {
 "rg": "",
 "c": [
@@ -289,22 +304,14 @@
 "temporada"
 ]
 },
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"og": {
+"onzass": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"jupiter": {
+"og": {
 "rg": "",
 "c": [
 "servidor",
@@ -319,14 +326,14 @@
 "temporada"
 ]
 },
-"pomberito": {
+"agus": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"agus": {
+"tuca": {
 "rg": "",
 "c": [
 "servidor",
@@ -337,13 +344,6 @@
 "rg": "",
 "c": []
 },
-"tuca": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "lordviruzz": {
 "rg": "D",
 "c": [
@@ -351,6 +351,12 @@
 "pais",
 "servidor",
 "temporada"
+]
+},
+"rt": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "mtz": {
@@ -382,17 +388,19 @@
 "temporada"
 ]
 },
+"soneto": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "badterne": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
-]
-},
-"rt": {
-"rg": "",
-"c": [
-"servidor"
 ]
 },
 "zeta": {
@@ -430,9 +438,10 @@
 "temporada"
 ]
 },
-"soneto": {
+"cronox": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -482,14 +491,6 @@
 "walker": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"cronox": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -623,6 +624,21 @@
 "temporada"
 ]
 },
+"richard": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"jult": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "betelguese": {
 "rg": "",
 "c": [
@@ -699,14 +715,6 @@
 "efimero": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"richard": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -806,13 +814,6 @@
 "temporada"
 ]
 },
-"jult": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "krish": {
 "rg": "",
 "c": [
@@ -854,6 +855,13 @@
 ]
 },
 "sami": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"saz": {
 "rg": "",
 "c": [
 "servidor",
@@ -944,10 +952,6 @@
 "servidor",
 "temporada"
 ]
-},
-"setesfifi": {
-"rg": "",
-"c": []
 },
 "mhs": {
 "rg": "",
@@ -1060,13 +1064,6 @@
 "temporada"
 ]
 },
-"prodigy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "selek": {
 "rg": "",
 "c": [
@@ -1114,6 +1111,13 @@
 ]
 },
 "shadow": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"malva": {
 "rg": "",
 "c": [
 "servidor",
@@ -1177,13 +1181,6 @@
 "rg": "",
 "c": []
 },
-"malva": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "reyes": {
 "rg": "",
 "c": [
@@ -1192,13 +1189,6 @@
 ]
 },
 "fleivaman": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"saz": {
 "rg": "",
 "c": [
 "servidor",
@@ -1266,6 +1256,13 @@
 "nyco": {
 "rg": "",
 "c": []
+},
+"prodigy": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "keider": {
 "rg": "",
@@ -1357,6 +1354,10 @@
 "servidor",
 "temporada"
 ]
+},
+"setesfifi": {
+"rg": "",
+"c": []
 },
 "julix": {
 "rg": "",
@@ -4725,6 +4726,23 @@
 "t": "2026-10-07T19:57:42Z",
 "quien": [
 "Majiztral"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-07T20:27:04Z",
+"quien": [
+"Soneto"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T20:27:04Z",
+"quien": [
+"Soneto"
 ],
 "carta": "competitivo"
 }

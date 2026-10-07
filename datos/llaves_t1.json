@@ -12808,28 +12808,35 @@
      ],
      [
       [
-       "RT 🇲🇽",
+       "Sin Limites",
+       "Cronox"
+      ],
+      "",
+      "cobra: Sin límites 🇵🇪; cobra: Cronox; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "RT",
        "Jupiter"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: RT 🇲🇽; cobra: Jupiter; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "Sin límites 🇵🇪",
-       "Yo mc 🇨🇱"
+       "Trot",
+       "Majiztral"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Trot🇪🇸; cobra: Majiztral 🇨🇴; cobra: Richard 🇪🇨; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "Trot🇪🇸",
-       "Majiztral 🇨🇴",
-       "Richard 🇪🇨"
+       "Trot",
+       "Richard"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Trot🇪🇸; cobra: Majiztral 🇨🇴; cobra: Richard 🇪🇨; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -12862,11 +12869,11 @@
      ],
      [
       [
-       "saz🇨🇴",
-       "za"
+       "Provenza",
+       "Saz"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Provenza",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -12934,6 +12941,11 @@
     2500
    ],
    [
+    "Saz",
+    "Cuartos",
+    2500
+   ],
+   [
     "Vandu",
     "Cuartos",
     2500
@@ -12944,12 +12956,27 @@
     2250
    ],
    [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
     "Drexx",
     "Octavos",
     1250
    ],
    [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
     "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
     "Octavos",
     1250
    ],
@@ -12960,6 +12987,26 @@
    ],
    [
     "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "RT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
     "Octavos",
     1250
    ],
@@ -13201,7 +13248,7 @@
      [
       [
        "Benjixo",
-       "ONZASS",
+       "onzas 🇻🇪",
        "Ezias🥈✒️🧢🐍"
       ],
       "Benjixo",
@@ -13414,11 +13461,6 @@
     1250
    ],
    [
-    "ONZASS",
-    "Octavos",
-    1250
-   ],
-   [
     "PichulaMc",
     "Octavos",
     1250
@@ -13445,6 +13487,11 @@
    ],
    [
     "dxg",
+    "Octavos",
+    1250
+   ],
+   [
+    "onzas 🇻🇪",
     "Octavos",
     1250
    ],
@@ -14197,11 +14244,26 @@
      [
       [
        "Jult",
-       "Sosa, Prodigy",
-       "setesfifi"
+       "NC"
       ],
       "Jult",
-      "triple (4 bandas, pasan 2); Walk-in 1: kurl 🇦🇷"
+      "Walk-in 1: kurl 🇦🇷"
+     ],
+     [
+      [
+       "Pomberito",
+       "Sosa"
+      ],
+      "Pomberito",
+      ""
+     ],
+     [
+      [
+       "Prodigy 🇦🇷",
+       "setes"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -14259,7 +14321,12 @@
     2000
    ],
    [
-    "setesfifi",
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
     "Cuartos",
     2000
    ],
@@ -14267,16 +14334,6 @@
     "Jult",
     "Semifinal",
     1750
-   ],
-   [
-    "Prodigy",
-    "Cuartos",
-    1000
-   ],
-   [
-    "Sosa",
-    "Cuartos",
-    1000
    ],
    [
     "Tenor",
@@ -14456,7 +14513,7 @@
      [
       [
        "MATICERNA",
-       "malvinitas"
+       "Malva"
       ],
       "MATICERNA",
       ""
@@ -14483,7 +14540,7 @@
        "EmiZor"
       ],
       "Liberia",
-      "ganador según #veredictos"
+      ""
      ],
      [
       [
@@ -14516,13 +14573,27 @@
      ],
      [
       [
-       "Tuca 🇦🇷",
-       "malasia + soneto",
-       "makma + agus",
-       "Nc"
+       "Liberia",
+       "Tuca"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Soneto"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "NC"
+      ],
+      "Agus",
+      "Walk-in 1: agus; Walk-in 1: Nc"
      ]
     ],
     "r": "Cuartos"
@@ -14570,11 +14641,6 @@
     7500
    ],
    [
-    "Agus",
-    "Subcampeón",
-    5000
-   ],
-   [
     "Makmah",
     "Semifinal",
     3500
@@ -14585,7 +14651,27 @@
     3500
    ],
    [
+    "Agus",
+    "Subcampeón",
+    2500
+   ],
+   [
     "MATICERNA",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soneto",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tuca",
     "Cuartos",
     2000
    ],
@@ -14610,12 +14696,12 @@
     0
    ],
    [
-    "RT",
+    "Malva",
     "Octavos",
     0
    ],
    [
-    "malvinitas",
+    "RT",
     "Octavos",
     0
    ]

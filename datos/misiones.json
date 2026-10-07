@@ -66,7 +66,7 @@
     ],
     "Agus": [
      1,
-     1,
+     2,
      2
     ],
     "Aldre": [
@@ -246,7 +246,7 @@
     ],
     "Jult": [
      1,
-     0,
+     1,
      4
     ],
     "Jupiter": [
@@ -296,7 +296,7 @@
     ],
     "Liberia": [
      1,
-     3,
+     4,
      1
     ],
     "Lord Viruzz": [
@@ -341,7 +341,7 @@
     ],
     "Makmah": [
      1,
-     1,
+     2,
      4
     ],
     "Malva": [
@@ -451,7 +451,7 @@
     ],
     "Pomberito": [
      1,
-     3,
+     4,
      1
     ],
     "Prodigy": [
@@ -466,7 +466,7 @@
     ],
     "Provenza": [
      1,
-     3,
+     4,
      1
     ],
     "RT": [
@@ -483,6 +483,11 @@
      1,
      0,
      8
+    ],
+    "Richard": [
+     1,
+     0,
+     16
     ],
     "Riolu": [
      1,
@@ -547,7 +552,7 @@
     "Soneto": [
      1,
      1,
-     16
+     8
     ],
     "Sosa": [
      1,
@@ -580,9 +585,9 @@
      8
     ],
     "Tuca": [
-     0,
      1,
-     99
+     1,
+     8
     ],
     "Tusicario": [
      1,
@@ -659,12 +664,12 @@
      1,
      99
     ],
-    "malvinitas": [
+    "melomaniaco": [
      1,
      0,
      16
     ],
-    "melomaniaco": [
+    "onzas 🇻🇪": [
      1,
      0,
      16
@@ -672,7 +677,7 @@
     "setesfifi": [
      1,
      0,
-     8
+     16
     ],
     "wei shenlong": [
      1,
@@ -769,6 +774,7 @@
     "RT": 1300,
     "Rayo": 300,
     "Reyes": 300,
+    "Richard": 300,
     "Riolu": 300,
     "Risa": 300,
     "Rodas": 300,
@@ -786,6 +792,7 @@
     "Tam": 1300,
     "Tenor": 300,
     "Trot": 300,
+    "Tuca": 300,
     "Tusicario": 300,
     "TøKīØ🦠🧠": 2900,
     "Valdoza": 300,
@@ -798,8 +805,8 @@
     "Zignos": 300,
     "chekialo 🇧🇯": 1300,
     "dxg": 300,
-    "malvinitas": 300,
     "melomaniaco": 300,
+    "onzas 🇻🇪": 300,
     "setesfifi": 300,
     "wei shenlong": 300,
     "yinn": 300
@@ -890,6 +897,7 @@
   "RT": 1300,
   "Rayo": 300,
   "Reyes": 300,
+  "Richard": 300,
   "Riolu": 300,
   "Risa": 300,
   "Rodas": 300,
@@ -907,6 +915,7 @@
   "Tam": 1300,
   "Tenor": 300,
   "Trot": 300,
+  "Tuca": 300,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 2900,
   "Valdoza": 300,
@@ -919,8 +928,8 @@
   "Zignos": 300,
   "chekialo 🇧🇯": 1300,
   "dxg": 300,
-  "malvinitas": 300,
   "melomaniaco": 300,
+  "onzas 🇻🇪": 300,
   "setesfifi": 300,
   "wei shenlong": 300,
   "yinn": 300

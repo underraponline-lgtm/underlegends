@@ -1,10 +1,6 @@
 {
  "batallas_avisadas": [
   "COPA SOOLAR 2 · FFA · 04/10 · octavos · Eclipse🇨🇱 🆚 Tuca 🇦🇷 🆚 onzass",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · cuartos · saz🇨🇴 🆚 za",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · octavos · RT 🇲🇽 🆚 Jupiter",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · octavos · Sin límites 🇵🇪 🆚 Yo mc 🇨🇱",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · octavos · Trot🇪🇸 🆚 Majiztral 🇨🇴 🆚 Richard 🇪🇨",
   "JH DE LA CRUZ CUP · DDF · 04/10 · cuartos · CrisZJ🇵🇪 🆚 Assuan 🇴",
   "JH DE LA CRUZ CUP · DDF · 04/10 · cuartos · Player🇻🇪 🆚 Ezias🇵🇾",
   "KISS OF SHINIGAMI · FFA · 02/10 · cuartos · # Zaik 🇪🇸 🆚 tormen 🇳🇮 🆚 vandu🇨🇦",
@@ -16,10 +12,6 @@
  ],
  "batallas_desde": {
   "COPA SOOLAR 2 · FFA · 04/10 · octavos · Eclipse🇨🇱 🆚 Tuca 🇦🇷 🆚 onzass": "2026-10-05T01:27:08.878712+00:00",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · cuartos · saz🇨🇴 🆚 za": "2026-10-06T19:57:34.383287+00:00",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · octavos · RT 🇲🇽 🆚 Jupiter": "2026-10-06T19:57:34.383287+00:00",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · octavos · Sin límites 🇵🇪 🆚 Yo mc 🇨🇱": "2026-10-06T19:57:34.383287+00:00",
-  "DEM UZBEKISTAN FECHA 1 · FFA · 06/10 · octavos · Trot🇪🇸 🆚 Majiztral 🇨🇴 🆚 Richard 🇪🇨": "2026-10-06T19:57:34.383287+00:00",
   "JH DE LA CRUZ CUP · DDF · 04/10 · cuartos · CrisZJ🇵🇪 🆚 Assuan 🇴": "2026-10-06T04:58:59.325113+00:00",
   "JH DE LA CRUZ CUP · DDF · 04/10 · cuartos · Player🇻🇪 🆚 Ezias🇵🇾": "2026-10-06T04:58:59.325113+00:00",
   "KISS OF SHINIGAMI · FFA · 02/10 · cuartos · # Zaik 🇪🇸 🆚 tormen 🇳🇮 🆚 vandu🇨🇦": "2026-10-03T15:55:07.354524+00:00",
@@ -30,12 +22,16 @@
   "NOCHE DE BOOMBAP · DDF · 06/10 · semifinales · Carlos 🆚 Sebita🇱🇷": "2026-10-07T02:29:24.926620+00:00",
   "NOCHE DE BOOMBAP · DDF · 06/10 · semifinales · ERIAN🇱🇰 🆚 CrisZJ🇵🇪": "2026-10-07T02:29:24.926620+00:00",
   "PRITTY FREE CLASIFICATORIA 3 · FFA · 05/10 · cuartos · Zignos 🆚 six": "2026-10-07T05:34:57.079494+00:00",
-  "WETTSIDDEE 2 · FFA · 07/10 · cuartos · Tuca 🇦🇷 🆚 malasia + soneto 🆚 makma + agus 🆚 Nc": "2026-10-07T19:58:08.204400+00:00",
+  "WETTSIDDEE · FFA · 07/10 · cuartos · Prodigy 🇦🇷 🆚 setes": "2026-10-07T20:27:39.365623+00:00",
   "WETTSIDDEE · FFA · 07/10 · octavos · kminant🇦🇷 🆚 Zignos": "2026-10-07T05:59:38.784657+00:00",
   "__ DESGRACIAS EN TOKYO VOL 24 __ · FFA · 05/10 · octavos · ABYSUSS🇮🇱 & PARK-JI SUNG🇮🇱 🆚 LOS DUEÑOS DE TU BURRA 🇦🇷": "2026-10-05T23:27:29.721804+00:00"
  },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
   "texto": "Lo que me pediste recordarte: **A7**, llevar el Score del Competitivo a 40–99. **PichulaMc ya tiene 8 eventos**: cuando alguien llega a 10 tiene letra, y cambiar la escala después se la mueve a mitad de temporada. Si va, decime y lo aplico junto con los umbrales de los 8 rangos."
+ },
+ "vigia": {
+  "t": "2026-10-07T20:27:39.101891+00:00",
+  "texto": "El vigía de avisos late, pero con errores: URBF 「🤖」EVENTOS-SMCRN: 404. Los avisos de esos canales pueden no estar saliendo. (07/10 4:27 PM ET)"
  }
 }

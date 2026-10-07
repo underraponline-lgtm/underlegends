@@ -248,7 +248,7 @@
   "msg": "1557088566079782997"
  },
  "411": {
-  "firma": "DEM UZBEKISTAN FECHA 1|06/10|12|10|0|2",
+  "firma": "DEM UZBEKISTAN FECHA 1|06/10|20|11|0|2",
   "msg": "1557118744013045773"
  },
  "412": {
@@ -256,7 +256,7 @@
   "msg": "1557156506896433176"
  },
  "413": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL 25 1v1 __|06/10|24|7|0|0",
+  "firma": "__ DESGRACIAS EN TOKYO VOL 25 1v1 __|06/10|24|7|1|0",
   "msg": "1557156508494733475"
  },
  "414": {
@@ -276,7 +276,7 @@
   "msg": "1557254660841021492"
  },
  "418": {
-  "firma": "WETTSIDDEE|07/10|11|7|1|1",
+  "firma": "WETTSIDDEE|07/10|10|9|1|0",
   "msg": "1557269820221947948"
  },
  "419": {
@@ -347,7 +347,7 @@
   "duelos": [
    [
     "MATICERNA",
-    "malvinitas",
+    "Malva",
     "MATICERNA"
    ],
    [
@@ -382,6 +382,21 @@
    ],
    [
     "Liberia",
+    "Tuca",
+    "Liberia"
+   ],
+   [
+    "Makmah",
+    "Soneto",
+    "Makmah"
+   ],
+   [
+    "Agus",
+    "NC",
+    "Agus"
+   ],
+   [
+    "Liberia",
     "Vandu",
     "Liberia"
    ],
@@ -409,7 +424,7 @@
    "Vandu": 14
   },
   "fecha": "07/10",
-  "firma": "4e8823ed5eb152a9",
+  "firma": "00d89a559e6b0284",
   "msg": "1557481124282892360",
   "nombre": "WETTSIDDEE 2",
   "num": 422,
@@ -426,11 +441,6 @@
     7500
    ],
    [
-    "Agus",
-    "Subcampeón",
-    5000
-   ],
-   [
     "Vandu",
     "Semifinal",
     3500
@@ -441,12 +451,32 @@
     3500
    ],
    [
+    "Agus",
+    "Subcampeón",
+    2500
+   ],
+   [
     "MATICERNA",
     "Cuartos",
     2000
    ],
    [
-    "malvinitas",
+    "Tuca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soneto",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Malva",
     "Octavos",
     0
    ],

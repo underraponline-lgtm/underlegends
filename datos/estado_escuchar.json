@@ -1,57 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-07T19:58:06Z",
+ "cuando": "2026-10-07T20:27:37Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 288.8,
+ "dur_s": 260.4,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 39.2
+   "s": 36.8
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 61.0
+   "s": 40.4
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.8
+   "s": 7.3
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 3.9
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 25.4
+   "s": 24.2
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 3.9
+   "s": 1.5
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.3
+   "s": 7.4
   },
   {
    "n": "2b",
@@ -69,31 +69,31 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.4
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.1
+   "s": 1.2
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.5
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.2
+   "s": 4.9
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 84.3
+   "s": 63.7
   },
   {
    "n": "2b7",
@@ -105,19 +105,19 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 32.7
+   "s": 32.4
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 1.1
+   "s": 4.6
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.6
+   "s": 14.3
   },
   {
    "n": "2e",
@@ -129,7 +129,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 8.0
   },
   {
    "n": "3",
@@ -139,7 +139,7 @@
   }
  ],
  "fallas": [],
- "decidir": 90,
+ "decidir": 87,
  "ultimo_evento": {
   "n": "422",
   "nombre": "WETTSIDDEE 2",
@@ -148,11 +148,11 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-07T19:54:04Z",
+  "cuando": "2026-10-07T20:23:58Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 363,
-  "un_evento": 180,
-  "diez_o_mas": 25,
+  "un_evento": 182,
+  "diez_o_mas": 26,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -169,27 +169,27 @@
    {
     "semana": "2026-10-05",
     "nuevos": 42,
-    "volvieron": 4,
+    "volvieron": 2,
     "completa": false
    }
   ]
  },
  "cuotas": {
   "kv": {
-   "write": 365,
-   "read": 38864
+   "write": 379,
+   "read": 39564
   },
   "objeto": {
-   "leidas": 1283741,
-   "escritas": 20336,
-   "pedidos": 5549
+   "leidas": 1346709,
+   "escritas": 21721,
+   "pedidos": 5874
   },
   "worker": {
-   "pedidos": 6515,
+   "pedidos": 6751,
    "errores": 0,
-   "sub": 6363,
+   "sub": 6624,
    "p50_ms": 1.01,
-   "p99_ms": 5.55
+   "p99_ms": 5.67
   },
   "r2": {
    "objetos": 3595,
