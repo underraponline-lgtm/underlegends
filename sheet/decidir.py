@@ -1264,6 +1264,102 @@ def una_cuenta_dos_nombres(dry=True, preguntas=()):
     return r
 
 
+# ── 👥 dos cuentas, una persona ─────────────────────────────────────────
+
+#: la pregunta de `dos_cuentas()` (tipo `Alias posible`): alias → real, la cuenta del alias y la del real
+_DOS_C_RE = re.compile(r'^DOS CUENTAS: «(.+?)» → «(.+?)» · cuentas (\d+) y (\d+)')
+DOS_C_ORIGEN = 'el ciclo · dos cuentas, una persona'
+
+
+def dos_cuentas(lista, con_puntos, juegan, real_de, son_distintos=lambda a, b: False, preguntados=()):
+    """👥 DOS CUENTAS, UNA PERSONA: `[{alias, real, did_alias, did_real}]` para preguntar en ✅ Decidir. Pura.
+
+    🔑 Dlx, 07/10/2026: *«riferian es erian… el bot no detectó que erian se inscribió así o que le inscribieron
+    así… asegurate que el bot detecte bien las cosas»*, y de la cuenta, *«sí, esa es su otra cuenta»*. Riferian
+    tenía su propia fila con su propia cuenta (@_5thofnovember, «Riferian (uma cryu)» en Urban), así que
+    `dos_nombres()` —que busca UNA cuenta con dos nombres— no podía verlo: eran dos cuentas.
+
+    Se pregunta, NUNCA se une solo: dos cuentas las decide Dlx (`lista_raperos.py` tampoco fusiona dos IDs). Pide todo:
+    las dos filas con cuenta, cuentas distintas, el MISMO país, un nombre dentro del otro (el corto de 4 letras o
+    más: «Erian» en «Riferian») o casi iguales, los dos con puntos —si no, no hay nada partido— y que NUNCA hayan
+    jugado el mismo evento. Ni marcados distintos ni ya preguntados. El alias es el que tiene menos eventos.
+    """
+    filas = []
+    for r in lista or ():
+        did = str(r.get('discord_id') or '').strip()
+        k = real_de(r.get('raw') or r.get('full') or '')
+        if did.isdigit() and k and k in con_puntos and juegan.get(k):
+            filas.append((k, did, norm(_sin_bandera(str(r.get('pais') or ''))), r.get('raw') or r.get('full')))
+    ya = {frozenset((norm(_sin_bandera(a)), norm(_sin_bandera(b)))) for a, b in preguntados or ()}
+    out, vistos = [], set()
+    for i, (ka, da, pa, na) in enumerate(filas):
+        for kb, db, pb, nb in filas[i + 1:]:
+            if ka == kb or da == db or not pa or pa != pb:
+                continue
+            corto, largo = sorted((ka, kb), key=len)
+            if not ((len(corto) >= 4 and corto in largo)
+                    or difflib.SequenceMatcher(None, ka, kb).ratio() >= 0.85):
+                continue
+            if juegan.get(ka, set()) & juegan.get(kb, set()):
+                continue                                     # jugaron el mismo evento: son dos
+            if son_distintos(na, nb) or frozenset((ka, kb)) in ya or frozenset((ka, kb)) in vistos:
+                continue
+            vistos.add(frozenset((ka, kb)))
+            (al, dal), (re_, dre) = sorted(((na, da), (nb, db)), key=lambda x: len(juegan.get(real_de(x[0]), ())))
+            out.append({'alias': al, 'real': re_, 'did_alias': dal, 'did_real': dre})
+    return out
+
+
+def dos_cuentas_corrida(dry=True, preguntas=()):
+    """👥 `dos_cuentas()` con los datos de la corrida: lo que encuentra va a ✅ Decidir, nada más."""
+    import construir_akas as AK
+    real_de, con_puntos, juegan, akas = _dos_datos()
+    preguntados = [_DOS_C_RE.match(p['detalle']).groups()[:2] for p in preguntas or ()
+                   if p.get('tipo') == 'Alias posible' and _DOS_C_RE.match(p.get('detalle') or '')]
+    r = dos_cuentas(_datos('padron') or [], con_puntos, juegan, real_de,
+                    son_distintos=lambda a, b: AK.son_distintos(a, b, akas), preguntados=preguntados)
+    if not r:
+        return r
+    print('\n   👥 dos cuentas, una persona: %d a ✅ Decidir' % len(r))
+    for x in r:
+        print('      pregunta: ¿%s es otra cuenta de %s?' % (x['alias'], x['real']))
+    if not dry:
+        import pendientes as PE
+        PE.anotar_varios([('Alias posible', DOS_C_ORIGEN,
+                           'DOS CUENTAS: «%s» → «%s» · cuentas %s y %s' % (x['alias'], x['real'], x['did_alias'],
+                                                                        x['did_real']),
+                           'el mismo país, nombres parecidos y nunca jugaron el mismo evento') for x in r])
+    return r
+
+
+def _agregar_cuenta(real, did):
+    """La cuenta `did` como OTRA cuenta de `real` (`cuentas` de `datos/akas_a_mano.json`: abre sus cartas)."""
+    p = os.path.join(BASE, 'datos', 'akas_a_mano.json')
+    with io.open(p, encoding='utf-8', newline='') as f:
+        crudo = f.read()
+    nl = '\r\n' if '\r\n' in crudo else '\n'
+    d = json.loads(crudo)
+    ids = d.setdefault('cuentas', {}).setdefault(real, [])
+    if did not in ids:
+        ids.append(did)
+        with io.open(p, 'w', encoding='utf-8', newline='') as f:
+            f.write(json.dumps(d, ensure_ascii=False, indent=1).replace('\n', nl) + (nl if crudo.endswith(nl) else ''))
+
+
+def _sacar_id(nombre, did):
+    """Le saca a la fila `nombre` de la Lista su Discord ID, si es `did`: pasa a ser la otra cuenta de alguien."""
+    import lista_raperos as LR
+    v = LR.leer()
+    _i, col = LR.mapa(v)
+    fs = LR.filas_de(v, nombre)
+    if len(fs) != 1 or LR._celda(fs[0][1], col['Discord ID']) != did:
+        return False
+    letra = chr(ord('A') + col['Discord ID'])
+    LR.respaldar(v, 'id')
+    LR._E().poner(LR._rango(LR.HOJA, '%s%d' % (letra, fs[0][0])), [['']])
+    return True
+
+
 #: las dos formas de «Alias posible» que escribe el backfill del repo de sync
 _ALIAS_TIENE = re.compile(r"AKA '(.+?)' \(fila (\d+)\) ya tiene ID (\d+), el log trae (\d+)")
 _ALIAS_ID = re.compile(r"ID (\d+) ya pertenece a fila (\d+) \((.+?)\); no se asignó a '(.+?)'")
@@ -1310,7 +1406,7 @@ def cierres_solos(preguntas, dry=True):
         det = p['detalle']
         # 👥 «¿X es Y?» de `una_cuenta_dos_nombres()` que ya no hace falta: X ya es alias de Y (lo unió otro camino,
         # como `por_discord()` en la misma corrida), o X ya no suma aparte
-        m = _DOS_RE.match(det) if p['tipo'] == 'Alias posible' else None
+        m = (_DOS_RE.match(det) or _DOS_C_RE.match(det)) if p['tipo'] == 'Alias posible' else None
         if m:
             if dos is None:
                 try:
@@ -1388,7 +1484,10 @@ def _pistas(p):
         m = re.search(r"ya tiene ID (\d+), el log trae (\d+)", p['detalle'])
         m2 = re.search(r"^ID (\d+) ya pertenece", p['detalle'])
         m3 = _DOS_RE.match(p['detalle'])
-        if m:
+        m4 = _DOS_C_RE.match(p['detalle'])
+        if m4:
+            out += ['La de «%s»: ' % m4.group(1) + _cuenta(m4.group(3)), 'La de %s: ' % m4.group(2) + _cuenta(m4.group(4))]
+        elif m:
             out += ['La que tiene: ' + _cuenta(m.group(1)), 'La otra: ' + _cuenta(m.group(2))]
         elif m2:
             out.append('Esa cuenta: ' + _cuenta(m2.group(1)))
@@ -1467,6 +1566,13 @@ def _conflicto_en_palabras(det):
     # ID —`_poner_ids()` nunca pisa uno—, y sin la frase «es la misma
     # persona» parecía que la Lista pasaba a la cuenta nueva.
     # 👥 la de `una_cuenta_dos_nombres()`: ésta SÍ hace algo, y lo dice
+    m = _DOS_C_RE.match(det)
+    if m:
+        a, b, da, db = m.groups()
+        return ('¿«%s» es otra cuenta de %s? Tienen cuentas de Discord distintas, son del mismo país, los nombres se '
+                'parecen y nunca jugaron el mismo evento. Si es la misma persona, los puntos de «%s» pasan a %s y esa '
+                'cuenta abre sus cartas.\nLa de «%s»: https://discord.com/users/%s\nLa de %s: https://discord.com/users/%s'
+                % (a, b, a, b, a, da, b, db))
     m = _DOS_RE.match(det)
     if m:
         a, b, did = m.groups()
@@ -1639,6 +1745,11 @@ def interpretar(p, respuesta):
     if p['tipo'] == 'Alias posible' and r in (MISMA, OTRA) and _DOS_RE.match(p['detalle']):
         a, b, _did = _DOS_RE.match(p['detalle']).groups()
         return ('unir' if r == MISMA else 'distintos', (a, b))
+    # 👥 DOS CUENTAS, UNA PERSONA (`dos_cuentas()`): «es la misma» une los nombres y la cuenta del alias pasa a ser la
+    # otra cuenta del real; «otra» los marca distintos
+    if p['tipo'] == 'Alias posible' and r in (MISMA, OTRA) and _DOS_C_RE.match(p['detalle']):
+        a, b, da, _db = _DOS_C_RE.match(p['detalle']).groups()
+        return ('dos_cuentas', (a, b, da)) if r == MISMA else ('distintos', (a, b))
     if r in CIERRAN:
         return ('cerrar', r)
     # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
@@ -2090,6 +2201,16 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         elif que == 'unir':
             pares.append([dato[0], dato[1], ''])
             cierres += [(n, 'alias de %s: es la misma persona' % dato[1]) for n in p['filas']]
+        elif que == 'dos_cuentas':
+            # el nombre, como alias; la cuenta, como la otra de él (abre sus cartas); y la fila del alias, sin ID
+            pares.append([dato[0], dato[1], ''])
+            if not dry:
+                try:
+                    _agregar_cuenta(dato[1], dato[2])
+                    _sacar_id(dato[0], dato[2])
+                except Exception as e:                   # noqa: BLE001
+                    print('   ⚠️ %s -> %s: no pude mover la cuenta (%s)' % (dato[0], dato[1], str(e)[:60]))
+            cierres += [(n, 'otra cuenta de %s: es la misma persona' % dato[1]) for n in p['filas']]
         elif que == 'distintos':
             distintos.append([dato[0], dato[1], 'Dlx en ✅ Decidir (%s): es otra persona' % _ahora_et()])
             cierres += [(n, 'otra persona: quedan separados') for n in p['filas']]
@@ -2686,6 +2807,11 @@ def correr(dry=True):
     except Exception as e:                               # noqa: BLE001
         # ⚠️ NO FRENA ✅ DECIDIR, como `por_discord()`
         print('   ⚠️ no pude revisar las cuentas con dos nombres (%s)' % str(e)[:80])
+    # 👥 Y LA PERSONA CON DOS CUENTAS: ver `dos_cuentas()`. Sólo pregunta
+    try:
+        dos_cuentas_corrida(dry=dry, preguntas=preguntas)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude revisar las personas con dos cuentas (%s)' % str(e)[:80])
     # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`
     try:
         cerradas = cierres_solos([p for p in preguntas if p['id'] not in respuestas], dry=dry)
@@ -3203,6 +3329,35 @@ def _self_check():
        '«¿es la misma persona?»: «es la misma» los une y «otra» los marca distintos')
     ok('los puntos de «Shisui» pasan a Velatz' in _conflicto_en_palabras(_q['detalle']),
        'y la pregunta dice qué pasa si contestás que sí')
+
+    # 👥 DOS CUENTAS, UNA PERSONA (07/10/2026): Riferian y Erian, como estaban en la Lista
+    _rd = lambda n: norm(_sin_bandera(n))                                 # noqa: E731
+    _lista = [{'raw': 'Erian', 'pais': 'Panamá', 'discord_id': '1055'},
+              {'raw': 'Riferian', 'pais': 'Panamá', 'discord_id': '6815'},
+              {'raw': 'Ana', 'pais': 'Chile', 'discord_id': '1'}, {'raw': 'Mariana', 'pais': 'Chile', 'discord_id': '2'},
+              {'raw': 'Snow', 'pais': 'Colombia', 'discord_id': '3'}, {'raw': 'Snowy', 'pais': 'Chile', 'discord_id': '4'},
+              {'raw': 'Kairo', 'pais': 'Ecuador', 'discord_id': '5'}, {'raw': 'Kairos', 'pais': 'Ecuador', 'discord_id': '6'},
+              {'raw': 'Lex', 'pais': 'Perú', 'discord_id': '7'}, {'raw': 'Lexus', 'pais': 'Perú', 'discord_id': '8'}]
+    _cp = {_rd(r['raw']): r['raw'] for r in _lista}
+    _jg = {'erian': {349, 353, 357}, 'riferian': {359, 380}, 'ana': {1}, 'mariana': {2}, 'snow': {3}, 'snowy': {4},
+           'kairo': {5}, 'kairos': {5}, 'lex': {6}, 'lexus': {7}}
+    _dc = dos_cuentas(_lista, _cp, _jg, _rd)
+    ok([(x['alias'], x['real'], x['did_alias']) for x in _dc] == [('Riferian', 'Erian', '6815')],
+       'dos cuentas: «Riferian» es la otra cuenta de Erian, y nada más  %s' % _dc)
+    ok(not any(x['real'] in ('Ana', 'Mariana') for x in _dc),
+       'el nombre de 3 letras adentro de otro no alcanza (Ana en Mariana)')
+    ok(not any(x['real'] in ('Snow', 'Snowy') for x in _dc), 'de distinto país, no')
+    ok(not any(x['real'] in ('Kairo', 'Kairos') for x in _dc), 'si jugaron el mismo evento, no: son dos')
+    ok(not dos_cuentas(_lista, _cp, _jg, _rd, preguntados=[('Riferian', 'Erian')]),
+       'lo ya preguntado no se vuelve a preguntar')
+    ok(not dos_cuentas(_lista, _cp, _jg, _rd, son_distintos=lambda a, b: {a, b} == {'Riferian', 'Erian'}),
+       'ni lo marcado distinto')
+    _q2 = {'tipo': 'Alias posible', 'detalle': 'DOS CUENTAS: «Riferian» → «Erian» · cuentas 6815 y 1055'}
+    ok(interpretar(_q2, MISMA) == ('dos_cuentas', ('Riferian', 'Erian', '6815'))
+       and interpretar(_q2, OTRA) == ('distintos', ('Riferian', 'Erian')),
+       '«es la misma» la hace la otra cuenta de Erian; «otra», distintos')
+    ok('otra cuenta de Erian' in _conflicto_en_palabras(_q2['detalle']) and '6815' in _conflicto_en_palabras(_q2['detalle']),
+       'y la pregunta lleva las dos cuentas')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
