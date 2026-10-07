@@ -202,8 +202,8 @@ const ok = (cond, que, det) => {
   ok(g2.length === 4 && /✅ \*\*Ana 🇦🇷\*\* pasa · Octavos · de un grupo con Bea 🇨🇱, Cami 🇻🇪/.test(g2[0].texto)
     && new Set(g2.map((x) => x.m)).size === 4,
   'cada batalla: uno por cada uno que pasa, y un grupo dice «de un grupo con» (no «contra»: pueden pasar dos)', g2.map((x) => x.texto).join(' | '));
-  ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo' && A.ajusteValido('en_vivo_nivel', { FFA: 'todo' }).FFA === 'todo'
-    && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard sólo acepta los tres');
+  ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo,datos,full' && A.ajusteValido('en_vivo_nivel', { FFA: 'full' }).FFA === 'full'
+    && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard acepta los cinco, y nada más');
   ok(JSON.stringify(A.favoritosDe(llaveDe(CUARTOS), [{ n: 'Ana', ovr: 80 }, { n: 'Dora', ovr: 90 },
     { n: 'Cami', ovr: 70 }, { n: 'cami', ovr: 75 }])) === '[["Dora",90],["Ana",80]]',
   'los favoritos: los de más OVR de la llave; un nombre de dos personas no cuenta');
@@ -745,6 +745,100 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🎲 LAS APUESTAS SOBRE EL OBJETO DE VERDAD (07/10/2026, «A full»): se abre con botones, se apuesta con sus frenos, se
+// cierra a los 3 minutos y se paga el pozo cuando la llave dice quién ganó
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n🎲 las apuestas, sobre el objeto\n');
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const CANAL = '555000000000000009';
+    const kv = new Map([['cfg:111', JSON.stringify({ vivo: CANAL, vivo_nivel: 'full' })],
+      ['web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', k: 'ana', ovr: 88 }, { n: 'Bea', k: 'bea', ovr: 60 }] })],
+      ['web:perfiles', JSON.stringify({ p: { ana: { du: [[1, 'Bea', 1]] }, bea: { du: [[1, 'Ana', 0]] } } })]]);
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+    o.state = o.state || {};
+    o.state.storage = o.state.storage || { transactionSync: (f) => f() };
+    if (!o.state.storage.transactionSync) o.state.storage.transactionSync = (f) => f();
+    await new Promise((r) => setTimeout(r, 5));
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    const T = Date.parse('2026-10-07T23:00:00Z');
+    const HORA_P = 3600000;
+    const CU = '# COPA X\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n';
+    const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('9', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
+      'texto = excluded.texto', T - 60000, ed, texto, ed);
+    llave(CU, T);
+    await o.chatVivo(T);
+    const msg = pedidos[0] && pedidos[0].b;
+    const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
+    ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana\*\* vs \*\*Bea/.test(msg.content)
+      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 2 && ap && ap.estado === 'abierta',
+    'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje', msg && msg.content);
+    const ini = { inicial: 5000, desde: 0 };
+    const pedir = async (d, t = T + 60000) => (await o.apostar(Object.assign({}, ini, d), t)).json();
+    const U1 = '100000000000000001', U2 = '100000000000000002', U3 = '100000000000000003';
+    const a1 = await pedir({ quien: U1, ap: ap.id, lado: 'A', monto: 100 });
+    const a2 = await pedir({ quien: U1, ap: ap.id, lado: 'A', monto: 500 });
+    const a3 = await pedir({ quien: U1, ap: ap.id, lado: 'B', monto: 50 });
+    const a4 = await pedir({ quien: U2, ap: ap.id, lado: 'B', monto: 250 });
+    const a5 = await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50, clave: 'Ana' });
+    const a6 = await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 75 });
+    ok(a1.ok && a1.saldo === 4900 && a2.error === 'tope' && a3.error === 'otro lado' && a4.ok && a4.pozo === 350
+      && a5.error === 'propia' && a6.error === 'datos', 'los frenos: el tope de 500, un solo lado, no en tu batalla, sólo los montos de los botones',
+    JSON.stringify([a1, a2, a3, a4, a5, a6]));
+    pedidos.length = 0;
+    await o.chatVivo(T + 4 * 60000);
+    const cierre = pedidos.find((p) => p.m === 'PATCH');
+    ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*350\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => c.disabled)
+      && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos se cierra: botones grises, el pozo, y no se puede apostar');
+    pedidos.length = 0;
+    llave(CU + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 6 * 60000);
+    await o.chatVivo(T + 6 * 60000);
+    const pago = pedidos.find((p) => p.m === 'PATCH' && /🏆 Ganó/.test(p.b.content));
+    ok(pago && /Ganó \*\*Ana\*\*: el pozo de \*\*350\*\* se repartió entre 1 que acertó/.test(pago.b.content)
+      && o.saldo(U1, 0, 5000) === 5250 && o.saldo(U2, 0, 5000) === 4750 && sql.exec('SELECT estado FROM apuestas WHERE id = ?', ap.id).toArray()[0].estado === 'pagada',
+    'gana Ana: U1 se lleva el pozo entero (350, puso 100), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
+    // 📝 la fase de inscripciones: desde tres anotados de verdad, UN mensaje, que se edita cuando se suman más
+    sql.exec('DELETE FROM vivo');
+    const AN = '1557000000000000000';
+    sql.exec('INSERT INTO avisos (id, sv, cuerpo, desde, hasta, creado, estado) VALUES (?, ?, ?, ?, ?, ?, 1)', AN, 'FFA',
+      JSON.stringify({ tipo: 'evento', sv: 'FFA', t: 'COPA Y', ini: T + 3 * HORA_P, cup: '8', url: 'https://discord.com/channels/111/2/' + AN }),
+      T, T + HORA_P, T + 10 * 60000);
+    o.guardar('anotados', { ev: { [AN]: [['Ana 🇦🇷', 'ar', 'ana', 1], ['Bea 🇨🇱', 'cl', 'bea', 1], ['yo', '', '', 0], ['Dora 🇲🇽', 'mx', '', 1]] } });
+    pedidos.length = 0;
+    await o.inscriptosChat(T + 20 * 60000);
+    const i1 = pedidos[0];
+    o.guardar('anotados', { ev: { [AN]: [['Ana 🇦🇷', 'ar', 'ana', 1], ['Bea 🇨🇱', 'cl', 'bea', 1], ['Dora 🇲🇽', 'mx', '', 1], ['Eva 🇵🇪', 'pe', '', 1]] } });
+    await o.inscriptosChat(T + 21 * 60000);
+    const n21 = pedidos.length;
+    await o.inscriptosChat(T + 23 * 60000);
+    const i2 = pedidos[1];
+    ok(i1 && i1.m === 'POST' && /📝 \*\*COPA Y\*\* · ya se anotaron \*\*3\*\* de 8: Ana, Bea, Dora/.test(i1.b.content) && !/yo/.test(i1.b.content.split('\n')[0])
+      && n21 === 1 && i2 && i2.m === 'PATCH' && /\*\*4\*\* de 8/.test(i2.b.content),
+    'inscripciones: tres anotados de verdad («yo» no cuenta), un mensaje, y se edita a los 2 minutos cuando se suman más',
+    JSON.stringify(pedidos.map((x) => [x.m, (x.b && x.b.content) || ''])));
+    globalThis.fetch = antesF;
+  }
+}
+
 // 🎟️ EL PASE DE RAPERO SOBRE EL OBJETO DE VERDAD (05/10/2026; con XP desde el 06/10): las Tareas dan XP y la XP sube de
 // nivel, cada nivel paga una vez, una cumplida no se pierde, sólo cuentan los miembros de DRA, y después del último
 // sigue la cola. Con `node:sqlite`, como el bot en vivo, y con el reloj quieto: las diarias dependen del día del este
@@ -1003,6 +1097,54 @@ const ok = (cond, que, det) => {
   ].every((t) => tipo(t) === null), 'lo condicional, lo negado, la regla del cupo y la charla de siempre: nada',
   ['si no se llenan los cupos se cancela', 'tu cupo queda cancelado si no te presentás', 'no se cancela, seguimos en 5',
     'vamo empezando 5 mins', 'gracias a todos, mañana hay otra compe', 'empezamos en 10 minutos'].map((t) => t + ' → ' + tipo(t)).join(' | '));
+}
+
+// ── 🔥🎲 «Con datos» y «A full»: el título, el dato, el pozo y quién ganó (07/10/2026) ───────────────────────────
+{
+  console.log('\n🔥🎲 los niveles nuevos del bot en vivo\n');
+  ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo,datos,full' && A.porBatalla('full') && A.porBatalla('datos')
+    && A.porBatalla('todo') && !A.porBatalla('normal'), 'cinco niveles, y los tres de arriba hablan batalla por batalla');
+  // el pozo: 300 a A (100 + 200) y 200 a B; gana A → los de A se llevan los 500 según lo que puso cada uno
+  const r1 = A.repartoPozo([['1', 'A', 100], ['2', 'A', 200], ['3', 'B', 200]], 'A');
+  ok(r1.out['1'] === 166 && r1.out['2'] === 333 && !r1.out['3'] && !r1.devuelto && r1.total === 500,
+    'pozo compartido: lo de los que pierden se reparte según lo que puso cada uno (sin crear puntos)', JSON.stringify(r1));
+  const r2 = A.repartoPozo([['1', 'A', 100], ['2', 'A', 50]], 'B');
+  ok(r2.devuelto && r2.out['1'] === 100 && r2.out['2'] === 50, 'nadie acertó: se devuelve todo', JSON.stringify(r2));
+  const r3 = A.repartoPozo([['1', 'B', 250]], '');
+  ok(r3.devuelto && r3.out['1'] === 250, 'sin resultado: se devuelve todo');
+  // los títulos
+  const tabla = { snow: { k: 'snow', n: 'Snow', ovr: 80, oro: 2, pos: 3, cc: 'co' }, oasis: { k: 'oasis', n: 'Oasis', ovr: 90, oro: 4, pos: 1, cc: 'cl' },
+    nuevo: null, og: { k: 'og', n: 'OG', ovr: 55, oro: 0, pos: 40, cc: 'co' } };
+  const perf = { snow: { du: [[400, 'Oasis', 0], [380, 'Oasis', 0], [366, 'OASIS 🇨🇱', 0], [350, 'OG', 1]], rd: [0, 3] },
+    oasis: { du: [[400, 'Snow', 1]], rd: [5, 7] }, og: { du: [[350, 'Snow', 0]] } };
+  const buscar = (n) => A.claveTurno(n);
+  const x1 = A.infoCruce(['Snow 🇨🇴', 'Oasis 🇨🇱'], buscar, tabla, perf);
+  const t1 = A.tituloCruce(x1);
+  ok(t1 && t1.t === 'EL CLÁSICO' && /3 veces: Oasis gana 3 a 0/.test(t1.sub), 'tres cruces: EL CLÁSICO, con cómo van', JSON.stringify(t1));
+  const t2 = A.tituloCruce(A.infoCruce(['OG', 'Snow'], buscar, tabla, perf));
+  ok(t2 && t2.t === 'LA REVANCHA' && /Snow le ganó la última vez y OG/.test(t2.sub), 'ya se cruzaron: LA REVANCHA', JSON.stringify(t2));
+  const t3 = A.tituloCruce(A.infoCruce(['Nuevo', 'OG'], buscar, tabla, perf));
+  ok(t3 && t3.t === 'DEBUT', 'quien no jugó nada esta temporada: DEBUT', JSON.stringify(t3));
+  const t4 = A.tituloCruce(A.infoCruce(['Desconocido', 'OG'], () => '', tabla, perf));
+  ok(!t4 || t4.t !== 'DEBUT', 'un nombre que la Liga no reconoce no es un debutante');
+  const d1 = A.datoCurioso(x1, 'semilla', () => 0);
+  ok(/^¿Sabías que .+\?$/.test(d1) && A.datoCurioso(x1, 'semilla', () => 0) === d1, 'el dato es de verdad y no cambia para el mismo cruce', d1);
+  ok(A.datoCurioso(x1, 'x', () => 0) !== '' && A.datoCurioso(A.infoCruce(['A', 'B'], () => '', {}, {}), 's', () => 0) === '',
+    'sin nada que contar, no se inventa un dato');
+  // los botones y la línea
+  const bt = A.botonesApuesta('abc', 'Snow 🇨🇴', 'Oasis 🇨🇱', false);
+  ok(bt.length === 2 && bt[0].components.length === 4 && bt[0].components[0].custom_id === 'ap:abc:A:50'
+    && bt[1].components[3].custom_id === 'ap:abc:B:500' && /^Snow · 50$/.test(bt[0].components[0].label)
+    && A.botonesApuesta('abc', 'a', 'b', true)[0].components.every((c) => c.disabled), 'dos filas de cuatro montos, y grises al cerrar');
+  ok(['abierta', 'cerrada', 'pagada', 'devuelta'].every((e) => A.lineaApuesta(e, { pozo: 1500, cuantos: 3, ganador: 'Snow' }).startsWith('🎲')),
+    'la línea de la apuesta empieza siempre con 🎲 (se reemplaza por eso)');
+  // quién ganó: por el ganador escrito, o por quién aparece en la ronda siguiente
+  const L = { rondas: [{ r: 'Cuartos', b: [[['Snow 🇨🇴', 'Oasis 🇨🇱'], '', ''], [['OG', 'Ana'], 'OG', '']] },
+    { r: 'Semifinales', b: [[['Oasis 🇨🇱', 'OG'], '', '']] }] };
+  ok(A.ladoGanador(L, 'Cuartos', 'Snow 🇨🇴', 'Oasis 🇨🇱') === 'B' && A.ladoGanador(L, 'Cuartos', 'OG', 'Ana') === 'A'
+    && A.ladoGanador(L, 'Semifinales', 'Oasis 🇨🇱', 'OG') === '', 'quién ganó: el de la ronda siguiente o el escrito; si no, todavía no');
+  const bc = A.batallaChat({ rondas: [{ r: 'Octavos', b: [[['A', 'B'], '', ''], [['C', 'D'], '', '']] }] });
+  ok(bc && bc.lados.join() === 'A,B', 'sin nada jugado, se habla de la primera batalla');
 }
 
 // ── 🧩 la llave que el lector no sabe leer (07/10/2026) ──────────────────────────────────────────────────────────

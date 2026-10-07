@@ -363,7 +363,14 @@ export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
   normal: ['Normal', 'El arranque, quién pasa cada ronda, la final y el campeón'],
   todo: ['Cada batalla', 'Además, quién gana cada batalla apenas se sabe'],
+  // 🔥🎲 Dlx, 07/10/2026: «un nuevo nivel de intensidad mayor, que hayan 5 o 7»: los dos de arriba hablan también de la
+  // batalla que VIENE (`batallaChat()`), con su título, un «¿sabías que…?» y, en el último, las apuestas
+  // ⚠️ La descripción va en el menú de /settings, y Discord rechaza el menú entero con más de 100 letras
+  datos: ['Con datos', 'Además, el cruce que viene con su título (EL CLÁSICO…), un «¿sabías que…?» y los anotados'],
+  full: ['A full', 'Todo eso y apuestas con Puntos de Tienda: botones de 50 a 500, cierran a los 3 minutos'],
 };
+/** ¿Este nivel habla batalla por batalla? «Cada batalla» y los dos de arriba. */
+export const porBatalla = (n) => n === 'todo' || n === 'datos' || n === 'full';
 export const CHAT_ENTRE_TODO = 2 * MIN;
 //: en «cada batalla», lo que se juntó sin decir se dice hasta este tanto; lo de antes ya es viejo
 export const CHAT_JUNTAS = 8;
@@ -402,7 +409,7 @@ export function momentosChat(L, nombre, fav, nivel = 'normal') {
     + '\nSeguila en vivo: <' + WEB_EVENTOS + '>' });
   const F = rondas.find((R) => /^final$/i.test(String(R.r || '')));
   const fb = F ? batallasDe(F)[0] : null;
-  if (nivel === 'todo') {
+  if (porBatalla(nivel)) {
     // 🔑 UN MOMENTO POR CADA UNO QUE PASA, no por batalla (revisión del 05/10/2026): en un grupo donde pasan dos, el
     // organizador escribe a uno en la ronda siguiente y al rato al otro. Con un momento por batalla salía «A pasa ·
     // contra B y C» y, cuando aparecía B, ya estaba dicho. Así sale «A pasa» y después «B pasa», y ninguno miente.
@@ -464,7 +471,7 @@ function planChatTodo(ms, hechos, ultimo, ahora, fresca) {
  * salieron se saltean. En «cada batalla» (`nivel` = todo), ver `planChatTodo()`.
  */
 export function planChat(ms, hechos, ultimo, ahora, fresca, nivel = 'normal') {
-  if (nivel === 'todo') return planChatTodo(ms, hechos, ultimo, ahora, fresca);
+  if (porBatalla(nivel)) return planChatTodo(ms, hechos, ultimo, ahora, fresca);
   const plan = [];
   const meta = ms[ms.length - 1];
   for (const x of ms) {
@@ -518,6 +525,175 @@ export function favoritosDe(L, tabla) {
     }
   }
   return [...vistos.values()].sort((a, b) => b[1] - a[1]).slice(0, 3);
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// 🔥🎲 «CON DATOS» Y «A FULL» (Dlx, 07/10/2026: «podrías hacer apuestas, con puntos de la tienda en vivo… en chat
+// general… podrías decir cosas aleatorias… EL CLÁSICO, etc… datos interesantes como… sabías que tal usuario X…»).
+// Las apuestas, como las decidió: «Botones en el chat», «Pozo compartido», «Hasta 500, cierra a los 3 min»
+// ═════════════════════════════════════════════════════════════════════
+export const AP_MONTOS = [50, 100, 250, 500];
+export const AP_TOPE = 500;
+export const AP_CIERRA = 3 * MIN;
+const milesAp = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const sinBandera = (n) => String(n || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/\s+/g, ' ').trim();
+
+/** La batalla de la que se habla: la de AHORA (`turnosDe()`) o, sin nada jugado todavía, la primera de la llave. */
+export function batallaChat(L) {
+  const t = turnosDe(L);
+  if (t) return t.ahora;
+  for (const R of (L && L.rondas) || []) {
+    for (const [i, b] of (R.b || []).entries()) {
+      const lados = (b[0] || []).filter(Boolean);
+      if (lados.length < 2) continue;
+      return b[1] || /^pasan \d/.test(String(b[2] || '')) ? null : { r: R.r, i, lados, hecha: false };
+    }
+  }
+  return null;
+}
+
+/**
+ * Lo que se sabe de un cruce de DOS lados, para su título y su dato: `{a, b, h2h}`. Cada lado es `{n, k, f, du, rd}` —el
+ * nombre sin bandera, su clave, su fila de la tabla (`f`), sus duelos (`du`, `[n, rival, ganó]`) y su racha de duelos
+ * (`rd`)—; `h2h` es `{ga, gb, ult}`: cuántas ganó cada uno entre ellos y quién ganó la última ('a', 'b' o ''). `buscar`
+ * da la clave de un nombre de llave (o ''), `tabla` las filas por clave y `perf` los perfiles (`/api/perfiles`).
+ */
+export function infoCruce(lados, buscar, tabla, perf) {
+  const lado = (n) => {
+    const k = buscar(n) || '';
+    const p = (k && (perf || {})[k]) || null;
+    return { n: sinBandera(n), k, f: (k && (tabla || {})[k]) || null, du: (p && p.du) || [], rd: (p && p.rd) || null, hay: !!p };
+  };
+  const a = lado(lados[0]);
+  const b = lado(lados[1]);
+  let ga = 0, gb = 0, ult = '', un = -1;
+  for (const d of a.du) {
+    if (!b.k || buscar(d[1]) !== b.k) continue;
+    if (d[2]) ga++; else gb++;
+    if (Number(d[0]) >= un) { un = Number(d[0]); ult = d[2] ? 'a' : 'b'; }
+  }
+  return { a, b, h2h: { ga, gb, ult } };
+}
+
+const GENTILICIO = { ar: 'ARGENTINO', cl: 'CHILENO', co: 'COLOMBIANO', mx: 'MEXICANO', pe: 'PERUANO', ve: 'VENEZOLANO',
+  uy: 'URUGUAYO', ec: 'ECUATORIANO', es: 'ESPAÑOL', bo: 'BOLIVIANO', py: 'PARAGUAYO', cu: 'CUBANO', do: 'DOMINICANO',
+  gt: 'GUATEMALTECO', hn: 'HONDUREÑO', cr: 'COSTARRICENSE', pa: 'PANAMEÑO', pr: 'BORICUA', sv: 'SALVADOREÑO', ni: 'NICA' };
+
+/**
+ * El título de un cruce, si se gana uno: `{t, sub}` o `null`. En orden: EL CLÁSICO (tres cruces o más), LA REVANCHA
+ * (ya se cruzaron), DUELO DE CAMPEONES (los dos ganaron un evento), DAVID CONTRA GOLIAT (20 de OVR o más de
+ * diferencia), DEBUT (uno no jugó nada en la temporada) y el duelo del mismo país. ⚠️ DEBUT sólo con un nombre que la
+ * Liga reconoce (`hay`): uno que no se pudo identificar no es un debutante
+ */
+export function tituloCruce(x) {
+  const { a, b, h2h } = x;
+  const fa = a.f || {}, fb = b.f || {};
+  const tot = h2h.ga + h2h.gb;
+  if (tot >= 3) {
+    return { t: 'EL CLÁSICO', sub: 'se cruzaron ' + tot + ' veces: ' + (h2h.ga === h2h.gb ? 'van ' + h2h.ga + ' a ' + h2h.gb
+      : (h2h.ga > h2h.gb ? a.n : b.n) + ' gana ' + Math.max(h2h.ga, h2h.gb) + ' a ' + Math.min(h2h.ga, h2h.gb)) };
+  }
+  if (tot >= 1 && h2h.ult) {
+    const [g, p] = h2h.ult === 'a' ? [a, b] : [b, a];
+    return { t: 'LA REVANCHA', sub: g.n + ' le ganó la última vez y ' + p.n + ' viene por la revancha' };
+  }
+  if ((fa.oro || 0) >= 1 && (fb.oro || 0) >= 1) return { t: 'DUELO DE CAMPEONES', sub: 'los dos ya ganaron un evento esta temporada' };
+  if (fa.ovr && fb.ovr && Math.abs(fa.ovr - fb.ovr) >= 20) {
+    const [g, d] = fa.ovr > fb.ovr ? [a, b] : [b, a];
+    return { t: 'DAVID CONTRA GOLIAT', sub: d.n + ' (OVR ' + d.f.ovr + ') contra ' + g.n + ' (OVR ' + g.f.ovr + ')' };
+  }
+  const nuevo = [a, b].find((y) => y.k && !y.hay && !y.f);
+  if (nuevo) return { t: 'DEBUT', sub: nuevo.n + ' juega su primer evento de la temporada' };
+  if (fa.cc && fa.cc === fb.cc) return { t: 'DUELO ' + (GENTILICIO[fa.cc] || 'ENTRE COMPATRIOTAS'), sub: '' };
+  return null;
+}
+
+/**
+ * Un «¿sabías que…?» de verdad sobre uno de los dos, o `''`: su racha, su puesto, sus títulos y podios, sus duelos, que
+ * nunca le pudo ganar al otro o el precio por su cabeza (`cabeza(lado)`, en Puntos de Tienda). El mismo cruce da siempre
+ * el mismo dato (`semilla`), así no cambia si se vuelve a armar el mensaje.
+ */
+export function datoCurioso(x, semilla, cabeza) {
+  const c = [];
+  for (const y of [x.a, x.b]) {
+    const f = y.f || {};
+    if (y.rd && y.rd[0] >= 3) c.push(y.n + ' viene de ganar ' + y.rd[0] + ' duelos seguidos');
+    if (f.pos && f.pos <= 10) c.push(y.n + ' es el #' + f.pos + ' de la temporada');
+    if ((f.oro || 0) >= 2) c.push(y.n + ' ya ganó ' + f.oro + ' eventos esta temporada');
+    const pod = (f.oro || 0) + (f.seg || 0) + (f.ter || 0);
+    if (pod >= 3) c.push(y.n + ' lleva ' + pod + ' podios esta temporada');
+    if (y.du.length >= 6) c.push(y.n + ' ganó ' + y.du.filter((d) => d[2]).length + ' de sus ' + y.du.length + ' duelos de la temporada');
+    if ((f.ev || 0) >= 10) c.push(y.n + ' ya jugó ' + f.ev + ' eventos esta temporada');
+    const v = cabeza ? cabeza(y) : 0;
+    if (v > 0) c.push('por la cabeza de ' + y.n + ' hay ' + milesAp(v) + ' Puntos de Tienda: el que le gane se los lleva');
+  }
+  const { ga, gb } = x.h2h;
+  if (ga + gb >= 2 && (!ga || !gb)) {
+    const [g, p] = ga ? [x.a, x.b] : [x.b, x.a];
+    c.push(p.n + ' nunca le pudo ganar a ' + g.n + ' (' + (ga + gb) + ' de ' + (ga + gb) + ')');
+  }
+  if (!c.length) return '';
+  let h = 0;
+  for (const ch of String(semilla)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return '¿Sabías que ' + c[h % c.length] + '?';
+}
+
+/** La línea de la apuesta en el mensaje del cruce, según cómo esté. ⚠️ Siempre empieza con 🎲: se reemplaza por eso */
+export function lineaApuesta(estado, d = {}) {
+  if (estado === 'abierta') {
+    return '🎲 **Apuestas abiertas 3 minutos**: tocá a quién y cuánto, de 50 a 500 Puntos de Tienda. Lo de los que pierden '
+      + 'se reparte entre los que aciertan.';
+  }
+  if (estado === 'cerrada') return '🎲 🔒 Apuestas cerradas · pozo de **' + milesAp(d.pozo) + '** entre ' + (d.cuantos || 0);
+  if (estado === 'pagada') {
+    return '🎲 🏆 Ganó **' + escMd(d.ganador || '') + '**: el pozo de **' + milesAp(d.pozo) + '** se repartió entre '
+      + (d.cuantos || 0) + (d.cuantos === 1 ? ' que acertó' : ' que acertaron');
+  }
+  return '🎲 ↩️ ' + (d.porque || 'Sin resultado') + ': se devolvió lo apostado';
+}
+
+/** Los botones de una apuesta: una fila por lado, con los cuatro montos. `cerrada` los deja grises */
+export function botonesApuesta(id, a, b, cerrada) {
+  const corto = (n) => { const s = sinBandera(n); return s.length > 14 ? s.slice(0, 13) + '…' : s; };
+  return [['A', a, 1], ['B', b, 4]].map(([lado, n, estilo]) => ({
+    type: 1,
+    components: AP_MONTOS.map((m, i) => ({ type: 2, style: estilo, disabled: !!cerrada,
+      label: (i ? '' : corto(n) + ' · ') + m, custom_id: 'ap:' + id + ':' + lado + ':' + m })),
+  }));
+}
+
+/**
+ * EL POZO COMPARTIDO: `{out: {quien: cobra}, devuelto, total}`. `ap` es `[[quien, lado, monto]]`. Lo de los que pierden se
+ * reparte entre los que aciertan, según cuánto puso cada uno, y el bot no crea ni quema puntos —lo que sobra del redondeo
+ * se pierde—. Sin nadie en el lado ganador (o sin ganador, `''`), se devuelve todo.
+ */
+export function repartoPozo(ap, ganador) {
+  const total = ap.reduce((s, x) => s + x[2], 0);
+  const w = ap.filter((x) => x[1] === ganador).reduce((s, x) => s + x[2], 0);
+  const out = {};
+  if (!w) {
+    for (const [q, , m] of ap) out[q] = (out[q] || 0) + m;
+    return { out, devuelto: true, total };
+  }
+  for (const [q, l, m] of ap) if (l === ganador) out[q] = (out[q] || 0) + Math.floor((m * total) / w);
+  return { out, devuelto: false, total };
+}
+
+/** Qué lado de la apuesta ganó su batalla en la llave `L`: 'A', 'B' o '' (todavía no se sabe). */
+export function ladoGanador(L, ronda, a, b) {
+  const rondas = (L && L.rondas) || [];
+  const ka = claveTurno(a), kb = claveTurno(b);
+  for (let k = 0; k < rondas.length; k++) {
+    if (rondas[k].r !== ronda) continue;
+    for (const bt of batallasDe(rondas[k])) {
+      const ks = (bt[0] || []).map(claveTurno);
+      if (!ks.includes(ka) || !ks.includes(kb)) continue;
+      const pas = pasaronChat(rondas, k, bt).map(claveTurno);
+      if (pas.length !== 1) return '';
+      return pas[0] === ka ? 'A' : pas[0] === kb ? 'B' : '';
+    }
+  }
+  return '';
 }
 
 /** El chat general de un servidor entre sus canales (`GET /guilds/{g}/channels`), o `''`: «general» antes que «chat»
@@ -3175,6 +3351,15 @@ export class Avisos {
         "pub INTEGER NOT NULL, evento TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 🧩 las llaves que no se supieron leer y ya se avisaron (07/10/2026): ver `llaveRara()`
       this.sql.exec("CREATE TABLE IF NOT EXISTS llaves_raras (id TEXT PRIMARY KEY, sv TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 🎲 LAS APUESTAS EN VIVO (07/10/2026, «A full»): cada una con su mensaje y su batalla (`apuestas`), y lo que puso
+      // cada uno (`apostado`, uno por persona y apuesta, de un solo lado). La plata va y vuelve por `tienda` (`ap:`).
+      // Ver `apostar()` y `apuestasRevisar()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS apuestas (id TEXT PRIMARY KEY, canal TEXT NOT NULL, msg TEXT NOT NULL DEFAULT '', " +
+        "sv TEXT NOT NULL DEFAULT '', llave TEXT NOT NULL, ronda TEXT NOT NULL, a TEXT NOT NULL, b TEXT NOT NULL, " +
+        "texto TEXT NOT NULL DEFAULT '', abre INTEGER NOT NULL, cierra INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'abierta', " +
+        "ganador TEXT NOT NULL DEFAULT '')");
+      this.sql.exec('CREATE TABLE IF NOT EXISTS apostado (ap TEXT NOT NULL, quien TEXT NOT NULL, lado TEXT NOT NULL, ' +
+        'monto INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (ap, quien))');
       // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
       // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -3380,6 +3565,8 @@ export class Avisos {
       }
       if (ruta === '/ciclo-mano') return json(await this.cicloAMano(Date.now()));
       if (ruta === '/precio') return this.precio(d);
+      // 🎲 una apuesta, desde el botón del chat (`worker.js`, firmado por Discord): ver `apostar()`
+      if (ruta === '/apostar') return this.apostar(d);
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
         return this.billetera(d);
@@ -3604,6 +3791,10 @@ export class Avisos {
       try { await this.chatVivo(ahora); } catch (e) {
         this.guardar('chat_vivo', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 📝 y quiénes se anotan, antes de la llave («Con datos» y «A full»). Nunca frena al vigía: ver `inscriptosChat()`
+      try { await this.inscriptosChat(ahora); } catch (e) {
+        this.guardar('inscriptos_chat', { t: ahora, error: String(e).slice(0, 160) });
+      }
       // 🕵️ y quién es cada nombre de las llaves en vivo. Nunca frena al vigía: ver `quienes()`
       try { await this.quienes(ahora); } catch (e) {
         this.guardar('quien', { ...(this.leer('quien') || {}), error: String(e).slice(0, 160) });
@@ -3756,7 +3947,8 @@ export class Avisos {
     const dashNivel = (aj.en_vivo_nivel && typeof aj.en_vivo_nivel === 'object') ? aj.en_vivo_nivel : {};
     const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
       ahora - 3 * HORA).toArray();
-    if (!filas.length) return 0;
+    // 🎲 sin llaves en juego, las apuestas que quedaron se revisan igual: así se devuelven
+    if (!filas.length) { await this.apuestasRevisar(ahora, new Map()); return 0; }
     if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
     const LV = globalThis.LlaveVivo;
     if (!LV) return 0;
@@ -3811,7 +4003,7 @@ export class Avisos {
       const L = llaves.get(b.id);
       if (!L) continue;
       const nivel = nivelChat(dashNivel[b.sv], cfgs.get(b.g).vivo_nivel);
-      const entre = nivel === 'todo' ? CHAT_ENTRE_TODO : CHAT_ENTRE;
+      const entre = porBatalla(nivel) ? CHAT_ENTRE_TODO : CHAT_ENTRE;
       const hechos = {};
       for (const r of this.sql.exec('SELECT m, msg, texto FROM chat_vivo WHERE llave = ? AND canal = ?', L.id, canal)
         .toArray()) hechos[r.m] = r;
@@ -3821,12 +4013,38 @@ export class Avisos {
       const nombre = nombreDe(L);
       let ms = momentosChat(L, nombre, [], nivel);
       // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
-      if (!hechos.llave && ms.length && (nivel === 'todo' || ms[ms.length - 1].m === 'llave') && fresca
+      if (!hechos.llave && ms.length && (porBatalla(nivel) || ms[ms.length - 1].m === 'llave') && fresca
           && ahora - ult >= entre) {
         if (lobby === null) {
           try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
         }
         ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel);
+      }
+      // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaChat()`), con su título, su «¿sabías que…?» y —en «A
+      // full»— la apuesta, que va con botones en el mismo mensaje. Sólo de dos lados, y una vez por batalla
+      let apuesta = null;
+      if ((nivel === 'datos' || nivel === 'full') && fresca) {
+        const bat = batallaChat(L);
+        if (bat && bat.lados.length === 2) {
+          const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
+          const mv = 'v:' + clave;
+          if (!hechos[mv]) {
+            const dc = await this.datosCruce(ahora);
+            const x = infoCruce(bat.lados, dc.buscar, dc.tabla, dc.perf);
+            const tt = tituloCruce(x);
+            const dato = datoCurioso(x, L.id + clave, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
+            const lineas = [];
+            if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
+            lineas.push('⚔️ ' + bat.r + ': **' + escMd(x.a.n) + '** vs **' + escMd(x.b.n) + '**');
+            if (dato) lineas.push('💡 ' + escMd(dato));
+            if (nivel === 'full') {
+              apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+              lineas.push(lineaApuesta('abierta'));
+            }
+            const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
+            ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') });
+          }
+        }
       }
       for (const p of planChat(ms, hechos, ult, ahora, fresca, nivel)) {
         if (p.tipo === 'saltar') {
@@ -3836,13 +4054,16 @@ export class Avisos {
         }
         if (pedidos >= CHAT_TOPE) break;
         pedidos++;
+        // 🎲 la apuesta va en el mensaje que lleva su cruce, con sus botones
+        const conAp = apuesta && p.tipo === 'mandar' && [].concat(p.m).includes(apuesta.m) ? apuesta : null;
         let r = null;
         try {
           r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
             method: p.tipo === 'editar' ? 'PATCH' : 'POST',
             headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
             // 🛑 nunca menciona a nadie, y sin la vista previa del link
-            body: JSON.stringify({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 }),
+            body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 },
+              conAp ? { components: botonesApuesta(conAp.id, conAp.a, conAp.b, false) } : {})),
           });
         } catch (e) { r = null; }
         if (r && r.ok) {
@@ -3857,6 +4078,11 @@ export class Avisos {
           for (const m of [].concat(p.m)) {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, m, id, p.texto, ahora);
+          }
+          if (conAp && id) {
+            this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
+              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', conAp.id, canal, id, b.sv || '', L.id, conAp.ronda, conAp.a, conAp.b,
+            p.texto.slice(0, 1900), ahora, ahora + AP_CIERRA);
           }
           mandados++;
           break;
@@ -3875,6 +4101,8 @@ export class Avisos {
       }
     }
     if (pedidos) this.guardar('chat_vivo', { t: ahora, mandados, editados, errores: errores.slice(0, 5) });
+    // 🎲 y las apuestas: cerrar, pagar o devolver (ver `apuestasRevisar()`)
+    try { await this.apuestasRevisar(ahora, llaves); } catch (e) { this.guardar('apuestas', { t: ahora, error: String(e).slice(0, 160) }); }
     if (cambio) {
       for (const [k, v] of Object.entries(nombres)) if (ahora - (v.t || 0) > 12 * HORA) delete nombres[k];
       this.guardar('nombres_vivo', nombres);
@@ -4063,6 +4291,177 @@ export class Avisos {
       this.guardar('ultimo_error', { t: ahora, ruta: 'llave-rara', error: String(e).slice(0, 120) });
     }
     return true;
+  }
+
+  /**
+   * 🔥 Lo que hace falta para el título y el dato de un cruce: la tabla del lobby por clave, los perfiles (los duelos de
+   * cada uno) y `buscar(nombre de llave)` → clave, por la tabla y los alias. Diez minutos en la memoria del objeto: son
+   * los dos JSON más grandes de KV y se piden sólo cuando hay un cruce que anunciar.
+   */
+  async datosCruce(ahora) {
+    if (this.cruceMem && ahora - this.cruceMem.t < 10 * MIN) return this.cruceMem;
+    let lobby = {}, perf = {};
+    try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
+    try { perf = (JSON.parse((await this.env.KV.get('web:perfiles')) || '{}') || {}).p || {}; } catch (e) { perf = {}; }
+    const tabla = {}, por = {};
+    for (const f of lobby.tabla || []) {
+      if (f && f.k) { tabla[f.k] = f; por[claveTurno(f.n)] = f.k; }
+    }
+    const alias = lobby.alias || {};
+    const buscar = (n) => { const c = claveTurno(n); return por[c] || alias[c] || (perf[c] ? c : '') || ''; };
+    this.cruceMem = { t: ahora, tabla, perf, buscar };
+    return this.cruceMem;
+  }
+
+  /**
+   * 🎲 UNA APUESTA, desde el botón (`ap:<id>:<lado>:<monto>`, ver `worker.js`). Lo valida todo acá —el objeto es uno solo,
+   * así que dos clics a la vez no gastan la misma plata—: que esté abierta, el monto (50 a 500 en total, de un solo lado),
+   * el saldo y que no sea su propia batalla (`clave`, de su cuenta). Se anota en `apostado` y se descuenta en `tienda`.
+   */
+  apostar(d, ahora = Date.now()) {
+    // `ahora` sólo lo pasan las pruebas
+    const quien = String(d.quien || '');
+    const lado = d.lado === 'A' || d.lado === 'B' ? d.lado : '';
+    const m = Number(d.monto);
+    if (!/^[0-9]{5,25}$/.test(quien) || !lado || !AP_MONTOS.includes(m) || !Number.isInteger(Number(d.inicial))) {
+      return json({ error: 'datos' }, 400);
+    }
+    const ap = this.sql.exec('SELECT * FROM apuestas WHERE id = ?', String(d.ap || '')).toArray()[0];
+    if (!ap) return json({ error: 'no existe' }, 404);
+    if (ap.estado !== 'abierta' || ahora >= ap.cierra) return json({ error: 'cerrada' }, 409);
+    const yo = claveTurno(d.clave || '');
+    if (yo && [ap.a, ap.b].some((n) => String(n).split(/\s*[,+&]\s*/).some((x) => claveTurno(x) === yo))) {
+      return json({ error: 'propia' }, 409);
+    }
+    const ya = this.sql.exec('SELECT lado, monto FROM apostado WHERE ap = ? AND quien = ?', ap.id, quien).toArray()[0];
+    if (ya && ya.lado !== lado) return json({ error: 'otro lado', lado: ya.lado, nombre: sinBandera(ya.lado === 'A' ? ap.a : ap.b) }, 409);
+    const antes = ya ? ya.monto : 0;
+    if (antes + m > AP_TOPE) return json({ error: 'tope', queda: AP_TOPE - antes }, 409);
+    const s = this.saldo(quien, Number(d.desde) || 0, Number(d.inicial));
+    if (m > s) return json({ error: 'saldo', saldo: s }, 409);
+    this.state.storage.transactionSync(() => {
+      this.sql.exec('INSERT OR REPLACE INTO apostado (ap, quien, lado, monto, t) VALUES (?, ?, ?, ?, ?)', ap.id, quien, lado, antes + m, ahora);
+      this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'ap:' + ap.id + ':' + quien,
+        quien, -(antes + m), ahora);
+    });
+    const pozo = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n, COUNT(*) AS c FROM apostado WHERE ap = ?', ap.id).toArray()[0];
+    return json({ ok: true, lado, nombre: sinBandera(lado === 'A' ? ap.a : ap.b), monto: m, total: antes + m, saldo: s - m,
+      pozo: pozo.n, cuantos: pozo.c, cierra: ap.cierra });
+  }
+
+  /**
+   * 🎲 Las apuestas vivas, cada minuto: a los 3 minutos se cierran (botones grises, con el pozo); cuando la llave dice
+   * quién ganó, se paga el pozo (`repartoPozo()`) y el mensaje lo dice; sin resultado en horas, se devuelve todo. Se edita
+   * el MISMO mensaje: Discord no notifica una edición. `llaves` son las de `chatVivo()`, por id.
+   */
+  async apuestasRevisar(ahora, llaves) {
+    const vivas = this.sql.exec("SELECT * FROM apuestas WHERE estado IN ('abierta', 'cerrada') ORDER BY abre LIMIT 20").toArray();
+    let pedidos = 0;
+    for (const ap of vivas) {
+      if (pedidos >= 3) break;
+      const L = llaves.get(ap.llave);
+      const g = L ? ladoGanador(L, ap.ronda, ap.a, ap.b) : '';
+      let estado = '', d = {};
+      const vence = ahora - ap.abre > (L ? 8 : 6) * HORA;
+      if (g || vence) {
+        const filas = this.sql.exec('SELECT quien, lado, monto FROM apostado WHERE ap = ?', ap.id).toArray();
+        const r = repartoPozo(filas.map((x) => [x.quien, x.lado, x.monto]), g);
+        estado = r.devuelto ? 'devuelta' : 'pagada';
+        this.state.storage.transactionSync(() => {
+          for (const [q, m] of Object.entries(r.out)) {
+            this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+              'ap:' + ap.id + ':' + q + ':pago', q, m, ahora);
+          }
+          this.sql.exec('UPDATE apuestas SET estado = ?, ganador = ? WHERE id = ?', estado, g, ap.id);
+        });
+        d = { pozo: r.total, cuantos: Object.keys(r.out).length, ganador: sinBandera(g === 'A' ? ap.a : ap.b),
+          porque: !g ? 'Sin resultado' : !filas.length ? 'Nadie apostó' : 'Nadie acertó' };
+      } else if (ap.estado === 'abierta' && ahora >= ap.cierra) {
+        this.sql.exec("UPDATE apuestas SET estado = 'cerrada' WHERE id = ?", ap.id);
+        const s = this.sql.exec('SELECT COALESCE(SUM(monto), 0) AS n, COUNT(*) AS c FROM apostado WHERE ap = ?', ap.id).toArray()[0];
+        estado = 'cerrada';
+        d = { pozo: s.n, cuantos: s.c };
+      }
+      if (!estado || !ap.msg) continue;
+      pedidos++;
+      const texto = String(ap.texto || '').replace(/^🎲.*$/mu, lineaApuesta(estado, d));
+      try {
+        const r = await fetch(`${DC}/channels/${ap.canal}/messages/${ap.msg}`, {
+          method: 'PATCH',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+          body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] },
+            components: estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true) : [] }),
+        });
+        if (r.ok) this.sql.exec('UPDATE apuestas SET texto = ? WHERE id = ?', texto, ap.id);
+      } catch (e) { /* el estado ya quedó anotado: el mensaje se corrige solo la próxima vez que cambie */ }
+    }
+    return pedidos;
+  }
+
+  /**
+   * 📝 QUIÉNES SE ANOTAN, mientras no hay llave (Dlx, 07/10/2026: «en cada batalla o incluso en fase de
+   * inscripciones»). Sólo en «Con datos» y «A full», en el canal del bot en vivo de ese servidor: UN mensaje por evento,
+   * desde tres anotados, que se edita a medida que se suman más —Discord no notifica una edición— y hasta media hora
+   * después de la hora. Los anotados son los que ya cuenta la página (`anotados`): con su bandera o con un nombre que la
+   * Liga conoce, no la charla del canal.
+   */
+  async inscriptosChat(ahora) {
+    const aj = this.ajustes();
+    const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
+    const dashNivel = (aj.en_vivo_nivel && typeof aj.en_vivo_nivel === 'object') ? aj.en_vivo_nivel : {};
+    const anot = (this.leer('anotados') || {}).ev || {};
+    const generales = (this.leer('canales') || {}).generales || [];
+    let pedidos = 0;
+    for (const a of this.anunciosVistos(ahora, 24, 40)) {
+      if (pedidos >= 1) break;
+      if (dash[a.sv] === false || (a.ini && ahora > a.ini + 30 * MIN)) continue;
+      const lista = (anot[a.id] || []).filter((x) => x && x[0] && (x[3] || x[2])).map((x) => sinBandera(x[0]));
+      if (lista.length < 3) continue;
+      // con llave en juego del mismo servidor publicada después del anuncio, ya habla la llave
+      const desde = Number((BigInt(a.id) >> 22n) + 1420070400000n);
+      if (this.sql.exec('SELECT 1 FROM vivo WHERE sv = ? AND pub > ? LIMIT 1', a.sv, desde - HORA).toArray().length) continue;
+      const g = (/\/channels\/(\d+)\//.exec(a.url || '') || [])[1] || '';
+      if (!g) continue;
+      const m0 = (this.cfgChat = this.cfgChat || new Map()).get(g);
+      let c = m0 && ahora - m0.t < 5 * MIN ? m0.c : null;
+      if (!c) {
+        try { c = JSON.parse((await this.env.KV.get('cfg:' + g, { cacheTtl: 60 })) || '{}') || {}; } catch (e) { c = {}; }
+        this.cfgChat.set(g, { c, t: ahora });
+      }
+      const nivel = nivelChat(dashNivel[a.sv], c.vivo_nivel);
+      if (nivel !== 'datos' && nivel !== 'full') continue;
+      const canal = String(c.vivo || '') || (dash[a.sv] === true ? String((generales.find((x) => x.g === g) || {}).id || '') : '');
+      if (!/^\d{5,25}$/.test(canal) || ahora < (this.leer('chat_pausa:' + canal) || 0)) continue;
+      const cupos = /^\s*\d+\s*$/.test(String(a.cup || '')) ? Number(a.cup) : 0;
+      const texto = '📝 **' + escMd(a.n) + '** · ya se anotaron **' + lista.length + '**' + (cupos ? ' de ' + cupos : '') + ': '
+        + lista.slice(0, 12).map(escMd).join(', ') + (lista.length > 12 ? ' y ' + (lista.length - 12) + ' más' : '')
+        + (a.url ? '\n¿Te sumás? <' + a.url + '>' : '');
+      const h = this.sql.exec("SELECT msg, texto, t FROM chat_vivo WHERE llave = ? AND canal = ? AND m = 'inscriptos'",
+        'i:' + a.id, canal).toArray()[0];
+      if (h && (h.texto === texto || !h.msg || ahora - h.t < CHAT_ENTRE_TODO)) continue;
+      if (!h) {
+        const ult = (this.sql.exec("SELECT MAX(t) AS t FROM chat_vivo WHERE canal = ? AND msg != ''", canal).toArray()[0] || {}).t || 0;
+        if (ahora - ult < CHAT_ENTRE_TODO) continue;
+      }
+      pedidos++;
+      let r = null;
+      try {
+        r = await fetch(`${DC}/channels/${canal}/messages` + (h ? '/' + h.msg : ''), {
+          method: h ? 'PATCH' : 'POST',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+          body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 }),
+        });
+      } catch (e) { r = null; }
+      if (!r || !r.ok) {
+        if (!h && r) this.guardar('chat_pausa:' + canal, ahora + pausaChat(r.status, 0));
+        continue;
+      }
+      let id = h ? h.msg : '';
+      if (!h) { try { id = String((await r.json()).id || ''); } catch (e) { id = ''; } }
+      this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+        'i:' + a.id, canal, 'inscriptos', id, texto, ahora);
+    }
+    return pedidos;
   }
 
   anunciosVistos(ahora, horas = 24, tope = 12) {

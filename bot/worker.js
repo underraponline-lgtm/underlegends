@@ -3821,6 +3821,44 @@ export default {
       const id = (i.data && i.data.custom_id) || '';
       const [que, quien, extra, dueno] = id.split(':');
 
+      // ── 🎲 Una apuesta en vivo (07/10/2026, el nivel «A full» del bot en vivo) ──────────
+      // `ap:<id>:<lado>:<monto>`. Quién apuesta es quien tocó (Discord lo firma); el objeto valida todo —abierta, monto,
+      // tope, saldo, que no sea su propia batalla— y la respuesta la ve sólo él. Los Puntos de Tienda son los de su cuenta
+      if (que === 'ap') {
+        const esperarAp = frenado(idDe(i), 'click');
+        if (esperarAp) return espera(esperarAp);
+        const did = idDe(i);
+        let cfg = null;
+        try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+        if (!did || !cfg || !Number.isInteger(cfg.inicial)) return aviso('Las apuestas todavía no están listas: probá en un rato.');
+        let clave = '';
+        try { clave = (await claveCarta(env, did)) || ''; } catch (e) { clave = ''; }
+        let j = {};
+        try {
+          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/apostar', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ quien: did, ap: quien, lado: extra, monto: Number(dueno), clave, inicial: cfg.inicial,
+              desde: Date.parse(cfg.desde || '') || 0 }),
+          });
+          j = await r.json();
+        } catch (e) { j = { error: 'red' }; }
+        const mil = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        if (j.ok) {
+          return aviso(`🎲 Apostaste **${mil(j.monto)}** a **${j.nombre}**` + (j.total > j.monto ? ` (vas ${mil(j.total)} en total)` : '')
+            + `. El pozo ya es de **${mil(j.pozo)}** entre ${j.cuantos}; cierra <t:${Math.floor(j.cierra / 1000)}:R>.`
+            + `\nTe quedan **${mil(j.saldo)}** Puntos de Tienda.`);
+        }
+        const por = {
+          cerrada: 'Las apuestas de esa batalla ya cerraron.',
+          'no existe': 'Esa apuesta ya no existe.',
+          propia: 'No podés apostar en tu propia batalla.',
+          'otro lado': `Ya apostaste a **${j.nombre || 'el otro'}**: en una batalla se apuesta a un solo lado.`,
+          tope: `El tope es 500 por batalla: te quedan ${mil(j.queda)}.`,
+          saldo: `No te alcanza: tenés ${mil(j.saldo)} Puntos de Tienda.`,
+        };
+        return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: probá de nuevo.'));
+      }
+
       // ── El panel de ajustes ────────────────────────────────────────────
       // ⚠️ SE VUELVE A CHEQUEAR EL PERMISO EN CADA CLICK, no sólo al abrir.
       // El panel es efímero y en principio sólo lo ve quien lo pidió, pero el
