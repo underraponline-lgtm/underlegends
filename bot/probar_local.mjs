@@ -2716,6 +2716,11 @@ console.log('\n«TU SERVIDOR»\n');
   ok('sin servidor, sólo lo lee', r.status === 200 &&
      alObjeto.filter(([u]) => u.endsWith('/mi-servidor'))[1][1].sv === undefined);
   alObjeto.length = 0;
+  // 🏠 «Ninguno» (07/10/2026) es `sv: ''`: pasa y llega al objeto así
+  r = await pedirM({ sv: '' }, SES);
+  ok('«ninguno» (`sv: \'\'`) llega al objeto tal cual', r.status === 200 &&
+     alObjeto.filter(([u]) => u.endsWith('/mi-servidor'))[0][1].sv === '', JSON.stringify(alObjeto));
+  alObjeto.length = 0;
   r = await pedirM({ sv: 'ffa; drop' }, SES);
   ok('un servidor con forma rara: 400, sin preguntarle a nadie', r.status === 400 && !alObjeto.length);
   r = await pedirM({ sv: 'SR' });

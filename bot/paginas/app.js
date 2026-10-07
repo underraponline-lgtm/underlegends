@@ -5391,7 +5391,7 @@ function elegirMiServidor(sv) {
     if (!j) return;
     if (j.status === 200) {
       MISV = j;
-      MISV_EST = { ok: true };
+      MISV_EST = { ok: true, sv: sv };
       if (DC && DC.clave) { ELEGIDOS = ELEGIDOS || {}; ELEGIDOS[DC.clave] = j.sv; }
     } else if (j.status === 409) {
       MISV = Object.assign({}, MISV || {}, { sv: j.sv, fijo: true, puede: false, libre: false });
@@ -5985,8 +5985,9 @@ function cuentaRedes(elegidas) {
 }
 /* «tu servidor»: durante la ventana libre se elige al toque; después, como es para toda la temporada, se confirma */
 function cuentaServidor(sv) {
-  if (MISV && MISV.sv === sv) return;
-  if (MISV && !MISV.libre) { MISV_EST = { pide: sv }; repintarMiServidor(); } else elegirMiServidor(sv);
+  // `''` es «ninguno» (07/10/2026): ya elegido sólo si contestó (`elegido`), y no se confirma porque no fija la temporada
+  if (MISV && MISV.sv === sv && (sv || MISV.elegido)) return;
+  if (sv && MISV && !MISV.libre) { MISV_EST = { pide: sv }; repintarMiServidor(); } else elegirMiServidor(sv);
 }
 function cuentaSalir() {
   desvincularAvisos();

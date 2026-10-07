@@ -304,7 +304,10 @@ function RedesCaja({ dc }) {
   );
 }
 
-function ServidorCaja({ liga, dc }) {
+// 🏠 Y AL FINAL DE VERIFICARSE (`paso`; Dlx, 07/10/2026: «que al final te pregunte de qué servidor venís y/o a qué
+// servidor querés representar… todos los socios y la opción ninguno»). La misma elección que Mi cuenta, con «Ninguno»
+// (`sv: ''`), que queda contestado sin fijar la temporada: tu perfil sigue con donde más jugás
+function ServidorCaja({ liga, dc, paso }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiServidor) W.pedirMiServidor(); }, [dc && dc.id]);
   const svs = Object.values(liga.svs || {});
@@ -316,12 +319,15 @@ function ServidorCaja({ liga, dc }) {
     : e.error ? e.error
     : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Probá en un rato.')
     : e.va ? 'Guardando…'
+    : M.elegido && !M.sv ? 'Elegiste ninguno: tu perfil muestra donde más jugás. Podés elegir uno cuando quieras.'
     : M.libre ? 'Cambialo cuantas veces quieras hasta el ' + hasta + '; después, uno por temporada.'
     : M.puede ? (M.sv ? 'Podés cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
     : 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.';
   const nombre = (sv) => ((liga.svs[sv] || {}).nombre || sv);
   return (
-    <Caja t={'Tu servidor' + (M.sv ? ' · ' + nombre(M.sv) : '')} d="El que representás en la Liga: sale en tu perfil. Tu tarjeta de Servidor sigue siendo la de donde jugás.">
+    <Caja t={(paso ? 'Último paso: tu servidor' : 'Tu servidor') + (M.sv ? ' · ' + nombre(M.sv) : M.elegido ? ' · ninguno' : '')}
+      d={paso ? '¿De qué servidor venís, o a cuál querés representar en la Liga? Sale en tu perfil. Si no es ninguno de éstos, elegí «Ninguno».'
+        : 'El que representás en la Liga: sale en tu perfil. Tu tarjeta de Servidor sigue siendo la de donde jugás.'}>
       <div className="cu-svs">{svs.map((o) => {
         const on = M.sv === o.sv;
         const off = (est.MISV && !M.error && !M.puede && !on) || !!e.va;
@@ -330,7 +336,16 @@ function ServidorCaja({ liga, dc }) {
             aria-pressed={on} disabled={off} onClick={() => { if (W.cuentaServidor) W.cuentaServidor(o.sv); }}>
             <img alt="" src={liga.logo(o.sv)} /><b>{siglaDe(o.sv)}</b></button>
         );
-      })}</div>
+      })}
+        {(() => {
+          const on = !!M.elegido && !M.sv;
+          return (
+            <button type="button" className={'cu-sv cu-sv-no' + (on ? ' on' : '')} style={{ '--c': 'var(--linea)' }} aria-pressed={on}
+              disabled={(est.MISV && !M.error && !M.puede && !on) || !!e.va} onClick={() => { if (W.cuentaServidor) W.cuentaServidor(''); }}>
+              <b>Ninguno</b></button>
+          );
+        })()}
+      </div>
       {/* pasada la ventana libre, elegir es para toda la temporada: se confirma */}
       {e.pide ? (
         <div className="cu-btns"><button type="button" className="btn verde chico" onClick={() => { if (W.elegirMiServidor) W.elegirMiServidor(e.pide); }}>Elegir {nombre(e.pide)}</button>
@@ -558,9 +573,12 @@ function Verificar({ liga, dc }) {
   // ya cargado: con su clave de la Liga (`d:`), que sólo tiene quien pasó el portón
   if ((dc && dc.rapero) || (v && v.listo)) {
     return (
-      <Caja t="Ya estás verificado ✅" d="Tus tarjetas salen con /card en Discord, y tu perfil está en la página.">
-        {yo ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a> : null}
-      </Caja>
+      <>
+        <Caja t="Ya estás verificado ✅" d="Tus tarjetas salen con /card en Discord, y tu perfil está en la página.">
+          {yo ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a> : null}
+        </Caja>
+        <ServidorCaja liga={liga} dc={dc} paso />
+      </>
     );
   }
   if (v && v.olvido) {
@@ -614,12 +632,15 @@ function Verificar({ liga, dc }) {
       : 'Lo tuyo está completo ✅. El resto lo hace el bot solo.')
     : v.revisa ? 'Lo tuyo está completo. Tu caso lo revisa un admin.' : 'Te falta lo que está marcado abajo.';
   return (
+    <>
     <Caja t={v.completo ? 'Listo de tu lado' : 'Lo que falta'} d={resumen}>
       <ul className="cu-chk" aria-busy={!!v.cargando}>{filas.map(([e, t, d, acc], i) => (
         <li key={i} className={e}><span className="cu-chk-i"><Ico n={e} t={18} /></span><span className="cu-chk-t"><b>{t}</b>{d ? <small>{d}</small> : null}</span>{acc || null}</li>
       ))}</ul>
       <button type="button" className="btn borde2 chico" disabled={!!v.cargando} onClick={() => revisar()}>{v.cargando ? 'Mirando…' : 'Revisar de nuevo'}</button>
     </Caja>
+    {v.completo ? <ServidorCaja liga={liga} dc={dc} paso /> : null}
+    </>
   );
 }
 

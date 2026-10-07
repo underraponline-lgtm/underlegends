@@ -2604,7 +2604,7 @@ export async function rutaAvisos(req, env, ruta) {
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
     if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
-        (d.sv !== undefined && !/^[A-Z]{2,5}$/.test(String(d.sv)))) return json({ error: 'faltan datos' }, 400);
+        (d.sv !== undefined && !/^([A-Z]{2,5})?$/.test(String(d.sv)))) return json({ error: 'faltan datos' }, 400);
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
     let de = '';
@@ -4883,14 +4883,18 @@ export class Avisos {
     let fila = this.sql.exec('SELECT sv, fijo FROM servidor WHERE quien = ? AND temporada = ?', quien, temp)
       .toArray()[0];
     if (d.sv !== undefined && d.sv !== null) {
+      // 🔑 `''` ES «NINGUNO» (Dlx, 07/10/2026: «que al final te pregunte de qué servidor venís o a cuál querés
+      // representar… todos los socios y la opción ninguno»). Queda anotado —ya contestó— y NO fija la temporada: quien
+      // eligió ninguno puede elegir un servidor después, como si no hubiera elegido
       const sv = String(d.sv);
-      if (!/^[A-Z]{2,5}$/.test(sv)) return json({ error: 'servidor' }, 400);
+      if (sv && !/^[A-Z]{2,5}$/.test(sv)) return json({ error: 'servidor' }, 400);
       if (!fila || fila.sv !== sv) {
         if (fila && fila.fijo && !libre) return json({ error: 'ya', sv: fila.sv, fijo: true, libre: false }, 409);
+        const fijo = libre || !sv ? 0 : 1;
         this.sql.exec('INSERT INTO servidor (quien, temporada, sv, de, t, fijo) VALUES (?, ?, ?, ?, ?, ?) ' +
           'ON CONFLICT(quien, temporada) DO UPDATE SET sv = excluded.sv, de = excluded.de, t = excluded.t, ' +
-          'fijo = excluded.fijo', quien, temp, sv, de, ahora, libre ? 0 : 1);
-        fila = { sv, fijo: libre ? 0 : 1 };
+          'fijo = excluded.fijo', quien, temp, sv, de, ahora, fijo);
+        fila = { sv, fijo };
       }
     } else if (fila && de) {
       // tu perfil puede haber cambiado (entraste con otro nombre): se corrige acá
@@ -4898,8 +4902,9 @@ export class Avisos {
     }
     const antes = fila ? null : this.sql.exec('SELECT sv FROM servidor WHERE quien = ? ORDER BY t DESC LIMIT 1',
       quien).toArray()[0];
-    return json({ ok: true, sv: fila ? fila.sv : antes ? antes.sv : '', fijo: !!(fila && fila.fijo), libre,
-      libre_hasta: hasta, puede: libre || !(fila && fila.fijo) });
+    // `elegido`: contestó esta temporada (también «ninguno», que es `sv: ''`): la verificación ya no le pregunta
+    return json({ ok: true, sv: fila ? fila.sv : antes ? antes.sv : '', elegido: !!fila, fijo: !!(fila && fila.fijo),
+      libre, libre_hasta: hasta, puede: libre || !(fila && fila.fijo) });
   }
 
   /**
@@ -4958,7 +4963,8 @@ export class Avisos {
     // el más nuevo de cada uno, de cualquier temporada
     for (const r of this.sql.exec('SELECT s.sv, s.de FROM servidor s WHERE s.t = ' +
       '(SELECT MAX(t) FROM servidor WHERE quien = s.quien)').toArray()) {
-      cuantos[r.sv] = (cuantos[r.sv] || 0) + 1;
+      // «ninguno» (`''`) no suma a ningún servidor, y en el perfil vuelve a «donde más jugó»
+      if (r.sv) cuantos[r.sv] = (cuantos[r.sv] || 0) + 1;
       if (r.de) n[r.de] = r.sv;
     }
     return { t: Date.now(), n, cuantos };

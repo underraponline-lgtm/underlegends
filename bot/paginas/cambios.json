@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.53",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T15:20:00-04:00",
+   "titulo": "Tu servidor, al verificarte",
+   "items": [
+    "🏠 **Al terminar de verificarte, el último paso es elegir tu servidor**: de cuál venís o a cuál querés representar, entre todos los socios. Y si no es ninguno, **«Ninguno»**, que también está en Mi cuenta y no te gasta la elección de la temporada.",
+    "👥 **Si jugás con dos cuentas, se juntan**: tus puntos y eventos quedan en uno solo."
+   ]
+  },
+  {
    "version": "2.52",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T14:30:00-04:00",
