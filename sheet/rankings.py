@@ -1322,6 +1322,28 @@ def _comp_ovr(v):
             g('🥇') + g('🥈') + g('🥉'), g('🎯'))
 
 
+#: cuántas filas menos se aceptan como gente que se unió (ver `aviso_encoge()`); más que esto se confirma a mano
+UNIDOS_MAX = 5
+
+
+def aviso_encoge(hubo, ahora, ev_antes, ev_ahora):
+    """El aviso de una tabla con menos personas, o `None`. Pura: la prueba el self-check.
+
+    🔴 DOS QUE SE UNEN NO SON «LA TABLA ENCOGE» (06/10/2026, 11:22 PM). El lector reconoció a XNOAH como Elbesaabuelas
+    por su cuenta de Discord y la tabla nueva los juntó, con la vieja todavía en dos filas —el alias que las une se arma
+    al final de esa corrida—: 359 contra 358, y la Temporada no se escribió. Faltaba una fila y no faltaba ningún
+    resultado. El guardián está para un `Resultados` leído a medias, y eso SIEMPRE baja los eventos; unir a dos no.
+    Con `UNIDOS_MAX` filas menos o menos y los eventos sin bajar, es gente que se unió: se dice y se escribe. Si no,
+    lo de siempre: `menos)`, que frena sin `--achicar`.
+    """
+    if ahora >= hubo:
+        return None
+    if ev_antes is not None and ev_ahora is not None and ev_ahora >= ev_antes and hubo - ahora <= UNIDOS_MAX:
+        return ('%d persona(s) se unieron con otra: la tabla pasa de %d a %d y los eventos no bajan (%d → %d)'
+                % (hubo - ahora, hubo, ahora, ev_antes, ev_ahora))
+    return 'la tabla pasaría de %d a %d personas (%d menos)' % (hubo, ahora, hubo - ahora)
+
+
 def tabla_nueva():
     """La `Ranking Temporada` entera, recalculada. (filas, avisos).
 
@@ -1497,9 +1519,19 @@ def tabla_nueva():
                       % (len(trolls_fuera), ', '.join(trolls_fuera)))
     hubo = len(viejo) - len(trolls_fuera)
     ahora = len(filas)
-    if ahora < hubo:
-        avisos.append('la tabla pasaría de %d a %d personas (%d menos)'
-                      % (hubo, ahora, hubo - ahora))
+    # 🔑 los eventos de las dos tablas: separan «se unieron» de «se perdió algo» (ver `aviso_encoge()`)
+    iev = icol.get('Ev')
+
+    def _ev(f):
+        try:
+            return int(float(str(f[iev]).strip() or 0))
+        except (ValueError, IndexError, TypeError):
+            return 0
+    ev_antes = sum(_ev(f) for k, f in viejo.items() if not es_troll(k)) if iev is not None else None
+    ev_ahora = sum(_ev(f) for f in filas) if iev is not None else None
+    _enc = aviso_encoge(hubo, ahora, ev_antes, ev_ahora)
+    if _enc:
+        avisos.append(_enc)
     if perdidos:
         # ⚠️ YA NO DICE «con Rango en blanco» ni «con Most Wanted en
         # blanco»: los dos se calculan (23/09 y 27/09). Lo único que se
@@ -3035,6 +3067,22 @@ def _self_check():
         ('sin nombres adentro', 'Ana' in json.dumps(r2), False),
     ]
     for que, dio, esp in casos:
+        ok = dio == esp
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
+    print('\n  el guardián de la tabla que encoge')
+    for que, dio, esp in [
+        ('una persona menos y los mismos eventos: se unieron, se escribe',
+         'menos)' in (aviso_encoge(359, 358, 1200, 1200) or ''), False),
+        ('y con eventos nuevos, igual', 'menos)' in (aviso_encoge(359, 358, 1200, 1230) or ''), False),
+        ('una persona menos y menos eventos: frena',
+         'menos)' in (aviso_encoge(359, 358, 1200, 1190) or ''), True),
+        ('muchas menos aunque los eventos no bajen: frena',
+         'menos)' in (aviso_encoge(359, 340, 1200, 1200) or ''), True),
+        ('sin la columna de eventos: frena como antes', 'menos)' in (aviso_encoge(359, 358, None, None) or ''), True),
+        ('la tabla que crece no avisa', aviso_encoge(358, 359, 1200, 1210), None),
+    ]:
         ok = dio == esp
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
