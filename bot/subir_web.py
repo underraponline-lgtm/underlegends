@@ -1412,6 +1412,62 @@ def _mil(n):
     return '{:,}'.format(int(n)).replace(',', '.')
 
 
+def _companeros(regs, de, por):
+    """`{clave: {clave_compañero: [ganadas, juntos]}}`: con quién peleó en el MISMO lado de una batalla de equipos.
+
+    🔑 Dlx, 07/10/2026: *«HACE MEJOR EQUIPO con X persona»*. Sale de los lados de las llaves procesadas con más de un
+    nombre (`Makmah, Tam, Agus`); gana el lado que la llave dice que pasó.
+    """
+    out = defaultdict(lambda: defaultdict(lambda: [0, 0]))
+    for n, r in regs.items():
+        if not str(n).isdigit():
+            continue
+        for R in r.get('rondas') or []:
+            for b in R.get('b') or []:
+                lados, g = (b[0] if b else []), (b[1] if len(b) > 1 else '')
+                for lado in lados:
+                    qs = [de(x) for x in re.split(r'\s*[,+&]\s*', str(lado or '')) if x.strip()]
+                    qs = [q for q in qs if q in por]
+                    if len(qs) < 2:
+                        continue
+                    gano = bool(g) and str(g).strip() == str(lado).strip()
+                    for q in qs:
+                        for o in qs:
+                            if o != q:
+                                out[q][o][1] += 1
+                                out[q][o][0] += 1 if gano else 0
+    return out
+
+
+def _replicas(de):
+    """`{clave: [ganadas, jugadas]}`: las réplicas de cada uno, de las batallas votadas que guarda el ciclo.
+
+    🔑 Dlx, 07/10/2026: *«su win rate en réplicas»*. Las llaves no dicen si hubo réplica; los canales donde se vota sí
+    (`datos/veredictos.json`, `batallas`): la misma pareja votada dos veces seguidas en el mismo servidor, a menos de
+    45 min, es una réplica, y la gana el de la última votación. ⚠️ Hay pocas: sólo de los servidores que votan en un
+    canal que el bot lee.
+    """
+    v = _json('datos', 'veredictos.json') or {}
+    bs = sorted((x for x in (v.get('batallas') or {}).values() if isinstance(x, dict)),
+                key=lambda x: x.get('pub') or 0)
+    por = defaultdict(list)
+    for b in bs:
+        por[(b.get('g'), frozenset((de(b.get('a')), de(b.get('b')))))].append(b)
+    out = defaultdict(lambda: [0, 0])
+    for (_g, par), lst in por.items():
+        i = 0
+        while i < len(lst) - 1:
+            if (lst[i + 1].get('pub') or 0) - (lst[i].get('pub') or 0) < 45 * 60000:
+                gan = de(lst[i + 1].get('ganador'))
+                for q in par:
+                    out[q][1] += 1
+                    out[q][0] += 1 if gan == q else 0
+                i += 2
+            else:
+                i += 1
+    return out
+
+
 def _perfiles(gente, comp, regs):
     """Lo que la página de cada rapero necesita y el lobby no trae.
 
@@ -1481,6 +1537,10 @@ def _perfiles(gente, comp, regs):
     med = [p for p in med if not p.get('fc')]
     pos_pod = {_clave(p): i + 1 for i, p in enumerate(med)}
     por_cc = Counter((x.get('cc') or '').lower() for x in comp if x.get('cc'))
+    # 🤝 con quién hace mejor equipo, sus réplicas y sus cartas de Servidor de los otros servidores (07/10/2026)
+    comp_eq = _companeros(regs, de, por)
+    reps = _replicas(de)
+    inv = _json('datos', 'cartas_r2.json') or {}
     out = {}
     for q, p in por.items():
         cp = comp_raw.get(p.get('raw')) or (comp_de.get(norm(p.get('raw')))
@@ -1528,6 +1588,19 @@ def _perfiles(gente, comp, regs):
             x['rk'] = rk
         if cr:
             x['crew'] = cr[0]
+        # 🤝 «hace mejor equipo con»: el compañero con más batallas GANADAS juntos, desde dos juntos
+        eqs = [(o, v) for o, v in (comp_eq.get(q) or {}).items() if v[1] >= 2]
+        if eqs:
+            o, v = max(eqs, key=lambda t: (t[1][0], t[1][0] / t[1][1], t[1][1]))
+            if v[0]:
+                x['eq'] = [o, (por.get(o) or {}).get('raw') or o, v[0], v[1]]
+        # 🔁 sus réplicas, si hay alguna votada
+        if reps.get(q) and reps[q][1]:
+            x['rp'] = list(reps[q])
+        # 🃏 de qué otros servidores tiene la carta de Servidor (`<clave>/sv-<sv>.webp`, del inventario de R2)
+        svc = sorted(k[3:] for k in (inv.get(q) or {}) if str(k).startswith('sv-'))
+        if svc:
+            x['svc'] = svc
         # 🔑 su cacería: a quién cazó, quién lo cazó y cuántas sobrevivió
         mwp = _mw_de(p.get('raw'))
         if mwp:

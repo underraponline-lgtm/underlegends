@@ -772,9 +772,18 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None):
             hist[x].append(x == gan)
         if not es_troll(gan):
             g[gan] += 1
+    # 🔑 SIN WIN% HASTA LOS 10 EVENTOS (Dlx, 07/10/2026: *«asegurate de que nadie pueda tener un win rate hasta que
+    # tenga 10 eventos»*). El mismo piso que el Competitivo —`comun/requisitos.py`, no un 10 escrito acá—: con dos
+    # eventos un 100 % no dice nada. Los duelos (`_duelos`, ganados y jugados) siguen: eso no es un porcentaje
+    try:
+        from comun import requisitos as _RQ
+        piso_wr = _RQ.minimo('competitivo', 'ev') or 10
+    except Exception:                                    # noqa: BLE001
+        piso_wr = 10
     for quien in set(list(j) + list(d)):
         if j.get(quien):
-            d[quien]['Win%'] = '%.1f%%' % (100.0 * g.get(quien, 0) / j[quien])
+            if (d[quien].get('Ev') or 0) >= piso_wr:
+                d[quien]['Win%'] = '%.1f%%' % (100.0 * g.get(quien, 0) / j[quien])
             d[quien]['_duelos'] = '%d/%d' % (g.get(quien, 0), j[quien])
             # la de duelos sigue existiendo para su propia vitrina
             d[quien]['_racha_duelos'] = _racha(hist[quien])
