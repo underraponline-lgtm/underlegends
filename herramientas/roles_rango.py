@@ -4,6 +4,7 @@
     python herramientas/roles_rango.py            mide y no toca nada
     python herramientas/roles_rango.py --crear    crea los roles que faltan
     python herramientas/roles_rango.py --aplicar  reasigna los roles
+    python herramientas/roles_rango.py --ciclo    lo mismo desde el ciclo (paso 2b7): sólo DRA, con tope
     python herramientas/roles_rango.py --vaciar   mide a quién se le sacaría
     python herramientas/roles_rango.py --vaciar --aplicar   se los saca
 
@@ -50,6 +51,8 @@ from comun.rangos import UMBRAL, de_score  # noqa: E402
 API = 'https://discord.com/api/v10'
 GUILDS = (('DRA', '841017460341604382'), ('FFA', '1468472442925092958'))
 TRAMOS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E']
+#: cuántos cambios hace sola una vuelta del ciclo (`--ciclo`); más es raro y se hace a mano
+TOPE_CICLO = 30
 
 # ⚠️ EL COLOR Y EL EMOJI DE LOS DOS NUEVOS SALEN DE LA SERIE QUE YA EXISTE:
 # S 🐉 · A 🏆 · B 🗡️ · C 🔥 · D 🏹 · E ⚓. SS y SSS van ARRIBA de S, así que se
@@ -270,8 +273,15 @@ def vaciar(s, aplicar=False):
 def main():
     s = requests.Session()
     s.headers['Authorization'] = 'Bot ' + env('DISCORD_TOKEN')
-    crear = '--crear' in sys.argv
-    aplicar = '--aplicar' in sys.argv
+    # 🔁 `--ciclo` (paso 2b7, 07/10/2026). Dlx: *«yo diría al día siguiente, pero si no consume nada hazlo… como lo
+    # haces con los apodos»*. El sync de afuera los pone una vez por día; Oasis volvió a DRA, el bot Utili («Role
+    # Persist») le devolvió su rol viejo de A, y hasta la vuelta del día siguiente tenía la letra equivocada. En cada
+    # vuelta: sólo DRA (FFA no usa roles de rango), nunca crea roles, sólo toca a quien lo tiene mal, y si el plan pasa
+    # de `TOPE_CICLO` no lo hace solo —algo raro, o cambiaron los umbrales: eso se corre a mano—. Cuesta tres pedidos
+    # para listar DRA y uno por cada cambio; nada de KV ni del Sheet
+    ciclo = '--ciclo' in sys.argv
+    crear = '--crear' in sys.argv and not ciclo
+    aplicar = '--aplicar' in sys.argv or ciclo
 
     if '--vaciar' in sys.argv:
         return vaciar(s, aplicar)
@@ -282,7 +292,7 @@ def main():
     c = Counter(r for r, _ in deberia.values())
     print('   por rango: %s' % '  '.join('%s=%d' % (t, c.get(t, 0)) for t in TRAMOS))
 
-    for nom, gid in GUILDS:
+    for nom, gid in (GUILDS[:1] if ciclo else GUILDS):
         print('\n══════ %s ══════' % nom)
         rs = s.get('%s/guilds/%s/roles' % (API, gid), timeout=30).json()
         tengo = roles_de_rango(rs)
@@ -351,7 +361,12 @@ def main():
         if len(plan) > 40:
             print('     … y %d más' % (len(plan) - 40))
 
-        if not aplicar:
+        if not aplicar or not plan:
+            continue
+        if ciclo and len(plan) > TOPE_CICLO:
+            print('  ⚠️ %d cambios en una vuelta: más de %d no se hacen solos. Si es lo que corresponde (cambiaron los '
+                  'umbrales, arrancó la temporada), correr `herramientas/roles_rango.py --aplicar` a mano'
+                  % (len(plan), TOPE_CICLO))
             continue
         # ⚠️ A `.cache/` (ignorado), no a `docs/`: el respaldo trae Discord IDs y `docs/` es público
         os.makedirs(os.path.join(BASE, '.cache'), exist_ok=True)

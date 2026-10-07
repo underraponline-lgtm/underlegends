@@ -1148,6 +1148,13 @@ def _lo_barato(correr):
         paso('2b6', 'el #N del apodo')
         if not corre(['herramientas/sincronizar_puesto.py', '--ciclo'], callado=False):
             print('      ⚠️ no pude sincronizar el #N de los apodos: se reintenta en la próxima')
+        # ── 2b7 · el rol de rango en DRA, como el #N del apodo ──────────
+        # 🔑 Dlx, 07/10/2026: «si no consume nada hazlo… como lo haces con los apodos». La letra del Competitivo (con su
+        # puerta de 10 eventos); sólo toca a quien tiene el rol equivocado, y con tope. Nunca frena el ciclo. Ver
+        # `herramientas/roles_rango.py`.
+        paso('2b7', 'el rol de rango en DRA')
+        if not corre(['herramientas/roles_rango.py', '--ciclo'], callado=False):
+            print('      ⚠️ no pude revisar los roles de rango: se reintenta en la próxima')
 
     # ── 2c · la web, que es lo que ve el que no abre Discord ────────
     #
