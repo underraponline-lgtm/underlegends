@@ -301,6 +301,10 @@
 "temporada"
 ]
 },
+"joshu": {
+"rg": "",
+"c": []
+},
 "catarsis": {
 "rg": "",
 "c": [
@@ -309,6 +313,13 @@
 ]
 },
 "tuca": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mtz": {
 "rg": "",
 "c": [
 "servidor",
@@ -365,13 +376,6 @@
 ]
 },
 "masino": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"mtz": {
 "rg": "",
 "c": [
 "servidor",
@@ -739,10 +743,6 @@
 ]
 },
 "jj": {
-"rg": "",
-"c": []
-},
-"joshu": {
 "rg": "",
 "c": []
 },
@@ -1144,6 +1144,10 @@
 "servidor",
 "temporada"
 ]
+},
+"elbesaabuelas": {
+"rg": "",
+"c": []
 },
 "malva": {
 "rg": "",

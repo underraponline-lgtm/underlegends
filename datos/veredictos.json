@@ -1182,6 +1182,26 @@
    "b": "ZIGNOS ERIAN WEI",
    "ganador": "PAIN TAM",
    "votos": "1–0"
+  },
+  "1557237006248185897": {
+   "id": "1557237006248185897",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791344634354,
+   "a": "SIX",
+   "b": "SNOW",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1557237887546957845": {
+   "id": "1557237887546957845",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791344844472,
+   "a": "SIX",
+   "b": "TAM",
+   "ganador": "SIX",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2734,8 +2754,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791338928016,
-   "ed": 1791343416539,
-   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝",
+   "ed": 1791345060242,
+   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝\n⌞ERIK CHEKIALO⌝ 🆚 ⌞PARIA⌝\n`[ FINAL ]`\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞TAM⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -2745,8 +2765,8 @@
       "PRAISERIZAS",
       "SNOW"
      ],
-     null,
-     "no aparece nadie después",
+     "SNOW",
+     "ronda siguiente",
      []
     ],
     [
@@ -2758,9 +2778,12 @@
       "ARIAXER",
       "SONETO"
      ],
-     "SOSA",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "PARIA",
+      "SOSA"
+     ]
     ],
     [
      "OCTAVOS",
@@ -2834,6 +2857,36 @@
       "ZIGNOS ERIAN WEI"
      ],
      "PAIN TAM",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ERIK CHEKIALO",
+      "PARIA"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "SNOW"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "TAM"
+     ],
+     "SIX",
      "veredicto",
      []
     ]
