@@ -1122,6 +1122,26 @@
    "b": "ERIAN 🇵🇦",
    "ganador": "ERIAN 🇵🇦",
    "votos": "1–0"
+  },
+  "1557186315613765632": {
+   "id": "1557186315613765632",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791332548765,
+   "a": "SHISUI 🇨🇱",
+   "b": "SIX 🇦🇷",
+   "ganador": "SIX 🇦🇷",
+   "votos": "1–0"
+  },
+  "1557188298064007199": {
+   "id": "1557188298064007199",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791333021418,
+   "a": "PARK JI SUNG 🇨🇱",
+   "b": "YOUNG VLAD 🇨🇴",
+   "ganador": "PARK JI SUNG 🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2493,8 +2513,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791328342547,
-   "ed": 1791332548765,
-   "texto": "`[ CUARTOS ]`\n⌞SOUL B 🇨🇱 + ECLIPSE 🇨🇱⌝ 🆚 ⌞BNA 🇦🇷 + PAIN 🇨🇴⌝\n⌞SHISUI 🇨🇱 + PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + UZI 🇨🇱⌝\n⌞PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪⌝ 🆚 ⌞BENJIXO 🇦🇷 + ALTER 🇨🇱⌝\n⌞ZIGNOS + ERIAN 🇵🇦⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + RIOLU 🇪🇸⌝\n`[ SEMIFINALES ]`\n⌞BNA 🇦🇷 + ECLIPSE 🇨🇱 + PAIN 🇨🇴⌝ 🆚 ⌞PARK JI SUNG 🇨🇱 + BENJIXO 🇦🇷 + SIX 🇦🇷⌝\n⌞PARK JI SUNG 🇨🇱⌝ 🆚 ⌞ECLIPSE 🇨🇱 + BNA 🇦🇷⌝\n⌞PAIN 🇨🇴⌝ 🆚 ⌞BENJIXO 🇦🇷 + SIX 🇦🇷⌝\n⌞UZI 🇨🇱 + SHISUI 🇨🇱 + MAKMA 🇻🇪⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + ERIAN 🇵🇦⌝\n⌞ZIGNOS⌝ 🆚 ⌞SHISUI 🇨🇱 + UZI 🇨🇱⌝\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + ERIAN 🇵🇦⌝\n`[ FINAL ]`\n⌞PARK JI SUNG 🇨🇱 + BENJIXO 🇦🇷 + SIX 🇦🇷 + PAIN 🇨🇴⌝ 🆚 ⌞ERIAN 🇵🇦 + YOUNG VLAD 🇨🇴 + SHISUI 🇨🇱⌝\n⌞ZIGNOS⌝ 🆚 ⌞BENJIXO 🇦🇷⌝\n⌞PAIN 🇨🇴⌝ 🆚 ⌞ERIAN 🇵🇦⌝\n⌞SHISUI 🇨🇱⌝ 🆚 ⌞SIX 🇦🇷⌝",
+   "ed": 1791333260099,
+   "texto": "`[ CUARTOS ]`\n⌞SOUL B 🇨🇱 + ECLIPSE 🇨🇱⌝ 🆚 ⌞BNA 🇦🇷 + PAIN 🇨🇴⌝\n⌞SHISUI 🇨🇱 + PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + UZI 🇨🇱⌝\n⌞PICHULITA MC 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞PARK JI SUNG 🇨🇱 + ALASKA 🇵🇪⌝ 🆚 ⌞BENJIXO 🇦🇷 + ALTER 🇨🇱⌝\n⌞ZIGNOS + ERIAN 🇵🇦⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + RIOLU 🇪🇸⌝\n`[ SEMIFINALES ]`\n⌞BNA 🇦🇷 + ECLIPSE 🇨🇱 + PAIN 🇨🇴⌝ 🆚 ⌞PARK JI SUNG 🇨🇱 + BENJIXO 🇦🇷 + SIX 🇦🇷⌝\n⌞PARK JI SUNG 🇨🇱⌝ 🆚 ⌞ECLIPSE 🇨🇱 + BNA 🇦🇷⌝\n⌞PAIN 🇨🇴⌝ 🆚 ⌞BENJIXO 🇦🇷 + SIX 🇦🇷⌝\n⌞UZI 🇨🇱 + SHISUI 🇨🇱 + MAKMA 🇻🇪⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + ERIAN 🇵🇦⌝\n⌞ZIGNOS⌝ 🆚 ⌞SHISUI 🇨🇱 + UZI 🇨🇱⌝\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞YOUNG VLAD 🇨🇴 + ERIAN 🇵🇦⌝\n`[ FINAL ]`\n⌞PARK JI SUNG 🇨🇱 + BENJIXO 🇦🇷 + SIX 🇦🇷 + PAIN 🇨🇴⌝ 🆚 ⌞ERIAN 🇵🇦 + YOUNG VLAD 🇨🇴 + SHISUI 🇨🇱⌝\n⌞ZIGNOS⌝ 🆚 ⌞BENJIXO 🇦🇷⌝\n⌞PAIN 🇨🇴⌝ 🆚 ⌞ERIAN 🇵🇦⌝\n⌞SHISUI 🇨🇱⌝ 🆚 ⌞SIX 🇦🇷⌝\n⌞YOUNG VLAD 🇨🇴⌝ 🆚 ⌞SIX 🇦🇷⌝\n⌞PARK JI SUNG 🇨🇱⌝ 🆚 ⌞YOUNG VLAD 🇨🇴⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -2642,8 +2662,28 @@
       "SHISUI 🇨🇱",
       "SIX 🇦🇷"
      ],
+     "SIX 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YOUNG VLAD 🇨🇴",
+      "SIX 🇦🇷"
+     ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG 🇨🇱",
+      "YOUNG VLAD 🇨🇴"
+     ],
+     "PARK JI SUNG 🇨🇱",
+     "veredicto",
      []
     ]
    ]

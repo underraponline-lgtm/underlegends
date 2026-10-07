@@ -44,6 +44,11 @@
      0,
      16
     ],
+    "ALTER 🇨🇱": [
+     1,
+     0,
+     8
+    ],
     "ANTORCHA": [
      1,
      0,
@@ -84,6 +89,11 @@
      0,
      16
     ],
+    "BNA": [
+     1,
+     0,
+     4
+    ],
     "BTRX": [
      1,
      1,
@@ -92,7 +102,7 @@
     "Benjixo": [
      1,
      1,
-     4
+     1
     ],
     "Bludi🇨🇴": [
      0,
@@ -124,6 +134,11 @@
      0,
      16
     ],
+    "Cronox": [
+     1,
+     0,
+     16
+    ],
     "DSM-5 🇲🇽": [
      1,
      0,
@@ -149,6 +164,11 @@
      0,
      16
     ],
+    "Eclipsito": [
+     1,
+     0,
+     4
+    ],
     "Efimero": [
      1,
      0,
@@ -158,6 +178,11 @@
      0,
      0,
      8
+    ],
+    "Erian": [
+     1,
+     0,
+     2
     ],
     "Ezias🥈✒️🧢🐍": [
      1,
@@ -214,6 +239,11 @@
      0,
      8
     ],
+    "LKS 🇨🇱": [
+     1,
+     0,
+     16
+    ],
     "Liam🇺🇾": [
      1,
      0,
@@ -247,12 +277,17 @@
     "Makmah": [
      1,
      0,
-     16
+     4
     ],
     "Malva": [
      1,
      0,
      16
+    ],
+    "Miniboy": [
+     1,
+     0,
+     4
     ],
     "Molusco": [
      1,
@@ -354,6 +389,11 @@
      0,
      8
     ],
+    "Riolu": [
+     1,
+     0,
+     8
+    ],
     "Risa": [
      1,
      0,
@@ -397,12 +437,12 @@
     "Six": [
      1,
      0,
-     8
+     1
     ],
     "Snow": [
      1,
      3,
-     2
+     1
     ],
     "Soneto": [
      1,
@@ -412,7 +452,7 @@
     "Soulb": [
      1,
      0,
-     16
+     8
     ],
     "Tam": [
      1,
@@ -444,6 +484,11 @@
      0,
      4
     ],
+    "Valdoza": [
+     1,
+     0,
+     16
+    ],
     "Vandu": [
      1,
      3,
@@ -452,6 +497,11 @@
     "Xclusivo": [
      0,
      2,
+     2
+    ],
+    "YOUNG VLAD 🇨🇴": [
+     1,
+     0,
      2
     ],
     "Zaik": [
@@ -494,6 +544,7 @@
     ".SosaATR": 300,
     "1200": 300,
     "ALESS": 300,
+    "ALTER 🇨🇱": 300,
     "ANTORCHA": 300,
     "ARDEAN": 300,
     "Abyssus": 300,
@@ -502,19 +553,23 @@
     "Andy": 300,
     "Ariaxer": 300,
     "Assuan": 300,
+    "BNA": 300,
     "BTRX": 300,
-    "Benjixo": 300,
+    "Benjixo": 1300,
     "Carlosss": 1600,
     "Ckl": 300,
     "Colesito": 300,
     "CrisZJ": 1600,
     "Crk": 300,
+    "Cronox": 300,
     "DSM-5 🇲🇽": 300,
     "Delux": 300,
     "Deuxs": 300,
     "Drexx": 300,
     "Dyzz": 300,
+    "Eclipsito": 300,
     "Efimero": 300,
+    "Erian": 1300,
     "Ezias🥈✒️🧢🐍": 300,
     "ISAIAS": 300,
     "Iguana": 300,
@@ -524,6 +579,7 @@
     "Keider": 300,
     "Korey": 300,
     "Krish": 300,
+    "LKS 🇨🇱": 300,
     "Liam🇺🇾": 300,
     "Lord Viruzz": 300,
     "Lvel": 300,
@@ -531,6 +587,7 @@
     "Majiztral": 300,
     "Makmah": 300,
     "Malva": 300,
+    "Miniboy": 300,
     "Molusco": 300,
     "N1k": 300,
     "NC": 300,
@@ -549,6 +606,7 @@
     "Provenza": 300,
     "RT 🇲🇽": 1300,
     "Reyes": 300,
+    "Riolu": 300,
     "Risa": 300,
     "Rodas": 300,
     "Rosmel 🇻🇪": 300,
@@ -557,15 +615,17 @@
     "Saz": 300,
     "Shisui": 2900,
     "Sin Limites": 300,
-    "Six": 300,
+    "Six": 1300,
     "Snow": 2900,
     "Soneto": 300,
     "Soulb": 300,
     "Tam": 300,
     "Tusicario": 300,
     "TøKīØ🦠🧠": 2900,
+    "Valdoza": 300,
     "Vandu": 2900,
     "Xclusivo": 1000,
+    "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
     "Zignos": 300,
@@ -579,6 +639,7 @@
   ".SosaATR": 300,
   "1200": 300,
   "ALESS": 300,
+  "ALTER 🇨🇱": 300,
   "ANTORCHA": 300,
   "ARDEAN": 300,
   "Abyssus": 300,
@@ -587,19 +648,23 @@
   "Andy": 300,
   "Ariaxer": 300,
   "Assuan": 300,
+  "BNA": 300,
   "BTRX": 300,
-  "Benjixo": 300,
+  "Benjixo": 1300,
   "Carlosss": 1600,
   "Ckl": 300,
   "Colesito": 300,
   "CrisZJ": 1600,
   "Crk": 300,
+  "Cronox": 300,
   "DSM-5 🇲🇽": 300,
   "Delux": 300,
   "Deuxs": 300,
   "Drexx": 300,
   "Dyzz": 300,
+  "Eclipsito": 300,
   "Efimero": 300,
+  "Erian": 1300,
   "Ezias🥈✒️🧢🐍": 300,
   "ISAIAS": 300,
   "Iguana": 300,
@@ -609,6 +674,7 @@
   "Keider": 300,
   "Korey": 300,
   "Krish": 300,
+  "LKS 🇨🇱": 300,
   "Liam🇺🇾": 300,
   "Lord Viruzz": 300,
   "Lvel": 300,
@@ -616,6 +682,7 @@
   "Majiztral": 300,
   "Makmah": 300,
   "Malva": 300,
+  "Miniboy": 300,
   "Molusco": 300,
   "N1k": 300,
   "NC": 300,
@@ -634,6 +701,7 @@
   "Provenza": 300,
   "RT 🇲🇽": 1300,
   "Reyes": 300,
+  "Riolu": 300,
   "Risa": 300,
   "Rodas": 300,
   "Rosmel 🇻🇪": 300,
@@ -642,15 +710,17 @@
   "Saz": 300,
   "Shisui": 2900,
   "Sin Limites": 300,
-  "Six": 300,
+  "Six": 1300,
   "Snow": 2900,
   "Soneto": 300,
   "Soulb": 300,
   "Tam": 300,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 2900,
+  "Valdoza": 300,
   "Vandu": 2900,
   "Xclusivo": 1000,
+  "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,
   "Zignos": 300,

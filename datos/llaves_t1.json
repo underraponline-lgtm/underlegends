@@ -13454,5 +13454,282 @@
     1250
    ]
   ]
+ },
+ "414": {
+  "dia": "2026-10-06",
+  "escala": "16+",
+  "fecha": "06/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557189749913948211"
+  ],
+  "n": 414,
+  "nombre": "DESGRACIAS EN TOKYO VOL 26 PANDILLAS",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Eclipsito",
+       "Valdoza"
+      ],
+      "Eclipsito",
+      "triple (3 bandas, pasan 2); Revivido: Eclipse🇨🇱"
+     ],
+     [
+      [
+       "Miniboy",
+       "NC"
+      ],
+      "Miniboy",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "ALTER 🇨🇱",
+       "dxg"
+      ],
+      "ALTER 🇨🇱",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Riolu",
+       "Cronox"
+      ],
+      "Riolu",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Snow",
+       "LKS 🇨🇱"
+      ],
+      "Snow",
+      "triple (3 bandas, pasan 2); Revivido: Pain🇯🇵"
+     ],
+     [
+      [
+       "PichulaMc",
+       ".SosaATR"
+      ],
+      "PichulaMc",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Oasis",
+       "Nhp"
+      ],
+      "Oasis",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Erian",
+       "RT 🇲🇽",
+       "Zignos"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow, BNA",
+       "Soulb, Eclipsito"
+      ],
+      "Snow, BNA",
+      ""
+     ],
+     [
+      [
+       "Makmah, Miniboy",
+       "PichulaMc, Shisui"
+      ],
+      "Makmah, Miniboy",
+      "Revivido: SHISUI 🇨🇱"
+     ],
+     [
+      [
+       "Oasis, Six",
+       "Benjixo, ALTER 🇨🇱"
+      ],
+      "Oasis, Six",
+      "Revivido: BENJIXO 🇦🇷"
+     ],
+     [
+      [
+       "Erian",
+       "Riolu, YOUNG VLAD 🇨🇴"
+      ],
+      "Erian",
+      "Revivido: YOUNG VLAD 🇨🇴"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Benjixo, Six",
+       "BNA, Eclipsito, Snow"
+      ],
+      "Oasis, Benjixo, Six",
+      ""
+     ],
+     [
+      [
+       "YOUNG VLAD 🇨🇴, Erian",
+       "Miniboy, Shisui, Makmah"
+      ],
+      "YOUNG VLAD 🇨🇴, Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Benjixo, Six, Snow",
+       "Erian, YOUNG VLAD 🇨🇴, Shisui"
+      ],
+      "Oasis, Benjixo, Six, Snow",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Snow",
+    "Campeón",
+    3000
+   ],
+   [
+    "Benjixo",
+    "Campeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Shisui",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Six",
+    "Campeón",
+    2500
+   ],
+   [
+    "YOUNG VLAD 🇨🇴",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Eclipsito",
+    "Semifinal",
+    2125
+   ],
+   [
+    "BNA",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    1750
+   ],
+   [
+    ".SosaATR",
+    "Octavos",
+    1250
+   ],
+   [
+    "ALTER 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "LKS 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nhp",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "RT 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Riolu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ],
+   [
+    "dxg",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
