@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.56",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T17:54:00-04:00",
+   "titulo": "Cuando un evento se corta",
+   "items": [
+    "⏸ **Si el organizador avisa que el evento sigue otro día, la página lo dice**: «En pausa · sigue otro día», con sus palabras, en vez de «en vivo». Y **si se atrasa**, «Se atrasó» con la hora nueva cuando la dice.",
+    "❌ **Si avisa que se cancela en un mensaje aparte**, cuenta como cancelado igual que si borrara el anuncio, también en la campana.",
+    "🏆 **Más formatos de llave**: `(< A >) ⚔️ (< B >)` y otros marcos y «vs» parecidos (【】, 《》, 🗡️, «contra»…). Y una llave titulada «LLAVES» toma el nombre de verdad del evento."
+   ]
+  },
+  {
    "version": "2.55",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T16:05:00-04:00",
