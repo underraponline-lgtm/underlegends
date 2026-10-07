@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.54",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T15:45:00-04:00",
+   "titulo": "Buscá por cualquier nombre",
+   "items": [
+    "🔎 **El buscador encuentra a cada rapero por cualquiera de sus akas**: buscás el otro nombre y aparece su perfil, con el aka con que lo encontraste abajo.",
+    "🏆 **La llave en vivo aparece aunque el anuncio escriba el nombre distinto** («WETTTSIIIDEE» y «WETTSIDDEE» son el mismo evento).",
+    "🏷️ **Las crews, actualizadas.**"
+   ]
+  },
+  {
    "version": "2.53",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T15:20:00-04:00",

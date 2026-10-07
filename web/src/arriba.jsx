@@ -26,14 +26,40 @@ function Marca({ liga }) {
 // primero. Vive arriba en la computadora y en el menú ☰ en el celular, donde arriba no entra
 const TIPOS = { rapero: 0, servidor: 1, pais: 2, crew: 3 };
 const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', crew: 'crew' };
+// 🔑 Y POR SUS AKAS (Dlx, 07/10/2026: «cuando buscan a alguien con cualquiera de sus akas, que le aparezca el mismo
+// rapero… si alguien busca vice, que aparezca el nombre principal»). El payload ya trae `alias` —{aka: clave}, los de
+// quien tiene perfil; lo arma `subir_web._alias()` y lo usa la llave en vivo—, con la clave como `respaldo._norm()`:
+// minúsculas, sin tildes y sólo letras y números. Un aka cuenta medio punto menos que el nombre: si alguien SE LLAMA así,
+// sale primero
+const normAka = (s) => norm(s).replace(/[^\p{L}\p{N}]/gu, '');
 export function Buscar({ liga, onIr }) {
   const [q, setQ] = useState('');
+  const akas = useMemo(() => {
+    const m = {};
+    Object.entries(liga.d.alias || {}).forEach(([a, k]) => { (m[k] = m[k] || []).push(a); });
+    return m;
+  }, [liga]);
   const res = useMemo(() => {
     const t = norm(q).trim();
     if (!t) return [];
     const nota = (...xs) => Math.min(...xs.map((x) => { const n = norm(x).trim(); return n === t ? 0 : (n.startsWith(t) ? 1 : (n.includes(t) ? 2 : 9)); }));
+    const ta = normAka(q);
+    const porAka = (k) => {
+      let mejor = [9, ''];
+      if (ta.length >= 2) {
+        (akas[k] || []).forEach((a) => {
+          const x = a === ta ? 0.5 : a.startsWith(ta) ? 1.5 : a.includes(ta) ? 2.5 : 9;
+          if (x < mejor[0]) mejor = [x, a];
+        });
+      }
+      return mejor;
+    };
     const todo = [];
-    (liga.d.tabla || []).forEach((f) => todo.push({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k, x: nota(f.n) }));
+    (liga.d.tabla || []).forEach((f) => {
+      const x = nota(f.n), [xa, a] = porAka(f.k);
+      todo.push({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k,
+        x: Math.min(x, xa), aka: xa < x ? a : '' });
+    });
     Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || siglaDe(s.sv)), sub: siglaDe(s.sv), href: '#/sv/' + siglaDe(s.sv), logo: liga.logo(s.sv),
       x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
@@ -66,7 +92,7 @@ export function Buscar({ liga, onIr }) {
       </label>
       {res.length ? (
         <ul className="busca-res">
-          {res.map((r) => <li key={r.id}><a href={r.href} onClick={ir}>{icono(r)}<span>{r.n}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
+          {res.map((r) => <li key={r.id}><a href={r.href} onClick={ir}>{icono(r)}<span>{r.n}{r.aka ? <small className="br-aka">aka «{r.aka}»</small> : null}</span><small className="br-t">{ETIQUETA_TIPO[r.tipo]}{r.sub && r.sub !== r.n ? ' · ' + r.sub : ''}</small></a></li>)}
         </ul>
       ) : null}
     </div>
