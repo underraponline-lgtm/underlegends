@@ -1472,6 +1472,16 @@
    "b": "Majiztral 🇨🇴",
    "ganador": "Majiztral 🇨🇴",
    "votos": "1–0"
+  },
+  "1557532816718430320": {
+   "id": "1557532816718430320",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791415161066,
+   "a": "G8",
+   "b": "PRODIGY",
+   "ganador": "PRODIGY",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -3359,6 +3369,38 @@
       "JUPITER 🇲🇽"
      ],
      "ZA 🇮🇨",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1557527923865555057": {
+   "id": "1557527923865555057",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791413994519,
+   "ed": 1791415215833,
+   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "SNOW",
+      "CRONOX XCLUSIVO",
+      "ERIZO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "G8",
+      "PRODIGY"
+     ],
+     "PRODIGY",
      "veredicto",
      []
     ]
