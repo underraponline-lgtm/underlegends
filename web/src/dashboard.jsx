@@ -413,6 +413,33 @@ function AjVivo({ liga, aj, hacer, ocup, chat }) {
   );
 }
 
+// ── 📣 el aviso de cada evento en el canal de la Liga (`bot/aviso_evento.py`) ──────────────────────────────────────
+// Dlx, 07/10/2026: «para la liga global, pero añade nivel de intensidad». Los mismos tres que `NIVELES_AVISO` de
+// bot/avisos.js y `NIVELES` de aviso_evento.py: si se cambia uno, se cambian los tres
+const NIVELES_AVISO = {
+  poco: ['Lo justo', 'el evento, el campeón y cuántos jugaron'],
+  normal: ['Normal', 'además el podio con sus puntos y la tarjeta del campeón'],
+  todo: ['Todo', 'además quién subió en el ranking, quién debutó, las insignias, los rangos y la sorpresa'],
+};
+function AjAvisos({ aj, hacer, ocup }) {
+  const v = NIVELES_AVISO[aj.avisos_nivel] ? aj.avisos_nivel : 'normal';
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>El aviso de cada evento</h3><span className="db-est ok">{NIVELES_AVISO[v][0]}</span></div>
+      <p className="db-tx">Cuando el ciclo carga un evento, el bot lo cuenta en el canal de la Liga Global. Después, sin volver a sonar, le suma lo que cambió y la tarjeta nueva del campeón. Cuánto dice: <b>{NIVELES_AVISO[v][0].toLowerCase()}</b>, {NIVELES_AVISO[v][1]}.</p>
+      <div className="db-mult">
+        <label className="db-sv">
+          <span><b>Cuánto dice</b></span>
+          <select value={v} disabled={ocup} aria-label="Cuánto dice el aviso de cada evento"
+            onChange={(e) => hacer('avisos_nivel', e.target.value, 'Guardado: vale desde el próximo evento.')}>
+            {Object.keys(NIVELES_AVISO).map((k) => <option key={k} value={k}>{NIVELES_AVISO[k][0]}</option>)}
+          </select>
+        </label>
+      </div>
+    </div>
+  );
+}
+
 function Ajustes({ liga, aj, onAj, chat }) {
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
@@ -431,6 +458,7 @@ function Ajustes({ liga, aj, onAj, chat }) {
         <AjMult liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
+        <AjAvisos aj={aj} hacer={hacer} ocup={ocup} />
       </div>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
     </>

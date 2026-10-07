@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.52",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T14:30:00-04:00",
+   "titulo": "Cada evento, contado en Discord",
+   "items": [
+    "📣 **Cuando se carga un evento, el bot lo cuenta en el canal de la Liga Global**: el campeón, el podio con sus puntos y la tarjeta del campeón. Unos minutos después le suma lo que cambió —quién subió en el ranking, quién debutó, las insignias y la sorpresa de la noche— sin volver a sonar.",
+    "🎟️ **En el menú, el Pase se llama Pase rapero.**"
+   ]
+  },
+  {
    "version": "2.51",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T14:15:00-04:00",

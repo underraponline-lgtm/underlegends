@@ -8,7 +8,7 @@ import { useRacha } from './racha.js';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
-  ['Tarjetas', '#/tarjetas'], ['Pase', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
+  ['Tarjetas', '#/tarjetas'], ['Pase rapero', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx)
 

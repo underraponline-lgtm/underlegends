@@ -1911,7 +1911,16 @@ export const DUENO = '739338101603696681';
 //                     que la página ya pide al abrir y cada pocos minutos: no suma ningún pedido
 //   en_vivo           {SV: bool}: el bot en el chat de cada servidor durante un evento (llega con esa función)
 //   en_vivo_nivel     {SV: poco|normal|todo}: cuánto habla ahí (`NIVELES_CHAT`); gana sobre el que eligió su admin
+//   avisos_nivel      poco|normal|todo: cuánto dice el aviso de cada evento en el canal de la Liga (`NIVELES_AVISO`,
+//                     lo lee el ciclo: `bot/aviso_evento.py`). Sin elegir, «normal»
 export const FACTORES = [0.5, 1, 1.5, 2, 3, 5];
+// 📣 EL AVISO DE CADA EVENTO (Dlx, 07/10/2026: «para la liga global, pero añade nivel de intensidad»). Los mismos tres
+// que `NIVELES` de bot/aviso_evento.py: si se cambia uno, se cambia en los dos
+export const NIVELES_AVISO = {
+  poco: ['Lo justo', 'El evento, el campeón y cuántos jugaron'],
+  normal: ['Normal', 'Además el podio con sus puntos y la tarjeta del campeón'],
+  todo: ['Todo', 'Además quién subió en el ranking, quién debutó, las insignias, los rangos y la sorpresa'],
+};
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'multiplicadores') {
@@ -1943,6 +1952,10 @@ export function ajusteValido(cual, valor) {
       out[k] = v;
     }
     return out;
+  }
+  if (cual === 'avisos_nivel') {
+    if (valor === null) return null;
+    return Object.prototype.hasOwnProperty.call(NIVELES_AVISO, valor) ? valor : undefined;
   }
   if (cual === 'en_vivo_nivel') {
     if (!valor || typeof valor !== 'object') return undefined;

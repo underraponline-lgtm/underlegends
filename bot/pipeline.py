@@ -1171,6 +1171,14 @@ def _lo_barato(correr):
     if correr:
         paso('2c', 'la web')
         corre(['bot/subir_web.py', '--aplicar'], callado=False)
+        # ── 2c2 · el aviso de cada evento, al día ─────────────────────────
+        # 🔑 Dlx, 07/10/2026 («dale, me gusta», «añade nivel de intensidad»): el aviso sale al cargar el evento, cuando
+        # el ranking todavía no se rehízo; acá, después del ranking, las insignias y Publicaciones (2c), se le suma lo
+        # que cambió, y la tarjeta nueva del campeón cuando el ciclo la redibuja. Se EDITA: no vuelve a sonar. Nunca
+        # frena el ciclo. Ver `bot/aviso_evento.py`.
+        paso('2c2', 'el aviso de cada evento, al día')
+        if not corre(['bot/aviso_evento.py', '--al-dia', '--aplicar'], callado=False):
+            print('      ⚠️ no pude poner al día los avisos: se reintenta en la próxima')
 
         # 🔴 Y EL SITIO EN SI, QUE HASTA HOY NO SE DESPLEGABA SOLO.
         # Cloudflare Pages está conectado al repo **privado**, así que

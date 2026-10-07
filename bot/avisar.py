@@ -60,7 +60,7 @@ def _token():
     return ''
 
 
-def mandar(titulo, lineas, color=AZUL, canal=None, editar=None):
+def mandar(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
     """Un embed al canal. `True` si salio. **Nunca levanta.**
 
     ⚠️ EMBED Y NO TEXTO PELADO porque el titulo se lee de un vistazo en
@@ -72,13 +72,15 @@ def mandar(titulo, lineas, color=AZUL, canal=None, editar=None):
     evento que se completa actualiza su aviso sin volver a sonar.
     Devuelve el id del mensaje cuando manda uno nuevo, `True` cuando
     edito, y `False` si no salio — ver `_salio()`.
+
+    Con `embed=` manda ese embed tal cual (el aviso de cada evento, que arma `bot/aviso_evento.py`).
     """
     try:
         import requests
         t = _token()
         if not t:
             return False
-        cuerpo = '\n'.join(str(l) for l in lineas if str(l).strip())
+        cuerpo = '\n'.join(str(l) for l in (lineas or ()) if str(l).strip())
         # ⚠️ Discord corta la descripcion en 4096. Se recorta acá y se
         # dice que se recorto: un embed que Discord rechaza no se manda,
         # y un aviso que no se manda es peor que uno incompleto.
@@ -86,9 +88,11 @@ def mandar(titulo, lineas, color=AZUL, canal=None, editar=None):
             cuerpo = cuerpo[:3960] + '\n… (recortado)'
         base = 'https://discord.com/api/v10/channels/%s/messages' % (canal or CANAL)
         cab = {'Authorization': 'Bot ' + t, 'Content-Type': 'application/json'}
-        datos = json.dumps({'embeds': [{'title': titulo[:256],
-                                        'description': cuerpo,
-                                        'color': color}]})
+        datos = json.dumps({'embeds': [embed if embed else {'title': str(titulo or '')[:256],
+                                                            'description': cuerpo,
+                                                            'color': color}],
+                            # ⚠️ sin menciones: un nombre en el aviso no le tiene que sonar a nadie
+                            'allowed_mentions': {'parse': []}})
         if editar:
             r = requests.patch('%s/%s' % (base, editar), headers=cab,
                                data=datos, timeout=20)
@@ -155,7 +159,50 @@ def _avisados():
             for k, v in d.items()}
 
 
+def _guardar(ya):
+    try:
+        os.makedirs(os.path.dirname(YA), exist_ok=True)
+        with io.open(YA, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(ya, f, ensure_ascii=False, indent=1, sort_keys=True)
+    except OSError:
+        pass
+
+
 def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
+    """El aviso de un evento, para la Liga (`bot/aviso_evento.py`. Dlx, 07/10/2026: «dale, me gusta», «para la liga
+    global, pero añade nivel de intensidad»).
+
+    🔑 UNO NUEVO SALE CON EL FORMATO NUEVO; LOS DE ANTES SIGUEN COMO ESTABAN (`_evento_viejo()`). El ciclo reprocesa
+    todo lo que está en `Entrada` en cada corrida: si los viejos se pasaran al formato nuevo serían decenas de
+    ediciones de golpe, y sin su «antes» —el puesto de cada uno al cargarse— no tendrían nada nuevo que decir.
+    """
+    num = str(ev.get('num', '?'))
+    ya = _avisados()
+    antes = ya.get(num)
+    if antes and antes.get('v') != 2:
+        return _evento_viejo(ev, n_res, n_duelos, dudas, equipos)
+    import aviso_evento as AE
+    reg = AE.registro(ev)
+    if antes:
+        # lo de ESTA corrida (la llave se va completando), con el «antes» y la hora de la primera vez
+        for k in ('t', 'antes', 'ev_antes', 'sello', 'msg', 'firma', 'al_dia'):
+            if k in antes:
+                reg[k] = antes[k]
+    e = AE.armar(reg, AE.nivel())
+    f = AE.firma(e)
+    if antes and antes.get('firma') == f:
+        return False
+    r = mandar(None, None, embed=e, editar=(antes or {}).get('msg'))
+    if _salio(r):
+        # ⚠️ SE ANOTA SOLO SI SALIO, como siempre
+        reg['firma'] = f
+        reg['msg'] = r if isinstance(r, str) else (antes or {}).get('msg')
+        ya[num] = reg
+        _guardar(ya)
+    return _salio(r)
+
+
+def _evento_viejo(ev, n_res, n_duelos, dudas=(), equipos=0):
     """«detecté la llave X del servidor Y». Lo que Dlx pidió.
 
     `ev` es un plan de `sheet/procesar_entrada.py`: trae `num`, `nombre`,
@@ -330,8 +377,10 @@ def _self_check():
         # dejar el aviso congelado en lo que se sabia a las 3 AM.
         visto = {}
 
-        def _falso(titulo, lineas, color=AZUL, canal=None, editar=None):
+        def _falso(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
             visto['editar'] = editar
+            visto['embed'] = embed
+            visto['n'] = visto.get('n', 0) + 1
             return True if editar else 'msg-nuevo'
 
         real, globals()['mandar'] = mandar, _falso
@@ -354,6 +403,15 @@ def _self_check():
             mal += not ok
             print('   %s una llave nueva manda uno nuevo y guarda su id'
                   % ('ok' if ok else '🔴'))
+            # 🔑 y la nueva sale con el embed nuevo (bot/aviso_evento.py), y repetida no se manda de nuevo
+            ok = bool(visto.get('embed')) and guardado.get('v') == 2
+            mal += not ok
+            print('   %s la nueva sale con el embed nuevo y queda marcada v2' % ('ok' if ok else '🔴'))
+            visto.clear()
+            r2 = evento(ev2, 5, 2)
+            ok = r2 is False and not visto.get('n')
+            mal += not ok
+            print('   %s la misma llave otra vez no se vuelve a mandar' % ('ok' if ok else '🔴'))
         finally:
             globals()['mandar'] = real
     finally:
