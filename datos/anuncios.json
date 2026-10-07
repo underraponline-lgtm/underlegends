@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-07T21:26:19+00:00",
+ "cuando": "2026-10-07T21:54:43+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1306,46 +1306,6 @@
    "horario": "en 15",
    "fecha": "3",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "FLEIVA FREE",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1541620851307454574",
-   "cuando": "2026-08-25T01:30:52",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@nachonc_",
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "MULTIVERSE(1-4)",
-   "horario": "23 HS 🇦🇷",
-   "fecha": "2",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "FLEIVA FREE",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1541188007569260745",
-   "cuando": "2026-08-23T20:50:54",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@nachonc_",
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "1v1",
-   "horario": "en 30",
-   "fecha": "1",
-   "premios": "pts para el ranking+pts para la tabla+aura",
    "categoria_id": "863207988739309600"
   },
   {
@@ -2871,6 +2831,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1557507471080423455",
+   "cuando": "2026-10-07T21:38:38"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "riolu",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1557504565643845715",
+   "cuando": "2026-10-07T21:27:05"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",

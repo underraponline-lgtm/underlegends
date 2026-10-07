@@ -32,10 +32,22 @@
     "nivel": "A",
     "base": 12000,
     "o": 1,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 12000,
+    "caza": {
+     "n": 423,
+     "evento": "DESGRACIAS EN BELLAS ARTES VOL1",
+     "sv": "FFA",
+     "t": "2026-10-07T19:45:45Z",
+     "por": [
+      {
+       "n": "PRAISERIZA",
+       "cobra": 12250
+      }
+     ]
+    }
    },
    {
     "n": "Velatz",

@@ -14706,5 +14706,295 @@
     0
    ]
   ]
+ },
+ "423": {
+  "dia": "2026-10-07",
+  "escala": "16+",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557479066389577782"
+  ],
+  "n": 423,
+  "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+  "participantes": 27,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Majiztral",
+       "ARDEAN"
+      ],
+      "Oasis",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "RT",
+       "NC"
+      ],
+      "PRAISERIZA",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Liberia",
+       "Malva",
+       "Cronox"
+      ],
+      "Liberia",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Vandu",
+       "Ruvick 🇨🇴",
+       "Erian"
+      ],
+      "Vandu",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "1200",
+       "Dyzz"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "Chop",
+       "SINTEXT🇦🇷"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MATICERNA",
+       "Agus",
+       "MC Bot 🇻🇪"
+      ],
+      "MATICERNA",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Panchok",
+       "Enkil 🇦🇷",
+       "Efimero",
+       "Ger9🇨🇱"
+      ],
+      "Panchok",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Makmah"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Snow"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "MATICERNA"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Vandu"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Oasis"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Panchok"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Liberia"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Panchok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MATICERNA",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "ARDEAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Enkil 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ger9🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "MC Bot 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "Malva",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "RT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvick 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

@@ -507,5 +507,392 @@
    ]
   ],
   "v": 2
+ },
+ "423": {
+  "antes": {
+   "1200": [
+    213,
+    158,
+    true
+   ],
+   "ARDEAN": [
+    37,
+    52,
+    false
+   ],
+   "Agus": [
+    32,
+    45,
+    false
+   ],
+   "Chop": [
+    223,
+    178,
+    true
+   ],
+   "Cronox": [
+    44,
+    60,
+    false
+   ],
+   "Dyzz": [
+    176,
+    98,
+    true
+   ],
+   "Efimero": [
+    177,
+    100,
+    true
+   ],
+   "Erian": [
+    5,
+    7,
+    false
+   ],
+   "Liberia": [
+    7,
+    9,
+    false
+   ],
+   "MATICERNA": [
+    173,
+    94,
+    true
+   ],
+   "Majiztral": [
+    16,
+    20,
+    false
+   ],
+   "Makmah": [
+    8,
+    10,
+    false
+   ],
+   "Malva": [
+    215,
+    163,
+    true
+   ],
+   "NC": [
+    151,
+    24,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    146,
+    3,
+    true
+   ],
+   "Panchok": [
+    3,
+    5,
+    false
+   ],
+   "RT": [
+    34,
+    48,
+    false
+   ],
+   "Snow": [
+    1,
+    1,
+    false
+   ],
+   "Vandu": [
+    10,
+    13,
+    false
+   ]
+  },
+  "duelos": [
+   [
+    "Oasis",
+    "Majiztral",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "ARDEAN",
+    "Oasis"
+   ],
+   [
+    "PRAISERIZA",
+    "RT",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "NC",
+    "PRAISERIZA"
+   ],
+   [
+    "Liberia",
+    "Malva",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Cronox",
+    "Liberia"
+   ],
+   [
+    "Vandu",
+    "Ruvick 🇨🇴",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Erian",
+    "Vandu"
+   ],
+   [
+    "Makmah",
+    "1200",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Dyzz",
+    "Makmah"
+   ],
+   [
+    "Snow",
+    "Chop",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "SINTEXT🇦🇷",
+    "Snow"
+   ],
+   [
+    "MATICERNA",
+    "Agus",
+    "MATICERNA"
+   ],
+   [
+    "MATICERNA",
+    "MC Bot 🇻🇪",
+    "MATICERNA"
+   ],
+   [
+    "Panchok",
+    "Enkil 🇦🇷",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Efimero",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Ger9🇨🇱",
+    "Panchok"
+   ],
+   [
+    "Oasis",
+    "Makmah",
+    "Oasis"
+   ],
+   [
+    "PRAISERIZA",
+    "Snow",
+    "PRAISERIZA"
+   ],
+   [
+    "Liberia",
+    "MATICERNA",
+    "Liberia"
+   ],
+   [
+    "Panchok",
+    "Vandu",
+    "Panchok"
+   ],
+   [
+    "Liberia",
+    "Oasis",
+    "Liberia"
+   ],
+   [
+    "PRAISERIZA",
+    "Panchok",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Liberia",
+    "PRAISERIZA"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 3,
+   "ARDEAN": 8,
+   "Agus": 4,
+   "Chop": 3,
+   "Cronox": 9,
+   "Dyzz": 6,
+   "Efimero": 4,
+   "Erian": 17,
+   "Liberia": 6,
+   "MATICERNA": 3,
+   "Majiztral": 11,
+   "Makmah": 22,
+   "Malva": 3,
+   "NC": 17,
+   "Oasis": 18,
+   "PRAISERIZA": 8,
+   "Panchok": 7,
+   "RT": 6,
+   "Snow": 22,
+   "Vandu": 15
+  },
+  "fecha": "07/10",
+  "firma": "ac7d935949ecd6f5",
+  "msg": "1557511326450851895",
+  "nombre": "__ DESGRACIAS EN BELLAS ARTES VOL1 __",
+  "num": 423,
+  "participantes": 27,
+  "sello": {
+   "PRAISERIZA": "fcc79e496124:c2dd98b0f962"
+  },
+  "sv": "FFA",
+  "t": "2026-10-07T21:53:57Z",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Panchok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MATICERNA",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "ARDEAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "RT",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Malva",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvick 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "MC Bot 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Enkil 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ger9🇨🇱",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

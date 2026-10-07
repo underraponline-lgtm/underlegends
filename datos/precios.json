@@ -183,7 +183,19 @@
    "monto": 5000,
    "t": "2026-10-07T17:44:42Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PRAISERIZA",
+     5000
+    ]
+   ],
+   "ev": {
+    "n": 423,
+    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+    "sv": "FFA",
+    "t": "2026-10-07T19:45:45Z"
+   }
   },
   {
    "id": 13,
@@ -191,7 +203,19 @@
    "monto": 500,
    "t": "2026-10-07T17:44:49Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PRAISERIZA",
+     500
+    ]
+   ],
+   "ev": {
+    "n": 423,
+    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+    "sv": "FFA",
+    "t": "2026-10-07T19:45:45Z"
+   }
   },
   {
    "id": 14,
@@ -199,7 +223,19 @@
    "monto": 5000,
    "t": "2026-10-07T17:50:28Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PRAISERIZA",
+     5000
+    ]
+   ],
+   "ev": {
+    "n": 423,
+    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+    "sv": "FFA",
+    "t": "2026-10-07T19:45:45Z"
+   }
   },
   {
    "id": 15,
@@ -207,7 +243,19 @@
    "monto": 1000,
    "t": "2026-10-07T18:02:36Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PRAISERIZA",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 423,
+    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+    "sv": "FFA",
+    "t": "2026-10-07T19:45:45Z"
+   }
   },
   {
    "id": 16,
@@ -215,7 +263,19 @@
    "monto": 500,
    "t": "2026-10-07T18:02:36Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PRAISERIZA",
+     500
+    ]
+   ],
+   "ev": {
+    "n": 423,
+    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+    "sv": "FFA",
+    "t": "2026-10-07T19:45:45Z"
+   }
   },
   {
    "id": 17,
@@ -223,7 +283,19 @@
    "monto": 2500,
    "t": "2026-10-07T18:02:39Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PRAISERIZA",
+     2500
+    ]
+   ],
+   "ev": {
+    "n": 423,
+    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
+    "sv": "FFA",
+    "t": "2026-10-07T19:45:45Z"
+   }
   }
  ],
  "suma": {
@@ -234,6 +306,7 @@
   "PichulaMc": 1000,
   "SGB": 500,
   "Snow": 250,
-  "Velatz": 250
+  "Velatz": 250,
+  "PRAISERIZA": 14500
  }
 }

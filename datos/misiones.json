@@ -124,6 +124,11 @@
      7,
      1
     ],
+    "Chop": [
+     1,
+     0,
+     16
+    ],
     "Ckl": [
      1,
      0,
@@ -199,6 +204,11 @@
      0,
      16
     ],
+    "Enkil 🇦🇷": [
+     1,
+     0,
+     16
+    ],
     "Erian": [
      1,
      3,
@@ -213,6 +223,11 @@
      1,
      1,
      8
+    ],
+    "Ger9🇨🇱": [
+     1,
+     0,
+     16
     ],
     "ISAIAS": [
      1,
@@ -296,7 +311,7 @@
     ],
     "Liberia": [
      1,
-     4,
+     6,
      1
     ],
     "Lord Viruzz": [
@@ -313,6 +328,11 @@
      1,
      1,
      8
+    ],
+    "MC Bot 🇻🇪": [
+     1,
+     0,
+     16
     ],
     "MCO": [
      1,
@@ -406,12 +426,12 @@
     ],
     "Oasis": [
      1,
-     3,
+     4,
      1
     ],
     "PRAISERIZA": [
      1,
-     2,
+     5,
      1
     ],
     "PROMETHEUS BIB 🇨🇴": [
@@ -421,7 +441,7 @@
     ],
     "Panchok": [
      1,
-     5,
+     6,
      1
     ],
     "Paria": [
@@ -508,6 +528,16 @@
      1,
      0,
      8
+    ],
+    "Ruvick 🇨🇴": [
+     1,
+     0,
+     16
+    ],
+    "SINTEXT🇦🇷": [
+     1,
+     0,
+     16
     ],
     "Sami": [
      1,
@@ -704,6 +734,7 @@
     "Badterne": 300,
     "Benjixo": 1300,
     "Carlosss": 1600,
+    "Chop": 300,
     "Ckl": 300,
     "Colesito": 300,
     "CrisZJ": 1600,
@@ -717,9 +748,11 @@
     "Eclipsito": 300,
     "Efimero": 300,
     "EmiZor": 300,
+    "Enkil 🇦🇷": 300,
     "Erian": 2900,
     "Erik": 1300,
     "Ezias🥈✒️🧢🐍": 300,
+    "Ger9🇨🇱": 300,
     "ISAIAS": 300,
     "Iguana": 300,
     "JJ": 300,
@@ -738,6 +771,7 @@
     "Lord Viruzz": 300,
     "Lvel": 300,
     "MATICERNA": 300,
+    "MC Bot 🇻🇪": 300,
     "MCO": 300,
     "MHS": 300,
     "MTZ": 300,
@@ -755,7 +789,7 @@
     "OG": 300,
     "ONZASS": 300,
     "Oasis": 2900,
-    "PRAISERIZA": 1300,
+    "PRAISERIZA": 2900,
     "PROMETHEUS BIB 🇨🇴": 300,
     "Panchok": 2900,
     "Paria": 300,
@@ -774,6 +808,8 @@
     "Risa": 300,
     "Rodas": 300,
     "Rosmel 🇻🇪": 300,
+    "Ruvick 🇨🇴": 300,
+    "SINTEXT🇦🇷": 300,
     "Sami": 300,
     "Saz": 300,
     "Scot": 300,
@@ -826,6 +862,7 @@
   "Badterne": 300,
   "Benjixo": 1300,
   "Carlosss": 1600,
+  "Chop": 300,
   "Ckl": 300,
   "Colesito": 300,
   "CrisZJ": 1600,
@@ -839,9 +876,11 @@
   "Eclipsito": 300,
   "Efimero": 300,
   "EmiZor": 300,
+  "Enkil 🇦🇷": 300,
   "Erian": 2900,
   "Erik": 1300,
   "Ezias🥈✒️🧢🐍": 300,
+  "Ger9🇨🇱": 300,
   "ISAIAS": 300,
   "Iguana": 300,
   "JJ": 300,
@@ -860,6 +899,7 @@
   "Lord Viruzz": 300,
   "Lvel": 300,
   "MATICERNA": 300,
+  "MC Bot 🇻🇪": 300,
   "MCO": 300,
   "MHS": 300,
   "MTZ": 300,
@@ -877,7 +917,7 @@
   "OG": 300,
   "ONZASS": 300,
   "Oasis": 2900,
-  "PRAISERIZA": 1300,
+  "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
   "Panchok": 2900,
   "Paria": 300,
@@ -896,6 +936,8 @@
   "Risa": 300,
   "Rodas": 300,
   "Rosmel 🇻🇪": 300,
+  "Ruvick 🇨🇴": 300,
+  "SINTEXT🇦🇷": 300,
   "Sami": 300,
   "Saz": 300,
   "Scot": 300,
