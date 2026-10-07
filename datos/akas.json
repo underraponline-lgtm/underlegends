@@ -232,6 +232,8 @@
   "mathias": "Mathhias",
   "mailen": "Polosport",
   "xclusiva": "Xclusivo",
+  "xnoah": "Elbesaabuelas",
+  "emi": "EmiZor",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -262,7 +264,8 @@
   "shusui": "Velatz",
   "kude": "Mr.Kude",
   "nakamura": "Hassan",
-  "nhp": "Andres"
+  "nhp": "Andres",
+  "dsm5": "MTZ"
  },
  "pares": [
   [
@@ -1190,6 +1193,14 @@
    "Xclusivo"
   ],
   [
+   "XNOAH",
+   "Elbesaabuelas"
+  ],
+  [
+   "Emi",
+   "EmiZor"
+  ],
+  [
    "Nexus",
    "NXUZ"
   ],
@@ -1316,6 +1327,10 @@
   [
    "Nhp",
    "Andres"
+  ],
+  [
+   "DSM-5",
+   "MTZ"
   ]
  ],
  "no_confundir": [

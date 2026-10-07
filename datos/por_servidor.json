@@ -1256,7 +1256,7 @@
     "racha": "0/0"
    }
   },
-  "Elbesaabuelas 🇦🇷": {
+  "Elbesaabuelas": {
    "DDF": {
     "duelos": "0/1",
     "ev": 1,
@@ -1903,24 +1903,13 @@
   },
   "JOSHU": {
    "FFA": {
-    "duelos": "",
+    "duelos": "3/3",
     "ev": 1,
     "oro": 1,
-    "ovr": 52,
+    "ovr": 61,
     "pod": 1,
     "pts": 15000,
     "racha": "1/1"
-   }
-  },
-  "JOSHU 🇨🇺": {
-   "FFA": {
-    "duelos": "3/3",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 49,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   },
   "Jayden": {
@@ -2487,7 +2476,7 @@
     "racha": "0/0"
    }
   },
-  "Liam🇺🇾": {
+  "Liam": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -3165,7 +3154,7 @@
     "racha": "1/1"
    }
   },
-  "NYCO🇦🇷": {
+  "NYCO": {
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -3718,7 +3707,7 @@
     "racha": "0/0"
    }
   },
-  "RT 🇲🇽": {
+  "RT": {
    "DDF": {
     "duelos": "2/4",
     "ev": 2,

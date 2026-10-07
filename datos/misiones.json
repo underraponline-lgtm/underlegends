@@ -179,7 +179,7 @@
      0,
      8
     ],
-    "Elbesaabuelas 🇦🇷": [
+    "Elbesaabuelas": [
      0,
      0,
      8
@@ -211,13 +211,8 @@
     ],
     "JOSHU": [
      1,
-     0,
-     1
-    ],
-    "JOSHU 🇨🇺": [
-     0,
      3,
-     99
+     1
     ],
     "Julix🇧🇴": [
      0,
@@ -249,7 +244,7 @@
      0,
      16
     ],
-    "Liam🇺🇾": [
+    "Liam": [
      1,
      0,
      8
@@ -314,7 +309,7 @@
      0,
      8
     ],
-    "NYCO🇦🇷": [
+    "NYCO": [
      1,
      0,
      8
@@ -384,7 +379,7 @@
      0,
      4
     ],
-    "RT 🇲🇽": [
+    "RT": [
      1,
      2,
      2
@@ -584,13 +579,12 @@
     "ISAIAS": 300,
     "Iguana": 300,
     "JJ": 300,
-    "JOSHU": 1300,
-    "JOSHU 🇨🇺": 600,
+    "JOSHU": 2900,
     "Keider": 300,
     "Korey": 300,
     "Krish": 300,
     "LKS 🇨🇱": 300,
-    "Liam🇺🇾": 300,
+    "Liam": 300,
     "Lord Viruzz": 300,
     "Lvel": 300,
     "MCO": 300,
@@ -601,7 +595,7 @@
     "Molusco": 300,
     "N1k": 300,
     "NC": 300,
-    "NYCO🇦🇷": 300,
+    "NYCO": 300,
     "Neo": 300,
     "Noone": 300,
     "OG": 300,
@@ -613,7 +607,7 @@
     "Player": 300,
     "Polosport": 1300,
     "Provenza": 300,
-    "RT 🇲🇽": 1300,
+    "RT": 1300,
     "Reyes": 300,
     "Riolu": 300,
     "Risa": 300,
@@ -677,13 +671,12 @@
   "ISAIAS": 300,
   "Iguana": 300,
   "JJ": 300,
-  "JOSHU": 1300,
-  "JOSHU 🇨🇺": 600,
+  "JOSHU": 2900,
   "Keider": 300,
   "Korey": 300,
   "Krish": 300,
   "LKS 🇨🇱": 300,
-  "Liam🇺🇾": 300,
+  "Liam": 300,
   "Lord Viruzz": 300,
   "Lvel": 300,
   "MCO": 300,
@@ -694,7 +687,7 @@
   "Molusco": 300,
   "N1k": 300,
   "NC": 300,
-  "NYCO🇦🇷": 300,
+  "NYCO": 300,
   "Neo": 300,
   "Noone": 300,
   "OG": 300,
@@ -706,7 +699,7 @@
   "Player": 300,
   "Polosport": 1300,
   "Provenza": 300,
-  "RT 🇲🇽": 1300,
+  "RT": 1300,
   "Reyes": 300,
   "Riolu": 300,
   "Risa": 300,

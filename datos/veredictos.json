@@ -1142,6 +1142,46 @@
    "b": "YOUNG VLAD 🇨🇴",
    "ganador": "PARK JI SUNG 🇨🇱",
    "votos": "1–0"
+  },
+  "1557224903663558738": {
+   "id": "1557224903663558738",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791341748873,
+   "a": "SIX ERIK",
+   "b": "PRODIGY",
+   "ganador": "SIX ERIK",
+   "votos": "1–0"
+  },
+  "1557227677889462293": {
+   "id": "1557227677889462293",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791342410300,
+   "a": "ZIGNOS WEI ERIAN",
+   "b": "JAWA",
+   "ganador": "ZIGNOS WEI ERIAN",
+   "votos": "1–0"
+  },
+  "1557228254312661023": {
+   "id": "1557228254312661023",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791342547730,
+   "a": "SOSA",
+   "b": "PAIN TAM",
+   "ganador": "PAIN TAM",
+   "votos": "1–0"
+  },
+  "1557231866875220009": {
+   "id": "1557231866875220009",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791343409032,
+   "a": "PAIN TAM",
+   "b": "ZIGNOS ERIAN WEI",
+   "ganador": "PAIN TAM",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -2694,8 +2734,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791338928016,
-   "ed": 1791341487392,
-   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝",
+   "ed": 1791343416539,
+   "texto": "`[ OCTAVOS ]`\n⌞JUASMIO PROSU SAMI KYSS⌝ 🆚 ⌞LORD LEONAR T⌝ 🆚 ⌞PRAISERIZAS⌝ 🆚 ⌞SNOW⌝\n⌞PARIA⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞SETESFIFI⌝ 🆚 ⌞ARIAXER⌝ 🆚 ⌞SONETO⌝\n⌞SIX ERIK⌝ 🆚 ⌞CRONOX SOUL B⌝ 🆚 ⌞JAWA⌝\n⌞MUSICDUM⌝ 🆚 ⌞PRODIGY⌝ 🆚 ⌞WEI ZIGNOS ERIAN⌝\n`[ CUARTOS ]`\n⌞CRONOX⌝ 🆚 ⌞PARIA SIN REMEDIO⌝\n⌞SIX ERIK⌝ 🆚 ⌞PRODIGY⌝\n⌞ZIGNOS WEI ERIAN⌝ 🆚 ⌞JAWA⌝\n⌞SOSA⌝ 🆚 ⌞PAIN TAM⌝\n`[ SEMIFINALES ]`\n⌞PAIN TAM⌝ 🆚 ⌞ZIGNOS ERIAN WEI⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -2718,8 +2758,8 @@
       "ARIAXER",
       "SONETO"
      ],
-     null,
-     "no aparece nadie después",
+     "SOSA",
+     "ronda siguiente",
      []
     ],
     [
@@ -2730,8 +2770,11 @@
       "JAWA"
      ],
      null,
-     "no aparece nadie después",
-     []
+     "pasan 2, no hay un ganador",
+     [
+      "SIX ERIK",
+      "JAWA"
+     ]
     ],
     [
      "OCTAVOS",
@@ -2740,8 +2783,8 @@
       "PRODIGY",
       "WEI ZIGNOS ERIAN"
      ],
-     null,
-     "no aparece nadie después",
+     "PRODIGY",
+     "ronda siguiente",
      []
     ],
     [
@@ -2751,7 +2794,47 @@
       "PARIA SIN REMEDIO"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SIX ERIK",
+      "PRODIGY"
+     ],
+     "SIX ERIK",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ZIGNOS WEI ERIAN",
+      "JAWA"
+     ],
+     "ZIGNOS WEI ERIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SOSA",
+      "PAIN TAM"
+     ],
+     "PAIN TAM",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PAIN TAM",
+      "ZIGNOS ERIAN WEI"
+     ],
+     "PAIN TAM",
+     "veredicto",
      []
     ]
    ]
