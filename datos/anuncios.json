@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-07T20:54:19+00:00",
+ "cuando": "2026-10-07T21:26:19+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2871,6 +2871,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Chuche 🇨🇱",
+   "quien": "chucheee",
+   "discord_id": "617949355848237057",
+   "msg_id": "1557502879470985337",
+   "cuando": "2026-10-07T21:20:23"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1557501252336615597",
+   "cuando": "2026-10-07T21:13:55"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Nc🇵🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1557498941438689332",
+   "cuando": "2026-10-07T21:04:44"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
