@@ -849,15 +849,18 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         # formatos de Dlx (23/09/2026, §4.1) decide lo que el comentario
         # de arriba dejaba abierto: el walk-in cobra menos «porque se
         # salto camino», no su rival. Sin nombre se porta como antes.
-        mq = re.search(r'walk-in\s+(\d+)\s*:\s*([^;|]+)',
-                       str(b.get('notas') or ''), re.I)
-        if mq:
-            rondas = min(int(mq.group(1)), 3)
-            pct = mods['walkin'].get(rondas, 0.0)
-            d = res.get(resolver(mq.group(2).strip()))
-            if d:
-                d['puntos'] = int(d['puntos'] * pct)
-                d['notas'] += 'Walk-in %d ' % rondas
+        # ⚠️ TODOS los de la nota, no el primero: en la DEM UZBEKISTAN (FFA, 06/10/2026) Provenza y Saz entraron
+        # los dos de reemplazo a los mismos cuartos —«Walk-in 1: PROVENZAL; Walk-in 1: saz»— y Saz cobraba entero
+        mqs = list(re.finditer(r'walk-in\s+(\d+)\s*:\s*([^;|]+)',
+                               str(b.get('notas') or ''), re.I))
+        if mqs:
+            for mq in mqs:
+                rondas = min(int(mq.group(1)), 3)
+                pct = mods['walkin'].get(rondas, 0.0)
+                d = res.get(resolver(mq.group(2).strip()))
+                if d:
+                    d['puntos'] = int(d['puntos'] * pct)
+                    d['notas'] += 'Walk-in %d ' % rondas
             continue
         m = re.search(r'walk-in\s+(\d+)', n)
         if m:
@@ -1228,6 +1231,15 @@ def _self_check():
     con_c, _ = _pp([dict(b, notas='cobra: Geo') if b['ganador'] == 'Geo' else dict(b) for b in _oct])
     ok('ganó su octavo y no siguió: sin la decisión, nada',
        'Geo' not in sin_c and sin_c.get('Rich', {}).get('puntos') == 1250, '%s' % sin_c.get('Geo'))
+    # dos reemplazos que se cruzan en la misma batalla: los dos son walk-in (DEM UZBEKISTAN, 07/10/2026)
+    _dos_w, _ = _pp([{'ronda': 'cuartos', 'ladoA': 'Pro', 'ladoB': 'Saz', 'ganador': 'Pro',
+                      'notas': 'Walk-in 1: Pro; Walk-in 1: Saz'},
+                     {'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Pro', 'ganador': 'Ana'}])
+    _un_w, _ = _pp([{'ronda': 'cuartos', 'ladoA': 'Pro', 'ladoB': 'Saz', 'ganador': 'Pro'},
+                    {'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Pro', 'ganador': 'Ana'}])
+    ok('dos walk-ins en la misma batalla: cobran menos los dos, no sólo el primero',
+       all(_dos_w.get(x, {}).get('puntos', 0) < _un_w.get(x, {}).get('puntos', 0) for x in ('Pro', 'Saz')),
+       '%s' % {x: (_dos_w.get(x, {}).get('puntos'), _un_w.get(x, {}).get('puntos')) for x in ('Pro', 'Saz')})
     ok('… y con «cobra: Geo», el octavo, como quien lo perdió',
        con_c.get('Geo', {}).get('puntos') == 1250 and con_c.get('Geo', {}).get('posicion') == ETIQUETA['octavos']
        and con_c.get('Ana', {}).get('puntos') == 10000,

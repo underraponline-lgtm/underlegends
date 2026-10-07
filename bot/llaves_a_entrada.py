@@ -345,6 +345,24 @@ def ids_de(hallazgo):
 #: las personas de cada nombre que no dependen del servidor (la Lista y los AKAs), y las de cada servidor
 _PERS = [None]
 _PERS_SV = {}
+_CORTOS = [None]
+
+
+def _cortos_a_mano():
+    """Los nombres de 1 y 2 letras que Dlx dijo de quién son (`pares` de `akas_a_mano.json`): ésos sí se reconocen.
+
+    «za» es Provenza (Dlx, 04/10/2026, «2. A»), y `personas()` lo descartaba por corto: en la DEM UZBEKISTAN (FFA,
+    06/10) Provenza ganó sus cuartos como «za» y salía «Walk-in 2» en semis, como si no hubiera jugado. La regla de
+    los nombres cortos es contra adivinar; un par escrito por Dlx no es una adivinanza.
+    """
+    if _CORTOS[0] is None:
+        try:
+            pares = json.load(io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'),
+                                      encoding='utf-8')).get('pares') or []
+        except Exception:                                # noqa: BLE001
+            pares = []
+        _CORTOS[0] = {E.norm(n) for p in pares for n in p if 0 < len(E.norm(n)) < 3}
+    return _CORTOS[0]
 
 
 def _personas_base():
@@ -436,7 +454,8 @@ def personas(sv='', menciones=None):
     ⚠️ UN NOMBRE DE DOS PERSONAS DE LA LISTA NO ES DE NINGUNA: devuelve vacío y la llave se lee como antes. Una
     persona de la Lista sin cuenta (`n:`) y la cuenta que se anotó con ese nombre (`id:`) sí van juntas: es la
     misma regla que `decidir._se_anoto_como()`.
-    ⚠️ LOS NOMBRES DE 1 Y 2 LETRAS NO: «7» y «27» existen, y se parecen a demasiado.
+    ⚠️ LOS NOMBRES DE 1 Y 2 LETRAS NO: «7» y «27» existen, y se parecen a demasiado. Salvo los que Dlx dijo de
+    quién son (`_cortos_a_mano()`: «za» es Provenza).
     """
     idx, lista = _personas_base()
     insc = _inscripciones_solas(sv or '')
@@ -448,7 +467,7 @@ def personas(sv='', menciones=None):
 
     def quien(nombre):
         k = E.norm(nombre)
-        if len(k) < 3:
+        if len(k) < 3 and k not in _cortos_a_mano():
             return frozenset()
         ps = set(idx.get(k) or ()) | set(insc.get(k) or ()) | set(men.get(k) or ())
         if len(ps & lista) > 1:
@@ -2728,10 +2747,15 @@ def _self_check():
         _fver = filas_de(hallazgo_de_veredicto(_V, _hv0), nombre='Dos Generaciones', fecha='01/10')[0] if _V else []
         # la de veredictos que empieza en la FINAL (a mitad del evento) no reemplaza a nada
         _V2 = llave_de_veredictos_para(_gv, E.llaves_de_veredictos(_rv[5:]))
+        # 🔑 un nombre de dos letras vale sólo si Dlx dijo de quién es: «za» es Provenza (`_cortos_a_mano()`)
+        _PERS[0] = ({'za': {'id:5'}, 'provenzal': {'id:5'}, 'zz': {'id:6'}}, {'id:5', 'id:6'})
+        _CORTOS[0] = {'za'}
+        _za = (personas(_sv_h)('za'), personas(_sv_h)('zz'))
         _PERS[0] = ({}, set())
         fpj0 = marcar_walkins(filas_de(dict(h, texto=pj))[0], [pj], quien=personas(_sv_h))
     finally:
         _PERS[0] = _pers_antes
+        _CORTOS[0] = None
         _PERS_SV.clear()
         _PERS_SV.update(_sv_antes)
     # las llaves de broma: A publicó en la pre-temporada, B una que se cargó
@@ -2952,6 +2976,8 @@ def _self_check():
          _ox and _ox[0][2] is None),
         ('… y un nombre de dos personas de la Lista no es de ninguna',
          _sol == frozenset()),
+        ('un nombre de dos letras no es de nadie, salvo que Dlx haya dicho de quién: «za» es Provenza',
+         _za == (frozenset({'id:5'}), frozenset())),
         ('la final sin campeón la decide #veredictos: hay campeón y la fila lo dice (POESÍA CRUDA)',
          tiene_campeon(fpc) and any(f['ronda'] == 'final' and E.norm(f['ganador']) == 'pichulamc'
                                     and 'veredictos' in f['notas'] for f in fpc)
@@ -3289,10 +3315,10 @@ def main():
                 _ids[did] += [n for n in ns if n not in _ids[did]]
         # ⚠️ LAS MARCAS DE LLAVE NO SON PARA UN 5 VIDAS: `sin_repetir()` se
         # comería las revanchas, y las marcas tocan las filas en su lugar
+        _quien = personas(codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0],
+                          {d: n for h in g['llaves'] for d, n in (h.get('menciones') or {}).items()})
         limpias = [] if any(h.get('vidas') for h in g['llaves']) else marcar_revividos(
-            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids,
-                           quien=personas(codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0],
-                                          {d: n for h in g['llaves'] for d, n in (h.get('menciones') or {}).items()})),
+            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids, quien=_quien),
             _txt)
         # 🔑 EL EQUIPO CON UN SOLO NOMBRE (TEAM VENECIA), AL FINAL: el revivido
         # y el walk-in se miran con la llave tal cual la escribieron. Ver
@@ -3411,7 +3437,7 @@ def main():
         # no lo decía quedaba «incompleta» aunque Dlx hubiera dicho quién ganó
         # (el torneo de grupos de la ACADEMIA del 03/10: *«2. Abyssus»*).
         n_leidas = len(limpias)   # antes de sumar lo decidido: ver `repes`
-        base, quedan = (limpias[0] if limpias else {}), []
+        base, quedan, _dec0 = (limpias[0] if limpias else {}), [], decididas
         for d in d_grupo:
             if len(d) < 5 or not ligas:
                 quedan.append(d)
@@ -3447,6 +3473,16 @@ def main():
         # corrió sobre las leídas; aplicarlo otra vez no cambia lo que ya estaba): «Yo mc» en FFA es Cronox (07/10/2026)
         if decididas and ligas:
             limpias = otro_en_servidor(limpias, ligas[0])
+        # 🔑 Y LOS WALK-INS, OTRA VEZ, CON LAS FILAS DE ✅ DECIDIR (07/10/2026). Se marcaban antes de sumarlas, así que
+        # quien jugó una batalla decidida no constaba en esa ronda: en la DEM UZBEKISTAN (FFA, 06/10) Provenza ganó sus
+        # cuartos como «za» —«pasó Za», Dlx— y salía «Walk-in 2» en semis; y Saz, que entró de reemplazo a esos
+        # cuartos, no salía walk-in. Sólo en las llaves con algo decidido en esta corrida: las demás no cambian.
+        if decididas > _dec0 and limpias and not any(h.get('vidas') for h in g['llaves']):
+            for f in limpias:
+                if 'Walk-in' in str(f.get('notas') or ''):
+                    f['notas'] = '; '.join(x for x in re.split(r'\s*;\s*', f['notas'])
+                                           if x and not re.match(r'Walk-in \d+:', x))
+            limpias = marcar_walkins(limpias, _txt, _ids, quien=_quien)
         # 🔑 LA FINAL QUE LA LLAVE NO ESCRIBIÓ, si Dlx dijo cuál fue (`final` en la decisión del evento): COMPE DE
         # UDDI (22/09) puso en la final sólo «ERIAN» —el ganador— y nunca la batalla (Dlx: *«3. Sí»*, ganó Erian).
         fd = DEC.final_decidida(nom, ligas[0], fec) if ligas else None
