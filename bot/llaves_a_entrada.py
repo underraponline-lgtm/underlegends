@@ -2408,6 +2408,69 @@ def pausada(grupo, sv, estados=None):
                for e in (estados_vigia() if estados is None else estados))
 
 
+#: los eventos ya cargados (`datos/llaves_t1.json`), para `ya_cargada()`
+_CARGADAS = [None]
+#: «es el mismo evento»: casi todas sus batallas, y desde tres
+YA_PARTE, YA_MIN = 0.8, 3
+
+
+def ya_cargada(nom, sv, fec, filas, cargadas=None):
+    """El número del evento YA CARGADO, con otro nombre, que tiene casi todas las batallas de éste; o None.
+
+    🔴 EL FFA WORLD CUP DEL 27/09 CONTÓ DOS VECES (#366 y #409), y lo destapó Molusco (Dlx, 07/10/2026: *«me dijo
+    que me fije si algo está mal»*). La llave vino en dos mensajes —filtros y octavos; media hora después, de cuartos a
+    la final— y se cargó entera como #366. El 06/10 una corrida leyó el segundo sin el primero, sin título, y lo cargó
+    como «(sin titulo)»: OTRO evento, porque la identidad es (nombre, servidor, fecha). Oasis, Snow, Eze, Molusco,
+    Maticerna, SOL, dxg y yinn cobraron dos veces, y sus duelos de cuartos para arriba también.
+
+    Es la forma de la PRITTY FREE (#417) y del #420/#421: un evento ya cargado vuelve con otro nombre. Por el nombre no
+    se ve; por las BATALLAS sí —las mismas, del mismo servidor y del mismo día o el siguiente (la final pasada la
+    medianoche)—, con los nombres como los cuenta el ranking (`rankings.canon()`: FULLY es Oasis). ⚠️ Desde `YA_MIN`
+    batallas: dos cruces iguales pueden ser casualidad, y la gente de FFA se cruza seguido.
+    """
+    if cargadas is None:
+        if _CARGADAS[0] is None:
+            try:
+                d = json.load(io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8'))
+            except (OSError, ValueError):
+                d = {}
+            _CARGADAS[0] = [x for x in (d.values() if isinstance(d, dict) else d) if isinstance(x, dict)]
+        cargadas = _CARGADAS[0]
+    try:
+        import rankings as RK
+        canon = RK.canon
+    except Exception:                                    # noqa: BLE001
+        def canon(x):
+            return x
+
+    def k(x):
+        return E.norm(canon(str(x or '')))
+
+    def dia(f):
+        m = re.match(r'\s*(\d{1,2})/(\d{1,2})', str(f or ''))
+        try:
+            return datetime.date(2000, int(m.group(2)), int(m.group(1))) if m else None
+        except ValueError:
+            return None
+    mias = {frozenset((k(f.get('ladoA')), k(f.get('ladoB')))) for f in filas
+            if k(f.get('ladoA')) and k(f.get('ladoB')) and k(f.get('ladoA')) != k(f.get('ladoB'))}
+    d0 = dia(fec)
+    if len(mias) < YA_MIN or d0 is None:
+        return None
+    for ll in cargadas:
+        d1 = dia(ll.get('fecha'))
+        if ll.get('sv') != sv or d1 is None or abs((d1 - d0).days) > 1 or E.norm(ll.get('nombre')) == E.norm(nom):
+            continue
+        suyas = set()
+        for r in ll.get('rondas') or []:
+            for b in r.get('b') or []:
+                lados = [k(x) for x in (b[0] if b else []) if k(x)]
+                suyas |= {frozenset((a, c)) for i, a in enumerate(lados) for c in lados[i + 1:] if a != c}
+        if len(mias & suyas) >= YA_PARTE * len(mias):
+            return ll.get('n')
+    return None
+
+
 def tiene_campeon(filas):
     """`True` si alguna fila es la FINAL con ganador: se sabe quién ganó."""
     return any(str(f.get('ronda') or '').strip().lower() == 'final'
@@ -2880,6 +2943,21 @@ def _self_check():
                                  'notas': 'cobra: Sin límites 🇵🇪; cobra: Yo mc 🇨🇱; nadie siguió: ✅ Decidir'}],
                                'FFA', mapa={'FFA': {'yomc': 'Cronox'}})
     casos = [
+        ('la mitad de una llave ya cargada, con otro nombre, es la ya cargada (#409 = #366, FFA WORLD CUP); con dos '
+         'batallas, otro servidor u otra semana, no',
+         ya_cargada('(sin titulo)', 'FFA', '27/09', [{'ladoA': 'FULLY', 'ladoB': 'SOL'}, {'ladoA': 'Snow', 'ladoB': 'DXG'},
+                                                     {'ladoA': 'YINN', 'ladoB': 'MOLUSCO'}],
+                    [{'n': 366, 'sv': 'FFA', 'fecha': '27/09', 'nombre': 'FFA WORLD CUP',
+                      'rondas': [{'r': 'Cuartos', 'b': [[['Fully', 'SOL'], 'Fully', ''], [['Snow', 'dxg'], 'Snow', ''],
+                                                         [['Molusco', 'yinn'], 'Molusco', '']]}]}]) == 366
+         and ya_cargada('(sin titulo)', 'FFA', '27/09', [{'ladoA': 'Snow', 'ladoB': 'DXG'}, {'ladoA': 'YINN', 'ladoB': 'MOLUSCO'}],
+                        [{'n': 366, 'sv': 'FFA', 'fecha': '27/09', 'nombre': 'X',
+                          'rondas': [{'r': 'Cuartos', 'b': [[['Snow', 'dxg'], '', ''], [['Molusco', 'yinn'], '', '']]}]}]) is None
+         and ya_cargada('(sin titulo)', 'FFA', '05/10', [{'ladoA': 'FULLY', 'ladoB': 'SOL'}, {'ladoA': 'Snow', 'ladoB': 'DXG'},
+                                                         {'ladoA': 'YINN', 'ladoB': 'MOLUSCO'}],
+                        [{'n': 366, 'sv': 'FFA', 'fecha': '27/09', 'nombre': 'FFA WORLD CUP',
+                          'rondas': [{'r': 'Cuartos', 'b': [[['Fully', 'SOL'], '', ''], [['Snow', 'dxg'], '', ''],
+                                                             [['Molusco', 'yinn'], '', '']]}]}]) is None),
         ('una llave EN PAUSA —«seguimos mañana», avisado después de publicarla— espera; la de otro servidor o de antes, no',
          pausada({'llaves': [{'cuando': '2026-10-07T20:45:15+00:00', 'editado': '2026-10-07T21:16:34+00:00'}]}, 'SR',
                  [{'sv': 'SR', 'tipo': 'pausado', 'pub': 1791415920000}])
@@ -3258,6 +3336,7 @@ def main():
     _por_id = {str(a.get('msg_id') or ''): a for a in anuncios_l}
 
     todas, dudas, sabidas = [], [], collections.Counter()
+    ya_cargadas = []   # la que ya está en el ranking con otro nombre: ver `ya_cargada()`
     en_curso, incompletos, retenidos, descartados = [], [], [], []
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     de_veredictos = []                                # las llaves que se cargaron como se jugaron, de #veredictos
@@ -3569,6 +3648,11 @@ def main():
                                     ['%s: %s' % (d[1].lower(), d[2])
                                      for d in d_grupo]))
             continue
+        # 🔴 y la que ya está cargada con otro nombre no se suma otra vez (el FFA WORLD CUP, #366 y #409: ver `ya_cargada()`)
+        ya = ya_cargada(nom, ligas[0], fec, limpias) if ligas else None
+        if ya:
+            ya_cargadas.append((nom, ligas[0], fec, ya))
+            continue
         dudas += d_grupo
         repes += len(del_grupo) - n_leidas
         todas += limpias
@@ -3639,6 +3723,10 @@ def main():
               '-> NO se suma, va a Pendientes --' % QUIETA_H)
         for ev, sv_i, fec_i, _c in incompletos:
             print('     %-32s %s · %s' % (ev[:32], sv_i, fec_i))
+    if ya_cargadas:
+        print('\n   -- ya está cargada con otro nombre: las mismas batallas -> NO se suma otra vez --')
+        for ev, sv_i, fec_i, n_i in ya_cargadas:
+            print('     %-32s %s · %s  es el #%s' % (ev[:32], sv_i, fec_i, n_i))
     if descartados:
         print('\n   -- Dlx dijo que no cuentan (✅ Decidir) --')
         for ev, sv_i, fec_i in descartados:
