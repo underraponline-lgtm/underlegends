@@ -1005,6 +1005,18 @@ Lo que hay que saber acá:
 requests diarios. El número grande no molesta; el chiquito decide todo. Por
 eso el Worker **no lee el Sheet**: lee datos ya masticados en KV o D1.
 
+🧠 **LOS DATOS DE CADA PERSONA PARA `/card` (`p:<clave>`) VIVEN EN EL DURABLE
+OBJECT DESDE EL 06/10/2026**, no en KV (tabla `persona`). Eran casi todo el
+cupo de escrituras —unas 230 por corrida, porque los números del /versus se
+miden contra el pool y se mueven con cada evento— y el 06/10 a las 7:57 PM
+iban 909 de 1.000. Dlx lo había aprobado el 05/10 («3. Ok») y quedó a medias:
+se hizo lo de las lecturas y lo de «sólo los que jugaron», y la mudanza no.
+`bot/subir_datos.py` manda todas en un pedido (`subir_personas()`) y el objeto
+escribe sólo lo que cambió; el Worker las lee con `leerP()` y, si el objeto no
+contesta, de KV, donde quedan las de antes. `d:`, `dn:`, `dx:` y `meta` siguen
+en KV: cambian poco. ⚠️ **Recién desplegado, el Worker viejo contesta unos
+segundos más**: un pedido nuevo puede dar 404 y hay que repetirlo.
+
 ⚠️ **Playwright no corre en un Worker**, así que el render de las cartas no
 puede vivir ahí. O se pregeneran los 414 PNG (138 × 3) o el render vive en
 otro lado.

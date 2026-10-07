@@ -364,6 +364,21 @@ async function quienEs(i, env) {
 //
 // ⚠️ `d:` PRIMERO: es la de casi todos, así que la segunda lectura la paga
 // sólo quien no está verificado.
+// 🧠 LOS DATOS DE UNA PERSONA (`p:<clave>`), DEL DURABLE OBJECT DESDE EL 06/10/2026: en KV se comían el cupo de
+// escrituras (unas 230 por corrida contra 1.000 por día). Si el objeto no la tiene o no contesta, de KV, donde quedan
+// las de antes: mejor un dato de hace un rato que un /card que no anda. Esperar al objeto no gasta CPU
+async function leerP(env, clave) {
+  if (!clave) return null;
+  if (env.AVISOS) {
+    try {
+      const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch(
+        'https://avisos/persona?k=' + encodeURIComponent('p:' + clave));
+      if (r.ok) return await r.text();
+    } catch (e) { /* sin objeto: KV */ }
+  }
+  return env.KV.get('p:' + clave);
+}
+
 async function claveCarta(env, id) {
   if (!id) return null;
   // 🔑 y la cuenta EXTRA de alguien (`dx:`, `subir_datos.cuentas_extra()`, 04/10/2026): abre sus cartas y nada más
@@ -1382,7 +1397,7 @@ async function cuentaDiscord(req, env) {
   try {
     const clave = await env.KV.get('d:' + u.id);
     if (clave) {
-      const p = JSON.parse((await env.KV.get('p:' + clave)) || '{}');
+      const p = JSON.parse((await leerP(env, clave)) || '{}');
       rapero = p.n || '';
       yo = { clave, cs: p.cs || [], bl: p.bl || [], ev: p.ev || 0, sv: p.sv || '', cc: p.cc || '',
         // en qué servidores está: «tus próximos eventos» de Mi cuenta son los de ahí
@@ -2552,7 +2567,8 @@ export async function borrarMisDatos(env, id) {
       hecho.r2 = borrar.length;
     } catch (e) { hecho.r2 = 0; }
   }
-  hecho.avisos = await olvidarAvisos(env, id);
+  // 🧠 y sus datos de /card, que viven en el objeto desde el 06/10/2026: le pasa la clave para que los borre
+  hecho.avisos = await olvidarAvisos(env, id, clave);
   return hecho;
 }
 
@@ -2683,7 +2699,7 @@ const COMANDOS = {
                        'Operativo.');
         }
       }
-      const crudo = await env.KV.get('p:' + clave);
+      const crudo = await leerP(env, clave);
       if (!crudo) {
         return aviso('No hay nada en KV bajo `p:' + clave + '`.\n' +
                      '⚠️ La clave se normaliza igual acá que en el pipeline ' +
@@ -2917,7 +2933,7 @@ const COMANDOS = {
       }
     }
     const [crudo, meta] = await Promise.all([
-      env.KV.get('p:' + quien), env.KV.get('meta'),
+      leerP(env, quien), env.KV.get('meta'),
     ]);
     if (!crudo) return aviso(`No tengo cartas de ${comoDije}.`);
     const g = JSON.parse(crudo);
@@ -3040,7 +3056,7 @@ const COMANDOS = {
     }
 
     const [ca, cb, meta] = await Promise.all([
-      env.KV.get('p:' + mio.clave), env.KV.get('p:' + rival.clave), env.KV.get('meta'),
+      leerP(env, mio.clave), leerP(env, rival.clave), env.KV.get('meta'),
     ]);
     if (!ca) return aviso(`No tengo cartas de ${mio.como}.`);
     if (!cb) return aviso(`No tengo cartas de ${rival.como}.`);
@@ -3122,7 +3138,7 @@ const COMANDOS = {
     let numero = 0;
     try {
       const clave = await env.KV.get('d:' + uid);
-      const p = clave ? JSON.parse((await env.KV.get('p:' + clave)) || '{}') : {};
+      const p = clave ? JSON.parse((await leerP(env, clave)) || '{}') : {};
       numero = (p.vs && p.vs.c && p.vs.c.n) || 0;
     } catch (e) { numero = 0; }
     if (!numero) {
@@ -3900,7 +3916,7 @@ export default {
         const esperar2 = frenado(idDe(i), 'click');
         if (esperar2) return espera(esperar2);
         const [ca, cb, meta] = await Promise.all([
-          env.KV.get('p:' + quien), env.KV.get('p:' + rival), env.KV.get('meta'),
+          leerP(env, quien), leerP(env, rival), env.KV.get('meta'),
         ]);
         if (!ca || !cb) return aviso('Ese versus ya no está disponible.');
         const ga = JSON.parse(ca), gb = JSON.parse(cb);
@@ -3940,7 +3956,7 @@ export default {
       // ⚠️ El sello también acá: si el botón devolviera la URL sin `?v=`,
       // cambiar de carta mostraría la versión cacheada vieja.
       const [crudo, meta] = await Promise.all([
-        env.KV.get('p:' + quien), env.KV.get('meta'),
+        leerP(env, quien), env.KV.get('meta'),
       ]);
       if (!crudo) return aviso('Esa carta ya no está disponible.');
       const g = JSON.parse(crudo);

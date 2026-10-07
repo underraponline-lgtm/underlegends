@@ -1480,6 +1480,9 @@ const RUTAS = {
   '/avisos/pase': 'POST', '/avisos/pase-vivo': 'POST', '/avisos/pases': 'GET', '/avisos/pase-ciclo': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
+  // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
+  // ciclo, con `claveCiclo()`. Ver `personasCiclo()`
+  '/avisos/personas-ciclo': 'POST', '/avisos/personas-leer': 'GET',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -2718,6 +2721,18 @@ export async function rutaAvisos(req, env, ruta) {
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     return elObjeto(env).fetch('https://avisos/pase-niveles');
   }
+  // 🧠 LOS DATOS DE CADA PERSONA, DEL CICLO (`bot/subir_datos.py`) AL OBJETO, y de vuelta para sus auditorías: con su
+  // clave. Son ~1.000 personas en un pedido (unos 400 KB), así que no entran por el reenvío de abajo
+  if (ruta === '/avisos/personas-ciclo' || ruta === '/avisos/personas-leer') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/personas-leer') return elObjeto(env).fetch('https://avisos/personas-leer' + new URL(req.url).search);
+    const crudo = await req.text();
+    if (crudo.length > 4000000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/personas-ciclo', {
+      method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🎟️ LO DEL PASE QUE SABE EL CICLO (`bot/pase.py`): con su clave, y tal cual al objeto, que lo valida. Trae la lista
   // de miembros: por eso no entra por el reenvío de abajo (4 KB) ni por KV (1.000 escrituras por día)
   if (ruta === '/avisos/pase-ciclo') {
@@ -2842,11 +2857,11 @@ export async function marcarDisparo(env, cual, v) {
  * ⚠️ SE SUELTA EL VÍNCULO, NO LA SUSCRIPCIÓN: los avisos de eventos de ese
  * dispositivo los eligió el dispositivo, y se apagan desde la campana.
  */
-export async function olvidarAvisos(env, quien) {
+export async function olvidarAvisos(env, quien, clave) {
   if (!env.AVISOS || !/^[0-9]{5,25}$/.test(String(quien || ''))) return null;
   try {
     const r = await elObjeto(env).fetch('https://avisos/olvidar', {
-      method: 'POST', body: JSON.stringify({ quien: String(quien) }),
+      method: 'POST', body: JSON.stringify({ quien: String(quien), clave: clave ? String(clave) : '' }),
       headers: { 'content-type': 'application/json' },
     });
     return r.ok ? (await r.json()).soltados : null;
@@ -3104,6 +3119,11 @@ export class Avisos {
         'ref TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, que, ref)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_hito (quien TEXT NOT NULL, temp TEXT NOT NULL, ' +
         'nivel INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, nivel))');
+      // 🧠 LOS DATOS DE CADA PERSONA PARA /card (`p:<clave>`), ACÁ DESDE EL 06/10/2026 Y NO EN KV. Eran casi todo
+      // su cupo —unas 230 escrituras por corrida, porque los números del /versus se miden contra el pool y se mueven
+      // con cada evento—, y KV da 1.000 por día: el 06/10 a las 7:57 PM iba en 909. Acá son filas, de 100.000 por día.
+      // Las escribe el ciclo (`personasCiclo()`, desde `bot/subir_datos.py`) y las lee el Worker (`leerP()`)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS persona (k TEXT PRIMARY KEY, v TEXT NOT NULL, t INTEGER NOT NULL) WITHOUT ROWID');
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
       // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
       // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
@@ -3193,6 +3213,14 @@ export class Avisos {
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
+      // 🧠 una persona, para el Worker (`leerP()`): el valor tal cual, o 404. No está en `RUTAS_AVISOS`: de afuera no
+      // se llega, sólo por el binding
+      if (ruta === '/persona') {
+        const v = this.persona(new URL(req.url).searchParams.get('k') || '');
+        return v === null ? new Response('', { status: 404 }) : new Response(v, { headers: { 'content-type': 'application/json' } });
+      }
+      // 🧠 varias, para el ciclo y sus auditorías (`bot/verificar.py`), con la clave del ciclo: `{k: v}`
+      if (ruta === '/personas-leer') return json(this.personasLeer(new URL(req.url).searchParams.getAll('k')));
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
@@ -3223,6 +3251,11 @@ export class Avisos {
         return json(this.paseDe(String(d.quien)));
       }
       if (ruta === '/pase-vivo') return json(this.paseVivo(d));
+      // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
+      if (ruta === '/personas-ciclo') {
+        const v = this.personasCiclo(d);
+        return json(v, v.error ? 400 : 200);
+      }
       // ⚠️ lo que no se pudo tomar es un 400, no un 200 con `error`: el ciclo decía «✅ igual que antes» sobre un Pase
       // rechazado (revisión del 05/10/2026)
       if (ruta === '/pase-ciclo') {
@@ -3927,7 +3960,7 @@ export class Avisos {
     if (r && /^[0-9]{5,25}$/.test(String(r.quien || '')) && await this.perfilDe(String(r.quien), ahora) === a) return String(r.quien);
     let n = nombre || '';
     if (!n) {
-      try { n = String((JSON.parse((await this.env.KV.get('p:' + a)) || '{}') || {}).n || ''); } catch (e) { n = ''; }
+      try { n = String((JSON.parse(this.persona('p:' + a) || (await this.env.KV.get('p:' + a)) || '{}') || {}).n || ''); } catch (e) { n = ''; }
     }
     const did = n ? (idx || {})[claveTurno(n)] : '';
     return did && await this.perfilDe(String(did), ahora) === a ? String(did) : '';
@@ -4730,6 +4763,9 @@ export class Avisos {
 
   async olvidar(d) {
     if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
+    // 🧠 y sus datos de /card (`persona`), que viven acá desde el 06/10/2026: los busca por su clave, que manda el
+    // Worker (`borrarMisDatos()`)
+    if (d.clave && typeof d.clave === 'string') this.sql.exec('DELETE FROM persona WHERE k = ?', 'p:' + d.clave.slice(0, 100));
     const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
     // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
     // ya se aplicó (un Elegido, un ×2) quedó en el ciclo y no cambia.
@@ -5086,7 +5122,7 @@ export class Avisos {
       if (!did) { sinCuenta++; continue; }
       let nombre = '';
       if (fs.length === 1 && claveValida(fs[0].de)) {
-        try { nombre = String((JSON.parse((await this.env.KV.get('p:' + fs[0].de)) || '{}') || {}).n || '').slice(0, 40); } catch (e) { nombre = ''; }
+        try { nombre = String((JSON.parse(this.persona('p:' + fs[0].de) || (await this.env.KV.get('p:' + fs[0].de)) || '{}') || {}).n || '').slice(0, 40); } catch (e) { nombre = ''; }
       }
       const { titulo, cuerpo } = avisoSeguidores(fs.length, nombre);
       // 🔔 a su bandeja, tenga o no la campana; con la cara de quien te sigue si es uno de la Liga. ⚠️ La clave es la de
@@ -5689,6 +5725,59 @@ export class Avisos {
       out[k] = [x.nivel.n, x.racha.actual];
     }
     return { t: Date.now(), n: out };
+  }
+
+  // ── 🧠 LOS DATOS DE CADA PERSONA PARA /card (06/10/2026) ─────────────────────────────────────────────────────────────
+  // Eran claves `p:<clave>` de KV y se gastaban su cupo; ahora son filas de `persona`. El ciclo manda todas en cada
+  // corrida y acá se escribe sólo lo que cambió; el Worker las lee de a una (`leerP()` en worker.js), y si el objeto
+  // no contesta, de KV, donde quedan las de antes.
+
+  /** El valor de una persona (`p:<clave>`), o `null` */
+  persona(k) {
+    if (!/^p:\S{1,100}$/.test(String(k || ''))) return null;
+    const r = this.sql.exec('SELECT v FROM persona WHERE k = ?', String(k)).toArray()[0];
+    return r ? r.v : null;
+  }
+
+  /** Varias a la vez, para el ciclo: `{k: v}` de las que están (hasta 200) */
+  personasLeer(ks) {
+    const out = {};
+    for (const k of (Array.isArray(ks) ? ks : []).slice(0, 200)) {
+      const v = this.persona(k);
+      if (v !== null) out[k] = v;
+    }
+    return { t: Date.now(), personas: out };
+  }
+
+  /**
+   * Lo que manda el ciclo: `{pares: [[k, v], …], completo}`. Escribe sólo lo que cambió (una fila igual no se toca),
+   * y con `completo` borra a quien ya no está —salvo que falte más de la mitad: eso no es gente que se fue, es el
+   * ciclo, el mismo freno que los niveles del Pase (`bot/pase.py`)—.
+   */
+  personasCiclo(d) {
+    if (!d || typeof d !== 'object' || !Array.isArray(d.pares)) return { error: 'faltan datos' };
+    const ahora = Date.now();
+    const vienen = new Map();
+    for (const x of d.pares) {
+      if (!Array.isArray(x) || typeof x[0] !== 'string' || typeof x[1] !== 'string') continue;
+      if (!/^p:\S{1,100}$/.test(x[0]) || x[1].length > 20000) continue;
+      vienen.set(x[0], x[1]);
+    }
+    const hay = this.sql.exec('SELECT COUNT(*) AS n FROM persona').toArray()[0].n;
+    if (d.completo && hay >= 20 && vienen.size < hay / 2) {
+      return { error: 'freno', hay, vienen: vienen.size };
+    }
+    let escritas = 0, borradas = 0;
+    for (const [k, v] of vienen) {
+      escritas += this.sql.exec('INSERT INTO persona (k, v, t) VALUES (?, ?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v, ' +
+        't = excluded.t WHERE persona.v <> excluded.v', k, v, ahora).rowsWritten || 0;
+    }
+    if (d.completo) {
+      for (const { k } of this.sql.exec('SELECT k FROM persona').toArray()) {
+        if (!vienen.has(k)) borradas += this.sql.exec('DELETE FROM persona WHERE k = ?', k).rowsWritten || 0;
+      }
+    }
+    return { ok: true, escritas, borradas, total: vienen.size };
   }
 
   // ── 🎟️ EL PASE DE RAPERO (05/10/2026; con XP desde el 06/10) ───────────────────────────────────────────────────────

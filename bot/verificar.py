@@ -98,6 +98,12 @@ def main():
 
     print('\n2. KV\n')
     def kv(k):
+        # 🧠 las personas (`p:`) viven en el Durable Object desde el 06/10/2026: de ahí, y de KV si no contesta
+        if k.startswith('p:'):
+            import subir_datos as _SD
+            x = _SD.leer_personas([k])
+            if x is not None:
+                return x.get(k)
         rr = s.get('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/'
                    'namespaces/%s/values/%s' % (CUENTA, KV_NS, k), timeout=30)
         return rr.content.decode('utf-8') if rr.status_code == 200 else None

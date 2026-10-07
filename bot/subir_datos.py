@@ -17,9 +17,17 @@ Con `p:konan` lee un valor chico y parsea un objeto.
 
 QUÉ SE ESCRIBE
 --------------
-    p:<nombre>        los datos de esa persona
+    p:<nombre>        los datos de esa persona — EN EL DURABLE OBJECT, no en KV
     d:<discord_id>    a qué nombre corresponde ese ID
     meta              el sello de la corrida y cuántos hay
+
+🧠 **`p:` VIVE EN EL OBJETO DESDE EL 06/10/2026** (`subir_personas()`). Era casi todo
+el cupo de KV: unas 230 escrituras por corrida, porque los números del /versus se
+miden contra el pool y se mueven con cada evento, y el 06/10 a las 7:57 PM iban 909
+de 1.000. El objeto da 100.000 filas por día y escribe sólo lo que cambió. El Worker
+la lee de ahí (`leerP()`) y, si el objeto no contesta, de KV, donde quedan las de
+antes. **Si el objeto no la toma, esta corrida la escribe en KV como siempre**:
+gastar cupo es mejor que dejar un /card viejo.
 
 ⚠️ **`d:` ES LO QUE HACE ANDAR `/card` SIN ESCRIBIR NADA.** La interacción trae
 el ID de quien la usó; con este índice el bot sabe quién es. Hoy alcanza para
@@ -1182,6 +1190,66 @@ def _json_servidores():
         return {}
 
 
+WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
+
+
+def _clave_ciclo():
+    """La clave del ciclo (la misma de `bot/pase.py`), o `None` sin el token del bot."""
+    import hashlib
+    tok = os.environ.get('DISCORD_TOKEN') or ''
+    if not tok:
+        try:
+            import fotos as F
+            tok = F.env('DISCORD_TOKEN', obligatorio=False) or ''
+        except Exception:                                # noqa: BLE001
+            tok = ''
+    return hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest() if tok else None
+
+
+def subir_personas(pares_p):
+    """🧠 Las `p:` al Durable Object, todas en un pedido: el objeto escribe sólo lo que cambió y borra a quien ya no
+    está (`completo`, con su freno). `{ok, escritas, borradas, total}`, o `None` si no las tomó."""
+    k = _clave_ciclo()
+    if not k:
+        print('  ⚠️ sin DISCORD_TOKEN: las personas no van al objeto')
+        return None
+    cuerpo = json.dumps({'pares': [[p['key'], p['value']] for p in pares_p], 'completo': True}, ensure_ascii=False)
+    try:
+        r = requests.post(WORKER + '/avisos/personas-ciclo', data=cuerpo.encode('utf-8'),
+                          headers={'x-lg-ciclo': k, 'content-type': 'application/json'}, timeout=60)
+        x = r.json() if r.content else {}
+    except (OSError, ValueError) as e:
+        print('  ⚠️ el objeto no tomó las personas (%s)' % str(e)[:80])
+        return None
+    if not r.ok or not x.get('ok'):
+        print('  ⚠️ el objeto no tomó las personas: %s %s' % (r.status_code, json.dumps(x, ensure_ascii=False)[:120]))
+        return None
+    return x
+
+
+def leer_personas(ks):
+    """🧠 `{k: valor}` de las `p:` que tiene el objeto (para las auditorías: `bot/verificar.py`), o `None`."""
+    k = _clave_ciclo()
+    if not k or not ks:
+        return None
+    out = {}
+    try:
+        for i in range(0, len(ks), 100):
+            r = requests.get(WORKER + '/avisos/personas-leer', params=[('k', x) for x in ks[i:i + 100]],
+                             headers={'x-lg-ciclo': k}, timeout=30)
+            if not r.ok:
+                return None
+            out.update((r.json() or {}).get('personas') or {})
+    except (OSError, ValueError):
+        return None
+    return out
+
+
+def repartir(pares):
+    """`(las p:, lo demás)`: las personas van al objeto y lo demás a KV."""
+    return ([p for p in pares if p['key'].startswith('p:')], [p for p in pares if not p['key'].startswith('p:')])
+
+
 def solo_las_que_cambiaron(s, pares):
     """De las 241, las que KV todavia no tiene igual.
 
@@ -1347,6 +1415,17 @@ def main():
         # las 312 personas válidas que simplemente no habían cambiado—.
         # Lo frenó el guardián de la mitad, que existe justo para esto.
         todas_las_claves = list(pares)
+        # 🧠 LAS PERSONAS, AL OBJETO (06/10/2026): ver el docstring. `todas_las_claves` las sigue nombrando, así que
+        # `limpiar_huerfanas()` no borra de KV las de quien sigue —son el respaldo del Worker— y sí las de quien se fue
+        pares_p, pares = repartir(pares)
+        en_objeto = subir_personas(pares_p) if pares_p else None
+        if en_objeto:
+            print('  🧠 %d personas al objeto: %d cambiaron, %d se fueron (KV no gasta nada en ellas)\n'
+                  % (en_objeto.get('total', 0), en_objeto.get('escritas', 0), en_objeto.get('borradas', 0)))
+        elif pares_p:
+            print('  ⚠️ las %d personas van a KV, como antes de que vivieran en el objeto\n' % len(pares_p))
+            pares = pares_p + pares
+        pedidas = len(pares)
         if '--todas' not in sys.argv:
             pares = solo_las_que_cambiaron(s, pares)
         print('  %d de %d claves cambiaron  ->  %d escritura(s) de las 1.000 diarias\n'
@@ -1397,16 +1476,23 @@ def main():
     # y no el de la caché de `/values/`, pero **no es de lectura inmediata**.
     # Si lo de abajo se ve viejo, volver a leer antes de dar nada por perdido.
     print('\ncomprobando...')
-    r = s.post('%s/bulk/get' % API, json={'keys': ['meta', 'p:konan']}, timeout=30)
+    r = s.post('%s/bulk/get' % API, json={'keys': ['meta']}, timeout=30)
     vals = ((r.json().get('result') or {}).get('values') or {}) if r.ok else {}
-    for k in ('meta', 'p:konan'):
-        print('  %-10s %s' % (k, str(vals.get(k, '— no está'))[:140]))
+    print('  %-10s %s' % ('meta', str(vals.get('meta', '— no está'))[:140]))
+    # 🧠 una persona, del objeto: es de donde la lee /card
+    una = leer_personas([todas_las_claves[0]['key']] if todas_las_claves and
+                        todas_las_claves[0]['key'].startswith('p:') else ['p:konan']) or {}
+    for k, v in list(una.items())[:1]:
+        print('  %-10s %s  (del objeto)' % (k, str(v)[:120]))
 
 
 def _self_check():
     """Lo que puede esperar y el reparto del cupo (05/10/2026). Sin red ni KV: `presupuesto()` recibe `usadas` y
     `hora`, y `_ESPERAN` se arma a mano como lo arma `solo_las_que_cambiaron()`."""
     print('\n══ SUBIR DATOS: LO QUE PUEDE ESPERAR ══\n')
+    _p, _r = repartir([{'key': 'p:ana', 'value': '{}'}, {'key': 'd:1', 'value': 'ana'}, {'key': 'meta', 'value': '{}'}])
+    print('   %s las personas van al objeto y lo demás a KV' % ('✅' if [x['key'] for x in _p] == ['p:ana']
+                                                              and [x['key'] for x in _r] == ['d:1', 'meta'] else '🔴'))
     mal = 0
 
     def ok(c, q):

@@ -954,6 +954,24 @@ const ok = (cond, que, det) => {
     for (let i = 1; i <= 6; i++) sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(14 + i));
     o.premiarRacha(DANI);
     ok(tienda(DANI).length === 3, 'y si sigue hasta 21, el tercero sí');
+    // 🧠 LOS DATOS DE CADA PERSONA PARA /card, EN EL OBJETO (06/10/2026): se escribe sólo lo que cambió, se borra a
+    // quien ya no está, y una lista que perdió más de la mitad no borra nada (es el ciclo, no la gente)
+    const gente = Array.from({ length: 30 }, (_, i) => ['p:r' + i, JSON.stringify({ n: 'R' + i, ev: i })]);
+    let pc = o.personasCiclo({ pares: gente, completo: true });
+    ok(pc.ok && pc.escritas === 30 && pc.borradas === 0 && o.persona('p:r7') === gente[7][1] && o.persona('p:nadie') === null,
+      'el ciclo manda las 30 personas: se escriben y se leen de a una', JSON.stringify(pc));
+    const otra = gente.map((x, i) => (i === 3 ? [x[0], JSON.stringify({ n: 'R3', ev: 99 })] : x)).slice(0, 29);
+    pc = o.personasCiclo({ pares: otra, completo: true });
+    ok(pc.ok && pc.escritas === 1 && pc.borradas === 1 && JSON.parse(o.persona('p:r3')).ev === 99 && o.persona('p:r29') === null,
+      'la corrida siguiente: una cambió (una fila) y una se fue (se borra); las otras 27, intactas', JSON.stringify(pc));
+    pc = o.personasCiclo({ pares: otra.slice(0, 10), completo: true });
+    ok(pc.error === 'freno' && o.persona('p:r20') !== null,
+      'una lista con menos de la mitad no borra a nadie: es el ciclo, no gente que se fue', JSON.stringify(pc));
+    ok(o.personasCiclo({ pares: [['d:1', 'x'], ['p:ok', '{}']] }).total === 1 && o.persona('p:ok') === '{}'
+      && Object.keys(o.personasLeer(['p:r1', 'p:r2', 'p:nadie']).personas).join() === 'p:r1,p:r2',
+      'sólo claves p: (una d: no entra), y varias a la vez para el ciclo');
+    await o.olvidar({ quien: '555555555555555555', clave: 'r5' });
+    ok(o.persona('p:r5') === null && o.persona('p:r6') !== null, 'olvidar a alguien borra también sus datos de /card');
   }
 }
 
