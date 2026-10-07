@@ -1,15 +1,72 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
+  "emi": {
+   "servidor": "2026-10-07",
+   "sv-dra": "2026-10-07",
+   "sv-efa": "2026-10-07",
+   "sv-ffa": "2026-10-07",
+   "sv-frz": "2026-10-07",
+   "sv-ftn": "2026-10-07",
+   "sv-sr": "2026-10-07",
+   "sv-tfc": "2026-10-07",
+   "sv-twr": "2026-10-07",
+   "sv-urbf": "2026-10-07",
+   "temporada": "2026-10-07"
+  },
   "hassan": {
    "bloq-competitivo": "2026-10-05",
    "bloq-pais": "2026-10-05",
    "competitivo": "2026-10-05",
    "pais": "2026-10-05"
+  },
+  "kude": {
+   "servidor": "2026-10-07",
+   "sv-dra": "2026-10-07",
+   "sv-efa": "2026-10-07",
+   "sv-ffa": "2026-10-07",
+   "sv-frz": "2026-10-07",
+   "sv-ftn": "2026-10-07",
+   "sv-sr": "2026-10-07",
+   "sv-tfc": "2026-10-07",
+   "sv-twr": "2026-10-07",
+   "sv-urbf": "2026-10-07",
+   "temporada": "2026-10-07"
+  },
+  "nhp": {
+   "servidor": "2026-10-07",
+   "sv-dra": "2026-10-07",
+   "sv-efa": "2026-10-07",
+   "sv-ffa": "2026-10-07",
+   "sv-frz": "2026-10-07",
+   "sv-ftn": "2026-10-07",
+   "sv-sr": "2026-10-07",
+   "sv-tfc": "2026-10-07",
+   "sv-twr": "2026-10-07",
+   "sv-urbf": "2026-10-07",
+   "temporada": "2026-10-07"
+  },
+  "riferian": {
+   "bloq-competitivo": "2026-10-07",
+   "bloq-pais": "2026-10-07",
+   "competitivo": "2026-10-07",
+   "pais": "2026-10-07",
+   "servidor": "2026-10-07",
+   "sv-acad": "2026-10-07",
+   "sv-dra": "2026-10-07",
+   "sv-ffa": "2026-10-07",
+   "sv-ffs": "2026-10-07",
+   "sv-sr": "2026-10-07",
+   "sv-urbf": "2026-10-07",
+   "temporada": "2026-10-07"
+  },
+  "tokio": {
+   "servidor": "2026-10-07",
+   "temporada": "2026-10-07"
   }
  },
- "pasaban": 375,
- "cuando": "2026-10-07T18:27:40Z",
+ "pasaban": 373,
+ "cuando": "2026-10-07T18:42:12Z",
  "borradas": [
   [
    "indigena",

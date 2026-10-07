@@ -1363,12 +1363,12 @@
    },
    "FFA": {
     "duelos": "5/8",
-    "ev": 9,
+    "ev": 10,
     "oro": 0,
     "ovr": 66,
     "pod": 2,
-    "pts": 29396,
-    "racha": "2/3"
+    "pts": 30646,
+    "racha": "2/2"
    },
    "SR": {
     "duelos": "0/1",
@@ -1380,13 +1380,13 @@
     "racha": "0/0"
    },
    "URBF": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "2/4",
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 4400,
-    "racha": "0/0"
+    "ovr": 57,
+    "pod": 1,
+    "pts": 15400,
+    "racha": "0/1"
    }
   },
   "EricRJ": {
@@ -3873,26 +3873,6 @@
     "pod": 0,
     "pts": 11602,
     "racha": "0/0"
-   }
-  },
-  "Riferian": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0"
-   },
-   "URBF": {
-    "duelos": "2/3",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 58,
-    "pod": 1,
-    "pts": 16500,
-    "racha": "1/1"
    }
   },
   "Riolu": {

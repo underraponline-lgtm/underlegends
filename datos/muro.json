@@ -46,19 +46,19 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "pichulamc": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -435,13 +435,6 @@
 "temporada"
 ]
 },
-"riferian": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "nxuz": {
 "rg": "",
 "c": [
@@ -487,6 +480,7 @@
 "cronox": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1349,6 +1343,13 @@
 ]
 },
 "guess": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"riferian": {
 "rg": "",
 "c": [
 "servidor",
@@ -4714,6 +4715,14 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T18:41:58Z",
+"quien": [
+"Cronox"
+],
+"carta": "pais"
 }
 ]
 }
