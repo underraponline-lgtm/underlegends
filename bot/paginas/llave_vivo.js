@@ -665,9 +665,13 @@
     var ls = lineas(texto).slice(0, 6);
     for (var i = 0; i < ls.length; i++) {
       var l = ls[i];
-      var s = l.replace(/<a?:\w+:\d+>|<@[&!]?\d+>/g, ' ').replace(/[^\p{L}\p{N}_\s.\-]/gu, ' ')
+      // 🐍 sin la «I» de adorno pegada a una barra, sin los guiones sueltos y sin «LLAVES» (Snake Rap, 07/10/2026)
+      var s = l.replace(/<a?:\w+:\d+>|<@[&!]?\d+>/g, ' ')
+        .replace(/(?<=\|)[Il](?=[\[\]{}|])|(?<=[\[\]{}|])[Il](?=\|)/g, ' ')
+        .replace(/[^\p{L}\p{N}_\s.\-]/gu, ' ').replace(/(^|\s)[-.]{2,}(?=\s|$)/g, '$1 ')
         .replace(/\s+/g, ' ').trim();
       if (s.length < 3 || !/\p{L}/u.test(s)) continue;
+      if (/^(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos|emparejamientos)$/i.test(s)) continue;
       if (buscarRonda(s) || nombresDeLinea(l).length) continue;
       return quitarBordes(s.slice(0, 60), ['_', '*', '~', ' ']).trim();
     }

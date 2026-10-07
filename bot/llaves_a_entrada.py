@@ -1004,6 +1004,11 @@ def parecido(a, b):
     return len(a & b) / float(len(a | b)) if (a or b) else 0.0
 
 
+#: el encabezado que dice qué es el mensaje y no cómo se llama el evento (`titulo()`; igual en `llave_vivo.js`)
+TITULO_GENERICO = re.compile(r'(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos|emparejamientos)',
+                             re.I)
+
+
 def titulo(texto):
     """Como se llama el evento. Solo para NOMBRARLO, nunca como clave."""
     for l in (texto or '').splitlines()[:6]:
@@ -1017,9 +1022,16 @@ def titulo(texto):
         # limpio para la web, en vez del Sheet—. El nombre se limpia para
         # MOSTRARLO (`sheet/llaves_web.py`); para cambiarlo acá hay que migrar
         # antes las tres hojas del Operativo.
+        # 🐍 la «I» de adorno pegada a una barra y los guiones sueltos: Snake Rap (07/10/2026) titula
+        # `# 🔑 LLAVES 🔑` y abajo `> ]|I{•------» (Gallos del Under Amateur I «------•}I|[`
+        limpio = re.sub(r'(?<=\|)[Il](?=[\[\]{}|])|(?<=[\[\]{}|])[Il](?=\|)', ' ', limpio)
         limpio = re.sub(r'[^\w\sÁÉÍÓÚÑáéíóúñ.\-]', ' ', limpio)
+        limpio = re.sub(r'(^|\s)[-.]{2,}(?=\s|$)', '\\1 ', limpio)
         limpio = re.sub(r'\s+', ' ', limpio).strip()
         if len(limpio) < 3:
+            continue
+        # y «LLAVES» no es el nombre de nada: el nombre viene abajo, o del anuncio
+        if TITULO_GENERICO.fullmatch(limpio):
             continue
         # 🔴 UNA LÍNEA DE GUIONES NO ES UN TÍTULO. Urban Freestyle abre sus
         # llaves con `** ----------------------------- **` y el nombre
@@ -2828,6 +2840,11 @@ def _self_check():
                                  'notas': 'cobra: Sin límites 🇵🇪; cobra: Yo mc 🇨🇱; nadie siguió: ✅ Decidir'}],
                                'FFA', mapa={'FFA': {'yomc': 'Cronox'}})
     casos = [
+        ('«LLAVES» no es un título, ni la «I» de adorno entre barras ni los guiones: Gallos del Under Amateur I (Snake '
+         'Rap, 07/10/2026)',
+         titulo('# ▌│█║▌║▌║ 🔑  LLAVES 🔑  ║▌║▌║█│▌\n\n> ]|I{•------» (Gallos del Under Amateur I «------•}I|[ \n\n'
+                '## 4️⃣ Cuartos 4️⃣ \n** (< A >) ⚔️ (< B >)**') == 'Gallos del Under Amateur I'
+         and titulo('# LLAVES\n## CUARTOS\n[A] 🆚 [B]') is None),
         ('en DDF, CARLOS es Carlosss y NUMBER es Number VE (también dentro de un equipo); en FFA, nadie cambia',
          (_fo_ddf[0]['ladoA'], _fo_ddf[0]['ladoB'], _fo_ddf[0]['ganador']) == ('Carlosss', 'Number VE, Xplicit', 'Carlosss')
          and _fo_ffa[0]['ladoA'] == 'CARLOS🇪🇨'),
