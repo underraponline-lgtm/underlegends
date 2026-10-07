@@ -1233,6 +1233,20 @@ def subir_personas(pares_p):
     return x
 
 
+def _avisar_objeto(ok):
+    """El aviso a Dlx si el objeto no toma las personas (una vez cada 6 h, `alertar.alertar()`), y que volvió."""
+    try:
+        import alertar as AL
+        if ok:
+            AL.resuelto('objeto_personas', 'Los datos de cada persona vuelven a subirse al objeto: /card está al día.')
+        else:
+            AL.alertar('objeto_personas', 'Los datos de cada persona no se subieron al objeto: /card muestra los de la '
+                                          'corrida anterior hasta que la próxima lo logre. El motivo, en el log del ciclo '
+                                          '(subir_datos).')
+    except Exception as e:                               # noqa: BLE001
+        print('  ⚠️ no pude avisar (%s)' % str(e)[:60])
+
+
 def leer_personas(ks):
     """🧠 `{k: valor}` de las `p:` que tiene el objeto (para las auditorías: `bot/verificar.py`), o `None`."""
     k = _clave_ciclo()
@@ -1425,12 +1439,28 @@ def main():
         # `limpiar_huerfanas()` no borra de KV las de quien sigue —son el respaldo del Worker— y sí las de quien se fue
         pares_p, pares = repartir(pares)
         en_objeto = subir_personas(pares_p) if pares_p else None
+        if pares_p and not en_objeto:
+            # ⏳ un segundo intento: justo después de desplegar, el Worker viejo contesta unos segundos más
+            import time as _t
+            _t.sleep(8)
+            en_objeto = subir_personas(pares_p)
         if en_objeto:
             print('  🧠 %d personas al objeto: %d cambiaron, %d se fueron (KV no gasta nada en ellas)\n'
                   % (en_objeto.get('total', 0), en_objeto.get('escritas', 0), en_objeto.get('borradas', 0)))
+            # ⚠️ el objeto descarta en silencio una clave mal armada o un valor de más de 20.000 caracteres
+            fuera = len(pares_p) - int(en_objeto.get('total') or 0)
+            if fuera > 0:
+                print('  ⚠️ el objeto descartó %d persona(s) (clave mal armada o demasiado larga)\n' % fuera)
+            _avisar_objeto(True)
         elif pares_p:
-            print('  ⚠️ las %d personas van a KV, como antes de que vivieran en el objeto\n' % len(pares_p))
-            pares = pares_p + pares
+            # 🔴 YA NO VAN A KV (revisión del 06/10/2026, los dos revisores). Antes, si el objeto no las tomaba, se
+            # escribían en KV «como antes»: el Worker lee primero el objeto (`leerP()`), así que nadie las veía; se
+            # comparaban contra la copia de KV de las 8:35 PM de ese día —vieja a propósito, es el respaldo—, así que se
+            # escribía casi todo; y como iban antes que los índices, en un día justo se comían el cupo del `d:` de quien
+            # se acababa de verificar. Ahora se avisa y la corrida siguiente vuelve a intentar
+            print('  ⚠️ el objeto no tomó las %d personas: /card sigue con lo de la corrida anterior, y la próxima '
+                  'corrida vuelve a intentar. No van a KV: el Worker las lee del objeto\n' % len(pares_p))
+            _avisar_objeto(False)
         pedidas = len(pares)
         if '--todas' not in sys.argv:
             pares = solo_las_que_cambiaron(s, pares)
@@ -1438,6 +1468,10 @@ def main():
               % (len(pares), pedidas, len(pares)))
         if not pares:
             print('  nada que escribir: KV ya dice lo mismo.\n')
+            # 🧹 Y LAS HUÉRFANAS IGUAL (revisión del 06/10/2026). Desde que las `p:` viven en el objeto casi todas las
+            # corridas tranquilas terminaban acá, y quien perdía el portón seguía con su `d:` hasta que cambiara otra
+            # cosa. Borrar no gasta escrituras (ver abajo)
+            limpiar_huerfanas(s, todas_las_claves, [])
             return
         cambiaron = [p['key'] for p in pares]
         pares, diferidas = presupuesto(s, pares)

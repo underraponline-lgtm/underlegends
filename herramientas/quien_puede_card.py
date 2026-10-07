@@ -134,6 +134,13 @@ def _kv(claves):
             cursor = (j.get('result_info') or {}).get('cursor') or ''
             if not cursor:
                 break
+        # 🧠 Y LAS DEL OBJETO (06/10/2026): desde la mudanza, quien se verificó después tiene su `p:` sólo ahí —KV
+        # guarda la copia vieja de respaldo—, y esto lo contaba como «sin indexar: esto SÍ es un fallo». /card lee
+        # primero el objeto (`leerP()`), así que «indexada» es estar en cualquiera de los dos
+        if claves:
+            del_objeto = SD.leer_personas(sorted('p:' + c for c in claves))
+            if del_objeto:
+                hay |= {k[2:] for k, v in del_objeto.items() if v}
         return hay & claves if claves else hay
     except Exception:                                    # noqa: BLE001
         return None

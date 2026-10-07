@@ -103,6 +103,26 @@ def main():
         print('     volvé a correrlo en unos segundos antes de simular.')
 
     faltan = [k for k, v in volcado.items() if v is None]
+
+    # 🧠 LAS PERSONAS, DEL OBJETO (06/10/2026). /card las lee de ahí (`leerP()` en bot/worker.js) y KV guarda una copia
+    # vieja a propósito, de respaldo. Sin esto `simular.mjs` probaba esa copia y daba por rota la carta de quien se
+    # verificó después de la mudanza: la auditoría del lunes iba a fallar en falso (revisión del 06/10/2026). Se piden
+    # las de cada clave del índice (`d:`, `dn:`, `dx:`) y las que KV ya tenga.
+    try:
+        sys.path.insert(0, SCR)
+        import subir_datos as SD
+        claves_p = sorted({k for k in volcado if k.startswith('p:')}
+                          | {'p:' + v for k, v in volcado.items()
+                             if isinstance(v, str) and v and k.split(':', 1)[0] in ('d', 'dn', 'dx') and ':' in k})
+        del_objeto = SD.leer_personas(claves_p)
+        if del_objeto is None:
+            print('  ⚠️ el objeto no contestó: las personas quedan como las tiene KV (la copia vieja)')
+        else:
+            volcado.update({k: v for k, v in del_objeto.items() if v})
+            print('  🧠 %d persona(s) del objeto, encima de lo de KV' % sum(1 for v in del_objeto.values() if v))
+    except Exception as e:                               # noqa: BLE001
+        print('  ⚠️ no pude pedirle las personas al objeto (%s)' % str(e)[:60])
+
     p = os.path.join(SCR, '_kv_volcado.json')
     with open(p, 'w', encoding='utf-8') as f:
         json.dump(volcado, f, ensure_ascii=False, indent=0, sort_keys=True)

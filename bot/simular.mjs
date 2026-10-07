@@ -142,6 +142,10 @@ for (const q of gente) {
       data: { custom_id: b.custom_id },
     });
     const uu = media(r.data);
+    // 🔒 UNA CARTA QUE ESA PERSONA NO TIENE SE CONTESTA CON EL CANDADO Y SU MOTIVO —«todavía no se verificó en DRA, así
+    // que no tiene la Competitiva»—: es la respuesta correcta desde las tarjetas en dos pasos (2.41, 05/10/2026), no un
+    // fallo. La auditoría la contaba como «no devolvió carta» y falló todos los lunes desde ese día (revisión, 06/10)
+    if (!uu && /^🔒/.test(r.data?.content || '')) continue;
     if (!uu) { anotar(g.n, `el botón ${b.label} no devolvió carta`); continue; }
     if (!existe(uu)) anotar(g.n, `botón ${b.label} -> URL que no está: ${claveDe(uu)}`);
     urls++;

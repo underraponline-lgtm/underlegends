@@ -98,9 +98,6 @@ HUERFANA_HORAS = 24
 #: cuánto tiene que parecerse la serie (el nombre sin números ni modalidad).
 #: Más que `PARECIDO`: acá el número ya no ayuda a separar.
 SERIE = 0.9
-#: …o una serie EMPIEZA con la otra, y la corta tiene al menos estas letras: el anuncio dice «PRITTY FREE» y la llave
-#: «PRITTY FREE CLASIFICATORIA 3» (FFA, 05/10/2026). El mínimo es para que «COPA» no se lleve cualquier copa
-SERIE_PREFIJO = 8
 
 
 def limpio(nombre):
@@ -175,19 +172,6 @@ def _serie(nombre):
 
 def _misma_serie(a, b):
     return bool(a and b and (a == b or difflib.SequenceMatcher(None, a, b).ratio() >= SERIE))
-
-
-def _serie_de_llave(llave, anuncio):
-    """¿La llave huérfana es de la serie del anuncio? La misma serie, o una empieza con la otra (`SERIE_PREFIJO`).
-
-    🔴 La PRITTY FREE del 05/10/2026 a la noche salía DOS veces en «Eventos»: su anuncio dice «PRITTY FREE» y su llave
-    «PRITTY FREE CLASIFICATORIA 3», que es una serie más larga, así que la huérfana no la reconocía y el calendario
-    mostraba el anuncio sin jugar y la llave aparte. Medido sobre los 143 anuncios de ese día: cambia ése y ninguno más.
-    """
-    if _misma_serie(llave, anuncio):
-        return True
-    corto, largo = sorted((llave or '', anuncio or ''), key=len)
-    return len(corto) >= SERIE_PREFIJO and largo.startswith(corto)
 
 
 _FORMA = re.compile(r'(?i)(?<![a-z0-9])(\d+)\s*(?:vs|v)\s*(\d+)(?![a-z0-9])')
@@ -790,8 +774,7 @@ def _huerfanas(faltan, ctx, regs, tomadas):
     eventos—: se pide TODO lo demás, y cada cosa descarta por sí sola:
 
     - el mismo servidor y la misma **serie** (el nombre sin números ni
-      modalidad, `_serie()`), o una que empieza con la otra
-      (`_serie_de_llave()`: «PRITTY FREE» y «PRITTY FREE CLASIFICATORIA 3»);
+      modalidad, `_serie()`);
     - una llave que **ningún otro anuncio se llevó** en la primera pasada
       (`tomadas`, calculada sobre TODOS los anuncios y no sólo los que se
       muestran);
@@ -820,7 +803,7 @@ def _huerfanas(faltan, ctx, regs, tomadas):
             ms = _primero(r.get('links'))
             if ms is None or not pub - HUERFANA_ANTES_MIN * 60000 <= ms < hasta:
                 continue
-            if not _serie_de_llave(_serie(r.get('nombre')), serie) or _formas_chocan(p, r):
+            if not _misma_serie(_serie(r.get('nombre')), serie) or _formas_chocan(p, r):
                 continue
             cands.append(str(n))
         if len(cands) == 1:
@@ -1093,21 +1076,6 @@ def _self_check():
     q = [dict(a17)]
     cruzar(q, dos)
     ok(q[0].get('llave') is None, 'con dos huérfanas posibles no elige')
-    # 🔑 la llave dice más que el anuncio (FFA, 05/10/2026): se anunció «PRITTY FREE» y la llave dice «PRITTY FREE
-    # CLASIFICATORIA 3»; la «PRITTY FREE» de esa mañana es otro evento, con su llave
-    pf = {'402': {'nombre': 'PRITTY FREE', 'sv': 'FFA', 'dia': '2026-10-05', 'links': [lk('2026-10-05T05:20:00')]},
-          '412': {'nombre': 'PRITTY FREE CLASIFICATORIA 3', 'sv': 'FFA', 'dia': '2026-10-05',
-                  'links': [lk('2026-10-06T02:55:12')]}}
-    q = [{'nombre': 'PRITTY FREE', 'sv': 'FFA', 'cuando': '2026-10-05T05:17:40', 'pub': '2026-10-05T05:02:40'},
-         {'nombre': 'PRITTY FREE', 'sv': 'FFA', 'cuando': '2026-10-06T02:56:51', 'pub': '2026-10-06T02:41:51'}]
-    cruzar(q, pf)
-    ok([x.get('llave') for x in q] == [402, 412],
-       'PRITTY FREE: la llave «… CLASIFICATORIA 3» es del anuncio «PRITTY FREE» de esa noche  %s'
-       % [x.get('llave') for x in q])
-    q = [{'nombre': 'COPA', 'sv': 'FFA', 'cuando': '2026-10-06T02:56:51', 'pub': '2026-10-06T02:41:51'}]
-    cruzar(q, {'9': {'nombre': 'COPA SOOLAR', 'sv': 'FFA', 'dia': '2026-10-05', 'links': [lk('2026-10-06T02:55:12')]}})
-    ok(q[0].get('llave') is None, 'pero una serie de menos de %d letras no se lleva cualquier llave que empiece igual'
-       % SERIE_PREFIJO)
     # el anuncio siguiente de la serie cierra la ventana: la llave con el
     # número mal escrito es del que se anunció justo antes de publicarla
     a20 = {'nombre': 'TOKYO VOL 20', 'sv': 'FFA', 'cuando': '2026-10-01T00:00:00', 'mod': '1v1'}

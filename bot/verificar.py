@@ -98,11 +98,12 @@ def main():
 
     print('\n2. KV\n')
     def kv(k):
-        # 🧠 las personas (`p:`) viven en el Durable Object desde el 06/10/2026: de ahí, y de KV si no contesta
+        # 🧠 las personas (`p:`) viven en el Durable Object desde el 06/10/2026: de ahí, y de KV si no contesta o no
+        # la tiene —lo mismo que hace `leerP()` en el Worker, así esto mira lo que /card sirve de verdad—
         if k.startswith('p:'):
             import subir_datos as _SD
             x = _SD.leer_personas([k])
-            if x is not None:
+            if x and x.get(k) is not None:
                 return x.get(k)
         rr = s.get('https://api.cloudflare.com/client/v4/accounts/%s/storage/kv/'
                    'namespaces/%s/values/%s' % (CUENTA, KV_NS, k), timeout=30)

@@ -665,6 +665,20 @@ def main():
     print('  espejo  : %d' % len(d['espejo']))
     anotar(d['did'], nom)
     print('  anotado en datos/olvidados.json — el portón ya no lo deja pasar.')
+    # 🧠 Y SU FILA DEL OBJETO (revisión del 06/10/2026). /card lee los datos de cada persona del Durable Object
+    # (`leerP()` en bot/worker.js): borrar la copia de KV ya no la saca. Se sube la lista entera (`completo`) ya sin
+    # esta persona —desde la línea de arriba el portón no la deja pasar— y el objeto borra su fila. Sin esto quedaba
+    # hasta la próxima corrida que dibujara, que en una noche tranquila son horas
+    try:
+        import subir_datos as SD
+        import verificados as V
+        V.olvidados_cache = None
+        pares_p, _resto = SD.repartir(SD.armar()[0])
+        r = SD.subir_personas(pares_p) if pares_p else None
+        print('  objeto  : %s' % (('%d fila(s) borrada(s)' % r.get('borradas', 0)) if r
+                                 else '⚠️ no contestó: su fila se va en la próxima corrida'))
+    except Exception as e:                               # noqa: BLE001
+        print('  objeto  : ⚠️ no pude (%s): su fila se va en la próxima corrida' % str(e)[:60])
     print('')
 
 

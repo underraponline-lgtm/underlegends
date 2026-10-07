@@ -2986,5 +2986,41 @@ console.log('\n«EL PASE DE RAPERO»\n');
   if (antesT === undefined) delete env.DISCORD_TOKEN; else env.DISCORD_TOKEN = antesT;
 }
 
+{
+  // 🧠 /card LEE A LA PERSONA DEL OBJETO, y de KV si el objeto no la tiene o no contesta (`leerP()`, 06/10/2026).
+  // La mudanza del cupo de KV se publicó sin una prueba de este camino: las de arriba corren sin `AVISOS`, así que
+  // sólo ejercían KV (la revisión de esa noche). Veterano tiene en KV sus cuatro cartas; el objeto falso le deja sólo
+  // la Servidor: si /card lo lee del objeto, la Competitiva no aparece
+  console.log('\nLA PERSONA, DEL OBJETO\n');
+  const antes = env.AVISOS;
+  const pedidas = [];
+  const conObjeto = (responder) => ({
+    idFromName: () => 'liga',
+    get: () => ({ fetch: async (url) => {
+      const u = new URL(String(url));
+      if (u.pathname === '/persona') { pedidas.push(u.searchParams.get('k')); return responder(u.searchParams.get('k')); }
+      return new Response('{"ok":true}');
+    } }),
+  });
+  const soloServidor = JSON.stringify(Object.assign(JSON.parse(KV_FALSO['p:veterano']), { cs: ['servidor'] }));
+  let quien = 999200;
+  const cartas = async () => {
+    const r = await pedir({ type: 2, guild_id: '1', member: { user: { id: String(quien++) } },
+      data: { name: 'card', options: [{ name: 'nombre', value: 'Veterano' }] } });
+    return JSON.stringify(r.json?.data?.components || []);
+  };
+  env.AVISOS = conObjeto((k) => (k === 'p:veterano' ? new Response(soloServidor) : new Response('', { status: 404 })));
+  let t = await cartas();
+  ok('con el objeto, /card usa lo que dice el objeto (sólo la Servidor) y no la copia de KV',
+     pedidas.includes('p:veterano') && !/Competitiva/.test(t) && /Servidor/.test(t), t.slice(0, 200));
+  env.AVISOS = conObjeto(() => new Response('', { status: 404 }));
+  t = await cartas();
+  ok('si el objeto no la tiene (404), la de KV, con sus cuatro cartas', /Competitiva/.test(t), t.slice(0, 200));
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async () => { throw new Error('objeto caído'); } }) };
+  t = await cartas();
+  ok('si el objeto se cae, la de KV, y /card contesta igual', /Competitiva/.test(t), t.slice(0, 200));
+  env.AVISOS = antes;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

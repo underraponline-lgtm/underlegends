@@ -1323,7 +1323,7 @@ def _comp_ovr(v):
 
 
 #: cuántas filas menos se aceptan como gente que se unió (ver `aviso_encoge()`); más que esto se confirma a mano
-UNIDOS_MAX = 5
+UNIDOS_MAX = 3
 
 
 def aviso_encoge(hubo, ahora, ev_antes, ev_ahora):
@@ -1333,7 +1333,7 @@ def aviso_encoge(hubo, ahora, ev_antes, ev_ahora):
     por su cuenta de Discord y la tabla nueva los juntó, con la vieja todavía en dos filas —el alias que las une se arma
     al final de esa corrida—: 359 contra 358, y la Temporada no se escribió. Faltaba una fila y no faltaba ningún
     resultado. El guardián está para un `Resultados` leído a medias, y eso SIEMPRE baja los eventos; unir a dos no.
-    Con `UNIDOS_MAX` filas menos o menos y los eventos sin bajar, es gente que se unió: se dice y se escribe. Si no,
+    Con `UNIDOS_MAX` filas menos o menos y los eventos sin bajar, es gente que se unió: se dice y se escribe. Era 5 y la revisión de esa noche lo bajó a 3: un reproceso cortado en la misma corrida que entra un evento nuevo también puede dejar los eventos parejos, y en una corrida se unen una o dos personas, no cinco. Si no,
     lo de siempre: `menos)`, que frena sin `--achicar`.
     """
     if ahora >= hubo:
