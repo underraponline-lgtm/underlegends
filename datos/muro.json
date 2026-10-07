@@ -63,13 +63,6 @@
 "temporada"
 ]
 },
-"provenza": {
-"rg": "C",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "makmah": {
 "rg": "C",
 "c": [
@@ -90,6 +83,13 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"provenza": {
+"rg": "C",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -129,21 +129,6 @@
 },
 "vandu": {
 "rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"trot": {
-"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -238,6 +223,14 @@
 "temporada"
 ]
 },
+"trot": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "btrx": {
 "rg": "",
 "c": [
@@ -303,6 +296,13 @@
 ]
 },
 "og": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -386,13 +386,6 @@
 "servidor"
 ]
 },
-"rayo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "zeta": {
 "rg": "",
 "c": [
@@ -422,13 +415,6 @@
 ]
 },
 "presagio": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"scot": {
 "rg": "",
 "c": [
 "servidor",
@@ -555,10 +541,6 @@
 "temporada"
 ]
 },
-"prometheusbib": {
-"rg": "",
-"c": []
-},
 "tambaggio": {
 "rg": "",
 "c": []
@@ -574,6 +556,13 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"rayo": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -629,13 +618,6 @@
 "c": [
 "servidor",
 "temporada"
-]
-},
-"aldre": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
 ]
 },
 "betelguese": {
@@ -724,6 +706,12 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"aldre": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "saito": {
@@ -815,6 +803,13 @@
 ]
 },
 "jult": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"scot": {
 "rg": "",
 "c": [
 "servidor",
@@ -1273,6 +1268,10 @@
 "c": []
 },
 "nyco": {
+"rg": "",
+"c": []
+},
+"prometheusbib": {
 "rg": "",
 "c": []
 },

@@ -71,7 +71,7 @@
     ],
     "Aldre": [
      1,
-     3,
+     1,
      4
     ],
     "Andres": [
@@ -246,7 +246,7 @@
     ],
     "Jupiter": [
      1,
-     6,
+     2,
      2
     ],
     "Keider": [
@@ -402,7 +402,7 @@
     "PROMETHEUS BIB 🇨🇴": [
      1,
      0,
-     2
+     8
     ],
     "Panchok": [
      1,
@@ -451,7 +451,7 @@
     ],
     "Provenza": [
      1,
-     9,
+     3,
      1
     ],
     "RT": [
@@ -461,7 +461,7 @@
     ],
     "Rayo": [
      1,
-     5,
+     1,
      4
     ],
     "Reyes": [
@@ -502,7 +502,7 @@
     "Scot": [
      1,
      0,
-     2
+     8
     ],
     "Selek": [
      1,
@@ -562,7 +562,7 @@
     "Trot": [
      1,
      0,
-     2
+     8
     ],
     "Tusicario": [
      1,
@@ -669,7 +669,7 @@
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 300,
-    "Aldre": 900,
+    "Aldre": 300,
     "Andres": 1300,
     "Andy": 300,
     "Ariaxer": 300,
@@ -700,7 +700,7 @@
     "JOSHU": 2900,
     "Juasmio": 300,
     "Jult": 300,
-    "Jupiter": 2900,
+    "Jupiter": 1300,
     "Keider": 300,
     "Korey": 300,
     "Krish": 300,
@@ -727,7 +727,7 @@
     "ONZASS": 300,
     "Oasis": 2900,
     "PRAISERIZA": 1300,
-    "PROMETHEUS BIB 🇨🇴": 1300,
+    "PROMETHEUS BIB 🇨🇴": 300,
     "Panchok": 2900,
     "Paria": 300,
     "PichulaMc": 1300,
@@ -738,7 +738,7 @@
     "Prosu": 300,
     "Provenza": 2900,
     "RT": 1300,
-    "Rayo": 900,
+    "Rayo": 300,
     "Reyes": 300,
     "Riolu": 300,
     "Risa": 300,
@@ -746,7 +746,7 @@
     "Rosmel 🇻🇪": 300,
     "Sami": 300,
     "Saz": 300,
-    "Scot": 1300,
+    "Scot": 300,
     "Selek": 300,
     "Sin Limites": 300,
     "Six": 1300,
@@ -756,7 +756,7 @@
     "Soulb": 300,
     "Tam": 1300,
     "Tenor": 300,
-    "Trot": 1300,
+    "Trot": 300,
     "Tusicario": 300,
     "TøKīØ🦠🧠": 2900,
     "Valdoza": 300,
@@ -785,7 +785,7 @@
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 300,
-  "Aldre": 900,
+  "Aldre": 300,
   "Andres": 1300,
   "Andy": 300,
   "Ariaxer": 300,
@@ -816,7 +816,7 @@
   "JOSHU": 2900,
   "Juasmio": 300,
   "Jult": 300,
-  "Jupiter": 2900,
+  "Jupiter": 1300,
   "Keider": 300,
   "Korey": 300,
   "Krish": 300,
@@ -843,7 +843,7 @@
   "ONZASS": 300,
   "Oasis": 2900,
   "PRAISERIZA": 1300,
-  "PROMETHEUS BIB 🇨🇴": 1300,
+  "PROMETHEUS BIB 🇨🇴": 300,
   "Panchok": 2900,
   "Paria": 300,
   "PichulaMc": 1300,
@@ -854,7 +854,7 @@
   "Prosu": 300,
   "Provenza": 2900,
   "RT": 1300,
-  "Rayo": 900,
+  "Rayo": 300,
   "Reyes": 300,
   "Riolu": 300,
   "Risa": 300,
@@ -862,7 +862,7 @@
   "Rosmel 🇻🇪": 300,
   "Sami": 300,
   "Saz": 300,
-  "Scot": 1300,
+  "Scot": 300,
   "Selek": 300,
   "Sin Limites": 300,
   "Six": 1300,
@@ -872,7 +872,7 @@
   "Soulb": 300,
   "Tam": 1300,
   "Tenor": 300,
-  "Trot": 1300,
+  "Trot": 300,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 2900,
   "Valdoza": 300,

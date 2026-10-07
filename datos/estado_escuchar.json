@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-07T17:27:17Z",
+ "cuando": "2026-10-07T17:57:59Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 228.3,
+ "dur_s": 271.5,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 48.0
+   "s": 34.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 40.9
+   "s": 67.1
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 27.2
+   "s": 27.0
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 10.1
+   "s": 7.3
   },
   {
    "n": "2b",
@@ -75,13 +75,13 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 1.4
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "2b5",
@@ -93,19 +93,19 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 30.9
+   "s": 64.0
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 35.0
+   "s": 38.9
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 15.3
+   "s": 12.7
   },
   {
    "n": "2e",
@@ -117,35 +117,29 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.0
+   "s": 8.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.7
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 4.7
+   "s": 2.9
   }
  ],
  "fallas": [],
  "decidir": 88,
  "ultimo_evento": {
-  "n": "421",
+  "n": "419",
   "nombre": "MAÑANA DE LLUVIA VOL 1",
   "sv": "FFA",
   "dia": "2026-10-07"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-07T17:24:23Z",
+  "cuando": "2026-10-07T17:54:08Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 363,
-  "un_evento": 177,
+  "un_evento": 179,
   "diez_o_mas": 24,
   "cohortes": [
    {
@@ -170,20 +164,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 296,
-   "read": 32240
+   "write": 301,
+   "read": 33379
   },
   "objeto": {
-   "leidas": 938873,
-   "escritas": 15244,
-   "pedidos": 3257
+   "leidas": 1004158,
+   "escritas": 15478,
+   "pedidos": 3733
   },
   "worker": {
-   "pedidos": 4786,
+   "pedidos": 5178,
    "errores": 0,
-   "sub": 4493,
+   "sub": 4898,
    "p50_ms": 1.01,
-   "p99_ms": 5.74
+   "p99_ms": 5.3
   },
   "r2": {
    "objetos": 3595,
