@@ -1,5 +1,5 @@
 {
- "_nota": "Las crews de la Liga, pasadas por Dlx el 20/08/2026. La clave es el nombre de la crew y el valor la lista de miembros tal como los escribio; el cruce con el pool se hace normalizando el nombre.",
+ "_nota": "Las crews de la Liga. Dlx las pasó el 20/08/2026 y las ACTUALIZÓ el 07/10/2026 («aquí te doy una lista actualizada de las CREWS»): principales, secundarias y de aparición única. La clave es el nombre de la crew (la de las que ya existían se conserva: la usan los logos y las cartas) y cada nombre está pasado por la Lista de Raperos y los alias —Nhp es Andres, Kibak es Valen, Anritmico es Abyssus, Rizas es PRAISERIZA—, porque este cruce no los resuelve. «Solo» (Number) y «Nose / Sin Nombre» (Lord) no son crews: quedan sin crew.",
  "_aviso_umbral": "El umbral de 3 rige igual que para pais y servidor: ser '1 de 1' no dice nada. Medido sobre el pool de 138, solo 4 de 17 crews llegan a 3 miembros CON CARTA.",
  "_aviso_alias": "Algunos de los que figuran 'fuera del pool' pueden ser ALIAS y no ausencias. competitivo.py resuelve alias con la hoja AKAs del Operativo —hay rastro de 'kibak' -> 'valen'— y este cruce NO los resuelve. Antes de dar por ausente a alguien, pasarlo por AKAs.",
  "_nombres_leeme": "Cómo se lee cada crew en la web cuando la clave es una sigla. La clave no se cambia: la usan el logo (comun/logos_crew/KS.png) y las cartas.",
@@ -13,91 +13,195 @@
    "crew": "Follombia",
    "cuando": "2026-09-28 10:40 PM ET",
    "nota": "Dlx: «SNOW no es parte de Follombia, me comentó»."
+  },
+  "Jere": {
+   "crew": "KS",
+   "cuando": "2026-10-07 3:45 PM ET",
+   "nota": "la lista actualizada de Dlx (07/10) ya no lo trae en esta crew"
+  },
+  "Kain": {
+   "crew": "KS",
+   "cuando": "2026-10-07 3:45 PM ET",
+   "nota": "la lista actualizada de Dlx (07/10) ya no lo trae en esta crew"
+  },
+  "Zaylax": {
+   "crew": "KS",
+   "cuando": "2026-10-07 3:45 PM ET",
+   "nota": "la lista actualizada de Dlx (07/10) ya no lo trae en esta crew"
+  },
+  "Makmah": {
+   "crew": "Santa Trinidad",
+   "cuando": "2026-10-07 3:45 PM ET",
+   "nota": "la lista actualizada de Dlx (07/10) lo pone en Fuera de Rango"
   }
  },
  "crews": {
   "Follombia": [
    "Prosu",
-   "Vandu",
-   "Kirito",
-   "Erian",
-   "Bloody",
    "Vlade",
-   "97",
    "Saz",
-   "JJ",
+   "Juasmio",
+   "Bloody",
+   "Vandu",
+   "Erian",
+   "97",
+   "Colesito",
+   "Sami",
    "Partim",
-   "Sami"
-  ],
-  "KS": [
-   "Zignos",
-   "Heat",
-   "Sombra",
-   "Jere",
-   "Kain",
-   "Zaylax"
-  ],
-  "Fontana": [
-   "Kibak",
-   "RodriLP",
-   "Agus",
-   "Luzzano",
-   "Prodigy"
+   "JD",
+   "NFK",
+   "Kirito",
+   "JJ",
+   "Malacostumbre"
   ],
   "Sexosos": [
+   "Zekha",
    "Juanpa",
-   "Christo",
-   "Astaroth",
    "Axinu",
+   "Christo",
    "Acry",
-   "7Po"
-  ],
-  "Argentina Crew": [
-   "Franky"
-  ],
-  "Mayas Crew": [
-   "MayanMC"
-  ],
-  "RKT Crew": [
-   "Reazer"
-  ],
-  "La Formula Crew": [
-   "Pipe"
-  ],
-  "La Pampa Crew": [
-   "MCO"
+   "Astaroth",
+   "Snow",
+   "7po",
+   "Polosport"
   ],
   "NOBLESSE OBLIGE": [
    "Kyss",
    "Rubik",
-   "Vice"
+   "Jetix",
+   "Vize",
+   "Ken Zingle",
+   "Masino"
+  ],
+  "berazategui global hustlers": [
+   "Erik",
+   "Betelguese",
+   "Klk",
+   "BNA"
+  ],
+  "Fuera de Rango": [
+   "GP",
+   "Pablosky",
+   "Cronox",
+   "Leiter",
+   "Makmah",
+   "Thiflow"
+  ],
+  "Fontana": [
+   "Valen",
+   "Liberia",
+   "Luzzano",
+   "Agus",
+   "RodriLP",
+   "Prodigy"
+  ],
+  "KS": [
+   "Zignos",
+   "Abyssus",
+   "Heat",
+   "Sombra"
+  ],
+  "Lighting Force": [
+   "OG",
+   "Panchok",
+   "Imagy",
+   "Camila",
+   "Andres",
+   "MCNadie",
+   "Messi Negro"
   ],
   "Santa Trinidad": [
+   "Gocho",
+   "Humildad",
    "Mika",
-   "Makmah",
-   "Gocho"
+   "KC"
+  ],
+  "La Formula Crew": [
+   "Nacidoenitalia",
+   "Deuxs",
+   "Pipe",
+   "Kuasar",
+   "Brayan"
+  ],
+  "Blanca Perla": [
+   "Six"
+  ],
+  "El Último Bastón": [
+   "Fafax",
+   "Black Magic"
   ],
   "Guardia Nacional": [
    "Kourier",
    "Volk",
-   "Cj"
+   "CJ"
   ],
-  "Lighting Force": [
-   "Camila",
-   "Panchok",
-   "Og",
-   "Nhp"
+  "Argentina Crew": [
+   "Franky"
+  ],
+  "La Pampa Crew": [
+   "MCO",
+   "Konan"
+  ],
+  "Sentinelense": [
+   "Velatz",
+   "PRAISERIZA"
   ],
   "Caypher": [
    "Rayden",
    "Rayo"
   ],
-  "Peruvianleads": [],
-  "Blanca Perla": [
-   "Six"
+  "Mafia Chilena": [
+   "Xerve"
   ],
-  "Sentinelense": [
-   "Velatz"
+  "Arte del Chakalaje": [
+   "PichulaMc"
+  ],
+  "Dinoguay": [
+   "El indigena del parque"
+  ],
+  "04": [
+   "Molt"
+  ],
+  "Mayas Crew": [
+   "MayanMC"
+  ],
+  "RKT Crew": [
+   "Raezer"
+  ],
+  "Peruvianleads": [
+   "Noone"
+  ],
+  "montevideo wanders": [
+   "Gus"
+  ],
+  "Mdk Crew": [
+   "Am"
+  ],
+  "kzt": [
+   "Verc"
+  ],
+  "Podesta City": [
+   "LEWITO"
+  ],
+  "Yuta": [
+   "Kminant"
+  ],
+  "Rosario": [
+   "NC"
+  ],
+  "Miakamata": [
+   "Crk"
+  ],
+  "Área Limítrofe": [
+   "Saiko",
+   "Meteoro",
+   "Luz"
+  ],
+  "Underground Freestyle": [
+   "Adrianex"
+  ],
+  "B.A.A": [
+   "Provenza"
   ]
  }
 }
