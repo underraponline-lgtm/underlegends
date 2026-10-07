@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-07T15:51:19Z",
+ "cuando": "2026-10-07T16:06:08Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1056.3,
+ "dur_s": 471.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.6
+   "s": 7.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.2
+   "s": 2.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.6
+   "s": 27.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 8 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 984.8
+   "s": 382.4
   },
   {
    "n": "5b",
@@ -39,30 +39,30 @@
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 35.4
+   "s": 46.0
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "420",
-  "nombre": "5 VIDAS 07:57",
+  "n": "421",
+  "nombre": "MAÑANA DE LLUVIA VOL 1",
   "sv": "FFA",
   "dia": "2026-10-07"
  },
  "cuotas": {
   "kv": {
-   "write": 272,
-   "read": 28765
+   "write": 282,
+   "read": 30096
   },
   "objeto": {
-   "leidas": 861574,
-   "escritas": 13519,
-   "pedidos": 2824
+   "leidas": 869862,
+   "escritas": 13742,
+   "pedidos": 2884
   },
   "worker": {
-   "pedidos": 4591,
+   "pedidos": 4632,
    "errores": 0,
-   "sub": 4294,
+   "sub": 4339,
    "p50_ms": 1.01,
    "p99_ms": 5.74
   },
