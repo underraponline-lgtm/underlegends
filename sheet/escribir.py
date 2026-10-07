@@ -125,6 +125,40 @@ def _pedir(metodo, ruta, **kw):
     raise RuntimeError('%s %s -> %s: %s' % (metodo, ruta, r.status_code, m[:200]))
 
 
+def _fin_de(a1):
+    """`(hoja, última fila)` de un rango A1 (`'Lista de Raperos'!A1001:J1001` -> `('Lista de Raperos', 1001)`).
+    `(hoja, 0)` si el rango no dice filas. Pura: la prueba el self-check."""
+    import re as _re
+    hoja, _, celdas = str(a1).rpartition('!')
+    if len(hoja) >= 2 and hoja[0] == hoja[-1] == "'":
+        hoja = hoja[1:-1].replace("''", "'")
+    nums = [int(x) for x in _re.findall(r'[A-Za-z]+(\d+)', celdas)]
+    return hoja, (max(nums) if nums else 0)
+
+
+def _agrandar(a1):
+    """Agrega filas a la hoja de `a1` hasta que el rango entre, y 200 de aire. `True` si agregó.
+
+    🔴 LA LISTA DE RAPEROS LLEGÓ A LAS 1.000 FILAS Y NO ENTRABA NADIE MÁS (06/10/2026). Sheets crea las hojas con
+    1.000 filas y escribir en la 1.001 es un 400 «exceeds grid limits», así que `lista_raperos.agregar()` —y el alta
+    que hace sola ✅ Decidir (`decidir.por_discord()`)— fallaban con la primera persona nueva. Apareció enganchando a
+    RT y a SOL. `pendientes._poner()` ya lo resolvía así para su hoja; ahora lo hace el escritor de todas."""
+    hoja, ultima = _fin_de(a1)
+    if not hoja or not ultima:
+        return False
+    props = _pedir('GET', '?fields=sheets.properties')
+    p = next((x['properties'] for x in props.get('sheets') or [] if x['properties'].get('title') == hoja), None)
+    if not p:
+        return False
+    tiene = (p.get('gridProperties') or {}).get('rowCount', 0)
+    if ultima <= tiene:
+        return False
+    _pedir('POST', ':batchUpdate', json={'requests': [{'appendDimension': {
+        'sheetId': p['sheetId'], 'dimension': 'ROWS', 'length': ultima - tiene + 200}}]})
+    print('   ↕️ «%s» tenía %d filas: le agregué %d' % (hoja, tiene, ultima - tiene + 200))
+    return True
+
+
 def poner(a1, filas):
     """Escribe un rango y **comprueba leyendo** que quedó lo que se mandó.
 
@@ -143,8 +177,15 @@ def poner(a1, filas):
     archivo en vez de confiar en que el navegador respondió.
     """
     # por `_pedir()`: un 429 es «esperá», no «falló»
-    _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(a1),
-           json={'values': filas})
+    try:
+        _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(a1),
+               json={'values': filas})
+    except RuntimeError as e:
+        # ↕️ el rango se pasa del final de la hoja: se agranda y se vuelve a escribir (ver `_agrandar()`)
+        if 'exceeds grid limits' not in str(e) or not _agrandar(a1):
+            raise
+        _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(a1),
+               json={'values': filas})
     leido = _pedir('GET', '/values/%s' % requests.utils.quote(a1)).get('values', [])
     malas = []
     for i, esperada in enumerate(filas):
@@ -322,7 +363,26 @@ def probar():
     print('')
 
 
+def _self_check():
+    """Lo que se puede probar sin la planilla: leer la hoja y la última fila de un rango."""
+    casos = [("'Lista de Raperos'!A1001:J1001", ('Lista de Raperos', 1001)),
+             ('Log!A5:E7', ('Log', 7)),
+             ("'Hoja de Juan''s'!B2", ("Hoja de Juan's", 2)),
+             ('Config!T13:W13', ('Config', 13)),
+             ("'Lista de Raperos'!A:J", ('Lista de Raperos', 0))]
+    mal = 0
+    print('\n  escribir.py — self-check\n')
+    for a1, esperado in casos:
+        r = _fin_de(a1)
+        mal += r != esperado
+        print('   %s %-34s -> %r' % ('ok' if r == esperado else '🔴', a1, r))
+    print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
+    return 1 if mal else 0
+
+
 def main():
+    if '--auto' in sys.argv:
+        return _self_check()
     if '--probar' in sys.argv:
         return probar()
     if '--ver' in sys.argv:
@@ -331,4 +391,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main() or 0)
