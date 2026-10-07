@@ -3220,6 +3220,15 @@ def main():
                 for h in g['llaves']:
                     if h.get('msg_id'):
                         nombres_nuevos[str(h['msg_id'])] = _r
+        # 🔴 EL NOMBRE DE UN 5 VIDAS TAMBIÉN SE GUARDA (07/10/2026). `nombre_vidas()` lo saca del anuncio a esa hora y,
+        # sin anuncio, de la hora: la corrida de las 11:33 AM leyó la tanda de FFA de las 7:57 sin su anuncio y la cargó
+        # como «5 VIDAS 07:57» (#420); la de las 11:57 ya lo tenía y la cargó OTRA VEZ como «MAÑANA DE LLUVIA VOL 1»
+        # (#421). El nombre es un tercio de la identidad: el primero que se le da, queda
+        if not _ya:
+            for h in g['llaves']:
+                if h.get('vidas') and h.get('msg_id'):
+                    nombres_nuevos[str(h['msg_id'])] = {'nombre': nom, 'anuncio': '', 'autor_h': '',
+                                                        'sv': codigo_servidor(h.get('guild'))[0]}
         if inferido is not None or nom == '(sin titulo)':
             sin_titulo.append((nom, codigo_servidor((g['llaves'] or [{}])[0].get('guild'))[0], fec, por_hora,
                                inferido is not None))

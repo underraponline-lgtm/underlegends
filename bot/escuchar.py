@@ -2750,6 +2750,8 @@ STAFF = re.compile(r'staff|moderat|admin|organiz', re.I)  # 🏛️ y «organiz�
 TANDA_MIN = 45
 #: las vidas de cada uno: el formato que Dlx describió
 N_VIDAS = 5
+#: qué parte de las batallas seguidas tiene que compartir a alguien para ser un formato de vidas: ver `_vidas_de_tanda()`
+VIDAS_SIGUE = 0.6
 #: cuántas horas hacia atrás se leen, y cuántos mensajes como mucho
 VER_HORAS = 36
 VER_TOPE = 300
@@ -2824,6 +2826,15 @@ def _vidas_de_tanda(T, n_vidas=N_VIDAS):
         pares[k] = i
     n = len(gente)
     if not es_vidas or n > 8:
+        return None
+    # 🔴 Y EL QUE GANA SE QUEDA (07/10/2026). FFA votó la MAÑANA DE LLUVIA VOL 1 —una llave de 8, ya cargada como
+    # #419— en #votaciones, y un título mal escrito («JUPITER vs RAYO» en cuartos, que era contra Majiztral) repitió la
+    # pareja de la semi: se leyó como un 5 vidas y se cargó dos veces más (#420 y #421). En un 5 vidas casi todas las
+    # batallas seguidas comparten a alguien —el SNAKE ARENA VOL. 2, 23 de 23—; en una llave votada ronda por ronda casi
+    # ninguna —ésa, 2 de 7—. Debajo de `VIDAS_SIGUE` no es un 5 vidas: un título equivocado no hace un formato
+    seguidas = sum(1 for x, y in zip(bs, bs[1:])
+                   if {norm(x['a']), norm(x['b'])} & {norm(y['a']), norm(y['b'])})
+    if seguidas < VIDAS_SIGUE * (len(bs) - 1):
         return None
     for i, x in enumerate(bs):
         va = sum(1 for v in x['votos'].values() if v == 'a')
@@ -4205,6 +4216,14 @@ def _check_cadencia():
             ('y la copia es el evento armado, sin los mensajes ni los jueces',
              '"j1"' not in _copia and '**ANA**' not in _copia and '"ANA"' in _copia),
         ]
+        # 🔴 una llave votada ronda por ronda, con un título mal escrito que repite una pareja, NO es un 5 vidas: la
+        # MAÑANA DE LLUVIA VOL 1 de FFA (07/10/2026), tal cual quedó en #votaciones
+        _ll = [('JUPITER', 'RAYO', 'a'), ('SCOT', 'ZA', 'b'), ('TROT', 'ALDRE', 'b'), ('PROMETHEUS BIB', 'RAYO', 'b'),
+               ('JUPITER', 'RAYO', 'a'), ('ZA', 'ALDRE', 'a'), ('RAYO', 'ALDRE', 'a'), ('ZA', 'JUPITER', 'a')]
+        _T = {'id': 't', 'canal': 'c', 'sv': 'FFA', 'g': 'g', 'pub': 0, 'ed': 0,
+              'bs': [{'a': a, 'b': b, 'votos': {'j1': v}, 'id': str(i)} for i, (a, b, v) in enumerate(_ll)]}
+        casos.append(('una llave votada con un título mal escrito no es un 5 vidas: el que gana no se queda',
+                      _vidas_de_tanda(_T) is None))
         _a = {'id': '1', 'pub': 0, 'batallas': [[['A', 'B'], 'A', '', '10'], [['A', 'C'], 'A', '', '11']]}
         _b = {'id': '2', 'pub': 0, 'batallas': [[['A', 'C'], 'A', '', '11']]}
         _c = {'id': '3', 'pub': 0, 'batallas': [[['X', 'Y'], 'X', '', '20']]}

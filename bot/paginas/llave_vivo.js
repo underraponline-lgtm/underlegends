@@ -1011,6 +1011,15 @@
     });
     var n = Object.keys(gente).length;
     if (!vidas || n > 8) return null;
+    // 🔴 Y EL QUE GANA SE QUEDA (07/10/2026): una llave votada ronda por ronda con un título mal escrito repetía una
+    // pareja y se leía como 5 vidas. En un 5 vidas casi todas las batallas seguidas comparten a alguien; en una llave
+    // casi ninguna. La misma regla que `escuchar._vidas_de_tanda()` (VIDAS_SIGUE = 0.6)
+    var seguidas = 0;
+    for (var s = 1; s < bs.length; s++) {
+      var antes = [norm(bs[s - 1].a), norm(bs[s - 1].b)];
+      if (antes.indexOf(norm(bs[s].a)) >= 0 || antes.indexOf(norm(bs[s].b)) >= 0) seguidas++;
+    }
+    if (seguidas < 0.6 * (bs.length - 1)) return null;
     bs.forEach(function (x, i) {
       var va = 0, vb = 0;
       Object.keys(x.votos).forEach(function (j) { if (x.votos[j] === 'a') va++; else vb++; });

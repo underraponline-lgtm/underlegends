@@ -204,6 +204,12 @@ ok('«DELUXE 🇦🇷» y «🇦🇷 DELUXE» son la misma persona: un solo nomb
   Lv.length === 1 && Lv[0].participantes === 5 && bv[6][0][0] === bv[0][0][0], js(bv[6]));
 ok('una llave no es un 5 vidas: la réplica va seguida', LV.veredictos([].concat(
   bat('A', 'B', ['A', 'B', '']), bat('A', 'B', ['A', 'A', '']), bat('A', 'C', ['C', 'C', '']))).length === 0);
+// 🔴 la MAÑANA DE LLUVIA VOL 1 de FFA (07/10/2026): una llave votada ronda por ronda, con un título mal escrito
+// («JUPITER vs RAYO» en cuartos) que repite la pareja de la semi. El que gana no se queda: no es un 5 vidas
+ok('una llave votada con un título mal escrito no es un 5 vidas', LV.veredictos([].concat(
+  bat('JUPITER', 'RAYO', ['JUPITER']), bat('SCOT', 'ZA', ['ZA']), bat('TROT', 'ALDRE', ['ALDRE']),
+  bat('PROMETHEUS', 'RAYO', ['RAYO']), bat('JUPITER', 'RAYO', ['JUPITER']), bat('ZA', 'ALDRE', ['ZA']),
+  bat('RAYO', 'ALDRE', ['RAYO']), bat('ZA', 'JUPITER', ['ZA']))).length === 0);
 
 // 🔑 EL CONTRATO CON PYTHON: `escuchar.veredictos()` carga los 5 vidas en el
 // ciclo (Dlx, 28/09/2026: «A y b»), así que la página tiene que armar LAS
