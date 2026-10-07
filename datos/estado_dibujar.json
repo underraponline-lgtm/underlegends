@@ -1,75 +1,75 @@
 {
  "v": 1,
- "cuando": "2026-10-07T05:54:12Z",
+ "cuando": "2026-10-07T06:21:24Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1085.4,
+ "dur_s": 1281.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 7.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.5
+   "s": 2.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.1
+   "s": 23.2
   },
   {
    "n": "5",
    "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 1012.4
+   "s": 1200.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.7
+   "s": 6.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 32.2
+   "s": 39.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "416",
-  "nombre": "PRITTY FREE",
+  "n": "418",
+  "nombre": "WETTSIDDEE",
   "sv": "FFA",
-  "dia": "2026-10-06"
+  "dia": "2026-10-07"
  },
  "cuotas": {
   "kv": {
-   "write": 223,
-   "read": 22821
+   "write": 238,
+   "read": 24275
   },
   "objeto": {
-   "leidas": 692044,
-   "escritas": 10509,
-   "pedidos": 1822
+   "leidas": 736121,
+   "escritas": 10856,
+   "pedidos": 1885
   },
   "worker": {
-   "pedidos": 4419,
+   "pedidos": 4420,
    "errores": 0,
-   "sub": 4117,
+   "sub": 4118,
    "p50_ms": 1.01,
    "p99_ms": 5.64
   },
   "r2": {
-   "objetos": 3517,
-   "gb": 0.394,
-   "ts": 1791310402
+   "objetos": 3594,
+   "gb": 0.402,
+   "ts": 1791354089
   }
  }
 }
