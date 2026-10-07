@@ -12,6 +12,8 @@ import { Cara, accion } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 // 🎟️ su CSS viene con este pedazo y no con el paquete de todos (ver pase.css)
 import ESTILO from './pase.css?inline';
+// 🎟️ la pista dibujada, arriba en lo negro (Dlx, 07/10/2026: «ponlo arriba de todo en la parte del fondo negro»)
+import { PistaGrafica } from './pase_pista.jsx';
 
 function Caja({ liga, dc, P, cfg }) {
   const dra = (liga.svs && liga.svs.DRA) || {};
@@ -113,29 +115,6 @@ function Tareas({ titulo, nota, lista, miembro }) {
   );
 }
 
-function Pista({ P, cfg }) {
-  const ps = cfg.premios || [];
-  if (!ps.length) return null;
-  const miembro = !!(P && P.miembro);
-  const n = (miembro && P.nivel) || 0;
-  const u = cfg.umbrales || [];
-  return (
-    <>
-      <ol className="pa-pista" aria-label="Los niveles del Pase y lo que da cada uno">
-        {ps.map((p) => (
-          <li key={p[0]} className={[p[0] <= n ? 'pa-ya' : '', p[2] ? 'pa-esp' : '', miembro && p[0] === n + 1 ? 'pa-prox' : ''].join(' ').trim() || undefined}>
-            <b>{p[0]}</b>
-            {p[2] ? <small className="pa-que">{p[2] === 'color' ? 'Nombre dorado' : p[2] === 'tarjeta' ? 'Tu ' + p[3] : p[3]}</small> : null}
-            <small>+{num(p[1])}</small>
-            {u[p[0] - 1] ? <small className="pa-u">{num(u[p[0] - 1])} XP</small> : null}
-          </li>
-        ))}
-      </ol>
-      {cfg.cola ? <p className="ti-nota pa-nota">Después del {ps.length}: cada {num(cfg.cola[0])} XP que sumes, {num(cfg.cola[1])} Puntos de Tienda más.</p> : null}
-    </>
-  );
-}
-
 // 🏛️ EL SALÓN DEL PASE (Dlx, 06/10/2026: «4. B»): los que lo completaron, en el orden en que llegaron. Por clave de
 // perfil; quien no está en la tabla no sale, pero su puesto se respeta. Sin nadie todavía, no se dibuja
 function Salon({ liga, lista, temp }) {
@@ -190,9 +169,12 @@ export function Pase({ liga, dc }) {
           </div>
           <Caja liga={liga} dc={dc} P={dc ? P : null} cfg={cfg} />
         </section>
+        {/* 🎟️ los niveles, en lo negro y debajo del título: es lo que el Pase da, y abajo se perdía después de las Tareas */}
+        <div className="pa-niveles">
+          <PistaGrafica P={dc ? P : null} cfg={cfg} />
+        </div>
       </div>
-      {/* las Tareas a dos columnas —hoy y la semana | la temporada, que son parecidas de largo— y los niveles abajo, a
-          todo el ancho, como la pista de Brawl Stars: con los niveles al costado quedaba un hueco grande debajo */}
+      {/* las Tareas a dos columnas —hoy y la semana | la temporada, que son parecidas de largo— */}
       <section className="sec pa-sec">
         <div className="sec-t"><h2>Tus Tareas</h2></div>
         <div className="pa-dos">
@@ -207,10 +189,6 @@ export function Pase({ liga, dc }) {
           </div>
         </div>
         <p className="ti-nota pa-nota">Se cumplen solas: el Pase se entera de lo que hacés en la página, en el bot y en los eventos. Las Tareas no son las Misiones: ésas son para todos y suman a la Temporada.</p>
-      </section>
-      <section className="sec pa-sec">
-        <div className="sec-t"><h2>Los niveles</h2>{miembro ? <span className="ti-hasta">vas en el {tuyo.nivel}</span> : null}</div>
-        <Pista P={dc ? P : null} cfg={cfg} />
       </section>
       <Salon liga={liga} lista={pub && pub.salon && pub.salon[temp]} temp={temp} />
     </>

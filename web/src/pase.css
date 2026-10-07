@@ -24,18 +24,6 @@
 .pa-acc{display:flex;flex-wrap:wrap;gap:8px}
 .pa-tareas .pa-d{font:500 13px/1.35 Archivo,sans-serif;letter-spacing:0}
 .pa-nota{margin-top:10px}
-.pa-pista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.pa-pista li{display:grid;gap:5px;align-content:start;min-width:0;min-height:62px;padding:8px 7px;border:2px solid var(--linea);background:var(--fondo)}
-.pa-pista b{font:900 19px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums}
-.pa-pista small{font:700 9.5px/1.25 "Space Mono",monospace;color:var(--gris);overflow-wrap:anywhere}
-/* ⚠️ `pa-ya`, `pa-esp` y `pa-prox`, no `si`/`sig`: `.sig` es una clase global del prototipo (estilo.css) */
-.pa-pista .pa-que{color:var(--tinta);font-size:10px}
-.pa-pista li.pa-esp{border-color:#F5C542}
-.pa-pista li.pa-ya{background:var(--inv);border-color:var(--inv);color:var(--inv-tinta)}
-.pa-pista li.pa-ya small{color:var(--inv-tinta);opacity:.75}
-.pa-pista li.pa-ya .pa-que{opacity:1}
-.pa-pista li.pa-ya.pa-esp{box-shadow:inset 0 -4px 0 #F5C542}
-.pa-pista li.pa-prox{border-style:dashed;border-color:var(--magenta)}
 /* ── 🎟️ CON XP (06/10/2026): lo que llevás del nivel, las tres listas de Tareas (hoy, la semana y la temporada), la XP
    de cada nivel en la pista y el Salón del Pase. La barra de la XP es dorada: el dorado es el del Pase ── */
 .pa-xp{display:grid;gap:6px}
@@ -46,7 +34,6 @@
 .pa-col{display:grid;gap:14px;align-content:start;min-width:0}
 .pa-dos{display:grid;gap:14px}
 .pa-tareas .mis-pts small{display:block;margin-top:3px;font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
-.pa-pista .pa-u{font-size:9px;opacity:.7}
 .pa-salon{list-style:none;margin:0;padding:0;display:grid;gap:0 28px}
 .pa-salon li{display:grid;grid-template-columns:34px 36px minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--suave)}
 .pa-sp{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums}
@@ -56,7 +43,85 @@
 @media (min-width: 900px){
   .app .pa-caja{width:340px}
   .app .pa-dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
-  /* a todo el ancho, de a diez: tres filas, como una pista */
-  .app .pa-pista{grid-template-columns:repeat(10,minmax(0,1fr))}
   .app .pa-salon{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* ── 🎟️ LA PISTA DIBUJADA (`pase_pista.jsx`, 07/10/2026, preview con `lg:prev-pase`). Dlx: «como Brawl Stars, que cada
+   nivel tiene su [premio]… en vez de simples cuadrados». Una tira oscura que se desliza de costado: arriba la carta de
+   cada nivel con su premio dibujado, abajo el riel dorado que se llena hasta donde vas. Sin degradés ni radios de más
+   de 4 px en la caja: el volumen vive en los dibujos ── */
+.pg{display:grid;gap:12px;padding:14px 0 12px;border:2px solid var(--esc-tinta);background:#0E0E10;color:#F6F6F6;min-width:0}
+.pg-cab{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px}
+.pg-tag{font:700 11px/1 "Space Mono",monospace;letter-spacing:.12em;color:#F5C542}
+.pg-flechas{display:flex;gap:6px}
+.pg-flechas button{width:36px;height:36px;display:grid;place-items:center;padding:0;border:2px solid #2A2A2C;border-radius:2px;
+  background:#141416;color:#F6F6F6;font:900 22px/1 Archivo,sans-serif;cursor:pointer}
+.pg-flechas button:hover:not(:disabled){border-color:#F5C542;color:#F5C542}
+.pg-flechas button:disabled{opacity:.3;cursor:default}
+.pg-pista{list-style:none;margin:0;padding:12px 14px 6px;display:flex;overflow-x:auto;scroll-snap-type:x proximity;
+  scroll-padding:0 14px;scrollbar-width:thin;scrollbar-color:#2A2A2C transparent;overscroll-behavior-x:contain}
+.pg-n{flex:0 0 128px;display:grid;grid-template-rows:auto 28px auto;gap:8px;justify-items:stretch;align-content:start;scroll-snap-align:center;min-width:0}
+.pg-carta{position:relative;display:grid;grid-template-rows:1fr auto;justify-items:center;gap:6px;height:172px;margin:0 4px;
+  padding:16px 6px 10px;border:2px solid #2A2A2C;border-radius:4px;background:#17171A;box-shadow:inset 0 -5px 0 rgba(0,0,0,.35)}
+.pg-arte{display:grid;place-items:center;min-height:0}
+.pg-arte svg{display:block;width:86px;height:86px}
+.pg-texto{display:grid;gap:3px;justify-items:center;text-align:center}
+.pg-texto b{font:800 12px/1.2 Archivo,sans-serif;color:#F6F6F6;text-wrap:balance}
+.pg-tienda{display:inline-flex;align-items:center;gap:5px;font:700 11.5px/1 "Space Mono",monospace;color:#F5C542;font-variant-numeric:tabular-nums}
+.pg-tienda i{width:9px;height:9px;border-radius:50%;background:#F5C542;box-shadow:inset 0 -2px 0 #B07C0A}
+/* los premios especiales: el color del premio en el borde y un fondo de su tono */
+.pg-tarjeta .pg-carta{border-color:#E41373;background:#24081A}
+.pg-bronce .pg-carta{border-color:#B8692E;background:#22140A}
+.pg-plata .pg-carta{border-color:#AEB5BF;background:#181B20}
+.pg-oro .pg-carta,.pg-color .pg-carta{border-color:#F5C542;background:#241B05}
+.pg-titulo .pg-carta{border-color:#7E5CF0;background:#160F2E}
+.pg-esp .pg-arte svg{width:96px;height:96px}
+/* el riel: un tramo por nivel, pegados, y el número en su nodo */
+.pg-riel{position:relative;height:10px;align-self:center;background:#2A2A2C}
+.pg-riel>i{position:absolute;inset:0 auto 0 0;background:#F5C542}
+.pg-nodo{position:absolute;left:50%;top:50%;width:28px;height:28px;display:grid;place-items:center;transform:translate(-50%,-50%);
+  border:2px solid #0E0E10;border-radius:2px;background:#2A2A2C;color:#B9B9BE;font:900 13px/1 Archivo,sans-serif;font-stretch:120%;
+  font-variant-numeric:tabular-nums}
+.pg-esp .pg-nodo{background:#3A3A3E;color:#F6F6F6}
+.pg-xp{text-align:center;font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.04em;color:#7E7E86}
+/* ganado: el nodo dorado, el premio con su tilde */
+.pg-ya .pg-nodo{background:#F5C542;color:#0E0E10}
+.pg-ya .pg-arte{opacity:.5}
+.pg-ya .pg-carta{background:#101012;border-color:#3A3A3E}
+.pg-ya.pg-esp .pg-carta{border-color:#6B5520}
+.pg-check{position:absolute;top:8px;right:8px;z-index:1;width:24px;height:24px;display:grid;place-items:center;border-radius:50%;
+  background:#F5C542;color:#0E0E10;font:900 14px/1 Archivo,sans-serif}
+/* el siguiente: magenta, con la cinta arriba */
+.pg-sig .pg-carta{border-color:#E41373;box-shadow:0 0 0 2px #E41373,inset 0 -5px 0 rgba(0,0,0,.35)}
+.pg-cinta{position:absolute;top:-2px;left:-2px;right:-2px;padding:4px 0;border-radius:4px 4px 0 0;background:#E41373;color:#FFF;
+  font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.14em;text-align:center}
+.pg-sig .pg-nodo{background:#E41373;color:#FFF;animation:pg-late 1.6s ease-in-out infinite}
+@keyframes pg-late{50%{box-shadow:0 0 0 5px rgba(228,19,115,.35)}}
+@media (prefers-reduced-motion: reduce){.pg-sig .pg-nodo{animation:none}}
+/* el Salón, después del último */
+.pg-salon{flex-basis:144px}
+.pg-salon .pg-carta{border-color:#F5C542;background:#241B05;box-shadow:0 0 0 2px #3A2E0A,inset 0 -5px 0 rgba(0,0,0,.35)}
+.pg-salon .pg-arte svg{width:96px;height:96px}
+.pg-salon .pg-tienda{color:#B9B9BE}
+.pg-salon .pg-riel{background:transparent}
+.pg-salon .pg-nodo{background:#F5C542;color:#0E0E10}
+.pg-nota{margin:0;padding:0 14px;font:700 11px/1.4 "Space Mono",monospace;color:#9A9AA0}
+@media (max-width: 600px){
+  .pg-n{flex-basis:112px}
+  .pg-salon{flex-basis:128px}
+  .pg-carta{height:156px;padding-top:14px}
+  .pg-arte svg{width:72px;height:72px}
+  .pg-esp .pg-arte svg,.pg-salon .pg-arte svg{width:82px;height:82px}
+}
+/* ── en lo negro de arriba (07/10/2026): sin caja propia, así se ven los círculos de la escena detrás; las flechas
+   más grandes y también en el celular (Dlx: «no olvides las flechas para ir a la siguiente») ── */
+.pa-niveles{padding:0 16px 26px}
+.pa-niveles .pg{padding:0;border:0;background:transparent;gap:10px}
+.pa-niveles .pg-cab,.pa-niveles .pg-nota{padding:0}
+.pa-niveles .pg-pista{padding:12px 0 8px;scroll-padding:0}
+.pa-niveles .pg-tag{font-size:12px}
+.pa-niveles .pg-flechas button{width:44px;height:44px;border-color:#3A3A3E;background:#0E0E10;font-size:26px}
+.pa-niveles .pg-nota{color:#B9B9BE}
+@media (min-width: 900px){
+  .app .pa-niveles{padding:0 var(--gut) 40px}
+  .app .pa-hero{padding-bottom:28px}
 }

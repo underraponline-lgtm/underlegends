@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.50",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T13:20:00-04:00",
+   "titulo": "Los niveles del Pase, dibujados",
+   "items": [
+    "🎟️ **Cada nivel del Pase muestra su premio dibujado**: las monedas de la Tienda, tu tarjeta, las medallas de bronce, plata y oro, los títulos, tu nombre en dorado y el Salón del Pase al final.",
+    "⬆️ **Los niveles están arriba de todo**, debajo del título, con una barra que se llena hasta donde vas. Se deslizan de costado, con flechas también en el celular, y abren en tu nivel."
+   ]
+  },
+  {
    "version": "2.49",
    "dia": "2026-10-06",
    "cuando": "2026-10-06T23:15:00-04:00",
