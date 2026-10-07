@@ -339,7 +339,9 @@
 },
 "rt": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "riferian": {
 "rg": "",
@@ -576,7 +578,9 @@
 },
 "sol": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "jupiter": {
 "rg": "",
@@ -4562,6 +4566,22 @@
 ],
 "rg": "B",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T03:41:24Z",
+"quien": [
+"RT"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-07T03:41:24Z",
+"quien": [
+"SOL"
+],
+"carta": "servidor"
 }
 ]
 }
