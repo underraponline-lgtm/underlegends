@@ -436,13 +436,6 @@
 "temporada"
 ]
 },
-"riferian": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "nxuz": {
 "rg": "",
 "c": [
@@ -4119,22 +4112,6 @@
 "Colesito"
 ],
 "carta": "pais"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T16:39:36Z",
-"quien": [
-"Riferian"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T16:39:36Z",
-"quien": [
-"Riferian"
-],
-"carta": "temporada"
 },
 {
 "tipo": "tarjeta",
