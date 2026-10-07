@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-07T16:29:33Z",
+ "cuando": "2026-10-07T18:22:54Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 107.1,
+ "dur_s": 1469.5,
  "pasos": [
   {
    "n": "2f",
@@ -15,61 +15,61 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.6
+   "s": 2.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.1
+   "s": 306.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 4 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 32.7
+   "s": 1112.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.8
+   "s": 5.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 41.6
+   "s": 35.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "421",
+  "n": "419",
   "nombre": "MAÑANA DE LLUVIA VOL 1",
   "sv": "FFA",
   "dia": "2026-10-07"
  },
  "cuotas": {
   "kv": {
-   "write": 288,
-   "read": 30702
+   "write": 307,
+   "read": 34462
   },
   "objeto": {
-   "leidas": 886707,
-   "escritas": 14839,
-   "pedidos": 2945
+   "leidas": 1082176,
+   "escritas": 16712,
+   "pedidos": 4244
   },
   "worker": {
-   "pedidos": 4659,
+   "pedidos": 5595,
    "errores": 0,
-   "sub": 4364,
+   "sub": 5355,
    "p50_ms": 1.01,
-   "p99_ms": 5.74
+   "p99_ms": 5.42
   },
   "r2": {
-   "objetos": 3594,
-   "gb": 0.402,
-   "ts": 1791354089
+   "objetos": 3609,
+   "gb": 0.403,
+   "ts": 1791397378
   }
  }
 }
