@@ -624,6 +624,19 @@
           // el equipo partido en dos renglones, y el nombre en el de abajo
           if (g.length !== 1 && camp2 && /[+&]$/.test(camp)) g = campeonDe(camp + ' ' + camp2, b);
           if (g.length !== 1 && camp2) g = campeonDe(camp2, b);
+          // 🔑 «CAMPEÓN: TEAM ANDRES» (`escuchar.equipo_de_uno()`, DDF, CIUDAD GÓTICA): el lado-equipo que tiene a esa
+          // persona, si lo tiene uno solo
+          if (g.length !== 1) {
+            var mt = /^\s*(?:TEAM|EQUIPO)\s+(?:DEL?\s+)?(.+)$/i.exec(String(camp || '').replace(/\*\*|__|~~|\|\|/g, '').replace(/^[\s*`:]+|[\s*`]+$/g, ''));
+            var qt = mt ? norm(mt[1].replace(HISTORIA, '')) : '';
+            if (qt) {
+              var lt = b.filter(function (s) {
+                var ms = String(s).replace(HISTORIA, '').split(/[+&]/).filter(function (m) { return norm(m); });
+                return ms.length > 1 && ms.some(function (m) { return norm(m) === qt; });
+              });
+              if (lt.length === 1) g = lt;
+            }
+          }
           // 🔑 `escuchar.resolver()`: si el campeón no engancha —DESGRACIAS EN
           // TOKYO VOL 11 dice `CAMPEÓN: JOVEN ALA` con el lado `PRR`, dos
           // alias de Hassan—, el SUB-CAMPEÓN lo dice. Sólo con dos lados, sólo

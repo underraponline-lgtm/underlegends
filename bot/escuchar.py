@@ -1402,6 +1402,23 @@ def _mismos_integrantes(a, b, corte=0.85):
     return True
 
 
+#: «TEAM ANDRES», «EQUIPO DE MCO»: el equipo nombrado por uno de sus integrantes
+TEAM_DE = re.compile(r'^\s*(?:TEAM|EQUIPO)\s+(?:DE(?:L)?\s+)?(.+)$', re.I)
+
+
+def equipo_de_uno(linea, b):
+    """El lado-equipo de `b` que tiene a la persona de «TEAM X» (`linea`), si lo tiene uno solo; si no, `None`.
+
+    Ver la línea CAMPEÓN en `resolver()`: DIMENSIÓN DEL FREESTYLE escribe `CAMPEÓN : TEAM ANDRES🇨🇱🇨🇱🇲🇽` contra
+    el lado `LEONAR-T + CRONOX + ANDRES`. Las banderas del final son las del equipo, no un nombre."""
+    m = TEAM_DE.match(MENCION.sub('', MARCAS.sub('', linea or '')).strip(' *`:'))
+    quien = norm(HISTORIA.sub('', m.group(1))) if m else ''
+    if not quien:
+        return None
+    lados = [n for n in b if _miembros(n) and any(norm(x) == quien for x in _miembros(n))]
+    return lados[0] if len(lados) == 1 else None
+
+
 def _miembros(lado):
     """Los integrantes de un lado-equipo, como se escribieron: `A + B` -> [A, B].
 
@@ -1918,6 +1935,14 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
                                                   if norm(w)), _ms)
                     if '+' in _eq:
                         g = next((n for n in b if _equipo(n) == _equipo(_eq)), None)
+                # 🔑 EL EQUIPO NOMBRADO POR UNO DE LOS SUYOS (DIMENSIÓN DEL FREESTYLE, CIUDAD GÓTICA, 27/09/2026):
+                # `CAMPEÓN : TEAM ANDRES🇨🇱🇨🇱🇲🇽` contra el lado `LEONAR-T + CRONOX + ANDRES`. «TEAM X» es el equipo
+                # de X: gana el lado que lo tiene, y sólo si lo tiene uno solo. Sin esto la final quedaba sin campeón y
+                # el evento entero en Pendientes (Cronox, 08/10/2026: «yo tengo un 1er lugar en Dimensión»)
+                if g is None:
+                    g = equipo_de_uno(camp, b)
+                    if g is not None:
+                        pq = 'línea CAMPEÓN, el equipo de uno de los suyos («TEAM …»)'
                 if g is None and camp2:
                     g = _parecido(camp2, b) or next(
                         (n for n in b
@@ -3609,6 +3634,21 @@ def _self_check():
                           '[FINAL]\n[A] 🆚 [C]', True),
     ]
     mal = 0
+    # 🔑 «CAMPEÓN: TEAM ANDRES» (DDF, CIUDAD GÓTICA, 27/09/2026; Cronox, 08/10/2026): ver `equipo_de_uno()`
+    print('\n  el equipo campeón nombrado por uno de los suyos')
+    gotica = ('# CIUDAD GOTICA\n  SEMIFINAL\n⌞ANDRES🇨🇱⌝+ ⌞NEXUZ🇵🇪⌝ 🆚  ⌞CRONOX🇨🇱⌝+ ⌞LEONAR-T🇲🇽⌝\n'
+              '⌞MR.LABURO🇨🇴⌝+ ⌞RICARDFLEX🇪🇨⌝ 🆚 ⌞MCO🇦🇷⌝+ ⌞MINIBOY🇨🇱⌝\n GRAN - FINAL \n'
+              '⌞LEONAR-T🇲🇽⌝+ ⌞CRONOX🇨🇱⌝+ ⌞ANDRES🇨🇱⌝ 🆚  ⌞MCO🇦🇷⌝+ ⌞MINIBOY🇨🇱⌝+ ⌞MR.LABURO🇨🇴⌝\n'
+              '** `CAMPEÓN`  : TEAM ANDRES🇨🇱🇨🇱🇲🇽**\n**  `SEGUNDO LUGAR`  : TEAM MCO🇦🇷🇨🇱🇨🇴**\n')
+    fin_g = [x for x in resolver(gotica) if x[0] == 'FINAL']
+    for que, ok in [
+        ('«TEAM ANDRES» gana con el lado que tiene a ANDRES',
+         len(fin_g) == 1 and norm(fin_g[0][2] or '') == norm('LEONAR-T + CRONOX + ANDRES')),
+        ('y no si los dos lados lo tienen, ni si no es un equipo',
+         equipo_de_uno('TEAM ZZ', ['ZZ + A', 'ZZ + B']) is None and equipo_de_uno('TEAM ZZ', ['ZZ', 'A + B']) is None),
+    ]:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     # 🏰 LA FASE PREVIA EN OTRO MENSAJE (VALHALLA VOL1, 05/10/2026): ver `con_fase_previa()`
     print('\n  la fase previa en otro mensaje')
     fase = ('🏰 COPA X 🏰\n\nFILTROS\n\n### ⚔️ ENFRENTAMIENTO 1\n* ANA 🇦🇷\n* BEA 🇨🇱\n* CAMI 🇻🇪\n* DORA 🇲🇽\n'
