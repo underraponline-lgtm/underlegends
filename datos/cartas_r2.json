@@ -2886,7 +2886,8 @@
  "nyl": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nyl/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nyl/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nyl/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nyl/sv-ffa.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nyl/temporada.webp"
  },
  "oasis": {
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/oasis/bloq-pais.webp",
