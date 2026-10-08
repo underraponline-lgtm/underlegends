@@ -39,6 +39,11 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "nashei": {
+   "servidor": "2026-10-08",
+   "sv-dra": "2026-10-08",
+   "sv-ffa": "2026-10-08"
+  },
   "nhp": {
    "servidor": "2026-10-07",
    "sv-dra": "2026-10-07",
@@ -71,8 +76,8 @@
    "temporada": "2026-10-07"
   }
  },
- "pasaban": 375,
- "cuando": "2026-10-08T06:56:15Z",
+ "pasaban": 374,
+ "cuando": "2026-10-08T15:26:42Z",
  "borradas": [
   [
    "indigena",

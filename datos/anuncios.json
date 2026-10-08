@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-08T06:54:23+00:00",
+ "cuando": "2026-10-08T15:24:07+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -866,6 +866,26 @@
    "categoria_id": "863207988251852820"
   },
   {
+   "nombre": "SNAKE INSIGNIA",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1557722632873443429",
+   "cuando": "2026-10-08T11:53:36",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "@CANTU",
+   "autor_h": "d38ce51b292fbc64",
+   "cupos_texto": "Ilimitados**  ( Clasis por puntos )",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "JUEVES 20:00 🇦🇷",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "863207988739309600"
+  },
+  {
    "nombre": "Gallos del Under Amateur I",
    "servidor": "SR",
    "canal": "[🏆]eventos",
@@ -1282,26 +1302,6 @@
    "modalidad": "ROYAL RUMBLE",
    "horario": "en 15",
    "fecha": "3",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "FLEIVA FREE",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1541620851307454574",
-   "cuando": "2026-08-25T01:30:52",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@nachonc_",
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "MULTIVERSE(1-4)",
-   "horario": "23 HS 🇦🇷",
-   "fecha": "2",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
    "categoria_id": "863207988739309600"
   },
