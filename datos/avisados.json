@@ -424,7 +424,7 @@
    "Vandu": 14
   },
   "fecha": "07/10",
-  "firma": "3e26352c24b5a33c",
+  "firma": "f02686b0d4a1f34a",
   "msg": "1557481124282892360",
   "nombre": "WETTSIDDEE 2",
   "num": 422,
@@ -756,7 +756,7 @@
    "Vandu": 15
   },
   "fecha": "07/10",
-  "firma": "2474a6bcf7a006c0",
+  "firma": "3be837744ac7d3d3",
   "msg": "1557511326450851895",
   "nombre": "__ DESGRACIAS EN BELLAS ARTES VOL1 __",
   "num": 423,
@@ -980,7 +980,7 @@
    "Zetryko": 2
   },
   "fecha": "07/10",
-  "firma": "e100ddc979e8753b",
+  "firma": "db059690929e4102",
   "msg": "1557548977703092425",
   "nombre": "MORTAL KOMBAT MAPACHE CUP",
   "num": 424,
@@ -1105,28 +1105,18 @@
   "duelos": [
    [
     "Snow",
-    "Erizo 🇻🇪",
+    "CRONOX XCLUSIVO",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "Erizo",
     "Snow"
    ],
    [
     "Prodigy",
-    "Akutagawa🇹🇼",
+    "G8",
     "Prodigy"
-   ],
-   [
-    "Prodigy",
-    "Enkil 🇦🇷",
-    "Prodigy"
-   ],
-   [
-    "PichulaMc",
-    "Colesito",
-    "PichulaMc"
-   ],
-   [
-    "PichulaMc",
-    "Velatz, Armando Faso🇦🇫, Neo",
-    "PichulaMc"
    ],
    [
     "PichulaMc",
@@ -1134,14 +1124,19 @@
     "PichulaMc"
    ],
    [
-    "Oasis",
-    "araya🇦🇷",
-    "Oasis"
+    "PichulaMc",
+    "Colesito",
+    "PichulaMc"
    ],
    [
-    "Oasis",
-    "Elsoolar",
-    "Oasis"
+    "Snow",
+    "PRESAGIO DELUX NEMI",
+    "Snow"
+   ],
+   [
+    "Delux",
+    "Snow",
+    "Delux"
    ],
    [
     "Oasis",
@@ -1149,29 +1144,44 @@
     "Oasis"
    ],
    [
-    "Velatz, Snow, Neo",
-    "Six, Polosport",
-    "Velatz, Snow, Neo"
-   ],
-   [
-    "Cronox, Xclusivo",
-    "Prodigy",
-    "Cronox, Xclusivo"
+    "VELATZ SNOW NEO",
+    "SIX MAILEN",
+    "VELATZ SNOW NEO"
    ],
    [
     "Oasis",
-    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷",
+    "NEMI PRESAGIO DELUX",
     "Oasis"
-   ],
-   [
-    "Velatz, Snow, Neo, praiserizas",
-    "Cronox, Xclusivo",
-    "Velatz, Snow, Neo, praiserizas"
    ],
    [
     "Oasis",
-    "Velatz, Snow, Neo, praiserizas",
+    "Presagio",
     "Oasis"
+   ],
+   [
+    "Oasis",
+    "Nemi",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "PRAISERIZA",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Neo",
+    "Oasis"
+   ],
+   [
+    "PRAISERIZA",
+    "Nemi",
+    "PRAISERIZA"
+   ],
+   [
+    "Six",
+    "PRAISERIZA",
+    "Six"
    ]
   ],
   "ev_antes": {
@@ -1190,11 +1200,11 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "00725e21fe6e001a",
+  "firma": "70977ebf23a3f2ca",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
-  "participantes": 20,
+  "participantes": 21,
   "sello": {
    "Oasis": "1b7f37960de9:c2dd98b0f962"
   },
@@ -1202,24 +1212,19 @@
   "t": "2026-10-08T01:23:49Z",
   "tabla": [
    [
-    "Oasis",
-    "Campeón",
-    10000
-   ],
-   [
-    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷",
+    "NEMI PRESAGIO DELUX",
     "Semifinal",
     5250
    ],
    [
-    "Cronox",
+    "Presagio",
     "Semifinal",
-    2625
+    5250
    ],
    [
-    "Xclusivo",
-    "Semifinal",
-    2625
+    "Oasis",
+    "Campeón",
+    5000
    ],
    [
     "PichulaMc",
@@ -1227,57 +1232,32 @@
     2500
    ],
    [
-    "Prodigy",
+    "PRESAGIO DELUX NEMI",
     "Cuartos",
-    2500
+    1250
    ],
    [
     "Snow",
-    "Subcampeón",
-    1875
-   ],
-   [
-    "praiserizas",
-    "Subcampeón",
-    1875
-   ],
-   [
-    "Velatz",
-    "Subcampeón",
-    1353
-   ],
-   [
-    "Neo",
-    "Subcampeón",
-    1353
-   ],
-   [
-    "Six",
     "Cuartos",
     1250
    ],
    [
-    "Polosport",
+    "SIX MAILEN",
     "Cuartos",
     1250
    ],
    [
-    "Erizo 🇻🇪",
+    "CRONOX XCLUSIVO",
     "Octavos",
     1250
    ],
    [
-    "Akutagawa🇹🇼",
+    "Erizo",
     "Octavos",
     1250
    ],
    [
-    "Enkil 🇦🇷",
-    "Octavos",
-    1250
-   ],
-   [
-    "Colesito",
+    "G8",
     "Octavos",
     1250
    ],
@@ -1287,19 +1267,19 @@
     1250
    ],
    [
-    "araya🇦🇷",
+    "Colesito",
     "Octavos",
     1250
    ],
    [
-    "Elsoolar",
-    "Octavos",
-    1250
+    "Nemi",
+    "Semifinal",
+    656
    ],
    [
-    "Armando Faso🇦🇫",
-    "Octavos",
-    416
+    "PRAISERIZA",
+    "Subcampeón",
+    0
    ]
   ],
   "v": 2

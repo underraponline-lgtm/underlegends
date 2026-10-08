@@ -44,7 +44,7 @@
      "por": [
       {
        "n": "PRAISERIZA",
-       "cobra": 12750
+       "cobra": 12250
       }
      ]
     }
@@ -57,22 +57,10 @@
     "nivel": "B",
     "base": 9000,
     "o": 6,
-    "estado": "cazado",
-    "ev": 1,
-    "fase": "Subcampeón",
-    "valor": 9000,
-    "caza": {
-     "n": 425,
-     "evento": "PRITTY FREE",
-     "sv": "FFA",
-     "t": "2026-10-07T22:58:45Z",
-     "por": [
-      {
-       "n": "Oasis",
-       "cobra": 9000
-      }
-     ]
-    }
+    "estado": "suelto",
+    "ev": 0,
+    "fase": "",
+    "valor": 9000
    },
    {
     "n": "PichulaMc",
@@ -90,7 +78,7 @@
      "n": 425,
      "evento": "PRITTY FREE",
      "sv": "FFA",
-     "t": "2026-10-07T22:58:45Z",
+     "t": "2026-10-07T22:59:54Z",
      "por": [
       {
        "n": "Oasis",
