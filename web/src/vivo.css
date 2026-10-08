@@ -2026,6 +2026,13 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-rl small{font:700 12px/1 "Space Mono",monospace;color:var(--gris)}
 .lk-rl.sub{border-bottom:0;font:700 12px/1 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--gris)}
 
+/* la doble eliminación (`Doble`): la llave de ganadores, la de perdedores y la gran final, una abajo de la otra */
+/* ⚠️ `minmax(0,1fr)`: sin eso cada llave se estiraba a lo ancho de su pista (591 px en un celular de 375) */
+.lk-doble{display:grid;grid-template-columns:minmax(0,1fr);gap:30px}
+.lk-db{min-width:0}
+.lk-db .lk-h{flex-wrap:wrap;row-gap:6px}
+.lk-gf{display:grid;gap:22px;max-width:360px;padding-top:12px}
+
 /* 5 vidas y la nave de funa */
 .lk-vd-t{list-style:none;margin:0 0 20px;padding:0;border-top:2px solid var(--linea)}
 .lk-vd-t li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:2px 10px;padding:6px 0;border-bottom:1px solid var(--suave)}

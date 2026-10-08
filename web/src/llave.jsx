@@ -12,7 +12,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, enlace } from './piezas.jsx';
-import { completar, enOrden, esArbol, jugado } from './arriba.jsx';
+import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { vioVivo, vivoPendiente } from './pase.js';
 
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉', Cuarto: '🎖️' };
@@ -162,7 +162,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan }) {
 // ── EN EL CELULAR: una ronda por pantalla, deslizando, con las pestañas arriba ──
 // 🔴 EL ALTO ES EL DE LA RONDA QUE SE MIRA: con el de la más alta (los Octavos), la Final quedaba con un hueco enorme
 // abajo (Dlx no quiere huecos grandes)
-function Pista({ ctx, rondas, ter, inicial, vale }) {
+function Pista({ ctx, rondas, ter, inicial, vale, copaUlt = true }) {
   const pista = useRef(null);
   const cols = useRef([]);
   const [act, setAct] = useState(inicial);
@@ -231,7 +231,7 @@ function Pista({ ctx, rondas, ter, inicial, vale }) {
       <div className={'lk-pista' + (ctx.sigo ? ' siguiendo' : '')} ref={pista} style={alto ? { height: alto } : undefined}>
         {rondas.map((R, i) => (
           <div key={i} className="lk-col" ref={(el) => { cols.current[i] = el; }} role="tabpanel" aria-label={R.r}>
-            {R.b.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.est(i, j)} copa={i === ult && R.b.length === 1} pasan={ctx.pasan(i)} />)}
+            {R.b.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.est(i, j)} copa={copaUlt && i === ult && R.b.length === 1} pasan={ctx.pasan(i)} />)}
             {i === ult && ter ? (
               <>
                 <h4 className="lk-ter">Tercer puesto</h4>
@@ -248,8 +248,10 @@ function Pista({ ctx, rondas, ter, inicial, vale }) {
 
 // ── EN LA COMPU: el cuadro entero, con sus ramas (`cuadro()` de app.js, con las mismas cuentas) ──
 // ⚠️ EN ESPEJO SÓLO SI SE PUEDE: la final en el medio y una mitad de cada lado pide una final con dos ramas. Si no,
-// de izquierda a derecha. Y lo que no engancha (un walk-in, un revivido) se dibuja igual, en su columna, sin rama
-function Arbol({ ctx, rondas: rs, ter, vale }) {
+// de izquierda a derecha. Y lo que no engancha (un walk-in, un revivido) se dibuja igual, en su columna, sin rama.
+// `plano`: nunca en espejo; `oro`: el campeón del evento (en la doble, la última ronda de una llave no es la final);
+// `copaUlt`: la última ronda lleva la copa
+function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true }) {
   const caja = useRef(null);
   const [ancho, setAncho] = useState(1100);
   useLayoutEffect(() => {
@@ -302,7 +304,7 @@ function Arbol({ ctx, rondas: rs, ter, vale }) {
   // 🔴 Y SÓLO SI ENTRA: una de octavos en espejo son siete columnas, y a 1.333 px los filtros y la otra punta quedaban
   // cortados a los costados. De izquierda a derecha es más alta pero se ve entera, y bajar es lo natural
   const anchoDe = (cols) => Math.floor((ancho + G) / cols - G);
-  const espejo = n >= 3 && rs[n - 1].b.length === 1 && fin.length === 2 && anchoDe(2 * n - 1) >= 150;
+  const espejo = !plano && n >= 3 && rs[n - 1].b.length === 1 && fin.length === 2 && anchoDe(2 * n - 1) >= 150;
   enEspejo.current = espejo;
   const ncol = espejo ? 2 * n - 1 : n;
   const W = Math.max(156, Math.min(232, anchoDe(ncol)));
@@ -326,7 +328,7 @@ function Arbol({ ctx, rondas: rs, ter, vale }) {
   const TOPE = 54;
   const col = (p) => (p.lado === 'd' ? 2 * (n - 1) - p.r : p.r);
   const X = (p) => col(p) * (W + G);
-  const campeon = (rs[n - 1].b[0] || [])[1] || '';
+  const campeon = oro !== undefined ? oro : (rs[n - 1].b[0] || [])[1] || '';
   const conSigo = (b) => !!ctx.sigo && b[0].some((s) => partes(s).some((m) => ctx.idDe(m) === ctx.sigo));
   const cajas = [];
   const lineas = [];
@@ -334,7 +336,7 @@ function Arbol({ ctx, rondas: rs, ter, vale }) {
   Object.keys(pos).forEach((k) => {
     const p = pos[k];
     const b = rs[p.r].b[p.i];
-    const copa = p.r === n - 1 && rs[n - 1].b.length === 1;
+    const copa = copaUlt && p.r === n - 1 && rs[n - 1].b.length === 1;
     const h = alto(b);
     cajas.push(<Batalla key={k} ctx={ctx} b={b} est={ctx.est(p.r, p.i)} copa={copa} altos={altos(b)} pasan={ctx.pasan(p.r)}
       style={{ position: 'absolute', left: X(p), top: Math.round(TOPE + p.y - h / 2), width: W, height: h }} />);
@@ -374,6 +376,40 @@ function Arbol({ ctx, rondas: rs, ter, vale }) {
         <svg width={anchoT} height={altoT} aria-hidden="true">{lineas}</svg>
         {cajas}
       </div>
+    </div>
+  );
+}
+
+// 🔑 LA DOBLE ELIMINACIÓN (Dlx, 08/10/2026: «sí, dale»): la llave de ganadores, la de perdedores y la gran final, una
+// abajo de la otra, cada una con sus rondas. En la compu cada llave es un cuadro de izquierda a derecha —en espejo no:
+// su última ronda no es la final—; en el celular, cada una con sus pestañas. El camino del campeón va en verde en las
+// dos. ⚠️ SIN «AHORA»: las dos llaves se juegan intercaladas y la llave no dice en qué orden
+function Doble({ ctx, d, compu }) {
+  const singan = (rs) => (i, j) => { const b = rs[i] && rs[i].b[j]; return b && ctx.cerrada && !b[1] && b[0].length >= 2 ? 'singan' : ''; };
+  const secs = [
+    ['g', 'Llave de ganadores', 'Quien pierde acá pasa a la de perdedores', d.G, d.valeG, d.iniG],
+    ['p', 'Llave de perdedores', 'Quien pierde acá queda afuera', d.P, d.valeP, d.iniP],
+  ].filter((x) => x[3].length);
+  return (
+    <div className="lk-doble">
+      {secs.map(([k, t, sub, rs, vale, ini]) => {
+        const c = Object.assign({}, ctx, { est: singan(rs), pasan: () => null });
+        return (
+          <div key={k} className={'lk-db ' + k}>
+            <h3 className="lk-h">{t}<small>{sub}</small></h3>
+            {compu ? <Arbol ctx={c} rondas={rs} ter={null} vale={vale} plano oro={d.campeon} copaUlt={false} />
+              : <Pista ctx={c} rondas={rs} ter={null} inicial={ini} vale={vale} copaUlt={false} />}
+          </div>
+        );
+      })}
+      {d.F.length ? (
+        <div className="lk-db f">
+          <h3 className="lk-h">Gran final<small>{'El mejor de cada llave' + (d.ptsF ? ' · 🏆 ' + d.ptsF + ' pts' : '')}</small></h3>
+          <div className="lk-gf">
+            {d.F.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.cerrada && !b[1] && b[0].length >= 2 ? 'singan' : ''} copa={j === d.F.length - 1} />)}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -666,7 +702,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     const cerrada = !L.vivo || !!L.terminada;
     // 🔑 EN VIVO, LA LLAVE COMPLETA: las rondas que faltan y los cruces que no se jugaron, vacíos (`completar()` del
     // escenario), con sus ramas. Sólo si se arma como árbol: si no, cada cruce en el orden en que vino
-    if (!cerrada) {
+    if (!cerrada && !esDoble(prin)) {
       const previas = prin.filter((R) => PREVIAS.includes(R.r));
       const cuadro = prin.filter((R) => !PREVIAS.includes(R.r));
       const todas = completar(cuadro);
@@ -698,6 +734,25 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       const t = v != null ? num(v) + ' pts' : '';
       return i === ult && final && ptsCamp ? (t ? t + ' · ' : '') + '🏆 ' + ptsCamp : t;
     });
+    // 🔑 LA DOBLE: sus dos llaves y la gran final, con sus rondas y sus ramas (`partirDoble()`). La rama sale de quién
+    // ganó: la batalla de la ronda de antes cuyo ganador pelea en ésta. En la de perdedores, el otro lado viene de la
+    // de ganadores y no lleva rama. Los puntos sólo en la de perdedores: ahí quien pierde queda afuera
+    let dob = null;
+    if (esDoble(prin)) {
+      const d = partirDoble(prin);
+      const ramas = (rs) => rs.map((R, k) => ({ r: R.r, b: R.b.map((b) => {
+        const x = b.slice();
+        x[3] = k ? rs[k - 1].b.map((p, j) => (p[1] && b[0].some((s) => comparten(p[1], s)) ? j : -1)).filter((j) => j >= 0) : [];
+        return x;
+      }) }));
+      const G = ramas(d.G);
+      const P = ramas(d.P);
+      const ini = (rs) => { const i = rs.findIndex((R) => R.b.some((b) => !b[1] && b[0].length >= 2)); return !cerrada && i >= 0 ? i : 0; };
+      const gf = d.F[d.F.length - 1];
+      const pc = gf && gf[1] ? miembros(gf[1]).map((m) => ptsM[m]).filter((v) => v != null) : [];
+      dob = { G, P, F: d.F, valeG: G.map(() => ''), valeP: P.map((R) => { const v = valeR(R); return v != null ? num(v) + ' pts' : ''; }),
+        iniG: ini(G), iniP: ini(P), campeon: (gf && gf[1]) || '', ptsF: pc.length ? num(Math.max(...pc)) : '' };
+    }
     // quiénes pasaron de un grupo donde pasan varios: los que aparecen en la ronda siguiente
     const pasanDe = prin.map((R, i) => {
       if (!prin[i + 1] || !R.b.some((b) => /pasan [2-9]/.test(b[2]))) return null;
@@ -725,7 +780,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       if (!nombres[id]) nombres[id] = sinBanderas(m).txt;
     }))));
     (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = sinBanderas(x[0]).txt; });
-    return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final };
+    return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob };
   }, [L, liga, n]);
 
   if (!L) {
@@ -856,11 +911,13 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
           «ahora está muy negro… todo». El escenario negro arriba y el cuadro sobre la piel (`--caja`, el color de lo ya
           jugado, que a Dlx le gusta), con las casillas en blanco encima */}
       <section className="sec lk-sec piel">
-        <div className="sec-t"><h2>{N ? N + ' vidas' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
-        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
+        <div className="sec-t"><h2>{N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
+        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : base.dob ? 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores. '
+            + 'Tocá un nombre y se marca su camino.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
         <Funa ctx={ctx} L={L} />
         {N ? <Vidas ctx={ctx} L={L} N={N} />
           : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)
+            : base.dob ? <Doble ctx={ctx} d={base.dob} compu={compu} />
             : compu ? <Arbol ctx={ctx} rondas={base.prin} ter={base.ter} vale={base.vale} />
               : <Pista ctx={ctx} rondas={base.prin} ter={base.ter} inicial={base.inicial} vale={base.vale} />}
         <Barra ctx={ctx} tb={tb} />

@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.62",
+   "dia": "2026-10-08",
+   "cuando": "2026-10-08T00:39:00-04:00",
+   "titulo": "La doble eliminación, dibujada como doble",
+   "items": [
+    "🏆 **Las llaves de doble eliminación se ven en tres partes**: la llave de ganadores, la de perdedores y la gran final, una abajo de la otra, cada una con sus rondas y sus ramas. En la de perdedores, cada ronda dice cuánto paga quedar afuera ahí, y el camino del campeón va en verde. En el celular, cada llave con sus pestañas.",
+    "💰 **Lo que paga la doble del 9.º al 16.º**: Octavos si ganaste al menos una batalla, R32 si perdiste las dos que jugaste. Así la primera batalla de la llave de perdedores también vale.",
+    "🔧 **Dos errores de la doble, arreglados antes de que se cargara ninguna**: la «Semifinal» de la llave de ganadores se pagaba dos veces, y en una doble de 8 el 7.º y el 8.º cobraban cero (ahora 1.000, la mitad de Cuartos). Y la de 8 ya no dice «14 raperos»."
+   ]
+  },
+  {
    "version": "2.61",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T23:49:00-04:00",

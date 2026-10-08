@@ -618,10 +618,14 @@ const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).joi
 // grupos de tres y los cuartos vacíos—. Sin esto no se veía nada: los filtros no van en el cuadro.
 const PREVIAS = ['Filtros', 'Clasificatorias', 'Preliminares'];
 function CuadroRondas({ ll, previa }) {
-  const rondas = (ll.rondas || []).filter((r) => r.r !== 'Tercer puesto' && (previa || r.r !== 'Filtros'));
+  // la doble, con sus tres partes en orden: «Ganadores · Octavos», «Perdedores · Ronda 1», «Gran final»
+  const d = esDoble(ll.rondas) ? partirDoble(ll.rondas) : null;
+  const rondas = d ? d.G.map((R) => ({ r: 'Ganadores · ' + R.r, b: R.b })).concat(d.P.map((R) => ({ r: 'Perdedores · ' + R.r, b: R.b })),
+    d.F.length ? [{ r: 'Gran final', b: d.F }] : [])
+    : (ll.rondas || []).filter((r) => r.r !== 'Tercer puesto' && (previa || r.r !== 'Filtros'));
   return (
     <>
-      <div className="llave-cab"><span>CUADRO</span><span className="apag">POR RONDAS</span></div>
+      <div className="llave-cab"><span>{d ? 'DOBLE ELIMINACIÓN' : 'CUADRO'}</span><span className="apag">POR RONDAS</span></div>
       <div className="llave-wrap"><div className="llave" style={{ gridTemplateColumns: 'repeat(' + rondas.length + ',150px)' }}>
         {rondas.map((r, ri) => (
           <div className="ronda" key={ri}><h4>{r.r}</h4>
@@ -746,6 +750,49 @@ export function enRondas(todas) {
   return todas.length > out.length ? todas : out;
 }
 
+// 🔑 LA DOBLE ELIMINACIÓN, EN SUS TRES PARTES (Dlx, 08/10/2026: «sí, dale», a dibujarla como doble): la llave de
+// ganadores, la de perdedores y la gran final. El lector junta cada llave en una ronda —«Llave de perdedores» trae
+// todas sus batallas, en el orden de la llave— y FFA escribe la de ganadores por rondas (OCTAVOS, CUARTOS) con su
+// final aparte («Winner's Final» → «Llave de ganadores»). Las rondas que faltan salen de POR DÓNDE APARECE CADA UNO:
+// quien ya peleó en esta ronda, pelea en la siguiente. Funciona con la llave procesada y con la en vivo (`b[0]` de
+// textos o de listas)
+export const esDoble = (rs) => (rs || []).some((R) => /perdedores/i.test(R.r || ''));
+const genteDe = (z) => String(typeof z === 'string' ? z : (z || []).join(',')).split(/[,+&]/)
+  .map((s) => s.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim().toLowerCase()).filter(Boolean);
+function porAparicion(bs) {
+  const out = [];
+  let vistos = null;
+  bs.forEach((b) => {
+    const ms = (b[0] || []).flatMap(genteDe);
+    if (!out.length || ms.some((m) => vistos.has(m))) { out.push([]); vistos = new Set(); }
+    out[out.length - 1].push(b);
+    ms.forEach((m) => vistos.add(m));
+  });
+  return out;
+}
+const DESDE_EL_FIN = ['Final de ganadores', 'Semifinales', 'Cuartos', 'Octavos', 'Dieciseisavos'];
+export function partirDoble(rs) {
+  const G = [];
+  const P = [];
+  const F = [];
+  (rs || []).forEach((R) => {
+    const bs = (R.b || []).filter((b) => (b[0] || []).length);
+    if (!bs.length) return;
+    if (/perdedores/i.test(R.r)) P.push(...bs);
+    else if (/^(gran )?final$/i.test(R.r)) F.push(...bs);
+    else if (/ganadores/i.test(R.r)) porAparicion(bs).forEach((x) => G.push({ r: '', b: x }));
+    else G.push({ r: R.r, b: bs });
+  });
+  G.forEach((R, i) => { if (!R.r) R.r = DESDE_EL_FIN[G.length - 1 - i] || 'Ronda ' + (i + 1); });
+  const ps = porAparicion(P);
+  return {
+    G,
+    // la última de perdedores es su final sólo si ya hay gran final: en vivo puede ser una ronda de dos que se juega
+    P: ps.map((b, i) => ({ r: i === ps.length - 1 && i && b.length === 1 && F.length ? 'Final de perdedores' : 'Ronda ' + (i + 1), b })),
+    F,
+  };
+}
+
 // `lugar` (opcional): el ancho que tiene, medido. Con él la llave LO LLENA —las casillas se estiran hasta 220 y entran
 // hasta cuatro rondas— en vez de quedarse con la medida de la pantalla: en Eventos, en la compu, la llave abierta usaba
 // la mitad de la tarjeta y la otra mitad quedaba en blanco (Dlx, 02/10/2026: «too much white»). Sin `lugar`, como siempre
@@ -780,6 +827,8 @@ function LadoCm({ liga, n, W }) {
 export function CuadroMini({ liga, ll, lugar }) {
   const M0 = useMedida();
   const M = lugar ? medidaPara(lugar) : M0;
+  // la doble no es un árbol: tiene dos llaves y una gran final (`partirDoble()`)
+  if (esDoble(ll.rondas)) return <CuadroRondas ll={ll} />;
   const base = (ll.rondas || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
   let todas = completar(base);
   if (!todas.length && (ll.rondas || []).some((r) => PREVIAS.includes(r.r))) return <CuadroRondas ll={ll} previa />;
@@ -894,6 +943,8 @@ export function momentosLlave(ll) {
   // ⚠️ con la misma vuelta que el cuadro (`CuadroMini`) y la página de la llave: si reacomodar por los ganadores no da un
   // árbol, se usa el orden en que lo escribieron. Sin esto, «Ahora» y «Sigue» salían en otro orden que el del organizador
   // y, con el primer ganador, la vista corta desaparecía (revisión del 04/10/2026)
+  // ⚠️ en la doble no se sabe cuál va: las dos llaves se juegan intercaladas y la llave no dice en qué orden
+  if (esDoble(ll && ll.rondas)) return null;
   const base = ((ll && ll.rondas) || []).filter((r) => !['Tercer puesto', ...PREVIAS].includes(r.r));
   let todas = completar(base);
   if (!esArbol(todas)) todas = enRondas(base);
