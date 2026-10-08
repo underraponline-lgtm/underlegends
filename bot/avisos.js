@@ -1756,18 +1756,33 @@ export const OCR_MODELO = '@cf/meta/llama-4-scout-17b-16e-instruct';
 export const OCR_PEDIDO = 'Copiá TODO el texto que se lee en esta imagen, renglón por renglón y tal cual está escrito '
   + '(mayúsculas, números, horas, fechas, signos). No describas la imagen ni agregues nada tuyo. '
   + 'Si no hay texto, contestá NADA.';
+// 🏆 LA LLAVE QUE ES UNA IMAGEN (Dlx, 07/10/2026: «ya deberías poder reconocer las imágenes, ¿no?»): la IA la copia en
+// el formato que lee `bot/escuchar.py` —las rondas, o las dos llaves de la doble eliminación con «MATCH N: A vs B»— y
+// el ciclo la lee como cualquier otra. Sólo transcribe: quién ganó lo decide el lector por dónde sigue cada uno
+export const OCR_PEDIDO_LLAVE = 'Esta imagen es la llave (bracket) de un torneo. Copiá cada cruce que tenga nombres, '
+  + 'con los nombres EXACTAMENTE como están escritos, en este formato y nada más:\n'
+  + 'el título del torneo en el primer renglón, si se ve;\n'
+  + 'si es de doble eliminación, un renglón «WINNER BRACKET» y abajo «MATCH 1: A vs B» por cada cruce, en orden de '
+  + 'número; después «LOSER BRACKET» con los suyos; después «GRAN FINAL» con el suyo (o los dos, si hay revancha). '
+  + 'Cada MATCH va UNA sola vez: la gran final es la que juegan el que ganó la llave de ganadores y el que ganó la de '
+  + 'perdedores, aunque esté dibujada al lado de otra;\n'
+  + 'si es de eliminación simple, el nombre de cada ronda (OCTAVOS, CUARTOS, SEMIFINALES, FINAL) y abajo «A vs B»;\n'
+  + 'si se ve el campeón, un último renglón «CAMPEÓN: nombre».\n'
+  + 'Un cruce sin nombres no se escribe. Un lado vacío se escribe «?». No inventes nombres ni describas la imagen. '
+  + 'Si no es la llave de un torneo, contestá NADA.';
 
-export async function textoDeImagen(env, buf) {
+export async function textoDeImagen(env, buf, cual = 'afiche') {
   const tipo = tipoImagen(buf);
   if (!tipo) throw new Error('no es una imagen');
+  const llave = cual === 'llave';
   let bin = '';
   for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
   const sal = await env.AI.run(OCR_MODELO, {
     messages: [{ role: 'user', content: [
-      { type: 'text', text: OCR_PEDIDO },
+      { type: 'text', text: llave ? OCR_PEDIDO_LLAVE : OCR_PEDIDO },
       { type: 'image_url', image_url: { url: 'data:' + tipo + ';base64,' + btoa(bin) } },
     ] }],
-    max_tokens: 600, temperature: 0,
+    max_tokens: llave ? 1500 : 600, temperature: 0,
   });
   const t = String((sal && (sal.response != null ? sal.response : (sal.result || {}).response)) || '').trim();
   return { texto: /^nada\.?$/i.test(t) ? '' : t.slice(0, 3000), modelo: OCR_MODELO };
@@ -2645,7 +2660,7 @@ export async function rutaAvisos(req, env, ruta) {
     if (buf.length > OCR_MAX) return json({ error: 'demasiado grande: mandala achicada' }, 413);
     if (!tipoImagen(buf)) return json({ error: 'no es una imagen' }, 400);
     try {
-      return json(await textoDeImagen(env, buf));
+      return json(await textoDeImagen(env, buf, new URL(req.url).searchParams.get('tipo') === 'llave' ? 'llave' : 'afiche'));
     } catch (e) {
       return json({ error: String((e && e.message) || e).slice(0, 200) }, 502);
     }

@@ -133,6 +133,61 @@ DE_LLAVE = {
 VIDAS = re.compile(r'^(\d+)\s*vidas?$')
 
 
+#: 🔑 LA DOBLE ELIMINACIÓN (Dlx, 07/10/2026, con la plantilla de 8 de PLEXKITS). Dos llaves —la de ganadores y la de
+#: perdedores— y la gran final; el lector las escribe así (`escuchar.DOBLE_G`). Como las vidas, es otra forma de sacar
+#: el LUGAR: cada uno queda afuera con su SEGUNDA derrota, y el orden en que caen es el lugar. Ver `lugares_doble()`.
+DOBLE_G, DOBLE_P = 'llave de ganadores', 'llave de perdedores'
+
+
+def doble_de(batallas):
+    """¿Es un evento de doble eliminación? El que tiene llave de perdedores."""
+    return any(ronda_de(b.get('ronda')) == DOBLE_P for b in batallas)
+
+
+def puesto_doble(n):
+    """Lo que paga el lugar `n` en la doble eliminación. Dlx, 07/10/2026 (*«por dónde cae»*), sobre la de 8: campeón
+    el que gana la final, subcampeón el que la pierde, 3.º el que pierde la final de perdedores, 4.º el de antes,
+    «Cuartos» los dos que caen antes (5.º y 6.º) y «Octavos» los dos primeros en caer (7.º y 8.º). Más abajo, R32.
+
+    ⚠️ NO ES `puesto_de_lugar()`: ahí del 5.º al 8.º son todos «Cuartos» (lo que pagó la #320 5 VIDAS). Acá cada
+    ronda de la llave de perdedores saca a dos —en la de 8— y Dlx eligió que la primera en caer cobre menos."""
+    return ({1: 'campeon', 2: 'subcampeon', 3: 'tercero', 4: 'cuarto'}.get(n)
+            or ('cuartos' if n <= 6 else 'octavos' if n <= 8 else 'r32'))
+
+
+def lugares_doble(batallas, resolver=None):
+    """`(orden, avisos)` de un evento de doble eliminación: los lados del campeón al primero que cayó.
+
+    🔑 CADA UNO CAE CON SU SEGUNDA DERROTA, en el orden de las filas —que es el de la llave: la de ganadores, la de
+    perdedores y la final—. El que llega al final con menos de dos es el campeón: si pierde la primera final y gana la
+    revancha, termina con una. Un lado es una persona o un equipo, por su clave (`_clave_lado()`).
+
+    ⚠️ CON MÁS DE UNO EN PIE NO SE PAGA: la llave no terminó, o falta el ganador de alguna batalla. Se avisa."""
+    perdidas, cayeron, vistos, rep, avisos = {}, [], [], {}, []
+    for b in batallas:
+        for lado in (b.get('ladoA'), b.get('ladoB')):
+            k = _clave_lado(lado)
+            if k and k not in perdidas:
+                perdidas[k] = 0
+                vistos.append(k)
+                rep[k] = lado
+        p = _perdedor(b)
+        k = _clave_lado(p) if p else ''
+        if not k:
+            continue
+        perdidas[k] = perdidas.get(k, 0) + 1
+        if perdidas[k] == 2:
+            cayeron.append(k)
+        elif perdidas[k] > 2:
+            avisos.append('DOBLE: %s pierde %d veces — revisar el orden de las filas' % (rep.get(k, p), perdidas[k]))
+    vivos = [k for k in vistos if k not in cayeron]
+    if len(vivos) != 1:
+        avisos.append('DOBLE: terminan %d en pie (%s): la llave no terminó o falta un ganador — no se pagan los '
+                      'puestos' % (len(vivos), ', '.join(rep[k] for k in vivos) or '—'))
+        return [], avisos
+    return [rep[k] for k in vivos + list(reversed(cayeron))], avisos
+
+
 def puesto_de_lugar(n):
     """Lo que paga el lugar `n` cuando el formato ordena por POSICIÓN.
 
@@ -631,10 +686,18 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                     res[q]['notas'] += 'Empate %d-%d ' % (lugar, hasta)
             lugar = hasta + 1
 
+    # 🔑 LA DOBLE ELIMINACIÓN TAMBIÉN PAGA POR LUGAR, y su gran final se paga acá y no abajo: ver `lugares_doble()`
+    doble = doble_de(batallas)
+    if doble:
+        orden, av = lugares_doble(batallas, resolver)
+        avisos += av
+        for i, lado in enumerate(orden, 1):
+            sumar(lado, tab.get(puesto_doble(i), 0), puesto_doble(i))
+
     final = (por('final') or [None])[0]
     tercer = (por('tercer puesto') or [None])[0]
 
-    if final:
+    if final and not doble:
         sumar(final.get('ganador'), tab.get('campeon', 0), 'campeon',
               fuera=_pk(final))
         sub = _perdedor(final)
@@ -932,6 +995,8 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if r in ('final', 'tercer puesto', 'semifinal', FUNA_R):
             continue
         if vidas and VIDAS.match(r):
+            continue
+        if doble and r in (DOBLE_G, DOBLE_P):
             continue
         puesto = dict(CAIDA).get(r)
         if not puesto or not tab.get(puesto):
@@ -1364,6 +1429,35 @@ def _self_check():
     ok('un pozo no dispara el chequeo de SUMA (§13)',
        not any(a.startswith('SUMA:') for a in eem['avisos']),
        '%s' % ([a for a in eem['avisos'] if a.startswith('SUMA:')] or '—'))
+
+    # 8 · LA DOBLE ELIMINACIÓN de 8 (Dlx, 07/10/2026, la plantilla de PLEXKITS), con su tabla de 8-15 escrita acá:
+    #     cada uno cae con su segunda derrota y el puesto sale de dónde cae (`puesto_doble()`)
+    t815 = {'8-15': {'campeon': 7500, 'subcampeon': 5625, 'tercero': 4125, 'cuarto': 3750,
+                     'cuartos': 1875, 'octavos': 937}}
+    wb = [('Pe', 'Lu', 'Pe'), ('Em', 'Xa', 'Em'), ('Ki', 'Iv', 'Ki'), ('To', 'So', 'To'),
+          ('Pe', 'Em', 'Pe'), ('Ki', 'To', 'Ki'), ('Pe', 'Ki', 'Pe')]
+    lb = [('Lu', 'Xa', 'Xa'), ('Iv', 'So', 'So'), ('Em', 'Xa', 'Em'), ('To', 'So', 'To'),
+          ('Em', 'To', 'Em'), ('Ki', 'Em', 'Ki')]
+
+    def _db(final):
+        bs = ([{'ronda': 'llave de ganadores', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in wb]
+              + [{'ronda': 'llave de perdedores', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in lb]
+              + [{'ronda': 'final', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in final])
+        e = procesar(bs, num=2, fecha='07/10', servidor='FFA', participantes=8, tab=t815, mods=mods, resolver=_yo)
+        return {r['rapero']: r['posicion'] for r in e['resultados']}, e
+
+    dp, edp = _db([('Pe', 'Ki', 'Pe')])
+    ok('doble eliminación: el puesto es dónde cae cada uno',
+       dp == {'Pe': 'Campeón', 'Ki': 'Subcampeón', 'Em': 'Tercero', 'To': 'Cuarto', 'So': 'Cuartos',
+              'Xa': 'Cuartos', 'Iv': 'Octavos', 'Lu': 'Octavos'}, '%s' % dp)
+    ok('y las 14 batallas son duelos', len(edp['duelos']) == 14 and not edp['avisos'],
+       '%d · %s' % (len(edp['duelos']), edp['avisos'] or '—'))
+    dr, _edr = _db([('Pe', 'Ki', 'Ki'), ('Pe', 'Ki', 'Ki')])
+    ok('con la revancha de la final, gana el que cae con su segunda derrota',
+       dr.get('Ki') == 'Campeón' and dr.get('Pe') == 'Subcampeón', '%s' % dr)
+    dn, edn = _db([('Pe', 'Ki', '')])
+    ok('sin el ganador de la final no se paga, y se avisa',
+       not dn and any(a.startswith('DOBLE:') for a in edn['avisos']), '%s · %s' % (dn, edn['avisos']))
 
     mal = nonlocal_mal[0]
     print('')

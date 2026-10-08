@@ -1647,6 +1647,128 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "DOBLE ELIMINACIÓN de 8 (Dlx, 07/10/2026, la plantilla de PLEXKITS): «WINNER/LOSER BRACKET», «MATCH N:» y la gran final",
+   "texto": "# DOBLE COPA VOL 1\n**WINNER BRACKET**\nMATCH 1: Pedro vs Luis\nMATCH 2: Ema vs Xavi\nMATCH 3: Kira vs Ivan\nMATCH 4: Tomi vs Sole\nMATCH 7: Pedro vs Ema\nMATCH 8: Kira vs Tomi\nMATCH 11: Pedro vs Kira\n**LOSER BRACKET**\nMATCH 5: Luis vs Xavi\nMATCH 6: Ivan vs Sole\nMATCH 9: Ema vs Xavi\nMATCH 10: Tomi vs Sole\nMATCH 12: Ema vs Tomi\nMATCH 13: Kira vs Ema\n**GRAN FINAL**\nMATCH 14: Pedro vs Kira\nCAMPEÓN: Pedro\n",
+   "rondas": [
+    [
+     "LLAVE DE GANADORES",
+     [
+      [
+       "Pedro",
+       "Luis"
+      ],
+      [
+       "Ema",
+       "Xavi"
+      ],
+      [
+       "Kira",
+       "Ivan"
+      ],
+      [
+       "Tomi",
+       "Sole"
+      ],
+      [
+       "Pedro",
+       "Ema"
+      ],
+      [
+       "Kira",
+       "Tomi"
+      ],
+      [
+       "Pedro",
+       "Kira"
+      ]
+     ]
+    ],
+    [
+     "LLAVE DE PERDEDORES",
+     [
+      [
+       "Luis",
+       "Xavi"
+      ],
+      [
+       "Ivan",
+       "Sole"
+      ],
+      [
+       "Ema",
+       "Xavi"
+      ],
+      [
+       "Tomi",
+       "Sole"
+      ],
+      [
+       "Ema",
+       "Tomi"
+      ],
+      [
+       "Kira",
+       "Ema"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Pedro",
+       "Kira"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y en castellano: «LLAVE DE GANADORES / DE PERDEDORES», con marcos y «PARTIDA N -»",
+   "texto": "__**LLAVE DE GANADORES**__\nPARTIDA 1 - ⌞Snow 🇨🇴⌝ 🆚 ⌞Oasis 🇨🇱⌝\nPARTIDA 2 - ⌞Velatz 🇨🇱⌝ 🆚 ⌞Neo 🇦🇷⌝\nPARTIDA 3 - ⌞Snow 🇨🇴⌝ 🆚 ⌞Velatz 🇨🇱⌝\n__**LLAVE DE PERDEDORES**__\nPARTIDA 4 - ⌞Oasis 🇨🇱⌝ 🆚 ⌞Neo 🇦🇷⌝\nPARTIDA 5 - ⌞Velatz 🇨🇱⌝ 🆚 ⌞Oasis 🇨🇱⌝\n__**GRAN FINAL**__\n⌞Snow 🇨🇴⌝ 🆚 ⌞Velatz 🇨🇱⌝\n",
+   "rondas": [
+    [
+     "LLAVE DE GANADORES",
+     [
+      [
+       "Snow 🇨🇴",
+       "Oasis 🇨🇱"
+      ],
+      [
+       "Velatz 🇨🇱",
+       "Neo 🇦🇷"
+      ],
+      [
+       "Snow 🇨🇴",
+       "Velatz 🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "LLAVE DE PERDEDORES",
+     [
+      [
+       "Oasis 🇨🇱",
+       "Neo 🇦🇷"
+      ],
+      [
+       "Velatz 🇨🇱",
+       "Oasis 🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Snow 🇨🇴",
+       "Velatz 🇨🇱"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

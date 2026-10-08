@@ -71,6 +71,8 @@ ETIQUETA = {
     'cuartos de final': 'Cuartos', 'semifinal': 'Semifinales',
     'semifinales': 'Semifinales', 'tercer puesto': 'Tercer puesto',
     'tercer lugar': 'Tercer puesto', 'final': 'Final', 'gran final': 'Final',
+    # la doble eliminación (07/10/2026): ver `escuchar.DOBLE_G`
+    'llave de ganadores': 'Llave de ganadores', 'llave de perdedores': 'Llave de perdedores',
 }
 
 #: cuánto tiene que parecerse el nombre del anuncio al de la llave, cuando

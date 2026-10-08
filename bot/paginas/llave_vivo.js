@@ -32,7 +32,14 @@
   'use strict';
 
   var ORDEN = ['FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS', 'OCTAVOS',
-    'CUARTOS', 'SEMIFINALES', 'TERCER LUGAR', 'FINAL'];
+    'CUARTOS', 'SEMIFINALES', 'LLAVE DE GANADORES', 'LLAVE DE PERDEDORES', 'TERCER LUGAR', 'FINAL'];
+  // 🔑 la doble eliminación (07/10/2026): `escuchar.DOBLE_G` y `escuchar._doble()`
+  var DOBLE_G = 'LLAVE DE GANADORES', DOBLE_P = 'LLAVE DE PERDEDORES';
+  function doble(e) {
+    if (/GANADOR|WINNER|UPPER/.test(e || '')) return DOBLE_G;
+    if (/PERDEDOR|LOSER|LOWER/.test(e || '')) return DOBLE_P;
+    return e;
+  }
   var ALIAS = { 'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
     'FILTRO': 'FILTROS', 'SEMI - FINAL': 'SEMIFINALES', 'SEMI-FINAL': 'SEMIFINALES',
     'SEMI FINAL': 'SEMIFINALES', 'SEMIFINAL': 'SEMIFINALES', 'SEMIS': 'SEMIFINALES',
@@ -45,8 +52,10 @@
   var ETIQUETA = { 'FILTROS': 'Filtros', 'CLASIFICATORIAS': 'Clasificatorias',
     'PRELIMINARES': 'Preliminares', 'DIECISEISAVOS': 'Dieciseisavos', 'OCTAVOS': 'Octavos',
     'CUARTOS': 'Cuartos', 'SEMIFINALES': 'Semifinales', 'TERCER LUGAR': 'Tercer puesto',
-    'FINAL': 'Final' };
-  var RONDA_ALT = 'FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|' +
+    'FINAL': 'Final', 'LLAVE DE GANADORES': 'Llave de ganadores', 'LLAVE DE PERDEDORES': 'Llave de perdedores' };
+  var RONDA_ALT = '(?:LLAVE|BRACKET|CUADRO|LADO)\\s+DE\\s+(?:LOS\\s+)?(?:GANADORES|PERDEDORES)|' +
+    '(?:WINNERS?|LOSERS?|UPPER|LOWER)\\s*-?\\s*BRACKETS?|' +
+    'FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|' +
     'CUARTOS(?:\\s+DE\\s+FINAL)?|SEMI\\s*-?\\s*FINAL(?:ES)?|SEMIS?|TERCER\\s+LUGAR|GRAN\\s+FINAL|FINAL';
   var PALABRA = /[\p{L}\p{N}_]/u;
   var SEP = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/i;
@@ -215,6 +224,8 @@
     if (!texto) return texto || '';
     // el emoji entre dos `<>` de más (DIMENSIÓN DEL FREESTYLE)
     var t = texto.replace(/<(<a?:\w+:\d+>)>/g, '$1');
+    // «MATCH 1: P vs L»: `escuchar.MATCH_N`
+    t = t.replace(/^([ \t>*_▪️•·-]*)(?:MATCH|PARTIDA|PARTIDO|COMBATE|ENFRENTAMIENTO|CRUCE|GAME)[ \t]*#?[ \t]*\d{1,3}[ \t]*[:.)\-–—][ \t]*/gim, '$1');
     t = t.replace(VS_PROPIO, ' 🆚 ');
     // 🏛️ la RED BULL CREW de la ACADEMIA: el VS como texto, sin los marcos 〘〙 mal anidados ni la viñeta ➢
     t = t.replace(VS_TEXTO, ' 🆚 ').replace(/[〘〙]/g, ' ').replace(/^[ \t]*[➢➤]+[ \t]*/gm, '');
@@ -431,7 +442,7 @@
       if ((m || cy) && !nombres.length) {
         var e = cy ? 'FILTROS' : m[0].toUpperCase().replace(/\s+/g, ' ').trim();
         if (actual && bats.length) out.push([actual, bats]);
-        actual = ALIAS[e] || e;
+        actual = doble(ALIAS[e] || e);
         bats = [];
         return;
       }
@@ -530,7 +541,47 @@
     return ren;
   }
 
+  /* `escuchar._resolver_doble()`: en la doble eliminación el que pierde TAMBIÉN sigue, así que quién ganó sale de
+     dónde aparece después —en ganadores, el que sigue ahí (en la última, el que no baja a perdedores); en perdedores,
+     el que sigue; la final, el campeón, y la primera de dos, el que venía de perdedores— */
+  function resolverDoble(rs, texto) {
+    var bats = [];
+    rs.forEach(function (R) { R[1].forEach(function (b) { bats.push({ r: R[0], b: b }); }); });
+    var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto);
+    function aparece(x, desde, rondas, hasta) {
+      var kx = clave(x);
+      return !!kx && bats.slice(desde, hasta).some(function (o) {
+        return rondas.indexOf(o.r) >= 0 && o.b.some(function (y) { return clave(y) === kx; });
+      });
+    }
+    var finales = [];
+    bats.forEach(function (o, i) { if (o.r === 'FINAL') finales.push(i); });
+    var gan = bats.map(function (o, i) {
+      var sig = [];
+      if (o.r === DOBLE_G) {
+        sig = o.b.filter(function (x) { return aparece(x, i + 1, [DOBLE_G]); });
+        if (sig.length !== 1) {
+          sig = o.b.filter(function (x) {
+            return !aparece(x, i + 1, [DOBLE_P]) && (!finales.length || aparece(x, i + 1, ['FINAL']));
+          });
+        }
+      } else if (o.r === DOBLE_P) {
+        sig = o.b.filter(function (x) { return aparece(x, i + 1, [DOBLE_P, 'FINAL']); });
+      } else if (o.r === 'FINAL') {
+        if (i !== finales[finales.length - 1]) sig = o.b.filter(function (x) { return aparece(x, 0, [DOBLE_P], i); });
+        else {
+          sig = campeonDe(camp, o.b);
+          if (sig.length !== 1 && camp2) sig = campeonDe(camp2, o.b);
+        }
+      }
+      return sig.length === 1 ? sig[0] : '';
+    });
+    var k = 0;
+    return rs.map(function (R) { return [R[0], R[1].map(function (b) { return [b, gan[k++], '']; })]; });
+  }
+
   function resolver(rs, texto, quien) {
+    if (rs.some(function (R) { return R[0] === DOBLE_P; })) return resolverDoble(rs, texto);
     var arbol = rs.filter(function (R) { return R[0] !== 'TERCER LUGAR'; });
     var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto);
     return rs.map(function (R) {

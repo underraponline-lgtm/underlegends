@@ -3515,9 +3515,14 @@ def main():
         # comería las revanchas, y las marcas tocan las filas en su lugar
         _quien = personas(codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0],
                           {d: n for h in g['llaves'] for d, n in (h.get('menciones') or {}).items()})
-        limpias = [] if any(h.get('vidas') for h in g['llaves']) else marcar_revividos(
-            marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids, quien=_quien),
-            _txt)
+        # 🔑 NI PARA LA DOBLE ELIMINACIÓN (07/10/2026): el que baja a perdedores aparece otra vez después de perder
+        # —`marcar_revividos()` lo haría revivido— y la revancha de la final `sin_repetir()` se la comería. Sólo
+        # los pokemones. Ver `escuchar.DOBLE_G`
+        _doble = any(E.es_doble(E.rondas_de(t)) for t in _txt)
+        limpias = [] if any(h.get('vidas') for h in g['llaves']) else (
+            marcar_pokemones(list(del_grupo), _txt) if _doble else marcar_revividos(
+                marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids, quien=_quien),
+                _txt))
         # 🔑 EL EQUIPO CON UN SOLO NOMBRE (TEAM VENECIA), AL FINAL: el revivido
         # y el walk-in se miran con la llave tal cual la escribieron. Ver
         # `marcar_equipos()`.

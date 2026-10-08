@@ -146,7 +146,8 @@ import requests                                          # noqa: E402
 # vuelta sin un solo error.
 ORDEN = ['FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS',
          'OCTAVOS',
-         'CUARTOS', 'SEMIFINALES', 'TERCER LUGAR', 'FINAL']
+         'CUARTOS', 'SEMIFINALES', 'LLAVE DE GANADORES', 'LLAVE DE PERDEDORES',
+         'TERCER LUGAR', 'FINAL']
 # 🔴 Y EL PLURAL CON ESPACIO: Urban Freestyle escribe `-SEMI FINALES-` (COMPE
 # DEL VACILE #1, 28/09/2026). La ronda se leía con ese nombre, fuera de
 # `ORDEN`, y el motor no le encontraba valor en la escala: los que perdían la
@@ -159,6 +160,25 @@ ALIAS = {'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
          'SEMI FINALES': 'SEMIFINALES',
          'SEMIS': 'SEMIFINALES', 'SEMI': 'SEMIFINALES',
          'GRAN FINAL': 'FINAL'}
+
+# 🔑 DOBLE ELIMINACIÓN. Dlx, 07/10/2026, con la plantilla de 8 de PLEXKITS: *«haz que el bot reconozca este tipo de
+# llaves y formato»*, y a las preguntas: el puesto «por dónde cae» y las batallas de las dos llaves cuentan como duelos.
+# Hay dos llaves —la de GANADORES y la de PERDEDORES— y la GRAN FINAL: el que pierde en la de ganadores baja a la de
+# perdedores, y el que pierde ahí queda afuera. O sea que el que pierde TAMBIÉN sigue, y «el que pasó» deja de decir
+# quién ganó: ver `_resolver_doble()`. Lo que paga cada uno lo decide `sheet/motor.py` (`lugares_doble()`).
+# ⚠️ SÓLO CON «LLAVE/BRACKET DE» O «WINNER/LOSER BRACKET»: «GANADORES» suelto es una palabra de cualquier llave
+# («los ganadores pasan a semis»), y como encabezado partiría una llave común en dos.
+DOBLE_G, DOBLE_P = 'LLAVE DE GANADORES', 'LLAVE DE PERDEDORES'
+
+
+def _doble(e):
+    """El nombre de la ronda, con las dos llaves de la doble eliminación en el suyo."""
+    if re.search(r'GANADOR|WINNER|UPPER', e or ''):
+        return DOBLE_G
+    if re.search(r'PERDEDOR|LOSER|LOWER', e or ''):
+        return DOBLE_P
+    return e
+
 
 # 🔑 EL CYPHER CON BATALLAS ES LA FASE PREVIA, como los filtros: POESÍA CRUDA
 # (Urban Freestyle, 01/10/2026) escribe `[ CYPHER ]` y abajo grupos de tres
@@ -183,7 +203,9 @@ CYPHER_ENC = re.compile(r'^[\W_]*(?:(?:fase|ronda)\s+(?:de\s+)?)?c[iy]pher[\W_]*
 # aparece en ~18 de 78 eventos; sin esto sus batallas quedaban antes del
 # primer encabezado reconocido y se tiraban enteras.
 RONDA = re.compile(
-    r'\b(FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|'
+    r'\b((?:LLAVE|BRACKET|CUADRO|LADO)\s+DE\s+(?:LOS\s+)?(?:GANADORES|PERDEDORES)|'
+    r'(?:WINNERS?|LOSERS?|UPPER|LOWER)\s*-?\s*BRACKETS?|'
+    r'FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|'
     r'CUARTOS(?:\s+DE\s+FINAL)?|SEMI\s*-?\s*FINAL(?:ES)?|SEMIS?|'
     r'TERCER\s+LUGAR|GRAN\s+FINAL|FINAL)\b', re.I)
 
@@ -473,6 +495,12 @@ def _podio_con_medallas(ls):
     return ls
 
 
+#: «MATCH 1:», «PARTIDA 3 -», «CRUCE #2)» al principio del renglón. Ver `traducir()`. ⚠️ Sin «BATALLA»: hay llaves
+#: que lo usan como nombre de ronda, y sin «M1»: hay gente que se llama así
+MATCH_N = re.compile(r'(?im)^([ \t>*_▪️•·-]*)(?:MATCH|PARTIDA|PARTIDO|COMBATE|ENFRENTAMIENTO|CRUCE|GAME)'
+                     r'[ \t]*#?[ \t]*\d{1,3}[ \t]*[:.)\-–—][ \t]*')
+
+
 def traducir(texto):
     """La llave escrita en el dialecto de otro servidor, en el que este lector lee.
 
@@ -516,6 +544,9 @@ def traducir(texto):
         return texto or ''
     # 🔑 el emoji entre dos `<>` de más: `『A』<<:versus_:…>> 『B』` (DIMENSIÓN DEL FREESTYLE)
     t = re.sub(r'<(<a?:\w+:\d+>)>', r'\1', texto)
+    # 🔑 «MATCH 1: P vs L» (la plantilla de doble eliminación, y lo que la IA escribe de una llave en imagen): el
+    # número del cruce no es parte del nombre
+    t = MATCH_N.sub(r'\1', t)
     t = VS_PROPIO.sub(' 🆚 ', t)
     # 🏛️ LA RED BULL CREW DE LA ACADEMIA (04/10/2026): `➢〘 PANCHOK 🇨🇱〘:VSr:] KOCHI 🇨🇱〙`. El VS llega como
     # texto, los marcos 〘〙 vienen mal anidados —se sacan: el VS ya separa los lados— y la viñeta ➢ no es nadie
@@ -898,7 +929,7 @@ def _rondas_crudas(texto):
             e = 'FILTROS' if cy else re.sub(r'\s+', ' ', m.group(1).upper()).strip()
             if actual and bats:
                 out.append((actual, bats))
-            actual, bats = ALIAS.get(e, e), []
+            actual, bats = _doble(ALIAS.get(e, e)), []
             continue
         # 🔴 LA LINEA DEL PODIO NO ES UNA BATALLA. `CAMPEÓN: [Cj] [Zignos]`
         # trae dos nombres entre corchetes y cae dentro de la seccion
@@ -1473,6 +1504,63 @@ def _explicado(x, bats):
                for bb in bats for n in bb)
 
 
+def es_doble(rs):
+    """¿`rondas_de()` es una llave de doble eliminación? La que tiene llave de perdedores. Ver `DOBLE_G`."""
+    return any(r == DOBLE_P for r, _b in rs)
+
+
+def _resolver_doble(rs, camp, camp2=None):
+    """`[Batalla]` de una llave de DOBLE ELIMINACIÓN, en el orden de la llave. Ver `DOBLE_G`.
+
+    Quién ganó sale de DÓNDE aparece después, porque acá el que pierde también sigue:
+      · en la de ganadores, gana el que sigue en la de ganadores; en la última, el que no baja a perdedores;
+      · en la de perdedores, gana el que sigue —en perdedores o en la final—: el que pierde ahí queda afuera;
+      · la gran final, la línea del CAMPEÓN; y si se jugó dos veces (el «reset»), la primera la ganó el que venía de
+        perdedores: si no, no habría segunda.
+    Lo que no se puede saber queda sin ganador y va a ✅ Decidir, como cualquier batalla."""
+    bats = [(r, b) for r, bs in rs for b in bs]
+
+    def k(x):
+        return norm(HISTORIA.sub('', x or ''))
+
+    def aparece(x, desde, rondas, hasta=None):
+        kx = k(x)
+        return bool(kx) and any(kx in {k(y) for y in b2} for r2, b2 in bats[desde:hasta] if r2 in rondas)
+
+    finales = [i for i, (r, _b) in enumerate(bats) if r == 'FINAL']
+    out = []
+    for i, (r, b) in enumerate(bats):
+        gan = None
+        if r == DOBLE_G:
+            sig = [x for x in b if aparece(x, i + 1, (DOBLE_G,))]
+            if len(sig) != 1:
+                # la última de ganadores: el que no bajó a perdedores, y llegó a la final
+                sig = [x for x in b if not aparece(x, i + 1, (DOBLE_P,))
+                       and (not finales or aparece(x, i + 1, ('FINAL',)))]
+            gan = sig[0] if len(sig) == 1 else None
+            razon = '' if gan else 'doble eliminación: no se ve quién siguió en la llave de ganadores'
+        elif r == DOBLE_P:
+            sig = [x for x in b if aparece(x, i + 1, (DOBLE_P, 'FINAL'))]
+            gan = sig[0] if len(sig) == 1 else None
+            razon = '' if gan else 'doble eliminación: no se ve quién siguió en la llave de perdedores'
+        elif r == 'FINAL':
+            if i != finales[-1]:
+                # la primera de dos: la ganó el que venía de perdedores (si no, no hay «reset»)
+                sig = [x for x in b if aparece(x, 0, (DOBLE_P,), i)]
+            else:
+                sig = []
+                for c in (camp, camp2):
+                    if c and len(sig) != 1:
+                        p = _parecido(c, b)
+                        sig = [p] if p else [x for x in b if k(x) and k(x) in k(c)]
+            gan = sig[0] if len(sig) == 1 else None
+            razon = '' if gan else 'doble eliminación: la final todavía no dice el campeón'
+        else:
+            razon = 'doble eliminación: una ronda fuera de las dos llaves'
+        out.append(Batalla((r, b, gan, razon)))
+    return out
+
+
 def resolver(texto, conocidos=None, ids=None, quien=None):
     """[(ronda, [competidores], ganador|None, por_que)] de una llave.
 
@@ -1525,6 +1613,11 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
         if camp2 and re.search(r'SEGUND|SUB[\s\-]*CAMPE|\b2\s*(?:DO|ND|°|º)\b|'
                                r'\bPUESTO\b|\bLUGAR\b|M\.?\s*V\.?\s*P\b', camp2, re.I):
             camp2 = None
+    # 🔑 DOBLE ELIMINACIÓN: el que pierde también sigue, así que «el que pasó» no alcanza. Ver `_resolver_doble()`
+    if es_doble(rs):
+        res = Resueltas(_resolver_doble(rs, camp, camp2))
+        res.cambios = cambios
+        return res
     out = []
     for i, (ronda, bats) in enumerate(rs):
         # 🔴 `rs[i + 1][1]`, NO `rs[i + 1]`. La primera version iteraba la
@@ -2668,6 +2761,13 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
             # ⚠️ TRADUCIDO ANTES DE PREGUNTAR: ver `traducir()`. Todo lo
             # que viene detrás lee `texto`, así que se traduce una vez acá.
             texto = traducir(plano(m.get('content') or ''))
+            # 🖼️ LA LLAVE QUE ES UNA IMAGEN (Dlx, 07/10/2026: «ya deberías poder reconocer las imágenes»): la lee la
+            # IA, como los afiches, y se lee como cualquier otra. Ver `llave_de_imagen()`
+            imagen = False
+            if not es_llave(texto):
+                t2 = llave_de_imagen(m, canal)
+                if t2 and es_llave(t2):
+                    texto, imagen = t2, True
             fp = None if es_llave(texto) else fase_previa(texto)
             if fp:
                 fases.append((m.get('timestamp') or '', m.get('id'), fp))
@@ -2695,6 +2795,8 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
                             # plano: ver `plano()`. Lo que viene detrás
                             # —titulo, plantel, marcas— lee este texto
                             'texto': texto,
+                            # 🖼️ leída de una imagen por la IA (`llave_de_imagen()`)
+                            'imagen': imagen,
                             'partes': m.get('_partes', 1),
                             'menciones': menciones_de(m)})
         # 🏰 la fase previa que quedó en otro mensaje, adelante de su llave: la que ya tuvo, o la de esta corrida
@@ -2710,7 +2812,78 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
             guardar_fases(guardadas)
         except OSError as e:
             print('   ⚠️ no pude guardar las fases de las llaves: %s' % str(e)[:80])
+    _guardar_ocr_llaves()
     return out, n_ch, n_msg
+
+
+# ── la llave que es una imagen ─────────────────────────────────────────
+# 🖼️ Dlx, 07/10/2026, con la plantilla de doble eliminación de PLEXKITS: *«ya deberías poder reconocer las imágenes,
+# ¿no?»*. La IA que lee los afiches (`/avisos/ocr` del Worker, `anuncios.texto_de_imagen()`) la copia en el formato
+# que este lector ya lee —las rondas, o las dos llaves con «MATCH N: A vs B», y el CAMPEÓN si se ve— y de ahí sigue
+# como cualquier llave: los nombres se resuelven igual y lo que no se sabe va a ✅ Decidir.
+# ⚠️ SÓLO EN UN CANAL DE LLAVES (el nombre dice «llave», «bracket» o «cuadro»), de las últimas 72 horas y unas pocas
+# por corrida: el barrido mira todos los canales y no se le manda a la IA cada imagen del chat.
+# ⚠️ Una por adjunto (`datos/ocr_llaves.json`): la llave que se edita cambiando la imagen se vuelve a leer.
+OCR_LLAVES = os.path.join(BASE, 'datos', 'ocr_llaves.json')
+OCR_LLAVES_TOPE = 4
+_OCR = {'mem': None, 'cuenta': [0]}
+
+
+def canal_de_llaves(nombre):
+    n = unicodedata.normalize('NFKD', str(nombre or '')).lower()
+    return bool(re.search(r'llave|bracket|cuadro', n))
+
+
+def llave_de_imagen(m, canal):
+    """El texto de la llave que es una imagen, ya traducido, o `''`. Ver arriba."""
+    try:
+        import anuncios as A
+    except Exception:                                    # noqa: BLE001
+        return ''
+    if not canal_de_llaves(canal) or not A.pide_ocr(m):
+        return ''
+    if _OCR['mem'] is None:
+        _OCR['mem'] = A._ocr_memoria(OCR_LLAVES)
+    a = A.imagen_de(m) or {}
+    t = A.texto_de_imagen(m, _OCR['mem'], _OCR['cuenta'], tipo='llave', tope=OCR_LLAVES_TOPE,
+                          clave='%s:%s' % (m.get('id'), a.get('id') or ''))
+    return traducir(plano(sin_vacios(t))) if t else ''
+
+
+def sin_vacios(t):
+    """La copia de la IA sin lo que todavía no se jugó ni lo copiado dos veces. Probado con la plantilla de PLEXKITS
+    (07/10/2026), vacía y llena:
+      · «MATCH 5: ? vs ?», «A vs ?» —el cruce que espera—, «CAMPEÓN: ?» y «MATCH 15:» sin nadie: la IA los escribe
+        aunque se le pida que no, y un renglón con un solo nombre se pega con el de abajo (`unir_continuadas()`);
+      · el MISMO MATCH DOS VECES: copió el 14 —la gran final, dibujada al lado de la llave de perdedores— adentro de
+        perdedores y otra vez en la final. Vale el ÚLTIMO."""
+    ls = [l for l in str(t or '').splitlines()
+          if not re.search(r'(?:^|:|\bvs\.?)\s*\?+\s*(?:$|\bvs\b)', l, re.I) and not _MATCH_SOLO.match(l)]
+
+    def num(l):
+        m = _MATCH_NUM.match(l)
+        return m.group(1) if m else None
+    ult = {num(l): i for i, l in enumerate(ls) if num(l)}
+    return '\n'.join(l for i, l in enumerate(ls) if not num(l) or ult[num(l)] == i)
+
+
+_MATCH_PAL = r'(?:MATCH|PARTIDA|PARTIDO|COMBATE|ENFRENTAMIENTO|CRUCE|GAME)'
+_MATCH_NUM = re.compile(r'^[ \t>*_▪️•·-]*' + _MATCH_PAL + r'[ \t]*#?[ \t]*(\d{1,3})\b', re.I)
+_MATCH_SOLO = re.compile(r'^[ \t>*_▪️•·-]*' + _MATCH_PAL + r'[ \t]*#?[ \t]*\d{1,3}[ \t]*[:.)\-–—]?[ \t]*$', re.I)
+
+
+def _guardar_ocr_llaves():
+    mem = _OCR['mem']
+    if not mem or not mem.get('cambio'):
+        return
+    try:
+        import anuncios as A
+        A._ocr_guardar(mem, OCR_LLAVES, 'Las llaves que son una imagen, leídas por la IA de Cloudflare (/avisos/ocr del '
+                                       'Worker, tipo llave), por mensaje y adjunto: así cada una se lee una sola vez. '
+                                       'Lo escribe bot/escuchar.py. Dlx, 07/10/2026.')
+        mem['cambio'] = False
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude guardar las llaves leídas de imágenes: %s' % str(e)[:80])
 
 
 def escuchar(s, forzar=None, por_canal=25):
@@ -3495,6 +3668,41 @@ def _self_check():
         mal += not ok
         print('   %s %-10s %-14s -> %s' % ('✅' if ok else '🔴', ronda,
                                            ' vs '.join(b), g or '—'))
+
+    # 🔑 LA DOBLE ELIMINACIÓN (Dlx, 07/10/2026): el que pierde también sigue —baja a perdedores—, así que el ganador
+    # sale de DÓNDE sigue. Ver `_resolver_doble()`. La de 8 de la plantilla de PLEXKITS, y la revancha de la final
+    print('\n  la doble eliminación: el ganador por dónde sigue')
+    doble = ('**WINNER BRACKET**\nMATCH 1: Pedro vs Luis\nMATCH 2: Ema vs Xavi\nMATCH 3: Kira vs Ivan\n'
+             'MATCH 4: Tomi vs Sole\nMATCH 7: Pedro vs Ema\nMATCH 8: Kira vs Tomi\nMATCH 11: Pedro vs Kira\n'
+             '**LOSER BRACKET**\nMATCH 5: Luis vs Xavi\nMATCH 6: Ivan vs Sole\nMATCH 9: Ema vs Xavi\n'
+             'MATCH 10: Tomi vs Sole\nMATCH 12: Ema vs Tomi\nMATCH 13: Kira vs Ema\n**GRAN FINAL**\n'
+             'MATCH 14: Pedro vs Kira\n%sCAMPEÓN: %s\n')
+    for que, txt, esp in [
+        ('invicto', doble % ('', 'Pedro'),
+         ['Pedro', 'Ema', 'Kira', 'Tomi', 'Pedro', 'Kira', 'Pedro', 'Xavi', 'Sole', 'Ema', 'Tomi', 'Ema', 'Kira',
+          'Pedro']),
+        ('con revancha', doble % ('MATCH 15: Pedro vs Kira\n', 'Kira'),
+         ['Pedro', 'Ema', 'Kira', 'Tomi', 'Pedro', 'Kira', 'Pedro', 'Xavi', 'Sole', 'Ema', 'Tomi', 'Ema', 'Kira',
+          'Kira', 'Kira']),
+    ]:
+        gan = [g for _, _, g, _ in resolver(traducir(txt))]
+        ok = gan == esp
+        mal += not ok
+        print('   %s %-14s %s' % ('✅' if ok else '🔴', que, ' · '.join(x or '—' for x in gan)))
+    # 🖼️ y lo que la IA devolvió de verdad de la plantilla llena (07/10/2026): el MATCH 14 dos veces —adentro de
+    # perdedores y en la final— y el 15 vacío. Ver `sin_vacios()`
+    ia = ('Double Elimination Bracket: 8 Team\nWINNER BRACKET\nMATCH 1: Snow vs Oasis\nMATCH 7: Snow vs Velatz\n'
+          'MATCH 11: Snow vs Six\nLOSER BRACKET\nMATCH 5: Oasis vs Neo\nMATCH 13: Six vs Velatz\n'
+          'MATCH 14: Snow vs Six\nMATCH 15: \nMATCH 6: ? vs ?\nGRAN FINAL\nMATCH 14: Snow vs Six\nCAMPEÓN: ?\n')
+    lim = sin_vacios(ia).splitlines()
+    ok = (lim.count('MATCH 14: Snow vs Six') == 1 and lim.index('MATCH 14: Snow vs Six') > lim.index('GRAN FINAL')
+          and not any('MATCH 15' in l or '?' in l for l in lim))
+    mal += not ok
+    print('   %s la copia de la IA: el MATCH repetido vale en la final, y lo vacío se va' % ('✅' if ok else '🔴'))
+    # y «los ganadores pasan» de una llave común no la vuelve doble
+    ok = not es_doble(rondas_de('`[ SEMIFINALES ]`\nlos ganadores pasan\n⌞A⌝ 🆚 ⌞B⌝\n`[ FINAL ]`\n⌞A⌝ 🆚 ⌞C⌝'))
+    mal += not ok
+    print('   %s «los ganadores pasan» no es la llave de ganadores' % ('✅' if ok else '🔴'))
 
     # 🔴 EL BUG QUE YA TUVE: iterar la tupla en vez de las batallas hacia
     # que los nombres matchearan contra las letras de la ronda. Un nombre

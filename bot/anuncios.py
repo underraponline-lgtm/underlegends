@@ -729,45 +729,51 @@ def rotular_afiche(texto):
     return '\n'.join((['# ' + ' '.join(titulo)] if titulo else []) + resto)
 
 
-def _ocr_memoria():
+def _ocr_memoria(ruta=None):
+    """Lo ya leído por la IA. `ruta`: la de los afiches (`OCR`) o la de las llaves en imagen (`escuchar.OCR_LLAVES`)."""
     try:
-        with io.open(OCR, encoding='utf-8') as f:
+        with io.open(ruta or OCR, encoding='utf-8') as f:
             d = json.load(f)
         return d if isinstance(d.get('msgs'), dict) else {'msgs': {}}
     except (OSError, ValueError, AttributeError):
         return {'msgs': {}}
 
 
-def _ocr_guardar(mem):
+def _ocr_guardar(mem, ruta=None, leeme=None):
     import datetime as dt
     corte = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=OCR_DIAS)).strftime('%Y-%m-%dT%H:%M:%S')
     msgs = {k: v for k, v in mem['msgs'].items() if str(v.get('t') or '') >= corte}
-    out = {'_leeme': 'El texto de los anuncios que son una imagen, leído por la IA de Cloudflare '
-                     '(/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola '
-                     'vez. Se borra a los %d días. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.' % OCR_DIAS,
+    out = {'_leeme': (leeme or 'El texto de los anuncios que son una imagen, leído por la IA de Cloudflare '
+                      '(/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola '
+                      'vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.') + ' Se borra a los %d días.' % OCR_DIAS,
            'msgs': dict(sorted(msgs.items()))}
-    with io.open(OCR, 'w', encoding='utf-8', newline='\n') as f:
+    with io.open(ruta or OCR, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
         f.write('\n')
 
 
-def texto_de_imagen(m, mem, cuenta):
+def texto_de_imagen(m, mem, cuenta, tipo='afiche', tope=None, clave=None):
     """El texto del afiche de `m` (de la memoria o del Worker), o `''`.
 
-    `cuenta` es `[n]`: cuántos se pidieron en esta corrida, para el tope."""
+    `cuenta` es `[n]`: cuántos se pidieron en esta corrida, para el tope. `tipo='llave'` le pide a la IA la llave en
+    el formato que lee `escuchar.py` (ver `llave_de_imagen()` ahí), con su `tope` y su `clave` de memoria (el mensaje y
+    el adjunto: la llave que se edita cambiando la imagen se vuelve a leer)."""
     import datetime as dt
     import hashlib
     import requests
     import fotos as F
     mid = str(m.get('id') or '')
-    if mid in mem['msgs']:
-        return mem['msgs'][mid].get('texto') or ''
-    if cuenta[0] >= OCR_TOPE:
+    k = str(clave or mid)
+    if k in mem['msgs']:
+        return mem['msgs'][k].get('texto') or ''
+    if cuenta[0] >= (OCR_TOPE if tope is None else tope):
         return ''
     a = imagen_de(m)
     url = a.get('proxy_url') or a.get('url') or ''
-    alto = max(1, round(int(a.get('height') or 1) * OCR_ANCHO / max(1, int(a.get('width') or 1))))
-    url += ('&' if '?' in url else '?') + 'width=%d&height=%d&format=jpeg' % (OCR_ANCHO, alto)
+    # una llave tiene letras chicas: se la manda más grande que un afiche
+    ancho = OCR_ANCHO * 2 if tipo == 'llave' else OCR_ANCHO
+    alto = max(1, round(int(a.get('height') or 1) * ancho / max(1, int(a.get('width') or 1))))
+    url += ('&' if '?' in url else '?') + 'width=%d&height=%d&format=jpeg' % (ancho, alto)
     cuenta[0] += 1
     try:
         img = requests.get(url, timeout=30)
@@ -775,7 +781,7 @@ def texto_de_imagen(m, mem, cuenta):
             print('   ⚠️ el afiche de %s no bajó (%s)' % (mid, img.status_code))
             return ''
         k = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
-        r = requests.post(WORKER + '/avisos/ocr', data=img.content, timeout=90,
+        r = requests.post(WORKER + '/avisos/ocr' + ('?tipo=llave' if tipo == 'llave' else ''), data=img.content, timeout=90,
                           headers={'x-lg-ciclo': k, 'content-type': 'image/jpeg'})
         if r.status_code != 200:
             print('   ⚠️ el Worker no leyó el afiche de %s (%s %s)' % (mid, r.status_code, r.text[:80]))
@@ -785,7 +791,7 @@ def texto_de_imagen(m, mem, cuenta):
         print('   ⚠️ el afiche de %s no se pudo leer (%s)' % (mid, str(e)[:70]))
         return ''
     # ⚠️ se guarda también vacío: un afiche sin texto no se vuelve a pedir
-    mem['msgs'][mid] = {'texto': texto[:3000],
+    mem['msgs'][k] = {'texto': texto[:3000],
                         't': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S')}
     mem['cambio'] = True
     return texto
