@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.63",
+   "dia": "2026-10-08",
+   "cuando": "2026-10-08T10:53:00-04:00",
+   "titulo": "La Carta, con click derecho",
+   "items": [
+    "🖱️ **La tarjeta de alguien sin escribir nada**: click derecho en la persona → **Apps** → **Carta**. Es lo mismo que `/card` eligiendo a esa persona, y funciona en cualquier canal donde se pueda pedir cartas.",
+    "🏆 **La doble eliminación en el Inicio**: muestra las finales —la de ganadores, la de perdedores y la gran final—, que entran enteras; la llave completa está en «Ver la llave entera». Y las rondas de perdedores quedan como se jugaron, cada una con lo que paga."
+   ]
+  },
+  {
    "version": "2.62",
    "dia": "2026-10-08",
    "cuando": "2026-10-08T00:39:00-04:00",

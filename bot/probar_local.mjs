@@ -365,6 +365,14 @@ console.log('\nDE DÓNDE TE CONVOCARON\n');
   ok('sin esas cartas todavía, cae en la propia', u.includes('/konan/servidor.webp'), u);
 }
 {
+  // 🖱️ click derecho en una persona → Apps → Carta (08/10/2026): la carta de ESA persona, como `/card quien:`
+  const r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '000000' } },
+    data: { name: 'Carta', type: 2, target_id: '999111',
+            resolved: { users: { '999111': { id: '999111', username: 'konan' } } } } });
+  const u = galeria(r.json?.data?.components)?.items?.[0]?.media?.url || '';
+  ok('click derecho → Carta trae la carta de esa persona', u.includes('/konan/'), u || JSON.stringify(r.json).slice(0, 240));
+}
+{
   // Un servidor que no es de la Liga (alguien metió el bot en el suyo)
   const r = await pedir({ type: 2, guild_id: G.AJENO, member: { user: { id: '999111' } },
     data: { name: 'card' } });

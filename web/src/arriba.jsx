@@ -618,14 +618,17 @@ const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).joi
 // grupos de tres y los cuartos vacíos—. Sin esto no se veía nada: los filtros no van en el cuadro.
 const PREVIAS = ['Filtros', 'Clasificatorias', 'Preliminares'];
 function CuadroRondas({ ll, previa }) {
-  // la doble, con sus tres partes en orden: «Ganadores · Octavos», «Perdedores · Ronda 1», «Gran final»
+  // 🔑 LA DOBLE, SÓLO EL FINAL (Dlx, 08/10/2026, con la Doble Eliminación Vol. 2 en la portada: «esto está así»):
+  // entera son once columnas y la mitad quedaba cortada a la derecha. Acá van la última de ganadores, las dos últimas
+  // de perdedores y la gran final; la llave entera está a un botón
   const d = esDoble(ll.rondas) ? partirDoble(ll.rondas) : null;
-  const rondas = d ? d.G.map((R) => ({ r: 'Ganadores · ' + R.r, b: R.b })).concat(d.P.map((R) => ({ r: 'Perdedores · ' + R.r, b: R.b })),
-    d.F.length ? [{ r: 'Gran final', b: d.F }] : [])
+  const rondas = d ? d.G.slice(-1).map((R) => ({ r: /^final/i.test(R.r) ? R.r : 'Ganadores · ' + R.r, b: R.b }))
+    .concat(d.P.slice(-2).map((R) => ({ r: /^final/i.test(R.r) ? R.r : 'Perdedores · ' + R.r, b: R.b })),
+      d.F.length ? [{ r: 'Gran final', b: d.F }] : [])
     : (ll.rondas || []).filter((r) => r.r !== 'Tercer puesto' && (previa || r.r !== 'Filtros'));
   return (
     <>
-      <div className="llave-cab"><span>{d ? 'DOBLE ELIMINACIÓN' : 'CUADRO'}</span><span className="apag">POR RONDAS</span></div>
+      <div className="llave-cab"><span>{d ? 'DOBLE ELIMINACIÓN' : 'CUADRO'}</span><span className="apag">{d ? 'LAS FINALES' : 'POR RONDAS'}</span></div>
       <div className="llave-wrap"><div className="llave" style={{ gridTemplateColumns: 'repeat(' + rondas.length + ',150px)' }}>
         {rondas.map((r, ri) => (
           <div className="ronda" key={ri}><h4>{r.r}</h4>
@@ -759,20 +762,34 @@ export function enRondas(todas) {
 export const esDoble = (rs) => (rs || []).some((R) => /perdedores/i.test(R.r || ''));
 const genteDe = (z) => String(typeof z === 'string' ? z : (z || []).join(',')).split(/[,+&]/)
   .map((s) => s.replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim().toLowerCase()).filter(Boolean);
-function porAparicion(bs) {
+// ⚠️ Y POR DE DÓNDE BAJÓ (FFA, Doble Eliminación Vol. 2): la segunda ronda de perdedores arrancó con NC vs LitKunai,
+// los dos recién caídos de Cuartos, y como ninguno había peleado en la primera, quedaba en la primera. Quien baja de una
+// ronda de ganadores más honda que los de la ronda que se arma, abre la siguiente. `cae`: en qué ronda de ganadores
+// perdió cada uno
+function porAparicion(bs, cae) {
   const out = [];
   let vistos = null;
+  let tope = -1;
+  const antes = new Set();
   bs.forEach((b) => {
     const ms = (b[0] || []).flatMap(genteDe);
-    if (!out.length || ms.some((m) => vistos.has(m))) { out.push([]); vistos = new Set(); }
+    const bajan = cae ? ms.filter((m) => !antes.has(m) && cae[m] != null).map((m) => cae[m]) : [];
+    const mas = bajan.length && tope >= 0 && Math.max(...bajan) > tope;
+    if (!out.length || ms.some((m) => vistos.has(m)) || mas) { out.push([]); vistos = new Set(); tope = -1; }
     out[out.length - 1].push(b);
-    ms.forEach((m) => vistos.add(m));
+    ms.forEach((m) => { vistos.add(m); antes.add(m); });
+    bajan.forEach((x) => { tope = Math.max(tope, x); });
   });
   return out;
 }
 const DESDE_EL_FIN = ['Final de ganadores', 'Semifinales', 'Cuartos', 'Octavos', 'Dieciseisavos'];
+// ⚠️ LA LLAVE GUARDADA PONE «Llave de ganadores» ANTES QUE OCTAVOS (`llaves_web` ordena las rondas que conoce y las
+// demás van primero): la final de ganadores salía como «Octavos», a la izquierda de todo. Las rondas con nombre van por
+// su orden, y lo que viene de «Llave de ganadores», después
+const ORDEN_G = ['Dieciseisavos', '16avos', 'Octavos', 'Cuartos', 'Semifinales', 'Semis'];
 export function partirDoble(rs) {
   const G = [];
+  const Gx = [];
   const P = [];
   const F = [];
   (rs || []).forEach((R) => {
@@ -780,13 +797,21 @@ export function partirDoble(rs) {
     if (!bs.length) return;
     if (/perdedores/i.test(R.r)) P.push(...bs);
     else if (/^(gran )?final$/i.test(R.r)) F.push(...bs);
-    else if (/ganadores/i.test(R.r)) porAparicion(bs).forEach((x) => G.push({ r: '', b: x }));
+    else if (/ganadores/i.test(R.r)) porAparicion(bs).forEach((x) => Gx.push({ r: '', b: x }));
     else G.push({ r: R.r, b: bs });
   });
-  G.forEach((R, i) => { if (!R.r) R.r = DESDE_EL_FIN[G.length - 1 - i] || 'Ronda ' + (i + 1); });
-  const ps = porAparicion(P);
+  G.sort((a, b) => ORDEN_G.indexOf(a.r) - ORDEN_G.indexOf(b.r));
+  const GG = G.concat(Gx);
+  GG.forEach((R, i) => { if (!R.r) R.r = DESDE_EL_FIN[GG.length - 1 - i] || 'Ronda ' + (i + 1); });
+  const cae = {};
+  GG.forEach((R, i) => R.b.forEach((b) => {
+    if (!b[1]) return;
+    const g = new Set(genteDe(b[1]));
+    (b[0] || []).forEach((z) => { const ms = genteDe(z); if (!ms.some((m) => g.has(m))) ms.forEach((m) => { cae[m] = i; }); });
+  }));
+  const ps = porAparicion(P, cae);
   return {
-    G,
+    G: GG,
     // la última de perdedores es su final sólo si ya hay gran final: en vivo puede ser una ronda de dos que se juega
     P: ps.map((b, i) => ({ r: i === ps.length - 1 && i && b.length === 1 && F.length ? 'Final de perdedores' : 'Ronda ' + (i + 1), b })),
     F,

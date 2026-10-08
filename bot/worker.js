@@ -1934,6 +1934,7 @@ const AYUDA = {
   card: (m) => [
     '## `/card` — la tarjeta',
     'Sin poner nada, es la tuya. Con `quien:` es la de esa persona.',
+    'O sin escribir nada: click derecho en la persona → **Apps** → **Carta**.',
     '',
     'Cada uno tiene hasta **cuatro caras**, y los botones de abajo las cambian.',
     'La de **Servidor** trae además un menú para ver la de cada servidor.',
@@ -2573,6 +2574,14 @@ export async function borrarMisDatos(env, id) {
 }
 
 const COMANDOS = {
+  // 🖱️ click derecho en una persona → Apps → Carta (Dlx, 08/10/2026): es `/card quien:<esa persona>`. Discord manda
+  // a quién en `target_id`, con sus datos en `resolved` como el selector de `/card`, así que `datosDe()` los encuentra
+  async Carta(i, env, ctx) {
+    const t = i.data && i.data.target_id;
+    i.data.options = t ? [{ name: 'quien', type: 6, value: t }] : [];
+    return COMANDOS.card(i, env, ctx);
+  },
+
   async 'borrar-mis-datos'(i, env, ctx) {
     const id = idDe(i);
     if (!id) return aviso('No pude saber quién sos.');

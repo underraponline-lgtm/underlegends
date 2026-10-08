@@ -175,6 +175,14 @@ const COMANDOS = [
     ],
   },
   {
+    // 🖱️ LA CARTA CON CLICK DERECHO (Dlx, 08/10/2026: «dale sí», a cambio de «@ULAYA card»): click derecho en una
+    // persona → Apps → Carta. No se escribe nada y es instantáneo: es la alternativa al prefijo que CLAUDE.bot.md
+    // ya recomendaba. El Worker la atiende como `/card quien:<esa persona>` (`COMANDOS.Carta`)
+    name: 'Carta',
+    type: 2,
+    ...EN_TODOS_LADOS,
+  },
+  {
     name: 'versus',
     type: 1,
     description: 'quién gana entre dos, en la categoría que elijas',
