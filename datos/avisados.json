@@ -1959,5 +1959,389 @@
    ]
   ],
   "v": 2
+ },
+ "429": {
+  "antes": {
+   "1200": [
+    185,
+    111,
+    true
+   ],
+   "Agus": [
+    40,
+    53,
+    false
+   ],
+   "Alexi": [
+    62,
+    89,
+    false
+   ],
+   "Badterne": [
+    166,
+    63,
+    true
+   ],
+   "Chop": [
+    196,
+    132,
+    true
+   ],
+   "Colesito": [
+    9,
+    12,
+    false
+   ],
+   "Cronox": [
+    17,
+    20,
+    false
+   ],
+   "Dominick": [
+    164,
+    60,
+    true
+   ],
+   "Erian": [
+    6,
+    8,
+    false
+   ],
+   "Geoka": [
+    41,
+    54,
+    false
+   ],
+   "JJ": [
+    177,
+    91,
+    true
+   ],
+   "Kravitz": [
+    71,
+    106,
+    false
+   ],
+   "Krish": [
+    67,
+    100,
+    false
+   ],
+   "LRS": [
+    61,
+    87,
+    false
+   ],
+   "Makmah": [
+    5,
+    7,
+    false
+   ],
+   "Noone": [
+    198,
+    134,
+    true
+   ],
+   "Panchok": [
+    7,
+    9,
+    false
+   ],
+   "Paria": [
+    156,
+    34,
+    true
+   ],
+   "Snow": [
+    2,
+    3,
+    false
+   ],
+   "Valdoza": [
+    222,
+    177,
+    true
+   ],
+   "Zignos": [
+    16,
+    19,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Alexi",
+    "Kravitz",
+    "Alexi"
+   ],
+   [
+    "Alexi",
+    "Valdoza",
+    "Alexi"
+   ],
+   [
+    "Paria",
+    "Cronox",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Krish",
+    "Paria"
+   ],
+   [
+    "Snow",
+    "Chop",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "Badterne",
+    "Snow"
+   ],
+   [
+    "Agus",
+    "LRS",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "1200",
+    "Agus"
+   ],
+   [
+    "Erian",
+    "Geoka",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "melgar🇲🇽",
+    "Erian"
+   ],
+   [
+    "MRSTILL🇳🇴",
+    "Noone",
+    "MRSTILL🇳🇴"
+   ],
+   [
+    "MRSTILL🇳🇴",
+    "Dominick",
+    "MRSTILL🇳🇴"
+   ],
+   [
+    "Zignos",
+    "Makmah",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "JJ",
+    "Zignos"
+   ],
+   [
+    "Panchok",
+    "Colesito",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "HH",
+    "Panchok"
+   ],
+   [
+    "Alexi",
+    "Erian",
+    "Alexi"
+   ],
+   [
+    "MRSTILL🇳🇴",
+    "Paria",
+    "MRSTILL🇳🇴"
+   ],
+   [
+    "Zignos",
+    "Snow",
+    "Zignos"
+   ],
+   [
+    "Agus",
+    "Panchok",
+    "Agus"
+   ],
+   [
+    "Zignos",
+    "Alexi",
+    "Zignos"
+   ],
+   [
+    "MRSTILL🇳🇴",
+    "Agus",
+    "MRSTILL🇳🇴"
+   ],
+   [
+    "MRSTILL🇳🇴",
+    "Zignos",
+    "MRSTILL🇳🇴"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 4,
+   "Agus": 5,
+   "Alexi": 5,
+   "Badterne": 2,
+   "Chop": 4,
+   "Colesito": 14,
+   "Cronox": 14,
+   "Dominick": 6,
+   "Erian": 17,
+   "Geoka": 9,
+   "JJ": 3,
+   "Kravitz": 3,
+   "Krish": 6,
+   "LRS": 7,
+   "Makmah": 23,
+   "Noone": 4,
+   "Panchok": 8,
+   "Paria": 7,
+   "Snow": 23,
+   "Valdoza": 2,
+   "Zignos": 10
+  },
+  "fecha": "08/10",
+  "firma": "1e1a5636bf6915a9",
+  "msg": "1557873584389488832",
+  "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
+  "num": 429,
+  "participantes": 25,
+  "sello": {
+   "MRSTILL🇳🇴": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-08T21:53:25Z",
+  "tabla": [
+   [
+    "MRSTILL🇳🇴",
+    "Campeón",
+    10000
+   ],
+   [
+    "Zignos",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Alexi",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Panchok",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Badterne",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "melgar🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "JJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "HH",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

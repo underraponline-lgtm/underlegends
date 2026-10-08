@@ -58,10 +58,22 @@
     "nivel": "C",
     "base": 7500,
     "o": 6,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7500
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 7500,
+    "caza": {
+     "n": 429,
+     "evento": "LA BELLA ARTE DE LA DESGRACIA VOL2",
+     "sv": "FFA",
+     "t": "2026-10-08T19:57:30Z",
+     "por": [
+      {
+       "n": "Alexi",
+       "cobra": 15000
+      }
+     ]
+    }
    }
   ],
   "snap": {
