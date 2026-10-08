@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-08T18:54:09+00:00",
+ "cuando": "2026-10-08T19:24:28+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -320,6 +320,26 @@
    "fecha": "3 2V2",
    "premios": "",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1557835212732498064",
+   "cuando": "2026-10-08T19:20:57",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "autor_h": "6a6481d106eda6d3",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA III",
+   "modalidad": "⚔️  1VS1",
+   "horario": "EN 40 MINUTOS",
+   "fecha": "HOY PE MANO",
+   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "PELICULA SACABRONCA",
@@ -719,26 +739,6 @@
    "horario": "Ya",
    "fecha": "",
    "premios": "Amor y compasion y puntos para el ranking",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 21 1v1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1556032680762671145",
-   "cuando": "2026-10-03T19:58:20",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Lewis",
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "12 / 16 / 24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 30 MINUTOS",
-   "fecha": "",
-   "premios": "Respeto",
    "categoria_id": "1468478330826260500"
   },
   {
