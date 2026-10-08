@@ -1532,6 +1532,26 @@
    "b": "SIX MAILEN",
    "ganador": "VELATZ SNOW NEO",
    "votos": "1–0"
+  },
+  "1557550529826005134": {
+   "id": "1557550529826005134",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791419384200,
+   "a": "park ji sung🇰🇷",
+   "b": "NEMI",
+   "ganador": "park ji sung🇰🇷",
+   "votos": "1–0"
+  },
+  "1557555719832735795": {
+   "id": "1557555719832735795",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791420621594,
+   "a": "park ji sung🇰🇷",
+   "b": "RIZAS",
+   "ganador": "park ji sung🇰🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -3430,8 +3450,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791413994519,
-   "ed": 1791419190652,
-   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝\n⌞LEWITO⌝ 🆚 ⌞PICHULA⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞PRESAGIO DELUX NEMI⌝ 🆚 ⌞SNOW⌝\n⌞DELUX⌝ 🆚 ⌞SNOW⌝\n⌞Pichulamc⌝ 🆚 ⌞park ji sung🇰🇷⌝\n⌞VELATZ SNOW NEO⌝ 🆚 ⌞SIX MAILEN⌝\n`[ SEMIFINALES ]`\n⌞NEMI PRESAGIO DELUX⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PRESAGIO⌝ 🆚 ⌞PARK JI SUNG⌝",
+   "ed": 1791420772331,
+   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝\n⌞LEWITO⌝ 🆚 ⌞PICHULA⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞PRESAGIO DELUX NEMI⌝ 🆚 ⌞SNOW⌝\n⌞DELUX⌝ 🆚 ⌞SNOW⌝\n⌞Pichulamc⌝ 🆚 ⌞park ji sung🇰🇷⌝\n⌞VELATZ SNOW NEO⌝ 🆚 ⌞SIX MAILEN⌝\n`[ SEMIFINALES ]`\n⌞NEMI PRESAGIO DELUX⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PRESAGIO⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞NEMI⌝\n⌞SNOW NEO VELATZ RIZAS⌝ 🆚 ⌞CRONOX⌝\n`[ FINAL ]`\n⌞PARK JI SUNG⌝ 🆚 ⌞RIZAS⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3511,8 +3531,8 @@
       "NEMI PRESAGIO DELUX",
       "PARK JI SUNG"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARK JI SUNG",
+     "ronda siguiente",
      []
     ],
     [
@@ -3521,8 +3541,38 @@
       "PRESAGIO",
       "PARK JI SUNG"
      ],
+     "PARK JI SUNG",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PARK JI SUNG",
+      "NEMI"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SNOW NEO VELATZ RIZAS",
+      "CRONOX"
+     ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "RIZAS"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]
