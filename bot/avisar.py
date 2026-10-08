@@ -44,6 +44,9 @@ CANAL = '1504110449535483924'
 AZUL = 0x5865F2
 AMBAR = 0xF0B232
 
+#: el Worker, para preguntarle al objeto en qué chat habla el bot en vivo de cada servidor (`canales_chat()`)
+WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
+
 
 def _token():
     """El token del bot, de `.env` o del entorno. `''` si no hay."""
@@ -112,6 +115,39 @@ def mandar(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
             return True
     except Exception:                                    # noqa: BLE001
         return False
+
+
+_CHAT = None
+
+
+def canales_chat():
+    """`{SV: canal}`: el chat de cada servidor donde habla el bot en vivo, del objeto (`canalesChat()` de avisos.js). Una
+    vez por corrida. `None` si no se pudo preguntar.
+
+    🔑 EL AVISO DE CADA EVENTO VA AHÍ, NO A «LIGA GLOBAL». Dlx, 07/10/2026, al verlo en ese canal: *«¿por qué esto
+    aparece en el canal de logs, o sea registros? Pensé que sería en el chat general»* — LIGA GLOBAL está en la
+    categoría «registros» de DRA—, y a la pregunta: el chat del servidor, y en registros *«sacarlo de ahí»*. Es el mismo
+    canal que eligió el admin con /settings o que prendió Dlx en el Dashboard: un servidor sin el bot en vivo prendido
+    no recibe el aviso.
+    """
+    global _CHAT
+    if _CHAT is not None:
+        return _CHAT
+    try:
+        import hashlib
+        import requests
+        t = _token()
+        if not t:
+            return None
+        k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+        r = requests.get(WORKER + '/avisos/chat-canales', headers={'x-lg-ciclo': k}, timeout=20)
+        d = r.json() if r.ok else None
+    except Exception:                                    # noqa: BLE001
+        return None
+    if not isinstance(d, dict):
+        return None
+    _CHAT = {str(sv).upper(): str(c) for sv, c in d.items() if str(c).isdigit()}
+    return _CHAT
 
 
 def _salio(r):
@@ -188,15 +224,33 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
         for k in ('t', 'antes', 'ev_antes', 'sello', 'msg', 'firma', 'al_dia'):
             if k in antes:
                 reg[k] = antes[k]
+    # 💬 EL CHAT DEL SERVIDOR (ver `canales_chat()`). El que ya salió se edita donde está —los de antes del 07/10/2026,
+    # en LIGA GLOBAL—; uno nuevo va al chat del servidor del evento, y si ese servidor no tiene el bot en vivo prendido
+    # no se manda: queda anotado con `canal: ''` para no salir horas tarde cuando lo prendan
+    if antes and antes.get('canal') == '' and not antes.get('msg'):
+        return False
+    canal = (antes or {}).get('canal') if (antes or {}).get('msg') else None
+    if not (antes or {}).get('msg'):
+        cc = canales_chat()
+        if cc is None:
+            return False                              # no se pudo preguntar: la próxima corrida
+        canal = cc.get(str(ev.get('servidor') or ev.get('sv') or reg.get('sv') or '').upper(), '')
+        if not canal:
+            reg['canal'] = ''
+            ya[num] = reg
+            _guardar(ya)
+            return False
     e = AE.armar(reg, AE.nivel())
     f = AE.firma(e)
     if antes and antes.get('firma') == f:
         return False
-    r = mandar(None, None, embed=e, editar=(antes or {}).get('msg'))
+    r = mandar(None, None, embed=e, canal=canal, editar=(antes or {}).get('msg'))
     if _salio(r):
         # ⚠️ SE ANOTA SOLO SI SALIO, como siempre
         reg['firma'] = f
         reg['msg'] = r if isinstance(r, str) else (antes or {}).get('msg')
+        if canal:
+            reg['canal'] = canal
         ya[num] = reg
         _guardar(ya)
     return _salio(r)
@@ -384,6 +438,8 @@ def _self_check():
             return True if editar else 'msg-nuevo'
 
         real, globals()['mandar'] = mandar, _falso
+        global _CHAT
+        guardo_chat, _CHAT = _CHAT, {'FFA': 'chat-ffa'}
         try:
             with io.open(YA, 'w', encoding='utf-8') as f:
                 json.dump({'999': {'firma': f1, 'msg': 'abc'}}, f)
@@ -412,7 +468,35 @@ def _self_check():
             ok = r2 is False and not visto.get('n')
             mal += not ok
             print('   %s la misma llave otra vez no se vuelve a mandar' % ('ok' if ok else '🔴'))
+
+            # 💬 al chat del servidor, no a LIGA GLOBAL (Dlx, 07/10/2026: «sacarlo de ahí»)
+            ok = guardado.get('canal') == 'chat-ffa'
+            mal += not ok
+            print('   %s la nueva va al chat de su servidor (%r)' % ('ok' if ok else '🔴', guardado.get('canal')))
+            # un servidor sin el bot en vivo prendido: no se manda, y tampoco más tarde
+            os.remove(YA)
+            visto.clear()
+            ev3 = dict(ev2, servidor='DDF')
+            r3 = evento(ev3, 5, 2)
+            r4 = evento(ev3, 5, 2)
+            ok = r3 is False and r4 is False and not visto.get('n') and _avisados().get('999', {}).get('canal') == ''
+            mal += not ok
+            print('   %s sin chat prendido no se manda, ni la vez siguiente' % ('ok' if ok else '🔴'))
+            # el de antes, en LIGA GLOBAL, se sigue editando donde está
+            with io.open(YA, 'w', encoding='utf-8') as f:
+                json.dump({'999': {'v': 2, 'firma': 'otra', 'msg': 'viejo'}}, f)
+            visto.clear()
+
+            def _falso2(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
+                visto['canal'], visto['editar'] = canal, editar
+                return True
+            globals()['mandar'] = _falso2
+            evento(ev2, 5, 2)
+            ok = visto.get('editar') == 'viejo' and visto.get('canal') is None
+            mal += not ok
+            print('   %s el que ya salió se edita donde está (canal %r)' % ('ok' if ok else '🔴', visto.get('canal')))
         finally:
+            _CHAT = guardo_chat
             globals()['mandar'] = real
     finally:
         if os.path.exists(YA):

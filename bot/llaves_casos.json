@@ -1606,6 +1606,47 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "FFA · PRITTY FREE (MULTIVERSE 1-4, 07/10/2026): el equipo con « x » y las banderas al final (Dlx: «estas son 3 personas diferentes»)",
+   "texto": "# ▪️ [•OCTAVOS DE FINAL•]\n\n▪️   [Akutagawa🇹🇼] 🆚 [Prodigy 🇦🇷] 🆚   [Enkil 🇦🇷]  🆚  [Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷]\n\n# ▪️ [•CUARTOS DE FINAL•]\n\n▪️   [Snow🇨🇴] 🆚 [Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷]\n",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "Akutagawa🇹🇼",
+       "Prodigy 🇦🇷",
+       "Enkil 🇦🇷",
+       "Nemi + presagio + dantedelux🇦🇷 🇦🇷 🇦🇷"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "Snow🇨🇴",
+       "Nemi + presagio + dantedelux🇦🇷 🇦🇷 🇦🇷"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "… y la « x » que NO es un equipo: sin una bandera por cada nombre, queda como vino",
+   "texto": "# ▪️ [•CUARTOS DE FINAL•]\n\n▪️   [Malcom x Liam🇦🇷] 🆚 [Snow🇨🇴]\n",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "Malcom x Liam🇦🇷",
+       "Snow🇨🇴"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

@@ -385,6 +385,30 @@ def _pais_del_emoji(m):
     return m.group(0)
 
 
+#: « x » ENTRE NOMBRES, ADENTRO DE UN MARCO (ver `_equipo_con_x()`)
+_X_EQUIPO = re.compile(r'[ \t]+[xX][ \t]+')
+
+
+def _equipo_con_x(s):
+    """`Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷` -> `Nemi + presagio + dantedelux🇦🇷 🇦🇷 🇦🇷`.
+
+    🔑 PRITTY FREE (FFA, 07/10/2026), MULTIVERSE 1-4. Dlx: *«estas son 3
+    personas diferentes… pero la página no lo detectó»*: el equipo quedaba
+    como UNA persona llamada «Nemi x presagio x dantedelux».
+
+    ⚠️ SÓLO CON UNA BANDERA POR CADA UNO, como mínimo. Una «x» suelta puede
+    ser parte de un nombre, y ENTRE marcos ya es un «vs» (`VS_ENTRE`); adentro
+    de un marco y con tantas banderas como nombres, son personas. Las
+    banderas quedan donde vinieron, como en `lord+camila+dxg🇲🇽🇨🇴🇨🇴`.
+    """
+    if re.search(r'[+,/&]', s):
+        return s
+    partes = [p for p in _X_EQUIPO.split(s) if p.strip()]
+    if len(partes) < 2 or len(re.findall(_BANDERA + '{2}', s)) < len(partes):
+        return s
+    return _X_EQUIPO.sub(' + ', s)
+
+
 def _equipo_de_banderas(s):
     """`HASSAN🇦🇷 ABYSSUS🇵🇦` -> `HASSAN🇦🇷 + ABYSSUS🇵🇦`, si no hay otro separador.
 
@@ -551,10 +575,11 @@ def traducir(texto):
     # (`<:VSF:…>` no: `SEP` ya lo lee, y la llave de FFA queda como vino)
     t = re.sub(r'(?<=[⌝\]])[ \t]*' + _MD + r'[ \t]*(?!<a?:(?i:vsf?):)' + PROPIO
                + r'[ \t]*(?=' + _MD + r'[⌞\[])', ' 🆚 ', t)
-    # el equipo sin `+`
-    t = re.sub(r'⌞([^⌞⌝\n]{1,80})⌝', lambda m: '⌞' + _equipo_de_banderas(m.group(1)) + '⌝', t)
+    # el equipo sin `+`: con « x » entre los nombres, o con una bandera entre cada uno
+    t = re.sub(r'⌞([^⌞⌝\n]{1,80})⌝',
+               lambda m: '⌞' + _equipo_de_banderas(_equipo_con_x(m.group(1))) + '⌝', t)
     t = re.sub(r'\[([^\[\]\n]{1,40})\]',
-               lambda m: '[' + _equipo_de_banderas(m.group(1)) + ']', t)
+               lambda m: '[' + _equipo_de_banderas(_equipo_con_x(m.group(1))) + ']', t)
     # `3er Y 4º PUESTO` como encabezado: sólo si abajo hay una batalla,
     # así la línea del podio (`3ER PUESTO: X`) no cambia.
     # ⚠️ `split` y no `splitlines`: el salto del final se queda donde estaba

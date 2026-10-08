@@ -9,8 +9,9 @@
 diciendo que se actualizará en breve… un resumen… un ranking al finalizar con los cambios»*, y a las ideas, *«dale, me
 gusta, pero eso de los botones todavía no»*, *«para la liga global, pero añade nivel de intensidad»*.
 
-Va al canal de siempre (`avisar.CANAL`, «LIGA GLOBAL» en DRA) y cuánto dice lo elige Dlx en el Dashboard
-(`avisos_nivel` en los ajustes del objeto, como el bot en vivo):
+Va al CHAT DEL SERVIDOR del evento, el mismo donde habla el bot en vivo (`avisar.canales_chat()`; Dlx, 07/10/2026:
+«chat del servidor», y de LIGA GLOBAL —que está en «registros»— *«sacarlo de ahí»*), y cuánto dice lo elige Dlx en el
+Dashboard (`avisos_nivel` en los ajustes del objeto, como el bot en vivo):
 
     poco    «Lo justo»   el evento, el campeón y cuántos jugaron
     normal  «Normal»     además el podio con sus puntos y la tarjeta del campeón
@@ -305,7 +306,8 @@ def al_dia(aplicar=False, ahora=None):
         print('   #%s %s: %s' % (n, limpio(x.get('nombre')), 'se edita' if aplicar else 'se editaría'))
         if not aplicar:
             continue
-        if AV.mandar(None, None, embed=e, editar=x['msg']):
+        # donde salió: el chat del servidor, o LIGA GLOBAL los de antes del 07/10/2026 (sin `canal`)
+        if AV.mandar(None, None, embed=e, editar=x['msg'], canal=x.get('canal') or None):
             x['firma'] = f
             hechos += 1
     if aplicar and hechos:

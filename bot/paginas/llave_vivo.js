@@ -164,6 +164,15 @@
     return j !== l && buscarRonda(j) && !buscarRonda(l) ? j : l;
   }
 
+  /* `escuchar._equipo_con_x()`: `Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷` -> `Nemi + presagio + dantedelux…` (PRITTY
+     FREE, FFA, 07/10/2026). Sólo con una bandera por cada uno, como mínimo: una «x» suelta puede ser parte de un nombre */
+  function equipoConX(s) {
+    if (/[+,\/&]/.test(s)) return s;
+    var partes = s.split(/[ \t]+[xX][ \t]+/).filter(function (p) { return p.trim(); });
+    if (partes.length < 2 || (s.match(new RegExp(BANDERA + '{2}', 'gu')) || []).length < partes.length) return s;
+    return s.replace(/[ \t]+[xX][ \t]+/g, ' + ');
+  }
+
   function equipoDeBanderas(s) {
     if ((s.match(new RegExp(BANDERA + '{2}', 'gu')) || []).length < 2 || /[+,\/]/.test(s)) return s;
     s = s.replace(new RegExp('(' + BANDERA + ')(' + MD + ')[ \\t]*&[ \\t]*(?=' + MD + '[\\p{L}\\p{N}_])', 'gu'),
@@ -240,8 +249,8 @@
     t = t.replace(/([⌝\]])[ \t]*<a?:\w+:\d+>[ \t]*\([ \t]*([^()\n]{2,30}?)[ \t]*\)/gu, '$1 🆚 ⌞$2⌝');
     t = t.replace(new RegExp('([⌝\\]])[ \\t]*' + MD + '[ \\t]*(?!<a?:[vV][sS][fF]?:)<a?:\\w+:\\d+>[ \\t]*(?=' +
       MD + '[⌞\\[])', 'gu'), '$1 🆚 ');
-    t = t.replace(/⌞([^⌞⌝\n]{1,80})⌝/gu, function (_m, x) { return '⌞' + equipoDeBanderas(x) + '⌝'; });
-    t = t.replace(/\[([^\[\]\n]{1,40})\]/gu, function (_m, x) { return '[' + equipoDeBanderas(x) + ']'; });
+    t = t.replace(/⌞([^⌞⌝\n]{1,80})⌝/gu, function (_m, x) { return '⌞' + equipoDeBanderas(equipoConX(x)) + '⌝'; });
+    t = t.replace(/\[([^\[\]\n]{1,40})\]/gu, function (_m, x) { return '[' + equipoDeBanderas(equipoConX(x)) + ']'; });
     var ls = podioConMedallas(t.split('\n'));
     for (var i = 0; i < ls.length; i++) {
       var l = ls[i];

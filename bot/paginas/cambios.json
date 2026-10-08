@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.58",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T21:24:00-04:00",
+   "titulo": "El bot en vivo, con más ganas",
+   "items": [
+    "🎲 **Apuestas en vivo con Puntos de Tienda**: en los servidores que elijan el nivel «A full», cada cruce trae botones para apostar de 50 a 500 por uno de los dos. Cierra a los 3 minutos, y el pozo se reparte entre quienes acertaron; si la batalla no tiene ganador, se devuelve todo.",
+    "🔥 **Antes de cada batalla, qué cruce es**: con «Con datos», el bot dice si es EL CLÁSICO, LA REVANCHA, un DUELO DE CAMPEONES o un DAVID CONTRA GOLIAT, con un «¿sabías que…?» de los dos; y en inscripciones cuenta quiénes se anotaron.",
+    "📣 **El resumen de cada evento sale en el chat del servidor donde se jugó**, el mismo donde habla el bot en vivo: el campeón, el podio y su tarjeta.",
+    "🎯 **El Win% aparece a los 10 eventos**, como el rango: con dos o tres eventos un porcentaje no dice nada.",
+    "👥 **Un equipo escrito «A x B x C» son tres personas**: la llave lo partía como un solo nombre."
+   ]
+  },
+  {
    "version": "2.57",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T18:29:00-04:00",

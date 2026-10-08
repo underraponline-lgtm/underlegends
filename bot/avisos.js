@@ -1729,6 +1729,8 @@ const RUTAS = {
   // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
   // ciclo, con `claveCiclo()`. Ver `personasCiclo()`
   '/avisos/personas-ciclo': 'POST', '/avisos/personas-leer': 'GET',
+  // 💬 el chat de cada servidor, donde habla el bot en vivo: el ciclo manda ahí el aviso de cada evento. Ver `canalesChat()`
+  '/avisos/chat-canales': 'GET',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -2977,6 +2979,12 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 💬 EL CHAT DE CADA SERVIDOR, PARA EL CICLO (`avisar.evento()`): con su clave, como lo del Pase
+  if (ruta === '/avisos/chat-canales') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/chat-canales');
+  }
   // 🎟️ QUIÉN TIENE NIVEL EN EL PASE, PARA EL CICLO: trae Discord IDs, así que sin su clave «no existe»
   if (ruta === '/avisos/pase-niveles') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3491,6 +3499,7 @@ export class Avisos {
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
+      if (ruta === '/chat-canales') return json(await this.canalesChat());
       // 🧠 una persona, para el Worker (`leerP()`): el valor tal cual, o 404. No está en `RUTAS_AVISOS`: de afuera no
       // se llega, sólo por el binding
       if (ruta === '/persona') {
@@ -4405,6 +4414,33 @@ export class Avisos {
    * después de la hora. Los anotados son los que ya cuenta la página (`anotados`): con su bandera o con un nombre que la
    * Liga conoce, no la charla del canal.
    */
+  /**
+   * 💬 EL CHAT DE CADA SERVIDOR, el mismo donde habla el bot en vivo (la regla de `chatVivo()`): `{SV: canal}`, sólo los
+   * que lo tienen prendido. Lo pide el ciclo para el aviso de cada evento: Dlx, 07/10/2026, el aviso va al «chat del
+   * servidor» y sale de LIGA GLOBAL, que está en «registros» («Sacarlo de ahí»). Un servidor sin el bot en vivo prendido
+   * no está, y su aviso no se manda: se prende desde el Dashboard o con /settings.
+   */
+  async canalesChat() {
+    const aj = this.ajustes();
+    const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
+    const C = this.leer('canales') || {};
+    const gen = new Map((C.generales || []).map((x) => [x.g, x.id]));
+    // de qué guild es cada servidor: lo dicen todas las listas de canales que el vigía ya conoce
+    const guild = new Map();
+    for (const x of [].concat(C.generales || [], C.lista || [], C.inscripciones || [], C.veredictos || [])) {
+      if (x && x.sv && x.g && !guild.has(x.sv)) guild.set(x.sv, x.g);
+    }
+    const out = {};
+    for (const [sv, g] of guild) {
+      if (dash[sv] === false) continue;
+      let c = {};
+      try { c = JSON.parse((await this.env.KV.get('cfg:' + g, { cacheTtl: 300 })) || '{}') || {}; } catch (e) { c = {}; }
+      const canal = String(c.vivo || '') || (dash[sv] === true ? String(gen.get(g) || '') : '');
+      if (/^\d{5,25}$/.test(canal)) out[sv] = canal;
+    }
+    return out;
+  }
+
   async inscriptosChat(ahora) {
     const aj = this.ajustes();
     const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
