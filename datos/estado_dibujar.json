@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-08T18:28:46Z",
+ "cuando": "2026-10-08T19:17:36Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 105.4,
+ "dur_s": 1100.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.8
+   "s": 9.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.1
+   "s": 2.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.7
+   "s": 18.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 2 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 24.7
+   "s": 1018.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.9
+   "s": 6.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 47.7
+   "s": 44.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "427",
-  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "n": "428",
+  "nombre": "CIUDAD GOTICA",
   "sv": "DDF",
-  "dia": "2026-10-08"
+  "dia": "2026-09-27"
  },
  "cuotas": {
   "kv": {
-   "write": 246,
-   "read": 31507
+   "write": 263,
+   "read": 33975
   },
   "objeto": {
-   "leidas": 1394663,
-   "escritas": 15152,
-   "pedidos": 5919
+   "leidas": 1457149,
+   "escritas": 16616,
+   "pedidos": 6173
   },
   "worker": {
-   "pedidos": 8844,
+   "pedidos": 8481,
    "errores": 1,
-   "sub": 9313,
-   "p50_ms": 1.09,
-   "p99_ms": 6.16
+   "sub": 8914,
+   "p50_ms": 1.1,
+   "p99_ms": 6.22
   },
   "r2": {
    "objetos": 3651,
