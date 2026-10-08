@@ -64,6 +64,15 @@ NIVELES = ('facil', 'media', 'dificil')
 #: puntos de Temporada por misión cumplida, y el bono por las tres
 PUNTOS = {'facil': 300, 'media': 600, 'dificil': 1000}
 BONO = 1000
+#: 🎯 LA CACERÍA: la cuarta misión, «ganale un duelo a X» (Dlx, 08/10/2026: *«en misiones agregar una misión que
+#: diga caza a X persona (asegúrate que la persona sea activa)»*; a «¿un buscado diario o esta misión?», *«el que
+#: consideres»*). X es la misma para todos y sale de los más activos: los `CAZA_TOP` con más eventos en los
+#: `CAZA_DIAS` días antes de la semana —con dos o más, y alguno en la última semana—, sorteada con la semana como
+#: semilla. Va aparte del bono, que sigue siendo por las tres de siempre. Desde la semana del lunes 12/10, con el Most
+#: Wanted semanal: empezarla a mitad de una semana la daba por cumplida a gente que no sabía que existía
+CAZA_DESDE = '2026-10-12'
+PUNTOS_CAZA = 800
+CAZA_TOP, CAZA_DIAS = 8, 14
 #: hasta qué ronda llegó cada puesto de `Resultados` (como `rankings.LLEGO`)
 LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4, 'semifinal': 4, 'cuartos': 8,
          'octavos': 16, 'r32': 32, 'dieciseisavos': 32, 'r64': 64}
@@ -91,6 +100,28 @@ def elegir(sem, anterior=None):
         texto, _que, meta = CATALOGO[niv][i]
         out.append([i, texto, niv, meta, PUNTOS[niv]])
     return out
+
+
+def presa(sid, ini, evs, desde=None):
+    """A quién se caza la semana `sid` (que empieza en `ini`): uno de los más activos de antes, o `None`.
+
+    `evs` son las filas de `filas_de()`: `(num, sv, instante, quién, puesto)`. Activo es dos eventos o más en los
+    `CAZA_DIAS` días antes y alguno en los últimos siete: alguien a quien de verdad se lo puede cruzar esta semana."""
+    if sid < CAZA_DESDE:
+        return None
+    hace = ini - dt.timedelta(days=CAZA_DIAS)
+    reciente = ini - dt.timedelta(days=7)
+    cuantos, ult = {}, {}
+    for e in evs:
+        if e[2] is None or (desde and e[2] < desde) or not (hace <= e[2] < ini):
+            continue
+        cuantos.setdefault(e[3], set()).add(e[0])
+        ult[e[3]] = max(ult.get(e[3], e[2]), e[2])
+    act = sorted((q for q, ns in cuantos.items() if len(ns) >= 2 and ult[q] >= reciente),
+                 key=lambda q: (-len(cuantos[q]), q))[:CAZA_TOP]
+    if not act:
+        return None
+    return random.Random('caza:' + str(sid)).choice(act)
 
 
 def _que(i):
@@ -167,7 +198,9 @@ def filas_de(res, uno, instantes=None, canon=None, es_troll=None):
         if es_troll(gan):
             continue
         num = _n(f[0])
-        dus.append((num, cuando(num, f[1]), gan))
+        # y a quién le ganó: la cacería pide ganarle un duelo a alguien en particular
+        perd = next((str(x).strip() for x in (f[4], f[5]) if str(x).strip() and canon(str(x).strip()) != gan), '')
+        dus.append((num, cuando(num, f[1]), gan, canon(perd) if perd else ''))
     return evs, dus
 
 
@@ -218,6 +251,9 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
         ini, fin = semanas[sid]
         lista = elegir(sid, anterior)
         anterior = [x[0] for x in lista]
+        x_caza = presa(sid, ini, evs, desde)
+        if x_caza:
+            lista.append(['caza', 'Ganale un duelo a %s' % x_caza, 'caza', 1, PUNTOS_CAZA, x_caza])
         ev_s, svs_antes = {}, {}
         for e in evs:
             if e[2] is None or (desde and e[2] < desde):
@@ -226,17 +262,22 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
                 ev_s.setdefault(e[3], []).append((e[0], e[1], e[2], e[4]))
             elif e[2] < ini:
                 svs_antes.setdefault(e[3], set()).add(e[1])
-        du_s = {}
+        du_s, contra = {}, {}
         for d in dus:
             if d[1] is not None and ini <= d[1] < fin and not (desde and d[1] < desde):
                 du_s[d[2]] = du_s.get(d[2], 0) + 1
+                if len(d) > 3 and d[3]:
+                    contra.setdefault(d[2], set()).add(d[3])
         top = tops.get(sid, set())
         prog, pts = {}, {}
         for quien in sorted(set(ev_s) | set(du_s)):
-            vs = [valor(i, ev_s.get(quien, []), du_s.get(quien, 0), svs_antes.get(quien, set()), top)
-                  for i, _t, _n, _m, _p in lista]
+            vs = [int(x[5] in contra.get(quien, set())) if x[0] == 'caza'
+                  else valor(x[0], ev_s.get(quien, []), du_s.get(quien, 0), svs_antes.get(quien, set()), top)
+                  for x in lista]
             hechas = [cumplida(x[0], v, x[3]) for x, v in zip(lista, vs)]
-            p = sum(x[4] for x, h in zip(lista, hechas) if h) + (BONO if all(hechas) else 0)
+            # ⚠️ el bono es por las tres de siempre: la cacería va aparte
+            p = sum(x[4] for x, h in zip(lista, hechas) if h) + (
+                BONO if all(h for x, h in zip(lista, hechas) if x[0] != 'caza') else 0)
             prog[quien] = vs
             if p:
                 pts[quien] = p
@@ -344,6 +385,21 @@ def _self_check():
     w = para_web({'sem': '2026-10-05', 'semanas': {'2026-10-05': s}, 'suma': r['suma']})
     ok(w and len(w['lista']) == 3 and w['total'] == r['suma'], 'la página recibe las tres, el progreso y lo sumado')
     ok(para_web({}) is None, 'sin semana, nada para la página')
+    # 🎯 la cacería: la presa es de los activos, la misma para todos, y se cumple ganándole un duelo
+    t2 = dt.datetime(2026, 10, 13, 1, 0, tzinfo=U)       # lunes 12/10, 9 PM ET: la semana del 12
+    tv = dt.datetime(2026, 10, 8, 1, 0, tzinfo=U)
+    evs2 = evs + [(30, 'FFA', tv, 'Ana', 'octavos'), (31, 'FFA', tv, 'Ana', 'cuartos'), (30, 'FFA', tv, 'Cid', 'r32'),
+                  (40, 'FFA', t2, 'Bea', 'campeon'), (40, 'FFA', t2, 'Ana', 'subcampeon')]
+    dus2 = dus + [(40, t2, 'Bea', 'Ana')]
+    r2 = calcular(evs2, dus2, dt.datetime(2026, 10, 14, 12, 0, tzinfo=U))
+    s2 = r2['semanas'].get('2026-10-12') or {}
+    cz = [x for x in s2.get('lista') or [] if x[0] == 'caza']
+    ok(not [x for x in lista if x[0] == 'caza'] and len(cz) == 1 and cz[0][5] == 'Ana',
+       'la cacería arranca la semana del 12/10, y la presa es la activa (Ana: 3 eventos), no Cid (1)')
+    ok((s2.get('pts') or {}).get('Bea', 0) >= PUNTOS_CAZA and (s2['prog']['Bea'][-1] == 1),
+       'Bea le ganó un duelo a Ana: cumple la cacería y suma sus %d' % PUNTOS_CAZA)
+    ok(presa('2026-10-12', t2, evs2) == presa('2026-10-12', t2, evs2) and presa('2026-10-05', t1, evs2) is None,
+       'la misma semana, la misma presa; y antes del 12/10, ninguna')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
