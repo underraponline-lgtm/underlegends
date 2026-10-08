@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-08T23:26:54Z",
+ "cuando": "2026-10-08T23:57:45Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 242.3,
+ "dur_s": 296.7,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 40.6
+   "s": 34.1
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 58.6
+   "s": 30.5
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.6
+   "s": 113.3
   },
   {
    "n": "1a2",
@@ -39,7 +39,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 22.9
+   "s": 24.7
   },
   {
    "n": "1b2",
@@ -51,7 +51,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.9
+   "s": 5.9
   },
   {
    "n": "2b",
@@ -75,37 +75,37 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.6
+   "s": 2.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 24.5
+   "s": 20.7
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.7
+   "s": 2.9
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 34.4
+   "s": 30.6
   },
   {
    "n": "2c2",
@@ -117,7 +117,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.5
+   "s": 11.4
   },
   {
    "n": "2e",
@@ -129,7 +129,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 23.7
+   "s": 10.7
   },
   {
    "n": "3",
@@ -139,7 +139,7 @@
   }
  ],
  "fallas": [],
- "decidir": 88,
+ "decidir": 89,
  "ultimo_evento": {
   "n": "429",
   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL2",
@@ -148,7 +148,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-08T23:23:37Z",
+  "cuando": "2026-10-08T23:53:27Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 380,
   "un_evento": 190,
@@ -176,20 +176,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 356,
-   "read": 47465
+   "write": 372,
+   "read": 49148
   },
   "objeto": {
-   "leidas": 1986475,
-   "escritas": 24634,
-   "pedidos": 7234
+   "leidas": 2055532,
+   "escritas": 25274,
+   "pedidos": 7470
   },
   "worker": {
-   "pedidos": 7254,
+   "pedidos": 7289,
    "errores": 1,
-   "sub": 7599,
+   "sub": 7668,
    "p50_ms": 1.12,
-   "p99_ms": 6.18
+   "p99_ms": 6.19
   },
   "r2": {
    "objetos": 3652,
