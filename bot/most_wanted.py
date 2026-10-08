@@ -65,14 +65,21 @@ SALIDA = os.path.join(BASE, 'datos', 'mw.json')
 ARRANCA_H = 11
 #: cuántos buscados por período. Dlx, 27/09/2026: *«de momento, como es
 #: diario, que sean 3… y que cuando sea por semana que sean 9»*
-CUANTOS = {'dia': 3, 'semana': 9}
+#: 🔑 12 POR SEMANA (Dlx, 08/10/2026: *«pon 12 personas como most wanted cada semana»*). Eran 9
+CUANTOS = {'dia': 3, 'semana': 12}
 #: cómo se reparten entre los niveles de categoría. ⚠️ Sin esto, con tres
 #: lugares salían SIEMPRE El Rey, El Imparable y El Verdugo —las tres
 #: primeras de la lista—: el Rey es casi imposible de cazar y los demás
 #: nunca aparecían. Uno de cada nivel: un pez gordo, uno del medio y uno al
 #: alcance de cualquiera. Dentro de cada nivel la categoría sale sorteada.
+#: Con 12, la misma proporción que con 9 (2-3-3-1): más peces gordos y más al alcance de cualquiera.
 CUPOS = {'dia': (('A', 1), ('B', 1), ('CD', 1)),
-         'semana': (('A', 2), ('B', 3), ('C', 3), ('D', 1))}
+         'semana': (('A', 3), ('B', 4), ('C', 3), ('D', 2))}
+#: 🔑 DESDE CUÁNDO ES SEMANAL, en una temporada sin corte (`comun/temporada.SIN_CORTE`). Dlx, 08/10/2026: la T1
+#: arranca el 22/09 sin reset, y el Most Wanted pasa a ser de 12 por semana. Las semanas van de lunes a lunes a las
+#: 11 AM ET: la primera entera es la del lunes 12/10, y hasta ahí siguen los diarios. El último día termina justo
+#: donde empieza la semana, así que no hay hueco ni se pisan
+SEMANAL_DESDE = '2026-10-12T15:00:00+00:00'
 #: la recompensa base de cada nivel de categoría. La pre-temporada pagaba
 #: de 5.000 a 20.000 (Dlx, 27/09/2026)
 BASE_NIVEL = {'A': 8000, 'B': 6000, 'C': 5000, 'D': 4000}
@@ -198,10 +205,13 @@ def _espera(ahora=None):
 
 
 def tipo_de(ahora=None):
-    """`'dia'` en la fase de prueba, `'semana'` desde el arranque de la temporada."""
+    """`'dia'` en la fase de prueba, `'semana'` desde el arranque de la temporada (o desde `SEMANAL_DESDE`, si la
+    temporada no corta)."""
     a = _arranque()
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
-    return 'semana' if a and ahora >= a else 'dia'
+    if not a:
+        return 'semana' if ahora >= dt.datetime.fromisoformat(SEMANAL_DESDE) else 'dia'
+    return 'semana' if ahora >= a else 'dia'
 
 
 def temporada_de(ahora=None):
@@ -868,22 +878,34 @@ def _self_check():
     ok(fin.astimezone(et).hour == 11, 'y cruzando el cambio de horario sigue terminando a las 11 AM ET')
     # el borde de la temporada: la prueba termina a las 00:00 del arranque, la
     # primera semana no hay buscados y el lunes siguiente arranca el semanal
-    from comun.temporada import ACTUAL, FECHAS
-    arr = dt.date.fromisoformat(FECHAS[ACTUAL][0])
-    en = lambda d, h, m=0: dt.datetime(arr.year, arr.month, arr.day, h, m, tzinfo=et) + dt.timedelta(days=d)
-    pid, ini, fin = periodo(en(-1, 20))
-    ok(tipo_de(en(-1, 20)) == 'dia' and temporada_de(en(-1, 20)) == 'prueba'
-       and pid == (arr - dt.timedelta(days=1)).isoformat() and fin == en(0, 0),
-       'el último día de prueba (%s) termina con la prueba, a las 00:00 del arranque' % pid)
-    ps = _primera_semana()
-    ok(temporada_de(en(0, 0, 22)) == ACTUAL and _espera(en(0, 0, 22)) == ps and _espera(en(3, 15)) == ps,
-       'desde el arranque es la %s y la primera semana no hay buscados' % ACTUAL.upper())
-    pe = ps.astimezone(et)
-    ok(pe.weekday() == 0 and pe.hour == 11 and (pe.date() - arr).days >= 7,
-       'el primer Most Wanted sale el lunes %s a las 11 AM, con una semana jugada' % pe.date())
-    pid, ini, fin = periodo(ps + dt.timedelta(minutes=22))
-    ok(_espera(ps + dt.timedelta(minutes=22)) is None and tipo_de(ps) == 'semana'
-       and pid == pe.date().isoformat() and (fin - ini).days == 7, 'y es semanal: %s, 7 días' % pid)
+    from comun.temporada import ACTUAL, FECHAS, arranque as _arr
+    if _arr():
+        arr = dt.date.fromisoformat(FECHAS[ACTUAL][0])
+        en = lambda d, h, m=0: dt.datetime(arr.year, arr.month, arr.day, h, m, tzinfo=et) + dt.timedelta(days=d)
+        pid, ini, fin = periodo(en(-1, 20))
+        ok(tipo_de(en(-1, 20)) == 'dia' and temporada_de(en(-1, 20)) == 'prueba'
+           and pid == (arr - dt.timedelta(days=1)).isoformat() and fin == en(0, 0),
+           'el último día de prueba (%s) termina con la prueba, a las 00:00 del arranque' % pid)
+        ps = _primera_semana()
+        ok(temporada_de(en(0, 0, 22)) == ACTUAL and _espera(en(0, 0, 22)) == ps and _espera(en(3, 15)) == ps,
+           'desde el arranque es la %s y la primera semana no hay buscados' % ACTUAL.upper())
+        pe = ps.astimezone(et)
+        ok(pe.weekday() == 0 and pe.hour == 11 and (pe.date() - arr).days >= 7,
+           'el primer Most Wanted sale el lunes %s a las 11 AM, con una semana jugada' % pe.date())
+        pid, ini, fin = periodo(ps + dt.timedelta(minutes=22))
+        ok(_espera(ps + dt.timedelta(minutes=22)) is None and tipo_de(ps) == 'semana'
+           and pid == pe.date().isoformat() and (fin - ini).days == 7, 'y es semanal: %s, 7 días' % pid)
+    else:
+        # 🔑 SIN CORTE (la T1, Dlx 08/10/2026): ni un día que termina con la prueba ni una semana de espera. El diario
+        # sigue hasta `SEMANAL_DESDE` y ahí arranca el semanal, sin hueco y con la misma temporada
+        sd = dt.datetime.fromisoformat(SEMANAL_DESDE)
+        pid, ini, fin = periodo(sd - dt.timedelta(hours=3))
+        ok(tipo_de(sd - dt.timedelta(minutes=1)) == 'dia' and fin == sd and _espera(sd) is None
+           and temporada_de(sd + dt.timedelta(days=30)) == temporada_de(sd - dt.timedelta(days=10)),
+           'sin corte: el último diario (%s) termina justo cuando arranca el semanal, y la temporada es la misma' % pid)
+        pid, ini, fin = periodo(sd + dt.timedelta(minutes=22))
+        ok(tipo_de(sd) == 'semana' and ini == sd and (fin - ini).days == 7 and ini.astimezone(et).weekday() == 0,
+           'y es semanal, de lunes a lunes: %s, %d buscados' % (pid, CUANTOS['semana']))
 
     # quién lo cazó: 1 contra 1, equipos, triples y una triple sin nadie
     class _R:  # sin padrón: cada nombre es él mismo
@@ -995,9 +1017,10 @@ def _self_check():
         if b['cat'] == 'elegido'] == ['Cid'],
        'al fuera de concurso no se lo puede elegir aunque lo voten: entra el siguiente')
     s9e = elegir(pool9, evs9, None, t0, tipo='semana', semilla='x', votos={'P12': 7})
-    ok(len(s9e) == CUANTOS['semana'] and sum(1 for b in s9e if NIVEL[b['cat']] == 'B') == 3
+    nb = dict(CUPOS['semana'])['B']
+    ok(len(s9e) == CUANTOS['semana'] and sum(1 for b in s9e if NIVEL[b['cat']] == 'B') == nb
        and s9e[0]['cat'] == 'elegido',
-       'por semana también: %d buscados, El Elegido y dos más del medio' % len(s9e))
+       'por semana también: %d buscados, El Elegido y %d más del medio' % (len(s9e), nb - 1))
     # la cuenta que leen la web y las vitrinas: sólo la temporada de ahora
     per = lambda temp, bs: {'id': temp, 'temporada': temp, 'buscados': bs}
     caza = lambda quien, por, cobra: {'n': quien, 'cn': 'El Rey', 'estado': 'cazado',

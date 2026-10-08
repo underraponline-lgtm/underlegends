@@ -146,7 +146,9 @@ export function Pase({ liga, dc }) {
   // lo público del Pase: las Tareas, los premios y los umbrales. Con tu Pase, los premios son los mismos
   const cfg = (pub && pub.cfg) || (P && P.listo ? { premios: P.premios, niveles: P.niveles, temp: P.temp } : {});
   const temp = (P && P.temp) || cfg.temp || '';
-  const prueba = temp === 'prueba';
+  // ⚠️ «prueba» es el nombre interno de la T1 (Dlx, 08/10/2026: la T1 arrancó el 22/09 sin reset, `SIN_CORTE` de
+  // comun/temporada.py): ya no hay semana de prueba, y el Pase no vuelve a cero el 12
+  const prueba = false;
   const ult = (cfg.premios || [])[(cfg.niveles || 30) - 1];
   const tuyo = dc && P && P.listo ? P : null;
   const miembro = !!(tuyo && tuyo.miembro);

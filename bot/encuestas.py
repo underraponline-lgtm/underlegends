@@ -244,25 +244,34 @@ def _self_check():
     ok(x and x['id'] == 'x2:2026-09-28' and x['hasta'] == '2026-09-28T15:00:00Z' and x['x'] == MU.VOTADO_X,
        'hoy domingo 27/09 se vota el ×2 de la semana del lunes 28, hasta las 11 AM  %s'
        % (x and x['id'],))
+    from comun.temporada import arranque as _arr
     arr = dt.date.fromisoformat(FECHAS[ACTUAL][0])
     en = lambda d, h: dt.datetime(arr.year, arr.month, arr.day, h, tzinfo=et) + dt.timedelta(days=d)
-    x = x2(en(-3, 15))
-    ok(x and x['id'] == 'x2:' + arr.isoformat() and _de_iso(x['hasta']) == en(0, 0),
-       'la última semana de la prueba vota la primera de la %s, y cierra a las 00:00 del arranque'
-       % ACTUAL.upper())
+    if _arr():
+        x = x2(en(-3, 15))
+        ok(x and x['id'] == 'x2:' + arr.isoformat() and _de_iso(x['hasta']) == en(0, 0),
+           'la última semana de la prueba vota la primera de la %s, y cierra a las 00:00 del arranque'
+           % ACTUAL.upper())
     ok(x2(dt.datetime(2026, 9, 20, 15, 0, tzinfo=et)) is None,
        'nada para atrás: la semana del 21/09 no se votó')
 
     # cuándo se vota El Elegido
     s = MW.siguiente(dt.datetime(2026, 9, 27, 15, 0, tzinfo=et))
     ok(s and s[0] == '2026-09-28' and s[3] == 'dia', 'hoy se vota El Elegido de mañana  %s' % (s and s[0],))
-    ok(MW.siguiente(en(-1, 15)) is None,
-       'el último día de la prueba no se vota: el que sigue es de la temporada, y lo de la prueba no pasa')
-    s = MW.siguiente(en(2, 15))
-    ps = MW._primera_semana()
-    ok(s and s[1] == ps and s[3] == 'semana',
-       'en la primera semana de la %s se vota El Elegido del primer Most Wanted (%s)'
-       % (ACTUAL.upper(), ps.astimezone(et).date()))
+    if _arr():
+        ok(MW.siguiente(en(-1, 15)) is None,
+           'el último día de la prueba no se vota: el que sigue es de la temporada, y lo de la prueba no pasa')
+        s = MW.siguiente(en(2, 15))
+        ps = MW._primera_semana()
+        ok(s and s[1] == ps and s[3] == 'semana',
+           'en la primera semana de la %s se vota El Elegido del primer Most Wanted (%s)'
+           % (ACTUAL.upper(), ps.astimezone(et).date()))
+    else:
+        # 🔑 sin corte (la T1): el último día de los diarios vota El Elegido de la primera semana
+        sd = dt.datetime.fromisoformat(MW.SEMANAL_DESDE)
+        s = MW.siguiente(sd - dt.timedelta(hours=20))
+        ok(s and s[1] == sd and s[3] == 'semana',
+           'el día antes del primer semanal se vota su Elegido (%s)' % (s and s[0],))
 
     # los candidatos: activos, no fuera de concurso, no buscados ahora
     t0 = dt.datetime(2026, 9, 27, 15, tzinfo=dt.timezone.utc)

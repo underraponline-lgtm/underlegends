@@ -58,7 +58,27 @@ INICIO_PRUEBA = '2026-09-22T00:00:00+00:00'
 # 📅 SE MOVIÓ AL 12 (Dlx, 02/10/2026: *«El 12»*), con la idea de llegar a 8
 # servidores antes de arrancar. La fase de prueba dura una semana más y el
 # final no se toca.
-FECHAS = {'t1': ('2026-10-12', '2026-12-31')}
+#
+# ✅ Y DESPUÉS, SIN RESET (Dlx, 08/10/2026): *«we never reset and this could
+# be considered t1, but we need to setup a starting date for all the servers
+# to count for»*; a «¿la T1 arranca el 22/09?», *«A»*, y termina el 31/12.
+# La T1 ES la fase de prueba: lo jugado desde el 22/09 cuenta, para todos los
+# servidores igual (por la fecha en que se publicó cada llave). Ver
+# `SIN_CORTE`.
+FECHAS = {'t1': ('2026-09-22', '2026-12-31')}
+
+# 🔑 LAS TEMPORADAS QUE NO CORTAN: arrancan con la fase de prueba adentro.
+# Para ellas no hay arranque (`arranque()` da `''`): no se archiva ni se vacía
+# nada (`toca_arranque()`), las llaves cuentan desde `INICIO_PRUEBA` y todo lo
+# que se guardó como «prueba» —el Pase en el objeto, el Most Wanted, las
+# insignias, los multiplicadores, las misiones— SIGUE SIENDO de esta
+# temporada. Por eso no se renombra nada: el sistema sigue andando como anduvo
+# desde el 22/09, que es lo que Dlx decidió.
+#
+# ⚠️ «prueba» ES EL NOMBRE INTERNO DE LA T1, y la T2 lo tiene que saber: el
+# día que arranque, lo guardado como «prueba» es de la T1 (la Histórica, las
+# insignias que quedan para siempre). Ver `NOVEDADES.md`.
+SIN_CORTE = {'t1'}
 
 # 🔑 HASTA CUÁNDO LA FOTO SE CAMBIA SIN LÍMITE, inclusive y en hora del este.
 # Dlx, 25/09/2026, a «¿la foto es libre hasta el 5 de octubre?»: *«Sí. O sea
@@ -103,7 +123,11 @@ def foto_libre_hasta(cual=None):
 
 
 def arranque(cual=None):
-    """Cuándo arranca la temporada: las 00:00 ET de su primer día, en UTC."""
+    """Cuándo arranca la temporada: las 00:00 ET de su primer día, en UTC.
+
+    `''` si la temporada no corta (`SIN_CORTE`): arrancó con la prueba adentro."""
+    if (cual or ACTUAL) in SIN_CORTE:
+        return ''
     ini = (FECHAS.get(cual or ACTUAL) or ('',))[0]
     return _medianoche_et(ini).strftime('%Y-%m-%dT%H:%M:%S+00:00') if ini else ''
 
@@ -249,14 +273,14 @@ def clave_foto(nombre, cual=None):
 def mal_fechas():
     """Las fechas, sin red: cuántas cosas dan mal. Lo corre CI (`--auto`)."""
     casos = [
-        ('el arranque de la T1 es las 00:00 ET del 12/10',
-         arranque('t1') == '2026-10-12T04:00:00+00:00'),
+        ('la T1 no corta: no tiene arranque, no se vacía nada y empieza el 22/09',
+         arranque('t1') == '' and not toca_arranque('2026-12-01T00:00:00+00:00')
+         and FECHAS['t1'][0] == INICIO_PRUEBA[:10]),
         ('la foto es libre hasta el fin del 16/10 ET',
          foto_libre_hasta('t1') == '2026-10-17T04:00:00Z'),
-        ('antes del arranque cuentan las llaves desde la fase de prueba',
-         inicio('2026-10-12T03:59:59+00:00') == INICIO_PRUEBA),
-        ('desde el arranque, sólo las de la temporada',
-         inicio('2026-10-12T04:00:00+00:00') == arranque('t1')),
+        ('y las llaves cuentan desde el 22/09 toda la temporada',
+         inicio('2026-10-12T04:00:00+00:00') == INICIO_PRUEBA
+         and inicio('2026-12-31T23:00:00+00:00') == INICIO_PRUEBA),
         ('en invierno la medianoche del este es a las 05:00 UTC',
          _medianoche_et('2027-01-15').strftime('%H') == '05'),
     ]

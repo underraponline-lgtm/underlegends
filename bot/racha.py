@@ -19,8 +19,8 @@ LAS REGLAS (los números, acá arriba)
 - **El nivel** sube con la experiencia (Dlx: *«A y B»*): `XP_EVENTO` por cada evento jugado y `XP_DIA` por cada
   día que contó. Para llegar al nivel N hacen falta `PASO · N · (N − 1)` puntos: 20 el 2, 60 el 3, 200 el 5,
   900 el 10. Las misiones van a sumar acá cuando existan.
-- **Arrancan en cero con la T1**: lo de la prueba no cuenta (`origen()`, el arranque de la T1 en
-  `comun/temporada.py`). Ni la racha ni el nivel se reinician en las temporadas siguientes: el nivel mide qué tan
+- ~~**Arrancan en cero con la T1**~~: la T1 no corta (Dlx, 08/10/2026, `SIN_CORTE` de `comun/temporada.py`), así
+  que cuentan desde el 22/09 (`origen()` da `None`). Ni la racha ni el nivel se reinician en las temporadas siguientes: el nivel mide qué tan
   antiguo sos. Por eso los eventos viajan con su temporada (`temp`) y el objeto guarda los de cada una.
 
 DÓNDE VIVE CADA COSA
@@ -150,9 +150,10 @@ def _self_check():
     c = config(dt.datetime(2026, 10, 12, 4, 0, tzinfo=utc), 't1')
     ok(c['desde'] == 1791777600000 and c['cada'] == CADA and c['temp'] == 't1' and config()['desde'] == 0
        and config()['temp'] == 'prueba', 'la configuración que viaja')
-    ok(origen(dt.datetime(2026, 10, 1, tzinfo=utc)) is None
-       and origen(dt.datetime(2027, 2, 1, tzinfo=utc)) == dt.datetime(2026, 10, 12, 4, 0, tzinfo=utc),
-       'el origen es el arranque de la T1, también en la T2: el nivel no vuelve a cero')
+    # ✅ LA T1 NO CORTA (Dlx, 08/10/2026, `comun/temporada.SIN_CORTE`): la racha y el nivel cuentan desde el 22/09, y
+    # tampoco vuelven a cero en la T2
+    ok(origen(dt.datetime(2026, 10, 1, tzinfo=utc)) is None and origen(dt.datetime(2027, 2, 1, tzinfo=utc)) is None,
+       'la T1 no corta: el nivel cuenta desde el 22/09, también en la T2')
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas
 
