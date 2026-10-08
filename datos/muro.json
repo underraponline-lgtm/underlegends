@@ -231,13 +231,6 @@
 "temporada"
 ]
 },
-"alexi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "andres": {
 "rg": "",
 "c": [
@@ -246,6 +239,13 @@
 ]
 },
 "paria": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"alexi": {
 "rg": "",
 "c": [
 "servidor",
