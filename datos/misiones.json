@@ -91,8 +91,8 @@
     ],
     "Assuan": [
      1,
-     0,
-     16
+     2,
+     2
     ],
     "BNA": [
      1,
@@ -136,7 +136,7 @@
     ],
     "Colesito": [
      1,
-     1,
+     2,
      4
     ],
     "CrisZJ": [
@@ -369,6 +369,11 @@
      0,
      16
     ],
+    "Mathhias": [
+     0,
+     0,
+     8
+    ],
     "Miniboy": [
      1,
      0,
@@ -392,6 +397,11 @@
     "NC": [
      1,
      1,
+     8
+    ],
+    "NXUZ": [
+     0,
+     0,
      8
     ],
     "NYCO": [
@@ -461,8 +471,8 @@
     ],
     "Player": [
      1,
-     0,
-     16
+     3,
+     1
     ],
     "Polosport": [
      1,
@@ -488,6 +498,11 @@
      1,
      4,
      1
+    ],
+    "REPTILE JR": [
+     0,
+     0,
+     8
     ],
     "RT": [
      1,
@@ -674,6 +689,11 @@
      2,
      4
     ],
+    "Zetryko": [
+     0,
+     1,
+     4
+    ],
     "Zignos": [
      1,
      0,
@@ -728,7 +748,7 @@
     "Andres": 1300,
     "Andy": 300,
     "Ariaxer": 300,
-    "Assuan": 300,
+    "Assuan": 1300,
     "BNA": 300,
     "BTRX": 300,
     "Badterne": 300,
@@ -794,7 +814,7 @@
     "Panchok": 2900,
     "Paria": 300,
     "PichulaMc": 1300,
-    "Player": 300,
+    "Player": 2900,
     "Polosport": 1300,
     "Pomberito": 2900,
     "Prodigy": 300,
@@ -856,7 +876,7 @@
   "Andres": 1300,
   "Andy": 300,
   "Ariaxer": 300,
-  "Assuan": 300,
+  "Assuan": 1300,
   "BNA": 300,
   "BTRX": 300,
   "Badterne": 300,
@@ -922,7 +942,7 @@
   "Panchok": 2900,
   "Paria": 300,
   "PichulaMc": 1300,
-  "Player": 300,
+  "Player": 2900,
   "Polosport": 1300,
   "Pomberito": 2900,
   "Prodigy": 300,

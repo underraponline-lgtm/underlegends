@@ -756,7 +756,7 @@
    "Vandu": 15
   },
   "fecha": "07/10",
-  "firma": "8c6207c118b156ac",
+  "firma": "2474a6bcf7a006c0",
   "msg": "1557511326450851895",
   "nombre": "__ DESGRACIAS EN BELLAS ARTES VOL1 __",
   "num": 423,
@@ -891,6 +891,145 @@
     "Ger9🇨🇱",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "424": {
+  "antes": {
+   "Assuan": [
+    235,
+    201,
+    true
+   ],
+   "Colesito": [
+    12,
+    15,
+    false
+   ],
+   "Mathhias": [
+    345,
+    341,
+    true
+   ],
+   "NXUZ": [
+    43,
+    60,
+    false
+   ],
+   "Number VE": [
+    45,
+    63,
+    false
+   ],
+   "Player": [
+    66,
+    100,
+    false
+   ],
+   "Zetryko": [
+    63,
+    92,
+    false
+   ]
+  },
+  "duelos": [
+   [
+    "Player",
+    "NXUZ",
+    "Player"
+   ],
+   [
+    "Zetryko",
+    "Number VE",
+    "Zetryko"
+   ],
+   [
+    "Assuan",
+    "Mathhias",
+    "Assuan"
+   ],
+   [
+    "Colesito",
+    "REPTILE JR",
+    "Colesito"
+   ],
+   [
+    "Player",
+    "Zetryko",
+    "Player"
+   ],
+   [
+    "Assuan",
+    "Colesito",
+    "Assuan"
+   ],
+   [
+    "Player",
+    "Assuan",
+    "Player"
+   ]
+  ],
+  "ev_antes": {
+   "Assuan": 1,
+   "Colesito": 12,
+   "Mathhias": 1,
+   "NXUZ": 5,
+   "Number VE": 7,
+   "Player": 4,
+   "Zetryko": 2
+  },
+  "fecha": "07/10",
+  "firma": "0eb8c9bd6f5c8bfe",
+  "msg": "1557548977703092425",
+  "nombre": "MORTAL KOMBAT MAPACHE CUP",
+  "num": 424,
+  "participantes": 8,
+  "sello": {
+   "Player": "953c52d678e7:c2dd98b0f962"
+  },
+  "sv": "DDF",
+  "t": "2026-10-08T00:23:33Z",
+  "tabla": [
+   [
+    "Player",
+    "Campeón",
+    7500
+   ],
+   [
+    "Assuan",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Zetryko",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "REPTILE JR",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

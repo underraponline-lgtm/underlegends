@@ -323,6 +323,10 @@
 "debut": [
 "2026-10-06T04:25:25Z",
 "prueba"
+],
+"podio": [
+"2026-10-08T00:25:31Z",
+"prueba"
 ]
 },
 "Azillmoyta": {
@@ -708,6 +712,10 @@
 ],
 "trotamundos": [
 "2026-10-05T22:25:21Z",
+"prueba"
+],
+"duelista": [
+"2026-10-08T00:25:31Z",
 "prueba"
 ]
 },
@@ -2789,6 +2797,14 @@
 "trotamundos": [
 "2026-10-05T22:25:21Z",
 "prueba"
+],
+"campeon": [
+"2026-10-08T00:25:31Z",
+"prueba"
+],
+"podio": [
+"2026-10-08T00:25:31Z",
+"prueba"
 ]
 },
 "Pollo Sport": {
@@ -2912,6 +2928,12 @@
 "RAGE BAIT": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+]
+},
+"REPTILE JR": {
+"debut": [
+"2026-10-08T00:25:31Z",
 "prueba"
 ]
 },

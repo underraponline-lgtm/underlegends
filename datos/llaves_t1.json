@@ -14711,5 +14711,132 @@
     1250
    ]
   ]
+ },
+ "424": {
+  "dia": "2026-10-07",
+  "escala": "8-15",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1557532757016449105"
+  ],
+  "n": 424,
+  "nombre": "MORTAL KOMBAT MAPACHE CUP",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Player",
+       "NXUZ"
+      ],
+      "Player",
+      ""
+     ],
+     [
+      [
+       "Zetryko",
+       "Number VE"
+      ],
+      "Zetryko",
+      ""
+     ],
+     [
+      [
+       "Assuan",
+       "Mathhias"
+      ],
+      "Assuan",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "REPTILE JR"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Player",
+       "Zetryko"
+      ],
+      "Player",
+      ""
+     ],
+     [
+      [
+       "Assuan",
+       "Colesito"
+      ],
+      "Assuan",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Player",
+       "Assuan"
+      ],
+      "Player",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Player",
+    "Campeón",
+    7500
+   ],
+   [
+    "Assuan",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Zetryko",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "REPTILE JR",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

@@ -1492,6 +1492,46 @@
    "b": "PRODIGY",
    "ganador": "PRODIGY",
    "votos": "1–0"
+  },
+  "1557541190654623765": {
+   "id": "1557541190654623765",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791417157568,
+   "a": "DELUX",
+   "b": "SNOW",
+   "ganador": "DELUX",
+   "votos": "1–0"
+  },
+  "1557541875383009291": {
+   "id": "1557541875383009291",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791417320820,
+   "a": "Pichulamc",
+   "b": "park ji sung🇰🇷",
+   "ganador": "park ji sung🇰🇷",
+   "votos": "1–0"
+  },
+  "1557542698200731740": {
+   "id": "1557542698200731740",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791417516995,
+   "a": "A-SUAS",
+   "b": "PLAYER",
+   "ganador": "PLAYER",
+   "votos": "1–0"
+  },
+  "1557544766151856159": {
+   "id": "1557544766151856159",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791418010033,
+   "a": "VELATZ SNOW NEO",
+   "b": "SIX MAILEN",
+   "ganador": "VELATZ SNOW NEO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -3390,8 +3430,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791413994519,
-   "ed": 1791417157568,
-   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝\n⌞LEWITO⌝ 🆚 ⌞PICHULA⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞PRESAGIO DELUX NEMI⌝ 🆚 ⌞SNOW⌝\n⌞DELUX⌝ 🆚 ⌞SNOW⌝",
+   "ed": 1791418137146,
+   "texto": "`[ OCTAVOS ]`\n⌞SNOW⌝ 🆚 ⌞CRONOX XCLUSIVO⌝ 🆚 ⌞ERIZO⌝\n⌞G8⌝ 🆚 ⌞PRODIGY⌝\n⌞LEWITO⌝ 🆚 ⌞PICHULA⌝ 🆚 ⌞COLESITO⌝\n`[ CUARTOS ]`\n⌞PRESAGIO DELUX NEMI⌝ 🆚 ⌞SNOW⌝\n⌞DELUX⌝ 🆚 ⌞SNOW⌝\n⌞Pichulamc⌝ 🆚 ⌞park ji sung🇰🇷⌝\n⌞VELATZ SNOW NEO⌝ 🆚 ⌞SIX MAILEN⌝\n`[ SEMIFINALES ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -3441,8 +3481,28 @@
       "DELUX",
       "SNOW"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "DELUX",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Pichulamc",
+      "park ji sung🇰🇷"
+     ],
+     "park ji sung🇰🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VELATZ SNOW NEO",
+      "SIX MAILEN"
+     ],
+     "VELATZ SNOW NEO",
+     "veredicto",
      []
     ]
    ]

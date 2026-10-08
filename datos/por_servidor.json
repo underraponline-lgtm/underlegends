@@ -376,6 +376,15 @@
    }
   },
   "Assuan": {
+   "DDF": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 51,
+    "pod": 1,
+    "pts": 12375,
+    "racha": "1/1"
+   },
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -818,6 +827,15 @@
     "pod": 1,
     "pts": 5000,
     "racha": "1/1"
+   },
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 5775,
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "4/9",
@@ -3037,6 +3055,15 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   },
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 4950,
+    "racha": "0/0"
    }
   },
   "MauzzitoEmeces": {
@@ -3229,13 +3256,13 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "3/5",
-    "ev": 2,
+    "duelos": "3/6",
+    "ev": 3,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 53,
     "pod": 1,
-    "pts": 10250,
-    "racha": "1/1"
+    "pts": 13550,
+    "racha": "0/1"
    }
   },
   "NYCO": {
@@ -3384,12 +3411,12 @@
   },
   "Number VE": {
    "DDF": {
-    "duelos": "0/6",
-    "ev": 7,
+    "duelos": "0/7",
+    "ev": 8,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 55,
     "pod": 0,
-    "pts": 18900,
+    "pts": 22200,
     "racha": "0/0"
    }
   },
@@ -3667,13 +3694,13 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
+    "duelos": "3/4",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 52,
+    "pod": 1,
+    "pts": 14375,
+    "racha": "1/1"
    },
    "FFA": {
     "duelos": "0/1",
@@ -3788,6 +3815,17 @@
     "ovr": 44,
     "pod": 0,
     "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "REPTILE JR": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 3300,
     "racha": "0/0"
    }
   },
@@ -5014,6 +5052,15 @@
     "pod": 1,
     "pts": 11000,
     "racha": "2/2"
+   },
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 5775,
+    "racha": "0/0"
    }
   },
   "ZiarKI": {
