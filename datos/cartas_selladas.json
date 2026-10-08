@@ -644,7 +644,7 @@
    "competitivo": "21a327b1bec8:66620bff5eb9",
    "pais": "efcce08f2d33:dd0366c7fb5d",
    "servidor": "c88c9d2158f0:9d97339447c1:a4a87a",
-   "temporada": "02e87d05bd45:c2dd98b0f962"
+   "temporada": "ec6ed3aa9f72:c2dd98b0f962"
   },
   "Geremy": {
    "servidor": "4dd315c53988:9d97339447c1:980594"
@@ -1157,8 +1157,8 @@
   "Makmah": {
    "competitivo": "77110ca0ae56:66620bff5eb9",
    "pais": "78f3ebfa4bfb:dd0366c7fb5d",
-   "servidor": "51f6e4473d6d:9d97339447c1:c589ca",
-   "temporada": "0648fd4f40f0:c2dd98b0f962"
+   "servidor": "51f6e4473d6d:9d97339447c1:3ce074",
+   "temporada": "123a679792ef:c2dd98b0f962"
   },
   "Malova": {
    "servidor": "671a7c56b92d:9d97339447c1:15af16"
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-08T05:46:47+00:00"
+ "cuando": "2026-10-08T05:58:26+00:00"
 }
