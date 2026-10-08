@@ -253,8 +253,8 @@
   "Carlosss": {
    "competitivo": "b37ffb451c54:f77dc8dab350",
    "pais": "f2ec1430baa3:9bd767971dd0",
-   "servidor": "b549aaaa0e1f:23815767166b:324686",
-   "temporada": "eda8b49d0ed5:17c4f13e63d4"
+   "servidor": "609c19a84010:23815767166b:324686",
+   "temporada": "bf1edefe4f62:17c4f13e63d4"
   },
   "Catarsis": {
    "competitivo": "e5b3e029244c:66620bff5eb9",
@@ -421,7 +421,7 @@
   },
   "Dominick": {
    "servidor": "bcbd3973963b:23815767166b:da39a3",
-   "temporada": "1317d5d9c519:17c4f13e63d4"
+   "temporada": "129df2f3fe6c:17c4f13e63d4"
   },
   "Dr.Machine": {
    "servidor": "7bd2c254f145:9d97339447c1:c589ca"
@@ -2127,5 +2127,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-08T18:08:04+00:00"
+ "cuando": "2026-10-08T18:27:57+00:00"
 }
