@@ -3338,6 +3338,11 @@ def _self_check():
     return mal
 
 
+#: 🔎 lo que leyó la última corrida de `main()`: las filas y lo que no entró. Lo lee `herramientas/recalcular_t1.py`
+#: para volver a pagar la temporada entera sin escribir nada; el ciclo no lo usa
+ULTIMA = {}
+
+
 def main():
     if '--auto' in sys.argv:
         print('\n══ LLAVE -> `Entrada` ══')
@@ -3776,6 +3781,9 @@ def main():
         por_evento[ev].append('%s: %s' % (ronda.lower(), quienes))
 
     print('   %d fila(s) para `Entrada`' % len(todas))
+    ULTIMA.clear()
+    ULTIMA.update(filas=todas, dudas=dudas, en_curso=en_curso, incompletos=incompletos, ya_cargadas=ya_cargadas,
+                  descartados=descartados, retenidos=retenidos)
     for ev, sv_i, fec_i, nb in vidas_cargados:
         print('   ❤️ %s (%s · %s): 5 vidas de #veredictos, %d batalla(s)' % (ev, sv_i, fec_i, nb))
     for ev, sv_i, fec_i, nb in de_veredictos:
