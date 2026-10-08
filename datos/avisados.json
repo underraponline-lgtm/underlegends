@@ -1629,5 +1629,151 @@
    ]
   ],
   "v": 2
+ },
+ "427": {
+  "antes": {
+   "Carlosss": [
+    19,
+    23,
+    false
+   ],
+   "CrisZJ": [
+    25,
+    31,
+    false
+   ],
+   "Cronox": [
+    20,
+    24,
+    false
+   ],
+   "Dominick": [
+    186,
+    113,
+    true
+   ],
+   "Mathhias": [
+    215,
+    168,
+    true
+   ],
+   "NXUZ": [
+    43,
+    57,
+    false
+   ],
+   "Rodas": [
+    91,
+    144,
+    false
+   ],
+   "Teito": [
+    38,
+    51,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "CrisZJ",
+    "Mathhias",
+    "CrisZJ"
+   ],
+   [
+    "Carlosss",
+    "Cronox",
+    "Carlosss"
+   ],
+   [
+    "Dominick",
+    "Rodas",
+    "Dominick"
+   ],
+   [
+    "NXUZ",
+    "Teito",
+    "NXUZ"
+   ],
+   [
+    "Carlosss",
+    "CrisZJ",
+    "Carlosss"
+   ],
+   [
+    "Dominick",
+    "NXUZ",
+    "Dominick"
+   ],
+   [
+    "Carlosss",
+    "Dominick",
+    "Carlosss"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosss": 5,
+   "CrisZJ": 6,
+   "Cronox": 12,
+   "Dominick": 5,
+   "Mathhias": 2,
+   "NXUZ": 6,
+   "Rodas": 2,
+   "Teito": 10
+  },
+  "fecha": "08/10",
+  "firma": "12c1704fcaa38eee",
+  "msg": "1557813544467173468",
+  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "num": 427,
+  "participantes": 8,
+  "sello": {
+   "Carlosss": "ecf89c6162f5:c2dd98b0f962"
+  },
+  "sv": "DDF",
+  "t": "2026-10-08T17:54:50Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dominick",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

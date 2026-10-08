@@ -15439,5 +15439,132 @@
     625
    ]
   ]
+ },
+ "427": {
+  "dia": "2026-10-08",
+  "escala": "8-15",
+  "fecha": "08/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1557794783613820939"
+  ],
+  "n": 427,
+  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Mathhias"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Cronox"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "Rodas"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Teito"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "CrisZJ"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "NXUZ"
+      ],
+      "Dominick",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Dominick"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dominick",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
