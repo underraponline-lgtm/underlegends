@@ -15564,5 +15564,289 @@
     1666
    ]
   ]
+ },
+ "429": {
+  "dia": "2026-10-08",
+  "escala": "16+",
+  "fecha": "08/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557844410501304381"
+  ],
+  "n": 429,
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL2",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Alexi",
+       "Kravitz",
+       "Valdoza"
+      ],
+      "Alexi",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Paria",
+       "Cronox",
+       "Krish"
+      ],
+      "Paria",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "Chop",
+       "Badterne"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Agus",
+       "LRS",
+       "1200"
+      ],
+      "Agus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Erian",
+       "Geoka",
+       "melgar🇲🇽"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MRSTILL🇳🇴",
+       "Noone",
+       "Dominick"
+      ],
+      "MRSTILL🇳🇴",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Zignos",
+       "Makmah",
+       "JJ"
+      ],
+      "Zignos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Panchok",
+       "Colesito",
+       "HH"
+      ],
+      "Panchok",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Alexi",
+       "Erian"
+      ],
+      "Alexi",
+      ""
+     ],
+     [
+      [
+       "MRSTILL🇳🇴",
+       "Paria"
+      ],
+      "MRSTILL🇳🇴",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "Snow"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Panchok"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos",
+       "Alexi"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "MRSTILL🇳🇴",
+       "Agus"
+      ],
+      "MRSTILL🇳🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MRSTILL🇳🇴",
+       "Zignos"
+      ],
+      "MRSTILL🇳🇴",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "MRSTILL🇳🇴",
+    "Campeón",
+    10000
+   ],
+   [
+    "Zignos",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Alexi",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Panchok",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Paria",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Badterne",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "HH",
+    "Octavos",
+    1250
+   ],
+   [
+    "JJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "melgar🇲🇽",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
