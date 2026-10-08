@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-08T05:54:06+00:00",
+ "cuando": "2026-10-08T06:24:11+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -782,29 +782,6 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T04:46:32"
-  },
-  {
-   "nombre": "FREESTYLE FOR ALL 57",
-   "servidor": "FFA",
-   "canal": "✦⚡—novedades",
-   "msg_id": "1556548901916381335",
-   "cuando": "2026-10-05T06:09:37",
-   "canal_id": "1531832189187264543",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "autor_h": "797ecd0ceee716c6",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "1/1",
-   "premios": "",
-   "de_imagen": true,
-   "categoria_id": "1468472443843776657",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-08T04:46:32"
   },
