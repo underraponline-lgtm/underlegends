@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-08T21:28:46Z",
+ "cuando": "2026-10-08T22:21:50Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 92.6,
+ "dur_s": 1426.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.9
+   "s": 5.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.9
+   "s": 3.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.3
+   "s": 20.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 7 persona(s)",
+   "que": "tanda 1 de 8 · 40 persona(s)",
    "ok": true,
-   "s": 21.9
+   "s": 1348.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.9
+   "s": 7.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 35.8
+   "s": 39.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "428",
-  "nombre": "CIUDAD GOTICA",
-  "sv": "DDF",
-  "dia": "2026-09-27"
+  "n": "429",
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL2",
+  "sv": "FFA",
+  "dia": "2026-10-08"
  },
  "cuotas": {
   "kv": {
-   "write": 314,
-   "read": 41109
+   "write": 334,
+   "read": 43691
   },
   "objeto": {
-   "leidas": 1729940,
-   "escritas": 20048,
-   "pedidos": 6718
+   "leidas": 1831446,
+   "escritas": 21656,
+   "pedidos": 6859
   },
   "worker": {
-   "pedidos": 7627,
+   "pedidos": 7295,
    "errores": 1,
-   "sub": 7980,
-   "p50_ms": 1.12,
-   "p99_ms": 6.16
+   "sub": 7630,
+   "p50_ms": 1.11,
+   "p99_ms": 6.19
   },
   "r2": {
    "objetos": 3651,
