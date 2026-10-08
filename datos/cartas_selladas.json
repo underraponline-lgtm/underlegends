@@ -900,10 +900,10 @@
    "servidor": "fee8c99af02f:9d97339447c1:980594"
   },
   "Kochi": {
-   "competitivo": "6edfee7a6c3c:66620bff5eb9",
+   "competitivo": "92464542df42:66620bff5eb9",
    "pais": "f4a016674b1f:dd0366c7fb5d",
    "servidor": "6105274cfca3:9d97339447c1:3ce074",
-   "temporada": "c644ff9a3b50:c2dd98b0f962"
+   "temporada": "2e1bfd634ec9:c2dd98b0f962"
   },
   "Konan": {
    "servidor": "d398ba2fa296:9d97339447c1:3ce074"
@@ -1450,10 +1450,10 @@
   },
   "Piyi": {},
   "Player": {
-   "competitivo": "d51a998f454d:66620bff5eb9",
+   "competitivo": "b5b9a2f88ea8:66620bff5eb9",
    "pais": "d6c9d33e1bcb:dd0366c7fb5d",
    "servidor": "78ee24721a89:9d97339447c1:039304",
-   "temporada": "63a95943ec84:c2dd98b0f962"
+   "temporada": "f68b2f681523:c2dd98b0f962"
   },
   "Polosport": {
    "competitivo": "fc4960f211fe:66620bff5eb9",
@@ -2114,5 +2114,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-08T00:40:44+00:00"
+ "cuando": "2026-10-08T00:42:36+00:00"
 }
