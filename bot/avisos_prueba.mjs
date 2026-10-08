@@ -204,6 +204,40 @@ const ok = (cond, que, det) => {
   'cada batalla: uno por cada uno que pasa, y un grupo dice «de un grupo con» (no «contra»: pueden pasar dos)', g2.map((x) => x.texto).join(' | '));
   ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo,datos,full' && A.ajusteValido('en_vivo_nivel', { FFA: 'full' }).FFA === 'full'
     && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard acepta los cinco, y nada más');
+  // 🎛️ los ajustes de más del Dashboard (07/10/2026): apuestas, aviso de cada evento, silencio y ritmo
+  {
+    const ap = A.ajusteValido('apuestas', { montos: [20, 50, 100], minutos: 5, tope: 300, apagadas: { DRA: true } });
+    ok(ap && ap.montos.join() === '20,50,100' && ap.minutos === 5 && ap.tope === 300 && ap.apagadas.DRA === true
+      && A.ajusteValido('apuestas', { montos: [100, 50], minutos: 3, tope: 500 }) === undefined
+      && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 80 }) === undefined
+      && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 30, tope: 500 }) === undefined
+      && A.ajusteValido('apuestas', null) === null,
+    'las apuestas: botones de menor a mayor, de 1 a 15 minutos, el tope desde el botón más alto');
+    const c = A.apuestasCfg({ apuestas: ap }), c0 = A.apuestasCfg({});
+    ok(c.cierra === 5 * 60000 && c.tope === 300 && c0.montos.join() === '50,100,250,500' && c0.cierra === 3 * 60000
+      && c0.tope === 500 && A.botonesApuesta('x', 'Ana', 'Beto', false, c.montos)[0].components.length === 3
+      && /5 minutos/.test(A.lineaApuesta('abierta', c)) && /de 20 a 300/.test(A.lineaApuesta('abierta', c))
+      && /3 minutos/.test(A.lineaApuesta('abierta', c0)),
+    'sin ajuste vale lo de siempre, y con ajuste los botones y el texto lo dicen', A.lineaApuesta('abierta', c));
+    ok(A.ajusteValido('aviso_evento', { sv: { DRA: 'chat', FFA: 'no' }, resto: 'DRA' }).sv.FFA === 'no'
+      && A.ajusteValido('aviso_evento', { sv: { DRA: 'siempre' } }) === undefined,
+    'el aviso de cada evento: por servidor «chat» o «no», y a dónde va el que no tiene');
+    const sil = A.ajusteValido('silencio', { desde: '23:00', hasta: '08:00' });
+    // 03:00 UTC del 8/10 son las 23:00 del este (EDT); 12:30 UTC son las 08:30
+    ok(sil && A.enSilencio({ silencio: sil }, Date.UTC(2026, 9, 8, 3, 0))
+      && A.enSilencio({ silencio: sil }, Date.UTC(2026, 9, 8, 10, 0))
+      && !A.enSilencio({ silencio: sil }, Date.UTC(2026, 9, 8, 12, 30))
+      && !A.enSilencio({}, Date.UTC(2026, 9, 8, 3, 0))
+      && A.ajusteValido('silencio', { desde: '25:00', hasta: '08:00' }) === undefined,
+    'el horario de silencio, en hora del este y cruzando la medianoche');
+    const r = A.ajusteValido('ritmo', { normal: 5, batalla: 3 });
+    const ms = [{ m: 'llave', texto: 'Arrancó' }];
+    ok(r && A.ritmoCfg({ ritmo: r }).normal === 5 * 60000 && A.ritmoCfg({}).batalla === A.CHAT_ENTRE_TODO
+      && A.planChat(ms, {}, 0, 6 * 60000, true, 'normal', 5 * 60000).length === 1
+      && A.planChat(ms, {}, 2 * 60000, 6 * 60000, true, 'normal', 5 * 60000).length === 0
+      && A.ajusteValido('ritmo', { normal: 1, batalla: 3 }) === undefined,
+    'el ritmo del bot en vivo: cada cuánto puede hablar en un canal');
+  }
   ok(JSON.stringify(A.favoritosDe(llaveDe(CUARTOS), [{ n: 'Ana', ovr: 80 }, { n: 'Dora', ovr: 90 },
     { n: 'Cami', ovr: 70 }, { n: 'cami', ovr: 75 }])) === '[["Dora",90],["Ana",80]]',
   'los favoritos: los de más OVR de la llave; un nombre de dos personas no cuenta');

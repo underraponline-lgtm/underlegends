@@ -3853,7 +3853,7 @@ export default {
           'no existe': 'Esa apuesta ya no existe.',
           propia: 'No podés apostar en tu propia batalla.',
           'otro lado': `Ya apostaste a **${j.nombre || 'el otro'}**: en una batalla se apuesta a un solo lado.`,
-          tope: `El tope es 500 por batalla: te quedan ${mil(j.queda)}.`,
+          tope: `El tope es ${mil(j.tope || 500)} por batalla: te quedan ${mil(j.queda)}.`,
           saldo: `No te alcanza: tenés ${mil(j.saldo)} Puntos de Tienda.`,
         };
         return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: probá de nuevo.'));
