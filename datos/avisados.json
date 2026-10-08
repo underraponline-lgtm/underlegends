@@ -1105,23 +1105,18 @@
   "duelos": [
    [
     "Snow",
-    "CRONOX XCLUSIVO",
-    "Snow"
-   ],
-   [
-    "Snow",
     "Erizo",
     "Snow"
    ],
    [
     "Prodigy",
-    "G8",
+    "Akutagawa🇹🇼",
     "Prodigy"
    ],
    [
-    "PichulaMc",
-    "LEWITO",
-    "PichulaMc"
+    "Prodigy",
+    "Enkil 🇦🇷",
+    "Prodigy"
    ],
    [
     "PichulaMc",
@@ -1129,14 +1124,24 @@
     "PichulaMc"
    ],
    [
-    "Snow",
-    "PRESAGIO DELUX NEMI",
-    "Snow"
+    "PichulaMc",
+    "Velatz, Armando Faso🇦🇫, Neo",
+    "PichulaMc"
    ],
    [
-    "Delux",
-    "Snow",
-    "Delux"
+    "PichulaMc",
+    "LEWITO",
+    "PichulaMc"
+   ],
+   [
+    "Oasis",
+    "araya",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Elsoolar",
+    "Oasis"
    ],
    [
     "Oasis",
@@ -1144,44 +1149,29 @@
     "Oasis"
    ],
    [
-    "VELATZ SNOW NEO",
-    "SIX MAILEN",
-    "VELATZ SNOW NEO"
+    "Velatz, Snow, Neo",
+    "Six, Polosport",
+    "Velatz, Snow, Neo"
+   ],
+   [
+    "Cronox, Xclusivo",
+    "Prodigy",
+    "Cronox, Xclusivo"
    ],
    [
     "Oasis",
-    "NEMI PRESAGIO DELUX",
+    "Nemi, Presagio, Delux",
     "Oasis"
+   ],
+   [
+    "Velatz, Snow, Neo, PRAISERIZA",
+    "Cronox, Xclusivo",
+    "Velatz, Snow, Neo, PRAISERIZA"
    ],
    [
     "Oasis",
-    "Presagio",
+    "Velatz, Snow, Neo, PRAISERIZA",
     "Oasis"
-   ],
-   [
-    "Oasis",
-    "Nemi",
-    "Oasis"
-   ],
-   [
-    "Oasis",
-    "PRAISERIZA",
-    "Oasis"
-   ],
-   [
-    "Oasis",
-    "Neo",
-    "Oasis"
-   ],
-   [
-    "PRAISERIZA",
-    "Nemi",
-    "PRAISERIZA"
-   ],
-   [
-    "Six",
-    "PRAISERIZA",
-    "Six"
    ]
   ],
   "ev_antes": {
@@ -1200,11 +1190,11 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "70977ebf23a3f2ca",
+  "firma": "3807ddf0a40b1aa8",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
-  "participantes": 21,
+  "participantes": 22,
   "sello": {
    "Oasis": "1b7f37960de9:c2dd98b0f962"
   },
@@ -1212,19 +1202,19 @@
   "t": "2026-10-08T01:23:49Z",
   "tabla": [
    [
-    "NEMI PRESAGIO DELUX",
-    "Semifinal",
-    5250
-   ],
-   [
-    "Presagio",
-    "Semifinal",
-    5250
-   ],
-   [
     "Oasis",
     "Campeón",
-    5000
+    10000
+   ],
+   [
+    "Cronox",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    2625
    ],
    [
     "PichulaMc",
@@ -1232,23 +1222,53 @@
     2500
    ],
    [
-    "PRESAGIO DELUX NEMI",
+    "Prodigy",
     "Cuartos",
-    1250
+    2500
    ],
    [
     "Snow",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Nemi",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Presagio",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Six",
     "Cuartos",
     1250
    ],
    [
-    "SIX MAILEN",
+    "Polosport",
     "Cuartos",
-    1250
-   ],
-   [
-    "CRONOX XCLUSIVO",
-    "Octavos",
     1250
    ],
    [
@@ -1257,12 +1277,12 @@
     1250
    ],
    [
-    "G8",
+    "Akutagawa🇹🇼",
     "Octavos",
     1250
    ],
    [
-    "LEWITO",
+    "Enkil 🇦🇷",
     "Octavos",
     1250
    ],
@@ -1272,14 +1292,24 @@
     1250
    ],
    [
-    "Nemi",
-    "Semifinal",
-    656
+    "LEWITO",
+    "Octavos",
+    1250
    ],
    [
-    "PRAISERIZA",
-    "Subcampeón",
-    0
+    "araya",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Armando Faso🇦🇫",
+    "Octavos",
+    416
    ]
   ],
   "v": 2

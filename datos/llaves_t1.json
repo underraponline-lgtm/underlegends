@@ -14844,39 +14844,49 @@
   "escala": "16+",
   "fecha": "07/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487206164864438513/1557527923865555057"
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557527632323809362"
   ],
   "n": 425,
   "nombre": "PRITTY FREE",
-  "participantes": 21,
+  "participantes": 22,
   "rondas": [
    {
     "b": [
      [
       [
        "Snow",
-       "CRONOX XCLUSIVO",
        "Erizo"
       ],
       "Snow",
-      "triple (3 bandas); Revivido: snow"
+      "triple (3 bandas, pasan 2)"
      ],
      [
       [
        "Prodigy",
-       "G8"
+       "Akutagawa🇹🇼",
+       "Enkil 🇦🇷"
       ],
       "Prodigy",
-      ""
+      "triple (4 bandas, pasan 2)"
      ],
      [
       [
        "PichulaMc",
-       "LEWITO",
-       "Colesito"
+       "Colesito",
+       "Velatz, Armando Faso🇦🇫, Neo",
+       "LEWITO"
       ],
       "PichulaMc",
-      "triple (3 bandas)"
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "araya",
+       "Elsoolar"
+      ],
+      "Oasis",
+      "triple (4 bandas, pasan 2)"
      ]
     ],
     "r": "Octavos"
@@ -14885,35 +14895,27 @@
     "b": [
      [
       [
-       "Snow",
-       "PRESAGIO DELUX NEMI"
-      ],
-      "Snow",
-      "Walk-in 1: PRESAGIO DELUX NEMI"
-     ],
-     [
-      [
-       "Delux",
-       "Snow"
-      ],
-      "Delux",
-      "Walk-in 1: delux🇦🇷"
-     ],
-     [
-      [
        "Oasis",
        "PichulaMc"
       ],
       "Oasis",
-      "Walk-in 1: Park-Ji Sung🇰🇷"
+      ""
      ],
      [
       [
-       "VELATZ SNOW NEO",
-       "SIX MAILEN"
+       "Velatz, Snow, Neo",
+       "Six, Polosport"
       ],
-      "VELATZ SNOW NEO",
-      "Walk-in 1: VELATZ SNOW NEO; Walk-in 1: SIX MAILEN"
+      "Velatz, Snow, Neo",
+      ""
+     ],
+     [
+      [
+       "Cronox, Xclusivo",
+       "Prodigy"
+      ],
+      "Cronox, Xclusivo",
+      ""
      ]
     ],
     "r": "Cuartos"
@@ -14923,34 +14925,18 @@
      [
       [
        "Oasis",
-       "NEMI PRESAGIO DELUX"
+       "Nemi, Presagio, Delux"
       ],
       "Oasis",
       ""
      ],
      [
       [
-       "Oasis",
-       "Presagio"
+       "Velatz, Snow, Neo, PRAISERIZA",
+       "Cronox, Xclusivo"
       ],
-      "Oasis",
+      "Velatz, Snow, Neo, PRAISERIZA",
       ""
-     ],
-     [
-      [
-       "Oasis",
-       "Nemi"
-      ],
-      "Oasis",
-      "Walk-in 2: Nemi 🇦🇷; Revivido: Nemi 🇦🇷"
-     ],
-     [
-      [
-       "SNOW NEO VELATZ RIZAS",
-       "cronox 🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -14960,42 +14946,10 @@
      [
       [
        "Oasis",
-       "PRAISERIZA"
+       "Velatz, Snow, Neo, PRAISERIZA"
       ],
       "Oasis",
-      "Walk-in 3: RIZAS; Revivido: RIZAS"
-     ],
-     [
-      [
-       "Oasis",
-       "Neo"
-      ],
-      "Oasis",
-      "Walk-in 3: Neo🇦🇷"
-     ],
-     [
-      [
-       "PRAISERIZA",
-       "Nemi"
-      ],
-      "PRAISERIZA",
       ""
-     ],
-     [
-      [
-       "Six",
-       "PRAISERIZA"
-      ],
-      "Six",
-      ""
-     ],
-     [
-      [
-       "Park-Ji Sung🇰🇷",
-       "snow"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -15004,19 +14958,19 @@
   "sv": "FFA",
   "tabla": [
    [
-    "NEMI PRESAGIO DELUX",
-    "Semifinal",
-    5250
-   ],
-   [
-    "Presagio",
-    "Semifinal",
-    5250
-   ],
-   [
     "Oasis",
     "Campeón",
-    5000
+    10000
+   ],
+   [
+    "Cronox",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    2625
    ],
    [
     "PichulaMc",
@@ -15024,7 +14978,47 @@
     2500
    ],
    [
-    "CRONOX XCLUSIVO",
+    "Prodigy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Nemi",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Presagio",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Akutagawa🇹🇼",
     "Octavos",
     1250
    ],
@@ -15034,12 +15028,17 @@
     1250
    ],
    [
-    "Erizo",
+    "Elsoolar",
     "Octavos",
     1250
    ],
    [
-    "G8",
+    "Enkil 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erizo",
     "Octavos",
     1250
    ],
@@ -15049,29 +15048,24 @@
     1250
    ],
    [
-    "PRESAGIO DELUX NEMI",
+    "Polosport",
     "Cuartos",
     1250
    ],
    [
-    "SIX MAILEN",
+    "Six",
     "Cuartos",
     1250
    ],
    [
-    "Snow",
-    "Cuartos",
+    "araya",
+    "Octavos",
     1250
    ],
    [
-    "Nemi",
-    "Semifinal",
-    656
-   ],
-   [
-    "PRAISERIZA",
-    "Subcampeón",
-    0
+    "Armando Faso🇦🇫",
+    "Octavos",
+    416
    ]
   ]
  }
