@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-08T20:24:05+00:00",
+ "cuando": "2026-10-08T20:54:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2868,6 +2868,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "geekto 🇦🇷",
+   "quien": "eltractorjonshon",
+   "discord_id": "852667585593868288",
+   "msg_id": "1557851154371711098",
+   "cuando": "2026-10-08T20:24:18"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
