@@ -86,6 +86,11 @@
      4
     ],
     [
+     "CrisZJ",
+     24925,
+     3
+    ],
+    [
      "Six",
      19750,
      4
@@ -107,6 +112,11 @@
     ],
     [
      "Sosa",
+     13500,
+     2
+    ],
+    [
+     "MATICERNA",
      13500,
      2
     ],
@@ -149,11 +159,6 @@
      "BTRX",
      7650,
      2
-    ],
-    [
-     "MCO",
-     7500,
-     1
     ],
     [
      "Eclipsito",
@@ -245,11 +250,6 @@
      5
     ],
     [
-     "CrisZJ",
-     24925,
-     3
-    ],
-    [
      "Efimero",
      24750,
      3
@@ -273,6 +273,11 @@
      "Agus",
      17500,
      3
+    ],
+    [
+     "Number VE",
+     14200,
+     4
     ],
     [
      "Sami",
@@ -417,11 +422,6 @@
      3
     ],
     [
-     "Number VE",
-     14200,
-     4
-    ],
-    [
      "Rodas",
      10800,
      2
@@ -458,6 +458,11 @@
     ],
     [
      "Deuxs",
+     7500,
+     1
+    ],
+    [
+     "MCO",
      7500,
      1
     ],
@@ -666,11 +671,6 @@
    ],
    [
     [
-     "MATICERNA",
-     13500,
-     2
-    ],
-    [
      "Enkil 🇦🇷",
      9375,
      2
@@ -833,7 +833,7 @@
   "Colesito": 4,
   "Corvo": 4,
   "Crack and Krank": 5,
-  "CrisZJ": 5,
+  "CrisZJ": 4,
   "Crk": 4,
   "Cronox": 5,
   "DANCOLL 🇻🇪": 5,
@@ -894,7 +894,7 @@
   "Gwynyth": 5,
   "Hassan": 3,
   "Heat": 5,
-  "Humildad": 4,
+  "Humildad": 5,
   "IFX": 5,
   "ISAIAS": 5,
   "Iguana": 5,
@@ -948,11 +948,11 @@
   "Luffy": 5,
   "Luzzano": 5,
   "Lvel": 5,
-  "MATICERNA": 5,
+  "MATICERNA": 4,
   "MAWS🇻🇪": 4,
   "MAXIMILIANO CALVO": 5,
   "MCNadie": 5,
-  "MCO": 4,
+  "MCO": 5,
   "MD": 5,
   "METORITO 🇲🇽": 5,
   "METRO": 5,
@@ -1271,17 +1271,12 @@
   ],
   [
    "2026-09-21",
-   "Andy",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Humildad",
-   4
-  ],
-  [
-   "2026-09-21",
    "Zekha",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Andy",
    4
   ],
   [
@@ -1296,12 +1291,17 @@
   ],
   [
    "2026-09-21",
-   "Drexx",
+   "CrisZJ",
    4
   ],
   [
    "2026-09-21",
    "BTRX",
+   4
+  ],
+  [
+   "2026-09-21",
+   "MATICERNA",
    4
   ],
   [
@@ -1351,7 +1351,7 @@
   ],
   [
    "2026-09-28",
-   "MCO",
+   "Drexx",
    4
   ],
   [
@@ -1525,6 +1525,7 @@
    "Cinexfilo",
    "Corvo",
    "Crk",
+   "Drexx",
    "Eclipsito",
    "Erian",
    "Garxzii",
@@ -1536,7 +1537,6 @@
    "Liberia",
    "Lord Viruzz",
    "MAWS🇻🇪",
-   "MCO",
    "Motera",
    "NXUZ",
    "Noxvell",
