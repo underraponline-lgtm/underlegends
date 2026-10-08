@@ -241,22 +241,27 @@
      "SER O NO SER 🇬🇵",
      10,
      1
+    ],
+    [
+     "19",
+     8,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 23,
-     "DDF": 8
+     "DDF": 9
     },
     "gente": {
      "FFA": 121,
-     "DDF": 24
+     "DDF": 31
     },
     "gana": "DDF"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 24,
+    "DDF": 31,
     "DRA": 0,
     "FFA": 121,
     "FFS": 0,
