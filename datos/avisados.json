@@ -1313,5 +1313,296 @@
    ]
   ],
   "v": 2
+ },
+ "426": {
+  "antes": {
+   "Alexi": [
+    58,
+    81,
+    false
+   ],
+   "Crk": [
+    55,
+    76,
+    false
+   ],
+   "Cronox": [
+    21,
+    26,
+    false
+   ],
+   "Erik": [
+    60,
+    86,
+    false
+   ],
+   "Gocho": [
+    121,
+    212,
+    false
+   ],
+   "Molusco": [
+    31,
+    42,
+    false
+   ],
+   "NC": [
+    17,
+    21,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ],
+   "Polosport": [
+    23,
+    28,
+    false
+   ],
+   "setesfifi": [
+    250,
+    227,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC",
+    "Crk",
+    "NC"
+   ],
+   [
+    "Delux",
+    "setesfifi",
+    "Delux"
+   ],
+   [
+    "Molusco",
+    "Zaik 🇪🇸",
+    "Molusco"
+   ],
+   [
+    "Dyzz",
+    "Alexi",
+    "Dyzz"
+   ],
+   [
+    "Makmah",
+    "Polosport",
+    "Makmah"
+   ],
+   [
+    "Erik",
+    "Cronox",
+    "Erik"
+   ],
+   [
+    "LitKunai",
+    "Gocho",
+    "LitKunai"
+   ],
+   [
+    "Geoka",
+    "PichulaMc",
+    "Geoka"
+   ],
+   [
+    "Delux",
+    "NC",
+    "Delux"
+   ],
+   [
+    "Dyzz",
+    "Molusco",
+    "Dyzz"
+   ],
+   [
+    "Makmah",
+    "Erik",
+    "Makmah"
+   ],
+   [
+    "Geoka",
+    "LitKunai",
+    "Geoka"
+   ],
+   [
+    "Dyzz",
+    "Delux",
+    "Dyzz"
+   ],
+   [
+    "Makmah",
+    "Geoka",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Dyzz",
+    "Makmah"
+   ],
+   [
+    "Cronox",
+    "Crk",
+    "Cronox"
+   ],
+   [
+    "Jult",
+    "Zaik 🇪🇸",
+    "Jult"
+   ],
+   [
+    "Polosport",
+    "setesfifi",
+    "Polosport"
+   ],
+   [
+    "PichulaMc",
+    "Gocho",
+    "PichulaMc"
+   ],
+   [
+    "NC",
+    "LitKunai",
+    "NC"
+   ],
+   [
+    "Cronox",
+    "Jult",
+    "Cronox"
+   ],
+   [
+    "Polosport",
+    "Erik",
+    "Polosport"
+   ],
+   [
+    "PichulaMc",
+    "Molusco",
+    "PichulaMc"
+   ],
+   [
+    "NC",
+    "Cronox",
+    "NC"
+   ],
+   [
+    "PichulaMc",
+    "Polosport",
+    "PichulaMc"
+   ],
+   [
+    "NC",
+    "Delux",
+    "NC"
+   ],
+   [
+    "PichulaMc",
+    "Geoka",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "NC",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Dyzz",
+    "PichulaMc"
+   ],
+   [
+    "Makmah",
+    "PichulaMc",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "Alexi": 5,
+   "Crk": 7,
+   "Cronox": 11,
+   "Erik": 1,
+   "Gocho": 3,
+   "Molusco": 8,
+   "NC": 18,
+   "PichulaMc": 23,
+   "Polosport": 7,
+   "setesfifi": 1
+  },
+  "fecha": "07/10",
+  "firma": "79f3540cb00431ac",
+  "msg": "1557616971858579527",
+  "nombre": "Doble Eliminación Vol. 2",
+  "num": 426,
+  "participantes": 17,
+  "sello": {},
+  "sv": "FFA",
+  "t": "2026-10-08T04:53:44Z",
+  "tabla": [
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erik",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LitKunai",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "setesfifi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Alexi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Polosport",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gocho",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

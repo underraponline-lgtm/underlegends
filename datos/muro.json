@@ -129,6 +129,15 @@
 "temporada"
 ]
 },
+"nc": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "B",
 "c": [
@@ -160,15 +169,6 @@
 "temporada"
 ]
 },
-"nc": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "trot": {
 "rg": "E",
 "c": [
@@ -180,6 +180,15 @@
 "carlosss": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"cronox": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -199,10 +208,9 @@
 "temporada"
 ]
 },
-"cronox": {
-"rg": "E",
+"polosport": {
+"rg": "",
 "c": [
-"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -213,13 +221,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"polosport": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -263,6 +264,14 @@
 "tøkiø": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"molusco": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -313,14 +322,6 @@
 "juanpa": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"molusco": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -445,6 +446,12 @@
 "temporada"
 ]
 },
+"erik": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "pomberito": {
 "rg": "",
 "c": [
@@ -487,6 +494,13 @@
 "temporada"
 ]
 },
+"alexi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "efimero": {
 "rg": "",
 "c": [
@@ -502,6 +516,13 @@
 ]
 },
 "zetryko": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"crk": {
 "rg": "",
 "c": [
 "servidor",
@@ -555,13 +576,6 @@
 "temporada"
 ]
 },
-"crk": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "dyzz": {
 "rg": "",
 "c": [
@@ -590,13 +604,6 @@
 "temporada"
 ]
 },
-"alexi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "jj": {
 "rg": "",
 "c": []
@@ -615,12 +622,6 @@
 "chekialo": {
 "rg": "",
 "c": []
-},
-"erik": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "riolu": {
 "rg": "",
@@ -790,6 +791,13 @@
 "temporada"
 ]
 },
+"zaik": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "malva": {
 "rg": "",
 "c": [
@@ -941,13 +949,6 @@
 "temporada"
 ]
 },
-"zaik": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "walker": {
 "rg": "",
 "c": [
@@ -1008,6 +1009,10 @@
 "rg": "",
 "c": []
 },
+"setesfifi": {
+"rg": "",
+"c": []
+},
 "rodas": {
 "rg": "",
 "c": [
@@ -1027,6 +1032,13 @@
 ]
 },
 "shadow": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"gocho": {
 "rg": "",
 "c": [
 "servidor",
@@ -1100,6 +1112,13 @@
 "nyco": {
 "rg": "",
 "c": []
+},
+"litkunai": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "humildad": {
 "rg": "",
@@ -1459,10 +1478,6 @@
 "temporada"
 ]
 },
-"setesfifi": {
-"rg": "",
-"c": []
-},
 "setes": {
 "rg": "",
 "c": []
@@ -1556,13 +1571,6 @@
 ]
 },
 "mailo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"gocho": {
 "rg": "",
 "c": [
 "servidor",
@@ -4840,6 +4848,14 @@
 "t": "2026-10-08T04:14:20Z",
 "quien": [
 "NC"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-08T04:56:31Z",
+"quien": [
+"Polosport"
 ],
 "carta": "pais"
 }

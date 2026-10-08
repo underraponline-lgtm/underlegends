@@ -79,6 +79,11 @@
      1,
      4
     ],
+    "Alexi": [
+     1,
+     0,
+     16
+    ],
     "Andres": [
      1,
      1,
@@ -161,12 +166,12 @@
     ],
     "Cronox": [
      1,
-     0,
+     2,
      4
     ],
     "Delux": [
      1,
-     1,
+     3,
      4
     ],
     "Desio": [
@@ -191,7 +196,7 @@
     ],
     "Dyzz": [
      1,
-     0,
+     3,
      16
     ],
     "Eclipsito": [
@@ -231,7 +236,7 @@
     ],
     "Erik": [
      1,
-     0,
+     1,
      1
     ],
     "Erizo": [
@@ -244,7 +249,17 @@
      1,
      8
     ],
+    "Geoka": [
+     0,
+     2,
+     99
+    ],
     "Ger9🇨🇱": [
+     1,
+     0,
+     16
+    ],
+    "Gocho": [
      1,
      0,
      16
@@ -286,7 +301,7 @@
     ],
     "Jult": [
      1,
-     1,
+     2,
      4
     ],
     "Jupiter": [
@@ -344,6 +359,11 @@
      6,
      1
     ],
+    "LitKunai": [
+     1,
+     1,
+     8
+    ],
     "Lord Viruzz": [
      1,
      1,
@@ -386,7 +406,7 @@
     ],
     "Makmah": [
      1,
-     2,
+     7,
      4
     ],
     "Malva": [
@@ -406,7 +426,7 @@
     ],
     "Molusco": [
      1,
-     1,
+     2,
      4
     ],
     "Musicdum": [
@@ -421,7 +441,7 @@
     ],
     "NC": [
      1,
-     1,
+     5,
      8
     ],
     "NXUZ": [
@@ -491,7 +511,7 @@
     ],
     "PichulaMc": [
      1,
-     2,
+     8,
      2
     ],
     "Pipas🇵🇪": [
@@ -506,7 +526,7 @@
     ],
     "Polosport": [
      1,
-     0,
+     2,
      1
     ],
     "Pomberito": [
@@ -786,6 +806,7 @@
     "Agus": 1300,
     "Akutagawa🇹🇼": 300,
     "Aldre": 300,
+    "Alexi": 300,
     "Andres": 1300,
     "Andy": 300,
     "Ariaxer": 300,
@@ -802,11 +823,11 @@
     "CrisZJ": 1600,
     "Crk": 300,
     "Cronox": 300,
-    "Delux": 300,
+    "Delux": 900,
     "Desio": 300,
     "Deuxs": 300,
     "Drexx": 300,
-    "Dyzz": 300,
+    "Dyzz": 900,
     "Eclipsito": 300,
     "Efimero": 300,
     "Elsoolar": 300,
@@ -817,6 +838,7 @@
     "Erizo": 300,
     "Ezias🥈✒️🧢🐍": 300,
     "Ger9🇨🇱": 300,
+    "Gocho": 300,
     "Henry": 300,
     "ISAIAS": 300,
     "Iguana": 300,
@@ -834,6 +856,7 @@
     "Leonart": 300,
     "Liam": 300,
     "Liberia": 2900,
+    "LitKunai": 300,
     "Lord Viruzz": 300,
     "Lvel": 300,
     "MATICERNA": 300,
@@ -841,13 +864,13 @@
     "MHS": 300,
     "MTZ": 300,
     "Majiztral": 300,
-    "Makmah": 300,
+    "Makmah": 900,
     "Malva": 300,
     "Miniboy": 300,
     "Molusco": 300,
     "Musicdum": 300,
     "N1k": 300,
-    "NC": 300,
+    "NC": 900,
     "NYCO": 300,
     "Nemi": 300,
     "Neo": 1300,
@@ -859,7 +882,7 @@
     "PROMETHEUS BIB 🇨🇴": 300,
     "Panchok": 2900,
     "Paria": 300,
-    "PichulaMc": 1300,
+    "PichulaMc": 2900,
     "Player": 2900,
     "Polosport": 1300,
     "Pomberito": 2900,
@@ -922,6 +945,7 @@
   "Agus": 1300,
   "Akutagawa🇹🇼": 300,
   "Aldre": 300,
+  "Alexi": 300,
   "Andres": 1300,
   "Andy": 300,
   "Ariaxer": 300,
@@ -938,11 +962,11 @@
   "CrisZJ": 1600,
   "Crk": 300,
   "Cronox": 300,
-  "Delux": 300,
+  "Delux": 900,
   "Desio": 300,
   "Deuxs": 300,
   "Drexx": 300,
-  "Dyzz": 300,
+  "Dyzz": 900,
   "Eclipsito": 300,
   "Efimero": 300,
   "Elsoolar": 300,
@@ -953,6 +977,7 @@
   "Erizo": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "Ger9🇨🇱": 300,
+  "Gocho": 300,
   "Henry": 300,
   "ISAIAS": 300,
   "Iguana": 300,
@@ -970,6 +995,7 @@
   "Leonart": 300,
   "Liam": 300,
   "Liberia": 2900,
+  "LitKunai": 300,
   "Lord Viruzz": 300,
   "Lvel": 300,
   "MATICERNA": 300,
@@ -977,13 +1003,13 @@
   "MHS": 300,
   "MTZ": 300,
   "Majiztral": 300,
-  "Makmah": 300,
+  "Makmah": 900,
   "Malva": 300,
   "Miniboy": 300,
   "Molusco": 300,
   "Musicdum": 300,
   "N1k": 300,
-  "NC": 300,
+  "NC": 900,
   "NYCO": 300,
   "Nemi": 300,
   "Neo": 1300,
@@ -995,7 +1021,7 @@
   "PROMETHEUS BIB 🇨🇴": 300,
   "Panchok": 2900,
   "Paria": 300,
-  "PichulaMc": 1300,
+  "PichulaMc": 2900,
   "Player": 2900,
   "Polosport": 1300,
   "Pomberito": 2900,

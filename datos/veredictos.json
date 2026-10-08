@@ -1602,6 +1602,16 @@
    "b": "MAKMA🇻🇪",
    "ganador": "MAKMA🇻🇪",
    "votos": "1–0"
+  },
+  "1557614309645754429": {
+   "id": "1557614309645754429",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791434590494,
+   "a": "MAKMA🇻🇪",
+   "b": "PICHULITAMC🇦🇷",
+   "ganador": "MAKMA🇻🇪",
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -3663,6 +3673,37 @@
      ],
      "SIX",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1557614309645754429": {
+   "id": "1557614309645754429",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791434590494,
+   "ed": 1791435075454,
+   "texto": "`[ FINAL ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷⌝\n`[ FINAL ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "MAKMA🇻🇪",
+      "PICHULITAMC🇦🇷"
+     ],
+     "MAKMA🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMA🇻🇪",
+      "PICHULITAMC🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
