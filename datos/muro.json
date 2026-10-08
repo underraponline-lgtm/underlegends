@@ -858,7 +858,8 @@
 "delux": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "aby": {
@@ -4815,6 +4816,14 @@
 ],
 "rg": "S",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-08T03:11:05Z",
+"quien": [
+"Delux"
+],
+"carta": "temporada"
 }
 ]
 }
