@@ -7,6 +7,11 @@
   [
    [
     [
+     "Oasis",
+     102950,
+     6
+    ],
+    [
      "PichulaMc",
      76750,
      6
@@ -14,11 +19,6 @@
     [
      "Panchok",
      74250,
-     3
-    ],
-    [
-     "Liberia",
-     50775,
      3
     ],
     [
@@ -30,11 +30,6 @@
   ],
   [
    [
-    [
-     "Oasis",
-     102950,
-     6
-    ],
     [
      "Snow",
      96875,
@@ -54,6 +49,11 @@
      "Makmah",
      52375,
      6
+    ],
+    [
+     "Liberia",
+     50775,
+     3
     ],
     [
      "Provenza",
@@ -86,13 +86,13 @@
      4
     ],
     [
-     "Dyzz",
-     23625,
-     3
-    ],
-    [
      "Six",
      19750,
+     4
+    ],
+    [
+     "Andres",
+     19500,
      4
     ],
     [
@@ -107,11 +107,6 @@
     ],
     [
      "Sosa",
-     13500,
-     2
-    ],
-    [
-     "MATICERNA",
      13500,
      2
     ],
@@ -161,8 +156,8 @@
      1
     ],
     [
-     "melomaniaco",
-     6250,
+     "Eclipsito",
+     6375,
      1
     ],
     [
@@ -186,6 +181,11 @@
      1
     ],
     [
+     "MTZ",
+     3750,
+     1
+    ],
+    [
      "Riolu",
      3750,
      1
@@ -193,16 +193,6 @@
     [
      "Andy",
      1875,
-     1
-    ],
-    [
-     "Alexi",
-     1875,
-     1
-    ],
-    [
-     "Juasmio",
-     936,
      1
     ],
     [
@@ -265,14 +255,14 @@
      3
     ],
     [
-     "Player",
-     23375,
+     "Dyzz",
+     23625,
      3
     ],
     [
-     "Andres",
-     19500,
-     4
+     "Player",
+     23375,
+     3
     ],
     [
      "JJ",
@@ -283,11 +273,6 @@
      "Agus",
      17500,
      3
-    ],
-    [
-     "Number VE",
-     14200,
-     4
     ],
     [
      "Sami",
@@ -331,6 +316,11 @@
     ],
     [
      "Keider",
+     6250,
+     1
+    ],
+    [
+     "melomaniaco",
      6250,
      1
     ],
@@ -427,6 +417,11 @@
      3
     ],
     [
+     "Number VE",
+     14200,
+     4
+    ],
+    [
      "Rodas",
      10800,
      2
@@ -512,11 +507,6 @@
      1
     ],
     [
-     "Lvel",
-     3750,
-     1
-    ],
-    [
      "Bludi🇨🇴",
      3300,
      1
@@ -589,11 +579,6 @@
      2
     ],
     [
-     "Eclipsito",
-     6375,
-     1
-    ],
-    [
      "PROMETHEUS BIB 🇨🇴",
      6000,
      1
@@ -614,7 +599,7 @@
      1
     ],
     [
-     "MTZ",
+     "Lvel",
      3750,
      1
     ],
@@ -659,6 +644,11 @@
      1
     ],
     [
+     "Juasmio",
+     936,
+     1
+    ],
+    [
      "Kyss",
      936,
      1
@@ -675,6 +665,11 @@
     ]
    ],
    [
+    [
+     "MATICERNA",
+     13500,
+     2
+    ],
     [
      "Enkil 🇦🇷",
      9375,
@@ -766,6 +761,11 @@
      1
     ],
     [
+     "Alexi",
+     1875,
+     1
+    ],
+    [
      "Gocho",
      1875,
      1
@@ -792,6 +792,7 @@
   "AGUSTÍN51K": 5,
   "ARDEAN": 5,
   "AREZ": 5,
+  "Ab'l 🇦🇷 🇩🇴": 5,
   "Aby": 5,
   "Abyssus": 4,
   "Acry": 5,
@@ -799,9 +800,9 @@
   "Agre": 5,
   "Agus": 5,
   "Aktybo": 5,
-  "Alexi": 4,
+  "Alexi": 5,
   "Alonso": 5,
-  "Andres": 5,
+  "Andres": 4,
   "Andy": 4,
   "Ariaxer": 4,
   "BLANKO 🇺🇸": 5,
@@ -830,7 +831,7 @@
   "Cinexfilo": 4,
   "Clitax": 5,
   "Colesito": 4,
-  "Corvo": 5,
+  "Corvo": 4,
   "Crack and Krank": 5,
   "CrisZJ": 5,
   "Crk": 4,
@@ -844,16 +845,17 @@
   "Denik": 5,
   "Deuxs": 5,
   "Dios": 5,
+  "Dm🇵🇪": 5,
   "Dominick": 5,
   "Drexx": 4,
   "Dynoco": 5,
-  "Dyzz": 4,
+  "Dyzz": 5,
   "EIDP": 5,
   "ELPIBEOSIRIS": 5,
   "ELSOLAR 🇨🇴": 5,
   "EMMY": 5,
   "ENEK 🇪🇸": 5,
-  "Eclipsito": 5,
+  "Eclipsito": 4,
   "Efimero": 5,
   "El Hombre Eyau": 5,
   "El Wachin": 5,
@@ -867,7 +869,7 @@
   "Eze": 5,
   "Ezias🥈✒️🧢🐍": 5,
   "FALON 🇨🇱": 5,
-  "Faso": 4,
+  "Faso": 5,
   "Fazer": 4,
   "Filozico": 5,
   "Fin": 5,
@@ -892,7 +894,7 @@
   "Gwynyth": 5,
   "Hassan": 3,
   "Heat": 5,
-  "Humildad": 5,
+  "Humildad": 4,
   "IFX": 5,
   "ISAIAS": 5,
   "Iguana": 5,
@@ -901,14 +903,14 @@
   "Ivaynex": 5,
   "Izaya": 5,
   "JEIXDER": 5,
-  "JIMMY": 5,
+  "JIMMY": 4,
   "JOACO 🇨🇱": 5,
   "Jayden": 5,
   "Jere": 5,
   "Johao": 5,
   "Jotap": 5,
   "Juanpa": 4,
-  "Juasmio": 4,
+  "Juasmio": 5,
   "Jult": 5,
   "Jupiter": 4,
   "KASIVA🇵🇪": 5,
@@ -939,16 +941,15 @@
   "Leonart": 5,
   "Leyenda": 5,
   "Lhyon": 5,
-  "Liberia": 3,
+  "Liberia": 4,
   "Lilñaño": 5,
   "Lizeninn": 5,
   "Lord Viruzz": 4,
   "Luffy": 5,
   "Luzzano": 5,
   "Lvel": 5,
-  "MATICERNA": 4,
-  "MAU KC 🇨🇴": 4,
-  "MAWS🇻🇪": 5,
+  "MATICERNA": 5,
+  "MAWS🇻🇪": 4,
   "MAXIMILIANO CALVO": 5,
   "MCNadie": 5,
   "MCO": 4,
@@ -956,7 +957,8 @@
   "METORITO 🇲🇽": 5,
   "METRO": 5,
   "MHS": 5,
-  "MTZ": 5,
+  "MR.LABURO🇨🇴": 5,
+  "MTZ": 4,
   "MZK": 5,
   "MaYeuTyK": 5,
   "Mail O": 5,
@@ -967,6 +969,7 @@
   "Marto": 5,
   "Masino": 5,
   "Mathhias": 5,
+  "Mau Kc 🇨🇴": 5,
   "MauzzitoEmeces": 5,
   "MetriOdin": 5,
   "Miniboy": 4,
@@ -992,7 +995,7 @@
   "OG": 5,
   "OKAM": 5,
   "ONZASS": 5,
-  "Oasis": 4,
+  "Oasis": 3,
   "Ola🇲🇽": 5,
   "Oni 🇦🇷": 5,
   "PARADOJA": 5,
@@ -1029,6 +1032,7 @@
   "SGB": 4,
   "SHULIOT": 5,
   "SMAFF": 5,
+  "SNX🇻🇪": 5,
   "SOL": 4,
   "SONIC_DORADITO": 5,
   "SUDAKA🇦🇷": 5,
@@ -1041,6 +1045,7 @@
   "Selek": 5,
   "Sexo": 5,
   "Shadow": 5,
+  "Silence": 5,
   "Sin Limites": 5,
   "Six": 4,
   "Skratch": 5,
@@ -1079,7 +1084,7 @@
   "Xubaru": 5,
   "Yeyox": 5,
   "Yio": 5,
-  "Yor": 5,
+  "Yor": 4,
   "ZTR": 5,
   "ZWO 🇦🇷": 5,
   "Zafka": 5,
@@ -1087,7 +1092,7 @@
   "Zanet": 5,
   "Zanti": 5,
   "Zekha": 4,
-  "Zeta": 5,
+  "Zeta": 4,
   "Zetryko": 4,
   "ZiarKI": 5,
   "Zignos": 4,
@@ -1101,7 +1106,7 @@
   "leteletras": 5,
   "luisito 🏆": 5,
   "maldita enfermedad": 5,
-  "melomaniaco": 4,
+  "melomaniaco": 5,
   "melztube": 5,
   "papa": 5,
   "rayito": 5,
@@ -1151,12 +1156,12 @@
   ],
   [
    "2026-09-21",
-   "Erian",
+   "Colesito",
    4
   ],
   [
    "2026-09-21",
-   "Colesito",
+   "Erian",
    4
   ],
   [
@@ -1186,17 +1191,17 @@
   ],
   [
    "2026-09-21",
+   "Miniboy",
+   4
+  ],
+  [
+   "2026-09-21",
    "Saito",
    4
   ],
   [
    "2026-09-21",
-   "Liberia",
-   4
-  ],
-  [
-   "2026-09-21",
-   "MAU KC 🇨🇴",
+   "Richard",
    4
   ],
   [
@@ -1221,7 +1226,7 @@
   ],
   [
    "2026-09-21",
-   "Abyssus",
+   "Andres",
    4
   ],
   [
@@ -1231,12 +1236,12 @@
   ],
   [
    "2026-09-21",
-   "Fazer",
+   "Cronox",
    4
   ],
   [
    "2026-09-21",
-   "Cronox",
+   "Fazer",
    4
   ],
   [
@@ -1266,12 +1271,17 @@
   ],
   [
    "2026-09-21",
-   "Zekha",
+   "Andy",
    4
   ],
   [
    "2026-09-21",
-   "Andy",
+   "Humildad",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Zekha",
    4
   ],
   [
@@ -1281,42 +1291,32 @@
   ],
   [
    "2026-09-21",
-   "BTRX",
+   "JIMMY",
    4
   ],
   [
    "2026-09-21",
-   "MATICERNA",
+   "Drexx",
+   4
+  ],
+  [
+   "2026-09-21",
+   "BTRX",
    4
   ],
   [
    "2026-09-28",
    "Liberia",
-   3
-  ],
-  [
-   "2026-09-28",
-   "Hassan",
-   3
-  ],
-  [
-   "2026-09-28",
-   "PichulaMc",
-   3
-  ],
-  [
-   "2026-09-28",
-   "Panchok",
-   3
-  ],
-  [
-   "2026-09-28",
-   "Erian",
-   3
+   4
   ],
   [
    "2026-09-28",
    "Motera",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Abyssus",
    4
   ],
   [
@@ -1327,16 +1327,6 @@
   [
    "2026-09-28",
    "Cinexfilo",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Juasmio",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Miniboy",
    4
   ],
   [
@@ -1352,11 +1342,6 @@
   [
    "2026-09-28",
    "Carlosss",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Drexx",
    4
   ],
   [
@@ -1391,6 +1376,11 @@
   ],
   [
    "2026-09-28",
+   "Zeta",
+   4
+  ],
+  [
+   "2026-09-28",
    "Sosa",
    4
   ],
@@ -1411,7 +1401,7 @@
   ],
   [
    "2026-09-28",
-   "Dyzz",
+   "Yor",
    4
   ],
   [
@@ -1436,7 +1426,7 @@
   ],
   [
    "2026-09-28",
-   "Alexi",
+   "Eclipsito",
    4
   ],
   [
@@ -1451,17 +1441,17 @@
   ],
   [
    "2026-09-28",
-   "Faso",
-   4
-  ],
-  [
-   "2026-09-28",
-   "melomaniaco",
-   4
-  ],
-  [
-   "2026-09-28",
    "Adriagner",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Corvo",
+   4
+  ],
+  [
+   "2026-09-28",
+   "MAWS🇻🇪",
    4
   ],
   [
@@ -1488,46 +1478,70 @@
    "2026-09-28",
    "SOL",
    4
+  ],
+  [
+   "2026-09-28",
+   "Hassan",
+   3
+  ],
+  [
+   "2026-09-28",
+   "PichulaMc",
+   3
+  ],
+  [
+   "2026-09-28",
+   "Panchok",
+   3
+  ],
+  [
+   "2026-09-28",
+   "Erian",
+   3
+  ],
+  [
+   "2026-09-28",
+   "Oasis",
+   3
   ]
  ],
  "ult": {
   "baja": [
    "Cronox",
    "Eze",
-   "MTZ",
    "Masino",
+   "Richard",
    "Tuca"
   ],
   "sem": "2026-09-28",
   "sube": [
+   "Abyssus",
    "Adriagner",
-   "Alexi",
    "Ariaxer",
    "Badterne",
    "Benjixo",
    "Carlosss",
    "Catarsis",
    "Cinexfilo",
+   "Corvo",
    "Crk",
-   "Drexx",
-   "Dyzz",
+   "Eclipsito",
    "Erian",
-   "Faso",
    "Garxzii",
    "Hassan",
    "Juanpa",
-   "Juasmio",
    "Jupiter",
    "Krtman",
    "LRS",
    "Liberia",
    "Lord Viruzz",
+   "MAWS🇻🇪",
    "MCO",
-   "Miniboy",
    "Motera",
    "NXUZ",
    "Noxvell",
    "Number",
+   "Oasis",
    "PRAISERIZA",
    "Panchok",
    "PichulaMc",
@@ -1537,8 +1551,9 @@
    "SOL",
    "Sosa",
    "TøKīØ🦠🧠",
+   "Yor",
+   "Zeta",
    "Zetryko",
-   "melomaniaco",
    "tam🇧🇫baggio🇮🇹"
   ]
  },
