@@ -4,11 +4,11 @@
   "msg": "1552282492504113188"
  },
  "350": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL.10 __|22/09|24|7|5|0",
+  "firma": "__ DESGRACIAS EN TOKYO VOL.10 __|22/09|24|7|2|0",
   "msg": "1552282691855192137"
  },
  "351": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL 11 __|23/09|15|14|3|0",
+  "firma": "__ DESGRACIAS EN TOKYO VOL 11 __|23/09|15|14|1|0",
   "msg": "1552447302638239828"
  },
  "352": {
@@ -16,7 +16,7 @@
   "msg": "1552524905868824759"
  },
  "353": {
-  "firma": "ELRAP FECHA 6|24/09|24|7|6|0",
+  "firma": "ELRAP FECHA 6|24/09|25|7|6|0",
   "msg": "1552572590831444072"
  },
  "354": {
@@ -1772,6 +1772,190 @@
     "Teito",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "428": {
+  "antes": {
+   "Andres": [
+    155,
+    32,
+    true
+   ],
+   "CrisZJ": [
+    24,
+    29,
+    false
+   ],
+   "Cronox": [
+    20,
+    24,
+    false
+   ],
+   "EmiZor": [
+    241,
+    214,
+    true
+   ],
+   "Leonart": [
+    187,
+    114,
+    true
+   ],
+   "MCO": [
+    41,
+    54,
+    false
+   ],
+   "Miniboy": [
+    153,
+    26,
+    true
+   ],
+   "NXUZ": [
+    38,
+    51,
+    false
+   ],
+   "Richard": [
+    54,
+    76,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "NXUZ",
+    "Silence",
+    "NXUZ"
+   ],
+   [
+    "Leonart",
+    "Dm🇵🇪",
+    "Leonart"
+   ],
+   [
+    "Richard",
+    "CrisZJ",
+    "Richard"
+   ],
+   [
+    "MCO",
+    "SNX🇻🇪",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "EmiZor",
+    "MCO"
+   ],
+   [
+    "Cronox, Leonart",
+    "Andres, NXUZ",
+    "Cronox, Leonart"
+   ],
+   [
+    "MCO, Miniboy",
+    "MR.LABURO🇨🇴, Richard",
+    "MCO, Miniboy"
+   ],
+   [
+    "Leonart, Cronox, Andres",
+    "MCO, Miniboy, MR.LABURO🇨🇴",
+    "Leonart, Cronox, Andres"
+   ]
+  ],
+  "ev_antes": {
+   "Andres": 8,
+   "CrisZJ": 7,
+   "Cronox": 13,
+   "EmiZor": 3,
+   "Leonart": 5,
+   "MCO": 8,
+   "Miniboy": 13,
+   "NXUZ": 7,
+   "Richard": 10
+  },
+  "fecha": "27/09",
+  "firma": "64d76e203f417814",
+  "msg": "1557823138497036310",
+  "nombre": "CIUDAD GOTICA",
+  "num": 428,
+  "participantes": 13,
+  "sello": {
+   "Andres": "e2e429c029ec:c2dd98b0f962",
+   "Cronox": "943b90360464:17c4f13e63d4",
+   "Leonart": "776e0da98471:c2dd98b0f962"
+  },
+  "sv": "DDF",
+  "t": "2026-10-08T18:32:57Z",
+  "tabla": [
+   [
+    "Andres",
+    "Campeón",
+    3000
+   ],
+   [
+    "MR.LABURO🇨🇴",
+    "Subcampeón",
+    2583
+   ],
+   [
+    "Leonart",
+    "Campeón",
+    2500
+   ],
+   [
+    "Cronox",
+    "Campeón",
+    2500
+   ],
+   [
+    "Silence",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dm🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SNX🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Richard",
+    "Semifinal",
+    1750
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    1666
    ]
   ],
   "v": 2

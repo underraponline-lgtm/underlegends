@@ -238,7 +238,7 @@
      [
       [
        "MAU KC 🇨🇴",
-       "Teito🇨🇴",
+       "Teito",
        "Snow"
       ],
       "MAU KC 🇨🇴",
@@ -247,7 +247,7 @@
      [
       [
        "Geoka",
-       "WILLY 🇲🇽",
+       "WILLY",
        "Filozico"
       ],
       "Geoka",
@@ -265,7 +265,7 @@
      [
       [
        "Masino",
-       "JAHNO 🇦🇷",
+       "melomaniaco",
        "tormen"
       ],
       "Masino",
@@ -443,11 +443,6 @@
     1250
    ],
    [
-    "JAHNO 🇦🇷",
-    "Octavos",
-    1250
-   ],
-   [
     "KIPMC 🇧🇷",
     "Octavos",
     1250
@@ -488,7 +483,7 @@
     1250
    ],
    [
-    "Teito🇨🇴",
+    "Teito",
     "Octavos",
     1250
    ],
@@ -503,7 +498,12 @@
     1250
    ],
    [
-    "WILLY 🇲🇽",
+    "WILLY",
+    "Octavos",
+    1250
+   ],
+   [
+    "melomaniaco",
     "Octavos",
     1250
    ],
@@ -535,7 +535,7 @@
      [
       [
        "Colesito",
-       "Teito🇨🇴"
+       "Teito"
       ],
       "Colesito",
       ""
@@ -559,7 +559,7 @@
      [
       [
        "Baltrip",
-       "ISAIAS 🇪🇸"
+       "ISAIAS"
       ],
       "Baltrip",
       ""
@@ -587,14 +587,6 @@
       ],
       "Liberia",
       ""
-     ],
-     [
-      [
-       "onzass",
-       "gus"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -742,7 +734,7 @@
     1250
    ],
    [
-    "ISAIAS 🇪🇸",
+    "ISAIAS",
     "Octavos",
     1250
    ],
@@ -757,7 +749,7 @@
     1250
    ],
    [
-    "Teito🇨🇴",
+    "Teito",
     "Octavos",
     1250
    ]
@@ -953,11 +945,12 @@
      ],
      [
       [
-       "Sin Limites",
-       "Focox"
+       "Andres",
+       "Focox",
+       "Sin Limites"
       ],
-      "Sin Limites",
-      "triple (3 bandas, pasan 2)"
+      "Andres",
+      "triple (3 bandas)"
      ],
      [
       [
@@ -1020,10 +1013,10 @@
      ],
      [
       [
-       "Nhp",
+       "Andres",
        "fleivaman"
       ],
-      "Nhp",
+      "Andres",
       ""
      ],
      [
@@ -1050,7 +1043,7 @@
      [
       [
        "Presagio",
-       "Nhp"
+       "Andres"
       ],
       "Presagio",
       ""
@@ -1093,7 +1086,7 @@
     7500
    ],
    [
-    "Nhp",
+    "Andres",
     "Semifinal",
     5250
    ],
@@ -1179,6 +1172,11 @@
    ],
    [
     "Scot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
     "Octavos",
     1250
    ],
@@ -2136,7 +2134,7 @@
        "Masino",
        "Marto",
        "Xclusivo",
-       "Riferian"
+       "Ab'l 🇦🇷 🇩🇴"
       ],
       "Masino",
       "triple (4 bandas)"
@@ -2275,6 +2273,11 @@
     2500
    ],
    [
+    "Ab'l 🇦🇷 🇩🇴",
+    "Octavos",
+    1250
+   ],
+   [
     "Elinge_TIMP",
     "Octavos",
     1250
@@ -2301,11 +2304,6 @@
    ],
    [
     "Richard",
-    "Octavos",
-    1250
-   ],
-   [
-    "Riferian",
     "Octavos",
     1250
    ],
@@ -3872,10 +3870,10 @@
      ],
      [
       [
-       "SOL🇵🇪",
+       "SOL",
        "Deuxs"
       ],
-      "SOL🇵🇪",
+      "SOL",
       ""
      ],
      [
@@ -3910,7 +3908,7 @@
      [
       [
        "Oasis",
-       "SOL🇵🇪"
+       "SOL"
       ],
       "Oasis",
       ""
@@ -4005,7 +4003,7 @@
     2500
    ],
    [
-    "SOL🇵🇪",
+    "SOL",
     "Cuartos",
     2500
    ],
@@ -9784,159 +9782,6 @@
    ]
   ]
  },
- "397": {
-  "dia": "2026-10-04",
-  "escala": "8-15",
-  "fecha": "04/10",
-  "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1556494273606848638"
-  ],
-  "n": 397,
-  "nombre": "DESGRACIAS EN TOKYO VOL 22",
-  "participantes": 13,
-  "rondas": [
-   {
-    "b": [
-     [
-      [
-       "NC",
-       "BLITZ"
-      ],
-      "NC",
-      "triple (3 bandas, pasan 2); Revivido: Blitz"
-     ],
-     [
-      [
-       "Drexx",
-       "Garxzii"
-      ],
-      "Drexx",
-      "triple (3 bandas, pasan 2)"
-     ],
-     [
-      [
-       "Oasis",
-       "Choclo🇻🇪"
-      ],
-      "Oasis",
-      "triple (3 bandas, pasan 2)"
-     ],
-     [
-      [
-       "CFM",
-       "Sosa",
-       "Dyzz"
-      ],
-      "CFM",
-      "triple (4 bandas, pasan 2); Revivido: C F M 🇻🇪"
-     ]
-    ],
-    "r": "Cuartos"
-   },
-   {
-    "b": [
-     [
-      [
-       "Drexx, Alexi",
-       "Provenza, NC"
-      ],
-      "Drexx, Alexi",
-      ""
-     ],
-     [
-      [
-       "Oasis, Shishui🇯🇵",
-       "CFM, Freestyle4AllmyNiggaz 🌏🌏"
-      ],
-      "Oasis, Shishui🇯🇵",
-      ""
-     ]
-    ],
-    "r": "Semifinales"
-   },
-   {
-    "b": [
-     [
-      [
-       "Oasis, Shishui🇯🇵, CFM",
-       "Drexx, Alexi, BLITZ"
-      ],
-      "Oasis, Shishui🇯🇵, CFM",
-      ""
-     ]
-    ],
-    "r": "Final"
-   }
-  ],
-  "sv": "FFA",
-  "tabla": [
-   [
-    "CFM",
-    "Campeón",
-    3000
-   ],
-   [
-    "BLITZ",
-    "Subcampeón",
-    2833
-   ],
-   [
-    "Oasis",
-    "Campeón",
-    2500
-   ],
-   [
-    "Shishui🇯🇵",
-    "Campeón",
-    2500
-   ],
-   [
-    "Choclo🇻🇪",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Dyzz",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Garxzii",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Sosa",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Freestyle4AllmyNiggaz 🌏🌏",
-    "Semifinal",
-    1750
-   ],
-   [
-    "NC",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Provenza",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Alexi",
-    "Subcampeón",
-    1666
-   ],
-   [
-    "Drexx",
-    "Subcampeón",
-    1666
-   ]
-  ]
- },
  "398": {
   "dia": "2026-09-22",
   "escala": "8-15",
@@ -12741,7 +12586,7 @@
   ],
   "n": 412,
   "nombre": "PRITTY FREE CLASIFICATORIA 3",
-  "participantes": 16,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -12760,7 +12605,7 @@
        "Tam"
       ],
       "PichulaMc",
-      "triple (4 bandas, pasan 2)"
+      "triple (4 bandas, pasan 2); Revivido: Pichula🇦🇷"
      ],
      [
       [
@@ -12790,6 +12635,14 @@
        "Rodas"
       ],
       "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Six",
+       "Zignos"
+      ],
+      "Six",
       ""
      ],
      [
@@ -12859,11 +12712,6 @@
     5250
    ],
    [
-    "PichulaMc",
-    "Semifinal",
-    5250
-   ],
-   [
     "Snow",
     "Subcampeón",
     3750
@@ -12874,12 +12722,22 @@
     3750
    ],
    [
+    "PichulaMc",
+    "Semifinal",
+    2625
+   ],
+   [
     "Liam",
     "Cuartos",
     2500
    ],
    [
     "Rodas",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
     "Cuartos",
     2500
    ],
@@ -15564,6 +15422,157 @@
     "Teito",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "428": {
+  "dia": "2026-09-27",
+  "escala": "8-15",
+  "fecha": "27/09",
+  "links": [],
+  "n": 428,
+  "nombre": "CIUDAD GOTICA",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Silence"
+      ],
+      "NXUZ",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Leonart",
+       "Dm🇵🇪"
+      ],
+      "Leonart",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Richard",
+       "CrisZJ"
+      ],
+      "Richard",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "MCO",
+       "SNX🇻🇪",
+       "EmiZor"
+      ],
+      "MCO",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Cronox, Leonart",
+       "Andres, NXUZ"
+      ],
+      "Cronox, Leonart",
+      "Revivido: ANDRES🇨🇱"
+     ],
+     [
+      [
+       "MCO, Miniboy",
+       "MR.LABURO🇨🇴, Richard"
+      ],
+      "MCO, Miniboy",
+      "Revivido: MR.LABURO🇨🇴"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Leonart, Cronox, Andres",
+       "MCO, Miniboy, MR.LABURO🇨🇴"
+      ],
+      "Leonart, Cronox, Andres",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Andres",
+    "Campeón",
+    3000
+   ],
+   [
+    "MR.LABURO🇨🇴",
+    "Subcampeón",
+    2583
+   ],
+   [
+    "Cronox",
+    "Campeón",
+    2500
+   ],
+   [
+    "Leonart",
+    "Campeón",
+    2500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dm🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SNX🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Silence",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Richard",
+    "Semifinal",
+    1750
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    1666
    ]
   ]
  }

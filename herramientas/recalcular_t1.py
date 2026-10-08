@@ -314,6 +314,19 @@ def aplicar(d):
             print('   ⚠️ #%s: no sé con qué nombre está cargado, no lo toco' % n)
             continue
         filas += [dict(f, evento=nom, servidor=sv, fecha=fe) for f in e['filas']]
+    # 🆕 LO QUE ENTRA, SÓLO NOMBRADO: `--entran "CIUDAD GOTICA"`. CIUDAD GÓTICA (DDF, 27/09) quedó afuera de los
+    # últimos 25 mensajes de su canal, así que el ciclo no la vuelve a leer aunque el lector ya la entienda; el
+    # recálculo, que lee la historia entera, sí. Nunca todo lo que entra: ahí cae también lo que el ciclo NO carga a
+    # propósito (una llave sin título que ya está con el nombre de su anuncio)
+    pedidos = [x.strip().upper() for x in d.get('_entran') or [] if x.strip()]
+    n_ent = 0
+    for k, e in (d.get('nuevos') or {}).items():
+        if k.startswith('nuevo:') and e.get('filas') and str(e.get('nombre') or '').strip().upper() in pedidos:
+            filas += e['filas']
+            n_ent += 1
+            print('   🆕 entra %s · %s · %s (%d con puntos)' % (e['nombre'], e['sv'], e['fecha'], len(e['pts'])))
+    if pedidos and n_ent < len(pedidos):
+        print('   ⚠️ pediste %d evento(s) que entran y encontré %d: mirá los nombres' % (len(pedidos), n_ent))
     if filas:
         h = Hoja('Entrada')
         desplazo = ord(COL_A.upper()) - ord('A')
@@ -353,6 +366,8 @@ def main():
             d = json.load(f)
         _informe(d)
         if '--aplicar' in sys.argv:
+            if '--entran' in sys.argv:
+                d['_entran'] = sys.argv[sys.argv.index('--entran') + 1].split(',')
             aplicar(d)
         return 0
     tmp = tempfile.mkdtemp(prefix='recalcular_t1_')
