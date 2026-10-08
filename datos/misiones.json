@@ -69,6 +69,11 @@
      2,
      2
     ],
+    "Akutagawa🇹🇼": [
+     1,
+     0,
+     16
+    ],
     "Aldre": [
      1,
      1,
@@ -85,6 +90,11 @@
      16
     ],
     "Ariaxer": [
+     1,
+     0,
+     16
+    ],
+    "Armando Faso🇦🇫": [
      1,
      0,
      16
@@ -152,7 +162,7 @@
     "Cronox": [
      1,
      0,
-     8
+     4
     ],
     "Delux": [
      1,
@@ -199,6 +209,11 @@
      0,
      8
     ],
+    "Elsoolar": [
+     1,
+     0,
+     16
+    ],
     "EmiZor": [
      1,
      0,
@@ -218,6 +233,11 @@
      1,
      0,
      1
+    ],
+    "Erizo 🇻🇪": [
+     1,
+     0,
+     16
     ],
     "Ezias🥈✒️🧢🐍": [
      1,
@@ -295,6 +315,11 @@
      8
     ],
     "Kyss": [
+     1,
+     0,
+     16
+    ],
+    "LEWITO": [
      1,
      0,
      16
@@ -409,10 +434,15 @@
      0,
      8
     ],
+    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷": [
+     1,
+     0,
+     4
+    ],
     "Neo": [
      1,
      0,
-     8
+     2
     ],
     "Noone": [
      1,
@@ -436,7 +466,7 @@
     ],
     "Oasis": [
      1,
-     4,
+     6,
      1
     ],
     "PRAISERIZA": [
@@ -670,7 +700,7 @@
      2
     ],
     "Xclusivo": [
-     0,
+     1,
      2,
      2
     ],
@@ -699,6 +729,11 @@
      0,
      4
     ],
+    "araya🇦🇷": [
+     1,
+     0,
+     16
+    ],
     "chekialo 🇧🇯": [
      1,
      0,
@@ -718,6 +753,11 @@
      1,
      0,
      16
+    ],
+    "praiserizas": [
+     1,
+     0,
+     2
     ],
     "setesfifi": [
      1,
@@ -744,10 +784,12 @@
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 1300,
+    "Akutagawa🇹🇼": 300,
     "Aldre": 300,
     "Andres": 1300,
     "Andy": 300,
     "Ariaxer": 300,
+    "Armando Faso🇦🇫": 300,
     "Assuan": 1300,
     "BNA": 300,
     "BTRX": 300,
@@ -767,10 +809,12 @@
     "Dyzz": 300,
     "Eclipsito": 300,
     "Efimero": 300,
+    "Elsoolar": 300,
     "EmiZor": 300,
     "Enkil 🇦🇷": 300,
     "Erian": 2900,
     "Erik": 1300,
+    "Erizo 🇻🇪": 300,
     "Ezias🥈✒️🧢🐍": 300,
     "Ger9🇨🇱": 300,
     "Henry": 300,
@@ -785,6 +829,7 @@
     "Korey": 300,
     "Krish": 300,
     "Kyss": 300,
+    "LEWITO": 300,
     "LKS 🇨🇱": 300,
     "Leonart": 300,
     "Liam": 300,
@@ -804,7 +849,8 @@
     "N1k": 300,
     "NC": 300,
     "NYCO": 300,
-    "Neo": 300,
+    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷": 300,
+    "Neo": 1300,
     "Noone": 300,
     "OG": 300,
     "ONZASS": 300,
@@ -849,14 +895,16 @@
     "Valdoza": 300,
     "Vandu": 2900,
     "Velatz": 2900,
-    "Xclusivo": 1000,
+    "Xclusivo": 1300,
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
     "Zignos": 300,
+    "araya🇦🇷": 300,
     "chekialo 🇧🇯": 1300,
     "dxg": 300,
     "melomaniaco": 300,
+    "praiserizas": 1300,
     "setesfifi": 300,
     "wei shenlong": 300,
     "yinn": 300
@@ -872,10 +920,12 @@
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 1300,
+  "Akutagawa🇹🇼": 300,
   "Aldre": 300,
   "Andres": 1300,
   "Andy": 300,
   "Ariaxer": 300,
+  "Armando Faso🇦🇫": 300,
   "Assuan": 1300,
   "BNA": 300,
   "BTRX": 300,
@@ -895,10 +945,12 @@
   "Dyzz": 300,
   "Eclipsito": 300,
   "Efimero": 300,
+  "Elsoolar": 300,
   "EmiZor": 300,
   "Enkil 🇦🇷": 300,
   "Erian": 2900,
   "Erik": 1300,
+  "Erizo 🇻🇪": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "Ger9🇨🇱": 300,
   "Henry": 300,
@@ -913,6 +965,7 @@
   "Korey": 300,
   "Krish": 300,
   "Kyss": 300,
+  "LEWITO": 300,
   "LKS 🇨🇱": 300,
   "Leonart": 300,
   "Liam": 300,
@@ -932,7 +985,8 @@
   "N1k": 300,
   "NC": 300,
   "NYCO": 300,
-  "Neo": 300,
+  "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷": 300,
+  "Neo": 1300,
   "Noone": 300,
   "OG": 300,
   "ONZASS": 300,
@@ -977,14 +1031,16 @@
   "Valdoza": 300,
   "Vandu": 2900,
   "Velatz": 2900,
-  "Xclusivo": 1000,
+  "Xclusivo": 1300,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,
   "Zignos": 300,
+  "araya🇦🇷": 300,
   "chekialo 🇧🇯": 1300,
   "dxg": 300,
   "melomaniaco": 300,
+  "praiserizas": 1300,
   "setesfifi": 300,
   "wei shenlong": 300,
   "yinn": 300

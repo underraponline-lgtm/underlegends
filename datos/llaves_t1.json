@@ -14838,5 +14838,225 @@
     2000
    ]
   ]
+ },
+ "425": {
+  "dia": "2026-10-07",
+  "escala": "16+",
+  "fecha": "07/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557527632323809362"
+  ],
+  "n": 425,
+  "nombre": "PRITTY FREE",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Snow",
+       "Erizo 🇻🇪"
+      ],
+      "Snow",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Prodigy",
+       "Akutagawa🇹🇼",
+       "Enkil 🇦🇷"
+      ],
+      "Prodigy",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Colesito",
+       "Velatz, Armando Faso🇦🇫, Neo",
+       "LEWITO"
+      ],
+      "PichulaMc",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "araya🇦🇷",
+       "Elsoolar"
+      ],
+      "Oasis",
+      "triple (4 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "PichulaMc"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Velatz, Snow, Neo",
+       "Six, Polosport"
+      ],
+      "Velatz, Snow, Neo",
+      ""
+     ],
+     [
+      [
+       "Cronox, Xclusivo",
+       "Prodigy"
+      ],
+      "Cronox, Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Velatz, Snow, Neo, praiserizas",
+       "Cronox, Xclusivo"
+      ],
+      "Velatz, Snow, Neo, praiserizas",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Velatz, Snow, Neo, praiserizas"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Cronox",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    2625
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Prodigy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "praiserizas",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Akutagawa🇹🇼",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Enkil 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erizo 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Polosport",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Six",
+    "Cuartos",
+    1250
+   ],
+   [
+    "araya🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Armando Faso🇦🇫",
+    "Octavos",
+    416
+   ]
+  ]
  }
 }

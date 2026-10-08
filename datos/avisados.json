@@ -1033,5 +1033,275 @@
    ]
   ],
   "v": 2
+ },
+ "425": {
+  "antes": {
+   "Colesito": [
+    10,
+    13,
+    false
+   ],
+   "Cronox": [
+    22,
+    28,
+    false
+   ],
+   "Elsoolar": [
+    77,
+    123,
+    false
+   ],
+   "LEWITO": [
+    136,
+    292,
+    false
+   ],
+   "Neo": [
+    165,
+    70,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    5,
+    false
+   ],
+   "Polosport": [
+    23,
+    30,
+    false
+   ],
+   "Prodigy": [
+    98,
+    168,
+    false
+   ],
+   "Six": [
+    11,
+    14,
+    false
+   ],
+   "Snow": [
+    1,
+    1,
+    false
+   ],
+   "Velatz": [
+    4,
+    6,
+    false
+   ],
+   "Xclusivo": [
+    164,
+    67,
+    true
+   ]
+  },
+  "duelos": [
+   [
+    "Snow",
+    "Erizo 🇻🇪",
+    "Snow"
+   ],
+   [
+    "Prodigy",
+    "Akutagawa🇹🇼",
+    "Prodigy"
+   ],
+   [
+    "Prodigy",
+    "Enkil 🇦🇷",
+    "Prodigy"
+   ],
+   [
+    "PichulaMc",
+    "Colesito",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Velatz, Armando Faso🇦🇫, Neo",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "LEWITO",
+    "PichulaMc"
+   ],
+   [
+    "Oasis",
+    "araya🇦🇷",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Elsoolar",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "PichulaMc",
+    "Oasis"
+   ],
+   [
+    "Velatz, Snow, Neo",
+    "Six, Polosport",
+    "Velatz, Snow, Neo"
+   ],
+   [
+    "Cronox, Xclusivo",
+    "Prodigy",
+    "Cronox, Xclusivo"
+   ],
+   [
+    "Oasis",
+    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷",
+    "Oasis"
+   ],
+   [
+    "Velatz, Snow, Neo, praiserizas",
+    "Cronox, Xclusivo",
+    "Velatz, Snow, Neo, praiserizas"
+   ],
+   [
+    "Oasis",
+    "Velatz, Snow, Neo, praiserizas",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Colesito": 13,
+   "Cronox": 10,
+   "Elsoolar": 5,
+   "LEWITO": 1,
+   "Neo": 3,
+   "Oasis": 18,
+   "PichulaMc": 22,
+   "Polosport": 6,
+   "Prodigy": 1,
+   "Six": 11,
+   "Snow": 22,
+   "Velatz": 27,
+   "Xclusivo": 4
+  },
+  "fecha": "07/10",
+  "firma": "00725e21fe6e001a",
+  "msg": "1557564144360890428",
+  "nombre": "__ PRITTY FREE __",
+  "num": 425,
+  "participantes": 20,
+  "sello": {
+   "Oasis": "1b7f37960de9:c2dd98b0f962"
+  },
+  "sv": "FFA",
+  "t": "2026-10-08T01:23:49Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Nemi x presagio x dantedelux🇦🇷 🇦🇷 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Cronox",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    2625
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Prodigy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "praiserizas",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1353
+   ],
+   [
+    "Six",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Polosport",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Erizo 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akutagawa🇹🇼",
+    "Octavos",
+    1250
+   ],
+   [
+    "Enkil 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "araya🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Armando Faso🇦🇫",
+    "Octavos",
+    416
+   ]
+  ],
+  "v": 2
  }
 }
