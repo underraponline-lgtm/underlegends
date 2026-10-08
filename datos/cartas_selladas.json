@@ -445,7 +445,7 @@
   },
   "EIDP": {
    "servidor": "2dbc47ec307d:9d97339447c1:eed871",
-   "temporada": "3cdbc25d616d:c2dd98b0f962"
+   "temporada": "a500bad9c9d9:c2dd98b0f962"
   },
   "ELPIBEOSIRIS": {
    "servidor": "0cbd863f9629:9d97339447c1:90ce53",
@@ -514,10 +514,10 @@
    "temporada": "174378b9ad0a:c2dd98b0f962"
   },
   "Erian": {
-   "competitivo": "85da48bcb299:66620bff5eb9",
-   "pais": "655fc21b2fb4:dd0366c7fb5d",
-   "servidor": "8de533fce084:9d97339447c1:3ce074",
-   "temporada": "3b29d0be1929:c2dd98b0f962"
+   "competitivo": "7d1b82b7bc9e:66620bff5eb9",
+   "pais": "caa0750ab074:dd0366c7fb5d",
+   "servidor": "c6592130c947:9d97339447c1:3ce074",
+   "temporada": "06cb5ed784a1:c2dd98b0f962"
   },
   "EricRJ": {
    "servidor": "d390b3ad10d7:9d97339447c1:90ce53",
@@ -748,7 +748,7 @@
   },
   "Indígena": {
    "servidor": "0397719afde8:9d97339447c1:da39a3",
-   "temporada": "f07613fea83a:c2dd98b0f962"
+   "temporada": "cdd90dbf6734:c2dd98b0f962"
   },
   "Infecte": {
    "servidor": "2edaea0f70e1:9d97339447c1:a5e01f",
@@ -1290,7 +1290,7 @@
   },
   "NAW": {
    "servidor": "2693d9d61dd3:9d97339447c1:8d4f88",
-   "temporada": "1cc07ba43549:c2dd98b0f962"
+   "temporada": "bd3957ec9f57:c2dd98b0f962"
   },
   "NC": {
    "competitivo": "6a3402cbfc6f:66620bff5eb9",
@@ -1316,9 +1316,6 @@
   "Nairda": {
    "servidor": "dd3b7741c20b:9d97339447c1:a43412",
    "temporada": "792534c387f7:c2dd98b0f962"
-  },
-  "Nashei": {
-   "servidor": "ccc8205d1bc8:9d97339447c1:980594"
   },
   "Nemi": {
    "competitivo": "692e1051f9a6:66620bff5eb9",
@@ -1380,6 +1377,9 @@
    "pais": "b5e7b630e403:dd0366c7fb5d",
    "servidor": "1555666c9e4e:9d97339447c1:3bb1c2",
    "temporada": "2fa3e671c793:c2dd98b0f962"
+  },
+  "Nyl": {
+   "servidor": "cebd5d0fdfa0:9d97339447c1:980594"
   },
   "OEP": {
    "servidor": "0623a918f37c:9d97339447c1:ad2577",
@@ -1788,10 +1788,10 @@
    "servidor": "602a15707bfa:9d97339447c1:3e2e7c"
   },
   "Teo": {
-   "competitivo": "366bda64bbef:66620bff5eb9",
+   "competitivo": "2a9371749e26:66620bff5eb9",
    "pais": "bc6b8718ac48:dd0366c7fb5d",
    "servidor": "2135bb3ac455:9d97339447c1:055f77",
-   "temporada": "95c53b9fc75b:c2dd98b0f962"
+   "temporada": "1396bbfce048:c2dd98b0f962"
   },
   "Thiflow": {
    "servidor": "cd644a37ea2b:9d97339447c1:a301f0"
@@ -2081,7 +2081,7 @@
   },
   "rayito": {
    "servidor": "163bd72b95c5:9d97339447c1:cd7216",
-   "temporada": "69da9589ce41:c2dd98b0f962"
+   "temporada": "69deb9f100d4:c2dd98b0f962"
   },
   "sergare": {
    "servidor": "00611da75402:9d97339447c1:055f77"
@@ -2126,5 +2126,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-08T05:58:26+00:00"
+ "cuando": "2026-10-08T15:28:42+00:00"
 }
