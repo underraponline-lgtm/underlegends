@@ -475,6 +475,27 @@ button.btn{background:transparent;cursor:pointer}
 .dv-p{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
 @media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}.dv-cara{width:28px;height:28px}}
 /* 🏟️ la previa de las divisiones en el Inicio (`DivisionPrevia`): tu grupo, la zona de subida y vos */
+/* 🪜 la escalera de las divisiones (08/10/2026): de Sexta, abajo a la izquierda, a Primera, arriba a la derecha */
+.dv-esc{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:end;gap:6px;max-width:720px}
+.dv-esc-p{display:grid;align-content:end;justify-items:start;gap:4px;height:var(--alto);min-height:64px;min-width:0;padding:8px;
+  border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);text-align:left;cursor:pointer}
+.dv-esc-p b{font:900 20px/1 Archivo,sans-serif}
+.dv-esc-p span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 12px/1 Archivo,sans-serif;
+  letter-spacing:.03em;text-transform:uppercase}
+.dv-esc-p small{max-width:100%;font:700 12px/1.1 "Space Mono",monospace;color:var(--gris)}
+.dv-esc-p.vacia{border-style:dashed;color:var(--gris)}
+.dv-esc-p.mia{box-shadow:inset 0 -5px 0 #29B298}
+.dv-esc-p small em{font-style:normal}
+.dv-esc-p.mia small{color:inherit;font-weight:700}
+.dv-esc-p.on{background:var(--inv);color:var(--inv-tinta)}
+.dv-esc-p.on small{color:inherit;opacity:.8}
+.dv-vacia,.dv-tuyo{margin:0;font:700 14px/1.45 Archivo,sans-serif;max-width:70ch}
+/* las líneas de corte: hasta dónde se sube y desde dónde se baja */
+.dv-tabla li.dv-corte{display:block;padding:5px 10px;border-left:4px solid transparent;font:700 12px/1.35 "Space Mono",monospace;
+  letter-spacing:.03em}
+.dv-tabla li.dv-corte.sube{color:#17735f;background:rgba(41,178,152,.12)}
+.dv-tabla li.dv-corte.baja{color:#b3262b;background:rgba(229,72,77,.10)}
+@media (max-width: 520px){.dv-esc{gap:4px}.dv-esc-p{padding:6px 5px}.dv-esc-p span,.dv-esc-p small em{display:none}.dv-esc-p b{font-size:18px}}
 .dvp{display:grid;gap:10px}
 .dvp-cab,.dvp-yo{margin:0;font:600 14px/1.45 Archivo,sans-serif;max-width:70ch}
 .dvp-cab b{font-weight:900;text-transform:uppercase}

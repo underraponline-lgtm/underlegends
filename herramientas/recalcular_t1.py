@@ -126,7 +126,7 @@ def _hijo(salida):
             sin_numero.append([nombre, sv, fecha, 'el motor no pudo: %s' % e])
             continue
         clave = str(n) if n else 'nuevo:%s|%s|%s' % (nombre, sv, fecha)
-        nuevos[clave] = {'nombre': nombre, 'sv': sv, 'fecha': fecha, 'n': n,
+        nuevos[clave] = {'nombre': nombre, 'sv': sv, 'fecha': fecha, 'n': n, 'filas': bs,
                          'pts': {r['rapero']: int(r['puntos']) for r in ev['resultados']},
                          'pos': {r['rapero']: r['posicion'] for r in ev['resultados']},
                          'avisos': ev['avisos'], 'sin_resolver': ev['sin_resolver']}
@@ -243,6 +243,7 @@ def _informe(d, detalle=None):
                    if e['pts'].get(q, 0) != h['pts'].get(q, 0)}
             ev_cambian.append((k, e, mas))
     entran = [(k, e) for k, e in nuevos.items() if k.startswith('nuevo:')]
+    d['_cambian'] = [k for k, _e, _m in ev_cambian]
     print('   %d persona(s) cambian · %d evento(s) cambian · %d entran · %d duplicado(s) · %d no se pudieron volver '
           'a leer\n' % (len(cambios), len(ev_cambian), len(entran), len(dups), len(no_leidos)))
     if dups:
@@ -290,6 +291,54 @@ def _informe(d, detalle=None):
     print('')
 
 
+def aplicar(d):
+    """Lo medido, a las hojas. Dlx, 08/10/2026, al informe: *«1. A»* —todo, también el #359—.
+
+    · LOS QUE CAMBIAN: sus filas a `Entrada`, con el nombre, el servidor y la fecha con que ya están cargados —así
+      conservan su número y `procesar_entrada.py` los REEMPLAZA en vez de sumar otro—, y se procesan como en el ciclo
+      (`--aplicar --limpiar`).
+    · LOS CARGADOS DOS VECES: a `sacar` de `datos/decisiones.json`, como cuando Dlx contesta «es el mismo evento»
+      en ✅ Decidir (`decidir.numeros_a_sacar()`): el ciclo los saca en la corrida siguiente.
+    · LO QUE ENTRARÍA (un evento que no está): no se toca acá. Si es de verdad, el ciclo lo carga.
+
+    ⚠️ NO A LAS :22 NI A LAS :52: el ciclo escribe las mismas hojas y `datos/`."""
+    sys.path[:0] = [os.path.join(BASE, 'bot'), os.path.join(BASE, 'sheet'), BASE]
+    from procesar_entrada import COL_A, CAMPOS
+    from escribir import Hoja
+    import decidir as DEC
+    filas = []
+    for n in d.get('_cambian') or []:
+        nom, sv, fe = (d['nombres'].get(n) or [None, None, None])[:3]
+        e = d['nuevos'].get(n) or {}
+        if not nom or not e.get('filas'):
+            print('   ⚠️ #%s: no sé con qué nombre está cargado, no lo toco' % n)
+            continue
+        filas += [dict(f, evento=nom, servidor=sv, fecha=fe) for f in e['filas']]
+    if filas:
+        h = Hoja('Entrada')
+        desplazo = ord(COL_A.upper()) - ord('A')
+        h.agregar([[''] * desplazo + [f.get(c, '') for c in CAMPOS] for f in filas], dry=False)
+        print('   ✅ %d fila(s) de %d evento(s) en `Entrada`' % (len(filas), len(d.get('_cambian') or [])))
+    dups = d.get('duplicados') or {}
+    if dups:
+        dd = DEC._decisiones()
+        for n, m in dups.items():
+            nom, sv, fe = (d['nombres'].get(n) or ['', '', ''])[:3]
+            dd.setdefault('sacar', {})[str(n)] = {'es': int(m), 'nombre': nom, 'sv': sv, 'fecha': fe,
+                                                  'cuando': DEC._ahora_et(), 'por': 'Dlx (chat)',
+                                                  'nota': 'el recálculo de la T1 (08/10/2026, «1. A»): es el #%s '
+                                                          'otra vez, con la misma gente y los mismos puntos' % m}
+        with io.open(DEC.DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(dd, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+        print('   ✅ %d duplicado(s) a `sacar` (datos/decisiones.json): salen en la corrida siguiente' % len(dups))
+    if filas:
+        r = subprocess.run([sys.executable, os.path.join(BASE, 'sheet', 'procesar_entrada.py'), '--aplicar', '--limpiar'],
+                           cwd=BASE, env=dict(os.environ, PYTHONIOENCODING='utf-8'))
+        if r.returncode != 0:
+            raise SystemExit('   🔴 procesar_entrada.py no terminó bien: mirá `Entrada`')
+
+
 def main():
     try:
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -301,7 +350,10 @@ def main():
     # el informe otra vez, de un detalle ya guardado: sin volver a leer Discord (tarda y son ~1.500 pedidos)
     if '--informe' in sys.argv:
         with io.open(sys.argv[sys.argv.index('--informe') + 1], encoding='utf-8') as f:
-            _informe(json.load(f))
+            d = json.load(f)
+        _informe(d)
+        if '--aplicar' in sys.argv:
+            aplicar(d)
         return 0
     tmp = tempfile.mkdtemp(prefix='recalcular_t1_')
     copia = os.path.join(tmp, 'copia')
@@ -330,7 +382,10 @@ def main():
             print(r.stderr[-3000:])
             raise SystemExit('   🔴 el recálculo no terminó')
         with io.open(salida, encoding='utf-8') as f:
-            _informe(json.load(f), detalle)
+            d = json.load(f)
+        _informe(d, detalle)
+        if '--aplicar' in sys.argv:
+            aplicar(d)
     finally:
         subprocess.run(['git', 'worktree', 'remove', '--force', copia], cwd=BASE, capture_output=True)
         shutil.rmtree(tmp, ignore_errors=True)
