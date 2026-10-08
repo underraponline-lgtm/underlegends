@@ -255,7 +255,7 @@ function Misiones({ liga }) {
           );
         })}
       </ol>
-      <div className="mis-pie"><small>Las tres juntas: <b>+{num(M.bono)}</b> más.</small><a className="btn borde2 chico" href="#/ranking/misiones">Ver las misiones</a></div>
+      <div className="mis-pie"><small>Fácil, media y difícil juntas: <b>+{num(M.bono)}</b> más.</small><a className="btn borde2 chico" href="#/ranking/misiones">Ver las misiones</a></div>
     </section>
   );
 }

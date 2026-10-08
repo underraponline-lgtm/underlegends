@@ -5,7 +5,7 @@
 import { MESES, limpio, num, quienMira } from './liga.js';
 import { Cara } from './piezas.jsx';
 
-const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil' };
+const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil', caza: 'Cacería' };
 
 function fechaCorta(iso) {
   const d = new Date(String(iso || '') + 'T12:00:00');
@@ -27,7 +27,8 @@ export function Misiones({ liga }) {
   return (
     <div className="mi">
       <p className="dv-cab">Semana del {fechaCorta(M.sem)} · se renuevan {liga.dia(M.fin)}.
-        {' '}Las mismas tres para todos, y se cumplen jugando: cada una suma a tu <b>Temporada</b>, y las tres juntas, <b>+{num(M.bono)}</b> más.</p>
+        {' '}Las mismas para todos, y se cumplen jugando: cada una suma a tu <b>Temporada</b>, y la fácil, la media y la difícil juntas, <b>+{num(M.bono)}</b> más.
+        {lista.some((x) => x.n === 'caza') ? ' La cacería va aparte: ganale un duelo a la presa de la semana, una de las más activas.' : ''}</p>
       <ol className="mi-lista">
         {lista.map((x, i) => {
           // 🔑 quien juega la temporada y todavía no hizo nada esta semana lleva 0, no «nada» (revisión del 05/10/2026)
