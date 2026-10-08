@@ -423,12 +423,20 @@ const NIVELES_AVISO = {
   normal: ['Normal', 'además el podio con sus puntos y la tarjeta del campeón'],
   todo: ['Todo', 'además quién subió en el ranking, quién debutó, las insignias, los rangos y la sorpresa'],
 };
-function AjAvisos({ aj, hacer, ocup }) {
+// 🎛️ Y DÓNDE VA (07/10/2026): ya no a LIGA GLOBAL —que está en «registros»— sino al chat de cada servidor; servidor por
+// servidor se elige si va donde habla el bot en vivo, a su chat general siempre o a ningún lado, y a dónde va el que no
+// tiene a dónde (ver `canalesChat()` en bot/avisos.js)
+function AjAvisos({ liga, aj, hacer, ocup, chat }) {
   const v = NIVELES_AVISO[aj.avisos_nivel] ? aj.avisos_nivel : 'normal';
+  const ae = aj.aviso_evento || {};
+  const porSv = ae.sv || {};
+  const svs = svsDe(chat, aj);
+  const gens = [...new Set(((chat || {}).generales || []).map((x) => x.sv))].sort();
+  const poner = (cambio, ok) => hacer('aviso_evento', Object.assign({ sv: porSv, resto: ae.resto || '' }, cambio), ok);
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>El aviso de cada evento</h3><span className="db-est ok">{NIVELES_AVISO[v][0]}</span></div>
-      <p className="db-tx">Cuando el ciclo carga un evento, el bot lo cuenta en el canal de la Liga Global. Después, sin volver a sonar, le suma lo que cambió y la tarjeta nueva del campeón. Cuánto dice: <b>{NIVELES_AVISO[v][0].toLowerCase()}</b>, {NIVELES_AVISO[v][1]}.</p>
+      <p className="db-tx">Cuando el ciclo carga un evento, el bot lo cuenta en el chat del servidor donde se jugó: el mismo donde habla el bot en vivo. Después, sin volver a sonar, le suma lo que cambió y la tarjeta nueva del campeón. Cuánto dice: <b>{NIVELES_AVISO[v][0].toLowerCase()}</b>, {NIVELES_AVISO[v][1]}.</p>
       <div className="db-mult">
         <label className="db-sv">
           <span><b>Cuánto dice</b></span>
@@ -438,9 +446,169 @@ function AjAvisos({ aj, hacer, ocup }) {
           </select>
         </label>
       </div>
+      {svs.length ? (
+        <div className="db-mult db-mult-vivo">{svs.map((sv) => (
+          <label key={sv} className="db-sv">
+            <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
+            <select value={porSv[sv] || ''} disabled={ocup} aria-label={'Dónde va el aviso de los eventos de ' + siglaDe(sv)}
+              onChange={(e) => {
+                const n = Object.assign({}, porSv);
+                if (e.target.value) n[sv] = e.target.value; else delete n[sv];
+                poner({ sv: n }, 'Guardado: vale desde el próximo evento.');
+              }}>
+              <option value="">Donde habla el bot en vivo</option>
+              <option value="chat">En su chat general, siempre</option>
+              <option value="no">Apagado</option>
+            </select>
+          </label>
+        ))}</div>
+      ) : null}
+      {gens.length ? (
+        <label className="db-campo"><span>Si un servidor no tiene a dónde</span>
+          <select value={ae.resto || ''} disabled={ocup}
+            onChange={(e) => poner({ resto: e.target.value }, 'Guardado: vale desde el próximo evento.')}>
+            <option value="">No se manda</option>
+            {gens.map((sv) => <option key={sv} value={sv}>Al chat general de {siglaDe(sv)}</option>)}
+          </select></label>
+      ) : null}
     </div>
   );
 }
+
+// ── 🎛️ LOS DE MÁS (Dlx, 07/10/2026: «dame más configuraciones», y a la lista: «Apuestas», «Aviso de cada evento»,
+// «Horario de silencio»). Los validan `ajusteValido()` y los usan `apuestasCfg()`, `ritmoCfg()`, `enSilencio()` y
+// `canalesChat()` de bot/avisos.js; lo de siempre llega en `chat.def`, así que los números no se escriben acá ──────────
+function svsDe(chat, aj) {
+  const c = chat || {};
+  return [...new Set([...(c.generales || []).map((x) => x.sv), ...Object.keys(c.admin || {}), ...Object.keys(aj.en_vivo || {})])].sort();
+}
+const DEF_AP = { montos: [50, 100, 250, 500], minutos: 3, tope: 500 };
+const DEF_RIT = { normal: 10, batalla: 2 };
+
+// 🎲 las apuestas del nivel «A full»: los botones, cuánto quedan abiertas, el tope por batalla y dónde no van
+function AjApuestas({ liga, aj, hacer, ocup, chat }) {
+  const def = ((chat || {}).def || {}).apuestas || DEF_AP;
+  const a = aj.apuestas || null;
+  const firma = JSON.stringify(a);
+  const [montos, setMontos] = useState((a || def).montos.join(', '));
+  const [minutos, setMinutos] = useState((a || def).minutos);
+  const [tope, setTope] = useState((a || def).tope);
+  const [fuera, setFuera] = useState((a && a.apagadas) || {});
+  useEffect(() => {
+    const r = a || def;
+    setMontos(r.montos.join(', ')); setMinutos(r.minutos); setTope(r.tope); setFuera((a && a.apagadas) || {});
+  }, [firma]); // eslint-disable-line react-hooks/exhaustive-deps
+  const ms = montos.split(/[\s,;.]+/).filter(Boolean).map(Number);
+  const t = Number(tope);
+  const mal = ms.length < 2 || ms.length > 4 ? 'De 2 a 4 botones.'
+    : ms.some((m, i) => !Number.isInteger(m) || m < 10 || m > 5000 || (i && m <= ms[i - 1])) ? 'Los botones van de menor a mayor, de 10 a 5.000.'
+      : !Number.isInteger(t) || t < ms[ms.length - 1] || t > 20000 ? 'El tope va desde el botón más alto hasta 20.000.' : '';
+  const svs = svsDe(chat, aj);
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>Las apuestas</h3><span className={'db-est' + (a ? ' ojo' : ' ok')}>{a ? '✍ A tu gusto' : 'Como siempre'}</span></div>
+      <p className="db-tx">Salen con el bot en vivo en <b>A full</b>: botones en el mensaje de cada cruce, con Puntos de Tienda, y el pozo se reparte entre los que aciertan. Acá elegís los botones, cuántos minutos quedan abiertas, cuánto puede poner cada uno por batalla y en qué servidores no van.</p>
+      <form className="db-form uno" onSubmit={(e) => {
+        e.preventDefault();
+        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), tope: t, apagadas: fuera }, 'Guardado: vale para la próxima apuesta.');
+      }}>
+        <label className="db-campo"><span>Los botones <small>de menor a mayor, separados por coma</small></span>
+          <input value={montos} inputMode="numeric" placeholder="50, 100, 250, 500" onChange={(e) => setMontos(e.target.value)} /></label>
+        <div className="db-fila">
+          <label className="db-campo db-corto"><span>Abiertas</span>
+            <select value={minutos} onChange={(e) => setMinutos(Number(e.target.value))}>
+              {Array.from({ length: 15 }, (_, i) => i + 1).map((x) => <option key={x} value={x}>{x} {x === 1 ? 'minuto' : 'minutos'}</option>)}
+            </select></label>
+          <label className="db-campo db-corto"><span>Tope por batalla</span>
+            <input type="number" min={10} max={20000} step={10} value={tope} onChange={(e) => setTope(e.target.value)} /></label>
+        </div>
+        {svs.length ? (
+          <fieldset className="db-chk"><legend>No hay apuestas en</legend>
+            {svs.map((sv) => (
+              <label key={sv}><input type="checkbox" checked={!!fuera[sv]} onChange={(e) => {
+                const n = Object.assign({}, fuera);
+                if (e.target.checked) n[sv] = true; else delete n[sv];
+                setFuera(n);
+              }} /><img alt="" src={liga.logo(sv)} />{siglaDe(sv)}</label>
+            ))}
+          </fieldset>
+        ) : null}
+        {mal ? <p className="db-tx db-mal">{mal}</p> : null}
+        <div className="cu-btns">
+          <button type="submit" className="btn verde chico" disabled={ocup || !!mal}>Guardar</button>
+          {a ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver a lo de siempre"
+            onClick={() => hacer('apuestas', null, 'Volvieron los de siempre.')}>Volver a lo de siempre</DosToques> : null}
+        </div>
+      </form>
+      <p className="db-tx">Lo de siempre: botones de {def.montos.map(num).join(', ')}, {def.minutos} minutos y hasta {num(def.tope)} por batalla.</p>
+    </div>
+  );
+}
+
+// 🌙 el horario de silencio del bot en vivo, en hora del este
+function AjSilencio({ aj, hacer, ocup }) {
+  const s = aj.silencio || null;
+  const [desde, setDesde] = useState((s && s.desde) || '00:00');
+  const [hasta, setHasta] = useState((s && s.hasta) || '09:00');
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>Horario de silencio</h3><span className={'db-est' + (s ? ' ojo' : '')}>{s ? '🌙 De ' + s.desde + ' a ' + s.hasta : 'Sin silencio'}</span></div>
+      <p className="db-tx">En ese horario, en hora del este, el bot en vivo no habla en ningún chat ni cuenta quién se anotó. Las apuestas que estaban abiertas se siguen cerrando y pagando. Al terminar, sigue desde donde va la llave: lo que pasó en el medio no lo cuenta tarde. Puede cruzar la medianoche (de 23:00 a 08:00).</p>
+      <form className="db-form uno" onSubmit={(e) => {
+        e.preventDefault();
+        if (desde !== hasta) hacer('silencio', { desde, hasta }, 'Guardado: vale desde el próximo minuto.');
+      }}>
+        <div className="db-fila">
+          <label className="db-campo db-corto"><span>Desde</span><input type="time" value={desde} onChange={(e) => setDesde(e.target.value)} /></label>
+          <label className="db-campo db-corto"><span>Hasta</span><input type="time" value={hasta} onChange={(e) => setHasta(e.target.value)} /></label>
+        </div>
+        <div className="cu-btns">
+          <button type="submit" className="btn verde chico" disabled={ocup || !desde || !hasta || desde === hasta}>Guardar</button>
+          {s ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para sacarlo"
+            onClick={() => hacer('silencio', null, 'Sin silencio: vuelve a hablar a toda hora.')}>Sacarlo</DosToques> : null}
+        </div>
+      </form>
+    </div>
+  );
+}
+
+// ⏱️ el ritmo del bot en vivo: cada cuánto puede mandar un mensaje nuevo en un mismo chat
+const RIT_NORMAL = [3, 5, 10, 15, 20, 30];
+const RIT_BATALLA = [1, 2, 3, 5, 10];
+function AjRitmo({ aj, hacer, ocup, chat }) {
+  const def = ((chat || {}).def || {}).ritmo || DEF_RIT;
+  const r = aj.ritmo || null;
+  const [n, setN] = useState((r || def).normal);
+  const [b, setB] = useState((r || def).batalla);
+  const firma = JSON.stringify(r);
+  useEffect(() => { setN((r || def).normal); setB((r || def).batalla); }, [firma]); // eslint-disable-line react-hooks/exhaustive-deps
+  const ops = (xs, v) => (xs.indexOf(v) < 0 ? [...xs, v].sort((x, y) => x - y) : xs);
+  const cambio = n !== (r || def).normal || b !== (r || def).batalla;
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>El ritmo del bot en vivo</h3><span className={'db-est' + (r ? ' ojo' : ' ok')}>{r ? '✍ A tu gusto' : 'Como siempre'}</span></div>
+      <p className="db-tx">Cada cuánto puede mandar un mensaje nuevo en un mismo chat. Editar el de las rondas no cuenta: no suena.</p>
+      <div className="db-fila">
+        <label className="db-campo db-corto"><span>En «Lo justo» y «Normal»</span>
+          <select value={n} disabled={ocup} onChange={(e) => setN(Number(e.target.value))}>
+            {ops(RIT_NORMAL, n).map((x) => <option key={x} value={x}>Uno cada {x} min</option>)}
+          </select></label>
+        <label className="db-campo db-corto"><span>En «Cada batalla» y más</span>
+          <select value={b} disabled={ocup} onChange={(e) => setB(Number(e.target.value))}>
+            {ops(RIT_BATALLA, b).map((x) => <option key={x} value={x}>Uno cada {x} min</option>)}
+          </select></label>
+      </div>
+      <div className="cu-btns">
+        <button type="button" className="btn verde chico" disabled={ocup || !cambio}
+          onClick={() => hacer('ritmo', { normal: n, batalla: b }, 'Guardado: vale desde el próximo minuto.')}>Guardar</button>
+        {r ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver a lo de siempre"
+          onClick={() => hacer('ritmo', null, 'Volvió el de siempre.')}>Volver a lo de siempre</DosToques> : null}
+      </div>
+      <p className="db-tx">Lo de siempre: uno cada {def.normal} minutos, y en «Cada batalla», uno cada {def.batalla}.</p>
+    </div>
+  );
+}
+
 
 function Ajustes({ liga, aj, onAj, chat }) {
   const [msg, setMsg] = useState('');
@@ -460,7 +628,10 @@ function Ajustes({ liga, aj, onAj, chat }) {
         <AjMult liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
-        <AjAvisos aj={aj} hacer={hacer} ocup={ocup} />
+        <AjRitmo aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
+        <AjSilencio aj={aj} hacer={hacer} ocup={ocup} />
+        <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
+        <AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
       </div>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
     </>

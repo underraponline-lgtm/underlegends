@@ -9,7 +9,7 @@
 // lo que le falta, `ins` sus insignias, `mw` su cacería; `e` los eventos y `dmp` el promedio de la Liga). Las acciones
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { diaISO, limpio, num, siglaDe } from './liga.js';
+import { diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
@@ -215,25 +215,70 @@ function Numeros({ f, p }) {
 }
 
 // 🔎 SUS DATOS (Dlx, 07/10/2026: *«qué días usualmente participa, su win rate en réplicas… HACE MEJOR EQUIPO con X
-// persona… su verdugo es… y su hijo es…»*). Los días salen de sus eventos —en la hora de quien mira—, el verdugo y el
-// hijo de sus duelos (desde dos), y el compañero y las réplicas los arma el ciclo (`eq`, `rp` de `/api/perfiles`).
-// Sin dato no hay renglón; sin ninguno, no hay sección
+// persona… su verdugo es… y su hijo es…»*, y después: *«en sus datos, sé más detallista»*). Todo sale de lo que el perfil
+// ya trae —sus eventos (`ev`, con `e`: nombre, servidor, instante), sus duelos (`du`), el compañero y las réplicas que
+// arma el ciclo (`eq`, `rp`)—, y las horas en la zona de quien mira. Sin dato no hay renglón; sin ninguno, no hay sección
+const PUESTOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'R32', 'Dieciseisavos'];
+const FRANJA = [[6, 'de madrugada'], [12, 'a la mañana'], [19, 'a la tarde'], [24, 'a la noche']];
+const DIA_MS = 864e5;
+function franjaDe(iso) {
+  const h = minutosDelDia(iso) / 60;
+  return (FRANJA.find(([hasta]) => h < hasta) || FRANJA[3])[1];
+}
+function haceDias(iso) {
+  const n = Math.round((new Date(diaISO(new Date()) + 'T12:00:00Z') - new Date(diaISO(new Date(iso)) + 'T12:00:00Z')) / DIA_MS);
+  return n <= 0 ? 'hoy' : n === 1 ? 'ayer' : 'hace ' + n + ' días';
+}
 function Datos({ liga, p, e }) {
   const filas = [];
   const ev = (p && p.ev) || [];
+  const de = (n) => (e || {})[n] || [];
+  const conFecha = ev.filter(([n]) => de(n)[2] && !isNaN(new Date(de(n)[2])));
+  // 📅 los días, y a qué hora (la franja que junta más de la mitad)
   if (ev.length >= 3) {
     const c = [0, 0, 0, 0, 0, 0, 0];
-    ev.forEach(([n]) => {
-      const x = (e || {})[n] || [];
-      const d = x[2] ? new Date(x[2]) : null;
-      if (d && !isNaN(d)) c[new Date(diaISO(d) + 'T12:00:00Z').getUTCDay()] += 1;
-    });
+    conFecha.forEach(([n]) => { c[new Date(diaISO(new Date(de(n)[2])) + 'T12:00:00Z').getUTCDay()] += 1; });
     const tope = Math.max(2, Math.ceil(ev.length * 0.25));
     const dias = c.map((v, i) => [v, i]).filter(([v]) => v >= tope).sort((a, b) => b[0] - a[0]).slice(0, 2);
+    const fr = {};
+    conFecha.forEach(([n]) => { const f = franjaDe(de(n)[2]); fr[f] = (fr[f] || 0) + 1; });
+    const [franja, nf] = Object.entries(fr).sort((a, b) => b[1] - a[1])[0] || [];
+    const aHora = franja && nf * 2 > conFecha.length ? franja : '';
     if (dias.length) {
-      filas.push(['📅', 'Suele jugar', 'los ' + dias.map(([, i]) => DIAS[i]).join(' y los '),
-        dias.map(([v, i]) => v + ' ' + (v === 1 ? 'evento' : 'eventos') + ' un ' + DIA1[i]).join(' · ')]);
+      filas.push(['📅', 'Suele jugar', 'los ' + dias.map(([, i]) => DIAS[i]).join(' y los ') + (aHora ? ', ' + aHora : ''),
+        dias.map(([v, i]) => v + ' ' + (v === 1 ? 'evento' : 'eventos') + ' un ' + DIA1[i]).join(' · ')
+        + (aHora ? ' · ' + nf + ' de ' + conFecha.length + ' ' + aHora + ' (tu hora)' : '')]);
+    } else if (aHora && conFecha.length >= 3) {
+      filas.push(['🕘', 'Suele jugar', aHora, nf + ' de ' + conFecha.length + ' eventos, en tu hora']);
     }
+  }
+  // 🏟️ dónde juega más
+  if (ev.length >= 2) {
+    const sv = {};
+    ev.forEach(([n]) => { const s = de(n)[1]; if (s) sv[s] = (sv[s] || 0) + 1; });
+    const [s, k] = Object.entries(sv).sort((a, b) => b[1] - a[1])[0] || [];
+    const otros = Object.keys(sv).length - 1;
+    if (s) {
+      filas.push(['🏟️', 'Juega más en', liga.svs[s] ? (liga.svs[s].nombre || siglaDe(s)) : siglaDe(s),
+        k + ' de ' + ev.length + ' eventos' + (otros > 0 ? ' · también en ' + otros + (otros === 1 ? ' servidor más' : ' servidores más') : '')]);
+    }
+  }
+  // 🏆 su mejor resultado, con el evento y la fecha (y cuántas veces más)
+  const conPuesto = ev.filter(([, pu]) => PUESTOS.indexOf(pu) >= 0);
+  if (conPuesto.length) {
+    const mejor = Math.min(...conPuesto.map(([, pu]) => PUESTOS.indexOf(pu)));
+    const esos = conPuesto.filter(([, pu]) => PUESTOS.indexOf(pu) === mejor);
+    const [n] = esos[0];
+    const x = de(n);
+    filas.push([MEDALLA[PUESTOS[mejor]] || '🎖️', 'Su mejor resultado', PUESTOS[mejor],
+      limpio(x[0] || 'Evento ' + n) + (x[2] ? ' · ' + fecha(x[2]).toLowerCase() : '')
+      + (esos.length > 1 ? ' · y ' + (esos.length - 1) + (esos.length === 2 ? ' vez más' : ' veces más') : '')]);
+  }
+  // 📈 cuánto hace por evento
+  if (ev.length >= 2) {
+    const tot = ev.reduce((s, x) => s + (Number(x[2]) || 0), 0);
+    const top = Math.max(...ev.map((x) => Number(x[2]) || 0));
+    filas.push(['📈', 'Por evento', num(Math.round(tot / ev.length)) + ' puntos', 'el que más le dio: ' + num(top)]);
   }
   const du = (p && p.du) || [];
   if (du.length) {
@@ -241,20 +286,40 @@ function Datos({ liga, p, e }) {
     du.forEach((d) => {
       const r = liga.fila(d[1]);
       const id = r ? r.k : 'n:' + limpio(d[1]).toLowerCase();
-      if (!por.has(id)) por.set(id, { k: r ? r.k : '', n: r ? r.n : d[1], g: 0, p: 0 });
-      por.get(id)[d[2] ? 'g' : 'p'] += 1;
+      if (!por.has(id)) por.set(id, { k: r ? r.k : '', n: r ? r.n : d[1], g: 0, p: 0, evs: new Set() });
+      const x = por.get(id);
+      x[d[2] ? 'g' : 'p'] += 1;
+      x.evs.add(d[0]);
     });
     const rs = [...por.values()];
-    const verdugo = rs.filter((r) => r.p >= 2 && r.p > r.g).sort((a, b) => b.p - a.p || a.g - b.g)[0];
-    const hijo = rs.filter((r) => r.g >= 2 && r.g > r.p).sort((a, b) => b.g - a.g || a.p - b.p)[0];
-    if (verdugo) filas.push(['🪓', 'Su verdugo', verdugo, 'le ganó ' + verdugo.p + ' de ' + (verdugo.g + verdugo.p)]);
-    if (hijo) filas.push(['👶', 'Su hijo', hijo, 'le ganó ' + hijo.g + ' de ' + (hijo.g + hijo.p)]);
+    // 🔥 SU CLÁSICO, con la regla de la Liga (la Guía: «cuando dos se cruzan en su tercer evento o más, es un
+    // Clásico»): tres eventos distintos, no tres batallas. Dlx, 07/10/2026: «y su clásico de cada uno, añadir eso»
+    const clasicos = rs.filter((r) => r.evs.size >= 3).sort((a, b) => b.evs.size - a.evs.size || (b.g + b.p) - (a.g + a.p));
+    if (clasicos.length) {
+      const c = clasicos[0];
+      filas.push(['🔥', 'Su clásico', c, c.evs.size + ' eventos cruzados · ' + c.g + '–' + c.p + ' en duelos'
+        + (clasicos.length > 1 ? ' · y ' + (clasicos.length - 1) + (clasicos.length === 2 ? ' clásico más' : ' clásicos más') : '')]);
+    }
+    // 🔑 MÁS FORMAL (Dlx, 07/10/2026: «¿puedes hacer que sea más formal lo de verdugo e hijo?»): decía «su verdugo» y
+    // «su hijo»; la cuenta es la misma —desde dos, y más ganadas que perdidas (o al revés)—
+    const dificil = rs.filter((r) => r.p >= 2 && r.p > r.g).sort((a, b) => b.p - a.p || a.g - b.g)[0];
+    const vencio = rs.filter((r) => r.g >= 2 && r.g > r.p).sort((a, b) => b.g - a.g || a.p - b.p)[0];
+    if (dificil) filas.push(['🛡️', 'Su rival más difícil', dificil, 'le ganó ' + dificil.p + ' de ' + (dificil.g + dificil.p) + ' duelos']);
+    if (vencio) filas.push(['🎯', 'El rival que más venció', vencio, 'le ganó ' + vencio.g + ' de ' + (vencio.g + vencio.p) + ' duelos']);
   }
   if (p && p.eq) {
     const r = liga.T[p.eq[0]];
     filas.push(['🤝', 'Hace mejor equipo con', { k: r ? r.k : '', n: r ? r.n : p.eq[1] }, 'ganaron ' + p.eq[2] + ' de ' + p.eq[3] + ' juntos']);
   }
   if (p && p.rp && p.rp[1]) filas.push(['🔁', 'En réplicas', 'ganó ' + p.rp[0] + ' de ' + p.rp[1], 'las votadas en un canal que lee el bot']);
+  // 🌱 cuándo debutó, y 🕒 su último evento
+  if (conFecha.length) {
+    const orden = conFecha.slice().sort((a, b) => new Date(de(a[0])[2]) - new Date(de(b[0])[2]));
+    const [n0] = orden[0];
+    const [n1] = orden[orden.length - 1];
+    filas.push(['🌱', 'Debutó', fecha(de(n0)[2]).toLowerCase(), limpio(de(n0)[0] || 'Evento ' + n0)]);
+    if (orden.length > 1) filas.push(['🕒', 'Su último evento', haceDias(de(n1)[2]), limpio(de(n1)[0] || 'Evento ' + n1)]);
+  }
   if (!filas.length) return null;
   return (
     <section className="sec pf-sec">
@@ -440,14 +505,43 @@ function LoQueFalta({ f, p, esYo }) {
 }
 
 // ── Eventos: todos los que jugó en la temporada, con su puesto, sus puntos y la llave ──
+// 🔎 AL FINAL, CON BUSCADOR Y FILTRO POR RESULTADO (Dlx, 07/10/2026: «poner eventos en lo último y con la opción de
+// buscar evento y filtrar, ya sea que fue campeón, subcampeón, etc.»). Los filtros son los puestos que tiene, con cuántos
+const PUESTO_ORDEN = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'R32', 'Dieciseisavos'];
+const ordenPuesto = (x) => (PUESTO_ORDEN.indexOf(x) < 0 ? 99 : PUESTO_ORDEN.indexOf(x));
 function Eventos({ liga, p, e }) {
   const ev = (p && p.ev) || [];
+  const [q, setQ] = useState('');
+  const [pu, setPu] = useState('');
   if (!ev.length) return <section className="sec pf-sec"><p className="rk-vacio">Todavía no jugó ningún evento en la {liga.temp}.</p></section>;
+  const cuenta = {};
+  ev.forEach(([, x]) => { cuenta[x] = (cuenta[x] || 0) + 1; });
+  const puestos = Object.keys(cuenta).sort((a, b) => ordenPuesto(a) - ordenPuesto(b));
+  const nq = norm(q);
+  const vis = ev.filter(([n, x]) => (!pu || x === pu) && (!nq || norm(((e || {})[n] || [])[0] || '').includes(nq)));
   return (
     <section className="sec pf-sec">
-      <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{ev.length} en la {liga.temp}</span></div>
+      <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{vis.length === ev.length ? ev.length + ' en la ' + liga.temp : vis.length + ' de ' + ev.length}</span></div>
+      {ev.length > 3 ? (
+        <div className="rk-fil pf-ev-fil">
+          <label className="rk-buscar"><Ico n="buscar" t={18} />
+            <input type="search" value={q} onChange={(ev2) => setQ(ev2.target.value)} placeholder="Buscar evento" aria-label="Buscar evento" enterKeyHint="search" />
+          </label>
+          {puestos.length > 1 ? (
+            <div className="rk-chips" role="group" aria-label="Filtrar por resultado">
+              <button type="button" className={!pu ? 'on' : ''} aria-pressed={!pu} onClick={() => setPu('')}>Todos · {ev.length}</button>
+              {puestos.map((x) => (
+                <button type="button" key={x} className={pu === x ? 'on' : ''} aria-pressed={pu === x} onClick={() => setPu(pu === x ? '' : x)}>
+                  {MEDALLA[x] ? MEDALLA[x] + ' ' : ''}{x} · {cuenta[x]}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+      {!vis.length ? <p className="rk-vacio">Ningún evento con ese filtro.</p> : null}
       <ol className="pf-ev">
-        {ev.map(([n, puesto, pts]) => {
+        {vis.map(([n, puesto, pts]) => {
           const x = (e || {})[n] || [];
           return (
             <li key={n} style={{ '--c': (liga.svs[x[1]] || {}).color || '#29B298' }}>
@@ -629,10 +723,11 @@ export function Perfil({ liga, dc, k: k0, tab }) {
             <EnCadaRanking liga={liga} f={f} p={p} />
             <LoQueFalta f={f} p={p} esYo={esYo} />
           </div>
-          <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} /></div>
           <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
           <div id="pf-insignias"><Insignias liga={liga} p={p} /></div>
           <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
+          {/* sus eventos, al final y con buscador (Dlx, 07/10/2026: «poner eventos en lo último») */}
+          <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} /></div>
         </>
       )}
     </>

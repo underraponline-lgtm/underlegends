@@ -139,7 +139,9 @@ export function Pie({ liga }) {
       <div className="pie-marca"><img alt="" src="/ul.png" /><span>UNDER LEGENDS<small>LIGA GLOBAL · {liga.tempLarga}</small></span></div>
       <nav><a href="#/guia">Guía</a><a href="#/publicaciones">Publicaciones</a><a href="#/tienda">Tienda</a><a href="#/socios">Socios</a>
         <a href="#/cambios">Cambios</a><a href="/privacidad.html">Privacidad</a><a href="/terminos.html">Términos</a></nav>
-      <small>Los datos se actualizan solos cada media hora.</small>
+      {/* 🗓️ desde cuándo existe (Dlx, 07/10/2026: «cuándo fue creado el proyecto… el mes, el día y el año»): el primer
+          commit del proyecto, «Estado inicial: generadores andando en Windows», 29/07/2026 a las 2:04 AM ET */}
+      <small>Los datos se actualizan solos cada media hora.<br />Creado el 29 de julio de 2026.</small>
     </footer>
   );
 }

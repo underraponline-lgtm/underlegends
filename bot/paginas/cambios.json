@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.61",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T23:49:00-04:00",
+   "titulo": "El perfil, con más detalle",
+   "items": [
+    "🔎 **«Sus datos» dice más**: a qué hora suele jugar, en qué servidor juega más, su mejor resultado, cuántos puntos hace por evento, cuándo debutó y su último evento.",
+    "🔥 **Su clásico**: el rival con el que se cruzó en tres eventos o más, y cómo les fue. Y **su rival más difícil** y **el rival que más venció**, con sus duelos.",
+    "🗂️ **Sus eventos, al final y con buscador**: se buscan por nombre y se filtran por resultado —campeón, subcampeón, semifinal…—.",
+    "🗓️ **Abajo de todo, desde cuándo existe**: creado el 29 de julio de 2026."
+   ]
+  },
+  {
    "version": "2.60",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T22:32:00-04:00",
