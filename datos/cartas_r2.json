@@ -223,6 +223,11 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/andy/temporada.webp"
  },
+ "araya": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/araya/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/araya/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/araya/sv-ffa.webp"
+ },
  "ardean": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ardean/bloq-pais.webp",
@@ -2693,6 +2698,10 @@
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nc/temporada.webp"
  },
  "nemi": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nemi/sv-dra.webp",
