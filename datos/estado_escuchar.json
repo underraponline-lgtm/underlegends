@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-08T18:26:29Z",
+ "cuando": "2026-10-08T18:58:48Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 216.8,
+ "dur_s": 354.5,
  "pasos": [
   {
    "n": "0b",
@@ -15,13 +15,13 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 48.4
+   "s": 38.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 40.7
+   "s": 147.7
   },
   {
    "n": "1a",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 25.1
+   "s": 23.8
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.0
+   "s": 2.2
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.3
+   "s": 5.3
   },
   {
    "n": "2b",
@@ -69,55 +69,55 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.5
+   "s": 0.1
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 1.3
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.3
+   "s": 2.8
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 24.9
+   "s": 67.6
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 5.0
+   "s": 5.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 33.5
+   "s": 33.8
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 1.2
+   "s": 3.4
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.1
+   "s": 9.9
   },
   {
    "n": "2e",
@@ -129,46 +129,46 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.9
+   "s": 6.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.5
+   "s": 2.4
   }
  ],
  "fallas": [],
- "decidir": 87,
+ "decidir": 88,
  "ultimo_evento": {
-  "n": "427",
-  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "n": "428",
+  "nombre": "CIUDAD GOTICA",
   "sv": "DDF",
-  "dia": "2026-10-08"
+  "dia": "2026-09-27"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-08T18:23:45Z",
+  "cuando": "2026-10-08T18:53:37Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 374,
-  "un_evento": 184,
+  "jugadores": 378,
+  "un_evento": 188,
   "diez_o_mas": 28,
   "cohortes": [
    {
     "semana": "2026-09-21",
-    "nuevos": 190,
-    "volvieron": 133,
+    "nuevos": 196,
+    "volvieron": 135,
     "completa": false
    },
    {
     "semana": "2026-09-28",
-    "nuevos": 131,
-    "volvieron": 40,
+    "nuevos": 130,
+    "volvieron": 39,
     "completa": false
    },
    {
     "semana": "2026-10-05",
-    "nuevos": 53,
+    "nuevos": 52,
     "volvieron": 7,
     "completa": false
    }
@@ -176,20 +176,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 246,
-   "read": 31507
+   "write": 256,
+   "read": 33065
   },
   "objeto": {
-   "leidas": 1394663,
-   "escritas": 15152,
-   "pedidos": 5919
+   "leidas": 1427788,
+   "escritas": 15481,
+   "pedidos": 6074
   },
   "worker": {
-   "pedidos": 8849,
+   "pedidos": 8638,
    "errores": 1,
-   "sub": 9315,
+   "sub": 9058,
    "p50_ms": 1.09,
-   "p99_ms": 6.16
+   "p99_ms": 6.18
   },
   "r2": {
    "objetos": 3652,
