@@ -189,10 +189,19 @@ def _datos():
     return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera
 
 
+#: 🧹 LOS QUE NO SON PERSONAS (07/10/2026): equipos que una llave mal leída cargó como uno solo —el #425, PRITTY FREE,
+#: tomado de #votaciones, donde los equipos van sin separar— y que se ganaron el debut. Las insignias no se borran
+#: solas (son para siempre), así que se sacan en cada corrida: no importa en cuál se arregló, ni que haya otra en curso
+NO_SON_PERSONAS = frozenset({'CRONOX XCLUSIVO', 'NEMI PRESAGIO DELUX', 'Nemi x presagio x dantedelux',
+                             'PRESAGIO DELUX NEMI', 'SIX MAILEN'})
+
+
 def correr(ahora=None, aplicar=False):
     import multiplicadores as MU
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     registro = leer()
+    for k in NO_SON_PERSONAS:
+        registro.pop(k, None)
     c = cumple(*_datos())
     nuevas = anotar(registro, c, ahora, MU.temporada_actual(ahora))
     if aplicar:
