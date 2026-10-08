@@ -94,6 +94,28 @@ ok('el podio en su propio mensaje se pega a su llave, y dice el campeón',
 ok('un podio que no nombra a un finalista no se pega',
   LV.unirPartidas([wc[0], wc[1], Object.assign({}, wc[2], { texto: wc[2].texto.replace(/FULLY/g, 'OTRO') })]).length === 2);
 ok('ni a una llave que no llegó a la final', LV.unirPartidas([wc[0], wc[2]]).length === 2);
+// 🔑 LA DOBLE ELIMINACIÓN DE FFA (07/10/2026): la de perdedores, en OTRO mensaje de OTRA persona, dos segundos después.
+// Se parte el texto del contrato en sus dos mensajes y se vuelve a juntar
+{
+  const dob = casos.find((c) => /Doble Eliminación Vol\. 2/.test(c.que));
+  const corte = dob.texto.indexOf('`[ Lost Bracket 1st round ]`');
+  const dos = LV.unirPartidas([
+    { id: '1557580309124485192', canal: 'c', sv: 'FFA', autor: 'uno', pub: 1000, ed: 1000, texto: dob.texto.slice(0, corte) },
+    { id: '1557580319803318406', canal: 'c', sv: 'FFA', autor: 'otro', pub: 3000, ed: 3000, texto: dob.texto.slice(corte) },
+  ]);
+  const Ld = dos.length === 1 ? LV.aLlave(dos[0]) : null;
+  const gan = Ld ? [].concat(...Ld.rondas.map((R) => R.b.map((x) => x[1]))) : [];
+  ok('doble eliminación: la de perdedores de OTRA persona se pega, y los octavos ya tienen ganador',
+    dos.length === 1 && Ld.rondas.some((R) => /perdedores/i.test(R.r))
+      && gan.slice(0, 7).join() === ['NC🇦🇷', 'DELUX🇦🇷', 'MOLUSCO🇦🇷', 'DYZZ🇨🇱', 'MAKMA🇻🇪', 'ERIK🇦🇷', 'LITKUNAI🇨🇴'].join(),
+    dos.length + ' bloque(s) · ' + gan.slice(0, 8).join(', '));
+  // y suelta, lejos en el tiempo, no
+  ok('… pero no si sale media hora después',
+    LV.unirPartidas([
+      { id: '1', canal: 'c', autor: 'uno', pub: 1000, ed: 1000, texto: dob.texto.slice(0, corte) },
+      { id: '2', canal: 'c', autor: 'otro', pub: 1000 + 31 * 60000, ed: 1000 + 31 * 60000, texto: dob.texto.slice(corte) },
+    ]).length === 2);
+}
 // 🔑 LO QUE EL CICLO YA SABÍA Y LA PÁGINA NO (28/09/2026), medido sobre las 74
 // llaves reales guardadas: el campeón que no engancha, y la cuenta de gente.
 const fin = (t) => { const x = LV.aLlave({ id: '1', texto: t }); return x && x.rondas[x.rondas.length - 1].b[0][1]; };

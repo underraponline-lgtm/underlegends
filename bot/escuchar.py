@@ -175,7 +175,7 @@ def _doble(e):
     """El nombre de la ronda, con las dos llaves de la doble eliminación en el suyo."""
     if re.search(r'GANADOR|WINNER|UPPER', e or ''):
         return DOBLE_G
-    if re.search(r'PERDEDOR|LOSER|LOWER', e or ''):
+    if re.search(r'PERDEDOR|LOSER|LOST|LOWER', e or ''):
         return DOBLE_P
     return e
 
@@ -203,8 +203,11 @@ CYPHER_ENC = re.compile(r'^[\W_]*(?:(?:fase|ronda)\s+(?:de\s+)?)?c[iy]pher[\W_]*
 # aparece en ~18 de 78 eventos; sin esto sus batallas quedaban antes del
 # primer encabezado reconocido y se tiraban enteras.
 RONDA = re.compile(
-    r'\b((?:LLAVE|BRACKET|CUADRO|LADO)\s+DE\s+(?:LOS\s+)?(?:GANADORES|PERDEDORES)|'
-    r'(?:WINNERS?|LOSERS?|UPPER|LOWER)\s*-?\s*BRACKETS?|'
+    r'\b((?:LLAVES?|BRACKETS?|CUADROS?|LADOS?)\s+DE\s+(?:LOS\s+)?(?:GANADORES|PERDEDORES)|'
+    # 🔑 COMO LO ESCRIBE FFA (Doble Eliminación Vol. 2, 07/10/2026): «Winner's Final», «Lost Bracket 1st round»,
+    # «Loser's Final». Sin esto «Winner's Final» se leía FINAL —la gran final— y la de perdedores no se veía
+    r'(?:WINNER|LOSER)[\x27\u2019]?S?\s+FINAL|'
+    r'(?:WINNERS?|LOSERS?|LOST|UPPER|LOWER)\s*-?\s*BRACKETS?|'
     r'FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|'
     r'CUARTOS(?:\s+DE\s+FINAL)?|SEMI\s*-?\s*FINAL(?:ES)?|SEMIS?|'
     r'TERCER\s+LUGAR|GRAN\s+FINAL|FINAL)\b', re.I)
@@ -1518,35 +1521,44 @@ def _resolver_doble(rs, camp, camp2=None):
       · la gran final, la línea del CAMPEÓN; y si se jugó dos veces (el «reset»), la primera la ganó el que venía de
         perdedores: si no, no habría segunda.
     Lo que no se puede saber queda sin ganador y va a ✅ Decidir, como cualquier batalla."""
-    bats = [(r, b) for r, bs in rs for b in bs]
+    # 🔑 LAS RONDAS DE SIEMPRE SON DE LA LLAVE DE GANADORES: FFA escribe «Llaves de Ganadores» arriba y abajo OCTAVOS,
+    # CUARTOS, Semifinal y «Winner's Final» (Doble Eliminación Vol. 2, 07/10/2026). Todo lo que no es perdedores ni la
+    # gran final es de ganadores (`G`)
+    def grupo(r):
+        return 'P' if r == DOBLE_P else 'F' if r == 'FINAL' else 'G'
+    bats = [(grupo(r), r, b) for r, bs in rs for b in bs]
 
     def k(x):
         return norm(HISTORIA.sub('', x or ''))
 
-    def aparece(x, desde, rondas, hasta=None):
+    def aparece(x, desde, grupos, hasta=None):
         kx = k(x)
-        return bool(kx) and any(kx in {k(y) for y in b2} for r2, b2 in bats[desde:hasta] if r2 in rondas)
+        return bool(kx) and any(kx in {k(y) for y in b2} for g2, _r2, b2 in bats[desde:hasta] if g2 in grupos)
 
-    finales = [i for i, (r, _b) in enumerate(bats) if r == 'FINAL']
+    finales = [i for i, (g, _r, _b) in enumerate(bats) if g == 'F']
     out = []
-    for i, (r, b) in enumerate(bats):
+    for i, (g, r, b) in enumerate(bats):
         gan = None
-        if r == DOBLE_G:
-            sig = [x for x in b if aparece(x, i + 1, (DOBLE_G,))]
+        # un cruce con un solo nombre —`⌞LITKUNAI⌝ 🆚 ⌞⌝`— espera a su rival: todavía no ganó nadie
+        if len(b) < 2:
+            out.append(Batalla((r, b, None, 'espera a su rival')))
+            continue
+        if g == 'G':
+            sig = [x for x in b if aparece(x, i + 1, ('G',))]
             if len(sig) != 1:
                 # la última de ganadores: el que no bajó a perdedores, y llegó a la final
-                sig = [x for x in b if not aparece(x, i + 1, (DOBLE_P,))
-                       and (not finales or aparece(x, i + 1, ('FINAL',)))]
+                sig = [x for x in b if not aparece(x, i + 1, ('P',))
+                       and (not finales or aparece(x, i + 1, ('F',)))]
             gan = sig[0] if len(sig) == 1 else None
             razon = '' if gan else 'doble eliminación: no se ve quién siguió en la llave de ganadores'
-        elif r == DOBLE_P:
-            sig = [x for x in b if aparece(x, i + 1, (DOBLE_P, 'FINAL'))]
+        elif g == 'P':
+            sig = [x for x in b if aparece(x, i + 1, ('P', 'F'))]
             gan = sig[0] if len(sig) == 1 else None
             razon = '' if gan else 'doble eliminación: no se ve quién siguió en la llave de perdedores'
-        elif r == 'FINAL':
+        else:
             if i != finales[-1]:
                 # la primera de dos: la ganó el que venía de perdedores (si no, no hay «reset»)
-                sig = [x for x in b if aparece(x, 0, (DOBLE_P,), i)]
+                sig = [x for x in b if aparece(x, 0, ('P',), i)]
             else:
                 sig = []
                 for c in (camp, camp2):
@@ -1555,8 +1567,6 @@ def _resolver_doble(rs, camp, camp2=None):
                         sig = [p] if p else [x for x in b if k(x) and k(x) in k(c)]
             gan = sig[0] if len(sig) == 1 else None
             razon = '' if gan else 'doble eliminación: la final todavía no dice el campeón'
-        else:
-            razon = 'doble eliminación: una ronda fuera de las dos llaves'
         out.append(Batalla((r, b, gan, razon)))
     return out
 
@@ -2443,6 +2453,8 @@ def categorias_staff(canales):
 
 #: horas entre dos mensajes de la misma llave partida en dos
 PARTIDA_H = 3
+#: la llave de perdedores que publica OTRO se pega a la de ganadores si sale a menos de esto (ver `unir_partidas()`)
+DOBLE_JUNTA_MIN = 30
 
 
 def _ronda_n(r):
@@ -2521,6 +2533,20 @@ def unir_partidas(ms):
             b['edited_timestamp'] = max(b.get('edited_timestamp') or '',
                                         m.get('edited_timestamp') or '') or None
             # las menciones de las dos mitades: el podio suele ir en la segunda
+            b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
+            b['_ult'] = m['id']
+            b['_partes'] += 1
+            b['_rondas'] = rondas_de(traducir(plano(b['content'])))
+            continue
+        # 🔑 LA LLAVE DE PERDEDORES EN SU PROPIO MENSAJE, AUNQUE LA ESCRIBA OTRO (Doble Eliminación Vol. 2, FFA,
+        # 07/10/2026: la de ganadores la publicó uno y la de perdedores otro, dos segundos después). Se pega si EMPIEZA en
+        # la llave de perdedores, en el mismo canal, a menos de `DOBLE_JUNTA_MIN` de una llave que todavía no tiene
+        # perdedores ni gran final: suelta no es un evento
+        if (b and rs and b['_rondas'] and rs[0][0] == DOBLE_P
+                and not any(r == DOBLE_P or r == 'FINAL' for r, _bb in b['_rondas'])
+                and ((int(m['id']) >> 22) - (int(b['_ult']) >> 22) <= DOBLE_JUNTA_MIN * 60000)):
+            b['content'] = (b.get('content') or '') + '\n' + (m.get('content') or '')
+            b['edited_timestamp'] = max(b.get('edited_timestamp') or '', m.get('edited_timestamp') or '') or None
             b['mentions'] = list(b.get('mentions') or []) + list(m.get('mentions') or [])
             b['_ult'] = m['id']
             b['_partes'] += 1
@@ -3699,6 +3725,24 @@ def _self_check():
           and not any('MATCH 15' in l or '?' in l for l in lim))
     mal += not ok
     print('   %s la copia de la IA: el MATCH repetido vale en la final, y lo vacío se va' % ('✅' if ok else '🔴'))
+    # 🔑 la de FFA de verdad (07/10/2026): la de perdedores en OTRO mensaje de OTRA persona se pega; media hora
+    # después, no. Ver `unir_partidas()`
+    try:
+        with io.open(os.path.join(BASE, 'bot', 'llaves_casos.json'), encoding='utf-8') as f:
+            dob = next(c for c in json.load(f)['casos'] if 'Doble Eliminación Vol. 2' in c['que'])
+        corte = dob['texto'].index('`[ Lost Bracket 1st round ]`')
+
+        def _m(i, autor, txt):
+            return {'id': str(i), 'content': txt, 'author': {'id': autor}}
+        base = 1557580309124485192
+        juntas = unir_partidas([_m(base, 'uno', dob['texto'][:corte]), _m(base + (2000 << 22), 'otro', dob['texto'][corte:])])
+        lejos = unir_partidas([_m(base, 'uno', dob['texto'][:corte]), _m(base + ((31 * 60000) << 22), 'otro', dob['texto'][corte:])])
+        t2 = traducir(plano(juntas[0]['content'])) if len(juntas) == 1 else ''
+        ok = len(juntas) == 1 and es_doble(rondas_de(t2)) and len(lejos) == 2
+    except Exception as e:                               # noqa: BLE001
+        ok, t2 = False, str(e)
+    mal += not ok
+    print('   %s la de perdedores de otra persona se pega a la llave (FFA, Doble Eliminación Vol. 2)' % ('✅' if ok else '🔴'))
     # y «los ganadores pasan» de una llave común no la vuelve doble
     ok = not es_doble(rondas_de('`[ SEMIFINALES ]`\nlos ganadores pasan\n⌞A⌝ 🆚 ⌞B⌝\n`[ FINAL ]`\n⌞A⌝ 🆚 ⌞C⌝'))
     mal += not ok

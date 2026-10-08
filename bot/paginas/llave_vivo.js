@@ -37,7 +37,7 @@
   var DOBLE_G = 'LLAVE DE GANADORES', DOBLE_P = 'LLAVE DE PERDEDORES';
   function doble(e) {
     if (/GANADOR|WINNER|UPPER/.test(e || '')) return DOBLE_G;
-    if (/PERDEDOR|LOSER|LOWER/.test(e || '')) return DOBLE_P;
+    if (/PERDEDOR|LOSER|LOST|LOWER/.test(e || '')) return DOBLE_P;
     return e;
   }
   var ALIAS = { 'CLASIFICATORIA': 'CLASIFICATORIAS', 'CUARTOS DE FINAL': 'CUARTOS',
@@ -53,8 +53,10 @@
     'PRELIMINARES': 'Preliminares', 'DIECISEISAVOS': 'Dieciseisavos', 'OCTAVOS': 'Octavos',
     'CUARTOS': 'Cuartos', 'SEMIFINALES': 'Semifinales', 'TERCER LUGAR': 'Tercer puesto',
     'FINAL': 'Final', 'LLAVE DE GANADORES': 'Llave de ganadores', 'LLAVE DE PERDEDORES': 'Llave de perdedores' };
-  var RONDA_ALT = '(?:LLAVE|BRACKET|CUADRO|LADO)\\s+DE\\s+(?:LOS\\s+)?(?:GANADORES|PERDEDORES)|' +
-    '(?:WINNERS?|LOSERS?|UPPER|LOWER)\\s*-?\\s*BRACKETS?|' +
+  var RONDA_ALT = '(?:LLAVES?|BRACKETS?|CUADROS?|LADOS?)\\s+DE\\s+(?:LOS\\s+)?(?:GANADORES|PERDEDORES)|' +
+    // «Winner's Final», «Lost Bracket 1st round», «Loser's Final» (FFA, 07/10/2026): `escuchar.RONDA`
+    '(?:WINNER|LOSER)[\\x27\\u2019]?S?\\s+FINAL|' +
+    '(?:WINNERS?|LOSERS?|LOST|UPPER|LOWER)\\s*-?\\s*BRACKETS?|' +
     'FILTROS?|CLASIFICATORIAS?|PRELIMINARES|DIECISEISAVOS|OCTAVOS|' +
     'CUARTOS(?:\\s+DE\\s+FINAL)?|SEMI\\s*-?\\s*FINAL(?:ES)?|SEMIS?|TERCER\\s+LUGAR|GRAN\\s+FINAL|FINAL';
   var PALABRA = /[\p{L}\p{N}_]/u;
@@ -545,8 +547,10 @@
      dónde aparece después —en ganadores, el que sigue ahí (en la última, el que no baja a perdedores); en perdedores,
      el que sigue; la final, el campeón, y la primera de dos, el que venía de perdedores— */
   function resolverDoble(rs, texto) {
+    // las rondas de siempre son de la llave de ganadores (`G`): `escuchar._resolver_doble()`
+    var grupo = function (r) { return r === DOBLE_P ? 'P' : r === 'FINAL' ? 'F' : 'G'; };
     var bats = [];
-    rs.forEach(function (R) { R[1].forEach(function (b) { bats.push({ r: R[0], b: b }); }); });
+    rs.forEach(function (R) { R[1].forEach(function (b) { bats.push({ r: grupo(R[0]), b: b }); }); });
     var camp = lineaCampeon(texto), camp2 = renglonDeAbajo(texto);
     function aparece(x, desde, rondas, hasta) {
       var kx = clave(x);
@@ -555,20 +559,22 @@
       });
     }
     var finales = [];
-    bats.forEach(function (o, i) { if (o.r === 'FINAL') finales.push(i); });
+    bats.forEach(function (o, i) { if (o.r === 'F') finales.push(i); });
     var gan = bats.map(function (o, i) {
       var sig = [];
-      if (o.r === DOBLE_G) {
-        sig = o.b.filter(function (x) { return aparece(x, i + 1, [DOBLE_G]); });
+      // un cruce con un solo nombre espera a su rival
+      if (o.b.length < 2) return '';
+      if (o.r === 'G') {
+        sig = o.b.filter(function (x) { return aparece(x, i + 1, ['G']); });
         if (sig.length !== 1) {
           sig = o.b.filter(function (x) {
-            return !aparece(x, i + 1, [DOBLE_P]) && (!finales.length || aparece(x, i + 1, ['FINAL']));
+            return !aparece(x, i + 1, ['P']) && (!finales.length || aparece(x, i + 1, ['F']));
           });
         }
-      } else if (o.r === DOBLE_P) {
-        sig = o.b.filter(function (x) { return aparece(x, i + 1, [DOBLE_P, 'FINAL']); });
-      } else if (o.r === 'FINAL') {
-        if (i !== finales[finales.length - 1]) sig = o.b.filter(function (x) { return aparece(x, 0, [DOBLE_P], i); });
+      } else if (o.r === 'P') {
+        sig = o.b.filter(function (x) { return aparece(x, i + 1, ['P', 'F']); });
+      } else {
+        if (i !== finales[finales.length - 1]) sig = o.b.filter(function (x) { return aparece(x, 0, ['P'], i); });
         else {
           sig = campeonDe(camp, o.b);
           if (sig.length !== 1 && camp2) sig = campeonDe(camp2, o.b);
@@ -763,6 +769,7 @@
 
   /* `escuchar.unir_partidas()`: la llave que vino en dos mensajes, en uno.
      🔴 Y EL PODIO EN SU PROPIO MENSAJE (FFA WORLD CUP, 27/09/2026): ver allá */
+  var DOBLE_JUNTA_MS = 30 * 60000;
   function unirPartidas(ms) {
     var bloques = [];
     ms.slice().sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : 0; }).forEach(function (m) {
@@ -771,6 +778,15 @@
       var b = bloques[bloques.length - 1];
       if (b && rs.length && b.rs.length && m.autor && m.autor === b.autor && m.canal === b.canal &&
           m.pub - b.ult <= PARTIDA_MS && rondaN(rs[0][0]) > rondaN(b.rs[b.rs.length - 1][0])) {
+        b.texto += '\n' + (m.texto || '');
+        b.ult = m.pub;
+        b.ed = Math.max(b.ed, m.ed || 0);
+        b.rs = rondasDe(traducir(plano(b.texto)));
+        return;
+      }
+      // la llave de perdedores en su propio mensaje, aunque la escriba OTRO: `escuchar.unir_partidas()`
+      if (b && rs.length && b.rs.length && rs[0][0] === DOBLE_P && m.canal === b.canal &&
+          !b.rs.some(function (R) { return R[0] === DOBLE_P || R[0] === 'FINAL'; }) && m.pub - b.ult <= DOBLE_JUNTA_MS) {
         b.texto += '\n' + (m.texto || '');
         b.ult = m.pub;
         b.ed = Math.max(b.ed, m.ed || 0);
