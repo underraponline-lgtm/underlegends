@@ -6,7 +6,7 @@
    de la semana y los niveles. Las Tareas usan la pieza de las misiones del Inicio (`.mis`); el dorado es el del color
    de nombre que da el nivel 20 (`bot/pase.py`) ── */
 .pa-caja{display:grid;gap:10px;align-content:start;min-width:0;padding:16px;border:2px solid var(--esc-tinta);background:#0E0E10;color:#F6F6F6}
-.pa-caja>small{font:700 10.5px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--esc-gris)}
+.pa-caja>small{font:700 12px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--esc-gris)}
 .pa-caja p{margin:0;font:600 14px/1.45 Archivo,sans-serif;color:var(--esc-gris)}
 .pa-caja p b{color:#F6F6F6}
 .pa-caja .pa-mal{color:#F0559A}
@@ -29,17 +29,17 @@
 .pa-xp{display:grid;gap:6px}
 .pa-xp .mb{height:10px;border-color:#2A2A2C}
 .pa-xp .mb i{background:#F5C542}
-.pa-xp small{font:700 11px/1.4 "Space Mono",monospace;color:var(--esc-gris)}
+.pa-xp small{font:700 12px/1.4 "Space Mono",monospace;color:var(--esc-gris)}
 .pa-xp small b{color:#F6F6F6}
 .pa-col{display:grid;gap:14px;align-content:start;min-width:0}
 .pa-dos{display:grid;gap:14px}
-.pa-tareas .mis-pts small{display:block;margin-top:3px;font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
+.pa-tareas .mis-pts small{display:block;margin-top:3px;font:700 12px/1 "Space Mono",monospace;letter-spacing:.08em;color:var(--gris)}
 .pa-salon{list-style:none;margin:0;padding:0;display:grid;gap:0 28px}
 .pa-salon li{display:grid;grid-template-columns:34px 36px minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--suave)}
 .pa-sp{font:900 17px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums}
 .pa-sc{width:36px;height:36px;font:800 14px/1 Archivo,sans-serif}
 .pa-salon a{font:800 15px/1.2 Archivo,sans-serif;color:var(--tinta);text-decoration:none;overflow-wrap:anywhere}
-.pa-salon small{font:700 10.5px/1 "Space Mono",monospace;color:var(--gris);white-space:nowrap}
+.pa-salon small{font:700 12px/1 "Space Mono",monospace;color:var(--gris);white-space:nowrap}
 @media (min-width: 900px){
   .app .pa-caja{width:340px}
   .app .pa-dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;align-items:start}
@@ -51,7 +51,7 @@
    de 4 px en la caja: el volumen vive en los dibujos ── */
 .pg{display:grid;gap:12px;padding:14px 0 12px;border:2px solid var(--esc-tinta);background:#0E0E10;color:#F6F6F6;min-width:0}
 .pg-cab{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 14px}
-.pg-tag{font:700 11px/1 "Space Mono",monospace;letter-spacing:.12em;color:#F5C542}
+.pg-tag{font:700 12px/1 "Space Mono",monospace;letter-spacing:.12em;color:#F5C542}
 .pg-flechas{display:flex;gap:6px}
 .pg-flechas button{width:36px;height:36px;display:grid;place-items:center;padding:0;border:2px solid #2A2A2C;border-radius:2px;
   background:#141416;color:#F6F6F6;font:900 22px/1 Archivo,sans-serif;cursor:pointer}
@@ -66,7 +66,7 @@
 .pg-arte svg{display:block;width:86px;height:86px}
 .pg-texto{display:grid;gap:3px;justify-items:center;text-align:center}
 .pg-texto b{font:800 12px/1.2 Archivo,sans-serif;color:#F6F6F6;text-wrap:balance}
-.pg-tienda{display:inline-flex;align-items:center;gap:5px;font:700 11.5px/1 "Space Mono",monospace;color:#F5C542;font-variant-numeric:tabular-nums}
+.pg-tienda{display:inline-flex;align-items:center;gap:5px;font:700 12px/1 "Space Mono",monospace;color:#F5C542;font-variant-numeric:tabular-nums}
 .pg-tienda i{width:9px;height:9px;border-radius:50%;background:#F5C542;box-shadow:inset 0 -2px 0 #B07C0A}
 /* los premios especiales: el color del premio en el borde y un fondo de su tono */
 .pg-tarjeta .pg-carta{border-color:#E41373;background:#24081A}
@@ -82,7 +82,7 @@
   border:2px solid #0E0E10;border-radius:2px;background:#2A2A2C;color:#B9B9BE;font:900 13px/1 Archivo,sans-serif;font-stretch:120%;
   font-variant-numeric:tabular-nums}
 .pg-esp .pg-nodo{background:#3A3A3E;color:#F6F6F6}
-.pg-xp{text-align:center;font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.04em;color:#7E7E86}
+.pg-xp{text-align:center;font:700 12px/1 "Space Mono",monospace;letter-spacing:.04em;color:#7E7E86}
 /* ganado: el nodo dorado, el premio con su tilde */
 .pg-ya .pg-nodo{background:#F5C542;color:#0E0E10}
 .pg-ya .pg-arte{opacity:.5}
@@ -93,7 +93,7 @@
 /* el siguiente: magenta, con la cinta arriba */
 .pg-sig .pg-carta{border-color:#E41373;box-shadow:0 0 0 2px #E41373,inset 0 -5px 0 rgba(0,0,0,.35)}
 .pg-cinta{position:absolute;top:-2px;left:-2px;right:-2px;padding:4px 0;border-radius:4px 4px 0 0;background:#E41373;color:#FFF;
-  font:700 9.5px/1 "Space Mono",monospace;letter-spacing:.14em;text-align:center}
+  font:700 12px/1 "Space Mono",monospace;letter-spacing:.14em;text-align:center}
 .pg-sig .pg-nodo{background:#E41373;color:#FFF;animation:pg-late 1.6s ease-in-out infinite}
 @keyframes pg-late{50%{box-shadow:0 0 0 5px rgba(228,19,115,.35)}}
 @media (prefers-reduced-motion: reduce){.pg-sig .pg-nodo{animation:none}}
@@ -104,7 +104,7 @@
 .pg-salon .pg-tienda{color:#B9B9BE}
 .pg-salon .pg-riel{background:transparent}
 .pg-salon .pg-nodo{background:#F5C542;color:#0E0E10}
-.pg-nota{margin:0;padding:0 14px;font:700 11px/1.4 "Space Mono",monospace;color:#9A9AA0}
+.pg-nota{margin:0;padding:0 14px;font:700 12px/1.4 "Space Mono",monospace;color:#9A9AA0}
 @media (max-width: 600px){
   .pg-n{flex-basis:112px}
   .pg-salon{flex-basis:128px}

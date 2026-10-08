@@ -183,7 +183,7 @@ const SUBS = {
     vacio: (L) => {
       const pide = req(L, 'competitivo') || 10;
       const c = (L.d.tabla || []).slice().sort((a, b) => (b.ev || 0) - (a.ev || 0))[0];
-      return <>El Competitivo pide <b>{pide} eventos</b> en la temporada y todavía no llegó nadie.{c ? <> El más cerca: <b>{limpio(c.n)}</b>, con {c.ev}.</> : null}</>;
+      return <>El Competitivo pide participar en <b>{pide} eventos</b> de cualquier servidor asociado a la Liga Global, en la temporada, y todavía no llegó nadie.{c ? <> El más cerca: <b>{limpio(c.n)}</b>, con {c.ev}.</> : null}</>;
     },
   },
   duelos: {
@@ -638,7 +638,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
       lugar = { cara, quien, n, txt, ir: true, verificar: !n && f.fc, mov: sub === 'temporada' ? f.mv || 0 : 0 };
     } else if (sub === 'competitivo' && !yo.rg) {
       const falta = Math.max(0, (req(liga, 'competitivo') || 10) - (yo.ev || 0));
-      lugar = { cara, quien, n: 0, txt: falta ? 'Te faltan ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' para tu letra' : 'Tu letra llega con la próxima corrida' };
+      lugar = { cara, quien, n: 0, txt: falta ? 'Te falta participar en ' + falta + (falta === 1 ? ' evento' : ' eventos') + ' más, de cualquier servidor de la Liga, para tu letra' : 'Tu letra llega con la próxima corrida' };
     } else if (!cfg.grupo) {
       const no = { duelos: 'Todavía no jugaste un duelo uno contra uno', podios: 'Todavía no subiste a un podio', rachas: 'Todavía sin racha', mw: 'Todavía no cazaste a ningún buscado' }[sub];
       if (no) lugar = { cara, quien, n: 0, txt: no };

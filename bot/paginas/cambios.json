@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "2.59",
+   "dia": "2026-10-07",
+   "cuando": "2026-10-07T21:29:00-04:00",
+   "titulo": "El perfil, en una sola página",
+   "items": [
+    "👤 **Todo el perfil en una página**: sus números, sus datos, sus fortalezas, sus eventos, el cara a cara y las insignias, uno abajo del otro, alternando blanco y negro como el Inicio. Los links viejos a una pestaña bajan hasta esa parte.",
+    "🔎 **«Sus datos»**: qué días suele jugar, su verdugo (quien más le ganó), su hijo (a quien más le ganó), con quién hace mejor equipo y cómo le va en las réplicas.",
+    "🃏 **La tarjeta de Servidor de cada servidor**: si tiene en varios, un botón por servidor para verlas.",
+    "🔒 **Sus fortalezas llegan con la tarjeta Competitiva**: hasta entonces, una vista previa con cuánto falta.",
+    "✍️ **Lo que falta para cada tarjeta, dicho claro**: «Te falta participar en 4 eventos más de cualquier servidor asociado a la Liga Global», qué es un duelo nacional y cómo verificarse. También en Tarjetas y en la Guía, que suma «Evento» y «Duelo nacional» a sus palabras. Lo ya desbloqueado deja de aparecer.",
+    "🔠 **Letras más grandes**: ninguna por debajo de 12 px."
+   ]
+  },
+  {
    "version": "2.58",
    "dia": "2026-10-07",
    "cuando": "2026-10-07T21:24:00-04:00",

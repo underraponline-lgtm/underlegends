@@ -3778,6 +3778,8 @@ function radar(v, prom, color) {
 function pintaJuego(f, x, prom) {
   var v = x && x.dm;
   if (!v || v.length !== 5) return;
+  // 🔑 SÓLO CON LA COMPETITIVA DESBLOQUEADA (Dlx, 07/10/2026), como `Fortalezas` de web/src/perfil.jsx
+  if ((f.c || []).indexOf('competitivo') < 0) return;
   var G = (D.guia && D.guia.score) || [];
   var orden = v.map(function (n, i) { return [n, i]; }).sort(function (a, b) { return b[0] - a[0]; });
   var fuerte = orden[0], flojo = orden[orden.length - 1];

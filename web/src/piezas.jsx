@@ -2,6 +2,7 @@
 // Las clases son las del prototipo (docs/remake/reales.py): su CSS se genera de ahí (web/css_del_prototipo.py).
 import { useEffect, useRef, useState } from 'react';
 import { PAIS, limpio, num } from './liga.js';
+import * as RQ from './requisitos.js';
 
 const TRAZOS = {
   inicio: <path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" />,
@@ -332,5 +333,26 @@ export function Poster({ liga, b }) {
       <b>{limpio(b.n)}</b><span className="p-cat">{String(b.cn || '').toUpperCase()}</span>
       <span className="p-precio">{num(b.v)} PTS</span><small>{pie}</small>
     </a>
+  );
+}
+
+// ✍️ LO QUE FALTA PARA UNA TARJETA: cada condición con su barra y, si falta, qué es y cómo se consigue, dicho para alguien
+// nuevo (`requisitos.js`; Dlx, 07/10/2026: «sé más descriptivo»). La usan el perfil y «Las tuyas» de Tarjetas.
+// `q`: `[[lleva, pide, ETIQUETA], …]` de `req` (/api/perfiles); `tu`: si es la persona que mira
+export function FaltaLista({ q, tu }) {
+  return (
+    <ul className="tj-falta">
+      {q.map((x) => {
+        const pct = Math.max(0, Math.min(100, Math.round((100 * x[0]) / (x[1] || 1))));
+        const fr = RQ.falta(x[2], x[0], x[1], tu);
+        return (
+          <li key={x[2]} className={x[0] >= x[1] ? 'ok' : ''}>
+            <span>{Math.min(x[0], x[1])}/{x[1]} {String(x[2]).toLowerCase()}</span>
+            <i><u style={{ width: pct + '%' }} /></i>
+            {fr ? <em>{fr}</em> : null}
+          </li>
+        );
+      })}
+    </ul>
   );
 }

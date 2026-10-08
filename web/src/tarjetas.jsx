@@ -9,9 +9,10 @@
 // como «Lo que le falta» del perfil). Si una regla cambia allá, cambia acá.
 import { useEffect, useMemo, useState } from 'react';
 import { limpio, norm, num, siglaDe, utc } from './liga.js';
-import { Carta, Compartir, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
+import { Carta, Compartir, FaltaLista, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { usePaseDe } from './pase.js';
+import * as RQ from './requisitos.js';
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
@@ -22,8 +23,8 @@ const FILAS = {
   servidor: [['pts', 'Puntos', 1], ['ev', 'Eventos', 1], ['oro', 'Títulos', 1], ['pos', 'Puesto', -1]],
   pais: [['pts', 'Puntos', 1], ['ev', 'Eventos', 1], ['pod', 'Podios', 1], ['pos', 'Puesto', -1]],
 };
-// por qué alguien que cumple todavía no tiene la tarjeta: lo primero que le falta del portón (`nv` del payload)
-const NV = { id: 'tu Discord todavía no está vinculado a la Liga', pais: 'te falta el país', dra: 'tenés que ser Miembro de Discord Rap Español' };
+// por qué alguien que cumple todavía no tiene la tarjeta: lo primero que le falta del portón (`nv` del payload), dicho
+// en `requisitos.js` como todo lo que falta (Dlx, 07/10/2026: «sé más descriptivo»)
 const movil = () => typeof matchMedia === 'function' && matchMedia('(max-width: 599.98px)').matches;
 
 // ── las de arriba: las tres primeras de ese tipo, en abanico (sólo en la compu: en el celular, la galería primero) ──
@@ -91,19 +92,7 @@ function BotonHistoria({ liga, k, c }) {
 
 // ── «Las tuyas»: tus cuatro, y en las que faltan, qué te falta ──
 function Falta({ cs }) {
-  return (
-    <ul className="tj-falta">
-      {cs.map((q) => {
-        const pct = Math.max(0, Math.min(100, Math.round((100 * q[0]) / (q[1] || 1))));
-        return (
-          <li key={q[2]} className={q[0] >= q[1] ? 'ok' : ''}>
-            <span>{Math.min(q[0], q[1])}/{q[1]} {String(q[2]).toLowerCase()}</span>
-            <i><u style={{ width: pct + '%' }} /></i>
-          </li>
-        );
-      })}
-    </ul>
-  );
+  return <FaltaLista q={cs} tu />;
 }
 
 function Tuya({ liga, k, c, tiene, bloq, cs, nv, nivel }) {
@@ -137,8 +126,8 @@ function Tuya({ liga, k, c, tiene, bloq, cs, nv, nivel }) {
         <b>{NOMBRE[c]}</b>
         {tiene ? <small className="ok"><Ico n="ok" t={14} />La tenés</small>
           : listo ? <small><Ico n="reloj" t={14} />Se está dibujando</small>
-            : espera ? <small>Primero verificate: {NV[nv] || 'te falta verificarte'}.</small>
-              : c === 'temporada' ? <small>Sale con tu primera Tarea del Pase.</small>
+            : espera ? <small>Primero verificate. {RQ.sinVerificar(nv, true)}</small>
+              : c === 'temporada' ? <small>{RQ.pase(true)}</small>
                 : <small>Bloqueada</small>}
         {!tiene && !listo && (c === 'competitivo' || c === 'pais') && cs.length ? <Falta cs={cs} /> : null}
         {espera ? <a className="tj-lnk" href="#/cuenta/verificar">Verificarme</a> : null}

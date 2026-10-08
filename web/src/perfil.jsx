@@ -10,18 +10,22 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { diaISO, limpio, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, Ico, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
+import * as RQ from './requisitos.js';
 
-const TABS = [['', 'Resumen'], ['eventos', 'Eventos'], ['duelos', 'Duelos'], ['insignias', 'Insignias']];
+// 🔑 UNA SOLA PÁGINA (Dlx, 07/10/2026: *«me gustaría que todo esté en una página, no que esté dividido en varias»*).
+// Las pestañas de antes siguen siendo links que circulan (`#/r/x/duelos`): ahora bajan hasta su sección
+const SECCIONES = ['eventos', 'duelos', 'insignias'];
+const DIAS = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados'];
+const DIA1 = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
 // quién está en «Comparar dos» de Tarjetas (la de Temporada, que es la que abre): con carta y con cara, como
 // `conTarjeta()` de app.js. Sin esto, «Comparar conmigo» con alguien sin cara ponía en su lugar al #1 de la lista
 const enComparar = (x) => !!x && (x.c || []).includes('temporada') && x.fo !== 0;
-const NV = { id: 'su Discord todavía no está vinculado a la Liga', pais: 'le falta el país', dra: 'tiene que ser Miembro de Discord Rap Español' };
 const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉' };
 // en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026)
 const fecha = (iso) => {
@@ -78,7 +82,7 @@ function Precio({ liga, f, esYo, dc }) {
       : est.error ? sinEtiquetas(typeof window.errorPrecio === 'function' ? window.errorPrecio(est) : 'No pude ponerlo.')
         : dc ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
   return (
-    <section className="sec pf-sec">
+    <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Precio por su cabeza</h2><a href="#/tienda">Cómo funciona <Ico n="flecha" t={16} /></a></div>
       <p className="pf-bajada">El primero que le gane en un evento de la Liga se lleva lo que vale, en Puntos de Tienda y en su Temporada.</p>
       <p className="pf-pr"><b>{limpio(f.n)}</b> vale <span className="pf-pr-v">{num(v)}</span>
@@ -108,7 +112,12 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const redes = ((p && p.redes) || []).filter((r) => r && r[1]);
   const cs = ORDEN.filter((c) => (f.c || []).includes(c));
   const [cual, setCual] = useState(cs[0] || 'temporada');
-  useEffect(() => { setCual(cs[0] || 'temporada'); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setCual(cs[0] || 'temporada'); setOtroSv(''); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🃏 LA SERVIDOR DE SUS OTROS SERVIDORES (Dlx, 07/10/2026: *«en la opción de tarjetas servidor, que se vea la opción
+  // para ver sus otros servidores también»*): la misma carta con la camiseta de otro, `<clave>/sv-<sv>.webp` (`svc`)
+  const [otroSv, setOtroSv] = useState('');
+  const propio = String(f.sv || '').toLowerCase();
+  const svc = ((p && p.svc) || []).filter((x) => x !== propio);
   const sv = f.sv && liga.svs[f.sv];
   const crew = liga.crewDe(f);
   // 🔥 su nivel y su racha diaria (04/10/2026): por la clave del perfil, nunca por cuenta. Sin Discord no hay
@@ -145,7 +154,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             <div><dt>RANGO</dt><dd><Rango liga={liga} rg={f.rg} /></dd></div>
             <div><dt>PUNTOS</dt><dd>{num(f.pts || 0)}</dd></div>
             <div><dt>EVENTOS</dt><dd>{f.ev || 0}</dd></div>
-            <div><dt>WIN%</dt><dd>{f.wr ? String(f.wr).replace('.', ',') : '—'}</dd></div>
+            <div><dt>WIN%</dt><dd title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}>{f.wr ? String(f.wr).replace('.', ',') : '—'}</dd></div>
           </dl>
           <div className="hero-acc pf-acc">
             {!esYo && typeof window.alternarSigo === 'function' ? <Seguir si={si} onSeguir={() => window.alternarSigo(k)} /> : null}
@@ -155,7 +164,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             ) : null}
             <Compartir cls="btn borde chico" url={enlace('#/r/' + encodeURIComponent(k))} texto={limpio(f.n) + ' en la Liga Global'} etiqueta="Compartir" />
           </div>
-          {f.nv ? <p className="pf-nv">Sin verificar: {NV[f.nv] || 'le falta verificarse'}.{esYo ? <> Escribí <code>/verificar</code> en Discord.</> : null}</p> : null}
+          {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}
         </div>
         <div className="pf-carta">
           {cs.length > 1 ? (
@@ -163,8 +172,23 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
               {cs.map((c) => <button key={c} type="button" role="tab" aria-selected={c === cual} className={c === cual ? 'on' : ''} onClick={() => setCual(c)}>{NOMBRE[c]}</button>)}
             </div>
           ) : null}
+          {cual === 'servidor' && svc.length ? (
+            <div className="pf-svs" role="tablist" aria-label="La carta de Servidor en cada servidor">
+              {[''].concat(svc).map((x) => (
+                <button key={x || 'propio'} type="button" role="tab" aria-selected={x === otroSv} className={x === otroSv ? 'on' : ''}
+                  onClick={() => setOtroSv(x)}>
+                  <img alt="" src={liga.logo((x || propio).toUpperCase())} />{siglaDe((x || propio).toUpperCase())}
+                </button>
+              ))}
+            </div>
+          ) : null}
           <div className={'pf-carta-c tj-' + cual}>
-            {cs.length ? <Carta liga={liga} k={k} cual={cual} cls="tj-c" /> : <SinCarta liga={liga} k={k} nombre={f.n} cc={f.cc} cls="tj-c" />}
+            {cs.length && cual === 'servidor' && otroSv ? (
+              <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver las cartas de ' + f.n}>
+                <img className="tj-c" alt={'Carta de Servidor de ' + f.n + ' en ' + siglaDe(otroSv.toUpperCase())}
+                  src={liga.d.r2 + '/' + k + '/sv-' + otroSv + '.webp'} loading="lazy" />
+              </button>
+            ) : cs.length ? <Carta liga={liga} k={k} cual={cual} cls="tj-c" /> : <SinCarta liga={liga} k={k} nombre={f.n} cc={f.cc} cls="tj-c" />}
           </div>
         </div>
       </section>
@@ -190,9 +214,72 @@ function Numeros({ f, p }) {
   );
 }
 
+// 🔎 SUS DATOS (Dlx, 07/10/2026: *«qué días usualmente participa, su win rate en réplicas… HACE MEJOR EQUIPO con X
+// persona… su verdugo es… y su hijo es…»*). Los días salen de sus eventos —en la hora de quien mira—, el verdugo y el
+// hijo de sus duelos (desde dos), y el compañero y las réplicas los arma el ciclo (`eq`, `rp` de `/api/perfiles`).
+// Sin dato no hay renglón; sin ninguno, no hay sección
+function Datos({ liga, p, e }) {
+  const filas = [];
+  const ev = (p && p.ev) || [];
+  if (ev.length >= 3) {
+    const c = [0, 0, 0, 0, 0, 0, 0];
+    ev.forEach(([n]) => {
+      const x = (e || {})[n] || [];
+      const d = x[2] ? new Date(x[2]) : null;
+      if (d && !isNaN(d)) c[new Date(diaISO(d) + 'T12:00:00Z').getUTCDay()] += 1;
+    });
+    const tope = Math.max(2, Math.ceil(ev.length * 0.25));
+    const dias = c.map((v, i) => [v, i]).filter(([v]) => v >= tope).sort((a, b) => b[0] - a[0]).slice(0, 2);
+    if (dias.length) {
+      filas.push(['📅', 'Suele jugar', 'los ' + dias.map(([, i]) => DIAS[i]).join(' y los '),
+        dias.map(([v, i]) => v + ' ' + (v === 1 ? 'evento' : 'eventos') + ' un ' + DIA1[i]).join(' · ')]);
+    }
+  }
+  const du = (p && p.du) || [];
+  if (du.length) {
+    const por = new Map();
+    du.forEach((d) => {
+      const r = liga.fila(d[1]);
+      const id = r ? r.k : 'n:' + limpio(d[1]).toLowerCase();
+      if (!por.has(id)) por.set(id, { k: r ? r.k : '', n: r ? r.n : d[1], g: 0, p: 0 });
+      por.get(id)[d[2] ? 'g' : 'p'] += 1;
+    });
+    const rs = [...por.values()];
+    const verdugo = rs.filter((r) => r.p >= 2 && r.p > r.g).sort((a, b) => b.p - a.p || a.g - b.g)[0];
+    const hijo = rs.filter((r) => r.g >= 2 && r.g > r.p).sort((a, b) => b.g - a.g || a.p - b.p)[0];
+    if (verdugo) filas.push(['🪓', 'Su verdugo', verdugo, 'le ganó ' + verdugo.p + ' de ' + (verdugo.g + verdugo.p)]);
+    if (hijo) filas.push(['👶', 'Su hijo', hijo, 'le ganó ' + hijo.g + ' de ' + (hijo.g + hijo.p)]);
+  }
+  if (p && p.eq) {
+    const r = liga.T[p.eq[0]];
+    filas.push(['🤝', 'Hace mejor equipo con', { k: r ? r.k : '', n: r ? r.n : p.eq[1] }, 'ganaron ' + p.eq[2] + ' de ' + p.eq[3] + ' juntos']);
+  }
+  if (p && p.rp && p.rp[1]) filas.push(['🔁', 'En réplicas', 'ganó ' + p.rp[0] + ' de ' + p.rp[1], 'las votadas en un canal que lee el bot']);
+  if (!filas.length) return null;
+  return (
+    <section className="sec pf-sec">
+      <div className="sec-t"><h2>Sus datos</h2></div>
+      <ul className="pf-datos">
+        {filas.map(([ic, et, v, sub]) => (
+          <li key={et}>
+            <span className="pf-dt-ic" aria-hidden="true">{ic}</span>
+            <small>{et}</small>
+            {typeof v === 'object' ? (
+              v.k ? <a className="pf-dt-q" href={'#/r/' + encodeURIComponent(v.k)}><Cara liga={liga} k={v.k} nombre={v.n} cls="cara pf-dt-cara" lazy />{limpio(v.n)}</a>
+                : <b className="pf-dt-q">{limpio(v.n)}</b>
+            ) : <b>{v}</b>}
+            <em>{sub}</em>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 // el radar de las cinco dimensiones del Score, contra el promedio de la Liga (Dlx, 27/09/2026: «en mi perfil de la hoja
 // había un gráfico donde comparaba las estadísticas del competitivo y te mostraba cuál era más fuerte y menos»)
-function Radar({ dims, val, prom }) {
+// `oculto`: la vista previa de la bloqueada — la forma es de ejemplo y en vez de los números va «?»
+function Radar({ dims, val, prom, oculto }) {
   const cx = 150;
   const cy = 132;
   const R = 96;
@@ -201,29 +288,73 @@ function Radar({ dims, val, prom }) {
   const poly = (vs) => vs.map((v, i) => pt(i, Math.max(3, Math.min(100, v || 0))).map((x) => x.toFixed(1)).join(',')).join(' ');
   return (
     <svg className="pf-radar" viewBox="0 0 300 270" role="img"
-      aria-label={'Sus fortalezas: ' + dims.map((d, i) => d[1] + ' ' + (val[i] || 0)).join(', ')}>
+      aria-label={oculto ? 'Vista previa de sus fortalezas: se desbloquean con la tarjeta Competitiva'
+        : 'Sus fortalezas: ' + dims.map((d, i) => d[1] + ' ' + (val[i] || 0)).join(', ')}>
       {[25, 50, 75, 100].map((r) => <polygon key={r} className="pf-r-red" points={poly(dims.map(() => r))} />)}
       {dims.map((d, i) => { const [x, y] = pt(i, 100); return <line key={d[1]} className="pf-r-eje" x1={cx} y1={cy} x2={x} y2={y} />; })}
       {prom ? <polygon className="pf-r-liga" points={poly(prom)} /> : null}
-      <polygon className="pf-r-yo" points={poly(val)} />
+      <polygon className={'pf-r-yo' + (oculto ? ' fantasma' : '')} points={poly(val)} />
       {dims.map((d, i) => {
         const [x, y] = pt(i, 122);
-        return <text key={d[1]} className="pf-r-et" x={x} y={y + 5} textAnchor={Math.abs(x - cx) < 8 ? 'middle' : x > cx ? 'start' : 'end'}>{d[0]} {val[i] || 0}</text>;
+        return <text key={d[1]} className="pf-r-et" x={x} y={y + 5} textAnchor={Math.abs(x - cx) < 8 ? 'middle' : x > cx ? 'start' : 'end'}>{d[0]} {oculto ? '?' : val[i] || 0}</text>;
       })}
     </svg>
   );
 }
 
-function Fortalezas({ liga, f, p, dmp }) {
+// 🔒 LA VISTA PREVIA DE LA BLOQUEADA. Dlx, 07/10/2026: *«muéstrales una preview de lo que sería, desbloqueás esto al
+// tener 10 eventos»*. El radar va con una forma de EJEMPLO —sus números no se muestran hasta que tenga la carta—, con
+// qué mide cada una y cuánto le falta, dicho como `requisitos.js`. Quien ya tiene los eventos y no la carta es porque no
+// está verificado (`nv`)
+const EJEMPLO = [72, 48, 34, 62, 55];
+function FortalezasBloq({ dims, f, pide, esYo }) {
+  const ev = f.ev || 0;
+  const pct = Math.max(0, Math.min(100, Math.round((100 * ev) / pide)));
+  const llego = ev >= pide;
+  return (
+    <section className="sec pf-sec negra">
+      <div className="sec-t"><h2>Sus fortalezas</h2><span className="pf-bloq"><Ico n="candado" t={14} />Bloqueada</span></div>
+      <div className="pf-fz">
+        <div className="pf-fz-prev">
+          <Radar dims={dims} val={EJEMPLO} oculto />
+          <span className="pf-fz-cand" aria-hidden="true"><Ico n="candado" t={24} /></span>
+        </div>
+        <div className="pf-fz-tx">
+          <p className="pf-fz-q"><b>Se desbloquea con la tarjeta Competitiva</b>
+            {esYo ? 'En qué sos más fuerte y qué te toca trabajar' : 'En qué es más fuerte y qué le toca trabajar'}: las cinco
+            cosas que mide el Score, contra el promedio de la Liga.</p>
+          <ul className="tj-falta pf-fz-meta">
+            <li className={llego ? 'ok' : ''}><span>{Math.min(ev, pide)}/{pide} eventos</span><i><u style={{ width: pct + '%' }} /></i></li>
+          </ul>
+          <p className="pf-bajada pf-fz-falta">{llego
+            ? (esYo ? 'Ya tenés los ' : 'Ya tiene los ') + pide + ' eventos. ' + (f.nv ? (esYo ? 'Sólo te falta verificarte (arriba dice cómo).' : 'Sólo le falta verificarse.') : 'La tarjeta sale en la próxima vuelta del bot.')
+            : RQ.falta('EVENTOS', ev, pide, esYo)}</p>
+          <ul className="pf-dims pf-dims-bloq">
+            {dims.map((d) => (
+              <li key={d[1]}><span><b>{d[0]} {d[1]}</b><small>{d[2]} · {d[3]} %</small></span><i /><em>?</em></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Fortalezas({ liga, f, p, dmp, esYo }) {
   const dims = ((liga.d.guia || {}).score || []);
   const val = (p && p.dm) || null;
-  if (!dims.length || !val || !f.ev) return null;
-  const mx = val.indexOf(Math.max(...val));
+  if (!dims.length || !f.ev) return null;
   const q = (liga.d.requisitos || []).find((r) => r.id === 'competitivo') || {};
   const pide = parseInt(((q.pide || [])[0] || '10'), 10) || 10;
+  // 🔑 SÓLO CON LA COMPETITIVA DESBLOQUEADA. Dlx, 07/10/2026: *«para q te muestre sus fortalezas necesita tener
+  // desbloqueada la tarjeta competitiva»*. Las cinco son las del Score, que es lo que esa carta mide; antes, alguien
+  // con 1 evento ya tenía radar. Sin la carta, la vista previa. La misma regla en `pintaJuego()` de app.js
+  if (!(f.c || []).includes('competitivo')) return <FortalezasBloq dims={dims} f={f} pide={pide} esYo={esYo} />;
+  if (!val) return null;
+  const mx = val.indexOf(Math.max(...val));
   const mn = val.indexOf(Math.min(...val));
   return (
-    <section className="sec pf-sec">
+    <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Sus fortalezas</h2></div>
       <div className="pf-fz">
         <Radar dims={dims} val={val} prom={dmp} />
@@ -269,37 +400,37 @@ function EnCadaRanking({ liga, f, p }) {
   );
 }
 
-function LoQueFalta({ f, p }) {
+function LoQueFalta({ f, p, esYo }) {
   const pa = usePaseDe(f.k);
   const nivel = (pa && pa.nivel) || 0;
   const req = (p && p.req) || {};
-  const cs = ['temporada', 'competitivo', 'pais'].filter((c) => req[c] || (f.c || []).includes(c));
+  // 🔑 LO DESBLOQUEADO SE VA (Dlx, 07/10/2026: *«que cuando una tarjeta sea desbloqueada eso desaparezca del perfil»*):
+  // quedan sólo las que le faltan; sin ninguna, no hay sección
+  const listaDe = (c) => {
+    const q = req[c] || [];
+    const cumple = c === 'temporada' ? nivel >= 1 : q.every((x) => x[0] >= x[1]);
+    return (f.c || []).includes(c) || (cumple && !f.nv);
+  };
+  const cs = ['temporada', 'competitivo', 'pais'].filter((c) => (req[c] || (f.c || []).includes(c)) && !listaDe(c));
   if (!cs.length) return null;
   return (
     <section className="sec pf-sec">
-      <div className="sec-t"><h2>Lo que le falta</h2></div>
+      <div className="sec-t"><h2>{esYo ? 'Lo que te falta' : 'Lo que le falta'}</h2></div>
       <ul className="pf-falta">
         {cs.map((c) => {
-          const tiene = (f.c || []).includes(c);
           const q = req[c] || [];
           // 🔑 LAS REGLAS DEL 05/10/2026 (2.41): la Temporada sale con el nivel 1 del Pase, no con su requisito de antes,
           // y sin verificarse no hay ninguna (lo de `Tuya` en tarjetas.jsx). Decía «salvo la de Temporada, que no lo pide»
           const cumple = c === 'temporada' ? nivel >= 1 : q.every((x) => x[0] >= x[1]);
-          const listo = tiene || (cumple && !f.nv);
-          const espera = !listo && cumple;
+          const listo = false;
+          const espera = cumple;
           return (
-            <li key={c} className={listo ? 'ok' : ''}>
-              <h3>{NOMBRE[c]}<span>{listo ? <><Ico n="ok" t={14} />Desbloqueada</> : espera ? 'Falta verificarse' : 'Bloqueada'}</span></h3>
-              {espera ? <p>Cumple lo que pide; {NV[f.nv] || 'le falta verificarse'}.</p> : null}
-              {!listo && !espera && c === 'temporada' ? <p>Sale con su primera Tarea del Pase de rapero.</p> : null}
-              {!listo && !espera && c !== 'temporada' ? (
-                <ul className="tj-falta">
-                  {q.map((x) => {
-                    const pct = Math.max(0, Math.min(100, Math.round((100 * x[0]) / (x[1] || 1))));
-                    return <li key={x[2]} className={x[0] >= x[1] ? 'ok' : ''}><span>{Math.min(x[0], x[1])}/{x[1]} {String(x[2]).toLowerCase()}</span><i><u style={{ width: pct + '%' }} /></i></li>;
-                  })}
-                </ul>
-              ) : null}
+            <li key={c}>
+              <h3>{NOMBRE[c]}<span>{espera ? 'Falta verificarse' : 'Bloqueada'}</span></h3>
+              {/* el porqué entero va una sola vez, arriba (`pf-nv`): acá repetirlo en cada tarjeta era la misma frase tres veces */}
+              {espera ? <p>{esYo ? 'Ya cumplís lo que pide: sólo te falta verificarte (arriba dice cómo).' : 'Ya cumple lo que pide: sólo le falta verificarse.'}</p> : null}
+              {!listo && !espera && c === 'temporada' ? <p>{RQ.pase(esYo)}</p> : null}
+              {!listo && !espera && c !== 'temporada' ? <FaltaLista q={q} tu={esYo} /> : null}
             </li>
           );
         })}
@@ -356,7 +487,7 @@ function Duelos({ liga, p, e }) {
   const g = du.filter((d) => d[2]).length;
   const rd = (p && p.rd) || null;
   return (
-    <section className="sec pf-sec">
+    <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Cara a cara</h2><span className="tj-n">{g} ganados de {du.length}{rd ? ' · racha ' + rd[0] + ' (máx ' + rd[1] + ')' : ''}</span></div>
       <p className="pf-bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Tocá uno para ver sus duelos.</p>
       <ul className="pf-cc">
@@ -452,7 +583,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   const f = liga.T[k] || filaDeCuenta(dc, k);
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   const p = (P && P.p && P.p[k]) || null;
-  const t = TABS.some((x) => x[0] === tab) ? tab : '';
+  const t = SECCIONES.includes(tab) ? tab : '';
   useEffect(() => { window.scrollTo(0, 0); }, [k]);
   useEffect(() => {
     if (!f) return undefined;
@@ -461,16 +592,18 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     const r = setTimeout(poner, 0);
     return () => clearTimeout(r);
   }, [f]);
-  // al cambiar de pestaña, al principio de lo de abajo (si ya estabas más abajo): si no, la lista nueva arrancaba por la mitad.
+  // un link de los de antes (`#/r/x/duelos`): baja hasta esa sección cuando ya está dibujada.
   // ⚠️ ANTES del `return` de «no está»: un hook después de un return condicional cambia la cuenta de hooks si la persona
   // aparece o desaparece de la tabla con la página abierta, y React tira la página entera
   const abajo = useRef(null);
   useEffect(() => {
-    const el = abajo.current;
-    if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 64;
-    if (window.scrollY > y) window.scrollTo(0, y);
-  }, [t]);
+    if (!t || !P) return undefined;
+    const r = setTimeout(() => {
+      const el = abajo.current && abajo.current.parentNode && abajo.current.parentNode.querySelector('#pf-' + t);
+      if (el) window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 64);
+    }, 60);
+    return () => clearTimeout(r);
+  }, [t, k, !!P]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!f) {
     return (
       <section className="sec pf-sec">
@@ -479,38 +612,29 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       </section>
     );
   }
-  const base = '#/r/' + encodeURIComponent(k);
-  const nIns = ((p && p.ins) || []).length;
+  // 🎨 BLANCO Y NEGRO, COMO EL INICIO (Dlx, 07/10/2026: *«no todos los lugares son blancos sino intercala con el
+  // negro»*): la cabeza, Sus fortalezas, Cara a cara y el Precio van en `.sec.negra` (estilo.css), con dos blancas
+  // entre cada una. El Precio en negro como el Most Wanted del Inicio
   return (
     <>
-      <nav className="rk-subs" aria-label={'Perfil de ' + limpio(f.n)}>
-        <div className="rk-subs-in">
-          {TABS.map(([id, et]) => (
-            <a key={id || 'r'} href={base + (id ? '/' + id : '')} className={id === t ? 'on' : ''} aria-current={id === t ? 'page' : undefined}>
-              {et}{id === 'eventos' && p ? <i>{(p.ev || []).length}</i> : id === 'duelos' && p ? <i>{(p.du || []).length}</i>
-                : id === 'insignias' && p ? <i>{nIns}</i> : null}
-            </a>
-          ))}
-        </div>
-      </nav>
-      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen={!t} />
+      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen />
       <div ref={abajo} />
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entrás entre los 200 de la tabla.</p></section> : null}
-      {!P ? <div className="cargando">Cargando…</div>
-        : t === 'eventos' ? <Eventos liga={liga} p={p} e={P.e} />
-          : t === 'duelos' ? <Duelos liga={liga} p={p} e={P.e} />
-            : t === 'insignias' ? <Insignias liga={liga} p={p} />
-              : (
-                <>
-                  <Numeros f={f} p={p} />
-                  <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} />
-                  <div className="pf-dos">
-                    <EnCadaRanking liga={liga} f={f} p={p} />
-                    <LoQueFalta f={f} p={p} />
-                  </div>
-                  <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
-                </>
-              )}
+      {!P ? <div className="cargando">Cargando…</div> : (
+        <>
+          <Numeros f={f} p={p} />
+          <Datos liga={liga} p={p} e={P.e} />
+          <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
+          <div className="pf-dos">
+            <EnCadaRanking liga={liga} f={f} p={p} />
+            <LoQueFalta f={f} p={p} esYo={esYo} />
+          </div>
+          <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} /></div>
+          <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
+          <div id="pf-insignias"><Insignias liga={liga} p={p} /></div>
+          <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
+        </>
+      )}
     </>
   );
 }

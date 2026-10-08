@@ -7,7 +7,7 @@
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
 import { useEffect, useState } from 'react';
 import { hora, limpio, mult, num, siglaDe } from './liga.js';
-import { DosToques } from './piezas.jsx';
+import { DosToques, Ico } from './piezas.jsx';
 // 🔒 su CSS viene con este pedazo y no con el paquete de todos (ver dashboard.css)
 import ESTILO from './dashboard.css?inline';
 
@@ -47,9 +47,11 @@ function Cajas({ u }) {
   const antes = (x, y) => ((a.dias || 0) >= 7 && y != null ? (x >= y ? '+' : '') + num(x - y) + ' contra la anterior' : null);
   const cajas = [
     ['USARON EL BOT', s.bot, antes(s.bot, a.bot) || 'personas distintas'],
-    ['CON SU CUENTA', s.web, antes(s.web, a.web) || 'entraron a la página con Discord'],
+    ['ENTRARON CON DISCORD', s.web, antes(s.web, a.web) || 'a la página, con su cuenta'],
     ['EN TOTAL', s.personas, antes(s.personas, a.personas) || 'en el bot o en la página'],
-    ['VISITAS POR DÍA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) || 'navegadores, en promedio'],
+    // ⚠️ «VISITAS» SOLO NO DECÍA A QUÉ (Dlx, 07/10/2026: «visitas, pero visitas a qué?»): es cuántos celulares o
+    // compus abrieron la página en el día —cada uno cuenta una vez, con o sin cuenta (`lg:visita` de App.jsx)—
+    ['ABRIERON LA PÁGINA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) || 'celus o compus por día, en promedio'],
   ];
   return <div className="act-4">{cajas.map(([t, v, d]) => <div key={t}><span>{t}</span><b>{num(v || 0)}</b><small>{d}</small></div>)}</div>;
 }
@@ -57,7 +59,7 @@ function Cajas({ u }) {
 // día por día, las tres cosas en barras: el alto es contra el máximo de cada serie, así una no aplasta a las otras
 function Dias({ dias }) {
   const tope = (k) => Math.max(1, ...dias.map((d) => d[k] || 0));
-  const series = [['bot', 'Bot', 'var(--verde)'], ['web', 'Con su cuenta', 'var(--magenta)'], ['visitas', 'Visitas', '#A5A5A0']];
+  const series = [['bot', 'Bot', 'var(--verde)'], ['web', 'Con su cuenta', 'var(--magenta)'], ['visitas', 'Abrieron la página', '#A5A5A0']];
   return (
     <div className="db-dias">
       {series.map(([k, t, c]) => (
@@ -570,10 +572,13 @@ export function Dashboard({ dc, liga }) {
       </>
     );
   }
+  const [panel, setPanel] = useState(() => !panelCerrado());
   return (
     <section className="sec db">
       <style>{ESTILO}</style>
-      <div className="sec-t"><h1>Dashboard</h1></div>
+      <div className="sec-t"><h1>Dashboard</h1>
+        {st.d && !panel ? <button type="button" className="btn borde2 chico" onClick={() => { panelPoner(true); setPanel(true); }}>Mostrarlo en el Inicio</button> : null}
+      </div>
       {cuerpo}
     </section>
   );
@@ -582,15 +587,22 @@ export function Dashboard({ dc, liga }) {
 // 🏠 EN EL INICIO, SÓLO PARA VOS (Dlx, 04/10/2026: «y que me aparezca a mí únicamente en el inicio también»). Lo
 // dibuja App.jsx cuando la cuenta del navegador es la de Dlx, y se apaga solo si la puerta dice que no (otra cuenta
 // con el ID copiado, o la sesión vencida): lo que se ve sale de `/avisos/dueno`, igual que el Dashboard
+// ✕ Y SE CIERRA (Dlx, 07/10/2026: «crea una X para cerrar ese panel para mí»). Queda cerrado en ese navegador
+// (`lg:db-ini`) y se vuelve a prender desde el Dashboard («Mostrarlo en el Inicio»)
+const PANEL = 'lg:db-ini';
+const panelCerrado = () => { try { return localStorage.getItem(PANEL) === 'no'; } catch (e) { return false; } };
+const panelPoner = (si) => { try { if (si) localStorage.removeItem(PANEL); else localStorage.setItem(PANEL, 'no'); } catch (e) { /* sin almacenamiento */ } };
 export function PanelDueno({ liga }) {
   const [st, setSt] = useState(null);
+  const [cerrado, setCerrado] = useState(panelCerrado);
   useEffect(() => {
+    if (cerrado) return undefined;
     let vivo = true;
     pedirDueno().then((x) => { if (vivo) setSt(x); });
     return () => { vivo = false; };
-  }, []);
-  const q = useCuotas(!!(st && st.d));
-  if (!st || st.no) return null;
+  }, [cerrado]);
+  const q = useCuotas(!!(st && st.d) && !cerrado);
+  if (cerrado || !st || st.no) return null;
   const d = st.d;
   const s = (d && d.uso && d.uso.semana) || {};
   const aj = (d && d.ajustes) || {};
@@ -606,15 +618,20 @@ export function PanelDueno({ liga }) {
       <style>{ESTILO}</style>
       <div className="db-ini-c">
         <b>TU DASHBOARD</b>
-        <a className="btn borde2 chico" href="#/dashboard">Abrir</a>
+        <span className="db-ini-a">
+          <a className="btn borde2 chico" href="#/dashboard">Abrir</a>
+          <button type="button" className="db-ini-x" aria-label="Cerrar este panel" title="Cerrar (se vuelve a prender desde el Dashboard)"
+            onClick={() => { panelPoner(false); setCerrado(true); }}><Ico n="cerrar" t={18} /></button>
+        </span>
       </div>
       {d ? (
         <>
+          {/* cada número dice qué cuenta y de cuándo: «visitas» sola no decía a qué */}
           <dl className="db-ini-n">
-            <div><dt>Usaron el bot</dt><dd>{num(s.bot || 0)}</dd></div>
-            <div><dt>Con su cuenta</dt><dd>{num(s.web || 0)}</dd></div>
-            <div><dt>Visitas por día</dt><dd>{num(s.visitas_dia || 0)}</dd></div>
-            <div><dt>Postulaciones · 7 días</dt><dd>{num((d.postulaciones || []).filter((p) => Date.now() - p.t < 7 * 864e5).length)}</dd></div>
+            <div><dt>Usaron el bot</dt><dd>{num(s.bot || 0)}</dd><dd className="db-ini-s">personas · 7 días</dd></div>
+            <div><dt>Entraron con Discord</dt><dd>{num(s.web || 0)}</dd><dd className="db-ini-s">a la página · 7 días</dd></div>
+            <div><dt>Abrieron la página</dt><dd>{num(s.visitas_dia || 0)}</dd><dd className="db-ini-s">celus o compus por día · prom. 7 días</dd></div>
+            <div><dt>Postulaciones</dt><dd>{num((d.postulaciones || []).filter((p) => Date.now() - p.t < 7 * 864e5).length)}</dd><dd className="db-ini-s">servidores, por /sumate · 7 días</dd></div>
           </dl>
           {marcas.length ? <p className="db-ini-m">{marcas.join(' · ')}</p> : null}
         </>
