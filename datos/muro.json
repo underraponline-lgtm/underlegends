@@ -512,7 +512,8 @@
 "erik": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "dxg": {
@@ -4867,6 +4868,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-08T05:47:25Z",
+"quien": [
+"Erik"
+],
+"carta": "temporada"
 }
 ]
 }
