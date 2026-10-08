@@ -2530,9 +2530,17 @@ def duplicados_cargados(cargadas=None):
 
 
 def tiene_campeon(filas):
-    """`True` si alguna fila es la FINAL con ganador: se sabe quién ganó."""
-    return any(str(f.get('ronda') or '').strip().lower() == 'final'
-               and str(f.get('ganador') or '').strip() for f in filas)
+    """`True` si alguna fila es la FINAL con ganador: se sabe quién ganó.
+
+    🔴 EN LA DOBLE, LA ÚLTIMA FINAL (FFA, Doble Eliminación Vol. 2, 08/10/2026). Si el que viene de perdedores gana
+    la gran final, se juega otra —la revancha— y la primera ya tiene ganador (`escuchar._resolver_doble()`): con
+    «alguna fila» la llave se cargaba mientras se jugaba la segunda, sin campeón. Ahí manda la última."""
+    def es(f, r):
+        return str(f.get('ronda') or '').strip().lower() == r
+    fin = [f for f in filas if es(f, 'final')]
+    if any(es(f, 'llave de perdedores') for f in filas):
+        return bool(fin) and bool(str(fin[-1].get('ganador') or '').strip())
+    return any(str(f.get('ganador') or '').strip() for f in fin)
 
 
 def horas_quieta(grupo, ahora=None):
@@ -2805,6 +2813,11 @@ def _self_check():
          not tiene_campeon([{'ronda': 'semifinales', 'ganador': 'Ana'}])),
         ('la final sin ganador NO es campeón',
          not tiene_campeon([{'ronda': 'final', 'ganador': ''}])),
+        ('en la doble manda la última final: con la revancha sin jugar, todavía no hay campeón (FFA, 08/10)',
+         not tiene_campeon([{'ronda': 'llave de perdedores', 'ganador': 'Pi'}, {'ronda': 'final', 'ganador': 'Pi'},
+                            {'ronda': 'final', 'ganador': ''}])
+         and tiene_campeon([{'ronda': 'llave de perdedores', 'ganador': 'Pi'}, {'ronda': 'final', 'ganador': 'Pi'},
+                            {'ronda': 'final', 'ganador': 'Ma'}])),
         ('publicada hace 32 h y sin tocar: terminó',
          horas_quieta(g_viejo, ahora) >= QUIETA_H),
         ('editada hace 2 h: manda la edición, sigue en curso',

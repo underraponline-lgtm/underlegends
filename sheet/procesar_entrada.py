@@ -309,7 +309,7 @@ def main():
         alias_mal += [(ev['num'], a) for a in ev['avisos']
                       if 'pelean en la misma batalla' in a
                       or a.startswith('ESCALA:') or a.startswith('SUMA:')
-                      or a.startswith('VIDAS:')]
+                      or a.startswith('VIDAS:') or a.startswith('DOBLE:')]
 
     if alias_mal and aplicar:
         try:

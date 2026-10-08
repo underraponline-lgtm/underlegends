@@ -1014,8 +1014,11 @@
         if (gm.length === 1) F.b[0][1] = gm[0];
       }
     }
-    var fin = rs.length && rs[rs.length - 1][0] === 'FINAL' && rondas[rondas.length - 1].b.length === 1 &&
-      rondas[rondas.length - 1].b[0][1];
+    // 🔑 en la doble la gran final puede ser dos (la revancha, FFA 08/10/2026): termina cuando la última tiene ganador
+    var Rf = rondas.length ? rondas[rondas.length - 1] : null;
+    var dob = rs.some(function (R) { return R[0] === DOBLE_P; });
+    var fin = rs.length && rs[rs.length - 1][0] === 'FINAL' && Rf && (Rf.b.length === 1 || (dob && Rf.b.length === 2)) &&
+      Rf.b[Rf.b.length - 1][1];
     return {
       vivo: true, id: b.id, nombre: titulo(b.texto) || 'La llave', sv: b.sv || '',
       // la misma cuenta que el ciclo (`filas_de()`): la que elige la escala de puntos

@@ -176,33 +176,43 @@ def pago_doble(tab, puesto):
 def lugares_doble(batallas, resolver=None):
     """`(orden, avisos)` de un evento de doble eliminación: los lados del campeón al primero que cayó.
 
-    🔑 CADA UNO CAE CON SU SEGUNDA DERROTA, en el orden de las filas —que es el de la llave: la de ganadores, la de
-    perdedores y la final—. El que llega al final con menos de dos es el campeón: si pierde la primera final y gana la
-    revancha, termina con una. Un lado es una persona o un equipo, por su clave (`_clave_lado()`).
+    🔑 CADA UNO CAE EN SU ÚLTIMA BATALLA, SI LA PERDIÓ, en el orden de las filas —que es el de la llave: la de
+    ganadores, la de perdedores y la final—. Casi siempre es su segunda derrota; cuando no, la llave manda:
+
+      · LA GRAN FINAL ESCRITA UNA VEZ (FFA, Doble Eliminación Vol. 2, 08/10/2026; Dlx: *«MAKMA es de la llave de
+        ganadores, nunca perdió una vida, pero ya perdió 1… ahora tiene PICHULA que ganarle una vez más»*). Si el
+        campeón viene de perdedores hubo revancha, aunque la llave escriba la final una sola vez: el otro llega a su
+        última batalla con UNA derrota y es el subcampeón igual.
+      · QUIEN NO SIGUIÓ: ALEXIZ perdió en Octavos y no aparece en la de perdedores (la misma noche, KULRW entró
+        directo ahí). Con la regla de las dos derrotas quedaban «en pie» y no se pagaba a nadie.
+
+    Contar derrotas hacía que una llave bien escrita quedara sin pagar por cualquiera de las dos. Un lado es una
+    persona o un equipo, por su clave (`_clave_lado()`).
 
     ⚠️ CON MÁS DE UNO EN PIE NO SE PAGA: la llave no terminó, o falta el ganador de alguna batalla. Se avisa."""
-    perdidas, cayeron, vistos, rep, avisos = {}, [], [], {}, []
-    for b in batallas:
+    perdidas, ultima, perdio, vistos, rep, avisos = {}, {}, {}, [], {}, []
+    for i, b in enumerate(batallas):
+        p = _perdedor(b)
+        kp = _clave_lado(p) if p else ''
         for lado in (b.get('ladoA'), b.get('ladoB')):
             k = _clave_lado(lado)
-            if k and k not in perdidas:
-                perdidas[k] = 0
+            if not k:
+                continue
+            if k not in rep:
                 vistos.append(k)
                 rep[k] = lado
-        p = _perdedor(b)
-        k = _clave_lado(p) if p else ''
-        if not k:
-            continue
-        perdidas[k] = perdidas.get(k, 0) + 1
-        if perdidas[k] == 2:
-            cayeron.append(k)
-        elif perdidas[k] > 2:
-            avisos.append('DOBLE: %s pierde %d veces — revisar el orden de las filas' % (rep.get(k, p), perdidas[k]))
-    vivos = [k for k in vistos if k not in cayeron]
+            ultima[k] = i
+            perdio[k] = k == kp
+        if kp:
+            perdidas[kp] = perdidas.get(kp, 0) + 1
+            if perdidas[kp] > 2:
+                avisos.append('DOBLE: %s pierde %d veces — revisar el orden de las filas' % (rep.get(kp, p), perdidas[kp]))
+    vivos = [k for k in vistos if not perdio[k]]
     if len(vivos) != 1:
         avisos.append('DOBLE: terminan %d en pie (%s): la llave no terminó o falta un ganador — no se pagan los '
                       'puestos' % (len(vivos), ', '.join(rep[k] for k in vivos) or '—'))
         return [], avisos
+    cayeron = sorted((k for k in vistos if perdio[k]), key=lambda k: ultima[k])
     return [rep[k] for k in vivos + list(reversed(cayeron))], avisos
 
 
@@ -1480,6 +1490,21 @@ def _self_check():
     dn, edn = _db([('Pe', 'Ki', '')])
     ok('sin el ganador de la final no se paga, y se avisa',
        not dn and any(a.startswith('DOBLE:') for a in edn['avisos']), '%s · %s' % (dn, edn['avisos']))
+    # 🔑 LA GRAN FINAL ESCRITA UNA SOLA VEZ, con el campeón viniendo de perdedores (FFA, 08/10/2026: hubo revancha y
+    #    la llave no la escribe): Pe llega con UNA derrota y es el subcampeón igual
+    du, edu = _db([('Pe', 'Ki', 'Ki')])
+    ok('la final escrita una vez y el campeón de perdedores: el otro es el subcampeón, con una sola derrota',
+       du.get('Ki') == 'Campeón' and du.get('Pe') == 'Subcampeón' and not edu['avisos'], '%s · %s' % (du, edu['avisos']))
+    # 🔑 QUIEN NO SIGUIÓ EN LA DE PERDEDORES (ALEXIZ, la misma noche): cae con su única derrota, y se paga a todos
+    wb2 = wb + [('Pe', 'Zo', 'Pe')]
+    bsz = ([{'ronda': 'octavos', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in wb2[-1:]]
+           + [{'ronda': 'llave de ganadores', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in wb]
+           + [{'ronda': 'llave de perdedores', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in lb]
+           + [{'ronda': 'final', 'ladoA': 'Pe', 'ladoB': 'Ki', 'ganador': 'Pe'}])
+    ez = procesar(bsz, num=2, fecha='07/10', servidor='FFA', participantes=9, tab=t815, mods=mods, resolver=_yo)
+    pz = {r['rapero']: r['posicion'] for r in ez['resultados']}
+    ok('quien perdió una vez y no siguió cae ahí, y no deja la llave sin pagar',
+       pz.get('Pe') == 'Campeón' and pz.get('Zo') and len(pz) == 9 and not ez['avisos'], '%s · %s' % (pz, ez['avisos']))
     # 🔴 con la de 8-15 de verdad, que termina en Cuartos: el 7.º y el 8.º cobraban CERO
     t815r = {'8-15': {'campeon': 7500, 'subcampeon': 5000, 'tercero': 4000, 'semifinal': 3500, 'cuarto': 3000,
                       'cuartos': 2000}}
