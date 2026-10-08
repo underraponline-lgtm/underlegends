@@ -1,5 +1,5 @@
 {
- "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Se borra a los 30 días. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.",
+ "_leeme": "El texto de los anuncios que son una imagen, leído por la IA de Cloudflare (/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026. Se borra a los 30 días.",
  "msgs": {
   "1556061426861351064": {
    "texto": "MUERTE SUBITA\n\n \n \n\nTORNEO DE FREESTYLE\n\n \n\nFECHA 03/10\nCUPOS ILIMTADOS HASTA ACABAR FILTROS\n\nVS \n\nJUECES\nLEITAN-KANJI-IZAYA\n\nTORNEO ONLINE POR DISCORD SERVIDOR:\n\nPREMIOS \n$15P\n$7P\nHORA 7PM",
@@ -24,6 +24,10 @@
   "1557241725658079345": {
    "texto": "FREESTYLE MASTER HONGO\nJORNADA 7\nMAZATLÁN\n24 DE OCTUBRE\nLUGAR MAZATLAN INTERNATIONAL CENTER\nHORA: 20:00\nENTRADAS EN: FMH.TV\n\nCHINGAS A TU MADRE   TotalTRANS",
    "t": "2026-10-07T04:24:20"
+  },
+  "bdf9824f7ff5b21c81cfc2368da8e2d59c1a466f90eeebe07e6b317c2a0ccd2f": {
+   "texto": "",
+   "t": "2026-10-08T15:53:42"
   }
  }
 }
