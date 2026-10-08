@@ -515,6 +515,13 @@ def llave_de_veredictos_para(g, llaves_v=None):
         return None
     V = cands[0]
     rs = [r for h in g['llaves'] for r in E.rondas_de(h.get('texto') or '')]
+    # 🔑 UN EVENTO DE EQUIPOS SE QUEDA CON LA LLAVE DEL ORGANIZADOR (PRITTY FREE, FFA, 07/10/2026, MULTIVERSE 1-4). En
+    # #votaciones los jueces escriben el equipo en mayúsculas y SIN separador —«NEMI PRESAGIO DELUX», «CRONOX
+    # XCLUSIVO», «VELATZ SNOW NEO»—, y el #425 se cargó con cinco «personas» que eran equipos y sin los puntos de nueve
+    # (Dlx: «estas son 3 personas diferentes»). La del organizador los separa (`cronox+xclusivo`, `Nemi x presagio x
+    # dantedelux`). El reemplazo es para la llave recortada de un 1 contra 1 (DOS GENERACIONES VOL 2)
+    if any('+' in str(x) for r in rs for b in r[1] for x in b):
+        return None
     if rs:
         r0 = E.ALIAS.get(rs[0][0], rs[0][0])
         vr0 = [bt for bt in V['batallas'] if bt[0] == V['batallas'][0][0]]
