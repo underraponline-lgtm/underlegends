@@ -276,7 +276,8 @@
   "riferian": "Erian",
   "riferianumacryu": "Erian",
   "malasia": "Liberia",
-  "malasiafighter": "Liberia"
+  "malasiafighter": "Liberia",
+  "dantedelux": "Delux"
  },
  "pares": [
   [
@@ -1386,6 +1387,10 @@
   [
    "Malasia Fighter",
    "Liberia"
+  ],
+  [
+   "dantedelux",
+   "Delux"
   ]
  ],
  "no_confundir": [

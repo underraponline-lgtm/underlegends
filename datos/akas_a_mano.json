@@ -133,7 +133,11 @@
   "   07/10 jugó en FFA como «MALASIA 🇦🇷», y en la Lista había una fila «Malasia Fighter ❓» sin cuenta.",
   "   «Yo mc» en FFA es Cronox (07/10/2026): su cuenta (@cronoxzito, la de la Lista) se anota como «Yo mc 🇨🇱»,",
   "   «Yo 🇨🇱» y «Yo + tenor» —«yo» es él—, y el organizador copió «YO MC» a la llave (DEM UZBEKISTAN FECHA 1).",
-  "   Va por servidor y no global: en la ACADEMIA otra cuenta escribió «Yo mc🇨🇻» hablando de sí misma."
+  "   Va por servidor y no global: en la ACADEMIA otra cuenta escribió «Yo mc🇨🇻» hablando de sí misma.",
+  "   «dantedelux» es Delux 🇦🇷 (07/10/2026, PRITTY FREE de FFA: «Nemi x presagio x dantedelux», tres argentinos).",
+  "   Dlx preguntó si eran dos —Dante y Delux—: es UNA cuenta, @delux.13 (729809358627536938, la de Delux en la",
+  "   Lista), con nombre «dante» y apodo «Delux» en FFA y DRA y «Dante Delux» en Snake Rap; se anotó así y el bot",
+  "   ya la había reconocido. NO es Deluxe 🇦🇷 (@.jeluxe, de SR) ni Dantemx 🇲🇽 (@danteshemc)."
  ],
  "cuentas": {
   "Monet": [
@@ -299,6 +303,10 @@
   [
    "Malasia Fighter",
    "Liberia"
+  ],
+  [
+   "dantedelux",
+   "Delux"
   ]
  ],
  "no_confundir": [
