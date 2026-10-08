@@ -841,7 +841,8 @@
      ronda y ocupa dos lugares. Dlx, 28/09/2026: «en sí el formato es de 16»
      (COMPE DEL VACILE 1: Majiztral dos veces en octavos). */
   function repetidosEnLaPrimera(rs) {
-    if (!rs.length) return 0;
+    // 🔴 en la doble no: la llave de ganadores repite a quien gana (`repetidos_en_la_primera()`)
+    if (!rs.length || rs.some(function (R) { return R[0] === DOBLE_P; })) return 0;
     var vistos = {}, extra = 0;
     rs[0][1].forEach(function (b) {
       b.forEach(function (lado) {

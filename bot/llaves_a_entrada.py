@@ -804,7 +804,10 @@ def repetidos_en_la_primera(texto):
     de 16»*. Sólo la primera ronda: ahí están todos los lugares de la llave.
     """
     rs = E.rondas_de(texto or '')
-    if not rs:
+    # 🔴 EN LA DOBLE LA PRIMERA RONDA PUEDE SER LA LLAVE DE GANADORES ENTERA («WINNER BRACKET», PLEXKITS), y ahí cada
+    # uno aparece una vez por batalla que gana: la de 8 contaba 14 y la página decía «14 raperos». Nadie revive en una
+    # doble —para eso está la llave de perdedores—, así que no hay lugar doble que contar
+    if not rs or E.es_doble(rs):
         return 0
     vistos, extra = set(), 0
     for b in rs[0][1]:
@@ -3088,6 +3091,10 @@ def _self_check():
          repetidos_en_la_primera('# OCTAVOS\n⌞MAJI⌝ 🆚 ⌞MOTE⌝\n⌞TG⌝ 🆚 ⌞MAJI⌝\n'
                                  '# CUARTOS\n⌞MOTE⌝ 🆚 ⌞MAJI⌝\n') == 1
          and repetidos_en_la_primera('# CUARTOS\n⌞A⌝ 🆚 ⌞B⌝\n# FINAL\n⌞A⌝ 🆚 ⌞C⌝\n') == 0),
+        ('en la doble, la llave de ganadores repite a quien gana y no es un lugar doble (la de 8 contaba 14)',
+         repetidos_en_la_primera('**WINNER BRACKET**\nMATCH 1: Pedro vs Luis\nMATCH 2: Ema vs Xavi\n'
+                                 'MATCH 3: Pedro vs Ema\n**LOSER BRACKET**\nMATCH 4: Luis vs Xavi\n'
+                                 'MATCH 5: Ema vs Xavi\n**GRAN FINAL**\nMATCH 6: Pedro vs Ema\n') == 0),
         ('el equipo con nombre de un 2VS2 son dos (TEAM VENECIA); en un MULTIVERSE o un 1vs1, nada',
          faltan_en_equipos('# CUARTOS\n[JOTA P + IGUANA] VS [TEAM VENECIA]\n[DOS + PIYI] VS [SOUL B + CHAR]\n'
                            '[PARIA + PRRR] VS [VANDU + MAKMA]\n[ELSOLAR + METO] VS [SNOW + NC]\n') == 1

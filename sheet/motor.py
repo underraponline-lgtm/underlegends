@@ -144,15 +144,33 @@ def doble_de(batallas):
     return any(ronda_de(b.get('ronda')) == DOBLE_P for b in batallas)
 
 
-def puesto_doble(n):
+def puesto_doble(n, gano=True):
     """Lo que paga el lugar `n` en la doble eliminación. Dlx, 07/10/2026 (*«por dónde cae»*), sobre la de 8: campeón
     el que gana la final, subcampeón el que la pierde, 3.º el que pierde la final de perdedores, 4.º el de antes,
-    «Cuartos» los dos que caen antes (5.º y 6.º) y «Octavos» los dos primeros en caer (7.º y 8.º). Más abajo, R32.
+    «Cuartos» los dos que caen antes (5.º y 6.º) y «Octavos» los dos primeros en caer (7.º y 8.º).
+
+    🔑 DEL 9.º AL 16.º, «OCTAVOS» SI GANÓ ALGUNA BATALLA, Y «R32» EL QUE PERDIÓ LAS DOS QUE JUGÓ (Dlx, 08/10/2026,
+    sobre la de FFA, de 17: *«lo que tú consideres»*). Con R32 para todos, la primera batalla de la llave de perdedores
+    no cambiaba los puntos de nadie —el 9.º y el 16.º cobraban lo mismo— y quien acaba de perder no tenía por qué
+    quedarse a jugarla. Así la primera en caer sigue cobrando menos, que es lo que Dlx eligió para la de 8. Del 17.º
+    para abajo, R32.
 
     ⚠️ NO ES `puesto_de_lugar()`: ahí del 5.º al 8.º son todos «Cuartos» (lo que pagó la #320 5 VIDAS). Acá cada
     ronda de la llave de perdedores saca a dos —en la de 8— y Dlx eligió que la primera en caer cobre menos."""
     return ({1: 'campeon', 2: 'subcampeon', 3: 'tercero', 4: 'cuarto'}.get(n)
-            or ('cuartos' if n <= 6 else 'octavos' if n <= 8 else 'r32'))
+            or ('cuartos' if n <= 6 else 'octavos' if n <= 8 or (n <= 16 and gano) else 'r32'))
+
+
+def pago_doble(tab, puesto):
+    """Lo que cobra un puesto de la doble con la escala `tab`.
+
+    🔴 LAS ESCALAS DE 8-15 Y DE 4-7 TERMINAN EN «CUARTOS» (`Config`), y la doble de 8 paga «Octavos» al 7.º y al 8.º:
+    `tab.get('octavos', 0)` les daba CERO, callado, porque el aviso de `ESCALA:` saltea las rondas de la doble. Lo
+    que la escala no tiene es la mitad del escalón de arriba, que es como baja la de 16+ (2.500 → 1.250 → 625)."""
+    if tab.get(puesto):
+        return tab[puesto]
+    arriba = {'octavos': 'cuartos', 'r32': 'octavos'}.get(puesto)
+    return pago_doble(tab, arriba) // 2 if arriba else 0
 
 
 def lugares_doble(batallas, resolver=None):
@@ -691,8 +709,10 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     if doble:
         orden, av = lugares_doble(batallas, resolver)
         avisos += av
+        gano = {_clave_lado(b.get('ganador')) for b in batallas if b.get('ganador')}
         for i, lado in enumerate(orden, 1):
-            sumar(lado, tab.get(puesto_doble(i), 0), puesto_doble(i))
+            p = puesto_doble(i, _clave_lado(lado) in gano)
+            sumar(lado, pago_doble(tab, p), p)
 
     final = (por('final') or [None])[0]
     tercer = (por('tercer puesto') or [None])[0]
@@ -714,7 +734,9 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         c4 = _perdedor(tercer)
         if c4 is not None:
             sumar(c4, tab.get('cuarto', 0), 'cuarto', fuera=_pk(tercer))
-    else:
+    # 🔴 EN LA DOBLE, «SEMIFINAL» ES UNA RONDA DE LA LLAVE DE GANADORES (FFA, 07/10/2026) y quien la pierde no queda
+    # afuera: ya cobra por dónde cae (`puesto_doble()`). Pagarla acá le sumaba 5.250 más al 5.º y al 6.º
+    elif not doble:
         semis = por('semifinal')
         if len(semis) >= 2:
             # ⚠️ EL VALOR DECLARADO MANDA, Y SE COMPRUEBA. Ver el docstring.
@@ -1458,6 +1480,52 @@ def _self_check():
     dn, edn = _db([('Pe', 'Ki', '')])
     ok('sin el ganador de la final no se paga, y se avisa',
        not dn and any(a.startswith('DOBLE:') for a in edn['avisos']), '%s · %s' % (dn, edn['avisos']))
+    # 🔴 con la de 8-15 de verdad, que termina en Cuartos: el 7.º y el 8.º cobraban CERO
+    t815r = {'8-15': {'campeon': 7500, 'subcampeon': 5000, 'tercero': 4000, 'semifinal': 3500, 'cuarto': 3000,
+                      'cuartos': 2000}}
+    bs8 = ([{'ronda': 'llave de ganadores', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in wb]
+           + [{'ronda': 'llave de perdedores', 'ladoA': a, 'ladoB': c, 'ganador': g} for a, c, g in lb]
+           + [{'ronda': 'final', 'ladoA': 'Pe', 'ladoB': 'Ki', 'ganador': 'Pe'}])
+    e8 = procesar(bs8, num=2, fecha='07/10', servidor='FFA', participantes=8, tab=t815r, mods=mods, resolver=_yo)
+    p8 = {r['rapero']: r['puntos'] for r in e8['resultados']}
+    ok('la escala de 8-15 no tiene Octavos: el 7.º y el 8.º cobran la mitad de Cuartos, no cero',
+       p8.get('Lu') == 1000 and p8.get('Iv') == 1000 and p8.get('Xa') == 2000, '%s' % p8)
+
+    # 9 · LA DOBLE DE 16: del 9.º al 16.º, Octavos quien ganó alguna batalla y R32 quien perdió las dos que jugó
+    #     (Dlx, 08/10/2026: «lo que tú consideres»). Una doble de 16 de verdad, con el de número más bajo ganando
+    #     siempre: así se sabe quién cae dónde
+    t16 = {'16+': {'campeon': 10000, 'subcampeon': 7500, 'tercero': 6000, 'semifinal': 5250, 'cuarto': 4500,
+                   'cuartos': 2500, 'octavos': 1250, 'r32': 625}}
+    J = ['J%02d' % i for i in range(16)]
+    g16, p16 = [], []
+
+    def _pel(filas, ronda, a, c):
+        g = min(a, c)
+        filas.append({'ronda': ronda, 'ladoA': a, 'ladoB': c, 'ganador': g})
+        return g, max(a, c)
+
+    w1 = [_pel(g16, 'octavos', J[i], J[i + 1]) for i in range(0, 16, 2)]
+    l1 = [_pel(p16, 'llave de perdedores', w1[i][1], w1[i + 1][1])[0] for i in range(0, 8, 2)]
+    w2 = [_pel(g16, 'cuartos', w1[i][0], w1[i + 1][0]) for i in range(0, 8, 2)]
+    l2 = [_pel(p16, 'llave de perdedores', l1[i], w2[i][1])[0] for i in range(4)]
+    l3 = [_pel(p16, 'llave de perdedores', l2[i], l2[i + 1])[0] for i in (0, 2)]
+    w3 = [_pel(g16, 'semifinal', w2[i][0], w2[i + 1][0]) for i in (0, 2)]
+    l4 = [_pel(p16, 'llave de perdedores', l3[i], w3[i][1])[0] for i in range(2)]
+    l5 = _pel(p16, 'llave de perdedores', l4[0], l4[1])[0]
+    w4 = _pel(g16, 'llave de ganadores', w3[0][0], w3[1][0])
+    l6 = _pel(p16, 'llave de perdedores', l5, w4[1])[0]
+    _pel(p16, 'final', w4[0], l6)
+    e16 = procesar(g16 + p16, num=3, fecha='08/10', servidor='FFA', participantes=16, tab=t16, mods=mods,
+                   resolver=_yo)
+    d16 = {r['rapero']: (r['posicion'], r['puntos']) for r in e16['resultados']}
+    quiere = {'J00': ('Campeón', 10000), 'J01': ('Subcampeón', 7500), 'J08': ('Tercero', 6000),
+              'J09': ('Cuarto', 4500), 'J04': ('Cuartos', 2500), 'J12': ('Cuartos', 2500),
+              'J05': ('Octavos', 1250), 'J13': ('Octavos', 1250)}
+    quiere.update({j: ('Octavos', 1250) for j in ('J02', 'J06', 'J10', 'J14')})
+    quiere.update({j: ('R32', 625) for j in ('J03', 'J07', 'J11', 'J15')})
+    ok('doble de 16: del 9.º al 12.º ganaron una batalla y cobran Octavos; del 13.º al 16.º, R32',
+       d16 == quiere and not e16['avisos'],
+       '%s · %s' % ({k: v for k, v in d16.items() if quiere.get(k) != v}, e16['avisos'] or '—'))
 
     mal = nonlocal_mal[0]
     print('')
