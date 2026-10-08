@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.64",
+   "dia": "2026-10-08",
+   "cuando": "2026-10-08T14:24:00-04:00",
+   "titulo": "La Temporada 1 empezó el 22 de septiembre",
+   "items": [
+    "🏁 **No hay reset el 12 de octubre**: la Temporada 1 va del 22 de septiembre al 31 de diciembre, y lo que jugaste desde el 22/09 cuenta —en todos los servidores por igual—. Nada vuelve a cero: ni los puntos, ni el Pase, ni el Most Wanted, ni las insignias.",
+    "🎯 **Most Wanted: 12 buscados por semana**, desde el lunes 12 a las 11 AM. Hasta ahí siguen los diarios, y el domingo se vota El Elegido de la primera semana.",
+    "🪜 **Divisiones, más claras**: las seis siempre a la vista —de Sexta, donde se entra, a Primera—, con cuántos juegan en cada una; una línea en la tabla marca hasta dónde se sube y desde dónde se baja; cuánto te falta para subir, y cuánto falta para que cierre la semana.",
+    "🏆 **«CAMPEÓN: TEAM ANDRES»**: el bot entiende un equipo nombrado por uno de los suyos. CIUDAD GÓTICA (Dimensión del Freestyle, 27/09) estaba sin campeón y entra con el equipo de Andres, Cronox y Leonar-T."
+   ]
+  },
+  {
    "version": "2.63",
    "dia": "2026-10-08",
    "cuando": "2026-10-08T10:53:00-04:00",
