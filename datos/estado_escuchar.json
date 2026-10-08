@@ -1,27 +1,27 @@
 {
  "v": 1,
- "cuando": "2026-10-08T20:26:32Z",
+ "cuando": "2026-10-08T20:56:19Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 220.7,
+ "dur_s": 202.8,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 36.4
+   "s": 37.7
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 57.4
+   "s": 31.7
   },
   {
    "n": "1a",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 24.3
+   "s": 25.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.9
+   "s": 2.5
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.2
+   "s": 6.6
   },
   {
    "n": "2b",
@@ -75,7 +75,7 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.5
+   "s": 0.9
   },
   {
    "n": "2b4b",
@@ -93,19 +93,19 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 25.7
+   "s": 27.7
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.6
+   "s": 4.8
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 37.4
+   "s": 32.1
   },
   {
    "n": "2c2",
@@ -117,7 +117,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.0
+   "s": 11.7
   },
   {
    "n": "2e",
@@ -129,13 +129,19 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.0
+   "s": 7.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.8
+   "s": 2.9
+  },
+  {
+   "n": "5b",
+   "que": "las Bloqueadas",
+   "ok": true,
+   "s": 4.8
   }
  ],
  "fallas": [],
@@ -148,7 +154,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-08T20:23:32Z",
+  "cuando": "2026-10-08T20:53:39Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 378,
   "un_evento": 188,
@@ -176,20 +182,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 288,
-   "read": 38303
+   "write": 306,
+   "read": 39929
   },
   "objeto": {
-   "leidas": 1600151,
-   "escritas": 19188,
-   "pedidos": 6502
+   "leidas": 1672307,
+   "escritas": 19620,
+   "pedidos": 6623
   },
   "worker": {
-   "pedidos": 7947,
+   "pedidos": 7835,
    "errores": 1,
-   "sub": 8331,
+   "sub": 8206,
    "p50_ms": 1.11,
-   "p99_ms": 6.16
+   "p99_ms": 6.13
   },
   "r2": {
    "objetos": 3652,
