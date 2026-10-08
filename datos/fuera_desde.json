@@ -14,6 +14,12 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "emizor": {
+   "bloq-competitivo": "2026-10-08",
+   "bloq-pais": "2026-10-08",
+   "competitivo": "2026-10-08",
+   "pais": "2026-10-08"
+  },
   "hassan": {
    "bloq-competitivo": "2026-10-05",
    "bloq-pais": "2026-10-05",
@@ -65,8 +71,8 @@
    "temporada": "2026-10-07"
   }
  },
- "pasaban": 376,
- "cuando": "2026-10-08T04:56:51Z",
+ "pasaban": 375,
+ "cuando": "2026-10-08T05:27:07Z",
  "borradas": [
   [
    "indigena",

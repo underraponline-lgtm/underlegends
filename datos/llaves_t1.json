@@ -15341,11 +15341,11 @@
     "b": [
      [
       [
-       "Makmah",
-       "PichulaMc"
+       "PichulaMc",
+       "Makmah"
       ],
-      "Makmah",
-      "ganador según #veredictos"
+      "PichulaMc",
+      ""
      ]
     ],
     "r": "Final"
@@ -15354,34 +15354,34 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Erik",
-    "Cuartos",
-    2500
+    "PichulaMc",
+    "Campeón",
+    10000
    ],
    [
-    "LitKunai",
-    "Cuartos",
-    2500
+    "Makmah",
+    "Subcampeón",
+    7500
    ],
    [
-    "Molusco",
-    "Cuartos",
-    2500
+    "Dyzz",
+    "Tercero",
+    6000
    ],
    [
     "NC",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Delux",
     "Cuartos",
     2500
    ],
    [
-    "Alexi",
-    "Octavos",
-    1250
-   ],
-   [
-    "Crk",
-    "Octavos",
-    1250
+    "Geoka",
+    "Cuartos",
+    2500
    ],
    [
     "Cronox",
@@ -15389,12 +15389,22 @@
     1250
    ],
    [
-    "Gocho",
+    "Erik",
     "Octavos",
     1250
    ],
    [
-    "PichulaMc",
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "LitKunai",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
     "Octavos",
     1250
    ],
@@ -15404,14 +15414,29 @@
     1250
    ],
    [
+    "Alexi",
+    "R32",
+    625
+   ],
+   [
+    "Crk",
+    "R32",
+    625
+   ],
+   [
+    "Gocho",
+    "R32",
+    625
+   ],
+   [
     "Zaik 🇪🇸",
-    "Octavos",
-    1250
+    "R32",
+    625
    ],
    [
     "setesfifi",
-    "Octavos",
-    1250
+    "R32",
+    625
    ]
   ]
  }

@@ -1515,9 +1515,9 @@
     "PichulaMc"
    ],
    [
-    "Makmah",
     "PichulaMc",
-    "Makmah"
+    "Makmah",
+    "PichulaMc"
    ]
   ],
   "ev_antes": {
@@ -1533,7 +1533,7 @@
    "setesfifi": 1
   },
   "fecha": "07/10",
-  "firma": "79f3540cb00431ac",
+  "firma": "f8aa1a5bdc98fbaa",
   "msg": "1557616971858579527",
   "nombre": "Doble Eliminación Vol. 2",
   "num": 426,
@@ -1543,44 +1543,34 @@
   "t": "2026-10-08T04:53:44Z",
   "tabla": [
    [
+    "PichulaMc",
+    "Campeón",
+    10000
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Dyzz",
+    "Tercero",
+    6000
+   ],
+   [
     "NC",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Geoka",
     "Cuartos",
     2500
    ],
    [
-    "Molusco",
+    "Delux",
     "Cuartos",
     2500
-   ],
-   [
-    "Erik",
-    "Cuartos",
-    2500
-   ],
-   [
-    "LitKunai",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Crk",
-    "Octavos",
-    1250
-   ],
-   [
-    "setesfifi",
-    "Octavos",
-    1250
-   ],
-   [
-    "Zaik 🇪🇸",
-    "Octavos",
-    1250
-   ],
-   [
-    "Alexi",
-    "Octavos",
-    1250
    ],
    [
     "Polosport",
@@ -1593,14 +1583,49 @@
     1250
    ],
    [
-    "Gocho",
+    "Molusco",
     "Octavos",
     1250
    ],
    [
-    "PichulaMc",
+    "Erik",
     "Octavos",
     1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "LitKunai",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gocho",
+    "R32",
+    625
+   ],
+   [
+    "setesfifi",
+    "R32",
+    625
+   ],
+   [
+    "Zaik 🇪🇸",
+    "R32",
+    625
+   ],
+   [
+    "Crk",
+    "R32",
+    625
+   ],
+   [
+    "Alexi",
+    "R32",
+    625
    ]
   ],
   "v": 2
