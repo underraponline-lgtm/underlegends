@@ -1672,6 +1672,36 @@
    "b": "FLEIVAMAN",
    "ganador": "PRESAGIO",
    "votos": "1–0"
+  },
+  "1557981180371148845": {
+   "id": "1557981180371148845",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791522059291,
+   "a": "ZA🇺🇸",
+   "b": "MAKMAH🇻🇪",
+   "ganador": "ZA🇺🇸",
+   "votos": "1–0"
+  },
+  "1557982924626731131": {
+   "id": "1557982924626731131",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791522475154,
+   "a": "GREYFITSH🇵🇦",
+   "b": "ALDRE🇦🇷",
+   "ganador": "ALDRE🇦🇷",
+   "votos": "1–0"
+  },
+  "1557985463774740494": {
+   "id": "1557985463774740494",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791523080534,
+   "a": "XUBARU 🇩🇪",
+   "b": "MAKMAH🇻🇪",
+   "ganador": "MAKMAH🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -4065,8 +4095,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791518498151,
-   "ed": 1791521265587,
-   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞BLITZ🇦🇷⌝\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n`[ CUARTOS ]`\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝",
+   "ed": 1791523299532,
+   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞BLITZ🇦🇷⌝\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n`[ CUARTOS ]`\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ CUARTOS ]`\n⌞RAM🇦🇷⌝ 🆚 ⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ SEMIFINALES ]`\n⌞GREYFITSH🇵🇦⌝ 🆚 ⌞ALDRE🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞MAKMAH🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞GREYFITSH🇵🇦⌝ 🆚 ⌞ALDRE🇦🇷⌝\n`[ FINAL ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞ALDRE🇦🇷⌝\n⌞PROVENZA COLESITO XUBARU⌝ 🆚 ⌞ALDRE MAKMA RODA⌝\n⌞XUBARU 🇩🇪⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞XUBARU 🇩🇪⌝ 🆚 ⌞MAKMAH🇻🇪⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞COLESITO 🇨🇴⌝",
    "batallas": [
     [
      "FILTROS",
@@ -4098,8 +4128,8 @@
       "ZA🇺🇸",
       "BLITZ🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ZA🇺🇸",
+     "ronda siguiente",
      []
     ],
     [
@@ -4108,8 +4138,8 @@
       "EMILY FAMILY🇵🇾",
       "GREYFITSH🇵🇦"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "GREYFITSH🇵🇦",
+     "ronda siguiente",
      []
     ],
     [
@@ -4118,8 +4148,8 @@
       "MAKMAH🇻🇪",
       "TEO🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "MAKMAH🇻🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -4128,8 +4158,8 @@
       "ALDRE🇦🇷",
       "ERIAN🇵🇦"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ALDRE🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -4138,8 +4168,8 @@
       "EMILY FAMILY🇵🇾",
       "GREYFITSH🇵🇦"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "GREYFITSH🇵🇦",
+     "ronda siguiente",
      []
     ],
     [
@@ -4147,6 +4177,100 @@
      [
       "MAKMAH🇻🇪",
       "TENOR🇻🇪"
+     ],
+     "MAKMAH🇻🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "RAM🇦🇷",
+      "ALDRE🇦🇷",
+      "ERIAN🇵🇦"
+     ],
+     "ALDRE🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GREYFITSH🇵🇦",
+      "ALDRE🇦🇷"
+     ],
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "GREYFITSH🇵🇦",
+      "ALDRE🇦🇷"
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ZA🇺🇸",
+      "MAKMAH🇻🇪"
+     ],
+     "ZA🇺🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GREYFITSH🇵🇦",
+      "ALDRE🇦🇷"
+     ],
+     "ALDRE🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ZA🇺🇸",
+      "ALDRE🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PROVENZA COLESITO XUBARU",
+      "ALDRE MAKMA RODA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "XUBARU 🇩🇪",
+      "GREYFITSH🇵🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "XUBARU 🇩🇪",
+      "MAKMAH🇻🇪"
+     ],
+     "MAKMAH🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMAH🇻🇪",
+      "COLESITO 🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",

@@ -16914,5 +16914,230 @@
     625
    ]
   ]
+ },
+ "435": {
+  "dia": "2026-10-08",
+  "escala": "16+",
+  "fecha": "08/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1557966243867271220"
+  ],
+  "n": 435,
+  "nombre": "Cuentas Pendientes V.1",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "BLITZ",
+       "NC",
+       "Cronox",
+       "Nemi",
+       "Tenor"
+      ],
+      "BLITZ",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "DLX",
+       "ANTONIO🇵🇾",
+       "Erian"
+      ],
+      "DLX",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "BLITZ"
+      ],
+      "Provenza",
+      ""
+     ],
+     [
+      [
+       "Greyfitsh🇵🇦",
+       "Emily Family"
+      ],
+      "Greyfitsh🇵🇦",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Teo"
+      ],
+      "Makmah",
+      "Revivido: makmah 🇻🇪"
+     ],
+     [
+      [
+       "Aldre",
+       "Erian"
+      ],
+      "Aldre",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Tenor"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Aldre",
+       "Ram"
+      ],
+      "Aldre",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "Makmah"
+      ],
+      "Provenza",
+      ""
+     ],
+     [
+      [
+       "Aldre",
+       "Greyfitsh🇵🇦"
+      ],
+      "Aldre",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Xubaru"
+      ],
+      "Makmah",
+      "Walk-in 2: Xubaru🇻🇪"
+     ],
+     [
+      [
+       "PROVENZA COLESITO XUBARU",
+       "ALDRE MAKMA RODA"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Xubaru🇻🇪",
+       "Greyfitsh🇵🇦"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "makmah 🇻🇪",
+       "colesito"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "za",
+       "Aldre 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    10250
+   ],
+   [
+    "Greyfitsh🇵🇦",
+    "Semifinal",
+    5250
+   ],
+   [
+    "BLITZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Emily Family",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ram",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Xubaru",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "ANTONIO🇵🇾",
+    "R32",
+    625
+   ],
+   [
+    "Cronox",
+    "R32",
+    625
+   ],
+   [
+    "NC",
+    "R32",
+    625
+   ],
+   [
+    "Nemi",
+    "R32",
+    625
+   ]
+  ]
  }
 }
