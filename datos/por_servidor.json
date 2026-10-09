@@ -1329,12 +1329,12 @@
   },
   "Elbesaabuelas": {
    "DDF": {
-    "duelos": "0/2",
-    "ev": 2,
+    "duelos": "0/1",
+    "ev": 1,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 45,
     "pod": 0,
-    "pts": 8250,
+    "pts": 3300,
     "racha": "0/0"
    }
   },
@@ -1424,7 +1424,7 @@
     "racha": "0/1"
    },
    "DDF": {
-    "duelos": "3/3",
+    "duelos": "2/2",
     "ev": 1,
     "oro": 1,
     "ovr": 50,
