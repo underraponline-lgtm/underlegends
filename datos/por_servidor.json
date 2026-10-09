@@ -308,13 +308,13 @@
   },
   "Aldre": {
    "FFA": {
-    "duelos": "3/4",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 0,
-    "pts": 9900,
-    "racha": "0/0"
+    "duelos": "5/6",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 57,
+    "pod": 1,
+    "pts": 59400,
+    "racha": "1/1"
    }
   },
   "Alexi": {
@@ -911,7 +911,7 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "4/9",
+    "duelos": "5/11",
     "ev": 13,
     "oro": 0,
     "ovr": 66,
@@ -3219,12 +3219,12 @@
     "racha": "2/2"
    },
    "FFA": {
-    "duelos": "19/33",
+    "duelos": "19/34",
     "ev": 24,
-    "oro": 2,
-    "ovr": 81,
-    "pod": 8,
-    "pts": 146888,
+    "oro": 1,
+    "ovr": 79,
+    "pod": 7,
+    "pts": 121725,
     "racha": "1/3"
    },
    "SR": {
@@ -4131,13 +4131,13 @@
   },
   "Provenza": {
    "FFA": {
-    "duelos": "10/19",
-    "ev": 18,
+    "duelos": "10/20",
+    "ev": 19,
     "oro": 2,
-    "ovr": 73,
-    "pod": 3,
-    "pts": 97072,
-    "racha": "1/2"
+    "ovr": 76,
+    "pod": 4,
+    "pts": 121822,
+    "racha": "2/2"
    }
   },
   "QUEEN": {
@@ -5291,12 +5291,12 @@
   "Xubaru": {
    "FFA": {
     "duelos": "3/6",
-    "ev": 4,
+    "ev": 3,
     "oro": 0,
-    "ovr": 55,
-    "pod": 3,
-    "pts": 16038,
-    "racha": "2/2"
+    "ovr": 52,
+    "pod": 2,
+    "pts": 9850,
+    "racha": "1/1"
    }
   },
   "YOUNG VLAD 🇨🇴": {

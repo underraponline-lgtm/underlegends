@@ -3752,9 +3752,24 @@
     "Aldre"
    ],
    [
+    "Aldre",
+    "Provenza",
+    "Aldre"
+   ],
+   [
     "Makmah",
     "Xubaru",
     "Makmah"
+   ],
+   [
+    "Colesito",
+    "Makmah",
+    "Colesito"
+   ],
+   [
+    "Aldre",
+    "Colesito",
+    "Aldre"
    ]
   ],
   "ev_antes": {
@@ -3770,7 +3785,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "6049ebaf3e5b3d6e",
+  "firma": "cd3e45d4c3f17abf",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -3782,14 +3797,24 @@
   "t": "2026-10-09T05:23:27Z",
   "tabla": [
    [
-    "Makmah",
+    "Aldre",
     "Campeón",
-    10250
+    10000
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    7500
    ],
    [
     "Greyfitsh🇵🇦",
     "Semifinal",
     5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
    ],
    [
     "BLITZ",
@@ -3810,11 +3835,6 @@
     "Ram",
     "Cuartos",
     2500
-   ],
-   [
-    "Xubaru",
-    "Subcampeón",
-    1875
    ],
    [
     "Erian",

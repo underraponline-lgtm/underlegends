@@ -17029,11 +17029,35 @@
     "b": [
      [
       [
+       "Aldre",
+       "Provenza"
+      ],
+      "Aldre",
+      "ganador según #veredictos"
+     ],
+     [
+      [
        "Makmah",
        "Xubaru"
       ],
       "Makmah",
       "Walk-in 2: Xubaru🇻🇪"
+     ],
+     [
+      [
+       "Colesito",
+       "Makmah"
+      ],
+      "Colesito",
+      "Walk-in 2: colesito; Revivido: colesito"
+     ],
+     [
+      [
+       "Aldre",
+       "Colesito"
+      ],
+      "Aldre",
+      ""
      ],
      [
       [
@@ -17050,22 +17074,6 @@
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "makmah 🇻🇪",
-       "colesito"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "za",
-       "Aldre 🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -17074,14 +17082,24 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Makmah",
+    "Aldre",
     "Campeón",
-    10250
+    10000
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    7500
    ],
    [
     "Greyfitsh🇵🇦",
     "Semifinal",
     5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
    ],
    [
     "BLITZ",
@@ -17111,11 +17129,6 @@
    [
     "Tenor",
     "Cuartos",
-    1875
-   ],
-   [
-    "Xubaru",
-    "Subcampeón",
     1875
    ],
    [

@@ -24,7 +24,7 @@
 "temporada"
 ]
 },
-"makmah": {
+"pichulamc": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -33,8 +33,8 @@
 "temporada"
 ]
 },
-"pichulamc": {
-"rg": "B",
+"makmah": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -315,6 +315,13 @@
 "temporada"
 ]
 },
+"aldre": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "benjixo": {
 "rg": "",
 "c": [
@@ -453,13 +460,6 @@
 ]
 },
 "fazer": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"xubaru": {
 "rg": "",
 "c": [
 "servidor",
@@ -667,6 +667,13 @@
 ]
 },
 "ariaxer": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"xubaru": {
 "rg": "",
 "c": [
 "servidor",
@@ -915,6 +922,13 @@
 "temporada"
 ]
 },
+"teo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "rodas": {
 "rg": "",
 "c": [
@@ -1028,20 +1042,13 @@
 "temporada"
 ]
 },
-"zaza": {
-"rg": "",
-"c": []
-},
 "greyfitsh": {
 "rg": "",
 "c": []
 },
-"teo": {
+"zaza": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "selek": {
 "rg": "",
@@ -1157,13 +1164,6 @@
 ]
 },
 "acry": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"aldre": {
 "rg": "",
 "c": [
 "servidor",

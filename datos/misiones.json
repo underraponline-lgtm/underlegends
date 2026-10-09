@@ -91,8 +91,8 @@
     ],
     "Aldre": [
      1,
-     3,
-     4
+     5,
+     1
     ],
     "Alexi": [
      1,
@@ -186,7 +186,7 @@
     ],
     "Colesito": [
      1,
-     2,
+     3,
      4
     ],
     "CrisZJ": [
@@ -512,7 +512,7 @@
     "Makmah": [
      1,
      13,
-     1
+     2
     ],
     "Malva": [
      1,
@@ -879,11 +879,6 @@
      6,
      2
     ],
-    "Xubaru": [
-     1,
-     0,
-     2
-    ],
     "YOUNG VLAD 🇨🇴": [
      1,
      0,
@@ -977,7 +972,7 @@
     "Abyssus": 300,
     "Agus": 2900,
     "Akutagawa🇹🇼": 300,
-    "Aldre": 900,
+    "Aldre": 2900,
     "Alexi": 300,
     "Andres": 1300,
     "Andy": 300,
@@ -994,7 +989,7 @@
     "Carlosss": 1600,
     "Chop": 300,
     "Ckl": 300,
-    "Colesito": 300,
+    "Colesito": 900,
     "CrisZJ": 1600,
     "Crk": 300,
     "Cronox": 300,
@@ -1116,7 +1111,6 @@
     "Vandu": 2900,
     "Velatz": 2900,
     "Xclusivo": 2900,
-    "Xubaru": 1300,
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
@@ -1145,7 +1139,7 @@
   "Abyssus": 300,
   "Agus": 2900,
   "Akutagawa🇹🇼": 300,
-  "Aldre": 900,
+  "Aldre": 2900,
   "Alexi": 300,
   "Andres": 1300,
   "Andy": 300,
@@ -1162,7 +1156,7 @@
   "Carlosss": 1600,
   "Chop": 300,
   "Ckl": 300,
-  "Colesito": 300,
+  "Colesito": 900,
   "CrisZJ": 1600,
   "Crk": 300,
   "Cronox": 300,
@@ -1284,7 +1278,6 @@
   "Vandu": 2900,
   "Velatz": 2900,
   "Xclusivo": 2900,
-  "Xubaru": 1300,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,

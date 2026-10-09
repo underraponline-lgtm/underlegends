@@ -270,12 +270,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 36,
+     "FFA": 38,
      "DDF": 9,
      "SR": 1
     },
     "gente": {
-     "FFA": 153,
+     "FFA": 159,
      "DDF": 41,
      "SR": 16
     },
@@ -285,7 +285,7 @@
     "ACAD": 0,
     "DDF": 41,
     "DRA": 0,
-    "FFA": 153,
+    "FFA": 159,
     "FFS": 0,
     "SR": 16,
     "URBF": 0
