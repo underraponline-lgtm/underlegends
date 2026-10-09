@@ -1622,6 +1622,56 @@
    "b": "SNOW RODRILP",
    "ganador": "PRESAGIO ZIGNOS",
    "votos": "1–0"
+  },
+  "1557958056975802389": {
+   "id": "1557958056975802389",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791516546244,
+   "a": "GIAN ZA",
+   "b": "LUZZANO TAM",
+   "ganador": "GIAN ZA",
+   "votos": "1–0"
+  },
+  "1557959165631266889": {
+   "id": "1557959165631266889",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791516810568,
+   "a": "ZIGNOS",
+   "b": "SNOW",
+   "ganador": "SNOW",
+   "votos": "1–0"
+  },
+  "1557960219835895840": {
+   "id": "1557960219835895840",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791517061910,
+   "a": "SIX",
+   "b": "SNOW",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1557961198023213069": {
+   "id": "1557961198023213069",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791517295128,
+   "a": "SIX",
+   "b": "FLEIVAMAN",
+   "ganador": "FLEIVAMAN",
+   "votos": "1–0"
+  },
+  "1557962520193540128": {
+   "id": "1557962520193540128",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791517610358,
+   "a": "PRESAGIO",
+   "b": "FLEIVAMAN",
+   "ganador": "PRESAGIO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -3866,8 +3916,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791511124463,
-   "ed": 1791516090413,
-   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝\n⌞PERSONALITY NEMI⌝ 🆚 ⌞KURL ALEXIZ⌝ 🆚 ⌞SNOW RODRI LP⌝ 🆚 ⌞LUZZANO TAM⌝\n⌞PERSON⌝ 🆚 ⌞RODRI LP⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞LUZZANO TAM⌝ 🆚 ⌞FAMILY AGUSTIN⌝\n⌞GIAN ZA⌝ 🆚 ⌞XCLUSIVO CRONOX⌝\n`[ SEMIFINALES ]`\n⌞PRESAGIO ZIGNOS⌝ 🆚 ⌞SNOW RODRILP⌝",
+   "ed": 1791517878503,
+   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝\n⌞PERSONALITY NEMI⌝ 🆚 ⌞KURL ALEXIZ⌝ 🆚 ⌞SNOW RODRI LP⌝ 🆚 ⌞LUZZANO TAM⌝\n⌞PERSON⌝ 🆚 ⌞RODRI LP⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞LUZZANO TAM⌝ 🆚 ⌞FAMILY AGUSTIN⌝\n⌞GIAN ZA⌝ 🆚 ⌞XCLUSIVO CRONOX⌝\n`[ SEMIFINALES ]`\n⌞PRESAGIO ZIGNOS⌝ 🆚 ⌞SNOW RODRILP⌝\n⌞GIAN ZA⌝ 🆚 ⌞LUZZANO TAM⌝\n`[ FINAL ]`\n⌞ZIGNOS⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞FLEIVAMAN⌝\n⌞PRESAGIO⌝ 🆚 ⌞FLEIVAMAN⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3954,6 +4004,56 @@
       "SNOW RODRILP"
      ],
      "PRESAGIO ZIGNOS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GIAN ZA",
+      "LUZZANO TAM"
+     ],
+     "GIAN ZA",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ZIGNOS",
+      "SNOW"
+     ],
+     "SNOW",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "SNOW"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SIX",
+      "FLEIVAMAN"
+     ],
+     "FLEIVAMAN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRESAGIO",
+      "FLEIVAMAN"
+     ],
+     "PRESAGIO",
      "veredicto",
      []
     ]
