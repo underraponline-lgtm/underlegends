@@ -1822,6 +1822,46 @@
    "b": "ANDY 🇵🇪",
    "ganador": "ZETRYKO 🇨🇱",
    "votos": "1–0"
+  },
+  "1558251072466976840": {
+   "id": "1558251072466976840",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791586406581,
+   "a": "GEOKA 🇦🇷",
+   "b": "ZETRYKO 🇨🇱",
+   "ganador": "ZETRYKO 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558253056033034351": {
+   "id": "1558253056033034351",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791586879500,
+   "a": "PANCHOK 🇨🇱",
+   "b": "EMILIO ALVA 🇲🇽",
+   "ganador": "PANCHOK 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558254260175765558": {
+   "id": "1558254260175765558",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791587166590,
+   "a": "ANDY 🇵🇪",
+   "b": "ZETRYKO 🇨🇱",
+   "ganador": "ZETRYKO 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558255569385562223": {
+   "id": "1558255569385562223",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791587478730,
+   "a": "AGUS 🇦🇷",
+   "b": "FLAMA 🇦🇷",
+   "ganador": "FLAMA 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -4525,8 +4565,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791585065853,
-   "ed": 1791586382923,
-   "texto": "`[ OCTAVOS ]`\n⌞santi🇦🇷⌝ 🆚 ⌞riolu🇪🇸⌝\n⌞ikonoxx🇺🇾⌝ 🆚 ⌞dynoco🇦🇷⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞agus🇦🇷⌝\n⌞Kravitz🇫🇷⌝ 🆚 ⌞Za🇵🇪⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞makmah 🇻🇪 (R)⌝\n⌞andy⌝ 🆚 ⌞Shisui🇯🇵⌝\n⌞Trot🇪🇸⌝ 🆚 ⌞Pichulamc🇦🇷⌝ 🆚 ⌞Geo⌝\n⌞agus🇦🇷⌝ 🆚 ⌞Za🇵🇪⌝",
+   "ed": 1791588106799,
+   "texto": "`[ OCTAVOS ]`\n⌞santi🇦🇷⌝ 🆚 ⌞riolu🇪🇸⌝\n⌞ikonoxx🇺🇾⌝ 🆚 ⌞dynoco🇦🇷⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞agus🇦🇷⌝\n⌞Kravitz🇫🇷⌝ 🆚 ⌞Za🇵🇪⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞makmah 🇻🇪 (R)⌝\n⌞andy⌝ 🆚 ⌞Shisui🇯🇵⌝\n⌞Trot🇪🇸⌝ 🆚 ⌞Pich⌝\n⌞agus🇦🇷⌝ 🆚 ⌞Pichulamc🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -4602,8 +4642,7 @@
      "OCTAVOS",
      [
       "Trot🇪🇸",
-      "Pichulamc🇦🇷",
-      "Geo"
+      "Pich"
      ],
      null,
      "última ronda y no dice campeón",
@@ -4613,10 +4652,10 @@
      "OCTAVOS",
      [
       "agus🇦🇷",
-      "Za🇵🇪"
+      "Pichulamc🇦🇷"
      ],
-     "agus🇦🇷",
-     "veredicto",
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
