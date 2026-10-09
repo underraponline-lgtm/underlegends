@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-09T05:11:45Z",
+ "cuando": "2026-10-09T05:51:09Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 605.9,
+ "dur_s": 1386.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 6.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.6
+   "s": 3.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.0
+   "s": 26.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 8 · 40 persona(s)",
    "ok": true,
-   "s": 521.6
+   "s": 1301.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 3.7
+   "s": 8.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 43.7
+   "s": 38.3
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "434",
-  "nombre": "PRITTY FREE",
+  "n": "435",
+  "nombre": "Cuentas Pendientes V.1",
   "sv": "FFA",
   "dia": "2026-10-08"
  },
  "cuotas": {
   "kv": {
-   "write": 177,
-   "read": 16798
+   "write": 197,
+   "read": 18451
   },
   "objeto": {
-   "leidas": 1049552,
-   "escritas": 10159,
-   "pedidos": 2459
+   "leidas": 1169529,
+   "escritas": 11640,
+   "pedidos": 2741
   },
   "worker": {
-   "pedidos": 6401,
+   "pedidos": 6448,
    "errores": 0,
-   "sub": 6784,
+   "sub": 6826,
    "p50_ms": 1.16,
-   "p99_ms": 6.09
+   "p99_ms": 5.99
   },
   "r2": {
    "objetos": 3670,
