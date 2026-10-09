@@ -4203,5 +4203,502 @@
    ]
   ],
   "v": 2
+ },
+ "437": {
+  "antes": {
+   "Agus": [
+    26,
+    33,
+    false
+   ],
+   "Andy": [
+    82,
+    127,
+    false
+   ],
+   "Crk": [
+    61,
+    91,
+    false
+   ],
+   "Delux": [
+    66,
+    96,
+    false
+   ],
+   "Dynoco": [
+    69,
+    103,
+    false
+   ],
+   "Geoka": [
+    25,
+    32,
+    false
+   ],
+   "Kravitz": [
+    56,
+    83,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ],
+   "Provenza": [
+    155,
+    10,
+    true
+   ],
+   "Riolu": [
+    76,
+    115,
+    false
+   ],
+   "Santi": [
+    215,
+    157,
+    true
+   ],
+   "Trot": [
+    22,
+    29,
+    false
+   ],
+   "Velatz": [
+    6,
+    7,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Riolu",
+    "Santi",
+    "Riolu"
+   ],
+   [
+    "Dynoco",
+    "ikonoxx🇺🇾",
+    "Dynoco"
+   ],
+   [
+    "Agus",
+    "Mito",
+    "Agus"
+   ],
+   [
+    "Provenza",
+    "Kravitz",
+    "Provenza"
+   ],
+   [
+    "Delux",
+    "Makmah",
+    "Delux"
+   ],
+   [
+    "Makmah",
+    "Crk",
+    "Makmah"
+   ],
+   [
+    "Andy",
+    "Velatz",
+    "Andy"
+   ],
+   [
+    "PichulaMc",
+    "Trot",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Geoka",
+    "PichulaMc"
+   ],
+   [
+    "Dynoco",
+    "Riolu",
+    "Dynoco"
+   ],
+   [
+    "Agus",
+    "Provenza",
+    "Agus"
+   ],
+   [
+    "Delux",
+    "Makmah",
+    "Delux"
+   ],
+   [
+    "PichulaMc",
+    "Andy",
+    "PichulaMc"
+   ],
+   [
+    "Agus",
+    "Dynoco",
+    "Agus"
+   ],
+   [
+    "PichulaMc",
+    "Delux",
+    "PichulaMc"
+   ],
+   [
+    "Agus",
+    "PichulaMc",
+    "Agus"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 7,
+   "Andy": 2,
+   "Crk": 8,
+   "Delux": 3,
+   "Dynoco": 6,
+   "Geoka": 11,
+   "Kravitz": 5,
+   "Makmah": 30,
+   "PichulaMc": 26,
+   "Provenza": 19,
+   "Riolu": 4,
+   "Santi": 3,
+   "Trot": 12,
+   "Velatz": 28
+  },
+  "fecha": "09/10",
+  "firma": "38f6b0ce6233f09e",
+  "msg": "1558266214659260507",
+  "nombre": "COPA SOOLAR 4",
+  "num": 437,
+  "participantes": 17,
+  "sello": {
+   "Agus": "071a1e8cf985:17c4f13e63d4"
+  },
+  "sv": "FFA",
+  "t": "2026-10-09T23:53:35Z",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "PichulaMc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Dynoco",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Riolu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Santi",
+    "Octavos",
+    1250
+   ],
+   [
+    "ikonoxx🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "438": {
+  "antes": {
+   "Agus": [
+    26,
+    33,
+    false
+   ],
+   "Andy": [
+    82,
+    127,
+    false
+   ],
+   "Calíz": [
+    281,
+    259,
+    true
+   ],
+   "Damian": [
+    282,
+    260,
+    true
+   ],
+   "Dynoco": [
+    69,
+    103,
+    false
+   ],
+   "Eclipsito": [
+    178,
+    79,
+    true
+   ],
+   "Emilio Alva": [
+    249,
+    213,
+    true
+   ],
+   "Flama": [
+    228,
+    182,
+    true
+   ],
+   "Geoka": [
+    25,
+    32,
+    false
+   ],
+   "Lord Viruzz": [
+    30,
+    39,
+    false
+   ],
+   "Panchok": [
+    10,
+    13,
+    false
+   ],
+   "Zetryko": [
+    58,
+    87,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Panchok",
+    "Damian",
+    "Panchok"
+   ],
+   [
+    "4. ZETRYKO 🇨🇱",
+    "Geoka",
+    "4. ZETRYKO 🇨🇱"
+   ],
+   [
+    "Lord Viruzz",
+    "Dynoco",
+    "Lord Viruzz"
+   ],
+   [
+    "Eclipsito",
+    "6. 🇨🇴 VR",
+    "Eclipsito"
+   ],
+   [
+    "Agus",
+    "7. 🇺🇾 ATR",
+    "Agus"
+   ],
+   [
+    "Flama",
+    "Calíz",
+    "Flama"
+   ],
+   [
+    "Panchok",
+    "Emilio Alva",
+    "Panchok"
+   ],
+   [
+    "Zetryko",
+    "Andy",
+    "Zetryko"
+   ],
+   [
+    "Eclipsito",
+    "Lord Viruzz",
+    "Eclipsito"
+   ],
+   [
+    "Flama",
+    "Agus",
+    "Flama"
+   ],
+   [
+    "Zetryko",
+    "Panchok",
+    "Zetryko"
+   ],
+   [
+    "Eclipsito",
+    "Flama",
+    "Eclipsito"
+   ],
+   [
+    "Zetryko",
+    "Eclipsito",
+    "Zetryko"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 7,
+   "Andy": 2,
+   "Calíz": 2,
+   "Damian": 2,
+   "Dynoco": 6,
+   "Eclipsito": 8,
+   "Emilio Alva": 2,
+   "Flama": 3,
+   "Geoka": 11,
+   "Lord Viruzz": 10,
+   "Panchok": 9,
+   "Zetryko": 3
+  },
+  "fecha": "09/10",
+  "firma": "45238c7d979d0dbd",
+  "msg": "1558266219923112047",
+  "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
+  "num": 438,
+  "participantes": 21,
+  "sello": {
+   "Zetryko": "ca13e00aa440:17c4f13e63d4"
+  },
+  "sv": "ACAD",
+  "t": "2026-10-09T23:53:37Z",
+  "tabla": [
+   [
+    "Zetryko",
+    "Campeón",
+    10000
+   ],
+   [
+    "Eclipsito",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Panchok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Flama",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Andy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Emilio Alva",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Damian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "6. 🇨🇴 VR",
+    "Octavos",
+    1250
+   ],
+   [
+    "7. 🇺🇾 ATR",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

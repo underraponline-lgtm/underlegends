@@ -1809,9 +1809,9 @@
    "g": "1468472442925092958",
    "pub": 1791585584727,
    "a": "agus🇦🇷",
-   "b": "Za🇵🇪",
+   "b": "Pichulamc🇦🇷",
    "ganador": "agus🇦🇷",
-   "votos": "2–1"
+   "votos": "1–0"
   },
   "1558248416063258716": {
    "id": "1558248416063258716",
@@ -1861,6 +1861,36 @@
    "a": "AGUS 🇦🇷",
    "b": "FLAMA 🇦🇷",
    "ganador": "FLAMA 🇦🇷",
+   "votos": "1–0"
+  },
+  "1558257572606119958": {
+   "id": "1558257572606119958",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791587956335,
+   "a": "PANCHOK 🇨🇱",
+   "b": "ZETRYKO 🇨🇱",
+   "ganador": "ZETRYKO 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558259014956089395": {
+   "id": "1558259014956089395",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791588300218,
+   "a": "ECLIPSE 🇨🇱",
+   "b": "FLAMA 🇦🇷",
+   "ganador": "ECLIPSE 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558262877574402190": {
+   "id": "1558262877574402190",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791589221138,
+   "a": "ZETRYKO 🇨🇱",
+   "b": "ECLIPSE 🇨🇱",
+   "ganador": "ZETRYKO 🇨🇱",
    "votos": "1–0"
   }
  },
@@ -4565,7 +4595,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791585065853,
-   "ed": 1791588106799,
+   "ed": 1791588648281,
    "texto": "`[ OCTAVOS ]`\n⌞santi🇦🇷⌝ 🆚 ⌞riolu🇪🇸⌝\n⌞ikonoxx🇺🇾⌝ 🆚 ⌞dynoco🇦🇷⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞agus🇦🇷⌝\n⌞Kravitz🇫🇷⌝ 🆚 ⌞Za🇵🇪⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞makmah 🇻🇪 (R)⌝\n⌞andy⌝ 🆚 ⌞Shisui🇯🇵⌝\n⌞Trot🇪🇸⌝ 🆚 ⌞Pich⌝\n⌞agus🇦🇷⌝ 🆚 ⌞Pichulamc🇦🇷⌝",
    "batallas": [
     [
@@ -4654,8 +4684,8 @@
       "agus🇦🇷",
       "Pichulamc🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "agus🇦🇷",
+     "veredicto",
      []
     ]
    ]
