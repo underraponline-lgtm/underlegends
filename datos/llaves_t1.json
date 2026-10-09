@@ -16463,5 +16463,219 @@
     2000
    ]
   ]
+ },
+ "433": {
+  "dia": "2026-10-08",
+  "escala": "16+",
+  "fecha": "08/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1557928850678091888"
+  ],
+  "n": 433,
+  "nombre": "PROYECTO X",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Cabece 🇨🇱"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Erian"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "BastyRetro",
+       "Xclusivo"
+      ],
+      "BastyRetro",
+      "Revivido: XCLUSIVO🇱🇰"
+     ],
+     [
+      [
+       "Xclusivo",
+       "Cronox"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "EmiZor"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "fleivagner🇨🇴"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "JEIXDER",
+       "Shadow",
+       "Assuan"
+      ],
+      "JEIXDER",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Dm🇵🇪",
+       "Number 🇱🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BastyRetro",
+       "Adriagner"
+      ],
+      "BastyRetro",
+      "Walk-in 1: Adriagner🇳🇮"
+     ],
+     [
+      [
+       "Xclusivo",
+       "NXUZ"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "MINIBOY🇨🇱",
+       "Jeixder"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BastyRetro",
+       "Carlosss"
+      ],
+      "BastyRetro",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Makmah"
+      ],
+      "Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "BastyRetro",
+       "Xclusivo"
+      ],
+      "BastyRetro",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "BastyRetro",
+    "Campeón",
+    10000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Xclusivo",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cabece 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ],
+   [
+    "fleivagner🇨🇴",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

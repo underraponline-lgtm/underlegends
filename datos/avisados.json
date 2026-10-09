@@ -3102,5 +3102,224 @@
    ]
   ],
   "v": 2
+ },
+ "433": {
+  "antes": {
+   "Adriagner": [
+    98,
+    158,
+    false
+   ],
+   "Assuan": [
+    180,
+    82,
+    true
+   ],
+   "BastyRetro": [
+    128,
+    248,
+    false
+   ],
+   "Carlosss": [
+    20,
+    24,
+    false
+   ],
+   "Cronox": [
+    16,
+    19,
+    false
+   ],
+   "EmiZor": [
+    202,
+    133,
+    true
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "NXUZ": [
+    31,
+    39,
+    false
+   ],
+   "Shadow": [
+    92,
+    150,
+    false
+   ],
+   "Xclusivo": [
+    160,
+    38,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Carlosss",
+    "Cabece 🇨🇱",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "Erian",
+    "Makmah"
+   ],
+   [
+    "BastyRetro",
+    "Xclusivo",
+    "BastyRetro"
+   ],
+   [
+    "Xclusivo",
+    "Cronox",
+    "Xclusivo"
+   ],
+   [
+    "NXUZ",
+    "EmiZor",
+    "NXUZ"
+   ],
+   [
+    "Miniboy",
+    "fleivagner🇨🇴",
+    "Miniboy"
+   ],
+   [
+    "JEIXDER",
+    "Shadow",
+    "JEIXDER"
+   ],
+   [
+    "JEIXDER",
+    "Assuan",
+    "JEIXDER"
+   ],
+   [
+    "BastyRetro",
+    "Adriagner",
+    "BastyRetro"
+   ],
+   [
+    "Xclusivo",
+    "NXUZ",
+    "Xclusivo"
+   ],
+   [
+    "BastyRetro",
+    "Carlosss",
+    "BastyRetro"
+   ],
+   [
+    "Xclusivo",
+    "Makmah",
+    "Xclusivo"
+   ],
+   [
+    "BastyRetro",
+    "Xclusivo",
+    "BastyRetro"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 1,
+   "Assuan": 2,
+   "BastyRetro": 1,
+   "Carlosss": 6,
+   "Cronox": 17,
+   "EmiZor": 5,
+   "Erian": 21,
+   "Makmah": 27,
+   "NXUZ": 9,
+   "Shadow": 3,
+   "Xclusivo": 7
+  },
+  "fecha": "08/10",
+  "firma": "171925e4ebb334e5",
+  "msg": "1557964167649169470",
+  "nombre": "PROYECTO X",
+  "num": 433,
+  "participantes": 18,
+  "sello": {
+   "BastyRetro": "8830d9f6ae04:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-09T03:53:22Z",
+  "tabla": [
+   [
+    "BastyRetro",
+    "Campeón",
+    10000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Xclusivo",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Cabece 🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    1250
+   ],
+   [
+    "fleivagner🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Assuan",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-09T03:26:03Z",
+ "cuando": "2026-10-09T03:58:01Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 192.9,
+ "dur_s": 312.7,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 31.6
+   "s": 34.6
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 34.5
+   "s": 87.5
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,13 +39,13 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 25.8
+   "s": 24.1
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.9
+   "s": 2.2
   },
   {
    "n": "2",
@@ -81,43 +81,43 @@
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.8
+   "s": 0.4
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.0
+   "s": 2.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 25.4
+   "s": 90.3
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.0
+   "s": 4.2
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 31.9
+   "s": 34.2
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.4
+   "s": 3.1
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.7
+   "s": 11.0
   },
   {
    "n": "2e",
@@ -129,52 +129,46 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 6.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.6
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 4.9
+   "s": 3.0
   }
  ],
  "fallas": [],
- "decidir": 92,
+ "decidir": 96,
  "ultimo_evento": {
-  "n": "432",
-  "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
+  "n": "433",
+  "nombre": "PROYECTO X",
   "sv": "DDF",
   "dia": "2026-10-08"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-09T03:23:27Z",
+  "cuando": "2026-10-09T03:53:28Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 385,
+  "jugadores": 387,
   "un_evento": 193,
-  "diez_o_mas": 30,
+  "diez_o_mas": 31,
   "cohortes": [
    {
     "semana": "2026-09-21",
     "nuevos": 196,
-    "volvieron": 136,
+    "volvieron": 137,
     "completa": false
    },
    {
     "semana": "2026-09-28",
     "nuevos": 130,
-    "volvieron": 40,
+    "volvieron": 41,
     "completa": false
    },
    {
     "semana": "2026-10-05",
-    "nuevos": 59,
+    "nuevos": 61,
     "volvieron": 8,
     "completa": false
    }
@@ -182,20 +176,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 123,
-   "read": 11336
+   "write": 133,
+   "read": 12665
   },
   "objeto": {
-   "leidas": 653388,
-   "escritas": 5522,
-   "pedidos": 1425
+   "leidas": 774655,
+   "escritas": 6030,
+   "pedidos": 1720
   },
   "worker": {
-   "pedidos": 6479,
+   "pedidos": 6510,
    "errores": 0,
-   "sub": 6803,
+   "sub": 6826,
    "p50_ms": 1.15,
-   "p99_ms": 6.34
+   "p99_ms": 6.27
   },
   "r2": {
    "objetos": 3652,
