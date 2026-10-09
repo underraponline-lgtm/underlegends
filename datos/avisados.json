@@ -3868,5 +3868,340 @@
    ]
   ],
   "v": 2
+ },
+ "436": {
+  "antes": {
+   "Agus": [
+    28,
+    34,
+    false
+   ],
+   "Cronox": [
+    16,
+    19,
+    false
+   ],
+   "Dominick": [
+    165,
+    52,
+    true
+   ],
+   "Dynoco": [
+    86,
+    140,
+    false
+   ],
+   "Elsoolar": [
+    197,
+    122,
+    true
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "HH": [
+    124,
+    230,
+    false
+   ],
+   "JJ": [
+    172,
+    69,
+    true
+   ],
+   "Kravitz": [
+    63,
+    93,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "Mr Still Ballin": [
+    171,
+    68,
+    true
+   ],
+   "OG": [
+    31,
+    39,
+    false
+   ],
+   "Santi": [
+    277,
+    255,
+    true
+   ],
+   "Snow": [
+    2,
+    3,
+    false
+   ],
+   "Teo": [
+    82,
+    130,
+    false
+   ],
+   "Velatz": [
+    7,
+    9,
+    false
+   ],
+   "Xclusivo": [
+    158,
+    30,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Erian",
+    "Teo",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Elsoolar",
+    "Erian"
+   ],
+   [
+    "Agus",
+    "IKONOX🇺🇾",
+    "Agus"
+   ],
+   [
+    "OG",
+    "Dominick",
+    "OG"
+   ],
+   [
+    "OG",
+    "Velatz",
+    "OG"
+   ],
+   [
+    "Mr Still Ballin",
+    "Dynoco",
+    "Mr Still Ballin"
+   ],
+   [
+    "Mr Still Ballin",
+    "SAEVA 🇧🇦",
+    "Mr Still Ballin"
+   ],
+   [
+    "HH",
+    "Kravitz",
+    "HH"
+   ],
+   [
+    "HH",
+    "Cronox",
+    "HH"
+   ],
+   [
+    "Snow",
+    "Makmah",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "JJ",
+    "Snow"
+   ],
+   [
+    "Under🇨🇴",
+    "IKONOX🇺🇾",
+    "Under🇨🇴"
+   ],
+   [
+    "Under🇨🇴",
+    "Xclusivo",
+    "Under🇨🇴"
+   ],
+   [
+    "Agus",
+    "Dynoco",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Makmah",
+    "Agus"
+   ],
+   [
+    "HH",
+    "Erian",
+    "HH"
+   ],
+   [
+    "Snow",
+    "Santi",
+    "Snow"
+   ],
+   [
+    "OG",
+    "Under🇨🇴",
+    "OG"
+   ],
+   [
+    "Mr Still Ballin",
+    "Agus",
+    "Mr Still Ballin"
+   ],
+   [
+    "OG",
+    "HH",
+    "OG"
+   ],
+   [
+    "Mr Still Ballin",
+    "Snow",
+    "Mr Still Ballin"
+   ],
+   [
+    "Mr Still Ballin",
+    "OG",
+    "Mr Still Ballin"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 6,
+   "Cronox": 20,
+   "Dominick": 7,
+   "Dynoco": 5,
+   "Elsoolar": 6,
+   "Erian": 23,
+   "HH": 1,
+   "JJ": 5,
+   "Kravitz": 4,
+   "Makmah": 29,
+   "Mr Still Ballin": 1,
+   "OG": 6,
+   "Santi": 2,
+   "Snow": 26,
+   "Teo": 2,
+   "Velatz": 27,
+   "Xclusivo": 9
+  },
+  "fecha": "09/10",
+  "firma": "31282d8cadbf8fa8",
+  "msg": "1558235947840180255",
+  "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL3 __",
+  "num": 436,
+  "participantes": 24,
+  "sello": {
+   "Mr Still Ballin": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-09T21:53:19Z",
+  "tabla": [
+   [
+    "Mr Still Ballin",
+    "Campeón",
+    10000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "HH",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Santi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Under🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "IKONOX🇺🇾",
+    "Octavos",
+    1875
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1875
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "SAEVA 🇧🇦",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "JJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

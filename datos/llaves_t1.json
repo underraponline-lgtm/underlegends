@@ -17152,5 +17152,268 @@
     625
    ]
   ]
+ },
+ "436": {
+  "dia": "2026-10-09",
+  "escala": "16+",
+  "fecha": "09/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558198551664795729"
+  ],
+  "n": 436,
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL3",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Teo",
+       "Elsoolar"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Agus",
+       "IKONOX🇺🇾"
+      ],
+      "Agus",
+      "triple (3 bandas, pasan 2); Revivido: IKONOX🇺🇾"
+     ],
+     [
+      [
+       "OG",
+       "Dominick",
+       "Velatz"
+      ],
+      "OG",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Dynoco",
+       "SAEVA 🇧🇦"
+      ],
+      "Mr Still Ballin",
+      "triple (3 bandas); Revivido: dynoco"
+     ],
+     [
+      [
+       "HH",
+       "Kravitz",
+       "Cronox"
+      ],
+      "HH",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "Makmah",
+       "JJ"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Under🇨🇴",
+       "IKONOX🇺🇾",
+       "Xclusivo"
+      ],
+      "Under🇨🇴",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Agus",
+       "Dynoco",
+       "Makmah"
+      ],
+      "Agus",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "HH",
+       "Erian"
+      ],
+      "HH",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Santi"
+      ],
+      "Snow",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Under🇨🇴"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Agus"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "HH"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Snow"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mr Still Ballin",
+       "OG"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Mr Still Ballin",
+    "Campeón",
+    10000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "HH",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Santi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Under🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1875
+   ],
+   [
+    "IKONOX🇺🇾",
+    "Octavos",
+    1875
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Elsoolar",
+    "Octavos",
+    1250
+   ],
+   [
+    "JJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "SAEVA 🇧🇦",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
