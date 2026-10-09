@@ -1,75 +1,75 @@
 {
  "v": 1,
- "cuando": "2026-10-09T02:29:00Z",
+ "cuando": "2026-10-09T04:14:02Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 89.3,
+ "dur_s": 933.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.6
+   "s": 5.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.2
+   "s": 2.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.1
+   "s": 21.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 4 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 20.6
+   "s": 859.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.9
+   "s": 5.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 34.2
+   "s": 37.7
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "432",
-  "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
+  "n": "433",
+  "nombre": "PROYECTO X",
   "sv": "DDF",
   "dia": "2026-10-08"
  },
  "cuotas": {
   "kv": {
-   "write": 103,
-   "read": 8437
+   "write": 144,
+   "read": 13588
   },
   "objeto": {
-   "leidas": 453756,
-   "escritas": 4724,
-   "pedidos": 1100
+   "leidas": 851256,
+   "escritas": 7208,
+   "pedidos": 1867
   },
   "worker": {
-   "pedidos": 7294,
-   "errores": 1,
-   "sub": 7749,
-   "p50_ms": 1.13,
-   "p99_ms": 6.4
+   "pedidos": 6543,
+   "errores": 0,
+   "sub": 6868,
+   "p50_ms": 1.15,
+   "p99_ms": 6.27
   },
   "r2": {
-   "objetos": 3651,
-   "gb": 0.407,
-   "ts": 1791473369
+   "objetos": 3670,
+   "gb": 0.409,
+   "ts": 1791519247
   }
  }
 }
