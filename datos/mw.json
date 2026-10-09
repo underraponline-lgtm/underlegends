@@ -57,10 +57,22 @@
     "nivel": "B",
     "base": 9000,
     "o": 4,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 9000,
+    "caza": {
+     "n": 437,
+     "evento": "COPA SOOLAR 4",
+     "sv": "FFA",
+     "t": "2026-10-09T21:54:57Z",
+     "por": [
+      {
+       "n": "Agus",
+       "cobra": 13000
+      }
+     ]
+    }
    },
    {
     "n": "Aldre",

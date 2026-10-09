@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-09T23:26:37Z",
+ "cuando": "2026-10-09T23:59:26Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 231.2,
+ "dur_s": 394.5,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 32.2
+   "s": 48.0
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 80.1
+   "s": 99.5
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 20.6
+   "s": 23.0
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.0
+   "s": 2.4
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 4.9
+   "s": 7.3
   },
   {
    "n": "2b",
@@ -75,49 +75,49 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.8
+   "s": 1.6
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.4
+   "s": 0.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.6
+   "s": 3.0
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 24.0
+   "s": 142.2
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.3
+   "s": 4.3
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 32.2
+   "s": 35.0
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.4
+   "s": 14.4
   },
   {
    "n": "2e",
@@ -129,36 +129,30 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.3
+   "s": 5.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.4
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 5.1
+   "s": 3.5
   }
  ],
  "fallas": [],
- "decidir": 101,
+ "decidir": 106,
  "ultimo_evento": {
-  "n": "436",
-  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL3",
-  "sv": "FFA",
+  "n": "438",
+  "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
+  "sv": "ACAD",
   "dia": "2026-10-09"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-09T23:23:22Z",
+  "cuando": "2026-10-09T23:53:46Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 397,
-  "un_evento": 197,
-  "diez_o_mas": 32,
+  "jugadores": 401,
+  "un_evento": 201,
+  "diez_o_mas": 33,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -174,7 +168,7 @@
    },
    {
     "semana": "2026-10-05",
-    "nuevos": 71,
+    "nuevos": 75,
     "volvieron": 12,
     "completa": false
    }
@@ -182,20 +176,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 337,
-   "read": 44215
+   "write": 350,
+   "read": 45460
   },
   "objeto": {
-   "leidas": 1930521,
-   "escritas": 20953,
-   "pedidos": 6010
+   "leidas": 2016703,
+   "escritas": 21355,
+   "pedidos": 6265
   },
   "worker": {
-   "pedidos": 5961,
+   "pedidos": 5892,
    "errores": 0,
-   "sub": 6479,
+   "sub": 6420,
    "p50_ms": 1.24,
-   "p99_ms": 5.95
+   "p99_ms": 5.99
   },
   "r2": {
    "objetos": 3686,

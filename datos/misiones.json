@@ -44,6 +44,21 @@
      3,
      1
     ],
+    "4. ZETRYKO 🇨🇱": [
+     0,
+     1,
+     99
+    ],
+    "6. 🇨🇴 VR": [
+     0,
+     0,
+     16
+    ],
+    "7. 🇺🇾 ATR": [
+     0,
+     0,
+     16
+    ],
     "ALESS": [
      1,
      0,
@@ -81,8 +96,8 @@
     ],
     "Agus": [
      1,
-     3,
-     2
+     8,
+     1
     ],
     "Akutagawa🇹🇼": [
      1,
@@ -106,8 +121,8 @@
     ],
     "Andy": [
      1,
-     0,
-     16
+     1,
+     8
     ],
     "Ariaxer": [
      1,
@@ -169,6 +184,11 @@
      0,
      16
     ],
+    "Calíz": [
+     0,
+     0,
+     16
+    ],
     "Carlosss": [
      0,
      11,
@@ -204,6 +224,11 @@
      2,
      4
     ],
+    "Damian": [
+     0,
+     0,
+     16
+    ],
     "DarnBless": [
      1,
      0,
@@ -211,7 +236,7 @@
     ],
     "Delux": [
      1,
-     3,
+     5,
      4
     ],
     "Desio": [
@@ -241,8 +266,8 @@
     ],
     "Dynoco": [
      1,
-     0,
-     16
+     2,
+     4
     ],
     "Dyzz": [
      1,
@@ -261,8 +286,8 @@
     ],
     "Eclipsito": [
      1,
-     0,
-     4
+     3,
+     2
     ],
     "Efimero": [
      1,
@@ -283,6 +308,11 @@
      1,
      0,
      16
+    ],
+    "Emilio Alva": [
+     0,
+     0,
+     8
     ],
     "Emily Family": [
      1,
@@ -320,6 +350,11 @@
      16
     ],
     "Fazer": [
+     0,
+     2,
+     4
+    ],
+    "Flama": [
      0,
      2,
      4
@@ -476,7 +511,7 @@
     ],
     "Lord Viruzz": [
      1,
-     1,
+     2,
      8
     ],
     "Luzzano": [
@@ -521,7 +556,7 @@
     ],
     "Makmah": [
      1,
-     13,
+     14,
      2
     ],
     "Malva": [
@@ -538,6 +573,11 @@
      1,
      0,
      4
+    ],
+    "Mito": [
+     1,
+     0,
+     16
     ],
     "Molt": [
      0,
@@ -631,7 +671,7 @@
     ],
     "Panchok": [
      1,
-     6,
+     8,
      1
     ],
     "Paria": [
@@ -651,7 +691,7 @@
     ],
     "PichulaMc": [
      1,
-     11,
+     13,
      1
     ],
     "Pipas🇵🇪": [
@@ -691,7 +731,7 @@
     ],
     "Provenza": [
      1,
-     6,
+     7,
      1
     ],
     "REPTILE JR": [
@@ -726,7 +766,7 @@
     ],
     "Riolu": [
      1,
-     0,
+     1,
      8
     ],
     "Risa": [
@@ -926,8 +966,8 @@
     ],
     "Zetryko": [
      0,
-     1,
-     4
+     4,
+     1
     ],
     "Zignos": [
      1,
@@ -953,6 +993,11 @@
      1,
      0,
      2
+    ],
+    "ikonoxx🇺🇾": [
+     1,
+     0,
+     16
     ],
     "julia 🇧🇴": [
      0,
@@ -1028,7 +1073,7 @@
     "Dyzz": 900,
     "EGI": 300,
     "EIDP": 300,
-    "Eclipsito": 300,
+    "Eclipsito": 2900,
     "Efimero": 300,
     "Elsoolar": 300,
     "EmiZor": 300,
@@ -1079,6 +1124,7 @@
     "Malva": 300,
     "Mathhias": 300,
     "Miniboy": 300,
+    "Mito": 300,
     "Molusco": 300,
     "Mr Still Ballin": 2900,
     "Musicdum": 300,
@@ -1144,11 +1190,13 @@
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
+    "Zetryko": 1600,
     "Zignos": 2900,
     "araya": 300,
     "chekialo 🇧🇯": 1300,
     "dxg": 300,
     "fleivaman": 1300,
+    "ikonoxx🇺🇾": 300,
     "melomaniaco": 300,
     "rodrilp": 300,
     "setesfifi": 300,
@@ -1200,7 +1248,7 @@
   "Dyzz": 900,
   "EGI": 300,
   "EIDP": 300,
-  "Eclipsito": 300,
+  "Eclipsito": 2900,
   "Efimero": 300,
   "Elsoolar": 300,
   "EmiZor": 300,
@@ -1251,6 +1299,7 @@
   "Malva": 300,
   "Mathhias": 300,
   "Miniboy": 300,
+  "Mito": 300,
   "Molusco": 300,
   "Mr Still Ballin": 2900,
   "Musicdum": 300,
@@ -1316,11 +1365,13 @@
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,
+  "Zetryko": 1600,
   "Zignos": 2900,
   "araya": 300,
   "chekialo 🇧🇯": 1300,
   "dxg": 300,
   "fleivaman": 1300,
+  "ikonoxx🇺🇾": 300,
   "melomaniaco": 300,
   "rodrilp": 300,
   "setesfifi": 300,
