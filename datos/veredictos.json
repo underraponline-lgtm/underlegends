@@ -1552,6 +1552,16 @@
    "b": "SIX 🇦🇷",
    "ganador": "SIX 🇦🇷",
    "votos": "1–0"
+  },
+  "1557932595856154805": {
+   "id": "1557932595856154805",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791510475840,
+   "a": "CABECE🇨🇱",
+   "b": "CARLOS🇪🇨",
+   "ganador": "CARLOS🇪🇨",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -3641,6 +3651,37 @@
      [
       "MAKMA🇻🇪",
       "PICHULITAMC🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1557932528847822859": {
+   "id": "1557932528847822859",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1791510459864,
+   "ed": 1791510728320,
+   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "CABECE🇨🇱",
+      "CARLOS🇪🇨"
+     ],
+     "CARLOS🇪🇨",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ERIAN🇬🇵",
+      "MAKMA🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T01:24:12+00:00",
+ "cuando": "2026-10-09T01:54:14+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -320,8 +320,30 @@
    "fecha": "3 2V2",
    "premios": "",
    "categoria_id": "1497457390637809837",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
+  },
+  {
+   "nombre": "PRITTY FREE",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1557928516266500159",
+   "cuando": "2026-10-09T01:31:43",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "∞",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "2v2",
+   "horario": "en 20",
+   "fecha": "",
+   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "LA REDENCION",
@@ -342,8 +364,8 @@
    "fecha": "",
    "premios": "Clasificación + Campeonato 🏆",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL2",
@@ -364,8 +386,8 @@
    "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "PELICULA SACABRONCA",
@@ -386,8 +408,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "Doble Eliminación Vol. 2",
@@ -408,8 +430,8 @@
    "fecha": "",
    "premios": "Puntos de ascenso y rol de campeón",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "PRITTY FREE",
@@ -430,8 +452,8 @@
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
@@ -452,8 +474,8 @@
    "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "WETTTSIIIDEE #2",
@@ -474,8 +496,8 @@
    "fecha": "",
    "premios": "AURA",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "MAÑANA DE LLUVIA VOL 1",
@@ -496,8 +518,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "WETTTSIIIDEE",
@@ -518,8 +540,8 @@
    "fecha": "",
    "premios": "AURA",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "PRITTY FREE",
@@ -540,8 +562,8 @@
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 26 PANDILLAS",
@@ -562,8 +584,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 25 1v1",
@@ -584,8 +606,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "COPA SOOLAR",
@@ -606,8 +628,8 @@
    "fecha": "",
    "premios": "600k discordianos",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "PRITTY FREE",
@@ -628,8 +650,8 @@
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "COPA SOOLAR 3",
@@ -650,8 +672,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 24 2v2",
@@ -672,8 +694,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 23 1v1",
@@ -694,8 +716,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "PRITTY FREE",
@@ -716,8 +738,8 @@
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 22 pandillas",
@@ -738,8 +760,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "COPA SOOLAR 2",
@@ -760,30 +782,8 @@
    "fecha": "",
    "premios": "Respeto",
    "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
-  },
-  {
-   "nombre": "COPA SOOLAR",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1556386595580682261",
-   "cuando": "2026-10-04T19:24:40",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Elsoolar",
-   "autor_h": "9ac50a6f3726be04",
-   "cupos_texto": "12 / 16 / 24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "Respeto",
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-08T23:04:35"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:46:49"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -890,28 +890,6 @@
    "modalidad": "",
    "horario": "JUEVES 20:00 🇦🇷",
    "fecha": "",
-   "premios": "",
-   "categoria_id": "863207988739309600",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-08T23:05:00"
-  },
-  {
-   "nombre": "Gallos del Under Amateur I",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1557492991340453891",
-   "cuando": "2026-10-07T20:41:05",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@Soy_Rubick",
-   "autor_h": "52adbe7e22e5f4fd",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Chill",
-   "modalidad": "1v1",
-   "horario": "Cuando se llenen cupos",
-   "fecha": "Despues de que se llenen inscripciones",
    "premios": "",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
@@ -1353,6 +1331,50 @@
    "horario": "en 15",
    "fecha": "3",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "categoria_id": "863207988739309600",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-08T23:05:00"
+  },
+  {
+   "nombre": "FLEIVA FREE",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1541620851307454574",
+   "cuando": "2026-08-25T01:30:52",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "@nachonc_",
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "4",
+   "modalidad": "MULTIVERSE(1-4)",
+   "horario": "23 HS 🇦🇷",
+   "fecha": "2",
+   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "categoria_id": "863207988739309600",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-08T23:05:00"
+  },
+  {
+   "nombre": "FLEIVA FREE",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1541188007569260745",
+   "cuando": "2026-08-23T20:50:54",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "@nachonc_",
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "4",
+   "modalidad": "1v1",
+   "horario": "en 30",
+   "fecha": "1",
+   "premios": "pts para el ranking+pts para la tabla+aura",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -2379,6 +2401,28 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "PROYECTO X",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1557928680649396286",
+   "cuando": "2026-10-09T01:32:22",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "LA NOCHE NUNCA PERDONA🇬🇵",
+   "autor_h": "e0acf3adfb0d85f0",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "15 Minutos",
+   "fecha": "",
+   "premios": "",
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
+  },
+  {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -2396,7 +2440,9 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "STEVEN UNIVERSE",
@@ -2416,7 +2462,9 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.9",
@@ -2436,7 +2484,9 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "MORTAL KOMBAT MAPACHE CUP",
@@ -2456,7 +2506,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "UNA NOCHE CON PLAYER",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "NOCHE DE BOOMBAP",
@@ -2476,7 +2528,9 @@
    "horario": ": 06/10/26",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
@@ -2496,7 +2550,9 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
@@ -2516,7 +2572,9 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "MINI CUP GOD 110",
@@ -2536,7 +2594,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2556,7 +2616,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "MIDNIGHT MIAMI",
@@ -2576,7 +2638,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN - CUPO A LA LIGA APOCALIPSIS X",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "historia del peru cup",
@@ -2596,7 +2660,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2616,7 +2682,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "MINI CUP GOD 109",
@@ -2636,7 +2704,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "HEMOS VUELTO",
@@ -2656,7 +2726,9 @@
    "horario": "RIGHT NOW!",
    "fecha": "",
    "premios": "UN MESSI CON UNA FLOR AMARILLA",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "19 CUP VOL 2 EDICION FIFA",
@@ -2676,7 +2748,9 @@
    "horario": "RIGHT NOW!",
    "fecha": "",
    "premios": "SORPRESA + 1000 BOLOS POR CULO MOVIL (SI ERES DE TOCORON)",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "MINI CUP GOD 108",
@@ -2696,7 +2770,9 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "19 CUP EDICION SANGRE",
@@ -2716,7 +2792,9 @@
    "horario": "RIGHT NOW",
    "fecha": "",
    "premios": "1000 BOLIVARES POR CULO MOVIL",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -2736,7 +2814,9 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "COMPE CELEBRATORIA",
@@ -2756,7 +2836,9 @@
    "horario": "",
    "fecha": "",
    "premios": "",
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-09T01:37:11"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -2860,6 +2942,285 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Agustín la reliquia 🇺🇾 + Lewito 🇦🇷",
+   "quien": "fabrythenoob7n76687",
+   "discord_id": "595648807920861205",
+   "msg_id": "1557932883170304043",
+   "cuando": "2026-10-09T01:49:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1557932284890452050",
+   "cuando": "2026-10-09T01:46:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Neo Soul + Emily Family 🇵🇾",
+   "quien": "plapla23",
+   "discord_id": "839707244069126174",
+   "msg_id": "1557931531064836140",
+   "cuando": "2026-10-09T01:43:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Zignos 🇩🇴 + Presagio 🇦🇷",
+   "quien": "emekultra",
+   "discord_id": "1071185986366742630",
+   "msg_id": "1557931337325871216",
+   "cuando": "2026-10-09T01:42:55"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "CrisZJ",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1557931329264291862",
+   "cuando": "2026-10-09T01:42:53"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin limites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1557930507612987507",
+   "cuando": "2026-10-09T01:39:37"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1557930340616507434",
+   "cuando": "2026-10-09T01:38:58"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1557929778626175038",
+   "cuando": "2026-10-09T01:36:44"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "SHADOW 🇨🇴 última",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1557929668005597247",
+   "cuando": "2026-10-09T01:36:17"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Assuan 🇨🇱",
+   "quien": ".assuan._08335",
+   "discord_id": "1266557884058046507",
+   "msg_id": "1557929646039891989",
+   "cuando": "2026-10-09T01:36:12"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "melgar 🇲🇽",
+   "quien": "ventu._.x",
+   "discord_id": "913850096062439456",
+   "msg_id": "1557929556323733539",
+   "cuando": "2026-10-09T01:35:51"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Isac 🇬🇪",
+   "quien": "isac_16__45369",
+   "discord_id": "1409587624364081272",
+   "msg_id": "1557929397665800213",
+   "cuando": "2026-10-09T01:35:13"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1557929394519937065",
+   "cuando": "2026-10-09T01:35:12"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Cabece 🇨🇱",
+   "quien": "un_random0077",
+   "discord_id": "1144100773844766811",
+   "msg_id": "1557929307311968339",
+   "cuando": "2026-10-09T01:34:51"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Mc fleivagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1557929282343280691",
+   "cuando": "2026-10-09T01:34:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "fleivaman🇨🇦 + belleza🇮🇨",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1557929209945391165",
+   "cuando": "2026-10-09T01:34:28"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Si ser gordo fuera ilegal Dominick preso de por vida 🇦🇷",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1557929150868754463",
+   "cuando": "2026-10-09T01:34:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah 🇻🇪 + BastyRetro 🇨🇱",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1557929103628308591",
+   "cuando": "2026-10-09T01:34:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Shisui🇯🇵 + Vocedelokendo🇦🇫",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1557928964587257946",
+   "cuando": "2026-10-09T01:33:30"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "porque vengo con la rima 🇵🇦 (vs exclusivo)",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1557928891656568874",
+   "cuando": "2026-10-09T01:33:12"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "BastyRetro🇨🇱",
+   "quien": "bastyretro",
+   "discord_id": "596924970429448202",
+   "msg_id": "1557928890599612508",
+   "cuando": "2026-10-09T01:33:12"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Nxuz🇵🇪",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1557928845976412162",
+   "cuando": "2026-10-09T01:33:01"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Deja de llorar 🇭🇳",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1557928839462789272",
+   "cuando": "2026-10-09T01:33:00"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Eshou ñeri🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1557928836333834262",
+   "cuando": "2026-10-09T01:32:59"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Elbesaabuelas🇦🇷",
+   "quien": "xnoah_12341",
+   "discord_id": "1544902851975843900",
+   "msg_id": "1557928833641091204",
+   "cuando": "2026-10-09T01:32:58"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇨🇻",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1557928822727381085",
+   "cuando": "2026-10-09T01:32:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bloody 🇨🇴 + Holden 🇪🇸",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1557928816117026857",
+   "cuando": "2026-10-09T01:32:54"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Dominick 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1557928816263958619",
+   "cuando": "2026-10-09T01:32:54"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Egipto 🇨🇷 + Santo Trinidad 🇨🇴",
+   "quien": "franciscoegipto",
+   "discord_id": "1517014246087589923",
+   "msg_id": "1557928806851944449",
+   "cuando": "2026-10-09T01:32:52"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "no me tongueen otra vez🇻🇪",
+   "quien": "wackmc1",
+   "discord_id": "1493013247488430202",
+   "msg_id": "1557928767270293685",
+   "cuando": "2026-10-09T01:32:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "fleivaman🇨🇦 +",
+   "quien": "gianlam4ld4d",
+   "discord_id": "1514844014325796977",
+   "msg_id": "1557928685351342092",
+   "cuando": "2026-10-09T01:32:23"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -3241,19 +3602,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "eldelafoto🇪🇸",
-   "quien": "alexfrndezzz",
-   "discord_id": "600995936872824842",
-   "msg_id": "1557891911417733231",
+   "texto": "Park-Ji Sung🇰🇷",
+   "quien": "fullylo4ded",
+   "discord_id": "979878316846768139",
+   "msg_id": "1557891908951605311",
    "cuando": "2026-10-08T23:06:15"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Park-Ji Sung🇰🇷",
-   "quien": "fullylo4ded",
-   "discord_id": "979878316846768139",
-   "msg_id": "1557891908951605311",
+   "texto": "eldelafoto🇪🇸",
+   "quien": "alexfrndezzz",
+   "discord_id": "600995936872824842",
+   "msg_id": "1557891911417733231",
    "cuando": "2026-10-08T23:06:15"
   },
   {
@@ -3295,19 +3656,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "PBJT🇨🇱",
-   "quien": "erreise_66955",
-   "discord_id": "1154582019574079508",
-   "msg_id": "1557891541530578985",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1557891540888715335",
    "cuando": "2026-10-08T23:04:47"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1557891540888715335",
+   "texto": "PBJT🇨🇱",
+   "quien": "erreise_66955",
+   "discord_id": "1154582019574079508",
+   "msg_id": "1557891541530578985",
    "cuando": "2026-10-08T23:04:47"
   },
   {
@@ -3331,19 +3692,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Eclipse🇨🇱",
-   "quien": "eclipseeefre",
-   "discord_id": "1547397892153671792",
-   "msg_id": "1557891520139366411",
+   "texto": "Pain🇯🇵",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1557891519212429396",
    "cuando": "2026-10-08T23:04:42"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Pain🇯🇵",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1557891519212429396",
+   "texto": "Eclipse🇨🇱",
+   "quien": "eclipseeefre",
+   "discord_id": "1547397892153671792",
+   "msg_id": "1557891520139366411",
    "cuando": "2026-10-08T23:04:42"
   },
   {
