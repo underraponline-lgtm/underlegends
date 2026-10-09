@@ -1562,6 +1562,66 @@
    "b": "MAYEUTYK 🇺🇾",
    "ganador": "CARLOS🇪🇨",
    "votos": "1–0"
+  },
+  "1557948300252938331": {
+   "id": "1557948300252938331",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791514220060,
+   "a": "ADRIAGNER🇳🇮",
+   "b": "BASTYRETRO🇨🇱",
+   "ganador": "BASTYRETRO🇨🇱",
+   "votos": "1–0"
+  },
+  "1557951299180433449": {
+   "id": "1557951299180433449",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791514935060,
+   "a": "LUZZANO TAM",
+   "b": "FAMILY AGUSTIN",
+   "ganador": "LUZZANO TAM",
+   "votos": "1–0"
+  },
+  "1557951336019005527": {
+   "id": "1557951336019005527",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791514943843,
+   "a": "XCLUSIVO🇻🇪",
+   "b": "NEXUZ🇵🇪",
+   "ganador": "XCLUSIVO🇻🇪",
+   "votos": "1–0"
+  },
+  "1557952589843140639": {
+   "id": "1557952589843140639",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791515242778,
+   "a": "JEIXDER🇵🇪",
+   "b": "MAKMA🇻🇪",
+   "ganador": "MAKMA🇻🇪",
+   "votos": "1–0"
+  },
+  "1557953019755237497": {
+   "id": "1557953019755237497",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791515345277,
+   "a": "GIAN ZA",
+   "b": "XCLUSIVO CRONOX",
+   "ganador": "GIAN ZA",
+   "votos": "1–0"
+  },
+  "1557955887195492393": {
+   "id": "1557955887195492393",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791516028928,
+   "a": "PRESAGIO ZIGNOS",
+   "b": "SNOW RODRILP",
+   "ganador": "PRESAGIO ZIGNOS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -3664,8 +3724,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791510459864,
-   "ed": 1791514220060,
-   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞SIN LÍMITES🇵🇪⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝\n⌞NUMBER🇻🇪⌝ 🆚 ⌞DM🇵🇪⌝\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞MELGAR🇲🇽⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞CRONOX🇨🇱⌝\n⌞FLEIVAGNER🇳🇮⌝ 🆚 ⌞MINIBOY🇨🇱⌝\n⌞ASSUAN🇨🇱⌝ 🆚 ⌞JEIXDER🇦🇷⌝ 🆚 ⌞SHADOW🇨🇴⌝\n`[ CUARTOS ]`\n⌞CARLOS🇪🇨⌝ 🆚 ⌞MAYEUTYK 🇺🇾⌝\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝",
+   "ed": 1791516068720,
+   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞SIN LÍMITES🇵🇪⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝\n⌞NUMBER🇻🇪⌝ 🆚 ⌞DM🇵🇪⌝\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞MELGAR🇲🇽⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞CRONOX🇨🇱⌝\n⌞FLEIVAGNER🇳🇮⌝ 🆚 ⌞MINIBOY🇨🇱⌝\n⌞ASSUAN🇨🇱⌝ 🆚 ⌞JEIXDER🇦🇷⌝ 🆚 ⌞SHADOW🇨🇴⌝\n`[ CUARTOS ]`\n⌞CARLOS🇪🇨⌝ 🆚 ⌞MAYEUTYK 🇺🇾⌝\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n⌞JEIXDER🇵🇪⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞BASTYRETRO🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3764,6 +3824,36 @@
       "ADRIAGNER🇳🇮",
       "BASTYRETRO🇨🇱"
      ],
+     "BASTYRETRO🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "XCLUSIVO🇻🇪",
+      "NEXUZ🇵🇪"
+     ],
+     "XCLUSIVO🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "JEIXDER🇵🇪",
+      "MAKMA🇻🇪"
+     ],
+     "MAKMA🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "BASTYRETRO🇨🇱",
+      "CARLOS🇪🇨"
+     ],
      null,
      "última ronda y no dice campeón",
      []
@@ -3776,8 +3866,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791511124463,
-   "ed": 1791512994719,
-   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝\n⌞PERSONALITY NEMI⌝ 🆚 ⌞KURL ALEXIZ⌝ 🆚 ⌞SNOW RODRI LP⌝ 🆚 ⌞LUZZANO TAM⌝\n⌞PERSON⌝ 🆚 ⌞RODRI LP⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`",
+   "ed": 1791516090413,
+   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝\n⌞PERSONALITY NEMI⌝ 🆚 ⌞KURL ALEXIZ⌝ 🆚 ⌞SNOW RODRI LP⌝ 🆚 ⌞LUZZANO TAM⌝\n⌞PERSON⌝ 🆚 ⌞RODRI LP⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞LUZZANO TAM⌝ 🆚 ⌞FAMILY AGUSTIN⌝\n⌞GIAN ZA⌝ 🆚 ⌞XCLUSIVO CRONOX⌝\n`[ SEMIFINALES ]`\n⌞PRESAGIO ZIGNOS⌝ 🆚 ⌞SNOW RODRILP⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3787,7 +3877,7 @@
       "ZIGNOS PRESAGIO"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -3820,8 +3910,11 @@
       "LUZZANO TAM"
      ],
      null,
-     "última ronda y no dice campeón",
-     []
+     "pasan 2, no hay un ganador",
+     [
+      "SNOW RODRI LP",
+      "LUZZANO TAM"
+     ]
     ],
     [
      "OCTAVOS",
@@ -3831,6 +3924,36 @@
       "TAM"
      ],
      "RODRI LP",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LUZZANO TAM",
+      "FAMILY AGUSTIN"
+     ],
+     "LUZZANO TAM",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "GIAN ZA",
+      "XCLUSIVO CRONOX"
+     ],
+     "GIAN ZA",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PRESAGIO ZIGNOS",
+      "SNOW RODRILP"
+     ],
+     "PRESAGIO ZIGNOS",
      "veredicto",
      []
     ]
