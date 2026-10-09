@@ -3625,5 +3625,228 @@
    ]
   ],
   "v": 2
+ },
+ "435": {
+  "antes": {
+   "BLITZ": [
+    216,
+    164,
+    true
+   ],
+   "Cronox": [
+    16,
+    19,
+    false
+   ],
+   "Emily Family": [
+    112,
+    204,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "NC": [
+    14,
+    17,
+    false
+   ],
+   "Nemi": [
+    73,
+    114,
+    false
+   ],
+   "Tenor": [
+    127,
+    243,
+    false
+   ],
+   "Teo": [
+    145,
+    329,
+    false
+   ],
+   "Xubaru": [
+    63,
+    93,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "BLITZ",
+    "NC",
+    "BLITZ"
+   ],
+   [
+    "BLITZ",
+    "Cronox",
+    "BLITZ"
+   ],
+   [
+    "BLITZ",
+    "Nemi",
+    "BLITZ"
+   ],
+   [
+    "BLITZ",
+    "Tenor",
+    "BLITZ"
+   ],
+   [
+    "DLX",
+    "ANTONIO🇵🇾",
+    "DLX"
+   ],
+   [
+    "DLX",
+    "Erian",
+    "DLX"
+   ],
+   [
+    "Provenza",
+    "BLITZ",
+    "Provenza"
+   ],
+   [
+    "Greyfitsh🇵🇦",
+    "Emily Family",
+    "Greyfitsh🇵🇦"
+   ],
+   [
+    "Makmah",
+    "Teo",
+    "Makmah"
+   ],
+   [
+    "Aldre",
+    "Erian",
+    "Aldre"
+   ],
+   [
+    "Makmah",
+    "Tenor",
+    "Makmah"
+   ],
+   [
+    "Aldre",
+    "Ram",
+    "Aldre"
+   ],
+   [
+    "Provenza",
+    "Makmah",
+    "Provenza"
+   ],
+   [
+    "Aldre",
+    "Greyfitsh🇵🇦",
+    "Aldre"
+   ],
+   [
+    "Makmah",
+    "Xubaru",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "BLITZ": 2,
+   "Cronox": 19,
+   "Emily Family": 2,
+   "Erian": 22,
+   "Makmah": 28,
+   "NC": 20,
+   "Nemi": 4,
+   "Tenor": 1,
+   "Teo": 1,
+   "Xubaru": 3
+  },
+  "fecha": "08/10",
+  "firma": "6049ebaf3e5b3d6e",
+  "msg": "1557986840865411073",
+  "nombre": "__ __ Cuentas Pendientes V.1 __ __",
+  "num": 435,
+  "participantes": 19,
+  "sello": {
+   "Makmah": "3932ef7fc828:17c4f13e63d4"
+  },
+  "sv": "FFA",
+  "t": "2026-10-09T05:23:27Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    10250
+   ],
+   [
+    "Greyfitsh🇵🇦",
+    "Semifinal",
+    5250
+   ],
+   [
+    "BLITZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Emily Family",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ram",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xubaru",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1875
+   ],
+   [
+    "NC",
+    "R32",
+    625
+   ],
+   [
+    "Cronox",
+    "R32",
+    625
+   ],
+   [
+    "Nemi",
+    "R32",
+    625
+   ],
+   [
+    "ANTONIO🇵🇾",
+    "R32",
+    625
+   ]
+  ],
+  "v": 2
  }
 }
