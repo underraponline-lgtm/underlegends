@@ -431,6 +431,10 @@ def _inscripciones_solas(sv):
             if all(corto in n for n in ns):
                 for n in ns:
                     out[n].add('id:%s' % did)
+        # 🔑 y el de la pareja con la bandera de la cuenta: «belleza🇮🇨» es Provenza (`decidir.suyos_de_pareja()`)
+        for did, sv2, n in (D.suyos_de_pareja(ins) if D is not None else ()):
+            if sv2 == sv:
+                out[n].add('id:%s' % did)
         _PERS_SV[sv] = out
     return _PERS_SV[sv]
 

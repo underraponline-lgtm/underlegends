@@ -233,6 +233,9 @@ DELIMS = (re.compile(r'⌞([^⌞⌝]+?)⌝'),
 # shortcode en la MISMA linea (EL RAP FECHA 5, #349), y sin el segundo dos
 # equipos quedaban pegados en uno de seis.
 SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
+#: `[Nombre del equipo (A y B)]` -> `[A + B]`: ver `nombres_de_linea()`
+EQUIPO_NOMBRADO = re.compile(r'([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)'
+                             r'[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])', re.I)
 
 # 🔴 `[SUPLENTE]` ES UN CUPO VACIO, NO UNA PERSONA. Guía de formatos, Parte 2
 # (§9.4): *«ALGORITMOS cuartos: … 𝐕𝐒 [SUPLENTE]. Eso es un cupo vacío → 0
@@ -741,6 +744,11 @@ def nombres_de_linea(l):
     marcos DE UN LADO QUE SI LOS TIENE: `(BLOODY) [Cj] [Zignos]` es el
     equipo Cj + Zignos, y `(BLOODY)` un refuerzo que no peleo (§4.2).
     """
+    # 🔑 EL EQUIPO CON NOMBRE Y SUS INTEGRANTES ENTRE PARÉNTESIS: `[El hijo y el primo del sol (Nemi y
+    # Personality)]`, octavos de FFA del 08/10/2026. Pasaba de los 30 del marco y no tenía `+`, así que el
+    # lado se caía entero y Nemi y Personality no figuraban. Los que pelean son los de adentro
+    l = EQUIPO_NOMBRADO.sub(lambda m: m.group(1) + re.sub(r'\s+(?:y|e)\s+|\s*&\s*', ' + ', m.group(2))
+                            + m.group(3), l)
     if SEP.search(l):
         lados = []
         for seg in SEP.split(l):
@@ -1235,6 +1243,9 @@ REFUERZO_FIN = re.compile(r'\s+[' + _PAR_A + r'][^' + _PAR_A + _PAR_C + r']*' + 
 #: nombre: qui\u00e9n es revivido lo sigue diciendo `marcar_revividos()`, por la
 #: notaci\u00f3n de la gu\u00eda \u2014`(R)`, `1R`\u2014 o por aparecer dos veces.
 R_SUELTA = re.compile(r'(?<=' + _BANDERA + r')\s+R\s*$')
+#: el pokémon entre paréntesis al final de un equipo (`sin_refuerzos()`), y las marcas que NO son él
+POKEMON_PEGADO = re.compile(r'\s*[' + _PAR_A + r']([^' + _PAR_A + _PAR_C + r']+)[' + _PAR_C + r']\s*$')
+MARCA_PAR = re.compile(r'^\s*(?:\d*\s*[RP]|pok[eé]mon)\s*$', re.I)
 
 
 def sin_refuerzos(lado):
@@ -1248,6 +1259,16 @@ def sin_refuerzos(lado):
     # jugado la llave o no— y no cobra nada: es un pokémon
     if s != (lado or ''):
         s = re.sub(r'^\s*[+&,]\s*|\s*[+&,]\s*$', '', s)
+    # 🔑 Y EL POKÉMON PEGADO AL FINAL DE UN EQUIPO: `Zignos 🇩🇴 + Presagio 🇦🇷(SIX)` y
+    # `fleivaman🇨🇦 + belleza🇮🇨(SNOW)`, la final de FFA del 08/10/2026. Dlx: «los que están en ()
+    # son pokemon… son llamados para batallar también. no ganan nada». Leído como nombre,
+    # «belleza(SNOW)» era alguien nuevo y el equipo de la final no era el de la semi.
+    # ⚠️ SÓLO EN UN EQUIPO: en un uno contra uno `gekto🇦🇷(chianluka🇦🇷)` es la historia y se
+    # queda; `El hijo y el primo del sol (Nemi y Personality)` no tiene `+` afuera —ahí el
+    # paréntesis SON los integrantes—; y `(R)`, `(1R)`, `(P)` son marcas que se leen después.
+    m = POKEMON_PEGADO.search(s)
+    if m and re.search(r'[+&]', s[:m.start()]) and not MARCA_PAR.match(m.group(1)):
+        s = s[:m.start()].rstrip()
     partes = re.split(r'(\s*[+&]\s*)', s)
     s = ''.join(R_SUELTA.sub('', p) if i % 2 == 0 else p for i, p in enumerate(partes)).strip()
     return s if norm(s) or MENCION.search(s) else (lado or '')
@@ -3966,6 +3987,15 @@ def _self_check():
          and ref[2][1] == ['ENEK 🇪🇸 + NEO 🇦🇷', 'C 🇦🇷 + D 🇦🇷']),
         ('la historia pegada `gekto🇦🇷(chianluka🇦🇷)` se queda como venía',
          sin_refuerzos('gekto🇦🇷(chianluka🇦🇷)') == 'gekto🇦🇷(chianluka🇦🇷)'),
+        ('`[El hijo y el primo del sol (Nemi y Personality)]` es el equipo Nemi + Personality',
+         nombres_de_linea('[El hijo y el primo del sol (Nemi y Personality)] 🆚 [kurl+alexiz]')
+         == ['Nemi + Personality', 'kurl+alexiz']),
+        ('el pokémon pegado al final de un equipo se va; en un uno contra uno y en un nombre de equipo, no',
+         sin_refuerzos('fleivaman🇨🇦 + belleza🇮🇨(SNOW)') == 'fleivaman🇨🇦 + belleza🇮🇨'
+         and sin_refuerzos('Zignos 🇩🇴 + Presagio 🇦🇷(SIX)') == 'Zignos 🇩🇴 + Presagio 🇦🇷'
+         and sin_refuerzos('Ana 🇦🇷 + Beto 🇦🇷 (R)') == 'Ana 🇦🇷 + Beto 🇦🇷 (R)'
+         and sin_refuerzos('El hijo y el primo del sol (Nemi y Personality)')
+         == 'El hijo y el primo del sol (Nemi y Personality)'),
         ('la «R» suelta después de la bandera se va; sin bandera, no se toca',
          sin_refuerzos('PICHULITA 🇦🇷 + SIX 🇦🇷 R') == 'PICHULITA 🇦🇷 + SIX 🇦🇷'
          and sin_refuerzos('ROMEO R') == 'ROMEO R'),
