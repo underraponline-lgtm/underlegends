@@ -1702,6 +1702,36 @@
    "b": "MAKMAH🇻🇪",
    "ganador": "MAKMAH🇻🇪",
    "votos": "1–0"
+  },
+  "1557986353692680264": {
+   "id": "1557986353692680264",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791523292707,
+   "a": "MAKMAH🇻🇪",
+   "b": "COLESITO 🇨🇴",
+   "ganador": "COLESITO 🇨🇴",
+   "votos": "1–0"
+  },
+  "1557987170055229452": {
+   "id": "1557987170055229452",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791523487343,
+   "a": "COLESITO 🇨🇴",
+   "b": "ALDRE🇦🇷",
+   "ganador": "ALDRE🇦🇷",
+   "votos": "1–0"
+  },
+  "1557987899092504747": {
+   "id": "1557987899092504747",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791523661159,
+   "a": "ALDRE🇦🇷",
+   "b": "ZA🇺🇸",
+   "ganador": "ALDRE🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -4095,8 +4125,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791518498151,
-   "ed": 1791523299532,
-   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞BLITZ🇦🇷⌝\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n`[ CUARTOS ]`\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ CUARTOS ]`\n⌞RAM🇦🇷⌝ 🆚 ⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ SEMIFINALES ]`\n⌞GREYFITSH🇵🇦⌝ 🆚 ⌞ALDRE🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞MAKMAH🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞GREYFITSH🇵🇦⌝ 🆚 ⌞ALDRE🇦🇷⌝\n`[ FINAL ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞ALDRE🇦🇷⌝\n⌞PROVENZA COLESITO XUBARU⌝ 🆚 ⌞ALDRE MAKMA RODA⌝\n⌞XUBARU 🇩🇪⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞XUBARU 🇩🇪⌝ 🆚 ⌞MAKMAH🇻🇪⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞COLESITO 🇨🇴⌝",
+   "ed": 1791523796998,
+   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞BLITZ🇦🇷⌝\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n`[ CUARTOS ]`\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ CUARTOS ]`\n⌞RAM🇦🇷⌝ 🆚 ⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ SEMIFINALES ]`\n⌞GREYFITSH🇵🇦⌝ 🆚 ⌞ALDRE🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞MAKMAH🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞GREYFITSH🇵🇦⌝ 🆚 ⌞ALDRE🇦🇷⌝\n`[ FINAL ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞ALDRE🇦🇷⌝\n⌞PROVENZA COLESITO XUBARU⌝ 🆚 ⌞ALDRE MAKMA RODA⌝\n⌞XUBARU 🇩🇪⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞XUBARU 🇩🇪⌝ 🆚 ⌞MAKMAH🇻🇪⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞COLESITO 🇨🇴⌝\n⌞COLESITO 🇨🇴 🇨🇴⌝ 🆚 ⌞ALDRE 🇦🇷 🇦🇷⌝\n⌞ALDRE 🇦🇷 🇦🇷⌝ 🆚 ⌞ZA 🇺🇸 🇺🇸⌝",
    "batallas": [
     [
      "FILTROS",
@@ -4272,8 +4302,28 @@
       "MAKMAH🇻🇪",
       "COLESITO 🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "COLESITO 🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "COLESITO 🇨🇴 🇨🇴",
+      "ALDRE 🇦🇷 🇦🇷"
+     ],
+     "ALDRE 🇦🇷 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ALDRE 🇦🇷 🇦🇷",
+      "ZA 🇺🇸 🇺🇸"
+     ],
+     "ALDRE 🇦🇷 🇦🇷",
+     "veredicto",
      []
     ]
    ]
