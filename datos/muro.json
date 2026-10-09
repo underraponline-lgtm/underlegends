@@ -293,6 +293,13 @@
 "temporada"
 ]
 },
+"xclusivo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "nxuz": {
 "rg": "",
 "c": [
@@ -316,13 +323,6 @@
 ]
 },
 "onzass": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"xclusivo": {
 "rg": "",
 "c": [
 "servidor",
@@ -549,14 +549,14 @@
 "temporada"
 ]
 },
-"dxg": {
+"19": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"19": {
+"dxg": {
 "rg": "",
 "c": [
 "servidor",

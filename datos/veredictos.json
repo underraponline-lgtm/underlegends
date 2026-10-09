@@ -233,56 +233,6 @@
   }
  },
  "batallas": {
-  "1555399181114548288": {
-   "id": "1555399181114548288",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790906462697,
-   "a": "Soneto 🇪🇨",
-   "b": "Oasis🇨🇱",
-   "ganador": "Oasis🇨🇱",
-   "votos": "1–0"
-  },
-  "1555400427716091915": {
-   "id": "1555400427716091915",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790906759910,
-   "a": "Six🇦🇷",
-   "b": "Sosa🇨🇱",
-   "ganador": "Six🇦🇷",
-   "votos": "1–0"
-  },
-  "1555402362141540353": {
-   "id": "1555402362141540353",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790907221113,
-   "a": "Cinexfilo 🇻🇪",
-   "b": "Abyssus 🇨🇦",
-   "ganador": "Abyssus 🇨🇦",
-   "votos": "1–0"
-  },
-  "1555403123906838599": {
-   "id": "1555403123906838599",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790907402732,
-   "a": "Zignos 🇦🇷",
-   "b": "Snow 🇨🇴",
-   "ganador": "Snow 🇨🇴",
-   "votos": "1–0"
-  },
-  "1555404623395946499": {
-   "id": "1555404623395946499",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790907760238,
-   "a": "Oasis🇨🇱",
-   "b": "Abyssus 🇨🇦",
-   "ganador": "Oasis🇨🇱",
-   "votos": "1–0"
-  },
   "1555406690017615893": {
    "id": "1555406690017615893",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1561,6 +1511,56 @@
    "a": "CABECE🇨🇱",
    "b": "CARLOS🇪🇨",
    "ganador": "CARLOS🇪🇨",
+   "votos": "1–0"
+  },
+  "1557933654833889353": {
+   "id": "1557933654833889353",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791510728320,
+   "a": "ERIAN🇬🇵",
+   "b": "MAKMA🇻🇪",
+   "ganador": "MAKMA🇻🇪",
+   "votos": "1–0"
+  },
+  "1557935519625908289": {
+   "id": "1557935519625908289",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791511172921,
+   "a": "SIN LÍMITES🇵🇪",
+   "b": "BASTYRETRO🇨🇱",
+   "ganador": "BASTYRETRO🇨🇱",
+   "votos": "1–0"
+  },
+  "1557938254203064352": {
+   "id": "1557938254203064352",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791511824895,
+   "a": "NEXUZ🇵🇪",
+   "b": "MELGAR🇲🇽",
+   "ganador": "NEXUZ🇵🇪",
+   "votos": "1–0"
+  },
+  "1557938263203774517": {
+   "id": "1557938263203774517",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791511827041,
+   "a": "ANDRES",
+   "b": "CRONOX",
+   "ganador": "CRONOX",
+   "votos": "1–0"
+  },
+  "1557939959229456460": {
+   "id": "1557939959229456460",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791512231405,
+   "a": "XCLUSIVO🇻🇪",
+   "b": "CRONOX🇨🇱",
+   "ganador": "XCLUSIVO🇻🇪",
    "votos": "1–0"
   }
  },
@@ -3664,8 +3664,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791510459864,
-   "ed": 1791510728320,
-   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝",
+   "ed": 1791512485171,
+   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞SIN LÍMITES🇵🇪⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝\n⌞NUMBER🇻🇪⌝ 🆚 ⌞DM🇵🇪⌝\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞MELGAR🇲🇽⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞CRONOX🇨🇱⌝\n⌞FLEIVAGNER🇳🇮⌝ 🆚 ⌞MINIBOY🇨🇱⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3683,8 +3683,101 @@
       "ERIAN🇬🇵",
       "MAKMA🇻🇪"
      ],
+     "MAKMA🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIN LÍMITES🇵🇪",
+      "BASTYRETRO🇨🇱"
+     ],
+     "BASTYRETRO🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NUMBER🇻🇪",
+      "DM🇵🇪"
+     ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NEXUZ🇵🇪",
+      "MELGAR🇲🇽"
+     ],
+     "NEXUZ🇵🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "XCLUSIVO🇻🇪",
+      "CRONOX🇨🇱"
+     ],
+     "XCLUSIVO🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "FLEIVAGNER🇳🇮",
+      "MINIBOY🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1557935316378198067": {
+   "id": "1557935316378198067",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791511124463,
+   "ed": 1791512000851,
+   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "FLEIVAMAN BELLEZA",
+      "BLODDY HOLDEN",
+      "ZIGNOS PRESAGIO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NEO",
+      "XCLUSIVO",
+      "SNOW"
+     ],
+     "NEO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ANDRES",
+      "CRONOX"
+     ],
+     "CRONOX",
+     "veredicto",
      []
     ]
    ]
