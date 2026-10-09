@@ -1053,7 +1053,8 @@
 "tenor": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "aby": {
@@ -1165,7 +1166,8 @@
 "aldre": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "antorcha": {
@@ -1174,7 +1176,9 @@
 },
 "rodrilp": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "saito": {
 "rg": "",
@@ -5049,6 +5053,30 @@
 "Teo"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-09T05:51:08Z",
+"quien": [
+"Tenor"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-09T05:51:08Z",
+"quien": [
+"Aldre"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-09T05:51:08Z",
+"quien": [
+"rodrilp"
+],
+"carta": "servidor"
 }
 ]
 }
