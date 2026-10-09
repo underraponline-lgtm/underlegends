@@ -808,8 +808,16 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const cal = (liga.d.calendario || []).find((c) => String(c.ll) === String(n));
   const mod = inf.mod || (pas && pas.modalidad) || '';
   const rgo = inf.rg || (pas && pas.rango) || '';
-  const org = inf.org || (pas && pas.org) || '';
+  // ⚖️ y la en vivo, del anuncio que le toca (`liga.anuncioDeLlave()`). Sin «Organiza:» escrito, quien lo publicó
+  const evV = L.vivo && !inf.org ? liga.anuncioDeLlave(L) : null;
+  const org = inf.org || (pas && pas.org) || (evV && evV.org) || inf.aut || (evV && evV.aut) || '';
   const fOrg = org ? liga.fila(org) : null;
+  const st = inf.st || (evV && evV.st) || {};
+  // en UN span: el `gap` del renglón separaba la coma del nombre
+  const gente = (xs) => <span>{(xs || []).map((x, i) => {
+    const f = liga.fila(x);
+    return [i ? ', ' : '', f ? <a key={x} href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b key={x}>{limpio(x)}</b>];
+  })}</span>;
   const mR = /^Rango (\w+)$/.exec(String(rgo || ''));
   const asc = sv.rangos && mR && sv.rangos[mR[1]] ? sv.rangos[mR[1]].map((p, i) => (i < 3 ? (i + 1) + '°' : '4°') + ' ' + num(p)).join(' · ') : '';
   const mult = L.vivo ? liga.multSv(L.sv) : null;
@@ -851,7 +859,10 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             {mod ? <li>🎤 {mod}</li> : null}
             {rgo ? <li title={asc ? 'Puntos de ascenso en ' + (sv.nombre || L.sv) + ' (no en la Liga): ' + asc : undefined}>{rgo}{asc ? <small> · {asc}</small> : null}</li> : null}
             {L.participantes ? <li>{L.participantes} raperos</li> : null}
-            {org ? <li>organizó {fOrg ? <a href={'#/r/' + encodeURIComponent(fOrg.k)}>{limpio(fOrg.n)}</a> : <b>{limpio(org)}</b>}</li> : null}
+            {org ? <li>{L.vivo && !L.terminada ? 'organiza' : 'organizó'} {fOrg ? <a href={'#/r/' + encodeURIComponent(fOrg.k)}>{limpio(fOrg.n)}</a> : <b>{limpio(org)}</b>}</li> : null}
+            {st.j ? <li>⚖️ jurado {gente(st.j)}</li> : null}
+            {st.h ? <li>🎙️ host {gente(st.h)}</li> : null}
+            {st.d ? <li>🎧 DJ {gente(st.d)}</li> : null}
             {inf.pre ? <li>🏅 {inf.pre}</li> : null}
             {mult && mult !== 1 ? <li className="lk-mult">×{String(mult).replace('.', ',')} esta semana</li> : null}
           </ul>

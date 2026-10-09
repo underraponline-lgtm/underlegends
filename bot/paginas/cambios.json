@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.65",
+   "dia": "2026-10-09",
+   "cuando": "2026-10-09T00:05:00-04:00",
+   "titulo": "Quién organiza, juzga, presenta y pone la música",
+   "items": [
+    "⚖️ **La llave dice quién organiza, el jurado, el host y el DJ**, sacados del anuncio del evento. También la que se está jugando en vivo: antes no decía ni quién la organizaba.",
+    "🎭 **Lo de entre paréntesis al lado de un equipo es un pokémon**: «belleza(SNOW)» es belleza, y SNOW no gana nada por esa batalla.",
+    "🔎 **Las inscripciones en pareja también dicen quién es quién**: si tu cuenta se anota sola con tu bandera, en la pareja sos el que la lleva."
+   ]
+  },
+  {
    "version": "2.64",
    "dia": "2026-10-08",
    "cuando": "2026-10-08T14:24:00-04:00",

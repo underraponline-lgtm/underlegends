@@ -455,6 +455,15 @@ export class Liga {
   // el medio no estaba en vivo, no venía y no tenía llave procesada, así que no salía en ningún lado. Son las llaves en
   // vivo ya terminadas (`VIVO_L` de app.js: las procesadas ya no están, ver `llavesHechas()`), de las últimas 8 h, con
   // su evento anunciado si lo hay y el campeón de la final. `[{ L, e, camp }]`
+  // ⚖️ EL ANUNCIO DE UNA LLAVE EN VIVO, para decir quién organiza y quiénes son el jurado, el host y el DJ (Dlx,
+  // 08/10/2026). La procesada lo trae en su ficha (`L.info`); la en vivo todavía no tiene número, así que se busca
+  // como en `recienTerminadas()`: el evento de `proximos()` o del calendario que `llaveDeEvento()` le asigna
+  anuncioDeLlave(L) {
+    if (!L || typeof window === 'undefined' || !window.llaveDeEvento) return null;
+    const evs = this.proximos().concat((this.d.calendario || []).filter((c) => !c.ll)
+      .map((c) => ({ nombre: c.n, sv: c.sv, cuando: c.t, link: c.link, org: c.org, st: c.st, aut: c.aut })));
+    return evs.find((x) => { try { return !!window.llaveDeEvento(x, [L]); } catch (err) { return false; } }) || null;
+  }
   recienTerminadas() {
     const ls = typeof window !== 'undefined' ? Object.values(window.VIVO_L || {}).filter((L) => L && L.terminada && !L.veredictos) : [];
     if (!ls.length) return [];
