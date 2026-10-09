@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T02:53:50+00:00",
+ "cuando": "2026-10-09T03:23:56+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2942,6 +2942,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tenor",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1557956640378978418",
+   "cuando": "2026-10-09T03:23:28"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1557952299786178641",
+   "cuando": "2026-10-09T03:06:13"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
