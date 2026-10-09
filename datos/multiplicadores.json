@@ -224,8 +224,8 @@
    "organizadores": [
     [
      "Lewis",
-     108,
-     5
+     84,
+     4
     ],
     [
      "nachonc_",
@@ -265,12 +265,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 38,
+     "FFA": 41,
      "DDF": 9,
      "SR": 1
     },
     "gente": {
-     "FFA": 158,
+     "FFA": 163,
      "DDF": 41,
      "SR": 16
     },
@@ -280,7 +280,7 @@
     "ACAD": 0,
     "DDF": 41,
     "DRA": 0,
-    "FFA": 158,
+    "FFA": 163,
     "FFS": 0,
     "SR": 16,
     "URBF": 0

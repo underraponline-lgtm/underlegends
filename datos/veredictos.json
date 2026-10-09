@@ -1742,6 +1742,26 @@
    "b": "OG🇻🇪",
    "ganador": "MRSTILL🇺🇾",
    "votos": "2–0"
+  },
+  "1558239681223729283": {
+   "id": "1558239681223729283",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791583690697,
+   "a": "PANCHOK 🇨🇱",
+   "b": "DAMIAN 🇵🇪",
+   "ganador": "PANCHOK 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558241657542152213": {
+   "id": "1558241657542152213",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791584161888,
+   "a": "EMILIO 🇲🇽",
+   "b": "SHADOW 🇨🇴",
+   "ganador": "EMILIO 🇲🇽",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -4334,6 +4354,107 @@
      ],
      "ALDRE 🇦🇷 🇦🇷",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1558239683203571765": {
+   "id": "1558239683203571765",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791583691169,
+   "ed": 1791584503777,
+   "texto": "`[ OCTAVOS ]`\n⌞santi🇦🇷⌝ 🆚 ⌞riolu🇪🇸⌝\n⌞ikonoxx🇺🇾⌝ 🆚 ⌞dynoco🇦🇷⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞agus🇦🇷⌝\n⌞Kravitz🇫🇷⌝ 🆚 ⌞Za🇦🇷⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝\n⌞Trot 🇪🇸⌝ 🆚 ⌞RT 🇲🇽⌝\n⌞RT 🇲🇽⌝ 🆚 ⌞Shisui🇯🇵⌝\n⌞andy⌝ 🆚 ⌞Pichulamc🇦🇷⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "santi🇦🇷",
+      "riolu🇪🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ikonoxx🇺🇾",
+      "dynoco🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Mitosis🇦🇷",
+      "agus🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Kravitz🇫🇷",
+      "Za🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "makmah 🇻🇪",
+      "delux🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Trot 🇪🇸",
+      "RT 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "RT 🇲🇽",
+      "Shisui🇯🇵"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "andy",
+      "Pichulamc🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "makmah 🇻🇪",
+      "delux🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
