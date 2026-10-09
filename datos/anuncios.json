@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T19:54:16+00:00",
+ "cuando": "2026-10-09T20:24:07+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -976,30 +976,6 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-09T19:35:33"
-  },
-  {
-   "nombre": "PRITTY FREE",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1556532055393697843",
-   "cuando": "2026-10-05T05:02:40",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "∞",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "2V2 PANDILLA (NO BUSQUEN TEAM ANOTENSE SOLO)",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
-   "staff": {},
-   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T19:35:33"
@@ -3712,6 +3688,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Campoy🇪🇸",
+   "quien": "campy89_",
+   "discord_id": "1502684639062659122",
+   "msg_id": "1558208008092262471",
+   "cuando": "2026-10-09T20:02:19"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
