@@ -37,6 +37,7 @@
 "rg": "C",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -292,6 +293,13 @@
 "temporada"
 ]
 },
+"nxuz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "benjixo": {
 "rg": "",
 "c": [
@@ -314,6 +322,13 @@
 "temporada"
 ]
 },
+"xclusivo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "jupiter": {
 "rg": "",
 "c": [
@@ -329,13 +344,6 @@
 ]
 },
 "rt": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"nxuz": {
 "rg": "",
 "c": [
 "servidor",
@@ -375,13 +383,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"xclusivo": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -432,6 +433,13 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"numberve": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -490,13 +498,6 @@
 "temporada"
 ]
 },
-"numberve": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "mtz": {
 "rg": "",
 "c": [
@@ -549,6 +550,13 @@
 ]
 },
 "dxg": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"19": {
 "rg": "",
 "c": [
 "servidor",
@@ -798,6 +806,10 @@
 "temporada"
 ]
 },
+"globalhustler": {
+"rg": "",
+"c": []
+},
 "chop": {
 "rg": "",
 "c": [
@@ -825,10 +837,6 @@
 "servidor",
 "temporada"
 ]
-},
-"globalhustler": {
-"rg": "",
-"c": []
 },
 "malva": {
 "rg": "",
@@ -1153,13 +1161,6 @@
 "temporada"
 ]
 },
-"19": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "luzzano": {
 "rg": "",
 "c": [
@@ -1167,7 +1168,7 @@
 "temporada"
 ]
 },
-"xervoe": {
+"noa": {
 "rg": "",
 "c": [
 "servidor",
@@ -1175,6 +1176,13 @@
 ]
 },
 "eidp": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"xervoe": {
 "rg": "",
 "c": [
 "servidor",
@@ -4956,6 +4964,14 @@
 "MCO"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-09T01:56:34Z",
+"quien": [
+"Makmah"
+],
+"carta": "pais"
 }
 ]
 }

@@ -2956,5 +2956,151 @@
    ]
   ],
   "v": 2
+ },
+ "432": {
+  "antes": {
+   "19": [
+    218,
+    168,
+    true
+   ],
+   "Cronox": [
+    16,
+    19,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "NXUZ": [
+    34,
+    44,
+    false
+   ],
+   "Noa": [
+    320,
+    310,
+    true
+   ],
+   "Number VE": [
+    48,
+    66,
+    false
+   ],
+   "Xclusivo": [
+    163,
+    50,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Xclusivo",
+    "Erian",
+    "Xclusivo"
+   ],
+   [
+    "19",
+    "Number VE",
+    "19"
+   ],
+   [
+    "Makmah",
+    "Cronox",
+    "Makmah"
+   ],
+   [
+    "NXUZ",
+    "Noa",
+    "NXUZ"
+   ],
+   [
+    "19",
+    "Xclusivo",
+    "19"
+   ],
+   [
+    "Makmah",
+    "NXUZ",
+    "Makmah"
+   ],
+   [
+    "19",
+    "Makmah",
+    "19"
+   ]
+  ],
+  "ev_antes": {
+   "19": 2,
+   "Cronox": 16,
+   "Erian": 20,
+   "Makmah": 26,
+   "NXUZ": 8,
+   "Noa": 1,
+   "Number VE": 8,
+   "Xclusivo": 6
+  },
+  "fecha": "08/10",
+  "firma": "0868d08cc7f69ff3",
+  "msg": "1557934001543581767",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
+  "num": 432,
+  "participantes": 9,
+  "sello": {
+   "19": "e4f5391120e3:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-09T01:53:30Z",
+  "tabla": [
+   [
+    "19",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Noa",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

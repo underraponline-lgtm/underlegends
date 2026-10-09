@@ -39,6 +39,11 @@
      0,
      16
     ],
+    "19": [
+     0,
+     3,
+     1
+    ],
     "ALESS": [
      1,
      0,
@@ -264,7 +269,7 @@
      1,
      8
     ],
-    "F1THER🇪🇸": [
+    "F1THER": [
      1,
      0,
      16
@@ -284,7 +289,7 @@
      0,
      16
     ],
-    "Global Hustler 🇦🇷": [
+    "Global Hustler": [
      0,
      2,
      2
@@ -451,7 +456,7 @@
     ],
     "Makmah": [
      1,
-     7,
+     9,
      2
     ],
     "Malva": [
@@ -501,7 +506,7 @@
     ],
     "NXUZ": [
      0,
-     1,
+     2,
      4
     ],
     "NYCO": [
@@ -518,6 +523,11 @@
      1,
      0,
      2
+    ],
+    "Noa": [
+     0,
+     0,
+     8
     ],
     "Noone": [
      1,
@@ -791,7 +801,7 @@
     ],
     "Xclusivo": [
      1,
-     2,
+     3,
      2
     ],
     "YOUNG VLAD 🇨🇴": [
@@ -868,6 +878,7 @@
    "pts": {
     ".SosaATR": 300,
     "1200": 300,
+    "19": 1600,
     "ALESS": 300,
     "ALTER 🇨🇱": 300,
     "ANTORCHA": 300,
@@ -910,10 +921,10 @@
     "Erik": 1300,
     "Erizo": 300,
     "Ezias🥈✒️🧢🐍": 300,
-    "F1THER🇪🇸": 300,
+    "F1THER": 300,
     "Geoka": 300,
     "Ger9🇨🇱": 300,
-    "Global Hustler 🇦🇷": 1000,
+    "Global Hustler": 1000,
     "Gocho": 300,
     "HH": 300,
     "Henry": 300,
@@ -999,7 +1010,7 @@
     "Valdoza": 300,
     "Vandu": 2900,
     "Velatz": 2900,
-    "Xclusivo": 1300,
+    "Xclusivo": 2900,
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
@@ -1017,6 +1028,7 @@
  "suma": {
   ".SosaATR": 300,
   "1200": 300,
+  "19": 1600,
   "ALESS": 300,
   "ALTER 🇨🇱": 300,
   "ANTORCHA": 300,
@@ -1059,10 +1071,10 @@
   "Erik": 1300,
   "Erizo": 300,
   "Ezias🥈✒️🧢🐍": 300,
-  "F1THER🇪🇸": 300,
+  "F1THER": 300,
   "Geoka": 300,
   "Ger9🇨🇱": 300,
-  "Global Hustler 🇦🇷": 1000,
+  "Global Hustler": 1000,
   "Gocho": 300,
   "HH": 300,
   "Henry": 300,
@@ -1148,7 +1160,7 @@
   "Valdoza": 300,
   "Vandu": 2900,
   "Velatz": 2900,
-  "Xclusivo": 1300,
+  "Xclusivo": 2900,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,

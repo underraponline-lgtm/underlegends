@@ -15908,10 +15908,10 @@
      ],
      [
       [
-       "Global Hustler 🇦🇷",
+       "Global Hustler",
        "Makmah"
       ],
-      "Global Hustler 🇦🇷",
+      "Global Hustler",
       ""
      ],
      [
@@ -15937,10 +15937,10 @@
     "b": [
      [
       [
-       "Global Hustler 🇦🇷",
+       "Global Hustler",
        "Fazer"
       ],
-      "Global Hustler 🇦🇷",
+      "Global Hustler",
       ""
      ],
      [
@@ -15972,7 +15972,7 @@
      [
       [
        "MCO",
-       "Global Hustler 🇦🇷"
+       "Global Hustler"
       ],
       "MCO",
       ""
@@ -15989,7 +15989,7 @@
     10000
    ],
    [
-    "Global Hustler 🇦🇷",
+    "Global Hustler",
     "Subcampeón",
     7500
    ],
@@ -16134,7 +16134,7 @@
        "PichulaMc",
        "Snow",
        "Geoka",
-       "F1THER🇪🇸"
+       "F1THER"
       ],
       "PichulaMc",
       "triple (4 bandas)"
@@ -16286,7 +16286,7 @@
     1250
    ],
    [
-    "F1THER🇪🇸",
+    "F1THER",
     "Octavos",
     1250
    ],
@@ -16334,6 +16334,133 @@
     "Xclusivo",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "432": {
+  "dia": "2026-10-08",
+  "escala": "8-15",
+  "fecha": "08/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1557904185654251651"
+  ],
+  "n": 432,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Xclusivo",
+       "Erian"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "19",
+       "Number VE"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Cronox"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Noa"
+      ],
+      "NXUZ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "19",
+       "Xclusivo"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "NXUZ"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "19",
+       "Makmah"
+      ],
+      "19",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "19",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Noa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
    ]
   ]
  }
