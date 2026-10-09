@@ -79,11 +79,6 @@
      3,
      2
     ],
-    "Agustín la reliquia 🇺🇾": [
-     1,
-     0,
-     8
-    ],
     "Akutagawa🇹🇼": [
      1,
      0,
@@ -247,7 +242,7 @@
     "EIDP": [
      1,
      0,
-     16
+     8
     ],
     "Eclipsito": [
      1,
@@ -258,11 +253,6 @@
      1,
      0,
      8
-    ],
-    "Egipto 🇨🇷": [
-     1,
-     0,
-     16
     ],
     "Elbesaabuelas": [
      0,
@@ -278,6 +268,11 @@
      1,
      0,
      16
+    ],
+    "Emily Family": [
+     1,
+     0,
+     8
     ],
     "Enkil 🇦🇷": [
      1,
@@ -308,11 +303,6 @@
      1,
      0,
      16
-    ],
-    "Family🇵🇾": [
-     1,
-     0,
-     8
     ],
     "Fazer": [
      0,
@@ -349,7 +339,7 @@
      0,
      16
     ],
-    "Holden 🇪🇸": [
+    "Holden": [
      1,
      0,
      16
@@ -515,7 +505,7 @@
      16
     ],
     "Mathhias": [
-     0,
+     1,
      0,
      8
     ],
@@ -573,11 +563,6 @@
      1,
      0,
      2
-    ],
-    "Neo Soul": [
-     1,
-     0,
-     8
     ],
     "Noa": [
      0,
@@ -904,11 +889,6 @@
      0,
      16
     ],
-    "belleza🇮🇨": [
-     1,
-     0,
-     2
-    ],
     "chekialo 🇧🇯": [
      1,
      0,
@@ -928,11 +908,6 @@
      0,
      1,
      99
-    ],
-    "matthias": [
-     1,
-     0,
-     16
     ],
     "melomaniaco": [
      1,
@@ -970,7 +945,6 @@
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 2900,
-    "Agustín la reliquia 🇺🇾": 300,
     "Akutagawa🇹🇼": 300,
     "Aldre": 300,
     "Alexi": 300,
@@ -1003,23 +977,22 @@
     "EIDP": 300,
     "Eclipsito": 300,
     "Efimero": 300,
-    "Egipto 🇨🇷": 300,
     "Elsoolar": 300,
     "EmiZor": 300,
+    "Emily Family": 300,
     "Enkil 🇦🇷": 300,
     "Erian": 2900,
     "Erik": 1300,
     "Erizo": 300,
     "Ezias🥈✒️🧢🐍": 300,
     "F1THER": 300,
-    "Family🇵🇾": 300,
     "Geoka": 300,
     "Ger9🇨🇱": 300,
     "Global Hustler": 1000,
     "Gocho": 300,
     "HH": 300,
     "Henry": 300,
-    "Holden 🇪🇸": 300,
+    "Holden": 300,
     "ISAIAS": 300,
     "Iguana": 300,
     "JJ": 300,
@@ -1049,6 +1022,7 @@
     "Majiztral": 300,
     "Makmah": 2900,
     "Malva": 300,
+    "Mathhias": 300,
     "Miniboy": 300,
     "Molusco": 300,
     "Mr Still Ballin": 2900,
@@ -1059,7 +1033,6 @@
     "NYCO": 300,
     "Nemi": 300,
     "Neo": 1300,
-    "Neo Soul": 300,
     "Noone": 300,
     "OG": 300,
     "ONZASS": 300,
@@ -1113,11 +1086,9 @@
     "Zaza": 300,
     "Zignos": 2900,
     "araya": 300,
-    "belleza🇮🇨": 1300,
     "chekialo 🇧🇯": 1300,
     "dxg": 300,
     "fleivaman": 1300,
-    "matthias": 300,
     "melomaniaco": 300,
     "rodrilp": 300,
     "setesfifi": 300,
@@ -1136,7 +1107,6 @@
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 2900,
-  "Agustín la reliquia 🇺🇾": 300,
   "Akutagawa🇹🇼": 300,
   "Aldre": 300,
   "Alexi": 300,
@@ -1169,23 +1139,22 @@
   "EIDP": 300,
   "Eclipsito": 300,
   "Efimero": 300,
-  "Egipto 🇨🇷": 300,
   "Elsoolar": 300,
   "EmiZor": 300,
+  "Emily Family": 300,
   "Enkil 🇦🇷": 300,
   "Erian": 2900,
   "Erik": 1300,
   "Erizo": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "F1THER": 300,
-  "Family🇵🇾": 300,
   "Geoka": 300,
   "Ger9🇨🇱": 300,
   "Global Hustler": 1000,
   "Gocho": 300,
   "HH": 300,
   "Henry": 300,
-  "Holden 🇪🇸": 300,
+  "Holden": 300,
   "ISAIAS": 300,
   "Iguana": 300,
   "JJ": 300,
@@ -1215,6 +1184,7 @@
   "Majiztral": 300,
   "Makmah": 2900,
   "Malva": 300,
+  "Mathhias": 300,
   "Miniboy": 300,
   "Molusco": 300,
   "Mr Still Ballin": 2900,
@@ -1225,7 +1195,6 @@
   "NYCO": 300,
   "Nemi": 300,
   "Neo": 1300,
-  "Neo Soul": 300,
   "Noone": 300,
   "OG": 300,
   "ONZASS": 300,
@@ -1279,11 +1248,9 @@
   "Zaza": 300,
   "Zignos": 2900,
   "araya": 300,
-  "belleza🇮🇨": 1300,
   "chekialo 🇧🇯": 1300,
   "dxg": 300,
   "fleivaman": 1300,
-  "matthias": 300,
   "melomaniaco": 300,
   "rodrilp": 300,
   "setesfifi": 300,

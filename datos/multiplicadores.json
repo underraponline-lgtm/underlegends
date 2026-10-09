@@ -228,14 +228,14 @@
      5
     ],
     [
-     "CRONOX",
-     24,
+     "nachonc_",
+     48,
      2
     ],
     [
-     "nachonc_",
-     22,
-     1
+     "CRONOX",
+     24,
+     2
     ],
     [
      "Velatz🇨🇱",
@@ -254,7 +254,7 @@
     ],
     [
      "LA NOCHE NUNCA PERDONA🇬🇵",
-     13,
+     12,
      1
     ],
     [
@@ -270,12 +270,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 32,
+     "FFA": 36,
      "DDF": 9,
      "SR": 1
     },
     "gente": {
-     "FFA": 142,
+     "FFA": 153,
      "DDF": 41,
      "SR": 16
     },
@@ -285,7 +285,7 @@
     "ACAD": 0,
     "DDF": 41,
     "DRA": 0,
-    "FFA": 142,
+    "FFA": 153,
     "FFS": 0,
     "SR": 16,
     "URBF": 0
