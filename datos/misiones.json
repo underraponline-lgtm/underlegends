@@ -79,6 +79,11 @@
      3,
      2
     ],
+    "Agustín la reliquia 🇺🇾": [
+     1,
+     0,
+     8
+    ],
     "Akutagawa🇹🇼": [
      1,
      0,
@@ -135,7 +140,7 @@
      16
     ],
     "BastyRetro": [
-     0,
+     1,
      4,
      1
     ],
@@ -144,12 +149,17 @@
      1,
      1
     ],
+    "Bloody": [
+     1,
+     0,
+     16
+    ],
     "Bludi🇨🇴": [
      0,
      0,
      8
     ],
-    "Cabece 🇨🇱": [
+    "Cabece": [
      0,
      0,
      16
@@ -229,6 +239,11 @@
      3,
      4
     ],
+    "EGI": [
+     1,
+     0,
+     8
+    ],
     "EIDP": [
      1,
      0,
@@ -243,6 +258,11 @@
      1,
      0,
      8
+    ],
+    "Egipto 🇨🇷": [
+     1,
+     0,
+     16
     ],
     "Elbesaabuelas": [
      0,
@@ -289,6 +309,11 @@
      0,
      16
     ],
+    "Family🇵🇾": [
+     1,
+     0,
+     8
+    ],
     "Fazer": [
      0,
      2,
@@ -320,6 +345,11 @@
      16
     ],
     "Henry": [
+     1,
+     0,
+     16
+    ],
+    "Holden 🇪🇸": [
      1,
      0,
      16
@@ -397,7 +427,7 @@
     "LEWITO": [
      1,
      0,
-     16
+     8
     ],
     "LKS 🇨🇱": [
      1,
@@ -433,6 +463,11 @@
      1,
      1,
      8
+    ],
+    "Luzzano": [
+     1,
+     0,
+     4
     ],
     "Lvel": [
      1,
@@ -486,7 +521,7 @@
     ],
     "Miniboy": [
      1,
-     1,
+     0,
      4
     ],
     "Molt": [
@@ -538,6 +573,11 @@
      1,
      0,
      2
+    ],
+    "Neo Soul": [
+     1,
+     0,
+     8
     ],
     "Noa": [
      0,
@@ -594,6 +634,11 @@
      0,
      8
     ],
+    "Personality": [
+     1,
+     0,
+     16
+    ],
     "PichulaMc": [
      1,
      11,
@@ -622,7 +667,7 @@
     "Presagio": [
      1,
      0,
-     4
+     1
     ],
     "Prodigy": [
      1,
@@ -703,6 +748,11 @@
      1,
      0,
      8
+    ],
+    "Santo Trinidad 🇨🇴": [
+     1,
+     0,
+     16
     ],
     "Saz": [
      1,
@@ -847,12 +897,17 @@
     "Zignos": [
      1,
      3,
-     2
+     1
     ],
     "araya": [
      1,
      0,
      16
+    ],
+    "belleza🇮🇨": [
+     1,
+     0,
+     2
     ],
     "chekialo 🇧🇯": [
      1,
@@ -864,20 +919,30 @@
      0,
      16
     ],
-    "fleivagner🇨🇴": [
+    "fleivaman": [
+     1,
      0,
-     0,
-     16
+     2
     ],
     "julia 🇧🇴": [
      0,
      1,
      99
     ],
+    "matthias": [
+     1,
+     0,
+     16
+    ],
     "melomaniaco": [
      1,
      0,
      16
+    ],
+    "rodrilp": [
+     1,
+     0,
+     4
     ],
     "setesfifi": [
      1,
@@ -905,6 +970,7 @@
     "ARDEAN": 300,
     "Abyssus": 300,
     "Agus": 2900,
+    "Agustín la reliquia 🇺🇾": 300,
     "Akutagawa🇹🇼": 300,
     "Aldre": 300,
     "Alexi": 300,
@@ -916,8 +982,9 @@
     "BNA": 300,
     "BTRX": 300,
     "Badterne": 300,
-    "BastyRetro": 1600,
+    "BastyRetro": 2900,
     "Benjixo": 1300,
+    "Bloody": 300,
     "Carlosss": 1600,
     "Chop": 300,
     "Ckl": 300,
@@ -932,9 +999,11 @@
     "Dominick": 1300,
     "Drexx": 300,
     "Dyzz": 900,
+    "EGI": 300,
     "EIDP": 300,
     "Eclipsito": 300,
     "Efimero": 300,
+    "Egipto 🇨🇷": 300,
     "Elsoolar": 300,
     "EmiZor": 300,
     "Enkil 🇦🇷": 300,
@@ -943,12 +1012,14 @@
     "Erizo": 300,
     "Ezias🥈✒️🧢🐍": 300,
     "F1THER": 300,
+    "Family🇵🇾": 300,
     "Geoka": 300,
     "Ger9🇨🇱": 300,
     "Global Hustler": 1000,
     "Gocho": 300,
     "HH": 300,
     "Henry": 300,
+    "Holden 🇪🇸": 300,
     "ISAIAS": 300,
     "Iguana": 300,
     "JJ": 300,
@@ -969,6 +1040,7 @@
     "Liberia": 2900,
     "LitKunai": 300,
     "Lord Viruzz": 300,
+    "Luzzano": 300,
     "Lvel": 300,
     "MATICERNA": 300,
     "MCO": 2900,
@@ -987,6 +1059,7 @@
     "NYCO": 300,
     "Nemi": 300,
     "Neo": 1300,
+    "Neo Soul": 300,
     "Noone": 300,
     "OG": 300,
     "ONZASS": 300,
@@ -995,11 +1068,12 @@
     "PROMETHEUS BIB 🇨🇴": 300,
     "Panchok": 2900,
     "Paria": 300,
+    "Personality": 300,
     "PichulaMc": 2900,
     "Player": 2900,
     "Polosport": 1300,
     "Pomberito": 2900,
-    "Presagio": 300,
+    "Presagio": 1300,
     "Prodigy": 300,
     "Prosu": 300,
     "Provenza": 2900,
@@ -1014,6 +1088,7 @@
     "Ruvick": 300,
     "SINTEXT🇦🇷": 300,
     "Sami": 300,
+    "Santo Trinidad 🇨🇴": 300,
     "Saz": 300,
     "Scot": 300,
     "Selek": 300,
@@ -1038,9 +1113,13 @@
     "Zaza": 300,
     "Zignos": 2900,
     "araya": 300,
+    "belleza🇮🇨": 1300,
     "chekialo 🇧🇯": 1300,
     "dxg": 300,
+    "fleivaman": 1300,
+    "matthias": 300,
     "melomaniaco": 300,
+    "rodrilp": 300,
     "setesfifi": 300,
     "wei shenlong": 300,
     "yinn": 300
@@ -1057,6 +1136,7 @@
   "ARDEAN": 300,
   "Abyssus": 300,
   "Agus": 2900,
+  "Agustín la reliquia 🇺🇾": 300,
   "Akutagawa🇹🇼": 300,
   "Aldre": 300,
   "Alexi": 300,
@@ -1068,8 +1148,9 @@
   "BNA": 300,
   "BTRX": 300,
   "Badterne": 300,
-  "BastyRetro": 1600,
+  "BastyRetro": 2900,
   "Benjixo": 1300,
+  "Bloody": 300,
   "Carlosss": 1600,
   "Chop": 300,
   "Ckl": 300,
@@ -1084,9 +1165,11 @@
   "Dominick": 1300,
   "Drexx": 300,
   "Dyzz": 900,
+  "EGI": 300,
   "EIDP": 300,
   "Eclipsito": 300,
   "Efimero": 300,
+  "Egipto 🇨🇷": 300,
   "Elsoolar": 300,
   "EmiZor": 300,
   "Enkil 🇦🇷": 300,
@@ -1095,12 +1178,14 @@
   "Erizo": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "F1THER": 300,
+  "Family🇵🇾": 300,
   "Geoka": 300,
   "Ger9🇨🇱": 300,
   "Global Hustler": 1000,
   "Gocho": 300,
   "HH": 300,
   "Henry": 300,
+  "Holden 🇪🇸": 300,
   "ISAIAS": 300,
   "Iguana": 300,
   "JJ": 300,
@@ -1121,6 +1206,7 @@
   "Liberia": 2900,
   "LitKunai": 300,
   "Lord Viruzz": 300,
+  "Luzzano": 300,
   "Lvel": 300,
   "MATICERNA": 300,
   "MCO": 2900,
@@ -1139,6 +1225,7 @@
   "NYCO": 300,
   "Nemi": 300,
   "Neo": 1300,
+  "Neo Soul": 300,
   "Noone": 300,
   "OG": 300,
   "ONZASS": 300,
@@ -1147,11 +1234,12 @@
   "PROMETHEUS BIB 🇨🇴": 300,
   "Panchok": 2900,
   "Paria": 300,
+  "Personality": 300,
   "PichulaMc": 2900,
   "Player": 2900,
   "Polosport": 1300,
   "Pomberito": 2900,
-  "Presagio": 300,
+  "Presagio": 1300,
   "Prodigy": 300,
   "Prosu": 300,
   "Provenza": 2900,
@@ -1166,6 +1254,7 @@
   "Ruvick": 300,
   "SINTEXT🇦🇷": 300,
   "Sami": 300,
+  "Santo Trinidad 🇨🇴": 300,
   "Saz": 300,
   "Scot": 300,
   "Selek": 300,
@@ -1190,9 +1279,13 @@
   "Zaza": 300,
   "Zignos": 2900,
   "araya": 300,
+  "belleza🇮🇨": 1300,
   "chekialo 🇧🇯": 1300,
   "dxg": 300,
+  "fleivaman": 1300,
+  "matthias": 300,
   "melomaniaco": 300,
+  "rodrilp": 300,
   "setesfifi": 300,
   "wei shenlong": 300,
   "yinn": 300

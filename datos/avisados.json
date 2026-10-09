@@ -3321,5 +3321,309 @@
    ]
   ],
   "v": 2
+ },
+ "434": {
+  "antes": {
+   "Alexi": [
+    29,
+    37,
+    false
+   ],
+   "BastyRetro": [
+    53,
+    81,
+    false
+   ],
+   "Bloody": [
+    19,
+    22,
+    false
+   ],
+   "Cronox": [
+    16,
+    19,
+    false
+   ],
+   "Deuxs": [
+    83,
+    129,
+    false
+   ],
+   "Jult": [
+    55,
+    83,
+    false
+   ],
+   "LEWITO": [
+    105,
+    176,
+    false
+   ],
+   "Luzzano": [
+    219,
+    169,
+    true
+   ],
+   "Nemi": [
+    81,
+    126,
+    false
+   ],
+   "Presagio": [
+    58,
+    87,
+    false
+   ],
+   "Snow": [
+    2,
+    3,
+    false
+   ],
+   "Tam": [
+    165,
+    53,
+    true
+   ],
+   "Xclusivo": [
+    158,
+    30,
+    true
+   ],
+   "Zignos": [
+    11,
+    14,
+    false
+   ],
+   "fleivaman": [
+    243,
+    205,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "fleivaman, belleza🇮🇨",
+    "Bloody, Holden 🇪🇸",
+    "fleivaman, belleza🇮🇨"
+   ],
+   [
+    "Cronox, Xclusivo",
+    "Egipto 🇨🇷, Santo Trinidad 🇨🇴",
+    "Cronox, Xclusivo"
+   ],
+   [
+    "Snow, rodrilp",
+    "Nemi, Personality",
+    "Snow, rodrilp"
+   ],
+   [
+    "Snow, rodrilp",
+    "Jult, Alexi",
+    "Snow, rodrilp"
+   ],
+   [
+    "Agustín la reliquia 🇺🇾, LEWITO",
+    "matthias, BastyRetro",
+    "Agustín la reliquia 🇺🇾, LEWITO"
+   ],
+   [
+    "Zignos, Presagio",
+    "Neo Soul, Family🇵🇾",
+    "Zignos, Presagio"
+   ],
+   [
+    "Snow, rodrilp",
+    "Deuxs, EGI",
+    "Snow, rodrilp"
+   ],
+   [
+    "Tam, Luzzano",
+    "Agustín la reliquia 🇺🇾, LEWITO",
+    "Tam, Luzzano"
+   ],
+   [
+    "fleivaman, belleza🇮🇨",
+    "Cronox, Xclusivo",
+    "fleivaman, belleza🇮🇨"
+   ],
+   [
+    "Zignos, Presagio",
+    "Snow, rodrilp",
+    "Zignos, Presagio"
+   ],
+   [
+    "fleivaman, belleza🇮🇨",
+    "Tam, Luzzano",
+    "fleivaman, belleza🇮🇨"
+   ],
+   [
+    "Zignos, Presagio",
+    "fleivaman, belleza🇮🇨",
+    "Zignos, Presagio"
+   ]
+  ],
+  "ev_antes": {
+   "Alexi": 6,
+   "BastyRetro": 2,
+   "Bloody": 13,
+   "Cronox": 18,
+   "Deuxs": 3,
+   "Jult": 7,
+   "LEWITO": 2,
+   "Luzzano": 2,
+   "Nemi": 3,
+   "Presagio": 2,
+   "Snow": 25,
+   "Tam": 6,
+   "Xclusivo": 8,
+   "Zignos": 12,
+   "fleivaman": 2
+  },
+  "fecha": "08/10",
+  "firma": "e1862fff55a65b52",
+  "msg": "1557971710802796627",
+  "nombre": "__ PRITTY FREE __",
+  "num": 434,
+  "participantes": 26,
+  "sello": {
+   "Presagio": "20ac583097c5:17c4f13e63d4",
+   "Zignos": "37dd9a58a73e:17c4f13e63d4"
+  },
+  "sv": "FFA",
+  "t": "2026-10-09T04:23:20Z",
+  "tabla": [
+   [
+    "Zignos",
+    "Campeón",
+    5000
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    5000
+   ],
+   [
+    "fleivaman",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "belleza🇮🇨",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    2625
+   ],
+   [
+    "rodrilp",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Luzzano",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Neo Soul",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Family🇵🇾",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Cuartos",
+    1250
+   ],
+   [
+    "EGI",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Agustín la reliquia 🇺🇾",
+    "Cuartos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    625
+   ],
+   [
+    "Holden 🇪🇸",
+    "Octavos",
+    625
+   ],
+   [
+    "Egipto 🇨🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Santo Trinidad 🇨🇴",
+    "Octavos",
+    625
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    625
+   ],
+   [
+    "Personality",
+    "Octavos",
+    625
+   ],
+   [
+    "Jult",
+    "Octavos",
+    625
+   ],
+   [
+    "Alexi",
+    "Octavos",
+    625
+   ],
+   [
+    "matthias",
+    "Octavos",
+    625
+   ],
+   [
+    "BastyRetro",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

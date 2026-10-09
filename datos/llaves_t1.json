@@ -16480,7 +16480,7 @@
      [
       [
        "Carlosss",
-       "Cabece 🇨🇱"
+       "Cabece"
       ],
       "Carlosss",
       ""
@@ -16519,14 +16519,6 @@
      ],
      [
       [
-       "Miniboy",
-       "fleivagner🇨🇴"
-      ],
-      "Miniboy",
-      ""
-     ],
-     [
-      [
        "JEIXDER",
        "Shadow",
        "Assuan"
@@ -16553,7 +16545,7 @@
        "Adriagner"
       ],
       "BastyRetro",
-      "Walk-in 1: Adriagner🇳🇮"
+      ""
      ],
      [
       [
@@ -16632,14 +16624,14 @@
     5000
    ],
    [
-    "NXUZ",
+    "Adriagner",
     "Cuartos",
     2500
    ],
    [
-    "Adriagner",
+    "NXUZ",
     "Cuartos",
-    1250
+    2500
    ],
    [
     "Assuan",
@@ -16647,7 +16639,7 @@
     1250
    ],
    [
-    "Cabece 🇨🇱",
+    "Cabece",
     "Octavos",
     1250
    ],
@@ -16670,11 +16662,261 @@
     "Shadow",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "434": {
+  "dia": "2026-10-08",
+  "escala": "16+",
+  "fecha": "08/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557932786290139138"
+  ],
+  "n": 434,
+  "nombre": "PRITTY FREE",
+  "participantes": 26,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "fleivaman, belleza🇮🇨",
+       "Bloody, Holden 🇪🇸"
+      ],
+      "fleivaman, belleza🇮🇨",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Cronox, Xclusivo",
+       "Egipto 🇨🇷, Santo Trinidad 🇨🇴"
+      ],
+      "Cronox, Xclusivo",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Snow, rodrilp",
+       "Nemi, Personality",
+       "Jult, Alexi"
+      ],
+      "Snow, rodrilp",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Agustín la reliquia 🇺🇾, LEWITO",
+       "matthias, BastyRetro"
+      ],
+      "Agustín la reliquia 🇺🇾, LEWITO",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos, Presagio",
+       "Neo Soul, Family🇵🇾"
+      ],
+      "Zignos, Presagio",
+      ""
+     ],
+     [
+      [
+       "Snow, rodrilp",
+       "Deuxs, EGI"
+      ],
+      "Snow, rodrilp",
+      ""
+     ],
+     [
+      [
+       "Tam, Luzzano",
+       "Agustín la reliquia 🇺🇾, LEWITO"
+      ],
+      "Tam, Luzzano",
+      ""
+     ],
+     [
+      [
+       "fleivaman, belleza🇮🇨",
+       "Cronox, Xclusivo"
+      ],
+      "fleivaman, belleza🇮🇨",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos, Presagio",
+       "Snow, rodrilp"
+      ],
+      "Zignos, Presagio",
+      ""
+     ],
+     [
+      [
+       "fleivaman, belleza🇮🇨",
+       "Tam, Luzzano"
+      ],
+      "fleivaman, belleza🇮🇨",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos, Presagio",
+       "fleivaman, belleza🇮🇨"
+      ],
+      "Zignos, Presagio",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Presagio",
+    "Campeón",
+    5000
    ],
    [
-    "fleivagner🇨🇴",
-    "Octavos",
+    "Zignos",
+    "Campeón",
+    5000
+   ],
+   [
+    "belleza🇮🇨",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "fleivaman",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Luzzano",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "rodrilp",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Agustín la reliquia 🇺🇾",
+    "Cuartos",
     1250
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Cuartos",
+    1250
+   ],
+   [
+    "EGI",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Family🇵🇾",
+    "Cuartos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Neo Soul",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Alexi",
+    "Octavos",
+    625
+   ],
+   [
+    "BastyRetro",
+    "Octavos",
+    625
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    625
+   ],
+   [
+    "Egipto 🇨🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Holden 🇪🇸",
+    "Octavos",
+    625
+   ],
+   [
+    "Jult",
+    "Octavos",
+    625
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    625
+   ],
+   [
+    "Personality",
+    "Octavos",
+    625
+   ],
+   [
+    "Santo Trinidad 🇨🇴",
+    "Octavos",
+    625
+   ],
+   [
+    "matthias",
+    "Octavos",
+    625
    ]
   ]
  }

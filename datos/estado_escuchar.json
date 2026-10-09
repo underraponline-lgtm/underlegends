@@ -1,27 +1,27 @@
 {
  "v": 1,
- "cuando": "2026-10-09T03:58:01Z",
+ "cuando": "2026-10-09T04:26:45Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 312.7,
+ "dur_s": 235.2,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 34.6
+   "s": 32.1
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 87.5
+   "s": 37.8
   },
   {
    "n": "1a",
@@ -39,13 +39,13 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 24.1
+   "s": 23.4
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.2
+   "s": 1.7
   },
   {
    "n": "2",
@@ -69,13 +69,13 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.5
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 1.4
   },
   {
    "n": "2b4b",
@@ -87,37 +87,37 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.3
+   "s": 2.6
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 90.3
+   "s": 64.7
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.2
+   "s": 3.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 34.2
+   "s": 33.1
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 3.1
+   "s": 3.5
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.0
+   "s": 13.5
   },
   {
    "n": "2e",
@@ -129,29 +129,29 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.4
+   "s": 5.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.0
+   "s": 2.9
   }
  ],
  "fallas": [],
- "decidir": 96,
+ "decidir": 103,
  "ultimo_evento": {
-  "n": "433",
-  "nombre": "PROYECTO X",
-  "sv": "DDF",
+  "n": "434",
+  "nombre": "PRITTY FREE",
+  "sv": "FFA",
   "dia": "2026-10-08"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-09T03:53:28Z",
+  "cuando": "2026-10-09T04:23:26Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 387,
-  "un_evento": 193,
+  "jugadores": 397,
+  "un_evento": 203,
   "diez_o_mas": 31,
   "cohortes": [
    {
@@ -168,7 +168,7 @@
    },
    {
     "semana": "2026-10-05",
-    "nuevos": 61,
+    "nuevos": 71,
     "volvieron": 8,
     "completa": false
    }
@@ -176,25 +176,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 133,
-   "read": 12665
+   "write": 152,
+   "read": 14261
   },
   "objeto": {
-   "leidas": 774655,
-   "escritas": 6030,
-   "pedidos": 1720
+   "leidas": 907089,
+   "escritas": 8421,
+   "pedidos": 2017
   },
   "worker": {
-   "pedidos": 6510,
+   "pedidos": 6504,
    "errores": 0,
-   "sub": 6826,
+   "sub": 6833,
    "p50_ms": 1.15,
-   "p99_ms": 6.27
+   "p99_ms": 6.22
   },
   "r2": {
-   "objetos": 3652,
-   "gb": 0.407,
-   "ts": 1791476783
+   "objetos": 3670,
+   "gb": 0.409,
+   "ts": 1791520009
   }
  }
 }

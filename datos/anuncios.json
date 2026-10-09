@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T03:54:00+00:00",
+ "cuando": "2026-10-09T04:23:58+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -19,6 +19,8 @@
    "horario": "",
    "fecha": "FINAL 12 DE JULIO",
    "premios": "",
+   "staff": {},
+   "autor": "Dlxmouche",
    "categoria_id": "1170880071221923911"
   },
   {
@@ -39,6 +41,8 @@
    "horario": "19:30",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -59,6 +63,8 @@
    "horario": "16:00",
    "fecha": "Hoy, Lunes 20 Jul.",
    "premios": "",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -79,6 +85,8 @@
    "horario": "🇨🇷 17:00",
    "fecha": "Hoy, Domingo 5 Jul.",
    "premios": "",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -99,6 +107,8 @@
    "horario": "<t:1782946800:F>",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Dlxmouche",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -119,6 +129,8 @@
    "horario": "CUANDO SE LLENEN LAS INSCRIPCIONES",
    "fecha": "AHORA",
    "premios": "NADA COMPE CHILL",
+   "staff": {},
+   "autor": "TROT",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -139,6 +151,8 @@
    "horario": "10:20",
    "fecha": "Hoy, martes 30 Jun.",
    "premios": "Pts",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -159,6 +173,8 @@
    "horario": "16:00",
    "fecha": "Hoy, Lunes 29 Jun.",
    "premios": "",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -179,6 +195,8 @@
    "horario": "Ahora",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "LEYENDA.X5",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -199,6 +217,8 @@
    "horario": "8:50",
    "fecha": "Hoy, Viernes 26 Jun.",
    "premios": "Pts",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -219,6 +239,8 @@
    "horario": "🇨🇷 16:20",
    "fecha": "Hoy, Jueves 25 Jun.",
    "premios": "Pts",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -239,6 +261,12 @@
    "horario": "al finalizar inscripciones",
    "fecha": "24 de Junio",
    "premios": "Puntos para el ranking interserver interserver + rol del rey de saturno 🏅",
+   "staff": {
+    "host": [
+     "🎙️H i r e x🕊"
+    ]
+   },
+   "autor": "LIL DRAKO RAP",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -259,6 +287,8 @@
    "horario": "🇨🇷 16:00",
    "fecha": "Hoy, Martes 23 Jun.",
    "premios": "",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -279,6 +309,8 @@
    "horario": "🇨🇷 21:00",
    "fecha": "Hoy, Lunes 22 Jun.",
    "premios": "",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -299,6 +331,8 @@
    "horario": "Al llenar cupos.",
    "fecha": "Hoy Lunes 22 Jun.",
    "premios": "Puntos para Ranking Interserver Hermandad",
+   "staff": {},
+   "autor": "MMC.",
    "categoria_id": "1511754900026032139"
   },
   {
@@ -319,6 +353,8 @@
    "horario": "",
    "fecha": "3 2V2",
    "premios": "",
+   "staff": {},
+   "autor": "Geronimo",
    "categoria_id": "1497457390637809837",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -341,6 +377,18 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "Puntos de ascenso y rol de campeón",
+   "staff": {
+    "jurado": [
+     "Kravitz"
+    ],
+    "host": [
+     "Kravitz"
+    ],
+    "dj": [
+     "Kravitz"
+    ]
+   },
+   "autor": "Kravitz",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -363,6 +411,8 @@
    "horario": "en 20",
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -385,6 +435,20 @@
    "horario": "8:00",
    "fecha": "",
    "premios": "Clasificación + Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Velatz🇨🇱",
+     "Lewito🇦🇷",
+     "Gocho🇨🇴"
+    ],
+    "host": [
+     "Velatz🇨🇱"
+    ],
+    "dj": [
+     "Lewito🇦🇷"
+    ]
+   },
+   "autor": "Velatz",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -407,6 +471,20 @@
    "horario": "EN 40 MINUTOS",
    "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
+   "staff": {
+    "jurado": [
+     "Flennzs | ⛩️"
+    ],
+    "host": [
+     "l3wito",
+     "Flennzs | ⛩️"
+    ],
+    "dj": [
+     "Flennzs | ⛩️",
+     "l3wito"
+    ]
+   },
+   "autor": "Flennzs | ⛩️",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -429,6 +507,8 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -451,6 +531,23 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "Puntos de ascenso y rol de campeón",
+   "staff": {
+    "jurado": [
+     "Kravitz",
+     "Elsoolar",
+     "Dlxmouche"
+    ],
+    "host": [
+     "Kravitz",
+     "Elsoolar",
+     "SetesFifi"
+    ],
+    "dj": [
+     "Kravitz",
+     "PolloSport"
+    ]
+   },
+   "autor": "Kravitz",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -473,6 +570,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -495,6 +594,19 @@
    "horario": "EN 20 MINUTOS",
    "fecha": "HOY PE MANO",
    "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
+   "staff": {
+    "jurado": [
+     "Flennzs | ⛩️"
+    ],
+    "host": [
+     "l3wito"
+    ],
+    "dj": [
+     "Flennzs | ⛩️",
+     "l3wito"
+    ]
+   },
+   "autor": "Flennzs | ⛩️",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -517,6 +629,18 @@
    "horario": "ahora",
    "fecha": "",
    "premios": "AURA",
+   "staff": {
+    "jurado": [
+     "CRONOX 🇨🇱"
+    ],
+    "host": [
+     "CRONOX 🇨🇱"
+    ],
+    "dj": [
+     "CRONOX 🇨🇱"
+    ]
+   },
+   "autor": "CRONOX 🇨🇱",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -539,6 +663,15 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "host": [
+     "l3wito"
+    ],
+    "dj": [
+     "l3wito"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -561,6 +694,18 @@
    "horario": "ahora",
    "fecha": "",
    "premios": "AURA",
+   "staff": {
+    "jurado": [
+     "CRONOX 🇨🇱"
+    ],
+    "host": [
+     "CRONOX 🇨🇱"
+    ],
+    "dj": [
+     "CRONOX 🇨🇱"
+    ]
+   },
+   "autor": "CRONOX 🇨🇱",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -583,6 +728,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -605,6 +752,15 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "jurado": [
+     "Flennzs | ⛩️"
+    ],
+    "host": [
+     "Lewito"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -627,6 +783,15 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "jurado": [
+     "Flennzs | ⛩️"
+    ],
+    "host": [
+     "Lewito"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -649,6 +814,18 @@
    "horario": "apenas se llenen cupos",
    "fecha": "",
    "premios": "600k discordianos",
+   "staff": {
+    "jurado": [
+     "BETELGEUSE"
+    ],
+    "host": [
+     "BETELGEUSE"
+    ],
+    "dj": [
+     "BETELGEUSE"
+    ]
+   },
+   "autor": "BETELGEUSE",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -671,6 +848,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -693,6 +872,18 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "jurado": [
+     "Elsoolar"
+    ],
+    "host": [
+     "Elsoolar"
+    ],
+    "dj": [
+     "Elsoolar"
+    ]
+   },
+   "autor": "Elsoolar",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -715,6 +906,12 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "host": [
+     "Lewito"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -737,6 +934,12 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "host": [
+     "Lewito"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -759,6 +962,8 @@
    "horario": "EN 15",
    "fecha": "",
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -781,6 +986,17 @@
    "horario": "EN 30 MINUTOS",
    "fecha": "",
    "premios": "Respeto",
+   "staff": {
+    "jurado": [
+     "Lewito",
+     "Kravitz"
+    ],
+    "host": [
+     "Lewito",
+     "Kravitz"
+    ]
+   },
+   "autor": "Kravitz",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T03:46:03"
@@ -803,6 +1019,8 @@
    "horario": "",
    "fecha": "1 1V1",
    "premios": "",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988251852820",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -825,6 +1043,8 @@
    "horario": "",
    "fecha": "1vs1 pandilla",
    "premios": "",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988251852820",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -847,6 +1067,8 @@
    "horario": "<t:1781556600:F>",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "IroníaZka | Los Culeanizadores",
    "categoria_id": "863207988251852820",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -869,6 +1091,8 @@
    "horario": "<t:1766347200:F>",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "IroníaZka | Los Culeanizadores",
    "categoria_id": "863207988251852820",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -891,6 +1115,8 @@
    "horario": "JUEVES 20:00 🇦🇷",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "CANTU",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -913,6 +1139,8 @@
    "horario": "<t:1790713800:F>",
    "fecha": "",
    "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de",
+   "staff": {},
+   "autor": "Rubik",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -935,6 +1163,8 @@
    "horario": "Domingo 00:00 🇦🇷",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Yeye Fazer",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -957,6 +1187,20 @@
    "horario": "<t:1790542800:F>",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Rubik",
+     "LunaticoYG",
+     "El Pibe  | Los Culeanizadores"
+    ],
+    "host": [
+     "Rubik"
+    ],
+    "dj": [
+     "Rubik"
+    ]
+   },
+   "autor": "Rubik",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -979,6 +1223,8 @@
    "horario": "22:30 🇨🇱",
    "fecha": "7",
    "premios": "PTS TABLA",
+   "staff": {},
+   "autor": "Velatz",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1001,6 +1247,8 @@
    "horario": "<t:1790109000:F>",
    "fecha": "",
    "premios": "Clasificación DIRECTA a la *GRAN FINAL RANGO* 1️⃣ y puntos de",
+   "staff": {},
+   "autor": "Rubik",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1023,6 +1271,8 @@
    "horario": "<t:1789758000:F>",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "EseÉfe",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1045,6 +1295,8 @@
    "horario": "AHORA",
    "fecha": "",
    "premios": "PUNTOS DE ASCENSO",
+   "staff": {},
+   "autor": "Lewito",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1067,6 +1319,8 @@
    "horario": "20:30 🇨🇱",
    "fecha": "6",
    "premios": "PTS TABLA",
+   "staff": {},
+   "autor": "Velatz",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1089,6 +1343,8 @@
    "horario": "<t:1789412400:t>",
    "fecha": "14/09",
    "premios": "Puntos de ascenso + Puntos de ranking GØÐZ",
+   "staff": {},
+   "autor": "gxbrrlaljndrr",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1111,6 +1367,8 @@
    "horario": "<t:1789329600:F>",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Rubik",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1133,6 +1391,8 @@
    "horario": "EN 15",
    "fecha": "8",
    "premios": "PTS PARA EL RANKING",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1155,6 +1415,8 @@
    "horario": "en 15",
    "fecha": "7",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1177,6 +1439,8 @@
    "horario": "EN 15",
    "fecha": "6",
    "premios": "PTS PARA LA TABLA + PTS PARA EL RANKING",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1199,6 +1463,8 @@
    "horario": "<t:1788470428:t>",
    "fecha": "<t:1788470340:d>",
    "premios": "",
+   "staff": {},
+   "autor": "Velatz",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1221,6 +1487,8 @@
    "horario": "EN 10",
    "fecha": "5",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1243,6 +1511,8 @@
    "horario": "18:00 🇨🇱",
    "fecha": "1",
    "premios": "PTS TABLA",
+   "staff": {},
+   "autor": "Velatz",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1265,6 +1535,8 @@
    "horario": "en 10",
    "fecha": "4",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA+TROFEOS",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1287,6 +1559,8 @@
    "horario": "21:30 🇨🇱",
    "fecha": "5",
    "premios": "PTS TABLA",
+   "staff": {},
+   "autor": "Velatz",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1309,6 +1583,14 @@
    "horario": "<t:1787943600:F>",
    "fecha": "",
    "premios": "CUPO A LA LIGA SNAKE LEAGUE: NEW CHAPTER  + PUNTOS DE ASCENSO",
+   "staff": {
+    "jurado": [
+     "CANTU",
+     "Yeye Fazer",
+     "King🇦🇷"
+    ]
+   },
+   "autor": "CANTU",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1331,6 +1613,8 @@
    "horario": "en 15",
    "fecha": "3",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1353,6 +1637,8 @@
    "horario": "23 HS 🇦🇷",
    "fecha": "2",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1375,6 +1661,8 @@
    "horario": "en 30",
    "fecha": "1",
    "premios": "pts para el ranking+pts para la tabla+aura",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "863207988739309600",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-08T23:05:00"
@@ -1397,6 +1685,18 @@
    "horario": "",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "DSM-5 (MTZ)"
+    ],
+    "host": [
+     "DSM-5 (MTZ)"
+    ],
+    "dj": [
+     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ]
+   },
+   "autor": "DSM-5 (MTZ)",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1417,6 +1717,18 @@
    "horario": "cuando se llene/cuando me pinte",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "FASOO"
+    ],
+    "host": [
+     "faso"
+    ],
+    "dj": [
+     "OEP"
+    ]
+   },
+   "autor": "FASOO",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1437,6 +1749,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1457,6 +1781,18 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "1 Campeonato + Puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Player"
+    ],
+    "host": [
+     "Player"
+    ],
+    "dj": [
+     "Player"
+    ]
+   },
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1477,6 +1813,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Guty"
+    ],
+    "host": [
+     "Guty"
+    ],
+    "dj": [
+     "Guty"
+    ]
+   },
+   "autor": "Guty",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1497,6 +1845,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1517,6 +1877,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Guty"
+    ],
+    "host": [
+     "Guty"
+    ],
+    "dj": [
+     "Guty"
+    ]
+   },
+   "autor": "Guty",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1537,6 +1909,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1557,6 +1941,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1577,6 +1973,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Guty"
+    ],
+    "host": [
+     "Guty"
+    ],
+    "dj": [
+     "Guty"
+    ]
+   },
+   "autor": "Guty",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1597,6 +2005,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1617,6 +2037,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1637,6 +2069,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Erian 恵理久"
+    ],
+    "host": [
+     "Erian 恵理久"
+    ],
+    "dj": [
+     "Erian 恵理久"
+    ]
+   },
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1657,6 +2101,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Erian 恵理久"
+    ],
+    "host": [
+     "Erian 恵理久"
+    ],
+    "dj": [
+     "Erian 恵理久"
+    ]
+   },
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1677,6 +2133,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Erian 恵理久"
+    ],
+    "host": [
+     "Erian 恵理久"
+    ],
+    "dj": [
+     "Erian 恵理久"
+    ]
+   },
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1697,6 +2165,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1717,6 +2197,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1737,6 +2229,18 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "💗ValenAdoratesJuan💗"
+    ],
+    "host": [
+     "💗ValenAdoratesJuan💗"
+    ],
+    "dj": [
+     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ]
+   },
+   "autor": "💗ValenAdoratesJuan💗",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1757,6 +2261,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1777,6 +2293,18 @@
    "horario": "Ya",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1797,6 +2325,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "❤ MILIℂA ❤ | ♕ O.E.ℙ ♕|"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1817,6 +2357,18 @@
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ],
+    "host": [
+     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ],
+    "dj": [
+     "Forza"
+    ]
+   },
+   "autor": "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1837,6 +2389,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1857,6 +2421,18 @@
    "horario": "Cuando se llene",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -1877,6 +2453,8 @@
    "horario": "4 PM COLOMBIA",
    "fecha": "LUNES 5 de OCTUBRE.",
    "premios": "",
+   "staff": {},
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1511967903329812651"
   },
   {
@@ -1897,6 +2475,8 @@
    "horario": "4 PM MEX/USA",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Christopher",
    "categoria_id": "1511967903329812651"
   },
   {
@@ -1917,6 +2497,8 @@
    "horario": "4 PM mex,5 PM Col",
    "fecha": "Viernes 11 de septiembre",
    "premios": "",
+   "staff": {},
+   "autor": "Christopher",
    "categoria_id": "1511967903329812651"
   },
   {
@@ -1937,6 +2519,8 @@
    "horario": "6 PM COLOMBIA",
    "fecha": "LUNES 10 de AGOSTO.",
    "premios": "",
+   "staff": {},
+   "autor": "dxg",
    "categoria_id": "1511967903329812651"
   },
   {
@@ -1957,6 +2541,8 @@
    "horario": "8:00 PM España.",
    "fecha": "Sábado 01 de AGOSTO.",
    "premios": "",
+   "staff": {},
+   "autor": "dxg",
    "categoria_id": "1511967903329812651"
   },
   {
@@ -1977,6 +2563,8 @@
    "horario": "8:30-9:00pm España.",
    "fecha": "Sábado 27 de Junio.",
    "premios": "",
+   "staff": {},
+   "autor": "ꫀρᦔᠻ_ᧁꪮꪮᦔ",
    "categoria_id": "1511967903329812651"
   },
   {
@@ -1997,6 +2585,8 @@
    "horario": "20:00",
    "fecha": "24 DE OCTUBRE",
    "premios": "",
+   "staff": {},
+   "autor": "Christopher",
    "de_imagen": true,
    "categoria_id": "1511966248219578389"
   },
@@ -2018,6 +2608,8 @@
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
    "premios": "",
+   "staff": {},
+   "autor": "Suzuhara",
    "categoria_id": "1511961628500037662"
   },
   {
@@ -2038,6 +2630,8 @@
    "horario": "",
    "fecha": "[PRÓXIMAMENTE]",
    "premios": "",
+   "staff": {},
+   "autor": "Suzuhara",
    "categoria_id": "1511961628500037662"
   },
   {
@@ -2058,6 +2652,8 @@
    "horario": "",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "💗ValenAdoratesJuan💗",
    "categoria_id": "1511964043647123527"
   },
   {
@@ -2078,6 +2674,15 @@
    "horario": "Despues de inscripcion",
    "fecha": "",
    "premios": "Compe rango C + 1 Campeonato + CUPO PARA LA NACIONAL DE PLAZAS ESTE 1",
+   "staff": {
+    "host": [
+     "PLAYER"
+    ],
+    "dj": [
+     "PLAYER"
+    ]
+   },
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2098,6 +2703,8 @@
    "horario": "Ahora",
    "fecha": "",
    "premios": "Compe rango C + 1 Campeonato",
+   "staff": {},
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2118,6 +2725,15 @@
    "horario": "Despues de inscripcion",
    "fecha": "",
    "premios": "Compe rango C + 1 Campeonato",
+   "staff": {
+    "host": [
+     "PLAYER"
+    ],
+    "dj": [
+     "PLAYER"
+    ]
+   },
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2138,6 +2754,15 @@
    "horario": "Despues de inscripcion",
    "fecha": "",
    "premios": "Compe rango B + 1 Campeonato",
+   "staff": {
+    "host": [
+     "PLAYER"
+    ],
+    "dj": [
+     "PLAYER"
+    ]
+   },
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2158,6 +2783,15 @@
    "horario": "2 hora colombia",
    "fecha": "",
    "premios": "Compe rango B + 1 Campeonato + Un cupo para la Nacional de plazas (primer y segundo puesto entran)",
+   "staff": {
+    "host": [
+     "PLAYER"
+    ],
+    "dj": [
+     "PLAYER"
+    ]
+   },
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2178,6 +2812,8 @@
    "horario": "1:30pm (hora colombia",
    "fecha": "",
    "premios": "Compe rango B + 1 Campeonato + Un cupo para la Nacional de plazas (primer y segundo puesto entran)",
+   "staff": {},
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2198,6 +2834,8 @@
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
    "premios": "CAMPEONATO + PT EN TABLA DE ASCENSO",
+   "staff": {},
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2218,6 +2856,8 @@
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
    "premios": "CAMPEONATO",
+   "staff": {},
+   "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2238,6 +2878,8 @@
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
    "premios": "CUPO PARA REEMPLAZAR A UN PARTICIPANTE DE FFS SURAMERICA",
+   "staff": {},
+   "autor": "Bocamio",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2258,6 +2900,8 @@
    "horario": "CUANDO SE LLENEN INSCRIPCIONES",
    "fecha": "",
    "premios": "CUPO PARA REEMPLAZAR A UN PARTICIPANTE DE FFS CARIBE",
+   "staff": {},
+   "autor": "Bocamio",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2278,6 +2922,8 @@
    "horario": "HOY",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Ω† | SNE | †Ω",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2298,6 +2944,8 @@
    "horario": "CUANDO TERMINE INSCRIP",
    "fecha": "ahora",
    "premios": "",
+   "staff": {},
+   "autor": "Bootrax Humilde 🇸🇪",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2318,6 +2966,8 @@
    "horario": "A las 10:00 AM hora 🇦🇷",
    "fecha": "Martes 3 de marzo",
    "premios": "",
+   "staff": {},
+   "autor": "konan",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2338,6 +2988,8 @@
    "horario": "HOY",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Ω† | SNE | †Ω",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2358,6 +3010,15 @@
    "horario": "EN 1 HORA Y 10",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "host": [
+     "Bootrax Humilde 🇸🇪"
+    ],
+    "dj": [
+     "Bootrax Humilde 🇸🇪"
+    ]
+   },
+   "autor": "Bootrax Humilde 🇸🇪",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2378,6 +3039,15 @@
    "horario": "CUANDO SE TERMINEN LOS CUPOS",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "host": [
+     "Snake"
+    ],
+    "dj": [
+     "Snake"
+    ]
+   },
+   "autor": "Snake",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2398,6 +3068,15 @@
    "horario": "CUANDO SE TERMINEN LOS CUPOS",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "host": [
+     "SNAKE"
+    ],
+    "dj": [
+     "SNAKE"
+    ]
+   },
+   "autor": "SNAKE",
    "categoria_id": "1373343272482902127"
   },
   {
@@ -2418,6 +3097,8 @@
    "horario": "15 Minutos",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2438,6 +3119,18 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "John pork"
+    ],
+    "host": [
+     "John pork"
+    ],
+    "dj": [
+     "John pork"
+    ]
+   },
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2458,6 +3151,15 @@
    "horario": "",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "Pipas"
+    ],
+    "host": [
+     "Pipas"
+    ]
+   },
+   "autor": "pipi94",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2478,6 +3180,18 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "John pork"
+    ],
+    "host": [
+     "John pork"
+    ],
+    "dj": [
+     "John pork"
+    ]
+   },
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2498,6 +3212,8 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "UNA NOCHE CON PLAYER",
+   "staff": {},
+   "autor": "₁₉",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2518,6 +3234,8 @@
    "horario": ": 06/10/26",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2538,6 +3256,18 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "John pork"
+    ],
+    "host": [
+     "John pork"
+    ],
+    "dj": [
+     "John pork"
+    ]
+   },
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2558,6 +3288,18 @@
    "horario": "EN 5 MINS",
    "fecha": "EN 5 MINS",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "John pork"
+    ],
+    "host": [
+     "John pork"
+    ],
+    "dj": [
+     "John pork"
+    ]
+   },
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2578,6 +3320,8 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
+   "staff": {},
+   "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2598,6 +3342,12 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
+   "staff": {
+    "jurado": [
+     "Dominick 🇵🇪"
+    ]
+   },
+   "autor": "DOMINICK",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2618,6 +3368,12 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN - CUPO A LA LIGA APOCALIPSIS X",
+   "staff": {
+    "jurado": [
+     "DREXX🇵🇪"
+    ]
+   },
+   "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2638,6 +3394,12 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
+   "staff": {
+    "jurado": [
+     "ZJ 🇵🇪"
+    ]
+   },
+   "autor": "ChalonZJ",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2658,6 +3420,12 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
+   "staff": {
+    "jurado": [
+     "Dominick 🇵🇪"
+    ]
+   },
+   "autor": "DOMINICK",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2678,6 +3446,8 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
+   "staff": {},
+   "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2698,6 +3468,8 @@
    "horario": "RIGHT NOW!",
    "fecha": "",
    "premios": "UN MESSI CON UNA FLOR AMARILLA",
+   "staff": {},
+   "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2718,6 +3490,8 @@
    "horario": "RIGHT NOW!",
    "fecha": "",
    "premios": "SORPRESA + 1000 BOLOS POR CULO MOVIL (SI ERES DE TOCORON)",
+   "staff": {},
+   "autor": "₁₉",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2738,6 +3512,8 @@
    "horario": "YAYAYAYAYAYAAAAAA",
    "fecha": "",
    "premios": "🥇RECONOCIMIENTO🥇",
+   "staff": {},
+   "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2758,6 +3534,12 @@
    "horario": "RIGHT NOW",
    "fecha": "",
    "premios": "1000 BOLIVARES POR CULO MOVIL",
+   "staff": {
+    "jurado": [
+     "19 🇻🇪"
+    ]
+   },
+   "autor": "₁₉",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2778,6 +3560,12 @@
    "horario": "YAYAYA",
    "fecha": "",
    "premios": "RESPETO - TITULO DE CAMPEÓN",
+   "staff": {
+    "jurado": [
+     "Dominick 🇵🇪"
+    ]
+   },
+   "autor": "DOMINICK",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2798,6 +3586,8 @@
    "horario": "",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -2818,6 +3608,8 @@
    "horario": "🇪🇸🇯🇪 23:00 PM",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "868218509975498805"
   },
   {
@@ -2838,6 +3630,8 @@
    "horario": "🇦🇷🇺🇾 : 22:00 PM",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1309234419525222477"
   },
   {
@@ -2858,6 +3652,8 @@
    "horario": "🇪🇸🇯🇪 23:00 PM",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1309234419525222477"
   },
   {
@@ -2878,6 +3674,15 @@
    "horario": "",
    "fecha": "",
    "premios": "",
+   "staff": {
+    "jurado": [
+     "HYPETOWER 🇪🇸"
+    ],
+    "host": [
+     "LEONAR-T 🇲🇽"
+    ]
+   },
+   "autor": "Leonar-T",
    "categoria_id": "1309234419525222477"
   },
   {
@@ -2898,10 +3703,39 @@
    "horario": "APENAS SE LLENEN LOS CUPOS",
    "fecha": "",
    "premios": "",
+   "staff": {},
+   "autor": "BETELGEUSE",
    "categoria_id": "1309234419525222477"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "colesito",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1557966870110535691",
+   "cuando": "2026-10-09T04:04:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tenor",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1557964966550831146",
+   "cuando": "2026-10-09T03:56:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dlx 🇺🇸",
+   "quien": "itsdlx",
+   "discord_id": "739338101603696681",
+   "msg_id": "1557964274213847091",
+   "cuando": "2026-10-09T03:53:48"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
