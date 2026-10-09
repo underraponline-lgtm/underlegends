@@ -690,7 +690,8 @@
 "hh": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "delux": {
@@ -5100,6 +5101,14 @@
 ],
 "rg": "C",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-09T22:29:55Z",
+"quien": [
+"HH"
+],
+"carta": "temporada"
 }
 ]
 }
