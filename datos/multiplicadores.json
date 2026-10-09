@@ -253,6 +253,11 @@
      1
     ],
     [
+     "LA NOCHE NUNCA PERDONA🇬🇵",
+     13,
+     1
+    ],
+    [
      "SER O NO SER 🇬🇵",
      9,
      1
@@ -266,19 +271,19 @@
    "semillero": {
     "nuevos": {
      "FFA": 32,
-     "DDF": 8,
+     "DDF": 9,
      "SR": 1
     },
     "gente": {
      "FFA": 142,
-     "DDF": 37,
+     "DDF": 41,
      "SR": 16
     },
     "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 37,
+    "DDF": 41,
     "DRA": 0,
     "FFA": 142,
     "FFS": 0,

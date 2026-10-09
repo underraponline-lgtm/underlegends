@@ -4058,6 +4058,41 @@
      []
     ]
    ]
+  },
+  "1557966243867271220": {
+   "id": "1557966243867271220",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791518498151,
+   "ed": 1791519777398,
+   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝",
+   "batallas": [
+    [
+     "FILTROS",
+     [
+      "NC🇰🇷",
+      "CRONOX🇨🇱",
+      "NEMI🇦🇷",
+      "BLITZ🇦🇷",
+      "TENOR🇻🇪"
+     ],
+     "BLITZ🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FILTROS",
+     [
+      "DLX🇺🇸",
+      "ANTONIO🇵🇾",
+      "ERIAN🇵🇦"
+     ],
+     "DLX🇺🇸",
+     "veredicto",
+     []
+    ]
+   ]
   }
  }
 }
