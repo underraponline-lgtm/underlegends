@@ -4065,8 +4065,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791518498151,
-   "ed": 1791519777398,
-   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝",
+   "ed": 1791521265587,
+   "texto": "`[ FILTROS ]`\n⌞NC🇰🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞BLITZ🇦🇷⌝ 🆚 ⌞TENOR🇻🇪⌝\n`[ FILTROS ]`\n⌞DLX🇺🇸⌝ 🆚 ⌞ANTONIO🇵🇾⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞ZA🇺🇸⌝ 🆚 ⌞BLITZ🇦🇷⌝\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞ALDRE🇦🇷⌝ 🆚 ⌞ERIAN🇵🇦⌝\n`[ CUARTOS ]`\n⌞EMILY FAMILY🇵🇾⌝ 🆚 ⌞GREYFITSH🇵🇦⌝\n`[ CUARTOS ]`\n⌞MAKMAH🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝",
    "batallas": [
     [
      "FILTROS",
@@ -4090,6 +4090,66 @@
      ],
      "DLX🇺🇸",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ZA🇺🇸",
+      "BLITZ🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "EMILY FAMILY🇵🇾",
+      "GREYFITSH🇵🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH🇻🇪",
+      "TEO🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ALDRE🇦🇷",
+      "ERIAN🇵🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "EMILY FAMILY🇵🇾",
+      "GREYFITSH🇵🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH🇻🇪",
+      "TENOR🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

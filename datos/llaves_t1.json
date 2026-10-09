@@ -16680,16 +16680,16 @@
     "b": [
      [
       [
-       "fleivaman, belleza🇮🇨",
-       "Bloody, Holden 🇪🇸"
+       "fleivaman, Provenza",
+       "Bloody, Holden"
       ],
-      "fleivaman, belleza🇮🇨",
+      "fleivaman, Provenza",
       "triple (3 bandas, pasan 2)"
      ],
      [
       [
        "Cronox, Xclusivo",
-       "Egipto 🇨🇷, Santo Trinidad 🇨🇴"
+       "EGI, Santo Trinidad 🇨🇴"
       ],
       "Cronox, Xclusivo",
       "triple (3 bandas, pasan 2)"
@@ -16705,10 +16705,10 @@
      ],
      [
       [
-       "Agustín la reliquia 🇺🇾, LEWITO",
-       "matthias, BastyRetro"
+       "EIDP, LEWITO",
+       "Mathhias, BastyRetro"
       ],
-      "Agustín la reliquia 🇺🇾, LEWITO",
+      "EIDP, LEWITO",
       "triple (3 bandas, pasan 2)"
      ]
     ],
@@ -16719,7 +16719,7 @@
      [
       [
        "Zignos, Presagio",
-       "Neo Soul, Family🇵🇾"
+       "Neo, Emily Family"
       ],
       "Zignos, Presagio",
       ""
@@ -16735,17 +16735,17 @@
      [
       [
        "Tam, Luzzano",
-       "Agustín la reliquia 🇺🇾, LEWITO"
+       "EIDP, LEWITO"
       ],
       "Tam, Luzzano",
       ""
      ],
      [
       [
-       "fleivaman, belleza🇮🇨",
+       "fleivaman, Provenza",
        "Cronox, Xclusivo"
       ],
-      "fleivaman, belleza🇮🇨",
+      "fleivaman, Provenza",
       ""
      ]
     ],
@@ -16763,10 +16763,10 @@
      ],
      [
       [
-       "fleivaman, belleza🇮🇨",
+       "fleivaman, Provenza",
        "Tam, Luzzano"
       ],
-      "fleivaman, belleza🇮🇨",
+      "fleivaman, Provenza",
       ""
      ]
     ],
@@ -16777,7 +16777,7 @@
      [
       [
        "Zignos, Presagio",
-       "fleivaman, belleza🇮🇨"
+       "fleivaman, Provenza"
       ],
       "Zignos, Presagio",
       ""
@@ -16799,7 +16799,7 @@
     5000
    ],
    [
-    "belleza🇮🇨",
+    "Provenza",
     "Subcampeón",
     3750
    ],
@@ -16829,11 +16829,6 @@
     2625
    ],
    [
-    "Agustín la reliquia 🇺🇾",
-    "Cuartos",
-    1250
-   ],
-   [
     "Cronox",
     "Cuartos",
     1250
@@ -16849,7 +16844,12 @@
     1250
    ],
    [
-    "Family🇵🇾",
+    "EIDP",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Emily Family",
     "Cuartos",
     1250
    ],
@@ -16859,7 +16859,7 @@
     1250
    ],
    [
-    "Neo Soul",
+    "Neo",
     "Cuartos",
     1250
    ],
@@ -16884,17 +16884,17 @@
     625
    ],
    [
-    "Egipto 🇨🇷",
-    "Octavos",
-    625
-   ],
-   [
-    "Holden 🇪🇸",
+    "Holden",
     "Octavos",
     625
    ],
    [
     "Jult",
+    "Octavos",
+    625
+   ],
+   [
+    "Mathhias",
     "Octavos",
     625
    ],
@@ -16910,11 +16910,6 @@
    ],
    [
     "Santo Trinidad 🇨🇴",
-    "Octavos",
-    625
-   ],
-   [
-    "matthias",
     "Octavos",
     625
    ]

@@ -273,17 +273,6 @@
     "racha": "0/0"
    }
   },
-  "Agustín la reliquia 🇺🇾": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 4125,
-    "racha": "0/0"
-   }
-  },
   "Aktybo": {
    "SR": {
     "duelos": "",
@@ -1284,11 +1273,11 @@
    },
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 47,
     "pod": 0,
-    "pts": 4125,
+    "pts": 8250,
     "racha": "0/0"
    }
   },
@@ -1394,17 +1383,6 @@
     "racha": "0/0"
    }
   },
-  "Egipto 🇨🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 2062,
-    "racha": "0/0"
-   }
-  },
   "El Hombre Eyau": {
    "URBF": {
     "duelos": "",
@@ -1494,11 +1472,11 @@
   "Emily Family": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 1100,
+    "pts": 5225,
     "racha": "0/0"
    }
   },
@@ -1643,17 +1621,6 @@
     "ovr": 43,
     "pod": 0,
     "pts": 625,
-    "racha": "0/0"
-   }
-  },
-  "Family🇵🇾": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 4125,
     "racha": "0/0"
    }
   },
@@ -2030,7 +1997,7 @@
     "racha": "0/0"
    }
   },
-  "Holden 🇪🇸": {
+  "Holden": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -3319,6 +3286,15 @@
     "pod": 0,
     "pts": 8250,
     "racha": "0/0"
+   },
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 2062,
+    "racha": "0/0"
    }
   },
   "Mau Kc 🇨🇴": {
@@ -3598,23 +3574,12 @@
   "Neo": {
    "FFA": {
     "duelos": "",
-    "ev": 4,
+    "ev": 5,
     "oro": 2,
-    "ovr": 55,
+    "ovr": 56,
     "pod": 3,
-    "pts": 16923,
-    "racha": "1/2"
-   }
-  },
-  "Neo Soul": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 4125,
-    "racha": "0/0"
+    "pts": 21048,
+    "racha": "0/2"
    }
   },
   "Noa": {
@@ -4145,12 +4110,12 @@
   "Provenza": {
    "FFA": {
     "duelos": "8/17",
-    "ev": 17,
+    "ev": 18,
     "oro": 2,
-    "ovr": 71,
-    "pod": 2,
-    "pts": 84697,
-    "racha": "0/2"
+    "ovr": 73,
+    "pod": 3,
+    "pts": 97072,
+    "racha": "1/2"
    }
   },
   "QUEEN": {
@@ -5533,17 +5498,6 @@
     "racha": "0/0"
    }
   },
-  "belleza🇮🇨": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 50,
-    "pod": 1,
-    "pts": 12375,
-    "racha": "1/1"
-   }
-  },
   "benjadsantis🇦🇷": {
    "FFA": {
     "duelos": "",
@@ -5682,17 +5636,6 @@
     "ovr": 43,
     "pod": 0,
     "pts": 625,
-    "racha": "0/0"
-   }
-  },
-  "matthias": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 2062,
     "racha": "0/0"
    }
   },
