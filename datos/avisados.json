@@ -2343,5 +2343,618 @@
    ]
   ],
   "v": 2
+ },
+ "430": {
+  "antes": {
+   "Colesito": [
+    8,
+    10,
+    false
+   ],
+   "Cronox": [
+    16,
+    19,
+    false
+   ],
+   "Eclipsito": [
+    183,
+    101,
+    true
+   ],
+   "Erian": [
+    6,
+    8,
+    false
+   ],
+   "Fazer": [
+    179,
+    93,
+    true
+   ],
+   "MCO": [
+    28,
+    35,
+    false
+   ],
+   "Makmah": [
+    5,
+    7,
+    false
+   ],
+   "NC": [
+    15,
+    18,
+    false
+   ],
+   "Nemi": [
+    112,
+    199,
+    false
+   ],
+   "Partim": [
+    120,
+    214,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ],
+   "Six": [
+    10,
+    13,
+    false
+   ],
+   "Zeta": [
+    46,
+    63,
+    false
+   ]
+  },
+  "canal": "863207986264932372",
+  "duelos": [
+   [
+    "MCO",
+    "SK8",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Erian",
+    "MCO"
+   ],
+   [
+    "Makmah",
+    "NC",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Eclipsito",
+    "Makmah"
+   ],
+   [
+    "Six",
+    "Colesito",
+    "Six"
+   ],
+   [
+    "Six",
+    "Nemi",
+    "Six"
+   ],
+   [
+    "PichulaMc",
+    "Cronox",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Molt",
+    "PichulaMc"
+   ],
+   [
+    "Fazer",
+    "Six",
+    "Fazer"
+   ],
+   [
+    "Global Hustler 🇦🇷",
+    "Makmah",
+    "Global Hustler 🇦🇷"
+   ],
+   [
+    "PichulaMc",
+    "Zeta",
+    "PichulaMc"
+   ],
+   [
+    "MCO",
+    "Partim",
+    "MCO"
+   ],
+   [
+    "Global Hustler 🇦🇷",
+    "Fazer",
+    "Global Hustler 🇦🇷"
+   ],
+   [
+    "MCO",
+    "PichulaMc",
+    "MCO"
+   ],
+   [
+    "Fazer",
+    "PichulaMc",
+    "Fazer"
+   ],
+   [
+    "MCO",
+    "Global Hustler 🇦🇷",
+    "MCO"
+   ]
+  ],
+  "ev_antes": {
+   "Colesito": 15,
+   "Cronox": 15,
+   "Eclipsito": 6,
+   "Erian": 18,
+   "Fazer": 2,
+   "MCO": 9,
+   "Makmah": 24,
+   "NC": 18,
+   "Nemi": 1,
+   "Partim": 2,
+   "PichulaMc": 24,
+   "Six": 12,
+   "Zeta": 4
+  },
+  "fecha": "08/10",
+  "firma": "306f57129878baca",
+  "msg": "1557926456259248232",
+  "nombre": "SNAKE INSIGNIA 4 8",
+  "num": 430,
+  "participantes": 16,
+  "sello": {
+   "MCO": "c4c715cef3df:17c4f13e63d4"
+  },
+  "sv": "SR",
+  "t": "2026-10-09T01:23:31Z",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    10000
+   ],
+   [
+    "Global Hustler 🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Fazer",
+    "Tercero",
+    6000
+   ],
+   [
+    "PichulaMc",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zeta",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Partim",
+    "Cuartos",
+    2500
+   ],
+   [
+    "SK8",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eclipsito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molt",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "431": {
+  "antes": {
+   "Colesito": [
+    8,
+    10,
+    false
+   ],
+   "EIDP": [
+    275,
+    253,
+    true
+   ],
+   "Eclipsito": [
+    183,
+    101,
+    true
+   ],
+   "Erian": [
+    6,
+    8,
+    false
+   ],
+   "Geoka": [
+    22,
+    27,
+    false
+   ],
+   "JJ": [
+    174,
+    84,
+    true
+   ],
+   "MCO": [
+    28,
+    35,
+    false
+   ],
+   "Makmah": [
+    5,
+    7,
+    false
+   ],
+   "NC": [
+    15,
+    18,
+    false
+   ],
+   "Nemi": [
+    112,
+    199,
+    false
+   ],
+   "OG": [
+    34,
+    43,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ],
+   "Provenza": [
+    152,
+    12,
+    true
+   ],
+   "Six": [
+    10,
+    13,
+    false
+   ],
+   "Snow": [
+    2,
+    3,
+    false
+   ],
+   "Vandu": [
+    11,
+    14,
+    false
+   ],
+   "Xclusivo": [
+    162,
+    55,
+    true
+   ],
+   "Zignos": [
+    12,
+    15,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis",
+    "NC",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Eclipsito",
+    "Oasis"
+   ],
+   [
+    "Zignos",
+    "Nemi",
+    "Zignos"
+   ],
+   [
+    "Makmah",
+    "JJ",
+    "Makmah"
+   ],
+   [
+    "Provenza",
+    "DarnBless",
+    "Provenza"
+   ],
+   [
+    "Provenza",
+    "Lvel 🇻🇪",
+    "Provenza"
+   ],
+   [
+    "Erian",
+    "MCO",
+    "Erian"
+   ],
+   [
+    "OG",
+    "Vandu",
+    "OG"
+   ],
+   [
+    "OG",
+    "Colesito",
+    "OG"
+   ],
+   [
+    "PichulaMc",
+    "Snow",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Geoka",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "F1THER🇪🇸",
+    "PichulaMc"
+   ],
+   [
+    "Six",
+    "EIDP",
+    "Six"
+   ],
+   [
+    "Six",
+    "Xclusivo",
+    "Six"
+   ],
+   [
+    "Oasis",
+    "Erian",
+    "Oasis"
+   ],
+   [
+    "OG",
+    "Zignos",
+    "OG"
+   ],
+   [
+    "PichulaMc",
+    "Makmah",
+    "PichulaMc"
+   ],
+   [
+    "Six",
+    "Provenza",
+    "Six"
+   ],
+   [
+    "Oasis",
+    "OG",
+    "Oasis"
+   ],
+   [
+    "Six",
+    "PichulaMc",
+    "Six"
+   ],
+   [
+    "Six",
+    "Oasis",
+    "Six"
+   ]
+  ],
+  "ev_antes": {
+   "Colesito": 15,
+   "EIDP": 1,
+   "Eclipsito": 6,
+   "Erian": 18,
+   "Geoka": 10,
+   "JJ": 4,
+   "MCO": 9,
+   "Makmah": 24,
+   "NC": 18,
+   "Nemi": 1,
+   "OG": 5,
+   "Oasis": 18,
+   "PichulaMc": 24,
+   "Provenza": 16,
+   "Six": 12,
+   "Snow": 24,
+   "Vandu": 15,
+   "Xclusivo": 5,
+   "Zignos": 11
+  },
+  "fecha": "08/10",
+  "firma": "330e1d12674b14ff",
+  "msg": "1557926458221920299",
+  "nombre": "__ LA REDENCIÓN VOL.1 __",
+  "num": 431,
+  "participantes": 23,
+  "sello": {
+   "Six": "9f4176518e43:c2dd98b0f962"
+  },
+  "sv": "FFA",
+  "t": "2026-10-09T01:23:32Z",
+  "tabla": [
+   [
+    "Six",
+    "Campeón",
+    10000
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "OG",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eclipsito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "JJ",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "F1THER🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "EIDP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

@@ -45,10 +45,22 @@
     "nivel": "B",
     "base": 9000,
     "o": 1,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 9000,
+    "caza": {
+     "n": 431,
+     "evento": "LA REDENCIÓN VOL.1",
+     "sv": "FFA",
+     "t": "2026-10-08T23:25:35Z",
+     "por": [
+      {
+       "n": "Six",
+       "cobra": 10500
+      }
+     ]
+    }
    },
    {
     "n": "Erian",
@@ -70,7 +82,7 @@
      "por": [
       {
        "n": "Alexi",
-       "cobra": 11500
+       "cobra": 11750
       }
      ]
     }

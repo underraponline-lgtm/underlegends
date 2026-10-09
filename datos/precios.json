@@ -303,7 +303,19 @@
    "monto": 5000,
    "t": "2026-10-08T14:07:13Z",
    "fin": "2026-10-12T04:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Six",
+     5000
+    ]
+   ],
+   "ev": {
+    "n": 431,
+    "nombre": "LA REDENCIÓN VOL.1",
+    "sv": "FFA",
+    "t": "2026-10-08T23:25:35Z"
+   }
   },
   {
    "id": 19,
@@ -311,7 +323,19 @@
    "monto": 2500,
    "t": "2026-10-08T20:19:14Z",
    "fin": "2026-10-12T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "PichulaMc",
+     2500
+    ]
+   ],
+   "ev": {
+    "n": 431,
+    "nombre": "LA REDENCIÓN VOL.1",
+    "sv": "FFA",
+    "t": "2026-10-08T23:25:35Z"
+   }
   }
  ],
  "suma": {
@@ -319,10 +343,11 @@
   "NXUZ": 1000,
   "Abyssus": 1000,
   "Lambroggini": 1000,
-  "PichulaMc": 1000,
+  "PichulaMc": 3500,
   "SGB": 500,
   "Snow": 250,
   "Velatz": 250,
-  "PRAISERIZA": 14500
+  "PRAISERIZA": 14500,
+  "Six": 5000
  }
 }

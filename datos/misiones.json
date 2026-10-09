@@ -169,6 +169,11 @@
      2,
      4
     ],
+    "DarnBless": [
+     1,
+     0,
+     16
+    ],
     "Delux": [
      1,
      3,
@@ -204,6 +209,11 @@
      3,
      4
     ],
+    "EIDP": [
+     1,
+     0,
+     16
+    ],
     "Eclipsito": [
      1,
      0,
@@ -236,7 +246,7 @@
     ],
     "Erian": [
      1,
-     2,
+     3,
      1
     ],
     "Erik": [
@@ -254,6 +264,16 @@
      1,
      8
     ],
+    "F1THER🇪🇸": [
+     1,
+     0,
+     16
+    ],
+    "Fazer": [
+     0,
+     2,
+     4
+    ],
     "Geoka": [
      1,
      2,
@@ -263,6 +283,11 @@
      1,
      0,
      16
+    ],
+    "Global Hustler 🇦🇷": [
+     0,
+     2,
+     2
     ],
     "Gocho": [
      1,
@@ -401,8 +426,8 @@
     ],
     "MCO": [
      1,
-     1,
-     8
+     4,
+     1
     ],
     "MHS": [
      1,
@@ -426,7 +451,7 @@
     ],
     "Makmah": [
      1,
-     6,
+     7,
      2
     ],
     "Malva": [
@@ -443,6 +468,11 @@
      1,
      0,
      4
+    ],
+    "Molt": [
+     0,
+     0,
+     16
     ],
     "Molusco": [
      1,
@@ -501,7 +531,7 @@
     ],
     "OG": [
      1,
-     1,
+     2,
      4
     ],
     "ONZASS": [
@@ -511,7 +541,7 @@
     ],
     "Oasis": [
      1,
-     5,
+     7,
      1
     ],
     "PRAISERIZA": [
@@ -534,9 +564,14 @@
      1,
      4
     ],
+    "Partim": [
+     0,
+     0,
+     8
+    ],
     "PichulaMc": [
      1,
-     9,
+     11,
      1
     ],
     "Pipas🇵🇪": [
@@ -634,6 +669,11 @@
      0,
      16
     ],
+    "SK8": [
+     0,
+     0,
+     16
+    ],
     "Sami": [
      1,
      0,
@@ -666,7 +706,7 @@
     ],
     "Six": [
      1,
-     0,
+     3,
      1
     ],
     "Snow": [
@@ -769,6 +809,11 @@
      2,
      4
     ],
+    "Zeta": [
+     0,
+     0,
+     8
+    ],
     "Zetryko": [
      0,
      1,
@@ -776,7 +821,7 @@
     ],
     "Zignos": [
      1,
-     2,
+     3,
      2
     ],
     "araya": [
@@ -848,23 +893,27 @@
     "CrisZJ": 1600,
     "Crk": 300,
     "Cronox": 300,
+    "DarnBless": 300,
     "Delux": 900,
     "Desio": 300,
     "Deuxs": 300,
     "Dominick": 1300,
     "Drexx": 300,
     "Dyzz": 900,
+    "EIDP": 300,
     "Eclipsito": 300,
     "Efimero": 300,
     "Elsoolar": 300,
     "EmiZor": 300,
     "Enkil 🇦🇷": 300,
-    "Erian": 1300,
+    "Erian": 2900,
     "Erik": 1300,
     "Erizo": 300,
     "Ezias🥈✒️🧢🐍": 300,
+    "F1THER🇪🇸": 300,
     "Geoka": 300,
     "Ger9🇨🇱": 300,
+    "Global Hustler 🇦🇷": 1000,
     "Gocho": 300,
     "HH": 300,
     "Henry": 300,
@@ -890,7 +939,7 @@
     "Lord Viruzz": 300,
     "Lvel": 300,
     "MATICERNA": 300,
-    "MCO": 300,
+    "MCO": 2900,
     "MHS": 300,
     "MTZ": 300,
     "Majiztral": 300,
@@ -936,7 +985,7 @@
     "Scot": 300,
     "Selek": 300,
     "Sin Limites": 300,
-    "Six": 1300,
+    "Six": 2900,
     "Snow": 2900,
     "Soneto": 300,
     "Sosa": 300,
@@ -954,7 +1003,7 @@
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
-    "Zignos": 1300,
+    "Zignos": 2900,
     "araya": 300,
     "chekialo 🇧🇯": 1300,
     "dxg": 300,
@@ -993,23 +1042,27 @@
   "CrisZJ": 1600,
   "Crk": 300,
   "Cronox": 300,
+  "DarnBless": 300,
   "Delux": 900,
   "Desio": 300,
   "Deuxs": 300,
   "Dominick": 1300,
   "Drexx": 300,
   "Dyzz": 900,
+  "EIDP": 300,
   "Eclipsito": 300,
   "Efimero": 300,
   "Elsoolar": 300,
   "EmiZor": 300,
   "Enkil 🇦🇷": 300,
-  "Erian": 1300,
+  "Erian": 2900,
   "Erik": 1300,
   "Erizo": 300,
   "Ezias🥈✒️🧢🐍": 300,
+  "F1THER🇪🇸": 300,
   "Geoka": 300,
   "Ger9🇨🇱": 300,
+  "Global Hustler 🇦🇷": 1000,
   "Gocho": 300,
   "HH": 300,
   "Henry": 300,
@@ -1035,7 +1088,7 @@
   "Lord Viruzz": 300,
   "Lvel": 300,
   "MATICERNA": 300,
-  "MCO": 300,
+  "MCO": 2900,
   "MHS": 300,
   "MTZ": 300,
   "Majiztral": 300,
@@ -1081,7 +1134,7 @@
   "Scot": 300,
   "Selek": 300,
   "Sin Limites": 300,
-  "Six": 1300,
+  "Six": 2900,
   "Snow": 2900,
   "Soneto": 300,
   "Sosa": 300,
@@ -1099,7 +1152,7 @@
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,
-  "Zignos": 1300,
+  "Zignos": 2900,
   "araya": 300,
   "chekialo 🇧🇯": 1300,
   "dxg": 300,
