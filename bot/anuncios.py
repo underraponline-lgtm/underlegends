@@ -511,6 +511,68 @@ def huella_cuenta(cuenta):
     return hashlib.sha1(('lg-autor:' + x).encode('utf-8')).hexdigest()[:16] if x else ''
 
 
+#: lo que en un campo de jurado, host o DJ no es una persona
+NO_PERSONA = re.compile(r'^(?:@?(?:everyone|here)|tod[oa]s?|invitad\w*|jurados?\b.*|por definir|a definir|tba|'
+                        r'n/?a|no hay|ninguno|sin dj|-+|\?+)$', re.I)
+#: «yo», «@Yo», «CAPAZ yo»: quien publicó el anuncio
+YO = re.compile(r'^(?:capaz\s+)?@?yo\b', re.I)
+#: los campos de la gente del evento, como los escribe cada servidor (`CAMPOS_LINEA` ya los reconoce)
+STAFF_CAMPOS = {'jurado': r'JURADOS?|JUECES|JUEZ', 'host': r'HOST', 'dj': r'DJ'}
+
+
+def staff_de(m):
+    """`{'jurado': [...], 'host': [...], 'dj': [...]}` del anuncio `m`, sin los vacíos; y `autor`, quien lo publicó.
+
+    🔑 Dlx, 08/10/2026: *«que ponga quién lo organiza y si es que el bot detecta quiénes son los jurados, hosts y dj,
+    de los canales del bot vigía»*. El lector ya reconocía esos campos —para que no se colaran en el organizador— y los
+    tiraba. Medido ese día sobre 142 anuncios: 40 dicen el host, 20 el jurado y 18 el DJ.
+
+    ⚠️ LO QUE NO ES UNA PERSONA SE VA: «HOST: @everyone» (URBF lo llama así), «TODOS», «Jurados invitados ✨», «???».
+    ⚠️ «yo» —y «@Yo», «CAPAZ yo»— es quien publicó el anuncio, y la mención `<@id>` es el nombre que Discord manda
+    resuelto en el mismo mensaje, como hace `parsear()` con el organizador.
+    """
+    au = m.get('author') or {}
+    autor = _nombre_visible(au.get('global_name') or au.get('username'))
+    men = {str(x.get('id')): _nombre_visible(x.get('global_name') or x.get('username'))
+           for x in (m.get('mentions') or [])}
+    # ⚠️ LA MENCIÓN VA COMO FICHA HASTA EL FINAL: un nombre visible trae «|», «-» o espacios
+    # («Flennzs | ⛩️»), y partido por los separadores eran dos personas
+    fichas = []
+
+    def ficha(mm):
+        n = men.get(mm.group(1))
+        if not n:
+            return ' '
+        fichas.append(n)
+        return ' QQM%dQQ ' % (len(fichas) - 1)
+    txt = re.sub(r'<@!?(\d+)>', ficha, m.get('content') or '')
+    anchos = campos_lineas(txt)
+    out = {}
+    for k, pat in STAFF_CAMPOS.items():
+        v = campo(txt, pat) or anchos.get(k) or ''
+        gente = []
+        v = re.sub(r'[└├│┗┣•·▸➢*_`@]', ' ', v)
+        for p in re.split(r'\s+-\s+|\s*[,/|&+]\s*|\s+y\s+|\s+(?=QQM\d+QQ)|(?<=QQ)\s+', v):
+            p = p.strip(' .:')
+            mf = re.fullmatch(r'QQM(\d+)QQ', p)
+            p = fichas[int(mf.group(1))] if mf else _nombre_visible(re.sub(r'QQM\d+QQ', '', p))
+            if YO.match(p):
+                p = autor
+            if re.search(r'\w', p) and not NO_PERSONA.match(p) and '???' not in p and len(p) <= 32 \
+                    and p not in gente:
+                gente.append(p)
+        if gente:
+            out[k] = gente[:6]
+    return out, autor
+
+
+def _nombre_visible(s):
+    """El nombre como se lee: sin el guion o el signo de adelante («- 𝘾𝙍𝙊𝙉𝙊𝙓 🇨🇱», «! DSM-5») y con las letras de
+    fantasía (U+1D400…) pasadas a comunes, como `escuchar.plano()`."""
+    s = ''.join(unicodedata.normalize('NFKC', c) if 0x1D400 <= ord(c) <= 0x1D7FF else c for c in str(s or ''))
+    return s.strip().lstrip('-!@·•~ ').strip()
+
+
 def parsear(m, servidor, canal, guild=''):
     """Un mensaje -> un anuncio, o `None` si no parece uno."""
     txt = m.get('content') or ''
@@ -598,6 +660,8 @@ def parsear(m, servidor, canal, guild=''):
         # `cuando.hora_bandera()`
         'fecha': puestos.get('fecha') or anchos.get('fecha') or '',
         'premios': puestos.get('premios') or '',
+        # ⚖️ jurado, host y DJ, y quien lo publicó (Dlx, 08/10/2026): ver `staff_de()`
+        **dict(zip(('staff', 'autor'), staff_de(m))),
     }
 
 
@@ -1317,6 +1381,14 @@ def _self_check():
                 'DRA', 'competencias')
     mal += bool(x)
     print('   %s y la de una prueba del sistema, no' % ('✅' if not x else '🔴'))
+    # ⚖️ jurado, host y DJ (Dlx, 08/10/2026): las menciones como las manda Discord, «yo» es quien publicó, y
+    # «@everyone» o «???» no son nadie
+    st, au = staff_de({'content': '# COPA\n**JURADOS:** <@1> <@2> ???\n**HOST:** @everyone\n**DJ:** yo\n'
+                                  '**CUPOS:** 16', 'author': {'global_name': '- 𝘾𝙍𝙊𝙉𝙊𝙓 🇨🇱'},
+                       'mentions': [{'id': '1', 'global_name': 'Flennzs | ⛩️'}, {'id': '2', 'username': 'kravitz'}]})
+    ok = st == {'jurado': ['Flennzs | ⛩️', 'kravitz'], 'dj': ['CRONOX 🇨🇱']} and au == 'CRONOX 🇨🇱'
+    mal += not ok
+    print('   %s jurado, host y DJ del anuncio: las menciones, «yo» y lo que no es nadie  %s' % ('✅' if ok else '🔴', st))
     ok = campo_linea(norm_linea('⚙️*〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: @nachonc_')) == ('organizador', 9, 1) \
         and campo_linea(norm_linea('<:reloj:1> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 -'))[0] == 'inscripciones' \
         and campo_linea(norm_linea('Las inscripciones estarán abiertas 10 minutos antes en este canal')) is None \

@@ -455,6 +455,8 @@ def armar():
         'premios': (x.get('premios') or '')[:60],
         # quién organiza: la página marca el evento de la Copa de la Liga
         'org': _org(x.get('organizador')),
+        # ⚖️ jurado, host y DJ, y quien lo publicó: ver `_staff()`
+        **_staff(x),
         # 📣 anunciado con tiempo (ver `_con_tiempo()`)
         'ct': 1 if _con_tiempo(x.get('cuando'), x.get('publicado')) else 0,
         # ✍️ «Inscribite ya»: ver `_inscribir()`
@@ -689,6 +691,19 @@ def armar():
         # saber de cuándo es lo que está leyendo, no cuándo se copió.
         'leido': _an.get('cuando') or '',
     }
+
+
+def _staff(x):
+    """`{'st': {'j': […], 'h': […], 'd': […]}, 'aut': quien publicó}` de un anuncio, sólo lo que hay: la gente del
+    evento para la llave (Dlx, 08/10/2026: *«que ponga quién lo organiza y… los jurados, hosts y dj»*). `aut` va sólo
+    si el anuncio no dice organizador: la página lo muestra en su lugar, y la Copa de la Liga sigue contando el «Organiza:»
+    escrito (`org`). Ver `anuncios.staff_de()`."""
+    s = x.get('staff') or {}
+    st = {c: s[k] for k, c in (('jurado', 'j'), ('host', 'h'), ('dj', 'd')) if s.get(k)}
+    out = {'st': st} if st else {}
+    if not _org(x.get('organizador')) and x.get('autor'):
+        out['aut'] = x['autor']
+    return out
 
 
 def _org(s):
@@ -1656,7 +1671,7 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                       'mod': (x.get('modalidad') or '')[:40],
                       'org': _org(x.get('organizador')),
                       'pre': (x.get('premios') or '')[:60],
-                      'ct': 1 if ini and _con_tiempo(ini, pub) else 0})
+                      'ct': 1 if ini and _con_tiempo(ini, pub) else 0, **_staff(x)})
     LW.cruzar(items, regs)
     # 🔑 LA FICHA DE CADA LLAVE: formato, rango, quién organizó y el premio,
     # que están en el anuncio y no en la llave. Dlx, 25/09/2026: «mostrar el
@@ -1664,7 +1679,7 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
     if info is not None:
         for i in items:
             if i.get('llave'):
-                ficha = {k: i[k] for k in ('mod', 'rg', 'org', 'pre') if i.get(k)}
+                ficha = {k: i[k] for k in ('mod', 'rg', 'org', 'pre', 'st', 'aut') if i.get(k)}
                 if i.get('link'):
                     ficha['anuncio'] = i['link']
                 if ficha:
@@ -1703,7 +1718,9 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                     'fut': 1 if i['cuando'] > ahora else 0,
                     'sh': i['sh'], **({'rg': i['rg']} if i.get('rg') else {}),
                     **({'mod': i['mod']} if i.get('mod') else {}),
-                    **({'ct': 1} if i.get('ct') else {})})
+                    **({'ct': 1} if i.get('ct') else {}),
+                    # ⚖️ la gente del evento, para la llave EN VIVO: la procesada la lleva en su ficha (`info`)
+                    **({k: i[k] for k in ('org', 'st', 'aut') if i.get(k)} if not ll else {})})
     return out
 
 
