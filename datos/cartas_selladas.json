@@ -89,8 +89,8 @@
   "Aldre": {
    "competitivo": "da2578867026:f77dc8dab350",
    "pais": "d2e0189d9764:9bd767971dd0",
-   "servidor": "e0ffc5bc20a1:23815767166b:980594",
-   "temporada": "0d5101ce5152:17c4f13e63d4"
+   "servidor": "0d7ceee1842e:23815767166b:980594",
+   "temporada": "eccd8230c2dc:17c4f13e63d4"
   },
   "Ale": {
    "servidor": "b2f52f8f6382:23815767166b:055f77"
@@ -296,7 +296,7 @@
    "competitivo": "a58fa7459dfa:f77dc8dab350",
    "pais": "0583282574af:9bd767971dd0",
    "servidor": "9ed9f245a284:23815767166b:3ce074",
-   "temporada": "96b7d1d00033:17c4f13e63d4"
+   "temporada": "086d2dc51317:17c4f13e63d4"
   },
   "Crack and Krank": {
    "servidor": "28ba30da380b:23815767166b:da39a3",
@@ -927,10 +927,10 @@
    "temporada": "10d750328ee6:17c4f13e63d4"
   },
   "Kravitz": {
-   "competitivo": "f50597372b65:f77dc8dab350",
+   "competitivo": "dabc079b4c9a:f77dc8dab350",
    "pais": "861201d6edbe:9bd767971dd0",
    "servidor": "3364b558e85a:23815767166b:effa76",
-   "temporada": "02c864ed9da8:17c4f13e63d4"
+   "temporada": "6394f34e8680:17c4f13e63d4"
   },
   "Krish": {
    "competitivo": "5f6fe9805bf9:f77dc8dab350",
@@ -1929,10 +1929,10 @@
    "temporada": "934e38559676:17c4f13e63d4"
   },
   "Xubaru": {
-   "competitivo": "96454f3d6e5e:f77dc8dab350",
+   "competitivo": "910a123638fe:f77dc8dab350",
    "pais": "6ac21d900a86:9bd767971dd0",
    "servidor": "7f12fd793e52:23815767166b:d473d6",
-   "temporada": "77a34ae6c822:17c4f13e63d4"
+   "temporada": "74b4e336d6b4:17c4f13e63d4"
   },
   "YACO": {
    "servidor": "8dc17afd358c:23815767166b:980594"
@@ -2142,5 +2142,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-09T06:05:42+00:00"
+ "cuando": "2026-10-09T06:28:22+00:00"
 }
