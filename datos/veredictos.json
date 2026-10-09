@@ -233,26 +233,6 @@
   }
  },
  "batallas": {
-  "1555406690017615893": {
-   "id": "1555406690017615893",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790908252959,
-   "a": "Six🇦🇷",
-   "b": "Snow 🇨🇴",
-   "ganador": "Snow 🇨🇴",
-   "votos": "1–0"
-  },
-  "1555408745629098067": {
-   "id": "1555408745629098067",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1790908743055,
-   "a": "Oasis🇨🇱",
-   "b": "Snow 🇨🇴",
-   "ganador": "Oasis🇨🇱",
-   "votos": "1–0"
-  },
   "1555795316404396043": {
    "id": "1555795316404396043",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1561,6 +1541,26 @@
    "a": "XCLUSIVO🇻🇪",
    "b": "CRONOX🇨🇱",
    "ganador": "XCLUSIVO🇻🇪",
+   "votos": "1–0"
+  },
+  "1557941023601070151": {
+   "id": "1557941023601070151",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791512485171,
+   "a": "FLEIVAGNER🇳🇮",
+   "b": "MINIBOY🇨🇱",
+   "ganador": "MINIBOY🇨🇱",
+   "votos": "1–0"
+  },
+  "1557945830139240519": {
+   "id": "1557945830139240519",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791513631139,
+   "a": "CARLOS🇪🇨",
+   "b": "MAYEUTYK 🇺🇾",
+   "ganador": "CARLOS🇪🇨",
    "votos": "1–0"
   }
  },
@@ -3664,8 +3664,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791510459864,
-   "ed": 1791512485171,
-   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞SIN LÍMITES🇵🇪⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝\n⌞NUMBER🇻🇪⌝ 🆚 ⌞DM🇵🇪⌝\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞MELGAR🇲🇽⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞CRONOX🇨🇱⌝\n⌞FLEIVAGNER🇳🇮⌝ 🆚 ⌞MINIBOY🇨🇱⌝",
+   "ed": 1791514220060,
+   "texto": "`[ OCTAVOS ]`\n⌞CABECE🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ERIAN🇬🇵⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞SIN LÍMITES🇵🇪⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝\n⌞NUMBER🇻🇪⌝ 🆚 ⌞DM🇵🇪⌝\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞MELGAR🇲🇽⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞CRONOX🇨🇱⌝\n⌞FLEIVAGNER🇳🇮⌝ 🆚 ⌞MINIBOY🇨🇱⌝\n⌞ASSUAN🇨🇱⌝ 🆚 ⌞JEIXDER🇦🇷⌝ 🆚 ⌞SHADOW🇨🇴⌝\n`[ CUARTOS ]`\n⌞CARLOS🇪🇨⌝ 🆚 ⌞MAYEUTYK 🇺🇾⌝\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞BASTYRETRO🇨🇱⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -3704,7 +3704,7 @@
       "DM🇵🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -3733,6 +3733,37 @@
       "FLEIVAGNER🇳🇮",
       "MINIBOY🇨🇱"
      ],
+     "MINIBOY🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ASSUAN🇨🇱",
+      "JEIXDER🇦🇷",
+      "SHADOW🇨🇴"
+     ],
+     "JEIXDER🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CARLOS🇪🇨",
+      "MAYEUTYK 🇺🇾"
+     ],
+     "CARLOS🇪🇨",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ADRIAGNER🇳🇮",
+      "BASTYRETRO🇨🇱"
+     ],
      null,
      "última ronda y no dice campeón",
      []
@@ -3745,8 +3776,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791511124463,
-   "ed": 1791512000851,
-   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝",
+   "ed": 1791512994719,
+   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝\n⌞PERSONALITY NEMI⌝ 🆚 ⌞KURL ALEXIZ⌝ 🆚 ⌞SNOW RODRI LP⌝ 🆚 ⌞LUZZANO TAM⌝\n⌞PERSON⌝ 🆚 ⌞RODRI LP⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -3777,6 +3808,29 @@
       "CRONOX"
      ],
      "CRONOX",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PERSONALITY NEMI",
+      "KURL ALEXIZ",
+      "SNOW RODRI LP",
+      "LUZZANO TAM"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PERSON",
+      "RODRI LP",
+      "TAM"
+     ],
+     "RODRI LP",
      "veredicto",
      []
     ]
