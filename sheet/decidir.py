@@ -516,6 +516,46 @@ _SEP_INSC = re.compile(r'\s*(?:\+|&|,|/|\by\b|\be\b)\s*', re.I)
 _ENTRE_BANDERAS = re.compile('(?:[\U0001F1E6-\U0001F1FF]{2}\\s*)+(?=[^\\s\U0001F1E6-\U0001F1FF])')
 
 
+_UNA_BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]{2}')
+#: cuántas veces una cuenta se anotó con SÓLO esa bandera para que sea «la suya»
+VECES_BANDERA_PROPIA = 2
+
+
+def suyos_de_pareja(inscripciones):
+    """`[(discord_id, servidor, nombre normalizado)]`: en una inscripción de varios, el que es la cuenta que la
+    escribió, por su bandera. Pura.
+
+    🔑 Dlx, 08/10/2026: *«Belleza es provenza, si ves el canal de inscripciones podrías saber quiénes se
+    inscribieron»*. La cuenta de Provenza (`provenzaaznevorp`) anotó «fleivaman🇨🇦 + belleza🇮🇨» en FFA, y esa misma
+    cuenta se anota sola escribiendo SÓLO «🇮🇨» —tres veces, y otras cuatro «🇺🇸»—. Una inscripción que es nada más
+    una bandera la escribe la persona para sí misma: ésa es SU bandera. En la pareja, el único con esa bandera es esa cuenta.
+
+    ⚠️ Pide las tres cosas: la bandera sola `VECES_BANDERA_PROPIA` veces o más desde esa cuenta, UN solo integrante
+    con una de esas banderas, y la inscripción sin nota entre paréntesis («(me pidieron…)» es para otro). Si los dos
+    llevan la bandera de la cuenta, no se elige. Y no pasa por la regla de «una cuenta, un nombre» de
+    `indice_inscritos()`: esa cuenta se anota con un nombre distinto cada vez, y lo que la prueba acá es la bandera.
+    """
+    propias = collections.defaultdict(collections.Counter)
+    for x in inscripciones or []:
+        did, t = str(x.get('discord_id') or ''), str(x.get('texto') or '').strip()
+        if did.isdigit() and _UNA_BANDERA.fullmatch(t):
+            propias[did][t] += 1
+    out = []
+    for x in inscripciones or []:
+        did, t = str(x.get('discord_id') or ''), str(x.get('texto') or '')
+        mias = {b for b, k in (propias.get(did) or {}).items() if k >= VECES_BANDERA_PROPIA}
+        if not mias or '(' in t:
+            continue
+        partes = [p for p in _SEP_INSC.split(t) if len(norm(_sin_bandera(p))) >= 2]
+        if len(partes) < 2:
+            continue
+        suyos = [p for p in partes if set(_UNA_BANDERA.findall(p)) & mias]
+        if len(suyos) != 1 or len([q for q in _ENTRE_BANDERAS.split(suyos[0]) if len(norm(_sin_bandera(q))) >= 2]) != 1:
+            continue
+        out.append((did, x.get('servidor') or '', norm(_sin_bandera(suyos[0]))))
+    return out
+
+
 def _nombres_insc(texto):
     """Los nombres de una inscripción, normalizados y sin la nota entre paréntesis."""
     t = re.sub(r'\(.*?\)|\(.*$', ' ', str(texto or ''))
@@ -564,6 +604,9 @@ def indice_inscritos(inscripciones):
         if all(corto in n for _s, n in xs):
             for sv, n in xs:
                 idx.setdefault(sv, {}).setdefault(n, set()).add(did)
+    # 🔑 y el de la pareja que lleva la bandera de la cuenta: «belleza🇮🇨» es Provenza (`suyos_de_pareja()`)
+    for did, sv, n in suyos_de_pareja(inscripciones):
+        idx.setdefault(sv, {}).setdefault(n, set()).add(did)
     return idx
 
 
@@ -3181,6 +3224,14 @@ def _self_check():
             {'servidor': 'URBF', 'texto': 'Iguana 🇵🇪', 'discord_id': '8'}])
         ok(_DATOS['inscritos'] == {'FFA': {'prrr': {'9'}}, 'URBF': {'iguana': {'8'}}},
            'sólo las de un nombre, y no las de quien anota a otros (Player y Steven)  %s' % _DATOS['inscritos'])
+        _prov = [{'servidor': 'FFA', 'texto': '🇮🇨', 'discord_id': '30'}] * 2 + [
+            {'servidor': 'FFA', 'texto': 'fleivaman🇨🇦 + belleza🇮🇨', 'discord_id': '30'},
+            {'servidor': 'FFA', 'texto': 'uno🇮🇨 + otro🇮🇨', 'discord_id': '30'},
+            {'servidor': 'FFA', 'texto': '🇦🇷', 'discord_id': '31'},
+            {'servidor': 'FFA', 'texto': 'ana🇦🇷 + beto🇨🇱', 'discord_id': '31'}]
+        ok(suyos_de_pareja(_prov) == [('30', 'FFA', 'belleza')],
+           '«fleivaman🇨🇦 + belleza🇮🇨» desde la cuenta que se anota sola con «🇮🇨»: belleza es esa cuenta; '
+           'con los dos de esa bandera, o con la bandera una sola vez, no  %s' % suyos_de_pareja(_prov))
         _DATOS['servidores_de'].update({'9': ['FFA'], '7': ['FFA'], '8': ['URBF']})
         qs = armar([(40, {'Tipo': nd, 'Detalle': 'PRRR 🇦🇴', 'Origen': 'evento #359'}),
                     (41, {'Tipo': nd, 'Detalle': 'PARIA SIN REMEDIO 🇧🇲', 'Origen': 'evento #359'}),

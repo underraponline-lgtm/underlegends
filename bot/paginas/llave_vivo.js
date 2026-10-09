@@ -61,6 +61,7 @@
     'CUARTOS(?:\\s+DE\\s+FINAL)?|SEMI\\s*-?\\s*FINAL(?:ES)?|SEMIS?|TERCER\\s+LUGAR|GRAN\\s+FINAL|FINAL';
   var PALABRA = /[\p{L}\p{N}_]/u;
   var SEP = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/i;
+  var EQUIPO_NOMBRADO = /([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])/gi;
   var SEP_G = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/gi;
   // 🔴 SIN LOS MARCOS ADENTRO: con el hueco vacío de la plantilla (`⌞⌝ 🆚 ⌞⌝`)
   // la captura saltaba de un ⌞ al siguiente ⌝ y daba el lado «⌝ ⌞». Ver
@@ -306,6 +307,10 @@
   /* `escuchar.nombres_de_linea()` */
   function nombresDeLinea(l) {
     var i, lados, enm;
+    // `[Nombre del equipo (A y B)]` -> `[A + B]` (`escuchar.EQUIPO_NOMBRADO`)
+    l = String(l || '').replace(EQUIPO_NOMBRADO, function (_m, a, adentro, c) {
+      return a + adentro.replace(/\s+(?:y|e)\s+|\s*&\s*/gi, ' + ') + c;
+    });
     if (SEP.test(l)) {
       lados = [];
       l.split(SEP_G).forEach(function (seg) {
@@ -350,10 +355,15 @@
   var REFUERZO_INI = new RegExp('^\\s*[(（][^()（）]*' + BANDERA + '[^()（）]*[)）]\\s*', 'u');
   var REFUERZO_FIN = new RegExp('\\s+[(（][^()（）]*' + BANDERA + '[^()（）]*[)）]\\s*$', 'u');
   var R_SUELTA = new RegExp('(' + BANDERA + ')\\s+R\\s*$', 'u');
+  var POKEMON_PEGADO = /\s*[(（]([^()（）]+)[)）]\s*$/;
+  var MARCA_PAR = /^\s*(?:\d*\s*[RP]|pok[eé]mon)\s*$/i;
   function sinRefuerzos(lado) {
     var s = String(lado || '').replace(REFUERZO_INI, '').replace(REFUERZO_FIN, '');
     // y el `+` que sumaba al comodín: `YINN 🇲🇦 + (PICHULITAMC 🇦🇷)` (`escuchar.sin_refuerzos()`)
     if (s !== String(lado || '')) s = s.replace(/^\s*[+&,]\s*|\s*[+&,]\s*$/g, '');
+    // y el pokémon pegado al final de un EQUIPO: `belleza🇮🇨(SNOW)` (`escuchar.sin_refuerzos()`)
+    var pk = POKEMON_PEGADO.exec(s);
+    if (pk && /[+&]/.test(s.slice(0, pk.index)) && !MARCA_PAR.test(pk[1])) s = s.slice(0, pk.index).replace(/\s+$/, '');
     s = s.split(/(\s*[+&]\s*)/).map(function (p, i) { return i % 2 ? p : p.replace(R_SUELTA, '$1'); })
       .join('').trim();
     return norm(s) || /<@!?\d+>/.test(s) ? s : String(lado || '');

@@ -127,7 +127,8 @@ ok('pero no si la línea del segundo nombra a los dos',
   fin(semis + 'CAMPEÓN: JOVEN ALA\nSUB-CAMPEÓN: [SEBITA] [PRR]') === '');
 ok('el equipo campeón partido en dos renglones (EL RAP FECHA 5)',
   fin('# COPA\n`[ FINAL ]`\n⌞makma + tam⌝ 🆚 ⌞Hassan🇪🇬 + Neo🇦🇷(pollo)⌝\n' +
-    '**__CAMPEON:__**Hassan🇪🇬 +\nNeo🇦🇷(pollo)\n**__SUBCAMPEON: __**makma + tam') === 'Hassan🇪🇬, Neo🇦🇷(pollo)');
+    '**__CAMPEON:__**Hassan🇪🇬 +\nNeo🇦🇷(pollo)\n**__SUBCAMPEON: __**makma + tam') === 'Hassan🇪🇬, Neo🇦🇷');
+// (pollo) es el pokémon pegado al equipo: no es parte del campeón (Dlx, 08/10/2026, `escuchar.sin_refuerzos()`)
 ok('y el nombre en el renglón de abajo, nunca el del segundo',
   fin(semis + 'CAMPEÓN DEL TORNEO 🏆\nSEBITA 🇱🇷') === 'SEBITA 🇱🇷' &&
   fin(semis + 'CAMPEÓN 🏆 :\nSEGUNDO 🥈 : SEBITA') === '');
