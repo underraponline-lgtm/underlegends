@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-09T20:45:02Z",
+ "cuando": "2026-10-09T22:19:49Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1077.1,
+ "dur_s": 1281.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 5.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.4
+   "s": 3.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.2
+   "s": 22.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 1000.9
+   "s": 1201.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.9
+   "s": 7.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 44.9
+   "s": 39.7
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "435",
-  "nombre": "Cuentas Pendientes V.1",
+  "n": "436",
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL3",
   "sv": "FFA",
-  "dia": "2026-10-08"
+  "dia": "2026-10-09"
  },
  "cuotas": {
   "kv": {
-   "write": 277,
-   "read": 36971
+   "write": 305,
+   "read": 40833
   },
   "objeto": {
-   "leidas": 1630066,
-   "escritas": 16459,
-   "pedidos": 5249
+   "leidas": 1770014,
+   "escritas": 18909,
+   "pedidos": 5670
   },
   "worker": {
-   "pedidos": 5889,
+   "pedidos": 5993,
    "errores": 0,
-   "sub": 6383,
-   "p50_ms": 1.23,
-   "p99_ms": 5.83
+   "sub": 6511,
+   "p50_ms": 1.24,
+   "p99_ms": 5.95
   },
   "r2": {
    "objetos": 3686,
