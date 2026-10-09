@@ -41,7 +41,7 @@
   },
   "Aby": {
    "servidor": "e7a9322fb6d2:9d97339447c1:7c559a",
-   "temporada": "bee24e76c15a:17c4f13e63d4"
+   "temporada": "46b8a537a8ab:17c4f13e63d4"
   },
   "Abyssus": {
    "competitivo": "b218a5e0bc66:f77dc8dab350",
@@ -1843,10 +1843,10 @@
    "servidor": "a1187f5e549b:9d97339447c1:531696"
   },
   "VR": {
-   "competitivo": "dff9d88fbc31:f77dc8dab350",
+   "competitivo": "ccf00a478f75:f77dc8dab350",
    "pais": "559cce1945ff:dd0366c7fb5d",
    "servidor": "7165cffa07e0:9d97339447c1:15af16",
-   "temporada": "59dedacca917:17c4f13e63d4"
+   "temporada": "0e3090b8af35:17c4f13e63d4"
   },
   "Val": {
    "servidor": "d4465c1b5631:9d97339447c1:3ce074"
@@ -2128,5 +2128,5 @@
    "servidor": "7f8885a35a6d:9d97339447c1:d473d6"
   }
  },
- "cuando": "2026-10-09T00:27:52+00:00"
+ "cuando": "2026-10-09T00:58:18+00:00"
 }
