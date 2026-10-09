@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T00:24:22+00:00",
+ "cuando": "2026-10-09T00:54:04+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2898,6 +2898,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1557916797200769045",
+   "cuando": "2026-10-09T00:45:09"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
