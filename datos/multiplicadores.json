@@ -271,14 +271,14 @@
     },
     "gente": {
      "FFA": 142,
-     "DDF": 34,
+     "DDF": 37,
      "SR": 16
     },
-    "gana": "DDF"
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 34,
+    "DDF": 37,
     "DRA": 0,
     "FFA": 142,
     "FFS": 0,
