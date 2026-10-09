@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T19:43:14+00:00",
+ "cuando": "2026-10-09T19:54:16+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -415,16 +415,16 @@
    "premios": "Puntos de ascenso y rol de campeón",
    "staff": {
     "jurado": [
-     "Dravitz"
+     "Kravitz"
     ],
     "host": [
-     "Dravitz"
+     "Kravitz"
     ],
     "dj": [
-     "Dravitz"
+     "Kravitz"
     ]
    },
-   "autor": "Dravitz",
+   "autor": "Kravitz",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T19:35:33"
@@ -569,21 +569,21 @@
    "premios": "Puntos de ascenso y rol de campeón",
    "staff": {
     "jurado": [
-     "Dravitz",
+     "Kravitz",
      "Elsoolar",
      "Dlxmouche"
     ],
     "host": [
-     "Dravitz",
+     "Kravitz",
      "Elsoolar",
      "SetesFifi"
     ],
     "dj": [
-     "Dravitz",
+     "Kravitz",
      "PolloSport"
     ]
    },
-   "autor": "Dravitz",
+   "autor": "Kravitz",
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T19:35:33"
@@ -3712,6 +3712,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "JJ 🇨🇴",
+   "quien": "a.k.a_jj",
+   "discord_id": "1097650470476070995",
+   "msg_id": "1558204529034403901",
+   "cuando": "2026-10-09T19:48:29"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yo 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1558203983259111465",
+   "cuando": "2026-10-09T19:46:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "SAEVA 🇧🇦",
+   "quien": "mediadecadasinvida",
+   "discord_id": "1489270713041944589",
+   "msg_id": "1558203876241576038",
+   "cuando": "2026-10-09T19:45:54"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Under🇨🇴",
+   "quien": "ander074883",
+   "discord_id": "1026746712779395113",
+   "msg_id": "1558203828241694801",
+   "cuando": "2026-10-09T19:45:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "santi🇦🇷",
+   "quien": "santioi6",
+   "discord_id": "1069350263204368435",
+   "msg_id": "1558203265672290395",
+   "cuando": "2026-10-09T19:43:28"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
