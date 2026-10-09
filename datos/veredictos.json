@@ -1762,6 +1762,66 @@
    "b": "SHADOW 🇨🇴",
    "ganador": "EMILIO 🇲🇽",
    "votos": "1–0"
+  },
+  "1558242936913924128": {
+   "id": "1558242936913924128",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791584466914,
+   "a": "LORD 🇨🇴",
+   "b": "DYNOCO 🇦🇷",
+   "ganador": "LORD 🇨🇴",
+   "votos": "1–0"
+  },
+  "1558245408143310922": {
+   "id": "1558245408143310922",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791585056101,
+   "a": "ECLIPSE 🇨🇱",
+   "b": "VR 🇨🇴",
+   "ganador": "ECLIPSE 🇨🇱",
+   "votos": "1–0"
+  },
+  "1558245741783158908": {
+   "id": "1558245741783158908",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791585135647,
+   "a": "ATR 🇺🇾",
+   "b": "AGUS 🇦🇷",
+   "ganador": "AGUS 🇦🇷",
+   "votos": "1–0"
+  },
+  "1558246780418789400": {
+   "id": "1558246780418789400",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791585383277,
+   "a": "CALIZ 🇲🇽",
+   "b": "FLAMA 🇦🇷",
+   "ganador": "FLAMA 🇦🇷",
+   "votos": "1–0"
+  },
+  "1558247625361195059": {
+   "id": "1558247625361195059",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791585584727,
+   "a": "agus🇦🇷",
+   "b": "Za🇵🇪",
+   "ganador": "agus🇦🇷",
+   "votos": "2–1"
+  },
+  "1558248416063258716": {
+   "id": "1558248416063258716",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "pub": 1791585773245,
+   "a": "ZETRYKO 🇨🇱",
+   "b": "ANDY 🇵🇪",
+   "ganador": "ZETRYKO 🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -4455,6 +4515,108 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1558245449046171681": {
+   "id": "1558245449046171681",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791585065853,
+   "ed": 1791586382923,
+   "texto": "`[ OCTAVOS ]`\n⌞santi🇦🇷⌝ 🆚 ⌞riolu🇪🇸⌝\n⌞ikonoxx🇺🇾⌝ 🆚 ⌞dynoco🇦🇷⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞agus🇦🇷⌝\n⌞Kravitz🇫🇷⌝ 🆚 ⌞Za🇵🇪⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞makmah 🇻🇪 (R)⌝\n⌞andy⌝ 🆚 ⌞Shisui🇯🇵⌝\n⌞Trot🇪🇸⌝ 🆚 ⌞Pichulamc🇦🇷⌝ 🆚 ⌞Geo⌝\n⌞agus🇦🇷⌝ 🆚 ⌞Za🇵🇪⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "santi🇦🇷",
+      "riolu🇪🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ikonoxx🇺🇾",
+      "dynoco🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Mitosis🇦🇷",
+      "agus🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Kravitz🇫🇷",
+      "Za🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "makmah 🇻🇪",
+      "delux🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CRK 🇲🇽",
+      "makmah 🇻🇪 (R)"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "andy",
+      "Shisui🇯🇵"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Trot🇪🇸",
+      "Pichulamc🇦🇷",
+      "Geo"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "agus🇦🇷",
+      "Za🇵🇪"
+     ],
+     "agus🇦🇷",
+     "veredicto",
      []
     ]
    ]
