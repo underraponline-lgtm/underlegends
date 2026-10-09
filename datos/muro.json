@@ -883,7 +883,8 @@
 "nemi": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "rodas": {
@@ -4972,6 +4973,14 @@
 "Makmah"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-09T02:07:29Z",
+"quien": [
+"Nemi"
+],
+"carta": "temporada"
 }
 ]
 }

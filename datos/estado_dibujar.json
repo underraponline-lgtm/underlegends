@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-09T01:57:20Z",
+ "cuando": "2026-10-09T02:07:32Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1741.8,
+ "dur_s": 581.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.5
+   "s": 10.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.3
+   "s": 2.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.4
+   "s": 19.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 8 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 1636.1
+   "s": 500.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.0
+   "s": 4.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 65.4
+   "s": 42.5
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "431",
-  "nombre": "LA REDENCIÓN VOL.1",
-  "sv": "FFA",
+  "n": "432",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
+  "sv": "DDF",
   "dia": "2026-10-08"
  },
  "cuotas": {
   "kv": {
-   "write": 68,
-   "read": 6267
+   "write": 88,
+   "read": 7673
   },
   "objeto": {
-   "leidas": 346839,
-   "escritas": 4040,
-   "pedidos": 865
+   "leidas": 382312,
+   "escritas": 4402,
+   "pedidos": 927
   },
   "worker": {
-   "pedidos": 7376,
+   "pedidos": 7330,
    "errores": 1,
-   "sub": 7826,
+   "sub": 7791,
    "p50_ms": 1.14,
-   "p99_ms": 6.34
+   "p99_ms": 6.37
   },
   "r2": {
    "objetos": 3651,
