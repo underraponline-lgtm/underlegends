@@ -17870,5 +17870,378 @@
     1250
    ]
   ]
+ },
+ "439": {
+  "dia": "2026-10-09",
+  "escala": "16+",
+  "fecha": "09/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558304993247764633"
+  ],
+  "n": 439,
+  "nombre": "DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Cronox, Verc",
+       "Six, Agus"
+      ],
+      "Cronox, Verc",
+      "Revivido: SIX 🇦🇷"
+     ],
+     [
+      [
+       "Makmah, Walker",
+       "Kravitz, Zaik 🇪🇸"
+      ],
+      "Makmah, Walker",
+      ""
+     ],
+     [
+      [
+       "Seko Boy🇨🇴 + EGI🇨🇷",
+       "NEMI 🇦🇷 + V-ZIR 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "araya 🇦🇷 + crakero1312 🇦🇷",
+       "KUN Z 🇪🇸 + SOSA ATR 🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Cronox, Verc",
+       "Six, Snow"
+      ],
+      "Cronox, Verc",
+      ""
+     ],
+     [
+      [
+       "Presagio, Dynoco",
+       "Makmah, Walker"
+      ],
+      "Presagio, Dynoco",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Presagio, Dynoco",
+       "Verc, Cronox"
+      ],
+      "Presagio, Dynoco",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Dynoco",
+    "Campeón",
+    5000
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    5000
+   ],
+   [
+    "Cronox",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Walker",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Six",
+    "Semifinal",
+    2562
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Cuartos",
+    1250
+   ]
+  ]
+ },
+ "440": {
+  "dia": "2026-10-09",
+  "escala": "16+",
+  "fecha": "09/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1498009509036163173/1558311407332753469"
+  ],
+  "n": 440,
+  "nombre": "PROYECTO X VOL.2",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Dominick"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "MCO"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Masino",
+       "Rodas"
+      ],
+      "Masino",
+      "Revivido: Roda🇦🇷"
+     ],
+     [
+      [
+       "Walker",
+       "Soulb"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Dynoco"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "MARTYNEZ🇺🇾"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "Spartan"
+      ],
+      "Tuca",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Shadow"
+      ],
+      "Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Rodas"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "EIDP"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Walker"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Tuca"
+      ],
+      "Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "NXUZ"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Xclusivo"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Makmah"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    5250
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tuca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "MARTYNEZ🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Spartan",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

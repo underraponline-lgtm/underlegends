@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1555795316404396043": {
-   "id": "1555795316404396043",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791000908710,
-   "a": "ECLIPCITO",
-   "b": "HASSAN",
-   "ganador": "HASSAN",
-   "votos": "1–0"
-  },
   "1555798716982632519": {
    "id": "1555798716982632519",
    "sv": "[FFA] Freestyle For All 👾",
@@ -2031,6 +2021,36 @@
    "a": "XCLUSIVO🇻🇪",
    "b": "TUCA🇦🇷",
    "ganador": "XCLUSIVO🇻🇪",
+   "votos": "1–0"
+  },
+  "1558326900324302909": {
+   "id": "1558326900324302909",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791604485351,
+   "a": "MAKMA🇻🇪",
+   "b": "NEXUZ🇵🇪",
+   "ganador": "MAKMA🇻🇪",
+   "votos": "1–0"
+  },
+  "1558327004510683208": {
+   "id": "1558327004510683208",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791604510191,
+   "a": "AGUS🇦🇷",
+   "b": "XCLUSIVO🇻🇪",
+   "ganador": "AGUS🇦🇷",
+   "votos": "1–0"
+  },
+  "1558328397753622542": {
+   "id": "1558328397753622542",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791604842366,
+   "a": "MAKMA🇻🇪",
+   "b": "AGUS🇦🇷",
+   "ganador": "AGUS🇦🇷",
    "votos": "1–0"
   }
  },
@@ -4836,8 +4856,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791600791534,
-   "ed": 1791604364877,
-   "texto": "`[ OCTAVOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞RODA🇵🇦⌝\n⌞WALKER🇨🇴⌝ 🆚 ⌞ELVIOLAGINA🇧🇦⌝\n⌞AGUSTIN🇺🇾⌝ 🆚 ⌞DYNOCO🇦🇷⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞MARTYNEZ🇺🇾⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞SPARTAN🇺🇾⌝\n⌞SHADOW🇨🇴⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞RODA🇵🇦⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞AGUSTIN LA RELIQUIA🇺🇾⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞WALKER🇨🇴⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞TUCA🇦🇷⌝",
+   "ed": 1791605241172,
+   "texto": "`[ OCTAVOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞RODA🇵🇦⌝\n⌞WALKER🇨🇴⌝ 🆚 ⌞ELVIOLAGINA🇧🇦⌝\n⌞AGUSTIN🇺🇾⌝ 🆚 ⌞DYNOCO🇦🇷⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞MARTYNEZ🇺🇾⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞SPARTAN🇺🇾⌝\n⌞SHADOW🇨🇴⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞RODA🇵🇦⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞AGUSTIN LA RELIQUIA🇺🇾⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞WALKER🇨🇴⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞TUCA🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ FINAL ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞AGUS🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -4958,6 +4978,36 @@
      "XCLUSIVO🇻🇪",
      "veredicto",
      []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MAKMA🇻🇪",
+      "NEXUZ🇵🇪"
+     ],
+     "MAKMA🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "AGUS🇦🇷",
+      "XCLUSIVO🇻🇪"
+     ],
+     "AGUS🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMA🇻🇪",
+      "AGUS🇦🇷"
+     ],
+     "AGUS🇦🇷",
+     "veredicto",
+     []
     ]
    ]
   },
@@ -4967,15 +5017,14 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1791604017067,
-   "ed": 1791604321552,
-   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞ZANIX🇨🇱⌝ 🆚 ⌞EZE🇦🇷⌝\n⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞DELUX🇦🇷⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞NEMI🇦🇷⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝\n⌞ALEXIZ🇦🇷⌝ 🆚 ⌞TREINTAYNUEVE🇦🇩⌝\n⌞CHOP🇭🇳⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞ZANIX🇨🇱⌝ 🆚 ⌞EZE🇦🇷⌝",
+   "ed": 1791605872677,
+   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞NEMI🇦🇷⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝\n⌞ALEXIZ🇦🇷⌝ 🆚 ⌞TREINTAYNUEVE🇦🇩⌝\n⌞CHOP🇭🇳⌝ 🆚 ⌞SEKO BOY 🇨🇴⌝\n`[ OCTAVOS ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝",
    "batallas": [
     [
      "OCTAVOS",
      [
       "RODA🇵🇦",
-      "ZANIX🇨🇱",
-      "EZE🇦🇷"
+      "KRAKERO🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
@@ -4984,8 +5033,10 @@
     [
      "OCTAVOS",
      [
+      "EZE🇦🇷",
       "CRONOX🇨🇱",
-      "MONET🇲🇽"
+      "MONET🇲🇽",
+      "ZANIX🇨🇱"
      ],
      null,
      "última ronda y no dice campeón",
@@ -4995,7 +5046,8 @@
      "OCTAVOS",
      [
       "PRESAGIO🇦🇷",
-      "DELUX🇦🇷"
+      "AGUS🇦🇷",
+      "MR STILL BALLIN🇳🇴"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5004,8 +5056,10 @@
     [
      "OCTAVOS",
      [
-      "AGUS🇦🇷",
-      "KRAKERO🇦🇷"
+      "MAKMA🇻🇪",
+      "TENOR🇻🇪",
+      "SEKO BOY🇨🇴",
+      "SOSA🇺🇾"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5045,7 +5099,7 @@
      "OCTAVOS",
      [
       "CHOP🇭🇳",
-      "MAKMA🇻🇪"
+      "SEKO BOY 🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5054,12 +5108,13 @@
     [
      "OCTAVOS",
      [
-      "RODA🇵🇦",
-      "ZANIX🇨🇱",
-      "EZE🇦🇷"
+      "MAKMA🇻🇪",
+      "TENOR🇻🇪",
+      "SEKO BOY🇨🇴",
+      "SOSA🇺🇾"
      ],
-     "EZE🇦🇷",
-     "veredicto",
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
