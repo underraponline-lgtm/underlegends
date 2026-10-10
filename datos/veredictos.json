@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1555816634839465995": {
-   "id": "1555816634839465995",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791005991421,
-   "a": "HASSAN",
-   "b": "SONETO",
-   "ganador": "HASSAN",
-   "votos": "1–0"
-  },
   "1555819030722383883": {
    "id": "1555819030722383883",
    "sv": "[FFA] Freestyle For All 👾",
@@ -4987,8 +4977,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1791604017067,
-   "ed": 1791609570344,
-   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞KRAKERO🇦🇷(R)⌝ 🆚 ⌞MAKMA🇻🇪⌝ 🆚 ⌞SOSA🇺🇾⌝",
+   "ed": 1791610725033,
+   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5032,11 +5022,8 @@
       "SOSA🇺🇾"
      ],
      null,
-     "pasan 2, no hay un ganador",
-     [
-      "MAKMA🇻🇪",
-      "SOSA🇺🇾"
-     ]
+     "no aparece nadie después",
+     []
     ],
     [
      "OCTAVOS",
@@ -5056,16 +5043,15 @@
       "TENOR🇻🇪(R)",
       "XCLUSIVO🇻🇪"
      ],
-     null,
-     "no aparece nadie después",
+     "XCLUSIVO🇻🇪",
+     "ronda siguiente",
      []
     ],
     [
      "CUARTOS",
      [
-      "KRAKERO🇦🇷(R)",
-      "MAKMA🇻🇪",
-      "SOSA🇺🇾"
+      "XCLUSIVO🇻🇪",
+      "COLESITO🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",
