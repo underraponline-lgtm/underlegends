@@ -2032,6 +2032,16 @@
    "b": "XCLUSIVO 🇻🇪",
    "ganador": "WALKER 🇨🇴",
    "votos": "1–0"
+  },
+  "1558537632445759663": {
+   "id": "1558537632445759663",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791654727804,
+   "a": "WALKER 🇨🇴",
+   "b": "AGUSTIN 🇺🇾",
+   "ganador": "WALKER 🇨🇴",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5085,7 +5095,7 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791651691822,
-   "ed": 1791654727804,
+   "ed": 1791655394094,
    "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞RT 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞JULIX 🇧🇴⌝ 🆚 ⌞AGUSTIN 🇺🇾⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`\n⌞WALKER🇨🇴 🇨🇴⌝ 🆚 ⌞AGUSTIN🇺🇾 🇺🇾⌝",
    "batallas": [
     [
@@ -5154,8 +5164,8 @@
       "WALKER🇨🇴 🇨🇴",
       "AGUSTIN🇺🇾 🇺🇾"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "WALKER🇨🇴 🇨🇴",
+     "veredicto",
      []
     ]
    ]

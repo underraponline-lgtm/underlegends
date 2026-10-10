@@ -5416,5 +5416,134 @@
    ]
   ],
   "v": 2
+ },
+ "442": {
+  "antes": {
+   "Agus": [
+    7,
+    8,
+    false
+   ],
+   "EmiZor": [
+    203,
+    133,
+    true
+   ],
+   "Number VE": [
+    49,
+    68,
+    false
+   ],
+   "RT": [
+    39,
+    55,
+    false
+   ],
+   "Walker": [
+    59,
+    84,
+    false
+   ],
+   "Xclusivo": [
+    157,
+    21,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "JULIX 🇧🇴",
+    "Number VE",
+    "JULIX 🇧🇴"
+   ],
+   [
+    "Agus",
+    "EmiZor",
+    "Agus"
+   ],
+   [
+    "Walker",
+    "Xclusivo",
+    "Walker"
+   ],
+   [
+    "Agus",
+    "RT",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "JULIX 🇧🇴",
+    "Agus"
+   ],
+   [
+    "Walker",
+    "Agus",
+    "Walker"
+   ],
+   [
+    "Walker",
+    "Agus",
+    "Walker"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 12,
+   "EmiZor": 6,
+   "Number VE": 9,
+   "RT": 7,
+   "Walker": 3,
+   "Xclusivo": 12
+  },
+  "fecha": "10/10",
+  "firma": "ffcc15cd4bd7e2dd",
+  "msg": "1558545514931163258",
+  "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
+  "num": 442,
+  "participantes": 8,
+  "sello": {
+   "Walker": "789d8904ad09:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-10T18:23:26Z",
+  "tabla": [
+   [
+    "Agus",
+    "Semifinal",
+    8500
+   ],
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "JULIX 🇧🇴",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "RT",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

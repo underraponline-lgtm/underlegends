@@ -18504,5 +18504,127 @@
     1250
    ]
   ]
+ },
+ "442": {
+  "dia": "2026-10-10",
+  "escala": "8-15",
+  "fecha": "10/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1498009509036163173/1558524898614186019"
+  ],
+  "n": 442,
+  "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "JULIX 🇧🇴",
+       "Number VE"
+      ],
+      "JULIX 🇧🇴",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "EmiZor"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "Xclusivo"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "RT"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "JULIX 🇧🇴"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "Agus"
+      ],
+      "Walker",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Agus"
+      ],
+      "Walker",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Agus",
+    "Semifinal",
+    8500
+   ],
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "JULIX 🇧🇴",
+    "Semifinal",
+    3500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "RT",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

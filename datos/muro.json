@@ -351,6 +351,13 @@
 "temporada"
 ]
 },
+"rt": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "tam": {
 "rg": "",
 "c": [
@@ -410,14 +417,14 @@
 "temporada"
 ]
 },
-"dyzz": {
+"walker": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"rt": {
+"dyzz": {
 "rg": "",
 "c": [
 "servidor",
@@ -512,8 +519,9 @@
 ]
 },
 "numberve": {
-"rg": "",
+"rg": "E",
 "c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -609,13 +617,6 @@
 "c": []
 },
 "crk": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"walker": {
 "rg": "",
 "c": [
 "servidor",
@@ -799,6 +800,12 @@
 "temporada"
 ]
 },
+"emizor": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "prosu": {
 "rg": "",
 "c": [
@@ -947,12 +954,6 @@
 "temporada"
 ]
 },
-"emizor": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "adriagner": {
 "rg": "",
 "c": [
@@ -1071,6 +1072,10 @@
 "c": []
 },
 "zaza": {
+"rg": "",
+"c": []
+},
+"julix": {
 "rg": "",
 "c": []
 },
@@ -1379,10 +1384,6 @@
 "servidor",
 "temporada"
 ]
-},
-"julix": {
-"rg": "",
-"c": []
 },
 "pipas": {
 "rg": "",
@@ -5237,6 +5238,23 @@
 "araya"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-10T18:26:29Z",
+"quien": [
+"Number VE"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-10T18:26:29Z",
+"quien": [
+"Number VE"
+],
+"carta": "competitivo"
 }
 ]
 }
