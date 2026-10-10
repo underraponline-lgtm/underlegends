@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-10T16:54:09+00:00",
+ "cuando": "2026-10-10T17:24:11+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3580,6 +3580,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "agus",
+   "quien": "agusdcab",
+   "discord_id": "494965289042182164",
+   "msg_id": "1558523502619926610",
+   "cuando": "2026-10-10T16:55:58"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",

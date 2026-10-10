@@ -2012,6 +2012,16 @@
    "b": "AGUS🇦🇷",
    "ganador": "AGUS🇦🇷",
    "votos": "1–0"
+  },
+  "1558524956176941077": {
+   "id": "1558524956176941077",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791651705546,
+   "a": "NUMBER 🇻🇪",
+   "b": "JULIX 🇧🇴",
+   "ganador": "JULIX 🇧🇴",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5052,6 +5062,47 @@
      [
       "MR STILL BALLIN🇳🇴",
       "COLESITO🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1558524898614186019": {
+   "id": "1558524898614186019",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1791651691822,
+   "ed": 1791652873010,
+   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "NUMBER 🇻🇪",
+      "JULIX 🇧🇴"
+     ],
+     "JULIX 🇧🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "AGUSTIN 🇺🇾",
+      "EMI 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "WALKER 🇨🇴",
+      "XCLUSIVO 🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
