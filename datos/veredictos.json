@@ -4977,8 +4977,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1791604017067,
-   "ed": 1791611167198,
-   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝",
+   "ed": 1791611938938,
+   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞MR STILL BALLIN🇳🇴⌝ 🆚 ⌞COLESITO🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5009,8 +5009,8 @@
       "AGUS🇦🇷",
       "MR STILL BALLIN🇳🇴"
      ],
-     null,
-     "no aparece nadie después",
+     "MR STILL BALLIN🇳🇴",
+     "ronda siguiente",
      []
     ],
     [
@@ -5043,18 +5043,18 @@
       "TENOR🇻🇪(R)",
       "XCLUSIVO🇻🇪"
      ],
-     "XCLUSIVO🇻🇪",
-     "ronda siguiente",
+     null,
+     "no aparece nadie después",
      []
     ],
     [
      "CUARTOS",
      [
-      "XCLUSIVO🇻🇪",
+      "MR STILL BALLIN🇳🇴",
       "COLESITO🇨🇴"
      ],
-     "COLESITO🇨🇴",
-     "veredicto",
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
