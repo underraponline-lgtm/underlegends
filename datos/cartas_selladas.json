@@ -546,7 +546,7 @@
   "FALON": {},
   "Faso": {
    "servidor": "8c8a80acda93:23815767166b:086c7c",
-   "temporada": "f25c969408eb:17c4f13e63d4"
+   "temporada": "b9a9a4d4e3e9:17c4f13e63d4"
   },
   "Fazer": {
    "servidor": "a42d585b79a5:23815767166b:8d4f88",
@@ -597,7 +597,7 @@
   },
   "Fol": {
    "servidor": "7410ac22f6cb:23815767166b:aa6e97",
-   "temporada": "7bd9cf61e47c:17c4f13e63d4"
+   "temporada": "b3624ec574c9:17c4f13e63d4"
   },
   "ForceGP": {
    "servidor": "cf0c6daf8e59:23815767166b:19bb57"
@@ -751,7 +751,7 @@
   },
   "Indígena": {
    "servidor": "45886484ff2e:23815767166b:da39a3",
-   "temporada": "0f349956e308:17c4f13e63d4"
+   "temporada": "01753eedbc48:17c4f13e63d4"
   },
   "Infecte": {
    "servidor": "2edaea0f70e1:23815767166b:a5e01f",
@@ -1638,10 +1638,10 @@
   },
   "SUDAKA": {},
   "Saiko": {
-   "competitivo": "c8af25c0138b:f77dc8dab350",
+   "competitivo": "49f118297a0e:f77dc8dab350",
    "pais": "83eff4b975fb:9bd767971dd0",
    "servidor": "bace17a76b59:23815767166b:a1c2cd",
-   "temporada": "27cc4f61d043:17c4f13e63d4"
+   "temporada": "9695f904ee5a:17c4f13e63d4"
   },
   "Saito": {
    "servidor": "eb90e2e41e6e:23815767166b:9bda2d",
@@ -2096,7 +2096,7 @@
   },
   "rayito": {
    "servidor": "163bd72b95c5:23815767166b:cd7216",
-   "temporada": "3dfd0e9a3e8c:17c4f13e63d4"
+   "temporada": "c8e3bf1380b6:17c4f13e63d4"
   },
   "rodrilp": {
    "competitivo": "16dedf04c7e1:f77dc8dab350",
@@ -2146,5 +2146,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-10T19:57:27+00:00"
+ "cuando": "2026-10-10T23:57:39+00:00"
 }
