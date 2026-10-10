@@ -78,7 +78,7 @@
    "competitivo": "5806b22b4467:f77dc8dab350",
    "pais": "f742aa2dff19:9bd767971dd0",
    "servidor": "d575fc64fc42:23815767166b:3ce074",
-   "temporada": "821c0f6878d1:17c4f13e63d4"
+   "temporada": "4d2a5c8b4051:17c4f13e63d4"
   },
   "Aktybo": {
    "competitivo": "0970163ae383:f77dc8dab350",
@@ -280,7 +280,7 @@
   },
   "Chop": {
    "servidor": "06498cd2835a:23815767166b:ccf6ec",
-   "temporada": "689b32c7cd53:17c4f13e63d4"
+   "temporada": "edee8e1229d1:17c4f13e63d4"
   },
   "Cinexfilo": {
    "competitivo": "4957b2901d66:f77dc8dab350",
@@ -318,7 +318,7 @@
    "competitivo": "2f8ef5de1591:f77dc8dab350",
    "pais": "f2748fa77589:9bd767971dd0",
    "servidor": "e47ad3f495a3:23815767166b:3e2e7c",
-   "temporada": "37f3c14a0070:17c4f13e63d4"
+   "temporada": "cd7f446cd772:17c4f13e63d4"
   },
   "Cruz": {
    "servidor": "8a80c6b7775d:23815767166b:15af16"
@@ -440,7 +440,7 @@
    "competitivo": "e6d69a0cc7ae:f77dc8dab350",
    "pais": "4077cd35d93d:9bd767971dd0",
    "servidor": "7246f93dd137:23815767166b:6ae78a",
-   "temporada": "f5f36895cdaf:17c4f13e63d4"
+   "temporada": "4736e9807734:17c4f13e63d4"
   },
   "Dyzz": {
    "servidor": "8b8b687c9135:23815767166b:32ae62",
@@ -1361,7 +1361,7 @@
    "servidor": "0ba68011a29f:23815767166b:980594"
   },
   "Noone": {
-   "servidor": "01bad0b910d4:23815767166b:9bda2d",
+   "servidor": "01bad0b910d4:23815767166b:da39a3",
    "temporada": "2ae4145c547e:17c4f13e63d4"
   },
   "Nova": {
@@ -1668,7 +1668,7 @@
   },
   "Scot": {
    "servidor": "f6fbd4914bb9:23815767166b:c7b696",
-   "temporada": "c48facf48650:17c4f13e63d4"
+   "temporada": "56a0fdbf9470:17c4f13e63d4"
   },
   "Selek": {
    "competitivo": "c7f2caa0b14e:f77dc8dab350",
@@ -1905,7 +1905,7 @@
    "competitivo": "d7fc01226e88:f77dc8dab350",
    "pais": "78d62d77a920:9bd767971dd0",
    "servidor": "f0aa3cbf2d3c:23815767166b:324686",
-   "temporada": "a8dc35c55fb1:17c4f13e63d4"
+   "temporada": "789d8904ad09:17c4f13e63d4"
   },
   "Warriorvid": {
    "servidor": "f573cb071ebd:23815767166b:eb90d2",
@@ -2144,5 +2144,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-10T04:50:03+00:00"
+ "cuando": "2026-10-10T04:57:17+00:00"
 }
