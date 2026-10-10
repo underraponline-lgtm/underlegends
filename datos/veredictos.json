@@ -5085,8 +5085,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791651691822,
-   "ed": 1791653113461,
-   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝",
+   "ed": 1791654727804,
+   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞RT 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞JULIX 🇧🇴⌝ 🆚 ⌞AGUSTIN 🇺🇾⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`\n⌞WALKER🇨🇴 🇨🇴⌝ 🆚 ⌞AGUSTIN🇺🇾 🇺🇾⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5104,8 +5104,8 @@
       "AGUSTIN 🇺🇾",
       "EMI 🇲🇽"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "AGUSTIN 🇺🇾",
+     "ronda siguiente",
      []
     ],
     [
@@ -5116,6 +5116,46 @@
      ],
      "WALKER 🇨🇴",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "AGUS 🇦🇷",
+      "RT 🇲🇽"
+     ],
+     "AGUS 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "JULIX 🇧🇴",
+      "AGUSTIN 🇺🇾"
+     ],
+     "AGUSTIN 🇺🇾",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "WALKER 🇨🇴",
+      "AGUS 🇦🇷"
+     ],
+     "WALKER 🇨🇴",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "WALKER🇨🇴 🇨🇴",
+      "AGUSTIN🇺🇾 🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
