@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-10T19:06:47Z",
+ "cuando": "2026-10-10T19:38:50Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 534.3,
+ "dur_s": 657.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.1
+   "s": 5.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.3
+   "s": 3.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.6
+   "s": 20.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": true,
-   "s": 453.7
+   "s": 579.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.8
+   "s": 4.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 43.8
+   "s": 42.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "442",
-  "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
+  "n": "443",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "sv": "DDF",
   "dia": "2026-10-10"
  },
  "cuotas": {
   "kv": {
-   "write": 246,
-   "read": 33037
+   "write": 261,
+   "read": 34638
   },
   "objeto": {
-   "leidas": 1278139,
-   "escritas": 16230,
-   "pedidos": 3727
+   "leidas": 1341783,
+   "escritas": 17594,
+   "pedidos": 3928
   },
   "worker": {
-   "pedidos": 4941,
+   "pedidos": 5036,
    "errores": 0,
-   "sub": 5273,
-   "p50_ms": 1.36,
-   "p99_ms": 6.17
+   "sub": 5375,
+   "p50_ms": 1.35,
+   "p99_ms": 6.09
   },
   "r2": {
    "objetos": 3696,
