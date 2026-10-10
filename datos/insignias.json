@@ -263,6 +263,10 @@
 "ev10": [
 "2026-10-10T04:24:54Z",
 "prueba"
+],
+"racha": [
+"2026-10-10T18:55:14Z",
+"prueba"
 ]
 },
 "Agustín la reliquia": {
@@ -4766,6 +4770,18 @@
 "za": {
 "debut": [
 "2026-10-03T05:55:11Z",
+"prueba"
+]
+},
+"• Semifinal 1: JULIX": {
+"debut": [
+"2026-10-10T18:55:14Z",
+"prueba"
+]
+},
+"• Semifinal 2: WALKER": {
+"debut": [
+"2026-10-10T18:55:14Z",
 "prueba"
 ]
 }

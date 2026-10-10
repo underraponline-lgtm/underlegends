@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-10T18:24:14+00:00",
+ "cuando": "2026-10-10T18:54:37+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3587,6 +3587,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1558548943049068686",
+   "cuando": "2026-10-10T18:37:04"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1558545817718100058",
+   "cuando": "2026-10-10T18:24:39"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",

@@ -18510,21 +18510,21 @@
   "escala": "8-15",
   "fecha": "10/10",
   "links": [
-   "https://discord.com/channels/1469009547971526659/1498009509036163173/1558524898614186019"
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1558522373634920611"
   ],
   "n": 442,
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
-  "participantes": 8,
+  "participantes": 10,
   "rondas": [
    {
     "b": [
      [
       [
-       "JULIX 🇧🇴",
+       "• JULIX",
        "Number VE"
       ],
-      "JULIX 🇧🇴",
-      ""
+      "• JULIX",
+      "ganador según #veredictos"
      ],
      [
       [
@@ -18540,7 +18540,7 @@
        "Xclusivo"
       ],
       "Walker",
-      ""
+      "ganador según #veredictos"
      ],
      [
       [
@@ -18558,18 +18558,18 @@
      [
       [
        "Agus",
-       "JULIX 🇧🇴"
+       "• Semifinal 1: JULIX"
       ],
       "Agus",
-      ""
+      "Walk-in 1: • Semifinal 1: JULIX"
      ],
      [
       [
-       "Walker",
-       "Agus"
+       "Agus",
+       "• Semifinal 2: WALKER"
       ],
-      "Walker",
-      ""
+      "Agus",
+      "Walk-in 1: • Semifinal 2: WALKER"
      ]
     ],
     "r": "Semifinales"
@@ -18591,19 +18591,14 @@
   "sv": "DDF",
   "tabla": [
    [
-    "Agus",
-    "Semifinal",
-    8500
-   ],
-   [
     "Walker",
     "Campeón",
     7500
    ],
    [
-    "JULIX 🇧🇴",
-    "Semifinal",
-    3500
+    "Agus",
+    "Subcampeón",
+    5000
    ],
    [
     "EmiZor",
@@ -18624,6 +18619,16 @@
     "Xclusivo",
     "Cuartos",
     2000
+   ],
+   [
+    "• Semifinal 1: JULIX",
+    "Semifinal",
+    1750
+   ],
+   [
+    "• Semifinal 2: WALKER",
+    "Semifinal",
+    1750
    ]
   ]
  }

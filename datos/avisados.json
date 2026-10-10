@@ -5453,9 +5453,9 @@
   "canal": "1469943905771585708",
   "duelos": [
    [
-    "JULIX 🇧🇴",
+    "• JULIX",
     "Number VE",
-    "JULIX 🇧🇴"
+    "• JULIX"
    ],
    [
     "Agus",
@@ -5474,13 +5474,13 @@
    ],
    [
     "Agus",
-    "JULIX 🇧🇴",
+    "• Semifinal 1: JULIX",
     "Agus"
    ],
    [
-    "Walker",
     "Agus",
-    "Walker"
+    "• Semifinal 2: WALKER",
+    "Agus"
    ],
    [
     "Walker",
@@ -5497,11 +5497,11 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "ffcc15cd4bd7e2dd",
+  "firma": "5660c268514ecd05",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
-  "participantes": 8,
+  "participantes": 10,
   "sello": {
    "Walker": "789d8904ad09:17c4f13e63d4"
   },
@@ -5509,19 +5509,14 @@
   "t": "2026-10-10T18:23:26Z",
   "tabla": [
    [
-    "Agus",
-    "Semifinal",
-    8500
-   ],
-   [
     "Walker",
     "Campeón",
     7500
    ],
    [
-    "JULIX 🇧🇴",
-    "Semifinal",
-    3500
+    "Agus",
+    "Subcampeón",
+    5000
    ],
    [
     "Number VE",
@@ -5542,6 +5537,16 @@
     "RT",
     "Cuartos",
     2000
+   ],
+   [
+    "• Semifinal 1: JULIX",
+    "Semifinal",
+    1750
+   ],
+   [
+    "• Semifinal 2: WALKER",
+    "Semifinal",
+    1750
    ]
   ],
   "v": 2

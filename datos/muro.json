@@ -410,14 +410,14 @@
 "temporada"
 ]
 },
-"jupiter": {
+"walker": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"walker": {
+"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -1075,10 +1075,6 @@
 "rg": "",
 "c": []
 },
-"julix": {
-"rg": "",
-"c": []
-},
 "selek": {
 "rg": "",
 "c": [
@@ -1360,6 +1356,10 @@
 ]
 },
 "ikonox": {
+"rg": "",
+"c": []
+},
+"julix": {
 "rg": "",
 "c": []
 },

@@ -2041,7 +2041,7 @@
    "a": "WALKER 🇨🇴",
    "b": "AGUSTIN 🇺🇾",
    "ganador": "WALKER 🇨🇴",
-   "votos": "1–0"
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -5095,8 +5095,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791651691822,
-   "ed": 1791655394094,
-   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞RT 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞JULIX 🇧🇴⌝ 🆚 ⌞AGUSTIN 🇺🇾⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`\n⌞WALKER🇨🇴 🇨🇴⌝ 🆚 ⌞AGUSTIN🇺🇾 🇺🇾⌝",
+   "ed": 1791658375656,
+   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞RT 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞JULIX 🇧🇴⌝ 🆚 ⌞AGUSTIN 🇺🇾⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`\n⌞WALKER🇨🇴 🇨🇴⌝ 🆚 ⌞AGUSTIN🇺🇾 🇺🇾⌝\n⌞AGUS⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞WALKER⌝\n⌞WALKER🇨🇴⌝ 🆚 ⌞DIOS🇲🇽⌝\n⌞KEIDER⌝ 🆚 ⌞VILKA⌝ 🆚 ⌞19⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞NEXUS⌝ 🆚 ⌞RT⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5134,9 +5134,12 @@
       "AGUS 🇦🇷",
       "RT 🇲🇽"
      ],
-     "AGUS 🇦🇷",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "AGUS 🇦🇷",
+      "RT 🇲🇽"
+     ]
     ],
     [
      "SEMIFINALES",
@@ -5154,9 +5157,12 @@
       "WALKER 🇨🇴",
       "AGUS 🇦🇷"
      ],
-     "WALKER 🇨🇴",
-     "ronda siguiente",
-     []
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "WALKER 🇨🇴",
+      "AGUS 🇦🇷"
+     ]
     ],
     [
      "FINAL",
@@ -5166,6 +5172,49 @@
      ],
      "WALKER🇨🇴 🇨🇴",
      "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "AGUS",
+      "DIOS",
+      "WALKER"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "WALKER🇨🇴",
+      "DIOS🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "KEIDER",
+      "VILKA",
+      "19"
+     ],
+     "19",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAJIZTRAL",
+      "NEXUS",
+      "RT"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
