@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1555819030722383883": {
-   "id": "1555819030722383883",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791006562644,
-   "a": "HASSAN",
-   "b": "G8",
-   "ganador": "HASSAN",
-   "votos": "1–0"
-  },
   "1556066808681865387": {
    "id": "1556066808681865387",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1981,6 +1971,16 @@
    "a": "XCLUSIVO🇻🇪",
    "b": "TUCA🇦🇷",
    "ganador": "XCLUSIVO🇻🇪",
+   "votos": "1–0"
+  },
+  "1558325003165110395": {
+   "id": "1558325003165110395",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791604033033,
+   "a": "XCLUSIVO🇻🇪",
+   "b": "COLESITO🇨🇴",
+   "ganador": "COLESITO🇨🇴",
    "votos": "1–0"
   },
   "1558326900324302909": {
@@ -4977,7 +4977,7 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1791604017067,
-   "ed": 1791610725033,
+   "ed": 1791611167198,
    "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝",
    "batallas": [
     [
@@ -5053,8 +5053,8 @@
       "XCLUSIVO🇻🇪",
       "COLESITO🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "COLESITO🇨🇴",
+     "veredicto",
      []
     ]
    ]
