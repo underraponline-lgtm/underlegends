@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-10T02:24:12+00:00",
+ "cuando": "2026-10-10T02:54:20+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -365,7 +365,7 @@
    "cuando": "2026-10-10T02:15:06",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
-   "organizador": "",
+   "organizador": "@l3wito   @elsoolar",
    "autor_h": "211322958af20ae2",
    "cupos_texto": "",
    "inscriptos": null,
@@ -378,8 +378,8 @@
    "staff": {
     "jurado": [
      "Velatz",
-     "Lewito",
-     "Elsoolar"
+     "l3wito",
+     "Perry el orrincotorni"
     ],
     "host": [
      "LEWITO"
@@ -915,38 +915,6 @@
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "staff": {},
    "autor": "Nc",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "COPA SOOLAR 3",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1556832425198485599",
-   "cuando": "2026-10-06T00:56:14",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Elsoolar y tokio",
-   "autor_h": "9ac50a6f3726be04",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "Respeto",
-   "staff": {
-    "jurado": [
-     "Elsoolar"
-    ],
-    "host": [
-     "Elsoolar"
-    ],
-    "dj": [
-     "Elsoolar"
-    ]
-   },
-   "autor": "Elsoolar",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -2988,14 +2956,14 @@
    "cupo_total": null,
    "rango": "",
    "modalidad": "1 vs 1",
-   "horario": "15 Minutos",
+   "horario": "25 Minutos",
    "fecha": "",
    "premios": "",
    "staff": {},
    "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "PROYECTO X",
@@ -3018,8 +2986,8 @@
    "staff": {},
    "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
@@ -3052,8 +3020,8 @@
    },
    "autor": "John pork",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "STEVEN UNIVERSE",
@@ -3083,8 +3051,8 @@
    },
    "autor": "pipi94",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.9",
@@ -3117,8 +3085,8 @@
    },
    "autor": "John pork",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "MORTAL KOMBAT MAPACHE CUP",
@@ -3141,8 +3109,8 @@
    "staff": {},
    "autor": "₁₉",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "NOCHE DE BOOMBAP",
@@ -3165,8 +3133,8 @@
    "staff": {},
    "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
@@ -3199,8 +3167,8 @@
    },
    "autor": "John pork",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
@@ -3233,8 +3201,8 @@
    },
    "autor": "John pork",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "MINI CUP GOD 110",
@@ -3257,8 +3225,8 @@
    "staff": {},
    "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -3285,8 +3253,8 @@
    },
    "autor": "DOMINICK",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "MIDNIGHT MIAMI",
@@ -3313,8 +3281,8 @@
    },
    "autor": "La noche nunca perdona🇬🇵",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "historia del peru cup",
@@ -3341,8 +3309,8 @@
    },
    "autor": "ChalonZJ",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -3369,8 +3337,8 @@
    },
    "autor": "DOMINICK",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "MINI CUP GOD 109",
@@ -3393,8 +3361,8 @@
    "staff": {},
    "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "HEMOS VUELTO",
@@ -3417,8 +3385,8 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "19 CUP VOL 2 EDICION FIFA",
@@ -3441,8 +3409,8 @@
    "staff": {},
    "autor": "₁₉",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "MINI CUP GOD 108",
@@ -3465,8 +3433,8 @@
    "staff": {},
    "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "19 CUP EDICION SANGRE",
@@ -3493,8 +3461,8 @@
    },
    "autor": "₁₉",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "JH DE LA CRUZ CUP",
@@ -3521,8 +3489,8 @@
    },
    "autor": "DOMINICK",
    "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T02:17:07"
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-10T02:39:34"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -3653,6 +3621,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1558309865007616102",
+   "cuando": "2026-10-10T02:47:03"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MaYeuTyK 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1558307687475712033",
+   "cuando": "2026-10-10T02:38:24"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "El violaginas 🇧🇦",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1558306954336534641",
+   "cuando": "2026-10-10T02:35:29"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Cronox + xclusivo 🇨🇱 🇻🇪",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1558305512536154124",
+   "cuando": "2026-10-10T02:29:46"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
