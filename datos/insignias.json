@@ -255,6 +255,14 @@
 "trotamundos": [
 "2026-10-09T23:55:55Z",
 "prueba"
+],
+"duelista": [
+"2026-10-10T04:24:54Z",
+"prueba"
+],
+"ev10": [
+"2026-10-10T04:24:54Z",
+"prueba"
 ]
 },
 "Agustín la reliquia": {
@@ -1044,6 +1052,18 @@
 ],
 "trotamundos": [
 "2026-10-09T23:55:55Z",
+"prueba"
+],
+"campeon": [
+"2026-10-10T04:24:54Z",
+"prueba"
+],
+"ev10": [
+"2026-10-10T04:24:54Z",
+"prueba"
+],
+"podio": [
+"2026-10-10T04:24:54Z",
 "prueba"
 ]
 },
@@ -2195,6 +2215,12 @@
 "prueba"
 ]
 },
+"MARTYNEZ": {
+"debut": [
+"2026-10-10T04:24:54Z",
+"prueba"
+]
+},
 "MATICERNA": {
 "debut": [
 "2026-09-28T15:25:09Z",
@@ -3243,6 +3269,10 @@
 "racha": [
 "2026-10-09T04:24:33Z",
 "prueba"
+],
+"tricampeon": [
+"2026-10-10T04:24:54Z",
+"prueba"
 ]
 },
 "Prodigy": {
@@ -3827,6 +3857,12 @@
 "prueba"
 ]
 },
+"Spartan": {
+"debut": [
+"2026-10-10T04:24:54Z",
+"prueba"
+]
+},
 "Spray Lirical": {
 "debut": [
 "2026-10-04T20:56:40Z",
@@ -4082,6 +4118,16 @@
 ],
 "racha": [
 "2026-10-07T02:27:04Z",
+"prueba"
+]
+},
+"Verc": {
+"debut": [
+"2026-10-10T04:24:54Z",
+"prueba"
+],
+"podio": [
+"2026-10-10T04:24:54Z",
 "prueba"
 ]
 },

@@ -91,7 +91,7 @@
     ],
     "Agus": [
      1,
-     8,
+     13,
      1
     ],
     "Akutagawa🇹🇼": [
@@ -217,7 +217,7 @@
     "Cronox": [
      1,
      2,
-     4
+     2
     ],
     "Damian": [
      0,
@@ -262,7 +262,7 @@
     "Dynoco": [
      1,
      2,
-     4
+     1
     ],
     "Dyzz": [
      1,
@@ -452,7 +452,7 @@
     "Kravitz": [
      1,
      0,
-     16
+     8
     ],
     "Krish": [
      1,
@@ -519,6 +519,11 @@
      0,
      16
     ],
+    "MARTYNEZ🇺🇾": [
+     0,
+     0,
+     16
+    ],
     "MATICERNA": [
      1,
      1,
@@ -551,13 +556,18 @@
     ],
     "Makmah": [
      1,
-     14,
+     17,
      2
     ],
     "Malva": [
      1,
      0,
      16
+    ],
+    "Masino": [
+     0,
+     1,
+     99
     ],
     "Mathhias": [
      1,
@@ -606,7 +616,7 @@
     ],
     "NXUZ": [
      0,
-     3,
+     5,
      4
     ],
     "NYCO": [
@@ -864,6 +874,11 @@
      0,
      8
     ],
+    "Spartan": [
+     0,
+     0,
+     16
+    ],
     "Tam": [
      1,
      0,
@@ -891,7 +906,7 @@
     ],
     "Tuca": [
      1,
-     1,
+     2,
      8
     ],
     "Tusicario": [
@@ -934,9 +949,19 @@
      3,
      2
     ],
+    "Verc": [
+     1,
+     0,
+     2
+    ],
+    "Walker": [
+     1,
+     1,
+     4
+    ],
     "Xclusivo": [
      1,
-     6,
+     8,
      2
     ],
     "YOUNG VLAD 🇨🇴": [
@@ -947,7 +972,7 @@
     "Zaik": [
      1,
      0,
-     16
+     8
     ],
     "Zaza": [
      1,
@@ -1057,14 +1082,14 @@
     "Colesito": 900,
     "CrisZJ": 1600,
     "Crk": 300,
-    "Cronox": 300,
+    "Cronox": 1300,
     "DarnBless": 300,
     "Delux": 900,
     "Desio": 300,
     "Deuxs": 300,
     "Dominick": 1300,
     "Drexx": 300,
-    "Dynoco": 300,
+    "Dynoco": 1300,
     "Dyzz": 900,
     "EGI": 300,
     "EIDP": 300,
@@ -1181,6 +1206,8 @@
     "Valdoza": 300,
     "Vandu": 2900,
     "Velatz": 2900,
+    "Verc": 1300,
+    "Walker": 300,
     "Xclusivo": 2900,
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
@@ -1232,14 +1259,14 @@
   "Colesito": 900,
   "CrisZJ": 1600,
   "Crk": 300,
-  "Cronox": 300,
+  "Cronox": 1300,
   "DarnBless": 300,
   "Delux": 900,
   "Desio": 300,
   "Deuxs": 300,
   "Dominick": 1300,
   "Drexx": 300,
-  "Dynoco": 300,
+  "Dynoco": 1300,
   "Dyzz": 900,
   "EGI": 300,
   "EIDP": 300,
@@ -1356,6 +1383,8 @@
   "Valdoza": 300,
   "Vandu": 2900,
   "Velatz": 2900,
+  "Verc": 1300,
+  "Walker": 300,
   "Xclusivo": 2900,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,

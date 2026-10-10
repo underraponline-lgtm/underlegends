@@ -4700,5 +4700,414 @@
    ]
   ],
   "v": 2
+ },
+ "439": {
+  "antes": {
+   "Agus": [
+    16,
+    19,
+    false
+   ],
+   "Cronox": [
+    17,
+    20,
+    false
+   ],
+   "Dynoco": [
+    43,
+    60,
+    false
+   ],
+   "Kravitz": [
+    54,
+    75,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "Presagio": [
+    37,
+    50,
+    false
+   ],
+   "Six": [
+    8,
+    10,
+    false
+   ],
+   "Snow": [
+    2,
+    3,
+    false
+   ],
+   "Walker": [
+    88,
+    144,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Cronox, Verc",
+    "Six, Agus",
+    "Cronox, Verc"
+   ],
+   [
+    "Makmah, Walker",
+    "Kravitz, Zaik 🇪🇸",
+    "Makmah, Walker"
+   ],
+   [
+    "Cronox, Verc",
+    "Six, Snow",
+    "Cronox, Verc"
+   ],
+   [
+    "Presagio, Dynoco",
+    "Makmah, Walker",
+    "Presagio, Dynoco"
+   ],
+   [
+    "Presagio, Dynoco",
+    "Verc, Cronox",
+    "Presagio, Dynoco"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 9,
+   "Cronox": 21,
+   "Dynoco": 8,
+   "Kravitz": 6,
+   "Makmah": 31,
+   "Presagio": 3,
+   "Six": 14,
+   "Snow": 27,
+   "Walker": 1
+  },
+  "fecha": "09/10",
+  "firma": "eff128a55fb2b5da",
+  "msg": "1558334116259307552",
+  "nombre": "__ DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1 __",
+  "num": 439,
+  "participantes": 19,
+  "sello": {
+   "Dynoco": "2dddb87a3b17:17c4f13e63d4",
+   "Presagio": "d8ca4620dfbd:17c4f13e63d4"
+  },
+  "sv": "FFA",
+  "t": "2026-10-10T04:23:24Z",
+  "tabla": [
+   [
+    "Presagio",
+    "Campeón",
+    5000
+   ],
+   [
+    "Dynoco",
+    "Campeón",
+    5000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Cronox",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Walker",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Six",
+    "Semifinal",
+    2562
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "440": {
+  "antes": {
+   "Agus": [
+    16,
+    19,
+    false
+   ],
+   "Dominick": [
+    168,
+    54,
+    true
+   ],
+   "Dynoco": [
+    43,
+    60,
+    false
+   ],
+   "EIDP": [
+    217,
+    158,
+    true
+   ],
+   "MCO": [
+    18,
+    21,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "NXUZ": [
+    23,
+    29,
+    false
+   ],
+   "Rodas": [
+    85,
+    134,
+    false
+   ],
+   "Shadow": [
+    87,
+    140,
+    false
+   ],
+   "Soulb": [
+    78,
+    117,
+    false
+   ],
+   "Tuca": [
+    180,
+    85,
+    true
+   ],
+   "Walker": [
+    88,
+    144,
+    false
+   ],
+   "Xclusivo": [
+    157,
+    22,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "NXUZ",
+    "Dominick",
+    "NXUZ"
+   ],
+   [
+    "Makmah",
+    "MCO",
+    "Makmah"
+   ],
+   [
+    "Masino",
+    "Rodas",
+    "Masino"
+   ],
+   [
+    "Walker",
+    "Soulb",
+    "Walker"
+   ],
+   [
+    "Agus",
+    "Dynoco",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "MARTYNEZ🇺🇾",
+    "Agus"
+   ],
+   [
+    "Tuca",
+    "Spartan",
+    "Tuca"
+   ],
+   [
+    "Xclusivo",
+    "Shadow",
+    "Xclusivo"
+   ],
+   [
+    "NXUZ",
+    "Rodas",
+    "NXUZ"
+   ],
+   [
+    "Agus",
+    "EIDP",
+    "Agus"
+   ],
+   [
+    "Makmah",
+    "Walker",
+    "Makmah"
+   ],
+   [
+    "Xclusivo",
+    "Tuca",
+    "Xclusivo"
+   ],
+   [
+    "Makmah",
+    "NXUZ",
+    "Makmah"
+   ],
+   [
+    "Agus",
+    "Xclusivo",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Makmah",
+    "Agus"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 9,
+   "Dominick": 8,
+   "Dynoco": 8,
+   "EIDP": 3,
+   "MCO": 11,
+   "Makmah": 31,
+   "NXUZ": 10,
+   "Rodas": 3,
+   "Shadow": 4,
+   "Soulb": 5,
+   "Tuca": 4,
+   "Walker": 1,
+   "Xclusivo": 10
+  },
+  "fecha": "09/10",
+  "firma": "f032e7d39ef1c27f",
+  "msg": "1558334120172462091",
+  "nombre": "PROYECTO X VOL.2",
+  "num": 440,
+  "participantes": 17,
+  "sello": {
+   "Agus": "e8db10a10b84:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-10T04:23:26Z",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tuca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "MARTYNEZ🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Spartan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
