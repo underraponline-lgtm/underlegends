@@ -1,6 +1,12 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
+  "alexi": {
+   "bloq-competitivo": "2026-10-10",
+   "bloq-pais": "2026-10-10",
+   "competitivo": "2026-10-10",
+   "pais": "2026-10-10"
+  },
   "elsoolar": {
    "bloq-competitivo": "2026-10-09",
    "bloq-pais": "2026-10-09",
@@ -82,8 +88,8 @@
    "temporada": "2026-10-07"
   }
  },
- "pasaban": 375,
- "cuando": "2026-10-10T06:27:05Z",
+ "pasaban": 374,
+ "cuando": "2026-10-10T06:57:14Z",
  "borradas": [
   [
    "indigena",

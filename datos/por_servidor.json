@@ -1062,7 +1062,7 @@
     "racha": "0/0"
    }
   },
-  "DAVIJUAN🇦🇷": {
+  "DAVIJUAN": {
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -1704,7 +1704,7 @@
     "racha": "0/0"
    }
   },
-  "FAT PENIS🇻🇪": {
+  "FAT PENIS": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -2485,17 +2485,6 @@
     "ovr": 44,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0"
-   }
-  },
-  "KRAKERO🇦🇷": {
-   "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 0,
-    "pts": 12375,
     "racha": "0/0"
    }
   },
@@ -4587,17 +4576,6 @@
     "racha": "0/0"
    }
   },
-  "SEKO BOY🇨🇴": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 4125,
-    "racha": "0/0"
-   }
-  },
   "SGB": {
    "ACAD": {
     "duelos": "3/4",
@@ -4937,11 +4915,11 @@
   "Snow": {
    "FFA": {
     "duelos": "12/21",
-    "ev": 28,
+    "ev": 29,
     "oro": 4,
     "ovr": 86,
     "pod": 12,
-    "pts": 194083,
+    "pts": 198208,
     "racha": "0/6"
    }
   },
@@ -5777,6 +5755,17 @@
     "pod": 1,
     "pts": 16500,
     "racha": "1/1"
+   }
+  },
+  "crakero": {
+   "FFA": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 0,
+    "pts": 12375,
+    "racha": "0/0"
    }
   },
   "dxg": {
