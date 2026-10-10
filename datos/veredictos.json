@@ -2042,6 +2042,16 @@
    "b": "AGUSTIN 🇺🇾",
    "ganador": "WALKER 🇨🇴",
    "votos": "2–0"
+  },
+  "1558553332556111893": {
+   "id": "1558553332556111893",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "pub": 1791658471002,
+   "a": "NEXUS",
+   "b": "MAJIZTRAL",
+   "ganador": "MAJIZTRAL",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5095,8 +5105,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791651691822,
-   "ed": 1791658375656,
-   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞RT 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞JULIX 🇧🇴⌝ 🆚 ⌞AGUSTIN 🇺🇾⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`\n⌞WALKER🇨🇴 🇨🇴⌝ 🆚 ⌞AGUSTIN🇺🇾 🇺🇾⌝\n⌞AGUS⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞WALKER⌝\n⌞WALKER🇨🇴⌝ 🆚 ⌞DIOS🇲🇽⌝\n⌞KEIDER⌝ 🆚 ⌞VILKA⌝ 🆚 ⌞19⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞NEXUS⌝ 🆚 ⌞RT⌝",
+   "ed": 1791659140467,
+   "texto": "`[ CUARTOS ]`\n⌞NUMBER 🇻🇪⌝ 🆚 ⌞JULIX 🇧🇴⌝\n⌞AGUSTIN 🇺🇾⌝ 🆚 ⌞EMI 🇲🇽⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞XCLUSIVO 🇻🇪⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞RT 🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞JULIX 🇧🇴⌝ 🆚 ⌞AGUSTIN 🇺🇾⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`\n⌞WALKER🇨🇴 🇨🇴⌝ 🆚 ⌞AGUSTIN🇺🇾 🇺🇾⌝\n⌞AGUS⌝ 🆚 ⌞DIOS⌝ 🆚 ⌞WALKER⌝\n⌞WALKER🇨🇴⌝ 🆚 ⌞DIOS🇲🇽⌝\n⌞KEIDER⌝ 🆚 ⌞VILKA⌝ 🆚 ⌞19⌝\n⌞MAJIZTRAL⌝ 🆚 ⌞NEXUS⌝ 🆚 ⌞RT⌝\n⌞NEXUS⌝ 🆚 ⌞MAJIZTRAL⌝\n⌞PANCHOK⌝ 🆚 ⌞MAJIZTRAL⌝ 🆚 ⌞SPARTAN⌝\n⌞NEXUS⌝ 🆚 ⌞PANCHOK⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5212,6 +5222,37 @@
       "MAJIZTRAL",
       "NEXUS",
       "RT"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NEXUS",
+      "MAJIZTRAL"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PANCHOK",
+      "MAJIZTRAL",
+      "SPARTAN"
+     ],
+     "PANCHOK",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NEXUS",
+      "PANCHOK"
      ],
      null,
      "última ronda y no dice campeón",

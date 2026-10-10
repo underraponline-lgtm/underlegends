@@ -42,6 +42,15 @@
 "temporada"
 ]
 },
+"agus": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "panchok": {
 "rg": "S",
 "c": [
@@ -55,15 +64,6 @@
 "rg": "B",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"agus": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -141,6 +141,13 @@
 "temporada"
 ]
 },
+"xclusivo": {
+"rg": "C",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "nc": {
 "rg": "E",
 "c": [
@@ -162,13 +169,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"xclusivo": {
-"rg": "C",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -293,6 +293,13 @@
 "temporada"
 ]
 },
+"walker": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "polosport": {
 "rg": "",
 "c": [
@@ -410,13 +417,6 @@
 "temporada"
 ]
 },
-"walker": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "jupiter": {
 "rg": "",
 "c": [
@@ -468,6 +468,14 @@
 "temporada"
 ]
 },
+"numberve": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "player": {
 "rg": "",
 "c": [
@@ -514,14 +522,6 @@
 "badterne": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"numberve": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -687,6 +687,12 @@
 "temporada"
 ]
 },
+"emizor": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "fleivaman": {
 "rg": "",
 "c": [
@@ -798,12 +804,6 @@
 "c": [
 "servidor",
 "temporada"
-]
-},
-"emizor": {
-"rg": "",
-"c": [
-"servidor"
 ]
 },
 "prosu": {

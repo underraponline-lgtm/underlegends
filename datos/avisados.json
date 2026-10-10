@@ -5550,5 +5550,133 @@
    ]
   ],
   "v": 2
+ },
+ "443": {
+  "antes": {
+   "Agus": [
+    7,
+    8,
+    false
+   ],
+   "EmiZor": [
+    192,
+    111,
+    true
+   ],
+   "Number VE": [
+    50,
+    69,
+    false
+   ],
+   "Walker": [
+    39,
+    54,
+    false
+   ],
+   "Xclusivo": [
+    157,
+    21,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "JULIX 🇧🇴",
+    "Number VE",
+    "JULIX 🇧🇴"
+   ],
+   [
+    "Agus",
+    "EmiZor",
+    "Agus"
+   ],
+   [
+    "Walker",
+    "Xclusivo",
+    "Walker"
+   ],
+   [
+    "Agus",
+    "JULIX 🇧🇴",
+    "Agus"
+   ],
+   [
+    "Walker",
+    "Agus",
+    "Walker"
+   ],
+   [
+    "19",
+    "Keider",
+    "19"
+   ],
+   [
+    "19",
+    "VILKA",
+    "19"
+   ],
+   [
+    "Majiztral",
+    "NXUZ",
+    "Majiztral"
+   ],
+   [
+    "Panchok",
+    "Majiztral",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Spartan",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 13,
+   "EmiZor": 7,
+   "Number VE": 10,
+   "Walker": 4,
+   "Xclusivo": 13
+  },
+  "fecha": "10/10",
+  "firma": "c8780f4eb3ebf4d6",
+  "msg": "1558560596482461787",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
+  "num": 443,
+  "participantes": 16,
+  "sello": {
+   "Walker": "0ced2a0d2edd:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-10T19:23:21Z",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    10000
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
  }
 }
