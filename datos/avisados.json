@@ -5109,5 +5109,312 @@
    ]
   ],
   "v": 2
+ },
+ "441": {
+  "antes": {
+   "Agus": [
+    9,
+    10,
+    false
+   ],
+   "Alexi": [
+    32,
+    39,
+    false
+   ],
+   "Chop": [
+    197,
+    124,
+    true
+   ],
+   "Colesito": [
+    11,
+    14,
+    false
+   ],
+   "Jult": [
+    63,
+    91,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "Mr Still Ballin": [
+    158,
+    25,
+    true
+   ],
+   "PRAISERIZA": [
+    154,
+    3,
+    true
+   ],
+   "Presagio": [
+    29,
+    36,
+    false
+   ],
+   "Rodas": [
+    77,
+    116,
+    false
+   ],
+   "Sosa": [
+    44,
+    61,
+    false
+   ],
+   "Tenor": [
+    91,
+    153,
+    false
+   ],
+   "Xclusivo": [
+    157,
+    21,
+    true
+   ],
+   "araya": [
+    122,
+    227,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "KRAKERO🇦🇷",
+    "Rodas",
+    "KRAKERO🇦🇷"
+   ],
+   [
+    "Agus",
+    "Presagio",
+    "Agus"
+   ],
+   [
+    "Sosa",
+    "Makmah",
+    "Sosa"
+   ],
+   [
+    "Sosa",
+    "Tenor",
+    "Sosa"
+   ],
+   [
+    "Sosa",
+    "SEKO BOY🇨🇴",
+    "Sosa"
+   ],
+   [
+    "Xclusivo",
+    "araya",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "Zaik 🇪🇸",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "Tenor",
+    "Xclusivo"
+   ],
+   [
+    "Agus",
+    "FAT PENIS🇻🇪",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Alexi",
+    "Agus"
+   ],
+   [
+    "Colesito",
+    "Alexi",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Jult",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Chop",
+    "Colesito"
+   ],
+   [
+    "Mr Still Ballin",
+    "KRAKERO🇦🇷",
+    "Mr Still Ballin"
+   ],
+   [
+    "PRAISERIZA",
+    "KRAKERO🇦🇷",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Sosa",
+    "PRAISERIZA"
+   ],
+   [
+    "Agus",
+    "DAVIJUAN🇦🇷",
+    "Agus"
+   ],
+   [
+    "Colesito",
+    "Xclusivo",
+    "Colesito"
+   ],
+   [
+    "Mr Still Ballin",
+    "Colesito",
+    "Mr Still Ballin"
+   ],
+   [
+    "PRAISERIZA",
+    "Agus",
+    "PRAISERIZA"
+   ],
+   [
+    "Mr Still Ballin",
+    "PRAISERIZA",
+    "Mr Still Ballin"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 11,
+   "Alexi": 7,
+   "Chop": 5,
+   "Colesito": 17,
+   "Jult": 8,
+   "Makmah": 33,
+   "Mr Still Ballin": 2,
+   "PRAISERIZA": 10,
+   "Presagio": 4,
+   "Rodas": 4,
+   "Sosa": 10,
+   "Tenor": 2,
+   "Xclusivo": 11,
+   "araya": 1
+  },
+  "fecha": "09/10",
+  "firma": "c71c9e47dc0b79f2",
+  "msg": "1558364338363047943",
+  "nombre": "SACABRONCA",
+  "num": 441,
+  "participantes": 28,
+  "sello": {
+   "Mr Still Ballin": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-10T06:23:30Z",
+  "tabla": [
+   [
+    "Mr Still Ballin",
+    "Campeón",
+    10000
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "KRAKERO🇦🇷",
+    "Cuartos",
+    3750
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1875
+   ],
+   [
+    "Alexi",
+    "Octavos",
+    1875
+   ],
+   [
+    "DAVIJUAN🇦🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Rodas",
+    "Octavos",
+    1250
+   ],
+   [
+    "Presagio",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "SEKO BOY🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "araya",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "FAT PENIS🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

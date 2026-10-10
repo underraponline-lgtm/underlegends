@@ -18243,5 +18243,266 @@
     1250
    ]
   ]
+ },
+ "441": {
+  "dia": "2026-10-09",
+  "escala": "16+",
+  "fecha": "09/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558324199360176199"
+  ],
+  "n": 441,
+  "nombre": "SACABRONCA",
+  "participantes": 28,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "KRAKERO🇦🇷",
+       "Rodas"
+      ],
+      "KRAKERO🇦🇷",
+      "Revivido: KRAKERO🇦🇷"
+     ],
+     [
+      [
+       "Agus",
+       "Presagio"
+      ],
+      "Agus",
+      "triple (3 bandas, pasan 2); Revivido: agus"
+     ],
+     [
+      [
+       "Sosa",
+       "Makmah",
+       "Tenor",
+       "SEKO BOY🇨🇴"
+      ],
+      "Sosa",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Xclusivo",
+       "araya",
+       "Zaik 🇪🇸",
+       "Tenor"
+      ],
+      "Xclusivo",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Agus",
+       "FAT PENIS🇻🇪",
+       "Alexi"
+      ],
+      "Agus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "Alexi",
+       "Jult",
+       "Chop"
+      ],
+      "Colesito",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Eze",
+       "cronox 🇨🇱",
+       "Monet 🇲🇽",
+       "ZANIX🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Guess 🇦🇷",
+       "cronox 🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mr Still Ballin",
+       "KRAKERO🇦🇷"
+      ],
+      "Mr Still Ballin",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "KRAKERO🇦🇷",
+       "Sosa"
+      ],
+      "PRAISERIZA",
+      "triple (3 bandas); Walk-in 1: RIZAS🇻🇪"
+     ],
+     [
+      [
+       "Agus",
+       "DAVIJUAN🇦🇷"
+      ],
+      "Agus",
+      "Walk-in 1: DAVIJUAN🇦🇷"
+     ],
+     [
+      [
+       "Colesito",
+       "Xclusivo"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mr Still Ballin",
+       "Colesito"
+      ],
+      "Mr Still Ballin",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Agus"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mr Still Ballin",
+       "PRAISERIZA"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Mr Still Ballin",
+    "Campeón",
+    10000
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    5250
+   ],
+   [
+    "KRAKERO🇦🇷",
+    "Cuartos",
+    3750
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Alexi",
+    "Octavos",
+    1875
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1875
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "DAVIJUAN🇦🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "FAT PENIS🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Presagio",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rodas",
+    "Octavos",
+    1250
+   ],
+   [
+    "SEKO BOY🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "araya",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
