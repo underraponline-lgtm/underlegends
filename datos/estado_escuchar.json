@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-09T23:59:26Z",
+ "cuando": "2026-10-10T00:03:28Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 394.5,
+ "dur_s": 213.1,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 48.0
+   "s": 40.7
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 99.5
+   "s": 44.4
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 23.0
+   "s": 21.9
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.4
+   "s": 2.9
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.3
+   "s": 6.1
   },
   {
    "n": "2b",
@@ -69,31 +69,31 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.5
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.6
+   "s": 1.4
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.0
+   "s": 4.9
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 142.2
+   "s": 26.5
   },
   {
    "n": "2b7",
@@ -105,7 +105,7 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 35.0
+   "s": 35.1
   },
   {
    "n": "2c2",
@@ -117,7 +117,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 14.4
+   "s": 11.0
   },
   {
    "n": "2e",
@@ -129,7 +129,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 6.2
   },
   {
    "n": "3",
@@ -139,7 +139,7 @@
   }
  ],
  "fallas": [],
- "decidir": 106,
+ "decidir": 105,
  "ultimo_evento": {
   "n": "438",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
@@ -148,7 +148,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-09T23:53:46Z",
+  "cuando": "2026-10-10T00:00:40Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 401,
   "un_evento": 201,
@@ -176,20 +176,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 350,
-   "read": 45460
+   "write": 2,
+   "read": 186
   },
   "objeto": {
-   "leidas": 2016703,
-   "escritas": 21355,
-   "pedidos": 6265
+   "leidas": 16320,
+   "escritas": 1103,
+   "pedidos": 26
   },
   "worker": {
-   "pedidos": 5892,
+   "pedidos": 5905,
    "errores": 0,
-   "sub": 6420,
+   "sub": 6428,
    "p50_ms": 1.24,
-   "p99_ms": 5.99
+   "p99_ms": 5.96
   },
   "r2": {
    "objetos": 3686,

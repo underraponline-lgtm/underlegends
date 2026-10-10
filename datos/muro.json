@@ -148,6 +148,14 @@
 "temporada"
 ]
 },
+"agus": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "cronox": {
 "rg": "D",
 "c": [
@@ -199,14 +207,6 @@
 "mrstillballin": {
 "rg": "",
 "c": []
-},
-"agus": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "drexx": {
 "rg": "C",
@@ -306,6 +306,13 @@
 "temporada"
 ]
 },
+"eclipsito": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "tam": {
 "rg": "",
 "c": [
@@ -335,9 +342,10 @@
 "temporada"
 ]
 },
-"eclipsito": {
+"zetryko": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -374,14 +382,6 @@
 "presagio": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"zetryko": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]

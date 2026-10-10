@@ -45,17 +45,6 @@
     "racha": "1/1"
    }
   },
-  "4. ZETRYKO 🇨🇱": {
-   "ACAD": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
   "6. 🇨🇴 VR": {
    "ACAD": {
     "duelos": "0/1",
@@ -5566,12 +5555,12 @@
   },
   "Zetryko": {
    "ACAD": {
-    "duelos": "6/7",
+    "duelos": "7/8",
     "ev": 3,
     "oro": 2,
     "ovr": 55,
     "pod": 2,
-    "pts": 26000,
+    "pts": 27500,
     "racha": "3/3"
    },
    "DDF": {
