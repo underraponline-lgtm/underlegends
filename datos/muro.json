@@ -1105,7 +1105,8 @@
 "araya": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "enkil": {
@@ -5228,6 +5229,14 @@
 ],
 "rg": "B",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-10T07:09:01Z",
+"quien": [
+"araya"
+],
+"carta": "temporada"
 }
 ]
 }
