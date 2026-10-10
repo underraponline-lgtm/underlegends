@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-10T05:47:39Z",
+ "cuando": "2026-10-10T06:49:34Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 90.3,
+ "dur_s": 1308.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 4.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.6
+   "s": 3.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.4
+   "s": 22.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": true,
-   "s": 15.8
+   "s": 1229.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 0.9
+   "s": 7.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 38.0
+   "s": 40.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "440",
-  "nombre": "PROYECTO X VOL.2",
-  "sv": "DDF",
+  "n": "441",
+  "nombre": "SACABRONCA",
+  "sv": "FFA",
   "dia": "2026-10-09"
  },
  "cuotas": {
   "kv": {
-   "write": 148,
-   "read": 16763
+   "write": 175,
+   "read": 20325
   },
   "objeto": {
-   "leidas": 756470,
-   "escritas": 9120,
-   "pedidos": 1610
+   "leidas": 922816,
+   "escritas": 10995,
+   "pedidos": 1894
   },
   "worker": {
-   "pedidos": 4964,
+   "pedidos": 4960,
    "errores": 0,
-   "sub": 5366,
+   "sub": 5369,
    "p50_ms": 1.31,
-   "p99_ms": 5.96
+   "p99_ms": 6.0
   },
   "r2": {
    "objetos": 3686,
