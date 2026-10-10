@@ -1193,9 +1193,11 @@
 "temporada"
 ]
 },
-"krakero": {
+"crakero": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "saito": {
 "rg": "",
@@ -1352,6 +1354,10 @@
 ]
 },
 "ikonox": {
+"rg": "",
+"c": []
+},
+"krakero": {
 "rg": "",
 "c": []
 },

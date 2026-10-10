@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-10T06:24:17+00:00",
+ "cuando": "2026-10-10T06:54:30+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -893,38 +893,6 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "COPA SOOLAR",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557084644099498097",
-   "cuando": "2026-10-06T17:38:28",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "BETELGEUSE🇱🇸",
-   "autor_h": "8f502dc57bad1da2",
-   "cupos_texto": "8/12/16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "apenas se llenen cupos",
-   "fecha": "",
-   "premios": "600k discordianos",
-   "staff": {
-    "jurado": [
-     "BETELGEUSE"
-    ],
-    "host": [
-     "BETELGEUSE"
-    ],
-    "dj": [
-     "BETELGEUSE"
-    ]
-   },
-   "autor": "BETELGEUSE",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -3769,6 +3737,15 @@
    "discord_id": "1487658663148785734",
    "msg_id": "1558321374630510733",
    "cuando": "2026-10-10T03:32:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "krakero",
+   "quien": "crakero_crew_1312",
+   "discord_id": "1374555884868337738",
+   "msg_id": "1558321357090193440",
+   "cuando": "2026-10-10T03:32:43"
   },
   {
    "servidor": "FFA",
