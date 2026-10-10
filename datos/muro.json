@@ -1352,7 +1352,8 @@
 "keider": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "ikonox": {
@@ -5255,6 +5256,14 @@
 "Number VE"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-10T19:58:06Z",
+"quien": [
+"Keider"
+],
+"carta": "temporada"
 }
 ]
 }

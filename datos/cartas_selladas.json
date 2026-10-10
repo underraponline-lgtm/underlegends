@@ -885,7 +885,8 @@
   "Keider": {
    "competitivo": "9e9de8008f95:f77dc8dab350",
    "pais": "4d8098f6d293:9bd767971dd0",
-   "servidor": "ded7594f9bda:23815767166b:531696"
+   "servidor": "ded7594f9bda:23815767166b:531696",
+   "temporada": "7ef7af875a42:17c4f13e63d4"
   },
   "Keku": {
    "servidor": "496320fa3f90:23815767166b:980594"
@@ -2145,5 +2146,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-10T19:38:03+00:00"
+ "cuando": "2026-10-10T19:57:27+00:00"
 }
