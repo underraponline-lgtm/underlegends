@@ -233,26 +233,6 @@
   }
  },
  "batallas": {
-  "1555798716982632519": {
-   "id": "1555798716982632519",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791001719471,
-   "a": "MONET",
-   "b": "KURLW",
-   "ganador": "KURLW",
-   "votos": "1–0"
-  },
-  "1555799835058118749": {
-   "id": "1555799835058118749",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791001986041,
-   "a": "MOSQUITRAP",
-   "b": "NHP",
-   "ganador": "NHP",
-   "votos": "1–0"
-  },
   "1555807532889669645": {
    "id": "1555807532889669645",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5017,8 +4997,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1791604017067,
-   "ed": 1791605872677,
-   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞NEMI🇦🇷⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝\n⌞ALEXIZ🇦🇷⌝ 🆚 ⌞TREINTAYNUEVE🇦🇩⌝\n⌞CHOP🇭🇳⌝ 🆚 ⌞SEKO BOY 🇨🇴⌝\n`[ OCTAVOS ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝",
+   "ed": 1791607977075,
+   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n⌞AGUS🇦🇷(R)⌝ 🆚 ⌞FAT⌝\n`[ OCTAVOS ]`\n⌞AGUS🇦🇷(R)⌝ 🆚 ⌞FAT PENIS🇻🇪⌝ 🆚 ⌞ALEXIZ🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5069,7 +5049,7 @@
      "OCTAVOS",
      [
       "GUESS🇦🇷",
-      "NEMI🇦🇷"
+      "CRONOX🇨🇱(R)"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5079,7 +5059,9 @@
      "OCTAVOS",
      [
       "ARAYA🇦🇿",
-      "ZAIK🇪🇸"
+      "ZAIK🇪🇸",
+      "TENOR🇻🇪(R)",
+      "XCLUSIVO🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5088,8 +5070,8 @@
     [
      "OCTAVOS",
      [
-      "ALEXIZ🇦🇷",
-      "TREINTAYNUEVE🇦🇩"
+      "AGUS🇦🇷(R)",
+      "FAT"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5098,20 +5080,9 @@
     [
      "OCTAVOS",
      [
-      "CHOP🇭🇳",
-      "SEKO BOY 🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "MAKMA🇻🇪",
-      "TENOR🇻🇪",
-      "SEKO BOY🇨🇴",
-      "SOSA🇺🇾"
+      "AGUS🇦🇷(R)",
+      "FAT PENIS🇻🇪",
+      "ALEXIZ🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",

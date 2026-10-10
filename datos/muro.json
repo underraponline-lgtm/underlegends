@@ -615,14 +615,14 @@
 "temporada"
 ]
 },
-"19": {
+"walker": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"walker": {
+"19": {
 "rg": "",
 "c": [
 "servidor",
@@ -883,6 +883,10 @@
 "temporada"
 ]
 },
+"verc": {
+"rg": "",
+"c": []
+},
 "chop": {
 "rg": "",
 "c": [
@@ -910,10 +914,6 @@
 "servidor",
 "temporada"
 ]
-},
-"verc": {
-"rg": "",
-"c": []
 },
 "lvel": {
 "rg": "",
