@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-10T15:27:11+00:00",
+ "cuando": "2026-10-10T15:54:37+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3501,7 +3501,7 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "868218509975498805",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T14:12:01"
+   "inscripciones_cuando": "2026-10-10T15:39:20"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -3525,7 +3525,7 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T14:12:01"
+   "inscripciones_cuando": "2026-10-10T15:39:20"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -3549,7 +3549,7 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T14:12:01"
+   "inscripciones_cuando": "2026-10-10T15:39:20"
   },
   {
    "nombre": "ES UN PLACER ANUNCIARLES EL EQUIPO QUE NOS AYUDARÁ EN ESTA NACIONAL",
@@ -3580,7 +3580,7 @@
    "autor": "Leonar-T",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T14:12:01"
+   "inscripciones_cuando": "2026-10-10T15:39:20"
   },
   {
    "nombre": "COMPE CHILL",
@@ -3604,10 +3604,19 @@
    "autor": "BETELGEUSE",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T14:12:01"
+   "inscripciones_cuando": "2026-10-10T15:39:20"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "nozrag 🇨🇴",
+   "quien": "nozrag_pampara",
+   "discord_id": "916405446510800906",
+   "msg_id": "1558504805318787154",
+   "cuando": "2026-10-10T15:41:41"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
