@@ -2052,6 +2052,16 @@
    "b": "MAJIZTRAL",
    "ganador": "MAJIZTRAL",
    "votos": "1–0"
+  },
+  "1558574057690108048": {
+   "id": "1558574057690108048",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791663412259,
+   "a": "PLINK🇦🇷",
+   "b": "ALTUVE🇻🇪🎮",
+   "ganador": "ALTUVE🇻🇪🎮",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5273,6 +5283,27 @@
      [
       "19",
       "PANCHOK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1558580475394662422": {
+   "id": "1558580475394662422",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1511969585770004532",
+   "pub": 1791664942359,
+   "ed": 1791665203350,
+   "texto": "`[ FINAL ]`\n⌞MCO🇦🇷⌝ 🆚 ⌞FORCE🇲🇽⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "MCO🇦🇷",
+      "FORCE🇲🇽"
      ],
      null,
      "última ronda y no dice campeón",
