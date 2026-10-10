@@ -27,7 +27,7 @@
   },
   "AGUSTÍN51K": {
    "servidor": "d82ad898decd:23815767166b:977390",
-   "temporada": "909b272f2e45:17c4f13e63d4"
+   "temporada": "27c25713956b:17c4f13e63d4"
   },
   "ARDEAN": {
    "competitivo": "e2620c69bc94:f77dc8dab350",
@@ -183,7 +183,7 @@
   },
   "Benju": {
    "servidor": "0b30f7a1b907:23815767166b:da39a3",
-   "temporada": "3f3f9c6f8b3c:17c4f13e63d4"
+   "temporada": "457b085eb4f8:17c4f13e63d4"
   },
   "Benshi": {
    "servidor": "ffe21aefda53:23815767166b:da39a3",
@@ -258,9 +258,9 @@
    "temporada": "c25771892e31:17c4f13e63d4"
   },
   "Catarsis": {
-   "competitivo": "da48c82c80f8:f77dc8dab350",
+   "competitivo": "6f8d73dda72d:f77dc8dab350",
    "servidor": "eb1dbec77f89:23815767166b:3e2e7c",
-   "temporada": "5602d1839333:17c4f13e63d4"
+   "temporada": "e0023d72b721:17c4f13e63d4"
   },
   "Char": {
    "servidor": "eb87538a6e39:23815767166b:bb6568",
@@ -773,7 +773,7 @@
   },
   "Ivaynex": {
    "servidor": "2fccf5c01e4a:23815767166b:c024a8",
-   "temporada": "f4254e0db317:17c4f13e63d4"
+   "temporada": "ed19df4275b1:17c4f13e63d4"
   },
   "Ixed": {
    "servidor": "eee949a2735a:23815767166b:055f77"
@@ -796,7 +796,7 @@
   },
   "JIMMY": {
    "servidor": "b7e4411ccd50:23815767166b:cd7216",
-   "temporada": "12f9f94d2649:17c4f13e63d4"
+   "temporada": "c8459670ac90:17c4f13e63d4"
   },
   "Javi": {
    "servidor": "1b54240d32bf:23815767166b:055f77"
@@ -1136,10 +1136,10 @@
    "temporada": "20ed6970756b:17c4f13e63d4"
   },
   "MZK": {
-   "competitivo": "53926257f528:f77dc8dab350",
+   "competitivo": "ea01d1a5360d:f77dc8dab350",
    "pais": "a560175f3b91:9bd767971dd0",
    "servidor": "45688c609b87:23815767166b:980594",
-   "temporada": "43f873bdc865:17c4f13e63d4"
+   "temporada": "f0f9e89905ea:17c4f13e63d4"
   },
   "MaYeuTyK": {
    "servidor": "f54bd79ea1d4:23815767166b:eed871",
@@ -1940,10 +1940,10 @@
    "servidor": "8dc17afd358c:23815767166b:980594"
   },
   "Yeyox": {
-   "competitivo": "7e6c26ed0753:f77dc8dab350",
+   "competitivo": "d556d730e8b9:f77dc8dab350",
    "pais": "7f38b96cb442:9bd767971dd0",
    "servidor": "b714b5010025:23815767166b:8f9835",
-   "temporada": "6de69028dd0c:17c4f13e63d4"
+   "temporada": "274ca02743b2:17c4f13e63d4"
   },
   "Yio": {
    "servidor": "14780669c65b:23815767166b:50cae9",
@@ -2144,5 +2144,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-10T00:28:10+00:00"
+ "cuando": "2026-10-10T03:57:17+00:00"
 }
