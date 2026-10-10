@@ -224,8 +224,8 @@
    "organizadores": [
     [
      "Lewis",
-     84,
-     4
+     56,
+     3
     ],
     [
      "nachonc_",
@@ -238,12 +238,12 @@
      2
     ],
     [
-     "Elsoolar y tokio",
-     17,
+     "CANTU",
+     16,
      1
     ],
     [
-     "CANTU",
+     "Elsoolar",
      16,
      1
     ],
@@ -265,22 +265,24 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 41,
+     "FFA": 42,
      "DDF": 9,
-     "SR": 1
+     "SR": 1,
+     "ACAD": 2
     },
     "gente": {
-     "FFA": 163,
+     "FFA": 165,
      "DDF": 41,
-     "SR": 16
+     "SR": 16,
+     "ACAD": 14
     },
     "gana": "FFA"
    },
    "meta_va": {
-    "ACAD": 0,
+    "ACAD": 14,
     "DDF": 41,
     "DRA": 0,
-    "FFA": 163,
+    "FFA": 165,
     "FFS": 0,
     "SR": 16,
     "URBF": 0

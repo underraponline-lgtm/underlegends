@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-09T23:55:19+00:00",
+ "cuando": "2026-10-10T00:01:20+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3541,40 +3541,6 @@
    "premios": "",
    "staff": {},
    "autor": "BETELGEUSE",
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-09T21:53:57"
-  },
-  {
-   "nombre": "Y TENEMOS EL HONOR DE ANUNCIARLES A TODO EL EQUIPO DE TRABAJO QUE SE V",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1551245259898359891",
-   "cuando": "2026-09-20T14:54:50",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "F.R"
-    ],
-    "host": [
-     "LEONAR-T 🇲🇽"
-    ],
-    "dj": [
-     "LEONAR-T 🇲🇽"
-    ]
-   },
-   "autor": "Leonar-T",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-09T21:53:57"
