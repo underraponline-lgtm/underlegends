@@ -5358,8 +5358,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791756934485,
-   "ed": 1791757026617,
-   "texto": "`[ CUARTOS ]`\n⌞liam🇵🇦⌝ 🆚 ⌞makmah 🇻🇪⌝ 🆚 ⌞onzas.s 🇻🇪⌝\n⌞Guess 🇻🇪⌝ 🆚 ⌞Hinjkybesuk 🇻🇪⌝ 🆚 ⌞Jupiter 🇲🇽⌝",
+   "ed": 1791757620418,
+   "texto": "`[ CUARTOS ]`\n⌞liam🇵🇦⌝ 🆚 ⌞makmah 🇻🇪⌝ 🆚 ⌞onzas.s 🇻🇪⌝\n⌞Guess 🇻🇪⌝ 🆚 ⌞Hinjkybesuk 🇻🇪⌝ 🆚 ⌞Jupiter 🇲🇽⌝\n⌞Verc 🇻🇪⌝ 🆚 ⌞JJ🇪🇸⌝ 🆚 ⌞seko boy🇨🇴⌝ 🆚 ⌞Sintexto🇨🇴⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5378,6 +5378,18 @@
       "Guess 🇻🇪",
       "Hinjkybesuk 🇻🇪",
       "Jupiter 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Verc 🇻🇪",
+      "JJ🇪🇸",
+      "seko boy🇨🇴",
+      "Sintexto🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",
