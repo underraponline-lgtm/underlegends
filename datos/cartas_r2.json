@@ -3936,7 +3936,9 @@
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-ffs.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-sr.webp"
  },
  "vilca": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/servidor.webp",
