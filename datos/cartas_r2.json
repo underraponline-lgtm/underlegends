@@ -929,9 +929,12 @@
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/temporada.webp"
  },
  "drexx": {
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/sv-ddf.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/sv-ffs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/drexx/sv-sr.webp",

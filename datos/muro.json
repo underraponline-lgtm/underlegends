@@ -229,6 +229,8 @@
 "drexx": {
 "rg": "C",
 "c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -5408,6 +5410,22 @@
 "t": "2026-10-11T18:32:24Z",
 "quien": [
 "Motera"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T21:46:46Z",
+"quien": [
+"Drexx"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T21:46:46Z",
+"quien": [
+"Drexx"
 ],
 "carta": "pais"
 }
