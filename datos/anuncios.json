@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-11T01:24:19+00:00",
+ "cuando": "2026-10-11T01:54:17+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1540,40 +1540,6 @@
    "categoria_id": "863207988739309600"
   },
   {
-   "nombre": "ISLA DE SOCOTRA V.2 (esta vez en serio",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1558638807165829141",
-   "cuando": "2026-10-11T00:34:09",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "yo",
-   "autor_h": "78a9632c77e88d80",
-   "cupos_texto": "8/12/16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "(2k puntos de ascenso al primero y un campeonato)",
-   "modalidad": "1vs1",
-   "horario": "Cuando se llene",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Erian 恵理久"
-    ],
-    "host": [
-     "Erian 恵理久"
-    ],
-    "dj": [
-     "Erian 恵理久"
-    ]
-   },
-   "autor": "Erian 恵理久",
-   "categoria_id": "1511963280128868504",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-11T00:34:47"
-  },
-  {
    "nombre": "POESÍA CRUDA",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -2332,6 +2298,40 @@
    "organizador": "@Carlos",
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "(2k puntos de ascenso al primero)",
+   "modalidad": "1vs1",
+   "horario": "Cuando se llene",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "Carlos"
+    ],
+    "host": [
+     "Carlos"
+    ],
+    "dj": [
+     "Carlos"
+    ]
+   },
+   "autor": "Carlos",
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-11T00:34:47"
+  },
+  {
+   "nombre": "PNC V.7",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1543113161606045757",
+   "cuando": "2026-08-29T04:20:47",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "@Carlos",
+   "autor_h": "608cfa4b650ba173",
+   "cupos_texto": "8",
    "inscriptos": null,
    "cupo_total": null,
    "rango": "(2k puntos de ascenso al primero)",
@@ -3569,6 +3569,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "motera🇪🇸",
+   "quien": "hbrsg_",
+   "discord_id": "885365894606381068",
+   "msg_id": "1558652721522024539",
+   "cuando": "2026-10-11T01:29:27"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Pichulamc",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1558652445477834816",
+   "cuando": "2026-10-11T01:28:21"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
