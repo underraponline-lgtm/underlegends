@@ -2,7 +2,7 @@
 "_leeme": "El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.",
 "estado": {
 "oasis": {
-"rg": "S",
+"rg": "SS",
 "c": [
 "competitivo",
 "servidor",
@@ -202,17 +202,17 @@
 "temporada"
 ]
 },
-"carlosss": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "nxuz": {
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"carlosss": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -317,17 +317,17 @@
 "temporada"
 ]
 },
-"polosport": {
+"verc": {
 "rg": "",
 "c": [
-"pais",
 "servidor",
 "temporada"
 ]
 },
-"paria": {
+"polosport": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -354,6 +354,13 @@
 "temporada"
 ]
 },
+"paria": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "eclipsito": {
 "rg": "",
 "c": [
@@ -368,21 +375,7 @@
 "temporada"
 ]
 },
-"tøkiø": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "benjixo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"onzass": {
 "rg": "",
 "c": [
 "servidor",
@@ -418,7 +411,7 @@
 "temporada"
 ]
 },
-"neo": {
+"tøkiø": {
 "rg": "",
 "c": [
 "servidor",
@@ -440,6 +433,13 @@
 "temporada"
 ]
 },
+"onzass": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "numberve": {
 "rg": "E",
 "c": [
@@ -450,6 +450,13 @@
 ]
 },
 "jupiter": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -471,13 +478,6 @@
 "temporada"
 ]
 },
-"player": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "19": {
 "rg": "",
 "c": [
@@ -493,14 +493,14 @@
 "temporada"
 ]
 },
-"btrx": {
+"neo": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"verc": {
+"btrx": {
 "rg": "",
 "c": [
 "servidor",
@@ -515,6 +515,13 @@
 ]
 },
 "badterne": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"player": {
 "rg": "",
 "c": [
 "servidor",
@@ -540,13 +547,6 @@
 ]
 },
 "kravitz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"zekha": {
 "rg": "",
 "c": [
 "servidor",
@@ -615,6 +615,13 @@
 "temporada"
 ]
 },
+"zekha": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "andy": {
 "rg": "",
 "c": [
@@ -628,10 +635,6 @@
 "servidor",
 "temporada"
 ]
-},
-"oasisletrao": {
-"rg": "",
-"c": []
 },
 "efimero": {
 "rg": "",
@@ -695,21 +698,7 @@
 "temporada"
 ]
 },
-"masino": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "blitz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"ariaxer": {
 "rg": "",
 "c": [
 "servidor",
@@ -737,23 +726,12 @@
 "temporada"
 ]
 },
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "zaik": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"joshu": {
-"rg": "",
-"c": []
 },
 "krish": {
 "rg": "",
@@ -770,6 +748,13 @@
 ]
 },
 "soulb": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"masino": {
 "rg": "",
 "c": [
 "servidor",
@@ -817,6 +802,13 @@
 "temporada"
 ]
 },
+"ariaxer": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "xubaru": {
 "rg": "",
 "c": [
@@ -830,6 +822,10 @@
 "servidor",
 "temporada"
 ]
+},
+"joshu": {
+"rg": "",
+"c": []
 },
 "1200": {
 "rg": "",
@@ -855,6 +851,10 @@
 "servidor",
 "temporada"
 ]
+},
+"letrao": {
+"rg": "",
+"c": []
 },
 "tusicario": {
 "rg": "",
@@ -1202,6 +1202,10 @@
 "temporada"
 ]
 },
+"pierr": {
+"rg": "",
+"c": []
+},
 "crakero": {
 "rg": "",
 "c": [
@@ -1249,17 +1253,6 @@
 ]
 },
 "humildad": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"maukc": {
-"rg": "",
-"c": []
-},
-"reyes": {
 "rg": "",
 "c": [
 "servidor",
@@ -1352,13 +1345,6 @@
 "rg": "",
 "c": []
 },
-"benju": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "antorcha": {
 "rg": "",
 "c": []
@@ -1380,6 +1366,28 @@
 "ram": {
 "rg": "",
 "c": []
+},
+"oasisletrao": {
+"rg": "",
+"c": []
+},
+"maukc": {
+"rg": "",
+"c": []
+},
+"reyes": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"benju": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "under": {
 "rg": "",
@@ -5349,6 +5357,15 @@
 "Verc"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-11T06:18:29Z",
+"quien": [
+"Oasis"
+],
+"rg": "SS",
+"primero": false
 }
 ]
 }
