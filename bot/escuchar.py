@@ -1540,6 +1540,12 @@ def canonizador(conocidos):
                           == bool(_equipo(mapa[cerca[0]]))) and (
                     not _equipo(n) or _mismos_integrantes(n, mapa[cerca[0]])):
                 r = mapa[cerca[0]]
+        # 🔴 Y EL EQUIPO SE QUEDA CON SU «+». LA REDENCION (FFA, 10/10/2026): la llave dice «OASIS🇨🇱 LETRAO🇨🇱»
+        # —la pareja con dos banderas, que el lector lee como equipo— y la inscripción «Oasis🇨🇱 & Letrao🇨🇱». La
+        # regla 1 le ponía el nombre de la inscripción con su «&», y el motor (`sheet/equipos.py`) no parte por «&»
+        # a propósito: el campeón entraba como UNA persona con los 10.000 enteros
+        if r != n and _equipo(r):
+            r = re.sub(r'\s*&\s*', ' + ', r)
         canon[n] = r
         return r
     return _c
@@ -4028,6 +4034,8 @@ def _self_check():
         ('19 CUP (DDF): «• Cruce 1:» y «• Semifinal 1:» no son del nombre, «TERCER PUESTO» es una ronda, '
          'KEIDER no pasa por parecerse a JEIXDER, y el tercero del podio va con el nombre abajo',
          [x[2] for x in cup19] == ['PICHULA', 'CRISZJ', 'JEIXDER', 'NOA', 'PICHULA', 'NOA', 'CRISZJ', 'PICHULAMC']),
+        ('el equipo que toma el nombre de su inscripción «Oasis🇨🇱 & Letrao🇨🇱» se queda con «+» (LA REDENCION, FFA)',
+         canonizador(['Oasis🇨🇱 & Letrao🇨🇱'])('OASIS🇨🇱 + LETRAO🇨🇱') == 'Oasis🇨🇱 + Letrao🇨🇱'),
         ('`[El hijo y el primo del sol (Nemi y Personality)]` es el equipo Nemi + Personality',
          nombres_de_linea('[El hijo y el primo del sol (Nemi y Personality)] 🆚 [kurl+alexiz]')
          == ['Nemi + Personality', 'kurl+alexiz']),
