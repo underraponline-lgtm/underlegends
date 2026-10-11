@@ -5227,8 +5227,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1791676487347,
-   "ed": 1791677558282,
-   "texto": "`[ CUARTOS ]`\n⌞PICHULA 🇦🇷⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞GEROX 🇨🇴⌝ 🆚 ⌞CRISZJ 🇵🇪⌝\n⌞KEIDER 🇻🇪⌝ 🆚 ⌞JEIXDER 🇵🇪⌝\n⌞NOA 🇲🇽⌝ 🆚 ⌞ERIAN 🇵🇦⌝\n`[ SEMIFINALES ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞CRISZJ 🇵🇪⌝",
+   "ed": 1791677718045,
+   "texto": "`[ CUARTOS ]`\n⌞PICHULA 🇦🇷⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞GEROX 🇨🇴⌝ 🆚 ⌞CRISZJ 🇵🇪⌝\n⌞KEIDER 🇻🇪⌝ 🆚 ⌞JEIXDER 🇵🇪⌝\n⌞NOA 🇲🇽⌝ 🆚 ⌞ERIAN 🇵🇦⌝\n`[ SEMIFINALES ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞CRISZJ 🇵🇪⌝\n⌞JEIXDER 🇵🇪⌝ 🆚 ⌞NOA 🇲🇽⌝\n`[ FINAL ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞NOA 🇲🇽⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5256,8 +5256,8 @@
       "KEIDER 🇻🇪",
       "JEIXDER 🇵🇪"
      ],
-     null,
-     "no aparece nadie después",
+     "JEIXDER 🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5266,8 +5266,8 @@
       "NOA 🇲🇽",
       "ERIAN 🇵🇦"
      ],
-     null,
-     "no aparece nadie después",
+     "NOA 🇲🇽",
+     "ronda siguiente",
      []
     ],
     [
@@ -5275,6 +5275,26 @@
      [
       "PICHULAMC 🇦🇷",
       "CRISZJ 🇵🇪"
+     ],
+     "PICHULAMC 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "JEIXDER 🇵🇪",
+      "NOA 🇲🇽"
+     ],
+     "NOA 🇲🇽",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PICHULAMC 🇦🇷",
+      "NOA 🇲🇽"
      ],
      null,
      "última ronda y no dice campeón",
