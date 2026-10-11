@@ -198,6 +198,7 @@
 "rg": "D",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -349,6 +350,7 @@
 "motera": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -716,6 +718,10 @@
 "servidor",
 "temporada"
 ]
+},
+"hinjkybesuk": {
+"rg": "",
+"c": []
 },
 "riolu": {
 "rg": "",
@@ -5388,6 +5394,22 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T18:32:24Z",
+"quien": [
+"Trot"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T18:32:24Z",
+"quien": [
+"Motera"
+],
+"carta": "pais"
 }
 ]
 }

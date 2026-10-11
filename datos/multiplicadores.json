@@ -173,7 +173,9 @@
    },
    "dorado": {
     "sv": "URBF",
-    "desde": "2026-10-09T04:00:00Z"
+    "desde": "2026-10-09T04:00:00Z",
+    "n": 448,
+    "nombre": "RED BULL NACIONAL ESPAÑA T.5"
    },
    "guerra": {
     "pares": [
@@ -271,26 +273,28 @@
    "semillero": {
     "nuevos": {
      "ACAD": 2,
-     "FFA": 49,
+     "FFA": 52,
      "DDF": 12,
-     "SR": 1
+     "SR": 1,
+     "URBF": 5
     },
     "gente": {
-     "FFA": 175,
+     "FFA": 179,
      "DDF": 58,
      "SR": 16,
-     "ACAD": 14
+     "ACAD": 14,
+     "URBF": 8
     },
-    "gana": "FFA"
+    "gana": "URBF"
    },
    "meta_va": {
     "ACAD": 14,
     "DDF": 58,
     "DRA": 0,
-    "FFA": 175,
+    "FFA": 179,
     "FFS": 0,
     "SR": 16,
-    "URBF": 0
+    "URBF": 8
    },
    "sv_sorteo": {
     "FFA": 5,
