@@ -5358,8 +5358,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791756934485,
-   "ed": 1791757620418,
-   "texto": "`[ CUARTOS ]`\n⌞liam🇵🇦⌝ 🆚 ⌞makmah 🇻🇪⌝ 🆚 ⌞onzas.s 🇻🇪⌝\n⌞Guess 🇻🇪⌝ 🆚 ⌞Hinjkybesuk 🇻🇪⌝ 🆚 ⌞Jupiter 🇲🇽⌝\n⌞Verc 🇻🇪⌝ 🆚 ⌞JJ🇪🇸⌝ 🆚 ⌞seko boy🇨🇴⌝ 🆚 ⌞Sintexto🇨🇴⌝",
+   "ed": 1791758677925,
+   "texto": "`[ CUARTOS ]`\n⌞liam🇵🇦⌝ 🆚 ⌞makmah 🇻🇪⌝ 🆚 ⌞onzas.s 🇻🇪⌝\n⌞Guess 🇻🇪⌝ 🆚 ⌞Hinjkybesuk 🇻🇪⌝ 🆚 ⌞Jupiter 🇲🇽⌝\n⌞Verc 🇻🇪⌝ 🆚 ⌞JJ🇪🇸⌝ 🆚 ⌞seko boy🇨🇴⌝ 🆚 ⌞Sintexto🇨🇴⌝\n⌞Lvel 🇻🇪⌝ 🆚 ⌞Valdoza 🇨🇱⌝ 🆚 ⌞tnr :Espana:⌝ 🆚 ⌞JJ :Espana:⌝\n`[ SEMIFINALES ]`\n⌞makmah 🇻🇪 Liam⌝ 🆚 ⌞Verc 🇻🇪 + seko boy🇨🇴⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5380,7 +5380,7 @@
       "Jupiter 🇲🇽"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5390,6 +5390,28 @@
       "JJ🇪🇸",
       "seko boy🇨🇴",
       "Sintexto🇨🇴"
+     ],
+     "Verc 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Lvel 🇻🇪",
+      "Valdoza 🇨🇱",
+      "tnr :Espana:",
+      "JJ :Espana:"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "makmah 🇻🇪 Liam",
+      "Verc 🇻🇪 + seko boy🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",
