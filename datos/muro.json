@@ -317,13 +317,6 @@
 "temporada"
 ]
 },
-"verc": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "polosport": {
 "rg": "",
 "c": [
@@ -343,6 +336,13 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"verc": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -456,13 +456,6 @@
 "temporada"
 ]
 },
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "juasmio": {
 "rg": "",
 "c": [
@@ -529,6 +522,13 @@
 ]
 },
 "kochi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -845,16 +845,16 @@
 "rg": "",
 "c": []
 },
+"letrao": {
+"rg": "",
+"c": []
+},
 "catarsis": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"letrao": {
-"rg": "",
-"c": []
 },
 "tusicario": {
 "rg": "",
