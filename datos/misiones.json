@@ -524,6 +524,11 @@
      0,
      16
     ],
+    "Letrao🇨🇱": [
+     1,
+     0,
+     1
+    ],
     "Liam": [
      1,
      0,
@@ -588,11 +593,6 @@
      1,
      1,
      4
-    ],
-    "Majiztral[rebibido] 🇨🇴": [
-     0,
-     0,
-     8
     ],
     "Makmah": [
      1,
@@ -707,11 +707,6 @@
     "Oasis": [
      1,
      7,
-     1
-    ],
-    "Oasis🇨🇱 & Letrao🇨🇱": [
-     1,
-     4,
      1
     ],
     "PIERR🇵🇪": [
@@ -1089,7 +1084,7 @@
      1,
      99
     ],
-    "kerkoide 🇪🇨": [
+    "kerkoide": [
      1,
      0,
      16
@@ -1202,6 +1197,7 @@
     "LKS 🇨🇱": 300,
     "LRS": 300,
     "Leonart": 300,
+    "Letrao🇨🇱": 1300,
     "Liam": 300,
     "Liberia": 2900,
     "LitKunai": 300,
@@ -1233,7 +1229,6 @@
     "OG": 2900,
     "ONZASS": 300,
     "Oasis": 2900,
-    "Oasis🇨🇱 & Letrao🇨🇱": 2900,
     "PIERR🇵🇪": 300,
     "PRAISERIZA": 2900,
     "PROMETHEUS BIB 🇨🇴": 300,
@@ -1297,7 +1292,7 @@
     "dxg": 300,
     "fleivaman": 1300,
     "ikonoxx🇺🇾": 300,
-    "kerkoide 🇪🇨": 300,
+    "kerkoide": 300,
     "melomaniaco": 300,
     "rodrilp": 300,
     "setesfifi": 300,
@@ -1388,6 +1383,7 @@
   "LKS 🇨🇱": 300,
   "LRS": 300,
   "Leonart": 300,
+  "Letrao🇨🇱": 1300,
   "Liam": 300,
   "Liberia": 2900,
   "LitKunai": 300,
@@ -1419,7 +1415,6 @@
   "OG": 2900,
   "ONZASS": 300,
   "Oasis": 2900,
-  "Oasis🇨🇱 & Letrao🇨🇱": 2900,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
@@ -1483,7 +1478,7 @@
   "dxg": 300,
   "fleivaman": 1300,
   "ikonoxx🇺🇾": 300,
-  "kerkoide 🇪🇨": 300,
+  "kerkoide": 300,
   "melomaniaco": 300,
   "rodrilp": 300,
   "setesfifi": 300,

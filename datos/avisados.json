@@ -6202,9 +6202,9 @@
   "canal": "1468472443843776659",
   "duelos": [
    [
-    "Oasis🇨🇱 & Letrao🇨🇱",
-    "kerkoide 🇪🇨",
-    "Oasis🇨🇱 & Letrao🇨🇱"
+    "Oasis, Letrao🇨🇱",
+    "kerkoide",
+    "Oasis, Letrao🇨🇱"
    ],
    [
     "Guess",
@@ -6242,9 +6242,9 @@
     "Tam"
    ],
    [
-    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Oasis, Letrao🇨🇱",
     "Guess",
-    "Oasis🇨🇱 & Letrao🇨🇱"
+    "Oasis, Letrao🇨🇱"
    ],
    [
     "Verc",
@@ -6262,9 +6262,9 @@
     "Tam"
    ],
    [
-    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Oasis, Letrao🇨🇱",
     "Verc",
-    "Oasis🇨🇱 & Letrao🇨🇱"
+    "Oasis, Letrao🇨🇱"
    ],
    [
     "Snow",
@@ -6272,9 +6272,9 @@
     "Snow"
    ],
    [
-    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Oasis, Letrao🇨🇱",
     "Snow",
-    "Oasis🇨🇱 & Letrao🇨🇱"
+    "Oasis, Letrao🇨🇱"
    ]
   ],
   "ev_antes": {
@@ -6293,7 +6293,7 @@
    "Zignos": 14
   },
   "fecha": "10/10",
-  "firma": "82a377f6e78bc2b1",
+  "firma": "77d83b5f3392364e",
   "msg": "1558711597571121174",
   "nombre": "LA REDENCION",
   "num": 447,
@@ -6304,11 +6304,6 @@
   "sv": "FFA",
   "t": "2026-10-11T05:23:24Z",
   "tabla": [
-   [
-    "Oasis🇨🇱 & Letrao🇨🇱",
-    "Campeón",
-    10000
-   ],
    [
     "Snow",
     "Subcampeón",
@@ -6323,6 +6318,16 @@
     "Tam",
     "Semifinal",
     5250
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Letrao🇨🇱",
+    "Campeón",
+    5000
    ],
    [
     "Guess",
@@ -6345,7 +6350,7 @@
     2500
    ],
    [
-    "kerkoide 🇪🇨",
+    "kerkoide",
     "Octavos",
     1250
    ],

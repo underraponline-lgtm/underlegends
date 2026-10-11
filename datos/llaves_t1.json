@@ -11467,7 +11467,7 @@
      ],
      [
       [
-       "ABYSUSS🇮🇱 & PARK-JI SUNG🇮🇱",
+       "ABYSUSS🇮🇱 + PARK-JI SUNG🇮🇱",
        "LOS DUEÑOS DE TU BURRA 🇦🇷"
       ],
       "",
@@ -18828,7 +18828,7 @@
      [
       [
        "Panchok",
-       "Majiztral[rebibido] 🇨🇴",
+       "Majiztral",
        "Spartan"
       ],
       "Panchok",
@@ -18915,11 +18915,6 @@
     2000
    ],
    [
-    "Majiztral[rebibido] 🇨🇴",
-    "Cuartos",
-    2000
-   ],
-   [
     "RT",
     "Cuartos",
     2000
@@ -18951,10 +18946,10 @@
     "b": [
      [
       [
-       "Oasis🇨🇱 & Letrao🇨🇱",
-       "kerkoide 🇪🇨"
+       "Oasis, Letrao🇨🇱",
+       "kerkoide"
       ],
-      "Oasis🇨🇱 & Letrao🇨🇱",
+      "Oasis, Letrao🇨🇱",
       ""
      ],
      [
@@ -19020,10 +19015,10 @@
     "b": [
      [
       [
-       "Oasis🇨🇱 & Letrao🇨🇱",
+       "Oasis, Letrao🇨🇱",
        "Guess"
       ],
-      "Oasis🇨🇱 & Letrao🇨🇱",
+      "Oasis, Letrao🇨🇱",
       ""
      ],
      [
@@ -19057,10 +19052,10 @@
     "b": [
      [
       [
-       "Oasis🇨🇱 & Letrao🇨🇱",
+       "Oasis, Letrao🇨🇱",
        "Verc"
       ],
-      "Oasis🇨🇱 & Letrao🇨🇱",
+      "Oasis, Letrao🇨🇱",
       ""
      ],
      [
@@ -19078,10 +19073,10 @@
     "b": [
      [
       [
-       "Oasis🇨🇱 & Letrao🇨🇱",
+       "Oasis, Letrao🇨🇱",
        "Snow"
       ],
-      "Oasis🇨🇱 & Letrao🇨🇱",
+      "Oasis, Letrao🇨🇱",
       ""
      ]
     ],
@@ -19090,11 +19085,6 @@
   ],
   "sv": "FFA",
   "tabla": [
-   [
-    "Oasis🇨🇱 & Letrao🇨🇱",
-    "Campeón",
-    10000
-   ],
    [
     "Snow",
     "Subcampeón",
@@ -19109,6 +19099,16 @@
     "Verc",
     "Semifinal",
     5250
+   ],
+   [
+    "Letrao🇨🇱",
+    "Campeón",
+    5000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
    ],
    [
     "Guess",
@@ -19161,7 +19161,7 @@
     1250
    ],
    [
-    "kerkoide 🇪🇨",
+    "kerkoide",
     "Octavos",
     1250
    ],
