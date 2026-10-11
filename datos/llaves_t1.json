@@ -18060,10 +18060,10 @@
      ],
      [
       [
-       "Agus",
+       "EIDP",
        "Dynoco"
       ],
-      "Agus",
+      "EIDP",
       ""
      ],
      [
@@ -18514,24 +18514,24 @@
   ],
   "n": 442,
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
-  "participantes": 10,
+  "participantes": 8,
   "rondas": [
    {
     "b": [
      [
       [
-       "• JULIX",
+       "JULIX",
        "Number VE"
       ],
-      "• JULIX",
-      "ganador según #veredictos"
+      "JULIX",
+      ""
      ],
      [
       [
-       "Agus",
+       "EIDP",
        "EmiZor"
       ],
-      "Agus",
+      "EIDP",
       ""
      ],
      [
@@ -18557,11 +18557,19 @@
     "b": [
      [
       [
-       "Agus",
-       "• Semifinal 1: JULIX"
+       "EIDP",
+       "JULIX"
       ],
-      "Agus",
-      "Walk-in 1: • Semifinal 1: JULIX"
+      "EIDP",
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "Agus"
+      ],
+      "Walker",
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -18570,8 +18578,21 @@
     "b": [
      [
       [
-       "Walker",
+       "JULIX",
        "Agus"
+      ],
+      "JULIX",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "EIDP"
       ],
       "Walker",
       ""
@@ -18588,9 +18609,19 @@
     7500
    ],
    [
-    "Agus",
+    "EIDP",
     "Subcampeón",
     5000
+   ],
+   [
+    "JULIX",
+    "Tercero",
+    4000
+   ],
+   [
+    "Agus",
+    "Cuarto",
+    3000
    ],
    [
     "EmiZor",
@@ -18611,178 +18642,6 @@
     "Xclusivo",
     "Cuartos",
     2000
-   ]
-  ]
- },
- "443": {
-  "dia": "2026-10-10",
-  "escala": "16+",
-  "fecha": "10/10",
-  "links": [
-   "https://discord.com/channels/1469009547971526659/1498009509036163173/1558524898614186019"
-  ],
-  "n": 443,
-  "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
-  "participantes": 16,
-  "rondas": [
-   {
-    "b": [
-     [
-      [
-       "JULIX 🇧🇴",
-       "Number VE"
-      ],
-      "JULIX 🇧🇴",
-      ""
-     ],
-     [
-      [
-       "Agus",
-       "EmiZor"
-      ],
-      "Agus",
-      ""
-     ],
-     [
-      [
-       "Walker",
-       "Xclusivo"
-      ],
-      "Walker",
-      ""
-     ]
-    ],
-    "r": "Cuartos"
-   },
-   {
-    "b": [
-     [
-      [
-       "Agus",
-       "JULIX 🇧🇴"
-      ],
-      "Agus",
-      ""
-     ]
-    ],
-    "r": "Semifinales"
-   },
-   {
-    "b": [
-     [
-      [
-       "Walker",
-       "Agus"
-      ],
-      "Walker",
-      ""
-     ],
-     [
-      [
-       "19",
-       "Keider",
-       "Vilca"
-      ],
-      "19",
-      "triple (3 bandas); Walk-in 2: 19; Walk-in 2: KEIDER"
-     ],
-     [
-      [
-       "Majiztral",
-       "NXUZ"
-      ],
-      "Majiztral",
-      "ganador según #veredictos; Walk-in 2: Majiztral 🇨🇴; Walk-in 2: Nexus🇵🇪; Revivido: Majiztral 🇨🇴"
-     ],
-     [
-      [
-       "Panchok",
-       "Majiztral",
-       "Spartan"
-      ],
-      "Panchok",
-      "triple (3 bandas); Walk-in 2: Panchok 🇨🇱"
-     ],
-     [
-      [
-       "19",
-       "Panchok 🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Majiztral 🇨🇴",
-       "Nexus🇵🇪",
-       "RT 🇲🇽"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Nexus🇵🇪",
-       "Panchok 🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Number 🇱🇷",
-       "19"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Walker",
-       "Dios 🇲🇽"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "agus🇦🇷",
-       "Dios 🇲🇽",
-       "Walker"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ]
-    ],
-    "r": "Final"
-   }
-  ],
-  "sv": "DDF",
-  "tabla": [
-   [
-    "Walker",
-    "Campeón",
-    10000
-   ],
-   [
-    "Agus",
-    "Subcampeón",
-    7500
-   ],
-   [
-    "EmiZor",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Number VE",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Xclusivo",
-    "Cuartos",
-    2500
    ]
   ]
  },
@@ -18923,6 +18782,178 @@
     "LRS",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "445": {
+  "dia": "2026-10-10",
+  "escala": "16+",
+  "fecha": "10/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1498009509036163173/1558524898614186019"
+  ],
+  "n": 445,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "JULIX 🇧🇴",
+       "Number VE"
+      ],
+      "JULIX 🇧🇴",
+      ""
+     ],
+     [
+      [
+       "EIDP",
+       "EmiZor"
+      ],
+      "EIDP",
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "Xclusivo"
+      ],
+      "Walker",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "EIDP",
+       "JULIX 🇧🇴"
+      ],
+      "EIDP",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "EIDP"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "19",
+       "Keider",
+       "Vilca"
+      ],
+      "19",
+      "triple (3 bandas); Walk-in 2: 19; Walk-in 2: KEIDER"
+     ],
+     [
+      [
+       "Majiztral",
+       "NXUZ"
+      ],
+      "Majiztral",
+      "ganador según #veredictos; Walk-in 2: Majiztral 🇨🇴; Walk-in 2: Nexus🇵🇪; Revivido: Majiztral 🇨🇴"
+     ],
+     [
+      [
+       "Panchok",
+       "Majiztral",
+       "Spartan"
+      ],
+      "Panchok",
+      "triple (3 bandas); Walk-in 2: Panchok 🇨🇱"
+     ],
+     [
+      [
+       "19",
+       "Panchok 🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Majiztral 🇨🇴",
+       "Nexus🇵🇪",
+       "RT 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Nexus🇵🇪",
+       "Panchok 🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Number 🇱🇷",
+       "19"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Walker",
+       "Dios 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "agus🇦🇷",
+       "Dios 🇲🇽",
+       "Walker"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    10000
+   ],
+   [
+    "EIDP",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2500
    ]
   ]
  }

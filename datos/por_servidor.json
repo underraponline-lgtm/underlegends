@@ -297,13 +297,13 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "10/12",
-    "ev": 3,
+    "duelos": "5/6",
+    "ev": 2,
     "oro": 1,
-    "ovr": 57,
-    "pod": 3,
-    "pts": 37125,
-    "racha": "3/3"
+    "ovr": 52,
+    "pod": 1,
+    "pts": 21450,
+    "racha": "0/1"
    },
    "FFA": {
     "duelos": "8/12",
@@ -1343,13 +1343,13 @@
   },
   "EIDP": {
    "DDF": {
-    "duelos": "0/1",
-    "ev": 2,
+    "duelos": "5/8",
+    "ev": 4,
     "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 6125,
-    "racha": "0/0"
+    "ovr": 55,
+    "pod": 2,
+    "pts": 26750,
+    "racha": "2/2"
    },
    "FFA": {
     "duelos": "",
@@ -2309,6 +2309,17 @@
     "pod": 1,
     "pts": 16500,
     "racha": "1/1"
+   }
+  },
+  "JULIX": {
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 48,
+    "pod": 1,
+    "pts": 6600,
+    "racha": "0/0"
    }
   },
   "Jayden": {
@@ -5428,7 +5439,7 @@
   },
   "Walker": {
    "DDF": {
-    "duelos": "8/9",
+    "duelos": "9/10",
     "ev": 4,
     "oro": 3,
     "ovr": 57,
@@ -6066,28 +6077,6 @@
     "pod": 4,
     "pts": 42354,
     "racha": "0/4"
-   }
-  },
-  "• JULIX": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "• Semifinal 1: JULIX": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   }
  }

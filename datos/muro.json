@@ -42,15 +42,6 @@
 "temporada"
 ]
 },
-"agus": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "panchok": {
 "rg": "S",
 "c": [
@@ -64,6 +55,15 @@
 "rg": "B",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"agus": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -339,6 +339,13 @@
 ]
 },
 "aldre": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"eidp": {
 "rg": "",
 "c": [
 "servidor",
@@ -871,13 +878,6 @@
 "temporada"
 ]
 },
-"eidp": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "korey": {
 "rg": "",
 "c": [
@@ -1158,6 +1158,10 @@
 "servidor",
 "temporada"
 ]
+},
+"julix-x": {
+"rg": "",
+"c": []
 },
 "kyss": {
 "rg": "",

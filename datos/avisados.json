@@ -5453,14 +5453,14 @@
   "canal": "1469943905771585708",
   "duelos": [
    [
-    "• JULIX",
+    "JULIX",
     "Number VE",
-    "• JULIX"
+    "JULIX"
    ],
    [
-    "Agus",
+    "EIDP",
     "EmiZor",
-    "Agus"
+    "EIDP"
    ],
    [
     "Walker",
@@ -5473,19 +5473,24 @@
     "Agus"
    ],
    [
-    "Agus",
-    "• Semifinal 1: JULIX",
-    "Agus"
-   ],
-   [
-    "Agus",
-    "• Semifinal 2: WALKER",
-    "Agus"
+    "EIDP",
+    "JULIX",
+    "EIDP"
    ],
    [
     "Walker",
     "Agus",
     "Walker"
+   ],
+   [
+    "Walker",
+    "EIDP",
+    "Walker"
+   ],
+   [
+    "JULIX",
+    "Agus",
+    "JULIX"
    ]
   ],
   "ev_antes": {
@@ -5497,11 +5502,11 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "5660c268514ecd05",
+  "firma": "ffcc15cd4bd7e2dd",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
-  "participantes": 10,
+  "participantes": 8,
   "sello": {
    "Walker": "789d8904ad09:17c4f13e63d4"
   },
@@ -5514,9 +5519,19 @@
     7500
    ],
    [
-    "Agus",
+    "EIDP",
     "Subcampeón",
     5000
+   ],
+   [
+    "JULIX",
+    "Tercero",
+    4000
+   ],
+   [
+    "Agus",
+    "Cuarto",
+    3000
    ],
    [
     "Number VE",
@@ -5537,16 +5552,6 @@
     "RT",
     "Cuartos",
     2000
-   ],
-   [
-    "• Semifinal 1: JULIX",
-    "Semifinal",
-    1750
-   ],
-   [
-    "• Semifinal 2: WALKER",
-    "Semifinal",
-    1750
    ]
   ],
   "v": 2
@@ -5796,6 +5801,134 @@
     "Erian",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "445": {
+  "antes": {
+   "EIDP": [
+    198,
+    121,
+    true
+   ],
+   "EmiZor": [
+    185,
+    94,
+    true
+   ],
+   "Number VE": [
+    43,
+    60,
+    false
+   ],
+   "Walker": [
+    31,
+    39,
+    false
+   ],
+   "Xclusivo": [
+    158,
+    18,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "JULIX 🇧🇴",
+    "Number VE",
+    "JULIX 🇧🇴"
+   ],
+   [
+    "EIDP",
+    "EmiZor",
+    "EIDP"
+   ],
+   [
+    "Walker",
+    "Xclusivo",
+    "Walker"
+   ],
+   [
+    "EIDP",
+    "JULIX 🇧🇴",
+    "EIDP"
+   ],
+   [
+    "Walker",
+    "EIDP",
+    "Walker"
+   ],
+   [
+    "19",
+    "Keider",
+    "19"
+   ],
+   [
+    "19",
+    "Vilca",
+    "19"
+   ],
+   [
+    "Majiztral",
+    "NXUZ",
+    "Majiztral"
+   ],
+   [
+    "Panchok",
+    "Majiztral",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Spartan",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "EIDP": 4,
+   "EmiZor": 8,
+   "Number VE": 11,
+   "Walker": 5,
+   "Xclusivo": 14
+  },
+  "fecha": "10/10",
+  "firma": "e96de0043caf4021",
+  "msg": "1558704066232586272",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
+  "num": 445,
+  "participantes": 16,
+  "sello": {
+   "Walker": "7cd5cf51509d:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-11T04:53:27Z",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    10000
+   ],
+   [
+    "EIDP",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2500
    ]
   ],
   "v": 2
