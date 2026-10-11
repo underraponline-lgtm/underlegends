@@ -513,7 +513,7 @@ def huella_cuenta(cuenta):
 
 #: lo que en un campo de jurado, host o DJ no es una persona
 NO_PERSONA = re.compile(r'^(?:@?(?:everyone|here)|tod[oa]s?|invitad\w*|jurados?\b.*|por definir|a definir|tba|'
-                        r'n/?a|no hay|ninguno|sin dj|-+|\?+)$', re.I)
+                        r'n/?a|no hay|ninguno|sin dj|(?:o\s+)?quien\s+sea|cualquiera|-+|\?+)$', re.I)
 #: «yo», «@Yo», «CAPAZ yo»: quien publicó el anuncio
 YO = re.compile(r'^(?:capaz\s+)?@?yo\b', re.I)
 #: los campos de la gente del evento, como los escribe cada servidor (`CAMPOS_LINEA` ya los reconoce)
