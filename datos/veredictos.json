@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1556092213644234874": {
-   "id": "1556092213644234874",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "pub": 1791071694528,
-   "a": "Catarsis 🇦🇷",
-   "b": "PichulaMC 🇦🇷",
-   "ganador": "Catarsis 🇦🇷",
-   "votos": "1–0"
-  },
   "1556110290137915553": {
    "id": "1556110290137915553",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5227,6 +5217,67 @@
      ],
      "MCO🇦🇷",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1558628898583871540": {
+   "id": "1558628898583871540",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1791676487347,
+   "ed": 1791677558282,
+   "texto": "`[ CUARTOS ]`\n⌞PICHULA 🇦🇷⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞GEROX 🇨🇴⌝ 🆚 ⌞CRISZJ 🇵🇪⌝\n⌞KEIDER 🇻🇪⌝ 🆚 ⌞JEIXDER 🇵🇪⌝\n⌞NOA 🇲🇽⌝ 🆚 ⌞ERIAN 🇵🇦⌝\n`[ SEMIFINALES ]`\n⌞PICHULAMC 🇦🇷⌝ 🆚 ⌞CRISZJ 🇵🇪⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "PICHULA 🇦🇷",
+      "LRS 🇦🇷"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "GEROX 🇨🇴",
+      "CRISZJ 🇵🇪"
+     ],
+     "CRISZJ 🇵🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "KEIDER 🇻🇪",
+      "JEIXDER 🇵🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "NOA 🇲🇽",
+      "ERIAN 🇵🇦"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PICHULAMC 🇦🇷",
+      "CRISZJ 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

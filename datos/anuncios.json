@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-10T23:54:20+00:00",
+ "cuando": "2026-10-11T00:13:58+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3541,6 +3541,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Vilka",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1558628847891644547",
+   "cuando": "2026-10-10T23:54:35"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
