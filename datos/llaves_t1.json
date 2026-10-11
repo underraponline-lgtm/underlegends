@@ -18785,42 +18785,54 @@
    ]
   ]
  },
- "445": {
+ "446": {
   "dia": "2026-10-10",
-  "escala": "16+",
+  "escala": "8-15",
   "fecha": "10/10",
   "links": [
-   "https://discord.com/channels/1469009547971526659/1498009509036163173/1558524898614186019"
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1558543284505149461"
   ],
-  "n": 445,
+  "n": 446,
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
-  "participantes": 16,
+  "participantes": 12,
   "rondas": [
    {
     "b": [
      [
       [
-       "JULIX 🇧🇴",
-       "Number VE"
+       "19",
+       "Keider",
+       "Vilca"
       ],
-      "JULIX 🇧🇴",
-      ""
+      "19",
+      "triple (3 bandas)"
      ],
      [
       [
+       "NXUZ",
+       "Majiztral",
+       "RT"
+      ],
+      "NXUZ",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Number VE",
        "EIDP",
-       "EmiZor"
+       "Dios"
       ],
-      "EIDP",
-      ""
+      "Number VE",
+      "triple (3 bandas)"
      ],
      [
       [
-       "Walker",
-       "Xclusivo"
+       "Panchok",
+       "Majiztral[rebibido] 🇨🇴",
+       "Spartan"
       ],
-      "Walker",
-      ""
+      "Panchok",
+      "triple (3 bandas)"
      ]
     ],
     "r": "Cuartos"
@@ -18829,10 +18841,18 @@
     "b": [
      [
       [
-       "EIDP",
-       "JULIX 🇧🇴"
+       "19",
+       "Number VE"
       ],
-      "EIDP",
+      "19",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "NXUZ"
+      ],
+      "Panchok",
       ""
      ]
     ],
@@ -18842,87 +18862,11 @@
     "b": [
      [
       [
-       "Walker",
-       "EIDP"
-      ],
-      "Walker",
-      ""
-     ],
-     [
-      [
-       "19",
-       "Keider",
-       "Vilca"
-      ],
-      "19",
-      "triple (3 bandas); Walk-in 2: 19; Walk-in 2: KEIDER"
-     ],
-     [
-      [
-       "Majiztral",
-       "NXUZ"
-      ],
-      "Majiztral",
-      "ganador según #veredictos; Walk-in 2: Majiztral 🇨🇴; Walk-in 2: Nexus🇵🇪; Revivido: Majiztral 🇨🇴"
-     ],
-     [
-      [
        "Panchok",
-       "Majiztral",
-       "Spartan"
-      ],
-      "Panchok",
-      "triple (3 bandas); Walk-in 2: Panchok 🇨🇱"
-     ],
-     [
-      [
-       "19",
-       "Panchok 🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Majiztral 🇨🇴",
-       "Nexus🇵🇪",
-       "RT 🇲🇽"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Nexus🇵🇪",
-       "Panchok 🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Number 🇱🇷",
        "19"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Walker",
-       "Dios 🇲🇽"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "agus🇦🇷",
-       "Dios 🇲🇽",
-       "Walker"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Panchok",
+      ""
      ]
     ],
     "r": "Final"
@@ -18931,29 +18875,305 @@
   "sv": "DDF",
   "tabla": [
    [
-    "Walker",
+    "Panchok",
+    "Campeón",
+    7500
+   ],
+   [
+    "19",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Number VE",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral[rebibido] 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "RT",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Spartan",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "447": {
+  "dia": "2026-10-10",
+  "escala": "16+",
+  "fecha": "10/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558670384503455827"
+  ],
+  "n": 447,
+  "nombre": "LA REDENCION",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis🇨🇱 & Letrao🇨🇱",
+       "kerkoide 🇪🇨"
+      ],
+      "Oasis🇨🇱 & Letrao🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "IKONOXX🇺🇾"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "Number",
+       "Molusco"
+      ],
+      "Number",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "MCO"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "Makmah"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "BLITZ"
+      ],
+      "Snow",
+      ""
+     ],
+     [
+      [
+       "PIERR🇵🇪",
+       "PichulaMc, Xclusivo"
+      ],
+      "PIERR🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Erian"
+      ],
+      "Tam",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis🇨🇱 & Letrao🇨🇱",
+       "Guess"
+      ],
+      "Oasis🇨🇱 & Letrao🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Number"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Zignos"
+      ],
+      "Snow",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "PIERR🇵🇪"
+      ],
+      "Tam",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis🇨🇱 & Letrao🇨🇱",
+       "Verc"
+      ],
+      "Oasis🇨🇱 & Letrao🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Snow",
+       "Tam"
+      ],
+      "Snow",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis🇨🇱 & Letrao🇨🇱",
+       "Snow"
+      ],
+      "Oasis🇨🇱 & Letrao🇨🇱",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis🇨🇱 & Letrao🇨🇱",
     "Campeón",
     10000
    ],
    [
-    "EIDP",
+    "Snow",
     "Subcampeón",
     7500
    ],
    [
-    "EmiZor",
+    "Tam",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Guess",
     "Cuartos",
     2500
    ],
    [
-    "Number VE",
+    "Number",
     "Cuartos",
     2500
+   ],
+   [
+    "PIERR🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "IKONOXX🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "kerkoide 🇪🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    625
    ],
    [
     "Xclusivo",
-    "Cuartos",
-    2500
+    "Octavos",
+    625
    ]
   ]
  }

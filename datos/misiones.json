@@ -41,7 +41,7 @@
     ],
     "19": [
      0,
-     3,
+     4,
      1
     ],
     "6. 🇨🇴 VR": [
@@ -249,6 +249,11 @@
      1,
      8
     ],
+    "Dios": [
+     0,
+     0,
+     8
+    ],
     "Dm🇵🇪": [
      0,
      0,
@@ -281,7 +286,7 @@
     ],
     "EIDP": [
      1,
-     5,
+     3,
      2
     ],
     "Eclipsito": [
@@ -394,6 +399,11 @@
      1,
      4
     ],
+    "Guess": [
+     1,
+     1,
+     8
+    ],
     "HH": [
      1,
      1,
@@ -451,7 +461,7 @@
     ],
     "Julix🇧🇴": [
      0,
-     1,
+     0,
      4
     ],
     "Jult": [
@@ -576,8 +586,13 @@
     ],
     "Majiztral": [
      1,
-     2,
+     1,
      4
+    ],
+    "Majiztral[rebibido] 🇨🇴": [
+     0,
+     0,
+     8
     ],
     "Makmah": [
      1,
@@ -669,10 +684,15 @@
      0,
      16
     ],
+    "Number": [
+     1,
+     1,
+     8
+    ],
     "Number VE": [
      0,
      0,
-     8
+     4
     ],
     "OG": [
      1,
@@ -689,6 +709,16 @@
      7,
      1
     ],
+    "Oasis🇨🇱 & Letrao🇨🇱": [
+     1,
+     4,
+     1
+    ],
+    "PIERR🇵🇪": [
+     1,
+     0,
+     8
+    ],
     "PRAISERIZA": [
      1,
      6,
@@ -701,7 +731,7 @@
     ],
     "Panchok": [
      1,
-     8,
+     10,
      1
     ],
     "Paria": [
@@ -881,7 +911,7 @@
     ],
     "Snow": [
      1,
-     4,
+     7,
      1
     ],
     "Soneto": [
@@ -902,11 +932,11 @@
     "Spartan": [
      0,
      0,
-     16
+     8
     ],
     "Tam": [
      1,
-     0,
+     2,
      2
     ],
     "Teito": [
@@ -976,12 +1006,17 @@
     ],
     "Verc": [
      1,
-     0,
+     2,
      2
+    ],
+    "Vilca": [
+     0,
+     0,
+     8
     ],
     "Walker": [
      1,
-     6,
+     4,
      1
     ],
     "Xclusivo": [
@@ -1016,7 +1051,7 @@
     ],
     "Zignos": [
      1,
-     3,
+     4,
      1
     ],
     "araya": [
@@ -1053,6 +1088,11 @@
      0,
      1,
      99
+    ],
+    "kerkoide 🇪🇨": [
+     1,
+     0,
+     16
     ],
     "melomaniaco": [
      1,
@@ -1141,6 +1181,7 @@
     "Global Hustler": 1000,
     "Gocho": 300,
     "Greyfitsh🇵🇦": 300,
+    "Guess": 300,
     "HH": 300,
     "Henry": 300,
     "Holden": 300,
@@ -1188,9 +1229,12 @@
     "Neo": 1300,
     "Noa": 1000,
     "Noone": 300,
+    "Number": 300,
     "OG": 2900,
     "ONZASS": 300,
     "Oasis": 2900,
+    "Oasis🇨🇱 & Letrao🇨🇱": 2900,
+    "PIERR🇵🇪": 300,
     "PRAISERIZA": 2900,
     "PROMETHEUS BIB 🇨🇴": 300,
     "Panchok": 2900,
@@ -1253,6 +1297,7 @@
     "dxg": 300,
     "fleivaman": 1300,
     "ikonoxx🇺🇾": 300,
+    "kerkoide 🇪🇨": 300,
     "melomaniaco": 300,
     "rodrilp": 300,
     "setesfifi": 300,
@@ -1322,6 +1367,7 @@
   "Global Hustler": 1000,
   "Gocho": 300,
   "Greyfitsh🇵🇦": 300,
+  "Guess": 300,
   "HH": 300,
   "Henry": 300,
   "Holden": 300,
@@ -1369,9 +1415,12 @@
   "Neo": 1300,
   "Noa": 1000,
   "Noone": 300,
+  "Number": 300,
   "OG": 2900,
   "ONZASS": 300,
   "Oasis": 2900,
+  "Oasis🇨🇱 & Letrao🇨🇱": 2900,
+  "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
   "Panchok": 2900,
@@ -1434,6 +1483,7 @@
   "dxg": 300,
   "fleivaman": 1300,
   "ikonoxx🇺🇾": 300,
+  "kerkoide 🇪🇨": 300,
   "melomaniaco": 300,
   "rodrilp": 300,
   "setesfifi": 300,

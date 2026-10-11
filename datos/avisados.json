@@ -5932,5 +5932,464 @@
    ]
   ],
   "v": 2
+ },
+ "446": {
+  "antes": {
+   "19": [
+    184,
+    90,
+    true
+   ],
+   "Dios": [
+    141,
+    318,
+    false
+   ],
+   "EIDP": [
+    165,
+    45,
+    true
+   ],
+   "Keider": [
+    93,
+    156,
+    false
+   ],
+   "Majiztral": [
+    19,
+    24,
+    false
+   ],
+   "NXUZ": [
+    22,
+    27,
+    false
+   ],
+   "Number VE": [
+    43,
+    61,
+    false
+   ],
+   "Panchok": [
+    5,
+    6,
+    false
+   ],
+   "RT": [
+    35,
+    47,
+    false
+   ],
+   "Spartan": [
+    309,
+    291,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "19",
+    "Keider",
+    "19"
+   ],
+   [
+    "19",
+    "Vilca",
+    "19"
+   ],
+   [
+    "NXUZ",
+    "Majiztral",
+    "NXUZ"
+   ],
+   [
+    "NXUZ",
+    "RT",
+    "NXUZ"
+   ],
+   [
+    "Number VE",
+    "EIDP",
+    "Number VE"
+   ],
+   [
+    "Number VE",
+    "Dios",
+    "Number VE"
+   ],
+   [
+    "Panchok",
+    "Majiztral[rebibido] 🇨🇴",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Spartan",
+    "Panchok"
+   ],
+   [
+    "19",
+    "Number VE",
+    "19"
+   ],
+   [
+    "Panchok",
+    "NXUZ",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "19",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "19": 3,
+   "Dios": 1,
+   "EIDP": 6,
+   "Keider": 2,
+   "Majiztral": 12,
+   "NXUZ": 11,
+   "Number VE": 11,
+   "Panchok": 10,
+   "RT": 8,
+   "Spartan": 1
+  },
+  "fecha": "10/10",
+  "firma": "2429b38aa35c14ff",
+  "msg": "1558711595163590740",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
+  "num": 446,
+  "participantes": 12,
+  "sello": {
+   "Panchok": "b68df9627052:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-11T05:23:22Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    7500
+   ],
+   [
+    "19",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Number VE",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "RT",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dios",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Majiztral[rebibido] 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Spartan",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "447": {
+  "antes": {
+   "BLITZ": [
+    196,
+    114,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Guess": [
+    119,
+    216,
+    false
+   ],
+   "MCO": [
+    18,
+    23,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "Molusco": [
+    37,
+    51,
+    false
+   ],
+   "Number": [
+    79,
+    124,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ],
+   "Snow": [
+    2,
+    3,
+    false
+   ],
+   "Tam": [
+    167,
+    48,
+    true
+   ],
+   "Verc": [
+    78,
+    123,
+    false
+   ],
+   "Xclusivo": [
+    158,
+    18,
+    true
+   ],
+   "Zignos": [
+    11,
+    14,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis🇨🇱 & Letrao🇨🇱",
+    "kerkoide 🇪🇨",
+    "Oasis🇨🇱 & Letrao🇨🇱"
+   ],
+   [
+    "Guess",
+    "IKONOXX🇺🇾",
+    "Guess"
+   ],
+   [
+    "Number",
+    "Molusco",
+    "Number"
+   ],
+   [
+    "Verc",
+    "MCO",
+    "Verc"
+   ],
+   [
+    "Zignos",
+    "Makmah",
+    "Zignos"
+   ],
+   [
+    "Snow",
+    "BLITZ",
+    "Snow"
+   ],
+   [
+    "PIERR🇵🇪",
+    "PichulaMc, Xclusivo",
+    "PIERR🇵🇪"
+   ],
+   [
+    "Tam",
+    "Erian",
+    "Tam"
+   ],
+   [
+    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Guess",
+    "Oasis🇨🇱 & Letrao🇨🇱"
+   ],
+   [
+    "Verc",
+    "Number",
+    "Verc"
+   ],
+   [
+    "Snow",
+    "Zignos",
+    "Snow"
+   ],
+   [
+    "Tam",
+    "PIERR🇵🇪",
+    "Tam"
+   ],
+   [
+    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Verc",
+    "Oasis🇨🇱 & Letrao🇨🇱"
+   ],
+   [
+    "Snow",
+    "Tam",
+    "Snow"
+   ],
+   [
+    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Snow",
+    "Oasis🇨🇱 & Letrao🇨🇱"
+   ]
+  ],
+  "ev_antes": {
+   "BLITZ": 3,
+   "Erian": 25,
+   "Guess": 3,
+   "MCO": 12,
+   "Makmah": 34,
+   "Molusco": 9,
+   "Number": 5,
+   "PichulaMc": 28,
+   "Snow": 29,
+   "Tam": 7,
+   "Verc": 1,
+   "Xclusivo": 14,
+   "Zignos": 14
+  },
+  "fecha": "10/10",
+  "firma": "82a377f6e78bc2b1",
+  "msg": "1558711597571121174",
+  "nombre": "LA REDENCION",
+  "num": 447,
+  "participantes": 18,
+  "sello": {
+   "Oasis🇨🇱 & Letrao🇨🇱": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-11T05:23:24Z",
+  "tabla": [
+   [
+    "Oasis🇨🇱 & Letrao🇨🇱",
+    "Campeón",
+    10000
+   ],
+   [
+    "Snow",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PIERR🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "kerkoide 🇪🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "IKONOXX🇺🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    625
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

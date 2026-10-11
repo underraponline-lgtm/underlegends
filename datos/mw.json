@@ -45,10 +45,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 23,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 7250,
+    "caza": {
+     "n": 447,
+     "evento": "LA REDENCION",
+     "sv": "FFA",
+     "t": "2026-10-11T02:39:38Z",
+     "por": [
+      {
+       "n": "Verc",
+       "cobra": 13500
+      }
+     ]
+    }
    },
    {
     "n": "Molusco",
@@ -58,10 +70,22 @@
     "nivel": "D",
     "base": 4000,
     "o": 49,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 5000,
+    "caza": {
+     "n": 447,
+     "evento": "LA REDENCION",
+     "sv": "FFA",
+     "t": "2026-10-11T02:39:38Z",
+     "por": [
+      {
+       "n": "Number",
+       "cobra": 10000
+      }
+     ]
+    }
    }
   ],
   "snap": {
