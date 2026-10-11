@@ -3938,9 +3938,14 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-ffs.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-sr.webp"
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/sv-sr.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/verc/temporada.webp"
  },
  "vilca": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vilca/sv-ddf.webp",
