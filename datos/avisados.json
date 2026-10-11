@@ -5678,5 +5678,86 @@
    ]
   ],
   "v": 2
+ },
+ "444": {
+  "antes": {
+   "Erian": [
+    7,
+    8,
+    false
+   ],
+   "Noa": [
+    244,
+    201,
+    true
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "CrisZJ",
+    "Gerox 🇨🇴",
+    "CrisZJ"
+   ],
+   [
+    "Noa",
+    "Erian",
+    "Noa"
+   ],
+   [
+    "Noa",
+    "• Semifinal 2: JEIXDER",
+    "Noa"
+   ],
+   [
+    "PichulaMc",
+    "Noa",
+    "PichulaMc"
+   ]
+  ],
+  "ev_antes": {
+   "Erian": 24,
+   "Noa": 2,
+   "PichulaMc": 27
+  },
+  "fecha": "10/10",
+  "firma": "553232c6d1c02fd8",
+  "msg": "1558643633110917121",
+  "nombre": "(sin titulo)",
+  "num": 444,
+  "participantes": 11,
+  "sello": {
+   "PichulaMc": "d93fa81569c4:17c4f13e63d4"
+  },
+  "sv": "DDF",
+  "t": "2026-10-11T00:53:19Z",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Noa",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Gerox 🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

@@ -18785,5 +18785,112 @@
     2500
    ]
   ]
+ },
+ "444": {
+  "dia": "2026-10-10",
+  "escala": "8-15",
+  "fecha": "10/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1558628194674942003"
+  ],
+  "n": 444,
+  "nombre": "(sin titulo)",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Gerox 🇨🇴"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Noa",
+       "Erian"
+      ],
+      "Noa",
+      ""
+     ],
+     [
+      [
+       "• PICHULA",
+       "Lrs🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Noa",
+       "• Semifinal 2: JEIXDER"
+      ],
+      "Noa",
+      "Walk-in 1: • Semifinal 2: JEIXDER"
+     ],
+     [
+      [
+       "CrisZJ🇵🇪",
+       "Jeixder"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "• Semifinal 1: PICHULA",
+       "CrisZJ🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Noa"
+      ],
+      "PichulaMc",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Noa",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Gerox 🇨🇴",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
