@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-11T03:24:24+00:00",
+ "cuando": "2026-10-11T03:54:29+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3526,7 +3526,7 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "868218509975498805",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T15:39:20"
+   "inscripciones_cuando": "2026-10-11T03:24:47"
   },
   {
    "nombre": "CONFIRMADOS PARA RED BULL CREW ARGENTINA 2026",
@@ -3538,7 +3538,7 @@
    "guild_id": "765045834647339038",
    "organizador": "",
    "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
+   "cupos_texto": "REGIONAL",
    "inscriptos": null,
    "cupo_total": null,
    "rango": "",
@@ -3557,7 +3557,7 @@
    "autor": "Leonar-T",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T15:39:20"
+   "inscripciones_cuando": "2026-10-11T03:24:47"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -3581,7 +3581,7 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T15:39:20"
+   "inscripciones_cuando": "2026-10-11T03:24:47"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -3605,7 +3605,7 @@
    "autor": "Mosquitrap 🦟🇦🇷",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T15:39:20"
+   "inscripciones_cuando": "2026-10-11T03:24:47"
   },
   {
    "nombre": "ES UN PLACER ANUNCIARLES EL EQUIPO QUE NOS AYUDARÁ EN ESTA NACIONAL",
@@ -3636,7 +3636,7 @@
    "autor": "Leonar-T",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T15:39:20"
+   "inscripciones_cuando": "2026-10-11T03:24:47"
   },
   {
    "nombre": "COMPE CHILL",
@@ -3660,10 +3660,55 @@
    "autor": "BETELGEUSE",
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-10T15:39:20"
+   "inscripciones_cuando": "2026-10-11T03:24:47"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Caliz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1558686143808274475",
+   "cuando": "2026-10-11T03:42:15"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Eyow si 🇵🇾",
+   "quien": "jvoar3crew._71538",
+   "discord_id": "1488670857265156217",
+   "msg_id": "1558682051446706187",
+   "cuando": "2026-10-11T03:25:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1558681893535490081",
+   "cuando": "2026-10-11T03:25:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mr.kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1558681882776834139",
+   "cuando": "2026-10-11T03:25:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Leyenda.X5 🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1558681853467041847",
+   "cuando": "2026-10-11T03:25:12"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

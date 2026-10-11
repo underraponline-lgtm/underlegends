@@ -578,14 +578,6 @@
 "temporada"
 ]
 },
-"lrs": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "jult": {
 "rg": "",
 "c": [
@@ -664,6 +656,14 @@
 "19": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"lrs": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
