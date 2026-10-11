@@ -270,6 +270,14 @@
 "temporada"
 ]
 },
+"criszj": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "alexi": {
 "rg": "",
 "c": [
@@ -304,13 +312,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"criszj": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -577,6 +578,14 @@
 "temporada"
 ]
 },
+"lrs": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "jult": {
 "rg": "",
 "c": [
@@ -646,13 +655,6 @@
 ]
 },
 "erik": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"lrs": {
 "rg": "",
 "c": [
 "servidor",
@@ -1098,6 +1100,13 @@
 "temporada"
 ]
 },
+"keider": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "bna": {
 "rg": "",
 "c": []
@@ -1209,6 +1218,13 @@
 "setesfifi": {
 "rg": "",
 "c": []
+},
+"jeixder": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "humildad": {
 "rg": "",
@@ -1350,13 +1366,6 @@
 "prometheusbib": {
 "rg": "",
 "c": []
-},
-"keider": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "ikonox": {
 "rg": "",
@@ -1671,13 +1680,6 @@
 "c": []
 },
 "fin": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"jeixder": {
 "rg": "",
 "c": [
 "servidor",
@@ -5283,6 +5285,22 @@
 "Verc"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T03:26:17Z",
+"quien": [
+"CrisZJ"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T03:26:17Z",
+"quien": [
+"LRS"
+],
+"carta": "pais"
 }
 ]
 }

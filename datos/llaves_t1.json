@@ -18795,10 +18795,18 @@
   ],
   "n": 444,
   "nombre": "(sin titulo)",
-  "participantes": 11,
+  "participantes": 9,
   "rondas": [
    {
     "b": [
+     [
+      [
+       "PichulaMc",
+       "LRS"
+      ],
+      "PichulaMc",
+      ""
+     ],
      [
       [
        "CrisZJ",
@@ -18809,19 +18817,19 @@
      ],
      [
       [
+       "JEIXDER",
+       "Keider"
+      ],
+      "JEIXDER",
+      ""
+     ],
+     [
+      [
        "Noa",
        "Erian"
       ],
       "Noa",
       ""
-     ],
-     [
-      [
-       "• PICHULA",
-       "Lrs🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -18830,30 +18838,35 @@
     "b": [
      [
       [
+       "PichulaMc",
+       "CrisZJ"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
        "Noa",
        "JEIXDER"
       ],
       "Noa",
       ""
-     ],
-     [
-      [
-       "CrisZJ🇵🇪",
-       "Jeixder"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "• Semifinal 1: PICHULA",
-       "CrisZJ🇵🇪"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "JEIXDER"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
    },
    {
     "b": [
@@ -18882,12 +18895,32 @@
     5000
    ],
    [
+    "CrisZJ",
+    "Tercero",
+    4000
+   ],
+   [
+    "JEIXDER",
+    "Cuarto",
+    3000
+   ],
+   [
     "Erian",
     "Cuartos",
     2000
    ],
    [
     "Gerox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
     "Cuartos",
     2000
    ]

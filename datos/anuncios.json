@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-11T02:54:52+00:00",
+ "cuando": "2026-10-11T03:24:24+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3061,8 +3061,7 @@
      "John pork"
     ],
     "dj": [
-     "John pork",
-     "o quien sea"
+     "John pork"
     ]
    },
    "autor": "John pork",
@@ -3530,6 +3529,37 @@
    "inscripciones_cuando": "2026-10-10T15:39:20"
   },
   {
+   "nombre": "CONFIRMADOS PARA RED BULL CREW ARGENTINA 2026",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1558680285284147273",
+   "cuando": "2026-10-11T03:18:58",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "host": [
+     "Leonar-T 🇲🇽"
+    ],
+    "dj": [
+     "Ardean 🇵🇪"
+    ]
+   },
+   "autor": "Leonar-T",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-10T15:39:20"
+  },
+  {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
@@ -3634,6 +3664,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1558679874128977921",
+   "cuando": "2026-10-11T03:17:20"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Blitz",
+   "quien": "nahanah",
+   "discord_id": "1023727385822122104",
+   "msg_id": "1558679833175658597",
+   "cuando": "2026-10-11T03:17:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Musicdum 🇵🇪",
+   "quien": "hkx_2511",
+   "discord_id": "625195606960504832",
+   "msg_id": "1558677384671268936",
+   "cuando": "2026-10-11T03:07:27"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1558675488019587083",
+   "cuando": "2026-10-11T02:59:55"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

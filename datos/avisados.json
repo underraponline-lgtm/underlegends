@@ -5700,9 +5700,19 @@
   "canal": "1469943905771585708",
   "duelos": [
    [
+    "PichulaMc",
+    "LRS",
+    "PichulaMc"
+   ],
+   [
     "CrisZJ",
-    "Gerox 🇨🇴",
+    "Gerox",
     "CrisZJ"
+   ],
+   [
+    "JEIXDER",
+    "Keider",
+    "JEIXDER"
    ],
    [
     "Noa",
@@ -5710,9 +5720,19 @@
     "Noa"
    ],
    [
+    "PichulaMc",
+    "CrisZJ",
+    "PichulaMc"
+   ],
+   [
     "Noa",
-    "• Semifinal 2: JEIXDER",
+    "JEIXDER",
     "Noa"
+   ],
+   [
+    "CrisZJ",
+    "JEIXDER",
+    "CrisZJ"
    ],
    [
     "PichulaMc",
@@ -5726,11 +5746,11 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "553232c6d1c02fd8",
+  "firma": "e8642b2f399159df",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
-  "participantes": 11,
+  "participantes": 9,
   "sello": {
    "PichulaMc": "d93fa81569c4:17c4f13e63d4"
   },
@@ -5748,7 +5768,27 @@
     5000
    ],
    [
-    "Gerox 🇨🇴",
+    "CrisZJ",
+    "Tercero",
+    4000
+   ],
+   [
+    "JEIXDER",
+    "Cuarto",
+    3000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Gerox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Keider",
     "Cuartos",
     2000
    ],
