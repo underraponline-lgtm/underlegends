@@ -221,7 +221,7 @@
   "av": "",
   "pos_pais": "1/5",
   "arc_pais": 100,
-  "pos_sv": "1/12",
+  "pos_sv": "1/11",
   "arc_sv": 100
  },
  {
@@ -673,8 +673,8 @@
   "av": "",
   "pos_pais": "3/21",
   "arc_pais": 90,
-  "pos_sv": "2/12",
-  "arc_sv": 92
+  "pos_sv": "2/11",
+  "arc_sv": 91
  },
  {
   "full": "BTRX",
@@ -820,10 +820,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "1/15",
-  "arc_pais": 100,
-  "pos_sv": "3/12",
-  "arc_sv": 83
+  "pos_pais": "",
+  "arc_pais": 0,
+  "pos_sv": "",
+  "arc_sv": 0
  },
  {
   "full": "Provenza",
@@ -1007,10 +1007,10 @@
   "subrango": "C-",
   "ovr": 0,
   "av": "",
-  "pos_pais": "2/15",
-  "arc_pais": 93,
-  "pos_sv": "4/12",
-  "arc_sv": 75
+  "pos_pais": "1/14",
+  "arc_pais": 100,
+  "pos_sv": "3/11",
+  "arc_sv": 82
  },
  {
   "full": "Kochi",
@@ -2016,8 +2016,8 @@
   "av": "",
   "pos_pais": "9/19",
   "arc_pais": 58,
-  "pos_sv": "5/12",
-  "arc_sv": 67
+  "pos_sv": "4/11",
+  "arc_sv": 73
  },
  {
   "full": "Molusco",
@@ -2422,8 +2422,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "3/15",
-  "arc_pais": 87,
+  "pos_pais": "2/14",
+  "arc_pais": 93,
   "pos_sv": "32/117",
   "arc_sv": 74
  },
@@ -2496,8 +2496,8 @@
   "subrango": "D-",
   "ovr": 0,
   "av": "",
-  "pos_pais": "4/15",
-  "arc_pais": 80,
+  "pos_pais": "3/14",
+  "arc_pais": 86,
   "pos_sv": "33/117",
   "arc_sv": 73
  },
@@ -2721,8 +2721,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "6/12",
-  "arc_sv": 58
+  "pos_sv": "5/11",
+  "arc_sv": 64
  },
  {
   "full": "Fazer",
@@ -3946,8 +3946,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "5/15",
-  "arc_pais": 73,
+  "pos_pais": "4/14",
+  "arc_pais": 79,
   "pos_sv": "51/117",
   "arc_sv": 57
  },
@@ -4504,8 +4504,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "6/15",
-  "arc_pais": 67,
+  "pos_pais": "5/14",
+  "arc_pais": 71,
   "pos_sv": "55/117",
   "arc_sv": 54
  },
@@ -4952,8 +4952,8 @@
   "av": "",
   "pos_pais": "6/14",
   "arc_pais": 64,
-  "pos_sv": "7/12",
-  "arc_sv": 50
+  "pos_sv": "6/11",
+  "arc_sv": 55
  },
  {
   "full": "YOUNG VLAD 🇨🇴",
@@ -5358,8 +5358,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "7/15",
-  "arc_pais": 60,
+  "pos_pais": "6/14",
+  "arc_pais": 64,
   "pos_sv": "63/117",
   "arc_sv": 47
  },
@@ -6028,8 +6028,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "8/15",
-  "arc_pais": 53,
+  "pos_pais": "7/14",
+  "arc_pais": 57,
   "pos_sv": "68/117",
   "arc_sv": 43
  },
@@ -6216,8 +6216,8 @@
   "av": "",
   "pos_pais": "15/21",
   "arc_pais": 33,
-  "pos_sv": "8/12",
-  "arc_sv": 42
+  "pos_sv": "7/11",
+  "arc_sv": 45
  },
  {
   "full": "Tusicario",
@@ -6662,8 +6662,8 @@
   "av": "",
   "pos_pais": "9/14",
   "arc_pais": 43,
-  "pos_sv": "9/12",
-  "arc_sv": 33
+  "pos_sv": "8/11",
+  "arc_sv": 36
  },
  {
   "full": "Alonso",
@@ -7110,8 +7110,8 @@
   "av": "",
   "pos_pais": "8/13",
   "arc_pais": 46,
-  "pos_sv": "10/12",
-  "arc_sv": 25
+  "pos_sv": "9/11",
+  "arc_sv": 27
  },
  {
   "full": "MATICERNA",
@@ -8076,8 +8076,8 @@
   "av": "",
   "pos_pais": "18/19",
   "arc_pais": 11,
-  "pos_sv": "11/12",
-  "arc_sv": 17
+  "pos_sv": "10/11",
+  "arc_sv": 18
  },
  {
   "full": "MetriOdin",
@@ -8407,8 +8407,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "9/15",
-  "arc_pais": 47,
+  "pos_pais": "8/14",
+  "arc_pais": 50,
   "pos_sv": "98/117",
   "arc_sv": 17
  },
@@ -9000,8 +9000,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "10/15",
-  "arc_pais": 40,
+  "pos_pais": "9/14",
+  "arc_pais": 43,
   "pos_sv": "101/117",
   "arc_sv": 15
  },
@@ -9111,8 +9111,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "11/15",
-  "arc_pais": 33,
+  "pos_pais": "10/14",
+  "arc_pais": 36,
   "pos_sv": "102/117",
   "arc_sv": 14
  },
@@ -9629,10 +9629,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "12/15",
-  "arc_pais": 27,
-  "pos_sv": "12/12",
-  "arc_sv": 8
+  "pos_pais": "11/14",
+  "arc_pais": 29,
+  "pos_sv": "11/11",
+  "arc_sv": 9
  },
  {
   "full": "Gerox",
@@ -12409,8 +12409,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "13/15",
-  "arc_pais": 20,
+  "pos_pais": "12/14",
+  "arc_pais": 21,
   "pos_sv": "8/12",
   "arc_sv": 42
  },
@@ -12558,8 +12558,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "14/15",
-  "arc_pais": 13,
+  "pos_pais": "13/14",
+  "arc_pais": 14,
   "pos_sv": "111/117",
   "arc_sv": 6
  },
@@ -12706,7 +12706,7 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "15/15",
+  "pos_pais": "14/14",
   "arc_pais": 7,
   "pos_sv": "112/117",
   "arc_sv": 5
