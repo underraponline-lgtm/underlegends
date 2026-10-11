@@ -478,6 +478,13 @@
 "temporada"
 ]
 },
+"number": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "teito": {
 "rg": "E",
 "c": [
@@ -522,13 +529,6 @@
 ]
 },
 "kochi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"number": {
 "rg": "",
 "c": [
 "servidor",
