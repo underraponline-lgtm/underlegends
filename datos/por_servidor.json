@@ -4096,17 +4096,6 @@
     "racha": "0/0"
    }
   },
-  "Pedrinho Matador 🇧🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 688,
-    "racha": "0/0"
-   }
-  },
   "Personality": {
    "FFA": {
     "duelos": "",
@@ -5716,11 +5705,11 @@
    },
    "FFA": {
     "duelos": "4/8",
-    "ev": 11,
+    "ev": 12,
     "oro": 2,
-    "ovr": 69,
+    "ovr": 70,
     "pod": 4,
-    "pts": 75894,
+    "pts": 76582,
     "racha": "1/2"
    },
    "SR": {
