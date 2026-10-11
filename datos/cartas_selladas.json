@@ -30,10 +30,10 @@
    "temporada": "1b651b6a31d0:17c4f13e63d4"
   },
   "ARDEAN": {
-   "competitivo": "f83bb94d8e77:f77dc8dab350",
+   "competitivo": "35ffcbcc0b17:f77dc8dab350",
    "pais": "247f664c88ec:9bd767971dd0",
    "servidor": "d2deb007a009:23815767166b:baabdf",
-   "temporada": "83d9a01d2004:17c4f13e63d4"
+   "temporada": "7712c75c6d19:17c4f13e63d4"
   },
   "AREZ": {
    "servidor": "fb0e106af44e:23815767166b:90ce53",
@@ -844,10 +844,10 @@
    "temporada": "e73a788d5d97:17c4f13e63d4"
   },
   "Juasmio": {
-   "competitivo": "a0b0363c505c:f77dc8dab350",
+   "competitivo": "387471bd8346:f77dc8dab350",
    "pais": "d3ae27545b70:9bd767971dd0",
    "servidor": "0bee67940072:23815767166b:3ce074",
-   "temporada": "f57a1fadd3ec:17c4f13e63d4"
+   "temporada": "36db94fc2ae2:17c4f13e63d4"
   },
   "Jult": {
    "competitivo": "16f988d2a926:f77dc8dab350",
@@ -904,10 +904,10 @@
    "servidor": "fee8c99af02f:23815767166b:980594"
   },
   "Kochi": {
-   "competitivo": "bf2ac67c8bf8:f77dc8dab350",
+   "competitivo": "b10602fcc4c1:f77dc8dab350",
    "pais": "ea948940d1e3:9bd767971dd0",
    "servidor": "93e734cd4225:23815767166b:3ce074",
-   "temporada": "ef10757fe037:17c4f13e63d4"
+   "temporada": "90c0f0400ec0:17c4f13e63d4"
   },
   "Konan": {
    "servidor": "d398ba2fa296:23815767166b:3ce074"
@@ -1375,10 +1375,10 @@
    "temporada": "7d1894e5de12:17c4f13e63d4"
   },
   "Number": {
-   "competitivo": "14cb4181f0f2:f77dc8dab350",
+   "competitivo": "2c092a391c24:f77dc8dab350",
    "pais": "43b8b8ef664f:9bd767971dd0",
-   "servidor": "00f0fc83400f:23815767166b:a4a87a",
-   "temporada": "14b57b794592:17c4f13e63d4"
+   "servidor": "486f6f0fbaee:23815767166b:a4a87a",
+   "temporada": "651691ceee5a:17c4f13e63d4"
   },
   "Number VE": {
    "competitivo": "8f4c2e6cc223:f77dc8dab350",
@@ -1466,16 +1466,16 @@
   },
   "Piyi": {},
   "Player": {
-   "competitivo": "51b57a08f78e:f77dc8dab350",
+   "competitivo": "77d9a83d76ad:f77dc8dab350",
    "pais": "b75e8fcb4760:9bd767971dd0",
    "servidor": "d5ae3505f8ce:23815767166b:039304",
-   "temporada": "7ebecfc8c300:17c4f13e63d4"
+   "temporada": "63c10eaab67d:17c4f13e63d4"
   },
   "Polosport": {
-   "competitivo": "e95df8d45301:f77dc8dab350",
+   "competitivo": "d2d4cc29b47c:f77dc8dab350",
    "pais": "6b8cddf007f8:9bd767971dd0",
    "servidor": "a763d4fad4f5:23815767166b:c589ca",
-   "temporada": "6db96fc3ac2e:17c4f13e63d4"
+   "temporada": "f042980949c4:17c4f13e63d4"
   },
   "Pomberito": {
    "servidor": "c199427bed1f:23815767166b:90d6e7",
@@ -1739,10 +1739,10 @@
    "temporada": "f7e44ff2d455:17c4f13e63d4"
   },
   "Soneto": {
-   "competitivo": "ec184b76da5c:f77dc8dab350",
+   "competitivo": "7d689d689efb:f77dc8dab350",
    "pais": "24fb9144de3d:9bd767971dd0",
    "servidor": "504f5ac66a8f:23815767166b:43d041",
-   "temporada": "1575a8c0190c:17c4f13e63d4"
+   "temporada": "4c897bcde0d5:17c4f13e63d4"
   },
   "Sosa": {
    "competitivo": "995c3886a474:f77dc8dab350",
@@ -1785,10 +1785,10 @@
    "temporada": "cfd3329862e1:17c4f13e63d4"
   },
   "Teito": {
-   "competitivo": "2ae869f9b164:f77dc8dab350",
+   "competitivo": "080a84a0c747:f77dc8dab350",
    "pais": "203003608170:9bd767971dd0",
    "servidor": "f2eb9283fe1b:23815767166b:baabdf",
-   "temporada": "cef49c327142:17c4f13e63d4"
+   "temporada": "33afa7529e5c:17c4f13e63d4"
   },
   "Telmex": {
    "servidor": "a44b3afc37b9:23815767166b:874d2d"
@@ -1881,10 +1881,10 @@
    "temporada": "07ceb9fdeb25:17c4f13e63d4"
   },
   "Verc": {
-   "competitivo": "7dff1731266f:f77dc8dab350",
+   "competitivo": "0a2904b158fd:f77dc8dab350",
    "pais": "422d2bae77fd:9bd767971dd0",
-   "servidor": "0baa2bf1241c:23815767166b:0a3db8",
-   "temporada": "743ab55bfe1a:17c4f13e63d4"
+   "servidor": "6f82fe7c2511:23815767166b:0a3db8",
+   "temporada": "eabcd2603e08:17c4f13e63d4"
   },
   "Vilca": {
    "competitivo": "65ca80452f55:f77dc8dab350",
@@ -2074,9 +2074,9 @@
    "servidor": "17505f71e7f1:23815767166b:88f477"
   },
   "kerkoide": {
-   "competitivo": "8f4304dfa2ff:f77dc8dab350",
-   "pais": "47c9db1920d2:9bd767971dd0",
-   "servidor": "0334af9b5d70:23815767166b:980594"
+   "competitivo": "ee1c2d5128e1:f77dc8dab350",
+   "pais": "7536860ddf8a:9bd767971dd0",
+   "servidor": "ac3276c2849d:23815767166b:d473d6"
   },
   "leteletras": {
    "servidor": "cdef4ee949cc:23815767166b:cd7216",
@@ -2159,5 +2159,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-11T06:17:40+00:00"
+ "cuando": "2026-10-11T06:27:56+00:00"
 }
