@@ -272,12 +272,12 @@
     "nuevos": {
      "ACAD": 2,
      "FFA": 45,
-     "DDF": 11,
+     "DDF": 12,
      "SR": 1
     },
     "gente": {
      "FFA": 170,
-     "DDF": 50,
+     "DDF": 52,
      "SR": 16,
      "ACAD": 14
     },
@@ -285,7 +285,7 @@
    },
    "meta_va": {
     "ACAD": 14,
-    "DDF": 50,
+    "DDF": 52,
     "DRA": 0,
     "FFA": 170,
     "FFS": 0,

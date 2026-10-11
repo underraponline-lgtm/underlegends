@@ -1940,7 +1940,7 @@
     "racha": "0/0"
    }
   },
-  "Gerox 🇨🇴": {
+  "Gerox": {
    "DDF": {
     "duelos": "0/1",
     "ev": 1,
@@ -2246,6 +2246,15 @@
     "ovr": 44,
     "pod": 0,
     "pts": 1406,
+    "racha": "0/0"
+   },
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    },
    "FFA": {
@@ -6073,17 +6082,6 @@
    }
   },
   "• Semifinal 1: JULIX": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "• Semifinal 2: JEIXDER": {
    "DDF": {
     "duelos": "0/1",
     "ev": 0,
