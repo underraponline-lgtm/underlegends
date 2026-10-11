@@ -899,9 +899,12 @@
  },
  "dominick": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-acad.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-dra.webp",
   "sv-efa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-efa.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-ffs.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-frz.webp",
   "sv-ftn": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-ftn.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dominick/sv-sr.webp",
