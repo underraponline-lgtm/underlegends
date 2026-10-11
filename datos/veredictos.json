@@ -5351,6 +5351,39 @@
      []
     ]
    ]
+  },
+  "1558966318336577682": {
+   "id": "1558966318336577682",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791756934485,
+   "ed": 1791757026617,
+   "texto": "`[ CUARTOS ]`\n⌞liam🇵🇦⌝ 🆚 ⌞makmah 🇻🇪⌝ 🆚 ⌞onzas.s 🇻🇪⌝\n⌞Guess 🇻🇪⌝ 🆚 ⌞Hinjkybesuk 🇻🇪⌝ 🆚 ⌞Jupiter 🇲🇽⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "liam🇵🇦",
+      "makmah 🇻🇪",
+      "onzas.s 🇻🇪"
+     ],
+     "makmah 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Guess 🇻🇪",
+      "Hinjkybesuk 🇻🇪",
+      "Jupiter 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }
