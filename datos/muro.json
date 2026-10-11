@@ -885,7 +885,9 @@
 },
 "verc": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "number": {
 "rg": "",
@@ -5273,6 +5275,14 @@
 ],
 "rg": "A",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-11T03:12:26Z",
+"quien": [
+"Verc"
+],
+"carta": "servidor"
 }
 ]
 }
