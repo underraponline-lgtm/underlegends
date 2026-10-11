@@ -61,7 +61,8 @@
     'CUARTOS(?:\\s+DE\\s+FINAL)?|SEMI\\s*-?\\s*FINAL(?:ES)?|SEMIS?|TERCER\\s+LUGAR|GRAN\\s+FINAL|FINAL';
   var PALABRA = /[\p{L}\p{N}_]/u;
   var SEP = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/i;
-  var EQUIPO_NOMBRADO = /([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])/gi;
+  var ETIQUETA_CRUCE = /^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|duelo|combate|llave|match)\s*#?\d*\s*:\s*)?/i;
+  var EQUIPO_NOMBRADO =/([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])/gi;
   var SEP_G = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/gi;
   // 🔴 SIN LOS MARCOS ADENTRO: con el hueco vacío de la plantilla (`⌞⌝ 🆚 ⌞⌝`)
   // la captura saltaba de un ⌞ al siguiente ⌝ y daba el lado «⌝ ⌞». Ver
@@ -89,7 +90,7 @@
   /* 🏛️ el VS y el podio escritos como texto (`:VSr:`, `:1erPuesto:`): `escuchar.VS_TEXTO` y `PODIO_TEXTO` */
   var VS_TEXTO = /(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)\w*:(?!\d)/gi;
   var PODIO_TEXTO = /(?<![<\w]):([123])[a-zº°]*_?puesto\w*:(?!\d)/gi;
-  var TERCER_ENC = /\b3\s*(?:er|ro|º|°)?\s*(?:y\s*4\s*(?:to|º|°|o)?\s*)?(?:puesto|lugar)\b/i;
+  var TERCER_ENC = /\b(?:3\s*(?:er|ro|º|°)?|tercer[oa]?)\s*(?:y\s*(?:4\s*(?:to|º|°|o)?|cuarto)\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
     cl: ['CHI', 'CHL', 'CHILE'], co: ['COL', 'COLOMBIA'], cr: ['CRC', 'CRI', 'COSTARICA'], cu: ['CUB', 'CUBA'],
     do: ['DOM', 'DOMINICANA', 'REPUBLICADOMINICANA', 'REPDOM'], ec: ['ECU', 'ECUADOR'],
@@ -311,6 +312,8 @@
     l = String(l || '').replace(EQUIPO_NOMBRADO, function (_m, a, adentro, c) {
       return a + adentro.replace(/\s+(?:y|e)\s+|\s*&\s*/gi, ' + ') + c;
     });
+    // y la etiqueta del cruce: `• Cruce 1: JULIX vs NUMBER` (`escuchar.ETIQUETA_CRUCE`)
+    if (SEP.test(l)) l = l.replace(ETIQUETA_CRUCE, '');
     if (SEP.test(l)) {
       lados = [];
       l.split(SEP_G).forEach(function (seg) {

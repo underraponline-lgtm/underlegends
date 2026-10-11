@@ -1928,6 +1928,64 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "DDF · 19 CUP VOL. 2 (10/10/2026): «• Cruce 1:» y «• Semifinal 1:» delante de cada batalla, «🥉 TERCER PUESTO» como ronda y el podio con el nombre abajo",
+   "texto": "CUARTOS DE FINAL\n• Cruce 1: PICHULA vs LRS\n• Cruce 2: CRISZJ vs GEROX\n• Cruce 3: JEIXDER vs KEIDER\n• Cruce 4: NOA vs ERIAN\n\nSEMIFINALES\n• Semifinal 1: PICHULA vs CRISZJ\n• Semifinal 2: JEIXDER vs NOA\n\n🥉 TERCER PUESTO\n• CRISZJ vs JEIXDER\n🏆 GRAN FINAL\n• PICHULAMC vs NOA\n\n🏆 CUADRO DE HONOR — VOL. 2 🏆\n\n#🥇  1ER LUGAR (CAMPEÓN):\n# PICHULAMC 🇦🇷 \n\n#🥈  2DO LUGAR (SUBCAMPEÓN):\n# NOA 🇲🇽 \n\n#🥉  3ER LUGAR (3ER PUESTO):\n# CRISZJ 🇵🇪 \n\n# 👑 MVP DEL TORNEO:\n# NOA 🇲🇽 \n\n🎙️ Sede: Dimensión del Freestyle (Discord)\n\n🥇 Premio: Carta FIFA Personalizada Única — Vol. 2\n@everyone",
+   "rondas": [
+    [
+     "CUARTOS",
+     [
+      [
+       "PICHULA",
+       "LRS"
+      ],
+      [
+       "CRISZJ",
+       "GEROX"
+      ],
+      [
+       "JEIXDER",
+       "KEIDER"
+      ],
+      [
+       "NOA",
+       "ERIAN"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "PICHULA",
+       "CRISZJ"
+      ],
+      [
+       "JEIXDER",
+       "NOA"
+      ]
+     ]
+    ],
+    [
+     "TERCER LUGAR",
+     [
+      [
+       "CRISZJ",
+       "JEIXDER"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "PICHULAMC",
+       "NOA"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [

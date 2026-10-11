@@ -233,6 +233,10 @@ DELIMS = (re.compile(r'⌞([^⌞⌝]+?)⌝'),
 # shortcode en la MISMA linea (EL RAP FECHA 5, #349), y sin el segundo dos
 # equipos quedaban pegados en uno de seis.
 SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
+#: `• Cruce 1:` / `• Semifinal 2:` al principio de una batalla: ver `nombres_de_linea()`
+#: ⚠️ con la viñeta sola también: `traducir()` ya saca «Cruce 1:» y dejaba «• JULIX» como nombre
+ETIQUETA_CRUCE = re.compile(r'^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|'
+                            r'duelo|combate|llave|match)\s*#?\d*\s*:\s*)?', re.I)
 #: `[Nombre del equipo (A y B)]` -> `[A + B]`: ver `nombres_de_linea()`
 EQUIPO_NOMBRADO = re.compile(r'([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)'
                              r'[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])', re.I)
@@ -326,8 +330,10 @@ VS_ENTRE = (r'(?:(?:[\N{CROSSED SWORDS}\N{DAGGER KNIFE}\N{HEAVY MULTIPLICATION X
 #: el podio con emoji propio: `<:1erPuesto:…>`, `<:2oPuesto:…>`, `<:3erPuesto:…>`
 PODIO_PROPIO = re.compile(r'<a?:([123])[a-z\u00ba\u00b0]*_?puesto\w*:\d+>', re.I)
 #: `3er PUESTO`, `3er Y 4º PUESTO`: un ENCABEZADO, si lo que sigue es una batalla
+#: \ud83d\udd11 y escrito con letras, `\ud83e\udd49 TERCER PUESTO` (19 CUP, DDF, 10/10/2026): sin esto la batalla por el tercero quedaba
+#: sumada a las semifinales
 TERCER_ENC = re.compile(
-    r'\b3\s*(?:er|ro|\u00ba|\u00b0)?\s*(?:y\s*4\s*(?:to|\u00ba|\u00b0|o)?\s*)?'
+    r'\b(?:3\s*(?:er|ro|\u00ba|\u00b0)?|tercer[oa]?)\s*(?:y\s*(?:4\s*(?:to|\u00ba|\u00b0|o)?|cuarto)\s*)?'
     r'(?:puesto|lugar)\b', re.I)
 _BANDERA = '[\U0001F1E6-\U0001F1FF]'
 
@@ -749,6 +755,11 @@ def nombres_de_linea(l):
     # lado se caía entero y Nemi y Personality no figuraban. Los que pelean son los de adentro
     l = EQUIPO_NOMBRADO.sub(lambda m: m.group(1) + re.sub(r'\s+(?:y|e)\s+|\s*&\s*', ' + ', m.group(2))
                             + m.group(3), l)
+    # 🔑 Y LA ETIQUETA DEL CRUCE: `• Cruce 1: JULIX vs NUMBER`, `• Semifinal 1: PICHULA vs CRISZJ` (19 CUP, DDF,
+    # 10/10/2026). «• Semifinal 1: PICHULA» era una persona: el campeón de la VOL. 2 no salía de su semi, y CrisZJ
+    # —tercero en el podio—, Jeixder, Lrs y Keider se quedaban sin puntos
+    if SEP.search(l):
+        l = ETIQUETA_CRUCE.sub('', l)
     if SEP.search(l):
         lados = []
         for seg in SEP.split(l):
@@ -1731,6 +1742,23 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
                          or _parecido(HISTORIA.sub('', n), sig_l)
                          or (not _equipo(n)
                              and _parecido(HISTORIA.sub('', n), miembros))]
+                # 🔑 EL PARECIDO NO LE ROBA EL NOMBRE A OTRO DE LA RONDA (19 CUP, DDF, 10/10/2026). `KEIDER` se
+                # parece a `JEIXDER` y `AGUS` a `AGUSTIN`: los dos «pasaban», cuando el que está en la ronda
+                # siguiente es, con su nombre exacto, otro de ESTA ronda. Sin esto la batalla quedaba sin ganador
+                if len(ganan) > 1:
+                    _h = lambda x: norm(HISTORIA.sub('', x))
+                    ronda_n = {_h(m) for bb in bats for m in bb}
+                    sig_n = {_h(s) for s in sig} | {norm(m) for m in miembros}
+
+                    def _robado(n):
+                        if _h(n) in sig_n:
+                            return False
+                        s = _parecido(HISTORIA.sub('', n), sig_l) or _parecido(n, sig) or \
+                            (None if _equipo(n) else _parecido(HISTORIA.sub('', n), miembros))
+                        return s is not None and _h(s) != _h(n) and _h(s) in ronda_n
+                    _sin = [n for n in ganan if not _robado(n)]
+                    if _sin and len(_sin) < len(ganan):
+                        ganan = _sin
                 # 🔑 EL LADO ESCRITO COMO MENCIÓN, POR SUS NOMBRES CONOCIDOS.
                 # MARRUECOS EN VENTA V.1 (FFA, 26/09/2026) escribe los octavos
                 # SÓLO con `<@id>` y los cuartos con nombres: `norm()` borra la
@@ -2240,8 +2268,10 @@ def _por_negrita(out, rs, negr):
 
 
 #: `3ER PUESTO:` / `TERCER LUGAR:` del podio (y el typo `TECER`)
+#: ⚠️ con la aclaración entre paréntesis: `3ER LUGAR (3ER PUESTO):` y el nombre abajo (19 CUP, DDF, 10/10/2026);
+#: sin esto el «nombre» del tercero era `(3ER PUESTO):`
 TERCERO = re.compile(
-    r'(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)\s*:?\s*[*_`~|]*\s*'
+    r'(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*'
     r'([^\n]{1,80})', re.I)
 
 
@@ -2282,8 +2312,10 @@ def _tercero_del_podio(texto, out, ids=None):
     # ⚠️ LA PRIMERA QUE NOMBRA A ALGUIEN, no la primera a secas: un
     # encabezado `TERCER LUGAR` arriba de su batalla también matchea, y
     # sin esto tapaba al `3ER PUESTO: X` del podio de abajo.
+    # ⚠️ Y SI LO DE ABAJO ES UNA BATALLA (`TERCER LUGAR` / `• CRISZJ vs JEIXDER`), es el encabezado, no el podio
     m = next((x for x in TERCERO.finditer(texto or '')
-              if norm(MENCION.sub('', x.group(1))) or MENCION.search(x.group(1))),
+              if (norm(MENCION.sub('', x.group(1))) or MENCION.search(x.group(1)))
+              and not SEP.search(x.group(1))),
              None)
     if not m:
         return out
@@ -3979,6 +4011,12 @@ def _self_check():
                       '# CUARTOS\n[EZE 🇦🇷 + ZIGNOS 🇩🇴] 🆚 [PARIA SIN REMEDIO 🇦🇷 + JAWA 🇺🇾]')
     otros = resolver('# OCTAVOS\n[PROSU] 🆚 [ZETA]\n[VELATZ] 🆚 [PLAYER]\n'
                      '# CUARTOS\n[PROSU VELATZ NUEVO] 🆚 [OTRO]')
+    cup19 = resolver(traducir(plano(
+        'CUARTOS DE FINAL\n• Cruce 1: PICHULA vs LRS\n• Cruce 2: CRISZJ vs GEROX\n• Cruce 3: JEIXDER vs KEIDER\n'
+        '• Cruce 4: NOA vs ERIAN\n\nSEMIFINALES\n• Semifinal 1: PICHULA vs CRISZJ\n• Semifinal 2: JEIXDER vs NOA\n\n'
+        '🥉 TERCER PUESTO\n• CRISZJ vs JEIXDER\n🏆 GRAN FINAL\n• PICHULAMC vs NOA\n\n'
+        '#🥇  1ER LUGAR (CAMPEÓN):\n# PICHULAMC 🇦🇷 \n\n#🥈  2DO LUGAR (SUBCAMPEÓN):\n# NOA 🇲🇽 \n\n'
+        '#🥉  3ER LUGAR (3ER PUESTO):\n# CRISZJ 🇵🇪 \n')))
     negra = ('# OCTAVOS\n[**A1🇦🇷**] 🆚 [B1🇦🇷]\n[**A2🇦🇷**] 🆚 [B2🇦🇷]\n[**A3🇦🇷**] 🆚 [B3🇦🇷]\n'
              '[C4🇦🇷] 🆚 [**D4🇺🇾**]\n# CUARTOS\n[A1🇦🇷] 🆚 [A2🇦🇷]\n[A3🇦🇷] 🆚 [OTRO🇦🇷]')
     casos = [
@@ -3987,6 +4025,9 @@ def _self_check():
          and ref[2][1] == ['ENEK 🇪🇸 + NEO 🇦🇷', 'C 🇦🇷 + D 🇦🇷']),
         ('la historia pegada `gekto🇦🇷(chianluka🇦🇷)` se queda como venía',
          sin_refuerzos('gekto🇦🇷(chianluka🇦🇷)') == 'gekto🇦🇷(chianluka🇦🇷)'),
+        ('19 CUP (DDF): «• Cruce 1:» y «• Semifinal 1:» no son del nombre, «TERCER PUESTO» es una ronda, '
+         'KEIDER no pasa por parecerse a JEIXDER, y el tercero del podio va con el nombre abajo',
+         [x[2] for x in cup19] == ['PICHULA', 'CRISZJ', 'JEIXDER', 'NOA', 'PICHULA', 'NOA', 'CRISZJ', 'PICHULAMC']),
         ('`[El hijo y el primo del sol (Nemi y Personality)]` es el equipo Nemi + Personality',
          nombres_de_linea('[El hijo y el primo del sol (Nemi y Personality)] 🆚 [kurl+alexiz]')
          == ['Nemi + Personality', 'kurl+alexiz']),
