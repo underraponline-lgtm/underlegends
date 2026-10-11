@@ -30,10 +30,10 @@
    "temporada": "1b651b6a31d0:17c4f13e63d4"
   },
   "ARDEAN": {
-   "competitivo": "35ffcbcc0b17:f77dc8dab350",
+   "competitivo": "f83bb94d8e77:f77dc8dab350",
    "pais": "247f664c88ec:9bd767971dd0",
    "servidor": "d2deb007a009:23815767166b:baabdf",
-   "temporada": "7712c75c6d19:17c4f13e63d4"
+   "temporada": "83d9a01d2004:17c4f13e63d4"
   },
   "AREZ": {
    "servidor": "fb0e106af44e:23815767166b:90ce53",
@@ -904,10 +904,10 @@
    "servidor": "fee8c99af02f:23815767166b:980594"
   },
   "Kochi": {
-   "competitivo": "b10602fcc4c1:f77dc8dab350",
+   "competitivo": "bf2ac67c8bf8:f77dc8dab350",
    "pais": "ea948940d1e3:9bd767971dd0",
    "servidor": "93e734cd4225:23815767166b:3ce074",
-   "temporada": "90c0f0400ec0:17c4f13e63d4"
+   "temporada": "ef10757fe037:17c4f13e63d4"
   },
   "Konan": {
    "servidor": "d398ba2fa296:23815767166b:3ce074"
@@ -1375,10 +1375,10 @@
    "temporada": "7d1894e5de12:17c4f13e63d4"
   },
   "Number": {
-   "competitivo": "2c092a391c24:f77dc8dab350",
+   "competitivo": "702c0d782d97:f77dc8dab350",
    "pais": "43b8b8ef664f:9bd767971dd0",
-   "servidor": "486f6f0fbaee:23815767166b:a4a87a",
-   "temporada": "651691ceee5a:17c4f13e63d4"
+   "servidor": "00f0fc83400f:23815767166b:a4a87a",
+   "temporada": "5eea480de909:17c4f13e63d4"
   },
   "Number VE": {
    "competitivo": "8f4c2e6cc223:f77dc8dab350",
@@ -1466,10 +1466,10 @@
   },
   "Piyi": {},
   "Player": {
-   "competitivo": "77d9a83d76ad:f77dc8dab350",
+   "competitivo": "51b57a08f78e:f77dc8dab350",
    "pais": "b75e8fcb4760:9bd767971dd0",
    "servidor": "d5ae3505f8ce:23815767166b:039304",
-   "temporada": "63c10eaab67d:17c4f13e63d4"
+   "temporada": "7ebecfc8c300:17c4f13e63d4"
   },
   "Polosport": {
    "competitivo": "d2d4cc29b47c:f77dc8dab350",
@@ -1785,10 +1785,10 @@
    "temporada": "cfd3329862e1:17c4f13e63d4"
   },
   "Teito": {
-   "competitivo": "080a84a0c747:f77dc8dab350",
+   "competitivo": "2ae869f9b164:f77dc8dab350",
    "pais": "203003608170:9bd767971dd0",
    "servidor": "f2eb9283fe1b:23815767166b:baabdf",
-   "temporada": "33afa7529e5c:17c4f13e63d4"
+   "temporada": "cef49c327142:17c4f13e63d4"
   },
   "Telmex": {
    "servidor": "a44b3afc37b9:23815767166b:874d2d"
@@ -1884,7 +1884,7 @@
    "competitivo": "0a2904b158fd:f77dc8dab350",
    "pais": "422d2bae77fd:9bd767971dd0",
    "servidor": "6f82fe7c2511:23815767166b:0a3db8",
-   "temporada": "eabcd2603e08:17c4f13e63d4"
+   "temporada": "99f39315e478:17c4f13e63d4"
   },
   "Vilca": {
    "competitivo": "65ca80452f55:f77dc8dab350",
@@ -2159,5 +2159,5 @@
    "servidor": "7f8885a35a6d:23815767166b:d473d6"
   }
  },
- "cuando": "2026-10-11T06:27:56+00:00"
+ "cuando": "2026-10-11T06:31:36+00:00"
 }
