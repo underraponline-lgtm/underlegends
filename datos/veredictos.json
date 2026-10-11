@@ -2112,6 +2112,56 @@
    "b": "SANTI🇦🇷",
    "ganador": "SANTI🇦🇷",
    "votos": "3–0"
+  },
+  "1558892311021101108": {
+   "id": "1558892311021101108",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791739289766,
+   "a": "CARLOSMO🇪🇸",
+   "b": "MEDSTER🇪🇸",
+   "ganador": "CARLOSMO🇪🇸",
+   "votos": "2–0"
+  },
+  "1558894395015700573": {
+   "id": "1558894395015700573",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "pub": 1791739786629,
+   "a": "TROT🇪🇸",
+   "b": "MOTERA🇪🇸",
+   "ganador": "MOTERA🇪🇸",
+   "votos": "3–0"
+  },
+  "1558896396181053482": {
+   "id": "1558896396181053482",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791740263744,
+   "a": "VERC🇨🇱",
+   "b": "SANTI🇦🇷",
+   "ganador": "VERC🇨🇱",
+   "votos": "3–0"
+  },
+  "1558897850660823181": {
+   "id": "1558897850660823181",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791740610519,
+   "a": "PLAYER🇻🇪",
+   "b": "VANDU🇨🇦",
+   "ganador": "VANDU🇨🇦",
+   "votos": "2–0"
+  },
+  "1558899136521052201": {
+   "id": "1558899136521052201",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "pub": 1791740917092,
+   "a": "SEBITA🇱🇷",
+   "b": "VANDU🇨🇦",
+   "ganador": "SEBITA🇱🇷",
+   "votos": "3–0"
   }
  },
  "llaves": {
@@ -5267,14 +5317,34 @@
    "g": "1467763447117778989",
    "canal": "1540224373309444257",
    "pub": 1791739207486,
-   "ed": 1791739289766,
-   "texto": "`[ SEMIFINALES ]`\n⌞CARLOSMO🇪🇸⌝ 🆚 ⌞MEDSTER🇪🇸⌝",
+   "ed": 1791740230444,
+   "texto": "`[ SEMIFINALES ]`\n⌞CARLOSMO🇪🇸⌝ 🆚 ⌞MEDSTER🇪🇸⌝\n⌞TROT🇪🇸⌝ 🆚 ⌞MOTERA🇪🇸⌝\n`[ FINAL ]`\n⌞CARLOSMO🇪🇸⌝ 🆚 ⌞MOTERA🇪🇸⌝",
    "batallas": [
     [
      "SEMIFINALES",
      [
       "CARLOSMO🇪🇸",
       "MEDSTER🇪🇸"
+     ],
+     "CARLOSMO🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "TROT🇪🇸",
+      "MOTERA🇪🇸"
+     ],
+     "MOTERA🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CARLOSMO🇪🇸",
+      "MOTERA🇪🇸"
      ],
      null,
      "última ronda y no dice campeón",
