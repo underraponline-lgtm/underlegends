@@ -19176,5 +19176,386 @@
     625
    ]
   ]
+ },
+ "448": {
+  "dia": "2026-10-11",
+  "escala": "8-15",
+  "fecha": "11/10",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511968721491722413/1558878329535209473"
+  ],
+  "n": 448,
+  "nombre": "RED BULL NACIONAL ESPAÑA T.5",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Carlosmo",
+       "Ortiz🇪🇸"
+      ],
+      "Carlosmo",
+      ""
+     ],
+     [
+      [
+       "Medster🇪🇸",
+       "stormed"
+      ],
+      "Medster🇪🇸",
+      ""
+     ],
+     [
+      [
+       "Trot",
+       "Campoy🇪🇸"
+      ],
+      "Trot",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "Xowee🇪🇸"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosmo",
+       "Medster🇪🇸"
+      ],
+      "Carlosmo",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "Trot"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosmo",
+       "Motera"
+      ],
+      "Carlosmo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Carlosmo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Motera",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Medster🇪🇸",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Campoy🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ortiz🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xowee🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "stormed",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "449": {
+  "dia": "2026-10-11",
+  "escala": "16+",
+  "fecha": "11/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558886011566563379"
+  ],
+  "n": 449,
+  "nombre": "HJKSLOWT V.1",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "NC"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "LitKunai"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "doble h🇨🇱"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Player",
+       "Lvel 🇻🇪"
+      ],
+      "Player",
+      ""
+     ],
+     [
+      [
+       "Santi",
+       "Fin"
+      ],
+      "Santi",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Cajita 🇻🇪",
+       "1200"
+      ],
+      "Verc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "Majiztral",
+       "ONZASS"
+      ],
+      "Colesito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Hinjkybesuk🇦🇫",
+       "Snow",
+       "Provenza"
+      ],
+      "Hinjkybesuk🇦🇫",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Velatz"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Player"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Santi"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Hinjkybesuk🇦🇫"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Vandu"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Colesito"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Verc"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    10000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Hinjkybesuk🇦🇫",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Santi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cajita 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fin",
+    "Octavos",
+    1250
+   ],
+   [
+    "LitKunai",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "doble h🇨🇱",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

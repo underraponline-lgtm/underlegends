@@ -6396,5 +6396,413 @@
    ]
   ],
   "v": 2
+ },
+ "448": {
+  "antes": {
+   "Motera": [
+    52,
+    78,
+    false
+   ],
+   "Trot": [
+    23,
+    29,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Carlosmo",
+    "Ortiz🇪🇸",
+    "Carlosmo"
+   ],
+   [
+    "Medster🇪🇸",
+    "stormed",
+    "Medster🇪🇸"
+   ],
+   [
+    "Trot",
+    "Campoy🇪🇸",
+    "Trot"
+   ],
+   [
+    "Motera",
+    "Xowee🇪🇸",
+    "Motera"
+   ],
+   [
+    "Carlosmo",
+    "Medster🇪🇸",
+    "Carlosmo"
+   ],
+   [
+    "Motera",
+    "Trot",
+    "Motera"
+   ],
+   [
+    "Carlosmo",
+    "Motera",
+    "Carlosmo"
+   ]
+  ],
+  "ev_antes": {
+   "Motera": 2,
+   "Trot": 13
+  },
+  "fecha": "11/10",
+  "firma": "b347690ff3992cc0",
+  "msg": "1558907910707224587",
+  "nombre": "RED BULL NACIONAL ESPAÑA T.5",
+  "num": 448,
+  "participantes": 8,
+  "sello": {
+   "Carlosmo": ""
+  },
+  "sv": "URBF",
+  "t": "2026-10-11T18:23:28Z",
+  "tabla": [
+   [
+    "Carlosmo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Motera",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Medster🇪🇸",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Ortiz🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "stormed",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Campoy🇪🇸",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xowee🇪🇸",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "449": {
+  "antes": {
+   "1200": [
+    197,
+    114,
+    true
+   ],
+   "Colesito": [
+    11,
+    14,
+    false
+   ],
+   "Fin": [
+    132,
+    262,
+    false
+   ],
+   "Liberia": [
+    17,
+    21,
+    false
+   ],
+   "LitKunai": [
+    126,
+    245,
+    false
+   ],
+   "Majiztral": [
+    19,
+    24,
+    false
+   ],
+   "NC": [
+    15,
+    19,
+    false
+   ],
+   "ONZASS": [
+    172,
+    57,
+    true
+   ],
+   "Player": [
+    47,
+    69,
+    false
+   ],
+   "Provenza": [
+    158,
+    12,
+    true
+   ],
+   "Santi": [
+    207,
+    135,
+    true
+   ],
+   "Snow": [
+    2,
+    2,
+    false
+   ],
+   "Vandu": [
+    13,
+    16,
+    false
+   ],
+   "Velatz": [
+    9,
+    11,
+    false
+   ],
+   "Verc": [
+    33,
+    44,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Velatz",
+    "NC",
+    "Velatz"
+   ],
+   [
+    "Liberia",
+    "LitKunai",
+    "Liberia"
+   ],
+   [
+    "Vandu",
+    "doble h🇨🇱",
+    "Vandu"
+   ],
+   [
+    "Player",
+    "Lvel 🇻🇪",
+    "Player"
+   ],
+   [
+    "Santi",
+    "Fin",
+    "Santi"
+   ],
+   [
+    "Verc",
+    "Cajita 🇻🇪",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "1200",
+    "Verc"
+   ],
+   [
+    "Colesito",
+    "Majiztral",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "ONZASS",
+    "Colesito"
+   ],
+   [
+    "Hinjkybesuk🇦🇫",
+    "Snow",
+    "Hinjkybesuk🇦🇫"
+   ],
+   [
+    "Hinjkybesuk🇦🇫",
+    "Provenza",
+    "Hinjkybesuk🇦🇫"
+   ],
+   [
+    "Liberia",
+    "Velatz",
+    "Liberia"
+   ],
+   [
+    "Vandu",
+    "Player",
+    "Vandu"
+   ],
+   [
+    "Verc",
+    "Santi",
+    "Verc"
+   ],
+   [
+    "Colesito",
+    "Hinjkybesuk🇦🇫",
+    "Colesito"
+   ],
+   [
+    "Liberia",
+    "Vandu",
+    "Liberia"
+   ],
+   [
+    "Verc",
+    "Colesito",
+    "Verc"
+   ],
+   [
+    "Liberia",
+    "Verc",
+    "Liberia"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 5,
+   "Colesito": 18,
+   "Fin": 2,
+   "Liberia": 7,
+   "LitKunai": 1,
+   "Majiztral": 13,
+   "NC": 21,
+   "ONZASS": 5,
+   "Player": 5,
+   "Provenza": 20,
+   "Santi": 4,
+   "Snow": 30,
+   "Vandu": 16,
+   "Velatz": 29,
+   "Verc": 2
+  },
+  "fecha": "11/10",
+  "firma": "5c3bae264640dc68",
+  "msg": "1558907912582078525",
+  "nombre": "__ HJKSLOWT V.1 __",
+  "num": 449,
+  "participantes": 19,
+  "sello": {
+   "Liberia": "aa1845e07400:17c4f13e63d4"
+  },
+  "sv": "FFA",
+  "t": "2026-10-11T18:23:29Z",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    10000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Santi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Hinjkybesuk🇦🇫",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "LitKunai",
+    "Octavos",
+    1250
+   ],
+   [
+    "doble h🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cajita 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
