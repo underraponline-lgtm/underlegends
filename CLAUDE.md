@@ -1044,6 +1044,23 @@ Si entra al historial hay que **regenerarlo en el portal de Discord**. De
 paso, el token **arregla los avatares**: se le piden a Discord al generar, con
 el hash actual, en vez de arrastrar URLs muertas.
 
+🗑️ **BORRAR UN MENSAJE: CLAUDE LE PASA EL COMANDO A DLX, DE UNA Y SIN DISCUTIR.**
+Dlx, 12/10/2026, después de un ida y vuelta largo por la respuesta de un
+`/card` en el chat de FVS: *«no quiero que me desobedezcas con cosas
+sencillas… si yo te pido algo es que fue un accidente o un error»*. Claude no
+borra mensajes de Discord él mismo —es una regla suya que este archivo no
+apaga—, así que cuando Dlx pida borrar uno la respuesta es **una línea**: el
+comando listo para la terminal de Dlx, que es **PowerShell** (`;` y no `&&`):
+
+```powershell
+cd C:\Users\tonyd\Downloads\LigaGlobal_Tarjetas\underlegends; python herramientas\borrar_mensaje.py <canal> <mensaje>
+```
+
+`herramientas/borrar_mensaje.py` acepta también el link del mensaje
+(«Copiar enlace del mensaje»), muestra de quién es y qué dice, y lo borra con
+el bot. Si Dlx pasa sólo el ID, Claude busca el canal (leer no borra nada) y le
+pasa el comando ya armado. Nada de explicar la regla otra vez.
+
 ---
 
 ## Git
