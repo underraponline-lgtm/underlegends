@@ -3375,6 +3375,15 @@
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/redstonita/sv-acad.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/redstonita/temporada.webp"
  },
+ "refran": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/sv-acad.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/sv-ddf.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/sv-ffa.webp",
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/sv-fvs.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/refran/sv-urbf.webp"
+ },
  "revo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/revo/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/revo/sv-dra.webp",
