@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T21:24:31+00:00",
+ "cuando": "2026-10-12T21:30:24+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3496,7 +3496,9 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
-   "categoria_id": "868218509975498805"
+   "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-12T21:27:09"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -3518,7 +3520,9 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-12T21:27:09"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -3540,7 +3544,9 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-12T21:27:09"
   },
   {
    "nombre": "COMPE CHILL",
@@ -3562,7 +3568,9 @@
    "premios": "",
    "staff": {},
    "autor": "BETELGEUSE",
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-12T21:27:09"
   },
   {
    "nombre": "👀👀👀",
@@ -4384,6 +4392,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Ariaxer🇦🇷",
+   "quien": "ariaxer",
+   "discord_id": "659687894587277322",
+   "msg_id": "1559316569706729523",
+   "cuando": "2026-10-12T21:27:20"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1559316545425899555",
+   "cuando": "2026-10-12T21:27:15"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -6763,19 +6789,19 @@
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
-   "texto": "Makma 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1558639040784498822",
+   "texto": "agustin51k 🇨🇱",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1558639039018573917",
    "cuando": "2026-10-11T00:35:05"
   },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
-   "texto": "agustin51k 🇨🇱",
-   "quien": "agustin51k",
-   "discord_id": "1114241587262783631",
-   "msg_id": "1558639039018573917",
+   "texto": "Makma 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1558639040784498822",
    "cuando": "2026-10-11T00:35:05"
   },
   {

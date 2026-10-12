@@ -377,7 +377,7 @@
   "Leyenda": 5,
   "Lhyon": 5,
   "Liam": 5,
-  "Liberia": 4,
+  "Liberia": 3,
   "Lilñaño": 5,
   "LitKunai": 5,
   "Lizeninn": 5,
@@ -543,7 +543,7 @@
   "VR": 5,
   "Valdoza": 5,
   "Vandu": 4,
-  "Velatz": 3,
+  "Velatz": 4,
   "Verc": 4,
   "Vilca": 5,
   "Vlade": 5,
@@ -1191,7 +1191,7 @@
   ],
   [
    "2026-10-05",
-   "Velatz",
+   "Liberia",
    3
   ],
   [
@@ -1253,6 +1253,7 @@
    "HH",
    "Hinjkybesuk",
    "Letrao🇨🇱",
+   "Liberia",
    "MCO",
    "Makmah",
    "Medster",
@@ -1275,7 +1276,6 @@
    "Sosa",
    "Tam",
    "Vandu",
-   "Velatz",
    "Verc",
    "Walker",
    "Xclusivo",
