@@ -1548,14 +1548,26 @@
      16,
      0
     ],
-    "Ariaxer": [
+    "Agente sombra 🇵🇪": [
      1,
      16,
      16,
      0
     ],
-    "Benjixo": [
+    "Ariaxer": [
+     2,
+     16,
+     16,
+     0
+    ],
+    "BNA": [
      1,
+     1,
+     1,
+     0
+    ],
+    "Benjixo": [
+     2,
      4,
      4,
      0
@@ -1566,7 +1578,25 @@
      16,
      0
     ],
+    "Chop": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Colesito": [
+     1,
+     8,
+     8,
+     0
+    ],
     "DO-C": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Doce 🇵🇾": [
      1,
      16,
      16,
@@ -1585,7 +1615,7 @@
      0
     ],
     "EmiZor": [
-     1,
+     2,
      4,
      4,
      0
@@ -1597,9 +1627,15 @@
      0
     ],
     "Guess": [
+     2,
+     2,
+     2,
+     0
+    ],
+    "JHEYSON🇦🇷": [
      1,
-     2,
-     2,
+     16,
+     16,
      0
     ],
     "JJ": [
@@ -1614,20 +1650,32 @@
      4,
      0
     ],
-    "Lvel": [
+    "Krish": [
      1,
+     16,
+     16,
+     0
+    ],
+    "LRS": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Lvel": [
+     2,
      16,
      16,
      0
     ],
     "Makmah": [
-     1,
+     2,
      2,
      2,
      0
     ],
     "NC": [
-     1,
+     2,
      2,
      2,
      0
@@ -1645,7 +1693,7 @@
      0
     ],
     "OG": [
-     1,
+     2,
      2,
      2,
      0
@@ -1657,13 +1705,19 @@
      0
     ],
     "Player": [
+     2,
+     16,
+     16,
+     0
+    ],
+    "SINTEXT": [
      1,
      16,
      16,
      0
     ],
     "Snow": [
-     1,
+     2,
      1,
      1,
      0
@@ -1675,7 +1729,7 @@
      0
     ],
     "Teo": [
-     1,
+     2,
      8,
      8,
      0
@@ -1686,8 +1740,20 @@
      2,
      0
     ],
-    "Verc": [
+    "Under": [
      1,
+     16,
+     16,
+     0
+    ],
+    "Velatz": [
+     1,
+     4,
+     4,
+     0
+    ],
+    "Verc": [
+     2,
      1,
      1,
      0
@@ -1717,29 +1783,35 @@
      0
     ],
     "yinn": [
-     1,
+     2,
      1,
      1,
      0
     ]
    },
    "pts": {
-    "Benjixo": 600,
-    "EmiZor": 600,
+    "Ariaxer": 300,
+    "BNA": 1600,
+    "Benjixo": 900,
+    "EmiZor": 900,
     "Erian": 600,
-    "Guess": 600,
+    "Guess": 900,
     "JJ": 1600,
     "Keider": 900,
-    "Makmah": 600,
-    "NC": 600,
-    "OG": 600,
+    "Lvel": 300,
+    "Makmah": 900,
+    "NC": 900,
+    "OG": 900,
     "ONZASS": 600,
-    "Snow": 1600,
+    "Player": 300,
+    "Snow": 2900,
+    "Teo": 300,
     "TøKīØ🦠🧠": 600,
-    "Verc": 1600,
+    "Velatz": 600,
+    "Verc": 2900,
     "Walker": 1600,
     "Xclusivo": 600,
-    "yinn": 1600
+    "yinn": 2900
    }
   }
  },
@@ -1759,16 +1831,16 @@
   "Alexi": 300,
   "Andres": 1300,
   "Andy": 300,
-  "Ariaxer": 300,
+  "Ariaxer": 600,
   "Armando Faso🇦🇫": 300,
   "Assuan": 1300,
   "Axinu": 300,
   "BLITZ": 300,
-  "BNA": 1300,
+  "BNA": 2900,
   "BTRX": 300,
   "Badterne": 300,
   "BastyRetro": 2900,
-  "Benjixo": 1900,
+  "Benjixo": 2200,
   "Bloody": 300,
   "CJ": 300,
   "Cajita": 300,
@@ -1798,7 +1870,7 @@
   "Efimero": 300,
   "Eliot": 1300,
   "Elsoolar": 300,
-  "EmiZor": 900,
+  "EmiZor": 1200,
   "Emily Family": 300,
   "Enkil 🇦🇷": 300,
   "Erian": 3500,
@@ -1814,7 +1886,7 @@
   "Global Hustler": 1000,
   "Gocho": 300,
   "Greyfitsh🇵🇦": 300,
-  "Guess": 1900,
+  "Guess": 2200,
   "HH": 300,
   "Hardcore": 300,
   "Hassan": 300,
@@ -1847,13 +1919,13 @@
   "LitKunai": 300,
   "Lord Viruzz": 300,
   "Luzzano": 300,
-  "Lvel": 300,
+  "Lvel": 600,
   "MATICERNA": 300,
   "MCO": 2900,
   "MHS": 300,
   "MTZ": 300,
   "Majiztral": 900,
-  "Makmah": 3500,
+  "Makmah": 3800,
   "Malva": 300,
   "Marto": 300,
   "Mathhias": 300,
@@ -1865,7 +1937,7 @@
   "Mr Still Ballin": 2900,
   "Musicdum": 300,
   "N1k": 300,
-  "NC": 1500,
+  "NC": 1800,
   "NXUZ": 600,
   "NYCO": 300,
   "Nemi": 300,
@@ -1874,7 +1946,7 @@
   "Noa": 1000,
   "Noone": 300,
   "Number": 300,
-  "OG": 3500,
+  "OG": 3800,
   "ONZASS": 1500,
   "Oasis": 2900,
   "PIERR🇵🇪": 300,
@@ -1884,7 +1956,7 @@
   "Paria": 300,
   "Personality": 300,
   "PichulaMc": 2900,
-  "Player": 2900,
+  "Player": 3200,
   "Polosport": 1300,
   "Pomberito": 2900,
   "Presagio": 1300,
@@ -1913,13 +1985,13 @@
   "Selek": 300,
   "Sin Limites": 300,
   "Six": 2900,
-  "Snow": 4500,
+  "Snow": 5800,
   "Soneto": 300,
   "Sosa": 300,
   "Soulb": 300,
   "Tam": 1300,
   "Tenor": 300,
-  "Teo": 300,
+  "Teo": 600,
   "Tier": 300,
   "Trot": 300,
   "Tuca": 300,
@@ -1929,8 +2001,8 @@
   "VIXOVERSO": 300,
   "Valdoza": 300,
   "Vandu": 2900,
-  "Velatz": 2900,
-  "Verc": 4500,
+  "Velatz": 3500,
+  "Verc": 5800,
   "Walker": 4500,
   "Xclusivo": 3500,
   "Xplic🇨🇱": 300,
@@ -1953,7 +2025,7 @@
   "setesfifi": 300,
   "tnr": 300,
   "wei shenlong": 300,
-  "yinn": 2900
+  "yinn": 4200
  },
  "temp": "prueba"
 }

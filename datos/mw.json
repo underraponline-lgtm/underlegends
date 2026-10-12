@@ -117,7 +117,7 @@
       },
       {
        "n": "Verc",
-       "cobra": 3000
+       "cobra": 2750
       },
       {
        "n": "yinn",
@@ -147,10 +147,22 @@
     "nivel": "C",
     "base": 7500,
     "o": 8,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7500
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 7500,
+    "caza": {
+     "n": 459,
+     "evento": "LA BELLA ARTE DE LA DESGRACIA VOL4",
+     "sv": "FFA",
+     "t": "2026-10-12T21:29:12Z",
+     "por": [
+      {
+       "n": "BNA",
+       "cobra": 13500
+      }
+     ]
+    }
    },
    {
     "n": "Presagio",

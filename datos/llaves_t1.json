@@ -20809,7 +20809,7 @@
      [
       [
        "Zignos",
-       "DO-C"
+       "Doce 🇵🇾"
       ],
       "Zignos",
       "triple (3 bandas, pasan 2)"
@@ -20967,7 +20967,7 @@
     1250
    ],
    [
-    "DO-C",
+    "Doce 🇵🇾",
     "Octavos",
     1250
    ],
@@ -21009,6 +21009,290 @@
    [
     "doble h",
     "Cuartos",
+    1250
+   ]
+  ]
+ },
+ "459": {
+  "dia": "2026-10-12",
+  "escala": "16+",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559317036629495939"
+  ],
+  "n": 459,
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL4",
+  "participantes": 26,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "Player",
+       "Benjixo"
+      ],
+      "Guess",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "EmiZor",
+       "Teo",
+       "Krish"
+      ],
+      "EmiZor",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Verc",
+       "Lvel 🇻🇪",
+       "Agente sombra 🇵🇪"
+      ],
+      "Verc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "BNA",
+       "SINTEXT",
+       "DO-C"
+      ],
+      "BNA",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Snow",
+       "NC",
+       "LRS"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Velatz",
+       "yinn",
+       "Chop"
+      ],
+      "Velatz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Ariaxer",
+       "Under"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "OG",
+       "JHEYSON🇦🇷"
+      ],
+      "Colesito",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "Snow"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "Velatz",
+       "EmiZor"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Makmah"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "BNA",
+       "Colesito"
+      ],
+      "BNA",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Guess"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "BNA",
+       "Velatz"
+      ],
+      "BNA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "BNA",
+       "Verc"
+      ],
+      "BNA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "BNA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Guess",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agente sombra 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "JHEYSON🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Under",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
     1250
    ]
   ]

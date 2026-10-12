@@ -8800,5 +8800,389 @@
    ]
   ],
   "v": 2
+ },
+ "459": {
+  "antes": {
+   "Ariaxer": [
+    53,
+    73,
+    false
+   ],
+   "BNA": [
+    199,
+    101,
+    true
+   ],
+   "Benjixo": [
+    180,
+    54,
+    true
+   ],
+   "Chop": [
+    186,
+    72,
+    true
+   ],
+   "Colesito": [
+    11,
+    13,
+    false
+   ],
+   "DO-C": [
+    249,
+    188,
+    true
+   ],
+   "EmiZor": [
+    196,
+    96,
+    true
+   ],
+   "Guess": [
+    33,
+    40,
+    false
+   ],
+   "Krish": [
+    65,
+    94,
+    false
+   ],
+   "LRS": [
+    68,
+    99,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "NC": [
+    15,
+    18,
+    false
+   ],
+   "OG": [
+    25,
+    30,
+    false
+   ],
+   "Player": [
+    41,
+    55,
+    false
+   ],
+   "SINTEXT": [
+    231,
+    160,
+    true
+   ],
+   "Snow": [
+    1,
+    1,
+    false
+   ],
+   "Teo": [
+    71,
+    104,
+    false
+   ],
+   "Under": [
+    262,
+    216,
+    true
+   ],
+   "Velatz": [
+    8,
+    9,
+    false
+   ],
+   "Verc": [
+    18,
+    22,
+    false
+   ],
+   "yinn": [
+    169,
+    15,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Guess",
+    "Player",
+    "Guess"
+   ],
+   [
+    "Guess",
+    "Benjixo",
+    "Guess"
+   ],
+   [
+    "EmiZor",
+    "Teo",
+    "EmiZor"
+   ],
+   [
+    "EmiZor",
+    "Krish",
+    "EmiZor"
+   ],
+   [
+    "Verc",
+    "Lvel 🇻🇪",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Agente sombra 🇵🇪",
+    "Verc"
+   ],
+   [
+    "BNA",
+    "SINTEXT",
+    "BNA"
+   ],
+   [
+    "BNA",
+    "DO-C",
+    "BNA"
+   ],
+   [
+    "Snow",
+    "NC",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "LRS",
+    "Snow"
+   ],
+   [
+    "Velatz",
+    "yinn",
+    "Velatz"
+   ],
+   [
+    "Velatz",
+    "Chop",
+    "Velatz"
+   ],
+   [
+    "Makmah",
+    "Ariaxer",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Under",
+    "Makmah"
+   ],
+   [
+    "Colesito",
+    "OG",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "JHEYSON🇦🇷",
+    "Colesito"
+   ],
+   [
+    "Guess",
+    "Snow",
+    "Guess"
+   ],
+   [
+    "Velatz",
+    "EmiZor",
+    "Velatz"
+   ],
+   [
+    "Verc",
+    "Makmah",
+    "Verc"
+   ],
+   [
+    "BNA",
+    "Colesito",
+    "BNA"
+   ],
+   [
+    "Verc",
+    "Guess",
+    "Verc"
+   ],
+   [
+    "BNA",
+    "Velatz",
+    "BNA"
+   ],
+   [
+    "BNA",
+    "Verc",
+    "BNA"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 6,
+   "BNA": 4,
+   "Benjixo": 5,
+   "Chop": 7,
+   "Colesito": 22,
+   "DO-C": 2,
+   "EmiZor": 8,
+   "Guess": 7,
+   "Krish": 8,
+   "LRS": 9,
+   "Makmah": 37,
+   "NC": 23,
+   "OG": 9,
+   "Player": 7,
+   "SINTEXT": 2,
+   "Snow": 33,
+   "Teo": 5,
+   "Under": 1,
+   "Velatz": 30,
+   "Verc": 5,
+   "yinn": 17
+  },
+  "fecha": "12/10",
+  "firma": "6bfa4eca50246bc0",
+  "msg": "1559330803119427585",
+  "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL4 __",
+  "num": 459,
+  "participantes": 26,
+  "sello": {
+   "BNA": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T22:23:53Z",
+  "tabla": [
+   [
+    "BNA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Guess",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agente sombra 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Under",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "JHEYSON🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

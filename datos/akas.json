@@ -263,6 +263,7 @@
   "hasan": "Hassan",
   "launnok": "Launok",
   "sintexto": "SINTEXT",
+  "doce": "DO-C",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1349,6 +1350,10 @@
   [
    "Sintexto",
    "SINTEXT"
+  ],
+  [
+   "Doce",
+   "DO-C"
   ],
   [
    "Nexus",
