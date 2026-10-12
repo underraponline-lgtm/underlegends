@@ -5399,6 +5399,72 @@
      []
     ]
    ]
+  },
+  "1559279649400561765": {
+   "id": "1559279649400561765",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791831638432,
+   "ed": 1791831651329,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝\n⌞PRODIGY🇦🇷⌝ 🆚 ⌞CAJITA🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞BENJIXO🇦🇷⌝ 🆚 ⌞FIN🇦🇷⌝ 🆚 ⌞DOBLE H🇨🇱⌝\n⌞LVEL🇻🇪⌝ 🆚 ⌞TROT🇪🇸⌝ 🆚 ⌞ONZAS🇻🇪⌝\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "YINN🇪🇸",
+      "VERC🇨🇱",
+      "O.E.P🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PRODIGY🇦🇷",
+      "CAJITA🇻🇪",
+      "TEO🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BENJIXO🇦🇷",
+      "FIN🇦🇷",
+      "DOBLE H🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LVEL🇻🇪",
+      "TROT🇪🇸",
+      "ONZAS🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "YINN🇪🇸",
+      "VERC🇨🇱",
+      "O.E.P🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }
