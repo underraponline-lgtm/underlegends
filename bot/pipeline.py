@@ -819,7 +819,9 @@ def _lo_barato(correr):
         print('      correría sheet/rankings.py --escribir --aplicar')
         print('      y sheet/rankings.py --otras --aplicar')
     else:
-        ok_vit = corre(['sheet/rankings.py', '--escribir', '--aplicar'], callado=False)
+        ok_vit = corre(['sheet/rankings.py', '--escribir', '--aplicar'], eco=True)
+        # 📣 EL PORQUÉ, EN EL AVISO (Dlx, 12/10/2026, «1. Dale»): los renglones 🔴 de lo que dijo `rankings.py`
+        motivo = [l.strip() for l in (_ULTIMA_SALIDA[0] or '').splitlines() if '🔴' in l][-3:]
         # 🔴 Y SI NO SE ESCRIBE, SE AVISA. Esa hoja alimenta el pool de
         # Temporada: congelada, las cartas y la web se quedan con el número
         # de la última corrida buena, y el ciclo sigue en verde. Un DM cada
@@ -831,8 +833,9 @@ def _lo_barato(correr):
             else:
                 _AL.alertar('vitrina', '**Ranking Temporada no se está escribiendo**: '
                             'las cartas de Temporada y la web se quedan con los números de '
-                            'la última corrida buena. El motivo está en el log del ciclo, '
-                            'paso 1c.')
+                            'la última corrida buena.\n' + ('\n'.join('> ' + l[:300] for l in motivo)
+                                                            if motivo else 'El motivo está en el log '
+                                                            'del ciclo, paso 1c.'))
         except Exception:                                # noqa: BLE001
             pass
         corre(['sheet/rankings.py', '--otras', '--aplicar'], callado=False)

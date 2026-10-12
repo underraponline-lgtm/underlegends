@@ -221,6 +221,66 @@ def sacar_descartados(hproc, ya, aplicar):
     return fuera
 
 
+#: 🧭 una llave que entra con más días que esto desde que se jugó entra «tarde»
+TARDE_DIAS = 3
+
+
+def rutas_raras(ev, nombre, sv, fecha, batallas, hoy=None, decisiones=None):
+    """🧭 Por qué un evento NUEVO entró por un camino poco común, o `[]`. Dlx, 12/10/2026, «3. Dale».
+
+    Los dos errores de ese día fueron eventos que entraron por una vía nueva: DENME MODERADOR LPM, una llave de broma del
+    27/09 que entró dos semanas tarde por la respuesta del organizador, y la Fecha Rempalago Vol. 64, de una cuenta
+    nueva respaldada por su anuncio, con un formato que el lector no lee. Ninguno falló: se vieron cuando alguien se
+    quejó. Esto lo dice el mismo día, en Logs. Pura: la prueba el self-check."""
+    import datetime as dt
+    out = []
+    hoy = hoy or (dt.datetime.now(dt.timezone.utc) - dt.timedelta(hours=4)).date()
+    try:
+        d, m = (int(x) for x in str(fecha).split('/')[:2])
+        f = dt.date(hoy.year, m, d)
+        if f > hoy + dt.timedelta(days=1):
+            f = dt.date(hoy.year - 1, m, d)
+        if (hoy - f).days > TARDE_DIAS:
+            out.append('entró %d días después de jugarse' % (hoy - f).days)
+    except ValueError:
+        pass
+    notas = ' '.join(str(b.get('notas') or '') for b in batallas)
+    if 'cuenta nueva, con su anuncio' in notas:
+        out.append('la llave es de una cuenta nueva y la respaldó su anuncio')
+    if decisiones is None:
+        try:
+            import decidir as DEC
+            decisiones = DEC._decisiones().get('batallas') or {}
+            pre = DEC.clave_batalla(DEC.detalle_batalla(nombre, sv, fecha, 'x', ['a', 'b'])).split('|')[:3]
+        except Exception:                                # noqa: BLE001
+            decisiones, pre = {}, None
+    else:
+        pre = [nombre, sv, fecha]
+    if pre and any(k.split('|')[:3] == pre and 'organizador' in str((v or {}).get('por') or '')
+                   for k, v in decisiones.items()):
+        out.append('el organizador contestó quién ganó una batalla')
+    juntos = [a.split('«')[1].split('»')[0] for a in ev.get('avisos') or [] if a.startswith('JUNTOS:')]
+    if juntos:
+        out.append('nombres juntos que se separaron: %s' % ', '.join('«%s»' % x for x in juntos[:4]))
+    return out
+
+
+def avisar_rutas(raros):
+    """Un mensaje a Logs con los eventos nuevos que entraron por un camino poco común."""
+    if not raros:
+        return
+    lineas = ['🧭 **Entró por un camino poco común — revisalo**:']
+    for n, nombre, sv, fecha, por in raros:
+        lineas.append('• **#%s %s** (%s, %s): %s' % (n, nombre[:60], sv, fecha, '; '.join(por)))
+    lineas.append('Si alguno no tiene que contar, decímelo y sale.')
+    try:
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import alertar
+        alertar.normal('\n'.join(lineas)[:1900])
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude avisar en Logs (%s)' % str(e)[:60])
+
+
 def main():
     aplicar = '--aplicar' in sys.argv
     limpiar = '--limpiar' in sys.argv
@@ -253,7 +313,7 @@ def main():
 
     hproc = Hoja('Eventos Procesados')
     ya = numeros_por_evento(hproc)
-    planes, tope, sin_resolver, alias_mal = [], num, [], []
+    planes, tope, sin_resolver, alias_mal, raros = [], num, [], [], []
     # 🔴 EN EL ORDEN EN QUE SE JUGARON, NO EN ORDEN ALFABÉTICO. Era
     # `sorted(evs.items())`: el #354 (CARABOBO, 10:25 PM del 23/09) quedó
     # después del #353 (ELRAP FECHA 6, 2:18 AM del 24/09) porque «E» va
@@ -284,6 +344,13 @@ def main():
             continue
         ev['nombre'] = nombre
         planes.append(ev)
+        # 🧭 lo NUEVO que entró por un camino poco común, a Logs (`rutas_raras()`): una vez por evento, porque un número
+        # nuevo se da una sola vez
+        if repetido is None:
+            _por = rutas_raras(ev, nombre, sv, fecha, bs)
+            if _por:
+                raros.append((n, nombre, sv, fecha, _por))
+                print('          🧭 %s' % '; '.join(_por))
         print('   #%-4d %-28s %-6s %-7s %s  ·  %d con puntos, %d duelo(s)%s'
               % (n, nombre[:28], sv, fecha, ev['escala'],
                  len(ev['resultados']), len(ev['duelos']),
@@ -403,6 +470,8 @@ def main():
                    [[ev['num'], ev['nombre'], ev['servidor'], ev['fecha'],
                      ev['participantes'], ev['escala'], '✅', '', '', '', '']
                     for ev in planes])
+    # 🧭 DESPUÉS DE ESCRIBIR: lo que entró por un camino poco común, a Logs (`rutas_raras()`)
+    avisar_rutas(raros)
     for ev in planes:
         n1, n2 = cuentas[ev['num']]
         print('   ✅ #%d  %d en Resultados, %d en 1v1, 1 en Eventos Procesados'
@@ -504,5 +573,31 @@ def main():
     return 0
 
 
+def _self_check():
+    """`rutas_raras()`, con los dos casos del 12/10/2026 y uno normal."""
+    import datetime as dt
+    hoy, mal = dt.date(2026, 10, 12), 0
+    ev = {'avisos': ['JUNTOS: «Plink BNA Six JJ» son Guess + BNA + Six + JJ (un equipo escrito sin «+»)']}
+    dec = {'x|URBF|27/09|final|a|b': {'por': 'el organizador, con el menú (<@1>)'}}
+    casos = [
+        ('una llave de hace dos semanas, con la respuesta del organizador (DENME MODERADOR LPM)',
+         rutas_raras({}, 'x', 'URBF', '27/09', [], hoy, dec)
+         == ['entró 15 días después de jugarse', 'el organizador contestó quién ganó una batalla']),
+        ('la cuenta nueva con su anuncio, y los nombres juntos (Fecha Rempalago Vol. 64)',
+         len(rutas_raras(ev, 'y', 'FFA', '11/10', [{'notas': 'batalla 3 · cuenta nueva, con su anuncio'}], hoy, {}))
+         == 2),
+        ('un evento de ayer, de una cuenta conocida: nada', rutas_raras({}, 'z', 'FFA', '11/10', [], hoy, {}) == []),
+        ('el 31/12 visto el 02/01 es de hace dos días, no del año que viene',
+         rutas_raras({}, 'z', 'FFA', '31/12', [], dt.date(2027, 1, 2), {}) == []),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+    print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
+    return 1 if mal else 0
+
+
 if __name__ == '__main__':
+    if '--auto' in sys.argv:
+        sys.exit(_self_check())
     sys.exit(main())

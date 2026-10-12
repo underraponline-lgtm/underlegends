@@ -1331,6 +1331,16 @@ def _comp_ovr(v):
             g('🥇') + g('🥈') + g('🥉'), g('🎯'))
 
 
+def _nombres_vitrina(filas):
+    """Los nombres de la columna `Rapero` de unas filas de la vitrina."""
+    try:
+        cab = cabecera_oficial()
+        i = (cab + columnas_que_faltan(cab)).index('Rapero')
+    except (ValueError, Exception):                      # noqa: BLE001
+        return set()
+    return {str((list(f) + [''] * (i + 1))[i]).strip() for f in filas or []} - {''}
+
+
 #: cuántas filas menos se aceptan como gente que se unió (ver `aviso_encoge()`); más que esto se confirma a mano
 UNIDOS_MAX = 3
 
@@ -3217,7 +3227,14 @@ def main():
         #     `pipeline.py` ya tiene para los pools, por el mismo motivo.
         if any('menos)' in a for a in avisos) and '--achicar' not in sys.argv:
             print('\n   🔴 La tabla encogería. Si es a propósito —un reset,')
-            print('      gente que se fue— repetí con `--achicar`.\n')
+            print('      gente que se fue— repetí con `--achicar`.')
+            # 📣 Y QUIÉNES (Dlx, 12/10/2026, «1. Dale»): el aviso del ciclo cita este renglón, y con los nombres se ve
+            # de una mirada si es un `Resultados` leído a medias o una limpieza —ese día, siete «personas» que eran
+            # varios nombres juntos («TNR JJ»), de dos eventos sacados a propósito—
+            salen = sorted(_nombres_vitrina(tabla_nueva.leidas) - _nombres_vitrina(filas))
+            if salen:
+                print('   🔴 saldrían %d: %s%s' % (len(salen), ', '.join(salen[:8]), '…' if len(salen) > 8 else ''))
+            print()
             return 1
 
         # 3b · que el arrastre haya enganchado. Media tabla sin fila

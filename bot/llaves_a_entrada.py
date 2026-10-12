@@ -1406,6 +1406,8 @@ def _preguntar_h():
         return QUIETA_H
 
 
+#: 🧭 la nota de las filas de una llave de cuenta nueva que entró por su anuncio (ver `procesar_entrada.rutas_raras()`)
+RUTA_CUENTA_NUEVA = 'cuenta nueva, con su anuncio'
 #: 🏁 una llave se le pregunta al organizador mientras está fresca: Dlx, 12/10/2026, *«al finalizar el evento, o sea
 #: casi de inmediato»*. La primera corrida preguntó por una del 27/09
 PREGUNTA_MAX_H = 48
@@ -2659,14 +2661,32 @@ def _cargadas():
 
 
 def _clave_rapero():
-    """Un nombre de llave -> como lo cuenta el ranking (`rankings.canon()`: FULLY es Oasis), normalizado."""
+    """Un nombre de llave -> como lo cuenta el ranking (`rankings.canon()`: FULLY es Oasis), normalizado.
+
+    🔴 Y UN EQUIPO, INTEGRANTE POR INTEGRANTE (12/10/2026). La DESGRACIAS EN TOKYO VOL 26 PANDILLAS (#414, FFA, 06/10)
+    se cargó dos veces: un barrido dirigido leyó un pedazo suelto de su llave, sin título, y entró como #457 con 15 de
+    sus 24 personas. `ya_cargada()` no lo vio porque comparaba el lado entero: el cargado dice «Snow, BNA» y la lectura
+    nueva «PAIN 🇨🇴 + BNA» (Pain es Snow). Ahora cada integrante pasa por `canon()` y el equipo se ordena."""
     try:
         import rankings as RK
         canon = RK.canon
     except Exception:                                    # noqa: BLE001
         def canon(x):
             return x
-    return lambda x: E.norm(canon(str(x or '')))
+    try:
+        import equipos as EQ
+
+        def partes(x):
+            return EQ.integrantes(x)[0]
+    except Exception:                                    # noqa: BLE001
+        def partes(x):
+            return [x]
+
+    def k(x):
+        ms = [E.norm(canon(str(m or '').strip())) for m in (partes(str(x or '')) or [x])]
+        ms = sorted(m for m in ms if m)
+        return '+'.join(ms) if len(ms) > 1 else (ms[0] if ms else E.norm(canon(str(x or ''))))
+    return k
 
 
 def _dia_de(f):
@@ -3533,6 +3553,14 @@ def _self_check():
         ('a la normal y fresca se le pregunta', bool(para_organizador(_g, 'X', 'FFA', '12/10', _ds, ahora=_ahora))),
         ('a la que junta sin «+», nada', para_organizador(_gr, 'X', 'FFA', '12/10', _ds, ahora=_ahora) is None),
         ('ni a una de hace dos semanas', para_organizador(_gv, 'X', 'FFA', '12/10', _ds, ahora=_ahora) is None),
+        # 👯 el #457 (12/10/2026): el mismo evento por equipos, con los equipos escritos de otra manera
+        ('un pedazo de una llave por equipos ya cargada, con los equipos escritos de otra manera: es la misma',
+         ya_cargada('(sin titulo)', 'FFA', '06/10',
+                    [{'ladoA': 'Ana + Beto', 'ladoB': 'Caro + Dani'}, {'ladoA': 'Eze + Fer', 'ladoB': 'Gus + Hugo'},
+                     {'ladoA': 'Ana + Beto', 'ladoB': 'Eze + Fer'}],
+                    cargadas=[{'n': 414, 'sv': 'FFA', 'fecha': '06/10', 'nombre': 'VOL 26 PANDILLAS', 'rondas': [
+                        {'b': [[['Beto, Ana', 'Dani, Caro']], [['Fer, Eze', 'Hugo, Gus']]]},
+                        {'b': [[['Beto, Ana', 'Fer, Eze']]]}]}]) == 414),
     ]
     for que, ok in casos:
         mal += not ok
@@ -3711,6 +3739,8 @@ def main():
                     if h.get('msg_id'):
                         nombres_nuevos[str(h['msg_id'])] = inferido
                 por_hora = 'su anuncio, de la misma cuenta: «%s»' % (_a.get('nombre') or '').strip()
+                # 🧭 y la fila lo dice, para el aviso de Logs de `procesar_entrada.rutas_raras()`
+                g['_ruta'] = RUTA_CUENTA_NUEVA
         elif nom == '(sin titulo)' and g['llaves'] and not g['llaves'][0].get('_chico') \
                 and not any(h.get('vidas') for h in g['llaves']):
             inferido, por_hora = anuncio_de_llave(g, anuncios_l, tomados)
@@ -4030,6 +4060,9 @@ def main():
             if _org:
                 para_org.append(_org)
         repes += len(del_grupo) - n_leidas
+        if g.get('_ruta'):
+            for f in limpias:
+                f['notas'] = ('%s · %s' % (f.get('notas') or '', g['_ruta'])).strip(' ·')
         todas += limpias
         # quien publicó una llave que se carga ya no es nuevo
         if limpias:

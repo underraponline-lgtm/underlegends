@@ -238,6 +238,36 @@ def ronda_de(r):
     return DE_LLAVE.get(n, n)
 
 
+#: las rondas de una llave, de la primera a la última (para `piso_equipos()`)
+ORDEN_RONDAS = ['r32', 'octavos', 'cuartos', 'semifinal', 'final']
+
+
+def piso_equipos(batallas, tab):
+    """🪜 `(piso, integrantes)`: lo que cobran los eliminados de la última ronda DE A UNO antes de que la llave pase a
+    equipos, y los integrantes de los equipos de ahí en adelante. `(0, [])` si la llave no es así: toda de a uno,
+    toda por equipos, o con una ronda de a uno después de una por equipos. Ver el piso en `procesar()`."""
+    tipo = {}
+    for b in batallas:
+        r = ronda_de(b.get('ronda'))
+        if r not in ORDEN_RONDAS:
+            continue
+        eq = any(len(equipo(x)) > 1 for x in (b.get('ladoA'), b.get('ladoB')) if x)
+        tipo[r] = tipo.get(r, False) or eq
+    rs = [r for r in ORDEN_RONDAS if r in tipo]
+    i = next((k for k, r in enumerate(rs) if tipo[r]), None)
+    if not i or not all(tipo[r] for r in rs[i:]):
+        return 0, []
+    piso = tab.get(dict(CAIDA, semifinal='semifinal').get(rs[i - 1], ''), 0)
+    gente = []
+    for b in batallas:
+        if ronda_de(b.get('ronda')) in rs[i:]:
+            for x in (b.get('ladoA'), b.get('ladoB')):
+                for m in equipo(x) if x else []:
+                    if m not in gente:
+                        gente.append(m)
+    return piso, gente
+
+
 def escala_de(participantes):
     n = int(participantes or 0)
     return '16+' if n >= 16 else '8-15' if n >= 8 else '4-7' if n >= 4 else None
@@ -482,6 +512,42 @@ def _resolvedor():
     return resolver, len(porclave)
 
 
+#: hasta cuántas palabras puede tener UN nombre de la Lista, para `juntos()`
+JUNTOS_MAX = 3
+
+
+def juntos(nombre, resolver):
+    """👥 Los nombres de la Lista que un nombre desconocido junta sin «+», o `None`. Dlx, 12/10/2026, «2. Me gusta».
+
+    La Fecha Rempalago Vol. 64 (FFA, 11/10) escribe los equipos «[Plink BNA Six JJ]», y el ranking los cargaba como UNA
+    persona que no existe. Sólo si el nombre NO está en la Lista, no tiene separadores (eso ya es `equipo()`) y se arma
+    ENTERO, palabra por palabra, con dos o más de la Lista —los alias cuentan: Plink es Guess—. Si sobra una palabra
+    («Scot yinn guty», «Agustín la reliquia») no se adivina: queda como está y va a `Pendientes`."""
+    pad = getattr(resolver, 'padron', None) or {}
+    try:
+        from comun.claves import clave
+    except ImportError:
+        return None
+    n = str(nombre or '').strip()
+    if not pad or not n or len(equipo(n)) > 1 or clave(n) in pad or clave(_sin_anotaciones(n)) in pad:
+        return None
+    ws = [w for w in re.split(r'[\s\[\]]+', _ANOTACION.sub(' ', re.sub(r':[A-Za-z_]+:', ' ', n))) if clave(w)]
+    if len(ws) < 2:
+        return None
+    partes, i = [], 0
+    while i < len(ws):
+        for k in range(min(JUNTOS_MAX, len(ws) - i), 0, -1):
+            t = ' '.join(ws[i:i + k])
+            if clave(t) in pad:
+                partes.append(pad[clave(t)])
+                i += k
+                break
+        else:
+            return None
+    partes = list(dict.fromkeys(partes))
+    return partes if len(partes) >= 2 else None
+
+
 def parecidos(nombre, resolver, n=3):
     """Los nombres del padron mas parecidos, para sugerir en un typo.
 
@@ -611,6 +677,20 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     antes = set(getattr(resolver, 'fallo', ()))
 
     res, avisos = {}, []
+    # 👥 LOS NOMBRES JUNTOS SIN «+», como equipo: ver `juntos()`. Se cambia el lado entero, también donde es el ganador
+    cambio = {}
+    for b in batallas:
+        for c in ('ladoA', 'ladoB', 'ganador'):
+            x = str(b.get(c) or '').strip()
+            if x and x not in cambio:
+                j = juntos(x, resolver)
+                if j:
+                    cambio[x] = ' + '.join(j)
+    if cambio:
+        batallas = [dict(b, **{c: cambio.get(str(b.get(c) or '').strip(), b.get(c))
+                               for c in ('ladoA', 'ladoB', 'ganador')}) for b in batallas]
+        for x, e in cambio.items():
+            avisos.append('JUNTOS: «%s» son %s (un equipo escrito sin «+»)' % (x, e))
     # cada puesto que cobra cada uno, para el revivido (ver abajo)
     aportes = {}
     # 🔑 LOS REVIVIDOS SE CONOCEN ANTES DE REPARTIR: a ellos NO se
@@ -891,6 +971,21 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                    if x[0] in ORDEN_P else -1)
         d['posicion'] = ETIQUETA.get(alto[0], alto[0])
         d['notas'] += 'Drafteado '
+
+    # 🪜 EL PISO DE LOS EQUIPOS. Dlx, 12/10/2026, «5. Me gusta»: en una llave que arranca de a uno y sigue por equipos
+    # —la Fecha Rempalago Vol. 64 (#456): cuartos de a 3 y 4, semis y final de a 2, 3 y 4— el subcampeón (5.000) se
+    # repartía entre cuatro y Guess, que ganó su cuartos y su semi, cobraba 1.250: menos que los que perdieron en
+    # cuartos (2.000). Nadie que llegó a las rondas por equipos cobra menos que los eliminados de la última ronda de a
+    # uno. Ver `piso_equipos()`. ⚠️ Sobre los PUNTOS, no sobre los aportes: el chequeo de SUMA de abajo sigue viendo
+    # lo que el puesto reparte de verdad. Y nunca al revivido ni al drafteado, que ya cobran con su regla.
+    if not (vidas or doble or fase):
+        piso, en_equipos = piso_equipos(batallas, tab)
+        for m in en_equipos:
+            q = resolver(m)
+            d = res.get(q)
+            if piso and d and q not in revividos and q not in drafteados and d['puntos'] < piso:
+                d['puntos'] = piso
+                d['notas'] += 'Piso de equipo '
 
     # 🔴 UN PUESTO NO PUEDE REPARTIR MÁS DE LO QUE VALE. Guía, Parte 2 (§13):
     # en el #339 el equipo campeón cobró 10.000 CADA UNO en vez de dividir,
@@ -1299,8 +1394,11 @@ def _self_check():
                             'ladoB': 'Caro + Gus',
                             'ganador': 'Ana + Eze + Fer + Beto',
                             'notas': 'Pokemon: Beto'}])
-    ok('equipo campeón de 4 con un pokemon: ÷3 (§10.4)',
-       pk.get('Ana', {}).get('puntos') == 10000 // 3,
+    # 🪜 la guía (§10.4) daba 10.000 ÷ 3 = 3.333 a cada campeón, menos que la semi de a uno (5.250) de los que cayeron
+    # antes. Dlx, 12/10/2026 («5. Me gusta»): el piso de los equipos. El pokemon sigue sin dividir: lo dice el SUMA
+    ok('equipo campeón de 4 con un pokemon: ÷3 (§10.4), y con el piso no baja de la semi',
+       pk.get('Ana', {}).get('puntos') == 5250 and 'Piso de equipo' in pk.get('Ana', {}).get('notas', '')
+       and not any(a.startswith('SUMA:') for a in epk['avisos']),
        '%s' % pk.get('Ana', {}).get('puntos'))
     ok('el pokemon conserva su semi ENTERA y nada más (§10.3)',
        pk.get('Beto', {}).get('puntos') == 5250,
@@ -1561,6 +1659,30 @@ def _self_check():
     ok('doble de 16: del 9.º al 12.º ganaron una batalla y cobran Octavos; del 13.º al 16.º, R32',
        d16 == quiere and not e16['avisos'],
        '%s · %s' % ({k: v for k, v in d16.items() if quiere.get(k) != v}, e16['avisos'] or '—'))
+
+    # 👥 los nombres juntos sin «+» (`juntos()`, Dlx, 12/10/2026): con un resolvedor de mentira que sí sabe la Lista
+    try:
+        from comun.claves import clave as _cl
+        _lista = {'guess': 'Guess', 'plink': 'Guess', 'bna': 'BNA', 'six': 'Six', 'jj': 'JJ', 'kun z': 'Kun Z',
+                  'snow': 'Snow'}
+
+        def _rl(x):
+            return _lista.get(_cl(x), str(x or '').strip())
+        _rl.padron = {_cl(k): v for k, v in _lista.items()}
+        ok('nombres juntos sin «+», todos de la Lista: un equipo (los alias cuentan)',
+           juntos('Plink BNA Six JJ', _rl) == ['Guess', 'BNA', 'Six', 'JJ'])
+        ok('si sobra una palabra no se adivina, y uno de la Lista no se parte',
+           juntos('Scot yinn guty', _rl) is None and juntos('Kun Z', _rl) is None
+           and juntos('Guess + BNA', _rl) is None)
+        _jt = procesar([{'ronda': 'final', 'ladoA': 'Snow', 'ladoB': 'Plink BNA Six JJ', 'ganador': 'Snow'}],
+                       num=1, fecha='11/10', servidor='FFA', participantes=8, tab={'8-15': dict(t16['16+'])},
+                       mods=mods, resolver=_rl)
+        _jr = {r['rapero']: r for r in _jt['resultados']}
+        ok('y en la carga cobra cada uno su parte, no una persona inventada',
+           'Plink BNA Six JJ' not in _jr and _jr.get('Guess', {}).get('puntos') == 7500 // 4
+           and any(x.startswith('JUNTOS:') for x in _jt['avisos']), '%s' % sorted(_jr))
+    except ImportError:
+        pass
 
     mal = nonlocal_mal[0]
     print('')
