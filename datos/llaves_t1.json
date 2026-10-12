@@ -20403,5 +20403,176 @@
     2000
    ]
   ]
+ },
+ "456": {
+  "dia": "2026-10-11",
+  "escala": "8-15",
+  "fecha": "11/10",
+  "links": [],
+  "n": 456,
+  "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "ONZASS"
+      ],
+      "Makmah",
+      "cargada a mano (Dlx, 12/10/2026) · triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Guess",
+       "Six",
+       "Hinjkybesuk"
+      ],
+      "Guess",
+      "cargada a mano (Dlx, 12/10/2026) · triple (4 bandas, pasan 1)"
+     ],
+     [
+      [
+       "Guess",
+       "Jupiter"
+      ],
+      "Guess",
+      "cargada a mano (Dlx, 12/10/2026) · triple (4 bandas, pasan 1)"
+     ],
+     [
+      [
+       "Verc",
+       "JJ",
+       "Sintexto🇨🇴"
+      ],
+      "Verc",
+      "cargada a mano (Dlx, 12/10/2026) · triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "tnr",
+       "Lvel 🇻🇪",
+       "Valdoza"
+      ],
+      "tnr",
+      "cargada a mano (Dlx, 12/10/2026) · triple (4 bandas, pasan 2); revivido: JJ"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, Snow",
+       "Makmah, Liam"
+      ],
+      "Verc, Snow",
+      "cargada a mano (Dlx, 12/10/2026) · equipos: la llave los escribe juntos, sin «+»"
+     ],
+     [
+      [
+       "Guess, BNA",
+       "tnr, JJ"
+      ],
+      "Guess, BNA",
+      "cargada a mano (Dlx, 12/10/2026) · equipos: «[Guess Bna 6]», y 6 es Guess"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, Snow, Makmah",
+       "Guess, BNA, Six, JJ"
+      ],
+      "Verc, Snow, Makmah",
+      "cargada a mano (Dlx, 12/10/2026) · equipos: «Plink» es Guess; CAMPEÓN: Verc, seko boy y Makma; drafteado: Six; drafteado: Makmah"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    4250
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    3250
+   ],
+   [
+    "JJ",
+    "Subcampeón",
+    2625
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "Verc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Hinjkybesuk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jupiter",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sintexto🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Valdoza",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "tnr",
+    "Semifinal",
+    1750
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    1250
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    1250
+   ]
+  ]
  }
 }

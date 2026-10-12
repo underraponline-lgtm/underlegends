@@ -90,10 +90,10 @@
    "nota": "llave de broma («CAMPEÓN: MAMÁ ERIAN - Diego», «SEGUNDO: todos los demás :v») que el lector retenía bien porque no tenía campeón. El 12/10 la primera corrida del día se la preguntó al organizador, y con su respuesta entró al ranking como #453. Ver llaves_a_entrada.junta_sin_mas() y PREGUNTA_MAX_H."
   },
   "Fecha Rempalago Vol. 64 compe express por plata · FFA · 11/10": {
-   "decision": "no cuenta",
-   "cuando": "2026-10-12 3:32 PM ET",
-   "por": "Claude (hasta que Dlx decida)",
-   "nota": "cuartos de a tres y de a cuatro donde pasan dos, que en semis se juntan sin «+» («[Guess Bna 6]») y en la final suman gente nueva: el lector no lo puede leer (cargaba «TNR JJ» y «Plink BNA Six JJ» como personas, y Guess no aparecía). Entró el 12/10 por el arreglo de las llaves de cuentas nuevas con su anuncio; vuelve a como estaba antes de esa mañana mientras Dlx decide. Drako avisó con la captura."
+   "decision": "cuenta",
+   "cuando": "2026-10-12 4:17 PM ET",
+   "por": "Dlx (chat)",
+   "nota": "cargada a mano el 12/10: el lector no puede leer este formato (pasan dos por batalla y se juntan en equipos sin «+»). Dlx: «bna es bna voces lokendo, que está baneado de DRA · plink es guess · 6 es guess», y de JJ, «son el mismo, habrá revivido». Protegida del ciclo en datos/recalculados.json."
   }
  },
  "no_rankear": {

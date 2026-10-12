@@ -8006,5 +8006,232 @@
    ]
   ],
   "v": 2
+ },
+ "456": {
+  "antes": {
+   "BNA": [
+    237,
+    172,
+    true
+   ],
+   "Guess": [
+    42,
+    55,
+    false
+   ],
+   "Hinjkybesuk": [
+    198,
+    102,
+    true
+   ],
+   "JJ": [
+    189,
+    80,
+    true
+   ],
+   "Jupiter": [
+    44,
+    57,
+    false
+   ],
+   "Liam": [
+    263,
+    217,
+    true
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "ONZASS": [
+    174,
+    44,
+    true
+   ],
+   "Six": [
+    7,
+    8,
+    false
+   ],
+   "Snow": [
+    2,
+    2,
+    false
+   ],
+   "Valdoza": [
+    238,
+    174,
+    true
+   ],
+   "Verc": [
+    29,
+    33,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Makmah",
+    "ONZASS",
+    "Makmah"
+   ],
+   [
+    "Guess",
+    "Six",
+    "Guess"
+   ],
+   [
+    "Guess",
+    "Hinjkybesuk",
+    "Guess"
+   ],
+   [
+    "Guess",
+    "Jupiter",
+    "Guess"
+   ],
+   [
+    "Verc",
+    "JJ",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Sintexto🇨🇴",
+    "Verc"
+   ],
+   [
+    "tnr",
+    "Lvel 🇻🇪",
+    "tnr"
+   ],
+   [
+    "tnr",
+    "Valdoza",
+    "tnr"
+   ],
+   [
+    "Verc, Snow",
+    "Makmah, Liam",
+    "Verc, Snow"
+   ],
+   [
+    "Guess, BNA",
+    "tnr, JJ",
+    "Guess, BNA"
+   ],
+   [
+    "Verc, Snow, Makmah",
+    "Guess, BNA, Six, JJ",
+    "Verc, Snow, Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "BNA": 3,
+   "Guess": 5,
+   "Hinjkybesuk": 1,
+   "JJ": 6,
+   "Jupiter": 7,
+   "Liam": 1,
+   "Makmah": 35,
+   "ONZASS": 7,
+   "Six": 15,
+   "Snow": 31,
+   "Valdoza": 3,
+   "Verc": 3
+  },
+  "fecha": "11/10",
+  "firma": "822cfa5a64917af5",
+  "msg": "1559299096555294721",
+  "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
+  "num": 456,
+  "participantes": 15,
+  "sello": {
+   "Makmah": "f6ec3ade6563:9df1984d05ab",
+   "Snow": "fe290890f13a:9df1984d05ab",
+   "Verc": "7f080aaf1710:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T20:17:53Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    4250
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    3250
+   ],
+   [
+    "JJ",
+    "Subcampeón",
+    2625
+   ],
+   [
+    "Verc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Hinjkybesuk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jupiter",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sintexto🇨🇴",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Valdoza",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "tnr",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    1250
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
