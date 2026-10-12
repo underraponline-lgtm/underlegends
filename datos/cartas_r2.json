@@ -282,6 +282,10 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/astral/sv-dra.webp"
  },
  "axinu": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/axinu/sv-ddf.webp",
@@ -1510,6 +1514,10 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hades/sv-urbf.webp"
  },
  "hardcore": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/hardcore/sv-ddf.webp",
@@ -3801,6 +3809,10 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ticiarias/sv-dra.webp"
  },
  "tier": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tier/sv-dra.webp",
