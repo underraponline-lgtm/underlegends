@@ -264,6 +264,7 @@
   "launnok": "Launok",
   "sintexto": "SINTEXT",
   "doce": "DO-C",
+  "hinjkybesuk": "BNA",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1354,6 +1355,10 @@
   [
    "Doce",
    "DO-C"
+  ],
+  [
+   "Hinjkybesuk",
+   "BNA"
   ],
   [
    "Nexus",

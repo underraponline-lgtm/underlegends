@@ -424,7 +424,7 @@
    "Vandu": 14
   },
   "fecha": "07/10",
-  "firma": "f02686b0d4a1f34a",
+  "firma": "674e5c9032f2932d",
   "msg": "1557481124282892360",
   "nombre": "WETTSIDDEE 2",
   "num": 422,
@@ -669,7 +669,7 @@
    ],
    [
     "Snow",
-    "SINTEXT🇦🇷",
+    "SINTEXT",
     "Snow"
    ],
    [
@@ -756,7 +756,7 @@
    "Vandu": 15
   },
   "fecha": "07/10",
-  "firma": "3be837744ac7d3d3",
+  "firma": "84809bdc8d99f49b",
   "msg": "1557511326450851895",
   "nombre": "__ DESGRACIAS EN BELLAS ARTES VOL1 __",
   "num": 423,
@@ -863,7 +863,7 @@
     1250
    ],
    [
-    "SINTEXT🇦🇷",
+    "SINTEXT",
     "Octavos",
     1250
    ],
@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "3807ddf0a40b1aa8",
+  "firma": "7e9c9a749c452ca0",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -1533,7 +1533,7 @@
    "setesfifi": 1
   },
   "fecha": "07/10",
-  "firma": "f8aa1a5bdc98fbaa",
+  "firma": "cf49bc15c8448cff",
   "msg": "1557616971858579527",
   "nombre": "Doble Eliminación Vol. 2",
   "num": 426,
@@ -2210,7 +2210,7 @@
    "Zignos": 10
   },
   "fecha": "08/10",
-  "firma": "40c3de7f9117dcdb",
+  "firma": "acd6f895062a4242",
   "msg": "1557873584389488832",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
   "num": 429,
@@ -2460,9 +2460,9 @@
     "Fazer"
    ],
    [
-    "Global Hustler 🇦🇷",
+    "Global Hustler",
     "Makmah",
-    "Global Hustler 🇦🇷"
+    "Global Hustler"
    ],
    [
     "PichulaMc",
@@ -2475,9 +2475,9 @@
     "MCO"
    ],
    [
-    "Global Hustler 🇦🇷",
+    "Global Hustler",
     "Fazer",
-    "Global Hustler 🇦🇷"
+    "Global Hustler"
    ],
    [
     "MCO",
@@ -2491,7 +2491,7 @@
    ],
    [
     "MCO",
-    "Global Hustler 🇦🇷",
+    "Global Hustler",
     "MCO"
    ]
   ],
@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "306f57129878baca",
+  "firma": "2c1ca932df0c0c8d",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2528,7 +2528,7 @@
     10000
    ],
    [
-    "Global Hustler 🇦🇷",
+    "Global Hustler",
     "Subcampeón",
     7500
    ],
@@ -2762,7 +2762,7 @@
    ],
    [
     "PichulaMc",
-    "F1THER🇪🇸",
+    "F1THER",
     "PichulaMc"
    ],
    [
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "330e1d12674b14ff",
+  "firma": "f38a471becb28920",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -2940,7 +2940,7 @@
     1250
    ],
    [
-    "F1THER🇪🇸",
+    "F1THER",
     "Octavos",
     1250
    ],
@@ -3049,7 +3049,7 @@
    "Xclusivo": 6
   },
   "fecha": "08/10",
-  "firma": "0868d08cc7f69ff3",
+  "firma": "954f662f016925cc",
   "msg": "1557934001543581767",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
   "num": 432,
@@ -3165,7 +3165,7 @@
   "duelos": [
    [
     "Carlosss",
-    "Cabece 🇨🇱",
+    "Cabece",
     "Carlosss"
    ],
    [
@@ -3187,11 +3187,6 @@
     "NXUZ",
     "EmiZor",
     "NXUZ"
-   ],
-   [
-    "Miniboy",
-    "fleivagner🇨🇴",
-    "Miniboy"
    ],
    [
     "JEIXDER",
@@ -3227,6 +3222,16 @@
     "BastyRetro",
     "Xclusivo",
     "BastyRetro"
+   ],
+   [
+    "Number VE",
+    "Dm🇵🇪",
+    "Number VE"
+   ],
+   [
+    "Miniboy",
+    "JEIXDER",
+    "Miniboy"
    ]
   ],
   "ev_antes": {
@@ -3243,7 +3248,7 @@
    "Xclusivo": 7
   },
   "fecha": "08/10",
-  "firma": "171925e4ebb334e5",
+  "firma": "a7981c66512db3ac",
   "msg": "1557964167649169470",
   "nombre": "PROYECTO X",
   "num": 433,
@@ -3275,17 +3280,22 @@
     5000
    ],
    [
+    "Adriagner",
+    "Cuartos",
+    2500
+   ],
+   [
     "NXUZ",
     "Cuartos",
     2500
    ],
    [
-    "Adriagner",
+    "JEIXDER",
     "Cuartos",
-    1250
+    2500
    ],
    [
-    "Cabece 🇨🇱",
+    "Cabece",
     "Octavos",
     1250
    ],
@@ -3305,17 +3315,17 @@
     1250
    ],
    [
-    "fleivagner🇨🇴",
-    "Octavos",
-    1250
-   ],
-   [
     "Shadow",
     "Octavos",
     1250
    ],
    [
     "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dm🇵🇪",
     "Octavos",
     1250
    ]
@@ -4617,7 +4627,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "a1152c0ee8d49531",
+  "firma": "349c5093c9217214",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -4980,9 +4990,9 @@
     "Walker"
    ],
    [
-    "Agus",
+    "EIDP",
     "Dynoco",
-    "Agus"
+    "EIDP"
    ],
    [
     "Agus",
@@ -5051,7 +5061,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "f032e7d39ef1c27f",
+  "firma": "c19d87d5ac0672ad",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -6238,7 +6248,7 @@
    ],
    [
     "Guess",
-    "IKONOXX🇺🇾",
+    "ikonoxx",
     "Guess"
    ],
    [
@@ -6323,7 +6333,7 @@
    "Zignos": 14
   },
   "fecha": "10/10",
-  "firma": "77d83b5f3392364e",
+  "firma": "9a7d155a45e9f5ae",
   "msg": "1558711597571121174",
   "nombre": "LA REDENCION",
   "num": 447,
@@ -6385,7 +6395,7 @@
     1250
    ],
    [
-    "IKONOXX🇺🇾",
+    "ikonoxx",
     "Octavos",
     1250
    ],
@@ -6444,27 +6454,27 @@
   "duelos": [
    [
     "Carlosmo",
-    "Ortiz🇪🇸",
+    "Ortiz",
     "Carlosmo"
    ],
    [
-    "Medster🇪🇸",
+    "Medster",
     "stormed",
-    "Medster🇪🇸"
+    "Medster"
    ],
    [
     "Trot",
-    "Campoy🇪🇸",
+    "Campoy",
     "Trot"
    ],
    [
     "Motera",
-    "Xowee🇪🇸",
+    "Xowee",
     "Motera"
    ],
    [
     "Carlosmo",
-    "Medster🇪🇸",
+    "Medster",
     "Carlosmo"
    ],
    [
@@ -6483,7 +6493,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "b347690ff3992cc0",
+  "firma": "272d834f6f4c5ff7",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -6505,7 +6515,7 @@
     5000
    ],
    [
-    "Medster🇪🇸",
+    "Medster",
     "Semifinal",
     3500
    ],
@@ -6515,7 +6525,7 @@
     3500
    ],
    [
-    "Ortiz🇪🇸",
+    "Ortiz",
     "Cuartos",
     2000
    ],
@@ -6525,12 +6535,12 @@
     2000
    ],
    [
-    "Campoy🇪🇸",
+    "Campoy",
     "Cuartos",
     2000
    ],
    [
-    "Xowee🇪🇸",
+    "Xowee",
     "Cuartos",
     2000
    ]
@@ -6836,6 +6846,7 @@
   "v": 2
  },
  "450": {
+  "al_dia": true,
   "antes": {
    "Bloody": [
     21,
@@ -6993,7 +7004,7 @@
    "Zignos": 15
   },
   "fecha": "08/10",
-  "firma": "63362c9b3864863c",
+  "firma": "b7d28cebd2b20114",
   "msg": "1559092380379127900",
   "nombre": "__ MULTIVERSE __",
   "num": 450,
@@ -7134,6 +7145,7 @@
   "v": 2
  },
  "451": {
+  "al_dia": true,
   "antes": {
    "19": [
     179,
@@ -7202,7 +7214,7 @@
    "Teo": 3
   },
   "fecha": "11/10",
-  "firma": "973cadf1fa25f4e0",
+  "firma": "c106ec2b4bb67c7b",
   "msg": "1559225026232979500",
   "nombre": "MORTAL KOMBAT MAPACHE CUP",
   "num": 451,
@@ -7252,6 +7264,7 @@
   "v": 2
  },
  "452": {
+  "al_dia": true,
   "antes": {
    "JJ": [
     185,
@@ -7332,7 +7345,7 @@
    "Verc": 3
   },
   "fecha": "11/10",
-  "firma": "a08905db9e9e20a3",
+  "firma": "af859979ecd3d823",
   "msg": "1559225028904484906",
   "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
   "num": 452,
@@ -7393,6 +7406,7 @@
   "v": 2
  },
  "453": {
+  "al_dia": true,
   "antes": {
    "Bloody": [
     21,
@@ -7499,7 +7513,7 @@
    "Velatz": 30
   },
   "fecha": "27/09",
-  "firma": "635bc44be3ea3cea",
+  "firma": "e75f6255f031f146",
   "msg": "1559232482669371456",
   "nombre": "DENME MODERADOR LPM",
   "num": 453,
@@ -7569,6 +7583,7 @@
   "v": 2
  },
  "454": {
+  "al_dia": true,
   "antes": {
    "Ariaxer": [
     73,
@@ -7758,7 +7773,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "e77c947c2b0c4361",
+  "firma": "381c10db166c7422",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -7873,6 +7888,7 @@
   "v": 2
  },
  "455": {
+  "al_dia": true,
   "antes": {
    "Elbesaabuelas": [
     318,
@@ -7958,7 +7974,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "6f28347bb8e118b0",
+  "firma": "704003ba1227f51c",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -8008,6 +8024,7 @@
   "v": 2
  },
  "456": {
+  "al_dia": true,
   "antes": {
    "BNA": [
     237,
@@ -8235,6 +8252,7 @@
   "v": 2
  },
  "457": {
+  "al_dia": true,
   "antes": {
    "BNA": [
     237,
@@ -8449,6 +8467,7 @@
   "v": 2
  },
  "458": {
+  "al_dia": true,
   "antes": {
    "Ariaxer": [
     58,
@@ -8802,6 +8821,7 @@
   "v": 2
  },
  "459": {
+  "al_dia": true,
   "antes": {
    "Ariaxer": [
     53,
@@ -8988,7 +9008,7 @@
    ],
    [
     "Colesito",
-    "JHEYSON🇦🇷",
+    "JHEYSON",
     "Colesito"
    ],
    [
@@ -9051,7 +9071,7 @@
    "yinn": 17
   },
   "fecha": "12/10",
-  "firma": "6bfa4eca50246bc0",
+  "firma": "68ac66e9f7951045",
   "msg": "1559330803119427585",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL4 __",
   "num": 459,
@@ -9178,7 +9198,7 @@
     1250
    ],
    [
-    "JHEYSON🇦🇷",
+    "JHEYSON",
     "Octavos",
     1250
    ]

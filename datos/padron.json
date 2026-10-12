@@ -3915,9 +3915,9 @@
   "pais": "Argentina",
   "sv": "",
   "verificado": "",
-  "discord_id": "",
+  "discord_id": "849765868819972166",
   "av_sheet": "",
-  "notas": ""
+  "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-10-11 2:28 PM ET · fusionada con «Hinjkybesuk» (Dlx, 12/10/2026 6:49 PM ET)"
  },
  {
   "full": "Zaza 🇦🇷",
@@ -10160,16 +10160,6 @@
   "notas": "alta automática · se anotó así en inscripciones · 2026-10-11 2:28 PM ET"
  },
  {
-  "full": "Hinjkybesuk",
-  "raw": "Hinjkybesuk",
-  "pais": "",
-  "sv": "",
-  "verificado": "",
-  "discord_id": "849765868819972166",
-  "av_sheet": "",
-  "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-10-11 2:28 PM ET"
- },
- {
   "full": "doble h 🇨🇱",
   "raw": "doble h",
   "pais": "Chile",
@@ -10258,5 +10248,15 @@
   "discord_id": "1447024559197782138",
   "av_sheet": "",
   "notas": "alta automática · /card en FVS · 12/10/2026 1:25 PM ET"
+ },
+ {
+  "full": "JHEYSON 🇦🇷",
+  "raw": "JHEYSON",
+  "pais": "Argentina",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "1344749993332048037",
+  "av_sheet": "",
+  "notas": "alta automática · estaba en la llamada del evento con ese nombre · 2026-10-12 6:29 PM ET"
  }
 ]

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T22:24:55+00:00",
+ "cuando": "2026-10-12T22:54:52+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4368,6 +4368,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "JUASMIO",
+   "quien": "jmiopa",
+   "discord_id": "729439360545587291",
+   "msg_id": "1559333843561881682",
+   "cuando": "2026-10-12T22:35:59"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Abyssus",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1559331741532028981",
+   "cuando": "2026-10-12T22:27:38"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",

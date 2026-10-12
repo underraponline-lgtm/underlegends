@@ -361,14 +361,14 @@
    "temporada": "prueba",
    "sorteado": "2026-10-12T15:22:39Z",
    "sv": {
-    "DRA": 3,
+    "DRA": 1,
     "FFS": 0.5,
-    "FFA": 3.0,
-    "SR": 1,
-    "FVS": 1,
-    "URBF": 1.5,
-    "DDF": 1.5,
-    "ACAD": 1.5
+    "FFA": 1.5,
+    "SR": 5,
+    "FVS": 5,
+    "URBF": 3,
+    "DDF": 3,
+    "ACAD": 2
    },
    "dorado": {
     "sv": "ACAD",
@@ -430,10 +430,12 @@
    },
    "organizadores": [],
    "semillero": {
-    "nuevos": {},
+    "nuevos": {
+     "FFA": 2
+    },
     "gente": {
      "DDF": 7,
-     "FFA": 24
+     "FFA": 34
     },
     "gana": null
    },
@@ -441,12 +443,38 @@
     "ACAD": 0,
     "DDF": 7,
     "DRA": 0,
-    "FFA": 24,
+    "FFA": 34,
     "FFS": 0,
     "FVS": 0,
     "SR": 0,
     "URBF": 0
-   }
+   },
+   "sv_sorteo": {
+    "DRA": 3,
+    "FFS": 0.5,
+    "FFA": 3.0,
+    "SR": 1,
+    "FVS": 1,
+    "URBF": 1.5,
+    "DDF": 1.5,
+    "ACAD": 1.5
+   },
+   "tramos": [
+    {
+     "desde": "2026-10-12T22:43:58Z",
+     "sv": {
+      "DRA": 1,
+      "FFS": 0.5,
+      "FFA": 1.5,
+      "SR": 5,
+      "FVS": 5,
+      "URBF": 3,
+      "DDF": 3,
+      "ACAD": 2
+     }
+    }
+   ],
+   "manual": true
   }
  ]
 }

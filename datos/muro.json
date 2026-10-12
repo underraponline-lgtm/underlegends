@@ -263,6 +263,10 @@
 "servidor"
 ]
 },
+"bna": {
+"rg": "",
+"c": []
+},
 "walker": {
 "rg": "",
 "c": [
@@ -338,17 +342,6 @@
 "rg": "",
 "c": []
 },
-"bna": {
-"rg": "",
-"c": []
-},
-"jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "polosport": {
 "rg": "",
 "c": [
@@ -391,6 +384,13 @@
 "c": [
 "pais",
 "servidor"
+]
+},
+"jupiter": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "player": {
@@ -871,10 +871,6 @@
 "rg": "",
 "c": []
 },
-"maukc": {
-"rg": "",
-"c": []
-},
 "deuxs": {
 "rg": "",
 "c": [
@@ -920,6 +916,10 @@
 "rg": "",
 "c": []
 },
+"maukc": {
+"rg": "",
+"c": []
+},
 "luzzano": {
 "rg": "",
 "c": []
@@ -942,6 +942,10 @@
 ]
 },
 "under": {
+"rg": "",
+"c": []
+},
+"doc": {
 "rg": "",
 "c": []
 },
@@ -1094,10 +1098,6 @@
 "servidor",
 "temporada"
 ]
-},
-"doc": {
-"rg": "",
-"c": []
 },
 "dobleh": {
 "rg": "",
