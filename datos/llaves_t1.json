@@ -2454,6 +2454,21 @@
     2000
    ],
    [
+    "Dynoco",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Fazer",
+    "Subcampeón",
+    2000
+   ],
+   [
     "Jult",
     "Cuartos",
     2000
@@ -2469,29 +2484,14 @@
     2000
    ],
    [
-    "rayito",
-    "Cuartos",
+    "Zeta",
+    "Subcampeón",
     2000
    ],
    [
-    "Dynoco",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Erian",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Fazer",
-    "Subcampeón",
-    1666
-   ],
-   [
-    "Zeta",
-    "Subcampeón",
-    1666
+    "rayito",
+    "Cuartos",
+    2000
    ]
   ]
  },
@@ -20571,6 +20571,168 @@
    [
     "Guess",
     "Subcampeón",
+    1250
+   ]
+  ]
+ },
+ "457": {
+  "dia": "2026-10-06",
+  "escala": "16+",
+  "fecha": "06/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1557189824421830750"
+  ],
+  "n": 457,
+  "nombre": "(sin titulo)",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Snow, BNA",
+       "Soulb, Eclipsito"
+      ],
+      "Snow, BNA",
+      "Revivido: PAIN 🇨🇴; Revivido: ECLIPSE 🇨🇱"
+     ],
+     [
+      [
+       "Makmah, Miniboy",
+       "PichulaMc, Velatz"
+      ],
+      "Makmah, Miniboy",
+      "Revivido: SHISUI 🇨🇱"
+     ],
+     [
+      [
+       "Oasis, Six",
+       "Benjixo, ALTER 🇨🇱"
+      ],
+      "Oasis, Six",
+      "Revivido: BENJIXO 🇦🇷"
+     ],
+     [
+      [
+       "Erian",
+       "Riolu, YOUNG VLAD 🇨🇴"
+      ],
+      "Erian",
+      "Revivido: YOUNG VLAD 🇨🇴"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Benjixo, Six",
+       "BNA, Eclipsito, Snow"
+      ],
+      "Oasis, Benjixo, Six",
+      ""
+     ],
+     [
+      [
+       "YOUNG VLAD 🇨🇴, Erian",
+       "Miniboy, Velatz, Makmah"
+      ],
+      "YOUNG VLAD 🇨🇴, Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Benjixo, Six, Snow",
+       "Erian, YOUNG VLAD 🇨🇴, Velatz"
+      ],
+      "Oasis, Benjixo, Six, Snow",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Snow",
+    "Campeón",
+    3000
+   ],
+   [
+    "Benjixo",
+    "Campeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Six",
+    "Campeón",
+    2500
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "YOUNG VLAD 🇨🇴",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Eclipsito",
+    "Semifinal",
+    2125
+   ],
+   [
+    "BNA",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    1750
+   ],
+   [
+    "ALTER 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Riolu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Cuartos",
     1250
    ]
   ]
