@@ -489,7 +489,24 @@
       antes.forEach(function (k) { if (primera.has(k)) comunes++; });
       if (comunes >= 2) out.unshift([RONDA_ANTERIOR[out[0][0]], previas]);
     }
-    return equiposConEspacios(out);
+    return sinNumeracion(equiposConEspacios(out));
+  }
+
+  /* `escuchar._sin_numeracion()`: el número de cada batalla («1. 🇨🇱 PANCHOK», «2 ALVA») fuera del primer lado,
+     sólo si la ronda está numerada (dos o más con «N.» o «N)» y cada número igual a su lugar) */
+  var NUM_BAT = /^[ \t]*(\d{1,2})[ \t]*([.)\-–]?)[ \t]+(?=\S)/;
+  function sinNumeracion(rs) {
+    return rs.map(function (x) {
+      var bats = x[1];
+      var nums = bats.map(function (b) { return b && b[0] ? NUM_BAT.exec(b[0]) : null; });
+      var conPunto = nums.filter(function (m) { return m && m[2]; }).length;
+      var enOrden = nums.every(function (m, i) { return !m || parseInt(m[1], 10) === i + 1; });
+      if (conPunto < 2 || !enOrden) return x;
+      return [x[0], bats.map(function (b, i) {
+        var m = nums[i], resto = m ? b[0].slice(m[0].length).trim() : '';
+        return m && resto ? [resto].concat(b.slice(1)) : b;
+      })];
+    });
   }
 
   /* ── de acá para abajo no hay copia de Python: es lo que la página dibuja ── */

@@ -942,8 +942,34 @@ def unir_continuadas(texto):
 
 def rondas_de(texto):
     """[(ronda, [[competidor,...],...])] en el orden en que aparecen."""
-    return _equipos_con_espacios([(r, [n for n, _l in bats])
-                                  for r, bats in _rondas_crudas(texto)])
+    return _sin_numeracion(_equipos_con_espacios([(r, [n for n, _l in bats])
+                                                  for r, bats in _rondas_crudas(texto)]))
+
+
+#: el número de la batalla adelante del primer lado: «1. 🇨🇱 PANCHOK», «7) ATR», «2 ALVA»
+_NUM_BAT = re.compile(r'^[ \t]*(\d{1,2})[ \t]*([.)\-–]?)[ \t]+(?=\S)')
+
+
+def _sin_numeracion(rs):
+    """Las rondas sin el número de cada batalla pegado al primer lado.
+
+    🔴 FAT BATTLES PALOOZA T.3 FECHA 6 (la ACADEMIA, 09/10/2026) numera sus octavos —«## 1. 🇨🇱 PANCHOK 🆚 DAMIAN 🇵🇪»
+    … «## 8. 🇦🇷 FLAMA 🆚 CALIZ 🇲🇽»— y el número quedaba en el nombre: «6. 🇨🇴 VR» y «7. 🇺🇾 ATR» entraron al ranking
+    como dos personas, y «## 2 ALVA» (sin el punto) no era el «EMILIO ALVA» de cuartos, que salió walk-in y cobró la
+    mitad, y SHADOW se quedó sin su octavos.
+
+    ⚠️ SÓLO SI LA RONDA ESTÁ NUMERADA: dos batallas o más con «N.» o «N)», y cada número igual a su lugar (1, 2, 3…).
+    Ahí el «2» sin punto también es numeración. «19» o «27» se llaman así: no llevan punto ni van en secuencia."""
+    out = []
+    for r, bats in rs:
+        nums = [_NUM_BAT.match(b[0]) if b and b[0] else None for b in bats]
+        con_punto = sum(1 for m in nums if m and m.group(2))
+        en_orden = all(m is None or int(m.group(1)) == i + 1 for i, m in enumerate(nums))
+        if con_punto >= 2 and en_orden:
+            bats = [[b[0][m.end():].strip()] + list(b[1:]) if m and b[0][m.end():].strip() else b
+                    for b, m in zip(bats, nums)]
+        out.append((r, bats))
+    return out
 
 
 def _rondas_crudas(texto):
@@ -1922,9 +1948,13 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
                 # ganó el otro. COMPE DEL VACILE #1 (Urban Freestyle,
                 # 28/09/2026): Majiztral contra Motera en octavos y Majiztral
                 # contra TG más abajo; la primera quedaba sin ganador.
+                # ⚠️ CON OTRA BANDERA ES OTRA PERSONA: FAT BATTLES FECHA 6 (la ACADEMIA, 09/10/2026) tiene «🇨🇴 ZETRYKO» y
+                # «ZETRYKO 🇨🇱» en octavos, y el campeón salía revivido —la mitad—.
                 if len(b) == 2 and len(ganan) == 2:
-                    abajo = {norm(HISTORIA.sub('', m)) for bb in bats[_ib + 1:] for m in bb}
-                    rev = [n for n in ganan if norm(HISTORIA.sub('', n)) in abajo]
+                    abajo = [m for bb in bats[_ib + 1:] for m in bb]
+                    rev = [n for n in ganan if any(
+                        norm(HISTORIA.sub('', m)) == norm(HISTORIA.sub('', n))
+                        and not (_banderas(m) and _banderas(n) and _banderas(m) != _banderas(n)) for m in abajo)]
                     if len(rev) == 1:
                         ganan = [n for n in ganan if n != rev[0]]
                 # 🔑 EL NOMBRE QUE CRECE DE UNA RONDA A LA OTRA: `MATI🇦🇷` en
@@ -2175,11 +2205,15 @@ class Resueltas(list):
 def _crece(a, b):
     """¿`a` y `b` (normalizados) son el mismo nombre, uno el principio del
     otro? `mati` y `maticerna`, `paria` y `pariasinremedio`. Desde 4 letras:
-    `nc` es el principio de demasiada gente."""
+    `nc` es el principio de demasiada gente.
+
+    🔑 O EL FINAL: «## 2 ALVA 🇲🇽» en octavos es «EMILIO ALVA 🇲🇽» en cuartos (FAT BATTLES PALOOZA T.3 FECHA 6, la
+    ACADEMIA, 09/10/2026): el nombre crece hacia adelante. Con las mismas trabas de `_crecio()` —la misma bandera,
+    uno solo de la ronda y lo agregado no es gente de la llave—."""
     if not a or not b or a == b:
         return False
     corto, largo = sorted((a, b), key=len)
-    return len(corto) >= 4 and largo.startswith(corto)
+    return len(corto) >= 4 and (largo.startswith(corto) or largo.endswith(corto))
 
 
 def _banderas(s):

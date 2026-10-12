@@ -1953,7 +1953,9 @@ def marcar_walkins(filas, textos=(), ids=None, quien=None, sv=None):
         previos = set().union(*(en_texto[rondas[j]] for j in range(i)))
         if k in previos or E._parecido(k, list(previos)):
             continue
-        if any(len(p) >= 4 and (k.startswith(p) or p.startswith(k)) for p in previos):
+        # o con lo agregado adelante: «ALVA» en octavos y «EMILIO ALVA» en cuartos (FAT BATTLES FECHA 6, 09/10/2026)
+        if any(len(p) >= 4 and (k.startswith(p) or p.startswith(k) or k.endswith(p) or p.endswith(k))
+               for p in previos):
             continue
         # la misma persona, con otro nombre en una ronda anterior: ver el docstring
         if quien is not None and quien(k) and any(quien(k) & quien(p) for p in previos):
@@ -2017,6 +2019,14 @@ def marcar_revividos(filas, textos=()):
         return [p for p in (_k(x) for x in re.split(
             r'[+,&]', E.HISTORIA.sub('', lado or ''))) if p]
 
+    def _otra_bandera(lado, m, h):
+        """¿El `m` de `lado` y el `m` de la fila `h` llevan banderas distintas? Entonces son dos personas."""
+        def _de(x):
+            return [p for p in re.split(r'[+,&]', E.HISTORIA.sub('', x or '')) if _k(p) == m]
+        aca = [E._banderas(p) for p in _de(lado)]
+        alla = [E._banderas(p) for p in _de(h.get('ladoA')) + _de(h.get('ladoB'))]
+        return bool(aca and alla and all(a and b and a != b for a in aca for b in alla))
+
     revividos = {}
     # 🔑 EN UN DRAFT, QUIEN VUELVE DENTRO DE UN EQUIPO ES UN DRAFTEADO, no
     # un revivido (guía, Parte 2, §9.1 y §11.1): cobra su eliminación Y su
@@ -2045,6 +2055,10 @@ def marcar_revividos(filas, textos=()):
                 if m in _pokemones(h):
                     continue
                 ma, mb = _miembros(h.get('ladoA')), _miembros(h.get('ladoB'))
+                # ⚠️ CON OTRA BANDERA ES OTRA PERSONA (FAT BATTLES FECHA 6, 09/10/2026: «🇨🇴 ZETRYKO» perdió octavos y
+                # «ZETRYKO 🇨🇱» siguió hasta ser campeón; no es un revivido)
+                if m in ma + mb and _otra_bandera(perdedor, m, h):
+                    continue
                 if m in ma + mb:
                     # ⚠️ las filas de una amenaza partida comparten al que
                     # PASO, no al que perdio: el perdedor de una fila de
