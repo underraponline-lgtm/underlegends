@@ -15,6 +15,7 @@ import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
 import * as RQ from './requisitos.js';
+import { Miniatura, abrirVideo } from './video.jsx';
 
 // 🔑 UNA SOLA PÁGINA (Dlx, 07/10/2026: *«me gustaría que todo esté en una página, no que esté dividido en varias»*).
 // Las pestañas de antes siguen siendo links que circulan (`#/r/x/duelos`): ahora bajan hasta su sección
@@ -561,6 +562,32 @@ function Eventos({ liga, p, e }) {
   );
 }
 
+// ── 🎬 Sus batallas en video: las de los canales de YouTube de los socios donde aparece (`bot/videos.py`). Dlx,
+// 12/10/2026: «mejor sería que tú pudieses detectarlos tú mismo desde las cuentas y redes sociales de nuestros socios».
+// Sin videos, no se dibuja. Se toca y se mira acá (`abrirVideo()`): nada de YouTube antes del toque, salvo la miniatura
+const SV_CANAL = { DRA: 'Under Legends', SR: 'Snake Rap', FFS: 'Freestyle Future Series', FFA: 'Free for All', FVS: 'Freestyle Versus' };
+function Videos({ liga, p }) {
+  const vs = (p && p.vid) || [];
+  if (!vs.length) return null;
+  return (
+    <section className="sec pf-sec">
+      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs.length === 1 ? 'una' : vs.length}</span></div>
+      <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Tocá una para verla acá.</p>
+      <ul className="pf-vid">
+        {vs.map(([vid, tit, sv]) => (
+          <li key={vid}>
+            <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid, tit, link: 'https://www.youtube.com/watch?v=' + vid })}>
+              <span className="pf-vid-m"><Miniatura vid={vid} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
+              <b>{tit}</b>
+              <small>{SV_CANAL[sv] || siglaDe(sv)}</small>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 // ── Duelos: el cara a cara con cada rival; al tocar uno, sus duelos con él (Dlx: «3. A») ──
 function Duelos({ liga, p, e }) {
   const du = (p && p.du) || [];
@@ -725,6 +752,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           </div>
           <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
           <div id="pf-insignias"><Insignias liga={liga} p={p} /></div>
+          <div id="pf-videos"><Videos liga={liga} p={p} /></div>
           <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
           {/* sus eventos, al final y con buscador (Dlx, 07/10/2026: «poner eventos en lo último») */}
           <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} /></div>

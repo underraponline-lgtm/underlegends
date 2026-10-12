@@ -1567,6 +1567,8 @@ def _perfiles(gente, comp, regs):
     comp_eq = _companeros(regs, de, por)
     reps = _replicas(de)
     inv = _json('datos', 'cartas_r2.json') or {}
+    _vj = _json('datos', 'videos.json') or {}
+    _vids, _vpor = _vj.get('videos') or {}, _vj.get('por') or {}
     out = {}
     for q, p in por.items():
         cp = comp_raw.get(p.get('raw')) or (comp_de.get(norm(p.get('raw')))
@@ -1635,6 +1637,11 @@ def _perfiles(gente, comp, regs):
         ins = _ins_de(p.get('raw'))
         if ins:
             x['ins'] = ins
+        # 🎬 sus batallas en video, de los canales de los socios (`bot/videos.py`): [id, título, servidor]
+        vid = [[v, (_vids.get(v) or ['', ''])[0], (_vids.get(v) or ['', ''])[1]]
+               for v in (_vpor.get(p.get('raw')) or []) if v in _vids]
+        if vid:
+            x['vid'] = vid
         out[q] = x
     import time
     # el promedio de la Liga en cada dimensión, para comparar en el gráfico:

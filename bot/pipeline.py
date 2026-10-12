@@ -1200,6 +1200,12 @@ def _lo_barato(correr):
     #
     # ⚠️ Y ES UN DIFF-WRITER: si el payload sale igual al que está en KV
     # no escribe. KV da 1.000 escrituras por día.
+    # ── 2b8 · 🎬 las batallas en video de los socios (`bot/videos.py`, Dlx 12/10/2026): antes de la web, que las lleva al
+    # perfil. Una lectura entera por día y, en las demás corridas, sólo lo nuevo de cada canal. Nunca frena el ciclo
+    if correr:
+        paso('2b8', 'las batallas en video')
+        if not corre(['bot/videos.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
+            print('      ⚠️ los videos fallaron: queda lo de la corrida anterior')
     if correr:
         paso('2c', 'la web')
         corre(['bot/subir_web.py', '--aplicar'], callado=False)

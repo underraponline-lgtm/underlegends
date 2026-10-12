@@ -1,0 +1,3181 @@
+{
+ "_leeme": "Las batallas en video de cada rapero, de los canales de YouTube de los socios (bot/videos.py). Dlx, 12/10/2026.",
+ "crudos": {
+  "UC1wmceEHX_k4ME_ZGq60dJg": [
+   [
+    "0uk1CE5A3Ic",
+    "ZETA 🆚 RUBIK || FINAL MATANZA DE DIOSES - C16"
+   ],
+   [
+    "kaD74Qr7ky8",
+    "RUBIK 🆚 SCORPIO | FINAL MATANZA DE DIOSES - C15"
+   ],
+   [
+    "38suLG1mwHI",
+    "LUZ 🆚 POMBERITO || Jornada #2 - Snake League VII🔹"
+   ],
+   [
+    "_BuK21DwnIA",
+    "SCORPIO 🆚 RUBIK || Jornada #2 - Snake League VII🔹"
+   ],
+   [
+    "87uV6RRvgEs",
+    "LIBERIA 🆚 JD || Jornada #2 - Snake League VII🔹"
+   ],
+   [
+    "UdpBJo6T9g8",
+    "SIX 🆚 SAMSARA || Jornada #2 - Snake League VII🔹"
+   ],
+   [
+    "Hm6CZUJAXns",
+    "TIKAL 🆚 POMBERITO || Jornada #1 - Snake League VII🔹"
+   ],
+   [
+    "SVs79GG7XPE",
+    "LUZ 🆚 AGUS || Jornada #1 - Snake League VII🔹"
+   ],
+   [
+    "5S8aayW6nsE",
+    "RUBIK 🆚 KENCHIN || Jornada #1 - Snake League VII🔹"
+   ],
+   [
+    "WWjRVL1-Eno",
+    "SIX 🆚 LIBERIA || Jornada #1 - Snake League VII🔹"
+   ],
+   [
+    "SG_FYNBkKnk",
+    "SAMSARA 🆚 NUMBER || Jornada #1 - Snake League VII🔹"
+   ],
+   [
+    "6EPImwszyDs",
+    "SCORPIO 🆚 JD || Jornada #1 - Snake League VII🔹"
+   ],
+   [
+    "2RUo4qsGU9c",
+    "TIKAL 🆚 RUBIK || FINAL - 🩸 MATANZA DE DIOSES: THE HUNT 🩸"
+   ],
+   [
+    "duiUJ6joXQ4",
+    "TIKAL 🆚 RUBIK || GRAN FINAL - Snake League VI"
+   ],
+   [
+    "NXaqIr4dx0A",
+    "AGUS 🆚 JD || Jornada #1 - Snake League VI"
+   ],
+   [
+    "0ZRrxKhS0c8",
+    "SIX 🆚 DTR || Jornada #1 - Snake League VI"
+   ],
+   [
+    "U6ZzScWWAmE",
+    "RUBIK 🆚 NUMBER || Jornada #1 - Snake League VI"
+   ],
+   [
+    "TxQAHEgiv44",
+    "||SNAKE RAP|| Final de Matanza de Dioses - TIKAL vs JD"
+   ],
+   [
+    "8hKZGHJdids",
+    "NOVACANE vs BOHEMIO - Tinta de Gato ||Batallas Escritas||"
+   ],
+   [
+    "8R1-cqPEySc",
+    "MINUTO LIBRE - ARAMA || Level God Temporada 7 J.9"
+   ],
+   [
+    "wNR4x-muLfc",
+    "FAZER vs MJ || Level God J5T6 - Snake Rap"
+   ],
+   [
+    "Cr1HAzRAecI",
+    "SCORPIO vs ARAMA || Ronda Réplica - Level God"
+   ],
+   [
+    "jiZSyVBWjVw",
+    "ROAD vs HEAT || FPC VII - MINUTOS LIBRES"
+   ],
+   [
+    "R3z_U0aXcdk",
+    "Kyss vs Zeta  || FPC - Snake Rap"
+   ],
+   [
+    "ndxMADBnckk",
+    "MINUTOS A SANGRE - Nico vs Tavo Rex || Level God (Snake Rap)"
+   ],
+   [
+    "BhT4eKbTKKQ",
+    "LEVEL GOD T.6 J.1 - Scorpio vs Niko || Snake Rap Batallas de Freestyle"
+   ],
+   [
+    "-rKI1u16n8E",
+    "FINAL de Matanza de Dioses - Baeza vs Road (Deluxe) || Batalla de Freestyle"
+   ],
+   [
+    "DS6GC5glTq0",
+    "MINUTAZO DE TEMÁTICA - TAVO REX || LEVEL GOD T.5"
+   ],
+   [
+    "ebY9AQ6bclE",
+    "MINUTAZO DE RESPUESTA - Saga ||LIGA DE LEVEL GOD T.5||"
+   ],
+   [
+    "Ue6nnt7hqMs",
+    "MINUTAZO LIBRE en LEVEL GOD || Onfire"
+   ]
+  ],
+  "UC6hd1EYdjZi18NjjXbnr0iw": [
+   [
+    "eDGh4B9rVsQ",
+    "Carlosmo Vs Mco [FFS Bull Internacional] - FFS - Discord - Final"
+   ],
+   [
+    "2wEA2V73nY0",
+    "Garzi Vs Mco [FFS Bull Internacional] - FFS - Discord - Semi Final"
+   ],
+   [
+    "7TCUuFBYgec",
+    "Carlosmo Vs Mtz [FFS Bull Internacional] - FFS - Discord - Semi Final"
+   ],
+   [
+    "TQDtdk_GF2A",
+    "Konan Vs Mco [FFS Bull Internacional] - FFS - Discord - Cuartos"
+   ],
+   [
+    "3pgBiTGtF3c",
+    "Alvin Vs Garzi [FFS Bull Internacional] - FFS - Discord - Cuartos"
+   ],
+   [
+    "RR40sCEWDWU",
+    "MTZ Vs Draxx [FFS Bull Internacional] - FFS - Discord - Cuartos"
+   ],
+   [
+    "y6AYOHl-Mmk",
+    "Carlosmo Vs Kourier [FFS Bull Internacional] - FFS - Discord - Cuartos"
+   ],
+   [
+    "7vkSBpx3Z30",
+    "Konan Vs Humildad [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ],
+   [
+    "bLHOnPDKXnc",
+    "JJ Vs MCO [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ],
+   [
+    "vYoJz45oGY4",
+    "Junior Vs Alvin [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ],
+   [
+    "6oOyOfvMAKc",
+    "Snake Vs Garzi [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ],
+   [
+    "K586J9Jb7-4",
+    "MTZ Vs Ricardflex [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ],
+   [
+    "AldoytTlyLI",
+    "Plink Vs Kourier [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ],
+   [
+    "sN6wrdP9b-g",
+    "Carlosmo Vs Jobains [FFS Bull Internacional] - FFS - Discord - Octavos"
+   ]
+  ],
+  "UCW35yrKAOMyDCp3Uap6crkg": [
+   [
+    "tf3voRfPPzw",
+    "HaC Vs Draxx | La Final 🏆 -  Final Regional La serena T9 2025"
+   ],
+   [
+    "cmg3xBCxxCA",
+    "Blaxx Vs Deuxs | Final - Final Regional Coquimbo 2025 T9"
+   ],
+   [
+    "Bs5yViEKMT0",
+    "Xervo Vs Blaxx | Semifinales - Final Regional Coquimbo 2025"
+   ],
+   [
+    "U6fX5Ml3kIc",
+    "Agustín Vs Deuxs | Semifinales -Final Regional Coquimbo 2025"
+   ],
+   [
+    "fmtYuKsWJmk",
+    "Espectro Vs Mathias | Cuartos - Red Bull Nacional Colombia "
+   ],
+   [
+    "glZlmKqHNW4",
+    "HaC Vs Draxx Vs Benja MVP | Filtros - Red Bull Regional Chile La Serena"
+   ],
+   [
+    "PFLbVAhUmLQ",
+    "West Vs Taro | Cuartos De Final - Red Bull Nacional Colombia "
+   ],
+   [
+    "6YS76y5UL5g",
+    "Xervo Vs Deuxs Vs Jobains | Octavos - Final Regional La Serena 2025"
+   ],
+   [
+    "EArxcMi3PUs",
+    "Herrera Vs MC Vargas | Cuartos - Red Bull Nacional Colombia "
+   ],
+   [
+    "OaLecf0BaRU",
+    "Carlos Vs Snow || TFC Regional 2025 TFC 🤝VS"
+   ],
+   [
+    "EpLD5UifqbE",
+    "Perdónanos Por Tan Poco "
+   ],
+   [
+    "mlzM1dL4ER0",
+    "XERVO vs BENJA EVIL - Octavos De Final | Red Bull Regional Isla De Maipo"
+   ],
+   [
+    "ISCVRl3Px3I",
+    "MKNOLI VS MAITAS - Octavos De Final | Red Bull Regional Isla Del Maipo"
+   ],
+   [
+    "e9mtDFIUHHY",
+    "PARÉNTESIS vs DEUXX - TERCER PUESTO | RED BULL REGIONAL SANTIAGO"
+   ],
+   [
+    "TVYrcPxd7pg",
+    "DEUXX vs HAC - SEMIFINALES | RED BULL REGIONAL SANTIAGO"
+   ],
+   [
+    "L8KZ00zWRyY",
+    "AGUSTIN 51 vs DEUX - CUARTOS DE FINAL | RED BULL BATALLA REGIONAL SANTIAGO"
+   ],
+   [
+    "ecjpc1Hrm58",
+    "HAC Vs JOBAINS - CUARTOS DE FINAL | RED BULL REGIONAL SANTIAGO"
+   ],
+   [
+    "3nzgwyhpcMo",
+    "KZAONE V.S HAC | OCTAVOS DE FINAL #VSCUP"
+   ],
+   [
+    "7jOe6wx3MxI",
+    "ARTS VS EPIK | OCTAVOS DE FINAL #VSCUP"
+   ],
+   [
+    "Oi8nNu03drY",
+    "BENJA MVP VS KASAAXT | OCTAVOS DE FINAL #VSCUP"
+   ],
+   [
+    "k5kf6uR4114",
+    "CARLOS VS ZAMO | OCTAVOS DE FINAL #vscup"
+   ],
+   [
+    "7ukwD5aqiFM",
+    "KZAONE VS BLAXX | PLAYOFFS VS CUP 2025 #VSCUP"
+   ],
+   [
+    "pRVZJ_sICsk",
+    "SALMÓN VS HAC OCTAVOS DE FINAL RED BULL - live"
+   ],
+   [
+    "rvnfT257eHs",
+    "JUANFER VS POMBERITO JORNADA 4 FVS ARGENTINA"
+   ],
+   [
+    "NhZU7Up2-Os",
+    "MINUTAZO QERVO 🕺🏽| KUERVO VS ESPECTRO |"
+   ],
+   [
+    "q1qxv_d7Ruc",
+    "HAC VS LIL KANT | Cuartos de final"
+   ],
+   [
+    "fYh0MBStc8Q",
+    "HERRERA VS KASSATX | Cuartos De Final"
+   ],
+   [
+    "PW-N2QdRgpI",
+    "KZAONE AUTOMOVILÍSTICO VS BLEDOX | Cuartos de final"
+   ],
+   [
+    "U_MP8xzn1h8",
+    "HAC VS QERVO 🦿| DEM BATTLES -Final (No Oficial)"
+   ],
+   [
+    "8eT3PXG5lbk",
+    "ARTS VS RAMDOMS"
+   ],
+   [
+    "ww0EGha_kyQ",
+    "CARLOS VS DARÍO | Cuartos de final FVS internacional"
+   ],
+   [
+    "McGIV6ZOd18",
+    "KUERVO VS HAC | octavos de final FVS internacional"
+   ],
+   [
+    "vXRrVI-vn70",
+    "Jave vs el pomberito | Octavos de final FVS internacional"
+   ],
+   [
+    "Z55SdTObh_U",
+    "CARLOS VS XANDIZ REMASTER | FVS Internacional octavos de final"
+   ],
+   [
+    "brYOLwz7Rjg",
+    "PROSU VS KSSATX | DOBLE AA VS ALBIN Y LAS ARDILLAS| Octavos de final FVS internacional"
+   ],
+   [
+    "zehCmgKXopM",
+    "ZAMO VS SALMÓN | Octavos de final FVS internacional."
+   ],
+   [
+    "e8fHQth1nYg",
+    "MINUTOS DE PRESENTACIÓN FVS INTERNACIONAL 2025"
+   ],
+   [
+    "fnDEuDTwHZI",
+    "EL POMBERITO VS ASTRAL | Final nacional Red Bull batallas argentina"
+   ],
+   [
+    "8AJ8XuvIW2I",
+    "CARLOS VS SNOW | Red Bull can you make it? cuartos de final (no oficial)"
+   ],
+   [
+    "pmcQdZW0orU",
+    "CARLOS VS BENJA MC (MVP) | exhibición"
+   ],
+   [
+    "_xSdJ3WdG28",
+    "MEJORES RIMAS FVS 2K25"
+   ],
+   [
+    "C9gQNAgwNnA",
+    "CARLOS 🇪🇸VS SALMÓN 🇨🇱| Red Bull Internacional"
+   ],
+   [
+    "BOgK_q4BvBo",
+    "INTRO CARLOS VS SALMÓN (epiko)"
+   ],
+   [
+    "rkL7tDJA16Y",
+    "HaC y Salmón VS Ramdoms en DEM"
+   ],
+   [
+    "2t7K6eOLDJY",
+    "Carlos vs Kuervo Exhibición"
+   ],
+   [
+    "rsYPiq-0fns",
+    "Benja mvp clips red bull internacional"
+   ],
+   [
+    "WgjOENtfkQs",
+    "Samuel vs Zamo octavos de final red bull Internacional"
+   ],
+   [
+    "61DKTaZwWM4",
+    "Mejores rimas JM JULEX Red Bull Internacional 2024"
+   ],
+   [
+    "8UjDiDUuQZc",
+    "Carlos vs salmón ||Octavos de final Red Bull"
+   ],
+   [
+    "r52GL1uuxJs",
+    "CYPER RED BULL INTERNACIONAL"
+   ],
+   [
+    "mFrWB2RMzWI",
+    "Benja VS benja evil |Liga Vs"
+   ],
+   [
+    "DccNYVcka3M",
+    "HaC vs Benja MC-cuartos de final Vs CUP-|| 15 de septiembre 2024"
+   ],
+   [
+    "dNbvOKQKMWg",
+    "Zazo VS Salmon -cuartos de final 14 de septiembre 2024"
+   ],
+   [
+    "BKd8nMZLwBs",
+    "Benjitabrr vs carlosmo-octavos de final VS CUP"
+   ],
+   [
+    "krZ9KvUGRvs",
+    "Benja VS Benjitabrr -13 de septiembre 2024"
+   ]
+  ],
+  "UCnuSKqHzVgjQYLkLual97WA": [
+   [
+    "k18iS9I_1wc",
+    "Gran Final 5 Vidas Legends - Temporada 1 | Under Legends"
+   ],
+   [
+    "Yt8bhTttvp8",
+    "🐔 GALLOS DEL FREESTYLE 🎤 | Fecha 1 | #underlegends #rap #freestyle"
+   ],
+   [
+    "4WB7Yt160OU",
+    "(FREE) Freestyle Boom Bap Beat💥 | ZkN - REST IN PEACE 🪦 |  #beats #freestyle #hiphop #rap"
+   ],
+   [
+    "GTqWZREJx5k",
+    "4X4 EPICO DE EDU VS SOMBRA🥊| MEJORES RIMAS FREESTYLE #6"
+   ],
+   [
+    "scPWhVhb2Sc",
+    "LEVI ​​​​🇨🇱​ Vs CONNOR 🇨🇴 | #OKL23 | T1J1 | Liga Profesional De Freestyle"
+   ],
+   [
+    "Zmd_C5dEcI0",
+    "La Copa Underap T2🏆 | Recopilación Mejores Rimas Freestyle🎤 (Parte 1)"
+   ],
+   [
+    "nhGPppbr1Eg",
+    "MOLUSCO ​​​​🇦🇷​ Vs SK8 🇪🇨 | #UML23 | T2J1 | Liga de freestyle"
+   ],
+   [
+    "QV4Vnynu7a8",
+    "7PO 🇨🇱 Vs BOHEMIO 🇨🇴 | #HLC23 | T2J2 | Liga de freestyle"
+   ],
+   [
+    "Zd8cdYO4O1I",
+    "TOKIO ​​​​🇦🇷​ Vs RANK 🇪🇨 | #UML23 | T2J1 | Liga de freestyle"
+   ],
+   [
+    "hnoXlKNthGM",
+    "VALDRAX ​​​​🇵🇪​ Vs CHARRO 🇲🇽 | #UML23 | T2J1 | Liga de freestyle"
+   ],
+   [
+    "ATosltq3A0g",
+    "RENKHO ​​​​🇲🇽​ Vs KODOSTYLE 🇨🇱 | #FBR23 | T2J2 | “...“"
+   ],
+   [
+    "3fGoAlhIlII",
+    "JMB ​​​​🇦🇷​ Vs AXINU ​​​​​🇨🇴​ | #FBR23 | T2J2 | “...“"
+   ],
+   [
+    "g4gUig5g8n4",
+    "LOMARCE ​​​🇨🇱​ Vs CRISS ​​​🇨🇱​ | #FBR23 | T2J2 | “...“"
+   ],
+   [
+    "UFgR3QI6Fxk",
+    "DLX ​​🇵🇪​ Vs WARRIOR ​🇻🇪​​ | #FBR23 | T2J2 | “...“"
+   ],
+   [
+    "7fS--SUx-tk",
+    "BAU 🇦🇷​ Vs SHADOW 🇨🇴​ | #FBR23 | T2J2 | “...“"
+   ],
+   [
+    "OjqGn3dpAw0",
+    "XHAY 🇭🇳 Vs BELIKKO 🇻🇪 | #FBR23 | T2J2 | “...“"
+   ],
+   [
+    "fOI_LdAd9_I",
+    "VAL 🇨🇴 Vs MATI CERNA 🇦🇷 | #HLC23 | T2J2 | “...“"
+   ],
+   [
+    "FrR3TFv694U",
+    "MATI CERNA 🇦🇷 Vs ZYKLO 🇵🇪 | #HLC23 | T2J1 | “...“"
+   ],
+   [
+    "YiFu2eMg0Ms",
+    "BAU 🇦🇷 Vs DLX 🇵🇪 | #FBR23 | T2J1 | “...“"
+   ],
+   [
+    "gmn7lJ-LfSI",
+    "XHAY 🇭🇳 Vs CRISS 🇨🇱 | #FBR23 | T2J1 | “...“"
+   ],
+   [
+    "9oPIpPU1ze8",
+    "LOMARCE 🇨🇱 Vs WARRIOR 🇻🇪 | #FBR23 | T2J1 | “...“"
+   ],
+   [
+    "6MtPyvPZSos",
+    "RENKHO 🇲🇽 Vs AXINU 🇨🇱 | #FBR23 | T2J1 | “...“"
+   ],
+   [
+    "hE1U9hMexiY",
+    "JMB 🇦🇷 Vs BELIKKO 🇻🇪 | #FBR23 | T2J1 | “...“"
+   ],
+   [
+    "pXTupsW5yEA",
+    "THEMASTERBENJA 🇨🇱 Vs RETADOR | #FBR22 | T1J1 | “Te IMPORTA más DISCORD que TU vida SOCIAL“"
+   ],
+   [
+    "ujx0tGRVVhM",
+    "JDMC 🇻🇪 Vs LARU 🇦🇷 | #FBR22 | T1J1 | “ARGENTINA estuvo EN la FINAL por MESSI nada MÁS“"
+   ],
+   [
+    "t5iS8ges_3M",
+    "RICHITO 🇵🇪 Vs DIOSITO 🇦🇷 | #FBR22 | T1J1 | “NO es el INTERNET peruano, es tu ECONOMIA argentina“"
+   ],
+   [
+    "bBDNh7mq2lA",
+    "RENKHO 🇲🇽 Vs GIAN 🇦🇷 | #FBR22 | T1J1 | “MAMÁ apareci en YOUTUBE“"
+   ],
+   [
+    "9p4ybdOpkas",
+    "DLX 🇵🇪 Vs DARKT 🇨🇱 | #FBR23 | Liga de freestyle para novatos"
+   ],
+   [
+    "CwXKlQnFYZU",
+    "XHAY 🇭🇳 Vs WOSITO 🇦🇷 | #FBR23 | “...“"
+   ],
+   [
+    "AEfCGBhdV14",
+    "VALCITO 🇪🇸 Vs TRUENITO 🇦🇷 | #FBR23 | “...“"
+   ],
+   [
+    "lJPJKjPaLQM",
+    "KODOSTYLE 🇨🇱 Vs DLX 🇵🇪 | #FBR23 | “Te FUISTE a la UNI, pero te ESCAPASTE con el DINERO de tu madre“"
+   ],
+   [
+    "S6Es2PTOKJw",
+    "BAU 🇦🇷 Vs DARKT 🇨🇱 | #FBR | T1J1 | “NECESITABAN a ALGUIEN que SACARA 0 PUNTOS por eso ESTAS acá“"
+   ],
+   [
+    "Oo6u4f60rfc",
+    "SANDIA 🇻🇪 Vs MATI CERNA 🇦🇷 | #FBR | T1J1 | “Se TIRO del PISO porque se COGIO a la NOVIA de tu COMPA“"
+   ],
+   [
+    "tWUtszkjw0M",
+    "Levi 🇨🇱 Vs Manolito 🇪🇸 | Final | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "02nOcpYS0gQ",
+    "SPD 🇪🇸 Vs Levi 🇨🇱 | Semifinal | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "26JFWV0672Q",
+    "Manolito 🇪🇸 Vs Marxx 🇪🇸 | Semifinal | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "I6vEoI_joUM",
+    "SPD 🇪🇸 Vs Xhay 🇭🇳 | Cuartos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "sntwYbwhmBk",
+    "Rank 🇪🇨 Vs Levi 🇨🇱 | Cuartos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "Pqvz8JwkF0s",
+    "Improvisado 🇵🇪 Vs Marxx 🇪🇸 | Cuartos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "p1QbYzEkymo",
+    "Manolito 🇪🇸 Vs TeiwaZ 🇨🇴 | Cuartos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "d4nayNOleEk",
+    "SPD 🇪🇸 Vs Megara 🇨🇱 | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "uV0FkQXhNb4",
+    "Xhay 🇭🇳 Vs Droker 🇨🇱 | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "0hGhrr8OvPQ",
+    "Improvisado 🇵🇪 Vs Connor 🇨🇴 | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "XU3uR2wIXaU",
+    "GuruNegrata 🇨🇴 Vs Levi 🇨🇱  | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "pWbSTJ8U9Xc",
+    "AleLopez 🇨🇱 Vs Marxx 🇪🇸  | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "-JzB0yWBt0w",
+    "Rank 🇪🇨 Vs Sombra 🇵🇷 | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "VK5_4EcCS3I",
+    "TeiwaZ 🇨🇴 Vs EliasMc 🇦🇷  | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "kCUCmWQ7Cio",
+    "COMO PONER BEATS EN DISCORD🎶 | #PracticaTuFreestyleOnline"
+   ],
+   [
+    "7NxJLRXNYwo",
+    "🔴 Estreno | La Copa 3 - #2 | Pesatunes (Hay compe en nuestro servidor ya!)"
+   ],
+   [
+    "6B88q8N83jY",
+    "Manolito 🇪🇸 Vs Darktempo 🇨🇱  | Octavos | La Copa 3 - #2 | Pesatunes"
+   ],
+   [
+    "XFxNJzgMkE0",
+    "Zati 🇨🇱 Vs Levi 🇨🇱  | Final | La Copa 3 - #1 | Pesatunes"
+   ],
+   [
+    "ImdAY0N5UCA",
+    "Renkho 🇲🇽 Vs CrkKillah 🇲🇽  | Tercer Puesto | La Copa 3 - #1 | Pesatunes"
+   ],
+   [
+    "n_KaqMywSKQ",
+    "Renkho 🇲🇽 Vs Levi 🇨🇱  | Semifinal | La Copa 3 - #1 | Pesatunes"
+   ],
+   [
+    "jRkUJfxcTYY",
+    "Zati 🇨🇱 Vs CrkKillah 🇲🇽 | Semifinal | La Copa 3 - #1 | Pesatunes"
+   ],
+   [
+    "XuH6Rf6SCHc",
+    "Renkho 🇲🇽 Vs CF 🇨🇴 | 4tos | La Copa 3 - Pesatunes"
+   ],
+   [
+    "L9q1i1d6_2k",
+    "Levi 🇨🇱 Vs AleLopez 🇨🇱 | 4tos | La Copa 3 - Pesatunes"
+   ],
+   [
+    "16tdyBEed4A",
+    "Zati 🇨🇱 Vs Vinz 🇵🇪 | 4tos | La Copa 3 - Pesatunes"
+   ],
+   [
+    "7z0wdi-CfAw",
+    "EliasMc 🇦🇷 Vs CrkKillah 🇲🇽 | 4tos | La Copa 3 - Pesatunes"
+   ],
+   [
+    "XHjohGsmf3Y",
+    "#OKL2023 | UNDER LEGENDS"
+   ],
+   [
+    "KvYHgWE5VsY",
+    "4X4 AGRESIVO DE SOMBRA VS MAT⚡| UL EDIT #5 | MEJORES RIMAS FREESTYLE"
+   ],
+   [
+    "ccFOVuS2hzM",
+    "LEYENDA DEL FLOW V.1⚡┃COMPETENCIA RAP ONLINE┃#PRÁCTICATUFREESTYLE"
+   ],
+   [
+    "x0g2o2RCL3A",
+    "MINUTAZO DE LICHAL VS GLOUSE🩸| UL EDIT #4 | MEJORES RIMAS FREESTYLE"
+   ],
+   [
+    "Uks4Zz4Tem0",
+    "MINUTAZO DE RICHITO VS ALVA🔥| UL EDIT #3 | MEJORES RIMAS FREESTYLE"
+   ],
+   [
+    "MOjeuhsIa-4",
+    "ROMPIO LA TEMÁTICA | WACHIWA VS CHARRO🤖 | UL EDIT #2 | MEJORES RIMAS FREESTYLE"
+   ],
+   [
+    "AZnee93annQ",
+    "MINUTAZO DE SOMBRA VS MAT 🗡️ | UNDER LEGENDS EDIT #1 | MEJORES RIMAS FREESTYLE"
+   ],
+   [
+    "GmJ7oC3sTa8",
+    "RECKLESS 🇺🇸 Vs ZAYLAX 🇵🇷 | #FBR | T1J1 | “DEJA de HABLAR por el ORDENADOR tu PUTA MADRE“."
+   ],
+   [
+    "ltFVbqsrDNc",
+    "ARN 🇨🇱 Vs MTZ 🇦🇷 | #UML | T1J1 | “HABLO cosas BASICAS para QUE me PUEDAS ENTENDER“."
+   ],
+   [
+    "H7UhFkW6rvc",
+    "GAMER 🇵🇪 Vs APOLOZ 🇨🇷 | #UML | T1J1 | “HOY soy DYBALA, porque GANO como ARGENTINA vs FRANCIA“"
+   ],
+   [
+    "jNweUrz8v1w",
+    "LICHAL 🇦🇷 Vs GLOUSE 🇵🇪 | #UML | T1J1 | “Ya MATE a ANBECK con esta BASE, AHORA te TOCA a TI“"
+   ],
+   [
+    "_BoJJVFtRCo",
+    "SOMBRA 🇵🇷 Vs RANK 🇪🇨 | #UML | T1J1 | “TÚ me HABLAS de RAPEROS y DICES ANUEL AA“"
+   ],
+   [
+    "b7GhEZ7k4L4",
+    "ANBECK 🇵🇪 Vs LEVI 🇨🇱 | #UML | T1J1 | “TRUENO y ELMENOR, la METRICA NO, sino GANA el MEJOR “"
+   ],
+   [
+    "q9zrFXouw1E",
+    "ALELOPEZ 🇨🇱 Vs RICHITOMC 🇵🇪 | #UML | T1J1 | “Te LLEVO las PALOMAS pa CHILE via DELIVERY“"
+   ],
+   [
+    "jycJ2WaJgEk",
+    "MaT 🇨🇴 Vs Anbeck 🇵🇪 | Pre-UML | #BatallaFinal #53"
+   ],
+   [
+    "Hgi0_rJnaL0",
+    "Wachiwa 🇲🇽 Vs Mitz 🇦🇷 | Pre-UML | Batalla #52"
+   ],
+   [
+    "gxFfXNYhXm4",
+    "Anbeck 🇵🇪 Vs Glouse 🇵🇪 | Pre-UML | Batalla #51"
+   ],
+   [
+    "tXABDE_5FOQ",
+    "ApoloZ 🇨🇷 Vs Benja 🇨🇱 | Pre-UML | Batalla #50"
+   ],
+   [
+    "I5fUvgWj7Hg",
+    "Deko 🇦🇷 Vs Glouse 🇵🇪 | Pre-UML | Batalla #49"
+   ],
+   [
+    "i_x1MJtEBSA",
+    "Wachiwa 🇲🇽 Vs Lichal 🇦🇷| Pre-UML | Batalla #48"
+   ],
+   [
+    "dCodcTu0CJE",
+    "Pespy 🇲🇽 Vs Mitz 🇦🇷 | Pre-UML | Batalla #47"
+   ],
+   [
+    "ONuuTntbtE4",
+    "Deko 🇨🇱 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #46"
+   ],
+   [
+    "XuVHOlvNjI4",
+    "Mitz 🇦🇷 Vs Levi 🇨🇱 | Pre-UML | Batalla #45"
+   ],
+   [
+    "Po3P-N_abT0",
+    "Arn 🇨🇱 Vs DemianD 🇨🇱 | Pre-UML | Batalla #44"
+   ],
+   [
+    "DwjTNdopv-o",
+    "MaT 🇨🇴 Vs Lichal 🇦🇷 | Pre-UML | Batalla #43"
+   ],
+   [
+    "b7Tuutv4ffU",
+    "ApoloZ 🇨🇷 Vs Bluestyles 🇵🇦 | Pre-UML | Batalla #42"
+   ],
+   [
+    "SW_RHqfreKU",
+    "Pespy 🇲🇽 Vs Spring 🇵🇪 | Pre-UML | Batalla #41"
+   ],
+   [
+    "1XuP9WQfOqM",
+    "Spd 🇪🇸 Vs Sombra 🇵🇷 | Pre-UML | Batalla #40"
+   ],
+   [
+    "9R-o9r7QsN4",
+    "Minutos De Presentacion - Pre-UML T0 - Generación 1"
+   ],
+   [
+    "tWJeHH9tZ60",
+    "Ozora 🇦🇷 Vs Spd 🇪🇸 | Pre-UML | Batalla #39"
+   ],
+   [
+    "mWksSoYR3Ws",
+    "Bnedeto 🇦🇷 Vs Levi 🇨🇱 | Pre-UML | Batalla #38"
+   ],
+   [
+    "ume0-07jFVo",
+    "ApoloZ 🇨🇷 Vs Bluestyles 🇵🇦 | Pre-UML | Batalla #37"
+   ],
+   [
+    "cO2GvDfN4XM",
+    "Ozora 🇦🇷 Vs Bluestyles 🇵🇦 | Pre-UML | Batalla #36"
+   ],
+   [
+    "0k9B1taLEaI",
+    "Richito 🇵🇪 Vs Benja 🇨🇱 | Pre-UML | Batalla #34"
+   ],
+   [
+    "qBGFMX-uwxk",
+    "Laru 🇦🇷 Vs Jdmc 🇻🇪 | Pre-UML | Batalla #33"
+   ],
+   [
+    "ax3cmnjldDU",
+    "Richito 🇵🇪 Vs Laru 🇦🇷 | Pre-UML | Batalla #32"
+   ],
+   [
+    "SiAkhLgBelI",
+    "Laru 🇦🇷 Vs Edu 🇪🇨 | Pre-UML | Batalla #31"
+   ],
+   [
+    "ieLP9vvkgkM",
+    "Jdmc 🇻🇪 Vs Edu 🇪🇨 | Pre-UML | Batalla #30"
+   ],
+   [
+    "30IBgmGuDRQ",
+    "Richito 🇵🇪 Vs Alva 🇵🇪 | Pre-UML | Batalla #29"
+   ],
+   [
+    "CeAvusKOxYM",
+    "Wachiwa 🇲🇽 Vs Pespy 🇲🇽 #2 | Pre-UML | Batalla #28"
+   ],
+   [
+    "wrUPeUkH3-g",
+    "Makma 🇻🇪 Vs Gian 🇦🇷 | Pre-UML | Batalla #27"
+   ],
+   [
+    "XGtSByX4hu8",
+    "Gian 🇦🇷 Vs Laru 🇦🇷 | Pre-UML | Batalla #26"
+   ],
+   [
+    "Jwyo0XHfPOY",
+    "Jdmc 🇻🇪 Vs Diosito 🇦🇷 | Pre-UML | Batalla #25"
+   ],
+   [
+    "lVL0sxDnR28",
+    "Pespy 🇲🇽 Vs Wachiwa 🇲🇽 | Pre-UML | Batalla #24"
+   ],
+   [
+    "Y_32I9Mc1dg",
+    "Edu 🇪🇨 Vs Benja 🇨🇱 | Pre-UML | Batalla #23"
+   ],
+   [
+    "pwVDAwRgRpc",
+    "Anbeck 🇵🇪 Vs Sombra 🇵🇷  | Pre-UML | Batalla #22"
+   ],
+   [
+    "GI49PeMANY8",
+    "Sombra 🇵🇷 Vs Glouse 🇵🇪 | Pre-UML | Batalla #21"
+   ],
+   [
+    "ClgrtSDLgCU",
+    "Anbeck 🇵🇪 Vs Mitz 🇦🇷 | Pre-UML | Batalla Legendaria #20"
+   ],
+   [
+    "PbZEydMwm70",
+    "Wachiwa 🇲🇽 Vs Glouse 🇵🇪 #2 | Pre-UML | Batalla #19"
+   ],
+   [
+    "nh4ZY3F_cY0",
+    "Wachiwa 🇲🇽 Vs Glouse 🇵🇪 | Pre-UML | Batalla #18"
+   ],
+   [
+    "iU-ecywGWHU",
+    "Glouse 🇵🇪 Vs Spring 🇵🇪 | Pre-UML | Batalla #17"
+   ],
+   [
+    "ICfxpJz6nhs",
+    "Levi 🇨🇱 Vs Apoloz 🇨🇷 | Pre-UML | Batalla #16"
+   ],
+   [
+    "j33ubwnKK9Y",
+    "Charro 🇲🇽 Vs Wachiwa 🇲🇽 | Pre-UML | Batalla #15"
+   ],
+   [
+    "FoKDUaup5rk",
+    "Anbeck 🇵🇪 Vs ApoloZ 🇨🇷 | Pre-UML | Batallas Legendarias #14"
+   ],
+   [
+    "Bhx9uFJOmDk",
+    "Charro 🇲🇽 Vs Benja 🇨🇱 | Pre-UML | Batalla #13"
+   ],
+   [
+    "N89_7QZ7BnU",
+    "Charro 🇲🇽 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #12"
+   ],
+   [
+    "YY3WpNLzwAc",
+    "Mat 🇨🇴 Vs Sombra 🇵🇷 | Pre-UML | Batalla #11"
+   ],
+   [
+    "aj_QJTAAAGQ",
+    "Benja 🇨🇱 Vs Jdmc 🇻🇪 #2 | Pre-UML | Batalla #10"
+   ],
+   [
+    "m3Bq2RxCO-4",
+    "Jdmc 🇻🇪 Vs Benja 🇨🇱 | Pre-UML | Batalla #9"
+   ],
+   [
+    "oVRVzcRhZe0",
+    "Sombra 🇵🇷 Vs Benja 🇨🇱 | Pre-UML | Batalla #8"
+   ],
+   [
+    "VuvkuXN9pRE",
+    "Mat 🇨🇴 Vs Arn 🇨🇱 | Pre-UML | Batalla #7"
+   ],
+   [
+    "bcPFUH4kfBU",
+    "Levi 🇨🇱 Vs Arn 🇨🇱 | Pre-UML | Batalla #6"
+   ],
+   [
+    "kiyYaiFqTzw",
+    "Makma 🇻🇪 Vs Edu 🇪🇨 | Pre-UML | Batalla #5"
+   ],
+   [
+    "IzeF3e4tvAc",
+    "Lichal 🇦🇷 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #4"
+   ],
+   [
+    "ImkgRQqryhA",
+    "Levi 🇨🇱 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #3"
+   ],
+   [
+    "DQ8WnLEk41U",
+    "MaT 🇨🇴 Vs Levi 🇨🇱 | Pre-UML | Batalla #2"
+   ],
+   [
+    "Aojta0RGLxU",
+    "Reckless 🇺🇸 Vs Edu 🇪🇨 | Pre-UML | Batalla #1"
+   ],
+   [
+    "MtxTIHAaqUg",
+    "Anbeck 🇵🇪 Vs Charro 🇲🇽 | Final | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "uZMcNqSKpn0",
+    "MaT 🇨🇴 Vs Anbeck 🇵🇪 | Semifinal | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "1swSzgt-fz0",
+    "Wachiwa 🇲🇽 Vs Charro 🇲🇽 | Semifinal | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "agHflK8fDwQ",
+    "Sombra 🇵🇷 Vs MaT 🇨🇴 | 4tos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "_jdQPIwQ6Zs",
+    "Anbeck 🇵🇪 Vs Ajt 🇵🇪 | 4tos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "2vAn0QhDTe4",
+    "Charro 🇲🇽 Vs Lolo 🇦🇷 | 4tos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "3Pzfb84kPCI",
+    "Wachiwa 🇲🇽 Vs Rank 🇪🇨 | 4tos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "HH4dNYHmUjk",
+    "Sombra 🇵🇷 Vs Edu 🇪🇨 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "gi94ba4N4ao",
+    "MaT 🇨🇴 Vs Levi 🇨🇱 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "270WEJU-p2Q",
+    "Anbeck 🇵🇪 Vs Rec 🇵🇷 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "Ix4cmPRh0qw",
+    "Ajt 🇵🇪 Vs Renkho 🇲🇽 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "Md3e0II6epk",
+    "Lolo 🇦🇷 Vs Glouse 🇵🇪 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "ERatrinI150",
+    "Droker 🇨🇱 Vs Charro 🇲🇽 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "t9m7NOkds1Y",
+    "Rank 🇪🇨 Vs Gamer 🇵🇪 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "LJ_xbGuNCzM",
+    "Wachiwa 🇲🇽 Vs Agus 🇦🇷 | 8vos | La Copa Underap 2 | Gran Final"
+   ],
+   [
+    "00pgKWhU0WA",
+    "La Copa Underap 2022 | T2J9 | GRAN FINAL"
+   ],
+   [
+    "uaTjZ-5rAkY",
+    "Aka Box 🇦🇷 Vs TheMasterBenja 🇨🇱│Final│La Copa Underap T2J8"
+   ],
+   [
+    "8bRDi6QCbD0",
+    "Deko 🇦🇷 Vs Aka Box 🇦🇷│Semifinal│La Copa Underap T2J8"
+   ],
+   [
+    "z-MsugPNj7k",
+    "Lector 🇦🇷 Vs TheMasterBenja 🇨🇱│Semifinal│La Copa Underap T2J8"
+   ],
+   [
+    "QtKgzaVaZ_Y",
+    "JonitoMorales 🇲🇽 Vs TheMasterBenja 🇨🇱│4tos│La Copa Underap T2J8"
+   ],
+   [
+    "bBYfadvj9WQ",
+    "Aka Box 🇦🇷 Vs LaAlta 🇦🇷│4tos│La Copa Underap T2J8"
+   ],
+   [
+    "ZRIX5vr36gQ",
+    "Deko 🇦🇷 Vs Tokio 🇲🇽│4tos│La Copa Underap T2J8"
+   ],
+   [
+    "blVKLmpjpwo",
+    "KevBush 🇨🇴 Vs LaAlta 🇦🇷│8vos│La Copa Underap T2J8"
+   ],
+   [
+    "luCcsFAbz-Q",
+    "Aka Box 🇦🇷 Vs JonitoMorales 🇲🇽│8vos│La Copa Underap T2J8"
+   ],
+   [
+    "22TeLKicvLY",
+    "Tokio 🇲🇽 Vs Albanmage 🇨🇴│8vos│La Copa Underap T2J8"
+   ],
+   [
+    "RDEXAFZw6Cg",
+    "LaAlta 🇦🇷 Vs ElCuheMago 🇨🇴│8vos│La Copa Underap T2J8"
+   ],
+   [
+    "WyD4wGjcrDY",
+    "Mono Quiroga 🇦🇷 Vs Lector 🇦🇷│8vos│La Copa Underap T2J8"
+   ],
+   [
+    "E_n1r9L0L10",
+    "Gamer 🇵🇪 Vs Agus 🇦🇷│Final│La Copa Underap T2J7"
+   ],
+   [
+    "aX6TD2JjWjA",
+    "Agus 🇦🇷 Vs DemianD 🇨🇱│Semis│La Copa Underap T2J7"
+   ],
+   [
+    "Kz4wMU81c9I",
+    "High 🇨🇴 Vs Gamer 🇵🇪│Semis│La Copa Underap T2J7"
+   ],
+   [
+    "wYNHg6m9x64",
+    "Soreminduart 🇵🇪 Vs DemianD 🇨🇱│4tos│La Copa Underap T2J7"
+   ],
+   [
+    "WNCYvoDCu5s",
+    "TheMasterBenja 🇨🇱 Vs Agus 🇦🇷│4tos│La Copa Underap T2J7"
+   ],
+   [
+    "-Madfd8HVyQ",
+    "Deko 🇦🇷 Vs High 🇨🇴│4tos│La Copa Underap T2J7"
+   ],
+   [
+    "K07VBAB80fk",
+    "Gamer 🇵🇪 Vs Jonitomorales 🇲🇽│4tos│La Copa Underap T2J7"
+   ],
+   [
+    "wVZRIm-HhDo",
+    "Dani 🇵🇪 Vs Gian 🇦🇷│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "oJmMmxGhmAc",
+    "Goston 🇧🇴 Vs DemianD 🇦🇷│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "im3PVu2QWLY",
+    "Pijota 🇨🇴 Vs Agus 🇦🇷│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "XjJU3yVtRnI",
+    "TheMasterBenja 🇨🇱 Vs Ruso 🇦🇷│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "X-qhia2e4wA",
+    "Albanmage 🇨🇴 Vs Jonitomorales 🇲🇽│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "26E1M0-RGjI",
+    "Deko 🇦🇷 Vs Shadow 🇵🇷│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "T6iVPpirr2k",
+    "Mesotes 🇨🇱 Vs Gamer 🇵🇪│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "M0RI52mqiQc",
+    "Makma 🇻🇪 Vs High 🇨🇴│8vos│La Copa Underap T2J7"
+   ],
+   [
+    "oEb2b93a20g",
+    "RichitoMc 🇵🇪 Vs Glouse 🇵🇪│Final│La Copa Underap T2J4"
+   ],
+   [
+    "7fBR-JPc_cY",
+    "RichitoMc 🇵🇪 Vs TheMasterBenja 🇨🇱│Semis│La Copa Underap T2J4"
+   ],
+   [
+    "AWJ1gvW_pf8",
+    "MathiasCerna 🇦🇷 Vs Glouse 🇵🇪│Semis│La Copa Underap T2J4"
+   ],
+   [
+    "roB26RMmnko",
+    "DemianD 🇨🇱 Vs O.G.Boy 🇨🇱│4tos│La Copa Underap T2J4"
+   ],
+   [
+    "U2hn6mUWIFY",
+    "RichitoMc 🇵🇪 Vs DionyPloop 🇵🇪│8vos│La Copa Underap T2J4"
+   ],
+   [
+    "hPURpG2hiNY",
+    "MatiasCerna 🇦🇷 Vs Luck 🇵🇾│8vos│La Copa Underap T2J4"
+   ],
+   [
+    "VuUC3Fwejbw",
+    "Spring 🇵🇪 Vs KeruBine 🇨🇴│8vos│La Copa Underap T2J4"
+   ],
+   [
+    "zdEnvCmLIng",
+    "Lolo 🇦🇷 Vs Jotaro Cro 🇪🇨│8vos│La Copa Underap T2J4"
+   ],
+   [
+    "QXbi_HnW9_E",
+    "TheMasterBenja 🇨🇱 Vs Templer 🇦🇷│8vos│La Copa Underap T2J4"
+   ],
+   [
+    "cIahw4BU53c",
+    "MxTrias & ByEx Vs Diosito & Lichal - Under Level T1 (SEMIFINAL)"
+   ],
+   [
+    "F5g0vyvxwFA",
+    "Wachiwa & Bit Vs Ryze & Anbeck - Under Level T1 (SEMIFINAL)"
+   ],
+   [
+    "0c1y2i4Rv4A",
+    "Diosito & Lichal Vs Ryze & Anbeck - Under Level T1 (FINAL)"
+   ],
+   [
+    "ynWutgZaQk0",
+    "Battle & Tenka Vs MxTrias & ByEx - Under Level T1 (CUARTOS)"
+   ],
+   [
+    "Pwz0YWGpUO4",
+    "Diosito & Lichal Vs Sombra & Laru - Under Level T1 (CUARTOS)"
+   ],
+   [
+    "n6zA8N-GHBE",
+    "Bit & Wachiwa Vs Jere & Glouse - Under Level T1 (CUARTOS)"
+   ],
+   [
+    "2iY8nGBteDQ",
+    "Anbeck & Ryze Vs Bluestyles & Skr - Under Level T1 (CUARTOS)"
+   ],
+   [
+    "eZuJrqY1u5w",
+    "Ryze 🇪🇸 Vs ElDrin 🇻🇪│Final│La Copa Underap T2J3"
+   ],
+   [
+    "p7XMERNWecw",
+    "Triple B 🇪🇸 Vs Ajt 🇵🇪│3ero│La Copa Underap T2J3"
+   ],
+   [
+    "7MaQFRyRC70",
+    "ElDrin 🇻🇪 Vs Triple B 🇪🇸│Semi│La Copa Underap T2J3"
+   ],
+   [
+    "kifr6PvN6tE",
+    "Ajt 🇵🇪 Vs Ryze 🇪🇸│Semi│La Copa Underap T2J3"
+   ],
+   [
+    "l6Ck8up5n64",
+    "HighLimits 🇵🇪 Vs Triple B 🇪🇸│4tos│La Copa Underap T2J3"
+   ],
+   [
+    "awPpZktmUFE",
+    "ElDrin 🇻🇪 Vs Spring 🇵🇪│4tos│La Copa Underap T2J3"
+   ],
+   [
+    "_M1SDSLyFUM",
+    "Apk 🇦🇷 Vs HighLimits 🇵🇪│4tos│La Copa Underap T2J3"
+   ],
+   [
+    "T0n7pOMnlLk",
+    "Diego 🇨🇴 Vs Ajt 🇵🇪│4tos│La Copa Underap T2J3"
+   ],
+   [
+    "paTR8xNQFBQ",
+    "Ryze 🇪🇸 Vs Triz 🇲🇽│4tos│La Copa Underap T2J3"
+   ],
+   [
+    "gSzF_8TVdzo",
+    "ElDrin 🇻🇪 Vs Phano 🇵🇪│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "5WIw7BkKuwo",
+    "ADlex 🇪🇸 Vs Spring 🇵🇪│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "q8m830CuzPQ",
+    "CesarGarcia 🇲🇽 Vs HighLimits 🇵🇪│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "YYCSgXiptmQ",
+    "Kento 🇻🇪 Vs Apk 🇦🇷│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "MG4fkUfwq2E",
+    "Diego 🇨🇴 Vs Lolo 🇦🇷│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "ENWSbRUFlls",
+    "Ajt 🇵🇪 Vs Mamc 🇵🇪│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "MQpTq7x-VWE",
+    "Ryze 🇪🇸 Vs Ezmo 🇨🇱│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "L12dS-WQ2WA",
+    "Glouse 🇵🇪 Vs Triz 🇲🇽│8vos│La Copa Underap T2J3"
+   ],
+   [
+    "KIXjN-fKEVc",
+    "Gamer 🇵🇪 Vs ApoloZ 🇨🇷│Final│La Copa Underap T2J2"
+   ],
+   [
+    "BfETJPO0nvM",
+    "Mcma 🇨🇴 Vs Gamer 🇵🇪│Semis│La Copa Underap T2J2"
+   ],
+   [
+    "-MYp5CefecI",
+    "ApoloZ 🇨🇷 Vs Sombra 🇵🇷│Semis│La Copa Underap T2J2"
+   ],
+   [
+    "XZmNVJuxisg",
+    "Sombra 🇵🇷 Vs Ajit 🇻🇪 4tos│4tos│La Copa Underap T2J2"
+   ],
+   [
+    "CnHPYA5G6I8",
+    "RichitoMc 🇵🇪 Vs ApoloZ 🇨🇷│4tos│La Copa Underap T2J2"
+   ],
+   [
+    "rK5qoFM1qU0",
+    "Spring 🇵🇪 Vs Gamer 🇵🇪│4tos│La Copa Underap T2J2"
+   ],
+   [
+    "Sf8XlhLwSwk",
+    "Bluestyles 🇵🇦 Vs Mcma 🇨🇴│4tos│La Copa Underap T2J2"
+   ],
+   [
+    "ZPLL7Iz32QQ",
+    "Richito 🇵🇪 Vs Glouse 🇵🇪│8vos│La Copa Underap T2J2"
+   ],
+   [
+    "wb1RqNE76fg",
+    "Dreamboy 🇬🇶 Vs Spring 🇵🇪 │8vos│La Copa Underap T2J2"
+   ],
+   [
+    "LIJzA-vves0",
+    "Lolo 🇦🇷 Vs Mcma 🇨🇴 │8vos│La Copa Underap T2J2"
+   ],
+   [
+    "alHHZQt4jy0",
+    "Gamer 🇵🇪 Vs Mamc 🇵🇪 │8vos│La Copa Underap T2J2"
+   ],
+   [
+    "rnsDnSKHFJs",
+    "Laru 🇦🇷 Vs Bluestyles 🇵🇦 │8vos│La Copa Underap T2J2"
+   ],
+   [
+    "K_pqK_BGOvg",
+    "Pijota 🇨🇴 Vs Sombra 🇵🇷│8vos│La Copa Underap T2J2"
+   ],
+   [
+    "nej7ssl75rk",
+    "Ajit 🇻🇪 Vs TheMasterBenja 🇨🇱│8vos│La Copa Underap T2J2"
+   ],
+   [
+    "9YPWxHqn8Iw",
+    "Glouse 🇵🇪 Vs Anbeck 🇵🇪│8vos│La Copa Underap T2J2"
+   ],
+   [
+    "9pz2W5VWHGU",
+    "ApoloZ 🇨🇷 Vs Jaoking 🇵🇪│8vos│La Copa Underap T2J2"
+   ],
+   [
+    "PFQnQpCHssU",
+    "ElektroMc 🇻🇪 Vs Charro 🇲🇽│Final│La Copa Underap T2J1"
+   ],
+   [
+    "-6M2DARRrzI",
+    "Lichal 🇦🇷 Vs Camote_Siuu 🇨🇱│3ero│La Copa Underap T2J1"
+   ],
+   [
+    "0AkqQE7nmUY",
+    "Charro 🇲🇽 Vs Lichal 🇦🇷│Semi│La Copa Underap T2J1"
+   ],
+   [
+    "qbO86PrXVGo",
+    "Camote_Siuu 🇨🇱 Vs ElektroMc 🇻🇪│Semi│La Copa Underap T2J1"
+   ],
+   [
+    "aajE_1XM8L4",
+    "ADLex 🇪🇸 Vs Charro 🇲🇽│4tos│La Copa Underap T2J1"
+   ],
+   [
+    "9b93dxB5G5M",
+    "Camote_Siuu 🇨🇱 Vs Bluestyles 🇵🇦│4tos│La Copa Underap T2J1"
+   ],
+   [
+    "-mH59XSAXyY",
+    "Lichal 🇦🇷 Vs Prozak 🇻🇪│4tos│La Copa Underap T2J1"
+   ],
+   [
+    "c5hStlUgr-I",
+    "Mcma 🇨🇴 Vs ElektroMc 🇻🇪│4tos│La Copa Underap T2J1"
+   ],
+   [
+    "v3oWSiOkPgU",
+    "ADLex 🇪🇸 Vs DiegoSa1499 🇬🇶│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "9k14Zz0-OOU",
+    "ElektroMc 🇻🇪 Vs JoaKing 🇵🇪│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "lp4jCmuhNkw",
+    "Charro 🇲🇽 Vs Mamc 🇵🇪│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "enmceLlW6Js",
+    "Lolo 🇦🇷 Vs Lichal 🇦🇷│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "AXytzrNel_E",
+    "Laru 🇦🇷 Vs Bluestyles 🇵🇦│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "0wAOKjEzCCI",
+    "Prozak 🇻🇪 Vs TheMasterBenja 🇨🇱│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "JgOL7-HzhqA",
+    "Camote_Siuu 🇨🇱 Vs Irving09 🇸🇻│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "1I27jV6piZ8",
+    "Mcma 🇨🇴 VS Berto0X 🇻🇪│8vos│La Copa Underap T2J1"
+   ],
+   [
+    "sPC2w9R28ic",
+    "THEMASTERBENJA 🇨🇱 VS MARSHALL 🇲🇽│Final│La Copa Underap T1J8"
+   ],
+   [
+    "93d59S_9TZk",
+    "GAMER 🇵🇪 VS JUANCITO 🇨🇴│3er Puesto│La Copa Underap T1J8"
+   ],
+   [
+    "XNKr4guHfS4",
+    "THEMASTERBENJA 🇨🇱 VS GAMER 🇵🇪 │Semifinal│La Copa Underap T1J8"
+   ],
+   [
+    "3R62bTHMffI",
+    "MARSHALL 🇲🇽 VS JUANCITO 🇨🇴 │Semifinal│La Copa Underap T1J8"
+   ],
+   [
+    "HQ0FXXgY11o",
+    "THEMASTERBENJA 🇨🇱 VS TRANIX 🇦🇷 │Cuartos│La Copa Underap T1J8"
+   ],
+   [
+    "dBIti2QzI8g",
+    "GOYMC 🇦🇷 VS GAMER 🇵🇪 │Cuartos│La Copa Underap T1J8"
+   ],
+   [
+    "GMk0_a7rcL8",
+    "MARSHALL 🇲🇽 VS FURKI 🇨🇴 │Cuartos│La Copa Underap T1J8"
+   ],
+   [
+    "Qx3SqU0J9dw",
+    "JETXIEL 🇵🇷 VS JUANCITO 🇨🇴 │Cuartos│La Copa Underap T1J8"
+   ],
+   [
+    "DO5xAFFmYZg",
+    "GOYMC 🇦🇷 VS MAKMA 🇻🇪 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "GXYjK1f-0GA",
+    "MARSHALL 🇲🇽 VS RICHITO 🇵🇪 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "cn-dlpMCmWo",
+    "GAMER 🇵🇪 VS GARA 🇵🇪 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "puUs7Xyx7Fw",
+    "JUANCITO 🇨🇴 VS KENTOEMECE 🇻🇪 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "th1PjpqYOtE",
+    "THEMASTERBENJA 🇨🇱 VS RELAMPAGO 🇦🇷 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "k1UyU5899us",
+    "TRANIX 🇵🇷 VS LOLO 🇦🇷 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "eJ5xiVQSRoo",
+    "TRANIX 🇦🇷 VS SKAY 🇦🇷 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "Z2wVxYj-rzQ",
+    "ZETA 🇲🇽 VS FURKI 🇨🇴 │Octavos│La Copa Underap T1J8"
+   ],
+   [
+    "WN5GuF2M3BI",
+    "SOMBRA 🇵🇷 VS MESOTES 🇨🇱 │Final│La Copa Underap T1J7"
+   ],
+   [
+    "KDtbuQS6vOw",
+    "SOMBRA 🇵🇷 VS JETXIEL 🇵🇷 │Semifinal│La Copa Underap T1J7"
+   ],
+   [
+    "leGYVAy3BOw",
+    "BENJA 🇨🇱 VS MESOTES 🇨🇱 │Semifinal│La Copa Underap T1J7"
+   ],
+   [
+    "-glXhzMCk6E",
+    "JETXIEL 🇵🇷 VS SKAY 🇦🇷 │Cuartos│La Copa Underap T1J7"
+   ],
+   [
+    "Uaj8Ngc90G4",
+    "SOMBRA 🇵🇷 VS GAMER 🇵🇪 │Cuartos│La Copa Underap T1J7"
+   ],
+   [
+    "464SAx_J_dM",
+    "GOYMC 🇦🇷 VS MESOTES 🇨🇱 │Cuartos│La Copa Underap T1J7"
+   ],
+   [
+    "DRfKy5uOpNw",
+    "BRAYATAN 🇨🇱 VS D4VLO 🇲🇽 │Octavos│La Copa Underap T1J7"
+   ],
+   [
+    "EJDcJVmNNSs",
+    "THEMASTERBENJA 🇨🇱 VS MOSTAZA 🇻🇪 │Octavos│La Copa Underap T1J7"
+   ],
+   [
+    "6jhWreA63_8",
+    "SOMBRA 🇵🇷 VS PIJOTA 🇨🇴 │Octavos│La Copa Underap T1J7"
+   ],
+   [
+    "q1NzfPzWDNw",
+    "MESOTES 🇨🇱 VS LOLO 🇦🇷 │Octavos│La Copa Underap T1J7"
+   ],
+   [
+    "RSObsqnEhfI",
+    "GOYMC 🇦🇷 Vs GARAA 🇵🇪 │Octavos│La Copa Underap T1J7"
+   ],
+   [
+    "TYNrIXnM8i0",
+    "SPRING 🇵🇪 Vs ALELOPEZ 🇨🇱 │Final│La Copa Underap T1J6"
+   ],
+   [
+    "P9_mVv9mkVY",
+    "SPRING 🇵🇪 Vs MOSTAZA 🇻🇪 │Semifinal│La Copa Underap T1J6"
+   ],
+   [
+    "uG7uEtBchfk",
+    "ALELOPEZ 🇨🇱 Vs SOMBRA 🇵🇷 │Semifinal│La Copa Underap T1J6"
+   ],
+   [
+    "iziINgxijys",
+    "SPRING 🇵🇪 Vs GARAA 🇵🇪 │Cuartos│La Copa Underap T1J6"
+   ],
+   [
+    "9mPA56vsYw4",
+    "ALELOPEZ 🇨🇱 Vs THEMASTERBENJA 🇨🇱 │Cuartos│La Copa Underap T1J6"
+   ],
+   [
+    "4ck2DbguKZA",
+    "WACHIWA 🇲🇽 Vs CHARRO 🇲🇽 │Final│La Copa Underap T1J5"
+   ],
+   [
+    "jO-f68BgdeA",
+    "MATHIEF 🇵🇪 Vs GAMER 🇵🇪 │3er Puesto│La Copa Underap T1J5"
+   ],
+   [
+    "CkrcwXe8duU",
+    "WACHIWAMX 🇲🇽 Vs GAMER 🇵🇪 │Semifinal│La Copa Underap T1J5"
+   ],
+   [
+    "XYDQdFsmn_c",
+    "CHARRO 🇲🇽 Vs MATHIEF 🇵🇪 │CUARTOS│La Copa Underap T1J5"
+   ],
+   [
+    "QMtLBpzbD3M",
+    "WACHIWAMX 🇲🇽 Vs RICHITOMC 🇵🇪 │CUARTOS│La Copa Underap T1J5"
+   ],
+   [
+    "NVY0RgsARCk",
+    "APOLOZ 🇲🇽 Vs SHADOW 🇵🇷 │Cuartos│La Copa Underap T1J5"
+   ],
+   [
+    "aAPgAlRteE8",
+    "ONEK EA Vs CHARRO │Octavos│La Copa Underap T1J5"
+   ],
+   [
+    "KZzdgLvyTLY",
+    "ANBECK 🇵🇪 │ Show Privado │ La Copa Underap T1J4"
+   ],
+   [
+    "jc9z5wLEEbw",
+    "APOLOZ Vs JDMC │Semifinal │La Copa Underap T1J4"
+   ],
+   [
+    "1zJhaRZeCTQ",
+    "APOLOZ Vs THEDCAT │Semifinal │La Copa Underap T1J4"
+   ],
+   [
+    "MzTDdplID7M",
+    "POKER TIME Vs JDMC │Semifinal │La Copa Underap T1J4"
+   ],
+   [
+    "a6Lh2vqfzJc",
+    "MINUTOS DE PRESENTACION | Anbeck, BneDto vs Jose, BlueStyles | Under Level #1 | GRAN FINAL"
+   ]
+  ],
+  "UCqTZD3I0_C0BLSPw5Rle3Jg": [
+   [
+    "YYTNvgLKcB4",
+    "ORIGINAL GANG DUPLAS FINAL - ABYSSUS🇵🇦  (FULLYLO4DED🇨🇱) VS RESPAWN🇭🇳 (KMINANT🇦🇷) "
+   ]
+  ],
+  "UCvBsCGWVsw0lq0jf_d8O98g": [
+   [
+    "1yWJEy1CJYk",
+    "#FVSCHILE 2026 - Jornada 1 Temporada 6 | Fvs Roosters"
+   ],
+   [
+    "ZlumdrInyPI",
+    "5 VIDAS OG: 1 CAMPEÓN | HAC vs XERVOE/BENJA MVP vs CARLOS vs WEST vs ZAMO."
+   ],
+   [
+    "sEaoJ9OKdO0",
+    "XERVOE VS SOSA | #FVSCHILE Jornada 9 Temporada 5 - #FVS26 | Fvs Roosters"
+   ],
+   [
+    "fBRpbzPIzVo",
+    "MKNOLI VS HAC | #FVSCHILE Jornada 9 Temporada 5 - #FMS26 | Fvs Roosters"
+   ],
+   [
+    "ydemTAvqpCk",
+    "HERRERA VS SAIKO | GRAN FINAL 🏆🇨🇱🇨🇴 #FVSCHILE Jornada 9 Temporada 5 - #FVS26 | Fvs Roosters"
+   ],
+   [
+    "_5xemx7kWgQ",
+    "BENJA VS ALUVIÓN | #FVSCHILE Jornada 9 Temporada 5 - #FVS26 | Fvs Roosters"
+   ],
+   [
+    "F_biRjArw3I",
+    "HERRERA VS HAC - Octavos De Final | RED BULL INTERNACIONAL 10 EDICIÓN "
+   ],
+   [
+    "jUr6wYE_Amw",
+    "POMBERITO VS CARLOS - SemisFinales | RED BULL INTERNACIONAL FVS  "
+   ],
+   [
+    "BZgJenPhqRs",
+    "ZAMO VS KZAONE | FVS WORD SERIES 2025 J2 | ZACATECAS MEXICO"
+   ],
+   [
+    "VKnxyuyitAs",
+    "EPIK VS SALMON | FVS WORLD SERIES 2025 J1  | VENEZUELA, CARACAS"
+   ],
+   [
+    "qz4AZbYhYIY",
+    "POMBERITO VS AETHER | FVS WORD SERIES 2025 J1 | VENEZUELA CARACAS"
+   ],
+   [
+    "ahr__F0cddo",
+    "CARLOS VS PROSU | FVS WORD SERIES 2025 J1 | CARACAS VENEZUELA "
+   ],
+   [
+    "jlselD6ExZY",
+    "CARLOSMO VS JJ | FVS WORLD SERIES JORNADA 1 | CARACAS, VENEZUELA."
+   ],
+   [
+    "f17V8Y_I33U",
+    "PROSU VS SALMON | FVS WORD SERIES 2025 Jornada 1| CARACAS, VENEZUELA "
+   ]
+  ]
+ },
+ "por": {
+  "7po": [
+   "QV4Vnynu7a8"
+  ],
+  "Abyssus": [
+   "YYTNvgLKcB4"
+  ],
+  "Agus": [
+   "LJ_xbGuNCzM",
+   "E_n1r9L0L10",
+   "aX6TD2JjWjA",
+   "WNCYvoDCu5s",
+   "im3PVu2QWLY",
+   "SVs79GG7XPE",
+   "NXaqIr4dx0A"
+  ],
+  "Anbeck": [
+   "b7GhEZ7k4L4",
+   "jycJ2WaJgEk",
+   "gxFfXNYhXm4",
+   "ONuuTntbtE4",
+   "pwVDAwRgRpc",
+   "ClgrtSDLgCU",
+   "FoKDUaup5rk",
+   "N89_7QZ7BnU",
+   "IzeF3e4tvAc",
+   "ImkgRQqryhA",
+   "MtxTIHAaqUg",
+   "uZMcNqSKpn0"
+  ],
+  "Arama": [
+   "Cr1HAzRAecI"
+  ],
+  "Axinu": [
+   "3fGoAlhIlII"
+  ],
+  "Bau": [
+   "7fS--SUx-tk",
+   "YiFu2eMg0Ms",
+   "S6Es2PTOKJw"
+  ],
+  "Benja": [
+   "tXABDE_5FOQ",
+   "0k9B1taLEaI",
+   "Y_32I9Mc1dg",
+   "Bhx9uFJOmDk",
+   "aj_QJTAAAGQ",
+   "m3Bq2RxCO-4",
+   "oVRVzcRhZe0",
+   "leGYVAy3BOw"
+  ],
+  "Blaxx": [
+   "cmg3xBCxxCA",
+   "Bs5yViEKMT0",
+   "7ukwD5aqiFM"
+  ],
+  "Carlos": [
+   "OaLecf0BaRU",
+   "k5kf6uR4114",
+   "ww0EGha_kyQ",
+   "Z55SdTObh_U",
+   "8AJ8XuvIW2I",
+   "pmcQdZW0orU",
+   "2t7K6eOLDJY",
+   "8UjDiDUuQZc",
+   "ZlumdrInyPI",
+   "jUr6wYE_Amw",
+   "ahr__F0cddo"
+  ],
+  "Carlosmo": [
+   "eDGh4B9rVsQ",
+   "7TCUuFBYgec",
+   "y6AYOHl-Mmk",
+   "sN6wrdP9b-g",
+   "jlselD6ExZY"
+  ],
+  "Charro": [
+   "hnoXlKNthGM",
+   "MOjeuhsIa-4",
+   "j33ubwnKK9Y",
+   "Bhx9uFJOmDk",
+   "N89_7QZ7BnU",
+   "MtxTIHAaqUg",
+   "1swSzgt-fz0",
+   "2vAn0QhDTe4",
+   "ERatrinI150",
+   "PFQnQpCHssU",
+   "0AkqQE7nmUY",
+   "aajE_1XM8L4"
+  ],
+  "Deluxe": [
+   "-rKI1u16n8E"
+  ],
+  "Deuxs": [
+   "cmg3xBCxxCA",
+   "U6fX5Ml3kIc",
+   "6YS76y5UL5g",
+   "L8KZ00zWRyY"
+  ],
+  "Drexx": [
+   "RR40sCEWDWU",
+   "tf3voRfPPzw",
+   "glZlmKqHNW4"
+  ],
+  "Edu": [
+   "SiAkhLgBelI",
+   "ieLP9vvkgkM",
+   "Y_32I9Mc1dg",
+   "kiyYaiFqTzw",
+   "Aojta0RGLxU",
+   "HH4dNYHmUjk"
+  ],
+  "Erik": [
+   "7jOe6wx3MxI",
+   "VKnxyuyitAs"
+  ],
+  "Espectro": [
+   "fmtYuKsWJmk",
+   "NhZU7Up2-Os"
+  ],
+  "Fazer": [
+   "wNR4x-muLfc"
+  ],
+  "Gian": [
+   "bBDNh7mq2lA",
+   "wrUPeUkH3-g",
+   "XGtSByX4hu8",
+   "wVZRIm-HhDo"
+  ],
+  "Humildad": [
+   "XuH6Rf6SCHc",
+   "0ZRrxKhS0c8",
+   "7vkSBpx3Z30"
+  ],
+  "Improvisado": [
+   "Pqvz8JwkF0s",
+   "0hGhrr8OvPQ"
+  ],
+  "JJ": [
+   "jlselD6ExZY"
+  ],
+  "Jmb": [
+   "3fGoAlhIlII",
+   "hE1U9hMexiY"
+  ],
+  "KZAONE": [
+   "3nzgwyhpcMo",
+   "7ukwD5aqiFM",
+   "BZgJenPhqRs"
+  ],
+  "Kminant": [
+   "YYTNvgLKcB4"
+  ],
+  "Konan": [
+   "TQDtdk_GF2A",
+   "7vkSBpx3Z30"
+  ],
+  "Kourier": [
+   "GmJ7oC3sTa8",
+   "Aojta0RGLxU",
+   "y6AYOHl-Mmk",
+   "AldoytTlyLI"
+  ],
+  "Kyss": [
+   "R3z_U0aXcdk"
+  ],
+  "Liberia": [
+   "87uV6RRvgEs",
+   "WWjRVL1-Eno"
+  ],
+  "Luz": [
+   "38suLG1mwHI",
+   "SVs79GG7XPE"
+  ],
+  "MATICERNA": [
+   "fOI_LdAd9_I",
+   "FrR3TFv694U",
+   "Oo6u4f60rfc"
+  ],
+  "MCO": [
+   "eDGh4B9rVsQ",
+   "2wEA2V73nY0",
+   "TQDtdk_GF2A",
+   "bLHOnPDKXnc"
+  ],
+  "MTZ": [
+   "7TCUuFBYgec",
+   "RR40sCEWDWU",
+   "K586J9Jb7-4"
+  ],
+  "Makmah": [
+   "wrUPeUkH3-g",
+   "kiyYaiFqTzw",
+   "M0RI52mqiQc",
+   "DO5xAFFmYZg"
+  ],
+  "Marxx": [
+   "26JFWV0672Q",
+   "Pqvz8JwkF0s",
+   "pWbSTJ8U9Xc"
+  ],
+  "Mathhias": [
+   "fmtYuKsWJmk"
+  ],
+  "Megara": [
+   "d4nayNOleEk"
+  ],
+  "Mknoli": [
+   "ISCVRl3Px3I",
+   "fBRpbzPIzVo"
+  ],
+  "Molusco": [
+   "nhGPppbr1Eg"
+  ],
+  "Number": [
+   "SG_FYNBkKnk",
+   "U6ZzScWWAmE"
+  ],
+  "Phano": [
+   "gSzF_8TVdzo"
+  ],
+  "Pomberito": [
+   "38suLG1mwHI",
+   "Hm6CZUJAXns",
+   "jUr6wYE_Amw",
+   "qz4AZbYhYIY"
+  ],
+  "Prosu": [
+   "brYOLwz7Rjg",
+   "ahr__F0cddo",
+   "f17V8Y_I33U"
+  ],
+  "Richard": [
+   "K586J9Jb7-4"
+  ],
+  "Road": [
+   "jiZSyVBWjVw",
+   "-rKI1u16n8E"
+  ],
+  "Rubik": [
+   "0uk1CE5A3Ic",
+   "kaD74Qr7ky8",
+   "_BuK21DwnIA",
+   "5S8aayW6nsE",
+   "2RUo4qsGU9c",
+   "duiUJ6joXQ4",
+   "U6ZzScWWAmE"
+  ],
+  "SK8": [
+   "nhGPppbr1Eg"
+  ],
+  "SPD": [
+   "02nOcpYS0gQ",
+   "I6vEoI_joUM",
+   "d4nayNOleEk",
+   "1XuP9WQfOqM",
+   "tWJeHH9tZ60"
+  ],
+  "Saiko": [
+   "ydemTAvqpCk"
+  ],
+  "Shadow": [
+   "7fS--SUx-tk"
+  ],
+  "Six": [
+   "UdpBJo6T9g8",
+   "WWjRVL1-Eno",
+   "0ZRrxKhS0c8"
+  ],
+  "Snake": [
+   "6oOyOfvMAKc"
+  ],
+  "Sombra": [
+   "GTqWZREJx5k",
+   "-JzB0yWBt0w",
+   "_BoJJVFtRCo",
+   "1XuP9WQfOqM",
+   "pwVDAwRgRpc",
+   "GI49PeMANY8",
+   "YY3WpNLzwAc",
+   "oVRVzcRhZe0",
+   "agHflK8fDwQ",
+   "HH4dNYHmUjk",
+   "Pwz0YWGpUO4",
+   "-MYp5CefecI"
+  ],
+  "Sosa": [
+   "sEaoJ9OKdO0"
+  ],
+  "Valdrax": [
+   "hnoXlKNthGM"
+  ],
+  "Wachiwa": [
+   "MOjeuhsIa-4",
+   "Hgi0_rJnaL0",
+   "i_x1MJtEBSA",
+   "CeAvusKOxYM",
+   "lVL0sxDnR28",
+   "PbZEydMwm70",
+   "nh4ZY3F_cY0",
+   "j33ubwnKK9Y",
+   "1swSzgt-fz0",
+   "3Pzfb84kPCI",
+   "LJ_xbGuNCzM",
+   "F5g0vyvxwFA"
+  ],
+  "Xervoe": [
+   "Bs5yViEKMT0",
+   "6YS76y5UL5g",
+   "mlzM1dL4ER0",
+   "sEaoJ9OKdO0"
+  ],
+  "Xhay": [
+   "OjqGn3dpAw0",
+   "gmn7lJ-LfSI",
+   "CwXKlQnFYZU",
+   "I6vEoI_joUM",
+   "uV0FkQXhNb4"
+  ],
+  "Zamo": [
+   "k5kf6uR4114",
+   "zehCmgKXopM",
+   "ZlumdrInyPI",
+   "BZgJenPhqRs"
+  ],
+  "Zeta": [
+   "0uk1CE5A3Ic",
+   "R3z_U0aXcdk"
+  ]
+ },
+ "todo": "2026-10-12T22:07:53+00:00",
+ "videos": {
+  "-JzB0yWBt0w": [
+   "Rank 🇪🇨 Vs Sombra 🇵🇷 | Octavos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "-MYp5CefecI": [
+   "ApoloZ 🇨🇷 Vs Sombra 🇵🇷│Semis│La Copa Underap T2J2",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "-rKI1u16n8E": [
+   "FINAL de Matanza de Dioses - Baeza vs Road (Deluxe) || Batalla de Freestyle",
+   "SR",
+   [
+    "Road",
+    "Deluxe"
+   ]
+  ],
+  "02nOcpYS0gQ": [
+   "SPD 🇪🇸 Vs Levi 🇨🇱 | Semifinal | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "SPD"
+   ]
+  ],
+  "0AkqQE7nmUY": [
+   "Charro 🇲🇽 Vs Lichal 🇦🇷│Semi│La Copa Underap T2J1",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "0ZRrxKhS0c8": [
+   "SIX 🆚 DTR || Jornada #1 - Snake League VI",
+   "SR",
+   [
+    "Six",
+    "Humildad"
+   ]
+  ],
+  "0c1y2i4Rv4A": [
+   "Diosito & Lichal Vs Ryze & Anbeck - Under Level T1 (FINAL)",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "0hGhrr8OvPQ": [
+   "Improvisado 🇵🇪 Vs Connor 🇨🇴 | Octavos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "Improvisado"
+   ]
+  ],
+  "0k9B1taLEaI": [
+   "Richito 🇵🇪 Vs Benja 🇨🇱 | Pre-UML | Batalla #34",
+   "DRA",
+   [
+    "Benja"
+   ]
+  ],
+  "0uk1CE5A3Ic": [
+   "ZETA 🆚 RUBIK || FINAL MATANZA DE DIOSES - C16",
+   "SR",
+   [
+    "Zeta",
+    "Rubik"
+   ]
+  ],
+  "1XuP9WQfOqM": [
+   "Spd 🇪🇸 Vs Sombra 🇵🇷 | Pre-UML | Batalla #40",
+   "DRA",
+   [
+    "SPD",
+    "Sombra"
+   ]
+  ],
+  "1swSzgt-fz0": [
+   "Wachiwa 🇲🇽 Vs Charro 🇲🇽 | Semifinal | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Wachiwa",
+    "Charro"
+   ]
+  ],
+  "26JFWV0672Q": [
+   "Manolito 🇪🇸 Vs Marxx 🇪🇸 | Semifinal | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "Marxx"
+   ]
+  ],
+  "270WEJU-p2Q": [
+   "Anbeck 🇵🇪 Vs Rec 🇵🇷 | 8vos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "2RUo4qsGU9c": [
+   "TIKAL 🆚 RUBIK || FINAL - 🩸 MATANZA DE DIOSES: THE HUNT 🩸",
+   "SR",
+   [
+    "Rubik"
+   ]
+  ],
+  "2iY8nGBteDQ": [
+   "Anbeck & Ryze Vs Bluestyles & Skr - Under Level T1 (CUARTOS)",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "2t7K6eOLDJY": [
+   "Carlos vs Kuervo Exhibición",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "2vAn0QhDTe4": [
+   "Charro 🇲🇽 Vs Lolo 🇦🇷 | 4tos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "2wEA2V73nY0": [
+   "Garzi Vs Mco [FFS Bull Internacional] - FFS - Discord - Semi Final",
+   "FFS",
+   [
+    "MCO"
+   ]
+  ],
+  "38suLG1mwHI": [
+   "LUZ 🆚 POMBERITO || Jornada #2 - Snake League VII🔹",
+   "SR",
+   [
+    "Luz",
+    "Pomberito"
+   ]
+  ],
+  "3Pzfb84kPCI": [
+   "Wachiwa 🇲🇽 Vs Rank 🇪🇨 | 4tos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "3fGoAlhIlII": [
+   "JMB ​​​​🇦🇷​ Vs AXINU ​​​​​🇨🇴​ | #FBR23 | T2J2 | “...“",
+   "DRA",
+   [
+    "Jmb",
+    "Axinu"
+   ]
+  ],
+  "3nzgwyhpcMo": [
+   "KZAONE V.S HAC | OCTAVOS DE FINAL #VSCUP",
+   "FVS",
+   [
+    "KZAONE"
+   ]
+  ],
+  "4ck2DbguKZA": [
+   "WACHIWA 🇲🇽 Vs CHARRO 🇲🇽 │Final│La Copa Underap T1J5",
+   "DRA",
+   [
+    "Wachiwa",
+    "Charro"
+   ]
+  ],
+  "5S8aayW6nsE": [
+   "RUBIK 🆚 KENCHIN || Jornada #1 - Snake League VII🔹",
+   "SR",
+   [
+    "Rubik"
+   ]
+  ],
+  "6YS76y5UL5g": [
+   "Xervo Vs Deuxs Vs Jobains | Octavos - Final Regional La Serena 2025",
+   "FVS",
+   [
+    "Xervoe",
+    "Deuxs"
+   ]
+  ],
+  "6jhWreA63_8": [
+   "SOMBRA 🇵🇷 VS PIJOTA 🇨🇴 │Octavos│La Copa Underap T1J7",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "6oOyOfvMAKc": [
+   "Snake Vs Garzi [FFS Bull Internacional] - FFS - Discord - Octavos",
+   "FFS",
+   [
+    "Snake"
+   ]
+  ],
+  "7TCUuFBYgec": [
+   "Carlosmo Vs Mtz [FFS Bull Internacional] - FFS - Discord - Semi Final",
+   "FFS",
+   [
+    "Carlosmo",
+    "MTZ"
+   ]
+  ],
+  "7fS--SUx-tk": [
+   "BAU 🇦🇷​ Vs SHADOW 🇨🇴​ | #FBR23 | T2J2 | “...“",
+   "DRA",
+   [
+    "Bau",
+    "Shadow"
+   ]
+  ],
+  "7jOe6wx3MxI": [
+   "ARTS VS EPIK | OCTAVOS DE FINAL #VSCUP",
+   "FVS",
+   [
+    "Erik"
+   ]
+  ],
+  "7ukwD5aqiFM": [
+   "KZAONE VS BLAXX | PLAYOFFS VS CUP 2025 #VSCUP",
+   "FVS",
+   [
+    "KZAONE",
+    "Blaxx"
+   ]
+  ],
+  "7vkSBpx3Z30": [
+   "Konan Vs Humildad [FFS Bull Internacional] - FFS - Discord - Octavos",
+   "FFS",
+   [
+    "Konan",
+    "Humildad"
+   ]
+  ],
+  "87uV6RRvgEs": [
+   "LIBERIA 🆚 JD || Jornada #2 - Snake League VII🔹",
+   "SR",
+   [
+    "Liberia"
+   ]
+  ],
+  "8AJ8XuvIW2I": [
+   "CARLOS VS SNOW | Red Bull can you make it? cuartos de final (no oficial)",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "8UjDiDUuQZc": [
+   "Carlos vs salmón ||Octavos de final Red Bull",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "9YPWxHqn8Iw": [
+   "Glouse 🇵🇪 Vs Anbeck 🇵🇪│8vos│La Copa Underap T2J2",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "AldoytTlyLI": [
+   "Plink Vs Kourier [FFS Bull Internacional] - FFS - Discord - Octavos",
+   "FFS",
+   [
+    "Kourier"
+   ]
+  ],
+  "Aojta0RGLxU": [
+   "Reckless 🇺🇸 Vs Edu 🇪🇨 | Pre-UML | Batalla #1",
+   "DRA",
+   [
+    "Kourier",
+    "Edu"
+   ]
+  ],
+  "BZgJenPhqRs": [
+   "ZAMO VS KZAONE | FVS WORD SERIES 2025 J2 | ZACATECAS MEXICO",
+   "FVS",
+   [
+    "Zamo",
+    "KZAONE"
+   ]
+  ],
+  "Bhx9uFJOmDk": [
+   "Charro 🇲🇽 Vs Benja 🇨🇱 | Pre-UML | Batalla #13",
+   "DRA",
+   [
+    "Charro",
+    "Benja"
+   ]
+  ],
+  "Bs5yViEKMT0": [
+   "Xervo Vs Blaxx | Semifinales - Final Regional Coquimbo 2025",
+   "FVS",
+   [
+    "Xervoe",
+    "Blaxx"
+   ]
+  ],
+  "CeAvusKOxYM": [
+   "Wachiwa 🇲🇽 Vs Pespy 🇲🇽 #2 | Pre-UML | Batalla #28",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "ClgrtSDLgCU": [
+   "Anbeck 🇵🇪 Vs Mitz 🇦🇷 | Pre-UML | Batalla Legendaria #20",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "Cr1HAzRAecI": [
+   "SCORPIO vs ARAMA || Ronda Réplica - Level God",
+   "SR",
+   [
+    "Arama"
+   ]
+  ],
+  "CwXKlQnFYZU": [
+   "XHAY 🇭🇳 Vs WOSITO 🇦🇷 | #FBR23 | “...“",
+   "DRA",
+   [
+    "Xhay"
+   ]
+  ],
+  "DO5xAFFmYZg": [
+   "GOYMC 🇦🇷 VS MAKMA 🇻🇪 │Octavos│La Copa Underap T1J8",
+   "DRA",
+   [
+    "Makmah"
+   ]
+  ],
+  "ERatrinI150": [
+   "Droker 🇨🇱 Vs Charro 🇲🇽 | 8vos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "E_n1r9L0L10": [
+   "Gamer 🇵🇪 Vs Agus 🇦🇷│Final│La Copa Underap T2J7",
+   "DRA",
+   [
+    "Agus"
+   ]
+  ],
+  "F5g0vyvxwFA": [
+   "Wachiwa & Bit Vs Ryze & Anbeck - Under Level T1 (SEMIFINAL)",
+   "DRA",
+   [
+    "Wachiwa",
+    "Anbeck"
+   ]
+  ],
+  "FoKDUaup5rk": [
+   "Anbeck 🇵🇪 Vs ApoloZ 🇨🇷 | Pre-UML | Batallas Legendarias #14",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "FrR3TFv694U": [
+   "MATI CERNA 🇦🇷 Vs ZYKLO 🇵🇪 | #HLC23 | T2J1 | “...“",
+   "DRA",
+   [
+    "MATICERNA"
+   ]
+  ],
+  "GI49PeMANY8": [
+   "Sombra 🇵🇷 Vs Glouse 🇵🇪 | Pre-UML | Batalla #21",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "GTqWZREJx5k": [
+   "4X4 EPICO DE EDU VS SOMBRA🥊| MEJORES RIMAS FREESTYLE #6",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "GmJ7oC3sTa8": [
+   "RECKLESS 🇺🇸 Vs ZAYLAX 🇵🇷 | #FBR | T1J1 | “DEJA de HABLAR por el ORDENADOR tu PUTA MADRE“.",
+   "DRA",
+   [
+    "Kourier"
+   ]
+  ],
+  "HH4dNYHmUjk": [
+   "Sombra 🇵🇷 Vs Edu 🇪🇨 | 8vos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Sombra",
+    "Edu"
+   ]
+  ],
+  "Hgi0_rJnaL0": [
+   "Wachiwa 🇲🇽 Vs Mitz 🇦🇷 | Pre-UML | Batalla #52",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "Hm6CZUJAXns": [
+   "TIKAL 🆚 POMBERITO || Jornada #1 - Snake League VII🔹",
+   "SR",
+   [
+    "Pomberito"
+   ]
+  ],
+  "I6vEoI_joUM": [
+   "SPD 🇪🇸 Vs Xhay 🇭🇳 | Cuartos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "SPD",
+    "Xhay"
+   ]
+  ],
+  "ISCVRl3Px3I": [
+   "MKNOLI VS MAITAS - Octavos De Final | Red Bull Regional Isla Del Maipo",
+   "FVS",
+   [
+    "Mknoli"
+   ]
+  ],
+  "ImkgRQqryhA": [
+   "Levi 🇨🇱 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #3",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "IzeF3e4tvAc": [
+   "Lichal 🇦🇷 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #4",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "K586J9Jb7-4": [
+   "MTZ Vs Ricardflex [FFS Bull Internacional] - FFS - Discord - Octavos",
+   "FFS",
+   [
+    "MTZ",
+    "Richard"
+   ]
+  ],
+  "KDtbuQS6vOw": [
+   "SOMBRA 🇵🇷 VS JETXIEL 🇵🇷 │Semifinal│La Copa Underap T1J7",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "K_pqK_BGOvg": [
+   "Pijota 🇨🇴 Vs Sombra 🇵🇷│8vos│La Copa Underap T2J2",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "L8KZ00zWRyY": [
+   "AGUSTIN 51 vs DEUX - CUARTOS DE FINAL | RED BULL BATALLA REGIONAL SANTIAGO",
+   "FVS",
+   [
+    "Deuxs"
+   ]
+  ],
+  "LJ_xbGuNCzM": [
+   "Wachiwa 🇲🇽 Vs Agus 🇦🇷 | 8vos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Wachiwa",
+    "Agus"
+   ]
+  ],
+  "M0RI52mqiQc": [
+   "Makma 🇻🇪 Vs High 🇨🇴│8vos│La Copa Underap T2J7",
+   "DRA",
+   [
+    "Makmah"
+   ]
+  ],
+  "MOjeuhsIa-4": [
+   "ROMPIO LA TEMÁTICA | WACHIWA VS CHARRO🤖 | UL EDIT #2 | MEJORES RIMAS FREESTYLE",
+   "DRA",
+   [
+    "Wachiwa",
+    "Charro"
+   ]
+  ],
+  "MtxTIHAaqUg": [
+   "Anbeck 🇵🇪 Vs Charro 🇲🇽 | Final | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Anbeck",
+    "Charro"
+   ]
+  ],
+  "N89_7QZ7BnU": [
+   "Charro 🇲🇽 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #12",
+   "DRA",
+   [
+    "Charro",
+    "Anbeck"
+   ]
+  ],
+  "NXaqIr4dx0A": [
+   "AGUS 🆚 JD || Jornada #1 - Snake League VI",
+   "SR",
+   [
+    "Agus"
+   ]
+  ],
+  "NhZU7Up2-Os": [
+   "MINUTAZO QERVO 🕺🏽| KUERVO VS ESPECTRO |",
+   "FVS",
+   [
+    "Espectro"
+   ]
+  ],
+  "ONuuTntbtE4": [
+   "Deko 🇨🇱 Vs Anbeck 🇵🇪 | Pre-UML | Batalla #46",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "OaLecf0BaRU": [
+   "Carlos Vs Snow || TFC Regional 2025 TFC 🤝VS",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "OjqGn3dpAw0": [
+   "XHAY 🇭🇳 Vs BELIKKO 🇻🇪 | #FBR23 | T2J2 | “...“",
+   "DRA",
+   [
+    "Xhay"
+   ]
+  ],
+  "Oo6u4f60rfc": [
+   "SANDIA 🇻🇪 Vs MATI CERNA 🇦🇷 | #FBR | T1J1 | “Se TIRO del PISO porque se COGIO a la NOVIA de tu COMPA“",
+   "DRA",
+   [
+    "MATICERNA"
+   ]
+  ],
+  "PFQnQpCHssU": [
+   "ElektroMc 🇻🇪 Vs Charro 🇲🇽│Final│La Copa Underap T2J1",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "PbZEydMwm70": [
+   "Wachiwa 🇲🇽 Vs Glouse 🇵🇪 #2 | Pre-UML | Batalla #19",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "Pqvz8JwkF0s": [
+   "Improvisado 🇵🇪 Vs Marxx 🇪🇸 | Cuartos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "Improvisado",
+    "Marxx"
+   ]
+  ],
+  "Pwz0YWGpUO4": [
+   "Diosito & Lichal Vs Sombra & Laru - Under Level T1 (CUARTOS)",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "QV4Vnynu7a8": [
+   "7PO 🇨🇱 Vs BOHEMIO 🇨🇴 | #HLC23 | T2J2 | Liga de freestyle",
+   "DRA",
+   [
+    "7po"
+   ]
+  ],
+  "R3z_U0aXcdk": [
+   "Kyss vs Zeta  || FPC - Snake Rap",
+   "SR",
+   [
+    "Kyss",
+    "Zeta"
+   ]
+  ],
+  "RR40sCEWDWU": [
+   "MTZ Vs Draxx [FFS Bull Internacional] - FFS - Discord - Cuartos",
+   "FFS",
+   [
+    "MTZ",
+    "Drexx"
+   ]
+  ],
+  "S6Es2PTOKJw": [
+   "BAU 🇦🇷 Vs DARKT 🇨🇱 | #FBR | T1J1 | “NECESITABAN a ALGUIEN que SACARA 0 PUNTOS por eso ESTAS acá“",
+   "DRA",
+   [
+    "Bau"
+   ]
+  ],
+  "SG_FYNBkKnk": [
+   "SAMSARA 🆚 NUMBER || Jornada #1 - Snake League VII🔹",
+   "SR",
+   [
+    "Number"
+   ]
+  ],
+  "SVs79GG7XPE": [
+   "LUZ 🆚 AGUS || Jornada #1 - Snake League VII🔹",
+   "SR",
+   [
+    "Luz",
+    "Agus"
+   ]
+  ],
+  "SiAkhLgBelI": [
+   "Laru 🇦🇷 Vs Edu 🇪🇨 | Pre-UML | Batalla #31",
+   "DRA",
+   [
+    "Edu"
+   ]
+  ],
+  "TQDtdk_GF2A": [
+   "Konan Vs Mco [FFS Bull Internacional] - FFS - Discord - Cuartos",
+   "FFS",
+   [
+    "Konan",
+    "MCO"
+   ]
+  ],
+  "U6ZzScWWAmE": [
+   "RUBIK 🆚 NUMBER || Jornada #1 - Snake League VI",
+   "SR",
+   [
+    "Rubik",
+    "Number"
+   ]
+  ],
+  "U6fX5Ml3kIc": [
+   "Agustín Vs Deuxs | Semifinales -Final Regional Coquimbo 2025",
+   "FVS",
+   [
+    "Deuxs"
+   ]
+  ],
+  "Uaj8Ngc90G4": [
+   "SOMBRA 🇵🇷 VS GAMER 🇵🇪 │Cuartos│La Copa Underap T1J7",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "UdpBJo6T9g8": [
+   "SIX 🆚 SAMSARA || Jornada #2 - Snake League VII🔹",
+   "SR",
+   [
+    "Six"
+   ]
+  ],
+  "VKnxyuyitAs": [
+   "EPIK VS SALMON | FVS WORLD SERIES 2025 J1  | VENEZUELA, CARACAS",
+   "FVS",
+   [
+    "Erik"
+   ]
+  ],
+  "WN5GuF2M3BI": [
+   "SOMBRA 🇵🇷 VS MESOTES 🇨🇱 │Final│La Copa Underap T1J7",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "WNCYvoDCu5s": [
+   "TheMasterBenja 🇨🇱 Vs Agus 🇦🇷│4tos│La Copa Underap T2J7",
+   "DRA",
+   [
+    "Agus"
+   ]
+  ],
+  "WWjRVL1-Eno": [
+   "SIX 🆚 LIBERIA || Jornada #1 - Snake League VII🔹",
+   "SR",
+   [
+    "Six",
+    "Liberia"
+   ]
+  ],
+  "XGtSByX4hu8": [
+   "Gian 🇦🇷 Vs Laru 🇦🇷 | Pre-UML | Batalla #26",
+   "DRA",
+   [
+    "Gian"
+   ]
+  ],
+  "XYDQdFsmn_c": [
+   "CHARRO 🇲🇽 Vs MATHIEF 🇵🇪 │CUARTOS│La Copa Underap T1J5",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "XZmNVJuxisg": [
+   "Sombra 🇵🇷 Vs Ajit 🇻🇪 4tos│4tos│La Copa Underap T2J2",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "XuH6Rf6SCHc": [
+   "Renkho 🇲🇽 Vs CF 🇨🇴 | 4tos | La Copa 3 - Pesatunes",
+   "DRA",
+   [
+    "Humildad"
+   ]
+  ],
+  "YY3WpNLzwAc": [
+   "Mat 🇨🇴 Vs Sombra 🇵🇷 | Pre-UML | Batalla #11",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "YYTNvgLKcB4": [
+   "ORIGINAL GANG DUPLAS FINAL - ABYSSUS🇵🇦  (FULLYLO4DED🇨🇱) VS RESPAWN🇭🇳 (KMINANT🇦🇷) ",
+   "FFA",
+   [
+    "Abyssus",
+    "Kminant"
+   ]
+  ],
+  "Y_32I9Mc1dg": [
+   "Edu 🇪🇨 Vs Benja 🇨🇱 | Pre-UML | Batalla #23",
+   "DRA",
+   [
+    "Edu",
+    "Benja"
+   ]
+  ],
+  "YiFu2eMg0Ms": [
+   "BAU 🇦🇷 Vs DLX 🇵🇪 | #FBR23 | T2J1 | “...“",
+   "DRA",
+   [
+    "Bau"
+   ]
+  ],
+  "Z55SdTObh_U": [
+   "CARLOS VS XANDIZ REMASTER | FVS Internacional octavos de final",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "ZlumdrInyPI": [
+   "5 VIDAS OG: 1 CAMPEÓN | HAC vs XERVOE/BENJA MVP vs CARLOS vs WEST vs ZAMO.",
+   "FVS",
+   [
+    "Carlos",
+    "Zamo"
+   ]
+  ],
+  "_BoJJVFtRCo": [
+   "SOMBRA 🇵🇷 Vs RANK 🇪🇨 | #UML | T1J1 | “TÚ me HABLAS de RAPEROS y DICES ANUEL AA“",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "_BuK21DwnIA": [
+   "SCORPIO 🆚 RUBIK || Jornada #2 - Snake League VII🔹",
+   "SR",
+   [
+    "Rubik"
+   ]
+  ],
+  "_jdQPIwQ6Zs": [
+   "Anbeck 🇵🇪 Vs Ajt 🇵🇪 | 4tos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "a6Lh2vqfzJc": [
+   "MINUTOS DE PRESENTACION | Anbeck, BneDto vs Jose, BlueStyles | Under Level #1 | GRAN FINAL",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "aAPgAlRteE8": [
+   "ONEK EA Vs CHARRO │Octavos│La Copa Underap T1J5",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "aX6TD2JjWjA": [
+   "Agus 🇦🇷 Vs DemianD 🇨🇱│Semis│La Copa Underap T2J7",
+   "DRA",
+   [
+    "Agus"
+   ]
+  ],
+  "aajE_1XM8L4": [
+   "ADLex 🇪🇸 Vs Charro 🇲🇽│4tos│La Copa Underap T2J1",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "agHflK8fDwQ": [
+   "Sombra 🇵🇷 Vs MaT 🇨🇴 | 4tos | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "ahr__F0cddo": [
+   "CARLOS VS PROSU | FVS WORD SERIES 2025 J1 | CARACAS VENEZUELA ",
+   "FVS",
+   [
+    "Carlos",
+    "Prosu"
+   ]
+  ],
+  "aj_QJTAAAGQ": [
+   "Benja 🇨🇱 Vs Jdmc 🇻🇪 #2 | Pre-UML | Batalla #10",
+   "DRA",
+   [
+    "Benja"
+   ]
+  ],
+  "b7GhEZ7k4L4": [
+   "ANBECK 🇵🇪 Vs LEVI 🇨🇱 | #UML | T1J1 | “TRUENO y ELMENOR, la METRICA NO, sino GANA el MEJOR “",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "bBDNh7mq2lA": [
+   "RENKHO 🇲🇽 Vs GIAN 🇦🇷 | #FBR22 | T1J1 | “MAMÁ apareci en YOUTUBE“",
+   "DRA",
+   [
+    "Gian"
+   ]
+  ],
+  "bLHOnPDKXnc": [
+   "JJ Vs MCO [FFS Bull Internacional] - FFS - Discord - Octavos",
+   "FFS",
+   [
+    "MCO"
+   ]
+  ],
+  "brYOLwz7Rjg": [
+   "PROSU VS KSSATX | DOBLE AA VS ALBIN Y LAS ARDILLAS| Octavos de final FVS internacional",
+   "FVS",
+   [
+    "Prosu"
+   ]
+  ],
+  "cmg3xBCxxCA": [
+   "Blaxx Vs Deuxs | Final - Final Regional Coquimbo 2025 T9",
+   "FVS",
+   [
+    "Blaxx",
+    "Deuxs"
+   ]
+  ],
+  "d4nayNOleEk": [
+   "SPD 🇪🇸 Vs Megara 🇨🇱 | Octavos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "SPD",
+    "Megara"
+   ]
+  ],
+  "duiUJ6joXQ4": [
+   "TIKAL 🆚 RUBIK || GRAN FINAL - Snake League VI",
+   "SR",
+   [
+    "Rubik"
+   ]
+  ],
+  "eDGh4B9rVsQ": [
+   "Carlosmo Vs Mco [FFS Bull Internacional] - FFS - Discord - Final",
+   "FFS",
+   [
+    "Carlosmo",
+    "MCO"
+   ]
+  ],
+  "f17V8Y_I33U": [
+   "PROSU VS SALMON | FVS WORD SERIES 2025 Jornada 1| CARACAS, VENEZUELA ",
+   "FVS",
+   [
+    "Prosu"
+   ]
+  ],
+  "fBRpbzPIzVo": [
+   "MKNOLI VS HAC | #FVSCHILE Jornada 9 Temporada 5 - #FMS26 | Fvs Roosters",
+   "FVS",
+   [
+    "Mknoli"
+   ]
+  ],
+  "fOI_LdAd9_I": [
+   "VAL 🇨🇴 Vs MATI CERNA 🇦🇷 | #HLC23 | T2J2 | “...“",
+   "DRA",
+   [
+    "MATICERNA"
+   ]
+  ],
+  "fmtYuKsWJmk": [
+   "Espectro Vs Mathias | Cuartos - Red Bull Nacional Colombia ",
+   "FVS",
+   [
+    "Espectro",
+    "Mathhias"
+   ]
+  ],
+  "gSzF_8TVdzo": [
+   "ElDrin 🇻🇪 Vs Phano 🇵🇪│8vos│La Copa Underap T2J3",
+   "DRA",
+   [
+    "Phano"
+   ]
+  ],
+  "glZlmKqHNW4": [
+   "HaC Vs Draxx Vs Benja MVP | Filtros - Red Bull Regional Chile La Serena",
+   "FVS",
+   [
+    "Drexx"
+   ]
+  ],
+  "gmn7lJ-LfSI": [
+   "XHAY 🇭🇳 Vs CRISS 🇨🇱 | #FBR23 | T2J1 | “...“",
+   "DRA",
+   [
+    "Xhay"
+   ]
+  ],
+  "gxFfXNYhXm4": [
+   "Anbeck 🇵🇪 Vs Glouse 🇵🇪 | Pre-UML | Batalla #51",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "hE1U9hMexiY": [
+   "JMB 🇦🇷 Vs BELIKKO 🇻🇪 | #FBR23 | T2J1 | “...“",
+   "DRA",
+   [
+    "Jmb"
+   ]
+  ],
+  "hnoXlKNthGM": [
+   "VALDRAX ​​​​🇵🇪​ Vs CHARRO 🇲🇽 | #UML23 | T2J1 | Liga de freestyle",
+   "DRA",
+   [
+    "Valdrax",
+    "Charro"
+   ]
+  ],
+  "i_x1MJtEBSA": [
+   "Wachiwa 🇲🇽 Vs Lichal 🇦🇷| Pre-UML | Batalla #48",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "ieLP9vvkgkM": [
+   "Jdmc 🇻🇪 Vs Edu 🇪🇨 | Pre-UML | Batalla #30",
+   "DRA",
+   [
+    "Edu"
+   ]
+  ],
+  "im3PVu2QWLY": [
+   "Pijota 🇨🇴 Vs Agus 🇦🇷│8vos│La Copa Underap T2J7",
+   "DRA",
+   [
+    "Agus"
+   ]
+  ],
+  "j33ubwnKK9Y": [
+   "Charro 🇲🇽 Vs Wachiwa 🇲🇽 | Pre-UML | Batalla #15",
+   "DRA",
+   [
+    "Charro",
+    "Wachiwa"
+   ]
+  ],
+  "jUr6wYE_Amw": [
+   "POMBERITO VS CARLOS - SemisFinales | RED BULL INTERNACIONAL FVS  ",
+   "FVS",
+   [
+    "Pomberito",
+    "Carlos"
+   ]
+  ],
+  "jiZSyVBWjVw": [
+   "ROAD vs HEAT || FPC VII - MINUTOS LIBRES",
+   "SR",
+   [
+    "Road"
+   ]
+  ],
+  "jlselD6ExZY": [
+   "CARLOSMO VS JJ | FVS WORLD SERIES JORNADA 1 | CARACAS, VENEZUELA.",
+   "FVS",
+   [
+    "Carlosmo",
+    "JJ"
+   ]
+  ],
+  "jycJ2WaJgEk": [
+   "MaT 🇨🇴 Vs Anbeck 🇵🇪 | Pre-UML | #BatallaFinal #53",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "k5kf6uR4114": [
+   "CARLOS VS ZAMO | OCTAVOS DE FINAL #vscup",
+   "FVS",
+   [
+    "Carlos",
+    "Zamo"
+   ]
+  ],
+  "kaD74Qr7ky8": [
+   "RUBIK 🆚 SCORPIO | FINAL MATANZA DE DIOSES - C15",
+   "SR",
+   [
+    "Rubik"
+   ]
+  ],
+  "kiyYaiFqTzw": [
+   "Makma 🇻🇪 Vs Edu 🇪🇨 | Pre-UML | Batalla #5",
+   "DRA",
+   [
+    "Makmah",
+    "Edu"
+   ]
+  ],
+  "lVL0sxDnR28": [
+   "Pespy 🇲🇽 Vs Wachiwa 🇲🇽 | Pre-UML | Batalla #24",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "leGYVAy3BOw": [
+   "BENJA 🇨🇱 VS MESOTES 🇨🇱 │Semifinal│La Copa Underap T1J7",
+   "DRA",
+   [
+    "Benja"
+   ]
+  ],
+  "lp4jCmuhNkw": [
+   "Charro 🇲🇽 Vs Mamc 🇵🇪│8vos│La Copa Underap T2J1",
+   "DRA",
+   [
+    "Charro"
+   ]
+  ],
+  "m3Bq2RxCO-4": [
+   "Jdmc 🇻🇪 Vs Benja 🇨🇱 | Pre-UML | Batalla #9",
+   "DRA",
+   [
+    "Benja"
+   ]
+  ],
+  "mlzM1dL4ER0": [
+   "XERVO vs BENJA EVIL - Octavos De Final | Red Bull Regional Isla De Maipo",
+   "FVS",
+   [
+    "Xervoe"
+   ]
+  ],
+  "n6zA8N-GHBE": [
+   "Bit & Wachiwa Vs Jere & Glouse - Under Level T1 (CUARTOS)",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "nh4ZY3F_cY0": [
+   "Wachiwa 🇲🇽 Vs Glouse 🇵🇪 | Pre-UML | Batalla #18",
+   "DRA",
+   [
+    "Wachiwa"
+   ]
+  ],
+  "nhGPppbr1Eg": [
+   "MOLUSCO ​​​​🇦🇷​ Vs SK8 🇪🇨 | #UML23 | T2J1 | Liga de freestyle",
+   "DRA",
+   [
+    "Molusco",
+    "SK8"
+   ]
+  ],
+  "oVRVzcRhZe0": [
+   "Sombra 🇵🇷 Vs Benja 🇨🇱 | Pre-UML | Batalla #8",
+   "DRA",
+   [
+    "Sombra",
+    "Benja"
+   ]
+  ],
+  "pWbSTJ8U9Xc": [
+   "AleLopez 🇨🇱 Vs Marxx 🇪🇸  | Octavos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "Marxx"
+   ]
+  ],
+  "pmcQdZW0orU": [
+   "CARLOS VS BENJA MC (MVP) | exhibición",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "pwVDAwRgRpc": [
+   "Anbeck 🇵🇪 Vs Sombra 🇵🇷  | Pre-UML | Batalla #22",
+   "DRA",
+   [
+    "Anbeck",
+    "Sombra"
+   ]
+  ],
+  "qz4AZbYhYIY": [
+   "POMBERITO VS AETHER | FVS WORD SERIES 2025 J1 | VENEZUELA CARACAS",
+   "FVS",
+   [
+    "Pomberito"
+   ]
+  ],
+  "sEaoJ9OKdO0": [
+   "XERVOE VS SOSA | #FVSCHILE Jornada 9 Temporada 5 - #FVS26 | Fvs Roosters",
+   "FVS",
+   [
+    "Xervoe",
+    "Sosa"
+   ]
+  ],
+  "sN6wrdP9b-g": [
+   "Carlosmo Vs Jobains [FFS Bull Internacional] - FFS - Discord - Octavos",
+   "FFS",
+   [
+    "Carlosmo"
+   ]
+  ],
+  "tWJeHH9tZ60": [
+   "Ozora 🇦🇷 Vs Spd 🇪🇸 | Pre-UML | Batalla #39",
+   "DRA",
+   [
+    "SPD"
+   ]
+  ],
+  "tXABDE_5FOQ": [
+   "ApoloZ 🇨🇷 Vs Benja 🇨🇱 | Pre-UML | Batalla #50",
+   "DRA",
+   [
+    "Benja"
+   ]
+  ],
+  "tf3voRfPPzw": [
+   "HaC Vs Draxx | La Final 🏆 -  Final Regional La serena T9 2025",
+   "FVS",
+   [
+    "Drexx"
+   ]
+  ],
+  "uG7uEtBchfk": [
+   "ALELOPEZ 🇨🇱 Vs SOMBRA 🇵🇷 │Semifinal│La Copa Underap T1J6",
+   "DRA",
+   [
+    "Sombra"
+   ]
+  ],
+  "uV0FkQXhNb4": [
+   "Xhay 🇭🇳 Vs Droker 🇨🇱 | Octavos | La Copa 3 - #2 | Pesatunes",
+   "DRA",
+   [
+    "Xhay"
+   ]
+  ],
+  "uZMcNqSKpn0": [
+   "MaT 🇨🇴 Vs Anbeck 🇵🇪 | Semifinal | La Copa Underap 2 | Gran Final",
+   "DRA",
+   [
+    "Anbeck"
+   ]
+  ],
+  "wNR4x-muLfc": [
+   "FAZER vs MJ || Level God J5T6 - Snake Rap",
+   "SR",
+   [
+    "Fazer"
+   ]
+  ],
+  "wVZRIm-HhDo": [
+   "Dani 🇵🇪 Vs Gian 🇦🇷│8vos│La Copa Underap T2J7",
+   "DRA",
+   [
+    "Gian"
+   ]
+  ],
+  "wrUPeUkH3-g": [
+   "Makma 🇻🇪 Vs Gian 🇦🇷 | Pre-UML | Batalla #27",
+   "DRA",
+   [
+    "Makmah",
+    "Gian"
+   ]
+  ],
+  "ww0EGha_kyQ": [
+   "CARLOS VS DARÍO | Cuartos de final FVS internacional",
+   "FVS",
+   [
+    "Carlos"
+   ]
+  ],
+  "y6AYOHl-Mmk": [
+   "Carlosmo Vs Kourier [FFS Bull Internacional] - FFS - Discord - Cuartos",
+   "FFS",
+   [
+    "Carlosmo",
+    "Kourier"
+   ]
+  ],
+  "ydemTAvqpCk": [
+   "HERRERA VS SAIKO | GRAN FINAL 🏆🇨🇱🇨🇴 #FVSCHILE Jornada 9 Temporada 5 - #FVS26 | Fvs Roosters",
+   "FVS",
+   [
+    "Saiko"
+   ]
+  ],
+  "zehCmgKXopM": [
+   "ZAMO VS SALMÓN | Octavos de final FVS internacional.",
+   "FVS",
+   [
+    "Zamo"
+   ]
+  ]
+ },
+ "visto": "2026-10-12T22:07:53+00:00"
+}

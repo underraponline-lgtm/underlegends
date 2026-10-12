@@ -1,0 +1,35 @@
+{
+ "_leeme": "Los canales de YouTube de los socios donde se buscan batallas (bot/videos.py). Salieron de recorrer los servidores y de lo que pasó Dlx el 12/10/2026. `sv`: el servidor del canal, que es el que se pide a quien aparece sin bandera en el título. TikTok y Twitch, para cuando se puedan crear tokens: Urban sólo tiene TikTok (@urban_freestyle627). Se dejaron afuera a propósito los canales grandes de afuera (Red Bull Batalla, Urban Roosters, FMS, MC'GS): tienen MCs famosos que se llaman igual que gente de la Liga. La Crew (@lacrewoficial-g4i) no tiene videos públicos todavía.",
+ "canales": [
+  {
+   "sv": "DRA",
+   "id": "UCnuSKqHzVgjQYLkLual97WA",
+   "nombre": "Under Legends"
+  },
+  {
+   "sv": "SR",
+   "id": "UC1wmceEHX_k4ME_ZGq60dJg",
+   "nombre": "Snake Rap"
+  },
+  {
+   "sv": "FFS",
+   "id": "UC6hd1EYdjZi18NjjXbnr0iw",
+   "nombre": "Freestyle Future Series"
+  },
+  {
+   "sv": "FFA",
+   "id": "UCqTZD3I0_C0BLSPw5Rle3Jg",
+   "nombre": "Free for All"
+  },
+  {
+   "sv": "FVS",
+   "id": "UCW35yrKAOMyDCp3Uap6crkg",
+   "nombre": "Freestyle Versus"
+  },
+  {
+   "sv": "FVS",
+   "id": "UCvBsCGWVsw0lq0jf_d8O98g",
+   "nombre": "FVS Roosters"
+  }
+ ]
+}
