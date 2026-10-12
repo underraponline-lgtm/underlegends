@@ -2518,7 +2518,8 @@
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathhias/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathhias/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathhias/sv-dra.webp",
-  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathhias/sv-fvs.webp"
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathhias/sv-fvs.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathhias/temporada.webp"
  },
  "mathiasmc": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/servidor.webp",
@@ -3289,7 +3290,10 @@
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/prosu/temporada.webp"
  },
  "provenza": {
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/sv-sr.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/provenza/temporada.webp"
