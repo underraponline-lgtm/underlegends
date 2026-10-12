@@ -341,11 +341,23 @@ def main():
     crons = [{'cron': cron_vigia()}]
     if ght and ghr:
         crons.insert(0, {'cron': '22,52 * * * *'})
-    pedir(s, 'PUT',
-          '/accounts/%s/workers/scripts/%s/schedules' % (cid, NOMBRE),
-          json=crons)
-    for c in crons:
-        print('  ✅ cron registrado: %s' % c['cron'])
+    # 🔴 SÓLO SI CAMBIARON (12/10/2026). Cada PUT los vuelve a registrar, y Cloudflare tarda hasta 15 minutos en
+    # tomarlos: desplegar cerca de las :22 o las :52 podía perder esa corrida del ciclo sin que nada avisara. Si la
+    # consulta falla, se registran igual —registrar de más no rompe nada; no registrar sí—.
+    ya = None
+    try:
+        r = s.get('%s/accounts/%s/workers/scripts/%s/schedules' % (API, cid, NOMBRE), timeout=30)
+        ya = sorted(x.get('cron') for x in ((r.json().get('result') or {}).get('schedules') or []))
+    except Exception:                                    # noqa: BLE001
+        ya = None
+    if ya == sorted(c['cron'] for c in crons):
+        print('  ✅ los crons ya estaban así: no se tocan')
+    else:
+        pedir(s, 'PUT',
+              '/accounts/%s/workers/scripts/%s/schedules' % (cid, NOMBRE),
+              json=crons)
+        for c in crons:
+            print('  ✅ cron registrado: %s' % c['cron'])
     if ght and ghr:
         print('     22,52: dispara el ciclo, 15 min corrido del de GitHub '
               '(:07 y :37)')
