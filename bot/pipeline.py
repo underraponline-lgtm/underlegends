@@ -1140,6 +1140,11 @@ def _lo_barato(correr):
         # 🔑 Dlx, 28/09/2026: «1. Ambos. 2. B». Resuelve los precios que la
         # gente puso en la página (el Durable Object) contra las llaves
         # procesadas; ver `bot/precios.py`. Nunca frena el ciclo.
+        # ── 2b3c · el reto del debut (`bot/debutantes.py`, Dlx 12/10/2026): ANTES del 2b4, que se lleva lo que paga
+        # en Tienda en el mismo viaje. Nunca frena el ciclo
+        paso('2b3c', 'el reto del debut')
+        if not corre(['bot/debutantes.py', '--aplicar'], callado=False):
+            print('      ⚠️ el reto del debut falló: queda lo de la corrida anterior')
         paso('2b4', 'el precio por cabeza')
         if not corre(['bot/precios.py', '--aplicar'], callado=False):
             print('      ⚠️ el precio por cabeza falló: queda lo de la corrida anterior')

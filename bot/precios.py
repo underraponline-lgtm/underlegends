@@ -239,7 +239,7 @@ def tienda_mw(mw, dids):
     return out
 
 
-def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None):
+def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None):
     """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}, jugo, rcfg}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
@@ -263,7 +263,8 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None):
         elif x['e'] == 'devuelto':
             r[str(x['id'])] = {'e': 'devuelto', 'por': []}
     m = tienda_mw(mw, dids) if mw is not None else {}
-    v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div], sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:16]
+    v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div] + ([deb] if deb is not None else []), sort_keys=True,
+                                ensure_ascii=False).encode()).hexdigest()[:16]
     out = {'v': v, 'r': r, 'mw': m}
     if jugo is not None:
         out['jugo'] = jugo
@@ -271,6 +272,9 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None):
         out['rcfg'] = rcfg
     if div is not None:
         out['div'] = div
+    # 🎤 y lo que paga el reto del debut (`bot/debutantes.py`): entero en cada corrida, como las divisiones
+    if deb is not None:
+        out['deb'] = deb
     return out
 
 
@@ -331,12 +335,13 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         # 🏟️ y lo que pagan las subidas de división (`bot/divisiones.py`)
         import racha as RA
         import divisiones as DV
+        import debutantes as DB
         dids = discords(pool)
         import multiplicadores as MU
         o = RA.origen(ahora)
         _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, o), RA.config(o, MU.temporada_actual(ahora)),
-                           DV.tienda(DV.leer(), dids)),
-               CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados y las subidas de división')
+                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer())),
+               CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados, las divisiones y los debuts')
     return out
 
 
