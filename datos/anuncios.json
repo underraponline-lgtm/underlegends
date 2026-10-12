@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T01:54:13+00:00",
+ "cuando": "2026-10-12T02:24:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -356,40 +356,6 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
-  },
-  {
-   "nombre": "LA REDENCION VOL.4",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1559018918515970049",
-   "cuando": "2026-10-12T01:44:35",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "Pandillas",
-   "horario": "",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz",
-     "Flennzs | ⛩️",
-     "🇲🇽  zaik0009 🇪🇸"
-    ],
-    "host": [
-     "Velatz"
-    ],
-    "dj": [
-     "Velatz"
-    ]
-   },
-   "autor": "Velatz",
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "Competencia Rango Bronce",
@@ -965,6 +931,35 @@
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "staff": {},
    "autor": "Nc",
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 26 PANDILLAS",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1557150753838071923",
+   "cuando": "2026-10-06T22:01:10",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "Lewis",
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "12 / 16 / 24",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "Pandillas",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
+   "premios": "Respeto",
+   "staff": {
+    "jurado": [
+     "Flennzs | ⛩️"
+    ],
+    "host": [
+     "Lewito"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -3538,6 +3533,123 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "Shisui 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1559027122251759697",
+   "cuando": "2026-10-12T02:17:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "shisui 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1559026861751799846",
+   "cuando": "2026-10-12T02:16:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1559026846266433608",
+   "cuando": "2026-10-12T02:16:05"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Minis 🇲🇽",
+   "quien": "miniswchy.",
+   "discord_id": "868502873980403762",
+   "msg_id": "1559026242399772693",
+   "cuando": "2026-10-12T02:13:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Seko Boy🇨🇴",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1559026187966353529",
+   "cuando": "2026-10-12T02:13:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1559026162586353755",
+   "cuando": "2026-10-12T02:13:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1559026144135741562",
+   "cuando": "2026-10-12T02:13:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Soul B 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1559026104973660211",
+   "cuando": "2026-10-12T02:13:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "McK 🇨🇴",
+   "quien": "mchades227",
+   "discord_id": "740307349809397841",
+   "msg_id": "1559026045561344004",
+   "cuando": "2026-10-12T02:12:54"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Franky 🇺🇸",
+   "quien": "elezetagfx",
+   "discord_id": "1113438566303924244",
+   "msg_id": "1559026034156765275",
+   "cuando": "2026-10-12T02:12:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam🇻🇪",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1559026022425567243",
+   "cuando": "2026-10-12T02:12:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ikonoxx 🇺🇾",
+   "quien": "_.the.goat",
+   "discord_id": "1470870791351570630",
+   "msg_id": "1559026009146138667",
+   "cuando": "2026-10-12T02:12:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "excusas 🇦🇺",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1559021382589874292",
+   "cuando": "2026-10-12T01:54:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "Ariaxer🇦🇷",
    "quien": "ariaxer",
    "discord_id": "659687894587277322",
@@ -3592,19 +3704,10 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Jupiter 🇲🇽",
-   "quien": "jupiter2417tj",
-   "discord_id": "1413305434881658960",
-   "msg_id": "1559019546113736785",
-   "cuando": "2026-10-12T01:47:04"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Soul B 🇨🇱",
-   "quien": "sj.2008_",
-   "discord_id": "645308964141137952",
-   "msg_id": "1559019542905225237",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1559019542406242356",
    "cuando": "2026-10-12T01:47:04"
   },
   {
@@ -3619,10 +3722,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1559019542406242356",
+   "texto": "Soul B 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1559019542905225237",
+   "cuando": "2026-10-12T01:47:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Jupiter 🇲🇽",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1559019546113736785",
    "cuando": "2026-10-12T01:47:04"
   },
   {

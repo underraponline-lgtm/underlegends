@@ -81,6 +81,12 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "nobu": {
+   "bloq-competitivo": "2026-10-11",
+   "bloq-pais": "2026-10-11",
+   "competitivo": "2026-10-11",
+   "pais": "2026-10-11"
+  },
   "riferian": {
    "bloq-competitivo": "2026-10-07",
    "bloq-pais": "2026-10-07",
@@ -100,8 +106,8 @@
    "temporada": "2026-10-07"
   }
  },
- "pasaban": 375,
- "cuando": "2026-10-12T01:56:16Z",
+ "pasaban": 374,
+ "cuando": "2026-10-12T02:26:14Z",
  "borradas": [
   [
    "indigena",
