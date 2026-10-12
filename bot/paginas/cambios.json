@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.72",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T19:30:00-04:00",
+   "titulo": "Las llaves con letras de fantasía, en vivo",
+   "items": [
+    "🔑 Las llaves escritas con letras de otros alfabetos que imitan a las nuestras (ᎾᏟᎢᎪᏙᎾᏚ, ᴏᴄᴛᴀᴠᴏs, ᗩᗷᑕ…) ya se leen, en vivo y en el ranking.",
+    "🔑 Y si los títulos de las rondas no se pueden leer, el bot las reconoce por la forma de la llave."
+   ]
+  },
+  {
    "version": "2.71",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T19:10:00-04:00",
