@@ -993,6 +993,9 @@ const VOCAB = [
   [['PREMIOS'], 'premios', 9],
   [['PREMIO'], 'premios', 9],
   [['RECOMPENSA'], 'premios', 9],
+  // 🆚 FVS (12/10/2026): «𝐁𝐄𝐍𝐄𝐅𝐈𝐂𝐈𝐎𝐒» y abajo «puntos de ascenso» (`anuncios.VOCAB`)
+  [['BENEFICIOS'], 'premios', 9],
+  [['BENEFICIO'], 'premios', 9],
   [['JURADOS'], 'jurado', 9],
   [['JURADO'], 'jurado', 9],
   [['JUECES'], 'jurado', 9],
@@ -1133,7 +1136,8 @@ const VACIO_EN_CAJA = re('[\\[(][^\\p{L}\\p{N}_\\[\\]()]*[\\])]', 'g');
 /** Una línea -> el título limpio, o `''`. Ver `_titulo()` de Python. */
 function titulo(l) {
   let s = sinMd(l).replace(LINK, '');
-  if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(s)) return '';
+  // y la letra decorada es letra: «# 𝐅𝐎𝐑 𝐅𝐀𝐈𝐓𝐇» (FVS), como `anuncios._titulo()`
+  if (!/[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]/.test(s.normalize('NFKC'))) return '';
   if (s.includes('╎')) {
     const partes = s.split('╎').map(stripPy).filter(Boolean);
     // el PRIMERO de los más largos, como `max(..., key=len)`
@@ -1154,13 +1158,22 @@ function titulo(l) {
 }
 
 export function nombreDe(texto) {
+  // `anuncios.nombre_de()`: el valor de un campo en el renglón de abajo no es el título, el título de puros emojis
+  // («# 👀👀👀 #», FVS) queda de reserva, y una oración no es un nombre
+  let valorAbajo = false, reserva = '';
   for (const l of limpio(texto).split(LINEAS)) {
-    if (campoDe(l)) continue;
+    if (!reserva && /^\s*#/.test(l) && !/[\p{L}\p{N}]/u.test(l.replace(/#/g, '')) && /[\u{1F300}-\u{1FAFF}]/u.test(l)) {
+      reserva = Array.from(l.replace(/[#\s]+/g, '')).slice(0, 20).join('');
+      continue;
+    }
+    const c = campoDe(l);
+    if (c) { valorAbajo = !valorLinea(l, c[2], []); continue; }
+    if (valorAbajo && l.trim()) { valorAbajo = false; continue; }
     if (ES_CAMPO.test(sinMd(l))) continue;
     const t = titulo(l);
-    if (t) return t;
+    if (t && !(t.split(/\s+/).filter(Boolean).length >= 6 && /\.\s*$|\.\s+[^\P{L}]|\.\s+\(/u.test(t))) return t;
   }
-  return '';
+  return reserva;
 }
 
 /** Un mensaje -> un anuncio, o `null` si no parece uno. Ver `parsear()`. */

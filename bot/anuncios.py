@@ -168,6 +168,9 @@ VOCAB = (
     (('PREMIOS',), 'premios', 9),
     (('PREMIO',), 'premios', 9),
     (('RECOMPENSA',), 'premios', 9),
+    # 🆚 FVS (12/10/2026): «𝐁𝐄𝐍𝐄𝐅𝐈𝐂𝐈𝐎𝐒» y abajo «puntos de ascenso»
+    (('BENEFICIOS',), 'premios', 9),
+    (('BENEFICIO',), 'premios', 9),
     (('JURADOS',), 'jurado', 9),
     (('JURADO',), 'jurado', 9),
     (('JUECES',), 'jurado', 9),
@@ -417,17 +420,35 @@ def nombre_de(texto):
     `▬▬▬` antes; tomar la primera línea a secas devolvía la fila de
     guiones.
     """
-    for l in _limpio(texto).splitlines():
+    lineas = _limpio(texto).splitlines()
+    valor_abajo = False
+    reserva = ''
+    for i, l in enumerate(lineas):
+        # 🆚 EL TÍTULO DE PUROS EMOJIS (FVS, 13/09/2026: «# 👀👀👀 #», un evento sorpresa): es el nombre que puso el
+        # organizador, y queda de reserva por si no hay otro
+        if not reserva and re.match(r'\s*#', l) and not re.search(r'[^\W_]', l.replace('#', '')) \
+                and re.search('[\U0001F300-\U0001FAFF]', l):
+            reserva = re.sub(r'[#\s]+', '', l)[:20]
+            continue
         # una línea que ya es un campo no es el título (con el lector ancho:
         # `〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕:` también es un campo)
-        if campo_de(l):
+        c = campo_de(l)
+        if c:
+            # 🔑 Y SI SU VALOR VA EN EL RENGLÓN DE ABAJO, ESE RENGLÓN TAMPOCO (FVS, 12/10/2026): «# 𝐁𝐄𝐍𝐄𝐅𝐈𝐂𝐈𝐎𝐒» y
+            # abajo «puntos de ascenso» —con un título de puros emojis, «👀👀👀», el evento se llamaba así—
+            valor_abajo = not _valor_linea(l, c[2], [])
+            continue
+        if valor_abajo and l.strip():
+            valor_abajo = False
             continue
         if re.match(r'\s*[A-ZÁÉÍÓÚÑ]+\s*:', _sin_md(l)):
             continue
         t = _titulo(l)
-        if t:
+        # ⚠️ y una oración no es un nombre: «ANTES DE ESE MENSAJE NO PONGAN NINGUN OTRO.», «INSCRIBANSE CON SU AKA…
+        # EJEMPLO. (Colesito )» (FVS). Seis palabras o más y un punto al final o seguido de otra palabra —«VOL. 1» no—
+        if t and not (len(t.split()) >= 6 and re.search(r'\.\s*$|\.\s+[^\W\d_(]|\.\s+\(', t)):
             return t
-    return ''
+    return reserva
 
 
 def _sin_md(l):
@@ -449,7 +470,10 @@ def _titulo(l):
     s = re.sub(r'@everyone|@here|https?://\S+|<t:-?\d+(?::[a-zA-Z])?>', '',
                _sin_md(l))
     # la línea de adorno no tiene letras
-    if not re.search(r'[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]', s):
+    # 🔴 Y LA LETRA DECORADA ES LETRA (FVS, 12/10/2026): «# 𝐅𝐎𝐑 𝐅𝐀𝐈𝐓𝐇» no tenía ninguna de éstas y se saltaba;
+    # «𝐋𝐀 𝐒𝐔𝐏𝐄𝐑𝐕𝐈𝐕𝐄𝐍𝐂𝐈𝐀 … #4» pasaba sólo por el «4». Se mira normalizada, como sale al final
+    import unicodedata as _u
+    if not re.search(r'[A-Za-zÁÉÍÓÚÑáéíóúñ0-9]', _u.normalize('NFKC', s)):
         return ''
     # 🔴 EL TITULO VIENE ENVUELTO: `• 🉐 ╎NOMBRE ╎ 🉐 •`. Si hay
     # separadores `╎`, el nombre es lo del MEDIO; el resto son
@@ -563,6 +587,12 @@ def staff_de(m):
                 gente.append(p)
         if gente:
             out[k] = gente[:6]
+    # 🆚 «DJ Y HOST» en un solo renglón (FVS): la misma gente para los dos
+    junto = unicodedata.normalize('NFKC', txt)
+    if 'dj' in out and 'host' not in out and re.search(r'\bDJ\s*(?:Y|&|/|\+)\s*HOST', junto, re.I):
+        out['host'] = list(out['dj'])
+    if 'host' in out and 'dj' not in out and re.search(r'\bHOST\s*(?:Y|&|/|\+)\s*DJ\b', junto, re.I):
+        out['dj'] = list(out['host'])
     return out, autor
 
 
@@ -570,7 +600,8 @@ def _nombre_visible(s):
     """El nombre como se lee: sin el guion o el signo de adelante («- 𝘾𝙍𝙊𝙉𝙊𝙓 🇨🇱», «! DSM-5») y con las letras de
     fantasía (U+1D400…) pasadas a comunes, como `escuchar.plano()`."""
     s = ''.join(unicodedata.normalize('NFKC', c) if 0x1D400 <= ord(c) <= 0x1D7FF else c for c in str(s or ''))
-    return s.strip().lstrip('-!@·•~ ').strip()
+    # y la viñeta de la plantilla: «# 𐬺 yo» (FVS), «└ @Pipas» (DDF), «➤ X»
+    return s.strip().lstrip('-!@·•~#➤▸►└├╰┈𐬺 ').strip()
 
 
 def parsear(m, servidor, canal, guild=''):
@@ -607,6 +638,12 @@ def parsear(m, servidor, canal, guild=''):
             puestos[k] = anchos[k]
     if not org:
         org = anchos.get('organizador') or ''
+    # 🆚 SIN LA VIÑETA, Y «YO» ES QUIEN PUBLICÓ (FVS, 12/10/2026): «# 𐬺 yo» llegaba así a la página, y los «yo»
+    # de Urban Freestyle se contaban en la Copa de la Liga como UNA persona llamada «yo»
+    staff, autor = staff_de(m)
+    org = re.sub(r'^[#\s➤▸►└├╰┈𐬺]+', '', str(org or '')).strip()
+    if YO.match(org) and autor:
+        org = autor
     # 🔴 Y CUENTAN LOS CAMPOS PRESENTES, no sólo los que traen valor: en
     # «(RANGO)» sin nada al lado, la forma ya dice que es un anuncio.
     tipos = {k for k, v in puestos.items() if v} | \
@@ -661,7 +698,7 @@ def parsear(m, servidor, canal, guild=''):
         'fecha': puestos.get('fecha') or anchos.get('fecha') or '',
         'premios': puestos.get('premios') or '',
         # ⚖️ jurado, host y DJ, y quien lo publicó (Dlx, 08/10/2026): ver `staff_de()`
-        **dict(zip(('staff', 'autor'), staff_de(m))),
+        'staff': staff, 'autor': autor,
     }
 
 
@@ -1389,6 +1426,16 @@ def _self_check():
     ok = st == {'jurado': ['Flennzs | ⛩️', 'kravitz'], 'dj': ['CRONOX 🇨🇱']} and au == 'CRONOX 🇨🇱'
     mal += not ok
     print('   %s jurado, host y DJ del anuncio: las menciones, «yo» y lo que no es nadie  %s' % ('✅' if ok else '🔴', st))
+    # 🆚 la plantilla de FVS: el título de puros emojis, «BENEFICIOS» y abajo su valor, «# 𐬺 yo» y «DJ Y HOST»
+    fvs = parsear({'content': '┏━━━━✰( )✰━━━━┓\n# 👀👀👀 #\n┗━━━━✰( )✰━━━━┛\n\n# RANGO D\n\n# 𝐁𝐄𝐍𝐄𝐅𝐈𝐂𝐈𝐎𝐒\n'
+                              'puntos de ascenso\n\n⚔️ ••• 𝐌𝐎𝐃𝐀𝐋𝐈𝐃𝐀𝐃 ••• ⚔️ \n1v1 \n\n# ➤ 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 :\n# 𐬺 yo\n\n'
+                              '# ➤ 𝐃𝐉 𝐘 𝐇𝐎𝐒𝐓 :\n# 𐬺 yo\n\nANTES DE ESE MENSAJE NO PONGAN NINGUN OTRO.',
+                   'id': '1', 'timestamp': '2026-09-13T18:31:00', 'author': {'global_name': 'Mathhias'}}, 'FVS', 'anuncios')
+    ok = bool(fvs) and fvs['nombre'] == '👀👀👀' and fvs['organizador'] == 'Mathhias' \
+        and fvs['premios'] == 'puntos de ascenso' and fvs['staff'] == {'dj': ['Mathhias'], 'host': ['Mathhias']}
+    mal += not ok
+    print('   %s FVS: el título de emojis, BENEFICIOS, «# 𐬺 yo» es quien lo publicó y «DJ Y HOST» llena los dos  %s'
+          % ('✅' if ok else '🔴', {k: fvs[k] for k in ('nombre', 'organizador', 'premios', 'staff')} if fvs else None))
     ok = campo_linea(norm_linea('⚙️*〔𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑〕: @nachonc_')) == ('organizador', 9, 1) \
         and campo_linea(norm_linea('<:reloj:1> - 𝐇𝐎𝐑𝐀 𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒 -'))[0] == 'inscripciones' \
         and campo_linea(norm_linea('Las inscripciones estarán abiertas 10 minutos antes en este canal')) is None \
