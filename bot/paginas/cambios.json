@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.68",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T06:20:00-04:00",
+   "titulo": "Menos eventos «sin llave»",
+   "items": [
+    "📅 **Un evento anunciado dos veces sale una sola vez**, con su llave: la víspera y el día, o con otro nombre a los pocos minutos.",
+    "🏆 **Las llaves de organizadores nuevos entran** cuando las publica la misma cuenta que anunció el evento, aunque el título diga sólo «BRACKET DEL TORNEO».",
+    "✍️ **«Ganado #» en una llave ya marca al ganador**, en vez de pegarse al nombre."
+   ]
+  },
+  {
    "version": "2.67",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T05:03:00-04:00",
