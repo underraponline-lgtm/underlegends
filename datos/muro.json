@@ -243,7 +243,9 @@
 },
 "miniboy": {
 "rg": "D",
-"c": []
+"c": [
+"servidor"
+]
 },
 "og": {
 "rg": "",
@@ -5330,6 +5332,14 @@
 "Provenza"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-12T17:34:36Z",
+"quien": [
+"Miniboy"
+],
+"carta": "servidor"
 }
 ]
 }
