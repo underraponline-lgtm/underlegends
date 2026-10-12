@@ -1098,7 +1098,8 @@
 "dobleh": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "lewito": {
@@ -5368,6 +5369,14 @@
 ],
 "rg": "D",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-12T21:22:01Z",
+"quien": [
+"doble h"
+],
+"carta": "temporada"
 }
 ]
 }
