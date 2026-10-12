@@ -108,7 +108,7 @@
    "servidor": "c40fcb1f0e37:6d01de31deca:055f77"
   },
   "Axinu": {
-   "competitivo": "cbba83b0f85d:180ca0f5feae",
+   "competitivo": "5e5f2518bb44:180ca0f5feae",
    "pais": "be3091a80964:b8262c1f04f6",
    "servidor": "b0f7a9232034:6d01de31deca:2619cd"
   },
@@ -460,7 +460,7 @@
    "servidor": "e9116e763d3a:6d01de31deca:000eb3"
   },
   "Galileo": {
-   "competitivo": "c1435a017489:180ca0f5feae",
+   "competitivo": "01e9bae3b1f8:180ca0f5feae",
    "pais": "0e470f0b467b:b8262c1f04f6",
    "servidor": "62fbaa4faef7:6d01de31deca:948362"
   },
@@ -702,7 +702,7 @@
   },
   "Korey": {},
   "Kourier": {
-   "competitivo": "d95520a2d010:180ca0f5feae",
+   "competitivo": "f96b6523526f:180ca0f5feae",
    "pais": "6b3569aaa405:b8262c1f04f6",
    "servidor": "58bec3306459:6d01de31deca:531696"
   },
@@ -775,7 +775,7 @@
    "servidor": "a6abd5c1da19:6d01de31deca:055f77"
   },
   "Launok": {
-   "competitivo": "d604754d60c3:180ca0f5feae",
+   "competitivo": "66f009a41283:180ca0f5feae",
    "pais": "e539865f1a13:b8262c1f04f6",
    "servidor": "160bc505f4ea:6d01de31deca:5a3caa"
   },
@@ -957,10 +957,10 @@
    "servidor": "e95f8fefd190:6d01de31deca:3580af"
   },
   "Mito": {
-   "competitivo": "a26f009c621a:180ca0f5feae",
+   "competitivo": "d0d741f7fa4c:180ca0f5feae",
    "pais": "52af9177a601:b8262c1f04f6",
    "servidor": "530028fc479a:6d01de31deca:4975e5",
-   "temporada": "d849ddb3b184:9df1984d05ab"
+   "temporada": "afb70cafca30:9df1984d05ab"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:6d01de31deca:2619cd"
@@ -969,7 +969,7 @@
    "servidor": "c84e1b99747c:6d01de31deca:6b534c"
   },
   "Molt": {
-   "competitivo": "408c1c92ae1c:180ca0f5feae",
+   "competitivo": "323c11f0e90a:180ca0f5feae",
    "pais": "d923d0b66697:b8262c1f04f6",
    "servidor": "88d20586c287:6d01de31deca:a301f0"
   },
@@ -1188,7 +1188,7 @@
    "servidor": "c61e3e877a42:6d01de31deca:a672ab"
   },
   "QUEEN": {
-   "competitivo": "ee617890c22d:180ca0f5feae",
+   "competitivo": "8adca2a916e1:180ca0f5feae",
    "pais": "f3a143e000ac:b8262c1f04f6",
    "servidor": "10552a59988d:6d01de31deca:43d041"
   },
@@ -1266,7 +1266,7 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "88304ab529e4:180ca0f5feae",
+   "competitivo": "a43bfa64c408:180ca0f5feae",
    "pais": "c193c53fefda:b8262c1f04f6",
    "servidor": "8f7f2cfaf752:6d01de31deca:15af16"
   },
@@ -1353,7 +1353,7 @@
    "servidor": "108d0f35577d:6d01de31deca:43d041"
   },
   "Sombra": {
-   "competitivo": "899da9587a90:180ca0f5feae",
+   "competitivo": "c05cc748d36b:180ca0f5feae",
    "pais": "bf3178973511:b8262c1f04f6",
    "servidor": "1118f9c4d3fb:6d01de31deca:a672ab"
   },
@@ -1455,7 +1455,7 @@
    "servidor": "641109d8f579:6d01de31deca:15af16"
   },
   "VIXOVERSO": {
-   "competitivo": "28f5b59a9f2c:180ca0f5feae",
+   "competitivo": "25aefdca775f:180ca0f5feae",
    "pais": "e1b48afb4a62:b8262c1f04f6",
    "servidor": "e4b5328a8233:6d01de31deca:531696"
   },
@@ -1498,7 +1498,7 @@
    "servidor": "f878da4ea385:6d01de31deca:ba481e"
   },
   "Vlade": {
-   "competitivo": "1b6e48cd73cc:180ca0f5feae",
+   "competitivo": "f30d8c661d49:180ca0f5feae",
    "pais": "633c53eaada5:b8262c1f04f6",
    "servidor": "833993ba72d8:6d01de31deca:abdb4a"
   },
@@ -1555,7 +1555,7 @@
    "servidor": "b1642589051e:6d01de31deca:a672ab"
   },
   "Zafka": {
-   "competitivo": "8dfaeb3f4d8f:180ca0f5feae",
+   "competitivo": "24e19ced4d5a:180ca0f5feae",
    "pais": "d343350efb5f:b8262c1f04f6",
    "servidor": "c22c0426de47:6d01de31deca:2a03f7"
   },
@@ -1621,7 +1621,7 @@
    "servidor": "9bfffe182f2f:6d01de31deca:6b534c"
   },
   "doble h": {
-   "competitivo": "90705f2573f9:180ca0f5feae",
+   "competitivo": "756f27a4c298:180ca0f5feae",
    "pais": "e1e348aa850a:b8262c1f04f6",
    "servidor": "cac567464f2e:6d01de31deca:78ad9f"
   },
@@ -1645,7 +1645,7 @@
    "servidor": "17505f71e7f1:6d01de31deca:88f477"
   },
   "kerkoide": {
-   "competitivo": "533250f766f9:180ca0f5feae",
+   "competitivo": "afb71f217121:180ca0f5feae",
    "pais": "173aa4ba8c40:b8262c1f04f6",
    "servidor": "f3982da165ea:6d01de31deca:d473d6"
   },
@@ -1711,5 +1711,5 @@
    "servidor": "7f8885a35a6d:6d01de31deca:c9f1f2"
   }
  },
- "cuando": "2026-10-12T20:42:53+00:00"
+ "cuando": "2026-10-12T20:45:43+00:00"
 }
