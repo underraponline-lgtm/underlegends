@@ -272,6 +272,47 @@ def armar(reg, niv, pool=None, insignias=None, muro=None, sellos=None, cartas=No
     return e
 
 
+def retirado(reg, cargados):
+    """🗑️ El embed del aviso de un evento que YA NO ESTÁ cargado, o `None` si sigue. Pura: la prueba el self-check.
+
+    Flennzs, 12/10/2026, por Dlx: *«están mal las llaves en la página»*, con la página diciendo «Esa llave no está». El
+    aviso de cada evento lleva el link a su llave, y ese día se sacaron tres eventos que ya tenían aviso en el chat: el
+    #452 (la Rempalago, cargada otra vez como #456), el #453 (una llave de broma) y el #457 (el #414 contado dos
+    veces). Los tres links llevaban a una llave que no existía. Si el mismo evento —nombre, servidor y fecha— está con
+    otro número, el aviso apunta a ese; si no, dice que no cuenta y no apunta a ninguna llave.
+
+    `cargados` = `{num: (nombre, sv, fecha)}` de lo cargado (`datos/llaves_t1.json`)."""
+    n = str(reg.get('num') or '')
+    if not n or n in cargados:
+        return None
+    nombre = limpio(reg.get('nombre')) or 'Evento'
+    nom_sv, logo = _servidor(reg.get('sv') or '')
+    k = (limpio(reg.get('nombre')).lower(), reg.get('sv'), reg.get('fecha'))
+    otro = next((m for m, x in cargados.items() if (limpio(x[0]).lower(), x[1], x[2]) == k), None)
+    if otro:
+        desc = '♻️ Este evento se corrigió y se volvió a cargar como **#%s**: su aviso nuevo es el que vale.' % otro
+        url = '%s/freestyle-rap/llave/%s' % (WEB, otro)
+    else:
+        desc = '🗑️ Este evento se sacó: no cuenta para la Liga.'
+        url = None
+    e = {'title': nombre[:256], 'description': desc, 'color': 0x6E6E6A,
+         'author': {'name': ('%s · Liga Global' % nom_sv)[:256]}, 'footer': {'text': 'Era el evento #%s' % n}}
+    if url:
+        e['url'] = url
+    if logo:
+        e['author']['icon_url'] = logo
+    return e
+
+
+def _cargados():
+    """`{num: (nombre, sv, fecha)}` de lo cargado, o `None` si no se puede leer (y entonces no se retira nada)."""
+    ll = _json('datos', 'llaves_t1.json')
+    if not ll:
+        return None
+    return {str(n): (x.get('nombre') or '', x.get('sv') or '', x.get('fecha') or '') for n, x in ll.items()
+            if isinstance(x, dict) and str(n).isdigit()}
+
+
 def firma(e):
     return hashlib.sha256(json.dumps(e, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
 
@@ -296,10 +337,13 @@ def al_dia(aplicar=False, ahora=None):
         return 0
     niv = nivel()
     pool, sellos = _pool(), _sellos()
+    cargados = _cargados()
     hechos = 0
     for n, x in sorted(recientes.items()):
         x['al_dia'] = True
-        e = armar(x, niv, pool=pool, sellos=sellos)
+        # 🗑️ el evento que ya no está: su aviso deja de apuntar a una llave que no existe (`retirado()`)
+        e = retirado(x, cargados) if cargados else None
+        e = e or armar(x, niv, pool=pool, sellos=sellos)
         f = firma(e)
         if f == x.get('firma'):
             continue
@@ -324,6 +368,15 @@ def _self_check():
     def ok(c, que, extra=''):
         print('   %s %s%s' % ('✅' if c else '🔴', que, ('  ' + extra) if extra and not c else ''))
         mal[0] += not c
+
+    # 🗑️ los avisos de los eventos que se sacaron (12/10/2026): el renumerado apunta al nuevo; el sacado, a nada
+    _carg = {'456': ('Fecha Rempalago Vol. 64', 'FFA', '11/10'), '459': ('X', 'FFA', '12/10')}
+    _r1 = retirado({'num': 452, 'nombre': 'Fecha Rempalago Vol. 64', 'sv': 'FFA', 'fecha': '11/10'}, _carg)
+    _r2 = retirado({'num': 457, 'nombre': '(sin titulo)', 'sv': 'FFA', 'fecha': '06/10'}, _carg)
+    ok(_r1 and _r1['url'].endswith('/llave/456') and '#456' in _r1['description'],
+       'el evento cargado otra vez con otro número: el aviso apunta al nuevo')
+    ok(_r2 and 'url' not in _r2 and 'no cuenta' in _r2['description'], 'el que se sacó: dice que no cuenta y no linkea')
+    ok(retirado({'num': 459, 'nombre': 'X', 'sv': 'FFA', 'fecha': '12/10'}, _carg) is None, 'el que sigue, como siempre')
 
     reg = {'v': 2, 't': '2026-10-07T11:40:00Z', 'num': 419, 'nombre': '__ MAÑANA DE LLUVIA VOL 1 __', 'sv': 'FFA',
            'fecha': '07/10', 'participantes': 8,
