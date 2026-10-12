@@ -431,12 +431,14 @@
    "organizadores": [],
    "semillero": {
     "nuevos": {},
-    "gente": {},
+    "gente": {
+     "DDF": 7
+    },
     "gana": null
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 0,
+    "DDF": 7,
     "DRA": 0,
     "FFA": 0,
     "FFS": 0,

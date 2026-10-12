@@ -294,7 +294,9 @@
     "ronda": "FINAL"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Guess 🇦🇷"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },
