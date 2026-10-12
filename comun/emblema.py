@@ -165,6 +165,9 @@ ESTRELLA = ('M12 2 L14.9 8.9 L22.4 9.5 L16.7 14.4 L18.4 21.7 L12 17.8 '
 FONDO_PROPIO = {
     'SR': 'linear-gradient(158deg,#1B1310 0%,#0C0704 55%,#050201 100%)',
     'URBF': 'radial-gradient(circle at 50% 38%,#2E2620 0%,#15110E 58%,#070605 100%)',
+    # 🆚 FVS (12/10/2026): su escudo es negro con lo blanco encima, sobre humo gris —como su ícono—. Con el
+    # fondo del tono de la carta (plata) el blanco del «VS» se perdía
+    'FVS': 'radial-gradient(circle at 50% 38%,#34363C 0%,#17181B 58%,#060607 100%)',
 }
 A_SANGRE = {'TWR'}      # traen su baldosa entera: el fondo de aca no se ve
 

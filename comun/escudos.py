@@ -63,7 +63,10 @@ LOGO = {
 # los que hay que buscar como silueta si no estan en LOGO. URBF sigue acá
 # aunque ya tenga ícono: su silueta es la de los rombos de la Competitiva y
 # el respaldo si el ícono da 404 (`comun/respaldo.py`)
-SIN_ICONO = ['URBF', 'EFA', 'FFA', 'ACAD']
+SIN_ICONO = ['URBF', 'EFA', 'FFA', 'ACAD', 'FVS']
+# 🆚 FVS (12/10/2026) TAMPOCO: su ícono de Discord es el escudo con un gorro de cumpleaños encima (sus dos años)
+# y de 256 px. Va con la silueta de lo blanco de su escudo —el borde, «VS», la corona y el laurel—, sacada de su
+# emoji «VS» (`logos_sv/sv_fvs.png`), y la carta de Servidor con el escudo a color (`escudos_cuad`)
 # 🏛️ LA ACADEMIA (04/10/2026) TAMPOCO VA CON SU ÍCONO: es el logo entero —el círculo, «ACADEMIA DE RAP»
 # y un micrófono— en 256 px, y a 30 px las letras son ruido. Va con la silueta del círculo con las
 # columnas (`logos_sv/sv_acad.png`), y la carta de Servidor con su escudo a color (`escudos_cuad`)

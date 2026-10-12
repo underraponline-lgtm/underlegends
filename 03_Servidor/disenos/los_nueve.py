@@ -188,6 +188,58 @@ def acad_fondo(A):
     ])
 
 
+#: 🆚 FVS: (base carbón, acento plata). Su logo es blanco y negro: el escudo negro con «VS», la corona y el laurel
+FVS_COLORES = ('#24262B', '#D7DBE2')
+
+
+def fvs_laurel():
+    """El laurel de FVS: dos ramas plateadas que suben por los bordes del panel, sobre humo.
+
+    🆚 Dlx, 12/10/2026, entre ocho opciones: *«me gusta el 7»*. Sale de su escudo, que lleva el laurel debajo del
+    «VS». La primera vuelta (la «1 · Humo y laurel») usaba el laurel recortado de su emoji de 128 px y salía borroso:
+    éste está DIBUJADO —un tallo que sube pegado al borde y hojas que se achican hacia la punta—, así que queda nítido
+    a cualquier tamaño.
+
+    ⚠️ Las ramas van en x < 50 y x > 250: no tocan los círculos (de 67 a 233), ni el TAG ni el UL (lo que Dlx le pidió
+    al planeta de DDF). En el marco de la carta de verdad (300 × 487), como `urbf_pared()`.
+    """
+    def hoja(x, y, ang, largo, ancho):
+        d = (f'M0,0 C{ancho:.1f},{-largo * .3:.1f} {ancho:.1f},{-largo * .72:.1f} 0,{-largo:.1f} '
+             f'C{-ancho:.1f},{-largo * .72:.1f} {-ancho:.1f},{-largo * .3:.1f} 0,0 Z')
+        return (f'<path d="{d}" transform="translate({x:.1f} {y:.1f}) rotate({ang:.1f})" fill="url(#hoja)"/>'
+                f'<path d="M0,0 L0,{-largo * .92:.1f}" transform="translate({x:.1f} {y:.1f}) rotate({ang:.1f})" '
+                'stroke="#5D626B" stroke-width=".5" opacity=".7"/>')
+
+    def rama(lado):
+        # el tallo sube pegado al borde, de abajo hacia la línea
+        pts = []
+        for i in range(40):
+            t = i / 39
+            y = 474 - t * 128
+            x = 30 + 10 * math.sin(t * 2.4) - 14 * t
+            pts.append((x if lado < 0 else 300 - x, y))
+        tallo = 'M' + ' L'.join(f'{x:.1f},{y:.1f}' for x, y in pts)
+        out = f'<path d="{tallo}" stroke="#C9CDD4" stroke-width="1.6" fill="none" opacity=".85"/>'
+        ang_t = 0
+        for i in range(2, 38, 3):
+            (x0, y0), (x1, y1) = pts[i], pts[i + 1]
+            ang_t = math.degrees(math.atan2(x1 - x0, -(y1 - y0)))
+            tam = 1 - i / 52
+            for s in (-1, 1):
+                out += hoja(x0, y0, ang_t + s * 46, 15 * tam + 4, 4.2 * tam + 1.2)
+        return out + hoja(pts[-1][0], pts[-1][1], ang_t, 12, 3.5)
+
+    panel = 'M' + ' L'.join(f'{x},{_linea(x):.1f}' for x in range(0, 301, 5)) + ' L300,487 L0,487 Z'
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 487" width="300" height="487"><defs>'
+           '<linearGradient id="neg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1B1C20" stop-opacity="0"/>'
+           '<stop offset=".35" stop-color="#0D0E10" stop-opacity=".55"/><stop offset="1" stop-color="#050506" stop-opacity=".85"/>'
+           '</linearGradient>'
+           '<linearGradient id="hoja" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F6F9"/>'
+           '<stop offset="1" stop-color="#9DA3AD"/></linearGradient></defs>'
+           f'<path d="{panel}" fill="url(#neg)"/>' + rama(-1) + rama(1) + '</svg>')
+    return 'data:image/svg+xml;base64,' + base64.b64encode(svg.encode('utf-8')).decode()
+
+
 def ddf_fondo(A, B):
     """La galaxia de DDF: estrellas sin grilla, la nebulosa y el planeta al pie.
 
@@ -467,6 +519,24 @@ def defs():
                  'mix-blend-mode:screen;opacity:.34',
                  '', 'templo de noche: frontón, columnas y escalinata, sobre mármol negro con vetas doradas')
 
+    # FVS · Freestyle Versus, la decimotercera. Dlx, 12/10/2026: «el bot lo metieron a FVS… asegurate que sea bien
+    # integrada completamente», etiqueta COMPETITIVO; de ocho camisetas, «me gusta el 7».
+    #
+    # 🆚 BLANCO Y NEGRO, COMO SU ESCUDO: el escudo negro con «VS», la corona y el laurel, sobre humo gris (su ícono).
+    # La base es carbón y el acento plata —el marco, la línea y los aros—: ninguna de las otras doce es gris. El gesto
+    # es el laurel de su escudo, dibujado (`fvs_laurel()`), subiendo por los dos bordes del panel; el humo, manchas
+    # grises sueltas sobre el negro. Se probaron un «VS» con el corrimiento rojo y celeste de su logo, un estadio de
+    # noche, el ring (rincón rojo contra azul), las gradas y un cinturón de campeón: Dlx eligió éste.
+    A, B = FVS_COLORES
+    d['FVS'] = (B, A,
+                ','.join([f'url({fvs_laurel()}) 0 0/300px 487px no-repeat',
+                          'radial-gradient(ellipse 46% 18% at 22% 78%,rgba(190,192,200,.16),transparent 70%)',
+                          'radial-gradient(ellipse 38% 14% at 80% 70%,rgba(190,192,200,.13),transparent 72%)',
+                          'radial-gradient(ellipse 60% 22% at 60% 92%,rgba(160,162,170,.12),transparent 70%)',
+                          'radial-gradient(ellipse 30% 12% at 14% 58%,rgba(200,202,210,.10),transparent 70%)',
+                          'linear-gradient(172deg,#2A2C31 0%,#141518 46%,#060607 100%)']),
+                '', '', 'laurel de su escudo, dibujado, subiendo por los bordes sobre humo gris')
+
     # RZ · Rap Zone. Servidor ASOCIADO, no de la Hermandad.
     #
     # Su fuego NO esta simulado: sale extraido de su propio logo con
@@ -498,7 +568,7 @@ def defs():
 
 
 D = defs()
-ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'ACAD', 'RZ']
+ORDEN = ['SR', 'TFC', 'TWR', 'FTN', 'DRA', 'FRZ', 'URBF', 'EFA', 'FFA', 'FFS', 'DDF', 'ACAD', 'FVS', 'RZ']
 
 
 ESTRELLAS = json.load(open(os.path.join(BASE, 'datos', 'estrellas.json'),

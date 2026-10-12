@@ -430,6 +430,45 @@
      "creada": "2026-10-04"
     }
    ]
+  },
+  "FVS": {
+   "nombre": "Freestyle Versus",
+   "guild_id": "1283205153624952975",
+   "en_el_sheet": false,
+   "nota": "12/10/2026: el bot entró (Dlx: «el bot lo metieron a FVS, Freestyle Versus. Dale la bienvenida y asegurate que sea bien integrada completamente»). En Discord se llama «╔═══ஜ𝕍.𝕊ஜ═══╗» (~730 miembros, «FVS Freestyle… Est. 2024»). Código y sigla FVS, etiqueta COMPETITIVO (Dlx: «1. A»). El bot NO es admin: ve 91 de sus 229 canales —no FVS México, FVS Internacional ni la TFC Champions Regional—, escribe en «「💬」Central-FVS» y no puede @everyone. Sus torneos van en «🏆〘Torneos〙🏆»: 「📢」Anuncios, 「📜」Inscripciones, 「🔑」Llaves, 「📄」Veredictos y 「🏆」Podios; además MULTIVERSE y VS Global Series. Las llaves llevan la primera ronda sin título y el ganador de cada batalla sale en #veredictos. Su logo: el escudo negro con «VS», corona y laurel (su emoji «VS»; el ícono de Discord lleva un gorro de cumpleaños por sus 2 años).",
+   "confirmado": true,
+   "tag": "COMPETITIVO",
+   "sigla": "FVS",
+   "categorias_fuera": {
+    "_por_que": "La «FVS PRIMERA DIVISION» es una liga con jornadas, abierta el 12/10/2026: Dlx, ese día, «5. a» —afuera por ahora, como las ligas de FFS—.",
+    "ids": [
+     "1558965248378015824"
+    ],
+    "_ids": "la categoría 「FVS PRIMERA DIVISION」"
+   },
+   "invitacion": "https://discord.gg/dG9dJtZ5y7",
+   "invitacion_liga": {
+    "codigo": "dG9dJtZ5y7",
+    "canal": "「👋」𝖡𝗂𝖾𝗇𝗏𝖾𝗇𝗂𝖽𝖺",
+    "canal_id": "1321622964378144830",
+    "creada": "2026-10-12"
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "QN9gjTqDA7",
+     "canal": "「📜」𝖨𝗇𝗌𝖼𝗋𝗂𝗉𝖼𝗂𝗈𝗇𝖾𝗌",
+     "canal_id": "1425601346576584737",
+     "categoria_id": "1337125417018200166",
+     "creada": "2026-10-12"
+    },
+    {
+     "codigo": "9dSYshwH4R",
+     "canal": "「📜」𝖨𝗇𝗌𝖼𝗋𝗂𝗉𝖼𝗂𝗈𝗇𝖾𝗌",
+     "canal_id": "1543061731713089716",
+     "categoria_id": "1543048026107412489",
+     "creada": "2026-10-12"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [
@@ -496,7 +535,7 @@
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
- "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»). Y la Academia de Rap, «ACADEMIA» (Dlx, 04/10/2026: «Tag ponle ACADEMIA»).",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»). Y la Academia de Rap, «ACADEMIA» (Dlx, 04/10/2026: «Tag ponle ACADEMIA»). Y Freestyle Versus, «COMPETITIVO» (Dlx, 12/10/2026: «1. A»).",
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal. FFS: su canal 「📱」redes (29/09/2026), que enlaza publicaciones de @freestylefutureseries en Instagram y videos de @FreestyleFutureSeries en YouTube.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",

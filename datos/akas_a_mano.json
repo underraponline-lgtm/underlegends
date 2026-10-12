@@ -137,7 +137,8 @@
   "   «dantedelux» es Delux 🇦🇷 (07/10/2026, PRITTY FREE de FFA: «Nemi x presagio x dantedelux», tres argentinos).",
   "   Dlx preguntó si eran dos —Dante y Delux—: es UNA cuenta, @delux.13 (729809358627536938, la de Delux en la",
   "   Lista), con nombre «dante» y apodo «Delux» en FFA y DRA y «Dante Delux» en Snake Rap; se anotó así y el bot",
-  "   ya la había reconocido. NO es Deluxe 🇦🇷 (@.jeluxe, de SR) ni Dantemx 🇲🇽 (@danteshemc)."
+  "   ya la había reconocido. NO es Deluxe 🇦🇷 (@.jeluxe, de SR) ni Dantemx 🇲🇽 (@danteshemc).",
+  "🆚 FVS, Dlx 12/10/2026 («3. A, b, b, b»): en FVS «Agustin» —«Agustin 51 🇨🇱🇵🇪» en su lista de FVS UNDER— es AGUSTÍN51K, no Agus; «Draax»/«Draxx 🇨🇱» es Drexx (no una persona nueva); «Joaco»/«Joacoflz» es Joaco Zeo; y «Force 🇲🇽» NO es ForceGP (`no_confundir`)."
  ],
  "cuentas": {
   "Monet": [
@@ -364,6 +365,11 @@
    "Number",
    "Number VE",
    "Dlx, 03/10/2026, «9. A»: Number 🇺🇾 y Number VE 🇻🇪 (@numbyng, de DDF) son dos personas."
+  ],
+  [
+   "Force",
+   "ForceGP",
+   "Dlx, 12/10/2026 («3. A, b, b, b»): el Force 🇲🇽 de FVS no es ForceGP 🇲🇽."
   ]
  ],
  "por_servidor": {
@@ -374,6 +380,14 @@
   },
   "FFA": {
    "Yo mc": "Cronox"
+  },
+  "FVS": {
+   "Agustin": "AGUSTÍN51K",
+   "Agustin 51": "AGUSTÍN51K",
+   "Draax": "Drexx",
+   "Draxx": "Drexx",
+   "Joaco": "Joaco Zeo",
+   "Joacoflz": "Joaco Zeo"
   }
  }
 }

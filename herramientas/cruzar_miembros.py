@@ -86,7 +86,8 @@ def _guilds():
          ('DDF', '1469009547971526659'),
          # 🏛️ LA ACADEMIA, DESDE EL 04/10/2026: de la Liga (Dlx: «prepara todo para implementarlos
          # en la liga como se debe»). Igual: sólo se CAPTURA el ID.
-         ('ACAD', '765045834647339038')]
+         ('ACAD', '765045834647339038'),
+         ('FVS', '1283205153624952975')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:
