@@ -1829,10 +1829,16 @@ export const OCR_PEDIDO_LLAVE = 'Esta imagen es la llave (bracket) de un torneo.
   + 'número; después «LOSER BRACKET» con los suyos; después «GRAN FINAL» con el suyo (o los dos, si hay revancha). '
   + 'Cada MATCH va UNA sola vez: la gran final es la que juegan el que ganó la llave de ganadores y el que ganó la de '
   + 'perdedores, aunque esté dibujada al lado de otra;\n'
-  + 'si es de eliminación simple, el nombre de cada ronda (OCTAVOS, CUARTOS, SEMIFINALES, FINAL) y abajo «A vs B»;\n'
-  + 'si se ve el campeón, un último renglón «CAMPEÓN: nombre».\n'
+  + 'si es de eliminación simple, el nombre de cada ronda (OCTAVOS, CUARTOS, SEMIFINALES, FINAL) UNA sola vez, y abajo '
+  + 'todos sus cruces «A vs B», aunque la llave esté dibujada en dos mitades;\n'
+  + 'SÓLO si la imagen tiene escrita la palabra CAMPEÓN (o GANADOR o WINNER) con un nombre, un último renglón '
+  + '«CAMPEÓN: nombre». Quién ganó la final NO se deduce: si no está escrito, ese renglón no va.\n'
   + 'Un cruce sin nombres no se escribe. Un lado vacío se escribe «?». No inventes nombres ni describas la imagen. '
   + 'Si no es la llave de un torneo, contestá NADA.';
+
+//: la segunda pregunta, cuando la copia de una llave trae campeón (ver `textoDeImagen()`)
+export const OCR_VERIFICA_CAMPEON = '¿Esta imagen tiene ESCRITA la palabra CAMPEÓN, CAMPEON, GANADOR o WINNER? '
+  + 'Respondé sólo SI o NO.';
 
 export async function textoDeImagen(env, buf, cual = 'afiche') {
   const tipo = tipoImagen(buf);
@@ -1847,7 +1853,22 @@ export async function textoDeImagen(env, buf, cual = 'afiche') {
     ] }],
     max_tokens: llave ? 1500 : 600, temperature: 0,
   });
-  const t = String((sal && (sal.response != null ? sal.response : (sal.result || {}).response)) || '').trim();
+  let t = String((sal && (sal.response != null ? sal.response : (sal.result || {}).response)) || '').trim();
+  // 🔴 LA IA INVENTA AL CAMPEÓN (12/10/2026): la llave de MATANZA DE DIOSES del Ciclo 16 (Snake Rap) anunciaba la final
+  // Rubik vs Zeta ANTES de jugarse, sin ningún campeón dibujado, y la copia terminó en «CAMPEÓN: Rubik». Con un campeón
+  // inventado el evento entra al ranking con el podio equivocado. Si la copia trae campeón, una segunda pregunta, corta
+  // y de sí o no, sobre la misma imagen: si la palabra no está escrita, ese renglón se va
+  if (llave && /CAMPE[OÓ]N\s*:/i.test(t)) {
+    const v = await env.AI.run(OCR_MODELO, {
+      messages: [{ role: 'user', content: [
+        { type: 'text', text: OCR_VERIFICA_CAMPEON },
+        { type: 'image_url', image_url: { url: 'data:' + tipo + ';base64,' + btoa(bin) } },
+      ] }],
+      max_tokens: 5, temperature: 0,
+    });
+    const r = String((v && (v.response != null ? v.response : (v.result || {}).response)) || '').trim();
+    if (!/^s[ií]/i.test(r)) t = t.split('\n').filter((l) => !/CAMPE[OÓ]N\s*:/i.test(l)).join('\n');
+  }
   return { texto: /^nada\.?$/i.test(t) ? '' : t.slice(0, 3000), modelo: OCR_MODELO };
 }
 

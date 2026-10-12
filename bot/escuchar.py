@@ -3018,20 +3018,63 @@ def canal_de_llaves(nombre):
     return bool(re.search(r'llave|bracket|cuadro', n))
 
 
+#: 🐉 el adjunto que se llama como una llave: «Llaves_Matanza.jpg» (MATANZA DE DIOSES, Snake Rap)
+_ARCHIVO_LLAVE = re.compile(r'llave|bracket|cuadro', re.I)
+
+
+def adjunto_llave(m):
+    """El adjunto de imagen que por su NOMBRE es una llave («Llaves_Matanza.jpg»), o `None`."""
+    for a in m.get('attachments') or []:
+        if (a.get('content_type') or '').startswith('image') and _ARCHIVO_LLAVE.search(a.get('filename') or ''):
+            return a
+    return None
+
+
+def juntar_rondas(t):
+    """🐉 Una ronda partida en dos mitades vuelve a ser una: «CUARTOS / 2 cruces / CUARTOS / 2 cruces» es la forma en que
+    la IA copia una llave dibujada a los dos lados (MATANZA DE DIOSES), y así el lector no sabía quién pasó: el
+    segundo «CUARTOS» parecía la ronda siguiente. Sólo el título repetido sin otro título en el medio."""
+    out, ultimo = [], None
+    for l in str(t or '').splitlines():
+        mm = RONDA.search(l) if l.strip() and not nombres_de_linea(l) else None
+        r = norm(mm.group(0)) if mm else None
+        if r:
+            if r == ultimo:
+                continue
+            ultimo = r
+        out.append(l)
+    return '\n'.join(out)
+
+
 def llave_de_imagen(m, canal):
-    """El texto de la llave que es una imagen, ya traducido, o `''`. Ver arriba."""
+    """El texto de la llave que es una imagen, ya traducido, o `''`. Ver arriba.
+
+    🐉 TAMBIÉN POR EL NOMBRE DEL ARCHIVO (12/10/2026, Dlx: MATANZA DE DIOSES *«sí obviamente [cuenta]… tienen llave
+    pero la mayoría está en imágenes»*). Snake Rap la publica en #matanza-de-dioses —sin «llave» en el nombre— con un
+    anuncio largo y dos imágenes: «Formato_Matanza.jpg» y «Llaves_Matanza.jpg». Un adjunto que se llama como una llave
+    se lee aunque el canal no lo diga y aunque el texto sea largo, y se lee ESE, no el primero."""
     try:
         import anuncios as A
     except Exception:                                    # noqa: BLE001
         return ''
-    if not canal_de_llaves(canal) or not A.pide_ocr(m):
+    al = adjunto_llave(m)
+    if al:
+        m = dict(m, attachments=[al])
+        try:
+            import datetime as _dt
+            t0 = _dt.datetime.fromisoformat(str(m.get('timestamp') or '').replace('Z', '+00:00'))
+            if (_dt.datetime.now(_dt.timezone.utc) - t0).total_seconds() > A.OCR_HORAS * 3600:
+                return ''
+        except ValueError:
+            return ''
+    elif not canal_de_llaves(canal) or not A.pide_ocr(m):
         return ''
     if _OCR['mem'] is None:
         _OCR['mem'] = A._ocr_memoria(OCR_LLAVES)
     a = A.imagen_de(m) or {}
     t = A.texto_de_imagen(m, _OCR['mem'], _OCR['cuenta'], tipo='llave', tope=OCR_LLAVES_TOPE,
                           clave='%s:%s' % (m.get('id'), a.get('id') or ''))
-    return traducir(plano(sin_vacios(t))) if t else ''
+    return traducir(plano(juntar_rondas(sin_vacios(t)))) if t else ''
 
 
 def sin_vacios(t):
@@ -3815,6 +3858,23 @@ def _self_check():
                           '[FINAL]\n[A] 🆚 [C]', True),
     ]
     mal = 0
+    # 🐉 la llave de MATANZA DE DIOSES (12/10/2026): la ronda partida en dos mitades vuelve a ser una, y el adjunto que se
+    # llama como una llave es el que se lee, no el flyer que va primero
+    _mtz = ('MATANZA DE DIOSES\nCUARTOS\nLuzzano vs MCO\nJuanpa vs Zeta\nCUARTOS\nRoad vs Panchok\nGeas vs Rubik\n'
+            'SEMIFINAL\nLuzzano vs Zeta\nSEMIFINAL\nRoad vs Rubik\nFINAL\nRubik vs Zeta')
+    _rz = resolver(traducir(plano(juntar_rondas(_mtz))))
+    for que, ok in (
+            ('una ronda dibujada en dos mitades es UNA: cada cuartos tiene su ganador',
+             [x[2] for x in _rz if x[0] == 'CUARTOS'] == ['Luzzano', 'Zeta', 'Road', 'Rubik']),
+            ('y la final sin «CAMPEÓN» escrito queda sin ganador (se le pregunta al organizador)',
+             [x[2] for x in _rz if x[0] == 'FINAL'] == [None]),
+            ('el adjunto que se llama como una llave, aunque venga segundo',
+             (adjunto_llave({'attachments': [{'filename': 'Formato_Matanza.jpg', 'content_type': 'image/jpeg'},
+                                             {'filename': 'Llaves_Matanza.jpg', 'content_type': 'image/jpeg'}]})
+              or {}).get('filename') == 'Llaves_Matanza.jpg'
+             and adjunto_llave({'attachments': [{'filename': 'Flyer.jpg', 'content_type': 'image/jpeg'}]}) is None)):
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     # 🖼️ el voto que es una imagen (12/10/2026, `_voto_de_imagen()`): lo ya leído de la memoria, sin red. Una captura
     # que nombra a uno solo de los dos vota; un GIF sin nombres no
     _mem0 = _OCR['mem']
