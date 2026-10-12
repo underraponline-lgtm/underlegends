@@ -5406,8 +5406,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791831638432,
-   "ed": 1791832786878,
-   "texto": "`[ OCTAVOS ]`\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝\n⌞SNOW🇨🇴⌝ 🆚 ⌞CAJITA🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞BENJIXO🇦🇷⌝ 🆚 ⌞AFR🇨🇱⌝ 🆚 ⌞DOBLE H🇨🇱⌝\n⌞LVEL🇻🇪⌝ 🆚 ⌞JJ🇨🇴⌝ 🆚 ⌞ONZAS🇻🇪⌝\n⌞KEIDER🇻🇪⌝ 🆚 ⌞MAKMA🇻🇪⌝ 🆚 ⌞NC🇦🇷⌝",
+   "ed": 1791833221397,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝\n⌞SNOW🇨🇴⌝ 🆚 ⌞CAJITA🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞BENJIXO🇦🇷⌝ 🆚 ⌞AFR🇨🇱⌝ 🆚 ⌞DOBLE H🇨🇱⌝\n⌞LVEL🇻🇪⌝ 🆚 ⌞JJ🇨🇴⌝ 🆚 ⌞ONZAS🇻🇪⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞EFIMERO🇨🇱⌝ 🆚 ⌞ARIAXER🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5456,12 +5456,12 @@
     [
      "OCTAVOS",
      [
-      "KEIDER🇻🇪",
-      "MAKMA🇻🇪",
-      "NC🇦🇷"
+      "GUESS🇦🇷",
+      "EFIMERO🇨🇱",
+      "ARIAXER🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "GUESS🇦🇷",
+     "veredicto",
      []
     ]
    ]
