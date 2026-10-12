@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T15:54:27+00:00",
+ "cuando": "2026-10-12T16:00:44+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4348,9 +4348,54 @@
  ],
  "inscripciones": [
   {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "1200 🇰🇷",
+   "quien": "dreamero",
+   "discord_id": "1395903355909570633",
+   "msg_id": "1559233835705700363",
+   "cuando": "2026-10-12T15:58:35"
+  },
+  {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
-   "texto": "Adriagner🇳🇮",
+   "texto": "Kirito 🇨🇴",
+   "quien": "kiritortazssj",
+   "discord_id": "1131319147343659049",
+   "msg_id": "1559233606965272597",
+   "cuando": "2026-10-12T15:57:41"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Añañin🇨🇱",
+   "quien": "ananin_lmpx.",
+   "discord_id": "1538265496867176498",
+   "msg_id": "1559233546672013473",
+   "cuando": "2026-10-12T15:57:26"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Assuan",
+   "quien": ".assuan._08335",
+   "discord_id": "1266557884058046507",
+   "msg_id": "1559233532138881045",
+   "cuando": "2026-10-12T15:57:23"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "marcos🇪🇦",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1559233458000240662",
+   "cuando": "2026-10-12T15:57:05"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Adriagner🇳🇮 (le tuve piedad a erian y no se lo borre)",
    "quien": "adriagner",
    "discord_id": "1316490165836972104",
    "msg_id": "1559232237504041091",

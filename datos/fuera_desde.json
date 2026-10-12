@@ -954,9 +954,6 @@
    "temporada": "2026-10-12"
   },
   "provenza": {
-   "servidor": "2026-10-12",
-   "sv-ffa": "2026-10-12",
-   "sv-sr": "2026-10-12",
    "temporada": "2026-10-12"
   },
   "queen": {
@@ -1277,8 +1274,8 @@
    "temporada": "2026-10-12"
   }
  },
- "pasaban": 375,
- "cuando": "2026-10-12T15:57:50Z",
+ "pasaban": 376,
+ "cuando": "2026-10-12T16:05:03Z",
  "borradas": [
   [
    "infecte",
