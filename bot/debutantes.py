@@ -16,8 +16,8 @@ LAS TRES PATAS
     bloque `deb`), enteros en cada corrida; el objeto los reemplaza, así una llave corregida no paga dos veces.
   · el mensaje de ULAYA en el chat del servidor donde debutó: UNO POR DÍA por servidor, con todos los de ese día,
     y sólo donde el bot en vivo está prendido (`ajustes.en_vivo`, el interruptor del Dashboard y de /settings).
-    ⚠️ APAGADO (`CHAT = False`) hasta que Dlx apruebe el texto: hablar en el chat de un servidor es hablar en nombre
-    de la Liga. `python bot/debutantes.py` muestra el que saldría.
+    El texto lo aprobó Dlx el 12/10/2026 (*«1. dale»*): hablar en el chat de un servidor es hablar en nombre de la
+    Liga, así que si se cambia, se le muestra antes. `python bot/debutantes.py` muestra el que saldría.
 
 ⚠️ SÓLO LOS DEBUTS DESDE `DESDE`: el reto se anuncia ese día, y quien debutó antes nunca lo vio.
 ⚠️ «OTRO EVENTO» ES OTRO NÚMERO, aunque sea el mismo día: el reto pide volver a jugar, no volver otro día.
@@ -38,8 +38,8 @@ ESTADO = os.path.join(BASE, 'datos', 'debutantes.json')
 DESDE = dt.datetime(2026, 10, 12, 22, tzinfo=dt.timezone.utc)
 DIAS = 7
 PREMIO = 1000
-#: 🔒 el mensaje del chat, apagado hasta que Dlx apruebe el texto
-CHAT = False
+#: el mensaje del chat: Dlx aprobó el texto el 12/10/2026 («1. dale»)
+CHAT = True
 WEB = 'https://underlegends.pages.dev/freestyle-rap/'
 
 
@@ -237,7 +237,8 @@ def _self_check():
          mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[1] == ['123456']
          and '<@123456>' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0]
          and '**Caro**' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0]),
-        ('el chat queda apagado hasta que Dlx apruebe el texto', CHAT is False),
+        ('el mensaje no menciona a nadie más que a los debutantes: ni @here ni @everyone',
+         '@here' not in mensaje_chat([('Beto', r['Beto'])])[0] and '@everyone' not in mensaje_chat([('Beto', r['Beto'])])[0]),
     ]
     for que, ok in casos:
         mal += not ok
