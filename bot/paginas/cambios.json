@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.67",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T05:03:00-04:00",
+   "titulo": "El organizador dice quién ganó la final",
+   "items": [
+    "🏁 **Si una llave queda sin campeón**, el bot le pregunta a quien la publicó, en el mismo canal, con un botón por cada lado. Lo marca el organizador o el staff del servidor, y la llave entra al ranking.",
+    "🖼️ **El juez que vota con una imagen ahora cuenta**: si la captura nombra a uno de los dos, es su voto.",
+    "🔢 **Las llaves con las batallas numeradas** («1. A 🆚 B») se leen bien: el número ya no se pega al nombre."
+   ]
+  },
+  {
    "version": "2.66",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T04:23:00-04:00",
