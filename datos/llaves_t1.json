@@ -20444,7 +20444,7 @@
       [
        "Verc",
        "JJ",
-       "Sintexto🇨🇴"
+       "SINTEXT"
       ],
       "Verc",
       "cargada a mano (Dlx, 12/10/2026) · triple (4 bandas, pasan 2)"
@@ -20524,6 +20524,16 @@
     2500
    ],
    [
+    "BNA",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    2000
+   ],
+   [
     "Hinjkybesuk",
     "Cuartos",
     2000
@@ -20531,6 +20541,11 @@
    [
     "Jupiter",
     "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Semifinal",
     2000
    ],
    [
@@ -20544,7 +20559,7 @@
     2000
    ],
    [
-    "Sintexto🇨🇴",
+    "SINTEXT",
     "Cuartos",
     2000
    ],
@@ -20554,24 +20569,9 @@
     2000
    ],
    [
-    "Liam",
-    "Semifinal",
-    1750
-   ],
-   [
     "tnr",
     "Semifinal",
-    1750
-   ],
-   [
-    "BNA",
-    "Subcampeón",
-    1250
-   ],
-   [
-    "Guess",
-    "Subcampeón",
-    1250
+    2000
    ]
   ]
  },
