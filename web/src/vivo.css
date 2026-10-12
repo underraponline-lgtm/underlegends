@@ -1789,6 +1789,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-tiles dd small{font:700 14px/1 Archivo,sans-serif;color:var(--gris)}
 .pf-tiles dt{font:700 12px/1.2 "Space Mono",monospace;letter-spacing:.1em;color:var(--gris)}
 .pf-med{display:flex;flex-wrap:nowrap;gap:8px;font-size:19px;white-space:nowrap}
+/* en el celular las tres medallas no entraban en su casilla y se montaban sobre la de al lado (Makmah, 12/10/2026):
+   más chicas y, si igual no entran (dos cifras), bajan de renglón antes que pisar.
+   ⚠️ `.pf-tiles dd` (28px) le gana a `.pf-med` sola: por eso va con las dos clases */
+@media (max-width:600px){.pf-tiles dd.pf-med{font-size:18px;gap:4px;flex-wrap:wrap}}
 @media (min-width: 900px){.app .pf-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
 /* resumen: el radar */
 .pf-fz{display:grid;gap:18px;align-items:center}
@@ -1894,6 +1898,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-vid-b:hover .pf-vid-m,.pf-vid-b:focus-visible .pf-vid-m{border-color:var(--linea)}
 .pf-vid-b b{font:700 13px/1.3 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pf-vid-b small{font:700 11px/1.2 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+/* en el celular, de a dos: arriba del perfil, uno por fila eran cuatro pantallas de videos antes de Sus datos */
+@media (max-width:600px){.pf-vid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}.pf-vid-b b{font-size:12px}.pf-vid-m i{width:28px;height:28px;font-size:12px;left:6px;bottom:6px}.pf-vid-b small{font-size:10px}}
 .pf-cc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 .pf-cc li{min-width:0;border:2px solid var(--suave)}
 .pf-cc li.on{grid-column:1/-1;border-color:var(--linea)}

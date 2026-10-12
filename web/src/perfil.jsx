@@ -564,13 +564,14 @@ function Eventos({ liga, p, e }) {
 
 // ── 🎬 Sus batallas en video: las de los canales de YouTube de los socios donde aparece (`bot/videos.py`). Dlx,
 // 12/10/2026: «mejor sería que tú pudieses detectarlos tú mismo desde las cuentas y redes sociales de nuestros socios».
-// Sin videos, no se dibuja. Se toca y se mira acá (`abrirVideo()`): nada de YouTube antes del toque, salvo la miniatura
+// Sin videos, no se dibuja. Se toca y se mira acá (`abrirVideo()`): nada de YouTube antes del toque, salvo la miniatura.
+// Va debajo de Sus números y en NEGRO: entre dos blancas (Sus números y Datos), así sigue la regla de intercalar
 const SV_CANAL = { DRA: 'Under Legends', SR: 'Snake Rap', FFS: 'Freestyle Future Series', FFA: 'Free for All', FVS: 'Freestyle Versus' };
 function Videos({ liga, p }) {
   const vs = (p && p.vid) || [];
   if (!vs.length) return null;
   return (
-    <section className="sec pf-sec">
+    <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs.length === 1 ? 'una' : vs.length}</span></div>
       <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Tocá una para verla acá.</p>
       <ul className="pf-vid">
@@ -734,8 +735,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     );
   }
   // 🎨 BLANCO Y NEGRO, COMO EL INICIO (Dlx, 07/10/2026: *«no todos los lugares son blancos sino intercala con el
-  // negro»*): la cabeza, Sus fortalezas, Cara a cara y el Precio van en `.sec.negra` (estilo.css), con dos blancas
-  // entre cada una. El Precio en negro como el Most Wanted del Inicio
+  // negro»*): la cabeza, Sus batallas en video, Sus fortalezas, Cara a cara y el Precio van en `.sec.negra` (estilo.css),
+  // con blancas entre cada una. El Precio en negro como el Most Wanted del Inicio
   return (
     <>
       <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen />
@@ -744,6 +745,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       {!P ? <div className="cargando">Cargando…</div> : (
         <>
           <Numeros f={f} p={p} />
+          {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
+          <div id="pf-videos"><Videos liga={liga} p={p} /></div>
           <Datos liga={liga} p={p} e={P.e} />
           <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
           <div className="pf-dos">
@@ -752,7 +755,6 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           </div>
           <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
           <div id="pf-insignias"><Insignias liga={liga} p={p} /></div>
-          <div id="pf-videos"><Videos liga={liga} p={p} /></div>
           <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
           {/* sus eventos, al final y con buscador (Dlx, 07/10/2026: «poner eventos en lo último») */}
           <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} /></div>

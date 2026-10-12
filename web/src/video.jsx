@@ -9,14 +9,19 @@
 // con el toque. Lo dice la privacidad. Y se cierra con la X, con Escape o tocando afuera: al cerrarse, deja de sonar.
 import { useEffect, useRef, useState } from 'react';
 
-/** La miniatura más grande que tenga el video: `hq720` (1280×720) y, si no existe, `hqdefault` (480×360). */
+/** La miniatura más grande que tenga el video: `hq720` (1280×720) y, si no existe, `hqdefault` (480×360).
+ *
+ * ⚠️ CUANDO NO EXISTE, YOUTUBE NO DA UN ERROR: contesta 404 CON UNA IMAGEN, el cuadrito gris de 120×90 con «…», y
+ * Chrome la dibuja como si nada (dispara `load`, no `error`). Pasó el 12/10/2026 en el perfil de Makmah: su primer
+ * video salía gris. Por eso también se cambia cuando lo que cargó mide 120 de ancho. */
 export function Miniatura({ vid, cls }) {
+  const atras = (im) => {
+    if (!im.dataset.atras) { im.dataset.atras = '1'; im.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; }
+  };
   return (
     <img className={cls} alt="" src={'https://i.ytimg.com/vi/' + vid + '/hq720.jpg'} loading="lazy" decoding="async"
-      onError={(e) => {
-        const im = e.currentTarget;
-        if (!im.dataset.atras) { im.dataset.atras = '1'; im.src = 'https://i.ytimg.com/vi/' + vid + '/hqdefault.jpg'; }
-      }} />
+      onLoad={(e) => { if (e.currentTarget.naturalWidth <= 120) atras(e.currentTarget); }}
+      onError={(e) => atras(e.currentTarget)} />
   );
 }
 
