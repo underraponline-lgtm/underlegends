@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
-"""🏁 ¿QUIÉN GANÓ LA FINAL? SE LE PREGUNTA A QUIEN PUBLICÓ LA LLAVE, CON DOS BOTONES.
+"""🏁 LO QUE EL LECTOR NO ENTENDIÓ DE UNA LLAVE, SE LE PREGUNTA A QUIEN LA PUBLICÓ — CON BOTONES O UN MENÚ.
 
     python bot/finales.py --auto      el self-check (sin red)
     python bot/finales.py             qué hay preguntado y qué se contestó (sólo lee)
 
-Dlx, 12/10/2026: *«hazlo interactivo, osea con 2 botones y menciona al organizador, osea el de la llave misma»*.
-Lo que más llega a ✅ Decidir es una final sin ganador escrito —FVS UNDER, POESÍA CRUDA—, y quien sabe quién ganó es
-el que organizó. Cuando una llave lleva `QUIETA_H` horas sin campeón (`llaves_a_entrada`, los «incompletos») y su
-última ronda es una batalla de dos, el ciclo contesta a la llave en su mismo canal:
+Dlx, 12/10/2026: *«hazlo interactivo, osea con 2 botones y menciona al organizador, osea el de la llave misma»*, y
+después: *«si el bot no entendió muy bien la llave en algunas cosas, que le pregunte al organizador… al finalizar el
+evento, o sea casi de inmediato, pero que sea algo sencillo, tampoco tantas preguntas… con botones o con menú»*.
 
-    🏁 **FVS UNDER** — @zamo1., la llave no dice quién ganó la final: **Mathias** vs **Rfran**. ¿Quién ganó?
-    [ Mathias ] [ Rfran ]
+CUÁNDO (lo decide `llaves_a_entrada`):
+    · la llave ya tiene campeón y le quedaron batallas sin ganador: en la corrida siguiente;
+    · le falta la final: cuando lleva `PREGUNTA_H` hora sin que nadie la toque (antes eran 12 h a ✅ Decidir).
 
-El click lo atiende el Worker (`que === 'fin'` en `bot/worker.js`): vale el del organizador, el del staff del
-servidor o el de Dlx, y queda en el objeto (`finalElegir()` en `bot/avisos.js`). La corrida siguiente lo trae
-(`/avisos/finales`) y lo escribe en `datos/decisiones.json` como cualquier batalla decidida en ✅ Decidir, y la llave
-se carga con su campeón.
+CÓMO: UN mensaje por llave, contestando a la llave en su canal y mencionando sólo a quien la publicó, con hasta
+`MAX_PREGUNTAS` batallas —la final primero—. Una sola de dos lados va con dos botones; si son varias, un menú por
+batalla con sus lados y «Nadie siguió». Cada respuesta se tacha del mensaje (`que === 'dud'` en `bot/worker.js`), queda
+en el objeto (`finalElegir()` en `bot/avisos.js`) y la corrida siguiente la pasa a `datos/decisiones.json` como una
+batalla decidida en ✅ Decidir. Lo que no se pregunta —o no se contesta— sigue yendo a ✅ Decidir como siempre.
 
-⚠️ UNA PREGUNTA POR LLAVE, PARA SIEMPRE: lo preguntado vive en `datos/finales.json` (lo guarda el ciclo:
-`bot/ci/guardar.sh`). Sin eso cada corrida volvería a mencionar al organizador.
-⚠️ SÓLO LLAVES DE LOS ÚLTIMOS `DIAS` DÍAS: mencionar a alguien por una final de hace tres semanas es ruido.
-⚠️ Y COMO MUCHO `TOPE` POR CORRIDA, por si un lector roto deja veinte llaves «sin campeón» de golpe.
+⚠️ UNA VEZ POR LLAVE, PARA SIEMPRE (`datos/finales.json`, lo guarda `bot/ci/guardar.sh`): sin eso cada corrida
+volvería a mencionar al organizador. Sólo llaves de los últimos `DIAS` días, y como mucho `TOPE` mensajes por corrida.
 """
 import datetime
 import io
@@ -33,6 +32,12 @@ ESTADO = os.path.join(BASE, 'datos', 'finales.json')
 API = 'https://discord.com/api/v10'
 DIAS = 14
 TOPE = 5
+MAX_PREGUNTAS = 4
+#: la llave sin final se pregunta después de esta hora quieta (las demás, apenas tienen campeón)
+PREGUNTA_H = 1
+#: el valor del menú para «nadie siguió» (`decidir.NADIE`)
+NADIE_V = 'z'
+LETRAS = 'abcdefghijklmnopqrstuvwxy'
 
 
 def _cargar():
@@ -44,8 +49,8 @@ def _cargar():
 
 
 def _guardar(d):
-    d['_leeme'] = ('Las finales sin campeón que el ciclo le preguntó a quien publicó la llave, con dos botones '
-                   '(bot/finales.py). Una por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026.')
+    d['_leeme'] = ('Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú '
+                   '(bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026.')
     with io.open(ESTADO, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write('\n')
@@ -62,27 +67,47 @@ def _token():
     return avisar._token()
 
 
+def _cual(p):
+    return '%s: %s' % (str(p['ronda']).capitalize(), ' vs '.join(str(x).strip() for x in p['lados']))
+
+
 def mensaje(f):
-    """El cuerpo de la pregunta: el texto, los dos botones y a quién se menciona (sólo al organizador)."""
-    lados = [str(x).strip() for x in f['lados']]
+    """El mensaje: el texto, los componentes y a quién se menciona (sólo al organizador)."""
+    ps = f['preguntas'][:MAX_PREGUNTAS]
+    base = 'dud:%s:%s' % (f['llave'], f['autor'])
+    if len(ps) == 1 and len(ps[0]['lados']) == 2:
+        p = ps[0]
+        texto = ('🏁 **%s** — <@%s>, la llave no dice quién ganó %s: **%s** vs **%s**. ¿Quién ganó?'
+                 % (f['evento'], f['autor'], 'la final' if 'final' in str(p['ronda']).lower()
+                    else 'esta batalla (%s)' % str(p['ronda']).lower(), p['lados'][0], p['lados'][1]))
+        filas = [{'type': 1, 'components': [
+            {'type': 2, 'style': 1, 'label': str(p['lados'][j]).strip()[:80], 'custom_id': '%s:0:%s' % (base, LETRAS[j])}
+            for j in range(2)]}]
+    else:
+        texto = ('🏁 **%s** — <@%s>, no pude leer quién ganó %d batalla(s) de la llave. ¿Me ayudás?'
+                 % (f['evento'], f['autor'], len(ps)))
+        filas = []
+        for i, p in enumerate(ps):
+            ops = [{'label': str(x).strip()[:100], 'value': LETRAS[j]} for j, x in enumerate(p['lados'][:24])]
+            if 'final' not in str(p['ronda']).lower():
+                ops.append({'label': 'Nadie siguió (fue reemplazado o no se presentó)', 'value': NADIE_V})
+            filas.append({'type': 1, 'components': [{'type': 3, 'custom_id': '%s:%d' % (base, i),
+                                                     'placeholder': _cual(p)[:150], 'options': ops}]})
     return {
-        'content': ('🏁 **%s** — <@%s>, la llave no dice quién ganó la %s: **%s** vs **%s**. ¿Quién ganó?\n'
-                    '-# Lo marca quien publicó la llave o el staff. Con eso suma al ranking de la Liga.'
-                    % (f['evento'], f['autor'], str(f.get('ronda') or 'final').lower(), lados[0], lados[1])),
-        'components': [{'type': 1, 'components': [
-            {'type': 2, 'style': 1, 'label': lados[i][:80], 'custom_id': 'fin:%s:%s:%s' % (f['llave'], f['autor'], ab)}
-            for i, ab in ((0, 'a'), (1, 'b'))]}],
+        'content': texto + '\n-# Lo marca quien publicó la llave o el staff. Con eso la llave entra al ranking de la Liga.',
+        'components': filas,
         'message_reference': {'message_id': f['llave'], 'channel_id': f['canal'], 'fail_if_not_exists': False},
         'allowed_mentions': {'users': [f['autor']], 'replied_user': False},
     }
 
 
-def para_preguntar(finales, estado, hoy=None):
-    """Las de `finales` que se preguntan esta corrida: nuevas, de dos lados, con organizador y de los últimos `DIAS`."""
+def para_preguntar(llaves, estado, hoy=None):
+    """Las de `llaves` que se preguntan esta corrida: nuevas, con organizador, con algo que preguntar y recientes."""
     hoy = hoy or datetime.datetime.now(datetime.timezone.utc)
     out = []
-    for f in finales:
-        if str(f.get('llave')) in estado or len(f.get('lados') or ()) != 2 or not str(f.get('autor') or '').isdigit():
+    for f in llaves:
+        if (str(f.get('llave')) in estado or not f.get('preguntas') or not str(f.get('autor') or '').isdigit()
+                or not str(f.get('canal') or '').isdigit()):
             continue
         try:
             t = datetime.datetime.fromisoformat(str(f.get('cuando') or '').replace('Z', '+00:00'))
@@ -92,20 +117,21 @@ def para_preguntar(finales, estado, hoy=None):
             t = t.replace(tzinfo=datetime.timezone.utc)
         if (hoy - t).days > DIAS:
             continue
-        out.append(f)
+        out.append(dict(f, preguntas=f['preguntas'][:MAX_PREGUNTAS]))
     return out[:TOPE]
 
 
-def preguntar(finales):
-    """Manda las preguntas nuevas. `finales`: `[{llave, canal, autor, evento, sv, fecha, ronda, lados, cuando}]`."""
+def preguntar(llaves):
+    """Manda las preguntas nuevas. `llaves`: `[{llave, canal, autor, evento, sv, fecha, cuando, preguntas:
+    [{ronda, lados}]}]`, la final primero."""
     estado = _cargar()
-    nuevas = para_preguntar(finales, estado)
+    nuevas = para_preguntar(llaves, estado)
     if not nuevas:
         return 0
     import requests
     t = _token()
     if not t:
-        print('   ⚠️ finales: sin token, no pregunto')
+        print('   ⚠️ preguntas al organizador: sin token')
         return 0
     cab = {'Authorization': 'Bot ' + t, 'Content-Type': 'application/json'}
     n = 0
@@ -114,30 +140,29 @@ def preguntar(finales):
             r = requests.post('%s/channels/%s/messages' % (API, f['canal']), headers=cab,
                               data=json.dumps(mensaje(f)), timeout=20)
         except Exception as e:                           # noqa: BLE001
-            print('   ⚠️ finales: %s · %s' % (f['evento'], str(e)[:60]))
+            print('   ⚠️ preguntas: %s · %s' % (f['evento'], str(e)[:60]))
             continue
         if r.status_code not in (200, 201):
-            print('   ⚠️ finales: %s · Discord dijo %s' % (f['evento'], r.status_code))
-            # 🔴 sin permiso de escribir ahí no se reintenta cada hora: queda anotada igual
+            print('   ⚠️ preguntas: %s · Discord dijo %s %s' % (f['evento'], r.status_code, r.text[:80]))
+            # 🔴 sin permiso de escribir ahí no se reintenta cada media hora: queda anotada igual
             if r.status_code != 403:
                 continue
         estado[str(f['llave'])] = dict(f, pregunta=(r.json().get('id') if r.status_code in (200, 201) else ''),
-                                       preguntada=_ahora(), sin_permiso=r.status_code == 403)
+                                       preguntada=_ahora(), sin_permiso=r.status_code == 403, respondidas={})
         n += 1
-        print('   🏁 pregunté la final de %s · %s a <@%s>' % (f['evento'], f['sv'], f['autor']))
+        print('   🏁 le pregunté a <@%s> %d batalla(s) de %s · %s' % (f['autor'], len(f['preguntas']), f['evento'], f['sv']))
     _guardar(estado)
     return n
 
 
 def respuestas():
-    """`{id de la llave: {nombre, lado, quien, t}}` del objeto, o `{}`."""
+    """`{'<llave>:<i>': {nombre, v, quien, t}}` del objeto, o `{}`."""
     try:
         import hashlib
         import requests
         t = _token()
         if not t:
             return {}
-        sys.path.insert(0, os.path.join(BASE, 'bot'))
         import avisar
         k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
         r = requests.get(avisar.WORKER + '/avisos/finales', headers={'x-lg-ciclo': k}, timeout=20)
@@ -150,7 +175,8 @@ def respuestas():
 def aplicar_respuestas(resp=None):
     """Lo que contestaron los organizadores, a `datos/decisiones.json` (`batallas`). Devuelve cuántas."""
     estado = _cargar()
-    pend = {k: f for k, f in estado.items() if isinstance(f, dict) and not f.get('ganador')}
+    pend = {k: f for k, f in estado.items() if isinstance(f, dict)
+            and len(f.get('respondidas') or {}) < len(f.get('preguntas') or [])}
     if not pend:
         return 0
     resp = respuestas() if resp is None else resp
@@ -159,18 +185,26 @@ def aplicar_respuestas(resp=None):
     dd = DEC._decisiones()
     n = 0
     for k, f in pend.items():
-        x = resp.get(k)
-        if not x or x.get('nombre') not in [str(l).strip()[:80] for l in f['lados']]:
-            continue
-        gano = next(l for l in f['lados'] if str(l).strip()[:80] == x['nombre'])
-        det = DEC.detalle_batalla(f['evento'], f['sv'], f['fecha'], f.get('ronda') or 'FINAL', f['lados'])
-        dd.setdefault('batallas', {})[DEC.clave_batalla(det)] = {
-            'ganador': gano, 'batalla': det, 'cuando': _ahora(),
-            'por': 'el organizador, con el botón (<@%s>)' % x.get('quien', ''),
-            'nota': 'bot/finales.py: la llave no decía quién ganó y se lo preguntó a quien la publicó'}
-        f['ganador'] = gano
-        n += 1
-        print('   🏁 %s · %s: ganó %s (lo marcó %s)' % (f['evento'], f['sv'], gano, x.get('quien', '')))
+        for i, p in enumerate(f['preguntas']):
+            x = resp.get('%s:%d' % (k, i))
+            if str(i) in (f.get('respondidas') or {}) or not x:
+                continue
+            v = str(x.get('v') or '')
+            if v == NADIE_V:
+                gano = DEC.NADIE
+            elif len(v) == 1 and v in LETRAS[:len(p['lados'])]:
+                gano = p['lados'][LETRAS.index(v)]
+            else:
+                continue
+            det = DEC.detalle_batalla(f['evento'], f['sv'], f['fecha'], p['ronda'], p['lados'])
+            dd.setdefault('batallas', {})[DEC.clave_batalla(det)] = {
+                'ganador': gano, 'batalla': det, 'cuando': _ahora(),
+                'por': 'el organizador, con %s (<@%s>)' % ('el botón' if v in 'ab' and len(f['preguntas']) == 1
+                                                           else 'el menú', x.get('quien', '')),
+                'nota': 'bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave'}
+            f.setdefault('respondidas', {})[str(i)] = gano
+            n += 1
+            print('   🏁 %s · %s · %s: %s (lo marcó %s)' % (f['evento'], f['sv'], p['ronda'], gano, x.get('quien', '')))
     if n:
         with io.open(DEC.DECISIONES, 'w', encoding='utf-8', newline='\n') as fh:
             json.dump(dd, fh, ensure_ascii=False, indent=1)
@@ -183,29 +217,36 @@ def _self_check():
     malos = []
     hoy = datetime.datetime(2026, 10, 12, 12, tzinfo=datetime.timezone.utc)
     f = {'llave': '1553507758240964609', 'canal': '1337126410354950195', 'autor': '832733202769641554',
-         'evento': 'FVS UNDER', 'sv': 'FVS', 'fecha': '26/09', 'ronda': 'FINAL', 'lados': ['Mathias 🇪🇸', 'Rfran 🇪🇸'],
-         'cuando': '2026-10-05T20:45:00+00:00'}
+         'evento': 'FVS UNDER', 'sv': 'FVS', 'fecha': '26/09', 'cuando': '2026-10-05T20:45:00+00:00',
+         'preguntas': [{'ronda': 'FINAL', 'lados': ['Mathias 🇪🇸', 'Rfran 🇪🇸']}]}
     m = mensaje(f)
     if m['allowed_mentions'] != {'users': ['832733202769641554'], 'replied_user': False}:
         malos.append('menciona a alguien más que al organizador')
     ids = [c['custom_id'] for c in m['components'][0]['components']]
-    if ids != ['fin:1553507758240964609:832733202769641554:a', 'fin:1553507758240964609:832733202769641554:b']:
-        malos.append('los botones: %s' % ids)
-    if any(len(x) > 100 for x in ids):
+    if ids != ['dud:1553507758240964609:832733202769641554:0:a', 'dud:1553507758240964609:832733202769641554:0:b']:
+        malos.append('una sola final: dos botones (%s)' % ids)
+    f2 = dict(f, preguntas=[{'ronda': 'FINAL', 'lados': ['A', 'B']}, {'ronda': 'CUARTOS', 'lados': ['C', 'D', 'E']},
+                            {'ronda': 'OCTAVOS', 'lados': ['F', 'G']}, {'ronda': 'OCTAVOS', 'lados': ['H', 'I']},
+                            {'ronda': 'OCTAVOS', 'lados': ['J', 'K']}])
+    m2 = mensaje(f2)
+    sel = [r['components'][0] for r in m2['components']]
+    if len(sel) != MAX_PREGUNTAS or any(c['type'] != 3 for c in sel):
+        malos.append('varias: un menú por batalla, como mucho %d' % MAX_PREGUNTAS)
+    if [o['value'] for o in sel[1]['options']] != ['a', 'b', 'c', NADIE_V] or NADIE_V in [o['value'] for o in sel[0]['options']]:
+        malos.append('las opciones: los lados y «nadie siguió», que la final no lleva')
+    if any(len(c['custom_id']) > 100 for c in sel):
         malos.append('un custom_id pasa de 100')
     if [x['llave'] for x in para_preguntar([f], {}, hoy)] != [f['llave']]:
-        malos.append('una final de hace 7 días no se pregunta')
+        malos.append('una llave de hace 7 días no se pregunta')
     if para_preguntar([f], {f['llave']: {}}, hoy):
         malos.append('se pregunta dos veces la misma llave')
     if para_preguntar([dict(f, cuando='2026-09-20T00:00:00+00:00')], {}, hoy):
         malos.append('se pregunta una de hace más de %d días' % DIAS)
-    if para_preguntar([dict(f, lados=['A', 'B', 'C'])], {}, hoy):
-        malos.append('una de tres lados no tiene dos botones')
     if len(para_preguntar([dict(f, llave=str(i)) for i in range(10)], {}, hoy)) != TOPE:
         malos.append('el tope por corrida')
     for x in malos:
         print('   ❌ %s' % x)
-    print('   %s finales: la pregunta, los botones y cuándo se pregunta' % ('❌' if malos else '✅'))
+    print('   %s preguntas al organizador: el mensaje, los botones, el menú y cuándo' % ('❌' if malos else '✅'))
     return bool(malos)
 
 
@@ -217,9 +258,10 @@ def main():
     if '--auto' in sys.argv:
         return 1 if _self_check() else 0
     estado = {k: v for k, v in _cargar().items() if isinstance(v, dict)}
-    print('%d preguntada(s)' % len(estado))
+    print('%d llave(s) preguntada(s)' % len(estado))
     for k, f in sorted(estado.items(), key=lambda x: x[1].get('preguntada', '')):
-        print('   %s · %s · %s → %s' % (f['evento'], f['sv'], f.get('preguntada', ''), f.get('ganador') or 'sin contestar'))
+        print('   %s · %s · %s → %d de %d contestadas' % (f['evento'], f['sv'], f.get('preguntada', ''),
+                                                       len(f.get('respondidas') or {}), len(f.get('preguntas') or [])))
     return 0
 
 

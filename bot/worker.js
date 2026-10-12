@@ -3871,13 +3871,14 @@ export default {
         return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: probá de nuevo.'));
       }
 
-      // ── 🏁 ¿Quién ganó la final? (12/10/2026) ──────────────────────────
-      // Dlx: «que hazlo interactivo, osea con 2 botones y menciona al organizador». La llave que lleva 12 h sin
-      // campeón: el ciclo (`bot/finales.py`) le pregunta al que la publicó, en el mismo canal, con un botón por lado.
-      // `fin:<id de la llave>:<organizador>:<a|b>`. Lo marca el organizador, el staff del servidor (administrar
-      // mensajes, el servidor o administrador) o Dlx; el nombre es el del botón. Queda en el objeto y el ciclo lo
-      // pasa a `datos/decisiones.json` como cualquier decisión de batalla. El mensaje se pisa con quién ganó.
-      if (que === 'fin') {
+      // ── 🏁 Lo que el lector no entendió de una llave (12/10/2026) ───────
+      // Dlx: «hazlo interactivo, osea con 2 botones y menciona al organizador», y después: «al finalizar el evento…
+      // tampoco tantas preguntas… con botones o con menú». El ciclo (`bot/finales.py`) contesta a la llave en su
+      // canal: una batalla de dos con dos botones, varias con un menú por batalla. `dud:<llave>:<organizador>:<n.º de
+      // pregunta>` y, en el botón, `:<lado>` (en el menú el lado es lo elegido). Lo marca el organizador, el staff del
+      // servidor (administrar mensajes, el servidor o administrador) o Dlx. Queda en el objeto —el ciclo lo pasa a
+      // `datos/decisiones.json`— y la pregunta se tacha del mensaje: la fila sale y abajo queda quién ganó.
+      if (que === 'dud') {
         const esperarF = frenado(idDe(i), 'click');
         if (esperarF) return espera(esperarF);
         const did = idDe(i);
@@ -3887,25 +3888,37 @@ export default {
         if (!did || (did !== extra && did !== DUENO && !staff)) {
           return aviso(`Lo marca <@${extra}>, que publicó la llave, o el staff del servidor.`);
         }
-        let nombre = '';
-        for (const fila of (i.message && i.message.components) || []) {
-          for (const c of fila.components || []) if (c.custom_id === id) nombre = String(c.label || '');
+        const partes = id.split(':');
+        const nro = String(partes[3] || ''), menu = i.data && i.data.component_type === 3;
+        const v = menu ? String(((i.data && i.data.values) || [])[0] || '') : String(partes[4] || '');
+        let nombre = '', cual = '';
+        const filas = (i.message && i.message.components) || [];
+        for (const fila of filas) {
+          for (const c of fila.components || []) {
+            if (menu && c.custom_id === id) {
+              cual = String(c.placeholder || '');
+              nombre = String(((c.options || []).find((o) => o.value === v) || {}).label || '');
+            } else if (!menu && c.custom_id === id) nombre = String(c.label || '');
+          }
         }
-        if (!nombre) return aviso('No encontré ese botón: probá de nuevo.');
+        if (!/^\d{1,2}$/.test(nro) || !/^[a-z]$/.test(v) || !nombre) return aviso('No encontré esa opción: probá de nuevo.');
         let j = {};
         try {
           const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/final', {
             method: 'POST', headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ k: quien, lado: dueno === 'b' ? 'b' : 'a', nombre, quien: did }),
+            body: JSON.stringify({ k: `${quien}:${nro}`, v, nombre, quien: did }),
           });
           j = await r.json();
         } catch (e) { j = { error: 'red' }; }
         if (!j.ok && !j.ya) return aviso('No pude anotarlo: probá de nuevo en un rato.');
-        const titulo = String((i.message && i.message.content) || '').split('\n')[0];
+        const quedan = filas.filter((f) => !(f.components || []).some((c) => c.custom_id === id
+          || (!menu && String(c.custom_id || '').startsWith(`dud:${quien}:${extra}:${nro}:`))));
+        const linea = `✅ ${cual ? cual + ' → ' : ''}**${j.ya || nombre}** — lo marcó <@${j.quien || did}>.`;
+        const texto = `${String((i.message && i.message.content) || '')}\n${linea}`
+          + (quedan.length ? '' : '\n¡Gracias! Con esto la llave entra al ranking.');
         return new Response(JSON.stringify({
           type: RESPONDE.ACTUALIZAR,
-          data: { content: `${titulo}\n✅ **Ganó ${j.ya || nombre}** — lo marcó <@${j.quien || did}>. ¡Gracias!`,
-            components: [], allowed_mentions: { parse: [] } },
+          data: { content: texto.slice(0, 1990), components: quedan, allowed_mentions: { parse: [] } },
         }), { headers: { 'content-type': 'application/json' } });
       }
 

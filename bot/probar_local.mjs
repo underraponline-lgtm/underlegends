@@ -3036,32 +3036,38 @@ console.log('\n«EL PASE DE RAPERO»\n');
 }
 
 {
-  // 🏁 «¿Quién ganó la final?» (12/10/2026, `bot/finales.py`): lo marca quien publicó la llave o el staff, y el
-  // mensaje se pisa con el ganador y sin botones. Alguien más recibe un aviso sólo para él y no se anota nada.
+  // 🏁 Lo que el lector no entendió (12/10/2026, `bot/finales.py`): lo marca quien publicó la llave o el staff; la
+  // pregunta contestada sale del mensaje y abajo queda quién ganó. Alguien más recibe un aviso sólo para él.
   const antes = env.AVISOS, anotadas = [];
   env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
     if (String(url).endsWith('/final')) { anotadas.push(JSON.parse(opc.body)); return new Response('{"ok":true}'); }
     return new Response('{"ok":true}');
   } }) };
-  const mensaje = { content: '🏁 **FVS UNDER** — <@832733202769641554>, la llave no dice quién ganó la final: **Mathias** vs **Rfran**. ¿Quién ganó?',
+  const L = '1553507758240964609', O = '832733202769641554';
+  const botones = { content: '🏁 **FVS UNDER** — <@' + O + '>, la llave no dice quién ganó la final: **Mathias** vs **Rfran**.',
     components: [{ type: 1, components: [
-      { type: 2, style: 1, label: 'Mathias 🇪🇸', custom_id: 'fin:1553507758240964609:832733202769641554:a' },
-      { type: 2, style: 1, label: 'Rfran 🇪🇸', custom_id: 'fin:1553507758240964609:832733202769641554:b' }] }] };
-  const click = (quien, permisos, lado) => pedir({ type: 3, guild_id: '1283205153624952975', message: mensaje,
+      { type: 2, style: 1, label: 'Mathias 🇪🇸', custom_id: `dud:${L}:${O}:0:a` },
+      { type: 2, style: 1, label: 'Rfran 🇪🇸', custom_id: `dud:${L}:${O}:0:b` }] }] };
+  const menu = { content: '🏁 **X** — <@' + O + '>, no pude leer quién ganó 2 batalla(s) de la llave.',
+    components: [0, 1].map((n) => ({ type: 1, components: [{ type: 3, custom_id: `dud:${L}:${O}:${n}`,
+      placeholder: n ? 'Cuartos: C vs D' : 'Final: A vs B',
+      options: [{ label: n ? 'C' : 'A', value: 'a' }, { label: n ? 'D' : 'B', value: 'b' }, { label: 'Nadie siguió', value: 'z' }] }] })) };
+  const tocar = (msg, quien, permisos, custom, valor) => pedir({ type: 3, guild_id: '1283205153624952975', message: msg,
     member: { user: { id: quien }, permissions: permisos },
-    data: { component_type: 2, custom_id: 'fin:1553507758240964609:832733202769641554:' + lado } });
-  let r = await click('111222333444555666', '0', 'a');
-  ok('la final: alguien que no es el organizador ni el staff no la marca', r.json?.type === 4 && r.json?.data?.flags === 64
-     && !anotadas.length, JSON.stringify(r.json).slice(0, 160));
-  r = await click('832733202769641554', '0', 'a');
-  const c = r.json?.data || {};
-  ok('la final: el organizador la marca y el mensaje dice quién ganó, sin botones', r.json?.type === 7
-     && /Ganó Mathias 🇪🇸/.test(c.content || '') && Array.isArray(c.components) && !c.components.length
-     && anotadas.length === 1 && anotadas[0].nombre === 'Mathias 🇪🇸' && anotadas[0].k === '1553507758240964609',
-     JSON.stringify(r.json).slice(0, 200));
-  r = await click('555666777888999000', String(8192), 'b');
-  ok('la final: el staff (administrar mensajes) también la marca', r.json?.type === 7 && anotadas.length === 2
-     && anotadas[1].nombre === 'Rfran 🇪🇸', JSON.stringify(r.json).slice(0, 160));
+    data: valor ? { component_type: 3, custom_id: custom, values: [valor] } : { component_type: 2, custom_id: custom } });
+  let r = await tocar(botones, '111222333444555666', '0', `dud:${L}:${O}:0:a`);
+  ok('lo que no se entendió: alguien que no es el organizador ni el staff no lo marca',
+     r.json?.type === 4 && r.json?.data?.flags === 64 && !anotadas.length, JSON.stringify(r.json).slice(0, 160));
+  r = await tocar(botones, O, '0', `dud:${L}:${O}:0:a`);
+  let c = r.json?.data || {};
+  ok('el botón: el organizador marca la final, el mensaje dice quién ganó y queda sin botones', r.json?.type === 7
+     && /\*\*Mathias 🇪🇸\*\*/.test(c.content || '') && /¡Gracias!/.test(c.content || '') && !c.components.length
+     && anotadas[0]?.k === `${L}:0` && anotadas[0]?.v === 'a', JSON.stringify(r.json).slice(0, 220));
+  r = await tocar(menu, '555666777888999000', String(8192), `dud:${L}:${O}:1`, 'z');
+  c = r.json?.data || {};
+  ok('el menú: el staff contesta una, sale esa fila y queda la otra', r.json?.type === 7 && c.components.length === 1
+     && c.components[0].components[0].custom_id === `dud:${L}:${O}:0` && /Cuartos: C vs D → \*\*Nadie siguió\*\*/.test(c.content || '')
+     && !/¡Gracias!/.test(c.content || '') && anotadas[1]?.k === `${L}:1` && anotadas[1]?.v === 'z', JSON.stringify(r.json).slice(0, 260));
   env.AVISOS = antes;
 }
 

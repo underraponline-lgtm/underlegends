@@ -1361,6 +1361,32 @@ def otro_en_servidor(filas, sv, mapa=None):
     return filas
 
 
+def _preguntar_h():
+    try:
+        import finales as FIN
+        return FIN.PREGUNTA_H
+    except Exception:                                    # noqa: BLE001
+        return QUIETA_H
+
+
+def para_organizador(g, nom, sv, fec, ds):
+    """🏁 Lo que se le pregunta a quien publicó la llave (`bot/finales.py`), o `None`: las batallas sin ganador de dos
+    a cinco lados —no las de «pasan 2», que no tienen UN ganador—, la final primero. Ver el docstring de `finales`."""
+    h = g['llaves'][-1] if g.get('llaves') else {}
+    qs = [d for d in ds if len(d) >= 5 and 2 <= len(d[4]) <= 5 and not str(d[3]).startswith('pasan')]
+    if not qs or not h.get('autor_id') or h.get('vidas'):
+        return None
+
+    def orden(d):
+        r = str(d[1] or '').upper()
+        r = E.ALIAS.get(r, r)
+        return -(E.ORDEN.index(r) if r in E.ORDEN else -1)
+    qs.sort(key=orden)
+    return {'llave': str(h.get('msg_id') or ''), 'canal': str(h.get('canal_id') or ''), 'autor': str(h.get('autor_id')),
+            'evento': nom, 'sv': sv, 'fecha': fec, 'cuando': h.get('cuando') or '',
+            'preguntas': [{'ronda': d[1], 'lados': list(d[4])} for d in qs]}
+
+
 def marcar_paga(filas):
     """`paga: N` en las filas de la ronda que la escala no paga, si Dlx dijo cuánto (`decidir.paga_ronda()`)."""
     if not filas:
@@ -3474,7 +3500,7 @@ def main():
     todas, dudas, sabidas = [], [], collections.Counter()
     ya_cargadas = []   # la que ya está en el ranking con otro nombre: ver `ya_cargada()`
     en_curso, incompletos, retenidos, descartados = [], [], [], []
-    finales_sin = []   # 🏁 las finales de dos sin ganador, para preguntarle al organizador (`bot/finales.py`)
+    para_org = []   # 🏁 lo que no se entendió de cada llave, para preguntarle a quien la publicó (`bot/finales.py`)
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     de_veredictos = []                                # las llaves que se cargaron como se jugaron, de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
@@ -3792,13 +3818,12 @@ def main():
                 incompletos.append((nom, ligas[0], fec,
                                     ['%s: %s' % (d[1].lower(), d[2])
                                      for d in d_grupo]))
-                _h = g['llaves'][-1] if g['llaves'] else {}
-                for d in d_grupo:
-                    if len(d) >= 5 and 'no dice campeón' in str(d[3]) and len(d[4]) == 2:
-                        finales_sin.append({'llave': str(_h.get('msg_id') or ''), 'canal': str(_h.get('canal_id') or ''),
-                                            'autor': str(_h.get('autor_id') or ''), 'evento': nom, 'sv': ligas[0],
-                                            'fecha': fec, 'ronda': d[1], 'lados': list(d[4]),
-                                            'cuando': _h.get('cuando') or ''})
+            # 🏁 SIN CAMPEÓN: se le pregunta al organizador cuando la llave lleva una hora quieta, no doce
+            if (hq is not None and hq >= _preguntar_h() and not pausada(g, ligas[0])
+                    and any(str(d[1]).upper().replace(' ', '') in ('FINAL', 'GRANFINAL') for d in d_grupo)):
+                _org = para_organizador(g, nom, ligas[0], fec, d_grupo)
+                if _org:
+                    para_org.append(_org)
             continue
         # 🔴 y la que ya está cargada con otro nombre no se suma otra vez (el FFA WORLD CUP, #366 y #409: ver `ya_cargada()`)
         ya = ya_cargada(nom, ligas[0], fec, limpias) if ligas else None
@@ -3806,6 +3831,11 @@ def main():
             ya_cargadas.append((nom, ligas[0], fec, ya))
             continue
         dudas += d_grupo
+        # 🏁 CON CAMPEÓN Y BATALLAS SIN GANADOR: el evento terminó, se le pregunta ya (`bot/finales.py`)
+        if ligas and d_grupo:
+            _org = para_organizador(g, nom, ligas[0], fec, d_grupo)
+            if _org:
+                para_org.append(_org)
         repes += len(del_grupo) - n_leidas
         todas += limpias
         # quien publicó una llave que se carga ya no es nuevo
@@ -3905,9 +3935,9 @@ def main():
 
     try:
         import finales as FIN
-        for _f in FIN.para_preguntar(finales_sin, FIN._cargar()):
-            print('   🏁 final sin ganador, se le pregunta a <@%s>: %s · %s · %s'
-                  % (_f['autor'], _f['evento'], _f['sv'], ' vs '.join(_f['lados'])))
+        for _f in FIN.para_preguntar(para_org, FIN._cargar()):
+            print('   🏁 se le pregunta a <@%s> por %s · %s: %s'
+                  % (_f['autor'], _f['evento'], _f['sv'], ' · '.join(FIN._cual(x) for x in _f['preguntas'])))
     except Exception:                                    # noqa: BLE001
         pass
     if not aplicar:
@@ -3917,7 +3947,7 @@ def main():
     # 🏁 y la final sin ganador, al que publicó la llave: dos botones (`bot/finales.py`)
     try:
         import finales as FIN
-        FIN.preguntar(finales_sin)
+        FIN.preguntar(para_org)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ finales: no pude preguntar (%s)' % str(e)[:80])
 

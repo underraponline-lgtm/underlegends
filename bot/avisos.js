@@ -3591,16 +3591,19 @@ export class Avisos {
   }
 
   /**
-   * 🏁 «¿QUIÉN GANÓ LA FINAL?» (12/10/2026): el botón del organizador (`que === 'fin'` en worker.js). Vale el primero:
-   * después de marcarlo el mensaje se pisa sin botones, y un segundo click que llegue igual se contesta con lo que ya
-   * estaba. Guarda las últimas 300; el ciclo las pasa a `datos/decisiones.json` y no las necesita más.
+   * 🏁 LO QUE EL LECTOR NO ENTENDIÓ DE UNA LLAVE (12/10/2026): el botón o el menú del organizador (`que === 'dud'` en
+   * worker.js), una por pregunta: `<llave>:<n.º>`. Vale la primera respuesta; otra que llegue igual se contesta con lo
+   * que ya estaba. Guarda las últimas 300; el ciclo las pasa a `datos/decisiones.json` y no las necesita más.
    */
   finalElegir(d) {
-    const k = String(d.k || ''), nombre = String(d.nombre || '').slice(0, 80), quien = String(d.quien || '');
-    if (!/^\d{5,25}$/.test(k) || !nombre || !/^\d{5,25}$/.test(quien)) return { error: 'datos' };
+    const k = String(d.k || ''), nombre = String(d.nombre || '').slice(0, 100), quien = String(d.quien || '');
+    const v = String(d.v || '');
+    if (!/^\d{5,25}:\d{1,2}$/.test(k) || !/^[a-z]$/.test(v) || !nombre || !/^\d{5,25}$/.test(quien)) {
+      return { error: 'datos' };
+    }
     const f = this.leer('finales') || {};
     if (f[k]) return { ya: f[k].nombre, quien: f[k].quien };
-    f[k] = { nombre, lado: d.lado === 'b' ? 'b' : 'a', quien, t: Date.now() };
+    f[k] = { nombre, v, quien, t: Date.now() };
     const ks = Object.keys(f).sort((x, y) => f[x].t - f[y].t);
     for (const x of ks.slice(0, Math.max(0, ks.length - 300))) delete f[x];
     this.guardar('finales', f);
