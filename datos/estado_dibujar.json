@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-12T20:46:35Z",
+ "cuando": "2026-10-12T21:17:30Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 127.0,
+ "dur_s": 1119.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.3
+   "s": 5.0
   },
   {
    "n": "3",
@@ -21,50 +21,50 @@
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.6
+   "s": 24.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 14 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 43.1
+   "s": 1020.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 11.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 50.8
+   "s": 52.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "457",
-  "nombre": "(sin titulo)",
+  "n": "458",
+  "nombre": "LA REDENCIÓN",
   "sv": "FFA",
-  "dia": "2026-10-06"
+  "dia": "2026-10-12"
  },
  "cuotas": {
   "kv": {
-   "write": 352,
-   "read": 47363
+   "write": 382,
+   "read": 50216
   },
   "objeto": {
-   "leidas": 1328683,
-   "escritas": 25941,
-   "pedidos": 5761
+   "leidas": 1464421,
+   "escritas": 29352,
+   "pedidos": 6144
   },
   "worker": {
-   "pedidos": 6855,
+   "pedidos": 6986,
    "errores": 0,
-   "sub": 7302,
-   "p50_ms": 1.33,
-   "p99_ms": 6.68
+   "sub": 7454,
+   "p50_ms": 1.34,
+   "p99_ms": 6.84
   },
   "r2": {
    "objetos": 3921,
