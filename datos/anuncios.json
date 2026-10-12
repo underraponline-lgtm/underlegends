@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T16:24:50+00:00",
+ "cuando": "2026-10-12T16:30:18+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4347,6 +4347,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Monet",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1559241031692853279",
+   "cuando": "2026-10-12T16:27:11"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
