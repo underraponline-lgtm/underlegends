@@ -92,7 +92,8 @@ export const PATRON_VIGIA = /evento|competenc|torneo/i;
 // 10: cada canal con su categoría (`p`), para «Inscribite ya» (03/10/2026). Ver `invitacionPara()`
 // 11: «torneo» en `PATRON_VIGIA`, y «organiz» en `STAFF` (la ACADEMIA, 04/10/2026)
 // 12: el chat general de cada servidor, para el bot en vivo (05/10/2026). Ver `chatGeneralDe()`
-const CANALES_V = 12;
+// 13: «anuncios» adentro de una categoría de torneos (FVS, 12/10/2026). Ver `descubrir()`
+const CANALES_V = 13;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -3733,6 +3734,8 @@ export class Avisos {
       // sonaba en la campana de todos. Ver `categoriasStaff()`.
       const fuera = categoriasStaff(cs);
       for (const id of fueraSv[s.sv] || []) fuera.add(String(id));
+      // el nombre de cada categoría, normalizado: ver `enTorneos` abajo
+      const catNombre = new Map(cs.filter((c) => c && c.type === 4).map((c) => [String(c.id), String(c.name || '').normalize('NFKD')]));
       // 🎤 el chat general, para el bot en vivo cuando lo prende el Dashboard (ver `chatVivo()`)
       const gen = chatGeneralDe(cs, fuera);
       if (gen) generales.push({ sv: s.sv, g: s.guild, id: gen });
@@ -3752,7 +3755,11 @@ export class Avisos {
         // 🔑 los de inscripciones, aparte: ver `inscripciones()`
         if (PATRON_INSC.test(n) && !STAFF.test(n)) insc.push({ id: c.id, nombre: n, sv: s.sv, g: s.guild, p: String(c.parent_id || '') });
         // los de staff también dicen «evento», y el bot los lee
-        if (STAFF.test(n) || PATRON_INSC.test(n) || !PATRON_VIGIA.test(n)) continue;
+        // 🆚 Y «ANUNCIOS» ADENTRO DE UNA CATEGORÍA DE TORNEOS (FVS, 12/10/2026): FVS anuncia en «「📢」Anuncios» de su
+        // categoría «🏆〘Torneos〙🏆», y por el nombre del canal solo el vigía no la oía. Medido en los ocho servidores:
+        // suma ese canal y ningún otro
+        const enTorneos = /anuncio/i.test(n) && PATRON_VIGIA.test(catNombre.get(String(c.parent_id || '')) || '');
+        if (STAFF.test(n) || PATRON_INSC.test(n) || (!PATRON_VIGIA.test(n) && !enTorneos)) continue;
         lista.push({ id: c.id, nombre: n, sv: s.sv, svn: s.nombre || s.sv, g: s.guild, p: String(c.parent_id || '') });
       }
     }

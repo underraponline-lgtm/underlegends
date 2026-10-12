@@ -85,10 +85,11 @@
   var VS_ENTRE = '(?:(?:[\\u{2694}\\u{1F5E1}\\u{2716}\\u{2715}\\u{2717}\\u{D7}\\u{26A1}\\u{1F4A5}\\u{1F94A}\\u{1F91C}' +
     '\\u{1F91B}\\u{1F52A}]\\u{FE0F}?)+|(?<![\\p{L}\\p{N}_])(?:versus|vrs|v\\/s|v\\.s\\.?|contra|x)(?![\\p{L}\\p{N}_]))';
   // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
-  var VS_PROPIO = /<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>/gi;
+  // ⚠️ después del «VS», a lo sumo una letra, cifras o `_`: `<:VSCUP:…>` de FVS es una copa (`escuchar.VS_PROPIO`)
+  var VS_PROPIO = /<a?:(?!VSF?:)\w*?(?:vs|versus)[a-z]?[\d_]*:\d+>/gi;
   var PODIO_PROPIO = /<a?:([123])[a-zº°]*_?puesto\w*:\d+>/gi;
   /* 🏛️ el VS y el podio escritos como texto (`:VSr:`, `:1erPuesto:`): `escuchar.VS_TEXTO` y `PODIO_TEXTO` */
-  var VS_TEXTO = /(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)\w*:(?!\d)/gi;
+  var VS_TEXTO = /(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)[a-z]?[\d_]*:(?!\d)/gi;
   var PODIO_TEXTO = /(?<![<\w]):([123])[a-zº°]*_?puesto\w*:(?!\d)/gi;
   var TERCER_ENC = /\b(?:3\s*(?:er|ro|º|°)?|tercer[oa]?)\s*(?:y\s*(?:4\s*(?:to|º|°|o)?|cuarto)\s*)?(?:puesto|lugar)\b/i;
   var PAIS_DE_EMOJI = { ar: ['ARG', 'ARGENTINA'], bo: ['BOL', 'BOLIVIA'], br: ['BRA', 'BRASIL', 'BRAZIL'],
@@ -150,7 +151,11 @@
     x = quitarBordes(String(x).replace(MARCAS, '').replace(/[ \t]*<a?:\w+:\d+>/g, ''), [' ', '*', '`']);
     x = x.replace(/^#{1,3}[ \t]+/, '');
     var m = /^((?:[\u{1F1E6}-\u{1F1FF}]{2}[ \t]*)+)(\S[\s\S]*)$/u.exec(x);
-    if (m) x = m[2].replace(/\s+$/, '') + ' ' + m[1].replace(/\s/g, '');
+    if (m) {
+      // y la misma bandera a los dos lados, una vez: `🇪🇸Rfran🇪🇸` (FVS) es «Rfran🇪🇸» (`escuchar._sin_marcas()`)
+      var resto = m[2].replace(/\s+$/, ''), adelante = m[1].replace(/\s/g, '');
+      x = resto.slice(-adelante.length) === adelante ? resto : resto + ' ' + adelante;
+    }
     return quitarBordes(x, [' ', '*', '`']);
   }
 
@@ -188,7 +193,12 @@
 
   function equipoDeBanderas(s) {
     if ((s.match(new RegExp(BANDERA + '{2}', 'gu')) || []).length < 2 || /[+,\/]/.test(s)) return s;
+    // y dos pedazos con letras, no dos banderas: `🇨🇱 Joaco 🇨🇱` es UNA persona (`escuchar._equipo_de_banderas()`)
+    if (s.split(new RegExp(BANDERA + '{2}', 'u')).filter(function (p) { return /[\p{L}\p{N}]/u.test(p); }).length < 2) return s;
     s = s.replace(new RegExp('(' + BANDERA + ')(' + MD + ')[ \\t]*&[ \\t]*(?=' + MD + '[\\p{L}\\p{N}_])', 'gu'),
+      '$1$2 + ');
+    // y el guion con espacios entre dos nombres con bandera: `Eliot🇲🇽 - Respawm🇭🇳` (MULTIVERSE, FFA)
+    s = s.replace(new RegExp('(' + BANDERA + ')(' + MD + ')[ \\t]+[-–—][ \\t]+(?=' + MD + '[\\p{L}\\p{N}_])', 'gu'),
       '$1$2 + ');
     return s.replace(new RegExp('(' + BANDERA + ')(' + MD + ')[ \\t]+(?=' + MD + '[\\p{L}\\p{N}_])', 'gu'),
       '$1$2 + ');
@@ -198,7 +208,8 @@
      de la última batalla y sólo el puesto que la llave no escribe ya con palabras (ONE PIECE, FFA, 30/09/2026) */
   var MEDALLA_PODIO = { '\u{1F3C6}': 'CAMPEÓN', '\u{1F947}': 'CAMPEÓN', '\u{1F948}': 'SUBCAMPEÓN', '\u{1F949}': '3ER PUESTO' };
   var PUNTAS_PODIO = Array.from(' .·▪️*_`:-–—️|┋');
-  var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
+  // con la aclaración entre paréntesis: `3ER LUGAR (3ER PUESTO):` (`escuchar.TERCERO`, 19 CUP de DDF)
+  var TERCERO = /(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*([^\n]{1,80})/i;
   function hayCampeon(texto) {
     var re = /(SUB[\s\-]?)?(?:CAMPE[OÓ]N|\b(?:1\s*(?:ER|RO)|PRIMER)\s+PUESTO)\s*:?\s*[*_`~|┋]*\s*([^\n]{1,60})/gi, m;
     while ((m = re.exec(texto))) { if (!m[1]) return true; }
@@ -448,8 +459,10 @@
   }
 
   /* `escuchar.rondas_de()`: [[ronda, [[lados…]…]]…] */
+  /* la ronda de antes, para la primera que viene sin título (`escuchar.RONDA_ANTERIOR`) */
+  var RONDA_ANTERIOR = { OCTAVOS: 'DIECISEISAVOS', CUARTOS: 'OCTAVOS', SEMIFINALES: 'CUARTOS', FINAL: 'SEMIFINALES' };
   function rondasDe(texto) {
-    var out = [], actual = null, bats = [];
+    var out = [], actual = null, bats = [], previas = [];
     texto = plano(texto);
     lineas(unirContinuadas(texto)).forEach(function (l) {
       var m = buscarRonda(l), nombres = nombresDeLinea(l);
@@ -462,8 +475,20 @@
         return;
       }
       if (nombres.length && actual && !(PODIO.test(l) && !CONTRA.test(l))) bats.push(nombres);
+      else if (nombres.length && !actual && !(PODIO.test(l) && !CONTRA.test(l))) previas.push(nombres);
     });
     if (actual && bats.length) out.push([actual, bats]);
+    // la primera ronda sin título (FVS UNDER, 26/09/2026): `escuchar._rondas_crudas()`
+    if (previas.length >= 2 && out.length && RONDA_ANTERIOR[out[0][0]]) {
+      var gente = function (bs) {
+        var s = new Set();
+        bs.forEach(function (b) { b.forEach(function (x) { String(x).replace(HISTORIA, '').split(/[+&]/).forEach(function (q) { if (norm(q)) s.add(norm(q)); }); }); });
+        return s;
+      };
+      var antes = gente(previas), primera = gente(out[0][1]), comunes = 0;
+      antes.forEach(function (k) { if (primera.has(k)) comunes++; });
+      if (comunes >= 2) out.unshift([RONDA_ANTERIOR[out[0][0]], previas]);
+    }
     return equiposConEspacios(out);
   }
 

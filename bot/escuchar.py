@@ -148,6 +148,8 @@ ORDEN = ['FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES', 'DIECISEISAVOS',
          'OCTAVOS',
          'CUARTOS', 'SEMIFINALES', 'LLAVE DE GANADORES', 'LLAVE DE PERDEDORES',
          'TERCER LUGAR', 'FINAL']
+#: la ronda de antes, para la primera que viene sin título (`_rondas_crudas()`)
+RONDA_ANTERIOR = {'OCTAVOS': 'DIECISEISAVOS', 'CUARTOS': 'OCTAVOS', 'SEMIFINALES': 'CUARTOS', 'FINAL': 'SEMIFINALES'}
 # 🔴 Y EL PLURAL CON ESPACIO: Urban Freestyle escribe `-SEMI FINALES-` (COMPE
 # DEL VACILE #1, 28/09/2026). La ronda se leía con ese nombre, fuera de
 # `ORDEN`, y el motor no le encontraba valor en la escala: los que perdían la
@@ -306,10 +308,13 @@ def plano(texto):
 #: 🔑 Y `versus` ENTERO: DIMENSIÓN DEL FREESTYLE (03/10/2026) separa con
 #: `<:versus_:…>`, que no lleva «vs» adentro —v-e-r-s-u-s—. Sin esto sus
 #: llaves no tenían ninguna batalla.
-VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?(?:vs|versus)\w*:\d+>', re.I)
+#: ⚠️ DESPUÉS DEL «VS», A LO SUMO UNA LETRA, CIFRAS O `_` (`VS1`, `VSr`, `versus_`): FVS (12/10/2026) titula con
+#: `<:VSCUP:…>` —una copa— y `<:VSGlobalSeries:…>` —su serie—, y como separador el título «# FVS UNDER <:VSCUP:…>»
+#: se pegaba a la primera batalla. Medido sobre las llaves del contrato: VSF, VS1, VS2, VS6 y versus_, todas entran
+VS_PROPIO = re.compile(r'<a?:(?!VSF?:)\w*?(?:vs|versus)[a-z]?[\d_]*:\d+>', re.I)
 #: 🏛️ EL MISMO EMOJI, ESCRITO COMO TEXTO: `:VSr:`. Es como le llega al bot un emoji de un servidor donde no
 #: está —la RED BULL CREW de la ACADEMIA, 04/10/2026—. `:vs:` y `:vsf:` no: ya los lee `SEP`
-VS_TEXTO = re.compile(r'(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)\w*:(?!\d)', re.I)
+VS_TEXTO = re.compile(r'(?<![<\w]):(?!vsf?:)\w*?(?:vs|versus)[a-z]?[\d_]*:(?!\d)', re.I)
 #: y el podio igual: `:1erPuesto: <@…>`
 PODIO_TEXTO = re.compile(r'(?<![<\w]):([123])[a-z\u00ba\u00b0]*_?puesto\w*:(?!\d)', re.I)
 #: cualquier emoji propio del servidor
@@ -453,6 +458,10 @@ def _equipo_de_banderas(s):
     """
     if len(re.findall(_BANDERA + '{2}', s)) < 2 or re.search(r'[+,/]', s):
         return s
+    # 🔴 Y DOS PEDAZOS CON LETRAS, NO DOS BANDERAS: `🇨🇱 Joaco 🇨🇱` (FVS UNDER, 26/09/2026) es UNA persona con la
+    # bandera a los dos lados, y el espacio después de la primera la partía en «+ Joaco»
+    if len([p for p in re.split(_BANDERA + '{2}', s) if re.search(r'[^\W_]', p)]) < 2:
+        return s
     # 🔑 Y EL `&` ENTRE BANDERAS TAMBIÉN: `MAKMA🇻🇪&PRRR🇦🇴` (AGREEMENT
     # DOOMSDAY, FFA, 26/09/2026). `sheet/equipos.py` no parte por `&` a
     # propósito —«Snow & Velatz» podría ser un nombre—, pero con una
@@ -464,6 +473,10 @@ def _equipo_de_banderas(s):
     # persona llamada «FULLY&DXG».
     s = re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]*&[ \t]*(?=' + _MD + r'\w)',
                r'\1 + ', s)
+    # 🔑 Y EL GUION ENTRE DOS NOMBRES CON BANDERA: `Eliot🇲🇽 - Respawm🇭🇳` (MULTIVERSE, FFA, 08/10/2026) era UNA
+    # persona en octavos —y un duelo de «Eliot - Respawm» contra Krinkross—. Con espacios a los dos lados: un guion
+    # pegado es parte del nombre (`Agustín-51`)
+    s = re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]+[-–—][ \t]+(?=' + _MD + r'\w)', r'\1 + ', s)
     return re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]+(?=' + _MD + r'\w)', r'\1 + ', s)
 
 
@@ -700,7 +713,10 @@ def _sin_marcas(x):
     x = re.sub(r'^#{1,3}[ \t]+', '', x)
     m = re.match('^((?:%s{2}[ \t]*)+)(\\S.*)$' % _BANDERA, x)
     if m:
-        x = m.group(2).rstrip() + ' ' + re.sub(r'\s', '', m.group(1))
+        # 🔑 y la misma bandera a los dos lados, una vez: `🇪🇸Rfran🇪🇸` (FVS) es «Rfran🇪🇸», no «Rfran🇪🇸 🇪🇸»
+        adelante = re.sub(r'\s', '', m.group(1))
+        x = m.group(2).rstrip() if m.group(2).rstrip().endswith(adelante) else \
+            m.group(2).rstrip() + ' ' + adelante
     return x.strip(' *`')
 
 
@@ -936,6 +952,7 @@ def _rondas_crudas(texto):
     espacios —que no cambia ni cuántas batallas hay ni su orden—. Existe para
     que `_negritas()` mire exactamente las mismas líneas."""
     out, actual, bats = [], None, []
+    previas = []
     texto = plano(texto)
     # ⚠️ PRIMERO SE UNEN LAS CONTINUADAS. Ver `unir_continuadas()`: sin
     # esto, un equipo partido en dos lineas se pierde y la ronda entera
@@ -971,8 +988,19 @@ def _rondas_crudas(texto):
         if nombres and actual and not (PODIO.search(l)
                                        and not CONTRA.search(l)):
             bats.append((nombres, l))
+        elif nombres and actual is None and not (PODIO.search(l) and not CONTRA.search(l)):
+            previas.append((nombres, l))
     if actual and bats:
         out.append((actual, bats))
+    # 🔑 LA PRIMERA RONDA SIN ENCABEZADO (FVS UNDER, FVS, 26/09/2026): cuatro tríos `「Rfran」 vs 「Force」 vs 「Draax」`
+    # arriba de `-# CUARTOS`, sin título. Se tiraban: Force, Sosa, Agustín 51 y Molusco quedaban afuera de la llave.
+    # Son la ronda de ANTES de la primera que tiene título, si son dos batallas o más y su gente sigue en esa ronda
+    # (dos nombres iguales o más): una línea suelta de arriba —el título, un aviso— no es una ronda
+    if len(previas) >= 2 and out and out[0][0] in RONDA_ANTERIOR:
+        antes = {norm(HISTORIA.sub('', m)) for ns, _l in previas for x in ns for m in re.split(r'[+&]', x)}
+        primera = {norm(HISTORIA.sub('', m)) for ns, _l in out[0][1] for x in ns for m in re.split(r'[+&]', x)}
+        if len((antes & primera) - {''}) >= 2:
+            out.insert(0, (RONDA_ANTERIOR[out[0][0]], previas))
     return out
 
 
@@ -4017,6 +4045,11 @@ def _self_check():
                       '# CUARTOS\n[EZE 🇦🇷 + ZIGNOS 🇩🇴] 🆚 [PARIA SIN REMEDIO 🇦🇷 + JAWA 🇺🇾]')
     otros = resolver('# OCTAVOS\n[PROSU] 🆚 [ZETA]\n[VELATZ] 🆚 [PLAYER]\n'
                      '# CUARTOS\n[PROSU VELATZ NUEVO] 🆚 [OTRO]')
+    fvs = rondas_de(traducir(plano(
+        '# FVS UNDER <:VSCUP:1383245195436363816> \n「Rfran」<:vs:1310348233545093140> 「Force」<:vs:1310348233545093140> '
+        '「Draax」\n\n「Sosa」<:vs:1310348233545093140> 「Joacoflz」<:vs:1310348233545093140> 「Dxg」\n\n-# CUARTOS\n'
+        '[🇪🇸Rfran🇪🇸] <:vs:1310348233545093140> [🇪🇨Ricard🇪🇨]\n[🇨🇱 Joaco 🇨🇱 ] <:vs:1310348233545093140> [Tokio🇦🇷]\n'
+        '[Draax] <:vs:1310348233545093140> [Dxg]\n\n-# FINAL\n[Rfran 🇪🇸] <:vs:1310348233545093140> [Joaco 🇨🇱]')))
     cup19 = resolver(traducir(plano(
         'CUARTOS DE FINAL\n• Cruce 1: PICHULA vs LRS\n• Cruce 2: CRISZJ vs GEROX\n• Cruce 3: JEIXDER vs KEIDER\n'
         '• Cruce 4: NOA vs ERIAN\n\nSEMIFINALES\n• Semifinal 1: PICHULA vs CRISZJ\n• Semifinal 2: JEIXDER vs NOA\n\n'
@@ -4031,6 +4064,15 @@ def _self_check():
          and ref[2][1] == ['ENEK 🇪🇸 + NEO 🇦🇷', 'C 🇦🇷 + D 🇦🇷']),
         ('la historia pegada `gekto🇦🇷(chianluka🇦🇷)` se queda como venía',
          sin_refuerzos('gekto🇦🇷(chianluka🇦🇷)') == 'gekto🇦🇷(chianluka🇦🇷)'),
+        ('FVS UNDER: los tríos sin título arriba de CUARTOS son la ronda de antes, «🇨🇱 Joaco 🇨🇱» es UNA persona, '
+         '«🇪🇸Rfran🇪🇸» lleva una bandera y el título «# FVS UNDER <:VSCUP:…>» no se pega a la primera batalla',
+         [r for r, _b in fvs] == ['OCTAVOS', 'CUARTOS', 'FINAL'] and fvs[0][1][0] == ['Rfran', 'Force', 'Draax']
+         and fvs[1][1][1] == ['Joaco 🇨🇱', 'Tokio🇦🇷'] and fvs[1][1][0][0] == 'Rfran🇪🇸'),
+        ('una línea suelta arriba de la primera ronda no es una ronda',
+         [r for r, _b in rondas_de('[A] vs [B]\n# CUARTOS\n[C] vs [D]\n[E] vs [F]')] == ['CUARTOS']),
+        ('el guion entre dos nombres con bandera es un equipo; pegado, no: «Eliot🇲🇽 - Respawm🇭🇳»',
+         nombres_de_linea(traducir('[Eliot🇲🇽 - Respawm🇭🇳] 🆚 [Krinkross🇪🇸]')) == ['Eliot🇲🇽 + Respawm🇭🇳', 'Krinkross🇪🇸']
+         and nombres_de_linea(traducir('[Agus-51🇨🇱] 🆚 [Krinkross🇪🇸]')) == ['Agus-51🇨🇱', 'Krinkross🇪🇸']),
         ('19 CUP (DDF): «• Cruce 1:» y «• Semifinal 1:» no son del nombre, «TERCER PUESTO» es una ronda, '
          'KEIDER no pasa por parecerse a JEIXDER, y el tercero del podio va con el nombre abajo',
          [x[2] for x in cup19] == ['PICHULA', 'CRISZJ', 'JEIXDER', 'NOA', 'PICHULA', 'NOA', 'CRISZJ', 'PICHULAMC']),

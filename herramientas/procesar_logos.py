@@ -51,6 +51,9 @@ MODOS = {
     'ddf' : ('DDF.png',     'fondo'),
     # 🏛️ la ACADEMIA (04/10/2026): el círculo amarillo con las columnas, sobre negro
     'acad': ('ACAD.png',    'fondo'),
+    # 🆚 FVS (12/10/2026): su escudo es negro con lo blanco encima —el borde, «VS», la corona y el laurel—.
+    # Con el escudo entero relleno se perdía el «VS», que es la marca: va sólo lo blanco
+    'fvs' : ('FVS.png',     'blanco'),
 }
 
 
@@ -59,6 +62,10 @@ def _alfa_cruda(a, modo):
     rgb = a[:, :, :3]
     if modo == 'alfa':
         return a[:, :, 3].copy()
+
+    if modo == 'blanco':
+        # sólo lo opaco Y blanco: el dibujo claro encima de un escudo oscuro (FVS)
+        return a[:, :, 3] * np.clip((rgb.mean(axis=2) - 165) / 55.0, 0, 1)
 
     if modo == 'fondo':
         esq = np.array([a[0, 0, :3], a[0, -1, :3], a[-1, 0, :3], a[-1, -1, :3]])

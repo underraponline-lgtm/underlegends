@@ -1986,6 +1986,108 @@
      ]
     ]
    ]
+  },
+  {
+   "que": "FVS · FVS UNDER (26/09/2026): la primera ronda de tríos sin título, «「」» y «<:vs:…>», la bandera a los dos lados y «<:VSCUP:…>» que no es un VS",
+   "texto": "# FVS UNDER <:VSCUP:1383245195436363816> \n「Rfran」<:vs:1310348233545093140> 「Force」<:vs:1310348233545093140> 「Draax」\n\n「Sosa」<:vs:1310348233545093140> 「Joacoflz」<:vs:1310348233545093140> 「Dxg」\n\n「Agustin」<:vs:1310348233545093140> 「Mathias 」<:vs:1310348233545093140> 「Tokio」\n\n「Astral」<:vs:1310348233545093140>   「Molusco」<:vs:1310348233545093140> 「Ricardflex 」\n\n-# CUARTOS\n[🇪🇸Rfran🇪🇸] <:vs:1310348233545093140> [🇪🇨Ricard🇪🇨]\n[🇨🇱 Joaco 🇨🇱 ] <:vs:1310348233545093140> [🇺🇸Tokio🇦🇷]\n[🇻🇪Mathias🇪🇸] <:vs:1310348233545093140> [🇲🇽DXG🇲🇽]\n[🇦🇷Astral🇦🇷] <:vs:1310348233545093140> [🇨🇱Draxx🇨🇱]\n\n-# SEMIFINALES\n[Rfran] <:vs:1310348233545093140> [Joacoflz]\n[Mathias] <:vs:1310348233545093140> [Draax 🇨🇱]\n\n-# FINAL\n[Mathias 🇪🇸] <:vs:1310348233545093140> [Rfran 🇪🇸]",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "Rfran",
+       "Force",
+       "Draax"
+      ],
+      [
+       "Sosa",
+       "Joacoflz",
+       "Dxg"
+      ],
+      [
+       "Agustin",
+       "Mathias",
+       "Tokio"
+      ],
+      [
+       "Astral",
+       "Molusco",
+       "Ricardflex"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "Rfran🇪🇸",
+       "Ricard🇪🇨"
+      ],
+      [
+       "Joaco 🇨🇱",
+       "Tokio🇦🇷 🇺🇸"
+      ],
+      [
+       "Mathias🇪🇸 🇻🇪",
+       "DXG🇲🇽"
+      ],
+      [
+       "Astral🇦🇷",
+       "Draxx🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "SEMIFINALES",
+     [
+      [
+       "Rfran",
+       "Joacoflz"
+      ],
+      [
+       "Mathias",
+       "Draax 🇨🇱"
+      ]
+     ]
+    ],
+    [
+     "FINAL",
+     [
+      [
+       "Mathias 🇪🇸",
+       "Rfran 🇪🇸"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "que": "FFA · MULTIVERSE (08/10/2026): el equipo con guion entre dos nombres con bandera «Eliot🇲🇽 - Respawm🇭🇳»",
+   "texto": "# OCTAVOS\n[Eliot🇲🇽 - Respawm🇭🇳] 🆚 [Krinkross🇪🇸]\n[Tier🇲🇽] 🆚 [Hardcore]\n# CUARTOS\n[Eliot🇲🇽 + Respawn🇭🇳] 🆚 [Tier🇲🇽]",
+   "rondas": [
+    [
+     "OCTAVOS",
+     [
+      [
+       "Eliot🇲🇽 + Respawm🇭🇳",
+       "Krinkross🇪🇸"
+      ],
+      [
+       "Tier🇲🇽",
+       "Hardcore"
+      ]
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      [
+       "Eliot🇲🇽 + Respawn🇭🇳",
+       "Tier🇲🇽"
+      ]
+     ]
+    ]
+   ]
   }
  ],
  "veredictos": [
