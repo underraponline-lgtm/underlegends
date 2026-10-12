@@ -73,6 +73,13 @@ BONO = 1000
 CAZA_DESDE = '2026-10-12'
 PUNTOS_CAZA = 800
 CAZA_TOP, CAZA_DIAS = 8, 14
+#: ✨ EL EVENTO DORADO, UNA MISIÓN MÁS (Dlx, 12/10/2026: «4. Dale», a «el dorado sólo entre los servidores con pocos
+#: eventos, y una de las misiones sea “Jugá el evento dorado”»). La idea es que toda la Liga empuje a UN evento chico
+#: por semana en vez de repartirse: el organizador de un servidor con dos eventos por semana ve veinte personas en vez
+#: de nueve. Se cumple jugando el evento dorado de la semana —el que `multiplicadores` anota como `dorado.n` cuando se
+#: juega—, va aparte del bono como la cacería, y arranca la semana del lunes 19/10: ésta ya estaba sorteada
+DORADO_DESDE = '2026-10-19'
+PUNTOS_DORADO = 600
 #: hasta qué ronda llegó cada puesto de `Resultados` (como `rankings.LLEGO`)
 LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4, 'semifinal': 4, 'cuartos': 8,
          'octavos': 16, 'r32': 32, 'dieciseisavos': 32, 'r64': 64}
@@ -84,6 +91,16 @@ def _norm(s):
     import unicodedata
     s = unicodedata.normalize('NFD', str(s or '').lower())
     return ''.join(c for c in s if unicodedata.category(c) != 'Mn').strip()
+
+
+def _nombre_sv(sv):
+    """El nombre de un servidor para leer («Snake Rap»), o su sigla si no se encuentra."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            x = (json.load(f).get('servidores') or {}).get(sv) or {}
+        return x.get('nombre') or sv
+    except (OSError, ValueError):
+        return sv
 
 
 def elegir(sem, anterior=None):
@@ -229,6 +246,9 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
         m = max(sv.values())
         return {k for k, v in sv.items() if v == m}
     tops = {}
+    # ✨ el dorado de cada semana: `{id: (servidor, número del evento si ya se jugó)}`
+    dorados = {str(s.get('id') or ''): ((s.get('dorado') or {}).get('sv') or '', (s.get('dorado') or {}).get('n'))
+               for s in (mult or {}).get('semanas') or [] if s.get('dorado')}
     for s in (mult or {}).get('semanas') or []:
         base = s.get('sv_sorteo') or s.get('sv') or {}
         tramos = []
@@ -254,6 +274,10 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
         x_caza = presa(sid, ini, evs, desde)
         if x_caza:
             lista.append(['caza', 'Ganale un duelo a %s' % x_caza, 'caza', 1, PUNTOS_CAZA, x_caza])
+        if sid >= DORADO_DESDE and sid in dorados:
+            sv_d, n_d = dorados[sid]
+            lista.append(['dorado', 'Jugá el evento dorado de %s' % _nombre_sv(sv_d), 'dorado', 1, PUNTOS_DORADO,
+                          n_d])
         ev_s, svs_antes = {}, {}
         for e in evs:
             if e[2] is None or (desde and e[2] < desde):
@@ -272,12 +296,13 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
         prog, pts = {}, {}
         for quien in sorted(set(ev_s) | set(du_s)):
             vs = [int(x[5] in contra.get(quien, set())) if x[0] == 'caza'
+                  else int(x[5] is not None and any(e[0] == x[5] for e in ev_s.get(quien, []))) if x[0] == 'dorado'
                   else valor(x[0], ev_s.get(quien, []), du_s.get(quien, 0), svs_antes.get(quien, set()), top)
                   for x in lista]
             hechas = [cumplida(x[0], v, x[3]) for x, v in zip(lista, vs)]
-            # ⚠️ el bono es por las tres de siempre: la cacería va aparte
+            # ⚠️ el bono es por las tres de siempre: la cacería y el dorado van aparte
             p = sum(x[4] for x, h in zip(lista, hechas) if h) + (
-                BONO if all(h for x, h in zip(lista, hechas) if x[0] != 'caza') else 0)
+                BONO if all(h for x, h in zip(lista, hechas) if x[0] not in ('caza', 'dorado')) else 0)
             prog[quien] = vs
             if p:
                 pts[quien] = p
@@ -400,6 +425,18 @@ def _self_check():
        'Bea le ganó un duelo a Ana: cumple la cacería y suma sus %d' % PUNTOS_CAZA)
     ok(presa('2026-10-12', t2, evs2) == presa('2026-10-12', t2, evs2) and presa('2026-10-05', t1, evs2) is None,
        'la misma semana, la misma presa; y antes del 12/10, ninguna')
+    # ✨ el evento dorado: una misión más desde la semana del 19/10, que se cumple jugando ESE evento
+    t3 = dt.datetime(2026, 10, 21, 1, 0, tzinfo=U)       # martes 20/10, 9 PM ET: la semana del 19
+    evs3 = evs2 + [(50, 'SR', t3, 'Cid', 'octavos'), (51, 'FFA', t3, 'Bea', 'campeon')]
+    m3 = {'semanas': [{'id': '2026-10-12', 'sv': {}, 'dorado': {'sv': 'SR', 'desde': '2026-10-14T04:00:00Z', 'n': 40}},
+                      {'id': '2026-10-19', 'sv': {}, 'dorado': {'sv': 'SR', 'desde': '2026-10-20T04:00:00Z', 'n': 50}}]}
+    r3 = calcular(evs3, dus2, dt.datetime(2026, 10, 22, 12, 0, tzinfo=U), None, m3)
+    s3 = r3['semanas'].get('2026-10-19') or {}
+    do = [x for x in s3.get('lista') or [] if x[0] == 'dorado']
+    ok(len(do) == 1 and do[0][5] == 50 and not [x for x in r3['semanas']['2026-10-12']['lista'] if x[0] == 'dorado'],
+       'el dorado es misión desde la semana del 19/10 (la del 12 ya estaba sorteada)')
+    ok(s3['prog']['Cid'][-1] == 1 and s3['prog']['Bea'][-1] == 0 and (s3['pts'].get('Cid') or 0) >= PUNTOS_DORADO,
+       'Cid jugó el dorado (#50) y la cumple; Bea ganó otro evento y no')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

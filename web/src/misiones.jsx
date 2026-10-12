@@ -5,7 +5,7 @@
 import { MESES, limpio, num, quienMira } from './liga.js';
 import { Cara } from './piezas.jsx';
 
-const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil', caza: 'Cacería' };
+const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil', caza: 'Cacería', dorado: 'Evento dorado' };
 
 function fechaCorta(iso) {
   const d = new Date(String(iso || '') + 'T12:00:00');
@@ -28,7 +28,9 @@ export function Misiones({ liga }) {
     <div className="mi">
       <p className="dv-cab">Semana del {fechaCorta(M.sem)} · se renuevan {liga.dia(M.fin)}.
         {' '}Las mismas para todos, y se cumplen jugando: cada una suma a tu <b>Temporada</b>, y la fácil, la media y la difícil juntas, <b>+{num(M.bono)}</b> más.
-        {lista.some((x) => x.n === 'caza') ? ' La cacería va aparte: ganale un duelo a la presa de la semana, una de las más activas.' : ''}</p>
+        {lista.some((x) => x.n === 'caza') ? ' La cacería va aparte: ganale un duelo a la presa de la semana, una de las más activas.' : ''}
+        {/* ✨ el evento dorado (Dlx, 12/10/2026: «4. Dale»): sale entre los servidores que juegan poco */}
+        {lista.some((x) => x.n === 'dorado') ? ' El evento dorado también va aparte: es el de un servidor más chico, vale ×3, y jugarlo cumple la misión.' : ''}</p>
       <ol className="mi-lista">
         {lista.map((x, i) => {
           // 🔑 quien juega la temporada y todavía no hizo nada esta semana lleva 0, no «nada» (revisión del 05/10/2026)

@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.73",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T19:50:00-04:00",
+   "titulo": "Tareas nuevas en el Pase, y el evento dorado para los servidores chicos",
+   "items": [
+    "🎟️ **Pase de rapero**: «Votá en una encuesta», «Apostá en 3 batallas en vivo» y «Seguí a 5 raperos» reemplazan a las Tareas de jugar en DRA mientras DRA no organice eventos.",
+    "✨ Desde el lunes 19/10, el **evento dorado** sale entre los servidores que juegan menos, y jugarlo es una **misión** más de la semana."
+   ]
+  },
+  {
    "version": "2.72",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T19:30:00-04:00",

@@ -1326,7 +1326,8 @@ export const RACHA_CFG = { cada: 7, premio: 500, xp_ev: 10, xp_dia: 2, paso: 10,
 // 🎟️ lo que el Pase sabe contar: el «qué mide» de cada Tarea (`MIDE` en `bot/pase.py`). `dra` (eventos jugados en
 // DRA) y `caza` (buscados cazados) los manda el ciclo; los días (`activo`), las felicitaciones y las llaves en vivo
 // (`pase_log`) y los precios (`precios`) los ve pasar el objeto
-export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza'];
+//: 🏠 `voto`, `apuesta` y `sigue`: las Tareas que reemplazan a las de DRA mientras DRA no organice (`pase.SIN_DRA`)
+export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue'];
 const diaNum = (s) => Math.round(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DIA_MS);
 //: «hasta el final de la temporada», para las cuentas de temporada (un número y no `Infinity`: va a SQLite)
 const SIEMPRE = Number.MAX_SAFE_INTEGER;
@@ -6840,6 +6841,12 @@ export class Avisos {
     }
     if (mide === 'precio') {
       return this.sql.exec('SELECT COUNT(*) AS n FROM precios WHERE quien = ? AND t >= ? AND t < ?', quien, ini, fin)
+        .toArray()[0].n;
+    }
+    // 🏠 las que reemplazan a las de DRA (`pase.SIN_DRA`): votar en una encuesta, apostar en vivo y seguir raperos
+    if (mide === 'voto' || mide === 'apuesta' || mide === 'sigue') {
+      const tabla = { voto: 'votos', apuesta: 'apostado', sigue: 'sigue' }[mide];
+      return this.sql.exec('SELECT COUNT(*) AS n FROM ' + tabla + ' WHERE quien = ? AND t >= ? AND t < ?', quien, ini, fin)
         .toArray()[0].n;
     }
     if (mide === 'dra' || mide === 'caza') {

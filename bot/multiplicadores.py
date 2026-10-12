@@ -272,6 +272,24 @@ def sortear(svs, semilla):
     return out
 
 
+#: ✨ un servidor «chico» para el dorado: menos de esto en los últimos 14 días (3 por semana)
+DORADO_CHICO = 6
+
+
+def chicos(activos, evs, ahora):
+    """✨ De los servidores que juegan, los que juegan POCO: el dorado sale entre ellos (Dlx, 12/10/2026: «4. Dale»).
+
+    Medido ese día, en eventos por semana: FFA 19,7, DDF 7, la ACADEMIA 2,3, Snake Rap 2 y Urban 2. Con el dorado en
+    FFA, el evento que la Liga empuja es uno más de veinte; en un servidor chico es EL evento de la semana, y la Misión
+    del dorado (`misiones.DORADO_DESDE`) le lleva gente. Si ninguno es chico, entre todos los que juegan."""
+    desde = ahora - dt.timedelta(days=14)
+    n = {}
+    for e in evs:
+        if e[2] and e[2] >= desde:
+            n[e[1]] = n.get(e[1], 0) + 1
+    return sorted(sv for sv in activos if n.get(sv, 0) < DORADO_CHICO) or list(activos)
+
+
 def sortear_dorado(svs, ini, fin, semilla):
     """`{'sv', 'desde'}`: el servidor y desde qué día (00:00 ET), o `None`.
 
@@ -968,7 +986,7 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
             # el dorado, en un servidor que juega: uno sin eventos lo desperdiciaría
             activos = sorted({e[1] for e in evs if e[2] and e[2] >= ahora - dt.timedelta(days=14)}
                              & set(svs)) or svs
-            dor = sortear_dorado(activos, ini, fin, pid)
+            dor = sortear_dorado(chicos(activos, evs, ahora), ini, fin, pid)
             if dor:
                 rec['dorado'] = dor
             if len(svs) >= 2:
@@ -1091,6 +1109,13 @@ def _self_check():
        'el dorado cae de martes a sábado, a las 00:00 ET  %s %s' % (dor['sv'], dd.strftime('%a %d')))
     ok(sortear_dorado(svs, en(9, 27, 12), en(9, 28, 11), 'x') is None,
        'y en una semana de un día no hay dorado (no hay tiempo de anunciarlo)')
+    # ✨ el dorado, entre los que juegan poco (Dlx, 12/10/2026: «4. Dale»)
+    _ah = en(10, 19, 11)
+    _evs = [(i, 'FFA', _ah - dt.timedelta(days=1 + i % 10)) for i in range(20)] + \
+        [(100, 'SR', _ah - dt.timedelta(days=3)), (101, 'ACAD', _ah - dt.timedelta(days=2))]
+    ok(chicos(['ACAD', 'FFA', 'SR'], _evs, _ah) == ['ACAD', 'SR']
+       and chicos(['FFA'], _evs, _ah) == ['FFA'],
+       'el dorado sale entre los servidores que juegan poco; si no hay ninguno, entre todos los que juegan')
     # la guerra: pares, y gana el de más puntos por persona
     pares = emparejar(svs, 'x')
     ok(len(pares) == 2 and sorted(sum(pares, [])) == svs and len(emparejar(svs + ['EFA'], 'x')) == 2,

@@ -516,6 +516,8 @@ button.btn{background:transparent;cursor:pointer}
 .mi-dificil{border-top-color:#E41373}
 /* la cacería (08/10/2026): ganale un duelo a la presa de la semana; negro, como el Most Wanted */
 .mi-caza{border-top-color:var(--tinta)}
+/* ✨ la misión del evento dorado, con el dorado de los eventos dorados (`.evp-ev.dorado`) */
+.mi-dorado{border-top-color:#E7B622}
 .mi-m.ok{background:var(--caja)}
 .mi-niv{font:700 12px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
 .mi-t{font:900 17px/1.2 Archivo,sans-serif;text-wrap:balance}

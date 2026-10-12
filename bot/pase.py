@@ -67,7 +67,7 @@ COLA = (1000, 300)
 #: lo que el objeto sabe contar. `activo`: días de la racha · `fel`: felicitaciones · `vivo`: llaves en vivo
 #: distintas · `precio`: precios por cabeza · `dra`: eventos jugados en DRA · `caza`: buscados cazados (estos dos, del
 #: ciclo). Si se agrega uno, también en `PASE_MIDE` de `bot/avisos.js`
-MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza')
+MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue')
 #: las Tareas: `(id, texto, cómo se cumple, qué mide, meta, xp)`, en el orden en que se muestran
 DIARIAS = (
     ('entrar', 'Entrá hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
@@ -96,6 +96,18 @@ TEMPORADA = (
     ('dias30', 'Entrá 30 días', 'En toda la temporada: la página con tu cuenta, el bot o un evento.', 'activo', 30,
      3000),
 )
+#: 🏠 MIENTRAS DRA NO ORGANICE, SUS TRES TAREAS SE CAMBIAN POR ESTAS (Dlx, 12/10/2026, «6. B»). DRA no había hecho
+#: ningún evento en la T1, así que «Jugá un evento en DRA» y las dos de temporada no las podía cumplir nadie: eran 5.500
+#: XP fuera de alcance. Las de reemplazo no piden jugar —eso es de las Misiones— y valen lo mismo. Vuelven solas cuando
+#: DRA juega un evento en los últimos `DRA_DIAS` días (`dra_activo()`). Con ids propios: lo cumplido de una no es de otra
+SIN_DRA = {
+    'dra': ('voto', 'Votá en una encuesta', 'El Elegido del Most Wanted o el ×2 de la semana, en la página.', 'voto', 1,
+            500),
+    'dra3': ('apuesta3', 'Apostá en 3 batallas en vivo', 'Con tus Puntos de Tienda, en el chat de un servidor con el bot '
+             'en vivo.', 'apuesta', 3, 2000),
+    'dra5': ('sigue5', 'Seguí a 5 raperos', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 5, 3000),
+}
+DRA_DIAS = 14
 #: Puntos de Tienda por cada nivel (la billetera arranca con 5.000: `precios.INICIAL`)
 TIENDA_NIVEL = 150
 #: el color del nombre: el dorado del Pase
@@ -147,9 +159,16 @@ def diarias_de(dia):
     return [DIARIAS[0]] + [resto[(n + j) % len(resto)] for j in range(min(POR_DIA - 1, len(resto)))]
 
 
-def config(temp):
-    """Lo que lee el objeto: los números y los textos. La temporada (`temp`) separa un Pase del siguiente."""
-    lista = lambda xs: [list(t) for t in xs]
+def dra_activo(evs, ahora):
+    """🏠 ¿DRA jugó algún evento en los últimos `DRA_DIAS` días? `evs` con `sv` y su instante `t` (`hechas()`)."""
+    desde = ahora - dt.timedelta(days=DRA_DIAS)
+    return any(ev.get('sv') == 'DRA' and ev.get('t') and desde <= ev['t'] <= ahora for ev in evs or [])
+
+
+def config(temp, dra=True):
+    """Lo que lee el objeto: los números y los textos. La temporada (`temp`) separa un Pase del siguiente. Sin `dra`
+    (DRA no está organizando), sus Tareas van cambiadas por las de `SIN_DRA`."""
+    lista = lambda xs: [list(SIN_DRA[t[0]]) if not dra and t[0] in SIN_DRA else list(t) for t in xs]
     out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(), 'cola': list(COLA),
            'diarias': lista(DIARIAS), 'por_dia': POR_DIA, 'semanales': lista(SEMANALES),
            'temporada': lista(TEMPORADA), 'premios': premios(), 'publicar': list(PUBLICAR)}
@@ -258,7 +277,8 @@ def armar(ahora=None):
     sems = semanas(ahora)
     miembros = sorted(ids)
     h = hechas(sems, evs, _cazas(MW.leer()), buscador(PR.discords(pool)), set(miembros))
-    out = {'cfg': config(MU.temporada_actual(ahora)), 'sem': sems, 'miembros': miembros, 'hechas': h}
+    out = {'cfg': config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora)), 'sem': sems, 'miembros': miembros,
+           'hechas': h}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
 
@@ -387,6 +407,19 @@ def _self_check():
        'ninguna Tarea es una Misión (Dlx, 06/10: «hay TAREAS y misiones que son diferentes»)')
     ok(sum(1 for t in todas if t[3] == 'dra') == 3 and len(SEMANALES) == 5,
        'de DRA, jugar ahí (una semanal y dos de temporada); cinco semanales')
+    # 🏠 mientras DRA no organice, esas tres cambian (Dlx, 12/10/2026: «6. B»), valen lo mismo y no piden jugar
+    sd = config('t1', dra=False)
+    ids_sd = [t[0] for t in sd['semanales'] + sd['temporada']]
+    ok(not any(t[3] == 'dra' for t in sd['semanales'] + sd['temporada'])
+       and {'voto', 'apuesta3', 'sigue5'} <= set(ids_sd) and len(ids_sd) == len(set(ids_sd))
+       and sum(t[5] for t in sd['semanales'] + sd['temporada']) == sum(t[5] for t in SEMANALES + TEMPORADA)
+       and all(t[3] in MIDE for t in sd['semanales'] + sd['temporada']),
+       'sin DRA organizando, sus tres Tareas cambian por otras que valen lo mismo')
+    _ah = dt.datetime(2026, 10, 12, 23, tzinfo=dt.timezone.utc)
+    ok(dra_activo([{'sv': 'DRA', 't': _ah - dt.timedelta(days=3)}], _ah)
+       and not dra_activo([{'sv': 'DRA', 't': _ah - dt.timedelta(days=20)}, {'sv': 'FFA', 't': _ah}], _ah)
+       and [t[0] for t in config('t1')['semanales']] == [t[0] for t in SEMANALES],
+       'y vuelven solas cuando DRA juega un evento en las últimas dos semanas')
     # 📏 la regla de margen del informe: completar el Pase no puede pedir más de la mitad de lo que se puede juntar
     semanas_t1 = 11
     tope = semanas_t1 * (sum(t[5] for t in SEMANALES) + 7 * sum(t[5] for t in diarias_de('2026-10-12')))
