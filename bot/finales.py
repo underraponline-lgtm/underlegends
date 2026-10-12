@@ -172,11 +172,19 @@ def respuestas():
         return {}
 
 
+def pendientes(estado):
+    """Las llaves con preguntas sin aplicar. ⚠️ NUNCA UNA RETIRADA (`retirada` en `datos/finales.json`): la pregunta
+    sigue en Discord con su menú, y un clic tardío no tiene que entrar al ranking. El 12/10/2026 se retiraron las de
+    tres llaves que juntaban gente sin «+» (Fecha Rempalago Vol. 64, DENME MODERADOR LPM y Cuentas Pendientes V.1):
+    ver `llaves_a_entrada.junta_sin_mas()`."""
+    return {k: f for k, f in estado.items() if isinstance(f, dict) and not f.get('retirada')
+            and len(f.get('respondidas') or {}) < len(f.get('preguntas') or [])}
+
+
 def aplicar_respuestas(resp=None):
     """Lo que contestaron los organizadores, a `datos/decisiones.json` (`batallas`). Devuelve cuántas."""
     estado = _cargar()
-    pend = {k: f for k, f in estado.items() if isinstance(f, dict)
-            and len(f.get('respondidas') or {}) < len(f.get('preguntas') or [])}
+    pend = pendientes(estado)
     if not pend:
         return 0
     resp = respuestas() if resp is None else resp
@@ -244,6 +252,8 @@ def _self_check():
         malos.append('se pregunta una de hace más de %d días' % DIAS)
     if len(para_preguntar([dict(f, llave=str(i)) for i in range(10)], {}, hoy)) != TOPE:
         malos.append('el tope por corrida')
+    if pendientes({'1': dict(f, retirada='junta sin «+»'), '2': f}) != {'2': f}:
+        malos.append('una pregunta retirada no se aplica aunque la contesten')
     for x in malos:
         print('   ❌ %s' % x)
     print('   %s preguntas al organizador: el mensaje, los botones, el menú y cuándo' % ('❌' if malos else '✅'))
