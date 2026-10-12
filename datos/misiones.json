@@ -134,6 +134,11 @@
      2,
      2
     ],
+    "Axinu": [
+     1,
+     0,
+     8
+    ],
     "BLITZ": [
      1,
      0,
@@ -167,10 +172,15 @@
     "Bloody": [
      1,
      0,
-     16
+     8
     ],
     "Bludi🇨🇴": [
      0,
+     0,
+     8
+    ],
+    "CJ": [
+     1,
      0,
      8
     ],
@@ -284,6 +294,11 @@
      1,
      4
     ],
+    "Drezz🇵🇪": [
+     1,
+     0,
+     8
+    ],
     "Dynoco": [
      1,
      2,
@@ -318,6 +333,16 @@
      0,
      0,
      8
+    ],
+    "Eliot🇲🇽": [
+     1,
+     0,
+     1
+    ],
+    "Eliot🇲🇽 - Respawm🇭🇳": [
+     0,
+     1,
+     99
     ],
     "Elsoolar": [
      1,
@@ -358,6 +383,11 @@
      1,
      0,
      16
+    ],
+    "Eze": [
+     1,
+     0,
+     4
     ],
     "Ezias🥈✒️🧢🐍": [
      1,
@@ -412,7 +442,7 @@
     "Gocho": [
      1,
      0,
-     32
+     4
     ],
     "Greyfitsh🇵🇦": [
      1,
@@ -427,6 +457,16 @@
     "HH": [
      1,
      1,
+     4
+    ],
+    "Hardcore": [
+     1,
+     0,
+     16
+    ],
+    "Hasan🇦🇷": [
+     1,
+     0,
      4
     ],
     "Henry": [
@@ -509,6 +549,11 @@
      0,
      8
     ],
+    "Krinkross🇪🇸": [
+     1,
+     0,
+     16
+    ],
     "Krish": [
      1,
      0,
@@ -538,6 +583,11 @@
      1,
      0,
      8
+    ],
+    "Launnok🇨🇱": [
+     1,
+     0,
+     16
     ],
     "Leonart": [
      1,
@@ -704,6 +754,11 @@
      0,
      2
     ],
+    "NewCharacter🇦🇷": [
+     1,
+     1,
+     4
+    ],
     "Noa": [
      0,
      2,
@@ -844,6 +899,11 @@
      1,
      4
     ],
+    "Respawn": [
+     1,
+     0,
+     1
+    ],
     "Reyes": [
      1,
      0,
@@ -893,6 +953,11 @@
      0,
      0,
      16
+    ],
+    "Saiko": [
+     1,
+     0,
+     8
     ],
     "Sami": [
      1,
@@ -984,6 +1049,11 @@
      0,
      8
     ],
+    "Tier": [
+     1,
+     1,
+     8
+    ],
     "Trot": [
      1,
      1,
@@ -1058,6 +1128,11 @@
      0,
      0,
      8
+    ],
+    "Xplic🇨🇱": [
+     1,
+     0,
+     16
     ],
     "YOUNG VLAD 🇨🇴": [
      1,
@@ -1184,6 +1259,7 @@
     "Ariaxer": 300,
     "Armando Faso🇦🇫": 300,
     "Assuan": 1300,
+    "Axinu": 300,
     "BLITZ": 300,
     "BNA": 300,
     "BTRX": 300,
@@ -1191,6 +1267,7 @@
     "BastyRetro": 2900,
     "Benjixo": 1300,
     "Bloody": 300,
+    "CJ": 300,
     "Cajita": 300,
     "Carlosmo": 1600,
     "Carlosss": 1600,
@@ -1207,12 +1284,14 @@
     "Deuxs": 300,
     "Dominick": 1300,
     "Drexx": 300,
+    "Drezz🇵🇪": 300,
     "Dynoco": 1300,
     "Dyzz": 900,
     "EGI": 300,
     "EIDP": 2900,
     "Eclipsito": 2900,
     "Efimero": 300,
+    "Eliot🇲🇽": 1300,
     "Elsoolar": 300,
     "EmiZor": 300,
     "Emily Family": 300,
@@ -1220,6 +1299,7 @@
     "Erian": 2900,
     "Erik": 1300,
     "Erizo": 300,
+    "Eze": 300,
     "Ezias🥈✒️🧢🐍": 300,
     "F1THER": 300,
     "FAT PENIS": 300,
@@ -1231,6 +1311,8 @@
     "Greyfitsh🇵🇦": 300,
     "Guess": 300,
     "HH": 300,
+    "Hardcore": 300,
+    "Hasan🇦🇷": 300,
     "Henry": 300,
     "Hinjkybesuk": 300,
     "Holden": 300,
@@ -1244,11 +1326,13 @@
     "Keider": 300,
     "Korey": 300,
     "Kravitz": 300,
+    "Krinkross🇪🇸": 300,
     "Krish": 300,
     "Kyss": 300,
     "LEWITO": 300,
     "LKS 🇨🇱": 300,
     "LRS": 300,
+    "Launnok🇨🇱": 300,
     "Leonart": 300,
     "Letrao🇨🇱": 1300,
     "Liam": 300,
@@ -1277,6 +1361,7 @@
     "NYCO": 300,
     "Nemi": 300,
     "Neo": 1300,
+    "NewCharacter🇦🇷": 300,
     "Noa": 1000,
     "Noone": 300,
     "Number": 300,
@@ -1300,6 +1385,7 @@
     "RT": 1300,
     "Ram": 300,
     "Rayo": 300,
+    "Respawn": 1300,
     "Reyes": 300,
     "Richard": 300,
     "Riolu": 300,
@@ -1309,6 +1395,7 @@
     "Ruvick": 300,
     "SAEVA": 300,
     "SINTEXT": 300,
+    "Saiko": 300,
     "Sami": 300,
     "Santi": 300,
     "Santo Trinidad 🇨🇴": 300,
@@ -1324,6 +1411,7 @@
     "Tam": 1300,
     "Tenor": 300,
     "Teo": 300,
+    "Tier": 300,
     "Trot": 300,
     "Tuca": 300,
     "Tusicario": 300,
@@ -1335,6 +1423,7 @@
     "Verc": 2900,
     "Walker": 2900,
     "Xclusivo": 2900,
+    "Xplic🇨🇱": 300,
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
@@ -1375,6 +1464,7 @@
   "Ariaxer": 300,
   "Armando Faso🇦🇫": 300,
   "Assuan": 1300,
+  "Axinu": 300,
   "BLITZ": 300,
   "BNA": 300,
   "BTRX": 300,
@@ -1382,6 +1472,7 @@
   "BastyRetro": 2900,
   "Benjixo": 1300,
   "Bloody": 300,
+  "CJ": 300,
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
@@ -1398,12 +1489,14 @@
   "Deuxs": 300,
   "Dominick": 1300,
   "Drexx": 300,
+  "Drezz🇵🇪": 300,
   "Dynoco": 1300,
   "Dyzz": 900,
   "EGI": 300,
   "EIDP": 2900,
   "Eclipsito": 2900,
   "Efimero": 300,
+  "Eliot🇲🇽": 1300,
   "Elsoolar": 300,
   "EmiZor": 300,
   "Emily Family": 300,
@@ -1411,6 +1504,7 @@
   "Erian": 2900,
   "Erik": 1300,
   "Erizo": 300,
+  "Eze": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "F1THER": 300,
   "FAT PENIS": 300,
@@ -1422,6 +1516,8 @@
   "Greyfitsh🇵🇦": 300,
   "Guess": 300,
   "HH": 300,
+  "Hardcore": 300,
+  "Hasan🇦🇷": 300,
   "Henry": 300,
   "Hinjkybesuk": 300,
   "Holden": 300,
@@ -1435,11 +1531,13 @@
   "Keider": 300,
   "Korey": 300,
   "Kravitz": 300,
+  "Krinkross🇪🇸": 300,
   "Krish": 300,
   "Kyss": 300,
   "LEWITO": 300,
   "LKS 🇨🇱": 300,
   "LRS": 300,
+  "Launnok🇨🇱": 300,
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Liam": 300,
@@ -1468,6 +1566,7 @@
   "NYCO": 300,
   "Nemi": 300,
   "Neo": 1300,
+  "NewCharacter🇦🇷": 300,
   "Noa": 1000,
   "Noone": 300,
   "Number": 300,
@@ -1491,6 +1590,7 @@
   "RT": 1300,
   "Ram": 300,
   "Rayo": 300,
+  "Respawn": 1300,
   "Reyes": 300,
   "Richard": 300,
   "Riolu": 300,
@@ -1500,6 +1600,7 @@
   "Ruvick": 300,
   "SAEVA": 300,
   "SINTEXT": 300,
+  "Saiko": 300,
   "Sami": 300,
   "Santi": 300,
   "Santo Trinidad 🇨🇴": 300,
@@ -1515,6 +1616,7 @@
   "Tam": 1300,
   "Tenor": 300,
   "Teo": 300,
+  "Tier": 300,
   "Trot": 300,
   "Tuca": 300,
   "Tusicario": 300,
@@ -1526,6 +1628,7 @@
   "Verc": 2900,
   "Walker": 2900,
   "Xclusivo": 2900,
+  "Xplic🇨🇱": 300,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
   "Zaza": 300,
