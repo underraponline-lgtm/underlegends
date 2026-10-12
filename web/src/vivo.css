@@ -943,6 +943,11 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 /* 3 · «NUEVO»: su primer evento es de esta semana */
 .rk-nuevo{flex:none;font-style:normal;font-size:12px;letter-spacing:.08em;padding:2px 4px;background:#29B298;color:#030304}
 .rk-chips button.rk-chip-nuevo:not(.on){border-color:#29B298;box-shadow:inset 0 0 0 1px #29B298}
+/* 🏆 la línea de los 16 que clasifican al torneo de cierre de la T1 (sólo con `?prev=fin` hasta que Dlx lo anuncie) */
+.rk-t tr.rk-corte td{padding:0;border:0;background:none}
+.rk-corte span{display:block;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);
+  font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
+.rk-final{margin:10px 0 0;padding:8px 10px;border-left:3px solid var(--magenta);background:var(--caja);font-size:14px}
 /* 2 · los que tenés cerca */
 .rk-cerca{margin:0 0 16px}
 .rk-cerca-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-bottom:10px;

@@ -172,14 +172,14 @@ const SUBS = {
     baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
-    valor: [(f) => f.ovr || 0, 'de OVR'], podio: 'temporada',
+    valor: [(f) => f.ovr || 0, 'de OVR'], podio: 'temporada', final: 16,
   },
   competitivo: {
     et: 'Competitivo', filas: (L) => (L.d.tabla || []).filter((f) => f.rg), orden: 'sc',
     cols: ['i', 'n', 'rg', 'sc', 'ev', 'wr'], movil: ['i', 'n', 'rg', 'sc'],
     baj: <>Ordenado por <b>Score</b>, que mide la calidad y no la cantidad. De ahí sale el rango, el mismo en todas las cartas.</>,
     // sin `dato` tampoco: la carta Competitiva tiene el Score en grande
-    valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo',
+    valor: [(f) => f.sc || 0, 'de Score', 1], podio: 'competitivo', final: 16,
     vacio: (L) => {
       const pide = req(L, 'competitivo') || 10;
       const c = (L.d.tabla || []).slice().sort((a, b) => (b.ev || 0) - (a.ev || 0))[0];
@@ -366,8 +366,26 @@ function Vecino({ x, cfg, f, rol, txt }) {
     </a>
   );
 }
-function Cerca({ x, cfg, base, i, sub }) {
+// 🏆 LA GRAN FINAL DE LA T1 (Dlx, 12/10/2026): clasifican los 16 primeros CON NÚMERO de Temporada y de Competitivo,
+// dos torneos, y quien está en los dos juega los dos. Fecha y nombre los anuncia Dlx: hasta entonces, sólo con la
+// vista previa `?prev=fin` (`lg:prev-fin`)
+function verFinal() {
+  try { return localStorage.getItem('lg:prev-fin') === '1'; } catch (e) { return false; }
+}
+function clasificados(cfg, base) {
+  if (!cfg.final || !verFinal()) return null;
+  const out = [];
+  for (const f of base) {
+    if (out.length >= cfg.final) break;
+    if (numero(cfg, f)) out.push(f);
+  }
+  return out;
+}
+function Cerca({ x, cfg, base, i, sub, clas }) {
   const yo = base[i];
+  const dentro = clas && clas.includes(yo);
+  const corte = clas && clas.length === cfg.final ? clas[clas.length - 1] : null;
+  const falta = clas && !dentro && corte && cfg.valor ? distancia(cfg, corte, yo) : null;
   const arriba = base.slice(0, i).reverse().find((g) => numero(cfg, g));
   const abajo = base.slice(i + 1).find((g) => numero(cfg, g));
   const igual = (a, b) => numero(cfg, a) === numero(cfg, b);
@@ -388,6 +406,11 @@ function Cerca({ x, cfg, base, i, sub }) {
         <Vecino x={x} cfg={cfg} f={yo} rol="yo" txt={yoTxt} />
         <Vecino x={x} cfg={cfg} f={abajo} rol="abajo" txt={tB} />
       </div>
+      {clas && numero(cfg, yo) ? (
+        <p className="rk-final">{dentro ? <>🏆 Si la temporada terminara hoy, <b>jugás el torneo de cierre</b>.</>
+          : falta ? <>🏆 Te faltan <b>{falta}</b> para entrar al torneo de cierre: clasifican los {cfg.final} primeros.</>
+            : null}</p>
+      ) : null}
     </section>
   );
 }
@@ -545,6 +568,9 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
   };
 
   const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 🏆 los que clasifican al torneo de cierre (ver `clasificados()`), y la fila después de la cual va la línea
+  const clas = useMemo(() => clasificados(cfg, base), [base, sub]); // eslint-disable-line react-hooks/exhaustive-deps
+  const corteK = clas && clas.length === cfg.final ? clave(clas[clas.length - 1]) : null;
 
   // al cambiar de ranking: orden, búsqueda y «ver más» vuelven a cero (los filtros de servidor y país se quedan:
   // quien mira «sólo FFA» quiere seguir viendo FFA en Duelos)
@@ -796,7 +822,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
               <div className="rk-invita"><span>¿Y vos? Entrá con Discord y te marcamos en cada ranking.</span>
                 <button type="button" className="btn verde chico" onClick={accion.cuenta}>Entrar</button></div>
             ) : null}
-            {iYo >= 0 && lugar && lugar.n ? <Cerca x={x} cfg={cfg} base={base} i={iYo} sub={sub} /> : null}
+            {iYo >= 0 && lugar && lugar.n ? <Cerca x={x} cfg={cfg} base={base} i={iYo} sub={sub} clas={clas} /> : null}
             {!base.length ? <p className="rk-vacio">{vacioTxt}</p>
               : !fs.length ? (
                 <p className="rk-vacio">Nadie con ese filtro. <button type="button" className="rk-lnk" onClick={() => { setQ(''); setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }}>Sacar los filtros</button></p>
@@ -819,6 +845,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
                     <tbody>
                       {vis.map((f) => {
                         const k = clave(f);
+                        const esCorte = corteK === k && !orden && !q && !sv && !cc && !soloSigo && !soloNuevos;
                         const ab = abierta === k;
                         const cl = [k === miFila ? 'yo' : '', f.fc ? 'fc' : '', cfg.sinPuesto && cfg.sinPuesto(f) ? 'chica' : '', ab ? 'abierta' : ''].filter(Boolean).join(' ');
                         const puede = cfg.grupo || f.k;
@@ -831,6 +858,9 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
                             </tr>
                             {ab ? (
                               <tr className="rk-det"><td colSpan={cols.length}><Detalle x={x} cfg={cfg} f={f} perf={perf} /></td></tr>
+                            ) : null}
+                            {esCorte ? (
+                              <tr className="rk-corte"><td colSpan={cols.length}><span>🏆 Hasta acá clasifican al torneo de cierre de la T1</span></td></tr>
                             ) : null}
                           </Fragment>
                         );
