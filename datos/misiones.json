@@ -1542,10 +1542,52 @@
     ]
    ],
    "prog": {
+    "AFR": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Ariaxer": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Benjixo": [
+     1,
+     4,
+     4,
+     0
+    ],
+    "Cajita": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "DO-C": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Efimero": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Elbesaabuelas": [
      1,
      8,
      8,
+     0
+    ],
+    "EmiZor": [
+     1,
+     4,
+     4,
      0
     ],
     "Erian": [
@@ -1554,10 +1596,40 @@
      4,
      0
     ],
-    "Keider": [
+    "Guess": [
      1,
+     2,
+     2,
+     0
+    ],
+    "JJ": [
+     1,
+     1,
+     1,
+     0
+    ],
+    "Keider": [
+     2,
      4,
      4,
+     0
+    ],
+    "Lvel": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Makmah": [
+     1,
+     2,
+     2,
+     0
+    ],
+    "NC": [
+     1,
+     2,
+     2,
      0
     ],
     "Number VE": [
@@ -1566,7 +1638,43 @@
      8,
      0
     ],
+    "OEP": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "OG": [
+     1,
+     2,
+     2,
+     0
+    ],
+    "ONZASS": [
+     1,
+     4,
+     4,
+     0
+    ],
+    "Player": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Snow": [
+     1,
+     1,
+     1,
+     0
+    ],
     "Teito": [
+     1,
+     8,
+     8,
+     0
+    ],
+    "Teo": [
      1,
      8,
      8,
@@ -1578,7 +1686,37 @@
      2,
      0
     ],
+    "Verc": [
+     1,
+     1,
+     1,
+     0
+    ],
     "Walker": [
+     1,
+     1,
+     1,
+     0
+    ],
+    "Xclusivo": [
+     1,
+     4,
+     4,
+     0
+    ],
+    "Zignos": [
+     1,
+     8,
+     8,
+     0
+    ],
+    "doble h": [
+     1,
+     8,
+     8,
+     0
+    ],
+    "yinn": [
      1,
      1,
      1,
@@ -1586,10 +1724,22 @@
     ]
    },
    "pts": {
+    "Benjixo": 600,
+    "EmiZor": 600,
     "Erian": 600,
-    "Keider": 600,
+    "Guess": 600,
+    "JJ": 1600,
+    "Keider": 900,
+    "Makmah": 600,
+    "NC": 600,
+    "OG": 600,
+    "ONZASS": 600,
+    "Snow": 1600,
     "TøKīØ🦠🧠": 600,
-    "Walker": 1600
+    "Verc": 1600,
+    "Walker": 1600,
+    "Xclusivo": 600,
+    "yinn": 1600
    }
   }
  },
@@ -1618,7 +1768,7 @@
   "BTRX": 300,
   "Badterne": 300,
   "BastyRetro": 2900,
-  "Benjixo": 1300,
+  "Benjixo": 1900,
   "Bloody": 300,
   "CJ": 300,
   "Cajita": 300,
@@ -1648,7 +1798,7 @@
   "Efimero": 300,
   "Eliot": 1300,
   "Elsoolar": 300,
-  "EmiZor": 300,
+  "EmiZor": 900,
   "Emily Family": 300,
   "Enkil 🇦🇷": 300,
   "Erian": 3500,
@@ -1664,7 +1814,7 @@
   "Global Hustler": 1000,
   "Gocho": 300,
   "Greyfitsh🇵🇦": 300,
-  "Guess": 1300,
+  "Guess": 1900,
   "HH": 300,
   "Hardcore": 300,
   "Hassan": 300,
@@ -1673,12 +1823,12 @@
   "Holden": 300,
   "ISAIAS": 300,
   "Iguana": 300,
-  "JJ": 1300,
+  "JJ": 2900,
   "JOSHU": 2900,
   "Juasmio": 300,
   "Jult": 300,
   "Jupiter": 1300,
-  "Keider": 900,
+  "Keider": 1200,
   "Kminant": 300,
   "Korey": 300,
   "Kravitz": 300,
@@ -1703,7 +1853,7 @@
   "MHS": 300,
   "MTZ": 300,
   "Majiztral": 900,
-  "Makmah": 2900,
+  "Makmah": 3500,
   "Malva": 300,
   "Marto": 300,
   "Mathhias": 300,
@@ -1715,7 +1865,7 @@
   "Mr Still Ballin": 2900,
   "Musicdum": 300,
   "N1k": 300,
-  "NC": 900,
+  "NC": 1500,
   "NXUZ": 600,
   "NYCO": 300,
   "Nemi": 300,
@@ -1724,8 +1874,8 @@
   "Noa": 1000,
   "Noone": 300,
   "Number": 300,
-  "OG": 2900,
-  "ONZASS": 900,
+  "OG": 3500,
+  "ONZASS": 1500,
   "Oasis": 2900,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
@@ -1763,7 +1913,7 @@
   "Selek": 300,
   "Sin Limites": 300,
   "Six": 2900,
-  "Snow": 2900,
+  "Snow": 4500,
   "Soneto": 300,
   "Sosa": 300,
   "Soulb": 300,
@@ -1780,9 +1930,9 @@
   "Valdoza": 300,
   "Vandu": 2900,
   "Velatz": 2900,
-  "Verc": 2900,
+  "Verc": 4500,
   "Walker": 4500,
-  "Xclusivo": 2900,
+  "Xclusivo": 3500,
   "Xplic🇨🇱": 300,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 300,
@@ -1803,7 +1953,7 @@
   "setesfifi": 300,
   "tnr": 300,
   "wei shenlong": 300,
-  "yinn": 1300
+  "yinn": 2900
  },
  "temp": "prueba"
 }

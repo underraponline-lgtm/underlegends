@@ -20736,5 +20736,281 @@
     1250
    ]
   ]
+ },
+ "458": {
+  "dia": "2026-10-12",
+  "escala": "16+",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559278845259948165"
+  ],
+  "n": 458,
+  "nombre": "LA REDENCIÓN",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "OEP"
+      ],
+      "yinn",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Snow",
+       "Cajita"
+      ],
+      "Snow",
+      "triple (3 bandas, pasan 2); Revivido: snow"
+     ],
+     [
+      [
+       "Benjixo",
+       "AFR"
+      ],
+      "Benjixo",
+      "triple (3 bandas, pasan 2); Revivido: BENJIXO🇦🇷"
+     ],
+     [
+      [
+       "JJ",
+       "Lvel 🇻🇪"
+      ],
+      "JJ",
+      "triple (3 bandas, pasan 2); Revivido: JJ 🇨🇴"
+     ],
+     [
+      [
+       "Makmah",
+       "Keider"
+      ],
+      "Makmah",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Guess",
+       "Ariaxer"
+      ],
+      "Guess",
+      "triple (3 bandas, pasan 2); Revivido: Guess 🇦🇷"
+     ],
+     [
+      [
+       "Xclusivo",
+       "Player"
+      ],
+      "Xclusivo",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Zignos",
+       "DO-C"
+      ],
+      "Zignos",
+      "triple (3 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, yinn",
+       "Snow, Teo"
+      ],
+      "Verc, yinn",
+      ""
+     ],
+     [
+      [
+       "JJ, ONZASS",
+       "Benjixo, doble h"
+      ],
+      "JJ, ONZASS",
+      ""
+     ],
+     [
+      [
+       "Makmah, NC",
+       "Guess, Efimero"
+      ],
+      "Makmah, NC",
+      ""
+     ],
+     [
+      [
+       "Xclusivo, OG",
+       "Zignos, EmiZor"
+      ],
+      "Xclusivo, OG",
+      "Revivido: OG🇻🇪; Revivido: EMI🇲🇽"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, yinn, Snow",
+       "JJ, ONZASS, Benjixo"
+      ],
+      "Verc, yinn, Snow",
+      ""
+     ],
+     [
+      [
+       "Makmah, NC, Guess",
+       "Xclusivo, OG, EmiZor"
+      ],
+      "Makmah, NC, Guess",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, yinn, Snow, JJ",
+       "Makmah, NC, Guess, OG"
+      ],
+      "Verc, yinn, Snow, JJ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "JJ",
+    "Campeón",
+    3000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    2687
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "Verc",
+    "Campeón",
+    2500
+   ],
+   [
+    "yinn",
+    "Campeón",
+    2500
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    2187
+   ],
+   [
+    "Benjixo",
+    "Semifinal",
+    2125
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    2125
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "ONZASS",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    1750
+   ],
+   [
+    "AFR",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cajita",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "OEP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "doble h",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

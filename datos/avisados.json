@@ -8447,5 +8447,358 @@
    ]
   ],
   "v": 2
+ },
+ "458": {
+  "antes": {
+   "Ariaxer": [
+    58,
+    83,
+    false
+   ],
+   "Benjixo": [
+    176,
+    46,
+    true
+   ],
+   "Cajita": [
+    229,
+    157,
+    true
+   ],
+   "DO-C": [
+    290,
+    254,
+    true
+   ],
+   "Efimero": [
+    194,
+    87,
+    true
+   ],
+   "EmiZor": [
+    215,
+    134,
+    true
+   ],
+   "Guess": [
+    37,
+    47,
+    false
+   ],
+   "JJ": [
+    180,
+    55,
+    true
+   ],
+   "Keider": [
+    81,
+    122,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "NC": [
+    18,
+    21,
+    false
+   ],
+   "OEP": [
+    401,
+    395,
+    true
+   ],
+   "OG": [
+    28,
+    32,
+    false
+   ],
+   "ONZASS": [
+    172,
+    39,
+    true
+   ],
+   "Player": [
+    46,
+    60,
+    false
+   ],
+   "Snow": [
+    2,
+    2,
+    false
+   ],
+   "Teo": [
+    80,
+    121,
+    false
+   ],
+   "Verc": [
+    26,
+    30,
+    false
+   ],
+   "Xclusivo": [
+    169,
+    20,
+    true
+   ],
+   "Zignos": [
+    12,
+    14,
+    false
+   ],
+   "doble h": [
+    131,
+    255,
+    false
+   ],
+   "yinn": [
+    15,
+    17,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "yinn",
+    "OEP",
+    "yinn"
+   ],
+   [
+    "Snow",
+    "Cajita",
+    "Snow"
+   ],
+   [
+    "Benjixo",
+    "AFR",
+    "Benjixo"
+   ],
+   [
+    "JJ",
+    "Lvel 🇻🇪",
+    "JJ"
+   ],
+   [
+    "Makmah",
+    "Keider",
+    "Makmah"
+   ],
+   [
+    "Guess",
+    "Ariaxer",
+    "Guess"
+   ],
+   [
+    "Xclusivo",
+    "Player",
+    "Xclusivo"
+   ],
+   [
+    "Zignos",
+    "DO-C",
+    "Zignos"
+   ],
+   [
+    "Verc, yinn",
+    "Snow, Teo",
+    "Verc, yinn"
+   ],
+   [
+    "JJ, ONZASS",
+    "Benjixo, doble h",
+    "JJ, ONZASS"
+   ],
+   [
+    "Makmah, NC",
+    "Guess, Efimero",
+    "Makmah, NC"
+   ],
+   [
+    "Xclusivo, OG",
+    "Zignos, EmiZor",
+    "Xclusivo, OG"
+   ],
+   [
+    "Verc, yinn, Snow",
+    "JJ, ONZASS, Benjixo",
+    "Verc, yinn, Snow"
+   ],
+   [
+    "Makmah, NC, Guess",
+    "Xclusivo, OG, EmiZor",
+    "Makmah, NC, Guess"
+   ],
+   [
+    "Verc, yinn, Snow, JJ",
+    "Makmah, NC, Guess, OG",
+    "Verc, yinn, Snow, JJ"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 5,
+   "Benjixo": 5,
+   "Cajita": 2,
+   "DO-C": 1,
+   "Efimero": 6,
+   "EmiZor": 7,
+   "Guess": 6,
+   "JJ": 7,
+   "Keider": 4,
+   "Makmah": 37,
+   "NC": 22,
+   "OEP": 1,
+   "OG": 8,
+   "ONZASS": 8,
+   "Player": 6,
+   "Snow": 33,
+   "Teo": 4,
+   "Verc": 4,
+   "Xclusivo": 15,
+   "Zignos": 18,
+   "doble h": 1,
+   "yinn": 16
+  },
+  "fecha": "12/10",
+  "firma": "7289a391d7bca96b",
+  "msg": "1559308035636334683",
+  "nombre": "LA REDENCIÓN",
+  "num": 458,
+  "participantes": 24,
+  "sello": {
+   "JJ": "",
+   "Snow": "db84f6f20237:9df1984d05ab",
+   "Verc": "8cbf7a33b8b4:9df1984d05ab",
+   "yinn": "053c42d3e8bb:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T20:53:24Z",
+  "tabla": [
+   [
+    "JJ",
+    "Campeón",
+    3000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    2687
+   ],
+   [
+    "Verc",
+    "Campeón",
+    2500
+   ],
+   [
+    "yinn",
+    "Campeón",
+    2500
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    2187
+   ],
+   [
+    "Benjixo",
+    "Semifinal",
+    2125
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    2125
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "ONZASS",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Xclusivo",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "doble h",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OEP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cajita",
+    "Octavos",
+    1250
+   ],
+   [
+    "AFR",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
