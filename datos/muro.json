@@ -244,6 +244,7 @@
 "miniboy": {
 "rg": "D",
 "c": [
+"competitivo",
 "servidor"
 ]
 },
@@ -5340,6 +5341,14 @@
 "Miniboy"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-12T17:53:06Z",
+"quien": [
+"Miniboy"
+],
+"carta": "competitivo"
 }
 ]
 }
