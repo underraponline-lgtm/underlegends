@@ -1,29 +1,365 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
+  "1200": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "19": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "7": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "aby": {
+   "servidor": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "abyssus": {
+   "temporada": "2026-10-12"
+  },
+  "acry": {
+   "temporada": "2026-10-12"
+  },
+  "agre": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "agustin51k": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "aktybo": {
+   "temporada": "2026-10-12"
+  },
   "alexi": {
    "bloq-competitivo": "2026-10-10",
    "bloq-pais": "2026-10-10",
    "competitivo": "2026-10-10",
-   "pais": "2026-10-10"
+   "pais": "2026-10-10",
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "alonso": {
    "bloq-competitivo": "2026-10-11",
    "bloq-pais": "2026-10-11",
    "competitivo": "2026-10-11",
-   "pais": "2026-10-11"
+   "pais": "2026-10-11",
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "andres": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "arez": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "badterne": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "baltrip": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "bastyretro": {
+   "temporada": "2026-10-12"
+  },
+  "benjixo": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "benju": {
+   "servidor": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "benshi": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "betelguese": {
+   "servidor": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "blitz": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "bloody": {
+   "temporada": "2026-10-12"
+  },
+  "btrece": {
+   "temporada": "2026-10-12"
+  },
+  "btrx": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "caliz": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "camila": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "carlos": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "catarsis": {
+   "temporada": "2026-10-12"
+  },
+  "char": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "chop": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "cinexfilo": {
+   "temporada": "2026-10-12"
+  },
+  "cj": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "clitax": {
+   "servidor": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "crackandkrank": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "criszj": {
    "bloq-competitivo": "2026-10-11",
    "bloq-pais": "2026-10-11",
    "competitivo": "2026-10-11",
-   "pais": "2026-10-11"
+   "pais": "2026-10-11",
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "damian": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "dcet": {
+   "temporada": "2026-10-12"
+  },
+  "deluxe": {
+   "temporada": "2026-10-12"
+  },
+  "denik": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "didyer": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "dios": {
+   "temporada": "2026-10-12"
+  },
+  "dominick": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "dxg": {
+   "temporada": "2026-10-12"
+  },
+  "dynoco": {
+   "temporada": "2026-10-12"
+  },
+  "dyzz": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "eclipsito": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "efimero": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "eidp": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "elhombreeyau": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "elingetimp": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "elpibeosiris": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "elsoolar": {
    "bloq-competitivo": "2026-10-09",
    "bloq-pais": "2026-10-09",
    "competitivo": "2026-10-09",
-   "pais": "2026-10-09"
+   "pais": "2026-10-09",
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "elwachin": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "emi": {
    "servidor": "2026-10-07",
@@ -38,17 +374,241 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "emilioalva": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
   "emizor": {
    "bloq-competitivo": "2026-10-08",
    "bloq-pais": "2026-10-08",
    "competitivo": "2026-10-08",
-   "pais": "2026-10-08"
+   "pais": "2026-10-08",
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12"
+  },
+  "ericrj": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "eze": {
+   "temporada": "2026-10-12"
+  },
+  "ezias": {
+   "temporada": "2026-10-12"
+  },
+  "faso": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "fazer": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "filozico": {
+   "temporada": "2026-10-12"
+  },
+  "fin": {
+   "temporada": "2026-10-12"
+  },
+  "fisics": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "flama": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "fleivacheck": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "fleivaman": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "focox": {
+   "temporada": "2026-10-12"
+  },
+  "fol": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "freestyle4allmyniggaz": {
+   "temporada": "2026-10-12"
+  },
+  "frost": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12"
+  },
+  "galileo": {
+   "temporada": "2026-10-12"
+  },
+  "garxzii": {
+   "temporada": "2026-10-12"
+  },
+  "gian": {
+   "servidor": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "gmc": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "gosuz": {
+   "temporada": "2026-10-12"
+  },
+  "gp": {
+   "temporada": "2026-10-12"
+  },
+  "gus": {
+   "temporada": "2026-10-12"
+  },
+  "gwynyth": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "hassan": {
-   "bloq-competitivo": "2026-10-05",
-   "bloq-pais": "2026-10-05",
-   "competitivo": "2026-10-05",
-   "pais": "2026-10-05"
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "heat": {
+   "servidor": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "humildad": {
+   "temporada": "2026-10-12"
+  },
+  "ifx": {
+   "temporada": "2026-10-12"
+  },
+  "iguana": {
+   "temporada": "2026-10-12"
+  },
+  "indigena": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "infecte": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "isaias": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "ivaynex": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "izaya": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "jayden": {
+   "temporada": "2026-10-12"
+  },
+  "jere": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "jimmy": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "johao": {
+   "temporada": "2026-10-12"
+  },
+  "jotap": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "juanpa": {
+   "temporada": "2026-10-12"
+  },
+  "juasmio": {
+   "temporada": "2026-10-12"
+  },
+  "kenny": {
+   "temporada": "2026-10-12"
+  },
+  "kochi": {
+   "temporada": "2026-10-12"
+  },
+  "korey": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "kourier": {
+   "temporada": "2026-10-12"
+  },
+  "krtman": {
+   "temporada": "2026-10-12"
   },
   "kude": {
    "servidor": "2026-10-07",
@@ -63,10 +623,236 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "kuni": {
+   "temporada": "2026-10-12"
+  },
+  "kyron": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "kyss": {
+   "temporada": "2026-10-12"
+  },
+  "lambroggini": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "last": {
+   "temporada": "2026-10-12"
+  },
+  "leonart": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "leteletras": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "leyenda": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "lhyon": {
+   "servidor": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "lilnano": {
+   "temporada": "2026-10-12"
+  },
+  "lizeninn": {
+   "servidor": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "luffy": {
+   "temporada": "2026-10-12"
+  },
+  "luisito": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "luzzano": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mailo": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "malditaenfermedad": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "malva": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "marcos": {
+   "temporada": "2026-10-12"
+  },
+  "marto": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "masino": {
+   "temporada": "2026-10-12"
+  },
+  "maticerna": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mauzzitoemeces": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mayeutyk": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mcnadie": {
+   "temporada": "2026-10-12"
+  },
+  "md": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "melomaniaco": {
+   "temporada": "2026-10-12"
+  },
+  "melztube": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "metriodin": {
+   "temporada": "2026-10-12"
+  },
+  "metro": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mhs": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "miniboy": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "monet": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mosquitrap": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "motera": {
+   "temporada": "2026-10-12"
+  },
+  "mtz": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mva": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "mzk": {
+   "temporada": "2026-10-12"
+  },
+  "nairda": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
   "nashei": {
    "servidor": "2026-10-08",
    "sv-dra": "2026-10-08",
    "sv-ffa": "2026-10-08"
+  },
+  "naw": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "neo": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "nhp": {
    "servidor": "2026-10-07",
@@ -81,11 +867,152 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "nitram": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12"
+  },
+  "noa": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
   "nobu": {
    "bloq-competitivo": "2026-10-11",
    "bloq-pais": "2026-10-11",
    "competitivo": "2026-10-11",
-   "pais": "2026-10-11"
+   "pais": "2026-10-11",
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "noone": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "nox": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "noxvell": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "oep": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "okam": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "onzass": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "paria": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "partim": {
+   "temporada": "2026-10-12"
+  },
+  "pomberito": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "praiseriza": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "prosu": {
+   "temporada": "2026-10-12"
+  },
+  "provenza": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "queen": {
+   "temporada": "2026-10-12"
+  },
+  "rayden": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "rayito": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "rayo": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "redstonita": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "reyes": {
+   "servidor": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-efa": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-frz": "2026-10-12",
+   "sv-ftn": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-tfc": "2026-10-12",
+   "sv-twr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "reyexxmc": {
+   "temporada": "2026-10-12"
+  },
+  "richard": {
+   "temporada": "2026-10-12"
+  },
+  "rickyfort": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
   },
   "riferian": {
    "bloq-competitivo": "2026-10-07",
@@ -101,18 +1028,261 @@
    "sv-urbf": "2026-10-07",
    "temporada": "2026-10-07"
   },
+  "rubik": {
+   "temporada": "2026-10-12"
+  },
+  "ruvi": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "saiko": {
+   "temporada": "2026-10-12"
+  },
+  "saito": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "sami": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "santi": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "saz": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "scot": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "sdk": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "selek": {
+   "temporada": "2026-10-12"
+  },
+  "sexo": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "sgb": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "shuliot": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "skratch": {
+   "temporada": "2026-10-12"
+  },
+  "slasher": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "smaff": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "soft": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "sombra": {
+   "temporada": "2026-10-12"
+  },
+  "sonicdoradito": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "tam": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "teo": {
+   "temporada": "2026-10-12"
+  },
+  "tg": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "titocalderon": {
+   "temporada": "2026-10-12"
+  },
   "tokio": {
    "servidor": "2026-10-07",
    "temporada": "2026-10-07"
+  },
+  "tormen": {
+   "temporada": "2026-10-12"
+  },
+  "tuca": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "tusicario": {
+   "temporada": "2026-10-12"
+  },
+  "typhlosion": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "uddizim": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "valdoza": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "vlade": {
+   "temporada": "2026-10-12"
+  },
+  "vr": {
+   "temporada": "2026-10-12"
+  },
+  "warriorvid": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "willy": {
+   "servidor": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "xclusivo": {
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "xervoe": {
+   "temporada": "2026-10-12"
+  },
+  "xplicit": {
+   "temporada": "2026-10-12"
+  },
+  "xubaru": {
+   "temporada": "2026-10-12"
+  },
+  "xz": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "yeyox": {
+   "temporada": "2026-10-12"
+  },
+  "yio": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "yor": {
+   "temporada": "2026-10-12"
+  },
+  "zafka": {
+   "temporada": "2026-10-12"
+  },
+  "zaik": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "zanet": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-ffs": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "zekha": {
+   "temporada": "2026-10-12"
+  },
+  "zeta": {
+   "temporada": "2026-10-12"
+  },
+  "ziarki": {
+   "servidor": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
+  "ztr": {
+   "servidor": "2026-10-12",
+   "sv-acad": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
   }
  },
  "pasaban": 374,
- "cuando": "2026-10-12T03:56:16Z",
+ "cuando": "2026-10-12T04:27:02Z",
  "borradas": [
-  [
-   "indigena",
-   "2026-10-04"
-  ],
   [
    "infecte",
    "2026-10-04"
@@ -908,6 +2078,10 @@
   [
    "tg",
    "2026-10-05"
+  ],
+  [
+   "hassan",
+   "2026-10-12"
   ]
  ]
 }
