@@ -1,57 +1,75 @@
 {
  "v": 1,
- "cuando": "2026-10-12T16:28:22Z",
+ "cuando": "2026-10-12T17:20:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 18.8,
+ "dur_s": 1268.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.4
+   "s": 7.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.6
+   "s": 4.5
+  },
+  {
+   "n": "4",
+   "que": "las caras, desde R2",
+   "ok": true,
+   "s": 21.2
+  },
+  {
+   "n": "5",
+   "que": "tanda 1 de 5 · 40 persona(s)",
+   "ok": true,
+   "s": 1156.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.7
+   "s": 12.2
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 64.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "453",
-  "nombre": "DENME MODERADOR LPM",
-  "sv": "URBF",
-  "dia": "2026-09-27"
+  "n": "455",
+  "nombre": "FMS UNDER",
+  "sv": "DDF",
+  "dia": "2026-10-12"
  },
  "cuotas": {
   "kv": {
-   "write": 144,
-   "read": 23469
+   "write": 186,
+   "read": 27488
   },
   "objeto": {
-   "leidas": 562266,
-   "escritas": 14390,
-   "pedidos": 3295
+   "leidas": 726018,
+   "escritas": 18135,
+   "pedidos": 3733
   },
   "worker": {
-   "pedidos": 5488,
+   "pedidos": 5675,
    "errores": 0,
-   "sub": 5785,
-   "p50_ms": 1.37,
-   "p99_ms": 6.07
+   "sub": 5977,
+   "p50_ms": 1.36,
+   "p99_ms": 6.31
   },
   "r2": {
-   "objetos": 3744,
-   "gb": 0.417,
-   "ts": 1791780015
+   "objetos": 3921,
+   "gb": 0.437,
+   "ts": 1791825625
   }
  }
 }
