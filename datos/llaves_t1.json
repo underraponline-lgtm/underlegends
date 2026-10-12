@@ -1907,6 +1907,14 @@
      ],
      [
       [
+       "MetriOdin",
+       "Perrin🇨🇱"
+      ],
+      "MetriOdin",
+      ""
+     ],
+     [
+      [
        "Provenza",
        "Valdoza"
       ],
@@ -2055,6 +2063,11 @@
    ],
    [
     "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Perrin🇨🇱",
     "Octavos",
     1250
    ],
@@ -6580,7 +6593,7 @@
        "Zignos",
        "Korey",
        "LOLOELGAUCHO",
-       "Tayo🇵🇪"
+       "Tayo"
       ],
       "Abyssus",
       "triple (5 bandas)"
@@ -6753,7 +6766,7 @@
     1250
    ],
    [
-    "Tayo🇵🇪",
+    "Tayo",
     "Octavos",
     1250
    ],
@@ -6937,6 +6950,14 @@
   "rondas": [
    {
     "b": [
+     [
+      [
+       "Jult",
+       "Monet"
+      ],
+      "Jult",
+      ""
+     ],
      [
       [
        "Number",
@@ -7158,6 +7179,11 @@
     1250
    ],
    [
+    "Monet",
+    "Octavos",
+    1250
+   ],
+   [
     "Mosquitrap 🦟",
     "Octavos",
     1250
@@ -7371,7 +7397,7 @@
      [
       [
        "NC",
-       "Pedrinho Matador 🇧🇷",
+       "Zignos",
        "Alonso"
       ],
       "NC",
@@ -7576,11 +7602,6 @@
     1250
    ],
    [
-    "Pedrinho Matador 🇧🇷",
-    "Octavos",
-    1250
-   ],
-   [
     "Richard",
     "Octavos",
     1250
@@ -7597,6 +7618,11 @@
    ],
    [
     "ZiarKI",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
     "Octavos",
     1250
    ],
@@ -12586,7 +12612,7 @@
   ],
   "n": 412,
   "nombre": "PRITTY FREE CLASIFICATORIA 3",
-  "participantes": 16,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -12605,7 +12631,7 @@
        "Tam"
       ],
       "PichulaMc",
-      "triple (4 bandas, pasan 2)"
+      "triple (4 bandas, pasan 2); Revivido: Pichula🇦🇷"
      ],
      [
       [
@@ -12635,6 +12661,14 @@
        "Rodas"
       ],
       "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Six",
+       "Zignos"
+      ],
+      "Six",
       ""
      ],
      [
@@ -12704,11 +12738,6 @@
     5250
    ],
    [
-    "PichulaMc",
-    "Semifinal",
-    5250
-   ],
-   [
     "Snow",
     "Subcampeón",
     3750
@@ -12719,12 +12748,22 @@
     3750
    ],
    [
+    "PichulaMc",
+    "Semifinal",
+    2625
+   ],
+   [
     "Liam",
     "Cuartos",
     2500
    ],
    [
     "Rodas",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
     "Cuartos",
     2500
    ],
@@ -19555,6 +19594,269 @@
     "doble h",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "450": {
+  "dia": "2026-10-08",
+  "escala": "16+",
+  "fecha": "08/10",
+  "links": [],
+  "n": 450,
+  "nombre": "MULTIVERSE",
+  "participantes": 30,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Tier",
+       "Hardcore"
+      ],
+      "Tier",
+      ""
+     ],
+     [
+      [
+       "NewCharacter🇦🇷",
+       "Xplic🇨🇱, Efimero"
+      ],
+      "NewCharacter🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Eze, Gocho, Hasan🇦🇷",
+       "Dynoco, MCO"
+      ],
+      "Eze, Gocho, Hasan🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Xclusivo, Launnok🇨🇱"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "Saiko, Zignos, CJ",
+       "DarnBless"
+      ],
+      "Saiko, Zignos, CJ",
+      ""
+     ],
+     [
+      [
+       "Eliot🇲🇽 - Respawm🇭🇳",
+       "Krinkross🇪🇸"
+      ],
+      "Eliot🇲🇽 - Respawm🇭🇳",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, PRAISERIZA",
+       "Drezz🇵🇪"
+      ],
+      "Oasis, PRAISERIZA",
+      "Walk-in 1: Drezz🇵🇪"
+     ],
+     [
+      [
+       "NewCharacter🇦🇷",
+       "Tier"
+      ],
+      "NewCharacter🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Eze, Hasan🇦🇷, Gocho",
+       "Colesito, Bloody, Axinu"
+      ],
+      "Eze, Hasan🇦🇷, Gocho",
+      ""
+     ],
+     [
+      [
+       "Eliot🇲🇽, Respawn",
+       "CJ, Saiko, Zignos"
+      ],
+      "Eliot🇲🇽, Respawn",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, PRAISERIZA",
+       "NewCharacter🇦🇷"
+      ],
+      "Oasis, PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Respawn, Eliot 🇲🇽",
+       "Eze, Gocho, Hasan🇦🇷"
+      ],
+      "Respawn, Eliot 🇲🇽",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Respawn, Eliot🇲🇽",
+       "PRAISERIZA, Oasis"
+      ],
+      "Respawn, Eliot🇲🇽",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "NewCharacter🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Eliot🇲🇽",
+    "Campeón",
+    5000
+   ],
+   [
+    "Respawn",
+    "Campeón",
+    5000
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Tier",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Eze",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Gocho",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Hasan🇦🇷",
+    "Semifinal",
+    1750
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drezz🇵🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Hardcore",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krinkross🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Axinu",
+    "Cuartos",
+    833
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    833
+   ],
+   [
+    "CJ",
+    "Cuartos",
+    833
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    833
+   ],
+   [
+    "Saiko",
+    "Cuartos",
+    833
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    833
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    625
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    625
+   ],
+   [
+    "Launnok🇨🇱",
+    "Octavos",
+    625
+   ],
+   [
+    "MCO",
+    "Octavos",
+    625
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    625
+   ],
+   [
+    "Xplic🇨🇱",
+    "Octavos",
+    625
    ]
   ]
  }

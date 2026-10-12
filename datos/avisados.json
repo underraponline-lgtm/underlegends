@@ -32,7 +32,7 @@
   "msg": "1553175999737237537"
  },
  "357": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL.14 __|25/09|15|14|0|0",
+  "firma": "__ DESGRACIAS EN TOKYO VOL.14 __|25/09|16|15|1|0",
   "msg": "1553200107053129749"
  },
  "358": {
@@ -120,7 +120,7 @@
   "msg": "1555404925876572270"
  },
  "379": {
-  "firma": "Dos Generaciones Un Destino Vol 2|01/10|23|8|1|0",
+  "firma": "Dos Generaciones Un Destino Vol 2|01/10|23|8|0|0",
   "msg": "1555412472016408587"
  },
  "380": {
@@ -128,7 +128,7 @@
   "msg": "1555616463891472456"
  },
  "381": {
-  "firma": "PRITTY FREE|03/10|22|9|2|0",
+  "firma": "PRITTY FREE|03/10|23|10|2|0",
   "msg": "1555820034302021713"
  },
  "382": {
@@ -6801,6 +6801,304 @@
     "Provenza",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "450": {
+  "antes": {
+   "Bloody": [
+    21,
+    26,
+    false
+   ],
+   "CJ": [
+    218,
+    153,
+    true
+   ],
+   "Colesito": [
+    10,
+    13,
+    false
+   ],
+   "DarnBless": [
+    127,
+    245,
+    false
+   ],
+   "Dynoco": [
+    25,
+    30,
+    false
+   ],
+   "Efimero": [
+    185,
+    87,
+    true
+   ],
+   "Eze": [
+    90,
+    146,
+    false
+   ],
+   "Gocho": [
+    112,
+    193,
+    false
+   ],
+   "MCO": [
+    18,
+    23,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "PRAISERIZA": [
+    158,
+    3,
+    true
+   ],
+   "Saiko": [
+    92,
+    152,
+    false
+   ],
+   "Xclusivo": [
+    161,
+    20,
+    true
+   ],
+   "Zignos": [
+    11,
+    14,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Tier",
+    "Hardcore",
+    "Tier"
+   ],
+   [
+    "NewCharacter🇦🇷",
+    "Xplic🇨🇱, Efimero",
+    "NewCharacter🇦🇷"
+   ],
+   [
+    "Eze, Gocho, Hasan🇦🇷",
+    "Dynoco, MCO",
+    "Eze, Gocho, Hasan🇦🇷"
+   ],
+   [
+    "Colesito",
+    "Xclusivo, Launnok🇨🇱",
+    "Colesito"
+   ],
+   [
+    "Saiko, Zignos, CJ",
+    "DarnBless",
+    "Saiko, Zignos, CJ"
+   ],
+   [
+    "Eliot🇲🇽 - Respawm🇭🇳",
+    "Krinkross🇪🇸",
+    "Eliot🇲🇽 - Respawm🇭🇳"
+   ],
+   [
+    "Oasis, PRAISERIZA",
+    "Drezz🇵🇪",
+    "Oasis, PRAISERIZA"
+   ],
+   [
+    "NewCharacter🇦🇷",
+    "Tier",
+    "NewCharacter🇦🇷"
+   ],
+   [
+    "Eze, Hasan🇦🇷, Gocho",
+    "Colesito, Bloody, Axinu",
+    "Eze, Hasan🇦🇷, Gocho"
+   ],
+   [
+    "Eliot🇲🇽, Respawn",
+    "CJ, Saiko, Zignos",
+    "Eliot🇲🇽, Respawn"
+   ],
+   [
+    "Oasis, PRAISERIZA",
+    "NewCharacter🇦🇷",
+    "Oasis, PRAISERIZA"
+   ],
+   [
+    "Respawn, Eliot 🇲🇽",
+    "Eze, Gocho, Hasan🇦🇷",
+    "Respawn, Eliot 🇲🇽"
+   ],
+   [
+    "Respawn, Eliot🇲🇽",
+    "PRAISERIZA, Oasis",
+    "Respawn, Eliot🇲🇽"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 14,
+   "CJ": 2,
+   "Colesito": 19,
+   "DarnBless": 1,
+   "Dynoco": 10,
+   "Efimero": 5,
+   "Eze": 4,
+   "Gocho": 4,
+   "MCO": 13,
+   "Oasis": 20,
+   "PRAISERIZA": 11,
+   "Saiko": 2,
+   "Xclusivo": 14,
+   "Zignos": 15
+  },
+  "fecha": "08/10",
+  "firma": "63362c9b3864863c",
+  "msg": "1559092380379127900",
+  "nombre": "__ MULTIVERSE __",
+  "num": 450,
+  "participantes": 30,
+  "sello": {
+   "Eliot🇲🇽": "",
+   "Respawn": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T06:36:28Z",
+  "tabla": [
+   [
+    "NewCharacter🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Respawn",
+    "Campeón",
+    5000
+   ],
+   [
+    "Eliot🇲🇽",
+    "Campeón",
+    5000
+   ],
+   [
+    "PRAISERIZA",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Tier",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Eze",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Gocho",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Hasan🇦🇷",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Drezz🇵🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Hardcore",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krinkross🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    833
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    833
+   ],
+   [
+    "Axinu",
+    "Cuartos",
+    833
+   ],
+   [
+    "CJ",
+    "Cuartos",
+    833
+   ],
+   [
+    "Saiko",
+    "Cuartos",
+    833
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    833
+   ],
+   [
+    "Xplic🇨🇱",
+    "Octavos",
+    625
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    625
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    625
+   ],
+   [
+    "MCO",
+    "Octavos",
+    625
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    625
+   ],
+   [
+    "Launnok🇨🇱",
+    "Octavos",
+    625
    ]
   ],
   "v": 2
