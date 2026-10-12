@@ -1214,6 +1214,19 @@
   "yeyox": {
    "temporada": "2026-10-12"
   },
+  "yinn": {
+   "bloq-competitivo": "2026-10-12",
+   "bloq-pais": "2026-10-12",
+   "competitivo": "2026-10-12",
+   "pais": "2026-10-12",
+   "servidor": "2026-10-12",
+   "sv-ddf": "2026-10-12",
+   "sv-dra": "2026-10-12",
+   "sv-ffa": "2026-10-12",
+   "sv-sr": "2026-10-12",
+   "sv-urbf": "2026-10-12",
+   "temporada": "2026-10-12"
+  },
   "yio": {
    "servidor": "2026-10-12",
    "sv-acad": "2026-10-12",
@@ -1264,8 +1277,8 @@
    "temporada": "2026-10-12"
   }
  },
- "pasaban": 379,
- "cuando": "2026-10-12T21:32:35Z",
+ "pasaban": 378,
+ "cuando": "2026-10-12T21:58:56Z",
  "borradas": [
   [
    "infecte",
