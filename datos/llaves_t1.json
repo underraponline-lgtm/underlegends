@@ -20411,7 +20411,7 @@
   "links": [],
   "n": 456,
   "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
-  "participantes": 15,
+  "participantes": 14,
   "rondas": [
    {
     "b": [
@@ -20427,7 +20427,7 @@
       [
        "Guess",
        "Six",
-       "Hinjkybesuk"
+       "BNA"
       ],
       "Guess",
       "cargada a mano (Dlx, 12/10/2026) · triple (4 bandas, pasan 1)"
@@ -20490,7 +20490,7 @@
        "Guess, BNA, Six, JJ"
       ],
       "Verc, Snow, Makmah",
-      "cargada a mano (Dlx, 12/10/2026) · equipos: «Plink» es Guess; CAMPEÓN: Verc, seko boy y Makma; drafteado: Six; drafteado: Makmah"
+      "cargada a mano (Dlx, 12/10/2026) · equipos: «Plink» es Guess; CAMPEÓN: Verc, seko boy y Makma; drafteado: Six; drafteado: Makmah; drafteado: BNA"
      ]
     ],
     "r": "Final"
@@ -20502,6 +20502,11 @@
     "Makmah",
     "Campeón",
     4250
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    3250
    ],
    [
     "Six",
@@ -20524,18 +20529,8 @@
     2500
    ],
    [
-    "BNA",
-    "Subcampeón",
-    2000
-   ],
-   [
     "Guess",
     "Subcampeón",
-    2000
-   ],
-   [
-    "Hinjkybesuk",
-    "Cuartos",
     2000
    ],
    [

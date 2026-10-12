@@ -8101,7 +8101,7 @@
    ],
    [
     "Guess",
-    "Hinjkybesuk",
+    "BNA",
     "Guess"
    ],
    [
@@ -8116,7 +8116,7 @@
    ],
    [
     "Verc",
-    "Sintexto🇨🇴",
+    "SINTEXT",
     "Verc"
    ],
    [
@@ -8160,11 +8160,11 @@
    "Verc": 3
   },
   "fecha": "11/10",
-  "firma": "822cfa5a64917af5",
+  "firma": "c18f717a5dc30f84",
   "msg": "1559299096555294721",
   "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
   "num": 456,
-  "participantes": 15,
+  "participantes": 14,
   "sello": {
    "Makmah": "f6ec3ade6563:9df1984d05ab",
    "Snow": "fe290890f13a:9df1984d05ab",
@@ -8177,6 +8177,11 @@
     "Makmah",
     "Campeón",
     4250
+   ],
+   [
+    "BNA",
+    "Subcampeón",
+    3250
    ],
    [
     "Six",
@@ -8199,12 +8204,22 @@
     2500
    ],
    [
-    "ONZASS",
-    "Cuartos",
+    "Guess",
+    "Subcampeón",
     2000
    ],
    [
-    "Hinjkybesuk",
+    "Liam",
+    "Semifinal",
+    2000
+   ],
+   [
+    "tnr",
+    "Semifinal",
+    2000
+   ],
+   [
+    "ONZASS",
     "Cuartos",
     2000
    ],
@@ -8214,7 +8229,7 @@
     2000
    ],
    [
-    "Sintexto🇨🇴",
+    "SINTEXT",
     "Cuartos",
     2000
    ],
@@ -8227,26 +8242,6 @@
     "Valdoza",
     "Cuartos",
     2000
-   ],
-   [
-    "Liam",
-    "Semifinal",
-    1750
-   ],
-   [
-    "tnr",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Guess",
-    "Subcampeón",
-    1250
-   ],
-   [
-    "BNA",
-    "Subcampeón",
-    1250
    ]
   ],
   "v": 2
