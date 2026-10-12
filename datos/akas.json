@@ -262,6 +262,7 @@
   "guessbna6": "Guess",
   "hasan": "Hassan",
   "launnok": "Launok",
+  "sintexto": "SINTEXT",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1344,6 +1345,10 @@
   [
    "Launnok",
    "Launok"
+  ],
+  [
+   "Sintexto",
+   "SINTEXT"
   ],
   [
    "Nexus",

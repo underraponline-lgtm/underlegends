@@ -8233,5 +8233,219 @@
    ]
   ],
   "v": 2
+ },
+ "457": {
+  "antes": {
+   "BNA": [
+    237,
+    172,
+    true
+   ],
+   "Benjixo": [
+    179,
+    54,
+    true
+   ],
+   "Eclipsito": [
+    178,
+    52,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "Miniboy": [
+    27,
+    31,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    4,
+    false
+   ],
+   "Riolu": [
+    71,
+    103,
+    false
+   ],
+   "Six": [
+    7,
+    8,
+    false
+   ],
+   "Snow": [
+    2,
+    2,
+    false
+   ],
+   "Soulb": [
+    73,
+    108,
+    false
+   ],
+   "Velatz": [
+    9,
+    11,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Snow, BNA",
+    "Soulb, Eclipsito",
+    "Snow, BNA"
+   ],
+   [
+    "Makmah, Miniboy",
+    "PichulaMc, Velatz",
+    "Makmah, Miniboy"
+   ],
+   [
+    "Oasis, Six",
+    "Benjixo, ALTER 🇨🇱",
+    "Oasis, Six"
+   ],
+   [
+    "Erian",
+    "Riolu, YOUNG VLAD 🇨🇴",
+    "Erian"
+   ],
+   [
+    "Oasis, Benjixo, Six",
+    "BNA, Eclipsito, Snow",
+    "Oasis, Benjixo, Six"
+   ],
+   [
+    "YOUNG VLAD 🇨🇴, Erian",
+    "Miniboy, Velatz, Makmah",
+    "YOUNG VLAD 🇨🇴, Erian"
+   ],
+   [
+    "Oasis, Benjixo, Six, Snow",
+    "Erian, YOUNG VLAD 🇨🇴, Velatz",
+    "Oasis, Benjixo, Six, Snow"
+   ]
+  ],
+  "ev_antes": {
+   "BNA": 3,
+   "Benjixo": 4,
+   "Eclipsito": 9,
+   "Erian": 28,
+   "Makmah": 35,
+   "Miniboy": 14,
+   "Oasis": 21,
+   "PichulaMc": 29,
+   "Riolu": 5,
+   "Six": 15,
+   "Snow": 31,
+   "Soulb": 6,
+   "Velatz": 30
+  },
+  "fecha": "06/10",
+  "firma": "f07df52a252b7aae",
+  "msg": "1559300453412634725",
+  "nombre": "(sin titulo)",
+  "num": 457,
+  "participantes": 16,
+  "sello": {
+   "Benjixo": "",
+   "Oasis": "8b80b3876e9c:9df1984d05ab",
+   "Six": "9d94517c74f7:9df1984d05ab",
+   "Snow": "fe290890f13a:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T20:23:17Z",
+  "tabla": [
+   [
+    "Snow",
+    "Campeón",
+    3000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Benjixo",
+    "Campeón",
+    2500
+   ],
+   [
+    "Six",
+    "Campeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "YOUNG VLAD 🇨🇴",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Velatz",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Eclipsito",
+    "Semifinal",
+    2125
+   ],
+   [
+    "BNA",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Soulb",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "ALTER 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Riolu",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

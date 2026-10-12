@@ -105,7 +105,7 @@
   "Cajita": 4,
   "Calíz": 5,
   "Camila": 5,
-  "Campoy": 4,
+  "Campoy": 5,
   "Carlos": 5,
   "Carlosmo": 4,
   "Carlosss": 4,
@@ -201,7 +201,7 @@
   "Hassan": 4,
   "Heat": 5,
   "Henry": 5,
-  "Hinjkybesuk": 5,
+  "Hinjkybesuk": 4,
   "Holden": 5,
   "Humildad": 4,
   "IFX": 5,
@@ -262,7 +262,7 @@
   "Leyenda": 5,
   "Lhyon": 5,
   "Liam": 5,
-  "Liberia": 3,
+  "Liberia": 4,
   "Lilñaño": 5,
   "LitKunai": 5,
   "Lizeninn": 5,
@@ -397,6 +397,7 @@
   "Shadow": 5,
   "Silence": 5,
   "Sin Limites": 5,
+  "Sintexto🇨🇴": 5,
   "Six": 4,
   "Skratch": 5,
   "Slasher": 5,
@@ -428,7 +429,7 @@
   "VR": 5,
   "Valdoza": 5,
   "Vandu": 4,
-  "Velatz": 4,
+  "Velatz": 3,
   "Verc": 4,
   "Vilca": 5,
   "Vlade": 5,
@@ -485,6 +486,7 @@
   "tam🇧🇫baggio🇮🇹": 4,
   "tito calderon": 5,
   "tkl": 5,
+  "tnr": 5,
   "tormen": 5,
   "volk 🇨🇴": 5,
   "wei shenlong": 5,
@@ -895,12 +897,12 @@
   ],
   [
    "2026-10-05",
-   "NC",
+   "ONZASS",
    4
   ],
   [
    "2026-10-05",
-   "ONZASS",
+   "NC",
    4
   ],
   [
@@ -1035,6 +1037,11 @@
   ],
   [
    "2026-10-05",
+   "Hinjkybesuk",
+   4
+  ],
+  [
+   "2026-10-05",
    "Medster",
    4
   ],
@@ -1046,11 +1053,6 @@
   [
    "2026-10-05",
    "Letrao🇨🇱",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Campoy",
    4
   ],
   [
@@ -1075,7 +1077,7 @@
   ],
   [
    "2026-10-05",
-   "Liberia",
+   "Velatz",
    3
   ],
   [
@@ -1124,7 +1126,6 @@
    "Aldre",
    "Alexi",
    "Cajita",
-   "Campoy",
    "Carlosmo",
    "Chop",
    "Cronox",
@@ -1136,8 +1137,8 @@
    "Geoka",
    "Guess",
    "HH",
+   "Hinjkybesuk",
    "Letrao🇨🇱",
-   "Liberia",
    "MCO",
    "Makmah",
    "Medster",
@@ -1160,6 +1161,7 @@
    "Sosa",
    "Tam",
    "Vandu",
+   "Velatz",
    "Verc",
    "Walker",
    "Xclusivo",
