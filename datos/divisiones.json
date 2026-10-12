@@ -47,7 +47,7 @@
   "BTRX": 5,
   "Badterne": 5,
   "Baltrip": 5,
-  "BastyRetro": 5,
+  "BastyRetro": 4,
   "Benjixo": 4,
   "Benju": 5,
   "Benshi": 5,
@@ -72,9 +72,9 @@
   "Ckl": 5,
   "Clitax": 5,
   "Colesito": 4,
-  "Corvo": 4,
+  "Corvo": 5,
   "Crack and Krank": 5,
-  "CrisZJ": 4,
+  "CrisZJ": 5,
   "Crk": 4,
   "Cronox": 4,
   "DANCOLL 🇻🇪": 5,
@@ -97,7 +97,7 @@
   "Dynoco": 4,
   "Dyzz": 5,
   "EGI": 5,
-  "EIDP": 4,
+  "EIDP": 3,
   "ELPIBEOSIRIS": 5,
   "ELSOLAR 🇨🇴": 5,
   "EMMY": 5,
@@ -123,7 +123,7 @@
   "F1THER": 5,
   "FALON 🇨🇱": 5,
   "FAT PENIS": 5,
-  "Faso": 5,
+  "Faso": 4,
   "Fazer": 4,
   "Filozico": 5,
   "Fin": 5,
@@ -190,6 +190,7 @@
   "Keider": 5,
   "Kenny": 5,
   "King": 5,
+  "Kminant": 5,
   "Kochi": 4,
   "Korey": 5,
   "Kourier": 5,
@@ -224,10 +225,10 @@
   "Lord Viruzz": 4,
   "Luffy": 5,
   "Luzzano": 5,
-  "Lvel": 4,
+  "Lvel": 5,
   "MARTYNEZ🇺🇾": 5,
   "MATICERNA": 5,
-  "MAWS🇻🇪": 4,
+  "MAWS🇻🇪": 5,
   "MAXIMILIANO CALVO": 5,
   "MCNadie": 5,
   "MCO": 4,
@@ -268,6 +269,7 @@
   "NXUZ": 3,
   "NYCO": 5,
   "Nairda": 5,
+  "Nc jupiter Agustín Cinexfilo MCO": 5,
   "Nemi": 4,
   "Neo": 5,
   "NewCharacter🇦🇷": 5,
@@ -305,7 +307,7 @@
   "Polosport": 5,
   "Pomberito": 4,
   "Presagio": 3,
-  "Prodigy": 5,
+  "Prodigy": 4,
   "Prosu": 5,
   "Provenza": 3,
   "QUEEN": 5,
@@ -313,7 +315,7 @@
   "REPTILE JR": 5,
   "RICKYFORT": 5,
   "RIQUEZA": 5,
-  "RT": 5,
+  "RT": 4,
   "Ram": 5,
   "Rayden": 5,
   "Rayo": 5,
@@ -348,6 +350,7 @@
   "Santo Trinidad 🇨🇴": 5,
   "Saz": 5,
   "Scot": 5,
+  "Scot yinn guty": 5,
   "Selek": 5,
   "Sexo": 5,
   "Shadow": 5,
@@ -360,7 +363,7 @@
   "Soft": 5,
   "Sombra": 5,
   "Soneto": 5,
-  "Sosa": 3,
+  "Sosa": 4,
   "Soulb": 5,
   "Spartan": 5,
   "Steven🇨🇴": 5,
@@ -414,6 +417,7 @@
   "Zetryko": 4,
   "ZiarKI": 5,
   "Zignos": 4,
+  "Zignos cinexfilo nc": 5,
   "araya": 5,
   "benjadsantis🇦🇷": 5,
   "cardozo": 5,
@@ -460,12 +464,12 @@
  "subidas": [
   [
    "2026-09-21",
-   "Hassan",
+   "Makmah",
    4
   ],
   [
    "2026-09-21",
-   "Makmah",
+   "Hassan",
    4
   ],
   [
@@ -480,7 +484,7 @@
   ],
   [
    "2026-09-21",
-   "Six",
+   "MCO",
    4
   ],
   [
@@ -620,22 +624,17 @@
   ],
   [
    "2026-09-21",
+   "EIDP",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Player",
+   4
+  ],
+  [
+   "2026-09-21",
    "JIMMY",
-   4
-  ],
-  [
-   "2026-09-21",
-   "CrisZJ",
-   4
-  ],
-  [
-   "2026-09-21",
-   "BTRX",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Liberia",
    4
   ],
   [
@@ -660,7 +659,12 @@
   ],
   [
    "2026-09-28",
-   "Juanpa",
+   "Juasmio",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Liberia",
    4
   ],
   [
@@ -685,6 +689,16 @@
   ],
   [
    "2026-09-28",
+   "Juanpa",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Six",
+   4
+  ],
+  [
+   "2026-09-28",
    "Lord Viruzz",
    4
   ],
@@ -696,16 +710,6 @@
   [
    "2026-09-28",
    "Riolu",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Krtman",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Zeta",
    4
   ],
   [
@@ -770,17 +774,17 @@
   ],
   [
    "2026-09-28",
+   "Faso",
+   4
+  ],
+  [
+   "2026-09-28",
+   "melomaniaco",
+   4
+  ],
+  [
+   "2026-09-28",
    "Adriagner",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Corvo",
-   4
-  ],
-  [
-   "2026-09-28",
-   "MAWS🇻🇪",
    4
   ],
   [
@@ -820,12 +824,12 @@
   ],
   [
    "2026-09-28",
-   "Panchok",
+   "Erian",
    3
   ],
   [
    "2026-09-28",
-   "Erian",
+   "Panchok",
    3
   ],
   [
@@ -880,12 +884,17 @@
   ],
   [
    "2026-10-05",
-   "MCO",
+   "RT",
    4
   ],
   [
    "2026-10-05",
    "Aldre",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Prodigy",
    4
   ],
   [
@@ -901,11 +910,6 @@
   [
    "2026-10-05",
    "Erik",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Lvel",
    4
   ],
   [
@@ -950,12 +954,12 @@
   ],
   [
    "2026-10-05",
-   "EIDP",
+   "Dominick",
    4
   ],
   [
    "2026-10-05",
-   "Dominick",
+   "BastyRetro",
    4
   ],
   [
@@ -1050,7 +1054,7 @@
   ],
   [
    "2026-10-05",
-   "Sosa",
+   "EIDP",
    3
   ],
   [
@@ -1063,14 +1067,14 @@
   "baja": [
    "Adriagner",
    "Ariaxer",
-   "BTRX",
    "Badterne",
    "Bloody",
    "Hassan",
-   "Krtman",
+   "Juasmio",
    "MTZ",
    "Prosu",
-   "Zeta"
+   "Richard",
+   "melomaniaco"
   ],
   "sem": "2026-10-05",
   "sube": [
@@ -1078,6 +1082,7 @@
    "Agus",
    "Aldre",
    "Alexi",
+   "BastyRetro",
    "Campoy",
    "Carlosmo",
    "Chop",
@@ -1092,8 +1097,6 @@
    "HH",
    "Hinjkybesuk",
    "Liberia",
-   "Lvel",
-   "MCO",
    "Makmah",
    "Medster",
    "Motera",
@@ -1109,10 +1112,11 @@
    "Paria",
    "Pomberito",
    "Presagio",
+   "Prodigy",
    "Provenza",
+   "RT",
    "Santi",
    "Snow",
-   "Sosa",
    "Tam",
    "Teo",
    "Vandu",

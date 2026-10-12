@@ -539,6 +539,11 @@
      0,
      8
     ],
+    "Kminant": [
+     1,
+     0,
+     16
+    ],
     "Korey": [
      1,
      0,
@@ -781,7 +786,7 @@
     ],
     "Number VE": [
      0,
-     0,
+     1,
      4
     ],
     "OG": [
@@ -1247,7 +1252,7 @@
     "setesfifi": [
      1,
      0,
-     16
+     8
     ],
     "stormed": [
      0,
@@ -1355,6 +1360,7 @@
     "Jult": 300,
     "Jupiter": 1300,
     "Keider": 300,
+    "Kminant": 300,
     "Korey": 300,
     "Kravitz": 300,
     "Krinkross🇪🇸": 300,
@@ -1600,6 +1606,7 @@
   "Jult": 300,
   "Jupiter": 1300,
   "Keider": 300,
+  "Kminant": 300,
   "Korey": 300,
   "Kravitz": 300,
   "Krinkross🇪🇸": 300,

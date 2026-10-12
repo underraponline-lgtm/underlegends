@@ -276,7 +276,7 @@
   "msg": "1557254660841021492"
  },
  "418": {
-  "firma": "WETTSIDDEE|07/10|10|9|1|0",
+  "firma": "WETTSIDDEE|07/10|14|9|1|0",
   "msg": "1557269820221947948"
  },
  "419": {
@@ -7386,6 +7386,182 @@
    ],
    [
     "Plink BNA Six JJ",
+    "Subcampeón",
+    1875
+   ]
+  ],
+  "v": 2
+ },
+ "453": {
+  "antes": {
+   "Bloody": [
+    21,
+    26,
+    false
+   ],
+   "EIDP": [
+    184,
+    69,
+    true
+   ],
+   "MCO": [
+    18,
+    22,
+    false
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "NC": [
+    17,
+    21,
+    false
+   ],
+   "Player": [
+    41,
+    57,
+    false
+   ],
+   "Provenza": [
+    166,
+    12,
+    true
+   ],
+   "Velatz": [
+    8,
+    9,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "yinn",
+    "Provenza",
+    "yinn"
+   ],
+   [
+    "yinn",
+    "Bloody",
+    "yinn"
+   ],
+   [
+    "yinn",
+    "NC",
+    "yinn"
+   ],
+   [
+    "Makmah",
+    "MCO",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "EIDP",
+    "Makmah"
+   ],
+   [
+    "Prosu",
+    "Velatz",
+    "Prosu"
+   ],
+   [
+    "Prosu",
+    "Player",
+    "Prosu"
+   ],
+   [
+    "yinn",
+    "Makmah",
+    "yinn"
+   ],
+   [
+    "Prosu velatz player erian 7",
+    "Nc jupiter Agustín Cinexfilo MCO",
+    "Prosu velatz player erian 7"
+   ],
+   [
+    "Zignos cinexfilo nc",
+    "Scot yinn guty",
+    "Zignos cinexfilo nc"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 15,
+   "EIDP": 6,
+   "MCO": 14,
+   "Makmah": 36,
+   "NC": 22,
+   "Player": 6,
+   "Provenza": 21,
+   "Velatz": 30
+  },
+  "fecha": "27/09",
+  "firma": "635bc44be3ea3cea",
+  "msg": "1559232482669371456",
+  "nombre": "DENME MODERADOR LPM",
+  "num": 453,
+  "participantes": 18,
+  "sello": {
+   "Zignos cinexfilo nc": ""
+  },
+  "sv": "URBF",
+  "t": "2026-10-12T15:53:12Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Nc jupiter Agustín Cinexfilo MCO",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Zignos cinexfilo nc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Scot yinn guty",
     "Subcampeón",
     1875
    ]

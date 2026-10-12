@@ -6878,11 +6878,11 @@
     "b": [
      [
       [
-       "PichulaMc",
-       "Erian"
+       "Erian",
+       "PichulaMc"
       ],
-      "PichulaMc",
-      "ganador según #veredictos"
+      "Erian",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -6891,12 +6891,12 @@
   "sv": "URBF",
   "tabla": [
    [
-    "PichulaMc",
+    "Erian",
     "Campeón",
     7500
    ],
    [
-    "Erian",
+    "PichulaMc",
     "Subcampeón",
     5000
    ],
@@ -13803,11 +13803,11 @@
      ],
      [
       [
-       "kminant🇦🇷",
+       "Kminant",
        "Zignos"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: kminant🇦🇷; cobra: Zignos; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -13840,11 +13840,11 @@
      ],
      [
       [
-       "Prodigy 🇦🇷",
-       "setes"
+       "Prodigy",
+       "setesfifi"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Prodigy 🇦🇷; cobra: setes; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -13907,7 +13907,17 @@
     2000
    ],
    [
+    "Prodigy",
+    "Cuartos",
+    2000
+   ],
+   [
     "Sosa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "setesfifi",
     "Cuartos",
     2000
    ],
@@ -13932,7 +13942,17 @@
     0
    ],
    [
+    "Kminant",
+    "Octavos",
+    0
+   ],
+   [
     "Molusco",
+    "Octavos",
+    0
+   ],
+   [
+    "Zignos",
     "Octavos",
     0
    ]
@@ -16554,11 +16574,11 @@
      ],
      [
       [
-       "Dm🇵🇪",
-       "Number 🇱🇷"
+       "Number VE",
+       "Dm🇵🇪"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Number VE",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -16671,6 +16691,11 @@
    ],
    [
     "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dm🇵🇪",
     "Octavos",
     1250
    ],
@@ -20151,6 +20176,153 @@
    ],
    [
     "Plink BNA Six JJ",
+    "Subcampeón",
+    1875
+   ]
+  ]
+ },
+ "453": {
+  "dia": "2026-09-27",
+  "escala": "16+",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1553957529648767098"
+  ],
+  "n": 453,
+  "nombre": "DENME MODERADOR LPM",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Provenza",
+       "Bloody",
+       "NC"
+      ],
+      "yinn",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "MCO",
+       "EIDP"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Prosu",
+       "Velatz",
+       "Player"
+      ],
+      "Prosu",
+      "triple (3 bandas); ganador: ✅ Decidir"
+     ],
+     [
+      [
+       "No quiero rapia 🇲🇽",
+       "Agustín 🇨🇱",
+       "Cinexfilo 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Makmah"
+      ],
+      "yinn",
+      "ganador: ✅ Decidir"
+     ],
+     [
+      [
+       "Prosu velatz player erian 7",
+       "Nc jupiter Agustín Cinexfilo MCO"
+      ],
+      "Prosu velatz player erian 7",
+      "ganador: ✅ Decidir; Walk-in 1: Nc jupiter Agustín Cinexfilo MCO"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos cinexfilo nc",
+       "Scot yinn guty"
+      ],
+      "Zignos cinexfilo nc",
+      "ganador: ✅ Decidir; Walk-in 2: Zignos cinexfilo nc; Walk-in 2: Scot yinn guty"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Nc jupiter Agustín Cinexfilo MCO",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos cinexfilo nc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Scot yinn guty",
     "Subcampeón",
     1875
    ]

@@ -39,7 +39,12 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Zignos cinexfilo nc (pichula)",
+   "1": "yinn",
+   "2": "Prosu velatz player erian 7",
+   "3": "Prosu"
+  },
   "sin_permiso": false,
   "sv": "URBF"
  },
@@ -61,7 +66,9 @@
     "ronda": "FINAL"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Riferian 🇵🇦"
+  },
   "sin_permiso": false,
   "sv": "URBF"
  },
@@ -90,7 +97,10 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "(nadie siguió)",
+   "1": "(nadie siguió)"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },
@@ -119,7 +129,9 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "1": "Number 🇱🇷"
+  },
   "sin_permiso": false,
   "sv": "DDF"
  },
@@ -257,6 +269,7 @@
    }
   ],
   "respondidas": {
+   "0": "six",
    "1": "tnr :Espana:"
   },
   "sin_permiso": false,
