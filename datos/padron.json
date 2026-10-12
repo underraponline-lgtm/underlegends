@@ -8822,7 +8822,7 @@
  {
   "full": "AREZ",
   "raw": "AREZ",
-  "pais": "",
+  "pais": "Ecuador",
   "sv": "",
   "verificado": "",
   "discord_id": "960929883532435456",
@@ -10218,5 +10218,15 @@
   "discord_id": "617251110939525121",
   "av_sheet": "",
   "notas": "alta automática · su nombre en Discord · 2026-10-12 2:57 AM ET"
+ },
+ {
+  "full": "KZAONE 🇲🇽",
+  "raw": "KZAONE",
+  "pais": "México",
+  "sv": "",
+  "verificado": "",
+  "discord_id": "800272272753033246",
+  "av_sheet": "",
+  "notas": "alta automática · /card en FVS · 12/10/2026 11:25 AM ET"
  }
 ]

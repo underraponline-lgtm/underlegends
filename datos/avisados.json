@@ -4542,9 +4542,9 @@
     "Panchok"
    ],
    [
-    "4. ZETRYKO 🇨🇱",
+    "Zetryko",
     "Geoka",
-    "4. ZETRYKO 🇨🇱"
+    "Zetryko"
    ],
    [
     "Lord Viruzz",
@@ -4553,12 +4553,12 @@
    ],
    [
     "Eclipsito",
-    "6. 🇨🇴 VR",
+    "VR",
     "Eclipsito"
    ],
    [
     "Agus",
-    "7. 🇺🇾 ATR",
+    "🇺🇾 ATR",
     "Agus"
    ],
    [
@@ -4617,11 +4617,11 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "45238c7d979d0dbd",
+  "firma": "a1152c0ee8d49531",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
-  "participantes": 21,
+  "participantes": 17,
   "sello": {
    "Zetryko": "ca13e00aa440:17c4f13e63d4"
   },
@@ -4649,6 +4649,11 @@
     5250
    ],
    [
+    "Emilio Alva",
+    "Cuartos",
+    2500
+   ],
+   [
     "Andy",
     "Cuartos",
     2500
@@ -4662,11 +4667,6 @@
     "Agus",
     "Cuartos",
     2500
-   ],
-   [
-    "Emilio Alva",
-    "Cuartos",
-    1250
    ],
    [
     "Damian",
@@ -4684,12 +4684,12 @@
     1250
    ],
    [
-    "6. 🇨🇴 VR",
+    "VR",
     "Octavos",
     1250
    ],
    [
-    "7. 🇺🇾 ATR",
+    "🇺🇾 ATR",
     "Octavos",
     1250
    ],
@@ -7099,6 +7099,265 @@
     "Launnok🇨🇱",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "451": {
+  "antes": {
+   "19": [
+    179,
+    64,
+    true
+   ],
+   "Chop": [
+    198,
+    105,
+    true
+   ],
+   "Leonart": [
+    193,
+    97,
+    true
+   ],
+   "Majiztral": [
+    19,
+    24,
+    false
+   ],
+   "Teo": [
+    84,
+    137,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Chop",
+    "Riley🇵🇪",
+    "Chop"
+   ],
+   [
+    "Majiztral",
+    "Teo",
+    "Majiztral"
+   ],
+   [
+    "19",
+    "Leonart",
+    "19"
+   ],
+   [
+    "Chop",
+    "Majiztral",
+    "Chop"
+   ],
+   [
+    "19",
+    "GROOMER🇧🇴",
+    "19"
+   ],
+   [
+    "19",
+    "Chop",
+    "19"
+   ]
+  ],
+  "ev_antes": {
+   "19": 4,
+   "Chop": 6,
+   "Leonart": 6,
+   "Majiztral": 14,
+   "Teo": 3
+  },
+  "fecha": "11/10",
+  "firma": "973cadf1fa25f4e0",
+  "msg": "1559225026232979500",
+  "nombre": "MORTAL KOMBAT MAPACHE CUP",
+  "num": 451,
+  "participantes": 9,
+  "sello": {
+   "19": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-12T15:23:34Z",
+  "tabla": [
+   [
+    "19",
+    "Campeón",
+    7500
+   ],
+   [
+    "Chop",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Riley🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leonart",
+    "Cuartos",
+    2000
+   ],
+   [
+    "GROOMER🇧🇴",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
+ },
+ "452": {
+  "antes": {
+   "JJ": [
+    185,
+    78,
+    true
+   ],
+   "Liam": [
+    255,
+    211,
+    true
+   ],
+   "Makmah": [
+    4,
+    5,
+    false
+   ],
+   "ONZASS": [
+    175,
+    51,
+    true
+   ],
+   "SINTEXT": [
+    298,
+    271,
+    true
+   ],
+   "Snow": [
+    2,
+    2,
+    false
+   ],
+   "Verc": [
+    27,
+    33,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Liam",
+    "ONZASS",
+    "Liam"
+   ],
+   [
+    "Verc",
+    "JJ",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "SINTEXT",
+    "Verc"
+   ],
+   [
+    "Verc, Snow",
+    "Makmah, Liam",
+    "Verc, Snow"
+   ],
+   [
+    "Guess Bna 6",
+    "TNR JJ",
+    "Guess Bna 6"
+   ],
+   [
+    "Verc, Snow, Makmah",
+    "Plink BNA Six JJ",
+    "Verc, Snow, Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "JJ": 6,
+   "Liam": 1,
+   "Makmah": 35,
+   "ONZASS": 6,
+   "SINTEXT": 1,
+   "Snow": 31,
+   "Verc": 3
+  },
+  "fecha": "11/10",
+  "firma": "a08905db9e9e20a3",
+  "msg": "1559225028904484906",
+  "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
+  "num": 452,
+  "participantes": 19,
+  "sello": {
+   "Snow": "fe290890f13a:9df1984d05ab",
+   "Verc": "820a5190ce63:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T15:23:35Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Semifinal",
+    5958
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3333
+   ],
+   [
+    "Snow",
+    "Campeón",
+    3333
+   ],
+   [
+    "Liam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "TNR JJ",
+    "Semifinal",
+    2625
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JJ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "SINTEXT",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Plink BNA Six JJ",
+    "Subcampeón",
+    1875
    ]
   ],
   "v": 2

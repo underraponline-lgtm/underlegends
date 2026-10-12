@@ -17688,7 +17688,7 @@
   ],
   "n": 438,
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
-  "participantes": 21,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -17719,7 +17719,7 @@
      [
       [
        "Eclipsito",
-       "6. 🇨🇴 VR"
+       "VR"
       ],
       "Eclipsito",
       ""
@@ -17727,7 +17727,7 @@
      [
       [
        "Agus",
-       "7. 🇺🇾 ATR"
+       "🇺🇾 ATR"
       ],
       "Agus",
       ""
@@ -17742,7 +17742,7 @@
      ],
      [
       [
-       "2 ALVA 🇲🇽",
+       "ALVA 🇲🇽",
        "SHADOW 🇨🇴"
       ],
       "",
@@ -17759,7 +17759,7 @@
        "Emilio Alva"
       ],
       "Panchok",
-      "Walk-in 1: Emilio Alva 🇧🇱"
+      ""
      ],
      [
       [
@@ -17856,19 +17856,14 @@
     2500
    ],
    [
-    "Lord Viruzz",
+    "Emilio Alva",
     "Cuartos",
     2500
    ],
    [
-    "6. 🇨🇴 VR",
-    "Octavos",
-    1250
-   ],
-   [
-    "7. 🇺🇾 ATR",
-    "Octavos",
-    1250
+    "Lord Viruzz",
+    "Cuartos",
+    2500
    ],
    [
     "Calíz",
@@ -17886,12 +17881,17 @@
     1250
    ],
    [
-    "Emilio Alva",
-    "Cuartos",
+    "Geoka",
+    "Octavos",
     1250
    ],
    [
-    "Geoka",
+    "VR",
+    "Octavos",
+    1250
+   ],
+   [
+    "🇺🇾 ATR",
     "Octavos",
     1250
    ]
@@ -19844,6 +19844,265 @@
     "Xplic🇨🇱",
     "Octavos",
     625
+   ]
+  ]
+ },
+ "451": {
+  "dia": "2026-10-11",
+  "escala": "8-15",
+  "fecha": "11/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1558888545505255445"
+  ],
+  "n": 451,
+  "nombre": "MORTAL KOMBAT MAPACHE CUP",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "Riley🇵🇪"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Teo"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "19",
+       "Leonart"
+      ],
+      "19",
+      ""
+     ],
+     [
+      [
+       "Btrece🇺🇾",
+       "Evangeline"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "Majiztral"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "19",
+       "GROOMER🇧🇴"
+      ],
+      "19",
+      "Walk-in 1: GROOMER🇧🇴"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "19",
+       "Chop"
+      ],
+      "19",
+      "ganador: marcado en la llave"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "19",
+    "Campeón",
+    7500
+   ],
+   [
+    "Chop",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Leonart",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Riley🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "GROOMER🇧🇴",
+    "Semifinal",
+    1750
+   ]
+  ]
+ },
+ "452": {
+  "dia": "2026-10-11",
+  "escala": "16+",
+  "fecha": "11/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558963593406587072"
+  ],
+  "n": 452,
+  "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Liam",
+       "ONZASS"
+      ],
+      "Liam",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Verc",
+       "JJ",
+       "SINTEXT"
+      ],
+      "Verc",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Lvel 🇻🇪",
+       "Valdoza 🇨🇱",
+       "tnr :Espana:",
+       "JJ :Espana:"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "six",
+       "Hinjkybesuk🇦🇫",
+       "Jupiter",
+       "Guess 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, Snow",
+       "Makmah, Liam"
+      ],
+      "Verc, Snow",
+      ""
+     ],
+     [
+      [
+       "Guess Bna 6",
+       "TNR JJ"
+      ],
+      "Guess Bna 6",
+      "ganador según #veredictos; Walk-in 1: TNR JJ"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, Snow, Makmah",
+       "Plink BNA Six JJ"
+      ],
+      "Verc, Snow, Makmah",
+      "Walk-in 2: Plink BNA Six JJ"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Makmah",
+    "Semifinal",
+    5958
+   ],
+   [
+    "Snow",
+    "Campeón",
+    3333
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3333
+   ],
+   [
+    "Liam",
+    "Semifinal",
+    2625
+   ],
+   [
+    "TNR JJ",
+    "Semifinal",
+    2625
+   ],
+   [
+    "JJ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ONZASS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "SINTEXT",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Plink BNA Six JJ",
+    "Subcampeón",
+    1875
    ]
   ]
  }

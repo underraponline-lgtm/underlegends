@@ -1,7 +1,7 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-10-05",
+ "sem": "2026-10-12",
  "semanas": {
   "2026-10-05": {
    "fin": "2026-10-12T15:00:00Z",
@@ -41,18 +41,8 @@
     ],
     "19": [
      0,
-     4,
+     7,
      1
-    ],
-    "6. 🇨🇴 VR": [
-     0,
-     0,
-     16
-    ],
-    "7. 🇺🇾 ATR": [
-     0,
-     0,
-     16
     ],
     "ALESS": [
      1,
@@ -216,8 +206,8 @@
     ],
     "Chop": [
      1,
-     0,
-     16
+     2,
+     2
     ],
     "Ckl": [
      1,
@@ -334,7 +324,7 @@
      0,
      8
     ],
-    "Eliot🇲🇽": [
+    "Eliot": [
      1,
      0,
      1
@@ -419,6 +409,11 @@
      2,
      4
     ],
+    "GROOMER🇧🇴": [
+     0,
+     0,
+     4
+    ],
     "Geoka": [
      1,
      2,
@@ -453,6 +448,11 @@
      1,
      1,
      8
+    ],
+    "Guess Bna 6": [
+     0,
+     1,
+     99
     ],
     "HH": [
      1,
@@ -592,7 +592,7 @@
     "Leonart": [
      1,
      0,
-     16
+     8
     ],
     "Letrao🇨🇱": [
      1,
@@ -602,7 +602,7 @@
     "Liam": [
      1,
      0,
-     8
+     4
     ],
     "Liberia": [
      1,
@@ -661,7 +661,7 @@
     ],
     "Majiztral": [
      1,
-     1,
+     2,
      4
     ],
     "Makmah": [
@@ -849,6 +849,11 @@
      4,
      1
     ],
+    "Plink BNA Six JJ": [
+     1,
+     0,
+     2
+    ],
     "Polosport": [
      1,
      2,
@@ -914,6 +919,11 @@
      0,
      16
     ],
+    "Riley🇵🇪": [
+     0,
+     0,
+     8
+    ],
     "Riolu": [
      1,
      1,
@@ -947,7 +957,7 @@
     "SINTEXT": [
      1,
      0,
-     16
+     8
     ],
     "SK8": [
      0,
@@ -1029,6 +1039,11 @@
      0,
      8
     ],
+    "TNR JJ": [
+     1,
+     0,
+     4
+    ],
     "Tam": [
      1,
      2,
@@ -1089,6 +1104,11 @@
      0,
      4
     ],
+    "VR": [
+     0,
+     0,
+     16
+    ],
     "Valdoza": [
      1,
      0,
@@ -1107,7 +1127,7 @@
     "Verc": [
      1,
      4,
-     2
+     1
     ],
     "Vilca": [
      0,
@@ -1238,6 +1258,11 @@
      1,
      0,
      16
+    ],
+    "🇺🇾 ATR": [
+     0,
+     0,
+     16
     ]
    },
    "pts": {
@@ -1271,7 +1296,7 @@
     "Cajita": 300,
     "Carlosmo": 1600,
     "Carlosss": 1600,
-    "Chop": 300,
+    "Chop": 1300,
     "Ckl": 300,
     "Colesito": 900,
     "CrisZJ": 1600,
@@ -1291,7 +1316,7 @@
     "EIDP": 2900,
     "Eclipsito": 2900,
     "Efimero": 300,
-    "Eliot🇲🇽": 1300,
+    "Eliot": 1300,
     "Elsoolar": 300,
     "EmiZor": 300,
     "Emily Family": 300,
@@ -1376,6 +1401,7 @@
     "Personality": 300,
     "PichulaMc": 2900,
     "Player": 2900,
+    "Plink BNA Six JJ": 1300,
     "Polosport": 1300,
     "Pomberito": 2900,
     "Presagio": 1300,
@@ -1408,6 +1434,7 @@
     "Soneto": 300,
     "Sosa": 300,
     "Soulb": 300,
+    "TNR JJ": 300,
     "Tam": 1300,
     "Tenor": 300,
     "Teo": 300,
@@ -1443,6 +1470,42 @@
     "wei shenlong": 300,
     "yinn": 300
    }
+  },
+  "2026-10-12": {
+   "fin": "2026-10-19T15:00:00Z",
+   "lista": [
+    [
+     "eventos2",
+     "Jugá 2 eventos",
+     "facil",
+     2,
+     300
+    ],
+    [
+     "semis",
+     "Llegá a una semifinal",
+     "media",
+     4,
+     600
+    ],
+    [
+     "campeon",
+     "Ganá un evento",
+     "dificil",
+     1,
+     1000
+    ],
+    [
+     "caza",
+     "Ganale un duelo a Oasis",
+     "caza",
+     1,
+     800,
+     "Oasis"
+    ]
+   ],
+   "prog": {},
+   "pts": {}
   }
  },
  "suma": {
@@ -1476,7 +1539,7 @@
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
-  "Chop": 300,
+  "Chop": 1300,
   "Ckl": 300,
   "Colesito": 900,
   "CrisZJ": 1600,
@@ -1496,7 +1559,7 @@
   "EIDP": 2900,
   "Eclipsito": 2900,
   "Efimero": 300,
-  "Eliot🇲🇽": 1300,
+  "Eliot": 1300,
   "Elsoolar": 300,
   "EmiZor": 300,
   "Emily Family": 300,
@@ -1581,6 +1644,7 @@
   "Personality": 300,
   "PichulaMc": 2900,
   "Player": 2900,
+  "Plink BNA Six JJ": 1300,
   "Polosport": 1300,
   "Pomberito": 2900,
   "Presagio": 1300,
@@ -1613,6 +1677,7 @@
   "Soneto": 300,
   "Sosa": 300,
   "Soulb": 300,
+  "TNR JJ": 300,
   "Tam": 1300,
   "Tenor": 300,
   "Teo": 300,

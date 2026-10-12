@@ -191,6 +191,19 @@
       "ACAD",
       "DRA"
      ]
+    ],
+    "ppp": {
+     "URBF": 3437.5,
+     "FFA": 5859.0,
+     "SR": 3000.0,
+     "DDF": 6262.9,
+     "ACAD": 3160.7,
+     "DRA": 0
+    },
+    "gana": [
+     "FFA",
+     "DDF",
+     "ACAD"
     ]
    },
    "metas": {
@@ -285,7 +298,8 @@
      "ACAD": 14,
      "URBF": 8
     },
-    "gana": "URBF"
+    "gana": "URBF",
+    "final": true
    },
    "meta_va": {
     "ACAD": 14,
@@ -319,7 +333,117 @@
      }
     }
    ],
-   "manual": true
+   "manual": true,
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Snow",
+     191050
+    ],
+    "revelacion": [
+     "Aldre",
+     59400
+    ],
+    "cazador": [
+     "Oasis",
+     16500
+    ],
+    "servidor": [
+     "FFA",
+     192
+    ]
+   }
+  },
+  {
+   "id": "2026-10-12",
+   "inicio": "2026-10-12T15:00:00Z",
+   "fin": "2026-10-19T15:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-10-12T15:22:39Z",
+   "sv": {
+    "DRA": 3,
+    "FFS": 0.5,
+    "FFA": 3.0,
+    "SR": 1,
+    "FVS": 1,
+    "URBF": 1.5,
+    "DDF": 1.5,
+    "ACAD": 1.5
+   },
+   "dorado": {
+    "sv": "ACAD",
+    "desde": "2026-10-14T04:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "DDF",
+      "FFA"
+     ],
+     [
+      "FFS",
+      "ACAD"
+     ],
+     [
+      "SR",
+      "FVS"
+     ],
+     [
+      "URBF",
+      "DRA"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 53,
+    "DDF": 38,
+    "DRA": 8,
+    "FFA": 172,
+    "FFS": 8,
+    "FVS": 8,
+    "SR": 35,
+    "URBF": 25
+   },
+   "votado": {
+    "sv": "FFA",
+    "votos": 4,
+    "de": 8
+   },
+   "premios": {
+    "FFA": [
+     "votado",
+     "guerra"
+    ],
+    "DDF": [
+     "guerra"
+    ],
+    "ACAD": [
+     "guerra"
+    ],
+    "URBF": [
+     "semillero"
+    ]
+   },
+   "copa": {
+    "org": "nachonc_",
+    "clave": "nachonc"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "DDF": 0,
+    "DRA": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FVS": 0,
+    "SR": 0,
+    "URBF": 0
+   }
   }
  ]
 }

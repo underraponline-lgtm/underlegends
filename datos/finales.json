@@ -1,3 +1,138 @@
 {
- "_leeme": "Las finales sin campeón que el ciclo le preguntó a quien publicó la llave, con dos botones (bot/finales.py). Una por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
+ "1557928850678091888": {
+  "autor": "1150099153238630410",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-09T01:33:02.920000+00:00",
+  "evento": "PROYECTO X",
+  "fecha": "08/10",
+  "llave": "1557928850678091888",
+  "pregunta": "1559224916950257725",
+  "preguntada": "2026-10-12 11:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "MINIBOY🇨🇱",
+     "Jeixder"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Dm🇵🇪",
+     "Number 🇱🇷"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
+ "1558238351826489406": {
+  "autor": "1494178897908990136",
+  "canal": "1309234583023124531",
+  "cuando": "2026-10-09T22:02:53.744000+00:00",
+  "evento": "FAT BATTLES PALOOZA T.3 FECHA 6",
+  "fecha": "09/10",
+  "llave": "1558238351826489406",
+  "pregunta": "",
+  "preguntada": "2026-10-12 11:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "ALVA 🇲🇽",
+     "SHADOW 🇨🇴"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "ACAD"
+ },
+ "1558304993247764633": {
+  "autor": "1086485696572817418",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-10T02:27:42.297000+00:00",
+  "evento": "__ DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1 __",
+  "fecha": "09/10",
+  "llave": "1558304993247764633",
+  "pregunta": "1559224921492815937",
+  "preguntada": "2026-10-12 11:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Seko Boy🇨🇴 + EGI🇨🇷",
+     "NEMI 🇦🇷 + V-ZIR 🇻🇪"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "araya 🇦🇷 + crakero1312 🇦🇷",
+     "KUN Z 🇪🇸 + SOSA ATR 🇺🇾"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
+ "1558888545505255445": {
+  "autor": "1247306019839938754",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-11T17:06:31.997000+00:00",
+  "evento": "MORTAL KOMBAT MAPACHE CUP",
+  "fecha": "11/10",
+  "llave": "1558888545505255445",
+  "pregunta": "1559224914559500299",
+  "preguntada": "2026-10-12 11:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Btrece🇺🇾",
+     "Evangeline"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
+ "1558963593406587072": {
+  "autor": "790016013680771102",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-11T22:04:44.811000+00:00",
+  "evento": "Fecha Rempalago Vol. 64 compe express por plata",
+  "fecha": "11/10",
+  "llave": "1558963593406587072",
+  "pregunta": "1559224918720249907",
+  "preguntada": "2026-10-12 11:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "six",
+     "Hinjkybesuk🇦🇫",
+     "Jupiter",
+     "Guess 🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Lvel 🇻🇪",
+     "Valdoza 🇨🇱",
+     "tnr :Espana:",
+     "JJ :Espana:"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
+ "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
