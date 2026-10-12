@@ -114,7 +114,7 @@
   "Emilio Alva": 5,
   "Emily Family": 5,
   "Enkil 🇦🇷": 5,
-  "Erian": 4,
+  "Erian": 3,
   "EricRJ": 5,
   "Erik": 4,
   "Erizo": 5,
@@ -153,11 +153,10 @@
   "Gwynyth": 5,
   "HH": 4,
   "Hardcore": 5,
-  "Hasan🇦🇷": 5,
-  "Hassan": 3,
+  "Hassan": 4,
   "Heat": 5,
   "Henry": 5,
-  "Hinjkybesuk": 5,
+  "Hinjkybesuk": 4,
   "Holden": 5,
   "Humildad": 4,
   "IFX": 5,
@@ -170,6 +169,7 @@
   "JEIXDER": 5,
   "JIMMY": 4,
   "JJ": 5,
+  "JJ :Espana:": 5,
   "JOACO 🇨🇱": 5,
   "JOSHU": 5,
   "JULIX": 5,
@@ -197,6 +197,7 @@
   "Krinkross🇪🇸": 5,
   "Krish": 5,
   "Krtman": 5,
+  "Kun Z": 5,
   "Kuni": 5,
   "Kyron": 5,
   "Kyss": 5,
@@ -210,7 +211,7 @@
   "LRS LA MARIHUANA🇵🇰": 5,
   "LV": 5,
   "Lambroggini": 5,
-  "Launnok🇨🇱": 5,
+  "Launok": 5,
   "Leonart": 5,
   "Letrao🇨🇱": 5,
   "Leyenda": 5,
@@ -223,7 +224,7 @@
   "Lord Viruzz": 4,
   "Luffy": 5,
   "Luzzano": 5,
-  "Lvel": 5,
+  "Lvel": 4,
   "MARTYNEZ🇺🇾": 5,
   "MATICERNA": 5,
   "MAWS🇻🇪": 4,
@@ -304,7 +305,7 @@
   "Polosport": 5,
   "Pomberito": 4,
   "Presagio": 3,
-  "Prodigy": 4,
+  "Prodigy": 5,
   "Prosu": 5,
   "Provenza": 3,
   "QUEEN": 5,
@@ -393,7 +394,7 @@
   "Warriorvid": 5,
   "Xclusivo": 4,
   "Xervoe": 5,
-  "Xowee": 4,
+  "Xowee": 5,
   "Xplicit": 5,
   "Xplic🇨🇱": 5,
   "Xubaru": 5,
@@ -904,7 +905,7 @@
   ],
   [
    "2026-10-05",
-   "Prodigy",
+   "Lvel",
    4
   ],
   [
@@ -989,6 +990,11 @@
   ],
   [
    "2026-10-05",
+   "Hinjkybesuk",
+   4
+  ],
+  [
+   "2026-10-05",
    "Medster",
    4
   ],
@@ -1000,11 +1006,6 @@
   [
    "2026-10-05",
    "Ortiz",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Xowee",
    4
   ],
   [
@@ -1065,7 +1066,7 @@
    "BTRX",
    "Badterne",
    "Bloody",
-   "Erian",
+   "Hassan",
    "Krtman",
    "MTZ",
    "Prosu",
@@ -1089,7 +1090,9 @@
    "Geoka",
    "Greyfitsh🇵🇦",
    "HH",
+   "Hinjkybesuk",
    "Liberia",
+   "Lvel",
    "MCO",
    "Makmah",
    "Medster",
@@ -1106,7 +1109,6 @@
    "Paria",
    "Pomberito",
    "Presagio",
-   "Prodigy",
    "Provenza",
    "Santi",
    "Snow",
@@ -1116,8 +1118,7 @@
    "Vandu",
    "Verc",
    "Walker",
-   "Xclusivo",
-   "Xowee"
+   "Xclusivo"
   ]
  },
  "zona": 5

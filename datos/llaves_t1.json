@@ -17906,17 +17906,25 @@
   ],
   "n": 439,
   "nombre": "DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1",
-  "participantes": 19,
+  "participantes": 16,
   "rondas": [
    {
     "b": [
      [
       [
        "Cronox, Verc",
-       "Six, Agus"
+       "Agus, Colesito"
       ],
       "Cronox, Verc",
-      "Revivido: SIX 🇦🇷"
+      ""
+     ],
+     [
+      [
+       "Dynoco, Presagio",
+       "Snow, EGI"
+      ],
+      "Dynoco, Presagio",
+      ""
      ],
      [
       [
@@ -17928,19 +17936,11 @@
      ],
      [
       [
-       "Seko Boy🇨🇴 + EGI🇨🇷",
-       "NEMI 🇦🇷 + V-ZIR 🇻🇪"
+       "Six, Snow",
+       "Kun Z, .SosaATR"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "araya 🇦🇷 + crakero1312 🇦🇷",
-       "KUN Z 🇪🇸 + SOSA ATR 🇺🇾"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Six, Snow",
+      ""
      ]
     ],
     "r": "Cuartos"
@@ -18008,6 +18008,11 @@
     2625
    ],
    [
+    "Six",
+    "Semifinal",
+    2625
+   ],
+   [
     "Snow",
     "Semifinal",
     2625
@@ -18018,9 +18023,9 @@
     2625
    ],
    [
-    "Six",
-    "Semifinal",
-    2562
+    ".SosaATR",
+    "Cuartos",
+    1250
    ],
    [
     "Agus",
@@ -18028,7 +18033,22 @@
     1250
    ],
    [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "EGI",
+    "Cuartos",
+    1250
+   ],
+   [
     "Kravitz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kun Z",
     "Cuartos",
     1250
    ],
@@ -19992,6 +20012,16 @@
      ],
      [
       [
+       "Guess",
+       "Six",
+       "Hinjkybesuk",
+       "Jupiter"
+      ],
+      "Guess",
+      "triple (4 bandas)"
+     ],
+     [
+      [
        "Verc",
        "JJ",
        "SINTEXT"
@@ -20001,23 +20031,13 @@
      ],
      [
       [
-       "Lvel 🇻🇪",
-       "Valdoza 🇨🇱",
        "tnr :Espana:",
+       "Lvel 🇻🇪",
+       "Valdoza",
        "JJ :Espana:"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "six",
-       "Hinjkybesuk🇦🇫",
-       "Jupiter",
-       "Guess 🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "tnr :Espana:",
+      "triple (4 bandas); ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -20034,10 +20054,10 @@
      ],
      [
       [
-       "Guess Bna 6",
+       "Guess",
        "TNR JJ"
       ],
-      "Guess Bna 6",
+      "Guess",
       "ganador según #veredictos; Walk-in 1: TNR JJ"
      ]
     ],
@@ -20085,7 +20105,27 @@
     2625
    ],
    [
+    "Hinjkybesuk",
+    "Cuartos",
+    2500
+   ],
+   [
     "JJ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JJ :Espana:",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jupiter",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lvel 🇻🇪",
     "Cuartos",
     2500
    ],
@@ -20096,6 +20136,16 @@
    ],
    [
     "SINTEXT",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Valdoza",
     "Cuartos",
     2500
    ],

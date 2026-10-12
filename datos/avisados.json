@@ -4753,13 +4753,23 @@
   "duelos": [
    [
     "Cronox, Verc",
-    "Six, Agus",
+    "Agus, Colesito",
     "Cronox, Verc"
+   ],
+   [
+    "Dynoco, Presagio",
+    "Snow, EGI",
+    "Dynoco, Presagio"
    ],
    [
     "Makmah, Walker",
     "Kravitz, Zaik 🇪🇸",
     "Makmah, Walker"
+   ],
+   [
+    "Six, Snow",
+    "Kun Z, .SosaATR",
+    "Six, Snow"
    ],
    [
     "Cronox, Verc",
@@ -4789,11 +4799,11 @@
    "Walker": 1
   },
   "fecha": "09/10",
-  "firma": "eff128a55fb2b5da",
+  "firma": "a9cc8e7b41dd9c3e",
   "msg": "1558334116259307552",
   "nombre": "__ DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1 __",
   "num": 439,
-  "participantes": 19,
+  "participantes": 16,
   "sello": {
    "Dynoco": "2dddb87a3b17:17c4f13e63d4",
    "Presagio": "d8ca4620dfbd:17c4f13e63d4"
@@ -4822,6 +4832,11 @@
     3750
    ],
    [
+    "Six",
+    "Semifinal",
+    2625
+   ],
+   [
     "Snow",
     "Semifinal",
     2625
@@ -4837,12 +4852,17 @@
     2625
    ],
    [
-    "Six",
-    "Semifinal",
-    2562
+    "Agus",
+    "Cuartos",
+    1250
    ],
    [
-    "Agus",
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "EGI",
     "Cuartos",
     1250
    ],
@@ -4853,6 +4873,16 @@
    ],
    [
     "Zaik 🇪🇸",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kun Z",
+    "Cuartos",
+    1250
+   ],
+   [
+    ".SosaATR",
     "Cuartos",
     1250
    ]

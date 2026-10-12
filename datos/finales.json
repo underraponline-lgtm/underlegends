@@ -1,4 +1,99 @@
 {
+ "1553957529648767098": {
+  "autor": "681588123699904563",
+  "canal": "1511963625793912892",
+  "cuando": "2026-09-28T02:32:26.203000+00:00",
+  "evento": "DENME MODERADOR LPM",
+  "fecha": "27/09",
+  "llave": "1553957529648767098",
+  "pregunta": "1559227191521312952",
+  "preguntada": "2026-10-12 11:32 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Zignos cinexfilo nc (pichula)",
+     "Scot yinn guty (mi mamá)"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "yinn",
+     "Makma 🇻🇪"
+    ],
+    "ronda": "SEMIFINALES"
+   },
+   {
+    "lados": [
+     "Prosu velatz player erian 7",
+     "Nc jupiter Agustín Cinexfilo MCO"
+    ],
+    "ronda": "SEMIFINALES"
+   },
+   {
+    "lados": [
+     "velatz",
+     "player🇻🇪",
+     "Prosu"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "URBF"
+ },
+ "1555357529846972507": {
+  "autor": "794733304729436212",
+  "canal": "1511963625793912892",
+  "cuando": "2026-10-01T23:15:32.261000+00:00",
+  "evento": "POESÍA CRUDA",
+  "fecha": "01/10",
+  "llave": "1555357529846972507",
+  "pregunta": "1559227189868757194",
+  "preguntada": "2026-10-12 11:32 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Pichulamc",
+     "Riferian 🇵🇦"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "URBF"
+ },
+ "1557241619433128028": {
+  "autor": "1487658663148785734",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-07T04:02:14.223000+00:00",
+  "evento": "WETTSIDDEE",
+  "fecha": "07/10",
+  "llave": "1557241619433128028",
+  "pregunta": "1559227187180077220",
+  "preguntada": "2026-10-12 11:32 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Prodigy 🇦🇷",
+     "setes"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "kminant🇦🇷",
+     "Zignos"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "1557928850678091888": {
   "autor": "1150099153238630410",
   "canal": "1470097588635176960",
@@ -27,6 +122,35 @@
   "respondidas": {},
   "sin_permiso": false,
   "sv": "DDF"
+ },
+ "1557966243867271220": {
+  "autor": "1345962362615894027",
+  "canal": "1487206164864438513",
+  "cuando": "2026-10-09T04:01:38+00:00",
+  "evento": "__ __ Cuentas Pendientes V.1 __ __",
+  "fecha": "08/10",
+  "llave": "1557966243867271220",
+  "pregunta": "1559227180758868029",
+  "preguntada": "2026-10-12 11:32 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "PROVENZA COLESITO XUBARU",
+     "ALDRE MAKMA RODA"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "Xubaru🇻🇪",
+     "Greyfitsh🇵🇦"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
  },
  "1558238351826489406": {
   "autor": "1494178897908990136",
@@ -75,7 +199,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Seko Boy🇨🇴 + EGI🇨🇷"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },
@@ -130,7 +256,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "1": "tnr :Espana:"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },

@@ -199,6 +199,20 @@
    "cuando": "2026-10-12 3:56 AM ET",
    "por": "Claude, de lo que publicó FVS (Dlx: «4. A», el evento cuenta)",
    "nota": "La llave termina en «[Mathias 🇪🇸] vs [Rfran 🇪🇸]» sin ganador, y en #veredictos falta el «# GANADOR» del organizador. Lo dicen el voto del jurado en #veredictos («Mathias 🇻🇪», 26/09 5:43 PM ET) y el anuncio del organizador esa misma noche (6:12 PM ET): Mathias «llega a Primera división… el único participante que se ganó su puesto», que era el premio del UNDER."
+  },
+  "desgraciasentokyolaredencionvol1|FFA|09/10|cuartos|nemivzir|sekoboyegi": {
+   "ganador": "Seko Boy🇨🇴 + EGI🇨🇷",
+   "batalla": "__ DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1 __ · FFA · 09/10 · cuartos · Seko Boy🇨🇴 + EGI🇨🇷 🆚 NEMI 🇦🇷 + V-ZIR 🇻🇪",
+   "cuando": "2026-10-12 11:31 AM ET",
+   "por": "el organizador, con el menú (<@1414431452346581052>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "fecharempalagovol64compeexpressporplata|FFA|11/10|cuartos|jjespana|lvel|tnrespana|valdoza": {
+   "ganador": "tnr :Espana:",
+   "batalla": "Fecha Rempalago Vol. 64 compe express por plata · FFA · 11/10 · cuartos · Lvel 🇻🇪 🆚 Valdoza 🇨🇱 🆚 tnr :Espana: 🆚 JJ :Espana:",
+   "cuando": "2026-10-12 11:31 AM ET",
+   "por": "el organizador, con el menú (<@1414431452346581052>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

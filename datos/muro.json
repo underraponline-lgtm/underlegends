@@ -56,6 +56,15 @@
 "temporada"
 ]
 },
+"six": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "velatz": {
 "rg": "C",
 "c": [
@@ -73,15 +82,6 @@
 "temporada"
 ]
 },
-"six": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "hassan": {
 "rg": "A",
 "c": []
@@ -91,7 +91,7 @@
 "c": []
 },
 "colesito": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -357,6 +357,13 @@
 "rg": "",
 "c": []
 },
+"jupiter": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "eclipsito": {
 "rg": "",
 "c": []
@@ -411,13 +418,6 @@
 "temporada"
 ]
 },
-"jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "dyzz": {
 "rg": "",
 "c": []
@@ -428,6 +428,10 @@
 "pais",
 "servidor"
 ]
+},
+"chop": {
+"rg": "",
+"c": []
 },
 "teito": {
 "rg": "E",
@@ -475,10 +479,6 @@
 "servidor"
 ]
 },
-"chop": {
-"rg": "",
-"c": []
-},
 "kravitz": {
 "rg": "",
 "c": [
@@ -509,6 +509,10 @@
 "c": [
 "servidor"
 ]
+},
+"hinjkybesuk": {
+"rg": "",
+"c": []
 },
 "badterne": {
 "rg": "",
@@ -564,6 +568,13 @@
 "pomberito": {
 "rg": "",
 "c": []
+},
+"lvel": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "cinexfilo": {
 "rg": "",
@@ -621,10 +632,6 @@
 ]
 },
 "blitz": {
-"rg": "",
-"c": []
-},
-"hinjkybesuk": {
 "rg": "",
 "c": []
 },
@@ -712,10 +719,15 @@
 "teo": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "joshu": {
+"rg": "",
+"c": []
+},
+"valdoza": {
 "rg": "",
 "c": []
 },
@@ -749,13 +761,6 @@
 "c": []
 },
 "soulb": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"lvel": {
 "rg": "",
 "c": [
 "servidor",
@@ -862,6 +867,13 @@
 "c": []
 },
 "keider": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"sosaatr": {
 "rg": "",
 "c": [
 "servidor",
@@ -982,10 +994,6 @@
 "temporada"
 ]
 },
-"valdoza": {
-"rg": "",
-"c": []
-},
 "youngvlad": {
 "rg": "",
 "c": []
@@ -1002,6 +1010,10 @@
 "rg": "",
 "c": []
 },
+"plinkbnasixjj": {
+"rg": "",
+"c": []
+},
 "iguana": {
 "rg": "",
 "c": [
@@ -1013,10 +1025,6 @@
 "c": []
 },
 "julix-x": {
-"rg": "",
-"c": []
-},
-"plinkbnasixjj": {
 "rg": "",
 "c": []
 },
@@ -1046,13 +1054,6 @@
 "rg": "",
 "c": []
 },
-"sosaatr": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "araya": {
 "rg": "",
 "c": [
@@ -1065,6 +1066,10 @@
 "c": [
 "servidor"
 ]
+},
+"egi": {
+"rg": "",
+"c": []
 },
 "enkil": {
 "rg": "",
@@ -5242,6 +5247,14 @@
 "Majiztral"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-12T15:36:59Z",
+"quien": [
+"Teo"
+],
+"carta": "temporada"
 }
 ]
 }

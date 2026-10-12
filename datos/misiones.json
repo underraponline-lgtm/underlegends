@@ -32,7 +32,7 @@
     ".SosaATR": [
      1,
      0,
-     16
+     8
     ],
     "1200": [
      1,
@@ -446,13 +446,8 @@
     ],
     "Guess": [
      1,
-     1,
+     2,
      8
-    ],
-    "Guess Bna 6": [
-     0,
-     1,
-     99
     ],
     "HH": [
      1,
@@ -464,7 +459,7 @@
      0,
      16
     ],
-    "Hasan🇦🇷": [
+    "Hassan": [
      1,
      0,
      4
@@ -500,6 +495,11 @@
      4
     ],
     "JJ": [
+     1,
+     0,
+     8
+    ],
+    "JJ :Espana:": [
      1,
      0,
      8
@@ -564,6 +564,11 @@
      0,
      8
     ],
+    "Kun Z": [
+     1,
+     0,
+     8
+    ],
     "Kyss": [
      1,
      0,
@@ -584,7 +589,7 @@
      0,
      8
     ],
-    "Launnok🇨🇱": [
+    "Launok": [
      1,
      0,
      16
@@ -627,7 +632,7 @@
     "Lvel": [
      1,
      0,
-     16
+     8
     ],
     "MARTYNEZ🇺🇾": [
      0,
@@ -1112,7 +1117,7 @@
     "Valdoza": [
      1,
      0,
-     16
+     8
     ],
     "Vandu": [
      1,
@@ -1337,13 +1342,14 @@
     "Guess": 300,
     "HH": 300,
     "Hardcore": 300,
-    "Hasan🇦🇷": 300,
+    "Hassan": 300,
     "Henry": 300,
     "Hinjkybesuk": 300,
     "Holden": 300,
     "ISAIAS": 300,
     "Iguana": 300,
     "JJ": 300,
+    "JJ :Espana:": 300,
     "JOSHU": 2900,
     "Juasmio": 300,
     "Jult": 300,
@@ -1353,11 +1359,12 @@
     "Kravitz": 300,
     "Krinkross🇪🇸": 300,
     "Krish": 300,
+    "Kun Z": 300,
     "Kyss": 300,
     "LEWITO": 300,
     "LKS 🇨🇱": 300,
     "LRS": 300,
-    "Launnok🇨🇱": 300,
+    "Launok": 300,
     "Leonart": 300,
     "Letrao🇨🇱": 1300,
     "Liam": 300,
@@ -1580,13 +1587,14 @@
   "Guess": 300,
   "HH": 300,
   "Hardcore": 300,
-  "Hasan🇦🇷": 300,
+  "Hassan": 300,
   "Henry": 300,
   "Hinjkybesuk": 300,
   "Holden": 300,
   "ISAIAS": 300,
   "Iguana": 300,
   "JJ": 300,
+  "JJ :Espana:": 300,
   "JOSHU": 2900,
   "Juasmio": 300,
   "Jult": 300,
@@ -1596,11 +1604,12 @@
   "Kravitz": 300,
   "Krinkross🇪🇸": 300,
   "Krish": 300,
+  "Kun Z": 300,
   "Kyss": 300,
   "LEWITO": 300,
   "LKS 🇨🇱": 300,
   "LRS": 300,
-  "Launnok🇨🇱": 300,
+  "Launok": 300,
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Liam": 300,
