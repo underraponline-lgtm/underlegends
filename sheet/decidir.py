@@ -553,7 +553,34 @@ def suyos_de_pareja(inscripciones):
         if len(suyos) != 1 or len([q for q in _ENTRE_BANDERAS.split(suyos[0]) if len(norm(_sin_bandera(q))) >= 2]) != 1:
             continue
         out.append((did, x.get('servidor') or '', norm(_sin_bandera(suyos[0]))))
+    # 🔑 Y EL QUE TIENE EL NOMBRE DE LA CUENTA (Dlx, 12/10/2026: «cuando el evento ha abierto inscripciones mirá bien
+    # quiénes se han inscrito… mejorar en ese aspecto»). «Metorito🇲🇽 + DXG🇲🇽» la escribió `metorito0807`: en la
+    # pareja, Metorito es esa cuenta. Medido sobre las 2.151 inscripciones guardadas: 48 de las 181 de varios nombres
+    # tienen UNO SOLO que es el usuario de quien la escribió (Molusco, Cronox, Makmah, Bloody, Eclipse, DXG, Snow…).
+    # El compañero sigue sin cuenta: eso no lo dice la inscripción.
+    ya = {(o[0], o[1]) for o in out}
+    for x in inscripciones or []:
+        did, t = str(x.get('discord_id') or ''), str(x.get('texto') or '')
+        if not did.isdigit() or '(' in t or (did, x.get('servidor') or '') in ya:
+            continue
+        ns = _nombres_insc(t)
+        if len(ns) < 2:
+            continue
+        de_cuenta = [n for n in ns if es_su_usuario(n, x.get('quien'))]
+        if len(de_cuenta) == 1:
+            out.append((did, x.get('servidor') or '', de_cuenta[0]))
     return out
+
+
+def es_su_usuario(nombre, usuario):
+    """¿`nombre` (normalizado) es el usuario de Discord `usuario`, sin los números del final? Igual, uno el principio
+    del otro desde 4 letras, o parecido a 0,85: «metorito» y `metorito0807`, «molusco» y `moluscoanvriento_79058`."""
+    a, b = norm(_sin_bandera(nombre)), re.sub(r'\d+$', '', norm(usuario or ''))
+    if not a or not b:
+        return False
+    if len(a) < 4 or len(b) < 4:
+        return a == b
+    return a == b or a.startswith(b) or b.startswith(a) or difflib.SequenceMatcher(None, a, b).ratio() >= 0.85
 
 
 def _nombres_insc(texto):
