@@ -2018,6 +2018,13 @@ def integrantes_equipo(ev, sv, fecha, equipo):
     return None
 
 
+def paga_ronda(ev, sv, fecha):
+    """`{ronda: puntos}` que Dlx dijo para las rondas que la escala de ese evento no paga (`paga` en la decisión del
+    evento), o `{}`. Ver `motor._paga()`: FVS UNDER, «octavos» a 625 (12/10/2026)."""
+    d = (_decision_de_evento(ev, sv, fecha) or {}).get('paga') or {}
+    return {norm(r): int(v) for r, v in d.items() if str(v).isdigit()}
+
+
 def cobra_ronda(ev, sv, fecha):
     """Quiénes cobran una ronda que GANARON y después no siguieron, si Dlx lo dijo: `{nombre: ronda}`.
 

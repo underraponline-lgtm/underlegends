@@ -635,6 +635,13 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             if q:
                 drafteados.add(q)
 
+    def _paga(b):
+        """🔑 LA RONDA QUE LA ESCALA NO PAGA, SI DLX DIJO CUÁNTO (`paga: N` en la nota, de `decidir.paga_ronda()`).
+        FVS UNDER (26/09/2026, 12 personas, escala 8-15) abre con tríos en «octavos», que esa escala no tiene: los
+        cuatro que cayeron ahí cobraban 0. Dlx, 12/10/2026: «b», 625, como pagó URBAN LEAGUE (guía §3.6)."""
+        m = re.search(r'paga\s*:\s*(\d+)', str(b.get('notas') or ''), re.I)
+        return int(m.group(1)) if m else 0
+
     def _pk(b):
         """Los que la batalla marca como pokemon: no pelearon ahí."""
         return {q for q in (resolver(x.strip()) for x in re.findall(
@@ -828,7 +835,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                   - revividos - drafteados)
             if ya and len(ya) == len(equipo(p) or [p]):
                 continue
-            sumar(p, tab.get(puesto, 0), puesto, salvo=ya, fuera=_pk(b))
+            sumar(p, tab.get(puesto, 0) or _paga(b), puesto, salvo=ya, fuera=_pk(b))
 
     # 🔑 EL QUE GANÓ SU RONDA Y NO SIGUIÓ, si Dlx dijo que la cobra (`cobra: X` en la nota de esa batalla; ver
     # `decidir.cobra_ronda()`). Se le paga la ronda como a quien la perdió, y sólo si no tiene ya un puesto: el motor
@@ -1031,6 +1038,9 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         if doble and r in (DOBLE_G, DOBLE_P):
             continue
         puesto = dict(CAIDA).get(r)
+        # la que Dlx dijo cuánto paga (`paga: N`) ya no es una duda
+        if puesto and all(_paga(b) for b in batallas if ronda_de(b.get('ronda')) == r):
+            continue
         if not puesto or not tab.get(puesto):
             avisos.append('ESCALA: la ronda «%s» no tiene valor en la escala '
                           '%s y sus eliminados cobran 0 — revisar (guía §2 '

@@ -1361,6 +1361,23 @@ def otro_en_servidor(filas, sv, mapa=None):
     return filas
 
 
+def marcar_paga(filas):
+    """`paga: N` en las filas de la ronda que la escala no paga, si Dlx dijo cuánto (`decidir.paga_ronda()`)."""
+    if not filas:
+        return filas
+    f0 = filas[0]
+    try:
+        import decidir as DEC
+        plan = DEC.paga_ronda(f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or '')
+    except Exception:                                    # noqa: BLE001
+        plan = {}
+    for f in filas if plan else ():
+        v = plan.get(E.norm(f.get('ronda')))
+        if v and 'paga:' not in str(f.get('notas') or ''):
+            _con_nota(f, 'paga: %d' % v)
+    return filas
+
+
 def marcar_cobra(filas, decidir=None):
     """La ronda que alguien GANÓ y después no siguió, si Dlx dijo que la cobra: `cobra: <nombre>` en esa batalla.
 
@@ -3598,6 +3615,8 @@ def main():
             equipos_inf += _inf
             # quien ganó su ronda y no siguió, si Dlx dijo que la cobra (Geoka, 02/10/2026)
             limpias = marcar_cobra(limpias)
+            # y la ronda que la escala no paga, si Dlx dijo cuánto (FVS UNDER, 12/10/2026): ver `motor._paga()`
+            limpias = marcar_paga(limpias)
             # y el nombre que en ESE servidor es otra persona (Carlosss y Number VE en DDF): ver `otro_en_servidor()`
             limpias = otro_en_servidor(limpias, codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0])
 

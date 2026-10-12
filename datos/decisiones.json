@@ -78,7 +78,10 @@
    "decision": "cuenta",
    "cuando": "2026-10-12 3:56 AM ET",
    "por": "Dlx por chat",
-   "nota": "Dlx, 12/10/2026, a «¿cuenta FVS UNDER (26/09)?»: «4. A». Se jugó antes de que FVS entrara a la Liga (12/10), pero adentro de la T1 (desde el 22/09)."
+   "nota": "Dlx, 12/10/2026, a «¿cuenta FVS UNDER (26/09)?»: «4. A». Se jugó antes de que FVS entrara a la Liga (12/10), pero adentro de la T1 (desde el 22/09). Y la primera ronda —tríos en «octavos», que la escala 8-15 no tiene— paga 625 (Dlx, 12/10/2026: «b», como URBAN LEAGUE en la guía §3.6).",
+   "paga": {
+    "octavos": 625
+   }
   }
  },
  "no_rankear": {
