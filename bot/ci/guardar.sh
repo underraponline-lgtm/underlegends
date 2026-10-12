@@ -94,7 +94,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json \
           datos/batallas_sin_ganador.json datos/veredictos.json datos/vitrinas_diseno.json \
           datos/autores_llaves.json datos/podio_menciones.json datos/equipos_llaves.json \
           datos/identidad_llaves.json datos/nombres_llaves.json \
-          datos/invitaciones.json datos/ranking_semana.json datos/finales.json \
+          datos/invitaciones.json datos/ranking_semana.json datos/finales.json datos/salud_lector.json \
           datos/estado_escuchar.json datos/estado_dibujar.json \
           datos/por_servidor.json datos/cancelados.json datos/divisiones.json \
           datos/ocr_anuncios.json datos/ocr_llaves.json datos/misiones.json \

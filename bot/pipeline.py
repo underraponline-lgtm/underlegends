@@ -1128,6 +1128,11 @@ def _lo_barato(correr):
         paso('2b3', 'el Lunes de la Liga')
         if not corre(['bot/lunes.py', '--publicar'], callado=False):
             print('      ⚠️ el Lunes de la Liga no salió: se reintenta en la próxima')
+        # ── 2b3b · cómo leyó el bot las llaves de la semana, a Logs ──────
+        # 🔑 Dlx, 12/10/2026: «Si me gusta». Uno por semana; ver `bot/salud_lector.py`.
+        paso('2b3b', 'cómo leyó el bot las llaves')
+        if not corre(['bot/salud_lector.py', '--publicar'], callado=False):
+            print('      ⚠️ el informe del lector no salió: se reintenta en la próxima')
         # ── 2b4 · el precio por cabeza: quién cazó qué, y lo que vence ────
         # 🔑 Dlx, 28/09/2026: «1. Ambos. 2. B». Resuelve los precios que la
         # gente puso en la página (el Durable Object) contra las llaves
