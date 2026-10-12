@@ -1,0 +1,51 @@
+# 🧰 EL KIT DEL ORGANIZADOR: /afiche y /llave (Dlx, 12/10/2026). La prende el Worker (`kit()` en bot/worker.js) con el
+# tipo, el servidor y un id al azar; dibuja con bot/kit.py y le devuelve la imagen al objeto, que edita la respuesta.
+#
+# ⚠️ EL PERMISO PARA CONTESTAR NO VIENE ACÁ: el repo es público y estos datos de entrada se ven desde afuera. Sólo el id,
+# que sin la clave del ciclo no sirve para nada.
+name: kit
+
+on:
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: afiche o llave
+        required: true
+        type: choice
+        options: [afiche, llave]
+      sv:
+        description: el servidor (FFA, DRA…)
+        required: true
+        type: string
+      id:
+        description: el id del pedido (lo guarda el objeto)
+        required: true
+        type: string
+
+concurrency:
+  group: kit-${{ inputs.sv }}
+  cancel-in-progress: false
+
+jobs:
+  dibujar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+      # el Chromium de Playwright, guardado: bajarlo cada vez son ~1-2 minutos más de espera para el organizador
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-chromium-${{ runner.os }}-v1
+      - name: dibujar y contestar
+        env:
+          TIPO: ${{ inputs.tipo }}
+          SV: ${{ inputs.sv }}
+          ID: ${{ inputs.id }}
+        run: python bot/kit.py --tipo "$TIPO" --sv "$SV" --id "$ID"

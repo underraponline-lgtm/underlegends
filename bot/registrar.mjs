@@ -146,6 +146,8 @@ const COMANDOS = [
           { name: '/foto', value: 'foto' },
           { name: '/numeral', value: 'numeral' },
           { name: '/settings', value: 'settings' },
+          { name: '/afiche', value: 'afiche' },
+          { name: '/llave', value: 'llave' },
           { name: '/ping', value: 'ping' },
         ],
       },
@@ -227,6 +229,21 @@ const COMANDOS = [
         required: false,
       },
     ],
+  },
+  // 🧰 el kit del organizador (Dlx, 12/10/2026): la imagen del último anuncio y de la última llave del servidor. Sólo
+  // staff u organizadores: lo mira el Worker (`esStaff()`), porque un rol de «Organizador» no tiene por qué tener un
+  // permiso que Discord conozca
+  {
+    name: 'afiche',
+    type: 1,
+    description: 'el afiche del último anuncio de este servidor, para compartir (staff y organizadores)',
+    ...SOLO_EN_SERVIDOR,
+  },
+  {
+    name: 'llave',
+    type: 1,
+    description: 'la última llave de este servidor, dibujada como imagen (staff y organizadores)',
+    ...SOLO_EN_SERVIDOR,
   },
   {
     name: 'numeral',

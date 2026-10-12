@@ -1934,6 +1934,20 @@ function requisitos(m) {
 }
 
 const AYUDA = {
+  afiche: () => [
+    '## `/afiche` — el afiche del evento',
+    'Toma el **último anuncio de este servidor** (de las últimas 48 horas) y lo dibuja como una imagen cuadrada, con el ' +
+    'logo del servidor, lista para compartir.',
+    '',
+    'Es para el **staff y los organizadores** del servidor. Tarda uno o dos minutos: la imagen aparece en la misma respuesta.',
+  ].join('\n'),
+  llave: () => [
+    '## `/llave` — la llave como imagen',
+    'Toma la **última llave de este servidor** (de las últimas 48 horas) y la dibuja como cuadro, con el campeón si ya lo hay.',
+    '',
+    'Sale como la leyó el bot: si algo se ve mal, es que se leyó mal y conviene avisar.',
+    'Es para el **staff y los organizadores** del servidor. Tarda uno o dos minutos.',
+  ].join('\n'),
   card: (m) => [
     '## `/card` — la tarjeta',
     'Sin poner nada, es la tuya. Con `quien:` es la de esa persona.',
@@ -2093,6 +2107,7 @@ const AYUDA_INDICE = [
   '*(una por temporada, libre hasta que arranque)*',
   '· **`/numeral`** — mostrá u ocultá tu `#N` en tu apodo *(en un servidor)*',
   '· **`/settings`** — los ajustes del servidor *(admins)*',
+  '· **`/afiche`** y **`/llave`** — la imagen del último anuncio y de la última llave *(staff y organizadores)*',
   '· **`/borrar-mis-datos`** — borrá tu perfil, tus tarjetas y tu foto de la Liga',
   '· **`/ping`** — ¿está vivo?',
   '',
@@ -2576,7 +2591,71 @@ export async function borrarMisDatos(env, id) {
   return hecho;
 }
 
+// ── 🧰 EL KIT DEL ORGANIZADOR: /afiche y /llave (Dlx, 12/10/2026: «crear un comando ÚNICAMENTE para aquellos que tienen
+// rol de staff u organizador en cada servidor»). El Worker no dibuja —no corre Chromium—: contesta «lo estoy armando»,
+// guarda en el objeto el permiso para editar ESA respuesta y prende `.github/workflows/kit.yml`, que dibuja con
+// `bot/kit.py` y le devuelve la imagen al objeto (`kitListo()`). ⚠️ EL PERMISO NO VIAJA A LA TAREA: el repo es público
+// y sus datos de entrada se ven desde afuera; con él, cualquiera podría escribir como ULAYA en ese canal.
+const ROLES_STAFF = /staff|organiz|moderad|\bmods?\b|admin|host|jurad|evento/i;
+const _rolesCache = new Map();
+async function rolesDe(gid, env) {
+  const c = _rolesCache.get(gid);
+  if (c && Date.now() - c.t < 10 * 60000) return c.r;
+  try {
+    const r = await fetch(`https://discord.com/api/v10/guilds/${gid}/roles`, { headers: { Authorization: 'Bot ' + env.DISCORD_TOKEN } });
+    if (!r.ok) return c ? c.r : [];
+    const roles = await r.json();
+    _rolesCache.set(gid, { t: Date.now(), r: Array.isArray(roles) ? roles : [] });
+    return Array.isArray(roles) ? roles : [];
+  } catch (e) { return c ? c.r : []; }
+}
+// staff: Dlx, un permiso de staff (admin, gestionar servidor o gestionar mensajes), o un rol que lo diga en el nombre
+// —los nombres van en negrita matemática en DRA («𝐑𝐚𝐧𝐠𝐨»): NFKD antes de buscar—
+async function esStaff(i, env) {
+  if (idDe(i) === DUENO) return true;
+  const p = BigInt((i.member && i.member.permissions) || '0');
+  if ((p & 8n) !== 0n || (p & 32n) !== 0n || (p & 8192n) !== 0n) return true;
+  const mios = new Set((i.member && i.member.roles) || []);
+  if (!mios.size || !env.DISCORD_TOKEN) return false;
+  const roles = await rolesDe(i.guild_id, env);
+  return roles.some((r) => mios.has(r.id) && ROLES_STAFF.test(String(r.name || '').normalize('NFKD')));
+}
+async function kit(i, env, ctx, tipo) {
+  const sv = aquiEs(i.guild_id);
+  if (!sv) return aviso('`/' + tipo + '` funciona en los servidores de la Liga.');
+  if (!(await esStaff(i, env))) return aviso('`/' + tipo + '` es para el staff y los organizadores del servidor.');
+  if (!env.GH_TOKEN || !env.GH_REPO || !env.AVISOS) return aviso('Ahora no puedo armarla: probá en un rato.');
+  const id = [...crypto.getRandomValues(new Uint8Array(12))].map((b) => b.toString(16).padStart(2, '0')).join('');
+  const editar = (txt) => fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
+    method: 'PATCH', headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ content: txt, allowed_mentions: { parse: [] } }),
+  });
+  luego(ctx, (async () => {
+    try {
+      const g = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/kit', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ id, token: i.token, app: i.application_id, tipo, sv }),
+      });
+      const gd = await g.json().catch(() => ({}));
+      if (gd.error === 'espera') return editar('Ya hay una en camino en este servidor: esperá un minuto y pedila de nuevo.');
+      if (!gd.ok) return editar('Ahora no puedo armarla: probá en un rato.');
+      const r = await fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/kit.yml/dispatches`, {
+        method: 'POST',
+        headers: { 'User-Agent': 'liga-global-bot', Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + env.GH_TOKEN,
+          'content-type': 'application/json' },
+        body: JSON.stringify({ ref: 'main', inputs: { tipo, sv, id } }),
+      });
+      if (r.status !== 204) return editar('Ahora no puedo armarla: probá en un rato.');
+      return editar('🧰 Armando ' + (tipo === 'afiche' ? 'el afiche del último anuncio' : 'la última llave') + ' de ' + sv +
+        '… en uno o dos minutos aparece acá.');
+    } catch (e) { return editar('Ahora no puedo armarla: probá en un rato.'); }
+  })());
+  return new Response(JSON.stringify({ type: RESPONDE.PENSANDO }), { headers: { 'content-type': 'application/json' } });
+}
+
 const COMANDOS = {
+  async afiche(i, env, ctx) { return kit(i, env, ctx, 'afiche'); },
+  async llave(i, env, ctx) { return kit(i, env, ctx, 'llave'); },
   // 🖱️ click derecho en una persona → Apps → Carta (Dlx, 08/10/2026): es `/card quien:<esa persona>`. Discord manda
   // a quién en `target_id`, con sus datos en `resolved` como el selector de `/card`, así que `datosDe()` los encuentra
   async Carta(i, env, ctx) {

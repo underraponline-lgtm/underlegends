@@ -1792,6 +1792,8 @@ const RUTAS = {
   '/avisos/chat-canales': 'GET',
   // 🏁 quién ganó cada final que se preguntó con botones, para el ciclo: con `claveCiclo()`. Ver `finalElegir()`
   '/avisos/finales': 'GET',
+  // 🧰 la imagen de /afiche o /llave ya dibujada (`bot/kit.py`), con `claveCiclo()`. Ver `kitListo()`
+  '/avisos/kit-listo': 'POST',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -3099,6 +3101,14 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🧰 LA IMAGEN DEL KIT, DE LA TAREA `kit.yml` (`bot/kit.py`): con la clave del ciclo
+  if (ruta === '/avisos/kit-listo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/kit-listo', {
+      method: 'POST', body: await req.text(), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🏁 LAS FINALES QUE CONTESTÓ CADA ORGANIZADOR, PARA EL CICLO (`bot/finales.py`): con su clave
   if (ruta === '/avisos/finales') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3660,6 +3670,9 @@ export class Avisos {
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
+      // 🧰 /afiche y /llave: el permiso para contestar, del Worker; y la imagen, de la tarea (ver `kitGuardar()`)
+      if (ruta === '/kit') return json(this.kitGuardar(d));
+      if (ruta === '/kit-listo') return json(await this.kitListo(d));
       if (ruta === '/alta') return await this.alta(d);
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);
@@ -6245,6 +6258,42 @@ export class Avisos {
    * otro, lo cobrado de ese precio se borra y se vuelve a anotar. Así lo
    * anotado es siempre lo último que dijo el ciclo, y nadie cobra dos veces.
    */
+  /**
+   * 🧰 EL PERMISO PARA EDITAR LA RESPUESTA DE /afiche O /llave (`bot/kit.py`). Lo manda el Worker y se queda acá: la
+   * tarea que dibuja sólo conoce el id. Vence a los 20 minutos (el de Discord, a los 15), y uno por servidor cada 90 s,
+   * para que nadie llene GitHub Actions de tareas.
+   */
+  kitGuardar(d) {
+    const kits = this.leer('kits') || {};
+    const ahora = Date.now();
+    for (const [k, v] of Object.entries(kits)) if (ahora - (v.t || 0) > 20 * 60000) delete kits[k];
+    if (!/^[a-f0-9]{16,40}$/.test(String(d.id || '')) || !/^[\w.-]{20,500}$/.test(String(d.token || '')) ||
+      !/^\d{5,25}$/.test(String(d.app || ''))) return { error: 'datos' };
+    const sv = String(d.sv || '').toUpperCase().slice(0, 6);
+    if (Object.values(kits).some((v) => v.sv === sv && ahora - v.t < 90000)) return { error: 'espera' };
+    kits[String(d.id)] = { token: String(d.token), app: String(d.app), sv, tipo: d.tipo === 'llave' ? 'llave' : 'afiche', t: ahora };
+    this.guardar('kits', kits);
+    return { ok: true };
+  }
+
+  /** 🧰 La imagen ya dibujada: edita la respuesta del organizador y se olvida del permiso. */
+  async kitListo(d) {
+    const kits = this.leer('kits') || {};
+    const id = String(d.id || '');
+    const k = kits[id];
+    if (!k) return { error: 'no existe' };
+    delete kits[id];
+    this.guardar('kits', kits);
+    // sólo una imagen nuestra, del bucket de las cartas
+    const url = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/kit\/[\w.-]+\.png$/.test(String(d.url || '')) ? String(d.url) : null;
+    const texto = String((url ? d.texto : d.error) || '').slice(0, 400) || (url ? '🧰' : 'No pude armarla esta vez.');
+    const r = await fetch(`https://discord.com/api/v10/webhooks/${k.app}/${k.token}/messages/@original`, {
+      method: 'PATCH', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ content: texto, embeds: url ? [{ image: { url }, color: 0xE41373 }] : [], allowed_mentions: { parse: [] } }),
+    });
+    return { ok: r.ok, estado: r.status };
+  }
+
   async resolverPrecios(ahora) {
     const crudo = await this.env.KV.get('precios:resolucion');
     if (!crudo) return 0;
