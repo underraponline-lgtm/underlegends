@@ -3035,5 +3035,35 @@ console.log('\n«EL PASE DE RAPERO»\n');
   env.AVISOS = antes;
 }
 
+{
+  // 🏁 «¿Quién ganó la final?» (12/10/2026, `bot/finales.py`): lo marca quien publicó la llave o el staff, y el
+  // mensaje se pisa con el ganador y sin botones. Alguien más recibe un aviso sólo para él y no se anota nada.
+  const antes = env.AVISOS, anotadas = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    if (String(url).endsWith('/final')) { anotadas.push(JSON.parse(opc.body)); return new Response('{"ok":true}'); }
+    return new Response('{"ok":true}');
+  } }) };
+  const mensaje = { content: '🏁 **FVS UNDER** — <@832733202769641554>, la llave no dice quién ganó la final: **Mathias** vs **Rfran**. ¿Quién ganó?',
+    components: [{ type: 1, components: [
+      { type: 2, style: 1, label: 'Mathias 🇪🇸', custom_id: 'fin:1553507758240964609:832733202769641554:a' },
+      { type: 2, style: 1, label: 'Rfran 🇪🇸', custom_id: 'fin:1553507758240964609:832733202769641554:b' }] }] };
+  const click = (quien, permisos, lado) => pedir({ type: 3, guild_id: '1283205153624952975', message: mensaje,
+    member: { user: { id: quien }, permissions: permisos },
+    data: { component_type: 2, custom_id: 'fin:1553507758240964609:832733202769641554:' + lado } });
+  let r = await click('111222333444555666', '0', 'a');
+  ok('la final: alguien que no es el organizador ni el staff no la marca', r.json?.type === 4 && r.json?.data?.flags === 64
+     && !anotadas.length, JSON.stringify(r.json).slice(0, 160));
+  r = await click('832733202769641554', '0', 'a');
+  const c = r.json?.data || {};
+  ok('la final: el organizador la marca y el mensaje dice quién ganó, sin botones', r.json?.type === 7
+     && /Ganó Mathias 🇪🇸/.test(c.content || '') && Array.isArray(c.components) && !c.components.length
+     && anotadas.length === 1 && anotadas[0].nombre === 'Mathias 🇪🇸' && anotadas[0].k === '1553507758240964609',
+     JSON.stringify(r.json).slice(0, 200));
+  r = await click('555666777888999000', String(8192), 'b');
+  ok('la final: el staff (administrar mensajes) también la marca', r.json?.type === 7 && anotadas.length === 2
+     && anotadas[1].nombre === 'Rfran 🇪🇸', JSON.stringify(r.json).slice(0, 160));
+  env.AVISOS = antes;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

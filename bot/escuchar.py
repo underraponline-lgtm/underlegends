@@ -2891,6 +2891,10 @@ def fase_de_llave(h, fases, guardadas):
     return texto2, mid
 
 
+#: el ID del bot (ULAYA): el mismo que `APP_ID` de `bot/avisos.js`
+BOT_ID = '1550026808404217926'
+
+
 def barrer(s, por_canal=25, solo=None, guilds=None):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
@@ -2930,6 +2934,10 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
         # 🏰 las fases previas de este canal, para la llave que venga después (ver `con_fase_previa()`)
         fases, desde = [], len(out)
         for m in unir_partidas(ms):
+            # 🤖 NI LO QUE PUBLICA EL BOT MISMO (12/10/2026): «COPA SOOLAR 3» (FFA, 09/10) quedó retenida en ✅ Decidir
+            # porque «la publicó ULAYA» —su propia copia de una llave—. Es el mismo ID que `APP_ID` de avisos.js
+            if str((m.get('author') or {}).get('id') or '') == BOT_ID:
+                continue
             # ⚠️ TRADUCIDO ANTES DE PREGUNTAR: ver `traducir()`. Todo lo
             # que viene detrás lee `texto`, así que se traduce una vez acá.
             texto = traducir(plano(m.get('content') or ''))

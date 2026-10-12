@@ -1784,6 +1784,8 @@ const RUTAS = {
   '/avisos/personas-ciclo': 'POST', '/avisos/personas-leer': 'GET',
   // 💬 el chat de cada servidor, donde habla el bot en vivo: el ciclo manda ahí el aviso de cada evento. Ver `canalesChat()`
   '/avisos/chat-canales': 'GET',
+  // 🏁 quién ganó cada final que se preguntó con botones, para el ciclo: con `claveCiclo()`. Ver `finalElegir()`
+  '/avisos/finales': 'GET',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -3091,6 +3093,12 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🏁 LAS FINALES QUE CONTESTÓ CADA ORGANIZADOR, PARA EL CICLO (`bot/finales.py`): con su clave
+  if (ruta === '/avisos/finales') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/finales');
+  }
   // 💬 EL CHAT DE CADA SERVIDOR, PARA EL CICLO (`avisar.evento()`): con su clave, como lo del Pase
   if (ruta === '/avisos/chat-canales') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3582,6 +3590,23 @@ export class Avisos {
       'ON CONFLICT(k) DO UPDATE SET v = excluded.v', k, JSON.stringify(v));
   }
 
+  /**
+   * 🏁 «¿QUIÉN GANÓ LA FINAL?» (12/10/2026): el botón del organizador (`que === 'fin'` en worker.js). Vale el primero:
+   * después de marcarlo el mensaje se pisa sin botones, y un segundo click que llegue igual se contesta con lo que ya
+   * estaba. Guarda las últimas 300; el ciclo las pasa a `datos/decisiones.json` y no las necesita más.
+   */
+  finalElegir(d) {
+    const k = String(d.k || ''), nombre = String(d.nombre || '').slice(0, 80), quien = String(d.quien || '');
+    if (!/^\d{5,25}$/.test(k) || !nombre || !/^\d{5,25}$/.test(quien)) return { error: 'datos' };
+    const f = this.leer('finales') || {};
+    if (f[k]) return { ya: f[k].nombre, quien: f[k].quien };
+    f[k] = { nombre, lado: d.lado === 'b' ? 'b' : 'a', quien, t: Date.now() };
+    const ks = Object.keys(f).sort((x, y) => f[x].t - f[y].t);
+    for (const x of ks.slice(0, Math.max(0, ks.length - 300))) delete f[x];
+    this.guardar('finales', f);
+    return { ok: true };
+  }
+
   async fetch(req) {
     const ruta = new URL(req.url).pathname;
     this.medir('pedidos', ruta, 1);
@@ -3621,8 +3646,11 @@ export class Avisos {
       // 🧠 varias, para el ciclo y sus auditorías (`bot/verificar.py`), con la clave del ciclo: `{k: v}`
       if (ruta === '/personas-leer') return json(this.personasLeer(new URL(req.url).searchParams.getAll('k')));
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
+      // 🏁 quién ganó cada final que el ciclo preguntó (`bot/finales.py`), con la clave del ciclo
+      if (ruta === '/finales') return json(this.leer('finales') || {}, 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
+      if (ruta === '/final') return json(this.finalElegir(d));
       if (ruta === '/alta') return await this.alta(d);
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);

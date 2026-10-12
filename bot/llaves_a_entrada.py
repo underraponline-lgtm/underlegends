@@ -3378,6 +3378,14 @@ def main():
         return 1 if _self_check() else 0
 
     aplicar = '--aplicar' in sys.argv
+    # 🏁 LO QUE CONTESTARON LOS ORGANIZADORES CON LOS BOTONES, antes de leer ninguna decisión: entra como una batalla
+    # decidida en ✅ Decidir (`bot/finales.py`, 12/10/2026). Sólo de verdad: el simulacro no escribe nada
+    if aplicar:
+        try:
+            import finales as FIN
+            FIN.aplicar_respuestas()
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ finales: no pude traer las respuestas (%s)' % str(e)[:80])
     print('\n══ LAS LLAVES DE DISCORD, A `Entrada` ══\n')
     s = E.sesion()
     # 🔴 `E.escuchar` Y NO `E.barrer`: la primera elige la cadencia
@@ -3447,6 +3455,7 @@ def main():
     todas, dudas, sabidas = [], [], collections.Counter()
     ya_cargadas = []   # la que ya está en el ranking con otro nombre: ver `ya_cargada()`
     en_curso, incompletos, retenidos, descartados = [], [], [], []
+    finales_sin = []   # 🏁 las finales de dos sin ganador, para preguntarle al organizador (`bot/finales.py`)
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     de_veredictos = []                                # las llaves que se cargaron como se jugaron, de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
@@ -3762,6 +3771,13 @@ def main():
                 incompletos.append((nom, ligas[0], fec,
                                     ['%s: %s' % (d[1].lower(), d[2])
                                      for d in d_grupo]))
+                _h = g['llaves'][-1] if g['llaves'] else {}
+                for d in d_grupo:
+                    if len(d) >= 5 and 'no dice campeón' in str(d[3]) and len(d[4]) == 2:
+                        finales_sin.append({'llave': str(_h.get('msg_id') or ''), 'canal': str(_h.get('canal_id') or ''),
+                                            'autor': str(_h.get('autor_id') or ''), 'evento': nom, 'sv': ligas[0],
+                                            'fecha': fec, 'ronda': d[1], 'lados': list(d[4]),
+                                            'cuando': _h.get('cuando') or ''})
             continue
         # 🔴 y la que ya está cargada con otro nombre no se suma otra vez (el FFA WORLD CUP, #366 y #409: ver `ya_cargada()`)
         ya = ya_cargada(nom, ligas[0], fec, limpias) if ligas else None
@@ -3866,9 +3882,23 @@ def main():
                   % (ev[:28], sv_i, fec_i, nom_i,
                      ' + '.join(ms) if ms else 'nadie', por))
 
+    try:
+        import finales as FIN
+        for _f in FIN.para_preguntar(finales_sin, FIN._cargar()):
+            print('   🏁 final sin ganador, se le pregunta a <@%s>: %s · %s · %s'
+                  % (_f['autor'], _f['evento'], _f['sv'], ' vs '.join(_f['lados'])))
+    except Exception:                                    # noqa: BLE001
+        pass
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
+
+    # 🏁 y la final sin ganador, al que publicó la llave: dos botones (`bot/finales.py`)
+    try:
+        import finales as FIN
+        FIN.preguntar(finales_sin)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ finales: no pude preguntar (%s)' % str(e)[:80])
 
     # el nombre que su anuncio le dio a cada llave sin título, sumado a lo de antes: el anuncio se va del canal y la
     # llave no (ver `NOMBRES`)

@@ -3871,6 +3871,44 @@ export default {
         return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: probá de nuevo.'));
       }
 
+      // ── 🏁 ¿Quién ganó la final? (12/10/2026) ──────────────────────────
+      // Dlx: «que hazlo interactivo, osea con 2 botones y menciona al organizador». La llave que lleva 12 h sin
+      // campeón: el ciclo (`bot/finales.py`) le pregunta al que la publicó, en el mismo canal, con un botón por lado.
+      // `fin:<id de la llave>:<organizador>:<a|b>`. Lo marca el organizador, el staff del servidor (administrar
+      // mensajes, el servidor o administrador) o Dlx; el nombre es el del botón. Queda en el objeto y el ciclo lo
+      // pasa a `datos/decisiones.json` como cualquier decisión de batalla. El mensaje se pisa con quién ganó.
+      if (que === 'fin') {
+        const esperarF = frenado(idDe(i), 'click');
+        if (esperarF) return espera(esperarF);
+        const did = idDe(i);
+        let perm = 0n;
+        try { perm = BigInt((i.member && i.member.permissions) || '0'); } catch (e) { perm = 0n; }
+        const staff = (perm & 8n) !== 0n || (perm & 32n) !== 0n || (perm & 8192n) !== 0n;
+        if (!did || (did !== extra && did !== DUENO && !staff)) {
+          return aviso(`Lo marca <@${extra}>, que publicó la llave, o el staff del servidor.`);
+        }
+        let nombre = '';
+        for (const fila of (i.message && i.message.components) || []) {
+          for (const c of fila.components || []) if (c.custom_id === id) nombre = String(c.label || '');
+        }
+        if (!nombre) return aviso('No encontré ese botón: probá de nuevo.');
+        let j = {};
+        try {
+          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/final', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ k: quien, lado: dueno === 'b' ? 'b' : 'a', nombre, quien: did }),
+          });
+          j = await r.json();
+        } catch (e) { j = { error: 'red' }; }
+        if (!j.ok && !j.ya) return aviso('No pude anotarlo: probá de nuevo en un rato.');
+        const titulo = String((i.message && i.message.content) || '').split('\n')[0];
+        return new Response(JSON.stringify({
+          type: RESPONDE.ACTUALIZAR,
+          data: { content: `${titulo}\n✅ **Ganó ${j.ya || nombre}** — lo marcó <@${j.quien || did}>. ¡Gracias!`,
+            components: [], allowed_mentions: { parse: [] } },
+        }), { headers: { 'content-type': 'application/json' } });
+      }
+
       // ── El panel de ajustes ────────────────────────────────────────────
       // ⚠️ SE VUELVE A CHEQUEAR EL PERMISO EN CADA CLICK, no sólo al abrir.
       // El panel es efímero y en principio sólo lo ve quien lo pidió, pero el
