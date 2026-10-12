@@ -1,57 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-12T18:31:31Z",
+ "cuando": "2026-10-12T18:57:12Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 264.2,
+ "dur_s": 275.6,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 1.6
+   "s": 0.6
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 52.2
+   "s": 49.1
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 54.7
+   "s": 66.3
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.6
+   "s": 2.5
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 3.9
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 27.4
+   "s": 23.7
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.9
+   "s": 3.0
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 8.2
+   "s": 7.1
   },
   {
    "n": "2b",
@@ -81,49 +81,49 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.1
+   "s": 0.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 1.0
+   "s": 0.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.8
+   "s": 4.0
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 30.7
+   "s": 33.0
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 5.9
+   "s": 5.5
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 47.3
+   "s": 46.1
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.8
+   "s": 0.4
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 13.3
+   "s": 14.0
   },
   {
    "n": "2e",
@@ -135,13 +135,13 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.0
+   "s": 7.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.6
+   "s": 4.8
   }
  ],
  "fallas": [],
@@ -154,7 +154,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-12T18:28:05Z",
+  "cuando": "2026-10-12T18:53:32Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 443,
   "un_evento": 227,
@@ -188,20 +188,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 254,
-   "read": 34191
+   "write": 270,
+   "read": 37092
   },
   "objeto": {
-   "leidas": 918098,
-   "escritas": 19955,
-   "pedidos": 4543
+   "leidas": 982194,
+   "escritas": 20603,
+   "pedidos": 4720
   },
   "worker": {
-   "pedidos": 6058,
+   "pedidos": 6119,
    "errores": 0,
-   "sub": 6438,
-   "p50_ms": 1.36,
-   "p99_ms": 6.54
+   "sub": 6532,
+   "p50_ms": 1.37,
+   "p99_ms": 6.56
   },
   "r2": {
    "objetos": 3926,
