@@ -21129,5 +21129,271 @@
     1250
    ]
   ]
+ },
+ "460": {
+  "dia": "2026-10-12",
+  "escala": "16+",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1559325221045936308"
+  ],
+  "n": 460,
+  "nombre": "GODZ",
+  "participantes": 21,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Zignos",
+       "Verc"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Scritura 🇻🇪",
+       "Guess"
+      ],
+      "Scritura 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "BNA",
+       "Dynoco"
+      ],
+      "BNA",
+      ""
+     ],
+     [
+      [
+       "Prosu",
+       "Zeta"
+      ],
+      "Prosu",
+      ""
+     ],
+     [
+      [
+       "NC",
+       "Makmah",
+       "Cronox"
+      ],
+      "NC",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Velatz",
+       "Colesito",
+       "Magic🇲🇽"
+      ],
+      "Velatz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Abyssus",
+       "Jupiter",
+       "Erian"
+      ],
+      "Abyssus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+       "SYEPORUTE🇿🇲",
+       "Valdoza",
+       "Vargas"
+      ],
+      "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zignos",
+       "Scritura 🇻🇪"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Prosu",
+       "BNA"
+      ],
+      "Prosu",
+      ""
+     ],
+     [
+      [
+       "Velatz",
+       "NC"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Joaquín La Profecia 👨🏻‍🍳🇦🇷"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Prosu",
+       "Zignos"
+      ],
+      "Prosu",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Velatz"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Prosu",
+       "Abyssus"
+      ],
+      "Prosu",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Prosu",
+    "Campeón",
+    10000
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    5250
+   ],
+   [
+    "BNA",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Scritura 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Guess",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "SYEPORUTE🇿🇲",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vargas",
+    "Octavos",
+    1250
+   ],
+   [
+    "Verc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zeta",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

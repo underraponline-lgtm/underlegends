@@ -56,19 +56,19 @@
 "temporada"
 ]
 },
+"velatz": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "six": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"velatz": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -104,16 +104,23 @@
 "temporada"
 ]
 },
-"yinn": {
-"rg": "C",
-"c": []
-},
 "zignos": {
-"rg": "C",
+"rg": "B",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
+]
+},
+"yinn": {
+"rg": "C",
+"c": []
+},
+"abyssus": {
+"rg": "A",
+"c": [
+"competitivo",
+"servidor"
 ]
 },
 "verc": {
@@ -148,13 +155,6 @@
 "temporada"
 ]
 },
-"abyssus": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor"
-]
-},
 "liberia": {
 "rg": "",
 "c": [
@@ -185,6 +185,10 @@
 "temporada"
 ]
 },
+"mrstillballin": {
+"rg": "",
+"c": []
+},
 "mco": {
 "rg": "D",
 "c": [
@@ -193,10 +197,6 @@
 "servidor",
 "temporada"
 ]
-},
-"mrstillballin": {
-"rg": "",
-"c": []
 },
 "trot": {
 "rg": "D",
@@ -222,18 +222,22 @@
 "temporada"
 ]
 },
+"carlosss": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"bna": {
+"rg": "",
+"c": []
+},
 "drexx": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"carlosss": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -252,20 +256,16 @@
 "temporada"
 ]
 },
-"bna": {
-"rg": "",
-"c": []
-},
-"jj": {
-"rg": "",
-"c": []
-},
 "dynoco": {
 "rg": "C",
 "c": [
 "competitivo",
 "servidor"
 ]
+},
+"jj": {
+"rg": "",
+"c": []
 },
 "walker": {
 "rg": "",
@@ -342,6 +342,13 @@
 "rg": "",
 "c": []
 },
+"jupiter": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "polosport": {
 "rg": "",
 "c": [
@@ -384,13 +391,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"jupiter": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "player": {
@@ -512,15 +512,15 @@
 "temporada"
 ]
 },
-"btrx": {
-"rg": "",
-"c": []
-},
 "zeta": {
 "rg": "",
 "c": [
 "servidor"
 ]
+},
+"btrx": {
+"rg": "",
+"c": []
 },
 "efimero": {
 "rg": "",
@@ -550,6 +550,12 @@
 "tambaggio": {
 "rg": "",
 "c": []
+},
+"prosu": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "tuca": {
 "rg": "",
@@ -756,6 +762,10 @@
 "rg": "",
 "c": []
 },
+"valdoza": {
+"rg": "",
+"c": []
+},
 "nemi": {
 "rg": "",
 "c": [
@@ -792,12 +802,6 @@
 "temporada"
 ]
 },
-"catarsis": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "elsoolar": {
 "rg": "",
 "c": []
@@ -811,12 +815,6 @@
 "rayo": {
 "rg": "",
 "c": []
-},
-"prosu": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "krtman": {
 "rg": "",
@@ -859,13 +857,11 @@
 "servidor"
 ]
 },
-"valdoza": {
+"catarsis": {
 "rg": "",
-"c": []
-},
-"setesfifi": {
-"rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "deuxs": {
 "rg": "",
@@ -909,6 +905,10 @@
 ]
 },
 "liam": {
+"rg": "",
+"c": []
+},
+"setesfifi": {
 "rg": "",
 "c": []
 },
@@ -1057,12 +1057,6 @@
 "servidor"
 ]
 },
-"crakero": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "aby": {
 "rg": "",
 "c": []
@@ -1161,6 +1155,16 @@
 "servidor"
 ]
 },
+"g8-co": {
+"rg": "",
+"c": []
+},
+"crakero": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "hinjkybesuk": {
 "rg": "",
 "c": []
@@ -1172,10 +1176,6 @@
 ]
 },
 "alter": {
-"rg": "",
-"c": []
-},
-"g8-co": {
 "rg": "",
 "c": []
 },
@@ -5409,6 +5409,24 @@
 "LRS"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-12T23:58:19Z",
+"quien": [
+"Zignos"
+],
+"rg": "B",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-12T23:58:19Z",
+"quien": [
+"Abyssus"
+],
+"rg": "A",
+"primero": false
 }
 ]
 }

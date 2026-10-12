@@ -4291,7 +4291,7 @@
    ],
    [
     "Dynoco",
-    "ikonoxx🇺🇾",
+    "ikonoxx",
     "Dynoco"
    ],
    [
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "38f6b0ce6233f09e",
+  "firma": "6bbe0f526bbe1782",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4439,7 +4439,7 @@
     1250
    ],
    [
-    "ikonoxx🇺🇾",
+    "ikonoxx",
     "Octavos",
     1250
    ],
@@ -4804,7 +4804,7 @@
    "Walker": 1
   },
   "fecha": "09/10",
-  "firma": "a9cc8e7b41dd9c3e",
+  "firma": "7ed852e217e0e418",
   "msg": "1558334116259307552",
   "nombre": "__ DESGRACIAS EN TOKYO LA REDENCIÓN VOL.1 __",
   "num": 439,
@@ -6629,7 +6629,7 @@
    ],
    [
     "Vandu",
-    "doble h🇨🇱",
+    "doble h",
     "Vandu"
    ],
    [
@@ -6644,7 +6644,7 @@
    ],
    [
     "Verc",
-    "Cajita 🇻🇪",
+    "Cajita",
     "Verc"
    ],
    [
@@ -6663,14 +6663,14 @@
     "Colesito"
    ],
    [
-    "Hinjkybesuk🇦🇫",
+    "BNA",
     "Snow",
-    "Hinjkybesuk🇦🇫"
+    "BNA"
    ],
    [
-    "Hinjkybesuk🇦🇫",
+    "BNA",
     "Provenza",
-    "Hinjkybesuk🇦🇫"
+    "BNA"
    ],
    [
     "Liberia",
@@ -6689,7 +6689,7 @@
    ],
    [
     "Colesito",
-    "Hinjkybesuk🇦🇫",
+    "BNA",
     "Colesito"
    ],
    [
@@ -6726,7 +6726,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "5c3bae264640dc68",
+  "firma": "16a7ff4cd83776ef",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -6773,7 +6773,7 @@
     2500
    ],
    [
-    "Hinjkybesuk🇦🇫",
+    "BNA",
     "Cuartos",
     2500
    ],
@@ -6788,7 +6788,7 @@
     1250
    ],
    [
-    "doble h🇨🇱",
+    "doble h",
     "Octavos",
     1250
    ],
@@ -6803,7 +6803,7 @@
     1250
    ],
    [
-    "Cajita 🇻🇪",
+    "Cajita",
     "Octavos",
     1250
    ],
@@ -9184,6 +9184,330 @@
    ],
    [
     "JHEYSON",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "460": {
+  "antes": {
+   "Abyssus": [
+    17,
+    20,
+    false
+   ],
+   "BNA": [
+    172,
+    34,
+    true
+   ],
+   "Colesito": [
+    11,
+    13,
+    false
+   ],
+   "Cronox": [
+    19,
+    22,
+    false
+   ],
+   "Dynoco": [
+    29,
+    36,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Guess": [
+    28,
+    33,
+    false
+   ],
+   "Jupiter": [
+    41,
+    56,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "NC": [
+    16,
+    19,
+    false
+   ],
+   "Prosu": [
+    84,
+    132,
+    false
+   ],
+   "Valdoza": [
+    219,
+    141,
+    true
+   ],
+   "Velatz": [
+    8,
+    9,
+    false
+   ],
+   "Verc": [
+    13,
+    16,
+    false
+   ],
+   "Zeta": [
+    55,
+    77,
+    false
+   ],
+   "Zignos": [
+    12,
+    15,
+    false
+   ]
+  },
+  "canal": "863207986264932372",
+  "duelos": [
+   [
+    "Zignos",
+    "Verc",
+    "Zignos"
+   ],
+   [
+    "Scritura 🇻🇪",
+    "Guess",
+    "Scritura 🇻🇪"
+   ],
+   [
+    "BNA",
+    "Dynoco",
+    "BNA"
+   ],
+   [
+    "Prosu",
+    "Zeta",
+    "Prosu"
+   ],
+   [
+    "NC",
+    "Makmah",
+    "NC"
+   ],
+   [
+    "NC",
+    "Cronox",
+    "NC"
+   ],
+   [
+    "Velatz",
+    "Colesito",
+    "Velatz"
+   ],
+   [
+    "Velatz",
+    "Magic🇲🇽",
+    "Velatz"
+   ],
+   [
+    "Abyssus",
+    "Jupiter",
+    "Abyssus"
+   ],
+   [
+    "Abyssus",
+    "Erian",
+    "Abyssus"
+   ],
+   [
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+    "SYEPORUTE🇿🇲",
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷"
+   ],
+   [
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+    "Valdoza",
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷"
+   ],
+   [
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+    "Vargas",
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷"
+   ],
+   [
+    "Zignos",
+    "Scritura 🇻🇪",
+    "Zignos"
+   ],
+   [
+    "Prosu",
+    "BNA",
+    "Prosu"
+   ],
+   [
+    "Velatz",
+    "NC",
+    "Velatz"
+   ],
+   [
+    "Abyssus",
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+    "Abyssus"
+   ],
+   [
+    "Prosu",
+    "Zignos",
+    "Prosu"
+   ],
+   [
+    "Abyssus",
+    "Velatz",
+    "Abyssus"
+   ],
+   [
+    "Prosu",
+    "Abyssus",
+    "Prosu"
+   ]
+  ],
+  "ev_antes": {
+   "Abyssus": 14,
+   "BNA": 6,
+   "Colesito": 23,
+   "Cronox": 22,
+   "Dynoco": 11,
+   "Erian": 28,
+   "Guess": 8,
+   "Jupiter": 8,
+   "Makmah": 38,
+   "NC": 24,
+   "Prosu": 3,
+   "Valdoza": 4,
+   "Velatz": 31,
+   "Verc": 6,
+   "Zeta": 5,
+   "Zignos": 19
+  },
+  "fecha": "12/10",
+  "firma": "71bab0075409c3ab",
+  "msg": "1559353480601411625",
+  "nombre": "GODZ",
+  "num": 460,
+  "participantes": 21,
+  "sello": {
+   "Prosu": ""
+  },
+  "sv": "SR",
+  "t": "2026-10-12T23:54:00Z",
+  "tabla": [
+   [
+    "Prosu",
+    "Campeón",
+    10000
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Scritura 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BNA",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Joaquín La Profecia 👨🏻‍🍳🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Verc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Guess",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zeta",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "SYEPORUTE🇿🇲",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vargas",
     "Octavos",
     1250
    ]

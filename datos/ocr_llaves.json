@@ -2,8 +2,8 @@
  "_leeme": "Las llaves que son una imagen, leídas por la IA de Cloudflare (/avisos/ocr del Worker, tipo llave), por mensaje y adjunto: así cada una se lee una sola vez. Lo escribe bot/escuchar.py. Dlx, 07/10/2026. Se borra a los 30 días.",
  "msgs": {
   "clave-sacada": {
-   "texto": "#9 | Erian TFC 4:49 PM\ngay abajo \n 1 \n!DSM-5 (MTZ) 4:49 PM\nERIAN",
-   "t": "2026-10-12T23:23:12"
+   "texto": "",
+   "t": "2026-10-12T23:53:27"
   }
  }
 }

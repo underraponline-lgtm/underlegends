@@ -1,5 +1,73 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
- "chats": {},
- "retos": {}
+ "chats": {
+  "SR": "2026-10-12"
+ },
+ "retos": {
+  "Joaquín La Profecia 👨🏻‍🍳": {
+   "avisado": "2026-10-12",
+   "chat": "2026-10-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-12T22:01:43+00:00",
+   "did": "",
+   "evento": "GODZ",
+   "n": 460,
+   "sv": "SR",
+   "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Magic": {
+   "avisado": "2026-10-12",
+   "chat": "2026-10-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-12T22:01:43+00:00",
+   "did": "",
+   "evento": "GODZ",
+   "n": 460,
+   "sv": "SR",
+   "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "SYEPORUTE": {
+   "avisado": "2026-10-12",
+   "chat": "2026-10-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-12T22:01:43+00:00",
+   "did": "",
+   "evento": "GODZ",
+   "n": 460,
+   "sv": "SR",
+   "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Scritura": {
+   "avisado": "2026-10-12",
+   "chat": "2026-10-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-12T22:01:43+00:00",
+   "did": "",
+   "evento": "GODZ",
+   "n": 460,
+   "sv": "SR",
+   "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Vargas": {
+   "avisado": "2026-10-12",
+   "chat": "2026-10-12",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-12T22:01:43+00:00",
+   "did": "1371970161023778927",
+   "evento": "GODZ",
+   "n": 460,
+   "sv": "SR",
+   "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  }
+ }
 }
