@@ -1,4 +1,11 @@
 {
  "_leeme": "Los eventos que corrigió herramientas/recalcular_t1.py --aplicar, con cuándo: el ciclo no los vuelve a escribir mientras su llave no se edite después (llaves_a_entrada.corregido_por_recalculo). Dlx, 12/10/2026.",
- "eventos": {}
+ "eventos": {
+  "412": {
+   "cuando": "2026-10-12T19:33:45+00:00",
+   "fecha": "05/10",
+   "nombre": "PRITTY FREE CLASIFICATORIA 3",
+   "sv": "FFA"
+  }
+ }
 }

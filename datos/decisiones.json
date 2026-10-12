@@ -82,6 +82,18 @@
    "paga": {
     "octavos": 625
    }
+  },
+  "DENME MODERADOR LPM · URBF · 27/09": {
+   "decision": "no cuenta",
+   "cuando": "2026-10-12 3:32 PM ET",
+   "por": "Claude (deshace lo que entró por la pregunta al organizador)",
+   "nota": "llave de broma («CAMPEÓN: MAMÁ ERIAN - Diego», «SEGUNDO: todos los demás :v») que el lector retenía bien porque no tenía campeón. El 12/10 la primera corrida del día se la preguntó al organizador, y con su respuesta entró al ranking como #453. Ver llaves_a_entrada.junta_sin_mas() y PREGUNTA_MAX_H."
+  },
+  "Fecha Rempalago Vol. 64 compe express por plata · FFA · 11/10": {
+   "decision": "no cuenta",
+   "cuando": "2026-10-12 3:32 PM ET",
+   "por": "Claude (hasta que Dlx decida)",
+   "nota": "cuartos de a tres y de a cuatro donde pasan dos, que en semis se juntan sin «+» («[Guess Bna 6]») y en la final suman gente nueva: el lector no lo puede leer (cargaba «TNR JJ» y «Plink BNA Six JJ» como personas, y Guess no aparecía). Entró el 12/10 por el arreglo de las llaves de cuentas nuevas con su anuncio; vuelve a como estaba antes de esa mañana mientras Dlx decide. Drako avisó con la captura."
   }
  },
  "no_rankear": {
@@ -207,41 +219,6 @@
    "por": "el organizador, con el menú (<@1414431452346581052>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   },
-  "fecharempalagovol64compeexpressporplata|FFA|11/10|cuartos|jjespana|lvel|tnrespana|valdoza": {
-   "ganador": "tnr :Espana:",
-   "batalla": "Fecha Rempalago Vol. 64 compe express por plata · FFA · 11/10 · cuartos · Lvel 🇻🇪 🆚 Valdoza 🇨🇱 🆚 tnr :Espana: 🆚 JJ :Espana:",
-   "cuando": "2026-10-12 11:31 AM ET",
-   "por": "el organizador, con el menú (<@1414431452346581052>)",
-   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
-  },
-  "denmemoderadorlpm|URBF|27/09|final|scotyinngutymimama|zignoscinexfiloncpichula": {
-   "ganador": "Zignos cinexfilo nc (pichula)",
-   "batalla": "DENME MODERADOR LPM · URBF · 27/09 · final · Zignos cinexfilo nc (pichula) 🆚 Scot yinn guty (mi mamá)",
-   "cuando": "2026-10-12 11:52 AM ET",
-   "por": "el organizador, con el menú (<@1055474244089286706>)",
-   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
-  },
-  "denmemoderadorlpm|URBF|27/09|semifinales|makma|yinn": {
-   "ganador": "yinn",
-   "batalla": "DENME MODERADOR LPM · URBF · 27/09 · semifinales · yinn 🆚 Makma 🇻🇪",
-   "cuando": "2026-10-12 11:52 AM ET",
-   "por": "el organizador, con el menú (<@1055474244089286706>)",
-   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
-  },
-  "denmemoderadorlpm|URBF|27/09|semifinales|ncjupiteragustincinexfilomco|prosuvelatzplayererian7": {
-   "ganador": "Prosu velatz player erian 7",
-   "batalla": "DENME MODERADOR LPM · URBF · 27/09 · semifinales · Prosu velatz player erian 7 🆚 Nc jupiter Agustín Cinexfilo MCO",
-   "cuando": "2026-10-12 11:52 AM ET",
-   "por": "el organizador, con el menú (<@1055474244089286706>)",
-   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
-  },
-  "denmemoderadorlpm|URBF|27/09|cuartos|player|prosu|velatz": {
-   "ganador": "Prosu",
-   "batalla": "DENME MODERADOR LPM · URBF · 27/09 · cuartos · velatz 🆚 player🇻🇪 🆚 Prosu",
-   "cuando": "2026-10-12 11:52 AM ET",
-   "por": "el organizador, con el menú (<@1055474244089286706>)",
-   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
-  },
   "poesiacruda|URBF|01/10|final|pichulamc|riferian": {
    "ganador": "Riferian 🇵🇦",
    "batalla": "POESÍA CRUDA · URBF · 01/10 · final · Pichulamc 🆚 Riferian 🇵🇦",
@@ -268,13 +245,6 @@
    "batalla": "PROYECTO X · DDF · 08/10 · octavos · Dm🇵🇪 🆚 Number 🇱🇷",
    "cuando": "2026-10-12 11:52 AM ET",
    "por": "el organizador, con el menú (<@1310075576991875144>)",
-   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
-  },
-  "fecharempalagovol64compeexpressporplata|FFA|11/10|cuartos|guess|hinjkybesuk|jupiter|six": {
-   "ganador": "six",
-   "batalla": "Fecha Rempalago Vol. 64 compe express por plata · FFA · 11/10 · cuartos · six 🆚 Hinjkybesuk🇦🇫 🆚 Jupiter 🆚 Guess 🇦🇷",
-   "cuando": "2026-10-12 11:52 AM ET",
-   "por": "el organizador, con el menú (<@1414431452346581052>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   },
   "proyectox|DDF|08/10|cuartos|jeixder|miniboy": {

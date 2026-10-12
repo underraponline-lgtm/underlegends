@@ -12612,7 +12612,7 @@
   ],
   "n": 412,
   "nombre": "PRITTY FREE CLASIFICATORIA 3",
-  "participantes": 16,
+  "participantes": 17,
   "rondas": [
    {
     "b": [
@@ -12631,7 +12631,7 @@
        "Tam"
       ],
       "PichulaMc",
-      "triple (4 bandas, pasan 2)"
+      "triple (4 bandas, pasan 2); Revivido: Pichula🇦🇷"
      ],
      [
       [
@@ -12665,19 +12665,19 @@
      ],
      [
       [
+       "Six",
+       "Zignos"
+      ],
+      "Six",
+      ""
+     ],
+     [
+      [
        "Velatz, Snow",
        "Liam"
       ],
       "Velatz, Snow",
       ""
-     ],
-     [
-      [
-       "Zignos",
-       "six"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -12730,11 +12730,6 @@
     5250
    ],
    [
-    "PichulaMc",
-    "Semifinal",
-    5250
-   ],
-   [
     "Snow",
     "Subcampeón",
     3750
@@ -12745,12 +12740,22 @@
     3750
    ],
    [
+    "PichulaMc",
+    "Semifinal",
+    2625
+   ],
+   [
     "Liam",
     "Cuartos",
     2500
    ],
    [
     "Rodas",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Zignos",
     "Cuartos",
     2500
    ],
@@ -20016,320 +20021,6 @@
     "GROOMER🇧🇴",
     "Semifinal",
     1750
-   ]
-  ]
- },
- "452": {
-  "dia": "2026-10-11",
-  "escala": "16+",
-  "fecha": "11/10",
-  "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1558963593406587072"
-  ],
-  "n": 452,
-  "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
-  "participantes": 19,
-  "rondas": [
-   {
-    "b": [
-     [
-      [
-       "Liam",
-       "ONZASS"
-      ],
-      "Liam",
-      "triple (3 bandas, pasan 2)"
-     ],
-     [
-      [
-       "Guess",
-       "Six",
-       "Hinjkybesuk",
-       "Jupiter"
-      ],
-      "Guess",
-      "triple (4 bandas)"
-     ],
-     [
-      [
-       "Verc",
-       "JJ",
-       "SINTEXT"
-      ],
-      "Verc",
-      "triple (4 bandas, pasan 2)"
-     ],
-     [
-      [
-       "tnr :Espana:",
-       "Lvel 🇻🇪",
-       "Valdoza",
-       "JJ :Espana:"
-      ],
-      "tnr :Espana:",
-      "triple (4 bandas); ganador: ✅ Decidir"
-     ]
-    ],
-    "r": "Cuartos"
-   },
-   {
-    "b": [
-     [
-      [
-       "Verc, Snow",
-       "Makmah, Liam"
-      ],
-      "Verc, Snow",
-      ""
-     ],
-     [
-      [
-       "Guess",
-       "TNR JJ"
-      ],
-      "Guess",
-      "ganador según #veredictos; Walk-in 1: TNR JJ"
-     ]
-    ],
-    "r": "Semifinales"
-   },
-   {
-    "b": [
-     [
-      [
-       "Verc, Snow, Makmah",
-       "Plink BNA Six JJ"
-      ],
-      "Verc, Snow, Makmah",
-      "Walk-in 2: Plink BNA Six JJ"
-     ]
-    ],
-    "r": "Final"
-   }
-  ],
-  "sv": "FFA",
-  "tabla": [
-   [
-    "Makmah",
-    "Semifinal",
-    5958
-   ],
-   [
-    "Snow",
-    "Campeón",
-    3333
-   ],
-   [
-    "Verc",
-    "Campeón",
-    3333
-   ],
-   [
-    "Liam",
-    "Semifinal",
-    2625
-   ],
-   [
-    "TNR JJ",
-    "Semifinal",
-    2625
-   ],
-   [
-    "Hinjkybesuk",
-    "Cuartos",
-    2500
-   ],
-   [
-    "JJ",
-    "Cuartos",
-    2500
-   ],
-   [
-    "JJ :Espana:",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Jupiter",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Lvel 🇻🇪",
-    "Cuartos",
-    2500
-   ],
-   [
-    "ONZASS",
-    "Cuartos",
-    2500
-   ],
-   [
-    "SINTEXT",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Six",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Valdoza",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Plink BNA Six JJ",
-    "Subcampeón",
-    1875
-   ]
-  ]
- },
- "453": {
-  "dia": "2026-09-27",
-  "escala": "16+",
-  "fecha": "27/09",
-  "links": [
-   "https://discord.com/channels/1467763447117778989/1511963625793912892/1553957529648767098"
-  ],
-  "n": 453,
-  "nombre": "DENME MODERADOR LPM",
-  "participantes": 18,
-  "rondas": [
-   {
-    "b": [
-     [
-      [
-       "yinn",
-       "Provenza",
-       "Bloody",
-       "NC"
-      ],
-      "yinn",
-      "triple (4 bandas)"
-     ],
-     [
-      [
-       "Makmah",
-       "MCO",
-       "EIDP"
-      ],
-      "Makmah",
-      "triple (3 bandas)"
-     ],
-     [
-      [
-       "Prosu",
-       "Velatz",
-       "Player"
-      ],
-      "Prosu",
-      "triple (3 bandas); ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "No quiero rapia 🇲🇽",
-       "Agustín 🇨🇱",
-       "Cinexfilo 🇻🇪"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ]
-    ],
-    "r": "Cuartos"
-   },
-   {
-    "b": [
-     [
-      [
-       "yinn",
-       "Makmah"
-      ],
-      "yinn",
-      "ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "Prosu velatz player erian 7",
-       "Nc jupiter Agustín Cinexfilo MCO"
-      ],
-      "Prosu velatz player erian 7",
-      "ganador: ✅ Decidir; Walk-in 1: Nc jupiter Agustín Cinexfilo MCO"
-     ]
-    ],
-    "r": "Semifinales"
-   },
-   {
-    "b": [
-     [
-      [
-       "Zignos cinexfilo nc",
-       "Scot yinn guty"
-      ],
-      "Zignos cinexfilo nc",
-      "ganador: ✅ Decidir; Walk-in 2: Zignos cinexfilo nc; Walk-in 2: Scot yinn guty"
-     ]
-    ],
-    "r": "Final"
-   }
-  ],
-  "sv": "URBF",
-  "tabla": [
-   [
-    "Makmah",
-    "Semifinal",
-    5250
-   ],
-   [
-    "Nc jupiter Agustín Cinexfilo MCO",
-    "Semifinal",
-    2625
-   ],
-   [
-    "Bloody",
-    "Cuartos",
-    2500
-   ],
-   [
-    "EIDP",
-    "Cuartos",
-    2500
-   ],
-   [
-    "MCO",
-    "Cuartos",
-    2500
-   ],
-   [
-    "NC",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Player",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Provenza",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Velatz",
-    "Cuartos",
-    2500
-   ],
-   [
-    "Zignos cinexfilo nc",
-    "Campeón",
-    2500
-   ],
-   [
-    "Scot yinn guty",
-    "Subcampeón",
-    1875
    ]
   ]
  },
