@@ -1590,6 +1590,130 @@ def cierres_solos(preguntas, dry=True):
     return out
 
 
+# ── 🔤 el tipeo: «Enkil» es Enkill ──────────────────────────────────────
+
+#: menos letras que esto no es un tipeo, es otro nombre: «Ola» y Olaf, «Ger9» y Gero
+TIPEO_MIN = 5
+TIPEO_POR = 'el ciclo (una letra de diferencia)'
+
+
+def _letras(a, b):
+    """Cuántas letras separan a `a` de `b`: agregar, sacar, cambiar una, o dar vuelta dos seguidas."""
+    d = [[i + j if not i * j else 0 for j in range(len(b) + 1)] for i in range(len(a) + 1)]
+    for i in range(1, len(a) + 1):
+        for j in range(1, len(b) + 1):
+            d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] != b[j - 1]))
+            if i > 1 and j > 1 and a[i - 1] == b[j - 2] and a[i - 2] == b[j - 1]:
+                d[i][j] = min(d[i][j], d[i - 2][j - 2] + 1)
+    return d[len(a)][len(b)]
+
+
+def tipeo_de(det, variantes, padron, svs_ev, juega_en, son_distintos=lambda a, b: False):
+    """El nombre de la Lista del que `det` es un tipeo, o `None`. Ver `tipeos()`."""
+    k = norm(_sin_bandera(det))
+    if len(k) < TIPEO_MIN or not svs_ev:
+        return None
+    ccs = {_iso(b) for v in (variantes or [det]) for b in _BANDERA.findall(v)}
+    if len(ccs) != 1:
+        return None
+    cc = next(iter(ccs))
+    try:
+        from padron_t1 import PAIS_ISO
+    except Exception:                                    # noqa: BLE001
+        return None
+    cerca = []
+    for r in padron:
+        kr = norm(_sin_bandera(r.get('raw') or r.get('full') or ''))
+        if kr and kr != k and abs(len(kr) - len(k)) <= 2:
+            d = _letras(k, kr)
+            if d <= 2:
+                cerca.append((d, r))
+    uno = [r for d, r in cerca if d == 1]
+    if len(uno) != 1 or PAIS_ISO.get(uno[0].get('pais')) != cc:
+        return None
+    # ⚠️ NI OTRO DEL MISMO PAÍS A DOS LETRAS: entre «Kaell», «Kael» y «Kaelo» no hay uno que sea el obvio
+    if any(d == 2 and PAIS_ISO.get(r.get('pais')) == cc for d, r in cerca):
+        return None
+    real = uno[0].get('raw') or uno[0].get('full')
+    if son_distintos(det, real) or not (set(svs_ev) & set(juega_en(uno[0]))):
+        return None
+    return real
+
+
+def tipeos(preguntas, respuestas, eventos, dry=True):
+    """🔤 «¿QUIÉN ES ENKIL?» SE CONTESTA SOLO CUANDO ES UN TIPEO OBVIO DE ALGUIEN DE LA LISTA.
+
+    Dlx, 12/10/2026, sobre ✅ Decidir: *«la idea es que la gran mayoría lo soluciones tú»*. Ese día había
+    «Enkil 🇦🇷» (Enkill), «Hasan🇦🇷» (Hassan) y «Launnok🇨🇱» (Launok) esperando su respuesta: el nombre de alguien
+    de la Lista con una letra de más o de menos, que es lo que contestaría cualquiera que los conozca.
+
+    Alias (hoja AKAs) sólo si se cumple TODO:
+
+      · el nombre tiene `TIPEO_MIN` letras o más, y una sola bandera;
+      · hay UNA persona de la Lista a una letra (`_letras()`), del país de esa bandera, y ninguna otra de ese país
+        a dos;
+      · esa persona ya jugó en el servidor del evento, o su cuenta está ahí;
+      · nadie en Discord se llama así (`_cuenta_de()`): si hay una cuenta con ese nombre, es un nombre, no un
+        tipeo;
+      · y el par no está marcado distinto en AKAs.
+
+    ⚠️ NO DA DE ALTA A NADIE: sólo junta con quien ya está. Lo que no cumple sigue en `Pendientes`.
+    Devuelve los ids de las preguntas que resolvió (o resolvería, en seco).
+    """
+    import construir_akas as AK
+    akas = AK.cargar() or {}
+    padron = _datos('padron') or []
+    svs = _datos('servidores_de') or {}
+    fuera = no_rankear()
+    cand = [p for p in preguntas if p['tipo'] == 'Nombre desconocido' and p['id'] not in (respuestas or {})
+            and len(norm(_sin_bandera(p['detalle']))) >= TIPEO_MIN]
+    if not cand:
+        return set()
+    try:
+        from escribir import Hoja
+        jugo = {}
+        for f in Hoja('Resultados').filas():
+            f = [str(x).strip() for x in list(f) + [''] * 5]
+            jugo.setdefault(norm(_sin_bandera(f[4])), set()).add(f[2])
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer Resultados para los tipeos: %s' % str(e)[:60])
+        return set()
+
+    def juega_en(r):
+        out = set(jugo.get(norm(_sin_bandera(r.get('raw') or r.get('full') or ''))) or ())
+        if r.get('discord_id'):
+            out |= set(_servidores_de(str(r['discord_id']), svs))
+        return out
+
+    pares, hechas = [], []
+    for p in cand:
+        svs_ev = {(eventos.get(n) or ('', '', ''))[1] for n in _nums(p)} - {''}
+        real = tipeo_de(p['detalle'], p.get('variantes'), padron, svs_ev, juega_en,
+                        lambda a, b: AK.son_distintos(a, b, akas))
+        if not real or norm(real) in fuera:
+            continue
+        ids, _f = _cuenta_de(p, eventos)
+        if ids:
+            continue
+        a = _sin_bandera(p['detalle']).strip()
+        pares.append([a, real, ''.join(_BANDERA.findall(p['detalle']))])
+        hechas.append((p, 'alias de %s: «%s» con una letra de diferencia, del mismo país, y %s juega en %s'
+                       % (real, a, real, _y(sorted(svs_ev)))))
+    if not hechas:
+        return set()
+    print('\n   🔤 tipeos de alguien de la Lista: %d' % len(hechas))
+    for p, res in hechas:
+        print('      %s — %s' % (p['detalle'][:40], res))
+    if not dry:
+        _agregar_akas(pares, [])
+        from escribir import _pedir
+        _pedir('POST', '/values:batchUpdate', json={
+            'valueInputOption': 'RAW',
+            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n), 'values': [['Resuelto', res, TIPEO_POR]]}
+                     for p, res in hechas for n in p['filas']]})
+    return {p['id'] for p, _r in hechas}
+
+
 #: cómo se dice cada motivo del lector
 _MOTIVO = {
     'no aparece nadie después': 'Ninguno aparece en la ronda siguiente, y la llave no marca quién pasó.',
@@ -2966,6 +3090,66 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
     print('   ✅ `%s`: %d pregunta(s) en %d sección(es)' % (HOJA, len(preguntas), len(secs)))
 
 
+#: 🙈 los días que una batalla o una llave sin campeón le tocan al organizador (`bot/finales.py`) antes que a Dlx
+DIAS_ORGANIZADOR = 2
+#: los días que un nombre desconocido con un parecido en la Lista se le muestra a Dlx
+DIAS_PARECIDO = 7
+
+
+def _dia_de_pregunta(p, eventos):
+    """El día del evento de una pregunta (`datetime.date`), o `None`: del número de evento o de su detalle."""
+    ev = eventos.get(_num_evento(p)) or ()
+    f = ev[2] if len(ev) > 2 else ''
+    if not f:
+        partes = [x.strip() for x in str(p.get('detalle') or '').split(' · ')]
+        f = next((x for x in partes if re.match(r'^\d{1,2}/\d{1,2}$', x)), '')
+    m = re.match(r'^(\d{1,2})/(\d{1,2})$', f or '')
+    if not m:
+        return None
+    hoy = datetime.date.today()
+    try:
+        d = datetime.date(hoy.year, int(m.group(2)), int(m.group(1)))
+    except ValueError:
+        return None
+    return d if d <= hoy + datetime.timedelta(days=1) else datetime.date(hoy.year - 1, d.month, d.day)
+
+
+def para_dlx(preguntas, eventos, respuestas=None, hoy=None):
+    """🙈 LO QUE ✅ DECIDIR LE MUESTRA A DLX: sólo lo que de verdad necesita su decisión.
+
+    Dlx, 12/10/2026: *«esa página hasta ahora sólo la he visto 2 veces desde que se creó… sólo cosas muy raras que no se
+    entiendan aparezcan ahí… no que yo entre y vea 104 cosas pendientes. La idea es que la gran mayoría lo soluciones
+    tú, y ahora con los organizadores»*. Medido ese día: 115 preguntas abiertas, y 43 eran nombres que nadie tiene en
+    Discord ni se parecen a nadie de la Lista —no hay a quién elegir—.
+
+    · NOMBRE DESCONOCIDO: sólo si hay cuentas que no se pudieron confirmar solas (`_cuenta_de()`), o si se parece a
+      alguien de la Lista y el evento es de los últimos `DIAS_PARECIDO` días. Sin nada de eso, Dlx tampoco sabe quién
+      es: queda en `Pendientes` y se cierra sola si algún día resuelve (`pendientes.barrer()`).
+    · BATALLA SIN GANADOR y BRACKET INCOMPLETO: los primeros `DIAS_ORGANIZADOR` días son del organizador, que tiene la
+      pregunta con botones (`bot/finales.py`).
+    · Lo demás —altas dudosas, eventos dudosos, alias, conflictos—, siempre: eso sí es raro.
+    · Y lo que Dlx ya contestó en la hoja no se esconde nunca, o la respuesta se perdería.
+
+    ⚠️ NO CIERRA NADA: sólo decide qué se pinta. Todo sigue en `Pendientes`."""
+    hoy = hoy or datetime.date.today()
+    out = []
+    for p in preguntas:
+        if respuestas and p.get('id') in respuestas:
+            out.append(p)
+            continue
+        t, d = p.get('tipo'), _dia_de_pregunta(p, eventos)
+        if t == 'Nombre desconocido':
+            ids, _f = _cuenta_de(p, eventos)
+            reciente = d is not None and (hoy - d).days <= DIAS_PARECIDO
+            if not ids and not (p.get('match') and reciente):
+                continue
+        elif t in ('Batalla sin ganador', 'Bracket incompleto'):
+            if d is not None and (hoy - d).days < DIAS_ORGANIZADOR:
+                continue
+        out.append(p)
+    return out
+
+
 def correr(dry=True):
     abiertas, repetidas, hechas = _abiertas_de_pendientes()
     eventos = _eventos()
@@ -2982,6 +3166,15 @@ def correr(dry=True):
         print('   ⚠️ no pude resolver con Discord (%s)' % str(e)[:80])
         solas = set()
     preguntas = [p for p in preguntas if p['id'] not in solas]
+    # 🔤 Y EL TIPEO OBVIO DE ALGUIEN DE LA LISTA: ver `tipeos()`
+    try:
+        tip = tipeos(preguntas, respuestas, eventos, dry=dry)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude revisar los tipeos (%s)' % str(e)[:80])
+        tip = set()
+    if tip:
+        preguntas = [p for p in preguntas if p['id'] not in tip]
+        solas = set(solas) | tip
     # 👥 Y LA CUENTA QUE JUEGA CON DOS NOMBRES: ver `una_cuenta_dos_nombres()`. Lo que pregunta aparece la próxima vez
     try:
         una_cuenta_dos_nombres(dry=dry, preguntas=preguntas)
@@ -3016,6 +3209,11 @@ def correr(dry=True):
     if not dry and getattr(aplicar, 'hubo', True):
         abiertas, repetidas, hechas = _abiertas_de_pendientes()
         preguntas = armar(abiertas, eventos)
+    # 🙈 y a Dlx, sólo lo que necesita su decisión (`para_dlx()`)
+    antes = len(preguntas)
+    preguntas = para_dlx(preguntas, eventos, respuestas)
+    print('   🙈 %d de %d pregunta(s) se le muestran a Dlx: lo demás espera al organizador o no tiene a quién elegir'
+          % (len(preguntas), antes))
     pintar(preguntas, estados, respuestas, hechas, dry=dry)
     return 0
 
@@ -3563,6 +3761,21 @@ def _self_check():
        and interpretar(_qd, SACAR_DUP + '409') == ('sacar_num', (409, 366, '(sin titulo)', 'FFA', '27/09'))
        and interpretar(_qd, NO_DUP) == ('no_duplicado', (409, 366)),
        'el mismo evento dos veces: «sí» saca el #409 por número, «no» los deja y no se vuelve a preguntar')
+    # 🔤 el tipeo obvio (`tipeo_de()`)
+    _pt = [{'raw': 'Enkill', 'pais': 'Argentina'}, {'raw': 'Hassan', 'pais': 'Argentina'},
+           {'raw': 'HadaH', 'pais': 'México'}, {'raw': 'Olaf', 'pais': 'México'},
+           {'raw': 'Kael', 'pais': 'Chile'}, {'raw': 'Kaelo', 'pais': 'Chile'}]
+    _je = lambda r: {'FFA'}                              # noqa: E731
+    ok(tipeo_de('Enkil 🇦🇷', None, _pt, {'FFA'}, _je) == 'Enkill'
+       and tipeo_de('Hasan🇦🇷', None, _pt, {'FFA'}, _je) == 'Hassan',
+       'el tipeo obvio: una letra, el mismo país, y juega en ese servidor')
+    ok(tipeo_de('Enkil 🇦🇷', None, _pt, {'DRA'}, _je) is None, 'si nunca jugó en ese servidor, no')
+    ok(tipeo_de('Hasan 🇲🇽', None, _pt, {'FFA'}, _je) is None, 'de otro país, no')
+    ok(tipeo_de('Ola🇲🇽', None, _pt, {'FFA'}, _je) is None, 'menos de cinco letras, no: «Ola» no es Olaf')
+    ok(tipeo_de('Kaell 🇨🇱', None, _pt, {'FFA'}, _je) is None, 'dos parecidos del mismo país, no')
+    ok(tipeo_de('Enkil', None, _pt, {'FFA'}, _je) is None
+       and tipeo_de('Enkil', ['Enkil 🇦🇷', 'Enkil 🇨🇱'], _pt, {'FFA'}, _je) is None, 'sin bandera o con dos, no')
+    ok(tipeo_de('Enkil 🇦🇷', None, _pt, {'FFA'}, _je, lambda a, b: True) is None, 'ni lo marcado distinto')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 
