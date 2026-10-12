@@ -244,6 +244,10 @@ const ok = (cond, que, det) => {
   ok(A.chatGeneralDe([{ id: '1', type: 0, name: '💬┇charla' }, { id: '2', type: 0, name: 'chat-general' },
     { id: '3', type: 2, name: 'general' }, { id: '4', type: 0, name: 'general-staff' }]) === '2',
   'el chat general: «general» de texto, nunca el del staff ni el de voz');
+  ok(A.chatGeneralDe([{ id: '1', type: 0, name: '「💬」𝐃𝐮𝐝𝐚𝐬' }, { id: '2', type: 0, name: '「💬」𝖢𝖾𝗇𝗍𝗋𝖺𝗅-𝖥𝖵𝖲' },
+    { id: '3', type: 0, name: '「🤖」𝐉𝐮𝐞𝐜𝐞𝐬-𝐂𝐡𝐚𝐭', parent_id: 'adm' }], new Set(['adm'])) === '2'
+    && A.chatGeneralDe([{ id: '1', type: 0, name: '「🌏」𝐂𝐄𝐍𝐓𝐑𝐀𝐋-𝐅𝐅𝐒' }, { id: '2', type: 0, name: 'chat-general' }]) === '2',
+  'el chat de FVS y de FFS: «Central-FVS» (con letras decoradas) es su chat, y un «chat-general» le gana');
   const mc = A.mensajeRedCancelado({ t: 'VOL 21 2v2', sv: 'FFA', svn: 'Freestyle For All', ini: 1790000000000,
     url: 'https://discord.com/channels/1/2/3' }, 'borrado');
   ok(/^❌ CANCELADO/.test(mc.embeds[0].title) && mc.allowed_mentions.parse.length === 0 &&

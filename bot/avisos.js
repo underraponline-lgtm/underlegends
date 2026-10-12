@@ -93,7 +93,8 @@ export const PATRON_VIGIA = /evento|competenc|torneo/i;
 // 11: «torneo» en `PATRON_VIGIA`, y «organiz» en `STAFF` (la ACADEMIA, 04/10/2026)
 // 12: el chat general de cada servidor, para el bot en vivo (05/10/2026). Ver `chatGeneralDe()`
 // 13: «anuncios» adentro de una categoría de torneos (FVS, 12/10/2026). Ver `descubrir()`
-const CANALES_V = 13;
+// 14: «central» también es el chat general (FVS y FFS, 12/10/2026). Ver `chatGeneralDe()`
+const CANALES_V = 14;
 
 //: 🔑 LOS CANALES DE VEREDICTOS. Dlx, 28/09/2026: *«tienes que estar
 //: pendiente de todos los canales de eventos cuando hay un evento en vivo…
@@ -730,14 +731,20 @@ export function ladoGanador(L, ronda, a, b) {
 }
 
 /** El chat general de un servidor entre sus canales (`GET /guilds/{g}/channels`), o `''`: «general» antes que «chat»
- *  y que «charla», sólo de texto y nunca del staff. */
+ *  y que «charla» o «central», sólo de texto y nunca del staff.
+ *
+ *  🆚 «CENTRAL» (12/10/2026): FVS llama a su chat «「💬」Central-FVS» y FFS el suyo «「🌏」CENTRAL-FFS», con el nombre
+ *  del servidor y sin «chat» ni «general», así que los dos quedaban sin chat y el bot en vivo no tenía dónde hablar
+ *  aunque Dlx lo prendiera. Medido en los ocho de la Liga: sólo esos dos canales dicen «central» (la categoría
+ *  «CENTRAL» del staff de DRA es una categoría, no un canal), y va con el puntaje más bajo para que un «general» o
+ *  un «chat» le ganen siempre. */
 export function chatGeneralDe(cs, fuera) {
   let mejor = '', puntos = 0;
   for (const c of cs || []) {
     if (c.type !== 0 || (fuera && fuera.has(String(c.parent_id || '')))) continue;
     const n = String(c.name || '').normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
     if (STAFF.test(n) || /\bbots?\b|comando|clip|meme|media|beat/.test(n)) continue;
-    const p = /\bgeneral\b/.test(n) ? 3 : /\bchat\b/.test(n) ? 2 : /\bcharla\b/.test(n) ? 1 : 0;
+    const p = /\bgeneral\b/.test(n) ? 3 : /\bchat\b/.test(n) ? 2 : /\bcharla\b|\bcentral\b/.test(n) ? 1 : 0;
     if (p > puntos) { mejor = String(c.id); puntos = p; }
   }
   return mejor;
