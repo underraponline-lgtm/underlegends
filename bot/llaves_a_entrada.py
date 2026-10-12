@@ -1361,6 +1361,43 @@ def otro_en_servidor(filas, sv, mapa=None):
     return filas
 
 
+#: 🔒 los eventos que corrigió `herramientas/recalcular_t1.py --aplicar`: ver `corregido_por_recalculo()`
+RECALCULADOS = os.path.join(BASE, 'datos', 'recalculados.json')
+
+
+def _recalculados():
+    try:
+        with io.open(RECALCULADOS, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('eventos') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def corregido_por_recalculo(nom, sv, fec, g, recs, ahora=None):
+    """🔒 EL NÚMERO DEL EVENTO SI LO CORRIGIÓ EL RECÁLCULO Y SU LLAVE NO SE TOCÓ DESPUÉS, o `None`.
+
+    Dlx, 12/10/2026 («1. dale»): el ciclo mira los últimos 25 mensajes de cada canal y el recálculo la historia
+    entera, y no siempre leen lo mismo. PRITTY FREE CLASIFICATORIA 3 (#412, FFA) tiene la llave del 05/10 y una copia
+    sin título del 06/10 con lo que faltaba —Pichula revivido, six contra Zignos—: el recálculo la corregía con la
+    segunda y cada corrida del ciclo la volvía a pisar con la primera. Si la llave se edita DESPUÉS del recálculo, hay
+    información nueva y el ciclo la vuelve a leer como siempre."""
+    k = E.norm(nom)
+    for n, r in (recs or {}).items():
+        if not isinstance(r, dict) or E.norm(r.get('nombre')) != k or r.get('sv') != sv or r.get('fecha') != fec:
+            continue
+        try:
+            t = datetime.datetime.fromisoformat(str(r.get('cuando') or '').replace('Z', '+00:00'))
+        except ValueError:
+            continue
+        if t.tzinfo is None:
+            t = t.replace(tzinfo=datetime.timezone.utc)
+        ahora = ahora or datetime.datetime.now(datetime.timezone.utc)
+        hq = horas_quieta(g, ahora)
+        if hq is None or ahora - datetime.timedelta(hours=hq) <= t:
+            return n
+    return None
+
+
 def _preguntar_h():
     try:
         import finales as FIN
@@ -3500,6 +3537,7 @@ def main():
     todas, dudas, sabidas = [], [], collections.Counter()
     ya_cargadas = []   # la que ya está en el ranking con otro nombre: ver `ya_cargada()`
     en_curso, incompletos, retenidos, descartados = [], [], [], []
+    _recs = _recalculados()
     para_org = []   # 🏁 lo que no se entendió de cada llave, para preguntarle a quien la publicó (`bot/finales.py`)
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     de_veredictos = []                                # las llaves que se cargaron como se jugaron, de #veredictos
@@ -3829,6 +3867,12 @@ def main():
         ya = ya_cargada(nom, ligas[0], fec, limpias) if ligas else None
         if ya:
             ya_cargadas.append((nom, ligas[0], fec, ya))
+            continue
+        # 🔒 lo que corrigió el recálculo y no cambió desde entonces se queda como está (`corregido_por_recalculo()`)
+        _rc = corregido_por_recalculo(nom, ligas[0], fec, g, _recs) if ligas else None
+        if _rc:
+            print('   🔒 #%s %s · %s · %s: lo corrigió el recálculo y la llave no cambió desde entonces, se queda'
+                  % (_rc, nom[:30], ligas[0], fec))
             continue
         dudas += d_grupo
         # 🏁 CON CAMPEÓN Y BATALLAS SIN GANADOR: el evento terminó, se le pregunta ya (`bot/finales.py`)

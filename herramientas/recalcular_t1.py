@@ -350,6 +350,30 @@ def aplicar(d):
                            cwd=BASE, env=dict(os.environ, PYTHONIOENCODING='utf-8'))
         if r.returncode != 0:
             raise SystemExit('   🔴 procesar_entrada.py no terminó bien: mirá `Entrada`')
+        # 🔒 y queda anotado qué se corrigió, para que el ciclo no lo vuelva a pisar con su lectura de los últimos 25
+        # mensajes (Dlx, 12/10/2026, «1. dale»): ver `llaves_a_entrada.corregido_por_recalculo()`
+        import datetime as _dt
+        ruta = os.path.join(BASE, 'datos', 'recalculados.json')
+        try:
+            with io.open(ruta, encoding='utf-8') as f:
+                rec = json.load(f) or {}
+        except (OSError, ValueError):
+            rec = {}
+        ev = rec.setdefault('eventos', {})
+        ahora = _dt.datetime.now(_dt.timezone.utc).isoformat(timespec='seconds')
+        for n in d.get('_cambian') or []:
+            nom, sv, fe = (d['nombres'].get(n) or [None, None, None])[:3]
+            if nom:
+                ev[str(n)] = {'nombre': nom, 'sv': sv, 'fecha': fe, 'cuando': ahora}
+        for k, e in (d.get('nuevos') or {}).items():
+            if k.startswith('nuevo:') and e.get('filas') and str(e.get('nombre') or '').strip().upper() in pedidos:
+                ev[k] = {'nombre': e['nombre'], 'sv': e['sv'], 'fecha': e['fecha'], 'cuando': ahora}
+        rec['_leeme'] = ('Los eventos que corrigió herramientas/recalcular_t1.py --aplicar, con cuándo: el ciclo no los '
+                         'vuelve a escribir mientras su llave no se edite después (llaves_a_entrada.'
+                         'corregido_por_recalculo). Dlx, 12/10/2026.')
+        with io.open(ruta, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(rec, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
 
 
 def main():
