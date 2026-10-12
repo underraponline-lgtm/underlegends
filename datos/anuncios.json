@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T19:04:06+00:00",
+ "cuando": "2026-10-12T19:24:03+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1165,6 +1165,28 @@
    "staff": {},
    "autor": "IroníaZka | Los Culeanizadores",
    "categoria_id": "863207988251852820"
+  },
+  {
+   "nombre": "El bosque de Artemisa",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1559281288807055550",
+   "cuando": "2026-10-12T19:07:09",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "",
+   "autor_h": "f8abf54d3900e8f9",
+   "cupos_texto": "Ilimitados",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1🆚️1",
+   "horario": "<t:1791842400:t>",
+   "fecha": "12/10",
+   "premios": "Puntos de ascenso + Puntos de ranking GØÐZ",
+   "staff": {},
+   "autor": "gxbrrlaljndrr",
+   "categoria_id": "863207988739309600"
   },
   {
    "nombre": "SNAKE INSIGNIA",
@@ -4438,6 +4460,33 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "Efimero",
+   "quien": "efimero001",
+   "discord_id": "742442337028014090",
+   "msg_id": "1559281784250699987",
+   "cuando": "2026-10-12T19:09:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "JJ 🇨🇴",
+   "quien": "a.k.a_jj",
+   "discord_id": "1097650470476070995",
+   "msg_id": "1559281487873052713",
+   "cuando": "2026-10-12T19:07:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "SinText",
+   "quien": "20_sintext_10",
+   "discord_id": "882120927096209449",
+   "msg_id": "1559281310827024426",
+   "cuando": "2026-10-12T19:07:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "Emi 🇲🇽",
    "quien": "ventu._.x",
    "discord_id": "913850096062439456",
@@ -4519,19 +4568,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Fin 🇦🇷",
-   "quien": "finallnme",
-   "discord_id": "1247102577573625856",
-   "msg_id": "1559274513353416847",
+   "texto": "Cajita 🇻🇪",
+   "quien": "cajita____",
+   "discord_id": "794084098422341632",
+   "msg_id": "1559274511633748060",
    "cuando": "2026-10-12T18:40:13"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Cajita 🇻🇪",
-   "quien": "cajita____",
-   "discord_id": "794084098422341632",
-   "msg_id": "1559274511633748060",
+   "texto": "Fin 🇦🇷",
+   "quien": "finallnme",
+   "discord_id": "1247102577573625856",
+   "msg_id": "1559274513353416847",
    "cuando": "2026-10-12T18:40:13"
   },
   {

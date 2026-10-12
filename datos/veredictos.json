@@ -5406,8 +5406,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791831638432,
-   "ed": 1791831651329,
-   "texto": "`[ OCTAVOS ]`\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝\n⌞PRODIGY🇦🇷⌝ 🆚 ⌞CAJITA🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞BENJIXO🇦🇷⌝ 🆚 ⌞FIN🇦🇷⌝ 🆚 ⌞DOBLE H🇨🇱⌝\n⌞LVEL🇻🇪⌝ 🆚 ⌞TROT🇪🇸⌝ 🆚 ⌞ONZAS🇻🇪⌝\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝",
+   "ed": 1791832786878,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝\n⌞SNOW🇨🇴⌝ 🆚 ⌞CAJITA🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞BENJIXO🇦🇷⌝ 🆚 ⌞AFR🇨🇱⌝ 🆚 ⌞DOBLE H🇨🇱⌝\n⌞LVEL🇻🇪⌝ 🆚 ⌞JJ🇨🇴⌝ 🆚 ⌞ONZAS🇻🇪⌝\n⌞KEIDER🇻🇪⌝ 🆚 ⌞MAKMA🇻🇪⌝ 🆚 ⌞NC🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5423,7 +5423,7 @@
     [
      "OCTAVOS",
      [
-      "PRODIGY🇦🇷",
+      "SNOW🇨🇴",
       "CAJITA🇻🇪",
       "TEO🇨🇴"
      ],
@@ -5435,7 +5435,7 @@
      "OCTAVOS",
      [
       "BENJIXO🇦🇷",
-      "FIN🇦🇷",
+      "AFR🇨🇱",
       "DOBLE H🇨🇱"
      ],
      null,
@@ -5446,7 +5446,7 @@
      "OCTAVOS",
      [
       "LVEL🇻🇪",
-      "TROT🇪🇸",
+      "JJ🇨🇴",
       "ONZAS🇻🇪"
      ],
      null,
@@ -5456,9 +5456,9 @@
     [
      "OCTAVOS",
      [
-      "YINN🇪🇸",
-      "VERC🇨🇱",
-      "O.E.P🇨🇴"
+      "KEIDER🇻🇪",
+      "MAKMA🇻🇪",
+      "NC🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
