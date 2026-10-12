@@ -336,6 +336,15 @@
    "cuando": "2026-10-11 1:25 AM ET",
    "por": "Dlx (chat)",
    "nota": "el #443 otra vez (Dlx, 10/10/2026, «1. a»): la llave que el bot armó de #veredictos de DDF juntaba los votos de la 19 CUP VOL. 1 y de la GALACTICOS VOL.11; su mensaje se borró y quedaba en datos/veredictos.json. Se sacó de ahí también"
+  },
+  "457": {
+   "es": 414,
+   "nombre": "(sin titulo)",
+   "sv": "FFA",
+   "fecha": "06/10",
+   "cuando": "2026-10-12 5:23 PM ET",
+   "por": "Claude (duplicado)",
+   "nota": "un barrido dirigido de las 4:22 PM del 12/10 leyó un pedazo suelto de la llave del #414 (DESGRACIAS EN TOKYO VOL 26 PANDILLAS) y lo cargó otra vez: 15 de sus 24 personas, con los mismos puestos. ya_cargada() no lo vio porque comparaba el equipo entero («Snow, BNA» contra «PAIN + BNA»): arreglado."
   }
  }
 }
