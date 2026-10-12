@@ -959,7 +959,8 @@
   "Mito": {
    "competitivo": "3be60921c0ed:180ca0f5feae",
    "pais": "52af9177a601:b8262c1f04f6",
-   "servidor": "530028fc479a:6d01de31deca:4975e5"
+   "servidor": "530028fc479a:6d01de31deca:4975e5",
+   "temporada": "4769cdd318b5:9df1984d05ab"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:6d01de31deca:2619cd"
@@ -1707,5 +1708,5 @@
    "servidor": "7f8885a35a6d:6d01de31deca:c9f1f2"
   }
  },
- "cuando": "2026-10-12T17:52:13+00:00"
+ "cuando": "2026-10-12T18:27:50+00:00"
 }
