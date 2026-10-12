@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.70",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T18:30:00-04:00",
+   "titulo": "Tus batallas en video, y el kit del organizador",
+   "items": [
+    "🎬 **Sus batallas en video**: el perfil de cada rapero junta sus batallas de los canales de YouTube de los servidores de la Liga. Se tocan y se miran ahí mismo.",
+    "🧰 **`/afiche` y `/llave`**, para el staff y los organizadores de cada servidor: la imagen del último anuncio, lista para compartir, y la última llave dibujada como cuadro."
+   ]
+  },
+  {
    "version": "2.69",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T17:50:00-04:00",
