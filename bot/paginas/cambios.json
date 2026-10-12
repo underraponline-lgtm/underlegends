@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.69",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T17:50:00-04:00",
+   "titulo": "El reto de tu primer evento",
+   "items": [
+    "🎤 **¿Jugaste tu primer evento en la Liga?** Tenés 7 días para jugar otro, en cualquier servidor, y te llevás **1.000 Puntos de Tienda**. Te avisamos en la página cuando debutás y cuando lo cumplís.",
+    "🏆 **Equipos más justos**: en una llave que arranca de a uno y sigue por equipos, nadie de un equipo cobra menos que los que quedaron afuera en la última ronda de a uno."
+   ]
+  },
+  {
    "version": "2.68",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T06:20:00-04:00",
