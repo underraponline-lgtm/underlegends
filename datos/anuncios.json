@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T06:54:17+00:00",
+ "cuando": "2026-10-12T07:30:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -365,7 +365,7 @@
    "cuando": "2026-10-11T21:55:55",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
-   "organizador": "yo",
+   "organizador": "Colesito",
    "autor_h": "fa8f09cab11e2bb2",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -1026,6 +1026,28 @@
    "premios": "",
    "staff": {},
    "autor": "IroníaZka | Los Culeanizadores",
+   "categoria_id": "863207988251852820"
+  },
+  {
+   "nombre": "BATALLA DE EXHIBICIÓN EN LA LIGA",
+   "servidor": "SR",
+   "canal": "[📢]anuncios",
+   "msg_id": "1514390798450425928",
+   "cuando": "2026-06-10T22:08:22",
+   "canal_id": "863208009503997952",
+   "guild_id": "492346406976356374",
+   "organizador": "",
+   "autor_h": "60e38ff03c62af68",
+   "cupos_texto": "6 pre-inscritos máximo.",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "BOOSTER",
+   "staff": {},
+   "autor": "EseÉfe",
    "categoria_id": "863207988251852820"
   },
   {
@@ -1966,7 +1988,7 @@
    "cuando": "2026-09-09T01:19:39",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "yo",
+   "organizador": "Erian 恵理久",
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -1998,7 +2020,7 @@
    "cuando": "2026-09-08T19:39:12",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "yo",
+   "organizador": "Erian 恵理久",
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -2030,7 +2052,7 @@
    "cuando": "2026-09-08T04:31:16",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "yo",
+   "organizador": "Erian 恵理久",
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -3102,7 +3124,7 @@
    "cuando": "2026-10-08T20:17:51",
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
-   "organizador": "└ @Pipas",
+   "organizador": "@Pipas",
    "autor_h": "656c27885fd775f7",
    "cupos_texto": "",
    "inscriptos": null,
@@ -3174,7 +3196,7 @@
    "fecha": "",
    "premios": "UNA NOCHE CON PLAYER",
    "staff": {},
-   "autor": "#19 | ₁₉",
+   "autor": "19 | ₁₉",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -3527,6 +3549,824 @@
    "staff": {},
    "autor": "BETELGEUSE",
    "categoria_id": "1309234419525222477"
+  },
+  {
+   "nombre": "👀👀👀",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1548763144048873527",
+   "cuando": "2026-09-13T18:31:48",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Mathhias",
+   "autor_h": "c8f035765c7a24b7",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Mathhias"
+    ],
+    "dj": [
+     "Mathhias"
+    ],
+    "host": [
+     "Mathhias"
+    ]
+   },
+   "autor": "Mathhias",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Sic Seven kup",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1543314135759192249",
+   "cuando": "2026-08-29T17:39:23",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "RFran",
+   "autor_h": "c9f7e6c5b0cf0004",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "Mi pija",
+   "staff": {
+    "jurado": [
+     "RFran"
+    ],
+    "dj": [
+     "RFran"
+    ],
+    "host": [
+     "RFran"
+    ]
+   },
+   "autor": "RFran",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "FOR FAITH",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1541884791329136730",
+   "cuando": "2026-08-25T18:59:41",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "KZAONE",
+   "autor_h": "82005ff102d82b1d",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "C",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "27 Julio",
+   "premios": "Clasificatoria a 𝐋𝐀 𝐔𝐋𝐓𝐈𝐌𝐀 𝐏𝐀𝐋𝐀𝐁𝐑𝐀",
+   "staff": {
+    "jurado": [
+     "KZAONE"
+    ],
+    "dj": [
+     "KZAONE"
+    ],
+    "host": [
+     "KZAONE"
+    ]
+   },
+   "autor": "eselkz4",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Copa Olimpo",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1540883636373426236",
+   "cuando": "2026-08-23T00:41:27",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "MC_Glock",
+   "autor_h": "317bd50868cfdc21",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "MC_Glock"
+    ],
+    "dj": [
+     "MC_Glock"
+    ],
+    "host": [
+     "MC_Glock"
+    ]
+   },
+   "autor": "MC_Glock",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Conference League",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1540548155760709632",
+   "cuando": "2026-08-22T02:28:22",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "MC_Glock",
+   "autor_h": "317bd50868cfdc21",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "MC_Glock"
+    ],
+    "dj": [
+     "MC_Glock"
+    ],
+    "host": [
+     "MC_Glock"
+    ]
+   },
+   "autor": "MC_Glock",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "SEKA'T KATANNA",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1540057404098617384",
+   "cuando": "2026-08-20T17:58:18",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "¢RAIZER¥",
+   "autor_h": "f2d792a69fc01a5f",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "¢RAIZER¥"
+    ],
+    "dj": [
+     "¢RAIZER¥"
+    ],
+    "host": [
+     "¢RAIZER¥"
+    ]
+   },
+   "autor": "¢RAIZER¥",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "CLASIFICATORIA A ZAMO CUP MULTIVERSE (OFICIAL)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1537958202510020699",
+   "cuando": "2026-08-14T22:56:49",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "",
+   "autor_h": "31b78813447e01ef",
+   "cupos_texto": "16 O MENOS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "C",
+   "modalidad": "MULTIVERSE",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "1- YO"
+    ],
+    "dj": [
+     "1-Yo"
+    ],
+    "host": [
+     "1-Yo"
+    ]
+   },
+   "autor": "zamo1.",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "NO SUPE COMO SOLTAR",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1537522851085684867",
+   "cuando": "2026-08-13T18:06:53",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "¢RAIZER¥",
+   "autor_h": "f2d792a69fc01a5f",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "¢RAIZER¥"
+    ],
+    "dj": [
+     "¢RAIZER¥"
+    ],
+    "host": [
+     "¢RAIZER¥"
+    ]
+   },
+   "autor": "¢RAIZER¥",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 6/6 (KOKUSHIBO)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1536892200519204875",
+   "cuando": "2026-08-12T00:20:54",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Bloody",
+   "autor_h": "745aa43302deb894",
+   "cupos_texto": "12",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "1 VS 5 (INSCRIBANSE DE FORMA INDIVIDUAL)",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Bloody"
+    ],
+    "dj": [
+     "Bloody"
+    ],
+    "host": [
+     "Bloody"
+    ]
+   },
+   "autor": "Bloody",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 5/6 (DOUMA)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1536852612371185835",
+   "cuando": "2026-08-11T21:43:36",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Bloody",
+   "autor_h": "745aa43302deb894",
+   "cupos_texto": "8/12",
+   "inscriptos": 8,
+   "cupo_total": 12,
+   "rango": "D",
+   "modalidad": "DUPLA TRAICIONERA",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Bloody"
+    ],
+    "dj": [
+     "Bloody"
+    ],
+    "host": [
+     "Bloody"
+    ]
+   },
+   "autor": "Bloody",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "ALERTA FORENSE",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1536155806322397204",
+   "cuando": "2026-08-09T23:34:44",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "¢RAIZER¥",
+   "autor_h": "f2d792a69fc01a5f",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "¢RAIZER¥"
+    ],
+    "dj": [
+     "¢RAIZER¥"
+    ],
+    "host": [
+     "¢RAIZER¥"
+    ]
+   },
+   "autor": "¢RAIZER¥",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 4/6 (AKAZA)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1535087679560093767",
+   "cuando": "2026-08-07T00:50:23",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Bloody",
+   "autor_h": "745aa43302deb894",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "Saca bronca",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Bloody"
+    ],
+    "dj": [
+     "Bloody"
+    ],
+    "host": [
+     "Bloody"
+    ]
+   },
+   "autor": "Bloody",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Copa RHLM",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1533969874794320042",
+   "cuando": "2026-08-03T22:48:37",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "MC Glock",
+   "autor_h": "317bd50868cfdc21",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "en 15 min",
+   "premios": "Puntos de ascenso,",
+   "staff": {
+    "jurado": [
+     "MC Glock"
+    ],
+    "dj": [
+     "MC Glock"
+    ],
+    "host": [
+     "MC Glock"
+    ]
+   },
+   "autor": "MC_Glock",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "PREREDBULL",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1532811287036170353",
+   "cuando": "2026-07-31T18:04:49",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "RFran",
+   "autor_h": "c9f7e6c5b0cf0004",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "Ya",
+   "premios": "Po na",
+   "staff": {
+    "jurado": [
+     "RFran"
+    ]
+   },
+   "autor": "RFran",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 3/6 (HANTENGU)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1532088165257707781",
+   "cuando": "2026-07-29T18:11:23",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Bloody",
+   "autor_h": "745aa43302deb894",
+   "cupos_texto": "12/24",
+   "inscriptos": 12,
+   "cupo_total": 24,
+   "rango": "D",
+   "modalidad": "Pandillas",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Bloody"
+    ],
+    "dj": [
+     "Bloody"
+    ],
+    "host": [
+     "Bloody"
+    ]
+   },
+   "autor": "Bloody",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Copa Juicio Final",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1531860421122986004",
+   "cuando": "2026-07-29T03:06:24",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "MC Glock",
+   "autor_h": "317bd50868cfdc21",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "En 15 minutos",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "MC Glock"
+    ],
+    "dj": [
+     "MC Glock"
+    ],
+    "host": [
+     "MC Glock"
+    ]
+   },
+   "autor": "MC_Glock",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 2/6 (GYOKKO)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1531783104690393212",
+   "cuando": "2026-07-28T21:59:11",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Bloody",
+   "autor_h": "745aa43302deb894",
+   "cupos_texto": "8/12",
+   "inscriptos": 8,
+   "cupo_total": 12,
+   "rango": "D",
+   "modalidad": "1vs1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Bloody"
+    ],
+    "dj": [
+     "Bloody"
+    ],
+    "host": [
+     "Bloody"
+    ]
+   },
+   "autor": "Bloody",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Copa Champions League",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1531735695234961610",
+   "cuando": "2026-07-28T18:50:48",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "MC Glock",
+   "autor_h": "317bd50868cfdc21",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "En 15 minutos",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "MC Glock"
+    ],
+    "dj": [
+     "MC Glock"
+    ],
+    "host": [
+     "MC Glock"
+    ]
+   },
+   "autor": "MC_Glock",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "FOR FAITH",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1531366135130362166",
+   "cuando": "2026-07-27T18:22:18",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "KZAONE",
+   "autor_h": "82005ff102d82b1d",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "C",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "27 Julio",
+   "premios": "Clasificatoria a 𝐋𝐀 𝐔𝐋𝐓𝐈𝐌𝐀 𝐏𝐀𝐋𝐀𝐁𝐑𝐀",
+   "staff": {
+    "jurado": [
+     "KZAONE"
+    ],
+    "dj": [
+     "KZAONE"
+    ],
+    "host": [
+     "KZAONE"
+    ]
+   },
+   "autor": "eselkz4",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "10 DE PIKAS",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1531305318489788457",
+   "cuando": "2026-07-27T14:20:38",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "",
+   "autor_h": "f2d792a69fc01a5f",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "1v1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "1- YO"
+    ],
+    "dj": [
+     "1-Yo"
+    ],
+    "host": [
+     "1-Yo"
+    ]
+   },
+   "autor": "¢RAIZER¥",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "Copa God Battels",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1531065066374303825",
+   "cuando": "2026-07-26T22:25:57",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "MC Glock",
+   "autor_h": "317bd50868cfdc21",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "F",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "En 15 minutos",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "MC Glock"
+    ],
+    "dj": [
+     "MC Glock"
+    ],
+    "host": [
+     "MC Glock"
+    ]
+   },
+   "autor": "MC_Glock",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "RED BULL - FINAL NACIONAL MÉXICO T11",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1530690647252537484",
+   "cuando": "2026-07-25T21:38:09",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Xervœ",
+   "autor_h": "098b1ad2c38fd8b4",
+   "cupos_texto": "A VOTACION",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "S",
+   "modalidad": "1v1",
+   "horario": "",
+   "fecha": "en 20 minutos",
+   "premios": "Clasificacion a la Inter",
+   "staff": {
+    "jurado": [
+     "Xervœ"
+    ],
+    "dj": [
+     "Qerveats"
+    ],
+    "host": [
+     "Qerveats"
+    ]
+   },
+   "autor": "thedinamite",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 1/6 (GYUTARO Y DAKI)",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1530651092747026442",
+   "cuando": "2026-07-25T19:00:58",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Bloody",
+   "autor_h": "745aa43302deb894",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "D",
+   "modalidad": "2v2",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Bloody"
+    ],
+    "dj": [
+     "Bloody"
+    ],
+    "host": [
+     "Bloody"
+    ]
+   },
+   "autor": "Bloody",
+   "categoria_id": "1337125417018200166"
+  },
+  {
+   "nombre": "El Bi-Campeón de Red Bull Nacional USA 🇺🇸 llega a la inter como jurado",
+   "servidor": "FVS",
+   "canal": "「🚨」Anuncios",
+   "msg_id": "1528758039468048544",
+   "cuando": "2026-07-20T13:38:39",
+   "canal_id": "1342508350788603935",
+   "guild_id": "1283205153624952975",
+   "organizador": "",
+   "autor_h": "098b1ad2c38fd8b4",
+   "cupos_texto": "Zamo 🇨🇱",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "thedinamite",
+   "categoria_id": "1283208296714600560"
+  },
+  {
+   "nombre": "Este Jurado es actualmente considerado para muchos el mejor jurado de ",
+   "servidor": "FVS",
+   "canal": "「🚨」Anuncios",
+   "msg_id": "1528576414306009219",
+   "cuando": "2026-07-20T01:36:56",
+   "canal_id": "1342508350788603935",
+   "guild_id": "1283205153624952975",
+   "organizador": "",
+   "autor_h": "098b1ad2c38fd8b4",
+   "cupos_texto": "Zamo 🇨🇱",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "thedinamite",
+   "categoria_id": "1283208296714600560"
+  },
+  {
+   "nombre": "Esta Persona , de los mas OG’S del servidor, actual Owner de Nuestro S",
+   "servidor": "FVS",
+   "canal": "「🚨」Anuncios",
+   "msg_id": "1528571619193127024",
+   "cuando": "2026-07-20T01:17:53",
+   "canal_id": "1342508350788603935",
+   "guild_id": "1283205153624952975",
+   "organizador": "",
+   "autor_h": "098b1ad2c38fd8b4",
+   "cupos_texto": "||Zamo 🇨🇱||",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "thedinamite",
+   "categoria_id": "1283208296714600560"
+  },
+  {
+   "nombre": "La siguiente semana se realizará la ultima nacional Final Nacional Méx",
+   "servidor": "FVS",
+   "canal": "「🚨」Anuncios",
+   "msg_id": "1528458974813356233",
+   "cuando": "2026-07-19T17:50:16",
+   "canal_id": "1342508350788603935",
+   "guild_id": "1283205153624952975",
+   "organizador": "",
+   "autor_h": "098b1ad2c38fd8b4",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "RB INTERNACIONAL",
+   "fecha": "OFICIAL RED BULL INTER T11",
+   "premios": "",
+   "staff": {},
+   "autor": "thedinamite",
+   "categoria_id": "1283208296714600560"
   }
  ],
  "inscripciones": [
@@ -7858,6 +8698,15 @@
    "discord_id": "1439048698142134436",
    "msg_id": "1557793657975738540",
    "cuando": "2026-10-08T16:35:50"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Sosa🇦🇷",
+   "quien": "sosa.1417",
+   "discord_id": "1338912904614903849",
+   "msg_id": "1557721486259781643",
+   "cuando": "2026-10-08T11:49:03"
   },
   {
    "servidor": "FFA",
@@ -13395,6 +14244,24 @@
    "cuando": "2026-10-04T19:17:28"
   },
   {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Leyenda.X5 🇦🇷",
+   "quien": "microcrack",
+   "discord_id": "1358539185778327612",
+   "msg_id": "1556384285987045528",
+   "cuando": "2026-10-04T19:15:30"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1556383802471882803",
+   "cuando": "2026-10-04T19:13:34"
+  },
+  {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
    "texto": "Kyron 🇻🇪",
@@ -13402,6 +14269,33 @@
    "discord_id": "1436522190802653325",
    "msg_id": "1556383792787099779",
    "cuando": "2026-10-04T19:13:32"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1556380951934795797",
+   "cuando": "2026-10-04T19:02:15"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "luisito 🇦🇷",
+   "quien": "byte1143",
+   "discord_id": "753758513800413334",
+   "msg_id": "1556380690969526365",
+   "cuando": "2026-10-04T19:01:12"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1556377526518157424",
+   "cuando": "2026-10-04T18:48:38"
   },
   {
    "servidor": "ACAD",
@@ -21432,6 +22326,42 @@
    "cuando": "2026-09-12T21:50:45"
   },
   {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Zignos",
+   "quien": "emekultra",
+   "discord_id": "1071185986366742630",
+   "msg_id": "1548122388049305681",
+   "cuando": "2026-09-12T00:05:40"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "snow",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1548115885644849184",
+   "cuando": "2026-09-11T23:39:49"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Mco 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1548107223518027869",
+   "cuando": "2026-09-11T23:05:24"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Praiseriza",
+   "quien": "lein7426",
+   "discord_id": "1078792444080046271",
+   "msg_id": "1548103487101997059",
+   "cuando": "2026-09-11T22:50:33"
+  },
+  {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
    "texto": "Crk🇲🇽",
@@ -21729,6 +22659,15 @@
    "cuando": "2026-09-11T03:03:28"
   },
   {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Soliwan 🇨🇴",
+   "quien": "soliwan57",
+   "discord_id": "697969108213301339",
+   "msg_id": "1547791651433480223",
+   "cuando": "2026-09-11T02:11:26"
+  },
+  {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
    "texto": "Leonar-T 🇲🇽",
@@ -21864,6 +22803,60 @@
    "cuando": "2026-09-11T01:21:06"
   },
   {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "juasmio",
+   "quien": "jmiopa",
+   "discord_id": "729439360545587291",
+   "msg_id": "1547773757110620201",
+   "cuando": "2026-09-11T01:00:19"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Leonar-T 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1547772459317465149",
+   "cuando": "2026-09-11T00:55:10"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1547757101496008705",
+   "cuando": "2026-09-10T23:54:08"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "NO SOY DE TRICOLOR PRO ME CHUPA UN WEBO\n\nBETELGEUSE🇨🇴",
+   "quien": "brujuladescalibrada",
+   "discord_id": "1535382535876509787",
+   "msg_id": "1547737418579320943",
+   "cuando": "2026-09-10T22:35:56"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Crk🇲🇽",
+   "quien": "user_mic",
+   "discord_id": "559068959845122048",
+   "msg_id": "1547732916178522122",
+   "cuando": "2026-09-10T22:18:02"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1547730914954444870",
+   "cuando": "2026-09-10T22:10:05"
+  },
+  {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
    "texto": "miniboy",
@@ -21871,6 +22864,15 @@
    "discord_id": "950011515434573824",
    "msg_id": "1547730893295325235",
    "cuando": "2026-09-10T22:10:00"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Sosa 🇦🇷",
+   "quien": "sosa.1417",
+   "discord_id": "1338912904614903849",
+   "msg_id": "1547730655192948848",
+   "cuando": "2026-09-10T22:09:03"
   },
   {
    "servidor": "ACAD",
@@ -22060,6 +23062,96 @@
    "discord_id": "766366997117141022",
    "msg_id": "1547082811788238848",
    "cuando": "2026-09-09T03:14:45"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "agustin51k 🇨🇱",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1547072943593623607",
+   "cuando": "2026-09-09T02:35:32"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "campoy🇪🇸",
+   "quien": "campy89_",
+   "discord_id": "1502684639062659122",
+   "msg_id": "1546987550584078336",
+   "cuando": "2026-09-08T20:56:13"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Sne",
+   "quien": "sne_2.",
+   "discord_id": "1513243793116102867",
+   "msg_id": "1546655801035202600",
+   "cuando": "2026-09-07T22:57:58"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Mco 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1546581623430975518",
+   "cuando": "2026-09-07T18:03:13"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Kuzoh 🇲🇽",
+   "quien": "kuzoh_",
+   "discord_id": "1447024559197782138",
+   "msg_id": "1546581596432371792",
+   "cuando": "2026-09-07T18:03:06"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Erian 🇦🇷",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1546502837335236618",
+   "cuando": "2026-09-07T12:50:09"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Guty 🇨🇴",
+   "quien": "gutierrez__9",
+   "discord_id": "766366997117141022",
+   "msg_id": "1546466557486702633",
+   "cuando": "2026-09-07T10:25:59"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1546417200062275594",
+   "cuando": "2026-09-07T07:09:51"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1546402320894394418",
+   "cuando": "2026-09-07T06:10:44"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Mcarepa 🇻🇪",
+   "quien": "abraham_e29_03496",
+   "discord_id": "1489469731168845894",
+   "msg_id": "1546402182243287140",
+   "cuando": "2026-09-07T06:10:11"
   },
   {
    "servidor": "URBF",

@@ -49,7 +49,7 @@
 ]
 },
 "erian": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "servidor",
@@ -83,7 +83,7 @@
 ]
 },
 "hassan": {
-"rg": "S",
+"rg": "A",
 "c": []
 },
 "provenza": {
@@ -165,7 +165,7 @@
 "c": []
 },
 "mco": {
-"rg": "C",
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -733,7 +733,17 @@
 "temporada"
 ]
 },
+"eze": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "chekialo": {
+"rg": "",
+"c": []
+},
+"eliot": {
 "rg": "",
 "c": []
 },
@@ -741,25 +751,15 @@
 "rg": "",
 "c": []
 },
-"eze": {
+"respawn": {
 "rg": "",
-"c": [
-"servidor"
-]
+"c": []
 },
 "catarsis": {
 "rg": "",
 "c": [
 "servidor"
 ]
-},
-"eliot": {
-"rg": "",
-"c": []
-},
-"respawn": {
-"rg": "",
-"c": []
 },
 "tusicario": {
 "rg": "",
@@ -942,15 +942,15 @@
 "rg": "",
 "c": []
 },
+"newcharacter": {
+"rg": "",
+"c": []
+},
 "zaza": {
 "rg": "",
 "c": []
 },
 "medster": {
-"rg": "",
-"c": []
-},
-"newcharacter": {
 "rg": "",
 "c": []
 },
