@@ -61,7 +61,8 @@
     'CUARTOS(?:\\s+DE\\s+FINAL)?|SEMI\\s*-?\\s*FINAL(?:ES)?|SEMIS?|TERCER\\s+LUGAR|GRAN\\s+FINAL|FINAL';
   var PALABRA = /[\p{L}\p{N}_]/u;
   var SEP = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/i;
-  var ETIQUETA_CRUCE = /^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|duelo|combate|llave|match)\s*#?\d*\s*:\s*)?/i;
+  // y «Ganado #» / «Ganador:» delante del primero (MORTAL KOMBAT MAPACHE CUP, DDF, 11/10/2026): `escuchar.ETIQUETA_CRUCE`
+  var ETIQUETA_CRUCE = /^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|duelo|combate|llave|match)\s*#?\d*\s*:\s*)?(?:(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*)?(?:#\s+)?/i;
   var EQUIPO_NOMBRADO =/([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])/gi;
   var SEP_G = /🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b/gi;
   // 🔴 SIN LOS MARCOS ADENTRO: con el hueco vacío de la plantilla (`⌞⌝ 🆚 ⌞⌝`)

@@ -237,8 +237,12 @@ DELIMS = (re.compile(r'⌞([^⌞⌝]+?)⌝'),
 SEP = re.compile(r'🆚|<a?:VSF?:\d+>|:vsf?:|\bvs\.?\b', re.I)
 #: `• Cruce 1:` / `• Semifinal 2:` al principio de una batalla: ver `nombres_de_linea()`
 #: ⚠️ con la viñeta sola también: `traducir()` ya saca «Cruce 1:» y dejaba «• JULIX» como nombre
+#: 🔑 y «Ganado #» / «Ganador:» delante del primero (MORTAL KOMBAT MAPACHE CUP, DDF, 11/10/2026: `• Ganado # 19🇲🇦 vs
+#: CHOP🇭🇳` en la final, y `• Semifinal 2: # GROOMER🇧🇴 vs 19🇲🇦`): «Ganado # 19» era una persona. Sólo con `#` o `:` detrás,
+#: para no comerse a alguien que se llame así
 ETIQUETA_CRUCE = re.compile(r'^\s*(?:[•·▸➢]\s*|-\s+)*(?:(?:cruce|semi\s*-?\s*final|cuartos?|octavos?|final|batalla|'
-                            r'duelo|combate|llave|match)\s*#?\d*\s*:\s*)?', re.I)
+                            r'duelo|combate|llave|match)\s*#?\d*\s*:\s*)?'
+                            r'(?:(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*)?(?:#\s+)?', re.I)
 #: `[Nombre del equipo (A y B)]` -> `[A + B]`: ver `nombres_de_linea()`
 EQUIPO_NOMBRADO = re.compile(r'([\[⌞])[^\[\]⌞⌝()+&\n]*\s\(([^()\[\]⌞⌝\n]+?(?:\s+(?:y|e)\s+|\s*[+&]\s*)'
                              r'[^()\[\]⌞⌝\n]+?)\)\s*([\]⌝])', re.I)

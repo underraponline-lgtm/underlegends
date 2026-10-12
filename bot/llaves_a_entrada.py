@@ -1424,6 +1424,25 @@ def para_organizador(g, nom, sv, fec, ds):
             'preguntas': [{'ronda': d[1], 'lados': list(d[4])} for d in qs]}
 
 
+#: «Ganado # 19🇲🇦 vs CHOP🇭🇳»: el lado que la línea marca como ganador. Ver `ganador_marcado()`
+_GANADO = re.compile(r'(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*(.+?)\s*(?:🆚|\bvs\.?(?:\s|$)|<a?:VSF?:\d+>)', re.I)
+
+
+def ganador_marcado(textos, lados):
+    """El lado de `lados` que una línea de la llave marca como ganador («Ganado # 19 vs CHOP»), o `None`. Sólo si es
+    uno y coincide exacto con un lado (sin banderas): una marca que no se entiende no elige a nadie."""
+    ks = {E.norm(re.sub('[\U0001F1E6-\U0001F1FF]', '', x)): x for x in lados}
+    hallados = set()
+    for t in textos or ():
+        for l in str(t or '').splitlines():
+            m = _GANADO.search(l)
+            if m:
+                k = E.norm(re.sub('[\U0001F1E6-\U0001F1FF]', '', m.group(1)))
+                if k in ks:
+                    hallados.add(ks[k])
+    return next(iter(hallados)) if len(hallados) == 1 else None
+
+
 def marcar_paga(filas):
     """`paga: N` en las filas de la ronda que la escala no paga, si Dlx dijo cuánto (`decidir.paga_ronda()`)."""
     if not filas:
@@ -2189,6 +2208,10 @@ ANTES_MS, DESPUES_MS = 3600000, 5 * 3600000
 #: `anuncio_de_llave()`. Se guarda porque el anuncio se va del canal y la llave
 #: no: sin esto volvería a «(sin titulo)» —otro evento, otro número—.
 NOMBRES = os.path.join(BASE, 'datos', 'nombres_llaves.json')
+#: 🔑 el título que no dice qué evento es: la llave lleva el nombre de su anuncio (ver el bucle de `main()`, 12/10/2026)
+TITULO_VACIO = re.compile(r'^\s*(?:el\s+|la\s+)?(?:bracket|brackets|llave|llaves|cuadro|fixture|torneo|compe|competencia|'
+                          r'nombre de la compe(?:tencia)?)(?:\s+(?:del?|de la)\s+(?:torneo|evento|compe|competencia))?\s*$',
+                          re.I)
 
 
 def _hora_et(ms):
@@ -3580,6 +3603,26 @@ def main():
                 if h.get('msg_id') and guardados.get(str(h['msg_id'])) != inferido:
                     nombres_nuevos[str(h['msg_id'])] = inferido
             nom, por_hora = inferido['nombre'], 'el que ya tenía'
+        # 🔑 CON TÍTULO, DE UNA CUENTA NUEVA, Y SU ANUNCIO LO PUBLICÓ ESA MISMA CUENTA A ESA HORA (12/10/2026). Dlx: *«en la
+        # página web hay bastantes eventos sin llaves… no debería serlo»*. Walker anunció MORTAL KOMBAT MAPACHE CUP y 7
+        # minutos después publicó su llave como «BRACKET DEL TORNEO»; Colesito anunció «Competencia Rango Bronce» y 9
+        # minutos después, «Fecha Rempalago Vol. 64…». Los dos quedaban retenidos «de broma» —cuenta nueva y ningún
+        # anuncio con ESE nombre— y el calendario mostraba el anuncio sin llave. El anuncio de la misma cuenta a la hora
+        # de la llave la respalda (la regla de `llave_de_broma()` para las sin título), queda guardado de qué anuncio es
+        # —así el calendario la cruza— y si el título no dice nada («BRACKET DEL TORNEO»), lleva el nombre del anuncio
+        elif (nom != '(sin titulo)' and g['llaves'] and not any(h.get('vidas') for h in g['llaves'])
+                and not any(huella_autor(h) in conocidos for h in g['llaves'])):
+            _a, _c = anuncio_de_llave(g, anuncios_l, tomados)
+            if _a and _a.get('autor_h') and _a['autor_h'] in {huella_autor(h) for h in g['llaves']}:
+                if TITULO_VACIO.match(nom):
+                    nom = (_a.get('nombre') or nom).strip()
+                tomados.add(str(_a.get('msg_id') or ''))
+                _sv_i = codigo_servidor(g['llaves'][0].get('guild'))[0]
+                inferido = {'nombre': nom, 'anuncio': str(_a.get('msg_id') or ''), 'sv': _sv_i, 'autor_h': _a['autor_h']}
+                for h in g['llaves']:
+                    if h.get('msg_id'):
+                        nombres_nuevos[str(h['msg_id'])] = inferido
+                por_hora = 'su anuncio, de la misma cuenta: «%s»' % (_a.get('nombre') or '').strip()
         elif nom == '(sin titulo)' and g['llaves'] and not g['llaves'][0].get('_chico') \
                 and not any(h.get('vidas') for h in g['llaves']):
             inferido, por_hora = anuncio_de_llave(g, anuncios_l, tomados)
@@ -3835,6 +3878,24 @@ def main():
                     f['notas'] = '; '.join(x for x in re.split(r'\s*;\s*', f['notas'])
                                            if x and not re.match(r'Walk-in \d+:', x))
             limpias = marcar_walkins(limpias, _txt, _ids, quien=_quien, sv=ligas[0] if ligas else None)
+        # 🔑 EL GANADOR QUE LA LÍNEA MARCA («• Ganado # 19🇲🇦 vs CHOP🇭🇳», la final de MORTAL KOMBAT MAPACHE CUP, DDF,
+        # 11/10/2026): el campeón está escrito, no hay que preguntárselo a nadie. Ver `ganador_marcado()`
+        if d_grupo and limpias and not tiene_campeon(limpias):
+            _q2, _b = [], limpias[0]
+            for d in d_grupo:
+                _fin = len(d) >= 5 and ('campeón' in str(d[3]).lower()
+                                        or str(d[1]).upper().replace(' ', '') in ('FINAL', 'GRANFINAL'))
+                gm = ganador_marcado(_txt, d[4]) if _fin else None
+                if not gm:
+                    _q2.append(d)
+                    continue
+                for otro in [x for x in d[4] if x != gm]:
+                    limpias.append({'evento': _b.get('evento') or nom, 'servidor': _b.get('servidor') or (ligas or [''])[0],
+                                    'fecha': _b.get('fecha') or fec,
+                                    'participantes': _b.get('participantes') or len(g['plantel']),
+                                    'ronda': d[1].lower(), 'ladoA': gm, 'ladoB': otro, 'ganador': gm,
+                                    'notas': 'ganador: marcado en la llave'})
+            d_grupo = _q2
         # 🔑 LA FINAL QUE LA LLAVE NO ESCRIBIÓ, si Dlx dijo cuál fue (`final` en la decisión del evento): COMPE DE
         # UDDI (22/09) puso en la final sólo «ERIAN» —el ganador— y nunca la batalla (Dlx: *«3. Sí»*, ganó Erian).
         fd = DEC.final_decidida(nom, ligas[0], fec) if ligas else None

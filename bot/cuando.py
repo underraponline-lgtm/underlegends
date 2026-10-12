@@ -170,6 +170,16 @@ def _dia_de(texto):
     return None
 
 
+def dia_del_nombre(nombre):
+    """El día de la semana que dice el NOMBRE del anuncio, o `''`: la fecha cuando el anuncio no trae una aparte.
+
+    🔴 FAT BATTLES PALOOZA T.3 FECHA 4 (la ACADEMIA, 12/10/2026): «( DOMINGO - MAÑANA )» va en el título, la fecha
+    vino vacía y la hora «23:00 🇪🇸» se tomó del día en que se publicó —el sábado—. El evento quedó un día antes en el
+    calendario y no se cruzó con su llave, que se publicó el domingo. Lo mismo en el JS (`diaDelNombre()`)."""
+    d = _dia_de(nombre)
+    return _DIAS[d] if d is not None else ''
+
+
 def _hora_de(texto):
     """`(hora, minutos)` de «22:30», «23 HS» o «8 pm»; `None` si no hay."""
     t = str(texto or '')
@@ -253,7 +263,7 @@ def momento(anuncio):
     if d is None:
         # 🔑 «22:30 🇨🇱»: ver `hora_bandera()`
         return hora_bandera(anuncio.get('horario'), anuncio.get('cuando'),
-                            anuncio.get('fecha'))
+                            anuncio.get('fecha') or dia_del_nombre(anuncio.get('nombre')))
     t = _leer_iso(anuncio.get('cuando'))
     if t is None:
         return None

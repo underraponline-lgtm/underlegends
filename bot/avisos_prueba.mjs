@@ -336,7 +336,7 @@ const ok = (cond, que, det) => {
   let mal = 0;
   for (const c of casos) {
     const a = A.parsearAnuncio({ content: c.content });
-    const ms = a ? A.momentoMs(a.horario, c.timestamp, a.fecha) : null;
+    const ms = a ? A.momentoMs(a.horario, c.timestamp, a.fecha || A.diaDelNombre(a.nombre)) : null;
     const js = {
       es: !!a,
       nombre: a ? a.nombre : '',

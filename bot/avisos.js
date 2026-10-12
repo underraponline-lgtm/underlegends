@@ -1369,6 +1369,12 @@ function diaDe(texto) {
   }
   return null;
 }
+/** `cuando.dia_del_nombre()`: el día de la semana que dice el NOMBRE del anuncio, o `''`: la fecha cuando el anuncio
+ *  no trae una aparte («( DOMINGO - MAÑANA )» en el título de la FAT BATTLES Fecha 4, 12/10/2026) */
+export function diaDelNombre(nombre) {
+  const d = diaDe(nombre);
+  return d == null ? '' : DIAS_JS[d];
+}
 function horaDe(texto) {
   const t = String(texto || '');
   let h, mi, ap;
@@ -5171,7 +5177,7 @@ export class Avisos {
       try { this.anotarEstado(m, c, ahora); } catch (e) { /* sigue */ }
       return descartar();
     }
-    const ini = momentoMs(a.horario, m.timestamp, a.fecha);
+    const ini = momentoMs(a.horario, m.timestamp, a.fecha || diaDelNombre(a.nombre));
     // 🔴 LA REGLA: tarde es peor que nunca
     if (ini != null ? ini < ahora - GRACIA : ahora - publicado > EDAD_SIN_HORA) {
       return descartar();

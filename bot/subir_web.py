@@ -553,6 +553,17 @@ def armar():
                   for n, r in llaves.items()}
         _info = {}
         calendario = _calendario(ann, regs, llaves, _LW, CU, _ahora, _info)
+        # 🔁 y en «Lo que pasó», el anuncio repetido lleva la llave de su evento (`reanuncio()`)
+        for _p in pas:
+            if _p.get('llave'):
+                continue
+            for _c in calendario:
+                if _c.get('ll') and reanuncio(_p, {'nombre': _c['n'], 'sv': _c['sv'], 'cuando': _c['t'][:-1]}, _LW):
+                    _p['llave'] = _c['ll']
+                    if str(_c['ll']) in regs and str(_c['ll']) not in llaves:
+                        llaves[str(_c['ll'])] = dict(regs[str(_c['ll'])],
+                                                     rondas=_LW.enlazar(regs[str(_c['ll'])].get('rondas') or []))
+                    break
         # 🔴 y lo que se canceló con el anuncio en pie (LA REDENCION, 03/10/2026): ver `_cancelados()`
         try:
             _cancelados(calendario, _LW, escribir='--aplicar' in sys.argv)
@@ -1634,6 +1645,49 @@ def _perfiles(gente, comp, regs):
             'dmp': dmp}
 
 
+#: 🔁 las palabras que no dicen de qué evento se trata: el día (el anuncio dice «MAÑANA», el de la víspera; «HOY», el del día) y
+#: lo que comparten todos los torneos
+_DIA_W = {'hoy', 'manana', 'lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo', 'esta', 'noche',
+          'tarde'}
+_GENERICAS = {'final', 'finales', 'cup', 'copa', 'vol', 'fecha', 'red', 'bull', 'nacional', 'regional', 'torneo',
+              'compe', 'competencia', 'liga', 'evento', 'batalla', 'batallas', 'freestyle', 'edicion', 'gran',
+              'temporada', 'clasificatoria', 'desgracias'}
+#: un evento anunciado otra vez arranca a esta distancia del primero, como mucho (la víspera y el día ya arrancan a la
+#: misma hora: el día sale del nombre, `cuando.dia_del_nombre()`)
+REANUNCIO_H = 2
+
+
+def _palabras_ev(nombre):
+    import unicodedata
+    t = unicodedata.normalize('NFKD', str(nombre or '')).encode('ascii', 'ignore').decode('ascii').lower()
+    return [w for w in re.findall(r'[a-z0-9]+', t) if w not in _DIA_W]
+
+
+def reanuncio(a, b, LW):
+    """🔁 ¿El anuncio `a` (sin llave) es el mismo evento que `b` (con llave), anunciado otra vez? Dlx, 12/10/2026: *«en la
+    página web hay bastantes eventos sin llaves… quizás sea cierto pero no debería serlo»*. Medido ese día: de los nueve
+    «SIN LLAVE» del calendario, los que tenían llave eran el MISMO evento anunciado dos veces —URBF anunció «RED BULL
+    NACIONAL ESPAÑA T.5» y cinco minutos después «FINAL NACIONAL ESPAÑA»; la ACADEMIA, la FAT BATTLES Fecha 4 la víspera
+    («DOMINGO - MAÑANA») y el día («HOY»)—: el cruce le daba la llave a uno y el otro quedaba en el calendario sin ella.
+
+    El mismo servidor, sin números que se contradigan (`llaves_web._chocan()`: Fecha 4 y Fecha 5 son dos), la misma
+    modalidad si las dos la dicen, el arranque a `REANUNCIO_H` horas o menos y una palabra propia en común (ESPAÑA,
+    PALOOZA). Medido sobre el calendario del 12/10: no junta ningún par de eventos distintos."""
+    if (a.get('sv') or '') != (b.get('sv') or '') or LW._chocan(a.get('nombre'), b.get('nombre')):
+        return False
+    ta, tb = LW._instante_iso(a.get('cuando')), LW._instante_iso(b.get('cuando'))
+    if not ta or not tb or abs((ta - tb).total_seconds()) > REANUNCIO_H * 3600:
+        return False
+    # ⚠️ LA MODALIDAD SEPARA: la TOKYO VOL 16 se jugó en 1vs1 y en 2vs2 la misma noche (28/09/2026)
+    forma = lambda x: set(re.findall(r'(\d)\s*(?:vs|v|x)\s*(\d)', ' '.join(_palabras_ev(
+        '%s %s' % (x.get('nombre') or '', x.get('modalidad') or x.get('mod') or '')))))
+    if forma(a) and forma(b) and forma(a) != forma(b):
+        return False
+    pa, pb = _palabras_ev(a.get('nombre')), _palabras_ev(b.get('nombre'))
+    propias = {w for w in pa if len(w) >= 4 and w not in _GENERICAS} & {w for w in pb if len(w) >= 4 and w not in _GENERICAS}
+    return bool(propias)
+
+
 def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
     """Los eventos de la temporada, para el calendario de «Eventos».
 
@@ -1673,6 +1727,10 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                       'pre': (x.get('premios') or '')[:60],
                       'ct': 1 if ini and _con_tiempo(ini, pub) else 0, **_staff(x)})
     LW.cruzar(items, regs)
+    # 🔁 el mismo evento anunciado otra vez no sale dos veces, y el «SIN LLAVE» del repetido desaparece (`reanuncio()`)
+    con = [i for i in items if i.get('llave')]
+    items = [i for i in items if i.get('llave') or str(i['cuando']) > ahora
+             or not any(reanuncio(i, j, LW) for j in con)]
     # 🔑 LA FICHA DE CADA LLAVE: formato, rango, quién organizó y el premio,
     # que están en el anuncio y no en la llave. Dlx, 25/09/2026: «mostrar el
     # formato de eventos… lo mostrabas en inicio: pandillas, 1v1, el rango».
