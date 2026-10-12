@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.66",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T04:23:00-04:00",
+   "titulo": "FVS se suma a la Liga",
+   "items": [
+    "🆚 **FVS (Freestyle Versus) es parte de la Liga Global**: sus torneos suman al ranking de la Temporada, sus anuncios llegan a quien tenga la 🔔 campana prendida y sus llaves se siguen en vivo. Y aparece entre los servidores de la Liga, con su invitación.",
+    "🏷️ **Su etiqueta es COMPETITIVO**, y su carta de Servidor lleva el laurel de su escudo subiendo por los bordes, sobre humo gris.",
+    "📋 **El bot entiende cómo escribe FVS**: las llaves que arrancan sin título de ronda, quién gana cada batalla en #veredictos, y en los anuncios quién organiza, el jurado, el host y el DJ."
+   ]
+  },
+  {
    "version": "2.65",
    "dia": "2026-10-09",
    "cuando": "2026-10-09T00:05:00-04:00",

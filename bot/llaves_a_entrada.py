@@ -1820,8 +1820,14 @@ def fase_sin_batallas(texto):
 PREVIAS = {'FILTROS', 'CLASIFICATORIAS', 'PRELIMINARES'}
 
 
-def marcar_walkins(filas, textos=(), ids=None, quien=None):
+def marcar_walkins(filas, textos=(), ids=None, quien=None, sv=None):
     """Anota `Walk-in N: nombre` a quien aparece recien en una ronda avanzada.
+
+    🆚 NI QUIEN DLX DIJO QUE ES LA MISMA PERSONA EN ESE SERVIDOR (`sv`, `por_servidor` de `akas_a_mano.json`, el
+    mismo de `otro_en_servidor()`). FVS UNDER (26/09/2026) escribe «Draax» en la primera ronda y «Draxx» en cuartos,
+    y los dos son Drexx (Dlx, 12/10/2026, «3. … b»): no se parecen lo bastante, y con el nombre ya cambiado a «Drexx»
+    (la segunda pasada, después de ✅ Decidir) menos. Salía «Walk-in 1» y cobraba la mitad de su semifinal. Sólo acá
+    y no en `personas()`: ahí cambiaba también cómo se resuelven las llaves de DDF (medido con comparar_lector).
 
     🔴 Y NO ES WALK-IN QUIEN ESTUVO ANTES CON OTRO NOMBRE (02/10/2026). Oasis
     jugó los octavos de la DOS GENERACIONES UN DESTINO VOL 2 como «Park-Ji
@@ -1882,6 +1888,8 @@ def marcar_walkins(filas, textos=(), ids=None, quien=None):
     def _ronda(r):
         r = (r or '').upper()
         return E.ALIAS.get(r, r)
+
+    del_sv = (_otros_por_servidor().get(sv) or {}) if sv else {}
 
     # las rondas del texto, en orden, con TODOS los nombres que aparecen
     # —tambien los de adentro de un parentesis: son gente que ya peleo—
@@ -1949,6 +1957,9 @@ def marcar_walkins(filas, textos=(), ids=None, quien=None):
             continue
         # la misma persona, con otro nombre en una ronda anterior: ver el docstring
         if quien is not None and quien(k) and any(quien(k) & quien(p) for p in previos):
+            continue
+        # o la misma persona según lo que Dlx dijo de ese servidor: ver el docstring
+        if del_sv and any(E.norm(del_sv.get(k, k)) == E.norm(del_sv.get(p, p)) for p in previos):
             continue
         nota = 'Walk-in %d: %s' % (min(i - base, 3), E.HISTORIA.sub('', nombre).strip())
         f['notas'] = ('%s; %s' % (f['notas'], nota)) if f.get('notas') else nota
@@ -3550,7 +3561,8 @@ def main():
         _doble = any(E.es_doble(E.rondas_de(t)) for t in _txt)
         limpias = [] if any(h.get('vidas') for h in g['llaves']) else (
             marcar_pokemones(list(del_grupo), _txt) if _doble else marcar_revividos(
-                marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids, quien=_quien),
+                marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids, quien=_quien,
+                               sv=codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0]),
                 _txt))
         # 🔑 EL EQUIPO CON UN SOLO NOMBRE (TEAM VENECIA), AL FINAL: el revivido
         # y el walk-in se miran con la llave tal cual la escribieron. Ver
@@ -3714,7 +3726,7 @@ def main():
                 if 'Walk-in' in str(f.get('notas') or ''):
                     f['notas'] = '; '.join(x for x in re.split(r'\s*;\s*', f['notas'])
                                            if x and not re.match(r'Walk-in \d+:', x))
-            limpias = marcar_walkins(limpias, _txt, _ids, quien=_quien)
+            limpias = marcar_walkins(limpias, _txt, _ids, quien=_quien, sv=ligas[0] if ligas else None)
         # 🔑 LA FINAL QUE LA LLAVE NO ESCRIBIÓ, si Dlx dijo cuál fue (`final` en la decisión del evento): COMPE DE
         # UDDI (22/09) puso en la final sólo «ERIAN» —el ganador— y nunca la batalla (Dlx: *«3. Sí»*, ganó Erian).
         fd = DEC.final_decidida(nom, ligas[0], fec) if ligas else None

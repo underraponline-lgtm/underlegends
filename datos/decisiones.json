@@ -73,6 +73,12 @@
    "cuando": "2026-10-07 6:30 PM ET",
    "por": "Claude (arreglo, a pedido de Dlx)",
    "nota": "CONTADO DOS VECES (07/10/2026, lo destapó Molusco al revisar el winrate): era la segunda mitad del FFA WORLD CUP (#366), cargada sola el 06/10 (#409). Se sacó por número del Sheet; `ya_cargada()` de llaves_a_entrada frena que vuelva."
+  },
+  "FVS UNDER · FVS · 26/09": {
+   "decision": "cuenta",
+   "cuando": "2026-10-12 3:56 AM ET",
+   "por": "Dlx por chat",
+   "nota": "Dlx, 12/10/2026, a «¿cuenta FVS UNDER (26/09)?»: «4. A». Se jugó antes de que FVS entrara a la Liga (12/10), pero adentro de la T1 (desde el 22/09)."
   }
  },
  "no_rankear": {
@@ -183,6 +189,13 @@
    "cuando": "2026-10-07 4:20 PM ET",
    "por": "Dlx por chat",
    "nota": "Dlx: «lo mismo que el anterior»"
+  },
+  "fvsunder|FVS|26/09|final|mathias|rfran": {
+   "ganador": "Mathias 🇪🇸",
+   "batalla": "FVS UNDER · FVS · 26/09 · final · Mathias 🇪🇸 🆚 Rfran 🇪🇸",
+   "cuando": "2026-10-12 3:56 AM ET",
+   "por": "Claude, de lo que publicó FVS (Dlx: «4. A», el evento cuenta)",
+   "nota": "La llave termina en «[Mathias 🇪🇸] vs [Rfran 🇪🇸]» sin ganador, y en #veredictos falta el «# GANADOR» del organizador. Lo dicen el voto del jurado en #veredictos («Mathias 🇻🇪», 26/09 5:43 PM ET) y el anuncio del organizador esa misma noche (6:12 PM ET): Mathias «llega a Primera división… el único participante que se ganó su puesto», que era el premio del UNDER."
   }
  },
  "anuncios_fuera": {
