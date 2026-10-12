@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T20:24:33+00:00",
+ "cuando": "2026-10-12T20:30:18+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -981,35 +981,6 @@
     ]
    },
    "autor": "CRONOX 🇨🇱",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "MAÑANA DE LLUVIA VOL 1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557351182630916210",
-   "cuando": "2026-10-07T11:17:36",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Lewis",
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "12 / 16 / 24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 30 MINUTOS",
-   "fecha": "",
-   "premios": "Respeto",
-   "staff": {
-    "host": [
-     "l3wito"
-    ],
-    "dj": [
-     "l3wito"
-    ]
-   },
-   "autor": "Lewito",
    "categoria_id": "1468478330826260500"
   },
   {
