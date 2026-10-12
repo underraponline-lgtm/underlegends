@@ -514,13 +514,13 @@
   },
   "BNA": {
    "FFA": {
-    "duelos": "3/3",
-    "ev": 4,
+    "duelos": "3/4",
+    "ev": 5,
     "oro": 1,
-    "ovr": 56,
+    "ovr": 57,
     "pod": 2,
-    "pts": 44125,
-    "racha": "3/3"
+    "pts": 56500,
+    "racha": "1/2"
    },
    "SR": {
     "duelos": "",
@@ -2244,17 +2244,6 @@
     "ovr": 45,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0"
-   }
-  },
-  "Hinjkybesuk": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 48,
-    "pod": 0,
-    "pts": 18975,
     "racha": "0/0"
    }
   },

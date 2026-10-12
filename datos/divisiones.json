@@ -31,6 +31,11 @@
      2
     ],
     [
+     "BNA",
+     30000,
+     1
+    ],
+    [
      "Guess",
      22311,
      2
@@ -114,11 +119,6 @@
   ],
   [
    [
-    [
-     "BNA",
-     30000,
-     1
-    ],
     [
      "EmiZor",
      13875,
@@ -251,7 +251,7 @@
   "Axinu": 5,
   "BLANKO 🇺🇸": 5,
   "BLITZ": 5,
-  "BNA": 5,
+  "BNA": 4,
   "BRAGEURITHER🇦🇪": 5,
   "BTRX": 5,
   "Badterne": 5,
@@ -270,7 +270,7 @@
   "Cajita": 4,
   "Calíz": 5,
   "Camila": 5,
-  "Campoy": 5,
+  "Campoy": 4,
   "Carlos": 5,
   "Carlosmo": 4,
   "Carlosss": 4,
@@ -326,7 +326,7 @@
   "Enkil 🇦🇷": 5,
   "Erian": 3,
   "EricRJ": 5,
-  "Erik": 4,
+  "Erik": 5,
   "Erizo": 5,
   "Eze": 5,
   "Ezias🥈✒️🧢🐍": 5,
@@ -366,7 +366,6 @@
   "Hassan": 4,
   "Heat": 5,
   "Henry": 5,
-  "Hinjkybesuk": 4,
   "Holden": 5,
   "Humildad": 4,
   "IFX": 5,
@@ -1111,12 +1110,12 @@
   ],
   [
    "2026-10-05",
-   "Pomberito",
+   "BNA",
    4
   ],
   [
    "2026-10-05",
-   "Erik",
+   "Pomberito",
    4
   ],
   [
@@ -1201,11 +1200,6 @@
   ],
   [
    "2026-10-05",
-   "Hinjkybesuk",
-   4
-  ],
-  [
-   "2026-10-05",
    "Medster",
    4
   ],
@@ -1217,6 +1211,11 @@
   [
    "2026-10-05",
    "Letrao🇨🇱",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Campoy",
    4
   ],
   [
@@ -1289,7 +1288,9 @@
    "Agus",
    "Aldre",
    "Alexi",
+   "BNA",
    "Cajita",
+   "Campoy",
    "Carlosmo",
    "Chop",
    "Cronox",
@@ -1297,11 +1298,9 @@
    "Dominick",
    "Dynoco",
    "EIDP",
-   "Erik",
    "Geoka",
    "Guess",
    "HH",
-   "Hinjkybesuk",
    "Letrao🇨🇱",
    "Liberia",
    "MCO",

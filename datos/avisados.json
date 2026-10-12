@@ -3413,13 +3413,13 @@
   "canal": "1468472443843776659",
   "duelos": [
    [
-    "fleivaman, belleza🇮🇨",
-    "Bloody, Holden 🇪🇸",
-    "fleivaman, belleza🇮🇨"
+    "fleivaman, Provenza",
+    "Bloody, Holden",
+    "fleivaman, Provenza"
    ],
    [
     "Cronox, Xclusivo",
-    "Egipto 🇨🇷, Santo Trinidad 🇨🇴",
+    "EGI, Santo Trinidad 🇨🇴",
     "Cronox, Xclusivo"
    ],
    [
@@ -3433,13 +3433,13 @@
     "Snow, rodrilp"
    ],
    [
-    "Agustín la reliquia 🇺🇾, LEWITO",
-    "matthias, BastyRetro",
-    "Agustín la reliquia 🇺🇾, LEWITO"
+    "EIDP, LEWITO",
+    "Mathhias, BastyRetro",
+    "EIDP, LEWITO"
    ],
    [
     "Zignos, Presagio",
-    "Neo Soul, Family🇵🇾",
+    "Neo, Emily Family",
     "Zignos, Presagio"
    ],
    [
@@ -3449,13 +3449,13 @@
    ],
    [
     "Tam, Luzzano",
-    "Agustín la reliquia 🇺🇾, LEWITO",
+    "EIDP, LEWITO",
     "Tam, Luzzano"
    ],
    [
-    "fleivaman, belleza🇮🇨",
+    "fleivaman, Provenza",
     "Cronox, Xclusivo",
-    "fleivaman, belleza🇮🇨"
+    "fleivaman, Provenza"
    ],
    [
     "Zignos, Presagio",
@@ -3463,13 +3463,13 @@
     "Zignos, Presagio"
    ],
    [
-    "fleivaman, belleza🇮🇨",
+    "fleivaman, Provenza",
     "Tam, Luzzano",
-    "fleivaman, belleza🇮🇨"
+    "fleivaman, Provenza"
    ],
    [
     "Zignos, Presagio",
-    "fleivaman, belleza🇮🇨",
+    "fleivaman, Provenza",
     "Zignos, Presagio"
    ]
   ],
@@ -3491,7 +3491,7 @@
    "fleivaman": 2
   },
   "fecha": "08/10",
-  "firma": "e1862fff55a65b52",
+  "firma": "cd8d501fb76ffa05",
   "msg": "1557971710802796627",
   "nombre": "__ PRITTY FREE __",
   "num": 434,
@@ -3519,7 +3519,7 @@
     3750
    ],
    [
-    "belleza🇮🇨",
+    "Provenza",
     "Subcampeón",
     3750
    ],
@@ -3544,12 +3544,12 @@
     2625
    ],
    [
-    "Neo Soul",
+    "Neo",
     "Cuartos",
     1250
    ],
    [
-    "Family🇵🇾",
+    "Emily Family",
     "Cuartos",
     1250
    ],
@@ -3564,7 +3564,7 @@
     1250
    ],
    [
-    "Agustín la reliquia 🇺🇾",
+    "EIDP",
     "Cuartos",
     1250
    ],
@@ -3589,12 +3589,7 @@
     625
    ],
    [
-    "Holden 🇪🇸",
-    "Octavos",
-    625
-   ],
-   [
-    "Egipto 🇨🇷",
+    "Holden",
     "Octavos",
     625
    ],
@@ -3624,7 +3619,7 @@
     625
    ],
    [
-    "matthias",
+    "Mathhias",
     "Octavos",
     625
    ],
@@ -3795,7 +3790,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "cd3e45d4c3f17abf",
+  "firma": "e138d964053c496d",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -3981,7 +3976,7 @@
    ],
    [
     "Agus",
-    "IKONOX🇺🇾",
+    "ikonoxx",
     "Agus"
    ],
    [
@@ -4001,7 +3996,7 @@
    ],
    [
     "Mr Still Ballin",
-    "SAEVA 🇧🇦",
+    "SAEVA",
     "Mr Still Ballin"
    ],
    [
@@ -4025,14 +4020,14 @@
     "Snow"
    ],
    [
-    "Under🇨🇴",
-    "IKONOX🇺🇾",
-    "Under🇨🇴"
+    "Under",
+    "ikonoxx",
+    "Under"
    ],
    [
-    "Under🇨🇴",
+    "Under",
     "Xclusivo",
-    "Under🇨🇴"
+    "Under"
    ],
    [
     "Agus",
@@ -4056,7 +4051,7 @@
    ],
    [
     "OG",
-    "Under🇨🇴",
+    "Under",
     "OG"
    ],
    [
@@ -4100,7 +4095,7 @@
    "Xclusivo": 9
   },
   "fecha": "09/10",
-  "firma": "31282d8cadbf8fa8",
+  "firma": "ded3bcb0870c564e",
   "msg": "1558235947840180255",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL3 __",
   "num": 436,
@@ -4142,7 +4137,7 @@
     2500
    ],
    [
-    "Under🇨🇴",
+    "Under",
     "Cuartos",
     2500
    ],
@@ -4152,7 +4147,7 @@
     2500
    ],
    [
-    "IKONOX🇺🇾",
+    "ikonoxx",
     "Octavos",
     1875
    ],
@@ -4182,7 +4177,7 @@
     1250
    ],
    [
-    "SAEVA 🇧🇦",
+    "SAEVA",
     "Octavos",
     1250
    ],
@@ -5542,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "ffcc15cd4bd7e2dd",
+  "firma": "3b84743e15e5feb9",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -5791,7 +5786,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "e8642b2f399159df",
+  "firma": "8acc156cd02892eb",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6060,7 +6055,7 @@
    ],
    [
     "Panchok",
-    "Majiztral[rebibido] 🇨🇴",
+    "Majiztral",
     "Panchok"
    ],
    [
@@ -6097,7 +6092,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "2429b38aa35c14ff",
+  "firma": "198e8f3f5f6c5028",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -6155,11 +6150,6 @@
    ],
    [
     "Dios",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Majiztral[rebibido] 🇨🇴",
     "Cuartos",
     2000
    ],
@@ -7773,7 +7763,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "381c10db166c7422",
+  "firma": "765d3f15b5b05f8f",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -8369,7 +8359,7 @@
    "Velatz": 30
   },
   "fecha": "06/10",
-  "firma": "f07df52a252b7aae",
+  "firma": "8be19f3525419f03",
   "msg": "1559300453412634725",
   "nombre": "(sin titulo)",
   "num": 457,
@@ -8678,7 +8668,7 @@
    "yinn": 16
   },
   "fecha": "12/10",
-  "firma": "7289a391d7bca96b",
+  "firma": "7c5a75d3b13159e1",
   "msg": "1559308035636334683",
   "nombre": "LA REDENCIÓN",
   "num": 458,
